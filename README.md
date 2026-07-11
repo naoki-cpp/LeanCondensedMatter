@@ -1,13 +1,11 @@
 # LeanCondensedMatter
 
-## GitHub configuration
+Formalizing results in condensed matter physics as machine-checked theorems in Lean 4, building on Mathlib.
 
-To set up your new GitHub repository, follow these steps:
+See [PROJECT.md](PROJECT.md) for project purpose, document structure, and writing conventions, and [notes/roadmap.md](notes/roadmap.md) for current formalization targets and their status.
 
-* Under your repository name, click **Settings**.
-* In the **Actions** section of the sidebar, click "General".
-* Check the box **Allow GitHub Actions to create and approve pull requests**.
-* Click the **Pages** section of the settings sidebar.
-* In the **Source** dropdown menu, select "GitHub Actions".
+## Building
 
-After following the steps above, you can remove this section from the README file.
+```sh
+lake build
+```
