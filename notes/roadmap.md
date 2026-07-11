@@ -21,6 +21,9 @@ Track A: quantum theory foundations       Track B: combinatorics
 
 ### Track A — quantum theory foundations
 
+- **Minimal axiomatic quantum theory foundation** — status: `stated`.
+  State-space and observable postulates (`QuantumTheory.State`, `QuantumTheory.Observable`) and the expectation value they define, with reality of expectation values proved (`expValue_im_eq_zero`). See `LeanCondensedMatter/QuantumTheory/Postulates.lean` and `notes/model-and-assumptions.md`. Entry point beneath the QFT groundwork target below.
+
 - **Basic quantum field theory formalization** — status: `idea`.
   Prerequisite groundwork target: the minimal scaffolding needed before stating either theorem below — e.g. creation/annihilation operator algebra (CCR/CAR), Fock space construction, and normal ordering, on the countably infinite-dimensional lattice setting chosen for this project. Precise scope to be filled in `notes/model-and-assumptions.md`.
 

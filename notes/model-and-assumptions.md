@@ -10,6 +10,13 @@ Physical models under consideration, their assumptions, and how each maps to a f
 - **Statement level:** the cumulant expansion of `log Z` (with `Z = tr e^{-βH}`, thermal/Matsubara perturbation theory) contains only connected-diagram contributions. This is the standard formulation of the theorem.
 - **Proof strategy:** derive from a general combinatorial moment-cumulant theorem (set-partition lattice / Möbius function on the partition lattice), then specialize to the thermal expectation-value setting, rather than proving it directly from Dyson series + Wick's theorem.
 
+### Minimal axiomatic quantum theory foundation
+
+- **Role:** entry point beneath the QFT groundwork target — the bare state-space and observable postulates, before second quantization / field content is introduced.
+- **State space postulate:** a pure state is a unit vector in a complex Hilbert space (`QuantumTheory.State`, `LeanCondensedMatter/QuantumTheory/Postulates.lean`). Global-phase equivalence of states is not yet formalized: `State H` is a space of representatives, not of physical (phase-equivalence-class) states — see `notes/caveats.md`.
+- **Observable postulate:** an observable is a self-adjoint bounded linear operator on the state space (`QuantumTheory.Observable`). Built on Mathlib's `IsSelfAdjoint` / `ContinuousLinearMap.adjoint`.
+- **Expectation value:** `QuantumTheory.expValue A ψ = ⟪A ψ, ψ⟫`; proved real (`expValue_im_eq_zero`) via Mathlib's `LinearMap.IsSymmetric.im_inner_apply_self`, as required for it to represent a measurable quantity.
+
 ### Basic quantum field theory formalization
 
 - **Role:** shared prerequisite for both the Linked Cluster Theorem and the Bloch–de Dominicis theorem targets, not a physics result in its own right. Scope kept to what those two targets actually need — not a general-purpose QFT library.
@@ -33,4 +40,6 @@ Physical models under consideration, their assumptions, and how each maps to a f
 
 | Physical notion | Formal counterpart | Source |
 |---|---|---|
-| (To be filled) | | |
+| Pure state | `QuantumTheory.State H` | `LeanCondensedMatter/QuantumTheory/Postulates.lean` |
+| Observable | `QuantumTheory.Observable H` | `LeanCondensedMatter/QuantumTheory/Postulates.lean` |
+| Expectation value `⟨ψ\|A\|ψ⟩` | `QuantumTheory.expValue A ψ` | `LeanCondensedMatter/QuantumTheory/Postulates.lean` |
