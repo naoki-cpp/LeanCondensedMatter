@@ -31,7 +31,14 @@ Physical models under consideration, their assumptions, and how each maps to a f
 - **Role:** extends the density-operator picture above with entropy. Restricted to finite-dimensional `H`, for the same reason as `DensityOperator`.
 - **Von Neumann entropy (defined):** `QuantumTheory.vonNeumannEntropy ρ = -Tr[ρ ln ρ] = Σᵢ negMulLog(λᵢ)` over the eigenvalues `λᵢ` of `ρ` (`LeanCondensedMatter/QuantumTheory/Entropy.lean`), using Mathlib's `LinearMap.IsSymmetric.eigenvalues` and `Real.negMulLog`.
 - **Boltzmann's principle (postulate, not formalized):** `k_B` times the von Neumann entropy equals the thermodynamic entropy `S[U,V,N]`. This equates a formal quantum-mechanical quantity with a thermodynamic one; since thermodynamics proper is out of scope for this project (see the Linked Cluster Theorem scope note above), the postulate's *equality claim* is not formalized — only its LHS (`vonNeumannEntropy`) is.
-- **Equal a priori probabilities postulate (not formalized):** at equilibrium, the state realized is the one maximizing entropy. Not yet formalized; would need a notion of constrained maximization over `DensityOperator H`. Recorded here for future scoping, not on the roadmap yet.
+- **Equal a priori probabilities postulate (not formalized):** at equilibrium, the state realized is the one maximizing entropy. Not yet formalized; would need a notion of constrained maximization over `DensityOperator H`. Feeds directly into the "Canonical distribution as the entropy-maximizing state" target below.
+
+### Canonical distribution as the entropy-maximizing state
+
+- **Role:** identifies the canonical/Gibbs state `ρ' = e^{-βH}/Z(β)` as the state that is actually physically realized at equilibrium (via the equal a priori probabilities postulate above), rather than an arbitrary convenient choice. This is what justifies treating `Z(β) = Tr[e^{-βH}]` as *the* object of interest in the Linked Cluster Theorem target.
+- **Statement:** subject to `Tr[ρĤ] = U` fixed, `ρ' = e^{-βH}/Z(β)` uniquely maximizes `vonNeumannEntropy`, equivalently minimizes the free energy `Tr[ρĤ] - T·vonNeumannEntropy ρ`.
+- **Proof strategy (Gibbs–Klein):** `Tr[ρ ln ρ] ≥ Tr[ρ ln ρ']` for any density operator `ρ` and Gibbs-form `ρ'`, with equality iff `ρ = ρ'`. This is a quantum (matrix) analogue of Gibbs' inequality for classical relative entropy.
+- **Gap:** Mathlib has no Klein-type trace inequality / quantum relative entropy machinery (checked — not present as of the pinned revision). This needs to be built here, likely via the operator-convexity of `x ↦ x ln x` or a direct eigenvalue-based argument using `vonNeumannEntropy`'s definition in `Entropy.lean`.
 
 ### Basic quantum field theory formalization
 
