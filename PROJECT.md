@@ -24,9 +24,19 @@ notes/
 
 Details belong in `notes/`; do not add content sections to this file.
 
-## Writing rules
+## Writing rules — notes (`notes/*.md`)
 
 - **Every claim needs a source.** When stating a physical or mathematical claim, value, mechanism, or formula, cite its provenance (reference, equation number, Mathlib declaration name). Do not write claims you cannot source.
 - **Separate the source's claims from your own inference.** Distinguish what a reference states from your interpretation or extrapolation; mark inference explicitly (e.g. "(inferred)"). Do not add words absent from the original when summarizing, and do not present open questions as settled.
 - **When unsure, verify before writing.** Do not assert from memory; check the original source or the Lean code itself first.
-- **Formal vs. informal.** A statement is only "proved" when it compiles with no `sorry`; otherwise record it as a target or conjecture in `notes/roadmap.md`.
+
+## Writing rules — Lean code
+
+- **Correctness is the kernel's job, not prose's.** Do not pad code with citation text to justify something the type checker already guarantees; sourcing is only needed where a definition encodes a physical assumption or choice that isn't forced by the math (see below).
+- **Cite physical assumptions where they enter, not everywhere.** When a `def`/`structure`/hypothesis embeds a physical modeling choice (not a pure math fact), a short docstring/comment citing the source is warranted. Routine lemmas need no citation.
+- **Formal vs. informal.** A statement is only "proved" when it compiles with no `sorry`; otherwise record it as a target or conjecture in `notes/roadmap.md`, not as a claim in prose.
+- **Names and structures track the physics dictionary.** Keep `def`/`theorem` names aligned with the physical notions they formalize, per the physics-to-Lean dictionary in `notes/model-and-assumptions.md`; update that dictionary when a new correspondence is introduced.
+
+## Commit conventions
+
+- Commits follow Conventional Commits, in English. See `notes/conventions.md` for format and type/scope guidance.
