@@ -26,6 +26,13 @@ Physical models under consideration, their assumptions, and how each maps to a f
 - **Purification:** `QuantumTheory.pure ψ = |ψ⟩⟨ψ|` maps a pure state (`QuantumTheory.State`) to its density-operator representative, via Mathlib's `InnerProductSpace.rankOne`.
 - **Purity:** `QuantumTheory.purity ρ = Tr[ρ²]`; proved equal to `1` on `pure ψ` (`purity_pure`). General bounds `0 < purity ≤ 1` (relying on spectral decomposition) are not yet formalized — out of scope for now.
 
+### Von Neumann entropy / Boltzmann's principle
+
+- **Role:** extends the density-operator picture above with entropy. Restricted to finite-dimensional `H`, for the same reason as `DensityOperator`.
+- **Von Neumann entropy (defined):** `QuantumTheory.vonNeumannEntropy ρ = -Tr[ρ ln ρ] = Σᵢ negMulLog(λᵢ)` over the eigenvalues `λᵢ` of `ρ` (`LeanCondensedMatter/QuantumTheory/Entropy.lean`), using Mathlib's `LinearMap.IsSymmetric.eigenvalues` and `Real.negMulLog`.
+- **Boltzmann's principle (postulate, not formalized):** `k_B` times the von Neumann entropy equals the thermodynamic entropy `S[U,V,N]`. This equates a formal quantum-mechanical quantity with a thermodynamic one; since thermodynamics proper is out of scope for this project (see the Linked Cluster Theorem scope note above), the postulate's *equality claim* is not formalized — only its LHS (`vonNeumannEntropy`) is.
+- **Equal a priori probabilities postulate (not formalized):** at equilibrium, the state realized is the one maximizing entropy. Not yet formalized; would need a notion of constrained maximization over `DensityOperator H`. Recorded here for future scoping, not on the roadmap yet.
+
 ### Basic quantum field theory formalization
 
 - **Role:** shared prerequisite for both the Linked Cluster Theorem and the Bloch–de Dominicis theorem targets, not a physics result in its own right. Scope kept to what those two targets actually need — not a general-purpose QFT library.
@@ -57,3 +64,4 @@ Physical models under consideration, their assumptions, and how each maps to a f
 | Born-rule probability `Tr[E_m ρ]` | `QuantumTheory.prob P ρ m` | `LeanCondensedMatter/QuantumTheory/DensityOperator.lean` |
 | Pure state `\|ψ⟩⟨ψ\|` (density-operator form) | `QuantumTheory.pure ψ` | `LeanCondensedMatter/QuantumTheory/DensityOperator.lean` |
 | Purity `Tr[ρ²]` | `QuantumTheory.purity ρ` | `LeanCondensedMatter/QuantumTheory/DensityOperator.lean` |
+| Von Neumann entropy `-Tr[ρ ln ρ]` | `QuantumTheory.vonNeumannEntropy ρ` | `LeanCondensedMatter/QuantumTheory/Entropy.lean` |
