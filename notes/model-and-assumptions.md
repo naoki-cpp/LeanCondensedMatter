@@ -4,11 +4,30 @@ Physical models under consideration, their assumptions, and how each maps to a f
 
 ## Models
 
-(To be filled)
+### Finite-temperature Linked Cluster Theorem
+
+- **Hilbert space / algebra setting:** countably infinite-dimensional, lattice model (e.g. spins or fermions/bosons on a countable lattice). Chosen for physical realism over the finite-dimensional alternative.
+- **Statement level:** the cumulant expansion of `log Z` (with `Z = tr e^{-βH}`, thermal/Matsubara perturbation theory) contains only connected-diagram contributions. This is the standard formulation of the theorem.
+- **Proof strategy:** derive from a general combinatorial moment-cumulant theorem (set-partition lattice / Möbius function on the partition lattice), then specialize to the thermal expectation-value setting, rather than proving it directly from Dyson series + Wick's theorem.
+
+### Basic quantum field theory formalization
+
+- **Role:** shared prerequisite for both the Linked Cluster Theorem and the Bloch–de Dominicis theorem targets, not a physics result in its own right. Scope kept to what those two targets actually need — not a general-purpose QFT library.
+- **Setting:** consistent with the lattice model chosen above — creation/annihilation operators indexed by lattice site (and internal degrees of freedom as needed), CCR (bosons) or CAR (fermions) relations, Fock space as the representation space.
+- **Open scope questions (to resolve before formal definitions are written):** bosons, fermions, or both; whether Fock space is built directly or assumed via an existing Mathlib/Lean construction if one exists; how normal ordering is defined for the infinite-lattice case given the convergence caveat below.
+
+### Finite-temperature Bloch–de Dominicis theorem
+
+- **Statement level:** thermal expectation value of a product of creation/annihilation operators equals the sum over all full pairings (contractions) of the product of pairwise thermal averages — the thermal-average generalization of Wick's theorem.
+- **Relation to Linked Cluster Theorem:** expected to serve as an input lemma to the Linked Cluster Theorem's diagrammatic expansion (pairings ↔ diagrams), but the precise logical dependency is not yet fixed — record the decision here once made.
+- **Convergence:** subject to the same caveat as the Linked Cluster Theorem below — treated first as an algebraic identity for a fixed finite sub-volume / finite operator product, not as an analytic statement about infinite sums.
 
 ## Assumptions
 
-(To be filled)
+### Finite-temperature Linked Cluster Theorem
+
+- **Convergence is out of scope for the combinatorial core.** The moment-cumulant identity from the partition lattice is a formal/algebraic identity (holds order-by-order in the perturbative expansion, or as an identity of formal power series). It does not by itself establish convergence of the series to `log Z`, nor trace-class properties of the infinite-lattice operators. Analytic questions (existence/convergence of the thermodynamic limit, trace-class-ness of `e^{-βH}`) are a separate concern to be scoped later — record any such follow-up target separately in `notes/roadmap.md` rather than folding it into this one.
+- **Consequence for scope:** the initial target theorem should be stated as an algebraic identity between the cumulants of `log Z`'s expansion and connected diagrams (or connected set partitions), conditioned on the underlying moments/cumulants being well-defined (e.g. as formal power series, or for a fixed finite sub-volume before any thermodynamic limit is taken).
 
 ## Physics-to-Lean dictionary
 
