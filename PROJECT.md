@@ -19,6 +19,7 @@ notes/
   roadmaps/
     quantum-theory-foundations.md — Track A detail
     combinatorics.md               — Track B detail
+    operator-algebra.md            — Track C detail
     linked-cluster-theorem.md      — Combined target detail
   completed.md              — targets that have reached `proved`
   conventions.md           — Lean/Mathlib style and project conventions
