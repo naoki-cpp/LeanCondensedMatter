@@ -342,4 +342,19 @@ theorem hasSum_eigenvectorFamily (hT : IsCompactOperator T) (hT' : T.IsSymmetric
     rw [apply_eigenvectorFamily hT a, smul_smul, smul_smul, mul_comm]
   simpa only [heq] using hstep2
 
+/-- **A compact self-adjoint operator is trace-class** when the absolute values of its
+(nonzero) eigenvalues, with multiplicity, are summable. This is Track C's step 2
+(`notes/roadmaps/operator-algebra.md`) — the finite-dimensional analogue is automatic (a
+finite sum is always summable), so this predicate is the substantive content that's new in
+infinite dimensions.
+
+No separate "independent of the choice of eigenbasis" lemma is needed here: `EigenvectorIndex
+T` and the eigenvalue recorded at each index (`a.1.1`) depend only on the eigenspaces of `T`
+themselves and their dimensions, not on which orthonormal basis `stdOrthonormalBasis` happens
+to pick within each (possibly multi-dimensional) eigenspace — every basis vector of a given
+eigenspace shares the same eigenvalue, so `Summable (fun a => |a.1.1|)` is manifestly
+insensitive to that choice. -/
+def IsTraceClass (T : H →L[ℂ] H) : Prop :=
+  Summable (fun a : EigenvectorIndex T => |a.1.1|)
+
 end ContinuousLinearMap
