@@ -1,3 +1,4 @@
 import LeanCondensedMatter.QuantumTheory.Postulates
 import LeanCondensedMatter.QuantumTheory.DensityOperator
 import LeanCondensedMatter.QuantumTheory.Entropy
+import LeanCondensedMatter.Combinatorics.PartitionLattice
