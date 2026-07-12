@@ -138,4 +138,117 @@ theorem countable_eigenvectorIndex (hT : IsCompactOperator T) (hT' : T.IsSymmetr
   rw [← Set.countable_univ_iff, hcov]
   exact Set.countable_iUnion fun n => (hfin n).countable
 
+/-- The (algebraic) span of `eigenvectorFamily` is exactly the sum of all the nonzero
+eigenspaces: each per-eigenspace `stdOrthonormalBasis` spans its own (finite-dimensional)
+eigenspace, and these are glued together in the same way as the index type. -/
+theorem span_eigenvectorFamily (hT : IsCompactOperator T) :
+    Submodule.span ℂ (Set.range (eigenvectorFamily hT)) =
+      ⨆ μ : { μ : ℝ // μ ≠ 0 }, Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ) := by
+  apply le_antisymm
+  · rw [Submodule.span_le]
+    rintro x ⟨a, rfl⟩
+    exact Submodule.mem_iSup_of_mem a.1 (by
+      haveI := finite_dimensional_eigenspace hT (a.1.1 : ℂ) (by exact_mod_cast a.1.2)
+      exact Submodule.coe_mem _)
+  · apply iSup_le
+    intro μ
+    haveI := finite_dimensional_eigenspace hT (μ.1 : ℂ) (by exact_mod_cast μ.2)
+    have hbasis : Submodule.span ℂ
+        (Set.range (stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)))) =
+        (⊤ : Submodule ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ))) :=
+      (stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ))).toBasis.span_eq
+    have hmap : Submodule.map (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)).subtype
+        (Submodule.span ℂ
+          (Set.range (stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ))))) =
+        Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ) := by
+      rw [hbasis, Submodule.map_top, Submodule.range_subtype]
+    rw [← hmap, Submodule.map_span]
+    apply Submodule.span_mono
+    rintro x ⟨v, ⟨y, rfl⟩, rfl⟩
+    exact ⟨⟨μ, y⟩, rfl⟩
+
+/-- **The closure of the nonzero-eigenspace part and the kernel are exactly each other's
+orthogonal complements.** The key structural fact enabling the `tsum` reconstruction of `T`:
+`ker T` and `eigenvectorFamily`'s span are mutually orthogonal (distinct eigenspaces), and
+their algebraic sum is dense — it equals the sum of *all* eigenspaces, dense by
+`orthogonalComplement_iSup_eigenspaces_eq_bot`, since a self-adjoint operator's eigenvalues are
+always real (so no eigenspace outside `ℝ` contributes). -/
+theorem orthogonal_closure_span_eigenvectorFamily (hT : IsCompactOperator T)
+    (hT' : T.IsSymmetric) :
+    (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosureᗮ =
+      Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ) := by
+  set E' := Submodule.span ℂ (Set.range (eigenvectorFamily hT)) with hE'_def
+  set F := E'.topologicalClosure with hF_def
+  set G := Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ) with hG_def
+  have hOrth : OrthogonalFamily ℂ (fun μ : ℝ => Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ : ℂ))
+      (fun μ => (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ : ℂ)).subtypeₗᵢ) :=
+    hT'.orthogonalFamily_eigenspaces.comp (f := fun μ : ℝ => (μ : ℂ)) Complex.ofReal_injective
+  -- `E' ⊆ Gᗮ`
+  have hE'G : E' ≤ Gᗮ := by
+    rw [hE'_def, Submodule.span_le]
+    rintro x ⟨a, rfl⟩
+    rw [SetLike.mem_coe, Submodule.mem_orthogonal']
+    intro u hu
+    haveI := finite_dimensional_eigenspace hT (a.1.1 : ℂ) (by exact_mod_cast a.1.2)
+    have hxmem : eigenvectorFamily hT a ∈ Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ) :=
+      Submodule.coe_mem _
+    have hne : a.1.1 ≠ (0 : ℝ) := a.1.2
+    have := hOrth hne (⟨eigenvectorFamily hT a, hxmem⟩ :
+        Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ)) (⟨u, hu⟩ : G)
+    simpa using this
+  -- `G` is closed (it's the kernel of the continuous map `T`), hence complete.
+  have hGclosed : IsClosed (G : Set H) := by
+    have heq : G = LinearMap.ker (T : H →ₗ[ℂ] H) := by
+      ext x
+      rw [hG_def, Module.End.mem_eigenspace_iff, LinearMap.mem_ker, zero_smul]
+    rw [heq]; exact T.isClosed_ker
+  haveI : CompleteSpace G := hGclosed.completeSpace_coe
+  -- `F ⊆ Gᗮ`, hence `G ⊆ Fᗮ`.
+  have hFG : F ≤ Gᗮ := hF_def ▸ E'.topologicalClosure_minimal hE'G G.isClosed_orthogonal
+  have hGF : G ≤ Fᗮ := Submodule.le_orthogonal_iff_le_orthogonal.mpr hFG
+  -- Density: `G ⊔ E'` equals the sum of *all* eigenspaces (over `ℂ`), which is dense.
+  have hsup : (⨆ μ : ℂ, Module.End.eigenspace (T : H →ₗ[ℂ] H) μ) = G ⊔ E' := by
+    apply le_antisymm
+    · apply iSup_le
+      intro μ
+      rcases eq_or_ne (Module.End.eigenspace (T : H →ₗ[ℂ] H) μ) ⊥ with hbot | hne
+      · rw [hbot]; exact bot_le
+      · have hreal : (starRingEnd ℂ) μ = μ := hT'.conj_eigenvalue_eq_self hne
+        have hre : (μ.re : ℂ) = μ := Complex.conj_eq_iff_re.mp hreal
+        rcases eq_or_ne μ.re 0 with hz | hz
+        · rw [← hre, hz, Complex.ofReal_zero]; exact le_sup_left
+        · refine le_trans ?_ le_sup_right
+          rw [← hre, hE'_def, span_eigenvectorFamily hT]
+          exact le_iSup (fun ν : { ν : ℝ // ν ≠ 0 } =>
+            Module.End.eigenspace (T : H →ₗ[ℂ] H) (ν.1 : ℂ)) ⟨μ.re, hz⟩
+    · refine sup_le (le_iSup (fun μ : ℂ => Module.End.eigenspace (T : H →ₗ[ℂ] H) μ) 0) ?_
+      rw [hE'_def, span_eigenvectorFamily hT]
+      exact iSup_le fun ν => le_iSup
+        (fun μ : ℂ => Module.End.eigenspace (T : H →ₗ[ℂ] H) μ) (ν.1 : ℂ)
+  have hdense : (G ⊔ E').topologicalClosure = ⊤ := by
+    rw [← hsup, ← Submodule.orthogonal_orthogonal_eq_closure,
+      orthogonalComplement_iSup_eigenspaces_eq_bot hT hT', Submodule.bot_orthogonal_eq_top]
+  -- Combine: `G ⊆ Fᗮ`, and `G ⊔ F` is dense (since it contains `G ⊔ E'`), so `Fᗮ ⊆ G`.
+  have hFGdense : (F ⊔ G).topologicalClosure = ⊤ := by
+    have hle : G ⊔ E' ≤ F ⊔ G := by
+      have h1 : E' ≤ F := hF_def ▸ E'.le_topologicalClosure
+      calc G ⊔ E' ≤ G ⊔ F := sup_le_sup_left h1 G
+        _ = F ⊔ G := sup_comm ..
+    have hmono := Submodule.topologicalClosure_mono hle
+    rw [hdense] at hmono
+    exact top_le_iff.mp hmono
+  have hFGbot : Fᗮ ⊓ Gᗮ = ⊥ := by
+    rw [Submodule.inf_orthogonal, ← Submodule.orthogonal_closure, hFGdense]
+    exact Submodule.top_orthogonal_eq_bot
+  refine le_antisymm ?_ hGF
+  intro v hv
+  obtain ⟨g, hg, g', hg', rfl⟩ := G.exists_add_mem_mem_orthogonal (v := v)
+  have hg'F : g' ∈ Fᗮ := by
+    have : g' = (g + g') - g := by abel
+    rw [this]
+    exact Fᗮ.sub_mem hv (hGF hg)
+  have : g' ∈ Fᗮ ⊓ Gᗮ := ⟨hg'F, hg'⟩
+  rw [hFGbot, Submodule.mem_bot] at this
+  rwa [this, add_zero]
+
 end ContinuousLinearMap
