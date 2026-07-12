@@ -23,8 +23,12 @@ open Polynomial
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
   [CompleteSpace H]
 
-/-- A self-adjoint operator's polynomial functional calculus acts on an eigenvector by
-evaluating the polynomial at the eigenvalue. -/
+/-- An operator's polynomial functional calculus acts on an eigenvector by evaluating the
+polynomial at the eigenvalue. No self-adjointness hypothesis is needed here — this is a
+purely algebraic fact about `Polynomial.aeval`. Self-adjointness only becomes necessary for
+the continuous functional calculus `cfc` itself (in the next step of this file, not yet
+proved — see `notes/caveats.md`), since Mathlib's `cfc` on `H →L[ℂ] H` is only meaningful
+(non-junk) for operators satisfying the `IsSelfAdjoint` predicate. -/
 theorem Polynomial.aeval_apply_eigenvector {T : H →L[ℂ] H} {v : H} {c : ℝ}
     (hv : (T : H →ₗ[ℂ] H) v = (c : ℂ) • v) (q : ℝ[X]) :
     (Polynomial.aeval T q : H →L[ℂ] H) v = ((q.eval c : ℝ) : ℂ) • v := by
