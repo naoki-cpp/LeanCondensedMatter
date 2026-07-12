@@ -20,7 +20,7 @@ No TODO comments or Zulip-referenced plans found suggesting this is in progress 
 
 **Rough scope** (minimal path to "trace of a self-adjoint compact operator via its eigenvalue sequence"):
 1. Extend the compact self-adjoint spectral theorem from finite dimensions (`InnerProductSpace/Spectrum.lean`) to a countable orthonormal eigenbasis with eigenvalues forming a sequence tending to `0`. **Done** — see below (the "sequence tending to `0`" part follows from `finite_large_eigenvalue_index` but is not separately packaged as a `Tendsto` statement; `hasSum_eigenvectorFamily`'s `HasSum` already implies the terms tend to `0`, which is what's actually needed downstream).
-2. Define an `IsTraceClass` predicate (e.g. `Summable` of the eigenvalue/singular-value sequence), and prove it is independent of the choice of eigenbasis.
+2. Define an `IsTraceClass` predicate (e.g. `Summable` of the eigenvalue/singular-value sequence), and prove it is independent of the choice of eigenbasis. **Done** — see below.
 3. Optional easier stepping stone first: Hilbert-Schmidt operators, via `Summable (fun i => ‖T (e i)‖^2)` for an orthonormal basis `e` — simpler than trace-class since it needs no ordering/positivity, only `ℓ²` membership.
 4. Define trace on trace-class operators via the summable eigenvalue sum, and prove linearity/cyclicity lemmas mirroring the finite-dimensional ones already used in `LeanCondensedMatter/QuantumTheory/Entropy.lean`.
 
@@ -45,6 +45,10 @@ This is scoped as its own track (not folded into Track A) because it is foundati
 `ContinuousLinearMap.hasSum_eigenvectorFamily` — **the `tsum` reconstruction itself, closing step 1 in full:** for any `x : H`,
 `HasSum (fun a => (eigenvalue a : ℂ) • ⟪eigenvectorFamily a, x⟫ • eigenvectorFamily a) (T x)`.
 Proved by taking `HilbertBasis.hasSum_orthogonalProjectionOnto` for `eigenvectorHilbertBasis` (giving the `F`-component of `x` as a `HasSum` in `F`), pushing it out to `H` and then through `T` via `HasSum.mapL` (twice), and simplifying: `T` sends the `F`-projection of `x` to `T x` itself (since `x` minus its `F`-projection lies in `Fᗮ = ker T`, by `orthogonal_closure_span_eigenvectorFamily`, which `T` kills), and `T` sends each eigenvector term to itself scaled by its eigenvalue (`apply_eigenvectorFamily`).
+
+### Progress on step 2: the `IsTraceClass` predicate
+
+`ContinuousLinearMap.IsTraceClass` — `T` is trace-class when `Summable (fun a : EigenvectorIndex T => |a.1.1|)` (the absolute values of `T`'s nonzero eigenvalues, with multiplicity, are summable). No separate "independent of the choice of eigenbasis" lemma was needed: `EigenvectorIndex T` and the eigenvalue at each index depend only on `T`'s eigenspaces and their dimensions, not on which orthonormal basis was chosen within each (possibly multi-dimensional) eigenspace — every basis vector of a given eigenspace shares the same eigenvalue, so the predicate is manifestly insensitive to that choice by construction (documented in the declaration's docstring rather than proved as a separate lemma, since there is nothing left to prove).
 
 ## Continuous functional calculus acts on eigenvectors by evaluation
 
