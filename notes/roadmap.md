@@ -46,7 +46,7 @@ Track A: quantum theory foundations       Track B: combinatorics
 
 - **Partition-lattice Möbius / moment-cumulant formula** — status: `stated`.
   Goal: formalize the general combinatorial moment-cumulant theorem on the lattice of set partitions (Möbius function of the partition lattice), in a form specializable to thermal expectation values. Independent of Track A — pure combinatorics, no physics content.
-  `LocallyFiniteOrder (Finpartition s)` instance done (`LeanCondensedMatter/Combinatorics/PartitionLattice.lean`), letting Mathlib's `IncidenceAlgebra` Möbius machinery apply to the partition lattice. The closed-form Möbius formula itself is not yet proved — see `notes/caveats.md` for three attempted routes and why each is blocked on a missing Mathlib lemma.
+  `LocallyFiniteOrder (Finpartition s)` instance done (`LeanCondensedMatter/Combinatorics/PartitionLattice.lean`), letting Mathlib's `IncidenceAlgebra` Möbius machinery apply to the partition lattice. `Finpartition.bind_le`/`bind_restrict_eq_of_le` done (the `π ≤ σ ↔ (block-restrictions of π)` correspondence needed for the moment-cumulant sum decomposition, one direction). The closed-form Möbius formula itself is not yet proved — see `notes/caveats.md` for attempted routes and next steps.
 
 ### Combined
 
