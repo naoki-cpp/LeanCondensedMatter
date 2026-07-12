@@ -2,6 +2,9 @@ import LeanCondensedMatter.QuantumTheory.DensityOperator
 import Mathlib.Analysis.InnerProductSpace.Spectrum
 import Mathlib.Analysis.SpecialFunctions.Log.NegMulLog
 import Mathlib.Analysis.SpecialFunctions.Exp
+import Mathlib.LinearAlgebra.Charpoly.ToMatrix
+import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
+import Mathlib.Algebra.Polynomial.Roots
 
 /-!
 # Von Neumann entropy and Boltzmann's principle
@@ -115,6 +118,62 @@ theorem partitionFunction_pos [NeZero n] (Hop : Observable H) (β : ℝ) :
     0 < partitionFunction hn Hop β :=
   Finset.sum_pos (fun i _ => Real.exp_pos _) ⟨⟨0, NeZero.pos n⟩, Finset.mem_univ _⟩
 
+/-- **Diagonal presentation determines eigenvalues up to reindexing.** If a self-adjoint
+operator `T` is presented as `∑ i, w i • |b i⟩⟨b i|` for an orthonormal basis `b` and
+real weights `w`, then the multiset of weights `w` coincides with the multiset of `T`'s own
+(Mathlib-sorted) spectral eigenvalues. This lets a sum `∑ i, f (w i)` over the hand-built
+weights be identified with `∑ i, f (T's own eigenvalues i)` — in particular with
+`vonNeumannEntropy` — without needing to know the explicit reindexing permutation, since both
+sides are the sum of `f` over the same multiset. Proved via the characteristic polynomial,
+which is basis-independent (`LinearMap.charpoly_toMatrix`) and whose roots are the operator's
+eigenvalues (`LinearMap.IsSymmetric.charpoly_eq`) as well as, for a diagonal matrix, literally
+the diagonal entries (`Matrix.charpoly_diagonal`). -/
+theorem diagOp_eigenvalues_map_eq (b : OrthonormalBasis (Fin n) ℂ H) (w : Fin n → ℝ)
+    (hself : IsSelfAdjoint
+      ((∑ i : Fin n, (w i : ℂ) • InnerProductSpace.rankOne ℂ (b i) (b i)) : H →L[ℂ] H)) :
+    Finset.univ.val.map w = Finset.univ.val.map (hself.isSymmetric.eigenvalues hn) := by
+  classical
+  open Polynomial in
+  set T : H →L[ℂ] H := ∑ i : Fin n, (w i : ℂ) • InnerProductSpace.rankOne ℂ (b i) (b i) with hT_def
+  have hTb : ∀ j, (T : H →ₗ[ℂ] H) (b j) = (w j : ℂ) • b j := by
+    intro j
+    have hTapply : (T : H →ₗ[ℂ] H) (b j) =
+        ∑ i : Fin n, (w i : ℂ) • InnerProductSpace.rankOne ℂ (b i) (b i) (b j) := by
+      simp [hT_def]
+    rw [hTapply, Finset.sum_eq_single j]
+    · simp [InnerProductSpace.rankOne_apply, inner_self_eq_norm_sq_to_K, b.orthonormal.1 j]
+    · intro i _ hij
+      simp [InnerProductSpace.rankOne_apply, b.orthonormal.2 hij]
+    · simp
+  have htoMatrix : (T : H →ₗ[ℂ] H).toMatrix b.toBasis b.toBasis =
+      Matrix.diagonal (fun i => (w i : ℂ)) := by
+    ext i j
+    rw [LinearMap.toMatrix_apply, OrthonormalBasis.coe_toBasis,
+      OrthonormalBasis.coe_toBasis_repr_apply, hTb j, map_smul, PiLp.smul_apply, b.repr_self]
+    simp only [Matrix.diagonal_apply, PiLp.single_apply]
+    split_ifs with h <;> simp [h, smul_eq_mul]
+  have hcharpoly1 : (T : H →ₗ[ℂ] H).charpoly = ∏ i : Fin n, (X - C (w i : ℂ)) := by
+    rw [← (T : H →ₗ[ℂ] H).charpoly_toMatrix b.toBasis, htoMatrix, Matrix.charpoly_diagonal]
+  have hcharpoly2 : (T : H →ₗ[ℂ] H).charpoly =
+      ∏ i : Fin n, (X - C (hself.isSymmetric.eigenvalues hn i : ℂ)) :=
+    hself.isSymmetric.charpoly_eq hn
+  have hroots : (∏ i : Fin n, (X - C (w i : ℂ))).roots =
+      (∏ i : Fin n, (X - C (hself.isSymmetric.eigenvalues hn i : ℂ))).roots := by
+    rw [← hcharpoly1, hcharpoly2]
+  have hroots_eq : ∀ f : Fin n → ℝ,
+      (∏ i : Fin n, (X - C (f i : ℂ))).roots =
+        Multiset.map Complex.ofReal (Finset.univ.val.map f) := by
+    intro f
+    have hne : (∏ i : Fin n, (X - C (f i : ℂ))) ≠ 0 :=
+      Finset.prod_ne_zero_iff.mpr fun i _ => X_sub_C_ne_zero _
+    rw [show (∏ i : Fin n, (X - C (f i : ℂ))) = Finset.univ.prod (fun i => X - C (f i : ℂ)) from
+      rfl, roots_prod _ _ hne]
+    simp_rw [roots_X_sub_C]
+    rw [Multiset.bind_singleton, Multiset.map_map]
+    rfl
+  rw [hroots_eq w, hroots_eq (hself.isSymmetric.eigenvalues hn)] at hroots
+  exact Multiset.map_injective Complex.ofReal_injective hroots
+
 /-- The canonical (Gibbs) density operator `e^{-βH}/Z(β)` associated to a Hamiltonian `Hop`
 at inverse temperature `β`. -/
 noncomputable def gibbsState [NeZero n] (Hop : Observable H) (β : ℝ) : DensityOperator H :=
@@ -222,9 +281,7 @@ theorem energyExpValue_eq_sum (ρ : DensityOperator H) (Hop : Observable H) :
 `F[ρ] = Tr[ρĤ] - (1/β)·vonNeumannEntropy ρ` is bounded below by `-(1/β)·ln Z(β)` — the free
 energy of the canonical (Gibbs) state. This is the precise sense (see `notes/roadmap.md`) in
 which the canonical distribution minimizes the Helmholtz free energy: `-(1/β)·ln Z(β)` is
-`gibbsState`'s own free energy (not separately verified here, but follows from
-`vonNeumannEntropy (gibbsState hn Hop β) = β·energyExpValue (gibbsState hn Hop β) Hop + ln Z(β)`,
-a direct computation from `gibbsState`'s definition). -/
+`gibbsState`'s own free energy, verified separately by `vonNeumannEntropy_gibbsState` below. -/
 theorem helmholtzFreeEnergy_ge [NeZero n] (ρ : DensityOperator H) (Hop : Observable H)
     (β : ℝ) (hβ : 0 < β) :
     -(1 / β) * Real.log (partitionFunction hn Hop β) ≤
@@ -319,5 +376,83 @@ theorem helmholtzFreeEnergy_ge [NeZero n] (ρ : DensityOperator H) (Hop : Observ
   rw [mul_add, ← mul_assoc, one_div, inv_mul_cancel₀ hβ.ne', one_mul] at hmul
   simp only [one_div]
   linarith [hmul]
+
+/-- **`gibbsState`'s own free energy.** The canonical state's von Neumann entropy is exactly
+`β·Tr[ρĤ] + ln Z(β)`, so its Helmholtz free energy `Tr[ρĤ] - (1/β)·S_vN(ρ)` equals
+`-(1/β)·ln Z(β)` — the lower bound of `helmholtzFreeEnergy_ge` is attained by `gibbsState`
+itself. This closes the gap left open in `helmholtzFreeEnergy_ge`'s docstring, using
+`diagOp_eigenvalues_map_eq` to identify `gibbsState`'s own (Mathlib-sorted) spectral data
+with its hand-built Boltzmann weights without needing an explicit reindexing permutation. -/
+theorem vonNeumannEntropy_gibbsState [NeZero n] (Hop : Observable H) (β : ℝ) :
+    vonNeumannEntropy hn (gibbsState hn Hop β) =
+      β * energyExpValue (gibbsState hn Hop β) Hop + Real.log (partitionFunction hn Hop β) := by
+  set Z := partitionFunction hn Hop β with hZ_def
+  set E := Hop.2.isSymmetric.eigenvalues hn with hE_def
+  set bE := Hop.2.isSymmetric.eigenvectorBasis hn with hbE_def
+  set w : Fin n → ℝ := fun i => Real.exp (-β * E i) / Z with hw_def
+  have hgibbs_eq : (gibbsState hn Hop β).1 =
+      ∑ i : Fin n, (w i : ℂ) • InnerProductSpace.rankOne ℂ (bE i) (bE i) := rfl
+  have hself : IsSelfAdjoint (gibbsState hn Hop β).1 := (gibbsState hn Hop β).2.1.isSelfAdjoint
+  have hmap := diagOp_eigenvalues_map_eq hn bE w (hgibbs_eq ▸ hself)
+  have hsum_eq : ∀ F : ℝ → ℝ,
+      ∑ i, F (w i) = ∑ i, F ((gibbsState hn Hop β).2.1.isSymmetric.eigenvalues hn i) := by
+    intro F
+    have h1 : Finset.univ.val.map (F ∘ w) =
+        Finset.univ.val.map (F ∘ (gibbsState hn Hop β).2.1.isSymmetric.eigenvalues hn) := by
+      rw [← Multiset.map_map, ← Multiset.map_map, hmap]
+      rfl
+    calc ∑ i, F (w i) = (Finset.univ.val.map (F ∘ w)).sum := rfl
+      _ = (Finset.univ.val.map (F ∘ (gibbsState hn Hop β).2.1.isSymmetric.eigenvalues hn)).sum := by
+          rw [h1]
+      _ = ∑ i, F ((gibbsState hn Hop β).2.1.isSymmetric.eigenvalues hn i) := rfl
+  have hvN : vonNeumannEntropy hn (gibbsState hn Hop β) = ∑ i, Real.negMulLog (w i) :=
+    (hsum_eq Real.negMulLog).symm
+  have hEbE : ∀ j, (Hop.1 : H →ₗ[ℂ] H) (bE j) = (E j : ℂ) • bE j :=
+    fun j => Hop.2.isSymmetric.apply_eigenvectorBasis hn j
+  have hρbE : ∀ j, ((gibbsState hn Hop β).1 : H →ₗ[ℂ] H) (bE j) = (w j : ℂ) • bE j := by
+    intro j
+    have : ((gibbsState hn Hop β).1 : H →ₗ[ℂ] H) (bE j) =
+        ∑ i : Fin n, (w i : ℂ) • InnerProductSpace.rankOne ℂ (bE i) (bE i) (bE j) := by
+      simp [hgibbs_eq]
+    rw [this, Finset.sum_eq_single j]
+    · simp [InnerProductSpace.rankOne_apply, inner_self_eq_norm_sq_to_K, bE.orthonormal.1 j]
+    · intro i _ hij
+      simp [InnerProductSpace.rankOne_apply, bE.orthonormal.2 hij]
+    · simp
+  have henergy : energyExpValue (gibbsState hn Hop β) Hop = ∑ i, w i * E i := by
+    show (LinearMap.trace ℂ H
+        (((gibbsState hn Hop β).1 ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H)).re = ∑ i, w i * E i
+    rw [LinearMap.trace_eq_sum_inner (𝕜 := ℂ) _ bE]
+    have hterm : ∀ j : Fin n, inner ℂ (bE j) ((((gibbsState hn Hop β).1 ∘L Hop.1 : H →L[ℂ] H) :
+        H →ₗ[ℂ] H) (bE j)) = (w j : ℂ) * (E j : ℂ) := by
+      intro j
+      show inner ℂ (bE j) (((gibbsState hn Hop β).1 : H →ₗ[ℂ] H) ((Hop.1 : H →ₗ[ℂ] H) (bE j))) =
+        (w j : ℂ) * (E j : ℂ)
+      rw [hEbE j, map_smul, hρbE j, inner_smul_right, inner_smul_right,
+        inner_self_eq_norm_sq_to_K, bE.norm_eq_one]
+      push_cast
+      ring
+    simp_rw [hterm]
+    have : (∑ i : Fin n, (w i : ℂ) * (E i : ℂ)) = ((∑ i, w i * E i : ℝ) : ℂ) := by
+      push_cast; ring
+    rw [this, Complex.ofReal_re]
+  rw [hvN, henergy]
+  have hZpos : 0 < Z := partitionFunction_pos hn Hop β
+  have hlogw : ∀ i, Real.log (w i) = -β * E i - Real.log Z := by
+    intro i
+    show Real.log (Real.exp (-β * E i) / Z) = -β * E i - Real.log Z
+    rw [Real.log_div (Real.exp_pos _).ne' hZpos.ne', Real.log_exp]
+  have hw_sum : ∑ i, w i = 1 := by
+    show (∑ i : Fin n, Real.exp (-β * E i) / Z) = 1
+    rw [← Finset.sum_div]
+    exact div_self hZpos.ne'
+  have hexpand : ∑ i, Real.negMulLog (w i) =
+      β * ∑ i, w i * E i + Real.log Z * ∑ i, w i := by
+    have : ∀ i, Real.negMulLog (w i) = β * (w i * E i) + Real.log Z * w i := by
+      intro i
+      rw [Real.negMulLog, hlogw i]
+      ring
+    simp_rw [this, Finset.sum_add_distrib, ← Finset.mul_sum]
+  rw [hexpand, hw_sum, mul_one]
 
 end QuantumTheory
