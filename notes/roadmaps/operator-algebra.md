@@ -25,3 +25,13 @@ No TODO comments or Zulip-referenced plans found suggesting this is in progress 
 4. Define trace on trace-class operators via the summable eigenvalue sum, and prove linearity/cyclicity lemmas mirroring the finite-dimensional ones already used in `LeanCondensedMatter/QuantumTheory/Entropy.lean`.
 
 This is scoped as its own track (not folded into Track A) because it is foundational analysis work, independent of the physics content, and is likely a substantial undertaking in its own right — comparable in size to Track B's combinatorics work.
+
+## Continuous functional calculus acts on eigenvectors by evaluation
+
+Status: `stated`.
+
+Goal: `cfc f T v = (f c : ℂ) • v` for a self-adjoint `T`, continuous `f : ℝ → ℝ`, and eigenvector `v` with `T v = (c:ℂ) • v` — a general-purpose bridge between Mathlib's continuous functional calculus (`cfc`, usable on `H →L[ℂ] H` via its `CStarAlgebra` instance) and explicit eigenbasis constructions. `cfc` is the natural infinite-dimensional replacement for the eigenbasis-sum constructions used throughout `LeanCondensedMatter/QuantumTheory/Entropy.lean` (finite dimensions can enumerate eigenvalues; infinite dimensions generally cannot), so this lemma is a prerequisite piece of Track C groundwork, developed in `LeanCondensedMatter/Analysis/CFC.lean`.
+
+`Polynomial.aeval_apply_eigenvector` — **proved**: the polynomial-functional-calculus case, `(Polynomial.aeval T q) v = (q.eval c : ℂ) • v` for `q : ℝ[X]`, by induction on `q`.
+
+**Remaining to close this target:** the limit step extending from polynomials to general continuous `f`, via Stone–Weierstrass approximation and the isometry of `cfcHom` — see `notes/caveats.md` for the detailed step-by-step plan and why it was checkpointed rather than completed in one session.

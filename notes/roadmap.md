@@ -30,6 +30,7 @@ Track A: quantum theory foundations       Track B: combinatorics          Track 
 | Finite-temperature Bloch–de Dominicis theorem | A | `idea` | [notes/roadmaps/quantum-theory-foundations.md](roadmaps/quantum-theory-foundations.md#finite-temperature-bloch–de-dominicis-theorem) |
 | Partition-lattice Möbius / moment-cumulant formula | B | `stated` | [notes/roadmaps/combinatorics.md](roadmaps/combinatorics.md#partition-lattice-möbius--moment-cumulant-formula) |
 | Trace-class / Hilbert-Schmidt operator theory | C | `idea` | [notes/roadmaps/operator-algebra.md](roadmaps/operator-algebra.md#trace-class--hilbert-schmidt-operator-theory) |
+| Continuous functional calculus acts on eigenvectors by evaluation | C | `stated` | [notes/roadmaps/operator-algebra.md](roadmaps/operator-algebra.md#continuous-functional-calculus-acts-on-eigenvectors-by-evaluation) |
 | Linked Cluster Theorem (finite temperature) | Combined | `idea` | [notes/roadmaps/linked-cluster-theorem.md](roadmaps/linked-cluster-theorem.md#linked-cluster-theorem-finite-temperature) |
 
 See [notes/completed.md](completed.md) for targets that have reached `proved`.
