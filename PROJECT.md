@@ -15,7 +15,12 @@ Formalize results in condensed matter physics as machine-checked theorems in Lea
 PROJECT.md                 — this index: purpose, tree, writing rules (keep slim)
 AGENTS.md / CLAUDE.md       — thin pointers to this file, for harness discovery
 notes/
-  roadmap.md               — formalization targets and their status
+  roadmap.md               — formalization targets status table (index)
+  roadmaps/
+    quantum-theory-foundations.md — Track A detail
+    combinatorics.md               — Track B detail
+    linked-cluster-theorem.md      — Combined target detail
+  completed.md              — targets that have reached `proved`
   conventions.md           — Lean/Mathlib style and project conventions
   model-and-assumptions.md — physical models, assumptions, and how they map to formal definitions
   caveats.md               — known pitfalls and things to watch out for
