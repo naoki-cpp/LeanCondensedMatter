@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.CompactSelfAdjoint
 import LeanCondensedMatter.QuantumTheory.Postulates
 import LeanCondensedMatter.QuantumTheory.DensityOperator
 import LeanCondensedMatter.QuantumTheory.Entropy
