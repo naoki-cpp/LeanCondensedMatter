@@ -36,7 +36,11 @@ This is scoped as its own track (not folded into Track A) because it is foundati
 
 `ContinuousLinearMap.countable_eigenvectorIndex` — **`EigenvectorIndex T` is countable.** `Set.univ` is the union, over `n : ℕ`, of the finite sets of indices with eigenvalue `≥ 1/(n+1)` in absolute value (every nonzero eigenvalue exceeds some such threshold, by the Archimedean property `exists_nat_one_div_lt`); a countable union of finite sets is countable. This closes step 1's countability requirement.
 
-**Still needed to close step 1:** the `tsum` reconstruction `T x = ∑' i, (eigenvalue i : ℂ) • ⟪eigenvectorFamily i, x⟫ • eigenvectorFamily i` is not proved (needs `T`'s continuity plus density of the eigenspace sum, from `orthogonalComplement_iSup_eigenspaces_eq_bot`).
+`ContinuousLinearMap.span_eigenvectorFamily` — the (algebraic) span of `eigenvectorFamily` equals exactly `⨆ μ ≠ 0, eigenspace T μ`: each per-eigenspace `stdOrthonormalBasis` spans its own eigenspace (`Basis.span_eq`, pushed forward along the submodule inclusion via `Submodule.map_span`/`Submodule.map_top`/`Submodule.range_subtype`), and these combine the same way the index type does.
+
+`ContinuousLinearMap.orthogonal_closure_span_eigenvectorFamily` — **the closure of `eigenvectorFamily`'s span and `ker T` are exactly each other's orthogonal complements.** Proved via the general Hilbert-space fact "two closed mutually-orthogonal subspaces whose sum is dense are each other's orthogonal complements" (`v ∈ Fᗮ` decomposes as `g + g'` with `g ∈ ker T ⊆ Fᗮ`, `g' ∈ (ker T)ᗮ`; then `g' ∈ Fᗮ ⊓ (ker T)ᗮ = (F ⊔ ker T)ᗮ = ⊥` since `F ⊔ ker T` is dense, forcing `g' = 0`). Density of `ker T ⊔ eigenvectorFamily`'s span comes from `orthogonalComplement_iSup_eigenspaces_eq_bot` applied to the sum over *all* complex eigenvalues, combined with the fact that a self-adjoint operator's eigenvalues are always real (`LinearMap.IsSymmetric.conj_eigenvalue_eq_self`), so no eigenspace outside `ℝ` contributes to that sum.
+
+**Still needed to close step 1:** the `tsum` reconstruction `T x = ∑' i, (eigenvalue i : ℂ) • ⟪eigenvectorFamily i, x⟫ • eigenvectorFamily i` itself — the structural fact above is now in place, but still needs (a) a `HilbertBasis`-style reconstruction of the closed subspace `F`'s component of `x` in terms of `eigenvectorFamily`, and (b) pushing `T` through the resulting `HasSum` via `ContinuousLinearMap.hasSum`/`HasSum.mapL`, using that `T` kills the `ker T` component.
 
 ## Continuous functional calculus acts on eigenvectors by evaluation
 
