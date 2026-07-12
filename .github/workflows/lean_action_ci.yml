@@ -24,4 +24,22 @@ jobs:
             echo "::error::Found 'sorry' in the Lean sources above. Per PROJECT.md, a statement is only 'proved' with no 'sorry' — record it as a target in notes/roadmap.md instead of leaving it in place."
             exit 1
           fi
+
+  # Docs are only built (and deployed to GitHub Pages) on push to main, not on every PR —
+  # doc-gen4 has to process Mathlib's full symbol set, which is slow and not needed for
+  # every PR check. The .lake/build cache is kept across runs to speed up repeat builds.
+  docs:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/cache@v4
+        with:
+          path: .lake/build
+          key: lake-build-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+          restore-keys: |
+            lake-build-
+      - uses: leanprover/lean-action@v1
       - uses: leanprover-community/docgen-action@v1
