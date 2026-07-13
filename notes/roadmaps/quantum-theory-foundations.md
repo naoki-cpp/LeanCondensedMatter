@@ -28,7 +28,7 @@ Recurring Lean pitfall in this proof (not a math issue): `haveI hu := someDef ar
 
 This sidesteps needing `E_m` itself to be Hilbert–Schmidt (which the `innerHS`-based route would have required), since only `ρ`'s eigenbasis — not a general Hilbert basis — is ever used; the Hilbert–Schmidt inner product infrastructure (steps 1–4, complete) remains available for other purposes but wasn't needed for the Born rule after all.
 
-**Still needed:** `purity` (`Tr[ρ²]`, well-posed since `ρ ∘ ρ` is self-adjoint whenever `ρ` is, but needs `ρ ∘ ρ`'s own compactness/trace-class facts, not yet derived for a general density operator `ρ`).
+**Still needed: `purity` (`Tr[ρ²]`) — deliberately deferred, not just unstarted.** `ρ ∘ ρ` is compact and self-adjoint for free, but proving it's *trace-class* needs a new spectral-theory lemma not yet in `Analysis/CompactSelfAdjoint.lean`: for self-adjoint `T`, `Module.End.eigenspace (T ∘ T) ν = Module.End.eigenspace T √ν` for `ν > 0` (simpler than the fully general statement since `ρ` is positive, so has no negative eigenvalues, ruling out the `eigenspace T (-√ν)` contribution that would otherwise also merge in). This is comparable in scope to the existing eigenvector-family machinery in that file, not a quick corollary — considered and consciously deferred (2026-07-14) in favor of other targets rather than attempted piecemeal.
 
 **Von Neumann entropy is now ported (infinite-dimensional), in `LeanCondensedMatter/QuantumTheory/EntropyTraceClass.lean` (namespace `QuantumTheory.TraceClass`, additive to `QuantumTheory/Entropy.lean`).** `QuantumTheory.TraceClass.vonNeumannEntropy` computes `-Σᵢ λᵢ ln λᵢ` from `ρ`'s eigenvalues via `ContinuousLinearMap.EigenvectorIndex`, just as `prob` above does.
 
