@@ -456,4 +456,160 @@ theorem trace_smul {c : ℝ} (hc : c ≠ 0) (h : IsTraceClass T)
     exact congrArg (fun S' : Submodule ℂ H => Module.finrank ℂ S') (eigenspace_smul hc μ.1)]
   ring
 
+/-- **The trace of a finite-rank orthogonal projection, computed against any Hilbert basis of the
+ambient space, equals its rank.** The key basis-independence fact underlying `trace`'s additive
+linearity: for `V := eigenspace T μ` and summing over all nonzero `μ`, this shows `trace T` can be
+computed via *any* orthonormal basis of `H`, not just the eigenbasis used in its definition. -/
+theorem tsum_norm_sq_orthogonalProjectionOnto_eq_finrank {ι : Type*} (b : HilbertBasis ι ℂ H)
+    (V : Submodule ℂ H) [FiniteDimensional ℂ V] :
+    ∑' i, ‖V.orthogonalProjectionOnto (b i)‖ ^ 2 = (Module.finrank ℂ V : ℝ) := by
+  classical
+  set f : Fin (Module.finrank ℂ V) → V := ⇑(stdOrthonormalBasis ℂ V) with hf_def
+  -- Step 1: expand each summand via the (finite) orthonormal basis `f` of `V` itself.
+  have hpoint : ∀ i, ‖V.orthogonalProjectionOnto (b i)‖ ^ 2 =
+      ∑ j, ‖(inner ℂ ((f j : H)) (b i) : ℂ)‖ ^ 2 := by
+    intro i
+    rw [← (stdOrthonormalBasis ℂ V).sum_sq_norm_inner_right (V.orthogonalProjectionOnto (b i))]
+    refine Finset.sum_congr rfl fun j _ => ?_
+    rw [Submodule.inner_orthogonalProjectionOnto_eq_of_mem_left]
+  simp_rw [hpoint]
+  -- Step 2: each individual term, summed over `i`, is summable (Parseval for `b`).
+  have hterm : ∀ x : H, (fun i => ‖(inner ℂ x (b i) : ℂ)‖ ^ 2) =
+      (fun i => (inner ℂ x (b i) * inner ℂ (b i) x : ℂ).re) := by
+    intro x
+    funext i
+    rw [show (inner ℂ (b i) x : ℂ) = starRingEnd ℂ (inner ℂ x (b i)) from
+        (inner_conj_symm (b i) x).symm,
+      Complex.mul_conj, Complex.ofReal_re, ← Complex.normSq_eq_norm_sq]
+  have hj : ∀ j, Summable (fun i => ‖(inner ℂ ((f j : H)) (b i) : ℂ)‖ ^ 2) := fun j => by
+    rw [hterm (f j : H)]
+    exact ((b.hasSum_inner_mul_inner (f j : H) (f j : H)).mapL Complex.reCLM).summable
+  -- Step 3: swap the (finite) `Finset.sum` over `j` with the `tsum` over `i`.
+  rw [Summable.tsum_finsetSum (fun j _ => hj j)]
+  -- Step 4: each swapped inner tsum is, again by Parseval for `b`, the norm² of `f j` in `H`.
+  have hbasis : ∀ j : Fin (Module.finrank ℂ V),
+      ∑' i, ‖(inner ℂ ((f j : H)) (b i) : ℂ)‖ ^ 2 = ‖(f j : H)‖ ^ 2 := by
+    intro j
+    rw [hterm (f j : H)]
+    have hs : HasSum (fun i => (inner ℂ ((f j : H)) (b i) * inner ℂ (b i) ((f j : H)) : ℂ).re)
+        (inner ℂ ((f j : H)) ((f j : H)) : ℂ).re :=
+      (b.hasSum_inner_mul_inner (f j : H) (f j : H)).mapL Complex.reCLM
+    rw [hs.tsum_eq, inner_self_eq_norm_sq_to_K]
+    norm_cast
+  simp_rw [hbasis]
+  have hnorm1 : ∀ j : Fin (Module.finrank ℂ V), ‖(f j : H)‖ = 1 :=
+    fun j => (stdOrthonormalBasis ℂ V).orthonormal.1 j
+  simp [hnorm1]
+
+/-- **Parseval's identity for a Hilbert basis, in norm-squared form.** For any `x : H`, the
+squared-magnitude Fourier coefficients of `x` against a Hilbert basis `d` sum (unconditionally)
+to `‖x‖ ^ 2`. -/
+theorem _root_.HilbertBasis.hasSum_norm_sq_inner {ι : Type*} (d : HilbertBasis ι ℂ H) (x : H) :
+    HasSum (fun i => ‖(inner ℂ x (d i) : ℂ)‖ ^ 2) (‖x‖ ^ 2) := by
+  have hterm : (fun i => ‖(inner ℂ x (d i) : ℂ)‖ ^ 2) =
+      (fun i => (inner ℂ x (d i) * inner ℂ (d i) x : ℂ).re) := by
+    funext i
+    rw [show (inner ℂ (d i) x : ℂ) = starRingEnd ℂ (inner ℂ x (d i)) from
+        (inner_conj_symm (d i) x).symm,
+      Complex.mul_conj, Complex.ofReal_re, ← Complex.normSq_eq_norm_sq]
+  rw [hterm]
+  have hs : HasSum (fun i => (inner ℂ x (d i) * inner ℂ (d i) x : ℂ).re)
+      ((inner ℂ x x : ℂ).re) := (d.hasSum_inner_mul_inner x x).mapL Complex.reCLM
+  rw [inner_self_eq_norm_sq_to_K] at hs
+  exact_mod_cast hs
+
+/-- **`trace` can be computed against *any* Hilbert basis of `H`, not just the eigenbasis used in
+its definition.** The basis-independence fact making additive linearity of `trace` provable: two
+trace-class self-adjoint compact operators can be compared term-by-term against a *common*
+Hilbert basis, sidestepping the fact that their own eigenbases are generally unrelated. Stated as
+a genuine `HasSum` (not just a `tsum` equality) so it can be combined additively via
+`HasSum.add`. -/
+theorem hasSum_inner_apply_eq_trace (hT : IsCompactOperator T) (hT' : T.IsSymmetric)
+    (h : IsTraceClass T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    HasSum (fun i => (inner ℂ (d i) (T (d i)) : ℂ).re) (trace h) := by
+  classical
+  show HasSum (fun i => (inner ℂ (d i) (T (d i)) : ℂ).re) (∑' a : EigenvectorIndex T, a.1.1)
+  set e := eigenvectorFamily hT with he_def
+  set f : EigenvectorIndex T → ι → ℝ :=
+    fun a i => a.1.1 * ‖(inner ℂ (e a) (d i) : ℂ)‖ ^ 2 with hf_def
+  -- The complex product `⟪e a, d i⟫ * ⟪d i, e a⟫` is always exactly the real cast of its
+  -- squared magnitude.
+  have hreal : ∀ (a : EigenvectorIndex T) (i : ι),
+      (inner ℂ (e a) (d i) * inner ℂ (d i) (e a) : ℂ) =
+        ((‖(inner ℂ (e a) (d i) : ℂ)‖ ^ 2 : ℝ) : ℂ) := by
+    intro a i
+    rw [show (inner ℂ (d i) (e a) : ℂ) = starRingEnd ℂ (inner ℂ (e a) (d i)) from
+        (inner_conj_symm (d i) (e a)).symm,
+      Complex.mul_conj, Complex.normSq_eq_norm_sq]
+  -- Parseval for `d`, evaluated at each (unit-norm) eigenvector `e a`.
+  have hparseval : ∀ a : EigenvectorIndex T, HasSum (fun i => ‖(inner ℂ (e a) (d i) : ℂ)‖ ^ 2)
+      (1 : ℝ) := fun a => by
+    have := d.hasSum_norm_sq_inner (e a)
+    rwa [(orthonormal_eigenvectorFamily hT hT').1 a, one_pow] at this
+  -- Pointwise (for each `d i`), `⟪dᵢ,T(dᵢ)⟩` decomposes as a sum over `EigenvectorIndex T`.
+  have hpoint : ∀ i, HasSum (f · i) (inner ℂ (d i) (T (d i)) : ℂ).re := by
+    intro i
+    have hs := ((hasSum_eigenvectorFamily hT hT' (d i)).mapL
+      (innerSL ℂ (d i))).mapL Complex.reCLM
+    have heq : (fun a : EigenvectorIndex T => Complex.reCLM ((innerSL ℂ (d i))
+        ((a.1.1 : ℂ) • (inner ℂ (e a) (d i) : ℂ) • e a))) = (f · i) := by
+      funext a
+      have hstep : (innerSL ℂ (d i) ((a.1.1 : ℂ) • (inner ℂ (e a) (d i) : ℂ) • e a) : ℂ)
+          = (a.1.1 : ℂ) * (inner ℂ (e a) (d i) * inner ℂ (d i) (e a) : ℂ) := by
+        simp [innerSL_apply_apply, inner_smul_right, mul_assoc]
+      show (innerSL ℂ (d i) ((a.1.1 : ℂ) • (inner ℂ (e a) (d i) : ℂ) • e a) : ℂ).re = f a i
+      rw [hstep, hreal a i, hf_def, ← Complex.ofReal_mul, Complex.ofReal_re]
+    rwa [heq] at hs
+  -- The magnitude family is summable over the product index, via trace-class-ness of `T`.
+  have hcond1 : ∀ a : EigenvectorIndex T, Summable (fun i => |a.1.1| * ‖(inner ℂ (e a) (d i) :
+      ℂ)‖ ^ 2) := fun a => (hparseval a).summable.mul_left _
+  have hcond2 : Summable (fun a : EigenvectorIndex T =>
+      ∑' i, |a.1.1| * ‖(inner ℂ (e a) (d i) : ℂ)‖ ^ 2) := by
+    have heq2 : ∀ a : EigenvectorIndex T,
+        ∑' i, |a.1.1| * ‖(inner ℂ (e a) (d i) : ℂ)‖ ^ 2 = |a.1.1| := fun a => by
+      rw [tsum_mul_left, (hparseval a).tsum_eq, mul_one]
+    have h' : Summable (fun a : EigenvectorIndex T => |a.1.1|) := h
+    simpa only [heq2] using h'
+  have habs : Summable (fun p : EigenvectorIndex T × ι =>
+      |p.1.1.1| * ‖(inner ℂ (e p.1) (d p.2) : ℂ)‖ ^ 2) :=
+    (summable_prod_of_nonneg (fun p => by positivity)).mpr ⟨hcond1, hcond2⟩
+  have hg : Summable (Function.uncurry f) := by
+    have heqabs : (fun p : EigenvectorIndex T × ι => |Function.uncurry f p|) =
+        (fun p : EigenvectorIndex T × ι =>
+          |p.1.1.1| * ‖(inner ℂ (e p.1) (d p.2) : ℂ)‖ ^ 2) := by
+      funext p
+      rw [Function.uncurry, hf_def]
+      rw [abs_mul, abs_of_nonneg (sq_nonneg ‖(inner ℂ (e p.1) (d p.2) : ℂ)‖)]
+    exact Summable.of_abs (by rw [heqabs]; exact habs)
+  have hpointA : ∀ a : EigenvectorIndex T, HasSum (f a) a.1.1 := fun a => by
+    have := (hparseval a).mul_left (a.1.1 : ℝ)
+    rwa [mul_one] at this
+  have hS_eq : (∑' p, Function.uncurry f p) = ∑' a : EigenvectorIndex T, a.1.1 :=
+    (hg.hasSum.prod_fiberwise hpointA).tsum_eq.symm
+  have hswap2 : Summable (fun q : ι × EigenvectorIndex T => f q.2 q.1) := hg.prod_symm
+  have hHS := hswap2.hasSum.prod_fiberwise hpoint
+  have hsymmeq : ∑' q : ι × EigenvectorIndex T, f q.2 q.1 = ∑' p, Function.uncurry f p :=
+    (Equiv.prodComm ι (EigenvectorIndex T)).tsum_eq (Function.uncurry f)
+  rwa [hsymmeq, hS_eq] at hHS
+
+/-- **Additive linearity of `trace`.** Proved by comparing all three operators against a
+*common* Hilbert basis of `H` (via `hasSum_inner_apply_eq_trace`), rather than attempting to
+relate `T`'s and `T'`'s individually unrelated eigenbases. -/
+theorem trace_add {T' : H →L[ℂ] H} (hT : IsCompactOperator T) (hTsym : T.IsSymmetric)
+    (hT' : IsCompactOperator T') (hT'sym : T'.IsSymmetric)
+    (hTT' : IsCompactOperator (T + T')) (hTT'sym : (T + T' : H →L[ℂ] H).IsSymmetric)
+    (h : IsTraceClass T) (h' : IsTraceClass T') (hsum : IsTraceClass (T + T')) :
+    trace hsum = trace h + trace h' := by
+  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+  have hs1 := hasSum_inner_apply_eq_trace hT hTsym h d
+  have hs2 := hasSum_inner_apply_eq_trace hT' hT'sym h' d
+  have hs3 := hasSum_inner_apply_eq_trace hTT' hTT'sym hsum d
+  have hadd := hs1.add hs2
+  have heq : (fun i => (inner ℂ (d i) (T (d i)) : ℂ).re + (inner ℂ (d i) (T' (d i)) : ℂ).re) =
+      (fun i => (inner ℂ (d i) ((T + T') (d i)) : ℂ).re) := by
+    funext i
+    simp [ContinuousLinearMap.add_apply, inner_add_right]
+  rw [heq] at hadd
+  exact (hadd.unique hs3).symm
+
 end ContinuousLinearMap
