@@ -30,6 +30,12 @@ This sidesteps needing `E_m` itself to be Hilbert–Schmidt (which the `innerHS`
 
 **Still needed:** `purity` (`Tr[ρ²]`, well-posed since `ρ ∘ ρ` is self-adjoint whenever `ρ` is, but needs `ρ ∘ ρ`'s own compactness/trace-class facts, not yet derived for a general density operator `ρ`).
 
+**Von Neumann entropy is now ported (infinite-dimensional), in `LeanCondensedMatter/QuantumTheory/EntropyTraceClass.lean` (namespace `QuantumTheory.TraceClass`, additive to `QuantumTheory/Entropy.lean`).** `QuantumTheory.TraceClass.vonNeumannEntropy` computes `-Σᵢ λᵢ ln λᵢ` from `ρ`'s eigenvalues via `ContinuousLinearMap.EigenvectorIndex`, just as `prob` above does.
+
+**A genuine mathematical wrinkle, not a Lean technicality:** unlike the finite-dimensional `ℝ`-valued `vonNeumannEntropy` (a finite sum, automatically finite), the infinite-dimensional entropy sum `Σᵢ (-λᵢ ln λᵢ)` — every term nonnegative — **can genuinely diverge** even though `Σᵢ λᵢ` converges (`ρ` is trace-class): e.g. `λᵢ = c/(i log² i)` is summable, but `-λᵢ ln λᵢ ~ c/(i log i)` is not. A trace-class density operator really can have infinite von Neumann entropy — this is standard in the physics literature, not a formalization artifact. So `vonNeumannEntropy` is **`ENNReal`-valued** (`[0, ∞]`) rather than `ℝ`-valued: the `tsum` is always well-defined in that codomain (divergence shows up honestly as `⊤`), avoiding the silent-junk-value-`0` problem a real-valued `tsum` would have for a non-summable sequence. `eigenvalue_nonneg` (needed to justify treating each `λᵢ` as a probability) is proved via Mathlib's `eigenvalue_nonneg_of_nonneg`, mirroring `ContinuousLinearMap.trace_nonneg`'s proof.
+
+**Still needed:** `gibbsState`/`energyExpValue`/`helmholtzFreeEnergy_ge`/`vonNeumannEntropy_gibbsState` — the canonical-distribution target — are not yet ported; defining `gibbsState = e^{-βH}/Z(β)` for an infinite-dimensional Hamiltonian needs additional structure (e.g. a discrete-spectrum/compact-resolvent assumption on `Hop`) not yet formalized here.
+
 ## Von Neumann entropy / Boltzmann's principle (finite-dimensional)
 
 Status: `stated`.
