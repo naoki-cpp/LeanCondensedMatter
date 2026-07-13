@@ -111,4 +111,48 @@ theorem isHilbertSchmidt_iff_isHilbertSchmidtWrt {ι : Type*} (d : HilbertBasis 
     obtain ⟨w, e, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
     exact ⟨w, e, (isHilbertSchmidtWrt_iff d e T).mp hd⟩
 
+/-- **Hilbert–Schmidt-ness is preserved by taking the adjoint.** A direct consequence of the
+basis-independence computation: `T` being Hilbert–Schmidt with respect to `d` already gives that
+`T†` is Hilbert–Schmidt with respect to that *same* `d` (no basis change needed for this
+direction). -/
+theorem isHilbertSchmidt_adjoint {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) :
+    IsHilbertSchmidt (ContinuousLinearMap.adjoint T) := by
+  obtain ⟨w, d, hd⟩ := hT
+  exact ⟨w, d, (summable_norm_sq_adjoint_apply_and_tsum_eq d d T hd).1⟩
+
+/-- **Composing a Hilbert–Schmidt operator with a bounded operator on the left stays
+Hilbert–Schmidt**, with respect to the same basis, by the comparison test against the operator
+norm bound `‖B (T dᵢ)‖ ≤ ‖B‖ * ‖T dᵢ‖`. -/
+theorem isHilbertSchmidtWrt_comp_left {ι : Type*} (d : HilbertBasis ι ℂ H) (B : H →L[ℂ] H)
+    {T : H →L[ℂ] H} (hT : IsHilbertSchmidtWrt d T) : IsHilbertSchmidtWrt d (B * T) := by
+  refine Summable.of_nonneg_of_le (fun i => sq_nonneg _) (fun i => ?_)
+    (hT.mul_left (‖B‖ ^ 2))
+  have hle : ‖(B * T) (d i)‖ ≤ ‖B‖ * ‖T (d i)‖ := by
+    rw [mul_apply_eq_comp]
+    exact B.le_opNorm (T (d i))
+  calc ‖(B * T) (d i)‖ ^ 2 ≤ (‖B‖ * ‖T (d i)‖) ^ 2 :=
+        pow_le_pow_left₀ (norm_nonneg _) hle 2
+    _ = ‖B‖ ^ 2 * ‖T (d i)‖ ^ 2 := by ring
+
+theorem isHilbertSchmidt_comp_left (B : H →L[ℂ] H) {T : H →L[ℂ] H}
+    (hT : IsHilbertSchmidt T) : IsHilbertSchmidt (B * T) := by
+  obtain ⟨w, d, hd⟩ := hT
+  exact ⟨w, d, isHilbertSchmidtWrt_comp_left d B hd⟩
+
+/-- **Composing a Hilbert–Schmidt operator with a bounded operator on the right stays
+Hilbert–Schmidt.** Reduced to the left-composition case via the adjoint identity
+`(T * B)† = B† * T†`: `T†` is Hilbert–Schmidt (`isHilbertSchmidt_adjoint`), so `B† * T†` is
+Hilbert–Schmidt (`isHilbertSchmidt_comp_left`), so its adjoint `T * B` is Hilbert–Schmidt
+(`isHilbertSchmidt_adjoint` again, using `T†† = T`). -/
+theorem isHilbertSchmidt_comp_right {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T)
+    (B : H →L[ℂ] H) : IsHilbertSchmidt (T * B) := by
+  have hadj : IsHilbertSchmidt (ContinuousLinearMap.adjoint B * ContinuousLinearMap.adjoint T) :=
+    isHilbertSchmidt_comp_left (ContinuousLinearMap.adjoint B) (isHilbertSchmidt_adjoint hT)
+  have heq : ContinuousLinearMap.adjoint
+      (ContinuousLinearMap.adjoint B * ContinuousLinearMap.adjoint T) = T * B := by
+    rw [← ContinuousLinearMap.star_eq_adjoint, ← ContinuousLinearMap.star_eq_adjoint,
+      ← ContinuousLinearMap.star_eq_adjoint, star_mul, star_star, star_star]
+  have hadj' := isHilbertSchmidt_adjoint hadj
+  rwa [heq] at hadj'
+
 end ContinuousLinearMap

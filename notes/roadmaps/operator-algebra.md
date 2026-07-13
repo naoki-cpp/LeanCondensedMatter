@@ -86,7 +86,17 @@ Status: `stated`.
 
 `ContinuousLinearMap.isHilbertSchmidtWrt_iff` / `IsHilbertSchmidt` / `isHilbertSchmidt_iff_isHilbertSchmidtWrt` — applying the core computation twice (once for `T`, once for `T†`, using `T†† = T`) gives genuine basis-independence: `IsHilbertSchmidtWrt d T ↔ IsHilbertSchmidtWrt f T` for *any* two bases `d`, `f`. `IsHilbertSchmidt T` packages this as `∃ (w : Set H) (d : HilbertBasis w ℂ H), IsHilbertSchmidtWrt d T` — using `Set H` (as `exists_hilbertBasis` does), not an arbitrary `Type*`, to avoid a universe-polymorphism mismatch when destructuring the existential against an already-fixed basis at a different universe.
 
-**Still needed:** steps 2–5 above (composition closure, the Hilbert–Schmidt inner product, reconciling with `ContinuousLinearMap.trace`, and the Born rule itself) are not yet attempted.
+### Progress on step 2: composition closure
+
+`ContinuousLinearMap.isHilbertSchmidt_adjoint` — Hilbert–Schmidt-ness is preserved by taking the adjoint: if `T` is Hilbert–Schmidt with respect to a basis `d`, then `T†` is Hilbert–Schmidt with respect to that *same* `d`, directly from `summable_norm_sq_adjoint_apply_and_tsum_eq d d T`.
+
+`ContinuousLinearMap.isHilbertSchmidtWrt_comp_left` / `isHilbertSchmidt_comp_left` — **`B * T` is Hilbert–Schmidt whenever `T` is, for any bounded `B`** (with respect to the same basis as `T`). Proved by the comparison test: `‖B (T dᵢ)‖ ≤ ‖B‖ * ‖T dᵢ‖` (`ContinuousLinearMap.le_opNorm`), so `‖(B*T) dᵢ‖² ≤ ‖B‖² * ‖T dᵢ‖²`, and `Summable.of_nonneg_of_le` against `‖B‖² • (‖T dᵢ‖²)`'s summability closes it.
+
+`ContinuousLinearMap.isHilbertSchmidt_comp_right` — **`T * B` is Hilbert–Schmidt whenever `T` is, for any bounded `B`.** Reduced to the left-composition case via the adjoint identity `(T * B)† = B† * T†` (proved by unfolding `†` to `star` via `ContinuousLinearMap.star_eq_adjoint` and using `star_mul`/`star_star` from the ambient star-ring structure on `H →L[ℂ] H`, since Mathlib has no direct `adjoint_mul` lemma for `*`, only `adjoint_comp` for `∘L`): `T†` is Hilbert–Schmidt (`isHilbertSchmidt_adjoint`), so `B† * T†` is Hilbert–Schmidt (`isHilbertSchmidt_comp_left`), so its adjoint `T * B` is Hilbert–Schmidt (`isHilbertSchmidt_adjoint` again, using `T†† = T`).
+
+Step 2 is now closed: Hilbert–Schmidt operators are closed under composition with any bounded operator on either side.
+
+**Still needed:** steps 3–5 above (the Hilbert–Schmidt inner product, reconciling with `ContinuousLinearMap.trace`, and the Born rule itself) are not yet attempted.
 
 ## Continuous functional calculus acts on eigenvectors by evaluation
 
