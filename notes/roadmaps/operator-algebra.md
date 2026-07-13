@@ -96,7 +96,19 @@ Status: `stated`.
 
 Step 2 is now closed: Hilbert–Schmidt operators are closed under composition with any bounded operator on either side.
 
-**Still needed:** steps 3–5 above (the Hilbert–Schmidt inner product, reconciling with `ContinuousLinearMap.trace`, and the Born rule itself) are not yet attempted.
+### Progress on step 3: the Hilbert–Schmidt inner product
+
+`ContinuousLinearMap.innerHS d S T` — `Σᵢ ⟪S dᵢ, T dᵢ⟫`, the Hilbert–Schmidt inner product of `S`, `T` with respect to a basis `d` (`noncomputable`, since it unfolds to a `tsum`).
+
+`ContinuousLinearMap.summable_inner_apply_of_isHilbertSchmidtWrt` — convergence: for `S`, `T` Hilbert–Schmidt with respect to `d`, `Σᵢ ⟪S dᵢ, T dᵢ⟫` is summable, via the AM–GM bound `|⟪S dᵢ, T dᵢ⟫| ≤ ‖S dᵢ‖‖T dᵢ‖ ≤ (‖S dᵢ‖² + ‖T dᵢ‖²)/2` and comparison against the (summable, by hypothesis) sum of squared norms.
+
+`ContinuousLinearMap.hasSum_inner_swap` — **the core Fubini computation.** For `S`, `T` Hilbert–Schmidt with respect to `d`, and *any* other basis `f`: the double family `g(i,j) := ⟪S dᵢ, fⱼ⟫ ⟪fⱼ, T dᵢ⟫` sums row-first (via the resolution of the identity along `f`, `HilbertBasis.hasSum_inner_mul_inner`) to `Σᵢ ⟪S dᵢ, T dᵢ⟫`, and column-first (via the resolution of the identity along `d`, after rewriting each factor through the adjoint with `adjoint_inner_left`/`adjoint_inner_right`) to `Σⱼ ⟪T† fⱼ, S† fⱼ⟫`. Unlike the analogous squared-norm swap for `IsHilbertSchmidtWrt`, the summands here are complex (not nonnegative), so absolute summability of the double family is established via the same AM–GM bound rather than `summable_prod_of_nonneg` applied directly to the family; the two iterated sums are then equated against a common total via `HasSum.prod_fiberwise` (applied once to the family and once to its swap), which — unlike `summable_prod_of_nonneg` — needs no sign hypothesis.
+
+`ContinuousLinearMap.innerHS_eq_of_isHilbertSchmidt` — **`innerHS` is independent of the choice of basis.** Applying `hasSum_inner_swap` with `f := d` (the *same* basis in both argument slots) identifies `innerHS d S T` with `Σᵢ ⟪T† dᵢ, S† dᵢ⟫`; applying it again with `d` and `f` swapped identifies that same quantity `Σᵢ ⟪T† dᵢ, S† dᵢ⟫` with `innerHS f S T`. Chaining the two equalities closes the loop — the same two-application trick used for `isHilbertSchmidtWrt_iff` (Track C step 1), but here both applications share the *second* basis argument (`d`) rather than exploiting `T†† = T`.
+
+Step 3 is now closed: the Hilbert–Schmidt inner product is well-defined, independent of the choice of basis.
+
+**Still needed:** steps 4–5 above (reconciling with `ContinuousLinearMap.trace`, and the Born rule itself) are not yet attempted.
 
 ## Continuous functional calculus acts on eigenvectors by evaluation
 

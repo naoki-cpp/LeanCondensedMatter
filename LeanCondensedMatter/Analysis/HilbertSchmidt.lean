@@ -155,4 +155,107 @@ theorem isHilbertSchmidt_comp_right {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T
   have hadj' := isHilbertSchmidt_adjoint hadj
   rwa [heq] at hadj'
 
+/-- **The Hilbert–Schmidt inner product, for a fixed basis.** `Σᵢ ⟪S dᵢ, T dᵢ⟫`; convergence
+(for `S`, `T` Hilbert–Schmidt with respect to `d`) is `summable_inner_apply_of_isHilbertSchmidtWrt`
+below, and independence of the choice of `d` is `innerHS_eq_of_isHilbertSchmidt`. -/
+noncomputable def innerHS {ι : Type*} (d : HilbertBasis ι ℂ H) (S T : H →L[ℂ] H) : ℂ :=
+  ∑' i, (inner ℂ (S (d i)) (T (d i)) : ℂ)
+
+theorem summable_inner_apply_of_isHilbertSchmidtWrt {ι : Type*} (d : HilbertBasis ι ℂ H)
+    {S T : H →L[ℂ] H} (hS : IsHilbertSchmidtWrt d S) (hT : IsHilbertSchmidtWrt d T) :
+    Summable (fun i => (inner ℂ (S (d i)) (T (d i)) : ℂ)) := by
+  refine Summable.of_norm_bounded ((hS.add hT).div_const 2) fun i => ?_
+  have hab : ‖S (d i)‖ * ‖T (d i)‖ ≤ (‖S (d i)‖ ^ 2 + ‖T (d i)‖ ^ 2) / 2 := by
+    nlinarith [sq_nonneg (‖S (d i)‖ - ‖T (d i)‖)]
+  exact (norm_inner_le_norm (S (d i)) (T (d i))).trans hab
+
+/-- **The core Fubini computation underlying basis-independence of `innerHS`.** For `S`, `T`
+Hilbert–Schmidt with respect to a basis `d`, and *any* other basis `f`, the double sum
+`Σᵢⱼ ⟪S dᵢ, fⱼ⟫ ⟪fⱼ, T dᵢ⟫` can be summed either row-first (giving `Σᵢ ⟪S dᵢ, T dᵢ⟫`, via the
+resolution of the identity along `f`) or column-first (giving `Σⱼ ⟪T† fⱼ, S† fⱼ⟫`, via the
+resolution of the identity along `d`, after rewriting each factor with the adjoint). Unlike the
+squared-norm swap used for `IsHilbertSchmidtWrt` basis-independence, the summands here are complex
+(not nonnegative), so absolute summability of the double family is established via the AM–GM
+bound `|ab| ≤ (|a|² + |b|²) / 2` instead of `summable_prod_of_nonneg` applied to the family
+itself. -/
+theorem hasSum_inner_swap {ι κ : Type*} (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H)
+    {S T : H →L[ℂ] H} (hSd : IsHilbertSchmidtWrt d S) (hTd : IsHilbertSchmidtWrt d T) :
+    Summable (fun j => (inner ℂ (ContinuousLinearMap.adjoint T (f j))
+        (ContinuousLinearMap.adjoint S (f j)) : ℂ)) ∧
+      ∑' j, (inner ℂ (ContinuousLinearMap.adjoint T (f j))
+          (ContinuousLinearMap.adjoint S (f j)) : ℂ) =
+        ∑' i, (inner ℂ (S (d i)) (T (d i)) : ℂ) := by
+  classical
+  set g : ι × κ → ℂ :=
+    fun p => (inner ℂ (S (d p.1)) (f p.2) : ℂ) * (inner ℂ (f p.2) (T (d p.1)) : ℂ) with hg_def
+  -- Absolute summability of `g`, via the AM–GM bound on each term.
+  set bd : ι × κ → ℝ :=
+    fun p => (‖(inner ℂ (S (d p.1)) (f p.2) : ℂ)‖ ^ 2 +
+      ‖(inner ℂ (f p.2) (T (d p.1)) : ℂ)‖ ^ 2) / 2 with hbd_def
+  have hbd_nonneg : ∀ p, 0 ≤ bd p := fun p => by positivity
+  have hg_le : ∀ p, ‖g p‖ ≤ bd p := fun p => by
+    rw [hg_def, hbd_def]
+    simp only [norm_mul]
+    nlinarith [sq_nonneg (‖(inner ℂ (S (d p.1)) (f p.2) : ℂ)‖ -
+      ‖(inner ℂ (f p.2) (T (d p.1)) : ℂ)‖)]
+  have hbd_row : ∀ i, HasSum (fun j => bd (i, j)) ((‖S (d i)‖ ^ 2 + ‖T (d i)‖ ^ 2) / 2) := by
+    intro i
+    have h1 : HasSum (fun j => ‖(inner ℂ (S (d i)) (f j) : ℂ)‖ ^ 2) (‖S (d i)‖ ^ 2) :=
+      f.hasSum_norm_sq_inner (S (d i))
+    have h2 : HasSum (fun j => ‖(inner ℂ (f j) (T (d i)) : ℂ)‖ ^ 2) (‖T (d i)‖ ^ 2) := by
+      have heq : ∀ j, ‖(inner ℂ (f j) (T (d i)) : ℂ)‖ = ‖(inner ℂ (T (d i)) (f j) : ℂ)‖ :=
+        fun j => by rw [← inner_conj_symm, RCLike.norm_conj]
+      simp_rw [heq]
+      exact f.hasSum_norm_sq_inner (T (d i))
+    simpa only [hbd_def, add_div] using h1.div_const 2 |>.add (h2.div_const 2)
+  have hbd_summable : Summable bd :=
+    (summable_prod_of_nonneg hbd_nonneg).mpr ⟨fun i => (hbd_row i).summable, by
+      simpa only [fun i => (hbd_row i).tsum_eq] using (hSd.add hTd).div_const 2⟩
+  have hg_summable : Summable g := Summable.of_norm_bounded hbd_summable hg_le
+  -- Row sums of `g`: the resolution of the identity along `f`, applied to `⟪S dᵢ, T dᵢ⟫`.
+  have hrow : ∀ i, HasSum (fun j => g (i, j)) ((inner ℂ (S (d i)) (T (d i)) : ℂ)) := fun i =>
+    f.hasSum_inner_mul_inner (S (d i)) (T (d i))
+  -- Column sums of `g`: rewrite via the adjoint, then the resolution of the identity along `d`.
+  have hcol_point : ∀ i j, g (i, j) =
+      (inner ℂ (ContinuousLinearMap.adjoint T (f j)) (d i) : ℂ) *
+        (inner ℂ (d i) (ContinuousLinearMap.adjoint S (f j)) : ℂ) := fun i j => by
+    rw [hg_def]
+    simp only
+    rw [← ContinuousLinearMap.adjoint_inner_right S (d i) (f j),
+      ← ContinuousLinearMap.adjoint_inner_left T (d i) (f j), mul_comm]
+  have hcol : ∀ j, HasSum (fun i => g (i, j))
+      ((inner ℂ (ContinuousLinearMap.adjoint T (f j)) (ContinuousLinearMap.adjoint S (f j)) :
+        ℂ)) := fun j => by
+    simp_rw [hcol_point]
+    exact d.hasSum_inner_mul_inner (ContinuousLinearMap.adjoint T (f j))
+      (ContinuousLinearMap.adjoint S (f j))
+  -- Assemble both iterated sums against the *same* total `∑' p, g p`, via `HasSum.prod_fiberwise`
+  -- (valid for general, not-necessarily-nonnegative summable families).
+  have hg_summable' : Summable (fun q : κ × ι => g q.swap) := hg_summable.prod_symm
+  have hswap_eq : ∑' q : κ × ι, g q.swap = ∑' p : ι × κ, g p := (Equiv.prodComm κ ι).tsum_eq g
+  have ha' : HasSum (fun q : κ × ι => g q.swap) (∑' p : ι × κ, g p) :=
+    hswap_eq ▸ hg_summable'.hasSum
+  have hcolSum : HasSum (fun j => (inner ℂ (ContinuousLinearMap.adjoint T (f j))
+      (ContinuousLinearMap.adjoint S (f j)) : ℂ)) (∑' p : ι × κ, g p) :=
+    ha'.prod_fiberwise hcol
+  have ha : HasSum g (∑' p : ι × κ, g p) := hg_summable.hasSum
+  have hrowSum : HasSum (fun i => (inner ℂ (S (d i)) (T (d i)) : ℂ)) (∑' p : ι × κ, g p) :=
+    ha.prod_fiberwise hrow
+  exact ⟨hcolSum.summable, hcolSum.tsum_eq.trans hrowSum.tsum_eq.symm⟩
+
+/-- **`innerHS` is independent of the choice of Hilbert basis.** Applying
+`hasSum_inner_swap` with the same basis for both arguments identifies `innerHS d S T` with
+`Σᵢ ⟪T† dᵢ, S† dᵢ⟫`; applying it again with `d` and `f` swapped identifies the latter with
+`innerHS f S T`. -/
+theorem innerHS_eq_of_isHilbertSchmidt {ι κ : Type*} (d : HilbertBasis ι ℂ H)
+    (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S)
+    (hT : IsHilbertSchmidt T) : innerHS d S T = innerHS f S T := by
+  have hSd := (isHilbertSchmidt_iff_isHilbertSchmidtWrt d S).mp hS
+  have hTd := (isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mp hT
+  have hSf := (isHilbertSchmidt_iff_isHilbertSchmidtWrt f S).mp hS
+  have hTf := (isHilbertSchmidt_iff_isHilbertSchmidtWrt f T).mp hT
+  have h2 := hasSum_inner_swap d d hSd hTd
+  have h3 := hasSum_inner_swap f d hSf hTf
+  exact h2.2.symm.trans h3.2
+
 end ContinuousLinearMap
