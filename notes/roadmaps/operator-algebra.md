@@ -56,7 +56,9 @@ Proved by taking `HilbertBasis.hasSum_orthogonalProjectionOnto` for `eigenvector
 
 `ContinuousLinearMap.trace_nonneg` — the trace of a positive trace-class operator is nonnegative, mirroring the finite-dimensional fact used for density operators (`QuantumTheory.DensityOperator`) that every eigenvalue of a positive operator is nonnegative (via Mathlib's own `eigenvalue_nonneg_of_nonneg`).
 
-**Still needed to close step 4:** linearity of `trace` (nontrivial since it would need relating the *different* `EigenvectorIndex` types of two different operators `T`, `T'` and their sum `T + T'` — no shared index type is available for free) and cyclicity (`trace (S ∘ T) = trace (T ∘ S)`) are not yet attempted.
+`ContinuousLinearMap.trace_smul` — `trace (c • T) = c * trace T` for `c ≠ 0`, scalar-multiplication linearity. Proved by splitting each trace-defining `tsum` into an outer `tsum` over the (non-dependent) base eigenvalue type and an inner *finite* sum over each eigenspace's basis vectors (`tsum_eigenvectorIndex_eq_tsum_mul_finrank`), rather than by building a reindexing `Equiv (EigenvectorIndex T) (EigenvectorIndex (c • T))` between the two dependent `Sigma` types directly — several attempts at the latter hit genuine kernel timeouts, not just slow builds; see `notes/caveats.md` for the full account and the reusable lesson (split the sum, don't reindex the dependent type, whenever the summand doesn't depend on the fiber index).
+
+**Still needed to close step 4:** additive linearity of `trace` (nontrivial since it would need relating the *different* `EigenvectorIndex` types of two different operators `T`, `T'` and their sum `T + T'` — no shared index type is available for free) and cyclicity (`trace (S ∘ T) = trace (T ∘ S)`) are not yet attempted.
 
 ## Continuous functional calculus acts on eigenvectors by evaluation
 
