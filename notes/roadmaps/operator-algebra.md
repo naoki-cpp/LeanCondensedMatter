@@ -108,7 +108,13 @@ Step 2 is now closed: Hilbert–Schmidt operators are closed under composition w
 
 Step 3 is now closed: the Hilbert–Schmidt inner product is well-defined, independent of the choice of basis.
 
-**Still needed:** steps 4–5 above (reconciling with `ContinuousLinearMap.trace`, and the Born rule itself) are not yet attempted.
+### Progress on step 4: reconciliation with `ContinuousLinearMap.trace`
+
+`ContinuousLinearMap.innerHS_one_eq_trace` — for a compact self-adjoint trace-class `A`, `innerHS d 1 A = (trace hAtc : ℂ)` (the Hilbert–Schmidt inner product of the identity against `A`, cast to `ℂ`, equals the eigenvalue-sum `trace` already defined for the self-adjoint case). Proved by: (1) `⟪1 dᵢ, A dᵢ⟫ = ⟪dᵢ, A dᵢ⟫` (`one_apply_eq_self`); (2) each `⟪dᵢ, A dᵢ⟫` is real, since self-adjointness (`A.IsSymmetric`) plus `inner_conj_symm` gives `conj ⟪dᵢ, A dᵢ⟫ = ⟪dᵢ, A dᵢ⟫`, hence `⟪dᵢ, A dᵢ⟫ = ((⟪dᵢ,A dᵢ⟫).re : ℂ)` (`Complex.conj_eq_iff_re`); (3) pushing `hasSum_inner_apply_eq_trace`'s `HasSum` of the real parts through the continuous embedding `Complex.ofRealCLM` (`HasSum.mapL`) and combining with (1)–(2) identifies the two sums termwise, so their `tsum`s agree.
+
+This is a minimal-but-representative reconciliation: it identifies the two notions of trace on the overlap of their domains (self-adjoint operators via `S := 1`) rather than proving the fully general statement `innerHS d S T = trace (S† ∘ T)` for arbitrary Hilbert–Schmidt `S`, `T` — the latter would need `ContinuousLinearMap.trace` extended to (not-necessarily-self-adjoint) trace-class operators first, which is out of scope here. Step 4 is closed for this purpose.
+
+**Still needed:** step 5 above (applying this to the Born rule) is not yet attempted.
 
 ## Continuous functional calculus acts on eigenvectors by evaluation
 
