@@ -172,6 +172,13 @@ structure POVM (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Com
   pos : ∀ m, (E m).IsPositive
   sum_eq_id : (∑ m, E m) = ContinuousLinearMap.id ℂ H
 
+/-- Each vector of `ρ`'s eigenvector family is a unit vector — used by `summable_prob_term` and
+`sum_prob_eq_one`, since each `eᵢ` needs to be a unit vector for the comparison bound
+`|⟪eᵢ, E_m eᵢ⟩| ≤ ‖E_m‖` and for `⟪eᵢ,eᵢ⟩ = 1` to hold. -/
+theorem eigenvectorFamily_norm_eq_one (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) :
+    ‖eigenvectorFamily ρ.compact a‖ = 1 :=
+  (orthonormal_eigenvectorFamily ρ.compact ρ.isSymmetric).1 a
+
 /-- **Born rule (general measurement postulate, infinite-dimensional).** The probability of
 outcome `m` of a POVM measurement `P` on a density operator `ρ`, computed via `ρ`'s own
 eigendecomposition `ρ = Σᵢ λᵢ |eᵢ⟩⟨eᵢ|` (`ContinuousLinearMap.eigenvectorFamily`): `Σᵢ λᵢ ⟪eᵢ,
@@ -185,8 +192,7 @@ noncomputable def prob (P : POVM H M) (ρ : DensityOperator H) (m : M) : ℝ :=
 theorem summable_prob_term (P : POVM H M) (ρ : DensityOperator H) (m : M) :
     Summable (fun a : EigenvectorIndex ρ.op => (a.1.1 : ℂ) *
       (inner ℂ (eigenvectorFamily ρ.compact a) (P.E m (eigenvectorFamily ρ.compact a)) : ℂ)) := by
-  have hnorm : ∀ a, ‖eigenvectorFamily ρ.compact a‖ = 1 :=
-    (orthonormal_eigenvectorFamily ρ.compact ρ.isSymmetric).1
+  have hnorm := eigenvectorFamily_norm_eq_one ρ
   refine Summable.of_norm_bounded (ρ.traceClass.mul_right ‖P.E m‖) fun a => ?_
   have hle : ‖(inner ℂ (eigenvectorFamily ρ.compact a) (P.E m (eigenvectorFamily ρ.compact a)) :
       ℂ)‖ ≤ ‖P.E m‖ :=
@@ -211,8 +217,7 @@ theorem sum_prob_eq_one (P : POVM H M) (ρ : DensityOperator H) :
       ∑' a : EigenvectorIndex ρ.op, ∑ m, (a.1.1 : ℂ) *
       (inner ℂ (eigenvectorFamily ρ.compact a) (P.E m (eigenvectorFamily ρ.compact a)) : ℂ) :=
     (Summable.tsum_finsetSum (fun m _ => summable_prob_term P ρ m)).symm
-  have hnorm : ∀ a, ‖eigenvectorFamily ρ.compact a‖ = 1 :=
-    (orthonormal_eigenvectorFamily ρ.compact ρ.isSymmetric).1
+  have hnorm := eigenvectorFamily_norm_eq_one ρ
   have hcollapse : ∀ a : EigenvectorIndex ρ.op, ∑ m, (a.1.1 : ℂ) *
       (inner ℂ (eigenvectorFamily ρ.compact a) (P.E m (eigenvectorFamily ρ.compact a)) : ℂ) =
       (a.1.1 : ℂ) := fun a => by

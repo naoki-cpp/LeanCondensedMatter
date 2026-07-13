@@ -33,12 +33,20 @@ nonzero real eigenvalue `μ`, together with an index into a chosen orthonormal b
 def EigenvectorIndex (T : H →L[ℂ] H) : Type :=
   Σ μ : { μ : ℝ // μ ≠ 0 }, Fin (Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)))
 
+/-- A nonzero eigenspace of a compact operator is finite-dimensional — packaged as a named
+lemma (rather than repeating `finite_dimensional_eigenspace hT (μ.1 : ℂ) (by exact_mod_cast μ.2)`
+at each use site) since it recurs throughout this file. -/
+theorem finiteDimensional_eigenspace_ne_zero (hT : IsCompactOperator T)
+    (μ : { μ : ℝ // μ ≠ 0 }) :
+    FiniteDimensional ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)) :=
+  finite_dimensional_eigenspace hT (μ.1 : ℂ) (by exact_mod_cast μ.2)
+
 /-- The orthonormal family of eigenvectors of `T`, glued from an orthonormal basis of each
 nonzero eigenspace. -/
 noncomputable def eigenvectorFamily (hT : IsCompactOperator T) :
     EigenvectorIndex T → H :=
   fun a =>
-    haveI := finite_dimensional_eigenspace hT (a.1.1 : ℂ) (by exact_mod_cast a.1.2)
+    haveI := finiteDimensional_eigenspace_ne_zero hT a.1
     ((stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ))) a.2 : H)
 
 theorem orthonormal_eigenvectorFamily (hT : IsCompactOperator T) (hT' : T.IsSymmetric) :
@@ -53,10 +61,10 @@ theorem orthonormal_eigenvectorFamily (hT : IsCompactOperator T) (hT' : T.IsSymm
     hOrth.comp (f := fun μ : { μ : ℝ // μ ≠ 0 } => μ.1) Subtype.val_injective
   have := hOrth'.orthonormal_sigma_orthonormal
     (v_family := fun μ : { μ : ℝ // μ ≠ 0 } =>
-      haveI := finite_dimensional_eigenspace hT (μ.1 : ℂ) (by exact_mod_cast μ.2)
+      haveI := finiteDimensional_eigenspace_ne_zero hT μ
       (stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)) : _ → _))
     (fun μ =>
-      haveI := finite_dimensional_eigenspace hT (μ.1 : ℂ) (by exact_mod_cast μ.2)
+      haveI := finiteDimensional_eigenspace_ne_zero hT μ
       (stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ))).orthonormal)
   exact this
 
@@ -65,7 +73,7 @@ recorded in its index. -/
 theorem apply_eigenvectorFamily (hT : IsCompactOperator T) (a : EigenvectorIndex T) :
     (T : H →ₗ[ℂ] H) (eigenvectorFamily hT a) = (a.1.1 : ℂ) • eigenvectorFamily hT a := by
   apply Module.End.mem_eigenspace_iff.mp
-  haveI := finite_dimensional_eigenspace hT (a.1.1 : ℂ) (by exact_mod_cast a.1.2)
+  haveI := finiteDimensional_eigenspace_ne_zero hT a.1
   exact Submodule.coe_mem _
 
 /-- **Only finitely many eigenvalues of a compact self-adjoint operator can exceed any fixed
@@ -150,11 +158,11 @@ theorem span_eigenvectorFamily (hT : IsCompactOperator T) :
   · rw [Submodule.span_le]
     rintro x ⟨a, rfl⟩
     exact Submodule.mem_iSup_of_mem a.1 (by
-      haveI := finite_dimensional_eigenspace hT (a.1.1 : ℂ) (by exact_mod_cast a.1.2)
+      haveI := finiteDimensional_eigenspace_ne_zero hT a.1
       exact Submodule.coe_mem _)
   · apply iSup_le
     intro μ
-    haveI := finite_dimensional_eigenspace hT (μ.1 : ℂ) (by exact_mod_cast μ.2)
+    haveI := finiteDimensional_eigenspace_ne_zero hT μ
     have hbasis : Submodule.span ℂ
         (Set.range (stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)))) =
         (⊤ : Submodule ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ))) :=
@@ -191,7 +199,7 @@ theorem orthogonal_closure_span_eigenvectorFamily (hT : IsCompactOperator T)
     rintro x ⟨a, rfl⟩
     rw [SetLike.mem_coe, Submodule.mem_orthogonal']
     intro u hu
-    haveI := finite_dimensional_eigenspace hT (a.1.1 : ℂ) (by exact_mod_cast a.1.2)
+    haveI := finiteDimensional_eigenspace_ne_zero hT a.1
     have hxmem : eigenvectorFamily hT a ∈ Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ) :=
       Submodule.coe_mem _
     have hne : a.1.1 ≠ (0 : ℝ) := a.1.2
