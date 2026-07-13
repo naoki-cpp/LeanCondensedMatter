@@ -70,6 +70,24 @@ Proved by taking `HilbertBasis.hasSum_orthogonalProjectionOnto` for `eigenvector
 
 Step 4 is now closed: `trace`, `trace_nonneg`, `trace_smul`, `trace_add`, and `trace_comp_comm` are all proved.
 
+## Hilbert–Schmidt operators
+
+Status: `stated`.
+
+**Motivation.** `ContinuousLinearMap.trace` only applies to compact self-adjoint trace-class operators. The Born-rule probability `Tr[E_m ρ]` needs a trace-like quantity for `E_m ∘ ρ`, which need not be self-adjoint even when `E_m`, `ρ` both are. The standard fix: if `S`, `T` are Hilbert–Schmidt, `S† ∘ T` is trace-class regardless of self-adjointness, with `Tr[S† ∘ T] = Σᵢ ⟪S dᵢ, T dᵢ⟫` well-defined via the Hilbert–Schmidt inner product — no self-adjointness needed anywhere in this construction. See `LeanCondensedMatter/Analysis/HilbertSchmidt.lean`.
+
+**Rough scope:** (1) the Hilbert–Schmidt predicate and its basis-independence — **done**, see below; (2) closure under composition with a bounded operator (`bounded ∘ HS = HS`, `HS ∘ bounded = HS`); (3) the Hilbert–Schmidt inner product `⟪S,T⟫_HS := Σᵢ⟪S dᵢ,T dᵢ⟫` and its convergence/basis-independence; (4) connecting `S† ∘ T`'s `⟪·,·⟫_HS`-derived trace back to `ContinuousLinearMap.trace` when `S = T` is also self-adjoint compact trace-class (consistency check); (5) applying this to the Born rule (`QuantumTheory.TraceClass.POVM`/`prob`/`sum_prob_eq_one`).
+
+### Progress on step 1: the Hilbert–Schmidt predicate and its basis-independence
+
+`ContinuousLinearMap.IsHilbertSchmidtWrt d T` — `T` is Hilbert–Schmidt with respect to a given Hilbert basis `d`: `Summable (fun i => ‖T (d i)‖ ^ 2)`. Defined for *any* bounded `T` — no self-adjointness required.
+
+`ContinuousLinearMap.summable_norm_sq_adjoint_apply_and_tsum_eq` — **the core basis-independence computation**: if `T` is Hilbert–Schmidt with respect to a basis `d`, its adjoint `T†` is Hilbert–Schmidt with respect to *any* basis `f`, with the same sum of squared norms (`Σᵢ‖T dᵢ‖² = Σⱼ‖T† fⱼ‖²`). Proved via the same order-of-summation-swap technique used for `ContinuousLinearMap.hasSum_inner_apply_eq_trace` (Track C step 4) — `summable_prod_of_nonneg` plus a `Summable.tsum_prod'`/`Equiv.prodComm` chain — but genuinely *simpler* here since every summand is already nonnegative (`‖·‖²`), avoiding the sign-tracking (`Summable.of_abs`, `HasSum.prod_fiberwise`) needed in the trace-class case.
+
+`ContinuousLinearMap.isHilbertSchmidtWrt_iff` / `IsHilbertSchmidt` / `isHilbertSchmidt_iff_isHilbertSchmidtWrt` — applying the core computation twice (once for `T`, once for `T†`, using `T†† = T`) gives genuine basis-independence: `IsHilbertSchmidtWrt d T ↔ IsHilbertSchmidtWrt f T` for *any* two bases `d`, `f`. `IsHilbertSchmidt T` packages this as `∃ (w : Set H) (d : HilbertBasis w ℂ H), IsHilbertSchmidtWrt d T` — using `Set H` (as `exists_hilbertBasis` does), not an arbitrary `Type*`, to avoid a universe-polymorphism mismatch when destructuring the existential against an already-fixed basis at a different universe.
+
+**Still needed:** steps 2–5 above (composition closure, the Hilbert–Schmidt inner product, reconciling with `ContinuousLinearMap.trace`, and the Born rule itself) are not yet attempted.
+
 ## Continuous functional calculus acts on eigenvectors by evaluation
 
 Status: `proved`.
