@@ -612,4 +612,35 @@ theorem trace_add {T' : H →L[ℂ] H} (hT : IsCompactOperator T) (hTsym : T.IsS
   rw [heq] at hadd
   exact (hadd.unique hs3).symm
 
+/-- **Cyclicity of `trace`.** `trace (S * T') = trace (T' * S)` for self-adjoint compact `S`,
+`T'` whose compositions (in both orders) are compact self-adjoint trace-class. Proved via a
+*pointwise* identity against a common Hilbert basis, with no order-of-summation swap needed: for
+self-adjoint `S`, `⟪dᵢ, S (T' dᵢ)⟫ = ⟪S dᵢ, T' dᵢ⟫` (`IsSymmetric`), and similarly
+`⟪dᵢ, T' (S dᵢ)⟫ = ⟪T' dᵢ, S dᵢ⟫`; since `⟪T' dᵢ, S dᵢ⟫` is exactly the complex conjugate of
+`⟪S dᵢ, T' dᵢ⟫` (`inner_conj_symm`), the two real parts coincide term by term. -/
+theorem trace_comp_comm {T' : H →L[ℂ] H} (hT : IsCompactOperator T) (hTsym : T.IsSymmetric)
+    (hT' : IsCompactOperator T') (hT'sym : T'.IsSymmetric)
+    (hTT' : IsCompactOperator (T * T')) (hTT'sym : (T * T' : H →L[ℂ] H).IsSymmetric)
+    (hT'T : IsCompactOperator (T' * T)) (hT'Tsym : (T' * T : H →L[ℂ] H).IsSymmetric)
+    (h1 : IsTraceClass (T * T')) (h2 : IsTraceClass (T' * T)) :
+    trace h1 = trace h2 := by
+  obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
+  have hs1 := hasSum_inner_apply_eq_trace hTT' hTT'sym h1 d
+  have hs2 := hasSum_inner_apply_eq_trace hT'T hT'Tsym h2 d
+  have heq : (fun i => (inner ℂ (d i) ((T * T') (d i)) : ℂ).re) =
+      (fun i => (inner ℂ (d i) ((T' * T) (d i)) : ℂ).re) := by
+    funext i
+    simp only [mul_apply_eq_comp, ContinuousLinearMap.comp_apply]
+    have h1 : (inner ℂ (d i) (T (T' (d i))) : ℂ) = inner ℂ (T (d i)) (T' (d i)) :=
+      (hTsym (d i) (T' (d i))).symm
+    have h2 : (inner ℂ (d i) (T' (T (d i))) : ℂ) = inner ℂ (T' (d i)) (T (d i)) :=
+      (hT'sym (d i) (T (d i))).symm
+    rw [h1, h2]
+    have h3 : (inner ℂ (T' (d i)) (T (d i)) : ℂ) =
+        starRingEnd ℂ (inner ℂ (T (d i)) (T' (d i))) :=
+      (inner_conj_symm (T' (d i)) (T (d i))).symm
+    rw [h3, Complex.conj_re]
+  rw [heq] at hs1
+  exact hs1.unique hs2
+
 end ContinuousLinearMap
