@@ -380,4 +380,80 @@ theorem trace_nonneg {T : H →L[ℂ] H} (h : IsTraceClass T)
     exact absurd hpos_finrank (lt_irrefl 0)
   exact eigenvalue_nonneg_of_nonneg hne hpos.re_inner_nonneg_right
 
+/-- Scaling `T` by a nonzero real `c` scales each eigenvalue by `c` and leaves the
+eigenspaces (as submodules) unchanged. -/
+theorem eigenspace_smul {c : ℝ} (hc : c ≠ 0) (μ : ℂ) :
+    Module.End.eigenspace (((c • T : H →L[ℂ] H)) : H →ₗ[ℂ] H) ((c : ℂ) * μ) =
+      Module.End.eigenspace (T : H →ₗ[ℂ] H) μ := by
+  have hcv : ∀ v, ((c • T : H →L[ℂ] H) : H →ₗ[ℂ] H) v = (c : ℂ) • ((T : H →ₗ[ℂ] H) v) := fun v => by
+    simp [ContinuousLinearMap.smul_apply]
+  ext v
+  simp only [Module.End.mem_eigenspace_iff, hcv]
+  constructor
+  · intro h
+    have h' : (c : ℂ) • ((T : H →ₗ[ℂ] H) v) = (c : ℂ) • ((μ : ℂ) • v) := by rw [h, mul_smul]
+    exact smul_right_injective H (by exact_mod_cast hc) h'
+  · intro h
+    rw [h, mul_smul]
+
+/-- The reindexing `μ ↦ c * μ` on nonzero eigenvalues, for a nonzero real `c`, as an
+`Equiv` on the base index type `{μ : ℝ // μ ≠ 0}`. Named separately (rather than inlined into
+`Equiv.sigmaCongr`) so that its `toFun`/`invFun` stay as ordinary function applications instead
+of being left as anonymous unreduced lambdas in later goals. -/
+noncomputable def eigenvalueScaleEquiv {c : ℝ} (hc : c ≠ 0) :
+    { μ : ℝ // μ ≠ 0 } ≃ { μ : ℝ // μ ≠ 0 } where
+  toFun a := ⟨c * a.1, mul_ne_zero hc a.2⟩
+  invFun a := ⟨a.1 / c, div_ne_zero a.2 hc⟩
+  left_inv a := Subtype.ext (mul_div_cancel_left₀ a.1 hc)
+  right_inv a := Subtype.ext (show c * (a.1 / c) = a.1 by
+    rw [← mul_div_assoc]; exact mul_div_cancel_left₀ a.1 hc)
+
+@[simp] theorem eigenvalueScaleEquiv_apply {c : ℝ} (hc : c ≠ 0) (a : { μ : ℝ // μ ≠ 0 }) :
+    ((eigenvalueScaleEquiv hc a : { μ : ℝ // μ ≠ 0 }) : ℝ) = c * a.1 := rfl
+
+/-- Splits the trace-defining `tsum` over `EigenvectorIndex S` into an outer sum over the
+(base) nonzero eigenvalues and an inner, *finite* sum over each eigenspace's basis vectors.
+Since the summand `a ↦ a.1.1` only depends on the base component `a.1`, the inner sum is just
+`finrank • μ.1`. Splitting this way (rather than reindexing `EigenvectorIndex` itself via a
+dependent `Sigma`/`Fin.cast` equivalence) avoids the `Fin`/`HEq` casting machinery that turned out
+to make even shallow `rfl` checks time out in the kernel (see `notes/caveats.md`). -/
+theorem tsum_eigenvectorIndex_eq_tsum_mul_finrank {S : H →L[ℂ] H}
+    (hS : Summable (fun a : EigenvectorIndex S => a.1.1)) :
+    ∑' a : EigenvectorIndex S, a.1.1 =
+      ∑' μ : { ν : ℝ // ν ≠ 0 },
+        (Module.finrank ℂ (Module.End.eigenspace (S : H →ₗ[ℂ] H) (μ.1 : ℂ)) : ℝ) * μ.1 := by
+  have hsplit : ∑' a : EigenvectorIndex S, a.1.1 =
+      ∑' (μ : { ν : ℝ // ν ≠ 0 }) (i : Fin (Module.finrank ℂ
+        (Module.End.eigenspace (S : H →ₗ[ℂ] H) (μ.1 : ℂ)))), (⟨μ, i⟩ : EigenvectorIndex S).1.1 :=
+    hS.tsum_sigma
+  rw [hsplit]
+  refine tsum_congr fun μ => ?_
+  simp [tsum_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
+
+theorem summable_eigenvectorIndex_of_isTraceClass {S : H →L[ℂ] H} (hS : IsTraceClass S) :
+    Summable (fun a : EigenvectorIndex S => a.1.1) := by
+  have hS' : Summable (fun a : EigenvectorIndex S => |a.1.1|) := hS
+  exact Summable.of_norm (by simpa only [Real.norm_eq_abs] using hS')
+
+/-- **Trace is homogeneous under scalar multiplication by a nonzero real.** -/
+theorem trace_smul {c : ℝ} (hc : c ≠ 0) (h : IsTraceClass T)
+    (hcT : IsTraceClass (c • T)) :
+    trace hcT = c * trace h := by
+  show (∑' b : EigenvectorIndex (c • T), b.1.1) = c * ∑' a : EigenvectorIndex T, a.1.1
+  rw [tsum_eigenvectorIndex_eq_tsum_mul_finrank (summable_eigenvectorIndex_of_isTraceClass hcT),
+    tsum_eigenvectorIndex_eq_tsum_mul_finrank (summable_eigenvectorIndex_of_isTraceClass h),
+    ← (eigenvalueScaleEquiv hc).tsum_eq (fun ν : { γ : ℝ // γ ≠ 0 } =>
+      (Module.finrank ℂ (Module.End.eigenspace ((c • T : H →L[ℂ] H) : H →ₗ[ℂ] H)
+        (ν.1 : ℂ)) : ℝ) * ν.1),
+    ← tsum_mul_left]
+  refine tsum_congr fun μ => ?_
+  rw [eigenvalueScaleEquiv_apply]
+  rw [show (Module.finrank ℂ (Module.End.eigenspace ((c • T : H →L[ℂ] H) : H →ₗ[ℂ] H)
+      ((c * μ.1 : ℝ) : ℂ)) : ℝ) =
+      (Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)) : ℝ) by
+    congr 1
+    rw [show ((c * μ.1 : ℝ) : ℂ) = (c : ℂ) * (μ.1 : ℂ) from by push_cast; ring]
+    exact congrArg (fun S' : Submodule ℂ H => Module.finrank ℂ S') (eigenspace_smul hc μ.1)]
+  ring
+
 end ContinuousLinearMap
