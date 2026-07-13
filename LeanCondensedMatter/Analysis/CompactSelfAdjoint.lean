@@ -1,6 +1,7 @@
 import Mathlib.Analysis.InnerProductSpace.Spectrum
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.InnerProductSpace.l2Space
+import Mathlib.Analysis.InnerProductSpace.Positive
 
 /-!
 # A countable orthonormal family of eigenvectors for a compact self-adjoint operator
@@ -288,7 +289,8 @@ noncomputable def eigenvectorHilbertBasis (hT : IsCompactOperator T) (hT' : T.Is
         · rintro ⟨-, ⟨a, rfl⟩, rfl⟩; exact ⟨a, rfl⟩
         · rintro ⟨a, rfl⟩; exact ⟨_, ⟨a, rfl⟩, rfl⟩
       have himg : F.subtypeₗᵢ '' (Submodule.span ℂ
-          (Set.range (fun a => (⟨eigenvectorFamily hT a, hmem a⟩ : F))) : Set F) = (E' : Set H) := by
+          (Set.range (fun a => (⟨eigenvectorFamily hT a, hmem a⟩ : F))) : Set F) =
+          (E' : Set H) := by
         rw [← hspaneq]
         exact (Submodule.map_coe _ _).symm
       rw [himg, ← Submodule.topologicalClosure_coe, ← hF_def]
@@ -356,5 +358,26 @@ eigenspace shares the same eigenvalue, so `Summable (fun a => |a.1.1|)` is manif
 insensitive to that choice. -/
 def IsTraceClass (T : H →L[ℂ] H) : Prop :=
   Summable (fun a : EigenvectorIndex T => |a.1.1|)
+
+/-- **The trace of a trace-class compact self-adjoint operator**: the sum of its (nonzero)
+eigenvalues, with multiplicity. This is Track C's step 4 (`notes/roadmaps/operator-algebra.md`),
+the infinite-dimensional analogue of `LinearMap.trace` used throughout
+`QuantumTheory/Entropy.lean` in the finite-dimensional case. -/
+noncomputable def trace {T : H →L[ℂ] H} (_h : IsTraceClass T) : ℝ :=
+  ∑' a : EigenvectorIndex T, a.1.1
+
+/-- The trace of a positive trace-class operator is nonnegative — as for a density operator's
+`LinearMap.trace` in the finite-dimensional case (`QuantumTheory.DensityOperator`), every
+eigenvalue of a positive operator is nonnegative. -/
+theorem trace_nonneg {T : H →L[ℂ] H} (h : IsTraceClass T)
+    (hpos : (T : H →ₗ[ℂ] H).IsPositive) : 0 ≤ trace h := by
+  refine tsum_nonneg fun a => ?_
+  have hpos_finrank : 0 < Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ)) :=
+    Nat.lt_of_le_of_lt (Nat.zero_le _) a.2.isLt
+  have hne : Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ) ≠ ⊥ := by
+    intro hbot
+    rw [hbot, finrank_bot ℂ H] at hpos_finrank
+    exact absurd hpos_finrank (lt_irrefl 0)
+  exact eigenvalue_nonneg_of_nonneg hne hpos.re_inner_nonneg_right
 
 end ContinuousLinearMap

@@ -21,8 +21,8 @@ No TODO comments or Zulip-referenced plans found suggesting this is in progress 
 **Rough scope** (minimal path to "trace of a self-adjoint compact operator via its eigenvalue sequence"):
 1. Extend the compact self-adjoint spectral theorem from finite dimensions (`InnerProductSpace/Spectrum.lean`) to a countable orthonormal eigenbasis with eigenvalues forming a sequence tending to `0`. **Done** — see below (the "sequence tending to `0`" part follows from `finite_large_eigenvalue_index` but is not separately packaged as a `Tendsto` statement; `hasSum_eigenvectorFamily`'s `HasSum` already implies the terms tend to `0`, which is what's actually needed downstream).
 2. Define an `IsTraceClass` predicate (e.g. `Summable` of the eigenvalue/singular-value sequence), and prove it is independent of the choice of eigenbasis. **Done** — see below.
-3. Optional easier stepping stone first: Hilbert-Schmidt operators, via `Summable (fun i => ‖T (e i)‖^2)` for an orthonormal basis `e` — simpler than trace-class since it needs no ordering/positivity, only `ℓ²` membership.
-4. Define trace on trace-class operators via the summable eigenvalue sum, and prove linearity/cyclicity lemmas mirroring the finite-dimensional ones already used in `LeanCondensedMatter/QuantumTheory/Entropy.lean`.
+3. Optional easier stepping stone first: Hilbert-Schmidt operators, via `Summable (fun i => ‖T (e i)‖^2)` for an orthonormal basis `e` — simpler than trace-class since it needs no ordering/positivity, only `ℓ²` membership. **Superseded** — step 1 solved the harder eigenvector-decomposition problem directly, so this easier stepping stone is no longer needed as a prerequisite; left undone as its own target unless a future use case wants Hilbert-Schmidt operators specifically (e.g. for a Hilbert-Schmidt inner product space structure).
+4. Define trace on trace-class operators via the summable eigenvalue sum, and prove linearity/cyclicity lemmas mirroring the finite-dimensional ones already used in `LeanCondensedMatter/QuantumTheory/Entropy.lean`. **Partially done** — see below (`trace` and `trace_nonneg` proved; linearity/cyclicity not yet attempted).
 
 This is scoped as its own track (not folded into Track A) because it is foundational analysis work, independent of the physics content, and is likely a substantial undertaking in its own right — comparable in size to Track B's combinatorics work.
 
@@ -49,6 +49,14 @@ Proved by taking `HilbertBasis.hasSum_orthogonalProjectionOnto` for `eigenvector
 ### Progress on step 2: the `IsTraceClass` predicate
 
 `ContinuousLinearMap.IsTraceClass` — `T` is trace-class when `Summable (fun a : EigenvectorIndex T => |a.1.1|)` (the absolute values of `T`'s nonzero eigenvalues, with multiplicity, are summable). No separate "independent of the choice of eigenbasis" lemma was needed: `EigenvectorIndex T` and the eigenvalue at each index depend only on `T`'s eigenspaces and their dimensions, not on which orthonormal basis was chosen within each (possibly multi-dimensional) eigenspace — every basis vector of a given eigenspace shares the same eigenvalue, so the predicate is manifestly insensitive to that choice by construction (documented in the declaration's docstring rather than proved as a separate lemma, since there is nothing left to prove).
+
+### Progress on step 4: the `trace` definition
+
+`ContinuousLinearMap.trace` — `trace h := ∑' a : EigenvectorIndex T, a.1.1` for `h : IsTraceClass T` — the trace of a trace-class compact self-adjoint operator, defined as the sum of its (nonzero) eigenvalues with multiplicity. The infinite-dimensional analogue of `LinearMap.trace` used throughout `QuantumTheory/Entropy.lean`.
+
+`ContinuousLinearMap.trace_nonneg` — the trace of a positive trace-class operator is nonnegative, mirroring the finite-dimensional fact used for density operators (`QuantumTheory.DensityOperator`) that every eigenvalue of a positive operator is nonnegative (via Mathlib's own `eigenvalue_nonneg_of_nonneg`).
+
+**Still needed to close step 4:** linearity of `trace` (nontrivial since it would need relating the *different* `EigenvectorIndex` types of two different operators `T`, `T'` and their sum `T + T'` — no shared index type is available for free) and cyclicity (`trace (S ∘ T) = trace (T ∘ S)`) are not yet attempted.
 
 ## Continuous functional calculus acts on eigenvectors by evaluation
 
