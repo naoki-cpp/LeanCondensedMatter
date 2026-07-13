@@ -366,12 +366,11 @@ the infinite-dimensional analogue of `LinearMap.trace` used throughout
 noncomputable def trace {T : H →L[ℂ] H} (_h : IsTraceClass T) : ℝ :=
   ∑' a : EigenvectorIndex T, a.1.1
 
-/-- The trace of a positive trace-class operator is nonnegative — as for a density operator's
-`LinearMap.trace` in the finite-dimensional case (`QuantumTheory.DensityOperator`), every
-eigenvalue of a positive operator is nonnegative. -/
-theorem trace_nonneg {T : H →L[ℂ] H} (h : IsTraceClass T)
-    (hpos : (T : H →ₗ[ℂ] H).IsPositive) : 0 ≤ trace h := by
-  refine tsum_nonneg fun a => ?_
+/-- **Every eigenvalue of a positive operator is nonnegative** — the per-index fact underlying
+both `trace_nonneg` below and `QuantumTheory.TraceClass.eigenvalue_nonneg` (a density operator's
+eigenvalues are probabilities). -/
+theorem eigenvalue_nonneg_of_isPositive {T : H →L[ℂ] H} (hpos : (T : H →ₗ[ℂ] H).IsPositive)
+    (a : EigenvectorIndex T) : 0 ≤ a.1.1 := by
   have hpos_finrank : 0 < Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ)) :=
     Nat.lt_of_le_of_lt (Nat.zero_le _) a.2.isLt
   have hne : Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ) ≠ ⊥ := by
@@ -379,6 +378,20 @@ theorem trace_nonneg {T : H →L[ℂ] H} (h : IsTraceClass T)
     rw [hbot, finrank_bot ℂ H] at hpos_finrank
     exact absurd hpos_finrank (lt_irrefl 0)
   exact eigenvalue_nonneg_of_nonneg hne hpos.re_inner_nonneg_right
+
+/-- The trace of a positive trace-class operator is nonnegative — as for a density operator's
+`LinearMap.trace` in the finite-dimensional case (`QuantumTheory.DensityOperator`), every
+eigenvalue of a positive operator is nonnegative. -/
+theorem trace_nonneg {T : H →L[ℂ] H} (h : IsTraceClass T)
+    (hpos : (T : H →ₗ[ℂ] H).IsPositive) : 0 ≤ trace h :=
+  tsum_nonneg fun a => eigenvalue_nonneg_of_isPositive hpos a
+
+/-- A real scalar multiple of a continuous linear map agrees, as an operator, with the complex
+scalar multiple by its cast. Useful for bridging lemmas stated for a general (complex) scalar,
+such as `IsPositive.smul_of_nonneg`, with the real-scalar convention used elsewhere in this file
+(e.g. `trace_smul`, `isTraceClass_smul`). -/
+theorem real_smul_eq_complex_smul (r : ℝ) (T : H →L[ℂ] H) : r • T = (r : ℂ) • T := by
+  ext x; simp
 
 /-- Scaling `T` by a nonzero real `c` scales each eigenvalue by `c` and leaves the
 eigenspaces (as submodules) unchanged. -/
