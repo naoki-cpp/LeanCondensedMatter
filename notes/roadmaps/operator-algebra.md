@@ -114,7 +114,7 @@ Step 3 is now closed: the Hilbert–Schmidt inner product is well-defined, indep
 
 This is a minimal-but-representative reconciliation: it identifies the two notions of trace on the overlap of their domains (self-adjoint operators via `S := 1`) rather than proving the fully general statement `innerHS d S T = trace (S† ∘ T)` for arbitrary Hilbert–Schmidt `S`, `T` — the latter would need `ContinuousLinearMap.trace` extended to (not-necessarily-self-adjoint) trace-class operators first, which is out of scope here. Step 4 is closed for this purpose.
 
-**Still needed:** step 5 above (applying this to the Born rule) is not yet attempted.
+**Still needed:** step 5 above (applying this to the Born rule) is now done directly in `QuantumTheory.TraceClass` — see `notes/roadmaps/quantum-theory-foundations.md` — via `ρ`'s own eigendecomposition, sidestepping the Hilbert–Schmidt inner product entirely (see the note there for why). The Hilbert–Schmidt track itself (steps 1–4) is complete; no further steps are currently planned here.
 
 ## Continuous functional calculus acts on eigenvectors by evaluation
 
