@@ -41,17 +41,10 @@ style of `ContinuousLinearMap.trace_add`/`trace_comp_comm`, which also take thes
 hypotheses. -/
 structure DensityOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] where
-  /-- The underlying operator. -/
   op : H →L[ℂ] H
-  /-- A density operator is positive. -/
   pos : op.IsPositive
-  /-- A density operator is a compact operator, needed for `ContinuousLinearMap.trace` (via its
-  eigenbasis) to correctly capture `op`'s action. -/
   compact : IsCompactOperator op
-  /-- A density operator is trace-class: its eigenvalues (with multiplicity) are absolutely
-  summable. -/
   traceClass : op.IsTraceClass
-  /-- A density operator has trace `1`. -/
   trace_eq_one : trace traceClass = 1
 
 /-- A density operator's underlying operator is self-adjoint (in the `IsSymmetric` sense used
