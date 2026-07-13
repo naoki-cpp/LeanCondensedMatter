@@ -435,6 +435,61 @@ theorem summable_eigenvectorIndex_of_isTraceClass {S : H →L[ℂ] H} (hS : IsTr
   have hS' : Summable (fun a : EigenvectorIndex S => |a.1.1|) := hS
   exact Summable.of_norm (by simpa only [Real.norm_eq_abs] using hS')
 
+/-- **Trace-class-ness is preserved under scalar multiplication by a nonzero real.** Unlike
+`trace_smul` (which takes `IsTraceClass (c • T)` as an external hypothesis, matching this
+project's usual style of not deriving compactness/trace-class facts), this genuinely proves it
+from `IsTraceClass T` alone. Proved via `summable_sigma_of_nonneg` (splitting `Summable` over the
+dependent `EigenvectorIndex` type into a nonnegativity-only base+fiber criterion), reindexing only
+the *base* type `{γ : ℝ // γ ≠ 0}` via `eigenvalueScaleEquiv` — deliberately avoiding a literal
+`Equiv (EigenvectorIndex (c • T)) (EigenvectorIndex T)` on the full dependent `Sigma` type (via
+`Equiv.sigmaCongr`), which hits a genuine `(kernel) deterministic timeout` here (its
+`sigmaCongrLeft` implementation goes through a `cast`, unlike the base-only reindexing used
+elsewhere in this file, e.g. `trace_smul`). -/
+theorem isTraceClass_smul {c : ℝ} (hc : c ≠ 0) (h : IsTraceClass T) :
+    IsTraceClass (c • T) := by
+  set e := eigenvalueScaleEquiv hc with he_def
+  have hfin : ∀ μ : { γ : ℝ // γ ≠ 0 },
+      Module.finrank ℂ (Module.End.eigenspace ((c • T : H →L[ℂ] H) : H →ₗ[ℂ] H) (μ.1 : ℂ)) =
+      Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) ((e.symm μ).1 : ℂ)) := by
+    intro μ
+    have h2 := congrArg Subtype.val (e.apply_symm_apply μ)
+    rw [he_def, eigenvalueScaleEquiv_apply] at h2
+    have heq : (μ.1 : ℂ) = (c : ℂ) * ((e.symm μ).1 : ℂ) := by exact_mod_cast h2.symm
+    rw [heq, eigenspace_smul hc]
+  have hval : ∀ μ : { γ : ℝ // γ ≠ 0 }, μ.1 = c * (e.symm μ).1 := by
+    intro μ
+    have h2 := congrArg Subtype.val (e.apply_symm_apply μ)
+    rw [he_def, eigenvalueScaleEquiv_apply] at h2
+    linarith
+  have hT' : Summable (fun ν : { γ : ℝ // γ ≠ 0 } =>
+      (Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (ν.1 : ℂ)) : ℝ) * |ν.1|) := by
+    have hsig := (summable_sigma_of_nonneg (f := fun a : EigenvectorIndex T => |a.1.1|)
+      (fun a => abs_nonneg _)).mp h
+    simpa only [tsum_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+      nsmul_eq_mul] using hsig.2
+  show Summable (fun a : EigenvectorIndex (c • T) => |a.1.1|)
+  apply (summable_sigma_of_nonneg (f := fun a : EigenvectorIndex (c • T) => |a.1.1|)
+    (fun a => abs_nonneg _)).mpr
+  refine ⟨fun _ => Summable.of_finite, ?_⟩
+  have heq2 : (fun μ : { γ : ℝ // γ ≠ 0 } =>
+      ∑' _i : Fin (Module.finrank ℂ (Module.End.eigenspace ((c • T : H →L[ℂ] H) : H →ₗ[ℂ] H)
+        (μ.1 : ℂ))), |μ.1|) =
+      (fun μ => |c| * ((Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H)
+        ((e.symm μ).1 : ℂ)) : ℝ) * |(e.symm μ).1|)) := by
+    funext μ
+    rw [tsum_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin, hfin μ, hval μ,
+      abs_mul]
+    push_cast
+    ring
+  rw [heq2]
+  refine (summable_mul_left_iff (abs_ne_zero.mpr hc)).mpr ?_
+  rw [show (fun μ : { γ : ℝ // γ ≠ 0 } => (Module.finrank ℂ (Module.End.eigenspace
+      (T : H →ₗ[ℂ] H) ((e.symm μ).1 : ℂ)) : ℝ) * |(e.symm μ).1|) =
+      (fun ν : { γ : ℝ // γ ≠ 0 } =>
+        (Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (ν.1 : ℂ)) : ℝ) * |ν.1|) ∘
+        ⇑e.symm from rfl]
+  exact (Equiv.summable_iff e.symm).mpr hT'
+
 /-- **Trace is homogeneous under scalar multiplication by a nonzero real.** -/
 theorem trace_smul {c : ℝ} (hc : c ≠ 0) (h : IsTraceClass T)
     (hcT : IsTraceClass (c • T)) :

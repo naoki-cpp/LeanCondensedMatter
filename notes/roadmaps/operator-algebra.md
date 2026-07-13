@@ -70,6 +70,8 @@ Proved by taking `HilbertBasis.hasSum_orthogonalProjectionOnto` for `eigenvector
 
 Step 4 is now closed: `trace`, `trace_nonneg`, `trace_smul`, `trace_add`, and `trace_comp_comm` are all proved.
 
+`ContinuousLinearMap.isTraceClass_smul` — **trace-class-ness itself (not just the trace value) is preserved under scalar multiplication by a nonzero real**, `IsTraceClass T → IsTraceClass (c • T)` for `c ≠ 0`. Unlike `trace_smul` (which takes `IsTraceClass (c • T)` as an external hypothesis, matching this project's general style of not deriving compactness/trace-class facts), this genuinely derives it. Added later (2026-07-14) as a prerequisite for `QuantumTheory.TraceClass.gibbsState` (normalizing a trace-class Gibbs operator by its trace). Notable Lean pitfall hit and resolved here: constructing a literal `Equiv (EigenvectorIndex (c • T)) (EigenvectorIndex T)` via `Equiv.sigmaCongr` (needed to transport `Summable` across the two different dependent `Sigma` index types) hits a genuine `(kernel) deterministic timeout`, because `Equiv.sigmaCongr`'s underlying `sigmaCongrLeft` implementation goes through a `cast`. The fix: `summable_sigma_of_nonneg` (Mathlib) splits `Summable` over a dependent `Sigma` type into a *nonnegativity-only* base+fiber criterion, with no `Sigma`-level `Equiv` needed at all — only the *base* type `{γ : ℝ // γ ≠ 0}` is reindexed, via the already-existing (non-dependent, so safe) `eigenvalueScaleEquiv`, exactly matching the pattern `trace_smul` itself already used safely.
+
 ## Hilbert–Schmidt operators
 
 Status: `stated`.
