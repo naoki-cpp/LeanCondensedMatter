@@ -15,17 +15,16 @@ requires finite-dimensionality.
 and everything built on it (`POVM`, `prob`, `sum_prob_eq_one`, `purity`, ...) are untouched. This
 namespace develops the infinite-dimensional analogue in parallel.
 
-**Scope note (a genuine mathematical gap, not just a Lean technicality):** in finite dimensions
-`LinearMap.trace` is defined unconditionally, so `Tr[E_m ρ]` (the Born-rule probability, needed
-for `prob`/`sum_prob_eq_one`) makes sense for *any* positive `E_m` and density operator `ρ`. In
-this infinite-dimensional setting, `ContinuousLinearMap.trace` is only meaningful for *compact
-self-adjoint trace-class* operators — and `E_m ∘ ρ` need not be self-adjoint at all (a product of
-two self-adjoint operators is self-adjoint only when they commute). Porting `prob`/`sum_prob_eq_one`
-therefore needs a notion of trace for non-self-adjoint (e.g. Hilbert–Schmidt-class) operators that
-does not yet exist in this project; see `notes/roadmaps/operator-algebra.md`. This file is
-deliberately scoped to what's well-posed without that: the `DensityOperator` structure itself and
-properties of a single density operator (`pure`, and eventually `purity`, which only needs `ρ ∘ ρ`
-— self-adjoint since `ρ` is).
+**On the Born rule (`POVM`/`prob`/`sum_prob_eq_one`, below):** `E_m ∘ ρ` need not be self-adjoint
+even when `E_m`, `ρ` both are (a product of self-adjoint operators is self-adjoint only when they
+commute), so `ContinuousLinearMap.trace` — meaningful only for compact self-adjoint trace-class
+operators — doesn't apply to it directly. The originally-anticipated fix was a Hilbert–Schmidt-class
+trace (`Analysis/HilbertSchmidt.lean`, `notes/roadmaps/operator-algebra.md`), but that turned out to
+be unnecessary: `prob` below is defined directly via `ρ`'s own eigendecomposition (never a general
+Hilbert basis, so `E_m` itself never needs to be Hilbert–Schmidt), sidestepping the need for a
+general non-self-adjoint trace entirely. **Still open:** `purity`, which needs `ρ ∘ ρ`'s own
+compactness/trace-class facts (not yet derived for a general density operator `ρ`) — unlike `prob`,
+`ρ ∘ ρ` genuinely is self-adjoint here, so this doesn't have the same obstacle to begin with.
 -/
 
 namespace QuantumTheory.TraceClass
@@ -157,5 +156,78 @@ noncomputable def pure (ψ : QuantumTheory.State H) : DensityOperator H where
   compact := isCompactOperator_rankOne ψ.1 ψ.1
   traceClass := rankOne_isTraceClass ψ.2
   trace_eq_one := rankOne_trace_eq_one ψ.2
+
+variable {M : Type*} [Fintype M]
+
+/-- **A (finite-outcome) POVM (infinite-dimensional).** A finite family of positive bounded
+operators summing to the identity. Unlike the finite-dimensional `QuantumTheory.POVM`, the
+individual `E m` need *not* be compact or trace-class — e.g. a single-outcome POVM forces
+`E () = 1`, never compact in infinite dimensions. Only `ρ`'s own trace-class-ness (via its
+eigendecomposition) is needed to make `prob` well-defined below, sidestepping the
+Hilbert–Schmidt-inner-product route (`Analysis/HilbertSchmidt.lean`), which would additionally
+require each `E m` itself to be Hilbert–Schmidt. -/
+structure POVM (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+    (M : Type*) [Fintype M] where
+  E : M → H →L[ℂ] H
+  pos : ∀ m, (E m).IsPositive
+  sum_eq_id : (∑ m, E m) = ContinuousLinearMap.id ℂ H
+
+/-- **Born rule (general measurement postulate, infinite-dimensional).** The probability of
+outcome `m` of a POVM measurement `P` on a density operator `ρ`, computed via `ρ`'s own
+eigendecomposition `ρ = Σᵢ λᵢ |eᵢ⟩⟨eᵢ|` (`ContinuousLinearMap.eigenvectorFamily`): `Σᵢ λᵢ ⟪eᵢ,
+E_m eᵢ⟫`. Well-defined (summable, `summable_prob_term`) since `Σᵢ |λᵢ|` converges (`ρ.traceClass`)
+and each `eᵢ` is a unit vector, so `|⟪eᵢ, E_m eᵢ⟫| ≤ ‖E_m‖`. -/
+noncomputable def prob (P : POVM H M) (ρ : DensityOperator H) (m : M) : ℝ :=
+  (∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) *
+    (inner ℂ (eigenvectorFamily ρ.compact a) (P.E m (eigenvectorFamily ρ.compact a)) : ℂ)).re
+
+/-- Convergence of the series defining `prob`, via comparison against `‖P.E m‖ * |λᵢ|`. -/
+theorem summable_prob_term (P : POVM H M) (ρ : DensityOperator H) (m : M) :
+    Summable (fun a : EigenvectorIndex ρ.op => (a.1.1 : ℂ) *
+      (inner ℂ (eigenvectorFamily ρ.compact a) (P.E m (eigenvectorFamily ρ.compact a)) : ℂ)) := by
+  have hnorm : ∀ a, ‖eigenvectorFamily ρ.compact a‖ = 1 :=
+    (orthonormal_eigenvectorFamily ρ.compact ρ.isSymmetric).1
+  refine Summable.of_norm_bounded (ρ.traceClass.mul_right ‖P.E m‖) fun a => ?_
+  have hle : ‖(inner ℂ (eigenvectorFamily ρ.compact a) (P.E m (eigenvectorFamily ρ.compact a)) :
+      ℂ)‖ ≤ ‖P.E m‖ :=
+    calc ‖(inner ℂ (eigenvectorFamily ρ.compact a) (P.E m (eigenvectorFamily ρ.compact a)) : ℂ)‖
+        ≤ ‖eigenvectorFamily ρ.compact a‖ * ‖P.E m (eigenvectorFamily ρ.compact a)‖ :=
+          norm_inner_le_norm _ _
+      _ ≤ ‖eigenvectorFamily ρ.compact a‖ * (‖P.E m‖ * ‖eigenvectorFamily ρ.compact a‖) := by
+          gcongr; exact (P.E m).le_opNorm _
+      _ = ‖P.E m‖ := by rw [hnorm a]; ring
+  rw [norm_mul, Complex.norm_real]
+  exact mul_le_mul_of_nonneg_left hle (abs_nonneg _)
+
+/-- **The outcome probabilities of a POVM measurement sum to `1`** (infinite-dimensional),
+matching the finite-dimensional `QuantumTheory.sum_prob_eq_one`. Proved by swapping the finite
+sum over `M` with the (absolutely convergent) sum over `ρ`'s eigenvectors
+(`Summable.tsum_finsetSum`), using `P.sum_eq_id` to collapse `Σₘ E_m eᵢ` to `eᵢ`, and finally
+`ρ.trace_eq_one` to evaluate the resulting eigenvalue sum. -/
+theorem sum_prob_eq_one (P : POVM H M) (ρ : DensityOperator H) :
+    ∑ m, prob P ρ m = 1 := by
+  have hswap : ∑ m, ∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) *
+      (inner ℂ (eigenvectorFamily ρ.compact a) (P.E m (eigenvectorFamily ρ.compact a)) : ℂ) =
+      ∑' a : EigenvectorIndex ρ.op, ∑ m, (a.1.1 : ℂ) *
+      (inner ℂ (eigenvectorFamily ρ.compact a) (P.E m (eigenvectorFamily ρ.compact a)) : ℂ) :=
+    (Summable.tsum_finsetSum (fun m _ => summable_prob_term P ρ m)).symm
+  have hnorm : ∀ a, ‖eigenvectorFamily ρ.compact a‖ = 1 :=
+    (orthonormal_eigenvectorFamily ρ.compact ρ.isSymmetric).1
+  have hcollapse : ∀ a : EigenvectorIndex ρ.op, ∑ m, (a.1.1 : ℂ) *
+      (inner ℂ (eigenvectorFamily ρ.compact a) (P.E m (eigenvectorFamily ρ.compact a)) : ℂ) =
+      (a.1.1 : ℂ) := fun a => by
+    rw [← Finset.mul_sum, ← inner_sum]
+    have hsum : ∑ m, P.E m (eigenvectorFamily ρ.compact a) = eigenvectorFamily ρ.compact a := by
+      have h := map_sum (ContinuousLinearMap.apply ℂ H (eigenvectorFamily ρ.compact a)) P.E
+        Finset.univ
+      simp only [ContinuousLinearMap.apply_apply] at h
+      rw [← h, P.sum_eq_id, ContinuousLinearMap.id_apply]
+    rw [hsum, inner_self_eq_norm_sq_to_K, hnorm a]
+    push_cast
+    ring
+  simp only [prob]
+  rw [← Complex.re_sum, hswap]
+  simp_rw [hcollapse]
+  exact_mod_cast ρ.trace_eq_one
 
 end QuantumTheory.TraceClass
