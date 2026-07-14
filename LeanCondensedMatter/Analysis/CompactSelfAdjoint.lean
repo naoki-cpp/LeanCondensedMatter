@@ -3,6 +3,10 @@ import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Analysis.InnerProductSpace.Positive
 
+-- No project files currently carry a Mathlib-style copyright/author header; a
+-- project-wide policy for this is a separate open item (see notes/conventions.md).
+set_option linter.style.header false
+
 /-!
 # A countable orthonormal family of eigenvectors for a compact self-adjoint operator
 
@@ -98,7 +102,7 @@ theorem finite_large_eigenvalue_index (hT : IsCompactOperator T) (hT' : T.IsSymm
     intro m n hmn
     have hinner : inner ℂ (e m) (e n) = (0 : ℂ) := he_orth.2 hmn
     have hTinner : inner ℂ (T (e m)) (T (e n)) = (0 : ℂ) := by
-      show inner ℂ ((T : H →ₗ[ℂ] H) (e m)) ((T : H →ₗ[ℂ] H) (e n)) = (0 : ℂ)
+      change inner ℂ ((T : H →ₗ[ℂ] H) (e m)) ((T : H →ₗ[ℂ] H) (e n)) = (0 : ℂ)
       rw [hTe m, hTe n, inner_smul_left, inner_smul_right, hinner]; simp
     have hnormsq : ‖T (e m) - T (e n)‖ ^ 2 = ‖T (e m)‖ ^ 2 + ‖T (e n)‖ ^ 2 := by
       have h0 : (inner ℂ (T (e m)) (T (e n)) : ℂ) = 0 := hTinner
@@ -107,7 +111,7 @@ theorem finite_large_eigenvalue_index (hT : IsCompactOperator T) (hT' : T.IsSymm
       rw [this]; ring
     have hTe_norm : ∀ k, ‖T (e k)‖ = |(f k).1.1.1| := by
       intro k
-      show ‖(T : H →ₗ[ℂ] H) (e k)‖ = _
+      change ‖(T : H →ₗ[ℂ] H) (e k)‖ = _
       rw [hTe k, norm_smul, he_orth.1 k]
       simp
     have hm_bound : ε ≤ ‖T (e m)‖ := by rw [hTe_norm]; exact (f m).2
@@ -348,7 +352,7 @@ theorem hasSum_eigenvectorFamily (hT : IsCompactOperator T) (hT' : T.IsSymmetric
       (a.1.1 : ℂ) • (inner ℂ (eigenvectorFamily hT a) x : ℂ) • eigenvectorFamily hT a := by
     intro a
     rw [ContinuousLinearMap.map_smul, hb a]
-    show (inner ℂ (eigenvectorFamily hT a) x : ℂ) • (T : H →ₗ[ℂ] H) (eigenvectorFamily hT a) = _
+    change (inner ℂ (eigenvectorFamily hT a) x : ℂ) • (T : H →ₗ[ℂ] H) (eigenvectorFamily hT a) = _
     rw [apply_eigenvectorFamily hT a, smul_smul, smul_smul, mul_comm]
   simpa only [heq] using hstep2
 
@@ -411,7 +415,7 @@ theorem eigenspace_smul {c : ℝ} (hc : c ≠ 0) (μ : ℂ) :
     Module.End.eigenspace (((c • T : H →L[ℂ] H)) : H →ₗ[ℂ] H) ((c : ℂ) * μ) =
       Module.End.eigenspace (T : H →ₗ[ℂ] H) μ := by
   have hcv : ∀ v, ((c • T : H →L[ℂ] H) : H →ₗ[ℂ] H) v = (c : ℂ) • ((T : H →ₗ[ℂ] H) v) := fun v => by
-    simp [ContinuousLinearMap.smul_apply]
+    simp
   ext v
   simp only [Module.End.mem_eigenspace_iff, hcv]
   constructor
@@ -495,7 +499,7 @@ theorem isTraceClass_smul {c : ℝ} (hc : c ≠ 0) (h : IsTraceClass T) :
       (fun a => abs_nonneg _)).mp h
     simpa only [tsum_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
       nsmul_eq_mul] using hsig.2
-  show Summable (fun a : EigenvectorIndex (c • T) => |a.1.1|)
+  change Summable (fun a : EigenvectorIndex (c • T) => |a.1.1|)
   apply (summable_sigma_of_nonneg (f := fun a : EigenvectorIndex (c • T) => |a.1.1|)
     (fun a => abs_nonneg _)).mpr
   refine ⟨fun _ => Summable.of_finite, ?_⟩
@@ -507,7 +511,6 @@ theorem isTraceClass_smul {c : ℝ} (hc : c ≠ 0) (h : IsTraceClass T) :
     funext μ
     rw [tsum_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin, hfin μ, hval μ,
       abs_mul]
-    push_cast
     ring
   rw [heq2]
   refine (summable_mul_left_iff (abs_ne_zero.mpr hc)).mpr ?_
@@ -523,7 +526,7 @@ omit [CompleteSpace H] in
 theorem trace_smul {c : ℝ} (hc : c ≠ 0) (h : IsTraceClass T)
     (hcT : IsTraceClass (c • T)) :
     trace hcT = c * trace h := by
-  show (∑' b : EigenvectorIndex (c • T), b.1.1) = c * ∑' a : EigenvectorIndex T, a.1.1
+  change (∑' b : EigenvectorIndex (c • T), b.1.1) = c * ∑' a : EigenvectorIndex T, a.1.1
   rw [tsum_eigenvectorIndex_eq_tsum_mul_finrank (summable_eigenvectorIndex_of_isTraceClass hcT),
     tsum_eigenvectorIndex_eq_tsum_mul_finrank (summable_eigenvectorIndex_of_isTraceClass h),
     ← (eigenvalueScaleEquiv hc).tsum_eq (fun ν : { γ : ℝ // γ ≠ 0 } =>
@@ -614,7 +617,7 @@ theorem hasSum_inner_apply_eq_trace (hT : IsCompactOperator T) (hT' : T.IsSymmet
     (h : IsTraceClass T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
     HasSum (fun i => (inner ℂ (d i) (T (d i)) : ℂ).re) (trace h) := by
   classical
-  show HasSum (fun i => (inner ℂ (d i) (T (d i)) : ℂ).re) (∑' a : EigenvectorIndex T, a.1.1)
+  change HasSum (fun i => (inner ℂ (d i) (T (d i)) : ℂ).re) (∑' a : EigenvectorIndex T, a.1.1)
   set e := eigenvectorFamily hT with he_def
   set f : EigenvectorIndex T → ι → ℝ :=
     fun a i => a.1.1 * ‖(inner ℂ (e a) (d i) : ℂ)‖ ^ 2 with hf_def
@@ -642,8 +645,8 @@ theorem hasSum_inner_apply_eq_trace (hT : IsCompactOperator T) (hT' : T.IsSymmet
       funext a
       have hstep : (innerSL ℂ (d i) ((a.1.1 : ℂ) • (inner ℂ (e a) (d i) : ℂ) • e a) : ℂ)
           = (a.1.1 : ℂ) * (inner ℂ (e a) (d i) * inner ℂ (d i) (e a) : ℂ) := by
-        simp [innerSL_apply_apply, inner_smul_right, mul_assoc]
-      show (innerSL ℂ (d i) ((a.1.1 : ℂ) • (inner ℂ (e a) (d i) : ℂ) • e a) : ℂ).re = f a i
+        simp
+      change (innerSL ℂ (d i) ((a.1.1 : ℂ) • (inner ℂ (e a) (d i) : ℂ) • e a) : ℂ).re = f a i
       rw [hstep, hreal a i, hf_def, ← Complex.ofReal_mul, Complex.ofReal_re]
     rwa [heq] at hs
   -- The magnitude family is summable over the product index, via trace-class-ness of `T`.
@@ -694,7 +697,7 @@ theorem trace_add {T' : H →L[ℂ] H} (hT : IsCompactOperator T) (hTsym : T.IsS
   have heq : (fun i => (inner ℂ (d i) (T (d i)) : ℂ).re + (inner ℂ (d i) (T' (d i)) : ℂ).re) =
       (fun i => (inner ℂ (d i) ((T + T') (d i)) : ℂ).re) := by
     funext i
-    simp [ContinuousLinearMap.add_apply, inner_add_right]
+    simp [inner_add_right]
   rw [heq] at hadd
   exact (hadd.unique hs3).symm
 
@@ -704,8 +707,8 @@ theorem trace_add {T' : H →L[ℂ] H} (hT : IsCompactOperator T) (hTsym : T.IsS
 self-adjoint `S`, `⟪dᵢ, S (T' dᵢ)⟫ = ⟪S dᵢ, T' dᵢ⟫` (`IsSymmetric`), and similarly
 `⟪dᵢ, T' (S dᵢ)⟫ = ⟪T' dᵢ, S dᵢ⟫`; since `⟪T' dᵢ, S dᵢ⟫` is exactly the complex conjugate of
 `⟪S dᵢ, T' dᵢ⟫` (`inner_conj_symm`), the two real parts coincide term by term. -/
-theorem trace_comp_comm {T' : H →L[ℂ] H} (hT : IsCompactOperator T) (hTsym : T.IsSymmetric)
-    (hT' : IsCompactOperator T') (hT'sym : T'.IsSymmetric)
+theorem trace_comp_comm {T' : H →L[ℂ] H} (_hT : IsCompactOperator T) (hTsym : T.IsSymmetric)
+    (_hT' : IsCompactOperator T') (hT'sym : T'.IsSymmetric)
     (hTT' : IsCompactOperator (T * T')) (hTT'sym : (T * T' : H →L[ℂ] H).IsSymmetric)
     (hT'T : IsCompactOperator (T' * T)) (hT'Tsym : (T' * T : H →L[ℂ] H).IsSymmetric)
     (h1 : IsTraceClass (T * T')) (h2 : IsTraceClass (T' * T)) :
@@ -716,7 +719,7 @@ theorem trace_comp_comm {T' : H →L[ℂ] H} (hT : IsCompactOperator T) (hTsym :
   have heq : (fun i => (inner ℂ (d i) ((T * T') (d i)) : ℂ).re) =
       (fun i => (inner ℂ (d i) ((T' * T) (d i)) : ℂ).re) := by
     funext i
-    simp only [mul_apply_eq_comp, ContinuousLinearMap.comp_apply]
+    simp only [mul_apply_eq_comp]
     have h1 : (inner ℂ (d i) (T (T' (d i))) : ℂ) = inner ℂ (T (d i)) (T' (d i)) :=
       (hTsym (d i) (T' (d i))).symm
     have h2 : (inner ℂ (d i) (T' (T (d i))) : ℂ) = inner ℂ (T' (d i)) (T (d i)) :=

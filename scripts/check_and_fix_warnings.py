@@ -16,6 +16,13 @@ import subprocess
 import sys
 from pathlib import Path
 
+# Lean's own output (identifier names, math notation) is UTF-8; on Windows the
+# console/subprocess default locale encoding (e.g. cp932) can't represent it,
+# so force UTF-8 everywhere rather than crash on a decode error.
+for _stream in (sys.stdout, sys.stderr):
+    if hasattr(_stream, "reconfigure"):
+        _stream.reconfigure(encoding="utf-8", errors="replace")
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 UNUSED_VAR_RE = re.compile(
@@ -44,6 +51,8 @@ def run_lake_build(modules: list[str]) -> str:
         cwd=REPO_ROOT,
         capture_output=True,
         text=True,
+        encoding="utf-8",
+        errors="replace",
     )
     return proc.stdout + proc.stderr
 
@@ -135,7 +144,7 @@ def fix_unused_var_warnings(warnings: list[tuple[str, int, str, str]]) -> list[s
                 f"note: {file} has {len(entries)} declarations with the same "
                 f"unused section variable(s) ({entries[0][2]}). Consider narrowing "
                 "the surrounding `variable` scope instead of relying on "
-                "per-declaration `omit ... in` — see notes/conventions.md.",
+                "per-declaration `omit ... in` -- see notes/conventions.md.",
                 file=sys.stderr,
             )
     return modified
@@ -165,7 +174,7 @@ def main(changed_files: list[str]) -> int:
     # nothing was fixed — `output` already reflects the current state).
     remaining = other_warnings(output)
     if remaining:
-        print("\nUnresolved warning(s) — fix by hand before pushing:\n", file=sys.stderr)
+        print("\nUnresolved warning(s) -- fix by hand before pushing:\n", file=sys.stderr)
         for w in remaining:
             print(w, file=sys.stderr)
         return 1
