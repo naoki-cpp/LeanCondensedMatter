@@ -51,6 +51,7 @@ throughout `Analysis/CompactSelfAdjoint.lean`), inherited from positivity. -/
 theorem DensityOperator.isSymmetric (ρ : DensityOperator H) : (ρ.op : H →ₗ[ℂ] H).IsSymmetric :=
   ρ.pos.isSelfAdjoint.isSymmetric
 
+omit [CompleteSpace H] in
 /-- **A rank-one operator `|x⟩⟨y|` is a compact operator**, regardless of the (possibly
 infinite) dimension of `H`: it factors as the composition of the (automatically compact, since
 its codomain `ℂ` is locally compact) functional `y ↦ ⟪y, ·⟫` with the continuous linear map
@@ -62,6 +63,7 @@ theorem isCompactOperator_rankOne (x y : H) :
   exact (isCompactOperator_of_locallyCompactSpace_dom (innerSL ℂ y)).clm_comp
     (ContinuousLinearMap.toSpanSingleton ℂ x)
 
+omit [CompleteSpace H] in
 /-- The rank-one projector `|ψ⟩⟨ψ|` for a unit vector `ψ` has no eigenvectors outside its own
 eigenspace at `1`: any other nonzero eigenvalue's eigenspace is trivial. -/
 theorem eigenspace_rankOne_eq_bot {ψ : H} (hψ : ‖ψ‖ = 1) {μ : ℂ} (hμ0 : μ ≠ 0) (hμ1 : μ ≠ 1) :
@@ -80,6 +82,7 @@ theorem eigenspace_rankOne_eq_bot {ψ : H} (hψ : ‖ψ‖ = 1) {μ : ℂ} (hμ0
   rw [h2, zero_smul] at hv
   exact (smul_eq_zero.mp hv.symm).resolve_left hμ0
 
+omit [CompleteSpace H] in
 /-- The rank-one projector `|ψ⟩⟨ψ|` for a unit vector `ψ` has eigenspace `span {ψ}` at
 eigenvalue `1`. -/
 theorem eigenspace_rankOne_one {ψ : H} (hψ : ‖ψ‖ = 1) :
@@ -94,6 +97,7 @@ theorem eigenspace_rankOne_one {ψ : H} (hψ : ‖ψ‖ = 1) :
     simp [ContinuousLinearMap.coe_coe, InnerProductSpace.rankOne_apply,
       inner_self_eq_norm_sq_to_K, hψ]
 
+omit [CompleteSpace H] in
 /-- The rank-one projector `|ψ⟩⟨ψ|`'s eigenspace at eigenvalue `1` has dimension `1`. -/
 theorem finrank_eigenspace_rankOne_one {ψ : H} (hψ : ‖ψ‖ = 1) :
     Module.finrank ℂ (Module.End.eigenspace
@@ -104,11 +108,11 @@ theorem finrank_eigenspace_rankOne_one {ψ : H} (hψ : ‖ψ‖ = 1) :
 /-- **The eigenvector index of a rank-one projector `|ψ⟩⟨ψ|` (unit `ψ`) has a unique element**,
 the single eigenvector `ψ` itself at eigenvalue `1`: every other nonzero eigenvalue's eigenspace
 is trivial (`eigenspace_rankOne_eq_bot`), forcing its `Fin`-indexed fiber to be empty. -/
-def uniqueEigenvectorIndexRankOne {ψ : H} (hψ : ‖ψ‖ = 1) :
+@[reducible] def uniqueEigenvectorIndexRankOne {ψ : H} (hψ : ‖ψ‖ = 1) :
     Unique (ContinuousLinearMap.EigenvectorIndex
       (InnerProductSpace.rankOne ℂ ψ ψ : H →L[ℂ] H)) where
   default := ⟨⟨1, one_ne_zero⟩, ⟨0, by
-    show 0 < Module.finrank ℂ (Module.End.eigenspace
+    change 0 < Module.finrank ℂ (Module.End.eigenspace
       ((InnerProductSpace.rankOne ℂ ψ ψ : H →L[ℂ] H) : H →ₗ[ℂ] H) (1 : ℂ))
     rw [finrank_eigenspace_rankOne_one hψ]; norm_num⟩⟩
   uniq := by
@@ -122,7 +126,7 @@ def uniqueEigenvectorIndexRankOne {ψ : H} (hψ : ‖ψ‖ = 1) :
         rw [hbot]; exact finrank_bot ℂ H
       exact (Nat.not_lt_zero i.1) (hfr ▸ i.isLt)
     subst hμ1
-    show (⟨⟨(1 : ℝ), hμ0⟩, i⟩ : ContinuousLinearMap.EigenvectorIndex
+    change (⟨⟨(1 : ℝ), hμ0⟩, i⟩ : ContinuousLinearMap.EigenvectorIndex
       (InnerProductSpace.rankOne ℂ ψ ψ : H →L[ℂ] H)) = _
     congr 1
     refine Fin.ext ?_
@@ -133,16 +137,18 @@ def uniqueEigenvectorIndexRankOne {ψ : H} (hψ : ‖ψ‖ = 1) :
     have hilt := i.isLt
     omega
 
+omit [CompleteSpace H] in
 /-- **`pure ψ` is trace-class, with trace `1`.** -/
 theorem rankOne_isTraceClass {ψ : H} (hψ : ‖ψ‖ = 1) :
     ContinuousLinearMap.IsTraceClass (InnerProductSpace.rankOne ℂ ψ ψ : H →L[ℂ] H) := by
   haveI := uniqueEigenvectorIndexRankOne hψ
   exact Summable.of_finite
 
+omit [CompleteSpace H] in
 theorem rankOne_trace_eq_one {ψ : H} (hψ : ‖ψ‖ = 1) :
     ContinuousLinearMap.trace (rankOne_isTraceClass hψ) = 1 := by
   haveI := uniqueEigenvectorIndexRankOne hψ
-  show (∑' a : ContinuousLinearMap.EigenvectorIndex
+  change (∑' a : ContinuousLinearMap.EigenvectorIndex
     (InnerProductSpace.rankOne ℂ ψ ψ : H →L[ℂ] H), a.1.1) = 1
   rw [tsum_eq_single (uniqueEigenvectorIndexRankOne hψ).default (fun b hb =>
     absurd (Subsingleton.elim b (uniqueEigenvectorIndexRankOne hψ).default) hb)]
