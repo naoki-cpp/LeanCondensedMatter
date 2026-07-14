@@ -127,3 +127,50 @@ Status: `proved`.
 `Polynomial.aeval_apply_eigenvector` — the polynomial-functional-calculus case, `(Polynomial.aeval T q) v = (q.eval c : ℂ) • v` for `q : ℝ[X]`, by induction on `q`.
 
 `cfc_apply_eigenvector` extends this to general continuous `f` by approximating `f` uniformly by polynomials `pₙ` on `[-‖T‖, ‖T‖]` (a compact interval containing `spectrum ℝ T`, via the classical Weierstrass approximation theorem `exists_polynomial_near_of_continuousOn` — this sidesteps needing `c ∈ spectrum ℝ T` explicitly, since the bound holds on all of `[-‖T‖,‖T‖]`), then passing to the limit: `cfc pₙ.eval T → cfc f T` in operator norm (via `IsGreatest.norm_cfc`, which identifies `‖cfc g T‖` with the sup of `|g|` over `spectrum ℝ T`) while `cfc pₙ.eval T v = (pₙ.eval c : ℂ) • v → (f c : ℂ) • v` (via `Polynomial.aeval_apply_eigenvector` plus continuity of evaluation at `c`), and uniqueness of limits closes the gap. See `notes/caveats.md` for a Mathlib pitfall hit along the way (`IsStarNormal.instContinuousFunctionalCalculus` is only a `local instance`).
+
+## Peierls–Bogoliubov spectral inequality
+
+Status: `stated` (core inequality proved; not yet applied to the Gibbs–Klein / Helmholtz
+free-energy target).
+
+**Mathlib survey (2026, at the pinned revision), spectral measures and Jensen's inequality.**
+No `spectralMeasure`/`SpectralMeasure` declaration anywhere in Mathlib — there is no construction
+of the spectral measure `μ_e` associated to `cfc`/a self-adjoint operator and a vector, and no
+Riesz-representation route from `cfcHom` to a measure either. This rules out the textbook proof
+of Peierls–Bogoliubov (integrate a convex function against `μ_e`, apply Jensen). Mathlib *does*
+have measure-theoretic Jensen's inequality (`ConvexOn.map_integral_le`,
+`Mathlib/Analysis/Convex/Integral.lean`) — the blocker is specifically the missing spectral
+measure, not Jensen itself.
+
+**Route actually used: the tangent-line trick, via `cfc_mono`.** `Mathlib.Analysis.CStarAlgebra.
+ContinuousFunctionalCalculus.Unital`'s `cfc_mono` (pointwise domination on the spectrum lifts to
+the C⋆-algebra order) combined with `ContinuousLinearMap.IsPositive.inner_nonneg_left`
+(`Mathlib.Analysis.InnerProductSpace.Positive`) gives a direct, spectral-measure-free proof: a
+convex function's supporting line at `x₀ = ⟪e,Te⟫` is an affine minorant of `g` everywhere, which
+`cfc_mono` lifts to an operator inequality `cfc (affine minorant) T ≤ cfc g T`, and taking the
+diagonal matrix element at `e` (unit vector) gives the result. See
+`LeanCondensedMatter/Analysis/PeierlsBogoliubov.lean` for the full account (file docstring) of
+why this route was chosen over spectral measures.
+
+`peierls_bogoliubov` — **proved**, `H` fully general (no finite-dimensionality, no compactness):
+for self-adjoint bounded `T`, unit vector `e`, continuous `g : ℝ → ℝ`, and an explicit
+tangent-line witness `m` at `x₀ = ⟪e,Te⟫` (`htangent : ∀ x, m*x + (g x₀ - m*x₀) ≤ g x`), `g x₀ ≤
+⟪e, cfc g T e⟫.re`. The tangent-line witness is taken as an explicit hypothesis rather than
+derived from `ConvexOn g Set.univ`, since Mathlib does not package "every convex function on all
+of `ℝ` has a subgradient at every point" as a ready-to-use existence lemma (per this project's
+convention of taking such analytic side conditions as explicit hypotheses rather than deriving
+them, when the derivation is not itself the target).
+
+`gibbs_peierls_bogoliubov` — **proved**, the concrete instance needed downstream:
+`exp(-β⟪e,Te⟫) ≤ ⟪e, cfc (fun x => exp(-β x)) T e⟫.re`. The tangent-line witness for
+`g = fun x => exp(-β x)` is discharged directly from `Real.add_one_le_exp` (`exp_tangent`), with
+no appeal to general convexity machinery.
+
+**Still needed** to close the Gibbs–Klein / Helmholtz free-energy target
+(`QuantumTheory.TraceClass.helmholtzFreeEnergy_ge`, see
+`notes/roadmaps/quantum-theory-foundations.md`): this file only proves the single-vector spectral
+inequality. Turning it into the free-energy inequality needs summing
+`gibbs_peierls_bogoliubov` over `ρ`'s eigenvector family (weighted by `ρ`'s eigenvalues) and
+relating the resulting sum to `energyExpValue`/`vonNeumannEntropy`/`ln Z(β)` — not attempted in
+this session. The `ENNReal`-valued-entropy formalization-choice question noted in
+`notes/roadmaps/quantum-theory-foundations.md` also still applies.
