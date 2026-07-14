@@ -222,72 +222,81 @@ noncomputable def gibbsState [NeZero n] (Hop : Observable H) (β : ℝ) : Densit
 noncomputable def energyExpValue (ρ : DensityOperator H) (Hop : Observable H) : ℝ :=
   (LinearMap.trace ℂ H ((ρ.1 ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H)).re
 
-/-- `Tr[ρĤ]` expanded via the eigenvalues/eigenbases of `ρ` and `Hop` separately (which need
-not coincide, since `ρ` and `Hop` need not commute). -/
-theorem energyExpValue_eq_sum (ρ : DensityOperator H) (Hop : Observable H) :
-    energyExpValue ρ Hop = ∑ m : Fin n, ∑ k : Fin n,
-      ρ.2.1.isSymmetric.eigenvalues hn m * Hop.2.isSymmetric.eigenvalues hn k *
-        ‖inner ℂ (Hop.2.isSymmetric.eigenvectorBasis hn k)
-          (ρ.2.1.isSymmetric.eigenvectorBasis hn m)‖ ^ 2 := by
-  have hsymmρ : LinearMap.IsSymmetric (ρ.1 : H →ₗ[ℂ] H) := ρ.2.1.isSymmetric
-  have hsymmHop : LinearMap.IsSymmetric (Hop.1 : H →ₗ[ℂ] H) := Hop.2.isSymmetric
-  set p := hsymmρ.eigenvalues hn with hp_def
-  set E := hsymmHop.eigenvalues hn with hE_def
-  set bρ := hsymmρ.eigenvectorBasis hn with hbρ_def
-  set bE := hsymmHop.eigenvectorBasis hn with hbE_def
-  have hEigenρ : ∀ m, (ρ.1 : H →ₗ[ℂ] H) (bρ m) = (p m : ℂ) • bρ m := fun m =>
-    hsymmρ.apply_eigenvectorBasis hn m
-  have hEigenHop : ∀ k, (Hop.1 : H →ₗ[ℂ] H) (bE k) = (E k : ℂ) • bE k := fun k =>
-    hsymmHop.apply_eigenvectorBasis hn k
-  have hρbE : ∀ k, (ρ.1 : H →ₗ[ℂ] H) (bE k) =
+omit [CompleteSpace H] in
+/-- **`Tr[T1 T2].re` expanded via `T1`'s and `T2`'s own (generally distinct) eigenbases.** For
+self-adjoint bounded operators `T1`, `T2` on a finite-dimensional space, `Tr[T1 T2] = Σₘ Σₖ
+p_m E_k ⟨e_m|f_k⟩⟨f_k|e_m⟩` where `p`/`e` and `E`/`f` are `T1`'s and `T2`'s eigenvalues/eigenbases
+— no Hilbert-space content specific to density operators or Hamiltonians, so this is stated for
+any pair of symmetric operators and reused by `energyExpValue_eq_sum`. -/
+theorem trace_comp_eq_sum_sq_inner {T1 T2 : H →L[ℂ] H}
+    (hsymm1 : (T1 : H →ₗ[ℂ] H).IsSymmetric) (hsymm2 : (T2 : H →ₗ[ℂ] H).IsSymmetric) :
+    (LinearMap.trace ℂ H ((T1 ∘L T2 : H →L[ℂ] H) : H →ₗ[ℂ] H)).re =
+      ∑ m : Fin n, ∑ k : Fin n,
+        hsymm1.eigenvalues hn m * hsymm2.eigenvalues hn k *
+          ‖inner ℂ (hsymm2.eigenvectorBasis hn k) (hsymm1.eigenvectorBasis hn m)‖ ^ 2 := by
+  set p := hsymm1.eigenvalues hn with hp_def
+  set E := hsymm2.eigenvalues hn with hE_def
+  set bρ := hsymm1.eigenvectorBasis hn with hbρ_def
+  set bE := hsymm2.eigenvectorBasis hn with hbE_def
+  have hEigenρ : ∀ m, (T1 : H →ₗ[ℂ] H) (bρ m) = (p m : ℂ) • bρ m := fun m =>
+    hsymm1.apply_eigenvectorBasis hn m
+  have hEigenHop : ∀ k, (T2 : H →ₗ[ℂ] H) (bE k) = (E k : ℂ) • bE k := fun k =>
+    hsymm2.apply_eigenvectorBasis hn k
+  have hρbE : ∀ k, (T1 : H →ₗ[ℂ] H) (bE k) =
       ∑ m : Fin n, ((p m : ℂ) * inner ℂ (bρ m) (bE k)) • bρ m := by
     intro k
     conv_lhs => rw [← bρ.sum_repr' (bE k)]
     rw [map_sum]
     simp_rw [map_smul, hEigenρ, smul_smul]
     congr 1; ext m; rw [mul_comm]
-  have hinner : ∀ k, inner ℂ (bE k) ((ρ.1 : H →ₗ[ℂ] H) (bE k)) =
+  have hinner : ∀ k, inner ℂ (bE k) ((T1 : H →ₗ[ℂ] H) (bE k)) =
       ∑ m : Fin n, (p m : ℂ) * (inner ℂ (bρ m) (bE k) * inner ℂ (bE k) (bρ m)) := by
     intro k
     rw [hρbE, inner_sum]
     congr 1
     ext m
     rw [inner_smul_right, mul_assoc]
-  have htrace : (LinearMap.trace ℂ H ((ρ.1 ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H)) =
+  have htrace : (LinearMap.trace ℂ H ((T1 ∘L T2 : H →L[ℂ] H) : H →ₗ[ℂ] H)) =
       ∑ k : Fin n, ∑ m : Fin n,
         (p m : ℂ) * (E k : ℂ) * (inner ℂ (bρ m) (bE k) * inner ℂ (bE k) (bρ m)) := by
-    rw [LinearMap.trace_eq_sum_inner ((ρ.1 ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) bE]
+    rw [LinearMap.trace_eq_sum_inner ((T1 ∘L T2 : H →L[ℂ] H) : H →ₗ[ℂ] H) bE]
     have step1 : ∀ k : Fin n,
-        inner ℂ (bE k) (((ρ.1 ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) (bE k)) =
-          (E k : ℂ) * inner ℂ (bE k) ((ρ.1 : H →ₗ[ℂ] H) (bE k)) := by
+        inner ℂ (bE k) (((T1 ∘L T2 : H →L[ℂ] H) : H →ₗ[ℂ] H) (bE k)) =
+          (E k : ℂ) * inner ℂ (bE k) ((T1 : H →ₗ[ℂ] H) (bE k)) := by
       intro k
-      show inner ℂ (bE k) ((ρ.1 : H →ₗ[ℂ] H) ((Hop.1 : H →ₗ[ℂ] H) (bE k))) =
-        (E k : ℂ) * inner ℂ (bE k) ((ρ.1 : H →ₗ[ℂ] H) (bE k))
+      change inner ℂ (bE k) ((T1 : H →ₗ[ℂ] H) ((T2 : H →ₗ[ℂ] H) (bE k))) =
+        (E k : ℂ) * inner ℂ (bE k) ((T1 : H →ₗ[ℂ] H) (bE k))
       rw [hEigenHop, map_smul, inner_smul_right]
     simp_rw [step1, hinner, Finset.mul_sum]
     congr 1; ext k; congr 1; ext m
     ring
-  have hfinal : (LinearMap.trace ℂ H ((ρ.1 ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H)).re =
-      ∑ m : Fin n, ∑ k : Fin n, p m * E k * ‖inner ℂ (bE k) (bρ m)‖ ^ 2 := by
-    rw [htrace, Finset.sum_comm]
-    rw [show (∑ m : Fin n, ∑ k : Fin n,
-        (p m : ℂ) * (E k : ℂ) * (inner ℂ (bρ m) (bE k) * inner ℂ (bE k) (bρ m))) =
-        ((∑ m : Fin n, ∑ k : Fin n, p m * E k * ‖inner ℂ (bE k) (bρ m)‖ ^ 2 : ℝ) : ℂ) from ?_]
-    · exact Complex.ofReal_re _
-    · rw [Complex.ofReal_sum]
-      congr 1; ext m
-      rw [Complex.ofReal_sum]
-      congr 1; ext k
-      have hnormsq : inner ℂ (bρ m) (bE k) * inner ℂ (bE k) (bρ m) =
-          ((‖inner ℂ (bE k) (bρ m)‖ ^ 2 : ℝ) : ℂ) := by
-        have hc : inner ℂ (bρ m) (bE k) = starRingEnd ℂ (inner ℂ (bE k) (bρ m)) := by
-          rw [inner_conj_symm]
-        rw [hc, mul_comm, Complex.mul_conj]
-        norm_cast
-        exact Complex.normSq_eq_norm_sq _
-      push_cast [hnormsq]
-      ring
-  exact hfinal
+  rw [htrace, Finset.sum_comm]
+  rw [show (∑ m : Fin n, ∑ k : Fin n,
+      (p m : ℂ) * (E k : ℂ) * (inner ℂ (bρ m) (bE k) * inner ℂ (bE k) (bρ m))) =
+      ((∑ m : Fin n, ∑ k : Fin n, p m * E k * ‖inner ℂ (bE k) (bρ m)‖ ^ 2 : ℝ) : ℂ) from ?_]
+  · exact Complex.ofReal_re _
+  · rw [Complex.ofReal_sum]
+    congr 1; ext m
+    rw [Complex.ofReal_sum]
+    congr 1; ext k
+    have hnormsq : inner ℂ (bρ m) (bE k) * inner ℂ (bE k) (bρ m) =
+        ((‖inner ℂ (bE k) (bρ m)‖ ^ 2 : ℝ) : ℂ) := by
+      have hc : inner ℂ (bρ m) (bE k) = starRingEnd ℂ (inner ℂ (bE k) (bρ m)) := by
+        rw [inner_conj_symm]
+      rw [hc, mul_comm, Complex.mul_conj]
+      norm_cast
+      exact Complex.normSq_eq_norm_sq _
+    push_cast [hnormsq]
+    ring
+
+/-- `Tr[ρĤ]` expanded via the eigenvalues/eigenbases of `ρ` and `Hop` separately (which need
+not coincide, since `ρ` and `Hop` need not commute). -/
+theorem energyExpValue_eq_sum (ρ : DensityOperator H) (Hop : Observable H) :
+    energyExpValue ρ Hop = ∑ m : Fin n, ∑ k : Fin n,
+      ρ.2.1.isSymmetric.eigenvalues hn m * Hop.2.isSymmetric.eigenvalues hn k *
+        ‖inner ℂ (Hop.2.isSymmetric.eigenvectorBasis hn k)
+          (ρ.2.1.isSymmetric.eigenvectorBasis hn m)‖ ^ 2 :=
+  trace_comp_eq_sum_sq_inner hn ρ.2.1.isSymmetric Hop.2.isSymmetric
 
 /-- **Helmholtz free energy inequality.** For any density operator `ρ`, the free energy
 `F[ρ] = Tr[ρĤ] - (1/β)·vonNeumannEntropy ρ` is bounded below by `-(1/β)·ln Z(β)` — the free
