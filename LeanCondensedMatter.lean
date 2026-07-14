@@ -1,5 +1,8 @@
 import LeanCondensedMatter.Analysis.CFC
-import LeanCondensedMatter.Analysis.CompactSelfAdjoint
+import LeanCondensedMatter.Analysis.EigenvectorFamily
+import LeanCondensedMatter.Analysis.TraceClassBasic
+import LeanCondensedMatter.Analysis.TraceClassScalar
+import LeanCondensedMatter.Analysis.TraceClassOps
 import LeanCondensedMatter.QuantumTheory.Postulates
 import LeanCondensedMatter.QuantumTheory.DensityOperator
 import LeanCondensedMatter.QuantumTheory.Entropy

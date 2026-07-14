@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperatorTraceClass
+import LeanCondensedMatter.Analysis.TraceClassScalar
 import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Basic
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Instances

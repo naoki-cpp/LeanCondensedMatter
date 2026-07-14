@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.CompactSelfAdjoint
+import LeanCondensedMatter.Analysis.TraceClassBasic
 import LeanCondensedMatter.QuantumTheory.Postulates
 import Mathlib.Analysis.InnerProductSpace.Positive
 
@@ -8,7 +8,7 @@ import Mathlib.Analysis.InnerProductSpace.Positive
 Extends the density-operator postulate (`QuantumTheory.DensityOperator` in
 `QuantumTheory/DensityOperator.lean`) beyond finite-dimensional `H`, using the general
 `ContinuousLinearMap.trace` for compact self-adjoint trace-class operators
-(`LeanCondensedMatter/Analysis/CompactSelfAdjoint.lean`) in place of `LinearMap.trace`, which
+(`LeanCondensedMatter/Analysis/TraceClassBasic.lean`) in place of `LinearMap.trace`, which
 requires finite-dimensionality.
 
 **This file is additive, not a replacement**: the finite-dimensional `QuantumTheory.DensityOperator`
@@ -47,7 +47,7 @@ structure DensityOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace 
   trace_eq_one : trace traceClass = 1
 
 /-- A density operator's underlying operator is self-adjoint (in the `IsSymmetric` sense used
-throughout `Analysis/CompactSelfAdjoint.lean`), inherited from positivity. -/
+throughout `Analysis/EigenvectorFamily.lean`), inherited from positivity. -/
 theorem DensityOperator.isSymmetric (ρ : DensityOperator H) : (ρ.op : H →ₗ[ℂ] H).IsSymmetric :=
   ρ.pos.isSelfAdjoint.isSymmetric
 

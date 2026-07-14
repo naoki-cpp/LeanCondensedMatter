@@ -11,7 +11,7 @@ and everything built on it are untouched.
 
 **Why not `ContinuousLinearMap.trace (ρ.op ∘L Hop.1)` directly.** The finite-dimensional
 definition is `(LinearMap.trace ℂ H (ρ.1 ∘L Hop.1)).re`. The naive infinite-dimensional analogue
-would use `ContinuousLinearMap.trace` (`Analysis/CompactSelfAdjoint.lean`) on `ρ.op ∘L Hop.1`, but
+would use `ContinuousLinearMap.trace` (`Analysis/TraceClassBasic.lean`) on `ρ.op ∘L Hop.1`, but
 that trace is only meaningful for *compact self-adjoint* operators, and a composition of two
 self-adjoint operators is self-adjoint only when they commute — exactly the same obstacle already
 documented for the Born-rule `prob` in `DensityOperatorTraceClass.lean` (`E_m ∘ ρ need not be
