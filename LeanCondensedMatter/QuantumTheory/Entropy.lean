@@ -333,32 +333,8 @@ theorem helmholtzFreeEnergy_ge [NeZero n] (ρ : DensityOperator H) (Hop : Observ
     rw [htrρ] at h
     simpa [hp_def] using h.symm
   have hp_nonneg : ∀ m, 0 ≤ p m := fun m => eigenvalues_nonneg hn ρ m
-  have key : ∀ m k, (p m - w k) * c m k ≤ p m * (Real.log (p m) - Real.log (w k)) * c m k := by
-    intro m k
-    rcases (hp_nonneg m).eq_or_lt with hp0 | hp0
-    · rw [← hp0]
-      nlinarith [hc_nonneg m k, (hw_pos k).le]
-    · have hlog : Real.log (w k / p m) ≤ w k / p m - 1 :=
-        Real.log_le_sub_one_of_pos (div_pos (hw_pos k) hp0)
-      rw [Real.log_div (ne_of_gt (hw_pos k)) (ne_of_gt hp0)] at hlog
-      have hlog' : (Real.log (w k) - Real.log (p m) + 1) * p m ≤ w k := by
-        rw [← le_div_iff₀ hp0]; linarith [hlog]
-      have step : p m - w k ≤ p m * (Real.log (p m) - Real.log (w k)) := by
-        nlinarith [hlog']
-      exact mul_le_mul_of_nonneg_right step (hc_nonneg m k)
-  have expand : ∑ m, ∑ k, (p m - w k) * c m k = 0 := by
-    have step1 : ∑ m : Fin n, ∑ k : Fin n, (p m - w k) * c m k
-        = ∑ m : Fin n, ∑ k : Fin n, p m * c m k - ∑ m : Fin n, ∑ k : Fin n, w k * c m k := by
-      simp_rw [sub_mul, Finset.sum_sub_distrib]
-    have step2 : ∑ m : Fin n, ∑ k : Fin n, p m * c m k = ∑ m, p m := by
-      simp_rw [← Finset.mul_sum, hres1, mul_one]
-    have step3 : ∑ m : Fin n, ∑ k : Fin n, w k * c m k = ∑ k, w k := by
-      rw [Finset.sum_comm]
-      simp_rw [← Finset.mul_sum, hres2, mul_one]
-    rw [step1, step2, step3, hp_sum, hw_sum, sub_self]
-  have hklein : 0 ≤ ∑ m, ∑ k, p m * (Real.log (p m) - Real.log (w k)) * c m k := by
-    calc (0:ℝ) = ∑ m, ∑ k, (p m - w k) * c m k := expand.symm
-      _ ≤ _ := Finset.sum_le_sum fun m _ => Finset.sum_le_sum fun k _ => key m k
+  have hklein : 0 ≤ ∑ m, ∑ k, p m * (Real.log (p m) - Real.log (w k)) * c m k :=
+    gibbs_klein_double_sum p w c hp_nonneg hw_pos hc_nonneg hp_sum hw_sum hres1 hres2
   have hlogw : ∀ k, Real.log (w k) = -β * E k - Real.log Z := by
     intro k
     show Real.log (Real.exp (-β * E k) / Z) = -β * E k - Real.log Z
