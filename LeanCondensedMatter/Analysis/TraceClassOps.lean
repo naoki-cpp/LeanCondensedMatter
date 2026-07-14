@@ -18,6 +18,17 @@ comparing operators against a *common* Hilbert basis of `H`
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+omit [CompleteSpace H] in
+/-- **A complex inner product times its "reverse" is the real cast of its squared norm.**
+`⟪x,y⟫⟪y,x⟫ = ‖⟪x,y⟫‖²`, a consequence of `⟪y,x⟫` being the complex conjugate of `⟪x,y⟫`
+(`inner_conj_symm`) and `z * conj z = normSq z` (`Complex.mul_conj`). Recurs throughout this file
+whenever a `HasSum`/Parseval argument needs to turn a product of inner products into a real,
+nonnegative quantity. -/
+theorem inner_mul_inner_conj_eq_norm_sq (x y : H) :
+    (inner ℂ x y * inner ℂ y x : ℂ) = ((‖(inner ℂ x y : ℂ)‖ ^ 2 : ℝ) : ℂ) := by
+  rw [show (inner ℂ y x : ℂ) = starRingEnd ℂ (inner ℂ x y) from (inner_conj_symm y x).symm,
+    Complex.mul_conj, Complex.normSq_eq_norm_sq]
+
 namespace ContinuousLinearMap
 
 variable {T : H →L[ℂ] H}
@@ -45,9 +56,7 @@ theorem tsum_norm_sq_orthogonalProjectionOnto_eq_finrank {ι : Type*} (b : Hilbe
       (fun i => (inner ℂ x (b i) * inner ℂ (b i) x : ℂ).re) := by
     intro x
     funext i
-    rw [show (inner ℂ (b i) x : ℂ) = starRingEnd ℂ (inner ℂ x (b i)) from
-        (inner_conj_symm (b i) x).symm,
-      Complex.mul_conj, Complex.ofReal_re, ← Complex.normSq_eq_norm_sq]
+    rw [inner_mul_inner_conj_eq_norm_sq, Complex.ofReal_re]
   have hj : ∀ j, Summable (fun i => ‖(inner ℂ ((f j : H)) (b i) : ℂ)‖ ^ 2) := fun j => by
     rw [hterm (f j : H)]
     exact ((b.hasSum_inner_mul_inner (f j : H) (f j : H)).mapL Complex.reCLM).summable
@@ -77,14 +86,35 @@ theorem _root_.HilbertBasis.hasSum_norm_sq_inner {ι : Type*} (d : HilbertBasis 
   have hterm : (fun i => ‖(inner ℂ x (d i) : ℂ)‖ ^ 2) =
       (fun i => (inner ℂ x (d i) * inner ℂ (d i) x : ℂ).re) := by
     funext i
-    rw [show (inner ℂ (d i) x : ℂ) = starRingEnd ℂ (inner ℂ x (d i)) from
-        (inner_conj_symm (d i) x).symm,
-      Complex.mul_conj, Complex.ofReal_re, ← Complex.normSq_eq_norm_sq]
+    rw [inner_mul_inner_conj_eq_norm_sq, Complex.ofReal_re]
   rw [hterm]
   have hs : HasSum (fun i => (inner ℂ x (d i) * inner ℂ (d i) x : ℂ).re)
       ((inner ℂ x x : ℂ).re) := (d.hasSum_inner_mul_inner x x).mapL Complex.reCLM
   rw [inner_self_eq_norm_sq_to_K] at hs
   exact_mod_cast hs
+
+/-- **`T`'s eigenvector expansion of `x`, applied back through `⟪x, ·⟫`, sums to `⟪x, T x⟫.re`.**
+For any `x : H`, `Σₐ (eigenvalue a) * ‖⟪eigenvectorFamily a, x⟫‖² = ⟪x, T x⟫.re`. This is
+`hasSum_eigenvectorFamily` (the `tsum` reconstruction `T x = Σₐ ... • eigenvectorFamily a`) pushed
+through the continuous, ℝ-linear map `y ↦ ⟪x, y⟫.re`, used pointwise (for `x = d i`, each basis
+vector of a Hilbert basis `d`) by `hasSum_inner_apply_eq_trace` below. -/
+theorem hasSum_eigen_expansion_inner_apply (hT : IsCompactOperator T) (hT' : T.IsSymmetric)
+    (x : H) :
+    HasSum (fun a : EigenvectorIndex T => a.1.1 * ‖(inner ℂ (eigenvectorFamily hT a) x : ℂ)‖ ^ 2)
+      (inner ℂ x (T x) : ℂ).re := by
+  set e := eigenvectorFamily hT with he_def
+  have hs := ((hasSum_eigenvectorFamily hT hT' x).mapL (innerSL ℂ x)).mapL Complex.reCLM
+  have heq : (fun a : EigenvectorIndex T => Complex.reCLM ((innerSL ℂ x)
+      ((a.1.1 : ℂ) • (inner ℂ (e a) x : ℂ) • e a))) =
+      (fun a => a.1.1 * ‖(inner ℂ (e a) x : ℂ)‖ ^ 2) := by
+    funext a
+    have hstep : (innerSL ℂ x ((a.1.1 : ℂ) • (inner ℂ (e a) x : ℂ) • e a) : ℂ)
+        = (a.1.1 : ℂ) * (inner ℂ (e a) x * inner ℂ x (e a) : ℂ) := by
+      simp
+    change (innerSL ℂ x ((a.1.1 : ℂ) • (inner ℂ (e a) x : ℂ) • e a) : ℂ).re =
+      a.1.1 * ‖(inner ℂ (e a) x : ℂ)‖ ^ 2
+    rw [hstep, inner_mul_inner_conj_eq_norm_sq, ← Complex.ofReal_mul, Complex.ofReal_re]
+  rwa [heq] at hs
 
 /-- **`trace` can be computed against *any* Hilbert basis of `H`, not just the eigenbasis used in
 its definition.** The basis-independence fact making additive linearity of `trace` provable: two
@@ -100,34 +130,14 @@ theorem hasSum_inner_apply_eq_trace (hT : IsCompactOperator T) (hT' : T.IsSymmet
   set e := eigenvectorFamily hT with he_def
   set f : EigenvectorIndex T → ι → ℝ :=
     fun a i => a.1.1 * ‖(inner ℂ (e a) (d i) : ℂ)‖ ^ 2 with hf_def
-  -- The complex product `⟪e a, d i⟫ * ⟪d i, e a⟫` is always exactly the real cast of its
-  -- squared magnitude.
-  have hreal : ∀ (a : EigenvectorIndex T) (i : ι),
-      (inner ℂ (e a) (d i) * inner ℂ (d i) (e a) : ℂ) =
-        ((‖(inner ℂ (e a) (d i) : ℂ)‖ ^ 2 : ℝ) : ℂ) := by
-    intro a i
-    rw [show (inner ℂ (d i) (e a) : ℂ) = starRingEnd ℂ (inner ℂ (e a) (d i)) from
-        (inner_conj_symm (d i) (e a)).symm,
-      Complex.mul_conj, Complex.normSq_eq_norm_sq]
   -- Parseval for `d`, evaluated at each (unit-norm) eigenvector `e a`.
   have hparseval : ∀ a : EigenvectorIndex T, HasSum (fun i => ‖(inner ℂ (e a) (d i) : ℂ)‖ ^ 2)
       (1 : ℝ) := fun a => by
     have := d.hasSum_norm_sq_inner (e a)
     rwa [(orthonormal_eigenvectorFamily hT hT').1 a, one_pow] at this
   -- Pointwise (for each `d i`), `⟪dᵢ,T(dᵢ)⟩` decomposes as a sum over `EigenvectorIndex T`.
-  have hpoint : ∀ i, HasSum (f · i) (inner ℂ (d i) (T (d i)) : ℂ).re := by
-    intro i
-    have hs := ((hasSum_eigenvectorFamily hT hT' (d i)).mapL
-      (innerSL ℂ (d i))).mapL Complex.reCLM
-    have heq : (fun a : EigenvectorIndex T => Complex.reCLM ((innerSL ℂ (d i))
-        ((a.1.1 : ℂ) • (inner ℂ (e a) (d i) : ℂ) • e a))) = (f · i) := by
-      funext a
-      have hstep : (innerSL ℂ (d i) ((a.1.1 : ℂ) • (inner ℂ (e a) (d i) : ℂ) • e a) : ℂ)
-          = (a.1.1 : ℂ) * (inner ℂ (e a) (d i) * inner ℂ (d i) (e a) : ℂ) := by
-        simp
-      change (innerSL ℂ (d i) ((a.1.1 : ℂ) • (inner ℂ (e a) (d i) : ℂ) • e a) : ℂ).re = f a i
-      rw [hstep, hreal a i, hf_def, ← Complex.ofReal_mul, Complex.ofReal_re]
-    rwa [heq] at hs
+  have hpoint : ∀ i, HasSum (f · i) (inner ℂ (d i) (T (d i)) : ℂ).re :=
+    fun i => hasSum_eigen_expansion_inner_apply hT hT' (d i)
   -- The magnitude family is summable over the product index, via trace-class-ness of `T`.
   have hcond1 : ∀ a : EigenvectorIndex T, Summable (fun i => |a.1.1| * ‖(inner ℂ (e a) (d i) :
       ℂ)‖ ^ 2) := fun a => (hparseval a).summable.mul_left _
