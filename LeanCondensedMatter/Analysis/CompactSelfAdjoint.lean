@@ -33,12 +33,20 @@ nonzero real eigenvalue `μ`, together with an index into a chosen orthonormal b
 def EigenvectorIndex (T : H →L[ℂ] H) : Type :=
   Σ μ : { μ : ℝ // μ ≠ 0 }, Fin (Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)))
 
+/-- A nonzero eigenspace of a compact operator is finite-dimensional — packaged as a named
+lemma (rather than repeating `finite_dimensional_eigenspace hT (μ.1 : ℂ) (by exact_mod_cast μ.2)`
+at each use site) since it recurs throughout this file. -/
+theorem finiteDimensional_eigenspace_ne_zero (hT : IsCompactOperator T)
+    (μ : { μ : ℝ // μ ≠ 0 }) :
+    FiniteDimensional ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)) :=
+  finite_dimensional_eigenspace hT (μ.1 : ℂ) (by exact_mod_cast μ.2)
+
 /-- The orthonormal family of eigenvectors of `T`, glued from an orthonormal basis of each
 nonzero eigenspace. -/
 noncomputable def eigenvectorFamily (hT : IsCompactOperator T) :
     EigenvectorIndex T → H :=
   fun a =>
-    haveI := finite_dimensional_eigenspace hT (a.1.1 : ℂ) (by exact_mod_cast a.1.2)
+    haveI := finiteDimensional_eigenspace_ne_zero hT a.1
     ((stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ))) a.2 : H)
 
 theorem orthonormal_eigenvectorFamily (hT : IsCompactOperator T) (hT' : T.IsSymmetric) :
@@ -53,10 +61,10 @@ theorem orthonormal_eigenvectorFamily (hT : IsCompactOperator T) (hT' : T.IsSymm
     hOrth.comp (f := fun μ : { μ : ℝ // μ ≠ 0 } => μ.1) Subtype.val_injective
   have := hOrth'.orthonormal_sigma_orthonormal
     (v_family := fun μ : { μ : ℝ // μ ≠ 0 } =>
-      haveI := finite_dimensional_eigenspace hT (μ.1 : ℂ) (by exact_mod_cast μ.2)
+      haveI := finiteDimensional_eigenspace_ne_zero hT μ
       (stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)) : _ → _))
     (fun μ =>
-      haveI := finite_dimensional_eigenspace hT (μ.1 : ℂ) (by exact_mod_cast μ.2)
+      haveI := finiteDimensional_eigenspace_ne_zero hT μ
       (stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ))).orthonormal)
   exact this
 
@@ -65,7 +73,7 @@ recorded in its index. -/
 theorem apply_eigenvectorFamily (hT : IsCompactOperator T) (a : EigenvectorIndex T) :
     (T : H →ₗ[ℂ] H) (eigenvectorFamily hT a) = (a.1.1 : ℂ) • eigenvectorFamily hT a := by
   apply Module.End.mem_eigenspace_iff.mp
-  haveI := finite_dimensional_eigenspace hT (a.1.1 : ℂ) (by exact_mod_cast a.1.2)
+  haveI := finiteDimensional_eigenspace_ne_zero hT a.1
   exact Submodule.coe_mem _
 
 /-- **Only finitely many eigenvalues of a compact self-adjoint operator can exceed any fixed
@@ -150,11 +158,11 @@ theorem span_eigenvectorFamily (hT : IsCompactOperator T) :
   · rw [Submodule.span_le]
     rintro x ⟨a, rfl⟩
     exact Submodule.mem_iSup_of_mem a.1 (by
-      haveI := finite_dimensional_eigenspace hT (a.1.1 : ℂ) (by exact_mod_cast a.1.2)
+      haveI := finiteDimensional_eigenspace_ne_zero hT a.1
       exact Submodule.coe_mem _)
   · apply iSup_le
     intro μ
-    haveI := finite_dimensional_eigenspace hT (μ.1 : ℂ) (by exact_mod_cast μ.2)
+    haveI := finiteDimensional_eigenspace_ne_zero hT μ
     have hbasis : Submodule.span ℂ
         (Set.range (stdOrthonormalBasis ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)))) =
         (⊤ : Submodule ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ))) :=
@@ -191,7 +199,7 @@ theorem orthogonal_closure_span_eigenvectorFamily (hT : IsCompactOperator T)
     rintro x ⟨a, rfl⟩
     rw [SetLike.mem_coe, Submodule.mem_orthogonal']
     intro u hu
-    haveI := finite_dimensional_eigenspace hT (a.1.1 : ℂ) (by exact_mod_cast a.1.2)
+    haveI := finiteDimensional_eigenspace_ne_zero hT a.1
     have hxmem : eigenvectorFamily hT a ∈ Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ) :=
       Submodule.coe_mem _
     have hne : a.1.1 ≠ (0 : ℝ) := a.1.2
@@ -366,12 +374,11 @@ the infinite-dimensional analogue of `LinearMap.trace` used throughout
 noncomputable def trace {T : H →L[ℂ] H} (_h : IsTraceClass T) : ℝ :=
   ∑' a : EigenvectorIndex T, a.1.1
 
-/-- The trace of a positive trace-class operator is nonnegative — as for a density operator's
-`LinearMap.trace` in the finite-dimensional case (`QuantumTheory.DensityOperator`), every
-eigenvalue of a positive operator is nonnegative. -/
-theorem trace_nonneg {T : H →L[ℂ] H} (h : IsTraceClass T)
-    (hpos : (T : H →ₗ[ℂ] H).IsPositive) : 0 ≤ trace h := by
-  refine tsum_nonneg fun a => ?_
+/-- **Every eigenvalue of a positive operator is nonnegative** — the per-index fact underlying
+both `trace_nonneg` below and `QuantumTheory.TraceClass.eigenvalue_nonneg` (a density operator's
+eigenvalues are probabilities). -/
+theorem eigenvalue_nonneg_of_isPositive {T : H →L[ℂ] H} (hpos : (T : H →ₗ[ℂ] H).IsPositive)
+    (a : EigenvectorIndex T) : 0 ≤ a.1.1 := by
   have hpos_finrank : 0 < Module.finrank ℂ (Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ)) :=
     Nat.lt_of_le_of_lt (Nat.zero_le _) a.2.isLt
   have hne : Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ) ≠ ⊥ := by
@@ -379,6 +386,20 @@ theorem trace_nonneg {T : H →L[ℂ] H} (h : IsTraceClass T)
     rw [hbot, finrank_bot ℂ H] at hpos_finrank
     exact absurd hpos_finrank (lt_irrefl 0)
   exact eigenvalue_nonneg_of_nonneg hne hpos.re_inner_nonneg_right
+
+/-- The trace of a positive trace-class operator is nonnegative — as for a density operator's
+`LinearMap.trace` in the finite-dimensional case (`QuantumTheory.DensityOperator`), every
+eigenvalue of a positive operator is nonnegative. -/
+theorem trace_nonneg {T : H →L[ℂ] H} (h : IsTraceClass T)
+    (hpos : (T : H →ₗ[ℂ] H).IsPositive) : 0 ≤ trace h :=
+  tsum_nonneg fun a => eigenvalue_nonneg_of_isPositive hpos a
+
+/-- A real scalar multiple of a continuous linear map agrees, as an operator, with the complex
+scalar multiple by its cast. Useful for bridging lemmas stated for a general (complex) scalar,
+such as `IsPositive.smul_of_nonneg`, with the real-scalar convention used elsewhere in this file
+(e.g. `trace_smul`, `isTraceClass_smul`). -/
+theorem real_smul_eq_complex_smul (r : ℝ) (T : H →L[ℂ] H) : r • T = (r : ℂ) • T := by
+  ext x; simp
 
 /-- Scaling `T` by a nonzero real `c` scales each eigenvalue by `c` and leaves the
 eigenspaces (as submodules) unchanged. -/

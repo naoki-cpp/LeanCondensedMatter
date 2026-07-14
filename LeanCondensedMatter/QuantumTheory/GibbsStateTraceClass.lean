@@ -50,13 +50,6 @@ theorem gibbsOp_isPositive (Hop : Observable H) (β : ℝ) : (gibbsOp Hop β).Is
   rw [gibbsOp, ← nonneg_iff_isPositive]
   exact cfc_nonneg (fun x _ => (Real.exp_pos _).le)
 
-omit [CompleteSpace H] in
-/-- A real scalar multiple of a continuous linear map agrees, as an operator, with the complex
-scalar multiple by its cast — the bridge needed to reuse `IsPositive.smul_of_nonneg` (stated for
-the ambient field `ℂ`) for the real scalar `(trace htc)⁻¹` used to normalize `gibbsOp`. -/
-theorem real_smul_eq_complex_smul (r : ℝ) (T : H →L[ℂ] H) : r • T = (r : ℂ) • T := by
-  ext x; simp
-
 /-- **Canonical (Gibbs) density operator (infinite-dimensional).** The normalized Gibbs state
 `e^{-βH}/Z(β)`, given a Hamiltonian `Hop`, inverse temperature `β`, and explicit hypotheses that
 the (unnormalized) Gibbs operator `e^{-βH}` is compact and trace-class with nonzero trace `Z(β)`
@@ -67,7 +60,7 @@ noncomputable def gibbsState (Hop : Observable H) (β : ℝ)
     (hZ : ContinuousLinearMap.trace htc ≠ 0) : DensityOperator H where
   op := (ContinuousLinearMap.trace htc)⁻¹ • gibbsOp Hop β
   pos := by
-    rw [real_smul_eq_complex_smul]
+    rw [ContinuousLinearMap.real_smul_eq_complex_smul]
     refine (gibbsOp_isPositive Hop β).smul_of_nonneg ?_
     have hZnonneg : 0 ≤ ContinuousLinearMap.trace htc :=
       ContinuousLinearMap.trace_nonneg htc (gibbsOp_isPositive Hop β).toLinearMap

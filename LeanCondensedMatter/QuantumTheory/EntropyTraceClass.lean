@@ -33,15 +33,8 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 /-- **The eigenvalues of a density operator are nonnegative** — they are the probabilities `p_i`
 of measuring the system in the corresponding eigenstate, matching the finite-dimensional
 `QuantumTheory.eigenvalues_nonneg`. -/
-theorem eigenvalue_nonneg (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) : 0 ≤ a.1.1 := by
-  have hpos_finrank : 0 < Module.finrank ℂ
-      (Module.End.eigenspace (ρ.op : H →ₗ[ℂ] H) (a.1.1 : ℂ)) :=
-    Nat.lt_of_le_of_lt (Nat.zero_le _) a.2.isLt
-  have hne : Module.End.eigenspace (ρ.op : H →ₗ[ℂ] H) (a.1.1 : ℂ) ≠ ⊥ := by
-    intro hbot
-    rw [hbot, finrank_bot ℂ H] at hpos_finrank
-    exact absurd hpos_finrank (lt_irrefl 0)
-  exact eigenvalue_nonneg_of_nonneg hne ρ.pos.re_inner_nonneg_right
+theorem eigenvalue_nonneg (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) : 0 ≤ a.1.1 :=
+  eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a
 
 /-- **The von Neumann entropy `-Tr[ρ ln ρ]` of a density operator (infinite-dimensional)**,
 computed from `ρ`'s eigenvalues via `ContinuousLinearMap.EigenvectorIndex`. `ENNReal`-valued
