@@ -732,4 +732,47 @@ theorem trace_comp_comm {T' : H →L[ℂ] H} (_hT : IsCompactOperator T) (hTsym 
   rw [heq] at hs1
   exact hs1.unique hs2
 
+/-- **The sum of diagonal matrix elements of a positive trace-class operator against any
+orthonormal family is at most its trace.** The family `d` need not be a complete Hilbert basis
+of `H` — this is the general fact needed by the Gibbs–Klein / Helmholtz free-energy argument
+(`QuantumTheory.TraceClass.helmholtzFreeEnergy_ge`), where `d` is a density operator's own
+eigenvector family, generally incomplete (the density operator may have nontrivial kernel).
+
+**Proof idea.** Extend `d` to a full Hilbert basis `b` of `H`
+(`Orthonormal.exists_hilbertBasis_extension`, applied to `d.toSubtypeRange`), compute the trace
+against `b` (`hasSum_inner_apply_eq_trace`), and compare the sub-family `d` (embedded into `b`'s
+index type via the range inclusion) against the full sum, using positivity to control the
+(nonneg) terms outside `d`'s range (`hasSum_le_inj`). -/
+theorem sum_inner_apply_le_trace {T : H →L[ℂ] H} (hT : IsCompactOperator T)
+    (hTsym : T.IsSymmetric) (hTpos : (T : H →ₗ[ℂ] H).IsPositive) (h : IsTraceClass T)
+    {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d) :
+    Summable (fun i => (inner ℂ (d i) (T (d i)) : ℂ).re) ∧
+      ∑' i, (inner ℂ (d i) (T (d i)) : ℂ).re ≤ trace h := by
+  obtain ⟨w, b, hsub, hb_eq⟩ := hd.toSubtypeRange.exists_hilbertBasis_extension
+  set g : w → ℝ := fun j => (inner ℂ (b j) (T (b j)) : ℂ).re with hg_def
+  have htr : HasSum g (trace h) := hasSum_inner_apply_eq_trace hT hTsym h b
+  have hgnonneg : ∀ j : w, 0 ≤ g j := fun j => hTpos.re_inner_nonneg_right (b j)
+  have hd_inj : Function.Injective d := hd.linearIndependent.injective
+  set e : ι → w := fun i => ⟨d i, hsub ⟨i, rfl⟩⟩ with he_def
+  have he_inj : Function.Injective e := fun i j hij => hd_inj (congrArg Subtype.val hij)
+  have hbval : ∀ i, (b (e i) : H) = d i := fun i => by rw [hb_eq]
+  set fι : ι → ℝ := fun i => (inner ℂ (d i) (T (d i)) : ℂ).re with hf_def
+  have hge : ∀ i, g (e i) = fι i := fun i => by
+    change (inner ℂ (b (e i)) (T (b (e i))) : ℂ).re = fι i
+    rw [hbval i]
+  have hgsum : Summable g := htr.summable
+  have hsub_sum : Summable (fun x : Set.range e => g x) := hgsum.subtype _
+  set hphi := Equiv.ofInjective e he_inj with hphi_def
+  have heq : (fun x : Set.range e => g x) ∘ hphi = fι := by
+    funext i
+    change g (hphi i : w) = fι i
+    have hcoe : (hphi i : w) = e i := rfl
+    rw [hcoe]; exact hge i
+  have hfsum : Summable fι := by
+    rw [← heq]
+    exact hphi.summable_iff.mpr hsub_sum
+  refine ⟨hfsum, ?_⟩
+  exact hasSum_le_inj e he_inj (fun c _ => hgnonneg c)
+    (fun i => le_of_eq (hge i).symm) hfsum.hasSum htr
+
 end ContinuousLinearMap
