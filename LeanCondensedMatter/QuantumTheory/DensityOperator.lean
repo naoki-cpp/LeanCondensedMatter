@@ -3,6 +3,10 @@ import Mathlib.Analysis.InnerProductSpace.Positive
 import Mathlib.Analysis.InnerProductSpace.Trace
 import Mathlib.LinearAlgebra.Trace
 
+-- No project files currently carry a Mathlib-style copyright/author header; a
+-- project-wide policy for this is a separate open item (see notes/conventions.md).
+set_option linter.style.header false
+
 /-!
 # Axiomatic quantum theory: mixed states and the Born rule
 

@@ -6,6 +6,10 @@ import Mathlib.LinearAlgebra.Charpoly.ToMatrix
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
 import Mathlib.Algebra.Polynomial.Roots
 
+-- No project files currently carry a Mathlib-style copyright/author header; a
+-- project-wide policy for this is a separate open item (see notes/conventions.md).
+set_option linter.style.header false
+
 /-!
 # Von Neumann entropy and Boltzmann's principle
 
@@ -71,6 +75,7 @@ principle is `k_B` times this quantity. -/
 noncomputable def vonNeumannEntropy (ρ : DensityOperator H) : ℝ :=
   ∑ i : Fin n, Real.negMulLog (ρ.2.1.isSymmetric.eigenvalues hn i)
 
+omit [CompleteSpace H] in
 /-- The eigenvalues of a density operator are nonnegative — they are the probabilities
 `p_i` of measuring the system in the corresponding eigenstate. -/
 theorem eigenvalues_nonneg (ρ : DensityOperator H) (i : Fin n) :
@@ -88,6 +93,7 @@ noncomputable def relEntropy (ρ ρ' : DensityOperator H) : ℝ :=
       ‖inner ℂ (ρ'.2.1.isSymmetric.eigenvectorBasis hn k)
         (ρ.2.1.isSymmetric.eigenvectorBasis hn m)‖ ^ 2
 
+omit [CompleteSpace H] in
 /-- **Gibbs–Klein inequality.** The quantum relative entropy is nonnegative, provided `ρ'` has
 full support (all eigenvalues strictly positive) — which holds automatically for a canonical
 (Gibbs) state `e^{-βH}/Z`, the intended application (see `notes/roadmap.md`). -/
@@ -128,7 +134,7 @@ noncomputable def partitionFunction (Hop : Observable H) (β : ℝ) : ℝ :=
 
 theorem partitionFunction_pos [NeZero n] (Hop : Observable H) (β : ℝ) :
     0 < partitionFunction hn Hop β :=
-  Finset.sum_pos (fun i _ => Real.exp_pos _) ⟨⟨0, NeZero.pos n⟩, Finset.mem_univ _⟩
+  Finset.sum_pos (fun _ _ => Real.exp_pos _) ⟨⟨0, NeZero.pos n⟩, Finset.mem_univ _⟩
 
 /-- **Diagonal presentation determines eigenvalues up to reindexing.** If a self-adjoint
 operator `T` is presented as `∑ i, w i • |b i⟩⟨b i|` for an orthonormal basis `b` and
@@ -201,7 +207,7 @@ noncomputable def gibbsState [NeZero n] (Hop : Observable H) (β : ℝ) : Densit
       have hsum1 : (∑ i : Fin n, Real.exp (-β * Hop.2.isSymmetric.eigenvalues hn i) /
           partitionFunction hn Hop β) = 1 := by
         rw [← Finset.sum_div]
-        show partitionFunction hn Hop β / partitionFunction hn Hop β = 1
+        change partitionFunction hn Hop β / partitionFunction hn Hop β = 1
         exact div_self hZpos.ne'
       have step : ∀ i : Fin n, (LinearMap.trace ℂ H)
           ((((Real.exp (-β * Hop.2.isSymmetric.eigenvalues hn i) /
@@ -356,7 +362,7 @@ theorem helmholtzFreeEnergy_ge [NeZero n] (ρ : DensityOperator H) (Hop : Observ
   set w : Fin n → ℝ := fun k => Real.exp (-β * E k) / Z with hw_def
   have hw_pos : ∀ k, 0 < w k := fun k => div_pos (Real.exp_pos _) hZpos
   have hw_sum : ∑ k, w k = 1 := by
-    show (∑ k : Fin n, Real.exp (-β * E k) / Z) = 1
+    change (∑ k : Fin n, Real.exp (-β * E k) / Z) = 1
     rw [← Finset.sum_div]
     exact div_self hZpos.ne'
   set c : Fin n → Fin n → ℝ := fun m k => ‖inner ℂ (bE k) (bρ m)‖ ^ 2 with hc_def
@@ -374,7 +380,7 @@ theorem helmholtzFreeEnergy_ge [NeZero n] (ρ : DensityOperator H) (Hop : Observ
     gibbs_klein_double_sum p w c hp_nonneg hw_pos hc_nonneg hp_sum hw_sum hres1 hres2
   have hlogw : ∀ k, Real.log (w k) = -β * E k - Real.log Z := by
     intro k
-    show Real.log (Real.exp (-β * E k) / Z) = -β * E k - Real.log Z
+    change Real.log (Real.exp (-β * E k) / Z) = -β * E k - Real.log Z
     rw [Real.log_div (Real.exp_pos _).ne' hZpos.ne', Real.log_exp]
   have hrw : ∑ m, ∑ k, p m * (Real.log (p m) - Real.log (w k)) * c m k =
       -vonNeumannEntropy hn ρ + β * energyExpValue ρ Hop + Real.log Z := by
@@ -400,7 +406,7 @@ theorem helmholtzFreeEnergy_ge [NeZero n] (ρ : DensityOperator H) (Hop : Observ
       rw [hp_sum, mul_one]
     rw [t1, t2, t3]
     have hvN : vonNeumannEntropy hn ρ = -∑ m, p m * Real.log (p m) := by
-      show (∑ i : Fin n, Real.negMulLog (p i)) = -∑ m, p m * Real.log (p m)
+      change (∑ i : Fin n, Real.negMulLog (p i)) = -∑ m, p m * Real.log (p m)
       rw [← Finset.sum_neg_distrib]
       exact Finset.sum_congr rfl fun x _ => by rw [Real.negMulLog]; ring
     rw [hvN]; ring
@@ -450,10 +456,10 @@ theorem vonNeumannEntropy_gibbsState [NeZero n] (Hop : Observable H) (β : ℝ) 
   have hZpos : 0 < Z := partitionFunction_pos hn Hop β
   have hlogw : ∀ i, Real.log (w i) = -β * E i - Real.log Z := by
     intro i
-    show Real.log (Real.exp (-β * E i) / Z) = -β * E i - Real.log Z
+    change Real.log (Real.exp (-β * E i) / Z) = -β * E i - Real.log Z
     rw [Real.log_div (Real.exp_pos _).ne' hZpos.ne', Real.log_exp]
   have hw_sum : ∑ i, w i = 1 := by
-    show (∑ i : Fin n, Real.exp (-β * E i) / Z) = 1
+    change (∑ i : Fin n, Real.exp (-β * E i) / Z) = 1
     rw [← Finset.sum_div]
     exact div_self hZpos.ne'
   have hexpand : ∑ i, Real.negMulLog (w i) =
