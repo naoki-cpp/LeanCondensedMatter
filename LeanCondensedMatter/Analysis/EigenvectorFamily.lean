@@ -188,46 +188,43 @@ theorem span_eigenvectorFamily (hT : IsCompactOperator T) :
     rintro x ⟨v, ⟨y, rfl⟩, rfl⟩
     exact ⟨⟨μ, y⟩, rfl⟩
 
-/-- **The closure of the nonzero-eigenspace part and the kernel are exactly each other's
-orthogonal complements.** The key structural fact enabling the `tsum` reconstruction of `T`:
-`ker T` and `eigenvectorFamily`'s span are mutually orthogonal (distinct eigenspaces), and
-their algebraic sum is dense — it equals the sum of *all* eigenspaces, dense by
-`orthogonalComplement_iSup_eigenspaces_eq_bot`, since a self-adjoint operator's eigenvalues are
-always real (so no eigenspace outside `ℝ` contributes). -/
-theorem orthogonal_closure_span_eigenvectorFamily (hT : IsCompactOperator T)
+/-- **`eigenvectorFamily`'s span lies inside the orthogonal complement of the kernel.** Each
+eigenvector `eigenvectorFamily hT a` lies in a *nonzero*-eigenvalue eigenspace, which is
+orthogonal to the eigenvalue-`0` eigenspace `ker T` (`IsSymmetric.orthogonalFamily_eigenspaces`),
+so their span is too. The first of the two structural facts combined by
+`orthogonal_closure_span_eigenvectorFamily`. -/
+theorem span_eigenvectorFamily_le_kernel_orthogonal (hT : IsCompactOperator T)
     (hT' : T.IsSymmetric) :
-    (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosureᗮ =
-      Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ) := by
-  set E' := Submodule.span ℂ (Set.range (eigenvectorFamily hT)) with hE'_def
-  set F := E'.topologicalClosure with hF_def
-  set G := Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ) with hG_def
+    Submodule.span ℂ (Set.range (eigenvectorFamily hT)) ≤
+      (Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ))ᗮ := by
   have hOrth : OrthogonalFamily ℂ (fun μ : ℝ => Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ : ℂ))
       (fun μ => (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ : ℂ)).subtypeₗᵢ) :=
     hT'.orthogonalFamily_eigenspaces.comp (f := fun μ : ℝ => (μ : ℂ)) Complex.ofReal_injective
-  -- `E' ⊆ Gᗮ`
-  have hE'G : E' ≤ Gᗮ := by
-    rw [hE'_def, Submodule.span_le]
-    rintro x ⟨a, rfl⟩
-    rw [SetLike.mem_coe, Submodule.mem_orthogonal']
-    intro u hu
-    haveI := finiteDimensional_eigenspace_ne_zero hT a.1
-    have hxmem : eigenvectorFamily hT a ∈ Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ) :=
-      Submodule.coe_mem _
-    have hne : a.1.1 ≠ (0 : ℝ) := a.1.2
-    have := hOrth hne (⟨eigenvectorFamily hT a, hxmem⟩ :
-        Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ)) (⟨u, hu⟩ : G)
-    simpa using this
-  -- `G` is closed (it's the kernel of the continuous map `T`), hence complete.
-  have hGclosed : IsClosed (G : Set H) := by
-    have heq : G = LinearMap.ker (T : H →ₗ[ℂ] H) := by
-      ext x
-      rw [hG_def, Module.End.mem_eigenspace_iff, LinearMap.mem_ker, zero_smul]
-    rw [heq]; exact T.isClosed_ker
-  haveI : CompleteSpace G := hGclosed.completeSpace_coe
-  -- `F ⊆ Gᗮ`, hence `G ⊆ Fᗮ`.
-  have hFG : F ≤ Gᗮ := hF_def ▸ E'.topologicalClosure_minimal hE'G G.isClosed_orthogonal
-  have hGF : G ≤ Fᗮ := Submodule.le_orthogonal_iff_le_orthogonal.mpr hFG
-  -- Density: `G ⊔ E'` equals the sum of *all* eigenspaces (over `ℂ`), which is dense.
+  rw [Submodule.span_le]
+  rintro x ⟨a, rfl⟩
+  rw [SetLike.mem_coe, Submodule.mem_orthogonal']
+  intro u hu
+  haveI := finiteDimensional_eigenspace_ne_zero hT a.1
+  have hxmem : eigenvectorFamily hT a ∈ Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ) :=
+    Submodule.coe_mem _
+  have hne : a.1.1 ≠ (0 : ℝ) := a.1.2
+  have := hOrth hne (⟨eigenvectorFamily hT a, hxmem⟩ :
+      Module.End.eigenspace (T : H →ₗ[ℂ] H) (a.1.1 : ℂ))
+    (⟨u, hu⟩ : Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ))
+  simpa using this
+
+/-- **The kernel and `eigenvectorFamily`'s span together are dense.** Their (algebraic) sum
+equals the sum of *all* eigenspaces of `T` (over `ℂ`), which is dense by
+`orthogonalComplement_iSup_eigenspaces_eq_bot` — since a self-adjoint operator's eigenvalues are
+always real, no eigenspace outside `ℝ` (hence outside the kernel-or-nonzero-real split) is ever
+missed. The second of the two structural facts combined by
+`orthogonal_closure_span_eigenvectorFamily`. -/
+theorem kernel_sup_span_eigenvectorFamily_dense (hT : IsCompactOperator T)
+    (hT' : T.IsSymmetric) :
+    ((Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ)) ⊔
+      Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure = ⊤ := by
+  set E' := Submodule.span ℂ (Set.range (eigenvectorFamily hT)) with hE'_def
+  set G := Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ) with hG_def
   have hsup : (⨆ μ : ℂ, Module.End.eigenspace (T : H →ₗ[ℂ] H) μ) = G ⊔ E' := by
     apply le_antisymm
     · apply iSup_le
@@ -246,9 +243,32 @@ theorem orthogonal_closure_span_eigenvectorFamily (hT : IsCompactOperator T)
       rw [hE'_def, span_eigenvectorFamily hT]
       exact iSup_le fun ν => le_iSup
         (fun μ : ℂ => Module.End.eigenspace (T : H →ₗ[ℂ] H) μ) (ν.1 : ℂ)
-  have hdense : (G ⊔ E').topologicalClosure = ⊤ := by
-    rw [← hsup, ← Submodule.orthogonal_orthogonal_eq_closure,
-      orthogonalComplement_iSup_eigenspaces_eq_bot hT hT', Submodule.bot_orthogonal_eq_top]
+  rw [← hsup, ← Submodule.orthogonal_orthogonal_eq_closure,
+    orthogonalComplement_iSup_eigenspaces_eq_bot hT hT', Submodule.bot_orthogonal_eq_top]
+
+/-- **The closure of the nonzero-eigenspace part and the kernel are exactly each other's
+orthogonal complements.** The key structural fact enabling the `tsum` reconstruction of `T`,
+combining `span_eigenvectorFamily_le_kernel_orthogonal` (mutual orthogonality) with
+`kernel_sup_span_eigenvectorFamily_dense` (density of their sum). -/
+theorem orthogonal_closure_span_eigenvectorFamily (hT : IsCompactOperator T)
+    (hT' : T.IsSymmetric) :
+    (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosureᗮ =
+      Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ) := by
+  set E' := Submodule.span ℂ (Set.range (eigenvectorFamily hT)) with hE'_def
+  set F := E'.topologicalClosure with hF_def
+  set G := Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ) with hG_def
+  have hE'G : E' ≤ Gᗮ := span_eigenvectorFamily_le_kernel_orthogonal hT hT'
+  -- `G` is closed (it's the kernel of the continuous map `T`), hence complete.
+  have hGclosed : IsClosed (G : Set H) := by
+    have heq : G = LinearMap.ker (T : H →ₗ[ℂ] H) := by
+      ext x
+      rw [hG_def, Module.End.mem_eigenspace_iff, LinearMap.mem_ker, zero_smul]
+    rw [heq]; exact T.isClosed_ker
+  haveI : CompleteSpace G := hGclosed.completeSpace_coe
+  -- `F ⊆ Gᗮ`, hence `G ⊆ Fᗮ`.
+  have hFG : F ≤ Gᗮ := hF_def ▸ E'.topologicalClosure_minimal hE'G G.isClosed_orthogonal
+  have hGF : G ≤ Fᗮ := Submodule.le_orthogonal_iff_le_orthogonal.mpr hFG
+  have hdense : (G ⊔ E').topologicalClosure = ⊤ := kernel_sup_span_eigenvectorFamily_dense hT hT'
   -- Combine: `G ⊆ Fᗮ`, and `G ⊔ F` is dense (since it contains `G ⊔ E'`), so `Fᗮ ⊆ G`.
   have hFGdense : (F ⊔ G).topologicalClosure = ⊤ := by
     have hle : G ⊔ E' ≤ F ⊔ G := by
