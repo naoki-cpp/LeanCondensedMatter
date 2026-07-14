@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+# Pre-push hook: builds every changed .lean file being pushed and blocks the
+# push if any Lean warning survives. `unused section variable(s)` warnings
+# are fixed mechanically (an `omit ... in` is inserted at the affected
+# declaration) rather than ignored; see notes/conventions.md and
+# scripts/check_and_fix_warnings.py. Any other warning blocks the push for
+# manual review. `linter.unusedSectionVars` is never disabled.
+#
+# Install once with: git config core.hooksPath .githooks
+# Skip for a single push with: git push --no-verify
+
+set -euo pipefail
+
+remote_name="$1"
+remote_url="$2"
+
+repo_root="$(git rev-parse --show-toplevel)"
+cd "$repo_root"
+
+zero="0000000000000000000000000000000000000000"
+changed_files=()
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+  [ -z "$local_ref" ] && continue
+  [ "$local_sha" = "$zero" ] && continue # deleting a ref, nothing to check
+
+  if [ "$remote_sha" = "$zero" ]; then
+    # New remote ref: diff against the merge-base with main.
+    base="$(git merge-base main "$local_sha" 2>/dev/null || echo "$zero")"
+    if [ "$base" = "$zero" ]; then
+      range_files="$(git diff --name-only --diff-filter=ACMR "$local_sha" -- '*.lean' 2>/dev/null || true)"
+    else
+      range_files="$(git diff --name-only --diff-filter=ACMR "$base" "$local_sha" -- '*.lean')"
+    fi
+  else
+    range_files="$(git diff --name-only --diff-filter=ACMR "$remote_sha" "$local_sha" -- '*.lean')"
+  fi
+
+  while IFS= read -r f; do
+    [ -n "$f" ] && changed_files+=("$f")
+  done <<< "$range_files"
+done
+
+if [ "${#changed_files[@]}" -eq 0 ]; then
+  exit 0
+fi
+
+# Dedupe.
+mapfile -t changed_files < <(printf '%s\n' "${changed_files[@]}" | sort -u)
+
+# On Windows, `python3` may resolve to a non-functional Windows Store alias
+# even when a real interpreter is on PATH as `python`; pick whichever works.
+py=""
+for candidate in python3 python; do
+  if command -v "$candidate" >/dev/null 2>&1 && "$candidate" -c "" >/dev/null 2>&1; then
+    py="$candidate"
+    break
+  fi
+done
+if [ -z "$py" ]; then
+  echo "pre-push: no working Python interpreter found; skipping warning check." >&2
+  exit 0
+fi
+
+"$py" "$repo_root/scripts/check_and_fix_warnings.py" "${changed_files[@]}"
