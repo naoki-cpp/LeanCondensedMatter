@@ -374,6 +374,7 @@ the infinite-dimensional analogue of `LinearMap.trace` used throughout
 noncomputable def trace {T : H →L[ℂ] H} (_h : IsTraceClass T) : ℝ :=
   ∑' a : EigenvectorIndex T, a.1.1
 
+omit [CompleteSpace H] in
 /-- **Every eigenvalue of a positive operator is nonnegative** — the per-index fact underlying
 both `trace_nonneg` below and `QuantumTheory.TraceClass.eigenvalue_nonneg` (a density operator's
 eigenvalues are probabilities). -/
@@ -387,6 +388,7 @@ theorem eigenvalue_nonneg_of_isPositive {T : H →L[ℂ] H} (hpos : (T : H →�
     exact absurd hpos_finrank (lt_irrefl 0)
   exact eigenvalue_nonneg_of_nonneg hne hpos.re_inner_nonneg_right
 
+omit [CompleteSpace H] in
 /-- The trace of a positive trace-class operator is nonnegative — as for a density operator's
 `LinearMap.trace` in the finite-dimensional case (`QuantumTheory.DensityOperator`), every
 eigenvalue of a positive operator is nonnegative. -/
@@ -394,6 +396,7 @@ theorem trace_nonneg {T : H →L[ℂ] H} (h : IsTraceClass T)
     (hpos : (T : H →ₗ[ℂ] H).IsPositive) : 0 ≤ trace h :=
   tsum_nonneg fun a => eigenvalue_nonneg_of_isPositive hpos a
 
+omit [CompleteSpace H] in
 /-- A real scalar multiple of a continuous linear map agrees, as an operator, with the complex
 scalar multiple by its cast. Useful for bridging lemmas stated for a general (complex) scalar,
 such as `IsPositive.smul_of_nonneg`, with the real-scalar convention used elsewhere in this file
@@ -401,6 +404,7 @@ such as `IsPositive.smul_of_nonneg`, with the real-scalar convention used elsewh
 theorem real_smul_eq_complex_smul (r : ℝ) (T : H →L[ℂ] H) : r • T = (r : ℂ) • T := by
   ext x; simp
 
+omit [CompleteSpace H] in
 /-- Scaling `T` by a nonzero real `c` scales each eigenvalue by `c` and leaves the
 eigenspaces (as submodules) unchanged. -/
 theorem eigenspace_smul {c : ℝ} (hc : c ≠ 0) (μ : ℂ) :
@@ -432,6 +436,7 @@ noncomputable def eigenvalueScaleEquiv {c : ℝ} (hc : c ≠ 0) :
 @[simp] theorem eigenvalueScaleEquiv_apply {c : ℝ} (hc : c ≠ 0) (a : { μ : ℝ // μ ≠ 0 }) :
     ((eigenvalueScaleEquiv hc a : { μ : ℝ // μ ≠ 0 }) : ℝ) = c * a.1 := rfl
 
+omit [CompleteSpace H] in
 /-- Splits the trace-defining `tsum` over `EigenvectorIndex S` into an outer sum over the
 (base) nonzero eigenvalues and an inner, *finite* sum over each eigenspace's basis vectors.
 Since the summand `a ↦ a.1.1` only depends on the base component `a.1`, the inner sum is just
@@ -451,11 +456,13 @@ theorem tsum_eigenvectorIndex_eq_tsum_mul_finrank {S : H →L[ℂ] H}
   refine tsum_congr fun μ => ?_
   simp [tsum_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]
 
+omit [CompleteSpace H] in
 theorem summable_eigenvectorIndex_of_isTraceClass {S : H →L[ℂ] H} (hS : IsTraceClass S) :
     Summable (fun a : EigenvectorIndex S => a.1.1) := by
   have hS' : Summable (fun a : EigenvectorIndex S => |a.1.1|) := hS
   exact Summable.of_norm (by simpa only [Real.norm_eq_abs] using hS')
 
+omit [CompleteSpace H] in
 /-- **Trace-class-ness is preserved under scalar multiplication by a nonzero real.** Unlike
 `trace_smul` (which takes `IsTraceClass (c • T)` as an external hypothesis, matching this
 project's usual style of not deriving compactness/trace-class facts), this genuinely proves it
@@ -511,6 +518,7 @@ theorem isTraceClass_smul {c : ℝ} (hc : c ≠ 0) (h : IsTraceClass T) :
         ⇑e.symm from rfl]
   exact (Equiv.summable_iff e.symm).mpr hT'
 
+omit [CompleteSpace H] in
 /-- **Trace is homogeneous under scalar multiplication by a nonzero real.** -/
 theorem trace_smul {c : ℝ} (hc : c ≠ 0) (h : IsTraceClass T)
     (hcT : IsTraceClass (c • T)) :
@@ -532,6 +540,7 @@ theorem trace_smul {c : ℝ} (hc : c ≠ 0) (h : IsTraceClass T)
     exact congrArg (fun S' : Submodule ℂ H => Module.finrank ℂ S') (eigenspace_smul hc μ.1)]
   ring
 
+omit [CompleteSpace H] in
 /-- **The trace of a finite-rank orthogonal projection, computed against any Hilbert basis of the
 ambient space, equals its rank.** The key basis-independence fact underlying `trace`'s additive
 linearity: for `V := eigenspace T μ` and summing over all nonzero `μ`, this shows `trace T` can be
@@ -577,6 +586,7 @@ theorem tsum_norm_sq_orthogonalProjectionOnto_eq_finrank {ι : Type*} (b : Hilbe
     fun j => (stdOrthonormalBasis ℂ V).orthonormal.1 j
   simp [hnorm1]
 
+omit [CompleteSpace H] in
 /-- **Parseval's identity for a Hilbert basis, in norm-squared form.** For any `x : H`, the
 squared-magnitude Fourier coefficients of `x` against a Hilbert basis `d` sum (unconditionally)
 to `‖x‖ ^ 2`. -/
