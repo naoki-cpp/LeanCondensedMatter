@@ -289,6 +289,43 @@ theorem trace_comp_eq_sum_sq_inner {T1 T2 : H →L[ℂ] H}
     push_cast [hnormsq]
     ring
 
+omit [FiniteDimensional ℂ H] [CompleteSpace H] in
+/-- **`Tr[T1 T2].re` when `T1` is presented diagonally (`Σᵢ wᵢ|bᵢ⟩⟨bᵢ|`) in a basis `b` that is
+also an eigenbasis of `T2` (eigenvalues `c`).** Unlike `trace_comp_eq_sum_sq_inner`, `T1` and `T2`
+here share the *same* eigenbasis, so the trace reduces to the plain sum `Σᵢ wᵢ cᵢ` with no
+cross-basis inner-product terms — the case needed for `gibbsState`'s own energy expectation
+value, since `gibbsState` is diagonal in `Hop`'s own eigenbasis. -/
+theorem trace_diag_mul_apply_eq_sum (b : OrthonormalBasis (Fin n) ℂ H) (w c : Fin n → ℝ)
+    {T2 : H →L[ℂ] H} (hT2 : ∀ j, (T2 : H →ₗ[ℂ] H) (b j) = (c j : ℂ) • b j) :
+    (LinearMap.trace ℂ H
+        (((∑ i : Fin n, (w i : ℂ) • InnerProductSpace.rankOne ℂ (b i) (b i) : H →L[ℂ] H) ∘L T2 :
+          H →L[ℂ] H) : H →ₗ[ℂ] H)).re = ∑ i, w i * c i := by
+  set T1 : H →L[ℂ] H := ∑ i : Fin n, (w i : ℂ) • InnerProductSpace.rankOne ℂ (b i) (b i)
+    with hT1_def
+  have hT1b : ∀ j, (T1 : H →ₗ[ℂ] H) (b j) = (w j : ℂ) • b j := by
+    intro j
+    have hT1apply : (T1 : H →ₗ[ℂ] H) (b j) =
+        ∑ i : Fin n, (w i : ℂ) • InnerProductSpace.rankOne ℂ (b i) (b i) (b j) := by
+      simp [hT1_def]
+    rw [hT1apply, Finset.sum_eq_single j]
+    · simp [InnerProductSpace.rankOne_apply, inner_self_eq_norm_sq_to_K, b.orthonormal.1 j]
+    · intro i _ hij
+      simp [InnerProductSpace.rankOne_apply, b.orthonormal.2 hij]
+    · simp
+  rw [LinearMap.trace_eq_sum_inner (𝕜 := ℂ) _ b]
+  have hterm : ∀ j : Fin n, inner ℂ (b j) (((T1 ∘L T2 : H →L[ℂ] H) : H →ₗ[ℂ] H) (b j)) =
+      (w j : ℂ) * (c j : ℂ) := by
+    intro j
+    change inner ℂ (b j) ((T1 : H →ₗ[ℂ] H) ((T2 : H →ₗ[ℂ] H) (b j))) = (w j : ℂ) * (c j : ℂ)
+    rw [hT2 j, map_smul, hT1b j, inner_smul_right, inner_smul_right,
+      inner_self_eq_norm_sq_to_K, b.norm_eq_one]
+    push_cast
+    ring
+  simp_rw [hterm]
+  have hcast : (∑ i : Fin n, (w i : ℂ) * (c i : ℂ)) = ((∑ i, w i * c i : ℝ) : ℂ) := by
+    push_cast; ring
+  rw [hcast, Complex.ofReal_re]
+
 /-- `Tr[ρĤ]` expanded via the eigenvalues/eigenbases of `ρ` and `Hop` separately (which need
 not coincide, since `ρ` and `Hop` need not commute). -/
 theorem energyExpValue_eq_sum (ρ : DensityOperator H) (Hop : Observable H) :
@@ -406,33 +443,9 @@ theorem vonNeumannEntropy_gibbsState [NeZero n] (Hop : Observable H) (β : ℝ) 
     (hsum_eq Real.negMulLog).symm
   have hEbE : ∀ j, (Hop.1 : H →ₗ[ℂ] H) (bE j) = (E j : ℂ) • bE j :=
     fun j => Hop.2.isSymmetric.apply_eigenvectorBasis hn j
-  have hρbE : ∀ j, ((gibbsState hn Hop β).1 : H →ₗ[ℂ] H) (bE j) = (w j : ℂ) • bE j := by
-    intro j
-    have : ((gibbsState hn Hop β).1 : H →ₗ[ℂ] H) (bE j) =
-        ∑ i : Fin n, (w i : ℂ) • InnerProductSpace.rankOne ℂ (bE i) (bE i) (bE j) := by
-      simp [hgibbs_eq]
-    rw [this, Finset.sum_eq_single j]
-    · simp [InnerProductSpace.rankOne_apply, inner_self_eq_norm_sq_to_K, bE.orthonormal.1 j]
-    · intro i _ hij
-      simp [InnerProductSpace.rankOne_apply, bE.orthonormal.2 hij]
-    · simp
   have henergy : energyExpValue (gibbsState hn Hop β) Hop = ∑ i, w i * E i := by
-    show (LinearMap.trace ℂ H
-        (((gibbsState hn Hop β).1 ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H)).re = ∑ i, w i * E i
-    rw [LinearMap.trace_eq_sum_inner (𝕜 := ℂ) _ bE]
-    have hterm : ∀ j : Fin n, inner ℂ (bE j) ((((gibbsState hn Hop β).1 ∘L Hop.1 : H →L[ℂ] H) :
-        H →ₗ[ℂ] H) (bE j)) = (w j : ℂ) * (E j : ℂ) := by
-      intro j
-      show inner ℂ (bE j) (((gibbsState hn Hop β).1 : H →ₗ[ℂ] H) ((Hop.1 : H →ₗ[ℂ] H) (bE j))) =
-        (w j : ℂ) * (E j : ℂ)
-      rw [hEbE j, map_smul, hρbE j, inner_smul_right, inner_smul_right,
-        inner_self_eq_norm_sq_to_K, bE.norm_eq_one]
-      push_cast
-      ring
-    simp_rw [hterm]
-    have : (∑ i : Fin n, (w i : ℂ) * (E i : ℂ)) = ((∑ i, w i * E i : ℝ) : ℂ) := by
-      push_cast; ring
-    rw [this, Complex.ofReal_re]
+    rw [energyExpValue, hgibbs_eq]
+    exact trace_diag_mul_apply_eq_sum bE w E hEbE
   rw [hvN, henergy]
   have hZpos : 0 < Z := partitionFunction_pos hn Hop β
   have hlogw : ∀ i, Real.log (w i) = -β * E i - Real.log Z := by
