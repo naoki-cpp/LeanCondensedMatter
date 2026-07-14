@@ -6,6 +6,10 @@ import Mathlib.LinearAlgebra.Charpoly.ToMatrix
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
 import Mathlib.Algebra.Polynomial.Roots
 
+-- No project files currently carry a Mathlib-style copyright/author header; a
+-- project-wide policy for this is a separate open item (see notes/conventions.md).
+set_option linter.style.header false
+
 /-!
 # Von Neumann entropy and Boltzmann's principle
 
@@ -21,6 +25,44 @@ argues thermodynamics proper is out of scope for that target). Only the mathemat
 the postulate is about — the von Neumann entropy of a density operator — is defined here.
 -/
 
+/-- **The finite-dimensional Gibbs–Klein inequality, as a pure real-analysis fact.** Given
+probability distributions `p`, `q` (nonneg, summing to `1`, `q` everywhere positive) and a
+`Fin n × Fin n`-indexed nonnegative "coupling" `c` whose row sums and column sums are each `1`,
+`Σ_m Σ_k p m (ln(p m) - ln(q k)) c m k ≥ 0`. No Hilbert-space content: `c` abstracts the squared
+inner products `‖⟨k|m⟩‖²` used by `relEntropy`/`helmholtzFreeEnergy_ge`, whose row/column sums are
+`1` by completeness of each eigenbasis. -/
+theorem gibbs_klein_double_sum {n : ℕ} (p q : Fin n → ℝ) (c : Fin n → Fin n → ℝ)
+    (hp_nonneg : ∀ m, 0 ≤ p m) (hq_pos : ∀ k, 0 < q k) (hc_nonneg : ∀ m k, 0 ≤ c m k)
+    (hp_sum : ∑ m, p m = 1) (hq_sum : ∑ k, q k = 1) (hrow : ∀ m, ∑ k, c m k = 1)
+    (hcol : ∀ k, ∑ m, c m k = 1) :
+    0 ≤ ∑ m, ∑ k, p m * (Real.log (p m) - Real.log (q k)) * c m k := by
+  have key : ∀ m k, (p m - q k) * c m k ≤ p m * (Real.log (p m) - Real.log (q k)) * c m k := by
+    intro m k
+    rcases (hp_nonneg m).eq_or_lt with hp0 | hp0
+    · rw [← hp0]
+      nlinarith [hc_nonneg m k, (hq_pos k).le]
+    · have hlog : Real.log (q k / p m) ≤ q k / p m - 1 :=
+        Real.log_le_sub_one_of_pos (div_pos (hq_pos k) hp0)
+      rw [Real.log_div (ne_of_gt (hq_pos k)) (ne_of_gt hp0)] at hlog
+      have hlog' : (Real.log (q k) - Real.log (p m) + 1) * p m ≤ q k := by
+        rw [← le_div_iff₀ hp0]; linarith [hlog]
+      have step : p m - q k ≤ p m * (Real.log (p m) - Real.log (q k)) := by
+        nlinarith [hlog']
+      exact mul_le_mul_of_nonneg_right step (hc_nonneg m k)
+  have expand : ∑ m, ∑ k, (p m - q k) * c m k = 0 := by
+    have step1 : ∑ m : Fin n, ∑ k : Fin n, (p m - q k) * c m k
+        = ∑ m : Fin n, ∑ k : Fin n, p m * c m k - ∑ m : Fin n, ∑ k : Fin n, q k * c m k := by
+      simp_rw [sub_mul, Finset.sum_sub_distrib]
+    have step2 : ∑ m : Fin n, ∑ k : Fin n, p m * c m k = ∑ m, p m := by
+      simp_rw [← Finset.mul_sum, hrow, mul_one]
+    have step3 : ∑ m : Fin n, ∑ k : Fin n, q k * c m k = ∑ k, q k := by
+      rw [Finset.sum_comm]
+      simp_rw [← Finset.mul_sum, hcol, mul_one]
+    rw [step1, step2, step3, hp_sum, hq_sum, sub_self]
+  calc (0:ℝ) = ∑ m, ∑ k, (p m - q k) * c m k := expand.symm
+    _ ≤ ∑ m, ∑ k, p m * (Real.log (p m) - Real.log (q k)) * c m k :=
+        Finset.sum_le_sum fun m _ => Finset.sum_le_sum fun k _ => key m k
+
 namespace QuantumTheory
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
@@ -33,6 +75,7 @@ principle is `k_B` times this quantity. -/
 noncomputable def vonNeumannEntropy (ρ : DensityOperator H) : ℝ :=
   ∑ i : Fin n, Real.negMulLog (ρ.2.1.isSymmetric.eigenvalues hn i)
 
+omit [CompleteSpace H] in
 /-- The eigenvalues of a density operator are nonnegative — they are the probabilities
 `p_i` of measuring the system in the corresponding eigenstate. -/
 theorem eigenvalues_nonneg (ρ : DensityOperator H) (i : Fin n) :
@@ -50,6 +93,7 @@ noncomputable def relEntropy (ρ ρ' : DensityOperator H) : ℝ :=
       ‖inner ℂ (ρ'.2.1.isSymmetric.eigenvectorBasis hn k)
         (ρ.2.1.isSymmetric.eigenvectorBasis hn m)‖ ^ 2
 
+omit [CompleteSpace H] in
 /-- **Gibbs–Klein inequality.** The quantum relative entropy is nonnegative, provided `ρ'` has
 full support (all eigenvalues strictly positive) — which holds automatically for a canonical
 (Gibbs) state `e^{-βH}/Z`, the intended application (see `notes/roadmap.md`). -/
@@ -81,33 +125,7 @@ theorem relEntropy_nonneg (ρ ρ' : DensityOperator H)
     rw [htrρ'] at h
     simpa [hq_def] using h.symm
   have hp_nonneg : ∀ m, 0 ≤ p m := fun m => eigenvalues_nonneg hn ρ m
-  have key : ∀ m k, (p m - q k) * c m k ≤ p m * (Real.log (p m) - Real.log (q k)) * c m k := by
-    intro m k
-    rcases (hp_nonneg m).eq_or_lt with hp0 | hp0
-    · rw [← hp0]
-      nlinarith [hc_nonneg m k, (hq k).le]
-    · have hlog : Real.log (q k / p m) ≤ q k / p m - 1 :=
-        Real.log_le_sub_one_of_pos (div_pos (hq k) hp0)
-      rw [Real.log_div (ne_of_gt (hq k)) (ne_of_gt hp0)] at hlog
-      have hlog' : (Real.log (q k) - Real.log (p m) + 1) * p m ≤ q k := by
-        rw [← le_div_iff₀ hp0]; linarith [hlog]
-      have step : p m - q k ≤ p m * (Real.log (p m) - Real.log (q k)) := by
-        nlinarith [hlog']
-      exact mul_le_mul_of_nonneg_right step (hc_nonneg m k)
-  have expand : ∑ m, ∑ k, (p m - q k) * c m k = 0 := by
-    have step1 : ∑ m : Fin n, ∑ k : Fin n, (p m - q k) * c m k
-        = ∑ m : Fin n, ∑ k : Fin n, p m * c m k - ∑ m : Fin n, ∑ k : Fin n, q k * c m k := by
-      simp_rw [sub_mul, Finset.sum_sub_distrib]
-    have step2 : ∑ m : Fin n, ∑ k : Fin n, p m * c m k = ∑ m, p m := by
-      simp_rw [← Finset.mul_sum, hres1, mul_one]
-    have step3 : ∑ m : Fin n, ∑ k : Fin n, q k * c m k = ∑ k, q k := by
-      rw [Finset.sum_comm]
-      simp_rw [← Finset.mul_sum, hres2, mul_one]
-    rw [step1, step2, step3, hp_sum, hq_sum, sub_self]
-  calc (0:ℝ) = ∑ m, ∑ k, (p m - q k) * c m k := expand.symm
-    _ ≤ ∑ m, ∑ k, p m * (Real.log (p m) - Real.log (q k)) * c m k :=
-        Finset.sum_le_sum fun m _ => Finset.sum_le_sum fun k _ => key m k
-    _ = relEntropy hn ρ ρ' := rfl
+  exact gibbs_klein_double_sum p q c hp_nonneg hq hc_nonneg hp_sum hq_sum hres1 hres2
 
 /-- The partition function `Z(β) = Σᵢ e^{-βEᵢ}` for a Hamiltonian `Hop` at inverse
 temperature `β`, where `Eᵢ` are `Hop`'s eigenvalues. -/
@@ -116,7 +134,7 @@ noncomputable def partitionFunction (Hop : Observable H) (β : ℝ) : ℝ :=
 
 theorem partitionFunction_pos [NeZero n] (Hop : Observable H) (β : ℝ) :
     0 < partitionFunction hn Hop β :=
-  Finset.sum_pos (fun i _ => Real.exp_pos _) ⟨⟨0, NeZero.pos n⟩, Finset.mem_univ _⟩
+  Finset.sum_pos (fun _ _ => Real.exp_pos _) ⟨⟨0, NeZero.pos n⟩, Finset.mem_univ _⟩
 
 /-- **Diagonal presentation determines eigenvalues up to reindexing.** If a self-adjoint
 operator `T` is presented as `∑ i, w i • |b i⟩⟨b i|` for an orthonormal basis `b` and
@@ -189,7 +207,7 @@ noncomputable def gibbsState [NeZero n] (Hop : Observable H) (β : ℝ) : Densit
       have hsum1 : (∑ i : Fin n, Real.exp (-β * Hop.2.isSymmetric.eigenvalues hn i) /
           partitionFunction hn Hop β) = 1 := by
         rw [← Finset.sum_div]
-        show partitionFunction hn Hop β / partitionFunction hn Hop β = 1
+        change partitionFunction hn Hop β / partitionFunction hn Hop β = 1
         exact div_self hZpos.ne'
       have step : ∀ i : Fin n, (LinearMap.trace ℂ H)
           ((((Real.exp (-β * Hop.2.isSymmetric.eigenvalues hn i) /
@@ -210,72 +228,118 @@ noncomputable def gibbsState [NeZero n] (Hop : Observable H) (β : ℝ) : Densit
 noncomputable def energyExpValue (ρ : DensityOperator H) (Hop : Observable H) : ℝ :=
   (LinearMap.trace ℂ H ((ρ.1 ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H)).re
 
-/-- `Tr[ρĤ]` expanded via the eigenvalues/eigenbases of `ρ` and `Hop` separately (which need
-not coincide, since `ρ` and `Hop` need not commute). -/
-theorem energyExpValue_eq_sum (ρ : DensityOperator H) (Hop : Observable H) :
-    energyExpValue ρ Hop = ∑ m : Fin n, ∑ k : Fin n,
-      ρ.2.1.isSymmetric.eigenvalues hn m * Hop.2.isSymmetric.eigenvalues hn k *
-        ‖inner ℂ (Hop.2.isSymmetric.eigenvectorBasis hn k)
-          (ρ.2.1.isSymmetric.eigenvectorBasis hn m)‖ ^ 2 := by
-  have hsymmρ : LinearMap.IsSymmetric (ρ.1 : H →ₗ[ℂ] H) := ρ.2.1.isSymmetric
-  have hsymmHop : LinearMap.IsSymmetric (Hop.1 : H →ₗ[ℂ] H) := Hop.2.isSymmetric
-  set p := hsymmρ.eigenvalues hn with hp_def
-  set E := hsymmHop.eigenvalues hn with hE_def
-  set bρ := hsymmρ.eigenvectorBasis hn with hbρ_def
-  set bE := hsymmHop.eigenvectorBasis hn with hbE_def
-  have hEigenρ : ∀ m, (ρ.1 : H →ₗ[ℂ] H) (bρ m) = (p m : ℂ) • bρ m := fun m =>
-    hsymmρ.apply_eigenvectorBasis hn m
-  have hEigenHop : ∀ k, (Hop.1 : H →ₗ[ℂ] H) (bE k) = (E k : ℂ) • bE k := fun k =>
-    hsymmHop.apply_eigenvectorBasis hn k
-  have hρbE : ∀ k, (ρ.1 : H →ₗ[ℂ] H) (bE k) =
+omit [CompleteSpace H] in
+/-- **`Tr[T1 T2].re` expanded via `T1`'s and `T2`'s own (generally distinct) eigenbases.** For
+self-adjoint bounded operators `T1`, `T2` on a finite-dimensional space, `Tr[T1 T2] = Σₘ Σₖ
+p_m E_k ⟨e_m|f_k⟩⟨f_k|e_m⟩` where `p`/`e` and `E`/`f` are `T1`'s and `T2`'s eigenvalues/eigenbases
+— no Hilbert-space content specific to density operators or Hamiltonians, so this is stated for
+any pair of symmetric operators and reused by `energyExpValue_eq_sum`. -/
+theorem trace_comp_eq_sum_sq_inner {T1 T2 : H →L[ℂ] H}
+    (hsymm1 : (T1 : H →ₗ[ℂ] H).IsSymmetric) (hsymm2 : (T2 : H →ₗ[ℂ] H).IsSymmetric) :
+    (LinearMap.trace ℂ H ((T1 ∘L T2 : H →L[ℂ] H) : H →ₗ[ℂ] H)).re =
+      ∑ m : Fin n, ∑ k : Fin n,
+        hsymm1.eigenvalues hn m * hsymm2.eigenvalues hn k *
+          ‖inner ℂ (hsymm2.eigenvectorBasis hn k) (hsymm1.eigenvectorBasis hn m)‖ ^ 2 := by
+  set p := hsymm1.eigenvalues hn with hp_def
+  set E := hsymm2.eigenvalues hn with hE_def
+  set bρ := hsymm1.eigenvectorBasis hn with hbρ_def
+  set bE := hsymm2.eigenvectorBasis hn with hbE_def
+  have hEigenρ : ∀ m, (T1 : H →ₗ[ℂ] H) (bρ m) = (p m : ℂ) • bρ m := fun m =>
+    hsymm1.apply_eigenvectorBasis hn m
+  have hEigenHop : ∀ k, (T2 : H →ₗ[ℂ] H) (bE k) = (E k : ℂ) • bE k := fun k =>
+    hsymm2.apply_eigenvectorBasis hn k
+  have hρbE : ∀ k, (T1 : H →ₗ[ℂ] H) (bE k) =
       ∑ m : Fin n, ((p m : ℂ) * inner ℂ (bρ m) (bE k)) • bρ m := by
     intro k
     conv_lhs => rw [← bρ.sum_repr' (bE k)]
     rw [map_sum]
     simp_rw [map_smul, hEigenρ, smul_smul]
     congr 1; ext m; rw [mul_comm]
-  have hinner : ∀ k, inner ℂ (bE k) ((ρ.1 : H →ₗ[ℂ] H) (bE k)) =
+  have hinner : ∀ k, inner ℂ (bE k) ((T1 : H →ₗ[ℂ] H) (bE k)) =
       ∑ m : Fin n, (p m : ℂ) * (inner ℂ (bρ m) (bE k) * inner ℂ (bE k) (bρ m)) := by
     intro k
     rw [hρbE, inner_sum]
     congr 1
     ext m
     rw [inner_smul_right, mul_assoc]
-  have htrace : (LinearMap.trace ℂ H ((ρ.1 ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H)) =
+  have htrace : (LinearMap.trace ℂ H ((T1 ∘L T2 : H →L[ℂ] H) : H →ₗ[ℂ] H)) =
       ∑ k : Fin n, ∑ m : Fin n,
         (p m : ℂ) * (E k : ℂ) * (inner ℂ (bρ m) (bE k) * inner ℂ (bE k) (bρ m)) := by
-    rw [LinearMap.trace_eq_sum_inner ((ρ.1 ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) bE]
+    rw [LinearMap.trace_eq_sum_inner ((T1 ∘L T2 : H →L[ℂ] H) : H →ₗ[ℂ] H) bE]
     have step1 : ∀ k : Fin n,
-        inner ℂ (bE k) (((ρ.1 ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) (bE k)) =
-          (E k : ℂ) * inner ℂ (bE k) ((ρ.1 : H →ₗ[ℂ] H) (bE k)) := by
+        inner ℂ (bE k) (((T1 ∘L T2 : H →L[ℂ] H) : H →ₗ[ℂ] H) (bE k)) =
+          (E k : ℂ) * inner ℂ (bE k) ((T1 : H →ₗ[ℂ] H) (bE k)) := by
       intro k
-      show inner ℂ (bE k) ((ρ.1 : H →ₗ[ℂ] H) ((Hop.1 : H →ₗ[ℂ] H) (bE k))) =
-        (E k : ℂ) * inner ℂ (bE k) ((ρ.1 : H →ₗ[ℂ] H) (bE k))
+      change inner ℂ (bE k) ((T1 : H →ₗ[ℂ] H) ((T2 : H →ₗ[ℂ] H) (bE k))) =
+        (E k : ℂ) * inner ℂ (bE k) ((T1 : H →ₗ[ℂ] H) (bE k))
       rw [hEigenHop, map_smul, inner_smul_right]
     simp_rw [step1, hinner, Finset.mul_sum]
     congr 1; ext k; congr 1; ext m
     ring
-  have hfinal : (LinearMap.trace ℂ H ((ρ.1 ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H)).re =
-      ∑ m : Fin n, ∑ k : Fin n, p m * E k * ‖inner ℂ (bE k) (bρ m)‖ ^ 2 := by
-    rw [htrace, Finset.sum_comm]
-    rw [show (∑ m : Fin n, ∑ k : Fin n,
-        (p m : ℂ) * (E k : ℂ) * (inner ℂ (bρ m) (bE k) * inner ℂ (bE k) (bρ m))) =
-        ((∑ m : Fin n, ∑ k : Fin n, p m * E k * ‖inner ℂ (bE k) (bρ m)‖ ^ 2 : ℝ) : ℂ) from ?_]
-    · exact Complex.ofReal_re _
-    · rw [Complex.ofReal_sum]
-      congr 1; ext m
-      rw [Complex.ofReal_sum]
-      congr 1; ext k
-      have hnormsq : inner ℂ (bρ m) (bE k) * inner ℂ (bE k) (bρ m) =
-          ((‖inner ℂ (bE k) (bρ m)‖ ^ 2 : ℝ) : ℂ) := by
-        have hc : inner ℂ (bρ m) (bE k) = starRingEnd ℂ (inner ℂ (bE k) (bρ m)) := by
-          rw [inner_conj_symm]
-        rw [hc, mul_comm, Complex.mul_conj]
-        norm_cast
-        exact Complex.normSq_eq_norm_sq _
-      push_cast [hnormsq]
-      ring
-  exact hfinal
+  rw [htrace, Finset.sum_comm]
+  rw [show (∑ m : Fin n, ∑ k : Fin n,
+      (p m : ℂ) * (E k : ℂ) * (inner ℂ (bρ m) (bE k) * inner ℂ (bE k) (bρ m))) =
+      ((∑ m : Fin n, ∑ k : Fin n, p m * E k * ‖inner ℂ (bE k) (bρ m)‖ ^ 2 : ℝ) : ℂ) from ?_]
+  · exact Complex.ofReal_re _
+  · rw [Complex.ofReal_sum]
+    congr 1; ext m
+    rw [Complex.ofReal_sum]
+    congr 1; ext k
+    have hnormsq : inner ℂ (bρ m) (bE k) * inner ℂ (bE k) (bρ m) =
+        ((‖inner ℂ (bE k) (bρ m)‖ ^ 2 : ℝ) : ℂ) := by
+      have hc : inner ℂ (bρ m) (bE k) = starRingEnd ℂ (inner ℂ (bE k) (bρ m)) := by
+        rw [inner_conj_symm]
+      rw [hc, mul_comm, Complex.mul_conj]
+      norm_cast
+      exact Complex.normSq_eq_norm_sq _
+    push_cast [hnormsq]
+    ring
+
+omit [FiniteDimensional ℂ H] [CompleteSpace H] in
+/-- **`Tr[T1 T2].re` when `T1` is presented diagonally (`Σᵢ wᵢ|bᵢ⟩⟨bᵢ|`) in a basis `b` that is
+also an eigenbasis of `T2` (eigenvalues `c`).** Unlike `trace_comp_eq_sum_sq_inner`, `T1` and `T2`
+here share the *same* eigenbasis, so the trace reduces to the plain sum `Σᵢ wᵢ cᵢ` with no
+cross-basis inner-product terms — the case needed for `gibbsState`'s own energy expectation
+value, since `gibbsState` is diagonal in `Hop`'s own eigenbasis. -/
+theorem trace_diag_mul_apply_eq_sum (b : OrthonormalBasis (Fin n) ℂ H) (w c : Fin n → ℝ)
+    {T2 : H →L[ℂ] H} (hT2 : ∀ j, (T2 : H →ₗ[ℂ] H) (b j) = (c j : ℂ) • b j) :
+    (LinearMap.trace ℂ H
+        (((∑ i : Fin n, (w i : ℂ) • InnerProductSpace.rankOne ℂ (b i) (b i) : H →L[ℂ] H) ∘L T2 :
+          H →L[ℂ] H) : H →ₗ[ℂ] H)).re = ∑ i, w i * c i := by
+  set T1 : H →L[ℂ] H := ∑ i : Fin n, (w i : ℂ) • InnerProductSpace.rankOne ℂ (b i) (b i)
+    with hT1_def
+  have hT1b : ∀ j, (T1 : H →ₗ[ℂ] H) (b j) = (w j : ℂ) • b j := by
+    intro j
+    have hT1apply : (T1 : H →ₗ[ℂ] H) (b j) =
+        ∑ i : Fin n, (w i : ℂ) • InnerProductSpace.rankOne ℂ (b i) (b i) (b j) := by
+      simp [hT1_def]
+    rw [hT1apply, Finset.sum_eq_single j]
+    · simp [InnerProductSpace.rankOne_apply, inner_self_eq_norm_sq_to_K, b.orthonormal.1 j]
+    · intro i _ hij
+      simp [InnerProductSpace.rankOne_apply, b.orthonormal.2 hij]
+    · simp
+  rw [LinearMap.trace_eq_sum_inner (𝕜 := ℂ) _ b]
+  have hterm : ∀ j : Fin n, inner ℂ (b j) (((T1 ∘L T2 : H →L[ℂ] H) : H →ₗ[ℂ] H) (b j)) =
+      (w j : ℂ) * (c j : ℂ) := by
+    intro j
+    change inner ℂ (b j) ((T1 : H →ₗ[ℂ] H) ((T2 : H →ₗ[ℂ] H) (b j))) = (w j : ℂ) * (c j : ℂ)
+    rw [hT2 j, map_smul, hT1b j, inner_smul_right, inner_smul_right,
+      inner_self_eq_norm_sq_to_K, b.norm_eq_one]
+    push_cast
+    ring
+  simp_rw [hterm]
+  have hcast : (∑ i : Fin n, (w i : ℂ) * (c i : ℂ)) = ((∑ i, w i * c i : ℝ) : ℂ) := by
+    push_cast; ring
+  rw [hcast, Complex.ofReal_re]
+
+/-- `Tr[ρĤ]` expanded via the eigenvalues/eigenbases of `ρ` and `Hop` separately (which need
+not coincide, since `ρ` and `Hop` need not commute). -/
+theorem energyExpValue_eq_sum (ρ : DensityOperator H) (Hop : Observable H) :
+    energyExpValue ρ Hop = ∑ m : Fin n, ∑ k : Fin n,
+      ρ.2.1.isSymmetric.eigenvalues hn m * Hop.2.isSymmetric.eigenvalues hn k *
+        ‖inner ℂ (Hop.2.isSymmetric.eigenvectorBasis hn k)
+          (ρ.2.1.isSymmetric.eigenvectorBasis hn m)‖ ^ 2 :=
+  trace_comp_eq_sum_sq_inner hn ρ.2.1.isSymmetric Hop.2.isSymmetric
 
 /-- **Helmholtz free energy inequality.** For any density operator `ρ`, the free energy
 `F[ρ] = Tr[ρĤ] - (1/β)·vonNeumannEntropy ρ` is bounded below by `-(1/β)·ln Z(β)` — the free
@@ -298,7 +362,7 @@ theorem helmholtzFreeEnergy_ge [NeZero n] (ρ : DensityOperator H) (Hop : Observ
   set w : Fin n → ℝ := fun k => Real.exp (-β * E k) / Z with hw_def
   have hw_pos : ∀ k, 0 < w k := fun k => div_pos (Real.exp_pos _) hZpos
   have hw_sum : ∑ k, w k = 1 := by
-    show (∑ k : Fin n, Real.exp (-β * E k) / Z) = 1
+    change (∑ k : Fin n, Real.exp (-β * E k) / Z) = 1
     rw [← Finset.sum_div]
     exact div_self hZpos.ne'
   set c : Fin n → Fin n → ℝ := fun m k => ‖inner ℂ (bE k) (bρ m)‖ ^ 2 with hc_def
@@ -312,35 +376,11 @@ theorem helmholtzFreeEnergy_ge [NeZero n] (ρ : DensityOperator H) (Hop : Observ
     rw [htrρ] at h
     simpa [hp_def] using h.symm
   have hp_nonneg : ∀ m, 0 ≤ p m := fun m => eigenvalues_nonneg hn ρ m
-  have key : ∀ m k, (p m - w k) * c m k ≤ p m * (Real.log (p m) - Real.log (w k)) * c m k := by
-    intro m k
-    rcases (hp_nonneg m).eq_or_lt with hp0 | hp0
-    · rw [← hp0]
-      nlinarith [hc_nonneg m k, (hw_pos k).le]
-    · have hlog : Real.log (w k / p m) ≤ w k / p m - 1 :=
-        Real.log_le_sub_one_of_pos (div_pos (hw_pos k) hp0)
-      rw [Real.log_div (ne_of_gt (hw_pos k)) (ne_of_gt hp0)] at hlog
-      have hlog' : (Real.log (w k) - Real.log (p m) + 1) * p m ≤ w k := by
-        rw [← le_div_iff₀ hp0]; linarith [hlog]
-      have step : p m - w k ≤ p m * (Real.log (p m) - Real.log (w k)) := by
-        nlinarith [hlog']
-      exact mul_le_mul_of_nonneg_right step (hc_nonneg m k)
-  have expand : ∑ m, ∑ k, (p m - w k) * c m k = 0 := by
-    have step1 : ∑ m : Fin n, ∑ k : Fin n, (p m - w k) * c m k
-        = ∑ m : Fin n, ∑ k : Fin n, p m * c m k - ∑ m : Fin n, ∑ k : Fin n, w k * c m k := by
-      simp_rw [sub_mul, Finset.sum_sub_distrib]
-    have step2 : ∑ m : Fin n, ∑ k : Fin n, p m * c m k = ∑ m, p m := by
-      simp_rw [← Finset.mul_sum, hres1, mul_one]
-    have step3 : ∑ m : Fin n, ∑ k : Fin n, w k * c m k = ∑ k, w k := by
-      rw [Finset.sum_comm]
-      simp_rw [← Finset.mul_sum, hres2, mul_one]
-    rw [step1, step2, step3, hp_sum, hw_sum, sub_self]
-  have hklein : 0 ≤ ∑ m, ∑ k, p m * (Real.log (p m) - Real.log (w k)) * c m k := by
-    calc (0:ℝ) = ∑ m, ∑ k, (p m - w k) * c m k := expand.symm
-      _ ≤ _ := Finset.sum_le_sum fun m _ => Finset.sum_le_sum fun k _ => key m k
+  have hklein : 0 ≤ ∑ m, ∑ k, p m * (Real.log (p m) - Real.log (w k)) * c m k :=
+    gibbs_klein_double_sum p w c hp_nonneg hw_pos hc_nonneg hp_sum hw_sum hres1 hres2
   have hlogw : ∀ k, Real.log (w k) = -β * E k - Real.log Z := by
     intro k
-    show Real.log (Real.exp (-β * E k) / Z) = -β * E k - Real.log Z
+    change Real.log (Real.exp (-β * E k) / Z) = -β * E k - Real.log Z
     rw [Real.log_div (Real.exp_pos _).ne' hZpos.ne', Real.log_exp]
   have hrw : ∑ m, ∑ k, p m * (Real.log (p m) - Real.log (w k)) * c m k =
       -vonNeumannEntropy hn ρ + β * energyExpValue ρ Hop + Real.log Z := by
@@ -366,7 +406,7 @@ theorem helmholtzFreeEnergy_ge [NeZero n] (ρ : DensityOperator H) (Hop : Observ
       rw [hp_sum, mul_one]
     rw [t1, t2, t3]
     have hvN : vonNeumannEntropy hn ρ = -∑ m, p m * Real.log (p m) := by
-      show (∑ i : Fin n, Real.negMulLog (p i)) = -∑ m, p m * Real.log (p m)
+      change (∑ i : Fin n, Real.negMulLog (p i)) = -∑ m, p m * Real.log (p m)
       rw [← Finset.sum_neg_distrib]
       exact Finset.sum_congr rfl fun x _ => by rw [Real.negMulLog]; ring
     rw [hvN]; ring
@@ -409,41 +449,17 @@ theorem vonNeumannEntropy_gibbsState [NeZero n] (Hop : Observable H) (β : ℝ) 
     (hsum_eq Real.negMulLog).symm
   have hEbE : ∀ j, (Hop.1 : H →ₗ[ℂ] H) (bE j) = (E j : ℂ) • bE j :=
     fun j => Hop.2.isSymmetric.apply_eigenvectorBasis hn j
-  have hρbE : ∀ j, ((gibbsState hn Hop β).1 : H →ₗ[ℂ] H) (bE j) = (w j : ℂ) • bE j := by
-    intro j
-    have : ((gibbsState hn Hop β).1 : H →ₗ[ℂ] H) (bE j) =
-        ∑ i : Fin n, (w i : ℂ) • InnerProductSpace.rankOne ℂ (bE i) (bE i) (bE j) := by
-      simp [hgibbs_eq]
-    rw [this, Finset.sum_eq_single j]
-    · simp [InnerProductSpace.rankOne_apply, inner_self_eq_norm_sq_to_K, bE.orthonormal.1 j]
-    · intro i _ hij
-      simp [InnerProductSpace.rankOne_apply, bE.orthonormal.2 hij]
-    · simp
   have henergy : energyExpValue (gibbsState hn Hop β) Hop = ∑ i, w i * E i := by
-    show (LinearMap.trace ℂ H
-        (((gibbsState hn Hop β).1 ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H)).re = ∑ i, w i * E i
-    rw [LinearMap.trace_eq_sum_inner (𝕜 := ℂ) _ bE]
-    have hterm : ∀ j : Fin n, inner ℂ (bE j) ((((gibbsState hn Hop β).1 ∘L Hop.1 : H →L[ℂ] H) :
-        H →ₗ[ℂ] H) (bE j)) = (w j : ℂ) * (E j : ℂ) := by
-      intro j
-      show inner ℂ (bE j) (((gibbsState hn Hop β).1 : H →ₗ[ℂ] H) ((Hop.1 : H →ₗ[ℂ] H) (bE j))) =
-        (w j : ℂ) * (E j : ℂ)
-      rw [hEbE j, map_smul, hρbE j, inner_smul_right, inner_smul_right,
-        inner_self_eq_norm_sq_to_K, bE.norm_eq_one]
-      push_cast
-      ring
-    simp_rw [hterm]
-    have : (∑ i : Fin n, (w i : ℂ) * (E i : ℂ)) = ((∑ i, w i * E i : ℝ) : ℂ) := by
-      push_cast; ring
-    rw [this, Complex.ofReal_re]
+    rw [energyExpValue, hgibbs_eq]
+    exact trace_diag_mul_apply_eq_sum bE w E hEbE
   rw [hvN, henergy]
   have hZpos : 0 < Z := partitionFunction_pos hn Hop β
   have hlogw : ∀ i, Real.log (w i) = -β * E i - Real.log Z := by
     intro i
-    show Real.log (Real.exp (-β * E i) / Z) = -β * E i - Real.log Z
+    change Real.log (Real.exp (-β * E i) / Z) = -β * E i - Real.log Z
     rw [Real.log_div (Real.exp_pos _).ne' hZpos.ne', Real.log_exp]
   have hw_sum : ∑ i, w i = 1 := by
-    show (∑ i : Fin n, Real.exp (-β * E i) / Z) = 1
+    change (∑ i : Fin n, Real.exp (-β * E i) / Z) = 1
     rw [← Finset.sum_div]
     exact div_self hZpos.ne'
   have hexpand : ∑ i, Real.negMulLog (w i) =
