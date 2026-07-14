@@ -21,6 +21,44 @@ argues thermodynamics proper is out of scope for that target). Only the mathemat
 the postulate is about — the von Neumann entropy of a density operator — is defined here.
 -/
 
+/-- **The finite-dimensional Gibbs–Klein inequality, as a pure real-analysis fact.** Given
+probability distributions `p`, `q` (nonneg, summing to `1`, `q` everywhere positive) and a
+`Fin n × Fin n`-indexed nonnegative "coupling" `c` whose row sums and column sums are each `1`,
+`Σ_m Σ_k p m (ln(p m) - ln(q k)) c m k ≥ 0`. No Hilbert-space content: `c` abstracts the squared
+inner products `‖⟨k|m⟩‖²` used by `relEntropy`/`helmholtzFreeEnergy_ge`, whose row/column sums are
+`1` by completeness of each eigenbasis. -/
+theorem gibbs_klein_double_sum {n : ℕ} (p q : Fin n → ℝ) (c : Fin n → Fin n → ℝ)
+    (hp_nonneg : ∀ m, 0 ≤ p m) (hq_pos : ∀ k, 0 < q k) (hc_nonneg : ∀ m k, 0 ≤ c m k)
+    (hp_sum : ∑ m, p m = 1) (hq_sum : ∑ k, q k = 1) (hrow : ∀ m, ∑ k, c m k = 1)
+    (hcol : ∀ k, ∑ m, c m k = 1) :
+    0 ≤ ∑ m, ∑ k, p m * (Real.log (p m) - Real.log (q k)) * c m k := by
+  have key : ∀ m k, (p m - q k) * c m k ≤ p m * (Real.log (p m) - Real.log (q k)) * c m k := by
+    intro m k
+    rcases (hp_nonneg m).eq_or_lt with hp0 | hp0
+    · rw [← hp0]
+      nlinarith [hc_nonneg m k, (hq_pos k).le]
+    · have hlog : Real.log (q k / p m) ≤ q k / p m - 1 :=
+        Real.log_le_sub_one_of_pos (div_pos (hq_pos k) hp0)
+      rw [Real.log_div (ne_of_gt (hq_pos k)) (ne_of_gt hp0)] at hlog
+      have hlog' : (Real.log (q k) - Real.log (p m) + 1) * p m ≤ q k := by
+        rw [← le_div_iff₀ hp0]; linarith [hlog]
+      have step : p m - q k ≤ p m * (Real.log (p m) - Real.log (q k)) := by
+        nlinarith [hlog']
+      exact mul_le_mul_of_nonneg_right step (hc_nonneg m k)
+  have expand : ∑ m, ∑ k, (p m - q k) * c m k = 0 := by
+    have step1 : ∑ m : Fin n, ∑ k : Fin n, (p m - q k) * c m k
+        = ∑ m : Fin n, ∑ k : Fin n, p m * c m k - ∑ m : Fin n, ∑ k : Fin n, q k * c m k := by
+      simp_rw [sub_mul, Finset.sum_sub_distrib]
+    have step2 : ∑ m : Fin n, ∑ k : Fin n, p m * c m k = ∑ m, p m := by
+      simp_rw [← Finset.mul_sum, hrow, mul_one]
+    have step3 : ∑ m : Fin n, ∑ k : Fin n, q k * c m k = ∑ k, q k := by
+      rw [Finset.sum_comm]
+      simp_rw [← Finset.mul_sum, hcol, mul_one]
+    rw [step1, step2, step3, hp_sum, hq_sum, sub_self]
+  calc (0:ℝ) = ∑ m, ∑ k, (p m - q k) * c m k := expand.symm
+    _ ≤ ∑ m, ∑ k, p m * (Real.log (p m) - Real.log (q k)) * c m k :=
+        Finset.sum_le_sum fun m _ => Finset.sum_le_sum fun k _ => key m k
+
 namespace QuantumTheory
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
@@ -81,33 +119,7 @@ theorem relEntropy_nonneg (ρ ρ' : DensityOperator H)
     rw [htrρ'] at h
     simpa [hq_def] using h.symm
   have hp_nonneg : ∀ m, 0 ≤ p m := fun m => eigenvalues_nonneg hn ρ m
-  have key : ∀ m k, (p m - q k) * c m k ≤ p m * (Real.log (p m) - Real.log (q k)) * c m k := by
-    intro m k
-    rcases (hp_nonneg m).eq_or_lt with hp0 | hp0
-    · rw [← hp0]
-      nlinarith [hc_nonneg m k, (hq k).le]
-    · have hlog : Real.log (q k / p m) ≤ q k / p m - 1 :=
-        Real.log_le_sub_one_of_pos (div_pos (hq k) hp0)
-      rw [Real.log_div (ne_of_gt (hq k)) (ne_of_gt hp0)] at hlog
-      have hlog' : (Real.log (q k) - Real.log (p m) + 1) * p m ≤ q k := by
-        rw [← le_div_iff₀ hp0]; linarith [hlog]
-      have step : p m - q k ≤ p m * (Real.log (p m) - Real.log (q k)) := by
-        nlinarith [hlog']
-      exact mul_le_mul_of_nonneg_right step (hc_nonneg m k)
-  have expand : ∑ m, ∑ k, (p m - q k) * c m k = 0 := by
-    have step1 : ∑ m : Fin n, ∑ k : Fin n, (p m - q k) * c m k
-        = ∑ m : Fin n, ∑ k : Fin n, p m * c m k - ∑ m : Fin n, ∑ k : Fin n, q k * c m k := by
-      simp_rw [sub_mul, Finset.sum_sub_distrib]
-    have step2 : ∑ m : Fin n, ∑ k : Fin n, p m * c m k = ∑ m, p m := by
-      simp_rw [← Finset.mul_sum, hres1, mul_one]
-    have step3 : ∑ m : Fin n, ∑ k : Fin n, q k * c m k = ∑ k, q k := by
-      rw [Finset.sum_comm]
-      simp_rw [← Finset.mul_sum, hres2, mul_one]
-    rw [step1, step2, step3, hp_sum, hq_sum, sub_self]
-  calc (0:ℝ) = ∑ m, ∑ k, (p m - q k) * c m k := expand.symm
-    _ ≤ ∑ m, ∑ k, p m * (Real.log (p m) - Real.log (q k)) * c m k :=
-        Finset.sum_le_sum fun m _ => Finset.sum_le_sum fun k _ => key m k
-    _ = relEntropy hn ρ ρ' := rfl
+  exact gibbs_klein_double_sum p q c hp_nonneg hq hc_nonneg hp_sum hq_sum hres1 hres2
 
 /-- The partition function `Z(β) = Σᵢ e^{-βEᵢ}` for a Hamiltonian `Hop` at inverse
 temperature `β`, where `Eᵢ` are `Hop`'s eigenvalues. -/
