@@ -27,6 +27,16 @@ General cautions distilled from past sessions; detailed incident records live in
 - **Extend additively.** When generalizing an existing formalization (e.g. beyond a restrictive typeclass), add a parallel file/namespace; leave the original untouched.
 - **Name recurring proof idioms.** When the same proof block appears in more than one declaration, extract it as a named lemma in the most upstream file that can state it.
 
+## Lean workflow
+
+- Never run Lean against the entire project unless explicitly necessary.
+- Compile only the currently edited file.
+- Limit command output to the first relevant error.
+- Do not repeatedly read unchanged `.lean` files.
+- After a failed proof, inspect only the error location and nearby definitions.
+- Prefer small proof attempts and verify after each change.
+- Do not use verbose flags unless debugging requires them.
+
 ## Dependencies
 
 - **Mathlib only.** No other external Lean libraries; the toolchain and Mathlib revision are pinned (`lean-toolchain`, `lake-manifest.json`) and upgraded deliberately, not as a side effect of other work.
