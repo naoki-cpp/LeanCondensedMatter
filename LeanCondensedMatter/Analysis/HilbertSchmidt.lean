@@ -191,33 +191,27 @@ theorem summable_inner_apply_of_isHilbertSchmidtWrt {ι : Type*} (d : HilbertBas
     nlinarith [sq_nonneg (‖S (d i)‖ - ‖T (d i)‖)]
   exact (norm_inner_le_norm (S (d i)) (T (d i))).trans hab
 
-/-- **The core Fubini computation underlying basis-independence of `innerHS`.** For `S`, `T`
-Hilbert–Schmidt with respect to a basis `d`, and *any* other basis `f`, the double sum
-`Σᵢⱼ ⟪S dᵢ, fⱼ⟫ ⟪fⱼ, T dᵢ⟫` can be summed either row-first (giving `Σᵢ ⟪S dᵢ, T dᵢ⟫`, via the
-resolution of the identity along `f`) or column-first (giving `Σⱼ ⟪T† fⱼ, S† fⱼ⟫`, via the
-resolution of the identity along `d`, after rewriting each factor with the adjoint). Unlike the
-squared-norm swap used for `IsHilbertSchmidtWrt` basis-independence, the summands here are complex
-(not nonnegative), so absolute summability of the double family is established via the AM–GM
-bound `|ab| ≤ (|a|² + |b|²) / 2` instead of `summable_prod_of_nonneg` applied to the family
-itself. -/
-theorem summable_inner_adjoint_apply_and_tsum_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
+omit [CompleteSpace H] in
+/-- **Absolute summability of the "resolution of the identity" double product**
+`⟪S dᵢ, fⱼ⟫⟪fⱼ, T dᵢ⟫`, for `S`, `T` Hilbert–Schmidt with respect to `d` and *any* other basis
+`f`. Established via the AM–GM bound `|ab| ≤ (|a|² + |b|²) / 2` (rather than
+`summable_prod_of_nonneg` applied to the family itself, since the summands here are complex, not
+nonnegative). The absolute-summability half of
+`summable_inner_adjoint_apply_and_tsum_eq`'s argument, isolated since it doesn't need the
+row/column identification that follows it. -/
+theorem summable_inner_resolution_product {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H} (hSd : IsHilbertSchmidtWrt d S)
     (hTd : IsHilbertSchmidtWrt d T) :
-    Summable (fun j => (inner ℂ (ContinuousLinearMap.adjoint T (f j))
-        (ContinuousLinearMap.adjoint S (f j)) : ℂ)) ∧
-      ∑' j, (inner ℂ (ContinuousLinearMap.adjoint T (f j))
-          (ContinuousLinearMap.adjoint S (f j)) : ℂ) =
-        ∑' i, (inner ℂ (S (d i)) (T (d i)) : ℂ) := by
+    Summable (fun p : ι × κ =>
+      (inner ℂ (S (d p.1)) (f p.2) : ℂ) * (inner ℂ (f p.2) (T (d p.1)) : ℂ)) := by
   classical
-  set g : ι × κ → ℂ :=
-    fun p => (inner ℂ (S (d p.1)) (f p.2) : ℂ) * (inner ℂ (f p.2) (T (d p.1)) : ℂ) with hg_def
-  -- Absolute summability of `g`, via the AM–GM bound on each term.
   set bd : ι × κ → ℝ :=
     fun p => (‖(inner ℂ (S (d p.1)) (f p.2) : ℂ)‖ ^ 2 +
       ‖(inner ℂ (f p.2) (T (d p.1)) : ℂ)‖ ^ 2) / 2 with hbd_def
   have hbd_nonneg : ∀ p, 0 ≤ bd p := fun p => by positivity
-  have hg_le : ∀ p, ‖g p‖ ≤ bd p := fun p => by
-    rw [hg_def, hbd_def]
+  have hg_le : ∀ p, ‖(inner ℂ (S (d p.1)) (f p.2) : ℂ) * (inner ℂ (f p.2) (T (d p.1)) : ℂ)‖ ≤
+      bd p := fun p => by
+    rw [hbd_def]
     simp only [norm_mul]
     nlinarith [sq_nonneg (‖(inner ℂ (S (d p.1)) (f p.2) : ℂ)‖ -
       ‖(inner ℂ (f p.2) (T (d p.1)) : ℂ)‖)]
@@ -234,7 +228,26 @@ theorem summable_inner_adjoint_apply_and_tsum_eq {ι κ : Type*} (d : HilbertBas
   have hbd_summable : Summable bd :=
     (summable_prod_of_nonneg hbd_nonneg).mpr ⟨fun i => (hbd_row i).summable, by
       simpa only [fun i => (hbd_row i).tsum_eq] using (hSd.add hTd).div_const 2⟩
-  have hg_summable : Summable g := Summable.of_norm_bounded hbd_summable hg_le
+  exact Summable.of_norm_bounded hbd_summable hg_le
+
+/-- **The core Fubini computation underlying basis-independence of `innerHS`.** For `S`, `T`
+Hilbert–Schmidt with respect to a basis `d`, and *any* other basis `f`, the double sum
+`Σᵢⱼ ⟪S dᵢ, fⱼ⟫ ⟪fⱼ, T dᵢ⟫` (`summable_inner_resolution_product`) can be summed either row-first
+(giving `Σᵢ ⟪S dᵢ, T dᵢ⟫`, via the resolution of the identity along `f`) or column-first (giving
+`Σⱼ ⟪T† fⱼ, S† fⱼ⟫`, via the resolution of the identity along `d`, after rewriting each factor
+with the adjoint). -/
+theorem summable_inner_adjoint_apply_and_tsum_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
+    (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H} (hSd : IsHilbertSchmidtWrt d S)
+    (hTd : IsHilbertSchmidtWrt d T) :
+    Summable (fun j => (inner ℂ (ContinuousLinearMap.adjoint T (f j))
+        (ContinuousLinearMap.adjoint S (f j)) : ℂ)) ∧
+      ∑' j, (inner ℂ (ContinuousLinearMap.adjoint T (f j))
+          (ContinuousLinearMap.adjoint S (f j)) : ℂ) =
+        ∑' i, (inner ℂ (S (d i)) (T (d i)) : ℂ) := by
+  classical
+  set g : ι × κ → ℂ :=
+    fun p => (inner ℂ (S (d p.1)) (f p.2) : ℂ) * (inner ℂ (f p.2) (T (d p.1)) : ℂ) with hg_def
+  have hg_summable : Summable g := summable_inner_resolution_product d f hSd hTd
   -- Row sums of `g`: the resolution of the identity along `f`, applied to `⟪S dᵢ, T dᵢ⟫`.
   have hrow : ∀ i, HasSum (fun j => g (i, j)) ((inner ℂ (S (d i)) (T (d i)) : ℂ)) := fun i =>
     f.hasSum_inner_mul_inner (S (d i)) (T (d i))
