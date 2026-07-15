@@ -200,4 +200,15 @@ theorem mu_eq_prod_restrict {π σ : Finpartition a} (h : π ≤ σ) :
   change mu ℤ (π.restrict (σ.le B.2)) (σ.restrict (σ.le B.2)) = mu ℤ (π.restrict (σ.le B.2)) ⊤
   rw [restrict_self_part_eq_top σ B.2]
 
+/-- **`ℂ`-coefficient version of `mu_eq_prod_restrict`**, obtained by casting rather than
+reproving: `IncidenceAlgebraMu.mu_intCast_eq_complex` shows `mu ℤ`'s value agrees with `mu ℂ`'s
+after casting, since `mu`'s recursive definition only uses `+`, `-`, `1`. Needed so
+`MomentCumulant.lean` (which fixes coefficients to `ℂ`, matching the Fock-space side of the
+project) can reuse this block-factorization fact directly. -/
+theorem mu_eq_prod_restrict_complex {π σ : Finpartition a} (h : π ≤ σ) :
+    mu ℂ π σ = ∏ B : σ.parts, mu ℂ (π.restrict (σ.le B.2)) (⊤ : Finpartition (B : Finset α)) := by
+  rw [← mu_intCast_eq_complex, mu_eq_prod_restrict h]
+  push_cast
+  exact Finset.prod_congr rfl fun B _ => mu_intCast_eq_complex _ _
+
 end Finpartition
