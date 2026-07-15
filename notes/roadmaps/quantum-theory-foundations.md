@@ -76,10 +76,10 @@ Goal: formalize that the canonical/Gibbs state `ρ' = e^{-βH}/Z(β)`, `Z(β) = 
 
 Status: `idea`.
 
-Prerequisite groundwork target: the minimal scaffolding needed before stating either theorem below — e.g. creation/annihilation operator algebra (CCR/CAR), Fock space construction, and normal ordering, on the countably infinite-dimensional lattice setting chosen for this project. Precise scope to be filled in `notes/model-and-assumptions.md`.
+Prerequisite groundwork target: the minimal scaffolding needed before stating either theorem below — creation/annihilation operator algebra (CCR/CAR), Fock space construction, and normal ordering, on the countably infinite-dimensional lattice setting chosen for this project. This groundwork is now tracked in detail as its own track: see [notes/roadmaps/second-quantization.md](second-quantization.md), which lays out the full dependency chain (one-particle space → occupation basis → Fock space → creation/annihilation → CCR → Hamiltonians → Gibbs state/partition function → Dyson expansion → Linked Cluster Theorem) and the planned file order. Precise physical scope (lattice model, interaction form) still to be filled in `notes/model-and-assumptions.md`.
 
 ## Finite-temperature Bloch–de Dominicis theorem
 
 Status: `idea`.
 
-Goal: formalize the thermal-average analogue of Wick's theorem — that a thermal expectation value of a product of creation/annihilation operators decomposes into a sum over all full pairings (contractions), each a product of two-operator thermal averages. Depends on the QFT groundwork target above.
+Goal: formalize the thermal-average analogue of Wick's theorem — that a thermal expectation value of a product of creation/annihilation operators decomposes into a sum over all full pairings (contractions), each a product of two-operator thermal averages. Depends on the second-quantization groundwork ([notes/roadmaps/second-quantization.md](second-quantization.md)) above.

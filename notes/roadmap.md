@@ -7,15 +7,15 @@ Status values: `idea` → `stated` (definition/statement written, may contain `s
 
 ## Approach
 
-The Linked Cluster Theorem target rests on three largely independent prerequisite tracks that all feed into it. Work on the tracks can proceed in parallel; the top-level theorem waits on all three. Track C is a foundational gap discovered while scoping Track A's extension to the countably-infinite-dimensional (Fock space) setting: Mathlib currently has no trace-class/Schatten-class operator theory, so `DensityOperator`/`vonNeumannEntropy`/`gibbsState` are finite-dimensional only (see `notes/caveats.md`).
+The Linked Cluster Theorem target rests on four largely independent prerequisite tracks that all feed into it. Work on the tracks can proceed in parallel; the top-level theorem waits on all four. Track C is a foundational gap discovered while scoping Track A's extension to the countably-infinite-dimensional (Fock space) setting: Mathlib currently has no trace-class/Schatten-class operator theory, so `DensityOperator`/`vonNeumannEntropy`/`gibbsState` are finite-dimensional only (see `notes/caveats.md`). Track D (second quantization) is the concrete algebraic build-out of Track A's former "QFT groundwork" placeholder.
 
 ```
-Track A: quantum theory foundations       Track B: combinatorics          Track C: operator algebra
-  Basic QFT formalization                   Partition-lattice Möbius /      (trace-class / Hilbert-Schmidt,
-    -> Bloch-de Dominicis theorem              moment-cumulant formula      for infinite-dim Hilbert spaces)
-              \                                      /                            /
-               \                                    /                           /
-                -> Linked Cluster Theorem (finite temperature) <-----------------
+Track A: quantum theory     Track B: combinatorics       Track C: operator algebra      Track D: second quantization
+  Bloch-de Dominicis thm.     Partition-lattice Möbius /    (trace-class / Hilbert-        Fock space -> creation/annihilation
+                                moment-cumulant formula      Schmidt, infinite-dim)         -> CCR -> Hamiltonians -> Dyson exp.
+              \                        /                            /                              /
+               \                      /                            /                              /
+                -> Linked Cluster Theorem (finite temperature) <---------------------------------
 ```
 
 ## Targets
@@ -30,6 +30,7 @@ Track A: quantum theory foundations       Track B: combinatorics          Track 
 | Finite-temperature Bloch–de Dominicis theorem | A | `idea` | [notes/roadmaps/quantum-theory-foundations.md](roadmaps/quantum-theory-foundations.md#finite-temperature-bloch–de-dominicis-theorem) |
 | Partition-lattice Möbius / moment-cumulant formula | B | `stated` | [notes/roadmaps/combinatorics.md](roadmaps/combinatorics.md#partition-lattice-möbius--moment-cumulant-formula) |
 | Trace-class / Hilbert-Schmidt operator theory | C | `stated` | [notes/roadmaps/operator-algebra.md](roadmaps/operator-algebra.md#trace-class--hilbert-schmidt-operator-theory) |
+| Second quantization (Fock space, CCR, Hamiltonians, Dyson expansion) | D | `idea` | [notes/roadmaps/second-quantization.md](roadmaps/second-quantization.md) |
 | Linked Cluster Theorem (finite temperature) | Combined | `idea` | [notes/roadmaps/linked-cluster-theorem.md](roadmaps/linked-cluster-theorem.md#linked-cluster-theorem-finite-temperature) |
 
 See [notes/completed.md](completed.md) for targets that have reached `proved`.
