@@ -117,6 +117,19 @@ theorem isHilbertSchmidt_iff_isHilbertSchmidtWrt {ι : Type*} (d : HilbertBasis 
     obtain ⟨w, e, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
     exact ⟨w, e, (isHilbertSchmidtWrt_iff d e T).mp hd⟩
 
+/-- **Accessor: an `IsHilbertSchmidt` witness gives `IsHilbertSchmidtWrt` against *any* basis.**
+Lets a caller who already has a specific basis `d` in mind write `hT.isHilbertSchmidtWrt d`
+instead of unfolding `isHilbertSchmidt_iff_isHilbertSchmidtWrt`. -/
+theorem IsHilbertSchmidt.isHilbertSchmidtWrt {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T)
+    {ι : Type*} (d : HilbertBasis ι ℂ H) : IsHilbertSchmidtWrt d T :=
+  (isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mp hT
+
+/-- **Accessor: the reverse direction**, packaging `IsHilbertSchmidtWrt` evidence for one basis
+into the basis-independent `IsHilbertSchmidt`. -/
+theorem IsHilbertSchmidt.of_isHilbertSchmidtWrt {ι : Type*} {d : HilbertBasis ι ℂ H}
+    {T : H →L[ℂ] H} (hT : IsHilbertSchmidtWrt d T) : IsHilbertSchmidt T :=
+  (isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mpr hT
+
 /-- **Hilbert–Schmidt-ness is preserved by taking the adjoint.** A direct consequence of the
 basis-independence computation: `T` being Hilbert–Schmidt with respect to `d` already gives that
 `T†` is Hilbert–Schmidt with respect to that *same* `d` (no basis change needed for this
@@ -250,10 +263,10 @@ the latter with
 theorem innerHS_eq_of_isHilbertSchmidt {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S)
     (hT : IsHilbertSchmidt T) : innerHS d S T = innerHS f S T := by
-  have hSd := (isHilbertSchmidt_iff_isHilbertSchmidtWrt d S).mp hS
-  have hTd := (isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mp hT
-  have hSf := (isHilbertSchmidt_iff_isHilbertSchmidtWrt f S).mp hS
-  have hTf := (isHilbertSchmidt_iff_isHilbertSchmidtWrt f T).mp hT
+  have hSd := hS.isHilbertSchmidtWrt d
+  have hTd := hT.isHilbertSchmidtWrt d
+  have hSf := hS.isHilbertSchmidtWrt f
+  have hTf := hT.isHilbertSchmidtWrt f
   have h2 := summable_inner_adjoint_apply_and_tsum_eq d d hSd hTd
   have h3 := summable_inner_adjoint_apply_and_tsum_eq f d hSf hTf
   exact h2.2.symm.trans h3.2
