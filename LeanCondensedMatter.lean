@@ -10,6 +10,7 @@ import LeanCondensedMatter.Analysis.TraceClassScalar
 import LeanCondensedMatter.Combinatorics.IncidenceAlgebraMu
 import LeanCondensedMatter.Combinatorics.PartitionLattice
 import LeanCondensedMatter.Combinatorics.MomentCumulant
+import LeanCondensedMatter.Combinatorics.CumulantFactorization
 import LeanCondensedMatter.QuantumTheory.Postulates
 import LeanCondensedMatter.QuantumTheory.DensityOperator
 import LeanCondensedMatter.QuantumTheory.DensityOperatorTraceClass

@@ -93,7 +93,36 @@ moment-cumulant relationship is simply not meaningful at the empty set.
 
 **Not yet done (moment-cumulant):** connecting this finite-set combinatorial identity to actual
 thermal expectation values / cumulants of physical observables (Track D), and the log-generating-
-function / connected-contribution translation needed for the Linked Cluster Theorem itself. The
-natural next step is a `Combinatorics/CumulantFactorization.lean`: if a moment factors over a
-disconnected decomposition, the corresponding cumulant vanishes on disconnected sets, isolating
-the "connected contribution" structure the Linked Cluster Theorem ultimately needs.
+function / connected-contribution translation needed for the Linked Cluster Theorem itself.
+
+## Moment factorization under independence (towards connected cumulants)
+
+Status: `stated` — first (partition-level) step done, in
+`LeanCondensedMatter/Combinatorics/CumulantFactorization.lean`.
+
+Goal: the classical "cumulants vanish across independence" theorem, needed for the Linked Cluster
+Theorem's "only connected diagrams survive in `log Z`" statement.
+
+- `Finpartition.IsIndependentAcross m A B` — `m` factors independently across the disjoint pair
+  `(A, B)`: `Disjoint A B ∧ m ⊥ = 1 ∧ ∀ T ≤ A ⊔ B, m T = m (T ⊓ A) * m (T ⊓ B)`. `m ⊥ = 1` is
+  required explicitly, not derivable — the factorization alone only forces `m ⊥ ∈ {0, 1}`, and the
+  `0` branch degenerates to `m ≡ 0`.
+- `Finpartition.partitionProduct_restrict_eq_prod_inf` — a general fact about
+  `Finpartition.restrict` (no independence needed): `partitionProduct m (π.restrict hb) = ∏ C ∈
+  π.parts, m (C ⊓ b)`. Blocks with `C ⊓ b = ⊥` are absent from `(π.restrict hb).parts` but
+  contribute a no-op `m ⊥ = 1` factor on the other side; among the rest, `C ↦ C ⊓ b` is injective
+  (`eq_of_inf_ne_bot`, reused from `PartitionLattice.lean`) with image exactly
+  `(π.restrict hb).parts`.
+- **`Finpartition.partitionProduct_eq_mul_of_isIndependentAcross`** — the partition-level
+  factorization: under `IsIndependentAcross m A B`, for any `π : Finpartition (A ⊔ B)`,
+  `partitionProduct m π = partitionProduct m (π.restrict le_sup_left) * partitionProduct m
+  (π.restrict le_sup_right)`.
+
+**Not yet done:** the deeper cumulant-vanishing theorem itself, `cumulantFromMoment m (A ⊔ B) = 0`
+under independence (for `A`, `B` both nonempty). This needs summing the partition-level
+factorization above over all `π ∈ Finpartition (A ⊔ B)`, weighted by `μ(π, ⊤)` — but unlike the
+moment-cumulant inversion proofs, the fiber of `π ↦ (π.restrict hA, π.restrict hB)` over a fixed
+pair `(ρ_A, ρ_B)` is not a bijection: it's the set of ways to *partially match* blocks of `ρ_A`
+with blocks of `ρ_B` (merging at most one block from each side per group). Summing `μ` over that
+matching structure and showing it vanishes (except in degenerate cases) is a genuinely harder,
+separate combinatorial argument — not attempted here.
