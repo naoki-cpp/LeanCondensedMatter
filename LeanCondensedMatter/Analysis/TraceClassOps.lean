@@ -18,6 +18,27 @@ comparing operators against a *common* Hilbert basis of `H`
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/-- **A nonnegative summable family, reindexed along an injection, is still summable and its sum
+only decreases.** `Summable (fun i => g (e i))` and `Σᵢ g (e i) ≤ Σₖ g k`, for `g ≥ 0` summable
+and `e` injective. The general (no Hilbert-space content) comparison fact underlying
+`sum_inner_apply_le_trace`: embedding an incomplete orthonormal family into a full Hilbert basis
+via an injection, and discarding the (nonneg) terms outside its range. -/
+theorem tsum_le_tsum_of_injective_of_nonneg {ι κ : Type*} {g : κ → ℝ} {e : ι → κ}
+    (he : Function.Injective e) (hg : Summable g) (hgnonneg : ∀ k, 0 ≤ g k) :
+    Summable (fun i => g (e i)) ∧ ∑' i, g (e i) ≤ ∑' k, g k := by
+  have hsub_sum : Summable (fun x : Set.range e => g x) := hg.subtype _
+  set phi := Equiv.ofInjective e he with hphi_def
+  have heq : (fun x : Set.range e => g x) ∘ phi = fun i => g (e i) := by
+    funext i
+    have hcoe : (phi i : κ) = e i := rfl
+    change g (phi i : κ) = g (e i)
+    rw [hcoe]
+  have hfsum : Summable (fun i => g (e i)) := by
+    rw [← heq]
+    exact phi.summable_iff.mpr hsub_sum
+  refine ⟨hfsum, ?_⟩
+  exact hasSum_le_inj e he (fun c _ => hgnonneg c) (fun _ => le_refl _) hfsum.hasSum hg.hasSum
+
 omit [CompleteSpace H] in
 /-- **A complex inner product times its "reverse" is the real cast of its squared norm.**
 `⟪x,y⟫⟪y,x⟫ = ‖⟪x,y⟫‖²`, a consequence of `⟪y,x⟫` being the complex conjugate of `⟪x,y⟫`
@@ -244,24 +265,12 @@ theorem sum_inner_apply_le_trace {T : H →L[ℂ] H} (hT : IsCompactOperator T)
   have hd_inj : Function.Injective d := hd.linearIndependent.injective
   set e : ι → w := fun i => ⟨d i, hsub ⟨i, rfl⟩⟩ with he_def
   have he_inj : Function.Injective e := fun i j hij => hd_inj (congrArg Subtype.val hij)
-  have hbval : ∀ i, (b (e i) : H) = d i := fun i => by rw [hb_eq]
-  set fι : ι → ℝ := fun i => (inner ℂ (d i) (T (d i)) : ℂ).re with hf_def
-  have hge : ∀ i, g (e i) = fι i := fun i => by
-    change (inner ℂ (b (e i)) (T (b (e i))) : ℂ).re = fι i
-    rw [hbval i]
-  have hgsum : Summable g := htr.summable
-  have hsub_sum : Summable (fun x : Set.range e => g x) := hgsum.subtype _
-  set hphi := Equiv.ofInjective e he_inj with hphi_def
-  have heq : (fun x : Set.range e => g x) ∘ hphi = fι := by
-    funext i
-    change g (hphi i : w) = fι i
-    have hcoe : (hphi i : w) = e i := rfl
-    rw [hcoe]; exact hge i
-  have hfsum : Summable fι := by
-    rw [← heq]
-    exact hphi.summable_iff.mpr hsub_sum
-  refine ⟨hfsum, ?_⟩
-  exact hasSum_le_inj e he_inj (fun c _ => hgnonneg c)
-    (fun i => le_of_eq (hge i).symm) hfsum.hasSum htr
+  have hge : ∀ i, g (e i) = (inner ℂ (d i) (T (d i)) : ℂ).re := fun i => by
+    change (inner ℂ (b (e i)) (T (b (e i))) : ℂ).re = _
+    rw [show (b (e i) : H) = d i from by rw [hb_eq]]
+  obtain ⟨hfsum, hle⟩ := tsum_le_tsum_of_injective_of_nonneg he_inj htr.summable hgnonneg
+  rw [htr.tsum_eq] at hle
+  refine ⟨hfsum.congr hge, ?_⟩
+  rwa [tsum_congr hge] at hle
 
 end ContinuousLinearMap
