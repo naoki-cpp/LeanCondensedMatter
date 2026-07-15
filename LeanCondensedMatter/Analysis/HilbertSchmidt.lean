@@ -78,25 +78,25 @@ theorem summable_norm_sq_adjoint_apply_and_tsum_eq {ι κ : Type*} (d : HilbertB
     _ = ∑' i, ∑' j, g (i, j) := Summable.tsum_prod' hg_summable (fun i => (hrow i).summable)
     _ = ∑' i, ‖T (d i)‖ ^ 2 := tsum_congr fun i => (hrow i).tsum_eq
 
-/-- **`IsHilbertSchmidtWrt` is independent of the choice of Hilbert basis.** Applying
+/-- **The same basis-independence, phrased for `T` itself rather than its adjoint.** Applying
 `summable_norm_sq_adjoint_apply_and_tsum_eq` twice — once for `T`, once for `T†` — and using
-`T†† = T` transports Hilbert–Schmidt-ness (and the common sum of squared norms) from any one
-basis to any other. -/
+`T†† = T` transports the sum of squared norms of `T` from any one basis to any other. This is
+the public-facing form of the basis-independence computation: callers wanting to compare `T`
+across bases (`isHilbertSchmidtWrt_iff`) should use this rather than reasoning about `T†`
+directly. -/
+theorem summable_norm_sq_apply_and_tsum_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
+    (f : HilbertBasis κ ℂ H) (T : H →L[ℂ] H) (hd : Summable (fun i => ‖T (d i)‖ ^ 2)) :
+    Summable (fun j => ‖T (f j)‖ ^ 2) ∧ ∑' j, ‖T (f j)‖ ^ 2 = ∑' i, ‖T (d i)‖ ^ 2 := by
+  have h1 := summable_norm_sq_adjoint_apply_and_tsum_eq d f T hd
+  have h2 := summable_norm_sq_adjoint_apply_and_tsum_eq f f (ContinuousLinearMap.adjoint T) h1.1
+  rw [ContinuousLinearMap.adjoint_adjoint] at h2
+  exact ⟨h2.1, h2.2.trans h1.2⟩
+
+/-- **`IsHilbertSchmidtWrt` is independent of the choice of Hilbert basis.** -/
 theorem isHilbertSchmidtWrt_iff {ι κ : Type*} (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H)
-    (T : H →L[ℂ] H) : IsHilbertSchmidtWrt d T ↔ IsHilbertSchmidtWrt f T := by
-  constructor
-  · intro hd
-    have h1 := summable_norm_sq_adjoint_apply_and_tsum_eq d f T hd
-    have h2 := summable_norm_sq_adjoint_apply_and_tsum_eq f f
-      (ContinuousLinearMap.adjoint T) h1.1
-    rw [ContinuousLinearMap.adjoint_adjoint] at h2
-    exact h2.1
-  · intro hf
-    have h1 := summable_norm_sq_adjoint_apply_and_tsum_eq f d T hf
-    have h2 := summable_norm_sq_adjoint_apply_and_tsum_eq d d
-      (ContinuousLinearMap.adjoint T) h1.1
-    rw [ContinuousLinearMap.adjoint_adjoint] at h2
-    exact h2.1
+    (T : H →L[ℂ] H) : IsHilbertSchmidtWrt d T ↔ IsHilbertSchmidtWrt f T :=
+  ⟨fun hd => (summable_norm_sq_apply_and_tsum_eq d f T hd).1,
+    fun hf => (summable_norm_sq_apply_and_tsum_eq f d T hf).1⟩
 
 /-- **`T` is Hilbert–Schmidt**, independently of any particular choice of Hilbert basis. -/
 def IsHilbertSchmidt (T : H →L[ℂ] H) : Prop :=
