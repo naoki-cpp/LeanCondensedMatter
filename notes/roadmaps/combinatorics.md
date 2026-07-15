@@ -8,7 +8,8 @@ Status: split into three sub-targets, tracked separately in `notes/roadmap.md`'s
 - **Partition-lattice refinement/Möbius factorization — `proved`.**
 - **Explicit partition-lattice Möbius formula (`(-1)^(n-1)(n-1)!`) — `stated`** (not yet proved; see
   "Not yet done" below).
-- **Moment–cumulant inversion formula — `idea`** (not started).
+- **Moment–cumulant inversion formula — `proved`**, in
+  `LeanCondensedMatter/Combinatorics/MomentCumulant.lean`. See that section below.
 
 Goal: formalize the general combinatorial moment-cumulant theorem on the lattice of set partitions (Möbius function of the partition lattice), in a form specializable to thermal expectation values.
 
@@ -31,4 +32,46 @@ This exhibits the interval `[⊥, σ]` in the partition lattice as (in bijection
 
 In `PartitionLattice.lean` itself, `restrict_self_part_eq_top` (`σ.restrict (σ.le hB) = ⊤` for `B ∈ σ.parts`) identifies `σ`'s own image under the fiber correspondence with the all-`⊤` element, closing the argument.
 
-**Not yet done:** the explicit closed-form factorial formula for each `mu ℤ (π.restrict (σ.le hB)) ⊤` (a single-block Möbius function) is not yet proved — see `notes/caveats.md` for attempted routes and next steps.
+**Not yet done (Möbius formula):** the explicit closed-form factorial formula for each
+`mu ℤ (π.restrict (σ.le hB)) ⊤` (a single-block Möbius function) is not yet proved — see
+`notes/caveats.md` for attempted routes and next steps.
+
+## Moment–cumulant inversion
+
+Status: `proved`, in `LeanCondensedMatter/Combinatorics/MomentCumulant.lean`.
+
+Goal: the moment/cumulant relation for a finite set `S`, defined as sums over `Finpartition S`,
+and its inversion via Möbius inversion on the partition lattice. Coefficients fixed to `ℂ`
+throughout (using `IncidenceAlgebra.mu ℂ` directly, not `mu ℤ` cast — avoids an unneeded
+cast-compatibility lemma and matches the coefficient field on Track D's Fock-space side).
+
+- `Finpartition.partitionProduct f π := ∏ B ∈ π.parts, f B` — the product of `f` over a
+  partition's blocks.
+- `Finpartition.momentFromCumulant κ S := ∑ π : Finpartition S, partitionProduct κ π` — the
+  moment associated to a cumulant `κ`.
+- `Finpartition.cumulantFromMoment m S := ∑ π : Finpartition S, mu ℂ π ⊤ * partitionProduct m π`
+  — the cumulant recovered from a moment `m` via the partition lattice's Möbius function.
+- `Finpartition.partitionProduct_bind` — the product over a `bind`-glued partition factors as a
+  product over the coarser partition's blocks of the product over each block's own
+  sub-partition. Proved via `Finset.prod_biUnion` (disjointness of `Q B`'s parts across distinct
+  `B`, mirroring `Finpartition.card_bind`'s own disjointness argument).
+- `Finpartition.sum_Iic_partitionProduct_eq` — the sum, over all refinements `ρ ≤ π`, of the full
+  product equals the product over `π`'s blocks of `momentFromCumulant κ` applied to that block.
+  Combines `refinementsEquivFiberPartitions` (reindexing the sum via the refinement-fiber
+  bijection), `partitionProduct_bind`, and the "sum of a product of independent choices is a
+  product of sums" identity (`Finset.prod_univ_sum`).
+- **`Finpartition.cumulantFromMoment_momentFromCumulant`** — the main theorem:
+  `cumulantFromMoment (momentFromCumulant κ) S = κ S`, for `S ≠ ⊥`. Proved by Möbius inversion on
+  the partition lattice (`IncidenceAlgebra.moebius_inversion_bot`) evaluated at `⊤ : Finpartition
+  S`, using `sum_Iic_partitionProduct_eq` to identify the "sum function" with `momentFromCumulant
+  κ` applied blockwise.
+
+**`S ≠ ⊥` is a genuine hypothesis, not a proof convenience.** `Finpartition ⊥` is a one-element
+type (the only partition of the empty set is the empty one, with zero parts), so
+`momentFromCumulant κ ⊥ = 1` regardless of `κ`, forcing `cumulantFromMoment (momentFromCumulant
+κ) ⊥ = 1` too — the unrestricted equality would force `κ ⊥ = 1` for every `κ`, which is false.
+The moment-cumulant relationship is simply not meaningful at the empty set.
+
+**Not yet done (moment-cumulant):** connecting this finite-set combinatorial identity to actual
+thermal expectation values / cumulants of physical observables (Track D), and the log-generating-
+function / connected-contribution translation needed for the Linked Cluster Theorem itself.
