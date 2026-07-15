@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.CompactSelfAdjoint
+import LeanCondensedMatter.Analysis.TraceClassOps
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 
 /-!
@@ -120,6 +120,7 @@ theorem isHilbertSchmidt_adjoint {T : H →L[ℂ] H} (hT : IsHilbertSchmidt T) :
   obtain ⟨w, d, hd⟩ := hT
   exact ⟨w, d, (summable_norm_sq_adjoint_apply_and_tsum_eq d d T hd).1⟩
 
+omit [CompleteSpace H] in
 /-- **Composing a Hilbert–Schmidt operator with a bounded operator on the left stays
 Hilbert–Schmidt**, with respect to the same basis, by the comparison test against the operator
 norm bound `‖B (T dᵢ)‖ ≤ ‖B‖ * ‖T dᵢ‖`. -/
@@ -134,6 +135,7 @@ theorem isHilbertSchmidtWrt_comp_left {ι : Type*} (d : HilbertBasis ι ℂ H) (
         pow_le_pow_left₀ (norm_nonneg _) hle 2
     _ = ‖B‖ ^ 2 * ‖T (d i)‖ ^ 2 := by ring
 
+omit [CompleteSpace H] in
 theorem isHilbertSchmidt_comp_left (B : H →L[ℂ] H) {T : H →L[ℂ] H}
     (hT : IsHilbertSchmidt T) : IsHilbertSchmidt (B * T) := by
   obtain ⟨w, d, hd⟩ := hT
@@ -161,6 +163,7 @@ below, and independence of the choice of `d` is `innerHS_eq_of_isHilbertSchmidt`
 noncomputable def innerHS {ι : Type*} (d : HilbertBasis ι ℂ H) (S T : H →L[ℂ] H) : ℂ :=
   ∑' i, (inner ℂ (S (d i)) (T (d i)) : ℂ)
 
+omit [CompleteSpace H] in
 theorem summable_inner_apply_of_isHilbertSchmidtWrt {ι : Type*} (d : HilbertBasis ι ℂ H)
     {S T : H →L[ℂ] H} (hS : IsHilbertSchmidtWrt d S) (hT : IsHilbertSchmidtWrt d T) :
     Summable (fun i => (inner ℂ (S (d i)) (T (d i)) : ℂ)) := by
