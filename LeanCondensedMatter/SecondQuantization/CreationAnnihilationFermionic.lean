@@ -100,12 +100,14 @@ theorem annihilate_fockVacuum (i : Mode) :
 
 /-- **Creating a particle in the vacuum** produces the single-particle basis state at mode `i`,
 with sign `1` (no modes precede an empty occupation). -/
+@[simp]
 theorem create_fockVacuum (i : Mode) :
     create i (fockVacuum : FockSpaceFermionic Mode) =
-      basisState (insertOccupation i (fermionVacuum : FermionOccupation Mode)) := by
+      basisState ({i} : FermionOccupation Mode) := by
   have hnotmem : i ∉ (fermionVacuum : FermionOccupation Mode) := Finset.notMem_empty i
   rw [fockVacuum, create_basisState_of_not_mem hnotmem, fermionSign_fermionVacuum, Int.cast_one,
-    one_smul]
+    one_smul, insertOccupation, fermionVacuum]
+  congr 1
 
 /-- **Creating twice in the same mode annihilates the state**, the basis-level shadow of Pauli
 exclusion (`{aᵢ†, aᵢ†} = 0`, before CAR itself is stated in `CAR.lean`). -/
