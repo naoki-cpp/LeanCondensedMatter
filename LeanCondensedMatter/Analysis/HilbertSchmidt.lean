@@ -23,8 +23,8 @@ individually summable.** Given `g : ι × κ → E` summable, together with `Has
 sums (`row i = Σⱼ g(i,j)`) and column sums (`col j = Σᵢ g(i,j)`), `row` and `col` are themselves
 summable with a common total `Σᵢ row i = Σⱼ col j = Σ g`. The Fubini-style swap
 (`Summable.prod_symm`/`Equiv.prodComm`/`HasSum.prod_fiberwise`) underlying both
-`summable_norm_sq_adjoint_apply_and_tsum_eq` and `hasSum_inner_swap`, factored out since neither
-proof depends on `E` being `ℝ` or `ℂ` specifically. -/
+`summable_norm_sq_adjoint_apply_and_tsum_eq` and `summable_inner_adjoint_apply_and_tsum_eq`,
+factored out since neither proof depends on `E` being `ℝ` or `ℂ` specifically. -/
 theorem tsum_fiberwise_eq_of_summable {ι κ E : Type*} [NormedAddCommGroup E] [CompleteSpace E]
     {g : ι × κ → E} {row : ι → E} {col : κ → E} (hg : Summable g)
     (hrow : ∀ i, HasSum (fun j => g (i, j)) (row i))
@@ -187,8 +187,9 @@ squared-norm swap used for `IsHilbertSchmidtWrt` basis-independence, the summand
 (not nonnegative), so absolute summability of the double family is established via the AM–GM
 bound `|ab| ≤ (|a|² + |b|²) / 2` instead of `summable_prod_of_nonneg` applied to the family
 itself. -/
-theorem hasSum_inner_swap {ι κ : Type*} (d : HilbertBasis ι ℂ H) (f : HilbertBasis κ ℂ H)
-    {S T : H →L[ℂ] H} (hSd : IsHilbertSchmidtWrt d S) (hTd : IsHilbertSchmidtWrt d T) :
+theorem summable_inner_adjoint_apply_and_tsum_eq {ι κ : Type*} (d : HilbertBasis ι ℂ H)
+    (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H} (hSd : IsHilbertSchmidtWrt d S)
+    (hTd : IsHilbertSchmidtWrt d T) :
     Summable (fun j => (inner ℂ (ContinuousLinearMap.adjoint T (f j))
         (ContinuousLinearMap.adjoint S (f j)) : ℂ)) ∧
       ∑' j, (inner ℂ (ContinuousLinearMap.adjoint T (f j))
@@ -242,8 +243,9 @@ theorem hasSum_inner_swap {ι κ : Type*} (d : HilbertBasis ι ℂ H) (f : Hilbe
   exact ⟨hcolSummable, heq.symm⟩
 
 /-- **`innerHS` is independent of the choice of Hilbert basis.** Applying
-`hasSum_inner_swap` with the same basis for both arguments identifies `innerHS d S T` with
-`Σᵢ ⟪T† dᵢ, S† dᵢ⟫`; applying it again with `d` and `f` swapped identifies the latter with
+`summable_inner_adjoint_apply_and_tsum_eq` with the same basis for both arguments identifies
+`innerHS d S T` with `Σᵢ ⟪T† dᵢ, S† dᵢ⟫`; applying it again with `d` and `f` swapped identifies
+the latter with
 `innerHS f S T`. -/
 theorem innerHS_eq_of_isHilbertSchmidt {ι κ : Type*} (d : HilbertBasis ι ℂ H)
     (f : HilbertBasis κ ℂ H) {S T : H →L[ℂ] H} (hS : IsHilbertSchmidt S)
@@ -252,8 +254,8 @@ theorem innerHS_eq_of_isHilbertSchmidt {ι κ : Type*} (d : HilbertBasis ι ℂ 
   have hTd := (isHilbertSchmidt_iff_isHilbertSchmidtWrt d T).mp hT
   have hSf := (isHilbertSchmidt_iff_isHilbertSchmidtWrt f S).mp hS
   have hTf := (isHilbertSchmidt_iff_isHilbertSchmidtWrt f T).mp hT
-  have h2 := hasSum_inner_swap d d hSd hTd
-  have h3 := hasSum_inner_swap f d hSf hTf
+  have h2 := summable_inner_adjoint_apply_and_tsum_eq d d hSd hTd
+  have h3 := summable_inner_adjoint_apply_and_tsum_eq f d hSf hTf
   exact h2.2.symm.trans h3.2
 
 /-- **Reconciliation with `ContinuousLinearMap.trace`.** For a compact self-adjoint trace-class
