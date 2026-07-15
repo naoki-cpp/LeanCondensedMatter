@@ -18,4 +18,6 @@ Goal: formalize the general combinatorial moment-cumulant theorem on the lattice
 
 This exhibits the interval `[⊥, σ]` in the partition lattice as (in bijection with) the product `Π B ∈ σ.parts, Finpartition B` — the structural fact underlying the moment-cumulant / Möbius-inversion formula.
 
-**Not yet done:** the `Equiv` is not yet upgraded to an order isomorphism (relating `≤` on `{π // π ≤ σ}` to the pointwise product order on `∀ B, Finpartition B`), and the closed-form Möbius formula itself is not yet proved — see `notes/caveats.md` for attempted routes and next steps.
+**The `Equiv` is now upgraded to an order isomorphism**: `Finpartition.refinementsOrderIsoFiberPartitions`, relating `≤` on `{π // π ≤ σ}` (refinement, inherited from `Finpartition a`) to the pointwise product order on `∀ B, Finpartition B`. Built from `restrict_mono` (`P ≤ P' → P.restrict hb ≤ P'.restrict hb`) for the easy direction, and, for the other, testing membership of a part `A` of `π` at the `σ`-part `B` containing it and transporting the pointwise hypothesis there via `mem_restrict_iff`.
+
+**Not yet done:** the closed-form Möbius formula itself is not yet proved — see `notes/caveats.md` for attempted routes and next steps.

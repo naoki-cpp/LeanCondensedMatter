@@ -96,6 +96,19 @@ theorem restrict_bind_eq (σ : Finpartition a) (Q : ∀ B ∈ σ.parts, Finparti
   · intro hd
     exact ⟨(Q B hB).ne_bot hd, d, mem_bind.2 ⟨B, hB, hd⟩, inf_eq_left.2 ((Q B hB).le hd)⟩
 
+/-- **`restrict` is monotone**: refining `P` to `P'` also refines each of their restrictions to a
+common `b ≤ a`. Needed to show `refinementsEquivFiberPartitions` is an order isomorphism, not
+just a bijection. -/
+theorem restrict_mono {P P' : Finpartition a} (h : P ≤ P') {b : Finset α} (hb : b ≤ a) :
+    P.restrict hb ≤ P'.restrict hb := by
+  intro d hd
+  rw [mem_restrict_iff] at hd
+  obtain ⟨hd0, A, hA, rfl⟩ := hd
+  obtain ⟨C, hC, hAC⟩ := h hA
+  refine ⟨C ⊓ b, ?_, inf_le_inf_right b hAC⟩
+  rw [mem_restrict_iff]
+  exact ⟨ne_bot_of_le_ne_bot hd0 (inf_le_inf_right b hAC), C, hC, rfl⟩
+
 /-- **The refinement fiber decomposition.** The refinements of `σ` (partitions `π ≤ σ`, i.e.
 finer than `σ`) correspond exactly to choosing, independently, a partition of each part `B` of
 `σ`: forward via `restrict` (splitting `π` by intersecting with each part of `σ`), backward via
@@ -109,5 +122,27 @@ def refinementsEquivFiberPartitions (σ : Finpartition a) :
   invFun Q := ⟨σ.bind (fun B hB => Q ⟨B, hB⟩), bind_le σ _⟩
   left_inv π := Subtype.ext (bind_restrict_eq_of_le π.2)
   right_inv Q := funext fun B => restrict_bind_eq σ (fun C hC => Q ⟨C, hC⟩) B.2
+
+/-- **`refinementsEquivFiberPartitions` as an order isomorphism.** The subtype order on
+`{π // π ≤ σ}` (inherited from refinement on `Finpartition a`) corresponds to the pointwise order
+on `∀ B, Finpartition B` under the bijection: `≥` (`restrict_mono`) is immediate, and `≤` follows
+by testing membership of a part `A` of `π` at the `σ`-part `B` containing it (via `π.2 : π ≤ σ`),
+transporting the pointwise hypothesis there. This is the structure needed to factor the
+partition lattice's Möbius function as a product over `σ`'s parts. -/
+def refinementsOrderIsoFiberPartitions (σ : Finpartition a) :
+    {π : Finpartition a // π ≤ σ} ≃o (∀ B : σ.parts, Finpartition (B : Finset α)) where
+  toEquiv := refinementsEquivFiberPartitions σ
+  map_rel_iff' := by
+    intro π π'
+    refine ⟨fun h A hA => ?_, fun h B => restrict_mono h (σ.le B.2)⟩
+    obtain ⟨B, hB, hAB⟩ := π.2 hA
+    have hAmem : A ∈ (π.1.restrict (σ.le hB)).parts := by
+      rw [mem_restrict_iff]
+      exact ⟨π.1.ne_bot hA, A, hA, inf_eq_left.2 hAB⟩
+    obtain ⟨D, hD, hAD⟩ := h ⟨B, hB⟩ hAmem
+    have hD' : D ∈ (π'.1.restrict (σ.le hB)).parts := hD
+    rw [mem_restrict_iff] at hD'
+    obtain ⟨-, C, hC, rfl⟩ := hD'
+    exact ⟨C, hC, hAD.trans inf_le_left⟩
 
 end Finpartition
