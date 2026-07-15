@@ -11,7 +11,7 @@ Lean/Mathlib style and project-wide conventions.
 
 ## Project structure
 
-- **One directory per track:** `Analysis/` for general mathematical infrastructure (Track C), `Combinatorics/` for Track B, `QuantumTheory/` for the physics postulates and what is built on them (Track A). Physics files import analysis files, never the reverse.
+- **One directory per track:** `Analysis/` for general mathematical infrastructure (Track C), `Combinatorics/` for Track B, `QuantumTheory/` for the physics postulates and what is built on them (Track A), `SecondQuantization/` for Track D (Fock space, creation/annihilation, CCR/CAR — kept separate from `QuantumTheory/` since second quantization is its own construction, not an extension of the axiomatic single-particle postulates). Physics files import analysis files, never the reverse.
 - **Lemmas live as far upstream as they can be stated.** A fact about a general structure belongs in the infrastructure file, not in the physics file that first needed it.
 - **Generalizations get a parallel file**, named after the original plus the enabling machinery, leaving the original file untouched.
 - **Every unit of work updates its track's roadmap** (`notes/roadmaps/*.md`) in the same PR: what was proved, the route taken, and what remains.

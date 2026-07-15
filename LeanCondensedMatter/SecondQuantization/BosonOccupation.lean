@@ -21,7 +21,7 @@ so the same API works unchanged once `Mode` is later generalized to a countably 
 need a *finite* mode set (e.g. an explicit finite-dimensional Fock space truncation).
 -/
 
-namespace QuantumTheory
+namespace SecondQuantization
 
 variable {Mode : Type*}
 
@@ -75,4 +75,4 @@ theorem particleNumber_createOccupation (i : Mode) (n : Occupation Mode) :
     particleNumber (createOccupation i n) = particleNumber n + 1 := by
   rw [createOccupation, particleNumber_add, particleNumber_singleOccupation]
 
-end QuantumTheory
+end SecondQuantization

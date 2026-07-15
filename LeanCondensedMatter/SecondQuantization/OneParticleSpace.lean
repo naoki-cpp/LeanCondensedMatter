@@ -16,7 +16,7 @@ the countably-infinite-mode case is deferred to a later generalization, mirrorin
 finite-first approach already used for `Finpartition`/`IncidenceAlgebra` in Track B.
 -/
 
-namespace QuantumTheory
+namespace SecondQuantization
 
 -- **One-particle mode space.** An abstract label set for single-particle states (momentum
 -- modes, lattice sites, spin components, ...). No algebraic structure beyond `Fintype` and
@@ -26,4 +26,4 @@ variable (Mode : Type*) [Fintype Mode] [DecidableEq Mode]
 /-- The number of one-particle modes. -/
 abbrev modeCount : ℕ := Fintype.card Mode
 
-end QuantumTheory
+end SecondQuantization
