@@ -18,6 +18,26 @@ the groundwork: the Hilbert–Schmidt predicate and its basis-independence. See
 `notes/roadmaps/operator-algebra.md`.
 -/
 
+/-- **Row-first and column-first iterated sums of a summable double family agree, with each
+individually summable.** Given `g : ι × κ → E` summable, together with `HasSum` data for its row
+sums (`row i = Σⱼ g(i,j)`) and column sums (`col j = Σᵢ g(i,j)`), `row` and `col` are themselves
+summable with a common total `Σᵢ row i = Σⱼ col j = Σ g`. The Fubini-style swap
+(`Summable.prod_symm`/`Equiv.prodComm`/`HasSum.prod_fiberwise`) underlying both
+`summable_norm_sq_adjoint_apply_and_tsum_eq` and `hasSum_inner_swap`, factored out since neither
+proof depends on `E` being `ℝ` or `ℂ` specifically. -/
+theorem tsum_fiberwise_eq_of_summable {ι κ E : Type*} [NormedAddCommGroup E] [CompleteSpace E]
+    {g : ι × κ → E} {row : ι → E} {col : κ → E} (hg : Summable g)
+    (hrow : ∀ i, HasSum (fun j => g (i, j)) (row i))
+    (hcol : ∀ j, HasSum (fun i => g (i, j)) (col j)) :
+    Summable row ∧ Summable col ∧ ∑' i, row i = ∑' j, col j := by
+  have hg' : Summable (fun q : κ × ι => g q.swap) := hg.prod_symm
+  have hswap : ∑' q : κ × ι, g q.swap = ∑' p : ι × κ, g p := (Equiv.prodComm κ ι).tsum_eq g
+  have haCol' : HasSum (fun q : κ × ι => g q.swap) (∑' p : ι × κ, g p) := by
+    rw [← hswap]; exact hg'.hasSum
+  have haRow : HasSum row (∑' p, g p) := hg.hasSum.prod_fiberwise hrow
+  have haCol : HasSum col (∑' p, g p) := haCol'.prod_fiberwise hcol
+  exact ⟨haRow.summable, haCol.summable, haRow.tsum_eq.trans haCol.tsum_eq.symm⟩
+
 namespace ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -61,22 +81,8 @@ theorem summable_norm_sq_adjoint_apply_and_tsum_eq {ι κ : Type*} (d : HilbertB
   have hg_summable : Summable g :=
     (summable_prod_of_nonneg hg_nonneg).mpr ⟨fun i => (hrow i).summable, by
       simpa only [fun i => (hrow i).tsum_eq] using hd⟩
-  -- Swap to the column-first form to read off the conclusion.
-  have hg_summable' : Summable (fun q : κ × ι => g q.swap) := hg_summable.prod_symm
-  have hcol_prod := (summable_prod_of_nonneg
-    (f := fun q : κ × ι => g q.swap) (fun q => hg_nonneg q.swap)).mp hg_summable'
-  have hcol_summable : Summable (fun j => ‖(ContinuousLinearMap.adjoint T) (f j)‖ ^ 2) :=
-    hcol_prod.2.congr fun j => (hcol j).tsum_eq
-  refine ⟨hcol_summable, ?_⟩
-  have hswap : ∑' q : κ × ι, g q.swap = ∑' p : ι × κ, g p :=
-    (Equiv.prodComm κ ι).tsum_eq g
-  calc ∑' j, ‖(ContinuousLinearMap.adjoint T) (f j)‖ ^ 2
-      = ∑' j, ∑' i, g (i, j) := tsum_congr fun j => ((hcol j).tsum_eq).symm
-    _ = ∑' q : κ × ι, g q.swap := (Summable.tsum_prod' hg_summable'
-        (fun j => (hcol_prod.1 j))).symm
-    _ = ∑' p : ι × κ, g p := hswap
-    _ = ∑' i, ∑' j, g (i, j) := Summable.tsum_prod' hg_summable (fun i => (hrow i).summable)
-    _ = ∑' i, ‖T (d i)‖ ^ 2 := tsum_congr fun i => (hrow i).tsum_eq
+  obtain ⟨_, hcol_summable, heq⟩ := tsum_fiberwise_eq_of_summable hg_summable hrow hcol
+  exact ⟨hcol_summable, heq.symm⟩
 
 /-- **The same basis-independence, phrased for `T` itself rather than its adjoint.** Applying
 `summable_norm_sq_adjoint_apply_and_tsum_eq` twice — once for `T`, once for `T†` — and using
@@ -232,19 +238,8 @@ theorem hasSum_inner_swap {ι κ : Type*} (d : HilbertBasis ι ℂ H) (f : Hilbe
     simp_rw [hcol_point]
     exact d.hasSum_inner_mul_inner (ContinuousLinearMap.adjoint T (f j))
       (ContinuousLinearMap.adjoint S (f j))
-  -- Assemble both iterated sums against the *same* total `∑' p, g p`, via `HasSum.prod_fiberwise`
-  -- (valid for general, not-necessarily-nonnegative summable families).
-  have hg_summable' : Summable (fun q : κ × ι => g q.swap) := hg_summable.prod_symm
-  have hswap_eq : ∑' q : κ × ι, g q.swap = ∑' p : ι × κ, g p := (Equiv.prodComm κ ι).tsum_eq g
-  have ha' : HasSum (fun q : κ × ι => g q.swap) (∑' p : ι × κ, g p) :=
-    hswap_eq ▸ hg_summable'.hasSum
-  have hcolSum : HasSum (fun j => (inner ℂ (ContinuousLinearMap.adjoint T (f j))
-      (ContinuousLinearMap.adjoint S (f j)) : ℂ)) (∑' p : ι × κ, g p) :=
-    ha'.prod_fiberwise hcol
-  have ha : HasSum g (∑' p : ι × κ, g p) := hg_summable.hasSum
-  have hrowSum : HasSum (fun i => (inner ℂ (S (d i)) (T (d i)) : ℂ)) (∑' p : ι × κ, g p) :=
-    ha.prod_fiberwise hrow
-  exact ⟨hcolSum.summable, hcolSum.tsum_eq.trans hrowSum.tsum_eq.symm⟩
+  obtain ⟨_, hcolSummable, heq⟩ := tsum_fiberwise_eq_of_summable hg_summable hrow hcol
+  exact ⟨hcolSummable, heq.symm⟩
 
 /-- **`innerHS` is independent of the choice of Hilbert basis.** Applying
 `hasSum_inner_swap` with the same basis for both arguments identifies `innerHS d S T` with
