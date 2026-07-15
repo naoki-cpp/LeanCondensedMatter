@@ -42,7 +42,7 @@ Track D.
 | Hilbert–Schmidt operator theory | C | `stated` | [notes/roadmaps/operator-algebra.md](roadmaps/operator-algebra.md#hilbert–schmidt-operators) |
 | Trace-class operator theory | C | `stated` | [notes/roadmaps/operator-algebra.md](roadmaps/operator-algebra.md#trace-class--hilbert-schmidt-operator-theory) |
 | Fredholm determinant | C | `idea` | [notes/roadmaps/operator-algebra.md](roadmaps/operator-algebra.md) |
-| Second quantization, fermionic primary line (Fock space, CAR, Hamiltonians, Dyson expansion) | D | `stated` (phases 1-2 done) | [notes/roadmaps/second-quantization.md](roadmaps/second-quantization.md) |
+| Second quantization, fermionic primary line (Fock space, CAR, Hamiltonians, Dyson expansion) | D | `stated` (phases 1-6 done) | [notes/roadmaps/second-quantization.md](roadmaps/second-quantization.md) |
 | Second quantization, bosonic line (parallel, not critical path) | D | `stated` (occupation done) | [notes/roadmaps/second-quantization.md](roadmaps/second-quantization.md#bosonic-line-parallel-not-critical-path) |
 | Linked Cluster Theorem (finite temperature) | Combined | `idea` | [notes/roadmaps/linked-cluster-theorem.md](roadmaps/linked-cluster-theorem.md#linked-cluster-theorem-finite-temperature) |
 
