@@ -9,7 +9,7 @@ The starting point of second quantization (Track D, `notes/roadmaps/second-quant
 an abstract type of one-particle "modes" (momentum modes, lattice sites, or any other
 single-particle label). This deliberately carries no linear or Hilbert-space structure yet —
 that structure appears once modes are combined into occupation-number states
-(`OccupationBosonic.lean`) and then Fock space (`FockSpaceBosonic.lean`).
+(`BosonOccupation.lean`/`FermionOccupation.lean`) and then Fock space.
 
 `Fintype Mode` is assumed for now to avoid analytical complications (summability, completions);
 the countably-infinite-mode case is deferred to a later generalization, mirroring the same

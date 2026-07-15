@@ -4,13 +4,16 @@ import Mathlib.Algebra.BigOperators.Finsupp.Basic
 set_option linter.style.header false
 
 /-!
-# Occupation-number states
+# Bosonic occupation-number states
 
-Phase 2 of Track D (`notes/roadmaps/second-quantization.md`): the occupation-number
-representation of the bosonic Fock basis, `Occupation Mode := Mode →₀ ℕ` — a finitely-supported
-function assigning each mode its number of particles. This is the preferred basis for the
-bosonic Fock space built in `FockSpace.lean`; symmetric tensor powers are deliberately avoided
-as the starting point since the occupation-number picture is simpler and computationally direct.
+The occupation-number representation of the bosonic Fock basis, `Occupation Mode := Mode →₀ ℕ` —
+a finitely-supported function assigning each mode its number of particles. This is the preferred
+basis for a future bosonic Fock space; symmetric tensor powers are deliberately avoided as the
+starting point since the occupation-number picture is simpler and computationally direct. See
+`FermionOccupation.lean` for the fermionic counterpart (`Finset Mode`, not `Mode →₀ ℕ`, since
+Pauli exclusion caps occupation at `0`/`1`) and `notes/roadmaps/second-quantization.md` for how
+this fits into Track D — the fermionic, finite-mode case is now the primary line toward the
+Linked Cluster Theorem, with this bosonic development kept in parallel.
 
 This file deliberately does not assume `[Fintype Mode]`: finite support is built into `Finsupp`,
 so the same API works unchanged once `Mode` is later generalized to a countably infinite mode set
