@@ -1,5 +1,6 @@
 import Mathlib.Order.Partition.Finpartition
 import Mathlib.Combinatorics.Enumerative.IncidenceAlgebra
+import LeanCondensedMatter.Combinatorics.IncidenceAlgebraMu
 
 -- No project files currently carry a Mathlib-style copyright/author header; a
 -- project-wide policy for this is a separate open item (see notes/conventions.md).
@@ -16,6 +17,8 @@ machinery.
 physics content elsewhere in this project. See `notes/model-and-assumptions.md` for the survey
 of what Mathlib/PhysLean already provide here.
 -/
+
+open IncidenceAlgebra
 
 variable {α : Type*} [DecidableEq α] {s : Finset α}
 
@@ -144,5 +147,57 @@ def refinementsOrderIsoFiberPartitions (σ : Finpartition a) :
     rw [mem_restrict_iff] at hD'
     obtain ⟨-, C, hC, rfl⟩ := hD'
     exact ⟨C, hC, hAD.trans inf_le_left⟩
+
+/-- **A partition restricted to one of its own parts is the indiscrete (single-part) partition
+of that part.** `σ.restrict (σ.le hB) = ⊤` for `B ∈ σ.parts`: both sides have `parts = {B}` —
+`σ`'s restriction because every other part of `σ` is disjoint from `B` (so intersects it to
+`⊥`, discarded), and `⊤` by `Finpartition.parts_top_subset`/`parts_nonempty_iff`. The final piece
+needed to identify `refinementsOrderIsoFiberPartitions σ ⟨σ, le_rfl⟩` (the top refinement of
+`σ`, itself) with the all-`⊤` element under the fiber-partition correspondence. -/
+theorem restrict_self_part_eq_top (σ : Finpartition a) {B : Finset α} (hB : B ∈ σ.parts) :
+    σ.restrict (σ.le hB) = (⊤ : Finpartition B) := by
+  classical
+  have hparts : (σ.restrict (σ.le hB)).parts = {B} := by
+    apply Finset.eq_singleton_iff_unique_mem.2
+    refine ⟨mem_restrict_iff.2 ⟨σ.ne_bot hB, B, hB, inf_idem B⟩, fun d hd => ?_⟩
+    rw [mem_restrict_iff] at hd
+    obtain ⟨hd0, C, hC, rfl⟩ := hd
+    by_contra hne
+    exact hd0 (bot_unique (σ.disjoint hC hB (fun h => hne (h ▸ inf_idem B))).le_bot)
+  have htop : (⊤ : Finpartition B).parts = {B} := by
+    apply Finset.eq_singleton_iff_unique_mem.2
+    refine ⟨?_, fun d hd => Finset.mem_singleton.1 (Finpartition.parts_top_subset B hd)⟩
+    obtain ⟨x, hx⟩ := (Finpartition.parts_nonempty_iff (P := (⊤ : Finpartition B))).2
+      (σ.ne_bot hB)
+    rwa [Finset.mem_singleton.1 (Finpartition.parts_top_subset B hx)] at hx
+  exact Finpartition.ext (hparts.trans htop.symm)
+
+/-- **The Möbius function of the partition lattice factors as a product over the parts of a
+coarser partition.** For `π ≤ σ`, `mu ℤ π σ = ∏ B ∈ σ.parts, mu ℤ (π|_B) ⊤`, where `π|_B` is
+`π` restricted to `B` and `⊤` is `B`'s indiscrete partition. Combines
+`refinementsOrderIsoFiberPartitions` with the general facts in `IncidenceAlgebraMu.lean`:
+`mu_subtype_le_apply` moves the computation into the down-set `{τ // τ ≤ σ}`,
+`mu_orderIso_apply` transports it across `refinementsOrderIsoFiberPartitions`, `mu_pi_finset_apply`
+splits the resulting product-type Möbius function into a product over `σ.parts`, and
+`restrict_self_part_eq_top` identifies `σ`'s own image (`refinementsOrderIsoFiberPartitions σ`
+applied to the top element `⟨σ, le_rfl⟩`) with the all-`⊤` element. This is the moment-cumulant
+formula's structural core; the explicit factorial formula for each `mu ℤ (π|_B) ⊤` is not proved
+here — see `notes/roadmaps/combinatorics.md`. -/
+theorem mu_eq_prod_restrict {π σ : Finpartition a} (h : π ≤ σ) :
+    mu ℤ π σ = ∏ B : σ.parts, mu ℤ (π.restrict (σ.le B.2)) (⊤ : Finpartition (B : Finset α)) := by
+  classical
+  have hstep1 : mu ℤ π σ = mu ℤ (⟨π, h⟩ : {τ : Finpartition a // τ ≤ σ}) ⟨σ, le_refl σ⟩ :=
+    (mu_subtype_le_apply (⟨π, h⟩ : {τ : Finpartition a // τ ≤ σ}) ⟨σ, le_refl σ⟩).symm
+  have hstep2 : mu ℤ (⟨π, h⟩ : {τ : Finpartition a // τ ≤ σ}) ⟨σ, le_refl σ⟩ =
+      mu ℤ (refinementsOrderIsoFiberPartitions σ ⟨π, h⟩)
+        (refinementsOrderIsoFiberPartitions σ ⟨σ, le_refl σ⟩) :=
+    (mu_orderIso_apply _ _ _).symm
+  have hstep3 := mu_pi_finset_apply (fun B : Finset α => Finpartition B) σ.parts
+    (refinementsOrderIsoFiberPartitions σ ⟨π, h⟩)
+    (refinementsOrderIsoFiberPartitions σ ⟨σ, le_refl σ⟩)
+  rw [hstep1, hstep2, hstep3]
+  refine Finset.prod_congr rfl fun B _ => ?_
+  change mu ℤ (π.restrict (σ.le B.2)) (σ.restrict (σ.le B.2)) = mu ℤ (π.restrict (σ.le B.2)) ⊤
+  rw [restrict_self_part_eq_top σ B.2]
 
 end Finpartition
