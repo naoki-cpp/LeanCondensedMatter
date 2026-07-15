@@ -104,15 +104,47 @@ theorem dysonTruncation_freeHamiltonian_basisState (ε : Mode → ℝ) (n : Ferm
   simp only [dysonTruncation, LinearMap.sum_apply, dysonTerm_freeHamiltonian_basisState]
   rw [← Finset.sum_smul]
 
+/-- **The order-`N` truncated Boltzmann weight** of an occupation state `n`, for the free
+Hamiltonian's dispersion `ε`: the order-`N` partial sum of the scalar Taylor series for
+`exp(-E(n))`, `E(n) := Σ_{i∈n} ε(i)`. This is exactly the scalar produced by
+`dysonTruncation_freeHamiltonian_basisState`, named separately so it can be fed to
+`partitionFunction`/`weightedTrace` (`ThermalExpectationFermionic.lean`) as a genuine (if only
+finite-order-approximate) weight. -/
+noncomputable def truncatedBoltzmannWeight (ε : Mode → ℝ) (N : ℕ) (n : FermionOccupation Mode) :
+    ℂ :=
+  ∑ k ∈ Finset.range (N + 1), (-1 : ℂ) ^ k / k.factorial * (∑ i ∈ n, (ε i : ℂ)) ^ k
+
+/-- **The free Hamiltonian's truncated Dyson series is diagonal**, with `(n, n)` matrix
+coefficient exactly `truncatedBoltzmannWeight ε N n`. -/
+theorem matrixCoeff_dysonTruncation_freeHamiltonian (ε : Mode → ℝ) (N : ℕ)
+    (n : FermionOccupation Mode) :
+    matrixCoeff (dysonTruncation (freeHamiltonian ε) N) n n = truncatedBoltzmannWeight ε N n :=
+  matrixCoeff_of_smul_basisState (dysonTruncation_freeHamiltonian_basisState ε n N)
+
+/-- **The order-`N` formal partition function of the free Hamiltonian** is exactly
+`partitionFunction` applied to the order-`N` truncated Boltzmann weight — the finite-Taylor-order
+approximation to the Gibbs weight has entered `ThermalExpectationFermionic.lean`'s machinery. -/
+theorem traceFock_dysonTruncation_freeHamiltonian (ε : Mode → ℝ) (N : ℕ) :
+    traceFock (dysonTruncation (freeHamiltonian ε) N) =
+      partitionFunction (truncatedBoltzmannWeight ε N) := by
+  simp [traceFock, partitionFunction, matrixCoeff_dysonTruncation_freeHamiltonian]
+
+/-- **Weighted-trace version.** For any additional weight `w`, `weightedTrace w` of the free
+Hamiltonian's order-`N` truncated Dyson series is `partitionFunction` of the pointwise product
+`w * truncatedBoltzmannWeight ε N`. -/
+theorem weightedTrace_dysonTruncation_freeHamiltonian (ε : Mode → ℝ) (N : ℕ)
+    (w : FermionOccupation Mode → ℂ) :
+    weightedTrace w (dysonTruncation (freeHamiltonian ε) N) =
+      partitionFunction (fun n => w n * truncatedBoltzmannWeight ε N n) := by
+  simp [weightedTrace, partitionFunction, matrixCoeff_dysonTruncation_freeHamiltonian]
+
 /-- **The order-`N` formal partition function of the free Hamiltonian** is the expected finite sum
 over occupation states of the order-`N` partial sum of the scalar Taylor series for `exp(-E(n))`. -/
 theorem dysonPartitionFunction_freeHamiltonian (ε : Mode → ℝ) (N : ℕ) :
     dysonPartitionFunction (freeHamiltonian ε) N =
       ∑ n : FermionOccupation Mode,
-        ∑ k ∈ Finset.range (N + 1), (-1 : ℂ) ^ k / k.factorial * (∑ i ∈ n, (ε i : ℂ)) ^ k := by
-  simp only [dysonPartitionFunction, traceFock, matrixCoeff,
-    dysonTruncation_freeHamiltonian_basisState, Finsupp.smul_apply]
-  simp [basisState]
+        ∑ k ∈ Finset.range (N + 1), (-1 : ℂ) ^ k / k.factorial * (∑ i ∈ n, (ε i : ℂ)) ^ k :=
+  traceFock_dysonTruncation_freeHamiltonian ε N
 
 /-! ## What remains
 
