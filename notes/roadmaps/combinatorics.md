@@ -29,6 +29,7 @@ This exhibits the interval `[⊥, σ]` in the partition lattice as (in bijection
 - `mu_orderIso_apply` — `mu` is invariant under order isomorphism (strong induction on `Icc` cardinality, mirroring `mu`'s own recursive definition).
 - `mu_subtype_le_apply` — `mu` computed inside a down-set `{t // t ≤ z}` agrees with the ambient `mu`. Needs `[Fintype α]` for a `LocallyFiniteOrder` instance on the down-set (`instLocallyFiniteOrderSubtypeLe`) — satisfied by `Finpartition a`, already `Fintype`.
 - `mu_pi_finset_apply` — `mu` on a finite dependent product `∀ i : t, β i` is the product of the factors' `mu`'s. Proved by induction on `t : Finset ι`, splitting off one index at a time via `piInsertOrderIso` (an order isomorphism `∀ i : insert j s, β i ≃o β j × ∀ i : s, β i`) combined with Mathlib's `IncidenceAlgebra.mu_prod_mu`.
+- `mu_intCast_eq_complex` — `mu ℤ x y` cast to `ℂ` agrees with `mu ℂ x y` computed directly (same strong-induction technique). Added when `Combinatorics/MomentCumulant.lean` needed to reuse `mu_eq_prod_restrict`'s `ℤ`-coefficient content in a `ℂ`-coefficient setting without redoing the other three lemmas above for `ℂ`.
 
 In `PartitionLattice.lean` itself, `restrict_self_part_eq_top` (`σ.restrict (σ.le hB) = ⊤` for `B ∈ σ.parts`) identifies `σ`'s own image under the fiber correspondence with the all-`⊤` element, closing the argument.
 
@@ -41,9 +42,9 @@ In `PartitionLattice.lean` itself, `restrict_self_part_eq_top` (`σ.restrict (σ
 Status: `proved`, in `LeanCondensedMatter/Combinatorics/MomentCumulant.lean`.
 
 Goal: the moment/cumulant relation for a finite set `S`, defined as sums over `Finpartition S`,
-and its inversion via Möbius inversion on the partition lattice. Coefficients fixed to `ℂ`
-throughout (using `IncidenceAlgebra.mu ℂ` directly, not `mu ℤ` cast — avoids an unneeded
-cast-compatibility lemma and matches the coefficient field on Track D's Fock-space side).
+and its inversion via Möbius inversion on the partition lattice — proved as a genuine **mutual**
+inversion (both directions), not just one-sided. Coefficients fixed to `ℂ` throughout (matching
+Track D's Fock-space side).
 
 - `Finpartition.partitionProduct f π := ∏ B ∈ π.parts, f B` — the product of `f` over a
   partition's blocks.
@@ -60,18 +61,39 @@ cast-compatibility lemma and matches the coefficient field on Track D's Fock-spa
   Combines `refinementsEquivFiberPartitions` (reindexing the sum via the refinement-fiber
   bijection), `partitionProduct_bind`, and the "sum of a product of independent choices is a
   product of sums" identity (`Finset.prod_univ_sum`).
-- **`Finpartition.cumulantFromMoment_momentFromCumulant`** — the main theorem:
+- **`Finpartition.cumulantFromMoment_momentFromCumulant`** —
   `cumulantFromMoment (momentFromCumulant κ) S = κ S`, for `S ≠ ⊥`. Proved by Möbius inversion on
   the partition lattice (`IncidenceAlgebra.moebius_inversion_bot`) evaluated at `⊤ : Finpartition
   S`, using `sum_Iic_partitionProduct_eq` to identify the "sum function" with `momentFromCumulant
   κ` applied blockwise.
+- **`Finpartition.momentFromCumulant_cumulantFromMoment`** — the other direction:
+  `momentFromCumulant (cumulantFromMoment m) S = m S`, for `S ≠ ⊥`. Needs two more pieces:
+  - `IncidenceAlgebra.mu_intCast_eq_complex` (`IncidenceAlgebraMu.lean`) — `mu ℤ x y` cast to `ℂ`
+    agrees with `mu ℂ x y` computed directly, by the same strong-induction argument as
+    `mu_orderIso_apply` (the recursive definition of `mu` only uses `+`, `-`, `1`, so it commutes
+    with the ring homomorphism `ℤ → ℂ`).
+  - `Finpartition.mu_eq_prod_restrict_complex` (`PartitionLattice.lean`) — the `ℂ`-coefficient
+    version of `mu_eq_prod_restrict`, obtained by casting the existing `ℤ` theorem rather than
+    redoing the whole `mu_orderIso_apply`/`mu_subtype_le_apply`/`mu_pi_finset_apply` development
+    for `ℂ`.
+  - `Finpartition.sum_Iic_mu_partitionProduct_eq` — the reverse-direction analogue of
+    `sum_Iic_partitionProduct_eq`: the `μ`-weighted sum over refinements of `π` equals the
+    product, over `π`'s blocks, of `cumulantFromMoment m` applied to that block. Additionally uses
+    `mu_eq_prod_restrict_complex` to identify `∏ B, mu ℂ (Q B) ⊤` with `mu ℂ ρ π` (`ρ := π.bind
+    Q`), and `restrict_bind_eq` to identify `ρ.restrict (π.le B.2)` with `Q B`.
+  - The main proof swaps the order of summation in `∑ π, ∑ ρ ≤ π, μ(ρ,π) · m-product(ρ)` to
+    `∑ ρ, ∑ π ≥ ρ, μ(ρ,π) · m-product(ρ)`, then uses `IncidenceAlgebra.sum_Icc_mu_right` to
+    telescope the inner sum to the indicator of `ρ = ⊤`.
 
-**`S ≠ ⊥` is a genuine hypothesis, not a proof convenience.** `Finpartition ⊥` is a one-element
-type (the only partition of the empty set is the empty one, with zero parts), so
-`momentFromCumulant κ ⊥ = 1` regardless of `κ`, forcing `cumulantFromMoment (momentFromCumulant
-κ) ⊥ = 1` too — the unrestricted equality would force `κ ⊥ = 1` for every `κ`, which is false.
-The moment-cumulant relationship is simply not meaningful at the empty set.
+**`S ≠ ⊥` is a genuine hypothesis, not a proof convenience, for both directions.** `Finpartition
+⊥` is a one-element type (the only partition of the empty set is the empty one, with zero parts),
+so `momentFromCumulant κ ⊥ = 1` regardless of `κ`, forcing `cumulantFromMoment (momentFromCumulant
+κ) ⊥ = 1` too — the unrestricted equality would force `κ ⊥ = 1` for every `κ`, which is false. The
+moment-cumulant relationship is simply not meaningful at the empty set.
 
 **Not yet done (moment-cumulant):** connecting this finite-set combinatorial identity to actual
 thermal expectation values / cumulants of physical observables (Track D), and the log-generating-
-function / connected-contribution translation needed for the Linked Cluster Theorem itself.
+function / connected-contribution translation needed for the Linked Cluster Theorem itself. The
+natural next step is a `Combinatorics/CumulantFactorization.lean`: if a moment factors over a
+disconnected decomposition, the corresponding cumulant vanishes on disconnected sets, isolating
+the "connected contribution" structure the Linked Cluster Theorem ultimately needs.

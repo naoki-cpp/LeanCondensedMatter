@@ -2,6 +2,7 @@ import Mathlib.Combinatorics.Enumerative.IncidenceAlgebra
 import Mathlib.Logic.Equiv.Prod
 import Mathlib.Data.Finset.Insert
 import Mathlib.Data.Pi.Interval
+import Mathlib.Data.Complex.Basic
 
 -- No project files currently carry a Mathlib-style copyright/author header; a
 -- project-wide policy for this is a separate open item (see notes/conventions.md).
@@ -62,6 +63,30 @@ theorem mu_orderIso_apply {α β : Type*} [PartialOrder α] [PartialOrder β]
         exact ⟨e.le_iff_le.2 h1, e.lt_iff_lt.2 h2⟩
     rw [mu_eq_neg_sum_Ico_of_ne hexy, mu_eq_neg_sum_Ico_of_ne hxy, himg,
       Finset.sum_image (fun z1 _ z2 _ h => e.injective h)]
+    congr 1
+    apply Finset.sum_congr rfl
+    intro z hz
+    rw [Finset.mem_Ico] at hz
+    have hcard : (Finset.Icc x z).card < (Finset.Icc x y).card :=
+      Finset.card_lt_card (Finset.Icc_ssubset_Icc_right (hz.1.trans hz.2.le) le_rfl hz.2)
+    exact ih _ hcard x z rfl
+
+/-- **The Möbius function is compatible with casting the coefficient ring `ℤ → ℂ`.** `mu ℤ x y`
+cast to `ℂ` agrees with `mu ℂ x y` computed directly. Proved by strong induction on
+`(Icc x y).card`, mirroring `mu`'s own recursive definition (`mu_eq_neg_sum_Ico_of_ne`): that
+recursion only uses `+`, `-`, `1`, so it commutes with the ring homomorphism `ℤ → ℂ`. Lets
+`PartitionLattice.lean`'s `mu_eq_prod_restrict` (proved once, for `ℤ`) be reused directly for the
+`ℂ`-coefficient application in `MomentCumulant.lean`, instead of redoing the whole
+`mu_orderIso_apply`/`mu_subtype_le_apply`/`mu_pi_finset_apply` development for `ℂ`. -/
+theorem mu_intCast_eq_complex {α : Type*} [PartialOrder α] [LocallyFiniteOrder α] [DecidableEq α]
+    (x y : α) : ((mu ℤ x y : ℤ) : ℂ) = mu ℂ x y := by
+  induction hn : (Finset.Icc x y).card using Nat.strong_induction_on generalizing x y with
+  | _ n ih =>
+    subst hn
+    by_cases hxy : x = y
+    · subst hxy; simp
+    rw [mu_eq_neg_sum_Ico_of_ne hxy, mu_eq_neg_sum_Ico_of_ne hxy]
+    push_cast
     congr 1
     apply Finset.sum_congr rfl
     intro z hz
