@@ -12,7 +12,7 @@ Kept as its own tiny file so both occupation-number representations
 refer to it without duplicating the sign convention.
 -/
 
-namespace QuantumTheory
+namespace SecondQuantization
 
 /-- **Quantum statistics.** Which of the two exchange statistics a species of identical particle
 obeys. -/
@@ -42,4 +42,4 @@ theorem zeta_sq (s : Statistics) : zetaInt s * zetaInt s = 1 := by
 
 end Statistics
 
-end QuantumTheory
+end SecondQuantization

@@ -18,7 +18,7 @@ those belong to a later file (`CreationAnnihilationFermionic.lean`) once this bo
 in place.
 -/
 
-namespace QuantumTheory
+namespace SecondQuantization
 
 variable {Mode : Type*} [DecidableEq Mode]
 
@@ -69,4 +69,4 @@ theorem fermionParticleNumber_removeOccupation_of_not_mem {i : Mode} {n : Fermio
     fermionParticleNumber (removeOccupation i n) = fermionParticleNumber n := by
   rw [fermionParticleNumber, fermionParticleNumber, removeOccupation, Finset.erase_eq_of_notMem h]
 
-end QuantumTheory
+end SecondQuantization

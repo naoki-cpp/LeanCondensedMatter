@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.FermionOccupation
+import LeanCondensedMatter.SecondQuantization.FermionOccupation
 import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Finsupp.Basic
 
@@ -18,7 +18,7 @@ annihilation operators, with their sign factors, come next
 (`CreationAnnihilationFermionic.lean`).
 -/
 
-namespace QuantumTheory
+namespace SecondQuantization
 
 variable {Mode : Type*} [DecidableEq Mode]
 
@@ -46,4 +46,4 @@ basis vectors: `basisState m` and `basisState n` never coincide for `m ≠ n`. -
 theorem basisState_injOn : Set.InjOn (basisState : FermionOccupation Mode → _) Set.univ :=
   fun _ _ _ _ h => basisState_injective h
 
-end QuantumTheory
+end SecondQuantization

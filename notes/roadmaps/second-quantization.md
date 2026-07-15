@@ -6,6 +6,12 @@ plan. This track replaces the old "QFT groundwork" placeholder in
 with a concrete, ordered construction, algebraic first — no Hilbert-space completion, closable
 operators, or self-adjointness/spectral theory until the algebraic Linked Cluster Theorem is done.
 
+Lives in its own directory, `LeanCondensedMatter/SecondQuantization/`, under the `SecondQuantization`
+namespace — deliberately separate from `QuantumTheory/`/`QuantumTheory` (Track A): second
+quantization is its own construction (Fock space, creation/annihilation, CCR/CAR), not an
+extension of the axiomatic single-particle postulates in `Postulates.lean` et al. See
+`notes/conventions.md`'s "one directory per track" rule.
+
 ## Primary line: finite-mode fermions
 
 **As of this redesign, the finite-mode *fermionic* case is the primary line toward the Linked
