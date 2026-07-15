@@ -174,3 +174,13 @@ inequality. Turning it into the free-energy inequality needs summing
 relating the resulting sum to `energyExpValue`/`vonNeumannEntropy`/`ln Z(β)` — not attempted in
 this session. The `ENNReal`-valued-entropy formalization-choice question noted in
 `notes/roadmaps/quantum-theory-foundations.md` also still applies.
+
+## Fredholm determinant
+
+Status: `idea`.
+
+Goal: a Fredholm-determinant construction on trace-class operators (`det(1 + A)` for `A` trace
+class), needed if the Dyson/Duhamel expansion in Track D
+(`notes/roadmaps/second-quantization.md`) is eventually pushed past the purely algebraic setting
+into genuine infinite-dimensional convergence/trace-class territory. Not started; no Mathlib
+survey done yet.

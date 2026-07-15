@@ -4,7 +4,11 @@ See [notes/roadmap.md](../roadmap.md) for the status table and how this track fi
 
 ## Partition-lattice Möbius / moment-cumulant formula
 
-Status: `stated`.
+Status: split into three sub-targets, tracked separately in `notes/roadmap.md`'s table:
+- **Partition-lattice refinement/Möbius factorization — `proved`.**
+- **Explicit partition-lattice Möbius formula (`(-1)^(n-1)(n-1)!`) — `stated`** (not yet proved; see
+  "Not yet done" below).
+- **Moment–cumulant inversion formula — `idea`** (not started).
 
 Goal: formalize the general combinatorial moment-cumulant theorem on the lattice of set partitions (Möbius function of the partition lattice), in a form specializable to thermal expectation values.
 
