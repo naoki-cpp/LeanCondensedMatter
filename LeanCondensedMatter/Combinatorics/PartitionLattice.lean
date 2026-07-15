@@ -23,7 +23,7 @@ variable {α : Type*} [DecidableEq α] {s : Finset α}
 (Mathlib), and its `≤` (refinement) is decidable, so every interval is a finite set. This is
 the adapter needed to apply Mathlib's `IncidenceAlgebra` (Möbius function, Möbius inversion) to
 the partition lattice. -/
-noncomputable instance : LocallyFiniteOrder (Finpartition s) := by
+noncomputable instance instLocallyFiniteOrder : LocallyFiniteOrder (Finpartition s) := by
   classical
   exact Fintype.toLocallyFiniteOrder
 
@@ -80,8 +80,8 @@ theorem bind_restrict_eq_of_le {σ π : Finpartition a} (h : π ≤ σ) :
 
 /-- The other half of `bind_restrict_eq_of_le`: given a partition `B ↦ Q B hB` of each part `B`
 of `σ`, gluing them together via `bind` and then restricting back to a single part `B` recovers
-`Q B hB` exactly. Distinct parts of `σ`.bind `Q` only intersect nontrivially with the `σ`-part
-they came from, by `eq_of_inf_ne_bot`. -/
+`Q B hB` exactly. A part of `σ.bind Q` only intersects nontrivially with the `σ`-part it came
+from, by `eq_of_inf_ne_bot`. -/
 theorem restrict_bind_eq (σ : Finpartition a) (Q : ∀ B ∈ σ.parts, Finpartition B) {B : Finset α}
     (hB : B ∈ σ.parts) : (σ.bind Q).restrict (σ.le hB) = Q B hB := by
   ext d
