@@ -76,7 +76,13 @@ theorem freeHamiltonian_basisState (ε : Mode → ℝ) (n : FermionOccupation Mo
 
 /-- **A density-density interaction Hamiltonian** for a coupling `V : Mode → Mode → ℝ`,
 `H_int := Σᵢⱼ V(i,j) Nᵢ Nⱼ` — a concrete instance of "a finite sum of monomials in
-creation/annihilation operators" (here, quartic monomials `aᵢ†aᵢaⱼ†aⱼ`). -/
+creation/annihilation operators" (here, quartic monomials `aᵢ†aᵢaⱼ†aⱼ`).
+
+This interaction is diagonal in the occupation-number basis (as `interactionHamiltonian_basisState`
+below shows) and hence commutes with `freeHamiltonian`/`numberOperator` — a genuinely restrictive
+special case, not a general quartic interaction. A general fermionic interaction
+`Σᵢⱼₖₗ V(i,j,k,l) cᵢ† cⱼ† cₖ cₗ` (not basis-diagonal, needed for a non-trivial Wick/Dyson
+expansion) is a separate future target; see `notes/roadmaps/second-quantization.md`. -/
 noncomputable def interactionHamiltonian (V : Mode → Mode → ℝ) :
     FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
   ∑ i : Mode, ∑ j : Mode, (V i j : ℂ) • ((numberOperator i).comp (numberOperator j))
