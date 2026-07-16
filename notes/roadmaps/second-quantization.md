@@ -147,7 +147,7 @@ Wick's theorem (Bloch–de Dominicis), and the non-commutative time-ordered Dyso
 order:
 
 1. `ImaginaryTimeEvolution.lean` — `e^{τH₀}` and Heisenberg-picture evolution (**done**, see below).
-2. `ThermalTimeOrdering.lean` — imaginary-time ordering `T_τ`.
+2. `ThermalTimeOrdering.lean` — imaginary-time ordering `T_τ` (**done**, see below).
 3. `ThermalGreenFunction.lean` — `G_{ij}(τ,τ') := -⟨T_τ c_i(τ) c_j†(τ')⟩_β` as a special case of a
    general time-ordered `n`-point thermal correlator.
 4. `ThermalContraction.lean` / `BlochDeDominicis.lean` — Wick contractions and the finite-mode
@@ -168,4 +168,15 @@ order:
 - `imaginaryTimeEvolve ε τ A := e^{τH₀} A e^{-τH₀}` — Heisenberg-picture evolution of a general
   operator, with sanity checks `imaginaryTimeEvolve_zero`/`_freeHamiltonian`.
 
-**Not yet done:** everything from step 2 onward.
+**Step 2 done, in `ThermalTimeOrdering.lean`:**
+- `timeOrderedProduct ζ A B τA τB` — `T_τ[A(τA) B(τB)]`: later time acts first, picking up the
+  exchange sign `ζ : ℤ` (`Statistics.zetaInt`, `-1` fermions/`+1` bosons) on every swap. At equal
+  times, resolves by definition to the `τB ≤ τA` branch. Time ordering doesn't depend on
+  `imaginaryTimeEvolve` itself — it orders whatever two time-labelled operators it's given — but
+  is intended for use on `imaginaryTimeEvolve ε τ A`, feeding `ThermalGreenFunction.lean`.
+- `timeOrderedProduct_of_le`/`_of_lt`, `timeOrderedProduct_self_time` — the two defining branches.
+- `timeOrderedProduct_swap` — swapping the operator pair (with their times) and negating by `ζ`
+  returns the same product, for `τA ≠ τB` and `ζ² = 1`: the operator-level statement that swapping
+  two operators inside a time-ordered product costs exactly the exchange sign.
+
+**Not yet done:** everything from step 3 onward.
