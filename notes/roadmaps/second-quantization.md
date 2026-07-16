@@ -70,7 +70,7 @@ creation and annihilation operators exist, as a later derived construction.
 | 6 | `HamiltonianFermionic.lean` — `numberOperator`/`totalNumberOperator`, `freeHamiltonian` (dispersion-weighted number operators), `interactionHamiltonian` (density-density coupling, a quartic monomial in creation/annihilation operators — see note below). Finite mode sets still assumed | `proved` |
 | 6.5 | `ThermalExpectationFermionic.lean` — `matrixCoeff`, `traceFock`, `weightedTrace`, `partitionFunction`, `thermalExpectation`, for an *arbitrary* weight `w : FermionOccupation Mode → ℂ` (not yet the genuine Gibbs weight `e^{-βE(n)}`, no analytic `exp` anywhere). Isolates the combinatorial "sum over basis states, weighted" structure both a formal and a genuine Gibbs weight will specialize to | `proved` |
 | 7 | `FormalExpFermionic.lean` — `formalExpTerm`/`formalExpTruncation`, the formal (term-by-term) Taylor series for `exp(-H)` and its finite truncations — deliberately *not* the analytic operator exponential (`FockSpaceFermionic Mode` has no topology), and deliberately *not* named `Dyson*`/`dyson*` (that name is reserved for the genuine interaction-picture Dyson series, a separate future target). Validated on `freeHamiltonian` (`truncatedBoltzmannWeight`, `traceFock_formalExpTruncation_freeHamiltonian`, `weightedTrace_formalExpTruncation_freeHamiltonian`), where it reduces to the expected finite-order truncated Boltzmann weight, feeding directly into `ThermalExpectationFermionic.lean`'s `partitionFunction`/`weightedTrace`. Splitting `H₀ + V` combinatorially by perturbation order (the genuine Dyson series) and the analytic Gibbs weight `e^{-βE(n)}` itself both remain, as does a general (non-basis-diagonal) quartic interaction and the moment/cumulant formal-power-series connection to Track B — see the file's own "What remains" note | `proved` |
-| 8 | `QuantumLinkedCluster.lean` — apply Track B's `mu_eq_prod_restrict` (partition-lattice Möbius inversion) to show `log Z = Σ` over connected clusters. Reuse Track B directly; do not reprove | `idea` |
+| 8 | `QuantumLinkedCluster.lean` — apply Track B's `mu_eq_prod_restrict` (partition-lattice Möbius inversion) to show `log Z = Σ` over connected clusters. Reuse Track B directly; do not reprove | `stated` (first bridge landed, see below) |
 
 **Note on `interactionHamiltonian`:** the current `Σᵢⱼ V(i,j) Nᵢ Nⱼ` density-density form is
 diagonal in the occupation-number basis (`interactionHamiltonian_basisState`) and hence commutes
@@ -100,3 +100,23 @@ Analytic issues — Hilbert-space completion of the algebraic Fock space, self-a
 the unbounded creation/annihilation operators, trace-class questions on the completed space — are
 explicitly deferred past the algebraic Linked Cluster Theorem. When they're eventually needed,
 Track C's Hilbert–Schmidt/trace-class infrastructure should be reused, not reproved.
+
+## Phase 8 progress: `QuantumLinkedCluster.lean`
+
+**First bridge landed:** `SecondQuantization.occupationMoment w S` — the thermal expectation value
+`⟨∏ᵢ∈S nᵢ⟩_w` of simultaneous occupation of every mode in `S`, computed directly as a weighted sum
+`(Σₙ, if S ⊆ n then w n else 0) / Z(w)` rather than via an operator product (avoiding the need for
+a `CommMonoid` structure on `FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode` under
+composition, which doesn't exist). This lands exactly in Track B's `Finset Mode → ℂ` moment
+function type.
+
+- `occupationMoment_bot` — `occupationMoment w ⊥ = 1` (given `Z(w) ≠ 0`), matching
+  `Finpartition.IsIndependentAcross`'s normalization hypothesis.
+- `occupationMoment_singleton` — `occupationMoment w {i} = thermalExpectation w (numberOperator
+  i)`, connecting the weighted-sum definition back to Track D's operator-level
+  `thermalExpectation`.
+
+**Not yet done:** establishing `Finpartition.IsIndependentAcross (occupationMoment w) A B` for a
+genuine product/Gibbs weight (i.e. connecting *physical* independence of a weight across a mode
+bipartition to the abstract hypothesis Track B's cumulant-vanishing theorem needs), and the
+`log Z = Σ` over connected clusters assembly itself.
