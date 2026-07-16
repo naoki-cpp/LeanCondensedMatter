@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.ThermalExpectationFermionic
 import LeanCondensedMatter.Combinatorics.CumulantFactorization
+import Mathlib.Tactic.FieldSimp
 
 set_option linter.style.header false
 
@@ -28,8 +29,14 @@ occupation-number basis, built via `Finsupp.lift` exactly as `create`/`annihilat
 projector algebra under composition, making "`occupationProjector S` is the simultaneous product
 of number operators" an operator-algebra theorem rather than only a physical reading.
 
-This remains a modest step: it does *not* yet establish `IsIndependentAcross` for a genuine
-product/Gibbs weight, nor assemble the `log Z = Σ` over connected clusters statement itself — see
+`IsProductWeightAcross w A B` formalizes *physical* independence of a weight across a mode
+bipartition (`Disjoint A B`, `A ∪ B = univ`, `w n = wA (n ∩ A) * wB (n ∩ B)`), and
+`occupationMoment_isIndependentAcross` shows it implies `Finpartition.IsIndependentAcross
+(occupationMoment w) A B` — connecting this physical hypothesis to Track B's abstract one, so
+`cumulantFromMoment_eq_zero_of_isIndependentAcross` applies directly to occupation-number
+cumulants of a product weight.
+
+This does *not* yet assemble the `log Z = Σ` over connected clusters statement itself — see
 `notes/roadmaps/second-quantization.md` for what remains.
 -/
 
@@ -161,5 +168,131 @@ omit [LinearOrder Mode] [Fintype Mode] in
 theorem occupationProjector_idempotent (S : Finset Mode) :
     occupationProjector S * occupationProjector S = occupationProjector S := by
   rw [occupationProjector_mul, Finset.union_self]
+
+/-! ## Independence from a product weight -/
+
+/-- **`w` is a product weight across the mode bipartition `(A, B)`.** `A`, `B` partition all of
+`Mode` (`Disjoint A B`, `A ∪ B = univ`), and `w` factors as `wA` on the `A`-part of an occupation
+state times `wB` on the `B`-part — the combinatorial content of "the weight treats modes in `A`
+and modes in `B` as physically independent". -/
+def IsProductWeightAcross (w : FermionOccupation Mode → ℂ) (A B : Finset Mode) : Prop :=
+  Disjoint A B ∧ A ∪ B = Finset.univ ∧
+    ∃ wA wB : Finset Mode → ℂ, ∀ n, w n = wA (n ∩ A) * wB (n ∩ B)
+
+omit [LinearOrder Mode] in
+/-- **Reindexing a sum over occupation states restricted to contain `C`, split across a product
+weight's two independent sides.** The combinatorial core of this section: every occupation state
+`n ⊇ C` corresponds bijectively to a pair `(n ∩ A, n ∩ B)` with `n ∩ A ⊇ C ∩ A` a subset of `A`
+and `n ∩ B ⊇ C ∩ B` a subset of `B` (via `Disjoint A B`/`A ∪ B = univ`), so a sum of a product
+`wA (n ∩ A) * wB (n ∩ B)` over such `n` splits into a product of two independent sums. -/
+theorem sum_filter_subset_eq_mul {A B : Finset Mode} (hAB : Disjoint A B)
+    (hU : A ∪ B = Finset.univ) (wA wB : Finset Mode → ℂ) (C : Finset Mode) :
+    (∑ n ∈ (Finset.univ : Finset (FermionOccupation Mode)).filter (C ⊆ ·), wA (n ∩ A) * wB (n ∩ B))
+      = (∑ S ∈ A.powerset.filter ((C ∩ A) ⊆ ·), wA S) *
+        (∑ T ∈ B.powerset.filter ((C ∩ B) ⊆ ·), wB T) := by
+  rw [Finset.sum_mul_sum, ← Finset.sum_product']
+  apply Finset.sum_nbij' (fun n => (n ∩ A, n ∩ B)) (fun p => p.1 ∪ p.2)
+  · intro n hn
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hn
+    simp only [Finset.mem_product, Finset.mem_filter, Finset.mem_powerset]
+    exact ⟨⟨Finset.inter_subset_right, Finset.inter_subset_inter_right hn⟩,
+      Finset.inter_subset_right, Finset.inter_subset_inter_right hn⟩
+  · intro p hp
+    simp only [Finset.mem_product, Finset.mem_filter, Finset.mem_powerset] at hp
+    obtain ⟨⟨-, hCS⟩, -, hCT⟩ := hp
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    calc C = C ∩ A ∪ C ∩ B := by
+          rw [← Finset.inter_union_distrib_left, hU, Finset.inter_univ]
+      _ ⊆ p.1 ∪ p.2 := Finset.union_subset_union hCS hCT
+  · intro n _
+    ext x
+    simp only [Finset.mem_union, Finset.mem_inter]
+    refine ⟨fun h => h.elim And.left And.left, fun hx => ?_⟩
+    rcases Finset.mem_union.1 (hU ▸ Finset.mem_univ x : x ∈ A ∪ B) with h | h
+    · exact Or.inl ⟨hx, h⟩
+    · exact Or.inr ⟨hx, h⟩
+  · intro p hp
+    simp only [Finset.mem_product, Finset.mem_filter, Finset.mem_powerset] at hp
+    obtain ⟨⟨hSA, -⟩, hTB, -⟩ := hp
+    have hTA : p.2 ∩ A = ∅ :=
+      Finset.eq_empty_of_forall_notMem fun x hx =>
+        Finset.disjoint_left.1 hAB (Finset.mem_inter.1 hx).2 (hTB (Finset.mem_inter.1 hx).1)
+    have hSB : p.1 ∩ B = ∅ :=
+      Finset.eq_empty_of_forall_notMem fun x hx =>
+        Finset.disjoint_left.1 hAB (hSA (Finset.mem_inter.1 hx).1) (Finset.mem_inter.1 hx).2
+    refine Prod.ext ?_ ?_
+    · change (p.1 ∪ p.2) ∩ A = p.1
+      rw [Finset.union_inter_distrib_right, hTA, Finset.union_empty,
+        Finset.inter_eq_left.2 hSA]
+    · change (p.1 ∪ p.2) ∩ B = p.2
+      rw [Finset.union_inter_distrib_right, hSB, Finset.empty_union,
+        Finset.inter_eq_left.2 hTB]
+  · intro n hn
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hn
+    rfl
+
+omit [LinearOrder Mode] in
+/-- **`occupationMoment` under a product weight, in terms of the two independent sides.** -/
+theorem occupationMoment_eq_of_isProductWeightAcross {w wA wB : FermionOccupation Mode → ℂ}
+    {A B : Finset Mode} (hAB : Disjoint A B) (hU : A ∪ B = Finset.univ)
+    (hw : ∀ n, w n = wA (n ∩ A) * wB (n ∩ B)) (T : Finset Mode) :
+    occupationMoment w T = (∑ S ∈ A.powerset.filter ((T ∩ A) ⊆ ·), wA S) *
+      (∑ T' ∈ B.powerset.filter ((T ∩ B) ⊆ ·), wB T') / partitionFunction w := by
+  rw [occupationMoment, ← sum_filter_subset_eq_mul hAB hU wA wB T]
+  congr 1
+  exact Finset.sum_congr rfl fun n _ => hw n
+
+omit [LinearOrder Mode] in
+theorem partitionFunction_eq_mul_of_isProductWeightAcross {w wA wB : FermionOccupation Mode → ℂ}
+    {A B : Finset Mode} (hAB : Disjoint A B) (hU : A ∪ B = Finset.univ)
+    (hw : ∀ n, w n = wA (n ∩ A) * wB (n ∩ B)) :
+    partitionFunction w = (∑ S ∈ A.powerset, wA S) * (∑ T ∈ B.powerset, wB T) := by
+  have h := sum_filter_subset_eq_mul hAB hU wA wB (⊥ : Finset Mode)
+  have e1 : (Finset.univ : Finset (FermionOccupation Mode)).filter ((⊥ : Finset Mode) ⊆ ·) =
+      Finset.univ := Finset.filter_true_of_mem fun n _ => Finset.empty_subset n
+  have e2 : A.powerset.filter (((⊥ : Finset Mode) ∩ A) ⊆ ·) = A.powerset := by
+    have : (⊥ : Finset Mode) ∩ A = ⊥ := by ext x; simp
+    rw [this]; exact Finset.filter_true_of_mem fun S _ => Finset.empty_subset S
+  have e3 : B.powerset.filter (((⊥ : Finset Mode) ∩ B) ⊆ ·) = B.powerset := by
+    have : (⊥ : Finset Mode) ∩ B = ⊥ := by ext x; simp
+    rw [this]; exact Finset.filter_true_of_mem fun T _ => Finset.empty_subset T
+  rw [e1, e2, e3] at h
+  rw [partitionFunction]
+  simp_rw [hw]
+  exact h
+
+omit [LinearOrder Mode] in
+/-- **The main theorem: a product weight makes `occupationMoment` independent across its
+bipartition.** Connects the *physical* independence hypothesis `IsProductWeightAcross` to the
+abstract hypothesis `Finpartition.IsIndependentAcross` that Track B's cumulant-vanishing theorem
+(`cumulantFromMoment_eq_zero_of_isIndependentAcross`) needs. -/
+theorem occupationMoment_isIndependentAcross {w : FermionOccupation Mode → ℂ} {A B : Finset Mode}
+    (hw : IsProductWeightAcross w A B) (hZ : partitionFunction w ≠ 0) :
+    Finpartition.IsIndependentAcross (occupationMoment w) A B := by
+  obtain ⟨hAB, hU, wA, wB, hfact⟩ := hw
+  refine ⟨hAB, occupationMoment_bot hZ, fun T _ => ?_⟩
+  rw [Finset.inf_eq_inter, Finset.inf_eq_inter]
+  have hZeq := partitionFunction_eq_mul_of_isProductWeightAcross hAB hU hfact
+  have hTAA : (T ∩ A) ∩ A = T ∩ A := by rw [Finset.inter_assoc, Finset.inter_self]
+  have hTAB : (T ∩ A) ∩ B = ⊥ :=
+    Finset.eq_empty_of_forall_notMem fun x hx =>
+      Finset.disjoint_left.1 hAB (Finset.mem_inter.1 (Finset.mem_inter.1 hx).1).2
+        (Finset.mem_inter.1 hx).2
+  have hTBA : (T ∩ B) ∩ A = ⊥ :=
+    Finset.eq_empty_of_forall_notMem fun x hx =>
+      Finset.disjoint_left.1 hAB (Finset.mem_inter.1 hx).2
+        (Finset.mem_inter.1 (Finset.mem_inter.1 hx).1).2
+  have hTBB : (T ∩ B) ∩ B = T ∩ B := by rw [Finset.inter_assoc, Finset.inter_self]
+  have eA : A.powerset.filter ((⊥ : Finset Mode) ⊆ ·) = A.powerset :=
+    Finset.filter_true_of_mem fun S _ => Finset.empty_subset S
+  have eB : B.powerset.filter ((⊥ : Finset Mode) ⊆ ·) = B.powerset :=
+    Finset.filter_true_of_mem fun T _ => Finset.empty_subset T
+  have hZAB : (∑ S ∈ A.powerset, wA S) * (∑ T ∈ B.powerset, wB T) ≠ 0 := hZeq ▸ hZ
+  obtain ⟨hZA, hZB⟩ := mul_ne_zero_iff.1 hZAB
+  rw [occupationMoment_eq_of_isProductWeightAcross hAB hU hfact T,
+    occupationMoment_eq_of_isProductWeightAcross hAB hU hfact (T ∩ A),
+    occupationMoment_eq_of_isProductWeightAcross hAB hU hfact (T ∩ B), hTAA, hTAB, hTBA, hTBB,
+    eA, eB, hZeq]
+  field_simp
 
 end SecondQuantization
