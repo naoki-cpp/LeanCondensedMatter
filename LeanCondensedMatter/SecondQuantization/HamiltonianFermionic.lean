@@ -78,6 +78,15 @@ theorem freeHamiltonian_basisState (ε : Mode → ℝ) (n : FermionOccupation Mo
 `H_int := Σᵢⱼ V(i,j) Nᵢ Nⱼ` — a concrete instance of "a finite sum of monomials in
 creation/annihilation operators" (here, quartic monomials `aᵢ†aᵢaⱼ†aⱼ`).
 
+**Summation convention, fixed explicitly since it is not forced by the physics alone:** the sum
+runs over *every* ordered pair `(i, j) : Mode × Mode`, including `i = j` (contributing `V(i,i) Nᵢ`,
+since `Nᵢ² = Nᵢ` on occupation numbers), with **no `1/2` prefactor** and **no assumption that `V`
+is symmetric**. Consequently, for symmetric `V` this double-counts each unordered pair `{i, j}`
+with `i ≠ j` (contributing `V(i,j) + V(j,i) = 2V(i,j)`) relative to the more common physics
+convention `H_int = ½ Σᵢⱼ V(i,j) Nᵢ Nⱼ` (summed the same way) or `Σ_{i<j} V(i,j) Nᵢ Nⱼ`. Callers
+building a specific physical model must choose `V` (and, if matching a `½ Σ` convention, halve it)
+accordingly — this file makes no claim about which convention `V` follows.
+
 This interaction is diagonal in the occupation-number basis (as `interactionHamiltonian_basisState`
 below shows) and hence commutes with `freeHamiltonian`/`numberOperator` — a genuinely restrictive
 special case, not a general quartic interaction. A general fermionic interaction

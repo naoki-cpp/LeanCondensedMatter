@@ -38,11 +38,18 @@ noncomputable def weightedTrace (w : FermionOccupation Mode → ℂ)
     (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) : ℂ :=
   ∑ n : FermionOccupation Mode, w n * matrixCoeff A n n
 
-/-- **The partition function** of a weight `w`, `Z(w) := Σₙ w(n)`. -/
+/-- **The partition function** of a weight `w`, `Z(w) := Σₙ w(n)`. `w` is an arbitrary
+`FermionOccupation Mode → ℂ` here, not necessarily a genuine Boltzmann weight
+`w(n) = e^{-βE(n)}` — `Z(w)` is only the physical partition function `Tr(e^{-βH})` once `w` is
+specialized to that positive, real-valued form. -/
 noncomputable def partitionFunction (w : FermionOccupation Mode → ℂ) : ℂ :=
   ∑ n : FermionOccupation Mode, w n
 
-/-- **The thermal expectation value** of `A` against the weight `w`, `⟨A⟩_w := Tr_w(A) / Z(w)`. -/
+/-- **The thermal expectation value** of `A` against the weight `w`, `⟨A⟩_w := Tr_w(A) / Z(w)`.
+As with `partitionFunction`, this is only a genuine thermal (Gibbs-state) expectation value once
+`w` is specialized to a positive Boltzmann weight with `Z(w) ≠ 0`; for a general complex `w` this
+is simply a `w`-weighted, `Z(w)`-normalized diagonal trace, with no guarantee of positivity,
+reality (even against a Hermitian `A`), or a Gibbs-state interpretation. -/
 noncomputable def thermalExpectation (w : FermionOccupation Mode → ℂ)
     (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) : ℂ :=
   weightedTrace w A / partitionFunction w
