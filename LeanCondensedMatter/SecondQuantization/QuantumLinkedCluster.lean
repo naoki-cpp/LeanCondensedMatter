@@ -20,10 +20,14 @@ the issue rather than solving it). It lands exactly in Track B's `Finset Mode �
 type, with
 `occupationMoment w ⊥ = 1` matching `IsIndependentAcross`'s normalization hypothesis.
 
-This is a first, deliberately modest step: it connects the types and proves the basic sanity facts
-(`occupationMoment` at `⊥` and at a singleton). It does *not* yet establish `IsIndependentAcross`
-for a genuine Gibbs weight, nor assemble the `log Z = Σ` over connected clusters statement itself —
-see `notes/roadmaps/second-quantization.md` for what remains.
+`occupationProjector S` supplies the operator-level witness `∏ᵢ∈S nᵢ` (diagonal in the
+occupation-number basis, built via `Finsupp.lift` exactly as `create`/`annihilate` are), with
+`thermalExpectation_occupationProjector` confirming it reproduces `occupationMoment` and
+`occupationProjector_singleton` confirming it agrees with `numberOperator` at a single mode.
+
+This remains a modest step: it does *not* yet establish `IsIndependentAcross` for a genuine
+product/Gibbs weight, nor assemble the `log Z = Σ` over connected clusters statement itself — see
+`notes/roadmaps/second-quantization.md` for what remains.
 -/
 
 namespace SecondQuantization
@@ -63,5 +67,58 @@ theorem occupationMoment_singleton (w : FermionOccupation Mode → ℂ) (i : Mod
       (i ∈ ·) := by
     ext n; simp [Finset.subset_iff]
   rw [hfilter]
+
+/-! ## The occupation projector: an operator-level witness for `occupationMoment` -/
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- **The occupation-projector operator, on a basis state.** `basisState n` if `n` occupies every
+mode of `S`, `0` otherwise — the simultaneous-occupation observable `∏ᵢ∈S nᵢ` at the basis-state
+level. -/
+noncomputable def occupationProjectorBasis (S : Finset Mode) (n : FermionOccupation Mode) :
+    FockSpaceFermionic Mode :=
+  if S ⊆ n then basisState n else 0
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- **The occupation-projector operator**, extended linearly from `occupationProjectorBasis`.
+Diagonal in the occupation-number basis, so it commutes with itself and with every
+`numberOperator i`, without needing a `CommMonoid` structure on
+`FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode` under composition. -/
+noncomputable def occupationProjector (S : Finset Mode) :
+    FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
+  Finsupp.lift (FockSpaceFermionic Mode) ℂ (FermionOccupation Mode) (occupationProjectorBasis S)
+
+omit [LinearOrder Mode] [Fintype Mode] in
+theorem occupationProjector_basisState (S : Finset Mode) (n : FermionOccupation Mode) :
+    occupationProjector S (basisState n) = if S ⊆ n then basisState n else 0 := by
+  change Finsupp.lift _ ℂ _ (occupationProjectorBasis S) (Finsupp.single n 1) =
+    occupationProjectorBasis S n
+  simp [Finsupp.lift_apply, Finsupp.sum_single_index, occupationProjectorBasis]
+
+omit [Fintype Mode] in
+/-- **`occupationProjector` at the singleton `{i}` is exactly `numberOperator i`.** Confirms the
+operator-level definition matches the physical "number operator" reading. -/
+theorem occupationProjector_singleton (i : Mode) :
+    occupationProjector ({i} : Finset Mode) = numberOperator i := by
+  apply linearMap_ext_basisState
+  intro n
+  simp [occupationProjector_basisState, numberOperator_basisState, Finset.singleton_subset_iff]
+
+omit [LinearOrder Mode] in
+/-- **`thermalExpectation` of `occupationProjector S` is `occupationMoment w S`.** The operator-
+level bridge promised by `occupationMoment`'s docstring: the simultaneous-occupation observable's
+thermal expectation value agrees with the direct weighted-sum definition. -/
+theorem thermalExpectation_occupationProjector (w : FermionOccupation Mode → ℂ) (S : Finset Mode) :
+    thermalExpectation w (occupationProjector S) = occupationMoment w S := by
+  rw [thermalExpectation, occupationMoment]
+  congr 1
+  have h : ∀ n : FermionOccupation Mode,
+      matrixCoeff (occupationProjector S) n n = if S ⊆ n then 1 else 0 := fun n => by
+    by_cases hs : S ⊆ n
+    · exact matrixCoeff_of_smul_basisState (by
+        rw [occupationProjector_basisState, if_pos hs, if_pos hs, one_smul])
+    · exact matrixCoeff_of_smul_basisState (by
+        rw [occupationProjector_basisState, if_neg hs, if_neg hs, zero_smul])
+  simp only [weightedTrace, h, mul_ite, mul_one, mul_zero]
+  rw [← Finset.sum_filter]
 
 end SecondQuantization
