@@ -3,12 +3,14 @@ import LeanCondensedMatter.Combinatorics.MomentCumulant
 set_option linter.style.header false
 
 /-!
-# Cumulants vanish across independence (towards connected cumulants)
+# A partition-lattice ingredient for the Linked Cluster Theorem's "only connected contributions
+survive in `log Z`" statement
 
-The Linked Cluster Theorem's "only connected diagrams survive in `log Z`" statement, in
-partition-lattice form: if a moment function `m` factors independently across a disjoint pair of
-finite sets `A`, `B` (`IsIndependentAcross`), then the cumulant of their union vanishes,
-`cumulantFromMoment m (A ⊔ B) = 0` (`cumulantFromMoment_eq_zero_of_isIndependentAcross`).
+If a moment function `m` factors independently across a disjoint pair of finite sets `A`, `B`
+(`IsIndependentAcross`), then the cumulant of their union vanishes,
+`cumulantFromMoment m (A ⊔ B) = 0` (`cumulantFromMoment_eq_zero_of_isIndependentAcross`). This is
+one ingredient the Linked Cluster Theorem needs, not the theorem itself — `log` and diagram
+connectedness are not yet formalized here.
 
 The proof goes through two stages. First, the partition-block product `partitionProduct m π`
 itself factors as a product over the restrictions of `π` to `A` and to `B`, for every partition
@@ -96,8 +98,8 @@ the real `cumulantFromMoment m T` to vanish whenever `T` straddles both `A` and 
 noncomputable def splitCumulant (m : Finset α → ℂ) (A B T : Finset α) : ℂ :=
   if T ≤ A ∨ T ≤ B then cumulantFromMoment m T else 0
 
-theorem momentFromCumulant_splitCumulant_of_le {m : Finset α → ℂ} {A B T : Finset α} (hT : T ≠ ⊥)
-    (hTA : T ≤ A) : momentFromCumulant (splitCumulant m A B) T = m T := by
+theorem momentFromCumulant_splitCumulant_of_le_left {m : Finset α → ℂ} {A B T : Finset α}
+    (hT : T ≠ ⊥) (hTA : T ≤ A) : momentFromCumulant (splitCumulant m A B) T = m T := by
   have heq : ∀ π : Finpartition T,
       partitionProduct (splitCumulant m A B) π = partitionProduct (cumulantFromMoment m) π :=
     fun π => Finset.prod_congr rfl fun C hC => by
@@ -106,7 +108,7 @@ theorem momentFromCumulant_splitCumulant_of_le {m : Finset α → ℂ} {A B T : 
   simp_rw [heq]
   exact momentFromCumulant_cumulantFromMoment m hT
 
-theorem momentFromCumulant_splitCumulant_of_le' {m : Finset α → ℂ} {A B T : Finset α}
+theorem momentFromCumulant_splitCumulant_of_le_right {m : Finset α → ℂ} {A B T : Finset α}
     (hT : T ≠ ⊥) (hTB : T ≤ B) : momentFromCumulant (splitCumulant m A B) T = m T := by
   have heq : ∀ π : Finpartition T,
       partitionProduct (splitCumulant m A B) π = partitionProduct (cumulantFromMoment m) π :=
@@ -137,11 +139,11 @@ theorem momentFromCumulant_splitCumulant_eq {m : Finset α → ℂ} {A B : Finse
   by_cases hTA : T ≤ A
   · rcases eq_or_ne T ⊥ with rfl | hT0
     · exact hbase
-    · exact momentFromCumulant_splitCumulant_of_le hT0 hTA
+    · exact momentFromCumulant_splitCumulant_of_le_left hT0 hTA
   by_cases hTB : T ≤ B
   · rcases eq_or_ne T ⊥ with rfl | hT0
     · exact hbase
-    · exact momentFromCumulant_splitCumulant_of_le' hT0 hTB
+    · exact momentFromCumulant_splitCumulant_of_le_right hT0 hTB
   -- `T` straddles both `A` and `B`: build the 2-block partition `{T ⊓ A, T ⊓ B}` of `T`, show
   -- every partition of `T` that does *not* refine it has a block with `splitCumulant = 0`
   -- (hence contributes nothing), and reindex the surviving sum via
@@ -181,31 +183,48 @@ theorem momentFromCumulant_splitCumulant_eq {m : Finset α → ℂ} {A B : Finse
     exact hTA' (disjoint_self.1 (h ▸ hdisj.symm))
   rw [hsum, sum_Iic_partitionProduct_eq (splitCumulant m A B) σ₀, partitionProduct, hσ₀parts,
     Finset.prod_insert hne, Finset.prod_singleton,
-    momentFromCumulant_splitCumulant_of_le' hTB' (inf_le_right : T ⊓ B ≤ B),
-    momentFromCumulant_splitCumulant_of_le hTA' (inf_le_right : T ⊓ A ≤ A), mul_comm]
+    momentFromCumulant_splitCumulant_of_le_right hTB' (inf_le_right : T ⊓ B ≤ B),
+    momentFromCumulant_splitCumulant_of_le_left hTA' (inf_le_right : T ⊓ A ≤ A), mul_comm]
   exact (hfact T hT).symm
+
+/-- **`m`'s cumulant agrees with the candidate `splitCumulant` on every nonempty `T ≤ A ⊔ B`.**
+The key intermediate step: since `splitCumulant`'s moment agrees with `m` on all of `A ⊔ B`
+(`momentFromCumulant_splitCumulant_eq`), the two moment functions induce the same cumulant there,
+and `splitCumulant`'s own cumulant is itself (moment-cumulant inversion). -/
+theorem cumulantFromMoment_eq_splitCumulant_of_le {m : Finset α → ℂ} {A B : Finset α}
+    (hind : IsIndependentAcross m A B) {T : Finset α} (hT : T ≤ A ⊔ B) (hT0 : T ≠ ⊥) :
+    cumulantFromMoment m T = splitCumulant m A B T := by
+  have hkey : cumulantFromMoment m T =
+      cumulantFromMoment (momentFromCumulant (splitCumulant m A B)) T := by
+    simp only [cumulantFromMoment, partitionProduct]
+    refine Finset.sum_congr rfl fun π _ => ?_
+    congr 1
+    exact Finset.prod_congr rfl fun C hC =>
+      (momentFromCumulant_splitCumulant_eq hind C ((π.le hC).trans hT)).symm
+  rw [hkey, cumulantFromMoment_momentFromCumulant (splitCumulant m A B) hT0]
+
+/-- **Any set straddling both `A` and `B` has vanishing cumulant.** Sharper than
+`cumulantFromMoment_eq_zero_of_isIndependentAcross`: applies to every `T ≤ A ⊔ B` that lies
+entirely in neither `A` nor `B`, not just `T = A ⊔ B` itself. -/
+theorem cumulantFromMoment_eq_zero_of_straddles {m : Finset α → ℂ} {A B : Finset α}
+    (hind : IsIndependentAcross m A B) {T : Finset α} (hT : T ≤ A ⊔ B) (hTA : ¬T ≤ A)
+    (hTB : ¬T ≤ B) : cumulantFromMoment m T = 0 := by
+  have hT0 : T ≠ ⊥ := fun h => hTA (h ▸ bot_le)
+  rw [cumulantFromMoment_eq_splitCumulant_of_le hind hT hT0, splitCumulant,
+    if_neg (not_or.2 ⟨hTA, hTB⟩)]
 
 /-- **The main theorem: cumulants vanish across independence.** If `m` factors independently
 across the disjoint pair `(A, B)` (both nonempty), the cumulant of their union vanishes. -/
 theorem cumulantFromMoment_eq_zero_of_isIndependentAcross {m : Finset α → ℂ} {A B : Finset α}
     (hind : IsIndependentAcross m A B) (hA : A ≠ ⊥) (hB : B ≠ ⊥) :
     cumulantFromMoment m (A ⊔ B) = 0 := by
-  have hS : (A ⊔ B : Finset α) ≠ ⊥ := fun h => hA (le_bot_iff.1 (h ▸ le_sup_left))
-  have hkey : cumulantFromMoment m (A ⊔ B) =
-      cumulantFromMoment (momentFromCumulant (splitCumulant m A B)) (A ⊔ B) := by
-    simp only [cumulantFromMoment, partitionProduct]
-    refine Finset.sum_congr rfl fun π _ => ?_
-    congr 1
-    exact Finset.prod_congr rfl fun C hC =>
-      (momentFromCumulant_splitCumulant_eq hind C (π.le hC)).symm
-  rw [hkey, cumulantFromMoment_momentFromCumulant (splitCumulant m A B) hS, splitCumulant,
-    if_neg]
-  obtain ⟨hAB, -, -⟩ := hind
-  push Not
-  refine ⟨fun h => ?_, fun h => ?_⟩
-  · obtain ⟨x, hx⟩ := Finset.nonempty_iff_ne_empty.2 hB
+  have hAB := hind.1
+  refine cumulantFromMoment_eq_zero_of_straddles hind le_rfl ?_ ?_
+  · intro h
+    obtain ⟨x, hx⟩ := Finset.nonempty_iff_ne_empty.2 hB
     exact (Finset.disjoint_left.1 hAB) (h (Finset.mem_union.2 (Or.inr hx))) hx
-  · obtain ⟨x, hx⟩ := Finset.nonempty_iff_ne_empty.2 hA
+  · intro h
+    obtain ⟨x, hx⟩ := Finset.nonempty_iff_ne_empty.2 hA
     exact (Finset.disjoint_left.1 hAB) hx (h (Finset.mem_union.2 (Or.inl hx)))
 
 end Finpartition

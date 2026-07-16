@@ -95,12 +95,13 @@ moment-cumulant relationship is simply not meaningful at the empty set.
 thermal expectation values / cumulants of physical observables (Track D), and the log-generating-
 function / connected-contribution translation needed for the Linked Cluster Theorem itself.
 
-## Moment factorization under independence (towards connected cumulants)
+## Cumulants vanish across independence
 
 Status: `proved`, in `LeanCondensedMatter/Combinatorics/CumulantFactorization.lean`.
 
-Goal: the classical "cumulants vanish across independence" theorem, needed for the Linked Cluster
-Theorem's "only connected diagrams survive in `log Z`" statement.
+Goal: the classical "cumulants vanish across independence" theorem — one ingredient (not the full
+statement) of the Linked Cluster Theorem's "only connected contributions survive in `log Z`"
+result; `log` and diagram connectedness are not yet formalized.
 
 - `Finpartition.IsIndependentAcross m A B` — `m` factors independently across the disjoint pair
   `(A, B)`: `Disjoint A B ∧ m ⊥ = 1 ∧ ∀ T ≤ A ⊔ B, m T = m (T ⊓ A) * m (T ⊓ B)`. `m ⊥ = 1` is
@@ -120,14 +121,19 @@ Theorem's "only connected diagrams survive in `log Z`" statement.
   *candidate* cumulant that is forced to vanish on sets straddling both `A` and `B`, sidestepping
   the "partial matching between blocks" combinatorics a direct fiber-sum argument would need.
   `Finpartition.momentFromCumulant_splitCumulant_eq` shows it reproduces `m` on every `T ≤ A ⊔ B`
-  (three cases: `T ≤ A`, `T ≤ B`, or straddling — the straddling case builds the 2-block partition
-  `{T ⊓ A, T ⊓ B}` of `T` and sums over its refinements via `refinementsEquivFiberPartitions`,
-  using that any non-refining partition has a block contributing a zero `splitCumulant` factor).
-- **`Finpartition.cumulantFromMoment_eq_zero_of_isIndependentAcross`** — the main theorem:
-  `cumulantFromMoment m (A ⊔ B) = 0` under `IsIndependentAcross m A B`, for `A`, `B` both
-  nonempty. Proved by rewriting `cumulantFromMoment m (A ⊔ B)` as
-  `cumulantFromMoment (momentFromCumulant (splitCumulant m A B)) (A ⊔ B)` (via
-  `momentFromCumulant_splitCumulant_eq`), collapsing it to `splitCumulant m A B (A ⊔ B)` by
-  uniqueness of the moment-cumulant inverse (`cumulantFromMoment_momentFromCumulant`), and
-  observing `A ⊔ B` is neither `≤ A` nor `≤ B` (since `A`, `B` are disjoint and both nonempty), so
-  `splitCumulant` evaluates to `0` there by definition.
+  (three cases: `T ≤ A` via `momentFromCumulant_splitCumulant_of_le_left`, `T ≤ B` via
+  `momentFromCumulant_splitCumulant_of_le_right`, or straddling — the straddling case builds the
+  2-block partition `{T ⊓ A, T ⊓ B}` of `T` and sums over its refinements via
+  `refinementsEquivFiberPartitions`, using that any non-refining partition has a block contributing
+  a zero `splitCumulant` factor).
+- **`Finpartition.cumulantFromMoment_eq_splitCumulant_of_le`** — the key intermediate step:
+  `cumulantFromMoment m T = splitCumulant m A B T` for every nonempty `T ≤ A ⊔ B`, obtained by
+  rewriting `cumulantFromMoment m T` as `cumulantFromMoment (momentFromCumulant (splitCumulant m A
+  B)) T` (via `momentFromCumulant_splitCumulant_eq`) and collapsing it via uniqueness of the
+  moment-cumulant inverse (`cumulantFromMoment_momentFromCumulant`).
+- **`Finpartition.cumulantFromMoment_eq_zero_of_straddles`** — the sharper form: `cumulantFromMoment
+  m T = 0` for any `T ≤ A ⊔ B` lying entirely in neither `A` nor `B`, not just `T = A ⊔ B`. Follows
+  immediately from `cumulantFromMoment_eq_splitCumulant_of_le` plus `splitCumulant`'s definition.
+- **`Finpartition.cumulantFromMoment_eq_zero_of_isIndependentAcross`** — the headline corollary:
+  `cumulantFromMoment m (A ⊔ B) = 0` under `IsIndependentAcross m A B`, for `A`, `B` both nonempty
+  (so `A ⊔ B` itself straddles, since `A`, `B` are disjoint and both nonempty).
