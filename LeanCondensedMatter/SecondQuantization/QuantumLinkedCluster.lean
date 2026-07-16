@@ -24,6 +24,9 @@ type, with
 occupation-number basis, built via `Finsupp.lift` exactly as `create`/`annihilate` are), with
 `thermalExpectation_occupationProjector` confirming it reproduces `occupationMoment` and
 `occupationProjector_singleton` confirming it agrees with `numberOperator` at a single mode.
+`occupationProjector_mul`/`_comm`/`_idempotent`/`_empty` establish it as a genuine commuting-
+projector algebra under composition, making "`occupationProjector S` is the simultaneous product
+of number operators" an operator-algebra theorem rather than only a physical reading.
 
 This remains a modest step: it does *not* yet establish `IsIndependentAcross` for a genuine
 product/Gibbs weight, nor assemble the `log Z = Σ` over connected clusters statement itself — see
@@ -80,8 +83,8 @@ noncomputable def occupationProjectorBasis (S : Finset Mode) (n : FermionOccupat
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- **The occupation-projector operator**, extended linearly from `occupationProjectorBasis`.
-Diagonal in the occupation-number basis, so it commutes with itself and with every
-`numberOperator i`, without needing a `CommMonoid` structure on
+Diagonal in the occupation-number basis, so `occupationProjector S` and `occupationProjector T`
+commute for any `S`, `T` (`occupationProjector_comm`), without needing a `CommMonoid` structure on
 `FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode` under composition. -/
 noncomputable def occupationProjector (S : Finset Mode) :
     FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
@@ -120,5 +123,43 @@ theorem thermalExpectation_occupationProjector (w : FermionOccupation Mode → �
         rw [occupationProjector_basisState, if_neg hs, if_neg hs, zero_smul])
   simp only [weightedTrace, h, mul_ite, mul_one, mul_zero]
   rw [← Finset.sum_filter]
+
+/-! ## Algebra of occupation projectors -/
+
+omit [LinearOrder Mode] [Fintype Mode] in
+@[simp]
+theorem occupationProjector_empty :
+    occupationProjector (∅ : Finset Mode) = LinearMap.id := by
+  apply linearMap_ext_basisState
+  intro n
+  simp [occupationProjector_basisState]
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- **Occupation projectors compose by taking unions.** The operator-level confirmation that
+`occupationProjector S` genuinely behaves as the "simultaneous occupation of `S`" observable: two
+such observables combine into the observable for their union, without needing a general
+`CommMonoid` structure on composition. -/
+theorem occupationProjector_mul (S T : Finset Mode) :
+    occupationProjector S * occupationProjector T = occupationProjector (S ∪ T) := by
+  apply linearMap_ext_basisState
+  intro n
+  rw [Module.End.mul_apply, occupationProjector_basisState (S := T)]
+  by_cases hT : T ⊆ n
+  · rw [if_pos hT, occupationProjector_basisState, occupationProjector_basisState]
+    simp [Finset.union_subset_iff, hT]
+  · rw [if_neg hT, map_zero, occupationProjector_basisState]
+    simp only [Finset.union_subset_iff, hT, and_false, if_false]
+
+omit [LinearOrder Mode] [Fintype Mode] in
+theorem occupationProjector_comm (S T : Finset Mode) :
+    occupationProjector S * occupationProjector T =
+      occupationProjector T * occupationProjector S := by
+  rw [occupationProjector_mul, occupationProjector_mul, Finset.union_comm]
+
+omit [LinearOrder Mode] [Fintype Mode] in
+@[simp]
+theorem occupationProjector_idempotent (S : Finset Mode) :
+    occupationProjector S * occupationProjector S = occupationProjector S := by
+  rw [occupationProjector_mul, Finset.union_self]
 
 end SecondQuantization

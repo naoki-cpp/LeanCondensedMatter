@@ -129,6 +129,12 @@ extended linearly via `Finsupp.lift` — same pattern as `create`/`annihilate`),
 - `thermalExpectation_occupationProjector` — `thermalExpectation w (occupationProjector S) =
   occupationMoment w S`, the operator-level/weighted-sum bridge `occupationMoment`'s docstring
   promised.
+- `occupationProjector_empty`, `occupationProjector_mul`, `occupationProjector_comm`,
+  `occupationProjector_idempotent` — the commuting-projector algebra:
+  `occupationProjector ∅ = LinearMap.id`, `occupationProjector S * occupationProjector T =
+  occupationProjector (S ∪ T)` (hence commutative, and idempotent at `S = T`). Makes
+  "`occupationProjector S` is the simultaneous product of number operators" an operator-algebra
+  theorem, not just a physical reading.
 
 **Not yet done:** establishing `Finpartition.IsIndependentAcross (occupationMoment w) A B` for a
 genuine product/Gibbs weight (i.e. connecting *physical* independence of a weight across a mode
