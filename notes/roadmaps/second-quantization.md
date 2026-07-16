@@ -167,4 +167,22 @@ cross-region interaction present, the *disconnected* contributions at each pertu
 cancel in `log Z`. This bridge is a necessary building block for that argument, not a shortcut
 past it — the perturbative assembly itself remains substantial future work, not a small finish.
 
-**Not yet done:** the `log Z = Σ` over connected clusters assembly itself.
+**The genuine-`log Z` groundwork has now started**, in
+`LeanCondensedMatter/SecondQuantization/FormalLogPartitionFunction.lean` — deliberately abstract
+and physics-free: `log Z` as a formal power series in a perturbation-strength parameter, for an
+*arbitrary* `Z : PowerSeries ℂ` with `Z(0) = 1`, via Mathlib's `PowerSeries.log`
+(`log(1+X) = X - X²/2 + ⋯`, defined by substitution, so no convergence hypothesis is needed).
+
+- `formalLogPartitionFunction Z := (PowerSeries.log ℂ).subst (Z - 1)` — substitutes `Z - 1` for
+  `X` in the universal `log(1+X)` series, giving `log Z` once `Z`'s constant term is `1`.
+- `hasSubst_sub_one_of_constantCoeff_eq_one` — `HasSubst (Z - 1)`, the side condition
+  `PowerSeries.subst`'s correctness lemmas need, following directly from `constantCoeff Z = 1`.
+- `constantCoeff_formalLogPartitionFunction` — `log Z`'s constant term vanishes, matching the
+  physical picture `log Z(0) = log 1 = 0`.
+
+**Not yet done:** connecting this abstract `log Z` to an actual perturbative expansion of
+`traceFock (formalExpTruncation (H₀ + λ • V) N)` — a genuinely harder step, since `H₀`, `V` are
+non-commuting operators and `(H₀ + λV)ⁿ` expands into a non-trivial sum over orderings (this is
+where the real Dyson-series combinatorics enters) — and then relating that expansion's
+coefficients to Track B's connected-cluster combinatorics. This is the substantial remaining work
+toward the genuine Linked Cluster Theorem, not a small finish.
