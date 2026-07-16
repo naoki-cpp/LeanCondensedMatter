@@ -97,8 +97,7 @@ function / connected-contribution translation needed for the Linked Cluster Theo
 
 ## Moment factorization under independence (towards connected cumulants)
 
-Status: `stated` — first (partition-level) step done, in
-`LeanCondensedMatter/Combinatorics/CumulantFactorization.lean`.
+Status: `proved`, in `LeanCondensedMatter/Combinatorics/CumulantFactorization.lean`.
 
 Goal: the classical "cumulants vanish across independence" theorem, needed for the Linked Cluster
 Theorem's "only connected diagrams survive in `log Z`" statement.
@@ -113,16 +112,22 @@ Theorem's "only connected diagrams survive in `log Z`" statement.
   contribute a no-op `m ⊥ = 1` factor on the other side; among the rest, `C ↦ C ⊓ b` is injective
   (`eq_of_inf_ne_bot`, reused from `PartitionLattice.lean`) with image exactly
   `(π.restrict hb).parts`.
-- **`Finpartition.partitionProduct_eq_mul_of_isIndependentAcross`** — the partition-level
+- `Finpartition.partitionProduct_eq_mul_of_isIndependentAcross` — the partition-level
   factorization: under `IsIndependentAcross m A B`, for any `π : Finpartition (A ⊔ B)`,
   `partitionProduct m π = partitionProduct m (π.restrict le_sup_left) * partitionProduct m
   (π.restrict le_sup_right)`.
-
-**Not yet done:** the deeper cumulant-vanishing theorem itself, `cumulantFromMoment m (A ⊔ B) = 0`
-under independence (for `A`, `B` both nonempty). This needs summing the partition-level
-factorization above over all `π ∈ Finpartition (A ⊔ B)`, weighted by `μ(π, ⊤)` — but unlike the
-moment-cumulant inversion proofs, the fiber of `π ↦ (π.restrict hA, π.restrict hB)` over a fixed
-pair `(ρ_A, ρ_B)` is not a bijection: it's the set of ways to *partially match* blocks of `ρ_A`
-with blocks of `ρ_B` (merging at most one block from each side per group). Summing `μ` over that
-matching structure and showing it vanishes (except in degenerate cases) is a genuinely harder,
-separate combinatorial argument — not attempted here.
+- `Finpartition.splitCumulant m A B T := if T ≤ A ∨ T ≤ B then cumulantFromMoment m T else 0` — a
+  *candidate* cumulant that is forced to vanish on sets straddling both `A` and `B`, sidestepping
+  the "partial matching between blocks" combinatorics a direct fiber-sum argument would need.
+  `Finpartition.momentFromCumulant_splitCumulant_eq` shows it reproduces `m` on every `T ≤ A ⊔ B`
+  (three cases: `T ≤ A`, `T ≤ B`, or straddling — the straddling case builds the 2-block partition
+  `{T ⊓ A, T ⊓ B}` of `T` and sums over its refinements via `refinementsEquivFiberPartitions`,
+  using that any non-refining partition has a block contributing a zero `splitCumulant` factor).
+- **`Finpartition.cumulantFromMoment_eq_zero_of_isIndependentAcross`** — the main theorem:
+  `cumulantFromMoment m (A ⊔ B) = 0` under `IsIndependentAcross m A B`, for `A`, `B` both
+  nonempty. Proved by rewriting `cumulantFromMoment m (A ⊔ B)` as
+  `cumulantFromMoment (momentFromCumulant (splitCumulant m A B)) (A ⊔ B)` (via
+  `momentFromCumulant_splitCumulant_eq`), collapsing it to `splitCumulant m A B (A ⊔ B)` by
+  uniqueness of the moment-cumulant inverse (`cumulantFromMoment_momentFromCumulant`), and
+  observing `A ⊔ B` is neither `≤ A` nor `≤ B` (since `A`, `B` are disjoint and both nonempty), so
+  `splitCumulant` evaluates to `0` there by definition.

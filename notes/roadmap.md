@@ -38,7 +38,7 @@ Track D.
 | Partition-lattice refinement/Möbius factorization | B | `proved` | [notes/roadmaps/combinatorics.md](roadmaps/combinatorics.md#partition-lattice-möbius--moment-cumulant-formula) |
 | Explicit partition-lattice Möbius formula (`(-1)^(n-1)(n-1)!`) | B | `stated` | [notes/roadmaps/combinatorics.md](roadmaps/combinatorics.md#partition-lattice-möbius--moment-cumulant-formula) |
 | Moment–cumulant inversion formula | B | `proved` | [notes/roadmaps/combinatorics.md](roadmaps/combinatorics.md#moment–cumulant-inversion) |
-| Moment factorization under independence (towards connected cumulants) | B | `stated` | [notes/roadmaps/combinatorics.md](roadmaps/combinatorics.md#moment-factorization-under-independence-towards-connected-cumulants) |
+| Moment factorization under independence (towards connected cumulants) | B | `proved` | [notes/roadmaps/combinatorics.md](roadmaps/combinatorics.md#moment-factorization-under-independence-towards-connected-cumulants) |
 | Bounded/compact operator groundwork | C | `proved` | [notes/roadmaps/operator-algebra.md](roadmaps/operator-algebra.md#continuous-functional-calculus-acts-on-eigenvectors-by-evaluation) |
 | Hilbert–Schmidt operator theory | C | `stated` | [notes/roadmaps/operator-algebra.md](roadmaps/operator-algebra.md#hilbert–schmidt-operators) |
 | Trace-class operator theory | C | `stated` | [notes/roadmaps/operator-algebra.md](roadmaps/operator-algebra.md#trace-class--hilbert-schmidt-operator-theory) |
