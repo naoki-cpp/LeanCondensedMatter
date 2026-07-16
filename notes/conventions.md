@@ -32,6 +32,13 @@ General cautions distilled from past sessions; detailed incident records live in
 - Never run Lean against the entire project unless explicitly necessary.
 - Compile only the currently edited file.
 - Limit command output to the first relevant error.
+- **Filter `lake build` output before reading it — do not rely on `tail` alone.** A single `trace:
+  .> LEAN_PATH=...` line lists every dependency's absolute path and can dwarf the actual error in
+  characters, even though it's one line; `tail -N` does not shrink it. Drop lines matching
+  `^(trace:|Some required targets logged failures:|- LeanCondensedMatter\.|error: build failed$)`
+  (e.g. `| grep -vE '...'` in bash, `Where-Object` in PowerShell) and keep: file:line:col, the
+  failed tactic, the pattern it searched for, and the full goal/local context. Fix the first error
+  before reading later ones in the same output.
 - Do not repeatedly read unchanged `.lean` files.
 - After a failed proof, inspect only the error location and nearby definitions.
 - Prefer small proof attempts and verify after each change.
