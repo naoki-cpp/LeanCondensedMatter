@@ -148,8 +148,8 @@ order:
 
 1. `ImaginaryTimeEvolution.lean` — `e^{τH₀}` and Heisenberg-picture evolution (**done**, see below).
 2. `ThermalTimeOrdering.lean` — imaginary-time ordering `T_τ` (**done**, see below).
-3. `ThermalGreenFunction.lean` — `G_{ij}(τ,τ') := -⟨T_τ c_i(τ) c_j†(τ')⟩_β` as a special case of a
-   general time-ordered `n`-point thermal correlator.
+3. `ThermalGreenFunction.lean` — `G_{ij}(τ,τ') := -⟨T_τ c_i(τ) c_j†(τ')⟩_β` (**done**, see below;
+   only the free-Hamiltonian `G₀`, and not yet as a special case of a general `n`-point correlator).
 4. `ThermalContraction.lean` / `BlochDeDominicis.lean` — Wick contractions and the finite-mode
    fermionic Wick/Bloch–de Dominicis theorem.
 5. `DysonExpansionFermionic.lean` — the genuine interaction-picture Dyson series (the name
@@ -179,4 +179,13 @@ order:
   returns the same product, for `τA ≠ τB` and `ζ² = 1`: the operator-level statement that swapping
   two operators inside a time-ordered product costs exactly the exchange sign.
 
-**Not yet done:** everything from step 3 onward.
+**Step 3 done, in `ThermalGreenFunction.lean`:**
+- `thermalGreenFunction ε w i j τ τ' := -thermalExpectation w (timeOrderedProduct
+  (Statistics.zetaInt Statistics.fermion) (imaginaryTimeEvolve ε τ (annihilate i))
+  (imaginaryTimeEvolve ε τ' (create j)) τ τ')` — the free-Hamiltonian Green function `G₀`
+  (`imaginaryTimeEvolve` is still only defined for `H₀`; the interacting `G` needs step 5's genuine
+  Dyson series). As with `thermalExpectation`/`partitionFunction`, `w` is an arbitrary complex
+  weight, physical only once specialized to a Boltzmann weight.
+- `thermalGreenFunction_self_time` — at equal times, time-ordering resolves to the plain product.
+
+**Not yet done:** everything from step 4 onward.
