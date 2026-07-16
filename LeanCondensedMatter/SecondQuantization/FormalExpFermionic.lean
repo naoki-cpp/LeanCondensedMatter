@@ -12,11 +12,11 @@ FockSpaceFermionic Mode`, and its finite truncations.
 **Naming note.** `formalExpTerm`/`formalExpTruncation` deliberately do *not* use "Dyson" in their
 name, even though `(-1)ⁿ/n! • Hⁿ` is literally the `n`-th term of a Taylor expansion of `exp(-H)`.
 The name `DysonExpansion`/`dysonTerm` is reserved for the *genuine* physical Dyson series — the
-imaginary-time interaction-picture expansion `Û_I(τ,τ') = T_τ exp[-∫_{τ'}^τ V̂_I(τ') dτ']`
-(`finite-temperature-Green-function.tex` §13.3 in the accompanying physics notes), which splits
-`H = H₀ + V` combinatorially by perturbation order and needs continuous imaginary-time
-integration — a genuinely different, not-yet-started future target. This file is that Dyson
-series' `V = 0` degenerate case, and only that.
+imaginary-time interaction-picture expansion `Û_I(τ,τ') = T_τ exp[-∫_{τ'}^τ V̂_I(τ') dτ']`, which
+splits `H = H₀ + V` combinatorially by perturbation order and needs continuous imaginary-time
+integration — a genuinely different, not-yet-started future target (see
+`notes/roadmaps/second-quantization.md`'s Phase 9 plan). This file is that Dyson series' `V = 0`
+degenerate case, and only that.
 
 This is deliberately *not* the analytic operator exponential either: `FockSpaceFermionic Mode`
 carries no topology in this development (see `FockSpaceFermionic.lean`'s module docstring —

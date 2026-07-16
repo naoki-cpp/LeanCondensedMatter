@@ -102,142 +102,70 @@ the unbounded creation/annihilation operators, trace-class questions on the comp
 explicitly deferred past the algebraic Linked Cluster Theorem. When they're eventually needed,
 Track C's Hilbert–Schmidt/trace-class infrastructure should be reused, not reproved.
 
-## Phase 8 progress: `QuantumLinkedCluster.lean`
+## Phase 8: combinatorial linked-cluster groundwork
 
-**First bridge landed:** `SecondQuantization.occupationMoment w S` — the thermal expectation value
-`⟨∏ᵢ∈S nᵢ⟩_w` of simultaneous occupation of every mode in `S`, computed directly as a weighted sum
-`(Σₙ, if S ⊆ n then w n else 0) / Z(w)` rather than via an operator product (avoiding the need for
-a `CommMonoid` structure on `FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode` under
-composition, which doesn't exist). This lands exactly in Track B's `Finset Mode → ℂ` moment
-function type.
+Not the genuine Linked Cluster Theorem — see "Phase 9" below for what's still missing (time
+ordering, Green functions, Wick contractions, the genuine Dyson series). What's proved so far:
 
-- `occupationMoment_bot` — `occupationMoment w ⊥ = 1` (given `Z(w) ≠ 0`), matching
-  `Finpartition.IsIndependentAcross`'s normalization hypothesis.
-- `occupationMoment_singleton` — `occupationMoment w {i} = thermalExpectation w (numberOperator
-  i)`, connecting the weighted-sum definition back to Track D's operator-level
-  `thermalExpectation`.
+**`QuantumLinkedCluster.lean`** — connects Track D to Track B's abstract cumulant machinery:
+- `occupationMoment w S` — `⟨∏ᵢ∈S nᵢ⟩_w`, computed as a weighted sum over occupation states
+  (`occupationMoment_bot`, `occupationMoment_singleton` confirm it lands in Track B's moment type
+  and matches `thermalExpectation`).
+- `occupationProjector S` — the same observable as an actual `FockSpaceFermionic` operator
+  (`occupationProjector_basisState`/`_singleton`/`_empty`/`_mul`/`_comm`/`_idempotent`;
+  `thermalExpectation_occupationProjector` ties it back to `occupationMoment`).
+- `IsProductWeightAcross w A B` — `w` factors across a mode bipartition
+  (`Disjoint A B`, `A ∪ B = univ`, `w n = wA (n ∩ A) * wB (n ∩ B)`), e.g. a Gibbs weight for
+  `H = HA + HB` with `[HA, HB] = 0` and no cross-region interaction. **Does not cover a genuine
+  interacting Gibbs weight.**
+- `sum_filter_subset_eq_mul` (the `n ↦ (n ∩ A, n ∩ B)` reindexing core),
+  `partitionFunction_eq_mul_of_product_factorization`, `occupationMoment_eq_of_product_factorization`,
+  and the main theorem **`occupationMoment_isIndependentAcross`** — a product weight makes
+  `Finpartition.IsIndependentAcross (occupationMoment w) A B` hold.
+- `occupationCumulant`, `occupationCumulant_eq_zero_of_isProductWeightAcross` — the physics-facing
+  packaging, applying Track B's `cumulantFromMoment_eq_zero_of_isIndependentAcross` directly.
 
-**The operator-level witness is now also done:** `occupationProjector S`, the simultaneous-
-occupation observable `∏ᵢ∈S nᵢ` as an actual `FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic
-Mode` operator (diagonal in the occupation-number basis, defined directly on basis states and
-extended linearly via `Finsupp.lift` — same pattern as `create`/`annihilate`), rather than only as
-`occupationMoment`'s weighted-sum formula.
+**`FormalLogPartitionFunction.lean`** — `log Z` as a formal power series (via Mathlib's
+`PowerSeries.log`), for an arbitrary `Z : PowerSeries ℂ` normalized to `Z(0) = 1`. Not yet
+physics-connected — no coefficient here has been shown to count connected contributions.
+- `normalizePartitionSeries`/`constantCoeff_normalizePartitionSeries` — rescale a genuine `Z(0) =
+  Z₀ ≠ 1` to constant term `1`.
+- `formalLogPartitionFunction Z := (PowerSeries.log ℂ).subst (Z - 1)`,
+  `hasSubst_sub_one_of_constantCoeff_eq_one`, `constantCoeff_formalLogPartitionFunction`,
+  `coeff_one_formalLogPartitionFunction` (order-1 coefficient matches `Z`'s own).
 
-- `occupationProjector_basisState` — `occupationProjector S (basisState n) = if S ⊆ n then
-  basisState n else 0`.
-- `occupationProjector_singleton` — `occupationProjector {i} = numberOperator i`, confirming the
-  operator agrees with the existing number operator at the single-mode case.
-- `thermalExpectation_occupationProjector` — `thermalExpectation w (occupationProjector S) =
-  occupationMoment w S`, the operator-level/weighted-sum bridge `occupationMoment`'s docstring
-  promised.
-- `occupationProjector_empty`, `occupationProjector_mul`, `occupationProjector_comm`,
-  `occupationProjector_idempotent` — the commuting-projector algebra:
-  `occupationProjector ∅ = LinearMap.id`, `occupationProjector S * occupationProjector T =
-  occupationProjector (S ∪ T)` (hence commutative, and idempotent at `S = T`). Makes
-  "`occupationProjector S` is the simultaneous product of number operators" an operator-algebra
-  theorem, not just a physical reading.
-
-**The physical-independence bridge is now also done:** `IsProductWeightAcross w A B` — `w`
-factors as `wA` on the `A`-part of an occupation state times `wB` on the `B`-part
-(`Disjoint A B`, `A ∪ B = univ`, `w n = wA (n ∩ A) * wB (n ∩ B)`) — and
-`occupationMoment_isIndependentAcross` shows this implies `Finpartition.IsIndependentAcross
-(occupationMoment w) A B`, so Track B's `cumulantFromMoment_eq_zero_of_isIndependentAcross`
-applies directly to occupation-number cumulants of a product weight.
-
-- `sum_filter_subset_eq_mul` — the combinatorial core: every occupation state `n ⊇ C` corresponds
-  bijectively to a pair `(n ∩ A, n ∩ B)` with `n ∩ A ⊇ C ∩ A` a subset of `A` and `n ∩ B ⊇ C ∩ B` a
-  subset of `B` (via `Disjoint A B`/`A ∪ B = univ`), reindexed via `Finset.sum_nbij'` with inverse
-  maps `n ↦ (n ∩ A, n ∩ B)` and `(S, T) ↦ S ∪ T`.
-- `partitionFunction_eq_mul_of_product_factorization` — `Z(w) = Z(wA) * Z(wB)`, the `C = ⊥` case of
-  the above.
-- `occupationMoment_eq_of_product_factorization` — `occupationMoment w T` written in terms of the
-  two independent sides' filtered sums, divided by `Z(w)`.
-- **`occupationMoment_isIndependentAcross`** — the main theorem, combining the above at `T`,
-  `T ∩ A`, `T ∩ B` and closing with `field_simp` once `Z(wA), Z(wB) ≠ 0` are extracted from
-  `Z(w) ≠ 0` via `Z(w) = Z(wA) * Z(wB)`.
-- `occupationCumulant w := Finpartition.cumulantFromMoment (occupationMoment w)` and
-  **`occupationCumulant_eq_zero_of_isProductWeightAcross`** — the physics-facing packaging: under
-  a product weight (e.g. a Gibbs weight for `H = HA + HB`, `[HA, HB] = 0`, no cross-region
-  interaction), the occupation-number cumulant spanning both `A` and `B` vanishes, without the
-  caller needing to name `Finpartition.IsIndependentAcross`.
-
-**Scope note:** `IsProductWeightAcross` only covers the case where the Hamiltonian itself splits
-cleanly across the bipartition (`e^{-βH} = e^{-βHA} e^{-βHB}`) — it does *not* hold for a genuine
-interacting Gibbs weight. The Linked Cluster Theorem needs the harder statement that, even with
-cross-region interaction present, the *disconnected* contributions at each perturbation order
-cancel in `log Z`. This bridge is a necessary building block for that argument, not a shortcut
-past it — the perturbative assembly itself remains substantial future work, not a small finish.
-
-**A formal-power-series prerequisite for the genuine `log Z` statement has now started**, in
-`LeanCondensedMatter/SecondQuantization/FormalLogPartitionFunction.lean` — deliberately abstract
-and physics-free, and **not yet a piece of the theorem itself**: nothing here proves any
-disconnected contribution vanishes, only that `log Z` is a well-defined object with the expected
-basic coefficients. `log Z` is a formal power series in a perturbation-strength parameter, for an
-*arbitrary* `Z : PowerSeries ℂ` with `Z(0) = 1`, via Mathlib's `PowerSeries.log`
-(`log(1+X) = X - X²/2 + ⋯`, defined by substitution, so no convergence hypothesis is needed).
-
-- `normalizePartitionSeries Z := C (constantCoeff Z)⁻¹ * Z` and
-  `constantCoeff_normalizePartitionSeries` — a genuine perturbative partition function has
-  `Z(0) = Z₀` (the free partition function), not `1`; this rescales it to constant term `1` so
-  `formalLogPartitionFunction` below applies.
-- `formalLogPartitionFunction Z := (PowerSeries.log ℂ).subst (Z - 1)` — substitutes `Z - 1` for
-  `X` in the universal `log(1+X)` series, giving `log Z` once `Z`'s constant term is `1`.
-- `hasSubst_sub_one_of_constantCoeff_eq_one` — `HasSubst (Z - 1)`, the side condition
-  `PowerSeries.subst`'s correctness lemmas need, following directly from `constantCoeff Z = 1`.
-- `constantCoeff_formalLogPartitionFunction` — `log Z`'s constant term vanishes, matching the
-  physical picture `log Z(0) = log 1 = 0`.
-- `coeff_one_formalLogPartitionFunction` — `log Z`'s order-`1` coefficient equals `Z`'s own
-  order-`1` coefficient (the connected/disconnected pictures only start to differ from second
-  order onward).
-
-**Not yet done, roughly in order:** (1) relating Track B's finite-set moment/cumulant duality to
-exponential-generating-series `exp`/`log` — a purely combinatorial bridge (a single `Finset α → ℂ`
-moment function only tracks perturbation order, not which vertex set belongs to which connected
-component, so this bridge is necessary before "connected" can be proved from `log` coefficients at
-all; likely its own file, e.g. `ExponentialFormula.lean`); (2) the general coefficient-level
-formula for `log Z`'s `[λⁿ]` term (`coeff_one_...` above is only the `n = 1` case); (3) connecting
-an actual perturbative expansion of `traceFock (formalExpTruncation (H₀ + λ • V) N)` — `H₀`, `V`
-are non-commuting operators, so `(H₀ + λV)ⁿ` expands into a non-trivial sum over orderings (the
-real Dyson-series combinatorics) — to that combinatorial structure. This is the substantial
-remaining work toward the genuine Linked Cluster Theorem, not a small finish.
+**Not yet done:** relating Track B's finite-set moment/cumulant duality to exponential-generating-
+series `exp`/`log` (a single `Finset α → ℂ` moment only tracks perturbation order, not which
+vertex set is in which connected component — likely its own file); the general `[λⁿ]` coefficient
+formula for `log Z`; connecting an actual perturbative expansion of
+`traceFock (formalExpTruncation (H₀ + λ • V) N)` (non-commuting `H₀`, `V`) to that structure.
 
 ## Phase 9: finite-temperature Green functions and time ordering
 
-The combinatorial groundwork above (Phase 8) does not by itself constitute the Linked Cluster
-Theorem: it is a set-partition-lattice connectedness result and its specialization to equal-time
-occupation correlators, not the statement that `log Z`'s perturbative coefficients are sums over
-*connected Feynman diagrams*. The genuine theorem needs imaginary-time evolution, time ordering,
-thermal `n`-point correlators, Wick's theorem (Bloch–de Dominicis), and the non-commutative,
-time-ordered Dyson series — none of which exist yet. Planned order:
+The genuine theorem needs imaginary-time evolution, time ordering, thermal `n`-point correlators,
+Wick's theorem (Bloch–de Dominicis), and the non-commutative time-ordered Dyson series. Planned
+order:
 
-1. `ImaginaryTimeEvolution.lean` — `e^{τH₀}` and Heisenberg-picture evolution (done, see below).
+1. `ImaginaryTimeEvolution.lean` — `e^{τH₀}` and Heisenberg-picture evolution (**done**, see below).
 2. `ThermalTimeOrdering.lean` — imaginary-time ordering `T_τ`.
-3. `ThermalGreenFunction.lean` — the two-point Green function
-   `G_{ij}(τ,τ') := -⟨T_τ c_i(τ) c_j†(τ')⟩_β`, as a special case of a general time-ordered
-   `n`-point thermal correlator.
+3. `ThermalGreenFunction.lean` — `G_{ij}(τ,τ') := -⟨T_τ c_i(τ) c_j†(τ')⟩_β` as a special case of a
+   general time-ordered `n`-point thermal correlator.
 4. `ThermalContraction.lean` / `BlochDeDominicis.lean` — Wick contractions and the finite-mode
    fermionic Wick/Bloch–de Dominicis theorem.
-5. `DysonExpansionFermionic.lean` — the genuine (interaction-picture, `H = H₀ + V`) Dyson series,
-   reserving the name this project's `FormalExpFermionic.lean` deliberately avoided.
+5. `DysonExpansionFermionic.lean` — the genuine interaction-picture Dyson series (the name
+   `FormalExpFermionic.lean` deliberately avoided).
 6. `DiagramConnectedness.lean` — connecting Dyson-series terms to diagrams and Track B's
    connectedness result.
 7. Reassemble `QuantumLinkedCluster.lean` on top of the above.
 
-**Step 1 is done:** `LeanCondensedMatter/SecondQuantization/ImaginaryTimeEvolution.lean`.
-
+**Step 1 done, in `ImaginaryTimeEvolution.lean`:**
 - `imaginaryTimeEvolveFree ε τ` — `e^{τH₀}` for the free Hamiltonian, defined directly on the
-  occupation-number basis via the actual (non-truncated) `Complex.exp` of each basis state's
-  eigenvalue `E(n) := Σᵢ∈n ε(i)`, extended linearly via `Finsupp.lift` — unlike
-  `FormalExpFermionic.lean`'s `formalExpTerm`/`formalExpTruncation`, this needs no Taylor
-  truncation, since `freeHamiltonian` is diagonal and `Complex.exp` of a concrete scalar is always
-  well-defined. This trick is specific to the *free* (diagonal) Hamiltonian; it does not extend to
-  a general `H = H₀ + V`.
-- `imaginaryTimeEvolveFree_zero`, `imaginaryTimeEvolveFree_add` (the one-parameter semigroup law),
-  `imaginaryTimeEvolveFree_comp_neg`/`_neg_comp` (mutual inverses) — basic flow properties.
-- `imaginaryTimeEvolve ε τ A := e^{τH₀} A e^{-τH₀}` — the Heisenberg-picture evolution of a
-  *general* operator `A` (not just diagonal ones), well-defined since `e^{±τH₀}` are genuine
-  operators.
-- `imaginaryTimeEvolve_zero`, `imaginaryTimeEvolve_freeHamiltonian` (`H₀` evolves trivially under
-  its own flow) — sanity checks.
+  occupation-number basis via `Complex.exp` of each basis state's eigenvalue `E(n) := Σᵢ∈n ε(i)`
+  (no Taylor truncation needed, unlike `FormalExpFermionic.lean`, since `freeHamiltonian` is
+  diagonal — specific to the free Hamiltonian, doesn't extend to `H = H₀ + V`).
+  `imaginaryTimeEvolveFree_zero`/`_add`/`_comp_neg`/`_neg_comp` give the one-parameter semigroup
+  law and mutual inverses.
+- `imaginaryTimeEvolve ε τ A := e^{τH₀} A e^{-τH₀}` — Heisenberg-picture evolution of a general
+  operator, with sanity checks `imaginaryTimeEvolve_zero`/`_freeHamiltonian`.
 
 **Not yet done:** everything from step 2 onward.
