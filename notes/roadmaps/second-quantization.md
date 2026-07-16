@@ -167,4 +167,35 @@ cross-region interaction present, the *disconnected* contributions at each pertu
 cancel in `log Z`. This bridge is a necessary building block for that argument, not a shortcut
 past it — the perturbative assembly itself remains substantial future work, not a small finish.
 
-**Not yet done:** the `log Z = Σ` over connected clusters assembly itself.
+**A formal-power-series prerequisite for the genuine `log Z` statement has now started**, in
+`LeanCondensedMatter/SecondQuantization/FormalLogPartitionFunction.lean` — deliberately abstract
+and physics-free, and **not yet a piece of the theorem itself**: nothing here proves any
+disconnected contribution vanishes, only that `log Z` is a well-defined object with the expected
+basic coefficients. `log Z` is a formal power series in a perturbation-strength parameter, for an
+*arbitrary* `Z : PowerSeries ℂ` with `Z(0) = 1`, via Mathlib's `PowerSeries.log`
+(`log(1+X) = X - X²/2 + ⋯`, defined by substitution, so no convergence hypothesis is needed).
+
+- `normalizePartitionSeries Z := C (constantCoeff Z)⁻¹ * Z` and
+  `constantCoeff_normalizePartitionSeries` — a genuine perturbative partition function has
+  `Z(0) = Z₀` (the free partition function), not `1`; this rescales it to constant term `1` so
+  `formalLogPartitionFunction` below applies.
+- `formalLogPartitionFunction Z := (PowerSeries.log ℂ).subst (Z - 1)` — substitutes `Z - 1` for
+  `X` in the universal `log(1+X)` series, giving `log Z` once `Z`'s constant term is `1`.
+- `hasSubst_sub_one_of_constantCoeff_eq_one` — `HasSubst (Z - 1)`, the side condition
+  `PowerSeries.subst`'s correctness lemmas need, following directly from `constantCoeff Z = 1`.
+- `constantCoeff_formalLogPartitionFunction` — `log Z`'s constant term vanishes, matching the
+  physical picture `log Z(0) = log 1 = 0`.
+- `coeff_one_formalLogPartitionFunction` — `log Z`'s order-`1` coefficient equals `Z`'s own
+  order-`1` coefficient (the connected/disconnected pictures only start to differ from second
+  order onward).
+
+**Not yet done, roughly in order:** (1) relating Track B's finite-set moment/cumulant duality to
+exponential-generating-series `exp`/`log` — a purely combinatorial bridge (a single `Finset α → ℂ`
+moment function only tracks perturbation order, not which vertex set belongs to which connected
+component, so this bridge is necessary before "connected" can be proved from `log` coefficients at
+all; likely its own file, e.g. `ExponentialFormula.lean`); (2) the general coefficient-level
+formula for `log Z`'s `[λⁿ]` term (`coeff_one_...` above is only the `n = 1` case); (3) connecting
+an actual perturbative expansion of `traceFock (formalExpTruncation (H₀ + λ • V) N)` — `H₀`, `V`
+are non-commuting operators, so `(H₀ + λV)ⁿ` expands into a non-trivial sum over orderings (the
+real Dyson-series combinatorics) — to that combinatorial structure. This is the substantial
+remaining work toward the genuine Linked Cluster Theorem, not a small finish.
