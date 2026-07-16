@@ -136,8 +136,35 @@ extended linearly via `Finsupp.lift` — same pattern as `create`/`annihilate`),
   "`occupationProjector S` is the simultaneous product of number operators" an operator-algebra
   theorem, not just a physical reading.
 
-**Not yet done:** establishing `Finpartition.IsIndependentAcross (occupationMoment w) A B` for a
-genuine product/Gibbs weight (i.e. connecting *physical* independence of a weight across a mode
-bipartition — `Disjoint A B`, `A ⊔ B = univ`, `w n = wA (n ∩ A) * wB (n ∩ B)` — to the abstract
-hypothesis Track B's cumulant-vanishing theorem needs), and the `log Z = Σ` over connected clusters
-assembly itself.
+**The physical-independence bridge is now also done:** `IsProductWeightAcross w A B` — `w`
+factors as `wA` on the `A`-part of an occupation state times `wB` on the `B`-part
+(`Disjoint A B`, `A ∪ B = univ`, `w n = wA (n ∩ A) * wB (n ∩ B)`) — and
+`occupationMoment_isIndependentAcross` shows this implies `Finpartition.IsIndependentAcross
+(occupationMoment w) A B`, so Track B's `cumulantFromMoment_eq_zero_of_isIndependentAcross`
+applies directly to occupation-number cumulants of a product weight.
+
+- `sum_filter_subset_eq_mul` — the combinatorial core: every occupation state `n ⊇ C` corresponds
+  bijectively to a pair `(n ∩ A, n ∩ B)` with `n ∩ A ⊇ C ∩ A` a subset of `A` and `n ∩ B ⊇ C ∩ B` a
+  subset of `B` (via `Disjoint A B`/`A ∪ B = univ`), reindexed via `Finset.sum_nbij'` with inverse
+  maps `n ↦ (n ∩ A, n ∩ B)` and `(S, T) ↦ S ∪ T`.
+- `partitionFunction_eq_mul_of_product_factorization` — `Z(w) = Z(wA) * Z(wB)`, the `C = ⊥` case of
+  the above.
+- `occupationMoment_eq_of_product_factorization` — `occupationMoment w T` written in terms of the
+  two independent sides' filtered sums, divided by `Z(w)`.
+- **`occupationMoment_isIndependentAcross`** — the main theorem, combining the above at `T`,
+  `T ∩ A`, `T ∩ B` and closing with `field_simp` once `Z(wA), Z(wB) ≠ 0` are extracted from
+  `Z(w) ≠ 0` via `Z(w) = Z(wA) * Z(wB)`.
+- `occupationCumulant w := Finpartition.cumulantFromMoment (occupationMoment w)` and
+  **`occupationCumulant_eq_zero_of_isProductWeightAcross`** — the physics-facing packaging: under
+  a product weight (e.g. a Gibbs weight for `H = HA + HB`, `[HA, HB] = 0`, no cross-region
+  interaction), the occupation-number cumulant spanning both `A` and `B` vanishes, without the
+  caller needing to name `Finpartition.IsIndependentAcross`.
+
+**Scope note:** `IsProductWeightAcross` only covers the case where the Hamiltonian itself splits
+cleanly across the bipartition (`e^{-βH} = e^{-βHA} e^{-βHB}`) — it does *not* hold for a genuine
+interacting Gibbs weight. The Linked Cluster Theorem needs the harder statement that, even with
+cross-region interaction present, the *disconnected* contributions at each perturbation order
+cancel in `log Z`. This bridge is a necessary building block for that argument, not a shortcut
+past it — the perturbative assembly itself remains substantial future work, not a small finish.
+
+**Not yet done:** the `log Z = Σ` over connected clusters assembly itself.
