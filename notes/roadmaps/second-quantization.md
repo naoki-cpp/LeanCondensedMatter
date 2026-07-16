@@ -147,12 +147,24 @@ applies directly to occupation-number cumulants of a product weight.
   bijectively to a pair `(n ∩ A, n ∩ B)` with `n ∩ A ⊇ C ∩ A` a subset of `A` and `n ∩ B ⊇ C ∩ B` a
   subset of `B` (via `Disjoint A B`/`A ∪ B = univ`), reindexed via `Finset.sum_nbij'` with inverse
   maps `n ↦ (n ∩ A, n ∩ B)` and `(S, T) ↦ S ∪ T`.
-- `partitionFunction_eq_mul_of_isProductWeightAcross` — `Z(w) = Z(wA) * Z(wB)`, the `C = ⊥` case of
+- `partitionFunction_eq_mul_of_product_factorization` — `Z(w) = Z(wA) * Z(wB)`, the `C = ⊥` case of
   the above.
-- `occupationMoment_eq_of_isProductWeightAcross` — `occupationMoment w T` written in terms of the
+- `occupationMoment_eq_of_product_factorization` — `occupationMoment w T` written in terms of the
   two independent sides' filtered sums, divided by `Z(w)`.
 - **`occupationMoment_isIndependentAcross`** — the main theorem, combining the above at `T`,
   `T ∩ A`, `T ∩ B` and closing with `field_simp` once `Z(wA), Z(wB) ≠ 0` are extracted from
   `Z(w) ≠ 0` via `Z(w) = Z(wA) * Z(wB)`.
+- `occupationCumulant w := Finpartition.cumulantFromMoment (occupationMoment w)` and
+  **`occupationCumulant_eq_zero_of_isProductWeightAcross`** — the physics-facing packaging: under
+  a product weight (e.g. a Gibbs weight for `H = HA + HB`, `[HA, HB] = 0`, no cross-region
+  interaction), the occupation-number cumulant spanning both `A` and `B` vanishes, without the
+  caller needing to name `Finpartition.IsIndependentAcross`.
+
+**Scope note:** `IsProductWeightAcross` only covers the case where the Hamiltonian itself splits
+cleanly across the bipartition (`e^{-βH} = e^{-βHA} e^{-βHB}`) — it does *not* hold for a genuine
+interacting Gibbs weight. The Linked Cluster Theorem needs the harder statement that, even with
+cross-region interaction present, the *disconnected* contributions at each perturbation order
+cancel in `log Z`. This bridge is a necessary building block for that argument, not a shortcut
+past it — the perturbative assembly itself remains substantial future work, not a small finish.
 
 **Not yet done:** the `log Z = Σ` over connected clusters assembly itself.

@@ -30,14 +30,16 @@ projector algebra under composition, making "`occupationProjector S` is the simu
 of number operators" an operator-algebra theorem rather than only a physical reading.
 
 `IsProductWeightAcross w A B` formalizes *physical* independence of a weight across a mode
-bipartition (`Disjoint A B`, `A ∪ B = univ`, `w n = wA (n ∩ A) * wB (n ∩ B)`), and
-`occupationMoment_isIndependentAcross` shows it implies `Finpartition.IsIndependentAcross
-(occupationMoment w) A B` — connecting this physical hypothesis to Track B's abstract one, so
-`cumulantFromMoment_eq_zero_of_isIndependentAcross` applies directly to occupation-number
-cumulants of a product weight.
+bipartition (`Disjoint A B`, `A ∪ B = univ`, `w n = wA (n ∩ A) * wB (n ∩ B)`) — e.g. a Gibbs weight
+for a Hamiltonian `H = HA + HB` with `[HA, HB] = 0` and no cross-region interaction. It is *not* a
+general interacting Gibbs weight. `occupationMoment_isIndependentAcross` shows it implies
+`Finpartition.IsIndependentAcross (occupationMoment w) A B`, and `occupationCumulant_eq_zero_of_
+isProductWeightAcross` packages the resulting cumulant-vanishing fact without exposing
+`Finpartition.IsIndependentAcross` to callers.
 
-This does *not* yet assemble the `log Z = Σ` over connected clusters statement itself — see
-`notes/roadmaps/second-quantization.md` for what remains.
+This is a necessary building block for the Linked Cluster Theorem, not the theorem itself: the LCT
+needs the harder statement that disconnected contributions cancel in `log Z` even in the presence
+of cross-region interaction — see `notes/roadmaps/second-quantization.md` for what remains.
 -/
 
 namespace SecondQuantization
@@ -233,7 +235,7 @@ theorem sum_filter_subset_eq_mul {A B : Finset Mode} (hAB : Disjoint A B)
 
 omit [LinearOrder Mode] in
 /-- **`occupationMoment` under a product weight, in terms of the two independent sides.** -/
-theorem occupationMoment_eq_of_isProductWeightAcross {w wA wB : FermionOccupation Mode → ℂ}
+theorem occupationMoment_eq_of_product_factorization {w wA wB : FermionOccupation Mode → ℂ}
     {A B : Finset Mode} (hAB : Disjoint A B) (hU : A ∪ B = Finset.univ)
     (hw : ∀ n, w n = wA (n ∩ A) * wB (n ∩ B)) (T : Finset Mode) :
     occupationMoment w T = (∑ S ∈ A.powerset.filter ((T ∩ A) ⊆ ·), wA S) *
@@ -243,7 +245,7 @@ theorem occupationMoment_eq_of_isProductWeightAcross {w wA wB : FermionOccupatio
   exact Finset.sum_congr rfl fun n _ => hw n
 
 omit [LinearOrder Mode] in
-theorem partitionFunction_eq_mul_of_isProductWeightAcross {w wA wB : FermionOccupation Mode → ℂ}
+theorem partitionFunction_eq_mul_of_product_factorization {w wA wB : FermionOccupation Mode → ℂ}
     {A B : Finset Mode} (hAB : Disjoint A B) (hU : A ∪ B = Finset.univ)
     (hw : ∀ n, w n = wA (n ∩ A) * wB (n ∩ B)) :
     partitionFunction w = (∑ S ∈ A.powerset, wA S) * (∑ T ∈ B.powerset, wB T) := by
@@ -272,7 +274,7 @@ theorem occupationMoment_isIndependentAcross {w : FermionOccupation Mode → ℂ
   obtain ⟨hAB, hU, wA, wB, hfact⟩ := hw
   refine ⟨hAB, occupationMoment_bot hZ, fun T _ => ?_⟩
   rw [Finset.inf_eq_inter, Finset.inf_eq_inter]
-  have hZeq := partitionFunction_eq_mul_of_isProductWeightAcross hAB hU hfact
+  have hZeq := partitionFunction_eq_mul_of_product_factorization hAB hU hfact
   have hTAA : (T ∩ A) ∩ A = T ∩ A := by rw [Finset.inter_assoc, Finset.inter_self]
   have hTAB : (T ∩ A) ∩ B = ⊥ :=
     Finset.eq_empty_of_forall_notMem fun x hx =>
@@ -289,10 +291,29 @@ theorem occupationMoment_isIndependentAcross {w : FermionOccupation Mode → ℂ
     Finset.filter_true_of_mem fun T _ => Finset.empty_subset T
   have hZAB : (∑ S ∈ A.powerset, wA S) * (∑ T ∈ B.powerset, wB T) ≠ 0 := hZeq ▸ hZ
   obtain ⟨hZA, hZB⟩ := mul_ne_zero_iff.1 hZAB
-  rw [occupationMoment_eq_of_isProductWeightAcross hAB hU hfact T,
-    occupationMoment_eq_of_isProductWeightAcross hAB hU hfact (T ∩ A),
-    occupationMoment_eq_of_isProductWeightAcross hAB hU hfact (T ∩ B), hTAA, hTAB, hTBA, hTBB,
+  rw [occupationMoment_eq_of_product_factorization hAB hU hfact T,
+    occupationMoment_eq_of_product_factorization hAB hU hfact (T ∩ A),
+    occupationMoment_eq_of_product_factorization hAB hU hfact (T ∩ B), hTAA, hTAB, hTBA, hTBB,
     eA, eB, hZeq]
   field_simp
+
+/-- **The occupation-number cumulant** — Track B's `cumulantFromMoment` specialized to
+`occupationMoment w`. Named so the physics-facing corollary below reads without exposing
+`Finpartition.IsIndependentAcross`. -/
+noncomputable def occupationCumulant (w : FermionOccupation Mode → ℂ) (S : Finset Mode) : ℂ :=
+  Finpartition.cumulantFromMoment (occupationMoment w) S
+
+omit [LinearOrder Mode] in
+/-- **Occupation-number cumulants vanish across a product-weight bipartition.** The physics-facing
+form of `occupationMoment_isIndependentAcross`: under a product weight (e.g. a Gibbs weight for a
+Hamiltonian `H = HA + HB` with `[HA, HB] = 0` and no cross-region interaction), the connected
+correlator of modes spanning both `A` and `B` vanishes. This packages Track B's
+`cumulantFromMoment_eq_zero_of_isIndependentAcross` so callers never need to name
+`Finpartition.IsIndependentAcross` themselves. -/
+theorem occupationCumulant_eq_zero_of_isProductWeightAcross {w : FermionOccupation Mode → ℂ}
+    {A B : Finset Mode} (hw : IsProductWeightAcross w A B) (hZ : partitionFunction w ≠ 0)
+    (hA : A ≠ ⊥) (hB : B ≠ ⊥) : occupationCumulant w (A ⊔ B) = 0 :=
+  Finpartition.cumulantFromMoment_eq_zero_of_isIndependentAcross
+    (occupationMoment_isIndependentAcross hw hZ) hA hB
 
 end SecondQuantization
