@@ -11,12 +11,13 @@ bridge between Track D (thermal expectation values on `FockSpaceFermionic`) and 
 abstract moment-cumulant duality on the partition lattice, `Combinatorics/MomentCumulant.lean`,
 `Combinatorics/CumulantFactorization.lean`).
 
-`occupationMoment w S := (Σₙ (if S ⊆ n then w n else 0)) / Z(w)` is the thermal expectation value
-of the simultaneous occupation of every mode in `S`, `⟨∏ᵢ∈S nᵢ⟩_w`, computed directly as a weighted
-sum rather than via an operator product (the `numberOperator i`'s commute as they're simultaneously
-diagonal, but `FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode` has no `CommMonoid` structure
-under composition to state that with `Finset.prod`, so this file bypasses the issue rather than
-solving it). It lands exactly in Track B's `Finset Mode → ℂ` moment-function type, with
+`occupationMoment w S := (Σₙ (if S ⊆ n then w n else 0)) / Z(w)` is the normalized thermal
+expectation value of the simultaneous occupation of every mode in `S`, `⟨∏ᵢ∈S nᵢ⟩_w`, computed
+directly as a weighted sum rather than via an operator product (the `numberOperator i`'s commute as
+they're simultaneously diagonal, but `FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode` has no
+`CommMonoid` structure under composition to state that with `Finset.prod`, so this file bypasses
+the issue rather than solving it). It lands exactly in Track B's `Finset Mode → ℂ` moment-function
+type, with
 `occupationMoment w ⊥ = 1` matching `IsIndependentAcross`'s normalization hypothesis.
 
 This is a first, deliberately modest step: it connects the types and proves the basic sanity facts
@@ -29,9 +30,13 @@ namespace SecondQuantization
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
-/-- **The thermal occupation-correlator moment.** `occupationMoment w S` is the (un-normalized)
-probability, under the weight `w`, that every mode in `S` is occupied — the thermal expectation
-value `⟨∏ᵢ∈S nᵢ⟩_w` of the simultaneous occupation of `S`, computed directly as a weighted sum. -/
+/-- **The thermal occupation-correlator moment.** `occupationMoment w S` is the normalized weighted
+occupation correlator under the weight `w` — the thermal expectation value `⟨∏ᵢ∈S nᵢ⟩_w` of the
+simultaneous occupation of `S`, computed directly as a weighted sum. For positive real weights (a
+genuine Boltzmann weight) it is the probability that every mode in `S` is occupied; `w` here is an
+arbitrary complex-valued weight, so no probabilistic interpretation is assumed in general. As with
+`thermalExpectation`, division by `partitionFunction w` is only physically meaningful when
+`partitionFunction w ≠ 0`. -/
 noncomputable def occupationMoment (w : FermionOccupation Mode → ℂ) (S : Finset Mode) : ℂ :=
   (∑ n ∈ (Finset.univ : Finset (FermionOccupation Mode)).filter (S ⊆ ·), w n) /
     partitionFunction w
