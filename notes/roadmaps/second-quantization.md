@@ -116,7 +116,28 @@ function type.
   i)`, connecting the weighted-sum definition back to Track D's operator-level
   `thermalExpectation`.
 
+**The operator-level witness is now also done:** `occupationProjector S`, the simultaneous-
+occupation observable `∏ᵢ∈S nᵢ` as an actual `FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic
+Mode` operator (diagonal in the occupation-number basis, defined directly on basis states and
+extended linearly via `Finsupp.lift` — same pattern as `create`/`annihilate`), rather than only as
+`occupationMoment`'s weighted-sum formula.
+
+- `occupationProjector_basisState` — `occupationProjector S (basisState n) = if S ⊆ n then
+  basisState n else 0`.
+- `occupationProjector_singleton` — `occupationProjector {i} = numberOperator i`, confirming the
+  operator agrees with the existing number operator at the single-mode case.
+- `thermalExpectation_occupationProjector` — `thermalExpectation w (occupationProjector S) =
+  occupationMoment w S`, the operator-level/weighted-sum bridge `occupationMoment`'s docstring
+  promised.
+- `occupationProjector_empty`, `occupationProjector_mul`, `occupationProjector_comm`,
+  `occupationProjector_idempotent` — the commuting-projector algebra:
+  `occupationProjector ∅ = LinearMap.id`, `occupationProjector S * occupationProjector T =
+  occupationProjector (S ∪ T)` (hence commutative, and idempotent at `S = T`). Makes
+  "`occupationProjector S` is the simultaneous product of number operators" an operator-algebra
+  theorem, not just a physical reading.
+
 **Not yet done:** establishing `Finpartition.IsIndependentAcross (occupationMoment w) A B` for a
 genuine product/Gibbs weight (i.e. connecting *physical* independence of a weight across a mode
-bipartition to the abstract hypothesis Track B's cumulant-vanishing theorem needs), and the
-`log Z = Σ` over connected clusters assembly itself.
+bipartition — `Disjoint A B`, `A ⊔ B = univ`, `w n = wA (n ∩ A) * wB (n ∩ B)` — to the abstract
+hypothesis Track B's cumulant-vanishing theorem needs), and the `log Z = Σ` over connected clusters
+assembly itself.
