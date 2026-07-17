@@ -92,8 +92,8 @@ theorem comm_annihilate_annihilate (i j : Mode) : comm (annihilate i) (annihilat
 
 /-! ## `[aᵢ, aⱼ†] = δᵢⱼ` -/
 
-/-- **`a_i† a_i` raises the occupation weight by one**: `a_i(a_i†|n⟩) = (n_i + 1)|n⟩`. Half of
-the diagonal (`i = j`) CCR telescoping argument. -/
+/-- **`a_i a_i†` acts diagonally with eigenvalue `n_i + 1`**: `a_i(a_i†|n⟩) = (n_i + 1)|n⟩`. Half
+of the diagonal (`i = j`) CCR telescoping argument. -/
 theorem annihilate_create_basisState_same (i : Mode) (n : Occupation Mode) :
     annihilate i (create i (basisState n)) = ((n i : ℂ) + 1) • basisState n := by
   have h1 : createOccupation i n i ≠ 0 := by rw [createOccupation_apply_same]; omega
@@ -106,7 +106,7 @@ theorem annihilate_create_basisState_same (i : Mode) (n : Occupation Mode) :
   rw [create_basisState_eq, map_smul, annihilate_basisState_of_pos h1,
     removeOccupation_createOccupation, smul_smul, hscalar]
 
-/-- **`a_i a_i†` lowers the occupation weight by one**: `a_i†(a_i|n⟩) = n_i|n⟩`. The other half
+/-- **`a_i† a_i` acts diagonally with eigenvalue `n_i`**: `a_i†(a_i|n⟩) = n_i|n⟩`. The other half
 of the diagonal (`i = j`) CCR telescoping argument. -/
 theorem create_annihilate_basisState_same (i : Mode) (n : Occupation Mode) :
     create i (annihilate i (basisState n)) = (n i : ℂ) • basisState n := by
