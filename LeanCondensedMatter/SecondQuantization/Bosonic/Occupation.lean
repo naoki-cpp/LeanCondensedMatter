@@ -10,7 +10,7 @@ The occupation-number representation of the bosonic Fock basis, `Occupation Mode
 a finitely-supported function assigning each mode its number of particles. This is the preferred
 basis for a future bosonic Fock space; symmetric tensor powers are deliberately avoided as the
 starting point since the occupation-number picture is simpler and computationally direct. See
-`FermionOccupation.lean` for the fermionic counterpart (`Finset Mode`, not `Mode →₀ ℕ`, since
+`Fermionic/Occupation.lean` for the fermionic counterpart (`Finset Mode`, not `Mode →₀ ℕ`, since
 Pauli exclusion caps occupation at `0`/`1`) and `notes/roadmaps/second-quantization.md` for how
 this fits into Track D — the fermionic, finite-mode case is now the primary line toward the
 Linked Cluster Theorem, with this bosonic development kept in parallel.
@@ -87,7 +87,7 @@ theorem createOccupation_apply_ne {i j : Mode} (h : j ≠ i) (n : Occupation Mod
 /-!
 `removeOccupation` lives under `SecondQuantization.Bosonic` (rather than plain
 `SecondQuantization`, unlike the rest of this file) solely to avoid a name clash with the
-fermionic `SecondQuantization.removeOccupation` in `FermionOccupation.lean`.
+fermionic `SecondQuantization.removeOccupation` in `Fermionic/Occupation.lean`.
 -/
 
 namespace Bosonic
@@ -128,6 +128,40 @@ theorem particleNumber_removeOccupation_of_pos {i : Mode} {n : Occupation Mode} 
     particleNumber (removeOccupation i n) + 1 = particleNumber n := by
   conv_rhs => rw [← createOccupation_removeOccupation_of_pos h]
   rw [particleNumber_createOccupation]
+
+/-! ## Commuting independent-mode operations
+
+The occupation-level facts behind the CCR at distinct modes (`CCR.lean`): creating/removing at
+mode `i` doesn't interact with creating/removing at a different mode `j`. -/
+
+theorem createOccupation_comm (i j : Mode) (n : Occupation Mode) :
+    createOccupation i (createOccupation j n) = createOccupation j (createOccupation i n) := by
+  simp only [createOccupation]
+  exact add_right_comm n (singleOccupation j) (singleOccupation i)
+
+theorem removeOccupation_comm {i j : Mode} (h : i ≠ j) (n : Occupation Mode) :
+    removeOccupation i (removeOccupation j n) = removeOccupation j (removeOccupation i n) := by
+  ext k
+  rcases eq_or_ne k i with rfl | hki
+  · rw [removeOccupation_apply_same, removeOccupation_apply_ne h,
+      removeOccupation_apply_ne h, removeOccupation_apply_same]
+  · rcases eq_or_ne k j with rfl | hkj
+    · rw [removeOccupation_apply_ne (Ne.symm h), removeOccupation_apply_same,
+        removeOccupation_apply_same, removeOccupation_apply_ne (Ne.symm h)]
+    · rw [removeOccupation_apply_ne hki, removeOccupation_apply_ne hkj,
+        removeOccupation_apply_ne hkj, removeOccupation_apply_ne hki]
+
+theorem removeOccupation_createOccupation_of_ne {i j : Mode} (h : i ≠ j) (n : Occupation Mode) :
+    removeOccupation i (createOccupation j n) = createOccupation j (removeOccupation i n) := by
+  ext k
+  rcases eq_or_ne k i with rfl | hki
+  · rw [removeOccupation_apply_same, createOccupation_apply_ne h,
+      createOccupation_apply_ne h, removeOccupation_apply_same]
+  · rcases eq_or_ne k j with rfl | hkj
+    · rw [removeOccupation_apply_ne (Ne.symm h), createOccupation_apply_same,
+        createOccupation_apply_same, removeOccupation_apply_ne (Ne.symm h)]
+    · rw [removeOccupation_apply_ne hki, createOccupation_apply_ne hkj,
+        createOccupation_apply_ne hkj, removeOccupation_apply_ne hki]
 
 end Bosonic
 end SecondQuantization
