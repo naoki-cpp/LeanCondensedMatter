@@ -114,6 +114,29 @@ bosonic partition sums are genuinely infinite series needing convergence conditi
 | B3d | `Bosonic/FreeTwoPointCoefficient.lean` — `diagonalCoeff A n := A (basisState n) n` (a coordinate evaluation, deliberately *not* named `operatorTrace`: `FockSpaceBosonic` is the algebraic, finite-particle *dense subspace* of a would-be completed bosonic Fock space, not that completed Hilbert space itself, so there is no inner product yet to make `diagonalCoeff` and `⟨n\|A\|n⟩` provably coincide); the free two-point function's basis coefficient `⟨n\|a_i(τ)a_j†\|n⟩ = δᵢⱼ e^{-τεᵢ}(nᵢ+1)`, computed algebraically with no thermal sum or Hilbert completion needed | `proved` |
 | B3e+ | The Boltzmann-weighted thermal sum over `n` of `B3d`'s coefficient (working name `gibbsDiagonalSum`/`occupationGibbsExpectation`, same naming caveat as `diagonalCoeff`), reducing to the Bose–Einstein distribution `⟨n_i⟩ = 1/(e^{βεᵢ}-1)` via `B3a`'s geometric series — needs the multi-mode summability `B3b/c` was deferred pending | `idea` |
 
+## Common statistics-agnostic layer
+
+The fermionic and bosonic lines proved the same shape of facts twice — an algebraic Fock space
+built from an occupation-state type, and a basis-diagonal free-Hamiltonian evolution — using
+different concrete occupation types (`FermionOccupation Mode := Finset Mode` vs. `Occupation Mode
+:= Mode →₀ ℕ`) but genuinely identical proofs otherwise. Extracted into `Common/`:
+
+| File | Contents | Status |
+|---|---|---|
+| `Common/AlgebraicFock.lean` | `AlgebraicFock Config := Config →₀ ℂ`, `basisState`, `linearMap_ext_basisState`, `matrixCoeff`/`diagonalCoeff` (coordinate-evaluation APIs), generic over the occupation-state type `Config` | `proved` |
+| `Common/OccupationBasis.lean` | `OccupationBasis Mode Config` — the architectural interface (`vacuum`, `occupation : Config → Mode → ℕ`, finiteness, faithfulness) both lines' concrete occupation types satisfy; no fermionic/bosonic instances supplied here (would invert the `Common/` → statistics-specific dependency direction) | `stated` (interface only) |
+| `Common/DiagonalEvolution.lean` | `diagonalEvolution energy τ` — the algebraic, basis-diagonal `e^{τH₀}` for a free Hamiltonian diagonal in `AlgebraicFock Config`'s eigenbasis with eigenvalue `energy : Config → ℝ`, and its Heisenberg-picture `heisenbergEvolve`; the semigroup law, mutual inversion, `A(0) = A` | `proved` |
+
+**Not yet done**: retrofitting `Fermionic/FockSpace.lean`/`CreationAnnihilation.lean` and
+`Fermionic/ImaginaryTimeEvolution.lean`/`Bosonic/ImaginaryTimeEvolution.lean` to build on
+`AlgebraicFock`/`DiagonalEvolution` instead of duplicating their proofs — both are already proved
+and depended on by later phases, so rebasing them is a separate, focused refactor, not folded into
+introducing this layer. Also not yet done: `ExchangeAlgebra` (the unified CCR/CAR statement
+`aᵢaⱼ† - ζ aⱼ†aᵢ = δᵢⱼ` for `ζ := Statistics.zetaInt`) and the unified free two-point coefficient
+`⟨n|aᵢ(τ)aⱼ†|n⟩ = δᵢⱼ e^{-τεᵢ}(1+ζnᵢ)` it would give (specializing to bosonic `B3d`'s
+`e^{-τεᵢ}(nᵢ+1)` at `ζ=+1` and the fermionic Green function's `e^{-τεᵢ}(1-nᵢ)` at `ζ=-1`) —
+concrete future targets once the case for rebasing the existing lines is made.
+
 ## Relation to Track C (operator algebra)
 
 Analytic issues — Hilbert-space completion of the algebraic Fock space, self-adjointness/domains of
