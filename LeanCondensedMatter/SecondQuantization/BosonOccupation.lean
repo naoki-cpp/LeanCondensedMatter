@@ -75,4 +75,59 @@ theorem particleNumber_createOccupation (i : Mode) (n : Occupation Mode) :
     particleNumber (createOccupation i n) = particleNumber n + 1 := by
   rw [createOccupation, particleNumber_add, particleNumber_singleOccupation]
 
+@[simp]
+theorem createOccupation_apply_same (i : Mode) (n : Occupation Mode) :
+    createOccupation i n i = n i + 1 := by
+  simp [createOccupation, singleOccupation]
+
+theorem createOccupation_apply_ne {i j : Mode} (h : j ≠ i) (n : Occupation Mode) :
+    createOccupation i n j = n j := by
+  simp [createOccupation, singleOccupation, h]
+
+/-!
+`removeOccupation` lives under `SecondQuantization.Bosonic` (rather than plain
+`SecondQuantization`, unlike the rest of this file) solely to avoid a name clash with the
+fermionic `SecondQuantization.removeOccupation` in `FermionOccupation.lean`.
+-/
+
+namespace Bosonic
+
+/-- **Removing a particle from mode `i`**: subtract one particle from mode `i` (a no-op if `i`
+was already unoccupied), leaving all other modes unchanged. The occupation-number counterpart of
+the annihilation operator's action on a basis state, before annihilation operators themselves are
+defined (`CreationAnnihilationBosonic.lean`). -/
+noncomputable def removeOccupation (i : Mode) (n : Occupation Mode) : Occupation Mode :=
+  n.update i (n i - 1)
+
+@[simp]
+theorem removeOccupation_apply_same (i : Mode) (n : Occupation Mode) :
+    removeOccupation i n i = n i - 1 := by
+  classical
+  simp [removeOccupation, Finsupp.update_apply]
+
+theorem removeOccupation_apply_ne {i j : Mode} (h : j ≠ i) (n : Occupation Mode) :
+    removeOccupation i n j = n j := by
+  classical
+  simp [removeOccupation, Finsupp.update_apply, h]
+
+theorem createOccupation_removeOccupation_of_pos {i : Mode} {n : Occupation Mode} (h : n i ≠ 0) :
+    createOccupation i (removeOccupation i n) = n := by
+  ext j
+  rcases eq_or_ne j i with rfl | hj
+  · rw [createOccupation_apply_same, removeOccupation_apply_same]; omega
+  · rw [createOccupation_apply_ne hj, removeOccupation_apply_ne hj]
+
+theorem removeOccupation_createOccupation (i : Mode) (n : Occupation Mode) :
+    removeOccupation i (createOccupation i n) = n := by
+  ext j
+  rcases eq_or_ne j i with rfl | hj
+  · rw [removeOccupation_apply_same, createOccupation_apply_same]; omega
+  · rw [removeOccupation_apply_ne hj, createOccupation_apply_ne hj]
+
+theorem particleNumber_removeOccupation_of_pos {i : Mode} {n : Occupation Mode} (h : n i ≠ 0) :
+    particleNumber (removeOccupation i n) + 1 = particleNumber n := by
+  conv_rhs => rw [← createOccupation_removeOccupation_of_pos h]
+  rw [particleNumber_createOccupation]
+
+end Bosonic
 end SecondQuantization
