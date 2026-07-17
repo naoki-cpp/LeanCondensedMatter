@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.BosonOccupation
 import Mathlib.Data.Complex.Basic
+import Mathlib.LinearAlgebra.Finsupp.VectorSpace
 
 set_option linter.style.header false
 
@@ -10,8 +11,9 @@ Phase B1 of Track D's bosonic line (`notes/roadmaps/second-quantization.md`): th
 (finite-particle, uncompleted) bosonic Fock space — the free `ℂ`-vector space on the bosonic
 occupation-number basis `Occupation Mode` (`BosonOccupation.lean`).
 
-Lives under `namespace SecondQuantization.Bosonic`, distinct from the fermionic line's plain
-`SecondQuantization` namespace: `basisState`, `create`, `annihilate`, etc. all have fermionic
+The Fock-space and operator declarations here live under `namespace SecondQuantization.Bosonic`,
+distinct from the fermionic line's plain `SecondQuantization` namespace: `basisState`, `create`,
+`annihilate`, etc. all have fermionic
 namesakes in `FockSpaceFermionic.lean`/`CreationAnnihilationFermionic.lean`, and the bosonic
 theory is genuinely different (occupation numbers are unbounded, so `FockSpaceBosonic Mode`, while
 still algebraic here, is expected to be infinite-dimensional even for a finite mode set — unlike
@@ -48,10 +50,17 @@ theorem basisState_ne_zero (n : Occupation Mode) : basisState n ≠ 0 :=
 theorem basisState_injective : Function.Injective (basisState : Occupation Mode → _) :=
   fun _ _ h => Finsupp.single_left_injective one_ne_zero h
 
-/-- Distinct occupation-number states give linearly-independent (in fact, orthogonal-support)
-basis vectors: `basisState m` and `basisState n` never coincide for `m ≠ n`. -/
+/-- Distinct occupation-number states give distinct basis vectors: `basisState m` and
+`basisState n` never coincide for `m ≠ n`. Their `Finsupp` supports are disjoint singletons. -/
 theorem basisState_injOn : Set.InjOn (basisState : Occupation Mode → _) Set.univ :=
   fun _ _ _ _ h => basisState_injective h
+
+/-- The basis vectors are in fact linearly independent, as `Finsupp.single`'s standard basis
+family always is. -/
+theorem basisState_linearIndependent :
+    LinearIndependent ℂ (basisState : Occupation Mode → FockSpaceBosonic Mode) := by
+  change LinearIndependent ℂ (fun n => Finsupp.single n (1 : ℂ))
+  exact Finsupp.basisSingleOne.linearIndependent
 
 end Bosonic
 end SecondQuantization

@@ -89,9 +89,11 @@ Now developed in parallel with Phase 9 of the fermionic line, per the staged pla
 fermionic line remains what's needed for the condensed-matter LCT target, and nothing here reuses
 fermionic proof code directly: occupation numbers are unbounded (no Pauli exclusion), so even a
 finite mode set gives an *infinite-dimensional* Fock space, unlike the fermionic
-`2^|Mode|`-dimensional case. All bosonic declarations live under `namespace
-SecondQuantization.Bosonic`, distinct from the fermionic line's plain `SecondQuantization`
-namespace, since `basisState`/`create`/`annihilate`/etc. all have fermionic namesakes.
+`2^|Mode|`-dimensional case. The Fock-space and operator declarations (`basisState`, `create`,
+`annihilate`, etc.) live under `namespace SecondQuantization.Bosonic`, distinct from the fermionic
+line's plain `SecondQuantization` namespace, since those names all have fermionic namesakes;
+`removeOccupation` is likewise namespaced there to avoid clashing with the fermionic occupation
+API, while `Occupation`/`vacuum`/`createOccupation` remain in plain `SecondQuantization`.
 
 **Planned order** (Phase B1: algebraic layer, parallel to fermionic Phases 1–7; Phase B2: free
 imaginary-time evolution, parallel to Phase 9 step 1; Phase B3: finite-occupation-cutoff thermal

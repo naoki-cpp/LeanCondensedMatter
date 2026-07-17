@@ -84,6 +84,14 @@ theorem createOccupation_apply_ne {i j : Mode} (h : j ≠ i) (n : Occupation Mod
     createOccupation i n j = n j := by
   simp [createOccupation, singleOccupation, h]
 
+/-!
+`removeOccupation` lives under `SecondQuantization.Bosonic` (rather than plain
+`SecondQuantization`, unlike the rest of this file) solely to avoid a name clash with the
+fermionic `SecondQuantization.removeOccupation` in `FermionOccupation.lean`.
+-/
+
+namespace Bosonic
+
 /-- **Removing a particle from mode `i`**: subtract one particle from mode `i` (a no-op if `i`
 was already unoccupied), leaving all other modes unchanged. The occupation-number counterpart of
 the annihilation operator's action on a basis state, before annihilation operators themselves are
@@ -121,4 +129,5 @@ theorem particleNumber_removeOccupation_of_pos {i : Mode} {n : Occupation Mode} 
   conv_rhs => rw [← createOccupation_removeOccupation_of_pos h]
   rw [particleNumber_createOccupation]
 
+end Bosonic
 end SecondQuantization
