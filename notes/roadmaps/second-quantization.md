@@ -192,13 +192,9 @@ order:
 
 **Step 3 done, in `ThermalGreenFunction.lean`:** `thermalGreenFunction ε w i j τ τ' :=
 -thermalExpectation w (timeOrderedProduct (Statistics.zetaInt Statistics.fermion)
-(imaginaryTimeEvolve ε τ (annihilate i)) (imaginaryTimeEvolve ε τ' (create j)) τ τ')`. **This is
-not yet the free thermal Green function `G₀` in general** — two independent restrictions must both
-hold: `w` must be a genuine Boltzmann weight (not an arbitrary complex one, as with
-`thermalExpectation`/`partitionFunction`), *and* it must be the free Boltzmann weight for the same
-`ε` used in the evolution (a Boltzmann weight for some other Hamiltonian would evolve the
-operators with the wrong generator). Neither is encoded in the type; a future step should
-introduce the free Boltzmann weight explicitly and specialize to it.
+(imaginaryTimeEvolve ε τ (annihilate i)) (imaginaryTimeEvolve ε τ' (create j)) τ τ')`. For
+*arbitrary* `w` this is only a free-evolution correlator, not the genuine `G₀` — see
+`FreeBoltzmannWeight.lean` below for the specialization that closes that gap.
 - `thermalGreenFunction_of_gt`/`_of_lt` — the two strict-time branches, verifying the sign:
   `_of_lt`'s fermionic swap sign (`-1`) cancels the definition's own `-1`, giving
   `+⟨c_j†(τ') c_i(τ)⟩_w` for `τ < τ'` — the standard finite-temperature convention.
@@ -207,5 +203,24 @@ introduce the free Boltzmann weight explicitly and specialize to it.
   agree — they generically don't (CAR forces `G(0⁺) - G(0⁻) = -1`) — only that this formalization's
   convention picks their average at exact coincidence.
 
-**Not yet done:** an explicit free Boltzmann weight (and specializing `thermalGreenFunction` to
-it, to obtain the genuine `G₀`); everything from step 4 onward.
+**Step 3 follow-up done, in `FreeBoltzmannWeight.lean`:** closes both gaps above.
+- `freeBoltzmannWeight ε β n := e^{-β E(n)}` — the genuine Gibbs weight for `freeHamiltonian ε` at
+  inverse temperature `β`.
+- `freeBoltzmannWeight_eq_ofReal` — it's the cast of a positive real (`Real.exp`), giving
+  positivity/non-vanishing without reasoning about complex `exp`; `freeBoltzmannWeight_ne_zero`,
+  `partitionFunction_freeBoltzmannWeight_ne_zero` (a sum of positive reals over the nonempty
+  `FermionOccupation Mode`, hence a nonzero positive real cast).
+- `freePartitionFunction`/`freeThermalExpectation` — `partitionFunction`/`thermalExpectation`
+  specialized to `freeBoltzmannWeight`, named wrappers so callers don't have to spell out the
+  weight each time; `freePartitionFunction_ne_zero`.
+- **`freeThermalGreenFunction ε β i j τ τ' := thermalGreenFunction ε (freeBoltzmannWeight ε β) i j
+  τ τ'`** — the free Gibbs-weight specialization of the time-ordered correlator: a positive Gibbs
+  weight for the same `ε` the evolution uses, closing both gaps above. **Not yet the full Matsubara
+  Green-function apparatus** — `0 < β`, the fundamental domain `0 ≤ τ, τ' ≤ β`, and KMS fermionic
+  antiperiodicity `G₀(τ+β,τ') = -G₀(τ,τ')` are not yet established, nor is the closed-form
+  agreement with the standard free-fermion result (`⟨N_i⟩₀ = 1/(e^{βε_i}+1)`, `G₀,ᵢⱼ = 0` for
+  `i ≠ j`).
+
+**Not yet done:** the finite-temperature structure above; the full Matsubara-Green-function
+apparatus; everything from step 4 onward (Wick contractions, the genuine Dyson series, diagram
+connectedness).
