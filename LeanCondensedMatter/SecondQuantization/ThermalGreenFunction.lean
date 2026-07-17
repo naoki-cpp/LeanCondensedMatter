@@ -23,8 +23,8 @@ must both hold before that name applies:
   generator, since `imaginaryTimeEvolve` only knows about `H₀ = freeHamiltonian ε`.
 
 `thermalGreenFunction` becomes the genuine `G₀` only once both hold. Neither restriction is
-encoded in the type here; a future file should introduce the free Boltzmann weight explicitly
-(`notes/roadmaps/second-quantization.md`) and specialize to it.
+encoded in the type here; `FreeBoltzmannWeight.lean`'s `freeThermalGreenFunction` specializes to
+the weight that satisfies both.
 -/
 
 namespace SecondQuantization
