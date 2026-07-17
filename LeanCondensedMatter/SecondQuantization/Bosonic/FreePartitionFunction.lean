@@ -20,9 +20,10 @@ throughout the roadmap's Phase B3 notes.
 `Z(β) = ∏ᵢ (1 - e^{-βεᵢ})⁻¹` for `[Fintype Mode]`, decomposing `freeEigenvalue`'s sum over modes
 into a `tsum` over `Occupation Mode` that factors as a product of one-mode geometric series (one
 per mode, via the identity proved here). Carrying that out by induction on `Mode` (`Mode = Empty`,
-then `Mode = Option Mode'`) needs a `Occupation (Option Mode) ≃ ℕ × Occupation Mode` decomposition
-that Mathlib does not currently provide off the shelf; building it is deferred to its own file
-rather than folded into this one.
+then `Mode = Option Mode'`) uses Mathlib's `Finsupp.optionEquiv : (Option α →₀ M) ≃ M × (α →₀ M)`
+to identify `Occupation (Option Mode) ≃ ℕ × Occupation Mode`; the remaining work is the
+`tsum`-over-a-product decomposition and the `Fintype.induction_empty_option` bookkeeping around
+it, deferred to its own file rather than folded into this one.
 -/
 
 namespace SecondQuantization
@@ -48,6 +49,20 @@ theorem hasSum_oneModeBoltzmannWeight {β ε : ℝ} (h : 0 < β * ε) :
 theorem summable_oneModeBoltzmannWeight {β ε : ℝ} (h : 0 < β * ε) :
     Summable (oneModeBoltzmannWeight β ε) :=
   (hasSum_oneModeBoltzmannWeight h).summable
+
+/-- **Convergence is not just sufficient but necessary**: `0 < βε` exactly characterizes
+summability, matching the `HasSum`/docstring claims above word for word rather than only their
+`0 < βε →` direction. -/
+theorem summable_oneModeBoltzmannWeight_iff {β ε : ℝ} :
+    Summable (oneModeBoltzmannWeight β ε) ↔ 0 < β * ε := by
+  unfold oneModeBoltzmannWeight
+  rw [show (fun k : ℕ => Real.exp ((k : ℝ) * (-β * ε))) =
+        fun k : ℕ => Real.exp (-β * ε) ^ k from funext fun k => Real.exp_nat_mul _ k,
+    summable_geometric_iff_norm_lt_one, Real.norm_eq_abs, abs_of_nonneg (Real.exp_nonneg _),
+    Real.exp_lt_one_iff]
+  constructor
+  · intro h; linarith
+  · intro h; linarith
 
 /-- **The one-mode bosonic partition function**, `Σ_{k=0}^∞ e^{-βkε} = (1 - e^{-βε})⁻¹`. -/
 theorem tsum_oneModeBoltzmannWeight {β ε : ℝ} (h : 0 < β * ε) :
