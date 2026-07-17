@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Hamiltonian
+import LeanCondensedMatter.SecondQuantization.Common.DiagonalEvolution
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 
 set_option linter.style.header false
@@ -27,66 +28,58 @@ namespace SecondQuantization
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
 
-/-- **`e^{τH₀}`, on a basis state.** `Complex.exp (τ * E(n)) • basisState n`, where
-`E(n) := Σᵢ∈n ε(i)` is the occupation state's free-Hamiltonian eigenvalue
-(`freeHamiltonian_basisState`). -/
-noncomputable def imaginaryTimeEvolveFreeBasis (ε : Mode → ℝ) (τ : ℝ)
-    (n : FermionOccupation Mode) : FockSpaceFermionic Mode :=
-  Complex.exp (τ * ∑ i ∈ n, (ε i : ℂ)) • basisState n
+/-- **The free Hamiltonian's eigenvalue** on an occupation state, `E(n) := Σᵢ∈n ε(i) : ℝ`
+(`freeHamiltonian_basisState`). Real-valued, matching `Common.DiagonalEvolution`'s `energy`
+parameter — cast to `ℂ` only where `Complex.exp` needs it. -/
+def fermionEnergy (ε : Mode → ℝ) (n : FermionOccupation Mode) : ℝ := ∑ i ∈ n, ε i
 
-/-- **The imaginary-time evolution operator `e^{τH₀}` for the free Hamiltonian**, extended
-linearly from `imaginaryTimeEvolveFreeBasis`. -/
+omit [DecidableEq Mode] [LinearOrder Mode] in
+theorem fermionEnergy_eq_sum_complex (ε : Mode → ℝ) (n : FermionOccupation Mode) :
+    (fermionEnergy ε n : ℂ) = ∑ i ∈ n, (ε i : ℂ) := by
+  simp [fermionEnergy]
+
+/-- **The imaginary-time evolution operator `e^{τH₀}` for the free Hamiltonian**: the algebraic,
+basis-diagonal realization from `Common.diagonalEvolution`, specialized to `fermionEnergy`. -/
 noncomputable def imaginaryTimeEvolveFree (ε : Mode → ℝ) (τ : ℝ) :
     FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
-  Finsupp.lift (FockSpaceFermionic Mode) ℂ (FermionOccupation Mode)
-    (imaginaryTimeEvolveFreeBasis ε τ)
+  Common.diagonalEvolution (fermionEnergy ε) τ
 
 omit [LinearOrder Mode] in
 theorem imaginaryTimeEvolveFree_basisState (ε : Mode → ℝ) (τ : ℝ) (n : FermionOccupation Mode) :
     imaginaryTimeEvolveFree ε τ (basisState n) =
       Complex.exp (τ * ∑ i ∈ n, (ε i : ℂ)) • basisState n := by
-  change Finsupp.lift _ ℂ _ (imaginaryTimeEvolveFreeBasis ε τ) (Finsupp.single n 1) =
-    imaginaryTimeEvolveFreeBasis ε τ n
-  simp [Finsupp.lift_apply, Finsupp.sum_single_index, imaginaryTimeEvolveFreeBasis]
+  simp only [imaginaryTimeEvolveFree, basisState]
+  rw [Common.diagonalEvolution_basisState]
+  congr 2
+  push_cast [fermionEnergy]
+  ring
 
 omit [LinearOrder Mode] in
 /-- **`e^{0·H₀} = id`.** -/
 @[simp]
 theorem imaginaryTimeEvolveFree_zero (ε : Mode → ℝ) :
-    imaginaryTimeEvolveFree ε 0 = LinearMap.id := by
-  apply linearMap_ext_basisState
-  intro n
-  simp [imaginaryTimeEvolveFree_basisState]
+    imaginaryTimeEvolveFree ε 0 = LinearMap.id :=
+  Common.diagonalEvolution_zero (fermionEnergy ε)
 
 omit [LinearOrder Mode] in
-/-- **The one-parameter semigroup law**, `e^{τH₀} ∘ e^{τ'H₀} = e^{(τ+τ')H₀}`, proved directly from
-`Complex.exp`'s additive law on the shared eigenbasis. -/
+/-- **The one-parameter semigroup law**, `e^{τH₀} ∘ e^{τ'H₀} = e^{(τ+τ')H₀}`. -/
 theorem imaginaryTimeEvolveFree_add (ε : Mode → ℝ) (τ τ' : ℝ) :
     (imaginaryTimeEvolveFree ε τ).comp (imaginaryTimeEvolveFree ε τ') =
-      imaginaryTimeEvolveFree ε (τ + τ') := by
-  apply linearMap_ext_basisState
-  intro n
-  rw [LinearMap.comp_apply, imaginaryTimeEvolveFree_basisState, map_smul,
-    imaginaryTimeEvolveFree_basisState, imaginaryTimeEvolveFree_basisState, smul_smul,
-    ← Complex.exp_add]
-  congr 2
-  push_cast
-  ring
+      imaginaryTimeEvolveFree ε (τ + τ') :=
+  Common.diagonalEvolution_add (fermionEnergy ε) τ τ'
 
 omit [LinearOrder Mode] in
 /-- **`e^{τH₀}` and `e^{-τH₀}` are mutually inverse.** -/
 @[simp]
 theorem imaginaryTimeEvolveFree_comp_neg (ε : Mode → ℝ) (τ : ℝ) :
-    (imaginaryTimeEvolveFree ε τ).comp (imaginaryTimeEvolveFree ε (-τ)) = LinearMap.id := by
-  rw [imaginaryTimeEvolveFree_add]
-  simp
+    (imaginaryTimeEvolveFree ε τ).comp (imaginaryTimeEvolveFree ε (-τ)) = LinearMap.id :=
+  Common.diagonalEvolution_comp_neg (fermionEnergy ε) τ
 
 omit [LinearOrder Mode] in
 @[simp]
 theorem imaginaryTimeEvolveFree_neg_comp (ε : Mode → ℝ) (τ : ℝ) :
-    (imaginaryTimeEvolveFree ε (-τ)).comp (imaginaryTimeEvolveFree ε τ) = LinearMap.id := by
-  rw [imaginaryTimeEvolveFree_add]
-  simp
+    (imaginaryTimeEvolveFree ε (-τ)).comp (imaginaryTimeEvolveFree ε τ) = LinearMap.id :=
+  Common.diagonalEvolution_neg_comp (fermionEnergy ε) τ
 
 /-! ## The Heisenberg-picture evolution of a general operator -/
 
@@ -96,15 +89,24 @@ since `e^{±τH₀}` are the genuinely analytic, non-truncated operators above. 
 noncomputable def imaginaryTimeEvolve (ε : Mode → ℝ) (τ : ℝ)
     (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
     FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
-  (imaginaryTimeEvolveFree ε τ).comp (A.comp (imaginaryTimeEvolveFree ε (-τ)))
+  Common.heisenbergEvolve (fermionEnergy ε) τ A
 
 omit [LinearOrder Mode] in
 /-- **At `τ = 0`, imaginary-time evolution is trivial**: `A(0) = A`. -/
 @[simp]
 theorem imaginaryTimeEvolve_zero (ε : Mode → ℝ)
     (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
-    imaginaryTimeEvolve ε 0 A = A := by
-  simp [imaginaryTimeEvolve]
+    imaginaryTimeEvolve ε 0 A = A :=
+  Common.heisenbergEvolve_zero (fermionEnergy ε) A
+
+omit [LinearOrder Mode] in
+/-- Unfolds `imaginaryTimeEvolve` back down to `imaginaryTimeEvolveFree`, matching the shape most
+proofs below need — `A(τ) := e^{τH₀} A e^{-τH₀}`, applied to a vector. -/
+theorem imaginaryTimeEvolve_apply (ε : Mode → ℝ) (τ : ℝ)
+    (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (x : FockSpaceFermionic Mode) :
+    imaginaryTimeEvolve ε τ A x =
+      imaginaryTimeEvolveFree ε τ (A (imaginaryTimeEvolveFree ε (-τ) x)) :=
+  rfl
 
 /-- **The free Hamiltonian evolves trivially under its own flow**: `H₀(τ) = H₀`, since `H₀` is
 diagonal in the very basis `e^{τH₀}` acts on by a scalar. -/
@@ -112,7 +114,7 @@ theorem imaginaryTimeEvolve_freeHamiltonian [Fintype Mode] (ε : Mode → ℝ) (
     imaginaryTimeEvolve ε τ (freeHamiltonian ε) = freeHamiltonian ε := by
   apply linearMap_ext_basisState
   intro n
-  rw [imaginaryTimeEvolve, LinearMap.comp_apply, LinearMap.comp_apply,
+  rw [imaginaryTimeEvolve_apply,
     imaginaryTimeEvolveFree_basisState, map_smul, freeHamiltonian_basisState, smul_smul,
     map_smul, imaginaryTimeEvolveFree_basisState, smul_smul]
   congr 1
@@ -129,7 +131,7 @@ theorem imaginaryTimeEvolve_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode)
     imaginaryTimeEvolve ε τ (annihilate i) = Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i := by
   apply linearMap_ext_basisState
   intro n
-  rw [imaginaryTimeEvolve, LinearMap.comp_apply, LinearMap.comp_apply,
+  rw [imaginaryTimeEvolve_apply,
     imaginaryTimeEvolveFree_basisState, map_smul, LinearMap.smul_apply]
   by_cases hi : i ∈ n
   · rw [annihilate_basisState_of_mem hi, smul_smul, map_smul, imaginaryTimeEvolveFree_basisState,
@@ -149,7 +151,7 @@ theorem imaginaryTimeEvolve_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     imaginaryTimeEvolve ε τ (create i) = Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i := by
   apply linearMap_ext_basisState
   intro n
-  rw [imaginaryTimeEvolve, LinearMap.comp_apply, LinearMap.comp_apply,
+  rw [imaginaryTimeEvolve_apply,
     imaginaryTimeEvolveFree_basisState, map_smul, LinearMap.smul_apply]
   by_cases hi : i ∈ n
   · rw [create_basisState_of_mem hi, smul_zero, map_zero, smul_zero]

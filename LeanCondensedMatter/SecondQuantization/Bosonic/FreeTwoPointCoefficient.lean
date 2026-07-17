@@ -67,7 +67,7 @@ theorem diagonalCoeff_evolve_annihilate_comp_create_of_ne (ε : Mode → ℝ) (�
       have hcoord := congrArg (· i) heq
       rw [createOccupation_apply_ne hij, removeOccupation_apply_same] at hcoord
       omega
-    simp [basisState, hne]
+    simp [basisState, Common.basisState, hne]
 
 end Bosonic
 end SecondQuantization

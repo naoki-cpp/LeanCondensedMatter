@@ -63,8 +63,7 @@ each give such a `c`), the `(n, n)` matrix coefficient is exactly `c`. -/
 theorem matrixCoeff_of_smul_basisState {A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode}
     {n : FermionOccupation Mode} {c : ℂ} (h : A (basisState n) = c • basisState n) :
     matrixCoeff A n n = c := by
-  rw [matrixCoeff, h, basisState, Finsupp.smul_apply, Finsupp.single_eq_same, smul_eq_mul,
-    mul_one]
+  rw [matrixCoeff, h, basisState, Common.smul_basisState_apply_self]
 
 omit [LinearOrder Mode] in
 @[simp]

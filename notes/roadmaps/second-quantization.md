@@ -127,11 +127,20 @@ different concrete occupation types (`FermionOccupation Mode := Finset Mode` vs.
 | `Common/OccupationBasis.lean` | `OccupationBasis Mode Config` — the architectural interface (`vacuum`, `occupation : Config → Mode → ℕ`, finiteness, faithfulness) both lines' concrete occupation types satisfy; no fermionic/bosonic instances supplied here (would invert the `Common/` → statistics-specific dependency direction) | `stated` (interface only) |
 | `Common/DiagonalEvolution.lean` | `diagonalEvolution energy τ` — the algebraic, basis-diagonal `e^{τH₀}` for a free Hamiltonian diagonal in `AlgebraicFock Config`'s eigenbasis with eigenvalue `energy : Config → ℝ`, and its Heisenberg-picture `heisenbergEvolve`; the semigroup law, mutual inversion, `A(0) = A` | `proved` |
 
-**Not yet done**: retrofitting `Fermionic/FockSpace.lean`/`CreationAnnihilation.lean` and
-`Fermionic/ImaginaryTimeEvolution.lean`/`Bosonic/ImaginaryTimeEvolution.lean` to build on
-`AlgebraicFock`/`DiagonalEvolution` instead of duplicating their proofs — both are already proved
-and depended on by later phases, so rebasing them is a separate, focused refactor, not folded into
-introducing this layer. Also not yet done: `ExchangeAlgebra` (the unified CCR/CAR statement
+**Retrofit done**: `Fermionic/FockSpace.lean`/`Bosonic/FockSpace.lean` now define
+`FockSpaceFermionic`/`FockSpaceBosonic` directly as `Common.AlgebraicFock (…)`, with `basisState`/
+`linearMap_ext_basisState` delegating to the `Common` versions (statistics-specific facts —
+`fockVacuum`, `basisState_injOn`, `basisState_linearIndependent` — stay local). Both
+`Fermionic/ImaginaryTimeEvolution.lean` and `Bosonic/ImaginaryTimeEvolution.lean` now define
+`imaginaryTimeEvolveFree`/`imaginaryTimeEvolve` as `Common.diagonalEvolution`/`heisenbergEvolve`
+specialized to their own real-valued eigenvalue (`fermionEnergy`/`freeEigenvalue`), with the
+generic lemmas (`_zero`, `_add`, `_comp_neg`, `_neg_comp`) delegated outright and a bridging
+`imaginaryTimeEvolve_apply` lemma (`rfl`) keeping the evolved-operator proofs
+(`_annihilate`/`_create`/`_freeHamiltonian`), which are statistics-specific, unchanged in shape.
+No public name or theorem statement in either file changed, so nothing downstream needed updates
+beyond two internal `simp`/`rw` fixes where the underlying unfolding changed.
+
+**Not yet done**: `ExchangeAlgebra` (the unified CCR/CAR statement
 `aᵢaⱼ† - ζ aⱼ†aᵢ = δᵢⱼ` for `ζ := Statistics.zetaInt`) and the unified free two-point coefficient
 `⟨n|aᵢ(τ)aⱼ†|n⟩ = δᵢⱼ e^{-τεᵢ}(1+ζnᵢ)` it would give (specializing to bosonic `B3d`'s
 `e^{-τεᵢ}(nᵢ+1)` at `ζ=+1` and the fermionic Green function's `e^{-τεᵢ}(1-nᵢ)` at `ζ=-1`) —

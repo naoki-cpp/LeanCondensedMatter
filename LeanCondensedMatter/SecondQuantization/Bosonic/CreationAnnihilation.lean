@@ -28,15 +28,6 @@ namespace Bosonic
 
 variable {Mode : Type*} [DecidableEq Mode]
 
-/-- Two linear maps out of `FockSpaceBosonic Mode` that agree on every basis state are equal. -/
-theorem linearMap_ext_basisState {f g : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode}
-    (h : ∀ n, f (basisState n) = g (basisState n)) : f = g := by
-  apply Finsupp.lhom_ext
-  intro n b
-  have hb : (Finsupp.single n b : FockSpaceBosonic Mode) = b • basisState n :=
-    (Finsupp.smul_single_one n b).symm
-  rw [hb, map_smul, map_smul, h]
-
 /-- **Creation, on a basis state.** `√(n_i + 1) • |n + eᵢ⟩`. -/
 noncomputable def createBasis (i : Mode) (n : Occupation Mode) : FockSpaceBosonic Mode :=
   (Real.sqrt (n i + 1 : ℝ) : ℂ) • basisState (createOccupation i n)
