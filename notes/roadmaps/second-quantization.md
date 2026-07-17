@@ -210,9 +210,17 @@ order:
   positivity/non-vanishing without reasoning about complex `exp`; `freeBoltzmannWeight_ne_zero`,
   `partitionFunction_freeBoltzmannWeight_ne_zero` (a sum of positive reals over the nonempty
   `FermionOccupation Mode`, hence a nonzero positive real cast).
+- `freePartitionFunction`/`freeThermalExpectation` — `partitionFunction`/`thermalExpectation`
+  specialized to `freeBoltzmannWeight`, named wrappers so callers don't have to spell out the
+  weight each time; `freePartitionFunction_ne_zero`.
 - **`freeThermalGreenFunction ε β i j τ τ' := thermalGreenFunction ε (freeBoltzmannWeight ε β) i j
-  τ τ'`** — the genuine free thermal Green function `G₀`, without qualification: a positive Gibbs
-  weight for the same `ε` the evolution uses.
+  τ τ'`** — the free Gibbs-weight specialization of the time-ordered correlator: a positive Gibbs
+  weight for the same `ε` the evolution uses, closing both gaps above. **Not yet the full Matsubara
+  Green-function apparatus** — `0 < β`, the fundamental domain `0 ≤ τ, τ' ≤ β`, and KMS fermionic
+  antiperiodicity `G₀(τ+β,τ') = -G₀(τ,τ')` are not yet established, nor is the closed-form
+  agreement with the standard free-fermion result (`⟨N_i⟩₀ = 1/(e^{βε_i}+1)`, `G₀,ᵢⱼ = 0` for
+  `i ≠ j`).
 
-**Not yet done:** everything from step 4 onward (Wick contractions, the genuine Dyson series,
-diagram connectedness).
+**Not yet done:** the finite-temperature structure above; the full Matsubara-Green-function
+apparatus; everything from step 4 onward (Wick contractions, the genuine Dyson series, diagram
+connectedness).
