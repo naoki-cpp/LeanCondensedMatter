@@ -167,6 +167,12 @@ order:
   law and mutual inverses.
 - `imaginaryTimeEvolve ε τ A := e^{τH₀} A e^{-τH₀}` — Heisenberg-picture evolution of a general
   operator, with sanity checks `imaginaryTimeEvolve_zero`/`_freeHamiltonian`.
+- `imaginaryTimeEvolve_annihilate`/`_create` — the explicit evolved-operator formulas
+  `c_i(τ) = e^{-τε_i} c_i`, `c_i†(τ) = e^{τε_i} c_i†`, proved directly from the basis-level action
+  (Pauli exclusion zeroes one branch; the other tracks the occupied-set sum shift on inserting or
+  removing mode `i`). This is the free-theory Heisenberg equation of motion
+  `d/dτ c_i(τ) = [H₀, c_i(τ)] = -ε_i c_i(τ)`, confirming `imaginaryTimeEvolve` reproduces the
+  expected physical time dependence rather than just an abstract conjugation.
 
 **Step 2 done, in `ThermalTimeOrdering.lean`:**
 - `timeOrderedProduct ζ A B τA τB` — `T_τ[A(τA) B(τB)]`: later time acts first, picking up the
