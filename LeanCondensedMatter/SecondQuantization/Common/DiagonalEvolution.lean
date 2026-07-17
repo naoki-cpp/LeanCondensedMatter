@@ -24,10 +24,10 @@ an operator-valued `Complex.exp` of some `H₀ : AlgebraicFock Config →ₗ[ℂ
 meaningful yet). See `Bosonic.freeHamiltonian`/`Bosonic.freeHamiltonian_basisState` for how the
 bosonic line relates the two for its own `energy := freeEigenvalue ε`.
 
-**Not yet done**: retrofitting `Fermionic.ImaginaryTimeEvolution.lean`/
-`Bosonic.ImaginaryTimeEvolution.lean` to build on this file instead of duplicating its proofs.
-Deliberately deferred — both files are already proved and used by later phases, and rebasing them
-here is a separate, focused refactor rather than something to fold into introducing this file.
+Both `Fermionic.imaginaryTimeEvolveFree`/`imaginaryTimeEvolve` and
+`Bosonic.imaginaryTimeEvolveFree`/`imaginaryTimeEvolve` are now specialized wrappers around
+`diagonalEvolution`/`heisenbergEvolve` here (`fermionEnergy`/`freeEigenvalue` supplying `energy`),
+so the semigroup/inversion/`A(0) = A` facts are proved once, in this file.
 -/
 
 namespace SecondQuantization

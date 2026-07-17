@@ -65,8 +65,8 @@ theorem thermalGreenFunction_of_lt (ε : Mode → ℝ) (w : FermionOccupation Mo
           (imaginaryTimeEvolve ε τ (annihilate i))) := by
   rw [thermalGreenFunction, timeOrderedProduct_of_lt _ _ _ h, Statistics.zetaInt_fermion,
     Int.cast_neg, Int.cast_one, neg_one_smul, thermalExpectation, weightedTrace]
-  simp only [matrixCoeff, LinearMap.neg_apply, Finsupp.neg_apply, mul_neg, thermalExpectation,
-    weightedTrace, Finset.sum_neg_distrib, neg_div, neg_neg]
+  simp only [matrixCoeff, Common.matrixCoeff, LinearMap.neg_apply, Finsupp.neg_apply, mul_neg,
+    thermalExpectation, weightedTrace, Finset.sum_neg_distrib, neg_div, neg_neg]
 
 /-- **At equal times**, this selects the `θ(0) = 1/2` convention `ThermalTimeOrdering.lean` fixes
 — an average of the two one-sided orderings, *not* a claim that the fermionic Green function's two

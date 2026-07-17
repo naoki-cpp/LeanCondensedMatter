@@ -23,10 +23,12 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 /-! ## Traces -/
 
 /-- **The `(m, n)` matrix coefficient** of an operator `A`, in the occupation-number basis:
-`⟨m| A |n⟩`, i.e. the coefficient of `basisState m` in `A (basisState n)`. -/
+`⟨m| A |n⟩`, i.e. the coefficient of `basisState m` in `A (basisState n)`. Delegates to
+`Common.matrixCoeff`, so the meaning is guaranteed to match the bosonic line's
+`Bosonic.diagonalCoeff`. -/
 noncomputable def matrixCoeff (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode)
     (m n : FermionOccupation Mode) : ℂ :=
-  A (basisState n) m
+  Common.matrixCoeff A m n
 
 /-- **The Fock-space trace** of an operator, `Tr A := Σₙ ⟨n| A |n⟩`. -/
 noncomputable def traceFock (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) : ℂ :=
@@ -63,7 +65,8 @@ each give such a `c`), the `(n, n)` matrix coefficient is exactly `c`. -/
 theorem matrixCoeff_of_smul_basisState {A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode}
     {n : FermionOccupation Mode} {c : ℂ} (h : A (basisState n) = c • basisState n) :
     matrixCoeff A n n = c := by
-  rw [matrixCoeff, h, basisState, Common.smul_basisState_apply_self]
+  change A (basisState n) n = c
+  rw [h, basisState, Common.smul_basisState_apply_self]
 
 omit [LinearOrder Mode] in
 @[simp]
