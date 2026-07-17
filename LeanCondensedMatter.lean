@@ -26,6 +26,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.FockSpace
 import LeanCondensedMatter.SecondQuantization.Bosonic.CreationAnnihilation
 import LeanCondensedMatter.SecondQuantization.Bosonic.CCR
 import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTimeEvolution
+import LeanCondensedMatter.SecondQuantization.Bosonic.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Occupation
 import LeanCondensedMatter.SecondQuantization.Fermionic.FockSpace
 import LeanCondensedMatter.SecondQuantization.Fermionic.CreationAnnihilation
