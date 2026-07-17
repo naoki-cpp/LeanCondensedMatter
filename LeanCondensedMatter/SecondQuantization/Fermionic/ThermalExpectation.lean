@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.HamiltonianFermionic
+import LeanCondensedMatter.SecondQuantization.Fermionic.Hamiltonian
 
 set_option linter.style.header false
 

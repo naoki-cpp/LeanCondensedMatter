@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.FockSpaceBosonic
+import LeanCondensedMatter.SecondQuantization.Bosonic.FockSpace
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.LinearAlgebra.Finsupp.LSum
 

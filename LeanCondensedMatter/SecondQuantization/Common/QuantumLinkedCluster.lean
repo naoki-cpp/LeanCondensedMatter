@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.ThermalExpectationFermionic
+import LeanCondensedMatter.SecondQuantization.Fermionic.ThermalExpectation
 import LeanCondensedMatter.Combinatorics.CumulantFactorization
 import Mathlib.Tactic.FieldSimp
 

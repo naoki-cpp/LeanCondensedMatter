@@ -1,5 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.ImaginaryTimeEvolution
-import LeanCondensedMatter.SecondQuantization.Statistics
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTimeEvolution
+import LeanCondensedMatter.SecondQuantization.Common.Statistics
 
 set_option linter.style.header false
 

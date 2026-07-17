@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.CreationAnnihilationFermionic
+import LeanCondensedMatter.SecondQuantization.Fermionic.CreationAnnihilation
 
 set_option linter.style.header false
 

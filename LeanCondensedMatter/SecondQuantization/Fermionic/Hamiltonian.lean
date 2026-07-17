@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.CanonicalAnticommutationRelations
+import LeanCondensedMatter.SecondQuantization.Fermionic.CanonicalAnticommutationRelations
 import Mathlib.Algebra.Module.BigOperators
 
 set_option linter.style.header false
