@@ -96,10 +96,10 @@ line's plain `SecondQuantization` namespace, since those names all have fermioni
 API, while `Occupation`/`vacuum`/`createOccupation` remain in plain `SecondQuantization`.
 
 **Planned order** (Phase B1: algebraic layer, parallel to fermionic Phases 1–7; Phase B2: free
-imaginary-time evolution, parallel to Phase 9 step 1; Phase B3: finite-occupation-cutoff thermal
-theory, *not* a direct port of the fermionic finite-sum trace/partition-function API — bosonic
-partition sums are genuinely infinite series needing convergence conditions, e.g. `βεᵢ > 0` per
-mode, that have no fermionic analogue):
+imaginary-time evolution, parallel to Phase 9 step 1; Phase B3: the genuine, uncutoff bosonic
+thermal theory, *not* a direct port of the fermionic finite-sum trace/partition-function API —
+bosonic partition sums are genuinely infinite series needing convergence conditions, e.g.
+`βεᵢ > 0` per mode, that have no fermionic analogue):
 
 | # | File | Status |
 |---|---|---|
@@ -108,7 +108,9 @@ mode, that have no fermionic analogue):
 | B1c | `Bosonic/CreationAnnihilation.lean` — `create`/`annihilate` on basis vectors *with* the `√n`/`√(n+1)` normalization factors (no Jordan–Wigner sign, unlike fermions — bosonic modes commute), extended linearly via `Finsupp.lift`; `linearMap_ext_basisState`, basis-level raising/lowering. CCR itself was deferred to a separate file (B1d) — the `√n` bookkeeping makes that telescoping argument genuinely more involved than the fermionic CAR proof | `proved` |
 | B1d | `Bosonic/CCR.lean` — `[aᵢ, aⱼ] = 0`, `[aᵢ†, aⱼ†] = 0`, `[aᵢ, aⱼ†] = δᵢⱼ`, via `createOccupation_comm`/`removeOccupation_comm`/`removeOccupation_createOccupation_of_ne` (`Bosonic/Occupation.lean`) at distinct modes and a `√n · √n = n` telescoping identity (`Real.mul_self_sqrt`) at the diagonal | `proved` |
 | B2 | `Bosonic/ImaginaryTimeEvolution.lean` — real-valued `freeEigenvalue ε n := Σᵢ n(i)·ε(i)`, `freeHamiltonian` (diagonal in the occupation basis with that eigenvalue), the algebraic basis-diagonal realization of `e^{τH₀}` (`imaginaryTimeEvolveFree`, not an operator exponential), Heisenberg-picture `imaginaryTimeEvolve`, and the evolved operators `a_i(τ) = e^{-τεᵢ} a_i`, `a_i†(τ) = e^{τεᵢ} a_i†` | `proved` |
-| B3 | Finite-occupation-cutoff thermal trace/partition-function/Green-function API | `idea` |
+| B3a | `Bosonic/FreePartitionFunction.lean` — the one-mode geometric series `Σ_{k=0}^∞ e^{-βkε} = (1-e^{-βε})⁻¹` (`hasSum_oneModeBoltzmannWeight`/`tsum_oneModeBoltzmannWeight`), converging exactly when `0 < βε` | `proved` |
+| B3b/c | The multi-mode product formula `Z(β) = ∏ᵢ (1-e^{-βεᵢ})⁻¹` for `[Fintype Mode]`, by `Fintype.induction_empty_option` reducing to B3a's one-mode factors. Needs an `Occupation (Option Mode) ≃ ℕ × Occupation Mode` decomposition Mathlib doesn't provide off the shelf | `idea` |
+| B3d+ | Occupation-basis Gibbs-weighted diagonal sums (working names `diagonalCoeff`/`gibbsDiagonalSum`/`occupationGibbsExpectation` — deliberately *not* `operatorTrace`/`thermalTrace`: `FockSpaceBosonic` is the algebraic, finite-particle *dense subspace* of a would-be completed bosonic Fock space, not that completed Hilbert space itself, so there is no inner product yet to make a genuine operator trace meaningful — a coordinate evaluation like `A (basisState n) n` only *coincides* with `⟨n\|A\|n⟩` once an orthonormal-basis inner product exists) and the free two-point function's Bose–Einstein reduction, following the same basis-coefficient route Phase 9's fermionic Green function already uses, without needing Hilbert completion first | `idea` |
 
 ## Relation to Track C (operator algebra)
 
