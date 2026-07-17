@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.ThermalGreenFunction
+import LeanCondensedMatter.SecondQuantization.Fermionic.ThermalGreenFunction
 
 set_option linter.style.header false
 

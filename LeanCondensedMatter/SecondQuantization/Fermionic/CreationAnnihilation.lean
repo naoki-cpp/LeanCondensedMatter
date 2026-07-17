@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.FockSpaceFermionic
+import LeanCondensedMatter.SecondQuantization.Fermionic.FockSpace
 import Mathlib.LinearAlgebra.Finsupp.LSum
 
 set_option linter.style.header false

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.FermionOccupation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Occupation
 import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Finsupp.Basic
 

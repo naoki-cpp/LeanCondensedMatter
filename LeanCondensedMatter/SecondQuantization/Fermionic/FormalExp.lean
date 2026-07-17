@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.ThermalExpectationFermionic
+import LeanCondensedMatter.SecondQuantization.Fermionic.ThermalExpectation
 
 set_option linter.style.header false
 

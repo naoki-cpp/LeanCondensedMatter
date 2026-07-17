@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.HamiltonianFermionic
+import LeanCondensedMatter.SecondQuantization.Fermionic.Hamiltonian
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 
 set_option linter.style.header false

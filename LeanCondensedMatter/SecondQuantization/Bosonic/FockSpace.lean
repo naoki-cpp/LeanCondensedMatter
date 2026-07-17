@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.BosonOccupation
+import LeanCondensedMatter.SecondQuantization.Bosonic.Occupation
 import Mathlib.Data.Complex.Basic
 import Mathlib.LinearAlgebra.Finsupp.VectorSpace
 
