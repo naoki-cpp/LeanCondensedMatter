@@ -23,9 +23,11 @@ anywhere in this file). `freeHamiltonian_basisState` below records how the two r
 by definition of both.
 
 `ε : Mode → ℝ` carries no positivity or boundedness assumption in this file — none of the
-algebraic identities here need one. Positivity/convergence conditions on `ε` (e.g. `βεᵢ > 0` per
-mode) become necessary once a genuine bosonic thermal partition function is defined in Phase B3,
-since that sum is genuinely infinite (no finite-mode cutoff like the fermionic case).
+algebraic identities here need one. Phase B3's planned finite-occupation-cutoff thermal trace
+needs no convergence theorem either, since a cutoff sum is finite regardless of `ε`'s sign.
+Positivity/convergence conditions on `ε` (e.g. `βεᵢ > 0` per mode) only become necessary once the
+cutoff is later removed for a genuine, uncutoff bosonic thermal partition function — a further
+step past B3, not B3 itself.
 
 `freeEigenvalue` is additive under `createOccupation`/`removeOccupation`
 (`freeEigenvalue_createOccupation`/`_removeOccupation_of_pos`), proved via the additivity of
@@ -157,6 +159,20 @@ theorem imaginaryTimeEvolve_zero (ε : Mode → ℝ)
     (A : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode) :
     imaginaryTimeEvolve ε 0 A = A := by
   simp [imaginaryTimeEvolve]
+
+/-- **The free Hamiltonian evolves trivially under its own flow**: `H₀(τ) = H₀`, since `H₀` is
+diagonal in the very basis `imaginaryTimeEvolveFree` acts on by a scalar. -/
+theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
+    imaginaryTimeEvolve ε τ (freeHamiltonian ε) = freeHamiltonian ε := by
+  apply linearMap_ext_basisState
+  intro n
+  have hscalar : Complex.exp ((-τ * freeEigenvalue ε n : ℝ) : ℂ) *
+      Complex.exp ((τ * freeEigenvalue ε n : ℝ) : ℂ) = 1 := by
+    rw [← Complex.exp_add, ← Complex.ofReal_add]
+    norm_num
+  rw [imaginaryTimeEvolve, LinearMap.comp_apply, LinearMap.comp_apply,
+    imaginaryTimeEvolveFree_basisState, map_smul, freeHamiltonian_basisState, smul_smul,
+    map_smul, imaginaryTimeEvolveFree_basisState, smul_smul, mul_right_comm, hscalar, one_mul]
 
 /-! ## Evolved creation and annihilation operators -/
 
