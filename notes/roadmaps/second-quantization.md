@@ -170,22 +170,36 @@ order:
 
 **Step 2 done, in `ThermalTimeOrdering.lean`:**
 - `timeOrderedProduct ζ A B τA τB` — `T_τ[A(τA) B(τB)]`: later time acts first, picking up the
-  exchange sign `ζ : ℤ` (`Statistics.zetaInt`, `-1` fermions/`+1` bosons) on every swap. At equal
-  times, resolves by definition to the `τB ≤ τA` branch. Time ordering doesn't depend on
-  `imaginaryTimeEvolve` itself — it orders whatever two time-labelled operators it's given — but
-  is intended for use on `imaginaryTimeEvolve ε τ A`, feeding `ThermalGreenFunction.lean`.
-- `timeOrderedProduct_of_le`/`_of_lt`, `timeOrderedProduct_self_time` — the two defining branches.
+  exchange sign `ζ : ℤ` (`Statistics.zetaInt`, `-1` fermions/`+1` bosons) on every swap.
+  **`θ(0) = 1/2`**: at equal times this symmetrizes the two branches,
+  `T_τ[A(τ)B(τ)] = ½(A(τ)B(τ) + ζ B(τ)A(τ))`, rather than picking either one. Time ordering
+  doesn't depend on `imaginaryTimeEvolve` itself — it orders whatever two time-labelled operators
+  it's given — but is intended for use on `imaginaryTimeEvolve ε τ A`, feeding
+  `ThermalGreenFunction.lean`.
+- `timeOrderedProduct_of_gt`/`_of_lt`, `timeOrderedProduct_self_time` — the two strict branches and
+  the symmetrized equal-time value.
 - `timeOrderedProduct_swap` — swapping the operator pair (with their times) and negating by `ζ`
-  returns the same product, for `τA ≠ τB` and `ζ² = 1`: the operator-level statement that swapping
-  two operators inside a time-ordered product costs exactly the exchange sign.
+  returns the same product, for *any* `τA`, `τB` (including equal — the `θ(0) = 1/2` convention
+  symmetrizes exactly enough to make this hold unconditionally) given `ζ² = 1`: the operator-level
+  statement that swapping two operators inside a time-ordered product costs exactly the exchange
+  sign.
 
-**Step 3 done, in `ThermalGreenFunction.lean`:**
-- `thermalGreenFunction ε w i j τ τ' := -thermalExpectation w (timeOrderedProduct
-  (Statistics.zetaInt Statistics.fermion) (imaginaryTimeEvolve ε τ (annihilate i))
-  (imaginaryTimeEvolve ε τ' (create j)) τ τ')` — the free-Hamiltonian Green function `G₀`
-  (`imaginaryTimeEvolve` is still only defined for `H₀`; the interacting `G` needs step 5's genuine
-  Dyson series). As with `thermalExpectation`/`partitionFunction`, `w` is an arbitrary complex
-  weight, physical only once specialized to a Boltzmann weight.
-- `thermalGreenFunction_self_time` — at equal times, time-ordering resolves to the plain product.
+**Step 3 done, in `ThermalGreenFunction.lean`:** `thermalGreenFunction ε w i j τ τ' :=
+-thermalExpectation w (timeOrderedProduct (Statistics.zetaInt Statistics.fermion)
+(imaginaryTimeEvolve ε τ (annihilate i)) (imaginaryTimeEvolve ε τ' (create j)) τ τ')`. **This is
+not yet the free thermal Green function `G₀` in general** — two independent restrictions must both
+hold: `w` must be a genuine Boltzmann weight (not an arbitrary complex one, as with
+`thermalExpectation`/`partitionFunction`), *and* it must be the free Boltzmann weight for the same
+`ε` used in the evolution (a Boltzmann weight for some other Hamiltonian would evolve the
+operators with the wrong generator). Neither is encoded in the type; a future step should
+introduce the free Boltzmann weight explicitly and specialize to it.
+- `thermalGreenFunction_of_gt`/`_of_lt` — the two strict-time branches, verifying the sign:
+  `_of_lt`'s fermionic swap sign (`-1`) cancels the definition's own `-1`, giving
+  `+⟨c_j†(τ') c_i(τ)⟩_w` for `τ < τ'` — the standard finite-temperature convention.
+- `thermalGreenFunction_self_time` — at equal times, resolves to the `θ(0) = 1/2` symmetrized
+  value. This is *not* a claim that the Green function's two one-sided limits `G(0⁺)`/`G(0⁻)`
+  agree — they generically don't (CAR forces `G(0⁺) - G(0⁻) = -1`) — only that this formalization's
+  convention picks their average at exact coincidence.
 
-**Not yet done:** everything from step 4 onward.
+**Not yet done:** an explicit free Boltzmann weight (and specializing `thermalGreenFunction` to
+it, to obtain the genuine `G₀`); everything from step 4 onward.
