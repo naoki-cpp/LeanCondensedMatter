@@ -439,11 +439,24 @@ construction.
 This layer is purely combinatorial and keeps `Common/` independent of both statistics-specific
 implementation directories.
 
-**Not yet done (except `Pairing.eraseZeroPair`):** a general `n`-operator time-ordered product (`timeOrderedProduct` is still
-2-operator-only); the pair-removal/reindexing step is now implemented by `Pairing.eraseZeroPair`;
-the crossing-count/weight recurrence and a first concrete Bloch–de Dominicis induction step (the finite-temperature
+**Crossing-count/weight recurrence under `eraseZeroPair` done, in `Common/BlochDeDominicisPairing.lean`:**
+`Pairing.firstPair` names the pair containing position `0`; `Pairing.crossingsWithFirstPair` counts
+the remaining pairs that cross it. `Pairing.crossingCount_eraseZeroPair` proves
+`crossingCount = eraseZeroPair.crossingCount + crossingsWithFirstPair` by splitting the crossing-pair
+product-filter as a sum over the left endpoint (`card_filter_crosses_product_eq_sum`) and matching the
+remaining-pairs term to `eraseZeroPair`'s own crossing count via the `eraseZeroOrderIso` bijection.
+`Pairing.interveningPositionCount` counts the positions strictly between `0` and its partner;
+`Pairing.crossingsWithFirstPair_mod_two` shows `crossingsWithFirstPair` and `interveningPositionCount`
+agree mod `2` — the intervening positions split into pairs that nest entirely inside (an even
+contribution, via a fixed-point-free involution argument on that subset) and positions whose partner
+crosses `firstPair` (exactly `crossingsWithFirstPair` of them). Since `ζ² = 1`, matching parities give
+matching powers (`zetaInt_pow_eq_of_mod_two_eq`), yielding the final recurrence
+`Pairing.weight_eraseZeroPair : pairing.weight s = ζ ^ interveningPositionCount * eraseZeroPair.weight s`.
+
+**Not yet done:** a general `n`-operator time-ordered product (`timeOrderedProduct` is still
+2-operator-only); a first concrete Bloch–de Dominicis induction step (the finite-temperature
 4-point identity `⟨A₁A₂A₃A₄⟩_{0,β} = ⟨A₁A₂⟩_{0,β}⟨A₃A₄⟩_{0,β} + ζ⟨A₁A₃⟩_{0,β}⟨A₂A₄⟩_{0,β} + ⟨A₁A₄⟩_{0,β}⟨A₂A₃⟩_{0,β}`, before the
-general `2n`-point theorem) using `ExchangeAlgebra` to validate the pairing-sign design; the
+general `2n`-point theorem) using `ExchangeAlgebra` and `weight_eraseZeroPair` to validate the pairing-sign design; the
 bosonic thermal-trace layer (`weightedTrace`/`normalizedWeightedDiagonal`/`weightSum`) that
 `Fermionic/WeightedDiagonalFunctional.lean` already has and the free bosonic two-point/occupation-number
 closed forms would need — deferred since the fermionic, finite-mode line remains this track's
