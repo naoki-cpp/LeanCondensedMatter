@@ -266,10 +266,12 @@ order:
   `Statistics.zetaInt Statistics.fermion`), and `Bosonic/ThermalTimeOrdering.lean` fixes
   `s := Statistics.boson` (added even though nothing in the bosonic line consumes it yet, for
   file-layout symmetry). **Scope note** (`Common/TimeOrdering.lean`'s module docstring):
-  `timeOrderedProduct_swap`'s exchange-sign claim is appropriate for elementary
-  creation/annihilation-type operators (or operators whose exchange parity matches `s`), not
-  arbitrary linear endomorphisms — e.g. the number operator `N_i` (even) does not pick up `-1`
-  when swapped past another such operator, and nothing in the types enforces this.
+  `timeOrderedProduct_swap` is an algebraic identity holding for *arbitrary* `A`, `B` — what's
+  restricted is the *physical interpretation* of `timeOrderedProduct Statistics.fermion A B` as
+  the fermionic time-ordered product, appropriate only when `A`, `B`'s exchange parity matches
+  `s` (elementary creation/annihilation operators, not e.g. the even number operator `N_i`, which
+  the theorem still applies to but does not physically pick up `-1` when exchanged) — nothing in
+  the types enforces this parity-matching condition.
 - `timeOrderedProduct_of_gt`/`_of_lt`, `timeOrderedProduct_self_time` — the two strict branches and
   the symmetrized equal-time value.
 - `timeOrderedProduct_swap` — swapping the operator pair (with their times) and negating by `ζ`

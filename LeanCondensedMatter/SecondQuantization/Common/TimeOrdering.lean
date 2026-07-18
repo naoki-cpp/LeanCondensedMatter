@@ -34,15 +34,19 @@ standard finite-temperature time-ordering convention. **`θ(0) := 1/2`**: at equ
 `τ_A = τ_B` this symmetrizes the two branches, `T_τ[A(τ)B(τ)] = ½(A(τ)B(τ) + ζ B(τ)A(τ))`, rather
 than picking either one.
 
-**Scope of the exchange-sign convention.** `timeOrderedProduct_swap`'s claim that swapping the
-operator pair costs exactly `s.zetaInt` is the statement appropriate for *elementary*
-creation/annihilation operators (or, more generally, any pair of operators that are each
-individually "odd"/"even" matching `s`'s exchange parity) — it is not a claim about *arbitrary*
-linear endomorphisms `A`, `B`. A composite operator built from an even number of fermionic
-creation/annihilation operators (e.g. the number operator `N_i`) does not pick up a `-1` when
-swapped past another such operator; nothing in this file's types enforces that distinction, so
-callers are responsible for only invoking `timeOrderedProduct_swap` on operators whose exchange
-parity genuinely matches `s`.
+**Scope of the exchange-sign convention.** `timeOrderedProduct_swap` is an algebraic identity that
+holds for *arbitrary* `A`, `B` — it follows directly from the definition, with no restriction on
+the operators. What is restricted is a *physical interpretation*: reading
+`timeOrderedProduct Statistics.fermion A B τA τB` as *the* fermionic time-ordered product of `A`
+and `B` is appropriate only when `A`, `B`'s exchange parity matches the chosen sign — i.e. for
+elementary creation/annihilation operators, or more generally operators that are each
+individually "odd"/"even" consistently with `s`. A composite operator built from an even number of
+fermionic creation/annihilation operators (e.g. the number operator `N_i`) does not physically
+pick up a `-1` when exchanged past another such operator, even though the *theorem*
+`timeOrderedProduct_swap` still applies to it and correctly computes what this file's `-1`
+convention assigns; nothing in this file's types enforces the parity-matching condition, so
+callers are responsible for only relying on the *physical* fermionic-time-ordering reading when
+that condition holds.
 -/
 
 namespace SecondQuantization
