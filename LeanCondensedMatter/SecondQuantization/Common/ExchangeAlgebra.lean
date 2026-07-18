@@ -5,8 +5,8 @@ set_option linter.style.header false
 /-!
 # The exchange-algebra interface, generic over the exchange statistics
 
-Groundwork for the general (fermionic *and* bosonic) finite-mode Wick/Bloch–de Dominicis theorem
-(`notes/roadmaps/second-quantization.md`): a general Wick induction needs to move a
+Groundwork for the general (fermionic *and* bosonic) finite-temperature Bloch–de Dominicis theorem
+(`notes/roadmaps/second-quantization.md`): a Bloch–de Dominicis induction needs to move a
 creation/annihilation operator past another one at every step, using the *all-index* exchange
 relation `a_i a_j† - ζ a_j† a_i = δᵢⱼ`, `a_i a_j - ζ a_j a_i = 0`, `a_i† a_j† - ζ a_j† a_i† = 0` —
 not just the single-mode `a_i a_i† = id + ζ N_i` reordering identity
@@ -14,7 +14,7 @@ not just the single-mode `a_i a_i† = id + ζ N_i` reordering identity
 `annihilate_comp_create_self`).
 CAR (`ζ = -1`) and CCR (`ζ = 1`) both have exactly this shape once stated via
 `Common.exchangeCommutator`, so `ExchangeAlgebra` packages it as a single interface both
-statistics instantiate, letting a future `Common/WickCombinatorics.lean` induction reference
+statistics instantiate, letting a future `Common/BlochDeDominicis.lean` induction reference
 `ExchangeAlgebra.annihilate_create`/`_annihilate_annihilate`/`_create_create` directly instead of
 fermionic `anticomm_*`/bosonic `comm_*` facts.
 

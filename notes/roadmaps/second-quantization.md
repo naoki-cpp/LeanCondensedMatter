@@ -144,7 +144,8 @@ finite-sum shape.
 | `Common/DiagonalEvolution.lean` | `diagonalEvolution energy τ` — the algebraic, basis-diagonal `e^{τH₀}` for a free Hamiltonian diagonal in `AlgebraicFock Config`'s eigenbasis with eigenvalue `energy : Config → ℝ`, and its Heisenberg-picture `heisenbergEvolve`; the semigroup law, mutual inversion, `A(0) = A` | `proved` |
 | `Common/ExchangeCommutator.lean` | `zetaCommutator`/`exchangeCommutator` (`notes/roadmaps/second-quantization.md`'s Phase 9 section below) | `proved` |
 | `Common/TimeOrdering.lean` | `Common.zetaTimeOrderedProduct`/`Common.timeOrderedProduct` — the imaginary-time-ordered product `T_τ` of two `AlgebraicFock Config` endomorphisms, generic over `Config` (never depended on the concrete occupation-state type, only on `.comp`/scalar multiplication) and, mirroring `ExchangeCommutator.lean`'s `zetaCommutator`/`exchangeCommutator` split, indexed by a raw `ζ : ℤ` or by a `Statistics` value; `Fermionic/ThermalTimeOrdering.lean`/`Bosonic/ThermalTimeOrdering.lean` fix the statistics (no `ζ`/`Statistics` parameter at their own call sites) while preserving their own public names | `proved`, both wrappers |
-| `Common/ExchangeAlgebra.lean` | `Common.ExchangeAlgebra s Mode Config` — a `class` packaging the *all-index* exchange relation `a_i a_j† - ζ a_j† a_i = δᵢⱼ`, `a_i a_j - ζ a_j a_i = 0`, `a_i† a_j† - ζ a_j† a_i† = 0` (via `exchangeCommutator s`) that CAR (`s = fermion`) and CCR (`s = boson`) share, letting a future Wick induction move operators past each other without referencing fermionic `anticomm_*`/bosonic `comm_*` directly; the concrete instances (`SecondQuantization.exchangeAlgebra` — fermionic, plain namespace — and `SecondQuantization.Bosonic.exchangeAlgebra`) live in each statistics' own directory, mirroring `OccupationBasis.lean`'s architecture, and are derived from the bridging fact that `exchangeCommutator s = anticomm`/`comm` for *any* two operators (generalizing the single-mode bridging in `Fermionic/NumberOperator.lean`/`Bosonic/NumberOperator.lean`) | `proved`, both instances |
+| `Common/ExchangeAlgebra.lean` | `Common.ExchangeAlgebra s Mode Config` — a `class` packaging the *all-index* exchange relation `a_i a_j† - ζ a_j† a_i = δᵢⱼ`, `a_i a_j - ζ a_j a_i = 0`, `a_i† a_j† - ζ a_j† a_i† = 0` (via `exchangeCommutator s`) that CAR (`s = fermion`) and CCR (`s = boson`) share, letting a future Bloch–de Dominicis induction move operators past each other without referencing fermionic `anticomm_*`/bosonic `comm_*` directly; the concrete instances (`SecondQuantization.exchangeAlgebra` — fermionic, plain namespace — and `SecondQuantization.Bosonic.exchangeAlgebra`) live in each statistics' own directory, mirroring `OccupationBasis.lean`'s architecture, and are derived from the bridging fact that `exchangeCommutator s = anticomm`/`comm` for *any* two operators (generalizing the single-mode bridging in `Fermionic/NumberOperator.lean`/`Bosonic/NumberOperator.lean`) | `proved`, both instances |
+| `Common/BlochDeDominicisPairing.lean` | `Common.BlochDeDominicis.Pairing n` — perfect pairings of `Fin (2 * n)` as fixed-point-free involutive permutations, with finite enumeration, crossing count, and the statistics weight `ζ^crossings`; the four-position theorem gives the adjacent/crossing/nested weights `1`, `ζ`, `1` without choosing an enumeration order | `proved` |
 
 **Symmetric file layout, `Fermionic/NumberOperator.lean` split from `Hamiltonian.lean`:** the
 fermionic number operator (`numberOperator`/`numberOperator_apply`/`numberOperator_basisState`)
@@ -165,11 +166,10 @@ generic lemmas (`_zero`, `_add`, `_comp_neg`, `_neg_comp`) delegated outright an
 No public name or theorem statement in either file changed, so nothing downstream needed updates
 beyond two internal `simp`/`rw` fixes where the underlying unfolding changed.
 
-**Not yet done**: `ExchangeAlgebra` (the unified CCR/CAR statement
-`aᵢaⱼ† - ζ aⱼ†aᵢ = δᵢⱼ` for `ζ := Statistics.zetaInt`) and the unified free two-point coefficient
+**Still not done:** the unified free two-point coefficient
 `⟨n|aᵢ(τ)aⱼ†|n⟩ = δᵢⱼ e^{-τεᵢ}(1+ζnᵢ)` it would give (specializing to bosonic `B3d`'s
 `e^{-τεᵢ}(nᵢ+1)` at `ζ=+1` and the fermionic Green function's `e^{-τεᵢ}(1-nᵢ)` at `ζ=-1`) —
-concrete future targets once the case for rebasing the existing lines is made.
+a concrete future target now that `ExchangeAlgebra` supplies the unified CCR/CAR interface.
 
 ## Relation to Track C (operator algebra)
 
@@ -219,7 +219,7 @@ formula for `log Z`; connecting an actual perturbative expansion of
 ## Phase 9: finite-temperature Green functions and time ordering
 
 The genuine theorem needs imaginary-time evolution, time ordering, thermal `n`-point correlators,
-Wick's theorem (Bloch–de Dominicis), and the non-commutative time-ordered Dyson series. Planned
+the finite-temperature Bloch–de Dominicis theorem, and the non-commutative time-ordered Dyson series. Planned
 order:
 
 1. `Fermionic/ImaginaryTimeEvolution.lean` — `e^{τH₀}` and Heisenberg-picture evolution (**done**, see below).
@@ -227,7 +227,7 @@ order:
 3. `Fermionic/ThermalGreenFunction.lean` — `G_{ij}(τ,τ') := -⟨T_τ c_i(τ) c_j†(τ')⟩_β` (**done**, see below;
    only the free-Hamiltonian `G₀`, and not yet as a special case of a general `n`-point correlator).
 4. `Fermionic/ThermalContraction.lean` — same-type contractions vanish (**done**, see below).
-   `BlochDeDominicis.lean` — the general finite-mode fermionic Wick/Bloch–de Dominicis theorem,
+   `BlochDeDominicis.lean` — the general finite-mode, finite-temperature fermionic Bloch–de Dominicis theorem,
    not yet started.
 5. `DysonExpansionFermionic.lean` — the genuine interaction-picture Dyson series (the name
    `Fermionic/FormalExp.lean` deliberately avoided).
@@ -367,7 +367,7 @@ type rather than a fermion-specific case analysis; `Fermionic/ParticleNumberChar
 linearity lemmas for `matrixCoeff` (`Common/AlgebraicFock.lean`) and
 `weightedTrace`/`thermalExpectation` (`Fermionic/ThermalExpectation.lean`) in their operator
 argument.
-**Not yet done:** the general finite-mode fermionic Wick/Bloch–de Dominicis theorem itself (the
+**Not yet done:** the general finite-mode, finite-temperature fermionic Bloch–de Dominicis theorem itself (the
 `n`-point sum-over-pairings formula, `BlochDeDominicis.lean`) — this file only established the
 vanishing half, not the full decomposition into `thermalGreenFunction` factors; the finite-
 temperature structure noted above (KMS antiperiodicity etc.); the full Matsubara-Green-function
@@ -399,7 +399,7 @@ above; `Fermionic/ThermalTimeOrdering.lean`/`Bosonic/ThermalTimeOrdering.lean` f
 statistics outright.
 
 **The all-index exchange relation done, in `Common/ExchangeAlgebra.lean`:** the strictly more
-useful common building block flagged above — a general Wick induction needs to move operators past
+useful common building block flagged above — a Bloch–de Dominicis induction needs to move operators past
 *each other* at every step (`a_i a_j† - ζ a_j† a_i = δᵢⱼ`, all `i, j`), not just the single-mode
 `a_i a_i† = id + ζN_i` case. `Common.ExchangeAlgebra s Mode Config` packages
 `annihilate_create`/`annihilate_annihilate`/`create_create` (all stated via `exchangeCommutator
@@ -414,13 +414,14 @@ that bridge — no new algebra, only the interface. This does not replace the ex
 `annihilate`/`create` functions or CAR/CCR theorems; downstream files using the statistics-specific
 names directly are unaffected.
 
-**Ordered Wick-pairing combinatorics done, in `Common/WickPairing.lean`:** Mathlib's existing
+**Finite-temperature Bloch–de Dominicis pairing combinatorics done, in
+`Common/BlochDeDominicisPairing.lean`:** Mathlib's existing
 perfect-matching abstraction is attached to subgraphs of general simple graphs; it is not a natural
-fit for the linearly ordered operator positions needed for Wick crossing signs.  The project-owned
-`Common.WickPairing n` therefore uses the smaller representation appropriate here: a finite set of
-normalized pairs `(a,b)` in `Fin (2*n)`, with `a < b`, in which every position occurs exactly once.
-`allWickPairings` gives its finite enumeration, `crossingCount` counts precisely the configurations
-`a < c < b < d`, and `WickPairing.weight s` is `(s.zetaInt : ℂ) ^ crossingCount`.  The bosonic
+fit for the linearly ordered operator positions needed for pairing crossing signs.  The project-owned
+`Common.BlochDeDominicis.Pairing n` therefore uses the smaller representation appropriate here: a
+fixed-point-free involutive permutation of `Fin (2*n)`.  `allPairings` gives its finite enumeration,
+`crossingCount` counts precisely the normalized configurations `a < c < b < d`, and
+`Pairing.weight s` is `(s.zetaInt : ℂ) ^ crossingCount`.  The bosonic
 weight is proved to be `1`, while the fermionic weight is `(-1)^crossingCount`.  The closed
 four-position theorem enumerates the three pairings as a `Finset` (so no arbitrary list order is
 part of the statement) and verifies their adjacent/crossing/nested weights are `1`, `ζ`, and `1`.
@@ -428,8 +429,8 @@ This layer is purely combinatorial and keeps `Common/` independent of both stati
 implementation directories.
 
 **Not yet done:** a general `n`-operator time-ordered product (`timeOrderedProduct` is still
-2-operator-only); a first concrete Wick induction step (the
-4-point identity `⟨A₁A₂A₃A₄⟩₀ = ⟨A₁A₂⟩₀⟨A₃A₄⟩₀ + ζ⟨A₁A₃⟩₀⟨A₂A₄⟩₀ + ⟨A₁A₄⟩₀⟨A₂A₃⟩₀`, before the
+2-operator-only); a first concrete Bloch–de Dominicis induction step (the finite-temperature
+4-point identity `⟨A₁A₂A₃A₄⟩_{0,β} = ⟨A₁A₂⟩_{0,β}⟨A₃A₄⟩_{0,β} + ζ⟨A₁A₃⟩_{0,β}⟨A₂A₄⟩_{0,β} + ⟨A₁A₄⟩_{0,β}⟨A₂A₃⟩_{0,β}`, before the
 general `2n`-point theorem) using `ExchangeAlgebra` to validate the pairing-sign design; the
 bosonic thermal-trace layer (`weightedTrace`/`thermalExpectation`/`partitionFunction`) that
 `Fermionic/ThermalExpectation.lean` already has and the free bosonic two-point/occupation-number
