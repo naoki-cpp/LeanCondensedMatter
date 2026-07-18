@@ -412,9 +412,23 @@ single-mode one above to *arbitrary* operator pairs (`exchangeCommutator_fermion
 so the instance fields just restate the existing `anticomm_*`/`comm_*` CAR/CCR theorems through
 that bridge — no new algebra, only the interface. This does not replace the existing public
 `annihilate`/`create` functions or CAR/CCR theorems; downstream files using the statistics-specific
-names directly are unaffected. **Not yet done:** the pairing/crossing-sign combinatorics itself (a
-`2n`-index pairing type, its enumeration, and `ζ^{crossings}`); a general `n`-operator time-ordered
-product (`timeOrderedProduct` is still 2-operator-only); a first concrete Wick induction step (the
+names directly are unaffected.
+
+**Ordered Wick-pairing combinatorics done, in `Common/WickPairing.lean`:** Mathlib's existing
+perfect-matching abstraction is attached to subgraphs of general simple graphs; it is not a natural
+fit for the linearly ordered operator positions needed for Wick crossing signs.  The project-owned
+`Common.WickPairing n` therefore uses the smaller representation appropriate here: a finite set of
+normalized pairs `(a,b)` in `Fin (2*n)`, with `a < b`, in which every position occurs exactly once.
+`allWickPairings` gives its finite enumeration, `crossingCount` counts precisely the configurations
+`a < c < b < d`, and `WickPairing.weight s` is `(s.zetaInt : ℂ) ^ crossingCount`.  The bosonic
+weight is proved to be `1`, while the fermionic weight is `(-1)^crossingCount`.  The closed
+four-position theorem enumerates the three pairings as a `Finset` (so no arbitrary list order is
+part of the statement) and verifies their adjacent/crossing/nested weights are `1`, `ζ`, and `1`.
+This layer is purely combinatorial and keeps `Common/` independent of both statistics-specific
+implementation directories.
+
+**Not yet done:** a general `n`-operator time-ordered product (`timeOrderedProduct` is still
+2-operator-only); a first concrete Wick induction step (the
 4-point identity `⟨A₁A₂A₃A₄⟩₀ = ⟨A₁A₂⟩₀⟨A₃A₄⟩₀ + ζ⟨A₁A₃⟩₀⟨A₂A₄⟩₀ + ⟨A₁A₄⟩₀⟨A₂A₃⟩₀`, before the
 general `2n`-point theorem) using `ExchangeAlgebra` to validate the pairing-sign design; the
 bosonic thermal-trace layer (`weightedTrace`/`thermalExpectation`/`partitionFunction`) that
