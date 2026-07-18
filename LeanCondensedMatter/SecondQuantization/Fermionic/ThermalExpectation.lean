@@ -91,6 +91,12 @@ theorem thermalExpectation_neg (w : FermionOccupation Mode → ℂ)
   rw [show (-A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) = (-1 : ℂ) • A from
     (neg_one_smul ℂ A).symm, thermalExpectation_smul, neg_one_mul]
 
+omit [LinearOrder Mode] in
+theorem thermalExpectation_sub (w : FermionOccupation Mode → ℂ)
+    (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    thermalExpectation w (A - B) = thermalExpectation w A - thermalExpectation w B := by
+  rw [sub_eq_add_neg, thermalExpectation_add, thermalExpectation_neg, sub_eq_add_neg]
+
 /-! ## Matrix coefficients of diagonal operators -/
 
 omit [LinearOrder Mode] [Fintype Mode] in
@@ -110,6 +116,22 @@ theorem traceFock_id : traceFock (LinearMap.id : FockSpaceFermionic Mode →ₗ[
   have h : ∀ n : FermionOccupation Mode, matrixCoeff (LinearMap.id) n n = 1 := fun n =>
     matrixCoeff_of_smul_basisState (by rw [LinearMap.id_apply, one_smul])
   simp [traceFock, h]
+
+omit [LinearOrder Mode] in
+/-- **The weighted trace of the identity is the partition function itself**,
+`Tr_w(id) = Σₙ w(n) = Z(w)`. -/
+theorem weightedTrace_id (w : FermionOccupation Mode → ℂ) :
+    weightedTrace w (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] _) = partitionFunction w := by
+  have h : ∀ n : FermionOccupation Mode, matrixCoeff (LinearMap.id) n n = 1 := fun n =>
+    matrixCoeff_of_smul_basisState (by rw [LinearMap.id_apply, one_smul])
+  simp [weightedTrace, partitionFunction, h]
+
+omit [LinearOrder Mode] in
+/-- **The thermal expectation of the identity is `1`**, `⟨id⟩_w = Z(w)/Z(w) = 1`, given a nonzero
+partition function. -/
+theorem thermalExpectation_id (w : FermionOccupation Mode → ℂ) (hw : partitionFunction w ≠ 0) :
+    thermalExpectation w (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] _) = 1 := by
+  rw [thermalExpectation, weightedTrace_id, div_self hw]
 
 /-! ## Weighted traces of the number operators -/
 
