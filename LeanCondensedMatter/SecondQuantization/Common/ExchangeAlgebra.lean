@@ -19,7 +19,9 @@ statistics instantiate, letting a future `Common/WickCombinatorics.lean` inducti
 fermionic `anticomm_*`/bosonic `comm_*` facts.
 
 Mirrors `Common/OccupationBasis.lean`'s architecture exactly: the interface is a `class` here in
-`Common/`, and the concrete instances (`Fermionic.exchangeAlgebra`, `Bosonic.exchangeAlgebra`)
+`Common/`, and the concrete instances (`SecondQuantization.exchangeAlgebra` for the fermionic line,
+which uses the plain `SecondQuantization` namespace rather than a `Fermionic` sub-namespace;
+`SecondQuantization.Bosonic.exchangeAlgebra` for the bosonic line)
 live in each statistics' own directory — a `Common/` file importing `Fermionic/`/`Bosonic/` would
 invert the intended dependency direction (`notes/conventions.md`'s "one directory per track"
 rule).
