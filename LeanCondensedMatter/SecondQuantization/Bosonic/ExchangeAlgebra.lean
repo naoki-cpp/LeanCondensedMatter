@@ -19,7 +19,7 @@ namespace Bosonic
 variable {Mode : Type*} [DecidableEq Mode]
 
 /-- **`Common.exchangeCommutator Statistics.boson = comm`**: CCR's commutator is exactly the
-`ζ = 1` case of the graded commutator, for arbitrary operators `A`, `B`. -/
+`ζ = 1` case of the `ζ`-commutator (`Common.zetaCommutator`), for arbitrary operators `A`, `B`. -/
 theorem exchangeCommutator_boson_eq_comm
     (A B : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode) :
     Common.exchangeCommutator Statistics.boson A B = comm A B := by

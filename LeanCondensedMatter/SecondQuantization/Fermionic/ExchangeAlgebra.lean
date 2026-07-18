@@ -21,8 +21,8 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
 
 omit [LinearOrder Mode] in
 /-- **`Common.exchangeCommutator Statistics.fermion = anticomm`**: CAR's anticommutator is exactly
-the `ζ = -1` case of the graded commutator, for arbitrary operators `A`, `B` (not just at a single
-mode). -/
+the `ζ = -1` case of the `ζ`-commutator (`Common.zetaCommutator`), for arbitrary operators `A`, `B`
+(not just at a single mode). -/
 theorem exchangeCommutator_fermion_eq_anticomm
     (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
     Common.exchangeCommutator Statistics.fermion A B = anticomm A B := by

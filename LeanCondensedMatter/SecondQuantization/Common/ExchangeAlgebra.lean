@@ -10,7 +10,7 @@ Groundwork for the general (fermionic *and* bosonic) finite-mode Wick/Bloch–de
 creation/annihilation operator past another one at every step, using the *all-index* exchange
 relation `a_i a_j† - ζ a_j† a_i = δᵢⱼ`, `a_i a_j - ζ a_j a_i = 0`, `a_i† a_j† - ζ a_j† a_i† = 0` —
 not just the single-mode `a_i a_i† = id + ζ N_i` reordering identity
-(`Fermionic/FreeTwoPointFunction.lean`/`Bosonic/NumberOperator.lean`'s
+(`Fermionic/NumberOperator.lean`/`Bosonic/NumberOperator.lean`'s
 `annihilate_comp_create_self`).
 CAR (`ζ = -1`) and CCR (`ζ = 1`) both have exactly this shape once stated via
 `Common.exchangeCommutator`, so `ExchangeAlgebra` packages it as a single interface both

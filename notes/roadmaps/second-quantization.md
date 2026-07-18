@@ -389,8 +389,8 @@ is in hand. CAR's `{c_i,c_i†} = id` and CCR's `[a_i,a_i†] = id` become the *
 generically — an *operator-level reordering identity*, not a Wick-theorem contraction (a thermal
 two-point function/`ℂ`-number, which is what `Fermionic/FreeTwoPointFunction.lean`'s
 `freeThermalExpectation_annihilate_comp_create`/`_create_comp_annihilate` already provide).
-`Fermionic/FreeTwoPointFunction.lean`'s `annihilate_comp_create_self` (`ζ = -1`, already proved,
-now refactored through this) and `Bosonic/NumberOperator.lean`'s new `annihilate_comp_create_self`
+`Fermionic/NumberOperator.lean`'s `annihilate_comp_create_self` (`ζ = -1`, proved there since PR #78,
+now refactored to go through `exchangeCommutator`) and `Bosonic/NumberOperator.lean`'s new `annihilate_comp_create_self`
 (`ζ = 1`, `a_i a_i† = id + N_i`, the first bosonic `numberOperator`/reordering result — the bosonic
 line had no `numberOperator` at all before this) are both literal instances.
 
