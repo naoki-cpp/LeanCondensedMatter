@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.ThermalGreenFunction
+import LeanCondensedMatter.SecondQuantization.Fermionic.ParticleNumberCharge
 
 set_option linter.style.header false
 
@@ -35,11 +36,14 @@ free Gibbs state considered throughout this project, only mixed create–annihil
 be nonzero (`ThermalGreenFunction.lean`'s `thermalGreenFunction`) — that claim is scoped to this
 project's number-conserving setting, not a universal statement about all quasi-free states.
 
-The underlying fact is purely about occupation-number bookkeeping: annihilating twice (composing
-`annihilate i` with `annihilate j`, in either order) always changes the particle number by `-2` or
-produces `0` outright, so it can never map a basis state `|n⟩` back to a multiple of itself. The
-`(n, n)` matrix coefficient of any such composite operator is therefore `0` for every `n`, making
-the weighted trace — hence the thermal expectation — vanish termwise for any occupation-number-
+The basis-level vanishing is now an instance of `Common/ParticleNumberSelectionRule.lean`'s
+general particle-number selection rule, rather than a fermion-specific case analysis:
+`carriesParticleNumberCharge_annihilate`/`_create` (`Fermionic/ParticleNumberCharge.lean`) show
+`annihilate i`/`create i` carry particle-number charge `∓1`,
+`Common.CarriesGradingDegree.comp` combines these into charge `∓2` for the composite
+operators, and `Common.diagonalCoeff_eq_zero_of_carriesGradingDegree` concludes that any
+operator of nonzero charge has vanishing diagonal matrix coefficients everywhere. That makes the
+weighted trace — hence the thermal expectation — vanish termwise for any occupation-number-
 diagonal weight `w` (the only kind `weightedTrace` accepts), with no need to know anything about
 `w`'s specific values.
 -/
@@ -51,51 +55,26 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 /-! ## Basis-level vanishing -/
 
 omit [Fintype Mode] in
-/-- **Annihilating twice never returns to the same occupation state.** Composing `annihilate i`
-with `annihilate j` (in this order) sends `basisState n` to a scalar multiple of `basisState m`
-for some `m` with strictly fewer particles than `n` (or to `0` outright) — either way, `m ≠ n`. -/
+/-- **Annihilating twice never returns to the same occupation state.** `(annihilate i).comp
+(annihilate j)` carries particle-number charge `-2` (`carriesParticleNumberCharge_annihilate`
+composed via `Common.CarriesGradingDegree.comp`), so by the particle-number selection rule
+(`Common.diagonalCoeff_eq_zero_of_carriesGradingDegree`) its diagonal matrix coefficients
+vanish identically. -/
 theorem matrixCoeff_annihilate_comp_annihilate (i j : Mode) (n : FermionOccupation Mode) :
-    matrixCoeff ((annihilate i).comp (annihilate j)) n n = 0 := by
-  change ((annihilate i).comp (annihilate j)) (basisState n) n = 0
-  by_cases hj : j ∈ n
-  · rw [LinearMap.comp_apply, annihilate_basisState_of_mem hj, map_smul]
-    by_cases hi : i ∈ removeOccupation j n
-    · rw [annihilate_basisState_of_mem hi, smul_smul]
-      have hcard1 := fermionParticleNumber_removeOccupation_of_mem hj
-      have hcard2 := fermionParticleNumber_removeOccupation_of_mem hi
-      have hne : removeOccupation i (removeOccupation j n) ≠ n := by
-        intro heq
-        rw [heq] at hcard2
-        omega
-      exact Common.smul_basisState_apply_of_ne _ hne
-    · rw [annihilate_basisState_of_not_mem hi, smul_zero]
-      simp
-  · rw [LinearMap.comp_apply, annihilate_basisState_of_not_mem hj, map_zero]
-    simp
+    matrixCoeff ((annihilate i).comp (annihilate j)) n n = 0 :=
+  Common.diagonalCoeff_eq_zero_of_carriesGradingDegree
+    ((carriesParticleNumberCharge_annihilate i).comp (carriesParticleNumberCharge_annihilate j))
+    (by norm_num) n
 
 omit [Fintype Mode] in
 /-- **Creating twice never returns to the same occupation state**, the creation-side mirror of
-`matrixCoeff_annihilate_comp_annihilate`: `create i ∘ create j` sends `basisState n` to a scalar
-multiple of `basisState m` with strictly more particles than `n` (or to `0` outright, from Pauli
-exclusion). -/
+`matrixCoeff_annihilate_comp_annihilate`: `(create i).comp (create j)` carries particle-number
+charge `+2`. -/
 theorem matrixCoeff_create_comp_create (i j : Mode) (n : FermionOccupation Mode) :
-    matrixCoeff ((create i).comp (create j)) n n = 0 := by
-  change ((create i).comp (create j)) (basisState n) n = 0
-  by_cases hj : j ∈ n
-  · rw [LinearMap.comp_apply, create_basisState_of_mem hj, map_zero]
-    simp
-  · rw [LinearMap.comp_apply, create_basisState_of_not_mem hj, map_smul]
-    by_cases hi : i ∈ insertOccupation j n
-    · rw [create_basisState_of_mem hi, smul_zero]
-      simp
-    · rw [create_basisState_of_not_mem hi, smul_smul]
-      have hcard1 := fermionParticleNumber_insertOccupation_of_not_mem hj
-      have hcard2 := fermionParticleNumber_insertOccupation_of_not_mem hi
-      have hne : insertOccupation i (insertOccupation j n) ≠ n := by
-        intro heq
-        rw [heq] at hcard2
-        omega
-      exact Common.smul_basisState_apply_of_ne _ hne
+    matrixCoeff ((create i).comp (create j)) n n = 0 :=
+  Common.diagonalCoeff_eq_zero_of_carriesGradingDegree
+    ((carriesParticleNumberCharge_create i).comp (carriesParticleNumberCharge_create j))
+    (by norm_num) n
 
 /-! ## Vanishing at the level of the thermal weighted trace and expectation value -/
 
