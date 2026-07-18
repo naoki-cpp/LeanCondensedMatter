@@ -58,6 +58,13 @@ theorem smul_basisState_apply_self {Config : Type*} (c : ℂ) (n : Config) :
     (c • basisState n : AlgebraicFock Config) n = c := by
   simp [basisState]
 
+/-- The `n`-coefficient of a scalar multiple of a *different* basis state `m ≠ n` is always `0` —
+the algebraic core of "particle-number-changing operators have vanishing diagonal matrix
+coefficients" (e.g. same-type creation/annihilation contractions). -/
+theorem smul_basisState_apply_of_ne {Config : Type*} (c : ℂ) {m n : Config} (h : m ≠ n) :
+    (c • basisState m : AlgebraicFock Config) n = 0 := by
+  simp [basisState, h]
+
 /-- **The `m`-coefficient of `A (basisState n)`** — a coordinate evaluation, not an inner product.
 -/
 noncomputable def matrixCoeff {Config : Type*}

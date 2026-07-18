@@ -45,3 +45,4 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTimeEvolution
 import LeanCondensedMatter.SecondQuantization.Fermionic.ThermalTimeOrdering
 import LeanCondensedMatter.SecondQuantization.Fermionic.ThermalGreenFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.FreeBoltzmannWeight
+import LeanCondensedMatter.SecondQuantization.Fermionic.ThermalContraction
