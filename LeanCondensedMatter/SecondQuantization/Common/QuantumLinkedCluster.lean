@@ -55,17 +55,17 @@ occupation correlator under the weight `w` — the diagonal functional
 `⟨∏ᵢ∈S nᵢ⟩_w` of the simultaneous occupation of `S`, computed directly as a weighted sum. For positive real weights (a
 genuine Boltzmann weight) it is the probability that every mode in `S` is occupied; `w` here is an
 arbitrary complex-valued weight, so no probabilistic interpretation is assumed in general. As with
-the normalized weighted diagonal functional, division by `partitionFunction w` is only physically meaningful when
-`partitionFunction w ≠ 0`. -/
+the normalized weighted diagonal functional, division by `weightSum w` is only physically meaningful when
+`weightSum w ≠ 0`. -/
 noncomputable def occupationMoment (w : FermionOccupation Mode → ℂ) (S : Finset Mode) : ℂ :=
   (∑ n ∈ (Finset.univ : Finset (FermionOccupation Mode)).filter (S ⊆ ·), w n) /
-    partitionFunction w
+    weightSum w
 
 omit [LinearOrder Mode] in
 /-- **`occupationMoment` at `⊥` is `1`** (given a nonzero partition function): every occupation
 state vacuously contains the empty set of modes, so the numerator is exactly `Z(w)`. This matches
 `Finpartition.IsIndependentAcross`'s `m ⊥ = 1` normalization hypothesis. -/
-theorem occupationMoment_bot {w : FermionOccupation Mode → ℂ} (hZ : partitionFunction w ≠ 0) :
+theorem occupationMoment_bot {w : FermionOccupation Mode → ℂ} (hZ : weightSum w ≠ 0) :
     occupationMoment w ⊥ = 1 := by
   have hfilter : (Finset.univ : Finset (FermionOccupation Mode)).filter ((⊥ : Finset Mode) ⊆ ·) =
       Finset.univ := by
@@ -245,16 +245,16 @@ theorem occupationMoment_eq_of_product_factorization {w wA wB : FermionOccupatio
     {A B : Finset Mode} (hAB : Disjoint A B) (hU : A ∪ B = Finset.univ)
     (hw : ∀ n, w n = wA (n ∩ A) * wB (n ∩ B)) (T : Finset Mode) :
     occupationMoment w T = (∑ S ∈ A.powerset.filter ((T ∩ A) ⊆ ·), wA S) *
-      (∑ T' ∈ B.powerset.filter ((T ∩ B) ⊆ ·), wB T') / partitionFunction w := by
+      (∑ T' ∈ B.powerset.filter ((T ∩ B) ⊆ ·), wB T') / weightSum w := by
   rw [occupationMoment, ← sum_filter_subset_eq_mul hAB hU wA wB T]
   congr 1
   exact Finset.sum_congr rfl fun n _ => hw n
 
 omit [LinearOrder Mode] in
-theorem partitionFunction_eq_mul_of_product_factorization {w wA wB : FermionOccupation Mode → ℂ}
+theorem weightSum_eq_mul_of_product_factorization {w wA wB : FermionOccupation Mode → ℂ}
     {A B : Finset Mode} (hAB : Disjoint A B) (hU : A ∪ B = Finset.univ)
     (hw : ∀ n, w n = wA (n ∩ A) * wB (n ∩ B)) :
-    partitionFunction w = (∑ S ∈ A.powerset, wA S) * (∑ T ∈ B.powerset, wB T) := by
+    weightSum w = (∑ S ∈ A.powerset, wA S) * (∑ T ∈ B.powerset, wB T) := by
   have h := sum_filter_subset_eq_mul hAB hU wA wB (⊥ : Finset Mode)
   have e1 : (Finset.univ : Finset (FermionOccupation Mode)).filter ((⊥ : Finset Mode) ⊆ ·) =
       Finset.univ := Finset.filter_true_of_mem fun n _ => Finset.empty_subset n
@@ -265,7 +265,7 @@ theorem partitionFunction_eq_mul_of_product_factorization {w wA wB : FermionOccu
     have : (⊥ : Finset Mode) ∩ B = ⊥ := by ext x; simp
     rw [this]; exact Finset.filter_true_of_mem fun T _ => Finset.empty_subset T
   rw [e1, e2, e3] at h
-  rw [partitionFunction]
+  rw [weightSum]
   simp_rw [hw]
   exact h
 
@@ -275,12 +275,12 @@ bipartition.** Connects the *physical* independence hypothesis `IsProductWeightA
 abstract hypothesis `Finpartition.IsIndependentAcross` that Track B's cumulant-vanishing theorem
 (`cumulantFromMoment_eq_zero_of_isIndependentAcross`) needs. -/
 theorem occupationMoment_isIndependentAcross {w : FermionOccupation Mode → ℂ} {A B : Finset Mode}
-    (hw : IsProductWeightAcross w A B) (hZ : partitionFunction w ≠ 0) :
+    (hw : IsProductWeightAcross w A B) (hZ : weightSum w ≠ 0) :
     Finpartition.IsIndependentAcross (occupationMoment w) A B := by
   obtain ⟨hAB, hU, wA, wB, hfact⟩ := hw
   refine ⟨hAB, occupationMoment_bot hZ, fun T _ => ?_⟩
   rw [Finset.inf_eq_inter, Finset.inf_eq_inter]
-  have hZeq := partitionFunction_eq_mul_of_product_factorization hAB hU hfact
+  have hZeq := weightSum_eq_mul_of_product_factorization hAB hU hfact
   have hTAA : (T ∩ A) ∩ A = T ∩ A := by rw [Finset.inter_assoc, Finset.inter_self]
   have hTAB : (T ∩ A) ∩ B = ⊥ :=
     Finset.eq_empty_of_forall_notMem fun x hx =>
@@ -317,7 +317,7 @@ correlator of modes spanning both `A` and `B` vanishes. This packages Track B's
 `cumulantFromMoment_eq_zero_of_isIndependentAcross` so callers never need to name
 `Finpartition.IsIndependentAcross` themselves. -/
 theorem occupationCumulant_eq_zero_of_isProductWeightAcross {w : FermionOccupation Mode → ℂ}
-    {A B : Finset Mode} (hw : IsProductWeightAcross w A B) (hZ : partitionFunction w ≠ 0)
+    {A B : Finset Mode} (hw : IsProductWeightAcross w A B) (hZ : weightSum w ≠ 0)
     (hA : A ≠ ⊥) (hB : B ≠ ⊥) : occupationCumulant w (A ⊔ B) = 0 :=
   Finpartition.cumulantFromMoment_eq_zero_of_isIndependentAcross
     (occupationMoment_isIndependentAcross hw hZ) hA hB

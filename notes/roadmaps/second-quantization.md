@@ -68,8 +68,8 @@ creation and annihilation operators exist, as a later derived construction.
 | 4 | `Fermionic/CreationAnnihilation.lean` — `create`/`annihilate` on basis vectors *with* the Jordan–Wigner-style sign factor, extended linearly; vacuum, particle number, raising/lowering proved before CAR | `proved` |
 | 5 | `Fermionic/CanonicalAnticommutationRelations.lean` — `{aᵢ, aⱼ} = 0`, `{aᵢ†, aⱼ†} = 0`, `{aᵢ, aⱼ†} = δᵢⱼ`. Spelled out in full (not abbreviated `CAR.lean`) so the module name says what it proves | `proved` |
 | 6 | `Fermionic/Hamiltonian.lean` — `numberOperator`/`totalNumberOperator`, `freeHamiltonian` (dispersion-weighted number operators), `interactionHamiltonian` (density-density coupling, a quartic monomial in creation/annihilation operators — see note below). Finite mode sets still assumed | `proved` |
-| 6.5 | `Fermionic/WeightedDiagonalFunctional.lean` — `matrixCoeff`, `traceFock`, `weightedTrace`, `partitionFunction`, and `normalizedWeightedDiagonal`, for an *arbitrary* weight `w : FermionOccupation Mode → ℂ` (not yet the genuine Gibbs weight `e^{-βE(n)}`, no analytic `exp` anywhere). The mathematical content is a normalized weighted diagonal functional; the Gibbs interpretation is appropriate only after Gibbs specialization. Isolates the combinatorial "sum over basis states, weighted" structure both a formal and a genuine Gibbs weight will specialize to | `proved` |
-| 7 | `Fermionic/FormalExp.lean` — `formalExpTerm`/`formalExpTruncation`, the formal (term-by-term) Taylor series for `exp(-H)` and its finite truncations — deliberately *not* the analytic operator exponential (`FockSpaceFermionic Mode` has no topology), and deliberately *not* named `Dyson*`/`dyson*` (that name is reserved for the genuine interaction-picture Dyson series, a separate future target). Validated on `freeHamiltonian` (`truncatedBoltzmannWeight`, `traceFock_formalExpTruncation_freeHamiltonian`, `weightedTrace_formalExpTruncation_freeHamiltonian`), where it reduces to the expected finite-order truncated Boltzmann weight, feeding directly into `Fermionic/WeightedDiagonalFunctional.lean`'s `partitionFunction`/`weightedTrace`. Splitting `H₀ + V` combinatorially by perturbation order (the genuine Dyson series) and the analytic Gibbs weight `e^{-βE(n)}` itself both remain, as does a general (non-basis-diagonal) quartic interaction and the moment/cumulant formal-power-series connection to Track B — see the file's own "What remains" note | `proved` |
+| 6.5 | `Fermionic/WeightedDiagonalFunctional.lean` — `matrixCoeff`, `traceFock`, `weightedTrace`, `weightSum`, and `normalizedWeightedDiagonal`, for an *arbitrary* weight `w : FermionOccupation Mode → ℂ` (not yet the genuine Gibbs weight `e^{-βE(n)}`, no analytic `exp` anywhere). The mathematical content is a normalized weighted diagonal functional; the Gibbs interpretation is appropriate only after Gibbs specialization. Isolates the combinatorial "sum over basis states, weighted" structure both a formal and a genuine Gibbs weight will specialize to | `proved` |
+| 7 | `Fermionic/FormalExp.lean` — `formalExpTerm`/`formalExpTruncation`, the formal (term-by-term) Taylor series for `exp(-H)` and its finite truncations — deliberately *not* the analytic operator exponential (`FockSpaceFermionic Mode` has no topology), and deliberately *not* named `Dyson*`/`dyson*` (that name is reserved for the genuine interaction-picture Dyson series, a separate future target). Validated on `freeHamiltonian` (`truncatedBoltzmannWeight`, `traceFock_formalExpTruncation_freeHamiltonian`, `weightedTrace_formalExpTruncation_freeHamiltonian`), where it reduces to the expected finite-order truncated Boltzmann weight, feeding directly into `Fermionic/WeightedDiagonalFunctional.lean`'s `weightSum`/`weightedTrace`. Splitting `H₀ + V` combinatorially by perturbation order (the genuine Dyson series) and the analytic Gibbs weight `e^{-βE(n)}` itself both remain, as does a general (non-basis-diagonal) quartic interaction and the moment/cumulant formal-power-series connection to Track B — see the file's own "What remains" note | `proved` |
 | 8 | `Common/QuantumLinkedCluster.lean` / `Fermionic/FormalLogPartitionFunction.lean` — combinatorial linked-cluster groundwork: occupation-cumulant connectedness under a product weight, and `log Z` as a formal power series. Not yet the genuine (time-ordered, Wick-expanded) Linked Cluster Theorem — see below | `stated` (groundwork landed, see below) |
 | 9 | `Fermionic/ImaginaryTimeEvolution.lean` — the algebraic, basis-diagonal realization of free imaginary-time evolution for the free Hamiltonian, and its Heisenberg-type conjugation of a general algebraic operator. First step of the finite-temperature Green-function / time-ordered-correlator line a genuine LCT needs | `stated` |
 
@@ -199,7 +199,7 @@ Track D line to Track B's abstract cumulant machinery:
   `H = HA + HB` with `[HA, HB] = 0` and no cross-region interaction. **Does not cover a genuine
   interacting Gibbs weight.**
 - `sum_filter_subset_eq_mul` (the `n ↦ (n ∩ A, n ∩ B)` reindexing core),
-  `partitionFunction_eq_mul_of_product_factorization`, `occupationMoment_eq_of_product_factorization`,
+  `weightSum_eq_mul_of_product_factorization`, `occupationMoment_eq_of_product_factorization`,
   and the main theorem **`occupationMoment_isIndependentAcross`** — a product weight makes
   `Finpartition.IsIndependentAcross (occupationMoment w) A B` hold.
 - `occupationCumulant`, `occupationCumulant_eq_zero_of_isProductWeightAcross` — the physics-facing
@@ -305,9 +305,9 @@ order:
   inverse temperature `β`.
 - `freeBoltzmannWeight_eq_ofReal` — it's the cast of a positive real (`Real.exp`), giving
   positivity/non-vanishing without reasoning about complex `exp`; `freeBoltzmannWeight_ne_zero`,
-  `partitionFunction_freeBoltzmannWeight_ne_zero` (a sum of positive reals over the nonempty
+  `weightSum_freeBoltzmannWeight_ne_zero` (a sum of positive reals over the nonempty
   `FermionOccupation Mode`, hence a nonzero positive real cast).
-- `freePartitionFunction`/`freeGibbsExpectation` — `partitionFunction`/the
+- `freePartitionFunction`/`freeGibbsExpectation` — `weightSum`/the
   `normalizedWeightedDiagonal` specialized to `freeBoltzmannWeight`, named wrappers so callers don't have to spell out the
   weight each time; `freePartitionFunction_ne_zero`.
 - **`freeGibbsGreenFunction ε β i j τ τ' := weightedFreeTwoPointFunction ε (freeBoltzmannWeight ε β) i j
@@ -444,7 +444,7 @@ implementation directories.
 the crossing-count/weight recurrence and a first concrete Bloch–de Dominicis induction step (the finite-temperature
 4-point identity `⟨A₁A₂A₃A₄⟩_{0,β} = ⟨A₁A₂⟩_{0,β}⟨A₃A₄⟩_{0,β} + ζ⟨A₁A₃⟩_{0,β}⟨A₂A₄⟩_{0,β} + ⟨A₁A₄⟩_{0,β}⟨A₂A₃⟩_{0,β}`, before the
 general `2n`-point theorem) using `ExchangeAlgebra` to validate the pairing-sign design; the
-bosonic thermal-trace layer (`weightedTrace`/`normalizedWeightedDiagonal`/`partitionFunction`) that
+bosonic thermal-trace layer (`weightedTrace`/`normalizedWeightedDiagonal`/`weightSum`) that
 `Fermionic/WeightedDiagonalFunctional.lean` already has and the free bosonic two-point/occupation-number
 closed forms would need — deferred since the fermionic, finite-mode line remains this track's
 primary path to the Linked Cluster Theorem.

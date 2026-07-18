@@ -16,7 +16,7 @@ Phase 9, step 3 (`notes/roadmaps/second-quantization.md`): `weightedFreeTwoPoint
 
 **This is not yet the free Gibbs Green function `G₀` in general.** Two independent restrictions
 must both hold before that name applies:
-- as with `normalizedWeightedDiagonal`/`partitionFunction`, `w` is an arbitrary complex weight here, not
+- as with `normalizedWeightedDiagonal`/`weightSum`, `w` is an arbitrary complex weight here, not
   necessarily a genuine Boltzmann weight;
 - even if `w` *is* a genuine Boltzmann weight, it must be the *free* one associated to the same
   `ε` used in the evolution (`w n = exp(-β Σᵢ∈n ε i)`) — a Boltzmann weight for some other

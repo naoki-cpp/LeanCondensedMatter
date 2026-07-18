@@ -6,7 +6,7 @@ set_option linter.style.header false
 # The free Boltzmann weight, and the genuine free thermal Green function
 
 Phase 9 (`notes/roadmaps/second-quantization.md`): specializes `normalizedWeightedDiagonal`,
-`partitionFunction`, and `weightedFreeTwoPointFunction` — all previously stated for an *arbitrary* complex
+`weightSum`, and `weightedFreeTwoPointFunction` — all previously stated for an *arbitrary* complex
 weight `w` — to the genuine free Gibbs weight `w(n) = e^{-β E(n)}`, `E(n) := Σᵢ∈n ε(i)`, for the
 same dispersion `ε` used by `imaginaryTimeEvolve`. This closes both gaps
 `WeightedFreeTwoPointFunction.lean`'s module docstring flagged: `w` is now a genuine positive weight, and
@@ -52,22 +52,22 @@ omit [DecidableEq Mode] [LinearOrder Mode] in
 /-- **The free partition function is nonzero.** `Z(w) := Σₙ w(n)` is a sum of casts of strictly
 positive reals (`Real.exp_pos`) over the nonempty `Fintype` `FermionOccupation Mode` (it always
 contains `fermionVacuum`), hence itself a positive real cast, hence nonzero. -/
-theorem partitionFunction_freeBoltzmannWeight_ne_zero (ε : Mode → ℝ) (β : ℝ) :
-    partitionFunction (freeBoltzmannWeight ε β) ≠ 0 := by
-  rw [partitionFunction]
+theorem weightSum_freeBoltzmannWeight_ne_zero (ε : Mode → ℝ) (β : ℝ) :
+    weightSum (freeBoltzmannWeight ε β) ≠ 0 := by
+  rw [weightSum]
   simp_rw [freeBoltzmannWeight_eq_ofReal]
   rw [← Complex.ofReal_sum]
   refine Complex.ofReal_ne_zero.2 (ne_of_gt ?_)
   exact Finset.sum_pos (fun n _ => Real.exp_pos _) Finset.univ_nonempty
 
-/-- **The free partition function**, `Z₀(β) := Σₙ e^{-β E(n)}`: `partitionFunction` specialized to
+/-- **The free partition function**, `Z₀(β) := Σₙ e^{-β E(n)}`: `weightSum` specialized to
 `freeBoltzmannWeight`. -/
 noncomputable def freePartitionFunction (ε : Mode → ℝ) (β : ℝ) : ℂ :=
-  partitionFunction (freeBoltzmannWeight ε β)
+  weightSum (freeBoltzmannWeight ε β)
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
 theorem freePartitionFunction_ne_zero (ε : Mode → ℝ) (β : ℝ) : freePartitionFunction ε β ≠ 0 :=
-  partitionFunction_freeBoltzmannWeight_ne_zero ε β
+  weightSum_freeBoltzmannWeight_ne_zero ε β
 
 /-- **The free Gibbs expectation value**, `⟨A⟩₀,β`: `normalizedWeightedDiagonal` specialized to
 `freeBoltzmannWeight`. -/
@@ -77,7 +77,7 @@ noncomputable def freeGibbsExpectation (ε : Mode → ℝ) (β : ℝ)
 
 /-- **The free Gibbs two-point correlator `G₀`**: `weightedFreeTwoPointFunction` specialized to the free
 Boltzmann weight for the *same* dispersion `ε` used in the imaginary-time evolution — `w` is a
-genuine positive Gibbs weight (`partitionFunction_freeBoltzmannWeight_ne_zero`) for the same `ε`
+genuine positive Gibbs weight (`weightSum_freeBoltzmannWeight_ne_zero`) for the same `ε`
 the evolution uses, closing the two gaps `WeightedFreeTwoPointFunction.lean` flagged. See the module
 docstring for what finite-temperature structure (KMS antiperiodicity, the fundamental domain)
 still remains before this is the full Matsubara Green function. -/

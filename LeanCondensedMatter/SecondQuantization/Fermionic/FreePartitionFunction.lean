@@ -47,7 +47,7 @@ omit [DecidableEq Mode] in
 `Z₀(β) = ∏ᵢ (1 + e^{-βε_i})`. -/
 theorem freePartitionFunction_eq_prod (ε : Mode → ℝ) (β : ℝ) :
     freePartitionFunction ε β = ∏ i, (1 + Complex.exp (-(β : ℂ) * (ε i : ℂ))) := by
-  rw [freePartitionFunction, partitionFunction, ← Finset.powerset_univ]
+  rw [freePartitionFunction, weightSum, ← Finset.powerset_univ]
   exact sum_freeBoltzmannWeight_powerset_eq_prod ε β Finset.univ
 
 /-- **The closed-form Fermi–Dirac occupation number.** `⟨N_i⟩₀,β = 1/(e^{βε_i}+1)`. -/
@@ -81,7 +81,7 @@ theorem freeGibbsExpectation_numberOperator (ε : Mode → ℝ) (β : ℝ) (i : 
           ∑ n ∈ (Finset.univ : Finset (FermionOccupation Mode)).filter (i ∉ ·),
             freeBoltzmannWeight ε β n
           = freePartitionFunction ε β := by
-      rw [weightedTrace_numberOperator, freePartitionFunction, partitionFunction]
+      rw [weightedTrace_numberOperator, freePartitionFunction, weightSum]
       exact Finset.sum_filter_add_sum_filter_not Finset.univ (i ∈ ·) (freeBoltzmannWeight ε β)
     rw [hsum_not, hZ] at hsplit
     linear_combination hsplit

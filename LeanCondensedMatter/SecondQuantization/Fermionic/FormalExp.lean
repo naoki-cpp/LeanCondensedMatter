@@ -113,7 +113,7 @@ theorem formalExpTruncation_freeHamiltonian_basisState (ε : Mode → ℝ)
 Hamiltonian's dispersion `ε`: the order-`N` partial sum of the scalar Taylor series for
 `exp(-E(n))`, `E(n) := Σ_{i∈n} ε(i)`. This is exactly the scalar produced by
 `formalExpTruncation_freeHamiltonian_basisState`, named separately so it can be fed to
-`partitionFunction`/`weightedTrace` (`WeightedDiagonalFunctional.lean`) as a genuine (if only
+`weightSum`/`weightedTrace` (`WeightedDiagonalFunctional.lean`) as a genuine (if only
 finite-order-approximate) weight. -/
 noncomputable def truncatedBoltzmannWeight (ε : Mode → ℝ) (N : ℕ) (n : FermionOccupation Mode) :
     ℂ :=
@@ -128,21 +128,21 @@ theorem matrixCoeff_formalExpTruncation_freeHamiltonian (ε : Mode → ℝ) (N :
   matrixCoeff_of_smul_basisState (formalExpTruncation_freeHamiltonian_basisState ε n N)
 
 /-- **The order-`N` formal partition function of the free Hamiltonian** is exactly
-`partitionFunction` applied to the order-`N` truncated Boltzmann weight — the finite-Taylor-order
+`weightSum` applied to the order-`N` truncated Boltzmann weight — the finite-Taylor-order
 approximation to the Gibbs weight has entered `WeightedDiagonalFunctional.lean`'s machinery. -/
 theorem traceFock_formalExpTruncation_freeHamiltonian (ε : Mode → ℝ) (N : ℕ) :
     traceFock (formalExpTruncation (freeHamiltonian ε) N) =
-      partitionFunction (truncatedBoltzmannWeight ε N) := by
-  simp [traceFock, partitionFunction, matrixCoeff_formalExpTruncation_freeHamiltonian]
+      weightSum (truncatedBoltzmannWeight ε N) := by
+  simp [traceFock, weightSum, matrixCoeff_formalExpTruncation_freeHamiltonian]
 
 /-- **Weighted-trace version.** For any additional weight `w`, `weightedTrace w` of the free
-Hamiltonian's order-`N` truncated formal exponential is `partitionFunction` of the pointwise
+Hamiltonian's order-`N` truncated formal exponential is `weightSum` of the pointwise
 product `w * truncatedBoltzmannWeight ε N`. -/
 theorem weightedTrace_formalExpTruncation_freeHamiltonian (ε : Mode → ℝ) (N : ℕ)
     (w : FermionOccupation Mode → ℂ) :
     weightedTrace w (formalExpTruncation (freeHamiltonian ε) N) =
-      partitionFunction (fun n => w n * truncatedBoltzmannWeight ε N n) := by
-  simp [weightedTrace, partitionFunction, matrixCoeff_formalExpTruncation_freeHamiltonian]
+      weightSum (fun n => w n * truncatedBoltzmannWeight ε N n) := by
+  simp [weightedTrace, weightSum, matrixCoeff_formalExpTruncation_freeHamiltonian]
 
 /-- **The order-`N` formal partition function of the free Hamiltonian** is the expected finite sum
 over occupation states of the order-`N` partial sum of the scalar Taylor series for `exp(-E(n))`. -/
@@ -154,7 +154,7 @@ theorem formalExpPartitionFunction_freeHamiltonian (ε : Mode → ℝ) (N : ℕ)
 
 /-! ## What remains
 
-The genuine `weightedTrace`/`partitionFunction` against the Gibbs weight `n ↦ e^{-βE(n)}` needs
+The genuine `weightedTrace`/`weightSum` against the Gibbs weight `n ↦ e^{-βE(n)}` needs
 the analytic exponential on `ℂ` applied to each (finite, real) eigenvalue `E(n)` — an easy,
 purely scalar step that does *not* need `formalExpTerm`/`formalExpTruncation` above, and belongs
 to a later phase once the project is ready to introduce `Real.exp`/`Complex.exp` for this purpose.

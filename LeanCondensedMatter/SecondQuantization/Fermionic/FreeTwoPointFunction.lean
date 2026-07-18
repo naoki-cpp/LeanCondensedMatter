@@ -109,7 +109,7 @@ theorem freeGibbsExpectation_annihilate_comp_create_self (ε : Mode → ℝ) (β
     freeGibbsExpectation ε β ((annihilate i).comp (create i)) =
       Complex.exp ((β : ℂ) * (ε i : ℂ)) / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) := by
   rw [annihilate_comp_create_self, freeGibbsExpectation, normalizedWeightedDiagonal_sub,
-    normalizedWeightedDiagonal_id _ (partitionFunction_freeBoltzmannWeight_ne_zero ε β),
+    normalizedWeightedDiagonal_id _ (weightSum_freeBoltzmannWeight_ne_zero ε β),
     show normalizedWeightedDiagonal (freeBoltzmannWeight ε β) (numberOperator i) =
       freeGibbsExpectation ε β (numberOperator i) from rfl, freeGibbsExpectation_numberOperator]
   have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by

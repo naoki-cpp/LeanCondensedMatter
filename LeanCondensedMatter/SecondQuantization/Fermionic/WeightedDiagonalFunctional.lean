@@ -6,7 +6,7 @@ set_option linter.style.header false
 # Finite weighted traces and normalized diagonal functionals (algebraic)
 
 Phase 6.5 of Track D's fermionic primary line (`notes/roadmaps/second-quantization.md`): the
-finite-mode-set trace, weighted trace, partition function, and normalized weighted diagonal
+finite-mode-set trace, weighted trace, total weight, and normalized weighted diagonal
 functional, for an
 *arbitrary* weight `w : FermionOccupation Mode → ℂ` — not yet the genuine Gibbs weight
 `e^{-βE(n)}`, and no analytic `exp` anywhere in this file. This is deliberate: it isolates the
@@ -21,7 +21,7 @@ namespace SecondQuantization
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
-/-! ## Traces -/
+/-! ## Traces and weighted sums -/
 
 /-- **The `(m, n)` matrix coefficient** of an operator `A`, in the occupation-number basis:
 `⟨m| A |n⟩`, i.e. the coefficient of `basisState m` in `A (basisState n)`. Delegates to
@@ -42,21 +42,20 @@ noncomputable def weightedTrace (w : FermionOccupation Mode → ℂ)
     (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) : ℂ :=
   ∑ n : FermionOccupation Mode, w n * matrixCoeff A n n
 
-/-- **The partition function** of a weight `w`, `Z(w) := Σₙ w(n)`. `w` is an arbitrary
-`FermionOccupation Mode → ℂ` here, not necessarily a genuine Boltzmann weight
-`w(n) = e^{-βE(n)}` — `Z(w)` is only the physical partition function `Tr(e^{-βH})` once `w` is
-specialized to that positive, real-valued form. -/
-noncomputable def partitionFunction (w : FermionOccupation Mode → ℂ) : ℂ :=
+/-- **The total weight** of a weight function `w`, `weightSum(w) := ∑ₙ w(n)`. `w` is an arbitrary
+`FermionOccupation Mode → ℂ` here, not necessarily a genuine Boltzmann weight. The physical
+partition function is introduced separately by the Gibbs-specialized `freePartitionFunction`. -/
+noncomputable def weightSum (w : FermionOccupation Mode → ℂ) : ℂ :=
   ∑ n : FermionOccupation Mode, w n
 
-/-- **The normalized weighted diagonal functional** of `A` against `w`, `Tr_w(A) / Z(w)`.
+/-- **The normalized weighted diagonal functional** of `A` against `w`, `Tr_w(A) / weightSum(w)`.
 The normalized weighted diagonal functional is `normalizedWeightedDiagonal`; it is a genuine thermal (Gibbs-state)
-expectation only once `w` is specialized to a positive Boltzmann weight with `Z(w) ≠ 0`. For a
-general complex `w` this is simply a `w`-weighted, `Z(w)`-normalized diagonal functional, with no
+expectation only once `w` is specialized to a positive Boltzmann weight with `weightSum(w) ≠ 0`. For a
+general complex `w` this is simply a `w`-weighted, `weightSum(w)`-normalized diagonal functional, with no
 guarantee of positivity, reality (even against a Hermitian `A`), or a Gibbs-state interpretation. -/
 noncomputable def normalizedWeightedDiagonal (w : FermionOccupation Mode → ℂ)
     (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) : ℂ :=
-  weightedTrace w A / partitionFunction w
+  weightedTrace w A / weightSum w
 
 /-! ## Linearity of `weightedTrace`/`normalizedWeightedDiagonal` in the operator argument -/
 
@@ -123,18 +122,18 @@ theorem traceFock_id : traceFock (LinearMap.id : FockSpaceFermionic Mode →ₗ[
 
 omit [LinearOrder Mode] in
 /-- **The weighted trace of the identity is the partition function itself**,
-`Tr_w(id) = Σₙ w(n) = Z(w)`. -/
+`Tr_w(id) = Σₙ w(n) = weightSum(w)`. -/
 theorem weightedTrace_id (w : FermionOccupation Mode → ℂ) :
-    weightedTrace w (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] _) = partitionFunction w := by
+    weightedTrace w (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] _) = weightSum w := by
   have h : ∀ n : FermionOccupation Mode, matrixCoeff (LinearMap.id) n n = 1 := fun n =>
     matrixCoeff_of_smul_basisState (by rw [LinearMap.id_apply, one_smul])
-  simp [weightedTrace, partitionFunction, h]
+  simp [weightedTrace, weightSum, h]
 
 omit [LinearOrder Mode] in
-/-- **The normalized weighted functional of the identity is `1`**, `⟨id⟩_w = Z(w)/Z(w) = 1`,
-given a nonzero partition function. For a Gibbs/Boltzmann weight this is the corresponding Gibbs
+/-- **The normalized weighted functional of the identity is `1`**, `⟨id⟩_w = weightSum(w)/weightSum(w) = 1`,
+given a nonzero total weight. For a Gibbs/Boltzmann weight this is the corresponding Gibbs
 statement. -/
-theorem normalizedWeightedDiagonal_id (w : FermionOccupation Mode → ℂ) (hw : partitionFunction w ≠ 0) :
+theorem normalizedWeightedDiagonal_id (w : FermionOccupation Mode → ℂ) (hw : weightSum w ≠ 0) :
     normalizedWeightedDiagonal w (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] _) = 1 := by
   rw [normalizedWeightedDiagonal, weightedTrace_id, div_self hw]
 
