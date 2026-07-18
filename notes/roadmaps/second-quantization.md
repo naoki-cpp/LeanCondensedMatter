@@ -282,12 +282,17 @@ fermionic statistics or to this project's number-conserving Gibbs weight; the op
 reason that, in the number-conserving occupation-diagonal setting considered throughout this
 project, only mixed creation–annihilation contractions can be nonzero. Does *not* extend to
 non-number-conserving quasi-free states (e.g. superconducting/Bogoliubov states), where such
-"anomalous" contractions are generically nonzero. Proved from occupation-number bookkeeping alone
-(`matrixCoeff_annihilate_comp_annihilate`/`_create_comp_create`: composing two same-type operators
-always changes the particle number, so the resulting operator's diagonal matrix coefficient
-vanishes for every basis state), plus new linearity lemmas for `matrixCoeff` (`Common/
-AlgebraicFock.lean`) and `weightedTrace`/`thermalExpectation` (`Fermionic/ThermalExpectation.lean`)
-in their operator argument.
+"anomalous" contractions are generically nonzero.
+`matrixCoeff_annihilate_comp_annihilate`/`_create_comp_create` now follow from the general
+`U(1)` particle-number selection rule extracted to `Common/ParticleNumberSelectionRule.lean`
+(`Common.CarriesParticleNumberCharge`, `Common.CarriesParticleNumberCharge.comp`,
+`Common.diagonalCoeff_eq_zero_of_carriesParticleNumberCharge`), generic over the occupation-state
+type rather than a fermion-specific case analysis; `Fermionic/ParticleNumberCharge.lean` and
+`Bosonic/ParticleNumberCharge.lean` instantiate it for `annihilate`/`create` in both statistics
+(charge `∓1`), confirming the rule really is exchange-statistics-independent. Also added:
+linearity lemmas for `matrixCoeff` (`Common/AlgebraicFock.lean`) and
+`weightedTrace`/`thermalExpectation` (`Fermionic/ThermalExpectation.lean`) in their operator
+argument.
 **Not yet done:** the general finite-mode fermionic Wick/Bloch–de Dominicis theorem itself (the
 `n`-point sum-over-pairings formula, `BlochDeDominicis.lean`) — this file only established the
 vanishing half, not the full decomposition into `thermalGreenFunction` factors; the finite-
