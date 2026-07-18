@@ -453,8 +453,20 @@ crosses `firstPair` (exactly `crossingsWithFirstPair` of them). Since `ζ² = 1`
 matching powers (`zetaInt_pow_eq_of_mod_two_eq`), yielding the final recurrence
 `Pairing.weight_eraseZeroPair : pairing.weight s = ζ ^ interveningPositionCount * eraseZeroPair.weight s`.
 
+**The inverse construction to `eraseZeroPair` done, in `Common/BlochDeDominicisPairing.lean`:**
+`insertFirstPair j hj pairing` builds a `Pairing (n + 1)` from a choice of position `j ≠ 0` and a
+smaller `Pairing n`, by pairing `0` with `j` and reindexing `pairing`'s own partner permutation onto
+the remaining positions via `Equiv.Perm.extendDomain` composed with `deletedPositionsOrderIso`
+(rather than duplicating the `restrictedPartner`/order-isomorphism plumbing `eraseZeroPair` already
+owns). `insertFirstPair_partner_zero` confirms `(insertFirstPair j hj pairing).partner 0 = j`. This
+is the constructive counterpart `eraseZeroPair` needed to let the Bloch–de Dominicis induction build
+pairings up from smaller ones (choosing `0`'s partner among `2n + 1` positions), not just tear them
+down; the round-trip laws (`eraseZeroPair_insertFirstPair`, `insertFirstPair_eraseZeroPair`)
+connecting the two directions are not yet proved.
+
 **Not yet done:** a general `n`-operator time-ordered product (`timeOrderedProduct` is still
-2-operator-only); a first concrete Bloch–de Dominicis induction step (the finite-temperature
+2-operator-only); the `eraseZeroPair`/`insertFirstPair` round-trip laws; a first concrete
+Bloch–de Dominicis induction step (the finite-temperature
 4-point identity `⟨A₁A₂A₃A₄⟩_{0,β} = ⟨A₁A₂⟩_{0,β}⟨A₃A₄⟩_{0,β} + ζ⟨A₁A₃⟩_{0,β}⟨A₂A₄⟩_{0,β} + ⟨A₁A₄⟩_{0,β}⟨A₂A₃⟩_{0,β}`, before the
 general `2n`-point theorem) using `ExchangeAlgebra` and `weight_eraseZeroPair` to validate the pairing-sign design; the
 bosonic thermal-trace layer (`weightedTrace`/`normalizedWeightedDiagonal`/`weightSum`) that
