@@ -16,12 +16,12 @@ faithful) — without unifying `Config` itself: fermionic and bosonic occupation
 genuinely different (`Finset Mode` vs. `Mode →₀ ℕ`, since Pauli exclusion caps the former at
 `0`/`1`), each supplying its own instance of this structure.
 
-**Not yet done**: concrete `OccupationBasis` instances for `Fermionic.FermionOccupation Mode` and
-`Bosonic.Occupation Mode`. Deliberately deferred to each statistics' own directory (mirroring the
-`ExchangeAlgebra`/instance split in the roadmap's future plan) rather than added here, since a
-`Common/` file importing `Fermionic/`/`Bosonic/` would invert the intended dependency direction
-(`notes/conventions.md`'s "one directory per track" rule: statistics-specific code depends on
-`Common/`, not the reverse).
+The concrete instances (`SecondQuantization.occupationBasis` for the fermionic line, which uses
+the plain `SecondQuantization` namespace rather than a `Fermionic` sub-namespace;
+`SecondQuantization.Bosonic.occupationBasis` for the bosonic line) live in each statistics' own
+directory, not here, since a `Common/` file importing `Fermionic/`/`Bosonic/` would invert the
+intended dependency direction (`notes/conventions.md`'s "one directory per track" rule:
+statistics-specific code depends on `Common/`, not the reverse).
 -/
 
 namespace SecondQuantization
@@ -30,8 +30,10 @@ namespace Common
 /-- **The occupation-basis interface**: a Fock-space basis type `Config`, together with a
 `vacuum` state and a per-mode occupation-number reading `occupation : Config → Mode → ℕ`, subject
 to the physically expected constraints — the vacuum has no particles anywhere, every state has
-only finitely many occupied modes, and the reading determines the state. -/
-structure OccupationBasis (Mode Config : Type*) where
+only finitely many occupied modes, and the reading determines the state. A `class` (not a plain
+`structure`) so each statistics' concrete instance is found by typeclass resolution once `Mode`
+and its `Config` are fixed, rather than needing to be threaded explicitly. -/
+class OccupationBasis (Mode Config : Type*) where
   /-- The zero-particle state. -/
   vacuum : Config
   /-- The occupation number of mode `i` in state `n`. -/

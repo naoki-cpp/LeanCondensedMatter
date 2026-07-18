@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.ThermalGreenFunction
-import LeanCondensedMatter.SecondQuantization.Common.ExchangeCommutator
+import LeanCondensedMatter.SecondQuantization.Fermionic.NumberOperator
 
 set_option linter.style.header false
 
@@ -21,10 +21,10 @@ different, finer fact — a basis-level mismatch specific to *which* mode is tog
 nonzero — so it can never contribute to a diagonal matrix coefficient, regardless of any weight.
 This holds for *any* weight `w`, not just the free Boltzmann one.
 
-The diagonal (`i = j`) case, by contrast, does *not* need a new argument: it follows directly from
-CAR's `{c_i, c_i†} = id` (`anticomm_annihilate_create`, `CanonicalAnticommutationRelations.lean`),
-which rewrites `(annihilate i).comp (create i)` as `id - numberOperator i` — so its thermal
-expectation is `1 - ⟨N_i⟩₀,β`, already computed in `FreePartitionFunction.lean`. **The equal-time,
+The diagonal (`i = j`) case, by contrast, does *not* need a new argument here: `NumberOperator.lean`
+already rewrites `(annihilate i).comp (create i)` as `id - numberOperator i`
+(`annihilate_comp_create_self`, from CAR's `{c_i, c_i†} = id`), so its thermal expectation is
+`1 - ⟨N_i⟩₀,β`, already computed in `FreePartitionFunction.lean`. **The equal-time,
 same-mode case `G₀,ᵢᵢ(τ,τ)` is a separate, third closed form**
 (`freeThermalGreenFunction_self_time_self`), not a limit of either one-sided formula: it comes from
 `timeOrderedProduct`'s `θ(0) = 1/2` symmetrization convention, and is genuinely discontinuous
@@ -103,31 +103,6 @@ theorem thermalExpectation_create_comp_annihilate_of_ne (w : FermionOccupation M
   rw [thermalExpectation, weightedTrace_create_comp_annihilate_of_ne w hij, zero_div]
 
 /-! ## Diagonal (`i = j`): the free hole/occupation numbers `1 - f_i`, `f_i` -/
-
-omit [Fintype Mode] in
-/-- **`[c_i, c_i†]_ζ = id`, the fermionic case (`ζ = Statistics.zetaInt Statistics.fermion`)**:
-CAR's anticommutator `{c_i, c_i†} = id` (`anticomm_annihilate_create`) is exactly
-`Common.exchangeCommutator Statistics.fermion` — see `Common/ExchangeCommutator.lean`'s module
-docstring, and `Bosonic/NumberOperator.lean`'s `exchangeCommutator_annihilate_create_self` for the
-bosonic mirror. -/
-theorem exchangeCommutator_annihilate_create_self (i : Mode) :
-    Common.exchangeCommutator Statistics.fermion (annihilate i) (create i) =
-      (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) := by
-  rw [Common.exchangeCommutator, Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one,
-    Common.zetaCommutator, neg_one_smul, sub_neg_eq_add]
-  have h := anticomm_annihilate_create (Mode := Mode) i i
-  rwa [if_pos rfl] at h
-
-omit [Fintype Mode] in
-/-- **`c_i c_i† = id - N_i`**, from CAR's `{c_i, c_i†} = id`, via the unified `ζ`-commutator
-reordering identity (`Common.comp_eq_id_add_of_zetaCommutator_eq_id`). -/
-theorem annihilate_comp_create_self (i : Mode) :
-    (annihilate i).comp (create i) = LinearMap.id - numberOperator i := by
-  have h := Common.comp_eq_id_add_of_zetaCommutator_eq_id
-    ((Statistics.zetaInt Statistics.fermion : ℤ) : ℂ)
-    (exchangeCommutator_annihilate_create_self i)
-  rw [Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one] at h
-  rwa [neg_one_smul, ← sub_eq_add_neg] at h
 
 /-- **The free hole number** `⟨c_i c_i†⟩₀,β = 1 - ⟨N_i⟩₀,β = e^{βε_i}/(e^{βε_i}+1)`. -/
 theorem freeThermalExpectation_annihilate_comp_create_self (ε : Mode → ℝ) (β : ℝ) (i : Mode) :

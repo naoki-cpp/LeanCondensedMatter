@@ -1,4 +1,5 @@
 import Mathlib.Data.Finset.Card
+import LeanCondensedMatter.SecondQuantization.Common.OccupationBasis
 
 set_option linter.style.header false
 
@@ -68,5 +69,22 @@ theorem fermionParticleNumber_removeOccupation_of_not_mem {i : Mode} {n : Fermio
     (h : i ∉ n) :
     fermionParticleNumber (removeOccupation i n) = fermionParticleNumber n := by
   rw [fermionParticleNumber, fermionParticleNumber, removeOccupation, Finset.erase_eq_of_notMem h]
+
+/-! ## The `Common.OccupationBasis` instance -/
+
+/-- **The fermionic occupation-basis instance**: `FermionOccupation Mode` reads off each mode's
+occupation number as `1`/`0` (occupied/empty) — the concrete side of `Common.OccupationBasis`'s
+shared interface, mirroring `SecondQuantization.Bosonic.occupationBasis`
+(`Bosonic/Occupation.lean`). -/
+instance occupationBasis : Common.OccupationBasis Mode (FermionOccupation Mode) where
+  vacuum := fermionVacuum
+  occupation n i := if i ∈ n then 1 else 0
+  occupation_vacuum i := by simp [fermionVacuum]
+  finiteSupport n := (Finset.finite_toSet n).subset fun i hi => by
+    by_contra hin
+    exact hi (if_neg hin)
+  ext {m n} h := Finset.ext fun i => by
+    have hi := h i
+    by_cases hm : i ∈ m <;> by_cases hn : i ∈ n <;> simp_all
 
 end SecondQuantization

@@ -1,14 +1,13 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.CanonicalAnticommutationRelations
+import LeanCondensedMatter.SecondQuantization.Fermionic.NumberOperator
 import Mathlib.Algebra.Module.BigOperators
 
 set_option linter.style.header false
 
 /-!
-# Fermionic number operator and Hamiltonians
+# Fermionic Hamiltonians
 
 Phase 6 of Track D's fermionic primary line (`notes/roadmaps/second-quantization.md`): the
-number operator `numberOperator i := create i ∘ annihilate i`, its eigenvalue equation on basis
-states, and the free/interaction Hamiltonians built from it as finite sums of
+free/interaction Hamiltonians built from `NumberOperator.lean`'s `numberOperator` as finite sums of
 creation/annihilation monomials — still on a finite mode set (`[Fintype Mode]`).
 
 Field operators are still out of scope (see `CreationAnnihilationFermionic.lean`'s module
@@ -20,33 +19,6 @@ design principles.
 namespace SecondQuantization
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
-
-/-! ## The number operator -/
-
-/-- **The single-mode number operator** `Nᵢ := aᵢ† aᵢ`. -/
-noncomputable def numberOperator (i : Mode) :
-    FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
-  (create i).comp (annihilate i)
-
-theorem numberOperator_apply (i : Mode) (x : FockSpaceFermionic Mode) :
-    numberOperator i x = create i (annihilate i x) :=
-  rfl
-
-/-- **The number-operator eigenvalue equation**, on basis states: `Nᵢ` acts as the identity on
-occupied modes and as zero on unoccupied ones — occupation-number states are simultaneous
-eigenvectors of every `numberOperator i`, with eigenvalue `0` or `1`. -/
-theorem numberOperator_basisState (i : Mode) (n : FermionOccupation Mode) :
-    numberOperator i (basisState n) = if i ∈ n then basisState n else 0 := by
-  rw [numberOperator_apply]
-  by_cases hi : i ∈ n
-  · rw [if_pos hi]
-    have hnotmem : i ∉ removeOccupation i n := Finset.notMem_erase i n
-    have heq : insertOccupation i (removeOccupation i n) = n := by
-      rw [insertOccupation, removeOccupation, Finset.insert_erase hi]
-    rw [annihilate_basisState_of_mem hi, map_smul, create_basisState_of_not_mem hnotmem,
-      fermionSign_removeOccupation_of_not_lt hi (lt_irrefl i), heq, smul_smul,
-      fermionSign_sq_complex, one_smul]
-  · rw [if_neg hi, annihilate_basisState_of_not_mem hi, map_zero]
 
 /-! ## Free and interaction Hamiltonians -/
 
