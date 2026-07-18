@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Bosonic creation/annihilation operators carry particle-number charge `±1`
 
 The bosonic mirror of `Fermionic/ParticleNumberCharge.lean`: instantiates
-`Common.CarriesParticleNumberCharge` (`Common/ParticleNumberSelectionRule.lean`) for `annihilate
+`Common.CarriesGradingDegree` (`Common/ParticleNumberSelectionRule.lean`) for `annihilate
 i`/`create i`, with grading `particleNumber` (cast to `ℤ`). The proof needs no positivity fact
 about the `√n`/`√(n+1)` normalization coefficients — `Common.smul_basisState_apply_of_ne` kills
 the off-target basis coefficient for *any* scalar multiplier, so acting with `annihilate i`/
@@ -26,7 +26,7 @@ variable {Mode : Type*} [DecidableEq Mode]
 /-- **`annihilate i` carries particle-number charge `-1`**: it only ever connects a basis state
 `m` to a basis state `n` with one fewer particle. -/
 theorem carriesParticleNumberCharge_annihilate (i : Mode) :
-    Common.CarriesParticleNumberCharge
+    Common.CarriesGradingDegree
       (fun n : Occupation Mode => (particleNumber n : ℤ)) (annihilate i) (-1) := by
   intro m n hmn
   change annihilate i (basisState n) m ≠ 0 at hmn
@@ -44,7 +44,7 @@ theorem carriesParticleNumberCharge_annihilate (i : Mode) :
 /-- **`create i` carries particle-number charge `+1`**: it only ever connects a basis state `m` to
 a basis state `n` with one more particle. -/
 theorem carriesParticleNumberCharge_create (i : Mode) :
-    Common.CarriesParticleNumberCharge
+    Common.CarriesGradingDegree
       (fun n : Occupation Mode => (particleNumber n : ℤ)) (create i) 1 := by
   intro m n hmn
   change create i (basisState n) m ≠ 0 at hmn

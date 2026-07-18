@@ -285,8 +285,9 @@ non-number-conserving quasi-free states (e.g. superconducting/Bogoliubov states)
 "anomalous" contractions are generically nonzero.
 `matrixCoeff_annihilate_comp_annihilate`/`_create_comp_create` now follow from the general
 `U(1)` particle-number selection rule extracted to `Common/ParticleNumberSelectionRule.lean`
-(`Common.CarriesParticleNumberCharge`, `Common.CarriesParticleNumberCharge.comp`,
-`Common.diagonalCoeff_eq_zero_of_carriesParticleNumberCharge`), generic over the occupation-state
+(`Common.CarriesGradingDegree` — named generically since neither the definition nor its proofs
+use anything specific to particle number, `Common.CarriesGradingDegree.comp`,
+`Common.diagonalCoeff_eq_zero_of_carriesGradingDegree`), generic over the occupation-state
 type rather than a fermion-specific case analysis; `Fermionic/ParticleNumberCharge.lean` and
 `Bosonic/ParticleNumberCharge.lean` instantiate it for `annihilate`/`create` in both statistics
 (charge `∓1`), confirming the rule really is exchange-statistics-independent. Also added:

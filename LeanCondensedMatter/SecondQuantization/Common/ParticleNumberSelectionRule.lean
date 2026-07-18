@@ -14,31 +14,34 @@ matrix coefficients at all — a `U(1)` particle-number selection rule. This fil
 argument to `Common.AlgebraicFock`, generic over the occupation-state type `Config`, so both the
 fermionic and bosonic lines can instantiate it instead of repeating the case analysis.
 
-`CarriesParticleNumberCharge grading A q` says `A` only ever connects basis states `m`/`n` whose
-`grading`-difference is exactly `q` — e.g. `grading = fermionParticleNumber` (cast to `ℤ`) and
-`q = 1` for `create i`, `q = -1` for `annihilate i`. `q` need not be `±1`: it composes additively
-under `LinearMap.comp` (`CarriesParticleNumberCharge.comp`), so e.g. `annihilate i |>.comp
-(annihilate j)` carries charge `-2`.
+`CarriesGradingDegree grading A q` says `A` only ever connects basis states `m`/`n` whose
+`grading`-difference is exactly `q`, for an *arbitrary* `ℤ`-valued `grading : Config → ℤ` — the
+statement and its proofs below never use that `grading` specifically counts particles, so the same
+API applies unchanged to any other `ℤ`-grading one might put on `Config` (spin projection, a
+sublattice grading, ...). The name is generic for that reason; `Fermionic/ParticleNumberCharge.lean`
+and `Bosonic/ParticleNumberCharge.lean` are what actually specialize `grading` to
+`fermionParticleNumber`/`particleNumber` (cast to `ℤ`) to get the physical particle-number
+selection rule, e.g. `q = 1` for `create i`, `q = -1` for `annihilate i`. `q` need not be `±1`: it
+composes additively under `LinearMap.comp` (`CarriesGradingDegree.comp`), so e.g.
+`annihilate i |>.comp (annihilate j)` carries degree `-2`.
 -/
 
 namespace SecondQuantization
 namespace Common
 
-/-- **`A` carries particle-number charge `q`** with respect to `grading : Config → ℤ`: `A` only
-ever connects basis states `m`, `n` (i.e. has a nonzero `(m, n)` matrix coefficient) when
+/-- **`A` carries grading degree `q`** with respect to `grading : Config → ℤ`: `A` only ever
+connects basis states `m`, `n` (i.e. has a nonzero `(m, n)` matrix coefficient) when
 `grading m = grading n + q`. -/
-def CarriesParticleNumberCharge {Config : Type*} (grading : Config → ℤ)
+def CarriesGradingDegree {Config : Type*} (grading : Config → ℤ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (q : ℤ) : Prop :=
   ∀ m n, matrixCoeff A m n ≠ 0 → grading m = grading n + q
 
-/-- Carrying a nonzero particle-number charge composes additively under `LinearMap.comp`: if `A`
-carries charge `qA` and `B` carries charge `qB`, their composite `A.comp B` carries charge
-`qA + qB`. -/
-theorem CarriesParticleNumberCharge.comp {Config : Type*} {grading : Config → ℤ}
+/-- Grading degrees compose additively under `LinearMap.comp`: if `A` carries degree `qA` and `B`
+carries degree `qB`, their composite `A.comp B` carries degree `qA + qB`. -/
+theorem CarriesGradingDegree.comp {Config : Type*} {grading : Config → ℤ}
     {A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {qA qB : ℤ}
-    (hA : CarriesParticleNumberCharge grading A qA)
-    (hB : CarriesParticleNumberCharge grading B qB) :
-    CarriesParticleNumberCharge grading (A.comp B) (qA + qB) := by
+    (hA : CarriesGradingDegree grading A qA) (hB : CarriesGradingDegree grading B qB) :
+    CarriesGradingDegree grading (A.comp B) (qA + qB) := by
   intro m n hmn
   by_contra hcharge
   apply hmn
@@ -61,12 +64,12 @@ theorem CarriesParticleNumberCharge.comp {Config : Type*} {grading : Config → 
     · rw [hAk, mul_zero]
     · exact absurd (by rw [hA m k hAk, hB k n hBk]; ring) hcharge
 
-/-- **The particle-number selection rule.** An operator that carries a nonzero particle-number
-charge has vanishing diagonal matrix coefficients everywhere: it can never map a basis state back
-to a multiple of itself, since that would force its charge to be `0`. -/
-theorem diagonalCoeff_eq_zero_of_carriesParticleNumberCharge {Config : Type*}
-    {grading : Config → ℤ} {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {q : ℤ}
-    (hA : CarriesParticleNumberCharge grading A q) (hq : q ≠ 0) (n : Config) :
+/-- **The particle-number selection rule.** An operator that carries a nonzero grading degree has
+vanishing diagonal matrix coefficients everywhere: it can never map a basis state back to a
+multiple of itself, since that would force its degree to be `0`. -/
+theorem diagonalCoeff_eq_zero_of_carriesGradingDegree {Config : Type*} {grading : Config → ℤ}
+    {A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config} {q : ℤ}
+    (hA : CarriesGradingDegree grading A q) (hq : q ≠ 0) (n : Config) :
     diagonalCoeff A n = 0 := by
   rw [diagonalCoeff_eq_matrixCoeff]
   by_contra h

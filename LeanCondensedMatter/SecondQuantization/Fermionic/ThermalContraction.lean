@@ -40,8 +40,8 @@ The basis-level vanishing is now an instance of `Common/ParticleNumberSelectionR
 general particle-number selection rule, rather than a fermion-specific case analysis:
 `carriesParticleNumberCharge_annihilate`/`_create` (`Fermionic/ParticleNumberCharge.lean`) show
 `annihilate i`/`create i` carry particle-number charge `∓1`,
-`Common.CarriesParticleNumberCharge.comp` combines these into charge `∓2` for the composite
-operators, and `Common.diagonalCoeff_eq_zero_of_carriesParticleNumberCharge` concludes that any
+`Common.CarriesGradingDegree.comp` combines these into charge `∓2` for the composite
+operators, and `Common.diagonalCoeff_eq_zero_of_carriesGradingDegree` concludes that any
 operator of nonzero charge has vanishing diagonal matrix coefficients everywhere. That makes the
 weighted trace — hence the thermal expectation — vanish termwise for any occupation-number-
 diagonal weight `w` (the only kind `weightedTrace` accepts), with no need to know anything about
@@ -57,12 +57,12 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 omit [Fintype Mode] in
 /-- **Annihilating twice never returns to the same occupation state.** `(annihilate i).comp
 (annihilate j)` carries particle-number charge `-2` (`carriesParticleNumberCharge_annihilate`
-composed via `Common.CarriesParticleNumberCharge.comp`), so by the particle-number selection rule
-(`Common.diagonalCoeff_eq_zero_of_carriesParticleNumberCharge`) its diagonal matrix coefficients
+composed via `Common.CarriesGradingDegree.comp`), so by the particle-number selection rule
+(`Common.diagonalCoeff_eq_zero_of_carriesGradingDegree`) its diagonal matrix coefficients
 vanish identically. -/
 theorem matrixCoeff_annihilate_comp_annihilate (i j : Mode) (n : FermionOccupation Mode) :
     matrixCoeff ((annihilate i).comp (annihilate j)) n n = 0 :=
-  Common.diagonalCoeff_eq_zero_of_carriesParticleNumberCharge
+  Common.diagonalCoeff_eq_zero_of_carriesGradingDegree
     ((carriesParticleNumberCharge_annihilate i).comp (carriesParticleNumberCharge_annihilate j))
     (by norm_num) n
 
@@ -72,7 +72,7 @@ omit [Fintype Mode] in
 charge `+2`. -/
 theorem matrixCoeff_create_comp_create (i j : Mode) (n : FermionOccupation Mode) :
     matrixCoeff ((create i).comp (create j)) n n = 0 :=
-  Common.diagonalCoeff_eq_zero_of_carriesParticleNumberCharge
+  Common.diagonalCoeff_eq_zero_of_carriesGradingDegree
     ((carriesParticleNumberCharge_create i).comp (carriesParticleNumberCharge_create j))
     (by norm_num) n
 
