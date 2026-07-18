@@ -145,7 +145,7 @@ finite-sum shape.
 | `Common/ExchangeCommutator.lean` | `zetaCommutator`/`exchangeCommutator` (`notes/roadmaps/second-quantization.md`'s Phase 9 section below) | `proved` |
 | `Common/TimeOrdering.lean` | `Common.zetaTimeOrderedProduct`/`Common.timeOrderedProduct` — the imaginary-time-ordered product `T_τ` of two `AlgebraicFock Config` endomorphisms, generic over `Config` (never depended on the concrete occupation-state type, only on `.comp`/scalar multiplication) and, mirroring `ExchangeCommutator.lean`'s `zetaCommutator`/`exchangeCommutator` split, indexed by a raw `ζ : ℤ` or by a `Statistics` value; `Fermionic/ThermalTimeOrdering.lean`/`Bosonic/ThermalTimeOrdering.lean` fix the statistics (no `ζ`/`Statistics` parameter at their own call sites) while preserving their own public names | `proved`, both wrappers |
 | `Common/ExchangeAlgebra.lean` | `Common.ExchangeAlgebra s Mode Config` — a `class` packaging the *all-index* exchange relation `a_i a_j† - ζ a_j† a_i = δᵢⱼ`, `a_i a_j - ζ a_j a_i = 0`, `a_i† a_j† - ζ a_j† a_i† = 0` (via `exchangeCommutator s`) that CAR (`s = fermion`) and CCR (`s = boson`) share, letting a future Bloch–de Dominicis induction move operators past each other without referencing fermionic `anticomm_*`/bosonic `comm_*` directly; the concrete instances (`SecondQuantization.exchangeAlgebra` — fermionic, plain namespace — and `SecondQuantization.Bosonic.exchangeAlgebra`) live in each statistics' own directory, mirroring `OccupationBasis.lean`'s architecture, and are derived from the bridging fact that `exchangeCommutator s = anticomm`/`comm` for *any* two operators (generalizing the single-mode bridging in `Fermionic/NumberOperator.lean`/`Bosonic/NumberOperator.lean`) | `proved`, both instances |
-| `Common/BlochDeDominicisPairing.lean` | `Common.BlochDeDominicis.Pairing n` — perfect pairings of `Fin (2 * n)` as fixed-point-free involutive permutations, with finite enumeration, crossing count, and the statistics weight `ζ^crossings`; the four-position theorem gives the adjacent/crossing/nested weights `1`, `ζ`, `1` without choosing an enumeration order | `proved` |
+| `Common/BlochDeDominicisPairing.lean` | `Common.BlochDeDominicis.Pairing n` — perfect pairings of `Fin (2 * n)` behind a stable `partner` interface, implemented by fixed-point-free involutive permutations; finite enumeration, partner laws, normalized-pair membership, crossing count, and the statistics weight `ζ^crossings`; the four-position theorem gives the adjacent/crossing/nested weights `1`, `ζ`, `1` without choosing an enumeration order | `proved` |
 
 **Symmetric file layout, `Fermionic/NumberOperator.lean` split from `Hamiltonian.lean`:** the
 fermionic number operator (`numberOperator`/`numberOperator_apply`/`numberOperator_basisState`)
@@ -425,11 +425,17 @@ fixed-point-free involutive permutation of `Fin (2*n)`.  `allPairings` gives its
 weight is proved to be `1`, while the fermionic weight is `(-1)^crossingCount`.  The closed
 four-position theorem enumerates the three pairings as a `Finset` (so no arbitrary list order is
 part of the statement) and verifies their adjacent/crossing/nested weights are `1`, `ζ`, and `1`.
+The implementation is hidden behind the `Pairing` structure's `partner` interface;
+`partner_partner`, `partner_ne`, `mem_pairs_iff`, and `pair_or_reverse_mem` expose the laws needed by
+later proofs without requiring callers to unfold the internal subtype or the `Finset.filter`/`image`
+construction.
 This layer is purely combinatorial and keeps `Common/` independent of both statistics-specific
 implementation directories.
 
 **Not yet done:** a general `n`-operator time-ordered product (`timeOrderedProduct` is still
-2-operator-only); a first concrete Bloch–de Dominicis induction step (the finite-temperature
+2-operator-only); removing the pair containing position `0` and transporting the remaining ordered
+positions to `Fin (2*n)` (`Pairing.eraseZeroPair` or equivalent), which is the key reindexing seam
+for induction; a first concrete Bloch–de Dominicis induction step (the finite-temperature
 4-point identity `⟨A₁A₂A₃A₄⟩_{0,β} = ⟨A₁A₂⟩_{0,β}⟨A₃A₄⟩_{0,β} + ζ⟨A₁A₃⟩_{0,β}⟨A₂A₄⟩_{0,β} + ⟨A₁A₄⟩_{0,β}⟨A₂A₃⟩_{0,β}`, before the
 general `2n`-point theorem) using `ExchangeAlgebra` to validate the pairing-sign design; the
 bosonic thermal-trace layer (`weightedTrace`/`thermalExpectation`/`partitionFunction`) that
