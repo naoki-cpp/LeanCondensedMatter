@@ -5,21 +5,25 @@ import Mathlib.Tactic.FieldSimp
 set_option linter.style.header false
 
 /-!
-# Connecting thermal occupation correlators to Track B's moment-cumulant machinery
+# Fermionic occupation moments and the linked-cluster bridge
 
 Phase 8 of Track D's fermionic primary line (`notes/roadmaps/second-quantization.md`): the first
-bridge between Track D (thermal expectation values on `FockSpaceFermionic`) and Track B (the
+bridge between Track D (weighted expectation functionals on `FockSpaceFermionic`) and Track B (the
 abstract moment-cumulant duality on the partition lattice, `Combinatorics/MomentCumulant.lean`,
 `Combinatorics/CumulantFactorization.lean`).
 
-`occupationMoment w S := (Σₙ (if S ⊆ n then w n else 0)) / Z(w)` is the normalized thermal
-expectation value of the simultaneous occupation of every mode in `S`, `⟨∏ᵢ∈S nᵢ⟩_w`, computed
+`occupationMoment w S := (Σₙ (if S ⊆ n then w n else 0)) / Z(w)` is the normalized weighted
+diagonal functional for the simultaneous occupation of every mode in `S`, `⟨∏ᵢ∈S nᵢ⟩_w`, computed
 directly as a weighted sum rather than via an operator product (the `numberOperator i`'s commute as
 they're simultaneously diagonal, but `FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode` has no
 `CommMonoid` structure under composition to state that with `Finset.prod`, so this file bypasses
 the issue rather than solving it). It lands exactly in Track B's `Finset Mode → ℂ` moment-function
 type, with
 `occupationMoment w ⊥ = 1` matching `IsIndependentAcross`'s normalization hypothesis.
+
+Despite this file's current `Common/` path, the implementation is fermionic-specific: it imports
+`Fermionic.ThermalExpectation` and uses `FermionOccupation` throughout. It should be moved under
+`Fermionic/` or generalized before being presented as statistics-independent common infrastructure.
 
 `occupationProjector S` supplies the operator-level witness `∏ᵢ∈S nᵢ` (diagonal in the
 occupation-number basis, built via `Finsupp.lift` exactly as `create`/`annihilate` are), with
@@ -46,12 +50,12 @@ namespace SecondQuantization
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
-/-- **The thermal occupation-correlator moment.** `occupationMoment w S` is the normalized weighted
-occupation correlator under the weight `w` — the thermal expectation value `⟨∏ᵢ∈S nᵢ⟩_w` of the
-simultaneous occupation of `S`, computed directly as a weighted sum. For positive real weights (a
+/-- **The weighted occupation-correlator moment.** `occupationMoment w S` is the normalized weighted
+occupation correlator under the weight `w` — the diagonal functional
+`⟨∏ᵢ∈S nᵢ⟩_w` of the simultaneous occupation of `S`, computed directly as a weighted sum. For positive real weights (a
 genuine Boltzmann weight) it is the probability that every mode in `S` is occupied; `w` here is an
 arbitrary complex-valued weight, so no probabilistic interpretation is assumed in general. As with
-`thermalExpectation`, division by `partitionFunction w` is only physically meaningful when
+the historical identifier `thermalExpectation`, division by `partitionFunction w` is only physically meaningful when
 `partitionFunction w ≠ 0`. -/
 noncomputable def occupationMoment (w : FermionOccupation Mode → ℂ) (S : Finset Mode) : ℂ :=
   (∑ n ∈ (Finset.univ : Finset (FermionOccupation Mode)).filter (S ⊆ ·), w n) /
@@ -69,8 +73,10 @@ theorem occupationMoment_bot {w : FermionOccupation Mode → ℂ} (hZ : partitio
   rw [occupationMoment, hfilter]
   exact div_self hZ
 
-/-- **`occupationMoment` at a singleton `{i}` is the thermal expectation of `numberOperator i`.**
-Connects the weighted-sum definition back to Track D's operator-level `thermalExpectation`. -/
+/-- **`occupationMoment` at a singleton `{i}` is the normalized weighted diagonal functional of
+`numberOperator i`.**
+Connects the weighted-sum definition back to Track D's operator-level normalized weighted
+functional (the historical identifier `thermalExpectation`). -/
 theorem occupationMoment_singleton (w : FermionOccupation Mode → ℂ) (i : Mode) :
     occupationMoment w {i} = thermalExpectation w (numberOperator i) := by
   rw [occupationMoment, thermalExpectation, weightedTrace_numberOperator]
@@ -116,9 +122,9 @@ theorem occupationProjector_singleton (i : Mode) :
   simp [occupationProjector_basisState, numberOperator_basisState, Finset.singleton_subset_iff]
 
 omit [LinearOrder Mode] in
-/-- **`thermalExpectation` of `occupationProjector S` is `occupationMoment w S`.** The operator-
+/-- **The normalized weighted functional of `occupationProjector S` is `occupationMoment w S`.** The operator-
 level bridge promised by `occupationMoment`'s docstring: the simultaneous-occupation observable's
-thermal expectation value agrees with the direct weighted-sum definition. -/
+normalized weighted diagonal functional agrees with the direct weighted-sum definition. -/
 theorem thermalExpectation_occupationProjector (w : FermionOccupation Mode → ℂ) (S : Finset Mode) :
     thermalExpectation w (occupationProjector S) = occupationMoment w S := by
   rw [thermalExpectation, occupationMoment]

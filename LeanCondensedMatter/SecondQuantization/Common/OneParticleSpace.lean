@@ -3,10 +3,10 @@ import Mathlib.Data.Fintype.Card
 set_option linter.style.header false
 
 /-!
-# The one-particle mode space
+# One-particle mode labels
 
 The starting point of second quantization (Track D, `notes/roadmaps/second-quantization.md`):
-an abstract type of one-particle "modes" (momentum modes, lattice sites, or any other
+an abstract type of one-particle mode labels (momentum modes, lattice sites, or any other
 single-particle label). This deliberately carries no linear or Hilbert-space structure yet —
 that structure appears once modes are combined into occupation-number states
 (`BosonOccupation.lean`/`FermionOccupation.lean`) and then Fock space.
@@ -23,7 +23,7 @@ namespace SecondQuantization
 -- decidable equality is assumed at this stage.
 variable (Mode : Type*) [Fintype Mode] [DecidableEq Mode]
 
-/-- The number of one-particle modes. -/
+/-- The number of one-particle mode labels. -/
 abbrev modeCount : ℕ := Fintype.card Mode
 
 end SecondQuantization

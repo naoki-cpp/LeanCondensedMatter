@@ -31,7 +31,7 @@ Track D.
 |---|---|---|---|
 | Minimal axiomatic quantum theory foundation | A | `stated` | [notes/roadmaps/quantum-theory-foundations.md](roadmaps/quantum-theory-foundations.md#minimal-axiomatic-quantum-theory-foundation) |
 | Density operators and the Born rule (finite-dimensional) | A | `stated` | [notes/roadmaps/quantum-theory-foundations.md](roadmaps/quantum-theory-foundations.md#density-operators-and-the-born-rule-finite-dimensional) |
-| Von Neumann entropy / Boltzmann's principle (finite-dimensional) | A | `stated` | [notes/roadmaps/quantum-theory-foundations.md](roadmaps/quantum-theory-foundations.md#von-neumann-entropy--boltzmanns-principle-finite-dimensional) |
+| Von Neumann entropy / thermodynamic entropy correspondence (finite-dimensional) | A | `stated` | [notes/roadmaps/quantum-theory-foundations.md](roadmaps/quantum-theory-foundations.md#von-neumann-entropy--thermodynamic-entropy-correspondence-finite-dimensional) |
 | Canonical distribution as the Helmholtz free-energy-minimizing state | A | `stated` | [notes/roadmaps/quantum-theory-foundations.md](roadmaps/quantum-theory-foundations.md#canonical-distribution-as-the-helmholtz-free-energy-minimizing-state) |
 | Finite-temperature many-body perturbation theory (formerly "basic QFT") | A | `idea` | [notes/roadmaps/quantum-theory-foundations.md](roadmaps/quantum-theory-foundations.md#basic-quantum-field-theory-formalization) |
 | Finite-temperature Bloch–de Dominicis theorem | A | `idea` | [notes/roadmaps/quantum-theory-foundations.md](roadmaps/quantum-theory-foundations.md#finite-temperature-bloch–de-dominicis-theorem) |

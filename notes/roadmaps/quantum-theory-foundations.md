@@ -12,7 +12,7 @@ State-space postulate and observable definition (`QuantumTheory.State`, `Quantum
 
 Status: `stated`.
 
-Density-operator postulate (`QuantumTheory.DensityOperator`, positive trace-1 operator) and general (POVM) measurement postulate (`QuantumTheory.POVM`, `QuantumTheory.prob`), with the Born rule's probabilities proved to sum to `1` (`sum_prob_eq_one`). Purification (`QuantumTheory.pure`) and purity (`QuantumTheory.purity`) defined, with `purity_pure : purity (pure ψ) = 1` proved. See `LeanCondensedMatter/QuantumTheory/DensityOperator.lean`. **Scoped to finite-dimensional `H`** — see the trace-class caveat in `notes/caveats.md`.
+Density-operator postulate (`QuantumTheory.DensityOperator`, positive trace-1 operator) and general (POVM) measurement postulate (`QuantumTheory.POVM`, `QuantumTheory.prob`), with the Born rule's probabilities proved to sum to `1` (`sum_prob_eq_one`). The pure-state density-operator embedding (`QuantumTheory.pure`) and purity (`QuantumTheory.purity`) are defined, with `purity_pure : purity (pure ψ) = 1` proved. This `pure` map is not the mixed-state purification construction on an enlarged Hilbert space. See `LeanCondensedMatter/QuantumTheory/DensityOperator.lean`. **Scoped to finite-dimensional `H`** — see the trace-class caveat in `notes/caveats.md`.
 
 **In progress: infinite-dimensional density operators.** Now that Track C's `ContinuousLinearMap.trace` (with linearity/cyclicity) is done, extending `DensityOperator` beyond finite dimensions is underway in `LeanCondensedMatter/QuantumTheory/DensityOperatorTraceClass.lean` (namespace `QuantumTheory.TraceClass`, additive to the finite-dimensional file above — nothing there is touched). `QuantumTheory.TraceClass.DensityOperator` (positive + compact + trace-class + trace `1`) is defined, and `QuantumTheory.TraceClass.pure : State H → DensityOperator H` (the rank-one projector `|ψ⟩⟨ψ|`) is **fully proved** for arbitrary (possibly infinite-dimensional) `H`:
 - `isCompactOperator_rankOne` — any rank-one operator `|x⟩⟨y|` is compact, via factoring through the locally-compact `ℂ`.
@@ -51,11 +51,11 @@ The Mathlib route originally hoped for (a spectral measure at a vector, with Jen
 
 **Not yet attempted:** the equality-iff-`ρ = gibbsState` direction (uniqueness of the minimizer) and an infinite-dimensional `vonNeumannEntropy_gibbsState` (that `gibbsState` itself attains the bound) — the finite-dimensional file's analogues (`diagOp_eigenvalues_map_eq`, `vonNeumannEntropy_gibbsState`) have no infinite-dimensional counterpart yet.
 
-## Von Neumann entropy / Boltzmann's principle (finite-dimensional)
+## Von Neumann entropy / thermodynamic entropy correspondence (finite-dimensional)
 
 Status: `stated`.
 
-`QuantumTheory.vonNeumannEntropy` (`-Tr[ρ ln ρ]`, computed via the eigenvalues of `ρ`) defined. See `LeanCondensedMatter/QuantumTheory/Entropy.lean`. **Scope note:** only the mathematical quantity is defined; Boltzmann's principle itself (its equality, times `k_B`, with a thermodynamic entropy `S[U,V,N]`) is a postulate connecting to thermodynamics, which stays out of scope — see `notes/model-and-assumptions.md`. No theorems proved yet (e.g. nonnegativity, or entropy `0` for pure states) — natural next steps if this target is picked up again.
+`QuantumTheory.vonNeumannEntropy` (`-Tr[ρ ln ρ]`, computed via the eigenvalues of `ρ`) defined. See `LeanCondensedMatter/QuantumTheory/Entropy.lean`. **Scope note:** Boltzmann's statistical-mechanical relation `S_B = k_B log Ω` and the separate identification of `k_B` times von Neumann entropy with thermodynamic `S[U,V,N]` are not formalized; thermodynamics stays out of scope — see `notes/model-and-assumptions.md`. No theorems proved yet (e.g. nonnegativity, or entropy `0` for pure states) — natural next steps if this target is picked up again.
 
 ## Canonical distribution as the Helmholtz free-energy-minimizing state
 
@@ -82,4 +82,4 @@ Prerequisite groundwork target: the minimal scaffolding needed before stating ei
 
 Status: `idea`.
 
-Goal: formalize the thermal-average analogue of Wick's theorem — that a thermal expectation value of a product of creation/annihilation operators decomposes into a sum over all full pairings (contractions), each a product of two-operator thermal averages. Depends on the second-quantization groundwork ([notes/roadmaps/second-quantization.md](second-quantization.md)) above.
+Goal: formalize the finite-temperature Bloch–de Dominicis theorem for a finite-mode free/quasifree (Gaussian) Gibbs state — a thermal expectation value of a product of creation/annihilation operators decomposes into a sum over all full pairings (contractions), each a product of two-operator thermal averages. An arbitrary interacting Gibbs state is outside this target. Depends on the second-quantization groundwork ([notes/roadmaps/second-quantization.md](second-quantization.md)) above.

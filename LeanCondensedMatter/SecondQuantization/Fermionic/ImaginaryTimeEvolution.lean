@@ -8,18 +8,18 @@ set_option linter.style.header false
 # Imaginary-time evolution under the free Hamiltonian
 
 Beginning of the finite-temperature Green-function / time-ordered-correlator line: the genuine
-Linked Cluster Theorem needs actual imaginary-time evolution `A(τ) := e^{τH₀} A e^{-τH₀}`, time
-ordering, and thermal `n`-point correlators — none of which `FormalLogPartitionFunction.lean`'s
-purely combinatorial `log Z` groundwork provides on its own. This file is step 1: `e^{τH₀}` itself,
-for the *free* Hamiltonian `H₀ = freeHamiltonian ε` only.
+Linked Cluster Theorem needs free imaginary-time evolution, time ordering, and thermal `n`-point
+correlators — none of which `FormalLogPartitionFunction.lean`'s purely combinatorial `log Z`
+groundwork provides on its own. This file is step 1: an algebraic, basis-diagonal realization of
+free evolution for `H₀ = freeHamiltonian ε` only.
 
-Unlike `FormalExpFermionic.lean`'s `formalExpTerm`/`formalExpTruncation` (a finite Taylor
-truncation, since `FockSpaceFermionic Mode` has no topology for a genuine operator limit),
-`e^{τH₀}` here is the **actual, non-truncated analytic exponential** — because `freeHamiltonian ε`
-is diagonal in the occupation-number basis (`freeHamiltonian_basisState`) with eigenvalue
-`E(n) := Σᵢ∈n ε(i) : ℝ`, so `e^{τH₀}` acts on each basis vector by the ordinary scalar
-`Complex.exp (τ * E(n)) : ℂ` — no operator-norm limit is needed, only `Complex.exp` of a concrete
-number. This trick is specific to a *diagonal* Hamiltonian; it does not extend to a general
+Unlike `FormalExpFermionic.lean`'s `formalExpTerm`/`formalExpTruncation` (finite Taylor
+truncations), this file defines the scalar action of free evolution directly on each basis vector:
+`Complex.exp (τ * E(n)) • |n⟩`, where `E(n) := Σᵢ∈n ε(i) : ℝ`. This is an algebraic,
+basis-diagonal realization, not an analytic operator exponential: `FockSpaceFermionic Mode` has
+no topology or Hilbert completion in this development. The construction does not require an
+operator-norm limit, but that is because no operator exponential is being constructed here. This
+diagonal definition is specific to a *diagonal* Hamiltonian; it does not extend to a general
 `H = H₀ + V` (that is exactly why the interaction picture and Dyson series are needed for anything
 beyond the free theory).
 -/
@@ -81,11 +81,12 @@ theorem imaginaryTimeEvolveFree_neg_comp (ε : Mode → ℝ) (τ : ℝ) :
     (imaginaryTimeEvolveFree ε (-τ)).comp (imaginaryTimeEvolveFree ε τ) = LinearMap.id :=
   Common.diagonalEvolution_neg_comp (fermionEnergy ε) τ
 
-/-! ## The Heisenberg-picture evolution of a general operator -/
+/-! ## Algebraic Heisenberg-type evolution of a general operator -/
 
-/-- **The imaginary-time (Heisenberg-picture) evolution of an operator `A` under the free
-Hamiltonian**: `A(τ) := e^{τH₀} A e^{-τH₀}`. Well-defined for *any* `A` (not just diagonal ones),
-since `e^{±τH₀}` are the genuinely analytic, non-truncated operators above. -/
+/-- **The algebraic imaginary-time conjugation of an operator `A` under the free diagonal
+evolution**: notation `A(τ) := e^{τH₀} A e^{-τH₀}` for the two basis-diagonal realizations above.
+It is well-defined for *any* algebraic linear map `A`, but this file does not construct analytic
+operators or a completed Hilbert-space conjugation. -/
 noncomputable def imaginaryTimeEvolve (ε : Mode → ℝ) (τ : ℝ)
     (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
     FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=

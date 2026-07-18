@@ -3,10 +3,11 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Hamiltonian
 set_option linter.style.header false
 
 /-!
-# Finite thermal traces and expectation values (algebraic)
+# Finite weighted traces and normalized diagonal functionals (algebraic)
 
 Phase 6.5 of Track D's fermionic primary line (`notes/roadmaps/second-quantization.md`): the
-finite-mode-set trace, weighted trace, partition function, and thermal expectation value, for an
+finite-mode-set trace, weighted trace, partition function, and normalized weighted diagonal
+functional, for an
 *arbitrary* weight `w : FermionOccupation Mode → ℂ` — not yet the genuine Gibbs weight
 `e^{-βE(n)}`, and no analytic `exp` anywhere in this file. This is deliberate: it isolates the
 purely combinatorial "sum over basis states, weighted" structure that both a formal Gibbs weight
@@ -34,8 +35,9 @@ noncomputable def matrixCoeff (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpace
 noncomputable def traceFock (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) : ℂ :=
   ∑ n : FermionOccupation Mode, matrixCoeff A n n
 
-/-- **The weighted trace**, `Tr_w A := Σₙ w(n) ⟨n| A |n⟩` — the un-normalized thermal average of
-`A` against the weight `w`. -/
+/-- **The weighted trace**, `Tr_w A := Σₙ w(n) ⟨n| A |n⟩` — the un-normalized weighted diagonal
+functional of `A` against the weight `w`. It becomes the un-normalized thermal weighted trace
+only for a Gibbs/Boltzmann weight. -/
 noncomputable def weightedTrace (w : FermionOccupation Mode → ℂ)
     (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) : ℂ :=
   ∑ n : FermionOccupation Mode, w n * matrixCoeff A n n
@@ -47,11 +49,11 @@ specialized to that positive, real-valued form. -/
 noncomputable def partitionFunction (w : FermionOccupation Mode → ℂ) : ℂ :=
   ∑ n : FermionOccupation Mode, w n
 
-/-- **The thermal expectation value** of `A` against the weight `w`, `⟨A⟩_w := Tr_w(A) / Z(w)`.
-As with `partitionFunction`, this is only a genuine thermal (Gibbs-state) expectation value once
-`w` is specialized to a positive Boltzmann weight with `Z(w) ≠ 0`; for a general complex `w` this
-is simply a `w`-weighted, `Z(w)`-normalized diagonal trace, with no guarantee of positivity,
-reality (even against a Hermitian `A`), or a Gibbs-state interpretation. -/
+/-- **The normalized weighted diagonal functional** of `A` against `w`, `Tr_w(A) / Z(w)`.
+The historical identifier is `thermalExpectation`; it is a genuine thermal (Gibbs-state)
+expectation only once `w` is specialized to a positive Boltzmann weight with `Z(w) ≠ 0`. For a
+general complex `w` this is simply a `w`-weighted, `Z(w)`-normalized diagonal functional, with no
+guarantee of positivity, reality (even against a Hermitian `A`), or a Gibbs-state interpretation. -/
 noncomputable def thermalExpectation (w : FermionOccupation Mode → ℂ)
     (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) : ℂ :=
   weightedTrace w A / partitionFunction w
@@ -127,8 +129,9 @@ theorem weightedTrace_id (w : FermionOccupation Mode → ℂ) :
   simp [weightedTrace, partitionFunction, h]
 
 omit [LinearOrder Mode] in
-/-- **The thermal expectation of the identity is `1`**, `⟨id⟩_w = Z(w)/Z(w) = 1`, given a nonzero
-partition function. -/
+/-- **The normalized weighted functional of the identity is `1`**, `⟨id⟩_w = Z(w)/Z(w) = 1`,
+given a nonzero partition function. For a Gibbs/Boltzmann weight this is the thermal statement;
+the identifier is retained for API compatibility. -/
 theorem thermalExpectation_id (w : FermionOccupation Mode → ℂ) (hw : partitionFunction w ≠ 0) :
     thermalExpectation w (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] _) = 1 := by
   rw [thermalExpectation, weightedTrace_id, div_self hw]

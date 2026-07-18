@@ -5,7 +5,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTimeEvolution
 set_option linter.style.header false
 
 /-!
-# A free-evolution time-ordered two-point correlator
+# A free-evolution time-ordered two-point functional
 
 Phase 9, step 3 (`notes/roadmaps/second-quantization.md`): `thermalGreenFunction ε w i j τ τ' :=
 -⟨T_τ c_i(τ) c_j†(τ')⟩_w`, assembled from the previous two steps —
@@ -23,7 +23,7 @@ must both hold before that name applies:
   Hamiltonian (e.g. one including an interaction) would evolve the operators with the wrong
   generator, since `imaginaryTimeEvolve` only knows about `H₀ = freeHamiltonian ε`.
 
-`thermalGreenFunction` becomes the genuine `G₀` only once both hold. Neither restriction is
+The historical identifier `thermalGreenFunction` becomes the genuine `G₀` only once both hold. Neither restriction is
 encoded in the type here; `FreeBoltzmannWeight.lean`'s `freeThermalGreenFunction` specializes to
 the weight that satisfies both.
 -/

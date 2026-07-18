@@ -31,7 +31,7 @@ support. An `abbrev` rather than a `def` so that `Mode →₀ ℕ`'s existing al
 (`AddCommMonoid`, `Inhabited`, ...) transfer automatically. -/
 abbrev Occupation (Mode : Type*) := Mode →₀ ℕ
 
-/-- **The vacuum state**: zero particles in every mode. -/
+/-- **The vacuum occupation configuration**: zero particles in every mode. -/
 def vacuum : Occupation Mode := 0
 
 /-- **The total particle number** of an occupation-number state, `Σᵢ n(i)`. -/

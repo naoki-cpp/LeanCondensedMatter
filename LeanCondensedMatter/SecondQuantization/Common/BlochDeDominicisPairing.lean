@@ -11,10 +11,10 @@ set_option linter.style.header false
 /-!
 # Pairings for the finite-temperature Bloch--de Dominicis theorem
 
-The target of this project is the finite-temperature Bloch--de Dominicis factorization of thermal
-expectations, not the vacuum-expectation Wick theorem.  The namespace and module name make that
-distinction explicit even though the finite pairing combinatorics itself does not depend on a
-temperature parameter.
+The target of this project is the finite-temperature Bloch--de Dominicis factorization of
+free/quasifree Gibbs expectations, not the vacuum-expectation Wick theorem or an arbitrary
+interacting thermal state.  The namespace and module name make that distinction explicit even
+though the finite pairing combinatorics itself does not depend on a temperature parameter.
 
 A perfect pairing of `Fin (2 * n)` is represented by its partner permutation: a fixed-point-free
 involution.  Mathlib supplies finite permutations but no naturally suitable bundled perfect-pairing

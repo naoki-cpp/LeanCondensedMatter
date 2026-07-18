@@ -6,6 +6,9 @@ set_option linter.style.header false
 /-!
 # Imaginary-time ordering `T_τ`, specialized to the fermionic Fock space
 
+The `ThermalTimeOrdering` filename is historical: this module defines imaginary-time ordering and
+does not introduce a thermal state, weight, or inverse temperature.
+
 Phase 9, step 2 (`notes/roadmaps/second-quantization.md`): a thin wrapper fixing
 `Common.TimeOrdering.lean`'s `Common.timeOrderedProduct` to `FockSpaceFermionic Mode` *and* to
 `Statistics.fermion` — time ordering itself depends on neither `imaginaryTimeEvolve` nor the
