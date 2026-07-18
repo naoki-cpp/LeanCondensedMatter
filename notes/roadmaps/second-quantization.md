@@ -270,8 +270,22 @@ order:
   weight for the same `ε` the evolution uses, closing both gaps above. **Not yet the full Matsubara
   Green-function apparatus** — `0 < β`, the fundamental domain `0 ≤ τ, τ' ≤ β`, and KMS fermionic
   antiperiodicity `G₀(τ+β,τ') = -G₀(τ,τ')` are not yet established, nor is the closed-form
-  agreement with the standard free-fermion result (`⟨N_i⟩₀ = 1/(e^{βε_i}+1)`, `G₀,ᵢⱼ = 0` for
-  `i ≠ j`).
+  two-point Green function `G₀,ᵢⱼ = 0` for `i ≠ j`.
+
+**Step 3 follow-up, part 2, done, in `Fermionic/FreePartitionFunction.lean`:** the free partition
+function factorizes mode-by-mode, `Z₀(β) = Σₙ e^{-β E(n)} = ∏ᵢ (1 + e^{-βε_i})`
+(`freePartitionFunction_eq_prod`), and the free thermal expectation of the number operator is the
+closed-form Fermi–Dirac distribution, `⟨N_i⟩₀,β = 1/(e^{βε_i}+1)`
+(`freeThermalExpectation_numberOperator`) — the occupation-number half of the gap
+`FreeBoltzmannWeight.lean` flagged. Unlike the bosonic partition function (`Bosonic
+/FreePartitionFunction.lean`, B3a), no convergence theory is needed: each fermionic mode
+contributes only `0`/`1` to the occupied set, so `Σₙ e^{-β E(n)} = ∏ᵢ (1+e^{-βε_i})` is proved
+directly from `Finset.prod_add` (the binomial-type expansion of a product of sums), with the
+Fermi–Dirac occupation number then following from splitting that product on whether mode `i` is
+occupied (`freePartitionFunction ε β = (1+f_i) · Σ_{t ⊆ univ.erase i} e^{-βE(t)}`, `f_i :=
+e^{-βε_i}`) and comparing to the weighted trace of `numberOperator i` restricted to the same
+occupied/unoccupied split. **Not yet done:** the closed-form two-point Green function itself
+(`⟨c_i†c_j⟩ = δᵢⱼf_i`, `⟨c_ic_j†⟩ = δᵢⱼ(1-f_i)`), and KMS antiperiodicity.
 
 **Step 4 (partial) done, in `Fermionic/ThermalContraction.lean`:** same-type thermal contractions
 vanish for any occupation-number-diagonal weight `w` used by `weightedTrace` — `⟨T_τ[c_i(τ)
