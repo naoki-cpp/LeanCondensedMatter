@@ -335,22 +335,31 @@ temperature structure noted above (KMS antiperiodicity etc.); the full Matsubara
 apparatus; the genuine Dyson series and diagram connectedness (steps 5–7).
 
 **Groundwork for the *general* (fermionic *and* bosonic) Bloch–de Dominicis theorem done, in
-`Common/GradedCommutator.lean` and `Bosonic/NumberOperator.lean`:** `BlochDeDominicis.lean` needs
+`Common/ExchangeCommutator.lean` and `Bosonic/NumberOperator.lean`:** `BlochDeDominicis.lean` needs
 to be built for both statistics at once rather than duplicated, since the `n`-point pairing-sum
 formula is the same combinatorics with only the pairing sign differing (`ζ^{crossings}`, trivial
-for bosons). As a first, purely algebraic piece of that unification: `Common.gradedCommutator ζ A
-B := A∘B - ζ•(B∘A)` specializes to the ordinary commutator at `ζ = 1` and the anticommutator at
-`ζ = -1` (`Statistics.zetaInt`'s two values), so CAR's `{c_i,c_i†} = id` and CCR's `[a_i,a_i†] =
-id` become the *same* hypothesis `[a_i,a_i†]_ζ = id` at the two values of `ζ`, and
-`Common.selfContraction_of_gradedCommutator_eq_id` derives `a_i a_i† = id + ζ•N_i` from it
-generically — `Fermionic/FreeTwoPointFunction.lean`'s `annihilate_comp_create_self` (`ζ = -1`,
-already proved, now refactored through this) and `Bosonic/NumberOperator.lean`'s new
-`annihilate_comp_create_self` (`ζ = 1`, `a_i a_i† = id + N_i`, the first bosonic
-`numberOperator`/self-contraction result — the bosonic line had no `numberOperator` at all before
-this) are both literal instances. **Not yet done:** the pairing/crossing-sign combinatorics itself
-(a `2n`-index pairing type, its enumeration, and `ζ^{crossings}`); a general `n`-operator
-time-ordered product (`timeOrderedProduct` is still 2-operator-only); the bosonic thermal-trace
-layer (`weightedTrace`/`thermalExpectation`/`partitionFunction`) that `Fermionic/
-ThermalExpectation.lean` already has and the free bosonic two-point/occupation-number closed forms
-would need — deferred since the fermionic, finite-mode line remains this track's primary path to
-the Linked Cluster Theorem.
+for bosons). As a first, purely algebraic piece of that unification: `Common.zetaCommutator ζ A B
+:= A∘B - ζ•(B∘A)` specializes to the ordinary commutator at `ζ = 1` and the anticommutator at
+`ζ = -1` — **not** the graded commutator of a `ℤ`/`ℤ₂`-graded algebra in the usual sense (that
+sign comes from the operators' own degrees; here `ζ` is a single fixed constant indexing the
+ambient exchange statistics), hence `zetaCommutator`, with `Common.exchangeCommutator s A B :=
+zetaCommutator (s.zetaInt : ℂ) A B` the form callers actually reach for once a `Statistics` value
+is in hand. CAR's `{c_i,c_i†} = id` and CCR's `[a_i,a_i†] = id` become the *same* hypothesis
+`[a_i,a_i†]_ζ = id` at the two values of `ζ` (`Statistics.zetaInt`'s), and
+`Common.comp_eq_id_add_of_zetaCommutator_eq_id` derives `a_i a_i† = id + ζ•N_i` from it
+generically — an *operator-level reordering identity*, not a Wick-theorem contraction (a thermal
+two-point function/`ℂ`-number, which is what `Fermionic/FreeTwoPointFunction.lean`'s
+`freeThermalExpectation_annihilate_comp_create`/`_create_comp_annihilate` already provide).
+`Fermionic/FreeTwoPointFunction.lean`'s `annihilate_comp_create_self` (`ζ = -1`, already proved,
+now refactored through this) and `Bosonic/NumberOperator.lean`'s new `annihilate_comp_create_self`
+(`ζ = 1`, `a_i a_i† = id + N_i`, the first bosonic `numberOperator`/reordering result — the bosonic
+line had no `numberOperator` at all before this) are both literal instances. **Not yet done:** the
+all-index exchange commutator `exchangeCommutator s (annihilate i) (create j) = if i = j then id
+else 0` (needed for moving operators past each other in a Wick-theorem induction, a strictly more
+useful common building block than the single-mode `i = j` case above, deferred here for scope); the
+pairing/crossing-sign combinatorics itself (a `2n`-index pairing type, its enumeration, and
+`ζ^{crossings}`); a general `n`-operator time-ordered product (`timeOrderedProduct` is still
+2-operator-only); the bosonic thermal-trace layer (`weightedTrace`/`thermalExpectation`/
+`partitionFunction`) that `Fermionic/ThermalExpectation.lean` already has and the free bosonic
+two-point/occupation-number closed forms would need — deferred since the fermionic, finite-mode
+line remains this track's primary path to the Linked Cluster Theorem.

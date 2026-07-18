@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.ThermalGreenFunction
-import LeanCondensedMatter.SecondQuantization.Common.GradedCommutator
+import LeanCondensedMatter.SecondQuantization.Common.ExchangeCommutator
 
 set_option linter.style.header false
 
@@ -105,24 +105,28 @@ theorem thermalExpectation_create_comp_annihilate_of_ne (w : FermionOccupation M
 /-! ## Diagonal (`i = j`): the free hole/occupation numbers `1 - f_i`, `f_i` -/
 
 omit [Fintype Mode] in
-/-- **`[c_i, c_i†]_{-1} = id`**: CAR's anticommutator `{c_i, c_i†} = id`
-(`anticomm_annihilate_create`) is exactly the `ζ = -1` case of `Common.gradedCommutator` — see
-`Common/GradedCommutator.lean`'s module docstring, and `Bosonic/NumberOperator.lean`'s
-`gradedCommutator_annihilate_create_self` for the `ζ = 1` mirror. -/
-theorem gradedCommutator_annihilate_create_self (i : Mode) :
-    Common.gradedCommutator (-1 : ℂ) (annihilate i) (create i) =
+/-- **`[c_i, c_i†]_ζ = id`, the fermionic case (`ζ = Statistics.zetaInt Statistics.fermion`)**:
+CAR's anticommutator `{c_i, c_i†} = id` (`anticomm_annihilate_create`) is exactly
+`Common.exchangeCommutator Statistics.fermion` — see `Common/ExchangeCommutator.lean`'s module
+docstring, and `Bosonic/NumberOperator.lean`'s `exchangeCommutator_annihilate_create_self` for the
+bosonic mirror. -/
+theorem exchangeCommutator_annihilate_create_self (i : Mode) :
+    Common.exchangeCommutator Statistics.fermion (annihilate i) (create i) =
       (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) := by
-  rw [Common.gradedCommutator, neg_one_smul, sub_neg_eq_add]
+  rw [Common.exchangeCommutator, Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one,
+    Common.zetaCommutator, neg_one_smul, sub_neg_eq_add]
   have h := anticomm_annihilate_create (Mode := Mode) i i
   rwa [if_pos rfl] at h
 
 omit [Fintype Mode] in
-/-- **`c_i c_i† = id - N_i`**, from CAR's `{c_i, c_i†} = id`, via the unified graded-commutator
-self-contraction identity (`Common.selfContraction_of_gradedCommutator_eq_id`). -/
+/-- **`c_i c_i† = id - N_i`**, from CAR's `{c_i, c_i†} = id`, via the unified `ζ`-commutator
+reordering identity (`Common.comp_eq_id_add_of_zetaCommutator_eq_id`). -/
 theorem annihilate_comp_create_self (i : Mode) :
     (annihilate i).comp (create i) = LinearMap.id - numberOperator i := by
-  have h := Common.selfContraction_of_gradedCommutator_eq_id (-1 : ℂ)
-    (gradedCommutator_annihilate_create_self i)
+  have h := Common.comp_eq_id_add_of_zetaCommutator_eq_id
+    ((Statistics.zetaInt Statistics.fermion : ℤ) : ℂ)
+    (exchangeCommutator_annihilate_create_self i)
+  rw [Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one] at h
   rwa [neg_one_smul, ← sub_eq_add_neg] at h
 
 /-- **The free hole number** `⟨c_i c_i†⟩₀,β = 1 - ⟨N_i⟩₀,β = e^{βε_i}/(e^{βε_i}+1)`. -/
