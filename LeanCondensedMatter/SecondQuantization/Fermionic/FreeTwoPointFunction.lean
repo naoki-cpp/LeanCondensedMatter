@@ -162,7 +162,7 @@ theorem freeThermalGreenFunction_of_lt_self (ε : Mode → ℝ) (β : ℝ) (i : 
 formula above: `timeOrderedProduct`'s `θ(0) = 1/2` convention symmetrizes
 `½(⟨c_i(τ) c_i†(τ)⟩ - ⟨c_i†(τ) c_i(τ)⟩) = ½((1-f_i) - f_i) = 1/2 - f_i`, giving `G₀,ᵢᵢ(τ,τ) =
 -(1/2 - f_i) = f_i - 1/2` — genuinely discontinuous against both one-sided limits `G₀,ᵢᵢ(τ,τ'⁺) →
--（1-f_i)` and `G₀,ᵢᵢ(τ,τ'⁻) → f_i` as `τ' → τ` (their difference is `-1`, forced by CAR, matching
+-(1-f_i)` and `G₀,ᵢᵢ(τ,τ'⁻) → f_i` as `τ' → τ` (their difference is `-1`, forced by CAR, matching
 `thermalGreenFunction_self_time`'s module-level remark). -/
 theorem freeThermalGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i : Mode) (τ : ℝ) :
     freeThermalGreenFunction ε β i i τ τ =
