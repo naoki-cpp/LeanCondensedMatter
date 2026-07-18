@@ -121,11 +121,34 @@ built from an occupation-state type, and a basis-diagonal free-Hamiltonian evolu
 different concrete occupation types (`FermionOccupation Mode := Finset Mode` vs. `Occupation Mode
 := Mode →₀ ℕ`) but genuinely identical proofs otherwise. Extracted into `Common/`:
 
+**Design principle for what belongs in `Common/`.** `Common/` is not a dumping ground for
+"whatever happened to generalize" — it is the layer both statistics enter from their different
+concrete representations. A definition/theorem belongs here only if: (1) it doesn't depend on the
+concrete occupation-state type; (2) `Common/` never imports `Fermionic/`/`Bosonic/` (the
+dependency direction is one-way: statistics-specific code depends on `Common/`, never the
+reverse); (3) in general both statistics' concrete instantiations land in the *same* PR, so
+`Common/` never accumulates an API only one side actually uses; (4) if one side genuinely can't
+supply an instantiation, the docstring says why. **This does not mean forcing artificial
+symmetry** — the *algebraic* layer (Fock space, exchange commutator, occupation-basis interface)
+is symmetric by construction, but genuinely different analytic content stays on each statistics'
+own side: bosonic occupation-number sums are infinite series (even for a finite mode set, since
+`Occupation Mode := Mode →₀ ℕ` is unbounded per mode) where fermionic ones are `Finset.sum`s
+(`FermionOccupation Mode := Finset Mode` is finite), so the bosonic thermal-trace layer needs its
+own convergence-aware implementation, not a forced fit into `Fermionic/ThermalExpectation.lean`'s
+finite-sum shape.
+
 | File | Contents | Status |
 |---|---|---|
 | `Common/AlgebraicFock.lean` | `AlgebraicFock Config := Config →₀ ℂ`, `basisState`, `linearMap_ext_basisState`, `matrixCoeff`/`diagonalCoeff` (coordinate-evaluation APIs), generic over the occupation-state type `Config` | `proved` |
-| `Common/OccupationBasis.lean` | `OccupationBasis Mode Config` — the architectural interface (`vacuum`, `occupation : Config → Mode → ℕ`, finiteness, faithfulness) both lines' concrete occupation types satisfy; no fermionic/bosonic instances supplied here (would invert the `Common/` → statistics-specific dependency direction) | `stated` (interface only) |
+| `Common/OccupationBasis.lean` | `OccupationBasis Mode Config` (a `class`, resolved by instance search) — the architectural interface (`vacuum`, `occupation : Config → Mode → ℕ`, finiteness, faithfulness) both lines' concrete occupation types satisfy; the concrete `Fermionic.occupationBasis`/`Bosonic.occupationBasis` instances live in each statistics' own `Occupation.lean` (would invert the `Common/` → statistics-specific dependency direction if supplied here) | `proved`, both instances |
 | `Common/DiagonalEvolution.lean` | `diagonalEvolution energy τ` — the algebraic, basis-diagonal `e^{τH₀}` for a free Hamiltonian diagonal in `AlgebraicFock Config`'s eigenbasis with eigenvalue `energy : Config → ℝ`, and its Heisenberg-picture `heisenbergEvolve`; the semigroup law, mutual inversion, `A(0) = A` | `proved` |
+| `Common/ExchangeCommutator.lean` | `zetaCommutator`/`exchangeCommutator` (`notes/roadmaps/second-quantization.md`'s Phase 9 section below) | `proved` |
+
+**Symmetric file layout, `Fermionic/NumberOperator.lean` split from `Hamiltonian.lean`:** the
+fermionic number operator (`numberOperator`/`numberOperator_apply`/`numberOperator_basisState`)
+now lives in its own file, mirroring `Bosonic/NumberOperator.lean` — `Fermionic/Hamiltonian.lean`
+keeps only what's built on top of it (`totalNumberOperator`, `freeHamiltonian`,
+`interactionHamiltonian`), none of which has a bosonic counterpart yet.
 
 **Retrofit done**: `Fermionic/FockSpace.lean`/`Bosonic/FockSpace.lean` now define
 `FockSpaceFermionic`/`FockSpaceBosonic` directly as `Common.AlgebraicFock (…)`, with `basisState`/

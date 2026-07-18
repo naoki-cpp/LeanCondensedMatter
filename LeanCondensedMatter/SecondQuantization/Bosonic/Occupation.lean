@@ -1,5 +1,6 @@
 import Mathlib.Data.Finsupp.Basic
 import Mathlib.Algebra.BigOperators.Finsupp.Basic
+import LeanCondensedMatter.SecondQuantization.Common.OccupationBasis
 
 set_option linter.style.header false
 
@@ -85,12 +86,24 @@ theorem createOccupation_apply_ne {i j : Mode} (h : j ≠ i) (n : Occupation Mod
   simp [createOccupation, singleOccupation, h]
 
 /-!
-`removeOccupation` lives under `SecondQuantization.Bosonic` (rather than plain
-`SecondQuantization`, unlike the rest of this file) solely to avoid a name clash with the
-fermionic `SecondQuantization.removeOccupation` in `Fermionic/Occupation.lean`.
+`removeOccupation` and the `Common.OccupationBasis` instance live under `SecondQuantization.Bosonic`
+(rather than plain `SecondQuantization`, unlike the rest of this file) solely to avoid name clashes
+with the fermionic `SecondQuantization.removeOccupation`/`occupationBasis` in
+`Fermionic/Occupation.lean` — the fermionic line uses the plain `SecondQuantization` namespace
+throughout, so any name shared between the two files must be pushed into `Bosonic` here.
 -/
 
 namespace Bosonic
+
+/-- **The bosonic occupation-basis instance**: `Occupation Mode` reads off each mode's occupation
+number directly (`n i`) — the concrete side of `Common.OccupationBasis`'s shared interface,
+mirroring `Fermionic.occupationBasis`. -/
+instance occupationBasis : Common.OccupationBasis Mode (Occupation Mode) where
+  vacuum := vacuum
+  occupation n i := n i
+  occupation_vacuum i := by simp [vacuum]
+  finiteSupport n := (n.support.finite_toSet).subset fun i hi => Finsupp.mem_support_iff.2 hi
+  ext {m n} h := Finsupp.ext h
 
 /-- **Removing a particle from mode `i`**: subtract one particle from mode `i` (a no-op if `i`
 was already unoccupied), leaving all other modes unchanged. The occupation-number counterpart of
