@@ -16,8 +16,10 @@ it is the free weight for the same `ε` the evolution uses.
 Matsubara Green-function apparatus.** `freeThermalGreenFunction` accepts any `β : ℝ` and `τ, τ' :
 ℝ` with no further structure — the standard finite-temperature package (`0 < β`, the fundamental
 domain `0 ≤ τ, τ' ≤ β`, KMS fermionic antiperiodicity `G₀(τ+β,τ') = -G₀(τ,τ')`) is not yet
-established. Closing that, and verifying against the closed-form free-fermion Green function
-(`⟨N_i⟩₀ = 1/(e^{βε_i}+1)`, `G₀,ᵢⱼ = 0` for `i ≠ j`), is future work.
+established. The closed-form free-fermion occupation number `⟨N_i⟩₀ = 1/(e^{βε_i}+1)` is now
+proved in `Fermionic/FreePartitionFunction.lean`; the closed-form two-point Green function
+(`G₀,ᵢⱼ = 0` for `i ≠ j`, its explicit `τ`-dependence) and the KMS/fundamental-domain package
+remain future work.
 -/
 
 namespace SecondQuantization
