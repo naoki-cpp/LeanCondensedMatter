@@ -35,18 +35,6 @@ theorem anticomm_apply (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermi
   rfl
 
 omit [LinearOrder Mode] in
-/-- Two linear maps out of `FockSpaceFermionic Mode` that agree on every basis state are equal —
-the basis-level facts proved below (`anticomm_*_basisState`) suffice to establish the operator
-identities. -/
-theorem linearMap_ext_basisState {f g : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode}
-    (h : ∀ n, f (basisState n) = g (basisState n)) : f = g := by
-  apply Finsupp.lhom_ext
-  intro n b
-  have hb : (Finsupp.single n b : FockSpaceFermionic Mode) = b • basisState n :=
-    (Finsupp.smul_single_one n b).symm
-  rw [hb, map_smul, map_smul, h]
-
-omit [LinearOrder Mode] in
 /-- Two `ℤ`-signed multiples of the same basis vector cancel when the underlying integers do:
 the arithmetic core shared by all three CAR proofs below (creation-creation, annihilation-
 annihilation, and the off-diagonal case of annihilation-creation). -/

@@ -25,10 +25,15 @@ namespace Bosonic
 variable {Mode : Type*} [DecidableEq Mode]
 
 /-- **The coefficient of basis state `n`** in `A (basisState n)`. See the module docstring for why
-this is a coordinate evaluation, not an inner product. -/
+this is a coordinate evaluation, not an inner product. Delegates to `Common.diagonalCoeff`, so the
+meaning is guaranteed to match the fermionic line's `Fermionic.matrixCoeff`. -/
 noncomputable def diagonalCoeff (A : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode)
     (n : Occupation Mode) : ℂ :=
-  A (basisState n) n
+  Common.diagonalCoeff A n
+
+theorem diagonalCoeff_eq (A : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode)
+    (n : Occupation Mode) : diagonalCoeff A n = A (basisState n) n :=
+  rfl
 
 @[simp]
 theorem diagonalCoeff_smul_basisState (c : ℂ) (n : Occupation Mode) :
@@ -44,8 +49,9 @@ theorem diagonalCoeff_evolve_annihilate_comp_create_same (ε : Mode → ℝ) (τ
     (n : Occupation Mode) :
     diagonalCoeff (((imaginaryTimeEvolve ε τ (annihilate i)).comp (create i)))
       n = Complex.exp (-(τ : ℂ) * (ε i : ℂ)) * ((n i : ℂ) + 1) := by
-  rw [diagonalCoeff, LinearMap.comp_apply, imaginaryTimeEvolve_annihilate, LinearMap.smul_apply,
-    annihilate_create_basisState_same, smul_smul, diagonalCoeff_smul_basisState]
+  rw [diagonalCoeff_eq, LinearMap.comp_apply, imaginaryTimeEvolve_annihilate,
+    LinearMap.smul_apply, annihilate_create_basisState_same, smul_smul, basisState,
+    Common.smul_basisState_apply_self]
 
 /-- **`⟨n| a_i(τ) a_j† |n⟩ = 0` for `i ≠ j`**: the off-diagonal case, from the coordinate
 independence of distinct modes — creating a particle at `j` then annihilating (or failing to
@@ -53,8 +59,8 @@ annihilate) at `i ≠ j` never lands back on `n` itself: mode `i`'s coordinate s
 theorem diagonalCoeff_evolve_annihilate_comp_create_of_ne (ε : Mode → ℝ) (τ : ℝ) {i j : Mode}
     (hij : i ≠ j) (n : Occupation Mode) :
     diagonalCoeff ((imaginaryTimeEvolve ε τ (annihilate i)).comp (create j)) n = 0 := by
-  rw [diagonalCoeff, LinearMap.comp_apply, imaginaryTimeEvolve_annihilate, LinearMap.smul_apply,
-    create_basisState_eq, map_smul]
+  rw [diagonalCoeff_eq, LinearMap.comp_apply, imaginaryTimeEvolve_annihilate,
+    LinearMap.smul_apply, create_basisState_eq, map_smul]
   by_cases hi : (createOccupation j n) i = 0
   · simp [annihilate_basisState_of_zero hi]
   · have hni : n i ≠ 0 := by rwa [createOccupation_apply_ne hij] at hi
@@ -67,7 +73,7 @@ theorem diagonalCoeff_evolve_annihilate_comp_create_of_ne (ε : Mode → ℝ) (�
       have hcoord := congrArg (· i) heq
       rw [createOccupation_apply_ne hij, removeOccupation_apply_same] at hcoord
       omega
-    simp [basisState, hne]
+    simp [basisState, Common.basisState, hne]
 
 end Bosonic
 end SecondQuantization
