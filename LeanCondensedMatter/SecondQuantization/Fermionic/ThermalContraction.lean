@@ -6,21 +6,35 @@ set_option linter.style.header false
 # Same-type thermal contractions vanish
 
 Phase 9, step 4 (`notes/roadmaps/second-quantization.md`): the first piece of the finite-mode
-fermionic Wick/Bloch–De Dominicis theorem — for *any* weight `w` (not just the genuine free
-Boltzmann weight), the thermal time-ordered two-point function of two annihilation operators, or
-of two creation operators, is identically zero:
+fermionic Wick/Bloch–De Dominicis theorem — for *any* occupation-number-diagonal weight `w`
+(`weightedTrace`/`thermalExpectation`'s `Σₙ w(n)⟨n|A|n⟩` structure is diagonal in the
+occupation-number basis by construction, not just for the genuine free Boltzmann weight), the
+thermal time-ordered two-point function of two annihilation operators, or of two creation
+operators, is identically zero:
 
 `⟨T_τ[c_i(τ) c_j(τ')]⟩_w = 0`, `⟨T_τ[c_i†(τ) c_j†(τ')]⟩_w = 0`.
 
-Only the fermionic "type" (annihilate vs. create) determines this, not the specific `i`, `j`,
-`τ`, `τ'`, or even the weight `w` — the underlying fact is purely about occupation-number
-bookkeeping: annihilating twice (composing `annihilate i` with `annihilate j`, in either order)
-always changes the particle number by `-2` or produces `0` outright, so it can never map a basis
-state `|n⟩` back to a multiple of itself. The `(n, n)` matrix coefficient of any such composite
-operator is therefore `0` for every `n`, making the weighted trace — hence the thermal
-expectation — vanish termwise, with no need to know anything about `w`. This is the operator-level
-reason the only nonzero "contraction" in Wick's theorem pairs an annihilation operator with a
-creation operator (`ThermalGreenFunction.lean`'s `thermalGreenFunction`).
+**This is a `U(1)` particle-number selection rule, not a fact about fermions specifically.** The
+combination `cᵢcⱼ` carries particle-number charge `-2`, and `cᵢ†cⱼ†` carries charge `+2`; any
+occupation-number-diagonal (equivalently, `U(1)`-symmetric) state functional annihilates an
+operator of nonzero charge, since such an operator only ever connects basis states of *different*
+particle number, and the state functional only ever reads off diagonal (`m = n`) matrix elements.
+Nothing here depends on the exchange statistics — the identical argument holds for bosonic
+annihilation/creation operators against any occupation-number-diagonal bosonic state functional.
+**This does *not* extend to non-number-conserving quasi-free states** (e.g. a superconducting/
+Bogoliubov state), where the state functional is no longer occupation-number-diagonal and these
+same-type "anomalous" contractions are generically nonzero — they are exactly the pairing
+correlations superconductivity's anomalous Green functions describe. So: in the number-conserving
+free Gibbs state considered throughout this project, only mixed create–annihilate contractions can
+be nonzero (`ThermalGreenFunction.lean`'s `thermalGreenFunction`) — that claim is scoped to this
+project's number-conserving setting, not a universal statement about all quasi-free states.
+
+The underlying fact is purely about occupation-number bookkeeping: annihilating twice (composing
+`annihilate i` with `annihilate j`, in either order) always changes the particle number by `-2` or
+produces `0` outright, so it can never map a basis state `|n⟩` back to a multiple of itself. The
+`(n, n)` matrix coefficient of any such composite operator is therefore `0` for every `n`, making
+the weighted trace — hence the thermal expectation — vanish termwise, with no need to know
+anything about `w` beyond its occupation-number-diagonal structure.
 -/
 
 namespace SecondQuantization
@@ -75,52 +89,6 @@ theorem matrixCoeff_create_comp_create (i j : Mode) (n : FermionOccupation Mode)
         rw [heq] at hcard2
         omega
       exact Common.smul_basisState_apply_of_ne _ hne
-
-/-! ## Linearity of `matrixCoeff`/`weightedTrace`/`thermalExpectation` in the operator argument -/
-
-omit [LinearOrder Mode] [Fintype Mode] in
-theorem matrixCoeff_smul (c : ℂ) (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode)
-    (m n : FermionOccupation Mode) : matrixCoeff (c • A) m n = c * matrixCoeff A m n := by
-  simp [matrixCoeff, Common.matrixCoeff]
-
-omit [LinearOrder Mode] [Fintype Mode] in
-theorem matrixCoeff_add (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode)
-    (m n : FermionOccupation Mode) :
-    matrixCoeff (A + B) m n = matrixCoeff A m n + matrixCoeff B m n := by
-  simp [matrixCoeff, Common.matrixCoeff]
-
-omit [LinearOrder Mode] in
-theorem weightedTrace_smul (c : ℂ) (w : FermionOccupation Mode → ℂ)
-    (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
-    weightedTrace w (c • A) = c * weightedTrace w A := by
-  simp only [weightedTrace, matrixCoeff_smul, Finset.mul_sum]
-  exact Finset.sum_congr rfl fun n _ => by ring
-
-omit [LinearOrder Mode] in
-theorem weightedTrace_add (w : FermionOccupation Mode → ℂ)
-    (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
-    weightedTrace w (A + B) = weightedTrace w A + weightedTrace w B := by
-  simp only [weightedTrace, matrixCoeff_add, mul_add]
-  exact Finset.sum_add_distrib
-
-omit [LinearOrder Mode] in
-theorem thermalExpectation_smul (c : ℂ) (w : FermionOccupation Mode → ℂ)
-    (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
-    thermalExpectation w (c • A) = c * thermalExpectation w A := by
-  rw [thermalExpectation, thermalExpectation, weightedTrace_smul, mul_div_assoc]
-
-omit [LinearOrder Mode] in
-theorem thermalExpectation_add (w : FermionOccupation Mode → ℂ)
-    (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
-    thermalExpectation w (A + B) = thermalExpectation w A + thermalExpectation w B := by
-  rw [thermalExpectation, thermalExpectation, thermalExpectation, weightedTrace_add, add_div]
-
-omit [LinearOrder Mode] in
-theorem thermalExpectation_neg (w : FermionOccupation Mode → ℂ)
-    (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
-    thermalExpectation w (-A) = -thermalExpectation w A := by
-  rw [show (-A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) = (-1 : ℂ) • A from
-    (neg_one_smul ℂ A).symm, thermalExpectation_smul, neg_one_mul]
 
 /-! ## Vanishing at the level of the thermal weighted trace and expectation value -/
 

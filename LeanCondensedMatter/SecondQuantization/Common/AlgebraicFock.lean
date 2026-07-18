@@ -81,5 +81,17 @@ theorem diagonalCoeff_eq_matrixCoeff {Config : Type*}
     diagonalCoeff A n = matrixCoeff A n n :=
   rfl
 
+/-- `matrixCoeff` is linear in its operator argument: scaling. -/
+theorem matrixCoeff_smul {Config : Type*} (c : ℂ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
+    matrixCoeff (c • A) m n = c * matrixCoeff A m n := by
+  simp [matrixCoeff]
+
+/-- `matrixCoeff` is linear in its operator argument: addition. -/
+theorem matrixCoeff_add {Config : Type*}
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
+    matrixCoeff (A + B) m n = matrixCoeff A m n + matrixCoeff B m n := by
+  simp [matrixCoeff]
+
 end Common
 end SecondQuantization

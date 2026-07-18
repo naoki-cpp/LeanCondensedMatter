@@ -56,6 +56,41 @@ noncomputable def thermalExpectation (w : FermionOccupation Mode → ℂ)
     (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) : ℂ :=
   weightedTrace w A / partitionFunction w
 
+/-! ## Linearity of `weightedTrace`/`thermalExpectation` in the operator argument -/
+
+omit [LinearOrder Mode] in
+theorem weightedTrace_smul (c : ℂ) (w : FermionOccupation Mode → ℂ)
+    (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    weightedTrace w (c • A) = c * weightedTrace w A := by
+  simp only [weightedTrace, matrixCoeff, Common.matrixCoeff_smul, Finset.mul_sum]
+  exact Finset.sum_congr rfl fun n _ => by ring
+
+omit [LinearOrder Mode] in
+theorem weightedTrace_add (w : FermionOccupation Mode → ℂ)
+    (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    weightedTrace w (A + B) = weightedTrace w A + weightedTrace w B := by
+  simp only [weightedTrace, matrixCoeff, Common.matrixCoeff_add, mul_add]
+  exact Finset.sum_add_distrib
+
+omit [LinearOrder Mode] in
+theorem thermalExpectation_smul (c : ℂ) (w : FermionOccupation Mode → ℂ)
+    (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    thermalExpectation w (c • A) = c * thermalExpectation w A := by
+  rw [thermalExpectation, thermalExpectation, weightedTrace_smul, mul_div_assoc]
+
+omit [LinearOrder Mode] in
+theorem thermalExpectation_add (w : FermionOccupation Mode → ℂ)
+    (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    thermalExpectation w (A + B) = thermalExpectation w A + thermalExpectation w B := by
+  rw [thermalExpectation, thermalExpectation, thermalExpectation, weightedTrace_add, add_div]
+
+omit [LinearOrder Mode] in
+theorem thermalExpectation_neg (w : FermionOccupation Mode → ℂ)
+    (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    thermalExpectation w (-A) = -thermalExpectation w A := by
+  rw [show (-A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) = (-1 : ℂ) • A from
+    (neg_one_smul ℂ A).symm, thermalExpectation_smul, neg_one_mul]
+
 /-! ## Matrix coefficients of diagonal operators -/
 
 omit [LinearOrder Mode] [Fintype Mode] in
