@@ -6,8 +6,9 @@ set_option linter.style.header false
 /-!
 # Same-type thermal contractions vanish
 
-Phase 9, step 4 (`notes/roadmaps/second-quantization.md`): the first piece of the finite-mode
-fermionic Wick/Bloch–De Dominicis theorem — for *any* occupation-number-diagonal weight `w`
+Phase 9, step 4 (`notes/roadmaps/second-quantization.md`): the first piece of the finite-mode,
+finite-temperature fermionic Bloch–de Dominicis theorem — for *any*
+occupation-number-diagonal weight `w`
 (`weightedTrace`/`thermalExpectation`'s `Σₙ w(n)⟨n|A|n⟩` structure is diagonal in the
 occupation-number basis by construction, not just for the genuine free Boltzmann weight), the
 thermal time-ordered two-point function of two annihilation operators, or of two creation

@@ -6,7 +6,7 @@ set_option linter.style.header false
 /-!
 # The `ζ`-commutator, and its statistics-indexed specialization
 
-Groundwork for the general (fermionic *and* bosonic) finite-mode Wick/Bloch–de Dominicis theorem
+Groundwork for the general (fermionic *and* bosonic) finite-temperature Bloch–de Dominicis theorem
 (`notes/roadmaps/second-quantization.md`): the reordering identities
 `Fermionic/FreeTwoPointFunction.lean`'s `annihilate_comp_create_self` (`c_i c_i† = id - N_i`, from
 CAR's *anti*commutator `{c_i, c_i†} = id`) and the bosonic analogue `a_i a_i† = id + N_i` (from
