@@ -300,6 +300,25 @@ instance decidableCrosses {n : ℕ}
   inferInstanceAs (Decidable (
     left.1 < right.1 ∧ right.1 < left.2 ∧ left.2 < right.2))
 
+theorem Pairing.eraseZeroPair_crosses_iff {n : ℕ} (pairing : Pairing (n + 1))
+    (i k p q : Fin (2 * n)) :
+    Crosses (i, k) (p, q) ↔
+      Crosses
+        ((pairing.eraseZeroOrderIso i : Fin (2 * (n + 1))),
+          (pairing.eraseZeroOrderIso k : Fin (2 * (n + 1))))
+        ((pairing.eraseZeroOrderIso p : Fin (2 * (n + 1))),
+          (pairing.eraseZeroOrderIso q : Fin (2 * (n + 1)))) := by
+  constructor
+  · rintro ⟨hik, hkp, hpq⟩
+    exact ⟨pairing.eraseZeroOrderIso.strictMono hik,
+      pairing.eraseZeroOrderIso.strictMono hkp,
+      pairing.eraseZeroOrderIso.strictMono hpq⟩
+  · rintro ⟨hik, hkp, hpq⟩
+    refine ⟨?_, ?_, ?_⟩
+    · simpa using pairing.eraseZeroOrderIso.symm.strictMono hik
+    · simpa using pairing.eraseZeroOrderIso.symm.strictMono hkp
+    · simpa using pairing.eraseZeroOrderIso.symm.strictMono hpq
+
 /-- The number of geometric crossings.  `Crosses` fixes the order of the left endpoints, so each
 crossing is counted exactly once. -/
 def Pairing.crossingCount {n : ℕ} (pairing : Pairing n) : ℕ :=
