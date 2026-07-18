@@ -274,13 +274,20 @@ order:
   `i ≠ j`).
 
 **Step 4 (partial) done, in `Fermionic/ThermalContraction.lean`:** same-type thermal contractions
-vanish for *any* weight `w` — `⟨T_τ[c_i(τ) c_j(τ')]⟩_w = 0` and `⟨T_τ[c_i†(τ) c_j†(τ')]⟩_w = 0`
-(`thermalExpectation_timeOrderedProduct_annihilate_annihilate`/`_create_create`), the operator-level
-reason Wick's theorem only pairs an annihilation operator with a creation operator. Proved from
-occupation-number bookkeeping alone (`matrixCoeff_annihilate_comp_annihilate`/
-`_create_comp_create`: composing two same-type operators always changes the particle number,
-so the resulting operator's diagonal matrix coefficient vanishes for every basis state), plus new
-linearity lemmas for `matrixCoeff`/`weightedTrace`/`thermalExpectation` in their operator argument.
+vanish for any occupation-number-diagonal weight `w` used by `weightedTrace` — `⟨T_τ[c_i(τ)
+c_j(τ')]⟩_w = 0` and `⟨T_τ[c_i†(τ) c_j†(τ')]⟩_w = 0`
+(`thermalExpectation_timeOrderedProduct_annihilate_annihilate`/`_create_create`) — a `U(1)`
+particle-number selection rule (`cᵢcⱼ`/`cᵢ†cⱼ†` carry nonzero charge), not a fact specific to
+fermionic statistics or to this project's number-conserving Gibbs weight; the operator-level
+reason that, in the number-conserving occupation-diagonal setting considered throughout this
+project, only mixed creation–annihilation contractions can be nonzero. Does *not* extend to
+non-number-conserving quasi-free states (e.g. superconducting/Bogoliubov states), where such
+"anomalous" contractions are generically nonzero. Proved from occupation-number bookkeeping alone
+(`matrixCoeff_annihilate_comp_annihilate`/`_create_comp_create`: composing two same-type operators
+always changes the particle number, so the resulting operator's diagonal matrix coefficient
+vanishes for every basis state), plus new linearity lemmas for `matrixCoeff` (`Common/
+AlgebraicFock.lean`) and `weightedTrace`/`thermalExpectation` (`Fermionic/ThermalExpectation.lean`)
+in their operator argument.
 **Not yet done:** the general finite-mode fermionic Wick/Bloch–de Dominicis theorem itself (the
 `n`-point sum-over-pairings formula, `BlochDeDominicis.lean`) — this file only established the
 vanishing half, not the full decomposition into `thermalGreenFunction` factors; the finite-

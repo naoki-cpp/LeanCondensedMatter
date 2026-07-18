@@ -16,11 +16,17 @@ operators, is identically zero:
 
 **This is a `U(1)` particle-number selection rule, not a fact about fermions specifically.** The
 combination `cᵢcⱼ` carries particle-number charge `-2`, and `cᵢ†cⱼ†` carries charge `+2`; any
-occupation-number-diagonal (equivalently, `U(1)`-symmetric) state functional annihilates an
-operator of nonzero charge, since such an operator only ever connects basis states of *different*
-particle number, and the state functional only ever reads off diagonal (`m = n`) matrix elements.
-Nothing here depends on the exchange statistics — the identical argument holds for bosonic
-annihilation/creation operators against any occupation-number-diagonal bosonic state functional.
+occupation-number-diagonal state functional — hence `U(1)`-symmetric, though the converse fails
+(a state functional can be `U(1)`-symmetric, commuting with the total number operator, without
+being occupation-number-*diagonal*: it may still mix distinct occupation states of equal total
+particle number) — annihilates an operator of nonzero charge, since such an operator only ever
+connects basis states of *different* particle number, and an occupation-number-diagonal state
+functional only ever reads off diagonal (`m = n`) matrix elements. This file formalizes the
+occupation-number-diagonal special case (`weightedTrace`/`thermalExpectation`'s `Σₙ w(n)⟨n|A|n⟩`
+structure); more generally, the same charge-selection rule holds for any `U(1)`-invariant state
+functional, occupation-number-diagonal or not. Nothing here depends on the exchange statistics —
+the identical argument holds for bosonic annihilation/creation operators against any
+occupation-number-diagonal bosonic state functional.
 **This does *not* extend to non-number-conserving quasi-free states** (e.g. a superconducting/
 Bogoliubov state), where the state functional is no longer occupation-number-diagonal and these
 same-type "anomalous" contractions are generically nonzero — they are exactly the pairing
@@ -33,8 +39,9 @@ The underlying fact is purely about occupation-number bookkeeping: annihilating 
 `annihilate i` with `annihilate j`, in either order) always changes the particle number by `-2` or
 produces `0` outright, so it can never map a basis state `|n⟩` back to a multiple of itself. The
 `(n, n)` matrix coefficient of any such composite operator is therefore `0` for every `n`, making
-the weighted trace — hence the thermal expectation — vanish termwise, with no need to know
-anything about `w` beyond its occupation-number-diagonal structure.
+the weighted trace — hence the thermal expectation — vanish termwise for any occupation-number-
+diagonal weight `w` (the only kind `weightedTrace` accepts), with no need to know anything about
+`w`'s specific values.
 -/
 
 namespace SecondQuantization
@@ -111,7 +118,7 @@ theorem thermalExpectation_create_comp_create (w : FermionOccupation Mode → �
 /-! ## Vanishing for the evolved, time-ordered thermal two-point function -/
 
 /-- **`⟨T_τ[c_i(τ) c_j(τ')]⟩_w = 0`**: the imaginary-time-evolved, time-ordered thermal expectation
-of two annihilation operators vanishes, for *any* weight `w`. Combines
+of two annihilation operators vanishes, for any occupation-number-diagonal weight `w`. Combines
 `imaginaryTimeEvolve_annihilate` (each evolved annihilation operator is a scalar multiple of the
 un-evolved one) with `thermalExpectation_annihilate_comp_annihilate` on both time-ordering
 branches. -/
