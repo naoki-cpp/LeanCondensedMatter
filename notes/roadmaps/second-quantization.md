@@ -298,7 +298,12 @@ it — off-diagonal vanishing here is a strictly finer fact than the selection r
 `e^{-(τ-τ')ε_i}/(e^{βε_i}+1)` (`τ < τ'`), from CAR's `{c_i,c_i†} = id`
 (`annihilate_comp_create_self : c_ic_i† = id - N_i`) reducing the `τ' < τ` closed form to
 `1 - ⟨N_i⟩₀,β` (already known from the previous step), combined with the explicit
-`c_i(τ) = e^{-τε_i}c_i` evolution formulas. **Not yet done:** KMS antiperiodicity and the
+`c_i(τ) = e^{-τε_i}c_i` evolution formulas. `freeThermalGreenFunction_self_time_self`: the
+separate equal-time, same-mode closed form `G₀,ᵢᵢ(τ,τ) = f_i - 1/2` — genuinely discontinuous
+against both one-sided limits above (their difference is forced to `-1` by CAR), so **any future
+KMS antiperiodicity theorem must be stated away from this coincident-time discontinuity** (e.g. for
+`τ ≠ τ'`, or as one-sided boundary relations `G₀(0⁺)`/`G₀(0⁻)`) rather than unconditionally at
+`τ = τ'`. **Not yet done:** KMS antiperiodicity itself, and the
 fundamental-domain package (`0 < β`, `0 ≤ τ,τ' ≤ β`) — the last remaining piece of
 `FreeBoltzmannWeight.lean`'s original gap list.
 
