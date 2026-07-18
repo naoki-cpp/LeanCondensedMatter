@@ -27,11 +27,11 @@ Physical models under consideration, their assumptions, and how each maps to a f
 - **Pure-state density-operator embedding:** `QuantumTheory.pure ψ = |ψ⟩⟨ψ|` maps a pure state (`QuantumTheory.State`) to its density-operator representative, via Mathlib's `InnerProductSpace.rankOne`. This is not the standard mixed-state purification construction on an enlarged Hilbert space.
 - **Purity:** `QuantumTheory.purity ρ = Tr[ρ²]`; proved equal to `1` on `pure ψ` (`purity_pure`). General bounds `0 < purity ≤ 1` (relying on spectral decomposition) are not yet formalized — out of scope for now.
 
-### Von Neumann entropy / thermodynamic entropy correspondence
+### Von Neumann entropy / Boltzmann's principle
 
 - **Role:** extends the density-operator picture above with entropy. Restricted to finite-dimensional `H`, for the same reason as `DensityOperator`.
 - **Von Neumann entropy (defined):** `QuantumTheory.vonNeumannEntropy ρ = -Tr[ρ ln ρ] = Σᵢ negMulLog(λᵢ)` over the eigenvalues `λᵢ` of `ρ` (`LeanCondensedMatter/QuantumTheory/Entropy.lean`), using Mathlib's `LinearMap.IsSymmetric.eigenvalues` and `Real.negMulLog`.
-- **Boltzmann's principle (background, not formalized):** in its statistical-mechanical form, `S_B = k_B log Ω` for a macrostate with `Ω` compatible microstates. The separate identification of `k_B` times a quantum von Neumann entropy with thermodynamic `S[U,V,N]` is also not formalized; thermodynamics proper is out of scope for this project (see the Linked Cluster Theorem scope note above), so only the mathematical quantity `vonNeumannEntropy` is defined here.
+- **Boltzmann's principle (postulate, not formalized):** `k_B` times the von Neumann entropy equals the thermodynamic entropy `S[U,V,N]`. This equates a formal quantum-mechanical quantity with a thermodynamic one; since thermodynamics proper is out of scope for this project (see the Linked Cluster Theorem scope note above), the postulate's *equality claim* is not formalized — only its LHS (`vonNeumannEntropy`) is.
 - **Equal a priori probabilities postulate (not formalized):** at equilibrium, the state realized is the one minimizing the Helmholtz free energy (equivalently: maximizing the *combined* entropy of the system plus the heat bath it exchanges energy with — not simply "maximizing the system's own entropy at fixed energy", a looser phrasing corrected during this work). Not yet formalized as a general variational principle; the free-energy inequality itself is derived directly from Gibbs–Klein below without needing to formalize "maximization" as its own concept. Feeds directly into the "Canonical distribution as the Helmholtz free-energy-minimizing state" target below.
 
 ### Canonical distribution as the Helmholtz free-energy-minimizing state

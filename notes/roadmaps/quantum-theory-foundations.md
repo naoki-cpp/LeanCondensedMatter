@@ -51,11 +51,11 @@ The Mathlib route originally hoped for (a spectral measure at a vector, with Jen
 
 **Not yet attempted:** the equality-iff-`ρ = gibbsState` direction (uniqueness of the minimizer) and an infinite-dimensional `vonNeumannEntropy_gibbsState` (that `gibbsState` itself attains the bound) — the finite-dimensional file's analogues (`diagOp_eigenvalues_map_eq`, `vonNeumannEntropy_gibbsState`) have no infinite-dimensional counterpart yet.
 
-## Von Neumann entropy / thermodynamic entropy correspondence (finite-dimensional)
+## Von Neumann entropy / Boltzmann's principle (finite-dimensional)
 
 Status: `stated`.
 
-`QuantumTheory.vonNeumannEntropy` (`-Tr[ρ ln ρ]`, computed via the eigenvalues of `ρ`) defined. See `LeanCondensedMatter/QuantumTheory/Entropy.lean`. **Scope note:** Boltzmann's statistical-mechanical relation `S_B = k_B log Ω` and the separate identification of `k_B` times von Neumann entropy with thermodynamic `S[U,V,N]` are not formalized; thermodynamics stays out of scope — see `notes/model-and-assumptions.md`. No theorems proved yet (e.g. nonnegativity, or entropy `0` for pure states) — natural next steps if this target is picked up again.
+`QuantumTheory.vonNeumannEntropy` (`-Tr[ρ ln ρ]`, computed via the eigenvalues of `ρ`) defined. See `LeanCondensedMatter/QuantumTheory/Entropy.lean`. **Scope note:** only the mathematical quantity is defined; Boltzmann's principle itself (its equality, times `k_B`, with a thermodynamic entropy `S[U,V,N]`) is a postulate connecting to thermodynamics, which stays out of scope — see `notes/model-and-assumptions.md`. No theorems proved yet (e.g. nonnegativity, or entropy `0` for pure states) — natural next steps if this target is picked up again.
 
 ## Canonical distribution as the Helmholtz free-energy-minimizing state
 
