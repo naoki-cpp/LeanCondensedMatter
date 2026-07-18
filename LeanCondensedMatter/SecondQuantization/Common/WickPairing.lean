@@ -46,8 +46,19 @@ def IsWickPairing {n : ℕ} (pairs : Finset (WickPair n)) : Prop :=
     (Finset.univ : Finset (Fin (2 * n))).filter (fun i =>
       (pairs.filter fun pair => pair.1 = i ∨ pair.2 = i).card = 1) = Finset.univ
 
+instance decidableIsWickPairing {n : ℕ} (pairs : Finset (WickPair n)) :
+    Decidable (IsWickPairing pairs) :=
+  inferInstanceAs (Decidable (
+    pairs.filter (fun pair => pair.1 < pair.2) = pairs ∧
+      (Finset.univ : Finset (Fin (2 * n))).filter (fun i =>
+        (pairs.filter fun pair => pair.1 = i ∨ pair.2 = i).card = 1) = Finset.univ))
+
 /-- A perfect pairing of the linearly ordered positions `Fin (2 * n)`. -/
 abbrev WickPairing (n : ℕ) := {pairs : Finset (WickPair n) // IsWickPairing pairs}
+
+instance (n : ℕ) : Fintype (WickPairing n) := Subtype.fintype IsWickPairing
+
+instance (n : ℕ) : DecidableEq (WickPairing n) := inferInstance
 
 /-- Every pair stored in a Wick pairing is normalized. -/
 theorem WickPairing.normalized {n : ℕ} (pairing : WickPairing n)
@@ -77,6 +88,11 @@ theorem mem_allWickPairings (pairing : WickPairing n) : pairing ∈ allWickPairi
 /-- The normalized pair `(a, b)` crosses `(c, d)` when `a < c < b < d`. -/
 def WickPair.Crosses {n : ℕ} (left right : WickPair n) : Prop :=
   left.1 < right.1 ∧ right.1 < left.2 ∧ left.2 < right.2
+
+instance WickPair.decidableCrosses {n : ℕ} (left right : WickPair n) :
+    Decidable (WickPair.Crosses left right) :=
+  inferInstanceAs (Decidable (
+    left.1 < right.1 ∧ right.1 < left.2 ∧ left.2 < right.2))
 
 /-- The number of geometric crossings of a Wick pairing.  Because pairs are normalized and
 `Crosses` fixes the order of their left endpoints, each crossing is counted exactly once. -/
