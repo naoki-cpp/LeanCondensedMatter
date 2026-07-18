@@ -1,23 +1,18 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTimeEvolution
-import LeanCondensedMatter.SecondQuantization.Common.Statistics
+import LeanCondensedMatter.SecondQuantization.Common.TimeOrdering
 
 set_option linter.style.header false
 
 /-!
-# Imaginary-time ordering `T_τ`
+# Imaginary-time ordering `T_τ`, specialized to the fermionic Fock space
 
-Phase 9, step 2 (`notes/roadmaps/second-quantization.md`): imaginary-time ordering of a pair of
-operators at (generally distinct) imaginary times, the ingredient
-`ImaginaryTimeEvolution.lean`'s `e^{τH₀}`/`imaginaryTimeEvolve` still lacks. Time ordering itself
-does not depend on `imaginaryTimeEvolve` — it orders whatever two already-time-labelled operators
-it is given — but its intended use is on `imaginaryTimeEvolve ε τ A` for various `A`, `τ`, feeding
-directly into `ThermalGreenFunction.lean`'s two-point function.
-
-`T_τ[A(τ_A) B(τ_B)] := θ(τ_A - τ_B) A(τ_A) B(τ_B) + ζ · θ(τ_B - τ_A) B(τ_B) A(τ_A)`, where `ζ` is
-`Statistics.zetaInt` (`-1` for fermions, `+1` for bosons): later time to the left, picking up a
-sign `ζ` on every operator swap needed to enforce that ordering — the standard finite-temperature
-time-ordering convention. **`θ(0) := 1/2`**: at equal times `τ_A = τ_B` this symmetrizes the two
-branches, `T_τ[A(τ)B(τ)] = ½(A(τ)B(τ) + ζ B(τ)A(τ))`, rather than picking either one.
+Phase 9, step 2 (`notes/roadmaps/second-quantization.md`): a thin wrapper specializing
+`Common.TimeOrdering.lean`'s `Common.timeOrderedProduct` to `FockSpaceFermionic Mode`, keeping the
+statistics-agnostic implementation in `Common/` (time ordering itself doesn't depend on
+`imaginaryTimeEvolve` or on which concrete occupation-state type the operators act on) while
+preserving this file's own public names — `ThermalGreenFunction.lean`, `ThermalContraction.lean`,
+and `Fermionic/FreeTwoPointFunction.lean` all call `timeOrderedProduct` unqualified, and are
+unaffected by this refactor. See `Bosonic/ThermalTimeOrdering.lean` for the bosonic mirror.
 -/
 
 namespace SecondQuantization
@@ -31,25 +26,23 @@ orderings symmetrized (`θ(0) = 1/2`) at equal times. -/
 noncomputable def timeOrderedProduct (ζ : ℤ)
     (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (τA τB : ℝ) :
     FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
-  if τB < τA then A.comp B
-  else if τA < τB then (ζ : ℂ) • (B.comp A)
-  else (2⁻¹ : ℂ) • (A.comp B + (ζ : ℂ) • (B.comp A))
+  Common.timeOrderedProduct ζ A B τA τB
 
 theorem timeOrderedProduct_of_gt (ζ : ℤ)
     (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) {τA τB : ℝ} (h : τB < τA) :
-    timeOrderedProduct ζ A B τA τB = A.comp B := by
-  rw [timeOrderedProduct, if_pos h]
+    timeOrderedProduct ζ A B τA τB = A.comp B :=
+  Common.timeOrderedProduct_of_gt ζ A B h
 
 theorem timeOrderedProduct_of_lt (ζ : ℤ)
     (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) {τA τB : ℝ} (h : τA < τB) :
-    timeOrderedProduct ζ A B τA τB = (ζ : ℂ) • (B.comp A) := by
-  rw [timeOrderedProduct, if_neg (not_lt.2 h.le), if_pos h]
+    timeOrderedProduct ζ A B τA τB = (ζ : ℂ) • (B.comp A) :=
+  Common.timeOrderedProduct_of_lt ζ A B h
 
 @[simp]
 theorem timeOrderedProduct_self_time (ζ : ℤ)
     (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (τ : ℝ) :
-    timeOrderedProduct ζ A B τ τ = (2⁻¹ : ℂ) • (A.comp B + (ζ : ℂ) • (B.comp A)) := by
-  rw [timeOrderedProduct, if_neg (lt_irrefl τ), if_neg (lt_irrefl τ)]
+    timeOrderedProduct ζ A B τ τ = (2⁻¹ : ℂ) • (A.comp B + (ζ : ℂ) • (B.comp A)) :=
+  Common.timeOrderedProduct_self_time ζ A B τ
 
 /-- **Swapping the pair of operators (with their times) and negating for fermions returns the
 same time-ordered product**: `T_τ[B(τ_B) A(τ_A)] = ζ · T_τ[A(τ_A) B(τ_B)]`, given `ζ² = 1`
@@ -59,16 +52,7 @@ operator-level statement that swapping two operators inside a time-ordered produ
 the exchange sign. -/
 theorem timeOrderedProduct_swap {ζ : ℤ} (hζ : ζ * ζ = 1)
     (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (τA τB : ℝ) :
-    timeOrderedProduct ζ B A τB τA = (ζ : ℂ) • timeOrderedProduct ζ A B τA τB := by
-  have hζC : (ζ : ℂ) * (ζ : ℂ) = 1 := by exact_mod_cast hζ
-  rcases lt_trichotomy τA τB with hlt | heq | hlt
-  · rw [timeOrderedProduct_of_gt ζ B A hlt, timeOrderedProduct_of_lt ζ A B hlt, smul_smul, hζC,
-      one_smul]
-  · subst heq
-    rw [timeOrderedProduct_self_time, timeOrderedProduct_self_time]
-    rw [smul_add, smul_add, smul_add, smul_smul, smul_smul, smul_smul, smul_smul,
-      mul_comm (ζ : ℂ) (2⁻¹ : ℂ), mul_assoc, hζC, mul_one]
-    abel
-  · rw [timeOrderedProduct_of_lt ζ B A hlt, timeOrderedProduct_of_gt ζ A B hlt]
+    timeOrderedProduct ζ B A τB τA = (ζ : ℂ) • timeOrderedProduct ζ A B τA τB :=
+  Common.timeOrderedProduct_swap hζ A B τA τB
 
 end SecondQuantization
