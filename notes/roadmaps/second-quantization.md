@@ -144,6 +144,7 @@ finite-sum shape.
 | `Common/DiagonalEvolution.lean` | `diagonalEvolution energy τ` — the algebraic, basis-diagonal `e^{τH₀}` for a free Hamiltonian diagonal in `AlgebraicFock Config`'s eigenbasis with eigenvalue `energy : Config → ℝ`, and its Heisenberg-picture `heisenbergEvolve`; the semigroup law, mutual inversion, `A(0) = A` | `proved` |
 | `Common/ExchangeCommutator.lean` | `zetaCommutator`/`exchangeCommutator` (`notes/roadmaps/second-quantization.md`'s Phase 9 section below) | `proved` |
 | `Common/TimeOrdering.lean` | `Common.zetaTimeOrderedProduct`/`Common.timeOrderedProduct` — the imaginary-time-ordered product `T_τ` of two `AlgebraicFock Config` endomorphisms, generic over `Config` (never depended on the concrete occupation-state type, only on `.comp`/scalar multiplication) and, mirroring `ExchangeCommutator.lean`'s `zetaCommutator`/`exchangeCommutator` split, indexed by a raw `ζ : ℤ` or by a `Statistics` value; `Fermionic/ThermalTimeOrdering.lean`/`Bosonic/ThermalTimeOrdering.lean` fix the statistics (no `ζ`/`Statistics` parameter at their own call sites) while preserving their own public names | `proved`, both wrappers |
+| `Common/ExchangeAlgebra.lean` | `Common.ExchangeAlgebra s Mode Config` — a `class` packaging the *all-index* exchange relation `a_i a_j† - ζ a_j† a_i = δᵢⱼ`, `a_i a_j - ζ a_j a_i = 0`, `a_i† a_j† - ζ a_j† a_i† = 0` (via `exchangeCommutator s`) that CAR (`s = fermion`) and CCR (`s = boson`) share, letting a future Wick induction move operators past each other without referencing fermionic `anticomm_*`/bosonic `comm_*` directly; the concrete instances (`SecondQuantization.exchangeAlgebra` — fermionic, plain namespace — and `SecondQuantization.Bosonic.exchangeAlgebra`) live in each statistics' own directory, mirroring `OccupationBasis.lean`'s architecture, and are derived from the bridging fact that `exchangeCommutator s = anticomm`/`comm` for *any* two operators (generalizing the single-mode bridging in `Fermionic/NumberOperator.lean`/`Bosonic/NumberOperator.lean`) | `proved`, both instances |
 
 **Symmetric file layout, `Fermionic/NumberOperator.lean` split from `Hamiltonian.lean`:** the
 fermionic number operator (`numberOperator`/`numberOperator_apply`/`numberOperator_basisState`)
@@ -388,16 +389,35 @@ is in hand. CAR's `{c_i,c_i†} = id` and CCR's `[a_i,a_i†] = id` become the *
 generically — an *operator-level reordering identity*, not a Wick-theorem contraction (a thermal
 two-point function/`ℂ`-number, which is what `Fermionic/FreeTwoPointFunction.lean`'s
 `freeThermalExpectation_annihilate_comp_create`/`_create_comp_annihilate` already provide).
-`Fermionic/FreeTwoPointFunction.lean`'s `annihilate_comp_create_self` (`ζ = -1`, already proved,
-now refactored through this) and `Bosonic/NumberOperator.lean`'s new `annihilate_comp_create_self`
+`Fermionic/NumberOperator.lean`'s `annihilate_comp_create_self` (`ζ = -1`, proved there since PR #78,
+now refactored to go through `exchangeCommutator`) and `Bosonic/NumberOperator.lean`'s new `annihilate_comp_create_self`
 (`ζ = 1`, `a_i a_i† = id + N_i`, the first bosonic `numberOperator`/reordering result — the bosonic
-line had no `numberOperator` at all before this) are both literal instances. **Not yet done:** the
-all-index exchange commutator `exchangeCommutator s (annihilate i) (create j) = if i = j then id
-else 0` (needed for moving operators past each other in a Wick-theorem induction, a strictly more
-useful common building block than the single-mode `i = j` case above, deferred here for scope); the
-pairing/crossing-sign combinatorics itself (a `2n`-index pairing type, its enumeration, and
-`ζ^{crossings}`); a general `n`-operator time-ordered product (`timeOrderedProduct` is still
-2-operator-only); the bosonic thermal-trace layer (`weightedTrace`/`thermalExpectation`/
-`partitionFunction`) that `Fermionic/ThermalExpectation.lean` already has and the free bosonic
-two-point/occupation-number closed forms would need — deferred since the fermionic, finite-mode
-line remains this track's primary path to the Linked Cluster Theorem.
+line had no `numberOperator` at all before this) are both literal instances.
+
+**Time ordering also made statistics-indexed, in `Common/TimeOrdering.lean`:** see the table
+above; `Fermionic/ThermalTimeOrdering.lean`/`Bosonic/ThermalTimeOrdering.lean` fix their own
+statistics outright.
+
+**The all-index exchange relation done, in `Common/ExchangeAlgebra.lean`:** the strictly more
+useful common building block flagged above — a general Wick induction needs to move operators past
+*each other* at every step (`a_i a_j† - ζ a_j† a_i = δᵢⱼ`, all `i, j`), not just the single-mode
+`a_i a_i† = id + ζN_i` case. `Common.ExchangeAlgebra s Mode Config` packages
+`annihilate_create`/`annihilate_annihilate`/`create_create` (all stated via `exchangeCommutator
+s`) as a `class`, mirroring `Common/OccupationBasis.lean`'s architecture: the interface lives in
+`Common/`, the concrete instances (`SecondQuantization.exchangeAlgebra` — fermionic, plain namespace —
+and `SecondQuantization.Bosonic.exchangeAlgebra`) live in
+each statistics' own directory. Both instances are proved via a bridging fact generalizing the
+single-mode one above to *arbitrary* operator pairs (`exchangeCommutator_fermion_eq_anticomm`/
+`_boson_eq_comm : exchangeCommutator s = anticomm`/`comm`, for any `A`, `B`, not just at `i = j`),
+so the instance fields just restate the existing `anticomm_*`/`comm_*` CAR/CCR theorems through
+that bridge — no new algebra, only the interface. This does not replace the existing public
+`annihilate`/`create` functions or CAR/CCR theorems; downstream files using the statistics-specific
+names directly are unaffected. **Not yet done:** the pairing/crossing-sign combinatorics itself (a
+`2n`-index pairing type, its enumeration, and `ζ^{crossings}`); a general `n`-operator time-ordered
+product (`timeOrderedProduct` is still 2-operator-only); a first concrete Wick induction step (the
+4-point identity `⟨A₁A₂A₃A₄⟩₀ = ⟨A₁A₂⟩₀⟨A₃A₄⟩₀ + ζ⟨A₁A₃⟩₀⟨A₂A₄⟩₀ + ⟨A₁A₄⟩₀⟨A₂A₃⟩₀`, before the
+general `2n`-point theorem) using `ExchangeAlgebra` to validate the pairing-sign design; the
+bosonic thermal-trace layer (`weightedTrace`/`thermalExpectation`/`partitionFunction`) that
+`Fermionic/ThermalExpectation.lean` already has and the free bosonic two-point/occupation-number
+closed forms would need — deferred since the fermionic, finite-mode line remains this track's
+primary path to the Linked Cluster Theorem.
