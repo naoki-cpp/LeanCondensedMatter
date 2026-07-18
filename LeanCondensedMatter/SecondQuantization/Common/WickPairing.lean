@@ -134,13 +134,13 @@ def wickPairingCrossing : WickPairing 2 :=
 def wickPairingNested : WickPairing 2 :=
   ⟨{(0, 3), (1, 2)}, by decide⟩
 
-/-- There are exactly three pairings of four ordered positions, stated as a `Finset` equality so
+/- There are exactly three pairings of four ordered positions, stated as a `Finset` equality so
 the result is independent of any enumeration order. -/
+set_option maxRecDepth 100000 in
+set_option maxHeartbeats 1000000 in
 theorem allWickPairings_two :
     allWickPairings 2 = {wickPairingAdjacent, wickPairingCrossing, wickPairingNested} := by
-  set_option maxRecDepth 100000 in
-  set_option maxHeartbeats 1000000 in
-    decide
+  decide
 
 @[simp]
 theorem crossingCount_wickPairingAdjacent : wickPairingAdjacent.crossingCount = 0 := by
