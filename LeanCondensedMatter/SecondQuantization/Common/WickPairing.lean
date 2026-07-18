@@ -4,6 +4,7 @@ import Mathlib.Data.Finset.Filter
 import Mathlib.Data.Finset.Prod
 import Mathlib.Data.Fintype.Fin
 import Mathlib.Data.Fintype.Powerset
+import Mathlib.Data.Fintype.Prod
 import Mathlib.Data.Fintype.Sets
 
 set_option linter.style.header false
