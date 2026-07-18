@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.ThermalGreenFunction
+import LeanCondensedMatter.SecondQuantization.Common.GradedCommutator
 
 set_option linter.style.header false
 
@@ -104,13 +105,25 @@ theorem thermalExpectation_create_comp_annihilate_of_ne (w : FermionOccupation M
 /-! ## Diagonal (`i = j`): the free hole/occupation numbers `1 - f_i`, `f_i` -/
 
 omit [Fintype Mode] in
-/-- **`c_i c_i† = id - N_i`**, from CAR's `{c_i, c_i†} = id`. -/
+/-- **`[c_i, c_i†]_{-1} = id`**: CAR's anticommutator `{c_i, c_i†} = id`
+(`anticomm_annihilate_create`) is exactly the `ζ = -1` case of `Common.gradedCommutator` — see
+`Common/GradedCommutator.lean`'s module docstring, and `Bosonic/NumberOperator.lean`'s
+`gradedCommutator_annihilate_create_self` for the `ζ = 1` mirror. -/
+theorem gradedCommutator_annihilate_create_self (i : Mode) :
+    Common.gradedCommutator (-1 : ℂ) (annihilate i) (create i) =
+      (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) := by
+  rw [Common.gradedCommutator, neg_one_smul, sub_neg_eq_add]
+  have h := anticomm_annihilate_create (Mode := Mode) i i
+  rwa [if_pos rfl] at h
+
+omit [Fintype Mode] in
+/-- **`c_i c_i† = id - N_i`**, from CAR's `{c_i, c_i†} = id`, via the unified graded-commutator
+self-contraction identity (`Common.selfContraction_of_gradedCommutator_eq_id`). -/
 theorem annihilate_comp_create_self (i : Mode) :
     (annihilate i).comp (create i) = LinearMap.id - numberOperator i := by
-  have hanticomm := anticomm_annihilate_create i i
-  rw [if_pos rfl, anticomm] at hanticomm
-  rw [eq_sub_iff_add_eq]
-  exact hanticomm
+  have h := Common.selfContraction_of_gradedCommutator_eq_id (-1 : ℂ)
+    (gradedCommutator_annihilate_create_self i)
+  rwa [neg_one_smul, ← sub_eq_add_neg] at h
 
 /-- **The free hole number** `⟨c_i c_i†⟩₀,β = 1 - ⟨N_i⟩₀,β = e^{βε_i}/(e^{βε_i}+1)`. -/
 theorem freeThermalExpectation_annihilate_comp_create_self (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
