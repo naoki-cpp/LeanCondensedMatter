@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Statistics
+import LeanCondensedMatter.SecondQuantization.Common.DeletedPositions
 import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Finset.Filter
 import Mathlib.Data.Finset.Prod
@@ -138,6 +139,108 @@ theorem Pairing.pair_or_reverse_mem {n : ℕ} (pairing : Pairing n) (i : Fin (2 
     apply pairing.mem_pairs_iff (pairing.partner i) i |>.2
     exact ⟨lt_of_le_of_ne (le_of_not_gt h) (pairing.partner_ne i),
       pairing.partner_partner i⟩
+
+/-- Restrict a pairing partner permutation to the positions left after removing `0` and its
+partner.  The order-isomorphism back to `Fin (2 * n)` is applied by `eraseZeroPair`. -/
+def Pairing.restrictedPartner {n : ℕ} (pairing : Pairing (n + 1))
+    (hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0) :
+    deletedPositions n (pairing.partner 0) hzero ≃
+      deletedPositions n (pairing.partner 0) hzero where
+  toFun := fun x => by
+    have hxj : (x : Fin (2 * (n + 1))) ≠ pairing.partner 0 :=
+      (Finset.mem_erase.mp x.property).1
+    have hx0 : (x : Fin (2 * (n + 1))) ≠ 0 :=
+      (Finset.mem_erase.mp (Finset.mem_erase.mp x.property).2).1
+    have hpxj : pairing.partner x ≠ pairing.partner 0 := by
+      intro h
+      apply hx0
+      calc
+        (x : Fin (2 * (n + 1))) = pairing.partner (pairing.partner x) :=
+          (pairing.partner_partner x).symm
+        _ = pairing.partner (pairing.partner 0) := by rw [h]
+        _ = 0 := pairing.partner_partner 0
+    have hpx0 : pairing.partner x ≠ 0 := by
+      intro h
+      apply hxj
+      calc
+        (x : Fin (2 * (n + 1))) = pairing.partner (pairing.partner x) :=
+          (pairing.partner_partner x).symm
+        _ = pairing.partner 0 := by rw [h]
+    exact ⟨pairing.partner x,
+      Finset.mem_erase.mpr ⟨hpxj, Finset.mem_erase.mpr ⟨hpx0, Finset.mem_univ _⟩⟩⟩
+  invFun := fun x => by
+    have hxj : (x : Fin (2 * (n + 1))) ≠ pairing.partner 0 :=
+      (Finset.mem_erase.mp x.property).1
+    have hx0 : (x : Fin (2 * (n + 1))) ≠ 0 :=
+      (Finset.mem_erase.mp (Finset.mem_erase.mp x.property).2).1
+    have hpxj : pairing.partner x ≠ pairing.partner 0 := by
+      intro h
+      apply hx0
+      calc
+        (x : Fin (2 * (n + 1))) = pairing.partner (pairing.partner x) :=
+          (pairing.partner_partner x).symm
+        _ = pairing.partner (pairing.partner 0) := by rw [h]
+        _ = 0 := pairing.partner_partner 0
+    have hpx0 : pairing.partner x ≠ 0 := by
+      intro h
+      apply hxj
+      calc
+        (x : Fin (2 * (n + 1))) = pairing.partner (pairing.partner x) :=
+          (pairing.partner_partner x).symm
+        _ = pairing.partner 0 := by rw [h]
+    exact ⟨pairing.partner x,
+      Finset.mem_erase.mpr ⟨hpxj, Finset.mem_erase.mpr ⟨hpx0, Finset.mem_univ _⟩⟩⟩
+  left_inv x := by
+    apply Subtype.ext
+    exact pairing.partner_partner x
+  right_inv x := by
+    apply Subtype.ext
+    exact pairing.partner_partner x
+
+@[simp]
+theorem Pairing.restrictedPartner_partner_partner {n : ℕ} (pairing : Pairing (n + 1))
+    (hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0)
+    (x : deletedPositions n (pairing.partner 0) hzero) :
+    pairing.restrictedPartner hzero (pairing.restrictedPartner hzero x) = x := by
+  apply Subtype.ext
+  exact pairing.partner_partner x
+
+/-- Remove position `0` and its partner, reindexing the remaining positions in increasing order.
+
+The resulting pairing is the combinatorial deletion step used by the finite-temperature
+Bloch--de Dominicis induction. -/
+noncomputable def Pairing.eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)) : Pairing n := by
+  let hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0 :=
+    Ne.symm (pairing.partner_ne 0)
+  let e := deletedPositionsOrderIso n (pairing.partner 0) hzero
+  let r := pairing.restrictedPartner hzero
+  let newPartner : Equiv.Perm (Fin (2 * n)) :=
+    e.toEquiv.trans (r.trans e.symm.toEquiv)
+  refine
+    { partner := newPartner
+      partner_involutive := ?_
+      partner_ne_self := ?_ }
+  · intro i
+    dsimp [newPartner]
+    rw [e.apply_symm_apply]
+    rw [Pairing.restrictedPartner_partner_partner]
+    exact e.symm_apply_apply i
+  · intro i hi
+    have hfixed : r (e i) = e i := by
+      have h := congrArg e hi
+      simpa [newPartner] using h
+    have hpartner : pairing.partner (e i) = (e i : Fin (2 * (n + 1))) := by
+      exact congrArg Subtype.val hfixed
+    exact pairing.partner_ne (e i) hpartner
+
+theorem Pairing.eraseZeroPair_partner_apply {n : ℕ} (pairing : Pairing (n + 1))
+    (i : Fin (2 * n)) :
+    (pairing.eraseZeroPair).partner i =
+      let hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0 :=
+        Ne.symm (pairing.partner_ne 0)
+      let e := deletedPositionsOrderIso n (pairing.partner 0) hzero
+      e.symm (pairing.restrictedPartner hzero (e i)) := by
+  simp [Pairing.eraseZeroPair]
 
 /-- Every pair emitted by `Pairing.pairs` is normalized. -/
 theorem Pairing.pairs_normalized {n : ℕ} (pairing : Pairing n)
