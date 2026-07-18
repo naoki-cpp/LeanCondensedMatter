@@ -58,6 +58,13 @@ theorem smul_basisState_apply_self {Config : Type*} (c : ℂ) (n : Config) :
     (c • basisState n : AlgebraicFock Config) n = c := by
   simp [basisState]
 
+/-- The `n`-coefficient of a scalar multiple of a *different* basis state `m ≠ n` is always `0` —
+the algebraic core of "particle-number-changing operators have vanishing diagonal matrix
+coefficients" (e.g. same-type creation/annihilation contractions). -/
+theorem smul_basisState_apply_of_ne {Config : Type*} (c : ℂ) {m n : Config} (h : m ≠ n) :
+    (c • basisState m : AlgebraicFock Config) n = 0 := by
+  simp [basisState, h]
+
 /-- **The `m`-coefficient of `A (basisState n)`** — a coordinate evaluation, not an inner product.
 -/
 noncomputable def matrixCoeff {Config : Type*}
@@ -73,6 +80,18 @@ theorem diagonalCoeff_eq_matrixCoeff {Config : Type*}
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : Config) :
     diagonalCoeff A n = matrixCoeff A n n :=
   rfl
+
+/-- `matrixCoeff` is linear in its operator argument: scaling. -/
+theorem matrixCoeff_smul {Config : Type*} (c : ℂ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
+    matrixCoeff (c • A) m n = c * matrixCoeff A m n := by
+  simp [matrixCoeff]
+
+/-- `matrixCoeff` is linear in its operator argument: addition. -/
+theorem matrixCoeff_add {Config : Type*}
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
+    matrixCoeff (A + B) m n = matrixCoeff A m n + matrixCoeff B m n := by
+  simp [matrixCoeff]
 
 end Common
 end SecondQuantization

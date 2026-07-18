@@ -201,8 +201,9 @@ order:
 2. `Fermionic/ThermalTimeOrdering.lean` — imaginary-time ordering `T_τ` (**done**, see below).
 3. `Fermionic/ThermalGreenFunction.lean` — `G_{ij}(τ,τ') := -⟨T_τ c_i(τ) c_j†(τ')⟩_β` (**done**, see below;
    only the free-Hamiltonian `G₀`, and not yet as a special case of a general `n`-point correlator).
-4. `ThermalContraction.lean` / `BlochDeDominicis.lean` — Wick contractions and the finite-mode
-   fermionic Wick/Bloch–de Dominicis theorem.
+4. `Fermionic/ThermalContraction.lean` — same-type contractions vanish (**done**, see below).
+   `BlochDeDominicis.lean` — the general finite-mode fermionic Wick/Bloch–de Dominicis theorem,
+   not yet started.
 5. `DysonExpansionFermionic.lean` — the genuine interaction-picture Dyson series (the name
    `Fermionic/FormalExp.lean` deliberately avoided).
 6. `DiagramConnectedness.lean` — connecting Dyson-series terms to diagrams and Track B's
@@ -272,6 +273,23 @@ order:
   agreement with the standard free-fermion result (`⟨N_i⟩₀ = 1/(e^{βε_i}+1)`, `G₀,ᵢⱼ = 0` for
   `i ≠ j`).
 
-**Not yet done:** the finite-temperature structure above; the full Matsubara-Green-function
-apparatus; everything from step 4 onward (Wick contractions, the genuine Dyson series, diagram
-connectedness).
+**Step 4 (partial) done, in `Fermionic/ThermalContraction.lean`:** same-type thermal contractions
+vanish for any occupation-number-diagonal weight `w` used by `weightedTrace` — `⟨T_τ[c_i(τ)
+c_j(τ')]⟩_w = 0` and `⟨T_τ[c_i†(τ) c_j†(τ')]⟩_w = 0`
+(`thermalExpectation_timeOrderedProduct_annihilate_annihilate`/`_create_create`) — a `U(1)`
+particle-number selection rule (`cᵢcⱼ`/`cᵢ†cⱼ†` carry nonzero charge), not a fact specific to
+fermionic statistics or to this project's number-conserving Gibbs weight; the operator-level
+reason that, in the number-conserving occupation-diagonal setting considered throughout this
+project, only mixed creation–annihilation contractions can be nonzero. Does *not* extend to
+non-number-conserving quasi-free states (e.g. superconducting/Bogoliubov states), where such
+"anomalous" contractions are generically nonzero. Proved from occupation-number bookkeeping alone
+(`matrixCoeff_annihilate_comp_annihilate`/`_create_comp_create`: composing two same-type operators
+always changes the particle number, so the resulting operator's diagonal matrix coefficient
+vanishes for every basis state), plus new linearity lemmas for `matrixCoeff` (`Common/
+AlgebraicFock.lean`) and `weightedTrace`/`thermalExpectation` (`Fermionic/ThermalExpectation.lean`)
+in their operator argument.
+**Not yet done:** the general finite-mode fermionic Wick/Bloch–de Dominicis theorem itself (the
+`n`-point sum-over-pairings formula, `BlochDeDominicis.lean`) — this file only established the
+vanishing half, not the full decomposition into `thermalGreenFunction` factors; the finite-
+temperature structure noted above (KMS antiperiodicity etc.); the full Matsubara-Green-function
+apparatus; the genuine Dyson series and diagram connectedness (steps 5–7).
