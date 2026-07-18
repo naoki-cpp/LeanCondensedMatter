@@ -16,10 +16,12 @@ faithful) — without unifying `Config` itself: fermionic and bosonic occupation
 genuinely different (`Finset Mode` vs. `Mode →₀ ℕ`, since Pauli exclusion caps the former at
 `0`/`1`), each supplying its own instance of this structure.
 
-The concrete instances (`Fermionic.occupationBasis`, `Bosonic.occupationBasis`) live in each
-statistics' own directory, not here, since a `Common/` file importing `Fermionic/`/`Bosonic/`
-would invert the intended dependency direction (`notes/conventions.md`'s "one directory per
-track" rule: statistics-specific code depends on `Common/`, not the reverse).
+The concrete instances (`SecondQuantization.occupationBasis` for the fermionic line, which uses
+the plain `SecondQuantization` namespace rather than a `Fermionic` sub-namespace;
+`SecondQuantization.Bosonic.occupationBasis` for the bosonic line) live in each statistics' own
+directory, not here, since a `Common/` file importing `Fermionic/`/`Bosonic/` would invert the
+intended dependency direction (`notes/conventions.md`'s "one directory per track" rule:
+statistics-specific code depends on `Common/`, not the reverse).
 -/
 
 namespace SecondQuantization

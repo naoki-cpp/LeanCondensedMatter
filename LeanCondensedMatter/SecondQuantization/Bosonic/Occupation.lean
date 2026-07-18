@@ -97,7 +97,9 @@ namespace Bosonic
 
 /-- **The bosonic occupation-basis instance**: `Occupation Mode` reads off each mode's occupation
 number directly (`n i`) — the concrete side of `Common.OccupationBasis`'s shared interface,
-mirroring `Fermionic.occupationBasis`. -/
+mirroring the fermionic line's `SecondQuantization.occupationBasis`
+(`Fermionic/Occupation.lean`; the fermionic line uses the plain `SecondQuantization` namespace,
+not a `Fermionic` sub-namespace). -/
 instance occupationBasis : Common.OccupationBasis Mode (Occupation Mode) where
   vacuum := vacuum
   occupation n i := n i

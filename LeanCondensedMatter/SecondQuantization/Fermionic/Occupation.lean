@@ -74,7 +74,8 @@ theorem fermionParticleNumber_removeOccupation_of_not_mem {i : Mode} {n : Fermio
 
 /-- **The fermionic occupation-basis instance**: `FermionOccupation Mode` reads off each mode's
 occupation number as `1`/`0` (occupied/empty) — the concrete side of `Common.OccupationBasis`'s
-shared interface, mirroring `Bosonic.occupationBasis`. -/
+shared interface, mirroring `SecondQuantization.Bosonic.occupationBasis`
+(`Bosonic/Occupation.lean`). -/
 instance occupationBasis : Common.OccupationBasis Mode (FermionOccupation Mode) where
   vacuum := fermionVacuum
   occupation n i := if i ∈ n then 1 else 0
