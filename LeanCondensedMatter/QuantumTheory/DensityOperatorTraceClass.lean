@@ -154,8 +154,10 @@ theorem rankOne_trace_eq_one {ψ : H} (hψ : ‖ψ‖ = 1) :
     absurd (Subsingleton.elim b (uniqueEigenvectorIndexRankOne hψ).default) hb)]
   rfl
 
-/-- **Purification (infinite-dimensional).** A pure state `ψ` gives rise to a density operator,
-the rank-one projector `|ψ⟩⟨ψ|`. -/
+/-- **Pure-state density-operator embedding (infinite-dimensional).** A pure state `ψ` gives rise
+to a density operator, the rank-one projector `|ψ⟩⟨ψ|`. This is not a purification of a mixed
+state; purification is reserved for a pure state on a larger Hilbert space whose reduced state is
+the given mixed state. -/
 noncomputable def pure (ψ : QuantumTheory.State H) : DensityOperator H where
   op := InnerProductSpace.rankOne ℂ ψ.1 ψ.1
   pos := InnerProductSpace.isPositive_rankOne_self ψ.1

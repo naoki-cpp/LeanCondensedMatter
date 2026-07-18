@@ -55,9 +55,10 @@ theorem sum_prob_eq_one (P : POVM H M) (ρ : DensityOperator H) :
   simp only [prob, ← Complex.re_sum, ← map_sum, ← ContinuousLinearMap.toLinearMap_sum, hsum]
   simp [ρ.2.2]
 
-/-- **Purification.** A pure state `ψ` gives rise to a density operator, the rank-one
-projector `|ψ⟩⟨ψ|`; this is the density-operator picture's counterpart of
-`QuantumTheory.State`. -/
+/-- **Pure-state density-operator embedding.** A pure state `ψ` gives rise to a density operator,
+the rank-one projector `|ψ⟩⟨ψ|`; this is the density-operator picture's counterpart of
+`QuantumTheory.State`. This is not a purification of a mixed state: purification is reserved for
+representing a mixed state as the reduced state of a pure state on a larger Hilbert space. -/
 noncomputable def pure (ψ : State H) : DensityOperator H :=
   ⟨InnerProductSpace.rankOne ℂ ψ.1 ψ.1, InnerProductSpace.isPositive_rankOne_self ψ.1, by
     rw [InnerProductSpace.trace_rankOne, inner_self_eq_norm_sq_to_K, ψ.2]; norm_num⟩

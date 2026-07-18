@@ -24,7 +24,7 @@ specialized to a statistics-indexed `exchangeCommutator` below, not `gradedCommu
 
 **Nor is this a *contraction*** in the Wick-theorem sense (a thermal two-point function, a
 `ℂ`-number like `⟨T_τ c_i c_j†⟩₀` — see `Fermionic/FreeTwoPointFunction.lean`'s
-`freeThermalExpectation_annihilate_comp_create`/`_create_comp_annihilate`, which *are* contraction
+`freeGibbsExpectation_annihilate_comp_create`/`_create_comp_annihilate`, which *are* contraction
 kernels). `comp_eq_id_add_of_zetaCommutator_eq_id` below is an *operator-level reordering
 identity* — it rewrites `A∘B` in terms of `B∘A`, with no state or expectation value involved.
 
@@ -64,8 +64,9 @@ theorem comp_eq_id_add_of_zetaCommutator_eq_id {Config : Type*} (ζ : ℂ)
     {A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config}
     (h : zetaCommutator ζ A B = LinearMap.id) :
     A.comp B = LinearMap.id + ζ • (B.comp A) := by
-  rw [zetaCommutator, sub_eq_iff_eq_add] at h
-  exact h
+  have h' : A.comp B - ζ • (B.comp A) = LinearMap.id := by
+    simpa [zetaCommutator] using h
+  exact (sub_eq_iff_eq_add).mp h'
 
 end Common
 end SecondQuantization

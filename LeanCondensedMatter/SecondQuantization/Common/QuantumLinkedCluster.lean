@@ -1,19 +1,19 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.ThermalExpectation
+import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedDiagonalFunctional
 import LeanCondensedMatter.Combinatorics.CumulantFactorization
 import Mathlib.Tactic.FieldSimp
 
 set_option linter.style.header false
 
 /-!
-# Connecting thermal occupation correlators to Track B's moment-cumulant machinery
+# Fermionic occupation moments and the linked-cluster bridge
 
 Phase 8 of Track D's fermionic primary line (`notes/roadmaps/second-quantization.md`): the first
-bridge between Track D (thermal expectation values on `FockSpaceFermionic`) and Track B (the
+bridge between Track D (weighted expectation functionals on `FockSpaceFermionic`) and Track B (the
 abstract moment-cumulant duality on the partition lattice, `Combinatorics/MomentCumulant.lean`,
 `Combinatorics/CumulantFactorization.lean`).
 
-`occupationMoment w S := (Σₙ (if S ⊆ n then w n else 0)) / Z(w)` is the normalized thermal
-expectation value of the simultaneous occupation of every mode in `S`, `⟨∏ᵢ∈S nᵢ⟩_w`, computed
+`occupationMoment w S := (Σₙ (if S ⊆ n then w n else 0)) / Z(w)` is the normalized weighted
+diagonal functional for the simultaneous occupation of every mode in `S`, `⟨∏ᵢ∈S nᵢ⟩_w`, computed
 directly as a weighted sum rather than via an operator product (the `numberOperator i`'s commute as
 they're simultaneously diagonal, but `FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode` has no
 `CommMonoid` structure under composition to state that with `Finset.prod`, so this file bypasses
@@ -21,9 +21,13 @@ the issue rather than solving it). It lands exactly in Track B's `Finset Mode �
 type, with
 `occupationMoment w ⊥ = 1` matching `IsIndependentAcross`'s normalization hypothesis.
 
+Despite this file's current `Common/` path, the implementation is fermionic-specific: it imports
+`Fermionic.WeightedDiagonalFunctional` and uses `FermionOccupation` throughout. It should be moved under
+`Fermionic/` or generalized before being presented as statistics-independent common infrastructure.
+
 `occupationProjector S` supplies the operator-level witness `∏ᵢ∈S nᵢ` (diagonal in the
 occupation-number basis, built via `Finsupp.lift` exactly as `create`/`annihilate` are), with
-`thermalExpectation_occupationProjector` confirming it reproduces `occupationMoment` and
+`normalizedWeightedDiagonal_occupationProjector` confirming it reproduces `occupationMoment` and
 `occupationProjector_singleton` confirming it agrees with `numberOperator` at a single mode.
 `occupationProjector_mul`/`_comm`/`_idempotent`/`_empty` establish it as a genuine commuting-
 projector algebra under composition, making "`occupationProjector S` is the simultaneous product
@@ -46,22 +50,22 @@ namespace SecondQuantization
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
-/-- **The thermal occupation-correlator moment.** `occupationMoment w S` is the normalized weighted
-occupation correlator under the weight `w` — the thermal expectation value `⟨∏ᵢ∈S nᵢ⟩_w` of the
-simultaneous occupation of `S`, computed directly as a weighted sum. For positive real weights (a
+/-- **The weighted occupation-correlator moment.** `occupationMoment w S` is the normalized weighted
+occupation correlator under the weight `w` — the diagonal functional
+`⟨∏ᵢ∈S nᵢ⟩_w` of the simultaneous occupation of `S`, computed directly as a weighted sum. For positive real weights (a
 genuine Boltzmann weight) it is the probability that every mode in `S` is occupied; `w` here is an
 arbitrary complex-valued weight, so no probabilistic interpretation is assumed in general. As with
-`thermalExpectation`, division by `partitionFunction w` is only physically meaningful when
-`partitionFunction w ≠ 0`. -/
+the normalized weighted diagonal functional, division by `weightSum w` is only physically meaningful when
+`weightSum w ≠ 0`. -/
 noncomputable def occupationMoment (w : FermionOccupation Mode → ℂ) (S : Finset Mode) : ℂ :=
   (∑ n ∈ (Finset.univ : Finset (FermionOccupation Mode)).filter (S ⊆ ·), w n) /
-    partitionFunction w
+    weightSum w
 
 omit [LinearOrder Mode] in
 /-- **`occupationMoment` at `⊥` is `1`** (given a nonzero partition function): every occupation
 state vacuously contains the empty set of modes, so the numerator is exactly `Z(w)`. This matches
 `Finpartition.IsIndependentAcross`'s `m ⊥ = 1` normalization hypothesis. -/
-theorem occupationMoment_bot {w : FermionOccupation Mode → ℂ} (hZ : partitionFunction w ≠ 0) :
+theorem occupationMoment_bot {w : FermionOccupation Mode → ℂ} (hZ : weightSum w ≠ 0) :
     occupationMoment w ⊥ = 1 := by
   have hfilter : (Finset.univ : Finset (FermionOccupation Mode)).filter ((⊥ : Finset Mode) ⊆ ·) =
       Finset.univ := by
@@ -69,11 +73,13 @@ theorem occupationMoment_bot {w : FermionOccupation Mode → ℂ} (hZ : partitio
   rw [occupationMoment, hfilter]
   exact div_self hZ
 
-/-- **`occupationMoment` at a singleton `{i}` is the thermal expectation of `numberOperator i`.**
-Connects the weighted-sum definition back to Track D's operator-level `thermalExpectation`. -/
+/-- **`occupationMoment` at a singleton `{i}` is the normalized weighted diagonal functional of
+`numberOperator i`.**
+Connects the weighted-sum definition back to Track D's operator-level normalized weighted
+functional. -/
 theorem occupationMoment_singleton (w : FermionOccupation Mode → ℂ) (i : Mode) :
-    occupationMoment w {i} = thermalExpectation w (numberOperator i) := by
-  rw [occupationMoment, thermalExpectation, weightedTrace_numberOperator]
+    occupationMoment w {i} = normalizedWeightedDiagonal w (numberOperator i) := by
+  rw [occupationMoment, normalizedWeightedDiagonal, weightedTrace_numberOperator]
   have hfilter : (Finset.univ : Finset (FermionOccupation Mode)).filter
       (({i} : Finset Mode) ⊆ ·) = (Finset.univ : Finset (FermionOccupation Mode)).filter
       (i ∈ ·) := by
@@ -116,12 +122,12 @@ theorem occupationProjector_singleton (i : Mode) :
   simp [occupationProjector_basisState, numberOperator_basisState, Finset.singleton_subset_iff]
 
 omit [LinearOrder Mode] in
-/-- **`thermalExpectation` of `occupationProjector S` is `occupationMoment w S`.** The operator-
+/-- **The normalized weighted functional of `occupationProjector S` is `occupationMoment w S`.** The operator-
 level bridge promised by `occupationMoment`'s docstring: the simultaneous-occupation observable's
-thermal expectation value agrees with the direct weighted-sum definition. -/
-theorem thermalExpectation_occupationProjector (w : FermionOccupation Mode → ℂ) (S : Finset Mode) :
-    thermalExpectation w (occupationProjector S) = occupationMoment w S := by
-  rw [thermalExpectation, occupationMoment]
+normalized weighted diagonal functional agrees with the direct weighted-sum definition. -/
+theorem normalizedWeightedDiagonal_occupationProjector (w : FermionOccupation Mode → ℂ) (S : Finset Mode) :
+    normalizedWeightedDiagonal w (occupationProjector S) = occupationMoment w S := by
+  rw [normalizedWeightedDiagonal, occupationMoment]
   congr 1
   have h : ∀ n : FermionOccupation Mode,
       matrixCoeff (occupationProjector S) n n = if S ⊆ n then 1 else 0 := fun n => by
@@ -239,16 +245,16 @@ theorem occupationMoment_eq_of_product_factorization {w wA wB : FermionOccupatio
     {A B : Finset Mode} (hAB : Disjoint A B) (hU : A ∪ B = Finset.univ)
     (hw : ∀ n, w n = wA (n ∩ A) * wB (n ∩ B)) (T : Finset Mode) :
     occupationMoment w T = (∑ S ∈ A.powerset.filter ((T ∩ A) ⊆ ·), wA S) *
-      (∑ T' ∈ B.powerset.filter ((T ∩ B) ⊆ ·), wB T') / partitionFunction w := by
+      (∑ T' ∈ B.powerset.filter ((T ∩ B) ⊆ ·), wB T') / weightSum w := by
   rw [occupationMoment, ← sum_filter_subset_eq_mul hAB hU wA wB T]
   congr 1
   exact Finset.sum_congr rfl fun n _ => hw n
 
 omit [LinearOrder Mode] in
-theorem partitionFunction_eq_mul_of_product_factorization {w wA wB : FermionOccupation Mode → ℂ}
+theorem weightSum_eq_mul_of_product_factorization {w wA wB : FermionOccupation Mode → ℂ}
     {A B : Finset Mode} (hAB : Disjoint A B) (hU : A ∪ B = Finset.univ)
     (hw : ∀ n, w n = wA (n ∩ A) * wB (n ∩ B)) :
-    partitionFunction w = (∑ S ∈ A.powerset, wA S) * (∑ T ∈ B.powerset, wB T) := by
+    weightSum w = (∑ S ∈ A.powerset, wA S) * (∑ T ∈ B.powerset, wB T) := by
   have h := sum_filter_subset_eq_mul hAB hU wA wB (⊥ : Finset Mode)
   have e1 : (Finset.univ : Finset (FermionOccupation Mode)).filter ((⊥ : Finset Mode) ⊆ ·) =
       Finset.univ := Finset.filter_true_of_mem fun n _ => Finset.empty_subset n
@@ -259,7 +265,7 @@ theorem partitionFunction_eq_mul_of_product_factorization {w wA wB : FermionOccu
     have : (⊥ : Finset Mode) ∩ B = ⊥ := by ext x; simp
     rw [this]; exact Finset.filter_true_of_mem fun T _ => Finset.empty_subset T
   rw [e1, e2, e3] at h
-  rw [partitionFunction]
+  rw [weightSum]
   simp_rw [hw]
   exact h
 
@@ -269,12 +275,12 @@ bipartition.** Connects the *physical* independence hypothesis `IsProductWeightA
 abstract hypothesis `Finpartition.IsIndependentAcross` that Track B's cumulant-vanishing theorem
 (`cumulantFromMoment_eq_zero_of_isIndependentAcross`) needs. -/
 theorem occupationMoment_isIndependentAcross {w : FermionOccupation Mode → ℂ} {A B : Finset Mode}
-    (hw : IsProductWeightAcross w A B) (hZ : partitionFunction w ≠ 0) :
+    (hw : IsProductWeightAcross w A B) (hZ : weightSum w ≠ 0) :
     Finpartition.IsIndependentAcross (occupationMoment w) A B := by
   obtain ⟨hAB, hU, wA, wB, hfact⟩ := hw
   refine ⟨hAB, occupationMoment_bot hZ, fun T _ => ?_⟩
   rw [Finset.inf_eq_inter, Finset.inf_eq_inter]
-  have hZeq := partitionFunction_eq_mul_of_product_factorization hAB hU hfact
+  have hZeq := weightSum_eq_mul_of_product_factorization hAB hU hfact
   have hTAA : (T ∩ A) ∩ A = T ∩ A := by rw [Finset.inter_assoc, Finset.inter_self]
   have hTAB : (T ∩ A) ∩ B = ⊥ :=
     Finset.eq_empty_of_forall_notMem fun x hx =>
@@ -311,7 +317,7 @@ correlator of modes spanning both `A` and `B` vanishes. This packages Track B's
 `cumulantFromMoment_eq_zero_of_isIndependentAcross` so callers never need to name
 `Finpartition.IsIndependentAcross` themselves. -/
 theorem occupationCumulant_eq_zero_of_isProductWeightAcross {w : FermionOccupation Mode → ℂ}
-    {A B : Finset Mode} (hw : IsProductWeightAcross w A B) (hZ : partitionFunction w ≠ 0)
+    {A B : Finset Mode} (hw : IsProductWeightAcross w A B) (hZ : weightSum w ≠ 0)
     (hA : A ≠ ⊥) (hB : B ≠ ⊥) : occupationCumulant w (A ⊔ B) = 0 :=
   Finpartition.cumulantFromMoment_eq_zero_of_isIndependentAcross
     (occupationMoment_isIndependentAcross hw hZ) hA hB

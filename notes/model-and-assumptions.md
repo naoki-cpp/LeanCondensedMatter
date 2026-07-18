@@ -24,7 +24,7 @@ Physical models under consideration, their assumptions, and how each maps to a f
 - **Role:** extends the pure-state picture above to statistical mixtures, and gives the general (POVM) measurement postulate. Restricted to finite-dimensional `H` — see the trace-class caveat in `notes/caveats.md`.
 - **Density operator postulate:** the state of a system is a positive operator of trace `1` (`QuantumTheory.DensityOperator`, `LeanCondensedMatter/QuantumTheory/DensityOperator.lean`).
 - **General measurement postulate (Born rule):** a POVM (`QuantumTheory.POVM`, a finite family of positive operators summing to the identity) assigns outcome probabilities `QuantumTheory.prob P ρ m = Tr[E_m ρ]`; proved to sum to `1` over outcomes (`sum_prob_eq_one`).
-- **Purification:** `QuantumTheory.pure ψ = |ψ⟩⟨ψ|` maps a pure state (`QuantumTheory.State`) to its density-operator representative, via Mathlib's `InnerProductSpace.rankOne`.
+- **Pure-state density-operator embedding:** `QuantumTheory.pure ψ = |ψ⟩⟨ψ|` maps a pure state (`QuantumTheory.State`) to its density-operator representative, via Mathlib's `InnerProductSpace.rankOne`. This is not the standard mixed-state purification construction on an enlarged Hilbert space.
 - **Purity:** `QuantumTheory.purity ρ = Tr[ρ²]`; proved equal to `1` on `pure ψ` (`purity_pure`). General bounds `0 < purity ≤ 1` (relying on spectral decomposition) are not yet formalized — out of scope for now.
 
 ### Von Neumann entropy / Boltzmann's principle
@@ -52,7 +52,7 @@ Physical models under consideration, their assumptions, and how each maps to a f
 
 ### Finite-temperature Bloch–de Dominicis theorem
 
-- **Statement level:** thermal expectation value of a product of creation/annihilation operators equals the sum over all full pairings (contractions) of the product of pairwise thermal averages — the thermal-average generalization of Wick's theorem.
+- **State class and statement level:** for a finite-mode free/quasifree (Gaussian) Gibbs state, the thermal expectation value of a product of creation/annihilation operators equals the sum over all full pairings (contractions) of the product of pairwise thermal averages — the finite-temperature generalization of Wick's theorem. An arbitrary interacting Gibbs state is not covered by this pairing-only formula.
 - **Relation to Linked Cluster Theorem:** expected to serve as an input lemma to the Linked Cluster Theorem's diagrammatic expansion (pairings ↔ diagrams), but the precise logical dependency is not yet fixed — record the decision here once made.
 - **Convergence:** subject to the same caveat as the Linked Cluster Theorem below — treated first as an algebraic identity for a fixed finite sub-volume / finite operator product, not as an analytic statement about infinite sums.
 - **Reference only, not a dependency:** the external Lean library PhysLean formalizes the zero-temperature (vacuum expectation value) Wick's theorem (`wicks_theorem`, over a `WickContraction` type representing pairings, with sign/statistics bookkeeping). Decided not to add PhysLean as a project dependency — it proves the wrong (zero-temperature) statement and pulls in a large amount of unrelated QFT infrastructure. `WickContraction`'s combinatorial *shape* (as a type of pairings) may be worth consulting as design inspiration when defining the thermal-average pairing structure here, but the proof itself needs to be written independently for the thermal-average setting.

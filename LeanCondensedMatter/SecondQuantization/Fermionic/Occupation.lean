@@ -27,7 +27,7 @@ variable {Mode : Type*} [DecidableEq Mode]
 mode is either occupied (present) or empty (absent), with no multiplicity. -/
 abbrev FermionOccupation (Mode : Type*) := Finset Mode
 
-/-- **The vacuum state**: no mode occupied. -/
+/-- **The vacuum occupation configuration**: no mode occupied. -/
 def fermionVacuum : FermionOccupation Mode := ∅
 
 /-- **The total particle number** of a fermionic occupation-number state: the number of occupied

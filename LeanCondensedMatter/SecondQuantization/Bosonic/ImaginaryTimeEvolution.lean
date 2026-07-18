@@ -13,7 +13,7 @@ Phase B2 of Track D's bosonic line (`notes/roadmaps/second-quantization.md`), mi
 `E(n) := Σᵢ n(i)·ε(i)` (`freeEigenvalue`); the **algebraic, basis-diagonal realization** of
 `e^{τH₀}` (`imaginaryTimeEvolveFree`) this diagonality gives directly, without constructing an
 actual operator exponential or any topological completion of `FockSpaceBosonic Mode`; the
-Heisenberg-picture evolution `A(τ) := e^{τH₀} A e^{-τH₀}` of a general operator; and the evolved
+algebraic Heisenberg-type evolution `A(τ) := e^{τH₀} A e^{-τH₀}` of a general operator; and the evolved
 creation/annihilation operators `a_i(τ) = e^{-τε_i} a_i`, `a_i†(τ) = e^{τε_i} a_i†`.
 
 `imaginaryTimeEvolveFree ε τ` sends `|n⟩ ↦ exp(τ E(n)) • |n⟩` directly from `E(n)`'s value — this
@@ -127,10 +127,11 @@ theorem imaginaryTimeEvolveFree_neg_comp (ε : Mode → ℝ) (τ : ℝ) :
     (imaginaryTimeEvolveFree ε (-τ)).comp (imaginaryTimeEvolveFree ε τ) = LinearMap.id :=
   Common.diagonalEvolution_neg_comp (freeEigenvalue ε) τ
 
-/-! ## The Heisenberg-picture evolution of a general operator -/
+/-! ## The algebraic Heisenberg-type evolution of a general operator -/
 
-/-- **The imaginary-time (Heisenberg-picture) evolution of an operator `A` under the free
-Hamiltonian**: `A(τ) := e^{τH₀} A e^{-τH₀}`. -/
+/-- **The algebraic imaginary-time conjugation of an operator `A` under the free diagonal
+evolution**: notation `A(τ) := e^{τH₀} A e^{-τH₀}`. No analytic operator exponential or completed
+Hilbert-space conjugation is constructed here. -/
 noncomputable def imaginaryTimeEvolve (ε : Mode → ℝ) (τ : ℝ)
     (A : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode) :
     FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode :=

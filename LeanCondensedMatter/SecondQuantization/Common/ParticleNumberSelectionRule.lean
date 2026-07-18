@@ -5,7 +5,7 @@ set_option linter.style.header false
 /-!
 # The particle-number selection rule, generic over the occupation-state type
 
-`Fermionic/ThermalContraction.lean` proved, by direct case analysis on `FermionOccupation Mode`
+`Fermionic/WeightedContraction.lean` proved, by direct case analysis on `FermionOccupation Mode`
 cardinality, that composing two annihilation operators (or two creation operators) always yields
 an operator with vanishing diagonal matrix coefficients. That argument never actually used
 fermionic exchange statistics: it is the general fact that an operator changing the particle

@@ -12,7 +12,8 @@ Shared infrastructure for Track D's fermionic and bosonic lines
 in the occupation-number basis with some real eigenvalue `E(n)` — `Σᵢ∈n ε(i)` for fermions,
 `Σᵢ n(i)·ε(i)` for bosons — and both prove the exact same shape of facts about it: the basis-level
 action `|n⟩ ↦ exp(τ E(n))|n⟩`, the one-parameter semigroup law, mutual inversion of `e^{τH₀}` and
-`e^{-τH₀}`, and the Heisenberg-picture evolution `A(τ) := e^{τH₀} A e^{-τH₀}` of a general operator.
+`e^{-τH₀}`, and the algebraic Heisenberg-type evolution `A(τ) := e^{τH₀} A e^{-τH₀}` of a
+general operator.
 None of that depends on which occupation-state type or eigenvalue formula produced `E`, so it's
 extracted here as `diagonalEvolution energy τ` on `AlgebraicFock Config`, generic over `Config`
 and an arbitrary real-valued `energy : Config → ℝ`.
@@ -88,10 +89,11 @@ theorem diagonalEvolution_neg_comp (energy : Config → ℝ) (τ : ℝ) :
   rw [diagonalEvolution_add]
   simp
 
-/-! ## The Heisenberg-picture evolution of a general operator -/
+/-! ## Algebraic Heisenberg-type evolution of a general operator -/
 
-/-- **The imaginary-time (Heisenberg-picture) evolution of an operator `A` under the diagonal free
-Hamiltonian**: `A(τ) := e^{τH₀} A e^{-τH₀}`. -/
+/-- **The algebraic imaginary-time (Heisenberg-type) evolution of an operator `A` under the
+diagonal free Hamiltonian**: `A(τ) := e^{τH₀} A e^{-τH₀}`. This is the conjugation operation
+available on `AlgebraicFock`; it is not a completed-Hilbert-space operator construction. -/
 noncomputable def heisenbergEvolve (energy : Config → ℝ) (τ : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
