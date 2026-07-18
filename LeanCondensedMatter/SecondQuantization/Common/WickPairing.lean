@@ -1,7 +1,9 @@
 import LeanCondensedMatter.SecondQuantization.Common.Statistics
 import Mathlib.Data.Complex.Basic
-import Mathlib.Data.Finset.Powerset
+import Mathlib.Data.Finset.Filter
 import Mathlib.Data.Finset.Prod
+import Mathlib.Data.Fintype.Fin
+import Mathlib.Data.Fintype.Powerset
 import Mathlib.Data.Fintype.Sets
 
 set_option linter.style.header false
@@ -37,16 +39,12 @@ namespace Common
 /-- A normalized pair of ordered positions used in a Wick pairing. -/
 abbrev WickPair (n : ℕ) := Fin (2 * n) × Fin (2 * n)
 
-/-- The computable validity predicate for an ordered Wick pairing. -/
-def isWickPairing {n : ℕ} (pairs : Finset (WickPair n)) : Bool :=
-  pairs.all (fun pair => decide (pair.1 < pair.2)) &&
-    (Finset.univ : Finset (Fin (2 * n))).all fun i =>
-      decide ((pairs.filter fun pair => pair.1 = i || pair.2 = i).card = 1)
-
 /-- A finite set of normalized pairs is a Wick pairing when every position occurs in exactly one
 pair.  Normalization (`a < b`) makes the ordered crossing relation canonical. -/
 def IsWickPairing {n : ℕ} (pairs : Finset (WickPair n)) : Prop :=
-  isWickPairing pairs = true
+  pairs.filter (fun pair => pair.1 < pair.2) = pairs ∧
+    (Finset.univ : Finset (Fin (2 * n))).filter (fun i =>
+      (pairs.filter fun pair => pair.1 = i ∨ pair.2 = i).card = 1) = Finset.univ
 
 /-- A perfect pairing of the linearly ordered positions `Fin (2 * n)`. -/
 abbrev WickPairing (n : ℕ) := {pairs : Finset (WickPair n) // IsWickPairing pairs}
@@ -54,13 +52,20 @@ abbrev WickPairing (n : ℕ) := {pairs : Finset (WickPair n) // IsWickPairing pa
 /-- Every pair stored in a Wick pairing is normalized. -/
 theorem WickPairing.normalized {n : ℕ} (pairing : WickPairing n)
     {pair : WickPair n} (hpair : pair ∈ pairing.1) : pair.1 < pair.2 := by
-  simpa [IsWickPairing, isWickPairing] using pairing.2 |>.1 pair hpair
+  have hmem : pair ∈ pairing.1.filter (fun stored => stored.1 < stored.2) := by
+    rw [pairing.2.1]
+    exact hpair
+  exact (Finset.mem_filter.mp hmem).2
 
 /-- Every ordered position occurs in exactly one stored pair. -/
 theorem WickPairing.occurrence_card {n : ℕ} (pairing : WickPairing n)
     (i : Fin (2 * n)) :
-    (pairing.1.filter fun pair => pair.1 = i || pair.2 = i).card = 1 := by
-  simpa [IsWickPairing, isWickPairing] using pairing.2 |>.2 i
+    (pairing.1.filter fun pair => pair.1 = i ∨ pair.2 = i).card = 1 := by
+  have hmem : i ∈ (Finset.univ : Finset (Fin (2 * n))).filter (fun position =>
+      (pairing.1.filter fun pair => pair.1 = position ∨ pair.2 = position).card = 1) := by
+    rw [pairing.2.2]
+    simp
+  exact (Finset.mem_filter.mp hmem).2
 
 /-- The finite enumeration of all Wick pairings of `Fin (2 * n)`. -/
 def allWickPairings (n : ℕ) : Finset (WickPairing n) := Finset.univ
