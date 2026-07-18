@@ -104,12 +104,12 @@ branches. -/
 theorem thermalExpectation_timeOrderedProduct_annihilate_annihilate (ε : Mode → ℝ)
     (w : FermionOccupation Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
     thermalExpectation w
-      (timeOrderedProduct (Statistics.zetaInt Statistics.fermion)
+      (timeOrderedProduct
         (imaginaryTimeEvolve ε τ (annihilate i)) (imaginaryTimeEvolve ε τ' (annihilate j)) τ τ')
       = 0 := by
   rw [imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_annihilate]
   rcases lt_trichotomy τ' τ with h | h | h
-  · rw [timeOrderedProduct_of_gt _ _ _ h]
+  · rw [timeOrderedProduct_of_gt _ _ h]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, thermalExpectation_smul,
       thermalExpectation_annihilate_comp_annihilate]
   · subst h
@@ -117,7 +117,7 @@ theorem thermalExpectation_timeOrderedProduct_annihilate_annihilate (ε : Mode �
     simp [LinearMap.smul_comp, LinearMap.comp_smul, thermalExpectation_smul,
       thermalExpectation_add, thermalExpectation_neg,
       thermalExpectation_annihilate_comp_annihilate]
-  · rw [timeOrderedProduct_of_lt _ _ _ h]
+  · rw [timeOrderedProduct_of_lt _ _ h]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, thermalExpectation_smul,
       thermalExpectation_neg, thermalExpectation_annihilate_comp_annihilate]
 
@@ -126,19 +126,19 @@ theorem thermalExpectation_timeOrderedProduct_annihilate_annihilate (ε : Mode �
 theorem thermalExpectation_timeOrderedProduct_create_create (ε : Mode → ℝ)
     (w : FermionOccupation Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
     thermalExpectation w
-      (timeOrderedProduct (Statistics.zetaInt Statistics.fermion)
+      (timeOrderedProduct
         (imaginaryTimeEvolve ε τ (create i)) (imaginaryTimeEvolve ε τ' (create j)) τ τ')
       = 0 := by
   rw [imaginaryTimeEvolve_create, imaginaryTimeEvolve_create]
   rcases lt_trichotomy τ' τ with h | h | h
-  · rw [timeOrderedProduct_of_gt _ _ _ h]
+  · rw [timeOrderedProduct_of_gt _ _ h]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, thermalExpectation_smul,
       thermalExpectation_create_comp_create]
   · subst h
     rw [timeOrderedProduct_self_time]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, thermalExpectation_smul,
       thermalExpectation_add, thermalExpectation_neg, thermalExpectation_create_comp_create]
-  · rw [timeOrderedProduct_of_lt _ _ _ h]
+  · rw [timeOrderedProduct_of_lt _ _ h]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, thermalExpectation_smul,
       thermalExpectation_neg, thermalExpectation_create_comp_create]
 

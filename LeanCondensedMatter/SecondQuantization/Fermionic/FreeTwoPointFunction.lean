@@ -165,7 +165,7 @@ theorem freeThermalGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (
     show -(τ : ℂ) * (ε i : ℂ) + (τ : ℂ) * (ε i : ℂ) = 0 by ring,
     show (τ : ℂ) * (ε i : ℂ) + -(τ : ℂ) * (ε i : ℂ) = 0 by ring, Complex.exp_zero, one_smul,
     show (create i).comp (annihilate i) = numberOperator i from rfl]
-  rw [Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one, neg_smul, thermalExpectation_smul,
+  rw [neg_smul, thermalExpectation_smul,
     thermalExpectation_add, thermalExpectation_neg, thermalExpectation_smul, one_mul,
     show thermalExpectation (freeBoltzmannWeight ε β) ((annihilate i).comp (create i)) =
       freeThermalExpectation ε β ((annihilate i).comp (create i)) from rfl,
@@ -213,7 +213,7 @@ theorem freeThermalGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mod
     (τ τ' : ℝ) : freeThermalGreenFunction ε β i j τ τ' = 0 := by
   rw [freeThermalGreenFunction, thermalGreenFunction]
   rcases lt_trichotomy τ' τ with h | h | h
-  · rw [timeOrderedProduct_of_gt _ _ _ h, imaginaryTimeEvolve_annihilate,
+  · rw [timeOrderedProduct_of_gt _ _ h, imaginaryTimeEvolve_annihilate,
       imaginaryTimeEvolve_create]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, thermalExpectation_smul,
       thermalExpectation_annihilate_comp_create_of_ne _ hij]
@@ -223,8 +223,7 @@ theorem freeThermalGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mod
       thermalExpectation_add, thermalExpectation_neg,
       thermalExpectation_annihilate_comp_create_of_ne _ hij,
       thermalExpectation_create_comp_annihilate_of_ne _ hij]
-  · rw [timeOrderedProduct_of_lt _ _ _ h, imaginaryTimeEvolve_annihilate,
-      imaginaryTimeEvolve_create, Statistics.zetaInt_fermion]
+  · rw [timeOrderedProduct_of_lt _ _ h, imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, thermalExpectation_smul,
       thermalExpectation_neg, thermalExpectation_create_comp_annihilate_of_ne _ hij]
 

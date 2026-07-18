@@ -143,7 +143,7 @@ finite-sum shape.
 | `Common/OccupationBasis.lean` | `OccupationBasis Mode Config` (a `class`, resolved by instance search) — the architectural interface (`vacuum`, `occupation : Config → Mode → ℕ`, finiteness, faithfulness) both lines' concrete occupation types satisfy; the concrete instances (`SecondQuantization.occupationBasis` — fermionic, plain namespace — and `SecondQuantization.Bosonic.occupationBasis`) live in each statistics' own `Occupation.lean` (would invert the `Common/` → statistics-specific dependency direction if supplied here) | `proved`, both instances |
 | `Common/DiagonalEvolution.lean` | `diagonalEvolution energy τ` — the algebraic, basis-diagonal `e^{τH₀}` for a free Hamiltonian diagonal in `AlgebraicFock Config`'s eigenbasis with eigenvalue `energy : Config → ℝ`, and its Heisenberg-picture `heisenbergEvolve`; the semigroup law, mutual inversion, `A(0) = A` | `proved` |
 | `Common/ExchangeCommutator.lean` | `zetaCommutator`/`exchangeCommutator` (`notes/roadmaps/second-quantization.md`'s Phase 9 section below) | `proved` |
-| `Common/TimeOrdering.lean` | `Common.timeOrderedProduct` — the imaginary-time-ordered product `T_τ` of two `AlgebraicFock Config` endomorphisms, generic over `Config` (never depended on the concrete occupation-state type, only on `.comp`/scalar multiplication); `Fermionic/ThermalTimeOrdering.lean`/`Bosonic/ThermalTimeOrdering.lean` are thin wrappers preserving their own public names | `proved`, both wrappers |
+| `Common/TimeOrdering.lean` | `Common.zetaTimeOrderedProduct`/`Common.timeOrderedProduct` — the imaginary-time-ordered product `T_τ` of two `AlgebraicFock Config` endomorphisms, generic over `Config` (never depended on the concrete occupation-state type, only on `.comp`/scalar multiplication) and, mirroring `ExchangeCommutator.lean`'s `zetaCommutator`/`exchangeCommutator` split, indexed by a raw `ζ : ℤ` or by a `Statistics` value; `Fermionic/ThermalTimeOrdering.lean`/`Bosonic/ThermalTimeOrdering.lean` fix the statistics (no `ζ`/`Statistics` parameter at their own call sites) while preserving their own public names | `proved`, both wrappers |
 
 **Symmetric file layout, `Fermionic/NumberOperator.lean` split from `Hamiltonian.lean`:** the
 fermionic number operator (`numberOperator`/`numberOperator_apply`/`numberOperator_basisState`)
@@ -251,18 +251,25 @@ order:
   expected physical time dependence rather than just an abstract conjugation.
 
 **Step 2 done, in `Fermionic/ThermalTimeOrdering.lean`:**
-- `timeOrderedProduct ζ A B τA τB` — `T_τ[A(τA) B(τB)]`: later time acts first, picking up the
-  exchange sign `ζ : ℤ` (`Statistics.zetaInt`, `-1` fermions/`+1` bosons) on every swap.
-  **`θ(0) = 1/2`**: at equal times this symmetrizes the two branches,
-  `T_τ[A(τ)B(τ)] = ½(A(τ)B(τ) + ζ B(τ)A(τ))`, rather than picking either one. Time ordering
-  doesn't depend on `imaginaryTimeEvolve` itself — it orders whatever two time-labelled operators
-  it's given — but is intended for use on `imaginaryTimeEvolve ε τ A`, feeding
+- `timeOrderedProduct A B τA τB` — `T_τ[A(τA) B(τB)]`: later time acts first, picking up the
+  fermionic exchange sign `-1` on every swap. **`θ(0) = 1/2`**: at equal times this symmetrizes
+  the two branches, `T_τ[A(τ)B(τ)] = ½(A(τ)B(τ) - B(τ)A(τ))`, rather than picking either one. Time
+  ordering doesn't depend on `imaginaryTimeEvolve` itself — it orders whatever two time-labelled
+  operators it's given — but is intended for use on `imaginaryTimeEvolve ε τ A`, feeding
   `Fermionic/ThermalGreenFunction.lean`. **Moved to `Common/TimeOrdering.lean`** (per the
   `Common/` design principle above — this genuinely doesn't depend on the concrete
-  occupation-state type either), with `Fermionic/ThermalTimeOrdering.lean` now a thin wrapper
-  preserving these same public names, and `Bosonic/ThermalTimeOrdering.lean` the symmetric
-  bosonic wrapper (added even though nothing in the bosonic line consumes it yet, for file-layout
-  symmetry).
+  occupation-state type either), mirroring `ExchangeCommutator.lean`'s two-layer split:
+  `Common.zetaTimeOrderedProduct ζ A B τA τB` takes a raw `ζ : ℤ`;
+  `Common.timeOrderedProduct s A B τA τB`, for `s : Statistics`, specializes `ζ := s.zetaInt`.
+  `Fermionic/ThermalTimeOrdering.lean` fixes `s := Statistics.fermion` (no `ζ`/`Statistics`
+  parameter at its own call sites, so downstream files no longer spell out
+  `Statistics.zetaInt Statistics.fermion`), and `Bosonic/ThermalTimeOrdering.lean` fixes
+  `s := Statistics.boson` (added even though nothing in the bosonic line consumes it yet, for
+  file-layout symmetry). **Scope note** (`Common/TimeOrdering.lean`'s module docstring):
+  `timeOrderedProduct_swap`'s exchange-sign claim is appropriate for elementary
+  creation/annihilation-type operators (or operators whose exchange parity matches `s`), not
+  arbitrary linear endomorphisms — e.g. the number operator `N_i` (even) does not pick up `-1`
+  when swapped past another such operator, and nothing in the types enforces this.
 - `timeOrderedProduct_of_gt`/`_of_lt`, `timeOrderedProduct_self_time` — the two strict branches and
   the symmetrized equal-time value.
 - `timeOrderedProduct_swap` — swapping the operator pair (with their times) and negating by `ζ`
