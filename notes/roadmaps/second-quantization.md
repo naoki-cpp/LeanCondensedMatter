@@ -284,8 +284,28 @@ directly from `Finset.prod_add` (the binomial-type expansion of a product of sum
 Fermi–Dirac occupation number then following from splitting that product on whether mode `i` is
 occupied (`freePartitionFunction ε β = (1+f_i) · Σ_{t ⊆ univ.erase i} e^{-βE(t)}`, `f_i :=
 e^{-βε_i}`) and comparing to the weighted trace of `numberOperator i` restricted to the same
-occupied/unoccupied split. **Not yet done:** the closed-form two-point Green function itself
-(`⟨c_i†c_j⟩ = δᵢⱼf_i`, `⟨c_ic_j†⟩ = δᵢⱼ(1-f_i)`), and KMS antiperiodicity.
+occupied/unoccupied split.
+
+**Step 3 follow-up, part 3, done, in `Fermionic/FreeTwoPointFunction.lean`:** the closed-form free
+thermal Green function, closing the remaining gap `FreeBoltzmannWeight.lean` flagged.
+`freeThermalGreenFunction_of_ne`: `G₀,ᵢⱼ(τ,τ') = 0` for `i ≠ j`, at any `τ, τ'` — proved from a
+basis-level mismatch argument (`matrixCoeff_annihilate_comp_create_of_ne`/
+`_create_comp_annihilate_of_ne`), **not** an instance of the `U(1)` particle-number selection rule
+(`(annihilate i).comp (create j)` carries charge `0`, so the selection rule says nothing about
+it — off-diagonal vanishing here is a strictly finer fact than the selection rule, specific to
+*which* mode is toggled). `freeThermalGreenFunction_of_gt_self`/`_of_lt_self`: the explicit
+`i = j` closed form `-e^{-(τ-τ')ε_i}·e^{βε_i}/(e^{βε_i}+1)` (`τ' < τ`) /
+`e^{-(τ-τ')ε_i}/(e^{βε_i}+1)` (`τ < τ'`), from CAR's `{c_i,c_i†} = id`
+(`annihilate_comp_create_self : c_ic_i† = id - N_i`) reducing the `τ' < τ` closed form to
+`1 - ⟨N_i⟩₀,β` (already known from the previous step), combined with the explicit
+`c_i(τ) = e^{-τε_i}c_i` evolution formulas. `freeThermalGreenFunction_self_time_self`: the
+separate equal-time, same-mode closed form `G₀,ᵢᵢ(τ,τ) = f_i - 1/2` — genuinely discontinuous
+against both one-sided limits above (their difference is forced to `-1` by CAR), so **any future
+KMS antiperiodicity theorem must be stated away from this coincident-time discontinuity** (e.g. for
+`τ ≠ τ'`, or as one-sided boundary relations `G₀(0⁺)`/`G₀(0⁻)`) rather than unconditionally at
+`τ = τ'`. **Not yet done:** KMS antiperiodicity itself, and the
+fundamental-domain package (`0 < β`, `0 ≤ τ,τ' ≤ β`) — the last remaining piece of
+`FreeBoltzmannWeight.lean`'s original gap list.
 
 **Step 4 (partial) done, in `Fermionic/ThermalContraction.lean`:** same-type thermal contractions
 vanish for any occupation-number-diagonal weight `w` used by `weightedTrace` — `⟨T_τ[c_i(τ)

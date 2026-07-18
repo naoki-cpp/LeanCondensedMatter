@@ -15,11 +15,13 @@ it is the free weight for the same `ε` the evolution uses.
 **This is the free Gibbs-weight specialization of the time-ordered correlator, not yet the full
 Matsubara Green-function apparatus.** `freeThermalGreenFunction` accepts any `β : ℝ` and `τ, τ' :
 ℝ` with no further structure — the standard finite-temperature package (`0 < β`, the fundamental
-domain `0 ≤ τ, τ' ≤ β`, KMS fermionic antiperiodicity `G₀(τ+β,τ') = -G₀(τ,τ')`) is not yet
+domain `0 ≤ τ, τ' ≤ β`, KMS antiperiodicity away from coincident-time discontinuities, together
+with the corresponding one-sided boundary relations) is not yet
 established. The closed-form free-fermion occupation number `⟨N_i⟩₀ = 1/(e^{βε_i}+1)` is now
-proved in `Fermionic/FreePartitionFunction.lean`; the closed-form two-point Green function
-(`G₀,ᵢⱼ = 0` for `i ≠ j`, its explicit `τ`-dependence) and the KMS/fundamental-domain package
-remain future work.
+proved in `Fermionic/FreePartitionFunction.lean`, and the closed-form two-point Green function
+(`G₀,ᵢⱼ = 0` for `i ≠ j`, its explicit `τ`-dependence for `i = j`) in
+`Fermionic/FreeTwoPointFunction.lean`; only the KMS/fundamental-domain package remains future
+work.
 -/
 
 namespace SecondQuantization
