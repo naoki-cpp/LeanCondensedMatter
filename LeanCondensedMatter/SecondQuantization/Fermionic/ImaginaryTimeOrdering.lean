@@ -6,7 +6,7 @@ set_option linter.style.header false
 /-!
 # Imaginary-time ordering `T_τ`, specialized to the fermionic Fock space
 
-The `ThermalTimeOrdering` filename is historical: this module defines imaginary-time ordering and
+This module defines imaginary-time ordering and
 does not introduce a thermal state, weight, or inverse temperature.
 
 Phase 9, step 2 (`notes/roadmaps/second-quantization.md`): a thin wrapper fixing
@@ -15,9 +15,9 @@ Phase 9, step 2 (`notes/roadmaps/second-quantization.md`): a thin wrapper fixing
 concrete occupation-state type, so this file only imports `FockSpace.lean`, not
 `ImaginaryTimeEvolution.lean`. Fixing the statistics (rather than taking a `Statistics`/`ζ`
 parameter) means callers never need to spell out `Statistics.zetaInt Statistics.fermion`, and
-downstream files (`ThermalGreenFunction.lean`, `ThermalContraction.lean`,
+downstream files (`WeightedFreeTwoPointFunction.lean`, `WeightedContraction.lean`,
 `Fermionic/FreeTwoPointFunction.lean`) call `timeOrderedProduct A B τA τB` directly. See
-`Bosonic/ThermalTimeOrdering.lean` for the bosonic mirror, and `Common/TimeOrdering.lean`'s module
+`Bosonic/ImaginaryTimeOrdering.lean` for the bosonic mirror, and `Common/TimeOrdering.lean`'s module
 docstring for the scope note on which operators the exchange-sign convention below applies to
 (elementary creation/annihilation-type operators, not arbitrary `A`, `B`).
 -/

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.ThermalExpectation
+import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedDiagonalFunctional
 import LeanCondensedMatter.Combinatorics.CumulantFactorization
 import Mathlib.Tactic.FieldSimp
 
@@ -22,12 +22,12 @@ type, with
 `occupationMoment w ⊥ = 1` matching `IsIndependentAcross`'s normalization hypothesis.
 
 Despite this file's current `Common/` path, the implementation is fermionic-specific: it imports
-`Fermionic.ThermalExpectation` and uses `FermionOccupation` throughout. It should be moved under
+`Fermionic.WeightedDiagonalFunctional` and uses `FermionOccupation` throughout. It should be moved under
 `Fermionic/` or generalized before being presented as statistics-independent common infrastructure.
 
 `occupationProjector S` supplies the operator-level witness `∏ᵢ∈S nᵢ` (diagonal in the
 occupation-number basis, built via `Finsupp.lift` exactly as `create`/`annihilate` are), with
-`thermalExpectation_occupationProjector` confirming it reproduces `occupationMoment` and
+`normalizedWeightedDiagonal_occupationProjector` confirming it reproduces `occupationMoment` and
 `occupationProjector_singleton` confirming it agrees with `numberOperator` at a single mode.
 `occupationProjector_mul`/`_comm`/`_idempotent`/`_empty` establish it as a genuine commuting-
 projector algebra under composition, making "`occupationProjector S` is the simultaneous product
@@ -55,7 +55,7 @@ occupation correlator under the weight `w` — the diagonal functional
 `⟨∏ᵢ∈S nᵢ⟩_w` of the simultaneous occupation of `S`, computed directly as a weighted sum. For positive real weights (a
 genuine Boltzmann weight) it is the probability that every mode in `S` is occupied; `w` here is an
 arbitrary complex-valued weight, so no probabilistic interpretation is assumed in general. As with
-the historical identifier `thermalExpectation`, division by `partitionFunction w` is only physically meaningful when
+the normalized weighted diagonal functional, division by `partitionFunction w` is only physically meaningful when
 `partitionFunction w ≠ 0`. -/
 noncomputable def occupationMoment (w : FermionOccupation Mode → ℂ) (S : Finset Mode) : ℂ :=
   (∑ n ∈ (Finset.univ : Finset (FermionOccupation Mode)).filter (S ⊆ ·), w n) /
@@ -76,10 +76,10 @@ theorem occupationMoment_bot {w : FermionOccupation Mode → ℂ} (hZ : partitio
 /-- **`occupationMoment` at a singleton `{i}` is the normalized weighted diagonal functional of
 `numberOperator i`.**
 Connects the weighted-sum definition back to Track D's operator-level normalized weighted
-functional (the historical identifier `thermalExpectation`). -/
+functional. -/
 theorem occupationMoment_singleton (w : FermionOccupation Mode → ℂ) (i : Mode) :
-    occupationMoment w {i} = thermalExpectation w (numberOperator i) := by
-  rw [occupationMoment, thermalExpectation, weightedTrace_numberOperator]
+    occupationMoment w {i} = normalizedWeightedDiagonal w (numberOperator i) := by
+  rw [occupationMoment, normalizedWeightedDiagonal, weightedTrace_numberOperator]
   have hfilter : (Finset.univ : Finset (FermionOccupation Mode)).filter
       (({i} : Finset Mode) ⊆ ·) = (Finset.univ : Finset (FermionOccupation Mode)).filter
       (i ∈ ·) := by
@@ -125,9 +125,9 @@ omit [LinearOrder Mode] in
 /-- **The normalized weighted functional of `occupationProjector S` is `occupationMoment w S`.** The operator-
 level bridge promised by `occupationMoment`'s docstring: the simultaneous-occupation observable's
 normalized weighted diagonal functional agrees with the direct weighted-sum definition. -/
-theorem thermalExpectation_occupationProjector (w : FermionOccupation Mode → ℂ) (S : Finset Mode) :
-    thermalExpectation w (occupationProjector S) = occupationMoment w S := by
-  rw [thermalExpectation, occupationMoment]
+theorem normalizedWeightedDiagonal_occupationProjector (w : FermionOccupation Mode → ℂ) (S : Finset Mode) :
+    normalizedWeightedDiagonal w (occupationProjector S) = occupationMoment w S := by
+  rw [normalizedWeightedDiagonal, occupationMoment]
   congr 1
   have h : ∀ n : FermionOccupation Mode,
       matrixCoeff (occupationProjector S) n n = if S ⊆ n then 1 else 0 := fun n => by

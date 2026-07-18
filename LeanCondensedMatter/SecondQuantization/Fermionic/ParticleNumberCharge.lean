@@ -10,7 +10,7 @@ Instantiates `Common.CarriesGradingDegree` (`Common/ParticleNumberSelectionRule.
 `annihilate i`/`create i`, with grading `fermionParticleNumber` (cast to `ℤ`): `annihilate i`
 carries charge `-1`, `create i` carries charge `+1`. Combined with
 `Common.CarriesGradingDegree.comp` and `Common.diagonalCoeff_eq_zero_of_carriesGradingDegree`,
-this reduces the same-type contraction vanishing proved by hand in `ThermalContraction.lean` to
+this reduces the same-type contraction vanishing proved by hand in `WeightedContraction.lean` to
 the general particle-number selection rule.
 -/
 

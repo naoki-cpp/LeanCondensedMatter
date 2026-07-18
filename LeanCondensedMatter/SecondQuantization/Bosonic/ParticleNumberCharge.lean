@@ -13,7 +13,7 @@ about the `√n`/`√(n+1)` normalization coefficients — `Common.smul_basisSta
 the off-target basis coefficient for *any* scalar multiplier, so acting with `annihilate i`/
 `create i` on `basisState n` has a nonzero `m`-coefficient only when `m` is exactly the one basis
 state (`removeOccupation i n`/`createOccupation i n`) the operator's basis-level action targets.
-This confirms the claim already made in `Fermionic/ThermalContraction.lean`'s module docstring
+This confirms the claim already made in `Fermionic/WeightedContraction.lean`'s module docstring
 that the particle-number selection rule is a `U(1)` fact independent of exchange statistics:
 nothing here uses that modes commute rather than anticommute.
 -/

@@ -6,10 +6,10 @@ set_option linter.style.header false
 /-!
 # Imaginary-time ordering `T_τ`, specialized to the bosonic Fock space
 
-The `ThermalTimeOrdering` filename is historical: this module defines imaginary-time ordering and
+This module defines imaginary-time ordering and
 does not introduce a thermal state, weight, or inverse temperature.
 
-The bosonic mirror of `Fermionic/ThermalTimeOrdering.lean`: a thin wrapper fixing
+The bosonic mirror of `Fermionic/ImaginaryTimeOrdering.lean`: a thin wrapper fixing
 `Common/TimeOrdering.lean`'s `Common.timeOrderedProduct` to `FockSpaceBosonic Mode` *and* to
 `Statistics.boson`. Nothing here is fermion-specific — the definition and every theorem below are
 identical to the fermionic file up to the type of the operators and the sign (`+1` rather than

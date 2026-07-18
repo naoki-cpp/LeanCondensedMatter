@@ -50,15 +50,15 @@ noncomputable def partitionFunction (w : FermionOccupation Mode → ℂ) : ℂ :
   ∑ n : FermionOccupation Mode, w n
 
 /-- **The normalized weighted diagonal functional** of `A` against `w`, `Tr_w(A) / Z(w)`.
-The historical identifier is `thermalExpectation`; it is a genuine thermal (Gibbs-state)
+The normalized weighted diagonal functional is `normalizedWeightedDiagonal`; it is a genuine thermal (Gibbs-state)
 expectation only once `w` is specialized to a positive Boltzmann weight with `Z(w) ≠ 0`. For a
 general complex `w` this is simply a `w`-weighted, `Z(w)`-normalized diagonal functional, with no
 guarantee of positivity, reality (even against a Hermitian `A`), or a Gibbs-state interpretation. -/
-noncomputable def thermalExpectation (w : FermionOccupation Mode → ℂ)
+noncomputable def normalizedWeightedDiagonal (w : FermionOccupation Mode → ℂ)
     (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) : ℂ :=
   weightedTrace w A / partitionFunction w
 
-/-! ## Linearity of `weightedTrace`/`thermalExpectation` in the operator argument -/
+/-! ## Linearity of `weightedTrace`/`normalizedWeightedDiagonal` in the operator argument -/
 
 omit [LinearOrder Mode] in
 theorem weightedTrace_smul (c : ℂ) (w : FermionOccupation Mode → ℂ)
@@ -75,29 +75,31 @@ theorem weightedTrace_add (w : FermionOccupation Mode → ℂ)
   exact Finset.sum_add_distrib
 
 omit [LinearOrder Mode] in
-theorem thermalExpectation_smul (c : ℂ) (w : FermionOccupation Mode → ℂ)
+theorem normalizedWeightedDiagonal_smul (c : ℂ) (w : FermionOccupation Mode → ℂ)
     (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
-    thermalExpectation w (c • A) = c * thermalExpectation w A := by
-  rw [thermalExpectation, thermalExpectation, weightedTrace_smul, mul_div_assoc]
+    normalizedWeightedDiagonal w (c • A) = c * normalizedWeightedDiagonal w A := by
+  rw [normalizedWeightedDiagonal, normalizedWeightedDiagonal, weightedTrace_smul, mul_div_assoc]
 
 omit [LinearOrder Mode] in
-theorem thermalExpectation_add (w : FermionOccupation Mode → ℂ)
+theorem normalizedWeightedDiagonal_add (w : FermionOccupation Mode → ℂ)
     (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
-    thermalExpectation w (A + B) = thermalExpectation w A + thermalExpectation w B := by
-  rw [thermalExpectation, thermalExpectation, thermalExpectation, weightedTrace_add, add_div]
+    normalizedWeightedDiagonal w (A + B) = normalizedWeightedDiagonal w A + normalizedWeightedDiagonal w B := by
+  rw [normalizedWeightedDiagonal, normalizedWeightedDiagonal, normalizedWeightedDiagonal, weightedTrace_add, add_div]
 
 omit [LinearOrder Mode] in
-theorem thermalExpectation_neg (w : FermionOccupation Mode → ℂ)
+theorem normalizedWeightedDiagonal_neg (w : FermionOccupation Mode → ℂ)
     (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
-    thermalExpectation w (-A) = -thermalExpectation w A := by
+    normalizedWeightedDiagonal w (-A) = -normalizedWeightedDiagonal w A := by
   rw [show (-A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) = (-1 : ℂ) • A from
-    (neg_one_smul ℂ A).symm, thermalExpectation_smul, neg_one_mul]
+    (neg_one_smul ℂ A).symm, normalizedWeightedDiagonal_smul, neg_one_mul]
 
 omit [LinearOrder Mode] in
-theorem thermalExpectation_sub (w : FermionOccupation Mode → ℂ)
+theorem normalizedWeightedDiagonal_sub (w : FermionOccupation Mode → ℂ)
     (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
-    thermalExpectation w (A - B) = thermalExpectation w A - thermalExpectation w B := by
-  rw [sub_eq_add_neg, thermalExpectation_add, thermalExpectation_neg, sub_eq_add_neg]
+    normalizedWeightedDiagonal w (A - B) = normalizedWeightedDiagonal w A - normalizedWeightedDiagonal w B := by
+  change normalizedWeightedDiagonal w (A + -B) =
+    normalizedWeightedDiagonal w A + -normalizedWeightedDiagonal w B
+  rw [normalizedWeightedDiagonal_add, normalizedWeightedDiagonal_neg]
 
 /-! ## Matrix coefficients of diagonal operators -/
 
@@ -130,11 +132,11 @@ theorem weightedTrace_id (w : FermionOccupation Mode → ℂ) :
 
 omit [LinearOrder Mode] in
 /-- **The normalized weighted functional of the identity is `1`**, `⟨id⟩_w = Z(w)/Z(w) = 1`,
-given a nonzero partition function. For a Gibbs/Boltzmann weight this is the thermal statement;
-the identifier is retained for API compatibility. -/
-theorem thermalExpectation_id (w : FermionOccupation Mode → ℂ) (hw : partitionFunction w ≠ 0) :
-    thermalExpectation w (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] _) = 1 := by
-  rw [thermalExpectation, weightedTrace_id, div_self hw]
+given a nonzero partition function. For a Gibbs/Boltzmann weight this is the corresponding Gibbs
+statement. -/
+theorem normalizedWeightedDiagonal_id (w : FermionOccupation Mode → ℂ) (hw : partitionFunction w ≠ 0) :
+    normalizedWeightedDiagonal w (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] _) = 1 := by
+  rw [normalizedWeightedDiagonal, weightedTrace_id, div_self hw]
 
 /-! ## Weighted traces of the number operators -/
 

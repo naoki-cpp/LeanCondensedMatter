@@ -68,8 +68,8 @@ creation and annihilation operators exist, as a later derived construction.
 | 4 | `Fermionic/CreationAnnihilation.lean` — `create`/`annihilate` on basis vectors *with* the Jordan–Wigner-style sign factor, extended linearly; vacuum, particle number, raising/lowering proved before CAR | `proved` |
 | 5 | `Fermionic/CanonicalAnticommutationRelations.lean` — `{aᵢ, aⱼ} = 0`, `{aᵢ†, aⱼ†} = 0`, `{aᵢ, aⱼ†} = δᵢⱼ`. Spelled out in full (not abbreviated `CAR.lean`) so the module name says what it proves | `proved` |
 | 6 | `Fermionic/Hamiltonian.lean` — `numberOperator`/`totalNumberOperator`, `freeHamiltonian` (dispersion-weighted number operators), `interactionHamiltonian` (density-density coupling, a quartic monomial in creation/annihilation operators — see note below). Finite mode sets still assumed | `proved` |
-| 6.5 | `Fermionic/ThermalExpectation.lean` — `matrixCoeff`, `traceFock`, `weightedTrace`, `partitionFunction`, and the historical identifier `thermalExpectation`, for an *arbitrary* weight `w : FermionOccupation Mode → ℂ` (not yet the genuine Gibbs weight `e^{-βE(n)}`, no analytic `exp` anywhere). The mathematical content is a normalized weighted diagonal functional; the thermal name is appropriate only after Gibbs specialization. Isolates the combinatorial "sum over basis states, weighted" structure both a formal and a genuine Gibbs weight will specialize to | `proved` |
-| 7 | `Fermionic/FormalExp.lean` — `formalExpTerm`/`formalExpTruncation`, the formal (term-by-term) Taylor series for `exp(-H)` and its finite truncations — deliberately *not* the analytic operator exponential (`FockSpaceFermionic Mode` has no topology), and deliberately *not* named `Dyson*`/`dyson*` (that name is reserved for the genuine interaction-picture Dyson series, a separate future target). Validated on `freeHamiltonian` (`truncatedBoltzmannWeight`, `traceFock_formalExpTruncation_freeHamiltonian`, `weightedTrace_formalExpTruncation_freeHamiltonian`), where it reduces to the expected finite-order truncated Boltzmann weight, feeding directly into `Fermionic/ThermalExpectation.lean`'s `partitionFunction`/`weightedTrace`. Splitting `H₀ + V` combinatorially by perturbation order (the genuine Dyson series) and the analytic Gibbs weight `e^{-βE(n)}` itself both remain, as does a general (non-basis-diagonal) quartic interaction and the moment/cumulant formal-power-series connection to Track B — see the file's own "What remains" note | `proved` |
+| 6.5 | `Fermionic/WeightedDiagonalFunctional.lean` — `matrixCoeff`, `traceFock`, `weightedTrace`, `partitionFunction`, and `normalizedWeightedDiagonal`, for an *arbitrary* weight `w : FermionOccupation Mode → ℂ` (not yet the genuine Gibbs weight `e^{-βE(n)}`, no analytic `exp` anywhere). The mathematical content is a normalized weighted diagonal functional; the Gibbs interpretation is appropriate only after Gibbs specialization. Isolates the combinatorial "sum over basis states, weighted" structure both a formal and a genuine Gibbs weight will specialize to | `proved` |
+| 7 | `Fermionic/FormalExp.lean` — `formalExpTerm`/`formalExpTruncation`, the formal (term-by-term) Taylor series for `exp(-H)` and its finite truncations — deliberately *not* the analytic operator exponential (`FockSpaceFermionic Mode` has no topology), and deliberately *not* named `Dyson*`/`dyson*` (that name is reserved for the genuine interaction-picture Dyson series, a separate future target). Validated on `freeHamiltonian` (`truncatedBoltzmannWeight`, `traceFock_formalExpTruncation_freeHamiltonian`, `weightedTrace_formalExpTruncation_freeHamiltonian`), where it reduces to the expected finite-order truncated Boltzmann weight, feeding directly into `Fermionic/WeightedDiagonalFunctional.lean`'s `partitionFunction`/`weightedTrace`. Splitting `H₀ + V` combinatorially by perturbation order (the genuine Dyson series) and the analytic Gibbs weight `e^{-βE(n)}` itself both remain, as does a general (non-basis-diagonal) quartic interaction and the moment/cumulant formal-power-series connection to Track B — see the file's own "What remains" note | `proved` |
 | 8 | `Common/QuantumLinkedCluster.lean` / `Fermionic/FormalLogPartitionFunction.lean` — combinatorial linked-cluster groundwork: occupation-cumulant connectedness under a product weight, and `log Z` as a formal power series. Not yet the genuine (time-ordered, Wick-expanded) Linked Cluster Theorem — see below | `stated` (groundwork landed, see below) |
 | 9 | `Fermionic/ImaginaryTimeEvolution.lean` — the algebraic, basis-diagonal realization of free imaginary-time evolution for the free Hamiltonian, and its Heisenberg-type conjugation of a general algebraic operator. First step of the finite-temperature Green-function / time-ordered-correlator line a genuine LCT needs | `stated` |
 
@@ -134,7 +134,7 @@ is symmetric by construction, but genuinely different analytic content stays on 
 own side: bosonic occupation-number sums are infinite series (even for a finite mode set, since
 `Occupation Mode := Mode →₀ ℕ` is unbounded per mode) where fermionic ones are `Finset.sum`s
 (`FermionOccupation Mode := Finset Mode` is finite), so the bosonic thermal-trace layer needs its
-own convergence-aware implementation, not a forced fit into `Fermionic/ThermalExpectation.lean`'s
+own convergence-aware implementation, not a forced fit into `Fermionic/WeightedDiagonalFunctional.lean`'s
 finite-sum shape.
 
 | File | Contents | Status |
@@ -143,7 +143,7 @@ finite-sum shape.
 | `Common/OccupationBasis.lean` | `OccupationBasis Mode Config` (a `class`, resolved by instance search) — the architectural interface (`vacuum`, `occupation : Config → Mode → ℕ`, finiteness, faithfulness) both lines' concrete occupation types satisfy; the concrete instances (`SecondQuantization.occupationBasis` — fermionic, plain namespace — and `SecondQuantization.Bosonic.occupationBasis`) live in each statistics' own `Occupation.lean` (would invert the `Common/` → statistics-specific dependency direction if supplied here) | `proved`, both instances |
 | `Common/DiagonalEvolution.lean` | `diagonalEvolution energy τ` — the algebraic, basis-diagonal realization of `e^{τH₀}` for a free Hamiltonian diagonal in `AlgebraicFock Config`'s eigenbasis with eigenvalue `energy : Config → ℝ`, and its Heisenberg-type `heisenbergEvolve`; the semigroup law, mutual inversion, `A(0) = A` | `proved` |
 | `Common/ExchangeCommutator.lean` | `zetaCommutator`/`exchangeCommutator` (`notes/roadmaps/second-quantization.md`'s Phase 9 section below) | `proved` |
-| `Common/TimeOrdering.lean` | `Common.zetaTimeOrderedProduct`/`Common.timeOrderedProduct` — the imaginary-time-ordered product `T_τ` of two `AlgebraicFock Config` endomorphisms, generic over `Config` (never depended on the concrete occupation-state type, only on `.comp`/scalar multiplication) and, mirroring `ExchangeCommutator.lean`'s `zetaCommutator`/`exchangeCommutator` split, indexed by a raw `ζ : ℤ` or by a `Statistics` value; `Fermionic/ThermalTimeOrdering.lean`/`Bosonic/ThermalTimeOrdering.lean` fix the statistics (no `ζ`/`Statistics` parameter at their own call sites) while preserving their own public names | `proved`, both wrappers |
+| `Common/TimeOrdering.lean` | `Common.zetaTimeOrderedProduct`/`Common.timeOrderedProduct` — the imaginary-time-ordered product `T_τ` of two `AlgebraicFock Config` endomorphisms, generic over `Config` (never depended on the concrete occupation-state type, only on `.comp`/scalar multiplication) and, mirroring `ExchangeCommutator.lean`'s `zetaCommutator`/`exchangeCommutator` split, indexed by a raw `ζ : ℤ` or by a `Statistics` value; `Fermionic/ImaginaryTimeOrdering.lean`/`Bosonic/ImaginaryTimeOrdering.lean` fix the statistics (no `ζ`/`Statistics` parameter at their own call sites) | `proved`, both wrappers |
 | `Common/ExchangeAlgebra.lean` | `Common.ExchangeAlgebra s Mode Config` — a `class` packaging the *all-index* exchange relation `a_i a_j† - ζ a_j† a_i = δᵢⱼ`, `a_i a_j - ζ a_j a_i = 0`, `a_i† a_j† - ζ a_j† a_i† = 0` (via `exchangeCommutator s`) that CAR (`s = fermion`) and CCR (`s = boson`) share, letting a future Bloch–de Dominicis induction move operators past each other without referencing fermionic `anticomm_*`/bosonic `comm_*` directly; the concrete instances (`SecondQuantization.exchangeAlgebra` — fermionic, plain namespace — and `SecondQuantization.Bosonic.exchangeAlgebra`) live in each statistics' own directory, mirroring `OccupationBasis.lean`'s architecture, and are derived from the bridging fact that `exchangeCommutator s = anticomm`/`comm` for *any* two operators (generalizing the single-mode bridging in `Fermionic/NumberOperator.lean`/`Bosonic/NumberOperator.lean`) | `proved`, both instances |
 | `Common/BlochDeDominicisPairing.lean` | `Common.BlochDeDominicis.Pairing n` — perfect pairings of `Fin (2 * n)` behind a stable `partner` interface, implemented by fixed-point-free involutive permutations; finite enumeration, partner laws, normalized-pair membership, crossing count, statistics weight `ζ^crossings`, `Pairing.eraseZeroPair` with its named order-isomorphism API, preservation of normalized pair membership under deletion, and preservation of `Crosses` under the deletion order isomorphism; the four-position theorem gives the adjacent/crossing/nested weights `1`, `ζ`, `1` without choosing an enumeration order | `proved` |
 | `Common/DeletedPositions.lean` | `deletedPositions n j hzero` and `deletedPositionsOrderIso n j hzero` — the finite ordered-set seam that identifies `Fin (2 * n)` with `Fin (2 * (n + 1))` after deleting position `0` and a distinct position `j`; cardinality, membership, and strict monotonicity are proved for the later pairing-restriction induction | `proved` |
@@ -189,10 +189,10 @@ Track D line to Track B's abstract cumulant machinery:
 - `occupationMoment w S` — `⟨∏ᵢ∈S nᵢ⟩_w`, computed as a weighted sum over occupation states
   (`occupationMoment_bot`, `occupationMoment_singleton` confirm it lands in Track B's moment type
   and matches the normalized weighted diagonal functional (the historical identifier
-  `thermalExpectation`).
+`normalizedWeightedDiagonal`).
 - `occupationProjector S` — the same observable as an actual `FockSpaceFermionic` operator
   (`occupationProjector_basisState`/`_singleton`/`_empty`/`_mul`/`_comm`/`_idempotent`;
-  `thermalExpectation_occupationProjector` ties it back to `occupationMoment`; the theorem
+  `normalizedWeightedDiagonal_occupationProjector` ties it back to `occupationMoment`; the theorem
   name is retained for API compatibility).
 - `IsProductWeightAcross w A B` — `w` factors across a mode bipartition
   (`Disjoint A B`, `A ∪ B = univ`, `w n = wA (n ∩ A) * wB (n ∩ B)`), e.g. a Gibbs weight for
@@ -228,10 +228,10 @@ Dyson series. Planned
 order:
 
 1. `Fermionic/ImaginaryTimeEvolution.lean` — the algebraic, basis-diagonal realization of `e^{τH₀}` and its Heisenberg-type conjugation (**done**, see below).
-2. `Fermionic/ThermalTimeOrdering.lean` — imaginary-time ordering `T_τ` (**done**, see below).
-3. `Fermionic/ThermalGreenFunction.lean` — `G_{ij}(τ,τ') := -⟨T_τ c_i(τ) c_j†(τ')⟩_β` (**done**, see below;
+2. `Fermionic/ImaginaryTimeOrdering.lean` — imaginary-time ordering `T_τ` (**done**, see below).
+3. `Fermionic/WeightedFreeTwoPointFunction.lean` — `G_{ij}(τ,τ') := -⟨T_τ c_i(τ) c_j†(τ')⟩_β` (**done**, see below;
    only the free-Hamiltonian `G₀`, and not yet as a special case of a general `n`-point correlator).
-4. `Fermionic/ThermalContraction.lean` — same-type contractions vanish (**done**, see below).
+4. `Fermionic/WeightedContraction.lean` — same-type contractions vanish (**done**, see below).
    `BlochDeDominicis.lean` — the general finite-mode, finite-temperature fermionic Bloch–de Dominicis
    theorem for the free/quasifree Gibbs reference state, not yet started.
 5. `DysonExpansionFermionic.lean` — the genuine interaction-picture Dyson series (the name
@@ -256,20 +256,20 @@ order:
   `d/dτ c_i(τ) = [H₀, c_i(τ)] = -ε_i c_i(τ)`, confirming `imaginaryTimeEvolve` reproduces the
   expected physical time dependence rather than just an abstract conjugation.
 
-**Step 2 done, in `Fermionic/ThermalTimeOrdering.lean`:**
+**Step 2 done, in `Fermionic/ImaginaryTimeOrdering.lean`:**
 - `timeOrderedProduct A B τA τB` — `T_τ[A(τA) B(τB)]`: later time acts first, picking up the
   fermionic exchange sign `-1` on every swap. **`θ(0) = 1/2`**: at equal times this symmetrizes
   the two branches, `T_τ[A(τ)B(τ)] = ½(A(τ)B(τ) - B(τ)A(τ))`, rather than picking either one. Time
   ordering doesn't depend on `imaginaryTimeEvolve` itself — it orders whatever two time-labelled
   operators it's given — but is intended for use on `imaginaryTimeEvolve ε τ A`, feeding
-  `Fermionic/ThermalGreenFunction.lean`. **Moved to `Common/TimeOrdering.lean`** (per the
+  `Fermionic/WeightedFreeTwoPointFunction.lean`. **Moved to `Common/TimeOrdering.lean`** (per the
   `Common/` design principle above — this genuinely doesn't depend on the concrete
   occupation-state type either), mirroring `ExchangeCommutator.lean`'s two-layer split:
   `Common.zetaTimeOrderedProduct ζ A B τA τB` takes a raw `ζ : ℤ`;
   `Common.timeOrderedProduct s A B τA τB`, for `s : Statistics`, specializes `ζ := s.zetaInt`.
-  `Fermionic/ThermalTimeOrdering.lean` fixes `s := Statistics.fermion` (no `ζ`/`Statistics`
+  `Fermionic/ImaginaryTimeOrdering.lean` fixes `s := Statistics.fermion` (no `ζ`/`Statistics`
   parameter at its own call sites, so downstream files no longer spell out
-  `Statistics.zetaInt Statistics.fermion`), and `Bosonic/ThermalTimeOrdering.lean` fixes
+  `Statistics.zetaInt Statistics.fermion`), and `Bosonic/ImaginaryTimeOrdering.lean` fixes
   `s := Statistics.boson` (added even though nothing in the bosonic line consumes it yet, for
   file-layout symmetry). **Scope note** (`Common/TimeOrdering.lean`'s module docstring):
   `timeOrderedProduct_swap` is an algebraic identity holding for *arbitrary* `A`, `B` — what's
@@ -286,16 +286,16 @@ order:
   statement that swapping two operators inside a time-ordered product costs exactly the exchange
   sign.
 
-**Step 3 done, in `Fermionic/ThermalGreenFunction.lean`:** the historical identifier
-`thermalGreenFunction ε w i j τ τ' :=
--thermalExpectation w (timeOrderedProduct (Statistics.zetaInt Statistics.fermion)
+**Step 3 done, in `Fermionic/WeightedFreeTwoPointFunction.lean`:** the arbitrary-weight identifier
+`weightedFreeTwoPointFunction ε w i j τ τ' :=
+-normalizedWeightedDiagonal w (timeOrderedProduct (Statistics.fermion)
 (imaginaryTimeEvolve ε τ (annihilate i)) (imaginaryTimeEvolve ε τ' (create j)) τ τ')`. For
 *arbitrary* `w` this is only a free-evolution correlator, not the genuine `G₀` — see
 `Fermionic/FreeBoltzmannWeight.lean` below for the specialization that closes that gap.
-- `thermalGreenFunction_of_gt`/`_of_lt` — the two strict-time branches, verifying the sign:
+- `weightedFreeTwoPointFunction_of_gt`/`_of_lt` — the two strict-time branches, verifying the sign:
   `_of_lt`'s fermionic swap sign (`-1`) cancels the definition's own `-1`, giving
   `+⟨c_j†(τ') c_i(τ)⟩_w` for `τ < τ'` — the standard finite-temperature convention.
-- `thermalGreenFunction_self_time` — at equal times, resolves to the `θ(0) = 1/2` symmetrized
+- `weightedFreeTwoPointFunction_self_time` — at equal times, resolves to the `θ(0) = 1/2` symmetrized
   value. This is *not* a claim that the Green function's two one-sided limits `G(0⁺)`/`G(0⁻)`
   agree — they generically don't (CAR forces `G(0⁺) - G(0⁻) = -1`) — only that this formalization's
   convention picks their average at exact coincidence.
@@ -307,10 +307,10 @@ order:
   positivity/non-vanishing without reasoning about complex `exp`; `freeBoltzmannWeight_ne_zero`,
   `partitionFunction_freeBoltzmannWeight_ne_zero` (a sum of positive reals over the nonempty
   `FermionOccupation Mode`, hence a nonzero positive real cast).
-- `freePartitionFunction`/`freeThermalExpectation` — `partitionFunction`/the historical
-  `thermalExpectation` specialized to `freeBoltzmannWeight`, named wrappers so callers don't have to spell out the
+- `freePartitionFunction`/`freeGibbsExpectation` — `partitionFunction`/the
+  `normalizedWeightedDiagonal` specialized to `freeBoltzmannWeight`, named wrappers so callers don't have to spell out the
   weight each time; `freePartitionFunction_ne_zero`.
-- **`freeThermalGreenFunction ε β i j τ τ' := thermalGreenFunction ε (freeBoltzmannWeight ε β) i j
+- **`freeGibbsGreenFunction ε β i j τ τ' := weightedFreeTwoPointFunction ε (freeBoltzmannWeight ε β) i j
   τ τ'`** — the free Gibbs-weight specialization of the time-ordered correlator: a positive Gibbs
   weight for the same `ε` the evolution uses, closing both gaps above. **Not yet the full Matsubara
   Green-function apparatus** — `0 < β`, the fundamental domain `0 ≤ τ, τ' ≤ β`, and KMS fermionic
@@ -321,7 +321,7 @@ order:
 function factorizes mode-by-mode, `Z₀(β) = Σₙ e^{-β E(n)} = ∏ᵢ (1 + e^{-βε_i})`
 (`freePartitionFunction_eq_prod`), and the free thermal expectation of the number operator is the
 closed-form Fermi–Dirac distribution, `⟨N_i⟩₀,β = 1/(e^{βε_i}+1)`
-(`freeThermalExpectation_numberOperator`) — the occupation-number half of the gap
+(`freeGibbsExpectation_numberOperator`) — the occupation-number half of the gap
 `FreeBoltzmannWeight.lean` flagged. Unlike the bosonic partition function (`Bosonic
 /FreePartitionFunction.lean`, B3a), no convergence theory is needed: each fermionic mode
 contributes only `0`/`1` to the occupied set, so `Σₙ e^{-β E(n)} = ∏ᵢ (1+e^{-βε_i})` is proved
@@ -333,17 +333,17 @@ occupied/unoccupied split.
 
 **Step 3 follow-up, part 3, done, in `Fermionic/FreeTwoPointFunction.lean`:** the closed-form free
 thermal Green function, closing the remaining gap `FreeBoltzmannWeight.lean` flagged.
-`freeThermalGreenFunction_of_ne`: `G₀,ᵢⱼ(τ,τ') = 0` for `i ≠ j`, at any `τ, τ'` — proved from a
+`freeGibbsGreenFunction_of_ne`: `G₀,ᵢⱼ(τ,τ') = 0` for `i ≠ j`, at any `τ, τ'` — proved from a
 basis-level mismatch argument (`matrixCoeff_annihilate_comp_create_of_ne`/
 `_create_comp_annihilate_of_ne`), **not** an instance of the `U(1)` particle-number selection rule
 (`(annihilate i).comp (create j)` carries charge `0`, so the selection rule says nothing about
 it — off-diagonal vanishing here is a strictly finer fact than the selection rule, specific to
-*which* mode is toggled). `freeThermalGreenFunction_of_gt_self`/`_of_lt_self`: the explicit
+*which* mode is toggled). `freeGibbsGreenFunction_of_gt_self`/`_of_lt_self`: the explicit
 `i = j` closed form `-e^{-(τ-τ')ε_i}·e^{βε_i}/(e^{βε_i}+1)` (`τ' < τ`) /
 `e^{-(τ-τ')ε_i}/(e^{βε_i}+1)` (`τ < τ'`), from CAR's `{c_i,c_i†} = id`
 (`annihilate_comp_create_self : c_ic_i† = id - N_i`) reducing the `τ' < τ` closed form to
 `1 - ⟨N_i⟩₀,β` (already known from the previous step), combined with the explicit
-`c_i(τ) = e^{-τε_i}c_i` evolution formulas. `freeThermalGreenFunction_self_time_self`: the
+`c_i(τ) = e^{-τε_i}c_i` evolution formulas. `freeGibbsGreenFunction_self_time_self`: the
 separate equal-time, same-mode closed form `G₀,ᵢᵢ(τ,τ) = f_i - 1/2` — genuinely discontinuous
 against both one-sided limits above (their difference is forced to `-1` by CAR), so **any future
 KMS antiperiodicity theorem must be stated away from this coincident-time discontinuity** (e.g. for
@@ -352,10 +352,10 @@ KMS antiperiodicity theorem must be stated away from this coincident-time discon
 fundamental-domain package (`0 < β`, `0 ≤ τ,τ' ≤ β`) — the last remaining piece of
 `FreeBoltzmannWeight.lean`'s original gap list.
 
-**Step 4 (partial) done, in `Fermionic/ThermalContraction.lean`:** same-type thermal contractions
+**Step 4 (partial) done, in `Fermionic/WeightedContraction.lean`:** same-type thermal contractions
 vanish for any occupation-number-diagonal weight `w` used by `weightedTrace` — `⟨T_τ[c_i(τ)
 c_j(τ')]⟩_w = 0` and `⟨T_τ[c_i†(τ) c_j†(τ')]⟩_w = 0`
-(`thermalExpectation_timeOrderedProduct_annihilate_annihilate`/`_create_create`) — a `U(1)`
+(`normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate`/`_create_create`) — a `U(1)`
 particle-number selection rule (`cᵢcⱼ`/`cᵢ†cⱼ†` carry nonzero charge), not a fact specific to
 fermionic statistics or to this project's number-conserving Gibbs weight; the operator-level
 reason that, in the number-conserving occupation-diagonal setting considered throughout this
@@ -371,12 +371,12 @@ type rather than a fermion-specific case analysis; `Fermionic/ParticleNumberChar
 `Bosonic/ParticleNumberCharge.lean` instantiate it for `annihilate`/`create` in both statistics
 (charge `∓1`), confirming the rule really is exchange-statistics-independent. Also added:
 linearity lemmas for `matrixCoeff` (`Common/AlgebraicFock.lean`) and
-`weightedTrace`/`thermalExpectation` (`Fermionic/ThermalExpectation.lean`) in their operator
+`weightedTrace`/`normalizedWeightedDiagonal` (`Fermionic/WeightedDiagonalFunctional.lean`) in their operator
 argument.
 **Not yet done:** the general finite-mode, finite-temperature fermionic Bloch–de Dominicis theorem for the
 free/quasifree Gibbs reference state itself (the `n`-point sum-over-pairings formula,
 `BlochDeDominicis.lean`) — this file only established the
-vanishing half, not the full decomposition into `thermalGreenFunction` factors; the finite-
+vanishing half, not the full decomposition into `weightedFreeTwoPointFunction` factors; the finite-
 temperature structure noted above (KMS antiperiodicity etc.); the full Matsubara-Green-function
 apparatus; the genuine Dyson series and diagram connectedness (steps 5–7).
 
@@ -395,14 +395,14 @@ is in hand. CAR's `{c_i,c_i†} = id` and CCR's `[a_i,a_i†] = id` become the *
 `Common.comp_eq_id_add_of_zetaCommutator_eq_id` derives `a_i a_i† = id + ζ•N_i` from it
 generically — an *operator-level reordering identity*, not a Wick-theorem contraction (a thermal
 two-point function/`ℂ`-number, which is what `Fermionic/FreeTwoPointFunction.lean`'s
-`freeThermalExpectation_annihilate_comp_create`/`_create_comp_annihilate` already provide).
+`freeGibbsExpectation_annihilate_comp_create`/`_create_comp_annihilate` already provide).
 `Fermionic/NumberOperator.lean`'s `annihilate_comp_create_self` (`ζ = -1`, proved there since PR #78,
 now refactored to go through `exchangeCommutator`) and `Bosonic/NumberOperator.lean`'s new `annihilate_comp_create_self`
 (`ζ = 1`, `a_i a_i† = id + N_i`, the first bosonic `numberOperator`/reordering result — the bosonic
 line had no `numberOperator` at all before this) are both literal instances.
 
 **Time ordering also made statistics-indexed, in `Common/TimeOrdering.lean`:** see the table
-above; `Fermionic/ThermalTimeOrdering.lean`/`Bosonic/ThermalTimeOrdering.lean` fix their own
+above; `Fermionic/ImaginaryTimeOrdering.lean`/`Bosonic/ImaginaryTimeOrdering.lean` fix their own
 statistics outright.
 
 **The all-index exchange relation done, in `Common/ExchangeAlgebra.lean`:** the strictly more
@@ -444,7 +444,7 @@ implementation directories.
 the crossing-count/weight recurrence and a first concrete Bloch–de Dominicis induction step (the finite-temperature
 4-point identity `⟨A₁A₂A₃A₄⟩_{0,β} = ⟨A₁A₂⟩_{0,β}⟨A₃A₄⟩_{0,β} + ζ⟨A₁A₃⟩_{0,β}⟨A₂A₄⟩_{0,β} + ⟨A₁A₄⟩_{0,β}⟨A₂A₃⟩_{0,β}`, before the
 general `2n`-point theorem) using `ExchangeAlgebra` to validate the pairing-sign design; the
-bosonic thermal-trace layer (`weightedTrace`/`thermalExpectation`/`partitionFunction`) that
-`Fermionic/ThermalExpectation.lean` already has and the free bosonic two-point/occupation-number
+bosonic thermal-trace layer (`weightedTrace`/`normalizedWeightedDiagonal`/`partitionFunction`) that
+`Fermionic/WeightedDiagonalFunctional.lean` already has and the free bosonic two-point/occupation-number
 closed forms would need — deferred since the fermionic, finite-mode line remains this track's
 primary path to the Linked Cluster Theorem.

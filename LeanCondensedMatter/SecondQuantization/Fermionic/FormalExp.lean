@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.ThermalExpectation
+import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedDiagonalFunctional
 
 set_option linter.style.header false
 
@@ -113,7 +113,7 @@ theorem formalExpTruncation_freeHamiltonian_basisState (ε : Mode → ℝ)
 Hamiltonian's dispersion `ε`: the order-`N` partial sum of the scalar Taylor series for
 `exp(-E(n))`, `E(n) := Σ_{i∈n} ε(i)`. This is exactly the scalar produced by
 `formalExpTruncation_freeHamiltonian_basisState`, named separately so it can be fed to
-`partitionFunction`/`weightedTrace` (`ThermalExpectationFermionic.lean`) as a genuine (if only
+`partitionFunction`/`weightedTrace` (`WeightedDiagonalFunctional.lean`) as a genuine (if only
 finite-order-approximate) weight. -/
 noncomputable def truncatedBoltzmannWeight (ε : Mode → ℝ) (N : ℕ) (n : FermionOccupation Mode) :
     ℂ :=
@@ -129,7 +129,7 @@ theorem matrixCoeff_formalExpTruncation_freeHamiltonian (ε : Mode → ℝ) (N :
 
 /-- **The order-`N` formal partition function of the free Hamiltonian** is exactly
 `partitionFunction` applied to the order-`N` truncated Boltzmann weight — the finite-Taylor-order
-approximation to the Gibbs weight has entered `ThermalExpectationFermionic.lean`'s machinery. -/
+approximation to the Gibbs weight has entered `WeightedDiagonalFunctional.lean`'s machinery. -/
 theorem traceFock_formalExpTruncation_freeHamiltonian (ε : Mode → ℝ) (N : ℕ) :
     traceFock (formalExpTruncation (freeHamiltonian ε) N) =
       partitionFunction (truncatedBoltzmannWeight ε N) := by

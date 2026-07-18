@@ -1,19 +1,19 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.ThermalGreenFunction
+import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedFreeTwoPointFunction
 
 set_option linter.style.header false
 
 /-!
 # The free Boltzmann weight, and the genuine free thermal Green function
 
-Phase 9 (`notes/roadmaps/second-quantization.md`): specializes `thermalExpectation`,
-`partitionFunction`, and `thermalGreenFunction` — all previously stated for an *arbitrary* complex
+Phase 9 (`notes/roadmaps/second-quantization.md`): specializes `normalizedWeightedDiagonal`,
+`partitionFunction`, and `weightedFreeTwoPointFunction` — all previously stated for an *arbitrary* complex
 weight `w` — to the genuine free Gibbs weight `w(n) = e^{-β E(n)}`, `E(n) := Σᵢ∈n ε(i)`, for the
 same dispersion `ε` used by `imaginaryTimeEvolve`. This closes both gaps
-`ThermalGreenFunction.lean`'s module docstring flagged: `w` is now a genuine positive weight, and
+`WeightedFreeTwoPointFunction.lean`'s module docstring flagged: `w` is now a genuine positive weight, and
 it is the free weight for the same `ε` the evolution uses.
 
 **This is the free Gibbs-weight specialization of the time-ordered correlator, not yet the full
-Matsubara Green-function apparatus.** `freeThermalGreenFunction` accepts any `β : ℝ` and `τ, τ' :
+Matsubara Green-function apparatus.** `freeGibbsGreenFunction` accepts any `β : ℝ` and `τ, τ' :
 ℝ` with no further structure — the standard finite-temperature package (`0 < β`, the fundamental
 domain `0 ≤ τ, τ' ≤ β`, KMS antiperiodicity away from coincident-time discontinuities, together
 with the corresponding one-sided boundary relations) is not yet
@@ -69,19 +69,19 @@ omit [DecidableEq Mode] [LinearOrder Mode] in
 theorem freePartitionFunction_ne_zero (ε : Mode → ℝ) (β : ℝ) : freePartitionFunction ε β ≠ 0 :=
   partitionFunction_freeBoltzmannWeight_ne_zero ε β
 
-/-- **The free thermal expectation value**, `⟨A⟩₀,β`: `thermalExpectation` specialized to
+/-- **The free Gibbs expectation value**, `⟨A⟩₀,β`: `normalizedWeightedDiagonal` specialized to
 `freeBoltzmannWeight`. -/
-noncomputable def freeThermalExpectation (ε : Mode → ℝ) (β : ℝ)
+noncomputable def freeGibbsExpectation (ε : Mode → ℝ) (β : ℝ)
     (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) : ℂ :=
-  thermalExpectation (freeBoltzmannWeight ε β) A
+  normalizedWeightedDiagonal (freeBoltzmannWeight ε β) A
 
-/-- **The free thermal two-point correlator `G₀`**: `thermalGreenFunction` specialized to the free
+/-- **The free Gibbs two-point correlator `G₀`**: `weightedFreeTwoPointFunction` specialized to the free
 Boltzmann weight for the *same* dispersion `ε` used in the imaginary-time evolution — `w` is a
 genuine positive Gibbs weight (`partitionFunction_freeBoltzmannWeight_ne_zero`) for the same `ε`
-the evolution uses, closing the two gaps `ThermalGreenFunction.lean` flagged. See the module
+the evolution uses, closing the two gaps `WeightedFreeTwoPointFunction.lean` flagged. See the module
 docstring for what finite-temperature structure (KMS antiperiodicity, the fundamental domain)
 still remains before this is the full Matsubara Green function. -/
-noncomputable def freeThermalGreenFunction (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ) : ℂ :=
-  thermalGreenFunction ε (freeBoltzmannWeight ε β) i j τ τ'
+noncomputable def freeGibbsGreenFunction (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ) : ℂ :=
+  weightedFreeTwoPointFunction ε (freeBoltzmannWeight ε β) i j τ τ'
 
 end SecondQuantization

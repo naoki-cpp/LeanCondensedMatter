@@ -1,15 +1,15 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.FreePartitionFunction
-import LeanCondensedMatter.SecondQuantization.Fermionic.ThermalGreenFunction
+import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedFreeTwoPointFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.NumberOperator
 
 set_option linter.style.header false
 
 /-!
-# The closed-form free thermal Green function
+# The closed-form free Gibbs Green function
 
 Phase 9 follow-up (`notes/roadmaps/second-quantization.md`): the mixed contraction closed forms
-`⟨c_i c_j†⟩` and `⟨c_j† c_i⟩` that `thermalGreenFunction_of_gt`/`_of_lt` reduce
-`freeThermalGreenFunction` to, closing the remaining gap `FreeBoltzmannWeight.lean`'s module
+`⟨c_i c_j†⟩` and `⟨c_j† c_i⟩` that `weightedFreeTwoPointFunction_of_gt`/`_of_lt` reduce
+`freeGibbsGreenFunction` to, closing the remaining gap `FreeBoltzmannWeight.lean`'s module
 docstring flags: `G₀,ᵢⱼ = 0` for `i ≠ j`.
 
 **Off-diagonal (`i ≠ j`) vanishing is *not* an instance of the `U(1)` particle-number selection
@@ -26,10 +26,10 @@ already rewrites `(annihilate i).comp (create i)` as `id - numberOperator i`
 (`annihilate_comp_create_self`, from CAR's `{c_i, c_i†} = id`), so its thermal expectation is
 `1 - ⟨N_i⟩₀,β`, already computed in `FreePartitionFunction.lean`. **The equal-time,
 same-mode case `G₀,ᵢᵢ(τ,τ)` is a separate, third closed form**
-(`freeThermalGreenFunction_self_time_self`), not a limit of either one-sided formula: it comes from
+(`freeGibbsGreenFunction_self_time_self`), not a limit of either one-sided formula: it comes from
 `timeOrderedProduct`'s `θ(0) = 1/2` symmetrization convention, and is genuinely discontinuous
 against both one-sided limits (`G₀,ᵢᵢ(τ,τ'⁺) → -(1-f_i)`, `G₀,ᵢᵢ(τ,τ'⁻) → f_i` as `τ' → τ`, their
-difference forced to `-1` by CAR — `ThermalGreenFunction.lean`'s module docstring already flags
+difference forced to `-1` by CAR — `WeightedFreeTwoPointFunction.lean`'s module docstring already flags
 this discontinuity).
 -/
 
@@ -94,24 +94,24 @@ theorem weightedTrace_create_comp_annihilate_of_ne (w : FermionOccupation Mode �
     (hij : i ≠ j) : weightedTrace w ((create j).comp (annihilate i)) = 0 := by
   simp [weightedTrace, matrixCoeff_create_comp_annihilate_of_ne hij]
 
-theorem thermalExpectation_annihilate_comp_create_of_ne (w : FermionOccupation Mode → ℂ)
-    {i j : Mode} (hij : i ≠ j) : thermalExpectation w ((annihilate i).comp (create j)) = 0 := by
-  rw [thermalExpectation, weightedTrace_annihilate_comp_create_of_ne w hij, zero_div]
+theorem normalizedWeightedDiagonal_annihilate_comp_create_of_ne (w : FermionOccupation Mode → ℂ)
+{i j : Mode} (hij : i ≠ j) : normalizedWeightedDiagonal w ((annihilate i).comp (create j)) = 0 := by
+  rw [normalizedWeightedDiagonal, weightedTrace_annihilate_comp_create_of_ne w hij, zero_div]
 
-theorem thermalExpectation_create_comp_annihilate_of_ne (w : FermionOccupation Mode → ℂ)
-    {i j : Mode} (hij : i ≠ j) : thermalExpectation w ((create j).comp (annihilate i)) = 0 := by
-  rw [thermalExpectation, weightedTrace_create_comp_annihilate_of_ne w hij, zero_div]
+theorem normalizedWeightedDiagonal_create_comp_annihilate_of_ne (w : FermionOccupation Mode → ℂ)
+{i j : Mode} (hij : i ≠ j) : normalizedWeightedDiagonal w ((create j).comp (annihilate i)) = 0 := by
+  rw [normalizedWeightedDiagonal, weightedTrace_create_comp_annihilate_of_ne w hij, zero_div]
 
 /-! ## Diagonal (`i = j`): the free hole/occupation numbers `1 - f_i`, `f_i` -/
 
 /-- **The free hole number** `⟨c_i c_i†⟩₀,β = 1 - ⟨N_i⟩₀,β = e^{βε_i}/(e^{βε_i}+1)`. -/
-theorem freeThermalExpectation_annihilate_comp_create_self (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
-    freeThermalExpectation ε β ((annihilate i).comp (create i)) =
+theorem freeGibbsExpectation_annihilate_comp_create_self (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
+    freeGibbsExpectation ε β ((annihilate i).comp (create i)) =
       Complex.exp ((β : ℂ) * (ε i : ℂ)) / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) := by
-  rw [annihilate_comp_create_self, freeThermalExpectation, thermalExpectation_sub,
-    thermalExpectation_id _ (partitionFunction_freeBoltzmannWeight_ne_zero ε β),
-    show thermalExpectation (freeBoltzmannWeight ε β) (numberOperator i) =
-      freeThermalExpectation ε β (numberOperator i) from rfl, freeThermalExpectation_numberOperator]
+  rw [annihilate_comp_create_self, freeGibbsExpectation, normalizedWeightedDiagonal_sub,
+    normalizedWeightedDiagonal_id _ (partitionFunction_freeBoltzmannWeight_ne_zero ε β),
+    show normalizedWeightedDiagonal (freeBoltzmannWeight ε β) (numberOperator i) =
+      freeGibbsExpectation ε β (numberOperator i) from rfl, freeGibbsExpectation_numberOperator]
   have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
     rw [show Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 =
       ((Real.exp (β * ε i) + 1 : ℝ) : ℂ) by push_cast [Complex.ofReal_exp]; ring]
@@ -122,30 +122,30 @@ theorem freeThermalExpectation_annihilate_comp_create_self (ε : Mode → ℝ) (
 /-! ## The closed-form free thermal Green function -/
 
 /-- **`G₀,ᵢᵢ(τ, τ')` for `τ' < τ`**: `-e^{-(τ-τ')ε_i} · e^{βε_i}/(e^{βε_i}+1)`. -/
-theorem freeThermalGreenFunction_of_gt_self (ε : Mode → ℝ) (β : ℝ) (i : Mode) {τ τ' : ℝ}
+theorem freeGibbsGreenFunction_of_gt_self (ε : Mode → ℝ) (β : ℝ) (i : Mode) {τ τ' : ℝ}
     (h : τ' < τ) :
-    freeThermalGreenFunction ε β i i τ τ' =
+    freeGibbsGreenFunction ε β i i τ τ' =
       - (Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) *
         (Complex.exp ((β : ℂ) * (ε i : ℂ)) / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1))) := by
-  rw [freeThermalGreenFunction, thermalGreenFunction_of_gt ε (freeBoltzmannWeight ε β) i i h,
+  rw [freeGibbsGreenFunction, weightedFreeTwoPointFunction_of_gt ε (freeBoltzmannWeight ε β) i i h,
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
-    LinearMap.comp_smul, smul_smul, thermalExpectation_smul, ← freeThermalExpectation,
-    freeThermalExpectation_annihilate_comp_create_self]
+    LinearMap.comp_smul, smul_smul, normalizedWeightedDiagonal_smul, ← freeGibbsExpectation,
+    freeGibbsExpectation_annihilate_comp_create_self]
   rw [show Complex.exp (-(τ : ℂ) * (ε i : ℂ)) * Complex.exp ((τ' : ℂ) * (ε i : ℂ)) =
       Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) by
     rw [← Complex.exp_add]; congr 1; push_cast; ring]
 
 /-- **`G₀,ᵢᵢ(τ, τ')` for `τ < τ'`**: `e^{-(τ-τ')ε_i} · 1/(e^{βε_i}+1)`. -/
-theorem freeThermalGreenFunction_of_lt_self (ε : Mode → ℝ) (β : ℝ) (i : Mode) {τ τ' : ℝ}
+theorem freeGibbsGreenFunction_of_lt_self (ε : Mode → ℝ) (β : ℝ) (i : Mode) {τ τ' : ℝ}
     (h : τ < τ') :
-    freeThermalGreenFunction ε β i i τ τ' =
+    freeGibbsGreenFunction ε β i i τ τ' =
       Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) *
         (1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1)) := by
-  rw [freeThermalGreenFunction, thermalGreenFunction_of_lt ε (freeBoltzmannWeight ε β) i i h,
+  rw [freeGibbsGreenFunction, weightedFreeTwoPointFunction_of_lt ε (freeBoltzmannWeight ε β) i i h,
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
     LinearMap.comp_smul, smul_smul,
-    show (create i).comp (annihilate i) = numberOperator i from rfl, thermalExpectation_smul,
-    ← freeThermalExpectation, freeThermalExpectation_numberOperator]
+    show (create i).comp (annihilate i) = numberOperator i from rfl, normalizedWeightedDiagonal_smul,
+    ← freeGibbsExpectation, freeGibbsExpectation_numberOperator]
   rw [show Complex.exp ((τ' : ℂ) * (ε i : ℂ)) * Complex.exp (-(τ : ℂ) * (ε i : ℂ)) =
       Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) by
     rw [← Complex.exp_add]; congr 1; push_cast; ring]
@@ -155,23 +155,23 @@ formula above: `timeOrderedProduct`'s `θ(0) = 1/2` convention symmetrizes
 `½(⟨c_i(τ) c_i†(τ)⟩ - ⟨c_i†(τ) c_i(τ)⟩) = ½((1-f_i) - f_i) = 1/2 - f_i`, giving `G₀,ᵢᵢ(τ,τ) =
 -(1/2 - f_i) = f_i - 1/2` — genuinely discontinuous against both one-sided limits `G₀,ᵢᵢ(τ,τ'⁺) →
 -(1-f_i)` and `G₀,ᵢᵢ(τ,τ'⁻) → f_i` as `τ' → τ` (their difference is `-1`, forced by CAR, matching
-`thermalGreenFunction_self_time`'s module-level remark). -/
-theorem freeThermalGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i : Mode) (τ : ℝ) :
-    freeThermalGreenFunction ε β i i τ τ =
+`weightedFreeTwoPointFunction_self_time`'s module-level remark). -/
+theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i : Mode) (τ : ℝ) :
+    freeGibbsGreenFunction ε β i i τ τ =
       1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) - (2 : ℂ)⁻¹ := by
-  rw [freeThermalGreenFunction, thermalGreenFunction_self_time, imaginaryTimeEvolve_annihilate,
+  rw [freeGibbsGreenFunction, weightedFreeTwoPointFunction_self_time, imaginaryTimeEvolve_annihilate,
     imaginaryTimeEvolve_create]
   simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, ← Complex.exp_add,
     show -(τ : ℂ) * (ε i : ℂ) + (τ : ℂ) * (ε i : ℂ) = 0 by ring,
     show (τ : ℂ) * (ε i : ℂ) + -(τ : ℂ) * (ε i : ℂ) = 0 by ring, Complex.exp_zero, one_smul,
     show (create i).comp (annihilate i) = numberOperator i from rfl]
-  rw [neg_smul, thermalExpectation_smul,
-    thermalExpectation_add, thermalExpectation_neg, thermalExpectation_smul, one_mul,
-    show thermalExpectation (freeBoltzmannWeight ε β) ((annihilate i).comp (create i)) =
-      freeThermalExpectation ε β ((annihilate i).comp (create i)) from rfl,
-    show thermalExpectation (freeBoltzmannWeight ε β) (numberOperator i) =
-      freeThermalExpectation ε β (numberOperator i) from rfl,
-    freeThermalExpectation_annihilate_comp_create_self, freeThermalExpectation_numberOperator]
+  rw [neg_smul, normalizedWeightedDiagonal_smul,
+    normalizedWeightedDiagonal_add, normalizedWeightedDiagonal_neg, normalizedWeightedDiagonal_smul, one_mul,
+    show normalizedWeightedDiagonal (freeBoltzmannWeight ε β) ((annihilate i).comp (create i)) =
+      freeGibbsExpectation ε β ((annihilate i).comp (create i)) from rfl,
+    show normalizedWeightedDiagonal (freeBoltzmannWeight ε β) (numberOperator i) =
+      freeGibbsExpectation ε β (numberOperator i) from rfl,
+    freeGibbsExpectation_annihilate_comp_create_self, freeGibbsExpectation_numberOperator]
   have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
     rw [show Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 =
       ((Real.exp (β * ε i) + 1 : ℝ) : ℂ) by push_cast [Complex.ofReal_exp]; ring]
@@ -182,49 +182,49 @@ theorem freeThermalGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (
 /-! ## All-index (`if i = j then ... else 0`) forms, for Wick's theorem's contraction kernel -/
 
 /-- **`⟨c_j† c_i⟩₀,β`, all indices**: `δᵢⱼ · f_i`, `0` off-diagonal. Combines
-`freeThermalExpectation_numberOperator` (`i = j`) with
-`thermalExpectation_create_comp_annihilate_of_ne` (`i ≠ j`, which holds for any weight, hence
+`freeGibbsExpectation_numberOperator` (`i = j`) with
+`normalizedWeightedDiagonal_create_comp_annihilate_of_ne` (`i ≠ j`, which holds for any weight, hence
 specializes directly to `freeBoltzmannWeight`). -/
-theorem freeThermalExpectation_create_comp_annihilate (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
-    freeThermalExpectation ε β ((create j).comp (annihilate i)) =
+theorem freeGibbsExpectation_create_comp_annihilate (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
+    freeGibbsExpectation ε β ((create j).comp (annihilate i)) =
       if i = j then 1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) else 0 := by
   rcases eq_or_ne i j with rfl | hij
   · rw [if_pos rfl]
-    exact freeThermalExpectation_numberOperator ε β i
+    exact freeGibbsExpectation_numberOperator ε β i
   · rw [if_neg hij]
-    exact thermalExpectation_create_comp_annihilate_of_ne (freeBoltzmannWeight ε β) hij
+    exact normalizedWeightedDiagonal_create_comp_annihilate_of_ne (freeBoltzmannWeight ε β) hij
 
 /-- **`⟨c_i c_j†⟩₀,β`, all indices**: `δᵢⱼ · (1 - f_i)`, `0` off-diagonal. The mirror of
-`freeThermalExpectation_create_comp_annihilate`. -/
-theorem freeThermalExpectation_annihilate_comp_create (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
-    freeThermalExpectation ε β ((annihilate i).comp (create j)) =
+`freeGibbsExpectation_create_comp_annihilate`. -/
+theorem freeGibbsExpectation_annihilate_comp_create (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
+    freeGibbsExpectation ε β ((annihilate i).comp (create j)) =
       if i = j then
         Complex.exp ((β : ℂ) * (ε i : ℂ)) / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1)
       else 0 := by
   rcases eq_or_ne i j with rfl | hij
-  · rw [if_pos rfl, freeThermalExpectation_annihilate_comp_create_self]
+  · rw [if_pos rfl, freeGibbsExpectation_annihilate_comp_create_self]
   · rw [if_neg hij]
-    exact thermalExpectation_annihilate_comp_create_of_ne (freeBoltzmannWeight ε β) hij
+    exact normalizedWeightedDiagonal_annihilate_comp_create_of_ne (freeBoltzmannWeight ε β) hij
 
 /-- **`G₀,ᵢⱼ(τ, τ') = 0` for `i ≠ j`**, at any `τ, τ'` (both time-ordering branches vanish
-identically, from `thermalExpectation_annihilate_comp_create_of_ne`/
+identically, from `normalizedWeightedDiagonal_annihilate_comp_create_of_ne`/
 `_create_comp_annihilate_of_ne`). -/
-theorem freeThermalGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mode} (hij : i ≠ j)
-    (τ τ' : ℝ) : freeThermalGreenFunction ε β i j τ τ' = 0 := by
-  rw [freeThermalGreenFunction, thermalGreenFunction]
+theorem freeGibbsGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mode} (hij : i ≠ j)
+    (τ τ' : ℝ) : freeGibbsGreenFunction ε β i j τ τ' = 0 := by
+  rw [freeGibbsGreenFunction, weightedFreeTwoPointFunction]
   rcases lt_trichotomy τ' τ with h | h | h
   · rw [timeOrderedProduct_of_gt _ _ h, imaginaryTimeEvolve_annihilate,
       imaginaryTimeEvolve_create]
-    simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, thermalExpectation_smul,
-      thermalExpectation_annihilate_comp_create_of_ne _ hij]
+    simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, normalizedWeightedDiagonal_smul,
+      normalizedWeightedDiagonal_annihilate_comp_create_of_ne _ hij]
   · subst h
     rw [timeOrderedProduct_self_time, imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
-    simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, thermalExpectation_smul,
-      thermalExpectation_add, thermalExpectation_neg,
-      thermalExpectation_annihilate_comp_create_of_ne _ hij,
-      thermalExpectation_create_comp_annihilate_of_ne _ hij]
+    simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, normalizedWeightedDiagonal_smul,
+      normalizedWeightedDiagonal_add, normalizedWeightedDiagonal_neg,
+      normalizedWeightedDiagonal_annihilate_comp_create_of_ne _ hij,
+      normalizedWeightedDiagonal_create_comp_annihilate_of_ne _ hij]
   · rw [timeOrderedProduct_of_lt _ _ h, imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
-    simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, thermalExpectation_smul,
-      thermalExpectation_neg, thermalExpectation_create_comp_annihilate_of_ne _ hij]
+    simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, normalizedWeightedDiagonal_smul,
+      normalizedWeightedDiagonal_neg, normalizedWeightedDiagonal_create_comp_annihilate_of_ne _ hij]
 
 end SecondQuantization

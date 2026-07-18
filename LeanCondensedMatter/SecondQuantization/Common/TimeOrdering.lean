@@ -12,8 +12,8 @@ operators at (generally distinct) imaginary times. Time ordering itself does not
 `imaginaryTimeEvolve`, or on which concrete occupation-state type the operators act on — it
 orders whatever two already-time-labelled `AlgebraicFock Config` endomorphisms it is given, using
 only `LinearMap.comp` and scalar multiplication — so it is extracted here, generic over `Config`,
-rather than duplicated per statistics. `Fermionic/ThermalTimeOrdering.lean` and
-`Bosonic/ThermalTimeOrdering.lean` are thin wrappers fixing `Config` to `FermionOccupation
+rather than duplicated per statistics. `Fermionic/ImaginaryTimeOrdering.lean` and
+`Bosonic/ImaginaryTimeOrdering.lean` are thin wrappers fixing `Config` to `FermionOccupation
 Mode`/`Occupation Mode` *and* the statistics to `Statistics.fermion`/`Statistics.boson`, so
 downstream files no longer need to spell out `Statistics.zetaInt Statistics.fermion` at every call
 site.

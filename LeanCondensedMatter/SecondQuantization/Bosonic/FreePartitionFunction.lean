@@ -74,7 +74,7 @@ theorem tsum_oneModeBoltzmannWeight {β ε : ℝ} (h : 0 < β * ε) :
 = 1/(e^{βε} - 1)` (the Bose–Einstein distribution) — needs
 `tsum_coe_mul_geometric_of_norm_lt_one` composed with `hasSum_oneModeBoltzmannWeight`'s
 telescoping, analogous to `tsum_oneModeBoltzmannWeight`. Left as a future addition once the
-multi-mode `thermalExpectation` API (B3d onward) is in place to state it against.
+multi-mode `normalizedWeightedDiagonal` API (B3d onward) is in place to state it against.
 -/
 
 end Bosonic
