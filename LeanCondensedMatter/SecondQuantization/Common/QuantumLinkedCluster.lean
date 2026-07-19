@@ -22,8 +22,9 @@ type, with
 `occupationMoment w ⊥ = 1` matching `IsIndependentAcross`'s normalization hypothesis.
 
 Despite this file's current `Common/` path, the implementation is fermionic-specific: it imports
-`Fermionic.WeightedDiagonalFunctional` and uses `FermionOccupation` throughout. It should be moved under
-`Fermionic/` or generalized before being presented as statistics-independent common infrastructure.
+`Fermionic.WeightedDiagonalFunctional` and uses `FermionOccupation` throughout. It should be moved
+under `Fermionic/` or generalized before being presented as statistics-independent common
+infrastructure.
 
 `occupationProjector S` supplies the operator-level witness `∏ᵢ∈S nᵢ` (diagonal in the
 occupation-number basis, built via `Finsupp.lift` exactly as `create`/`annihilate` are), with
@@ -50,13 +51,13 @@ namespace SecondQuantization
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
-/-- **The weighted occupation-correlator moment.** `occupationMoment w S` is the normalized weighted
-occupation correlator under the weight `w` — the diagonal functional
-`⟨∏ᵢ∈S nᵢ⟩_w` of the simultaneous occupation of `S`, computed directly as a weighted sum. For positive real weights (a
+/-- **The weighted occupation-correlator moment.** `occupationMoment w S` is the normalized
+weighted occupation correlator under the weight `w` — the diagonal functional `⟨∏ᵢ∈S nᵢ⟩_w` of the
+simultaneous occupation of `S`, computed directly as a weighted sum. For positive real weights (a
 genuine Boltzmann weight) it is the probability that every mode in `S` is occupied; `w` here is an
 arbitrary complex-valued weight, so no probabilistic interpretation is assumed in general. As with
-the normalized weighted diagonal functional, division by `weightSum w` is only physically meaningful when
-`weightSum w ≠ 0`. -/
+the normalized weighted diagonal functional, division by `weightSum w` is only physically
+meaningful when `weightSum w ≠ 0`. -/
 noncomputable def occupationMoment (w : FermionOccupation Mode → ℂ) (S : Finset Mode) : ℂ :=
   (∑ n ∈ (Finset.univ : Finset (FermionOccupation Mode)).filter (S ⊆ ·), w n) /
     weightSum w
@@ -79,7 +80,7 @@ Connects the weighted-sum definition back to Track D's operator-level normalized
 functional. -/
 theorem occupationMoment_singleton (w : FermionOccupation Mode → ℂ) (i : Mode) :
     occupationMoment w {i} = normalizedWeightedDiagonal w (numberOperator i) := by
-  rw [occupationMoment, normalizedWeightedDiagonal, weightedTrace_numberOperator]
+  rw [occupationMoment, normalizedWeightedDiagonal_eq_div, weightedTrace_numberOperator]
   have hfilter : (Finset.univ : Finset (FermionOccupation Mode)).filter
       (({i} : Finset Mode) ⊆ ·) = (Finset.univ : Finset (FermionOccupation Mode)).filter
       (i ∈ ·) := by
@@ -122,12 +123,14 @@ theorem occupationProjector_singleton (i : Mode) :
   simp [occupationProjector_basisState, numberOperator_basisState, Finset.singleton_subset_iff]
 
 omit [LinearOrder Mode] in
-/-- **The normalized weighted functional of `occupationProjector S` is `occupationMoment w S`.** The operator-
-level bridge promised by `occupationMoment`'s docstring: the simultaneous-occupation observable's
-normalized weighted diagonal functional agrees with the direct weighted-sum definition. -/
-theorem normalizedWeightedDiagonal_occupationProjector (w : FermionOccupation Mode → ℂ) (S : Finset Mode) :
-    normalizedWeightedDiagonal w (occupationProjector S) = occupationMoment w S := by
-  rw [normalizedWeightedDiagonal, occupationMoment]
+/-- **The normalized weighted functional of `occupationProjector S` is `occupationMoment w S`.**
+The operator-level bridge promised by `occupationMoment`'s docstring: the simultaneous-occupation
+observable's normalized weighted diagonal functional agrees with the direct weighted-sum
+definition. -/
+theorem normalizedWeightedDiagonal_occupationProjector (w : FermionOccupation Mode → ℂ)
+    (S : Finset Mode) : normalizedWeightedDiagonal w (occupationProjector S) =
+      occupationMoment w S := by
+  rw [normalizedWeightedDiagonal_eq_div, occupationMoment]
   congr 1
   have h : ∀ n : FermionOccupation Mode,
       matrixCoeff (occupationProjector S) n n = if S ⊆ n then 1 else 0 := fun n => by
@@ -136,7 +139,7 @@ theorem normalizedWeightedDiagonal_occupationProjector (w : FermionOccupation Mo
         rw [occupationProjector_basisState, if_pos hs, if_pos hs, one_smul])
     · exact matrixCoeff_of_smul_basisState (by
         rw [occupationProjector_basisState, if_neg hs, if_neg hs, zero_smul])
-  simp only [weightedTrace, h, mul_ite, mul_one, mul_zero]
+  simp only [weightedTrace_eq_sum, h, mul_ite, mul_one, mul_zero]
   rw [← Finset.sum_filter]
 
 /-! ## Algebra of occupation projectors -/
@@ -265,7 +268,7 @@ theorem weightSum_eq_mul_of_product_factorization {w wA wB : FermionOccupation M
     have : (⊥ : Finset Mode) ∩ B = ⊥ := by ext x; simp
     rw [this]; exact Finset.filter_true_of_mem fun T _ => Finset.empty_subset T
   rw [e1, e2, e3] at h
-  rw [weightSum]
+  rw [weightSum_eq_sum]
   simp_rw [hw]
   exact h
 

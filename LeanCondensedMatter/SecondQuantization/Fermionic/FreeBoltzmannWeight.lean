@@ -9,8 +9,8 @@ Phase 9 (`notes/roadmaps/second-quantization.md`): specializes `normalizedWeight
 `weightSum`, and `weightedFreeTwoPointFunction` — all previously stated for an *arbitrary* complex
 weight `w` — to the genuine free Gibbs weight `w(n) = e^{-β E(n)}`, `E(n) := Σᵢ∈n ε(i)`, for the
 same dispersion `ε` used by `imaginaryTimeEvolve`. This closes both gaps
-`WeightedFreeTwoPointFunction.lean`'s module docstring flagged: `w` is now a genuine positive weight, and
-it is the free weight for the same `ε` the evolution uses.
+`WeightedFreeTwoPointFunction.lean`'s module docstring flagged: `w` is now a genuine positive
+weight, and it is the free weight for the same `ε` the evolution uses.
 
 **This is the free Gibbs-weight specialization of the time-ordered correlator, not yet the full
 Matsubara Green-function apparatus.** `freeGibbsGreenFunction` accepts any `β : ℝ` and `τ, τ' :
@@ -54,7 +54,7 @@ positive reals (`Real.exp_pos`) over the nonempty `Fintype` `FermionOccupation M
 contains `fermionVacuum`), hence itself a positive real cast, hence nonzero. -/
 theorem weightSum_freeBoltzmannWeight_ne_zero (ε : Mode → ℝ) (β : ℝ) :
     weightSum (freeBoltzmannWeight ε β) ≠ 0 := by
-  rw [weightSum]
+  rw [weightSum_eq_sum]
   simp_rw [freeBoltzmannWeight_eq_ofReal]
   rw [← Complex.ofReal_sum]
   refine Complex.ofReal_ne_zero.2 (ne_of_gt ?_)
@@ -75,12 +75,12 @@ noncomputable def freeGibbsExpectation (ε : Mode → ℝ) (β : ℝ)
     (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) : ℂ :=
   normalizedWeightedDiagonal (freeBoltzmannWeight ε β) A
 
-/-- **The free Gibbs two-point correlator `G₀`**: `weightedFreeTwoPointFunction` specialized to the free
-Boltzmann weight for the *same* dispersion `ε` used in the imaginary-time evolution — `w` is a
+/-- **The free Gibbs two-point correlator `G₀`**: `weightedFreeTwoPointFunction` specialized to the
+free Boltzmann weight for the *same* dispersion `ε` used in the imaginary-time evolution — `w` is a
 genuine positive Gibbs weight (`weightSum_freeBoltzmannWeight_ne_zero`) for the same `ε`
-the evolution uses, closing the two gaps `WeightedFreeTwoPointFunction.lean` flagged. See the module
-docstring for what finite-temperature structure (KMS antiperiodicity, the fundamental domain)
-still remains before this is the full Matsubara Green function. -/
+the evolution uses, closing the two gaps `WeightedFreeTwoPointFunction.lean` flagged. See the
+module docstring for what finite-temperature structure (KMS antiperiodicity, the fundamental
+domain) still remains before this is the full Matsubara Green function. -/
 noncomputable def freeGibbsGreenFunction (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ) : ℂ :=
   weightedFreeTwoPointFunction ε (freeBoltzmannWeight ε β) i j τ τ'
 

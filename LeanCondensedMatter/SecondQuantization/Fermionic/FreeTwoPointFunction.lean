@@ -29,8 +29,8 @@ same-mode case `G₀,ᵢᵢ(τ,τ)` is a separate, third closed form**
 (`freeGibbsGreenFunction_self_time_self`), not a limit of either one-sided formula: it comes from
 `timeOrderedProduct`'s `θ(0) = 1/2` symmetrization convention, and is genuinely discontinuous
 against both one-sided limits (`G₀,ᵢᵢ(τ,τ'⁺) → -(1-f_i)`, `G₀,ᵢᵢ(τ,τ'⁻) → f_i` as `τ' → τ`, their
-difference forced to `-1` by CAR — `WeightedFreeTwoPointFunction.lean`'s module docstring already flags
-this discontinuity).
+difference forced to `-1` by CAR — `WeightedFreeTwoPointFunction.lean`'s module docstring already
+flags this discontinuity).
 -/
 
 namespace SecondQuantization
@@ -88,19 +88,19 @@ theorem matrixCoeff_create_comp_annihilate_of_ne {i j : Mode} (hij : i ≠ j)
 
 theorem weightedTrace_annihilate_comp_create_of_ne (w : FermionOccupation Mode → ℂ) {i j : Mode}
     (hij : i ≠ j) : weightedTrace w ((annihilate i).comp (create j)) = 0 := by
-  simp [weightedTrace, matrixCoeff_annihilate_comp_create_of_ne hij]
+  simp [weightedTrace_eq_sum, matrixCoeff_annihilate_comp_create_of_ne hij]
 
 theorem weightedTrace_create_comp_annihilate_of_ne (w : FermionOccupation Mode → ℂ) {i j : Mode}
     (hij : i ≠ j) : weightedTrace w ((create j).comp (annihilate i)) = 0 := by
-  simp [weightedTrace, matrixCoeff_create_comp_annihilate_of_ne hij]
+  simp [weightedTrace_eq_sum, matrixCoeff_create_comp_annihilate_of_ne hij]
 
 theorem normalizedWeightedDiagonal_annihilate_comp_create_of_ne (w : FermionOccupation Mode → ℂ)
 {i j : Mode} (hij : i ≠ j) : normalizedWeightedDiagonal w ((annihilate i).comp (create j)) = 0 := by
-  rw [normalizedWeightedDiagonal, weightedTrace_annihilate_comp_create_of_ne w hij, zero_div]
+  rw [normalizedWeightedDiagonal_eq_div, weightedTrace_annihilate_comp_create_of_ne w hij, zero_div]
 
 theorem normalizedWeightedDiagonal_create_comp_annihilate_of_ne (w : FermionOccupation Mode → ℂ)
 {i j : Mode} (hij : i ≠ j) : normalizedWeightedDiagonal w ((create j).comp (annihilate i)) = 0 := by
-  rw [normalizedWeightedDiagonal, weightedTrace_create_comp_annihilate_of_ne w hij, zero_div]
+  rw [normalizedWeightedDiagonal_eq_div, weightedTrace_create_comp_annihilate_of_ne w hij, zero_div]
 
 /-! ## Diagonal (`i = j`): the free hole/occupation numbers `1 - f_i`, `f_i` -/
 
@@ -144,8 +144,8 @@ theorem freeGibbsGreenFunction_of_lt_self (ε : Mode → ℝ) (β : ℝ) (i : Mo
   rw [freeGibbsGreenFunction, weightedFreeTwoPointFunction_of_lt ε (freeBoltzmannWeight ε β) i i h,
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
     LinearMap.comp_smul, smul_smul,
-    show (create i).comp (annihilate i) = numberOperator i from rfl, normalizedWeightedDiagonal_smul,
-    ← freeGibbsExpectation, freeGibbsExpectation_numberOperator]
+    show (create i).comp (annihilate i) = numberOperator i from rfl,
+    normalizedWeightedDiagonal_smul, ← freeGibbsExpectation, freeGibbsExpectation_numberOperator]
   rw [show Complex.exp ((τ' : ℂ) * (ε i : ℂ)) * Complex.exp (-(τ : ℂ) * (ε i : ℂ)) =
       Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) by
     rw [← Complex.exp_add]; congr 1; push_cast; ring]
@@ -159,14 +159,15 @@ formula above: `timeOrderedProduct`'s `θ(0) = 1/2` convention symmetrizes
 theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i : Mode) (τ : ℝ) :
     freeGibbsGreenFunction ε β i i τ τ =
       1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) - (2 : ℂ)⁻¹ := by
-  rw [freeGibbsGreenFunction, weightedFreeTwoPointFunction_self_time, imaginaryTimeEvolve_annihilate,
-    imaginaryTimeEvolve_create]
+  rw [freeGibbsGreenFunction, weightedFreeTwoPointFunction_self_time,
+    imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
   simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, ← Complex.exp_add,
     show -(τ : ℂ) * (ε i : ℂ) + (τ : ℂ) * (ε i : ℂ) = 0 by ring,
     show (τ : ℂ) * (ε i : ℂ) + -(τ : ℂ) * (ε i : ℂ) = 0 by ring, Complex.exp_zero, one_smul,
     show (create i).comp (annihilate i) = numberOperator i from rfl]
   rw [neg_smul, normalizedWeightedDiagonal_smul,
-    normalizedWeightedDiagonal_add, normalizedWeightedDiagonal_neg, normalizedWeightedDiagonal_smul, one_mul,
+    normalizedWeightedDiagonal_add, normalizedWeightedDiagonal_neg, normalizedWeightedDiagonal_smul,
+    one_mul,
     show normalizedWeightedDiagonal (freeBoltzmannWeight ε β) ((annihilate i).comp (create i)) =
       freeGibbsExpectation ε β ((annihilate i).comp (create i)) from rfl,
     show normalizedWeightedDiagonal (freeBoltzmannWeight ε β) (numberOperator i) =
@@ -183,8 +184,8 @@ theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i 
 
 /-- **`⟨c_j† c_i⟩₀,β`, all indices**: `δᵢⱼ · f_i`, `0` off-diagonal. Combines
 `freeGibbsExpectation_numberOperator` (`i = j`) with
-`normalizedWeightedDiagonal_create_comp_annihilate_of_ne` (`i ≠ j`, which holds for any weight, hence
-specializes directly to `freeBoltzmannWeight`). -/
+`normalizedWeightedDiagonal_create_comp_annihilate_of_ne` (`i ≠ j`, which holds for any weight,
+hence specializes directly to `freeBoltzmannWeight`). -/
 theorem freeGibbsExpectation_create_comp_annihilate (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     freeGibbsExpectation ε β ((create j).comp (annihilate i)) =
       if i = j then 1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) else 0 := by
