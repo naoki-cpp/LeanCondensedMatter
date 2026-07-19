@@ -477,13 +477,20 @@ pairing` for `pairing : Pairing (n + 1)` — on the fiber of pairings with `part
 `pairing.partner 0`, or one of the remaining positions. `eraseZeroPair` itself is not globally
 injective (distinct `j` can erase to the same smaller pairing), so together these two identities
 establish that `insertFirstPair j hj` and `eraseZeroPair` restricted to the fiber `{P : Pairing
-(n + 1) | P.partner 0 = j}` are mutually inverse, one fiber at a time — which is what the
-Bloch–de Dominicis induction over `Pairing (n + 1) ≃ Σ_{j ≠ 0} Pairing n` will build on.
+(n + 1) | P.partner 0 = j}` are mutually inverse, one fiber at a time.
+
+**The finite `Pairing (n + 1) ≃ Σ_{j ≠ 0} Pairing n` equivalence done, in
+`Common/BlochDeDominicisPairing.lean`:** `Pairing.equivSigma n : Pairing (n + 1) ≃ Σ (j :
+{j : Fin (2 * (n + 1)) // 0 ≠ j}), Pairing n` sends a pairing to the partner it assigns to position
+`0` together with the smaller pairing left after erasing that pair (`fun pairing => ⟨⟨pairing.partner
+0, _⟩, pairing.eraseZeroPair⟩`), with inverse `fun ⟨⟨j, hj⟩, Q⟩ => Q.insertFirstPair j hj`. Its
+`left_inv`/`right_inv` obligations are exactly `insertFirstPair_eraseZeroPair` and
+`eraseZeroPair_insertFirstPair` (plus `insertFirstPair_partner_zero`), so the construction assembles
+directly from the two already-proved fiber-inverse identities with no new induction. This is the
+finite decomposition the Bloch–de Dominicis induction over positions will recurse on.
 
 **Not yet done:** a general `n`-operator time-ordered product (`timeOrderedProduct` is still
-2-operator-only); the finite `Pairing (n + 1) ≃ Σ_{j ≠ 0} Pairing n` equivalence itself (the
-per-fiber inverse identities are the ingredients, not yet assembled into the equivalence); a first
-concrete Bloch–de Dominicis induction step (the finite-temperature
+2-operator-only); a first concrete Bloch–de Dominicis induction step (the finite-temperature
 4-point identity `⟨A₁A₂A₃A₄⟩_{0,β} = ⟨A₁A₂⟩_{0,β}⟨A₃A₄⟩_{0,β} + ζ⟨A₁A₃⟩_{0,β}⟨A₂A₄⟩_{0,β} + ⟨A₁A₄⟩_{0,β}⟨A₂A₃⟩_{0,β}`, before the
 general `2n`-point theorem) using `ExchangeAlgebra` and `weight_eraseZeroPair` to validate the pairing-sign design; the
 bosonic thermal-trace layer (`weightedTrace`/`normalizedWeightedDiagonal`/`weightSum`) that
