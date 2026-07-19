@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.AlgebraicFock
+import LeanCondensedMatter.SecondQuantization.Common.NormalizedOperatorFunctional
 
 set_option linter.style.header false
 
@@ -139,6 +140,25 @@ weight this is the corresponding Gibbs statement. -/
 theorem normalizedWeightedDiagonal_id (w : Config → ℂ) (hw : weightSum w ≠ 0) :
     normalizedWeightedDiagonal w (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] _) = 1 := by
   rw [normalizedWeightedDiagonal, weightedTrace_id, div_self hw]
+
+/-! ## The `NormalizedOperatorFunctional` instantiation -/
+
+/-- **The finite-sum instantiation** of `NormalizedOperatorFunctional`, for a weight `w : Config →
+ℂ` with nonzero total weight: `toLinearMap := normalizedWeightedDiagonal w`, with linearity
+supplied by `normalizedWeightedDiagonal_add`/`_smul` and normalization by
+`normalizedWeightedDiagonal_id`. -/
+noncomputable def normalizedWeightedDiagonalFunctional (w : Config → ℂ) (hw : weightSum w ≠ 0) :
+    NormalizedOperatorFunctional Config where
+  toLinearMap :=
+    { toFun := normalizedWeightedDiagonal w
+      map_add' := normalizedWeightedDiagonal_add w
+      map_smul' := fun c A => normalizedWeightedDiagonal_smul c w A }
+  map_id := normalizedWeightedDiagonal_id w hw
+
+@[simp]
+theorem normalizedWeightedDiagonalFunctional_apply (w : Config → ℂ) (hw : weightSum w ≠ 0)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    normalizedWeightedDiagonalFunctional w hw A = normalizedWeightedDiagonal w A := rfl
 
 end Common
 end SecondQuantization
