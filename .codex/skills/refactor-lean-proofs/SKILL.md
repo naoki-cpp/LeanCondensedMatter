@@ -5,7 +5,7 @@ description: Behavior-preserving refactor pass over this project's Lean files â€
 
 # Shared Lean refactor pass
 
-The canonical skill is repository-local and shared with Codex:
+The canonical skill is repository-local and shared with Claude:
 
 `.agents/skills/refactor-lean-proofs/SKILL.md`
 
