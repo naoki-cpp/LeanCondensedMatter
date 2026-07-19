@@ -160,6 +160,12 @@ theorem traceFock_smul (c : ℂ) (A : AlgebraicFock Config →ₗ[ℂ] Algebraic
     traceFock (c • A) = c * traceFock A := by
   simp only [traceFock, matrixCoeff_smul, Finset.mul_sum]
 
+/-- **`traceFock` is linear in its operator argument: addition.** -/
+theorem traceFock_add (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    traceFock (A + B) = traceFock A + traceFock B := by
+  simp only [traceFock, matrixCoeff_add]
+  exact Finset.sum_add_distrib
+
 /-- **The weighted trace**, `Tr_w A := Σₙ w(n) ⟨n| A |n⟩` — the un-normalized weighted diagonal
 functional of `A` against the weight `w`. It becomes the un-normalized thermal weighted trace only
 for a Gibbs/Boltzmann weight. -/
