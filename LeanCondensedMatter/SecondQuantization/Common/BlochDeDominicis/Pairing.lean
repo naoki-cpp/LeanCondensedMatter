@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Statistics
-import LeanCondensedMatter.SecondQuantization.Common.DeletedPositions
+import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.DeletedPositions
 import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Finset.Filter
 import Mathlib.Data.Finset.Prod

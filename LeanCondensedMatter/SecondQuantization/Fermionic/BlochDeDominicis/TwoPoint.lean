@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTimeEvolution
 import LeanCondensedMatter.SecondQuantization.Fermionic.CanonicalAnticommutationRelations
 import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedDiagonalFunctional
-import LeanCondensedMatter.SecondQuantization.Common.KMSRotation
+import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.TwoPoint
 
 set_option linter.style.header false
 
@@ -10,8 +10,8 @@ set_option linter.style.header false
 
 Phase 9, step 4 of Track D's finite-mode fermionic primary line
 (`notes/roadmaps/second-quantization.md`): the first concrete instantiation of
-`Common.traceFock_diagonalEvolution_comp_two_point` (from `Common/KMSRotation.lean`, itself built
-from `Common/WeightedDiagonalFunctional.lean`'s trace cyclicity and
+`Common.traceFock_diagonalEvolution_comp_two_point` (from `Common/BlochDeDominicis/TwoPoint.lean`,
+itself built from `Common/WeightedDiagonalFunctional.lean`'s trace cyclicity and
 `Common/DiagonalEvolution.lean`'s KMS-type relation) against real fermionic `annihilate`/`create`
 operators — validating the whole general `Common/` Bloch–de Dominicis chain (PRs building trace
 cyclicity, the KMS relation, and their combination) by cross-checking it reproduces the already
