@@ -109,5 +109,92 @@ theorem traceFock_diagonalEvolution_comp_two_point
   rw [hrot, smul_eq_mul] at hstep
   linear_combination hstep
 
+/-! ## The `tsum` (possibly-infinite-`Config`) versions -/
+
+variable {Config' : Type*}
+
+/-- **The `tsum` KMS-type trace rotation**: the `[Fintype Config]`-free analogue of
+`traceFock_diagonalEvolution_comp_rotate`, built from `tsum_matrixCoeff_diag_comp_comm`
+(`Common/WeightedDiagonalFunctional.lean`'s summability-gated `tsum` cyclicity) instead of
+`traceFock_comp_comm`. This is the piece that lets the rotation step — hence, eventually, the
+2-point base case and the general induction — reach a genuine bosonic occupation type, at the cost
+of the explicit double-summability hypothesis `h` (unlike the `[Fintype Config]` case, where it is
+automatic). -/
+theorem tsum_matrixCoeff_diag_diagonalEvolution_comp_rotate
+    (energy : Config' → ℝ) (β q : ℝ) (A C : AlgebraicFock Config' →ₗ[ℂ] AlgebraicFock Config')
+    (hC : heisenbergEvolve energy (-β) C = Complex.exp ((q * (-β) : ℝ) : ℂ) • C)
+    (h : Summable (Function.uncurry (fun n k =>
+      matrixCoeff ((diagonalEvolution energy (-β)).comp A) n k * matrixCoeff C k n))) :
+    ∑' n, matrixCoeff ((diagonalEvolution energy (-β)).comp (A.comp C)) n n =
+      Complex.exp ((q * β : ℝ) : ℂ) •
+        ∑' n, matrixCoeff ((diagonalEvolution energy (-β)).comp (C.comp A)) n n := by
+  have hKMS' := comp_diagonalEvolution_eq_smul_diagonalEvolution_comp energy (-β) q C hC
+  rw [show ((-(q * -β) : ℝ) : ℂ) = ((q * β : ℝ) : ℂ) by push_cast; ring] at hKMS'
+  have hcyc := tsum_matrixCoeff_diag_comp_comm ((diagonalEvolution energy (-β)).comp A) C h
+  have hsmul : (fun n => matrixCoeff (Complex.exp ((q * β : ℝ) : ℂ) •
+        (((diagonalEvolution energy (-β)).comp C).comp A)) n n) =
+      fun n => Complex.exp ((q * β : ℝ) : ℂ) *
+        matrixCoeff (((diagonalEvolution energy (-β)).comp C).comp A) n n :=
+    funext fun n => matrixCoeff_smul _ _ n n
+  calc ∑' n, matrixCoeff ((diagonalEvolution energy (-β)).comp (A.comp C)) n n
+      = ∑' n, matrixCoeff (((diagonalEvolution energy (-β)).comp A).comp C) n n := by
+        rw [LinearMap.comp_assoc]
+    _ = ∑' n, matrixCoeff (C.comp ((diagonalEvolution energy (-β)).comp A)) n n := hcyc
+    _ = ∑' n, matrixCoeff ((C.comp (diagonalEvolution energy (-β))).comp A) n n := by
+        rw [LinearMap.comp_assoc]
+    _ = ∑' n, matrixCoeff ((Complex.exp ((q * β : ℝ) : ℂ) •
+          ((diagonalEvolution energy (-β)).comp C)).comp A) n n := by rw [hKMS']
+    _ = ∑' n, matrixCoeff (Complex.exp ((q * β : ℝ) : ℂ) •
+          (((diagonalEvolution energy (-β)).comp C).comp A)) n n := by rw [LinearMap.smul_comp]
+    _ = Complex.exp ((q * β : ℝ) : ℂ) •
+          ∑' n, matrixCoeff (((diagonalEvolution energy (-β)).comp C).comp A) n n := by
+        rw [hsmul, tsum_mul_left, smul_eq_mul]
+    _ = Complex.exp ((q * β : ℝ) : ℂ) •
+          ∑' n, matrixCoeff ((diagonalEvolution energy (-β)).comp (C.comp A)) n n := by
+        rw [LinearMap.comp_assoc]
+
+/-- **The `tsum` 2-point Bloch–de Dominicis base case**: the `[Fintype Config]`-free analogue of
+`traceFock_diagonalEvolution_comp_two_point`, given the same c-number-commutator and KMS-weight
+hypotheses plus explicit summability of `C₁`'s and `Cⱼ`'s diagonal series (`hSummD`,
+`hSummDCjC1`) and of the rotation's double series (`h`). This is the theorem a genuine bosonic
+free Boltzmann weight would need to instantiate (supplying all three summability witnesses from
+`Bosonic/BoltzmannWeightSummable.lean`-style convergence facts, not done here) to get a real
+bosonic 2-point function out of this framework. -/
+theorem tsum_matrixCoeff_diag_diagonalEvolution_comp_two_point
+    (energy : Config' → ℝ) (β q1 : ℝ) (ζ c1j : ℂ)
+    (C1 Cj : AlgebraicFock Config' →ₗ[ℂ] AlgebraicFock Config')
+    (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
+    (hcomm : C1.comp Cj - ζ • (Cj.comp C1) =
+      c1j • (LinearMap.id : AlgebraicFock Config' →ₗ[ℂ] AlgebraicFock Config'))
+    (hSummD : Summable (fun n => matrixCoeff (diagonalEvolution energy (-β)) n n))
+    (hSummDCjC1 : Summable
+      (fun n => matrixCoeff ((diagonalEvolution energy (-β)).comp (Cj.comp C1)) n n))
+    (h : Summable (Function.uncurry (fun n k =>
+      matrixCoeff ((diagonalEvolution energy (-β)).comp Cj) n k * matrixCoeff C1 k n))) :
+    (1 - ζ * Complex.exp ((q1 * β : ℝ) : ℂ)) *
+        ∑' n, matrixCoeff ((diagonalEvolution energy (-β)).comp (C1.comp Cj)) n n =
+      c1j * ∑' n, matrixCoeff (diagonalEvolution energy (-β)) n n := by
+  rw [sub_eq_iff_eq_add] at hcomm
+  have hrot := tsum_matrixCoeff_diag_diagonalEvolution_comp_rotate energy β q1 Cj C1 hC1 h
+  have hstep : ∑' n, matrixCoeff ((diagonalEvolution energy (-β)).comp (C1.comp Cj)) n n =
+      c1j * ∑' n, matrixCoeff (diagonalEvolution energy (-β)) n n +
+        ζ * ∑' n, matrixCoeff ((diagonalEvolution energy (-β)).comp (Cj.comp C1)) n n := by
+    have hpoint : (fun n => matrixCoeff ((diagonalEvolution energy (-β)).comp (C1.comp Cj)) n n) =
+        fun n => c1j * matrixCoeff (diagonalEvolution energy (-β)) n n +
+          ζ * matrixCoeff ((diagonalEvolution energy (-β)).comp (Cj.comp C1)) n n := by
+      funext n
+      conv_lhs => rw [hcomm]
+      rw [LinearMap.comp_add, LinearMap.comp_smul, LinearMap.comp_smul, LinearMap.comp_id,
+        matrixCoeff_add, matrixCoeff_smul, matrixCoeff_smul]
+    rw [hpoint]
+    have h1 : Summable (fun n => c1j * matrixCoeff (diagonalEvolution energy (-β)) n n) :=
+      hSummD.mul_left c1j
+    have h2 : Summable
+        (fun n => ζ * matrixCoeff ((diagonalEvolution energy (-β)).comp (Cj.comp C1)) n n) :=
+      hSummDCjC1.mul_left ζ
+    rw [(h1.hasSum.add h2.hasSum).tsum_eq, tsum_mul_left, tsum_mul_left]
+  rw [hrot, smul_eq_mul] at hstep
+  linear_combination hstep
+
 end Common
 end SecondQuantization
