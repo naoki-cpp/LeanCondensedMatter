@@ -374,12 +374,31 @@ type rather than a fermion-specific case analysis; `Fermionic/ParticleNumberChar
 linearity lemmas for `matrixCoeff` (`Common/AlgebraicFock.lean`) and
 `weightedTrace`/`normalizedWeightedDiagonal` (`Fermionic/WeightedDiagonalFunctional.lean`) in their operator
 argument.
+**A first concrete Wick-identity validation done, in `Fermionic/BlochDeDominicisSingleMode.lean`:**
+the single-mode instance of the 4-point pairing-sum identity, `⟨cᵢcᵢ†cᵢcᵢ†⟩_w = ⟨cᵢcᵢ†⟩_w² +
+ζ⟨cᵢcᵢ⟩_w⟨cᵢ†cᵢ†⟩_w + ⟨cᵢcᵢ†⟩_w⟨cᵢ†cᵢ⟩_w`
+(`normalizedWeightedDiagonal_annihilate_create_annihilate_create_single_mode`), for an *arbitrary*
+occupation-number-diagonal weight `w` — **not yet a finite-temperature statement** (no `β`,
+Hamiltonian, or Boltzmann weight appears). The coefficients `1`, `ζ`, `1` are hand-written to match
+`Common/BlochDeDominicisPairing.lean`'s four-position pairing weights term by term, not obtained by
+summing over `Common.BlochDeDominicis.Pairing 2` itself — an actual connection between this
+operator computation and the `Pairing` API remains future work. Proved purely from CAR (no
+cross-mode independence of the weight needed, since all four operators act at the same mode);
+supporting lemmas `annihilate_comp_self`/`create_comp_self` (`Fermionic/
+CanonicalAnticommutationRelations.lean`), `numberOperator_comp_self`/`annihilate_comp_create_comp_self`/
+`annihilate_comp_create_add_create_comp_annihilate` (`Fermionic/NumberOperator.lean`), and
+`normalizedWeightedDiagonal_zero` (`Common/WeightedDiagonalFunctional.lean`, with a
+`Fermionic/WeightedDiagonalFunctional.lean` thin wrapper) were placed at their most upstream
+reusable file rather than local to this proof.
+
 **Not yet done:** the general finite-mode, finite-temperature fermionic Bloch–de Dominicis theorem for the
 free/quasifree Gibbs reference state itself (the `n`-point sum-over-pairings formula,
-`BlochDeDominicis.lean`) — this file only established the
-vanishing half, not the full decomposition into `weightedFreeTwoPointFunction` factors; the finite-
-temperature structure noted above (KMS antiperiodicity etc.); the full Matsubara-Green-function
-apparatus; the genuine Dyson series and diagram connectedness (steps 5–7).
+`BlochDeDominicis.lean`) — multi-mode operators (needing the free partition function's mode
+factorization), a genuine free Boltzmann weight (turning this into an actual finite-temperature
+statement), and an actual reduction of the right side to a sum over `Pairing 2`, not just matching
+its already-known weights by hand; the finite-temperature structure noted above (KMS
+antiperiodicity etc.); the full Matsubara-Green-function apparatus; the genuine Dyson series and
+diagram connectedness (steps 5–7).
 
 **Groundwork for the *general* (fermionic *and* bosonic) Bloch–de Dominicis theorem done, in
 `Common/ExchangeCommutator.lean` and `Bosonic/NumberOperator.lean`:** `BlochDeDominicis.lean` needs

@@ -127,6 +127,12 @@ theorem normalizedWeightedDiagonal_sub (w : FermionOccupation Mode → ℂ)
       normalizedWeightedDiagonal w A - normalizedWeightedDiagonal w B :=
   Common.normalizedWeightedDiagonal_sub w A B
 
+omit [LinearOrder Mode] in
+/-- **`⟨0⟩_w = 0`**: the normalized weighted diagonal functional vanishes on the zero operator. -/
+theorem normalizedWeightedDiagonal_zero (w : FermionOccupation Mode → ℂ) :
+    normalizedWeightedDiagonal w (0 : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) = 0 :=
+  Common.normalizedWeightedDiagonal_zero w
+
 /-! ## Matrix coefficients of diagonal operators -/
 
 omit [LinearOrder Mode] [Fintype Mode] in

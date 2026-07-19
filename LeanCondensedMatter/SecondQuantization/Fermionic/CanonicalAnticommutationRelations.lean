@@ -152,6 +152,16 @@ theorem anticomm_create_create_basisState (i j : Mode) (n : FermionOccupation Mo
 theorem anticomm_create_create (i j : Mode) : anticomm (create i) (create j) = 0 :=
   linearMap_ext_basisState fun n => anticomm_create_create_basisState i j n
 
+/-- **`cᵢ† cᵢ† = 0`**: the same-mode special case of `anticomm_create_create`, `{cᵢ†, cᵢ†} =
+2 cᵢ† cᵢ† = 0`, hence `cᵢ† cᵢ† = 0` (`ℂ` has no `2`-torsion). -/
+theorem create_comp_self (i : Mode) : (create i).comp (create i) = 0 := by
+  have h := anticomm_create_create (Mode := Mode) i i
+  rw [anticomm] at h
+  have h2 : (2 : ℂ) • ((create i).comp (create i)) = 0 := by rw [two_smul]; exact h
+  rcases smul_eq_zero.mp h2 with h0 | h0
+  · exact absurd h0 (by norm_num)
+  · exact h0
+
 /-! ## `{aᵢ, aⱼ} = 0` -/
 
 theorem anticomm_annihilate_annihilate_basisState (i j : Mode) (n : FermionOccupation Mode) :
@@ -186,6 +196,16 @@ theorem anticomm_annihilate_annihilate_basisState (i j : Mode) (n : FermionOccup
 
 theorem anticomm_annihilate_annihilate (i j : Mode) : anticomm (annihilate i) (annihilate j) = 0 :=
   linearMap_ext_basisState fun n => anticomm_annihilate_annihilate_basisState i j n
+
+/-- **`cᵢ cᵢ = 0`**: the same-mode special case of `anticomm_annihilate_annihilate`, the
+creation-side mirror of `create_comp_self`. -/
+theorem annihilate_comp_self (i : Mode) : (annihilate i).comp (annihilate i) = 0 := by
+  have h := anticomm_annihilate_annihilate (Mode := Mode) i i
+  rw [anticomm] at h
+  have h2 : (2 : ℂ) • ((annihilate i).comp (annihilate i)) = 0 := by rw [two_smul]; exact h
+  rcases smul_eq_zero.mp h2 with h0 | h0
+  · exact absurd h0 (by norm_num)
+  · exact h0
 
 /-! ## `{aᵢ, aⱼ†} = δᵢⱼ` -/
 
