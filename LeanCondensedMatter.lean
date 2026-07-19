@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.CFC
 import LeanCondensedMatter.Analysis.EigenvectorFamily
+import LeanCondensedMatter.Analysis.FinsuppProductSeries
 import LeanCondensedMatter.Analysis.HilbertSchmidtBasic
 import LeanCondensedMatter.Analysis.HilbertSchmidtInnerProduct
 import LeanCondensedMatter.Analysis.HilbertSchmidtTrace

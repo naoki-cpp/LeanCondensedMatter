@@ -13,10 +13,11 @@ converges to the product of one-mode geometric series from `FreePartitionFunctio
 every mode satisfies the one-mode convergence condition `0 < βεᵢ`. This is the multi-mode
 generalization `BoltzmannWeightFactorization.lean` flagged as remaining.
 
-The proof is a thin corollary of the general (non-physics) `Finsupp.hasSum_prod_geometric` fact
+The proof is a thin corollary of the general (non-physics) `Finsupp.hasSum_prod_nonneg` fact
 proved in `Analysis/FinsuppProductSeries.lean`: `boltzmannWeight_eq_prod` identifies the Boltzmann
-weight with the multi-index product `∏ i, oneModeBoltzmannWeight β (ε i) (n i)`, and each factor
-is a geometric series `q i ^ k` with `q i := e^{-βεᵢ}`.
+weight with the multi-index product `∏ i, oneModeBoltzmannWeight β (ε i) (n i)`, and each
+one-mode factor is nonnegative and `HasSum`-convergent by `hasSum_oneModeBoltzmannWeight`, so the
+nonnegative (rather than absolute-value) version of the general theorem applies directly.
 -/
 
 namespace SecondQuantization
@@ -28,16 +29,12 @@ product of one-mode geometric series, given every mode's one-mode convergence co
 theorem hasSum_boltzmannWeight {Mode : Type*} [Fintype Mode] (ε : Mode → ℝ)
     (β : ℝ) (hpos : ∀ i, 0 < β * ε i) :
     HasSum (boltzmannWeight ε β) (∏ i, (1 - Real.exp (-β * ε i))⁻¹) := by
-  have hq : ∀ i, ‖Real.exp (-β * ε i)‖ < 1 := fun i => by
-    rw [Real.norm_eq_abs, abs_of_nonneg (Real.exp_nonneg _), Real.exp_lt_one_iff]
-    linarith [hpos i]
-  have heq : boltzmannWeight ε β = fun n => ∏ i, Real.exp (-β * ε i) ^ n i := by
-    funext n
-    rw [boltzmannWeight_eq_prod]
-    exact Finset.prod_congr rfl fun i _ => by
-      unfold oneModeBoltzmannWeight; rw [Real.exp_nat_mul]
-  rw [heq]
-  exact Finsupp.hasSum_prod_geometric (fun i => Real.exp (-β * ε i)) hq
+  rw [show boltzmannWeight ε β =
+    fun n => ∏ i, oneModeBoltzmannWeight β (ε i) (n i) from funext (boltzmannWeight_eq_prod ε β)]
+  exact Finsupp.hasSum_prod_nonneg (fun i k => oneModeBoltzmannWeight β (ε i) k)
+    (fun i => (1 - Real.exp (-β * ε i))⁻¹)
+    (fun i => hasSum_oneModeBoltzmannWeight (hpos i))
+    (fun i k => Real.exp_nonneg _)
 
 theorem summable_boltzmannWeight {Mode : Type*} [Fintype Mode] (ε : Mode → ℝ)
     (β : ℝ) (hpos : ∀ i, 0 < β * ε i) : Summable (boltzmannWeight ε β) :=

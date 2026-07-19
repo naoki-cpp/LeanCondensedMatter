@@ -4,6 +4,17 @@ See [notes/roadmap.md](../roadmap.md) for the status table and how this track fi
 
 Track C covers infinite-dimensional operator-algebraic foundations needed once Track A moves beyond finite-dimensional Hilbert spaces. The immediate, concrete target is trace-class operator theory (below); the track name is kept broad because further operator-algebraic infrastructure (e.g. C*-algebra structure on bounded operators, needed if functional-calculus-style constructions come up again) may be added here as later targets, rather than opening a new track each time.
 
+## General summability infrastructure
+
+`LeanCondensedMatter/Analysis/FinsuppProductSeries.lean` — general, non-physics `HasSum` facts for
+finite products of series indexed by a `Finsupp`-indexed multi-index type: for `[Fintype ι]`,
+`Finsupp.hasSum_prod_nonneg`/`hasSum_prod` show that given `∀ i, HasSum (f i) (a i)` (with either a
+pointwise-nonnegativity hypothesis, or absolute convergence over a `NormedCommRing`), the
+multi-index series `Σ_{n : ι →₀ ℕ} ∏ i, f i (n i)` converges to `∏ i, a i`; `hasSum_prod_geometric`
+specializes this to geometric series. Extracted from Track D's bosonic Boltzmann-weight
+summability proof (`SecondQuantization/Bosonic/BoltzmannWeightSummable.lean`, B3c), which is now a
+thin corollary via `Finsupp.hasSum_prod_nonneg`. `proved`.
+
 ## Trace-class / Hilbert-Schmidt operator theory
 
 Status: `stated`.
