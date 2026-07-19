@@ -106,5 +106,30 @@ theorem heisenbergEvolve_zero (energy : Config → ℝ)
     heisenbergEvolve energy 0 A = A := by
   simp [heisenbergEvolve]
 
+/-! ## The KMS-type commutation relation, for an operator with a known eigenvalue shift -/
+
+/-- **The KMS-type relation**: if a linear map `C` picks up an exponential eigenvalue-shift factor
+`e^{qτ}` under `heisenbergEvolve` (as every `create`/`annihilate` operator does, with `q` the
+eigenvalue shift `∓ε_i`), then `e^{τH₀}` and `C` satisfy `e^{τH₀} C = e^{qτ} C e^{τH₀}` — the exact
+statistics-agnostic algebraic ingredient the finite-temperature Bloch–de Dominicis theorem's
+KMS-rotation step needs (`ĉ_α e^{-βĤ} = e^{-βξ_α} e^{-βĤ} ĉ_α` in the project's physics reference
+notes, `quantum-statistical-mechanics.tex`'s "product-of-KMS-state-and-ladder-op"), obtained purely
+by rearranging the already-proved semigroup law and mutual inversion
+(`diagonalEvolution_neg_comp`) — no new physical input beyond the eigenvalue-shift hypothesis
+`hC`, and in particular no dependence on the concrete occupation-state type or exchange statistics.
+Both `Fermionic.imaginaryTimeEvolve_annihilate`/`_create` and
+`Bosonic.imaginaryTimeEvolve_annihilate`/`_create` supply exactly this hypothesis (with
+`q := -ε i`/`q := ε i` respectively), so this single `Common/` lemma gives the KMS relation for
+`create`/`annihilate` in both statistics at once. -/
+theorem diagonalEvolution_comp_eq_smul_comp_diagonalEvolution
+    (energy : Config → ℝ) (τ q : ℝ) (C : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (hC : heisenbergEvolve energy τ C = Complex.exp ((q * τ : ℝ) : ℂ) • C) :
+    (diagonalEvolution energy τ).comp C =
+      Complex.exp ((q * τ : ℝ) : ℂ) • (C.comp (diagonalEvolution energy τ)) := by
+  have h := congrArg (fun f => f.comp (diagonalEvolution energy τ)) hC
+  rw [heisenbergEvolve, LinearMap.comp_assoc, LinearMap.comp_assoc, diagonalEvolution_neg_comp,
+    LinearMap.comp_id, LinearMap.smul_comp] at h
+  exact h
+
 end Common
 end SecondQuantization

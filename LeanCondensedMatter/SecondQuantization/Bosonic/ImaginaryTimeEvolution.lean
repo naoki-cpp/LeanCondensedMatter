@@ -199,5 +199,32 @@ theorem imaginaryTimeEvolve_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     freeEigenvalue_createOccupation, mul_right_comm, hcast, ← Complex.exp_add,
     ← Complex.ofReal_add, hexp, smul_smul]
 
+/-! ## The KMS-type commutation relation with `e^{τH₀}` -/
+
+/-- **The KMS-type relation for the annihilation operator**: `e^{τH₀} a_i = e^{-τε_i} a_i e^{τH₀}`
+— an instance of `Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution`, from
+`imaginaryTimeEvolve_annihilate`'s eigenvalue-shift `q := -ε_i`. The bosonic mirror of
+`Fermionic.imaginaryTimeEvolveFree_comp_annihilate` — same statement, same `Common/` lemma,
+different concrete `energy`. -/
+theorem imaginaryTimeEvolveFree_comp_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
+    (imaginaryTimeEvolveFree ε τ).comp (annihilate i) =
+      Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • ((annihilate i).comp (imaginaryTimeEvolveFree ε τ)) := by
+  have hcast : ((-ε i * τ : ℝ) : ℂ) = -(τ : ℂ) * (ε i : ℂ) := by push_cast; ring
+  have h := Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution
+    (freeEigenvalue ε) τ (-ε i) (annihilate i) (by
+      rw [hcast]; exact imaginaryTimeEvolve_annihilate ε τ i)
+  rwa [hcast] at h
+
+/-- **The KMS-type relation for the creation operator**: `e^{τH₀} a_i† = e^{τε_i} a_i† e^{τH₀}`,
+the creation-side mirror of `imaginaryTimeEvolveFree_comp_annihilate`. -/
+theorem imaginaryTimeEvolveFree_comp_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
+    (imaginaryTimeEvolveFree ε τ).comp (create i) =
+      Complex.exp ((τ : ℂ) * (ε i : ℂ)) • ((create i).comp (imaginaryTimeEvolveFree ε τ)) := by
+  have hcast : ((ε i * τ : ℝ) : ℂ) = (τ : ℂ) * (ε i : ℂ) := by push_cast; ring
+  have h := Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution
+    (freeEigenvalue ε) τ (ε i) (create i) (by
+      rw [hcast]; exact imaginaryTimeEvolve_create ε τ i)
+  rwa [hcast] at h
+
 end Bosonic
 end SecondQuantization

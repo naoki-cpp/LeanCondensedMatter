@@ -167,4 +167,33 @@ theorem imaginaryTimeEvolve_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
       linear_combination (-(τ : ℂ)) * hsum
     rw [mul_right_comm, ← Complex.exp_add, hexp]
 
+/-! ## The KMS-type commutation relation with `e^{τH₀}` -/
+
+/-- **The KMS-type relation for the annihilation operator**: `e^{τH₀} c_i = e^{-τε_i} c_i e^{τH₀}`
+— an instance of `Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution`, from
+`imaginaryTimeEvolve_annihilate`'s eigenvalue-shift `q := -ε_i`. Setting `τ := -β` and rearranging
+gives the physics reference notes' `ĉ_i e^{-βĤ} = e^{-βε_i} e^{-βĤ} ĉ_i}`
+(`quantum-statistical-mechanics.tex`'s "product-of-KMS-state-and-ladder-op"), the algebraic
+ingredient the finite-temperature Bloch–de Dominicis theorem's induction needs to move a ladder
+operator through the (would-be) Gibbs weight `e^{-βH₀}`. -/
+theorem imaginaryTimeEvolveFree_comp_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
+    (imaginaryTimeEvolveFree ε τ).comp (annihilate i) =
+      Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • ((annihilate i).comp (imaginaryTimeEvolveFree ε τ)) := by
+  have hcast : ((-ε i * τ : ℝ) : ℂ) = -(τ : ℂ) * (ε i : ℂ) := by push_cast; ring
+  have h := Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution
+    (fermionEnergy ε) τ (-ε i) (annihilate i) (by
+      rw [hcast]; exact imaginaryTimeEvolve_annihilate ε τ i)
+  rwa [hcast] at h
+
+/-- **The KMS-type relation for the creation operator**: `e^{τH₀} c_i† = e^{τε_i} c_i† e^{τH₀}`,
+the creation-side mirror of `imaginaryTimeEvolveFree_comp_annihilate`. -/
+theorem imaginaryTimeEvolveFree_comp_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
+    (imaginaryTimeEvolveFree ε τ).comp (create i) =
+      Complex.exp ((τ : ℂ) * (ε i : ℂ)) • ((create i).comp (imaginaryTimeEvolveFree ε τ)) := by
+  have hcast : ((ε i * τ : ℝ) : ℂ) = (τ : ℂ) * (ε i : ℂ) := by push_cast; ring
+  have h := Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution
+    (fermionEnergy ε) τ (ε i) (create i) (by
+      rw [hcast]; exact imaginaryTimeEvolve_create ε τ i)
+  rwa [hcast] at h
+
 end SecondQuantization
