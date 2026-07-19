@@ -154,16 +154,14 @@ theorem tsumTrace_diagonalEvolution_comp_rotate
           tsumTrace ((diagonalEvolution energy (-β)).comp (C.comp A)) := by
         rw [LinearMap.comp_assoc]
 
-set_option maxHeartbeats 0 in
--- reason for change: the `conv_lhs => rw [hcomm]` step followed by several composition/smul
--- rewrites elaborates a deeply nested term (each rewrite carries the full prior instantiation),
--- pushing past even a generously raised heartbeat budget (800000) even though each individual
--- step is simple.
 /-- **The `tsum` 2-point Bloch–de Dominicis base case**: the `[Fintype Config]`-free analogue of
 `traceFock_diagonalEvolution_comp_two_point`, given the same c-number-commutator and KMS-weight
-hypotheses plus explicit summability of `C₁`'s and `Cⱼ`'s diagonal series (`hSummD`,
-`hSummDCjC1`) and of the rotation's double series (`h`). This is the theorem a genuine bosonic
-free Boltzmann weight would need to instantiate (supplying all three summability witnesses from
+hypotheses plus explicit summability of the partition-function diagonal series
+(`n ↦ (e^{-βH₀})ₙₙ`, `hSummD`) and of the rotation's double series (`h`). Summability of the
+rotated two-point diagonal series (`n ↦ (e^{-βH₀}CⱼC₁)ₙₙ`) is *not* a separate hypothesis — it
+follows from `h` alone via `summable_matrixCoeff_diag_comp_of_summable_uncurry`, so only two
+summability witnesses are needed rather than three. This is the theorem a genuine bosonic
+free Boltzmann weight would need to instantiate (supplying those two summability witnesses from
 `Bosonic/BoltzmannWeightSummable.lean`-style convergence facts, not done here) to get a real
 bosonic 2-point function out of this framework. -/
 theorem tsumTrace_diagonalEvolution_comp_two_point
@@ -173,8 +171,6 @@ theorem tsumTrace_diagonalEvolution_comp_two_point
     (hcomm : C1.comp Cj - ζ • (Cj.comp C1) =
       c1j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
     (hSummD : Summable (fun n => matrixCoeff (diagonalEvolution energy (-β)) n n))
-    (hSummDCjC1 : Summable
-      (fun n => matrixCoeff ((diagonalEvolution energy (-β)).comp (Cj.comp C1)) n n))
     (h : Summable (Function.uncurry (fun n k =>
       matrixCoeff ((diagonalEvolution energy (-β)).comp Cj) n k * matrixCoeff C1 k n))) :
     (1 - ζ * Complex.exp ((q1 * β : ℝ) : ℂ)) *
@@ -182,13 +178,24 @@ theorem tsumTrace_diagonalEvolution_comp_two_point
       c1j * tsumTrace (diagonalEvolution energy (-β)) := by
   rw [sub_eq_iff_eq_add] at hcomm
   have hrot := tsumTrace_diagonalEvolution_comp_rotate energy β q1 Cj C1 hC1 h
+  have hSummDCjC1 : Summable
+      (fun n => matrixCoeff ((diagonalEvolution energy (-β)).comp (Cj.comp C1)) n n) := by
+    have := summable_matrixCoeff_diag_comp_of_summable_uncurry
+      ((diagonalEvolution energy (-β)).comp Cj) C1 h
+    rwa [LinearMap.comp_assoc] at this
+  have hpoint : (fun n => matrixCoeff ((diagonalEvolution energy (-β)).comp (C1.comp Cj)) n n) =
+      fun n => c1j * matrixCoeff (diagonalEvolution energy (-β)) n n +
+        ζ * matrixCoeff ((diagonalEvolution energy (-β)).comp (Cj.comp C1)) n n := by
+    funext n
+    conv_lhs => rw [hcomm]
+    rw [LinearMap.comp_add, LinearMap.comp_smul, LinearMap.comp_smul, LinearMap.comp_id,
+      matrixCoeff_add, matrixCoeff_smul, matrixCoeff_smul]
   have hstep : tsumTrace ((diagonalEvolution energy (-β)).comp (C1.comp Cj)) =
       c1j * tsumTrace (diagonalEvolution energy (-β)) +
         ζ * tsumTrace ((diagonalEvolution energy (-β)).comp (Cj.comp C1)) := by
-    conv_lhs => rw [hcomm]
-    rw [LinearMap.comp_add, LinearMap.comp_smul, LinearMap.comp_smul, LinearMap.comp_id,
-      tsumTrace_add (hSummD.const_smul c1j) (hSummDCjC1.const_smul ζ), tsumTrace_smul,
-      tsumTrace_smul]
+    rw [tsumTrace, tsumTrace, tsumTrace, hpoint,
+      (((hSummD.mul_left c1j).hasSum).add ((hSummDCjC1.mul_left ζ)).hasSum).tsum_eq,
+      tsum_mul_left, tsum_mul_left]
   rw [hrot, smul_eq_mul] at hstep
   linear_combination hstep
 

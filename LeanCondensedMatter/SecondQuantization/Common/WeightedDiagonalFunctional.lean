@@ -138,6 +138,30 @@ theorem tsumTrace_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFoc
     _ = ∑' k, ∑' n, matrixCoeff A n k * matrixCoeff B k n := h.tsum_comm.symm
     _ = ∑' n, matrixCoeff (B.comp A) n n := tsum_congr fun k => hcol k
 
+/-- **A composite's diagonal series is summable whenever the underlying bivariate family is**:
+`Summable (n ↦ (AB)ₙₙ)` follows from `Summable (Function.uncurry (n, k ↦ A_{nk}B_{kn}))` alone,
+via Mathlib's `Summable.prod` (double summability implies each row's sum is itself a summable
+function of the row index) applied to the row-sum identity already used inside
+`tsumTrace_comp_comm`. Lets a caller who already has the double-summability hypothesis for
+`tsumTrace_comp_comm`/`tsumTrace_diagonalEvolution_comp_rotate` avoid separately assuming
+summability of a composite's diagonal series — it is redundant with that hypothesis. -/
+theorem summable_matrixCoeff_diag_comp_of_summable_uncurry
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (h : Summable (Function.uncurry (fun n k => matrixCoeff A n k * matrixCoeff B k n))) :
+    Summable (fun n => matrixCoeff (A.comp B) n n) := by
+  have hrow : (fun n => matrixCoeff (A.comp B) n n) =
+      fun n => ∑' k, matrixCoeff A n k * matrixCoeff B k n := by
+    funext n
+    rw [matrixCoeff_comp_support]
+    exact ((hasSum_sum_of_ne_finset_zero
+      (s := (B (basisState n)).support)
+      (fun k hk => by
+        have hz : matrixCoeff B k n = 0 := by
+          by_contra hcon; exact hk (Finsupp.mem_support_iff.mpr hcon)
+        rw [hz, mul_zero])).tsum_eq).symm
+  rw [hrow]
+  exact h.prod
+
 variable [Fintype Config]
 
 /-! ## Traces and weighted sums -/
