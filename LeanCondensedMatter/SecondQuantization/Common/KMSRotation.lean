@@ -7,9 +7,9 @@ set_option linter.style.header false
 # The KMS-type trace rotation, combining trace cyclicity and the KMS-type relation
 
 Phase 9, step 4 of Track D's finite-mode fermionic primary line
-(`notes/roadmaps/second-quantization.md`), step 3 of the plan (discussed with the user) to prove
-the general `2n`-point Bloch–de Dominicis theorem simultaneously for bosons and fermions in
-`Common/`: combines `Common.traceFock_comp_comm` (trace cyclicity, `[Fintype Config]`) with
+(`notes/roadmaps/second-quantization.md`), step 3 of the plan (discussed with the user) toward a
+common `Common/`-level Bloch–de Dominicis induction interface usable by both statistics: combines
+`Common.traceFock_comp_comm` (trace cyclicity, `[Fintype Config]`) with
 `Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution` (the KMS-type relation) into the
 single identity the theorem's induction actually uses to move a ladder operator from the end of an
 operator product to its front, picking up an eigenvalue-dependent weight:
@@ -32,7 +32,7 @@ namespace Common
 variable {Config : Type*} [Fintype Config]
 
 omit [Fintype Config] in
-/-- **`C e^{τH₀} = e^{qτ} e^{τH₀} C`**, the KMS-type relation with `C` on the left — the algebraic
+/-- **`C e^{τH₀} = e^{-qτ} e^{τH₀} C`**, the KMS-type relation with `C` on the left — the algebraic
 rearrangement of `diagonalEvolution_comp_eq_smul_comp_diagonalEvolution` needed by
 `traceFock_diagonalEvolution_comp_rotate` below, obtained by multiplying both sides of that lemma
 by the (nonzero) reciprocal exponential factor. -/
