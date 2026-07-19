@@ -146,7 +146,7 @@ theorem traceFock_id : traceFock (LinearMap.id : FockSpaceFermionic Mode →ₗ[
   Common.traceFock_id
 
 omit [LinearOrder Mode] in
-/-- **The weighted trace of the identity is the partition function itself**,
+/-- **The weighted trace of the identity is the total weight**,
 `Tr_w(id) = Σₙ w(n) = weightSum(w)`. -/
 theorem weightedTrace_id (w : FermionOccupation Mode → ℂ) :
     weightedTrace w (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] _) = weightSum w :=

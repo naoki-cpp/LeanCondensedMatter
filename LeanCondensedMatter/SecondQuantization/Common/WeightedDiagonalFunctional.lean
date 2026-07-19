@@ -5,18 +5,27 @@ set_option linter.style.header false
 /-!
 # Finite weighted traces and normalized diagonal functionals, generic over the occupation-state type
 
-Generalizes `Fermionic/WeightedDiagonalFunctional.lean`'s finite-mode-set trace, weighted trace,
-total weight, and normalized weighted diagonal functional to an arbitrary occupation-state type
-`Config` — the construction never used anything fermion-specific (Pauli exclusion, the `Finset
+A statistics-agnostic utility for a *finite* occupation-state type `Config` (`[Fintype Config]`):
+generalizes `Fermionic/WeightedDiagonalFunctional.lean`'s finite-mode-set trace, weighted trace,
+total weight, and normalized weighted diagonal functional away from `FermionOccupation Mode`
+specifically — the construction never used anything fermion-specific (Pauli exclusion, the `Finset
 Mode` representation, or any statistics constant), only `matrixCoeff`/`basisState` on
-`AlgebraicFock Config` and `[Fintype Config]` for the finite sum. Extracting it here lets a future
-Bloch–de Dominicis induction (and the bosonic line) share one definition and one set of linearity
-lemmas instead of duplicating them per statistics.
+`AlgebraicFock Config` and finiteness of `Config` for the finite sum.
+
+**This is not yet shared with the bosonic line.** `Bosonic.Occupation Mode := Mode →₀ ℕ` is
+infinite even for a finite mode set (unbounded occupation per mode), so it does not satisfy
+`[Fintype Config]` and cannot instantiate the definitions here. The physical bosonic weighted
+trace needs a separate, summability-aware `tsum` construction; it is not an instantiation of this
+finite-sum one. The current concrete user of this file is the fermionic finite-mode line
+(`Fermionic/WeightedDiagonalFunctional.lean`, below); a common abstract interface over both the
+finite-sum and `tsum` constructions, if one turns out to be worth building, is separate future
+work.
 
 As in `Fermionic/WeightedDiagonalFunctional.lean`, the weight `w : Config → ℂ` here is
-*arbitrary* — not yet the genuine Gibbs weight `e^{-βE(n)}` — so `normalizedWeightedDiagonal` is a
-genuine thermal (Gibbs-state) expectation only once `w` is specialized to a positive Boltzmann
-weight with `weightSum w ≠ 0`.
+*arbitrary* — not yet the genuine Gibbs weight `e^{-βE(n)}` — so `weightSum w` is only a total
+weight, not yet a physical partition function, and `normalizedWeightedDiagonal` is a genuine
+thermal (Gibbs-state) expectation only once `w` is specialized to a positive Boltzmann weight with
+`weightSum w ≠ 0`.
 
 `Fermionic/WeightedDiagonalFunctional.lean` keeps its own `weightedTrace`/`weightSum`/
 `normalizedWeightedDiagonal`/`traceFock` names as thin specializations of the definitions here
@@ -116,7 +125,7 @@ theorem traceFock_id : traceFock (LinearMap.id : AlgebraicFock Config →ₗ[ℂ
     matrixCoeff_of_smul_basisState (by rw [LinearMap.id_apply, one_smul])
   simp [traceFock, h]
 
-/-- **The weighted trace of the identity is the partition function itself**,
+/-- **The weighted trace of the identity is the total weight**,
 `Tr_w(id) = Σₙ w(n) = weightSum(w)`. -/
 theorem weightedTrace_id (w : Config → ℂ) :
     weightedTrace w (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] _) = weightSum w := by

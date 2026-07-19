@@ -491,18 +491,20 @@ directly from the two already-proved fiber-inverse identities with no new induct
 finite decomposition the Bloch–de Dominicis induction over positions will recurse on.
 
 **`weightedTrace`/`weightSum`/`normalizedWeightedDiagonal` generalized to `Common/` done** (see the
-`Common/WeightedDiagonalFunctional.lean` row above): the statistics-agnostic weighted-diagonal-
-functional layer both statistics need is now in place. What the bosonic line still lacks is not
-this shared definition but the *convergence-aware* instantiation of it — `Occupation Mode := Mode
-→₀ ℕ` is unbounded per mode even for a finite mode set, so a genuine bosonic Gibbs weight needs an
-infinite-series argument `Fermionic/FreeBoltzmannWeight.lean`'s finite `Fintype`-sum proofs don't
-supply — plus the free bosonic two-point/occupation-number closed forms built on top of it;
-deferred since the fermionic, finite-mode line remains this track's primary path to the Linked
-Cluster Theorem.
+`Common/WeightedDiagonalFunctional.lean` row above): a statistics-agnostic *finite*-occupation-
+state-type utility (`[Fintype Config]`) is now in place, and the fermionic finite-mode line
+instantiates it directly (`Config := FermionOccupation Mode`). **This is not yet shared with the
+bosonic line.** `Occupation Mode := Mode →₀ ℕ` is unbounded per mode even for a finite mode set, so
+it does not satisfy `[Fintype Config]` and cannot instantiate this construction; the physical
+bosonic weighted trace needs a separate, summability-aware `tsum` construction — not an
+instantiation of this finite-sum one — plus the free bosonic two-point/occupation-number closed
+forms built on top of it. A common abstract interface over both the finite-sum and `tsum`
+constructions, if one turns out to be worth building, is separate future work; deferred since the
+fermionic, finite-mode line remains this track's primary path to the Linked Cluster Theorem.
 
 **Not yet done:** a general `n`-operator time-ordered product (`timeOrderedProduct` is still
 2-operator-only); a first concrete Bloch–de Dominicis induction step (the finite-temperature
 4-point identity `⟨A₁A₂A₃A₄⟩_{0,β} = ⟨A₁A₂⟩_{0,β}⟨A₃A₄⟩_{0,β} + ζ⟨A₁A₃⟩_{0,β}⟨A₂A₄⟩_{0,β} + ⟨A₁A₄⟩_{0,β}⟨A₂A₃⟩_{0,β}`, before the
 general `2n`-point theorem) using `ExchangeAlgebra` and `weight_eraseZeroPair` to validate the
-pairing-sign design; the bosonic convergence-aware weighted-diagonal-functional instantiation and
-the free bosonic two-point/occupation-number closed forms built on top of it (deferred, see above).
+pairing-sign design; the bosonic `tsum`-based weighted-diagonal-functional construction and the
+free bosonic two-point/occupation-number closed forms built on top of it (deferred, see above).
