@@ -463,12 +463,23 @@ other, and `Pairing.insertFirstPair_partner_orderIso` gives the conjugation form
 remaining positions — the insertion-side counterpart to `eraseZeroOrderIso_partner`. This is the
 constructive counterpart `eraseZeroPair` needed to let the Bloch–de Dominicis induction build
 pairings up from smaller ones (choosing `0`'s partner among `2n + 1` positions), not just tear them
-down; the round-trip laws (`eraseZeroPair_insertFirstPair`, `insertFirstPair_eraseZeroPair`)
-connecting the two directions are not yet proved, so `insertFirstPair` is not yet known to be an
-actual inverse.
+down.
+
+**The `eraseZeroPair`/`insertFirstPair` round-trip laws done, in `Common/BlochDeDominicisPairing.lean`:**
+`Pairing.eraseZeroPair_insertFirstPair` proves `(pairing.insertFirstPair j hj).eraseZeroPair =
+pairing` (inserting a pair `(0, j)` ahead of `pairing` and immediately erasing it back out recovers
+`pairing`), using `deletedPositionsOrderIso_congr` (a new proof-irrelevance helper in
+`DeletedPositions.lean`) to identify the erase step's own order isomorphism with the one
+`insertFirstPair` used, plus `insertFirstPair_partner_orderIso`. `Pairing.insertFirstPair_eraseZeroPair`
+proves the reverse composite `pairing.eraseZeroPair.insertFirstPair (pairing.partner 0) hzero =
+pairing` for `pairing : Pairing (n + 1)`, by cases on whether a position is `0`, `pairing.partner 0`,
+or one of the remaining positions. Together these confirm `insertFirstPair` is a genuine two-sided
+inverse to `eraseZeroPair` (for the partner `insertFirstPair` was actually given), which is what the
+Bloch–de Dominicis induction over `Pairing (n + 1) ≃ Σ_{j ≠ 0} Pairing n` will build on.
 
 **Not yet done:** a general `n`-operator time-ordered product (`timeOrderedProduct` is still
-2-operator-only); the `eraseZeroPair`/`insertFirstPair` round-trip laws; a first concrete
+2-operator-only); the finite `Pairing (n + 1) ≃ Σ_{j ≠ 0} Pairing n` equivalence itself (the
+round-trip laws are the ingredients, not yet assembled into the equivalence); a first concrete
 Bloch–de Dominicis induction step (the finite-temperature
 4-point identity `⟨A₁A₂A₃A₄⟩_{0,β} = ⟨A₁A₂⟩_{0,β}⟨A₃A₄⟩_{0,β} + ζ⟨A₁A₃⟩_{0,β}⟨A₂A₄⟩_{0,β} + ⟨A₁A₄⟩_{0,β}⟨A₂A₃⟩_{0,β}`, before the
 general `2n`-point theorem) using `ExchangeAlgebra` and `weight_eraseZeroPair` to validate the pairing-sign design; the

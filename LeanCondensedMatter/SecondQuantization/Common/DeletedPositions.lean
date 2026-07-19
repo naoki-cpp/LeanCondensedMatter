@@ -47,5 +47,16 @@ theorem deletedPositionsOrderIso_strictMono (n : ℕ) (j : Fin (2 * (n + 1)))
   intro i k hik
   exact deletedPositionsOrderIso n j hzero |>.strictMono hik
 
+/-- `deletedPositionsOrderIso` only depends on the removed position `j`, not on the particular
+proof that it differs from `0`: this lets later round-trip proofs identify two differently-built
+instances once the underlying `j`'s are shown equal. -/
+theorem deletedPositionsOrderIso_congr (n : ℕ) {j j' : Fin (2 * (n + 1))} (h : j = j')
+    (hzero : (0 : Fin (2 * (n + 1))) ≠ j) (hzero' : (0 : Fin (2 * (n + 1))) ≠ j')
+    (i : Fin (2 * n)) :
+    (deletedPositionsOrderIso n j hzero i : Fin (2 * (n + 1))) =
+      (deletedPositionsOrderIso n j' hzero' i : Fin (2 * (n + 1))) := by
+  subst h
+  rfl
+
 end Common
 end SecondQuantization
