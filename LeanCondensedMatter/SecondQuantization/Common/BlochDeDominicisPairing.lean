@@ -676,11 +676,12 @@ theorem Pairing.weight_eraseZeroPair (s : Statistics) {n : ℕ} (pairing : Pairi
   exact zetaInt_pow_eq_of_mod_two_eq s pairing.crossingsWithFirstPair_mod_two
 
 /-- Insert a new pair `(0, j)` ahead of a smaller pairing, reindexing it onto the positions left
-after removing `0` and `j`. This is the inverse construction to `Pairing.eraseZeroPair`: it lets
-the Bloch--de Dominicis induction build up a `Pairing (n + 1)` from a choice of `j` and a smaller
-`Pairing n`, rather than only tearing one down. -/
-noncomputable def insertFirstPair {n : ℕ} (j : Fin (2 * (n + 1)))
-    (hj : (0 : Fin (2 * (n + 1))) ≠ j) (pairing : Pairing n) : Pairing (n + 1) := by
+after removing `0` and `j`. This is the constructive counterpart to `Pairing.eraseZeroPair` needed
+to let the Bloch--de Dominicis induction build up a `Pairing (n + 1)` from a choice of `j` and a
+smaller `Pairing n`, rather than only tearing one down; the round-trip laws connecting the two
+directions are proved separately. -/
+noncomputable def Pairing.insertFirstPair {n : ℕ} (pairing : Pairing n) (j : Fin (2 * (n + 1)))
+    (hj : (0 : Fin (2 * (n + 1))) ≠ j) : Pairing (n + 1) := by
   let oi := deletedPositionsOrderIso n j hj
   let extended : Equiv.Perm (Fin (2 * (n + 1))) := pairing.partner.extendDomain oi.toEquiv
   have hext0 : extended (0 : Fin (2 * (n + 1))) = 0 :=
@@ -752,14 +753,54 @@ noncomputable def insertFirstPair {n : ℕ} (j : Fin (2 * (n + 1)))
         exact hextNe x hxmem
 
 /-- `insertFirstPair` pairs position `0` with the chosen `j`. -/
-theorem insertFirstPair_partner_zero {n : ℕ} (j : Fin (2 * (n + 1)))
-    (hj : (0 : Fin (2 * (n + 1))) ≠ j) (pairing : Pairing n) :
-    (insertFirstPair j hj pairing).partner 0 = j := by
+@[simp]
+theorem Pairing.insertFirstPair_partner_zero {n : ℕ} (pairing : Pairing n)
+    (j : Fin (2 * (n + 1))) (hj : (0 : Fin (2 * (n + 1))) ≠ j) :
+    (pairing.insertFirstPair j hj).partner 0 = j := by
   change (Equiv.swap 0 j *
     (pairing.partner.extendDomain (deletedPositionsOrderIso n j hj).toEquiv)) 0 = j
   rw [Equiv.Perm.mul_apply,
     Equiv.Perm.extendDomain_apply_not_subtype _ _ (by simp [deletedPositions]),
     Equiv.swap_apply_left]
+
+/-- `insertFirstPair`'s chosen partner `j` pairs back with position `0`. -/
+@[simp]
+theorem Pairing.insertFirstPair_partner_chosen {n : ℕ} (pairing : Pairing n)
+    (j : Fin (2 * (n + 1))) (hj : (0 : Fin (2 * (n + 1))) ≠ j) :
+    (pairing.insertFirstPair j hj).partner j = 0 := by
+  change (Equiv.swap 0 j *
+    (pairing.partner.extendDomain (deletedPositionsOrderIso n j hj).toEquiv)) j = 0
+  rw [Equiv.Perm.mul_apply,
+    Equiv.Perm.extendDomain_apply_not_subtype _ _ (by simp [deletedPositions]),
+    Equiv.swap_apply_right]
+
+/-- On the positions left after removing `0` and `j`, `insertFirstPair`'s partner is exactly the
+smaller pairing's own partner, transported across `deletedPositionsOrderIso`: this is the
+conjugation formula `eraseZeroOrderIso_partner` needs a counterpart of on the insertion side. -/
+@[simp]
+theorem Pairing.insertFirstPair_partner_orderIso {n : ℕ} (pairing : Pairing n)
+    (j : Fin (2 * (n + 1))) (hj : (0 : Fin (2 * (n + 1))) ≠ j) (i : Fin (2 * n)) :
+    (pairing.insertFirstPair j hj).partner
+        (deletedPositionsOrderIso n j hj i : Fin (2 * (n + 1))) =
+      (deletedPositionsOrderIso n j hj (pairing.partner i) : Fin (2 * (n + 1))) := by
+  set oi := deletedPositionsOrderIso n j hj
+  change (Equiv.swap 0 j * (pairing.partner.extendDomain oi.toEquiv)) (oi i : Fin (2 * (n + 1))) =
+    (oi (pairing.partner i) : Fin (2 * (n + 1)))
+  rw [Equiv.Perm.mul_apply]
+  have hmem : (oi i : Fin (2 * (n + 1))) ∈ deletedPositions n j hj := (oi i).property
+  have h1 : pairing.partner.extendDomain oi.toEquiv (oi i : Fin (2 * (n + 1))) =
+      (oi (pairing.partner (oi.symm ⟨(oi i : Fin (2 * (n + 1))), hmem⟩)) :
+        Fin (2 * (n + 1))) :=
+    Equiv.Perm.extendDomain_apply_subtype _ _ hmem
+  rw [h1]
+  have hsymm : oi.symm ⟨(oi i : Fin (2 * (n + 1))), hmem⟩ = i := by
+    apply oi.injective
+    simp
+  rw [hsymm]
+  have hmem' : (oi (pairing.partner i) : Fin (2 * (n + 1))) ∈ deletedPositions n j hj :=
+    (oi (pairing.partner i)).property
+  exact Equiv.swap_apply_of_ne_of_ne
+    (Finset.mem_erase.mp (Finset.mem_erase.mp hmem').2).1 (Finset.mem_erase.mp hmem').1
 
 /-- The adjacent four-position pairing `(0,1)(2,3)`. -/
 def pairingAdjacent : Pairing 2 :=
