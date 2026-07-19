@@ -1,6 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Statistics
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.DeletedPositions
-import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Finset.Filter
 import Mathlib.Data.Finset.Prod
 import Mathlib.Data.Fintype.Sets
@@ -24,13 +22,14 @@ enumerating the powerset of all possible ordered pairs.  It also gives the later
 induction direct access to the unique partner of every operator position.
 
 Each partner orbit is normalized to `(a, b)` with `a < b`.  Two normalized pairs cross when
-`a < c < b < d`, and the statistics-dependent weight is `ζ ^ crossingCount`, where `ζ = +1` for
-bosons and `ζ = -1` for fermions.  At four positions the adjacent, crossing, and nested pairings
-have weights `1`, `ζ`, and `1`, respectively.
+`a < c < b < d`; `crossingCount` counts these. The statistics-dependent exchange weight
+`ζ ^ crossingCount` itself — `ζ = +1` for bosons, `ζ = -1` for fermions — is *not* defined here; see
+`Common/BlochDeDominicis/PairingWeight.lean`.
 
-This file is purely combinatorial.  It defines neither operator-valued time ordering, thermal
-contractions, thermal expectations, nor the Bloch--de Dominicis factorization theorem itself, and
-it imports neither statistics-specific implementation directory.
+This file is purely combinatorial and has no `Statistics`/`ℂ` dependency at all: it defines neither
+operator-valued time ordering, thermal contractions, thermal expectations, the exchange-statistics
+weight, nor the Bloch--de Dominicis factorization theorem itself, and it imports neither
+statistics-specific implementation directory.
 -/
 
 namespace SecondQuantization
@@ -324,26 +323,6 @@ crossing is counted exactly once. -/
 def Pairing.crossingCount {n : ℕ} (pairing : Pairing n) : ℕ :=
   ((pairing.pairs.product pairing.pairs).filter fun pairPair =>
     Crosses pairPair.1 pairPair.2).card
-
-/-- The exchange-statistics weight `ζ ^ crossings` of a Bloch--de Dominicis pairing. -/
-noncomputable def Pairing.weight (s : Statistics) {n : ℕ} (pairing : Pairing n) : ℂ :=
-  (s.zetaInt : ℂ) ^ pairing.crossingCount
-
-@[simp]
-theorem Pairing.weight_boson {n : ℕ} (pairing : Pairing n) :
-    pairing.weight Statistics.boson = 1 := by
-  simp [Pairing.weight]
-
-@[simp]
-theorem Pairing.weight_fermion {n : ℕ} (pairing : Pairing n) :
-    pairing.weight Statistics.fermion = (-1 : ℂ) ^ pairing.crossingCount := by
-  simp [Pairing.weight]
-
-/-- For fermions, the Bloch--de Dominicis pairing weight is the crossing-parity sign. -/
-theorem Pairing.weight_fermion_eq_ite {n : ℕ} (pairing : Pairing n) :
-    pairing.weight Statistics.fermion =
-      if Even pairing.crossingCount then 1 else -1 := by
-  rw [Pairing.weight_fermion, neg_one_pow_eq_ite]
 
 /-- The pair containing position `0`, i.e. `(0, partner 0)`. -/
 def Pairing.firstPair {n : ℕ} (pairing : Pairing (n + 1)) :
@@ -657,24 +636,6 @@ theorem Pairing.crossingsWithFirstPair_mod_two {n : ℕ} (pairing : Pairing (n +
     rw [← hIcard', hIcard, hDcard, hCcard]
   omega
 
-/-- The exchange sign `ζ` squares to `1`, so a power of `ζ` only depends on the exponent's
-parity. -/
-theorem zetaInt_pow_eq_of_mod_two_eq (s : Statistics) {a b : ℕ} (h : a % 2 = b % 2) :
-    (s.zetaInt : ℂ) ^ a = (s.zetaInt : ℂ) ^ b := by
-  cases s
-  · simp
-  · simp only [Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
-    rw [neg_one_pow_eq_pow_mod_two, h, ← neg_one_pow_eq_pow_mod_two]
-
-/-- The exponent-recurrence version of `crossingsWithFirstPair_mod_two`: since the exchange sign
-`ζ` squares to `1`, matching parities give matching powers. -/
-theorem Pairing.weight_eraseZeroPair (s : Statistics) {n : ℕ} (pairing : Pairing (n + 1)) :
-    pairing.weight s =
-      (s.zetaInt : ℂ) ^ pairing.interveningPositionCount * pairing.eraseZeroPair.weight s := by
-  rw [Pairing.weight, Pairing.weight, pairing.crossingCount_eraseZeroPair, pow_add, mul_comm]
-  congr 1
-  exact zetaInt_pow_eq_of_mod_two_eq s pairing.crossingsWithFirstPair_mod_two
-
 /-- Insert a new pair `(0, j)` ahead of a smaller pairing, reindexing it onto the positions left
 after removing `0` and `j`. This is the constructive counterpart to `Pairing.eraseZeroPair` needed
 to let the Bloch--de Dominicis induction build up a `Pairing (n + 1)` from a choice of `j` and a
@@ -894,15 +855,6 @@ theorem crossingCount_pairingCrossing : pairingCrossing.crossingCount = 1 := by
 @[simp]
 theorem crossingCount_pairingNested : pairingNested.crossingCount = 0 := by
   decide
-
-/-- Four-position sanity check: the three structural pairings have weights `1`, `ζ`, and `1`.
-This is the combinatorial sign pattern used by the four-point Bloch--de Dominicis formula. -/
-theorem four_position_pairings_and_weights (s : Statistics) :
-    allPairings 2 = {pairingAdjacent, pairingCrossing, pairingNested} ∧
-      pairingAdjacent.weight s = 1 ∧
-      pairingCrossing.weight s = (s.zetaInt : ℂ) ∧
-      pairingNested.weight s = 1 := by
-  simp [allPairings_two, Pairing.weight]
 
 end BlochDeDominicis
 end Common
