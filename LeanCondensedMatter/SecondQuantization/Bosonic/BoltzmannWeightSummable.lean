@@ -59,7 +59,7 @@ theorem boltzmannWeight_option {A : Type*} (ε : Option A → ℝ) (β : ℝ) (m
 
 /-! ## Nonnegative summability facts, in norm form -/
 
-theorem summable_norm_of_nonneg {ι : Type*} {f : ι → ℝ} (hf : Summable f)
+private theorem summable_norm_of_nonneg {ι : Type*} {f : ι → ℝ} (hf : Summable f)
     (hpos : ∀ i, 0 ≤ f i) : Summable (fun i => ‖f i‖) := by
   rw [show (fun i => ‖f i‖) = f from funext fun i => Real.norm_of_nonneg (hpos i)]
   exact hf
@@ -178,6 +178,21 @@ theorem tsum_boltzmannWeight {Mode : Type*} [Fintype Mode] (ε : Mode → ℝ)
     (β : ℝ) (hpos : ∀ i, 0 < β * ε i) :
     ∑' n, boltzmannWeight ε β n = ∏ i, (1 - Real.exp (-β * ε i))⁻¹ :=
   (hasSum_boltzmannWeight ε β hpos).tsum_eq
+
+/-- **The genuine multi-mode free partition function is strictly positive**: each one-mode factor
+`(1 - e^{-βεᵢ})⁻¹` is positive under the convergence condition `0 < βεᵢ`, hence so is their finite
+product. -/
+theorem tsum_boltzmannWeight_pos {Mode : Type*} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ)
+    (hpos : ∀ i, 0 < β * ε i) : 0 < ∑' n, boltzmannWeight ε β n := by
+  rw [tsum_boltzmannWeight ε β hpos]
+  refine Finset.prod_pos fun i _ => inv_pos.2 ?_
+  have hnorm : Real.exp (-β * ε i) < 1 := by
+    rw [Real.exp_lt_one_iff]; linarith [hpos i]
+  linarith
+
+theorem tsum_boltzmannWeight_ne_zero {Mode : Type*} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ)
+    (hpos : ∀ i, 0 < β * ε i) : (∑' n, boltzmannWeight ε β n) ≠ 0 :=
+  ne_of_gt (tsum_boltzmannWeight_pos ε β hpos)
 
 end Bosonic
 end SecondQuantization

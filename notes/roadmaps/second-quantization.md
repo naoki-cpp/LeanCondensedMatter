@@ -524,10 +524,20 @@ caveat as `normalizedWeightedDiagonal` itself (not necessarily positive, real-va
 any particular basis, or a genuine Gibbs-state expectation).
 
 **Not yet done:** a general `n`-operator time-ordered product (`timeOrderedProduct` is still
-2-operator-only); the bosonic `tsum`-based instantiation of `NormalizedOperatorFunctional` (a
-separate, summability-aware construction — `Occupation Mode := Mode →₀ ℕ` doesn't satisfy
-`[Fintype Config]`, so it isn't an instantiation of the finite-sum backend) and the free bosonic
-two-point/occupation-number closed forms built on top of it; the further quasifree/thermal-
+2-operator-only); a bosonic Gibbs weighted-expectation construction (a separate, summability-aware
+`tsum` layer — `Occupation Mode := Mode →₀ ℕ` doesn't satisfy `[Fintype Config]`, so it isn't an
+instantiation of the finite-sum backend). **This cannot be a direct `NormalizedOperatorFunctional
+Config` instantiation on *all* operators**: `NormalizedOperatorFunctional Config` is a `LinearMap`
+on the whole of `AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config`, but `Σₙ w(n)` converging is not
+enough to make `Σₙ w(n)·matrixCoeff A n n` converge for every operator `A` (e.g. the diagonal map
+sending `basisState n ↦ w(n)⁻¹ • basisState n` makes every term `w(n)·w(n)⁻¹ = 1`, summing over
+infinitely many occupation states, hence divergent). The bosonic construction instead needs either
+a summability-controlled submodule of operators (e.g. `Submodule ℂ (AlgebraicFock Config →ₗ[ℂ]
+AlgebraicFock Config)` restricted to operators whose diagonal is `w`-summable) to state a
+`LinearMap` on, or a generalization of `NormalizedOperatorFunctional` parametric in the operator
+domain — a design question for that later PR, not resolved here. The free bosonic
+two-point/occupation-number closed forms built on top of it are separate future work too; the
+further quasifree/thermal-
 exchange structure the Bloch–de Dominicis identity actually needs on top of
 `NormalizedOperatorFunctional`; connecting that structure to `ExchangeAlgebra`/the pairing
 combinatorics; a first concrete Bloch–de Dominicis induction step (the finite-temperature 4-point
