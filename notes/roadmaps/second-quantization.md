@@ -110,9 +110,9 @@ bosonic partition sums are genuinely infinite series needing convergence conditi
 | B2 | `Bosonic/ImaginaryTimeEvolution.lean` — real-valued `freeEigenvalue ε n := Σᵢ n(i)·ε(i)`, `freeHamiltonian` (diagonal in the occupation basis with that eigenvalue), the algebraic basis-diagonal realization of `e^{τH₀}` (`imaginaryTimeEvolveFree`, not an operator exponential), algebraic Heisenberg-type `imaginaryTimeEvolve`, and the evolved operators `a_i(τ) = e^{-τεᵢ} a_i`, `a_i†(τ) = e^{τεᵢ} a_i†` | `proved` |
 | B3a | `Bosonic/FreePartitionFunction.lean` — the one-mode geometric series `Σ_{k=0}^∞ e^{-βkε} = (1-e^{-βε})⁻¹` (`hasSum_oneModeBoltzmannWeight`/`tsum_oneModeBoltzmannWeight`), converging exactly when `0 < βε` | `proved` |
 | B3b | `Bosonic/BoltzmannWeightFactorization.lean` — for `[Fintype Mode]`, the multi-mode Boltzmann weight `boltzmannWeight ε β n := e^{-βE(n)}` factors into one-mode factors, `boltzmannWeight_eq_prod : e^{-βE(n)} = ∏ᵢ oneModeBoltzmannWeight β (εᵢ) (n i)` — the purely algebraic half of the product formula, no summability yet | `proved` |
-| B3c | The actual infinite-sum decomposition `Σ_n ∏ᵢ q_i^{n(i)} = ∏ᵢ Σ_k q_i^k`, giving `Z(β) = ∏ᵢ (1-e^{-βεᵢ})⁻¹`, by `Fintype.induction_empty_option` reducing to B3a's one-mode `HasSum` facts via Mathlib's `Finsupp.optionEquiv : (Option α →₀ M) ≃ M × (α →₀ M)` (giving `Occupation (Option Mode) ≃ ℕ × Occupation Mode`) and `tsum_mul_tsum_of_summable_norm`/`HasSum.mul` to combine the two per-step factors | `idea` |
+| B3c | `Bosonic/BoltzmannWeightSummable.lean` — the actual infinite-sum decomposition `Σ_n ∏ᵢ q_i^{n(i)} = ∏ᵢ Σ_k q_i^k`, giving `hasSum_boltzmannWeight : HasSum (boltzmannWeight ε β) (∏ᵢ (1-e^{-βεᵢ})⁻¹)` for any `[Fintype Mode]`, given `∀ i, 0 < βεᵢ` (with `summable_boltzmannWeight`/`tsum_boltzmannWeight` corollaries). Proved by ordinary induction on `k` for `Mode := Fin k` (not `Fintype.induction_empty_option`, to avoid its `of_equiv` transport case at every inductive step — the reindexing along an arbitrary `Fintype Mode ≃ Fin (Fintype.card Mode)` is instead done once, at the very end, via `Fintype.equivFin`), splitting off one mode at a time with `Finsupp.optionEquiv : (Option α →₀ M) ≃ M × (α →₀ M)` (giving `Occupation (Option (Fin k)) ≃ ℕ × Occupation (Fin k)`), `HasSum.mul`/`summable_mul_of_summable_norm` to combine the one-mode and `k`-mode `HasSum` facts, and `Equiv.hasSum_iff` to transport `HasSum` along each reindexing equivalence | `proved` |
 | B3d | `Bosonic/FreeTwoPointCoefficient.lean` — `diagonalCoeff A n := A (basisState n) n` (a coordinate evaluation, deliberately *not* named `operatorTrace`: `FockSpaceBosonic` is the algebraic, finite-particle *dense subspace* of a would-be completed bosonic Fock space, not that completed Hilbert space itself, so there is no inner product yet to make `diagonalCoeff` and `⟨n\|A\|n⟩` provably coincide); the free two-point function's basis coefficient `⟨n\|a_i(τ)a_j†\|n⟩ = δᵢⱼ e^{-τεᵢ}(nᵢ+1)`, computed algebraically with no thermal sum or Hilbert completion needed | `proved` |
-| B3e+ | The Boltzmann-weighted thermal sum over `n` of `B3d`'s coefficient (working name `gibbsDiagonalSum`/`occupationGibbsExpectation`, same naming caveat as `diagonalCoeff`), reducing to the Bose–Einstein distribution `⟨n_i⟩ = 1/(e^{βεᵢ}-1)` via `B3a`'s geometric series — needs `B3c`'s multi-mode summability | `idea` |
+| B3e+ | The Boltzmann-weighted thermal sum over `n` of `B3d`'s coefficient (working name `gibbsDiagonalSum`/`occupationGibbsExpectation`, same naming caveat as `diagonalCoeff`), reducing to the Bose–Einstein distribution `⟨n_i⟩ = 1/(e^{βεᵢ}-1)` via `B3a`'s geometric series. `B3c`'s multi-mode summability is now available for this; not yet started | `idea` |
 
 ## Common statistics-agnostic layer
 
@@ -524,10 +524,20 @@ caveat as `normalizedWeightedDiagonal` itself (not necessarily positive, real-va
 any particular basis, or a genuine Gibbs-state expectation).
 
 **Not yet done:** a general `n`-operator time-ordered product (`timeOrderedProduct` is still
-2-operator-only); the bosonic `tsum`-based instantiation of `NormalizedOperatorFunctional` (a
-separate, summability-aware construction — `Occupation Mode := Mode →₀ ℕ` doesn't satisfy
-`[Fintype Config]`, so it isn't an instantiation of the finite-sum backend) and the free bosonic
-two-point/occupation-number closed forms built on top of it; the further quasifree/thermal-
+2-operator-only); a bosonic Gibbs weighted-expectation construction (a separate, summability-aware
+`tsum` layer — `Occupation Mode := Mode →₀ ℕ` doesn't satisfy `[Fintype Config]`, so it isn't an
+instantiation of the finite-sum backend). **This cannot be a direct `NormalizedOperatorFunctional
+Config` instantiation on *all* operators**: `NormalizedOperatorFunctional Config` is a `LinearMap`
+on the whole of `AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config`, but `Σₙ w(n)` converging is not
+enough to make `Σₙ w(n)·matrixCoeff A n n` converge for every operator `A` (e.g. the diagonal map
+sending `basisState n ↦ w(n)⁻¹ • basisState n` makes every term `w(n)·w(n)⁻¹ = 1`, summing over
+infinitely many occupation states, hence divergent). The bosonic construction instead needs either
+a summability-controlled submodule of operators (e.g. `Submodule ℂ (AlgebraicFock Config →ₗ[ℂ]
+AlgebraicFock Config)` restricted to operators whose diagonal is `w`-summable) to state a
+`LinearMap` on, or a generalization of `NormalizedOperatorFunctional` parametric in the operator
+domain — a design question for that later PR, not resolved here. The free bosonic
+two-point/occupation-number closed forms built on top of it are separate future work too; the
+further quasifree/thermal-
 exchange structure the Bloch–de Dominicis identity actually needs on top of
 `NormalizedOperatorFunctional`; connecting that structure to `ExchangeAlgebra`/the pairing
 combinatorics; a first concrete Bloch–de Dominicis induction step (the finite-temperature 4-point
