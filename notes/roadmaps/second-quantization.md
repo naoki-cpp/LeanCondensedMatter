@@ -391,6 +391,25 @@ CanonicalAnticommutationRelations.lean`), `numberOperator_comp_self`/`annihilate
 `Fermionic/WeightedDiagonalFunctional.lean` thin wrapper) were placed at their most upstream
 reusable file rather than local to this proof.
 
+**Finite-configuration matrix composition and trace cyclicity done, in
+`Common/WeightedDiagonalFunctional.lean`:** `Common.matrixCoeff_comp_support` (`(AB)_{mn} =
+Σ_{k ∈ supp(B|n⟩)} A_{mk} B_{kn}`, holding for *any* `Config`, finite or not) and its
+`[Fintype Config]` specialization `Common.matrixCoeff_comp` (the sum extended to all of `Config`),
+from which `Common.traceFock_comp_comm` (`Tr[AB] = Tr[BA]`) follows by a double-sum reindex — the
+first of three ingredients (per the finite-temperature Bloch–de Dominicis proof in the project's
+physics reference notes) toward a `ζ`-uniform, `Common/`-level induction proving the general
+`2n`-point theorem once for both statistics. **`traceFock_comp_comm` is `[Fintype Config]`-specific
+finite-configuration infrastructure, immediately usable by the fermionic line
+(`FermionOccupation Mode := Finset Mode` is a `Fintype`) but *not* by the bosonic line as-is**:
+`Occupation Mode := Mode →₀ ℕ` is genuinely infinite (unbounded occupation per mode) even for a
+finite mode set, so it is not an instance of `[Fintype Config]`. A bosonic analogue needs a
+separate, summability-aware statement (e.g. a `tsum`-convergent weighted-trace cyclicity, or the
+Bloch–de Dominicis induction routed through a genuine KMS-type rotation identity rather than bare
+trace cyclicity) and is not supplied here. **Still needed for the `Common/`-level induction:** (2) a
+KMS-type relation for free-Hamiltonian ladder operators (`C e^{-βH} = w_C · e^{-βH} · C`, not yet
+built, statistics-agnostic in principle via `Common/DiagonalEvolution.lean`'s eigenvalue structure);
+(3) is the c-number `ζ`-commutator, already available (`Common/ExchangeAlgebra.lean`).
+
 **Not yet done:** the general finite-mode, finite-temperature fermionic Bloch–de Dominicis theorem for the
 free/quasifree Gibbs reference state itself (the `n`-point sum-over-pairings formula,
 `BlochDeDominicis.lean`) — multi-mode operators (needing the free partition function's mode
@@ -398,7 +417,8 @@ factorization), a genuine free Boltzmann weight (turning this into an actual fin
 statement), and an actual reduction of the right side to a sum over `Pairing 2`, not just matching
 its already-known weights by hand; the finite-temperature structure noted above (KMS
 antiperiodicity etc.); the full Matsubara-Green-function apparatus; the genuine Dyson series and
-diagram connectedness (steps 5–7).
+diagram connectedness (steps 5–7); a bosonic-side summability-aware trace-cyclicity/KMS-rotation
+statement, without which the planned `Common/`-level induction cannot cover the bosonic line.
 
 **Groundwork for the *general* (fermionic *and* bosonic) Bloch–de Dominicis theorem done, in
 `Common/ExchangeCommutator.lean` and `Bosonic/NumberOperator.lean`:** `BlochDeDominicis.lean` needs
