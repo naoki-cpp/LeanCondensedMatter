@@ -453,8 +453,23 @@ crosses `firstPair` (exactly `crossingsWithFirstPair` of them). Since `ζ² = 1`
 matching powers (`zetaInt_pow_eq_of_mod_two_eq`), yielding the final recurrence
 `Pairing.weight_eraseZeroPair : pairing.weight s = ζ ^ interveningPositionCount * eraseZeroPair.weight s`.
 
+**A constructive counterpart to `eraseZeroPair` done, in `Common/BlochDeDominicisPairing.lean`:**
+`pairing.insertFirstPair j hj` builds a `Pairing (n + 1)` from a smaller `Pairing n` and a choice of
+position `j ≠ 0`, by pairing `0` with `j` and reindexing `pairing`'s own partner permutation onto
+the remaining positions via `Equiv.Perm.extendDomain` composed with `deletedPositionsOrderIso`
+(rather than duplicating the `restrictedPartner`/order-isomorphism plumbing `eraseZeroPair` already
+owns). `Pairing.insertFirstPair_partner_zero`/`_partner_chosen` confirm `0` and `j` pair with each
+other, and `Pairing.insertFirstPair_partner_orderIso` gives the conjugation formula on the
+remaining positions — the insertion-side counterpart to `eraseZeroOrderIso_partner`. This is the
+constructive counterpart `eraseZeroPair` needed to let the Bloch–de Dominicis induction build
+pairings up from smaller ones (choosing `0`'s partner among `2n + 1` positions), not just tear them
+down; the round-trip laws (`eraseZeroPair_insertFirstPair`, `insertFirstPair_eraseZeroPair`)
+connecting the two directions are not yet proved, so `insertFirstPair` is not yet known to be an
+actual inverse.
+
 **Not yet done:** a general `n`-operator time-ordered product (`timeOrderedProduct` is still
-2-operator-only); a first concrete Bloch–de Dominicis induction step (the finite-temperature
+2-operator-only); the `eraseZeroPair`/`insertFirstPair` round-trip laws; a first concrete
+Bloch–de Dominicis induction step (the finite-temperature
 4-point identity `⟨A₁A₂A₃A₄⟩_{0,β} = ⟨A₁A₂⟩_{0,β}⟨A₃A₄⟩_{0,β} + ζ⟨A₁A₃⟩_{0,β}⟨A₂A₄⟩_{0,β} + ⟨A₁A₄⟩_{0,β}⟨A₂A₃⟩_{0,β}`, before the
 general `2n`-point theorem) using `ExchangeAlgebra` and `weight_eraseZeroPair` to validate the pairing-sign design; the
 bosonic thermal-trace layer (`weightedTrace`/`normalizedWeightedDiagonal`/`weightSum`) that
