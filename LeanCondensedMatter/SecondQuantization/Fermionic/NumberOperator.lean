@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CanonicalAnticommutationRelations
 import LeanCondensedMatter.SecondQuantization.Common.ExchangeCommutator
+import Mathlib.Tactic.Abel
 
 set_option linter.style.header false
 
@@ -68,5 +69,33 @@ theorem annihilate_comp_create_self (i : Mode) :
     (exchangeCommutator_annihilate_create_self i)
   rw [Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one] at h
   rwa [neg_one_smul, ← sub_eq_add_neg] at h
+
+/-- **`Nᵢ` is idempotent**: `Nᵢ ∘ Nᵢ = Nᵢ`, directly from the number-operator eigenvalue equation
+(occupation-number basis states are simultaneous eigenvectors with eigenvalue `0` or `1`). -/
+theorem numberOperator_comp_self (i : Mode) :
+    (numberOperator i).comp (numberOperator i) = numberOperator i := by
+  apply linearMap_ext_basisState
+  intro n
+  rw [LinearMap.comp_apply, numberOperator_basisState]
+  split_ifs with h
+  · rw [numberOperator_basisState, if_pos h]
+  · rw [map_zero]
+
+/-- **`cᵢ cᵢ†` is idempotent**: `(cᵢ cᵢ†)(cᵢ cᵢ†) = cᵢ cᵢ†`, from `cᵢ cᵢ† = id - Nᵢ`
+(`annihilate_comp_create_self`) and `Nᵢ`'s idempotency. -/
+theorem annihilate_comp_create_comp_self (i : Mode) :
+    ((annihilate i).comp (create i)).comp ((annihilate i).comp (create i)) =
+      (annihilate i).comp (create i) := by
+  simp only [annihilate_comp_create_self, LinearMap.sub_comp, LinearMap.comp_sub,
+    LinearMap.id_comp, LinearMap.comp_id, numberOperator_comp_self]
+  abel
+
+/-- **`cᵢ cᵢ† + cᵢ† cᵢ = id`**, CAR's anticommutation relation rearranged: `cᵢ cᵢ† = id - Nᵢ`
+together with `Nᵢ = cᵢ† cᵢ` by definition. -/
+theorem annihilate_comp_create_add_create_comp_annihilate (i : Mode) :
+    (annihilate i).comp (create i) + (create i).comp (annihilate i) =
+      (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) := by
+  rw [annihilate_comp_create_self, show (create i).comp (annihilate i) = numberOperator i from rfl]
+  abel
 
 end SecondQuantization
