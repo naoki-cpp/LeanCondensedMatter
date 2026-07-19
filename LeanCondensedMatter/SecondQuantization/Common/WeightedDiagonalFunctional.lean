@@ -73,21 +73,46 @@ theorem matrixCoeff_comp_support (A B : AlgebraicFock Config →ₗ[ℂ] Algebra
   simp only [map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul]
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
-/-! ## `tsum` diagonal-trace cyclicity, for a possibly-infinite `Config` -/
+/-! ## The `tsum` diagonal trace, for a possibly-infinite `Config` -/
 
-/-- **The `tsum` diagonal trace is cyclic under a two-operator swap, given absolute
-double-summability**: `Σ'ₙ (AB)ₙₙ = Σ'ₙ (BA)ₙₙ`, whenever the bivariate family
-`(n, k) ↦ A_{nk} B_{kn}` is (unconditionally) `Summable` over `Config × Config`. Unlike
-`traceFock_comp_comm` below, this holds for an *arbitrary* `Config`, finite or not — the
-`[Fintype Config]`-specific `traceFock_comp_comm` is the special case where the hypothesis is
-automatic (a finite sum is always summable). This is the piece needed for a bosonic analogue of
-finite-dimensional trace cyclicity, where `Config := Bosonic.Occupation Mode := Mode →₀ ℕ` is
-genuinely infinite even for a finite mode set: an actual instantiation for the free bosonic
-Boltzmann weight still needs to establish the summability hypothesis from
-`Bosonic/BoltzmannWeightSummable.lean`-style convergence facts, which is not done here. -/
-theorem tsum_matrixCoeff_diag_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+/-- **The `tsum` diagonal trace**, `Tr'[A] := Σ'ₙ ⟨n|A|n⟩` — well-defined for *any* `Config`,
+finite or not, unlike `traceFock` below (`[Fintype Config]`). **Unconditionally defined but not
+unconditionally well-behaved**: Mathlib's `tsum` returns `0` on a non-summable family, so
+`tsumTrace`'s linearity (`tsumTrace_add`/`_smul`) and cyclicity (`tsumTrace_comp_comm`) all need
+explicit summability hypotheses on the relevant diagonal families — nothing here is automatic the
+way it is for `traceFock`'s finite sums. -/
+noncomputable def tsumTrace (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) : ℂ :=
+  ∑' n, matrixCoeff A n n
+
+/-- **`tsumTrace` is additive, given summability of both diagonal families.** -/
+theorem tsumTrace_add {A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config}
+    (hA : Summable (fun n => matrixCoeff A n n)) (hB : Summable (fun n => matrixCoeff B n n)) :
+    tsumTrace (A + B) = tsumTrace A + tsumTrace B := by
+  rw [tsumTrace, tsumTrace, tsumTrace, ← (hA.hasSum.add hB.hasSum).tsum_eq]
+  exact tsum_congr fun n => matrixCoeff_add A B n n
+
+/-- **`tsumTrace` scales**, unconditionally (no summability hypothesis needed: `tsum_mul_left`
+holds even when the underlying family is not summable, since both sides are then `0`). -/
+theorem tsumTrace_smul (c : ℂ) (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    tsumTrace (c • A) = c * tsumTrace A := by
+  rw [tsumTrace, tsumTrace]
+  simp_rw [matrixCoeff_smul]
+  exact tsum_mul_left
+
+/-- **`tsumTrace` is cyclic under a two-operator swap, given absolute double-summability**:
+`Tr'[AB] = Tr'[BA]`, whenever the bivariate family `(n, k) ↦ A_{nk} B_{kn}` is (unconditionally)
+`Summable` over `Config × Config`. Unlike `traceFock_comp_comm` below, this holds for an
+*arbitrary* `Config`, finite or not — the `[Fintype Config]`-specific `traceFock_comp_comm` is the
+special case where the hypothesis is automatic (a finite sum is always summable). This is the
+piece needed for a bosonic analogue of finite-dimensional trace cyclicity, where `Config :=
+Bosonic.Occupation Mode := Mode →₀ ℕ` is genuinely infinite even for a finite mode set: an actual
+instantiation for the free bosonic Boltzmann weight still needs to establish the summability
+hypothesis from `Bosonic/BoltzmannWeightSummable.lean`-style convergence facts, which is not done
+here. -/
+theorem tsumTrace_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (h : Summable (Function.uncurry (fun n k => matrixCoeff A n k * matrixCoeff B k n))) :
-    ∑' n, matrixCoeff (A.comp B) n n = ∑' n, matrixCoeff (B.comp A) n n := by
+    tsumTrace (A.comp B) = tsumTrace (B.comp A) := by
+  rw [tsumTrace, tsumTrace]
   have hrow : ∀ n, (∑' k, matrixCoeff A n k * matrixCoeff B k n) = matrixCoeff (A.comp B) n n := by
     intro n
     rw [matrixCoeff_comp_support]
