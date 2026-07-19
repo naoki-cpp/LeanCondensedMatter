@@ -848,6 +848,23 @@ theorem Pairing.insertFirstPair_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 
       rw [← hxeq]
       exact hkey.trans (Pairing.eraseZeroOrderIso_partner pairing k)
 
+/-- **A `Pairing (n + 1)` decomposes into a choice of position `0`'s partner together with the
+smaller pairing left after removing it.** `eraseZeroPair_insertFirstPair` and
+`insertFirstPair_eraseZeroPair` are exactly the two `Equiv.left_inv`/`right_inv` obligations this
+needs: `eraseZeroPair` is not globally injective on `Pairing (n + 1)` (distinct choices of `0`'s
+partner can erase to the same smaller pairing), so this is an equivalence with the fiber-indexed
+sigma type, not a claim that `eraseZeroPair` alone is a global bijection. -/
+noncomputable def Pairing.equivSigma (n : ℕ) :
+    Pairing (n + 1) ≃ Σ _ : {j : Fin (2 * (n + 1)) // (0 : Fin (2 * (n + 1))) ≠ j}, Pairing n where
+  toFun pairing := ⟨⟨pairing.partner 0, Ne.symm (pairing.partner_ne 0)⟩, pairing.eraseZeroPair⟩
+  invFun jQ := jQ.2.insertFirstPair jQ.1.1 jQ.1.2
+  left_inv pairing := pairing.insertFirstPair_eraseZeroPair
+  right_inv jQ := by
+    obtain ⟨⟨j, hj⟩, Q⟩ := jQ
+    refine Sigma.ext (Subtype.ext ?_) ?_
+    · exact Q.insertFirstPair_partner_zero j hj
+    · exact heq_of_eq (Q.eraseZeroPair_insertFirstPair j hj)
+
 /-- The adjacent four-position pairing `(0,1)(2,3)`. -/
 def pairingAdjacent : Pairing 2 :=
   Pairing.ofPartner (Equiv.swap 0 1 * Equiv.swap 2 3) (by decide)
