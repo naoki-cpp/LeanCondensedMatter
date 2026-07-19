@@ -1,5 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.AlgebraicFock
 import LeanCondensedMatter.SecondQuantization.Common.NormalizedOperatorFunctional
+import Mathlib.Topology.Algebra.InfiniteSum.Constructions
+import Mathlib.Analysis.Complex.Basic
 
 set_option linter.style.header false
 
@@ -70,6 +72,46 @@ theorem matrixCoeff_comp_support (A B : AlgebraicFock Config →ₗ[ℂ] Algebra
   rw [map_sum]
   simp only [map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul]
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
+
+/-! ## `tsum` diagonal-trace cyclicity, for a possibly-infinite `Config` -/
+
+/-- **The `tsum` diagonal trace is cyclic under a two-operator swap, given absolute
+double-summability**: `Σ'ₙ (AB)ₙₙ = Σ'ₙ (BA)ₙₙ`, whenever the bivariate family
+`(n, k) ↦ A_{nk} B_{kn}` is (unconditionally) `Summable` over `Config × Config`. Unlike
+`traceFock_comp_comm` below, this holds for an *arbitrary* `Config`, finite or not — the
+`[Fintype Config]`-specific `traceFock_comp_comm` is the special case where the hypothesis is
+automatic (a finite sum is always summable). This is the piece needed for a bosonic analogue of
+finite-dimensional trace cyclicity, where `Config := Bosonic.Occupation Mode := Mode →₀ ℕ` is
+genuinely infinite even for a finite mode set: an actual instantiation for the free bosonic
+Boltzmann weight still needs to establish the summability hypothesis from
+`Bosonic/BoltzmannWeightSummable.lean`-style convergence facts, which is not done here. -/
+theorem tsum_matrixCoeff_diag_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (h : Summable (Function.uncurry (fun n k => matrixCoeff A n k * matrixCoeff B k n))) :
+    ∑' n, matrixCoeff (A.comp B) n n = ∑' n, matrixCoeff (B.comp A) n n := by
+  have hrow : ∀ n, (∑' k, matrixCoeff A n k * matrixCoeff B k n) = matrixCoeff (A.comp B) n n := by
+    intro n
+    rw [matrixCoeff_comp_support]
+    exact (hasSum_sum_of_ne_finset_zero
+      (s := (B (basisState n)).support)
+      (fun k hk => by
+        have hz : matrixCoeff B k n = 0 := by
+          by_contra hcon; exact hk (Finsupp.mem_support_iff.mpr hcon)
+        rw [hz, mul_zero])).tsum_eq
+  have hcol : ∀ k, (∑' n, matrixCoeff A n k * matrixCoeff B k n) = matrixCoeff (B.comp A) k k := by
+    intro k
+    have heq : (fun n => matrixCoeff A n k * matrixCoeff B k n) =
+        fun n => matrixCoeff B k n * matrixCoeff A n k := funext fun n => mul_comm _ _
+    rw [heq, matrixCoeff_comp_support]
+    exact (hasSum_sum_of_ne_finset_zero
+      (s := (A (basisState k)).support)
+      (fun n hn => by
+        have hz : matrixCoeff A n k = 0 := by
+          by_contra hcon; exact hn (Finsupp.mem_support_iff.mpr hcon)
+        rw [hz, mul_zero])).tsum_eq
+  calc ∑' n, matrixCoeff (A.comp B) n n
+      = ∑' n, ∑' k, matrixCoeff A n k * matrixCoeff B k n := tsum_congr fun n => (hrow n).symm
+    _ = ∑' k, ∑' n, matrixCoeff A n k * matrixCoeff B k n := h.tsum_comm.symm
+    _ = ∑' n, matrixCoeff (B.comp A) n n := tsum_congr fun k => hcol k
 
 variable [Fintype Config]
 
