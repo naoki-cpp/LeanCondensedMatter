@@ -133,7 +133,7 @@ approximation to the Gibbs weight has entered `WeightedDiagonalFunctional.lean`'
 theorem traceFock_formalExpTruncation_freeHamiltonian (ε : Mode → ℝ) (N : ℕ) :
     traceFock (formalExpTruncation (freeHamiltonian ε) N) =
       weightSum (truncatedBoltzmannWeight ε N) := by
-  simp [traceFock, weightSum, matrixCoeff_formalExpTruncation_freeHamiltonian]
+  simp [traceFock_eq_sum, weightSum_eq_sum, matrixCoeff_formalExpTruncation_freeHamiltonian]
 
 /-- **Weighted-trace version.** For any additional weight `w`, `weightedTrace w` of the free
 Hamiltonian's order-`N` truncated formal exponential is `weightSum` of the pointwise
@@ -142,7 +142,7 @@ theorem weightedTrace_formalExpTruncation_freeHamiltonian (ε : Mode → ℝ) (N
     (w : FermionOccupation Mode → ℂ) :
     weightedTrace w (formalExpTruncation (freeHamiltonian ε) N) =
       weightSum (fun n => w n * truncatedBoltzmannWeight ε N n) := by
-  simp [weightedTrace, weightSum, matrixCoeff_formalExpTruncation_freeHamiltonian]
+  simp [weightedTrace_eq_sum, weightSum_eq_sum, matrixCoeff_formalExpTruncation_freeHamiltonian]
 
 /-- **The order-`N` formal partition function of the free Hamiltonian** is the expected finite sum
 over occupation states of the order-`N` partial sum of the scalar Taylor series for `exp(-E(n))`. -/
