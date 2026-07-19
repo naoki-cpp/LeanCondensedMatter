@@ -48,6 +48,29 @@ theorem matrixCoeff_of_smul_basisState {A : AlgebraicFock Config →ₗ[ℂ] Alg
   change A (basisState n) n = c
   rw [h, smul_basisState_apply_self]
 
+/-! ## Composition of matrix coefficients -/
+
+/-- **`matrixCoeff` under composition, as a sum over `B`'s (finite) support**:
+`(AB)_{mn} = Σ_{k ∈ supp(B|n⟩)} A_{mk} B_{kn}`, expanding `B (basisState n)` in the basis and
+reading off `A`'s action on each basis vector. Holds for an *arbitrary* `Config` — `AlgebraicFock
+Config`'s elements are finitely supported by construction (`Config →₀ ℂ`), independent of whether
+`Config` itself is a `Fintype`. This is the form usable on an infinite `Config` such as
+`Bosonic.Occupation Mode := Mode →₀ ℕ`. -/
+theorem matrixCoeff_comp_support (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (m n : Config) :
+    matrixCoeff (A.comp B) m n =
+      ∑ k ∈ (B (basisState n)).support, matrixCoeff A m k * matrixCoeff B k n := by
+  have hx : B (basisState n) =
+      ∑ k ∈ (B (basisState n)).support, matrixCoeff B k n • basisState k := by
+    conv_lhs => rw [← Finsupp.sum_single (B (basisState n))]
+    rw [Finsupp.sum]
+    exact Finset.sum_congr rfl fun k _ => (Finsupp.smul_single_one k _).symm
+  rw [matrixCoeff, LinearMap.comp_apply]
+  conv_lhs => rw [hx]
+  rw [map_sum]
+  simp only [map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul]
+  exact Finset.sum_congr rfl fun k _ => mul_comm _ _
+
 variable [Fintype Config]
 
 /-! ## Traces and weighted sums -/
@@ -56,33 +79,34 @@ variable [Fintype Config]
 noncomputable def traceFock (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) : ℂ :=
   ∑ n : Config, matrixCoeff A n n
 
-/-! ## Composition and cyclicity of matrix coefficients / the trace -/
+/-! ## `[Fintype Config]` composition and cyclicity — a finite-configuration fact -/
 
-/-- **`matrixCoeff` under composition is ordinary matrix multiplication**:
-`(AB)_{mn} = Σₖ A_{mk} B_{kn}`, expanding `B (basisState n)` in the basis and reading off `A`'s
-action on each basis vector. -/
+/-- **`matrixCoeff` under composition is ordinary matrix multiplication**, `(AB)_{mn} = Σₖ A_{mk}
+B_{kn}` over *all* of `Config`: the `[Fintype Config]` specialization of
+`matrixCoeff_comp_support`, extending its support-sum to a `Finset.univ` sum (the extra terms
+vanish, since `B (basisState n)` has zero coefficient outside its support). -/
 theorem matrixCoeff_comp (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
     matrixCoeff (A.comp B) m n = ∑ k : Config, matrixCoeff A m k * matrixCoeff B k n := by
-  have hx : B (basisState n) =
-      ∑ k ∈ (B (basisState n)).support, matrixCoeff B k n • basisState k := by
-    conv_lhs => rw [← Finsupp.sum_single (B (basisState n))]
-    rw [Finsupp.sum]
-    exact Finset.sum_congr rfl fun k _ => (Finsupp.smul_single_one k _).symm
-  have hx' : B (basisState n) = ∑ k : Config, matrixCoeff B k n • basisState k := by
-    rw [hx]
-    apply Finset.sum_subset (Finset.subset_univ _)
-    intro k _ hk
-    have hz : matrixCoeff B k n = 0 := by
-      by_contra h
-      exact hk (Finsupp.mem_support_iff.mpr h)
-    rw [hz, zero_smul]
-  rw [matrixCoeff, LinearMap.comp_apply, hx', map_sum]
-  simp only [map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul]
-  exact Finset.sum_congr rfl fun k _ => mul_comm _ _
+  rw [matrixCoeff_comp_support]
+  apply Finset.sum_subset (Finset.subset_univ _)
+  intro k _ hk
+  have hz : matrixCoeff B k n = 0 := by
+    by_contra h
+    exact hk (Finsupp.mem_support_iff.mpr h)
+  rw [hz, mul_zero]
 
-/-- **The trace is cyclic under a two-operator swap**, `Tr[AB] = Tr[BA]` — the standard
-finite-dimensional matrix-trace cyclicity, from `matrixCoeff_comp` and swapping the order of a
-double sum. -/
+/-- **The trace is cyclic under a two-operator swap on a finite `Config`**, `Tr[AB] = Tr[BA]` —
+the standard finite-dimensional matrix-trace cyclicity, from `matrixCoeff_comp` and swapping the
+order of a double sum. **This is `[Fintype Config]`-specific finite-configuration infrastructure,
+not a statistics-agnostic building block usable for both lines of Track D as-is**: the fermionic
+`FermionOccupation Mode := Finset Mode` is a `Fintype` once `Mode` is, but the bosonic
+`Occupation Mode := Mode →₀ ℕ` is genuinely infinite (unbounded occupation per mode) even for a
+finite mode set, so it is *not* an instance of `[Fintype Config]` and this theorem does not apply
+to it. A bosonic thermal-trace cyclicity needs a separate, summability-aware statement — e.g.
+`Tr_w[AB] = Tr_w[BA]` for a `tsum`-convergent weighted trace, or the `ζ`-uniform Bloch–de Dominicis
+induction
+routed through a genuine KMS-type rotation identity rather than bare trace cyclicity — and is not
+supplied here; see `notes/roadmaps/second-quantization.md`'s Phase 9 section. -/
 theorem traceFock_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     traceFock (A.comp B) = traceFock (B.comp A) := by
   simp only [traceFock, matrixCoeff_comp]

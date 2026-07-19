@@ -36,6 +36,15 @@ noncomputable def matrixCoeff (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpace
 noncomputable def traceFock (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) : ℂ :=
   Common.traceFock A
 
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- **`matrixCoeff` under composition, as a sum over `B`'s support**. Delegates to
+`Common.matrixCoeff_comp_support`. -/
+theorem matrixCoeff_comp_support (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode)
+    (m n : FermionOccupation Mode) :
+    matrixCoeff (A.comp B) m n =
+      ∑ k ∈ (B (basisState n)).support, matrixCoeff A m k * matrixCoeff B k n :=
+  Common.matrixCoeff_comp_support A B m n
+
 omit [LinearOrder Mode] in
 /-- **`matrixCoeff` under composition is ordinary matrix multiplication**, `(AB)_{mn} = Σₖ A_{mk}
 B_{kn}`. Delegates to `Common.matrixCoeff_comp`. -/
