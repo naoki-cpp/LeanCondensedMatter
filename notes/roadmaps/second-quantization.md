@@ -498,13 +498,39 @@ bosonic line.** `Occupation Mode := Mode →₀ ℕ` is unbounded per mode even 
 it does not satisfy `[Fintype Config]` and cannot instantiate this construction; the physical
 bosonic weighted trace needs a separate, summability-aware `tsum` construction — not an
 instantiation of this finite-sum one — plus the free bosonic two-point/occupation-number closed
-forms built on top of it. A common abstract interface over both the finite-sum and `tsum`
-constructions, if one turns out to be worth building, is separate future work; deferred since the
-fermionic, finite-mode line remains this track's primary path to the Linked Cluster Theorem.
+forms built on top of it.
+
+**An abstract normalized-linear-functional interface done, in
+`Common/NormalizedOperatorFunctional.lean`:** `Common.NormalizedOperatorFunctional Config` bundles
+the *base* algebraic shape shared by any weighted-expectation implementation — a `LinearMap` from
+operators to `ℂ` (linearity comes free from `LinearMap`'s own API: `map_add`/`map_smul`/`map_zero`/
+`map_neg`/`map_sub`) with the identity operator sent to `1` (`map_id`) — without committing to how
+the underlying weighted expectation is actually computed. The file itself depends only on
+`AlgebraicFock`, deliberately not on any concrete backend, so a future bosonic `tsum` backend
+doesn't pull in the finite `[Fintype Config]` one; `WeightedDiagonalFunctional.lean` depends on
+this interface (not the reverse), and its
+`normalizedWeightedDiagonalFunctional w hw` instantiates it directly from
+`Common.normalizedWeightedDiagonal w`'s already-proved `_add`/`_smul`/`_id` facts, for a finite
+`Config` and a nonzero-total-weight `w`.
+
+**This is only the base linear-functional layer, not by itself enough for the Bloch–de Dominicis
+identity.** Linearity and `eval id = 1` alone do not force a 4-point functional to factorize into a
+pairing sum of 2-point ones — an arbitrary nonzero-total-weight complex weight already
+instantiates this interface without any such recurrence holding for it. The Bloch–de Dominicis
+theorem will need at least one further structure built on top of this one (e.g. a quasifree/
+Gaussian pairing recursion, or a thermal exchange relation tied to a genuine free Gibbs weight) as
+a separate, later addition. No physical claim beyond linearity/normalization is made here — same
+caveat as `normalizedWeightedDiagonal` itself (not necessarily positive, real-valued, diagonal in
+any particular basis, or a genuine Gibbs-state expectation).
 
 **Not yet done:** a general `n`-operator time-ordered product (`timeOrderedProduct` is still
-2-operator-only); a first concrete Bloch–de Dominicis induction step (the finite-temperature
-4-point identity `⟨A₁A₂A₃A₄⟩_{0,β} = ⟨A₁A₂⟩_{0,β}⟨A₃A₄⟩_{0,β} + ζ⟨A₁A₃⟩_{0,β}⟨A₂A₄⟩_{0,β} + ⟨A₁A₄⟩_{0,β}⟨A₂A₃⟩_{0,β}`, before the
-general `2n`-point theorem) using `ExchangeAlgebra` and `weight_eraseZeroPair` to validate the
-pairing-sign design; the bosonic `tsum`-based weighted-diagonal-functional construction and the
-free bosonic two-point/occupation-number closed forms built on top of it (deferred, see above).
+2-operator-only); the bosonic `tsum`-based instantiation of `NormalizedOperatorFunctional` (a
+separate, summability-aware construction — `Occupation Mode := Mode →₀ ℕ` doesn't satisfy
+`[Fintype Config]`, so it isn't an instantiation of the finite-sum backend) and the free bosonic
+two-point/occupation-number closed forms built on top of it; the further quasifree/thermal-
+exchange structure the Bloch–de Dominicis identity actually needs on top of
+`NormalizedOperatorFunctional`; connecting that structure to `ExchangeAlgebra`/the pairing
+combinatorics; a first concrete Bloch–de Dominicis induction step (the finite-temperature 4-point
+identity `⟨A₁A₂A₃A₄⟩_{0,β} = ⟨A₁A₂⟩_{0,β}⟨A₃A₄⟩_{0,β} + ζ⟨A₁A₃⟩_{0,β}⟨A₂A₄⟩_{0,β} +
+⟨A₁A₄⟩_{0,β}⟨A₂A₃⟩_{0,β}`, before the general `2n`-point theorem) using `ExchangeAlgebra` and
+`weight_eraseZeroPair` to validate the pairing-sign design.
