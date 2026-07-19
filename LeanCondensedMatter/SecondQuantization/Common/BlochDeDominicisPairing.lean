@@ -803,7 +803,7 @@ theorem Pairing.insertFirstPair_partner_orderIso {n : ℕ} (pairing : Pairing n)
     (Finset.mem_erase.mp (Finset.mem_erase.mp hmem').2).1 (Finset.mem_erase.mp hmem').1
 
 /-- Inserting a new pair `(0, j)` ahead of `pairing`, then erasing the pair containing position
-`0`, recovers `pairing` unchanged: `insertFirstPair` is a left inverse to `eraseZeroPair`. -/
+`0`, recovers `pairing` unchanged: `eraseZeroPair` is a left inverse of `insertFirstPair j hj`. -/
 theorem Pairing.eraseZeroPair_insertFirstPair {n : ℕ} (pairing : Pairing n)
     (j : Fin (2 * (n + 1))) (hj : (0 : Fin (2 * (n + 1))) ≠ j) :
     (pairing.insertFirstPair j hj).eraseZeroPair = pairing := by
@@ -822,8 +822,8 @@ theorem Pairing.eraseZeroPair_insertFirstPair {n : ℕ} (pairing : Pairing n)
   rw [hPdef, pairing.insertFirstPair_partner_orderIso j hj i]
 
 /-- Erasing the pair containing position `0` from `pairing`, then reinserting a pair with the
-same partner, recovers `pairing` unchanged: `insertFirstPair` is a right inverse to
-`eraseZeroPair` on the partner it actually chose. -/
+same partner, recovers `pairing` unchanged: on the fiber of pairings with `partner 0 = j`,
+`insertFirstPair j hj` is a left inverse of `eraseZeroPair`. -/
 theorem Pairing.insertFirstPair_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)) :
     pairing.eraseZeroPair.insertFirstPair (pairing.partner 0)
       (Ne.symm (pairing.partner_ne 0)) = pairing := by
