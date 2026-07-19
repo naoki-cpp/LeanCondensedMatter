@@ -498,13 +498,28 @@ bosonic line.** `Occupation Mode := Mode →₀ ℕ` is unbounded per mode even 
 it does not satisfy `[Fintype Config]` and cannot instantiate this construction; the physical
 bosonic weighted trace needs a separate, summability-aware `tsum` construction — not an
 instantiation of this finite-sum one — plus the free bosonic two-point/occupation-number closed
-forms built on top of it. A common abstract interface over both the finite-sum and `tsum`
-constructions, if one turns out to be worth building, is separate future work; deferred since the
-fermionic, finite-mode line remains this track's primary path to the Linked Cluster Theorem.
+forms built on top of it.
+
+**An abstract normalized-diagonal-functional interface done, in
+`Common/NormalizedDiagonalFunctional.lean`:** `Common.NormalizedDiagonalFunctional Config` bundles
+exactly the algebraic shape the Bloch–de Dominicis induction needs — linearity (`eval_add`,
+`eval_smul`) and identity-normalization (`eval_id : eval id = 1`) — without committing to how the
+underlying weighted expectation is actually computed. `normalizedWeightedDiagonalFunctional w hw`
+instantiates it directly from `Common.normalizedWeightedDiagonal w`'s already-proved `_add`/
+`_smul`/`_id` facts, for a finite `Config` and a nonzero-total-weight `w`. This decouples the
+eventual Bloch–de Dominicis induction from the finite-sum implementation detail: once a bosonic
+`tsum`-based instantiation exists, the induction can be stated once against the interface rather
+than against `Finset.sum` specifically. No physical claim beyond linearity/normalization is made —
+same caveat as `normalizedWeightedDiagonal` itself (not necessarily positive, real-valued, or a
+genuine Gibbs-state expectation).
 
 **Not yet done:** a general `n`-operator time-ordered product (`timeOrderedProduct` is still
-2-operator-only); a first concrete Bloch–de Dominicis induction step (the finite-temperature
-4-point identity `⟨A₁A₂A₃A₄⟩_{0,β} = ⟨A₁A₂⟩_{0,β}⟨A₃A₄⟩_{0,β} + ζ⟨A₁A₃⟩_{0,β}⟨A₂A₄⟩_{0,β} + ⟨A₁A₄⟩_{0,β}⟨A₂A₃⟩_{0,β}`, before the
-general `2n`-point theorem) using `ExchangeAlgebra` and `weight_eraseZeroPair` to validate the
-pairing-sign design; the bosonic `tsum`-based weighted-diagonal-functional construction and the
-free bosonic two-point/occupation-number closed forms built on top of it (deferred, see above).
+2-operator-only); the bosonic `tsum`-based instantiation of `NormalizedDiagonalFunctional` (a
+separate, summability-aware construction — `Occupation Mode := Mode →₀ ℕ` doesn't satisfy
+`[Fintype Config]`, so it isn't an instantiation of the finite-sum backend) and the free bosonic
+two-point/occupation-number closed forms built on top of it; connecting
+`NormalizedDiagonalFunctional` to `ExchangeAlgebra`/the pairing combinatorics; a first concrete
+Bloch–de Dominicis induction step (the finite-temperature 4-point identity
+`⟨A₁A₂A₃A₄⟩_{0,β} = ⟨A₁A₂⟩_{0,β}⟨A₃A₄⟩_{0,β} + ζ⟨A₁A₃⟩_{0,β}⟨A₂A₄⟩_{0,β} + ⟨A₁A₄⟩_{0,β}⟨A₂A₃⟩_{0,β}`,
+before the general `2n`-point theorem) using `ExchangeAlgebra` and `weight_eraseZeroPair` to
+validate the pairing-sign design.
