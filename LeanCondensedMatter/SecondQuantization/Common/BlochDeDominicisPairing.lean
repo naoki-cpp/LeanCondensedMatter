@@ -802,6 +802,52 @@ theorem Pairing.insertFirstPair_partner_orderIso {n : ℕ} (pairing : Pairing n)
   exact Equiv.swap_apply_of_ne_of_ne
     (Finset.mem_erase.mp (Finset.mem_erase.mp hmem').2).1 (Finset.mem_erase.mp hmem').1
 
+/-- Inserting a new pair `(0, j)` ahead of `pairing`, then erasing the pair containing position
+`0`, recovers `pairing` unchanged: `eraseZeroPair` is a left inverse of `insertFirstPair j hj`. -/
+theorem Pairing.eraseZeroPair_insertFirstPair {n : ℕ} (pairing : Pairing n)
+    (j : Fin (2 * (n + 1))) (hj : (0 : Fin (2 * (n + 1))) ≠ j) :
+    (pairing.insertFirstPair j hj).eraseZeroPair = pairing := by
+  set P := pairing.insertFirstPair j hj with hPdef
+  have hPj : P.partner 0 = j := pairing.insertFirstPair_partner_zero j hj
+  have hoi_eq : ∀ k : Fin (2 * n),
+      (P.eraseZeroOrderIso k : Fin (2 * (n + 1))) =
+        (deletedPositionsOrderIso n j hj k : Fin (2 * (n + 1))) :=
+    deletedPositionsOrderIso_congr n hPj (Ne.symm (P.partner_ne 0)) hj
+  apply Pairing.ext
+  apply Equiv.ext
+  intro i
+  apply P.eraseZeroOrderIso.injective
+  apply Subtype.ext
+  rw [Pairing.eraseZeroOrderIso_partner, hoi_eq, hoi_eq]
+  rw [hPdef, pairing.insertFirstPair_partner_orderIso j hj i]
+
+/-- Erasing the pair containing position `0` from `pairing`, then reinserting a pair with the
+same partner, recovers `pairing` unchanged: on the fiber of pairings with `partner 0 = j`,
+`insertFirstPair j hj` is a left inverse of `eraseZeroPair`. -/
+theorem Pairing.insertFirstPair_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)) :
+    pairing.eraseZeroPair.insertFirstPair (pairing.partner 0)
+      (Ne.symm (pairing.partner_ne 0)) = pairing := by
+  apply Pairing.ext
+  apply Equiv.ext
+  intro x
+  by_cases hx0 : x = 0
+  · subst hx0
+    exact pairing.eraseZeroPair.insertFirstPair_partner_zero (pairing.partner 0)
+      (Ne.symm (pairing.partner_ne 0))
+  · by_cases hxj : x = pairing.partner 0
+    · subst hxj
+      rw [pairing.eraseZeroPair.insertFirstPair_partner_chosen (pairing.partner 0)
+        (Ne.symm (pairing.partner_ne 0))]
+      exact (pairing.partner_partner 0).symm
+    · have hxmem : x ∈ deletedPositions n (pairing.partner 0) (Ne.symm (pairing.partner_ne 0)) := by
+        simp [deletedPositions, hx0, hxj]
+      set k := pairing.eraseZeroOrderIso.symm ⟨x, hxmem⟩ with hkdef
+      have hxeq : (pairing.eraseZeroOrderIso k : Fin (2 * (n + 1))) = x := by simp [hkdef]
+      have hkey := pairing.eraseZeroPair.insertFirstPair_partner_orderIso (pairing.partner 0)
+        (Ne.symm (pairing.partner_ne 0)) k
+      rw [← hxeq]
+      exact hkey.trans (Pairing.eraseZeroOrderIso_partner pairing k)
+
 /-- The adjacent four-position pairing `(0,1)(2,3)`. -/
 def pairingAdjacent : Pairing 2 :=
   Pairing.ofPartner (Equiv.swap 0 1 * Equiv.swap 2 3) (by decide)
