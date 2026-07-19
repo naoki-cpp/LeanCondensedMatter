@@ -56,6 +56,39 @@ variable [Fintype Config]
 noncomputable def traceFock (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) : ℂ :=
   ∑ n : Config, matrixCoeff A n n
 
+/-! ## Composition and cyclicity of matrix coefficients / the trace -/
+
+/-- **`matrixCoeff` under composition is ordinary matrix multiplication**:
+`(AB)_{mn} = Σₖ A_{mk} B_{kn}`, expanding `B (basisState n)` in the basis and reading off `A`'s
+action on each basis vector. -/
+theorem matrixCoeff_comp (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
+    matrixCoeff (A.comp B) m n = ∑ k : Config, matrixCoeff A m k * matrixCoeff B k n := by
+  have hx : B (basisState n) =
+      ∑ k ∈ (B (basisState n)).support, matrixCoeff B k n • basisState k := by
+    conv_lhs => rw [← Finsupp.sum_single (B (basisState n))]
+    rw [Finsupp.sum]
+    exact Finset.sum_congr rfl fun k _ => (Finsupp.smul_single_one k _).symm
+  have hx' : B (basisState n) = ∑ k : Config, matrixCoeff B k n • basisState k := by
+    rw [hx]
+    apply Finset.sum_subset (Finset.subset_univ _)
+    intro k _ hk
+    have hz : matrixCoeff B k n = 0 := by
+      by_contra h
+      exact hk (Finsupp.mem_support_iff.mpr h)
+    rw [hz, zero_smul]
+  rw [matrixCoeff, LinearMap.comp_apply, hx', map_sum]
+  simp only [map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul]
+  exact Finset.sum_congr rfl fun k _ => mul_comm _ _
+
+/-- **The trace is cyclic under a two-operator swap**, `Tr[AB] = Tr[BA]` — the standard
+finite-dimensional matrix-trace cyclicity, from `matrixCoeff_comp` and swapping the order of a
+double sum. -/
+theorem traceFock_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    traceFock (A.comp B) = traceFock (B.comp A) := by
+  simp only [traceFock, matrixCoeff_comp]
+  rw [Finset.sum_comm]
+  exact Finset.sum_congr rfl fun n _ => Finset.sum_congr rfl fun k _ => mul_comm _ _
+
 /-- **The weighted trace**, `Tr_w A := Σₙ w(n) ⟨n| A |n⟩` — the un-normalized weighted diagonal
 functional of `A` against the weight `w`. It becomes the un-normalized thermal weighted trace only
 for a Gibbs/Boltzmann weight. -/

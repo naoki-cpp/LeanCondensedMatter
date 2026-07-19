@@ -36,6 +36,22 @@ noncomputable def matrixCoeff (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpace
 noncomputable def traceFock (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) : ℂ :=
   Common.traceFock A
 
+omit [LinearOrder Mode] in
+/-- **`matrixCoeff` under composition is ordinary matrix multiplication**, `(AB)_{mn} = Σₖ A_{mk}
+B_{kn}`. Delegates to `Common.matrixCoeff_comp`. -/
+theorem matrixCoeff_comp (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode)
+    (m n : FermionOccupation Mode) :
+    matrixCoeff (A.comp B) m n =
+      ∑ k : FermionOccupation Mode, matrixCoeff A m k * matrixCoeff B k n :=
+  Common.matrixCoeff_comp A B m n
+
+omit [LinearOrder Mode] in
+/-- **The trace is cyclic under a two-operator swap**, `Tr[AB] = Tr[BA]`. Delegates to
+`Common.traceFock_comp_comm`. -/
+theorem traceFock_comp_comm (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    traceFock (A.comp B) = traceFock (B.comp A) :=
+  Common.traceFock_comp_comm A B
+
 /-- **The weighted trace**, `Tr_w A := Σₙ w(n) ⟨n| A |n⟩` — the un-normalized weighted diagonal
 functional of `A` against the weight `w`. It becomes the un-normalized thermal weighted trace
 only for a Gibbs/Boltzmann weight. Delegates to `Common.weightedTrace`. -/
