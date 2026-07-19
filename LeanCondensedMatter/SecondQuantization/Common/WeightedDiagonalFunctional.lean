@@ -155,6 +155,11 @@ theorem traceFock_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFoc
   rw [Finset.sum_comm]
   exact Finset.sum_congr rfl fun n _ => Finset.sum_congr rfl fun k _ => mul_comm _ _
 
+/-- **`traceFock` is linear in its operator argument: scaling.** -/
+theorem traceFock_smul (c : ℂ) (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    traceFock (c • A) = c * traceFock A := by
+  simp only [traceFock, matrixCoeff_smul, Finset.mul_sum]
+
 /-- **The weighted trace**, `Tr_w A := Σₙ w(n) ⟨n| A |n⟩` — the un-normalized weighted diagonal
 functional of `A` against the weight `w`. It becomes the un-normalized thermal weighted trace only
 for a Gibbs/Boltzmann weight. -/
