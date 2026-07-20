@@ -530,10 +530,31 @@ front via `gibbsExpectation_peel` (giving a sum of `gibbsExpectation (C₀.comp 
 gibbsExpectation (remaining 2n-2 operators, Cⱼ erased)` terms, one per position `j`, matching
 `peelSum`/`peelTerms`'s structure), apply the inductive hypothesis to each `(2n-2)`-operator
 remaining product (giving a `Pairing (n-1)` sum for it), and reassemble into a `Pairing n` sum via
-`Combinatorics.PerfectPairing`'s `Pairing.insertFirstPair`/`Pairing.equivSigma`. **Not yet built,
-needed for this**: `peelSum`'s indexed (`Fin`-based, not just `List`-recursive) form; the
-`Combinatorics/DeletedFinPositions.lean` reindexing bridge from "`2n` operators minus the erased
-one" back to `Fin (2n)`; assembling all of the above into the actual induction.
+`Combinatorics.PerfectPairing`'s `Pairing.insertFirstPair`/`Pairing.equivSigma`.
+
+**Four bridging pieces built since the statement was drafted** (all proved, no `sorry`, each its own
+small PR verified independently against the existing infrastructure):
+- `Common/BlochDeDominicis/ProdCompFamily.lean`: `prodCompFamily`/`prodCompFamily_succ` — lets a
+  `Fin`-indexed operator family (matching `Pairing n`'s own `Fin (2n)`-indexing, the shape the
+  target statement above actually uses) invoke `PeelFirst.lean`'s `List`-indexed peel lemmas
+  directly on `C 0` and the tail family, via `List.ofFn`.
+- `Common/BlochDeDominicis/PeelTermsIndexed.lean`: `peelTerms_eq_ofFn` — `PeelFirst.lean`'s
+  recursively-defined `peelTerms` agrees with the closed-form, `List.eraseIdx`-indexed description
+  matching the physics notes' `Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation term-by-term.
+- `Combinatorics/EraseIdxOfFn.lean`: `List.eraseIdx_ofFn_eq_ofFn_succAbove` — connects
+  `List.eraseIdx`-based erasure (of a `List.ofFn C`) to `Fin.succAbove`-based erasure of the
+  family `C` itself, the same description `Pairing.eraseZeroPair` needs to line up against.
+- `Combinatorics/DeletedFinPositionsSuccAbove.lean`: `deletedPositionsOrderIso_eq_succ_succAbove` —
+  decomposes `DeletedFinPositions.lean`'s `deletedPositionsOrderIso` (built directly as a
+  `Finset.orderIsoOfFin`, not via `succAbove`) into the explicit two-step map "avoid `k`'s position,
+  then shift up by one to skip `0`", for the `j = k.succ` shape `Pairing.eraseZeroPair` always uses.
+
+**Still not yet built, needed to close the induction**: connecting the four pieces above end-to-end
+(supplying `k := (pairing.partner 0).pred` at the one remaining call site, handling the resulting
+`Fin`-arithmetic cast from `2 * (n + 1)` to `(2 * n + 1) + 1`); matching each peeled term's `ζʲ`
+exponent against `Pairing.weight`'s `ζ^{crossingCount}` (via `PerfectPairing.lean`'s already-proved
+`Pairing.crossingsWithFirstPair_mod_two`); assembling the `Σⱼ` over peeled positions into
+`Pairing.equivSigma`'s `Σ_j Σ_{Pairing n}` double sum; and the strong induction itself.
 
 **Groundwork for the *general* (fermionic *and* bosonic) Bloch–de Dominicis theorem done, in
 `Common/ExchangeCommutator.lean` and `Bosonic/NumberOperator.lean`:** `Common/BlochDeDominicis/Induction.lean` needs
