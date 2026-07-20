@@ -13,6 +13,7 @@ import LeanCondensedMatter.SecondQuantization.Common.KMSRotation
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PairingWeight
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.FourPointReduction
+import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PeelFirst
 
 set_option linter.style.header false
 
