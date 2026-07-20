@@ -21,8 +21,9 @@ needing the new particle-number-weighted summability fact
 than following automatically the way the fermionic finite-sum case did.
 
 The instantiation uses: `imaginaryTimeEvolve_annihilate`'s eigenvalue-shift fact (`a_i(τ) =
-e^{-τεᵢ}a_i`, giving the KMS relation's `q := -εᵢ`) and CCR's `comm_annihilate_create` (the
-c-number exchange commutator, `ζ := +1`). All internal lemmas below work with the Bosonic-local
+e^{-τεᵢ}a_i`, giving the imaginary-time eigenoperator shift `q := -εᵢ`, which enters the KMS
+cyclicity relation) and CCR's `comm_annihilate_create` (the c-number exchange commutator, `ζ :=
++1`). All internal lemmas below work with the Bosonic-local
 `imaginaryTimeEvolveFree`/`basisState` (rather than the `Common.diagonalEvolution`/`basisState`
 they're literally defined as) purely so `rw`'s syntactic pattern matching lines up with the
 `annihilate`/`create` basis-level lemmas — the two forms are definitionally equal, so this makes no
@@ -36,14 +37,14 @@ variable {Mode : Type*} [DecidableEq Mode] [Fintype Mode]
 
 /-- **Bridges `Common.matrixCoeff` to the local `basisState`**: `rfl`, stated so every proof below
 can start from a `basisState`-headed form the `annihilate`/`create` basis-level lemmas match. -/
-theorem matrixCoeff_eq (A : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode)
+private theorem matrixCoeff_eq (A : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode)
     (m n : Occupation Mode) : Common.matrixCoeff A m n = A (basisState n) m := rfl
 
-theorem smul_basisState_apply_self (c : ℂ) (n : Occupation Mode) :
+private theorem smul_basisState_apply_self (c : ℂ) (n : Occupation Mode) :
     (c • basisState n : FockSpaceBosonic Mode) n = c :=
   Common.smul_basisState_apply_self c n
 
-theorem smul_basisState_apply_of_ne (c : ℂ) {m n : Occupation Mode} (h : m ≠ n) :
+private theorem smul_basisState_apply_of_ne (c : ℂ) {m n : Occupation Mode} (h : m ≠ n) :
     (c • basisState m : FockSpaceBosonic Mode) n = 0 :=
   Common.smul_basisState_apply_of_ne c h
 
@@ -182,10 +183,12 @@ theorem summable_imaginaryTimeEvolveFree_self (ε : Mode → ℝ) (β : ℝ) (hp
 `(1 - e^{-εᵢβ}) Σ'_n ⟨n|e^{-βH₀}(a_ia_j†)|n⟩ = δᵢⱼ Σ'_n ⟨n|e^{-βH₀}|n⟩`, a direct instantiation of
 `Common.tsumTrace_diagonalEvolution_comp_two_point` with `C₁ := annihilate i`, `Cⱼ := create j`,
 `q₁ := -εᵢ` (from `imaginaryTimeEvolve_annihilate`), and `ζ := +1`, `c₁ⱼ := δᵢⱼ` (from CCR's
-`comm_annihilate_create`), given every mode's one-mode convergence condition `0 < βεᵢ`. At `i = j`
-this rearranges to `⟨n_i⟩ = 1/(e^{βεᵢ}-1)`, the Bose–Einstein distribution — not itself derived
-here (would need dividing by the un-normalized `tsumTrace`, i.e. the genuine partition function
-being nonzero, which `tsum_boltzmannWeight_ne_zero` supplies but isn't invoked). -/
+`comm_annihilate_create`), given every mode's one-mode convergence condition `0 < βεᵢ`. After
+dividing by the partition function (not done here — would need
+`tsum_boltzmannWeight_ne_zero`'s non-vanishing), the `i = j` case gives `⟨aᵢaᵢ†⟩_β = 1/(1-e^{-βεᵢ})
+= 1 + n_B(εᵢ)`; only after further using `aᵢaᵢ† = Nᵢ + 1` (not proved here either — no bosonic
+`numberOperator` API yet) does this become the Bose–Einstein occupation number itself,
+`⟨Nᵢ⟩_β = 1/(e^{βεᵢ}-1) = n_B(εᵢ)`. -/
 theorem tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i j : Mode) :
     (1 - Complex.exp ((-(ε i) * β : ℝ) : ℂ)) *
