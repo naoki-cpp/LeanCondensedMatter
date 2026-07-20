@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Statistics
-import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.Pairing
+import LeanCondensedMatter.Combinatorics.PerfectPairing
 import Mathlib.Data.Complex.Basic
 
 set_option linter.style.header false
