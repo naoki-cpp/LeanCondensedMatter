@@ -116,6 +116,16 @@ bosonic partition sums are genuinely infinite series needing convergence conditi
 
 ## Common statistics-agnostic layer
 
+**File layout**: `SecondQuantization/{Common,Bosonic,Fermionic}.lean` are umbrella modules
+importing each layer's files at once, shrinking the root `LeanCondensedMatter.lean` from 72
+imports to 30. `Common/QuantumLinkedCluster.lean` stays a separate root import — it currently
+depends on `Fermionic/` (the dependency-direction violation noted at Phase 9 step 7 below), so
+folding it into the `Common` umbrella would make `Common` depend on the fermionic line. The purely
+combinatorial Bloch–de Dominicis files (`Combinatorics/PerfectPairing.lean`,
+`Combinatorics/DeletedFinPositions.lean`, both below) moved out of `SecondQuantization/` entirely,
+into the general-math `Combinatorics/` layer upstream of it — file paths only, their declarations
+keep the `SecondQuantization.Common.BlochDeDominicis` namespace.
+
 The fermionic and bosonic lines proved the same shape of facts twice — an algebraic Fock space
 built from an occupation-state type, and a basis-diagonal free-Hamiltonian evolution — using
 different concrete occupation types (`FermionOccupation Mode := Finset Mode` vs. `Occupation Mode
@@ -145,9 +155,9 @@ finite-sum shape.
 | `Common/ExchangeCommutator.lean` | `zetaCommutator`/`exchangeCommutator` (`notes/roadmaps/second-quantization.md`'s Phase 9 section below) | `proved` |
 | `Common/TimeOrdering.lean` | `Common.zetaTimeOrderedProduct`/`Common.timeOrderedProduct` — the imaginary-time-ordered product `T_τ` of two `AlgebraicFock Config` endomorphisms, generic over `Config` (never depended on the concrete occupation-state type, only on `.comp`/scalar multiplication) and, mirroring `ExchangeCommutator.lean`'s `zetaCommutator`/`exchangeCommutator` split, indexed by a raw `ζ : ℤ` or by a `Statistics` value; `Fermionic/ImaginaryTimeOrdering.lean`/`Bosonic/ImaginaryTimeOrdering.lean` fix the statistics (no `ζ`/`Statistics` parameter at their own call sites) | `proved`, both wrappers |
 | `Common/ExchangeAlgebra.lean` | `Common.ExchangeAlgebra s Mode Config` — a `class` packaging the *all-index* exchange relation `a_i a_j† - ζ a_j† a_i = δᵢⱼ`, `a_i a_j - ζ a_j a_i = 0`, `a_i† a_j† - ζ a_j† a_i† = 0` (via `exchangeCommutator s`) that CAR (`s = fermion`) and CCR (`s = boson`) share, letting a future Bloch–de Dominicis induction move operators past each other without referencing fermionic `anticomm_*`/bosonic `comm_*` directly; the concrete instances (`SecondQuantization.exchangeAlgebra` — fermionic, plain namespace — and `SecondQuantization.Bosonic.exchangeAlgebra`) live in each statistics' own directory, mirroring `OccupationBasis.lean`'s architecture, and are derived from the bridging fact that `exchangeCommutator s = anticomm`/`comm` for *any* two operators (generalizing the single-mode bridging in `Fermionic/NumberOperator.lean`/`Bosonic/NumberOperator.lean`) | `proved`, both instances |
-| `Common/BlochDeDominicis/Pairing.lean` | `Common.BlochDeDominicis.Pairing n` — perfect pairings of `Fin (2 * n)` behind a stable `partner` interface, implemented by fixed-point-free involutive permutations; finite enumeration, partner laws, normalized-pair membership, crossing count, `Pairing.eraseZeroPair` with its named order-isomorphism API, preservation of normalized pair membership under deletion, and preservation of `Crosses` under the deletion order isomorphism. **Now purely combinatorial, zero `Statistics`/`ℂ` dependency** — the exchange-statistics weight moved to `PairingWeight.lean` below (a reorganization PR, no theorem-statement changes) | `proved` |
+| `Combinatorics/PerfectPairing.lean` | `Common.BlochDeDominicis.Pairing n` — perfect pairings of `Fin (2 * n)` behind a stable `partner` interface, implemented by fixed-point-free involutive permutations; finite enumeration, partner laws, normalized-pair membership, crossing count, `Pairing.eraseZeroPair` with its named order-isomorphism API, preservation of normalized pair membership under deletion, and preservation of `Crosses` under the deletion order isomorphism. **Now purely combinatorial, zero `Statistics`/`ℂ` dependency** — the exchange-statistics weight moved to `PairingWeight.lean` below (a reorganization PR, no theorem-statement changes) | `proved` |
 | `Common/BlochDeDominicis/PairingWeight.lean` | `Pairing.weight s := (s.zetaInt : ℂ) ^ crossingCount`, `weight_boson`/`weight_fermion`/`weight_fermion_eq_ite`; the four-position theorem gives the adjacent/crossing/nested weights `1`, `ζ`, `1` without choosing an enumeration order (`four_position_pairings_and_weights`) | `proved` |
-| `Common/BlochDeDominicis/DeletedPositions.lean` | `deletedPositions n j hzero` and `deletedPositionsOrderIso n j hzero` — the finite ordered-set seam that identifies `Fin (2 * n)` with `Fin (2 * (n + 1))` after deleting position `0` and a distinct position `j`; cardinality, membership, and strict monotonicity are proved for the later pairing-restriction induction | `proved` |
+| `Combinatorics/DeletedFinPositions.lean` | `deletedPositions n j hzero` and `deletedPositionsOrderIso n j hzero` — the finite ordered-set seam that identifies `Fin (2 * n)` with `Fin (2 * (n + 1))` after deleting position `0` and a distinct position `j`; cardinality, membership, and strict monotonicity are proved for the later pairing-restriction induction | `proved` |
 | `Common/WeightedDiagonalFunctional.lean` | `Common.traceFock`/`Common.weightedTrace`/`Common.weightSum`/`Common.normalizedWeightedDiagonal`, generic over the occupation-state type `Config` — generalized from `Fermionic/WeightedDiagonalFunctional.lean`, which never used anything fermion-specific in this construction (only `matrixCoeff`/`basisState` and `[Fintype Config]`). `Fermionic/WeightedDiagonalFunctional.lean` keeps its own names as thin `FermionOccupation Mode`-specialized wrappers (mirroring `Common/TimeOrdering.lean`'s split), so existing fermionic call sites are unaffected; `weightedTrace_eq_sum`/`weightSum_eq_sum`/`normalizedWeightedDiagonal_eq_div` there restate each as its defining sum/quotient, headed by the fermionic `matrixCoeff`, for callers that need to compute | `proved`, fermionic wrapper unaffected |
 
 **Symmetric file layout, `Fermionic/NumberOperator.lean` split from `Hamiltonian.lean`:** the
@@ -450,10 +460,18 @@ undivided `⟨aᵢaᵢ†⟩_β`-numerator equation, not the normalized expectat
 from it would additionally need `aᵢaᵢ† = N_i + 1`, i.e. a bosonic `numberOperator`, which doesn't
 exist yet). The general
 `n`-point Bloch–de Dominicis theorem itself (the `n`-point sum-over-pairings formula,
-`Common/BlochDeDominicis/Induction.lean`, not yet started) — multi-mode operators, a genuine
-reduction of the right side to a sum over `Pairing n` (not just matching already-known weights by
-hand, as the single-mode 4-point sanity check still does), and connecting
-`Common.BlochDeDominicis.Pairing`/`PairingWeight`'s combinatorics to the actual induction; the
+`Common/BlochDeDominicis/Induction.lean`, not yet started). **A concrete stepping stone toward it is
+done, in `Common/BlochDeDominicis/FourPointReduction.lean`:** the `n = 2` (4-operator)
+*first-operator reduction* — commuting `C₁` through the three remaining factors via the c-number
+exchange commutator, then one KMS cyclicity step, giving `(1 - ζ³w₁) Tr[e^{-βH₀}(C₁C₂C₃C₄)] = c₁₂
+Tr[e^{-βH₀}(C₃C₄)] + ζc₁₃ Tr[e^{-βH₀}(C₂C₄)] + ζ²c₁₄ Tr[e^{-βH₀}(C₂C₃)]`. **Not the genuine 4-point
+Bloch–de Dominicis *expansion*** (the fully-reduced normalized `⟨C₁C₂C₃C₄⟩_β =
+⟨C₁C₂⟩_β⟨C₃C₄⟩_β + ζ⟨C₁C₃⟩_β⟨C₂C₄⟩_β + ⟨C₁C₄⟩_β⟨C₂C₃⟩_β`) — validates the peel-and-rotate pattern
+extends past the base case, one level short of a genuine pairing-weighted sum of numbers. Still
+needed for the general induction: multi-mode operators, a genuine reduction of the right side to a
+sum over `Pairing n` (not just matching already-known weights by hand, as the single-mode 4-point
+sanity check still does), and connecting `Common.BlochDeDominicis.Pairing`/`PairingWeight`'s
+combinatorics to the actual induction; the
 finite-temperature structure noted above (KMS antiperiodicity etc.); the full
 Matsubara-Green-function apparatus; the genuine Dyson series and diagram connectedness (steps 5–7).
 
@@ -478,6 +496,22 @@ now refactored to go through `exchangeCommutator`) and `Bosonic/NumberOperator.l
 (`ζ = 1`, `a_i a_i† = id + N_i`, the first bosonic `numberOperator`/reordering result — the bosonic
 line had no `numberOperator` at all before this) are both literal instances.
 
+**Fully deduplicated, in `Common/ExchangeAlgebra.lean`:** `Bosonic/NumberOperator.lean` and
+`Fermionic/NumberOperator.lean` had each independently *proved* (not just stated)
+`exchangeCommutator_annihilate_create_self`/`annihilate_comp_create_self` — the same statement
+shape, only the final sign algebra differing (`+N_i` vs `-N_i`). Two new `Common/ExchangeAlgebra.lean`
+lemmas, generic over any `Statistics s` with an `ExchangeAlgebra s Mode Config` instance
+(`exchangeCommutator_annihilate_create_self` — the `i = j` case of `annihilate_create` — and
+`annihilate_comp_create_self` — `a_i a_i† = id + ζ•N_i`), let both statistics' `NumberOperator.lean`
+instantiate in one line instead of re-deriving the reordering independently. Found via a systematic
+scan: aggregating every top-level declaration across `SecondQuantization/` into one list, grouped by
+name across files, and reviewing every group appearing in 2+ files. Most such groups were
+intentional per-statistics parity or already-documented `Common/` delegation; a second genuine gap
+(`Fermionic/ParticleNumberCharge.lean`/`Bosonic/ParticleNumberCharge.lean`'s grading-degree proofs)
+remains open — unifying it needs routing through `Common/OccupationBasis.lean`'s abstraction
+(`FermionOccupation Mode := Finset Mode` vs `Occupation Mode := Mode →₀ ℕ` have different underlying
+representations), not a direct merge.
+
 **Time ordering also made statistics-indexed, in `Common/TimeOrdering.lean`:** see the table
 above; `Fermionic/ImaginaryTimeOrdering.lean`/`Bosonic/ImaginaryTimeOrdering.lean` fix their own
 statistics outright.
@@ -499,7 +533,7 @@ that bridge — no new algebra, only the interface. This does not replace the ex
 names directly are unaffected.
 
 **Finite-temperature Bloch–de Dominicis pairing combinatorics done, in
-`Common/BlochDeDominicis/Pairing.lean`:** Mathlib's existing
+`Combinatorics/PerfectPairing.lean`:** Mathlib's existing
 perfect-matching abstraction is attached to subgraphs of general simple graphs; it is not a natural
 fit for the linearly ordered operator positions needed for pairing crossing signs.  The project-owned
 `Common.BlochDeDominicis.Pairing n` therefore uses the smaller representation appropriate here: a
@@ -516,7 +550,7 @@ construction.
 This layer is purely combinatorial and keeps `Common/` independent of both statistics-specific
 implementation directories.
 
-**Crossing-count/weight recurrence under `eraseZeroPair` done, in `Common/BlochDeDominicis/Pairing.lean`:**
+**Crossing-count/weight recurrence under `eraseZeroPair` done, in `Combinatorics/PerfectPairing.lean`:**
 `Pairing.firstPair` names the pair containing position `0`; `Pairing.crossingsWithFirstPair` counts
 the remaining pairs that cross it. `Pairing.crossingCount_eraseZeroPair` proves
 `crossingCount = eraseZeroPair.crossingCount + crossingsWithFirstPair` by splitting the crossing-pair
@@ -530,7 +564,7 @@ crosses `firstPair` (exactly `crossingsWithFirstPair` of them). Since `ζ² = 1`
 matching powers (`zetaInt_pow_eq_of_mod_two_eq`), yielding the final recurrence
 `Pairing.weight_eraseZeroPair : pairing.weight s = ζ ^ interveningPositionCount * eraseZeroPair.weight s`.
 
-**A constructive counterpart to `eraseZeroPair` done, in `Common/BlochDeDominicis/Pairing.lean`:**
+**A constructive counterpart to `eraseZeroPair` done, in `Combinatorics/PerfectPairing.lean`:**
 `pairing.insertFirstPair j hj` builds a `Pairing (n + 1)` from a smaller `Pairing n` and a choice of
 position `j ≠ 0`, by pairing `0` with `j` and reindexing `pairing`'s own partner permutation onto
 the remaining positions via `Equiv.Perm.extendDomain` composed with `deletedPositionsOrderIso`
@@ -543,7 +577,7 @@ pairings up from smaller ones (choosing `0`'s partner among `2n + 1` positions),
 down.
 
 **Inverse identities for `eraseZeroPair` and `insertFirstPair` done, in
-`Common/BlochDeDominicis/Pairing.lean`:** `Pairing.eraseZeroPair_insertFirstPair` proves
+`Combinatorics/PerfectPairing.lean`:** `Pairing.eraseZeroPair_insertFirstPair` proves
 `(pairing.insertFirstPair j hj).eraseZeroPair = pairing` — `eraseZeroPair` is a left inverse of
 `insertFirstPair j hj` — using `deletedPositionsOrderIso_congr` (a new proof-irrelevance helper in
 `DeletedPositions.lean`) to identify the erase step's own order isomorphism with the one
@@ -557,7 +591,7 @@ establish that `insertFirstPair j hj` and `eraseZeroPair` restricted to the fibe
 (n + 1) | P.partner 0 = j}` are mutually inverse, one fiber at a time.
 
 **The finite `Pairing (n + 1) ≃ Σ_{j ≠ 0} Pairing n` equivalence done, in
-`Common/BlochDeDominicis/Pairing.lean`:** `Pairing.equivSigma n : Pairing (n + 1) ≃ Σ (j :
+`Combinatorics/PerfectPairing.lean`:** `Pairing.equivSigma n : Pairing (n + 1) ≃ Σ (j :
 {j : Fin (2 * (n + 1)) // 0 ≠ j}), Pairing n` sends a pairing to the partner it assigns to position
 `0` together with the smaller pairing left after erasing that pair (`fun pairing => ⟨⟨pairing.partner
 0, _⟩, pairing.eraseZeroPair⟩`), with inverse `fun ⟨⟨j, hj⟩, Q⟩ => Q.insertFirstPair j hj`. Its
