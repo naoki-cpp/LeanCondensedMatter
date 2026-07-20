@@ -16,6 +16,7 @@ import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.GibbsExpec
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.FourPointReduction
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PeelFirst
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PeelFirstTrace
+import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.ProdCompFamily
 
 set_option linter.style.header false
 
