@@ -23,6 +23,7 @@ import LeanCondensedMatter.Combinatorics.DeletedFinPositionsSuccAbove
 import LeanCondensedMatter.Combinatorics.PairingEraseZeroSuccAbove
 import LeanCondensedMatter.Combinatorics.PairingPairsInsertFirstPair
 import LeanCondensedMatter.Combinatorics.PairingEquivSigmaSum
+import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.Induction
 
 set_option linter.style.header false
 

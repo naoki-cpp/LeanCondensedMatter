@@ -578,13 +578,30 @@ even started: `Common/BlochDeDominicis/PairingWeight.lean`'s `Pairing.weight_era
 pieces above use — so the `ζʲ` exponent `gibbsExpectation_peel_indexed` produces at position `j = k`
 already matches `Pairing.weight`'s sign with no further lemma needed.
 
-**Still not yet built, needed to close the induction**: assembling the `Σⱼ` over peeled positions
-(`gibbsExpectation_peel_indexed`) into `Pairing.equivSigma`'s `Σ_j Σ_{Pairing n}` double sum (the
-`Finset.sum` needs reindexing along `equivSigma`'s `Σ (j : {j // 0 ≠ j}), Pairing n` shape, matching
-each peeled-position term against the pairing containing `(0, j)`); and the strong induction on `n`
-itself, tying `gibbsExpectation_peel_indexed`, `Pairing.ofFn_comp_eraseZeroOrderIso_eq_eraseIdx`,
-`Pairing.weight_eraseZeroPair`, and the inductive hypothesis together. This is the one large
-remaining piece — everything feeding into it is now proved.
+- `Combinatorics/PairingPairsInsertFirstPair.lean`: `Pairing.pairs_eq_insert_firstPair`/
+  `prod_pairs_eq_firstPair_mul` — exposes, as a standalone fact, the pairs decomposition
+  `crossingCount_eraseZeroPair`'s proof already used internally: `pairing.pairs = insert
+  pairing.firstPair` (the smaller pairing's own pairs, pushed forward along `eraseZeroOrderIso`),
+  and its corollary splitting a product over `pairing.pairs` into the `firstPair` factor times a
+  product over the smaller pairing's pairs.
+- `Combinatorics/PairingEquivSigmaSum.lean`: `Pairing.sum_eq_sum_sum_insertFirstPair` — turns
+  `Pairing.equivSigma`'s decomposition into the `Finset.sum` reindexing identity the induction
+  actually needs: a sum over `Pairing (n + 1)` equals a double sum, first over positions `j : Fin
+  (2 * n + 1)`, then over the smaller `Pairing n`, reassembled via `Pairing.insertFirstPair`.
+
+**The general `n`-point theorem is now proved, in `Common/BlochDeDominicis/Induction.lean`**:
+`gibbsExpectation_prodComp_eq_sum_pairing`, by plain induction on `n` (only the immediately-
+preceding case is used, not strong induction), combining every piece above — peel `C 0`
+(`gibbsExpectation_peel_indexed`), identify the remaining operator family with the smaller
+pairing's positions directly via `List.eraseIdx_ofFn_eq_ofFn_succAbove`/
+`Pairing.eraseZeroOrderIso_eq_succ_succAbove` (the two lemmas `Pairing.
+ofFn_comp_eraseZeroOrderIso_eq_eraseIdx` composes, used individually here rather than through that
+composed form), apply the inductive hypothesis, and reassemble via
+`Pairing.sum_eq_sum_sum_insertFirstPair`, matching signs via `Pairing.weight_eraseZeroPair` and the
+pairs decomposition via
+`Pairing.prod_pairs_eq_firstPair_mul`. No `sorry`. This closes the design note above — the drafted
+statement (with the `hne` non-resonance hypothesis gpt's review on PR #116 caught) is the real,
+proved theorem.
 
 **Groundwork for the *general* (fermionic *and* bosonic) Bloch–de Dominicis theorem done, in
 `Common/ExchangeCommutator.lean` and `Bosonic/NumberOperator.lean`:** `Common/BlochDeDominicis/Induction.lean` needs
