@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing
 import LeanCondensedMatter.Combinatorics.DeletedFinPositionsSuccAbove
+import LeanCondensedMatter.Combinatorics.EraseIdxOfFn
 
 set_option linter.style.header false
 
@@ -33,6 +34,22 @@ theorem Pairing.eraseZeroOrderIso_eq_succ_succAbove {n : ℕ} (pairing : Pairing
   exact Common.deletedPositionsOrderIso_eq_succ_succAbove n
     ((pairing.partner 0).pred (pairing.partner_ne 0)) (pairing.partner 0)
     (Fin.succ_pred _ _).symm (Ne.symm (pairing.partner_ne 0)) i
+
+/-- **An operator family reindexed along `eraseZeroOrderIso` is the tail family with one position
+erased**: combines `eraseZeroOrderIso_eq_succ_succAbove` with `EraseIdxOfFn.lean`'s
+`List.eraseIdx_ofFn_eq_ofFn_succAbove`, giving the single composed identity the general `n`-point
+induction actually needs — the family `C` restricted to `pairing.eraseZeroPair`'s surviving
+positions is literally `PeelTermsIndexed.lean`'s `peelTerms_eq_ofFn`/`PeelFirst.lean`'s erasure of
+the tail list at position `(pairing.partner 0).pred`. -/
+theorem Pairing.ofFn_comp_eraseZeroOrderIso_eq_eraseIdx {α : Type*} {n : ℕ}
+    (pairing : Pairing (n + 1)) (C : Fin (2 * (n + 1)) → α) :
+    List.ofFn (fun i : Fin (2 * n) => C (pairing.eraseZeroOrderIso i)) =
+      (List.ofFn (fun i : Fin (2 * n + 1) => C i.succ)).eraseIdx
+        (((pairing.partner 0).pred (pairing.partner_ne 0) : Fin (2 * n + 1)) : ℕ) := by
+  rw [List.eraseIdx_ofFn_eq_ofFn_succAbove]
+  congr 1
+  funext i
+  rw [pairing.eraseZeroOrderIso_eq_succ_succAbove]
 
 end BlochDeDominicis
 end Common
