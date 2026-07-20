@@ -20,6 +20,7 @@ import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.ProdCompFa
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PeelTermsIndexed
 import LeanCondensedMatter.Combinatorics.EraseIdxOfFn
 import LeanCondensedMatter.Combinatorics.DeletedFinPositionsSuccAbove
+import LeanCondensedMatter.Combinatorics.PairingEraseZeroSuccAbove
 
 set_option linter.style.header false
 
