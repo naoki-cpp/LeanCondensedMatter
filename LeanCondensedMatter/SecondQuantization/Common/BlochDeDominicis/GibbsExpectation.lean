@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.FourPointReduction
+import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PeelFirstTrace
 import LeanCondensedMatter.SecondQuantization.Common.NormalizedOperatorFunctional
 
 set_option linter.style.header false
@@ -213,6 +214,32 @@ theorem gibbsExpectation_four_point (energy : Config → ℝ) (β q1 : ℝ) (ζ 
     hZ hne
   rw [h4, h12, h13, h14]
   field_simp
+
+/-- **The normalized peel-first identity**, dividing `PeelFirstTrace.lean`'s un-normalized
+`(1 - ζ^{l.length}w₁) Tr[e^{-βH₀}(C₁·B₁⋯Bₖ)] = Tr[e^{-βH₀}·peelSum ζ l]` through by the genuine
+partition function: `⟨C₁B₁⋯Bₖ⟩ = ⟨peelSum ζ l⟩ / (1 - ζ^{l.length}w₁)`. The general list-indexed
+counterpart of `gibbsExpectation_comp_eq_div_of_zetaCommutator`
+(`FourPointReduction`/`gibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator`'s 3-operator case
+is a specialization). Not yet decomposed into a `Pairing`-indexed sum — that's the remaining core
+of the general `n`-point induction (`Common/BlochDeDominicis/Induction.lean`). -/
+theorem gibbsExpectation_peel (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)
+    (C1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ))
+    (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
+    (hcomm : ∀ p ∈ l, zetaCommutator ζ C1 p.1 =
+      p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
+    (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0)
+    (hne : (1 : ℂ) - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
+    gibbsExpectation energy β (C1.comp (prodComp (l.map Prod.fst))) =
+      gibbsExpectation energy β (peelSum ζ l) / (1 - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ))
+    := by
+  have h := traceFock_diagonalEvolution_comp_peel energy β q1 ζ C1 l hC1 hcomm
+  have hne' : (1 : ℂ) - ζ ^ l.length * Complex.exp ((β * q1 : ℝ) : ℂ) ≠ 0 := by
+    rwa [mul_comm β q1]
+  simp only [gibbsExpectation_eq_normalizedWeightedDiagonal, normalizedWeightedDiagonal,
+    ← traceFock_diagonalEvolution_comp_eq_weightedTrace, ← traceFock_diagonalEvolution_eq_weightSum]
+  field_simp [hne']
+  linear_combination (norm := ring_nf) h
 
 end Common
 end SecondQuantization
