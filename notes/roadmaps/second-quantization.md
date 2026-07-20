@@ -514,17 +514,32 @@ theorem gibbsExpectation_prodComp_eq_sum_pairing (n : ℕ) (s : Statistics)
       Complex.exp ((q i * (-β) : ℝ) : ℂ) • C i)
     (hcomm : ∀ i j, i ≠ j → zetaCommutator (s.zetaInt : ℂ) (C i) (C j) =
       c i j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
-    (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0) :
+    (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0)
+    (hne : ∀ i, (1 : ℂ) - (s.zetaInt : ℂ) * Complex.exp (((q i) * β : ℝ) : ℂ) ≠ 0) :
     gibbsExpectation energy β (prodComp (List.ofFn C)) =
       ∑ pairing : Common.BlochDeDominicis.Pairing n,
         pairing.weight s * ∏ pr ∈ pairing.pairs, gibbsExpectation energy β ((C pr.1).comp (C pr.2))
 ```
 
+**Caught by gpt's review on PR #116**: the statement as first drafted (without `hne`) is *false* —
+`n = 2`, bosons (`ζ = 1`), a single-element `Config`, `energy = 0`, all `C i = id`, all `q i = 0`,
+all `c i j = 0` satisfies `hC`/`hcomm`/`hZ` (every hypothesis holds vacuously or trivially), giving
+LHS `⟨id⁴⟩ = 1` but RHS `= 1 + 1 + 1 = 3` (the three 4-position pairings, all boson weight `1`).
+`gibbsExpectation_peel` itself already requires exactly this non-resonance hypothesis at each
+recursive step (`hne` in its own signature) — the general statement needs it at *every* position
+`i`, not just position `0`, since the induction's recursive step lets any remaining operator become
+the "peeled first operator" of a smaller subproblem after two positions are removed.
+
 Design notes: unlike `TwoPoint.lean`/`FourPointReduction.lean` (which only needed the *first*
-operator's eigenvalue shift), *every* operator's shift `q i` is needed here, since the target
-product ranges over *arbitrary* pairs `(i, j)`, not just pairs involving a fixed first operator;
-similarly `c` is a full pairwise family, generalizing the single `c₁ⱼ`. This type-checked cleanly
-against the existing infrastructure, confirming the design. **The intended proof strategy**, by
+operator's eigenvalue shift), *every* operator's shift `q i` is needed here — not merely because the
+target's right side ranges over arbitrary pairs (that alone doesn't require `q`, since 2-point
+values are already normalized numbers there), but because the induction recursively deletes two
+positions at a time, and *any* remaining operator can become the next subproblem's own "first
+operator" to peel, needing its own `q i`/`hne i`. Likewise `c i j` is needed as a full pairwise
+family because each subproblem peels its own first operator through *all* of its remaining
+operators, not just against a fixed position `0`. This type-checked cleanly against the existing
+infrastructure, confirming the design (modulo the missing `hne`, since a type-checked *statement*
+says nothing about whether it's *true*). **The intended proof strategy**, by
 strong induction on `n` (following the physics reference notes' own proof): peel `C₀` off the
 front via `gibbsExpectation_peel` (giving a sum of `gibbsExpectation (C₀.comp Cⱼ) *
 gibbsExpectation (remaining 2n-2 operators, Cⱼ erased)` terms, one per position `j`, matching
