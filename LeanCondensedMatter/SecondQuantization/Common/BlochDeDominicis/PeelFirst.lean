@@ -27,10 +27,16 @@ peelSum ζ t)`), rather than as a closed `Finset.sum`-over-erasures formula matc
 notes' `Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation directly — connecting the two is deferred to whenever the
 general induction actually needs to match term-by-term against `Common.BlochDeDominicis.Pairing`.
 
-**Pure `LinearMap` composition algebra** — no `traceFock`/KMS-rotation/`Config`-finiteness
-involved yet. Wrapping this in the trace-level KMS-rotation step
-(`Common.traceFock_diagonalEvolution_comp_rotate`) to solve the resulting self-referential trace
-equation, the way `FourPointReduction.lean` does for the 3-operator case, is a separate next step.
+**Pure `LinearMap` composition algebra** — no `traceFock`/KMS-rotation/`Config`-finiteness involved
+here. The trace-level KMS-rotation wrapping (solving the resulting self-referential trace
+equation, the way `FourPointReduction.lean` does for the 3-operator case) is done separately, in
+`Common/BlochDeDominicis/PeelFirstTrace.lean`.
+
+**`peelSum_eq_peelTerms_sum` below converts `peelSum` into a `List.sum`**, `peelTerms`'s
+recursively-defined terms — not yet the indexed erasure formula (`ζʲ • cⱼ • prodComp (l.eraseIdx
+j |>.map Prod.fst)`, via `List.get`/`List.eraseIdx`) that would let each term be matched
+individually against `Common.BlochDeDominicis.Pairing`; that further step (`peelTerms_get`-style
+API) is deferred to whenever the general induction actually needs it.
 -/
 
 namespace SecondQuantization
