@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.KMSRotation
+import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PeelFirstTrace
 
 set_option linter.style.header false
 
@@ -35,10 +35,12 @@ namespace Common
 
 variable {Config : Type*}
 
-/-- **The pure operator-algebra identity behind the 4-point reduction**: repeatedly rewriting
-`C₁Cⱼ` as `c₁ⱼ • id + ζ•(CⱼC₁)` (for `j = 2, 3, 4`) and pushing the resulting `C₁` rightward through
-`C₂`, then `C₃`, picks up one factor of `ζ` per operator it passes, landing `C₁` at the very end.
-Pure `LinearMap` composition algebra — no `traceFock`/`Config`-finiteness involved. -/
+/-- **The pure operator-algebra identity behind the 4-point reduction**, now a specialization of
+`PeelFirst.lean`'s general `comp_prodComp_eq_of_zetaCommutator` at `l := [(C2,c12), (C3,c13),
+(C4,c14)]` — repeatedly rewriting `C₁Cⱼ` as `c₁ⱼ • id + ζ•(CⱼC₁)` (for `j = 2, 3, 4`) and pushing
+the resulting `C₁` rightward through `C₂`, then `C₃`, picks up one factor of `ζ` per operator it
+passes, landing `C₁` at the very end. Pure `LinearMap` composition algebra — no
+`traceFock`/`Config`-finiteness involved. -/
 theorem comp_comp_comp_eq_of_zetaCommutator
     (ζ c12 c13 c14 : ℂ) (C1 C2 C3 C4 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hcomm12 : C1.comp C2 - ζ • (C2.comp C1) =
@@ -50,35 +52,24 @@ theorem comp_comp_comp_eq_of_zetaCommutator
     C1.comp (C2.comp (C3.comp C4)) =
       c12 • (C3.comp C4) + (ζ * c13) • (C2.comp C4) + (ζ ^ 2 * c14) • (C2.comp C3) +
         ζ ^ 3 • (C2.comp (C3.comp (C4.comp C1))) := by
-  have hp12 : ∀ x, C1 (C2 x) = c12 • x + ζ • C2 (C1 x) := fun x => by
-    have h := DFunLike.congr_fun hcomm12 x
-    simp only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply,
-      LinearMap.id_apply] at h
-    rwa [sub_eq_iff_eq_add] at h
-  have hp13 : ∀ x, C1 (C3 x) = c13 • x + ζ • C3 (C1 x) := fun x => by
-    have h := DFunLike.congr_fun hcomm13 x
-    simp only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply,
-      LinearMap.id_apply] at h
-    rwa [sub_eq_iff_eq_add] at h
-  have hp14 : ∀ x, C1 (C4 x) = c14 • x + ζ • C4 (C1 x) := fun x => by
-    have h := DFunLike.congr_fun hcomm14 x
-    simp only [LinearMap.sub_apply, LinearMap.smul_apply, LinearMap.comp_apply,
-      LinearMap.id_apply] at h
-    rwa [sub_eq_iff_eq_add] at h
-  apply LinearMap.ext
-  intro x
-  simp only [LinearMap.comp_apply, LinearMap.add_apply, LinearMap.smul_apply]
-  rw [hp12 (C3 (C4 x)), hp13 (C4 x), hp14 x]
-  simp only [map_add, map_smul, smul_add, smul_smul]
-  module
+  have hmem : ∀ p ∈ [(C2, c12), (C3, c13), (C4, c14)], zetaCommutator ζ C1 p.1 =
+      p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
+    intro p hp
+    fin_cases hp
+    · exact hcomm12
+    · exact hcomm13
+    · exact hcomm14
+  have h := comp_prodComp_eq_of_zetaCommutator ζ C1 [(C2, c12), (C3, c13), (C4, c14)] hmem
+  simp only [prodComp, peelSum, List.map_cons, List.map_nil, List.length_cons, List.length_nil,
+    LinearMap.comp_id, LinearMap.comp_zero, LinearMap.comp_add, LinearMap.comp_smul, smul_add,
+    smul_smul, smul_zero, add_zero] at h
+  linear_combination (norm := module) h
 
-/-- **The 4-point Bloch–de Dominicis first-operator reduction**: `(1 - ζ³w₁)
-Tr[e^{-βH₀}(C₁C₂C₃C₄)] = c₁₂ Tr[e^{-βH₀}(C₃C₄)] + ζc₁₃ Tr[e^{-βH₀}(C₂C₄)] + ζ²c₁₄
-Tr[e^{-βH₀}(C₂C₃)]` — `TwoPoint.lean`'s `n = 1` strategy, commuting `C₁` through the three
-remaining factors via the c-number exchange commutator, followed by one KMS cyclicity step
-(`traceFock_diagonalEvolution_comp_rotate`) to solve the resulting self-referential equation. See
-the module docstring for why this is left un-normalized/un-reduced to a genuine pairing-weighted
-sum of numbers. -/
+/-- **The 4-point Bloch–de Dominicis first-operator reduction**, now a specialization of
+`PeelFirstTrace.lean`'s general `traceFock_diagonalEvolution_comp_peel` at `l := [(C2,c12),
+(C3,c13), (C4,c14)]`: `(1 - ζ³w₁) Tr[e^{-βH₀}(C₁C₂C₃C₄)] = c₁₂ Tr[e^{-βH₀}(C₃C₄)] + ζc₁₃
+Tr[e^{-βH₀}(C₂C₄)] + ζ²c₁₄ Tr[e^{-βH₀}(C₂C₃)]`. See the module docstring for why this is left
+un-normalized/un-reduced to a genuine pairing-weighted sum of numbers. -/
 theorem traceFock_diagonalEvolution_comp_four_point_reduction [Fintype Config]
     (energy : Config → ℝ) (β q1 : ℝ) (ζ c12 c13 c14 : ℂ)
     (C1 C2 C3 C4 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
@@ -95,21 +86,21 @@ theorem traceFock_diagonalEvolution_comp_four_point_reduction [Fintype Config]
       c12 * traceFock ((diagonalEvolution energy (-β)).comp (C3.comp C4)) +
         ζ * c13 * traceFock ((diagonalEvolution energy (-β)).comp (C2.comp C4)) +
         ζ ^ 2 * c14 * traceFock ((diagonalEvolution energy (-β)).comp (C2.comp C3)) := by
-  have hopeq := comp_comp_comp_eq_of_zetaCommutator ζ c12 c13 c14 C1 C2 C3 C4
-    hcomm12 hcomm13 hcomm14
-  have hrot := traceFock_diagonalEvolution_comp_rotate energy β q1 (C2.comp (C3.comp C4)) C1 hC1
-  rw [LinearMap.comp_assoc, LinearMap.comp_assoc] at hrot
-  have hstep : traceFock ((diagonalEvolution energy (-β)).comp
-      (C1.comp (C2.comp (C3.comp C4)))) =
-      c12 * traceFock ((diagonalEvolution energy (-β)).comp (C3.comp C4)) +
-        ζ * c13 * traceFock ((diagonalEvolution energy (-β)).comp (C2.comp C4)) +
-        ζ ^ 2 * c14 * traceFock ((diagonalEvolution energy (-β)).comp (C2.comp C3)) +
-        ζ ^ 3 * traceFock ((diagonalEvolution energy (-β)).comp
-          (C2.comp (C3.comp (C4.comp C1)))) := by
-    conv_lhs => rw [hopeq]
-    simp only [LinearMap.comp_add, LinearMap.comp_smul, traceFock_add, traceFock_smul]
-  rw [hrot, smul_eq_mul] at hstep
-  linear_combination hstep
+  have hmem : ∀ p ∈ [(C2, c12), (C3, c13), (C4, c14)], zetaCommutator ζ C1 p.1 =
+      p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
+    intro p hp
+    fin_cases hp
+    · exact hcomm12
+    · exact hcomm13
+    · exact hcomm14
+  have hz : traceFock (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 0 := by
+    simp [traceFock, matrixCoeff]
+  have h := traceFock_diagonalEvolution_comp_peel energy β q1 ζ C1
+    [(C2, c12), (C3, c13), (C4, c14)] hC1 hmem
+  simp only [prodComp, peelSum, List.map_cons, List.map_nil, List.length_cons, List.length_nil,
+    LinearMap.comp_id, LinearMap.comp_zero, LinearMap.comp_add, LinearMap.comp_smul,
+    traceFock_add, traceFock_smul, hz, mul_zero] at h
+  linear_combination h
 
 end Common
 end SecondQuantization
