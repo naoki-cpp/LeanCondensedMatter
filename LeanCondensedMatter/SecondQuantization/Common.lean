@@ -22,6 +22,7 @@ import LeanCondensedMatter.Combinatorics.EraseIdxOfFn
 import LeanCondensedMatter.Combinatorics.DeletedFinPositionsSuccAbove
 import LeanCondensedMatter.Combinatorics.PairingEraseZeroSuccAbove
 import LeanCondensedMatter.Combinatorics.PairingPairsInsertFirstPair
+import LeanCondensedMatter.Combinatorics.PairingEquivSigmaSum
 
 set_option linter.style.header false
 
