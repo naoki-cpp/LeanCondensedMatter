@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.TwoPoint
+import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.FourPointReduction
 import LeanCondensedMatter.SecondQuantization.Common.NormalizedOperatorFunctional
 
 set_option linter.style.header false
@@ -137,6 +138,41 @@ theorem gibbsExpectation_comp_eq_div_of_zetaCommutator (energy : Config → ℝ)
     ← traceFock_diagonalEvolution_comp_eq_weightedTrace, ← traceFock_diagonalEvolution_eq_weightSum,
     div_eq_div_iff hZ hne]
   linear_combination h
+
+/-- **The normalized 4-point Bloch–de Dominicis identity**, dividing
+`FourPointReduction.lean`'s un-normalized `(1 - ζ³w₁) Tr[e^{-βH₀}(C₁C₂C₃C₄)] = c₁₂
+Tr[e^{-βH₀}(C₃C₄)] + ζc₁₃ Tr[e^{-βH₀}(C₂C₄)] + ζ²c₁₄ Tr[e^{-βH₀}(C₂C₃)]` through by the genuine
+partition function: `⟨C₁C₂C₃C₄⟩ = (c₁₂⟨C₃C₄⟩ + ζc₁₃⟨C₂C₄⟩ + ζ²c₁₄⟨C₂C₃⟩) / (1 - ζ³w₁)`. **Still not
+the genuine 4-point *expansion*** (`⟨C₁C₂⟩⟨C₃C₄⟩ + ζ⟨C₁C₃⟩⟨C₂C₄⟩ + ⟨C₁C₄⟩⟨C₂C₃⟩`, a sum of
+*products* of normalized 2-point numbers) — the remaining `⟨C₃C₄⟩`/`⟨C₂C₄⟩`/`⟨C₂C₃⟩` terms are
+themselves normalized Gibbs expectations, but this theorem doesn't further reduce them to numbers
+via `gibbsExpectation_comp_eq_div_of_zetaCommutator`; doing that needs `C₂`, `C₃`, `C₄`'s own KMS
+eigenvalue-shift and `ζ`-commutator hypotheses (not assumed here, since `C₁` is the only operator
+`FourPointReduction`'s hypotheses concern). -/
+theorem gibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator (energy : Config → ℝ) (β q1 : ℝ)
+    (ζ c12 c13 c14 : ℂ) (C1 C2 C3 C4 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
+    (hcomm12 : C1.comp C2 - ζ • (C2.comp C1) =
+      c12 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
+    (hcomm13 : C1.comp C3 - ζ • (C3.comp C1) =
+      c13 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
+    (hcomm14 : C1.comp C4 - ζ • (C4.comp C1) =
+      c14 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
+    (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0)
+    (hne : (1 : ℂ) - ζ ^ 3 * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
+    gibbsExpectation energy β (C1.comp (C2.comp (C3.comp C4))) =
+      (c12 * gibbsExpectation energy β (C3.comp C4) +
+          ζ * c13 * gibbsExpectation energy β (C2.comp C4) +
+          ζ ^ 2 * c14 * gibbsExpectation energy β (C2.comp C3)) /
+        (1 - ζ ^ 3 * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
+  have h := traceFock_diagonalEvolution_comp_four_point_reduction energy β q1 ζ c12 c13 c14
+    C1 C2 C3 C4 hC1 hcomm12 hcomm13 hcomm14
+  have hne' : (1 : ℂ) - ζ ^ 3 * Complex.exp ((β * q1 : ℝ) : ℂ) ≠ 0 := by
+    rwa [mul_comm β q1]
+  simp only [gibbsExpectation_eq_normalizedWeightedDiagonal, normalizedWeightedDiagonal,
+    ← traceFock_diagonalEvolution_comp_eq_weightedTrace, ← traceFock_diagonalEvolution_eq_weightSum]
+  field_simp [hne']
+  linear_combination (norm := ring_nf) h
 
 end Common
 end SecondQuantization
