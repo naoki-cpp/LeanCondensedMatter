@@ -590,11 +590,15 @@ already matches `Pairing.weight`'s sign with no further lemma needed.
   (2 * n + 1)`, then over the smaller `Pairing n`, reassembled via `Pairing.insertFirstPair`.
 
 **The general `n`-point theorem is now proved, in `Common/BlochDeDominicis/Induction.lean`**:
-`gibbsExpectation_prodComp_eq_sum_pairing`, by strong induction on `n`, combining every piece above
-— peel `C 0` (`gibbsExpectation_peel_indexed`), identify the remaining operator family with the
-smaller pairing's positions (`Pairing.ofFn_comp_eraseZeroOrderIso_eq_eraseIdx`), apply the
-inductive hypothesis, and reassemble via `Pairing.sum_eq_sum_sum_insertFirstPair`, matching signs
-via `Pairing.weight_eraseZeroPair` and the pairs decomposition via
+`gibbsExpectation_prodComp_eq_sum_pairing`, by plain induction on `n` (only the immediately-
+preceding case is used, not strong induction), combining every piece above — peel `C 0`
+(`gibbsExpectation_peel_indexed`), identify the remaining operator family with the smaller
+pairing's positions directly via `List.eraseIdx_ofFn_eq_ofFn_succAbove`/
+`Pairing.eraseZeroOrderIso_eq_succ_succAbove` (the two lemmas `Pairing.
+ofFn_comp_eraseZeroOrderIso_eq_eraseIdx` composes, used individually here rather than through that
+composed form), apply the inductive hypothesis, and reassemble via
+`Pairing.sum_eq_sum_sum_insertFirstPair`, matching signs via `Pairing.weight_eraseZeroPair` and the
+pairs decomposition via
 `Pairing.prod_pairs_eq_firstPair_mul`. No `sorry`. This closes the design note above — the drafted
 statement (with the `hne` non-resonance hypothesis gpt's review on PR #116 caught) is the real,
 proved theorem.
