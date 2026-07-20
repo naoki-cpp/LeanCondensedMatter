@@ -21,6 +21,7 @@ import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PeelTermsI
 import LeanCondensedMatter.Combinatorics.EraseIdxOfFn
 import LeanCondensedMatter.Combinatorics.DeletedFinPositionsSuccAbove
 import LeanCondensedMatter.Combinatorics.PairingEraseZeroSuccAbove
+import LeanCondensedMatter.Combinatorics.PairingPairsInsertFirstPair
 
 set_option linter.style.header false
 
