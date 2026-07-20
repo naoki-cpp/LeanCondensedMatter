@@ -490,6 +490,51 @@ multi-mode operators; the finite-temperature structure noted above (KMS antiperi
 full Matsubara-Green-function apparatus; the genuine Dyson series and diagram connectedness (steps
 5–7).
 
+- `Common/BlochDeDominicis/GibbsExpectation.lean`'s `gibbsExpectation_peel`: the normalized
+  counterpart of `PeelFirstTrace.lean`'s peel identity, dividing through by the genuine partition
+  function — `⟨C₁B₁⋯Bₖ⟩ = ⟨peelSum ζ l⟩ / (1 - ζ^{l.length}w₁)`. The general list-indexed analogue
+  of `gibbsExpectation_comp_eq_div_of_zetaCommutator`/
+  `gibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator`.
+- Same file's `gibbsExpectation_four_point`: the genuine normalized 4-point *expansion* itself,
+  `⟨C₁C₂C₃C₄⟩ = ⟨C₁C₂⟩⟨C₃C₄⟩ + ζ⟨C₁C₃⟩⟨C₂C₄⟩ + ⟨C₁C₄⟩⟨C₂C₃⟩` — the physics reference notes' own
+  4-point example, proved (given `ζ² = 1`) purely by rewriting `gibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator`'s
+  coefficients `c₁ⱼ/(1-ζw₁)` as `⟨C₁Cⱼ⟩`.
+
+**The general `n`-point statement's API surface was drafted and confirmed to type-check** (PR
+#116; the theorem itself is *not* proved — a `sorry`-containing statement can't be merged per this
+project's CI "no `sorry`" check, so the draft below is recorded here as a design note rather than
+committed as dead Lean code):
+
+```lean
+theorem gibbsExpectation_prodComp_eq_sum_pairing (n : ℕ) (s : Statistics)
+    (energy : Config → ℝ) (β : ℝ)
+    (C : Fin (2 * n) → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ)
+    (hC : ∀ i, heisenbergEvolve energy (-β) (C i) =
+      Complex.exp ((q i * (-β) : ℝ) : ℂ) • C i)
+    (hcomm : ∀ i j, i ≠ j → zetaCommutator (s.zetaInt : ℂ) (C i) (C j) =
+      c i j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
+    (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0) :
+    gibbsExpectation energy β (prodComp (List.ofFn C)) =
+      ∑ pairing : Common.BlochDeDominicis.Pairing n,
+        pairing.weight s * ∏ pr ∈ pairing.pairs, gibbsExpectation energy β ((C pr.1).comp (C pr.2))
+```
+
+Design notes: unlike `TwoPoint.lean`/`FourPointReduction.lean` (which only needed the *first*
+operator's eigenvalue shift), *every* operator's shift `q i` is needed here, since the target
+product ranges over *arbitrary* pairs `(i, j)`, not just pairs involving a fixed first operator;
+similarly `c` is a full pairwise family, generalizing the single `c₁ⱼ`. This type-checked cleanly
+against the existing infrastructure, confirming the design. **The intended proof strategy**, by
+strong induction on `n` (following the physics reference notes' own proof): peel `C₀` off the
+front via `gibbsExpectation_peel` (giving a sum of `gibbsExpectation (C₀.comp Cⱼ) *
+gibbsExpectation (remaining 2n-2 operators, Cⱼ erased)` terms, one per position `j`, matching
+`peelSum`/`peelTerms`'s structure), apply the inductive hypothesis to each `(2n-2)`-operator
+remaining product (giving a `Pairing (n-1)` sum for it), and reassemble into a `Pairing n` sum via
+`Combinatorics.PerfectPairing`'s `Pairing.insertFirstPair`/`Pairing.equivSigma`. **Not yet built,
+needed for this**: `peelSum`'s indexed (`Fin`-based, not just `List`-recursive) form; the
+`Combinatorics/DeletedFinPositions.lean` reindexing bridge from "`2n` operators minus the erased
+one" back to `Fin (2n)`; assembling all of the above into the actual induction.
+
 **Groundwork for the *general* (fermionic *and* bosonic) Bloch–de Dominicis theorem done, in
 `Common/ExchangeCommutator.lean` and `Bosonic/NumberOperator.lean`:** `Common/BlochDeDominicis/Induction.lean` needs
 to be built for both statistics at once rather than duplicated, since the `n`-point pairing-sum
