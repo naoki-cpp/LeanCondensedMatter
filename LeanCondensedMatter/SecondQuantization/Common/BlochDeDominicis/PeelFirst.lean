@@ -27,10 +27,16 @@ peelSum ζ t)`), rather than as a closed `Finset.sum`-over-erasures formula matc
 notes' `Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation directly — connecting the two is deferred to whenever the
 general induction actually needs to match term-by-term against `Common.BlochDeDominicis.Pairing`.
 
-**Pure `LinearMap` composition algebra** — no `traceFock`/KMS-rotation/`Config`-finiteness
-involved yet. Wrapping this in the trace-level KMS-rotation step
-(`Common.traceFock_diagonalEvolution_comp_rotate`) to solve the resulting self-referential trace
-equation, the way `FourPointReduction.lean` does for the 3-operator case, is a separate next step.
+**Pure `LinearMap` composition algebra** — no `traceFock`/KMS-rotation/`Config`-finiteness involved
+here. The trace-level KMS-rotation wrapping (solving the resulting self-referential trace
+equation, the way `FourPointReduction.lean` does for the 3-operator case) is done separately, in
+`Common/BlochDeDominicis/PeelFirstTrace.lean`.
+
+**`peelSum_eq_peelTerms_sum` below converts `peelSum` into a `List.sum`**, `peelTerms`'s
+recursively-defined terms — not yet the indexed erasure formula (`ζʲ • cⱼ • prodComp (l.eraseIdx
+j |>.map Prod.fst)`, via `List.get`/`List.eraseIdx`) that would let each term be matched
+individually against `Common.BlochDeDominicis.Pairing`; that further step (`peelTerms_get`-style
+API) is deferred to whenever the general induction actually needs it.
 -/
 
 namespace SecondQuantization
@@ -61,6 +67,36 @@ noncomputable def peelSum (ζ : ℂ) :
       AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config
   | [] => 0
   | (B, c) :: t => c • prodComp (t.map Prod.fst) + ζ • (B.comp (peelSum ζ t))
+
+/-- **The individual terms `peelSum` sums**, one per position in `l`, in order: at position `j`
+(0-indexed), the term is `ζ^j·cⱼ•(remaining product with `Bⱼ` erased)`. Defined recursively in
+lockstep with `peelSum` itself, so `peelSum_eq_peelTerms_sum` below is close to definitional. -/
+noncomputable def peelTerms (ζ : ℂ) :
+    List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ) →
+      List (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+  | [] => []
+  | (B, c) :: t => (c • prodComp (t.map Prod.fst)) :: (peelTerms ζ t).map (fun x => ζ • (B.comp x))
+
+/-- **`peelSum` is the sum of its `peelTerms`** — the closed-form counterpart of `peelSum`'s
+recursive definition, `Σⱼ ζʲcⱼ•(remaining product with `Bⱼ` erased)` as a `List.sum` rather than
+an index/`Finset.sum`-over-erasures formula (`l.get`/`l.eraseIdx`) matching the physics notes'
+`Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation letter-for-letter — connecting `peelTerms` to that indexed form,
+whenever the general induction needs to match term-by-term against
+`Common.BlochDeDominicis.Pairing`, is deferred. -/
+theorem peelSum_eq_peelTerms_sum (ζ : ℂ)
+    (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ)) :
+    peelSum ζ l = (peelTerms ζ l).sum := by
+  induction l with
+  | nil => simp [peelSum, peelTerms]
+  | cons p t ih =>
+    obtain ⟨B, c⟩ := p
+    have hmap : ∀ l' : List (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config),
+        (l'.map (fun x => ζ • (B.comp x))).sum = ζ • (B.comp l'.sum) := by
+      intro l'
+      induction l' with
+      | nil => simp
+      | cons x t' ih' => simp [List.sum_cons, ih', LinearMap.comp_add, smul_add]
+    simp only [peelSum, peelTerms, List.sum_cons, hmap, ih]
 
 /-- **Peeling `C₁` through an arbitrary-length product**: repeatedly rewriting `C₁Bⱼ` via each
 pair's `ζ`-commutator coefficient and pushing `C₁` rightward, `C₁` lands at the very end having
