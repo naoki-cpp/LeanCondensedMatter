@@ -62,6 +62,36 @@ noncomputable def peelSum (ζ : ℂ) :
   | [] => 0
   | (B, c) :: t => c • prodComp (t.map Prod.fst) + ζ • (B.comp (peelSum ζ t))
 
+/-- **The individual terms `peelSum` sums**, one per position in `l`, in order: at position `j`
+(0-indexed), the term is `ζ^j·cⱼ•(remaining product with `Bⱼ` erased)`. Defined recursively in
+lockstep with `peelSum` itself, so `peelSum_eq_peelTerms_sum` below is close to definitional. -/
+noncomputable def peelTerms (ζ : ℂ) :
+    List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ) →
+      List (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+  | [] => []
+  | (B, c) :: t => (c • prodComp (t.map Prod.fst)) :: (peelTerms ζ t).map (fun x => ζ • (B.comp x))
+
+/-- **`peelSum` is the sum of its `peelTerms`** — the closed-form counterpart of `peelSum`'s
+recursive definition, `Σⱼ ζʲcⱼ•(remaining product with `Bⱼ` erased)` as a `List.sum` rather than
+an index/`Finset.sum`-over-erasures formula (`l.get`/`l.eraseIdx`) matching the physics notes'
+`Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation letter-for-letter — connecting `peelTerms` to that indexed form,
+whenever the general induction needs to match term-by-term against
+`Common.BlochDeDominicis.Pairing`, is deferred. -/
+theorem peelSum_eq_peelTerms_sum (ζ : ℂ)
+    (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ)) :
+    peelSum ζ l = (peelTerms ζ l).sum := by
+  induction l with
+  | nil => simp [peelSum, peelTerms]
+  | cons p t ih =>
+    obtain ⟨B, c⟩ := p
+    have hmap : ∀ l' : List (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config),
+        (l'.map (fun x => ζ • (B.comp x))).sum = ζ • (B.comp l'.sum) := by
+      intro l'
+      induction l' with
+      | nil => simp
+      | cons x t' ih' => simp [List.sum_cons, ih', LinearMap.comp_add, smul_add]
+    simp only [peelSum, peelTerms, List.sum_cons, hmap, ih]
+
 /-- **Peeling `C₁` through an arbitrary-length product**: repeatedly rewriting `C₁Bⱼ` via each
 pair's `ζ`-commutator coefficient and pushing `C₁` rightward, `C₁` lands at the very end having
 picked up `ζ^{l.length}`. -/
