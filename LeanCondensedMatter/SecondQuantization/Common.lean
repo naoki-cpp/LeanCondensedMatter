@@ -14,6 +14,7 @@ import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PairingWei
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.FourPointReduction
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PeelFirst
+import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PeelFirstTrace
 
 set_option linter.style.header false
 
