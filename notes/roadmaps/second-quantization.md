@@ -563,13 +563,28 @@ small PR verified independently against the existing infrastructure):
   decomposes `DeletedFinPositions.lean`'s `deletedPositionsOrderIso` (built directly as a
   `Finset.orderIsoOfFin`, not via `succAbove`) into the explicit two-step map "avoid `k`'s position,
   then shift up by one to skip `0`", for the `j = k.succ` shape `Pairing.eraseZeroPair` always uses.
+- `Combinatorics/PairingEraseZeroSuccAbove.lean`: `Pairing.eraseZeroOrderIso_eq_succ_succAbove`
+  specializes the above to `Pairing.eraseZeroOrderIso` itself, supplying `k := (pairing.partner
+  0).pred (pairing.partner_ne 0)`; `Pairing.ofFn_comp_eraseZeroOrderIso_eq_eraseIdx` composes that
+  with `EraseIdxOfFn.lean`'s lemma into the single identity actually needed: an operator family `C`
+  reindexed along `pairing.eraseZeroOrderIso` is literally the tail family with position
+  `(pairing.partner 0).pred` erased — matching `PeelTermsIndexed.lean`'s `peelTerms_eq_ofFn` term
+  erasure directly.
 
-**Still not yet built, needed to close the induction**: connecting the four pieces above end-to-end
-(supplying `k := (pairing.partner 0).pred` at the one remaining call site, handling the resulting
-`Fin`-arithmetic cast from `2 * (n + 1)` to `(2 * n + 1) + 1`); matching each peeled term's `ζʲ`
-exponent against `Pairing.weight`'s `ζ^{crossingCount}` (via `PerfectPairing.lean`'s already-proved
-`Pairing.crossingsWithFirstPair_mod_two`); assembling the `Σⱼ` over peeled positions into
-`Pairing.equivSigma`'s `Σ_j Σ_{Pairing n}` double sum; and the strong induction itself.
+**The crossing-sign matching turned out to already be proved**, before this session's bridging work
+even started: `Common/BlochDeDominicis/PairingWeight.lean`'s `Pairing.weight_eraseZeroPair` gives
+`pairing.weight s = ζ^{interveningPositionCount} · pairing.eraseZeroPair.weight s`, and
+`interveningPositionCount = (pairing.partner 0).val - 1` is exactly `(k : ℕ)` for the same `k` the
+pieces above use — so the `ζʲ` exponent `gibbsExpectation_peel_indexed` produces at position `j = k`
+already matches `Pairing.weight`'s sign with no further lemma needed.
+
+**Still not yet built, needed to close the induction**: assembling the `Σⱼ` over peeled positions
+(`gibbsExpectation_peel_indexed`) into `Pairing.equivSigma`'s `Σ_j Σ_{Pairing n}` double sum (the
+`Finset.sum` needs reindexing along `equivSigma`'s `Σ (j : {j // 0 ≠ j}), Pairing n` shape, matching
+each peeled-position term against the pairing containing `(0, j)`); and the strong induction on `n`
+itself, tying `gibbsExpectation_peel_indexed`, `Pairing.ofFn_comp_eraseZeroOrderIso_eq_eraseIdx`,
+`Pairing.weight_eraseZeroPair`, and the inductive hypothesis together. This is the one large
+remaining piece — everything feeding into it is now proved.
 
 **Groundwork for the *general* (fermionic *and* bosonic) Bloch–de Dominicis theorem done, in
 `Common/ExchangeCommutator.lean` and `Bosonic/NumberOperator.lean`:** `Common/BlochDeDominicis/Induction.lean` needs
