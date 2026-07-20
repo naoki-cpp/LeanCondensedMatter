@@ -25,10 +25,10 @@ namespace Common
 
 variable {Config : Type*}
 
-/-- **The 2-point Bloch–de Dominicis base case**: `(1 - ζw₁) ⟨C₁Cⱼ⟩ = c₁ⱼ ⟨id⟩`, where `⟨X⟩ :=
-Tr[e^{-βH₀}X]`, `c₁ⱼ` is the (assumed scalar) `ζ`-commutator `[C₁, Cⱼ]_ζ := C₁Cⱼ - ζCⱼC₁`, and `w₁
-:= e^{q₁β}` is `C₁`'s KMS weight (`q₁` its eigenvalue shift). This is the un-normalized,
-un-divided form of the physics reference notes' `⟨Ĉ₁Ĉⱼ⟩ = C_{1,j}/(1 - ζw₁)`
+/-- **The 2-point Bloch–de Dominicis base case**: `(1 - ζw₁) Tr[e^{-βH₀}(C₁Cⱼ)] = c₁ⱼ
+Tr[e^{-βH₀}]`, where `c₁ⱼ` is the (assumed scalar) `ζ`-commutator `[C₁, Cⱼ]_ζ := C₁Cⱼ - ζCⱼC₁`,
+and `w₁ := e^{q₁β}` is `C₁`'s thermal factor (`q₁` its eigenvalue shift). This is the
+un-normalized, un-divided form of the physics reference notes' `⟨Ĉ₁Ĉⱼ⟩ = C_{1,j}/(1 - ζw₁)`
 (`quantum-statistical-mechanics.tex`, the `n = 1` base case inside the general Bloch–de Dominicis
 induction): derived from the assumed c-number commutator (rewriting `C₁Cⱼ` as `c₁ⱼ • id + ζ•(CⱼC₁)`)
 and `traceFock_diagonalEvolution_comp_rotate` (rotating `CⱼC₁` back to `w₁•(C₁Cⱼ)`), then solving
