@@ -490,6 +490,87 @@ multi-mode operators; the finite-temperature structure noted above (KMS antiperi
 full Matsubara-Green-function apparatus; the genuine Dyson series and diagram connectedness (steps
 5–7).
 
+- `Common/BlochDeDominicis/GibbsExpectation.lean`'s `gibbsExpectation_peel`: the normalized
+  counterpart of `PeelFirstTrace.lean`'s peel identity, dividing through by the genuine partition
+  function — `⟨C₁B₁⋯Bₖ⟩ = ⟨peelSum ζ l⟩ / (1 - ζ^{l.length}w₁)`. The general list-indexed analogue
+  of `gibbsExpectation_comp_eq_div_of_zetaCommutator`/
+  `gibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator`.
+- Same file's `gibbsExpectation_four_point`: the genuine normalized 4-point *expansion* itself,
+  `⟨C₁C₂C₃C₄⟩ = ⟨C₁C₂⟩⟨C₃C₄⟩ + ζ⟨C₁C₃⟩⟨C₂C₄⟩ + ⟨C₁C₄⟩⟨C₂C₃⟩` — the physics reference notes' own
+  4-point example, proved (given `ζ² = 1`) purely by rewriting `gibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator`'s
+  coefficients `c₁ⱼ/(1-ζw₁)` as `⟨C₁Cⱼ⟩`.
+
+**The general `n`-point statement's API surface was drafted and confirmed to type-check** (PR
+#116; the theorem itself is *not* proved — a `sorry`-containing statement can't be merged per this
+project's CI "no `sorry`" check, so the draft below is recorded here as a design note rather than
+committed as dead Lean code):
+
+```lean
+theorem gibbsExpectation_prodComp_eq_sum_pairing (n : ℕ) (s : Statistics)
+    (energy : Config → ℝ) (β : ℝ)
+    (C : Fin (2 * n) → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ)
+    (hC : ∀ i, heisenbergEvolve energy (-β) (C i) =
+      Complex.exp ((q i * (-β) : ℝ) : ℂ) • C i)
+    (hcomm : ∀ i j, i ≠ j → zetaCommutator (s.zetaInt : ℂ) (C i) (C j) =
+      c i j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
+    (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0)
+    (hne : ∀ i, (1 : ℂ) - (s.zetaInt : ℂ) * Complex.exp (((q i) * β : ℝ) : ℂ) ≠ 0) :
+    gibbsExpectation energy β (prodComp (List.ofFn C)) =
+      ∑ pairing : Common.BlochDeDominicis.Pairing n,
+        pairing.weight s * ∏ pr ∈ pairing.pairs, gibbsExpectation energy β ((C pr.1).comp (C pr.2))
+```
+
+**Caught by gpt's review on PR #116**: the statement as first drafted (without `hne`) is *false* —
+`n = 2`, bosons (`ζ = 1`), a single-element `Config`, `energy = 0`, all `C i = id`, all `q i = 0`,
+all `c i j = 0` satisfies `hC`/`hcomm`/`hZ` (every hypothesis holds vacuously or trivially), giving
+LHS `⟨id⁴⟩ = 1` but RHS `= 1 + 1 + 1 = 3` (the three 4-position pairings, all boson weight `1`).
+`gibbsExpectation_peel` itself already requires exactly this non-resonance hypothesis at each
+recursive step (`hne` in its own signature) — the general statement needs it at *every* position
+`i`, not just position `0`, since the induction's recursive step lets any remaining operator become
+the "peeled first operator" of a smaller subproblem after two positions are removed.
+
+Design notes: unlike `TwoPoint.lean`/`FourPointReduction.lean` (which only needed the *first*
+operator's eigenvalue shift), *every* operator's shift `q i` is needed here — not merely because the
+target's right side ranges over arbitrary pairs (that alone doesn't require `q`, since 2-point
+values are already normalized numbers there), but because the induction recursively deletes two
+positions at a time, and *any* remaining operator can become the next subproblem's own "first
+operator" to peel, needing its own `q i`/`hne i`. Likewise `c i j` is needed as a full pairwise
+family because each subproblem peels its own first operator through *all* of its remaining
+operators, not just against a fixed position `0`. This type-checked cleanly against the existing
+infrastructure, confirming the design (modulo the missing `hne`, since a type-checked *statement*
+says nothing about whether it's *true*). **The intended proof strategy**, by
+strong induction on `n` (following the physics reference notes' own proof): peel `C₀` off the
+front via `gibbsExpectation_peel` (giving a sum of `gibbsExpectation (C₀.comp Cⱼ) *
+gibbsExpectation (remaining 2n-2 operators, Cⱼ erased)` terms, one per position `j`, matching
+`peelSum`/`peelTerms`'s structure), apply the inductive hypothesis to each `(2n-2)`-operator
+remaining product (giving a `Pairing (n-1)` sum for it), and reassemble into a `Pairing n` sum via
+`Combinatorics.PerfectPairing`'s `Pairing.insertFirstPair`/`Pairing.equivSigma`.
+
+**Four bridging pieces built since the statement was drafted** (all proved, no `sorry`, each its own
+small PR verified independently against the existing infrastructure):
+- `Common/BlochDeDominicis/ProdCompFamily.lean`: `prodCompFamily`/`prodCompFamily_succ` — lets a
+  `Fin`-indexed operator family (matching `Pairing n`'s own `Fin (2n)`-indexing, the shape the
+  target statement above actually uses) invoke `PeelFirst.lean`'s `List`-indexed peel lemmas
+  directly on `C 0` and the tail family, via `List.ofFn`.
+- `Common/BlochDeDominicis/PeelTermsIndexed.lean`: `peelTerms_eq_ofFn` — `PeelFirst.lean`'s
+  recursively-defined `peelTerms` agrees with the closed-form, `List.eraseIdx`-indexed description
+  matching the physics notes' `Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation term-by-term.
+- `Combinatorics/EraseIdxOfFn.lean`: `List.eraseIdx_ofFn_eq_ofFn_succAbove` — connects
+  `List.eraseIdx`-based erasure (of a `List.ofFn C`) to `Fin.succAbove`-based erasure of the
+  family `C` itself, the same description `Pairing.eraseZeroPair` needs to line up against.
+- `Combinatorics/DeletedFinPositionsSuccAbove.lean`: `deletedPositionsOrderIso_eq_succ_succAbove` —
+  decomposes `DeletedFinPositions.lean`'s `deletedPositionsOrderIso` (built directly as a
+  `Finset.orderIsoOfFin`, not via `succAbove`) into the explicit two-step map "avoid `k`'s position,
+  then shift up by one to skip `0`", for the `j = k.succ` shape `Pairing.eraseZeroPair` always uses.
+
+**Still not yet built, needed to close the induction**: connecting the four pieces above end-to-end
+(supplying `k := (pairing.partner 0).pred` at the one remaining call site, handling the resulting
+`Fin`-arithmetic cast from `2 * (n + 1)` to `(2 * n + 1) + 1`); matching each peeled term's `ζʲ`
+exponent against `Pairing.weight`'s `ζ^{crossingCount}` (via `PerfectPairing.lean`'s already-proved
+`Pairing.crossingsWithFirstPair_mod_two`); assembling the `Σⱼ` over peeled positions into
+`Pairing.equivSigma`'s `Σ_j Σ_{Pairing n}` double sum; and the strong induction itself.
+
 **Groundwork for the *general* (fermionic *and* bosonic) Bloch–de Dominicis theorem done, in
 `Common/ExchangeCommutator.lean` and `Bosonic/NumberOperator.lean`:** `Common/BlochDeDominicis/Induction.lean` needs
 to be built for both statistics at once rather than duplicated, since the `n`-point pairing-sum

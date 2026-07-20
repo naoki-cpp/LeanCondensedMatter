@@ -1,5 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.FourPointReduction
+import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PeelFirstTrace
+import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PeelTermsIndexed
 import LeanCondensedMatter.SecondQuantization.Common.NormalizedOperatorFunctional
 
 set_option linter.style.header false
@@ -213,6 +215,84 @@ theorem gibbsExpectation_four_point (energy : Config → ℝ) (β q1 : ℝ) (ζ 
     hZ hne
   rw [h4, h12, h13, h14]
   field_simp
+
+/-- **The normalized peel-first identity**, dividing `PeelFirstTrace.lean`'s un-normalized
+`(1 - ζ^{l.length}w₁) Tr[e^{-βH₀}(C₁·B₁⋯Bₖ)] = Tr[e^{-βH₀}·peelSum ζ l]` through by the genuine
+partition function: `⟨C₁B₁⋯Bₖ⟩ = ⟨peelSum ζ l⟩ / (1 - ζ^{l.length}w₁)`. The general list-indexed
+counterpart of `gibbsExpectation_comp_eq_div_of_zetaCommutator`
+(`FourPointReduction`/`gibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator`'s 3-operator case
+is a specialization). Not yet decomposed into a `Pairing`-indexed sum — that's the remaining core
+of the general `n`-point induction (`Common/BlochDeDominicis/Induction.lean`). -/
+theorem gibbsExpectation_peel (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)
+    (C1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ))
+    (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
+    (hcomm : ∀ p ∈ l, zetaCommutator ζ C1 p.1 =
+      p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
+    (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0)
+    (hne : (1 : ℂ) - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
+    gibbsExpectation energy β (C1.comp (prodComp (l.map Prod.fst))) =
+      gibbsExpectation energy β (peelSum ζ l) / (1 - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ))
+    := by
+  have h := traceFock_diagonalEvolution_comp_peel energy β q1 ζ C1 l hC1 hcomm
+  have hne' : (1 : ℂ) - ζ ^ l.length * Complex.exp ((β * q1 : ℝ) : ℂ) ≠ 0 := by
+    rwa [mul_comm β q1]
+  simp only [gibbsExpectation_eq_normalizedWeightedDiagonal, normalizedWeightedDiagonal,
+    ← traceFock_diagonalEvolution_comp_eq_weightedTrace, ← traceFock_diagonalEvolution_eq_weightSum]
+  field_simp [hne']
+  linear_combination (norm := ring_nf) h
+
+/-- **`gibbsExpectation` vanishes on `0`** — the missing piece (alongside `gibbsExpectation_add`)
+needed to extend additivity from pairs to arbitrary `List.sum`s below. -/
+theorem gibbsExpectation_zero (energy : Config → ℝ) (β : ℝ) :
+    gibbsExpectation energy β (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 0 := by
+  have h := gibbsExpectation_add energy β
+    (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) 0
+  simp only [add_zero] at h
+  linear_combination -h
+
+/-- **`gibbsExpectation` is additive over `List.sum`s**, not just pairs — needed to distribute it
+across `peelSum`'s `List.sum` form (`peelSum_eq_peelTerms_sum`). -/
+theorem gibbsExpectation_list_sum (energy : Config → ℝ) (β : ℝ)
+    (L : List (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) :
+    gibbsExpectation energy β L.sum = (L.map (gibbsExpectation energy β)).sum := by
+  induction L with
+  | nil => simp [gibbsExpectation_zero]
+  | cons A T ih => simp [List.sum_cons, gibbsExpectation_add, ih]
+
+/-- **`gibbsExpectation` of `peelSum`, as an indexed `Finset.sum`**: dividing `peelSum`'s
+recursive/`List.sum` structure into its `peelTerms_eq_ofFn`-closed-form individual terms and
+applying `gibbsExpectation`'s linearity to each, `⟨peelSum ζ l⟩ = Σⱼ ζʲcⱼ⟨remaining product with
+the `j`-th operator erased⟩` — the physics reference notes' `Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation, now at
+the level of normalized numbers rather than un-normalized traces or a bare `List.sum`. -/
+theorem gibbsExpectation_peelSum_eq_sum (energy : Config → ℝ) (β : ℝ) (ζ : ℂ)
+    (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ)) :
+    gibbsExpectation energy β (peelSum ζ l) =
+      ∑ j : Fin l.length, ζ ^ (j : ℕ) * (l[(j : ℕ)]'j.isLt).2 *
+        gibbsExpectation energy β (prodComp ((l.eraseIdx j).map Prod.fst)) := by
+  rw [peelSum_eq_peelTerms_sum, peelTerms_eq_ofFn, gibbsExpectation_list_sum, List.map_ofFn,
+    List.sum_ofFn]
+  apply Finset.sum_congr rfl
+  intro j _
+  simp only [Function.comp, gibbsExpectation_smul, mul_assoc]
+
+/-- **The normalized peel identity, as an indexed `Finset.sum`**: combines `gibbsExpectation_peel`
+with `gibbsExpectation_peelSum_eq_sum` to give `⟨C₁B₁⋯Bₖ⟩` directly as a sum of normalized terms
+over positions, rather than `⟨peelSum ζ l⟩` left opaque — the piece the general `n`-point induction
+(`notes/roadmaps/second-quantization.md`'s Phase 9) actually recurses on. -/
+theorem gibbsExpectation_peel_indexed (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)
+    (C1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ))
+    (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
+    (hcomm : ∀ p ∈ l, zetaCommutator ζ C1 p.1 =
+      p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
+    (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0)
+    (hne : (1 : ℂ) - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
+    gibbsExpectation energy β (C1.comp (prodComp (l.map Prod.fst))) =
+      (∑ j : Fin l.length, ζ ^ (j : ℕ) * (l[(j : ℕ)]'j.isLt).2 *
+          gibbsExpectation energy β (prodComp ((l.eraseIdx j).map Prod.fst))) /
+        (1 - ζ ^ l.length * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
+  rw [gibbsExpectation_peel energy β q1 ζ C1 l hC1 hcomm hZ hne, gibbsExpectation_peelSum_eq_sum]
 
 end Common
 end SecondQuantization
