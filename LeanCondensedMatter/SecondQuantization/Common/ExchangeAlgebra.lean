@@ -52,5 +52,35 @@ class ExchangeAlgebra (s : Statistics) (Mode Config : Type*) [DecidableEq Mode] 
   /-- `a_i† a_j† - ζ a_j† a_i† = 0`: CAR/CCR's same-type (creation) exchange relation. -/
   create_create : ∀ i j, exchangeCommutator s (create i) (create j) = 0
 
+variable {s : Statistics} {Mode Config : Type*} [DecidableEq Mode] [ExchangeAlgebra s Mode Config]
+
+/-- **`[a_i, a_i†]_ζ = id`, for any statistics instantiating `ExchangeAlgebra`**: the `i = j` case
+of `annihilate_create`. Generalizes `Fermionic/NumberOperator.lean`'s and
+`Bosonic/NumberOperator.lean`'s previously-independently-proved
+`exchangeCommutator_annihilate_create_self` — both are now one-line instances of this, since their
+`Common.ExchangeAlgebra` instances package the concrete `annihilate`/`create` operators directly
+(`Fermionic/ExchangeAlgebra.lean`'s/`Bosonic/ExchangeAlgebra.lean`'s `exchangeAlgebra`
+instances). -/
+theorem exchangeCommutator_annihilate_create_self (i : Mode) :
+    exchangeCommutator s (ExchangeAlgebra.annihilate (s := s) (Config := Config) i)
+      (ExchangeAlgebra.create (s := s) (Config := Config) i) =
+      (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
+  have h := ExchangeAlgebra.annihilate_create (s := s) (Config := Config) i i
+  rwa [if_pos rfl] at h
+
+/-- **`a_i a_i† = id + ζ•N_i`, for any statistics instantiating `ExchangeAlgebra`**, from
+`exchangeCommutator_annihilate_create_self` via `comp_eq_id_add_of_zetaCommutator_eq_id`.
+Generalizes `Fermionic/NumberOperator.lean`'s `annihilate_comp_create_self` (`c_i c_i† = id - N_i`,
+`ζ = -1`) and `Bosonic/NumberOperator.lean`'s (`a_i a_i† = id + N_i`, `ζ = 1`) — both are now
+one-line instances of this rather than independently re-deriving the same reordering. -/
+theorem annihilate_comp_create_self (i : Mode) :
+    (ExchangeAlgebra.annihilate (s := s) (Config := Config) i).comp
+        (ExchangeAlgebra.create (s := s) (Config := Config) i) =
+      (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) +
+        (s.zetaInt : ℂ) • ((ExchangeAlgebra.create (s := s) (Config := Config) i).comp
+          (ExchangeAlgebra.annihilate (s := s) (Config := Config) i)) :=
+  comp_eq_id_add_of_zetaCommutator_eq_id (s.zetaInt : ℂ)
+    (exchangeCommutator_annihilate_create_self i)
+
 end Common
 end SecondQuantization
