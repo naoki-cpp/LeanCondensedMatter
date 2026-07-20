@@ -1,26 +1,30 @@
-import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.TwoPoint
+import LeanCondensedMatter.SecondQuantization.Common.KMSRotation
 
 set_option linter.style.header false
 
 /-!
-# The 4-point Bloch–de Dominicis expansion (concrete stepping stone toward the general induction)
+# The 4-point Bloch–de Dominicis first-operator reduction (concrete stepping stone)
 
 Phase 9's finite-mode Bloch–de Dominicis induction (`notes/roadmaps/second-quantization.md`): the
-`n = 2` (4-operator) case, obtained by the same "peel the first operator off, rotate it back around"
-strategy as `Common/BlochDeDominicis/TwoPoint.lean`'s `n = 1` base case, iterated three times
-instead of once. This is a concrete stepping stone toward the general `n`-point induction
-(`Common/BlochDeDominicis/Induction.lean`, not yet started): it validates that the same
+`n = 2` (4-operator) case of `Common/BlochDeDominicis/TwoPoint.lean`'s `n = 1` base-case strategy —
+commuting `C₁` through the three remaining factors via the c-number exchange commutator, followed
+by one KMS cyclicity step (`Common.traceFock_diagonalEvolution_comp_rotate`) to solve the resulting
+self-referential trace equation. This is a concrete stepping stone toward the general `n`-point
+induction (`Common/BlochDeDominicis/Induction.lean`, not yet started): it validates that the same
 commutator-substitution/rotation pattern generalizes past the base case, before committing to the
 general inductive statement and its connection to `Common.BlochDeDominicis.Pairing`.
 
-**Deliberately left un-normalized/un-reduced**, matching `TwoPoint.lean`'s own choice: the RHS is a
-sum of `traceFock`-of-*remaining*-operator-pairs terms (`Tr[e^{-βH₀}(C₃C₄)]` etc.), not further
-reduced to pure numbers via `TwoPoint.lean`'s own theorem — doing that needs each remaining pair's
-own KMS eigenvalue-shift and c-number commutator hypotheses (not assumed here, since `C₁` is the
-only operator this file's hypotheses concern), and would need dividing by `traceFock D` (requiring
-it nonzero) to land on genuine normalized 2-point numbers rather than un-normalized traces. Chaining
-`TwoPoint.lean`'s own theorem onto each remaining-pair term, and connecting the resulting three
-coefficients `1`, `ζ`, `ζ²` (which specialize to the `1`, `ζ`, `1` of
+**Not the genuine 4-point Bloch–de Dominicis *expansion*** — that name refers to the fully-reduced
+normalized identity `⟨C₁C₂C₃C₄⟩_β = ⟨C₁C₂⟩_β⟨C₃C₄⟩_β + ζ⟨C₁C₃⟩_β⟨C₂C₄⟩_β + ⟨C₁C₄⟩_β⟨C₂C₃⟩_β`, a
+product of normalized 2-point *numbers*. What's proved here is only the *first-operator reduction*
+one level short of that: the RHS is a sum of `traceFock`-of-*remaining*-operator-pairs terms
+(`Tr[e^{-βH₀}(C₃C₄)]` etc.), not yet reduced to pure numbers via `TwoPoint.lean`'s own theorem —
+doing that needs each remaining pair's own imaginary-time eigenoperator shift and c-number
+commutator hypotheses (not assumed here, since `C₁` is the only operator this file's hypotheses
+concern), and would need dividing by `traceFock D` (requiring it nonzero) to land on genuine
+normalized 2-point numbers rather than un-normalized traces. Chaining `TwoPoint.lean`'s own theorem
+onto each remaining-pair term, and connecting the resulting three coefficients `1`, `ζ`, `ζ²`
+(which specialize to the `1`, `ζ`, `1` of
 `Common.BlochDeDominicis.PairingWeight.four_position_pairings_and_weights` exactly, since `ζ² = 1`
 for `ζ = ±1`) to a genuine sum over `Common.BlochDeDominicis.Pairing 2`, is future work — likely
 subsumed by the general induction rather than done here specifically.
@@ -31,7 +35,7 @@ namespace Common
 
 variable {Config : Type*}
 
-/-- **The pure operator-algebra identity behind the 4-point expansion**: repeatedly rewriting
+/-- **The pure operator-algebra identity behind the 4-point reduction**: repeatedly rewriting
 `C₁Cⱼ` as `c₁ⱼ • id + ζ•(CⱼC₁)` (for `j = 2, 3, 4`) and pushing the resulting `C₁` rightward through
 `C₂`, then `C₃`, picks up one factor of `ζ` per operator it passes, landing `C₁` at the very end.
 Pure `LinearMap` composition algebra — no `traceFock`/`Config`-finiteness involved. -/
@@ -68,13 +72,14 @@ theorem comp_comp_comp_eq_of_zetaCommutator
   simp only [map_add, map_smul, smul_add, smul_smul]
   module
 
-/-- **The 4-point Bloch–de Dominicis expansion**: `(1 - ζ³w₁) Tr[e^{-βH₀}(C₁C₂C₃C₄)] = c₁₂
-Tr[e^{-βH₀}(C₃C₄)] + ζc₁₃ Tr[e^{-βH₀}(C₂C₄)] + ζ²c₁₄ Tr[e^{-βH₀}(C₂C₃)]` — `TwoPoint.lean`'s `n = 1`
-strategy (commutator-substitution + `traceFock_diagonalEvolution_comp_rotate`, solving the
-resulting self-referential equation) iterated three times to peel `C₁` all the way through
-`C₂C₃C₄` before rotating it back to the front. See the module docstring for why this is left
-un-normalized/un-reduced to a genuine pairing-weighted sum of numbers. -/
-theorem traceFock_diagonalEvolution_comp_four_point [Fintype Config]
+/-- **The 4-point Bloch–de Dominicis first-operator reduction**: `(1 - ζ³w₁)
+Tr[e^{-βH₀}(C₁C₂C₃C₄)] = c₁₂ Tr[e^{-βH₀}(C₃C₄)] + ζc₁₃ Tr[e^{-βH₀}(C₂C₄)] + ζ²c₁₄
+Tr[e^{-βH₀}(C₂C₃)]` — `TwoPoint.lean`'s `n = 1` strategy, commuting `C₁` through the three
+remaining factors via the c-number exchange commutator, followed by one KMS cyclicity step
+(`traceFock_diagonalEvolution_comp_rotate`) to solve the resulting self-referential equation. See
+the module docstring for why this is left un-normalized/un-reduced to a genuine pairing-weighted
+sum of numbers. -/
+theorem traceFock_diagonalEvolution_comp_four_point_reduction [Fintype Config]
     (energy : Config → ℝ) (β q1 : ℝ) (ζ c12 c13 c14 : ℂ)
     (C1 C2 C3 C4 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
