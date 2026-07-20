@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.DeletedPositions
+import LeanCondensedMatter.Combinatorics.DeletedFinPositions
 import Mathlib.Data.Finset.Filter
 import Mathlib.Data.Finset.Prod
 import Mathlib.Data.Fintype.Sets
@@ -25,6 +25,12 @@ Each partner orbit is normalized to `(a, b)` with `a < b`.  Two normalized pairs
 `a < c < b < d`; `crossingCount` counts these. The statistics-dependent exchange weight
 `ζ ^ crossingCount` itself — `ζ = +1` for bosons, `ζ = -1` for fermions — is *not* defined here; see
 `Common/BlochDeDominicis/PairingWeight.lean`.
+
+**File location vs. namespace**: being purely combinatorial, this file now lives in the
+general-math `Combinatorics/` layer (with `DeletedFinPositions.lean`), upstream of all of
+`SecondQuantization/`. The declarations keep their original
+`SecondQuantization.Common.BlochDeDominicis` namespace — this move changed file paths and imports
+only, no theorem names or namespaces (a namespace migration, if ever wanted, is separate work).
 
 This file is purely combinatorial and has no `Statistics`/`ℂ` dependency at all: it defines neither
 operator-valued time ordering, thermal contractions, thermal expectations, the exchange-statistics

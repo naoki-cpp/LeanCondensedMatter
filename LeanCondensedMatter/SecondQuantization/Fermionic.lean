@@ -1,0 +1,29 @@
+import LeanCondensedMatter.SecondQuantization.Fermionic.Occupation
+import LeanCondensedMatter.SecondQuantization.Fermionic.FockSpace
+import LeanCondensedMatter.SecondQuantization.Fermionic.CreationAnnihilation
+import LeanCondensedMatter.SecondQuantization.Fermionic.ParticleNumberCharge
+import LeanCondensedMatter.SecondQuantization.Fermionic.CanonicalAnticommutationRelations
+import LeanCondensedMatter.SecondQuantization.Fermionic.ExchangeAlgebra
+import LeanCondensedMatter.SecondQuantization.Fermionic.NumberOperator
+import LeanCondensedMatter.SecondQuantization.Fermionic.Hamiltonian
+import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedDiagonalFunctional
+import LeanCondensedMatter.SecondQuantization.Fermionic.FormalExp
+import LeanCondensedMatter.SecondQuantization.Fermionic.FormalLogPartitionFunction
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTimeEvolution
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTimeOrdering
+import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedFreeTwoPointFunction
+import LeanCondensedMatter.SecondQuantization.Fermionic.FreeBoltzmannWeight
+import LeanCondensedMatter.SecondQuantization.Fermionic.FreePartitionFunction
+import LeanCondensedMatter.SecondQuantization.Fermionic.FreeTwoPointFunction
+import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedContraction
+import LeanCondensedMatter.SecondQuantization.Fermionic.BlochDeDominicis.SingleModeExample
+import LeanCondensedMatter.SecondQuantization.Fermionic.BlochDeDominicis.TwoPoint
+
+set_option linter.style.header false
+
+/-!
+# Umbrella module for the fermionic line of `SecondQuantization/`
+
+Importing this module brings in every file of the fermionic (`FermionOccupation Mode := Finset
+Mode`) line at once, including its `BlochDeDominicis/` subdirectory.
+-/
