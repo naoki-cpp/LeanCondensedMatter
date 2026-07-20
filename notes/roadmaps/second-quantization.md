@@ -112,7 +112,7 @@ bosonic partition sums are genuinely infinite series needing convergence conditi
 | B3b | `Bosonic/BoltzmannWeightFactorization.lean` — for `[Fintype Mode]`, the multi-mode Boltzmann weight `boltzmannWeight ε β n := e^{-βE(n)}` factors into one-mode factors, `boltzmannWeight_eq_prod : e^{-βE(n)} = ∏ᵢ oneModeBoltzmannWeight β (εᵢ) (n i)` — the purely algebraic half of the product formula, no summability yet | `proved` |
 | B3c | `Bosonic/BoltzmannWeightSummable.lean` — the actual infinite-sum decomposition `Σ_n ∏ᵢ q_i^{n(i)} = ∏ᵢ Σ_k q_i^k`, giving `hasSum_boltzmannWeight : HasSum (boltzmannWeight ε β) (∏ᵢ (1-e^{-βεᵢ})⁻¹)` for any `[Fintype Mode]`, given `∀ i, 0 < βεᵢ` (with `summable_boltzmannWeight`/`tsum_boltzmannWeight`/`tsum_boltzmannWeight_pos`/`tsum_boltzmannWeight_ne_zero` corollaries). Now a thin corollary (via `boltzmannWeight_eq_prod` identifying `boltzmannWeight ε β n` with the multi-index product `∏ᵢ (e^{-βεᵢ})^{n(i)}`) of the general, non-physics `Analysis/FinsuppProductSeries.lean : Finsupp.hasSum_prod_geometric` — a `[Fintype ι]`-indexed finite product of geometric series `HasSum (fun n : ι →₀ ℕ => ∏ i, q i ^ n i) (∏ i, (1 - q i)⁻¹)`, itself built from the general `Finsupp.hasSum_prod`/`Finsupp.hasSum_prod_nonneg` (finite products of absolutely convergent series over `Finsupp`-indexed types, proved by induction on `Fin k` splitting off one mode at a time via `Finsupp.optionEquiv`, then reindexed along an arbitrary `Fintype ι ≃ Fin (Fintype.card ι)` via `Fintype.equivFin`) | `proved` |
 | B3d | `Bosonic/FreeTwoPointCoefficient.lean` — `diagonalCoeff A n := A (basisState n) n` (a coordinate evaluation, deliberately *not* named `operatorTrace`: `FockSpaceBosonic` is the algebraic, finite-particle *dense subspace* of a would-be completed bosonic Fock space, not that completed Hilbert space itself, so there is no inner product yet to make `diagonalCoeff` and `⟨n\|A\|n⟩` provably coincide); the free two-point function's basis coefficient `⟨n\|a_i(τ)a_j†\|n⟩ = δᵢⱼ e^{-τεᵢ}(nᵢ+1)`, computed algebraically with no thermal sum or Hilbert completion needed | `proved` |
-| B3e+ | The Boltzmann-weighted thermal sum over `n` of `B3d`'s coefficient (working name `gibbsDiagonalSum`/`occupationGibbsExpectation`, same naming caveat as `diagonalCoeff`), reducing to the Bose–Einstein distribution `⟨n_i⟩ = 1/(e^{βεᵢ}-1)` via `B3a`'s geometric series. `B3c`'s multi-mode summability is now available for this; not yet started | `idea` |
+| B3e+ | The Boltzmann-weighted thermal sum over `n` of `B3d`'s coefficient (working name `gibbsDiagonalSum`/`occupationGibbsExpectation`, same naming caveat as `diagonalCoeff`), reducing to the Bose–Einstein distribution `⟨n_i⟩ = 1/(e^{βεᵢ}-1)` via `B3a`'s geometric series. `B3c`'s multi-mode summability is now available for this. **The summability half is now done** — `Bosonic/ParticleNumberWeightSummable.lean`'s `hasSum_particleNumber_boltzmannWeight` (added for the `Common/` Bloch–de Dominicis 2-point instantiation below, not for this line directly) gives `Σ_n n(j)·e^{-βE(n)}`'s convergence. The actual normalized-expectation closed form, and connecting it to `gibbsDiagonalSum`/`occupationGibbsExpectation`, is still not started | `idea` |
 
 ## Common statistics-agnostic layer
 
@@ -434,9 +434,21 @@ closed-form Fermi–Dirac 2-point function (`Fermionic/FreeTwoPointFunction.lean
 hand-derived single-mode sanity check, not routed through this general framework, is kept
 separately as `Fermionic/BlochDeDominicis/SingleModeExample.lean`.)
 
-**Not yet done:** a genuine bosonic instantiation of the `tsum` 2-point base case (needs summability
-witnesses for the free Boltzmann weight's diagonal/rotation series, from
-`Bosonic/BoltzmannWeightSummable.lean`-style convergence facts — not supplied yet); the general
+**A genuine bosonic instantiation of the `tsum` 2-point base case done, in
+`Bosonic/BlochDeDominicis/TwoPoint.lean`:** `tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create`
+instantiates it with `C₁ := annihilate i`, `Cⱼ := create j`, `ζ := +1`, `q₁ := -εᵢ` (from
+`imaginaryTimeEvolve_annihilate`), and CCR's `comm_annihilate_create`, given every mode's one-mode
+convergence condition `0 < βεᵢ` (`BoltzmannWeightSummable.lean`'s hypothesis). The two `tsum`
+summability witnesses aren't free the way the fermionic finite-sum case's were: the partition
+series follows from `hasSum_boltzmannWeight` (B3c), but the rotated two-point double series needed
+a new fact this PR added — `Bosonic/ParticleNumberWeightSummable.lean`'s
+`hasSum_particleNumber_boltzmannWeight`, `Σ_n n(j)·e^{-βE(n)}` converges under the same one-mode
+condition (B3e's summability half, via Mathlib's `n·r^n` geometric-derivative sum singled out at
+one mode in `Finsupp.hasSum_prod_nonneg`; B3e's Bose–Einstein *closed form* itself, `⟨N_i⟩ =
+1/(e^{βεᵢ}-1)`, is still not derived — the 2-point theorem only gives the un-normalized,
+undivided `⟨aᵢaᵢ†⟩_β`-numerator equation, not the normalized expectation, and reaching `⟨N_i⟩`
+from it would additionally need `aᵢaᵢ† = N_i + 1`, i.e. a bosonic `numberOperator`, which doesn't
+exist yet). The general
 `n`-point Bloch–de Dominicis theorem itself (the `n`-point sum-over-pairings formula,
 `Common/BlochDeDominicis/Induction.lean`, not yet started) — multi-mode operators, a genuine
 reduction of the right side to a sum over `Pairing n` (not just matching already-known weights by
