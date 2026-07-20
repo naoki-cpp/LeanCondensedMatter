@@ -460,20 +460,35 @@ undivided `⟨aᵢaᵢ†⟩_β`-numerator equation, not the normalized expectat
 from it would additionally need `aᵢaᵢ† = N_i + 1`, i.e. a bosonic `numberOperator`, which doesn't
 exist yet). The general
 `n`-point Bloch–de Dominicis theorem itself (the `n`-point sum-over-pairings formula,
-`Common/BlochDeDominicis/Induction.lean`, not yet started). **A concrete stepping stone toward it is
-done, in `Common/BlochDeDominicis/FourPointReduction.lean`:** the `n = 2` (4-operator)
-*first-operator reduction* — commuting `C₁` through the three remaining factors via the c-number
-exchange commutator, then one KMS cyclicity step, giving `(1 - ζ³w₁) Tr[e^{-βH₀}(C₁C₂C₃C₄)] = c₁₂
-Tr[e^{-βH₀}(C₃C₄)] + ζc₁₃ Tr[e^{-βH₀}(C₂C₄)] + ζ²c₁₄ Tr[e^{-βH₀}(C₂C₃)]`. **Not the genuine 4-point
-Bloch–de Dominicis *expansion*** (the fully-reduced normalized `⟨C₁C₂C₃C₄⟩_β =
-⟨C₁C₂⟩_β⟨C₃C₄⟩_β + ζ⟨C₁C₃⟩_β⟨C₂C₄⟩_β + ⟨C₁C₄⟩_β⟨C₂C₃⟩_β`) — validates the peel-and-rotate pattern
-extends past the base case, one level short of a genuine pairing-weighted sum of numbers. Still
-needed for the general induction: multi-mode operators, a genuine reduction of the right side to a
-sum over `Pairing n` (not just matching already-known weights by hand, as the single-mode 4-point
-sanity check still does), and connecting `Common.BlochDeDominicis.Pairing`/`PairingWeight`'s
-combinatorics to the actual induction; the
-finite-temperature structure noted above (KMS antiperiodicity etc.); the full
-Matsubara-Green-function apparatus; the genuine Dyson series and diagram connectedness (steps 5–7).
+`Common/BlochDeDominicis/Induction.lean`, not yet started).
+
+**Concrete stepping stones toward it done:**
+- `Common/BlochDeDominicis/FourPointReduction.lean`: the `n = 2` (4-operator) *first-operator
+  reduction* — commuting `C₁` through the three remaining factors via the c-number exchange
+  commutator, then one KMS cyclicity step, giving `(1 - ζ³w₁) Tr[e^{-βH₀}(C₁C₂C₃C₄)] = c₁₂
+  Tr[e^{-βH₀}(C₃C₄)] + ζc₁₃ Tr[e^{-βH₀}(C₂C₄)] + ζ²c₁₄ Tr[e^{-βH₀}(C₂C₃)]`. **Not the genuine
+  4-point Bloch–de Dominicis *expansion*** (the fully-reduced normalized `⟨C₁C₂C₃C₄⟩_β =
+  ⟨C₁C₂⟩_β⟨C₃C₄⟩_β + ζ⟨C₁C₃⟩_β⟨C₂C₄⟩_β + ⟨C₁C₄⟩_β⟨C₂C₃⟩_β`) — one level short of a genuine
+  pairing-weighted sum of numbers.
+- `Common/BlochDeDominicis/PeelFirst.lean`: generalizes `FourPointReduction`'s hand-unrolled
+  3-operator peel to an arbitrary-length list `l` of `(operator, ζ-commutator coefficient)` pairs,
+  by induction on the list — `C₁(B₁⋯Bₖ) = peelSum ζ [(B₁,c₁),…,(Bₖ,cₖ)] + ζᵏ•((B₁⋯Bₖ)C₁)`. Pure
+  `LinearMap` composition algebra, no trace/KMS-rotation involved.
+- `Common/BlochDeDominicis/PeelFirstTrace.lean`: wraps that in the trace-level KMS cyclicity step
+  (both a `[Fintype Config]` and a `tsum`, summability-hypothesis-gated form, mirroring
+  `TwoPoint.lean`'s finite/`tsum` pair — needed since the bosonic line's `Occupation Mode` is
+  genuinely infinite): `(1 - ζ^{l.length}w₁) Tr[e^{-βH₀}(C₁B₁⋯Bₖ)] = Tr[e^{-βH₀}·peelSum ζ l]`.
+  `FourPointReduction.lean`'s two theorems are now proved as specializations of these general
+  lemmas (`l := [(C2,c12), (C3,c13), (C4,c14)])`, rather than independently hand-unrolled.
+
+`peelSum` is defined *recursively*, mirroring the substitution steps directly, rather than as a
+closed `Finset.sum`-over-erasures formula matching the physics notes' `Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩`
+presentation — connecting the two, and reducing the right side to a genuine sum over `Pairing n`
+(not just matching already-known weights by hand, as the single-mode 4-point sanity check still
+does), remains the core of the not-yet-started general induction. Still needed beyond that:
+multi-mode operators; the finite-temperature structure noted above (KMS antiperiodicity etc.); the
+full Matsubara-Green-function apparatus; the genuine Dyson series and diagram connectedness (steps
+5–7).
 
 **Groundwork for the *general* (fermionic *and* bosonic) Bloch–de Dominicis theorem done, in
 `Common/ExchangeCommutator.lean` and `Bosonic/NumberOperator.lean`:** `Common/BlochDeDominicis/Induction.lean` needs
