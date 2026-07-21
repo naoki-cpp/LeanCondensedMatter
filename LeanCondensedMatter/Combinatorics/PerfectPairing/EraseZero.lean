@@ -17,56 +17,45 @@ namespace SecondQuantization
 namespace Common
 namespace BlochDeDominicis
 
+/-- The underlying map of `restrictedPartner`, `x ↦ partner x`, landing back in the same deleted
+positions: `partner` sends any position other than `0`/`partner 0` to another such position,
+since `partner` is an involution and `partner 0`'s own partner is `0`. Extracted once and used for
+both `restrictedPartner`'s `toFun` and `invFun` (an involution has a single underlying map, used
+in both directions), rather than duplicating this argument. -/
+def Pairing.restrictedPartnerMap {n : ℕ} (pairing : Pairing (n + 1))
+    (hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0)
+    (x : deletedPositions n (pairing.partner 0) hzero) :
+    deletedPositions n (pairing.partner 0) hzero := by
+  have hxj : (x : Fin (2 * (n + 1))) ≠ pairing.partner 0 :=
+    (Finset.mem_erase.mp x.property).1
+  have hx0 : (x : Fin (2 * (n + 1))) ≠ 0 :=
+    (Finset.mem_erase.mp (Finset.mem_erase.mp x.property).2).1
+  have hpxj : pairing.partner x ≠ pairing.partner 0 := by
+    intro h
+    apply hx0
+    calc
+      (x : Fin (2 * (n + 1))) = pairing.partner (pairing.partner x) :=
+        (pairing.partner_partner x).symm
+      _ = pairing.partner (pairing.partner 0) := by rw [h]
+      _ = 0 := pairing.partner_partner 0
+  have hpx0 : pairing.partner x ≠ 0 := by
+    intro h
+    apply hxj
+    calc
+      (x : Fin (2 * (n + 1))) = pairing.partner (pairing.partner x) :=
+        (pairing.partner_partner x).symm
+      _ = pairing.partner 0 := by rw [h]
+  exact ⟨pairing.partner x,
+    Finset.mem_erase.mpr ⟨hpxj, Finset.mem_erase.mpr ⟨hpx0, Finset.mem_univ _⟩⟩⟩
+
 /-- Restrict a pairing partner permutation to the positions left after removing `0` and its
 partner.  The order-isomorphism back to `Fin (2 * n)` is applied by `eraseZeroPair`. -/
 def Pairing.restrictedPartner {n : ℕ} (pairing : Pairing (n + 1))
     (hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0) :
     deletedPositions n (pairing.partner 0) hzero ≃
       deletedPositions n (pairing.partner 0) hzero where
-  toFun := fun x => by
-    have hxj : (x : Fin (2 * (n + 1))) ≠ pairing.partner 0 :=
-      (Finset.mem_erase.mp x.property).1
-    have hx0 : (x : Fin (2 * (n + 1))) ≠ 0 :=
-      (Finset.mem_erase.mp (Finset.mem_erase.mp x.property).2).1
-    have hpxj : pairing.partner x ≠ pairing.partner 0 := by
-      intro h
-      apply hx0
-      calc
-        (x : Fin (2 * (n + 1))) = pairing.partner (pairing.partner x) :=
-          (pairing.partner_partner x).symm
-        _ = pairing.partner (pairing.partner 0) := by rw [h]
-        _ = 0 := pairing.partner_partner 0
-    have hpx0 : pairing.partner x ≠ 0 := by
-      intro h
-      apply hxj
-      calc
-        (x : Fin (2 * (n + 1))) = pairing.partner (pairing.partner x) :=
-          (pairing.partner_partner x).symm
-        _ = pairing.partner 0 := by rw [h]
-    exact ⟨pairing.partner x,
-      Finset.mem_erase.mpr ⟨hpxj, Finset.mem_erase.mpr ⟨hpx0, Finset.mem_univ _⟩⟩⟩
-  invFun := fun x => by
-    have hxj : (x : Fin (2 * (n + 1))) ≠ pairing.partner 0 :=
-      (Finset.mem_erase.mp x.property).1
-    have hx0 : (x : Fin (2 * (n + 1))) ≠ 0 :=
-      (Finset.mem_erase.mp (Finset.mem_erase.mp x.property).2).1
-    have hpxj : pairing.partner x ≠ pairing.partner 0 := by
-      intro h
-      apply hx0
-      calc
-        (x : Fin (2 * (n + 1))) = pairing.partner (pairing.partner x) :=
-          (pairing.partner_partner x).symm
-        _ = pairing.partner (pairing.partner 0) := by rw [h]
-        _ = 0 := pairing.partner_partner 0
-    have hpx0 : pairing.partner x ≠ 0 := by
-      intro h
-      apply hxj
-      calc
-        (x : Fin (2 * (n + 1))) = pairing.partner (pairing.partner x) :=
-          (pairing.partner_partner x).symm
-        _ = pairing.partner 0 := by rw [h]
-    exact ⟨pairing.partner x,
-      Finset.mem_erase.mpr ⟨hpxj, Finset.mem_erase.mpr ⟨hpx0, Finset.mem_univ _⟩⟩⟩
+  toFun := pairing.restrictedPartnerMap hzero
+  invFun := pairing.restrictedPartnerMap hzero
   left_inv x := by
     apply Subtype.ext
     exact pairing.partner_partner x

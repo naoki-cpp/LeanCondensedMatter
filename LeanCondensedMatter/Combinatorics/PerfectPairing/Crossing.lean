@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
+import LeanCondensedMatter.Combinatorics.Common.FinsetProduct
 
 set_option linter.style.header false
 
@@ -57,35 +58,12 @@ theorem not_crosses_self {n : ℕ} (p : Fin (2 * n) × Fin (2 * n)) : ¬ Crosses
   rintro ⟨h, -, -⟩
   exact absurd h (lt_irrefl _)
 
-/-- A crossing-count as a product-filter card decomposes into a sum over the left endpoint. -/
+/-- A crossing-count as a product-filter card decomposes into a sum over the left endpoint —
+`Finset.card_filter_product_eq_sum_card_filter` specialized to `Crosses`. -/
 theorem card_filter_crosses_product_eq_sum {n : ℕ} (T : Finset (Fin (2 * n) × Fin (2 * n))) :
     ((T.product T).filter (fun pp => Crosses pp.1 pp.2)).card =
-      ∑ p ∈ T, (T.filter (fun q => Crosses p q)).card := by
-  classical
-  have hmaps : Set.MapsTo
-      (Prod.fst : (Fin (2 * n) × Fin (2 * n)) × (Fin (2 * n) × Fin (2 * n)) →
-        Fin (2 * n) × Fin (2 * n))
-      (((T.product T).filter (fun pp => Crosses pp.1 pp.2) :
-        Finset ((Fin (2 * n) × Fin (2 * n)) × (Fin (2 * n) × Fin (2 * n)))) : Set _)
-      (T : Set (Fin (2 * n) × Fin (2 * n))) := by
-    intro pp hpp
-    simp only [Finset.coe_filter, Finset.product_eq_sprod, Finset.mem_product,
-      Set.mem_setOf_eq] at hpp
-    exact hpp.1.1
-  rw [Finset.card_eq_sum_card_fiberwise hmaps]
-  apply Finset.sum_congr rfl
-  intro p _
-  have himg :
-      ((T.product T).filter (fun pp => Crosses pp.1 pp.2)).filter (fun pp => pp.1 = p) =
-        (T.filter (fun q => Crosses p q)).image (fun q => (p, q)) := by
-    ext pp
-    simp only [Finset.mem_filter, Finset.product_eq_sprod, Finset.mem_product, Finset.mem_image]
-    constructor
-    · rintro ⟨⟨⟨-, h2⟩, hcross⟩, rfl⟩
-      exact ⟨pp.2, ⟨h2, hcross⟩, rfl⟩
-    · rintro ⟨q, ⟨hq, hcross⟩, rfl⟩
-      exact ⟨⟨⟨‹p ∈ T›, hq⟩, hcross⟩, rfl⟩
-  rw [himg, Finset.card_image_of_injective _ fun a b h => by simpa using h]
+      ∑ p ∈ T, (T.filter (fun q => Crosses p q)).card :=
+  Finset.card_filter_product_eq_sum_card_filter T Crosses
 
 end BlochDeDominicis
 end Common
