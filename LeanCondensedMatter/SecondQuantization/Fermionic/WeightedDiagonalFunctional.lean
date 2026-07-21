@@ -13,6 +13,10 @@ statistics-generic `traceFock`/`weightedTrace`/`weightSum`/`normalizedWeightedDi
 `w : FermionOccupation Mode → ℂ` is *arbitrary* here — not yet the genuine Gibbs weight
 `e^{-βE(n)}` — and no analytic `exp` appears in this file.
 
+The one genuinely fermionic-content specialization — weighted traces of `numberOperator`/
+`totalNumberOperator` — lives separately, in `WeightedNumberOperator.lean`, since it is an actual
+computation rather than a thin delegation to `Common.WeightedDiagonalFunctional`.
+
 `[Fintype Mode]` throughout: `FermionOccupation Mode = Finset Mode` is itself a `Fintype` once
 `Mode` is, so every trace below is a finite sum.
 -/
@@ -190,29 +194,5 @@ weight this is the corresponding Gibbs statement. -/
 theorem normalizedWeightedDiagonal_id (w : FermionOccupation Mode → ℂ) (hw : weightSum w ≠ 0) :
     normalizedWeightedDiagonal w (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] _) = 1 :=
   Common.normalizedWeightedDiagonal_id w hw
-
-/-! ## Weighted traces of the number operators -/
-
-theorem weightedTrace_numberOperator (w : FermionOccupation Mode → ℂ) (i : Mode) :
-    weightedTrace w (numberOperator i) =
-      ∑ n ∈ (Finset.univ : Finset (FermionOccupation Mode)).filter (i ∈ ·), w n := by
-  have h : ∀ n : FermionOccupation Mode,
-      Common.matrixCoeff (numberOperator i) n n = if i ∈ n then 1 else 0 := fun n => by
-    rcases Finset.decidableMem i n with hi | hi
-    · exact matrixCoeff_of_smul_basisState (by
-        rw [numberOperator_basisState, if_neg hi, if_neg hi, zero_smul])
-    · exact matrixCoeff_of_smul_basisState (by
-        rw [numberOperator_basisState, if_pos hi, if_pos hi, one_smul])
-  simp only [weightedTrace, Common.weightedTrace, h, mul_ite, mul_one, mul_zero]
-  rw [← Finset.sum_filter]
-
-theorem weightedTrace_totalNumberOperator (w : FermionOccupation Mode → ℂ) :
-    weightedTrace w totalNumberOperator =
-      ∑ n : FermionOccupation Mode, (fermionParticleNumber n : ℂ) * w n := by
-  have h : ∀ n : FermionOccupation Mode,
-      Common.matrixCoeff totalNumberOperator n n = (fermionParticleNumber n : ℂ) :=
-    fun n => matrixCoeff_of_smul_basisState (totalNumberOperator_basisState n)
-  simp only [weightedTrace, Common.weightedTrace, h]
-  exact Finset.sum_congr rfl fun n _ => mul_comm _ _
 
 end SecondQuantization
