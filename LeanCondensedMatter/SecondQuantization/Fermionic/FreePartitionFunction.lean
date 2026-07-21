@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.FreeBoltzmannWeight
+import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedNumberOperator
 
 set_option linter.style.header false
 
