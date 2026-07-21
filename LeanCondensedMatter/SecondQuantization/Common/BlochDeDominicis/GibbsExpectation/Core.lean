@@ -116,21 +116,33 @@ theorem gibbsExpectation_smul (energy : Config → ℝ) (β : ℝ) (c : ℂ)
     gibbsExpectation energy β (c • A) = c * gibbsExpectation energy β A :=
   normalizedWeightedDiagonal_smul c (boltzmannWeight energy β) A
 
+/-- **`gibbsExpectation`, bundled as a genuine `LinearMap`** — directly
+`normalizedWeightedDiagonalLinearMap` at `w := boltzmannWeight energy β`. Lets `gibbsExpectation`'s
+basic linearity facts (`gibbsExpectation_zero` below) come from `LinearMap`'s own generic API
+(`map_zero`) rather than being re-derived by hand. -/
+noncomputable def gibbsExpectationLinearMap (energy : Config → ℝ) (β : ℝ) :
+    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ :=
+  normalizedWeightedDiagonalLinearMap (boltzmannWeight energy β)
+
+@[simp]
+theorem gibbsExpectationLinearMap_apply (energy : Config → ℝ) (β : ℝ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    gibbsExpectationLinearMap energy β A = gibbsExpectation energy β A := rfl
+
 /-- **The normalized Gibbs expectation, packaged as a `Common.NormalizedOperatorFunctional`** —
-directly `normalizedWeightedDiagonalFunctional` at `w := boltzmannWeight energy β`. -/
+`toLinearMap := gibbsExpectationLinearMap energy β`, with normalization from
+`gibbsExpectation_id`. -/
 noncomputable def gibbsExpectationFunctional (energy : Config → ℝ) (β : ℝ)
     (hZ : weightSum (boltzmannWeight energy β) ≠ 0) :
     NormalizedOperatorFunctional Config :=
   normalizedWeightedDiagonalFunctional (boltzmannWeight energy β) hZ
 
 /-- **`gibbsExpectation` vanishes on `0`** — the missing piece (alongside `gibbsExpectation_add`)
-needed to extend additivity from pairs to arbitrary `List.sum`s below. -/
+needed to extend additivity from pairs to arbitrary `List.sum`s below. Directly
+`gibbsExpectationLinearMap`'s `map_zero`. -/
 theorem gibbsExpectation_zero (energy : Config → ℝ) (β : ℝ) :
-    gibbsExpectation energy β (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 0 := by
-  have h := gibbsExpectation_add energy β
-    (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) 0
-  simp only [add_zero] at h
-  linear_combination -h
+    gibbsExpectation energy β (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 0 :=
+  (gibbsExpectationLinearMap energy β).map_zero
 
 /-- **`gibbsExpectation` is additive over `List.sum`s**, not just pairs — needed to distribute it
 across `peelSum`'s `List.sum` form (`peelSum_eq_peelTerms_sum`). -/
