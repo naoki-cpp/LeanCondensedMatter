@@ -9,7 +9,7 @@ set_option linter.style.header false
 The general operator-algebra step behind the finite-temperature Bloch–de Dominicis induction
 (`notes/roadmaps/second-quantization.md`, and the project's physics reference notes,
 `quantum-statistical-mechanics.tex`'s Bloch–De Dominicis theorem proof): generalizes
-`Common/BlochDeDominicis/FourPointReduction.lean`'s hand-unrolled 3-operator peel
+`Common/BlochDeDominicis/Specializations/FourPointReduction.lean`'s hand-unrolled 3-operator peel
 (`comp_comp_comp_eq_of_zetaCommutator`) to an arbitrary-length list of operators, by induction on
 the list rather than by hand.
 

@@ -9,8 +9,8 @@ set_option linter.style.header false
 Wraps `Common/BlochDeDominicis/PeelFirst.lean`'s pure operator-algebra peel identity
 (`comp_prodComp_eq_of_zetaCommutator`) in the trace-level KMS cyclicity step
 (`Common.traceFock_diagonalEvolution_comp_rotate`), the way
-`Common/BlochDeDominicis/FourPointReduction.lean` does for the hand-unrolled 3-operator case —
-this is that same strategy, but for an arbitrary-length remaining product, so
+`Common/BlochDeDominicis/Specializations/FourPointReduction.lean` does for the hand-unrolled
+3-operator case — this is that same strategy, but for an arbitrary-length remaining product, so
 `FourPointReduction.lean`'s theorem is now a special case (`l := [(C2, c12), (C3, c13), (C4,
 c14)]`, not yet stated as such here).
 

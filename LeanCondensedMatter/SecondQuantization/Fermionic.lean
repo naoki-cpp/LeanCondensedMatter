@@ -17,7 +17,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.FreeBoltzmannWeight
 import LeanCondensedMatter.SecondQuantization.Fermionic.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.FreeTwoPointFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedContraction
-import LeanCondensedMatter.SecondQuantization.Fermionic.BlochDeDominicis.SingleModeExample
+import LeanCondensedMatter.SecondQuantization.Fermionic.BlochDeDominicis.Examples.SingleMode
 import LeanCondensedMatter.SecondQuantization.Fermionic.BlochDeDominicis.TwoPoint
 
 set_option linter.style.header false
