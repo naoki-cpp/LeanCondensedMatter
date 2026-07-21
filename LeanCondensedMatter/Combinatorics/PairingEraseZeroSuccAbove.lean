@@ -7,16 +7,13 @@ set_option linter.style.header false
 /-!
 # `Pairing.eraseZeroOrderIso`, decomposed into two `Fin.succAbove`/`Fin.succ` steps
 
-The fifth bridging piece toward the general `n`-point Bloch–de Dominicis induction
-(`notes/roadmaps/second-quantization.md`'s Phase 9): specializes
-`DeletedFinPositionsSuccAbove.lean`'s `deletedPositionsOrderIso_eq_succ_succAbove` to
+Specializes `DeletedFinPositionsSuccAbove.lean`'s `deletedPositionsOrderIso_eq_succ_succAbove` to
 `Pairing.eraseZeroOrderIso` itself, supplying `k := (pairing.partner 0).pred (pairing.partner_ne
-0)` at the one remaining call site the earlier file's docstring deferred — `pairing.partner_ne 0 :
-pairing.partner 0 ≠ 0` is exactly the form `Fin.pred` needs, while its `Ne.symm` (`0 ≠
-pairing.partner 0`) is the separate form `deletedPositions`'s `hzero` needs; the proof below uses
-each at its own call site.
-This is what finally lets `Pairing.eraseZeroPair`'s reindexing line up term-by-term against
-`EraseIdxOfFn.lean`'s single-`succAbove` description of list erasure.
+0)` — `pairing.partner_ne 0 : pairing.partner 0 ≠ 0` is exactly the form `Fin.pred` needs, while
+its `Ne.symm` (`0 ≠ pairing.partner 0`) is the separate form `deletedPositions`'s `hzero` needs;
+the proof below uses each at its own call site. This lets `Pairing.eraseZeroPair`'s reindexing
+line up term-by-term against `EraseIdxOfFn.lean`'s single-`succAbove` description of list erasure
+(`ofFn_comp_eraseZeroOrderIso_eq_eraseIdx` below composes the two into a single identity).
 -/
 
 namespace SecondQuantization

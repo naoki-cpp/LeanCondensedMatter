@@ -6,18 +6,16 @@ set_option linter.style.header false
 /-!
 # `peelTerms`, reindexed by position (`List.eraseIdx`) instead of built recursively
 
-The second bridging piece toward the general `n`-point Bloch–de Dominicis induction
-(`notes/roadmaps/second-quantization.md`'s Phase 9), following `Common/BlochDeDominicis/
-ProdCompFamily.lean`. `PeelFirst.lean`'s `peelTerms` is defined recursively, in lockstep with
-`peelSum`; `peelTerms_eq_ofFn` below shows it agrees with the "closed-form", indexed description
-used by the physics reference notes' `Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation: at position `j` (0-indexed), the
-term is `ζʲ • cⱼ • (the remaining product with the `j`-th operator erased)`, expressed through
+`PeelFirst.lean`'s `peelTerms` is defined recursively, in lockstep with `peelSum`;
+`peelTerms_eq_ofFn` below shows it agrees with the "closed-form", indexed description used by the
+physics reference notes' `Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation: at position `j` (0-indexed), the term is
+`ζʲ • cⱼ • (the remaining product with the `j`-th operator erased)`, expressed through
 `List.eraseIdx`.
 
-This is still a `List`-level statement, in the same "erase one position from a flat list" shape as
-`peelTerms` itself — connecting it to `Combinatorics/PerfectPairing.lean`'s `Fin (2n)`-indexed
-`Pairing.eraseZeroPair`/`deletedPositionsOrderIso` (a different erasure/reindexing scheme entirely,
-built for pairs rather than single positions) remains a further, separate step.
+This is a `List`-level statement, in the same "erase one position from a flat list" shape as
+`peelTerms` itself — `Common/BlochDeDominicis/Induction.lean` connects it to
+`Combinatorics/PerfectPairing.lean`'s `Fin (2n)`-indexed `Pairing.eraseZeroPair` (a different
+erasure/reindexing scheme, built for pairs rather than single positions).
 -/
 
 namespace SecondQuantization
