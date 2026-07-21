@@ -1,9 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.GibbsExpectation.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.GibbsExpectation.Peel
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PairingWeight
-import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZeroSuccAbove
-import LeanCondensedMatter.Combinatorics.PerfectPairing.PairsDecomposition
-import LeanCondensedMatter.Combinatorics.PerfectPairing.SumDecomposition
+import LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion
 
 set_option linter.style.header false
 
@@ -13,17 +11,18 @@ set_option linter.style.header false
 The genuine `n`-point statement: a normalized Gibbs expectation of a `2n`-operator product is the
 `Pairing n`-weighted sum of products of normalized 2-point values, generalizing
 `GibbsExpectation/FourPoint.lean`'s `gibbsExpectation_four_point` (`n = 2`) to arbitrary `n`.
-Proved by plain induction on `n` (only the immediately-preceding case `m` is used, so ordinary
-`induction n` suffices — not strong induction), following the physics reference notes' own proof
-strategy: peel
-the first operator off the front (`gibbsExpectation_peel_indexed`), identify the remaining
-`2(n-1)`-operator product's family with the smaller pairing's positions directly via
-`List.eraseIdx_ofFn_eq_ofFn_succAbove`/`Pairing.eraseZeroOrderIso_eq_succ_succAbove` (the two
-lemmas `Pairing.ofFn_comp_eraseZeroOrderIso_eq_eraseIdx` composes, used here individually rather
-than through that composed form), apply the inductive hypothesis, and reassemble via
-`Pairing.equivSigma` (`Pairing.sum_eq_sum_sum_insertFirstPair`), matching signs via
-`Pairing.weight_eraseZeroPair` and the pairs decomposition via
-`Pairing.prod_pairs_eq_firstPair_mul`.
+
+The combinatorial backbone — induction on `n`, the `equivSigma`/`insertFirstPair` double-sum
+reindexing, and the `crossingCount`/`pairs` erase-zero recursions — is
+`Combinatorics/PerfectPairing/FirstPairRecursion.lean`'s
+`moment_eq_pairing_sum_of_first_pair_recursion`, stated with no `Statistics`/`ℂ`/`AlgebraicFock`
+dependency. This file supplies only the analytic content that lemma's `Admissible`/`moment_succ`
+hypotheses ask for: peeling the first operator off the front
+(`gibbsExpectation_peel_indexed`), identifying the remaining `2(n-1)`-operator product's family
+with the smaller pairing's positions directly via
+`List.eraseIdx_ofFn_eq_ofFn_succAbove`/`Pairing.eraseZeroOrderIso_eq_succ_succAbove`, and
+converting the peeled coefficient into a normalized 2-point value via
+`gibbsExpectation_comp_eq_div_of_zetaCommutator`.
 -/
 
 namespace SecondQuantization
@@ -45,25 +44,44 @@ theorem gibbsExpectation_prodComp_eq_sum_pairing (s : Statistics) (energy : Conf
         ∑ pairing : Pairing n,
           pairing.weight s *
             ∏ pr ∈ pairing.pairs, gibbsExpectation energy β ((C pr.1).comp (C pr.2)) := by
-  intro n
-  induction n with
-  | zero =>
-    intro C q c _ _ _
-    have p0 : Pairing 0 :=
-      Pairing.ofPartner (Equiv.refl (Fin 0)) ⟨fun i => i.elim0, fun i => i.elim0⟩
-    have hUniq : ∀ pairing : Pairing 0, pairing = p0 := fun pairing =>
-      Pairing.ext (Equiv.ext fun i => i.elim0)
+  have hζ : (s.zetaInt : ℂ) * (s.zetaInt : ℂ) = 1 := by
+    have h := zetaInt_pow_eq_of_mod_two_eq s (a := 2) (b := 0) (by omega)
+    simpa [pow_two] using h
+  -- The `Admissible` predicate packages the eigenoperator, scalar-commutator, and non-resonance
+  -- data `moment_succ`/`admissible_erase` need, existentially so it can be transported to erased
+  -- subfamilies.
+  set Admissible : (n : ℕ) →
+      (Fin (2 * n) → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) → Prop :=
+    fun n C => ∃ (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ),
+      (∀ i, heisenbergEvolve energy (-β) (C i) = Complex.exp ((q i * (-β) : ℝ) : ℂ) • C i) ∧
+      (∀ i j, i ≠ j → zetaCommutator (s.zetaInt : ℂ) (C i) (C j) =
+        c i j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) ∧
+      (∀ i, (1 : ℂ) - (s.zetaInt : ℂ) * Complex.exp ((q i * β : ℝ) : ℂ) ≠ 0) with hAdmDef
+  have moment_zero : ∀ C : Fin 0 → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config,
+      gibbsExpectation energy β (prodComp (List.ofFn C)) = 1 := by
+    intro C
     have hZw : weightSum (boltzmannWeight energy β) ≠ 0 := by
       rw [← traceFock_diagonalEvolution_eq_weightSum]; exact hZ
-    have hpairs0 : p0.pairs = (∅ : Finset (Fin 0 × Fin 0)) := by
-      simp [Pairing.pairs]
-    have hcc0 : p0.crossingCount = 0 := by simp [Pairing.crossingCount, hpairs0]
     simp only [List.ofFn_zero, prodComp_nil]
-    rw [gibbsExpectation_id energy β hZw, Fintype.sum_eq_single p0
-      (fun pairing hne => absurd (hUniq pairing) hne)]
-    simp [Pairing.weight, hpairs0, hcc0]
-  | succ m ih =>
-    intro C q c hC hcomm hne
+    exact gibbsExpectation_id energy β hZw
+  have admissible_erase : ∀ (n : ℕ)
+      (C : Fin (2 * (n + 1)) → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config),
+      Admissible (n + 1) C → ∀ j : Fin (2 * n + 1),
+        Admissible n (fun i : Fin (2 * n) => C ((j.succAbove i).succ)) := by
+    rintro m C ⟨q, c, hC, hcomm, hne⟩ j
+    exact ⟨fun i => q ((j.succAbove i).succ), fun i i' => c ((j.succAbove i).succ)
+      ((j.succAbove i').succ), fun i => hC _, fun i i' h => hcomm _ _
+        (fun heq => h (Fin.succAbove_right_injective (Fin.succ_injective _ heq))),
+      fun i => hne _⟩
+  have moment_succ : ∀ (m : ℕ)
+      (C : Fin (2 * (m + 1)) → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config),
+      Admissible (m + 1) C →
+      gibbsExpectation energy β (prodComp (List.ofFn C)) =
+        ∑ j : Fin (2 * m + 1), (s.zetaInt : ℂ) ^ (j : ℕ) *
+          gibbsExpectation energy β ((C 0).comp (C j.succ)) *
+          gibbsExpectation energy β
+            (prodComp (List.ofFn fun i : Fin (2 * m) => C ((j.succAbove i).succ))) := by
+    rintro m C ⟨q, c, hC, hcomm, hne⟩
     have h1 : gibbsExpectation energy β (prodComp (List.ofFn C)) =
         gibbsExpectation energy β
           ((C 0).comp (prodComp (List.ofFn (fun i : Fin (2 * m + 1) => C i.succ)))) := by
@@ -104,11 +122,7 @@ theorem gibbsExpectation_prodComp_eq_sum_pairing (s : Statistics) (energy : Conf
         simp only [hv]
     rw [hreindex] at hpeel
     rw [hzl] at hpeel
-    rw [h1, hpeel]
-    rw [Pairing.sum_eq_sum_sum_insertFirstPair
-      (fun pairing : Pairing (m + 1) => pairing.weight s *
-        ∏ pr ∈ pairing.pairs, gibbsExpectation energy β ((C pr.1).comp (C pr.2)))]
-    rw [Finset.sum_div]
+    rw [h1, hpeel, Finset.sum_div]
     refine Finset.sum_congr rfl fun j _ => ?_
     have hljfst : (l.eraseIdx (j : ℕ)).map Prod.fst =
         List.ofFn (fun i : Fin (2 * m) => C ((j.succAbove i).succ)) := by
@@ -116,69 +130,20 @@ theorem gibbsExpectation_prodComp_eq_sum_pairing (s : Statistics) (energy : Conf
       rfl
     have hljsnd : l[(j : ℕ)]'(by rw [hlen]; exact j.isLt) = (C j.succ, c 0 j.succ) := by
       simp only [hl, List.getElem_ofFn]
-    have hC' : ∀ i : Fin (2 * m),
-        heisenbergEvolve energy (-β) (C ((j.succAbove i).succ)) =
-          Complex.exp ((q ((j.succAbove i).succ) * (-β) : ℝ) : ℂ) • C ((j.succAbove i).succ) :=
-      fun i => hC _
-    have hcomm' : ∀ i i' : Fin (2 * m), i ≠ i' →
-        zetaCommutator (s.zetaInt : ℂ) (C ((j.succAbove i).succ)) (C ((j.succAbove i').succ)) =
-          c ((j.succAbove i).succ) ((j.succAbove i').succ) •
-            (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :=
-      fun i i' h => hcomm _ _
-        (fun heq => h (Fin.succAbove_right_injective (Fin.succ_injective _ heq)))
-    have hne' : ∀ i : Fin (2 * m),
-        (1 : ℂ) - (s.zetaInt : ℂ) * Complex.exp ((q ((j.succAbove i).succ) * β : ℝ) : ℂ) ≠ 0 :=
-      fun i => hne _
-    have hIH := ih (fun i : Fin (2 * m) => C ((j.succAbove i).succ))
-      (fun i : Fin (2 * m) => q ((j.succAbove i).succ))
-      (fun i i' : Fin (2 * m) => c ((j.succAbove i).succ) ((j.succAbove i').succ))
-      hC' hcomm' hne'
     have h2 : gibbsExpectation energy β (C 0 |>.comp (C j.succ)) =
         c 0 j.succ / (1 - (s.zetaInt : ℂ) * Complex.exp ((q 0 * β : ℝ) : ℂ)) :=
       gibbsExpectation_comp_eq_div_of_zetaCommutator energy β (q 0) (s.zetaInt : ℂ) (c 0 j.succ)
         (C 0) (C j.succ) (hC 0) (hcomm 0 j.succ (Ne.symm (Fin.succ_ne_zero j))) hZ (hne 0)
-    rw [hljfst, hljsnd]
-    change (s.zetaInt : ℂ) ^ (j : ℕ) * c 0 j.succ *
-        gibbsExpectation energy β
-          (prodComp (List.ofFn fun i : Fin (2 * m) => C (j.succAbove i).succ)) /
-      (1 - (s.zetaInt : ℂ) * Complex.exp ((q 0 * β : ℝ) : ℂ)) =
-        ∑ Q : Pairing m,
-          (Q.insertFirstPair j.succ (Ne.symm (Fin.succ_ne_zero j))).weight s *
-            ∏ pr ∈ (Q.insertFirstPair j.succ (Ne.symm (Fin.succ_ne_zero j))).pairs,
-              gibbsExpectation energy β ((C pr.1).comp (C pr.2))
-    rw [hIH, Finset.mul_sum, Finset.sum_div]
-    apply Finset.sum_congr rfl
-    intro Q _
-    set P := Q.insertFirstPair j.succ (Ne.symm (Fin.succ_ne_zero j)) with hP
-    have hPe : P.eraseZeroPair = Q :=
-      Q.eraseZeroPair_insertFirstPair j.succ (Ne.symm (Fin.succ_ne_zero j))
-    have hP0 : P.partner 0 = j.succ :=
-      Q.insertFirstPair_partner_zero j.succ (Ne.symm (Fin.succ_ne_zero j))
-    have hweight : P.weight s = (s.zetaInt : ℂ) ^ (j : ℕ) * Q.weight s := by
-      rw [Pairing.weight_eraseZeroPair, hPe]
-      congr 2
-      rw [Pairing.interveningPositionCount, hP0]
-      simp
-    have hpred : (P.partner 0).pred (P.partner_ne 0) = j := by
-      apply Fin.succ_injective
-      rw [Fin.succ_pred, hP0]
-    have heraseiso : ∀ pr : Fin (2 * m), (P.eraseZeroOrderIso pr : Fin (2 * (m + 1))) =
-        (j.succAbove pr).succ := by
-      intro pr
-      rw [P.eraseZeroOrderIso_eq_succ_succAbove, hpred]
-    have hprod : ∏ pr ∈ P.pairs, gibbsExpectation energy β ((C pr.1).comp (C pr.2)) =
-        gibbsExpectation energy β ((C 0).comp (C j.succ)) *
-          ∏ pr ∈ Q.pairs, gibbsExpectation energy β
-            ((C (j.succAbove pr.1).succ).comp (C (j.succAbove pr.2).succ)) := by
-      rw [P.prod_pairs_eq_firstPair_mul]
-      congr 1
-      · rw [Pairing.firstPair, hP0]
-      · rw [hPe]
-        apply Finset.prod_congr rfl
-        intro pr _
-        rw [heraseiso pr.1, heraseiso pr.2]
-    rw [hweight, hprod, h2]
+    rw [hljfst, hljsnd, h2]
     ring
+  intro n C q c hC hcomm hne
+  have hmoment := moment_eq_pairing_sum_of_first_pair_recursion (s.zetaInt : ℂ) hζ
+    (fun n C => gibbsExpectation energy β (prodComp (List.ofFn C)))
+    (fun A B => gibbsExpectation energy β (A.comp B)) Admissible moment_zero admissible_erase
+    moment_succ n C ⟨q, c, hC, hcomm, hne⟩
+  rw [hmoment]
+  refine Finset.sum_congr rfl fun pairing _ => ?_
+  rw [Pairing.weight]
 
 end BlochDeDominicis
 end Common
