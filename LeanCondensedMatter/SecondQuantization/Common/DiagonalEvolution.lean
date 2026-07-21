@@ -1,7 +1,10 @@
 import LeanCondensedMatter.SecondQuantization.Common.AlgebraicFock
+import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 
 set_option linter.style.header false
+set_option linter.style.openClassical false
+set_option linter.unusedFintypeInType false
 
 /-!
 # Imaginary-time evolution under a diagonal free Hamiltonian, generic over the basis type
@@ -33,6 +36,8 @@ so the semigroup/inversion/`A(0) = A` facts are proved once, in this file.
 
 namespace SecondQuantization
 namespace Common
+
+open scoped Classical
 
 variable {Config : Type*}
 
@@ -105,6 +110,58 @@ theorem heisenbergEvolve_zero (energy : Config → ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     heisenbergEvolve energy 0 A = A := by
   simp [heisenbergEvolve]
+
+/-! ## Matrix coefficients -/
+
+/-- **`diagonalEvolution`'s matrix coefficients**: diagonal, `exp(τ · energy n)` on the diagonal
+and `0` off it — the algebraic content of "`diagonalEvolution` acts on each basis state by a
+scalar". Needed for `matrixCoeff_heisenbergEvolve` below, and (specialized to `energy :=
+freeEigenvalue`/`fermionEnergy`, `τ := -β`) for the Gibbs weight's own diagonal matrix entries
+(`GibbsExpectation/Core.lean`'s `matrixCoeff_diagonalEvolution`, proved independently there rather
+than from this lemma to avoid pulling this file's dependents into that heavier one). -/
+theorem matrixCoeff_diagonalEvolution_eq_ite (energy : Config → ℝ) (τ : ℝ) (m n : Config) :
+    matrixCoeff (diagonalEvolution energy τ) m n =
+      if m = n then Complex.exp ((τ * energy n : ℝ) : ℂ) else 0 := by
+  rw [matrixCoeff, diagonalEvolution_basisState]
+  by_cases h : m = n
+  · simp only [if_pos h]
+    rw [← h, smul_basisState_apply_self]
+  · simp only [if_neg h]
+    exact smul_basisState_apply_of_ne _ (Ne.symm h)
+
+/-- **`heisenbergEvolve`'s matrix coefficients**: `A(τ)`'s `(m, n)` entry is `A`'s own `(m, n)`
+entry, rescaled by `exp(τ(energy m - energy n))` — the interaction-picture matrix-coefficient
+formula, for an *arbitrary* `A`, not just an eigenoperator of `heisenbergEvolve` (contrast
+`diagonalEvolution_comp_eq_smul_comp_diagonalEvolution`'s `hC` hypothesis, which needs `A` to
+already be an eigenoperator). Both `matrixCoeff (diagonalEvolution energy τ)` factors collapse the
+defining `Finset.sum`s (from `matrixCoeff_comp`) to their single nonzero term. -/
+theorem matrixCoeff_heisenbergEvolve [Fintype Config] (energy : Config → ℝ) (τ : ℝ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
+    matrixCoeff (heisenbergEvolve energy τ A) m n =
+      Complex.exp ((τ * (energy m - energy n) : ℝ) : ℂ) * matrixCoeff A m n := by
+  have hinner : matrixCoeff (A.comp (diagonalEvolution energy (-τ))) m n =
+      matrixCoeff A m n * Complex.exp (((-τ) * energy n : ℝ) : ℂ) := by
+    rw [matrixCoeff_comp]
+    have hstep' : ∀ k, matrixCoeff A m k * matrixCoeff (diagonalEvolution energy (-τ)) k n =
+        if k = n then matrixCoeff A m k *
+          Complex.exp (((-τ) * energy n : ℝ) : ℂ) else 0 := by
+      intro k
+      rw [matrixCoeff_diagonalEvolution_eq_ite]
+      by_cases h : k = n <;> simp [h]
+    simp only [hstep', Finset.sum_ite_eq', Finset.mem_univ, if_true]
+  rw [heisenbergEvolve, matrixCoeff_comp]
+  have hstep : ∀ k, matrixCoeff (diagonalEvolution energy τ) m k *
+      matrixCoeff (A.comp (diagonalEvolution energy (-τ))) k n =
+        if m = k then Complex.exp ((τ * energy k : ℝ) : ℂ) *
+          matrixCoeff (A.comp (diagonalEvolution energy (-τ))) k n else 0 := by
+    intro k
+    rw [matrixCoeff_diagonalEvolution_eq_ite]
+    by_cases h : m = k <;> simp [h]
+  simp only [hstep, Finset.sum_ite_eq, Finset.mem_univ, if_true]
+  rw [hinner, mul_comm (matrixCoeff A m n), ← mul_assoc, ← Complex.exp_add]
+  congr 2
+  push_cast
+  ring
 
 /-! ## The KMS-type commutation relation, for an operator with a known eigenvalue shift -/
 
