@@ -70,7 +70,7 @@ creation and annihilation operators exist, as a later derived construction.
 | 6 | `Fermionic/Hamiltonian.lean` — `numberOperator`/`totalNumberOperator`, `freeHamiltonian` (dispersion-weighted number operators), `interactionHamiltonian` (density-density coupling, a quartic monomial in creation/annihilation operators — see note below). Finite mode sets still assumed | `proved` |
 | 6.5 | `Fermionic/WeightedDiagonalFunctional.lean` — `matrixCoeff`, `traceFock`, `weightedTrace`, `weightSum`, and `normalizedWeightedDiagonal`, for an *arbitrary* weight `w : FermionOccupation Mode → ℂ` (not yet the genuine Gibbs weight `e^{-βE(n)}`, no analytic `exp` anywhere). The mathematical content is a normalized weighted diagonal functional; the Gibbs interpretation is appropriate only after Gibbs specialization. Isolates the combinatorial "sum over basis states, weighted" structure both a formal and a genuine Gibbs weight will specialize to. `traceFock`/`weightedTrace`/`weightSum`/`normalizedWeightedDiagonal` now delegate to `Common/WeightedDiagonalFunctional.lean` (see the `Common statistics-agnostic layer` section below); the fermionic names and their call sites are unaffected | `proved` |
 | 7 | `Fermionic/FormalExp.lean` — `formalExpTerm`/`formalExpTruncation`, the formal (term-by-term) Taylor series for `exp(-H)` and its finite truncations — deliberately *not* the analytic operator exponential (`FockSpaceFermionic Mode` has no topology), and deliberately *not* named `Dyson*`/`dyson*` (that name is reserved for the genuine interaction-picture Dyson series, a separate future target). Validated on `freeHamiltonian` (`truncatedBoltzmannWeight`, `traceFock_formalExpTruncation_freeHamiltonian`, `weightedTrace_formalExpTruncation_freeHamiltonian`), where it reduces to the expected finite-order truncated Boltzmann weight, feeding directly into `Fermionic/WeightedDiagonalFunctional.lean`'s `weightSum`/`weightedTrace`. Splitting `H₀ + V` combinatorially by perturbation order (the genuine Dyson series) and the analytic Gibbs weight `e^{-βE(n)}` itself both remain, as does a general (non-basis-diagonal) quartic interaction and the moment/cumulant formal-power-series connection to Track B — see the file's own "What remains" note | `proved` |
-| 8 | `Common/QuantumLinkedCluster.lean` / `Fermionic/FormalLogPartitionFunction.lean` — combinatorial linked-cluster groundwork: occupation-cumulant connectedness under a product weight, and `log Z` as a formal power series. Not yet the genuine (time-ordered, Wick-expanded) Linked Cluster Theorem — see below | `stated` (groundwork landed, see below) |
+| 8 | `Fermionic/QuantumLinkedCluster.lean` / `Fermionic/FormalLogPartitionFunction.lean` — combinatorial linked-cluster groundwork: occupation-cumulant connectedness under a product weight, and `log Z` as a formal power series. Not yet the genuine (time-ordered, Wick-expanded) Linked Cluster Theorem — see below | `stated` (groundwork landed, see below) |
 | 9 | `Fermionic/ImaginaryTimeEvolution.lean` — the algebraic, basis-diagonal realization of free imaginary-time evolution for the free Hamiltonian, and its Heisenberg-type conjugation of a general algebraic operator. First step of the finite-temperature Green-function / time-ordered-correlator line a genuine LCT needs | `stated` |
 
 **Note on `interactionHamiltonian`:** the current `Σᵢⱼ V(i,j) Nᵢ Nⱼ` density-density form is
@@ -118,9 +118,11 @@ bosonic partition sums are genuinely infinite series needing convergence conditi
 
 **File layout**: `SecondQuantization/{Common,Bosonic,Fermionic}.lean` are umbrella modules
 importing each layer's files at once, shrinking the root `LeanCondensedMatter.lean` from 72
-imports to 30. `Common/QuantumLinkedCluster.lean` stays a separate root import — it currently
-depends on `Fermionic/` (the dependency-direction violation noted at Phase 9 step 7 below), so
-folding it into the `Common` umbrella would make `Common` depend on the fermionic line. The purely
+imports to 30. `QuantumLinkedCluster.lean` — depending on `Fermionic/` throughout, hence moved to
+`SecondQuantization/Fermionic/QuantumLinkedCluster.lean` (a plain path move, no declaration or
+namespace changes) — stays a separate root import rather than folded into the `Fermionic`
+umbrella, matching this project's convention of keeping cross-track bridging files (Track D ↔
+Track B here) explicit at the root rather than absorbed into a single-track umbrella. The purely
 combinatorial Bloch–de Dominicis files (`Combinatorics/PerfectPairing.lean`,
 `Combinatorics/Common/DeletedFinPositions.lean`, both below) moved out of `SecondQuantization/` entirely,
 into the general-math `Combinatorics/` layer upstream of it — file paths only, their declarations
@@ -196,8 +198,8 @@ Track C's Hilbert–Schmidt/trace-class infrastructure should be reused, not rep
 Not the genuine Linked Cluster Theorem — see "Phase 9" below for what's still missing (time
 ordering, Green functions, Wick contractions, the genuine Dyson series). What's proved so far:
 
-**Current `Common/QuantumLinkedCluster.lean` (fermionic-specific bridge)** — connects the fermionic
-Track D line to Track B's abstract cumulant machinery:
+**Current `Fermionic/QuantumLinkedCluster.lean` (fermionic-specific bridge)** — connects the
+fermionic Track D line to Track B's abstract cumulant machinery:
 - `occupationMoment w S` — `⟨∏ᵢ∈S nᵢ⟩_w`, computed as a weighted sum over occupation states
   (`occupationMoment_bot`, `occupationMoment_singleton` confirm it lands in Track B's moment type
   and matches the normalized weighted diagonal functional (the historical identifier

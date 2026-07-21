@@ -25,6 +25,4 @@ import LeanCondensedMatter.QuantumTheory.HelmholtzFreeEnergyTraceClass
 import LeanCondensedMatter.SecondQuantization.Common
 import LeanCondensedMatter.SecondQuantization.Bosonic
 import LeanCondensedMatter.SecondQuantization.Fermionic
--- Imported separately from the Common umbrella: currently depends on Fermionic/
--- (Phase 9 step 7 in notes/roadmaps/second-quantization.md — pending move or generalization).
-import LeanCondensedMatter.SecondQuantization.Common.QuantumLinkedCluster
+import LeanCondensedMatter.SecondQuantization.Fermionic.QuantumLinkedCluster

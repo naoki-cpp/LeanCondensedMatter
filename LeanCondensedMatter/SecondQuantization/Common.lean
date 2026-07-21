@@ -18,9 +18,7 @@ set_option linter.style.header false
 # Umbrella module for the statistics-agnostic `SecondQuantization/Common` layer
 
 Importing this module brings in every file of the shared (boson/fermion-agnostic) layer at once.
-Deliberately **excluded**: `Common/QuantumLinkedCluster.lean`, which currently imports `Fermionic/`
-(the known dependency-direction violation flagged as Phase 9 step 7 in
-`notes/roadmaps/second-quantization.md`) — including it here would make this umbrella depend on
-the fermionic line. It is imported separately at the project root until it is moved or
-generalized.
+`QuantumLinkedCluster.lean` — which depends on `Fermionic/` — now lives at
+`SecondQuantization/Fermionic/QuantumLinkedCluster.lean`, not here; see that file and
+`notes/roadmaps/second-quantization.md`'s Phase 9 step 7 for its own scope and status.
 -/
