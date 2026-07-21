@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.GibbsExpectation.TwoPoint
-import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.FourPointReduction
+import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.Specializations.FourPointReduction
 
 set_option linter.style.header false
 
