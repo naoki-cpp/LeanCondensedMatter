@@ -308,18 +308,32 @@ theorem normalizedWeightedDiagonal_id (w : Config → ℂ) (hw : weightSum w ≠
     normalizedWeightedDiagonal w (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] _) = 1 := by
   rw [normalizedWeightedDiagonal, weightedTrace_id, div_self hw]
 
+/-! ## `normalizedWeightedDiagonal`, bundled as a genuine `LinearMap` -/
+
+/-- **`normalizedWeightedDiagonal w`, bundled as a `LinearMap`** — the same map
+`normalizedWeightedDiagonal_add`/`_smul` already show is linear, packaged once so downstream
+linearity facts (`map_zero`, and any further `LinearMap`-generic API) come from `LinearMap`'s own
+lemmas rather than being re-derived by hand for each. `normalizedWeightedDiagonalFunctional` below
+is exactly this `LinearMap` plus the normalization proof `map_id` needs. -/
+noncomputable def normalizedWeightedDiagonalLinearMap (w : Config → ℂ) :
+    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ where
+  toFun := normalizedWeightedDiagonal w
+  map_add' := normalizedWeightedDiagonal_add w
+  map_smul' := fun c A => normalizedWeightedDiagonal_smul c w A
+
+@[simp]
+theorem normalizedWeightedDiagonalLinearMap_apply (w : Config → ℂ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    normalizedWeightedDiagonalLinearMap w A = normalizedWeightedDiagonal w A := rfl
+
 /-! ## The `NormalizedOperatorFunctional` instantiation -/
 
 /-- **The finite-sum instantiation** of `NormalizedOperatorFunctional`, for a weight `w : Config →
-ℂ` with nonzero total weight: `toLinearMap := normalizedWeightedDiagonal w`, with linearity
-supplied by `normalizedWeightedDiagonal_add`/`_smul` and normalization by
-`normalizedWeightedDiagonal_id`. -/
+ℂ` with nonzero total weight: `toLinearMap := normalizedWeightedDiagonalLinearMap w`, with
+normalization supplied by `normalizedWeightedDiagonal_id`. -/
 noncomputable def normalizedWeightedDiagonalFunctional (w : Config → ℂ) (hw : weightSum w ≠ 0) :
     NormalizedOperatorFunctional Config where
-  toLinearMap :=
-    { toFun := normalizedWeightedDiagonal w
-      map_add' := normalizedWeightedDiagonal_add w
-      map_smul' := fun c A => normalizedWeightedDiagonal_smul c w A }
+  toLinearMap := normalizedWeightedDiagonalLinearMap w
   map_id := normalizedWeightedDiagonal_id w hw
 
 @[simp]
