@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.GibbsExpectation
+import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.GibbsExpectation.TwoPoint
+import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.GibbsExpectation.Peel
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PairingWeight
 import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZeroSuccAbove
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairsDecomposition
