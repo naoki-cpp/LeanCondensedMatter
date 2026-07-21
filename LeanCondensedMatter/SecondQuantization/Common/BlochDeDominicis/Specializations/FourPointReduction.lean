@@ -9,10 +9,14 @@ Phase 9's finite-mode Bloch–de Dominicis induction (`notes/roadmaps/second-qua
 `n = 2` (4-operator) case of `Common/BlochDeDominicis/TwoPoint.lean`'s `n = 1` base-case strategy —
 commuting `C₁` through the three remaining factors via the c-number exchange commutator, followed
 by one KMS cyclicity step (`Common.traceFock_diagonalEvolution_comp_rotate`) to solve the resulting
-self-referential trace equation. This is a concrete stepping stone toward the general `n`-point
-induction (`Common/BlochDeDominicis/Induction.lean`, not yet started): it validates that the same
-commutator-substitution/rotation pattern generalizes past the base case, before committing to the
-general inductive statement and its connection to `Common.BlochDeDominicis.Pairing`.
+self-referential trace equation. This was originally a concrete stepping stone toward the general
+`n`-point induction, built before committing to the general inductive statement and its connection
+to `Common.BlochDeDominicis.Pairing`, to validate that the same commutator-substitution/rotation
+pattern generalizes past the base case. That general theorem now exists —
+`Common/BlochDeDominicis/Induction.lean`'s `gibbsExpectation_prodComp_eq_sum_pairing`, proved by
+genuine induction on `n` rather than by hand-unrolling — so this file is no longer on the critical
+path to it; it remains useful in its own right as the concrete, hand-unrolled `n = 2`
+un-normalized first-operator reduction (below).
 
 **Not the genuine 4-point Bloch–de Dominicis *expansion*** — that name refers to the fully-reduced
 normalized identity `⟨C₁C₂C₃C₄⟩_β = ⟨C₁C₂⟩_β⟨C₃C₄⟩_β + ζ⟨C₁C₃⟩_β⟨C₂C₄⟩_β + ⟨C₁C₄⟩_β⟨C₂C₃⟩_β`, a
@@ -26,8 +30,9 @@ normalized 2-point numbers rather than un-normalized traces. Chaining `TwoPoint.
 onto each remaining-pair term, and connecting the resulting three coefficients `1`, `ζ`, `ζ²`
 (which specialize to the `1`, `ζ`, `1` of
 `Common.BlochDeDominicis.PairingWeight.four_position_pairings_and_weights` exactly, since `ζ² = 1`
-for `ζ = ±1`) to a genuine sum over `Common.BlochDeDominicis.Pairing 2`, is future work — likely
-subsumed by the general induction rather than done here specifically.
+for `ζ = ±1`) to a genuine sum over `Common.BlochDeDominicis.Pairing 2` is now subsumed by
+`Induction.lean`'s general theorem (at `n = 2`, matching `GibbsExpectation/FourPoint.lean`'s
+`gibbsExpectation_four_point`) rather than done here specifically.
 -/
 
 namespace SecondQuantization
