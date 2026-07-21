@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing
-import LeanCondensedMatter.Combinatorics.DeletedFinPositionsSuccAbove
-import LeanCondensedMatter.Combinatorics.EraseIdxOfFn
+import LeanCondensedMatter.Combinatorics.Common.DeletedFinPositionsSuccAbove
+import LeanCondensedMatter.Combinatorics.Common.EraseIdxOfFn
 
 set_option linter.style.header false
 

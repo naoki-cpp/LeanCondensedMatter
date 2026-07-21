@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.DeletedFinPositions
+import LeanCondensedMatter.Combinatorics.Common.DeletedFinPositions
 
 set_option linter.style.header false
 

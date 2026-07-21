@@ -12,10 +12,10 @@ so composing a family `C : Fin (m + 1) → α` with it gives `C` restricted to e
 `j`. This connects `PeelFirst.lean`'s `List.eraseIdx`-based erasure (`PeelTermsIndexed.lean`'s
 `peelTerms_eq_ofFn`) to `Fin`-indexed erasure — the description
 `Combinatorics/PerfectPairing.lean`'s `Pairing.eraseZeroPair` needs to line up against (see
-`DeletedFinPositionsSuccAbove.lean` and
-`PairingEraseZeroSuccAbove.lean` for the two-position case that lemma actually uses). This file has
-no Mathlib precedent (`eraseIdx`/`ofFn`/`succAbove` are never connected directly), so it is proved
-from scratch by induction on the family length.
+`Combinatorics/Common/DeletedFinPositionsSuccAbove.lean` and
+`Combinatorics/PerfectPairing/EraseZeroSuccAbove.lean` for the two-position case that lemma
+actually uses). This file has no Mathlib precedent (`eraseIdx`/`ofFn`/`succAbove` are never
+connected directly), so it is proved from scratch by induction on the family length.
 -/
 
 theorem List.eraseIdx_ofFn_eq_ofFn_succAbove {α : Type*} :
