@@ -490,12 +490,13 @@ multi-mode operators; the finite-temperature structure noted above (KMS antiperi
 full Matsubara-Green-function apparatus; the genuine Dyson series and diagram connectedness (steps
 5–7).
 
-- `Common/BlochDeDominicis/GibbsExpectation.lean`'s `gibbsExpectation_peel`: the normalized
+- `Common/BlochDeDominicis/GibbsExpectation/Peel.lean`'s `gibbsExpectation_peel`: the normalized
   counterpart of `PeelFirstTrace.lean`'s peel identity, dividing through by the genuine partition
   function — `⟨C₁B₁⋯Bₖ⟩ = ⟨peelSum ζ l⟩ / (1 - ζ^{l.length}w₁)`. The general list-indexed analogue
   of `gibbsExpectation_comp_eq_div_of_zetaCommutator`/
   `gibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator`.
-- Same file's `gibbsExpectation_four_point`: the genuine normalized 4-point *expansion* itself,
+- `Common/BlochDeDominicis/GibbsExpectation/FourPoint.lean`'s `gibbsExpectation_four_point`: the
+  genuine normalized 4-point *expansion* itself,
   `⟨C₁C₂C₃C₄⟩ = ⟨C₁C₂⟩⟨C₃C₄⟩ + ζ⟨C₁C₃⟩⟨C₂C₄⟩ + ⟨C₁C₄⟩⟨C₂C₃⟩` — the physics reference notes' own
   4-point example, proved (given `ζ² = 1`) purely by rewriting `gibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator`'s
   coefficients `c₁ⱼ/(1-ζw₁)` as `⟨C₁Cⱼ⟩`.
