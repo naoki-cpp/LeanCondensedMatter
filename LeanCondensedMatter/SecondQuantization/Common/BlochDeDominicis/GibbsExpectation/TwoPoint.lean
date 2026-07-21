@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.GibbsExpectation.Core
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.TwoPoint
+import LeanCondensedMatter.SecondQuantization.Common.ExchangeCommutator
 
 set_option linter.style.header false
 
@@ -24,7 +25,7 @@ leaving it as an un-divided trace equation. -/
 theorem gibbsExpectation_comp_eq_div_of_zetaCommutator (energy : Config → ℝ) (β q1 : ℝ)
     (ζ c1j : ℂ) (C1 Cj : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
-    (hcomm : C1.comp Cj - ζ • (Cj.comp C1) =
+    (hcomm : zetaCommutator ζ C1 Cj =
       c1j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
     (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0)
     (hne : (1 : ℂ) - ζ * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
@@ -35,6 +36,21 @@ theorem gibbsExpectation_comp_eq_div_of_zetaCommutator (energy : Config → ℝ)
     ← traceFock_diagonalEvolution_comp_eq_weightedTrace, ← traceFock_diagonalEvolution_eq_weightSum,
     div_eq_div_iff hZ hne]
   linear_combination h
+
+/-- **The `Statistics`-indexed presentation**, in terms of `exchangeCommutator s` rather than a
+raw `ζ : ℂ`/`zetaCommutator` pair — the form callers already holding a `Statistics` value (as
+opposed to `Induction.lean`'s general induction, which stays generic over `ζ`) should reach for. -/
+theorem gibbsExpectation_comp_eq_div_of_exchangeCommutator (energy : Config → ℝ) (β q1 : ℝ)
+    (s : Statistics) (c1j : ℂ) (C1 Cj : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (hC1 : heisenbergEvolve energy (-β) C1 = Complex.exp ((q1 * (-β) : ℝ) : ℂ) • C1)
+    (hcomm : exchangeCommutator s C1 Cj =
+      c1j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
+    (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0)
+    (hne : (1 : ℂ) - (s.zetaInt : ℂ) * Complex.exp ((q1 * β : ℝ) : ℂ) ≠ 0) :
+    gibbsExpectation energy β (C1.comp Cj) =
+      c1j / (1 - (s.zetaInt : ℂ) * Complex.exp ((q1 * β : ℝ) : ℂ)) :=
+  gibbsExpectation_comp_eq_div_of_zetaCommutator energy β q1 (s.zetaInt : ℂ) c1j C1 Cj hC1 hcomm
+    hZ hne
 
 end Common
 end SecondQuantization
