@@ -1,8 +1,8 @@
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.GibbsExpectation
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PairingWeight
-import LeanCondensedMatter.Combinatorics.PairingEraseZeroSuccAbove
-import LeanCondensedMatter.Combinatorics.PairingPairsInsertFirstPair
-import LeanCondensedMatter.Combinatorics.PairingEquivSigmaSum
+import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZeroSuccAbove
+import LeanCondensedMatter.Combinatorics.PerfectPairing.PairsDecomposition
+import LeanCondensedMatter.Combinatorics.PerfectPairing.SumDecomposition
 
 set_option linter.style.header false
 

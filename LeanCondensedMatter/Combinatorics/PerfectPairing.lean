@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.DeletedFinPositions
+import LeanCondensedMatter.Combinatorics.Common.DeletedFinPositions
 import Mathlib.Data.Finset.Filter
 import Mathlib.Data.Finset.Prod
 import Mathlib.Data.Fintype.Sets
