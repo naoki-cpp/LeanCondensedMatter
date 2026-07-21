@@ -8,14 +8,16 @@ set_option linter.style.openClassical false
 /-!
 # The normalized Gibbs expectation, as a `boltzmannWeight`-specialized `normalizedWeightedDiagonal`
 
-Every Bloch–de Dominicis theorem proved in `BlochDeDominicis/` is stated in terms of the
-*un-normalized* `traceFock`/`tsumTrace` of `e^{-βH₀}X`, deliberately left un-divided so callers
-choose whether/how to divide. The genuine physical statement of the theorem — e.g. the 4-point
-expansion `⟨C₁C₂C₃C₄⟩_β = ⟨C₁C₂⟩_β⟨C₃C₄⟩_β + ζ⟨C₁C₃⟩_β⟨C₂C₄⟩_β + ⟨C₁C₄⟩_β⟨C₂C₃⟩_β` (for `ζ = ±1`,
-the project's physics reference notes, `quantum-statistical-mechanics.tex`) — is a product of
+The foundational trace-level identities in `BlochDeDominicis/TwoPoint.lean`,
+`FourPointReduction.lean`, and `PeelFirstTrace.lean` are stated in terms of the *un-normalized*
+`traceFock`/`tsumTrace` of `e^{-βH₀}X`, deliberately left un-divided so callers choose whether/how
+to divide. The genuine physical statement of the theorem — e.g. the 4-point expansion
+`⟨C₁C₂C₃C₄⟩_β = ⟨C₁C₂⟩_β⟨C₃C₄⟩_β + ζ⟨C₁C₃⟩_β⟨C₂C₄⟩_β + ⟨C₁C₄⟩_β⟨C₂C₃⟩_β` (for `ζ = ±1`, the
+project's physics reference notes, `quantum-statistical-mechanics.tex`) — is a product of
 *normalized* 2-point *numbers*, not un-normalized traces. This file introduces that normalized
-functional and its basic algebraic properties; `TwoPoint.lean`/`FourPoint.lean`/`Peel.lean`
-(alongside this file, reassembled by `GibbsExpectation.lean`) build the genuine normalized
+functional and its basic algebraic properties; the sibling files in this directory —
+`GibbsExpectation/TwoPoint.lean`/`GibbsExpectation/FourPoint.lean`/`GibbsExpectation/Peel.lean`
+(alongside this file, reassembled by `GibbsExpectation.lean`) — build the genuine normalized
 Bloch–de Dominicis identities on top of it.
 
 **Not a new abstraction — a `boltzmannWeight`-specialized instance of the existing
@@ -36,8 +38,9 @@ Unlike `traceFock`, `tsumTrace` is *not* unconditionally additive on all of `Alg
 so there is no `tsum` operator space on which a `NormalizedOperatorFunctional` (a genuine
 `LinearMap` on *all* operators) can be built the same way. A bosonic normalized expectation is
 therefore a fact about *specific* operators with their own summability witnesses (as
-`TwoPoint.lean`'s own `tsum` theorem already requires), not a `tsum` specialization of this file's
-functional-level abstraction — a structurally different, separate future addition.
+`BlochDeDominicis/TwoPoint.lean`'s own `tsum` theorem already requires), not a `tsum`
+specialization of this file's functional-level abstraction — a structurally different, separate
+future addition.
 -/
 
 namespace SecondQuantization

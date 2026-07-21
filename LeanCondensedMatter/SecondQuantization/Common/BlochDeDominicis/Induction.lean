@@ -12,9 +12,10 @@ set_option linter.style.header false
 
 The genuine `n`-point statement: a normalized Gibbs expectation of a `2n`-operator product is the
 `Pairing n`-weighted sum of products of normalized 2-point values, generalizing
-`GibbsExpectation.lean`'s `gibbsExpectation_four_point` (`n = 2`) to arbitrary `n`. Proved by plain
-induction on `n` (only the immediately-preceding case `m` is used, so ordinary `induction n`
-suffices — not strong induction), following the physics reference notes' own proof strategy: peel
+`GibbsExpectation/FourPoint.lean`'s `gibbsExpectation_four_point` (`n = 2`) to arbitrary `n`.
+Proved by plain induction on `n` (only the immediately-preceding case `m` is used, so ordinary
+`induction n` suffices — not strong induction), following the physics reference notes' own proof
+strategy: peel
 the first operator off the front (`gibbsExpectation_peel_indexed`), identify the remaining
 `2(n-1)`-operator product's family with the smaller pairing's positions directly via
 `List.eraseIdx_ofFn_eq_ofFn_succAbove`/`Pairing.eraseZeroOrderIso_eq_succ_succAbove` (the two
