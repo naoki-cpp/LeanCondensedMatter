@@ -9,8 +9,8 @@ set_option linter.style.header false
 Step 5 (PR 4) of Phase 9's Dyson-series plan (`notes/roadmaps/second-quantization.md`): if the
 interaction picture leaves `V` fixed (`∀ τ, V_I(τ) = V`, e.g. because `V` commutes with the free
 Hamiltonian), the continuous-integral recursion `dysonCoeff` degenerates to the ordinary scalar
-Taylor coefficients `(-τ)ⁿ/n! • Vⁿ` — matching `FormalExp.lean`'s `formalExpTerm (-τ) V` at
-`H := -τ • V`'s formal series. Specializing to the existing density–density
+Taylor coefficients `(-τ)ⁿ/n! • Vⁿ` — matching `FormalExp.lean`'s `formalExpTerm (τ • V) n`, i.e.
+the formal Taylor coefficients of `exp(-τV)`. Specializing to the existing density–density
 `interactionHamiltonian` (diagonal in the occupation basis, hence commuting with
 `freeHamiltonian`) verifies the continuous-integral construction reduces to the expected
 exponential-series coefficients on a genuine (if physically restrictive) example.
