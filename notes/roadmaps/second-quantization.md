@@ -248,7 +248,8 @@ order:
 4. `Fermionic/WeightedContraction.lean` — same-type contractions vanish (**done**, see below).
    `Common/BlochDeDominicis/TwoPoint.lean` — the statistics-agnostic 2-point base case (**done**,
    see below, validated against the fermionic line). `Common/BlochDeDominicis/Induction.lean` — the
-   general finite-mode, finite-temperature `n`-point Bloch–de Dominicis theorem, not yet started.
+   general finite-mode, finite-temperature `n`-point Bloch–de Dominicis theorem (**done**, see
+   below).
 5. `DysonExpansionFermionic.lean` — the genuine interaction-picture Dyson series (the name
    `Fermionic/FormalExp.lean` deliberately avoided).
 6. `DiagramConnectedness.lean` — connecting Dyson-series terms to diagrams and Track B's
@@ -388,15 +389,19 @@ type rather than a fermion-specific case analysis; `Fermionic/ParticleNumberChar
 linearity lemmas for `matrixCoeff` (`Common/AlgebraicFock.lean`) and
 `weightedTrace`/`normalizedWeightedDiagonal` (`Fermionic/WeightedDiagonalFunctional.lean`) in their operator
 argument.
-**A first concrete Wick-identity validation done, in `Fermionic/BlochDeDominicis/SingleModeExample.lean`:**
+**A first concrete Wick-identity validation done, in
+`Fermionic/BlochDeDominicis/Examples/SingleMode.lean`:**
 the single-mode instance of the 4-point pairing-sum identity, `⟨cᵢcᵢ†cᵢcᵢ†⟩_w = ⟨cᵢcᵢ†⟩_w² +
 ζ⟨cᵢcᵢ⟩_w⟨cᵢ†cᵢ†⟩_w + ⟨cᵢcᵢ†⟩_w⟨cᵢ†cᵢ⟩_w`
 (`normalizedWeightedDiagonal_annihilate_create_annihilate_create_single_mode`), for an *arbitrary*
 occupation-number-diagonal weight `w` — **not yet a finite-temperature statement** (no `β`,
 Hamiltonian, or Boltzmann weight appears). The coefficients `1`, `ζ`, `1` are hand-written to match
 `Common/BlochDeDominicis/PairingWeight.lean`'s four-position pairing weights term by term, not obtained by
-summing over `Common.BlochDeDominicis.Pairing 2` itself — an actual connection between this
-operator computation and the `Pairing` API remains future work. Proved purely from CAR (no
+summing over `Common.BlochDeDominicis.Pairing 2` itself. `Common/BlochDeDominicis/Induction.lean`'s
+general theorem now gives that genuine `Pairing 2`-sum connection for `gibbsExpectation` (a
+specific, genuine Gibbs weight); restating *this* file's arbitrary-`w` identity as a `Pairing 2`
+sum remains separate future work, since the general theorem is specific to `gibbsExpectation`, not
+an arbitrary normalized diagonal weight `w`. Proved purely from CAR (no
 cross-mode independence of the weight needed, since all four operators act at the same mode);
 supporting lemmas `annihilate_comp_self`/`create_comp_self` (`Fermionic/
 CanonicalAnticommutationRelations.lean`), `numberOperator_comp_self`/`annihilate_comp_create_comp_self`/
@@ -444,7 +449,7 @@ supplies `1 - ζw₁ ≠ 0` only if needed). **Validated end-to-end against the 
 annihilate i`, `Cⱼ := create j`, `ζ := -1`, reproducing the already-independently-established
 closed-form Fermi–Dirac 2-point function (`Fermionic/FreeTwoPointFunction.lean`). (The earlier
 hand-derived single-mode sanity check, not routed through this general framework, is kept
-separately as `Fermionic/BlochDeDominicis/SingleModeExample.lean`.)
+separately as `Fermionic/BlochDeDominicis/Examples/SingleMode.lean`.)
 
 **A genuine bosonic instantiation of the `tsum` 2-point base case done, in
 `Bosonic/BlochDeDominicis/TwoPoint.lean`:** `tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create`
@@ -462,10 +467,10 @@ undivided `⟨aᵢaᵢ†⟩_β`-numerator equation, not the normalized expectat
 from it would additionally need `aᵢaᵢ† = N_i + 1`, i.e. a bosonic `numberOperator`, which doesn't
 exist yet). The general
 `n`-point Bloch–de Dominicis theorem itself (the `n`-point sum-over-pairings formula,
-`Common/BlochDeDominicis/Induction.lean`, not yet started).
+`Common/BlochDeDominicis/Induction.lean`) **is now proved — see further below.**
 
-**Concrete stepping stones toward it done:**
-- `Common/BlochDeDominicis/FourPointReduction.lean`: the `n = 2` (4-operator) *first-operator
+**Concrete stepping stones built along the way (predating the general induction):**
+- `Common/BlochDeDominicis/Specializations/FourPointReduction.lean`: the `n = 2` (4-operator) *first-operator
   reduction* — commuting `C₁` through the three remaining factors via the c-number exchange
   commutator, then one KMS cyclicity step, giving `(1 - ζ³w₁) Tr[e^{-βH₀}(C₁C₂C₃C₄)] = c₁₂
   Tr[e^{-βH₀}(C₃C₄)] + ζc₁₃ Tr[e^{-βH₀}(C₂C₄)] + ζ²c₁₄ Tr[e^{-βH₀}(C₂C₃)]`. **Not the genuine
@@ -485,12 +490,11 @@ exist yet). The general
 
 `peelSum` is defined *recursively*, mirroring the substitution steps directly, rather than as a
 closed `Finset.sum`-over-erasures formula matching the physics notes' `Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩`
-presentation — connecting the two, and reducing the right side to a genuine sum over `Pairing n`
-(not just matching already-known weights by hand, as the single-mode 4-point sanity check still
-does), remains the core of the not-yet-started general induction. Still needed beyond that:
-multi-mode operators; the finite-temperature structure noted above (KMS antiperiodicity etc.); the
-full Matsubara-Green-function apparatus; the genuine Dyson series and diagram connectedness (steps
-5–7).
+presentation — `PeelTermsIndexed.lean`/`GibbsExpectation/Peel.lean` connect the two, and the
+general induction (below) reduces the right side to a genuine sum over `Pairing n`, closing this
+gap. Still needed beyond that: multi-mode operators in the concrete correlator files; the
+finite-temperature structure noted above (KMS antiperiodicity etc.); the full Matsubara-Green-
+function apparatus; the genuine Dyson series and diagram connectedness (steps 5–7).
 
 - `Common/BlochDeDominicis/GibbsExpectation/Peel.lean`'s `gibbsExpectation_peel`: the normalized
   counterpart of `PeelFirstTrace.lean`'s peel identity, dividing through by the genuine partition
@@ -503,10 +507,11 @@ full Matsubara-Green-function apparatus; the genuine Dyson series and diagram co
   4-point example, proved (given `ζ² = 1`) purely by rewriting `gibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator`'s
   coefficients `c₁ⱼ/(1-ζw₁)` as `⟨C₁Cⱼ⟩`.
 
-**The general `n`-point statement's API surface was drafted and confirmed to type-check** (PR
-#116; the theorem itself is *not* proved — a `sorry`-containing statement can't be merged per this
-project's CI "no `sorry`" check, so the draft below is recorded here as a design note rather than
-committed as dead Lean code):
+**The general `n`-point statement's API surface was first drafted and confirmed to type-check**
+(PR #116; at the time the theorem itself was *not* proved — a `sorry`-containing statement can't
+be merged per this project's CI "no `sorry`" check, so the draft below was recorded as a design
+note rather than committed as dead Lean code. **It has since been proved in full — see further
+below** — the statement here is kept as the historical record of the design step):
 
 ```lean
 theorem gibbsExpectation_prodComp_eq_sum_pairing (n : ℕ) (s : Statistics)
@@ -711,7 +716,7 @@ down.
 `Combinatorics/PerfectPairing.lean`:** `Pairing.eraseZeroPair_insertFirstPair` proves
 `(pairing.insertFirstPair j hj).eraseZeroPair = pairing` — `eraseZeroPair` is a left inverse of
 `insertFirstPair j hj` — using `deletedPositionsOrderIso_congr` (a new proof-irrelevance helper in
-`DeletedPositions.lean`) to identify the erase step's own order isomorphism with the one
+`Combinatorics/Common/DeletedFinPositions.lean`) to identify the erase step's own order isomorphism with the one
 `insertFirstPair` used, plus `insertFirstPair_partner_orderIso`. `Pairing.insertFirstPair_eraseZeroPair`
 proves the reverse composite `pairing.eraseZeroPair.insertFirstPair (pairing.partner 0) hzero =
 pairing` for `pairing : Pairing (n + 1)` — on the fiber of pairings with `partner 0 = j`,
@@ -777,11 +782,8 @@ a summability-controlled submodule of operators (e.g. `Submodule ℂ (AlgebraicF
 AlgebraicFock Config)` restricted to operators whose diagonal is `w`-summable) to state a
 `LinearMap` on, or a generalization of `NormalizedOperatorFunctional` parametric in the operator
 domain — a design question for that later PR, not resolved here. The free bosonic
-two-point/occupation-number closed forms built on top of it are separate future work too; the
-further quasifree/thermal-
-exchange structure the Bloch–de Dominicis identity actually needs on top of
-`NormalizedOperatorFunctional`; connecting that structure to `ExchangeAlgebra`/the pairing
-combinatorics; a first concrete Bloch–de Dominicis induction step (the finite-temperature 4-point
-identity `⟨A₁A₂A₃A₄⟩_{0,β} = ⟨A₁A₂⟩_{0,β}⟨A₃A₄⟩_{0,β} + ζ⟨A₁A₃⟩_{0,β}⟨A₂A₄⟩_{0,β} +
-⟨A₁A₄⟩_{0,β}⟨A₂A₃⟩_{0,β}`, before the general `2n`-point theorem) using `ExchangeAlgebra` and
-`weight_eraseZeroPair` to validate the pairing-sign design.
+two-point/occupation-number closed forms built on top of it are separate future work too.
+(The finite-temperature 4-point identity and the general `2n`-point theorem this paragraph
+originally flagged as future work are both **now proved** — `GibbsExpectation/FourPoint.lean`'s
+`gibbsExpectation_four_point` and `Induction.lean`'s `gibbsExpectation_prodComp_eq_sum_pairing`,
+using `ExchangeAlgebra`/`Pairing.weight_eraseZeroPair` exactly as anticipated — see further below.)
