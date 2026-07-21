@@ -5,13 +5,13 @@ set_option linter.style.header false
 /-!
 # Reindexing a sum over `Pairing (n + 1)` via `equivSigma`
 
-The eighth bridging piece toward the general `n`-point Bloch–de Dominicis induction
-(`notes/roadmaps/second-quantization.md`'s Phase 9): `PerfectPairing.lean`'s `Pairing.equivSigma`
-decomposes `Pairing (n + 1)` as a choice of `0`'s partner `j` together with the smaller pairing left
-after removing it. This file turns that `Equiv` into the `Finset.sum` reindexing identity the
-induction actually needs: a sum over `Pairing (n + 1)` equals a double sum, first over positions
-`j : Fin (2 * n + 1)` (matching `PeelTermsIndexed.lean`'s peeled-term indexing), then over the
-smaller `Pairing n`, reassembled via `Pairing.insertFirstPair`.
+`PerfectPairing.lean`'s `Pairing.equivSigma` decomposes `Pairing (n + 1)` as a choice of `0`'s
+partner `j` together with the smaller pairing left after removing it. This file turns that `Equiv`
+into a `Finset.sum` reindexing identity: a sum over `Pairing (n + 1)` equals a double sum, first
+over positions `j : Fin (2 * n + 1)` (matching `PeelTermsIndexed.lean`'s peeled-term indexing),
+then over the smaller `Pairing n`, reassembled via `Pairing.insertFirstPair` — the form
+`Common/BlochDeDominicis/Induction.lean`'s general theorem needs to reassemble a `Pairing n` sum
+from a peeled-position sum.
 -/
 
 namespace SecondQuantization

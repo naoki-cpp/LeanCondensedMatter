@@ -24,8 +24,8 @@ passes, landing `C₁` at the very end:
 and on the left/right of the original operator product) — defined *recursively*, mirroring the
 substitution steps directly (`peelSum ζ ((B,c) :: t) = c•(prodComp of t's operators) + ζ•(B ∘
 peelSum ζ t)`), rather than as a closed `Finset.sum`-over-erasures formula matching the physics
-notes' `Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation directly — connecting the two is deferred to whenever the
-general induction actually needs to match term-by-term against `Common.BlochDeDominicis.Pairing`.
+notes' `Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation directly — `PeelTermsIndexed.lean`'s `peelTerms_eq_ofFn`
+connects the two.
 
 **Pure `LinearMap` composition algebra** — no `traceFock`/KMS-rotation/`Config`-finiteness involved
 here. The trace-level KMS-rotation wrapping (solving the resulting self-referential trace
@@ -33,10 +33,10 @@ equation, the way `FourPointReduction.lean` does for the 3-operator case) is don
 `Common/BlochDeDominicis/PeelFirstTrace.lean`.
 
 **`peelSum_eq_peelTerms_sum` below converts `peelSum` into a `List.sum`**, `peelTerms`'s
-recursively-defined terms — not yet the indexed erasure formula (`ζʲ • cⱼ • prodComp (l.eraseIdx
-j |>.map Prod.fst)`, via `List.get`/`List.eraseIdx`) that would let each term be matched
-individually against `Common.BlochDeDominicis.Pairing`; that further step (`peelTerms_get`-style
-API) is deferred to whenever the general induction actually needs it.
+recursively-defined terms. `PeelTermsIndexed.lean`'s `peelTerms_eq_ofFn` further converts this into
+the indexed erasure formula (`ζʲ • cⱼ • prodComp (l.eraseIdx j |>.map Prod.fst)`, via
+`List.eraseIdx`) that lets each term be matched individually against
+`Common.BlochDeDominicis.Pairing`.
 -/
 
 namespace SecondQuantization
@@ -79,10 +79,9 @@ noncomputable def peelTerms (ζ : ℂ) :
 
 /-- **`peelSum` is the sum of its `peelTerms`** — the closed-form counterpart of `peelSum`'s
 recursive definition, `Σⱼ ζʲcⱼ•(remaining product with `Bⱼ` erased)` as a `List.sum` rather than
-an index/`Finset.sum`-over-erasures formula (`l.get`/`l.eraseIdx`) matching the physics notes'
-`Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation letter-for-letter — connecting `peelTerms` to that indexed form,
-whenever the general induction needs to match term-by-term against
-`Common.BlochDeDominicis.Pairing`, is deferred. -/
+an index/`Finset.sum`-over-erasures formula (`l.eraseIdx`) matching the physics notes'
+`Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation letter-for-letter (`PeelTermsIndexed.lean`'s `peelTerms_eq_ofFn`
+gives that indexed form). -/
 theorem peelSum_eq_peelTerms_sum (ζ : ℂ)
     (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ)) :
     peelSum ζ l = (peelTerms ζ l).sum := by

@@ -5,21 +5,17 @@ set_option linter.style.header false
 /-!
 # `List.ofFn`, erased at a position, is `List.ofFn` composed with `Fin.succAbove`
 
-A small general-purpose lemma (no `SecondQuantization`/`AlgebraicFock` dependency at all) needed
-by the third bridging piece toward the general `n`-point Bloch–de Dominicis induction
-(`notes/roadmaps/second-quantization.md`'s Phase 9): connecting `PeelFirst.lean`'s
-`List.eraseIdx`-based erasure (`PeelTermsIndexed.lean`'s `peelTerms_eq_ofFn`) to
-`Combinatorics/PerfectPairing.lean`'s `Fin`-indexed one (`Pairing.eraseZeroPair`, built via
-`Combinatorics/DeletedFinPositions.lean`'s `deletedPositionsOrderIso`) needs a common description
-of "erase one position from a `Fin`-indexed family" on both sides. `Fin.succAbove` is the standard
-such description for erasing a *single* position: `j.succAbove : Fin m → Fin (m + 1)` is the
-increasing embedding onto `Fin (m + 1) \ {j}`, so composing a family `C : Fin (m + 1) → α` with it
-gives `C` restricted to everything but position `j`. Note `deletedPositionsOrderIso` itself is built
-directly as a `Finset.orderIsoOfFin`, not via `succAbove` — connecting the two (and lifting this
-file's single-position erasure to `Pairing.eraseZeroPair`'s two-position removal of `0` and its
-partner) is deferred to a later step. This file has no Mathlib precedent (`eraseIdx`/`ofFn`/
-`succAbove` are never connected directly), so it is proved from scratch by induction on the family
-length.
+A small general-purpose lemma (no `SecondQuantization`/`AlgebraicFock` dependency at all):
+`Fin.succAbove` is the standard description for erasing a *single* position from a `Fin`-indexed
+family — `j.succAbove : Fin m → Fin (m + 1)` is the increasing embedding onto `Fin (m + 1) \ {j}`,
+so composing a family `C : Fin (m + 1) → α` with it gives `C` restricted to everything but position
+`j`. This connects `PeelFirst.lean`'s `List.eraseIdx`-based erasure (`PeelTermsIndexed.lean`'s
+`peelTerms_eq_ofFn`) to `Fin`-indexed erasure — the description
+`Combinatorics/PerfectPairing.lean`'s `Pairing.eraseZeroPair` needs to line up against (see
+`DeletedFinPositionsSuccAbove.lean` and
+`PairingEraseZeroSuccAbove.lean` for the two-position case that lemma actually uses). This file has
+no Mathlib precedent (`eraseIdx`/`ofFn`/`succAbove` are never connected directly), so it is proved
+from scratch by induction on the family length.
 -/
 
 theorem List.eraseIdx_ofFn_eq_ofFn_succAbove {α : Type*} :

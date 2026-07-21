@@ -5,15 +5,12 @@ set_option linter.style.header false
 /-!
 # `Pairing.pairs`, decomposed into `firstPair` plus the smaller pairing's pairs
 
-The seventh bridging piece toward the general `n`-point Bloch–de Dominicis induction
-(`notes/roadmaps/second-quantization.md`'s Phase 9): `PerfectPairing.lean`'s
-`crossingCount_eraseZeroPair` already splits `crossingCount` along `firstPair` internally, but never
-exposed the underlying `Finset` decomposition of `pairing.pairs` itself as a standalone fact. This
-file states and proves it directly, by the same `eraseZeroOrderIso`/
-`mem_pairs_endpoints_mem_deletedPositions` reasoning `crossingCount_eraseZeroPair`'s proof already
-uses internally — needed so a product over
-`pairing.pairs` (not just a crossing count) can be split into the `firstPair` factor times a
-product over the smaller pairing's own pairs.
+`PerfectPairing.lean`'s `crossingCount_eraseZeroPair` splits `crossingCount` along `firstPair`
+internally, but never exposed the underlying `Finset` decomposition of `pairing.pairs` itself as a
+standalone fact. This file states and proves it directly, by the same `eraseZeroOrderIso`/
+`mem_pairs_endpoints_mem_deletedPositions` reasoning `crossingCount_eraseZeroPair`'s proof uses
+internally — needed so a product over `pairing.pairs` (not just a crossing count) can be split
+into the `firstPair` factor times a product over the smaller pairing's own pairs.
 -/
 
 namespace SecondQuantization

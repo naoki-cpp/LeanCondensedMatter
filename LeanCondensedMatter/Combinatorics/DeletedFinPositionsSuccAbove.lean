@@ -5,16 +5,14 @@ set_option linter.style.header false
 /-!
 # `deletedPositionsOrderIso`, decomposed into two `Fin.succAbove`/`Fin.succ` steps
 
-The fourth bridging piece toward the general `n`-point Bloch–de Dominicis induction
-(`notes/roadmaps/second-quantization.md`'s Phase 9), following `Combinatorics/EraseIdxOfFn.lean`
-(flagged as the natural next step by that PR's review): `DeletedFinPositions.lean`'s
-`deletedPositionsOrderIso` is built directly as a `Finset.orderIsoOfFin`, not via `Fin.succAbove`,
-so it cannot yet be compared term-by-term against `EraseIdxOfFn.lean`'s single-`succAbove`
-description of list erasure. This file closes that gap for the *specific* shape
-`deletedPositionsOrderIso` always has in this project — removing `0` together with a *second*,
-already-nonzero position `j` — by showing it agrees with the explicit two-step map "avoid `k`'s
-position among the positions above `0`, then shift up by one via `Fin.succ` to skip `0` itself",
-where `k` is `j` written as a successor (`j = k.succ`, always possible since `j ≠ 0`).
+`DeletedFinPositions.lean`'s `deletedPositionsOrderIso` is built directly as a
+`Finset.orderIsoOfFin`, not via `Fin.succAbove`, so it cannot be compared term-by-term against
+`EraseIdxOfFn.lean`'s single-`succAbove` description of list erasure without further work. This
+file closes that gap for the *specific* shape `deletedPositionsOrderIso` always has in this
+project — removing `0` together with a *second*, already-nonzero position `j` — by showing it
+agrees with the explicit two-step map "avoid `k`'s position among the positions above `0`, then
+shift up by one via `Fin.succ` to skip `0` itself", where `k` is `j` written as a successor
+(`j = k.succ`, always possible since `j ≠ 0`).
 
 Every use of `deletedPositionsOrderIso n j hzero` in `Combinatorics/PerfectPairing.lean` has `j`
 equal to some `pairing.partner 0`, which is always nonzero. Stating the hypothesis as `j = k.succ`

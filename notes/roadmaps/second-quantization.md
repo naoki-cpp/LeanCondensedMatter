@@ -547,12 +547,12 @@ gibbsExpectation (remaining 2n-2 operators, Cⱼ erased)` terms, one per positio
 remaining product (giving a `Pairing (n-1)` sum for it), and reassemble into a `Pairing n` sum via
 `Combinatorics.PerfectPairing`'s `Pairing.insertFirstPair`/`Pairing.equivSigma`.
 
-**Four bridging pieces built since the statement was drafted** (all proved, no `sorry`, each its own
-small PR verified independently against the existing infrastructure):
-- `Common/BlochDeDominicis/ProdCompFamily.lean`: `prodCompFamily`/`prodCompFamily_succ` — lets a
-  `Fin`-indexed operator family (matching `Pairing n`'s own `Fin (2n)`-indexing, the shape the
-  target statement above actually uses) invoke `PeelFirst.lean`'s `List`-indexed peel lemmas
-  directly on `C 0` and the tail family, via `List.ofFn`.
+**Bridging pieces built since the statement was drafted** (all proved, no `sorry`, each its own
+small PR verified independently against the existing infrastructure — a `prodCompFamily`/
+`prodCompFamily_succ` wrapper was also built at this stage to let a `Fin`-indexed operator family
+invoke `PeelFirst.lean`'s `List`-indexed peel lemmas via `List.ofFn`, but the general theorem below
+ended up invoking `prodComp (List.ofFn C)` directly instead, so it was removed as dead code in
+PR #127):
 - `Common/BlochDeDominicis/PeelTermsIndexed.lean`: `peelTerms_eq_ofFn` — `PeelFirst.lean`'s
   recursively-defined `peelTerms` agrees with the closed-form, `List.eraseIdx`-indexed description
   matching the physics notes' `Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation term-by-term.
