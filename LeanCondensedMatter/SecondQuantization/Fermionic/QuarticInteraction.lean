@@ -1,7 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.InteractionPicture
 
 set_option linter.style.header false
-set_option linter.unusedFintypeInType false
 
 /-!
 # A fixed-arity number-conserving quartic interaction
@@ -60,6 +59,7 @@ noncomputable def quarticInteraction (g : QuarticVertexLabel Mode → ℂ) :
     FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
   ∑ q, g q • quarticVertexOperator q
 
+omit [Fintype Mode] in
 /-- **A single quartic vertex's interaction-picture expansion**: at time `τ`, it is the same
 vertex operator, rescaled by `exp(τ(ε(create₁) + ε(create₂) - ε(annihilate₁) - ε(annihilate₂)))`
 — each of its four ladder operators evolves independently (`imaginaryTimeEvolve_create`/

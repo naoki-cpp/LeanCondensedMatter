@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.AlgebraicFock
 import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
-import LeanCondensedMatter.SecondQuantization.Common.FiniteOperatorIntegral
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 
 set_option linter.style.header false
@@ -112,6 +111,39 @@ theorem heisenbergEvolve_zero (energy : Config → ℝ)
     heisenbergEvolve energy 0 A = A := by
   simp [heisenbergEvolve]
 
+/-- **`heisenbergEvolve` distributes over composition**: `(AB)(τ) = A(τ) B(τ)`, since the
+`e^{-τH₀} e^{τH₀}` inserted between `A` and `B` cancels. Purely algebraic — no `Fintype Config`
+needed, since it only rearranges `LinearMap.comp` associativity and cancels
+`diagonalEvolution_neg_comp`. -/
+theorem heisenbergEvolve_comp (energy : Config → ℝ) (τ : ℝ)
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    heisenbergEvolve energy τ (A.comp B) =
+      (heisenbergEvolve energy τ A).comp (heisenbergEvolve energy τ B) := by
+  simp only [heisenbergEvolve]
+  have hcancel : (diagonalEvolution energy (-τ)).comp ((diagonalEvolution energy τ).comp
+      (B.comp (diagonalEvolution energy (-τ)))) = B.comp (diagonalEvolution energy (-τ)) := by
+    rw [← LinearMap.comp_assoc (B.comp (diagonalEvolution energy (-τ))) (diagonalEvolution energy τ)
+      (diagonalEvolution energy (-τ)), diagonalEvolution_neg_comp, LinearMap.id_comp]
+  rw [LinearMap.comp_assoc, LinearMap.comp_assoc, LinearMap.comp_assoc, hcancel]
+
+/-- **`heisenbergEvolve` commutes with scalar multiplication.** Purely algebraic. -/
+theorem heisenbergEvolve_smul (energy : Config → ℝ) (τ : ℝ) (c : ℂ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    heisenbergEvolve energy τ (c • A) = c • heisenbergEvolve energy τ A := by
+  simp only [heisenbergEvolve, LinearMap.smul_comp, LinearMap.comp_smul]
+
+/-- **`heisenbergEvolve` distributes over finite sums.** Purely algebraic, by induction on the
+`Finset` using `LinearMap.comp_add`/`LinearMap.add_comp`. -/
+theorem heisenbergEvolve_sum {ι : Type*} (energy : Config → ℝ) (τ : ℝ) (s : Finset ι)
+    (f : ι → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    heisenbergEvolve energy τ (∑ i ∈ s, f i) = ∑ i ∈ s, heisenbergEvolve energy τ (f i) := by
+  classical
+  induction s using Finset.induction with
+  | empty => simp [heisenbergEvolve]
+  | insert x s hx ih =>
+    rw [Finset.sum_insert hx, Finset.sum_insert hx, ← ih]
+    simp only [heisenbergEvolve, LinearMap.add_comp, LinearMap.comp_add]
+
 /-! ## Matrix coefficients -/
 
 /-- **`diagonalEvolution`'s matrix coefficients**: diagonal, `exp(τ · energy n)` on the diagonal
@@ -163,47 +195,6 @@ theorem matrixCoeff_heisenbergEvolve [Fintype Config] (energy : Config → ℝ) 
   congr 2
   push_cast
   ring
-
-/-- **`heisenbergEvolve` distributes over composition**: `(AB)(τ) = A(τ) B(τ)`, since the
-`e^{-τH₀} e^{τH₀}` inserted between `A` and `B` cancels. Proved via matrix coefficients
-(`matrixCoeff_heisenbergEvolve`/`matrixCoeff_comp`), rather than by rearranging `LinearMap.comp`
-associativity directly: both sides' `(m, n)` matrix entry reduces to `exp(τ(energy m - energy n))
-* Σ k, matrixCoeff A m k * matrixCoeff B k n`, the intermediate `exp(τ(energy m - energy k)) *
-exp(τ(energy k - energy n))` factor collapsing to `exp(τ(energy m - energy n))` for every `k`. -/
-theorem heisenbergEvolve_comp [Fintype Config] (energy : Config → ℝ) (τ : ℝ)
-    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    heisenbergEvolve energy τ (A.comp B) =
-      (heisenbergEvolve energy τ A).comp (heisenbergEvolve energy τ B) := by
-  apply matrixCoeff_ext
-  intro m n
-  rw [matrixCoeff_heisenbergEvolve, matrixCoeff_comp, matrixCoeff_comp, Finset.mul_sum]
-  refine Finset.sum_congr rfl fun k _ => ?_
-  rw [matrixCoeff_heisenbergEvolve, matrixCoeff_heisenbergEvolve,
-    show ((τ * (energy m - energy n) : ℝ) : ℂ) =
-      ((τ * (energy m - energy k) : ℝ) : ℂ) + ((τ * (energy k - energy n) : ℝ) : ℂ) from by
-      push_cast; ring,
-    Complex.exp_add]
-  ring
-
-/-- **`heisenbergEvolve` commutes with scalar multiplication.** -/
-theorem heisenbergEvolve_smul [Fintype Config] (energy : Config → ℝ) (τ : ℝ) (c : ℂ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    heisenbergEvolve energy τ (c • A) = c • heisenbergEvolve energy τ A := by
-  apply matrixCoeff_ext
-  intro m n
-  rw [matrixCoeff_heisenbergEvolve, matrixCoeff_smul, matrixCoeff_smul,
-    matrixCoeff_heisenbergEvolve]
-  ring
-
-/-- **`heisenbergEvolve` distributes over finite sums**, via `matrixCoeff_sum`'s own linearity. -/
-theorem heisenbergEvolve_sum [Fintype Config] {ι : Type*} (energy : Config → ℝ) (τ : ℝ)
-    (s : Finset ι) (f : ι → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    heisenbergEvolve energy τ (∑ i ∈ s, f i) = ∑ i ∈ s, heisenbergEvolve energy τ (f i) := by
-  apply matrixCoeff_ext
-  intro m n
-  rw [matrixCoeff_heisenbergEvolve, matrixCoeff_sum, Finset.mul_sum, matrixCoeff_sum]
-  refine Finset.sum_congr rfl fun i _ => ?_
-  rw [matrixCoeff_heisenbergEvolve]
 
 /-! ## The KMS-type commutation relation, for an operator with a known eigenvalue shift -/
 
