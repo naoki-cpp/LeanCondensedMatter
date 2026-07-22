@@ -70,6 +70,14 @@ theorem constantCoeff_dysonPartitionSeries (ε : Mode → ℝ) (β : ℝ)
   push_cast [fermionEnergy]
   ring_nf
 
+omit [LinearOrder Mode] in
+@[simp]
+theorem dysonPartitionCoeff_zero (ε : Mode → ℝ) (β : ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    dysonPartitionCoeff ε β V 0 = freePartitionFunction ε β := by
+  rw [← coeff_dysonPartitionSeries, PowerSeries.coeff_zero_eq_constantCoeff,
+    constantCoeff_dysonPartitionSeries]
+
 /-- **The normalized/log'd Dyson partition series**, feeding `dysonPartitionSeries` into the
 existing `FormalLogPartitionFunction.lean` layer once its zeroth-order term is known nonzero
 (`freePartitionFunction_ne_zero`). -/

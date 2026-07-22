@@ -8,13 +8,19 @@ set_option linter.style.header false
 
 Step 6 (PR 2) of the diagram-connectedness plan (`notes/roadmaps/second-quantization.md`): the
 type-level seam between the Dyson series (`ℕ`-indexed perturbation order) and Track B's moment
-type (`Finset α → ℂ`, indexed by a finite vertex set). `dysonVertexMoment` reduces to `dysonCoeff`
-along `n := S.card`, so `Combinatorics/DiagramConnectedness.lean`'s abstract
-`WeightedDiagramFamily` machinery can eventually be instantiated with a genuine vertex set `S` of
-interaction insertions rather than a bare perturbation order.
+type (`Finset α → ℂ`, indexed by a finite vertex set). `dysonVertexMoment` is `S.card!` times the
+*normalized* Dyson partition coefficient at `n := S.card`
+(`normalizedDysonPartitionCoeff`), whose numerator is `dysonPartitionCoeff`, the free-Gibbs-
+weighted trace of the operator-valued `dysonCoeff` — not `dysonCoeff` itself. This lets
+`Combinatorics/DiagramConnectedness.lean`'s abstract `WeightedDiagramFamily` machinery eventually
+be instantiated with a genuine vertex set `S` of interaction insertions rather than a bare
+perturbation order.
 
-**The `S.card.factorial` normalization is required, not cosmetic.** `dysonPartitionSeries` is an
-*ordinary* power series, `Z/Z₀ = Σₙ zₙ λⁿ`; finite-set partition combinatorics (Track B's
+**The `S.card.factorial` normalization is required, not cosmetic.**
+`normalizePartitionSeries (dysonPartitionSeries ε β V)` — equivalently,
+`normalizedDysonPartitionCoeff`'s own coefficients — is the *ordinary* power series `Z/Z₀ = Σₙ zₙ
+λⁿ` (`dysonPartitionSeries` itself is un-normalized, with constant term `Z₀ :=
+freePartitionFunction`, not `1`); finite-set partition combinatorics (Track B's
 `Finpartition.momentFromCumulant`/`cumulantFromMoment`) is native to *exponential* generating
 series, `Σₙ mₙ λⁿ/n!`. Matching the two conventions forces `mₙ = n! zₙ` — omitting the factorial
 would give set-partition block products the wrong multinomial weighting once diagram families with
@@ -39,13 +45,6 @@ empty vertex set. -/
 noncomputable def normalizedDysonPartitionCoeff (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) : ℂ :=
   dysonPartitionCoeff ε β V n / freePartitionFunction ε β
-
-omit [LinearOrder Mode] in
-theorem dysonPartitionCoeff_zero (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
-    dysonPartitionCoeff ε β V 0 = freePartitionFunction ε β := by
-  have h := constantCoeff_dysonPartitionSeries ε β V
-  rwa [← PowerSeries.coeff_zero_eq_constantCoeff, coeff_dysonPartitionSeries] at h
 
 omit [LinearOrder Mode] in
 @[simp]
