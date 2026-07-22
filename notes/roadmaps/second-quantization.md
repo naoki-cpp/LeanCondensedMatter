@@ -250,11 +250,88 @@ order:
    see below, validated against the fermionic line). `Common/BlochDeDominicis/Induction.lean` — the
    general finite-mode, finite-temperature `n`-point Bloch–de Dominicis theorem (**done**, see
    below).
-5. `DysonExpansionFermionic.lean` — the genuine interaction-picture Dyson series (the name
-   `Fermionic/FormalExp.lean` deliberately avoided).
-6. `DiagramConnectedness.lean` — connecting Dyson-series terms to diagrams and Track B's
-   connectedness result.
+5. The genuine interaction-picture Dyson series (**done**, see below) — split across 5 PRs per a
+   detailed design (`Common/FiniteOperatorIntegral.lean`, `Fermionic/InteractionPicture.lean`,
+   `Fermionic/DysonExpansion.lean`, `Fermionic/DysonExpansionVerification.lean`,
+   `Fermionic/DysonPartitionSeries.lean`).
+6. Diagram connectedness — connecting Dyson-series terms to diagrams and Track B's connectedness
+   result (**in progress**, see below): a 6-PR plan, PR 1 (`Combinatorics/DiagramConnectedness.lean`,
+   the abstract `WeightedDiagramFamily` moment-cumulant bridge) done; PRs 2–6 (Dyson vertex moment,
+   quartic interaction, Wick diagram structure, ordered-simplex amplitude, Dyson-to-diagram
+   expansion) not yet started.
 7. Move or generalize the current fermionic linked-cluster bridge before presenting it as `Common/` infrastructure.
+
+**Step 5 done — the genuine interaction-picture Dyson series**, as *continuous imaginary-time
+iterated integrals* (deliberately not a return to `FormalExp.lean`-style pure formal series, and
+not yet asserting infinite-series convergence or an analytic operator exponential):
+- `Common/FiniteOperatorIntegral.lean`: `operatorIntervalIntegral`, coefficientwise interval
+  integration of a finite-mode operator-valued function (`AlgebraicFock Config` has no norm/
+  topology, so integration is defined via each matrix coefficient's ordinary `ℂ`-valued
+  `intervalIntegral` directly), with `matrixCoeff_operatorIntervalIntegral`/`matrixCoeff_ext` and
+  basic linearity (`_zero`/`_same`/`_add`/`_smul`).
+- `Common/DiagonalEvolution.lean`: `matrixCoeff_diagonalEvolution_eq_ite`/
+  `matrixCoeff_heisenbergEvolve`, the generic matrix-coefficient formula for `heisenbergEvolve`'s
+  conjugation of an *arbitrary* (not necessarily eigenoperator) operator.
+- `Fermionic/InteractionPicture.lean`: `interactionPicture ε V τ := imaginaryTimeEvolve ε τ V` for
+  a general interaction operator `V`, its matrix-coefficient formula
+  (`matrixCoeff_interactionPicture`), and continuity/interval-integrability of each matrix
+  coefficient (`continuous_matrixCoeff_interactionPicture`/
+  `intervalIntegrable_matrixCoeff_interactionPicture`).
+- `Fermionic/DysonExpansion.lean`: `dysonCoeff ε V n τ`, the `n`-th order Dyson coefficient, by the
+  genuine continuous recursion `D₀(τ) = id`, `Dₙ₊₁(τ) = -∫ σ in 0..τ, V_I(σ) ∘ Dₙ(σ)` (representing
+  the time-ordered iterated integral `(-1)ⁿ ∫_{0≤τₙ≤⋯≤τ₁≤τ} V_I(τ₁)⋯V_I(τₙ) dτₙ⋯dτ₁` directly,
+  without a separate `n`-vertex time-ordering construction — the existing `timeOrderedProduct` is
+  2-operator and fermionic-signed, physically wrong for the fermion-even interaction vertex);
+  `matrixCoeff_dysonCoeff_succ`, and by induction on `n`,
+  `continuous_matrixCoeff_dysonCoeff`/`intervalIntegrable_matrixCoeff_dysonCoeff`.
+  `dysonTruncation` sums `dysonCoeff` over `n` up to `N`, weighted by `λⁿ`, mirroring
+  `FormalExp.lean`'s `formalExpTruncation` pattern.
+- `Fermionic/DysonExpansionVerification.lean`: sanity checks — for a time-independent interaction
+  (`∀ τ, V_I(τ) = V`), `dysonCoeff` degenerates to the ordinary scalar Taylor coefficients
+  `(-τ)ⁿ/n! • Vⁿ` (`dysonCoeff_eq_of_time_independent`), specialized to the existing (basis-
+  diagonal, hence time-independent) density–density `interactionHamiltonian`.
+- `Fermionic/DysonPartitionSeries.lean`: `dysonPartitionCoeff ε β V n := Tr[e^{-βH₀} Dₙ(β)]`,
+  packaged into a `PowerSeries ℂ` (`dysonPartitionSeries`) and connected to the existing
+  `normalizePartitionSeries`/`formalLogPartitionFunction` layer
+  (`dysonFormalLogPartitionFunction`), with the `n = 0` term confirmed to be the free partition
+  function.
+
+No claim anywhere in step 5 that the resulting `PowerSeries`/truncations converge, or match a
+genuine analytic `e^{-β(H₀+λV)}` beyond the `n = 0` term.
+
+**Step 6 in progress — diagram connectedness**, per a detailed 6-PR design deliberately built
+*before* any concrete diagram type (an arbitrary operator `V` carries no vertex/leg/mode
+information a diagram could be extracted from):
+- PR 1 done, `Combinatorics/DiagramConnectedness.lean`: `WeightedDiagramFamily`, an abstract
+  weighted family of diagrams on finite vertex sets that decomposes uniquely into a connected-
+  component partition plus a connected diagram per block. `diagramMoment_eq_momentFromCumulant`
+  (the total diagram-weight sum equals `Finpartition.momentFromCumulant` applied to the connected-
+  diagram contribution) and `cumulantFromMoment_diagramMoment` (the abstract "a cumulant only sees
+  connected diagrams" statement, for nonempty vertex sets) connect to `MomentCumulant.lean`'s
+  already-proved moment-cumulant inversion directly, rather than to `CumulantFactorization.lean`'s
+  narrower cross-region-independence corollary (reserved for a later `IsIndependentAcross`
+  corollary once a concrete diagram family's cross-region factorization is available). Purely
+  combinatorial — no `SecondQuantization` import.
+
+  **Design note on `decompose`'s dependent `Σ`-type reindexing.** `diagramMoment_eq_momentFromCumulant`
+  reindexes a sum along `decompose S : Diagram S ≃ Σ π : Finpartition S, ∀ B : π.parts,
+  ConnectedDiagram B` via `Equiv.sum_comp`, a dependent-`Sigma`-type `Equiv`. `notes/caveats.md`'s
+  documented lesson is narrower than "never reindex a dependent `Sigma` type": it specifically
+  flags *constructing* such an `Equiv` via `Equiv.sigmaCongr`/`cast`-heavy combinators between two
+  *different* dependent index types, which hit genuine kernel timeouts. Here `decompose` is instead
+  an arbitrary caller-supplied structure field (not built via `sigmaCongr`), and `Equiv.sum_comp`
+  against it compiles quickly with no timeout — the caveat's specific failure mode doesn't apply.
+- PRs 2–6 not yet started: `Fermionic/DysonVertexMoment.lean` (factorial-normalized Dyson
+  coefficients as `Finset`-indexed vertex moments, matching Track B's `Finset α → ℂ` moment type),
+  `Fermionic/QuarticInteraction.lean` (a fixed-arity number-conserving quartic vertex, the first
+  concrete interaction a Wick diagram can be extracted from), `Fermionic/WickDiagram.lean`
+  (quartic leg indexing, `Pairing (2 * S.card)`-based Wick pairings, connected-component
+  partitioning via a derived `SimpleGraph`), `Fermionic/WickDiagram/Amplitude.lean`
+  (vertex-order-averaged ordered-simplex diagram amplitudes), and
+  `Fermionic/DysonDiagramExpansion.lean` (`dysonVertexMoment_eq_sum_quarticWickDiagram`, applying
+  the general Bloch–de Dominicis theorem to expand the quartic interaction's Dyson vertex moment as
+  a sum over Wick diagrams — connected-component weight factorization and the `PowerSeries.log`
+  coefficient identification remain further future work beyond PR 6).
 
 **Step 1 done, in `Fermionic/ImaginaryTimeEvolution.lean`:**
 - `imaginaryTimeEvolveFree ε τ` — `e^{τH₀}` for the free Hamiltonian, defined directly on the
@@ -494,7 +571,8 @@ presentation — `PeelTermsIndexed.lean`/`GibbsExpectation/Peel.lean` connect th
 general induction (below) reduces the right side to a genuine sum over `Pairing n`, closing this
 gap. Still needed beyond that: multi-mode operators in the concrete correlator files; the
 finite-temperature structure noted above (KMS antiperiodicity etc.); the full Matsubara-Green-
-function apparatus; the genuine Dyson series and diagram connectedness (steps 5–7).
+function apparatus; diagram connectedness and the linked-cluster bridge move (steps 6–7; step 5,
+the genuine Dyson series, is now done — see below).
 
 - `Common/BlochDeDominicis/GibbsExpectation/Peel.lean`'s `gibbsExpectation_peel`: the normalized
   counterpart of `PeelFirstTrace.lean`'s peel identity, dividing through by the genuine partition

@@ -12,6 +12,7 @@ import LeanCondensedMatter.Combinatorics.IncidenceAlgebraMu
 import LeanCondensedMatter.Combinatorics.PartitionLattice
 import LeanCondensedMatter.Combinatorics.MomentCumulant
 import LeanCondensedMatter.Combinatorics.CumulantFactorization
+import LeanCondensedMatter.Combinatorics.DiagramConnectedness
 import LeanCondensedMatter.Combinatorics.Common.DeletedFinPositions
 import LeanCondensedMatter.Combinatorics.PerfectPairing
 import LeanCondensedMatter.QuantumTheory.Postulates
