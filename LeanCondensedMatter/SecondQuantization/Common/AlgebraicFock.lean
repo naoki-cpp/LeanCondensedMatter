@@ -93,5 +93,11 @@ theorem matrixCoeff_add {Config : Type*}
     matrixCoeff (A + B) m n = matrixCoeff A m n + matrixCoeff B m n := by
   simp [matrixCoeff]
 
+/-- `matrixCoeff` is linear in its operator argument: finite sums. -/
+theorem matrixCoeff_sum {Config ι : Type*} (s : Finset ι)
+    (f : ι → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
+    matrixCoeff (∑ i ∈ s, f i) m n = ∑ i ∈ s, matrixCoeff (f i) m n := by
+  simp [matrixCoeff]
+
 end Common
 end SecondQuantization
