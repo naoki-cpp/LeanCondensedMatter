@@ -321,13 +321,24 @@ information a diagram could be extracted from):
   *different* dependent index types, which hit genuine kernel timeouts. Here `decompose` is instead
   an arbitrary caller-supplied structure field (not built via `sigmaCongr`), and `Equiv.sum_comp`
   against it compiles quickly with no timeout — the caveat's specific failure mode doesn't apply.
-- PRs 2–6 not yet started: `Fermionic/DysonVertexMoment.lean` (factorial-normalized Dyson
-  coefficients as `Finset`-indexed vertex moments, matching Track B's `Finset α → ℂ` moment type),
-  `Fermionic/QuarticInteraction.lean` (a fixed-arity number-conserving quartic vertex, the first
-  concrete interaction a Wick diagram can be extracted from), `Fermionic/WickDiagram.lean`
-  (quartic leg indexing, `Pairing (2 * S.card)`-based Wick pairings, connected-component
-  partitioning via a derived `SimpleGraph`), `Fermionic/WickDiagram/Amplitude.lean`
-  (vertex-order-averaged ordered-simplex diagram amplitudes), and
+- PR 2 done, `Fermionic/DysonVertexMoment.lean`: the type-level seam between the `ℕ`-indexed Dyson
+  perturbation series and Track B's `Finset α → ℂ` moment type. `normalizedDysonPartitionCoeff :=
+  dysonPartitionCoeff / freePartitionFunction` (with `dysonPartitionCoeff_zero`, now in
+  `DysonPartitionSeries.lean` as the more upstream file, identifying the `n = 0` term with
+  `freePartitionFunction` directly); `dysonVertexMoment S := S.card! • normalizedDysonPartitionCoeff
+  S.card` — the `S.card!` factor is required, not cosmetic: `normalizePartitionSeries
+  (dysonPartitionSeries ε β V)` is the *ordinary* power series `Z/Z₀ = Σₙ zₙ λⁿ`, but finite-set
+  partition combinatorics (`Finpartition.momentFromCumulant`/`cumulantFromMoment`) is native to the
+  *exponential* generating series `Σₙ mₙ λⁿ/n!`, forcing `mₙ = n! zₙ`; `dysonVertexMoment_empty = 1`.
+  `dysonVertexCumulant := Finpartition.cumulantFromMoment (dysonVertexMoment ...)` — the finite-set
+  combinatorial cumulant, deliberately *not yet* identified with any coefficient of
+  `dysonFormalLogPartitionFunction` (a separate finite-set-cumulant/`PowerSeries.log` bridge,
+  future work beyond this plan).
+- PRs 3–6 not yet started: `Fermionic/QuarticInteraction.lean` (a fixed-arity number-conserving
+  quartic vertex, the first concrete interaction a Wick diagram can be extracted from),
+  `Fermionic/WickDiagram.lean` (quartic leg indexing, `Pairing (2 * S.card)`-based Wick pairings,
+  connected-component partitioning via a derived `SimpleGraph`), `Fermionic/WickDiagram/
+  Amplitude.lean` (vertex-order-averaged ordered-simplex diagram amplitudes), and
   `Fermionic/DysonDiagramExpansion.lean` (`dysonVertexMoment_eq_sum_quarticWickDiagram`, applying
   the general Bloch–de Dominicis theorem to expand the quartic interaction's Dyson vertex moment as
   a sum over Wick diagrams — connected-component weight factorization and the `PowerSeries.log`
