@@ -15,7 +15,7 @@ the connected-diagram weight sum. Möbius-inverting
 then recovers the connected-diagram sum directly from the cumulant of the moment, for any
 nonempty vertex set.
 
-This file is purely combinatorial — no `SecondQuantization` import, no physics, no `sorry` — and
+This file is purely combinatorial — no `SecondQuantization` import, no physics, fully proved — and
 does not construct any concrete diagram type itself; `Fermionic/`'s later files instantiate
 `WeightedDiagramFamily` with genuine Wick pairing diagrams.
 
