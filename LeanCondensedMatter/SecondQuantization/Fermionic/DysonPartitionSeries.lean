@@ -18,8 +18,12 @@ convergence-checked) candidate series to feed it.
 `dysonPartitionCoeff ε β V n := Tr[e^{-βH₀} Dₙ(β)]` is the `n`-th order trace of the Dyson
 coefficient against the free Gibbs weight — the `λⁿ`-coefficient a genuine perturbative partition
 function `Z(λ) = Tr[e^{-β(H₀+λV)}]` would have, *if* the (not established here) equality
-`Σₙ λⁿ Dₙ(β) = e^{-β(H₀+λV)} e^{βH₀}` held as a genuine (rather than merely formal) operator
-series. `dysonPartitionSeries` assembles these coefficients into a `PowerSeries ℂ`; no claim about
+`Σₙ λⁿ Dₙ(β) = e^{βH₀} e^{-β(H₀+λV)}` held as a genuine (rather than merely formal) operator
+series — the solution, at `τ := β`, of `dU_I/dτ = -λ V_I(τ) U_I(τ)`, `U_I(0) = 1`, the ODE
+`dysonCoeff`'s left-multiplying recursion represents (`V_I(τ) := e^{τH₀} V e^{-τH₀}` acts from the
+left in `Dₙ₊₁(τ) = -∫ V_I(σ) ∘ Dₙ(σ) dσ`, so its solution `U_I` satisfies `e^{-βH₀} U_I(β) =
+e^{-β(H₀+λV)}`, matching `dysonPartitionCoeff`'s own `e^{-βH₀} ∘ Dₙ(β)` shape exactly).
+`dysonPartitionSeries` assembles these coefficients into a `PowerSeries ℂ`; no claim about
 its radius of convergence, or about matching a genuine analytic partition function beyond the
 `n = 0` term, is made.
 -/
