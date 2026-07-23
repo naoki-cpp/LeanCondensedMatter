@@ -52,16 +52,28 @@ this same `quarticLegEquiv`, rather than re-deriving its own enumeration of `↥
 
 namespace SecondQuantization
 
-variable {Mode : Type*} {N : ℕ}
+variable {Mode : Type*} [DecidableEq Mode] [Fintype Mode] {N : ℕ}
+
+/-- **The flattened-leg/local-leg equivalence, generic over an abstract vertex count `n`**: a
+flattened leg position among `n` vertices' worth of legs is the same data as a choice of vertex
+slot `Fin n` together with a local leg `Fin 4`. Vertex-set-independent (unlike `quarticLegEquiv`
+below, which composes this with `quarticVertexEquiv` to land on `↥S`) — used directly by the
+vertex-order API (`WickDiagram/Ordered.lean`), where the vertex slot is filled by an arbitrary
+order `Fin S.card ≃ ↥S` rather than the fixed enumeration `quarticVertexEquiv` picks. -/
+noncomputable def orderedQuarticLegEquiv (n : ℕ) : Fin (2 * (2 * n)) ≃ Fin n × Fin 4 :=
+  (finCongr (by ring)).trans (finProdFinEquiv (m := n) (n := 4)).symm
+
+/-- **The fixed vertex enumeration** `quarticLegEquiv` uses for `↥S` — an arbitrary (if fixed)
+choice, not necessarily respecting `S`'s ambient `Fin N` order (see the module docstring's
+"Vertex enumeration is not `Fin N`-order-preserving" note). -/
+noncomputable def quarticVertexEquiv (S : Finset (Fin N)) : Fin S.card ≃ (↥S) :=
+  (finCongr (Fintype.card_coe S)).symm.trans (Fintype.equivFin (↥S)).symm
 
 /-- **The leg-indexing equivalence**: a flattened leg position is the same data as a choice of
 vertex in `S` together with a local leg `Fin 4` (which of that vertex's four ladder operators). -/
 noncomputable def quarticLegEquiv (S : Finset (Fin N)) :
     Fin (2 * (2 * S.card)) ≃ (↥S) × Fin 4 :=
-  (finCongr (by ring)).trans
-    ((finProdFinEquiv (m := S.card) (n := 4)).symm.trans
-      (((finCongr (Fintype.card_coe S)).symm.trans (Fintype.equivFin (↥S)).symm).prodCongr
-        (Equiv.refl (Fin 4))))
+  (orderedQuarticLegEquiv S.card).trans ((quarticVertexEquiv S).prodCongr (Equiv.refl (Fin 4)))
 
 /-- **The vertex a flattened leg position belongs to.** -/
 noncomputable def vertexOfLeg {S : Finset (Fin N)} (leg : Fin (2 * (2 * S.card))) : ↥S :=
@@ -90,11 +102,26 @@ theorem localLegOfLeg_legOfVertexLocal {S : Finset (Fin N)} (v : ↥S) (l : Fin 
 
 /-- **A quartic Wick diagram** on vertex set `S`: a `QuarticVertexLabel Mode` assignment to each
 vertex, together with a perfect pairing of the resulting `4 * S.card` legs. Purely combinatorial —
-no connectivity/graph structure yet (see the module docstring). -/
+no connectivity/graph structure yet (see the module docstring). Requires `[DecidableEq Mode]
+[Fintype Mode]` (beyond the rest of this file) so `deriving Fintype` can enumerate the finitely
+many vertex-label assignments `↥S → QuarticVertexLabel Mode` — needed for PR 6's sum over all
+diagrams on a fixed vertex set. -/
 structure QuarticWickDiagram (Mode : Type*) (N : ℕ) (S : Finset (Fin N)) where
   /-- Each vertex's quartic interaction label. -/
   vertexLabel : ↥S → QuarticVertexLabel Mode
   /-- The perfect pairing of the diagram's `4 * S.card` legs. -/
   pairing : Common.BlochDeDominicis.Pairing (2 * S.card)
+  deriving DecidableEq, Fintype
+
+omit [DecidableEq Mode] [Fintype Mode] in
+@[ext]
+theorem QuarticWickDiagram.ext {S : Finset (Fin N)}
+    {d₁ d₂ : QuarticWickDiagram Mode N S} (hv : d₁.vertexLabel = d₂.vertexLabel)
+    (hp : d₁.pairing = d₂.pairing) : d₁ = d₂ := by
+  cases d₁
+  cases d₂
+  cases hv
+  cases hp
+  rfl
 
 end SecondQuantization

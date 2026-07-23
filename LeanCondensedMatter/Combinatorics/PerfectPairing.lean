@@ -4,6 +4,7 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingEraseZero
 import LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair
 import LeanCondensedMatter.Combinatorics.PerfectPairing.FourPositions
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel
 
 set_option linter.style.header false
 
@@ -27,6 +28,8 @@ Importing this module brings in the whole `PerfectPairing/` subdirectory:
   decomposition.
 - `PerfectPairing/FourPositions.lean`: the three perfect pairings of four positions, a finite
   example.
+- `PerfectPairing/Relabel.lean`: `Pairing.relabel`/`Pairing.relabelEquiv`, transporting a pairing
+  along an ambient relabeling of its positions.
 
 **File location vs. namespace**: being purely combinatorial, these files live in the general-math
 `Combinatorics/` layer (with `Combinatorics/Common/`), upstream of all of `SecondQuantization/`.
