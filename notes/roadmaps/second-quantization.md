@@ -407,11 +407,15 @@ information a diagram could be extracted from):
   factors, both required. Pair contractions use `freeGibbsExpectation` (the *normalized* free
   Gibbs expectation), not `freeGibbsGreenFunction` (which carries its own extra minus and 2-operator
   time ordering). `quarticWickDiagramAmplitude_empty` matches `dysonVertexMoment_empty`.
-  **Not yet added** (needed before PR 6 can be proved, not blocking PR 5b/5c's own merge):
-  continuity of `orderedQuarticPairValue`/`contractionIntegrand` in the time variables (for
-  exchanging the finite diagram/order sums with `orderedSimplexIntegral`), and the
-  `Common.gibbsExpectation`/`Fermionic.freeGibbsExpectation` bridge lemma PR 6's own general
-  Bloch–de Dominicis application needs.
+  **PR 6 prerequisites now also done**: `Fermionic/FreeBoltzmannWeight.lean`'s
+  `freeGibbsExpectation_eq_gibbsExpectation` (the `Common.gibbsExpectation`/
+  `Fermionic.freeGibbsExpectation` bridge PR 6's general Bloch–de Dominicis application needs,
+  from `freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy` — both are `e^{-βE(n)}`, differing
+  only in which sum spells out `E(n)`) and `freeGibbsExpectation_smul`; and
+  `Fermionic/WickDiagram/Amplitude.lean`'s `orderedQuarticPairValue_eq` (the closed form pulling
+  both evolved operators' `Complex.exp` eigenvalue-shift scalars out front, leaving a
+  `τ`-independent bare pair value) with the resulting `continuous_orderedQuarticPairValue`/
+  `continuous_contractionIntegrand`.
   **`QuarticWickDiagram` (`WickDiagram.lean`) carries no finiteness constraint on `Mode` in its
   own type** — `[DecidableEq Mode] [Fintype Mode]` is required only by the separately-supplied
   `QuarticWickDiagram.instDecidableEq`/`instFintype` instances (transported along

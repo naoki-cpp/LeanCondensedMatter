@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedFreeTwoPointFunction
+import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.GibbsExpectation.Core
 
 set_option linter.style.header false
 
@@ -75,6 +76,14 @@ noncomputable def freeGibbsExpectation (ε : Mode → ℝ) (β : ℝ)
     (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) : ℂ :=
   normalizedWeightedDiagonal (freeBoltzmannWeight ε β) A
 
+omit [LinearOrder Mode] in
+/-- **`freeGibbsExpectation` scales**: `⟨c • A⟩₀ = c * ⟨A⟩₀`, directly
+`normalizedWeightedDiagonal_smul` at `w := freeBoltzmannWeight ε β`. -/
+theorem freeGibbsExpectation_smul (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
+    (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    freeGibbsExpectation ε β (c • A) = c * freeGibbsExpectation ε β A :=
+  normalizedWeightedDiagonal_smul c (freeBoltzmannWeight ε β) A
+
 /-- **The free Gibbs two-point correlator `G₀`**: `weightedFreeTwoPointFunction` specialized to the
 free Boltzmann weight for the *same* dispersion `ε` used in the imaginary-time evolution — `w` is a
 genuine positive Gibbs weight (`weightSum_freeBoltzmannWeight_ne_zero`) for the same `ε`
@@ -83,5 +92,31 @@ module docstring for what finite-temperature structure (KMS antiperiodicity, the
 domain) still remains before this is the full Matsubara Green function. -/
 noncomputable def freeGibbsGreenFunction (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ) : ℂ :=
   weightedFreeTwoPointFunction ε (freeBoltzmannWeight ε β) i j τ τ'
+
+omit [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] in
+/-- **`freeBoltzmannWeight` is `Common.boltzmannWeight` at `fermionEnergy`**: both are
+`e^{-βE(n)}`, the only difference being which sum (`Σᵢ∈n ε(i)` spelled out directly, vs. routed
+through `fermionEnergy`) computes `E(n)`. -/
+theorem freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy (ε : Mode → ℝ) (β : ℝ)
+    (n : FermionOccupation Mode) :
+    freeBoltzmannWeight ε β n = Common.boltzmannWeight (fermionEnergy ε) β n := by
+  rw [freeBoltzmannWeight, Common.boltzmannWeight, fermionEnergy]
+  push_cast
+  ring_nf
+
+omit [LinearOrder Mode] in
+/-- **`freeGibbsExpectation` is `Common.gibbsExpectation` at `fermionEnergy`**: both are the
+`e^{-βE(n)}`-normalized diagonal functional on the same underlying `AlgebraicFock
+(FermionOccupation Mode) = FockSpaceFermionic Mode`, differing only in how the weight's exponent
+is spelled (`freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy`) — the bridge PR 6's
+application of the general Bloch–de Dominicis theorem
+(`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing`, stated for
+`Common.gibbsExpectation`) needs to reach `freeGibbsExpectation`. -/
+theorem freeGibbsExpectation_eq_gibbsExpectation (ε : Mode → ℝ) (β : ℝ)
+    (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    freeGibbsExpectation ε β A = Common.gibbsExpectation (fermionEnergy ε) β A := by
+  have hw : freeBoltzmannWeight ε β = Common.boltzmannWeight (fermionEnergy ε) β :=
+    funext (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β)
+  rw [freeGibbsExpectation, normalizedWeightedDiagonal, Common.gibbsExpectation, hw]
 
 end SecondQuantization
