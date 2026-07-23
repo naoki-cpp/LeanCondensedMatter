@@ -76,7 +76,6 @@ noncomputable def quarticWickDiagramEquivOrderedData {S : Finset (Fin N)}
       simp
     · simp [QuarticWickDiagram.pairingInOrder]
 
-omit [DecidableEq Mode] in
 /-- **PR 6's reindexing lemma**: summing an arbitrary function of the ordered data over all
 diagrams on `S` (via `quarticWickDiagramEquivOrderedData`) is the same as summing it directly over
 all ordered data — a direct instance of `Equiv.sum_comp`. -/

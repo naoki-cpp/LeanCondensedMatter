@@ -35,10 +35,15 @@ or with a `1/n!`:
   be recomputed there, never reused from `d.pairing.weight` directly.
 
 No `1 / S.card!` appears: the sum below ranges over **all** vertex orders
-(`QuarticVertexOrder S = Fin S.card ≃ ↥S`), not an average over them — `S.card!` many equal-value
-terms is exactly what reproduces `dysonVertexMoment`'s own `S.card!` normalization (PR 6). No
-`1 / Z₀` appears either: `orderedQuarticPairValue` is already built from `freeGibbsExpectation`,
-the *normalized* free Gibbs expectation, not a raw un-normalized trace.
+(`QuarticVertexOrder S = Fin S.card ≃ ↥S`), not an average over them. The terms for different
+vertex orders are generally *different* — a different order assigns different vertex labels to
+the latest/outermost time slot, different time variables to each vertex, and transports the
+pairing onto different ordered positions, so the individual ordered-simplex contributions differ
+in general too. The sum runs over every assignment of the labelled vertices to the ordered time
+slots, matching `dysonVertexMoment`'s own `S.card!` normalization (PR 6) — not a sum of `S.card!`
+copies of a single value. No `1 / Z₀` appears either: `orderedQuarticPairValue` is already built
+from `freeGibbsExpectation`, the *normalized* free Gibbs expectation, not a raw un-normalized
+trace.
 -/
 
 namespace SecondQuantization

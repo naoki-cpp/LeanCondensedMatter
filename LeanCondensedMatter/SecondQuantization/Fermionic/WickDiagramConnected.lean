@@ -33,7 +33,7 @@ a concrete `WeightedDiagramFamily Mode N` instantiation is being built (after PR
 
 namespace SecondQuantization
 
-variable {Mode : Type*} [DecidableEq Mode] [Fintype Mode] {N : ℕ}
+variable {Mode : Type*} {N : ℕ}
 
 /-- **The derived connectivity graph** of a quartic Wick diagram: distinct vertices `v ≠ w` are
 adjacent iff some leg at `v` is paired to some leg at `w`. -/
@@ -55,9 +55,10 @@ set is nonempty — spelled out this way (rather than via `SimpleGraph.Connected
 def QuarticWickDiagram.IsConnected {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) : Prop :=
   d.vertexGraph.Preconnected ∧ S.Nonempty
 
-/-- **The subtype of connected quartic Wick diagrams** on vertex set `S`. -/
-def ConnectedQuarticWickDiagram (Mode : Type*) [DecidableEq Mode] [Fintype Mode] (N : ℕ)
-    (S : Finset (Fin N)) : Type _ :=
+/-- **The subtype of connected quartic Wick diagrams** on vertex set `S`. No finiteness constraint
+on `Mode` — connectivity never touches `Mode`'s cardinality (see `WickDiagram.lean`'s module
+docstring). -/
+def ConnectedQuarticWickDiagram (Mode : Type*) (N : ℕ) (S : Finset (Fin N)) : Type _ :=
   {d : QuarticWickDiagram Mode N S // d.IsConnected}
 
 end SecondQuantization

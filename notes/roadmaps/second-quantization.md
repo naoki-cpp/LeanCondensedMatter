@@ -384,17 +384,40 @@ information a diagram could be extracted from):
   `βⁿ/n!` for every real `β`). Basic API: `_zero`/`_succ`/`_congr`/`_zero_fun`/`_smul`/`_neg`/
   `_const`; no general finite-sum-commutes lemma yet (deferred to whatever PR 5c's concrete
   integrand needs).
-  **PR 5b not yet started**: `Combinatorics/PerfectPairing/Relabel.lean` (`Pairing.relabel`/
-  `relabelEquiv` and compatibility lemmas — *not* a "crossing weight is relabel-invariant" claim,
-  which is false in general) plus a vertex-order API (`QuarticVertexOrder S := Fin S.card ≃ ↥S`,
-  an ordered leg equivalence, `OrderedQuarticWickData`).
-  **PR 5c not yet started**: `Fermionic/WickDiagram/Amplitude.lean`
-  (`quarticWickDiagramAmplitude`, built from `orderedSimplexIntegral` and a **sum over all vertex
-  orders** — deliberately *not* an average: no `1/S.card!` factor, since summing over all `n!`
-  vertex orders is what matches `dysonVertexMoment`'s own `S.card!` factorial normalization; the
-  `(-1)^S.card` Dyson-recursion sign and the pairing's fermionic crossing sign
-  (`pairing.weight Statistics.fermion`) are distinct factors, both required). PR 6 (below) still
-  needs both 5b and 5c.
+  **PR 5b done**: `Combinatorics/PerfectPairing/Relabel.lean` — `Pairing.relabel`/`relabelEquiv`,
+  transporting a pairing along an ambient `Equiv.Perm (Fin (2 * n))` relabeling of its positions
+  (*not* a "crossing weight is relabel-invariant" claim, which is false in general — callers must
+  recompute `weight` on the relabeled pairing itself), plus `Fermionic/WickDiagram/Ordered.lean`'s
+  vertex-order API: `QuarticVertexOrder S := Fin S.card ≃ ↥S`, `orderedLegToDiagramLeg`,
+  `QuarticWickDiagram.pairingInOrder`, `OrderedQuarticWickData`, and the reindexing equivalence
+  `quarticWickDiagramEquivOrderedData : QuarticWickDiagram Mode N S ≃ OrderedQuarticWickData Mode
+  S.card` (for a *fixed* `S` and vertex order — relabeling between different `S ≠ T` deliberately
+  excluded, see the file's own module docstring) together with `sum_quarticWickDiagram_eq_sum_orderedData`
+  (a direct `Equiv.sum_comp` instance), the reindexing lemma PR 6 needs.
+  **PR 5c done**: `Fermionic/WickDiagram/Amplitude.lean` —
+  `quarticWickDiagramAmplitude`, built from `orderedSimplexIntegral` and a **sum over all vertex
+  orders** — deliberately *not* an average: no `1/S.card!` factor. The terms for different vertex
+  orders are generally *different* (a different order assigns different vertex labels to the
+  latest time slot, different time variables to each vertex, and transports the pairing onto
+  different ordered positions), so this is a genuine sum over every assignment of the labelled
+  vertices to the ordered time slots, not `S.card!` copies of one value — matching
+  `dysonVertexMoment`'s own `S.card!` factorial normalization. The `(-1)^S.card` Dyson-recursion
+  sign and the pairing's fermionic crossing sign (`pairing.weight Statistics.fermion`, recomputed
+  on the vertex-order-transported pairing, never reused from `d.pairing.weight`) are distinct
+  factors, both required. Pair contractions use `freeGibbsExpectation` (the *normalized* free
+  Gibbs expectation), not `freeGibbsGreenFunction` (which carries its own extra minus and 2-operator
+  time ordering). `quarticWickDiagramAmplitude_empty` matches `dysonVertexMoment_empty`.
+  **Not yet added** (needed before PR 6 can be proved, not blocking PR 5b/5c's own merge):
+  continuity of `orderedQuarticPairValue`/`contractionIntegrand` in the time variables (for
+  exchanging the finite diagram/order sums with `orderedSimplexIntegral`), and the
+  `Common.gibbsExpectation`/`Fermionic.freeGibbsExpectation` bridge lemma PR 6's own general
+  Bloch–de Dominicis application needs.
+  **`QuarticWickDiagram` (`WickDiagram.lean`) carries no finiteness constraint on `Mode` in its
+  own type** — `[DecidableEq Mode] [Fintype Mode]` is required only by the separately-supplied
+  `QuarticWickDiagram.instDecidableEq`/`instFintype` instances (transported along
+  `QuarticWickDiagram.equivPair`, not a `deriving` clause on the structure), so
+  `WickDiagramConnected.lean`'s connectivity API (which never touches `Mode`'s cardinality) stays
+  generic over `Mode`.
 - PR 6 not yet started: `Fermionic/DysonDiagramExpansion.lean`
   (`dysonVertexMoment_eq_sum_quarticWickDiagram`, applying the general Bloch–de Dominicis theorem
   to expand the quartic interaction's Dyson vertex moment as a sum over Wick diagrams).

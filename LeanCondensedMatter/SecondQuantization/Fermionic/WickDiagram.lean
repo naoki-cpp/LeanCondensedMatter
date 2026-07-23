@@ -48,11 +48,20 @@ component from `Fintype.equivFin (↥S)`, an arbitrary (if fixed) enumeration of
 not necessarily the order induced by `S`'s ambient `Fin N` order. This is harmless as long as
 every downstream construction (component restriction, relabeling, ...) consistently goes through
 this same `quarticLegEquiv`, rather than re-deriving its own enumeration of `↥S`.
+
+**`QuarticWickDiagram` itself imposes no finiteness constraint on `Mode`** — its two fields
+(`vertexLabel : ↥S → QuarticVertexLabel Mode`, `pairing : Pairing (2 * S.card)`) make sense for
+any `Mode : Type*`, and downstream connectivity (`WickDiagramConnected.lean`) never touches
+`Mode`'s cardinality at all. `[DecidableEq Mode] [Fintype Mode]` is needed only to *derive*
+`DecidableEq`/`Fintype` instances on `QuarticWickDiagram Mode N S` itself (so PR 6's sum over all
+diagrams on a fixed vertex set makes sense) — those instances are supplied separately, below,
+rather than baked into the structure's own parameter list, so callers that don't need to
+enumerate diagrams (e.g. `WickDiagramConnected.lean`) aren't forced to assume `Mode` is finite.
 -/
 
 namespace SecondQuantization
 
-variable {Mode : Type*} [DecidableEq Mode] [Fintype Mode] {N : ℕ}
+variable {Mode : Type*} {N : ℕ}
 
 /-- **The flattened-leg/local-leg equivalence, generic over an abstract vertex count `n`**: a
 flattened leg position among `n` vertices' worth of legs is the same data as a choice of vertex
@@ -102,18 +111,17 @@ theorem localLegOfLeg_legOfVertexLocal {S : Finset (Fin N)} (v : ↥S) (l : Fin 
 
 /-- **A quartic Wick diagram** on vertex set `S`: a `QuarticVertexLabel Mode` assignment to each
 vertex, together with a perfect pairing of the resulting `4 * S.card` legs. Purely combinatorial —
-no connectivity/graph structure yet (see the module docstring). Requires `[DecidableEq Mode]
-[Fintype Mode]` (beyond the rest of this file) so `deriving Fintype` can enumerate the finitely
-many vertex-label assignments `↥S → QuarticVertexLabel Mode` — needed for PR 6's sum over all
-diagrams on a fixed vertex set. -/
+no connectivity/graph structure yet (see the module docstring), and no finiteness constraint on
+`Mode` (see the module docstring's "`QuarticWickDiagram` itself imposes no finiteness constraint"
+note) — `DecidableEq`/`Fintype` instances requiring `[DecidableEq Mode] [Fintype Mode]` are
+supplied separately below, via `QuarticWickDiagram.equivPair`, rather than by a `deriving` clause
+here. -/
 structure QuarticWickDiagram (Mode : Type*) (N : ℕ) (S : Finset (Fin N)) where
   /-- Each vertex's quartic interaction label. -/
   vertexLabel : ↥S → QuarticVertexLabel Mode
   /-- The perfect pairing of the diagram's `4 * S.card` legs. -/
   pairing : Common.BlochDeDominicis.Pairing (2 * S.card)
-  deriving DecidableEq, Fintype
 
-omit [DecidableEq Mode] [Fintype Mode] in
 @[ext]
 theorem QuarticWickDiagram.ext {S : Finset (Fin N)}
     {d₁ d₂ : QuarticWickDiagram Mode N S} (hv : d₁.vertexLabel = d₂.vertexLabel)
@@ -123,5 +131,30 @@ theorem QuarticWickDiagram.ext {S : Finset (Fin N)}
   cases hv
   cases hp
   rfl
+
+/-- **A quartic Wick diagram, as a pair of its two fields** — the equivalence
+`DecidableEq`/`Fintype` on `QuarticWickDiagram Mode N S` are transported along, once `Mode` is
+finite (see the module docstring). -/
+def QuarticWickDiagram.equivPair {S : Finset (Fin N)} :
+    QuarticWickDiagram Mode N S ≃
+      (↥S → QuarticVertexLabel Mode) × Common.BlochDeDominicis.Pairing (2 * S.card) where
+  toFun d := (d.vertexLabel, d.pairing)
+  invFun p := ⟨p.1, p.2⟩
+  left_inv _ := rfl
+  right_inv _ := rfl
+
+/-- **`QuarticWickDiagram Mode N S` has decidable equality**, once `Mode` does — transported along
+`QuarticWickDiagram.equivPair` rather than a `deriving` clause on the structure itself (see the
+module docstring). -/
+instance QuarticWickDiagram.instDecidableEq [DecidableEq Mode] {S : Finset (Fin N)} :
+    DecidableEq (QuarticWickDiagram Mode N S) :=
+  QuarticWickDiagram.equivPair.decidableEq
+
+/-- **`QuarticWickDiagram Mode N S` is finite**, once `Mode` is — transported along
+`QuarticWickDiagram.equivPair` rather than a `deriving` clause on the structure itself (needed for
+PR 6's sum over all diagrams on a fixed vertex set; see the module docstring). -/
+noncomputable instance QuarticWickDiagram.instFintype [DecidableEq Mode] [Fintype Mode]
+    {S : Finset (Fin N)} : Fintype (QuarticWickDiagram Mode N S) :=
+  Fintype.ofEquiv _ QuarticWickDiagram.equivPair.symm
 
 end SecondQuantization
