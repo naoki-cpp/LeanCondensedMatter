@@ -258,7 +258,7 @@ order:
    result (**in progress**, see below): a 6-PR plan (PR 5 further split into 5a/5b/5c). PRs 1–5
    done (`WeightedDiagramFamily`, Dyson vertex moment, quartic interaction, Wick diagram
    structure/connectivity, ordered-simplex integral, vertex-order/relabel API, Wick-diagram
-   amplitude); PR 6 (the Dyson-to-diagram expansion) not yet started.
+   amplitude); PR 6, the Dyson-to-diagram expansion, is in progress.
 7. Move or generalize the current fermionic linked-cluster bridge before presenting it as `Common/` infrastructure.
 
 **Step 5 done — the genuine interaction-picture Dyson series**, as *continuous imaginary-time
@@ -422,9 +422,24 @@ information a diagram could be extracted from):
   `QuarticWickDiagram.equivPair`, not a `deriving` clause on the structure), so
   `WickDiagramConnected.lean`'s connectivity API (which never touches `Mode`'s cardinality) stays
   generic over `Mode`.
-- PR 6 not yet started: `Fermionic/DysonDiagramExpansion.lean`
-  (`dysonVertexMoment_eq_sum_quarticWickDiagram`, applying the general Bloch–de Dominicis theorem
-  to expand the quartic interaction's Dyson vertex moment as a sum over Wick diagrams).
+- PR 6 in progress: `Fermionic/DysonDiagramExpansion.lean`
+  (`dysonVertexMoment_quarticInteraction_eq_sum_amplitude`, applying the general Bloch–de
+  Dominicis theorem to expand the quartic interaction's Dyson vertex moment as a sum over Wick
+  diagrams). **Done so far**: `normalizedDysonPartitionCoeff_eq_freeGibbsExpectation`/
+  `dysonVertexMoment_eq_freeGibbsExpectation` bridge `dysonVertexMoment` to `freeGibbsExpectation
+  ε β (dysonCoeff ε V S.card β)` — the form the general theorem can actually be applied to — via
+  `Common.traceFock_diagonalEvolution_comp_eq_weightedTrace` and the PR 6-prerequisite
+  `freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy`/`freeGibbsExpectation_eq_gibbsExpectation`
+  bridge. `Common/FiniteOperatorIntegral.lean` additionally gained
+  `weightedTrace_operatorIntervalIntegral`/`normalizedWeightedDiagonal_operatorIntervalIntegral` (a
+  finite weighted trace commutes with `operatorIntervalIntegral`, given interval-integrability of
+  the matrix coefficients) — the finite-sum/integral interchange needed to expand `dysonCoeff`'s
+  recursion into an `orderedSimplexIntegral` of a vertex-label sum next.
+  **Still not done**: that `dysonCoeff`-recursion-to-`orderedSimplexIntegral` expansion itself,
+  expanding `quarticInteraction`'s `Finset.sum` into a genuine `4n`-operator product, applying the
+  general Bloch–de Dominicis theorem to that product, and reindexing the result via
+  `quarticWickDiagramEquivOrderedData` — see the file's own module docstring and this roadmap's
+  9-step PR 6 proof outline.
 - PR 7 not yet started (see above): `componentPartition`/restriction/reassembly, connecting
   `QuarticWickDiagram` to `Combinatorics/DiagramConnectedness.lean`'s abstract
   `WeightedDiagramFamily` as a concrete instantiation — connected-component weight factorization
