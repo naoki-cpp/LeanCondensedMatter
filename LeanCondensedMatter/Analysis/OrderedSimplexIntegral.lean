@@ -7,12 +7,17 @@ set_option linter.style.header false
 # Ordered-simplex iterated scalar integrals
 
 Step 6 (PR 5a) of the diagram-connectedness plan (`notes/roadmaps/second-quantization.md`): a
-purely analytic, physics-free `ℂ`-valued iterated integral over the ordered simplex `0 ≤ τₙ₋₁ ≤
-⋯ ≤ τ₁ ≤ τ₀ ≤ β`, defined recursively rather than as a single integral over an explicit
-`MeasureTheory`-level simplex subset of `ℝⁿ`. Coordinate `0` is the *latest*/*outermost* time —
-this orientation deliberately matches the existing Dyson recursion
-(`Fermionic/DysonExpansion.lean`'s `dysonCoeff`), whose outer integration variable `σ` also has
-range `[0, τ]` with `τ` the overall bound.
+purely analytic, physics-free `ℂ`-valued iterated integral, defined recursively via
+`intervalIntegral` rather than as a single integral over an explicit `MeasureTheory`-level simplex
+subset of `ℝⁿ`. For `0 ≤ β`, this is the genuine iterated integral over the ordered simplex
+`0 ≤ τₙ₋₁ ≤ ⋯ ≤ τ₁ ≤ τ₀ ≤ β`; for arbitrary real `β` (including negative), `intervalIntegral`'s
+own orientation convention (`∫ x in a..b = -∫ x in b..a`) makes this the corresponding recursively
+oriented interval-integral extension, not literally an integral over that simplex (which would be
+empty for `β < 0`) — e.g. `orderedSimplexIntegral_const` gives `βⁿ/n!` for *every* real `β`, not
+just `β ≥ 0`, and that value should be read as "simplex volume" only in the `0 ≤ β` case. Coordinate
+`0` is the *latest*/*outermost* time — this orientation deliberately matches the existing Dyson
+recursion (`Fermionic/DysonExpansion.lean`'s `dysonCoeff`), whose outer integration variable `σ`
+also has range `[0, τ]` with `τ` the overall bound.
 
 **Deliberately minimal.** No general "sum commutes with `orderedSimplexIntegral`" lemma is
 included — that needs integrability hypotheses tailored to whatever the caller actually
@@ -24,10 +29,11 @@ hypotheses require.
 
 namespace intervalIntegral
 
-/-- **The iterated integral over the ordered simplex** `0 ≤ τₙ₋₁ ≤ ⋯ ≤ τ₁ ≤ τ₀ ≤ β` (vacuously
-`f Fin.elim0` at `n = 0`, the empty simplex). Coordinate `0` is the latest/outermost time: the
-recursion integrates the *outermost* coordinate `τ` over `[0, β]`, then recurses into the
-remaining `n` coordinates over `[0, τ]`. -/
+/-- **The iterated integral over the ordered simplex** `0 ≤ τₙ₋₁ ≤ ⋯ ≤ τ₁ ≤ τ₀ ≤ β` for `0 ≤ β`
+(vacuously `f Fin.elim0` at `n = 0`, the empty simplex); for arbitrary `β : ℝ`, the corresponding
+recursively oriented interval-integral extension (see the module docstring). Coordinate `0` is the
+latest/outermost time: the recursion integrates the *outermost* coordinate `τ` over `[0, β]`, then
+recurses into the remaining `n` coordinates over `[0, τ]`. -/
 noncomputable def orderedSimplexIntegral :
     (n : ℕ) → ℝ → ((Fin n → ℝ) → ℂ) → ℂ
   | 0, _β, f => f Fin.elim0

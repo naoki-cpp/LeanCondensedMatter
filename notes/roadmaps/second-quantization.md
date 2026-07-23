@@ -255,10 +255,10 @@ order:
    `Fermionic/DysonExpansion.lean`, `Fermionic/DysonExpansionVerification.lean`,
    `Fermionic/DysonPartitionSeries.lean`).
 6. Diagram connectedness — connecting Dyson-series terms to diagrams and Track B's connectedness
-   result (**in progress**, see below): a 6-PR plan, PR 1 (`Combinatorics/DiagramConnectedness.lean`,
-   the abstract `WeightedDiagramFamily` moment-cumulant bridge) done; PRs 2–6 (Dyson vertex moment,
-   quartic interaction, Wick diagram structure, ordered-simplex amplitude, Dyson-to-diagram
-   expansion) not yet started.
+   result (**in progress**, see below): a 6-PR plan (PR 5 further split into 5a/5b/5c). PRs 1–4b
+   and 5a done (`WeightedDiagramFamily`, Dyson vertex moment, quartic interaction, Wick diagram
+   structure/connectivity, ordered-simplex integral); PRs 5b, 5c, and 6 (vertex-order/relabel API,
+   Wick-diagram amplitude, Dyson-to-diagram expansion) not yet started.
 7. Move or generalize the current fermionic linked-cluster bridge before presenting it as `Common/` infrastructure.
 
 **Step 5 done — the genuine interaction-picture Dyson series**, as *continuous imaginary-time
@@ -374,10 +374,30 @@ information a diagram could be extracted from):
   and reassembly are mutually inverse. That work is planned for its own PR (**"PR 7"**, after PR 6
   below), once a concrete `WeightedDiagramFamily Mode N` instantiation is being built on top of
   `Fermionic/DysonDiagramExpansion.lean`'s result — not folded into PR 4b/5/6.
-- PR 5–6 not yet started: `Fermionic/WickDiagram/Amplitude.lean` (vertex-order-averaged
-  ordered-simplex diagram amplitudes, PR 5), and `Fermionic/DysonDiagramExpansion.lean`
+- PR 5 in progress, split into 5a/5b/5c per a detailed design: **PR 5a done**,
+  `Analysis/OrderedSimplexIntegral.lean` — `intervalIntegral.orderedSimplexIntegral n β f`, a
+  purely analytic, physics-free recursive iterated integral (via `intervalIntegral`, not an
+  explicit `MeasureTheory`-level simplex subset of `ℝⁿ`); coordinate `0` is the latest/outermost
+  time, matching `dysonCoeff`'s own recursion (outer variable ranges over `[0, τ]`); for `0 ≤ β` it
+  is the genuine integral over `0 ≤ τₙ₋₁ ≤ ⋯ ≤ τ₀ ≤ β`, and for arbitrary real `β` the
+  correspondingly oriented interval-integral extension (`orderedSimplexIntegral_const` gives
+  `βⁿ/n!` for every real `β`). Basic API: `_zero`/`_succ`/`_congr`/`_zero_fun`/`_smul`/`_neg`/
+  `_const`; no general finite-sum-commutes lemma yet (deferred to whatever PR 5c's concrete
+  integrand needs).
+  **PR 5b not yet started**: `Combinatorics/PerfectPairing/Relabel.lean` (`Pairing.relabel`/
+  `relabelEquiv` and compatibility lemmas — *not* a "crossing weight is relabel-invariant" claim,
+  which is false in general) plus a vertex-order API (`QuarticVertexOrder S := Fin S.card ≃ ↥S`,
+  an ordered leg equivalence, `OrderedQuarticWickData`).
+  **PR 5c not yet started**: `Fermionic/WickDiagram/Amplitude.lean`
+  (`quarticWickDiagramAmplitude`, built from `orderedSimplexIntegral` and a **sum over all vertex
+  orders** — deliberately *not* an average: no `1/S.card!` factor, since summing over all `n!`
+  vertex orders is what matches `dysonVertexMoment`'s own `S.card!` factorial normalization; the
+  `(-1)^S.card` Dyson-recursion sign and the pairing's fermionic crossing sign
+  (`pairing.weight Statistics.fermion`) are distinct factors, both required). PR 6 (below) still
+  needs both 5b and 5c.
+- PR 6 not yet started: `Fermionic/DysonDiagramExpansion.lean`
   (`dysonVertexMoment_eq_sum_quarticWickDiagram`, applying the general Bloch–de Dominicis theorem
-  to expand the quartic interaction's Dyson vertex moment as a sum over Wick diagrams, PR 6).
+  to expand the quartic interaction's Dyson vertex moment as a sum over Wick diagrams).
 - PR 7 not yet started (see above): `componentPartition`/restriction/reassembly, connecting
   `QuarticWickDiagram` to `Combinatorics/DiagramConnectedness.lean`'s abstract
   `WeightedDiagramFamily` as a concrete instantiation — connected-component weight factorization
