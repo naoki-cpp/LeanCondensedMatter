@@ -55,7 +55,9 @@ set is nonempty — spelled out this way (rather than via `SimpleGraph.Connected
 def QuarticWickDiagram.IsConnected {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) : Prop :=
   d.vertexGraph.Preconnected ∧ S.Nonempty
 
-/-- **The subtype of connected quartic Wick diagrams** on vertex set `S`. -/
+/-- **The subtype of connected quartic Wick diagrams** on vertex set `S`. No finiteness constraint
+on `Mode` — connectivity never touches `Mode`'s cardinality (see `WickDiagram.lean`'s module
+docstring). -/
 def ConnectedQuarticWickDiagram (Mode : Type*) (N : ℕ) (S : Finset (Fin N)) : Type _ :=
   {d : QuarticWickDiagram Mode N S // d.IsConnected}
 
