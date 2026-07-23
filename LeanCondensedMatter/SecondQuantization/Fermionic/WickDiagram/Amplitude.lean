@@ -132,6 +132,64 @@ noncomputable def QuarticWickDiagram.orderedSimplexContribution (ε : Mode → �
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (order : QuarticVertexOrder S) : ℂ :=
   intervalIntegral.orderedSimplexIntegral S.card β (d.contractionIntegrand ε β order)
 
+/-! ## Continuity in the time assignment -/
+
+/-- **Closed form of a pair value**: unfolds both evolved local-leg operators to their
+`Complex.exp` eigenvalue-shift form (`imaginaryTimeEvolve_quarticLocalLegOperator`) and pulls both
+scalars out of `freeGibbsExpectation` (`freeGibbsExpectation_smul`), leaving a fixed
+(`τ`-independent) pair value of the two *bare* local-leg operators. The continuity lemma below is
+this closed form's only consumer — the exponentials are visibly continuous (`fun_prop`) in `τ`
+once written this way. -/
+theorem orderedQuarticPairValue_eq (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) (order : QuarticVertexOrder S) (τ : Fin S.card → ℝ)
+    (a b : Fin (2 * (2 * S.card))) :
+    orderedQuarticPairValue ε β d order τ a b =
+      Complex.exp
+          ((τ (orderedQuarticLegEquiv S.card a).1 *
+              quarticLocalLegEnergyShift ε
+                (d.vertexLabel (order (orderedQuarticLegEquiv S.card a).1))
+                (orderedQuarticLegEquiv S.card a).2 : ℝ) : ℂ) *
+        Complex.exp
+          ((τ (orderedQuarticLegEquiv S.card b).1 *
+              quarticLocalLegEnergyShift ε
+                (d.vertexLabel (order (orderedQuarticLegEquiv S.card b).1))
+                (orderedQuarticLegEquiv S.card b).2 : ℝ) : ℂ) *
+        freeGibbsExpectation ε β
+          ((quarticLocalLegOperator
+              (d.vertexLabel (order (orderedQuarticLegEquiv S.card a).1))
+              (orderedQuarticLegEquiv S.card a).2).comp
+            (quarticLocalLegOperator
+              (d.vertexLabel (order (orderedQuarticLegEquiv S.card b).1))
+              (orderedQuarticLegEquiv S.card b).2)) := by
+  simp only [orderedQuarticPairValue, orderedQuarticLegOperator,
+    imaginaryTimeEvolve_quarticLocalLegOperator, LinearMap.smul_comp, LinearMap.comp_smul,
+    smul_smul, freeGibbsExpectation_smul]
+  ring
+
+/-- **A pair value is continuous in the time assignment `τ`** — directly from the closed form
+`orderedQuarticPairValue_eq`: a product of two `Complex.exp`s of a continuous (coordinate-linear)
+function of `τ`, times a `τ`-independent constant. -/
+theorem continuous_orderedQuarticPairValue (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) (order : QuarticVertexOrder S)
+    (a b : Fin (2 * (2 * S.card))) :
+    Continuous (fun τ : Fin S.card → ℝ => orderedQuarticPairValue ε β d order τ a b) := by
+  simp only [orderedQuarticPairValue_eq]
+  fun_prop
+
+/-- **The fixed-vertex-order Wick contraction integrand is continuous in `τ`** — a `τ`-independent
+crossing-sign constant, times a finite product (over the transported pairing's pairs) of
+`continuous_orderedQuarticPairValue`'s continuous pair values. -/
+theorem continuous_contractionIntegrand (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) (order : QuarticVertexOrder S) :
+    Continuous (d.contractionIntegrand ε β order) := by
+  have heq : d.contractionIntegrand ε β order = fun τ =>
+      (d.pairingInOrder order).weight Statistics.fermion *
+        ∏ pr ∈ (d.pairingInOrder order).pairs, orderedQuarticPairValue ε β d order τ pr.1 pr.2 :=
+    rfl
+  rw [heq]
+  exact continuous_const.mul
+    (continuous_finsetProd _ fun pr _ => continuous_orderedQuarticPairValue ε β d order pr.1 pr.2)
+
 /-! ## The diagram amplitude -/
 
 /-- **The quartic Wick-diagram amplitude**: `(-1)^{S.card}` (the Dyson-recursion sign) times the
