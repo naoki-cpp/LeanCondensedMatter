@@ -422,9 +422,24 @@ information a diagram could be extracted from):
   `QuarticWickDiagram.equivPair`, not a `deriving` clause on the structure), so
   `WickDiagramConnected.lean`'s connectivity API (which never touches `Mode`'s cardinality) stays
   generic over `Mode`.
-- PR 6 not yet started: `Fermionic/DysonDiagramExpansion.lean`
-  (`dysonVertexMoment_eq_sum_quarticWickDiagram`, applying the general Bloch–de Dominicis theorem
-  to expand the quartic interaction's Dyson vertex moment as a sum over Wick diagrams).
+- PR 6 in progress: `Fermionic/DysonDiagramExpansion.lean`
+  (`dysonVertexMoment_quarticInteraction_eq_sum_amplitude`, applying the general Bloch–de
+  Dominicis theorem to expand the quartic interaction's Dyson vertex moment as a sum over Wick
+  diagrams). **Done so far**: `normalizedDysonPartitionCoeff_eq_freeGibbsExpectation`/
+  `dysonVertexMoment_eq_freeGibbsExpectation` bridge `dysonVertexMoment` to `freeGibbsExpectation
+  ε β (dysonCoeff ε V S.card β)` — the form the general theorem can actually be applied to — via
+  `Common.traceFock_diagonalEvolution_comp_eq_weightedTrace` and the PR 6-prerequisite
+  `freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy`/`freeGibbsExpectation_eq_gibbsExpectation`
+  bridge. `Common/FiniteOperatorIntegral.lean` additionally gained
+  `weightedTrace_operatorIntervalIntegral`/`normalizedWeightedDiagonal_operatorIntervalIntegral` (a
+  finite weighted trace commutes with `operatorIntervalIntegral`, given interval-integrability of
+  the matrix coefficients) — the finite-sum/integral interchange needed to expand `dysonCoeff`'s
+  recursion into an `orderedSimplexIntegral` of a vertex-label sum next.
+  **Still not done**: that `dysonCoeff`-recursion-to-`orderedSimplexIntegral` expansion itself,
+  expanding `quarticInteraction`'s `Finset.sum` into a genuine `4n`-operator product, applying the
+  general Bloch–de Dominicis theorem to that product, and reindexing the result via
+  `quarticWickDiagramEquivOrderedData` — see the file's own module docstring and this roadmap's
+  9-step PR 6 proof outline.
 - PR 7 not yet started (see above): `componentPartition`/restriction/reassembly, connecting
   `QuarticWickDiagram` to `Combinatorics/DiagramConnectedness.lean`'s abstract
   `WeightedDiagramFamily` as a concrete instantiation — connected-component weight factorization
