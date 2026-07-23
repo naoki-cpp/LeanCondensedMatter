@@ -30,8 +30,24 @@ conflating them**:
   S.card)` pairs
 
 `quarticLegEquiv` is the one named equivalence translating between the flattened position and the
-`(vertex, local leg)` pair; `vertexOfLeg`/`localLegOfLeg` are its two projections. No raw
-`Fin.cast`/arithmetic rewriting of leg positions should be needed outside this equivalence.
+`(vertex, local leg)` pair; `vertexOfLeg`/`localLegOfLeg`/`legOfVertexLocal` are its projections
+and inverse. No raw `Fin.cast`/arithmetic rewriting of leg positions should be needed outside this
+equivalence.
+
+**The local-leg `Fin 4` convention, fixed here and required to match
+`QuarticInteraction.lean`'s vertex operator order exactly** (since `Pairing` acts on *ordered*
+positions and the fermionic crossing sign downstream depends on that order):
+
+`0 ↦ create₁`, `1 ↦ create₂`, `2 ↦ annihilate₂`, `3 ↦ annihilate₁`
+
+matching `quarticVertexOperator q = c_{q.create₁}† c_{q.create₂}† c_{q.annihilate₂}
+c_{q.annihilate₁}` position-by-position.
+
+**Vertex enumeration is not `Fin N`-order-preserving.** `quarticLegEquiv` builds its `↥S`
+component from `Fintype.equivFin (↥S)`, an arbitrary (if fixed) enumeration of `S`'s elements —
+not necessarily the order induced by `S`'s ambient `Fin N` order. This is harmless as long as
+every downstream construction (component restriction, relabeling, ...) consistently goes through
+this same `quarticLegEquiv`, rather than re-deriving its own enumeration of `↥S`.
 -/
 
 namespace SecondQuantization
@@ -54,6 +70,23 @@ noncomputable def vertexOfLeg {S : Finset (Fin N)} (leg : Fin (2 * (2 * S.card))
 /-- **Which of its vertex's four ladder operators a flattened leg position picks out.** -/
 noncomputable def localLegOfLeg {S : Finset (Fin N)} (leg : Fin (2 * (2 * S.card))) : Fin 4 :=
   (quarticLegEquiv S leg).2
+
+/-- **The flattened leg position for a given vertex and local leg** — `quarticLegEquiv`'s
+inverse, spelled out for callers that build a position from `(vertex, local leg)` data rather than
+decomposing one. -/
+noncomputable def legOfVertexLocal {S : Finset (Fin N)} (v : ↥S) (l : Fin 4) :
+    Fin (2 * (2 * S.card)) :=
+  (quarticLegEquiv S).symm (v, l)
+
+@[simp]
+theorem vertexOfLeg_legOfVertexLocal {S : Finset (Fin N)} (v : ↥S) (l : Fin 4) :
+    vertexOfLeg (legOfVertexLocal v l) = v := by
+  simp [vertexOfLeg, legOfVertexLocal]
+
+@[simp]
+theorem localLegOfLeg_legOfVertexLocal {S : Finset (Fin N)} (v : ↥S) (l : Fin 4) :
+    localLegOfLeg (legOfVertexLocal v l) = l := by
+  simp [localLegOfLeg, legOfVertexLocal]
 
 /-- **A quartic Wick diagram** on vertex set `S`: a `QuarticVertexLabel Mode` assignment to each
 vertex, together with a perfect pairing of the resulting `4 * S.card` legs. Purely combinatorial —

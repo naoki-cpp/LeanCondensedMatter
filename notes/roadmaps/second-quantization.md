@@ -349,14 +349,24 @@ information a diagram could be extracted from):
   (via `matrixCoeff_heisenbergEvolve`/`matrixCoeff_comp`), which would have blocked reuse on the
   bosonic line's genuinely infinite `Occupation Mode := Mode →₀ ℕ` basis type, so it was replaced
   with the current Fintype-free algebraic proof before merging.
-- PRs 4–6 not yet started: `Fermionic/WickDiagram.lean` (quartic leg indexing, `Pairing (2 *
-  S.card)`-based Wick pairings, connected-component partitioning via a derived `SimpleGraph`),
-  `Fermionic/WickDiagram/Amplitude.lean` (vertex-order-averaged ordered-simplex diagram
-  amplitudes), and `Fermionic/DysonDiagramExpansion.lean`
-  (`dysonVertexMoment_eq_sum_quarticWickDiagram`, applying the general Bloch–de Dominicis theorem
-  to expand the quartic interaction's Dyson vertex moment as a sum over Wick diagrams —
-  connected-component weight factorization and the `PowerSeries.log` coefficient identification
-  remain further future work beyond PR 6).
+- PR 4a done, `Fermionic/WickDiagram.lean`: leg indexing and the bare `QuarticWickDiagram`
+  structure, split off PR 4's original scope per the plan's own fallback (connected-component
+  partitioning deferred to PR 4b). `quarticLegEquiv : Fin (2 * (2 * S.card)) ≃ (↥S) × Fin 4` is the
+  one named equivalence between a flattened leg position and a `(vertex, local leg)` pair —
+  `Pairing (2 * S.card)` pairs `Fin (2 * (2 * S.card))` positions, i.e. exactly `4 * S.card` legs;
+  `vertexOfLeg`/`localLegOfLeg`/`legOfVertexLocal` are its projections/inverse. The local-leg
+  `Fin 4` convention is fixed and documented to match `QuarticInteraction.lean`'s vertex operator
+  order exactly (`0 ↦ create₁`, `1 ↦ create₂`, `2 ↦ annihilate₂`, `3 ↦ annihilate₁`), since
+  `Pairing` acts on *ordered* positions and the downstream fermionic crossing sign depends on that
+  order. `QuarticWickDiagram`: a `QuarticVertexLabel` assignment per vertex plus a perfect pairing
+  of the legs — purely combinatorial, no leg-kind distinction or connectivity structure yet.
+- PR 4b–6 not yet started: connected-component partitioning via a derived `SimpleGraph` and
+  `IsConnected` on top of `Fermionic/WickDiagram.lean` (PR 4b), `Fermionic/WickDiagram/
+  Amplitude.lean` (vertex-order-averaged ordered-simplex diagram amplitudes, PR 5), and
+  `Fermionic/DysonDiagramExpansion.lean` (`dysonVertexMoment_eq_sum_quarticWickDiagram`, applying
+  the general Bloch–de Dominicis theorem to expand the quartic interaction's Dyson vertex moment as
+  a sum over Wick diagrams, PR 6) — connected-component weight factorization and the
+  `PowerSeries.log` coefficient identification remain further future work beyond PR 6.
 
 **Step 1 done, in `Fermionic/ImaginaryTimeEvolution.lean`:**
 - `imaginaryTimeEvolveFree ε τ` — `e^{τH₀}` for the free Hamiltonian, defined directly on the
