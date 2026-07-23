@@ -334,15 +334,29 @@ information a diagram could be extracted from):
   combinatorial cumulant, deliberately *not yet* identified with any coefficient of
   `dysonFormalLogPartitionFunction` (a separate finite-set-cumulant/`PowerSeries.log` bridge,
   future work beyond this plan).
-- PRs 3–6 not yet started: `Fermionic/QuarticInteraction.lean` (a fixed-arity number-conserving
-  quartic vertex, the first concrete interaction a Wick diagram can be extracted from),
-  `Fermionic/WickDiagram.lean` (quartic leg indexing, `Pairing (2 * S.card)`-based Wick pairings,
-  connected-component partitioning via a derived `SimpleGraph`), `Fermionic/WickDiagram/
-  Amplitude.lean` (vertex-order-averaged ordered-simplex diagram amplitudes), and
-  `Fermionic/DysonDiagramExpansion.lean` (`dysonVertexMoment_eq_sum_quarticWickDiagram`, applying
-  the general Bloch–de Dominicis theorem to expand the quartic interaction's Dyson vertex moment as
-  a sum over Wick diagrams — connected-component weight factorization and the `PowerSeries.log`
-  coefficient identification remain further future work beyond PR 6).
+- PR 3 done, `Fermionic/QuarticInteraction.lean`: the first *concrete* interaction operator a Wick
+  diagram can be extracted from — a genuine, generally non-diagonal number-conserving quartic
+  vertex `Σ g(q) cᵢ†cⱼ†cₗck` (`QuarticVertexLabel`/`quarticVertexOperator`/`quarticInteraction`),
+  deliberately without Hermiticity, coupling antisymmetry, a combinatorial prefactor, or
+  momentum-conservation constraints baked into the type (later predicates/specializations add
+  these). `interactionPicture_quarticVertexOperator`/`interactionPicture_quarticInteraction`:
+  each vertex's interaction-picture expansion is itself, rescaled by one exponential factor per
+  leg — needing new general facts added to `Common/DiagonalEvolution.lean`: `heisenbergEvolve_comp`
+  (distributes over `LinearMap.comp`) and `heisenbergEvolve_sum`/`heisenbergEvolve_smul`
+  (distributes over finite sums/scalars). All three are purely algebraic (`LinearMap.comp`
+  associativity plus `diagonalEvolution_neg_comp`/`LinearMap.comp_add`/`comp_smul`), with **no**
+  `Fintype Config` hypothesis — an initial matrix-coefficient-based proof needed `[Fintype Config]`
+  (via `matrixCoeff_heisenbergEvolve`/`matrixCoeff_comp`), which would have blocked reuse on the
+  bosonic line's genuinely infinite `Occupation Mode := Mode →₀ ℕ` basis type, so it was replaced
+  with the current Fintype-free algebraic proof before merging.
+- PRs 4–6 not yet started: `Fermionic/WickDiagram.lean` (quartic leg indexing, `Pairing (2 *
+  S.card)`-based Wick pairings, connected-component partitioning via a derived `SimpleGraph`),
+  `Fermionic/WickDiagram/Amplitude.lean` (vertex-order-averaged ordered-simplex diagram
+  amplitudes), and `Fermionic/DysonDiagramExpansion.lean`
+  (`dysonVertexMoment_eq_sum_quarticWickDiagram`, applying the general Bloch–de Dominicis theorem
+  to expand the quartic interaction's Dyson vertex moment as a sum over Wick diagrams —
+  connected-component weight factorization and the `PowerSeries.log` coefficient identification
+  remain further future work beyond PR 6).
 
 **Step 1 done, in `Fermionic/ImaginaryTimeEvolution.lean`:**
 - `imaginaryTimeEvolveFree ε τ` — `e^{τH₀}` for the free Hamiltonian, defined directly on the

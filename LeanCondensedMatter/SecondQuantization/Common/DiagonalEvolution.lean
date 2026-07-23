@@ -111,6 +111,39 @@ theorem heisenbergEvolve_zero (energy : Config → ℝ)
     heisenbergEvolve energy 0 A = A := by
   simp [heisenbergEvolve]
 
+/-- **`heisenbergEvolve` distributes over composition**: `(AB)(τ) = A(τ) B(τ)`, since the
+`e^{-τH₀} e^{τH₀}` inserted between `A` and `B` cancels. Purely algebraic — no `Fintype Config`
+needed, since it only rearranges `LinearMap.comp` associativity and cancels
+`diagonalEvolution_neg_comp`. -/
+theorem heisenbergEvolve_comp (energy : Config → ℝ) (τ : ℝ)
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    heisenbergEvolve energy τ (A.comp B) =
+      (heisenbergEvolve energy τ A).comp (heisenbergEvolve energy τ B) := by
+  simp only [heisenbergEvolve]
+  have hcancel : (diagonalEvolution energy (-τ)).comp ((diagonalEvolution energy τ).comp
+      (B.comp (diagonalEvolution energy (-τ)))) = B.comp (diagonalEvolution energy (-τ)) := by
+    rw [← LinearMap.comp_assoc (B.comp (diagonalEvolution energy (-τ))) (diagonalEvolution energy τ)
+      (diagonalEvolution energy (-τ)), diagonalEvolution_neg_comp, LinearMap.id_comp]
+  rw [LinearMap.comp_assoc, LinearMap.comp_assoc, LinearMap.comp_assoc, hcancel]
+
+/-- **`heisenbergEvolve` commutes with scalar multiplication.** Purely algebraic. -/
+theorem heisenbergEvolve_smul (energy : Config → ℝ) (τ : ℝ) (c : ℂ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    heisenbergEvolve energy τ (c • A) = c • heisenbergEvolve energy τ A := by
+  simp only [heisenbergEvolve, LinearMap.smul_comp, LinearMap.comp_smul]
+
+/-- **`heisenbergEvolve` distributes over finite sums.** Purely algebraic, by induction on the
+`Finset` using `LinearMap.comp_add`/`LinearMap.add_comp`. -/
+theorem heisenbergEvolve_sum {ι : Type*} (energy : Config → ℝ) (τ : ℝ) (s : Finset ι)
+    (f : ι → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    heisenbergEvolve energy τ (∑ i ∈ s, f i) = ∑ i ∈ s, heisenbergEvolve energy τ (f i) := by
+  classical
+  induction s using Finset.induction with
+  | empty => simp [heisenbergEvolve]
+  | insert x s hx ih =>
+    rw [Finset.sum_insert hx, Finset.sum_insert hx, ← ih]
+    simp only [heisenbergEvolve, LinearMap.add_comp, LinearMap.comp_add]
+
 /-! ## Matrix coefficients -/
 
 /-- **`diagonalEvolution`'s matrix coefficients**: diagonal, `exp(τ · energy n)` on the diagonal
