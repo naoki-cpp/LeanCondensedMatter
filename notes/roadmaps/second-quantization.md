@@ -258,7 +258,7 @@ order:
    result (**in progress**, see below): a 6-PR plan (PR 5 further split into 5a/5b/5c). PRs 1–5
    done (`WeightedDiagramFamily`, Dyson vertex moment, quartic interaction, Wick diagram
    structure/connectivity, ordered-simplex integral, vertex-order/relabel API, Wick-diagram
-   amplitude); PR 6 (the Dyson-to-diagram expansion) not yet started.
+   amplitude); PR 6, the Dyson-to-diagram expansion, is in progress.
 7. Move or generalize the current fermionic linked-cluster bridge before presenting it as `Common/` infrastructure.
 
 **Step 5 done — the genuine interaction-picture Dyson series**, as *continuous imaginary-time
