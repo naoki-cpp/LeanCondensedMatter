@@ -360,13 +360,23 @@ information a diagram could be extracted from):
   `Pairing` acts on *ordered* positions and the downstream fermionic crossing sign depends on that
   order. `QuarticWickDiagram`: a `QuarticVertexLabel` assignment per vertex plus a perfect pairing
   of the legs — purely combinatorial, no leg-kind distinction or connectivity structure yet.
-- PR 4b–6 not yet started: connected-component partitioning via a derived `SimpleGraph` and
-  `IsConnected` on top of `Fermionic/WickDiagram.lean` (PR 4b), `Fermionic/WickDiagram/
-  Amplitude.lean` (vertex-order-averaged ordered-simplex diagram amplitudes, PR 5), and
-  `Fermionic/DysonDiagramExpansion.lean` (`dysonVertexMoment_eq_sum_quarticWickDiagram`, applying
-  the general Bloch–de Dominicis theorem to expand the quartic interaction's Dyson vertex moment as
-  a sum over Wick diagrams, PR 6) — connected-component weight factorization and the
-  `PowerSeries.log` coefficient identification remain further future work beyond PR 6.
+- PR 4b done, `Fermionic/WickDiagramConnected.lean`: `QuarticWickDiagram.vertexGraph`, the derived
+  `SimpleGraph` on a diagram's vertex set (distinct vertices adjacent iff some leg of one is
+  paired to some leg of the other — same-vertex "tadpole" contractions are not turned into edges,
+  since `SimpleGraph` is irreflexive). `IsConnected := Preconnected ∧ S.Nonempty` (rather than
+  `SimpleGraph.Connected`, which needs a `Nonempty ↥S` *instance* — awkward for a `Prop` that must
+  also make sense, as `False`, on the empty vertex set), and `ConnectedQuarticWickDiagram`, the
+  connected-diagram subtype built directly from `IsConnected`. **Not yet included**:
+  `componentPartition : Finpartition S` (mapping `SimpleGraph.ConnectedComponent` fibers back to
+  `Finset (Fin N)` blocks) — deferred until `WeightedDiagramFamily`'s `decompose` field actually
+  needs it, per the original design's explicit allowance for an equivalent `IsConnected`-based
+  formulation instead.
+- PR 5–6 not yet started: `Fermionic/WickDiagram/Amplitude.lean` (vertex-order-averaged
+  ordered-simplex diagram amplitudes, PR 5), and `Fermionic/DysonDiagramExpansion.lean`
+  (`dysonVertexMoment_eq_sum_quarticWickDiagram`, applying the general Bloch–de Dominicis theorem
+  to expand the quartic interaction's Dyson vertex moment as a sum over Wick diagrams, PR 6) —
+  connected-component weight factorization and the `PowerSeries.log` coefficient identification
+  remain further future work beyond PR 6.
 
 **Step 1 done, in `Fermionic/ImaginaryTimeEvolution.lean`:**
 - `imaginaryTimeEvolveFree ε τ` — `e^{τH₀}` for the free Hamiltonian, defined directly on the
