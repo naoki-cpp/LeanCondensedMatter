@@ -366,17 +366,22 @@ information a diagram could be extracted from):
   since `SimpleGraph` is irreflexive). `IsConnected := Preconnected ∧ S.Nonempty` (rather than
   `SimpleGraph.Connected`, which needs a `Nonempty ↥S` *instance* — awkward for a `Prop` that must
   also make sense, as `False`, on the empty vertex set), and `ConnectedQuarticWickDiagram`, the
-  connected-diagram subtype built directly from `IsConnected`. **Not yet included**:
-  `componentPartition : Finpartition S` (mapping `SimpleGraph.ConnectedComponent` fibers back to
-  `Finset (Fin N)` blocks) — deferred until `WeightedDiagramFamily`'s `decompose` field actually
-  needs it, per the original design's explicit allowance for an equivalent `IsConnected`-based
-  formulation instead.
+  connected-diagram subtype built directly from `IsConnected`. `IsConnected` only *classifies* a
+  diagram as connected or not — it is **not** a substitute for the separate, larger piece of work
+  `WeightedDiagramFamily.decompose` actually needs: `componentPartition : Finpartition S` (mapping
+  `SimpleGraph.ConnectedComponent` fibers back to `Finset (Fin N)` blocks), vertex-label/pairing
+  *restriction* to each component, component-diagram *reassembly*, and the proof that restriction
+  and reassembly are mutually inverse. That work is planned for its own PR (**"PR 7"**, after PR 6
+  below), once a concrete `WeightedDiagramFamily Mode N` instantiation is being built on top of
+  `Fermionic/DysonDiagramExpansion.lean`'s result — not folded into PR 4b/5/6.
 - PR 5–6 not yet started: `Fermionic/WickDiagram/Amplitude.lean` (vertex-order-averaged
   ordered-simplex diagram amplitudes, PR 5), and `Fermionic/DysonDiagramExpansion.lean`
   (`dysonVertexMoment_eq_sum_quarticWickDiagram`, applying the general Bloch–de Dominicis theorem
-  to expand the quartic interaction's Dyson vertex moment as a sum over Wick diagrams, PR 6) —
-  connected-component weight factorization and the `PowerSeries.log` coefficient identification
-  remain further future work beyond PR 6.
+  to expand the quartic interaction's Dyson vertex moment as a sum over Wick diagrams, PR 6).
+- PR 7 not yet started (see above): `componentPartition`/restriction/reassembly, connecting
+  `QuarticWickDiagram` to `Combinatorics/DiagramConnectedness.lean`'s abstract
+  `WeightedDiagramFamily` as a concrete instantiation — connected-component weight factorization
+  and the `PowerSeries.log` coefficient identification remain further future work beyond that.
 
 **Step 1 done, in `Fermionic/ImaginaryTimeEvolution.lean`:**
 - `imaginaryTimeEvolveFree ε τ` — `e^{τH₀}` for the free Hamiltonian, defined directly on the

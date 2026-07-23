@@ -16,16 +16,19 @@ leg of the other. Same-vertex contractions ("tadpoles") are part of a vertex's o
 deliberately **not** turned into edges (a `SimpleGraph` is irreflexive), matching the plan's
 explicit instruction. `IsConnected` is stated as `Preconnected ∧ S.Nonempty` rather than via
 `SimpleGraph.Connected` directly, since the latter needs a `Nonempty ↥S` *instance*, awkward for a
-`Prop` that must also make sense (as `False`) for the empty vertex set — the plan's own suggested
-"equivalent definition with an explicit empty/singleton convention".
+`Prop` that must also make sense (as `False`) for the empty vertex set — an equivalent formulation
+of `SimpleGraph.Connected` itself, with an explicit empty/singleton convention, per the original
+design's own allowance ("または、空集合・singletonの規約を明示した同値な定義にします").
 
-**Not yet included**: `componentPartition : Finpartition S`, and hence the
-`WeightedDiagramFamily`-style connected-diagram subtype built from it —
-`ConnectedQuarticWickDiagram` below is instead built directly from `IsConnected`, an equivalent
-formulation the original design
-explicitly allows ("または、空集合・singletonの規約を明示した同値な定義にします"). Building the
-`Finpartition` itself (mapping `SimpleGraph.ConnectedComponent` fibers back to `Finset (Fin N)`
-blocks) is left to a later PR, once `WeightedDiagramFamily`'s `decompose` field actually needs it.
+**`ConnectedQuarticWickDiagram` is a genuinely separate, smaller deliverable than the abstract
+`WeightedDiagramFamily.decompose` equivalence still needs.** `IsConnected` only lets a diagram be
+*classified* as connected or not — `ConnectedQuarticWickDiagram` below is its subtype. It is
+*not* a substitute for `componentPartition : Finpartition S` (mapping
+`SimpleGraph.ConnectedComponent` fibers back to `Finset (Fin N)` blocks), vertex-label/pairing
+*restriction* to each component, component-diagram *reassembly*, or the proof that restriction and
+reassembly are mutually inverse — all of that remains future work, planned for a dedicated PR once
+a concrete `WeightedDiagramFamily Mode N` instantiation is being built (after PR 6's
+`dysonVertexMoment_eq_sum_quarticWickDiagram`; see `notes/roadmaps/second-quantization.md`).
 -/
 
 namespace SecondQuantization
