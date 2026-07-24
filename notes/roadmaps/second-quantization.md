@@ -508,11 +508,25 @@ information a diagram could be extracted from):
   `flatVertexLegOperator`'s own flattened position). This is exactly the general Bloch–de
   Dominicis theorem's first hypothesis (`∀ i, heisenbergEvolve energy (-β) (C i) = Complex.exp
   (q i * (-β)) • C i`), for `C := flatVertexLegOperator ε n q τ`.
-  **Still not done**: the general theorem's *second* hypothesis (the pairwise
-  `zetaCommutator`/CAR-based commutator constant, for all pairs of the `4n` flattened legs —
-  genuinely new case-analysis work, by leg-type and mode) and *third* hypothesis (non-resonance,
-  `1 - ζ * exp(q_i * β) ≠ 0` — expected to be free for real `q_i`, `β` since `ζ = -1` gives `1 +
-  exp(q_i * β) > 0`), then actually applying
+  **Part 8 done — the general theorem's second hypothesis, for a single vertex's four legs**:
+  `Fermionic/CanonicalAnticommutationRelations.lean` gained `anticomm_comm` (`{A, B} = {B, A}`)
+  and `anticomm_create_annihilate` (the creation-first mirror of `anticomm_annihilate_create`, via
+  `anticomm_comm`). `DysonDiagramExpansion.lean` gained `quarticLocalLegMode`/
+  `quarticLocalLegIsCreate` (companions to `quarticLocalLegOperator`'s own `0 ↦ create₁, 1 ↦
+  create₂, 2 ↦ annihilate₂, 3 ↦ annihilate₁` convention), `anticomm_quarticLocalLegOperator` (a
+  single closed formula for the bare anticommutator of two local-leg operators at *possibly
+  different* vertex labels — `0` for two legs of the same kind, even at the same mode; `δ` on the
+  two legs' modes otherwise — covering same-vertex "tadpole" and cross-vertex leg pairs alike),
+  and `zetaCommutator_quarticLocalLegOperator` (the same fact restated via
+  `Common.zetaCommutator`/`exchangeCommutator_fermion_eq_anticomm`, matching the general theorem's
+  own hypothesis shape). This is the *bare* (untime-evolved) commutator constant; the general
+  theorem's actual `c i j` hypothesis for the evolved, flattened `4n`-leg family still needs the
+  corresponding `Complex.exp` eigenvalue-shift factors multiplied in, and assembling the
+  two-position case analysis (via `orderedQuarticLegEquiv`) into a single `c : Fin (2 * (2 * n)) →
+  Fin (2 * (2 * n)) → ℂ` — not yet done.
+  **Still not done**: finishing the second hypothesis for the evolved, flattened family; the
+  *third* hypothesis (non-resonance, `1 - ζ * exp(q_i * β) ≠ 0` — expected to be free for real
+  `q_i`, `β` since `ζ = -1` gives `1 + exp(q_i * β) > 0`); then actually applying
   `Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` to the resulting `4n`-operator
   product and reindexing the result via `quarticWickDiagramEquivOrderedData` into a genuine sum
   over `QuarticWickDiagram`s — see the file's own module docstring and this roadmap's 9-step PR 6

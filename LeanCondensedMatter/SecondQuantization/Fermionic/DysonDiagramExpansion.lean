@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.DysonPartitionSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.DysonVertexMoment
 import LeanCondensedMatter.SecondQuantization.Fermionic.WickDiagram.Amplitude
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PeelFirst
+import LeanCondensedMatter.SecondQuantization.Fermionic.ExchangeAlgebra
 
 set_option linter.style.header false
 
@@ -53,16 +54,26 @@ flattened legs**: `heisenbergEvolve_flatVertexLegOperator` shows every atomic le
 `Common.heisenbergEvolve_heisenbergEvolve`, new in `Common/DiagonalEvolution.lean`, supplies the
 needed one-parameter-semigroup commutativity).
 
-**Still remaining**: the general theorem's *second* hypothesis (the pairwise
-`zetaCommutator`/CAR-based commutator constant, for all pairs of the `4n` flattened legs — new
-case-analysis work, by leg-type and mode) and *third* hypothesis (non-resonance, expected free for
-real eigenvalue shifts since `ζ = -1`), then actually applying
-`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` to the resulting `4n`-operator
-product (`freeGibbsExpectation_comp_dysonCoeff_quarticInteraction` at `L := LinearMap.id`, `t :=
-β`, composed with the flattening theorem, gives the vertex-label-sum side) and reindexing the
-resulting (vertex-label sequence, pairing) sum via `quarticWickDiagramEquivOrderedData` into a
-genuine sum over `QuarticWickDiagram`s — see `notes/roadmaps/second-quantization.md` for the full
-9-step proof outline.
+The general theorem's **second hypothesis is now discharged for a single vertex's four legs**:
+`zetaCommutator_quarticLocalLegOperator` (via `anticomm_quarticLocalLegOperator`, a single closed
+formula covering same-vertex and cross-vertex leg pairs alike — `0` for two legs of the same kind
+(CAR's `anticomm_create_create`/`anticomm_annihilate_annihilate`, always `0` even at the same
+mode), `δ` on the two legs' modes otherwise (CAR's `anticomm_annihilate_create`/the new
+`anticomm_create_annihilate`)). This is the *bare* (untime-evolved) commutator constant; the
+general theorem's actual `c i j` hypothesis (for the evolved `flatVertexLegOperator` legs, at
+fixed `τ`) still needs the corresponding `Complex.exp` eigenvalue-shift factors multiplied in, and
+assembling the two-vertex/two-local-leg case analysis (via `orderedQuarticLegEquiv`) into a single
+`c : Fin (2 * (2 * n)) → Fin (2 * (2 * n)) → ℂ` is not yet done.
+
+**Still remaining**: finishing the second hypothesis for the evolved, flattened `4n`-leg family
+(exponential factors plus the `orderedQuarticLegEquiv`-based two-position case analysis), the
+*third* hypothesis (non-resonance, expected free for real eigenvalue shifts since `ζ = -1`), then
+actually applying `Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` to the
+resulting `4n`-operator product (`freeGibbsExpectation_comp_dysonCoeff_quarticInteraction` at `L
+:= LinearMap.id`, `t := β`, composed with the flattening theorem, gives the vertex-label-sum side)
+and reindexing the resulting (vertex-label sequence, pairing) sum via
+`quarticWickDiagramEquivOrderedData` into a genuine sum over `QuarticWickDiagram`s — see
+`notes/roadmaps/second-quantization.md` for the full 9-step proof outline.
 -/
 
 namespace SecondQuantization
@@ -541,5 +552,52 @@ theorem prodComp_ofFn_flatVertexLegOperator_eq_nestedVertexOperatorComp (ε : Mo
         (orderedQuarticLegEquiv n k).1 (orderedQuarticLegEquiv n k).2 hcard'
       rw [← hk] at hrest
       exact hrest.symm
+
+/-! ## The general theorem's zeta-commutator hypothesis, for a single vertex's four legs -/
+
+omit [Fintype Mode] in
+/-- **The mode a local leg's ladder operator acts on** — companion to `quarticLocalLegOperator`'s
+own `0 ↦ create₁, 1 ↦ create₂, 2 ↦ annihilate₂, 3 ↦ annihilate₁` convention. -/
+def quarticLocalLegMode (q : QuarticVertexLabel Mode) : Fin 4 → Mode :=
+  ![q.create₁, q.create₂, q.annihilate₂, q.annihilate₁]
+
+/-- **Whether a local leg is a creation leg** (`0, 1`) or an annihilation leg (`2, 3`). -/
+def quarticLocalLegIsCreate : Fin 4 → Bool := ![true, true, false, false]
+
+omit [Fintype Mode] in
+/-- **The bare anticommutator of two local leg operators**, at possibly different vertex labels:
+`0` if both legs are the same kind (both creation or both annihilation — CAR's
+`anticomm_create_create`/`anticomm_annihilate_annihilate`, *always* `0`, even at the same mode),
+and otherwise `δ` on the two legs' modes (CAR's `anticomm_annihilate_create`/
+`anticomm_create_annihilate`) — a single closed formula covering same-vertex ("tadpole") and
+cross-vertex leg pairs alike, since `quarticLocalLegMode`/`quarticLocalLegOperator` only depend on
+the vertex label supplied, not on any shared vertex identity. -/
+theorem anticomm_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' : Fin 4) :
+    anticomm (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
+      if quarticLocalLegIsCreate l = quarticLocalLegIsCreate l' then
+        (0 : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode)
+      else if quarticLocalLegMode q l = quarticLocalLegMode q' l' then LinearMap.id else 0 := by
+  fin_cases l <;> fin_cases l' <;>
+    simp [quarticLocalLegOperator, quarticLocalLegIsCreate, quarticLocalLegMode,
+      anticomm_create_create, anticomm_annihilate_annihilate, anticomm_annihilate_create,
+      anticomm_create_annihilate]
+
+omit [Fintype Mode] in
+/-- **The general theorem's zeta-commutator hypothesis, for a single vertex's four legs** —
+`Common.zetaCommutator` at `ζ := Statistics.fermion.zetaInt` is exactly `anticomm`
+(`exchangeCommutator_fermion_eq_anticomm`), so `anticomm_quarticLocalLegOperator` transfers
+directly. -/
+theorem zetaCommutator_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' : Fin 4) :
+    Common.zetaCommutator ((Statistics.fermion.zetaInt : ℤ) : ℂ)
+        (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
+      (if quarticLocalLegIsCreate l = quarticLocalLegIsCreate l' then (0 : ℂ)
+       else if quarticLocalLegMode q l = quarticLocalLegMode q' l' then 1 else 0) •
+        (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) := by
+  have hbridge : Common.zetaCommutator ((Statistics.fermion.zetaInt : ℤ) : ℂ)
+      (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
+      anticomm (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') :=
+    exchangeCommutator_fermion_eq_anticomm _ _
+  rw [hbridge, anticomm_quarticLocalLegOperator]
+  split_ifs <;> simp
 
 end SecondQuantization
