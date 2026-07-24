@@ -482,21 +482,26 @@ information a diagram could be extracted from):
   vertex's evolved operator, flattened into a `Common.prodComp` of its four individually-evolved
   atomic legs) and `Common.prodComp_append` (`Common/BlochDeDominicis/PeelFirst.lean`, `prodComp`
   distributes over list concatenation).
-  **Still not done**: assembling these pointwise index facts into the full flattening theorem
-  `Common.prodComp (List.ofFn (flatVertexLegOperator ε n q τ)) = nestedVertexOperatorComp ε n q
-  τ` — the successor case reduces to a *pure list equality* (see
-  `DysonDiagramExpansion.lean`'s own `### The full flattening theorem (not yet proven)` section)
-  needing either `List.ofFn_mul` (splitting the domain into `n + 1` blocks of `4`) or
-  `List.ofFn_fin_append`/`Fin.addCases` (splitting additively into `4 + 2 * (2 * n)`) — both
-  routes need the recursive sub-block (for the smaller `n`) to be identified with *its own*
-  instance of the same block-splitting lemma, which the two cast-compatibility lemmas above don't
-  yet assemble into by themselves. Beyond that: applying the general Bloch–de Dominicis theorem
+  **Part 6 done — the full flattening theorem is now fully proven, no `sorry`**:
+  `prodComp_ofFn_flatVertexLegOperator_eq_nestedVertexOperatorComp`
+  (`Common.prodComp (List.ofFn (flatVertexLegOperator ε n q τ)) = nestedVertexOperatorComp ε n q
+  τ`), via `eq_cast_mul_add_orderedQuarticLegEquiv` (a new corollary: applying
+  `(orderedQuarticLegEquiv n).symm` to both sides of `orderedQuarticLegEquiv_cast_mul_add` and
+  using `Equiv.symm_apply_apply` shows *every* flattened position is of the `i * 4 + j` form, not
+  just the specific ones the block-splitting lemma constructs — needed to match the induction's
+  "tail" piece at an unconstrained position) combined with `List.ofFn_fin_append`/`Fin.addCases`
+  (splitting the domain additively into `4 + 2 * (2 * n)`; the `left` branch matches
+  `flatVertexLegOperator_cast_mul_add` at vertex `0` directly, the `right` branch uses the new
+  corollary to express an arbitrary position `k` of the smaller `n`-fold piece in `i' * 4 + j'`
+  form, then matches both sides via `flatVertexLegOperator_cast_mul_add` at the two different
+  vertex counts `n` and `n + 1`, since `4 + (i' * 4 + j') = i'.succ * 4 + j'` as naturals).
+  **Still not done**: applying the general Bloch–de Dominicis theorem
   (`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing`) to the resulting
   `4n`-operator product (`quarticVertexOperator`'s creation/annihilation legs still need their
   eigenoperator/zeta-commutator hypotheses discharged for that general theorem's own
-  preconditions), and reindexing the result via `quarticWickDiagramEquivOrderedData` into a
-  genuine sum over `QuarticWickDiagram`s — see the file's own module docstring and this roadmap's
-  9-step PR 6 proof outline.
+  preconditions, from CAR), and reindexing the result via `quarticWickDiagramEquivOrderedData`
+  into a genuine sum over `QuarticWickDiagram`s — see the file's own module docstring and this
+  roadmap's 9-step PR 6 proof outline.
 - PR 7 not yet started (see above): `componentPartition`/restriction/reassembly, connecting
   `QuarticWickDiagram` to `Combinatorics/DiagramConnectedness.lean`'s abstract
   `WeightedDiagramFamily` as a concrete instantiation — connected-component weight factorization
