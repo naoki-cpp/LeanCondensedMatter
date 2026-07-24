@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.AlgebraicFock
 import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
+import LeanCondensedMatter.SecondQuantization.Common.FiniteOperatorIntegral
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 
 set_option linter.style.header false
@@ -192,6 +193,25 @@ theorem matrixCoeff_heisenbergEvolve [Fintype Config] (energy : Config → ℝ) 
     by_cases h : m = k <;> simp [h]
   simp only [hstep, Finset.sum_ite_eq, Finset.mem_univ, if_true]
   rw [hinner, mul_comm (matrixCoeff A m n), ← mul_assoc, ← Complex.exp_add]
+  congr 2
+  push_cast
+  ring
+
+/-- **`heisenbergEvolve` is a one-parameter semigroup**: `A(s)(t) = A(s + t)`, i.e.
+`heisenbergEvolve energy t (heisenbergEvolve energy s A) = heisenbergEvolve energy (s + t) A` — by
+comparing matrix coefficients (`matrixCoeff_heisenbergEvolve`, which only depends on `energy m -
+energy n`, so composing two evolutions simply adds their `τ` factors) and using `matrixCoeff_ext`.
+Needed to show `imaginaryTimeEvolve`-dressed eigenoperators remain eigenoperators of
+`heisenbergEvolve energy (-β)` with the *same* eigenvalue shift, independent of the dressing
+time. -/
+theorem heisenbergEvolve_heisenbergEvolve [Fintype Config] (energy : Config → ℝ) (s t : ℝ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    heisenbergEvolve energy t (heisenbergEvolve energy s A) =
+      heisenbergEvolve energy (s + t) A := by
+  apply matrixCoeff_ext
+  intro m n
+  rw [matrixCoeff_heisenbergEvolve, matrixCoeff_heisenbergEvolve, matrixCoeff_heisenbergEvolve,
+    ← mul_assoc, ← Complex.exp_add]
   congr 2
   push_cast
   ring

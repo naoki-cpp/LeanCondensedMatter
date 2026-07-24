@@ -495,13 +495,28 @@ information a diagram could be extracted from):
   corollary to express an arbitrary position `k` of the smaller `n`-fold piece in `i' * 4 + j'`
   form, then matches both sides via `flatVertexLegOperator_cast_mul_add` at the two different
   vertex counts `n` and `n + 1`, since `4 + (i' * 4 + j') = i'.succ * 4 + j'` as naturals).
-  **Still not done**: applying the general Bloch–de Dominicis theorem
-  (`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing`) to the resulting
-  `4n`-operator product (`quarticVertexOperator`'s creation/annihilation legs still need their
-  eigenoperator/zeta-commutator hypotheses discharged for that general theorem's own
-  preconditions, from CAR), and reindexing the result via `quarticWickDiagramEquivOrderedData`
-  into a genuine sum over `QuarticWickDiagram`s — see the file's own module docstring and this
-  roadmap's 9-step PR 6 proof outline.
+  **Part 7 done — the general theorem's eigenoperator hypothesis, for all `4n` flattened legs**:
+  `Common/DiagonalEvolution.lean` gained `heisenbergEvolve_heisenbergEvolve` (`heisenbergEvolve` is
+  a one-parameter semigroup, `A(s)(t) = A(s + t)`, by comparing matrix coefficients — needed since
+  no direct commutativity lemma for two different evolution times existed yet).
+  `DysonDiagramExpansion.lean` gained `heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator`
+  (a single evolved atomic leg operator is an eigenoperator of `heisenbergEvolve (fermionEnergy ε)
+  (-β)`, with an eigenvalue shift *independent of the dressing time* `τ` — via
+  `heisenbergEvolve_heisenbergEvolve` combining the two evolutions into one at `τ + (-β)`, then
+  `imaginaryTimeEvolve_quarticLocalLegOperator` applied twice to factor the `τ`-dependent piece
+  back out) and `heisenbergEvolve_flatVertexLegOperator` (the direct specialization to
+  `flatVertexLegOperator`'s own flattened position). This is exactly the general Bloch–de
+  Dominicis theorem's first hypothesis (`∀ i, heisenbergEvolve energy (-β) (C i) = Complex.exp
+  (q i * (-β)) • C i`), for `C := flatVertexLegOperator ε n q τ`.
+  **Still not done**: the general theorem's *second* hypothesis (the pairwise
+  `zetaCommutator`/CAR-based commutator constant, for all pairs of the `4n` flattened legs —
+  genuinely new case-analysis work, by leg-type and mode) and *third* hypothesis (non-resonance,
+  `1 - ζ * exp(q_i * β) ≠ 0` — expected to be free for real `q_i`, `β` since `ζ = -1` gives `1 +
+  exp(q_i * β) > 0`), then actually applying
+  `Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` to the resulting `4n`-operator
+  product and reindexing the result via `quarticWickDiagramEquivOrderedData` into a genuine sum
+  over `QuarticWickDiagram`s — see the file's own module docstring and this roadmap's 9-step PR 6
+  proof outline.
 - PR 7 not yet started (see above): `componentPartition`/restriction/reassembly, connecting
   `QuarticWickDiagram` to `Combinatorics/DiagramConnectedness.lean`'s abstract
   `WeightedDiagramFamily` as a concrete instantiation — connected-component weight factorization
