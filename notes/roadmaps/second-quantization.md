@@ -470,13 +470,33 @@ information a diagram could be extracted from):
   this goal's specific shape) to reindex the resulting (outer label, inner label sequence) double
   sum into a single `Fin (n + 1) → QuarticVertexLabel Mode` sum, folded back into
   `orderedSimplexIntegral (n + 1) t` via `orderedSimplexIntegral_succ`.
-  **Still not done**: applying the general Bloch–de Dominicis theorem
-  (`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing`) to the resulting `4n`-operator
-  product (`quarticVertexOperator`'s creation/annihilation legs still need their
-  eigenoperator/zeta-commutator hypotheses discharged for that general theorem's own preconditions),
-  and reindexing the result via `quarticWickDiagramEquivOrderedData` into a genuine sum over
-  `QuarticWickDiagram`s — see the file's own module docstring and this roadmap's 9-step PR 6 proof
-  outline.
+  **Part 5 done — the index-arithmetic bridge lemma for flattening**:
+  `orderedQuarticLegEquiv_cast_mul_add` (`orderedQuarticLegEquiv n`'s value at the flattened
+  position `i * 4 + j`, up to the numeric cast identifying `Fin (2 * (2 * n))` with `Fin (n * 4)`,
+  is exactly `(i, j)` — proved via `Equiv.symm_apply_eq`, reducing to `finProdFinEquiv`'s own
+  defining formula, avoiding any named `finProdFinEquiv` "symm" simp lemma) and
+  `flatVertexLegOperator_cast_mul_add` (the corresponding fact for `flatVertexLegOperator`, the
+  generalization of `WickDiagram/Amplitude.lean`'s `orderedQuarticLegOperator` to a bare
+  `q : Fin n → QuarticVertexLabel Mode` not yet a `QuarticWickDiagram`). Also
+  `imaginaryTimeEvolve_comp`/`interactionPicture_quarticVertexOperator_eq_prodComp` (a single
+  vertex's evolved operator, flattened into a `Common.prodComp` of its four individually-evolved
+  atomic legs) and `Common.prodComp_append` (`Common/BlochDeDominicis/PeelFirst.lean`, `prodComp`
+  distributes over list concatenation).
+  **Still not done**: assembling these pointwise index facts into the full flattening theorem
+  `Common.prodComp (List.ofFn (flatVertexLegOperator ε n q τ)) = nestedVertexOperatorComp ε n q
+  τ` — the successor case reduces to a *pure list equality* (see
+  `DysonDiagramExpansion.lean`'s own `### The full flattening theorem (not yet proven)` section)
+  needing either `List.ofFn_mul` (splitting the domain into `n + 1` blocks of `4`) or
+  `List.ofFn_fin_append`/`Fin.addCases` (splitting additively into `4 + 2 * (2 * n)`) — both
+  routes need the recursive sub-block (for the smaller `n`) to be identified with *its own*
+  instance of the same block-splitting lemma, which the two cast-compatibility lemmas above don't
+  yet assemble into by themselves. Beyond that: applying the general Bloch–de Dominicis theorem
+  (`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing`) to the resulting
+  `4n`-operator product (`quarticVertexOperator`'s creation/annihilation legs still need their
+  eigenoperator/zeta-commutator hypotheses discharged for that general theorem's own
+  preconditions), and reindexing the result via `quarticWickDiagramEquivOrderedData` into a
+  genuine sum over `QuarticWickDiagram`s — see the file's own module docstring and this roadmap's
+  9-step PR 6 proof outline.
 - PR 7 not yet started (see above): `componentPartition`/restriction/reassembly, connecting
   `QuarticWickDiagram` to `Combinatorics/DiagramConnectedness.lean`'s abstract
   `WeightedDiagramFamily` as a concrete instantiation — connected-component weight factorization

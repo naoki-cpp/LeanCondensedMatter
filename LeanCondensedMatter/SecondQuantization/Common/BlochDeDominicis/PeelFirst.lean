@@ -59,6 +59,14 @@ theorem prodComp_cons (B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config
     (t : List (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) :
     prodComp (B :: t) = B.comp (prodComp t) := rfl
 
+/-- **`prodComp` distributes over list concatenation**: `prodComp (l₁ ++ l₂) = prodComp l₁ ∘
+prodComp l₂` — by induction on `l₁`, using `LinearMap.comp_assoc` at each step. -/
+theorem prodComp_append (l₁ l₂ : List (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) :
+    prodComp (l₁ ++ l₂) = (prodComp l₁).comp (prodComp l₂) := by
+  induction l₁ with
+  | nil => simp
+  | cons B t ih => rw [List.cons_append, prodComp_cons, prodComp_cons, ih, LinearMap.comp_assoc]
+
 /-- **The recursive "peeled" sum**: mirrors the exact substitution steps of pushing `C₁`
 rightward through a list of `(operator, scalar ζ-commutator coefficient)` pairs one at a time.
 Depends only on `ζ` and the list — not on `C₁`. -/
