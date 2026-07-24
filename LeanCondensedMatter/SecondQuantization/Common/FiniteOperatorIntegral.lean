@@ -116,6 +116,26 @@ theorem operatorIntervalIntegral_smul (c : ℂ)
   rw [hL, matrixCoeff_smul, intervalIntegral.integral_const_mul,
     matrixCoeff_operatorIntervalIntegral]
 
+/-- **Left-composition with a fixed operator commutes with `operatorIntervalIntegral`**:
+`L ∘ (∫ F) = ∫ (L ∘ F)`, given interval-integrability of every matrix coefficient `F` contributes.
+Both sides reduce, via `matrixCoeff_comp`/`matrixCoeff_operatorIntervalIntegral`, to the same
+`∑ k, matrixCoeff L m k * ∫ σ, matrixCoeff (F σ) k n` vs. `∫ σ, ∑ k, matrixCoeff L m k *
+matrixCoeff (F σ) k n` — the finite-sum/integral interchange `intervalIntegral.integral_finsetSum`
+supplies, after pulling the constant `matrixCoeff L m k` in/out of each summand's integral
+(`intervalIntegral.integral_const_mul`). Needed to move an already-evaluated interaction-picture
+vertex factor past the ordered-simplex integral over the *remaining* Dyson coefficient. -/
+theorem comp_operatorIntervalIntegral (L : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (F : ℝ → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (a b : ℝ)
+    (hF : ∀ (k n : Config), IntervalIntegrable (fun σ => matrixCoeff (F σ) k n)
+      MeasureTheory.volume a b) :
+    L.comp (operatorIntervalIntegral F a b) = operatorIntervalIntegral (fun σ => L.comp (F σ)) a b
+    := by
+  apply matrixCoeff_ext
+  intro m n
+  simp only [matrixCoeff_comp, matrixCoeff_operatorIntervalIntegral]
+  rw [intervalIntegral.integral_finsetSum fun k _ => (hF k n).const_mul (matrixCoeff L m k)]
+  exact Finset.sum_congr rfl fun k _ => (intervalIntegral.integral_const_mul _ _).symm
+
 /-! ## Interaction with a finite weighted trace/normalized diagonal functional -/
 
 /-- **A weighted trace commutes with `operatorIntervalIntegral`**: `Tr_w[∫ F] = ∫ Tr_w[F]`, given
