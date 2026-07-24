@@ -20,20 +20,22 @@ just `β ≥ 0`, and that value should be read as "simplex volume" only in the `
 recursion (`Fermionic/DysonExpansion.lean`'s `dysonCoeff`), whose outer integration variable `σ`
 also has range `[0, τ]` with `τ` the overall bound.
 
-**Deliberately minimal.** No general "sum commutes with `orderedSimplexIntegral`" lemma is
-included — that needs integrability hypotheses tailored to whatever the caller actually
-integrates, and a maximally general abstract version would be premature here (`Fermionic/
-WickDiagram/Amplitude.lean`, PR 5c, proves exactly the continuity/linearity facts its own
-integrand needs). No claim of measurability/integrability beyond what each individual lemma's own
-hypotheses require.
+**Deliberately minimal, but not silent on sums.** `orderedSimplexIntegral_finsetSum` gives a finite
+sum commuting with `orderedSimplexIntegral`, but only under an explicit `Continuous` hypothesis on
+every summand — not unconditionally. No claim of measurability/integrability beyond what each
+individual lemma's own hypotheses require; a maximally general abstract version (arbitrary
+`Summable`/measure-theoretic sums, or dropping continuity in favor of bare integrability) would be
+premature here. `continuous_orderedSimplexIntegral_of_continuous` is what supplies each summand's
+own interval-integrability (via its own continuity) at every recursion level, so no separate
+integrability side-lemma is needed to invoke `orderedSimplexIntegral_finsetSum`.
 
-**The one exception**: `continuous_orderedSimplexIntegral_of_continuous`, continuity of
-`orderedSimplexIntegral n (bound x) (f x)` jointly in an arbitrary parameter `x` — needed once a
-caller's own bound (not just its integrand) varies with an outer parameter (Step 6 PR 6's own
-`dysonCoeff`-recursion induction, where the *current* recursion's outer bound is itself the
-*previous* level's integration variable). This is a genuinely different kind of fact from the
-`_congr`/`_smul`/`_neg`/`_const` lemmas above (all stated for a *fixed* bound `β`), so it earns its
-own name rather than being folded into any of them.
+**A genuinely different kind of fact**: `continuous_orderedSimplexIntegral_of_continuous`, jointly
+continuity of `orderedSimplexIntegral n (bound x) (f x)` in an arbitrary parameter `x` — needed
+once a caller's own bound (not just its integrand) varies with an outer parameter (Step 6 PR 6's
+own `dysonCoeff`-recursion induction, where the *current* recursion's outer bound is itself the
+*previous* level's integration variable). This is unlike the `_congr`/`_smul`/`_neg`/`_const`/
+`_finsetSum` lemmas above (all stated for a *fixed* bound `β`), so it earns its own name rather
+than being folded into any of them.
 -/
 
 namespace intervalIntegral
@@ -141,5 +143,31 @@ theorem continuous_orderedSimplexIntegral_of_continuous {X : Type*} [Topological
     have hF := continuous_orderedSimplexIntegral_of_continuous n Prod.snd
       (fun (y : X × ℝ) (rest : Fin n → ℝ) => f y.1 (Fin.cons y.2 rest)) continuous_snd hf'
     exact intervalIntegral.continuous_parametric_intervalIntegral_of_continuous hF hbound
+
+/-- **A finite sum commutes with `orderedSimplexIntegral`**, given continuity of every summand —
+the tailored integrability the module docstring says any such lemma needs. Proved by induction on
+`n`, using `intervalIntegral.integral_finsetSum` at each level and
+`continuous_orderedSimplexIntegral_of_continuous` to supply that lemma's own
+`IntervalIntegrable` hypotheses. -/
+theorem orderedSimplexIntegral_finsetSum {ι : Type*} (s : Finset ι) (n : ℕ) (β : ℝ)
+    (f : ι → (Fin n → ℝ) → ℂ) (hf : ∀ i ∈ s, Continuous (f i)) :
+    orderedSimplexIntegral n β (fun τ => ∑ i ∈ s, f i τ) =
+      ∑ i ∈ s, orderedSimplexIntegral n β (f i) := by
+  induction n generalizing β with
+  | zero => simp
+  | succ n ih =>
+    have hcons : ∀ i ∈ s, Continuous (fun p : ℝ × (Fin n → ℝ) => f i (Fin.cons p.1 p.2)) :=
+      fun i hi => (hf i hi).comp (Continuous.finCons continuous_fst continuous_snd)
+    have heq : ∀ τ : ℝ, orderedSimplexIntegral n τ (fun rest => ∑ i ∈ s, f i (Fin.cons τ rest)) =
+        ∑ i ∈ s, orderedSimplexIntegral n τ (fun rest => f i (Fin.cons τ rest)) := fun τ =>
+      ih τ (fun i rest => f i (Fin.cons τ rest))
+        (fun i hi => (hcons i hi).comp (continuous_const.prodMk continuous_id))
+    rw [orderedSimplexIntegral_succ]
+    simp_rw [heq]
+    rw [intervalIntegral.integral_finsetSum]
+    · exact Finset.sum_congr rfl fun i _ => (orderedSimplexIntegral_succ n β (f i)).symm
+    · intro i hi
+      exact (continuous_orderedSimplexIntegral_of_continuous n id
+        (fun τ rest => f i (Fin.cons τ rest)) continuous_id (hcons i hi)).intervalIntegrable 0 β
 
 end intervalIntegral

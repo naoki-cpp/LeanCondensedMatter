@@ -98,13 +98,24 @@ flattened family, using all three discharged hypotheses, then bridges the conclu
 crossing-sign-weighted products of 2-point `freeGibbsExpectation` values of `flatVertexLegOperator`
 pairs.
 
-**Still remaining**: combining this with the key induction
-(`freeGibbsExpectation_comp_dysonCoeff_quarticInteraction` at `L := LinearMap.id`, `t := β`) to get
-`dysonVertexMoment`'s own vertex-label sum expressed via `Pairing`, then reindexing the resulting
-(vertex-label sequence, pairing) double sum via `quarticWickDiagramEquivOrderedData` (summing over
-all vertex orders, matching `dysonVertexMoment`'s `S.card!` prefactor against
-`Fintype.card (QuarticVertexOrder S) = S.card!`) into a genuine sum over `QuarticWickDiagram`s,
-matching `quarticWickDiagramAmplitude` exactly.
+**`dysonVertexMoment` is now expressed as a genuine `(vertex-label sequence, pairing)` double
+sum**: `Analysis/OrderedSimplexIntegral.lean` gained `orderedSimplexIntegral_finsetSum` (a finite
+sum commutes with `orderedSimplexIntegral`, given continuity of every summand).
+`orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing` uses it,
+together with `freeGibbsExpectation_flatVertexLegOperator_pair_eq`'s closed form for a pair value
+(the `flatVertexLegOperator` analogue of `WickDiagram/Amplitude.lean`'s `orderedQuarticPairValue_eq`,
+supplying the continuity side conditions), to pull the `Pairing (2 * n)` sum out past the
+`orderedSimplexIntegral`. `dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing` combines
+this with the key induction (`freeGibbsExpectation_comp_dysonCoeff_quarticInteraction` at `L :=
+LinearMap.id`, `t := β`) to express `dysonVertexMoment ε β (quarticInteraction g) S` as `S.card! *
+(-1)^S.card` times a sum, over vertex-label sequences `q : Fin S.card → QuarticVertexLabel Mode`
+and pairings `Pairing (2 * S.card)`, of `(∏ i, g (q i)) * pairing.weight * (integrated pairing
+contraction term)`.
+
+**Still remaining**: reindexing this `(vertex-label sequence, pairing)` double sum, via
+`quarticWickDiagramEquivOrderedData` (summing over all vertex orders, matching
+`dysonVertexMoment`'s `S.card!` prefactor against `Fintype.card (QuarticVertexOrder S) = S.card!`),
+into a genuine sum over `QuarticWickDiagram`s, matching `quarticWickDiagramAmplitude` exactly.
 -/
 
 namespace SecondQuantization
@@ -782,5 +793,105 @@ theorem freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing (ε : Mode 
   refine Finset.sum_congr rfl fun pairing _ => ?_
   congr 1
   exact Finset.prod_congr rfl fun pr _ => (freeGibbsExpectation_eq_gibbsExpectation ε β _).symm
+
+/-! ## Integrating the pairing sum over the ordered simplex -/
+
+/-- **A pair value of two flattened leg operators, in closed form**: unfolds both legs to their
+`Complex.exp` eigenvalue-shift form (`flatVertexLegOperator_eq_smul`) and pulls both scalars out of
+`freeGibbsExpectation` (`freeGibbsExpectation_smul`), leaving a fixed (`τ`-independent) pair value
+of the two *bare* local-leg operators — the `flatVertexLegOperator` analogue of
+`WickDiagram/Amplitude.lean`'s `orderedQuarticPairValue_eq`. -/
+theorem freeGibbsExpectation_flatVertexLegOperator_pair_eq {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))) :
+    freeGibbsExpectation ε β
+        ((flatVertexLegOperator ε n q τ a).comp (flatVertexLegOperator ε n q τ b)) =
+      Complex.exp ((τ (flatVertexIndex n a) * flatVertexLegEnergyShift ε q a : ℝ) : ℂ) *
+        Complex.exp ((τ (flatVertexIndex n b) * flatVertexLegEnergyShift ε q b : ℝ) : ℂ) *
+        freeGibbsExpectation ε β
+          ((quarticLocalLegOperator (q (flatVertexIndex n a)) (flatLocalLeg n a)).comp
+            (quarticLocalLegOperator (q (flatVertexIndex n b)) (flatLocalLeg n b))) := by
+  rw [flatVertexLegOperator_eq_smul, flatVertexLegOperator_eq_smul, LinearMap.smul_comp,
+    LinearMap.comp_smul, smul_smul, freeGibbsExpectation_smul]
+
+/-- **A pair value of two flattened leg operators is continuous in the time assignment `τ`** —
+directly from the closed form `freeGibbsExpectation_flatVertexLegOperator_pair_eq`: a product of
+two `Complex.exp`s of a continuous (coordinate-linear) function of `τ`, times a `τ`-independent
+constant. -/
+theorem continuous_freeGibbsExpectation_flatVertexLegOperator_pair {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (a b : Fin (2 * (2 * n))) :
+    Continuous (fun τ : Fin n → ℝ => freeGibbsExpectation ε β
+      ((flatVertexLegOperator ε n q τ a).comp (flatVertexLegOperator ε n q τ b))) := by
+  simp only [freeGibbsExpectation_flatVertexLegOperator_pair_eq]
+  fun_prop
+
+/-- **A pairing's contraction term is continuous in `τ`** — a `τ`-independent crossing-sign
+constant, times a finite product (over the pairing's pairs) of
+`continuous_freeGibbsExpectation_flatVertexLegOperator_pair`'s continuous pair values. -/
+theorem continuous_flatVertexLegPairingTerm {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode)
+    (pairing : Common.BlochDeDominicis.Pairing (2 * n)) :
+    Continuous (fun τ : Fin n → ℝ => pairing.weight Statistics.fermion *
+      ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
+        ((flatVertexLegOperator ε n q τ pr.1).comp (flatVertexLegOperator ε n q τ pr.2))) :=
+  continuous_const.mul (continuous_finsetProd _ fun pr _ =>
+    continuous_freeGibbsExpectation_flatVertexLegOperator_pair ε β q pr.1 pr.2)
+
+/-- **The ordered-simplex integral of `freeGibbsExpectation ∘ nestedVertexOperatorComp`, as a sum
+over pairings of integrated contraction terms** — rewrites the integrand pointwise via
+`freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing`
+(`intervalIntegral.orderedSimplexIntegral_congr`), pulls the finite `Pairing (2 * n)` sum out past
+the integral (`intervalIntegral.orderedSimplexIntegral_finsetSum`, using
+`continuous_flatVertexLegPairingTerm` for its integrability side condition), then pulls each
+pairing's `τ`-independent weight back out of its own integral
+(`intervalIntegral.orderedSimplexIntegral_smul`). -/
+theorem orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing
+    (ε : Mode → ℝ) (β t : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) :
+    intervalIntegral.orderedSimplexIntegral n t
+        (fun τ => freeGibbsExpectation ε β (nestedVertexOperatorComp ε n q τ)) =
+      ∑ pairing : Common.BlochDeDominicis.Pairing (2 * n),
+        pairing.weight Statistics.fermion *
+          intervalIntegral.orderedSimplexIntegral n t
+            (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
+              ((flatVertexLegOperator ε n q τ pr.1).comp
+                (flatVertexLegOperator ε n q τ pr.2))) := by
+  rw [intervalIntegral.orderedSimplexIntegral_congr
+      (fun τ => freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing ε β n q τ),
+    intervalIntegral.orderedSimplexIntegral_finsetSum _ n t _
+      (fun pairing _ => continuous_flatVertexLegPairingTerm ε β q pairing)]
+  exact Finset.sum_congr rfl fun pairing _ => intervalIntegral.orderedSimplexIntegral_smul n t _ _
+
+/-- **`dysonVertexMoment` of `quarticInteraction`, as a genuine sum over vertex-label sequences and
+pairings** — combines the key induction `freeGibbsExpectation_comp_dysonCoeff_quarticInteraction`
+(at `L := LinearMap.id`, `t := β`) with
+`orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing`. The last
+remaining step is reindexing this `(vertex-label sequence, pairing)` double sum, via
+`quarticWickDiagramEquivOrderedData`, into a genuine sum over `QuarticWickDiagram`s. -/
+theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing {α : Type*}
+    [DecidableEq α] (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (S : Finset α) :
+    dysonVertexMoment ε β (quarticInteraction g) S =
+      (S.card.factorial : ℂ) * (-1 : ℂ) ^ S.card *
+        ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
+          ∑ pairing : Common.BlochDeDominicis.Pairing (2 * S.card),
+            pairing.weight Statistics.fermion *
+              intervalIntegral.orderedSimplexIntegral S.card β (fun τ =>
+                ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
+                  ((flatVertexLegOperator ε S.card q τ pr.1).comp
+                    (flatVertexLegOperator ε S.card q τ pr.2))) := by
+  have hkey := freeGibbsExpectation_comp_dysonCoeff_quarticInteraction ε β g S.card β
+    LinearMap.id
+  simp only [LinearMap.id_comp] at hkey
+  have hsum : ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
+        intervalIntegral.orderedSimplexIntegral S.card β
+          (fun τ => freeGibbsExpectation ε β (nestedVertexOperatorComp ε S.card q τ)) =
+      ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
+        ∑ pairing : Common.BlochDeDominicis.Pairing (2 * S.card),
+          pairing.weight Statistics.fermion *
+            intervalIntegral.orderedSimplexIntegral S.card β
+              (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
+                ((flatVertexLegOperator ε S.card q τ pr.1).comp
+                  (flatVertexLegOperator ε S.card q τ pr.2))) :=
+    Finset.sum_congr rfl fun q _ => by
+      rw [orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing]
+  rw [dysonVertexMoment_eq_freeGibbsExpectation, hkey, mul_assoc, hsum]
 
 end SecondQuantization
