@@ -63,12 +63,20 @@ mode), `δ` on the two legs' modes otherwise (CAR's `anticomm_annihilate_create`
 
 The second hypothesis is now **fully discharged for the evolved, flattened `4n`-leg family, at
 arbitrary positions `p, p'`**: `zetaCommutator_flatVertexLegOperator` combines
-`imaginaryTimeEvolve_quarticLocalLegOperator` (peeling off each leg's `Complex.exp`
-eigenvalue-shift scalar), the new `Common.zetaCommutator_smul_smul` (bilinearity of
-`zetaCommutator` in scalar multiples, `Common/ExchangeCommutator.lean`), and
-`zetaCommutator_quarticLocalLegOperator` into a single closed formula for the general theorem's
-`c i j` hypothesis, valid for *any* pair of flattened positions (same-vertex or cross-vertex alike)
-via `orderedQuarticLegEquiv`.
+`flatVertexLegOperator_eq_smul` (reducing an evolved leg to a bare `quarticLocalLegOperator` times
+its own `Complex.exp` eigenvalue-shift scalar), the new `Common.zetaCommutator_smul_smul`
+(bilinearity of `zetaCommutator` in scalar multiples, `Common/ExchangeCommutator.lean`), and
+`zetaCommutator_quarticLocalLegOperator` into `flatVertexLegCommutatorCoeff`, a single named
+closed-form `c i j` family, valid for *any* pair of flattened positions (same-vertex or
+cross-vertex alike).
+
+**Refactored (no mathematical content change)**: the repeated `(orderedQuarticLegEquiv n p).1`/
+`.2` projections are now named `flatVertexIndex`/`flatLocalLeg`, and the three families the general
+theorem will eventually be applied to are named explicitly — `flatVertexLegOperator ε n q τ` (the
+`4n` operators), `flatVertexLegEnergyShift ε q` (the eigenvalue shifts), and
+`flatVertexLegCommutatorCoeff ε q τ` (the commutator coefficients) — rather than left as inlined
+case analyses at each call site. `flatVertexLegOperator_eq_smul` is the shared normal form both the
+eigenoperator and commutator theorems now reduce to.
 
 **Still remaining**: the *third* hypothesis (non-resonance, expected free for real eigenvalue
 shifts since `ζ = -1`), then actually applying
@@ -422,6 +430,18 @@ theorem orderedQuarticLegEquiv_cast_mul_add {n : ℕ} (i : Fin n) (j : Fin 4)
   ring
 
 omit [Fintype Mode] in
+/-- **The vertex a flattened position `p` belongs to** — named projection standing in for the
+repeated `(orderedQuarticLegEquiv n p).1`. -/
+noncomputable def flatVertexIndex (n : ℕ) (p : Fin (2 * (2 * n))) : Fin n :=
+  (orderedQuarticLegEquiv n p).1
+
+omit [Fintype Mode] in
+/-- **Which of its vertex's four legs a flattened position `p` is** — named projection standing in
+for the repeated `(orderedQuarticLegEquiv n p).2`. -/
+noncomputable def flatLocalLeg (n : ℕ) (p : Fin (2 * (2 * n))) : Fin 4 :=
+  (orderedQuarticLegEquiv n p).2
+
+omit [Fintype Mode] in
 /-- **The atomic operator at a flattened leg position, for a bare vertex-label sequence `q` (not
 yet a `QuarticWickDiagram`)** — the same construction as `orderedQuarticLegOperator`, generalized
 off a fixed diagram/order pair so the flattening lemma below can be stated for an arbitrary
@@ -429,8 +449,30 @@ off a fixed diagram/order pair so the flattening lemma below can be stated for a
 noncomputable def flatVertexLegOperator (ε : Mode → ℝ) (n : ℕ)
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))) :
     FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
-  imaginaryTimeEvolve ε (τ (orderedQuarticLegEquiv n p).1)
-    (quarticLocalLegOperator (q (orderedQuarticLegEquiv n p).1) (orderedQuarticLegEquiv n p).2)
+  imaginaryTimeEvolve ε (τ (flatVertexIndex n p))
+    (quarticLocalLegOperator (q (flatVertexIndex n p)) (flatLocalLeg n p))
+
+omit [Fintype Mode] in
+/-- **A flattened leg's evolution eigenvalue shift** — `quarticLocalLegEnergyShift` at the vertex
+label and local leg a flattened position `p` corresponds to. Named so the general theorem's own
+`q : Fin (2 * (2 * n)) → ℝ` eigenvalue-shift family can be stated as `flatVertexLegEnergyShift ε q`
+directly, without re-expanding `orderedQuarticLegEquiv n p`'s two projections at every call site. -/
+noncomputable def flatVertexLegEnergyShift {n : ℕ} (ε : Mode → ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (p : Fin (2 * (2 * n))) : ℝ :=
+  quarticLocalLegEnergyShift ε (q (flatVertexIndex n p)) (flatLocalLeg n p)
+
+omit [Fintype Mode] in
+/-- **Every flattened leg operator is, up to its own `Complex.exp` eigenvalue-shift scalar, a bare
+atomic `quarticLocalLegOperator`** — the normal form both `heisenbergEvolve_flatVertexLegOperator`
+and `zetaCommutator_flatVertexLegOperator` reduce to before invoking, respectively,
+`heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator`/`Common.zetaCommutator_smul_smul`. -/
+theorem flatVertexLegOperator_eq_smul {n : ℕ} (ε : Mode → ℝ) (q : Fin n → QuarticVertexLabel Mode)
+    (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))) :
+    flatVertexLegOperator ε n q τ p =
+      Complex.exp ((τ (flatVertexIndex n p) * flatVertexLegEnergyShift ε q p : ℝ) : ℂ) •
+        quarticLocalLegOperator (q (flatVertexIndex n p)) (flatLocalLeg n p) := by
+  rw [flatVertexLegOperator, imaginaryTimeEvolve_quarticLocalLegOperator]
+  rfl
 
 omit [Fintype Mode] in
 theorem flatVertexLegOperator_cast_mul_add {n : ℕ} (ε : Mode → ℝ)
@@ -438,7 +480,8 @@ theorem flatVertexLegOperator_cast_mul_add {n : ℕ} (ε : Mode → ℝ)
     (h : 2 * (2 * n) = n * 4) :
     flatVertexLegOperator ε n q τ (Fin.cast h.symm ⟨(i : ℕ) * 4 + (j : ℕ), by omega⟩) =
       imaginaryTimeEvolve ε (τ i) (quarticLocalLegOperator (q i) j) := by
-  rw [flatVertexLegOperator, orderedQuarticLegEquiv_cast_mul_add i j h]
+  rw [flatVertexLegOperator, flatVertexIndex, flatLocalLeg,
+    orderedQuarticLegEquiv_cast_mul_add i j h]
 
 set_option linter.unusedFintypeInType false in
 /-- **A single evolved atomic leg operator is an eigenoperator of `heisenbergEvolve (fermionEnergy
@@ -474,13 +517,10 @@ vertex label and time assignment. -/
 theorem heisenbergEvolve_flatVertexLegOperator {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))) :
     Common.heisenbergEvolve (fermionEnergy ε) (-β) (flatVertexLegOperator ε n q τ p) =
-      Complex.exp
-          ((quarticLocalLegEnergyShift ε (q (orderedQuarticLegEquiv n p).1)
-            (orderedQuarticLegEquiv n p).2 * (-β) : ℝ) : ℂ) •
+      Complex.exp ((flatVertexLegEnergyShift ε q p * (-β) : ℝ) : ℂ) •
         flatVertexLegOperator ε n q τ p :=
   heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator ε β
-    (q (orderedQuarticLegEquiv n p).1) (orderedQuarticLegEquiv n p).2
-    (τ (orderedQuarticLegEquiv n p).1)
+    (q (flatVertexIndex n p)) (flatLocalLeg n p) (τ (flatVertexIndex n p))
 
 /-- **Every flattened position is of the `i * 4 + j` form** — the converse of
 `orderedQuarticLegEquiv_cast_mul_add`: applying `(orderedQuarticLegEquiv n).symm` to both sides of
@@ -607,39 +647,42 @@ theorem zetaCommutator_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) 
 /-! ## The general theorem's zeta-commutator hypothesis, for the full evolved `4n`-leg family -/
 
 omit [Fintype Mode] in
+/-- **The general theorem's `c i j` coefficient family**, for the evolved, flattened `4n`-leg
+family — the product of both legs' `Complex.exp` eigenvalue-shift scalars and the bare
+single-vertex commutator indicator (`quarticLocalLegIsCreate`/`quarticLocalLegMode`-based), exactly
+what `zetaCommutator_flatVertexLegOperator` computes `Common.zetaCommutator` to equal. Naming this
+family is what lets the eventual `Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing`
+application read as passing three named families (`flatVertexLegOperator ε n q τ`,
+`flatVertexLegEnergyShift ε q`, `flatVertexLegCommutatorCoeff ε q τ`) rather than three copies of
+the same inlined case analysis. -/
+noncomputable def flatVertexLegCommutatorCoeff {n : ℕ} (ε : Mode → ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p p' : Fin (2 * (2 * n))) : ℂ :=
+  Complex.exp ((τ (flatVertexIndex n p) * flatVertexLegEnergyShift ε q p : ℝ) : ℂ) *
+    Complex.exp ((τ (flatVertexIndex n p') * flatVertexLegEnergyShift ε q p' : ℝ) : ℂ) *
+    (if quarticLocalLegIsCreate (flatLocalLeg n p) = quarticLocalLegIsCreate (flatLocalLeg n p')
+      then (0 : ℂ)
+     else if quarticLocalLegMode (q (flatVertexIndex n p)) (flatLocalLeg n p) =
+        quarticLocalLegMode (q (flatVertexIndex n p')) (flatLocalLeg n p') then 1
+     else 0)
+
+omit [Fintype Mode] in
 /-- **The general theorem's zeta-commutator hypothesis, for two arbitrary evolved/flattened leg
-positions** — combines `imaginaryTimeEvolve_quarticLocalLegOperator` (peeling the `Complex.exp`
-eigenvalue-shift scalar off each of the two `flatVertexLegOperator`s),
+positions** — combines `flatVertexLegOperator_eq_smul` (reducing each evolved leg to a bare
+`quarticLocalLegOperator` times its own `Complex.exp` eigenvalue-shift scalar),
 `Common.zetaCommutator_smul_smul` (pulling both scalars out of the commutator as a product), and
-`zetaCommutator_quarticLocalLegOperator` (the bare single-vertex commutator constant) into a single
-scalar-times-`id` formula, now valid for *any* pair of flattened positions `p, p'` — same-vertex or
-cross-vertex alike, since the underlying
+`zetaCommutator_quarticLocalLegOperator` (the bare single-vertex commutator constant) into
+`flatVertexLegCommutatorCoeff`, now valid for *any* pair of flattened positions `p, p'` —
+same-vertex or cross-vertex alike, since the underlying
 `quarticLocalLegOperator`/`quarticLocalLegMode`/`quarticLocalLegIsCreate` machinery never assumed a
 shared vertex. -/
 theorem zetaCommutator_flatVertexLegOperator {n : ℕ} (ε : Mode → ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p p' : Fin (2 * (2 * n))) :
     Common.zetaCommutator ((Statistics.fermion.zetaInt : ℤ) : ℂ)
         (flatVertexLegOperator ε n q τ p) (flatVertexLegOperator ε n q τ p') =
-      (Complex.exp ((τ (orderedQuarticLegEquiv n p).1 *
-              quarticLocalLegEnergyShift ε (q (orderedQuarticLegEquiv n p).1)
-                (orderedQuarticLegEquiv n p).2 : ℝ) : ℂ) *
-          Complex.exp ((τ (orderedQuarticLegEquiv n p').1 *
-              quarticLocalLegEnergyShift ε (q (orderedQuarticLegEquiv n p').1)
-                (orderedQuarticLegEquiv n p').2 : ℝ) : ℂ) *
-          (if quarticLocalLegIsCreate (orderedQuarticLegEquiv n p).2 =
-              quarticLocalLegIsCreate (orderedQuarticLegEquiv n p').2 then (0 : ℂ)
-           else if quarticLocalLegMode (q (orderedQuarticLegEquiv n p).1)
-                (orderedQuarticLegEquiv n p).2 =
-              quarticLocalLegMode (q (orderedQuarticLegEquiv n p').1)
-                (orderedQuarticLegEquiv n p').2 then 1 else 0)) •
+      flatVertexLegCommutatorCoeff ε q τ p p' •
         (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) := by
-  change Common.zetaCommutator ((Statistics.fermion.zetaInt : ℤ) : ℂ)
-      (imaginaryTimeEvolve ε (τ (orderedQuarticLegEquiv n p).1)
-        (quarticLocalLegOperator (q (orderedQuarticLegEquiv n p).1) (orderedQuarticLegEquiv n p).2))
-      (imaginaryTimeEvolve ε (τ (orderedQuarticLegEquiv n p').1)
-        (quarticLocalLegOperator (q (orderedQuarticLegEquiv n p').1)
-          (orderedQuarticLegEquiv n p').2)) = _
-  rw [imaginaryTimeEvolve_quarticLocalLegOperator, imaginaryTimeEvolve_quarticLocalLegOperator,
-    Common.zetaCommutator_smul_smul, zetaCommutator_quarticLocalLegOperator, smul_smul]
+  rw [flatVertexLegOperator_eq_smul, flatVertexLegOperator_eq_smul,
+    Common.zetaCommutator_smul_smul, zetaCommutator_quarticLocalLegOperator, smul_smul,
+    flatVertexLegCommutatorCoeff]
 
 end SecondQuantization
