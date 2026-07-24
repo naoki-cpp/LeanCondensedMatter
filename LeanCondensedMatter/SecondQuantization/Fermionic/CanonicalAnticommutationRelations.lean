@@ -265,4 +265,18 @@ theorem anticomm_annihilate_create (i j : Mode) :
     exact linearMap_ext_basisState fun n => by
       rw [anticomm_annihilate_create_basisState, if_neg hij, LinearMap.zero_apply]
 
+omit [LinearOrder Mode] in
+/-- **The anticommutator is symmetric**, `{A, B} = {B, A}` — immediate from `anticomm`'s own
+definition `A ∘ B + B ∘ A` via `add_comm`. -/
+theorem anticomm_comm (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    anticomm A B = anticomm B A := by
+  rw [anticomm, anticomm, add_comm]
+
+/-- **`{cᵢ†, cⱼ} = δᵢⱼ`**: the creation-first mirror of `anticomm_annihilate_create`, via
+`anticomm_comm`. -/
+theorem anticomm_create_annihilate (i j : Mode) :
+    anticomm (create i) (annihilate j) = if i = j then LinearMap.id else 0 := by
+  rw [anticomm_comm, anticomm_annihilate_create]
+  simp only [eq_comm]
+
 end SecondQuantization
