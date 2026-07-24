@@ -546,11 +546,21 @@ information a diagram could be extracted from):
   `one_sub_zetaInt_fermion_mul_exp_flatVertexLegEnergyShift_ne_zero` specializes it to `x :=
   flatVertexLegEnergyShift ε q p`. All three of the general Bloch–de Dominicis theorem's hypotheses
   are now discharged for the flattened `4n`-leg family.
-  **Still not done**: actually applying
-  `Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` to the resulting
-  `4n`-operator product and reindexing the result via `quarticWickDiagramEquivOrderedData` into a
-  genuine sum over `QuarticWickDiagram`s — see the file's own module docstring and this roadmap's
-  9-step PR 6 proof outline.
+  **Part 12 done — the general theorem is now actually applied**:
+  `freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing` invokes
+  `Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` (at its own `n := 2 * n`,
+  matching `flatVertexLegOperator`'s `Fin (2 * (2 * n))` domain with no cast) using all three
+  discharged hypotheses, bridging `hZ` from `freePartitionFunction_ne_zero`
+  (`traceFock_diagonalEvolution_fermionEnergy_ne_zero`), and bridging the conclusion back through
+  `freeGibbsExpectation_eq_gibbsExpectation`/`prodComp_ofFn_flatVertexLegOperator_eq_nestedVertexOperatorComp`
+  to express `freeGibbsExpectation ε β (nestedVertexOperatorComp ε n q τ)` as a `Pairing (2 * n)`
+  sum of crossing-sign-weighted products of 2-point `freeGibbsExpectation` values.
+  **Still not done**: combining this with the key induction
+  (`freeGibbsExpectation_comp_dysonCoeff_quarticInteraction`) to express `dysonVertexMoment`'s
+  vertex-label sum via `Pairing`, then reindexing the resulting (vertex-label sequence, pairing)
+  double sum via `quarticWickDiagramEquivOrderedData` — summing over all vertex orders, matching
+  `dysonVertexMoment`'s `S.card!` prefactor against `Fintype.card (QuarticVertexOrder S) = S.card!`
+  — into a genuine sum over `QuarticWickDiagram`s, matching `quarticWickDiagramAmplitude`.
 - PR 7 not yet started (see above): `componentPartition`/restriction/reassembly, connecting
   `QuarticWickDiagram` to `Combinatorics/DiagramConnectedness.lean`'s abstract
   `WeightedDiagramFamily` as a concrete instantiation — connected-component weight factorization
