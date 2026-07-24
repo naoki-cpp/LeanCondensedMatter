@@ -454,20 +454,29 @@ information a diagram could be extracted from):
   variable), via Mathlib's `intervalIntegral.continuous_parametric_intervalIntegral_of_continuous`
   (Leibniz-rule-style joint continuity of a parametrized interval integral with a
   parameter-dependent variable upper limit) and `Continuous.finCons`.
-  **Still not done**: the key induction itself (`dysonCoeff` of `quarticInteraction`, left-composed
-  with an arbitrary prefix operator, expanding into a `(-1)ⁿ`-signed sum over vertex-label
-  sequences of an `orderedSimplexIntegral`) is stated in `DysonDiagramExpansion.lean`'s module
-  docstring but not proven — now that `continuous_orderedSimplexIntegral_of_continuous` supplies
-  the missing joint continuity-in-bound fact, what remains is applying it (likely via continuity
-  of `(σ, τ) ↦ freeGibbsExpectation ε β (L.comp (nestedVertexOperatorComp ε n q (Fin.cons σ τ)))`
-  or a similarly parameterized fact) to actually swap the finite vertex-label sum with the outer
-  `∫ σ in 0..t`, then carry out the `Fin.consEquiv`-based reindexing into a single `Fin (n + 1) →
-  QuarticVertexLabel Mode` sum matching `orderedSimplexIntegral_succ`'s own recursive shape.
-  Beyond that: expanding
-  `quarticInteraction`'s `Finset.sum` into a genuine `4n`-operator product, applying the general
-  Bloch–de Dominicis theorem to that product, and reindexing the result via
-  `quarticWickDiagramEquivOrderedData` — see the file's own module docstring and this roadmap's
-  9-step PR 6 proof outline.
+  **Part 4 done — the key induction is now fully proven, no `sorry`**:
+  `freeGibbsExpectation_comp_dysonCoeff_quarticInteraction` (`dysonCoeff` of `quarticInteraction`,
+  left-composed with an arbitrary prefix operator `L`, expands into a `(-1)ⁿ`-signed sum over
+  vertex-label sequences of an `orderedSimplexIntegral` of `nestedVertexOperatorComp` values), via:
+  `continuous_matrixCoeff_nestedVertexOperatorComp`/
+  `continuous_freeGibbsExpectation_comp_nestedVertexOperatorComp` (joint continuity of
+  `nestedVertexOperatorComp` itself, in its full time vector — a genuinely new fact, distinct from
+  `continuous_matrixCoeff_interactionPicture_comp_dysonCoeff`'s single-`σ` continuity from part 2);
+  `Analysis/OrderedSimplexIntegral.lean`'s `continuous_orderedSimplexIntegral_of_continuous` (part
+  3) to swap the finite vertex-label sum with the outer `∫ σ in 0..t`; and a locally-defined
+  `QuarticVertexLabel Mode × (Fin n → QuarticVertexLabel Mode) ≃ (Fin (n + 1) →
+  QuarticVertexLabel Mode)` equivalence (`Fin.cons`-based, defined inline rather than via
+  `Fin.consEquiv` — the latter's `@[simps]`-generated `_apply` lemma did not unfold cleanly against
+  this goal's specific shape) to reindex the resulting (outer label, inner label sequence) double
+  sum into a single `Fin (n + 1) → QuarticVertexLabel Mode` sum, folded back into
+  `orderedSimplexIntegral (n + 1) t` via `orderedSimplexIntegral_succ`.
+  **Still not done**: applying the general Bloch–de Dominicis theorem
+  (`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing`) to the resulting `4n`-operator
+  product (`quarticVertexOperator`'s creation/annihilation legs still need their
+  eigenoperator/zeta-commutator hypotheses discharged for that general theorem's own preconditions),
+  and reindexing the result via `quarticWickDiagramEquivOrderedData` into a genuine sum over
+  `QuarticWickDiagram`s — see the file's own module docstring and this roadmap's 9-step PR 6 proof
+  outline.
 - PR 7 not yet started (see above): `componentPartition`/restriction/reassembly, connecting
   `QuarticWickDiagram` to `Combinatorics/DiagramConnectedness.lean`'s abstract
   `WeightedDiagramFamily` as a concrete instantiation — connected-component weight factorization
