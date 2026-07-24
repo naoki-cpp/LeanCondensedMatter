@@ -530,6 +530,15 @@ information a diagram could be extracted from):
   single closed formula for the general theorem's `c i j` hypothesis — now valid for *any* pair of
   flattened positions `p, p'` (same-vertex or cross-vertex alike) via `orderedQuarticLegEquiv`.
   This fully discharges the second hypothesis.
+  **Part 10 done — refactor, no mathematical content change**: named the repeated
+  `(orderedQuarticLegEquiv n p).1`/`.2` projections `flatVertexIndex`/`flatLocalLeg`, and named the
+  three families the general theorem will eventually be applied to explicitly:
+  `flatVertexLegEnergyShift ε q` (eigenvalue shifts) and `flatVertexLegCommutatorCoeff ε q τ`
+  (commutator coefficients), alongside the existing `flatVertexLegOperator ε n q τ`. Added
+  `flatVertexLegOperator_eq_smul` (every evolved leg is a `Complex.exp` scalar times a bare
+  `quarticLocalLegOperator`) as the shared normal form both `heisenbergEvolve_flatVertexLegOperator`
+  and `zetaCommutator_flatVertexLegOperator` now reduce to, replacing the previously inlined
+  `orderedQuarticLegEquiv n p`/`p'` case analyses in both theorems' statements and proofs.
   **Still not done**: the *third* hypothesis (non-resonance, `1 - ζ * exp(q_i * β) ≠ 0` — expected
   to be free for real `q_i`, `β` since `ζ = -1` gives `1 + exp(q_i * β) > 0`); then actually
   applying `Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` to the resulting
