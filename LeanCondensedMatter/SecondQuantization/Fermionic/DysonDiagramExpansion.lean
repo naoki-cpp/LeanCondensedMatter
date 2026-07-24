@@ -19,12 +19,18 @@ dysonVertexMoment ε β (quarticInteraction g) S =
 `freeGibbsExpectation ε β (dysonCoeff ε V n β)` — the form the general Bloch–de Dominicis theorem
 (`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing`) can actually be applied to —
 and `nestedVertexOperatorComp` (the `orderedSimplexIntegral` integrand's operator-valued
-ingredient) is defined, with its continuity established
-(`continuous_matrixCoeff_interactionPicture_comp_dysonCoeff`). The key induction expanding
-`dysonCoeff` of `quarticInteraction` into an `orderedSimplexIntegral` of a vertex-label sum is
-stated but **not yet proven** — see the `### The key induction (not yet proven)` section below for
-exactly what remains and the joint continuity-in-bound fact for `orderedSimplexIntegral` it
-needs. Applying the general theorem to the resulting `4n`-operator product and reindexing via
+ingredient) is defined, with its recursive unfolding lemmas. Separately,
+`continuous_matrixCoeff_interactionPicture_comp_dysonCoeff` supplies the matrix-coefficient
+continuity needed to move the *current* Dyson recursion's integral through composition
+(`Common.comp_operatorIntervalIntegral`) and `freeGibbsExpectation`
+(`freeGibbsExpectation_operatorIntervalIntegral`) — it is **not** a continuity statement about
+`nestedVertexOperatorComp` itself. The key induction expanding `dysonCoeff` of
+`quarticInteraction` into an `orderedSimplexIntegral` of a vertex-label sum is stated but **not
+yet proven** — see the `### The key induction (not yet proven)` section below for exactly what
+remains and the joint continuity-in-bound fact for `orderedSimplexIntegral` it needs (likely
+including continuity of `τ ↦ freeGibbsExpectation ε β (L.comp (nestedVertexOperatorComp ε n q
+τ))` itself, or a parameterized version of it, as part of establishing that fact). Applying the
+general theorem to the resulting `4n`-operator product and reindexing via
 `quarticWickDiagramEquivOrderedData` are further steps beyond that — see
 `notes/roadmaps/second-quantization.md` for the full 9-step proof outline.
 -/

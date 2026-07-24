@@ -435,9 +435,28 @@ information a diagram could be extracted from):
   finite weighted trace commutes with `operatorIntervalIntegral`, given interval-integrability of
   the matrix coefficients) — the finite-sum/integral interchange needed to expand `dysonCoeff`'s
   recursion into an `orderedSimplexIntegral` of a vertex-label sum next.
-  **Still not done**: that `dysonCoeff`-recursion-to-`orderedSimplexIntegral` expansion itself,
-  expanding `quarticInteraction`'s `Finset.sum` into a genuine `4n`-operator product, applying the
-  general Bloch–de Dominicis theorem to that product, and reindexing the result via
+  **Part 2 done**: `Common.comp_operatorIntervalIntegral` (left composition with a fixed operator
+  commutes with `operatorIntervalIntegral`, given matrix-coefficient interval-integrability) and
+  the Fermionic-level wrappers `freeGibbsExpectation_neg`/`freeGibbsExpectation_operatorIntervalIntegral`/
+  `freeGibbsExpectation_finsetSum`; `nestedVertexOperatorComp` (the nested interaction-picture
+  vertex-operator composition `V_I(τ 0) ∘ ⋯ ∘ V_I(τ (n-1))` the target `orderedSimplexIntegral`
+  integrand needs, coordinate `0` latest/outermost) with its recursive unfolding lemmas; and
+  `continuous_matrixCoeff_interactionPicture_comp_dysonCoeff` (the matrix-coefficient continuity
+  needed to move the *current* Dyson recursion's integral through composition/`freeGibbsExpectation`
+  — not a continuity statement about `nestedVertexOperatorComp` itself).
+  **Still not done**: the key induction itself (`dysonCoeff` of `quarticInteraction`, left-composed
+  with an arbitrary prefix operator, expanding into a `(-1)ⁿ`-signed sum over vertex-label
+  sequences of an `orderedSimplexIntegral`) is stated in `DysonDiagramExpansion.lean`'s module
+  docstring but not proven — working through its successor case surfaced a **new continuity
+  requirement not yet available anywhere in the project**: `orderedSimplexIntegral` must be shown
+  continuous (or interval-integrable) *in its own bound* `t` when the integrand itself varies
+  continuously with `t` (needed to swap a finite vertex-label sum with the outer `∫ σ in 0..t`),
+  not just continuity in the integrand for a *fixed* bound (all `Analysis/OrderedSimplexIntegral.lean`/
+  `WickDiagram/Amplitude.lean`'s existing continuity lemmas establish only the latter) — likely
+  needing continuity of `τ ↦ freeGibbsExpectation ε β (L.comp (nestedVertexOperatorComp ε n q τ))`
+  itself, or a parameterized version, along the way. Beyond that: expanding
+  `quarticInteraction`'s `Finset.sum` into a genuine `4n`-operator product, applying the general
+  Bloch–de Dominicis theorem to that product, and reindexing the result via
   `quarticWickDiagramEquivOrderedData` — see the file's own module docstring and this roadmap's
   9-step PR 6 proof outline.
 - PR 7 not yet started (see above): `componentPartition`/restriction/reassembly, connecting
