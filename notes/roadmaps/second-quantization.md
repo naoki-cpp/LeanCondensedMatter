@@ -519,18 +519,23 @@ information a diagram could be extracted from):
   two legs' modes otherwise — covering same-vertex "tadpole" and cross-vertex leg pairs alike),
   and `zetaCommutator_quarticLocalLegOperator` (the same fact restated via
   `Common.zetaCommutator`/`exchangeCommutator_fermion_eq_anticomm`, matching the general theorem's
-  own hypothesis shape). This is the *bare* (untime-evolved) commutator constant; the general
-  theorem's actual `c i j` hypothesis for the evolved, flattened `4n`-leg family still needs the
-  corresponding `Complex.exp` eigenvalue-shift factors multiplied in, and assembling the
-  two-position case analysis (via `orderedQuarticLegEquiv`) into a single `c : Fin (2 * (2 * n)) →
-  Fin (2 * (2 * n)) → ℂ` — not yet done.
-  **Still not done**: finishing the second hypothesis for the evolved, flattened family; the
-  *third* hypothesis (non-resonance, `1 - ζ * exp(q_i * β) ≠ 0` — expected to be free for real
-  `q_i`, `β` since `ζ = -1` gives `1 + exp(q_i * β) > 0`); then actually applying
-  `Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` to the resulting `4n`-operator
-  product and reindexing the result via `quarticWickDiagramEquivOrderedData` into a genuine sum
-  over `QuarticWickDiagram`s — see the file's own module docstring and this roadmap's 9-step PR 6
-  proof outline.
+  own hypothesis shape). This is the *bare* (untime-evolved) commutator constant.
+  **Part 9 done — the general theorem's second hypothesis, now for the full evolved, flattened
+  `4n`-leg family at arbitrary positions**: `Common/ExchangeCommutator.lean` gained
+  `zetaCommutator_smul_smul` (`[c•A, d•B]_ζ = (c*d)•[A, B]_ζ`, direct from `zetaCommutator`'s own
+  definition). `DysonDiagramExpansion.lean` gained `zetaCommutator_flatVertexLegOperator`,
+  combining `imaginaryTimeEvolve_quarticLocalLegOperator` (peeling each leg's `Complex.exp`
+  eigenvalue-shift scalar off), `zetaCommutator_smul_smul` (pulling both scalars out of the
+  commutator as a product), and `zetaCommutator_quarticLocalLegOperator` (the bare constant) into a
+  single closed formula for the general theorem's `c i j` hypothesis — now valid for *any* pair of
+  flattened positions `p, p'` (same-vertex or cross-vertex alike) via `orderedQuarticLegEquiv`.
+  This fully discharges the second hypothesis.
+  **Still not done**: the *third* hypothesis (non-resonance, `1 - ζ * exp(q_i * β) ≠ 0` — expected
+  to be free for real `q_i`, `β` since `ζ = -1` gives `1 + exp(q_i * β) > 0`); then actually
+  applying `Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` to the resulting
+  `4n`-operator product and reindexing the result via `quarticWickDiagramEquivOrderedData` into a
+  genuine sum over `QuarticWickDiagram`s — see the file's own module docstring and this roadmap's
+  9-step PR 6 proof outline.
 - PR 7 not yet started (see above): `componentPartition`/restriction/reassembly, connecting
   `QuarticWickDiagram` to `Combinatorics/DiagramConnectedness.lean`'s abstract
   `WeightedDiagramFamily` as a concrete instantiation — connected-component weight factorization

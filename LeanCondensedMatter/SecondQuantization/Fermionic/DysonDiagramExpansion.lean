@@ -59,21 +59,25 @@ The general theorem's **second hypothesis is now discharged for a single vertex'
 formula covering same-vertex and cross-vertex leg pairs alike — `0` for two legs of the same kind
 (CAR's `anticomm_create_create`/`anticomm_annihilate_annihilate`, always `0` even at the same
 mode), `δ` on the two legs' modes otherwise (CAR's `anticomm_annihilate_create`/the new
-`anticomm_create_annihilate`)). This is the *bare* (untime-evolved) commutator constant; the
-general theorem's actual `c i j` hypothesis (for the evolved `flatVertexLegOperator` legs, at
-fixed `τ`) still needs the corresponding `Complex.exp` eigenvalue-shift factors multiplied in, and
-assembling the two-vertex/two-local-leg case analysis (via `orderedQuarticLegEquiv`) into a single
-`c : Fin (2 * (2 * n)) → Fin (2 * (2 * n)) → ℂ` is not yet done.
+`anticomm_create_annihilate`)) is the *bare* (untime-evolved) commutator constant.
 
-**Still remaining**: finishing the second hypothesis for the evolved, flattened `4n`-leg family
-(exponential factors plus the `orderedQuarticLegEquiv`-based two-position case analysis), the
-*third* hypothesis (non-resonance, expected free for real eigenvalue shifts since `ζ = -1`), then
-actually applying `Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` to the
-resulting `4n`-operator product (`freeGibbsExpectation_comp_dysonCoeff_quarticInteraction` at `L
-:= LinearMap.id`, `t := β`, composed with the flattening theorem, gives the vertex-label-sum side)
-and reindexing the resulting (vertex-label sequence, pairing) sum via
-`quarticWickDiagramEquivOrderedData` into a genuine sum over `QuarticWickDiagram`s — see
-`notes/roadmaps/second-quantization.md` for the full 9-step proof outline.
+The second hypothesis is now **fully discharged for the evolved, flattened `4n`-leg family, at
+arbitrary positions `p, p'`**: `zetaCommutator_flatVertexLegOperator` combines
+`imaginaryTimeEvolve_quarticLocalLegOperator` (peeling off each leg's `Complex.exp`
+eigenvalue-shift scalar), the new `Common.zetaCommutator_smul_smul` (bilinearity of
+`zetaCommutator` in scalar multiples, `Common/ExchangeCommutator.lean`), and
+`zetaCommutator_quarticLocalLegOperator` into a single closed formula for the general theorem's
+`c i j` hypothesis, valid for *any* pair of flattened positions (same-vertex or cross-vertex alike)
+via `orderedQuarticLegEquiv`.
+
+**Still remaining**: the *third* hypothesis (non-resonance, expected free for real eigenvalue
+shifts since `ζ = -1`), then actually applying
+`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` to the resulting `4n`-operator
+product (`freeGibbsExpectation_comp_dysonCoeff_quarticInteraction` at `L := LinearMap.id`, `t :=
+β`, composed with the flattening theorem, gives the vertex-label-sum side) and reindexing the
+resulting (vertex-label sequence, pairing) sum via `quarticWickDiagramEquivOrderedData` into a
+genuine sum over `QuarticWickDiagram`s — see `notes/roadmaps/second-quantization.md` for the full
+9-step proof outline.
 -/
 
 namespace SecondQuantization
@@ -599,5 +603,43 @@ theorem zetaCommutator_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) 
     exchangeCommutator_fermion_eq_anticomm _ _
   rw [hbridge, anticomm_quarticLocalLegOperator]
   split_ifs <;> simp
+
+/-! ## The general theorem's zeta-commutator hypothesis, for the full evolved `4n`-leg family -/
+
+omit [Fintype Mode] in
+/-- **The general theorem's zeta-commutator hypothesis, for two arbitrary evolved/flattened leg
+positions** — combines `imaginaryTimeEvolve_quarticLocalLegOperator` (peeling the `Complex.exp`
+eigenvalue-shift scalar off each of the two `flatVertexLegOperator`s),
+`Common.zetaCommutator_smul_smul` (pulling both scalars out of the commutator as a product), and
+`zetaCommutator_quarticLocalLegOperator` (the bare single-vertex commutator constant) into a single
+scalar-times-`id` formula, now valid for *any* pair of flattened positions `p, p'` — same-vertex or
+cross-vertex alike, since the underlying
+`quarticLocalLegOperator`/`quarticLocalLegMode`/`quarticLocalLegIsCreate` machinery never assumed a
+shared vertex. -/
+theorem zetaCommutator_flatVertexLegOperator {n : ℕ} (ε : Mode → ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p p' : Fin (2 * (2 * n))) :
+    Common.zetaCommutator ((Statistics.fermion.zetaInt : ℤ) : ℂ)
+        (flatVertexLegOperator ε n q τ p) (flatVertexLegOperator ε n q τ p') =
+      (Complex.exp ((τ (orderedQuarticLegEquiv n p).1 *
+              quarticLocalLegEnergyShift ε (q (orderedQuarticLegEquiv n p).1)
+                (orderedQuarticLegEquiv n p).2 : ℝ) : ℂ) *
+          Complex.exp ((τ (orderedQuarticLegEquiv n p').1 *
+              quarticLocalLegEnergyShift ε (q (orderedQuarticLegEquiv n p').1)
+                (orderedQuarticLegEquiv n p').2 : ℝ) : ℂ) *
+          (if quarticLocalLegIsCreate (orderedQuarticLegEquiv n p).2 =
+              quarticLocalLegIsCreate (orderedQuarticLegEquiv n p').2 then (0 : ℂ)
+           else if quarticLocalLegMode (q (orderedQuarticLegEquiv n p).1)
+                (orderedQuarticLegEquiv n p).2 =
+              quarticLocalLegMode (q (orderedQuarticLegEquiv n p').1)
+                (orderedQuarticLegEquiv n p').2 then 1 else 0)) •
+        (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) := by
+  change Common.zetaCommutator ((Statistics.fermion.zetaInt : ℤ) : ℂ)
+      (imaginaryTimeEvolve ε (τ (orderedQuarticLegEquiv n p).1)
+        (quarticLocalLegOperator (q (orderedQuarticLegEquiv n p).1) (orderedQuarticLegEquiv n p).2))
+      (imaginaryTimeEvolve ε (τ (orderedQuarticLegEquiv n p').1)
+        (quarticLocalLegOperator (q (orderedQuarticLegEquiv n p').1)
+          (orderedQuarticLegEquiv n p').2)) = _
+  rw [imaginaryTimeEvolve_quarticLocalLegOperator, imaginaryTimeEvolve_quarticLocalLegOperator,
+    Common.zetaCommutator_smul_smul, zetaCommutator_quarticLocalLegOperator, smul_smul]
 
 end SecondQuantization
