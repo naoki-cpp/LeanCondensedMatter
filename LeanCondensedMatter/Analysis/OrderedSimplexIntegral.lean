@@ -142,4 +142,30 @@ theorem continuous_orderedSimplexIntegral_of_continuous {X : Type*} [Topological
       (fun (y : X × ℝ) (rest : Fin n → ℝ) => f y.1 (Fin.cons y.2 rest)) continuous_snd hf'
     exact intervalIntegral.continuous_parametric_intervalIntegral_of_continuous hF hbound
 
+/-- **A finite sum commutes with `orderedSimplexIntegral`**, given continuity of every summand —
+the tailored integrability the module docstring says any such lemma needs. Proved by induction on
+`n`, using `intervalIntegral.integral_finsetSum` at each level and
+`continuous_orderedSimplexIntegral_of_continuous` to supply that lemma's own
+`IntervalIntegrable` hypotheses. -/
+theorem orderedSimplexIntegral_finsetSum {ι : Type*} (s : Finset ι) (n : ℕ) (β : ℝ)
+    (f : ι → (Fin n → ℝ) → ℂ) (hf : ∀ i ∈ s, Continuous (f i)) :
+    orderedSimplexIntegral n β (fun τ => ∑ i ∈ s, f i τ) =
+      ∑ i ∈ s, orderedSimplexIntegral n β (f i) := by
+  induction n generalizing β with
+  | zero => simp
+  | succ n ih =>
+    have hcons : ∀ i ∈ s, Continuous (fun p : ℝ × (Fin n → ℝ) => f i (Fin.cons p.1 p.2)) :=
+      fun i hi => (hf i hi).comp (Continuous.finCons continuous_fst continuous_snd)
+    have heq : ∀ τ : ℝ, orderedSimplexIntegral n τ (fun rest => ∑ i ∈ s, f i (Fin.cons τ rest)) =
+        ∑ i ∈ s, orderedSimplexIntegral n τ (fun rest => f i (Fin.cons τ rest)) := fun τ =>
+      ih τ (fun i rest => f i (Fin.cons τ rest))
+        (fun i hi => (hcons i hi).comp (continuous_const.prodMk continuous_id))
+    rw [orderedSimplexIntegral_succ]
+    simp_rw [heq]
+    rw [intervalIntegral.integral_finsetSum]
+    · exact Finset.sum_congr rfl fun i _ => (orderedSimplexIntegral_succ n β (f i)).symm
+    · intro i hi
+      exact (continuous_orderedSimplexIntegral_of_continuous n id
+        (fun τ rest => f i (Fin.cons τ rest)) continuous_id (hcons i hi)).intervalIntegrable 0 β
+
 end intervalIntegral

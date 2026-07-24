@@ -555,10 +555,21 @@ information a diagram could be extracted from):
   `freeGibbsExpectation_eq_gibbsExpectation`/`prodComp_ofFn_flatVertexLegOperator_eq_nestedVertexOperatorComp`
   to express `freeGibbsExpectation ε β (nestedVertexOperatorComp ε n q τ)` as a `Pairing (2 * n)`
   sum of crossing-sign-weighted products of 2-point `freeGibbsExpectation` values.
-  **Still not done**: combining this with the key induction
-  (`freeGibbsExpectation_comp_dysonCoeff_quarticInteraction`) to express `dysonVertexMoment`'s
-  vertex-label sum via `Pairing`, then reindexing the resulting (vertex-label sequence, pairing)
-  double sum via `quarticWickDiagramEquivOrderedData` — summing over all vertex orders, matching
+  **Part 13 done — `dysonVertexMoment` is now a genuine `(vertex-label sequence, pairing)` double
+  sum**: `Analysis/OrderedSimplexIntegral.lean` gained `orderedSimplexIntegral_finsetSum` (a finite
+  sum commutes with `orderedSimplexIntegral`, given continuity of every summand — proved by
+  induction on `n` via `intervalIntegral.integral_finsetSum` and
+  `continuous_orderedSimplexIntegral_of_continuous`). `DysonDiagramExpansion.lean` gained
+  `freeGibbsExpectation_flatVertexLegOperator_pair_eq` (the `flatVertexLegOperator` analogue of
+  `WickDiagram/Amplitude.lean`'s `orderedQuarticPairValue_eq`, supplying the continuity side
+  conditions), `orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing`
+  (pulling the `Pairing (2 * n)` sum out past the `orderedSimplexIntegral`), and
+  `dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing`, combining this with the key
+  induction to express `dysonVertexMoment ε β (quarticInteraction g) S` as `S.card! * (-1)^S.card`
+  times a sum, over vertex-label sequences and pairings of `Pairing (2 * S.card)`, of
+  `(∏ i, g (q i)) * pairing.weight * (integrated pairing contraction term)`.
+  **Still not done**: reindexing this `(vertex-label sequence, pairing)` double sum, via
+  `quarticWickDiagramEquivOrderedData` — summing over all vertex orders, matching
   `dysonVertexMoment`'s `S.card!` prefactor against `Fintype.card (QuarticVertexOrder S) = S.card!`
   — into a genuine sum over `QuarticWickDiagram`s, matching `quarticWickDiagramAmplitude`.
 - PR 7 not yet started (see above): `componentPartition`/restriction/reassembly, connecting
