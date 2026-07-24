@@ -55,6 +55,16 @@ noncomputable def exchangeCommutator {Config : Type*} (s : Statistics)
     AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
   zetaCommutator (s.zetaInt : ℂ) A B
 
+/-- **`zetaCommutator` is bilinear in scalar multiples**: `[c•A, d•B]_ζ = (c*d)•[A, B]_ζ` — direct
+from `zetaCommutator`'s own definition via `LinearMap.smul_comp`/`LinearMap.comp_smul` and
+`smul_smul`. Needed to extract the `Complex.exp` eigenvalue-shift scalars an `imaginaryTimeEvolve`-
+dressed operator picks up, leaving only the bare (untime-evolved) commutator behind. -/
+theorem zetaCommutator_smul_smul {Config : Type*} (ζ c d : ℂ)
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    zetaCommutator ζ (c • A) (d • B) = (c * d) • zetaCommutator ζ A B := by
+  simp only [zetaCommutator, LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, smul_sub]
+  congr 2 <;> ring
+
 /-- **The reordering identity.** If `A`, `B` satisfy `[A, B]_ζ = id` (the unified shape of CAR's
 `{c_i, c_i†} = id` at `ζ = -1` and CCR's `[a_i, a_i†] = id` at `ζ = 1`), then `A∘B` is `id` plus a
 `ζ`-multiple of `B∘A` — e.g. `id - N_i` (fermion, `ζ = -1`) or `id + N_i` (boson, `ζ = 1`) when
