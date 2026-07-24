@@ -20,20 +20,22 @@ just `β ≥ 0`, and that value should be read as "simplex volume" only in the `
 recursion (`Fermionic/DysonExpansion.lean`'s `dysonCoeff`), whose outer integration variable `σ`
 also has range `[0, τ]` with `τ` the overall bound.
 
-**Deliberately minimal.** No general "sum commutes with `orderedSimplexIntegral`" lemma is
-included — that needs integrability hypotheses tailored to whatever the caller actually
-integrates, and a maximally general abstract version would be premature here (`Fermionic/
-WickDiagram/Amplitude.lean`, PR 5c, proves exactly the continuity/linearity facts its own
-integrand needs). No claim of measurability/integrability beyond what each individual lemma's own
-hypotheses require.
+**Deliberately minimal, but not silent on sums.** `orderedSimplexIntegral_finsetSum` gives a finite
+sum commuting with `orderedSimplexIntegral`, but only under an explicit `Continuous` hypothesis on
+every summand — not unconditionally. No claim of measurability/integrability beyond what each
+individual lemma's own hypotheses require; a maximally general abstract version (arbitrary
+`Summable`/measure-theoretic sums, or dropping continuity in favor of bare integrability) would be
+premature here. `continuous_orderedSimplexIntegral_of_continuous` is what supplies each summand's
+own interval-integrability (via its own continuity) at every recursion level, so no separate
+integrability side-lemma is needed to invoke `orderedSimplexIntegral_finsetSum`.
 
-**The one exception**: `continuous_orderedSimplexIntegral_of_continuous`, continuity of
-`orderedSimplexIntegral n (bound x) (f x)` jointly in an arbitrary parameter `x` — needed once a
-caller's own bound (not just its integrand) varies with an outer parameter (Step 6 PR 6's own
-`dysonCoeff`-recursion induction, where the *current* recursion's outer bound is itself the
-*previous* level's integration variable). This is a genuinely different kind of fact from the
-`_congr`/`_smul`/`_neg`/`_const` lemmas above (all stated for a *fixed* bound `β`), so it earns its
-own name rather than being folded into any of them.
+**A genuinely different kind of fact**: `continuous_orderedSimplexIntegral_of_continuous`, jointly
+continuity of `orderedSimplexIntegral n (bound x) (f x)` in an arbitrary parameter `x` — needed
+once a caller's own bound (not just its integrand) varies with an outer parameter (Step 6 PR 6's
+own `dysonCoeff`-recursion induction, where the *current* recursion's outer bound is itself the
+*previous* level's integration variable). This is unlike the `_congr`/`_smul`/`_neg`/`_const`/
+`_finsetSum` lemmas above (all stated for a *fixed* bound `β`), so it earns its own name rather
+than being folded into any of them.
 -/
 
 namespace intervalIntegral
