@@ -18,7 +18,7 @@ dysonVertexMoment ε β (quarticInteraction g) S =
   ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d
 ```
 
-**Status: complete, no `sorry`.**
+**Status: complete, fully proved.**
 `dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude` is exactly this theorem.
 The rest of this docstring records how it was built, part by part.
 
