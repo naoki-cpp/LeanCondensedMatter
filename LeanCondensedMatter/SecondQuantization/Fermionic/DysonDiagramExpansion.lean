@@ -34,15 +34,27 @@ the finite vertex-label sum out past the outer `∫ σ in 0..t`, and a locally-d
 Mode)` equivalence (`Fin.cons`-based) to reindex the resulting (outer label, inner label sequence)
 double sum into a single `Fin (n + 1) → QuarticVertexLabel Mode` sum.
 
+`nestedVertexOperatorComp` is further **fully flattened** into a `Common.prodComp` of its `4n`
+atomic (single-mode creation/annihilation) legs
+(`prodComp_ofFn_flatVertexLegOperator_eq_nestedVertexOperatorComp`), via
+`orderedQuarticLegEquiv_cast_mul_add`/`flatVertexLegOperator_cast_mul_add` (the index-arithmetic
+bridge tying `orderedQuarticLegEquiv`'s multiplicative domain identification to
+`List.ofFn_fin_append`'s additive one) and `eq_cast_mul_add_orderedQuarticLegEquiv` (expressing an
+*arbitrary* flattened position in `i * 4 + j` form, needed to match the induction's "tail" piece
+at an unconstrained position, not just the specific ones the bridge lemma constructs) — combined
+with `Common.prodComp_append` and `interactionPicture_quarticVertexOperator_eq_prodComp`. This is
+the last purely combinatorial/index-bookkeeping step before the genuine physics content
+(discharging the general theorem's eigenoperator/zeta-commutator hypotheses) is needed.
+
 **Still remaining**: applying the general Bloch–de Dominicis theorem
-(`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing`) to the `4n`-operator product
-`quarticInteraction`'s expansion produces (`freeGibbsExpectation_comp_dysonCoeff_quarticInteraction`
-at `L := LinearMap.id`, `t := β` gives the vertex-label-sum side; the general theorem's own
-`4n`-operator eigenoperator/zeta-commutator hypotheses still need to be discharged for
-`quarticVertexOperator`'s creation/annihilation legs), and reindexing the resulting
-(vertex-label sequence, pairing) sum via `quarticWickDiagramEquivOrderedData` into a genuine sum
-over `QuarticWickDiagram`s — see `notes/roadmaps/second-quantization.md` for the full 9-step proof
-outline.
+(`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing`) to the resulting
+`4n`-operator product (`freeGibbsExpectation_comp_dysonCoeff_quarticInteraction` at `L :=
+LinearMap.id`, `t := β`, composed with the flattening theorem, gives the vertex-label-sum side;
+the general theorem's own `4n`-operator eigenoperator/zeta-commutator hypotheses still need to be
+discharged for `quarticVertexOperator`'s creation/annihilation legs, from CAR), and reindexing the
+resulting (vertex-label sequence, pairing) sum via `quarticWickDiagramEquivOrderedData` into a
+genuine sum over `QuarticWickDiagram`s — see `notes/roadmaps/second-quantization.md` for the full
+9-step proof outline.
 -/
 
 namespace SecondQuantization
@@ -405,31 +417,79 @@ theorem flatVertexLegOperator_cast_mul_add {n : ℕ} (ε : Mode → ℝ)
       imaginaryTimeEvolve ε (τ i) (quarticLocalLegOperator (q i) j) := by
   rw [flatVertexLegOperator, orderedQuarticLegEquiv_cast_mul_add i j h]
 
-/-!
-### The full flattening theorem (not yet proven)
+/-- **Every flattened position is of the `i * 4 + j` form** — the converse of
+`orderedQuarticLegEquiv_cast_mul_add`: applying `(orderedQuarticLegEquiv n).symm` to both sides of
+`orderedQuarticLegEquiv_cast_mul_add` and using `Equiv.symm_apply_apply` on the resulting
+`(orderedQuarticLegEquiv n).symm (orderedQuarticLegEquiv n p) = p`. Lets the flattening theorem
+match an *arbitrary* flattened position `p`, not just the specific ones the block-splitting lemma
+above constructs. -/
+theorem eq_cast_mul_add_orderedQuarticLegEquiv {n : ℕ} (p : Fin (2 * (2 * n)))
+    (h : 2 * (2 * n) = n * 4) :
+    p = Fin.cast h.symm ⟨(orderedQuarticLegEquiv n p).1 * 4 + (orderedQuarticLegEquiv n p).2, by
+      have := (orderedQuarticLegEquiv n p).2.isLt; omega⟩ := by
+  have heq := orderedQuarticLegEquiv_cast_mul_add (orderedQuarticLegEquiv n p).1
+    (orderedQuarticLegEquiv n p).2 h
+  rw [Prod.mk.eta] at heq
+  exact ((orderedQuarticLegEquiv n).injective heq).symm
 
-**Target**: `Common.prodComp (List.ofFn (flatVertexLegOperator ε n q τ)) = nestedVertexOperatorComp
-ε n q τ`, by induction on `n`. The `n = 0` base case is immediate (`Fin (2 * (2 * 0))` is empty).
-
-The successor case reduces, via `nestedVertexOperatorComp_succ`,
+omit [Fintype Mode] in
+/-- **`nestedVertexOperatorComp`, flattened into a `Common.prodComp` of its `4n` atomic legs** —
+by induction on `n`: the base case is trivial (`Fin (2 * (2 * 0))` is empty); the successor case
+reduces, via `nestedVertexOperatorComp_succ`,
 `interactionPicture_quarticVertexOperator_eq_prodComp`, the inductive hypothesis, and
-`Common.prodComp_append`, to a **pure list equality** with no more physics content:
-
-```
-List.ofFn (flatVertexLegOperator ε (n + 1) q τ) =
-  List.ofFn (fun j : Fin 4 => imaginaryTimeEvolve ε (τ 0) (quarticLocalLegOperator (q 0) j)) ++
-    List.ofFn (flatVertexLegOperator ε n (fun i => q i.succ) (fun i => τ i.succ))
-```
-
-`orderedQuarticLegEquiv_cast_mul_add`/`flatVertexLegOperator_cast_mul_add` above already supply
-the pointwise fact needed at each flattened position `i * 4 + j` (up to the numeric cast
-identifying `Fin (2 * (2 * n))` with `Fin (n * 4)`) — what remains is assembling that pointwise
-fact into the list equality itself, either via `List.ofFn_mul` (splitting the domain into `n + 1`
-blocks of `4`, matching `finProdFinEquiv`'s own `i * 4 + j` indexing directly) or via
-`List.ofFn_fin_append` (splitting the domain additively into `4 + 2 * (2 * n)`, via
-`Fin.addCases`). Both routes need the corresponding index-cast compatibility fact connecting
-`orderedQuarticLegEquiv`'s multiplicative (`finProdFinEquiv`-based) domain identification to
-whichever splitting equivalence is used — not yet proven here.
--/
+`Common.prodComp_append`, to the *pure list* equality `List.ofFn (flatVertexLegOperator ε (n + 1)
+q τ) = List.ofFn (4 atoms for vertex 0) ++ List.ofFn (flatVertexLegOperator ε n (tail q) (tail
+τ))`, proved via `List.ofFn_fin_append`/`Fin.addCases` splitting the domain additively into `4 + 2
+* (2 * n)`: the `left` branch matches `flatVertexLegOperator_cast_mul_add` at vertex `0` directly;
+the `right` branch uses `eq_cast_mul_add_orderedQuarticLegEquiv` to express an *arbitrary*
+position `k` of the smaller `n`-fold piece in `i' * 4 + j'` form, then matches both sides via
+`flatVertexLegOperator_cast_mul_add` (at `n` for the RHS, at `n + 1` and vertex `i'.succ` for the
+LHS) — the two positions agree because `4 + (i' * 4 + j') = i'.succ * 4 + j'` as naturals. -/
+theorem prodComp_ofFn_flatVertexLegOperator_eq_nestedVertexOperatorComp (ε : Mode → ℝ) :
+    ∀ (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ),
+      Common.prodComp (List.ofFn (flatVertexLegOperator ε n q τ)) =
+        nestedVertexOperatorComp ε n q τ
+  | 0, q, τ => by
+    have h0 : 2 * (2 * 0) = 0 := by ring
+    have : IsEmpty (Fin (2 * (2 * 0))) := h0 ▸ Fin.isEmpty
+    simp [List.ofFn]
+  | n + 1, q, τ => by
+    have hcard : 2 * (2 * (n + 1)) = (n + 1) * 4 := by ring
+    have hcard' : 2 * (2 * n) = n * 4 := by ring
+    have h2 : 2 * (2 * (n + 1)) = 4 + 2 * (2 * n) := by ring
+    rw [nestedVertexOperatorComp_succ, interactionPicture_quarticVertexOperator_eq_prodComp,
+      ← prodComp_ofFn_flatVertexLegOperator_eq_nestedVertexOperatorComp ε n (fun i => q i.succ)
+        (fun i => τ i.succ),
+      ← Common.prodComp_append, List.ofFn_congr h2, ← List.ofFn_fin_append]
+    refine congrArg Common.prodComp
+      (congrArg List.ofFn (funext (Fin.addCases (fun j => ?_) fun k => ?_)))
+    · have e1 : Fin.cast h2.symm (Fin.castAdd (2 * (2 * n)) j) =
+          Fin.cast hcard.symm ⟨((0 : Fin (n + 1)) : ℕ) * 4 + (j : ℕ), by omega⟩ := by
+        apply Fin.ext; simp
+      change flatVertexLegOperator ε (n + 1) q τ (Fin.cast h2.symm (Fin.castAdd _ j)) =
+        Fin.append (fun j : Fin 4 => imaginaryTimeEvolve ε (τ 0) (quarticLocalLegOperator (q 0) j))
+          (flatVertexLegOperator ε n (fun i => q i.succ) (fun i => τ i.succ)) (Fin.castAdd _ j)
+      rw [Fin.append_left, e1, flatVertexLegOperator_cast_mul_add ε q τ 0 j hcard]
+    · have hk := eq_cast_mul_add_orderedQuarticLegEquiv k hcard'
+      have e2 : Fin.cast h2.symm (Fin.natAdd 4 k) = Fin.cast hcard.symm
+          ⟨((orderedQuarticLegEquiv n k).1.succ : ℕ) * 4 + ((orderedQuarticLegEquiv n k).2 : ℕ),
+            by have := (orderedQuarticLegEquiv n k).2.isLt; omega⟩ := by
+        apply Fin.ext
+        simp only [Fin.val_cast, Fin.val_natAdd, Fin.val_succ]
+        have hkval : (k : ℕ) =
+            (orderedQuarticLegEquiv n k).1 * 4 + (orderedQuarticLegEquiv n k).2 := by
+          have := congrArg Fin.val hk
+          simpa using this
+        omega
+      change flatVertexLegOperator ε (n + 1) q τ (Fin.cast h2.symm (Fin.natAdd 4 k)) =
+        Fin.append (fun j : Fin 4 => imaginaryTimeEvolve ε (τ 0) (quarticLocalLegOperator (q 0) j))
+          (flatVertexLegOperator ε n (fun i => q i.succ) (fun i => τ i.succ)) (Fin.natAdd 4 k)
+      rw [Fin.append_right, e2,
+        flatVertexLegOperator_cast_mul_add ε q τ (orderedQuarticLegEquiv n k).1.succ
+          (orderedQuarticLegEquiv n k).2 hcard]
+      have hrest := flatVertexLegOperator_cast_mul_add ε (fun i => q i.succ) (fun i => τ i.succ)
+        (orderedQuarticLegEquiv n k).1 (orderedQuarticLegEquiv n k).2 hcard'
+      rw [← hk] at hrest
+      exact hrest.symm
 
 end SecondQuantization
