@@ -46,12 +46,20 @@ with `Common.prodComp_append` and `interactionPicture_quarticVertexOperator_eq_p
 the last purely combinatorial/index-bookkeeping step before the genuine physics content
 (discharging the general theorem's eigenoperator/zeta-commutator hypotheses) is needed.
 
-**Still remaining**: applying the general Bloch–de Dominicis theorem
-(`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing`) to the resulting
-`4n`-operator product (`freeGibbsExpectation_comp_dysonCoeff_quarticInteraction` at `L :=
-LinearMap.id`, `t := β`, composed with the flattening theorem, gives the vertex-label-sum side;
-the general theorem's own `4n`-operator eigenoperator/zeta-commutator hypotheses still need to be
-discharged for `quarticVertexOperator`'s creation/annihilation legs, from CAR), and reindexing the
+The general Bloch–de Dominicis theorem's **first hypothesis is now discharged for all `4n`
+flattened legs**: `heisenbergEvolve_flatVertexLegOperator` shows every atomic leg operator
+`flatVertexLegOperator` produces is an eigenoperator of `heisenbergEvolve (fermionEnergy ε) (-β)`
+(the free-evolution eigenvalue shift is *independent of the dressing time* `τ` each leg carries —
+`Common.heisenbergEvolve_heisenbergEvolve`, new in `Common/DiagonalEvolution.lean`, supplies the
+needed one-parameter-semigroup commutativity).
+
+**Still remaining**: the general theorem's *second* hypothesis (the pairwise
+`zetaCommutator`/CAR-based commutator constant, for all pairs of the `4n` flattened legs — new
+case-analysis work, by leg-type and mode) and *third* hypothesis (non-resonance, expected free for
+real eigenvalue shifts since `ζ = -1`), then actually applying
+`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` to the resulting `4n`-operator
+product (`freeGibbsExpectation_comp_dysonCoeff_quarticInteraction` at `L := LinearMap.id`, `t :=
+β`, composed with the flattening theorem, gives the vertex-label-sum side) and reindexing the
 resulting (vertex-label sequence, pairing) sum via `quarticWickDiagramEquivOrderedData` into a
 genuine sum over `QuarticWickDiagram`s — see `notes/roadmaps/second-quantization.md` for the full
 9-step proof outline.
@@ -416,6 +424,48 @@ theorem flatVertexLegOperator_cast_mul_add {n : ℕ} (ε : Mode → ℝ)
     flatVertexLegOperator ε n q τ (Fin.cast h.symm ⟨(i : ℕ) * 4 + (j : ℕ), by omega⟩) =
       imaginaryTimeEvolve ε (τ i) (quarticLocalLegOperator (q i) j) := by
   rw [flatVertexLegOperator, orderedQuarticLegEquiv_cast_mul_add i j h]
+
+set_option linter.unusedFintypeInType false in
+/-- **A single evolved atomic leg operator is an eigenoperator of `heisenbergEvolve (fermionEnergy
+ε) (-β)`, with an eigenvalue shift *independent of the dressing time* `τ`** — the fact the general
+Bloch–de Dominicis theorem's own eigenoperator hypothesis needs, for each of the `4n` legs
+`flatVertexLegOperator` produces. Proved via `Common.heisenbergEvolve_heisenbergEvolve` (the two
+evolutions, at `τ` and `-β`, combine into a single evolution at `τ + (-β)`) and
+`imaginaryTimeEvolve_quarticLocalLegOperator` (applied twice: once at `τ + (-β)` to evaluate the
+combined evolution, once at `τ` in reverse to factor the `τ`-dependent piece back out) — the two
+resulting `Complex.exp`s combine via `exp_add`/`ring`, leaving only the `-β`-dependent factor. -/
+theorem heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode → ℝ) (β : ℝ)
+    (q : QuarticVertexLabel Mode) (l : Fin 4) (τ : ℝ) :
+    Common.heisenbergEvolve (fermionEnergy ε) (-β)
+        (imaginaryTimeEvolve ε τ (quarticLocalLegOperator q l)) =
+      Complex.exp (((quarticLocalLegEnergyShift ε q l * (-β) : ℝ)) : ℂ) •
+        imaginaryTimeEvolve ε τ (quarticLocalLegOperator q l) := by
+  have step : Common.heisenbergEvolve (fermionEnergy ε) (-β)
+      (imaginaryTimeEvolve ε τ (quarticLocalLegOperator q l)) =
+      imaginaryTimeEvolve ε (τ + -β) (quarticLocalLegOperator q l) :=
+    Common.heisenbergEvolve_heisenbergEvolve (fermionEnergy ε) τ (-β)
+      (quarticLocalLegOperator q l)
+  rw [step, imaginaryTimeEvolve_quarticLocalLegOperator,
+    imaginaryTimeEvolve_quarticLocalLegOperator, smul_smul, ← Complex.exp_add]
+  congr 2
+  push_cast
+  ring
+
+set_option linter.unusedFintypeInType false in
+/-- **Every atomic leg operator `flatVertexLegOperator` produces is an eigenoperator of
+`heisenbergEvolve (fermionEnergy ε) (-β)`** — direct specialization of
+`heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator` to the flattened position `p`'s own
+vertex label and time assignment. -/
+theorem heisenbergEvolve_flatVertexLegOperator {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))) :
+    Common.heisenbergEvolve (fermionEnergy ε) (-β) (flatVertexLegOperator ε n q τ p) =
+      Complex.exp
+          ((quarticLocalLegEnergyShift ε (q (orderedQuarticLegEquiv n p).1)
+            (orderedQuarticLegEquiv n p).2 * (-β) : ℝ) : ℂ) •
+        flatVertexLegOperator ε n q τ p :=
+  heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator ε β
+    (q (orderedQuarticLegEquiv n p).1) (orderedQuarticLegEquiv n p).2
+    (τ (orderedQuarticLegEquiv n p).1)
 
 /-- **Every flattened position is of the `i * 4 + j` form** — the converse of
 `orderedQuarticLegEquiv_cast_mul_add`: applying `(orderedQuarticLegEquiv n).symm` to both sides of
