@@ -18,7 +18,11 @@ dysonVertexMoment ε β (quarticInteraction g) S =
   ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d
 ```
 
-**Status: in progress.** `normalizedDysonPartitionCoeff`/`dysonVertexMoment` are bridged to
+**Status: complete, fully proved.**
+`dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude` is exactly this theorem.
+The rest of this docstring records how it was built, part by part.
+
+`normalizedDysonPartitionCoeff`/`dysonVertexMoment` are bridged to
 `freeGibbsExpectation ε β (dysonCoeff ε V n β)` — the form the general Bloch–de Dominicis theorem
 (`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing`) can actually be applied to.
 `nestedVertexOperatorComp` (the `orderedSimplexIntegral` integrand's operator-valued ingredient)
@@ -103,8 +107,9 @@ sum**: `Analysis/OrderedSimplexIntegral.lean` gained `orderedSimplexIntegral_fin
 sum commutes with `orderedSimplexIntegral`, given continuity of every summand).
 `orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing` uses it,
 together with `freeGibbsExpectation_flatVertexLegOperator_pair_eq`'s closed form for a pair value
-(the `flatVertexLegOperator` analogue of `WickDiagram/Amplitude.lean`'s `orderedQuarticPairValue_eq`,
-supplying the continuity side conditions), to pull the `Pairing (2 * n)` sum out past the
+(the `flatVertexLegOperator` analogue of `WickDiagram/Amplitude.lean`'s
+`orderedQuarticPairValue_eq`, supplying the continuity side conditions), to pull the `Pairing (2 *
+n)` sum out past the
 `orderedSimplexIntegral`. `dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing` combines
 this with the key induction (`freeGibbsExpectation_comp_dysonCoeff_quarticInteraction` at `L :=
 LinearMap.id`, `t := β`) to express `dysonVertexMoment ε β (quarticInteraction g) S` as `S.card! *
@@ -112,10 +117,23 @@ LinearMap.id`, `t := β`) to express `dysonVertexMoment ε β (quarticInteractio
 and pairings `Pairing (2 * S.card)`, of `(∏ i, g (q i)) * pairing.weight * (integrated pairing
 contraction term)`.
 
-**Still remaining**: reindexing this `(vertex-label sequence, pairing)` double sum, via
-`quarticWickDiagramEquivOrderedData` (summing over all vertex orders, matching
-`dysonVertexMoment`'s `S.card!` prefactor against `Fintype.card (QuarticVertexOrder S) = S.card!`),
-into a genuine sum over `QuarticWickDiagram`s, matching `quarticWickDiagramAmplitude` exactly.
+**The final reindex, completing PR 6**: `WickDiagram/Ordered.lean` gained `someVertexOrder`
+(exhibiting an element of `QuarticVertexOrder S` via `Fintype.equivFin`/`finCongr`) and
+`card_quarticVertexOrder` (`Fintype.card (QuarticVertexOrder S) = S.card!`, via
+`Fintype.card_equiv`). This file's `orderedQuarticLegOperator_eq_flatVertexLegOperator` identifies
+`WickDiagram/Amplitude.lean`'s per-diagram leg operator with `flatVertexLegOperator` (both unfold
+to the same `imaginaryTimeEvolve`/`quarticLocalLegOperator` expression, so this is `rfl`), which
+feeds `couplingWeight_eq_prod_vertexLabel_order` (reindexing a diagram's coupling weight along a
+vertex order via `Equiv.prod_comp`) and `orderedSimplexContribution_eq_pairing_sum_term` (a
+diagram's fixed-order contribution, rewritten via `flatVertexLegOperator`). Combined into
+`couplingWeight_mul_orderedSimplexContribution_eq`, then summed over all diagrams at a fixed order
+via `sum_quarticWickDiagram_eq_sum_orderedData`/`Fintype.sum_prod_type`
+(`sum_couplingWeight_mul_orderedSimplexContribution_eq`) — the result is *order-independent*, so
+summing over all `S.card!`-many vertex orders
+(`sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment`) exactly reproduces
+`dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing`'s own `S.card!` prefactor.
+`dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude` states the result in the
+canonical direction.
 -/
 
 namespace SecondQuantization
@@ -893,5 +911,191 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing {α : Ty
     Finset.sum_congr rfl fun q _ => by
       rw [orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing]
   rw [dysonVertexMoment_eq_freeGibbsExpectation, hkey, mul_assoc, hsum]
+
+/-! ## Reindexing into a sum over `QuarticWickDiagram`s -/
+
+omit [Fintype Mode] in
+/-- **An `orderedQuarticLegOperator` is exactly a `flatVertexLegOperator`**, for the vertex-label
+sequence `d.vertexLabel ∘ order` — both unfold to the identical `imaginaryTimeEvolve ε (τ i)
+(quarticLocalLegOperator (label i) l)` at the same `orderedQuarticLegEquiv`-determined slot/leg
+`(i, l)`, so this is `rfl`. -/
+theorem orderedQuarticLegOperator_eq_flatVertexLegOperator {N : ℕ} {S : Finset (Fin N)}
+    (ε : Mode → ℝ) (d : QuarticWickDiagram Mode N S) (order : QuarticVertexOrder S)
+    (τ : Fin S.card → ℝ) (p : Fin (2 * (2 * S.card))) :
+    orderedQuarticLegOperator ε d order τ p =
+      flatVertexLegOperator ε S.card (fun i => d.vertexLabel (order i)) τ p := rfl
+
+omit [DecidableEq Mode] [Fintype Mode] [LinearOrder Mode] in
+/-- **A diagram's coupling weight, reindexed along a vertex order** — `Equiv.prod_comp` at `order`
+turns the product over the vertex set `↥S` into a product over time slots `Fin S.card`. -/
+theorem couplingWeight_eq_prod_vertexLabel_order {N : ℕ} {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) (g : QuarticVertexLabel Mode → ℂ)
+    (order : QuarticVertexOrder S) :
+    d.couplingWeight g = ∏ i : Fin S.card, g (d.vertexLabel (order i)) := by
+  rw [QuarticWickDiagram.couplingWeight]
+  exact (Equiv.prod_comp order (fun v => g (d.vertexLabel v))).symm
+
+/-- **A diagram's fixed-order ordered-simplex contribution, in terms of `flatVertexLegOperator`**
+— unfolds `orderedSimplexContribution`/`contractionIntegrand`/`orderedQuarticPairValue` and
+rewrites each leg via `orderedQuarticLegOperator_eq_flatVertexLegOperator`, then pulls the
+`τ`-independent `pairingInOrder`-weight back out of the integral
+(`intervalIntegral.orderedSimplexIntegral_smul`). -/
+theorem orderedSimplexContribution_eq_pairing_sum_term {N : ℕ} {S : Finset (Fin N)} (ε : Mode → ℝ)
+    (β : ℝ) (d : QuarticWickDiagram Mode N S) (order : QuarticVertexOrder S) :
+    d.orderedSimplexContribution ε β order =
+      (d.pairingInOrder order).weight Statistics.fermion *
+        intervalIntegral.orderedSimplexIntegral S.card β
+          (fun τ => ∏ pr ∈ (d.pairingInOrder order).pairs, freeGibbsExpectation ε β
+            ((flatVertexLegOperator ε S.card (fun i => d.vertexLabel (order i)) τ pr.1).comp
+              (flatVertexLegOperator ε S.card (fun i => d.vertexLabel (order i)) τ pr.2))) := by
+  rw [QuarticWickDiagram.orderedSimplexContribution]
+  have heq : d.contractionIntegrand ε β order = fun τ =>
+      (d.pairingInOrder order).weight Statistics.fermion *
+        ∏ pr ∈ (d.pairingInOrder order).pairs, freeGibbsExpectation ε β
+          ((flatVertexLegOperator ε S.card (fun i => d.vertexLabel (order i)) τ pr.1).comp
+            (flatVertexLegOperator ε S.card (fun i => d.vertexLabel (order i)) τ pr.2)) := by
+    funext τ
+    rw [QuarticWickDiagram.contractionIntegrand]
+    refine congrArg (_ * ·) (Finset.prod_congr rfl fun pr _ => ?_)
+    rw [orderedQuarticPairValue, orderedQuarticLegOperator_eq_flatVertexLegOperator,
+      orderedQuarticLegOperator_eq_flatVertexLegOperator]
+  rw [heq, intervalIntegral.orderedSimplexIntegral_smul]
+
+/-- **A diagram's coupling weight times its fixed-order ordered-simplex contribution**, entirely in
+terms of the vertex-label sequence `d.vertexLabel ∘ order` and the transported pairing
+`d.pairingInOrder order` — combines the two previous lemmas. -/
+theorem couplingWeight_mul_orderedSimplexContribution_eq {N : ℕ} {S : Finset (Fin N)}
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (d : QuarticWickDiagram Mode N S)
+    (order : QuarticVertexOrder S) :
+    d.couplingWeight g * d.orderedSimplexContribution ε β order =
+      (∏ i : Fin S.card, g (d.vertexLabel (order i))) *
+        ((d.pairingInOrder order).weight Statistics.fermion *
+          intervalIntegral.orderedSimplexIntegral S.card β
+            (fun τ => ∏ pr ∈ (d.pairingInOrder order).pairs, freeGibbsExpectation ε β
+              ((flatVertexLegOperator ε S.card (fun i => d.vertexLabel (order i)) τ pr.1).comp
+                (flatVertexLegOperator ε S.card (fun i => d.vertexLabel (order i)) τ pr.2)))) := by
+  rw [couplingWeight_eq_prod_vertexLabel_order, orderedSimplexContribution_eq_pairing_sum_term]
+
+/-- **Summing `couplingWeight * orderedSimplexContribution` over all diagrams, at a fixed vertex
+order, is the vertex-label/pairing double sum** — `sum_quarticWickDiagram_eq_sum_orderedData`
+reindexes the diagram sum into a sum over `OrderedQuarticWickData`, then `Fintype.sum_prod_type`/
+`Finset.mul_sum` split the resulting product-type sum into the nested vertex-label/pairing form. -/
+theorem sum_couplingWeight_mul_orderedSimplexContribution_eq {N : ℕ} {S : Finset (Fin N)}
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (order : QuarticVertexOrder S) :
+    ∑ d : QuarticWickDiagram Mode N S,
+        d.couplingWeight g * d.orderedSimplexContribution ε β order =
+      ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
+        ∑ pairing : Common.BlochDeDominicis.Pairing (2 * S.card),
+          pairing.weight Statistics.fermion *
+            intervalIntegral.orderedSimplexIntegral S.card β
+              (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
+                ((flatVertexLegOperator ε S.card q τ pr.1).comp
+                  (flatVertexLegOperator ε S.card q τ pr.2))) :=
+  calc
+    ∑ d : QuarticWickDiagram Mode N S, d.couplingWeight g * d.orderedSimplexContribution ε β order
+        = ∑ d : QuarticWickDiagram Mode N S,
+            (fun x : OrderedQuarticWickData Mode S.card =>
+              (∏ i, g (x.1 i)) * (x.2.weight Statistics.fermion *
+                intervalIntegral.orderedSimplexIntegral S.card β
+                  (fun τ => ∏ pr ∈ x.2.pairs, freeGibbsExpectation ε β
+                    ((flatVertexLegOperator ε S.card x.1 τ pr.1).comp
+                      (flatVertexLegOperator ε S.card x.1 τ pr.2)))))
+              (quarticWickDiagramEquivOrderedData order d) :=
+        Finset.sum_congr rfl fun d _ => by
+          simp only [quarticWickDiagramEquivOrderedData]
+          exact couplingWeight_mul_orderedSimplexContribution_eq ε β g d order
+    _ = ∑ x : OrderedQuarticWickData Mode S.card,
+          (∏ i, g (x.1 i)) * (x.2.weight Statistics.fermion *
+            intervalIntegral.orderedSimplexIntegral S.card β
+              (fun τ => ∏ pr ∈ x.2.pairs, freeGibbsExpectation ε β
+                ((flatVertexLegOperator ε S.card x.1 τ pr.1).comp
+                  (flatVertexLegOperator ε S.card x.1 τ pr.2)))) :=
+        sum_quarticWickDiagram_eq_sum_orderedData order
+          (fun x : OrderedQuarticWickData Mode S.card =>
+            (∏ i, g (x.1 i)) * (x.2.weight Statistics.fermion *
+              intervalIntegral.orderedSimplexIntegral S.card β
+                (fun τ => ∏ pr ∈ x.2.pairs, freeGibbsExpectation ε β
+                  ((flatVertexLegOperator ε S.card x.1 τ pr.1).comp
+                    (flatVertexLegOperator ε S.card x.1 τ pr.2)))))
+    _ = ∑ q : Fin S.card → QuarticVertexLabel Mode,
+          ∑ pairing : Common.BlochDeDominicis.Pairing (2 * S.card),
+            (∏ i, g (q i)) * (pairing.weight Statistics.fermion *
+              intervalIntegral.orderedSimplexIntegral S.card β
+                (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
+                  ((flatVertexLegOperator ε S.card q τ pr.1).comp
+                    (flatVertexLegOperator ε S.card q τ pr.2)))) :=
+        Fintype.sum_prod_type _
+    _ = ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
+          ∑ pairing : Common.BlochDeDominicis.Pairing (2 * S.card),
+            pairing.weight Statistics.fermion *
+              intervalIntegral.orderedSimplexIntegral S.card β
+                (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
+                  ((flatVertexLegOperator ε S.card q τ pr.1).comp
+                    (flatVertexLegOperator ε S.card q τ pr.2))) :=
+        Finset.sum_congr rfl fun q _ => (Finset.mul_sum _ _ _).symm
+
+/-- **PR 6's final theorem: `dysonVertexMoment` of `quarticInteraction` is the sum, over every
+`QuarticWickDiagram`, of `quarticWickDiagramAmplitude`.** Swaps the diagram sum's `∑ order`
+(from `quarticWickDiagramAmplitude`'s own definition) to the outside, applies
+`sum_couplingWeight_mul_orderedSimplexContribution_eq` at each fixed order to get an
+order-independent vertex-label/pairing double sum, then collapses the resulting `∑ order` of a
+constant via `card_quarticVertexOrder` (`Fintype.card (QuarticVertexOrder S) = S.card!`) to match
+`dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing`'s own `S.card!` prefactor. -/
+theorem sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment (ε : Mode → ℝ) (β : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) {N : ℕ} (S : Finset (Fin N)) :
+    ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d =
+      dysonVertexMoment ε β (quarticInteraction g) S := by
+  rw [dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing]
+  have hstep : ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d =
+      (-1 : ℂ) ^ S.card * ∑ order : QuarticVertexOrder S,
+        ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
+          ∑ pairing : Common.BlochDeDominicis.Pairing (2 * S.card),
+            pairing.weight Statistics.fermion *
+              intervalIntegral.orderedSimplexIntegral S.card β
+                (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
+                  ((flatVertexLegOperator ε S.card q τ pr.1).comp
+                    (flatVertexLegOperator ε S.card q τ pr.2))) := by
+    have hpt : ∀ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d =
+        (-1 : ℂ) ^ S.card *
+          ∑ order : QuarticVertexOrder S,
+            d.couplingWeight g * d.orderedSimplexContribution ε β order :=
+      fun d => by rw [quarticWickDiagramAmplitude, mul_assoc, Finset.mul_sum]
+    calc
+      ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d
+          = ∑ d : QuarticWickDiagram Mode N S, (-1 : ℂ) ^ S.card *
+              ∑ order : QuarticVertexOrder S,
+                d.couplingWeight g * d.orderedSimplexContribution ε β order :=
+          Finset.sum_congr rfl fun d _ => hpt d
+      _ = (-1 : ℂ) ^ S.card * ∑ d : QuarticWickDiagram Mode N S,
+            ∑ order : QuarticVertexOrder S,
+              d.couplingWeight g * d.orderedSimplexContribution ε β order :=
+          (Finset.mul_sum _ _ _).symm
+      _ = (-1 : ℂ) ^ S.card * ∑ order : QuarticVertexOrder S,
+            ∑ d : QuarticWickDiagram Mode N S,
+              d.couplingWeight g * d.orderedSimplexContribution ε β order := by
+          rw [Finset.sum_comm]
+      _ = (-1 : ℂ) ^ S.card * ∑ order : QuarticVertexOrder S,
+            ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
+              ∑ pairing : Common.BlochDeDominicis.Pairing (2 * S.card),
+                pairing.weight Statistics.fermion *
+                  intervalIntegral.orderedSimplexIntegral S.card β
+                    (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
+                      ((flatVertexLegOperator ε S.card q τ pr.1).comp
+                        (flatVertexLegOperator ε S.card q τ pr.2))) := by
+          congr 1
+          exact Finset.sum_congr rfl fun order _ =>
+            sum_couplingWeight_mul_orderedSimplexContribution_eq ε β g order
+  rw [hstep, Finset.sum_const, Finset.card_univ, card_quarticVertexOrder]
+  ring
+
+/-- **PR 6, complete**: `dysonVertexMoment ε β (quarticInteraction g) S` is the sum, over every
+`QuarticWickDiagram Mode N S`, of `quarticWickDiagramAmplitude ε β g d` — the canonical direction
+of `sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment`, matching the statement this whole line
+of PRs (Step 6 PR 6, `notes/roadmaps/second-quantization.md`) has been building towards. -/
+theorem dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude (ε : Mode → ℝ)
+    (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) {N : ℕ} (S : Finset (Fin N)) :
+    dysonVertexMoment ε β (quarticInteraction g) S =
+      ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d :=
+  (sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment ε β g S).symm
 
 end SecondQuantization
