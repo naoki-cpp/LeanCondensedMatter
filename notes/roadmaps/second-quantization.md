@@ -444,17 +444,26 @@ information a diagram could be extracted from):
   `continuous_matrixCoeff_interactionPicture_comp_dysonCoeff` (the matrix-coefficient continuity
   needed to move the *current* Dyson recursion's integral through composition/`freeGibbsExpectation`
   — not a continuity statement about `nestedVertexOperatorComp` itself).
+  **Part 3 done**: `Analysis/OrderedSimplexIntegral.lean` gained
+  `continuous_orderedSimplexIntegral_of_continuous` — the joint continuity-in-bound fact part 2
+  discovered was missing: for a continuous `bound : X → ℝ` and a *jointly* continuous
+  `f : X → (Fin n → ℝ) → ℂ` (arbitrary parameter space `X`), `x ↦ orderedSimplexIntegral n
+  (bound x) (f x)` is continuous — proved by induction on `n`, generalizing the parameter space at
+  each level (the successor case's own inner recursion needs the inductive hypothesis at the
+  *bigger* space `X × ℝ`, pairing the original parameter with the outer integral's own integration
+  variable), via Mathlib's `intervalIntegral.continuous_parametric_intervalIntegral_of_continuous`
+  (Leibniz-rule-style joint continuity of a parametrized interval integral with a
+  parameter-dependent variable upper limit) and `Continuous.finCons`.
   **Still not done**: the key induction itself (`dysonCoeff` of `quarticInteraction`, left-composed
   with an arbitrary prefix operator, expanding into a `(-1)ⁿ`-signed sum over vertex-label
   sequences of an `orderedSimplexIntegral`) is stated in `DysonDiagramExpansion.lean`'s module
-  docstring but not proven — working through its successor case surfaced a **new continuity
-  requirement not yet available anywhere in the project**: `orderedSimplexIntegral` must be shown
-  continuous (or interval-integrable) *in its own bound* `t` when the integrand itself varies
-  continuously with `t` (needed to swap a finite vertex-label sum with the outer `∫ σ in 0..t`),
-  not just continuity in the integrand for a *fixed* bound (all `Analysis/OrderedSimplexIntegral.lean`/
-  `WickDiagram/Amplitude.lean`'s existing continuity lemmas establish only the latter) — likely
-  needing continuity of `τ ↦ freeGibbsExpectation ε β (L.comp (nestedVertexOperatorComp ε n q τ))`
-  itself, or a parameterized version, along the way. Beyond that: expanding
+  docstring but not proven — now that `continuous_orderedSimplexIntegral_of_continuous` supplies
+  the missing joint continuity-in-bound fact, what remains is applying it (likely via continuity
+  of `(σ, τ) ↦ freeGibbsExpectation ε β (L.comp (nestedVertexOperatorComp ε n q (Fin.cons σ τ)))`
+  or a similarly parameterized fact) to actually swap the finite vertex-label sum with the outer
+  `∫ σ in 0..t`, then carry out the `Fin.consEquiv`-based reindexing into a single `Fin (n + 1) →
+  QuarticVertexLabel Mode` sum matching `orderedSimplexIntegral_succ`'s own recursive shape.
+  Beyond that: expanding
   `quarticInteraction`'s `Finset.sum` into a genuine `4n`-operator product, applying the general
   Bloch–de Dominicis theorem to that product, and reindexing the result via
   `quarticWickDiagramEquivOrderedData` — see the file's own module docstring and this roadmap's

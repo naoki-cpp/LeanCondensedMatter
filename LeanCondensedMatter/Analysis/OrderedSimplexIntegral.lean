@@ -1,5 +1,6 @@
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
+import Mathlib.MeasureTheory.Integral.DominatedConvergence
 
 set_option linter.style.header false
 
@@ -25,6 +26,14 @@ integrates, and a maximally general abstract version would be premature here (`F
 WickDiagram/Amplitude.lean`, PR 5c, proves exactly the continuity/linearity facts its own
 integrand needs). No claim of measurability/integrability beyond what each individual lemma's own
 hypotheses require.
+
+**The one exception**: `continuous_orderedSimplexIntegral_of_continuous`, continuity of
+`orderedSimplexIntegral n (bound x) (f x)` jointly in an arbitrary parameter `x` — needed once a
+caller's own bound (not just its integrand) varies with an outer parameter (Step 6 PR 6's own
+`dysonCoeff`-recursion induction, where the *current* recursion's outer bound is itself the
+*previous* level's integration variable). This is a genuinely different kind of fact from the
+`_congr`/`_smul`/`_neg`/`_const` lemmas above (all stated for a *fixed* bound `β`), so it earns its
+own name rather than being folded into any of them.
 -/
 
 namespace intervalIntegral
@@ -102,5 +111,35 @@ theorem orderedSimplexIntegral_const (n : ℕ) (β : ℝ) (c : ℂ) :
     rw [hfac]
     field_simp
     ring
+
+/-- **`orderedSimplexIntegral` is continuous in an outer parameter `x`, jointly through both its
+own bound and its integrand.** For a continuous `bound : X → ℝ` and a jointly continuous
+`f : X → (Fin n → ℝ) → ℂ`, `x ↦ orderedSimplexIntegral n (bound x) (f x)` is continuous — the
+*bound itself* (not just the integrand, for a *fixed* bound) is allowed to vary continuously with
+`x`. Proved by induction on `n`, generalizing the parameter space `X`/`bound`/`f` at each level
+(the successor case's own inner recursion needs the inductive hypothesis at the *bigger* parameter
+space `X × ℝ`, pairing the original parameter with the outer integral's own integration variable),
+via `intervalIntegral.continuous_parametric_intervalIntegral_of_continuous` (Leibniz-rule-style
+joint continuity of a parametrized interval integral with a variable, parameter-dependent, upper
+limit) and `Continuous.finCons` (joint continuity of `Fin.cons`). -/
+theorem continuous_orderedSimplexIntegral_of_continuous {X : Type*} [TopologicalSpace X] :
+    ∀ (n : ℕ) (bound : X → ℝ) (f : X → (Fin n → ℝ) → ℂ), Continuous bound →
+      Continuous (Function.uncurry f) →
+      Continuous (fun x => orderedSimplexIntegral n (bound x) (f x))
+  | 0, bound, f, _, hf => by
+    simp only [orderedSimplexIntegral_zero]
+    exact hf.comp (continuous_id.prodMk continuous_const)
+  | n + 1, bound, f, hbound, hf => by
+    simp_rw [orderedSimplexIntegral_succ]
+    have hf' : Continuous (Function.uncurry
+        (fun (y : X × ℝ) (rest : Fin n → ℝ) => f y.1 (Fin.cons y.2 rest))) := by
+      have hcons : Continuous
+          (fun z : (X × ℝ) × (Fin n → ℝ) => Fin.cons z.1.2 z.2 : (X × ℝ) × (Fin n → ℝ) →
+            Fin (n + 1) → ℝ) :=
+        Continuous.finCons (continuous_snd.comp continuous_fst) continuous_snd
+      exact hf.comp ((continuous_fst.comp continuous_fst).prodMk hcons)
+    have hF := continuous_orderedSimplexIntegral_of_continuous n Prod.snd
+      (fun (y : X × ℝ) (rest : Fin n → ℝ) => f y.1 (Fin.cons y.2 rest)) continuous_snd hf'
+    exact intervalIntegral.continuous_parametric_intervalIntegral_of_continuous hF hbound
 
 end intervalIntegral
