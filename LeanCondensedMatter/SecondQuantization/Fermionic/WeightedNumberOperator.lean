@@ -29,6 +29,7 @@ theorem weightedTrace_numberOperator (w : FermionOccupation Mode → ℂ) (i : M
   simp only [weightedTrace, Common.weightedTrace, h, mul_ite, mul_one, mul_zero]
   rw [← Finset.sum_filter]
 
+omit [LinearOrder Mode] in
 theorem weightedTrace_totalNumberOperator (w : FermionOccupation Mode → ℂ) :
     weightedTrace w totalNumberOperator =
       ∑ n : FermionOccupation Mode, (fermionParticleNumber n : ℂ) * w n := by

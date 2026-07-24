@@ -593,6 +593,29 @@ information a diagram could be extracted from):
   `WeightedDiagramFamily` as a concrete instantiation — connected-component weight factorization
   and the `PowerSeries.log` coefficient identification remain further future work beyond that.
 
+**Post-PR-6 refactor (gpt's review, "Refactor 1"): generic basis-diagonal operators.** With PR 6
+complete, a reviewer flagged that basis-diagonal operators (`Common.diagonalEvolution`,
+`totalNumberOperator`, `freeHamiltonian`, `interactionHamiltonian`, `occupationProjector`) were
+each hand-built via their own `Finsupp.lift`/`Finset.sum` construction, duplicating the same
+algebra. **Done**: `Common/AlgebraicFock.lean` gained `Common.diagonalOperator a := Finsupp.lift _
+ℂ Config fun c => a c • basisState c` plus `diagonalOperator_basisState`/`_zero`/`_one`/`_add`/
+`_smul`/`_comp`/`_comm`/`matrixCoeff_diagonalOperator`/`_injective`.
+`Common/WeightedDiagonalFunctional.lean` gained `weightedTrace_diagonalOperator`/
+`normalizedWeightedDiagonal_diagonalOperator`. `Fermionic/Hamiltonian.lean`'s
+`totalNumberOperator`/`freeHamiltonian`/`interactionHamiltonian` are now each a
+`Common.diagonalOperator` specialization (eigenvalue `n.card`/`Σᵢ∈n ε(i)`/`Σᵢ∈n Σⱼ∈n V(i,j)`
+respectively — each a finite sum over the *occupation state* `n`, not over all of `Mode`), so **all
+three no longer need `[Fintype Mode]`** — mirroring `fermionEnergy`'s existing Fintype-free shape.
+Their own `_basisState` eigenvalue lemmas are now one-line `diagonalOperator_basisState`
+applications (previously multi-line `Finset.univ_inter`/`Finset.sum_smul` manipulations); every
+downstream consumer (`ImaginaryTimeEvolution.lean`, `FormalExp.lean`, `WeightedNumberOperator.lean`,
+`DysonExpansionVerification.lean`) is unaffected beyond dropping now-unused `[Fintype Mode]`/
+`[LinearOrder Mode]` hypotheses (several picked up transitively and were never actually used).
+**Not done in this pass** (deliberately, to keep the diff small): re-expressing
+`occupationProjector` (`QuantumLinkedCluster.lean`) as a `diagonalOperator` specialization — it
+already needs no `[Fintype Mode]`, so the only benefit would be reusing `diagonalOperator_comp` for
+`occupationProjector_mul`; left as a follow-up since it isn't blocking anything.
+
 **Step 1 done, in `Fermionic/ImaginaryTimeEvolution.lean`:**
 - `imaginaryTimeEvolveFree ε τ` — `e^{τH₀}` for the free Hamiltonian, defined directly on the
   occupation-number basis via `Complex.exp` of each basis state's eigenvalue `E(n) := Σᵢ∈n ε(i)`

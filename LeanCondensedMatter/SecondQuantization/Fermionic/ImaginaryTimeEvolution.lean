@@ -109,9 +109,10 @@ theorem imaginaryTimeEvolve_apply (ε : Mode → ℝ) (τ : ℝ)
       imaginaryTimeEvolveFree ε τ (A (imaginaryTimeEvolveFree ε (-τ) x)) :=
   rfl
 
+omit [LinearOrder Mode] in
 /-- **The free Hamiltonian evolves trivially under its own flow**: `H₀(τ) = H₀`, since `H₀` is
 diagonal in the very basis `e^{τH₀}` acts on by a scalar. -/
-theorem imaginaryTimeEvolve_freeHamiltonian [Fintype Mode] (ε : Mode → ℝ) (τ : ℝ) :
+theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
     imaginaryTimeEvolve ε τ (freeHamiltonian ε) = freeHamiltonian ε := by
   apply linearMap_ext_basisState
   intro n
