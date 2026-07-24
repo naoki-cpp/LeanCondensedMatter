@@ -85,4 +85,22 @@ theorem sum_quarticWickDiagram_eq_sum_orderedData {S : Finset (Fin N)}
       ∑ x : OrderedQuarticWickData Mode S.card, F x :=
   Equiv.sum_comp (quarticWickDiagramEquivOrderedData order) F
 
+omit [DecidableEq Mode] [Fintype Mode] in
+/-- **A vertex order always exists**: `Fin S.card` and `↥S` have the same cardinality
+(`Fintype.card_coe`), so `Fintype.equivFin`/`finCongr` transport an equivalence between them. Needed
+purely to exhibit *some* element of `QuarticVertexOrder S`, so `Fintype.card_equiv` (which needs an
+actual equivalence, not just matching cardinalities) can compute `Fintype.card (QuarticVertexOrder
+S)`. -/
+noncomputable def someVertexOrder (S : Finset (Fin N)) : QuarticVertexOrder S :=
+  ((Fintype.equivFin (↥S)).trans (finCongr (Fintype.card_coe S))).symm
+
+omit [DecidableEq Mode] [Fintype Mode] in
+/-- **There are exactly `S.card!` vertex orders** — `Fintype.card_equiv` at `someVertexOrder S`,
+using `Fintype.card_fin` to identify `Fintype.card (Fin S.card)` with `S.card`. This is what makes
+`quarticWickDiagramAmplitude`'s "sum over *every* vertex order" match `dysonVertexMoment`'s own
+`S.card!` normalization once the diagram sum is reindexed. -/
+theorem card_quarticVertexOrder (S : Finset (Fin N)) :
+    Fintype.card (QuarticVertexOrder S) = S.card.factorial := by
+  rw [Fintype.card_equiv (someVertexOrder S), Fintype.card_fin]
+
 end SecondQuantization

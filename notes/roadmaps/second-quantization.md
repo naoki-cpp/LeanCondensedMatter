@@ -255,10 +255,12 @@ order:
    `Fermionic/DysonExpansion.lean`, `Fermionic/DysonExpansionVerification.lean`,
    `Fermionic/DysonPartitionSeries.lean`).
 6. Diagram connectedness — connecting Dyson-series terms to diagrams and Track B's connectedness
-   result (**in progress**, see below): a 6-PR plan (PR 5 further split into 5a/5b/5c). PRs 1–5
-   done (`WeightedDiagramFamily`, Dyson vertex moment, quartic interaction, Wick diagram
+   result: a 6-PR plan (PR 5 further split into 5a/5b/5c), **now fully done through PR 6**. PRs
+   1–5 done (`WeightedDiagramFamily`, Dyson vertex moment, quartic interaction, Wick diagram
    structure/connectivity, ordered-simplex integral, vertex-order/relabel API, Wick-diagram
-   amplitude); PR 6, the Dyson-to-diagram expansion, is in progress.
+   amplitude); PR 6, the Dyson-to-diagram expansion, is **complete, no `sorry`**:
+   `dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude` (see below).
+   Remaining future work is PR 7 (component restriction/reassembly, not yet started, see below).
 7. Move or generalize the current fermionic linked-cluster bridge before presenting it as `Common/` infrastructure.
 
 **Step 5 done — the genuine interaction-picture Dyson series**, as *continuous imaginary-time
@@ -422,10 +424,11 @@ information a diagram could be extracted from):
   `QuarticWickDiagram.equivPair`, not a `deriving` clause on the structure), so
   `WickDiagramConnected.lean`'s connectivity API (which never touches `Mode`'s cardinality) stays
   generic over `Mode`.
-- PR 6 in progress: `Fermionic/DysonDiagramExpansion.lean`
-  (`dysonVertexMoment_quarticInteraction_eq_sum_amplitude`, applying the general Bloch–de
-  Dominicis theorem to expand the quartic interaction's Dyson vertex moment as a sum over Wick
-  diagrams). **Done so far**: `normalizedDysonPartitionCoeff_eq_freeGibbsExpectation`/
+- PR 6 **complete, no `sorry`**: `Fermionic/DysonDiagramExpansion.lean`'s
+  `dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude` applies the general
+  Bloch–de Dominicis theorem to expand the quartic interaction's Dyson vertex moment as a sum over
+  Wick diagrams — exactly the theorem stated at the top of item 6 above. Built up as follows.
+  `normalizedDysonPartitionCoeff_eq_freeGibbsExpectation`/
   `dysonVertexMoment_eq_freeGibbsExpectation` bridge `dysonVertexMoment` to `freeGibbsExpectation
   ε β (dysonCoeff ε V S.card β)` — the form the general theorem can actually be applied to — via
   `Common.traceFock_diagonalEvolution_comp_eq_weightedTrace` and the PR 6-prerequisite
@@ -568,10 +571,23 @@ information a diagram could be extracted from):
   induction to express `dysonVertexMoment ε β (quarticInteraction g) S` as `S.card! * (-1)^S.card`
   times a sum, over vertex-label sequences and pairings of `Pairing (2 * S.card)`, of
   `(∏ i, g (q i)) * pairing.weight * (integrated pairing contraction term)`.
-  **Still not done**: reindexing this `(vertex-label sequence, pairing)` double sum, via
-  `quarticWickDiagramEquivOrderedData` — summing over all vertex orders, matching
-  `dysonVertexMoment`'s `S.card!` prefactor against `Fintype.card (QuarticVertexOrder S) = S.card!`
-  — into a genuine sum over `QuarticWickDiagram`s, matching `quarticWickDiagramAmplitude`.
+  **Part 14 done — PR 6 complete**: `WickDiagram/Ordered.lean` gained `someVertexOrder`
+  (exhibiting an element of `QuarticVertexOrder S` via `Fintype.equivFin`/`finCongr`) and
+  `card_quarticVertexOrder` (`Fintype.card (QuarticVertexOrder S) = S.card!`, via
+  `Fintype.card_equiv`). `DysonDiagramExpansion.lean` gained
+  `orderedQuarticLegOperator_eq_flatVertexLegOperator` (identifying `WickDiagram/Amplitude.lean`'s
+  per-diagram leg operator with `flatVertexLegOperator`, by `rfl`),
+  `couplingWeight_eq_prod_vertexLabel_order` (reindexing a diagram's coupling weight along a vertex
+  order via `Equiv.prod_comp`), `orderedSimplexContribution_eq_pairing_sum_term` (a diagram's
+  fixed-order contribution, rewritten via `flatVertexLegOperator`), combined into
+  `couplingWeight_mul_orderedSimplexContribution_eq`, then summed over all diagrams at a fixed
+  order via `sum_quarticWickDiagram_eq_sum_orderedData`/`Fintype.sum_prod_type`
+  (`sum_couplingWeight_mul_orderedSimplexContribution_eq`) — the result is *order-independent*, so
+  summing over all `S.card!`-many vertex orders
+  (`sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment`) exactly reproduces the previous part's
+  own `S.card!` prefactor. **`dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude`**
+  states the final result in the canonical direction — **this is PR 6's target theorem, proven with
+  no `sorry`.**
 - PR 7 not yet started (see above): `componentPartition`/restriction/reassembly, connecting
   `QuarticWickDiagram` to `Combinatorics/DiagramConnectedness.lean`'s abstract
   `WeightedDiagramFamily` as a concrete instantiation — connected-component weight factorization
