@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedFreeTwoPointFunction
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.GibbsExpectation.Core
+import LeanCondensedMatter.SecondQuantization.Common.FiniteOperatorIntegral
 
 set_option linter.style.header false
 
@@ -84,6 +85,27 @@ theorem freeGibbsExpectation_smul (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
     freeGibbsExpectation ε β (c • A) = c * freeGibbsExpectation ε β A :=
   normalizedWeightedDiagonal_smul c (freeBoltzmannWeight ε β) A
 
+omit [LinearOrder Mode] in
+/-- **`freeGibbsExpectation` negates**: `⟨-A⟩₀ = -⟨A⟩₀`, from `freeGibbsExpectation_smul` at
+`c := -1`. -/
+theorem freeGibbsExpectation_neg (ε : Mode → ℝ) (β : ℝ)
+    (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    freeGibbsExpectation ε β (-A) = - freeGibbsExpectation ε β A := by
+  rw [show (-A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) = (-1 : ℂ) • A from
+    (neg_one_smul ℂ A).symm, freeGibbsExpectation_smul, neg_one_mul]
+
+omit [LinearOrder Mode] in
+/-- **`freeGibbsExpectation` commutes with `operatorIntervalIntegral`**: `⟨∫ F⟩₀ = ∫ ⟨F⟩₀`, given
+interval-integrability of every diagonal matrix coefficient `F` contributes — directly
+`Common.normalizedWeightedDiagonal_operatorIntervalIntegral` at `w := freeBoltzmannWeight ε β`. -/
+theorem freeGibbsExpectation_operatorIntervalIntegral (ε : Mode → ℝ) (β : ℝ)
+    (F : ℝ → FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (a b : ℝ)
+    (hF : ∀ n : FermionOccupation Mode, IntervalIntegrable
+      (fun τ => Common.matrixCoeff (F τ) n n) MeasureTheory.volume a b) :
+    freeGibbsExpectation ε β (Common.operatorIntervalIntegral F a b) =
+      ∫ τ in a..b, freeGibbsExpectation ε β (F τ) :=
+  Common.normalizedWeightedDiagonal_operatorIntervalIntegral (freeBoltzmannWeight ε β) F a b hF
+
 /-- **The free Gibbs two-point correlator `G₀`**: `weightedFreeTwoPointFunction` specialized to the
 free Boltzmann weight for the *same* dispersion `ε` used in the imaginary-time evolution — `w` is a
 genuine positive Gibbs weight (`weightSum_freeBoltzmannWeight_ne_zero`) for the same `ε`
@@ -118,5 +140,15 @@ theorem freeGibbsExpectation_eq_gibbsExpectation (ε : Mode → ℝ) (β : ℝ)
   have hw : freeBoltzmannWeight ε β = Common.boltzmannWeight (fermionEnergy ε) β :=
     funext (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β)
   rw [freeGibbsExpectation, normalizedWeightedDiagonal, Common.gibbsExpectation, hw]
+
+omit [LinearOrder Mode] in
+/-- **`freeGibbsExpectation` is additive over a `Finset.sum`**: `⟨∑ᵢ Aᵢ⟩₀ = ∑ᵢ ⟨Aᵢ⟩₀`, via the
+`Common.gibbsExpectation` bridge (`freeGibbsExpectation_eq_gibbsExpectation`) and
+`Common.gibbsExpectationLinearMap`'s generic `map_sum`. -/
+theorem freeGibbsExpectation_finsetSum (ε : Mode → ℝ) (β : ℝ) {ι : Type*} (s : Finset ι)
+    (F : ι → FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    freeGibbsExpectation ε β (∑ i ∈ s, F i) = ∑ i ∈ s, freeGibbsExpectation ε β (F i) := by
+  simp_rw [freeGibbsExpectation_eq_gibbsExpectation]
+  exact map_sum (Common.gibbsExpectationLinearMap (fermionEnergy ε) β) F s
 
 end SecondQuantization
