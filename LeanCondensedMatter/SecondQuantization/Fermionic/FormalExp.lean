@@ -82,6 +82,7 @@ noncomputable def formalExpPartitionFunction
 
 /-! ## Sanity check: the free Hamiltonian's truncated series has the expected eigenvalue -/
 
+omit [LinearOrder Mode] [Fintype Mode] in
 theorem freeHamiltonian_pow_basisState (ε : Mode → ℝ) (n : FermionOccupation Mode) (k : ℕ) :
     (freeHamiltonian ε ^ k) (basisState n) = ((∑ i ∈ n, (ε i : ℂ)) ^ k) • basisState n := by
   induction k with
@@ -90,6 +91,7 @@ theorem freeHamiltonian_pow_basisState (ε : Mode → ℝ) (n : FermionOccupatio
     rw [pow_succ', Module.End.mul_apply, ih, map_smul, freeHamiltonian_basisState, smul_smul,
       ← pow_succ]
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- **On the free Hamiltonian**, `formalExpTerm` reduces to the expected scalar Taylor-series
 term of `exp(-E(n))`, where `E(n) := Σ_{i∈n} ε(i)` is the occupation state's energy
 (`freeHamiltonian_basisState`). -/
@@ -99,6 +101,7 @@ theorem formalExpTerm_freeHamiltonian_basisState (ε : Mode → ℝ) (n : Fermio
       ((-1 : ℂ) ^ k / k.factorial * (∑ i ∈ n, (ε i : ℂ)) ^ k) • basisState n := by
   rw [formalExpTerm, LinearMap.smul_apply, freeHamiltonian_pow_basisState, smul_smul]
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- **On the free Hamiltonian**, `formalExpTruncation H N` reduces to the order-`N` partial sum
 of the scalar Taylor series for `exp(-E(n))`. -/
 theorem formalExpTruncation_freeHamiltonian_basisState (ε : Mode → ℝ)
@@ -119,6 +122,7 @@ noncomputable def truncatedBoltzmannWeight (ε : Mode → ℝ) (N : ℕ) (n : Fe
     ℂ :=
   ∑ k ∈ Finset.range (N + 1), (-1 : ℂ) ^ k / k.factorial * (∑ i ∈ n, (ε i : ℂ)) ^ k
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- **The free Hamiltonian's truncated formal exponential is diagonal**, with `(n, n)` matrix
 coefficient exactly `truncatedBoltzmannWeight ε N n`. -/
 theorem matrixCoeff_formalExpTruncation_freeHamiltonian (ε : Mode → ℝ) (N : ℕ)
@@ -127,6 +131,7 @@ theorem matrixCoeff_formalExpTruncation_freeHamiltonian (ε : Mode → ℝ) (N :
       truncatedBoltzmannWeight ε N n :=
   matrixCoeff_of_smul_basisState (formalExpTruncation_freeHamiltonian_basisState ε n N)
 
+omit [LinearOrder Mode] in
 /-- **The order-`N` formal partition function of the free Hamiltonian** is exactly
 `weightSum` applied to the order-`N` truncated Boltzmann weight — the finite-Taylor-order
 approximation to the Gibbs weight has entered `WeightedDiagonalFunctional.lean`'s machinery. -/
@@ -135,6 +140,7 @@ theorem traceFock_formalExpTruncation_freeHamiltonian (ε : Mode → ℝ) (N : �
       weightSum (truncatedBoltzmannWeight ε N) := by
   simp [traceFock_eq_sum, weightSum_eq_sum, matrixCoeff_formalExpTruncation_freeHamiltonian]
 
+omit [LinearOrder Mode] in
 /-- **Weighted-trace version.** For any additional weight `w`, `weightedTrace w` of the free
 Hamiltonian's order-`N` truncated formal exponential is `weightSum` of the pointwise
 product `w * truncatedBoltzmannWeight ε N`. -/
@@ -144,6 +150,7 @@ theorem weightedTrace_formalExpTruncation_freeHamiltonian (ε : Mode → ℝ) (N
       weightSum (fun n => w n * truncatedBoltzmannWeight ε N n) := by
   simp [weightedTrace_eq_sum, weightSum_eq_sum, matrixCoeff_formalExpTruncation_freeHamiltonian]
 
+omit [LinearOrder Mode] in
 /-- **The order-`N` formal partition function of the free Hamiltonian** is the expected finite sum
 over occupation states of the order-`N` partial sum of the scalar Taylor series for `exp(-E(n))`. -/
 theorem formalExpPartitionFunction_freeHamiltonian (ε : Mode → ℝ) (N : ℕ) :
