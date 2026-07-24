@@ -539,9 +539,15 @@ information a diagram could be extracted from):
   `quarticLocalLegOperator`) as the shared normal form both `heisenbergEvolve_flatVertexLegOperator`
   and `zetaCommutator_flatVertexLegOperator` now reduce to, replacing the previously inlined
   `orderedQuarticLegEquiv n p`/`p'` case analyses in both theorems' statements and proofs.
-  **Still not done**: the *third* hypothesis (non-resonance, `1 - ζ * exp(q_i * β) ≠ 0` — expected
-  to be free for real `q_i`, `β` since `ζ = -1` gives `1 + exp(q_i * β) > 0`); then actually
-  applying `Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` to the resulting
+  **Part 11 done — the general theorem's third (non-resonance) hypothesis, discharged
+  unconditionally**: `one_sub_zetaInt_fermion_mul_exp_ne_zero` shows `1 - ζ * exp(x * β) ≠ 0` for
+  `ζ := Statistics.fermion.zetaInt = -1` and *any* real `x, β` (`1 + exp(x * β) > 0` as a real
+  number, hence nonzero even as a complex number), and
+  `one_sub_zetaInt_fermion_mul_exp_flatVertexLegEnergyShift_ne_zero` specializes it to `x :=
+  flatVertexLegEnergyShift ε q p`. All three of the general Bloch–de Dominicis theorem's hypotheses
+  are now discharged for the flattened `4n`-leg family.
+  **Still not done**: actually applying
+  `Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` to the resulting
   `4n`-operator product and reindexing the result via `quarticWickDiagramEquivOrderedData` into a
   genuine sum over `QuarticWickDiagram`s — see the file's own module docstring and this roadmap's
   9-step PR 6 proof outline.

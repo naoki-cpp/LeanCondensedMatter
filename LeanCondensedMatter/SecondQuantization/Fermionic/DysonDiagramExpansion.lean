@@ -78,8 +78,15 @@ theorem will eventually be applied to are named explicitly — `flatVertexLegOpe
 case analyses at each call site. `flatVertexLegOperator_eq_smul` is the shared normal form both the
 eigenoperator and commutator theorems now reduce to.
 
-**Still remaining**: the *third* hypothesis (non-resonance, expected free for real eigenvalue
-shifts since `ζ = -1`), then actually applying
+The general theorem's **third (non-resonance) hypothesis is now discharged, for every real
+eigenvalue shift**: `one_sub_zetaInt_fermion_mul_exp_ne_zero` shows `1 - ζ * exp(x * β) ≠ 0` holds
+unconditionally for `ζ := Statistics.fermion.zetaInt = -1` and *any* real `x, β` — `1 + exp(x * β)`
+is a positive real number, hence nonzero even as a complex number — and
+`one_sub_zetaInt_fermion_mul_exp_flatVertexLegEnergyShift_ne_zero` specializes it to `x :=
+flatVertexLegEnergyShift ε q p`. All three of the general theorem's hypotheses are now discharged
+for the flattened `4n`-leg family.
+
+**Still remaining**: actually applying
 `Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` to the resulting `4n`-operator
 product (`freeGibbsExpectation_comp_dysonCoeff_quarticInteraction` at `L := LinearMap.id`, `t :=
 β`, composed with the flattening theorem, gives the vertex-label-sum side) and reindexing the
@@ -684,5 +691,36 @@ theorem zetaCommutator_flatVertexLegOperator {n : ℕ} (ε : Mode → ℝ)
   rw [flatVertexLegOperator_eq_smul, flatVertexLegOperator_eq_smul,
     Common.zetaCommutator_smul_smul, zetaCommutator_quarticLocalLegOperator, smul_smul,
     flatVertexLegCommutatorCoeff]
+
+/-! ## The general theorem's non-resonance hypothesis -/
+
+/-- **The general theorem's third (non-resonance) hypothesis is automatic for fermions, at any real
+eigenvalue shift** — `Statistics.fermion.zetaInt = -1` turns `1 - ζ * exp(x * β)` into
+`1 + exp(x * β)`, and `Complex.exp` at a real argument is a positive real number, so this can never
+vanish. Unlike the eigenoperator/commutator hypotheses, this one needs no information about the
+`flatVertexLegOperator` family at all — it holds for *every* real `x`, `β`. -/
+theorem one_sub_zetaInt_fermion_mul_exp_ne_zero (x β : ℝ) :
+    (1 : ℂ) - ((Statistics.fermion.zetaInt : ℤ) : ℂ) * Complex.exp ((x * β : ℝ) : ℂ) ≠ 0 := by
+  have hpos : (0 : ℝ) < 1 + Real.exp (x * β) := by positivity
+  have heq : (1 : ℂ) - ((Statistics.fermion.zetaInt : ℤ) : ℂ) * Complex.exp ((x * β : ℝ) : ℂ) =
+      ((1 + Real.exp (x * β) : ℝ) : ℂ) := by
+    rw [Statistics.zetaInt_fermion]
+    push_cast [Complex.ofReal_exp]
+    ring
+  rw [heq]
+  exact_mod_cast hpos.ne'
+
+omit [Fintype Mode] [DecidableEq Mode] [LinearOrder Mode] in
+/-- **The general theorem's non-resonance hypothesis, for every flattened leg position** — direct
+specialization of `one_sub_zetaInt_fermion_mul_exp_ne_zero` to `x := flatVertexLegEnergyShift ε q
+p`. This is the *third and final* hypothesis
+`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` needs; combined with
+`heisenbergEvolve_flatVertexLegOperator` and `zetaCommutator_flatVertexLegOperator`, the general
+theorem can now be applied to the flattened `4n`-leg family. -/
+theorem one_sub_zetaInt_fermion_mul_exp_flatVertexLegEnergyShift_ne_zero {n : ℕ} (ε : Mode → ℝ)
+    (β : ℝ) (q : Fin n → QuarticVertexLabel Mode) (p : Fin (2 * (2 * n))) :
+    (1 : ℂ) - ((Statistics.fermion.zetaInt : ℤ) : ℂ) *
+        Complex.exp ((flatVertexLegEnergyShift ε q p * β : ℝ) : ℂ) ≠ 0 :=
+  one_sub_zetaInt_fermion_mul_exp_ne_zero (flatVertexLegEnergyShift ε q p) β
 
 end SecondQuantization
