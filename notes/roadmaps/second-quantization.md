@@ -293,10 +293,15 @@ Bloch–de Dominicis theorem, and the non-commutative time-ordered Dyson series.
      restriction to one block) and `ComponentConnected.lean`'s
      `restrictComponent_isConnected`/`restrictComponentConnected` (the restricted diagram is a
      genuine `ConnectedQuarticWickDiagram`, via an adjacency-correspondence lemma plus a
-     walk-stays-in-its-component induction). **Not done yet**: reassembly and the
-     `QuarticWickDiagram ≃ Σ π, ∀ B, ConnectedQuarticWickDiagram` equivalence
-     `WeightedDiagramFamily.decompose` needs. **Next**: finish PR 7b (reassembly), then amplitude
-     factorization (PR 7c), the finite-set LCT, and the `PowerSeries.log` coefficient bridge.
+     walk-stays-in-its-component induction), and `Reassemble.lean`'s `reassemble` (builds a
+     `QuarticWickDiagram Mode N S` from an arbitrary `Finpartition S` and a connected diagram per
+     block, via `bigLegEquiv`'s `Σ`-type identification of `S`'s legs with the disjoint union of
+     each block's own legs, `Finpartition.equivSigmaParts` plus `quarticLegEquiv` on both sides).
+     **Not done yet**: that `reassemble` and `restrictComponent`/`componentPartition` are mutually
+     inverse, i.e. the `QuarticWickDiagram ≃ Σ π, ∀ B, ConnectedQuarticWickDiagram` equivalence
+     `WeightedDiagramFamily.decompose` needs. **Next**: finish PR 7b (the inverse relationship),
+     then amplitude factorization (PR 7c), the finite-set LCT, and the `PowerSeries.log`
+     coefficient bridge.
 
 7. **Not started**: move/generalize the fermionic linked-cluster bridge (Phase 8's
    `Fermionic/QuantumLinkedCluster.lean`, currently only a product-weight/independent-region toy
