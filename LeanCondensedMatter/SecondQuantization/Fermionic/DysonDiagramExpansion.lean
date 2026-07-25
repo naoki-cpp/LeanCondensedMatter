@@ -1,9 +1,9 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.DysonPartitionSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.DysonVertexMoment
 import LeanCondensedMatter.SecondQuantization.Fermionic.WickDiagram.Amplitude
+import LeanCondensedMatter.SecondQuantization.Fermionic.QuarticLocalLeg
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PeelFirst
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.Induction
-import LeanCondensedMatter.SecondQuantization.Fermionic.ExchangeAlgebra
 
 set_option linter.style.header false
 
@@ -645,54 +645,11 @@ theorem prodComp_ofFn_flatVertexLegOperator_eq_nestedVertexOperatorComp (ε : Mo
       rw [← hk] at hrest
       exact hrest.symm
 
-/-! ## The general theorem's zeta-commutator hypothesis, for a single vertex's four legs -/
+/-! ## The general theorem's zeta-commutator hypothesis, for the full evolved `4n`-leg family
 
-omit [Fintype Mode] in
-/-- **The mode a local leg's ladder operator acts on** — companion to `quarticLocalLegOperator`'s
-own `0 ↦ create₁, 1 ↦ create₂, 2 ↦ annihilate₂, 3 ↦ annihilate₁` convention. -/
-def quarticLocalLegMode (q : QuarticVertexLabel Mode) : Fin 4 → Mode :=
-  ![q.create₁, q.create₂, q.annihilate₂, q.annihilate₁]
-
-/-- **Whether a local leg is a creation leg** (`0, 1`) or an annihilation leg (`2, 3`). -/
-def quarticLocalLegIsCreate : Fin 4 → Bool := ![true, true, false, false]
-
-omit [Fintype Mode] in
-/-- **The bare anticommutator of two local leg operators**, at possibly different vertex labels:
-`0` if both legs are the same kind (both creation or both annihilation — CAR's
-`anticomm_create_create`/`anticomm_annihilate_annihilate`, *always* `0`, even at the same mode),
-and otherwise `δ` on the two legs' modes (CAR's `anticomm_annihilate_create`/
-`anticomm_create_annihilate`) — a single closed formula covering same-vertex ("tadpole") and
-cross-vertex leg pairs alike, since `quarticLocalLegMode`/`quarticLocalLegOperator` only depend on
-the vertex label supplied, not on any shared vertex identity. -/
-theorem anticomm_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' : Fin 4) :
-    anticomm (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
-      if quarticLocalLegIsCreate l = quarticLocalLegIsCreate l' then
-        (0 : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode)
-      else if quarticLocalLegMode q l = quarticLocalLegMode q' l' then LinearMap.id else 0 := by
-  fin_cases l <;> fin_cases l' <;>
-    simp [quarticLocalLegOperator, quarticLocalLegIsCreate, quarticLocalLegMode,
-      anticomm_create_create, anticomm_annihilate_annihilate, anticomm_annihilate_create,
-      anticomm_create_annihilate]
-
-omit [Fintype Mode] in
-/-- **The general theorem's zeta-commutator hypothesis, for a single vertex's four legs** —
-`Common.zetaCommutator` at `ζ := Statistics.fermion.zetaInt` is exactly `anticomm`
-(`exchangeCommutator_fermion_eq_anticomm`), so `anticomm_quarticLocalLegOperator` transfers
-directly. -/
-theorem zetaCommutator_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' : Fin 4) :
-    Common.zetaCommutator ((Statistics.fermion.zetaInt : ℤ) : ℂ)
-        (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
-      (if quarticLocalLegIsCreate l = quarticLocalLegIsCreate l' then (0 : ℂ)
-       else if quarticLocalLegMode q l = quarticLocalLegMode q' l' then 1 else 0) •
-        (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) := by
-  have hbridge : Common.zetaCommutator ((Statistics.fermion.zetaInt : ℤ) : ℂ)
-      (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
-      anticomm (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') :=
-    exchangeCommutator_fermion_eq_anticomm _ _
-  rw [hbridge, anticomm_quarticLocalLegOperator]
-  split_ifs <;> simp
-
-/-! ## The general theorem's zeta-commutator hypothesis, for the full evolved `4n`-leg family -/
+The bare single-vertex-four-legs case (`quarticLocalLegMode`, `quarticLocalLegIsCreate`,
+`anticomm_quarticLocalLegOperator`, `zetaCommutator_quarticLocalLegOperator`) now lives in
+`QuarticLocalLeg.lean`. -/
 
 omit [Fintype Mode] in
 /-- **The general theorem's `c i j` coefficient family**, for the evolved, flattened `4n`-leg

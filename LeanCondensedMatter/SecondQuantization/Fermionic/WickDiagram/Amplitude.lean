@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.WickDiagram.Ordered
-import LeanCondensedMatter.SecondQuantization.Fermionic.QuarticInteraction
+import LeanCondensedMatter.SecondQuantization.Fermionic.QuarticLocalLeg
 import LeanCondensedMatter.SecondQuantization.Fermionic.FreeBoltzmannWeight
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PairingWeight
 import LeanCondensedMatter.Analysis.OrderedSimplexIntegral
@@ -49,34 +49,6 @@ trace.
 namespace SecondQuantization
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] {N : ℕ}
-
-/-! ## Local-leg operator semantics -/
-
-/-- **The operator a vertex's local leg `Fin 4` stands for**, matching `WickDiagram.lean`'s fixed
-local-leg convention `0 ↦ create₁, 1 ↦ create₂, 2 ↦ annihilate₂, 3 ↦ annihilate₁` exactly. -/
-noncomputable def quarticLocalLegOperator (q : QuarticVertexLabel Mode) :
-    Fin 4 → FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
-  ![create q.create₁, create q.create₂, annihilate q.annihilate₂, annihilate q.annihilate₁]
-
-/-- **The free-evolution eigenvalue shift** of a vertex's local leg — the exponent
-`imaginaryTimeEvolve_quarticLocalLegOperator` below rescales that leg's operator by, matching each
-local leg's sign convention (`+ε` for a creation operator, `-ε` for an annihilation operator). -/
-noncomputable def quarticLocalLegEnergyShift (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) :
-    Fin 4 → ℝ :=
-  ![ε q.create₁, ε q.create₂, -ε q.annihilate₂, -ε q.annihilate₁]
-
-omit [Fintype Mode] in
-/-- **A local leg's operator evolves as a pure eigenvector** under `imaginaryTimeEvolve`, with
-eigenvalue shift `quarticLocalLegEnergyShift`. The single fact tying `quarticLocalLegOperator`'s
-four cases to `imaginaryTimeEvolve_create`/`imaginaryTimeEvolve_annihilate`. -/
-theorem imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode → ℝ) (q : QuarticVertexLabel Mode)
-    (l : Fin 4) (τ : ℝ) :
-    imaginaryTimeEvolve ε τ (quarticLocalLegOperator q l) =
-      Complex.exp (((τ * quarticLocalLegEnergyShift ε q l : ℝ) : ℂ)) •
-        quarticLocalLegOperator q l := by
-  fin_cases l <;>
-    simp [quarticLocalLegOperator, quarticLocalLegEnergyShift, imaginaryTimeEvolve_create,
-      imaginaryTimeEvolve_annihilate, mul_comm]
 
 /-! ## Time-assigned operators, per vertex order -/
 
