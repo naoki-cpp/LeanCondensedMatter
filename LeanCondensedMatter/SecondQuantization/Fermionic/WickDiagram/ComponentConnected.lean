@@ -29,7 +29,7 @@ theorem QuarticWickDiagram.blockVertex_mem {S : Finset (Fin N)} (d : QuarticWick
   (((QuarticWickDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)).symm v :
     {v : ↥S // (v : Fin N) ∈ B})).2
 
-theorem QuarticWickDiagram.blockVertex_injective {S : Finset (Fin N)}
+private theorem QuarticWickDiagram.blockVertex_injective {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts) :
     Function.Injective (d.blockVertex hB) := fun _v _w h =>
   (QuarticWickDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)).symm.injective
@@ -90,8 +90,9 @@ theorem QuarticWickDiagram.subtypeMemBlockEquiv_blockVertex {S : Finset (Fin N)}
 
 /-- **Adjacency preserves membership in `B`**, for a genuine component block `B` — the reason a
 walk starting inside `B` never leaves it. -/
-theorem QuarticWickDiagram.mem_of_adj_mem {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
-    {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts) {v w : ↥S}
+private theorem QuarticWickDiagram.mem_of_adj_mem {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts)
+    {v w : ↥S}
     (h : d.vertexGraph.Adj v w) (hv : (v : Fin N) ∈ B) : (w : Fin N) ∈ B := by
   rw [← d.componentBlock_eq_iff_mem hB] at hv ⊢
   rw [← d.componentBlock_eq_of_reachable h.reachable]
@@ -99,7 +100,7 @@ theorem QuarticWickDiagram.mem_of_adj_mem {S : Finset (Fin N)} (d : QuarticWickD
 
 /-- **Every walk of `d.vertexGraph` starting inside `B` stays inside `B`, and transports to a
 walk of the restricted graph.** Proved by induction on the walk. -/
-theorem QuarticWickDiagram.reachable_restrictComponent_of_walk {S : Finset (Fin N)}
+private theorem QuarticWickDiagram.reachable_restrictComponent_of_walk {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts)
     {v w : ↥S} (p : d.vertexGraph.Walk v w) (hv : (v : Fin N) ∈ B) :
     ∃ hw : (w : Fin N) ∈ B, (d.restrictComponent hB).vertexGraph.Reachable
@@ -120,9 +121,7 @@ theorem QuarticWickDiagram.restrictComponent_isConnected {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts) :
     (d.restrictComponent hB).IsConnected := by
   refine ⟨fun u w => ?_, ?_⟩
-  · have hu : d.componentBlock (d.blockVertex hB u) = B :=
-      (d.componentBlock_eq_iff_mem hB _).2 (d.blockVertex_mem hB u)
-    have hw : d.componentBlock (d.blockVertex hB w) = B :=
+  · have hw : d.componentBlock (d.blockVertex hB w) = B :=
       (d.componentBlock_eq_iff_mem hB _).2 (d.blockVertex_mem hB w)
     have hmem : (d.blockVertex hB u : Fin N) ∈ d.componentBlock (d.blockVertex hB w) := by
       rw [hw]; exact d.blockVertex_mem hB u
