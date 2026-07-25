@@ -308,6 +308,22 @@ theorem normalizedWeightedDiagonal_id (w : Config → ℂ) (hw : weightSum w ≠
     normalizedWeightedDiagonal w (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] _) = 1 := by
   rw [normalizedWeightedDiagonal, weightedTrace_id, div_self hw]
 
+/-! ## `weightedTrace`/`normalizedWeightedDiagonal` of a `diagonalOperator` -/
+
+/-- **The weighted trace of a diagonal operator is the weighted sum of its eigenvalues**,
+`Tr_w(diagonalOperator a) = Σₙ w(n) * a(n)` — direct from `matrixCoeff_diagonalOperator` collapsing
+each diagonal matrix coefficient to `a n`. -/
+theorem weightedTrace_diagonalOperator (w a : Config → ℂ) :
+    weightedTrace w (diagonalOperator a) = ∑ n : Config, w n * a n := by
+  simp [weightedTrace, matrixCoeff_diagonalOperator]
+
+/-- **The normalized weighted diagonal of a diagonal operator**, `⟨diagonalOperator a⟩_w = (Σₙ
+w(n) * a(n)) / weightSum(w)` — `weightedTrace_diagonalOperator` divided by `weightSum w`. -/
+theorem normalizedWeightedDiagonal_diagonalOperator (w a : Config → ℂ) :
+    normalizedWeightedDiagonal w (diagonalOperator a) =
+      (∑ n : Config, w n * a n) / weightSum w := by
+  rw [normalizedWeightedDiagonal, weightedTrace_diagonalOperator]
+
 /-! ## `normalizedWeightedDiagonal`, bundled as a genuine `LinearMap` -/
 
 /-- **`normalizedWeightedDiagonal w`, bundled as a `LinearMap`** — the same map

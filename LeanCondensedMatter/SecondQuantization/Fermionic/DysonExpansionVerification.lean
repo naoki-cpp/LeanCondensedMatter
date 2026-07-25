@@ -72,6 +72,7 @@ theorem dysonCoeff_eq_of_time_independent (ε : Mode → ℝ)
       field_simp
     rw [hcint, neg_smul, neg_neg]
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- **`interactionHamiltonian` is time-independent in the interaction picture**: it is diagonal in
 the occupation basis (`interactionHamiltonian_basisState`), so it commutes with `freeHamiltonian`
 and hence with the free evolution `e^{τH₀}` for any `τ` — the same cancellation
@@ -89,6 +90,7 @@ theorem imaginaryTimeEvolve_interactionHamiltonian (ε : Mode → ℝ) (Vint : M
     push_cast; ring
   rw [hx, mul_right_comm, Complex.exp_neg, inv_mul_cancel₀ (Complex.exp_ne_zero _), one_mul]
 
+omit [LinearOrder Mode] in
 /-- **`interactionHamiltonian`'s Dyson coefficients reduce to the ordinary scalar Taylor
 coefficients**: combining `imaginaryTimeEvolve_interactionHamiltonian` (time-independence) with
 `dysonCoeff_eq_of_time_independent`, the continuous-integral construction reduces to

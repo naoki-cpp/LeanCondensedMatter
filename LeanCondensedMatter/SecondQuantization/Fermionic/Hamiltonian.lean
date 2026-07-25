@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.NumberOperator
-import Mathlib.Algebra.Module.BigOperators
 
 set_option linter.style.header false
 
@@ -7,8 +6,12 @@ set_option linter.style.header false
 # Fermionic Hamiltonians
 
 Phase 6 of Track D's fermionic primary line (`notes/roadmaps/second-quantization.md`): the
-free/interaction Hamiltonians built from `NumberOperator.lean`'s `numberOperator` as finite sums of
-creation/annihilation monomials — still on a finite mode set (`[Fintype Mode]`).
+free/interaction Hamiltonians, each a `Common.diagonalOperator` (`Common/AlgebraicFock.lean`) whose
+eigenvalue at occupation state `n` is the corresponding occupation-dependent scalar (total particle
+number, free energy, or interaction energy). Since each `n : FermionOccupation Mode := Finset Mode`
+is itself finite regardless of whether `Mode` is, these sums are all over `n` (or `n × n`), **not**
+over all of `Mode` — so, unlike an earlier version of this file built from finite sums of
+`numberOperator i` over `i : Mode`, none of the three definitions below needs `[Fintype Mode]`.
 
 Field operators are still out of scope (see `CreationAnnihilationFermionic.lean`'s module
 docstring); so is anything beyond the algebraic level (no self-adjointness, no spectral theory,
@@ -22,33 +25,34 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
 
 /-! ## Free and interaction Hamiltonians -/
 
-variable [Fintype Mode]
-
-/-- **The total number operator**, `N := Σᵢ Nᵢ`. -/
+omit [LinearOrder Mode] in
+/-- **The total number operator**, `N := Σᵢ Nᵢ` — the `Common.diagonalOperator` with eigenvalue
+`n.card` (the total particle number) at each occupation state `n`. -/
 noncomputable def totalNumberOperator : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
-  ∑ i : Mode, numberOperator i
+  Common.diagonalOperator fun n : FermionOccupation Mode => (fermionParticleNumber n : ℂ)
 
+omit [LinearOrder Mode] in
 theorem totalNumberOperator_basisState (n : FermionOccupation Mode) :
-    totalNumberOperator (basisState n) = (fermionParticleNumber n : ℂ) • basisState n := by
-  simp only [totalNumberOperator, LinearMap.sum_apply, numberOperator_basisState]
-  rw [← Finset.sum_filter, Finset.filter_mem_eq_inter, Finset.univ_inter, Finset.sum_const,
-    show fermionParticleNumber n = n.card from rfl, ← Nat.cast_smul_eq_nsmul ℂ]
+    totalNumberOperator (basisState n) = (fermionParticleNumber n : ℂ) • basisState n :=
+  Common.diagonalOperator_basisState _ n
 
+omit [LinearOrder Mode] in
 /-- **The free (non-interacting) Hamiltonian** for a dispersion `ε : Mode → ℝ`,
-`H₀ := Σᵢ ε(i) Nᵢ`. -/
+`H₀ := Σᵢ ε(i) Nᵢ` — the `Common.diagonalOperator` with eigenvalue `Σᵢ∈n ε(i)` at each occupation
+state `n`. -/
 noncomputable def freeHamiltonian (ε : Mode → ℝ) :
     FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
-  ∑ i : Mode, (ε i : ℂ) • numberOperator i
+  Common.diagonalOperator fun n : FermionOccupation Mode => (∑ i ∈ n, (ε i : ℂ))
 
+omit [LinearOrder Mode] in
 theorem freeHamiltonian_basisState (ε : Mode → ℝ) (n : FermionOccupation Mode) :
-    freeHamiltonian ε (basisState n) = (∑ i ∈ n, (ε i : ℂ)) • basisState n := by
-  simp only [freeHamiltonian, LinearMap.sum_apply, LinearMap.smul_apply,
-    numberOperator_basisState, smul_ite, smul_zero]
-  rw [← Finset.sum_filter, Finset.filter_mem_eq_inter, Finset.univ_inter, ← Finset.sum_smul]
+    freeHamiltonian ε (basisState n) = (∑ i ∈ n, (ε i : ℂ)) • basisState n :=
+  Common.diagonalOperator_basisState _ n
 
+omit [LinearOrder Mode] in
 /-- **A density-density interaction Hamiltonian** for a coupling `V : Mode → Mode → ℝ`,
-`H_int := Σᵢⱼ V(i,j) Nᵢ Nⱼ` — a concrete instance of "a finite sum of monomials in
-creation/annihilation operators" (here, quartic monomials `aᵢ†aᵢaⱼ†aⱼ`).
+`H_int := Σᵢⱼ V(i,j) Nᵢ Nⱼ` — the `Common.diagonalOperator` with eigenvalue `Σᵢ∈n Σⱼ∈n V(i,j)` at
+each occupation state `n`, matching `Nᵢ Nⱼ`'s eigenvalue `[i ∈ n] · [j ∈ n]` on occupation numbers.
 
 **Summation convention, fixed explicitly since it is not forced by the physics alone:** the sum
 runs over *every* ordered pair `(i, j) : Mode × Mode`, including `i = j` (contributing `V(i,i) Nᵢ`,
@@ -66,22 +70,12 @@ special case, not a general quartic interaction. A general fermionic interaction
 expansion) is a separate future target; see `notes/roadmaps/second-quantization.md`. -/
 noncomputable def interactionHamiltonian (V : Mode → Mode → ℝ) :
     FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
-  ∑ i : Mode, ∑ j : Mode, (V i j : ℂ) • ((numberOperator i).comp (numberOperator j))
+  Common.diagonalOperator fun n : FermionOccupation Mode => (∑ i ∈ n, ∑ j ∈ n, (V i j : ℂ))
 
+omit [LinearOrder Mode] in
 theorem interactionHamiltonian_basisState (V : Mode → Mode → ℝ) (n : FermionOccupation Mode) :
     interactionHamiltonian V (basisState n) =
-      (∑ i ∈ n, ∑ j ∈ n, (V i j : ℂ)) • basisState n := by
-  simp only [interactionHamiltonian, LinearMap.sum_apply, LinearMap.smul_apply,
-    LinearMap.comp_apply, numberOperator_basisState, apply_ite, map_zero, smul_zero]
-  have hstep : ∀ x : Mode,
-      (∑ y : Mode, if y ∈ n then (if x ∈ n then (V x y : ℂ) • basisState n else 0) else 0) =
-        if x ∈ n then (∑ j ∈ n, (V x j : ℂ)) • basisState n else 0 := by
-    intro x
-    by_cases hx : x ∈ n
-    · simp only [if_pos hx]
-      rw [← Finset.sum_filter, Finset.filter_mem_eq_inter, Finset.univ_inter, ← Finset.sum_smul]
-    · simp [if_neg hx]
-  simp_rw [hstep]
-  rw [← Finset.sum_filter, Finset.filter_mem_eq_inter, Finset.univ_inter, ← Finset.sum_smul]
+      (∑ i ∈ n, ∑ j ∈ n, (V i j : ℂ)) • basisState n :=
+  Common.diagonalOperator_basisState _ n
 
 end SecondQuantization
