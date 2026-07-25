@@ -31,6 +31,15 @@ theorem QuarticWickDiagram.componentBlock_eq_iff_mem {S : Finset (Fin N)}
     obtain ⟨hx, hreach⟩ := (d.mem_componentBlock w).1 hv
     exact d.componentBlock_eq_of_reachable hreach⟩
 
+/-- **Every component block is a subset of the vertex set** — a `Finpartition` part is `≤` its
+whole, and `≤` on `Finset` is `⊆`. Lets every downstream construction take just `hB` rather than
+both `hB` and a separately-supplied `hBS : B ⊆ S`. -/
+theorem QuarticWickDiagram.componentPart_subset {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)}
+    (hB : B ∈ d.componentPartition.parts) : B ⊆ S := by
+  have h := Finset.le_sup (f := id) hB
+  rwa [d.componentPartition.sup_parts] at h
+
 /-- **A leg and its partner have the same vertex block.** The bridge fact connecting
 `vertexGraph`'s adjacency (which pairing directly witnesses) to `componentBlock`. -/
 theorem QuarticWickDiagram.componentBlock_vertexOfLeg_partner {S : Finset (Fin N)}
@@ -83,8 +92,16 @@ def QuarticWickDiagram.subtypeMemBlockEquiv {S : Finset (Fin N)} (B : Finset (Fi
   (Equiv.subtypeSubtypeEquivSubtypeInter (· ∈ S) (· ∈ B)).trans
     (Equiv.subtypeEquivRight fun _x => ⟨fun h => h.2, fun h => ⟨hBS h, h⟩⟩)
 
-/-- **A product-with-subtype-on-the-first-factor collapse**: `{(a, b) // p a} ≃ {a // p a} × β`. -/
-def prodSubtypeFstEquiv {α β : Type*} (p : α → Prop) :
+@[simp]
+theorem QuarticWickDiagram.subtypeMemBlockEquiv_symm_val {S : Finset (Fin N)}
+    {B : Finset (Fin N)} (hBS : B ⊆ S) (v : ↥B) :
+    (((QuarticWickDiagram.subtypeMemBlockEquiv B hBS).symm v : {v : ↥S // (v : Fin N) ∈ B}) :
+      Fin N) = (v : Fin N) :=
+  rfl
+
+/-- **A product-with-subtype-on-the-first-factor collapse**: `{(a, b) // p a} ≃ {a // p a} × β`.
+Internal glue for `blockLegEquiv`, not intended for reuse. -/
+private def prodSubtypeFstEquiv {α β : Type*} (p : α → Prop) :
     {x : α × β // p x.1} ≃ {a : α // p a} × β where
   toFun x := (⟨x.1.1, x.2⟩, x.1.2)
   invFun x := ⟨(x.1.1, x.2), x.1.2⟩
@@ -96,38 +113,56 @@ def prodSubtypeFstEquiv {α β : Type*} (p : α → Prop) :
 `quarticLegEquiv` convention on both sides (per `WickDiagram.lean`'s module docstring), so
 vertex/local-leg identity is preserved, not just cardinality. -/
 noncomputable def QuarticWickDiagram.blockLegEquiv {S : Finset (Fin N)}
-    (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)} (hBS : B ⊆ S) :
+    (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts) :
     {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg} ≃ Fin (2 * (2 * B.card)) :=
   (Equiv.subtypeEquivOfSubtype (quarticLegEquiv S)).trans
     ((prodSubtypeFstEquiv fun v : ↥S => (v : Fin N) ∈ B).trans
-      (((QuarticWickDiagram.subtypeMemBlockEquiv B hBS).prodCongr (Equiv.refl (Fin 4))).trans
+      (((QuarticWickDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)).prodCongr
+          (Equiv.refl (Fin 4))).trans
         (quarticLegEquiv B).symm))
 
-theorem QuarticWickDiagram.permCongr_partner_involutive {α β : Type*} (e : α ≃ β)
+-- `blockLegEquiv` preserving each leg's vertex/local leg (needed before the connectedness proof
+-- can compare `restrictComponent`'s `vertexGraph` to `d`'s own graph restricted to `B`) is
+-- deferred to that follow-up PR — the equational unfolding through this many composed `Equiv`s
+-- needs more care than a direct `simp` call gives it.
+
+private theorem permCongr_partner_involutive {α β : Type*} (e : α ≃ β)
     (p : Equiv.Perm α) (hp : Function.Involutive p) : Function.Involutive (e.permCongr p) := by
   intro x
   simp [Equiv.permCongr_apply, hp (e.symm x)]
 
-theorem QuarticWickDiagram.permCongr_partner_ne_self {α β : Type*} (e : α ≃ β) (p : Equiv.Perm α)
+private theorem permCongr_partner_ne_self {α β : Type*} (e : α ≃ β) (p : Equiv.Perm α)
     (hp : ∀ x, p x ≠ x) (x : β) : e.permCongr p x ≠ x := by
   intro h
   rw [Equiv.permCongr_apply, Equiv.apply_eq_iff_eq_symm_apply] at h
   exact hp _ h
 
-/-- **The restricted pairing on block `B`'s `2 * B.card` positions.** -/
+/-- **The restricted pairing `Pairing (2 * B.card)` on block `B`'s `4 * B.card` legs.** -/
 noncomputable def QuarticWickDiagram.restrictedPairing {S : Finset (Fin N)}
-    (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts)
-    (hBS : B ⊆ S) : Common.BlochDeDominicis.Pairing (2 * B.card) :=
+    (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts) :
+    Common.BlochDeDominicis.Pairing (2 * B.card) :=
   Common.BlochDeDominicis.Pairing.ofPartner
-    ((d.blockLegEquiv hBS).permCongr (d.restrictedPartner hB))
-    ⟨QuarticWickDiagram.permCongr_partner_involutive _ _ (d.restrictedPartner_involutive hB),
-      QuarticWickDiagram.permCongr_partner_ne_self _ _ (d.restrictedPartner_ne_self hB)⟩
+    ((d.blockLegEquiv hB).permCongr (d.restrictedPartner hB))
+    ⟨permCongr_partner_involutive _ _ (d.restrictedPartner_involutive hB),
+      permCongr_partner_ne_self _ _ (d.restrictedPartner_ne_self hB)⟩
+
+/-- **`restrictedPairing`'s partner agrees with `d`'s own partner**, transported along
+`blockLegEquiv`. The fact needed to compare the restricted diagram's `vertexGraph` to `d`'s own
+graph restricted to `B`. -/
+theorem QuarticWickDiagram.restrictedPairing_partner_blockLegEquiv {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts)
+    (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
+    (d.restrictedPairing hB).partner (d.blockLegEquiv hB leg) =
+      d.blockLegEquiv hB (d.restrictedPartner hB leg) := by
+  simp [restrictedPairing, Common.BlochDeDominicis.Pairing.ofPartner, Equiv.permCongr_apply]
 
 /-- **The restriction of `d` to component block `B`.** -/
 noncomputable def QuarticWickDiagram.restrictComponent {S : Finset (Fin N)}
-    (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts)
-    (hBS : B ⊆ S) : QuarticWickDiagram Mode N B where
-  vertexLabel v := d.vertexLabel ((QuarticWickDiagram.subtypeMemBlockEquiv B hBS).symm v).1
-  pairing := d.restrictedPairing hB hBS
+    (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts) :
+    QuarticWickDiagram Mode N B where
+  vertexLabel v :=
+    d.vertexLabel ((QuarticWickDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)).symm
+      v).1
+  pairing := d.restrictedPairing hB
 
 end SecondQuantization
