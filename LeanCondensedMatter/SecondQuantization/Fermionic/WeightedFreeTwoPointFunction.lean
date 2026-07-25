@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTimeOrdering
-import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedDiagonalFunctional
+import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTimeEvolution
 
 set_option linter.style.header false
@@ -13,12 +13,12 @@ previous two steps —
 `ImaginaryTimeEvolution.lean`'s `imaginaryTimeEvolve` (still only defined for evolution under the
 *free* Hamiltonian `H₀ = freeHamiltonian ε`) and `ImaginaryTimeOrdering.lean`'s
 `timeOrderedProduct` — applied to `annihilate i`/`create j` and evaluated with
-`WeightedDiagonalFunctional.lean`'s `normalizedWeightedDiagonal w`.
+`Common.normalizedWeightedDiagonal w`.
 
 **This is not yet the free Gibbs Green function `G₀` in general.** Two independent restrictions
 must both hold before that name applies:
-- as with `normalizedWeightedDiagonal`/`weightSum`, `w` is an arbitrary complex weight here, not
-  necessarily a genuine Boltzmann weight;
+- as with `Common.normalizedWeightedDiagonal`/`Common.weightSum`, `w` is an arbitrary complex
+  weight here, not necessarily a genuine Boltzmann weight;
 - even if `w` *is* a genuine Boltzmann weight, it must be the *free* one associated to the same
   `ε` used in the evolution (`w n = exp(-β Σᵢ∈n ε i)`) — a Boltzmann weight for some other
   Hamiltonian (e.g. one including an interaction) would evolve the operators with the wrong
@@ -40,7 +40,7 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 hold for this to be the physical free Gibbs Green function `G₀`. -/
 noncomputable def weightedFreeTwoPointFunction (ε : Mode → ℝ) (w : FermionOccupation Mode → ℂ)
     (i j : Mode) (τ τ' : ℝ) : ℂ :=
-  - normalizedWeightedDiagonal w
+  - Common.normalizedWeightedDiagonal w
       (timeOrderedProduct
         (imaginaryTimeEvolve ε τ (annihilate i)) (imaginaryTimeEvolve ε τ' (create j)) τ τ')
 
@@ -50,7 +50,7 @@ theorem weightedFreeTwoPointFunction_of_gt (ε : Mode → ℝ) (w : FermionOccup
     (i j : Mode)
     {τ τ' : ℝ} (h : τ' < τ) :
     weightedFreeTwoPointFunction ε w i j τ τ' =
-      - normalizedWeightedDiagonal w
+      - Common.normalizedWeightedDiagonal w
           ((imaginaryTimeEvolve ε τ (annihilate i)).comp
             (imaginaryTimeEvolve ε τ' (create j))) := by
   rw [weightedFreeTwoPointFunction, timeOrderedProduct_of_gt _ _ h]
@@ -63,13 +63,13 @@ convention. -/
 theorem weightedFreeTwoPointFunction_of_lt (ε : Mode → ℝ) (w : FermionOccupation Mode → ℂ)
     (i j : Mode) {τ τ' : ℝ} (h : τ < τ') :
     weightedFreeTwoPointFunction ε w i j τ τ' =
-      normalizedWeightedDiagonal w
+      Common.normalizedWeightedDiagonal w
         ((imaginaryTimeEvolve ε τ' (create j)).comp
           (imaginaryTimeEvolve ε τ (annihilate i))) := by
   rw [weightedFreeTwoPointFunction, timeOrderedProduct_of_lt _ _ h, neg_one_smul,
-    normalizedWeightedDiagonal_eq_div, weightedTrace_eq_sum]
-  simp only [matrixCoeff, Common.matrixCoeff, LinearMap.neg_apply, Finsupp.neg_apply, mul_neg,
-    normalizedWeightedDiagonal_eq_div, weightedTrace_eq_sum, Finset.sum_neg_distrib, neg_div,
+    Common.normalizedWeightedDiagonal, Common.weightedTrace]
+  simp only [Common.matrixCoeff, LinearMap.neg_apply, Finsupp.neg_apply, mul_neg,
+    Common.normalizedWeightedDiagonal, Common.weightedTrace, Finset.sum_neg_distrib, neg_div,
     neg_neg]
 
 /-- **At equal times**, this selects the `θ(0) = 1/2` convention `ImaginaryTimeOrdering.lean` fixes
@@ -79,7 +79,7 @@ one-sided limits `G(0⁺)`/`G(0⁻)` agree (they generically don't: `G(0⁺) = -
 theorem weightedFreeTwoPointFunction_self_time (ε : Mode → ℝ) (w : FermionOccupation Mode → ℂ)
     (i j : Mode) (τ : ℝ) :
     weightedFreeTwoPointFunction ε w i j τ τ =
-      - normalizedWeightedDiagonal w
+      - Common.normalizedWeightedDiagonal w
           ((2⁻¹ : ℂ) • ((imaginaryTimeEvolve ε τ (annihilate i)).comp
               (imaginaryTimeEvolve ε τ (create j)) +
             (-1 : ℂ) •

@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedFreeTwoPointFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.NumberOperator
+import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
 
 set_option linter.style.header false
 
@@ -46,7 +47,7 @@ omit [Fintype Mode] in
 nonzero `n`-coefficient. -/
 theorem matrixCoeff_annihilate_comp_create_of_ne {i j : Mode} (hij : i ≠ j)
     (n : FermionOccupation Mode) :
-    matrixCoeff ((annihilate i).comp (create j)) n n = 0 := by
+    Common.matrixCoeff ((annihilate i).comp (create j)) n n = 0 := by
   change ((annihilate i).comp (create j)) (basisState n) n = 0
   by_cases hj : j ∈ n
   · rw [LinearMap.comp_apply, create_basisState_of_mem hj, map_zero]
@@ -73,7 +74,7 @@ omit [Fintype Mode] in
 other. -/
 theorem matrixCoeff_create_comp_annihilate_of_ne {i j : Mode} (hij : i ≠ j)
     (n : FermionOccupation Mode) :
-    matrixCoeff ((create j).comp (annihilate i)) n n = 0 := by
+    Common.matrixCoeff ((create j).comp (annihilate i)) n n = 0 := by
   have hanticomm := anticomm_annihilate_create i j
   rw [if_neg hij, anticomm] at hanticomm
   have hzero : ((annihilate i).comp (create j) + (create j).comp (annihilate i))
@@ -87,20 +88,22 @@ theorem matrixCoeff_create_comp_annihilate_of_ne {i j : Mode} (hij : i ≠ j)
   linear_combination hcoeff - h1
 
 theorem weightedTrace_annihilate_comp_create_of_ne (w : FermionOccupation Mode → ℂ) {i j : Mode}
-    (hij : i ≠ j) : weightedTrace w ((annihilate i).comp (create j)) = 0 := by
-  simp [weightedTrace_eq_sum, matrixCoeff_annihilate_comp_create_of_ne hij]
+    (hij : i ≠ j) : Common.weightedTrace w ((annihilate i).comp (create j)) = 0 := by
+  simp [Common.weightedTrace, matrixCoeff_annihilate_comp_create_of_ne hij]
 
 theorem weightedTrace_create_comp_annihilate_of_ne (w : FermionOccupation Mode → ℂ) {i j : Mode}
-    (hij : i ≠ j) : weightedTrace w ((create j).comp (annihilate i)) = 0 := by
-  simp [weightedTrace_eq_sum, matrixCoeff_create_comp_annihilate_of_ne hij]
+    (hij : i ≠ j) : Common.weightedTrace w ((create j).comp (annihilate i)) = 0 := by
+  simp [Common.weightedTrace, matrixCoeff_create_comp_annihilate_of_ne hij]
 
 theorem normalizedWeightedDiagonal_annihilate_comp_create_of_ne (w : FermionOccupation Mode → ℂ)
-{i j : Mode} (hij : i ≠ j) : normalizedWeightedDiagonal w ((annihilate i).comp (create j)) = 0 := by
-  rw [normalizedWeightedDiagonal_eq_div, weightedTrace_annihilate_comp_create_of_ne w hij, zero_div]
+    {i j : Mode} (hij : i ≠ j) :
+    Common.normalizedWeightedDiagonal w ((annihilate i).comp (create j)) = 0 := by
+  rw [Common.normalizedWeightedDiagonal, weightedTrace_annihilate_comp_create_of_ne w hij, zero_div]
 
 theorem normalizedWeightedDiagonal_create_comp_annihilate_of_ne (w : FermionOccupation Mode → ℂ)
-{i j : Mode} (hij : i ≠ j) : normalizedWeightedDiagonal w ((create j).comp (annihilate i)) = 0 := by
-  rw [normalizedWeightedDiagonal_eq_div, weightedTrace_create_comp_annihilate_of_ne w hij, zero_div]
+    {i j : Mode} (hij : i ≠ j) :
+    Common.normalizedWeightedDiagonal w ((create j).comp (annihilate i)) = 0 := by
+  rw [Common.normalizedWeightedDiagonal, weightedTrace_create_comp_annihilate_of_ne w hij, zero_div]
 
 /-! ## Diagonal (`i = j`): the free hole/occupation numbers `1 - f_i`, `f_i` -/
 
@@ -108,9 +111,9 @@ theorem normalizedWeightedDiagonal_create_comp_annihilate_of_ne (w : FermionOccu
 theorem freeGibbsExpectation_annihilate_comp_create_self (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
     freeGibbsExpectation ε β ((annihilate i).comp (create i)) =
       Complex.exp ((β : ℂ) * (ε i : ℂ)) / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) := by
-  rw [annihilate_comp_create_self, freeGibbsExpectation, normalizedWeightedDiagonal_sub,
-    normalizedWeightedDiagonal_id _ (weightSum_freeBoltzmannWeight_ne_zero ε β),
-    show normalizedWeightedDiagonal (freeBoltzmannWeight ε β) (numberOperator i) =
+  rw [annihilate_comp_create_self, freeGibbsExpectation, Common.normalizedWeightedDiagonal_sub,
+    Common.normalizedWeightedDiagonal_id _ (weightSum_freeBoltzmannWeight_ne_zero ε β),
+    show Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β) (numberOperator i) =
       freeGibbsExpectation ε β (numberOperator i) from rfl, freeGibbsExpectation_numberOperator]
   have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
     rw [show Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 =
@@ -129,8 +132,8 @@ theorem freeGibbsGreenFunction_of_gt_self (ε : Mode → ℝ) (β : ℝ) (i : Mo
         (Complex.exp ((β : ℂ) * (ε i : ℂ)) / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1))) := by
   rw [freeGibbsGreenFunction, weightedFreeTwoPointFunction_of_gt ε (freeBoltzmannWeight ε β) i i h,
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
-    LinearMap.comp_smul, smul_smul, normalizedWeightedDiagonal_smul, ← freeGibbsExpectation,
-    freeGibbsExpectation_annihilate_comp_create_self]
+    LinearMap.comp_smul, smul_smul, Common.normalizedWeightedDiagonal_smul,
+    ← freeGibbsExpectation, freeGibbsExpectation_annihilate_comp_create_self]
   rw [show Complex.exp (-(τ : ℂ) * (ε i : ℂ)) * Complex.exp ((τ' : ℂ) * (ε i : ℂ)) =
       Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) by
     rw [← Complex.exp_add]; congr 1; push_cast; ring]
@@ -145,7 +148,8 @@ theorem freeGibbsGreenFunction_of_lt_self (ε : Mode → ℝ) (β : ℝ) (i : Mo
     imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create, LinearMap.smul_comp,
     LinearMap.comp_smul, smul_smul,
     show (create i).comp (annihilate i) = numberOperator i from rfl,
-    normalizedWeightedDiagonal_smul, ← freeGibbsExpectation, freeGibbsExpectation_numberOperator]
+    Common.normalizedWeightedDiagonal_smul, ← freeGibbsExpectation,
+    freeGibbsExpectation_numberOperator]
   rw [show Complex.exp ((τ' : ℂ) * (ε i : ℂ)) * Complex.exp (-(τ : ℂ) * (ε i : ℂ)) =
       Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) by
     rw [← Complex.exp_add]; congr 1; push_cast; ring]
@@ -165,12 +169,12 @@ theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i 
     show -(τ : ℂ) * (ε i : ℂ) + (τ : ℂ) * (ε i : ℂ) = 0 by ring,
     show (τ : ℂ) * (ε i : ℂ) + -(τ : ℂ) * (ε i : ℂ) = 0 by ring, Complex.exp_zero, one_smul,
     show (create i).comp (annihilate i) = numberOperator i from rfl]
-  rw [neg_smul, normalizedWeightedDiagonal_smul,
-    normalizedWeightedDiagonal_add, normalizedWeightedDiagonal_neg, normalizedWeightedDiagonal_smul,
-    one_mul,
-    show normalizedWeightedDiagonal (freeBoltzmannWeight ε β) ((annihilate i).comp (create i)) =
+  rw [neg_smul, Common.normalizedWeightedDiagonal_smul, Common.normalizedWeightedDiagonal_add,
+    Common.normalizedWeightedDiagonal_neg, Common.normalizedWeightedDiagonal_smul, one_mul,
+    show Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β)
+        ((annihilate i).comp (create i)) =
       freeGibbsExpectation ε β ((annihilate i).comp (create i)) from rfl,
-    show normalizedWeightedDiagonal (freeBoltzmannWeight ε β) (numberOperator i) =
+    show Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β) (numberOperator i) =
       freeGibbsExpectation ε β (numberOperator i) from rfl,
     freeGibbsExpectation_annihilate_comp_create_self, freeGibbsExpectation_numberOperator]
   have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
@@ -216,16 +220,20 @@ theorem freeGibbsGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mode}
   rcases lt_trichotomy τ' τ with h | h | h
   · rw [timeOrderedProduct_of_gt _ _ h, imaginaryTimeEvolve_annihilate,
       imaginaryTimeEvolve_create]
-    simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, normalizedWeightedDiagonal_smul,
+    simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
+      Common.normalizedWeightedDiagonal_smul,
       normalizedWeightedDiagonal_annihilate_comp_create_of_ne _ hij]
   · subst h
     rw [timeOrderedProduct_self_time, imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
-    simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, normalizedWeightedDiagonal_smul,
-      normalizedWeightedDiagonal_add, normalizedWeightedDiagonal_neg,
+    simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
+      Common.normalizedWeightedDiagonal_smul,
+      Common.normalizedWeightedDiagonal_add, Common.normalizedWeightedDiagonal_neg,
       normalizedWeightedDiagonal_annihilate_comp_create_of_ne _ hij,
       normalizedWeightedDiagonal_create_comp_annihilate_of_ne _ hij]
   · rw [timeOrderedProduct_of_lt _ _ h, imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
-    simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, normalizedWeightedDiagonal_smul,
-      normalizedWeightedDiagonal_neg, normalizedWeightedDiagonal_create_comp_annihilate_of_ne _ hij]
+    simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
+      Common.normalizedWeightedDiagonal_smul,
+      Common.normalizedWeightedDiagonal_neg,
+      normalizedWeightedDiagonal_create_comp_annihilate_of_ne _ hij]
 
 end SecondQuantization

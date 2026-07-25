@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.FreeBoltzmannWeight
 import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedNumberOperator
+import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
 
 set_option linter.style.header false
 
@@ -48,7 +49,7 @@ omit [DecidableEq Mode] in
 `Z₀(β) = ∏ᵢ (1 + e^{-βε_i})`. -/
 theorem freePartitionFunction_eq_prod (ε : Mode → ℝ) (β : ℝ) :
     freePartitionFunction ε β = ∏ i, (1 + Complex.exp (-(β : ℂ) * (ε i : ℂ))) := by
-  rw [freePartitionFunction, weightSum_eq_sum, ← Finset.powerset_univ]
+  rw [freePartitionFunction, Common.weightSum, ← Finset.powerset_univ]
   exact sum_freeBoltzmannWeight_powerset_eq_prod ε β Finset.univ
 
 /-- **The closed-form Fermi–Dirac occupation number.** `⟨N_i⟩₀,β = 1/(e^{βε_i}+1)`. -/
@@ -76,13 +77,13 @@ theorem freeGibbsExpectation_numberOperator (ε : Mode → ℝ) (β : ℝ) (i : 
     refine Complex.ofReal_ne_zero.2 (ne_of_gt ?_)
     apply Finset.sum_pos (fun n _ => Real.exp_pos _)
     exact ⟨fermionVacuum, Finset.mem_filter.2 ⟨Finset.mem_univ _, by simp [fermionVacuum]⟩⟩
-  have hnum : weightedTrace (freeBoltzmannWeight ε β) (numberOperator i) = f i * P := by
+  have hnum : Common.weightedTrace (freeBoltzmannWeight ε β) (numberOperator i) = f i * P := by
     have hsplit :
-        weightedTrace (freeBoltzmannWeight ε β) (numberOperator i) +
+        Common.weightedTrace (freeBoltzmannWeight ε β) (numberOperator i) +
           ∑ n ∈ (Finset.univ : Finset (FermionOccupation Mode)).filter (i ∉ ·),
             freeBoltzmannWeight ε β n
           = freePartitionFunction ε β := by
-      rw [weightedTrace_numberOperator, freePartitionFunction, weightSum_eq_sum]
+      rw [weightedTrace_numberOperator, freePartitionFunction, Common.weightSum]
       exact Finset.sum_filter_add_sum_filter_not Finset.univ (i ∈ ·) (freeBoltzmannWeight ε β)
     rw [hsum_not, hZ] at hsplit
     linear_combination hsplit
@@ -90,8 +91,9 @@ theorem freeGibbsExpectation_numberOperator (ε : Mode → ℝ) (β : ℝ) (i : 
   have hfi : f i = (Complex.exp ((β : ℂ) * (ε i : ℂ)))⁻¹ := by
     change Complex.exp (-(β : ℂ) * (ε i : ℂ)) = (Complex.exp ((β : ℂ) * (ε i : ℂ)))⁻¹
     rw [show -(β : ℂ) * (ε i : ℂ) = -((β : ℂ) * (ε i : ℂ)) by ring, Complex.exp_neg]
-  rw [freeGibbsExpectation, normalizedWeightedDiagonal_eq_div]
-  change weightedTrace (freeBoltzmannWeight ε β) (numberOperator i) / freePartitionFunction ε β = _
+  rw [freeGibbsExpectation, Common.normalizedWeightedDiagonal]
+  change Common.weightedTrace (freeBoltzmannWeight ε β) (numberOperator i) /
+    freePartitionFunction ε β = _
   rw [hnum, hZ, hfi]
   field_simp
 

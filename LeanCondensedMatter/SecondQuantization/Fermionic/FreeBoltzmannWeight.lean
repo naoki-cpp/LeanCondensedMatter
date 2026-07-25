@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedFreeTwoPointFunction
+import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.GibbsExpectation.Core
 import LeanCondensedMatter.SecondQuantization.Common.FiniteOperatorIntegral
 
@@ -55,8 +56,8 @@ omit [DecidableEq Mode] [LinearOrder Mode] in
 positive reals (`Real.exp_pos`) over the nonempty `Fintype` `FermionOccupation Mode` (it always
 contains `fermionVacuum`), hence itself a positive real cast, hence nonzero. -/
 theorem weightSum_freeBoltzmannWeight_ne_zero (ε : Mode → ℝ) (β : ℝ) :
-    weightSum (freeBoltzmannWeight ε β) ≠ 0 := by
-  rw [weightSum_eq_sum]
+    Common.weightSum (freeBoltzmannWeight ε β) ≠ 0 := by
+  rw [Common.weightSum]
   simp_rw [freeBoltzmannWeight_eq_ofReal]
   rw [← Complex.ofReal_sum]
   refine Complex.ofReal_ne_zero.2 (ne_of_gt ?_)
@@ -65,7 +66,7 @@ theorem weightSum_freeBoltzmannWeight_ne_zero (ε : Mode → ℝ) (β : ℝ) :
 /-- **The free partition function**, `Z₀(β) := Σₙ e^{-β E(n)}`: `weightSum` specialized to
 `freeBoltzmannWeight`. -/
 noncomputable def freePartitionFunction (ε : Mode → ℝ) (β : ℝ) : ℂ :=
-  weightSum (freeBoltzmannWeight ε β)
+  Common.weightSum (freeBoltzmannWeight ε β)
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
 theorem freePartitionFunction_ne_zero (ε : Mode → ℝ) (β : ℝ) : freePartitionFunction ε β ≠ 0 :=
@@ -75,15 +76,15 @@ theorem freePartitionFunction_ne_zero (ε : Mode → ℝ) (β : ℝ) : freeParti
 `freeBoltzmannWeight`. -/
 noncomputable def freeGibbsExpectation (ε : Mode → ℝ) (β : ℝ)
     (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) : ℂ :=
-  normalizedWeightedDiagonal (freeBoltzmannWeight ε β) A
+  Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β) A
 
 omit [LinearOrder Mode] in
 /-- **`freeGibbsExpectation` scales**: `⟨c • A⟩₀ = c * ⟨A⟩₀`, directly
-`normalizedWeightedDiagonal_smul` at `w := freeBoltzmannWeight ε β`. -/
+`Common.normalizedWeightedDiagonal_smul` at `w := freeBoltzmannWeight ε β`. -/
 theorem freeGibbsExpectation_smul (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
     (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
     freeGibbsExpectation ε β (c • A) = c * freeGibbsExpectation ε β A :=
-  normalizedWeightedDiagonal_smul c (freeBoltzmannWeight ε β) A
+  Common.normalizedWeightedDiagonal_smul c (freeBoltzmannWeight ε β) A
 
 omit [LinearOrder Mode] in
 /-- **`freeGibbsExpectation` negates**: `⟨-A⟩₀ = -⟨A⟩₀`, from `freeGibbsExpectation_smul` at
@@ -139,7 +140,7 @@ theorem freeGibbsExpectation_eq_gibbsExpectation (ε : Mode → ℝ) (β : ℝ)
     freeGibbsExpectation ε β A = Common.gibbsExpectation (fermionEnergy ε) β A := by
   have hw : freeBoltzmannWeight ε β = Common.boltzmannWeight (fermionEnergy ε) β :=
     funext (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β)
-  rw [freeGibbsExpectation, normalizedWeightedDiagonal, Common.gibbsExpectation, hw]
+  rw [freeGibbsExpectation, Common.gibbsExpectation, hw]
 
 omit [LinearOrder Mode] in
 /-- **`freeGibbsExpectation` is additive over a `Finset.sum`**: `⟨∑ᵢ Aᵢ⟩₀ = ∑ᵢ ⟨Aᵢ⟩₀`, via the

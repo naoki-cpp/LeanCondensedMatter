@@ -43,13 +43,12 @@ theorem normalizedDysonPartitionCoeff_eq_freeGibbsExpectation (ε : Mode → ℝ
     normalizedDysonPartitionCoeff ε β V n = freeGibbsExpectation ε β (dysonCoeff ε V n β) := by
   have hw : Common.boltzmannWeight (fermionEnergy ε) β = freeBoltzmannWeight ε β :=
     funext fun m => (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β m).symm
-  rw [normalizedDysonPartitionCoeff, freeGibbsExpectation, normalizedWeightedDiagonal_eq_div]
+  rw [normalizedDysonPartitionCoeff, freeGibbsExpectation, Common.normalizedWeightedDiagonal]
   congr 1
   rw [dysonPartitionCoeff, imaginaryTimeEvolveFree]
   change Common.traceFock (Common.diagonalEvolution (fermionEnergy ε) (-β) ∘ₗ dysonCoeff ε V n β) =
     _
   rw [Common.traceFock_diagonalEvolution_comp_eq_weightedTrace, hw]
-  rfl
 
 omit [LinearOrder Mode] in
 /-- **`dysonVertexMoment` is `S.card!` times `freeGibbsExpectation` of the bare Dyson coefficient
