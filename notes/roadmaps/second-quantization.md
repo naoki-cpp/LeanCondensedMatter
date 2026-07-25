@@ -287,8 +287,21 @@ Bloch–de Dominicis theorem, and the non-commutative time-ordered Dyson series.
      evolved atomic legs (`WickDiagram/LegFamily.lean`'s `quarticLegOperatorForSequence`,
      `Fermionic/QuarticLocalLeg.lean`'s per-leg operator/energy-shift/CAR semantics), plus the
      vertex-order-sum reindexing (`sum_quarticWickDiagram_eq_sum_orderedData`).
-   - **PR 7, not started**: `componentPartition`/restriction/reassembly, connecting
-     `QuarticWickDiagram` to `WeightedDiagramFamily` as a concrete instantiation.
+   - **PR 7 in progress, split into 7a/7b/7c per a 6-PR plan for the full LCT**:
+     **PR 7a done**, `Fermionic/WickDiagram/ComponentPartition.lean` — `d.componentBlock v : Finset
+     (Fin N)` (the vertices reachable from `v` in `d.vertexGraph`, read back via `Subtype.val`),
+     `componentBlock_eq_of_reachable`/`_disjoint_of_not_reachable`, and
+     `d.componentPartition : Finpartition S` assembled from these blocks via
+     `Finpartition.ofPairwiseDisjoint`. Reachability decidability is classical throughout
+     (`d.vertexGraph.Adj` is `∃`-defined, not computable). **Not done yet**: component-diagram
+     restriction/reassembly (PR 7b — the pairing-restriction direction needs each leg's partner to
+     provably stay within the same component) and the ordered-simplex shuffle-product lemma PR 7c's
+     amplitude factorization needs (`Analysis/OrderedSimplexIntegral.lean` currently has no
+     shuffle/product theorem) — see the file's own module docstring and gpt's PR 7 design notes for
+     the full remaining plan (restriction/reassembly equivalence, amplitude factorization across
+     components, the finite-set-level LCT via `WeightedDiagramFamily`, and finally the
+     `Combinatorics/ExponentialGeneratingFunction.lean` bridge connecting `dysonVertexCumulant` to
+     `PowerSeries.log`'s coefficients).
 
 7. **Not started**: move/generalize the fermionic linked-cluster bridge (Phase 8's
    `Fermionic/QuantumLinkedCluster.lean`, currently only a product-weight/independent-region toy
