@@ -154,7 +154,7 @@ finite-sum shape.
 | `Common/OccupationBasis.lean` | `OccupationBasis Mode Config` (a `class`, resolved by instance search) — the architectural interface (`vacuum`, `occupation : Config → Mode → ℕ`, finiteness, faithfulness) both lines' concrete occupation types satisfy; the concrete instances (`SecondQuantization.occupationBasis` — fermionic, plain namespace — and `SecondQuantization.Bosonic.occupationBasis`) live in each statistics' own `Occupation.lean` (would invert the `Common/` → statistics-specific dependency direction if supplied here) | `proved`, both instances |
 | `Common/DiagonalEvolution.lean` | `diagonalEvolution energy τ` — the algebraic, basis-diagonal realization of `e^{τH₀}` for a free Hamiltonian diagonal in `AlgebraicFock Config`'s eigenbasis with eigenvalue `energy : Config → ℝ`, and its Heisenberg-type `heisenbergEvolve`; the semigroup law, mutual inversion, `A(0) = A` | `proved` |
 | `Common/ExchangeCommutator.lean` | `zetaCommutator`/`exchangeCommutator`, unifying CAR/CCR as one `ζ`-indexed relation | `proved` |
-| `Common/TimeOrdering.lean` | `Common.zetaTimeOrderedProduct`/`Common.timeOrderedProduct` — the imaginary-time-ordered product `T_τ` of two `AlgebraicFock Config` endomorphisms, generic over `Config`, indexed by a raw `ζ : ℤ` or by a `Statistics` value; `Fermionic/ImaginaryTimeOrdering.lean`/`Bosonic/ImaginaryTimeOrdering.lean` fix the statistics | `proved`, both wrappers |
+| `Common/TimeOrdering.lean` | `Common.zetaTimeOrderedProduct`/`Common.timeOrderedProduct` — the imaginary-time-ordered product `T_τ` of two `AlgebraicFock Config` endomorphisms, generic over `Config`, indexed by a raw `ζ : ℤ` or by a `Statistics` value; `Bosonic/ImaginaryTimeOrdering.lean` fixes `Statistics.boson` (fermionic consumers call `Common.timeOrderedProduct Statistics.fermion` directly, the former `Fermionic/ImaginaryTimeOrdering.lean` wrapper was removed) | `proved` |
 | `Common/ExchangeAlgebra.lean` | `Common.ExchangeAlgebra s Mode Config` — a `class` packaging the *all-index* exchange relation `a_i a_j† - ζ a_j† a_i = δᵢⱼ`, `a_i a_j - ζ a_j a_i = 0`, `a_i† a_j† - ζ a_j† a_i† = 0` (via `exchangeCommutator s`) that CAR/CCR share; concrete instances live in each statistics' own directory | `proved`, both instances |
 | `Combinatorics/PerfectPairing.lean` | `Common.BlochDeDominicis.Pairing n` — perfect pairings of `Fin (2 * n)` behind a stable `partner` interface, implemented by fixed-point-free involutive permutations; finite enumeration, partner laws, crossing count, `eraseZeroPair`/`insertFirstPair`/`equivSigma` (the `Pairing (n+1) ≃ Σ_{j≠0} Pairing n` decomposition the Bloch–de Dominicis induction recurses on) | `proved` |
 | `Common/BlochDeDominicis/PairingWeight.lean` | `Pairing.weight s := (s.zetaInt : ℂ) ^ crossingCount`, `weight_eraseZeroPair` (the crossing-count recurrence), the four-position closed-form check | `proved` |
@@ -211,9 +211,10 @@ Bloch–de Dominicis theorem, and the non-commutative time-ordered Dyson series.
 1. `Fermionic/ImaginaryTimeEvolution.lean` — algebraic, basis-diagonal `e^{τH₀}`
    (`imaginaryTimeEvolveFree`) and Heisenberg-type conjugation (`imaginaryTimeEvolve`), with
    explicit evolved-operator formulas `c_i(τ) = e^{-τε_i}c_i`, `c_i†(τ) = e^{τε_i}c_i†`.
-2. `Fermionic/ImaginaryTimeOrdering.lean` — 2-operator imaginary-time ordering `T_τ`, `θ(0) = 1/2`
-   convention. Generic core lives in `Common/TimeOrdering.lean`; fermionic/bosonic files just fix
-   the statistics.
+2. `Common/TimeOrdering.lean`'s `Common.timeOrderedProduct` — 2-operator imaginary-time ordering
+   `T_τ`, `θ(0) = 1/2` convention, generic over `Config`/indexed by `Statistics`. Fermionic
+   consumers call `Common.timeOrderedProduct Statistics.fermion` directly (no fermionic wrapper);
+   `Bosonic/ImaginaryTimeOrdering.lean` still fixes `Statistics.boson`.
 3. `Fermionic/WeightedFreeTwoPointFunction.lean` / `Fermionic/FreeBoltzmannWeight.lean` /
    `Fermionic/FreePartitionFunction.lean` / `Fermionic/FreeTwoPointFunction.lean` — the free
    thermal two-point function for an arbitrary weight, specialized to the genuine Gibbs weight
