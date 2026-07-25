@@ -47,6 +47,9 @@ General cautions distilled from past sessions; detailed incident records live in
 - After a failed proof, inspect only the error location and nearby definitions.
 - Prefer small proof attempts and verify after each change.
 - Do not use verbose flags unless debugging requires them.
+- **Do not build after a docstring/comment-only change.** If a diff touches only `/-!  -/`/`/-- -/`
+  comments (no code, no `omit`/`variable`/import changes), skip `lake build` entirely — check with
+  a quick read for syntax sanity instead. This also applies to `notes/`-only changes.
 
 ## Dependencies
 
