@@ -151,38 +151,26 @@ finite-sum shape.
 
 | File | Contents | Status |
 |---|---|---|
-| `Common/AlgebraicFock.lean` | `AlgebraicFock Config := Config →₀ ℂ`, `basisState`, `linearMap_ext_basisState`, `matrixCoeff`/`diagonalCoeff` (coordinate-evaluation APIs), generic over the occupation-state type `Config` | `proved` |
+| `Common/AlgebraicFock.lean` | `AlgebraicFock Config := Config →₀ ℂ`, `basisState`, `linearMap_ext_basisState`, `matrixCoeff`/`diagonalCoeff` (coordinate-evaluation APIs), `diagonalOperator` (a generic basis-diagonal-operator constructor), generic over the occupation-state type `Config` | `proved` |
 | `Common/OccupationBasis.lean` | `OccupationBasis Mode Config` (a `class`, resolved by instance search) — the architectural interface (`vacuum`, `occupation : Config → Mode → ℕ`, finiteness, faithfulness) both lines' concrete occupation types satisfy; the concrete instances (`SecondQuantization.occupationBasis` — fermionic, plain namespace — and `SecondQuantization.Bosonic.occupationBasis`) live in each statistics' own `Occupation.lean` (would invert the `Common/` → statistics-specific dependency direction if supplied here) | `proved`, both instances |
 | `Common/DiagonalEvolution.lean` | `diagonalEvolution energy τ` — the algebraic, basis-diagonal realization of `e^{τH₀}` for a free Hamiltonian diagonal in `AlgebraicFock Config`'s eigenbasis with eigenvalue `energy : Config → ℝ`, and its Heisenberg-type `heisenbergEvolve`; the semigroup law, mutual inversion, `A(0) = A` | `proved` |
-| `Common/ExchangeCommutator.lean` | `zetaCommutator`/`exchangeCommutator` (`notes/roadmaps/second-quantization.md`'s Phase 9 section below) | `proved` |
-| `Common/TimeOrdering.lean` | `Common.zetaTimeOrderedProduct`/`Common.timeOrderedProduct` — the imaginary-time-ordered product `T_τ` of two `AlgebraicFock Config` endomorphisms, generic over `Config` (never depended on the concrete occupation-state type, only on `.comp`/scalar multiplication) and, mirroring `ExchangeCommutator.lean`'s `zetaCommutator`/`exchangeCommutator` split, indexed by a raw `ζ : ℤ` or by a `Statistics` value; `Fermionic/ImaginaryTimeOrdering.lean`/`Bosonic/ImaginaryTimeOrdering.lean` fix the statistics (no `ζ`/`Statistics` parameter at their own call sites) | `proved`, both wrappers |
-| `Common/ExchangeAlgebra.lean` | `Common.ExchangeAlgebra s Mode Config` — a `class` packaging the *all-index* exchange relation `a_i a_j† - ζ a_j† a_i = δᵢⱼ`, `a_i a_j - ζ a_j a_i = 0`, `a_i† a_j† - ζ a_j† a_i† = 0` (via `exchangeCommutator s`) that CAR (`s = fermion`) and CCR (`s = boson`) share, letting a future Bloch–de Dominicis induction move operators past each other without referencing fermionic `anticomm_*`/bosonic `comm_*` directly; the concrete instances (`SecondQuantization.exchangeAlgebra` — fermionic, plain namespace — and `SecondQuantization.Bosonic.exchangeAlgebra`) live in each statistics' own directory, mirroring `OccupationBasis.lean`'s architecture, and are derived from the bridging fact that `exchangeCommutator s = anticomm`/`comm` for *any* two operators (generalizing the single-mode bridging in `Fermionic/NumberOperator.lean`/`Bosonic/NumberOperator.lean`) | `proved`, both instances |
-| `Combinatorics/PerfectPairing.lean` | `Common.BlochDeDominicis.Pairing n` — perfect pairings of `Fin (2 * n)` behind a stable `partner` interface, implemented by fixed-point-free involutive permutations; finite enumeration, partner laws, normalized-pair membership, crossing count, `Pairing.eraseZeroPair` with its named order-isomorphism API, preservation of normalized pair membership under deletion, and preservation of `Crosses` under the deletion order isomorphism. **Now purely combinatorial, zero `Statistics`/`ℂ` dependency** — the exchange-statistics weight moved to `PairingWeight.lean` below (a reorganization PR, no theorem-statement changes) | `proved` |
-| `Common/BlochDeDominicis/PairingWeight.lean` | `Pairing.weight s := (s.zetaInt : ℂ) ^ crossingCount`, `weight_boson`/`weight_fermion`/`weight_fermion_eq_ite`; the four-position theorem gives the adjacent/crossing/nested weights `1`, `ζ`, `1` without choosing an enumeration order (`four_position_pairings_and_weights`) | `proved` |
-| `Combinatorics/Common/DeletedFinPositions.lean` | `deletedPositions n j hzero` and `deletedPositionsOrderIso n j hzero` — the finite ordered-set seam that identifies `Fin (2 * n)` with `Fin (2 * (n + 1))` after deleting position `0` and a distinct position `j`; cardinality, membership, and strict monotonicity are proved for the later pairing-restriction induction | `proved` |
-| `Common/WeightedDiagonalFunctional.lean` | `Common.traceFock`/`Common.weightedTrace`/`Common.weightSum`/`Common.normalizedWeightedDiagonal`, generic over the occupation-state type `Config` — generalized from `Fermionic/WeightedDiagonalFunctional.lean`, which never used anything fermion-specific in this construction (only `matrixCoeff`/`basisState` and `[Fintype Config]`). `Fermionic/WeightedDiagonalFunctional.lean` keeps its own names as thin `FermionOccupation Mode`-specialized wrappers (mirroring `Common/TimeOrdering.lean`'s split), so existing fermionic call sites are unaffected; `weightedTrace_eq_sum`/`weightSum_eq_sum`/`normalizedWeightedDiagonal_eq_div` there restate each as its defining sum/quotient, headed by the fermionic `matrixCoeff`, for callers that need to compute | `proved`, fermionic wrapper unaffected |
+| `Common/ExchangeCommutator.lean` | `zetaCommutator`/`exchangeCommutator`, unifying CAR/CCR as one `ζ`-indexed relation | `proved` |
+| `Common/TimeOrdering.lean` | `Common.zetaTimeOrderedProduct`/`Common.timeOrderedProduct` — the imaginary-time-ordered product `T_τ` of two `AlgebraicFock Config` endomorphisms, generic over `Config`, indexed by a raw `ζ : ℤ` or by a `Statistics` value; `Fermionic/ImaginaryTimeOrdering.lean`/`Bosonic/ImaginaryTimeOrdering.lean` fix the statistics | `proved`, both wrappers |
+| `Common/ExchangeAlgebra.lean` | `Common.ExchangeAlgebra s Mode Config` — a `class` packaging the *all-index* exchange relation `a_i a_j† - ζ a_j† a_i = δᵢⱼ`, `a_i a_j - ζ a_j a_i = 0`, `a_i† a_j† - ζ a_j† a_i† = 0` (via `exchangeCommutator s`) that CAR/CCR share; concrete instances live in each statistics' own directory | `proved`, both instances |
+| `Combinatorics/PerfectPairing.lean` | `Common.BlochDeDominicis.Pairing n` — perfect pairings of `Fin (2 * n)` behind a stable `partner` interface, implemented by fixed-point-free involutive permutations; finite enumeration, partner laws, crossing count, `eraseZeroPair`/`insertFirstPair`/`equivSigma` (the `Pairing (n+1) ≃ Σ_{j≠0} Pairing n` decomposition the Bloch–de Dominicis induction recurses on) | `proved` |
+| `Common/BlochDeDominicis/PairingWeight.lean` | `Pairing.weight s := (s.zetaInt : ℂ) ^ crossingCount`, `weight_eraseZeroPair` (the crossing-count recurrence), the four-position closed-form check | `proved` |
+| `Combinatorics/Common/DeletedFinPositions.lean` | `deletedPositions n j hzero` and `deletedPositionsOrderIso n j hzero` — the finite ordered-set seam identifying `Fin (2 * n)` with `Fin (2 * (n + 1))` after deleting two positions, used by the pairing-restriction induction | `proved` |
+| `Common/WeightedDiagonalFunctional.lean` | `Common.traceFock`/`Common.weightedTrace`/`Common.weightSum`/`Common.normalizedWeightedDiagonal`, generic over the occupation-state type `Config`; `Fermionic/WeightedDiagonalFunctional.lean` keeps thin `FermionOccupation Mode`-specialized wrappers | `proved`, fermionic wrapper unaffected |
 
-**Symmetric file layout, `Fermionic/NumberOperator.lean` split from `Hamiltonian.lean`:** the
-fermionic number operator (`numberOperator`/`numberOperator_apply`/`numberOperator_basisState`)
-now lives in its own file, mirroring `Bosonic/NumberOperator.lean` — `Fermionic/Hamiltonian.lean`
-keeps only what's built on top of it (`totalNumberOperator`, `freeHamiltonian`,
-`interactionHamiltonian`), none of which has a bosonic counterpart yet.
-
-**Retrofit done**: `Fermionic/FockSpace.lean`/`Bosonic/FockSpace.lean` now define
-`FockSpaceFermionic`/`FockSpaceBosonic` directly as `Common.AlgebraicFock (…)`, with `basisState`/
-`linearMap_ext_basisState` delegating to the `Common` versions (statistics-specific facts —
-`fockVacuum`, `basisState_injOn`, `basisState_linearIndependent` — stay local). Both
-`Fermionic/ImaginaryTimeEvolution.lean` and `Bosonic/ImaginaryTimeEvolution.lean` now define
+**Retrofit done**: `Fermionic/FockSpace.lean`/`Bosonic/FockSpace.lean` define
+`FockSpaceFermionic`/`FockSpaceBosonic` directly as `Common.AlgebraicFock (…)`; both
+`Fermionic/ImaginaryTimeEvolution.lean` and `Bosonic/ImaginaryTimeEvolution.lean` define
 `imaginaryTimeEvolveFree`/`imaginaryTimeEvolve` as `Common.diagonalEvolution`/`heisenbergEvolve`
-specialized to their own real-valued eigenvalue (`fermionEnergy`/`freeEigenvalue`), with the
-generic lemmas (`_zero`, `_add`, `_comp_neg`, `_neg_comp`) delegated outright and a bridging
-`imaginaryTimeEvolve_apply` lemma (`rfl`) keeping the evolved-operator proofs
-(`_annihilate`/`_create`/`_freeHamiltonian`), which are statistics-specific, unchanged in shape.
-No public name or theorem statement in either file changed, so nothing downstream needed updates
-beyond two internal `simp`/`rw` fixes where the underlying unfolding changed.
+specialized to their own real-valued eigenvalue. `totalNumberOperator`/`freeHamiltonian`/
+`interactionHamiltonian` share `Common.diagonalOperator`.
 
 **Still not done:** the unified free two-point coefficient
-`⟨n|aᵢ(τ)aⱼ†|n⟩ = δᵢⱼ e^{-τεᵢ}(1+ζnᵢ)` it would give (specializing to bosonic `B3d`'s
+`⟨n|aᵢ(τ)aⱼ†|n⟩ = δᵢⱼ e^{-τεᵢ}(1+ζnᵢ)` (specializing to bosonic `B3d`'s
 `e^{-τεᵢ}(nᵢ+1)` at `ζ=+1` and the fermionic Green function's `e^{-τεᵢ}(1-nᵢ)` at `ζ=-1`) —
 a concrete future target now that `ExchangeAlgebra` supplies the unified CCR/CAR interface.
 
@@ -198,945 +186,124 @@ Track C's Hilbert–Schmidt/trace-class infrastructure should be reused, not rep
 Not the genuine Linked Cluster Theorem — see "Phase 9" below for what's still missing (time
 ordering, Green functions, Wick contractions, the genuine Dyson series). What's proved so far:
 
-**Current `Fermionic/QuantumLinkedCluster.lean` (fermionic-specific bridge)** — connects the
-fermionic Track D line to Track B's abstract cumulant machinery:
-- `occupationMoment w S` — `⟨∏ᵢ∈S nᵢ⟩_w`, computed as a weighted sum over occupation states
-  (`occupationMoment_bot`, `occupationMoment_singleton` confirm it lands in Track B's moment type
-  and matches the normalized weighted diagonal functional (the historical identifier
-`normalizedWeightedDiagonal`).
-- `occupationProjector S` — the same observable as an actual `FockSpaceFermionic` operator
-  (`occupationProjector_basisState`/`_singleton`/`_empty`/`_mul`/`_comm`/`_idempotent`;
-  `normalizedWeightedDiagonal_occupationProjector` ties it back to `occupationMoment`; the theorem
-  name is retained for API compatibility).
-- `IsProductWeightAcross w A B` — `w` factors across a mode bipartition
-  (`Disjoint A B`, `A ∪ B = univ`, `w n = wA (n ∩ A) * wB (n ∩ B)`), e.g. a Gibbs weight for
-  `H = HA + HB` with `[HA, HB] = 0` and no cross-region interaction. **Does not cover a genuine
-  interacting Gibbs weight.**
-- `sum_filter_subset_eq_mul` (the `n ↦ (n ∩ A, n ∩ B)` reindexing core),
-  `weightSum_eq_mul_of_product_factorization`, `occupationMoment_eq_of_product_factorization`,
-  and the main theorem **`occupationMoment_isIndependentAcross`** — a product weight makes
-  `Finpartition.IsIndependentAcross (occupationMoment w) A B` hold.
-- `occupationCumulant`, `occupationCumulant_eq_zero_of_isProductWeightAcross` — the physics-facing
-  packaging, applying Track B's `cumulantFromMoment_eq_zero_of_isIndependentAcross` directly.
+**`Fermionic/QuantumLinkedCluster.lean` (fermionic-specific bridge)** — connects the fermionic
+Track D line to Track B's abstract cumulant machinery: `occupationMoment w S` (`⟨∏ᵢ∈S nᵢ⟩_w`),
+`occupationProjector S` (the same observable as an operator), `IsProductWeightAcross w A B` (`w`
+factors across a mode bipartition — **does not cover a genuine interacting Gibbs weight**), and
+the main theorem `occupationMoment_isIndependentAcross` — a product weight makes
+`Finpartition.IsIndependentAcross (occupationMoment w) A B` hold, packaged physics-facing as
+`occupationCumulant`/`occupationCumulant_eq_zero_of_isProductWeightAcross`.
 
 **`Fermionic/FormalLogPartitionFunction.lean`** — `log Z` as a formal power series (via Mathlib's
-`PowerSeries.log`), for an arbitrary `Z : PowerSeries ℂ` normalized to `Z(0) = 1`. Not yet
-physics-connected — no coefficient here has been shown to count connected contributions.
-- `normalizePartitionSeries`/`constantCoeff_normalizePartitionSeries` — rescale a genuine `Z(0) =
-  Z₀ ≠ 1` to constant term `1`.
-- `formalLogPartitionFunction Z := (PowerSeries.log ℂ).subst (Z - 1)`,
-  `hasSubst_sub_one_of_constantCoeff_eq_one`, `constantCoeff_formalLogPartitionFunction`,
-  `coeff_one_formalLogPartitionFunction` (order-1 coefficient matches `Z`'s own).
+`PowerSeries.log`), for an arbitrary `Z : PowerSeries ℂ` normalized to `Z(0) = 1`
+(`normalizePartitionSeries`, `formalLogPartitionFunction`). Not yet physics-connected — no
+coefficient here has been shown to count connected contributions.
 
 **Not yet done:** relating Track B's finite-set moment/cumulant duality to exponential-generating-
-series `exp`/`log` (a single `Finset α → ℂ` moment only tracks perturbation order, not which
-vertex set is in which connected component — likely its own file); the general `[λⁿ]` coefficient
-formula for `log Z`; connecting an actual perturbative expansion of
-`traceFock (formalExpTruncation (H₀ + λ • V) N)` (non-commuting `H₀`, `V`) to that structure.
+series `exp`/`log`; the general `[λⁿ]` coefficient formula for `log Z`; connecting an actual
+perturbative expansion of `traceFock (formalExpTruncation (H₀ + λ • V) N)` (non-commuting `H₀`,
+`V`) to that structure.
 
 ## Phase 9: finite-temperature Green functions and time ordering
 
-The genuine theorem needs imaginary-time evolution, time ordering, free/quasifree thermal `n`-point
-correlators, the finite-temperature Bloch–de Dominicis theorem, and the non-commutative time-ordered
-Dyson series. Planned
-order:
+**Status: steps 1–6 done, step 7 not started.** The genuine theorem needs imaginary-time
+evolution, time ordering, free/quasifree thermal `n`-point correlators, the finite-temperature
+Bloch–de Dominicis theorem, and the non-commutative time-ordered Dyson series.
 
-1. `Fermionic/ImaginaryTimeEvolution.lean` — the algebraic, basis-diagonal realization of `e^{τH₀}` and its Heisenberg-type conjugation (**done**, see below).
-2. `Fermionic/ImaginaryTimeOrdering.lean` — imaginary-time ordering `T_τ` (**done**, see below).
-3. `Fermionic/WeightedFreeTwoPointFunction.lean` — `G_{ij}(τ,τ') := -⟨T_τ c_i(τ) c_j†(τ')⟩_β` (**done**, see below;
-   only the free-Hamiltonian `G₀`, and not yet as a special case of a general `n`-point correlator).
-4. `Fermionic/WeightedContraction.lean` — same-type contractions vanish (**done**, see below).
-   `Common/BlochDeDominicis/TwoPoint.lean` — the statistics-agnostic 2-point base case (**done**,
-   see below, validated against the fermionic line). `Common/BlochDeDominicis/Induction.lean` — the
-   general finite-mode, finite-temperature `n`-point Bloch–de Dominicis theorem (**done**, see
-   below).
-5. The genuine interaction-picture Dyson series (**done**, see below) — split across 5 PRs per a
-   detailed design (`Common/FiniteOperatorIntegral.lean`, `Fermionic/InteractionPicture.lean`,
-   `Fermionic/DysonExpansion.lean`, `Fermionic/DysonExpansionVerification.lean`,
-   `Fermionic/DysonPartitionSeries.lean`).
-6. Diagram connectedness — connecting Dyson-series terms to diagrams and Track B's connectedness
-   result: a 6-PR plan (PR 5 further split into 5a/5b/5c), **now fully done through PR 6**. PRs
-   1–5 done (`WeightedDiagramFamily`, Dyson vertex moment, quartic interaction, Wick diagram
-   structure/connectivity, ordered-simplex integral, vertex-order/relabel API, Wick-diagram
-   amplitude); PR 6, the Dyson-to-diagram expansion, is **complete, no `sorry`**:
-   `dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude` (see below).
-   Remaining future work is PR 7 (component restriction/reassembly, not yet started, see below).
-7. Move or generalize the current fermionic linked-cluster bridge before presenting it as `Common/` infrastructure.
+1. `Fermionic/ImaginaryTimeEvolution.lean` — algebraic, basis-diagonal `e^{τH₀}`
+   (`imaginaryTimeEvolveFree`) and Heisenberg-type conjugation (`imaginaryTimeEvolve`), with
+   explicit evolved-operator formulas `c_i(τ) = e^{-τε_i}c_i`, `c_i†(τ) = e^{τε_i}c_i†`.
+2. `Fermionic/ImaginaryTimeOrdering.lean` — 2-operator imaginary-time ordering `T_τ`, `θ(0) = 1/2`
+   convention. Generic core lives in `Common/TimeOrdering.lean`; fermionic/bosonic files just fix
+   the statistics.
+3. `Fermionic/WeightedFreeTwoPointFunction.lean` / `Fermionic/FreeBoltzmannWeight.lean` /
+   `Fermionic/FreePartitionFunction.lean` / `Fermionic/FreeTwoPointFunction.lean` — the free
+   thermal two-point function for an arbitrary weight, specialized to the genuine Gibbs weight
+   `freeBoltzmannWeight`, giving `freeGibbsGreenFunction` and its closed form (`G₀,ᵢⱼ = 0` for
+   `i≠j`; the explicit `i=j` formula recovering the Fermi–Dirac occupation number). **Not done:**
+   KMS antiperiodicity and the `0≤τ,τ'≤β` fundamental-domain package — the equal-time value is
+   discontinuous against both one-sided limits by construction (CAR forces their difference to
+   `-1`), so any future KMS theorem must avoid `τ=τ'`.
+4. `Fermionic/WeightedContraction.lean` — same-type contractions (`cc`, `c†c†`) vanish, via the
+   general `U(1)` particle-number selection rule (`Common/ParticleNumberSelectionRule.lean`'s
+   `CarriesGradingDegree`, instantiated for both statistics).
 
-**Step 5 done — the genuine interaction-picture Dyson series**, as *continuous imaginary-time
-iterated integrals* (deliberately not a return to `FormalExp.lean`-style pure formal series, and
-not yet asserting infinite-series convergence or an analytic operator exponential):
-- `Common/FiniteOperatorIntegral.lean`: `operatorIntervalIntegral`, coefficientwise interval
-  integration of a finite-mode operator-valued function (`AlgebraicFock Config` has no norm/
-  topology, so integration is defined via each matrix coefficient's ordinary `ℂ`-valued
-  `intervalIntegral` directly), with `matrixCoeff_operatorIntervalIntegral`/`matrixCoeff_ext` and
-  basic linearity (`_zero`/`_same`/`_add`/`_smul`).
-- `Common/DiagonalEvolution.lean`: `matrixCoeff_diagonalEvolution_eq_ite`/
-  `matrixCoeff_heisenbergEvolve`, the generic matrix-coefficient formula for `heisenbergEvolve`'s
-  conjugation of an *arbitrary* (not necessarily eigenoperator) operator.
-- `Fermionic/InteractionPicture.lean`: `interactionPicture ε V τ := imaginaryTimeEvolve ε τ V` for
-  a general interaction operator `V`, its matrix-coefficient formula
-  (`matrixCoeff_interactionPicture`), and continuity/interval-integrability of each matrix
-  coefficient (`continuous_matrixCoeff_interactionPicture`/
-  `intervalIntegrable_matrixCoeff_interactionPicture`).
-- `Fermionic/DysonExpansion.lean`: `dysonCoeff ε V n τ`, the `n`-th order Dyson coefficient, by the
-  genuine continuous recursion `D₀(τ) = id`, `Dₙ₊₁(τ) = -∫ σ in 0..τ, V_I(σ) ∘ Dₙ(σ)` (representing
-  the time-ordered iterated integral `(-1)ⁿ ∫_{0≤τₙ≤⋯≤τ₁≤τ} V_I(τ₁)⋯V_I(τₙ) dτₙ⋯dτ₁` directly,
-  without a separate `n`-vertex time-ordering construction — the existing `timeOrderedProduct` is
-  2-operator and fermionic-signed, physically wrong for the fermion-even interaction vertex);
-  `matrixCoeff_dysonCoeff_succ`, and by induction on `n`,
-  `continuous_matrixCoeff_dysonCoeff`/`intervalIntegrable_matrixCoeff_dysonCoeff`.
-  `dysonTruncation` sums `dysonCoeff` over `n` up to `N`, weighted by `λⁿ`, mirroring
-  `FormalExp.lean`'s `formalExpTruncation` pattern.
-- `Fermionic/DysonExpansionVerification.lean`: sanity checks — for a time-independent interaction
-  (`∀ τ, V_I(τ) = V`), `dysonCoeff` degenerates to the ordinary scalar Taylor coefficients
-  `(-τ)ⁿ/n! • Vⁿ` (`dysonCoeff_eq_of_time_independent`), specialized to the existing (basis-
-  diagonal, hence time-independent) density–density `interactionHamiltonian`.
-- `Fermionic/DysonPartitionSeries.lean`: `dysonPartitionCoeff ε β V n := Tr[e^{-βH₀} Dₙ(β)]`,
-  packaged into a `PowerSeries ℂ` (`dysonPartitionSeries`) and connected to the existing
-  `normalizePartitionSeries`/`formalLogPartitionFunction` layer
-  (`dysonFormalLogPartitionFunction`), with the `n = 0` term confirmed to be the free partition
-  function.
+   **The general finite-temperature Bloch–de Dominicis theorem**
+   (`Common/BlochDeDominicis/Induction.lean`'s `gibbsExpectation_prodComp_eq_sum_pairing`) is the
+   load-bearing result of this phase: given (a) each operator is a `heisenbergEvolve` eigenoperator,
+   (b) pairwise `zetaCommutator` constants, (c) non-resonance `1 - ζ·exp(qᵢβ) ≠ 0` at every index,
+   it expands `⟨C₀⋯C_{2n-1}⟩_β` as a sum over `Pairing n` of crossing-sign-weighted products of
+   2-point expectations — **proved in full, no `sorry`**, by induction on `Pairing`'s
+   `eraseZeroPair`/`insertFirstPair`/`equivSigma` decomposition, combining trace-cyclicity, a
+   KMS-type rotation identity, and the exchange commutator
+   (`Common/WeightedDiagonalFunctional.lean`, `Common/DiagonalEvolution.lean`,
+   `Common/ExchangeAlgebra.lean`, `Common/KMSRotation.lean`, assembled via
+   `Common/BlochDeDominicis/{TwoPoint,PeelFirst,PeelFirstTrace,PeelTermsIndexed,GibbsExpectation/Peel,GibbsExpectation/FourPoint}.lean`).
+   The `hne` non-resonance hypothesis is required at *every* index (an early draft without it was
+   shown false by a boson/all-zero counterexample). Validated against the fermionic 2-point closed
+   form (`Fermionic/BlochDeDominicis/TwoPoint.lean`) and a genuine bosonic instantiation
+   (`Bosonic/BlochDeDominicis/TwoPoint.lean`, given each mode's `0<βεᵢ` convergence condition).
 
-No claim anywhere in step 5 that the resulting `PowerSeries`/truncations converge, or match a
-genuine analytic `e^{-β(H₀+λV)}` beyond the `n = 0` term.
+   Not yet done: a general `n`-operator time-ordered product (`timeOrderedProduct` is still
+   2-operator only); a bosonic `tsum`-based Gibbs weighted-expectation construction on arbitrary
+   operators (blocked on `Occupation Mode := Mode →₀ ℕ` not being `[Fintype Config]` — needs either
+   a summability-restricted operator submodule or a more general functional interface, a design
+   question for a later PR).
 
-**Step 6 in progress — diagram connectedness**, per a detailed 6-PR design deliberately built
-*before* any concrete diagram type (an arbitrary operator `V` carries no vertex/leg/mode
-information a diagram could be extracted from):
-- PR 1 done, `Combinatorics/DiagramConnectedness.lean`: `WeightedDiagramFamily`, an abstract
-  weighted family of diagrams on finite vertex sets that decomposes uniquely into a connected-
-  component partition plus a connected diagram per block. `diagramMoment_eq_momentFromCumulant`
-  (the total diagram-weight sum equals `Finpartition.momentFromCumulant` applied to the connected-
-  diagram contribution) and `cumulantFromMoment_diagramMoment` (the abstract "a cumulant only sees
-  connected diagrams" statement, for nonempty vertex sets) connect to `MomentCumulant.lean`'s
-  already-proved moment-cumulant inversion directly, rather than to `CumulantFactorization.lean`'s
-  narrower cross-region-independence corollary (reserved for a later `IsIndependentAcross`
-  corollary once a concrete diagram family's cross-region factorization is available). Purely
-  combinatorial — no `SecondQuantization` import.
+5. **The genuine interaction-picture Dyson series** — continuous imaginary-time iterated integrals
+   (not a formal power series; no convergence claim beyond the `n=0` term):
+   `Common/FiniteOperatorIntegral.lean` (coefficientwise `operatorIntervalIntegral`),
+   `Fermionic/InteractionPicture.lean`, `Fermionic/DysonExpansion.lean` (`dysonCoeff`, the genuine
+   recursion `D₀=id`, `Dₙ₊₁(τ)=-∫₀^τ V_I(σ)∘Dₙ(σ)`), `Fermionic/DysonExpansionVerification.lean`
+   (sanity check against ordinary Taylor coefficients for a time-independent interaction),
+   `Fermionic/DysonPartitionSeries.lean` (`dysonPartitionCoeff`/`dysonPartitionSeries`, connected to
+   `formalLogPartitionFunction`).
 
-  **Design note on `decompose`'s dependent `Σ`-type reindexing.** `diagramMoment_eq_momentFromCumulant`
-  reindexes a sum along `decompose S : Diagram S ≃ Σ π : Finpartition S, ∀ B : π.parts,
-  ConnectedDiagram B` via `Equiv.sum_comp`, a dependent-`Sigma`-type `Equiv`. `notes/caveats.md`'s
-  documented lesson is narrower than "never reindex a dependent `Sigma` type": it specifically
-  flags *constructing* such an `Equiv` via `Equiv.sigmaCongr`/`cast`-heavy combinators between two
-  *different* dependent index types, which hit genuine kernel timeouts. Here `decompose` is instead
-  an arbitrary caller-supplied structure field (not built via `sigmaCongr`), and `Equiv.sum_comp`
-  against it compiles quickly with no timeout — the caveat's specific failure mode doesn't apply.
-- PR 2 done, `Fermionic/DysonVertexMoment.lean`: the type-level seam between the `ℕ`-indexed Dyson
-  perturbation series and Track B's `Finset α → ℂ` moment type. `normalizedDysonPartitionCoeff :=
-  dysonPartitionCoeff / freePartitionFunction` (with `dysonPartitionCoeff_zero`, now in
-  `DysonPartitionSeries.lean` as the more upstream file, identifying the `n = 0` term with
-  `freePartitionFunction` directly); `dysonVertexMoment S := S.card! • normalizedDysonPartitionCoeff
-  S.card` — the `S.card!` factor is required, not cosmetic: `normalizePartitionSeries
-  (dysonPartitionSeries ε β V)` is the *ordinary* power series `Z/Z₀ = Σₙ zₙ λⁿ`, but finite-set
-  partition combinatorics (`Finpartition.momentFromCumulant`/`cumulantFromMoment`) is native to the
-  *exponential* generating series `Σₙ mₙ λⁿ/n!`, forcing `mₙ = n! zₙ`; `dysonVertexMoment_empty = 1`.
-  `dysonVertexCumulant := Finpartition.cumulantFromMoment (dysonVertexMoment ...)` — the finite-set
-  combinatorial cumulant, deliberately *not yet* identified with any coefficient of
-  `dysonFormalLogPartitionFunction` (a separate finite-set-cumulant/`PowerSeries.log` bridge,
-  future work beyond this plan).
-- PR 3 done, `Fermionic/QuarticInteraction.lean`: the first *concrete* interaction operator a Wick
-  diagram can be extracted from — a genuine, generally non-diagonal number-conserving quartic
-  vertex `Σ g(q) cᵢ†cⱼ†cₗck` (`QuarticVertexLabel`/`quarticVertexOperator`/`quarticInteraction`),
-  deliberately without Hermiticity, coupling antisymmetry, a combinatorial prefactor, or
-  momentum-conservation constraints baked into the type (later predicates/specializations add
-  these). `interactionPicture_quarticVertexOperator`/`interactionPicture_quarticInteraction`:
-  each vertex's interaction-picture expansion is itself, rescaled by one exponential factor per
-  leg — needing new general facts added to `Common/DiagonalEvolution.lean`: `heisenbergEvolve_comp`
-  (distributes over `LinearMap.comp`) and `heisenbergEvolve_sum`/`heisenbergEvolve_smul`
-  (distributes over finite sums/scalars). All three are purely algebraic (`LinearMap.comp`
-  associativity plus `diagonalEvolution_neg_comp`/`LinearMap.comp_add`/`comp_smul`), with **no**
-  `Fintype Config` hypothesis — an initial matrix-coefficient-based proof needed `[Fintype Config]`
-  (via `matrixCoeff_heisenbergEvolve`/`matrixCoeff_comp`), which would have blocked reuse on the
-  bosonic line's genuinely infinite `Occupation Mode := Mode →₀ ℕ` basis type, so it was replaced
-  with the current Fintype-free algebraic proof before merging.
-- PR 4a done, `Fermionic/WickDiagram.lean`: leg indexing and the bare `QuarticWickDiagram`
-  structure, split off PR 4's original scope per the plan's own fallback (connected-component
-  partitioning deferred to PR 4b). `quarticLegEquiv : Fin (2 * (2 * S.card)) ≃ (↥S) × Fin 4` is the
-  one named equivalence between a flattened leg position and a `(vertex, local leg)` pair —
-  `Pairing (2 * S.card)` pairs `Fin (2 * (2 * S.card))` positions, i.e. exactly `4 * S.card` legs;
-  `vertexOfLeg`/`localLegOfLeg`/`legOfVertexLocal` are its projections/inverse. The local-leg
-  `Fin 4` convention is fixed and documented to match `QuarticInteraction.lean`'s vertex operator
-  order exactly (`0 ↦ create₁`, `1 ↦ create₂`, `2 ↦ annihilate₂`, `3 ↦ annihilate₁`), since
-  `Pairing` acts on *ordered* positions and the downstream fermionic crossing sign depends on that
-  order. `QuarticWickDiagram`: a `QuarticVertexLabel` assignment per vertex plus a perfect pairing
-  of the legs — purely combinatorial, no leg-kind distinction or connectivity structure yet.
-- PR 4b done, `Fermionic/WickDiagramConnected.lean`: `QuarticWickDiagram.vertexGraph`, the derived
-  `SimpleGraph` on a diagram's vertex set (distinct vertices adjacent iff some leg of one is
-  paired to some leg of the other — same-vertex "tadpole" contractions are not turned into edges,
-  since `SimpleGraph` is irreflexive). `IsConnected := Preconnected ∧ S.Nonempty` (rather than
-  `SimpleGraph.Connected`, which needs a `Nonempty ↥S` *instance* — awkward for a `Prop` that must
-  also make sense, as `False`, on the empty vertex set), and `ConnectedQuarticWickDiagram`, the
-  connected-diagram subtype built directly from `IsConnected`. `IsConnected` only *classifies* a
-  diagram as connected or not — it is **not** a substitute for the separate, larger piece of work
-  `WeightedDiagramFamily.decompose` actually needs: `componentPartition : Finpartition S` (mapping
-  `SimpleGraph.ConnectedComponent` fibers back to `Finset (Fin N)` blocks), vertex-label/pairing
-  *restriction* to each component, component-diagram *reassembly*, and the proof that restriction
-  and reassembly are mutually inverse. That work is planned for its own PR (**"PR 7"**, after PR 6
-  below), once a concrete `WeightedDiagramFamily Mode N` instantiation is being built on top of
-  `Fermionic/DysonDiagramExpansion.lean`'s result — not folded into PR 4b/5/6.
-- PR 5 in progress, split into 5a/5b/5c per a detailed design: **PR 5a done**,
-  `Analysis/OrderedSimplexIntegral.lean` — `intervalIntegral.orderedSimplexIntegral n β f`, a
-  purely analytic, physics-free recursive iterated integral (via `intervalIntegral`, not an
-  explicit `MeasureTheory`-level simplex subset of `ℝⁿ`); coordinate `0` is the latest/outermost
-  time, matching `dysonCoeff`'s own recursion (outer variable ranges over `[0, τ]`); for `0 ≤ β` it
-  is the genuine integral over `0 ≤ τₙ₋₁ ≤ ⋯ ≤ τ₀ ≤ β`, and for arbitrary real `β` the
-  correspondingly oriented interval-integral extension (`orderedSimplexIntegral_const` gives
-  `βⁿ/n!` for every real `β`). Basic API: `_zero`/`_succ`/`_congr`/`_zero_fun`/`_smul`/`_neg`/
-  `_const`; no general finite-sum-commutes lemma yet (deferred to whatever PR 5c's concrete
-  integrand needs).
-  **PR 5b done**: `Combinatorics/PerfectPairing/Relabel.lean` — `Pairing.relabel`/`relabelEquiv`,
-  transporting a pairing along an ambient `Equiv.Perm (Fin (2 * n))` relabeling of its positions
-  (*not* a "crossing weight is relabel-invariant" claim, which is false in general — callers must
-  recompute `weight` on the relabeled pairing itself), plus `Fermionic/WickDiagram/Ordered.lean`'s
-  vertex-order API: `QuarticVertexOrder S := Fin S.card ≃ ↥S`, `orderedLegToDiagramLeg`,
-  `QuarticWickDiagram.pairingInOrder`, `OrderedQuarticWickData`, and the reindexing equivalence
-  `quarticWickDiagramEquivOrderedData : QuarticWickDiagram Mode N S ≃ OrderedQuarticWickData Mode
-  S.card` (for a *fixed* `S` and vertex order — relabeling between different `S ≠ T` deliberately
-  excluded, see the file's own module docstring) together with `sum_quarticWickDiagram_eq_sum_orderedData`
-  (a direct `Equiv.sum_comp` instance), the reindexing lemma PR 6 needs.
-  **PR 5c done**: `Fermionic/WickDiagram/Amplitude.lean` —
-  `quarticWickDiagramAmplitude`, built from `orderedSimplexIntegral` and a **sum over all vertex
-  orders** — deliberately *not* an average: no `1/S.card!` factor. The terms for different vertex
-  orders are generally *different* (a different order assigns different vertex labels to the
-  latest time slot, different time variables to each vertex, and transports the pairing onto
-  different ordered positions), so this is a genuine sum over every assignment of the labelled
-  vertices to the ordered time slots, not `S.card!` copies of one value — matching
-  `dysonVertexMoment`'s own `S.card!` factorial normalization. The `(-1)^S.card` Dyson-recursion
-  sign and the pairing's fermionic crossing sign (`pairing.weight Statistics.fermion`, recomputed
-  on the vertex-order-transported pairing, never reused from `d.pairing.weight`) are distinct
-  factors, both required. Pair contractions use `freeGibbsExpectation` (the *normalized* free
-  Gibbs expectation), not `freeGibbsGreenFunction` (which carries its own extra minus and 2-operator
-  time ordering). `quarticWickDiagramAmplitude_empty` matches `dysonVertexMoment_empty`.
-  **PR 6 prerequisites now also done**: `Fermionic/FreeBoltzmannWeight.lean`'s
-  `freeGibbsExpectation_eq_gibbsExpectation` (the `Common.gibbsExpectation`/
-  `Fermionic.freeGibbsExpectation` bridge PR 6's general Bloch–de Dominicis application needs,
-  from `freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy` — both are `e^{-βE(n)}`, differing
-  only in which sum spells out `E(n)`) and `freeGibbsExpectation_smul`; and
-  `Fermionic/WickDiagram/Amplitude.lean`'s `orderedQuarticPairValue_eq` (the closed form pulling
-  both evolved operators' `Complex.exp` eigenvalue-shift scalars out front, leaving a
-  `τ`-independent bare pair value) with the resulting `continuous_orderedQuarticPairValue`/
-  `continuous_contractionIntegrand`.
-  **`QuarticWickDiagram` (`WickDiagram.lean`) carries no finiteness constraint on `Mode` in its
-  own type** — `[DecidableEq Mode] [Fintype Mode]` is required only by the separately-supplied
-  `QuarticWickDiagram.instDecidableEq`/`instFintype` instances (transported along
-  `QuarticWickDiagram.equivPair`, not a `deriving` clause on the structure), so
-  `WickDiagramConnected.lean`'s connectivity API (which never touches `Mode`'s cardinality) stays
-  generic over `Mode`.
-- PR 6 **complete, no `sorry`**: `Fermionic/DysonDiagramExpansion.lean`'s
-  `dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude` applies the general
-  Bloch–de Dominicis theorem to expand the quartic interaction's Dyson vertex moment as a sum over
-  Wick diagrams — exactly the theorem stated at the top of item 6 above. Built up as follows.
-  `normalizedDysonPartitionCoeff_eq_freeGibbsExpectation`/
-  `dysonVertexMoment_eq_freeGibbsExpectation` bridge `dysonVertexMoment` to `freeGibbsExpectation
-  ε β (dysonCoeff ε V S.card β)` — the form the general theorem can actually be applied to — via
-  `Common.traceFock_diagonalEvolution_comp_eq_weightedTrace` and the PR 6-prerequisite
-  `freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy`/`freeGibbsExpectation_eq_gibbsExpectation`
-  bridge. `Common/FiniteOperatorIntegral.lean` additionally gained
-  `weightedTrace_operatorIntervalIntegral`/`normalizedWeightedDiagonal_operatorIntervalIntegral` (a
-  finite weighted trace commutes with `operatorIntervalIntegral`, given interval-integrability of
-  the matrix coefficients) — the finite-sum/integral interchange needed to expand `dysonCoeff`'s
-  recursion into an `orderedSimplexIntegral` of a vertex-label sum next.
-  **Part 2 done**: `Common.comp_operatorIntervalIntegral` (left composition with a fixed operator
-  commutes with `operatorIntervalIntegral`, given matrix-coefficient interval-integrability) and
-  the Fermionic-level wrappers `freeGibbsExpectation_neg`/`freeGibbsExpectation_operatorIntervalIntegral`/
-  `freeGibbsExpectation_finsetSum`; `nestedVertexOperatorComp` (the nested interaction-picture
-  vertex-operator composition `V_I(τ 0) ∘ ⋯ ∘ V_I(τ (n-1))` the target `orderedSimplexIntegral`
-  integrand needs, coordinate `0` latest/outermost) with its recursive unfolding lemmas; and
-  `continuous_matrixCoeff_interactionPicture_comp_dysonCoeff` (the matrix-coefficient continuity
-  needed to move the *current* Dyson recursion's integral through composition/`freeGibbsExpectation`
-  — not a continuity statement about `nestedVertexOperatorComp` itself).
-  **Part 3 done**: `Analysis/OrderedSimplexIntegral.lean` gained
-  `continuous_orderedSimplexIntegral_of_continuous` — the joint continuity-in-bound fact part 2
-  discovered was missing: for a continuous `bound : X → ℝ` and a *jointly* continuous
-  `f : X → (Fin n → ℝ) → ℂ` (arbitrary parameter space `X`), `x ↦ orderedSimplexIntegral n
-  (bound x) (f x)` is continuous — proved by induction on `n`, generalizing the parameter space at
-  each level (the successor case's own inner recursion needs the inductive hypothesis at the
-  *bigger* space `X × ℝ`, pairing the original parameter with the outer integral's own integration
-  variable), via Mathlib's `intervalIntegral.continuous_parametric_intervalIntegral_of_continuous`
-  (Leibniz-rule-style joint continuity of a parametrized interval integral with a
-  parameter-dependent variable upper limit) and `Continuous.finCons`.
-  **Part 4 done — the key induction is now fully proven, no `sorry`**:
-  `freeGibbsExpectation_comp_dysonCoeff_quarticInteraction` (`dysonCoeff` of `quarticInteraction`,
-  left-composed with an arbitrary prefix operator `L`, expands into a `(-1)ⁿ`-signed sum over
-  vertex-label sequences of an `orderedSimplexIntegral` of `nestedVertexOperatorComp` values), via:
-  `continuous_matrixCoeff_nestedVertexOperatorComp`/
-  `continuous_freeGibbsExpectation_comp_nestedVertexOperatorComp` (joint continuity of
-  `nestedVertexOperatorComp` itself, in its full time vector — a genuinely new fact, distinct from
-  `continuous_matrixCoeff_interactionPicture_comp_dysonCoeff`'s single-`σ` continuity from part 2);
-  `Analysis/OrderedSimplexIntegral.lean`'s `continuous_orderedSimplexIntegral_of_continuous` (part
-  3) to swap the finite vertex-label sum with the outer `∫ σ in 0..t`; and a locally-defined
-  `QuarticVertexLabel Mode × (Fin n → QuarticVertexLabel Mode) ≃ (Fin (n + 1) →
-  QuarticVertexLabel Mode)` equivalence (`Fin.cons`-based, defined inline rather than via
-  `Fin.consEquiv` — the latter's `@[simps]`-generated `_apply` lemma did not unfold cleanly against
-  this goal's specific shape) to reindex the resulting (outer label, inner label sequence) double
-  sum into a single `Fin (n + 1) → QuarticVertexLabel Mode` sum, folded back into
-  `orderedSimplexIntegral (n + 1) t` via `orderedSimplexIntegral_succ`.
-  **Part 5 done — the index-arithmetic bridge lemma for flattening**:
-  `orderedQuarticLegEquiv_cast_mul_add` (`orderedQuarticLegEquiv n`'s value at the flattened
-  position `i * 4 + j`, up to the numeric cast identifying `Fin (2 * (2 * n))` with `Fin (n * 4)`,
-  is exactly `(i, j)` — proved via `Equiv.symm_apply_eq`, reducing to `finProdFinEquiv`'s own
-  defining formula, avoiding any named `finProdFinEquiv` "symm" simp lemma) and
-  `flatVertexLegOperator_cast_mul_add` (the corresponding fact for `flatVertexLegOperator`, the
-  generalization of `WickDiagram/Amplitude.lean`'s `orderedQuarticLegOperator` to a bare
-  `q : Fin n → QuarticVertexLabel Mode` not yet a `QuarticWickDiagram`). Also
-  `imaginaryTimeEvolve_comp`/`interactionPicture_quarticVertexOperator_eq_prodComp` (a single
-  vertex's evolved operator, flattened into a `Common.prodComp` of its four individually-evolved
-  atomic legs) and `Common.prodComp_append` (`Common/BlochDeDominicis/PeelFirst.lean`, `prodComp`
-  distributes over list concatenation).
-  **Part 6 done — the full flattening theorem is now fully proven, no `sorry`**:
-  `prodComp_ofFn_flatVertexLegOperator_eq_nestedVertexOperatorComp`
-  (`Common.prodComp (List.ofFn (flatVertexLegOperator ε n q τ)) = nestedVertexOperatorComp ε n q
-  τ`), via `eq_cast_mul_add_orderedQuarticLegEquiv` (a new corollary: applying
-  `(orderedQuarticLegEquiv n).symm` to both sides of `orderedQuarticLegEquiv_cast_mul_add` and
-  using `Equiv.symm_apply_apply` shows *every* flattened position is of the `i * 4 + j` form, not
-  just the specific ones the block-splitting lemma constructs — needed to match the induction's
-  "tail" piece at an unconstrained position) combined with `List.ofFn_fin_append`/`Fin.addCases`
-  (splitting the domain additively into `4 + 2 * (2 * n)`; the `left` branch matches
-  `flatVertexLegOperator_cast_mul_add` at vertex `0` directly, the `right` branch uses the new
-  corollary to express an arbitrary position `k` of the smaller `n`-fold piece in `i' * 4 + j'`
-  form, then matches both sides via `flatVertexLegOperator_cast_mul_add` at the two different
-  vertex counts `n` and `n + 1`, since `4 + (i' * 4 + j') = i'.succ * 4 + j'` as naturals).
-  **Part 7 done — the general theorem's eigenoperator hypothesis, for all `4n` flattened legs**:
-  `Common/DiagonalEvolution.lean` gained `heisenbergEvolve_heisenbergEvolve` (`heisenbergEvolve` is
-  a one-parameter semigroup, `A(s)(t) = A(s + t)`, by comparing matrix coefficients — needed since
-  no direct commutativity lemma for two different evolution times existed yet).
-  `DysonDiagramExpansion.lean` gained `heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator`
-  (a single evolved atomic leg operator is an eigenoperator of `heisenbergEvolve (fermionEnergy ε)
-  (-β)`, with an eigenvalue shift *independent of the dressing time* `τ` — via
-  `heisenbergEvolve_heisenbergEvolve` combining the two evolutions into one at `τ + (-β)`, then
-  `imaginaryTimeEvolve_quarticLocalLegOperator` applied twice to factor the `τ`-dependent piece
-  back out) and `heisenbergEvolve_flatVertexLegOperator` (the direct specialization to
-  `flatVertexLegOperator`'s own flattened position). This is exactly the general Bloch–de
-  Dominicis theorem's first hypothesis (`∀ i, heisenbergEvolve energy (-β) (C i) = Complex.exp
-  (q i * (-β)) • C i`), for `C := flatVertexLegOperator ε n q τ`.
-  **Part 8 done — the general theorem's second hypothesis, for a single vertex's four legs**:
-  `Fermionic/CanonicalAnticommutationRelations.lean` gained `anticomm_comm` (`{A, B} = {B, A}`)
-  and `anticomm_create_annihilate` (the creation-first mirror of `anticomm_annihilate_create`, via
-  `anticomm_comm`). `DysonDiagramExpansion.lean` gained `quarticLocalLegMode`/
-  `quarticLocalLegIsCreate` (companions to `quarticLocalLegOperator`'s own `0 ↦ create₁, 1 ↦
-  create₂, 2 ↦ annihilate₂, 3 ↦ annihilate₁` convention), `anticomm_quarticLocalLegOperator` (a
-  single closed formula for the bare anticommutator of two local-leg operators at *possibly
-  different* vertex labels — `0` for two legs of the same kind, even at the same mode; `δ` on the
-  two legs' modes otherwise — covering same-vertex "tadpole" and cross-vertex leg pairs alike),
-  and `zetaCommutator_quarticLocalLegOperator` (the same fact restated via
-  `Common.zetaCommutator`/`exchangeCommutator_fermion_eq_anticomm`, matching the general theorem's
-  own hypothesis shape). This is the *bare* (untime-evolved) commutator constant.
-  **Part 9 done — the general theorem's second hypothesis, now for the full evolved, flattened
-  `4n`-leg family at arbitrary positions**: `Common/ExchangeCommutator.lean` gained
-  `zetaCommutator_smul_smul` (`[c•A, d•B]_ζ = (c*d)•[A, B]_ζ`, direct from `zetaCommutator`'s own
-  definition). `DysonDiagramExpansion.lean` gained `zetaCommutator_flatVertexLegOperator`,
-  combining `imaginaryTimeEvolve_quarticLocalLegOperator` (peeling each leg's `Complex.exp`
-  eigenvalue-shift scalar off), `zetaCommutator_smul_smul` (pulling both scalars out of the
-  commutator as a product), and `zetaCommutator_quarticLocalLegOperator` (the bare constant) into a
-  single closed formula for the general theorem's `c i j` hypothesis — now valid for *any* pair of
-  flattened positions `p, p'` (same-vertex or cross-vertex alike) via `orderedQuarticLegEquiv`.
-  This fully discharges the second hypothesis.
-  **Part 10 done — refactor, no mathematical content change**: named the repeated
-  `(orderedQuarticLegEquiv n p).1`/`.2` projections `flatVertexIndex`/`flatLocalLeg`, and named the
-  three families the general theorem will eventually be applied to explicitly:
-  `flatVertexLegEnergyShift ε q` (eigenvalue shifts) and `flatVertexLegCommutatorCoeff ε q τ`
-  (commutator coefficients), alongside the existing `flatVertexLegOperator ε n q τ`. Added
-  `flatVertexLegOperator_eq_smul` (every evolved leg is a `Complex.exp` scalar times a bare
-  `quarticLocalLegOperator`) as the shared normal form both `heisenbergEvolve_flatVertexLegOperator`
-  and `zetaCommutator_flatVertexLegOperator` now reduce to, replacing the previously inlined
-  `orderedQuarticLegEquiv n p`/`p'` case analyses in both theorems' statements and proofs.
-  **Part 11 done — the general theorem's third (non-resonance) hypothesis, discharged
-  unconditionally**: `one_sub_zetaInt_fermion_mul_exp_ne_zero` shows `1 - ζ * exp(x * β) ≠ 0` for
-  `ζ := Statistics.fermion.zetaInt = -1` and *any* real `x, β` (`1 + exp(x * β) > 0` as a real
-  number, hence nonzero even as a complex number), and
-  `one_sub_zetaInt_fermion_mul_exp_flatVertexLegEnergyShift_ne_zero` specializes it to `x :=
-  flatVertexLegEnergyShift ε q p`. All three of the general Bloch–de Dominicis theorem's hypotheses
-  are now discharged for the flattened `4n`-leg family.
-  **Part 12 done — the general theorem is now actually applied**:
-  `freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing` invokes
-  `Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` (at its own `n := 2 * n`,
-  matching `flatVertexLegOperator`'s `Fin (2 * (2 * n))` domain with no cast) using all three
-  discharged hypotheses, bridging `hZ` from `freePartitionFunction_ne_zero`
-  (`traceFock_diagonalEvolution_fermionEnergy_ne_zero`), and bridging the conclusion back through
-  `freeGibbsExpectation_eq_gibbsExpectation`/`prodComp_ofFn_flatVertexLegOperator_eq_nestedVertexOperatorComp`
-  to express `freeGibbsExpectation ε β (nestedVertexOperatorComp ε n q τ)` as a `Pairing (2 * n)`
-  sum of crossing-sign-weighted products of 2-point `freeGibbsExpectation` values.
-  **Part 13 done — `dysonVertexMoment` is now a genuine `(vertex-label sequence, pairing)` double
-  sum**: `Analysis/OrderedSimplexIntegral.lean` gained `orderedSimplexIntegral_finsetSum` (a finite
-  sum commutes with `orderedSimplexIntegral`, given continuity of every summand — proved by
-  induction on `n` via `intervalIntegral.integral_finsetSum` and
-  `continuous_orderedSimplexIntegral_of_continuous`). `DysonDiagramExpansion.lean` gained
-  `freeGibbsExpectation_flatVertexLegOperator_pair_eq` (the `flatVertexLegOperator` analogue of
-  `WickDiagram/Amplitude.lean`'s `orderedQuarticPairValue_eq`, supplying the continuity side
-  conditions), `orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing`
-  (pulling the `Pairing (2 * n)` sum out past the `orderedSimplexIntegral`), and
-  `dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing`, combining this with the key
-  induction to express `dysonVertexMoment ε β (quarticInteraction g) S` as `S.card! * (-1)^S.card`
-  times a sum, over vertex-label sequences and pairings of `Pairing (2 * S.card)`, of
-  `(∏ i, g (q i)) * pairing.weight * (integrated pairing contraction term)`.
-  **Part 14 done — PR 6 complete**: `WickDiagram/Ordered.lean` gained `someVertexOrder`
-  (exhibiting an element of `QuarticVertexOrder S` via `Fintype.equivFin`/`finCongr`) and
-  `card_quarticVertexOrder` (`Fintype.card (QuarticVertexOrder S) = S.card!`, via
-  `Fintype.card_equiv`). `DysonDiagramExpansion.lean` gained
-  `orderedQuarticLegOperator_eq_flatVertexLegOperator` (identifying `WickDiagram/Amplitude.lean`'s
-  per-diagram leg operator with `flatVertexLegOperator`, by `rfl`),
-  `couplingWeight_eq_prod_vertexLabel_order` (reindexing a diagram's coupling weight along a vertex
-  order via `Equiv.prod_comp`), `orderedSimplexContribution_eq_pairing_sum_term` (a diagram's
-  fixed-order contribution, rewritten via `flatVertexLegOperator`), combined into
-  `couplingWeight_mul_orderedSimplexContribution_eq`, then summed over all diagrams at a fixed
-  order via `sum_quarticWickDiagram_eq_sum_orderedData`/`Fintype.sum_prod_type`
-  (`sum_couplingWeight_mul_orderedSimplexContribution_eq`) — the result is *order-independent*, so
-  summing over all `S.card!`-many vertex orders
-  (`sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment`) exactly reproduces the previous part's
-  own `S.card!` prefactor. **`dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude`**
-  states the final result in the canonical direction — **this is PR 6's target theorem, proven with
-  no `sorry`.**
-- PR 7 not yet started (see above): `componentPartition`/restriction/reassembly, connecting
-  `QuarticWickDiagram` to `Combinatorics/DiagramConnectedness.lean`'s abstract
-  `WeightedDiagramFamily` as a concrete instantiation — connected-component weight factorization
-  and the `PowerSeries.log` coefficient identification remain further future work beyond that.
+6. **Diagram connectedness — done through PR 6, PR 7 not started.** Built *before* any concrete
+   diagram type, per a 6-PR design (PR 5 further split into 5a/5b/5c):
+   - PR 1, `Combinatorics/DiagramConnectedness.lean` — abstract `WeightedDiagramFamily`,
+     `diagramMoment_eq_momentFromCumulant`/`cumulantFromMoment_diagramMoment` connecting to
+     `MomentCumulant.lean`. Purely combinatorial, no `SecondQuantization` import.
+   - PR 2, `Fermionic/DysonVertexMoment.lean` — the `ℕ`-indexed Dyson series ↔ Track B's
+     `Finset α → ℂ` moment type seam (`dysonVertexMoment := S.card! • normalizedDysonPartitionCoeff
+     S.card`, the factorial converting ordinary → exponential generating series).
+   - PR 3, `Fermionic/QuarticInteraction.lean` — the first concrete, generally non-diagonal quartic
+     vertex `Σ g(q) cᵢ†cⱼ†cₗck` (no Hermiticity/antisymmetry/momentum-conservation baked in yet).
+   - PR 4a/4b, `Fermionic/WickDiagram.lean` / `WickDiagramConnected.lean` — leg indexing
+     (`quarticLegEquiv : Fin (2*(2*S.card)) ≃ ↥S × Fin 4`), `QuarticWickDiagram` (vertex labels +
+     a perfect pairing of legs), `vertexGraph`/`IsConnected`/`ConnectedQuarticWickDiagram`.
+     **`componentPartition`/restriction/reassembly connecting this to `WeightedDiagramFamily` is
+     deferred to PR 7** — `IsConnected` only classifies a diagram, it doesn't do the decomposition.
+   - PR 5a/5b/5c — `Analysis/OrderedSimplexIntegral.lean` (recursive iterated integral, via
+     `intervalIntegral`), `Combinatorics/PerfectPairing/Relabel.lean` +
+     `Fermionic/WickDiagram/Ordered.lean` (`QuarticVertexOrder := Fin S.card ≃ ↥S`,
+     `OrderedQuarticWickData`, the fixed-`S` reindexing equivalence
+     `quarticWickDiagramEquivOrderedData`), `Fermionic/WickDiagram/Amplitude.lean`
+     (`quarticWickDiagramAmplitude`, a genuine sum over vertex orders, not an average).
+   - PR 6, `Fermionic/DysonDiagramExpansion.lean` — **complete, no `sorry`**:
+     `dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude` applies the general
+     Bloch–de Dominicis theorem to expand the quartic interaction's Dyson vertex moment as a sum
+     over Wick-diagram amplitudes. Built on `nestedVertexOperatorComp` (the nested interaction-
+     picture vertex product) and the flattening theorem identifying it with a flat product of
+     evolved atomic legs (`WickDiagram/LegFamily.lean`'s `quarticLegOperatorForSequence`,
+     `Fermionic/QuarticLocalLeg.lean`'s per-leg operator/energy-shift/CAR semantics), plus the
+     vertex-order-sum reindexing (`sum_quarticWickDiagram_eq_sum_orderedData`).
+   - **PR 7, not started**: `componentPartition`/restriction/reassembly, connecting
+     `QuarticWickDiagram` to `WeightedDiagramFamily` as a concrete instantiation.
 
-### Completed cleanup (post-PR-6)
+7. **Not started**: move/generalize the fermionic linked-cluster bridge (Phase 8's
+   `Fermionic/QuantumLinkedCluster.lean`, currently only a product-weight/independent-region toy
+   case) on top of the real Wick-diagram machinery from step 6, and the `PowerSeries.log`
+   coefficient identification that actually states the Linked Cluster Theorem.
 
-- Basis-diagonal operators (`totalNumberOperator`/`freeHamiltonian`/`interactionHamiltonian`) share
-  `Common.diagonalOperator`, dropping their `[Fintype Mode]` requirement.
-- Quartic local-leg semantics (operator, energy shift, mode, CAR relations) live in
-  `Fermionic/QuarticLocalLeg.lean`.
-- Sequence-level evolved legs use a single generic
-  `WickDiagram/LegFamily.lean`'s `quarticLegOperatorForSequence`, replacing the old
-  `flatVertexLegOperator` wrapper.
+### Common Bloch–de Dominicis infrastructure (reference index)
 
-### Next
-
-- PR 7: `componentPartition`/restriction/reassembly, connecting `QuarticWickDiagram` to
-  `Combinatorics/DiagramConnectedness.lean`'s abstract `WeightedDiagramFamily`.
-
-**Step 1 done, in `Fermionic/ImaginaryTimeEvolution.lean`:**
-- `imaginaryTimeEvolveFree ε τ` — `e^{τH₀}` for the free Hamiltonian, defined directly on the
-  occupation-number basis via `Complex.exp` of each basis state's eigenvalue `E(n) := Σᵢ∈n ε(i)`
-  (no Taylor truncation needed, unlike `Fermionic/FormalExp.lean`, since `freeHamiltonian` is
-  diagonal — specific to the free Hamiltonian, doesn't extend to `H = H₀ + V`).
-  `imaginaryTimeEvolveFree_zero`/`_add`/`_comp_neg`/`_neg_comp` give the one-parameter semigroup
-  law and mutual inverses.
-- `imaginaryTimeEvolve ε τ A := e^{τH₀} A e^{-τH₀}` — algebraic Heisenberg-type conjugation of a
-  general operator, with sanity checks `imaginaryTimeEvolve_zero`/`_freeHamiltonian`.
-- `imaginaryTimeEvolve_annihilate`/`_create` — the explicit evolved-operator formulas
-  `c_i(τ) = e^{-τε_i} c_i`, `c_i†(τ) = e^{τε_i} c_i†`, proved directly from the basis-level action
-  (Pauli exclusion zeroes one branch; the other tracks the occupied-set sum shift on inserting or
-  removing mode `i`). This is the free-theory Heisenberg equation of motion
-  `d/dτ c_i(τ) = [H₀, c_i(τ)] = -ε_i c_i(τ)`, confirming `imaginaryTimeEvolve` reproduces the
-  expected physical time dependence rather than just an abstract conjugation.
-
-**Step 2 done, in `Fermionic/ImaginaryTimeOrdering.lean`:**
-- `timeOrderedProduct A B τA τB` — `T_τ[A(τA) B(τB)]`: later time acts first, picking up the
-  fermionic exchange sign `-1` on every swap. **`θ(0) = 1/2`**: at equal times this symmetrizes
-  the two branches, `T_τ[A(τ)B(τ)] = ½(A(τ)B(τ) - B(τ)A(τ))`, rather than picking either one. Time
-  ordering doesn't depend on `imaginaryTimeEvolve` itself — it orders whatever two time-labelled
-  operators it's given — but is intended for use on `imaginaryTimeEvolve ε τ A`, feeding
-  `Fermionic/WeightedFreeTwoPointFunction.lean`. **Moved to `Common/TimeOrdering.lean`** (per the
-  `Common/` design principle above — this genuinely doesn't depend on the concrete
-  occupation-state type either), mirroring `ExchangeCommutator.lean`'s two-layer split:
-  `Common.zetaTimeOrderedProduct ζ A B τA τB` takes a raw `ζ : ℤ`;
-  `Common.timeOrderedProduct s A B τA τB`, for `s : Statistics`, specializes `ζ := s.zetaInt`.
-  `Fermionic/ImaginaryTimeOrdering.lean` fixes `s := Statistics.fermion` (no `ζ`/`Statistics`
-  parameter at its own call sites, so downstream files no longer spell out
-  `Statistics.zetaInt Statistics.fermion`), and `Bosonic/ImaginaryTimeOrdering.lean` fixes
-  `s := Statistics.boson` (added even though nothing in the bosonic line consumes it yet, for
-  file-layout symmetry). **Scope note** (`Common/TimeOrdering.lean`'s module docstring):
-  `timeOrderedProduct_swap` is an algebraic identity holding for *arbitrary* `A`, `B` — what's
-  restricted is the *physical interpretation* of `timeOrderedProduct Statistics.fermion A B` as
-  the fermionic time-ordered product, appropriate only when `A`, `B`'s exchange parity matches
-  `s` (elementary creation/annihilation operators, not e.g. the even number operator `N_i`, which
-  the theorem still applies to but does not physically pick up `-1` when exchanged) — nothing in
-  the types enforces this parity-matching condition.
-- `timeOrderedProduct_of_gt`/`_of_lt`, `timeOrderedProduct_self_time` — the two strict branches and
-  the symmetrized equal-time value.
-- `timeOrderedProduct_swap` — swapping the operator pair (with their times) and negating by `ζ`
-  returns the same product, for *any* `τA`, `τB` (including equal — the `θ(0) = 1/2` convention
-  symmetrizes exactly enough to make this hold unconditionally) given `ζ² = 1`: the operator-level
-  statement that swapping two operators inside a time-ordered product costs exactly the exchange
-  sign.
-
-**Step 3 done, in `Fermionic/WeightedFreeTwoPointFunction.lean`:** the arbitrary-weight identifier
-`weightedFreeTwoPointFunction ε w i j τ τ' :=
--normalizedWeightedDiagonal w (timeOrderedProduct (Statistics.fermion)
-(imaginaryTimeEvolve ε τ (annihilate i)) (imaginaryTimeEvolve ε τ' (create j)) τ τ')`. For
-*arbitrary* `w` this is only a free-evolution correlator, not the genuine `G₀` — see
-`Fermionic/FreeBoltzmannWeight.lean` below for the specialization that closes that gap.
-- `weightedFreeTwoPointFunction_of_gt`/`_of_lt` — the two strict-time branches, verifying the sign:
-  `_of_lt`'s fermionic swap sign (`-1`) cancels the definition's own `-1`, giving
-  `+⟨c_j†(τ') c_i(τ)⟩_w` for `τ < τ'` — the standard finite-temperature convention.
-- `weightedFreeTwoPointFunction_self_time` — at equal times, resolves to the `θ(0) = 1/2` symmetrized
-  value. This is *not* a claim that the Green function's two one-sided limits `G(0⁺)`/`G(0⁻)`
-  agree — they generically don't (CAR forces `G(0⁺) - G(0⁻) = -1`) — only that this formalization's
-  convention picks their average at exact coincidence.
-
-**Step 3 follow-up done, in `Fermionic/FreeBoltzmannWeight.lean`:** closes both gaps above.
-- `freeBoltzmannWeight ε β n := e^{-β E(n)}` — the genuine Gibbs weight for `freeHamiltonian ε` at
-  inverse temperature `β`.
-- `freeBoltzmannWeight_eq_ofReal` — it's the cast of a positive real (`Real.exp`), giving
-  positivity/non-vanishing without reasoning about complex `exp`; `freeBoltzmannWeight_ne_zero`,
-  `weightSum_freeBoltzmannWeight_ne_zero` (a sum of positive reals over the nonempty
-  `FermionOccupation Mode`, hence a nonzero positive real cast).
-- `freePartitionFunction`/`freeGibbsExpectation` — `weightSum`/the
-  `normalizedWeightedDiagonal` specialized to `freeBoltzmannWeight`, named wrappers so callers don't have to spell out the
-  weight each time; `freePartitionFunction_ne_zero`.
-- **`freeGibbsGreenFunction ε β i j τ τ' := weightedFreeTwoPointFunction ε (freeBoltzmannWeight ε β) i j
-  τ τ'`** — the free Gibbs-weight specialization of the time-ordered correlator: a positive Gibbs
-  weight for the same `ε` the evolution uses, closing both gaps above. **Not yet the full Matsubara
-  Green-function apparatus** — `0 < β`, the fundamental domain `0 ≤ τ, τ' ≤ β`, and KMS fermionic
-  antiperiodicity `G₀(τ+β,τ') = -G₀(τ,τ')` are not yet established, nor is the closed-form
-  two-point Green function `G₀,ᵢⱼ = 0` for `i ≠ j`.
-
-**Step 3 follow-up, part 2, done, in `Fermionic/FreePartitionFunction.lean`:** the free partition
-function factorizes mode-by-mode, `Z₀(β) = Σₙ e^{-β E(n)} = ∏ᵢ (1 + e^{-βε_i})`
-(`freePartitionFunction_eq_prod`), and the free thermal expectation of the number operator is the
-closed-form Fermi–Dirac distribution, `⟨N_i⟩₀,β = 1/(e^{βε_i}+1)`
-(`freeGibbsExpectation_numberOperator`) — the occupation-number half of the gap
-`FreeBoltzmannWeight.lean` flagged. Unlike the bosonic partition function (`Bosonic
-/FreePartitionFunction.lean`, B3a), no convergence theory is needed: each fermionic mode
-contributes only `0`/`1` to the occupied set, so `Σₙ e^{-β E(n)} = ∏ᵢ (1+e^{-βε_i})` is proved
-directly from `Finset.prod_add` (the binomial-type expansion of a product of sums), with the
-Fermi–Dirac occupation number then following from splitting that product on whether mode `i` is
-occupied (`freePartitionFunction ε β = (1+f_i) · Σ_{t ⊆ univ.erase i} e^{-βE(t)}`, `f_i :=
-e^{-βε_i}`) and comparing to the weighted trace of `numberOperator i` restricted to the same
-occupied/unoccupied split.
-
-**Step 3 follow-up, part 3, done, in `Fermionic/FreeTwoPointFunction.lean`:** the closed-form free
-thermal Green function, closing the remaining gap `FreeBoltzmannWeight.lean` flagged.
-`freeGibbsGreenFunction_of_ne`: `G₀,ᵢⱼ(τ,τ') = 0` for `i ≠ j`, at any `τ, τ'` — proved from a
-basis-level mismatch argument (`matrixCoeff_annihilate_comp_create_of_ne`/
-`_create_comp_annihilate_of_ne`), **not** an instance of the `U(1)` particle-number selection rule
-(`(annihilate i).comp (create j)` carries charge `0`, so the selection rule says nothing about
-it — off-diagonal vanishing here is a strictly finer fact than the selection rule, specific to
-*which* mode is toggled). `freeGibbsGreenFunction_of_gt_self`/`_of_lt_self`: the explicit
-`i = j` closed form `-e^{-(τ-τ')ε_i}·e^{βε_i}/(e^{βε_i}+1)` (`τ' < τ`) /
-`e^{-(τ-τ')ε_i}/(e^{βε_i}+1)` (`τ < τ'`), from CAR's `{c_i,c_i†} = id`
-(`annihilate_comp_create_self : c_ic_i† = id - N_i`) reducing the `τ' < τ` closed form to
-`1 - ⟨N_i⟩₀,β` (already known from the previous step), combined with the explicit
-`c_i(τ) = e^{-τε_i}c_i` evolution formulas. `freeGibbsGreenFunction_self_time_self`: the
-separate equal-time, same-mode closed form `G₀,ᵢᵢ(τ,τ) = f_i - 1/2` — genuinely discontinuous
-against both one-sided limits above (their difference is forced to `-1` by CAR), so **any future
-KMS antiperiodicity theorem must be stated away from this coincident-time discontinuity** (e.g. for
-`τ ≠ τ'`, or as one-sided boundary relations `G₀(0⁺)`/`G₀(0⁻)`) rather than unconditionally at
-`τ = τ'`. **Not yet done:** KMS antiperiodicity itself, and the
-fundamental-domain package (`0 < β`, `0 ≤ τ,τ' ≤ β`) — the last remaining piece of
-`FreeBoltzmannWeight.lean`'s original gap list.
-
-**Step 4 (partial) done, in `Fermionic/WeightedContraction.lean`:** same-type thermal contractions
-vanish for any occupation-number-diagonal weight `w` used by `weightedTrace` — `⟨T_τ[c_i(τ)
-c_j(τ')]⟩_w = 0` and `⟨T_τ[c_i†(τ) c_j†(τ')]⟩_w = 0`
-(`normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate`/`_create_create`) — a `U(1)`
-particle-number selection rule (`cᵢcⱼ`/`cᵢ†cⱼ†` carry nonzero charge), not a fact specific to
-fermionic statistics or to this project's number-conserving Gibbs weight; the operator-level
-reason that, in the number-conserving occupation-diagonal setting considered throughout this
-project, only mixed creation–annihilation contractions can be nonzero. Does *not* extend to
-non-number-conserving quasi-free states (e.g. superconducting/Bogoliubov states), where such
-"anomalous" contractions are generically nonzero.
-`matrixCoeff_annihilate_comp_annihilate`/`_create_comp_create` now follow from the general
-`U(1)` particle-number selection rule extracted to `Common/ParticleNumberSelectionRule.lean`
-(`Common.CarriesGradingDegree` — named generically since neither the definition nor its proofs
-use anything specific to particle number, `Common.CarriesGradingDegree.comp`,
-`Common.diagonalCoeff_eq_zero_of_carriesGradingDegree`), generic over the occupation-state
-type rather than a fermion-specific case analysis; `Fermionic/ParticleNumberCharge.lean` and
-`Bosonic/ParticleNumberCharge.lean` instantiate it for `annihilate`/`create` in both statistics
-(charge `∓1`), confirming the rule really is exchange-statistics-independent. Also added:
-linearity lemmas for `matrixCoeff` (`Common/AlgebraicFock.lean`) and
-`weightedTrace`/`normalizedWeightedDiagonal` (`Fermionic/WeightedDiagonalFunctional.lean`) in their operator
-argument.
-**A first concrete Wick-identity validation done, in
-`Fermionic/BlochDeDominicis/Examples/SingleMode.lean`:**
-the single-mode instance of the 4-point pairing-sum identity, `⟨cᵢcᵢ†cᵢcᵢ†⟩_w = ⟨cᵢcᵢ†⟩_w² +
-ζ⟨cᵢcᵢ⟩_w⟨cᵢ†cᵢ†⟩_w + ⟨cᵢcᵢ†⟩_w⟨cᵢ†cᵢ⟩_w`
-(`normalizedWeightedDiagonal_annihilate_create_annihilate_create_single_mode`), for an *arbitrary*
-occupation-number-diagonal weight `w` — **not yet a finite-temperature statement** (no `β`,
-Hamiltonian, or Boltzmann weight appears). The coefficients `1`, `ζ`, `1` are hand-written to match
-`Common/BlochDeDominicis/PairingWeight.lean`'s four-position pairing weights term by term, not obtained by
-summing over `Common.BlochDeDominicis.Pairing 2` itself. `Common/BlochDeDominicis/Induction.lean`'s
-general theorem now gives that genuine `Pairing 2`-sum connection for `gibbsExpectation` (a
-specific, genuine Gibbs weight); restating *this* file's arbitrary-`w` identity as a `Pairing 2`
-sum remains separate future work, since the general theorem is specific to `gibbsExpectation`, not
-an arbitrary normalized diagonal weight `w`. Proved purely from CAR (no
-cross-mode independence of the weight needed, since all four operators act at the same mode);
-supporting lemmas `annihilate_comp_self`/`create_comp_self` (`Fermionic/
-CanonicalAnticommutationRelations.lean`), `numberOperator_comp_self`/`annihilate_comp_create_comp_self`/
-`annihilate_comp_create_add_create_comp_annihilate` (`Fermionic/NumberOperator.lean`), and
-`normalizedWeightedDiagonal_zero` (`Common/WeightedDiagonalFunctional.lean`, with a
-`Fermionic/WeightedDiagonalFunctional.lean` thin wrapper) were placed at their most upstream
-reusable file rather than local to this proof.
-
-**All three statistics-agnostic ingredients for the `Common/`-level Bloch–de Dominicis induction are
-now done**, following the physics reference notes' Bloch–De Dominicis proof strategy (three
-ingredients: trace cyclicity, a KMS-type relation, the c-number exchange commutator), assembled
-into the `n = 1` base case and validated end-to-end against the fermionic line:
-
-1. **Trace cyclicity, in `Common/WeightedDiagonalFunctional.lean`:** `Common.matrixCoeff_comp_support`
-   (`(AB)_{mn} = Σ_{k ∈ supp(B|n⟩)} A_{mk} B_{kn}`, holding for *any* `Config`, finite or not) and its
-   `[Fintype Config]` specialization `Common.matrixCoeff_comp` give `Common.traceFock_comp_comm`
-   (`Tr[AB] = Tr[BA]`), the finite-`Config` form immediately usable by the fermionic line. **A
-   `[Fintype Config]`-free, `tsum`-summability-gated analogue is also done**: `Common.tsumTrace A :=
-   ∑' n, matrixCoeff A n n` with `tsumTrace_add`/`tsumTrace_smul`/`tsumTrace_comp_comm` (summability
-   hypotheses on the relevant double series, not an unconditional statement) — the form the bosonic
-   line's genuinely infinite `Occupation Mode := Mode →₀ ℕ` configuration space needs, given
-   summability witnesses (not yet supplied for the bosonic Boltzmann weight; see below).
-2. **The KMS-type relation, in `Common/DiagonalEvolution.lean`:**
-   `Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution` — `e^{τH₀}C = e^{qτ}Ce^{τH₀}`
-   given `heisenbergEvolve energy τ C = exp(qτ)•C` — proved once generically over `Config`/
-   `energy : Config → ℝ` and instantiated identically for both statistics via each line's existing
-   `imaginaryTimeEvolve_annihilate`/`_create` lemmas (`Fermionic/ImaginaryTimeEvolution.lean`'s and
-   `Bosonic/ImaginaryTimeEvolution.lean`'s new `imaginaryTimeEvolveFree_comp_annihilate`/`_comp_create`).
-3. **The c-number exchange commutator**: already available, `Common/ExchangeAlgebra.lean`.
-
-Cyclicity and the KMS relation combine into the rotation identity, in `Common/KMSRotation.lean`:
-`Common.traceFock_diagonalEvolution_comp_rotate`/`Common.tsumTrace_diagonalEvolution_comp_rotate`
-(`Tr[e^{-βH₀}(CA)] = e^{qβ}·Tr[e^{-βH₀}(AC)]`, both a `[Fintype Config]` and a `tsum`
-summability-gated form), matching the physics notes' `⟨Ĉ₂⋯Ĉ₂ₙĈ₁⟩ = w₁⟨Ĉ₁Ĉ₂⋯Ĉ₂ₙ⟩` rotation step. This
-file holds only the general, reusable rotation infrastructure (not Bloch–de Dominicis-specific).
-
-**The 2-point Bloch–de Dominicis base case is done, in `Common/BlochDeDominicis/TwoPoint.lean`:**
-`Common.traceFock_diagonalEvolution_comp_two_point`/`Common.tsumTrace_diagonalEvolution_comp_two_point`
-— `(1 - ζw₁) Tr[e^{-βH₀}(C₁Cⱼ)] = c₁ⱼ Tr[e^{-βH₀}]`, the `n = 1` base case inside the general
-Bloch–de Dominicis induction, combining the rotation identity with the assumed c-number commutator
-and solving the resulting self-referential equation for the trace (left un-divided, so the caller
-supplies `1 - ζw₁ ≠ 0` only if needed). **Validated end-to-end against the fermionic line, in
-`Fermionic/BlochDeDominicis/TwoPoint.lean`:**
-`traceFock_imaginaryTimeEvolveFree_comp_annihilate_comp_create` instantiates it with `C₁ :=
-annihilate i`, `Cⱼ := create j`, `ζ := -1`, reproducing the already-independently-established
-closed-form Fermi–Dirac 2-point function (`Fermionic/FreeTwoPointFunction.lean`). (The earlier
-hand-derived single-mode sanity check, not routed through this general framework, is kept
-separately as `Fermionic/BlochDeDominicis/Examples/SingleMode.lean`.)
-
-**A genuine bosonic instantiation of the `tsum` 2-point base case done, in
-`Bosonic/BlochDeDominicis/TwoPoint.lean`:** `tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create`
-instantiates it with `C₁ := annihilate i`, `Cⱼ := create j`, `ζ := +1`, `q₁ := -εᵢ` (from
-`imaginaryTimeEvolve_annihilate`), and CCR's `comm_annihilate_create`, given every mode's one-mode
-convergence condition `0 < βεᵢ` (`BoltzmannWeightSummable.lean`'s hypothesis). The two `tsum`
-summability witnesses aren't free the way the fermionic finite-sum case's were: the partition
-series follows from `hasSum_boltzmannWeight` (B3c), but the rotated two-point double series needed
-a new fact this PR added — `Bosonic/ParticleNumberWeightSummable.lean`'s
-`hasSum_particleNumber_boltzmannWeight`, `Σ_n n(j)·e^{-βE(n)}` converges under the same one-mode
-condition (B3e's summability half, via Mathlib's `n·r^n` geometric-derivative sum singled out at
-one mode in `Finsupp.hasSum_prod_nonneg`; B3e's Bose–Einstein *closed form* itself, `⟨N_i⟩ =
-1/(e^{βεᵢ}-1)`, is still not derived — the 2-point theorem only gives the un-normalized,
-undivided `⟨aᵢaᵢ†⟩_β`-numerator equation, not the normalized expectation, and reaching `⟨N_i⟩`
-from it would additionally need `aᵢaᵢ† = N_i + 1`, i.e. a bosonic `numberOperator`, which doesn't
-exist yet). The general
-`n`-point Bloch–de Dominicis theorem itself (the `n`-point sum-over-pairings formula,
-`Common/BlochDeDominicis/Induction.lean`) **is now proved — see further below.**
-
-**Concrete stepping stones built along the way (predating the general induction):**
-- `Common/BlochDeDominicis/Specializations/FourPointReduction.lean`: the `n = 2` (4-operator) *first-operator
-  reduction* — commuting `C₁` through the three remaining factors via the c-number exchange
-  commutator, then one KMS cyclicity step, giving `(1 - ζ³w₁) Tr[e^{-βH₀}(C₁C₂C₃C₄)] = c₁₂
-  Tr[e^{-βH₀}(C₃C₄)] + ζc₁₃ Tr[e^{-βH₀}(C₂C₄)] + ζ²c₁₄ Tr[e^{-βH₀}(C₂C₃)]`. **Not the genuine
-  4-point Bloch–de Dominicis *expansion*** (the fully-reduced normalized `⟨C₁C₂C₃C₄⟩_β =
-  ⟨C₁C₂⟩_β⟨C₃C₄⟩_β + ζ⟨C₁C₃⟩_β⟨C₂C₄⟩_β + ⟨C₁C₄⟩_β⟨C₂C₃⟩_β`) — one level short of a genuine
-  pairing-weighted sum of numbers.
-- `Common/BlochDeDominicis/PeelFirst.lean`: generalizes `FourPointReduction`'s hand-unrolled
-  3-operator peel to an arbitrary-length list `l` of `(operator, ζ-commutator coefficient)` pairs,
-  by induction on the list — `C₁(B₁⋯Bₖ) = peelSum ζ [(B₁,c₁),…,(Bₖ,cₖ)] + ζᵏ•((B₁⋯Bₖ)C₁)`. Pure
-  `LinearMap` composition algebra, no trace/KMS-rotation involved.
-- `Common/BlochDeDominicis/PeelFirstTrace.lean`: wraps that in the trace-level KMS cyclicity step
-  (both a `[Fintype Config]` and a `tsum`, summability-hypothesis-gated form, mirroring
-  `TwoPoint.lean`'s finite/`tsum` pair — needed since the bosonic line's `Occupation Mode` is
-  genuinely infinite): `(1 - ζ^{l.length}w₁) Tr[e^{-βH₀}(C₁B₁⋯Bₖ)] = Tr[e^{-βH₀}·peelSum ζ l]`.
-  `FourPointReduction.lean`'s two theorems are now proved as specializations of these general
-  lemmas (`l := [(C2,c12), (C3,c13), (C4,c14)])`, rather than independently hand-unrolled.
-
-`peelSum` is defined *recursively*, mirroring the substitution steps directly, rather than as a
-closed `Finset.sum`-over-erasures formula matching the physics notes' `Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩`
-presentation — `PeelTermsIndexed.lean`/`GibbsExpectation/Peel.lean` connect the two, and the
-general induction (below) reduces the right side to a genuine sum over `Pairing n`, closing this
-gap. Still needed beyond that: multi-mode operators in the concrete correlator files; the
-finite-temperature structure noted above (KMS antiperiodicity etc.); the full Matsubara-Green-
-function apparatus; diagram connectedness and the linked-cluster bridge move (steps 6–7; step 5,
-the genuine Dyson series, is now done — see below).
-
-- `Common/BlochDeDominicis/GibbsExpectation/Peel.lean`'s `gibbsExpectation_peel`: the normalized
-  counterpart of `PeelFirstTrace.lean`'s peel identity, dividing through by the genuine partition
-  function — `⟨C₁B₁⋯Bₖ⟩ = ⟨peelSum ζ l⟩ / (1 - ζ^{l.length}w₁)`. The general list-indexed analogue
-  of `gibbsExpectation_comp_eq_div_of_zetaCommutator`/
-  `gibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator`.
-- `Common/BlochDeDominicis/GibbsExpectation/FourPoint.lean`'s `gibbsExpectation_four_point`: the
-  genuine normalized 4-point *expansion* itself,
-  `⟨C₁C₂C₃C₄⟩ = ⟨C₁C₂⟩⟨C₃C₄⟩ + ζ⟨C₁C₃⟩⟨C₂C₄⟩ + ⟨C₁C₄⟩⟨C₂C₃⟩` — the physics reference notes' own
-  4-point example, proved (given `ζ² = 1`) purely by rewriting `gibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator`'s
-  coefficients `c₁ⱼ/(1-ζw₁)` as `⟨C₁Cⱼ⟩`.
-
-**The general `n`-point statement's API surface was first drafted and confirmed to type-check**
-(PR #116; at the time the theorem itself was *not* proved — a `sorry`-containing statement can't
-be merged per this project's CI "no `sorry`" check, so the draft below was recorded as a design
-note rather than committed as dead Lean code. **It has since been proved in full — see further
-below** — the statement here is kept as the historical record of the design step):
-
-```lean
-theorem gibbsExpectation_prodComp_eq_sum_pairing (n : ℕ) (s : Statistics)
-    (energy : Config → ℝ) (β : ℝ)
-    (C : Fin (2 * n) → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ)
-    (hC : ∀ i, heisenbergEvolve energy (-β) (C i) =
-      Complex.exp ((q i * (-β) : ℝ) : ℂ) • C i)
-    (hcomm : ∀ i j, i ≠ j → zetaCommutator (s.zetaInt : ℂ) (C i) (C j) =
-      c i j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config))
-    (hZ : traceFock (diagonalEvolution energy (-β)) ≠ 0)
-    (hne : ∀ i, (1 : ℂ) - (s.zetaInt : ℂ) * Complex.exp (((q i) * β : ℝ) : ℂ) ≠ 0) :
-    gibbsExpectation energy β (prodComp (List.ofFn C)) =
-      ∑ pairing : Common.BlochDeDominicis.Pairing n,
-        pairing.weight s * ∏ pr ∈ pairing.pairs, gibbsExpectation energy β ((C pr.1).comp (C pr.2))
-```
-
-**Caught by gpt's review on PR #116**: the statement as first drafted (without `hne`) is *false* —
-`n = 2`, bosons (`ζ = 1`), a single-element `Config`, `energy = 0`, all `C i = id`, all `q i = 0`,
-all `c i j = 0` satisfies `hC`/`hcomm`/`hZ` (every hypothesis holds vacuously or trivially), giving
-LHS `⟨id⁴⟩ = 1` but RHS `= 1 + 1 + 1 = 3` (the three 4-position pairings, all boson weight `1`).
-`gibbsExpectation_peel` itself already requires exactly this non-resonance hypothesis at each
-recursive step (`hne` in its own signature) — the general statement needs it at *every* position
-`i`, not just position `0`, since the induction's recursive step lets any remaining operator become
-the "peeled first operator" of a smaller subproblem after two positions are removed.
-
-Design notes: unlike `TwoPoint.lean`/`FourPointReduction.lean` (which only needed the *first*
-operator's eigenvalue shift), *every* operator's shift `q i` is needed here — not merely because the
-target's right side ranges over arbitrary pairs (that alone doesn't require `q`, since 2-point
-values are already normalized numbers there), but because the induction recursively deletes two
-positions at a time, and *any* remaining operator can become the next subproblem's own "first
-operator" to peel, needing its own `q i`/`hne i`. Likewise `c i j` is needed as a full pairwise
-family because each subproblem peels its own first operator through *all* of its remaining
-operators, not just against a fixed position `0`. This type-checked cleanly against the existing
-infrastructure, confirming the design (modulo the missing `hne`, since a type-checked *statement*
-says nothing about whether it's *true*). **The intended proof strategy**, by
-strong induction on `n` (following the physics reference notes' own proof): peel `C₀` off the
-front via `gibbsExpectation_peel` (giving a sum of `gibbsExpectation (C₀.comp Cⱼ) *
-gibbsExpectation (remaining 2n-2 operators, Cⱼ erased)` terms, one per position `j`, matching
-`peelSum`/`peelTerms`'s structure), apply the inductive hypothesis to each `(2n-2)`-operator
-remaining product (giving a `Pairing (n-1)` sum for it), and reassemble into a `Pairing n` sum via
-`Combinatorics.PerfectPairing`'s `Pairing.insertFirstPair`/`Pairing.equivSigma`.
-
-**Bridging pieces built since the statement was drafted** (all proved, no `sorry`, each its own
-small PR verified independently against the existing infrastructure — a `prodCompFamily`/
-`prodCompFamily_succ` wrapper was also built at this stage to let a `Fin`-indexed operator family
-invoke `PeelFirst.lean`'s `List`-indexed peel lemmas via `List.ofFn`, but the general theorem below
-ended up invoking `prodComp (List.ofFn C)` directly instead, so it was removed as dead code in
-PR #127):
-- `Common/BlochDeDominicis/PeelTermsIndexed.lean`: `peelTerms_eq_ofFn` — `PeelFirst.lean`'s
-  recursively-defined `peelTerms` agrees with the closed-form, `List.eraseIdx`-indexed description
-  matching the physics notes' `Σⱼ ζʲc₁ⱼ⟨…Ĉⱼ…⟩` presentation term-by-term.
-- `Combinatorics/Common/EraseIdxOfFn.lean`: `List.eraseIdx_ofFn_eq_ofFn_succAbove` — connects
-  `List.eraseIdx`-based erasure (of a `List.ofFn C`) to `Fin.succAbove`-based erasure of the
-  family `C` itself, the same description `Pairing.eraseZeroPair` needs to line up against.
-- `Combinatorics/Common/DeletedFinPositionsSuccAbove.lean`: `deletedPositionsOrderIso_eq_succ_succAbove` —
-  decomposes `DeletedFinPositions.lean`'s `deletedPositionsOrderIso` (built directly as a
-  `Finset.orderIsoOfFin`, not via `succAbove`) into the explicit two-step map "avoid `k`'s position,
-  then shift up by one to skip `0`", for the `j = k.succ` shape `Pairing.eraseZeroPair` always uses.
-- `Combinatorics/PerfectPairing/EraseZeroSuccAbove.lean`: `Pairing.eraseZeroOrderIso_eq_succ_succAbove`
-  specializes the above to `Pairing.eraseZeroOrderIso` itself, supplying `k := (pairing.partner
-  0).pred (pairing.partner_ne 0)`; `Pairing.ofFn_comp_eraseZeroOrderIso_eq_eraseIdx` composes that
-  with `EraseIdxOfFn.lean`'s lemma into the single identity actually needed: an operator family `C`
-  reindexed along `pairing.eraseZeroOrderIso` is literally the tail family with position
-  `(pairing.partner 0).pred` erased — matching `PeelTermsIndexed.lean`'s `peelTerms_eq_ofFn` term
-  erasure directly.
-
-**The crossing-sign matching turned out to already be proved**, before this session's bridging work
-even started: `Common/BlochDeDominicis/PairingWeight.lean`'s `Pairing.weight_eraseZeroPair` gives
-`pairing.weight s = ζ^{interveningPositionCount} · pairing.eraseZeroPair.weight s`, and
-`interveningPositionCount = (pairing.partner 0).val - 1` is exactly `(k : ℕ)` for the same `k` the
-pieces above use — so the `ζʲ` exponent `gibbsExpectation_peel_indexed` produces at position `j = k`
-already matches `Pairing.weight`'s sign with no further lemma needed.
-
-- `Combinatorics/PerfectPairing/PairsDecomposition.lean`: `Pairing.pairs_eq_insert_firstPair`/
-  `prod_pairs_eq_firstPair_mul` — exposes, as a standalone fact, the pairs decomposition
-  `crossingCount_eraseZeroPair`'s proof already used internally: `pairing.pairs = insert
-  pairing.firstPair` (the smaller pairing's own pairs, pushed forward along `eraseZeroOrderIso`),
-  and its corollary splitting a product over `pairing.pairs` into the `firstPair` factor times a
-  product over the smaller pairing's pairs.
-- `Combinatorics/PerfectPairing/SumDecomposition.lean`: `Pairing.sum_eq_sum_sum_insertFirstPair` — turns
-  `Pairing.equivSigma`'s decomposition into the `Finset.sum` reindexing identity the induction
-  actually needs: a sum over `Pairing (n + 1)` equals a double sum, first over positions `j : Fin
-  (2 * n + 1)`, then over the smaller `Pairing n`, reassembled via `Pairing.insertFirstPair`.
-
-**The general `n`-point theorem is now proved, in `Common/BlochDeDominicis/Induction.lean`**:
-`gibbsExpectation_prodComp_eq_sum_pairing`, by plain induction on `n` (only the immediately-
-preceding case is used, not strong induction), combining every piece above — peel `C 0`
-(`gibbsExpectation_peel_indexed`), identify the remaining operator family with the smaller
-pairing's positions directly via `List.eraseIdx_ofFn_eq_ofFn_succAbove`/
-`Pairing.eraseZeroOrderIso_eq_succ_succAbove` (the two lemmas `Pairing.
-ofFn_comp_eraseZeroOrderIso_eq_eraseIdx` composes, used individually here rather than through that
-composed form), apply the inductive hypothesis, and reassemble via
-`Pairing.sum_eq_sum_sum_insertFirstPair`, matching signs via `Pairing.weight_eraseZeroPair` and the
-pairs decomposition via
-`Pairing.prod_pairs_eq_firstPair_mul`. No `sorry`. This closes the design note above — the drafted
-statement (with the `hne` non-resonance hypothesis gpt's review on PR #116 caught) is the real,
-proved theorem.
-
-**Groundwork for the *general* (fermionic *and* bosonic) Bloch–de Dominicis theorem done, in
-`Common/ExchangeCommutator.lean` and `Bosonic/NumberOperator.lean`:** `Common/BlochDeDominicis/Induction.lean` needs
-to be built for both statistics at once rather than duplicated, since the `n`-point pairing-sum
-formula is the same combinatorics with only the pairing sign differing (`ζ^{crossings}`, trivial
-for bosons). As a first, purely algebraic piece of that unification: `Common.zetaCommutator ζ A B
-:= A∘B - ζ•(B∘A)` specializes to the ordinary commutator at `ζ = 1` and the anticommutator at
-`ζ = -1` — **not** the graded commutator of a `ℤ`/`ℤ₂`-graded algebra in the usual sense (that
-sign comes from the operators' own degrees; here `ζ` is a single fixed constant indexing the
-ambient exchange statistics), hence `zetaCommutator`, with `Common.exchangeCommutator s A B :=
-zetaCommutator (s.zetaInt : ℂ) A B` the form callers actually reach for once a `Statistics` value
-is in hand. CAR's `{c_i,c_i†} = id` and CCR's `[a_i,a_i†] = id` become the *same* hypothesis
-`[a_i,a_i†]_ζ = id` at the two values of `ζ` (`Statistics.zetaInt`'s), and
-`Common.comp_eq_id_add_of_zetaCommutator_eq_id` derives `a_i a_i† = id + ζ•N_i` from it
-generically — an *operator-level reordering identity*, not a Wick-theorem contraction (a thermal
-two-point function/`ℂ`-number, which is what `Fermionic/FreeTwoPointFunction.lean`'s
-`freeGibbsExpectation_annihilate_comp_create`/`_create_comp_annihilate` already provide).
-`Fermionic/NumberOperator.lean`'s `annihilate_comp_create_self` (`ζ = -1`, proved there since PR #78,
-now refactored to go through `exchangeCommutator`) and `Bosonic/NumberOperator.lean`'s new `annihilate_comp_create_self`
-(`ζ = 1`, `a_i a_i† = id + N_i`, the first bosonic `numberOperator`/reordering result — the bosonic
-line had no `numberOperator` at all before this) are both literal instances.
-
-**Fully deduplicated, in `Common/ExchangeAlgebra.lean`:** `Bosonic/NumberOperator.lean` and
-`Fermionic/NumberOperator.lean` had each independently *proved* (not just stated)
-`exchangeCommutator_annihilate_create_self`/`annihilate_comp_create_self` — the same statement
-shape, only the final sign algebra differing (`+N_i` vs `-N_i`). Two new `Common/ExchangeAlgebra.lean`
-lemmas, generic over any `Statistics s` with an `ExchangeAlgebra s Mode Config` instance
-(`exchangeCommutator_annihilate_create_self` — the `i = j` case of `annihilate_create` — and
-`annihilate_comp_create_self` — `a_i a_i† = id + ζ•N_i`), let both statistics' `NumberOperator.lean`
-instantiate in one line instead of re-deriving the reordering independently. Found via a systematic
-scan: aggregating every top-level declaration across `SecondQuantization/` into one list, grouped by
-name across files, and reviewing every group appearing in 2+ files. Most such groups were
-intentional per-statistics parity or already-documented `Common/` delegation; a second genuine gap
-(`Fermionic/ParticleNumberCharge.lean`/`Bosonic/ParticleNumberCharge.lean`'s grading-degree proofs)
-remains open — unifying it needs routing through `Common/OccupationBasis.lean`'s abstraction
-(`FermionOccupation Mode := Finset Mode` vs `Occupation Mode := Mode →₀ ℕ` have different underlying
-representations), not a direct merge.
-
-**Time ordering also made statistics-indexed, in `Common/TimeOrdering.lean`:** see the table
-above; `Fermionic/ImaginaryTimeOrdering.lean`/`Bosonic/ImaginaryTimeOrdering.lean` fix their own
-statistics outright.
-
-**The all-index exchange relation done, in `Common/ExchangeAlgebra.lean`:** the strictly more
-useful common building block flagged above — a Bloch–de Dominicis induction needs to move operators past
-*each other* at every step (`a_i a_j† - ζ a_j† a_i = δᵢⱼ`, all `i, j`), not just the single-mode
-`a_i a_i† = id + ζN_i` case. `Common.ExchangeAlgebra s Mode Config` packages
-`annihilate_create`/`annihilate_annihilate`/`create_create` (all stated via `exchangeCommutator
-s`) as a `class`, mirroring `Common/OccupationBasis.lean`'s architecture: the interface lives in
-`Common/`, the concrete instances (`SecondQuantization.exchangeAlgebra` — fermionic, plain namespace —
-and `SecondQuantization.Bosonic.exchangeAlgebra`) live in
-each statistics' own directory. Both instances are proved via a bridging fact generalizing the
-single-mode one above to *arbitrary* operator pairs (`exchangeCommutator_fermion_eq_anticomm`/
-`_boson_eq_comm : exchangeCommutator s = anticomm`/`comm`, for any `A`, `B`, not just at `i = j`),
-so the instance fields just restate the existing `anticomm_*`/`comm_*` CAR/CCR theorems through
-that bridge — no new algebra, only the interface. This does not replace the existing public
-`annihilate`/`create` functions or CAR/CCR theorems; downstream files using the statistics-specific
-names directly are unaffected.
-
-**Finite-temperature Bloch–de Dominicis pairing combinatorics done, in
-`Combinatorics/PerfectPairing.lean`:** Mathlib's existing
-perfect-matching abstraction is attached to subgraphs of general simple graphs; it is not a natural
-fit for the linearly ordered operator positions needed for pairing crossing signs.  The project-owned
-`Common.BlochDeDominicis.Pairing n` therefore uses the smaller representation appropriate here: a
-fixed-point-free involutive permutation of `Fin (2*n)`.  `allPairings` gives its finite enumeration,
-`crossingCount` counts precisely the normalized configurations `a < c < b < d`, and
-`Pairing.weight s` is `(s.zetaInt : ℂ) ^ crossingCount`.  The bosonic
-weight is proved to be `1`, while the fermionic weight is `(-1)^crossingCount`.  The closed
-four-position theorem enumerates the three pairings as a `Finset` (so no arbitrary list order is
-part of the statement) and verifies their adjacent/crossing/nested weights are `1`, `ζ`, and `1`.
-The implementation is hidden behind the `Pairing` structure's `partner` interface;
-`partner_partner`, `partner_ne`, `mem_pairs_iff`, and `pair_or_reverse_mem` expose the laws needed by
-later proofs without requiring callers to unfold the internal subtype or the `Finset.filter`/`image`
-construction.
-This layer is purely combinatorial and keeps `Common/` independent of both statistics-specific
-implementation directories.
-
-**Crossing-count/weight recurrence under `eraseZeroPair` done, in `Combinatorics/PerfectPairing.lean`:**
-`Pairing.firstPair` names the pair containing position `0`; `Pairing.crossingsWithFirstPair` counts
-the remaining pairs that cross it. `Pairing.crossingCount_eraseZeroPair` proves
-`crossingCount = eraseZeroPair.crossingCount + crossingsWithFirstPair` by splitting the crossing-pair
-product-filter as a sum over the left endpoint (`card_filter_crosses_product_eq_sum`) and matching the
-remaining-pairs term to `eraseZeroPair`'s own crossing count via the `eraseZeroOrderIso` bijection.
-`Pairing.interveningPositionCount` counts the positions strictly between `0` and its partner;
-`Pairing.crossingsWithFirstPair_mod_two` shows `crossingsWithFirstPair` and `interveningPositionCount`
-agree mod `2` — the intervening positions split into pairs that nest entirely inside (an even
-contribution, via a fixed-point-free involution argument on that subset) and positions whose partner
-crosses `firstPair` (exactly `crossingsWithFirstPair` of them). Since `ζ² = 1`, matching parities give
-matching powers (`zetaInt_pow_eq_of_mod_two_eq`), yielding the final recurrence
-`Pairing.weight_eraseZeroPair : pairing.weight s = ζ ^ interveningPositionCount * eraseZeroPair.weight s`.
-
-**A constructive counterpart to `eraseZeroPair` done, in `Combinatorics/PerfectPairing.lean`:**
-`pairing.insertFirstPair j hj` builds a `Pairing (n + 1)` from a smaller `Pairing n` and a choice of
-position `j ≠ 0`, by pairing `0` with `j` and reindexing `pairing`'s own partner permutation onto
-the remaining positions via `Equiv.Perm.extendDomain` composed with `deletedPositionsOrderIso`
-(rather than duplicating the `restrictedPartner`/order-isomorphism plumbing `eraseZeroPair` already
-owns). `Pairing.insertFirstPair_partner_zero`/`_partner_chosen` confirm `0` and `j` pair with each
-other, and `Pairing.insertFirstPair_partner_orderIso` gives the conjugation formula on the
-remaining positions — the insertion-side counterpart to `eraseZeroOrderIso_partner`. This is the
-constructive counterpart `eraseZeroPair` needed to let the Bloch–de Dominicis induction build
-pairings up from smaller ones (choosing `0`'s partner among `2n + 1` positions), not just tear them
-down.
-
-**Inverse identities for `eraseZeroPair` and `insertFirstPair` done, in
-`Combinatorics/PerfectPairing.lean`:** `Pairing.eraseZeroPair_insertFirstPair` proves
-`(pairing.insertFirstPair j hj).eraseZeroPair = pairing` — `eraseZeroPair` is a left inverse of
-`insertFirstPair j hj` — using `deletedPositionsOrderIso_congr` (a new proof-irrelevance helper in
-`Combinatorics/Common/DeletedFinPositions.lean`) to identify the erase step's own order isomorphism with the one
-`insertFirstPair` used, plus `insertFirstPair_partner_orderIso`. `Pairing.insertFirstPair_eraseZeroPair`
-proves the reverse composite `pairing.eraseZeroPair.insertFirstPair (pairing.partner 0) hzero =
-pairing` for `pairing : Pairing (n + 1)` — on the fiber of pairings with `partner 0 = j`,
-`insertFirstPair j hj` is a left inverse of `eraseZeroPair` — by cases on whether a position is `0`,
-`pairing.partner 0`, or one of the remaining positions. `eraseZeroPair` itself is not globally
-injective (distinct `j` can erase to the same smaller pairing), so together these two identities
-establish that `insertFirstPair j hj` and `eraseZeroPair` restricted to the fiber `{P : Pairing
-(n + 1) | P.partner 0 = j}` are mutually inverse, one fiber at a time.
-
-**The finite `Pairing (n + 1) ≃ Σ_{j ≠ 0} Pairing n` equivalence done, in
-`Combinatorics/PerfectPairing.lean`:** `Pairing.equivSigma n : Pairing (n + 1) ≃ Σ (j :
-{j : Fin (2 * (n + 1)) // 0 ≠ j}), Pairing n` sends a pairing to the partner it assigns to position
-`0` together with the smaller pairing left after erasing that pair (`fun pairing => ⟨⟨pairing.partner
-0, _⟩, pairing.eraseZeroPair⟩`), with inverse `fun ⟨⟨j, hj⟩, Q⟩ => Q.insertFirstPair j hj`. Its
-`left_inv`/`right_inv` obligations are exactly `insertFirstPair_eraseZeroPair` and
-`eraseZeroPair_insertFirstPair` (plus `insertFirstPair_partner_zero`), so the construction assembles
-directly from the two already-proved fiber-inverse identities with no new induction. This is the
-finite decomposition the Bloch–de Dominicis induction over positions will recurse on.
-
-**`weightedTrace`/`weightSum`/`normalizedWeightedDiagonal` generalized to `Common/` done** (see the
-`Common/WeightedDiagonalFunctional.lean` row above): a statistics-agnostic *finite*-occupation-
-state-type utility (`[Fintype Config]`) is now in place, and the fermionic finite-mode line
-instantiates it directly (`Config := FermionOccupation Mode`). **This is not yet shared with the
-bosonic line.** `Occupation Mode := Mode →₀ ℕ` is unbounded per mode even for a finite mode set, so
-it does not satisfy `[Fintype Config]` and cannot instantiate this construction; the physical
-bosonic weighted trace needs a separate, summability-aware `tsum` construction — not an
-instantiation of this finite-sum one — plus the free bosonic two-point/occupation-number closed
-forms built on top of it.
-
-**An abstract normalized-linear-functional interface done, in
-`Common/NormalizedOperatorFunctional.lean`:** `Common.NormalizedOperatorFunctional Config` bundles
-the *base* algebraic shape shared by any weighted-expectation implementation — a `LinearMap` from
-operators to `ℂ` (linearity comes free from `LinearMap`'s own API: `map_add`/`map_smul`/`map_zero`/
-`map_neg`/`map_sub`) with the identity operator sent to `1` (`map_id`) — without committing to how
-the underlying weighted expectation is actually computed. The file itself depends only on
-`AlgebraicFock`, deliberately not on any concrete backend, so a future bosonic `tsum` backend
-doesn't pull in the finite `[Fintype Config]` one; `WeightedDiagonalFunctional.lean` depends on
-this interface (not the reverse), and its
-`normalizedWeightedDiagonalFunctional w hw` instantiates it directly from
-`Common.normalizedWeightedDiagonal w`'s already-proved `_add`/`_smul`/`_id` facts, for a finite
-`Config` and a nonzero-total-weight `w`.
-
-**This is only the base linear-functional layer, not by itself enough for the Bloch–de Dominicis
-identity.** Linearity and `eval id = 1` alone do not force a 4-point functional to factorize into a
-pairing sum of 2-point ones — an arbitrary nonzero-total-weight complex weight already
-instantiates this interface without any such recurrence holding for it. The Bloch–de Dominicis
-theorem will need at least one further structure built on top of this one (e.g. a quasifree/
-Gaussian pairing recursion, or a thermal exchange relation tied to a genuine free Gibbs weight) as
-a separate, later addition. No physical claim beyond linearity/normalization is made here — same
-caveat as `normalizedWeightedDiagonal` itself (not necessarily positive, real-valued, diagonal in
-any particular basis, or a genuine Gibbs-state expectation).
-
-**Not yet done:** a general `n`-operator time-ordered product (`timeOrderedProduct` is still
-2-operator-only); a bosonic Gibbs weighted-expectation construction (a separate, summability-aware
-`tsum` layer — `Occupation Mode := Mode →₀ ℕ` doesn't satisfy `[Fintype Config]`, so it isn't an
-instantiation of the finite-sum backend). **This cannot be a direct `NormalizedOperatorFunctional
-Config` instantiation on *all* operators**: `NormalizedOperatorFunctional Config` is a `LinearMap`
-on the whole of `AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config`, but `Σₙ w(n)` converging is not
-enough to make `Σₙ w(n)·matrixCoeff A n n` converge for every operator `A` (e.g. the diagonal map
-sending `basisState n ↦ w(n)⁻¹ • basisState n` makes every term `w(n)·w(n)⁻¹ = 1`, summing over
-infinitely many occupation states, hence divergent). The bosonic construction instead needs either
-a summability-controlled submodule of operators (e.g. `Submodule ℂ (AlgebraicFock Config →ₗ[ℂ]
-AlgebraicFock Config)` restricted to operators whose diagonal is `w`-summable) to state a
-`LinearMap` on, or a generalization of `NormalizedOperatorFunctional` parametric in the operator
-domain — a design question for that later PR, not resolved here. The free bosonic
-two-point/occupation-number closed forms built on top of it are separate future work too.
-(The finite-temperature 4-point identity and the general `2n`-point theorem this paragraph
-originally flagged as future work are both **now proved** — `GibbsExpectation/FourPoint.lean`'s
-`gibbsExpectation_four_point` and `Induction.lean`'s `gibbsExpectation_prodComp_eq_sum_pairing`,
-using `ExchangeAlgebra`/`Pairing.weight_eraseZeroPair` exactly as anticipated — see further below.)
+Purely combinatorial/algebraic building blocks used throughout step 4's induction, kept here as a
+pointer index rather than a development narrative — see the files themselves for details:
+- `Common/BlochDeDominicis/{TwoPoint,PeelFirst,PeelFirstTrace,PeelTermsIndexed,GibbsExpectation/Peel,GibbsExpectation/FourPoint,Induction}.lean`
+- `Common/KMSRotation.lean`, `Common/ExchangeAlgebra.lean`, `Common/ExchangeCommutator.lean`,
+  `Common/NormalizedOperatorFunctional.lean` (the base linear-functional interface — linearity +
+  `eval id = 1` alone, *not* by itself sufficient for the Bloch–de Dominicis pairing-sum identity)
+- `Combinatorics/PerfectPairing.lean`,
+  `Combinatorics/PerfectPairing/{Relabel,EraseZeroSuccAbove,PairsDecomposition,SumDecomposition}.lean`,
+  `Combinatorics/Common/{DeletedFinPositions,DeletedFinPositionsSuccAbove,EraseIdxOfFn}.lean`
