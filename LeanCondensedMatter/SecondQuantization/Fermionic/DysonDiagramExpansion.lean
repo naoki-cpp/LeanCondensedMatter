@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.DysonPartitionSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.DysonVertexMoment
 import LeanCondensedMatter.SecondQuantization.Fermionic.WickDiagram.Amplitude
+import LeanCondensedMatter.SecondQuantization.Fermionic.WickDiagram.LegFamily
 import LeanCondensedMatter.SecondQuantization.Fermionic.QuarticLocalLeg
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PeelFirst
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.Induction
@@ -121,9 +122,10 @@ contraction term)`.
 (exhibiting an element of `QuarticVertexOrder S` via `Fintype.equivFin`/`finCongr`) and
 `card_quarticVertexOrder` (`Fintype.card (QuarticVertexOrder S) = S.card!`, via
 `Fintype.card_equiv`). This file's `orderedQuarticLegOperator_eq_flatVertexLegOperator` identifies
-`WickDiagram/Amplitude.lean`'s per-diagram leg operator with `flatVertexLegOperator` (both unfold
-to the same `imaginaryTimeEvolve`/`quarticLocalLegOperator` expression, so this is `rfl`), which
-feeds `couplingWeight_eq_prod_vertexLabel_order` (reindexing a diagram's coupling weight along a
+`WickDiagram/Amplitude.lean`'s per-diagram leg operator with `flatVertexLegOperator` — since both
+are now specializations of `WickDiagram/LegFamily.lean`'s shared
+`quarticLegOperatorForSequence`, this is `rfl` *structurally*, not coincidentally — which feeds
+`couplingWeight_eq_prod_vertexLabel_order` (reindexing a diagram's coupling weight along a
 vertex order via `Equiv.prod_comp`) and `orderedSimplexContribution_eq_pairing_sum_term` (a
 diagram's fixed-order contribution, rewritten via `flatVertexLegOperator`). Combined into
 `couplingWeight_mul_orderedSimplexContribution_eq`, then summed over all diagrams at a fixed order
@@ -491,14 +493,13 @@ noncomputable def flatLocalLeg (n : ℕ) (p : Fin (2 * (2 * n))) : Fin 4 :=
 
 omit [Fintype Mode] in
 /-- **The atomic operator at a flattened leg position, for a bare vertex-label sequence `q` (not
-yet a `QuarticWickDiagram`)** — the same construction as `orderedQuarticLegOperator`, generalized
-off a fixed diagram/order pair so the flattening lemma below can be stated for an arbitrary
-`q : Fin n → QuarticVertexLabel Mode`. -/
+yet a `QuarticWickDiagram`)** — `quarticLegOperatorForSequence` (`WickDiagram/LegFamily.lean`),
+generalized off a fixed diagram/order pair so the flattening lemma below can be stated for an
+arbitrary `q : Fin n → QuarticVertexLabel Mode`. -/
 noncomputable def flatVertexLegOperator (ε : Mode → ℝ) (n : ℕ)
-    (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))) :
-    FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
-  imaginaryTimeEvolve ε (τ (flatVertexIndex n p))
-    (quarticLocalLegOperator (q (flatVertexIndex n p)) (flatLocalLeg n p))
+    (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) :
+    Fin (2 * (2 * n)) → FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
+  quarticLegOperatorForSequence ε q τ
 
 omit [Fintype Mode] in
 /-- **A flattened leg's evolution eigenvalue shift** — `quarticLocalLegEnergyShift` at the vertex
@@ -519,7 +520,8 @@ theorem flatVertexLegOperator_eq_smul {n : ℕ} (ε : Mode → ℝ) (q : Fin n �
     flatVertexLegOperator ε n q τ p =
       Complex.exp ((τ (flatVertexIndex n p) * flatVertexLegEnergyShift ε q p : ℝ) : ℂ) •
         quarticLocalLegOperator (q (flatVertexIndex n p)) (flatLocalLeg n p) := by
-  rw [flatVertexLegOperator, imaginaryTimeEvolve_quarticLocalLegOperator]
+  rw [flatVertexLegOperator, quarticLegOperatorForSequence,
+    imaginaryTimeEvolve_quarticLocalLegOperator]
   rfl
 
 omit [Fintype Mode] in
@@ -528,7 +530,7 @@ theorem flatVertexLegOperator_cast_mul_add {n : ℕ} (ε : Mode → ℝ)
     (h : 2 * (2 * n) = n * 4) :
     flatVertexLegOperator ε n q τ (Fin.cast h.symm ⟨(i : ℕ) * 4 + (j : ℕ), by omega⟩) =
       imaginaryTimeEvolve ε (τ i) (quarticLocalLegOperator (q i) j) := by
-  rw [flatVertexLegOperator, flatVertexIndex, flatLocalLeg,
+  rw [flatVertexLegOperator, quarticLegOperatorForSequence,
     orderedQuarticLegEquiv_cast_mul_add i j h]
 
 set_option linter.unusedFintypeInType false in
