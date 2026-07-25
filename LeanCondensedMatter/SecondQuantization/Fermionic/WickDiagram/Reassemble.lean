@@ -6,15 +6,15 @@ set_option linter.style.header false
 # Reassembling a quartic Wick diagram from a partition and connected pieces
 
 The converse of `QuarticWickDiagram.restrictComponent`: given an arbitrary `Finpartition S` and a
-connected quartic Wick diagram on each of its blocks, `reassemble` glues them into a single
-`QuarticWickDiagram Mode N S`. Unlike `restrictComponent` (which restricts an *existing* diagram
-to one of its *own* component blocks), `reassemble` starts from no ambient diagram at all — the
-partition and the per-block pieces are independent data.
+connected quartic Wick diagram on each of its blocks, `QuarticWickDiagram.reassemble` glues them
+into a single `QuarticWickDiagram Mode N S`. Unlike `restrictComponent` (which restricts an
+*existing* diagram to one of its *own* component blocks), `reassemble` starts from no ambient
+diagram at all — the partition and the per-block pieces are independent data.
 
-The construction goes through `bigLegEquiv`, identifying `S`'s `4 * S.card` legs with the disjoint
-union (`Σ`-type) of each block's own legs, via `Finpartition.equivSigmaParts`; the reassembled
-pairing is then a block-by-block gluing of each piece's own `Pairing.partner`
-(`Equiv.sigmaCongrRight`), transported back along `bigLegEquiv`.
+The construction goes through `QuarticWickDiagram.bigLegEquiv`, identifying `S`'s `4 * S.card`
+legs with the disjoint union (`Σ`-type) of each block's own legs, via
+`Finpartition.equivSigmaParts`; the reassembled pairing is then a block-by-block gluing of each
+piece's own `Pairing.partner` (`Equiv.sigmaCongrRight`), transported back along `bigLegEquiv`.
 
 The full `QuarticWickDiagram Mode N S ≃ Σ π : Finpartition S, ∀ B : π.parts,
 ConnectedQuarticWickDiagram Mode N B` equivalence `Combinatorics.WeightedDiagramFamily.decompose`
@@ -29,7 +29,7 @@ variable {Mode : Type*} {N : ℕ}
 /-- **`S`'s flattened legs, identified with the disjoint union of each block's own legs**, via
 `Finpartition.equivSigmaParts` (vertex level) and `quarticLegEquiv` (local-leg level) on both
 sides. -/
-noncomputable def bigLegEquiv {S : Finset (Fin N)} (π : Finpartition S) :
+noncomputable def QuarticWickDiagram.bigLegEquiv {S : Finset (Fin N)} (π : Finpartition S) :
     Fin (2 * (2 * S.card)) ≃ Σ B : π.parts, Fin (2 * (2 * (B : Finset (Fin N)).card)) :=
   (quarticLegEquiv S).trans <|
     (π.equivSigmaParts.prodCongr (Equiv.refl (Fin 4))).trans <|
@@ -61,12 +61,13 @@ private theorem permCongr_ne_self {α β : Type*} (e : α ≃ β) (p : Equiv.Per
   exact hp _ h
 
 /-- **The reassembled pairing**, on `S`'s `4 * S.card` legs, glued from each block's own pairing
-via `bigLegEquiv`. -/
-noncomputable def reassemblePairing {S : Finset (Fin N)} (π : Finpartition S)
+via `QuarticWickDiagram.bigLegEquiv`. -/
+noncomputable def QuarticWickDiagram.reassemblePairing {S : Finset (Fin N)} (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticWickDiagram Mode N (B : Finset (Fin N))) :
     Common.BlochDeDominicis.Pairing (2 * S.card) :=
   Common.BlochDeDominicis.Pairing.ofPartner
-    ((bigLegEquiv π).symm.permCongr (Equiv.sigmaCongrRight fun B => (F B).1.pairing.partner))
+    ((QuarticWickDiagram.bigLegEquiv π).symm.permCongr
+      (Equiv.sigmaCongrRight fun B => (F B).1.pairing.partner))
     ⟨permCongr_involutive _ _
         (sigmaCongrRight_involutive _ fun B => (F B).1.pairing.partner_involutive),
       permCongr_ne_self _ _
@@ -74,11 +75,11 @@ noncomputable def reassemblePairing {S : Finset (Fin N)} (π : Finpartition S)
 
 /-- **Reassembles a `QuarticWickDiagram Mode N S`** from an arbitrary `Finpartition S` and a
 connected diagram on each block: each vertex's label is read off from its own block's diagram
-(via `Finpartition.equivSigmaParts`), and the pairing is `reassemblePairing`. -/
-noncomputable def reassemble {S : Finset (Fin N)} (π : Finpartition S)
+(via `Finpartition.equivSigmaParts`), and the pairing is `QuarticWickDiagram.reassemblePairing`. -/
+noncomputable def QuarticWickDiagram.reassemble {S : Finset (Fin N)} (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticWickDiagram Mode N (B : Finset (Fin N))) :
     QuarticWickDiagram Mode N S where
   vertexLabel v := (F (π.equivSigmaParts v).1).1.vertexLabel (π.equivSigmaParts v).2
-  pairing := reassemblePairing π F
+  pairing := QuarticWickDiagram.reassemblePairing π F
 
 end SecondQuantization
