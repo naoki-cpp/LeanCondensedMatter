@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedFreeTwoPointFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.NumberOperator
 import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
+import LeanCondensedMatter.SecondQuantization.Common.TimeOrdering
 
 set_option linter.style.header false
 
@@ -218,19 +219,21 @@ theorem freeGibbsGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mode}
     (τ τ' : ℝ) : freeGibbsGreenFunction ε β i j τ τ' = 0 := by
   rw [freeGibbsGreenFunction, weightedFreeTwoPointFunction]
   rcases lt_trichotomy τ' τ with h | h | h
-  · rw [timeOrderedProduct_of_gt _ _ h, imaginaryTimeEvolve_annihilate,
+  · rw [Common.timeOrderedProduct_of_gt Statistics.fermion _ _ h, imaginaryTimeEvolve_annihilate,
       imaginaryTimeEvolve_create]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
       Common.normalizedWeightedDiagonal_smul,
       normalizedWeightedDiagonal_annihilate_comp_create_of_ne _ hij]
   · subst h
-    rw [timeOrderedProduct_self_time, imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
+    rw [Common.timeOrderedProduct_self_time Statistics.fermion, imaginaryTimeEvolve_annihilate,
+      imaginaryTimeEvolve_create]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
       Common.normalizedWeightedDiagonal_smul,
       Common.normalizedWeightedDiagonal_add, Common.normalizedWeightedDiagonal_neg,
       normalizedWeightedDiagonal_annihilate_comp_create_of_ne _ hij,
       normalizedWeightedDiagonal_create_comp_annihilate_of_ne _ hij]
-  · rw [timeOrderedProduct_of_lt _ _ h, imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
+  · rw [Common.timeOrderedProduct_of_lt Statistics.fermion _ _ h, imaginaryTimeEvolve_annihilate,
+      imaginaryTimeEvolve_create]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
       Common.normalizedWeightedDiagonal_smul,
       Common.normalizedWeightedDiagonal_neg,
