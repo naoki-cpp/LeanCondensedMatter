@@ -43,4 +43,27 @@ theorem QuarticWickDiagram.bigLegEquiv_legOfVertexLocal {S : Finset (Fin N)} (π
     Equiv.sigmaProdDistrib_apply, Equiv.sigmaCongrRight_apply]
   rfl
 
+/-- **`reassemble`'s vertex labels agree with `d`'s own**, when reassembling from `d`'s own
+`componentPartition` and its `restrictComponentConnected` pieces. The "easy direction"'s
+vertex-label half. -/
+theorem QuarticWickDiagram.reassemble_componentPartition_vertexLabel {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) (v : ↥S) :
+    (QuarticWickDiagram.reassemble d.componentPartition
+      fun B => d.restrictComponentConnected B.2).vertexLabel v = d.vertexLabel v := by
+  set B := (d.componentPartition.equivSigmaParts v).1 with hBdef
+  set v' := (d.componentPartition.equivSigmaParts v).2 with hv'def
+  change (d.restrictComponent B.2).vertexLabel v' = d.vertexLabel v
+  have hval : (((QuarticWickDiagram.subtypeMemBlockEquiv B.1
+      (d.componentPart_subset B.2)).symm v' : {v : ↥S // (v : Fin N) ∈ B.1}) : Fin N) =
+      (v : Fin N) := by
+    rw [QuarticWickDiagram.subtypeMemBlockEquiv_symm_val, hv'def]
+    simp [Finpartition.equivSigmaParts]
+  have heq : (((QuarticWickDiagram.subtypeMemBlockEquiv B.1
+      (d.componentPart_subset B.2)).symm v' : {v : ↥S // (v : Fin N) ∈ B.1}) : ↥S) = v :=
+    Subtype.ext hval
+  change d.vertexLabel (((QuarticWickDiagram.subtypeMemBlockEquiv B.1
+      (d.componentPart_subset B.2)).symm v' : {v : ↥S // (v : Fin N) ∈ B.1}) : ↥S) =
+      d.vertexLabel v
+  rw [heq]
+
 end SecondQuantization
