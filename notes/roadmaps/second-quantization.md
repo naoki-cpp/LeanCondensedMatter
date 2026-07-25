@@ -68,7 +68,7 @@ creation and annihilation operators exist, as a later derived construction.
 | 4 | `Fermionic/CreationAnnihilation.lean` — `create`/`annihilate` on basis vectors *with* the Jordan–Wigner-style sign factor, extended linearly; vacuum, particle number, raising/lowering proved before CAR | `proved` |
 | 5 | `Fermionic/CanonicalAnticommutationRelations.lean` — `{aᵢ, aⱼ} = 0`, `{aᵢ†, aⱼ†} = 0`, `{aᵢ, aⱼ†} = δᵢⱼ`. Spelled out in full (not abbreviated `CAR.lean`) so the module name says what it proves | `proved` |
 | 6 | `Fermionic/Hamiltonian.lean` — `numberOperator`/`totalNumberOperator`, `freeHamiltonian` (dispersion-weighted number operators), `interactionHamiltonian` (density-density coupling, a quartic monomial in creation/annihilation operators — see note below). Finite mode sets still assumed | `proved` |
-| 6.5 | `Fermionic/WeightedDiagonalFunctional.lean` — `matrixCoeff`, `traceFock`, `weightedTrace`, `weightSum`, and `normalizedWeightedDiagonal`, for an *arbitrary* weight `w : FermionOccupation Mode → ℂ` (not yet the genuine Gibbs weight `e^{-βE(n)}`, no analytic `exp` anywhere). The mathematical content is a normalized weighted diagonal functional; the Gibbs interpretation is appropriate only after Gibbs specialization. Isolates the combinatorial "sum over basis states, weighted" structure both a formal and a genuine Gibbs weight will specialize to. `traceFock`/`weightedTrace`/`weightSum`/`normalizedWeightedDiagonal` now delegate to `Common/WeightedDiagonalFunctional.lean` (see the `Common statistics-agnostic layer` section below); the fermionic names and their call sites are unaffected | `proved` |
+| 6.5 | `Common/WeightedDiagonalFunctional.lean` — `matrixCoeff`, `traceFock`, `weightedTrace`, `weightSum`, and `normalizedWeightedDiagonal`, for an *arbitrary* weight `w : Config → ℂ` (not yet the genuine Gibbs weight `e^{-βE(n)}`, no analytic `exp` anywhere). The mathematical content is a normalized weighted diagonal functional; the Gibbs interpretation is appropriate only after Gibbs specialization. Isolates the combinatorial "sum over basis states, weighted" structure both a formal and a genuine Gibbs weight will specialize to. Fermionic consumers call this `Common` API directly (the former `Fermionic/WeightedDiagonalFunctional.lean` thin wrapper was removed) | `proved` |
 | 8 | `Fermionic/QuantumLinkedCluster.lean` / `Fermionic/FormalLogPartitionFunction.lean` — combinatorial linked-cluster groundwork: occupation-cumulant connectedness under a product weight, and `log Z` as a formal power series. Not yet the genuine (time-ordered, Wick-expanded) Linked Cluster Theorem — see below | `stated` (groundwork landed, see below) |
 | 9 | `Fermionic/ImaginaryTimeEvolution.lean` — the algebraic, basis-diagonal realization of free imaginary-time evolution for the free Hamiltonian, and its Heisenberg-type conjugation of a general algebraic operator. First step of the finite-temperature Green-function / time-ordered-correlator line a genuine LCT needs | `stated` |
 
@@ -145,7 +145,7 @@ is symmetric by construction, but genuinely different analytic content stays on 
 own side: bosonic occupation-number sums are infinite series (even for a finite mode set, since
 `Occupation Mode := Mode →₀ ℕ` is unbounded per mode) where fermionic ones are `Finset.sum`s
 (`FermionOccupation Mode := Finset Mode` is finite), so the bosonic thermal-trace layer needs its
-own convergence-aware implementation, not a forced fit into `Fermionic/WeightedDiagonalFunctional.lean`'s
+own convergence-aware implementation, not a forced fit into `Common/WeightedDiagonalFunctional.lean`'s
 finite-sum shape.
 
 | File | Contents | Status |
@@ -159,7 +159,7 @@ finite-sum shape.
 | `Combinatorics/PerfectPairing.lean` | `Common.BlochDeDominicis.Pairing n` — perfect pairings of `Fin (2 * n)` behind a stable `partner` interface, implemented by fixed-point-free involutive permutations; finite enumeration, partner laws, crossing count, `eraseZeroPair`/`insertFirstPair`/`equivSigma` (the `Pairing (n+1) ≃ Σ_{j≠0} Pairing n` decomposition the Bloch–de Dominicis induction recurses on) | `proved` |
 | `Common/BlochDeDominicis/PairingWeight.lean` | `Pairing.weight s := (s.zetaInt : ℂ) ^ crossingCount`, `weight_eraseZeroPair` (the crossing-count recurrence), the four-position closed-form check | `proved` |
 | `Combinatorics/Common/DeletedFinPositions.lean` | `deletedPositions n j hzero` and `deletedPositionsOrderIso n j hzero` — the finite ordered-set seam identifying `Fin (2 * n)` with `Fin (2 * (n + 1))` after deleting two positions, used by the pairing-restriction induction | `proved` |
-| `Common/WeightedDiagonalFunctional.lean` | `Common.traceFock`/`Common.weightedTrace`/`Common.weightSum`/`Common.normalizedWeightedDiagonal`, generic over the occupation-state type `Config`; `Fermionic/WeightedDiagonalFunctional.lean` keeps thin `FermionOccupation Mode`-specialized wrappers | `proved`, fermionic wrapper unaffected |
+| `Common/WeightedDiagonalFunctional.lean` | `Common.traceFock`/`Common.weightedTrace`/`Common.weightSum`/`Common.normalizedWeightedDiagonal`, generic over the occupation-state type `Config`; fermionic consumers call this API directly | `proved` |
 
 **Retrofit done**: `Fermionic/FockSpace.lean`/`Bosonic/FockSpace.lean` define
 `FockSpaceFermionic`/`FockSpaceBosonic` directly as `Common.AlgebraicFock (…)`; both
