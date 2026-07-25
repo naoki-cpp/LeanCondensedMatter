@@ -99,32 +99,61 @@ theorem QuarticWickDiagram.subtypeMemBlockEquiv_symm_val {S : Finset (Fin N)}
       Fin N) = (v : Fin N) :=
   rfl
 
-/-- **A product-with-subtype-on-the-first-factor collapse**: `{(a, b) // p a} ≃ {a // p a} × β`.
-Internal glue for `blockLegEquiv`, not intended for reuse. -/
-private def prodSubtypeFstEquiv {α β : Type*} (p : α → Prop) :
-    {x : α × β // p x.1} ≃ {a : α // p a} × β where
-  toFun x := (⟨x.1.1, x.2⟩, x.1.2)
-  invFun x := ⟨(x.1.1, x.2), x.1.2⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
+/-- **A leg's flattened position is recovered from its own vertex and local leg.** The round trip
+`legOfVertexLocal`/`vertexOfLeg`/`localLegOfLeg` didn't state, `quarticLegEquiv`'s own
+`symm_apply_apply` specialized. -/
+theorem QuarticWickDiagram.legOfVertexLocal_vertexOfLeg_localLegOfLeg {S : Finset (Fin N)}
+    (leg : Fin (2 * (2 * S.card))) :
+    legOfVertexLocal (vertexOfLeg leg) (localLegOfLeg leg) = leg :=
+  (quarticLegEquiv S).symm_apply_apply leg
 
 /-- **The leg-reindexing equivalence between block `B`'s legs (as a subtype of `S`'s legs) and
-`B`'s own flattened leg positions `Fin (2 * (2 * B.card))`.** Goes through the same
-`quarticLegEquiv` convention on both sides (per `WickDiagram.lean`'s module docstring), so
-vertex/local-leg identity is preserved, not just cardinality. -/
+`B`'s own flattened leg positions `Fin (2 * (2 * B.card))`.** Built directly through
+`legOfVertexLocal`/`vertexOfLeg`/`localLegOfLeg` (the same `quarticLegEquiv` convention on both
+sides, per `WickDiagram.lean`'s module docstring), so vertex/local-leg identity transports by
+construction (`vertexOfLeg_blockLegEquiv`/`localLegOfLeg_blockLegEquiv`), not just cardinality. -/
 noncomputable def QuarticWickDiagram.blockLegEquiv {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts) :
-    {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg} ≃ Fin (2 * (2 * B.card)) :=
-  (Equiv.subtypeEquivOfSubtype (quarticLegEquiv S)).trans
-    ((prodSubtypeFstEquiv fun v : ↥S => (v : Fin N) ∈ B).trans
-      (((QuarticWickDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)).prodCongr
-          (Equiv.refl (Fin 4))).trans
-        (quarticLegEquiv B).symm))
+    {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg} ≃ Fin (2 * (2 * B.card)) where
+  toFun leg :=
+    legOfVertexLocal
+      (QuarticWickDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)
+        ⟨vertexOfLeg (leg : Fin (2 * (2 * S.card))), leg.2⟩)
+      (localLegOfLeg (leg : Fin (2 * (2 * S.card))))
+  invFun leg' :=
+    ⟨legOfVertexLocal
+        (((QuarticWickDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)).symm
+          (vertexOfLeg leg') : {v : ↥S // (v : Fin N) ∈ B}) : ↥S)
+        (localLegOfLeg leg'),
+      by
+        unfold QuarticWickDiagram.legInBlock
+        rw [vertexOfLeg_legOfVertexLocal]
+        exact (((QuarticWickDiagram.subtypeMemBlockEquiv B
+          (d.componentPart_subset hB)).symm (vertexOfLeg leg') :
+            {v : ↥S // (v : Fin N) ∈ B})).2⟩
+  left_inv leg := by
+    apply Subtype.ext
+    simp [Equiv.symm_apply_apply, QuarticWickDiagram.legOfVertexLocal_vertexOfLeg_localLegOfLeg]
+  right_inv leg' := by
+    simp [Equiv.apply_symm_apply, QuarticWickDiagram.legOfVertexLocal_vertexOfLeg_localLegOfLeg]
 
--- `blockLegEquiv` preserving each leg's vertex/local leg (needed before the connectedness proof
--- can compare `restrictComponent`'s `vertexGraph` to `d`'s own graph restricted to `B`) is
--- deferred to that follow-up PR — the equational unfolding through this many composed `Equiv`s
--- needs more care than a direct `simp` call gives it.
+/-- **`blockLegEquiv` preserves each leg's vertex**, exactly (not merely its ambient `Fin N`
+value): the restricted diagram's vertex, viewed back in `S` via `subtypeMemBlockEquiv`, is the
+original leg's own vertex. -/
+theorem QuarticWickDiagram.vertexOfLeg_blockLegEquiv {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts)
+    (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
+    vertexOfLeg (d.blockLegEquiv hB leg) =
+      QuarticWickDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)
+        ⟨vertexOfLeg (leg : Fin (2 * (2 * S.card))), leg.2⟩ :=
+  vertexOfLeg_legOfVertexLocal _ _
+
+/-- **`blockLegEquiv` preserves each leg's local leg.** -/
+theorem QuarticWickDiagram.localLegOfLeg_blockLegEquiv {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts)
+    (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
+    localLegOfLeg (d.blockLegEquiv hB leg) = localLegOfLeg (leg : Fin (2 * (2 * S.card))) :=
+  localLegOfLeg_legOfVertexLocal _ _
 
 private theorem permCongr_partner_involutive {α β : Type*} (e : α ≃ β)
     (p : Equiv.Perm α) (hp : Function.Involutive p) : Function.Involutive (e.permCongr p) := by
@@ -164,5 +193,9 @@ noncomputable def QuarticWickDiagram.restrictComponent {S : Finset (Fin N)}
     d.vertexLabel ((QuarticWickDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)).symm
       v).1
   pairing := d.restrictedPairing hB
+
+theorem QuarticWickDiagram.restrictComponent_pairing {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)} (hB : B ∈ d.componentPartition.parts) :
+    (d.restrictComponent hB).pairing = d.restrictedPairing hB := rfl
 
 end SecondQuantization
