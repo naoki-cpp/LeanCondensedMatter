@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.WickDiagram.Ordered
-import LeanCondensedMatter.SecondQuantization.Fermionic.QuarticLocalLeg
+import LeanCondensedMatter.SecondQuantization.Fermionic.WickDiagram.LegFamily
 import LeanCondensedMatter.SecondQuantization.Fermionic.FreeBoltzmannWeight
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PairingWeight
 import LeanCondensedMatter.Analysis.OrderedSimplexIntegral
@@ -53,16 +53,13 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] {N 
 /-! ## Time-assigned operators, per vertex order -/
 
 /-- **The operator at a flattened leg position, once a vertex order and a time assignment (one
-real time per slot) are fixed**: look up which slot/local-leg the position corresponds to
-(`orderedQuarticLegEquiv`), which vertex that slot's `order` picks out, and evolve that vertex's
-local-leg operator to the slot's assigned time. -/
+real time per slot) are fixed** — `quarticLegOperatorForSequence` (`WickDiagram/LegFamily.lean`)
+specialized to the vertex-label sequence `d.vertexLabel ∘ order` induced by the diagram `d` and
+vertex order `order`. -/
 noncomputable def orderedQuarticLegOperator (ε : Mode → ℝ) {S : Finset (Fin N)}
-    (d : QuarticWickDiagram Mode N S) (order : QuarticVertexOrder S) (τ : Fin S.card → ℝ)
-    (p : Fin (2 * (2 * S.card))) :
-    FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
-  let slotLeg := orderedQuarticLegEquiv S.card p
-  imaginaryTimeEvolve ε (τ slotLeg.1) (quarticLocalLegOperator (d.vertexLabel (order slotLeg.1))
-    slotLeg.2)
+    (d : QuarticWickDiagram Mode N S) (order : QuarticVertexOrder S) (τ : Fin S.card → ℝ) :
+    Fin (2 * (2 * S.card)) → FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
+  quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ
 
 /-! ## Pair contraction values -/
 
@@ -133,7 +130,7 @@ theorem orderedQuarticPairValue_eq (ε : Mode → ℝ) (β : ℝ) {S : Finset (F
             (quarticLocalLegOperator
               (d.vertexLabel (order (orderedQuarticLegEquiv S.card b).1))
               (orderedQuarticLegEquiv S.card b).2)) := by
-  simp only [orderedQuarticPairValue, orderedQuarticLegOperator,
+  simp only [orderedQuarticPairValue, orderedQuarticLegOperator, quarticLegOperatorForSequence,
     imaginaryTimeEvolve_quarticLocalLegOperator, LinearMap.smul_comp, LinearMap.comp_smul,
     smul_smul, freeGibbsExpectation_smul]
   ring

@@ -616,6 +616,35 @@ downstream consumer (`ImaginaryTimeEvolution.lean`, `FormalExp.lean`, `WeightedN
 already needs no `[Fintype Mode]`, so the only benefit would be reusing `diagonalOperator_comp` for
 `occupationProjector_mul`; left as a follow-up since it isn't blocking anything.
 
+**Post-PR-6 refactor (gpt's review), a second 3-PR plan for the quartic-leg/Dyson-diagram API.**
+- **PR A done**: new `Fermionic/QuarticLocalLeg.lean`, a pure move (no statement/proof changes) of
+  a single quartic vertex's four local legs' semantics — previously split between
+  `WickDiagram/Amplitude.lean` (`quarticLocalLegOperator`, `quarticLocalLegEnergyShift`,
+  `imaginaryTimeEvolve_quarticLocalLegOperator`) and `DysonDiagramExpansion.lean`
+  (`quarticLocalLegMode`, `quarticLocalLegIsCreate`, `anticomm_quarticLocalLegOperator`,
+  `zetaCommutator_quarticLocalLegOperator`) — gathered into one module, since this content is
+  about a vertex's own legs, not about diagrams or the Dyson expansion. Dependency direction:
+  `QuarticInteraction`/`ImaginaryTimeEvolution`/`ExchangeAlgebra` → `QuarticLocalLeg` →
+  `WickDiagram/Amplitude`/`DysonDiagramExpansion`.
+- **PR B done**: new `Fermionic/WickDiagram/LegFamily.lean` gained
+  `quarticLegOperatorForSequence ε q τ p` — the atomic operator at a flattened leg position for
+  *any* vertex-label sequence `q`/time assignment `τ` (looks up the slot/local-leg via
+  `orderedQuarticLegEquiv`, evolves that vertex's local-leg operator to the slot's time), the
+  common shape behind `DysonDiagramExpansion.lean`'s `flatVertexLegOperator` and
+  `WickDiagram/Amplitude.lean`'s `orderedQuarticLegOperator`. Both are now literal
+  `quarticLegOperatorForSequence` specializations (`flatVertexLegOperator ε n q τ :=
+  quarticLegOperatorForSequence ε q τ`; `orderedQuarticLegOperator ε d order τ :=
+  quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ`), so
+  `orderedQuarticLegOperator_eq_flatVertexLegOperator` is now `rfl` *structurally* (both unfold to
+  the same shared definition), not a coincidental syntactic match. Two proof sites
+  (`flatVertexLegOperator_eq_smul`, `flatVertexLegOperator_cast_mul_add`) needed an extra
+  `quarticLegOperatorForSequence` unfold step in their `rw` chains after the indirection; no
+  theorem statements changed.
+- **PR C not yet done**: splitting `DysonDiagramExpansion.lean` into
+  `DysonDiagramExpansion/VertexExpansion.lean` (Dyson-coefficient-to-vertex-label-sum content) and
+  `DysonDiagramExpansion/WickExpansion.lean` (Bloch–de Dominicis application onward), with the
+  existing file becoming a two-line import umbrella.
+
 **Step 1 done, in `Fermionic/ImaginaryTimeEvolution.lean`:**
 - `imaginaryTimeEvolveFree ε τ` — `e^{τH₀}` for the free Hamiltonian, defined directly on the
   occupation-number basis via `Complex.exp` of each basis state's eigenvalue `E(n) := Σᵢ∈n ε(i)`
