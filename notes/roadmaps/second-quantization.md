@@ -288,12 +288,15 @@ Bloch–de Dominicis theorem, and the non-commutative time-ordered Dyson series.
      `Fermionic/QuarticLocalLeg.lean`'s per-leg operator/energy-shift/CAR semantics), plus the
      vertex-order-sum reindexing (`sum_quarticWickDiagram_eq_sum_orderedData`).
    - **PR 7 in progress, split into 7a/7b/7c**: **PR 7a complete**,
-     `Fermionic/WickDiagram/ComponentPartition.lean`'s `componentPartition`. **PR 7b partial**,
-     `Fermionic/WickDiagram/ComponentRestriction.lean`'s `restrictComponent` — restricts vertex
-     labels and pairing to one component block, but does not yet prove the result is connected or
-     construct reassembly/the `Diagram ≃ Σ π, ∀ B, ConnectedDiagram B` equivalence. **Next**:
-     finish PR 7b (connectedness + reassembly), then amplitude factorization (PR 7c), the
-     finite-set LCT, and the `PowerSeries.log` coefficient bridge.
+     `Fermionic/WickDiagram/ComponentPartition.lean`'s `componentPartition`. **PR 7b nearly
+     complete**: `ComponentRestriction.lean`'s `restrictComponent` (vertex-label/pairing
+     restriction to one block) and `ComponentConnected.lean`'s
+     `restrictComponent_isConnected`/`restrictComponentConnected` (the restricted diagram is a
+     genuine `ConnectedQuarticWickDiagram`, via an adjacency-correspondence lemma plus a
+     walk-stays-in-its-component induction). **Not done yet**: reassembly and the
+     `QuarticWickDiagram ≃ Σ π, ∀ B, ConnectedQuarticWickDiagram` equivalence
+     `WeightedDiagramFamily.decompose` needs. **Next**: finish PR 7b (reassembly), then amplitude
+     factorization (PR 7c), the finite-set LCT, and the `PowerSeries.log` coefficient bridge.
 
 7. **Not started**: move/generalize the fermionic linked-cluster bridge (Phase 8's
    `Fermionic/QuantumLinkedCluster.lean`, currently only a product-weight/independent-region toy
