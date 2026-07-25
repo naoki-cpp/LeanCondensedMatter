@@ -9,133 +9,19 @@ import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.Induction
 set_option linter.style.header false
 
 /-!
-# The Dyson-to-diagram expansion (PR 6)
+# Dyson-to-diagram expansion
 
-Step 6 (PR 6) of the diagram-connectedness plan (`notes/roadmaps/second-quantization.md`): the
-final theorem this line of PRs has been building towards,
+This module proves that the Dyson vertex moment of a quartic interaction equals the sum of
+quartic Wick-diagram amplitudes:
 
 ```
 dysonVertexMoment ε β (quarticInteraction g) S =
   ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d
 ```
 
-**Status: complete, fully proved.**
-`dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude` is exactly this theorem.
-The rest of this docstring records how it was built, part by part.
-
-`normalizedDysonPartitionCoeff`/`dysonVertexMoment` are bridged to
-`freeGibbsExpectation ε β (dysonCoeff ε V n β)` — the form the general Bloch–de Dominicis theorem
-(`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing`) can actually be applied to.
-`nestedVertexOperatorComp` (the `orderedSimplexIntegral` integrand's operator-valued ingredient)
-is defined, with its recursive unfolding lemmas, and its own joint continuity in the full time
-vector is established (`continuous_matrixCoeff_nestedVertexOperatorComp`/
-`continuous_freeGibbsExpectation_comp_nestedVertexOperatorComp`).
-`freeGibbsExpectation_comp_dysonCoeff_quarticInteraction` — the key induction expanding
-`dysonCoeff` of `quarticInteraction`, left-composed with an arbitrary prefix operator, into a
-`(-1)ⁿ`-signed sum over vertex-label sequences of an `orderedSimplexIntegral` of
-`nestedVertexOperatorComp` values — is now **fully proven**, using
-`Analysis/OrderedSimplexIntegral.lean`'s `continuous_orderedSimplexIntegral_of_continuous` (the
-joint continuity-in-bound fact discovered missing while first attempting this induction) to swap
-the finite vertex-label sum out past the outer `∫ σ in 0..t`, and a locally-defined
-`QuarticVertexLabel Mode × (Fin n → QuarticVertexLabel Mode) ≃ (Fin (n + 1) → QuarticVertexLabel
-Mode)` equivalence (`Fin.cons`-based) to reindex the resulting (outer label, inner label sequence)
-double sum into a single `Fin (n + 1) → QuarticVertexLabel Mode` sum.
-
-`nestedVertexOperatorComp` is further **fully flattened** into a `Common.prodComp` of its `4n`
-atomic (single-mode creation/annihilation) legs
-(`prodComp_ofFn_flatVertexLegOperator_eq_nestedVertexOperatorComp`), via
-`orderedQuarticLegEquiv_cast_mul_add`/`flatVertexLegOperator_cast_mul_add` (the index-arithmetic
-bridge tying `orderedQuarticLegEquiv`'s multiplicative domain identification to
-`List.ofFn_fin_append`'s additive one) and `eq_cast_mul_add_orderedQuarticLegEquiv` (expressing an
-*arbitrary* flattened position in `i * 4 + j` form, needed to match the induction's "tail" piece
-at an unconstrained position, not just the specific ones the bridge lemma constructs) — combined
-with `Common.prodComp_append` and `interactionPicture_quarticVertexOperator_eq_prodComp`. This is
-the last purely combinatorial/index-bookkeeping step before the genuine physics content
-(discharging the general theorem's eigenoperator/zeta-commutator hypotheses) is needed.
-
-The general Bloch–de Dominicis theorem's **first hypothesis is now discharged for all `4n`
-flattened legs**: `heisenbergEvolve_flatVertexLegOperator` shows every atomic leg operator
-`flatVertexLegOperator` produces is an eigenoperator of `heisenbergEvolve (fermionEnergy ε) (-β)`
-(the free-evolution eigenvalue shift is *independent of the dressing time* `τ` each leg carries —
-`Common.heisenbergEvolve_heisenbergEvolve`, new in `Common/DiagonalEvolution.lean`, supplies the
-needed one-parameter-semigroup commutativity).
-
-The general theorem's **second hypothesis is now discharged for a single vertex's four legs**:
-`zetaCommutator_quarticLocalLegOperator` (via `anticomm_quarticLocalLegOperator`, a single closed
-formula covering same-vertex and cross-vertex leg pairs alike — `0` for two legs of the same kind
-(CAR's `anticomm_create_create`/`anticomm_annihilate_annihilate`, always `0` even at the same
-mode), `δ` on the two legs' modes otherwise (CAR's `anticomm_annihilate_create`/the new
-`anticomm_create_annihilate`)) is the *bare* (untime-evolved) commutator constant.
-
-The second hypothesis is now **fully discharged for the evolved, flattened `4n`-leg family, at
-arbitrary positions `p, p'`**: `zetaCommutator_flatVertexLegOperator` combines
-`flatVertexLegOperator_eq_smul` (reducing an evolved leg to a bare `quarticLocalLegOperator` times
-its own `Complex.exp` eigenvalue-shift scalar), the new `Common.zetaCommutator_smul_smul`
-(bilinearity of `zetaCommutator` in scalar multiples, `Common/ExchangeCommutator.lean`), and
-`zetaCommutator_quarticLocalLegOperator` into `flatVertexLegCommutatorCoeff`, a single named
-closed-form `c i j` family, valid for *any* pair of flattened positions (same-vertex or
-cross-vertex alike).
-
-**Refactored (no mathematical content change)**: the repeated `(orderedQuarticLegEquiv n p).1`/
-`.2` projections are now named `flatVertexIndex`/`flatLocalLeg`, and the three families the general
-theorem will eventually be applied to are named explicitly — `flatVertexLegOperator ε n q τ` (the
-`4n` operators), `flatVertexLegEnergyShift ε q` (the eigenvalue shifts), and
-`flatVertexLegCommutatorCoeff ε q τ` (the commutator coefficients) — rather than left as inlined
-case analyses at each call site. `flatVertexLegOperator_eq_smul` is the shared normal form both the
-eigenoperator and commutator theorems now reduce to.
-
-The general theorem's **third (non-resonance) hypothesis is now discharged, for every real
-eigenvalue shift**: `one_sub_zetaInt_fermion_mul_exp_ne_zero` shows `1 - ζ * exp(x * β) ≠ 0` holds
-unconditionally for `ζ := Statistics.fermion.zetaInt = -1` and *any* real `x, β` — `1 + exp(x * β)`
-is a positive real number, hence nonzero even as a complex number — and
-`one_sub_zetaInt_fermion_mul_exp_flatVertexLegEnergyShift_ne_zero` specializes it to `x :=
-flatVertexLegEnergyShift ε q p`. All three of the general theorem's hypotheses are now discharged
-for the flattened `4n`-leg family.
-
-**The general theorem is now actually applied**:
-`freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing` invokes
-`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` (at its own `n := 2 * n`,
-matching `flatVertexLegOperator`'s `Fin (2 * (2 * n))` domain exactly, no cast needed) on the
-flattened family, using all three discharged hypotheses, then bridges the conclusion back through
-`freeGibbsExpectation_eq_gibbsExpectation` and
-`prodComp_ofFn_flatVertexLegOperator_eq_nestedVertexOperatorComp` to express
-`freeGibbsExpectation ε β (nestedVertexOperatorComp ε n q τ)` as a sum, over `Pairing (2 * n)`, of
-crossing-sign-weighted products of 2-point `freeGibbsExpectation` values of `flatVertexLegOperator`
-pairs.
-
-**`dysonVertexMoment` is now expressed as a genuine `(vertex-label sequence, pairing)` double
-sum**: `Analysis/OrderedSimplexIntegral.lean` gained `orderedSimplexIntegral_finsetSum` (a finite
-sum commutes with `orderedSimplexIntegral`, given continuity of every summand).
-`orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing` uses it,
-together with `freeGibbsExpectation_flatVertexLegOperator_pair_eq`'s closed form for a pair value
-(the `flatVertexLegOperator` analogue of `WickDiagram/Amplitude.lean`'s
-`orderedQuarticPairValue_eq`, supplying the continuity side conditions), to pull the `Pairing (2 *
-n)` sum out past the
-`orderedSimplexIntegral`. `dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing` combines
-this with the key induction (`freeGibbsExpectation_comp_dysonCoeff_quarticInteraction` at `L :=
-LinearMap.id`, `t := β`) to express `dysonVertexMoment ε β (quarticInteraction g) S` as `S.card! *
-(-1)^S.card` times a sum, over vertex-label sequences `q : Fin S.card → QuarticVertexLabel Mode`
-and pairings `Pairing (2 * S.card)`, of `(∏ i, g (q i)) * pairing.weight * (integrated pairing
-contraction term)`.
-
-**The final reindex, completing PR 6**: `WickDiagram/Ordered.lean` gained `someVertexOrder`
-(exhibiting an element of `QuarticVertexOrder S` via `Fintype.equivFin`/`finCongr`) and
-`card_quarticVertexOrder` (`Fintype.card (QuarticVertexOrder S) = S.card!`, via
-`Fintype.card_equiv`). This file's `orderedQuarticLegOperator_eq_flatVertexLegOperator` identifies
-`WickDiagram/Amplitude.lean`'s per-diagram leg operator with `flatVertexLegOperator` — since both
-are now specializations of `WickDiagram/LegFamily.lean`'s shared
-`quarticLegOperatorForSequence`, this is `rfl` *structurally*, not coincidentally — which feeds
-`couplingWeight_eq_prod_vertexLabel_order` (reindexing a diagram's coupling weight along a
-vertex order via `Equiv.prod_comp`) and `orderedSimplexContribution_eq_pairing_sum_term` (a
-diagram's fixed-order contribution, rewritten via `flatVertexLegOperator`). Combined into
-`couplingWeight_mul_orderedSimplexContribution_eq`, then summed over all diagrams at a fixed order
-via `sum_quarticWickDiagram_eq_sum_orderedData`/`Fintype.sum_prod_type`
-(`sum_couplingWeight_mul_orderedSimplexContribution_eq`) — the result is *order-independent*, so
-summing over all `S.card!`-many vertex orders
-(`sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment`) exactly reproduces
-`dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing`'s own `S.card!` prefactor.
-`dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude` states the result in the
-canonical direction.
+(`dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude`), via the general
+finite-temperature Bloch–de Dominicis theorem. See `notes/roadmaps/second-quantization.md` for the
+surrounding diagram-connectedness plan.
 -/
 
 namespace SecondQuantization
@@ -492,16 +378,6 @@ noncomputable def flatLocalLeg (n : ℕ) (p : Fin (2 * (2 * n))) : Fin 4 :=
   (orderedQuarticLegEquiv n p).2
 
 omit [Fintype Mode] in
-/-- **The atomic operator at a flattened leg position, for a bare vertex-label sequence `q` (not
-yet a `QuarticWickDiagram`)** — `quarticLegOperatorForSequence` (`WickDiagram/LegFamily.lean`),
-generalized off a fixed diagram/order pair so the flattening lemma below can be stated for an
-arbitrary `q : Fin n → QuarticVertexLabel Mode`. -/
-noncomputable def flatVertexLegOperator (ε : Mode → ℝ) (n : ℕ)
-    (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) :
-    Fin (2 * (2 * n)) → FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
-  quarticLegOperatorForSequence ε q τ
-
-omit [Fintype Mode] in
 /-- **A flattened leg's evolution eigenvalue shift** — `quarticLocalLegEnergyShift` at the vertex
 label and local leg a flattened position `p` corresponds to. Named so the general theorem's own
 `q : Fin (2 * (2 * n)) → ℝ` eigenvalue-shift family can be stated as `flatVertexLegEnergyShift ε q`
@@ -512,33 +388,32 @@ noncomputable def flatVertexLegEnergyShift {n : ℕ} (ε : Mode → ℝ)
 
 omit [Fintype Mode] in
 /-- **Every flattened leg operator is, up to its own `Complex.exp` eigenvalue-shift scalar, a bare
-atomic `quarticLocalLegOperator`** — the normal form both `heisenbergEvolve_flatVertexLegOperator`
-and `zetaCommutator_flatVertexLegOperator` reduce to before invoking, respectively,
+atomic `quarticLocalLegOperator`** — the normal form both
+`heisenbergEvolve_quarticLegOperatorForSequence` and `zetaCommutator_quarticLegOperatorForSequence`
+reduce to before invoking, respectively,
 `heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator`/`Common.zetaCommutator_smul_smul`. -/
-theorem flatVertexLegOperator_eq_smul {n : ℕ} (ε : Mode → ℝ) (q : Fin n → QuarticVertexLabel Mode)
-    (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))) :
-    flatVertexLegOperator ε n q τ p =
+theorem quarticLegOperatorForSequence_eq_smul {n : ℕ} (ε : Mode → ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))) :
+    quarticLegOperatorForSequence ε q τ p =
       Complex.exp ((τ (flatVertexIndex n p) * flatVertexLegEnergyShift ε q p : ℝ) : ℂ) •
         quarticLocalLegOperator (q (flatVertexIndex n p)) (flatLocalLeg n p) := by
-  rw [flatVertexLegOperator, quarticLegOperatorForSequence,
-    imaginaryTimeEvolve_quarticLocalLegOperator]
+  rw [quarticLegOperatorForSequence, imaginaryTimeEvolve_quarticLocalLegOperator]
   rfl
 
 omit [Fintype Mode] in
-theorem flatVertexLegOperator_cast_mul_add {n : ℕ} (ε : Mode → ℝ)
+theorem quarticLegOperatorForSequence_cast_mul_add {n : ℕ} (ε : Mode → ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (i : Fin n) (j : Fin 4)
     (h : 2 * (2 * n) = n * 4) :
-    flatVertexLegOperator ε n q τ (Fin.cast h.symm ⟨(i : ℕ) * 4 + (j : ℕ), by omega⟩) =
+    quarticLegOperatorForSequence ε q τ (Fin.cast h.symm ⟨(i : ℕ) * 4 + (j : ℕ), by omega⟩) =
       imaginaryTimeEvolve ε (τ i) (quarticLocalLegOperator (q i) j) := by
-  rw [flatVertexLegOperator, quarticLegOperatorForSequence,
-    orderedQuarticLegEquiv_cast_mul_add i j h]
+  rw [quarticLegOperatorForSequence, orderedQuarticLegEquiv_cast_mul_add i j h]
 
 set_option linter.unusedFintypeInType false in
 /-- **A single evolved atomic leg operator is an eigenoperator of `heisenbergEvolve (fermionEnergy
 ε) (-β)`, with an eigenvalue shift *independent of the dressing time* `τ`** — the fact the general
 Bloch–de Dominicis theorem's own eigenoperator hypothesis needs, for each of the `4n` legs
-`flatVertexLegOperator` produces. Proved via `Common.heisenbergEvolve_heisenbergEvolve` (the two
-evolutions, at `τ` and `-β`, combine into a single evolution at `τ + (-β)`) and
+`quarticLegOperatorForSequence` produces. Proved via `Common.heisenbergEvolve_heisenbergEvolve`
+(the two evolutions, at `τ` and `-β`, combine into a single evolution at `τ + (-β)`) and
 `imaginaryTimeEvolve_quarticLocalLegOperator` (applied twice: once at `τ + (-β)` to evaluate the
 combined evolution, once at `τ` in reverse to factor the `τ`-dependent piece back out) — the two
 resulting `Complex.exp`s combine via `exp_add`/`ring`, leaving only the `-β`-dependent factor. -/
@@ -560,15 +435,15 @@ theorem heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode 
   ring
 
 set_option linter.unusedFintypeInType false in
-/-- **Every atomic leg operator `flatVertexLegOperator` produces is an eigenoperator of
+/-- **Every atomic leg operator `quarticLegOperatorForSequence` produces is an eigenoperator of
 `heisenbergEvolve (fermionEnergy ε) (-β)`** — direct specialization of
 `heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator` to the flattened position `p`'s own
 vertex label and time assignment. -/
-theorem heisenbergEvolve_flatVertexLegOperator {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
+theorem heisenbergEvolve_quarticLegOperatorForSequence {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))) :
-    Common.heisenbergEvolve (fermionEnergy ε) (-β) (flatVertexLegOperator ε n q τ p) =
+    Common.heisenbergEvolve (fermionEnergy ε) (-β) (quarticLegOperatorForSequence ε q τ p) =
       Complex.exp ((flatVertexLegEnergyShift ε q p * (-β) : ℝ) : ℂ) •
-        flatVertexLegOperator ε n q τ p :=
+        quarticLegOperatorForSequence ε q τ p :=
   heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator ε β
     (q (flatVertexIndex n p)) (flatLocalLeg n p) (τ (flatVertexIndex n p))
 
@@ -592,17 +467,18 @@ omit [Fintype Mode] in
 by induction on `n`: the base case is trivial (`Fin (2 * (2 * 0))` is empty); the successor case
 reduces, via `nestedVertexOperatorComp_succ`,
 `interactionPicture_quarticVertexOperator_eq_prodComp`, the inductive hypothesis, and
-`Common.prodComp_append`, to the *pure list* equality `List.ofFn (flatVertexLegOperator ε (n + 1)
-q τ) = List.ofFn (4 atoms for vertex 0) ++ List.ofFn (flatVertexLegOperator ε n (tail q) (tail
-τ))`, proved via `List.ofFn_fin_append`/`Fin.addCases` splitting the domain additively into `4 + 2
-* (2 * n)`: the `left` branch matches `flatVertexLegOperator_cast_mul_add` at vertex `0` directly;
-the `right` branch uses `eq_cast_mul_add_orderedQuarticLegEquiv` to express an *arbitrary*
-position `k` of the smaller `n`-fold piece in `i' * 4 + j'` form, then matches both sides via
-`flatVertexLegOperator_cast_mul_add` (at `n` for the RHS, at `n + 1` and vertex `i'.succ` for the
+`Common.prodComp_append`, to the *pure list* equality `List.ofFn (quarticLegOperatorForSequence ε
+q τ) = List.ofFn (4 atoms for vertex 0) ++ List.ofFn (quarticLegOperatorForSequence ε (tail q)
+(tail τ))`, proved via `List.ofFn_fin_append`/`Fin.addCases` splitting the domain additively into
+`4 + 2 * (2 * n)`: the `left` branch matches `quarticLegOperatorForSequence_cast_mul_add` at
+vertex `0` directly; the `right` branch uses `eq_cast_mul_add_orderedQuarticLegEquiv` to express an
+*arbitrary* position `k` of the smaller `n`-fold piece in `i' * 4 + j'` form, then matches both
+sides via `quarticLegOperatorForSequence_cast_mul_add` (at `n` for the RHS, at `n + 1` and vertex
+`i'.succ` for the
 LHS) — the two positions agree because `4 + (i' * 4 + j') = i'.succ * 4 + j'` as naturals. -/
-theorem prodComp_ofFn_flatVertexLegOperator_eq_nestedVertexOperatorComp (ε : Mode → ℝ) :
+theorem prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp (ε : Mode → ℝ) :
     ∀ (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ),
-      Common.prodComp (List.ofFn (flatVertexLegOperator ε n q τ)) =
+      Common.prodComp (List.ofFn (quarticLegOperatorForSequence ε q τ)) =
         nestedVertexOperatorComp ε n q τ
   | 0, q, τ => by
     have h0 : 2 * (2 * 0) = 0 := by ring
@@ -613,18 +489,19 @@ theorem prodComp_ofFn_flatVertexLegOperator_eq_nestedVertexOperatorComp (ε : Mo
     have hcard' : 2 * (2 * n) = n * 4 := by ring
     have h2 : 2 * (2 * (n + 1)) = 4 + 2 * (2 * n) := by ring
     rw [nestedVertexOperatorComp_succ, interactionPicture_quarticVertexOperator_eq_prodComp,
-      ← prodComp_ofFn_flatVertexLegOperator_eq_nestedVertexOperatorComp ε n (fun i => q i.succ)
-        (fun i => τ i.succ),
+      ← prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp ε n
+        (fun i => q i.succ) (fun i => τ i.succ),
       ← Common.prodComp_append, List.ofFn_congr h2, ← List.ofFn_fin_append]
     refine congrArg Common.prodComp
       (congrArg List.ofFn (funext (Fin.addCases (fun j => ?_) fun k => ?_)))
     · have e1 : Fin.cast h2.symm (Fin.castAdd (2 * (2 * n)) j) =
           Fin.cast hcard.symm ⟨((0 : Fin (n + 1)) : ℕ) * 4 + (j : ℕ), by omega⟩ := by
         apply Fin.ext; simp
-      change flatVertexLegOperator ε (n + 1) q τ (Fin.cast h2.symm (Fin.castAdd _ j)) =
+      change quarticLegOperatorForSequence ε q τ (Fin.cast h2.symm (Fin.castAdd _ j)) =
         Fin.append (fun j : Fin 4 => imaginaryTimeEvolve ε (τ 0) (quarticLocalLegOperator (q 0) j))
-          (flatVertexLegOperator ε n (fun i => q i.succ) (fun i => τ i.succ)) (Fin.castAdd _ j)
-      rw [Fin.append_left, e1, flatVertexLegOperator_cast_mul_add ε q τ 0 j hcard]
+          (quarticLegOperatorForSequence ε (fun i => q i.succ) (fun i => τ i.succ))
+          (Fin.castAdd _ j)
+      rw [Fin.append_left, e1, quarticLegOperatorForSequence_cast_mul_add ε q τ 0 j hcard]
     · have hk := eq_cast_mul_add_orderedQuarticLegEquiv k hcard'
       have e2 : Fin.cast h2.symm (Fin.natAdd 4 k) = Fin.cast hcard.symm
           ⟨((orderedQuarticLegEquiv n k).1.succ : ℕ) * 4 + ((orderedQuarticLegEquiv n k).2 : ℕ),
@@ -636,13 +513,15 @@ theorem prodComp_ofFn_flatVertexLegOperator_eq_nestedVertexOperatorComp (ε : Mo
           have := congrArg Fin.val hk
           simpa using this
         omega
-      change flatVertexLegOperator ε (n + 1) q τ (Fin.cast h2.symm (Fin.natAdd 4 k)) =
+      change quarticLegOperatorForSequence ε q τ (Fin.cast h2.symm (Fin.natAdd 4 k)) =
         Fin.append (fun j : Fin 4 => imaginaryTimeEvolve ε (τ 0) (quarticLocalLegOperator (q 0) j))
-          (flatVertexLegOperator ε n (fun i => q i.succ) (fun i => τ i.succ)) (Fin.natAdd 4 k)
+          (quarticLegOperatorForSequence ε (fun i => q i.succ) (fun i => τ i.succ))
+          (Fin.natAdd 4 k)
       rw [Fin.append_right, e2,
-        flatVertexLegOperator_cast_mul_add ε q τ (orderedQuarticLegEquiv n k).1.succ
+        quarticLegOperatorForSequence_cast_mul_add ε q τ (orderedQuarticLegEquiv n k).1.succ
           (orderedQuarticLegEquiv n k).2 hcard]
-      have hrest := flatVertexLegOperator_cast_mul_add ε (fun i => q i.succ) (fun i => τ i.succ)
+      have hrest := quarticLegOperatorForSequence_cast_mul_add ε
+        (fun i => q i.succ) (fun i => τ i.succ)
         (orderedQuarticLegEquiv n k).1 (orderedQuarticLegEquiv n k).2 hcard'
       rw [← hk] at hrest
       exact hrest.symm
@@ -657,9 +536,10 @@ omit [Fintype Mode] in
 /-- **The general theorem's `c i j` coefficient family**, for the evolved, flattened `4n`-leg
 family — the product of both legs' `Complex.exp` eigenvalue-shift scalars and the bare
 single-vertex commutator indicator (`quarticLocalLegIsCreate`/`quarticLocalLegMode`-based), exactly
-what `zetaCommutator_flatVertexLegOperator` computes `Common.zetaCommutator` to equal. Naming this
-family is what lets the eventual `Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing`
-application read as passing three named families (`flatVertexLegOperator ε n q τ`,
+what `zetaCommutator_quarticLegOperatorForSequence` computes `Common.zetaCommutator` to equal.
+Naming this family is what lets the eventual
+`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing`
+application read as passing three named families (`quarticLegOperatorForSequence ε q τ`,
 `flatVertexLegEnergyShift ε q`, `flatVertexLegCommutatorCoeff ε q τ`) rather than three copies of
 the same inlined case analysis. -/
 noncomputable def flatVertexLegCommutatorCoeff {n : ℕ} (ε : Mode → ℝ)
@@ -674,21 +554,21 @@ noncomputable def flatVertexLegCommutatorCoeff {n : ℕ} (ε : Mode → ℝ)
 
 omit [Fintype Mode] in
 /-- **The general theorem's zeta-commutator hypothesis, for two arbitrary evolved/flattened leg
-positions** — combines `flatVertexLegOperator_eq_smul` (reducing each evolved leg to a bare
-`quarticLocalLegOperator` times its own `Complex.exp` eigenvalue-shift scalar),
+positions** — combines `quarticLegOperatorForSequence_eq_smul` (reducing each evolved leg to a
+bare `quarticLocalLegOperator` times its own `Complex.exp` eigenvalue-shift scalar),
 `Common.zetaCommutator_smul_smul` (pulling both scalars out of the commutator as a product), and
 `zetaCommutator_quarticLocalLegOperator` (the bare single-vertex commutator constant) into
 `flatVertexLegCommutatorCoeff`, now valid for *any* pair of flattened positions `p, p'` —
 same-vertex or cross-vertex alike, since the underlying
 `quarticLocalLegOperator`/`quarticLocalLegMode`/`quarticLocalLegIsCreate` machinery never assumed a
 shared vertex. -/
-theorem zetaCommutator_flatVertexLegOperator {n : ℕ} (ε : Mode → ℝ)
+theorem zetaCommutator_quarticLegOperatorForSequence {n : ℕ} (ε : Mode → ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p p' : Fin (2 * (2 * n))) :
     Common.zetaCommutator ((Statistics.fermion.zetaInt : ℤ) : ℂ)
-        (flatVertexLegOperator ε n q τ p) (flatVertexLegOperator ε n q τ p') =
+        (quarticLegOperatorForSequence ε q τ p) (quarticLegOperatorForSequence ε q τ p') =
       flatVertexLegCommutatorCoeff ε q τ p p' •
         (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) := by
-  rw [flatVertexLegOperator_eq_smul, flatVertexLegOperator_eq_smul,
+  rw [quarticLegOperatorForSequence_eq_smul, quarticLegOperatorForSequence_eq_smul,
     Common.zetaCommutator_smul_smul, zetaCommutator_quarticLocalLegOperator, smul_smul,
     flatVertexLegCommutatorCoeff]
 
@@ -698,7 +578,7 @@ theorem zetaCommutator_flatVertexLegOperator {n : ℕ} (ε : Mode → ℝ)
 eigenvalue shift** — `Statistics.fermion.zetaInt = -1` turns `1 - ζ * exp(x * β)` into
 `1 + exp(x * β)`, and `Complex.exp` at a real argument is a positive real number, so this can never
 vanish. Unlike the eigenoperator/commutator hypotheses, this one needs no information about the
-`flatVertexLegOperator` family at all — it holds for *every* real `x`, `β`. -/
+`quarticLegOperatorForSequence` family at all — it holds for *every* real `x`, `β`. -/
 theorem one_sub_zetaInt_fermion_mul_exp_ne_zero (x β : ℝ) :
     (1 : ℂ) - ((Statistics.fermion.zetaInt : ℤ) : ℂ) * Complex.exp ((x * β : ℝ) : ℂ) ≠ 0 := by
   have hpos : (0 : ℝ) < 1 + Real.exp (x * β) := by positivity
@@ -715,8 +595,9 @@ omit [Fintype Mode] [DecidableEq Mode] [LinearOrder Mode] in
 specialization of `one_sub_zetaInt_fermion_mul_exp_ne_zero` to `x := flatVertexLegEnergyShift ε q
 p`. This is the *third and final* hypothesis
 `Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` needs; combined with
-`heisenbergEvolve_flatVertexLegOperator` and `zetaCommutator_flatVertexLegOperator`, the general
-theorem can now be applied to the flattened `4n`-leg family. -/
+`heisenbergEvolve_quarticLegOperatorForSequence` and
+`zetaCommutator_quarticLegOperatorForSequence`, the general theorem can now be applied to the
+flattened `4n`-leg family. -/
 theorem one_sub_zetaInt_fermion_mul_exp_flatVertexLegEnergyShift_ne_zero {n : ℕ} (ε : Mode → ℝ)
     (β : ℝ) (q : Fin n → QuarticVertexLabel Mode) (p : Fin (2 * (2 * n))) :
     (1 : ℂ) - ((Statistics.fermion.zetaInt : ℤ) : ℂ) *
@@ -740,15 +621,15 @@ theorem traceFock_diagonalEvolution_fermionEnergy_ne_zero (ε : Mode → ℝ) (�
 
 /-- **`nestedVertexOperatorComp`'s free Gibbs expectation, as the general theorem's pairing sum**
 — applies `Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` (at its own `n :=
-2 * n`, matching `flatVertexLegOperator`'s `Fin (2 * (2 * n))` domain exactly, with no cast needed)
-to the flattened family `flatVertexLegOperator ε n q τ`, using
-`heisenbergEvolve_flatVertexLegOperator`, `zetaCommutator_flatVertexLegOperator`, and
-`one_sub_zetaInt_fermion_mul_exp_flatVertexLegEnergyShift_ne_zero` for its three hypotheses, then
-bridges the conclusion back from `Common.gibbsExpectation` to `freeGibbsExpectation`
+2 * n`, matching `quarticLegOperatorForSequence`'s `Fin (2 * (2 * n))` domain exactly, with no cast
+needed) to the flattened family `quarticLegOperatorForSequence ε q τ`, using
+`heisenbergEvolve_quarticLegOperatorForSequence`, `zetaCommutator_quarticLegOperatorForSequence`,
+and `one_sub_zetaInt_fermion_mul_exp_flatVertexLegEnergyShift_ne_zero` for its three hypotheses,
+then bridges the conclusion back from `Common.gibbsExpectation` to `freeGibbsExpectation`
 (`freeGibbsExpectation_eq_gibbsExpectation`) and from `Common.prodComp (List.ofFn
-(flatVertexLegOperator ε n q τ))` to `nestedVertexOperatorComp ε n q τ`
-(`prodComp_ofFn_flatVertexLegOperator_eq_nestedVertexOperatorComp`). This is all three of the
-general theorem's hypotheses discharged and the theorem itself applied — the last purely
+(quarticLegOperatorForSequence ε q τ))` to `nestedVertexOperatorComp ε n q τ`
+(`prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp`). This is all three of
+the general theorem's hypotheses discharged and the theorem itself applied — the last purely
 combinatorial step is reindexing the resulting `(vertex-label sequence, pairing)` sum into a sum
 over `QuarticWickDiagram`s. -/
 theorem freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing (ε : Mode → ℝ) (β : ℝ)
@@ -757,15 +638,16 @@ theorem freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing (ε : Mode 
       ∑ pairing : Common.BlochDeDominicis.Pairing (2 * n),
         pairing.weight Statistics.fermion *
           ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
-            ((flatVertexLegOperator ε n q τ pr.1).comp (flatVertexLegOperator ε n q τ pr.2)) := by
+            ((quarticLegOperatorForSequence ε q τ pr.1).comp
+              (quarticLegOperatorForSequence ε q τ pr.2)) := by
   have hgen := Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing Statistics.fermion
     (fermionEnergy ε) β (traceFock_diagonalEvolution_fermionEnergy_ne_zero ε β) (2 * n)
-    (flatVertexLegOperator ε n q τ) (flatVertexLegEnergyShift ε q)
+    (quarticLegOperatorForSequence ε q τ) (flatVertexLegEnergyShift ε q)
     (flatVertexLegCommutatorCoeff ε q τ)
-    (fun p => heisenbergEvolve_flatVertexLegOperator ε β q τ p)
-    (fun i j _ => zetaCommutator_flatVertexLegOperator ε q τ i j)
+    (fun p => heisenbergEvolve_quarticLegOperatorForSequence ε β q τ p)
+    (fun i j _ => zetaCommutator_quarticLegOperatorForSequence ε q τ i j)
     (fun i => one_sub_zetaInt_fermion_mul_exp_flatVertexLegEnergyShift_ne_zero ε β q i)
-  rw [← prodComp_ofFn_flatVertexLegOperator_eq_nestedVertexOperatorComp,
+  rw [← prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp,
     freeGibbsExpectation_eq_gibbsExpectation, hgen]
   refine Finset.sum_congr rfl fun pairing _ => ?_
   congr 1
@@ -774,44 +656,46 @@ theorem freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing (ε : Mode 
 /-! ## Integrating the pairing sum over the ordered simplex -/
 
 /-- **A pair value of two flattened leg operators, in closed form**: unfolds both legs to their
-`Complex.exp` eigenvalue-shift form (`flatVertexLegOperator_eq_smul`) and pulls both scalars out of
-`freeGibbsExpectation` (`freeGibbsExpectation_smul`), leaving a fixed (`τ`-independent) pair value
-of the two *bare* local-leg operators — the `flatVertexLegOperator` analogue of
-`WickDiagram/Amplitude.lean`'s `orderedQuarticPairValue_eq`. -/
-theorem freeGibbsExpectation_flatVertexLegOperator_pair_eq {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
+`Complex.exp` eigenvalue-shift form (`quarticLegOperatorForSequence_eq_smul`) and pulls both
+scalars out of `freeGibbsExpectation` (`freeGibbsExpectation_smul`), leaving a fixed
+(`τ`-independent) pair value of the two *bare* local-leg operators — the
+`quarticLegOperatorForSequence` analogue of `WickDiagram/Amplitude.lean`'s
+`orderedQuarticPairValue_eq`. -/
+theorem freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))) :
     freeGibbsExpectation ε β
-        ((flatVertexLegOperator ε n q τ a).comp (flatVertexLegOperator ε n q τ b)) =
+        ((quarticLegOperatorForSequence ε q τ a).comp (quarticLegOperatorForSequence ε q τ b)) =
       Complex.exp ((τ (flatVertexIndex n a) * flatVertexLegEnergyShift ε q a : ℝ) : ℂ) *
         Complex.exp ((τ (flatVertexIndex n b) * flatVertexLegEnergyShift ε q b : ℝ) : ℂ) *
         freeGibbsExpectation ε β
           ((quarticLocalLegOperator (q (flatVertexIndex n a)) (flatLocalLeg n a)).comp
             (quarticLocalLegOperator (q (flatVertexIndex n b)) (flatLocalLeg n b))) := by
-  rw [flatVertexLegOperator_eq_smul, flatVertexLegOperator_eq_smul, LinearMap.smul_comp,
-    LinearMap.comp_smul, smul_smul, freeGibbsExpectation_smul]
+  rw [quarticLegOperatorForSequence_eq_smul, quarticLegOperatorForSequence_eq_smul,
+    LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, freeGibbsExpectation_smul]
 
 /-- **A pair value of two flattened leg operators is continuous in the time assignment `τ`** —
-directly from the closed form `freeGibbsExpectation_flatVertexLegOperator_pair_eq`: a product of
-two `Complex.exp`s of a continuous (coordinate-linear) function of `τ`, times a `τ`-independent
-constant. -/
-theorem continuous_freeGibbsExpectation_flatVertexLegOperator_pair {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (a b : Fin (2 * (2 * n))) :
+directly from the closed form `freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq`: a
+product of two `Complex.exp`s of a continuous (coordinate-linear) function of `τ`, times a
+`τ`-independent constant. -/
+theorem continuous_freeGibbsExpectation_quarticLegOperatorForSequence_pair {n : ℕ} (ε : Mode → ℝ)
+    (β : ℝ) (q : Fin n → QuarticVertexLabel Mode) (a b : Fin (2 * (2 * n))) :
     Continuous (fun τ : Fin n → ℝ => freeGibbsExpectation ε β
-      ((flatVertexLegOperator ε n q τ a).comp (flatVertexLegOperator ε n q τ b))) := by
-  simp only [freeGibbsExpectation_flatVertexLegOperator_pair_eq]
+      ((quarticLegOperatorForSequence ε q τ a).comp (quarticLegOperatorForSequence ε q τ b))) := by
+  simp only [freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq]
   fun_prop
 
 /-- **A pairing's contraction term is continuous in `τ`** — a `τ`-independent crossing-sign
 constant, times a finite product (over the pairing's pairs) of
-`continuous_freeGibbsExpectation_flatVertexLegOperator_pair`'s continuous pair values. -/
+`continuous_freeGibbsExpectation_quarticLegOperatorForSequence_pair`'s continuous pair values. -/
 theorem continuous_flatVertexLegPairingTerm {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
     (q : Fin n → QuarticVertexLabel Mode)
     (pairing : Common.BlochDeDominicis.Pairing (2 * n)) :
     Continuous (fun τ : Fin n → ℝ => pairing.weight Statistics.fermion *
       ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
-        ((flatVertexLegOperator ε n q τ pr.1).comp (flatVertexLegOperator ε n q τ pr.2))) :=
+        ((quarticLegOperatorForSequence ε q τ pr.1).comp
+          (quarticLegOperatorForSequence ε q τ pr.2))) :=
   continuous_const.mul (continuous_finsetProd _ fun pr _ =>
-    continuous_freeGibbsExpectation_flatVertexLegOperator_pair ε β q pr.1 pr.2)
+    continuous_freeGibbsExpectation_quarticLegOperatorForSequence_pair ε β q pr.1 pr.2)
 
 /-- **The ordered-simplex integral of `freeGibbsExpectation ∘ nestedVertexOperatorComp`, as a sum
 over pairings of integrated contraction terms** — rewrites the integrand pointwise via
@@ -829,8 +713,8 @@ theorem orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_
         pairing.weight Statistics.fermion *
           intervalIntegral.orderedSimplexIntegral n t
             (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
-              ((flatVertexLegOperator ε n q τ pr.1).comp
-                (flatVertexLegOperator ε n q τ pr.2))) := by
+              ((quarticLegOperatorForSequence ε q τ pr.1).comp
+                (quarticLegOperatorForSequence ε q τ pr.2))) := by
   rw [intervalIntegral.orderedSimplexIntegral_congr
       (fun τ => freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing ε β n q τ),
     intervalIntegral.orderedSimplexIntegral_finsetSum _ n t _
@@ -852,8 +736,8 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing {α : Ty
             pairing.weight Statistics.fermion *
               intervalIntegral.orderedSimplexIntegral S.card β (fun τ =>
                 ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
-                  ((flatVertexLegOperator ε S.card q τ pr.1).comp
-                    (flatVertexLegOperator ε S.card q τ pr.2))) := by
+                  ((quarticLegOperatorForSequence ε q τ pr.1).comp
+                    (quarticLegOperatorForSequence ε q τ pr.2))) := by
   have hkey := freeGibbsExpectation_comp_dysonCoeff_quarticInteraction ε β g S.card β
     LinearMap.id
   simp only [LinearMap.id_comp] at hkey
@@ -865,24 +749,13 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing {α : Ty
           pairing.weight Statistics.fermion *
             intervalIntegral.orderedSimplexIntegral S.card β
               (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
-                ((flatVertexLegOperator ε S.card q τ pr.1).comp
-                  (flatVertexLegOperator ε S.card q τ pr.2))) :=
+                ((quarticLegOperatorForSequence ε q τ pr.1).comp
+                  (quarticLegOperatorForSequence ε q τ pr.2))) :=
     Finset.sum_congr rfl fun q _ => by
       rw [orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing]
   rw [dysonVertexMoment_eq_freeGibbsExpectation, hkey, mul_assoc, hsum]
 
 /-! ## Reindexing into a sum over `QuarticWickDiagram`s -/
-
-omit [Fintype Mode] in
-/-- **An `orderedQuarticLegOperator` is exactly a `flatVertexLegOperator`**, for the vertex-label
-sequence `d.vertexLabel ∘ order` — both unfold to the identical `imaginaryTimeEvolve ε (τ i)
-(quarticLocalLegOperator (label i) l)` at the same `orderedQuarticLegEquiv`-determined slot/leg
-`(i, l)`, so this is `rfl`. -/
-theorem orderedQuarticLegOperator_eq_flatVertexLegOperator {N : ℕ} {S : Finset (Fin N)}
-    (ε : Mode → ℝ) (d : QuarticWickDiagram Mode N S) (order : QuarticVertexOrder S)
-    (τ : Fin S.card → ℝ) (p : Fin (2 * (2 * S.card))) :
-    orderedQuarticLegOperator ε d order τ p =
-      flatVertexLegOperator ε S.card (fun i => d.vertexLabel (order i)) τ p := rfl
 
 omit [DecidableEq Mode] [Fintype Mode] [LinearOrder Mode] in
 /-- **A diagram's coupling weight, reindexed along a vertex order** — `Equiv.prod_comp` at `order`
@@ -894,10 +767,10 @@ theorem couplingWeight_eq_prod_vertexLabel_order {N : ℕ} {S : Finset (Fin N)}
   rw [QuarticWickDiagram.couplingWeight]
   exact (Equiv.prod_comp order (fun v => g (d.vertexLabel v))).symm
 
-/-- **A diagram's fixed-order ordered-simplex contribution, in terms of `flatVertexLegOperator`**
-— unfolds `orderedSimplexContribution`/`contractionIntegrand`/`orderedQuarticPairValue` and
-rewrites each leg via `orderedQuarticLegOperator_eq_flatVertexLegOperator`, then pulls the
-`τ`-independent `pairingInOrder`-weight back out of the integral
+/-- **A diagram's fixed-order ordered-simplex contribution, in terms of
+`quarticLegOperatorForSequence`** — unfolds `orderedSimplexContribution`/`contractionIntegrand`/
+`orderedQuarticPairValue`/`orderedQuarticLegOperator` (a `quarticLegOperatorForSequence`
+specialization), then pulls the `τ`-independent `pairingInOrder`-weight back out of the integral
 (`intervalIntegral.orderedSimplexIntegral_smul`). -/
 theorem orderedSimplexContribution_eq_pairing_sum_term {N : ℕ} {S : Finset (Fin N)} (ε : Mode → ℝ)
     (β : ℝ) (d : QuarticWickDiagram Mode N S) (order : QuarticVertexOrder S) :
@@ -905,19 +778,18 @@ theorem orderedSimplexContribution_eq_pairing_sum_term {N : ℕ} {S : Finset (Fi
       (d.pairingInOrder order).weight Statistics.fermion *
         intervalIntegral.orderedSimplexIntegral S.card β
           (fun τ => ∏ pr ∈ (d.pairingInOrder order).pairs, freeGibbsExpectation ε β
-            ((flatVertexLegOperator ε S.card (fun i => d.vertexLabel (order i)) τ pr.1).comp
-              (flatVertexLegOperator ε S.card (fun i => d.vertexLabel (order i)) τ pr.2))) := by
+            ((quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ pr.1).comp
+              (quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ pr.2))) := by
   rw [QuarticWickDiagram.orderedSimplexContribution]
   have heq : d.contractionIntegrand ε β order = fun τ =>
       (d.pairingInOrder order).weight Statistics.fermion *
         ∏ pr ∈ (d.pairingInOrder order).pairs, freeGibbsExpectation ε β
-          ((flatVertexLegOperator ε S.card (fun i => d.vertexLabel (order i)) τ pr.1).comp
-            (flatVertexLegOperator ε S.card (fun i => d.vertexLabel (order i)) τ pr.2)) := by
+          ((quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ pr.1).comp
+            (quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ pr.2)) := by
     funext τ
     rw [QuarticWickDiagram.contractionIntegrand]
     refine congrArg (_ * ·) (Finset.prod_congr rfl fun pr _ => ?_)
-    rw [orderedQuarticPairValue, orderedQuarticLegOperator_eq_flatVertexLegOperator,
-      orderedQuarticLegOperator_eq_flatVertexLegOperator]
+    rw [orderedQuarticPairValue, orderedQuarticLegOperator]
   rw [heq, intervalIntegral.orderedSimplexIntegral_smul]
 
 /-- **A diagram's coupling weight times its fixed-order ordered-simplex contribution**, entirely in
@@ -931,8 +803,8 @@ theorem couplingWeight_mul_orderedSimplexContribution_eq {N : ℕ} {S : Finset (
         ((d.pairingInOrder order).weight Statistics.fermion *
           intervalIntegral.orderedSimplexIntegral S.card β
             (fun τ => ∏ pr ∈ (d.pairingInOrder order).pairs, freeGibbsExpectation ε β
-              ((flatVertexLegOperator ε S.card (fun i => d.vertexLabel (order i)) τ pr.1).comp
-                (flatVertexLegOperator ε S.card (fun i => d.vertexLabel (order i)) τ pr.2)))) := by
+              ((quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ pr.1).comp
+                (quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ pr.2)))) := by
   rw [couplingWeight_eq_prod_vertexLabel_order, orderedSimplexContribution_eq_pairing_sum_term]
 
 /-- **Summing `couplingWeight * orderedSimplexContribution` over all diagrams, at a fixed vertex
@@ -948,8 +820,8 @@ theorem sum_couplingWeight_mul_orderedSimplexContribution_eq {N : ℕ} {S : Fins
           pairing.weight Statistics.fermion *
             intervalIntegral.orderedSimplexIntegral S.card β
               (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
-                ((flatVertexLegOperator ε S.card q τ pr.1).comp
-                  (flatVertexLegOperator ε S.card q τ pr.2))) :=
+                ((quarticLegOperatorForSequence ε q τ pr.1).comp
+                  (quarticLegOperatorForSequence ε q τ pr.2))) :=
   calc
     ∑ d : QuarticWickDiagram Mode N S, d.couplingWeight g * d.orderedSimplexContribution ε β order
         = ∑ d : QuarticWickDiagram Mode N S,
@@ -957,8 +829,8 @@ theorem sum_couplingWeight_mul_orderedSimplexContribution_eq {N : ℕ} {S : Fins
               (∏ i, g (x.1 i)) * (x.2.weight Statistics.fermion *
                 intervalIntegral.orderedSimplexIntegral S.card β
                   (fun τ => ∏ pr ∈ x.2.pairs, freeGibbsExpectation ε β
-                    ((flatVertexLegOperator ε S.card x.1 τ pr.1).comp
-                      (flatVertexLegOperator ε S.card x.1 τ pr.2)))))
+                    ((quarticLegOperatorForSequence ε x.1 τ pr.1).comp
+                      (quarticLegOperatorForSequence ε x.1 τ pr.2)))))
               (quarticWickDiagramEquivOrderedData order d) :=
         Finset.sum_congr rfl fun d _ => by
           simp only [quarticWickDiagramEquivOrderedData]
@@ -967,30 +839,30 @@ theorem sum_couplingWeight_mul_orderedSimplexContribution_eq {N : ℕ} {S : Fins
           (∏ i, g (x.1 i)) * (x.2.weight Statistics.fermion *
             intervalIntegral.orderedSimplexIntegral S.card β
               (fun τ => ∏ pr ∈ x.2.pairs, freeGibbsExpectation ε β
-                ((flatVertexLegOperator ε S.card x.1 τ pr.1).comp
-                  (flatVertexLegOperator ε S.card x.1 τ pr.2)))) :=
+                ((quarticLegOperatorForSequence ε x.1 τ pr.1).comp
+                  (quarticLegOperatorForSequence ε x.1 τ pr.2)))) :=
         sum_quarticWickDiagram_eq_sum_orderedData order
           (fun x : OrderedQuarticWickData Mode S.card =>
             (∏ i, g (x.1 i)) * (x.2.weight Statistics.fermion *
               intervalIntegral.orderedSimplexIntegral S.card β
                 (fun τ => ∏ pr ∈ x.2.pairs, freeGibbsExpectation ε β
-                  ((flatVertexLegOperator ε S.card x.1 τ pr.1).comp
-                    (flatVertexLegOperator ε S.card x.1 τ pr.2)))))
+                  ((quarticLegOperatorForSequence ε x.1 τ pr.1).comp
+                    (quarticLegOperatorForSequence ε x.1 τ pr.2)))))
     _ = ∑ q : Fin S.card → QuarticVertexLabel Mode,
           ∑ pairing : Common.BlochDeDominicis.Pairing (2 * S.card),
             (∏ i, g (q i)) * (pairing.weight Statistics.fermion *
               intervalIntegral.orderedSimplexIntegral S.card β
                 (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
-                  ((flatVertexLegOperator ε S.card q τ pr.1).comp
-                    (flatVertexLegOperator ε S.card q τ pr.2)))) :=
+                  ((quarticLegOperatorForSequence ε q τ pr.1).comp
+                    (quarticLegOperatorForSequence ε q τ pr.2)))) :=
         Fintype.sum_prod_type _
     _ = ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
           ∑ pairing : Common.BlochDeDominicis.Pairing (2 * S.card),
             pairing.weight Statistics.fermion *
               intervalIntegral.orderedSimplexIntegral S.card β
                 (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
-                  ((flatVertexLegOperator ε S.card q τ pr.1).comp
-                    (flatVertexLegOperator ε S.card q τ pr.2))) :=
+                  ((quarticLegOperatorForSequence ε q τ pr.1).comp
+                    (quarticLegOperatorForSequence ε q τ pr.2))) :=
         Finset.sum_congr rfl fun q _ => (Finset.mul_sum _ _ _).symm
 
 /-- **PR 6's final theorem: `dysonVertexMoment` of `quarticInteraction` is the sum, over every
@@ -1012,8 +884,8 @@ theorem sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment (ε : Mode → ℝ)
             pairing.weight Statistics.fermion *
               intervalIntegral.orderedSimplexIntegral S.card β
                 (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
-                  ((flatVertexLegOperator ε S.card q τ pr.1).comp
-                    (flatVertexLegOperator ε S.card q τ pr.2))) := by
+                  ((quarticLegOperatorForSequence ε q τ pr.1).comp
+                    (quarticLegOperatorForSequence ε q τ pr.2))) := by
     have hpt : ∀ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d =
         (-1 : ℂ) ^ S.card *
           ∑ order : QuarticVertexOrder S,
@@ -1039,8 +911,8 @@ theorem sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment (ε : Mode → ℝ)
                 pairing.weight Statistics.fermion *
                   intervalIntegral.orderedSimplexIntegral S.card β
                     (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
-                      ((flatVertexLegOperator ε S.card q τ pr.1).comp
-                        (flatVertexLegOperator ε S.card q τ pr.2))) := by
+                      ((quarticLegOperatorForSequence ε q τ pr.1).comp
+                        (quarticLegOperatorForSequence ε q τ pr.2))) := by
           congr 1
           exact Finset.sum_congr rfl fun order _ =>
             sum_couplingWeight_mul_orderedSimplexContribution_eq ε β g order
