@@ -13,8 +13,7 @@ correlators — none of which `FormalLogPartitionFunction.lean`'s purely combina
 groundwork provides on its own. This file is step 1: an algebraic, basis-diagonal realization of
 free evolution for `H₀ = freeHamiltonian ε` only.
 
-Unlike `FormalExpFermionic.lean`'s `formalExpTerm`/`formalExpTruncation` (finite Taylor
-truncations), this file defines the scalar action of free evolution directly on each basis vector:
+This file defines the scalar action of free evolution directly on each basis vector:
 `Complex.exp (τ * E(n)) • |n⟩`, where `E(n) := Σᵢ∈n ε(i) : ℝ`. This is an algebraic,
 basis-diagonal realization, not an analytic operator exponential: `FockSpaceFermionic Mode` has
 no topology or Hilbert completion in this development. The construction does not require an

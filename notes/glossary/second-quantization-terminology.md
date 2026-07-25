@@ -27,4 +27,4 @@ identifier is given in backticks only when the implementation matters.
 
 ## Accepted terminology in the current design
 
-`Common/AlgebraicFock.lean` correctly treats `matrixCoeff`/`diagonalCoeff` as coordinate evaluations rather than Hilbert-space matrix elements. `FormalExp` and `FormalLogPartitionFunction` correctly distinguish formal series from analytic exponentials and from the future Dyson/linked-cluster theorem. `BlochDeDominicisPairing` already keeps pairings separate from contractions and expectations.
+`Common/AlgebraicFock.lean` correctly treats `matrixCoeff`/`diagonalCoeff` as coordinate evaluations rather than Hilbert-space matrix elements. `FormalLogPartitionFunction` correctly distinguishes its formal `log Z` power series from analytic exponentials and from the (now-proved) Dyson/linked-cluster theorem. `BlochDeDominicisPairing` already keeps pairings separate from contractions and expectations.

@@ -17,8 +17,7 @@ iterated integral `Dₙ(τ) = (-1)ⁿ ∫_{0≤τₙ≤⋯≤τ₁≤τ} V_I(τ�
 hypothetical infinite Dyson *series* `Σₙ λⁿ Dₙ(τ)`, no convergence, analytic operator exponential,
 or equality with a genuine `e^{-β(H₀+λV)}` is claimed anywhere in this file. `dysonTruncation`
 below is only a finite partial sum in the perturbation parameter `λ`, standing in for the
-(not-yet-analytic) full series the same way `FormalExp.lean`'s `formalExpTruncation` stands in for
-`exp(-H)`.
+(not-yet-analytic) full series.
 
 **Why a recursion, not an explicit closed form.** The recursion mirrors the physical
 time-ordering directly: `Dₙ₊₁`'s integral variable `σ` ranges over `[0, τ]`, and the *inner*
