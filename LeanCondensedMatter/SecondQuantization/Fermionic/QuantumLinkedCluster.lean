@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedNumberOperator
+import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
 import LeanCondensedMatter.Combinatorics.CumulantFactorization
 import Mathlib.Tactic.FieldSimp
 
@@ -55,17 +56,17 @@ weighted occupation correlator under the weight `w` — the diagonal functional 
 simultaneous occupation of `S`, computed directly as a weighted sum. For positive real weights (a
 genuine Boltzmann weight) it is the probability that every mode in `S` is occupied; `w` here is an
 arbitrary complex-valued weight, so no probabilistic interpretation is assumed in general. As with
-the normalized weighted diagonal functional, division by `weightSum w` is only physically
-meaningful when `weightSum w ≠ 0`. -/
+the normalized weighted diagonal functional, division by `Common.weightSum w` is only physically
+meaningful when `Common.weightSum w ≠ 0`. -/
 noncomputable def occupationMoment (w : FermionOccupation Mode → ℂ) (S : Finset Mode) : ℂ :=
   (∑ n ∈ (Finset.univ : Finset (FermionOccupation Mode)).filter (S ⊆ ·), w n) /
-    weightSum w
+    Common.weightSum w
 
 omit [LinearOrder Mode] in
 /-- **`occupationMoment` at `⊥` is `1`** (given a nonzero partition function): every occupation
 state vacuously contains the empty set of modes, so the numerator is exactly `Z(w)`. This matches
 `Finpartition.IsIndependentAcross`'s `m ⊥ = 1` normalization hypothesis. -/
-theorem occupationMoment_bot {w : FermionOccupation Mode → ℂ} (hZ : weightSum w ≠ 0) :
+theorem occupationMoment_bot {w : FermionOccupation Mode → ℂ} (hZ : Common.weightSum w ≠ 0) :
     occupationMoment w ⊥ = 1 := by
   have hfilter : (Finset.univ : Finset (FermionOccupation Mode)).filter ((⊥ : Finset Mode) ⊆ ·) =
       Finset.univ := by
@@ -78,8 +79,8 @@ theorem occupationMoment_bot {w : FermionOccupation Mode → ℂ} (hZ : weightSu
 Connects the weighted-sum definition back to Track D's operator-level normalized weighted
 functional. -/
 theorem occupationMoment_singleton (w : FermionOccupation Mode → ℂ) (i : Mode) :
-    occupationMoment w {i} = normalizedWeightedDiagonal w (numberOperator i) := by
-  rw [occupationMoment, normalizedWeightedDiagonal_eq_div, weightedTrace_numberOperator]
+    occupationMoment w {i} = Common.normalizedWeightedDiagonal w (numberOperator i) := by
+  rw [occupationMoment, Common.normalizedWeightedDiagonal, weightedTrace_numberOperator]
   have hfilter : (Finset.univ : Finset (FermionOccupation Mode)).filter
       (({i} : Finset Mode) ⊆ ·) = (Finset.univ : Finset (FermionOccupation Mode)).filter
       (i ∈ ·) := by
@@ -127,18 +128,22 @@ The operator-level bridge promised by `occupationMoment`'s docstring: the simult
 observable's normalized weighted diagonal functional agrees with the direct weighted-sum
 definition. -/
 theorem normalizedWeightedDiagonal_occupationProjector (w : FermionOccupation Mode → ℂ)
-    (S : Finset Mode) : normalizedWeightedDiagonal w (occupationProjector S) =
+    (S : Finset Mode) : Common.normalizedWeightedDiagonal w (occupationProjector S) =
       occupationMoment w S := by
-  rw [normalizedWeightedDiagonal_eq_div, occupationMoment]
+  rw [Common.normalizedWeightedDiagonal, occupationMoment]
   congr 1
   have h : ∀ n : FermionOccupation Mode,
-      matrixCoeff (occupationProjector S) n n = if S ⊆ n then 1 else 0 := fun n => by
+      Common.matrixCoeff (occupationProjector S) n n = if S ⊆ n then 1 else 0 := fun n => by
     by_cases hs : S ⊆ n
-    · exact matrixCoeff_of_smul_basisState (by
-        rw [occupationProjector_basisState, if_pos hs, if_pos hs, one_smul])
-    · exact matrixCoeff_of_smul_basisState (by
-        rw [occupationProjector_basisState, if_neg hs, if_neg hs, zero_smul])
-  simp only [weightedTrace_eq_sum, h, mul_ite, mul_one, mul_zero]
+    · exact Common.matrixCoeff_of_smul_basisState
+        (show occupationProjector S (basisState n) =
+            (if S ⊆ n then 1 else 0) • basisState n by
+          rw [occupationProjector_basisState, if_pos hs, if_pos hs, one_smul])
+    · exact Common.matrixCoeff_of_smul_basisState
+        (show occupationProjector S (basisState n) =
+            (if S ⊆ n then 1 else 0) • basisState n by
+          rw [occupationProjector_basisState, if_neg hs, if_neg hs, zero_smul])
+  simp only [Common.weightedTrace, h, mul_ite, mul_one, mul_zero]
   rw [← Finset.sum_filter]
 
 /-! ## Algebra of occupation projectors -/
@@ -247,7 +252,7 @@ theorem occupationMoment_eq_of_product_factorization {w wA wB : FermionOccupatio
     {A B : Finset Mode} (hAB : Disjoint A B) (hU : A ∪ B = Finset.univ)
     (hw : ∀ n, w n = wA (n ∩ A) * wB (n ∩ B)) (T : Finset Mode) :
     occupationMoment w T = (∑ S ∈ A.powerset.filter ((T ∩ A) ⊆ ·), wA S) *
-      (∑ T' ∈ B.powerset.filter ((T ∩ B) ⊆ ·), wB T') / weightSum w := by
+      (∑ T' ∈ B.powerset.filter ((T ∩ B) ⊆ ·), wB T') / Common.weightSum w := by
   rw [occupationMoment, ← sum_filter_subset_eq_mul hAB hU wA wB T]
   congr 1
   exact Finset.sum_congr rfl fun n _ => hw n
@@ -256,7 +261,7 @@ omit [LinearOrder Mode] in
 theorem weightSum_eq_mul_of_product_factorization {w wA wB : FermionOccupation Mode → ℂ}
     {A B : Finset Mode} (hAB : Disjoint A B) (hU : A ∪ B = Finset.univ)
     (hw : ∀ n, w n = wA (n ∩ A) * wB (n ∩ B)) :
-    weightSum w = (∑ S ∈ A.powerset, wA S) * (∑ T ∈ B.powerset, wB T) := by
+    Common.weightSum w = (∑ S ∈ A.powerset, wA S) * (∑ T ∈ B.powerset, wB T) := by
   have h := sum_filter_subset_eq_mul hAB hU wA wB (⊥ : Finset Mode)
   have e1 : (Finset.univ : Finset (FermionOccupation Mode)).filter ((⊥ : Finset Mode) ⊆ ·) =
       Finset.univ := Finset.filter_true_of_mem fun n _ => Finset.empty_subset n
@@ -267,7 +272,7 @@ theorem weightSum_eq_mul_of_product_factorization {w wA wB : FermionOccupation M
     have : (⊥ : Finset Mode) ∩ B = ⊥ := by ext x; simp
     rw [this]; exact Finset.filter_true_of_mem fun T _ => Finset.empty_subset T
   rw [e1, e2, e3] at h
-  rw [weightSum_eq_sum]
+  rw [Common.weightSum]
   simp_rw [hw]
   exact h
 
@@ -277,7 +282,7 @@ bipartition.** Connects the *physical* independence hypothesis `IsProductWeightA
 abstract hypothesis `Finpartition.IsIndependentAcross` that Track B's cumulant-vanishing theorem
 (`cumulantFromMoment_eq_zero_of_isIndependentAcross`) needs. -/
 theorem occupationMoment_isIndependentAcross {w : FermionOccupation Mode → ℂ} {A B : Finset Mode}
-    (hw : IsProductWeightAcross w A B) (hZ : weightSum w ≠ 0) :
+    (hw : IsProductWeightAcross w A B) (hZ : Common.weightSum w ≠ 0) :
     Finpartition.IsIndependentAcross (occupationMoment w) A B := by
   obtain ⟨hAB, hU, wA, wB, hfact⟩ := hw
   refine ⟨hAB, occupationMoment_bot hZ, fun T _ => ?_⟩
@@ -319,7 +324,7 @@ correlator of modes spanning both `A` and `B` vanishes. This packages Track B's
 `cumulantFromMoment_eq_zero_of_isIndependentAcross` so callers never need to name
 `Finpartition.IsIndependentAcross` themselves. -/
 theorem occupationCumulant_eq_zero_of_isProductWeightAcross {w : FermionOccupation Mode → ℂ}
-    {A B : Finset Mode} (hw : IsProductWeightAcross w A B) (hZ : weightSum w ≠ 0)
+    {A B : Finset Mode} (hw : IsProductWeightAcross w A B) (hZ : Common.weightSum w ≠ 0)
     (hA : A ≠ ⊥) (hB : B ≠ ⊥) : occupationCumulant w (A ⊔ B) = 0 :=
   Finpartition.cumulantFromMoment_eq_zero_of_isIndependentAcross
     (occupationMoment_isIndependentAcross hw hZ) hA hB

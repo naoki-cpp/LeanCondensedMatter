@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.NumberOperator
-import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedDiagonalFunctional
+import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
 
 set_option linter.style.header false
 
@@ -32,8 +32,9 @@ arbitrary normalized diagonal weight `w` used here.
 (`annihilate_comp_create_self`, `annihilate_comp_self`, `create_comp_self`,
 `annihilate_comp_create_comp_self`, `annihilate_comp_create_add_create_comp_annihilate` —
 `Fermionic/CanonicalAnticommutationRelations.lean`/`Fermionic/NumberOperator.lean`) plus the
-diagonal-functional API (`normalizedWeightedDiagonal_add`/`_id`/`_zero`). The general theorem, for
-operators at possibly distinct modes and a genuine free Gibbs weight, needs the multi-mode
+diagonal-functional API (`Common.normalizedWeightedDiagonal_add`/`_id`/`_zero`). The general
+theorem, for operators at possibly distinct modes and a genuine free Gibbs weight, needs the
+multi-mode
 factorization the free partition function already exhibits
 (`Fermionic/FreePartitionFunction.lean`'s `freePartitionFunction_eq_prod`) and remains future work;
 the middle `(13)(24)` term's vanishing here is a special case of
@@ -53,19 +54,19 @@ The middle term vanishes (`⟨cᵢcᵢ⟩_w = 0` from `annihilate_comp_self`), l
 + ⟨cᵢ†cᵢ⟩_w) = ⟨cᵢcᵢ†⟩_w · ⟨id⟩_w = ⟨cᵢcᵢ†⟩_w`, which matches the left side by `cᵢcᵢ†`'s
 idempotency (`annihilate_comp_create_comp_self`). -/
 theorem normalizedWeightedDiagonal_annihilate_create_annihilate_create_single_mode
-    (w : FermionOccupation Mode → ℂ) (hw : weightSum w ≠ 0) (i : Mode) :
-    normalizedWeightedDiagonal w
+    (w : FermionOccupation Mode → ℂ) (hw : Common.weightSum w ≠ 0) (i : Mode) :
+    Common.normalizedWeightedDiagonal w
         (((annihilate i).comp (create i)).comp ((annihilate i).comp (create i))) =
-      normalizedWeightedDiagonal w ((annihilate i).comp (create i)) *
-          normalizedWeightedDiagonal w ((annihilate i).comp (create i)) +
+      Common.normalizedWeightedDiagonal w ((annihilate i).comp (create i)) *
+          Common.normalizedWeightedDiagonal w ((annihilate i).comp (create i)) +
         (Statistics.zetaInt Statistics.fermion : ℂ) *
-          (normalizedWeightedDiagonal w ((annihilate i).comp (annihilate i)) *
-            normalizedWeightedDiagonal w ((create i).comp (create i))) +
-        normalizedWeightedDiagonal w ((annihilate i).comp (create i)) *
-          normalizedWeightedDiagonal w ((create i).comp (annihilate i)) := by
+          (Common.normalizedWeightedDiagonal w ((annihilate i).comp (annihilate i)) *
+            Common.normalizedWeightedDiagonal w ((create i).comp (create i))) +
+        Common.normalizedWeightedDiagonal w ((annihilate i).comp (create i)) *
+          Common.normalizedWeightedDiagonal w ((create i).comp (annihilate i)) := by
   rw [annihilate_comp_create_comp_self, annihilate_comp_self, create_comp_self,
-    normalizedWeightedDiagonal_zero, mul_zero, mul_zero, add_zero, ← mul_add,
-    ← normalizedWeightedDiagonal_add, annihilate_comp_create_add_create_comp_annihilate,
-    normalizedWeightedDiagonal_id w hw, mul_one]
+    Common.normalizedWeightedDiagonal_zero, mul_zero, mul_zero, add_zero, ← mul_add,
+    ← Common.normalizedWeightedDiagonal_add, annihilate_comp_create_add_create_comp_annihilate,
+    Common.normalizedWeightedDiagonal_id w hw, mul_one]
 
 end SecondQuantization

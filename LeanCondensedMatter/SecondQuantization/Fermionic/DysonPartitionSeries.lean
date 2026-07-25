@@ -37,7 +37,7 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 /-- **The `n`-th order Dyson partition-function coefficient**, `Tr[e^{-βH₀} Dₙ(β)]`. -/
 noncomputable def dysonPartitionCoeff (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) : ℂ :=
-  traceFock ((imaginaryTimeEvolveFree ε (-β)).comp (dysonCoeff ε V n β))
+  Common.traceFock ((imaginaryTimeEvolveFree ε (-β)).comp (dysonCoeff ε V n β))
 
 /-- **The Dyson partition-function series**, `Σₙ dysonPartitionCoeff(n) λⁿ` — packaging
 `dysonPartitionCoeff` into a genuine `PowerSeries ℂ` in the perturbation parameter, with no
@@ -61,9 +61,8 @@ theorem constantCoeff_dysonPartitionSeries (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
     PowerSeries.constantCoeff (dysonPartitionSeries ε β V) = freePartitionFunction ε β := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff, coeff_dysonPartitionSeries, dysonPartitionCoeff,
-    dysonCoeff_zero, LinearMap.comp_id]
-  change Common.traceFock (imaginaryTimeEvolveFree ε (-β)) = freePartitionFunction ε β
-  rw [imaginaryTimeEvolveFree, Common.traceFock_diagonalEvolution_eq_weightSum]
+    dysonCoeff_zero, LinearMap.comp_id, imaginaryTimeEvolveFree,
+    Common.traceFock_diagonalEvolution_eq_weightSum]
   congr 1
   funext n
   rw [Common.boltzmannWeight, freeBoltzmannWeight]

@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTimeEvolution
 import LeanCondensedMatter.SecondQuantization.Fermionic.CanonicalAnticommutationRelations
-import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedDiagonalFunctional
+import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.TwoPoint
 
 set_option linter.style.header false
@@ -40,8 +40,9 @@ Fermi–Dirac distribution already established independently in
 theorem traceFock_imaginaryTimeEvolveFree_comp_annihilate_comp_create
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (1 + Complex.exp ((-(ε i) * β : ℝ) : ℂ)) *
-        traceFock ((imaginaryTimeEvolveFree ε (-β)).comp ((annihilate i).comp (create j))) =
-      (if i = j then (1 : ℂ) else 0) * traceFock (imaginaryTimeEvolveFree ε (-β)) := by
+        Common.traceFock
+          ((imaginaryTimeEvolveFree ε (-β)).comp ((annihilate i).comp (create j))) =
+      (if i = j then (1 : ℂ) else 0) * Common.traceFock (imaginaryTimeEvolveFree ε (-β)) := by
   have hC1 : Common.heisenbergEvolve (fermionEnergy ε) (-β) (annihilate i) =
       Complex.exp ((-(ε i) * (-β) : ℝ) : ℂ) • annihilate i := by
     have h := imaginaryTimeEvolve_annihilate ε (-β) i
