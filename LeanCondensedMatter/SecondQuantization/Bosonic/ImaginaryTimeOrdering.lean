@@ -9,13 +9,10 @@ set_option linter.style.header false
 This module defines imaginary-time ordering and
 does not introduce a thermal state, weight, or inverse temperature.
 
-The bosonic mirror of `Fermionic/ImaginaryTimeOrdering.lean`: a thin wrapper fixing
-`Common/TimeOrdering.lean`'s `Common.timeOrderedProduct` to `FockSpaceBosonic Mode` *and* to
-`Statistics.boson`. Nothing here is fermion-specific — the definition and every theorem below are
-identical to the fermionic file up to the type of the operators and the sign (`+1` rather than
-`-1`) — so this file exists purely for symmetry with the fermionic line's file layout
-(`notes/roadmaps/second-quantization.md`'s `Common/` design principle), not because anything in
-the bosonic line consumes `timeOrderedProduct` yet.
+A thin wrapper fixing `Common/TimeOrdering.lean`'s `Common.timeOrderedProduct` to
+`FockSpaceBosonic Mode` *and* to `Statistics.boson`, so downstream bosonic files don't need to
+spell out `Statistics.zetaInt Statistics.boson` at every call site. (The fermionic line has no
+analogous wrapper — its consumers call `Common.timeOrderedProduct Statistics.fermion` directly.)
 -/
 
 namespace SecondQuantization
