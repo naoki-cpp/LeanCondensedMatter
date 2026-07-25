@@ -22,12 +22,13 @@ the issue rather than solving it). It lands exactly in Track B's `Finset Mode �
 type, with
 `occupationMoment w ⊥ = 1` matching `IsIndependentAcross`'s normalization hypothesis.
 
-The implementation is fermionic-specific — it imports `Fermionic.WeightedDiagonalFunctional` and
-uses `FermionOccupation` throughout — hence its `SecondQuantization/Fermionic/` path; generalizing
-it to a statistics-independent form (were that ever needed) remains separate future work.
+The implementation is fermionic-specific — it uses `FermionOccupation` and `Common.weightSum`/
+`Common.normalizedWeightedDiagonal` throughout — hence its `SecondQuantization/Fermionic/` path;
+generalizing it to a statistics-independent form (were that ever needed) remains separate future
+work.
 
-`occupationProjector S` supplies the operator-level witness `∏ᵢ∈S nᵢ` (diagonal in the
-occupation-number basis, built via `Finsupp.lift` exactly as `create`/`annihilate` are), with
+`occupationProjector S` supplies the operator-level witness `∏ᵢ∈S nᵢ`, a `Common.diagonalOperator`
+at eigenvalue function `fun n => if S ⊆ n then 1 else 0`, with
 `normalizedWeightedDiagonal_occupationProjector` confirming it reproduces `occupationMoment` and
 `occupationProjector_singleton` confirming it agrees with `numberOperator` at a single mode.
 `occupationProjector_mul`/`_comm`/`_idempotent`/`_empty` establish it as a genuine commuting-
@@ -89,29 +90,24 @@ theorem occupationMoment_singleton (w : FermionOccupation Mode → ℂ) (i : Mod
 
 /-! ## The occupation projector: an operator-level witness for `occupationMoment` -/
 
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- **The occupation-projector operator, on a basis state.** `basisState n` if `n` occupies every
-mode of `S`, `0` otherwise — the simultaneous-occupation observable `∏ᵢ∈S nᵢ` at the basis-state
-level. -/
-noncomputable def occupationProjectorBasis (S : Finset Mode) (n : FermionOccupation Mode) :
-    FockSpaceFermionic Mode :=
-  if S ⊆ n then basisState n else 0
-
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- **The occupation-projector operator**, extended linearly from `occupationProjectorBasis`.
-Diagonal in the occupation-number basis, so `occupationProjector S` and `occupationProjector T`
-commute for any `S`, `T` (`occupationProjector_comm`), without needing a `CommMonoid` structure on
-`FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode` under composition. -/
+omit [LinearOrder Mode] in
+/-- **The occupation-projector operator**: `Common.diagonalOperator` at the eigenvalue function
+`fun n => if S ⊆ n then 1 else 0` — `1` on occupation states containing every mode of `S`, `0`
+otherwise, the simultaneous-occupation observable `∏ᵢ∈S nᵢ`. Diagonal by construction, so
+`occupationProjector S` and `occupationProjector T` commute for any `S`, `T`
+(`occupationProjector_comm`), without needing a `CommMonoid` structure on `FockSpaceFermionic Mode
+→ₗ[ℂ] FockSpaceFermionic Mode` under composition. -/
 noncomputable def occupationProjector (S : Finset Mode) :
     FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
-  Finsupp.lift (FockSpaceFermionic Mode) ℂ (FermionOccupation Mode) (occupationProjectorBasis S)
+  Common.diagonalOperator fun n : FermionOccupation Mode => if S ⊆ n then 1 else 0
 
 omit [LinearOrder Mode] [Fintype Mode] in
 theorem occupationProjector_basisState (S : Finset Mode) (n : FermionOccupation Mode) :
     occupationProjector S (basisState n) = if S ⊆ n then basisState n else 0 := by
-  change Finsupp.lift _ ℂ _ (occupationProjectorBasis S) (Finsupp.single n 1) =
-    occupationProjectorBasis S n
-  simp [Finsupp.lift_apply, Finsupp.sum_single_index, occupationProjectorBasis]
+  change Common.diagonalOperator (fun n : FermionOccupation Mode => if S ⊆ n then (1 : ℂ) else 0)
+      (Common.basisState n) = if S ⊆ n then Common.basisState n else 0
+  rw [Common.diagonalOperator_basisState]
+  split_ifs <;> simp
 
 omit [Fintype Mode] in
 /-- **`occupationProjector` at the singleton `{i}` is exactly `numberOperator i`.** Confirms the
@@ -130,21 +126,10 @@ definition. -/
 theorem normalizedWeightedDiagonal_occupationProjector (w : FermionOccupation Mode → ℂ)
     (S : Finset Mode) : Common.normalizedWeightedDiagonal w (occupationProjector S) =
       occupationMoment w S := by
-  rw [Common.normalizedWeightedDiagonal, occupationMoment]
+  rw [occupationProjector, Common.normalizedWeightedDiagonal_diagonalOperator, occupationMoment,
+    Finset.sum_filter]
   congr 1
-  have h : ∀ n : FermionOccupation Mode,
-      Common.matrixCoeff (occupationProjector S) n n = if S ⊆ n then 1 else 0 := fun n => by
-    by_cases hs : S ⊆ n
-    · exact Common.matrixCoeff_of_smul_basisState
-        (show occupationProjector S (basisState n) =
-            (if S ⊆ n then 1 else 0) • basisState n by
-          rw [occupationProjector_basisState, if_pos hs, if_pos hs, one_smul])
-    · exact Common.matrixCoeff_of_smul_basisState
-        (show occupationProjector S (basisState n) =
-            (if S ⊆ n then 1 else 0) • basisState n by
-          rw [occupationProjector_basisState, if_neg hs, if_neg hs, zero_smul])
-  simp only [Common.weightedTrace, h, mul_ite, mul_one, mul_zero]
-  rw [← Finset.sum_filter]
+  exact Finset.sum_congr rfl fun n _ => by split_ifs <;> ring
 
 /-! ## Algebra of occupation projectors -/
 
@@ -152,25 +137,25 @@ omit [LinearOrder Mode] [Fintype Mode] in
 @[simp]
 theorem occupationProjector_empty :
     occupationProjector (∅ : Finset Mode) = LinearMap.id := by
-  apply linearMap_ext_basisState
-  intro n
-  simp [occupationProjector_basisState]
+  rw [occupationProjector,
+    show (fun n : FermionOccupation Mode => if (∅ : Finset Mode) ⊆ n then (1 : ℂ) else 0) =
+      fun _ => (1 : ℂ) from funext fun n => if_pos (Finset.empty_subset n),
+    Common.diagonalOperator_one]
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- **Occupation projectors compose by taking unions.** The operator-level confirmation that
 `occupationProjector S` genuinely behaves as the "simultaneous occupation of `S`" observable: two
-such observables combine into the observable for their union, without needing a general
-`CommMonoid` structure on composition. -/
+such observables combine into the observable for their union — direct from
+`Common.diagonalOperator_comp`, since `S ∪ T ⊆ n ↔ S ⊆ n ∧ T ⊆ n`. -/
 theorem occupationProjector_mul (S T : Finset Mode) :
     occupationProjector S * occupationProjector T = occupationProjector (S ∪ T) := by
-  apply linearMap_ext_basisState
-  intro n
-  rw [Module.End.mul_apply, occupationProjector_basisState (S := T)]
-  by_cases hT : T ⊆ n
-  · rw [if_pos hT, occupationProjector_basisState, occupationProjector_basisState]
-    simp [Finset.union_subset_iff, hT]
-  · rw [if_neg hT, map_zero, occupationProjector_basisState]
-    simp only [Finset.union_subset_iff, hT, and_false, if_false]
+  change (occupationProjector S).comp (occupationProjector T) = occupationProjector (S ∪ T)
+  rw [occupationProjector, occupationProjector, occupationProjector,
+    Common.diagonalOperator_comp]
+  congr 1
+  funext n
+  by_cases hS : S ⊆ n <;> by_cases hT : T ⊆ n <;>
+    simp [hS, hT, Finset.union_subset_iff]
 
 omit [LinearOrder Mode] [Fintype Mode] in
 theorem occupationProjector_comm (S T : Finset Mode) :
