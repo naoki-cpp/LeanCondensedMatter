@@ -5,15 +5,9 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.ExchangeAlgebra
 set_option linter.style.header false
 
 /-!
-# A quartic vertex's four local legs
+# Local legs of a quartic fermionic vertex
 
-Pure move, no statement or proof changes: the semantics of a single quartic vertex's four local
-legs (`0 ↦ create₁, 1 ↦ create₂, 2 ↦ annihilate₂, 3 ↦ annihilate₁`) — previously split between
-`WickDiagram/Amplitude.lean` (the operator/eigenvalue-shift half) and `DysonDiagramExpansion.lean`
-(the anticommutator/zeta-commutator half) — gathered into one module, since this content is about
-a vertex's own legs, not about diagrams or the Dyson expansion as such.
-
-Downstream: `WickDiagram/Amplitude.lean` and `DysonDiagramExpansion.lean` both import this file.
+Operators, energy shifts, modes, and CAR relations for the four local legs.
 -/
 
 namespace SecondQuantization

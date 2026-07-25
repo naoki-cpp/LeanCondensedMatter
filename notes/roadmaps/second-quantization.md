@@ -593,57 +593,20 @@ information a diagram could be extracted from):
   `WeightedDiagramFamily` as a concrete instantiation — connected-component weight factorization
   and the `PowerSeries.log` coefficient identification remain further future work beyond that.
 
-**Post-PR-6 refactor (gpt's review, "Refactor 1"): generic basis-diagonal operators.** With PR 6
-complete, a reviewer flagged that basis-diagonal operators (`Common.diagonalEvolution`,
-`totalNumberOperator`, `freeHamiltonian`, `interactionHamiltonian`, `occupationProjector`) were
-each hand-built via their own `Finsupp.lift`/`Finset.sum` construction, duplicating the same
-algebra. **Done**: `Common/AlgebraicFock.lean` gained `Common.diagonalOperator a := Finsupp.lift _
-ℂ Config fun c => a c • basisState c` plus `diagonalOperator_basisState`/`_zero`/`_one`/`_add`/
-`_smul`/`_comp`/`_comm`/`matrixCoeff_diagonalOperator`/`_injective`.
-`Common/WeightedDiagonalFunctional.lean` gained `weightedTrace_diagonalOperator`/
-`normalizedWeightedDiagonal_diagonalOperator`. `Fermionic/Hamiltonian.lean`'s
-`totalNumberOperator`/`freeHamiltonian`/`interactionHamiltonian` are now each a
-`Common.diagonalOperator` specialization (eigenvalue `n.card`/`Σᵢ∈n ε(i)`/`Σᵢ∈n Σⱼ∈n V(i,j)`
-respectively — each a finite sum over the *occupation state* `n`, not over all of `Mode`), so **all
-three no longer need `[Fintype Mode]`** — mirroring `fermionEnergy`'s existing Fintype-free shape.
-Their own `_basisState` eigenvalue lemmas are now one-line `diagonalOperator_basisState`
-applications (previously multi-line `Finset.univ_inter`/`Finset.sum_smul` manipulations); every
-downstream consumer (`ImaginaryTimeEvolution.lean`, `FormalExp.lean`, `WeightedNumberOperator.lean`,
-`DysonExpansionVerification.lean`) is unaffected beyond dropping now-unused `[Fintype Mode]`/
-`[LinearOrder Mode]` hypotheses (several picked up transitively and were never actually used).
-**Not done in this pass** (deliberately, to keep the diff small): re-expressing
-`occupationProjector` (`QuantumLinkedCluster.lean`) as a `diagonalOperator` specialization — it
-already needs no `[Fintype Mode]`, so the only benefit would be reusing `diagonalOperator_comp` for
-`occupationProjector_mul`; left as a follow-up since it isn't blocking anything.
+### Completed cleanup (post-PR-6)
 
-**Post-PR-6 refactor (gpt's review), a second 3-PR plan for the quartic-leg/Dyson-diagram API.**
-- **PR A done**: new `Fermionic/QuarticLocalLeg.lean`, a pure move (no statement/proof changes) of
-  a single quartic vertex's four local legs' semantics — previously split between
-  `WickDiagram/Amplitude.lean` (`quarticLocalLegOperator`, `quarticLocalLegEnergyShift`,
-  `imaginaryTimeEvolve_quarticLocalLegOperator`) and `DysonDiagramExpansion.lean`
-  (`quarticLocalLegMode`, `quarticLocalLegIsCreate`, `anticomm_quarticLocalLegOperator`,
-  `zetaCommutator_quarticLocalLegOperator`) — gathered into one module, since this content is
-  about a vertex's own legs, not about diagrams or the Dyson expansion. Dependency direction:
-  `QuarticInteraction`/`ImaginaryTimeEvolution`/`ExchangeAlgebra` → `QuarticLocalLeg` →
-  `WickDiagram/Amplitude`/`DysonDiagramExpansion`.
-- **PR B done**: new `Fermionic/WickDiagram/LegFamily.lean` gained
-  `quarticLegOperatorForSequence ε q τ p` — the atomic operator at a flattened leg position for
-  *any* vertex-label sequence `q`/time assignment `τ` (looks up the slot/local-leg via
-  `orderedQuarticLegEquiv`, evolves that vertex's local-leg operator to the slot's time), the
-  common shape behind `DysonDiagramExpansion.lean`'s `flatVertexLegOperator` and
-  `WickDiagram/Amplitude.lean`'s `orderedQuarticLegOperator`. Both are now literal
-  `quarticLegOperatorForSequence` specializations (`flatVertexLegOperator ε n q τ :=
-  quarticLegOperatorForSequence ε q τ`; `orderedQuarticLegOperator ε d order τ :=
-  quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ`), so
-  `orderedQuarticLegOperator_eq_flatVertexLegOperator` is now `rfl` *structurally* (both unfold to
-  the same shared definition), not a coincidental syntactic match. Two proof sites
-  (`flatVertexLegOperator_eq_smul`, `flatVertexLegOperator_cast_mul_add`) needed an extra
-  `quarticLegOperatorForSequence` unfold step in their `rw` chains after the indirection; no
-  theorem statements changed.
-- **PR C not yet done**: splitting `DysonDiagramExpansion.lean` into
-  `DysonDiagramExpansion/VertexExpansion.lean` (Dyson-coefficient-to-vertex-label-sum content) and
-  `DysonDiagramExpansion/WickExpansion.lean` (Bloch–de Dominicis application onward), with the
-  existing file becoming a two-line import umbrella.
+- Basis-diagonal operators (`totalNumberOperator`/`freeHamiltonian`/`interactionHamiltonian`) share
+  `Common.diagonalOperator`, dropping their `[Fintype Mode]` requirement.
+- Quartic local-leg semantics (operator, energy shift, mode, CAR relations) live in
+  `Fermionic/QuarticLocalLeg.lean`.
+- Sequence-level evolved legs use a single generic
+  `WickDiagram/LegFamily.lean`'s `quarticLegOperatorForSequence`, replacing the old
+  `flatVertexLegOperator` wrapper.
+
+### Next
+
+- PR 7: `componentPartition`/restriction/reassembly, connecting `QuarticWickDiagram` to
+  `Combinatorics/DiagramConnectedness.lean`'s abstract `WeightedDiagramFamily`.
 
 **Step 1 done, in `Fermionic/ImaginaryTimeEvolution.lean`:**
 - `imaginaryTimeEvolveFree ε τ` — `e^{τH₀}` for the free Hamiltonian, defined directly on the

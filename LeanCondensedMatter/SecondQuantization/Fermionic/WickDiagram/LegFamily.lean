@@ -4,22 +4,9 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.QuarticLocalLeg
 set_option linter.style.header false
 
 /-!
-# The atomic leg operator for an arbitrary vertex-label sequence
+# Quartic leg families
 
-Refactor PR B of the post-PR-6 cleanup (`notes/roadmaps/second-quantization.md`): a single generic
-operator family, `quarticLegOperatorForSequence`, for the atomic operator at a flattened leg
-position `p : Fin (2 * (2 * n))`, given *any* vertex-label sequence `q : Fin n →
-QuarticVertexLabel Mode` and time assignment `τ : Fin n → ℝ` — looks up which slot/local-leg `p`
-corresponds to (`orderedQuarticLegEquiv`) and evolves that vertex's local-leg operator
-(`QuarticLocalLeg.lean`) to the slot's assigned time.
-
-This is the common shape behind two previously independent constructions:
-`Fermionic/DysonDiagramExpansion.lean`'s `flatVertexLegOperator` (for a bare vertex-label sequence,
-not yet a `QuarticWickDiagram`) and `WickDiagram/Amplitude.lean`'s `orderedQuarticLegOperator` (for
-a fixed diagram `d` and vertex order, via `q := fun i => d.vertexLabel (order i)`) — both are now
-literally `quarticLegOperatorForSequence` specializations, so
-`orderedQuarticLegOperator_eq_flatVertexLegOperator` (`DysonDiagramExpansion.lean`) is a structural
-consequence of sharing this one definition, not a coincidental `rfl`.
+Atomic time-evolved leg operators for a sequence of quartic vertex labels.
 -/
 
 namespace SecondQuantization
