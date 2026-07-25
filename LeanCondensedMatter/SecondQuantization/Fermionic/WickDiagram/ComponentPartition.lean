@@ -6,20 +6,8 @@ set_option linter.style.header false
 /-!
 # The connected-component partition of a quartic Wick diagram's vertex set
 
-PR 7a of the diagram-connectedness plan (`notes/roadmaps/second-quantization.md`): the first piece
-of `componentPartition`/restriction/reassembly, connecting `QuarticWickDiagram` to
-`Combinatorics/DiagramConnectedness.lean`'s abstract `WeightedDiagramFamily`.
-
-`d.componentBlock v` is the `Finset (Fin N)` of vertices reachable from `v` in `d.vertexGraph`,
-read back from `↥S` to `Fin N` via `Subtype.val`. `d.componentPartition` assembles these blocks,
-one per reachability class, into a genuine `Finpartition S` — the object
-`WeightedDiagramFamily.decompose` needs. Reachability decidability throughout this file is
-classical (`d.vertexGraph.Adj` is defined via an unbounded `∃`, not decidable by computation).
-
-**Not done here**: component-diagram restriction and reassembly, and the equivalence between
-`QuarticWickDiagram Mode N S` and `Σ π : Finpartition S, ∀ B : π.parts, ConnectedQuarticWickDiagram
-Mode N B` — both remain future work (PR 7b), per
-`WickDiagramConnected.lean`'s own module docstring.
+Defines the connected-component blocks and component partition of a quartic Wick diagram.
+Restriction and reassembly are developed separately.
 -/
 
 namespace SecondQuantization
@@ -91,5 +79,22 @@ noncomputable def QuarticWickDiagram.componentPartition {S : Finset (Fin N)}
         exact ((d.mem_componentBlock v).1 hx).1
       · intro hx
         exact ⟨⟨x, hx⟩, d.self_mem_componentBlock ⟨x, hx⟩⟩)
+
+theorem QuarticWickDiagram.componentBlock_mem_componentPartition {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) (v : ↥S) :
+    d.componentBlock v ∈ d.componentPartition.parts := by
+  simp only [componentPartition, Finpartition.copy_parts, Finpartition.ofPairwiseDisjoint_parts,
+    Finset.mem_erase]
+  refine ⟨?_, Finset.mem_image.2 ⟨v, Finset.mem_univ v, rfl⟩⟩
+  rw [Finset.bot_eq_empty]
+  exact Finset.ne_empty_of_mem (d.self_mem_componentBlock v)
+
+theorem QuarticWickDiagram.exists_componentBlock_eq_of_mem {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)}
+    (hB : B ∈ d.componentPartition.parts) : ∃ v : ↥S, d.componentBlock v = B := by
+  simp only [componentPartition, Finpartition.copy_parts, Finpartition.ofPairwiseDisjoint_parts,
+    Finset.mem_erase] at hB
+  obtain ⟨v, _, rfl⟩ := Finset.mem_image.1 hB.2
+  exact ⟨v, rfl⟩
 
 end SecondQuantization
