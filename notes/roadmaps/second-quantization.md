@@ -287,8 +287,10 @@ Bloch–de Dominicis theorem, and the non-commutative time-ordered Dyson series.
      evolved atomic legs (`WickDiagram/LegFamily.lean`'s `quarticLegOperatorForSequence`,
      `Fermionic/QuarticLocalLeg.lean`'s per-leg operator/energy-shift/CAR semantics), plus the
      vertex-order-sum reindexing (`sum_quarticWickDiagram_eq_sum_orderedData`).
-   - **PR 7, not started**: `componentPartition`/restriction/reassembly, connecting
-     `QuarticWickDiagram` to `WeightedDiagramFamily` as a concrete instantiation.
+   - **PR 7 in progress, split into 7a/7b/7c**: **PR 7a complete**,
+     `Fermionic/WickDiagram/ComponentPartition.lean`'s `componentPartition`. **Next**: component
+     restriction/reassembly and amplitude factorization (PR 7b/7c), followed by the finite-set LCT
+     and the `PowerSeries.log` coefficient bridge.
 
 7. **Not started**: move/generalize the fermionic linked-cluster bridge (Phase 8's
    `Fermionic/QuantumLinkedCluster.lean`, currently only a product-weight/independent-region toy
