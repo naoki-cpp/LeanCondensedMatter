@@ -4,59 +4,40 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel
 set_option linter.style.header false
 
 /-!
-# Vertex orders and the ordered-data equivalence for quartic Wick diagrams
+# Vertex orders and ordered quartic Wick data
 
-Step 6 (PR 5b) of the diagram-connectedness plan (`notes/roadmaps/second-quantization.md`): the
-second sub-piece of PR 5's design, transporting a `QuarticWickDiagram`'s pairing onto the leg
-enumeration induced by an arbitrary **vertex order** — a bijection `Fin S.card ≃ ↥S` assigning a
-time slot `0, 1, …, S.card - 1` to each vertex, needed so PR 5c's ordered-simplex amplitude
-(indexed by `Fin S.card`, not `↥S`) can be built.
+A `QuarticVertexOrder S` identifies the diagram's vertices with ordered slots `Fin S.card`.
+`orderedLegToDiagramLeg` transports flattened leg positions between the slot enumeration and the
+diagram's fixed enumeration, and `pairingInOrder` transports the pairing accordingly.
 
-`quarticWickDiagramEquivOrderedData` is the resulting equivalence between `QuarticWickDiagram Mode
-N S` (for the *fixed* vertex set `S`) and `OrderedQuarticWickData Mode S.card` (a vertex-label
-sequence indexed by `Fin S.card` together with a pairing already transported onto that same slot
-enumeration) — this is all PR 6 needs to reindex its diagram sum. **Deliberately excluded**:
-relabeling between `QuarticWickDiagram Mode N S` and `QuarticWickDiagram Mode N T` for *different*
-vertex sets `S ≠ T` — that mixes cardinality equalities, dependent-subtype casts, and pairing
-position casts in a way that risks the same kernel-timeout failure mode `notes/caveats.md`
-documents for dependent-`Sigma`-type reindexing, and is not needed until a future component
-restriction/reassembly PR.
+For a fixed vertex set and vertex order, `quarticWickDiagramEquivOrderedData` identifies a quartic
+Wick diagram with a slot-indexed vertex-label sequence and a pairing in the same slot enumeration.
 -/
 
 namespace SecondQuantization
 
 variable {Mode : Type*} [DecidableEq Mode] [Fintype Mode] {N : ℕ}
 
-/-- **A vertex order**: a bijection between time slots `Fin S.card` and the diagram's vertex set
-`↥S`. -/
+/-- A bijection between ordered slots and the diagram's vertex set. -/
 abbrev QuarticVertexOrder (S : Finset (Fin N)) := Fin S.card ≃ (↥S)
 
-/-- **The leg relabeling induced by a vertex order**: translates a flattened leg position from
-the ordered-data enumeration (`orderedQuarticLegEquiv`, built on `Fin S.card`-indexed slots) to
-the diagram's own fixed leg enumeration (`quarticLegEquiv`, built on `quarticVertexEquiv`'s
-enumeration of `↥S`), by routing through `order` on the vertex component and leaving the local leg
-untouched. -/
+/-- The flattened-leg relabeling induced by a vertex order. -/
 noncomputable def orderedLegToDiagramLeg (S : Finset (Fin N)) (order : QuarticVertexOrder S) :
     Equiv.Perm (Fin (2 * (2 * S.card))) :=
   (orderedQuarticLegEquiv S.card).trans
     ((order.prodCongr (Equiv.refl (Fin 4))).trans (quarticLegEquiv S).symm)
 
-/-- **A diagram's pairing, transported onto a vertex order's slot enumeration.** -/
+/-- A diagram's pairing transported to a vertex order's slot enumeration. -/
 noncomputable def QuarticWickDiagram.pairingInOrder {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (order : QuarticVertexOrder S) :
     Common.BlochDeDominicis.Pairing (2 * S.card) :=
   d.pairing.relabel (orderedLegToDiagramLeg S order)
 
-/-- **Ordered Wick-diagram data**: a vertex-label sequence indexed by time slot `Fin n`, together
-with a pairing of the resulting `4 * n` legs already stated in that same slot enumeration
-(`orderedQuarticLegEquiv`'s enumeration, not `quarticLegEquiv`'s). -/
+/-- Slot-indexed vertex labels together with a pairing in the same enumeration. -/
 abbrev OrderedQuarticWickData (Mode : Type*) (n : ℕ) :=
   (Fin n → QuarticVertexLabel Mode) × Common.BlochDeDominicis.Pairing (2 * n)
 
-/-- **The ordered-data equivalence**: for a *fixed* vertex set `S` and vertex order `order`, a
-`QuarticWickDiagram Mode N S` is the same data as an `OrderedQuarticWickData Mode S.card` —
-relabel the vertex-indexed data along `order`, and transport the pairing via
-`orderedLegToDiagramLeg`. -/
+/-- A diagram on `S` is equivalent to ordered data for any fixed vertex order. -/
 noncomputable def quarticWickDiagramEquivOrderedData {S : Finset (Fin N)}
     (order : QuarticVertexOrder S) :
     QuarticWickDiagram Mode N S ≃ OrderedQuarticWickData Mode S.card where
@@ -76,9 +57,7 @@ noncomputable def quarticWickDiagramEquivOrderedData {S : Finset (Fin N)}
       simp
     · simp [QuarticWickDiagram.pairingInOrder]
 
-/-- **PR 6's reindexing lemma**: summing an arbitrary function of the ordered data over all
-diagrams on `S` (via `quarticWickDiagramEquivOrderedData`) is the same as summing it directly over
-all ordered data — a direct instance of `Equiv.sum_comp`. -/
+/-- Reindex a finite sum over diagrams as a sum over ordered data. -/
 theorem sum_quarticWickDiagram_eq_sum_orderedData {S : Finset (Fin N)}
     (order : QuarticVertexOrder S) (F : OrderedQuarticWickData Mode S.card → ℂ) :
     ∑ d : QuarticWickDiagram Mode N S, F (quarticWickDiagramEquivOrderedData order d) =
@@ -86,19 +65,12 @@ theorem sum_quarticWickDiagram_eq_sum_orderedData {S : Finset (Fin N)}
   Equiv.sum_comp (quarticWickDiagramEquivOrderedData order) F
 
 omit [DecidableEq Mode] [Fintype Mode] in
-/-- **A vertex order always exists**: `Fin S.card` and `↥S` have the same cardinality
-(`Fintype.card_coe`), so `Fintype.equivFin`/`finCongr` transport an equivalence between them. Needed
-purely to exhibit *some* element of `QuarticVertexOrder S`, so `Fintype.card_equiv` (which needs an
-actual equivalence, not just matching cardinalities) can compute `Fintype.card (QuarticVertexOrder
-S)`. -/
+/-- A vertex order exists for every finite vertex set. -/
 noncomputable def someVertexOrder (S : Finset (Fin N)) : QuarticVertexOrder S :=
   ((Fintype.equivFin (↥S)).trans (finCongr (Fintype.card_coe S))).symm
 
 omit [DecidableEq Mode] [Fintype Mode] in
-/-- **There are exactly `S.card!` vertex orders** — `Fintype.card_equiv` at `someVertexOrder S`,
-using `Fintype.card_fin` to identify `Fintype.card (Fin S.card)` with `S.card`. This is what makes
-`quarticWickDiagramAmplitude`'s "sum over *every* vertex order" match `dysonVertexMoment`'s own
-`S.card!` normalization once the diagram sum is reindexed. -/
+/-- The number of vertex orders is `S.card!`. -/
 theorem card_quarticVertexOrder (S : Finset (Fin N)) :
     Fintype.card (QuarticVertexOrder S) = S.card.factorial := by
   rw [Fintype.card_equiv (someVertexOrder S), Fintype.card_fin]
