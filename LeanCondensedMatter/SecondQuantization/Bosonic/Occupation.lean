@@ -7,34 +7,25 @@ set_option linter.style.header false
 /-!
 # Bosonic occupation-number states
 
-The occupation-number representation of the bosonic Fock basis, `Occupation Mode := Mode →₀ ℕ` —
-a finitely-supported function assigning each mode its number of particles. This is the preferred
-basis for a future bosonic Fock space; symmetric tensor powers are deliberately avoided as the
-starting point since the occupation-number picture is simpler and computationally direct. See
-`Fermionic/Occupation.lean` for the fermionic counterpart (`Finset Mode`, not `Mode →₀ ℕ`, since
-Pauli exclusion caps occupation at `0`/`1`) and `notes/roadmaps/second-quantization.md` for how
-this fits into Track D — the fermionic, finite-mode case is now the primary line toward the
-Linked Cluster Theorem, with this bosonic development kept in parallel.
+A bosonic occupation state is a finitely supported function `Mode →₀ ℕ`. The support is finite even
+when the mode type is not, so the bookkeeping layer does not require `[Fintype Mode]`.
 
-This file deliberately does not assume `[Fintype Mode]`: finite support is built into `Finsupp`,
-so the same API works unchanged once `Mode` is later generalized to a countably infinite mode set
-(e.g. `ℕ` or a lattice `ℤ^d`). `[Fintype Mode]` only becomes relevant for later constructions that
-need a *finite* mode set (e.g. an explicit finite-dimensional Fock space truncation).
+The canonical API lives in `SecondQuantization.Bosonic`. Compatibility aliases for the older
+`SecondQuantization`-level names are retained at the end of the file.
 -/
 
 namespace SecondQuantization
+namespace Bosonic
 
 variable {Mode : Type*}
 
-/-- **Occupation-number state.** Assigns each mode its (finite) particle number, with finite
-support. An `abbrev` rather than a `def` so that `Mode →₀ ℕ`'s existing algebraic instances
-(`AddCommMonoid`, `Inhabited`, ...) transfer automatically. -/
+/-- A finitely supported bosonic occupation-number state. -/
 abbrev Occupation (Mode : Type*) := Mode →₀ ℕ
 
-/-- **The vacuum occupation configuration**: zero particles in every mode. -/
+/-- The zero-particle occupation configuration. -/
 def vacuum : Occupation Mode := 0
 
-/-- **The total particle number** of an occupation-number state, `Σᵢ n(i)`. -/
+/-- The total particle number `Σᵢ n(i)`. -/
 def particleNumber (n : Occupation Mode) : ℕ := n.sum fun _ k => k
 
 @[simp]
@@ -49,7 +40,7 @@ theorem particleNumber_add (m n : Occupation Mode) :
     particleNumber (m + n) = particleNumber m + particleNumber n :=
   Finsupp.sum_add_index' (fun _ => rfl) (fun _ _ _ => rfl)
 
-/-- **The single-particle occupation state** with one particle in mode `i` and none elsewhere. -/
+/-- The occupation state with one particle in mode `i`. -/
 noncomputable def singleOccupation (i : Mode) : Occupation Mode := Finsupp.single i 1
 
 @[simp]
@@ -65,9 +56,7 @@ theorem particleNumber_singleOccupation (i : Mode) :
     particleNumber (singleOccupation i : Occupation Mode) = 1 := by
   simp [particleNumber, singleOccupation]
 
-/-- **Creating a particle in mode `i`**: add one particle to mode `i`, leaving all other modes
-unchanged. The occupation-number counterpart of the creation operator's action on a basis state,
-before creation operators themselves are defined (`CreationAnnihilation.lean`). -/
+/-- Add one particle in mode `i`. -/
 noncomputable def createOccupation (i : Mode) (n : Occupation Mode) : Occupation Mode :=
   n + singleOccupation i
 
@@ -85,21 +74,7 @@ theorem createOccupation_apply_ne {i j : Mode} (h : j ≠ i) (n : Occupation Mod
     createOccupation i n j = n j := by
   simp [createOccupation, singleOccupation, h]
 
-/-!
-`removeOccupation` and the `Common.OccupationBasis` instance live under `SecondQuantization.Bosonic`
-(rather than plain `SecondQuantization`, unlike the rest of this file) solely to avoid name clashes
-with the fermionic `SecondQuantization.removeOccupation`/`occupationBasis` in
-`Fermionic/Occupation.lean` — the fermionic line uses the plain `SecondQuantization` namespace
-throughout, so any name shared between the two files must be pushed into `Bosonic` here.
--/
-
-namespace Bosonic
-
-/-- **The bosonic occupation-basis instance**: `Occupation Mode` reads off each mode's occupation
-number directly (`n i`) — the concrete side of `Common.OccupationBasis`'s shared interface,
-mirroring the fermionic line's `SecondQuantization.occupationBasis`
-(`Fermionic/Occupation.lean`; the fermionic line uses the plain `SecondQuantization` namespace,
-not a `Fermionic` sub-namespace). -/
+/-- The shared occupation-basis interface for bosonic occupation states. -/
 instance occupationBasis : Common.OccupationBasis Mode (Occupation Mode) where
   vacuum := vacuum
   occupation n i := n i
@@ -107,10 +82,7 @@ instance occupationBasis : Common.OccupationBasis Mode (Occupation Mode) where
   finiteSupport n := (n.support.finite_toSet).subset fun i hi => Finsupp.mem_support_iff.2 hi
   ext {m n} h := Finsupp.ext h
 
-/-- **Removing a particle from mode `i`**: subtract one particle from mode `i` (a no-op if `i`
-was already unoccupied), leaving all other modes unchanged. The occupation-number counterpart of
-the annihilation operator's action on a basis state, before annihilation operators themselves are
-defined (`CreationAnnihilationBosonic.lean`). -/
+/-- Remove one particle from mode `i`, with zero left unchanged. -/
 noncomputable def removeOccupation (i : Mode) (n : Occupation Mode) : Occupation Mode :=
   n.update i (n i - 1)
 
@@ -144,16 +116,13 @@ theorem particleNumber_removeOccupation_of_pos {i : Mode} {n : Occupation Mode} 
   conv_rhs => rw [← createOccupation_removeOccupation_of_pos h]
   rw [particleNumber_createOccupation]
 
-/-! ## Commuting independent-mode operations
-
-The occupation-level facts behind the CCR at distinct modes (`CCR.lean`): creating/removing at
-mode `i` doesn't interact with creating/removing at a different mode `j`. -/
-
+/-- Creating particles in two modes commutes. -/
 theorem createOccupation_comm (i j : Mode) (n : Occupation Mode) :
     createOccupation i (createOccupation j n) = createOccupation j (createOccupation i n) := by
   simp only [createOccupation]
   exact add_right_comm n (singleOccupation j) (singleOccupation i)
 
+/-- Removing particles in distinct modes commutes. -/
 theorem removeOccupation_comm {i j : Mode} (h : i ≠ j) (n : Occupation Mode) :
     removeOccupation i (removeOccupation j n) = removeOccupation j (removeOccupation i n) := by
   ext k
@@ -166,6 +135,7 @@ theorem removeOccupation_comm {i j : Mode} (h : i ≠ j) (n : Occupation Mode) :
     · rw [removeOccupation_apply_ne hki, removeOccupation_apply_ne hkj,
         removeOccupation_apply_ne hkj, removeOccupation_apply_ne hki]
 
+/-- Creation and removal in distinct modes commute. -/
 theorem removeOccupation_createOccupation_of_ne {i j : Mode} (h : i ≠ j) (n : Occupation Mode) :
     removeOccupation i (createOccupation j n) = createOccupation j (removeOccupation i n) := by
   ext k
@@ -179,4 +149,62 @@ theorem removeOccupation_createOccupation_of_ne {i j : Mode} (h : i ≠ j) (n : 
         createOccupation_apply_ne hkj, removeOccupation_apply_ne hki]
 
 end Bosonic
+
+/-! ## Compatibility aliases
+
+These preserve the original `SecondQuantization`-level occupation API while new code uses the
+`SecondQuantization.Bosonic` namespace.
+-/
+
+variable {Mode : Type*}
+
+abbrev Occupation (Mode : Type*) := Bosonic.Occupation Mode
+abbrev vacuum : Occupation Mode := Bosonic.vacuum
+abbrev particleNumber (n : Occupation Mode) : ℕ := Bosonic.particleNumber n
+
+@[simp]
+theorem particleNumber_zero : particleNumber (0 : Occupation Mode) = 0 :=
+  Bosonic.particleNumber_zero
+
+@[simp]
+theorem particleNumber_vacuum : particleNumber (vacuum : Occupation Mode) = 0 :=
+  Bosonic.particleNumber_vacuum
+
+theorem particleNumber_add (m n : Occupation Mode) :
+    particleNumber (m + n) = particleNumber m + particleNumber n :=
+  Bosonic.particleNumber_add m n
+
+noncomputable abbrev singleOccupation (i : Mode) : Occupation Mode :=
+  Bosonic.singleOccupation i
+
+@[simp]
+theorem singleOccupation_apply_same (i : Mode) : singleOccupation i i = 1 :=
+  Bosonic.singleOccupation_apply_same i
+
+@[simp]
+theorem singleOccupation_apply_ne {i j : Mode} (h : j ≠ i) : singleOccupation i j = 0 :=
+  Bosonic.singleOccupation_apply_ne h
+
+@[simp]
+theorem particleNumber_singleOccupation (i : Mode) :
+    particleNumber (singleOccupation i : Occupation Mode) = 1 :=
+  Bosonic.particleNumber_singleOccupation i
+
+noncomputable abbrev createOccupation (i : Mode) (n : Occupation Mode) : Occupation Mode :=
+  Bosonic.createOccupation i n
+
+@[simp]
+theorem particleNumber_createOccupation (i : Mode) (n : Occupation Mode) :
+    particleNumber (createOccupation i n) = particleNumber n + 1 :=
+  Bosonic.particleNumber_createOccupation i n
+
+@[simp]
+theorem createOccupation_apply_same (i : Mode) (n : Occupation Mode) :
+    createOccupation i n i = n i + 1 :=
+  Bosonic.createOccupation_apply_same i n
+
+theorem createOccupation_apply_ne {i j : Mode} (h : j ≠ i) (n : Occupation Mode) :
+    createOccupation i n j = n j :=
+  Bosonic.createOccupation_apply_ne h n
+
 end SecondQuantization
