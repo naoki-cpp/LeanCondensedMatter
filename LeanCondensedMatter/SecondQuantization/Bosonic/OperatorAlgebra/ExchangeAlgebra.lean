@@ -1,0 +1,38 @@
+import LeanCondensedMatter.SecondQuantization.Bosonic.OperatorAlgebra.CCR
+import LeanCondensedMatter.SecondQuantization.Common.ExchangeAlgebra
+
+set_option linter.style.header false
+
+/-!
+# Bosonic exchange algebra
+
+The canonical commutation relations provide the `Statistics.boson` instance of
+`Common.ExchangeAlgebra`. The local bridge identifies the concrete ordinary commutator used in the
+basis-state proofs with the Common statistics-indexed exchange commutator.
+-/
+
+namespace SecondQuantization
+namespace Bosonic
+
+variable {Mode : Type*} [DecidableEq Mode]
+
+private theorem exchangeCommutator_boson_eq_comm
+    (A B : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode) :
+    Common.exchangeCommutator Statistics.boson A B = comm A B := by
+  rw [Common.exchangeCommutator, Statistics.zetaInt_boson, Int.cast_one, Common.zetaCommutator,
+    one_smul]
+  rfl
+
+noncomputable instance exchangeAlgebra :
+    Common.ExchangeAlgebra Statistics.boson Mode (Occupation Mode) where
+  annihilate := annihilate
+  create := create
+  annihilate_create i j := by
+    rw [exchangeCommutator_boson_eq_comm, comm_annihilate_create]
+  annihilate_annihilate i j := by
+    rw [exchangeCommutator_boson_eq_comm, comm_annihilate_annihilate]
+  create_create i j := by
+    rw [exchangeCommutator_boson_eq_comm, comm_create_create]
+
+end Bosonic
+end SecondQuantization
