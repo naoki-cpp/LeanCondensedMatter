@@ -1,5 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTimeOrdering
-import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTimeEvolution
+import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeOrdering
+import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution
 
 set_option linter.style.header false
 
