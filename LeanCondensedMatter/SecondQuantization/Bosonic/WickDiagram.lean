@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.QuarticVertexLabel
-import LeanCondensedMatter.SecondQuantization.Common.QuarticDiagramConnected
+import LeanCondensedMatter.SecondQuantization.Common.QuarticDiagramReassemble
 
 set_option linter.style.header false
 
@@ -7,8 +7,9 @@ set_option linter.style.header false
 # Bosonic quartic Wick diagrams
 
 Bosonic quartic diagrams specialize the statistics-independent labelled diagram structures to
-`Common.QuarticVertexLabel Mode`. Their stored data and connectedness are purely combinatorial;
-bosonic contraction weights and amplitudes belong in later layers.
+`Common.QuarticVertexLabel Mode`. Their stored data, connected-component decomposition, and
+reassembly are purely combinatorial; bosonic contraction weights and amplitudes belong in later
+layers.
 -/
 
 namespace SecondQuantization
