@@ -1,22 +1,19 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.CreationAnnihilation
+import LeanCondensedMatter.SecondQuantization.Common.ExchangeCommutator
 
 set_option linter.style.header false
 
 /-!
-# The canonical commutation relations
+# Canonical commutation relations
 
-Phase B1d of Track D's bosonic line (`notes/roadmaps/second-quantization.md`): the canonical
-commutation relations (CCR) for the bosonic creation/annihilation operators of
-`CreationAnnihilation.lean`:
+The bosonic creation and annihilation operators satisfy
 
-* `[aᵢ, aⱼ] = 0` (`comm_annihilate_annihilate`)
-* `[aᵢ†, aⱼ†] = 0` (`comm_create_create`)
-* `[aᵢ, aⱼ†] = δᵢⱼ` (`comm_annihilate_create`)
+* `[a_i, a_j] = 0`,
+* `[a_i†, a_j†] = 0`,
+* `[a_i, a_j†] = δ_ij`.
 
-Unlike the fermionic CAR proof (`Fermionic/CanonicalAnticommutationRelations.lean`), there is no
-sign bookkeeping to track — bosonic modes commute — but the `√n`/`√(n+1)` normalization
-factors need their own telescoping identity, `Real.mul_self_sqrt`, to collapse `√n · √n = n`
-at the diagonal (`i = j`) case.
+The public `comm` name is the bosonic specialization of `Common.exchangeCommutator`, so these
+relations directly instantiate the statistics-independent exchange-algebra interface.
 -/
 
 namespace SecondQuantization
@@ -24,26 +21,23 @@ namespace Bosonic
 
 variable {Mode : Type*} [DecidableEq Mode]
 
-/-! ## The commutator, and reduction to basis states -/
-
-/-- **The commutator** of two linear endomorphisms, `[A, B] := AB - BA`. -/
+/-- The bosonic commutator, as the `Statistics.boson` exchange commutator. -/
 noncomputable def comm (A B : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode) :
     FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode :=
-  A.comp B - B.comp A
+  Common.exchangeCommutator Statistics.boson A B
 
 theorem comm_apply (A B : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode)
-    (x : FockSpaceBosonic Mode) : comm A B x = A (B x) - B (A x) :=
-  rfl
+    (x : FockSpaceBosonic Mode) : comm A B x = A (B x) - B (A x) := by
+  simp [comm, Common.exchangeCommutator, Common.zetaCommutator]
 
-/-- **The square-root normalization factor squares back to the (cast) natural number it was taken
-from** — the arithmetic core of every diagonal (`i = j`) case below. -/
+/-- The square-root normalization factor squares to its natural-number argument. -/
 theorem sqrt_natCast_mul_self (k : ℕ) :
     (Real.sqrt (k : ℝ) : ℂ) * (Real.sqrt (k : ℝ) : ℂ) = (k : ℂ) := by
   have h : Real.sqrt (k : ℝ) * Real.sqrt (k : ℝ) = (k : ℝ) :=
     Real.mul_self_sqrt (Nat.cast_nonneg k)
   exact_mod_cast h
 
-/-! ## `[aᵢ†, aⱼ†] = 0` -/
+/-! ## `[a_i†, a_j†] = 0` -/
 
 theorem comm_create_create_basisState (i j : Mode) (n : Occupation Mode) :
     comm (create i) (create j) (basisState n) = 0 := by
@@ -57,7 +51,7 @@ theorem comm_create_create_basisState (i j : Mode) (n : Occupation Mode) :
 theorem comm_create_create (i j : Mode) : comm (create i) (create j) = 0 :=
   linearMap_ext_basisState fun n => by rw [comm_create_create_basisState, LinearMap.zero_apply]
 
-/-! ## `[aᵢ, aⱼ] = 0` -/
+/-! ## `[a_i, a_j] = 0` -/
 
 theorem comm_annihilate_annihilate_basisState (i j : Mode) (n : Occupation Mode) :
     comm (annihilate i) (annihilate j) (basisState n) = 0 := by
@@ -90,10 +84,9 @@ theorem comm_annihilate_annihilate (i j : Mode) : comm (annihilate i) (annihilat
   linearMap_ext_basisState fun n => by
     rw [comm_annihilate_annihilate_basisState, LinearMap.zero_apply]
 
-/-! ## `[aᵢ, aⱼ†] = δᵢⱼ` -/
+/-! ## `[a_i, a_j†] = δ_ij` -/
 
-/-- **`a_i a_i†` acts diagonally with eigenvalue `n_i + 1`**: `a_i(a_i†|n⟩) = (n_i + 1)|n⟩`. Half
-of the diagonal (`i = j`) CCR telescoping argument. -/
+/-- `a_i a_i†` acts diagonally with eigenvalue `n_i + 1`. -/
 theorem annihilate_create_basisState_same (i : Mode) (n : Occupation Mode) :
     annihilate i (create i (basisState n)) = ((n i : ℂ) + 1) • basisState n := by
   have h1 : createOccupation i n i ≠ 0 := by rw [createOccupation_apply_same]; omega
@@ -106,8 +99,7 @@ theorem annihilate_create_basisState_same (i : Mode) (n : Occupation Mode) :
   rw [create_basisState_eq, map_smul, annihilate_basisState_of_pos h1,
     removeOccupation_createOccupation, smul_smul, hscalar]
 
-/-- **`a_i† a_i` acts diagonally with eigenvalue `n_i`**: `a_i†(a_i|n⟩) = n_i|n⟩`. The other half
-of the diagonal (`i = j`) CCR telescoping argument. -/
+/-- `a_i† a_i` acts diagonally with eigenvalue `n_i`. -/
 theorem create_annihilate_basisState_same (i : Mode) (n : Occupation Mode) :
     create i (annihilate i (basisState n)) = (n i : ℂ) • basisState n := by
   by_cases h : n i = 0
