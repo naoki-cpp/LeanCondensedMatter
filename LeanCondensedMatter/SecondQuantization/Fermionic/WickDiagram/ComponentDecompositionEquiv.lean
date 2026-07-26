@@ -40,8 +40,10 @@ theorem QuarticWickDiagram.componentDecompose_reassemble {S : Finset (Fin N)}
     (F : ∀ B : π.parts, ConnectedQuarticWickDiagram Mode N (B : Finset (Fin N))) :
     QuarticWickDiagram.componentDecompose (QuarticWickDiagram.reassemble π F) = ⟨π, F⟩ := by
   unfold QuarticWickDiagram.componentDecompose
-  rw [QuarticWickDiagram.componentPartition_reassemble]
-  congr 1
+  have hπ := QuarticWickDiagram.componentPartition_reassemble π F
+  cases hπ
+  apply Sigma.ext rfl
+  apply HEq.of_eq
   funext B
   exact QuarticWickDiagram.restrictComponentConnected_reassemble π F B B.2
 
