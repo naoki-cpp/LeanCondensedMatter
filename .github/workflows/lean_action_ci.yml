@@ -11,9 +11,11 @@ permissions:
   pages: write
   id-token: write
 
+# Do not let a long documentation build block CI on unrelated branches. For repeated
+# pushes to the same ref, only the newest run is useful.
 concurrency:
-  group: pages
-  cancel-in-progress: false
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -42,15 +44,20 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Restore Lean and documentation cache
+      # Cache only the nested documentation build here. lean-action already maintains
+      # the root .lake cache with its own commit-aware key.
+      - name: Restore documentation cache
         uses: actions/cache@v4
         with:
           path: |
-            .lake/build
             docbuild/.lake/build
-          key: docs-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}
+            docbuild/lake-manifest.json
+          # GitHub caches are immutable, so include the commit SHA to save a fresh
+          # incremental snapshot after every successful main build. The restore prefix
+          # selects the newest snapshot with the same Lean and dependency versions.
+          key: docgen-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
           restore-keys: |
-            docs-${{ runner.os }}-
+            docgen-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
 
       - uses: leanprover/lean-action@v1
 
