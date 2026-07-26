@@ -1,5 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.FreeTwoPointCoefficient
-import LeanCondensedMatter.SecondQuantization.Bosonic.ParticleNumberWeightSummable
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeTwoPointCoefficient
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable
 
 set_option linter.style.header false
 
