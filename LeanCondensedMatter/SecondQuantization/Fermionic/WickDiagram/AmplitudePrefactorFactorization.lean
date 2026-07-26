@@ -14,15 +14,16 @@ shuffle identity for the vertex-order sum of ordered-simplex contributions.
 
 namespace SecondQuantization
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] {N : ℕ}
+variable {Mode : Type*} {N : ℕ}
 
 /-- The product of quartic couplings factors over the connected-component restrictions. -/
 theorem QuarticWickDiagram.couplingWeight_eq_prod_restrictComponentConnected
+    [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (g : QuarticVertexLabel Mode → ℂ) :
     d.couplingWeight g =
       ∏ B : d.componentPartition.parts,
-        (d.restrictComponentConnected B.2).1.couplingWeight g := by
+        QuarticWickDiagram.couplingWeight ((d.restrictComponentConnected B.2).1) g := by
   simpa only [QuarticWickDiagram.couplingWeight,
     QuarticWickDiagram.restrictComponentConnected] using
       (Common.QuarticDiagram.prod_vertexLabel_eq_prod_restrictComponent (d := d) (w := g))
@@ -49,12 +50,13 @@ theorem QuarticWickDiagram.dysonSign_eq_prod_componentSigns
 components. What remains for the full amplitude theorem is the vertex-order/ordered-simplex shuffle
 factorization. -/
 theorem QuarticWickDiagram.amplitudePrefactor_eq_prod_restrictComponentConnected
+    [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (g : QuarticVertexLabel Mode → ℂ) :
     (-1 : ℂ) ^ S.card * d.couplingWeight g =
       ∏ B : d.componentPartition.parts,
         ((-1 : ℂ) ^ (B : Finset (Fin N)).card *
-          (d.restrictComponentConnected B.2).1.couplingWeight g) := by
+          QuarticWickDiagram.couplingWeight ((d.restrictComponentConnected B.2).1) g) := by
   rw [d.dysonSign_eq_prod_componentSigns, d.couplingWeight_eq_prod_restrictComponentConnected]
   rw [Finset.prod_mul_distrib]
 
