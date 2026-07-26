@@ -15,7 +15,6 @@ import LeanCondensedMatter.SecondQuantization.Common.QuarticLeg
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis
 
 set_option linter.style.header false
-
 /-!
 # Statistics-independent second quantization
 
