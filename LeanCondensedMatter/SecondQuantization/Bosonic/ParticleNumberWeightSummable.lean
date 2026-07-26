@@ -5,21 +5,11 @@ set_option linter.unusedFintypeInType false
 set_option linter.unusedDecidableInType false
 
 /-!
-# The particle-number-weighted free Boltzmann weight is summable
+# Summability of particle-number-weighted bosonic Gibbs weights
 
-Phase B3e groundwork of Track D's bosonic line (`notes/roadmaps/second-quantization.md`): unlike
-`BoltzmannWeightSummable.lean`'s bare `Σ_n e^{-βE(n)}`, the Bloch–de Dominicis 2-point
-instantiation needs `Σ_n n(j)·e^{-βE(n)}` — the un-normalized numerator of the mode-`j`
-occupation-number expectation `⟨n_j⟩` — to converge as well, under the same one-mode convergence
-condition `0 < βεᵢ` at every mode.
-
-The one-mode building block is Mathlib's `hasSum_coe_mul_geometric_of_norm_lt_one : ‖r‖ < 1 →
-HasSum (fun n ↦ n * r ^ n) (r / (1 - r) ^ 2)` — the same one-mode geometric series
-`FreePartitionFunction.lean` already uses, weighted by the summation index. The multi-mode
-statement follows by singling out mode `j` in `Finsupp.hasSum_prod_nonneg`
-(`Analysis/FinsuppProductSeries.lean`) with an index-`j`-only-modified one-mode series (weighted
-by `n(j)` at `j`, unweighted at every other mode), rather than reproving the finite-product
-machinery.
+For a fixed mode `j`, the series `Σ n, n(j) e^{-βE(n)}` converges under the same positivity
+assumption as the partition sum. The proof replaces the `j`th one-mode geometric series by its
+index-weighted version and applies the same finite-product `Finsupp` summation theorem.
 -/
 
 namespace SecondQuantization
@@ -27,10 +17,7 @@ namespace Bosonic
 
 variable {Mode : Type*} [Fintype Mode] [DecidableEq Mode]
 
-/-- **The particle-number-weighted free Boltzmann weight is summable**: `Σ_n n(j)·e^{-βE(n)}`
-converges, given every mode's one-mode convergence condition `0 < βεᵢ` — the numerator needed for
-the mode-`j` occupation-number expectation `⟨n_j⟩ = 1/(e^{βεⱼ}-1)` (Bose–Einstein distribution,
-not itself derived here). -/
+/-- The particle-number-weighted free Boltzmann series has its product closed form. -/
 theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
     (hpos : ∀ i, 0 < β * ε i) (j : Mode) :
     HasSum (fun n : Occupation Mode => (n j : ℝ) * boltzmannWeight ε β n)
