@@ -15,7 +15,7 @@ private def projectModule? (moduleName : Name) : Bool :=
   moduleName.toString.startsWith "LeanCondensedMatter"
 
 private def declarationModule? (env : Environment) (declName : Name) : Option Name := do
-  let moduleIdx ← env.const2ModIdx.find? declName
+  let moduleIdx ← env.const2ModIdx.get? declName
   env.header.moduleNames[moduleIdx]?
 
 private def collectEntries : CommandElabM (Array Entry) := do
@@ -45,7 +45,7 @@ private def markdown (entries : Array Entry) : String := Id.run do
     output := output ++ s!"Module: `{entry.moduleName}`\n\n"
     output := output ++ s!"```lean\n{entry.statement}\n```\n\n"
     if let some docString := entry.docString then
-      output := output ++ docString.trim ++ "\n\n"
+      output := output ++ docString.trimAscii.toString ++ "\n\n"
   return output
 
 private def json (entries : Array Entry) : Json :=
