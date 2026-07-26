@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.DiagonalEvolution
 
 set_option linter.style.header false
+set_option linter.unusedFintypeInType false
 
 /-!
 # Algebraic interaction-picture operators
