@@ -50,7 +50,7 @@ private theorem QuarticWickDiagram.componentFamily_heq_of_partition_eq {S : Fins
   cases hπ
   apply HEq.of_eq
   funext B
-  exact hF B
+  simpa [QuarticWickDiagram.componentPartMemOfEq] using hF B
 
 /-- **The connected component family of a reassembled diagram is heterogeneously equal to `F`.** -/
 private theorem QuarticWickDiagram.componentFamily_reassemble_heq {S : Finset (Fin N)}
