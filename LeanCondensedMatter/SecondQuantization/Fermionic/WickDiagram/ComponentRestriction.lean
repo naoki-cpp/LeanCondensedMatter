@@ -16,10 +16,10 @@ variable {Mode : Type*} {N : ℕ}
 
 noncomputable section
 
-abbrev QuarticWickDiagram.legInBlock {S : Finset (Fin N)}
-    (d : QuarticWickDiagram Mode N S) (B : Finset (Fin N))
+def QuarticWickDiagram.legInBlock {S : Finset (Fin N)}
+    (_d : QuarticWickDiagram Mode N S) (B : Finset (Fin N))
     (leg : Fin (2 * (2 * S.card))) : Prop :=
-  Common.QuarticDiagram.legInBlock d B leg
+  (vertexOfLeg leg : Fin N) ∈ B
 
 theorem QuarticWickDiagram.componentBlock_eq_iff_mem {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)}
