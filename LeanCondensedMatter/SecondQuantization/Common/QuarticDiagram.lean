@@ -39,5 +39,17 @@ def QuarticDiagram.equivPair {S : Finset (Fin N)} :
   left_inv _ := rfl
   right_inv _ := rfl
 
+/-- Labelled quartic diagrams have decidable equality when their labels do. Statistics-specific
+aliases may provide higher-priority compatibility instances. -/
+instance (priority := 100) QuarticDiagram.instDecidableEq [DecidableEq Label]
+    {S : Finset (Fin N)} : DecidableEq (QuarticDiagram Label N S) :=
+  QuarticDiagram.equivPair.decidableEq
+
+/-- Labelled quartic diagrams form a finite type when their labels do. Statistics-specific aliases
+may provide higher-priority compatibility instances. -/
+noncomputable instance (priority := 100) QuarticDiagram.instFintype [Fintype Label]
+    {S : Finset (Fin N)} : Fintype (QuarticDiagram Label N S) :=
+  Fintype.ofEquiv _ QuarticDiagram.equivPair.symm
+
 end Common
 end SecondQuantization
