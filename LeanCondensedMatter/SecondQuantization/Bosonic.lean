@@ -2,7 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.Foundations
 import LeanCondensedMatter.SecondQuantization.Bosonic.OperatorAlgebra
 import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal
-import LeanCondensedMatter.SecondQuantization.Bosonic.BlochDeDominicis.TwoPoint
+import LeanCondensedMatter.SecondQuantization.Bosonic.BlochDeDominicis
 
 set_option linter.style.header false
 
