@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.CreationAnnihilation
-import LeanCondensedMatter.SecondQuantization.Common.ExchangeCommutator
 
 set_option linter.style.header false
 
@@ -12,8 +11,9 @@ The bosonic creation and annihilation operators satisfy
 * `[a_i†, a_j†] = 0`,
 * `[a_i, a_j†] = δ_ij`.
 
-The public `comm` name is the bosonic specialization of `Common.exchangeCommutator`, so these
-relations directly instantiate the statistics-independent exchange-algebra interface.
+The basis-state proofs account explicitly for the square-root normalization of the ladder
+operators. `Bosonic.ExchangeAlgebra` packages these relations through the statistics-independent
+`Common.exchangeCommutator` interface.
 -/
 
 namespace SecondQuantization
@@ -21,14 +21,14 @@ namespace Bosonic
 
 variable {Mode : Type*} [DecidableEq Mode]
 
-/-- The bosonic commutator, as the `Statistics.boson` exchange commutator. -/
+/-- The ordinary commutator of bosonic Fock-space endomorphisms. -/
 noncomputable def comm (A B : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode) :
     FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode :=
-  Common.exchangeCommutator Statistics.boson A B
+  A.comp B - B.comp A
 
 theorem comm_apply (A B : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode)
-    (x : FockSpaceBosonic Mode) : comm A B x = A (B x) - B (A x) := by
-  simp [comm, Common.exchangeCommutator, Common.zetaCommutator]
+    (x : FockSpaceBosonic Mode) : comm A B x = A (B x) - B (A x) :=
+  rfl
 
 /-- The square-root normalization factor squares to its natural-number argument. -/
 theorem sqrt_natCast_mul_self (k : ℕ) :
