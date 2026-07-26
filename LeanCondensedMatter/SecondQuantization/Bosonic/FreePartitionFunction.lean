@@ -1,4 +1,5 @@
 import Mathlib.Analysis.SpecificLimits.Normed
+import Mathlib.Analysis.SpecialFunctions.Exp
 
 set_option linter.style.header false
 
