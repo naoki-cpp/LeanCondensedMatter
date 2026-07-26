@@ -38,6 +38,7 @@ noncomputable abbrev quarticDiagramEquivOrderedData {S : Finset (Fin N)}
     QuarticDiagram Mode N S ≃ OrderedQuarticDiagramData Mode S.card :=
   Common.quarticDiagramEquivOrderedData order
 
+omit [DecidableEq Mode] in
 /-- Reindex a sum over bosonic quartic diagrams as a sum over ordered data. -/
 theorem sum_quarticDiagram_eq_sum_orderedData {S : Finset (Fin N)}
     (order : QuarticVertexOrder S) (F : OrderedQuarticDiagramData Mode S.card → ℂ) :
