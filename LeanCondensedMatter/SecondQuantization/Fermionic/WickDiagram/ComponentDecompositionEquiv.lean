@@ -34,33 +34,6 @@ theorem QuarticWickDiagram.restrictComponentConnected_reassemble {S : Finset (Fi
   apply Subtype.ext
   exact QuarticWickDiagram.restrictComponent_reassemble π F B hB'
 
-private def QuarticWickDiagram.castBlock {S : Finset (Fin N)} {ρ π : Finpartition S}
-    (h : ρ = π) (B : π.parts) : ρ.parts :=
-  ⟨B.1, by rw [h]; exact B.2⟩
-
-private theorem QuarticWickDiagram.componentFamily_transport_apply {S : Finset (Fin N)}
-    {ρ π : Finpartition S} (h : ρ = π)
-    (G : ∀ B : ρ.parts, ConnectedQuarticWickDiagram Mode N (B : Finset (Fin N)))
-    (B : π.parts) :
-    (Eq.recOn (motive := fun σ _ =>
-      ∀ C : σ.parts, ConnectedQuarticWickDiagram Mode N (C : Finset (Fin N))) h G) B =
-      G (QuarticWickDiagram.castBlock h B) := by
-  cases h
-  rfl
-
-private theorem QuarticWickDiagram.componentFamily_heq_of_eq {S : Finset (Fin N)}
-    {ρ π : Finpartition S} (h : ρ = π)
-    (G : ∀ B : ρ.parts, ConnectedQuarticWickDiagram Mode N (B : Finset (Fin N)))
-    (F : ∀ B : π.parts, ConnectedQuarticWickDiagram Mode N (B : Finset (Fin N)))
-    (hGF : ∀ B : π.parts, G (QuarticWickDiagram.castBlock h B) = F B) : HEq G F := by
-  have hEq :
-      Eq.recOn (motive := fun σ _ =>
-        ∀ C : σ.parts, ConnectedQuarticWickDiagram Mode N (C : Finset (Fin N))) h G = F := by
-    funext B
-    rw [QuarticWickDiagram.componentFamily_transport_apply]
-    exact hGF B
-  exact (eqRec_heq h G).symm.trans (HEq.of_eq hEq)
-
 /-- **The connected component family of a reassembled diagram is heterogeneously equal to `F`.** -/
 private theorem QuarticWickDiagram.componentFamily_reassemble_heq {S : Finset (Fin N)}
     (π : Finpartition S)
@@ -69,18 +42,10 @@ private theorem QuarticWickDiagram.componentFamily_reassemble_heq {S : Finset (F
       (fun B : (QuarticWickDiagram.reassemble π F).componentPartition.parts =>
         (QuarticWickDiagram.reassemble π F).restrictComponentConnected B.2)
       F := by
-  let ρ := (QuarticWickDiagram.reassemble π F).componentPartition
-  let G : ∀ B : ρ.parts, ConnectedQuarticWickDiagram Mode N (B : Finset (Fin N)) :=
-    fun B => (QuarticWickDiagram.reassemble π F).restrictComponentConnected B.2
-  have hρ : ρ = π := by
-    simpa [ρ] using QuarticWickDiagram.componentPartition_reassemble π F
-  change HEq G F
-  apply QuarticWickDiagram.componentFamily_heq_of_eq hρ G F
-  intro B
-  change (QuarticWickDiagram.reassemble π F).restrictComponentConnected
-      (QuarticWickDiagram.castBlock hρ B).2 = F B
-  exact QuarticWickDiagram.restrictComponentConnected_reassemble π F B
-    (QuarticWickDiagram.castBlock hρ B).2
+  simp only [QuarticWickDiagram.componentPartition_reassemble]
+  apply Eq.heq
+  funext B
+  exact QuarticWickDiagram.restrictComponentConnected_reassemble π F B B.2
 
 /-- **Decomposing a reassembled family recovers the original dependent family.** -/
 theorem QuarticWickDiagram.componentDecompose_reassemble {S : Finset (Fin N)}
