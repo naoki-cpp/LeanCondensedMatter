@@ -7,9 +7,13 @@ on:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: read # Read access to repository contents
-  pages: write # Write access to GitHub Pages
-  id-token: write # Write access to ID tokens
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
 
 jobs:
   build:
@@ -25,21 +29,95 @@ jobs:
             exit 1
           fi
 
-  # Docs are only built (and deployed to GitHub Pages) on push to main, not on every PR —
-  # doc-gen4 has to process Mathlib's full symbol set, which is slow and not needed for
-  # every PR check. The .lake/build cache is kept across runs to speed up repeat builds.
+  # Documentation is intentionally built only on pushes to main. doc-gen4 processes the
+  # full Mathlib symbol set, so running it for every pull request would be unnecessarily slow.
   docs:
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/cache@v4
+
+      - name: Restore Lean and documentation cache
+        uses: actions/cache@v4
         with:
-          path: .lake/build
-          key: lake-build-${{ hashFiles('lean-toolchain', 'lake-manifest.json') }}
+          path: |
+            .lake/build
+            docbuild/.lake/build
+          key: docs-${{ runner.os }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}
           restore-keys: |
-            lake-build-
+            docs-${{ runner.os }}-
+
       - uses: leanprover/lean-action@v1
-      - uses: leanprover-community/docgen-action@v1
+
+      - name: Build API documentation
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p docbuild
+          cat > docbuild/lakefile.toml <<EOF
+          name = "docbuild"
+          reservoir = false
+          version = "0.1.0"
+          packagesDir = "../.lake/packages"
+
+          [[require]]
+          name = "LeanCondensedMatter"
+          path = "../"
+
+          [[require]]
+          scope = "leanprover"
+          name = "doc-gen4"
+          rev = "$(cut -f 2 -d: lean-toolchain)"
+          EOF
+
+          (
+            cd docbuild
+            MATHLIB_NO_CACHE_ON_UPDATE=1 ~/.elan/bin/lake update LeanCondensedMatter
+            ~/.elan/bin/lake build LeanCondensedMatter:docs
+          )
+
+      - name: Assemble themed documentation site
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          rm -rf site
+          mkdir -p site/docs
+          cp -R docbuild/.lake/build/doc/. site/docs/
+          cat docs-site/docgen.css >> site/docs/style.css
+          cp docs-site/project-nav.js site/docs/
+          cp docs-site/index.html docs-site/site.css site/
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          navbar = Path("site/docs/navbar.html")
+          html = navbar.read_text(encoding="utf-8")
+          script = '  <script type="module" src="./project-nav.js"></script>\n'
+          closing_tag = "</body>"
+
+          if closing_tag not in html:
+              raise SystemExit("doc-gen4 navbar.html does not contain </body>")
+
+          navbar.write_text(
+              html.replace(closing_tag, script + closing_tag, 1),
+              encoding="utf-8",
+          )
+          PY
+
+          touch site/.nojekyll
+
+      - name: Upload documentation
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy documentation
+        id: deployment
+        uses: actions/deploy-pages@v4
