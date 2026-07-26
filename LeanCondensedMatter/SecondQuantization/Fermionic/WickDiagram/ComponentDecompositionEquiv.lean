@@ -34,14 +34,20 @@ theorem QuarticWickDiagram.restrictComponentConnected_reassemble {S : Finset (Fi
   apply Subtype.ext
   exact QuarticWickDiagram.restrictComponent_reassemble π F B hB'
 
+private def QuarticWickDiagram.componentPartMemOfEq {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) {π : Finpartition S}
+    (hπ : d.componentPartition = π) (B : π.parts) :
+    (B : Finset (Fin N)) ∈ d.componentPartition.parts :=
+  hπ.symm ▸ B.2
+
 private theorem QuarticWickDiagram.componentFamily_heq_of_partition_eq {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticWickDiagram Mode N (B : Finset (Fin N)))
     (hπ : d.componentPartition = π)
     (hF : ∀ B : π.parts,
-      d.restrictComponentConnected (by rw [hπ]; exact B.2) = F B) :
+      d.restrictComponentConnected (QuarticWickDiagram.componentPartMemOfEq d hπ B) = F B) :
     HEq (fun B : d.componentPartition.parts => d.restrictComponentConnected B.2) F := by
-  subst π
+  cases hπ
   apply HEq.of_eq
   funext B
   exact hF B
@@ -54,11 +60,12 @@ private theorem QuarticWickDiagram.componentFamily_reassemble_heq {S : Finset (F
       (fun B : (QuarticWickDiagram.reassemble π F).componentPartition.parts =>
         (QuarticWickDiagram.reassemble π F).restrictComponentConnected B.2)
       F := by
+  have hπ := QuarticWickDiagram.componentPartition_reassemble π F
   apply QuarticWickDiagram.componentFamily_heq_of_partition_eq
-    (d := QuarticWickDiagram.reassemble π F) (π := π) (F := F)
-    (QuarticWickDiagram.componentPartition_reassemble π F)
+    (d := QuarticWickDiagram.reassemble π F) (π := π) (F := F) hπ
   intro B
-  exact QuarticWickDiagram.restrictComponentConnected_reassemble π F B _
+  exact QuarticWickDiagram.restrictComponentConnected_reassemble π F B
+    (QuarticWickDiagram.componentPartMemOfEq _ hπ B)
 
 /-- **Decomposing a reassembled family recovers the original dependent family.** -/
 theorem QuarticWickDiagram.componentDecompose_reassemble {S : Finset (Fin N)}
