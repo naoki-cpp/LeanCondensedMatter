@@ -26,10 +26,9 @@ noncomputable def QuarticWickDiagram.blockVertex {S : Finset (Fin N)}
 theorem QuarticWickDiagram.blockVertex_mem {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (v : ↥B) :
-    (d.blockVertex hB v : Fin N) ∈ B := by
-  simpa only [QuarticWickDiagram.blockVertex, QuarticWickDiagram.subtypeMemBlockEquiv,
-    Common.QuarticDiagram.blockVertex] using
-    (Common.QuarticDiagram.blockVertex_mem d hB v)
+    (d.blockVertex hB v : Fin N) ∈ B :=
+  (((QuarticWickDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)).symm v :
+    {v : ↥S // (v : Fin N) ∈ B})).2
 
 theorem QuarticWickDiagram.vertexOfLeg_blockLegEquiv_eq_iff {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)}
@@ -37,9 +36,8 @@ theorem QuarticWickDiagram.vertexOfLeg_blockLegEquiv_eq_iff {S : Finset (Fin N)}
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) (v : ↥B) :
     vertexOfLeg (d.blockLegEquiv hB leg) = v ↔
       vertexOfLeg (leg : Fin (2 * (2 * S.card))) = d.blockVertex hB v := by
-  simpa only [QuarticWickDiagram.blockVertex, QuarticWickDiagram.blockLegEquiv,
-    QuarticWickDiagram.subtypeMemBlockEquiv, Common.QuarticDiagram.blockVertex] using
-    (Common.QuarticDiagram.vertexOfLeg_blockLegEquiv_eq_iff d hB leg v)
+  rw [d.vertexOfLeg_blockLegEquiv hB leg, Equiv.apply_eq_iff_eq_symm_apply]
+  exact ⟨fun h => congrArg Subtype.val h, fun h => Subtype.ext h⟩
 
 theorem QuarticWickDiagram.restrictComponent_vertexGraph_adj_iff {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)}
@@ -56,18 +54,15 @@ theorem QuarticWickDiagram.blockVertex_subtypeMemBlockEquiv {S : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (v : ↥S) (hv : (v : Fin N) ∈ B) :
     d.blockVertex hB
         (QuarticWickDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB) ⟨v, hv⟩) = v := by
-  simpa only [QuarticWickDiagram.blockVertex, QuarticWickDiagram.subtypeMemBlockEquiv,
-    Common.QuarticDiagram.blockVertex] using
-    (Common.QuarticDiagram.blockVertex_subtypeMemBlockEquiv d hB v hv)
+  unfold QuarticWickDiagram.blockVertex
+  rw [Equiv.symm_apply_apply]
 
 theorem QuarticWickDiagram.subtypeMemBlockEquiv_blockVertex {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (v : ↥B) :
     QuarticWickDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)
-        ⟨d.blockVertex hB v, d.blockVertex_mem hB v⟩ = v := by
-  simpa only [QuarticWickDiagram.blockVertex, QuarticWickDiagram.subtypeMemBlockEquiv,
-    Common.QuarticDiagram.blockVertex] using
-    (Common.QuarticDiagram.subtypeMemBlockEquiv_blockVertex d hB v)
+        ⟨d.blockVertex hB v, d.blockVertex_mem hB v⟩ = v :=
+  Equiv.apply_symm_apply _ v
 
 /-- Restricting a fermionic diagram to a component part produces a connected diagram. -/
 theorem QuarticWickDiagram.restrictComponent_isConnected {S : Finset (Fin N)}
