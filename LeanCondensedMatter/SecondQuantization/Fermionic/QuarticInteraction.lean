@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.InteractionPicture
+import LeanCondensedMatter.SecondQuantization.Common.QuarticVertexLabel
 
 set_option linter.style.header false
 
@@ -32,19 +33,8 @@ namespace SecondQuantization
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
-/-- **A quartic interaction vertex's mode label**: two creation-operator modes and two
-annihilation-operator modes, with no further structure (no antisymmetry/ordering constraint
-between `create₁`/`create₂` or between `annihilate₁`/`annihilate₂`). -/
-structure QuarticVertexLabel (Mode : Type*) where
-  /-- The first creation operator's mode. -/
-  create₁ : Mode
-  /-- The second creation operator's mode. -/
-  create₂ : Mode
-  /-- The first annihilation operator's mode. -/
-  annihilate₁ : Mode
-  /-- The second annihilation operator's mode. -/
-  annihilate₂ : Mode
-  deriving DecidableEq, Fintype
+/-- Compatibility alias for the statistics-independent quartic vertex label. -/
+abbrev QuarticVertexLabel (Mode : Type*) := Common.QuarticVertexLabel Mode
 
 /-- **The quartic vertex operator**, `c_{q.create₁}† c_{q.create₂}† c_{q.annihilate₂}
 c_{q.annihilate₁}` — see the module docstring for why this specific operator order is fixed. -/
