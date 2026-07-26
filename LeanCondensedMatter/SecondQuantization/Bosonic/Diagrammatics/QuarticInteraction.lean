@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.OperatorAlgebra.CreationAnnihilation
+import LeanCondensedMatter.SecondQuantization.Common.QuarticVertexLabel
 
 set_option linter.style.header false
 
@@ -15,17 +16,8 @@ namespace Bosonic
 
 variable {Mode : Type*} [DecidableEq Mode]
 
-/-- The four mode labels of a number-conserving bosonic quartic vertex. -/
-structure QuarticVertexLabel (Mode : Type*) where
-  /-- The first creation mode. -/
-  create₁ : Mode
-  /-- The second creation mode. -/
-  create₂ : Mode
-  /-- The first annihilation mode. -/
-  annihilate₁ : Mode
-  /-- The second annihilation mode. -/
-  annihilate₂ : Mode
-  deriving DecidableEq, Fintype
+/-- Compatibility alias for the statistics-independent quartic vertex label. -/
+abbrev QuarticVertexLabel (Mode : Type*) := Common.QuarticVertexLabel Mode
 
 /-- The ordered bosonic quartic vertex operator. -/
 noncomputable def quarticVertexOperator (q : QuarticVertexLabel Mode) :
