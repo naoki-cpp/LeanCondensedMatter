@@ -43,7 +43,7 @@ private theorem QuarticWickDiagram.componentFamily_heq_of_partition_eq {S : Fins
       d.restrictComponentConnected hBd = F ⟨B, hBπ⟩) :
     HEq (fun B : d.componentPartition.parts => d.restrictComponentConnected B.2) F := by
   subst π
-  apply Eq.heq
+  apply heq_of_eq
   funext B
   simpa using hF B.1 B.2 B.2
 
