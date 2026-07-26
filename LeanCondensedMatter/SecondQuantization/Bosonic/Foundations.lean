@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.FockSpace
+import LeanCondensedMatter.SecondQuantization.Bosonic.Foundations.FockSpace
 
 set_option linter.style.header false
 
