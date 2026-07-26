@@ -24,7 +24,28 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: leanprover/lean-action@v1
+        with:
+          auto-config: false
+      - name: Build Lean project
+        id: lean-build
+        shell: bash
+        run: |
+          set +e
+          lake build > lean-build.log 2>&1
+          status=$?
+          echo "status=$status" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Upload failed Lean build log
+        if: steps.lean-build.outputs.status != '0'
+        uses: actions/upload-artifact@v4
+        with:
+          name: lean-build-errors
+          path: lean-build.log
+      - name: Fail on Lean build error
+        if: steps.lean-build.outputs.status != '0'
+        run: exit 1
       - name: Check for sorry
+        if: steps.lean-build.outputs.status == '0'
         run: |
           if grep -rnE '\bsorry\b' --include='*.lean' LeanCondensedMatter; then
             echo "::error::Found 'sorry' in the Lean sources above. Per PROJECT.md, a statement is only 'proved' with no 'sorry' — record it as a target in notes/roadmap.md instead of leaving it in place."
