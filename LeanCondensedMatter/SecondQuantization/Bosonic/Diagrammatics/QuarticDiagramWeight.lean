@@ -27,8 +27,9 @@ theorem QuarticDiagram.couplingWeight_eq_prod_restrictComponentConnected
     d.couplingWeight g =
       ∏ B : d.componentPartition.parts,
         QuarticDiagram.couplingWeight ((d.restrictComponentConnected B.2).1) g := by
-  simpa only [QuarticDiagram.couplingWeight, QuarticDiagram.restrictComponentConnected] using
-    (Common.QuarticDiagram.prod_vertexLabel_eq_prod_restrictComponent (d := d) (w := g))
+  simpa only [QuarticDiagram.couplingWeight, QuarticDiagram.restrictComponentConnected,
+    Common.QuarticDiagram.restrictComponentConnected] using
+      (Common.QuarticDiagram.prod_vertexLabel_eq_prod_restrictComponent (d := d) (w := g))
 
 /-- The Dyson recursion sign factors over the connected components of a bosonic quartic diagram. -/
 theorem QuarticDiagram.dysonSign_eq_prod_componentSigns
