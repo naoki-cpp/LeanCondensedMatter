@@ -1,5 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.ParticleNumberCharge
-import LeanCondensedMatter.SecondQuantization.Bosonic.NumberOperator
+import LeanCondensedMatter.SecondQuantization.Bosonic.OperatorAlgebra.ParticleNumberCharge
+import LeanCondensedMatter.SecondQuantization.Bosonic.OperatorAlgebra.NumberOperator
 
 set_option linter.style.header false
 
