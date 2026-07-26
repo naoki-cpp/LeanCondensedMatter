@@ -42,16 +42,13 @@ private theorem QuarticWickDiagram.componentFamily_reassemble_heq {S : Finset (F
       (fun B : (QuarticWickDiagram.reassemble π F).componentPartition.parts =>
         (QuarticWickDiagram.reassemble π F).restrictComponentConnected B.2)
       F := by
-  let G := fun B : (QuarticWickDiagram.reassemble π F).componentPartition.parts =>
-    (QuarticWickDiagram.reassemble π F).restrictComponentConnected B.2
   have hπ := QuarticWickDiagram.componentPartition_reassemble π F
-  have htransport :
-      Eq.recOn (motive := fun ρ _ =>
-        ∀ B : ρ.parts, ConnectedQuarticWickDiagram Mode N (B : Finset (Fin N))) hπ G = F := by
-    cases hπ
-    funext B
-    exact QuarticWickDiagram.restrictComponentConnected_reassemble π F B B.2
-  exact (eqRec_heq hπ G).symm.trans (HEq.of_eq htransport)
+  apply Function.hfunext
+    (congrArg (fun ρ : Finpartition S => (ρ.parts : Type)) hπ)
+  intro B B' hBB
+  cases hBB
+  exact HEq.of_eq
+    (QuarticWickDiagram.restrictComponentConnected_reassemble π F B B.2)
 
 /-- **Decomposing a reassembled family recovers the original dependent family.** -/
 theorem QuarticWickDiagram.componentDecompose_reassemble {S : Finset (Fin N)}
