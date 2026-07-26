@@ -1,55 +1,36 @@
-import LeanCondensedMatter.SecondQuantization.Common.QuarticLeg
+import LeanCondensedMatter.SecondQuantization.Common.QuarticDiagram
 import LeanCondensedMatter.SecondQuantization.Fermionic.QuarticInteraction
-import LeanCondensedMatter.Combinatorics.PerfectPairing
 
 set_option linter.style.header false
 
 /-!
-# Quartic Wick diagrams
+# Fermionic quartic Wick diagrams
 
-A quartic Wick diagram on a finite vertex set `S : Finset (Fin N)` assigns a
-`QuarticVertexLabel Mode` to each vertex and perfectly pairs the resulting `4 * S.card` legs.
-The pairing is combinatorial; creation and annihilation semantics come from the fixed local-leg
-convention
-
-`0 ↦ create₁`, `1 ↦ create₂`, `2 ↦ annihilate₂`, `3 ↦ annihilate₁`,
-
-matching the operator order in `quarticVertexOperator`. Statistics-independent flattened-leg
-bookkeeping is provided by `SecondQuantization.Common.QuarticLeg`.
-
-`QuarticWickDiagram` imposes no finiteness constraint on `Mode`. Decidable equality and finite
-enumeration are supplied separately when `Mode` has the required instances.
+`QuarticWickDiagram Mode N S` specializes the statistics-independent
+`Common.QuarticDiagram` to fermionic `QuarticVertexLabel Mode` labels. Creation and annihilation
+semantics remain in the label and amplitude layers; the stored diagram data are only vertex labels
+and a perfect pairing of the four legs per vertex.
 -/
 
 namespace SecondQuantization
 
 variable {Mode : Type*} {N : ℕ}
 
-/-- A quartic Wick diagram on vertex set `S`. -/
-structure QuarticWickDiagram (Mode : Type*) (N : ℕ) (S : Finset (Fin N)) where
-  /-- Each vertex's quartic interaction label. -/
-  vertexLabel : ↥S → QuarticVertexLabel Mode
-  /-- The perfect pairing of the diagram's `4 * S.card` legs. -/
-  pairing : Common.BlochDeDominicis.Pairing (2 * S.card)
+/-- A quartic diagram whose vertex labels describe fermionic interaction vertices. -/
+abbrev QuarticWickDiagram (Mode : Type*) (N : ℕ) (S : Finset (Fin N)) :=
+  Common.QuarticDiagram (QuarticVertexLabel Mode) N S
 
 @[ext]
 theorem QuarticWickDiagram.ext {S : Finset (Fin N)}
     {d₁ d₂ : QuarticWickDiagram Mode N S} (hv : d₁.vertexLabel = d₂.vertexLabel)
-    (hp : d₁.pairing = d₂.pairing) : d₁ = d₂ := by
-  cases d₁
-  cases d₂
-  cases hv
-  cases hp
-  rfl
+    (hp : d₁.pairing = d₂.pairing) : d₁ = d₂ :=
+  Common.QuarticDiagram.ext hv hp
 
-/-- A quartic Wick diagram as a pair of its vertex-label function and pairing. -/
+/-- A fermionic quartic Wick diagram as its vertex-label function and pairing. -/
 def QuarticWickDiagram.equivPair {S : Finset (Fin N)} :
     QuarticWickDiagram Mode N S ≃
-      (↥S → QuarticVertexLabel Mode) × Common.BlochDeDominicis.Pairing (2 * S.card) where
-  toFun d := (d.vertexLabel, d.pairing)
-  invFun p := ⟨p.1, p.2⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
+      (↥S → QuarticVertexLabel Mode) × Common.BlochDeDominicis.Pairing (2 * S.card) :=
+  Common.QuarticDiagram.equivPair
 
 /-- `QuarticWickDiagram Mode N S` has decidable equality when `Mode` does. -/
 instance QuarticWickDiagram.instDecidableEq [DecidableEq Mode] {S : Finset (Fin N)} :
