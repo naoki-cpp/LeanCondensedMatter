@@ -17,6 +17,7 @@ import LeanCondensedMatter.SecondQuantization.Common.QuarticDiagramConnected
 import LeanCondensedMatter.SecondQuantization.Common.QuarticDiagramComponentPartition
 import LeanCondensedMatter.SecondQuantization.Common.QuarticDiagramComponentRestriction
 import LeanCondensedMatter.SecondQuantization.Common.QuarticDiagramComponentConnected
+import LeanCondensedMatter.SecondQuantization.Common.QuarticDiagramReassemble
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis
 
 set_option linter.style.header false
