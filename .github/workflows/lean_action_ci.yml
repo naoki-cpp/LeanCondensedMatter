@@ -91,7 +91,26 @@ jobs:
           mkdir -p site/docs
           cp -R docbuild/.lake/build/doc/. site/docs/
           cat docs-site/docgen.css >> site/docs/style.css
+          cp docs-site/project-nav.js site/docs/
           cp docs-site/index.html docs-site/site.css site/
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          navbar = Path("site/docs/navbar.html")
+          html = navbar.read_text(encoding="utf-8")
+          script = '  <script type="module" src="./project-nav.js"></script>\n'
+          closing_tag = "</body>"
+
+          if closing_tag not in html:
+              raise SystemExit("doc-gen4 navbar.html does not contain </body>")
+
+          navbar.write_text(
+              html.replace(closing_tag, script + closing_tag, 1),
+              encoding="utf-8",
+          )
+          PY
+
           touch site/.nojekyll
 
       - name: Upload documentation
