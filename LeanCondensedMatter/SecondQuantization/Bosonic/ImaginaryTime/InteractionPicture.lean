@@ -9,8 +9,9 @@ set_option linter.style.header false
 Bosonic specialization of the statistics-independent algebraic interaction-picture operator, using
 the free bosonic occupation energy. The operator and its zero-time law require no finite basis.
 
-The fermionic matrix-coefficient continuity API currently uses `[Fintype Config]`; it is deliberately
-not copied here because `Occupation Mode := Mode →₀ ℕ` is infinite even when `Mode` is finite.
+The fermionic matrix-coefficient continuity API currently uses `[Fintype Config]`; it is
+deliberately not copied here because `Occupation Mode := Mode →₀ ℕ` is infinite even when `Mode`
+is finite.
 -/
 
 namespace SecondQuantization
