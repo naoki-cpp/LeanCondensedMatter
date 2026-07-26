@@ -10,6 +10,20 @@ set_option linter.style.header false
 /-!
 # Bosonic second quantization
 
-The bosonic development is organized into foundations, operator algebra, imaginary-time theory,
-free thermal theory, Bloch–de Dominicis results, and quartic diagrammatics.
+Umbrella module for the bosonic line of `SecondQuantization/`.
+
+It imports:
+
+- occupation-number foundations and the algebraic bosonic Fock space;
+- creation/annihilation operators, CCR, exchange algebra, and number operators;
+- free imaginary-time evolution and the algebraic interaction picture;
+- convergence-aware free thermal series and two-point results;
+- the uncutoff bosonic Bloch–de Dominicis two-point instantiation;
+- quartic interaction and diagrammatics through connected-component decomposition and scalar-weight
+  factorization.
+
+The algebraic and finite-combinatorial layers share infrastructure with the fermionic line through
+`SecondQuantization.Common`. General bosonic Gibbs expectations, Dyson coefficients, and full Wick
+amplitudes are not exported here because they require additional summability or locally finite
+operator hypotheses on the infinite occupation basis.
 -/
