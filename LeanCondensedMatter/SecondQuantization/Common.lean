@@ -13,6 +13,7 @@ import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
 import LeanCondensedMatter.SecondQuantization.Common.KMSRotation
 import LeanCondensedMatter.SecondQuantization.Common.QuarticLeg
 import LeanCondensedMatter.SecondQuantization.Common.QuarticDiagram
+import LeanCondensedMatter.SecondQuantization.Common.QuarticDiagramConnected
 import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis
 
 set_option linter.style.header false
