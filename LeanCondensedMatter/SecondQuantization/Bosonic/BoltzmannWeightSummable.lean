@@ -5,27 +5,19 @@ set_option linter.style.header false
 set_option linter.unusedFintypeInType false
 
 /-!
-# The multi-mode free Boltzmann weight is summable, with total weight `∏ᵢ (1 - e^{-βεᵢ})⁻¹`
+# Summability of the free bosonic Boltzmann weight
 
-Phase B3c of Track D's bosonic line (`notes/roadmaps/second-quantization.md`): the genuine
-(uncutoff) infinite sum `Σ_n e^{-βE(n)}` over *all* of `Occupation Mode`, for a finite mode set,
-converges to the product of one-mode geometric series from `FreePartitionFunction.lean` whenever
-every mode satisfies the one-mode convergence condition `0 < βεᵢ`. This is the multi-mode
-generalization `BoltzmannWeightFactorization.lean` flagged as remaining.
+For a finite mode type, the sum over all bosonic occupation states converges whenever every mode
+satisfies `0 < β ε i`. The total weight is the product of the one-mode geometric-series values.
 
-The proof is a thin corollary of the general (non-physics) `Finsupp.hasSum_prod_nonneg` fact
-proved in `Analysis/FinsuppProductSeries.lean`: `boltzmannWeight_eq_prod` identifies the Boltzmann
-weight with the multi-index product `∏ i, oneModeBoltzmannWeight β (ε i) (n i)`, and each
-one-mode factor is nonnegative and `HasSum`-convergent by `hasSum_oneModeBoltzmannWeight`, so the
-nonnegative (rather than absolute-value) version of the general theorem applies directly.
+The proof is a direct specialization of `Finsupp.hasSum_prod_nonneg`, using
+`boltzmannWeight_eq_prod` and the one-mode summability theorem.
 -/
 
 namespace SecondQuantization
 namespace Bosonic
 
-/-- **The genuine multi-mode free Boltzmann weight is summable**, converging to the
-product of one-mode geometric series, given every mode's one-mode convergence condition
-`0 < βεᵢ`. -/
+/-- The free multi-mode Boltzmann weight has the expected product sum. -/
 theorem hasSum_boltzmannWeight {Mode : Type*} [Fintype Mode] (ε : Mode → ℝ)
     (β : ℝ) (hpos : ∀ i, 0 < β * ε i) :
     HasSum (boltzmannWeight ε β) (∏ i, (1 - Real.exp (-β * ε i))⁻¹) := by
@@ -45,9 +37,7 @@ theorem tsum_boltzmannWeight {Mode : Type*} [Fintype Mode] (ε : Mode → ℝ)
     ∑' n, boltzmannWeight ε β n = ∏ i, (1 - Real.exp (-β * ε i))⁻¹ :=
   (hasSum_boltzmannWeight ε β hpos).tsum_eq
 
-/-- **The genuine multi-mode free partition function is strictly positive**: each one-mode factor
-`(1 - e^{-βεᵢ})⁻¹` is positive under the convergence condition `0 < βεᵢ`, hence so is their finite
-product. -/
+/-- The free bosonic partition sum is strictly positive. -/
 theorem tsum_boltzmannWeight_pos {Mode : Type*} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ)
     (hpos : ∀ i, 0 < β * ε i) : 0 < ∑' n, boltzmannWeight ε β n := by
   rw [tsum_boltzmannWeight ε β hpos]
