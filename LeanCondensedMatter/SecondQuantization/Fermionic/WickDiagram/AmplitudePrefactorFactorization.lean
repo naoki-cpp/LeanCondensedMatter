@@ -33,18 +33,8 @@ blocks. -/
 theorem QuarticWickDiagram.dysonSign_eq_prod_componentSigns
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) :
     (-1 : ℂ) ^ S.card =
-      ∏ B : d.componentPartition.parts, (-1 : ℂ) ^ (B : Finset (Fin N)).card := by
-  classical
-  rw [Finset.prod_coe_sort d.componentPartition.parts
-    (fun B => (-1 : ℂ) ^ B.card)]
-  have hpow : ∀ T : Finset (Finset (Fin N)),
-      (∏ B ∈ T, (-1 : ℂ) ^ B.card) = (-1 : ℂ) ^ (∑ B ∈ T, B.card) := by
-    intro T
-    induction T using Finset.induction_on with
-    | empty => simp
-    | @insert B T hBT ih =>
-      simp [hBT, ih, pow_add]
-  rw [hpow, d.componentPartition.sum_card_parts]
+      ∏ B : d.componentPartition.parts, (-1 : ℂ) ^ (B : Finset (Fin N)).card :=
+  Common.QuarticDiagram.dysonSign_eq_prod_componentSigns d
 
 /-- The complete scalar prefactor of `quarticWickDiagramAmplitude` factors over connected
 components. What remains for the full amplitude theorem is the vertex-order/ordered-simplex shuffle
