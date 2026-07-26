@@ -32,5 +32,22 @@ set_option linter.style.header false
 /-!
 # Statistics-independent second quantization
 
-Umbrella module for the shared bosonic and fermionic layer.
+Umbrella module for infrastructure shared by the fermionic and bosonic lines.
+
+The shared layer is organized into four groups:
+
+1. **Algebraic Fock infrastructure:** occupation-basis interfaces, algebraic Fock spaces, matrix
+   coefficients, diagonal operators, grading selection rules, and finite-basis operator integrals.
+2. **Evolution and exchange algebra:** statistics, `ζ`-commutators, CAR/CCR interfaces, imaginary-time
+   ordering, diagonal evolution, the algebraic interaction picture, KMS rotation, and normalized
+   operator functionals.
+3. **Quartic diagram combinatorics:** vertex labels, leg indexing, ordered data, connectedness,
+   component restriction/reassembly, decomposition equivalences, and componentwise scalar products.
+4. **Bloch–de Dominicis infrastructure:** pairing weights and the abstract finite-temperature pairing
+   expansion.
+
+`Common/` contains no import of `Fermionic/` or `Bosonic/`; statistics-specific modules instantiate
+these APIs. Some declarations, notably finite operator integration and the current closed formula for
+interaction-picture matrix coefficients, still require a finite configuration type. Bosonic modules
+therefore use only the unrestricted algebraic part unless separate summability results are supplied.
 -/
