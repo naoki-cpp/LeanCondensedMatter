@@ -70,4 +70,16 @@ theorem QuarticWickDiagram.componentDecompose_reassemble {S : Finset (Fin N)}
   · exact QuarticWickDiagram.componentPartition_reassemble π F
   · exact QuarticWickDiagram.componentFamily_reassemble_heq π F
 
+/-- **Quartic Wick diagrams are equivalent to partitions carrying one connected diagram per block.** -/
+noncomputable def QuarticWickDiagram.componentDecompositionEquiv {S : Finset (Fin N)} :
+    QuarticWickDiagram Mode N S ≃
+      Σ π : Finpartition S,
+        ∀ B : π.parts, ConnectedQuarticWickDiagram Mode N (B : Finset (Fin N)) where
+  toFun := QuarticWickDiagram.componentDecompose
+  invFun := fun x => QuarticWickDiagram.reassemble x.1 x.2
+  left_inv := QuarticWickDiagram.reassemble_componentPartition
+  right_inv := by
+    rintro ⟨π, F⟩
+    exact QuarticWickDiagram.componentDecompose_reassemble π F
+
 end SecondQuantization
