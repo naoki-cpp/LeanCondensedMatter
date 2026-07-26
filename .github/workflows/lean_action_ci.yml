@@ -24,6 +24,8 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: leanprover/lean-action@v1
+        with:
+          build-args: "LeanCondensedMatter.SecondQuantization.Common.QuarticDiagramComponentRestriction LeanCondensedMatter.SecondQuantization.Fermionic.WickDiagram.ComponentRestriction"
       - name: Check for sorry
         run: |
           if grep -rnE '\bsorry\b' --include='*.lean' LeanCondensedMatter; then
