@@ -34,17 +34,26 @@ theorem QuarticWickDiagram.restrictComponentConnected_reassemble {S : Finset (Fi
   apply Subtype.ext
   exact QuarticWickDiagram.restrictComponent_reassemble π F B hB'
 
+/-- **The connected component family of a reassembled diagram is heterogeneously equal to `F`.** -/
+private theorem QuarticWickDiagram.componentFamily_reassemble_heq {S : Finset (Fin N)}
+    (π : Finpartition S)
+    (F : ∀ B : π.parts, ConnectedQuarticWickDiagram Mode N (B : Finset (Fin N))) :
+    HEq
+      (fun B : (QuarticWickDiagram.reassemble π F).componentPartition.parts =>
+        (QuarticWickDiagram.reassemble π F).restrictComponentConnected B.2)
+      F := by
+  rw [QuarticWickDiagram.componentPartition_reassemble]
+  apply Eq.heq
+  funext B
+  exact QuarticWickDiagram.restrictComponentConnected_reassemble π F B B.2
+
 /-- **Decomposing a reassembled family recovers the original dependent family.** -/
 theorem QuarticWickDiagram.componentDecompose_reassemble {S : Finset (Fin N)}
     (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticWickDiagram Mode N (B : Finset (Fin N))) :
     QuarticWickDiagram.componentDecompose (QuarticWickDiagram.reassemble π F) = ⟨π, F⟩ := by
-  unfold QuarticWickDiagram.componentDecompose
-  have hπ := QuarticWickDiagram.componentPartition_reassemble π F
-  cases hπ
-  apply Sigma.ext rfl
-  apply HEq.of_eq
-  funext B
-  exact QuarticWickDiagram.restrictComponentConnected_reassemble π F B B.2
+  apply Sigma.ext
+  · exact QuarticWickDiagram.componentPartition_reassemble π F
+  · exact QuarticWickDiagram.componentFamily_reassemble_heq π F
 
 end SecondQuantization
