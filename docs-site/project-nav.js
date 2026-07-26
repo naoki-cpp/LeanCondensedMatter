@@ -4,10 +4,8 @@ function topLevelModuleName(section) {
   const summary = section.querySelector(":scope > summary");
   if (!summary) return "";
 
-  const fileLink = summary.querySelector("a");
-  if (fileLink) fileLink.remove();
-
-  return summary.textContent.replace(/\s*\(\s*$/, "").trim();
+  const leadingText = summary.firstChild?.textContent ?? summary.textContent;
+  return leadingText.replace(/\s*\(\s*$/, "").trim();
 }
 
 function filterProjectNavigation() {
