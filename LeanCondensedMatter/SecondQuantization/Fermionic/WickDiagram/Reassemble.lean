@@ -5,21 +5,12 @@ set_option linter.style.header false
 /-!
 # Reassembling a quartic Wick diagram from a partition and connected pieces
 
-The converse of `QuarticWickDiagram.restrictComponent`: given an arbitrary `Finpartition S` and a
-connected quartic Wick diagram on each of its blocks, `QuarticWickDiagram.reassemble` glues them
-into a single `QuarticWickDiagram Mode N S`. Unlike `restrictComponent` (which restricts an
-*existing* diagram to one of its *own* component blocks), `reassemble` starts from no ambient
-diagram at all — the partition and the per-block pieces are independent data.
+Given a `Finpartition S` and a connected quartic Wick diagram on each block,
+`QuarticWickDiagram.reassemble` glues the block diagrams into one diagram on `S`.
 
-The construction goes through `QuarticWickDiagram.bigLegEquiv`, identifying `S`'s `4 * S.card`
-legs with the disjoint union (`Σ`-type) of each block's own legs, via
-`Finpartition.equivSigmaParts`; the reassembled pairing is then a block-by-block gluing of each
-piece's own `Pairing.partner` (`Equiv.sigmaCongrRight`), transported back along `bigLegEquiv`.
-
-The full `QuarticWickDiagram Mode N S ≃ Σ π : Finpartition S, ∀ B : π.parts,
-ConnectedQuarticWickDiagram Mode N B` equivalence `Combinatorics.WeightedDiagramFamily.decompose`
-needs (i.e. that `reassemble` and `restrictComponent`/`componentPartition` are mutually inverse)
-remains future work.
+The construction uses `QuarticWickDiagram.bigLegEquiv` to identify the ambient legs with the
+disjoint union of the block legs. The pairing is assembled blockwise through
+`Equiv.sigmaCongrRight` and transported back along this equivalence.
 -/
 
 namespace SecondQuantization
@@ -35,6 +26,30 @@ noncomputable def QuarticWickDiagram.bigLegEquiv {S : Finset (Fin N)} (π : Finp
     (π.equivSigmaParts.prodCongr (Equiv.refl (Fin 4))).trans <|
       (Equiv.sigmaProdDistrib _ _).trans
         (Equiv.sigmaCongrRight fun B => (quarticLegEquiv (B : Finset (Fin N))).symm)
+
+/-- `bigLegEquiv` at a leg constructed from an ambient vertex and a local leg. -/
+theorem QuarticWickDiagram.bigLegEquiv_legOfVertexLocal {S : Finset (Fin N)}
+    (π : Finpartition S) (v : ↥S) (i : Fin 4) :
+    QuarticWickDiagram.bigLegEquiv π (legOfVertexLocal v i) =
+      ⟨(π.equivSigmaParts v).1, legOfVertexLocal (π.equivSigmaParts v).2 i⟩ := by
+  have hqv : quarticLegEquiv S (legOfVertexLocal v i) = (v, i) :=
+    Equiv.apply_symm_apply (quarticLegEquiv S) (v, i)
+  simp only [QuarticWickDiagram.bigLegEquiv, Equiv.trans_apply, hqv, Equiv.prodCongr_apply,
+    Equiv.sigmaProdDistrib_apply, Equiv.sigmaCongrRight_apply]
+  rfl
+
+/-- The inverse of `bigLegEquiv` at a leg in one partition block. -/
+theorem QuarticWickDiagram.bigLegEquiv_symm_sigma_mk {S : Finset (Fin N)}
+    (π : Finpartition S) (B : π.parts)
+    (leg' : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
+    (QuarticWickDiagram.bigLegEquiv π).symm ⟨B, leg'⟩ =
+      legOfVertexLocal (π.equivSigmaParts.symm ⟨B, vertexOfLeg leg'⟩) (localLegOfLeg leg') := by
+  have hqv : quarticLegEquiv (B : Finset (Fin N)) leg' =
+      (vertexOfLeg leg', localLegOfLeg leg') := rfl
+  simp only [QuarticWickDiagram.bigLegEquiv, Equiv.symm_trans_apply,
+    Equiv.sigmaCongrRight_symm, Equiv.sigmaCongrRight_apply, Equiv.symm_symm, hqv,
+    Equiv.sigmaProdDistrib_symm_apply, Equiv.prodCongr_symm, Equiv.refl_symm]
+  rfl
 
 private theorem sigmaCongrRight_involutive {ι : Type*} {β : ι → Type*}
     (F : ∀ i, Equiv.Perm (β i)) (hF : ∀ i, Function.Involutive (F i)) :
