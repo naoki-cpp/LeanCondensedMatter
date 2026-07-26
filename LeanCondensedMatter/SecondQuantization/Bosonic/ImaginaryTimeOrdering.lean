@@ -4,15 +4,11 @@ import LeanCondensedMatter.SecondQuantization.Common.TimeOrdering
 set_option linter.style.header false
 
 /-!
-# Imaginary-time ordering `T_τ`, specialized to the bosonic Fock space
+# Bosonic imaginary-time ordering
 
-This module defines imaginary-time ordering and
-does not introduce a thermal state, weight, or inverse temperature.
-
-A thin wrapper fixing `Common/TimeOrdering.lean`'s `Common.timeOrderedProduct` to
-`FockSpaceBosonic Mode` *and* to `Statistics.boson`, so downstream bosonic files don't need to
-spell out `Statistics.zetaInt Statistics.boson` at every call site. (The fermionic line has no
-analogous wrapper — its consumers call `Common.timeOrderedProduct Statistics.fermion` directly.)
+This module specializes `Common.timeOrderedProduct` to bosonic statistics and the algebraic bosonic
+Fock space. Since the bosonic exchange sign is `+1`, swapping the operators introduces no scalar
+factor in the public specialization.
 -/
 
 namespace SecondQuantization
@@ -20,46 +16,39 @@ namespace Bosonic
 
 variable {Mode : Type*} [DecidableEq Mode]
 
-/-- **The imaginary-time-ordered product** of two operators `A`, `B` at imaginary times `τ_A`,
-`τ_B`: the later time acts first (leftmost), picking up the bosonic exchange sign `+1` when the
-times must be swapped from their given argument order, and the two orderings symmetrized
-(`θ(0) = 1/2`) at equal times. -/
+/-- The bosonic imaginary-time-ordered product of two operators. -/
 noncomputable def timeOrderedProduct
-    (A B : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode) (τA τB : ℝ) :
-    FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode :=
+    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (τA τB : ℝ) :
+    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   Common.timeOrderedProduct Statistics.boson A B τA τB
 
+/-- At strictly later time, `A` acts first. -/
 theorem timeOrderedProduct_of_gt
-    (A B : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode) {τA τB : ℝ} (h : τB < τA) :
+    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) {τA τB : ℝ} (h : τB < τA) :
     timeOrderedProduct A B τA τB = A.comp B :=
   Common.timeOrderedProduct_of_gt Statistics.boson A B h
 
+/-- At strictly later time, `B` acts first without a bosonic exchange sign. -/
 theorem timeOrderedProduct_of_lt
-    (A B : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode) {τA τB : ℝ} (h : τA < τB) :
-    timeOrderedProduct A B τA τB = (1 : ℂ) • (B.comp A) := by
-  change Common.timeOrderedProduct Statistics.boson A B τA τB = (1 : ℂ) • (B.comp A)
-  rw [Common.timeOrderedProduct_of_lt Statistics.boson A B h, Statistics.zetaInt_boson,
-    Int.cast_one]
+    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) {τA τB : ℝ} (h : τA < τB) :
+    timeOrderedProduct A B τA τB = B.comp A := by
+  simpa [timeOrderedProduct] using
+    (Common.timeOrderedProduct_of_lt Statistics.boson A B h)
 
+/-- Equal imaginary times give the symmetric product. -/
 @[simp]
 theorem timeOrderedProduct_self_time
-    (A B : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode) (τ : ℝ) :
-    timeOrderedProduct A B τ τ = (2⁻¹ : ℂ) • (A.comp B + (1 : ℂ) • (B.comp A)) := by
-  change Common.timeOrderedProduct Statistics.boson A B τ τ =
-    (2⁻¹ : ℂ) • (A.comp B + (1 : ℂ) • (B.comp A))
-  rw [Common.timeOrderedProduct_self_time Statistics.boson A B τ, Statistics.zetaInt_boson,
-    Int.cast_one]
+    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (τ : ℝ) :
+    timeOrderedProduct A B τ τ = (2⁻¹ : ℂ) • (A.comp B + B.comp A) := by
+  simpa [timeOrderedProduct] using
+    (Common.timeOrderedProduct_self_time Statistics.boson A B τ)
 
-/-- **Swapping the pair of operators (with their times) returns the same time-ordered product**:
-`T_τ[B(τ_B) A(τ_A)] = T_τ[A(τ_A) B(τ_B)]`. See `Common/TimeOrdering.lean`'s module docstring for
-the scope note on which operators this applies to. -/
+/-- Swapping both operators and their times leaves the bosonic ordered product unchanged. -/
 theorem timeOrderedProduct_swap
-    (A B : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode) (τA τB : ℝ) :
-    timeOrderedProduct B A τB τA = (1 : ℂ) • timeOrderedProduct A B τA τB := by
-  change Common.timeOrderedProduct Statistics.boson B A τB τA =
-    (1 : ℂ) • Common.timeOrderedProduct Statistics.boson A B τA τB
-  rw [Common.timeOrderedProduct_swap Statistics.boson A B τA τB, Statistics.zetaInt_boson,
-    Int.cast_one]
+    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (τA τB : ℝ) :
+    timeOrderedProduct B A τB τA = timeOrderedProduct A B τA τB := by
+  simpa [timeOrderedProduct] using
+    (Common.timeOrderedProduct_swap Statistics.boson A B τA τB)
 
 end Bosonic
 end SecondQuantization
