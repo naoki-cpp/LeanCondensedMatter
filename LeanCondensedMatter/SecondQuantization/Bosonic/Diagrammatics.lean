@@ -1,11 +1,16 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticInteraction
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticLocalLeg
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticLegFamily
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagram
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagramOrdered
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagramComponentDecompositionEquiv
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagramWeight
 
 set_option linter.style.header false
 
 /-!
 # Bosonic diagrammatics
 
-Bosonic quartic interaction vertices and their statistics-independent pairing-diagram combinatorics.
+Bosonic quartic interaction vertices, local-leg semantics, ordered pairing data, component
+decomposition, and componentwise scalar weights.
 -/
