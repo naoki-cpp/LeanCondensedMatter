@@ -5,8 +5,8 @@ set_option linter.style.header false
 /-!
 # Products of vertex-local weights over quartic-diagram components
 
-A product depending only on each vertex label factors through the connected-component partition.
-This is the statistics-independent scalar part of later Wick-diagram amplitude factorization.
+Products depending only on vertex-local data factor through the connected-component partition. This
+is the statistics-independent scalar part of later Wick-diagram amplitude factorization.
 -/
 
 namespace SecondQuantization
@@ -49,6 +49,23 @@ theorem QuarticDiagram.prod_vertexLabel_eq_prod_restrictComponent
     _ = ∏ B : d.componentPartition.parts,
         ∏ v : ↥(B : Finset (Fin N)), w ((d.restrictComponent B.2).vertexLabel v) :=
       Fintype.prod_sigma _
+
+/-- The Dyson recursion sign `(-1)^|S|` factors into the corresponding signs of all connected
+component blocks. -/
+theorem QuarticDiagram.dysonSign_eq_prod_componentSigns {S : Finset (Fin N)}
+    (d : QuarticDiagram Label N S) :
+    (-1 : ℂ) ^ S.card =
+      ∏ B : d.componentPartition.parts, (-1 : ℂ) ^ (B : Finset (Fin N)).card := by
+  classical
+  rw [Finset.prod_coe_sort d.componentPartition.parts (fun B => (-1 : ℂ) ^ B.card)]
+  have hpow : ∀ T : Finset (Finset (Fin N)),
+      (∏ B ∈ T, (-1 : ℂ) ^ B.card) = (-1 : ℂ) ^ (∑ B ∈ T, B.card) := by
+    intro T
+    induction T using Finset.induction_on with
+    | empty => simp
+    | @insert B T hBT ih =>
+      simp [hBT, ih, pow_add]
+  rw [hpow, d.componentPartition.sum_card_parts]
 
 end Common
 end SecondQuantization
