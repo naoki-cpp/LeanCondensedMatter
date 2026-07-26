@@ -34,4 +34,17 @@ theorem QuarticWickDiagram.restrictComponentConnected_reassemble {S : Finset (Fi
   apply Subtype.ext
   exact QuarticWickDiagram.restrictComponent_reassemble π F B hB'
 
+/-- **Decomposing a reassembled family recovers the original dependent family.** -/
+theorem QuarticWickDiagram.componentDecompose_reassemble {S : Finset (Fin N)}
+    (π : Finpartition S)
+    (F : ∀ B : π.parts, ConnectedQuarticWickDiagram Mode N (B : Finset (Fin N))) :
+    QuarticWickDiagram.componentDecompose (QuarticWickDiagram.reassemble π F) = ⟨π, F⟩ := by
+  unfold QuarticWickDiagram.componentDecompose
+  have hπ := QuarticWickDiagram.componentPartition_reassemble π F
+  cases hπ
+  apply Sigma.ext rfl
+  apply HEq.of_eq
+  funext B
+  exact QuarticWickDiagram.restrictComponentConnected_reassemble π F B B.2
+
 end SecondQuantization
