@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedFreeTwoPointFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.ParticleNumberCharge
-import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
-import LeanCondensedMatter.SecondQuantization.Common.TimeOrdering
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering
 
 set_option linter.style.header false
 
@@ -43,7 +43,7 @@ be nonzero (`WeightedFreeTwoPointFunction.lean`'s `weightedFreeTwoPointFunction`
 scoped to this project's number-conserving setting, not a universal statement about all
 quasi-free states.
 
-The basis-level vanishing is now an instance of `Common/ParticleNumberSelectionRule.lean`'s
+The basis-level vanishing is now an instance of `Common/Algebra/ParticleNumberSelectionRule.lean`'s
 general particle-number selection rule, rather than a fermion-specific case analysis:
 `carriesParticleNumberCharge_annihilate`/`_create` (`Fermionic/ParticleNumberCharge.lean`) show
 `annihilate i`/`create i` carry particle-number charge `∓1`,

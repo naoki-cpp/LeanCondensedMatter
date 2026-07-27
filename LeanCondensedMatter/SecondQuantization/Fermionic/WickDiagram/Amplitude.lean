@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.WickDiagram.Ordered
 import LeanCondensedMatter.SecondQuantization.Fermionic.WickDiagram.LegFamily
 import LeanCondensedMatter.SecondQuantization.Fermionic.FreeBoltzmannWeight
-import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PairingWeight
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 import LeanCondensedMatter.Analysis.OrderedSimplexIntegral
 
 set_option linter.style.header false

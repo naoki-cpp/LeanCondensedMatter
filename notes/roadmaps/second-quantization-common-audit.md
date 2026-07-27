@@ -102,3 +102,27 @@ likely to support later thin Bosonic specializations:
 The main remaining Bosonic obstruction is still analytic: arbitrary Gibbs expectations and
 operator-valued Dyson integration need a convergence-aware domain.  The algebraic and finite-support
 results above should not be blocked on that larger construction.
+
+## Physical source layout
+
+The responsibility umbrellas now match the physical directory layout:
+
+- `Common/Algebra/` — basis-independent algebraic Fock and exchange infrastructure;
+- `Common/ImaginaryTime/` — time ordering, diagonal evolution, interaction picture, and KMS rotation;
+- `Common/Thermal/` — normalized/weighted functionals and Bloch–de Dominicis;
+- `Common/Perturbation/` — finite-basis operator integration;
+- `Common/Diagrammatics/` — quartic diagram data and component decomposition.
+
+No compatibility shims remain at the old flat `Common/*.lean` implementation paths. The only
+root-level files under `Common/` are the five public responsibility umbrellas.
+
+### Bloch–de Dominicis internal layout
+
+`Common/Thermal/BlochDeDominicis/` is split by mathematical role rather than theorem length:
+
+- `Unnormalized/` contains operator and trace peel identities before normalization;
+- `GibbsExpectation/` contains the normalized functional and two-/four-point recursion;
+- `Induction.lean` contains the arbitrary-length pairing theorem;
+- `PairingWeight.lean` contains the statistics-dependent crossing weight.
+
+This keeps the recursion mechanism visible without mixing it with the normalization layer.

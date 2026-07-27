@@ -1,12 +1,12 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CreationAnnihilation
-import LeanCondensedMatter.SecondQuantization.Common.ParticleNumberSelectionRule
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.ParticleNumberSelectionRule
 
 set_option linter.style.header false
 
 /-!
 # Fermionic creation/annihilation operators carry particle-number charge `±1`
 
-Instantiates `Common.CarriesGradingDegree` (`Common/ParticleNumberSelectionRule.lean`) for
+Instantiates `Common.CarriesGradingDegree` (`Common/Algebra/ParticleNumberSelectionRule.lean`) for
 `annihilate i`/`create i`, with grading `fermionParticleNumber` (cast to `ℤ`): `annihilate i`
 carries charge `-1`, `create i` carries charge `+1`. Combined with
 `Common.CarriesGradingDegree.comp` and `Common.diagonalCoeff_eq_zero_of_carriesGradingDegree`,

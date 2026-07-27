@@ -1,7 +1,7 @@
-import LeanCondensedMatter.SecondQuantization.Common.TimeOrdering
-import LeanCondensedMatter.SecondQuantization.Common.DiagonalEvolution
-import LeanCondensedMatter.SecondQuantization.Common.InteractionPicture
-import LeanCondensedMatter.SecondQuantization.Common.KMSRotation
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.KMSRotation
 
 set_option linter.style.header false
 

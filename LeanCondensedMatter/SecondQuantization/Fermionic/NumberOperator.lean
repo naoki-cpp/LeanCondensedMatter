@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CanonicalAnticommutationRelations
 import LeanCondensedMatter.SecondQuantization.Fermionic.ExchangeAlgebra
-import LeanCondensedMatter.SecondQuantization.Common.ExchangeCommutator
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator
 import Mathlib.Tactic.Abel
 
 set_option linter.style.header false

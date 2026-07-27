@@ -10,7 +10,7 @@ partner `j` together with the smaller pairing left after removing it. This file 
 into a `Finset.sum` reindexing identity: a sum over `Pairing (n + 1)` equals a double sum, first
 over positions `j : Fin (2 * n + 1)` (matching `PeelTermsIndexed.lean`'s peeled-term indexing),
 then over the smaller `Pairing n`, reassembled via `Pairing.insertFirstPair` — the form
-`Common/BlochDeDominicis/Induction.lean`'s general theorem needs to reassemble a `Pairing n` sum
+`Common/Thermal/BlochDeDominicis/Induction.lean`'s general theorem needs to reassemble a `Pairing n` sum
 from a peeled-position sum.
 -/
 

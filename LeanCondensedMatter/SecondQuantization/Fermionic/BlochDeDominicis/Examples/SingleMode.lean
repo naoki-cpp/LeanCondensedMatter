@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.NumberOperator
-import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 
 set_option linter.style.header false
 
@@ -17,10 +17,10 @@ Boltzmann weight appears — so this is a purely algebraic identity for any norm
 occupation-number-diagonal weighted functional, not yet a genuine thermal-expectation statement
 (see `Fermionic/FreeBoltzmannWeight.lean` for the specialization that supplies a genuine Gibbs
 weight). It matches the previously established four-position pairing weights `1`, `ζ`, `1` from
-`Common/BlochDeDominicis/PairingWeight.lean`'s `four_position_pairings_and_weights` term by term
+`Common/Thermal/BlochDeDominicis/PairingWeight.lean`'s `four_position_pairings_and_weights` term by term
 (`(12)(34)`, `(13)(24)`, `(14)(23)` for the position labels `1,2,3,4 ↦ cᵢ,cᵢ†,cᵢ,cᵢ†`) — the
 coefficients are hand-written here to match those weights, not obtained by summing over
-`Common.BlochDeDominicis.Pairing 2` itself. `Common/BlochDeDominicis/Induction.lean`'s general
+`Common.BlochDeDominicis.Pairing 2` itself. `Common/Thermal/BlochDeDominicis/Induction.lean`'s general
 `gibbsExpectation_prodComp_eq_sum_pairing` now gives that genuine `Pairing 2`-sum connection for
 `gibbsExpectation` (a specific, genuine Gibbs weight); restating *this* file's arbitrary-`w`
 identity as a `Pairing 2` sum (rather than three hand-written terms) remains separate future
@@ -48,7 +48,7 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
 /-- **The single-mode 4-point Wick identity for normalized diagonal weights**:
 `⟨cᵢcᵢ†cᵢcᵢ†⟩_w = ⟨cᵢcᵢ†⟩_w² + ζ⟨cᵢcᵢ⟩_w⟨cᵢ†cᵢ†⟩_w + ⟨cᵢcᵢ†⟩_w⟨cᵢ†cᵢ⟩_w`, matching
-`Common/BlochDeDominicis/PairingWeight.lean`'s four-position pairing weights `1`, `ζ`, `1` term by
+`Common/Thermal/BlochDeDominicis/PairingWeight.lean`'s four-position pairing weights `1`, `ζ`, `1` term by
 term.
 The middle term vanishes (`⟨cᵢcᵢ⟩_w = 0` from `annihilate_comp_self`), leaving `⟨cᵢcᵢ†⟩_w(⟨cᵢcᵢ†⟩_w
 + ⟨cᵢ†cᵢ⟩_w) = ⟨cᵢcᵢ†⟩_w · ⟨id⟩_w = ⟨cᵢcᵢ†⟩_w`, which matches the left side by `cᵢcᵢ†`'s

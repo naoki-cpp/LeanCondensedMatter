@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedFreeTwoPointFunction
-import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
-import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.GibbsExpectation.Core
-import LeanCondensedMatter.SecondQuantization.Common.FiniteOperatorIntegral
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 
 set_option linter.style.header false
 

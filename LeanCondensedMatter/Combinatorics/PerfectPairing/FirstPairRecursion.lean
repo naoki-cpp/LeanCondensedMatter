@@ -9,7 +9,7 @@ set_option linter.style.header false
 /-!
 # The Wick/Bloch–de Dominicis pairing recursion, abstracted away from `gibbsExpectation`
 
-`Common/BlochDeDominicis/Induction.lean`'s general theorem interleaves two independent kinds of
+`Common/Thermal/BlochDeDominicis/Induction.lean`'s general theorem interleaves two independent kinds of
 reasoning: analytic facts about Gibbs expectations (`gibbsExpectation_peel_indexed`, the two-point
 identity, list reindexing) and purely combinatorial bookkeeping about `Pairing` (the
 `equivSigma`/`insertFirstPair` double-sum reindexing, `crossingCount`'s erase-zero recursion, and

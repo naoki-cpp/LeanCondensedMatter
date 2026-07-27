@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.QuarticLeg
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Leg
 import LeanCondensedMatter.SecondQuantization.Fermionic.QuarticLocalLeg
 
 set_option linter.style.header false

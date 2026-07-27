@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.InteractionPicture
-import LeanCondensedMatter.SecondQuantization.Common.QuarticVertexLabel
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.VertexLabel
 
 set_option linter.style.header false
 

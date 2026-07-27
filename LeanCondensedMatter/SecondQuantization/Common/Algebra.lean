@@ -1,10 +1,10 @@
-import LeanCondensedMatter.SecondQuantization.Common.OneParticleSpace
-import LeanCondensedMatter.SecondQuantization.Common.Statistics
-import LeanCondensedMatter.SecondQuantization.Common.OccupationBasis
-import LeanCondensedMatter.SecondQuantization.Common.AlgebraicFock
-import LeanCondensedMatter.SecondQuantization.Common.ParticleNumberSelectionRule
-import LeanCondensedMatter.SecondQuantization.Common.ExchangeCommutator
-import LeanCondensedMatter.SecondQuantization.Common.ExchangeAlgebra
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.OneParticleSpace
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.OccupationBasis
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.ParticleNumberSelectionRule
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeCommutator
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeAlgebra
 
 set_option linter.style.header false
 

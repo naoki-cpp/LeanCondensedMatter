@@ -1,5 +1,5 @@
 import Mathlib.Data.Finset.Card
-import LeanCondensedMatter.SecondQuantization.Common.OccupationBasis
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.OccupationBasis
 
 set_option linter.style.header false
 

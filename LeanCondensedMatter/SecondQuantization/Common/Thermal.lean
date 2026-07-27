@@ -1,6 +1,6 @@
-import LeanCondensedMatter.SecondQuantization.Common.NormalizedOperatorFunctional
-import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
-import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.NormalizedOperatorFunctional
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis
 
 set_option linter.style.header false
 

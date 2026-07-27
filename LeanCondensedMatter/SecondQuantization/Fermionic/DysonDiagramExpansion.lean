@@ -3,8 +3,8 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.DysonVertexMoment
 import LeanCondensedMatter.SecondQuantization.Fermionic.WickDiagram.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.WickDiagram.LegFamily
 import LeanCondensedMatter.SecondQuantization.Fermionic.QuarticLocalLeg
-import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.PeelFirst
-import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.Induction
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction
 
 set_option linter.style.header false
 

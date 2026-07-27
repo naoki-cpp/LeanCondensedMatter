@@ -1,8 +1,8 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedFreeTwoPointFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.NumberOperator
-import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
-import LeanCondensedMatter.SecondQuantization.Common.TimeOrdering
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering
 
 set_option linter.style.header false
 
@@ -15,7 +15,7 @@ Phase 9 follow-up (`notes/roadmaps/second-quantization.md`): the mixed contracti
 docstring flags: `G₀,ᵢⱼ = 0` for `i ≠ j`.
 
 **Off-diagonal (`i ≠ j`) vanishing is *not* an instance of the `U(1)` particle-number selection
-rule** (`Common/ParticleNumberSelectionRule.lean`): `(annihilate i).comp (create j)` carries
+rule** (`Common/Algebra/ParticleNumberSelectionRule.lean`): `(annihilate i).comp (create j)` carries
 charge `-1 + 1 = 0`, so the selection rule says nothing about it. The vanishing here is a
 different, finer fact — a basis-level mismatch specific to *which* mode is toggled: acting with
 `create j` then `annihilate i` (`i ≠ j`) on `basisState n` either returns `0` outright, or lands on

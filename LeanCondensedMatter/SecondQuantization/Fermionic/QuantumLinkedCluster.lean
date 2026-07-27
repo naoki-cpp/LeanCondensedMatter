@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedNumberOperator
-import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 import LeanCondensedMatter.Combinatorics.CumulantFactorization
 import Mathlib.Tactic.FieldSimp
 

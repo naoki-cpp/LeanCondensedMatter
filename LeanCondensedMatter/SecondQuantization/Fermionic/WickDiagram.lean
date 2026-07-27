@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.QuarticDiagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Diagram
 import LeanCondensedMatter.SecondQuantization.Fermionic.QuarticInteraction
 
 set_option linter.style.header false

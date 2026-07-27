@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution
 import LeanCondensedMatter.SecondQuantization.Bosonic.OperatorAlgebra.CCR
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable
-import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.TwoPoint
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.TwoPoint
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false

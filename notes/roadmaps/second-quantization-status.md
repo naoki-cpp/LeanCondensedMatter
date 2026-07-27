@@ -21,7 +21,7 @@ The parity boundary is analytic rather than combinatorial:
   functional interface.
 
 Sources: `Fermionic/Occupation.lean`, `Bosonic/Algebra.lean`,
-`Common/WeightedDiagonalFunctional.lean`, and `Common/FiniteOperatorIntegral.lean`.
+`Common/Thermal/WeightedDiagonalFunctional.lean`, and `Common/Perturbation/FiniteOperatorIntegral.lean`.
 
 ## Public import layouts
 
@@ -60,16 +60,16 @@ The extraction decisions and deferred Bosonic specializations are recorded in
 
 ## Shared statistics-independent layer
 
-The following infrastructure is shared by both statistics:
+The following infrastructure is shared by both statistics. The listed modules live under the matching `Common/Algebra/`, `Common/ImaginaryTime/`, `Common/Thermal/`, or `Common/Diagrammatics/` directory:
 
 | Area | Main modules | Current result |
 |---|---|---|
-| Algebraic Fock space | `Common/AlgebraicFock.lean` | Basis states, matrix coefficients, diagonal operators, and linear-map extensionality are generic in the configuration type. |
-| Free evolution | `Common/DiagonalEvolution.lean` | Basis-diagonal evolution and algebraic Heisenberg evolution are generic in the energy function. |
-| Interaction picture | `Common/InteractionPicture.lean` | The operator construction, matrix-coefficient closed form, continuity, and interval integrability are generic in the configuration type and use only finite support of algebraic-Fock vectors. |
-| Exchange relations | `Common/ExchangeCommutator.lean`, `Common/ExchangeAlgebra.lean` | CAR and CCR are represented through the common statistics-dependent `ζ` relation. |
-| Thermal functionals | `Analysis/NormalizedEndomorphismFunctional.lean`, `Common/NormalizedOperatorFunctional.lean`, `Common/WeightedDiagonalFunctional.lean` | The normalized-functional structure is pure linear algebra; Fock-space and weighted-trace specializations remain in Common. |
-| Bloch–de Dominicis | `Common/BlochDeDominicis/Induction.lean` | The pairing expansion is proved abstractly under the stated eigenoperator, commutator, non-resonance, and functional hypotheses. |
+| Algebraic Fock space | `Common/Algebra/AlgebraicFock.lean` | Basis states, matrix coefficients, diagonal operators, and linear-map extensionality are generic in the configuration type. |
+| Free evolution | `Common/ImaginaryTime/DiagonalEvolution.lean` | Basis-diagonal evolution and algebraic Heisenberg evolution are generic in the energy function. |
+| Interaction picture | `Common/ImaginaryTime/InteractionPicture.lean` | The operator construction, matrix-coefficient closed form, continuity, and interval integrability are generic in the configuration type and use only finite support of algebraic-Fock vectors. |
+| Exchange relations | `Common/Algebra/ExchangeCommutator.lean`, `Common/Algebra/ExchangeAlgebra.lean` | CAR and CCR are represented through the common statistics-dependent `ζ` relation. |
+| Thermal functionals | `Analysis/NormalizedEndomorphismFunctional.lean`, `Common/Thermal/NormalizedOperatorFunctional.lean`, `Common/Thermal/WeightedDiagonalFunctional.lean` | The normalized-functional structure is pure linear algebra; Fock-space and weighted-trace specializations remain in Common. |
+| Bloch–de Dominicis | `Common/Thermal/BlochDeDominicis/Induction.lean` | The pairing expansion is proved abstractly under the stated eigenoperator, commutator, non-resonance, and functional hypotheses. |
 | Quartic diagrams | `Common/QuarticDiagram*.lean`, `Combinatorics/FinpartitionProduct.lean` | Labels, ordered data, connectedness, component restriction/reassembly, decomposition equivalence, and component scalar factorization are statistics independent; the underlying finite-partition product identities are pure combinatorics. |
 
 The Common dependency direction is one way: `Fermionic/` and `Bosonic/` may import `Common/`, while
