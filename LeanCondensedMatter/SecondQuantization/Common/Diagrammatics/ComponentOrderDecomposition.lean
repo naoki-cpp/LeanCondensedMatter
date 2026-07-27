@@ -113,8 +113,11 @@ theorem QuarticDiagram.componentVertexOrderOfVertexOrder_strictMono {S : Finset 
     (B : d.componentPartition.parts) :
     StrictMono (fun i => d.componentGlobalSlot order B
       (d.componentVertexOrderOfVertexOrder order B i)) := by
-  exact ((d.componentGlobalSlots order B).orderEmbOfFin
-    (d.card_componentGlobalSlots order B)).strictMono
+  intro i j hij
+  rw [d.componentGlobalSlot_componentVertexOrderOfVertexOrder,
+    d.componentGlobalSlot_componentVertexOrderOfVertexOrder]
+  exact ((d.componentGlobalSlots order B).orderIsoOfFin
+    (d.card_componentGlobalSlots order B)).strictMono hij
 
 /-- The canonical component-local orders are compatible with the ambient order. -/
 theorem QuarticDiagram.componentOrdersCompatible_componentVertexOrdersOfVertexOrder
