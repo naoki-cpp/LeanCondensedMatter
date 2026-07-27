@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.NumberOperator
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 
 set_option linter.style.header false

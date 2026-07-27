@@ -27,4 +27,3 @@ import LeanCondensedMatter.QuantumTheory.HelmholtzFreeEnergyTraceClass
 import LeanCondensedMatter.SecondQuantization.Common
 import LeanCondensedMatter.SecondQuantization.Bosonic
 import LeanCondensedMatter.SecondQuantization.Fermionic
-import LeanCondensedMatter.SecondQuantization.Fermionic.QuantumLinkedCluster
