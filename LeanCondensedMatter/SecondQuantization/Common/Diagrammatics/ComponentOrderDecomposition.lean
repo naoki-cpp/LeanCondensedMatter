@@ -114,6 +114,8 @@ theorem QuarticDiagram.componentVertexOrderOfVertexOrder_strictMono {S : Finset 
     StrictMono (fun i => d.componentGlobalSlot order B
       (d.componentVertexOrderOfVertexOrder order B i)) := by
   intro i j hij
+  change d.componentGlobalSlot order B (d.componentVertexOrderOfVertexOrder order B i) <
+    d.componentGlobalSlot order B (d.componentVertexOrderOfVertexOrder order B j)
   rw [d.componentGlobalSlot_componentVertexOrderOfVertexOrder,
     d.componentGlobalSlot_componentVertexOrderOfVertexOrder]
   exact ((d.componentGlobalSlots order B).orderIsoOfFin
