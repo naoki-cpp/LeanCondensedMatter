@@ -1,99 +1,130 @@
 name: Lean Action CI
 
 on:
+  push:
   pull_request:
   workflow_dispatch:
 
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+# Do not let a long documentation build block CI on unrelated branches. For repeated
+# pushes to the same ref, only the newest run is useful.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v5
-
-      - name: Normalize diagrammatics roadmap formatting
-        id: docs-update
-        continue-on-error: true
-        if: github.event_name == 'pull_request' && github.head_ref == 'agent/final-second-quantization-docs'
-        shell: bash
-        run: |
-          set -euo pipefail
-          exec > >(tee /tmp/second-quantization-doc-update.log) 2>&1
-          git fetch origin +refs/heads/agent/final-second-quantization-docs:refs/remotes/origin/agent/final-second-quantization-docs
-          git checkout -B agent/final-second-quantization-docs origin/agent/final-second-quantization-docs
-          python3 - <<'PY'
-          from pathlib import Path
-
-          path = Path("notes/roadmaps/second-quantization.md")
-          text = path.read_text(encoding="utf-8")
-          key = "PR 1, `Combinatorics/DiagramConnectedness.lean`"
-          marker = "7. **Not started**"
-          key_pos = text.find(key)
-          marker_pos = text.find(marker, key_pos)
-          if key_pos < 0 or marker_pos < 0:
-              raise SystemExit(f"could not locate diagrammatics history: key={key_pos}, marker={marker_pos}")
-          start = text.rfind("\n", 0, key_pos) + 1
-          end = text.rfind("\n", 0, marker_pos)
-
-          lines = [
-              "   - PR 1, `Combinatorics/DiagramConnectedness.lean` — abstract `WeightedDiagramFamily`,",
-              "     `diagramMoment_eq_momentFromCumulant`/`cumulantFromMoment_diagramMoment` connecting to",
-              "     `MomentCumulant.lean`. Purely combinatorial, no `SecondQuantization` import.",
-              "   - PR 2, `Fermionic/Perturbation/DysonVertexMoment.lean` — the `ℕ`-indexed Dyson series ↔ Track B's",
-              "     `Finset α → ℂ` moment type seam (`dysonVertexMoment := S.card! • normalizedDysonPartitionCoeff`,",
-              "     with the factorial converting ordinary to exponential generating coefficients).",
-              "   - PR 3, `Fermionic/Diagrammatics/QuarticInteraction.lean` — the first concrete,",
-              "     generally non-diagonal quartic vertex `Σ g(q) cᵢ†cⱼ†cₗcₖ`, with no",
-              "     Hermiticity, antisymmetry, or momentum conservation built into the definition.",
-              "   - PR 4a/4b introduced the quartic Wick-diagram data and connectedness layer in",
-              "     `Fermionic/Diagrammatics/WickDiagram.lean` and",
-              "     `Fermionic/Diagrammatics/WickDiagram/Connected.lean`.",
-              "   - PR 5a/5b/5c added `Analysis/OrderedSimplexIntegral.lean`, pairing relabelling,",
-              "     `Fermionic/Diagrammatics/WickDiagram/Ordered.lean`, and",
-              "     `Fermionic/Diagrammatics/WickDiagram/Amplitude.lean`.",
-              "   - PR 6 proved the Dyson diagram expansion in",
-              "     `Fermionic/Diagrammatics/DysonDiagramExpansion.lean`, using the flattened local-leg",
-              "     semantics from `Fermionic/Diagrammatics/WickDiagram/LegFamily.lean` and",
-              "     `Fermionic/Diagrammatics/QuarticLocalLeg.lean`.",
-              "   - PR 7 completed component partition, restriction, connectedness, reassembly, the",
-              "     decomposition equivalence, and scalar-prefactor factorization under",
-              "     `Fermionic/Diagrammatics/WickDiagram/`. The remaining full-amplitude factorization is the",
-              "     ordered-simplex shuffle together with pairing-weight and pair-value compatibility under",
-              "     component-local orders; after that come the finite-set LCT and the `PowerSeries.log`",
-              "     coefficient bridge.",
-          ]
-          replacement = "\n".join(lines) + "\n"
-          text = text[:start] + replacement + text[end:]
-          path.write_text(text, encoding="utf-8")
-          PY
-
-          if git diff --quiet; then
-            echo "Diagrammatics roadmap formatting is already normalized."
-          else
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add notes/roadmaps/second-quantization.md
-            git commit -m "docs: normalize diagrammatics roadmap formatting"
-            git push origin HEAD:agent/final-second-quantization-docs
-          fi
-
-      - name: Upload documentation updater diagnostics
-        if: steps.docs-update.outcome == 'failure'
-        uses: actions/upload-artifact@v4
-        with:
-          name: second-quantization-doc-update-log
-          path: /tmp/second-quantization-doc-update.log
-
-      - name: Fail after documentation updater error
-        if: steps.docs-update.outcome == 'failure'
-        run: exit 1
-
       - uses: leanprover/lean-action@v1
       - name: Check for sorry
         run: |
           if grep -rnE '\bsorry\b' --include='*.lean' LeanCondensedMatter; then
-            echo "::error::Found 'sorry' in the Lean sources above."
+            echo "::error::Found 'sorry' in the Lean sources above. Per PROJECT.md, a statement is only 'proved' with no 'sorry' — record it as a target in notes/roadmap.md instead of leaving it in place."
             exit 1
           fi
+
+  # Documentation is intentionally built only on pushes to main. doc-gen4 processes the
+  # full Mathlib symbol set, so running it for every pull request would be unnecessarily slow.
+  docs:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - uses: actions/checkout@v5
+
+      # Cache only the nested documentation build here. lean-action already maintains
+      # the root .lake cache with its own commit-aware key.
+      - name: Restore documentation cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            docbuild/.lake/build
+            docbuild/lake-manifest.json
+          # GitHub caches are immutable, so include the commit SHA to save a fresh
+          # incremental snapshot after every successful main build. The restore prefix
+          # selects the newest snapshot with the same Lean and dependency versions.
+          key: docgen-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
+          restore-keys: |
+            docgen-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
+
+      - uses: leanprover/lean-action@v1
+
+      - name: Build API documentation
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mkdir -p docbuild
+          cat > docbuild/lakefile.toml <<EOF
+          name = "docbuild"
+          reservoir = false
+          version = "0.1.0"
+          packagesDir = "../.lake/packages"
+
+          [[require]]
+          name = "LeanCondensedMatter"
+          path = "../"
+
+          [[require]]
+          scope = "leanprover"
+          name = "doc-gen4"
+          rev = "$(cut -f 2 -d: lean-toolchain)"
+          EOF
+
+          (
+            cd docbuild
+            MATHLIB_NO_CACHE_ON_UPDATE=1 ~/.elan/bin/lake update LeanCondensedMatter
+            ~/.elan/bin/lake build LeanCondensedMatter:docs
+          )
+
+      - name: Assemble themed documentation site
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          rm -rf site
+          mkdir -p site/docs
+          cp -R docbuild/.lake/build/doc/. site/docs/
+          cat docs-site/docgen.css >> site/docs/style.css
+          cp docs-site/project-nav.js site/docs/
+          cp docs-site/index.html docs-site/site.css site/
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          navbar = Path("site/docs/navbar.html")
+          html = navbar.read_text(encoding="utf-8")
+          script = '  <script type="module" src="./project-nav.js"></script>\n'
+          closing_tag = "</body>"
+
+          if closing_tag not in html:
+              raise SystemExit("doc-gen4 navbar.html does not contain </body>")
+
+          navbar.write_text(
+              html.replace(closing_tag, script + closing_tag, 1),
+              encoding="utf-8",
+          )
+          PY
+
+          touch site/.nojekyll
+
+      - name: Upload documentation
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy documentation
+        id: deployment
+        uses: actions/deploy-pages-artifact@v4
