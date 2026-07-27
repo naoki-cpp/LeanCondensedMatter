@@ -8,7 +8,7 @@ set_option linter.style.header false
 # Bosonic creation and annihilation operators
 
 Creation and annihilation are defined on occupation-number basis states and extended linearly to
-`FockSpaceBosonic Mode`. Their basis-state normalization is
+`FockSpace Mode`. Their basis-state normalization is
 
 `a_i† |n⟩ = √(n_i + 1) |n + e_i⟩`,
 `a_i |n⟩ = √n_i |n - e_i⟩`.
@@ -23,20 +23,20 @@ namespace Bosonic
 variable {Mode : Type*} [DecidableEq Mode]
 
 /-- Creation on a basis state: `√(n_i + 1) • |n + e_i⟩`. -/
-noncomputable def createBasis (i : Mode) (n : Occupation Mode) : FockSpaceBosonic Mode :=
+noncomputable def createBasis (i : Mode) (n : Occupation Mode) : FockSpace Mode :=
   (Real.sqrt (n i + 1 : ℝ) : ℂ) • basisState (createOccupation i n)
 
 /-- Annihilation on a basis state, vanishing when mode `i` is unoccupied. -/
-noncomputable def annihilateBasis (i : Mode) (n : Occupation Mode) : FockSpaceBosonic Mode :=
+noncomputable def annihilateBasis (i : Mode) (n : Occupation Mode) : FockSpace Mode :=
   if n i = 0 then 0 else (Real.sqrt (n i : ℝ) : ℂ) • basisState (removeOccupation i n)
 
 /-- The creation operator at mode `i`. -/
-noncomputable def create (i : Mode) : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode :=
-  Finsupp.lift (FockSpaceBosonic Mode) ℂ (Occupation Mode) (createBasis i)
+noncomputable def create (i : Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+  Finsupp.lift (FockSpace Mode) ℂ (Occupation Mode) (createBasis i)
 
 /-- The annihilation operator at mode `i`. -/
-noncomputable def annihilate (i : Mode) : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode :=
-  Finsupp.lift (FockSpaceBosonic Mode) ℂ (Occupation Mode) (annihilateBasis i)
+noncomputable def annihilate (i : Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+  Finsupp.lift (FockSpace Mode) ℂ (Occupation Mode) (annihilateBasis i)
 
 theorem create_basisState (i : Mode) (n : Occupation Mode) :
     create i (basisState n) = createBasis i n := by
@@ -66,7 +66,7 @@ theorem annihilate_basisState_of_pos {i : Mode} {n : Occupation Mode} (h : n i �
 
 @[simp]
 theorem annihilate_fockVacuum (i : Mode) :
-    annihilate i (fockVacuum : FockSpaceBosonic Mode) = 0 :=
+    annihilate i (fockVacuum : FockSpace Mode) = 0 :=
   annihilate_basisState_of_zero (by simp [vacuum])
 
 end Bosonic
