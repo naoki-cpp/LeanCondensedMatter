@@ -11,7 +11,7 @@ entirely among the remaining pairs after removing `firstPair` (`eraseZeroPair.cr
 crossings with `firstPair` itself (`crossingsWithFirstPair`).
 `Pairing.crossingsWithFirstPair_mod_two` further identifies `crossingsWithFirstPair`'s parity with
 `interveningPositionCount`'s (the number of positions strictly between `0` and its partner) — the
-exponent-recurrence fact `Common/BlochDeDominicis/PairingWeight.lean`'s `weight_eraseZeroPair`
+exponent-recurrence fact `Common/Thermal/BlochDeDominicis/PairingWeight.lean`'s `weight_eraseZeroPair`
 builds the induction's sign-matching step on.
 -/
 

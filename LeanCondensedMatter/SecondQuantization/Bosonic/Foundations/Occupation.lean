@@ -1,6 +1,6 @@
 import Mathlib.Data.Finsupp.Basic
 import Mathlib.Algebra.BigOperators.Finsupp.Basic
-import LeanCondensedMatter.SecondQuantization.Common.OccupationBasis
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.OccupationBasis
 
 set_option linter.style.header false
 

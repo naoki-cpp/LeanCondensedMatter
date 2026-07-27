@@ -1,12 +1,12 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CanonicalAnticommutationRelations
-import LeanCondensedMatter.SecondQuantization.Common.ExchangeAlgebra
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeAlgebra
 
 set_option linter.style.header false
 
 /-!
 # The fermionic `Common.ExchangeAlgebra` instance
 
-Instantiates `Common/ExchangeAlgebra.lean`'s `Common.ExchangeAlgebra` at `Statistics.fermion` for
+Instantiates `Common/Algebra/ExchangeAlgebra.lean`'s `Common.ExchangeAlgebra` at `Statistics.fermion` for
 `FermionOccupation Mode`, from `CanonicalAnticommutationRelations.lean`'s CAR facts
 (`anticomm_annihilate_create`/`_annihilate_annihilate`/`_create_create`) via the bridging fact
 that `Common.exchangeCommutator Statistics.fermion` and `anticomm` are the same operator, for

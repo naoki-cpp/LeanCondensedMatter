@@ -1,0 +1,23 @@
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.VertexLabel
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Leg
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Diagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Ordered
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Connected
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentPartition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentRestriction
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentVertexProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentConnected
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Reassemble
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ReassembleComponentPartitionEq
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ReassembleRestrictComponent
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ReassembleDecompose
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentDecompositionEquiv
+
+set_option linter.style.header false
+
+/-!
+# Statistics-independent quartic diagrammatics
+
+Quartic vertex labels and leg indexing, ordered diagram data, connected components, component
+restriction and reassembly, decomposition equivalences, and componentwise scalar factorization.
+-/

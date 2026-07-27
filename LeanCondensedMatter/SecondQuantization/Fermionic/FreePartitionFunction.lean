@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.FreeBoltzmannWeight
 import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedNumberOperator
-import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 
 set_option linter.style.header false
 

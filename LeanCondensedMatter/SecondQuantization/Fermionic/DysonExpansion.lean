@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.InteractionPicture
-import LeanCondensedMatter.SecondQuantization.Common.FiniteOperatorIntegral
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 
 set_option linter.style.header false
 

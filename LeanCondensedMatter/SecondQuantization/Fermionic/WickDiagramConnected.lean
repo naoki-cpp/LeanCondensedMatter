@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.QuarticDiagramConnected
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Connected
 import LeanCondensedMatter.SecondQuantization.Fermionic.WickDiagram
 
 set_option linter.style.header false

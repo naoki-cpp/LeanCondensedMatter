@@ -21,7 +21,8 @@ The parity boundary is analytic rather than combinatorial:
   functional interface.
 
 Sources: `Fermionic/Occupation.lean`, `Bosonic/Algebra.lean`,
-`Common/WeightedDiagonalFunctional.lean`, and `Common/FiniteOperatorIntegral.lean`.
+`Common/Thermal/WeightedDiagonalFunctional.lean`, and
+`Common/Perturbation/FiniteOperatorIntegral.lean`.
 
 ## Public import layouts
 
@@ -45,21 +46,38 @@ on the finite fermionic occupation basis.
 separate when they express a useful proof or dependency boundary; the layouts are not forced to have
 identical file counts.
 
+The Common API uses five corresponding responsibility groups:
+
+| Common import | Scope |
+|---|---|
+| `SecondQuantization.Common.Algebra` | Algebraic Fock infrastructure, statistics, grading, and CAR/CCR interfaces. |
+| `SecondQuantization.Common.ImaginaryTime` | Time ordering, diagonal evolution, interaction pictures, and KMS rotation. |
+| `SecondQuantization.Common.Thermal` | Normalized functionals, diagonal traces, Gibbs infrastructure, and Bloch–de Dominicis. |
+| `SecondQuantization.Common.Perturbation` | Finite-basis coefficientwise operator integration. |
+| `SecondQuantization.Common.Diagrammatics` | Label-generic quartic diagrams and component decomposition. |
+
+The extraction decisions and deferred Bosonic specializations are recorded in
+[`second-quantization-common-audit.md`](second-quantization-common-audit.md).
+
 ## Shared statistics-independent layer
 
-The following infrastructure is shared by both statistics:
+The following infrastructure is shared by both statistics. The listed modules live under the
+matching `Common/Algebra/`, `Common/ImaginaryTime/`, `Common/Thermal/`, or
+`Common/Diagrammatics/` directory:
 
 | Area | Main modules | Current result |
 |---|---|---|
-| Algebraic Fock space | `Common/AlgebraicFock.lean` | Basis states, matrix coefficients, diagonal operators, and linear-map extensionality are generic in the configuration type. |
-| Free evolution | `Common/DiagonalEvolution.lean` | Basis-diagonal evolution and algebraic Heisenberg evolution are generic in the energy function. |
-| Interaction picture | `Common/InteractionPicture.lean` | The operator construction and zero-time identity are generic; the current matrix-coefficient closed form still assumes `[Fintype Config]`. |
-| Exchange relations | `Common/ExchangeCommutator.lean`, `Common/ExchangeAlgebra.lean` | CAR and CCR are represented through the common statistics-dependent `ζ` relation. |
-| Bloch–de Dominicis | `Common/BlochDeDominicis/Induction.lean` | The pairing expansion is proved abstractly under the stated eigenoperator, commutator, non-resonance, and functional hypotheses. |
-| Quartic diagrams | `Common/QuarticDiagram*.lean` | Labels, ordered data, connectedness, component restriction, reassembly, decomposition equivalence, vertex-local product factorization, and component sign factorization are statistics independent. |
+| Algebraic Fock space | `Common/Algebra/AlgebraicFock.lean` | Basis states, matrix coefficients, diagonal operators, and linear-map extensionality are generic in the configuration type. |
+| Free evolution | `Common/ImaginaryTime/DiagonalEvolution.lean` | Basis-diagonal evolution and algebraic Heisenberg evolution are generic in the energy function. |
+| Interaction picture | `Common/ImaginaryTime/InteractionPicture.lean` | The operator construction, matrix-coefficient closed form, continuity, and interval integrability are generic in the configuration type and use only finite support of algebraic-Fock vectors. |
+| Exchange relations | `Common/Algebra/ExchangeCommutator.lean`, `Common/Algebra/ExchangeAlgebra.lean` | CAR and CCR are represented through the common statistics-dependent `ζ` relation. |
+| Thermal functionals | `Analysis/NormalizedEndomorphismFunctional.lean`, `Common/Thermal/NormalizedOperatorFunctional.lean`, `Common/Thermal/WeightedDiagonalFunctional.lean` | The normalized-functional structure is pure linear algebra; Fock-space and weighted-trace specializations remain in Common. |
+| Bloch–de Dominicis | `Common/Thermal/BlochDeDominicis/Induction.lean` | The pairing expansion is proved abstractly under the stated eigenoperator, commutator, non-resonance, and functional hypotheses. |
+| Quartic diagrams | `Common/Diagrammatics/*.lean`, `Combinatorics/FinpartitionProduct.lean` | Labels, ordered data, connectedness, component restriction/reassembly, decomposition equivalence, and component scalar factorization are statistics independent; the underlying finite-partition product identities are pure combinatorics. |
 
 The Common dependency direction is one way: `Fermionic/` and `Bosonic/` may import `Common/`, while
-`Common/` must not import either statistics-specific directory.
+`Common/` must not import either statistics-specific directory. General facts that do not depend on
+Fock spaces, particle statistics, or diagram data belong in `Analysis/` or `Combinatorics/`.
 
 ## Fermionic line
 
@@ -107,7 +125,7 @@ Wick amplitude, or Dyson diagram expansion.
 | CAR/CCR through Common exchange algebra | done | done | — |
 | Free imaginary-time evolution | done | done | — |
 | Algebraic interaction-picture operator | done | done | — |
-| Arbitrary interaction-picture matrix-coefficient formula | done | pending | Current Common proof uses `[Fintype Config]`. |
+| Arbitrary interaction-picture matrix-coefficient formula | done | available through Common | A thin Bosonic-named specialization has not yet been added. |
 | Free thermal two-point result | done | done | Bosonic proof supplies explicit summability. |
 | General finite-temperature pairing theorem | done | instantiated at two point | Arbitrary bosonic Gibbs functionals need a convergence-aware domain. |
 | Quartic local-leg and ordered-diagram data | done | done | — |
@@ -122,31 +140,26 @@ Wick amplitude, or Dyson diagram expansion.
 
 The remaining bosonic gaps should not be filled by adding a false finite-type assumption.
 
-1. **Matrix coefficients of compositions on an infinite basis.**
-   `Common.matrixCoeff_heisenbergEvolve` currently uses the finite-basis composition formula. A
-   non-`Fintype` replacement must express the coefficient using the finite support actually produced
-   by an algebraic operator, or impose a suitable locally finite condition.
-2. **Operator-valued integration.**
-   `Common.operatorIntervalIntegral` reconstructs an operator by summing over all output basis
-   states and therefore assumes `[Fintype Config]`. The bosonic version needs a locally finite or
-   summability-controlled operator class.
-3. **Gibbs expectations of arbitrary operators.**
+1. **Operator-valued integration.**
+   `Common/Perturbation/FiniteOperatorIntegral.lean` reconstructs an operator by summing over all
+   output basis states and therefore assumes `[Fintype Config]`. The bosonic version needs a locally
+   finite or summability-controlled operator class.
+2. **Gibbs expectations of arbitrary operators.**
    The existing bosonic thermal results prove summability for specific diagonal and two-point
    expressions. A reusable arbitrary-operator functional must carry its summability hypotheses in
    the type or theorem statement.
-4. **Completed-space operator theory.**
+3. **Completed-space operator theory.**
    Hilbert-space completion, domains of unbounded ladder operators, and trace-class theory remain
    deferred to Track C; the current Track D results are algebraic unless a theorem explicitly states
    a convergent series.
 
 ## Recommended implementation order
 
-1. Generalize the matrix coefficient of operator composition beyond `[Fintype Config]`, using finite
-   output support or an explicit locally finite operator condition.
-2. Restore the bosonic interaction-picture matrix-coefficient continuity theorem from that result.
-3. Define a summability-restricted bosonic thermal functional and prove its linearity, normalization,
+1. Add thin Bosonic names for the now-generic interaction-picture matrix-coefficient, continuity, and
+   interval-integrability theorems where they improve discoverability.
+2. Define a summability-restricted bosonic thermal functional and prove its linearity, normalization,
    and KMS rotation properties.
-4. Introduce a compatible bosonic operator-integral/Dyson interface.
-5. Implement the bosonic quartic Wick amplitude and Dyson diagram expansion.
-6. Finish the statistics-independent ordered-simplex shuffle and full amplitude factorization.
-7. Connect the diagram cumulant identity to coefficients of the normalized formal `log Z`.
+3. Introduce a compatible bosonic operator-integral/Dyson interface.
+4. Implement the bosonic quartic Wick amplitude and Dyson diagram expansion.
+5. Finish the statistics-independent ordered-simplex shuffle and full amplitude factorization.
+6. Connect the diagram cumulant identity to coefficients of the normalized formal `log Z`.

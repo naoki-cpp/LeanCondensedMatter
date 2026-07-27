@@ -1,5 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.TimeOrdering
-import LeanCondensedMatter.SecondQuantization.Common.WeightedDiagonalFunctional
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTimeEvolution
 
 set_option linter.style.header false
@@ -11,7 +11,7 @@ Phase 9, step 3 (`notes/roadmaps/second-quantization.md`):
 `weightedFreeTwoPointFunction ε w i j τ τ' := -⟨T_τ c_i(τ) c_j†(τ')⟩_w`, assembled from the
 previous two steps —
 `ImaginaryTimeEvolution.lean`'s `imaginaryTimeEvolve` (still only defined for evolution under the
-*free* Hamiltonian `H₀ = freeHamiltonian ε`) and `Common/TimeOrdering.lean`'s
+*free* Hamiltonian `H₀ = freeHamiltonian ε`) and `Common/ImaginaryTime/TimeOrdering.lean`'s
 `Common.timeOrderedProduct Statistics.fermion` — applied to `annihilate i`/`create j` and
 evaluated with `Common.normalizedWeightedDiagonal w`.
 
@@ -73,7 +73,7 @@ theorem weightedFreeTwoPointFunction_of_lt (ε : Mode → ℝ) (w : FermionOccup
     Common.normalizedWeightedDiagonal, Common.weightedTrace, Finset.sum_neg_distrib, neg_div,
     neg_neg]
 
-/-- **At equal times**, this selects the `θ(0) = 1/2` convention `Common/TimeOrdering.lean` fixes
+/-- **At equal times**, this selects the `θ(0) = 1/2` convention `Common/ImaginaryTime/TimeOrdering.lean` fixes
 — an average of the two one-sided orderings, *not* a claim that the fermionic Green function's two
 one-sided limits `G(0⁺)`/`G(0⁻)` agree (they generically don't: `G(0⁺) = -⟨cc†⟩`,
 `G(0⁻) = +⟨c†c⟩`, and CAR gives their difference `-⟨cc†⟩ - ⟨c†c⟩ = -⟨{c,c†}⟩ = -1`). -/

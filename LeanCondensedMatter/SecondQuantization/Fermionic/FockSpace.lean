@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Occupation
-import LeanCondensedMatter.SecondQuantization.Common.AlgebraicFock
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 
 set_option linter.style.header false
 

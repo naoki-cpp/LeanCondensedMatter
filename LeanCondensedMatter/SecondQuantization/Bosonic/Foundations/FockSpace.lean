@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Foundations.Occupation
-import LeanCondensedMatter.SecondQuantization.Common.AlgebraicFock
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 import Mathlib.LinearAlgebra.Finsupp.VectorSpace
 
 set_option linter.style.header false

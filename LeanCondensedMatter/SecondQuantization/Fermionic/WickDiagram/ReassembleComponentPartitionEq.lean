@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.QuarticDiagramReassembleComponentPartitionEq
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ReassembleComponentPartitionEq
 import LeanCondensedMatter.SecondQuantization.Fermionic.WickDiagram.Reassemble
 
 set_option linter.style.header false

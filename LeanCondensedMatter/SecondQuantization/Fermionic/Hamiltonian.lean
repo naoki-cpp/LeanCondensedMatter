@@ -6,7 +6,7 @@ set_option linter.style.header false
 # Fermionic Hamiltonians
 
 Phase 6 of Track D's fermionic primary line (`notes/roadmaps/second-quantization.md`): the
-free/interaction Hamiltonians, each a `Common.diagonalOperator` (`Common/AlgebraicFock.lean`) whose
+free/interaction Hamiltonians, each a `Common.diagonalOperator` (`Common/Algebra/AlgebraicFock.lean`) whose
 eigenvalue at occupation state `n` is the corresponding occupation-dependent scalar (total particle
 number, free energy, or interaction energy). Since each `n : FermionOccupation Mode := Finset Mode`
 is itself finite regardless of whether `Mode` is, these sums are all over `n` (or `n × n`), **not**

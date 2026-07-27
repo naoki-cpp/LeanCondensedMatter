@@ -9,7 +9,7 @@ set_option linter.style.header false
 Two normalized pairs `(a, b)` and `(c, d)` cross when `a < c < b < d` (`Crosses`); `crossingCount`
 counts these across a pairing's own `pairs`. The statistics-dependent exchange weight
 `ζ ^ crossingCount` itself — `ζ = +1` for bosons, `ζ = -1` for fermions — is *not* defined here; see
-`Common/BlochDeDominicis/PairingWeight.lean`.
+`Common/Thermal/BlochDeDominicis/PairingWeight.lean`.
 
 `Pairing.firstPair` is the pair containing position `0`; `crossingsWithFirstPair` counts pairs
 crossing it. `PerfectPairing/CrossingEraseZero.lean` relates both to

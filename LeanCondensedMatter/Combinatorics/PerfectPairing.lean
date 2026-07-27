@@ -41,5 +41,5 @@ neither operator-valued time ordering, thermal contractions, thermal expectation
 exchange-statistics weight, nor the Bloch--de Dominicis factorization theorem itself, and it
 imports neither statistics-specific implementation directory. The statistics-dependent exchange
 weight `ζ ^ crossingCount` itself — `ζ = +1` for bosons, `ζ = -1` for fermions — is defined
-separately, in `Common/BlochDeDominicis/PairingWeight.lean`.
+separately, in `Common/Thermal/BlochDeDominicis/PairingWeight.lean`.
 -/

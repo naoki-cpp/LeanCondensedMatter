@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.OperatorAlgebra.CCR
-import LeanCondensedMatter.SecondQuantization.Common.ExchangeAlgebra
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.ExchangeAlgebra
 
 set_option linter.style.header false
 

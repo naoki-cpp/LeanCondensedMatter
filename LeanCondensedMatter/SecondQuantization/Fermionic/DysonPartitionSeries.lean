@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.DysonExpansion
 import LeanCondensedMatter.SecondQuantization.Fermionic.FreeBoltzmannWeight
-import LeanCondensedMatter.SecondQuantization.Common.BlochDeDominicis.GibbsExpectation.Core
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core
 import LeanCondensedMatter.SecondQuantization.Fermionic.FormalLogPartitionFunction
 
 set_option linter.style.header false
