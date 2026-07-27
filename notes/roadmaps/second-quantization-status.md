@@ -20,7 +20,7 @@ The parity boundary is analytic rather than combinatorial:
   line; bosonic thermal and Dyson constructions need explicit summability or a convergence-aware
   functional interface.
 
-Sources: `Fermionic/Occupation.lean`, `Bosonic/Algebra.lean`,
+Sources: `Fermionic/Algebra/Occupation.lean`, `Bosonic/Algebra.lean`,
 `Common/Thermal/WeightedDiagonalFunctional.lean`, and
 `Common/Perturbation/FiniteOperatorIntegral.lean`.
 
@@ -46,6 +46,13 @@ on the finite fermionic occupation basis.
 separate when they express a useful proof or dependency boundary; the layouts are not forced to have
 identical file counts.
 
+The physical Fermionic directories now match the five umbrella responsibilities. Common follows the
+same five-way layout. Bosonic keeps `Foundations/` and `OperatorAlgebra/` as a useful internal split
+behind `Bosonic.Algebra`, while its imaginary-time, thermal, and diagrammatic implementations live
+under the matching responsibility directories. Statistics-specific Bloch–de Dominicis files are
+under `Bosonic/Thermal/BlochDeDominicis/` and `Fermionic/Thermal/BlochDeDominicis/`; the general
+recursion remains under `Common/Thermal/BlochDeDominicis/`.
+
 The Common API uses five corresponding responsibility groups:
 
 | Common import | Scope |
@@ -56,7 +63,7 @@ The Common API uses five corresponding responsibility groups:
 | `SecondQuantization.Common.Perturbation` | Finite-basis coefficientwise operator integration. |
 | `SecondQuantization.Common.Diagrammatics` | Label-generic quartic diagrams and component decomposition. |
 
-The extraction decisions and deferred Bosonic specializations are recorded in
+The extraction decisions, completed thin Bosonic specializations, and remaining analytic blockers are recorded in
 [`second-quantization-common-audit.md`](second-quantization-common-audit.md).
 
 ## Shared statistics-independent layer
@@ -84,16 +91,18 @@ Fock spaces, particle statistics, or diagram data belong in `Analysis/` or `Comb
 The fermionic line currently includes:
 
 - free imaginary-time evolution and arbitrary interaction-picture matrix coefficients
-  (`Fermionic/ImaginaryTimeEvolution.lean`, `Fermionic/InteractionPicture.lean`);
+  (`Fermionic/ImaginaryTime/ImaginaryTimeEvolution.lean`, `Fermionic/ImaginaryTime/InteractionPicture.lean`);
+- finite-basis thermal weights, partition/two-point functions, contractions, concrete Bloch–de Dominicis checks, and the occupation-cumulant bridge
+  (`Fermionic/Thermal/`);
 - genuine finite-basis Dyson coefficients and partition-series coefficients
-  (`Fermionic/DysonExpansion.lean`, `Fermionic/DysonPartitionSeries.lean`);
+  (`Fermionic/Perturbation/DysonExpansion.lean`, `Fermionic/Perturbation/DysonPartitionSeries.lean`);
 - a general quartic interaction and local-leg semantics
-  (`Fermionic/QuarticInteraction.lean`, `Fermionic/QuarticLocalLeg.lean`);
+  (`Fermionic/Diagrammatics/QuarticInteraction.lean`, `Fermionic/Diagrammatics/QuarticLocalLeg.lean`);
 - ordered quartic Wick-diagram amplitudes and the Dyson diagram expansion
-  (`Fermionic/WickDiagram/Amplitude.lean`, `Fermionic/DysonDiagramExpansion.lean`);
+  (`Fermionic/Diagrammatics/WickDiagram/Amplitude.lean`, `Fermionic/Diagrammatics/DysonDiagramExpansion.lean`);
 - component decomposition equivalence and scalar-prefactor factorization
-  (`Fermionic/WickDiagram/ComponentDecompositionEquiv.lean`,
-  `Fermionic/WickDiagram/AmplitudePrefactorFactorization.lean`).
+  (`Fermionic/Diagrammatics/WickDiagram/ComponentDecompositionEquiv.lean`,
+  `Fermionic/Diagrammatics/WickDiagram/AmplitudePrefactorFactorization.lean`).
 
 The full Wick-amplitude factorization is not complete. The remaining combinatorial/analytic step is
 the ordered-simplex shuffle identity together with compatibility of pairing weights and pair-value

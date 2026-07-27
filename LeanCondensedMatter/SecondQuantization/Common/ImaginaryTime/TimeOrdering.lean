@@ -12,7 +12,7 @@ operators at (generally distinct) imaginary times. Time ordering itself does not
 `imaginaryTimeEvolve`, or on which concrete occupation-state type the operators act on — it
 orders whatever two already-time-labelled `AlgebraicFock Config` endomorphisms it is given, using
 only `LinearMap.comp` and scalar multiplication — so it is extracted here, generic over `Config`,
-rather than duplicated per statistics. `Bosonic/ImaginaryTimeOrdering.lean` provides a thin
+rather than duplicated per statistics. `Bosonic/ImaginaryTime/ImaginaryTimeEvolution.lean` provides a thin
 statistics-specific wrapper fixing `Config` to `Occupation Mode` and the statistics to
 `Statistics.boson`. Fermionic consumers call `Common.timeOrderedProduct Statistics.fermion`
 directly (no fermionic wrapper file).

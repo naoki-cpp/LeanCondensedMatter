@@ -14,7 +14,7 @@ partition function,
 
 `Z₀(β) = Σₙ e^{-β E(n)} = ∏ᵢ (1 + e^{-βε_i})`,
 
-which needs no convergence theory: unlike the bosonic case (`Bosonic/FreePartitionFunction.lean`),
+which needs no convergence theory: unlike the bosonic case (`Bosonic/Thermal/FreePartitionFunction.lean`),
 each fermionic mode's occupation is `0` or `1`, so every sum here is manifestly finite (a
 `Finset.sum`/`Finset.prod` over `Fintype Mode`, no infinite series).
 -/

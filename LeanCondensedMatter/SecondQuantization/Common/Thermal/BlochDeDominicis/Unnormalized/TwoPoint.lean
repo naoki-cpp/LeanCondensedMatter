@@ -63,7 +63,7 @@ rotated two-point diagonal series (`n ↦ (e^{-βH₀}CⱼC₁)ₙₙ`) is *not*
 follows from `h` alone via `summable_matrixCoeff_diag_comp_of_summable_uncurry`, so only two
 summability witnesses are needed rather than three. This is the theorem a genuine bosonic
 free Boltzmann weight would need to instantiate (supplying those two summability witnesses from
-`Bosonic/BoltzmannWeightSummable.lean`-style convergence facts, not done here) to get a real
+`Bosonic/Thermal/BoltzmannWeightSummable.lean`-style convergence facts, not done here) to get a real
 bosonic 2-point function out of this framework. -/
 theorem tsumTrace_diagonalEvolution_comp_two_point
     (energy : Config → ℝ) (β q1 : ℝ) (ζ c1j : ℂ)

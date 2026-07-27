@@ -17,7 +17,7 @@ oriented interval-integral extension, not literally an integral over that simple
 empty for `β < 0`) — e.g. `orderedSimplexIntegral_const` gives `βⁿ/n!` for *every* real `β`, not
 just `β ≥ 0`, and that value should be read as "simplex volume" only in the `0 ≤ β` case. Coordinate
 `0` is the *latest*/*outermost* time — this orientation deliberately matches the existing Dyson
-recursion (`Fermionic/DysonExpansion.lean`'s `dysonCoeff`), whose outer integration variable `σ`
+recursion (`Fermionic/Perturbation/DysonExpansion.lean`'s `dysonCoeff`), whose outer integration variable `σ`
 also has range `[0, τ]` with `τ` the overall bound.
 
 **Deliberately minimal, but not silent on sums.** `orderedSimplexIntegral_finsetSum` gives a finite

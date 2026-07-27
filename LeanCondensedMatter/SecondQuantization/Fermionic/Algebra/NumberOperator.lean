@@ -8,13 +8,13 @@ set_option linter.style.header false
 /-!
 # The fermionic number operator, and the reordering identity `c_i c_i† = id - N_i`
 
-The fermionic counterpart of `Bosonic/NumberOperator.lean`: `numberOperator i := create i ∘
+The fermionic counterpart of `Bosonic/OperatorAlgebra/NumberOperator.lean`: `numberOperator i := create i ∘
 annihilate i`, its eigenvalue equation on basis states, and the reordering identity `c_i c_i† =
 id - N_i` (from CAR's `{c_i, c_i†} = id`, via the unified `ζ`-commutator
 `Common.exchangeCommutator`). Split out from `Hamiltonian.lean` (which still holds
 `totalNumberOperator`/`freeHamiltonian`/`interactionHamiltonian`, all built on top of this) so
 both statistics' number-operator layer live in symmetric files — mirroring
-`Bosonic/NumberOperator.lean`'s `numberOperator`/`numberOperator_apply`/`numberOperator_basisState`/
+`Bosonic/OperatorAlgebra/NumberOperator.lean`'s `numberOperator`/`numberOperator_apply`/`numberOperator_basisState`/
 `exchangeCommutator_annihilate_create_self`/`annihilate_comp_create_self` exactly, up to the sign
 of `ζ`.
 -/
@@ -50,7 +50,7 @@ theorem numberOperator_basisState (i : Mode) (n : FermionOccupation Mode) :
 
 /-- **`[c_i, c_i†]_ζ = id`, the fermionic case (`ζ = Statistics.zetaInt Statistics.fermion`)**: an
 instance of `Common.exchangeCommutator_annihilate_create_self`, via the fermionic
-`Common.ExchangeAlgebra` instance (`Fermionic/ExchangeAlgebra.lean`), whose `annihilate`/`create`
+`Common.ExchangeAlgebra` instance (`Fermionic/Algebra/ExchangeAlgebra.lean`), whose `annihilate`/`create`
 fields are literally `Fermionic.annihilate`/`create`. -/
 theorem exchangeCommutator_annihilate_create_self (i : Mode) :
     Common.exchangeCommutator Statistics.fermion (annihilate i) (create i) =

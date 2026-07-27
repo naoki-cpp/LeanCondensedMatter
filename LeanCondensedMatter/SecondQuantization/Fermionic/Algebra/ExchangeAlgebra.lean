@@ -10,7 +10,7 @@ Instantiates `Common/Algebra/ExchangeAlgebra.lean`'s `Common.ExchangeAlgebra` at
 `FermionOccupation Mode`, from `CanonicalAnticommutationRelations.lean`'s CAR facts
 (`anticomm_annihilate_create`/`_annihilate_annihilate`/`_create_create`) via the bridging fact
 that `Common.exchangeCommutator Statistics.fermion` and `anticomm` are the same operator, for
-*any* two operators (not just at a single mode — unlike `Fermionic/NumberOperator.lean`'s
+*any* two operators (not just at a single mode — unlike `Fermionic/Algebra/NumberOperator.lean`'s
 `exchangeCommutator_annihilate_create_self`, which only needed this at `i = j`, a general Wick
 induction needs the all-index exchange relation this instance packages).
 -/

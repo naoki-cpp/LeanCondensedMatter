@@ -53,7 +53,7 @@ variable {Config : Type*} [Fintype Config]
 /-- **The multi-mode free Boltzmann weight**, `e^{-βE(n)}`, generic over the occupation-state type
 `Config` and an arbitrary real-valued `energy`. The un-cast-apart form of `diagonalEvolution
 energy (-β)`'s own diagonal matrix entries (`matrixCoeff_diagonalEvolution` below) — mirrors
-`Fermionic/FreeBoltzmannWeight.lean`'s/`Bosonic/BoltzmannWeightFactorization.lean`'s own
+`Fermionic/Thermal/FreeBoltzmannWeight.lean`'s/`Bosonic/Thermal/BoltzmannWeightFactorization.lean`'s own
 `freeBoltzmannWeight`/`boltzmannWeight`, generalized off the concrete occupation-state type. -/
 noncomputable def boltzmannWeight (energy : Config → ℝ) (β : ℝ) (n : Config) : ℂ :=
   Complex.exp (((-β) * energy n : ℝ) : ℂ)
