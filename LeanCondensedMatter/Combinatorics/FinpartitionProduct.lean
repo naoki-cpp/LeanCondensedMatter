@@ -1,5 +1,5 @@
 import Mathlib.Order.Partition.Finpartition
-import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Data.Fintype.BigOperators
 
 set_option linter.style.header false
 
