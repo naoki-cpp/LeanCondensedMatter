@@ -23,6 +23,26 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
+      - name: Capture PR head source
+        if: github.event_name == 'pull_request'
+        shell: bash
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+          git fetch origin "$HEAD_SHA" --depth=1
+          git rev-parse "$HEAD_SHA^{tree}" > base-tree.txt
+          git ls-tree -r "$HEAD_SHA" > tree.txt
+          git archive --format=tar.gz --output=source.tar.gz "$HEAD_SHA"
+      - name: Upload PR head source
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: common-layout-source
+          path: |
+            source.tar.gz
+            base-tree.txt
+            tree.txt
       - uses: leanprover/lean-action@v1
       - name: Check for sorry
         run: |
