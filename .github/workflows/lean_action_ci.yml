@@ -26,10 +26,13 @@ jobs:
 
       # BEGIN TEMP SECOND-QUANTIZATION DOC UPDATE
       - name: Update second-quantization documentation
+        id: docs-update
+        continue-on-error: true
         if: github.event_name == 'pull_request' && github.head_ref == 'agent/move-statistical-bdd-under-thermal'
         shell: bash
         run: |
           set -euo pipefail
+          exec > >(tee /tmp/second-quantization-doc-update.log) 2>&1
           git fetch origin +refs/heads/agent/move-statistical-bdd-under-thermal:refs/remotes/origin/agent/move-statistical-bdd-under-thermal
           git checkout -B agent/move-statistical-bdd-under-thermal origin/agent/move-statistical-bdd-under-thermal
           python3 scripts/update_second_quantization_docs.py
@@ -40,6 +43,17 @@ jobs:
             git commit -m "docs: update second-quantization structure and status"
             git push origin HEAD:agent/move-statistical-bdd-under-thermal
           fi
+
+      - name: Upload documentation updater diagnostics
+        if: steps.docs-update.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: second-quantization-doc-update-log
+          path: /tmp/second-quantization-doc-update.log
+
+      - name: Fail after documentation updater error
+        if: steps.docs-update.outcome == 'failure'
+        run: exit 1
       # END TEMP SECOND-QUANTIZATION DOC UPDATE
 
       - uses: leanprover/lean-action@v1
