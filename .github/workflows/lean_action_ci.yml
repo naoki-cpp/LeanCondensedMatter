@@ -25,7 +25,7 @@ jobs:
       - uses: actions/checkout@v5
 
       # BEGIN TEMP SECOND-QUANTIZATION DOC UPDATE
-      - name: Update second-quantization documentation
+      - name: Polish second-quantization roadmap
         id: docs-update
         continue-on-error: true
         if: github.event_name == 'pull_request' && github.head_ref == 'agent/move-statistical-bdd-under-thermal'
@@ -37,21 +37,96 @@ jobs:
           git checkout -B agent/move-statistical-bdd-under-thermal origin/agent/move-statistical-bdd-under-thermal
           python3 - <<'PY'
           from pathlib import Path
+          import re
 
-          path = Path("scripts/update_second_quantization_docs.py")
+          path = Path("notes/roadmaps/second-quantization.md")
           text = path.read_text(encoding="utf-8")
-          old = 'r"    - \\*\\*PR 7 in progress, split into 7a/7b/7c\\*\\*:.*?coefficient bridge\\.\\n",'
-          new = 'r"\\n\\s+- \\*\\*PR 7 in progress.*?(?=\\n7\\. \\*\\*Not started\\*\\*)",'
-          if old not in text:
-              raise SystemExit("could not find the narrow PR 7 rewrite pattern")
-          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+
+          old_status = """Track D's own aggregate status (as shown in `notes/roadmap.md`'s table) is `stated` once phase 2
+          lands, tracking the *earliest* non-`idea` phase — it moves to `proved` only once phase 8 is done.
+          """
+          new_status = """Track D's aggregate entries in `notes/roadmap.md` remain `stated` while the full Linked
+          Cluster Theorem pipeline is unfinished. Individual modules and intermediate phases are marked
+          `proved` when they compile without `sorry`; the track-level status describes the unfinished target.
+          """
+          if old_status not in text:
+              raise SystemExit("could not find the stale Track D aggregate-status paragraph")
+          text = text.replace(old_status, new_status, 1)
+
+          old_bosonic = """Now developed in parallel with Phase 9 of the fermionic line, per the staged plan below — but the
+          fermionic line remains what's needed for the condensed-matter LCT target, and nothing here reuses
+          fermionic proof code directly: occupation numbers are unbounded (no Pauli exclusion), so even a
+          finite mode set gives an *infinite-dimensional* Fock space, unlike the fermionic
+          `2^|Mode|`-dimensional case. The canonical Fock-space and operator declarations (`Occupation`, `basisState`, `create`,
+          """
+          new_bosonic = """Now developed in parallel with Phase 9 of the fermionic line, per the staged plan below. The
+          fermionic line remains the critical path for the condensed-matter LCT target. The concrete
+          occupation calculations differ, while shared Fock-space, evolution, exchange, and component
+          proofs live in `Common/`. The remaining asymmetry is analytic: bosonic occupation numbers are
+          unbounded, so even a finite mode set gives an *infinite-dimensional* Fock space, unlike the
+          fermionic `2^|Mode|`-dimensional case. The canonical Fock-space and operator declarations
+          (`Occupation`, `basisState`, `create`,
+          """
+          if old_bosonic not in text:
+              raise SystemExit("could not find the stale Bosonic sharing paragraph")
+          text = text.replace(old_bosonic, new_bosonic, 1)
+
+          text = text.replace("`FockSpaceBosonic`", "`Bosonic.FockSpace`")
+          text = text.replace(
+              "live in each statistics' own `Occupation.lean`",
+              "live in `Fermionic/Algebra/Occupation.lean` and `Bosonic/Foundations/Occupation.lean`",
+          )
+
+          text = text.replace(
+              "6. **Diagram connectedness and component decomposition — complete through scalar-prefactor factorization.** Built *before* any concrete\n   diagram type, per a 6-PR design (PR 5 further split into 5a/5b/5c):",
+              "6. **Diagrammatics — complete through component decomposition and scalar-prefactor factorization.**\n   The implementation history was staged as follows:",
+          )
+
+          clean_history = """    - PR 4a/4b introduced the quartic Wick-diagram data and connectedness layer in
+              `Fermionic/Diagrammatics/WickDiagram.lean` and
+              `Fermionic/Diagrammatics/WickDiagram/Connected.lean`.
+              - PR 5a/5b/5c added `Analysis/OrderedSimplexIntegral.lean`, pairing relabelling,
+              `Fermionic/Diagrammatics/WickDiagram/Ordered.lean`, and
+              `Fermionic/Diagrammatics/WickDiagram/Amplitude.lean`.
+              - PR 6 proved the Dyson diagram expansion in
+              `Fermionic/Diagrammatics/DysonDiagramExpansion.lean`, using the flattened local-leg
+              semantics from `Fermionic/Diagrammatics/WickDiagram/LegFamily.lean` and
+              `Fermionic/Diagrammatics/QuarticLocalLeg.lean`.
+              - PR 7 completed component partition, restriction, connectedness, reassembly, the
+              decomposition equivalence, and scalar-prefactor factorization under
+              `Fermionic/Diagrammatics/WickDiagram/`. The remaining full-amplitude factorization is the
+              ordered-simplex shuffle together with pairing-weight and pair-value compatibility under
+              component-local orders; after that come the finite-set LCT and the `PowerSeries.log`
+              coefficient bridge.
+          """
+          text, count = re.subn(
+              r"    - PR 4a/4b,.*?(?=\n7\. \*\*Not started\*\*)",
+              clean_history,
+              text,
+              flags=re.DOTALL,
+          )
+          if count != 1:
+              raise SystemExit("could not rewrite the PR 4–7 diagrammatics history")
+
+          forbidden = [
+              "FockSpaceBosonic",
+              "nothing here reuses fermionic proof code directly",
+              "deferred to PR 7",
+              ").    - **PR 7",
+              "moves to `proved` only once phase 8 is done",
+              "WickDiagramConnected.lean",
+          ]
+          remaining = [needle for needle in forbidden if needle in text]
+          if remaining:
+              raise SystemExit("stale roadmap prose remains: " + ", ".join(remaining))
+
+          path.write_text(text, encoding="utf-8")
           PY
-          python3 scripts/update_second_quantization_docs.py
           if ! git diff --quiet; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add notes LeanCondensedMatter
-            git commit -m "docs: update second-quantization structure and status"
+            git add notes/roadmaps/second-quantization.md
+            git commit -m "docs: polish second-quantization roadmap status"
             git push origin HEAD:agent/move-statistical-bdd-under-thermal
           fi
 
