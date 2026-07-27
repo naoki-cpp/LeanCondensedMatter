@@ -267,27 +267,27 @@ Bloch–de Dominicis theorem, and the non-commutative time-ordered Dyson series.
      `diagramMoment_eq_momentFromCumulant`/`cumulantFromMoment_diagramMoment` connecting to
      `MomentCumulant.lean`. Purely combinatorial, no `SecondQuantization` import.
    - PR 2, `Fermionic/Perturbation/DysonVertexMoment.lean` — the `ℕ`-indexed Dyson series ↔ Track B's
-     `Finset α → ℂ` moment type seam (`dysonVertexMoment := S.card! • normalizedDysonPartitionCoeff
-     S.card`, the factorial converting ordinary → exponential generating series).
-    - PR 3, `Fermionic/Diagrammatics/QuarticInteraction.lean` — the first concrete,
-    generally non-diagonal quartic vertex `Σ g(q) cᵢ†cⱼ†cₗcₖ` (no
-    Hermiticity/antisymmetry/momentum-conservation baked in yet).
-  - PR 4a/4b introduced the quartic Wick-diagram data and connectedness layer in
-    `Fermionic/Diagrammatics/WickDiagram.lean` and
-    `Fermionic/Diagrammatics/WickDiagram/Connected.lean`.
-  - PR 5a/5b/5c added `Analysis/OrderedSimplexIntegral.lean`, pairing relabelling,
-    `Fermionic/Diagrammatics/WickDiagram/Ordered.lean`, and
-    `Fermionic/Diagrammatics/WickDiagram/Amplitude.lean`.
-  - PR 6 proved the Dyson diagram expansion in
-    `Fermionic/Diagrammatics/DysonDiagramExpansion.lean`, using the flattened local-leg
-    semantics from `Fermionic/Diagrammatics/WickDiagram/LegFamily.lean` and
-    `Fermionic/Diagrammatics/QuarticLocalLeg.lean`.
-  - PR 7 completed component partition, restriction, connectedness, reassembly, the
-    decomposition equivalence, and scalar-prefactor factorization under
-    `Fermionic/Diagrammatics/WickDiagram/`. The remaining full-amplitude factorization is the
-    ordered-simplex shuffle together with pairing-weight and pair-value compatibility under
-    component-local orders; after that come the finite-set LCT and the `PowerSeries.log`
-    coefficient bridge.
+     `Finset α → ℂ` moment type seam (`dysonVertexMoment := S.card! • normalizedDysonPartitionCoeff`,
+     with the factorial converting ordinary to exponential generating coefficients).
+   - PR 3, `Fermionic/Diagrammatics/QuarticInteraction.lean` — the first concrete,
+     generally non-diagonal quartic vertex `Σ g(q) cᵢ†cⱼ†cₗcₖ`, with no
+     Hermiticity, antisymmetry, or momentum conservation built into the definition.
+   - PR 4a/4b introduced the quartic Wick-diagram data and connectedness layer in
+     `Fermionic/Diagrammatics/WickDiagram.lean` and
+     `Fermionic/Diagrammatics/WickDiagram/Connected.lean`.
+   - PR 5a/5b/5c added `Analysis/OrderedSimplexIntegral.lean`, pairing relabelling,
+     `Fermionic/Diagrammatics/WickDiagram/Ordered.lean`, and
+     `Fermionic/Diagrammatics/WickDiagram/Amplitude.lean`.
+   - PR 6 proved the Dyson diagram expansion in
+     `Fermionic/Diagrammatics/DysonDiagramExpansion.lean`, using the flattened local-leg
+     semantics from `Fermionic/Diagrammatics/WickDiagram/LegFamily.lean` and
+     `Fermionic/Diagrammatics/QuarticLocalLeg.lean`.
+   - PR 7 completed component partition, restriction, connectedness, reassembly, the
+     decomposition equivalence, and scalar-prefactor factorization under
+     `Fermionic/Diagrammatics/WickDiagram/`. The remaining full-amplitude factorization is the
+     ordered-simplex shuffle together with pairing-weight and pair-value compatibility under
+     component-local orders; after that come the finite-set LCT and the `PowerSeries.log`
+     coefficient bridge.
 
 7. **Not started**: move/generalize the fermionic linked-cluster bridge (Phase 8's
    `Fermionic/Thermal/QuantumLinkedCluster.lean`, currently only a product-weight/independent-region toy
