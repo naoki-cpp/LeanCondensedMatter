@@ -1,4 +1,4 @@
-import Mathlib.LinearAlgebra.Basic
+import Mathlib.Algebra.Module.LinearMap.End
 
 set_option linter.style.header false
 
