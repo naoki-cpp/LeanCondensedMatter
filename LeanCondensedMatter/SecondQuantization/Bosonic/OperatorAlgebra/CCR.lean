@@ -22,12 +22,12 @@ namespace Bosonic
 variable {Mode : Type*} [DecidableEq Mode]
 
 /-- The ordinary commutator of bosonic Fock-space endomorphisms. -/
-noncomputable def comm (A B : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode) :
-    FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode :=
+noncomputable def comm (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   A.comp B - B.comp A
 
-theorem comm_apply (A B : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode)
-    (x : FockSpaceBosonic Mode) : comm A B x = A (B x) - B (A x) :=
+theorem comm_apply (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
+    (x : FockSpace Mode) : comm A B x = A (B x) - B (A x) :=
   rfl
 
 /-- The square-root normalization factor squares to its natural-number argument. -/
@@ -141,7 +141,7 @@ theorem comm_annihilate_create_basisState (i j : Mode) (n : Occupation Mode) :
 theorem comm_annihilate_create (i j : Mode) :
     comm (annihilate i) (create j) =
       if i = j then
-        (LinearMap.id : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode)
+        (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
       else 0 := by
   rcases eq_or_ne i j with rfl | hij
   · rw [if_pos rfl]
