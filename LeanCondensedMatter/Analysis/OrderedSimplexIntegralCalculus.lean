@@ -42,6 +42,11 @@ theorem orderedSimplexIntegral_succ_zero_bound (n : ℕ)
     orderedSimplexIntegral (n + 1) 0 f = 0 := by
   simp [orderedSimplexIntegral_succ]
 
+-- Use the normed-space structure supplied by the real normed algebra on `ℂ` throughout the
+-- derivative statements below. This keeps the fundamental theorem and the product rule on the
+-- same instance.
+local instance : NormedSpace ℝ ℂ := NormedAlgebra.toNormedSpace
+
 /-- Fundamental theorem of calculus for an ordered-simplex integral: differentiating in the upper
 bound fixes the outermost time coordinate at that bound. -/
 theorem hasDerivAt_orderedSimplexIntegral_succ (n : ℕ)
@@ -87,7 +92,7 @@ theorem orderedSimplexIntegral_succ_mul_succ (m n : ℕ) (β : ℝ)
         (continuous_orderedSimplexIntegral_boundary n g hg))
   have hfund := intervalIntegral.integral_eq_sub_of_hasDerivAt
     (a := (0 : ℝ)) (b := β) (f := F) (f' := F')
-    (fun t _ => hderiv t) hF'.intervalIntegrable
+    (fun t _ => hderiv t) (hF'.intervalIntegrable 0 β)
   simpa [F, F'] using hfund.symm
 
 end intervalIntegral
