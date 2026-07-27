@@ -7,8 +7,8 @@ set_option linter.style.header false
 /-!
 # The normalized peel identity, and its indexed `Finset.sum` form
 
-Divides `BlochDeDominicis/PeelFirstTrace.lean`'s un-normalized peel identity through by the
-genuine partition function, then rewrites the result as an indexed `Finset.sum` over positions —
+Divides `BlochDeDominicis/Unnormalized/PeelFirstTrace.lean`'s un-normalized peel identity through by
+the genuine partition function, then rewrites the result as an indexed `Finset.sum` over positions —
 the form the general `n`-point induction (`Common/Thermal/BlochDeDominicis/Induction.lean`) actually
 recurses on.
 -/
@@ -18,10 +18,11 @@ namespace Common
 
 variable {Config : Type*} [Fintype Config]
 
-/-- **The normalized peel-first identity**, dividing `PeelFirstTrace.lean`'s un-normalized
-`(1 - ζ^{l.length}w₁) Tr[e^{-βH₀}(C₁·B₁⋯Bₖ)] = Tr[e^{-βH₀}·peelSum ζ l]` through by the genuine
-partition function: `⟨C₁B₁⋯Bₖ⟩ = ⟨peelSum ζ l⟩ / (1 - ζ^{l.length}w₁)`. The general list-indexed
-counterpart of `TwoPoint.lean`'s `gibbsExpectation_comp_eq_div_of_zetaCommutator`. -/
+/-- **The normalized peel-first identity**, dividing `Unnormalized/PeelFirstTrace.lean`'s
+un-normalized `(1 - ζ^{l.length}w₁) Tr[e^{-βH₀}(C₁·B₁⋯Bₖ)] = Tr[e^{-βH₀}·peelSum ζ l]` through by
+the genuine partition function: `⟨C₁B₁⋯Bₖ⟩ = ⟨peelSum ζ l⟩ / (1 - ζ^{l.length}w₁)`. The general
+list-indexed counterpart of `GibbsExpectation/TwoPoint.lean`'s
+`gibbsExpectation_comp_eq_div_of_zetaCommutator`. -/
 theorem gibbsExpectation_peel (energy : Config → ℝ) (β q1 : ℝ) (ζ : ℂ)
     (C1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ))
