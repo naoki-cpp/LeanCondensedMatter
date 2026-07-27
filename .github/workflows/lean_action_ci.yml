@@ -26,10 +26,12 @@ jobs:
 
       # BEGIN TEMP FERMIONIC LAYOUT REFACTOR
       - name: Apply fermionic layout refactor
-        if: github.event_name == 'push' && github.ref == 'refs/heads/agent/organize-fermionic-layout'
+        if: github.event_name == 'pull_request' && github.head_ref == 'agent/organize-fermionic-layout'
         shell: bash
         run: |
           set -euo pipefail
+          git fetch origin agent/organize-fermionic-layout
+          git checkout -B agent/organize-fermionic-layout origin/agent/organize-fermionic-layout
           python3 scripts/refactor_fermionic_layout.py
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
