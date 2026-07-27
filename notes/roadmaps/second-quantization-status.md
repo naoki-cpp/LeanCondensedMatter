@@ -21,7 +21,8 @@ The parity boundary is analytic rather than combinatorial:
   functional interface.
 
 Sources: `Fermionic/Occupation.lean`, `Bosonic/Algebra.lean`,
-`Common/Thermal/WeightedDiagonalFunctional.lean`, and `Common/Perturbation/FiniteOperatorIntegral.lean`.
+`Common/Thermal/WeightedDiagonalFunctional.lean`, and
+`Common/Perturbation/FiniteOperatorIntegral.lean`.
 
 ## Public import layouts
 
@@ -60,7 +61,9 @@ The extraction decisions and deferred Bosonic specializations are recorded in
 
 ## Shared statistics-independent layer
 
-The following infrastructure is shared by both statistics. The listed modules live under the matching `Common/Algebra/`, `Common/ImaginaryTime/`, `Common/Thermal/`, or `Common/Diagrammatics/` directory:
+The following infrastructure is shared by both statistics. The listed modules live under the
+matching `Common/Algebra/`, `Common/ImaginaryTime/`, `Common/Thermal/`, or
+`Common/Diagrammatics/` directory:
 
 | Area | Main modules | Current result |
 |---|---|---|
@@ -70,7 +73,7 @@ The following infrastructure is shared by both statistics. The listed modules li
 | Exchange relations | `Common/Algebra/ExchangeCommutator.lean`, `Common/Algebra/ExchangeAlgebra.lean` | CAR and CCR are represented through the common statistics-dependent `ζ` relation. |
 | Thermal functionals | `Analysis/NormalizedEndomorphismFunctional.lean`, `Common/Thermal/NormalizedOperatorFunctional.lean`, `Common/Thermal/WeightedDiagonalFunctional.lean` | The normalized-functional structure is pure linear algebra; Fock-space and weighted-trace specializations remain in Common. |
 | Bloch–de Dominicis | `Common/Thermal/BlochDeDominicis/Induction.lean` | The pairing expansion is proved abstractly under the stated eigenoperator, commutator, non-resonance, and functional hypotheses. |
-| Quartic diagrams | `Common/QuarticDiagram*.lean`, `Combinatorics/FinpartitionProduct.lean` | Labels, ordered data, connectedness, component restriction/reassembly, decomposition equivalence, and component scalar factorization are statistics independent; the underlying finite-partition product identities are pure combinatorics. |
+| Quartic diagrams | `Common/Diagrammatics/*.lean`, `Combinatorics/FinpartitionProduct.lean` | Labels, ordered data, connectedness, component restriction/reassembly, decomposition equivalence, and component scalar factorization are statistics independent; the underlying finite-partition product identities are pure combinatorics. |
 
 The Common dependency direction is one way: `Fermionic/` and `Bosonic/` may import `Common/`, while
 `Common/` must not import either statistics-specific directory. General facts that do not depend on
@@ -138,9 +141,9 @@ Wick amplitude, or Dyson diagram expansion.
 The remaining bosonic gaps should not be filled by adding a false finite-type assumption.
 
 1. **Operator-valued integration.**
-   `Common.operatorIntervalIntegral` reconstructs an operator by summing over all output basis
-   states and therefore assumes `[Fintype Config]`. The bosonic version needs a locally finite or
-   summability-controlled operator class.
+   `Common/Perturbation/FiniteOperatorIntegral.lean` reconstructs an operator by summing over all
+   output basis states and therefore assumes `[Fintype Config]`. The bosonic version needs a locally
+   finite or summability-controlled operator class.
 2. **Gibbs expectations of arbitrary operators.**
    The existing bosonic thermal results prove summability for specific diagonal and two-point
    expressions. A reusable arbitrary-operator functional must carry its summability hypotheses in
