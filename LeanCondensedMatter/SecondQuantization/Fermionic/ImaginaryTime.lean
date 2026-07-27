@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTimeEvolution
+import LeanCondensedMatter.SecondQuantization.Fermionic.InteractionPicture
 
 set_option linter.style.header false
 
