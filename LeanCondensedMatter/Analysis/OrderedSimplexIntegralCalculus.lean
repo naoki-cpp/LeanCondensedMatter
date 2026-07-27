@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.OrderedSimplexIntegral
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
 
 set_option linter.style.header false
 
@@ -64,40 +65,32 @@ theorem orderedSimplexIntegral_succ_mul_succ (m n : ℕ) (β : ℝ)
             orderedSimplexIntegral (n + 1) t g +
           orderedSimplexIntegral (m + 1) t f *
             orderedSimplexIntegral n t (fun rest => g (Fin.cons t rest)) := by
-  letI : NormedSpace ℝ ℂ := NormedAlgebra.toNormedSpace ℂ
-  let F : ℝ → ℂ := fun t =>
-    orderedSimplexIntegral (m + 1) t f * orderedSimplexIntegral (n + 1) t g
-  let F' : ℝ → ℂ := fun t =>
-    orderedSimplexIntegral m t (fun rest => f (Fin.cons t rest)) *
-        orderedSimplexIntegral (n + 1) t g +
-      orderedSimplexIntegral (m + 1) t f *
-        orderedSimplexIntegral n t (fun rest => g (Fin.cons t rest))
-  have hleft : ∀ t : ℝ,
-      HasDerivAt (fun s : ℝ => orderedSimplexIntegral (m + 1) s f)
-        (orderedSimplexIntegral m t (fun rest => f (Fin.cons t rest))) t := by
-    intro t
-    have hboundary := continuous_orderedSimplexIntegral_boundary m f hf
-    simpa only [orderedSimplexIntegral_succ] using
-      (hboundary.integral_hasStrictDerivAt 0 t).hasDerivAt
-  have hright : ∀ t : ℝ,
-      HasDerivAt (fun s : ℝ => orderedSimplexIntegral (n + 1) s g)
-        (orderedSimplexIntegral n t (fun rest => g (Fin.cons t rest))) t := by
-    intro t
-    have hboundary := continuous_orderedSimplexIntegral_boundary n g hg
-    simpa only [orderedSimplexIntegral_succ] using
-      (hboundary.integral_hasStrictDerivAt 0 t).hasDerivAt
-  have hderiv : ∀ t : ℝ, HasDerivAt F (F' t) t := by
-    intro t
-    simpa [F, F'] using (hleft t).mul (hright t)
-  have hF' : Continuous F' := by
-    dsimp [F']
-    exact ((continuous_orderedSimplexIntegral_boundary m f hf).mul
-      (continuous_orderedSimplexIntegral_bound (n + 1) g hg)).add
-      ((continuous_orderedSimplexIntegral_bound (m + 1) f hf).mul
-        (continuous_orderedSimplexIntegral_boundary n g hg))
-  have hfund := intervalIntegral.integral_eq_sub_of_hasDerivAt
-    (a := (0 : ℝ)) (b := β) (f := F) (f' := F')
-    (fun t _ => hderiv t) (hF'.intervalIntegrable 0 β)
-  simpa [F, F'] using hfund.symm
+  let u : ℝ → ℂ := fun t => orderedSimplexIntegral (m + 1) t f
+  let v : ℝ → ℂ := fun t => orderedSimplexIntegral (n + 1) t g
+  let u' : ℝ → ℂ := fun t =>
+    orderedSimplexIntegral m t (fun rest => f (Fin.cons t rest))
+  let v' : ℝ → ℂ := fun t =>
+    orderedSimplexIntegral n t (fun rest => g (Fin.cons t rest))
+  have hu : Continuous u := by
+    simpa [u] using continuous_orderedSimplexIntegral_bound (m + 1) f hf
+  have hv : Continuous v := by
+    simpa [v] using continuous_orderedSimplexIntegral_bound (n + 1) g hg
+  have hu' : Continuous u' := by
+    simpa [u'] using continuous_orderedSimplexIntegral_boundary m f hf
+  have hv' : Continuous v' := by
+    simpa [v'] using continuous_orderedSimplexIntegral_boundary n g hg
+  have hprod := intervalIntegral.integral_deriv_mul_eq_sub_of_hasDerivAt
+    (a := (0 : ℝ)) (b := β) (u := u) (v := v) (u' := u') (v' := v')
+    hu.continuousOn hv.continuousOn
+    (fun t _ => by
+      have hboundary := continuous_orderedSimplexIntegral_boundary m f hf
+      simpa only [u, u', orderedSimplexIntegral_succ] using
+        (hboundary.integral_hasStrictDerivAt 0 t).hasDerivAt)
+    (fun t _ => by
+      have hboundary := continuous_orderedSimplexIntegral_boundary n g hg
+      simpa only [v, v', orderedSimplexIntegral_succ] using
+        (hboundary.integral_hasStrictDerivAt 0 t).hasDerivAt)
+    (hu'.intervalIntegrable 0 β) (hv'.intervalIntegrable 0 β)
+  simpa [u, v, u', v'] using hprod.symm
 
 end intervalIntegral
