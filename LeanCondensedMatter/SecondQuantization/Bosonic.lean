@@ -1,8 +1,6 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.Foundations
-import LeanCondensedMatter.SecondQuantization.Bosonic.OperatorAlgebra
+import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra
 import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal
-import LeanCondensedMatter.SecondQuantization.Bosonic.BlochDeDominicis
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics
 
 set_option linter.style.header false
@@ -10,20 +8,18 @@ set_option linter.style.header false
 /-!
 # Bosonic second quantization
 
-Umbrella module for the bosonic line of `SecondQuantization/`.
+The public bosonic API is organized into four layers:
 
-It imports:
+- `Bosonic.Algebra`: occupation states, algebraic Fock space, creation/annihilation, CCR, grading,
+  and number operators;
+- `Bosonic.ImaginaryTime`: time ordering, free diagonal evolution, and the algebraic interaction
+  picture;
+- `Bosonic.Thermal`: convergence-aware free thermal sums, two-point coefficients, and the bosonic
+  two-point Bloch–de Dominicis specialization;
+- `Bosonic.Diagrammatics`: quartic vertices and statistics-independent diagram combinatorics through
+  connected-component scalar-prefactor factorization.
 
-- occupation-number foundations and the algebraic bosonic Fock space;
-- creation/annihilation operators, CCR, exchange algebra, and number operators;
-- free imaginary-time evolution and the algebraic interaction picture;
-- convergence-aware free thermal series and two-point results;
-- the uncutoff bosonic Bloch–de Dominicis two-point instantiation;
-- quartic interaction and diagrammatics through connected-component decomposition and scalar-weight
-  factorization.
-
-The algebraic and finite-combinatorial layers share infrastructure with the fermionic line through
-`SecondQuantization.Common`. General bosonic Gibbs expectations, Dyson coefficients, and full Wick
-amplitudes are not exported here because they require additional summability or locally finite
-operator hypotheses on the infinite occupation basis.
+Small implementation files remain grouped below these four umbrellas. General bosonic Gibbs
+functionals, Dyson coefficients, and full Wick amplitudes are still blocked on summability-aware
+interfaces for the infinite occupation basis.
 -/
