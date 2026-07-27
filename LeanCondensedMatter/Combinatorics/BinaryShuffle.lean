@@ -109,5 +109,23 @@ theorem card_succ_succ (m n : ℕ) :
   rw [Fintype.card_congr (outerEquiv m n)]
   simp
 
+/-- A finite sum over shuffles with no left slots has one term. -/
+theorem sum_zero_left [AddCommMonoid M] (n : ℕ) (F : BinaryShuffle 0 n → M) :
+    ∑ σ : BinaryShuffle 0 n, F σ = F (allRight n) := by
+  simpa [zeroLeftEquiv] using (Equiv.sum_comp (zeroLeftEquiv n).symm F).symm
+
+/-- A finite sum over shuffles with no right slots has one term. -/
+theorem sum_zero_right [AddCommMonoid M] (m : ℕ) (F : BinaryShuffle m 0 → M) :
+    ∑ σ : BinaryShuffle m 0, F σ = F (allLeft m) := by
+  simpa [zeroRightEquiv] using (Equiv.sum_comp (zeroRightEquiv m).symm F).symm
+
+/-- Split a finite shuffle sum by the side that supplies the outermost slot. -/
+theorem sum_succ_succ [AddCommMonoid M] (m n : ℕ)
+    (F : BinaryShuffle (m + 1) (n + 1) → M) :
+    ∑ σ : BinaryShuffle (m + 1) (n + 1), F σ =
+      (∑ σ : BinaryShuffle m (n + 1), F (.consLeft σ)) +
+        ∑ σ : BinaryShuffle (m + 1) n, F (.consRight σ) := by
+  simpa [outerEquiv] using (Equiv.sum_comp (outerEquiv m n).symm F).symm
+
 end BinaryShuffle
 end Combinatorics
