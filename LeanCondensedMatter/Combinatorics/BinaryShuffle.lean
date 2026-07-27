@@ -1,4 +1,4 @@
-import Mathlib.Data.Fintype.Card
+import Mathlib
 
 set_option linter.style.header false
 
@@ -45,17 +45,17 @@ theorem eq_allLeft : ∀ {m : ℕ} (σ : BinaryShuffle m 0), σ = allLeft m
   | _ + 1, .consLeft σ => congrArg consLeft (eq_allLeft σ)
 
 /-- Shuffles with no left slots form a singleton type. -/
-def zeroLeftEquiv (n : ℕ) : BinaryShuffle 0 n ≃ PUnit where
-  toFun _ := PUnit.unit
+def zeroLeftEquiv (n : ℕ) : BinaryShuffle 0 n ≃ Unit where
+  toFun _ := ()
   invFun _ := allRight n
-  left_inv := eq_allRight
+  left_inv σ := (eq_allRight σ).symm
   right_inv _ := rfl
 
 /-- Shuffles with no right slots form a singleton type. -/
-def zeroRightEquiv (m : ℕ) : BinaryShuffle m 0 ≃ PUnit where
-  toFun _ := PUnit.unit
+def zeroRightEquiv (m : ℕ) : BinaryShuffle m 0 ≃ Unit where
+  toFun _ := ()
   invFun _ := allLeft m
-  left_inv := eq_allLeft
+  left_inv σ := (eq_allLeft σ).symm
   right_inv _ := rfl
 
 /-- A positive-dimensional binary shuffle is classified by the side of its outermost slot. -/
@@ -76,9 +76,10 @@ def outerEquiv (m n : ℕ) :
     cases σ <;> rfl
 
 /-- Binary shuffles form a finite type. -/
+@[reducible]
 noncomputable def fintype : ∀ (m n : ℕ), Fintype (BinaryShuffle m n)
-  | 0, n => Fintype.ofEquiv PUnit (zeroLeftEquiv n).symm
-  | m + 1, 0 => Fintype.ofEquiv PUnit (zeroRightEquiv (m + 1)).symm
+  | 0, n => Fintype.ofEquiv Unit (zeroLeftEquiv n).symm
+  | m + 1, 0 => Fintype.ofEquiv Unit (zeroRightEquiv (m + 1)).symm
   | m + 1, n + 1 =>
       letI : Fintype (BinaryShuffle m (n + 1)) := fintype m (n + 1)
       letI : Fintype (BinaryShuffle (m + 1) n) := fintype (m + 1) n
