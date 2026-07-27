@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - agent/ordered-simplex-product-calculus
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: read
