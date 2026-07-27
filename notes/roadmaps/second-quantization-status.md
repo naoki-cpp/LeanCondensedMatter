@@ -20,8 +20,22 @@ The parity boundary is analytic rather than combinatorial:
   line; bosonic thermal and Dyson constructions need explicit summability or a convergence-aware
   functional interface.
 
-Sources: `Fermionic/Occupation.lean`, `Bosonic/Foundations/FockSpace.lean`,
+Sources: `Fermionic/Occupation.lean`, `Bosonic/Algebra.lean`,
 `Common/WeightedDiagonalFunctional.lean`, and `Common/FiniteOperatorIntegral.lean`.
+
+## Public bosonic import layout
+
+The bosonic public API has four umbrellas:
+
+| Import | Scope |
+|---|---|
+| `SecondQuantization.Bosonic.Algebra` | Occupation states, algebraic Fock space, ladder operators, CCR, exchange algebra, grading, and number operators. |
+| `SecondQuantization.Bosonic.ImaginaryTime` | Time ordering, free diagonal evolution, evolved ladder operators, and the algebraic interaction picture. |
+| `SecondQuantization.Bosonic.Thermal` | Convergent free thermal sums, two-point coefficients, and the uncutoff bosonic two-point Bloch–de Dominicis specialization. |
+| `SecondQuantization.Bosonic.Diagrammatics` | Quartic vertices, ordered diagrams, connected-component decomposition, and scalar-prefactor factorization. |
+
+`SecondQuantization.Bosonic` imports all four. Smaller implementation modules are imported through
+their canonical subdirectory paths; redundant top-level compatibility imports are not retained.
 
 ## Shared statistics-independent layer
 
@@ -63,15 +77,12 @@ products under component-local orders.
 
 The bosonic line currently includes:
 
-- occupation states, algebraic Fock space, ladder operators, CCR, number operators, and free
-  evolution (`Bosonic/Foundations.lean`, `Bosonic/OperatorAlgebra.lean`,
-  `Bosonic/ImaginaryTime.lean`);
-- convergent free partition and particle-number series under positive mode-energy hypotheses
-  (`Bosonic/Thermal.lean`);
-- an uncutoff two-point Bloch–de Dominicis instantiation
-  (`Bosonic/BlochDeDominicis/TwoPoint.lean`);
-- the algebraic interaction-picture operator and zero-time identity
-  (`Bosonic/ImaginaryTime/InteractionPicture.lean`);
+- occupation states, algebraic Fock space, ladder operators, CCR, number operators, and grading
+  (`Bosonic/Algebra.lean`);
+- free time ordering, diagonal evolution, evolved ladder operators, and the algebraic
+  interaction-picture operator (`Bosonic/ImaginaryTime.lean`);
+- convergent free partition and particle-number series, free two-point coefficients, and an uncutoff
+  two-point Bloch–de Dominicis specialization (`Bosonic/Thermal.lean`);
 - quartic interaction vertices, local-leg CCR semantics, flattened leg families, ordered diagram
   data, component decomposition equivalence, and componentwise scalar weights
   (`Bosonic/Diagrammatics.lean`).

@@ -1,20 +1,26 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeBoltzmannWeight
+import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreePartitionFunction
 
 set_option linter.style.header false
 
 /-!
-# Factorization of the free bosonic Boltzmann weight
+# Free bosonic Boltzmann weight and factorization
 
-For a finite mode type, the free weight `e^{-βE(n)}` factors into the product of its one-mode
-weights. This is the algebraic input used by the summability and partition-function product
-formulas.
+This module defines the free Gibbs weight `e^{-βE(n)}` and proves that, for a finite mode type, it
+factors into a product of one-mode weights. The factorization is the algebraic input for the
+summability and partition-function product formulas.
 -/
 
 namespace SecondQuantization
 namespace Bosonic
 
-variable {Mode : Type*} [Fintype Mode] [DecidableEq Mode]
+variable {Mode : Type*} [DecidableEq Mode]
+
+/-- The free bosonic Boltzmann weight `e^{-βE(n)}`. -/
+noncomputable def boltzmannWeight (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) : ℝ :=
+  Real.exp (-β * freeEigenvalue ε n)
+
+variable [Fintype Mode]
 
 omit [DecidableEq Mode] in
 /-- The free energy is the sum over all modes; terms outside the support vanish. -/
