@@ -28,13 +28,13 @@ jobs:
       - name: Polish second-quantization roadmap
         id: docs-update
         continue-on-error: true
-        if: github.event_name == 'pull_request' && github.head_ref == 'agent/move-statistical-bdd-under-thermal'
+        if: github.event_name == 'pull_request' && github.head_ref == 'agent/update-second-quantization-docs'
         shell: bash
         run: |
           set -euo pipefail
           exec > >(tee /tmp/second-quantization-doc-update.log) 2>&1
-          git fetch origin +refs/heads/agent/move-statistical-bdd-under-thermal:refs/remotes/origin/agent/move-statistical-bdd-under-thermal
-          git checkout -B agent/move-statistical-bdd-under-thermal origin/agent/move-statistical-bdd-under-thermal
+          git fetch origin +refs/heads/agent/update-second-quantization-docs:refs/remotes/origin/agent/update-second-quantization-docs
+          git checkout -B agent/update-second-quantization-docs origin/agent/update-second-quantization-docs
           python3 - <<'PY'
           from pathlib import Path
           import re
@@ -127,7 +127,7 @@ jobs:
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add notes/roadmaps/second-quantization.md
             git commit -m "docs: polish second-quantization roadmap status"
-            git push origin HEAD:agent/move-statistical-bdd-under-thermal
+            git push origin HEAD:agent/update-second-quantization-docs
           fi
 
       - name: Upload documentation updater diagnostics
