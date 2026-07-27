@@ -45,7 +45,7 @@ theorem orderedSimplexIntegral_succ_zero_bound (n : ℕ)
 -- Use the normed-space structure supplied by the real normed algebra on `ℂ` throughout the
 -- derivative statements below. This keeps the fundamental theorem and the product rule on the
 -- same instance.
-local instance : NormedSpace ℝ ℂ := NormedAlgebra.toNormedSpace
+local instance : NormedSpace ℝ ℂ := NormedAlgebra.toNormedSpace ℂ
 
 /-- Fundamental theorem of calculus for an ordered-simplex integral: differentiating in the upper
 bound fixes the outermost time coordinate at that bound. -/
@@ -54,11 +54,8 @@ theorem hasDerivAt_orderedSimplexIntegral_succ (n : ℕ)
     HasDerivAt (fun t : ℝ => orderedSimplexIntegral (n + 1) t f)
       (orderedSimplexIntegral n β (fun rest => f (Fin.cons β rest))) β := by
   have hboundary := continuous_orderedSimplexIntegral_boundary n f hf
-  change HasDerivAt
-    (fun t : ℝ => ∫ σ in (0 : ℝ)..t,
-      orderedSimplexIntegral n σ (fun rest => f (Fin.cons σ rest)))
-    (orderedSimplexIntegral n β (fun rest => f (Fin.cons β rest))) β
-  exact (hboundary.integral_hasStrictDerivAt 0 β).hasDerivAt
+  simpa only [orderedSimplexIntegral_succ] using
+    (hboundary.integral_hasStrictDerivAt 0 β).hasDerivAt
 
 /-- Split a product of two positive-dimensional ordered-simplex integrals by the component that
 contains the largest time. This is the analytic recurrence underlying the binary shuffle identity:
