@@ -7,8 +7,8 @@ set_option linter.style.header false
 /-!
 # The genuine normalized 2-point Bloch–de Dominicis value
 
-Divides `BlochDeDominicis/TwoPoint.lean`'s un-normalized trace identity through by the genuine
-(nonzero) partition function, giving the first genuine, normalized-number Bloch–de Dominicis
+Divides `BlochDeDominicis/Unnormalized/TwoPoint.lean`'s un-normalized trace identity through by the
+genuine (nonzero) partition function, giving the first genuine, normalized-number Bloch–de Dominicis
 statement.
 -/
 
@@ -18,7 +18,7 @@ namespace Common
 variable {Config : Type*} [Fintype Config]
 
 /-- **The genuine normalized 2-point Bloch–de Dominicis value**: `⟨C₁Cⱼ⟩ = c₁ⱼ/(1 - ζw₁)`,
-dividing `TwoPoint.lean`'s un-normalized `(1 - ζw₁) Tr[e^{-βH₀}(C₁Cⱼ)] = c₁ⱼ Tr[e^{-βH₀}]` through
+dividing `Unnormalized/TwoPoint.lean`'s `(1 - ζw₁) Tr[e^{-βH₀}(C₁Cⱼ)] = c₁ⱼ Tr[e^{-βH₀}]` through
 by the genuine (nonzero) partition function and by the (assumed nonzero) `1 - ζw₁` factor —
 matching the physics reference notes' `⟨Ĉ₁Ĉⱼ⟩ = C_{1,j}/(1 - ζw₁)` letter-for-letter rather than
 leaving it as an un-divided trace equation. -/
