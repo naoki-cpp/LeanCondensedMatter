@@ -93,9 +93,9 @@ proofs live in `Common/`. The remaining asymmetry is analytic: bosonic occupatio
 unbounded, so even a finite mode set gives an *infinite-dimensional* Fock space, unlike the
 fermionic `2^|Mode|`-dimensional case. The canonical Fock-space and operator declarations
 (`Occupation`, `basisState`, `create`,
-`annihilate`, etc.) live under `namespace SecondQuantization.Bosonic`, distinct from the fermionic
-line's plain `SecondQuantization` namespace. Legacy plain-namespace occupation/Fock aliases remain
-for compatibility, but the Bosonic implementation now uses only the canonical names internally.
+`annihilate`, etc.) live exclusively under `namespace SecondQuantization.Bosonic`, distinct from
+the fermionic line's plain `SecondQuantization` namespace. The former plain-namespace
+occupation/Fock aliases have been removed.
 
 **Planned order** (Phase B1: algebraic layer, parallel to fermionic Phases 1–7; Phase B2: free
 imaginary-time evolution, parallel to Phase 9 step 1; Phase B3: the genuine, uncutoff bosonic
