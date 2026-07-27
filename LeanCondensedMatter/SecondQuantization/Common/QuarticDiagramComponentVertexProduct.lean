@@ -6,9 +6,10 @@ set_option linter.style.header false
 /-!
 # Products of vertex-local weights over quartic-diagram components
 
-The finite-partition product identities now live in `Combinatorics/FinpartitionProduct.lean`.  This
-module contains only the diagram-specific compatibility between ambient and restricted vertex labels,
-then specializes those general identities to the pairing-graph component partition.
+The finite-partition product identities now live in
+`Combinatorics/FinpartitionProduct.lean`. This module contains only the diagram-specific
+compatibility between ambient and restricted vertex labels, then specializes those general
+identities to the pairing-graph component partition.
 -/
 
 namespace SecondQuantization
