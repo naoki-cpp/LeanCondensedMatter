@@ -36,15 +36,15 @@ termination_by m n => m + n
 theorem orderedSimplexShuffleIntegral_zero_left (n : ℕ) (β : ℝ)
     (f : (Fin 0 → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ) :
     orderedSimplexShuffleIntegral 0 n β f g =
-      f Fin.elim0 * orderedSimplexIntegral n β g :=
-  rfl
+      f Fin.elim0 * orderedSimplexIntegral n β g := by
+  rw [orderedSimplexShuffleIntegral]
 
 @[simp]
 theorem orderedSimplexShuffleIntegral_zero_right (m : ℕ) (β : ℝ)
     (f : (Fin (m + 1) → ℝ) → ℂ) (g : (Fin 0 → ℝ) → ℂ) :
     orderedSimplexShuffleIntegral (m + 1) 0 β f g =
-      orderedSimplexIntegral (m + 1) β f * g Fin.elim0 :=
-  rfl
+      orderedSimplexIntegral (m + 1) β f * g Fin.elim0 := by
+  rw [orderedSimplexShuffleIntegral]
 
 /-- Binary shuffle identity: the recursively accumulated contribution of all order-preserving
 interleavings equals the product of the two component ordered-simplex integrals. -/
@@ -54,9 +54,9 @@ theorem orderedSimplexShuffleIntegral_eq_mul :
       orderedSimplexShuffleIntegral m n β f g =
         orderedSimplexIntegral m β f * orderedSimplexIntegral n β g
   | 0, n, β, f, g, _hf, _hg => by
-      simp [orderedSimplexShuffleIntegral]
+      simp
   | m + 1, 0, β, f, g, _hf, _hg => by
-      simp [orderedSimplexShuffleIntegral]
+      simp
   | m + 1, n + 1, β, f, g, hf, hg => by
       rw [orderedSimplexShuffleIntegral]
       have hleft : ∀ t : ℝ,
