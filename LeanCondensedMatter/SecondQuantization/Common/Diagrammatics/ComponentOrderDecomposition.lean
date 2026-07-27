@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Decomposing global vertex orders into component orders and shuffles
 
 An ambient vertex order canonically induces an order on every connected-component block by sorting
-that block according to its ambient slot. These induced local orders are the unique local orders
+the global slots occupied by that block. These induced local orders are the unique local orders
 compatible with the ambient order. Consequently, global vertex orders are equivalent to pairs of
 component-local orders and order-preserving component shuffles.
 -/
@@ -34,20 +34,72 @@ theorem QuarticDiagram.componentGlobalSlot_injective {S : Finset (Fin N)}
   cases h₂
   rfl
 
-/-- The linear order on one component obtained by pulling back the ambient slot order. -/
-@[reducible]
-noncomputable def QuarticDiagram.componentVertexLinearOrder {S : Finset (Fin N)}
+/-- The finite set of ambient slots occupied by component block `B`. -/
+noncomputable def QuarticDiagram.componentGlobalSlots {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (order : QuarticVertexOrder S)
-    (B : d.componentPartition.parts) : LinearOrder ↥(B : Finset (Fin N)) :=
-  LinearOrder.lift' (d.componentGlobalSlot order B)
-    (d.componentGlobalSlot_injective order B)
+    (B : d.componentPartition.parts) : Finset (Fin S.card) :=
+  Finset.univ.image (d.componentGlobalSlot order B)
 
-/-- The canonical order on component `B`, induced by an ambient vertex order. -/
+@[simp]
+theorem QuarticDiagram.componentGlobalSlot_mem_componentGlobalSlots {S : Finset (Fin N)}
+    (d : QuarticDiagram Label N S) (order : QuarticVertexOrder S)
+    (B : d.componentPartition.parts) (v : ↥(B : Finset (Fin N))) :
+    d.componentGlobalSlot order B v ∈ d.componentGlobalSlots order B :=
+  Finset.mem_image.2 ⟨v, Finset.mem_univ v, rfl⟩
+
+/-- A component occupies exactly as many global slots as it has vertices. -/
+theorem QuarticDiagram.card_componentGlobalSlots {S : Finset (Fin N)}
+    (d : QuarticDiagram Label N S) (order : QuarticVertexOrder S)
+    (B : d.componentPartition.parts) :
+    (d.componentGlobalSlots order B).card = (B : Finset (Fin N)).card := by
+  rw [QuarticDiagram.componentGlobalSlots,
+    Finset.card_image_of_injective _ (d.componentGlobalSlot_injective order B)]
+  simp
+
+/-- Component vertices are equivalent to the global slots occupied by that component. -/
+noncomputable def QuarticDiagram.componentGlobalSlotEquiv {S : Finset (Fin N)}
+    (d : QuarticDiagram Label N S) (order : QuarticVertexOrder S)
+    (B : d.componentPartition.parts) :
+    ↥(B : Finset (Fin N)) ≃ ↥(d.componentGlobalSlots order B) :=
+  Equiv.ofBijective
+    (fun v => ⟨d.componentGlobalSlot order B v,
+      d.componentGlobalSlot_mem_componentGlobalSlots order B v⟩)
+    ⟨by
+      intro v w h
+      apply d.componentGlobalSlot_injective order B
+      exact congrArg Subtype.val h,
+    by
+      intro slot
+      obtain ⟨v, _, hv⟩ := Finset.mem_image.1 slot.2
+      refine ⟨v, Subtype.ext ?_⟩
+      exact hv⟩
+
+@[simp]
+theorem QuarticDiagram.componentGlobalSlot_componentGlobalSlotEquiv_symm
+    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
+    (order : QuarticVertexOrder S) (B : d.componentPartition.parts)
+    (slot : ↥(d.componentGlobalSlots order B)) :
+    d.componentGlobalSlot order B ((d.componentGlobalSlotEquiv order B).symm slot) = slot := by
+  have h := congrArg Subtype.val ((d.componentGlobalSlotEquiv order B).apply_symm_apply slot)
+  exact h
+
+/-- The canonical order on component `B`, induced by its increasing global slots. -/
 noncomputable def QuarticDiagram.componentVertexOrderOfVertexOrder {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (order : QuarticVertexOrder S)
-    (B : d.componentPartition.parts) : QuarticVertexOrder (B : Finset (Fin N)) := by
-  letI := d.componentVertexLinearOrder order B
-  exact (Fintype.orderIsoFinOfCardEq ↥(B : Finset (Fin N)) (by simp)).symm.toEquiv
+    (B : d.componentPartition.parts) : QuarticVertexOrder (B : Finset (Fin N)) :=
+  (d.componentGlobalSlots order B).orderIsoOfFin
+      (d.card_componentGlobalSlots order B) |>.toEquiv.trans
+    (d.componentGlobalSlotEquiv order B).symm
+
+@[simp]
+theorem QuarticDiagram.componentGlobalSlot_componentVertexOrderOfVertexOrder
+    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
+    (order : QuarticVertexOrder S) (B : d.componentPartition.parts)
+    (i : Fin (B : Finset (Fin N)).card) :
+    d.componentGlobalSlot order B (d.componentVertexOrderOfVertexOrder order B i) =
+      ((d.componentGlobalSlots order B).orderIsoOfFin
+        (d.card_componentGlobalSlots order B) i : Fin S.card) := by
+  simp [QuarticDiagram.componentVertexOrderOfVertexOrder]
 
 /-- The canonical family of component-local orders induced by an ambient order. -/
 noncomputable def QuarticDiagram.componentVertexOrdersOfVertexOrder {S : Finset (Fin N)}
@@ -61,10 +113,9 @@ theorem QuarticDiagram.componentVertexOrderOfVertexOrder_strictMono {S : Finset 
     (B : d.componentPartition.parts) :
     StrictMono (fun i => d.componentGlobalSlot order B
       (d.componentVertexOrderOfVertexOrder order B i)) := by
-  letI := d.componentVertexLinearOrder order B
-  let e := (Fintype.orderIsoFinOfCardEq ↥(B : Finset (Fin N)) (by simp)).symm
-  change StrictMono (fun i => e i)
-  exact e.strictMono
+  simpa using
+    ((d.componentGlobalSlots order B).orderIsoOfFin
+      (d.card_componentGlobalSlots order B)).strictMono
 
 /-- The canonical component-local orders are compatible with the ambient order. -/
 theorem QuarticDiagram.componentOrdersCompatible_componentVertexOrdersOfVertexOrder
@@ -76,27 +127,23 @@ theorem QuarticDiagram.componentOrdersCompatible_componentVertexOrdersOfVertexOr
     QuarticDiagram.componentVertexOrdersOfVertexOrder, QuarticDiagram.componentGlobalSlot] using
     d.componentVertexOrderOfVertexOrder_strictMono order B
 
-/-- A compatible order on one component must be its canonical ambient-slot order. -/
+/-- A compatible order on one component must be its canonical increasing-slot order. -/
 theorem QuarticDiagram.componentVertexOrder_eq_of_strictMono {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (order : QuarticVertexOrder S)
     (B : d.componentPartition.parts)
     (localOrder : QuarticVertexOrder (B : Finset (Fin N)))
     (hlocal : StrictMono (fun i => d.componentGlobalSlot order B (localOrder i))) :
     localOrder = d.componentVertexOrderOfVertexOrder order B := by
-  letI := d.componentVertexLinearOrder order B
   apply Equiv.ext
   intro i
-  have hmono : StrictMono (fun i => localOrder i) := by
-    intro a b hab
-    change d.componentGlobalSlot order B (localOrder a) <
-      d.componentGlobalSlot order B (localOrder b)
-    exact hlocal hab
+  apply d.componentGlobalSlot_injective order B
   have h := Finset.orderEmbOfFin_unique
-    (s := (Finset.univ : Finset ↥(B : Finset (Fin N))))
-    (k := (B : Finset (Fin N)).card) (by simp)
-    (f := fun i => localOrder i) (fun _ => Finset.mem_univ _) hmono
+    (s := d.componentGlobalSlots order B)
+    (h := d.card_componentGlobalSlots order B)
+    (f := fun i => d.componentGlobalSlot order B (localOrder i))
+    (fun i => d.componentGlobalSlot_mem_componentGlobalSlots order B (localOrder i)) hlocal
   have hi := congrFun h i
-  simpa [QuarticDiagram.componentVertexOrderOfVertexOrder] using hi
+  simpa [Finset.orderEmbOfFin] using hi
 
 /-- A compatible family of component-local orders is uniquely determined by the ambient order. -/
 theorem QuarticDiagram.componentVertexOrders_eq_of_compatible {S : Finset (Fin N)}
@@ -137,10 +184,11 @@ noncomputable def QuarticDiagram.componentOrderDecompositionEquiv {S : Finset (F
       (d.componentVertexOrders_eq_of_compatible
         (d.assembleVertexOrder orders shuffle) orders
         (d.componentOrdersCompatible_assembleVertexOrder orders shuffle)).symm
-    rw [horders]
-    apply Prod.ext
-    · rfl
-    · simpa using d.shuffleOfVertexOrder_assembleVertexOrder orders shuffle
+    refine Prod.ext horders ?_
+    apply QuarticDiagram.ComponentShuffle.ext
+    ext slot
+    simp [QuarticDiagram.shuffleOfVertexOrder, QuarticDiagram.assembleVertexOrder,
+      QuarticDiagram.componentVertexEquiv, horders]
 
 /-- Reindex a finite sum over global vertex orders by component-local orders and shuffles. -/
 theorem QuarticDiagram.sum_vertexOrder_eq_sum_componentOrders_shuffle [AddCommMonoid M]
