@@ -1,30 +1,18 @@
 name: Lean Action CI
 
 on:
-  push:
   pull_request:
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: write
-  pages: write
-  id-token: write
-
-# Do not let a long documentation build block CI on unrelated branches. For repeated
-# pushes to the same ref, only the newest run is useful.
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v5
 
-      # BEGIN TEMP SECOND-QUANTIZATION DOC UPDATE
       - name: Apply second-quantization documentation update
         id: docs-update
         continue-on-error: true
@@ -52,7 +40,6 @@ jobs:
 
           python3 - <<'PY'
           from pathlib import Path
-          import re
 
           path = Path("notes/roadmaps/second-quantization.md")
           text = path.read_text(encoding="utf-8")
@@ -91,7 +78,6 @@ jobs:
               "live in each statistics' own `Occupation.lean`",
               "live in `Fermionic/Algebra/Occupation.lean` and `Bosonic/Foundations/Occupation.lean`",
           )
-
           text = text.replace(
               "6. **Diagram connectedness and component decomposition — complete through scalar-prefactor factorization.** Built *before* any concrete\n   diagram type, per a 6-PR design (PR 5 further split into 5a/5b/5c):",
               "6. **Diagrammatics — complete through component decomposition and scalar-prefactor factorization.**\n   The implementation history was staged as follows:",
@@ -100,28 +86,25 @@ jobs:
           clean_history = """    - PR 4a/4b introduced the quartic Wick-diagram data and connectedness layer in
               `Fermionic/Diagrammatics/WickDiagram.lean` and
               `Fermionic/Diagrammatics/WickDiagram/Connected.lean`.
-              - PR 5a/5b/5c added `Analysis/OrderedSimplexIntegral.lean`, pairing relabelling,
+            - PR 5a/5b/5c added `Analysis/OrderedSimplexIntegral.lean`, pairing relabelling,
               `Fermionic/Diagrammatics/WickDiagram/Ordered.lean`, and
               `Fermionic/Diagrammatics/WickDiagram/Amplitude.lean`.
-              - PR 6 proved the Dyson diagram expansion in
+            - PR 6 proved the Dyson diagram expansion in
               `Fermionic/Diagrammatics/DysonDiagramExpansion.lean`, using the flattened local-leg
               semantics from `Fermionic/Diagrammatics/WickDiagram/LegFamily.lean` and
               `Fermionic/Diagrammatics/QuarticLocalLeg.lean`.
-              - PR 7 completed component partition, restriction, connectedness, reassembly, the
+            - PR 7 completed component partition, restriction, connectedness, reassembly, the
               decomposition equivalence, and scalar-prefactor factorization under
               `Fermionic/Diagrammatics/WickDiagram/`. The remaining full-amplitude factorization is the
               ordered-simplex shuffle together with pairing-weight and pair-value compatibility under
               component-local orders; after that come the finite-set LCT and the `PowerSeries.log`
               coefficient bridge.
           """
-          text, count = re.subn(
-              r"    - PR 4a/4b,.*?(?=\n7\. \*\*Not started\*\*)",
-              clean_history,
-              text,
-              flags=re.DOTALL,
-          )
-          if count != 1:
-              raise SystemExit("could not rewrite the PR 4–7 diagrammatics history")
+          start = text.find("- PR 4a/4b")
+          end = text.find("\n7. **Not started**", start)
+          if start < 0 or end < 0:
+              raise SystemExit("could not locate the PR 4–7 diagrammatics history boundary")
+          text = text[:start] + clean_history + text[end:]
 
           forbidden = [
               "FockSpaceBosonic",
@@ -134,7 +117,6 @@ jobs:
           remaining = [needle for needle in forbidden if needle in text]
           if remaining:
               raise SystemExit("stale roadmap prose remains: " + ", ".join(remaining))
-
           path.write_text(text, encoding="utf-8")
           PY
 
@@ -154,110 +136,11 @@ jobs:
       - name: Fail after documentation updater error
         if: steps.docs-update.outcome == 'failure'
         run: exit 1
-      # END TEMP SECOND-QUANTIZATION DOC UPDATE
 
       - uses: leanprover/lean-action@v1
       - name: Check for sorry
         run: |
           if grep -rnE '\bsorry\b' --include='*.lean' LeanCondensedMatter; then
-            echo "::error::Found 'sorry' in the Lean sources above. Per PROJECT.md, a statement is only 'proved' with no 'sorry' — record it as a target in notes/roadmap.md instead of leaving it in place."
+            echo "::error::Found 'sorry' in the Lean sources above."
             exit 1
           fi
-
-  # Documentation is intentionally built only on pushes to main. doc-gen4 processes the
-  # full Mathlib symbol set, so running it for every pull request would be unnecessarily slow.
-  docs:
-    needs: build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
-    steps:
-      - uses: actions/checkout@v5
-
-      # Cache only the nested documentation build here. lean-action already maintains
-      # the root .lake cache with its own commit-aware key.
-      - name: Restore documentation cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            docbuild/.lake/build
-            docbuild/lake-manifest.json
-          # GitHub caches are immutable, so include the commit SHA to save a fresh
-          # incremental snapshot after every successful main build. The restore prefix
-          # selects the newest snapshot with the same Lean and dependency versions.
-          key: docgen-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
-          restore-keys: |
-            docgen-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
-
-      - uses: leanprover/lean-action@v1
-
-      - name: Build API documentation
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          mkdir -p docbuild
-          cat > docbuild/lakefile.toml <<EOF
-          name = "docbuild"
-          reservoir = false
-          version = "0.1.0"
-          packagesDir = "../.lake/packages"
-
-          [[require]]
-          name = "LeanCondensedMatter"
-          path = "../"
-
-          [[require]]
-          scope = "leanprover"
-          name = "doc-gen4"
-          rev = "$(cut -f 2 -d: lean-toolchain)"
-          EOF
-
-          (
-            cd docbuild
-            MATHLIB_NO_CACHE_ON_UPDATE=1 ~/.elan/bin/lake update LeanCondensedMatter
-            ~/.elan/bin/lake build LeanCondensedMatter:docs
-          )
-
-      - name: Assemble themed documentation site
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          rm -rf site
-          mkdir -p site/docs
-          cp -R docbuild/.lake/build/doc/. site/docs/
-          cat docs-site/docgen.css >> site/docs/style.css
-          cp docs-site/project-nav.js site/docs/
-          cp docs-site/index.html docs-site/site.css site/
-
-          python3 - <<'PY'
-          from pathlib import Path
-
-          navbar = Path("site/docs/navbar.html")
-          html = navbar.read_text(encoding="utf-8")
-          script = '  <script type="module" src="./project-nav.js"></script>\n'
-          closing_tag = "</body>"
-
-          if closing_tag not in html:
-              raise SystemExit("doc-gen4 navbar.html does not contain </body>")
-
-          navbar.write_text(
-              html.replace(closing_tag, script + closing_tag, 1),
-              encoding="utf-8",
-          )
-          PY
-
-          touch site/.nojekyll
-
-      - name: Upload documentation
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-
-      - name: Deploy documentation
-        id: deployment
-        uses: actions/deploy-pages@v4
