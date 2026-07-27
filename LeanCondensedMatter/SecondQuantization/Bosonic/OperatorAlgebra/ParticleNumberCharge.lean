@@ -56,5 +56,19 @@ theorem carriesParticleNumberCharge_create (i : Mode) :
     omega
   · exact absurd (Common.smul_basisState_apply_of_ne _ (Ne.symm hm)) hmn
 
+/-- Two annihilation operators have zero diagonal matrix coefficient. -/
+theorem matrixCoeff_annihilate_comp_annihilate (i j : Mode) (n : Occupation Mode) :
+    Common.matrixCoeff ((annihilate i).comp (annihilate j)) n n = 0 :=
+  Common.diagonalCoeff_eq_zero_of_carriesGradingDegree
+    ((carriesParticleNumberCharge_annihilate i).comp (carriesParticleNumberCharge_annihilate j))
+    (by norm_num) n
+
+/-- Two creation operators have zero diagonal matrix coefficient. -/
+theorem matrixCoeff_create_comp_create (i j : Mode) (n : Occupation Mode) :
+    Common.matrixCoeff ((create i).comp (create j)) n n = 0 :=
+  Common.diagonalCoeff_eq_zero_of_carriesGradingDegree
+    ((carriesParticleNumberCharge_create i).comp (carriesParticleNumberCharge_create j))
+    (by norm_num) n
+
 end Bosonic
 end SecondQuantization
