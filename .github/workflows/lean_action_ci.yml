@@ -30,7 +30,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git fetch origin agent/organize-fermionic-layout
+          git fetch origin +refs/heads/agent/organize-fermionic-layout:refs/remotes/origin/agent/organize-fermionic-layout
           git checkout -B agent/organize-fermionic-layout origin/agent/organize-fermionic-layout
           python3 scripts/refactor_fermionic_layout.py
           git config user.name "github-actions[bot]"
