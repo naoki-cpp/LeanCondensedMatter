@@ -16,7 +16,8 @@ namespace Bosonic
 
 variable {Mode : Type*} [DecidableEq Mode]
 
-private theorem exchangeCommutator_boson_eq_comm
+/-- The bosonic exchange commutator is the ordinary commutator. -/
+theorem exchangeCommutator_boson_eq_comm
     (A B : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode) :
     Common.exchangeCommutator Statistics.boson A B = comm A B := by
   rw [Common.exchangeCommutator, Statistics.zetaInt_boson, Int.cast_one, Common.zetaCommutator,
