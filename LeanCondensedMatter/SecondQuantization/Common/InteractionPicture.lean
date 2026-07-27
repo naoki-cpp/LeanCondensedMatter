@@ -49,8 +49,8 @@ theorem matrixCoeff_interactionPicture (energy : Config → ℝ)
         LinearMap.smul_apply]
       by_cases h : a = c
       · subst a
-        simp [eval, basisState, smul_smul]
-      · simp [eval, basisState, h, smul_smul]
+        simp [eval, basisState, mul_comm]
+      · simp [eval, basisState, h]
     have hx := congrArg (fun L => L x) hmap
     simpa only [eval, LinearMap.comp_apply, LinearMap.smul_apply, Finsupp.lapply_apply,
       smul_eq_mul] using hx
