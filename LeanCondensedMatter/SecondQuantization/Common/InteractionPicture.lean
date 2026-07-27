@@ -45,12 +45,20 @@ theorem matrixCoeff_interactionPicture (energy : Config → ℝ)
       intro a b
       have hb : (Finsupp.single a b : AlgebraicFock Config) = b • basisState a :=
         (Finsupp.smul_single_one a b).symm
-      simp [eval, hb, diagonalEvolution_basisState, basisState, smul_smul]
+      rw [hb, LinearMap.comp_apply, map_smul, diagonalEvolution_basisState, map_smul,
+        LinearMap.smul_apply]
+      by_cases h : a = c
+      · subst a
+        simp [eval, basisState, smul_smul]
+      · simp [eval, basisState, h, smul_smul]
     have hx := congrArg (fun L => L x) hmap
-    simpa [eval, LinearMap.comp_apply, LinearMap.smul_apply, smul_eq_mul] using hx
+    simpa only [eval, LinearMap.comp_apply, LinearMap.smul_apply, Finsupp.lapply_apply,
+      smul_eq_mul] using hx
   rw [interactionPicture, heisenbergEvolve, matrixCoeff, LinearMap.comp_apply,
     LinearMap.comp_apply, diagonalEvolution_basisState, map_smul, map_smul,
-    Finsupp.smul_apply, hdiag, ← mul_assoc, ← Complex.exp_add]
+    Finsupp.smul_apply, hdiag]
+  simp only [smul_eq_mul]
+  rw [← mul_assoc, ← Complex.exp_add]
   congr 2
   push_cast
   ring
