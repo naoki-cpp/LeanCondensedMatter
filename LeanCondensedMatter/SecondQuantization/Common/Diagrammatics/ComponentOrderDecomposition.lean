@@ -113,9 +113,8 @@ theorem QuarticDiagram.componentVertexOrderOfVertexOrder_strictMono {S : Finset 
     (B : d.componentPartition.parts) :
     StrictMono (fun i => d.componentGlobalSlot order B
       (d.componentVertexOrderOfVertexOrder order B i)) := by
-  simpa using
-    ((d.componentGlobalSlots order B).orderIsoOfFin
-      (d.card_componentGlobalSlots order B)).strictMono
+  exact ((d.componentGlobalSlots order B).orderEmbOfFin
+    (d.card_componentGlobalSlots order B)).strictMono
 
 /-- The canonical component-local orders are compatible with the ambient order. -/
 theorem QuarticDiagram.componentOrdersCompatible_componentVertexOrdersOfVertexOrder
@@ -143,7 +142,8 @@ theorem QuarticDiagram.componentVertexOrder_eq_of_strictMono {S : Finset (Fin N)
     (f := fun i => d.componentGlobalSlot order B (localOrder i))
     (fun i => d.componentGlobalSlot_mem_componentGlobalSlots order B (localOrder i)) hlocal
   have hi := congrFun h i
-  simpa [Finset.orderEmbOfFin] using hi
+  rw [d.componentGlobalSlot_componentVertexOrderOfVertexOrder]
+  simpa only [Finset.coe_orderIsoOfFin_apply] using hi
 
 /-- A compatible family of component-local orders is uniquely determined by the ambient order. -/
 theorem QuarticDiagram.componentVertexOrders_eq_of_compatible {S : Finset (Fin N)}
@@ -186,9 +186,13 @@ noncomputable def QuarticDiagram.componentOrderDecompositionEquiv {S : Finset (F
         (d.componentOrdersCompatible_assembleVertexOrder orders shuffle)).symm
     refine Prod.ext horders ?_
     apply QuarticDiagram.ComponentShuffle.ext
+    change (d.componentVertexEquiv
+      (d.componentVertexOrdersOfVertexOrder (d.assembleVertexOrder orders shuffle))).trans
+        (d.assembleVertexOrder orders shuffle).symm = shuffle.slotEquiv
+    have hvertex := congrArg (fun componentOrders => d.componentVertexEquiv componentOrders) horders
+    rw [hvertex]
     ext slot
-    simp [QuarticDiagram.shuffleOfVertexOrder, QuarticDiagram.assembleVertexOrder,
-      QuarticDiagram.componentVertexEquiv, horders]
+    simp [QuarticDiagram.assembleVertexOrder]
 
 /-- Reindex a finite sum over global vertex orders by component-local orders and shuffles. -/
 theorem QuarticDiagram.sum_vertexOrder_eq_sum_componentOrders_shuffle [AddCommMonoid M]
