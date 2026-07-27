@@ -34,8 +34,8 @@ The bosonic public API has four umbrellas:
 | `SecondQuantization.Bosonic.Thermal` | Convergent free thermal sums, two-point coefficients, and the uncutoff bosonic two-point Bloch–de Dominicis specialization. |
 | `SecondQuantization.Bosonic.Diagrammatics` | Quartic vertices, ordered diagrams, connected-component decomposition, and scalar-prefactor factorization. |
 
-`SecondQuantization.Bosonic` imports all four. Smaller proof files remain under the corresponding
-subdirectories, while legacy direct-import shims are retained temporarily for compatibility.
+`SecondQuantization.Bosonic` imports all four. Smaller implementation modules are imported through
+their canonical subdirectory paths; redundant top-level compatibility imports are not retained.
 
 ## Shared statistics-independent layer
 
