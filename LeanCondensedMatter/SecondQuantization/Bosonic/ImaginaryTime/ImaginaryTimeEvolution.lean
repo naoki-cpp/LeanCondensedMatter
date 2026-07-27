@@ -18,9 +18,9 @@ This module contains the bosonic imaginary-time layer:
 - the algebraic interaction-picture operator.
 
 All constructions are algebraic. No operator exponential, Hilbert-space completion, positivity
-assumption on the dispersion, or convergence theorem is used. Matrix-coefficient continuity for a
-general bosonic interaction-picture operator is intentionally omitted because the current Common
-proof assumes a finite configuration type.
+assumption on the dispersion, or convergence theorem is used. The interaction-picture matrix-
+coefficient formula, continuity, and interval integrability use only finite support of individual
+algebraic-Fock vectors, not finiteness of the bosonic occupation type.
 -/
 
 namespace SecondQuantization
@@ -150,6 +150,13 @@ theorem imaginaryTimeEvolve_apply (ε : Mode → ℝ) (τ : ℝ)
       imaginaryTimeEvolveFree ε τ (A (imaginaryTimeEvolveFree ε (-τ) x)) :=
   rfl
 
+/-- Imaginary-time evolution distributes over operator composition. -/
+theorem imaginaryTimeEvolve_comp (ε : Mode → ℝ) (τ : ℝ)
+    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    imaginaryTimeEvolve ε τ (A.comp B) =
+      (imaginaryTimeEvolve ε τ A).comp (imaginaryTimeEvolve ε τ B) :=
+  Common.heisenbergEvolve_comp (freeEigenvalue ε) τ A B
+
 /-- The free Hamiltonian is fixed by its own imaginary-time evolution. -/
 theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
     imaginaryTimeEvolve ε τ (freeHamiltonian ε) = freeHamiltonian ε := by
@@ -239,6 +246,28 @@ theorem interactionPicture_zero (ε : Mode → ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     interactionPicture ε V 0 = V :=
   Common.interactionPicture_zero (freeEigenvalue ε) V
+
+/-- Matrix coefficients acquire the free bosonic energy-difference exponential. -/
+theorem matrixCoeff_interactionPicture (ε : Mode → ℝ)
+    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (τ : ℝ)
+    (m n : Occupation Mode) :
+    Common.matrixCoeff (interactionPicture ε V τ) m n =
+      Complex.exp ((τ * (freeEigenvalue ε m - freeEigenvalue ε n) : ℝ) : ℂ) *
+        Common.matrixCoeff V m n :=
+  Common.matrixCoeff_interactionPicture (freeEigenvalue ε) V τ m n
+
+/-- Every bosonic interaction-picture matrix coefficient is continuous in imaginary time. -/
+theorem continuous_matrixCoeff_interactionPicture (ε : Mode → ℝ)
+    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (m n : Occupation Mode) :
+    Continuous (fun τ : ℝ => Common.matrixCoeff (interactionPicture ε V τ) m n) :=
+  Common.continuous_matrixCoeff_interactionPicture (freeEigenvalue ε) V m n
+
+/-- Every bosonic interaction-picture matrix coefficient is interval-integrable. -/
+theorem intervalIntegrable_matrixCoeff_interactionPicture (ε : Mode → ℝ)
+    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (m n : Occupation Mode) (a b : ℝ) :
+    IntervalIntegrable (fun τ : ℝ => Common.matrixCoeff (interactionPicture ε V τ) m n)
+      MeasureTheory.volume a b :=
+  Common.intervalIntegrable_matrixCoeff_interactionPicture (freeEigenvalue ε) V m n a b
 
 end Bosonic
 end SecondQuantization
