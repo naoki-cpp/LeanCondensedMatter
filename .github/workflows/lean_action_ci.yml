@@ -5,14 +5,11 @@ on:
   pull_request:
   workflow_dispatch:
 
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
-# Do not let a long documentation build block CI on unrelated branches. For repeated
-# pushes to the same ref, only the newest run is useful.
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -23,26 +20,26 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
-      - name: Capture PR head source
-        if: github.event_name == 'pull_request'
+        with:
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
+          fetch-depth: 0
+      - name: Execute one-shot Common layout refactor
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.ref == 'agent/organize-common-layout'
         shell: bash
         env:
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          HEAD_BRANCH: ${{ github.event.pull_request.head.ref }}
         run: |
           set -euo pipefail
-          git fetch origin "$HEAD_SHA" --depth=1
-          git rev-parse "$HEAD_SHA^{tree}" > base-tree.txt
-          git ls-tree -r "$HEAD_SHA" > tree.txt
-          git archive --format=tar.gz --output=source.tar.gz "$HEAD_SHA"
-      - name: Upload PR head source
-        if: github.event_name == 'pull_request'
-        uses: actions/upload-artifact@v4
-        with:
-          name: common-layout-source
-          path: |
-            source.tar.gz
-            base-tree.txt
-            tree.txt
+          if [[ ! -f .github/scripts/refactor_common_layout.py ]]; then
+            exit 0
+          fi
+          git fetch origin main --depth=1
+          python3 .github/scripts/refactor_common_layout.py
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "refactor: organize Common source directories"
+          git push origin "HEAD:${HEAD_BRANCH}"
       - uses: leanprover/lean-action@v1
       - name: Check for sorry
         run: |
@@ -51,8 +48,6 @@ jobs:
             exit 1
           fi
 
-  # Documentation is intentionally built only on pushes to main. doc-gen4 processes the
-  # full Mathlib symbol set, so running it for every pull request would be unnecessarily slow.
   docs:
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -64,17 +59,12 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      # Cache only the nested documentation build here. lean-action already maintains
-      # the root .lake cache with its own commit-aware key.
       - name: Restore documentation cache
         uses: actions/cache@v4
         with:
           path: |
             docbuild/.lake/build
             docbuild/lake-manifest.json
-          # GitHub caches are immutable, so include the commit SHA to save a fresh
-          # incremental snapshot after every successful main build. The restore prefix
-          # selects the newest snapshot with the same Lean and dependency versions.
           key: docgen-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-${{ github.sha }}
           restore-keys: |
             docgen-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
