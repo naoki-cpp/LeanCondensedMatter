@@ -15,7 +15,7 @@ finite-mode fermionic Bloch–de Dominicis pairing-sum structure, for a single m
 **This is not yet a finite-temperature theorem.** `w` is arbitrary here — no `β`, Hamiltonian, or
 Boltzmann weight appears — so this is a purely algebraic identity for any normalized
 occupation-number-diagonal weighted functional, not yet a genuine thermal-expectation statement
-(see `Fermionic/FreeBoltzmannWeight.lean` for the specialization that supplies a genuine Gibbs
+(see `Fermionic/Thermal/FreeBoltzmannWeight.lean` for the specialization that supplies a genuine Gibbs
 weight). It matches the previously established four-position pairing weights `1`, `ζ`, `1` from
 `Common/Thermal/BlochDeDominicis/PairingWeight.lean`'s `four_position_pairings_and_weights` term by term
 (`(12)(34)`, `(13)(24)`, `(14)(23)` for the position labels `1,2,3,4 ↦ cᵢ,cᵢ†,cᵢ,cᵢ†`) — the
@@ -31,14 +31,14 @@ arbitrary normalized diagonal weight `w` used here.
 `i`, so no cross-mode independence of the weight is needed — the identity follows from CAR alone
 (`annihilate_comp_create_self`, `annihilate_comp_self`, `create_comp_self`,
 `annihilate_comp_create_comp_self`, `annihilate_comp_create_add_create_comp_annihilate` —
-`Fermionic/CanonicalAnticommutationRelations.lean`/`Fermionic/NumberOperator.lean`) plus the
+`Fermionic/Algebra/CanonicalAnticommutationRelations.lean`/`Fermionic/Algebra/NumberOperator.lean`) plus the
 diagonal-functional API (`Common.normalizedWeightedDiagonal_add`/`_id`/`_zero`). The general
 theorem, for operators at possibly distinct modes and a genuine free Gibbs weight, needs the
 multi-mode
 factorization the free partition function already exhibits
-(`Fermionic/FreePartitionFunction.lean`'s `freePartitionFunction_eq_prod`) and remains future work;
+(`Fermionic/Thermal/FreePartitionFunction.lean`'s `freePartitionFunction_eq_prod`) and remains future work;
 the middle `(13)(24)` term's vanishing here is a special case of
-`Fermionic/WeightedContraction.lean`'s same-type selection rule (a `U(1)`-charge argument, not a
+`Fermionic/Thermal/WeightedContraction.lean`'s same-type selection rule (a `U(1)`-charge argument, not a
 single-mode coincidence), so that part of the argument already generalizes.
 -/
 

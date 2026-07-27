@@ -12,7 +12,7 @@ finite products of series indexed by a `Finsupp`-indexed multi-index type: for `
 pointwise-nonnegativity hypothesis, or absolute convergence over a `NormedCommRing`), the
 multi-index series `Σ_{n : ι →₀ ℕ} ∏ i, f i (n i)` converges to `∏ i, a i`; `hasSum_prod_geometric`
 specializes this to geometric series. Extracted from Track D's bosonic Boltzmann-weight
-summability proof (`SecondQuantization/Bosonic/BoltzmannWeightSummable.lean`, B3c), which is now a
+summability proof (`SecondQuantization/Bosonic/Thermal/BoltzmannWeightSummable.lean`, B3c), which is now a
 thin corollary via `Finsupp.hasSum_prod_nonneg`. `proved`.
 
 Mathlib survey at the pinned revision: searched for finite products of `HasSum` series indexed by

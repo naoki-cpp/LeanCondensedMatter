@@ -8,7 +8,7 @@ set_option linter.style.header false
 
 Groundwork for the general (fermionic *and* bosonic) finite-temperature Bloch–de Dominicis theorem
 (`notes/roadmaps/second-quantization.md`): the reordering identities
-`Fermionic/FreeTwoPointFunction.lean`'s `annihilate_comp_create_self` (`c_i c_i† = id - N_i`, from
+`Fermionic/Thermal/FreeTwoPointFunction.lean`'s `annihilate_comp_create_self` (`c_i c_i† = id - N_i`, from
 CAR's *anti*commutator `{c_i, c_i†} = id`) and the bosonic analogue `a_i a_i† = id + N_i` (from
 CCR's *ordinary* commutator `[a_i, a_i†] = id`) are the same algebraic fact once the
 `+`-vs-`-` distinction is absorbed into `Statistics.zetaInt`'s sign `ζ = -1` (fermion) / `ζ = +1`
@@ -23,7 +23,7 @@ degrees). Here `ζ` is a single fixed constant applied uniformly to every pair `
 specialized to a statistics-indexed `exchangeCommutator` below, not `gradedCommutator`.
 
 **Nor is this a *contraction*** in the Wick-theorem sense (a thermal two-point function, a
-`ℂ`-number like `⟨T_τ c_i c_j†⟩₀` — see `Fermionic/FreeTwoPointFunction.lean`'s
+`ℂ`-number like `⟨T_τ c_i c_j†⟩₀` — see `Fermionic/Thermal/FreeTwoPointFunction.lean`'s
 `freeGibbsExpectation_annihilate_comp_create`/`_create_comp_annihilate`, which *are* contraction
 kernels). `comp_eq_id_add_of_zetaCommutator_eq_id` below is an *operator-level reordering
 identity* — it rewrites `A∘B` in terms of `B∘A`, with no state or expectation value involved.

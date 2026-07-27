@@ -5,7 +5,7 @@ set_option linter.style.header false
 /-!
 # The particle-number selection rule, generic over the occupation-state type
 
-`Fermionic/WeightedContraction.lean` proved, by direct case analysis on `FermionOccupation Mode`
+`Fermionic/Thermal/WeightedContraction.lean` proved, by direct case analysis on `FermionOccupation Mode`
 cardinality, that composing two annihilation operators (or two creation operators) always yields
 an operator with vanishing diagonal matrix coefficients. That argument never actually used
 fermionic exchange statistics: it is the general fact that an operator changing the particle
@@ -18,7 +18,7 @@ fermionic and bosonic lines can instantiate it instead of repeating the case ana
 `grading`-difference is exactly `q`, for an *arbitrary* `ℤ`-valued `grading : Config → ℤ` — the
 statement and its proofs below never use that `grading` specifically counts particles, so the same
 API applies unchanged to any other `ℤ`-grading one might put on `Config` (spin projection, a
-sublattice grading, ...). The name is generic for that reason; `Fermionic/ParticleNumberCharge.lean`
+sublattice grading, ...). The name is generic for that reason; `Fermionic/Algebra/ParticleNumberCharge.lean`
 and `Bosonic/ParticleNumberCharge.lean` are what actually specialize `grading` to
 `fermionParticleNumber`/`particleNumber` (cast to `ℤ`) to get the physical particle-number
 selection rule, e.g. `q = 1` for `create i`, `q = -1` for `annihilate i`. `q` need not be `±1`: it
