@@ -103,15 +103,16 @@ products under component-local orders.
 
 The bosonic line currently includes:
 
-- occupation states, algebraic Fock space, ladder operators, CCR, number operators, and grading
-  (`Bosonic/Algebra.lean`);
-- free time ordering, diagonal evolution, evolved ladder operators, and the algebraic
-  interaction-picture operator (`Bosonic/ImaginaryTime.lean`);
+- occupation states, algebraic Fock space, ladder operators, CCR, number operators, grading, the
+  public exchange-commutator bridge, and same-charge diagonal selection rules (`Bosonic/Algebra.lean`);
+- free time ordering, diagonal evolution, evolved ladder operators, composition preservation, and the
+  algebraic interaction-picture operator with arbitrary matrix-coefficient, continuity, and
+  interval-integrability formulas (`Bosonic/ImaginaryTime.lean`);
 - convergent free partition and particle-number series, free two-point coefficients, and an uncutoff
   two-point Bloch–de Dominicis specialization (`Bosonic/Thermal.lean`);
-- quartic interaction vertices, local-leg CCR semantics, flattened leg families, ordered diagram
-  data, component decomposition equivalence, and componentwise scalar weights
-  (`Bosonic/Diagrammatics.lean`).
+- quartic interaction vertices and their interaction-picture formulas, local-leg CCR semantics,
+  flattened leg families, ordered diagram data, component decomposition equivalence, and
+  componentwise scalar weights (`Bosonic/Diagrammatics.lean`).
 
 Thus the bosonic line matches the fermionic line through the algebraic quartic-diagram layer and the
 scalar coupling/Dyson prefactor. It does not yet include the general Dyson coefficient, full quartic
@@ -125,7 +126,7 @@ Wick amplitude, or Dyson diagram expansion.
 | CAR/CCR through Common exchange algebra | done | done | — |
 | Free imaginary-time evolution | done | done | — |
 | Algebraic interaction-picture operator | done | done | — |
-| Arbitrary interaction-picture matrix-coefficient formula | done | available through Common | A thin Bosonic-named specialization has not yet been added. |
+| Arbitrary interaction-picture matrix-coefficient formula | done | done | Shared through Common and exposed under both statistics-specific APIs. |
 | Free thermal two-point result | done | done | Bosonic proof supplies explicit summability. |
 | General finite-temperature pairing theorem | done | instantiated at two point | Arbitrary bosonic Gibbs functionals need a convergence-aware domain. |
 | Quartic local-leg and ordered-diagram data | done | done | — |
@@ -155,11 +156,9 @@ The remaining bosonic gaps should not be filled by adding a false finite-type as
 
 ## Recommended implementation order
 
-1. Add thin Bosonic names for the now-generic interaction-picture matrix-coefficient, continuity, and
-   interval-integrability theorems where they improve discoverability.
-2. Define a summability-restricted bosonic thermal functional and prove its linearity, normalization,
+1. Define a summability-restricted bosonic thermal functional and prove its linearity, normalization,
    and KMS rotation properties.
-3. Introduce a compatible bosonic operator-integral/Dyson interface.
-4. Implement the bosonic quartic Wick amplitude and Dyson diagram expansion.
-5. Finish the statistics-independent ordered-simplex shuffle and full amplitude factorization.
-6. Connect the diagram cumulant identity to coefficients of the normalized formal `log Z`.
+2. Introduce a compatible bosonic operator-integral/Dyson interface.
+3. Implement the bosonic quartic Wick amplitude and Dyson diagram expansion.
+4. Finish the statistics-independent ordered-simplex shuffle and full amplitude factorization.
+5. Connect the diagram cumulant identity to coefficients of the normalized formal `log Z`.
