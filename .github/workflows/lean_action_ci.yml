@@ -35,6 +35,17 @@ jobs:
           exec > >(tee /tmp/second-quantization-doc-update.log) 2>&1
           git fetch origin +refs/heads/agent/move-statistical-bdd-under-thermal:refs/remotes/origin/agent/move-statistical-bdd-under-thermal
           git checkout -B agent/move-statistical-bdd-under-thermal origin/agent/move-statistical-bdd-under-thermal
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("scripts/update_second_quantization_docs.py")
+          text = path.read_text(encoding="utf-8")
+          old = 'r"    - \\*\\*PR 7 in progress, split into 7a/7b/7c\\*\\*:.*?coefficient bridge\\.\\n",'
+          new = 'r"\\n\\s+- \\*\\*PR 7 in progress.*?(?=\\n7\\. \\*\\*Not started\\*\\*)",'
+          if old not in text:
+              raise SystemExit("could not find the narrow PR 7 rewrite pattern")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
           python3 scripts/update_second_quantization_docs.py
           if ! git diff --quiet; then
             git config user.name "github-actions[bot]"
