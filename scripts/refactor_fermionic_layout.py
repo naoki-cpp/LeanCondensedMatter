@@ -7,7 +7,6 @@ import subprocess
 
 REPO = Path.cwd()
 FERMIONIC = REPO / "LeanCondensedMatter/SecondQuantization/Fermionic"
-WORKFLOW = REPO / ".github/workflows/lean_action_ci.yml"
 SELF = REPO / "scripts/refactor_fermionic_layout.py"
 MODULE_PREFIX = "LeanCondensedMatter.SecondQuantization.Fermionic"
 
@@ -142,16 +141,6 @@ if missing_imports:
     details = "\n".join(f"{path}: {module}" for path, module in missing_imports)
     raise SystemExit(f"project-local imports no longer resolve:\n{details}")
 
-# Remove the temporary workflow hook and restore read-only contents permission.
-workflow_text = WORKFLOW.read_text(encoding="utf-8")
-workflow_text = workflow_text.replace("  contents: write\n", "  contents: read\n", 1)
-workflow_text = re.sub(
-    r"\n      # BEGIN TEMP FERMIONIC LAYOUT REFACTOR\n.*?\n      # END TEMP FERMIONIC LAYOUT REFACTOR\n",
-    "\n",
-    workflow_text,
-    flags=re.DOTALL,
-)
-WORKFLOW.write_text(workflow_text, encoding="utf-8")
-
+# The workflow is restored in a separate connector commit because Actions tokens cannot update it.
 SELF.unlink()
 print("Fermionic source layout refactor completed successfully.")
