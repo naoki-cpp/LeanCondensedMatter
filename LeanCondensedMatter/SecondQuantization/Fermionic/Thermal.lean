@@ -4,8 +4,8 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFun
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeTwoPointFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.WeightedContraction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.QuantumLinkedCluster
-import LeanCondensedMatter.SecondQuantization.Fermionic.BlochDeDominicis.Examples.SingleMode
-import LeanCondensedMatter.SecondQuantization.Fermionic.BlochDeDominicis.TwoPoint
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BlochDeDominicis.Examples.SingleMode
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BlochDeDominicis.TwoPoint
 
 set_option linter.style.header false
 
