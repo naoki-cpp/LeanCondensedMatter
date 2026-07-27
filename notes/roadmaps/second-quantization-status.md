@@ -23,19 +23,27 @@ The parity boundary is analytic rather than combinatorial:
 Sources: `Fermionic/Occupation.lean`, `Bosonic/Algebra.lean`,
 `Common/WeightedDiagonalFunctional.lean`, and `Common/FiniteOperatorIntegral.lean`.
 
-## Public bosonic import layout
+## Public import layouts
 
-The bosonic public API has four umbrellas:
+The two statistics-specific APIs use parallel umbrellas wherever their mathematics has matching
+responsibilities.
 
-| Import | Scope |
-|---|---|
-| `SecondQuantization.Bosonic.Algebra` | Occupation states, algebraic Fock space, ladder operators, CCR, exchange algebra, grading, and number operators. |
-| `SecondQuantization.Bosonic.ImaginaryTime` | Time ordering, free diagonal evolution, evolved ladder operators, and the algebraic interaction picture. |
-| `SecondQuantization.Bosonic.Thermal` | Convergent free thermal sums, two-point coefficients, and the uncutoff bosonic two-point Bloch–de Dominicis specialization. |
-| `SecondQuantization.Bosonic.Diagrammatics` | Quartic vertices, ordered diagrams, connected-component decomposition, and scalar-prefactor factorization. |
+| Area | Fermionic import | Bosonic import |
+|---|---|---|
+| Algebra | `SecondQuantization.Fermionic.Algebra` | `SecondQuantization.Bosonic.Algebra` |
+| Imaginary time | `SecondQuantization.Fermionic.ImaginaryTime` | `SecondQuantization.Bosonic.ImaginaryTime` |
+| Free thermal theory | `SecondQuantization.Fermionic.Thermal` | `SecondQuantization.Bosonic.Thermal` |
+| Quartic diagrammatics | `SecondQuantization.Fermionic.Diagrammatics` | `SecondQuantization.Bosonic.Diagrammatics` |
 
-`SecondQuantization.Bosonic` imports all four. Smaller implementation modules are imported through
-their canonical subdirectory paths; redundant top-level compatibility imports are not retained.
+The fermionic line additionally exports `SecondQuantization.Fermionic.Perturbation`, containing the
+formal partition-series logarithm and finite-basis Dyson construction. There is no bosonic umbrella
+with the same role yet because the current operator integral and arbitrary Gibbs expectation depend
+on the finite fermionic occupation basis.
+
+`SecondQuantization.Fermionic` imports all five fermionic umbrellas, while
+`SecondQuantization.Bosonic` imports the four bosonic umbrellas. Smaller implementation modules remain
+separate when they express a useful proof or dependency boundary; the layouts are not forced to have
+identical file counts.
 
 ## Shared statistics-independent layer
 
