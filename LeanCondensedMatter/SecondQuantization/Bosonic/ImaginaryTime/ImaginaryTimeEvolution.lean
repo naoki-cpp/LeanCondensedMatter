@@ -1,24 +1,66 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.OperatorAlgebra.CreationAnnihilation
 import LeanCondensedMatter.SecondQuantization.Common.DiagonalEvolution
+import LeanCondensedMatter.SecondQuantization.Common.InteractionPicture
+import LeanCondensedMatter.SecondQuantization.Common.TimeOrdering
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 
 set_option linter.style.header false
 
 /-!
-# Free bosonic imaginary-time evolution
+# Bosonic imaginary-time theory
 
-This module defines the free-energy eigenvalue, the corresponding diagonal Hamiltonian and
-algebraic imaginary-time evolution on the bosonic occupation basis. It also proves the evolution
-laws for creation and annihilation operators and their KMS-type commutation relations.
+This module contains the bosonic imaginary-time layer:
+
+- bosonic time ordering;
+- the free-energy eigenvalue and diagonal free Hamiltonian;
+- algebraic free and Heisenberg imaginary-time evolution;
+- evolved creation and annihilation operators;
+- the algebraic interaction-picture operator.
 
 All constructions are algebraic. No operator exponential, Hilbert-space completion, positivity
-assumption on the dispersion, or convergence theorem is used.
+assumption on the dispersion, or convergence theorem is used. Matrix-coefficient continuity for a
+general bosonic interaction-picture operator is intentionally omitted because the current Common
+proof assumes a finite configuration type.
 -/
 
 namespace SecondQuantization
 namespace Bosonic
 
 variable {Mode : Type*} [DecidableEq Mode]
+
+/-- The bosonic imaginary-time-ordered product of two operators. -/
+noncomputable def timeOrderedProduct
+    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (τA τB : ℝ) :
+    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+  Common.timeOrderedProduct Statistics.boson A B τA τB
+
+/-- At strictly later time, `A` acts first. -/
+theorem timeOrderedProduct_of_gt
+    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) {τA τB : ℝ} (h : τB < τA) :
+    timeOrderedProduct A B τA τB = A.comp B :=
+  Common.timeOrderedProduct_of_gt Statistics.boson A B h
+
+/-- At strictly later time, `B` acts first without a bosonic exchange sign. -/
+theorem timeOrderedProduct_of_lt
+    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) {τA τB : ℝ} (h : τA < τB) :
+    timeOrderedProduct A B τA τB = B.comp A := by
+  simpa [timeOrderedProduct] using
+    (Common.timeOrderedProduct_of_lt Statistics.boson A B h)
+
+/-- Equal imaginary times give the symmetric product. -/
+@[simp]
+theorem timeOrderedProduct_self_time
+    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (τ : ℝ) :
+    timeOrderedProduct A B τ τ = (2⁻¹ : ℂ) • (A.comp B + B.comp A) := by
+  simpa [timeOrderedProduct] using
+    (Common.timeOrderedProduct_self_time Statistics.boson A B τ)
+
+/-- Swapping both operators and their times leaves the bosonic ordered product unchanged. -/
+theorem timeOrderedProduct_swap
+    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (τA τB : ℝ) :
+    timeOrderedProduct B A τB τA = timeOrderedProduct A B τA τB := by
+  simpa [timeOrderedProduct] using
+    (Common.timeOrderedProduct_swap Statistics.boson A B τA τB)
 
 /-- The free-Hamiltonian eigenvalue `E(n) = Σᵢ n(i) ε(i)`. -/
 def freeEigenvalue (ε : Mode → ℝ) (n : Occupation Mode) : ℝ :=
@@ -184,6 +226,19 @@ theorem imaginaryTimeEvolveFree_comp_create (ε : Mode → ℝ) (τ : ℝ) (i : 
       rw [hcast]
       exact imaginaryTimeEvolve_create ε τ i)
   rwa [hcast] at h
+
+/-- The interaction-picture operator `V_I(τ) = e^{τH₀} V e^{-τH₀}`. -/
+noncomputable def interactionPicture (ε : Mode → ℝ)
+    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (τ : ℝ) :
+    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+  Common.interactionPicture (freeEigenvalue ε) V τ
+
+/-- At zero imaginary time, the interaction picture is the original operator. -/
+@[simp]
+theorem interactionPicture_zero (ε : Mode → ℝ)
+    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    interactionPicture ε V 0 = V :=
+  Common.interactionPicture_zero (freeEigenvalue ε) V
 
 end Bosonic
 end SecondQuantization
