@@ -5,6 +5,7 @@ import LeanCondensedMatter.Analysis.HilbertSchmidtBasic
 import LeanCondensedMatter.Analysis.HilbertSchmidtInnerProduct
 import LeanCondensedMatter.Analysis.HilbertSchmidtTrace
 import LeanCondensedMatter.Analysis.OrderedSimplexIntegral
+import LeanCondensedMatter.Analysis.OrderedSimplexIntegralCalculus
 import LeanCondensedMatter.Analysis.PeierlsBogoliubov
 import LeanCondensedMatter.Analysis.TraceClassBasic
 import LeanCondensedMatter.Analysis.TraceClassOps
