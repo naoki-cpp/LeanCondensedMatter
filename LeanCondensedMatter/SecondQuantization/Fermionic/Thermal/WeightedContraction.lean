@@ -45,7 +45,7 @@ quasi-free states.
 
 The basis-level vanishing is now an instance of `Common/Algebra/ParticleNumberSelectionRule.lean`'s
 general particle-number selection rule, rather than a fermion-specific case analysis:
-`carriesParticleNumberCharge_annihilate`/`_create` (`Fermionic/ParticleNumberCharge.lean`) show
+`carriesParticleNumberCharge_annihilate`/`_create` (`Fermionic/Algebra/ParticleNumberCharge.lean`) show
 `annihilate i`/`create i` carry particle-number charge `∓1`,
 `Common.CarriesGradingDegree.comp` combines these into charge `∓2` for the composite
 operators, and `Common.diagonalCoeff_eq_zero_of_carriesGradingDegree` concludes that any

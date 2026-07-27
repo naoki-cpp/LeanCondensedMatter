@@ -24,8 +24,8 @@ freePartitionFunction`, not `1`); finite-set partition combinatorics (Track B's
 `Finpartition.momentFromCumulant`/`cumulantFromMoment`) is native to *exponential* generating
 series, `Σₙ mₙ λⁿ/n!`. Matching the two conventions forces `mₙ = n! zₙ` — omitting the factorial
 would give set-partition block products the wrong multinomial weighting once diagram families with
-more than one vertex are built on top of this file (`Fermionic/QuarticInteraction.lean`,
-`Fermionic/WickDiagram.lean`, later PRs in this plan).
+more than one vertex are built on top of this file (`Fermionic/Diagrammatics/QuarticInteraction.lean`,
+`Fermionic/Diagrammatics/WickDiagram.lean`, later PRs in this plan).
 
 **Not yet connected to `PowerSeries.log`'s coefficients.** `dysonVertexCumulant` is only
 `Finpartition.cumulantFromMoment` applied to `dysonVertexMoment` — the finite-set combinatorial

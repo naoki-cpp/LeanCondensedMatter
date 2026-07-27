@@ -107,7 +107,7 @@ special case where the hypothesis is automatic (a finite sum is always summable)
 piece needed for a bosonic analogue of finite-dimensional trace cyclicity, where `Config :=
 Bosonic.Occupation Mode := Mode →₀ ℕ` is genuinely infinite even for a finite mode set: an actual
 instantiation for the free bosonic Boltzmann weight still needs to establish the summability
-hypothesis from `Bosonic/BoltzmannWeightSummable.lean`-style convergence facts, which is not done
+hypothesis from `Bosonic/Thermal/BoltzmannWeightSummable.lean`-style convergence facts, which is not done
 here. -/
 theorem tsumTrace_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (h : Summable (Function.uncurry (fun n k => matrixCoeff A n k * matrixCoeff B k n))) :

@@ -21,9 +21,9 @@ Matsubara Green-function apparatus.** `freeGibbsGreenFunction` accepts any `β :
 domain `0 ≤ τ, τ' ≤ β`, KMS antiperiodicity away from coincident-time discontinuities, together
 with the corresponding one-sided boundary relations) is not yet
 established. The closed-form free-fermion occupation number `⟨N_i⟩₀ = 1/(e^{βε_i}+1)` is now
-proved in `Fermionic/FreePartitionFunction.lean`, and the closed-form two-point Green function
+proved in `Fermionic/Thermal/FreePartitionFunction.lean`, and the closed-form two-point Green function
 (`G₀,ᵢⱼ = 0` for `i ≠ j`, its explicit `τ`-dependence for `i = j`) in
-`Fermionic/FreeTwoPointFunction.lean`; only the KMS/fundamental-domain package remains future
+`Fermionic/Thermal/FreeTwoPointFunction.lean`; only the KMS/fundamental-domain package remains future
 work.
 -/
 

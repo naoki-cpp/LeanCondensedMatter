@@ -16,7 +16,7 @@ itself built from `Common/Thermal/WeightedDiagonalFunctional.lean`'s trace cycli
 operators — validating the whole general `Common/` Bloch–de Dominicis chain (PRs building trace
 cyclicity, the KMS relation, and their combination) by cross-checking it reproduces the already
 independently-established closed-form fermionic 2-point function
-(`Fermionic/FreeTwoPointFunction.lean`'s `freeGibbsGreenFunction_of_gt_self`/Fermi–Dirac
+(`Fermionic/Thermal/FreeTwoPointFunction.lean`'s `freeGibbsGreenFunction_of_gt_self`/Fermi–Dirac
 occupation number).
 
 The instantiation uses only: `imaginaryTimeEvolve_annihilate`'s eigenvalue-shift fact (`c_i(τ) =
@@ -36,7 +36,7 @@ Tr[e^{-βH₀}]`, a direct instantiation of `Common.traceFock_diagonalEvolution_
 `ζ := -1`, `c₁ⱼ := δᵢⱼ` (from `anticomm_annihilate_create`, CAR's mixed exchange relation). At
 `i = j` this recovers `⟨cᵢcᵢ†⟩ = 1/(1 + e^{-εᵢβ}) = e^{εᵢβ}/(e^{εᵢβ}+1) = 1 - ⟨Nᵢ⟩`, matching the
 Fermi–Dirac distribution already established independently in
-`Fermionic/FreeTwoPointFunction.lean`. -/
+`Fermionic/Thermal/FreeTwoPointFunction.lean`. -/
 theorem traceFock_imaginaryTimeEvolveFree_comp_annihilate_comp_create
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (1 + Complex.exp ((-(ε i) * β : ℝ) : ℂ)) *

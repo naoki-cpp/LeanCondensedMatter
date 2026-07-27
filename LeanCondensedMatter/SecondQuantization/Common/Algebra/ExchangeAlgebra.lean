@@ -10,7 +10,7 @@ Groundwork for the general (fermionic *and* bosonic) finite-temperature Bloch–
 creation/annihilation operator past another one at every step, using the *all-index* exchange
 relation `a_i a_j† - ζ a_j† a_i = δᵢⱼ`, `a_i a_j - ζ a_j a_i = 0`, `a_i† a_j† - ζ a_j† a_i† = 0` —
 not just the single-mode `a_i a_i† = id + ζ N_i` reordering identity
-(`Fermionic/NumberOperator.lean`/`Bosonic/NumberOperator.lean`'s
+(`Fermionic/Algebra/NumberOperator.lean`/`Bosonic/OperatorAlgebra/NumberOperator.lean`'s
 `annihilate_comp_create_self`).
 CAR (`ζ = -1`) and CCR (`ζ = 1`) both have exactly this shape once stated via
 `Common.exchangeCommutator`, so `ExchangeAlgebra` packages it as a single interface both
@@ -55,11 +55,11 @@ class ExchangeAlgebra (s : Statistics) (Mode Config : Type*) [DecidableEq Mode] 
 variable {s : Statistics} {Mode Config : Type*} [DecidableEq Mode] [ExchangeAlgebra s Mode Config]
 
 /-- **`[a_i, a_i†]_ζ = id`, for any statistics instantiating `ExchangeAlgebra`**: the `i = j` case
-of `annihilate_create`. Generalizes `Fermionic/NumberOperator.lean`'s and
-`Bosonic/NumberOperator.lean`'s previously-independently-proved
+of `annihilate_create`. Generalizes `Fermionic/Algebra/NumberOperator.lean`'s and
+`Bosonic/OperatorAlgebra/NumberOperator.lean`'s previously-independently-proved
 `exchangeCommutator_annihilate_create_self` — both are now one-line instances of this, since their
 `Common.ExchangeAlgebra` instances package the concrete `annihilate`/`create` operators directly
-(`Fermionic/ExchangeAlgebra.lean`'s/`Bosonic/ExchangeAlgebra.lean`'s `exchangeAlgebra`
+(`Fermionic/Algebra/ExchangeAlgebra.lean`'s/`Bosonic/OperatorAlgebra/ExchangeAlgebra.lean`'s `exchangeAlgebra`
 instances). -/
 theorem exchangeCommutator_annihilate_create_self (i : Mode) :
     exchangeCommutator s (ExchangeAlgebra.annihilate (s := s) (Config := Config) i)
@@ -70,8 +70,8 @@ theorem exchangeCommutator_annihilate_create_self (i : Mode) :
 
 /-- **`a_i a_i† = id + ζ•N_i`, for any statistics instantiating `ExchangeAlgebra`**, from
 `exchangeCommutator_annihilate_create_self` via `comp_eq_id_add_of_zetaCommutator_eq_id`.
-Generalizes `Fermionic/NumberOperator.lean`'s `annihilate_comp_create_self` (`c_i c_i† = id - N_i`,
-`ζ = -1`) and `Bosonic/NumberOperator.lean`'s (`a_i a_i† = id + N_i`, `ζ = 1`) — both are now
+Generalizes `Fermionic/Algebra/NumberOperator.lean`'s `annihilate_comp_create_self` (`c_i c_i† = id - N_i`,
+`ζ = -1`) and `Bosonic/OperatorAlgebra/NumberOperator.lean`'s (`a_i a_i† = id + N_i`, `ζ = 1`) — both are now
 one-line instances of this rather than independently re-deriving the same reordering. -/
 theorem annihilate_comp_create_self (i : Mode) :
     (ExchangeAlgebra.annihilate (s := s) (Config := Config) i).comp

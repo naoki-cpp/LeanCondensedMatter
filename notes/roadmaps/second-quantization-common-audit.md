@@ -73,56 +73,77 @@ factored through a general `Finsupp` linear-map module.  This would be a larger 
 simple file move, because these names currently define the algebraic-Fock vocabulary used throughout
 SecondQuantization.
 
-## Bosonic results that may later be nearly free
+## Bosonic specializations already exposed
 
-No Bosonic files are changed by this audit.  The following Common results or proof improvements are
-likely to support later thin Bosonic specializations:
+The statistics-independent improvements identified by the original audit have now produced thin
+Bosonic API where no new convergence argument is needed:
 
-1. **Interaction-picture matrix coefficients without a finite configuration type.**
-   `Common.matrixCoeff_interactionPicture`, its continuity theorem, and its interval-integrability
-   theorem now use only finite support of algebraic-Fock vectors.  A later Bosonic PR can expose the
-   corresponding theorems without adding convergence assumptions.
-2. **Summability-aware trace cyclicity.**
-   `Common.tsumTrace_comp_comm` and the related summability lemmas already apply to an arbitrary
-   configuration type once the required double-series summability is supplied.  Bosonic work should
-   prove those hypotheses for the intended operator class rather than recreate the algebraic proof.
-3. **Summability-aware KMS rotation.**
-   The `tsumTrace` KMS-rotation path in `Common.KMSRotation` is already formulated for infinite
-   configuration types under explicit summability hypotheses.  Free Bosonic aliases should follow
-   only after the concrete Boltzmann-weight hypotheses are connected.
-4. **Particle-number selection rules.**
-   `Common.ParticleNumberSelectionRule` can yield Bosonic vanishing statements whenever the relevant
-   charge-shift hypotheses are available; these should be specialized only where they improve the
-   public Bosonic API.
-5. **Quartic component identities.**
-   Common connected-component restriction, reassembly, decomposition, vertex-product, and sign
-   factorization are already statistics independent.  Future Bosonic additions should normally be
-   thin names or direct uses, not duplicated proofs.
+1. **Interaction-picture regularity.**
+   `Bosonic.matrixCoeff_interactionPicture`, its continuity theorem, and its interval-integrability
+   theorem directly specialize the Common finite-support proof; no finite configuration type is
+   assumed.
+2. **Algebraic free-evolution and quartic formulas.**
+   The Bosonic API exposes Heisenberg-evolution composition together with interaction-picture formulas
+   for quartic vertices and finite quartic interactions.
+3. **Exchange and particle-number bridges.**
+   The ordinary bosonic commutator is connected to `Common.exchangeCommutator`, and same-charge
+   two-ladder diagonal coefficients vanish by the Common particle-number selection rule.
 
-The main remaining Bosonic obstruction is still analytic: arbitrary Gibbs expectations and
-operator-valued Dyson integration need a convergence-aware domain.  The algebraic and finite-support
-results above should not be blocked on that larger construction.
+These additions are API specializations rather than duplicated proofs. They do not construct a
+general bosonic Gibbs functional or a bosonic Dyson integral.
+
+## Remaining nearly-free Bosonic candidates
+
+1. **Summability-aware trace cyclicity.**
+   `Common.tsumTrace_comp_comm` and related lemmas apply to arbitrary configuration types once the
+   required double-series summability is supplied. Concrete Bosonic results should prove those
+   hypotheses for a useful operator class rather than recreate the algebraic proof.
+2. **Summability-aware KMS rotation.**
+   The `tsumTrace` KMS path is already generic under explicit summability hypotheses. A public
+   Bosonic theorem still needs the relevant Boltzmann-weight estimates and a clear operator domain.
+3. **Additional quartic component aliases.**
+   Common restriction, reassembly, decomposition, vertex-product, and sign-factorization results are
+   statistics independent. New Bosonic names are worthwhile only where they make the public API
+   easier to use; the proofs should remain in Common.
+
+The main remaining Bosonic obstruction is analytic: arbitrary Gibbs expectations and operator-valued
+Dyson integration need a convergence-aware domain. Algebraic and finite-support results should remain
+independent of that larger construction.
 
 ## Physical source layout
 
-The responsibility umbrellas now match the physical directory layout:
+The public responsibility umbrellas and physical source layout now agree wherever the internal
+mathematics has the same boundary:
 
-- `Common/Algebra/` — basis-independent algebraic Fock and exchange infrastructure;
-- `Common/ImaginaryTime/` — time ordering, diagonal evolution, interaction picture, and KMS rotation;
-- `Common/Thermal/` — normalized/weighted functionals and Bloch–de Dominicis;
-- `Common/Perturbation/` — finite-basis operator integration;
-- `Common/Diagrammatics/` — quartic diagram data and component decomposition.
+- `Common/{Algebra,ImaginaryTime,Thermal,Perturbation,Diagrammatics}/` contains the shared
+  statistics-independent implementations;
+- `Fermionic/{Algebra,ImaginaryTime,Thermal,Perturbation,Diagrammatics}/` contains the finite-mode
+  fermionic implementations, with `QuantumLinkedCluster` classified under `Thermal/`;
+- `Bosonic/{ImaginaryTime,Thermal,Diagrammatics}/` follows the same responsibility names, while the
+  algebraic implementation intentionally keeps the finer `Foundations/` and `OperatorAlgebra/`
+  split behind the public `Bosonic.Algebra` umbrella.
 
-No compatibility shims remain at the old flat `Common/*.lean` implementation paths. The only
-root-level files under `Common/` are the five public responsibility umbrellas.
+No compatibility shims remain at the former flat Common or Fermionic implementation paths. The
+statistics-specific Bloch–de Dominicis specializations now live under each statistics' `Thermal/`
+directory. Bosonic plain-namespace occupation/Fock aliases still exist as compatibility API, but
+internal Bosonic code uses the canonical `SecondQuantization.Bosonic` names.
 
-### Bloch–de Dominicis internal layout
+### Bloch–de Dominicis layout
 
-`Common/Thermal/BlochDeDominicis/` is split by mathematical role rather than theorem length:
+The statistics-independent framework is under `Common/Thermal/BlochDeDominicis/` and is split by
+mathematical role:
 
 - `Unnormalized/` contains operator and trace peel identities before normalization;
 - `GibbsExpectation/` contains the normalized functional and two-/four-point recursion;
 - `Induction.lean` contains the arbitrary-length pairing theorem;
 - `PairingWeight.lean` contains the statistics-dependent crossing weight.
 
-This keeps the recursion mechanism visible without mixing it with the normalization layer.
+Concrete specializations are colocated with the thermal APIs that discharge their hypotheses:
+
+- `Bosonic/Thermal/BlochDeDominicis/TwoPoint.lean` supplies the uncutoff summability proof;
+- `Fermionic/Thermal/BlochDeDominicis/TwoPoint.lean` supplies the finite-mode free two-point check;
+- `Fermionic/Thermal/BlochDeDominicis/Examples/SingleMode.lean` records the algebraic four-point
+  example for a normalized diagonal weight.
+
+This separates the general recursion mechanism from the statistics-specific analytic or finite-basis
+verification without pretending that the two concrete thermal theories have identical assumptions.
