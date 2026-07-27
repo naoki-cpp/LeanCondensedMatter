@@ -10,8 +10,8 @@ set_option linter.style.header false
 A bosonic occupation state is a finitely supported function `Mode →₀ ℕ`. The support is finite even
 when the mode type is not, so the bookkeeping layer does not require `[Fintype Mode]`.
 
-The canonical API lives in `SecondQuantization.Bosonic`. Compatibility aliases for the older
-`SecondQuantization`-level names are retained at the end of the file.
+The public API lives in `SecondQuantization.Bosonic`; the former plain-namespace compatibility
+aliases have been removed.
 -/
 
 namespace SecondQuantization
@@ -149,62 +149,5 @@ theorem removeOccupation_createOccupation_of_ne {i j : Mode} (h : i ≠ j) (n : 
         createOccupation_apply_ne hkj, removeOccupation_apply_ne hki]
 
 end Bosonic
-
-/-! ## Compatibility aliases
-
-These preserve the original `SecondQuantization`-level occupation API while new code uses the
-`SecondQuantization.Bosonic` namespace.
--/
-
-variable {Mode : Type*}
-
-abbrev Occupation (Mode : Type*) := Bosonic.Occupation Mode
-abbrev vacuum : Occupation Mode := Bosonic.vacuum
-abbrev particleNumber (n : Occupation Mode) : ℕ := Bosonic.particleNumber n
-
-@[simp]
-theorem particleNumber_zero : particleNumber (0 : Occupation Mode) = 0 :=
-  Bosonic.particleNumber_zero
-
-@[simp]
-theorem particleNumber_vacuum : particleNumber (vacuum : Occupation Mode) = 0 :=
-  Bosonic.particleNumber_vacuum
-
-theorem particleNumber_add (m n : Occupation Mode) :
-    particleNumber (m + n) = particleNumber m + particleNumber n :=
-  Bosonic.particleNumber_add m n
-
-noncomputable abbrev singleOccupation (i : Mode) : Occupation Mode :=
-  Bosonic.singleOccupation i
-
-@[simp]
-theorem singleOccupation_apply_same (i : Mode) : singleOccupation i i = 1 :=
-  Bosonic.singleOccupation_apply_same i
-
-@[simp]
-theorem singleOccupation_apply_ne {i j : Mode} (h : j ≠ i) : singleOccupation i j = 0 :=
-  Bosonic.singleOccupation_apply_ne h
-
-@[simp]
-theorem particleNumber_singleOccupation (i : Mode) :
-    particleNumber (singleOccupation i : Occupation Mode) = 1 :=
-  Bosonic.particleNumber_singleOccupation i
-
-noncomputable abbrev createOccupation (i : Mode) (n : Occupation Mode) : Occupation Mode :=
-  Bosonic.createOccupation i n
-
-@[simp]
-theorem particleNumber_createOccupation (i : Mode) (n : Occupation Mode) :
-    particleNumber (createOccupation i n) = particleNumber n + 1 :=
-  Bosonic.particleNumber_createOccupation i n
-
-@[simp]
-theorem createOccupation_apply_same (i : Mode) (n : Occupation Mode) :
-    createOccupation i n i = n i + 1 :=
-  Bosonic.createOccupation_apply_same i n
-
-theorem createOccupation_apply_ne {i j : Mode} (h : j ≠ i) (n : Occupation Mode) :
-    createOccupation i n j = n j :=
-  Bosonic.createOccupation_apply_ne h n
 
 end SecondQuantization

@@ -123,10 +123,10 @@ mathematics has the same boundary:
   algebraic implementation intentionally keeps the finer `Foundations/` and `OperatorAlgebra/`
   split behind the public `Bosonic.Algebra` umbrella.
 
-No compatibility shims remain at the former flat Common or Fermionic implementation paths. The
-statistics-specific Bloch–de Dominicis specializations now live under each statistics' `Thermal/`
-directory. Bosonic plain-namespace occupation/Fock aliases still exist as compatibility API, but
-internal Bosonic code uses the canonical `SecondQuantization.Bosonic` names.
+No compatibility shims remain at the former flat Common or Fermionic implementation paths, and the
+legacy plain-namespace Bosonic occupation/Fock aliases have also been removed. The
+statistics-specific Bloch–de Dominicis specializations live under each statistics' `Thermal/`
+directory, while the canonical Bosonic API lives exclusively under `SecondQuantization.Bosonic`.
 
 ### Bloch–de Dominicis layout
 

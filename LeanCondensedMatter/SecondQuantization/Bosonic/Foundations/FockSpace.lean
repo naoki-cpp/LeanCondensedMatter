@@ -11,7 +11,7 @@ The bosonic Fock space is the free complex vector space on bosonic occupation st
 algebraic, finite-support construction; no Hilbert-space completion or operator-domain theory is
 included here.
 
-`Bosonic.FockSpace` is the canonical name. `FockSpaceBosonic` is retained as a compatibility alias.
+The public type is `Bosonic.FockSpace`.
 -/
 
 namespace SecondQuantization
@@ -21,9 +21,6 @@ variable {Mode : Type*} [DecidableEq Mode]
 
 /-- The algebraic bosonic Fock space on occupation-number states. -/
 abbrev FockSpace (Mode : Type*) [DecidableEq Mode] := Common.AlgebraicFock (Occupation Mode)
-
-/-- Compatibility alias for the original bosonic Fock-space name. -/
-abbrev FockSpaceBosonic (Mode : Type*) [DecidableEq Mode] := FockSpace Mode
 
 /-- The basis vector corresponding to occupation state `n`. -/
 noncomputable def basisState (n : Occupation Mode) : FockSpace Mode :=
