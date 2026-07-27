@@ -28,7 +28,7 @@ jobs:
 
           path = Path("notes/roadmaps/second-quantization.md")
           text = path.read_text(encoding="utf-8")
-          key = "PR 3, `Fermionic/Diagrammatics/QuarticInteraction.lean`"
+          key = "PR 1, `Combinatorics/DiagramConnectedness.lean`"
           marker = "7. **Not started**"
           key_pos = text.find(key)
           marker_pos = text.find(marker, key_pos)
@@ -37,35 +37,47 @@ jobs:
           start = text.rfind("\n", 0, key_pos) + 1
           end = text.rfind("\n", 0, marker_pos)
 
-          replacement = """    - PR 3, `Fermionic/Diagrammatics/QuarticInteraction.lean` — the first concrete,
-              generally non-diagonal quartic vertex `Σ g(q) cᵢ†cⱼ†cₗcₖ` (no
-              Hermiticity/antisymmetry/momentum-conservation baked in yet).
-            - PR 4a/4b introduced the quartic Wick-diagram data and connectedness layer in
-              `Fermionic/Diagrammatics/WickDiagram.lean` and
-              `Fermionic/Diagrammatics/WickDiagram/Connected.lean`.
-            - PR 5a/5b/5c added `Analysis/OrderedSimplexIntegral.lean`, pairing relabelling,
-              `Fermionic/Diagrammatics/WickDiagram/Ordered.lean`, and
-              `Fermionic/Diagrammatics/WickDiagram/Amplitude.lean`.
-            - PR 6 proved the Dyson diagram expansion in
-              `Fermionic/Diagrammatics/DysonDiagramExpansion.lean`, using the flattened local-leg
-              semantics from `Fermionic/Diagrammatics/WickDiagram/LegFamily.lean` and
-              `Fermionic/Diagrammatics/QuarticLocalLeg.lean`.
-            - PR 7 completed component partition, restriction, connectedness, reassembly, the
-              decomposition equivalence, and scalar-prefactor factorization under
-              `Fermionic/Diagrammatics/WickDiagram/`. The remaining full-amplitude factorization is the
-              ordered-simplex shuffle together with pairing-weight and pair-value compatibility under
-              component-local orders; after that come the finite-set LCT and the `PowerSeries.log`
-              coefficient bridge.
-          """
+          lines = [
+              "   - PR 1, `Combinatorics/DiagramConnectedness.lean` — abstract `WeightedDiagramFamily`,",
+              "     `diagramMoment_eq_momentFromCumulant`/`cumulantFromMoment_diagramMoment` connecting to",
+              "     `MomentCumulant.lean`. Purely combinatorial, no `SecondQuantization` import.",
+              "   - PR 2, `Fermionic/Perturbation/DysonVertexMoment.lean` — the `ℕ`-indexed Dyson series ↔ Track B's",
+              "     `Finset α → ℂ` moment type seam (`dysonVertexMoment := S.card! • normalizedDysonPartitionCoeff`,",
+              "     with the factorial converting ordinary to exponential generating coefficients).",
+              "   - PR 3, `Fermionic/Diagrammatics/QuarticInteraction.lean` — the first concrete,",
+              "     generally non-diagonal quartic vertex `Σ g(q) cᵢ†cⱼ†cₗcₖ`, with no",
+              "     Hermiticity, antisymmetry, or momentum conservation built into the definition.",
+              "   - PR 4a/4b introduced the quartic Wick-diagram data and connectedness layer in",
+              "     `Fermionic/Diagrammatics/WickDiagram.lean` and",
+              "     `Fermionic/Diagrammatics/WickDiagram/Connected.lean`.",
+              "   - PR 5a/5b/5c added `Analysis/OrderedSimplexIntegral.lean`, pairing relabelling,",
+              "     `Fermionic/Diagrammatics/WickDiagram/Ordered.lean`, and",
+              "     `Fermionic/Diagrammatics/WickDiagram/Amplitude.lean`.",
+              "   - PR 6 proved the Dyson diagram expansion in",
+              "     `Fermionic/Diagrammatics/DysonDiagramExpansion.lean`, using the flattened local-leg",
+              "     semantics from `Fermionic/Diagrammatics/WickDiagram/LegFamily.lean` and",
+              "     `Fermionic/Diagrammatics/QuarticLocalLeg.lean`.",
+              "   - PR 7 completed component partition, restriction, connectedness, reassembly, the",
+              "     decomposition equivalence, and scalar-prefactor factorization under",
+              "     `Fermionic/Diagrammatics/WickDiagram/`. The remaining full-amplitude factorization is the",
+              "     ordered-simplex shuffle together with pairing-weight and pair-value compatibility under",
+              "     component-local orders; after that come the finite-set LCT and the `PowerSeries.log`",
+              "     coefficient bridge.",
+          ]
+          replacement = "\n".join(lines) + "\n"
           text = text[:start] + replacement + text[end:]
           path.write_text(text, encoding="utf-8")
           PY
 
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add notes/roadmaps/second-quantization.md
-          git commit -m "docs: normalize diagrammatics roadmap formatting"
-          git push origin HEAD:agent/final-second-quantization-docs
+          if git diff --quiet; then
+            echo "Diagrammatics roadmap formatting is already normalized."
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add notes/roadmaps/second-quantization.md
+            git commit -m "docs: normalize diagrammatics roadmap formatting"
+            git push origin HEAD:agent/final-second-quantization-docs
+          fi
 
       - name: Upload documentation updater diagnostics
         if: steps.docs-update.outcome == 'failure'
