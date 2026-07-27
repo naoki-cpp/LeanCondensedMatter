@@ -42,11 +42,6 @@ theorem orderedSimplexIntegral_succ_zero_bound (n : ℕ)
     orderedSimplexIntegral (n + 1) 0 f = 0 := by
   simp [orderedSimplexIntegral_succ]
 
--- Use the normed-space structure supplied by the real normed algebra on `ℂ` throughout the
--- derivative statements below. This keeps the fundamental theorem and the product rule on the
--- same instance.
-local instance : NormedSpace ℝ ℂ := NormedAlgebra.toNormedSpace ℂ
-
 /-- Fundamental theorem of calculus for an ordered-simplex integral: differentiating in the upper
 bound fixes the outermost time coordinate at that bound. -/
 theorem hasDerivAt_orderedSimplexIntegral_succ (n : ℕ)
@@ -69,6 +64,7 @@ theorem orderedSimplexIntegral_succ_mul_succ (m n : ℕ) (β : ℝ)
             orderedSimplexIntegral (n + 1) t g +
           orderedSimplexIntegral (m + 1) t f *
             orderedSimplexIntegral n t (fun rest => g (Fin.cons t rest)) := by
+  letI : NormedSpace ℝ ℂ := NormedAlgebra.toNormedSpace ℂ
   let F : ℝ → ℂ := fun t =>
     orderedSimplexIntegral (m + 1) t f * orderedSimplexIntegral (n + 1) t g
   let F' : ℝ → ℂ := fun t =>
@@ -76,11 +72,23 @@ theorem orderedSimplexIntegral_succ_mul_succ (m n : ℕ) (β : ℝ)
         orderedSimplexIntegral (n + 1) t g +
       orderedSimplexIntegral (m + 1) t f *
         orderedSimplexIntegral n t (fun rest => g (Fin.cons t rest))
+  have hleft : ∀ t : ℝ,
+      HasDerivAt (fun s : ℝ => orderedSimplexIntegral (m + 1) s f)
+        (orderedSimplexIntegral m t (fun rest => f (Fin.cons t rest))) t := by
+    intro t
+    have hboundary := continuous_orderedSimplexIntegral_boundary m f hf
+    simpa only [orderedSimplexIntegral_succ] using
+      (hboundary.integral_hasStrictDerivAt 0 t).hasDerivAt
+  have hright : ∀ t : ℝ,
+      HasDerivAt (fun s : ℝ => orderedSimplexIntegral (n + 1) s g)
+        (orderedSimplexIntegral n t (fun rest => g (Fin.cons t rest))) t := by
+    intro t
+    have hboundary := continuous_orderedSimplexIntegral_boundary n g hg
+    simpa only [orderedSimplexIntegral_succ] using
+      (hboundary.integral_hasStrictDerivAt 0 t).hasDerivAt
   have hderiv : ∀ t : ℝ, HasDerivAt F (F' t) t := by
     intro t
-    simpa [F, F'] using
-      (hasDerivAt_orderedSimplexIntegral_succ m f hf t).mul
-        (hasDerivAt_orderedSimplexIntegral_succ n g hg t)
+    simpa [F, F'] using (hleft t).mul (hright t)
   have hF' : Continuous F' := by
     dsimp [F']
     exact ((continuous_orderedSimplexIntegral_boundary m f hf).mul
