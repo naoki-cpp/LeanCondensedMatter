@@ -1,37 +1,22 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Occupation
-import LeanCondensedMatter.SecondQuantization.Fermionic.FockSpace
-import LeanCondensedMatter.SecondQuantization.Fermionic.CreationAnnihilation
-import LeanCondensedMatter.SecondQuantization.Fermionic.ParticleNumberCharge
-import LeanCondensedMatter.SecondQuantization.Fermionic.CanonicalAnticommutationRelations
-import LeanCondensedMatter.SecondQuantization.Fermionic.ExchangeAlgebra
-import LeanCondensedMatter.SecondQuantization.Fermionic.NumberOperator
-import LeanCondensedMatter.SecondQuantization.Fermionic.Hamiltonian
-import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedNumberOperator
-import LeanCondensedMatter.SecondQuantization.Fermionic.FormalLogPartitionFunction
-import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTimeEvolution
-import LeanCondensedMatter.SecondQuantization.Fermionic.InteractionPicture
-import LeanCondensedMatter.SecondQuantization.Fermionic.DysonExpansion
-import LeanCondensedMatter.SecondQuantization.Fermionic.DysonExpansionVerification
-import LeanCondensedMatter.SecondQuantization.Fermionic.DysonPartitionSeries
-import LeanCondensedMatter.SecondQuantization.Fermionic.DysonVertexMoment
-import LeanCondensedMatter.SecondQuantization.Fermionic.QuarticInteraction
-import LeanCondensedMatter.SecondQuantization.Fermionic.WickDiagram.ComponentDecompositionEquiv
-import LeanCondensedMatter.SecondQuantization.Fermionic.WickDiagram.Amplitude
-import LeanCondensedMatter.SecondQuantization.Fermionic.WickDiagram.AmplitudePrefactorFactorization
-import LeanCondensedMatter.SecondQuantization.Fermionic.DysonDiagramExpansion
-import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedFreeTwoPointFunction
-import LeanCondensedMatter.SecondQuantization.Fermionic.FreeBoltzmannWeight
-import LeanCondensedMatter.SecondQuantization.Fermionic.FreePartitionFunction
-import LeanCondensedMatter.SecondQuantization.Fermionic.FreeTwoPointFunction
-import LeanCondensedMatter.SecondQuantization.Fermionic.WeightedContraction
-import LeanCondensedMatter.SecondQuantization.Fermionic.BlochDeDominicis.Examples.SingleMode
-import LeanCondensedMatter.SecondQuantization.Fermionic.BlochDeDominicis.TwoPoint
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal
+import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics
 
 set_option linter.style.header false
 
 /-!
-# Umbrella module for the fermionic line of `SecondQuantization/`
+# Fermionic second quantization
 
-Importing this module brings in every file of the fermionic (`FermionOccupation Mode := Finset
-Mode`) line at once, including its `BlochDeDominicis/` subdirectory.
+The public fermionic API is organized into five umbrellas:
+
+- `Algebra`: occupation states, Fock space, CAR, exchange algebra, and Hamiltonians;
+- `ImaginaryTime`: free evolution and the interaction picture;
+- `Thermal`: finite-basis Gibbs expectations, free thermal functions, and Bloch–de Dominicis results;
+- `Perturbation`: formal partition-series logarithms and finite-basis Dyson coefficients;
+- `Diagrammatics`: quartic Wick diagrams, amplitudes, and the Dyson diagram expansion.
+
+The first, second, third, and fifth groups parallel the bosonic public layout. `Perturbation` remains a
+fermionic-only group because its current operator integrals and traces use the finite occupation basis.
 -/
