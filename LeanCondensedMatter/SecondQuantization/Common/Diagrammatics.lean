@@ -5,6 +5,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Connected
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentPartition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentRestriction
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentConnected
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Reassemble
@@ -18,6 +19,7 @@ set_option linter.style.header false
 /-!
 # Statistics-independent quartic diagrammatics
 
-Quartic vertex labels and leg indexing, ordered diagram data, connected components, component
-restriction and reassembly, decomposition equivalences, and componentwise scalar factorization.
+Quartic vertex labels and leg indexing, ordered diagram data, connected components, component-local
+orders and shuffles, component restriction and reassembly, decomposition equivalences, and
+componentwise scalar factorization.
 -/
