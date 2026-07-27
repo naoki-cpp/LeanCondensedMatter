@@ -24,15 +24,15 @@ namespace Bosonic
 variable {Mode : Type*} [DecidableEq Mode] [Fintype Mode]
 
 /-- Bridge `Common.matrixCoeff` to the local occupation-basis notation. -/
-private theorem matrixCoeff_eq (A : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode)
+private theorem matrixCoeff_eq (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
     (m n : Occupation Mode) : Common.matrixCoeff A m n = A (basisState n) m := rfl
 
 private theorem smul_basisState_apply_self (c : ℂ) (n : Occupation Mode) :
-    (c • basisState n : FockSpaceBosonic Mode) n = c :=
+    (c • basisState n : FockSpace Mode) n = c :=
   Common.smul_basisState_apply_self c n
 
 private theorem smul_basisState_apply_of_ne (c : ℂ) {m n : Occupation Mode} (h : m ≠ n) :
-    (c • basisState m : FockSpaceBosonic Mode) n = 0 :=
+    (c • basisState m : FockSpace Mode) n = 0 :=
   Common.smul_basisState_apply_of_ne c h
 
 /-- The diagonal matrix coefficient of `e^{τH₀}` is its basis eigenvalue. -/
@@ -174,7 +174,7 @@ theorem tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create
   have hcomm : (annihilate i).comp (create j) -
       (1 : ℂ) • ((create j).comp (annihilate i)) =
         (if i = j then (1 : ℂ) else 0) •
-          (LinearMap.id : FockSpaceBosonic Mode →ₗ[ℂ] FockSpaceBosonic Mode) := by
+          (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
     rw [one_smul]
     have h := comm_annihilate_create i j
     rw [comm] at h
