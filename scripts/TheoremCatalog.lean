@@ -25,6 +25,9 @@ private def collectEntries : CommandElabM (Array Entry) := do
     let .thmInfo theoremInfo := info | continue
     let some moduleName := declarationModule? env declName | continue
     unless projectModule? moduleName do continue
+    -- Generated declarations such as structure extensionality and injectivity
+    -- theorems do not have their own source declaration range.
+    unless (← findDeclarationRanges? declName).isSome do continue
     let statement ← liftTermElabM do
       return (← ppExpr theoremInfo.type).pretty
     let docString ← liftIO <| findDocString? env declName
@@ -38,7 +41,7 @@ private def collectEntries : CommandElabM (Array Entry) := do
 
 private def markdown (entries : Array Entry) : String := Id.run do
   let mut output := "# LeanCondensedMatter theorem catalog\n\n"
-  output := output ++ "This file is generated from Lean's compiled environment. Do not edit it manually.\n\n"
+  output := output ++ "This file is generated from source-declared theorems in LeanCondensedMatter modules. Do not edit it manually.\n\n"
   output := output ++ s!"Theorems: {entries.size}\n\n"
   for entry in entries do
     output := output ++ s!"## `{entry.name}`\n\n"
