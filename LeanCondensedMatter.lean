@@ -11,6 +11,7 @@ import LeanCondensedMatter.Analysis.PeierlsBogoliubov
 import LeanCondensedMatter.Analysis.TraceClassBasic
 import LeanCondensedMatter.Analysis.TraceClassOps
 import LeanCondensedMatter.Analysis.TraceClassScalar
+import LeanCondensedMatter.Combinatorics.BinaryShuffle
 import LeanCondensedMatter.Combinatorics.IncidenceAlgebraMu
 import LeanCondensedMatter.Combinatorics.PartitionLattice
 import LeanCondensedMatter.Combinatorics.MomentCumulant
