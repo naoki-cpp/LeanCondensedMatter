@@ -1,0 +1,37 @@
+name: Binary Shuffle Slot Ordered Simplex Diagnostic
+
+on:
+  push:
+    branches:
+      - agent/binary-shuffle-slot-ordered-simplex
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: leanprover/lean-action@v1
+        with:
+          auto-config: false
+      - name: Build target and capture output
+        shell: bash
+        run: |
+          set +e
+          lake build +LeanCondensedMatter.Analysis.BinaryShuffleSlotOrderedSimplex \
+            > binary-shuffle-slot-ordered-simplex-diagnostic.log 2>&1
+          status=$?
+          echo "exit_status=$status" >> binary-shuffle-slot-ordered-simplex-diagnostic.log
+          exit 0
+      - name: Upload diagnostic log
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary-shuffle-slot-ordered-simplex-diagnostic
+          path: binary-shuffle-slot-ordered-simplex-diagnostic.log
+          if-no-files-found: error
+          retention-days: 1
