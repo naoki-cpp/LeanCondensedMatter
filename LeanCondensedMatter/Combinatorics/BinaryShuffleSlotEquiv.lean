@@ -216,13 +216,14 @@ theorem card_leftSlotSet (m n : ℕ) :
     Fintype.card (LeftSlotSet m n) = Nat.choose (m + n) m := by
   classical
   change Fintype.card {s : Finset (Fin (m + n)) // s.card = m} = Nat.choose (m + n) m
-  calc
-    Fintype.card {s : Finset (Fin (m + n)) // s.card = m} =
-        ((Finset.univ : Finset (Fin (m + n))).powersetCard m).card := by
-      refine Fintype.subtype_card _ ?_
-      intro s
-      simp
-    _ = Nat.choose (m + n) m := by simp
+  let e : {s : Finset (Fin (m + n)) // s.card = m} ≃
+      ↥((Finset.univ : Finset (Fin (m + n))).powersetCard m) where
+    toFun s := ⟨s.1, by simp [s.2]⟩
+    invFun s := ⟨s.1, by simpa using s.2⟩
+    left_inv s := by cases s; rfl
+    right_inv s := by cases s; rfl
+  rw [Fintype.card_congr e]
+  simp
 
 /-- Recursive binary shuffles are counted by the same binomial coefficient. -/
 theorem card_eq_choose : ∀ (m n : ℕ),
@@ -243,7 +244,8 @@ theorem card_slotShuffle (m n : ℕ) :
   have hupper : Fintype.card (SlotShuffle m n) ≤ Fintype.card (LeftSlotSet m n) :=
     Fintype.card_le_of_injective
       (fun σ : SlotShuffle m n => σ.toLeftSlotSet) SlotShuffle.toLeftSlotSet_injective
-  rw [card_eq_choose, card_leftSlotSet] at hlower hupper
+  rw [card_eq_choose] at hlower
+  rw [card_leftSlotSet] at hupper
   omega
 
 /-- Recursive binary shuffles are equivalent to order-preserving ambient slot shuffles. -/
