@@ -219,9 +219,9 @@ theorem card_leftSlotSet (m n : ℕ) :
   let e : {s : Finset (Fin (m + n)) // s.card = m} ≃
       ↥((Finset.univ : Finset (Fin (m + n))).powersetCard m) :=
     { toFun := fun s : {s : Finset (Fin (m + n)) // s.card = m} =>
-        ⟨s.1, by simpa using s.2⟩
+        ⟨s.1, Finset.mem_powersetCard.2 ⟨Finset.subset_univ _, s.2⟩⟩
       invFun := fun s : ↥((Finset.univ : Finset (Fin (m + n))).powersetCard m) =>
-        ⟨s.1, by simpa using s.2⟩
+        ⟨s.1, (Finset.mem_powersetCard.1 s.2).2⟩
       left_inv := by intro s; rfl
       right_inv := by intro s; rfl }
   rw [Fintype.card_congr e]
