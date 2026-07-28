@@ -13,6 +13,7 @@ import LeanCondensedMatter.Analysis.TraceClassBasic
 import LeanCondensedMatter.Analysis.TraceClassOps
 import LeanCondensedMatter.Analysis.TraceClassScalar
 import LeanCondensedMatter.Combinatorics.BinaryShuffle
+import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlots
 import LeanCondensedMatter.Combinatorics.IncidenceAlgebraMu
 import LeanCondensedMatter.Combinatorics.PartitionLattice
