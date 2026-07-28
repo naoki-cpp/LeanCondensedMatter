@@ -63,6 +63,7 @@ theorem orderedSimplexContribution_eq_orderedSimplexIntegral_integrand :
       rw [orderedSimplexIntegral_succ]
       apply intervalIntegral.integral_congr
       intro t _ht
+      change orderedSimplexContribution σ t (fun rest => f (Fin.cons t rest)) g = _
       rw [orderedSimplexContribution_eq_orderedSimplexIntegral_integrand σ t
         (fun rest => f (Fin.cons t rest)) g]
       apply orderedSimplexIntegral_congr
@@ -75,6 +76,7 @@ theorem orderedSimplexContribution_eq_orderedSimplexIntegral_integrand :
       rw [orderedSimplexIntegral_succ]
       apply intervalIntegral.integral_congr
       intro t _ht
+      change orderedSimplexContribution σ t f (fun rest => g (Fin.cons t rest)) = _
       rw [orderedSimplexContribution_eq_orderedSimplexIntegral_integrand σ t f
         (fun rest => g (Fin.cons t rest))]
       apply orderedSimplexIntegral_congr
