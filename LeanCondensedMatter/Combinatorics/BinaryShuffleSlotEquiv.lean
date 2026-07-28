@@ -217,11 +217,13 @@ theorem card_leftSlotSet (m n : ℕ) :
   classical
   change Fintype.card {s : Finset (Fin (m + n)) // s.card = m} = Nat.choose (m + n) m
   let e : {s : Finset (Fin (m + n)) // s.card = m} ≃
-      ↥((Finset.univ : Finset (Fin (m + n))).powersetCard m) where
-    toFun s := ⟨s.1, by simp [s.2]⟩
-    invFun s := ⟨s.1, by simpa using s.2⟩
-    left_inv s := by cases s; rfl
-    right_inv s := by cases s; rfl
+      ↥((Finset.univ : Finset (Fin (m + n))).powersetCard m) :=
+    { toFun := fun s : {s : Finset (Fin (m + n)) // s.card = m} =>
+        ⟨s.1, by simpa using s.2⟩
+      invFun := fun s : ↥((Finset.univ : Finset (Fin (m + n))).powersetCard m) =>
+        ⟨s.1, by simpa using s.2⟩
+      left_inv := by intro s; rfl
+      right_inv := by intro s; rfl }
   rw [Fintype.card_congr e]
   simp
 
