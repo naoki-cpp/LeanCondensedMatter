@@ -66,16 +66,16 @@ theorem leftSlot_strictMono : ∀ {m n : ℕ} (σ : BinaryShuffle m n), StrictMo
       induction i using Fin.cases with
       | zero =>
           induction j using Fin.cases with
-          | zero => omega
+          | zero => simpa using hij
           | succ j =>
               simp only [leftSlot_consLeft_zero, leftSlot_consLeft_succ]
               change 0 < (leftSlot σ j).val + 1
               omega
       | succ i =>
           induction j using Fin.cases with
-          | zero => omega
+          | zero => simpa using hij
           | succ j =>
-              have hbase : i < j := by omega
+              have hbase : i < j := by simpa using hij
               have h := leftSlot_strictMono σ hbase
               simp only [leftSlot_consLeft_succ]
               change (leftSlot σ i).val + 1 < (leftSlot σ j).val + 1
@@ -101,16 +101,16 @@ theorem rightSlot_strictMono : ∀ {m n : ℕ} (σ : BinaryShuffle m n), StrictM
       induction i using Fin.cases with
       | zero =>
           induction j using Fin.cases with
-          | zero => omega
+          | zero => simpa using hij
           | succ j =>
               simp only [rightSlot_consRight_zero, rightSlot_consRight_succ]
               change 0 < (rightSlot σ j).val + 1
               omega
       | succ i =>
           induction j using Fin.cases with
-          | zero => omega
+          | zero => simpa using hij
           | succ j =>
-              have hbase : i < j := by omega
+              have hbase : i < j := by simpa using hij
               have h := rightSlot_strictMono σ hbase
               simp only [rightSlot_consRight_succ]
               change (rightSlot σ i).val + 1 < (rightSlot σ j).val + 1
@@ -125,7 +125,7 @@ theorem leftSlot_ne_rightSlot : ∀ {m n : ℕ} (σ : BinaryShuffle m n)
       | zero =>
           intro h
           have hv := congrArg Fin.val h
-          simp only [leftSlot_consLeft_zero, rightSlot_consLeft, Fin.coe_cast, Fin.val_succ,
+          simp only [leftSlot_consLeft_zero, rightSlot_consLeft, Fin.val_cast, Fin.val_succ,
             Fin.val_zero] at hv
           omega
       | succ i =>
@@ -133,14 +133,14 @@ theorem leftSlot_ne_rightSlot : ∀ {m n : ℕ} (σ : BinaryShuffle m n)
           apply leftSlot_ne_rightSlot σ i j
           apply Fin.ext
           have hv := congrArg Fin.val h
-          simp only [leftSlot_consLeft_succ, rightSlot_consLeft, Fin.coe_cast, Fin.val_succ] at hv
+          simp only [leftSlot_consLeft_succ, rightSlot_consLeft, Fin.val_cast, Fin.val_succ] at hv
           omega
   | m, n + 1, .consRight σ, i, j => by
       induction j using Fin.cases with
       | zero =>
           intro h
           have hv := congrArg Fin.val h
-          simp only [leftSlot_consRight, rightSlot_consRight_zero, Fin.coe_cast, Fin.val_succ,
+          simp only [leftSlot_consRight, rightSlot_consRight_zero, Fin.val_cast, Fin.val_succ,
             Fin.val_zero] at hv
           omega
       | succ j =>
@@ -148,7 +148,7 @@ theorem leftSlot_ne_rightSlot : ∀ {m n : ℕ} (σ : BinaryShuffle m n)
           apply leftSlot_ne_rightSlot σ i j
           apply Fin.ext
           have hv := congrArg Fin.val h
-          simp only [leftSlot_consRight, rightSlot_consRight_succ, Fin.coe_cast, Fin.val_succ] at hv
+          simp only [leftSlot_consRight, rightSlot_consRight_succ, Fin.val_cast, Fin.val_succ] at hv
           omega
 
 /-- Ambient slot occupied by a tagged left or right local slot. -/
