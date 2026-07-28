@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.BinaryShuffleOrderedSimplex
 import LeanCondensedMatter.Analysis.CFC
 import LeanCondensedMatter.Analysis.EigenvectorFamily
 import LeanCondensedMatter.Analysis.FinsuppProductSeries
