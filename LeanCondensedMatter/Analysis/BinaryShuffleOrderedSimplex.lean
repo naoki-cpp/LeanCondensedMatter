@@ -41,12 +41,14 @@ theorem continuous_orderedSimplexContribution_of_continuous {X : Type*} [Topolog
         hf.comp (continuous_id.prodMk continuous_const)
       have hg0 : Continuous (fun x => g x Fin.elim0) :=
         hg.comp (continuous_id.prodMk continuous_const)
-      simpa only [orderedSimplexContribution, Pi.mul_apply] using hf0.mul hg0
+      change Continuous ((fun x => f x Fin.elim0) * fun x => g x Fin.elim0)
+      exact hf0.mul hg0
   | m + 1, n, .consLeft σ, bound, f, g, hbound, hf, hg => by
       have hf' : Continuous (Function.uncurry
           (fun y : X × ℝ => fun rest : Fin m → ℝ => f y.1 (Fin.cons y.2 rest))) := by
         have hcons : Continuous
-            (fun z : (X × ℝ) × (Fin m → ℝ) => Fin.cons z.1.2 z.2) := by
+            (fun z : (X × ℝ) × (Fin m → ℝ) =>
+              (Fin.cons z.1.2 z.2 : Fin (m + 1) → ℝ)) := by
           exact Continuous.finCons
             ((continuous_snd.comp continuous_fst) :
               Continuous (fun z : (X × ℝ) × (Fin m → ℝ) => z.1.2))
@@ -68,7 +70,8 @@ theorem continuous_orderedSimplexContribution_of_continuous {X : Type*} [Topolog
       have hg' : Continuous (Function.uncurry
           (fun y : X × ℝ => fun rest : Fin n → ℝ => g y.1 (Fin.cons y.2 rest))) := by
         have hcons : Continuous
-            (fun z : (X × ℝ) × (Fin n → ℝ) => Fin.cons z.1.2 z.2) := by
+            (fun z : (X × ℝ) × (Fin n → ℝ) =>
+              (Fin.cons z.1.2 z.2 : Fin (n + 1) → ℝ)) := by
           exact Continuous.finCons
             ((continuous_snd.comp continuous_fst) :
               Continuous (fun z : (X × ℝ) × (Fin n → ℝ) => z.1.2))
@@ -158,10 +161,12 @@ theorem sum_orderedSimplexContribution_eq_shuffleIntegral :
       simp_rw [← hleft, ← hright]
       rw [intervalIntegral.integral_add]
       · rw [intervalIntegral.integral_finsetSum, intervalIntegral.integral_finsetSum]
-      · intro σ _
-        exact (hcontRight σ).intervalIntegrable 0 β
-      · intro σ _
-        exact (hcontLeft σ).intervalIntegrable 0 β
+        · intro σ _
+          exact (hcontRight σ).intervalIntegrable 0 β
+        · intro σ _
+          exact (hcontLeft σ).intervalIntegrable 0 β
+      · exact (continuous_finsetSum _ fun σ _ => hcontLeft σ).intervalIntegrable 0 β
+      · exact (continuous_finsetSum _ fun σ _ => hcontRight σ).intervalIntegrable 0 β
 
 /-- Explicit binary ordered-simplex shuffle identity. -/
 theorem sum_orderedSimplexContribution_eq_mul (m n : ℕ) (β : ℝ)
