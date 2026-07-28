@@ -7,10 +7,10 @@ set_option linter.style.header false
 # Ambient-slot binary-shuffle ordered-simplex integrals
 
 A recursive `BinaryShuffle` already carries an order-preserving equivalence from its two local slot
-families to the ambient slots.  This module evaluates two local integrands through that equivalence,
-proves that the resulting ordinary ordered-simplex integral is the recursive contribution attached to
-the shuffle, and then transports the binary shuffle product identity to the ambient `SlotShuffle`
-presentation.
+families to the ambient slots. This module evaluates two local integrands through that equivalence,
+proves that the resulting ordinary ordered-simplex integral is the recursive contribution attached
+to the shuffle, and then transports the binary shuffle product identity to the ambient
+`SlotShuffle` presentation.
 -/
 
 namespace Combinatorics
@@ -18,7 +18,8 @@ namespace BinaryShuffle
 
 open intervalIntegral
 
-/-- Product of two local integrands after their coordinates are embedded by an ambient slot shuffle. -/
+/-- Product of two local integrands after their coordinates are embedded by an ambient slot
+shuffle. -/
 noncomputable def SlotShuffle.integrand {m n : ℕ} (shuffle : SlotShuffle m n)
     (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ)
     (τ : Fin (m + n) → ℝ) : ℂ :=
@@ -38,6 +39,15 @@ theorem SlotShuffle.continuous_integrand {m n : ℕ} (shuffle : SlotShuffle m n)
     continuous_pi fun j => continuous_apply (shuffle.slotEquiv (Sum.inr j))
   exact (hf.comp hleft).mul (hg.comp hright)
 
+/-- Changing the presentation of the finite coordinate count only precomposes the integrand with the
+corresponding `Fin.cast`. -/
+theorem orderedSimplexIntegral_cast {a b : ℕ} (h : a = b) (β : ℝ)
+    (F : (Fin a → ℝ) → ℂ) :
+    orderedSimplexIntegral a β F =
+      orderedSimplexIntegral b β (fun τ => F (fun i => τ (Fin.cast h i))) := by
+  subst b
+  rfl
+
 /-- One recursive shuffle contribution is the ordinary ordered-simplex integral of its ambient-slot
 shuffled product. -/
 theorem orderedSimplexContribution_eq_orderedSimplexIntegral_integrand :
@@ -48,7 +58,9 @@ theorem orderedSimplexContribution_eq_orderedSimplexIntegral_integrand :
   | 0, 0, .nil, _β, _f, _g => rfl
   | m + 1, n, .consLeft σ, β, f, g => by
       rw [orderedSimplexContribution]
-      rw [show m + 1 + n = (m + n) + 1 by omega, orderedSimplexIntegral_succ]
+      rw [orderedSimplexIntegral_cast
+        (show m + 1 + n = (m + n) + 1 by omega)]
+      rw [orderedSimplexIntegral_succ]
       apply intervalIntegral.integral_congr
       intro t _ht
       rw [orderedSimplexContribution_eq_orderedSimplexIntegral_integrand σ t
@@ -58,7 +70,9 @@ theorem orderedSimplexContribution_eq_orderedSimplexIntegral_integrand :
       simp [SlotShuffle.integrand, toSlotShuffle]
   | m, n + 1, .consRight σ, β, f, g => by
       rw [orderedSimplexContribution]
-      rw [show m + (n + 1) = (m + n) + 1 by omega, orderedSimplexIntegral_succ]
+      rw [orderedSimplexIntegral_cast
+        (show m + (n + 1) = (m + n) + 1 by omega)]
+      rw [orderedSimplexIntegral_succ]
       apply intervalIntegral.integral_congr
       intro t _ht
       rw [orderedSimplexContribution_eq_orderedSimplexIntegral_integrand σ t f
