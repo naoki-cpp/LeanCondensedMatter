@@ -46,12 +46,14 @@ theorem slotEquiv_injective :
       cases x with
       | inl i =>
           apply Fin.ext
+          change (leftSlot σ i).val = (leftSlot τ i).val
           have hx := congrArg (fun e => e (Sum.inl i.succ)) h
           have hxv := congrArg Fin.val hx
           simp only [slotEquiv_inl, leftSlot_consLeft_succ, Fin.val_cast, Fin.val_succ] at hxv
           omega
       | inr j =>
           apply Fin.ext
+          change (rightSlot σ j).val = (rightSlot τ j).val
           have hx := congrArg (fun e => e (Sum.inr j)) h
           have hxv := congrArg Fin.val hx
           simp only [slotEquiv_inr, rightSlot_consLeft, Fin.val_cast, Fin.val_succ] at hxv
@@ -71,12 +73,14 @@ theorem slotEquiv_injective :
       cases x with
       | inl i =>
           apply Fin.ext
+          change (leftSlot σ i).val = (leftSlot τ i).val
           have hx := congrArg (fun e => e (Sum.inl i)) h
           have hxv := congrArg Fin.val hx
           simp only [slotEquiv_inl, leftSlot_consRight, Fin.val_cast, Fin.val_succ] at hxv
           omega
       | inr j =>
           apply Fin.ext
+          change (rightSlot σ j).val = (rightSlot τ j).val
           have hx := congrArg (fun e => e (Sum.inr j.succ)) h
           have hxv := congrArg Fin.val hx
           simp only [slotEquiv_inr, rightSlot_consRight_succ, Fin.val_cast, Fin.val_succ] at hxv
@@ -212,10 +216,13 @@ theorem card_leftSlotSet (m n : ℕ) :
     Fintype.card (LeftSlotSet m n) = Nat.choose (m + n) m := by
   classical
   change Fintype.card {s : Finset (Fin (m + n)) // s.card = m} = Nat.choose (m + n) m
-  rw [Fintype.subtype_card ((Finset.univ : Finset (Fin (m + n))).powersetCard m)]
-  · simp
-  · intro s
-    simp
+  calc
+    Fintype.card {s : Finset (Fin (m + n)) // s.card = m} =
+        ((Finset.univ : Finset (Fin (m + n))).powersetCard m).card := by
+      refine Fintype.subtype_card _ ?_
+      intro s
+      simp
+    _ = Nat.choose (m + n) m := by simp
 
 /-- Recursive binary shuffles are counted by the same binomial coefficient. -/
 theorem card_eq_choose : ∀ (m n : ℕ),
@@ -231,9 +238,11 @@ theorem card_eq_choose : ∀ (m n : ℕ),
 theorem card_slotShuffle (m n : ℕ) :
     Fintype.card (SlotShuffle m n) = Nat.choose (m + n) m := by
   have hlower : Fintype.card (BinaryShuffle m n) ≤ Fintype.card (SlotShuffle m n) :=
-    Fintype.card_le_of_injective toSlotShuffle_injective
+    Fintype.card_le_of_injective
+      (fun σ : BinaryShuffle m n => toSlotShuffle σ) toSlotShuffle_injective
   have hupper : Fintype.card (SlotShuffle m n) ≤ Fintype.card (LeftSlotSet m n) :=
-    Fintype.card_le_of_injective SlotShuffle.toLeftSlotSet_injective
+    Fintype.card_le_of_injective
+      (fun σ : SlotShuffle m n => σ.toLeftSlotSet) SlotShuffle.toLeftSlotSet_injective
   rw [card_eq_choose, card_leftSlotSet] at hlower hupper
   omega
 
