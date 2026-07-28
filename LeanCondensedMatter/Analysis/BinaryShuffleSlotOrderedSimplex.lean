@@ -68,7 +68,16 @@ theorem orderedSimplexContribution_eq_orderedSimplexIntegral_integrand :
         (fun rest => f (Fin.cons t rest)) g]
       apply orderedSimplexIntegral_congr
       intro rest
-      simp [SlotShuffle.integrand, toSlotShuffle]
+      unfold SlotShuffle.integrand
+      apply congrArg₂ (· * ·)
+      · apply congrArg f
+        funext i
+        induction i using Fin.cases with
+        | zero => simp [toSlotShuffle]
+        | succ i => simp [toSlotShuffle]
+      · apply congrArg g
+        funext j
+        simp [toSlotShuffle]
   | m, n + 1, .consRight σ, β, f, g => by
       rw [orderedSimplexContribution]
       rw [orderedSimplexIntegral_cast
@@ -81,7 +90,16 @@ theorem orderedSimplexContribution_eq_orderedSimplexIntegral_integrand :
         (fun rest => g (Fin.cons t rest))]
       apply orderedSimplexIntegral_congr
       intro rest
-      simp [SlotShuffle.integrand, toSlotShuffle]
+      unfold SlotShuffle.integrand
+      apply congrArg₂ (· * ·)
+      · apply congrArg f
+        funext i
+        simp [toSlotShuffle]
+      · apply congrArg g
+        funext j
+        induction j using Fin.cases with
+        | zero => simp [toSlotShuffle]
+        | succ j => simp [toSlotShuffle]
 
 /-- Ambient-slot form of the explicit binary ordered-simplex shuffle identity. -/
 theorem sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul (m n : ℕ) (β : ℝ)
