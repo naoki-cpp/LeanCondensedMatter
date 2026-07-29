@@ -14,8 +14,8 @@ namespace SecondQuantization
 
 variable {Mode : Type*} {N : ℕ}
 
-/-- A component-local normalized pair maps to, and is reflected by, the corresponding normalized pair
-of the assembled global ordered pairing. -/
+/-- A component-local normalized pair maps to, and is reflected by, the corresponding normalized
+pair of the assembled global ordered pairing. -/
 theorem QuarticWickDiagram.mem_pairingInOrder_pairs_componentOrderedLeg_iff
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
