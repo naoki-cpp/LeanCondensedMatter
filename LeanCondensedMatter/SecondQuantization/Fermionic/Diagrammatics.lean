@@ -6,6 +6,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagra
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairValue
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairs
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.AmplitudePrefactorFactorization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion
 
@@ -16,6 +17,6 @@ set_option linter.style.header false
 
 Quartic interaction vertices, local-leg semantics, ordered Wick diagrams and amplitudes, component
 orders, order-preserving shuffle decompositions, shuffled ordered-simplex integrands, component-local
-leg/pair-value and pairing-partner compatibility; the Dyson diagram expansion, connected-component
+leg, pairing, and pair-product compatibility; the Dyson diagram expansion, connected-component
 decomposition, and scalar-prefactor factorization.
 -/
