@@ -66,6 +66,15 @@ noncomputable def QuarticDiagram.TwoComponentPresentation.boolSlotFiberEquiv
       bif b then Fin p.rightSize else Fin p.leftSize := by
   cases b <;> exact Equiv.refl _
 
+/-- Reindex a Boolean sigma family by the chosen component enumeration. -/
+noncomputable def QuarticDiagram.TwoComponentPresentation.partsSigmaEquiv
+    {S : Finset (Fin N)} {d : QuarticDiagram Label N S}
+    (p : d.TwoComponentPresentation) :
+    (Σ b : Bool,
+      Fin ((p.partsEquiv b : d.componentPartition.parts) : Finset (Fin N)).card) ≃
+      (Σ B : d.componentPartition.parts, Fin (B : Finset (Fin N)).card) :=
+  p.partsEquiv.sigmaCongrLeft
+
 /-- Embed a binary sum of the two local slot families into the sigma type of all component-local
 slots. This direction computes directly on `Sum.inl` and `Sum.inr`. -/
 noncomputable def QuarticDiagram.TwoComponentPresentation.sumToLocalSlotEquiv
@@ -75,21 +84,27 @@ noncomputable def QuarticDiagram.TwoComponentPresentation.sumToLocalSlotEquiv
       (Σ B : d.componentPartition.parts, Fin (B : Finset (Fin N)).card) :=
   (Equiv.sumEquivSigmaBool (Fin p.leftSize) (Fin p.rightSize)).trans
     ((Equiv.sigmaCongrRight fun b => (p.boolSlotFiberEquiv b).symm).trans
-      p.partsEquiv.sigmaCongrLeft)
+      p.partsSigmaEquiv)
 
 @[simp]
 theorem QuarticDiagram.TwoComponentPresentation.sumToLocalSlotEquiv_inl
     {S : Finset (Fin N)} {d : QuarticDiagram Label N S}
     (p : d.TwoComponentPresentation) (i : Fin p.leftSize) :
     p.sumToLocalSlotEquiv (Sum.inl i) = ⟨p.leftComponent, i⟩ := by
-  rfl
+  simp [QuarticDiagram.TwoComponentPresentation.sumToLocalSlotEquiv,
+    QuarticDiagram.TwoComponentPresentation.partsSigmaEquiv,
+    QuarticDiagram.TwoComponentPresentation.boolSlotFiberEquiv,
+    QuarticDiagram.TwoComponentPresentation.leftComponent]
 
 @[simp]
 theorem QuarticDiagram.TwoComponentPresentation.sumToLocalSlotEquiv_inr
     {S : Finset (Fin N)} {d : QuarticDiagram Label N S}
     (p : d.TwoComponentPresentation) (i : Fin p.rightSize) :
     p.sumToLocalSlotEquiv (Sum.inr i) = ⟨p.rightComponent, i⟩ := by
-  rfl
+  simp [QuarticDiagram.TwoComponentPresentation.sumToLocalSlotEquiv,
+    QuarticDiagram.TwoComponentPresentation.partsSigmaEquiv,
+    QuarticDiagram.TwoComponentPresentation.boolSlotFiberEquiv,
+    QuarticDiagram.TwoComponentPresentation.rightComponent]
 
 /-- Identify the sigma type of all component-local slots with a binary sum of the two local slot
 families. -/
@@ -164,10 +179,20 @@ noncomputable def QuarticDiagram.TwoComponentPresentation.toComponentShuffle
     cases b with
     | false =>
         intro i j hij
-        simpa using (strictMono_finCongr p.totalCard) (shuffle.strictMonoLeft hij)
+        change (finCongr p.totalCard)
+            (shuffle.slotEquiv (p.localSlotEquiv ⟨p.leftComponent, i⟩)) <
+          (finCongr p.totalCard)
+            (shuffle.slotEquiv (p.localSlotEquiv ⟨p.leftComponent, j⟩))
+        rw [p.localSlotEquiv_left, p.localSlotEquiv_left]
+        exact (strictMono_finCongr p.totalCard) (shuffle.strictMonoLeft hij)
     | true =>
         intro i j hij
-        simpa using (strictMono_finCongr p.totalCard) (shuffle.strictMonoRight hij)
+        change (finCongr p.totalCard)
+            (shuffle.slotEquiv (p.localSlotEquiv ⟨p.rightComponent, i⟩)) <
+          (finCongr p.totalCard)
+            (shuffle.slotEquiv (p.localSlotEquiv ⟨p.rightComponent, j⟩))
+        rw [p.localSlotEquiv_right, p.localSlotEquiv_right]
+        exact (strictMono_finCongr p.totalCard) (shuffle.strictMonoRight hij)
 
 /-- Read a binary ambient slot shuffle from a component shuffle under a two-component presentation. -/
 noncomputable def QuarticDiagram.TwoComponentPresentation.fromComponentShuffle
@@ -180,12 +205,22 @@ noncomputable def QuarticDiagram.TwoComponentPresentation.fromComponentShuffle
     intro i j hij
     have hcast : StrictMono (finCongr p.totalCard).symm := by
       simpa using strictMono_finCongr p.totalCard.symm
-    simpa using hcast ((shuffle.strictMono p.leftComponent) hij)
+    change (finCongr p.totalCard).symm
+        (shuffle.slotEquiv (p.localSlotEquiv.symm (Sum.inl i))) <
+      (finCongr p.totalCard).symm
+        (shuffle.slotEquiv (p.localSlotEquiv.symm (Sum.inl j)))
+    rw [p.localSlotEquiv_symm_inl, p.localSlotEquiv_symm_inl]
+    exact hcast ((shuffle.strictMono p.leftComponent) hij)
   strictMonoRight := by
     intro i j hij
     have hcast : StrictMono (finCongr p.totalCard).symm := by
       simpa using strictMono_finCongr p.totalCard.symm
-    simpa using hcast ((shuffle.strictMono p.rightComponent) hij)
+    change (finCongr p.totalCard).symm
+        (shuffle.slotEquiv (p.localSlotEquiv.symm (Sum.inr i))) <
+      (finCongr p.totalCard).symm
+        (shuffle.slotEquiv (p.localSlotEquiv.symm (Sum.inr j)))
+    rw [p.localSlotEquiv_symm_inr, p.localSlotEquiv_symm_inr]
+    exact hcast ((shuffle.strictMono p.rightComponent) hij)
 
 /-- Binary slot shuffles and component shuffles are equivalent after choosing the two component
 blocks. -/
