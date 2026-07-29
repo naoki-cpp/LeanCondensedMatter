@@ -23,6 +23,7 @@ jobs:
         shell: bash
         run: |
           set +e
+          # Keep this target-only build separate from the repository-wide CI.
           lake build +LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairProduct \
             > component-pair-product-diagnostic.log 2>&1
           status=$?
