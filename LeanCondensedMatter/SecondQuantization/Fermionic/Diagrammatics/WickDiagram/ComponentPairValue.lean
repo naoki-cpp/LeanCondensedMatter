@@ -15,7 +15,7 @@ These coordinate lemmas are the first part of the contraction-integrand factoriz
 
 namespace SecondQuantization
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] {N : ℕ}
+variable {Mode : Type*} {N : ℕ}
 
 /-- Embed a component-local ordered flattened leg into the assembled global ordered-leg
 enumeration. -/
@@ -91,10 +91,14 @@ theorem QuarticWickDiagram.restrictComponent_vertexLabel_componentOrder
   apply Subtype.ext
   simpa using (d.assembleVertexOrder_componentSlot_val orders shuffle B i).symm
 
+section Fermionic
+
+variable [DecidableEq Mode] [LinearOrder Mode]
+
 /-- A global ordered leg at a component-embedded position equals the corresponding ordered leg of the
 restricted component diagram. -/
-theorem orderedQuarticLegOperator_componentOrderedLeg (ε : Mode → ℝ)
-    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+theorem orderedQuarticLegOperator_componentOrderedLeg
+    (ε : Mode → ℝ) {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (τ : Fin S.card → ℝ) (B : d.componentPartition.parts)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
@@ -106,6 +110,8 @@ theorem orderedQuarticLegOperator_componentOrderedLeg (ε : Mode → ℝ)
   simp only [d.orderedQuarticLegEquiv_componentOrderedLeg,
     Common.QuarticDiagram.componentTimeAssignment_apply]
   rw [d.restrictComponent_vertexLabel_componentOrder orders shuffle B]
+
+variable [Fintype Mode]
 
 /-- Pair values agree after embedding both component-local ordered legs into the assembled global
 ordered-leg enumeration. -/
@@ -121,5 +127,7 @@ theorem orderedQuarticPairValue_componentOrderedLeg (ε : Mode → ℝ) (β : �
   unfold orderedQuarticPairValue
   rw [orderedQuarticLegOperator_componentOrderedLeg,
     orderedQuarticLegOperator_componentOrderedLeg]
+
+end Fermionic
 
 end SecondQuantization
