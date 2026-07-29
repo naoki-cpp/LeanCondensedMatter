@@ -70,8 +70,20 @@ theorem FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod :
           (shuffle.integrand localIntegrand)) =
         ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i)
   | 0, size, β, localIntegrand, _ => by
-      rw [show (∑ i : Fin 0, size i) = 0 by simp]
-      simp [FamilySlotShuffle.integrand]
+      let h : (∑ i : Fin 0, size i) = 0 := by simp
+      calc
+        (∑ shuffle : FamilySlotShuffle size,
+            orderedSimplexIntegral (∑ i, size i) β
+              (shuffle.integrand localIntegrand)) =
+          orderedSimplexIntegral (∑ i, size i) β
+            ((default : FamilySlotShuffle size).integrand localIntegrand) := by simp
+        _ = orderedSimplexIntegral 0 β (fun τ =>
+              (default : FamilySlotShuffle size).integrand localIntegrand
+                (fun i => τ (Fin.cast h i))) :=
+          BinaryShuffle.orderedSimplexIntegral_cast h β
+            ((default : FamilySlotShuffle size).integrand localIntegrand)
+        _ = 1 := by simp [FamilySlotShuffle.integrand]
+        _ = ∏ i : Fin 0, orderedSimplexIntegral (size i) β (localIntegrand i) := by simp
   | k + 1, size, β, localIntegrand, hlocal => by
       classical
       let tailIntegrand : ∀ i : Fin k, (Fin (FamilySlotShuffle.tailSize size i) → ℝ) → ℂ :=
@@ -97,6 +109,7 @@ theorem FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod :
             orderedSimplexIntegral (∑ i, size i) β
               ((FamilySlotShuffle.cons size p.1 p.2).integrand localIntegrand) := by
                 rw [← Equiv.sum_comp (FamilySlotShuffle.consEquiv size)]
+                simp [FamilySlotShuffle.consEquiv]
         _ = ∑ outer : SlotShuffle (size 0) (FamilySlotShuffle.tailTotal size),
               ∑ tail : FamilySlotShuffle (FamilySlotShuffle.tailSize size),
                 orderedSimplexIntegral (size 0 + FamilySlotShuffle.tailTotal size) β
