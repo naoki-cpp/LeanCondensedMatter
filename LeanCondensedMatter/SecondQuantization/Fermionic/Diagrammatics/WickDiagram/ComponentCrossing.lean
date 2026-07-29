@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairProduct
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 
 set_option linter.style.header false
 
@@ -15,29 +14,6 @@ crossings between distinct components.
 namespace SecondQuantization
 
 variable {Mode : Type*} {N : ℕ}
-
-namespace Common.BlochDeDominicis
-
-/-- A strictly monotone embedding preserves and reflects the crossing relation. -/
-theorem crosses_map_iff {n m : ℕ} (f : Fin (2 * n) → Fin (2 * m)) (hf : StrictMono f)
-    (a b c e : Fin (2 * n)) :
-    Crosses (f a, f b) (f c, f e) ↔ Crosses (a, b) (c, e) := by
-  constructor
-  · rintro ⟨hac, hcb, hbe⟩
-    refine ⟨?_, ?_, ?_⟩
-    · apply lt_of_not_ge
-      intro hca
-      exact (not_lt_of_ge (hf.monotone hca)) hac
-    · apply lt_of_not_ge
-      intro hbc
-      exact (not_lt_of_ge (hf.monotone hbc)) hcb
-    · apply lt_of_not_ge
-      intro heb
-      exact (not_lt_of_ge (hf.monotone heb)) hbe
-  · rintro ⟨hac, hcb, hbe⟩
-    exact ⟨hf hac, hf hcb, hf hbe⟩
-
-end Common.BlochDeDominicis
 
 /-- Two pairs belonging to the same component cross in the assembled global order exactly when their
 component-local representatives cross. -/
