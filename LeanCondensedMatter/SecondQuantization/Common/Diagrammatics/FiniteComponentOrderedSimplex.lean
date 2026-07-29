@@ -6,9 +6,10 @@ set_option linter.style.header false
 /-!
 # Finite-family presentations of diagram component shuffles
 
-After enumerating the connected-component blocks by `Fin k`, a diagram `ComponentShuffle` is exactly a
-`FamilySlotShuffle` for the corresponding family of component sizes.  This module constructs that
-equivalence and identifies the associated shuffled ordered-simplex integrands and finite sums.
+After enumerating the connected-component blocks by `Fin k`, a diagram `ComponentShuffle` is
+exactly a `FamilySlotShuffle` for the corresponding family of component sizes. This module
+constructs that equivalence and identifies the associated shuffled ordered-simplex integrands and
+finite sums.
 -/
 
 namespace SecondQuantization
@@ -204,7 +205,11 @@ theorem QuarticDiagram.FiniteComponentPresentation.sum_componentShuffle_orderedS
         orderedSimplexIntegral (∑ i, p.size i) β
           (shuffle.integrand (fun i => componentIntegrand (p.partsEquiv i))) := by
   rw [← Equiv.sum_comp p.componentShuffleEquiv]
-  simp_rw [p.orderedSimplexIntegral_toComponentShuffle]
+  apply Finset.sum_congr rfl
+  intro shuffle _hshuffle
+  change orderedSimplexIntegral S.card β
+      (d.componentShuffleIntegrand (p.toComponentShuffle shuffle) componentIntegrand) = _
+  exact p.orderedSimplexIntegral_toComponentShuffle shuffle β componentIntegrand
 
 end Common
 end SecondQuantization
