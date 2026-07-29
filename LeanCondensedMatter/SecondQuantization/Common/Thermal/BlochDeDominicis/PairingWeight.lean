@@ -75,8 +75,8 @@ theorem Pairing.weight_eq_prod_of_crossingCount_mod_two_eq (s : Statistics)
     pairing.weight s = ∏ i, (localPairing i).weight s := by
   classical
   have hpow (t : Finset ι) :
-      (s.zetaInt : ℂ) ^ (∑ i in t, (localPairing i).crossingCount) =
-        ∏ i in t, (localPairing i).weight s := by
+      (s.zetaInt : ℂ) ^ (t.sum fun i => (localPairing i).crossingCount) =
+        t.prod fun i => (localPairing i).weight s := by
     induction t using Finset.induction_on with
     | empty =>
         simp
