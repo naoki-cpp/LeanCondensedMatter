@@ -92,7 +92,7 @@ theorem Pairing.normalizedPair_endpoints_ne_of_ne {n : ℕ} (pairing : Pairing n
         _ = pairing.partner q.1.2 := congrArg pairing.partner hcross
         _ = q.1.1 := hpartnerQRight
     have hreverse : q.1.2 < q.1.1 := by simpa [hcross, hright] using hp.1
-    exact (lt_asymm hq.1 hreverse) hq.1
+    exact lt_asymm hq.1 hreverse
   · intro hcross
     have hleft : p.1.1 = q.1.2 := by
       calc
@@ -100,7 +100,7 @@ theorem Pairing.normalizedPair_endpoints_ne_of_ne {n : ℕ} (pairing : Pairing n
         _ = pairing.partner q.1.1 := congrArg pairing.partner hcross
         _ = q.1.2 := hqPartner
     have hreverse : q.1.2 < q.1.1 := by simpa [hleft, hcross] using hp.1
-    exact (lt_asymm hq.1 hreverse) hq.1
+    exact lt_asymm hq.1 hreverse
   · intro hright
     apply hpq
     apply Subtype.ext
