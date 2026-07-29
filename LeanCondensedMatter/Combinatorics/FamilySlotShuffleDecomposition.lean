@@ -329,12 +329,13 @@ theorem FamilySlotShuffle.cons_injective (size : Fin (k + 1) → ℕ) :
         FamilySlotShuffle (FamilySlotShuffle.tailSize size) =>
       FamilySlotShuffle.cons size p.1 p.2) := by
   rintro ⟨outer₁, tail₁⟩ ⟨outer₂, tail₂⟩ h
-  have hslot := congrArg FamilySlotShuffle.slotEquiv h
   have hleft : ∀ j : Fin (size 0),
       outer₁.slotEquiv (Sum.inl j) = outer₂.slotEquiv (Sum.inl j) := by
     intro j
-    have hj := congrFun hslot
-      (⟨(0 : Fin (k + 1)), j⟩ : Σ i : Fin (k + 1), Fin (size i))
+    have hj := congrArg
+      (fun shuffle : FamilySlotShuffle size =>
+        shuffle.slotEquiv
+          (⟨(0 : Fin (k + 1)), j⟩ : Σ i : Fin (k + 1), Fin (size i))) h
     exact (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size).symm).injective hj
   have houter : outer₁ = outer₂ := by
     apply SlotShuffle.eq_of_leftSlots_eq
@@ -351,8 +352,10 @@ theorem FamilySlotShuffle.cons_injective (size : Fin (k + 1) → ℕ) :
     apply FamilySlotShuffle.ext
     apply Equiv.ext
     intro x
-    have hx := congrFun hslot
-      ((FamilySlotShuffle.headTailLocalSlotEquiv size).symm (Sum.inr x))
+    have hx := congrArg
+      (fun shuffle : FamilySlotShuffle size =>
+        shuffle.slotEquiv
+          ((FamilySlotShuffle.headTailLocalSlotEquiv size).symm (Sum.inr x))) h
     have hx' := (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size).symm).injective hx
     have hx'' := outer₁.slotEquiv.injective hx'
     exact Sum.inr.inj hx''
