@@ -52,7 +52,7 @@ theorem QuarticWickDiagram.componentOrderedLeg_injective {S : Finset (Fin N)}
   have hlocal :
       (orderedQuarticLegEquiv (B : Finset (Fin N)).card a).2 =
         (orderedQuarticLegEquiv (B : Finset (Fin N)).card b).2 :=
-    congrArg Prod.snd hpair
+    congrArg (fun x : Fin S.card × Fin 4 => x.2) hpair
   have hsigma := shuffle.slotEquiv.injective hslot
   have hvertex :
       (orderedQuarticLegEquiv (B : Finset (Fin N)).card a).1 =
