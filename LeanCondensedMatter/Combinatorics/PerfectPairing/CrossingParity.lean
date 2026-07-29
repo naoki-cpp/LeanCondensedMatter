@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 
 set_option linter.style.header false
 
@@ -35,6 +36,46 @@ theorem pairEndpointInversionCount_eq_sum {n : ℕ}
         if pairEndpointAt right j < pairEndpointAt left i then 1 else 0 := by
   simp [pairEndpointInversionCount, pairEndpointAt, Fin.sum_univ_two,
     add_assoc, add_comm, add_left_comm]
+
+/-- Crossing pair-of-pairs represented directly by normalized-pair subtypes. -/
+def Pairing.crossingPairEquivNormalized {n : ℕ} (pairing : Pairing n) :
+    pairing.CrossingPair ≃
+      {x : pairing.NormalizedPair × pairing.NormalizedPair // Crosses x.1.1 x.2.1} where
+  toFun z := ⟨(⟨z.1.1, z.2.1⟩, ⟨z.1.2, z.2.2.1⟩), z.2.2.2⟩
+  invFun z := ⟨(z.1.1.1, z.1.2.1), z.1.1.2, z.1.2.2, z.2⟩
+  left_inv z := rfl
+  right_inv z := rfl
+
+/-- `crossingCount` as a `0`-or-`1` sum over all ordered normalized-pair pairs. -/
+theorem Pairing.crossingCount_eq_sum_crosses {n : ℕ} (pairing : Pairing n) :
+    pairing.crossingCount =
+      ∑ x : pairing.NormalizedPair × pairing.NormalizedPair,
+        if Crosses x.1.1 x.2.1 then 1 else 0 := by
+  classical
+  rw [pairing.crossingCount_eq_card_crossingPair,
+    Fintype.card_congr pairing.crossingPairEquivNormalized]
+  have hcard :
+      Fintype.card
+          {x : pairing.NormalizedPair × pairing.NormalizedPair // Crosses x.1.1 x.2.1} =
+        ((Finset.univ : Finset (pairing.NormalizedPair × pairing.NormalizedPair)).filter
+          fun x => Crosses x.1.1 x.2.1).card := by
+    exact Fintype.card_of_subtype
+      (p := fun x : pairing.NormalizedPair × pairing.NormalizedPair => Crosses x.1.1 x.2.1)
+      ((Finset.univ : Finset (pairing.NormalizedPair × pairing.NormalizedPair)).filter
+        fun x => Crosses x.1.1 x.2.1)
+      (fun x => by simp)
+  rw [hcard]
+  simpa using
+    (Finset.sum_boole
+      (fun x : pairing.NormalizedPair × pairing.NormalizedPair => Crosses x.1.1 x.2.1)
+      Finset.univ).symm
+
+/-- Double-sum form of `crossingCount_eq_sum_crosses`. -/
+theorem Pairing.crossingCount_eq_sum_sum_crosses {n : ℕ} (pairing : Pairing n) :
+    pairing.crossingCount =
+      ∑ p : pairing.NormalizedPair, ∑ q : pairing.NormalizedPair,
+        if Crosses p.1 q.1 then 1 else 0 := by
+  rw [pairing.crossingCount_eq_sum_crosses, Fintype.sum_prod_type]
 
 /-- Two normalized pairs with disjoint endpoints cross in one orientation exactly when their four
 cross-pair endpoint comparisons have odd parity. -/
