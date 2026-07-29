@@ -47,10 +47,8 @@ noncomputable def Pairing.pairEndpointEquiv {n : ℕ} (pairing : Pairing n) :
       rw [← hpartnera, pairing.partner_partner]
     fin_cases k
     · simp [Pairing.pairEndpoint, Pairing.positionToPairEndpoint, hablt, hpartnera]
-    · have hnot : ¬ b < pairing.partner b := by
-        rw [hpartnerb]
-        exact not_lt_of_ge (le_of_lt hablt)
-      simp [Pairing.pairEndpoint, Pairing.positionToPairEndpoint, hnot, hpartnera, hpartnerb]
+    · have hba : ¬ b < a := not_lt_of_ge (le_of_lt hablt)
+      simp [Pairing.pairEndpoint, Pairing.positionToPairEndpoint, hba, hpartnerb]
   right_inv := by
     intro i
     by_cases h : i < pairing.partner i
