@@ -8,8 +8,8 @@ set_option linter.style.header false
 
 Two normalized pairs `(a, b)` and `(c, d)` cross when `a < c < b < d` (`Crosses`); `crossingCount`
 counts these across a pairing's own `pairs`. The statistics-dependent exchange weight
-`ζ ^ crossingCount` itself — `ζ = +1` for bosons, `ζ = -1` for fermions — is *not* defined here; see
-`Common/Thermal/BlochDeDominicis/PairingWeight.lean`.
+`ζ ^ crossingCount` itself — `ζ = +1` for bosons and `ζ = -1` for fermions — is *not* defined here;
+see `Common/Thermal/BlochDeDominicis/PairingWeight.lean`.
 
 `Pairing.firstPair` is the pair containing position `0`; `crossingsWithFirstPair` counts pairs
 crossing it. `PerfectPairing/CrossingEraseZero.lean` relates both to
@@ -29,7 +29,26 @@ instance decidableCrosses {n : ℕ}
   inferInstanceAs (Decidable (
     left.1 < right.1 ∧ right.1 < left.2 ∧ left.2 < right.2))
 
-/-- The number of geometric crossings.  `Crosses` fixes the order of the left endpoints, so each
+/-- A strictly monotone embedding preserves and reflects the crossing relation. -/
+theorem crosses_map_iff {n m : ℕ} (f : Fin (2 * n) → Fin (2 * m)) (hf : StrictMono f)
+    (a b c e : Fin (2 * n)) :
+    Crosses (f a, f b) (f c, f e) ↔ Crosses (a, b) (c, e) := by
+  constructor
+  · rintro ⟨hac, hcb, hbe⟩
+    refine ⟨?_, ?_, ?_⟩
+    · apply lt_of_not_ge
+      intro hca
+      exact (not_lt_of_ge (hf.monotone hca)) hac
+    · apply lt_of_not_ge
+      intro hbc
+      exact (not_lt_of_ge (hf.monotone hbc)) hcb
+    · apply lt_of_not_ge
+      intro heb
+      exact (not_lt_of_ge (hf.monotone heb)) hbe
+  · rintro ⟨hac, hcb, hbe⟩
+    exact ⟨hf hac, hf hcb, hf hbe⟩
+
+/-- The number of geometric crossings. `Crosses` fixes the order of the left endpoints, so each
 crossing is counted exactly once. -/
 def Pairing.crossingCount {n : ℕ} (pairing : Pairing n) : ℕ :=
   ((pairing.pairs.product pairing.pairs).filter fun pairPair =>
