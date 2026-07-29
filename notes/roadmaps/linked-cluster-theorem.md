@@ -1,7 +1,7 @@
 # Roadmap — Fermionic Linked Cluster Theorem
 
 This page is the execution plan for the finite-mode, finite-temperature fermionic Linked Cluster
-Theorem (LCT). It complements the longer historical narrative in
+Theorem (LCT). It complements the historical narrative in
 [`second-quantization.md`](second-quantization.md) and the architecture summary in
 [`second-quantization-status.md`](second-quantization-status.md).
 
@@ -23,86 +23,55 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmpl
       quarticWickDiagramAmplitude ε β g d
 ```
 
-The left side is the exponential-generating normalization of a coefficient of the normalized formal
+The left side is the exponential-generating normalization of a coefficient of normalized formal
 Dyson `log Z`. The right side is the sum of amplitudes of connected quartic Wick diagrams on the
 labelled vertex set `Finset.univ : Finset (Fin n)`.
 
-## Completed foundation
+## Milestone overview
 
-The following load-bearing pieces are already proved and compile without `sorry`.
+| Milestone | Deliverable | Status | Depends on | Expected PRs |
+|---|---|---|---|---:|
+| M0 | Statistics-independent component-shuffle product calculus | complete | — | completed in PRs #233–#247 |
+| M1 | Fermionic contraction-integrand factorization | next | M0 | 2–3 |
+| M2 | Full quartic Wick-amplitude factorization | blocked by M1 | M1 | 1 |
+| M3 | Connected-diagram formula for `dysonVertexCumulant` | blocked by M2 | M2 | 1–2 |
+| M4 | Finite-set cumulant / formal-`log` EGF bridge | independent high-risk track | normalized power-series API | 1–2 |
+| M5 | Final Dyson LCT specialization and public export | blocked by M3 and M4 | M3, M4 | 1 |
 
-### Dyson and Wick expansion
+The remaining implementation is approximately six to nine focused PRs. M1 and M4 are the two
+high-risk milestones. They should remain isolated from mechanical assembly PRs.
 
-- `Fermionic/Perturbation/DysonExpansion.lean` defines the genuine iterated-integral coefficients
-  `dysonCoeff`.
-- `Fermionic/Perturbation/DysonPartitionSeries.lean` packages their thermal traces into
-  `dysonPartitionSeries` and defines `dysonFormalLogPartitionFunction`.
-- `Fermionic/Perturbation/DysonVertexMoment.lean` converts ordinary power-series coefficients into
-  finite-set moments with the required factorial normalization.
-- `Fermionic/Diagrammatics/DysonDiagramExpansion.lean` proves
+## M0 — Component-shuffle product calculus
 
-  ```lean
-  dysonVertexMoment ε β (quarticInteraction g) S =
-    ∑ d : QuarticWickDiagram Mode N S,
-      quarticWickDiagramAmplitude ε β g d
-  ```
+**Status: complete.**
 
-### Diagram connectedness
+This milestone established the statistics-independent combinatorics and ordered-simplex analysis
+needed to multiply all connected-component contributions.
 
-- Quartic Wick diagrams have a component partition, connected restrictions, reassembly, and a
-  component-decomposition equivalence.
-- `Combinatorics/DiagramConnectedness.lean` proves the abstract theorem that the cumulant of a
-  factorizing weighted diagram family is the sum of connected-diagram weights.
-- Coupling products and the Dyson sign already factor over connected components in
-  `WickDiagram/AmplitudePrefactorFactorization.lean`.
+### Completed foundation
 
-### Ordered-simplex shuffle calculus
-
-The analytic binary-shuffle layer is complete.
-
-- `Analysis/OrderedSimplexIntegralCalculus.lean` proves the product recurrence for two
-  ordered-simplex integrals.
-- `Combinatorics/BinaryShuffle.lean` defines finite order-preserving binary shuffles and their outer
-  left/right decomposition.
-- `Analysis/BinaryShuffleOrderedSimplex.lean` proves that the finite sum of explicit binary-shuffle
-  contributions equals the product of the two component ordered-simplex integrals.
-- `Combinatorics/BinaryShuffleSlots.lean` turns each recursive shuffle into an order-preserving
-  equivalence
-
-  ```lean
-  Fin m ⊕ Fin n ≃ Fin (m + n)
-  ```
-
-- Global vertex orders already decompose into component-local orders and a
+- Global vertex orders decompose into component-local orders and a
   `QuarticDiagram.ComponentShuffle`.
-- `Common/Diagrammatics/ComponentOrderedSimplex.lean` defines component-restricted time assignments,
-  shuffled products of component integrands, continuity, and finite-sum/integral interchange.
+- Recursive binary shuffles are equivalent to ambient two-block slot shuffles:
 
-The binary shuffle sequence was completed by PRs #237–#241. Component-order and component-shuffle
-infrastructure was completed immediately before it in PRs #233–#235.
+  ```lean
+  BinaryShuffle m n ≃ BinaryShuffle.SlotShuffle m n
+  ```
 
-## Remaining critical path
+- Two-block ambient integrands satisfy the ordered-simplex product identity.
+- `FamilySlotShuffle` represents an arbitrary finite family of ordered slot blocks.
+- A family shuffle on `Fin (k + 1)` decomposes into a head-versus-tail binary shuffle and a tail
+  family shuffle.
+- Finite-family shuffles transport to `QuarticDiagram.ComponentShuffle` through a canonical
+  enumeration of connected components.
 
-### 1. Identify binary shuffles with two-family slot shuffles
-
-`BinaryShuffle.toSlotShuffle` currently forgets the recursive presentation. Prove that this map is an
-equivalence, or provide an equivalent canonical inverse from an order-preserving slot equivalence.
-
-Expected output:
+### Exit theorem
 
 ```lean
-BinaryShuffle m n ≃ BinaryShuffle.SlotShuffle m n
+QuarticDiagram.sum_componentShuffle_orderedSimplexIntegral_eq_prod
 ```
 
-This supplies the uniqueness needed to reindex finite sums, rather than only constructing one ambient
-slot equivalence from each recursive shuffle.
-
-### 2. Prove the finite-family component-shuffle product identity
-
-Transport the binary formula to two component blocks, then iterate it across the finite type
-`d.componentPartition.parts`.
-
-Expected theorem shape:
+with theorem shape
 
 ```lean
 ∑ shuffle : d.ComponentShuffle,
@@ -110,18 +79,21 @@ Expected theorem shape:
       (d.componentShuffleIntegrand shuffle componentIntegrand)
   =
   ∏ B : d.componentPartition.parts,
-    orderedSimplexIntegral (B : Finset (Fin N)).card β (componentIntegrand B)
+    orderedSimplexIntegral (B : Finset (Fin N)).card β
+      (componentIntegrand B)
 ```
 
-This stage is statistics-independent and should live in `Common/Diagrammatics` or in a general
-`Analysis`/`Combinatorics` layer with a Common specialization.
+The binary and finite-family sequence was completed by PRs #237–#247. The component-order and
+component-integrand infrastructure was completed in PRs #233–#235.
 
-### 3. Factor the fermionic contraction integrand
+## M1 — Fermionic contraction-integrand factorization
 
-For an assembled global order, prove that the Wick contraction integrand is the product of the
+**Status: next.**
+
+For an assembled global vertex order, prove that the Wick contraction integrand is the product of the
 connected-component contraction integrands evaluated on component-restricted times.
 
-Expected theorem shape:
+### Exit theorem
 
 ```lean
 d.contractionIntegrand ε β (d.assembleVertexOrder orders shuffle) τ =
@@ -130,23 +102,49 @@ d.contractionIntegrand ε β (d.assembleVertexOrder orders shuffle) τ =
       ε β (orders B) (d.componentTimeAssignment shuffle τ B))
 ```
 
-This requires four compatibility results:
+### Work packages
 
-1. the transported global pairing decomposes into the pairings of the component restrictions;
-2. each global pair value agrees with the corresponding restricted pair value;
-3. the product over global pairs reindexes to the product over components and local pairs;
-4. the fermionic pairing weight factors over components.
+#### M1a — Pairing restriction and local pair values
 
-The fourth item is the main proof risk. `Pairing.weight` is not invariant under an arbitrary relabeling.
-The proof must use the special block-of-four vertex-leg permutation induced by a component shuffle and
-show that its cross-component parity contribution is even.
+Prove that:
 
-### 4. Prove complete amplitude factorization
+1. the global `pairingInOrder` pair set decomposes into component-local pair sets;
+2. the global leg operators agree with restricted component leg operators;
+3. every global pair value agrees with its restricted component pair value.
 
-Combine the component-shuffle product theorem, contraction-integrand factorization, and the already
-proved scalar-prefactor factorization.
+The preferred first PR should expose small compatibility lemmas rather than attempting the full
+product identity immediately.
 
-Expected theorem:
+#### M1b — Product reindexing
+
+Reindex the product over global pairs as a product over components and local pairs. This should use
+explicit equivalences of pair index types, avoiding large `simp` proofs over nested subtypes.
+
+#### M1c — Fermionic pairing-sign factorization
+
+Prove that `Pairing.weight` factors over connected components under the assembled order.
+
+This is the main risk in M1. `Pairing.weight` is not invariant under arbitrary relabeling. The proof
+must use the special permutation induced by shuffling blocks of four vertex legs. A vertex-block
+transposition exchanges `4 × 4 = 16` leg pairs, so its cross-component parity contribution should be
+even; this parity fact must be expressed in the concrete pairing-weight API.
+
+### Definition of done
+
+M1 is complete only when the full contraction-integrand theorem is available without adding a new
+sign convention or changing `pairingInOrder`.
+
+## M2 — Full quartic Wick-amplitude factorization
+
+**Status: blocked by M1.**
+
+Combine:
+
+- M1 contraction-integrand factorization;
+- the M0 component-shuffle ordered-simplex product theorem;
+- the existing coupling-weight and Dyson-sign factorization.
+
+### Exit theorem
 
 ```lean
 quarticWickDiagramAmplitude ε β g d =
@@ -155,9 +153,13 @@ quarticWickDiagramAmplitude ε β g d =
       ((d.restrictComponentConnected B.2).1)
 ```
 
-### 5. Instantiate `WeightedDiagramFamily`
+This should be a short assembly PR. New combinatorics appearing here indicates that M1 is incomplete.
 
-Use
+## M3 — Connected-diagram formula for finite-set cumulants
+
+**Status: blocked by M2.**
+
+Instantiate the existing abstract `Combinatorics.WeightedDiagramFamily` with
 
 ```lean
 Diagram S          := QuarticWickDiagram Mode N S
@@ -166,8 +168,11 @@ diagramWeight       := quarticWickDiagramAmplitude ε β g
 connectedWeight     := quarticWickDiagramAmplitude ε β g
 ```
 
-with the existing component-decomposition equivalence and the amplitude-factorization theorem. The
-abstract diagram-connectedness theorem and Dyson diagram expansion should then yield
+using the existing component-decomposition equivalence and M2 amplitude factorization.
+
+Combine the abstract diagram-connectedness theorem with the Dyson diagram expansion.
+
+### Exit theorem
 
 ```lean
 dysonVertexCumulant ε β (quarticInteraction g) S =
@@ -177,10 +182,17 @@ dysonVertexCumulant ε β (quarticInteraction g) S =
 
 for nonempty `S`.
 
-### 6. Connect finite-set cumulants to coefficients of formal `log Z`
+This milestone may need one infrastructure PR for the concrete family instance and one theorem PR,
+but they should be combined when elaboration remains straightforward.
 
-Prove the exponential-generating-series bridge for an arbitrary normalized power series. The desired
-general theorem has the shape
+## M4 — Finite-set cumulant / formal-log EGF bridge
+
+**Status: not started; independent high-risk track.**
+
+Prove a general theorem for an arbitrary normalized power series, independent of second
+quantization.
+
+### Target theorem shape
 
 ```lean
 (n.factorial : ℂ) * PowerSeries.coeff n (formalLogPartitionFunction Z) =
@@ -191,43 +203,64 @@ general theorem has the shape
 
 under `PowerSeries.constantCoeff Z = 1` and `n ≠ 0`.
 
-This is the second main proof risk. It must align Mathlib's ordinary power-series multiplication with
-labelled set partitions and their multinomial factors. The proof should be general and independent of
-second quantization.
+### Required bridge
 
-### 7. Final Dyson specialization
+The proof must align:
 
-Specialize the EGF/log theorem to
+- ordinary power-series multiplication and substitution;
+- ordered compositions appearing in powers of `Z - 1`;
+- labelled set partitions and multinomial factors;
+- the Möbius coefficients used by `Finpartition.cumulantFromMoment`.
+
+A clean route is to prove the labelled exponential formula first and then obtain the logarithm theorem
+by inversion. A direct coefficient expansion is acceptable only if the resulting API remains reusable
+outside the Dyson specialization.
+
+### Definition of done
+
+The theorem lives in `Analysis/` or `Combinatorics/`, mentions no Fock-space or diagrammatic type, and
+handles the factorial normalization once rather than in the final LCT proof.
+
+## M5 — Final Dyson LCT specialization
+
+**Status: blocked by M3 and M4.**
+
+Specialize M4 to
 
 ```lean
 normalizePartitionSeries (dysonPartitionSeries ε β (quarticInteraction g))
 ```
 
-identify its finite-set moment with `dysonVertexMoment`, and compose with stage 5. This final PR should
-contain little new combinatorics; it should mainly rewrite and combine previously proved theorems.
+identify the induced finite-set moment with `dysonVertexMoment`, then compose with M3.
 
-## Suggested PR sequence
+### Exit deliverables
 
-The expected remaining implementation is approximately seven to ten focused PRs:
+- the target LCT theorem at the top of this document;
+- export through the Fermionic public API;
+- concise documentation of the algebraic scope and normalization conventions.
 
-1. `BinaryShuffle ≃ SlotShuffle` and sum reindexing;
-2. two-component `ComponentShuffle` transport;
-3. arbitrary finite-family component-shuffle product identity;
-4. pairing restriction and pair-value compatibility;
-5. fermionic pairing-sign factorization;
-6. full contraction-integrand and amplitude factorization;
-7. concrete `WeightedDiagramFamily` and finite-set connected-diagram theorem;
-8. general finite-set cumulant/formal-log EGF bridge, possibly split into two PRs;
-9. final Dyson LCT specialization.
+This PR should contain little new combinatorics. It should mainly rewrite and combine previously
+proved theorems.
 
-The sequence can be compressed when adjacent statements elaborate cleanly, but pairing-sign and EGF
-work should remain isolated because they are the highest-risk proofs.
+## Next PR sequence
+
+The current recommended sequence is:
+
+1. pairing restriction and leg/pair-value compatibility;
+2. global-pair product reindexing;
+3. fermionic pairing-weight parity factorization;
+4. contraction-integrand and complete amplitude factorization;
+5. concrete `WeightedDiagramFamily` and connected-diagram finite-set cumulant theorem;
+6. general EGF / finite-set cumulant bridge, possibly split into two PRs;
+7. final Dyson specialization and API export.
+
+M4 can be developed in parallel with M1–M3 because the two tracks meet only at M5.
 
 ## Definition of done
 
 The algebraic fermionic LCT milestone is complete when:
 
-- the target theorem above is exported by the Fermionic API;
+- the target theorem is exported by the Fermionic API;
 - it assumes finite `Mode`, the existing ordering/typeclass hypotheses, and `n ≠ 0`, but no analytic
   convergence of the perturbation series;
 - all intermediate theorems compile without `sorry`;
@@ -235,5 +268,5 @@ The algebraic fermionic LCT milestone is complete when:
   conventions;
 - repository-wide Lean CI, no-`sorry`, and theorem-catalog checks pass.
 
-Analytic convergence, infinite-volume limits, and completed-space operator theory remain separate later
-milestones.
+Analytic convergence, infinite-volume limits, and completed-space operator theory remain separate
+later milestones.
