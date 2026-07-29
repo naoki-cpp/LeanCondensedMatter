@@ -85,18 +85,18 @@ theorem QuarticWickDiagram.componentPairToGlobal_injective {S : Finset (Fin N)}
     (d.componentOrderedLeg shuffle B a, d.componentOrderedLeg shuffle B b) =
       (d.componentOrderedLeg shuffle C c, d.componentOrderedLeg shuffle C e) at hval
   have hfst := congrArg Prod.fst hval
-  have hfst' :
+  have hfstEquiv :
       d.componentOrderedLegEquiv shuffle ⟨B, a⟩ =
         d.componentOrderedLegEquiv shuffle ⟨C, c⟩ := by
     simpa only [d.componentOrderedLegEquiv_apply] using hfst
-  have hsigmaFst := (d.componentOrderedLegEquiv shuffle).injective hfst'
+  have hsigmaFst := (d.componentOrderedLegEquiv shuffle).injective hfstEquiv
   cases hsigmaFst
   have hsnd := congrArg Prod.snd hval
-  have hsnd' :
+  have hsndEquiv :
       d.componentOrderedLegEquiv shuffle ⟨B, b⟩ =
         d.componentOrderedLegEquiv shuffle ⟨B, e⟩ := by
     simpa only [d.componentOrderedLegEquiv_apply] using hsnd
-  have hsigmaSnd := (d.componentOrderedLegEquiv shuffle).injective hsnd'
+  have hsigmaSnd := (d.componentOrderedLegEquiv shuffle).injective hsndEquiv
   cases hsigmaSnd
   rfl
 
