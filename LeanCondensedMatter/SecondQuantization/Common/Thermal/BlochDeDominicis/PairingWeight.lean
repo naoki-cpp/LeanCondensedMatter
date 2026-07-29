@@ -52,6 +52,43 @@ theorem zetaInt_pow_eq_of_mod_two_eq (s : Statistics) {a b : ℕ} (h : a % 2 = b
   · simp only [Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
     rw [neg_one_pow_eq_pow_mod_two, h, ← neg_one_pow_eq_pow_mod_two]
 
+/-- Pairing weights multiply whenever the global crossing count has the same parity as the sum of
+two local crossing counts. This isolates sign factorization from the combinatorial parity proof. -/
+theorem Pairing.weight_eq_mul_of_crossingCount_mod_two_eq (s : Statistics)
+    {n nLeft nRight : ℕ} (pairing : Pairing n) (left : Pairing nLeft)
+    (right : Pairing nRight)
+    (h : pairing.crossingCount % 2 =
+      (left.crossingCount + right.crossingCount) % 2) :
+    pairing.weight s = left.weight s * right.weight s := by
+  simp only [Pairing.weight]
+  rw [← pow_add]
+  exact zetaInt_pow_eq_of_mod_two_eq s h
+
+/-- A finite-family version of `Pairing.weight_eq_mul_of_crossingCount_mod_two_eq`: once the global
+crossing count is identified modulo two with the sum of local crossing counts, the global exchange
+weight is the product of all local exchange weights. -/
+theorem Pairing.weight_eq_prod_of_crossingCount_mod_two_eq (s : Statistics)
+    {ι : Type*} [Fintype ι] {n : ℕ} {localSize : ι → ℕ}
+    (pairing : Pairing n) (localPairing : (i : ι) → Pairing (localSize i))
+    (h : pairing.crossingCount % 2 =
+      (∑ i, (localPairing i).crossingCount) % 2) :
+    pairing.weight s = ∏ i, (localPairing i).weight s := by
+  classical
+  have hpow (t : Finset ι) :
+      (s.zetaInt : ℂ) ^ (∑ i in t, (localPairing i).crossingCount) =
+        ∏ i in t, (localPairing i).weight s := by
+    induction t using Finset.induction_on with
+    | empty =>
+        simp
+    | @insert a t ha ih =>
+        simp [ha, pow_add, Pairing.weight, ih]
+  calc
+    pairing.weight s = (s.zetaInt : ℂ) ^ pairing.crossingCount := rfl
+    _ = (s.zetaInt : ℂ) ^ (∑ i, (localPairing i).crossingCount) :=
+      zetaInt_pow_eq_of_mod_two_eq s h
+    _ = ∏ i, (localPairing i).weight s := by
+      simpa using hpow Finset.univ
+
 /-- The exponent-recurrence version of `crossingsWithFirstPair_mod_two`: since the exchange sign
 `ζ` squares to `1`, matching parities give matching powers. -/
 theorem Pairing.weight_eraseZeroPair (s : Statistics) {n : ℕ} (pairing : Pairing (n + 1)) :
