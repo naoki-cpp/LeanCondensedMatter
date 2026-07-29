@@ -116,7 +116,6 @@ theorem QuarticWickDiagram.componentPairToGlobal_surjective {S : Finset (Fin N)}
       Σ B : d.componentPartition.parts,
         Fin (2 * (2 * (B : Finset (Fin N)).card))) = x := by
     dsimp [B, localA]
-    cases x
   have ha : d.componentOrderedLeg shuffle B localA = a := by
     calc
       d.componentOrderedLeg shuffle B localA =
