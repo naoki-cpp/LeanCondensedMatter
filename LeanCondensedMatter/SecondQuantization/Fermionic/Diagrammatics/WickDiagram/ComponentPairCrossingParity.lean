@@ -222,10 +222,30 @@ theorem QuarticWickDiagram.componentPairEndpointInversionSum_eq_sum_componentOrd
                     d.componentOrderedLeg shuffle B
                       (localPairingB.pairEndpointEquiv x)
                   then 1 else 0) = _
-            rw [Equiv.sum_comp localPairingB.pairEndpointEquiv]
-            apply Finset.sum_congr rfl
-            intro p _
-            rw [Equiv.sum_comp localPairingC.pairEndpointEquiv]
+            refine Fintype.sum_equiv localPairingB.pairEndpointEquiv
+              (fun x => ∑ y : localPairingC.NormalizedPair × Fin 2,
+                if d.componentOrderedLeg shuffle C
+                    (localPairingC.pairEndpointEquiv y) <
+                  d.componentOrderedLeg shuffle B
+                    (localPairingB.pairEndpointEquiv x)
+                then 1 else 0)
+              (fun p => ∑ q : Fin (2 * (2 * (C : Finset (Fin N)).card)),
+                if d.componentOrderedLeg shuffle C q <
+                  d.componentOrderedLeg shuffle B p
+                then 1 else 0) ?_
+            intro x
+            refine Fintype.sum_equiv localPairingC.pairEndpointEquiv
+              (fun y => if d.componentOrderedLeg shuffle C
+                  (localPairingC.pairEndpointEquiv y) <
+                d.componentOrderedLeg shuffle B
+                  (localPairingB.pairEndpointEquiv x)
+                then 1 else 0)
+              (fun q => if d.componentOrderedLeg shuffle C q <
+                d.componentOrderedLeg shuffle B
+                  (localPairingB.pairEndpointEquiv x)
+                then 1 else 0) ?_
+            intro y
+            rfl
 
 /-- The pair-endpoint inversion sum between two distinct components is even. -/
 theorem QuarticWickDiagram.componentPairEndpointInversionSum_mod_two_eq_zero
