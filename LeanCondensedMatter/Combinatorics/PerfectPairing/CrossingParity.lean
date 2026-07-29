@@ -128,6 +128,7 @@ theorem finset_sum_mod_two_congr {α : Type*} (s : Finset α) (f g : α → ℕ)
       simp only [Finset.mem_insert] at h
       rw [Finset.sum_insert ha, Finset.sum_insert ha, Nat.add_mod, Nat.add_mod,
         h a (Or.inl rfl), ih (fun x hx => h x (Or.inr hx))]
+      simp only [Nat.mod_mod]
 
 /-- Pointwise equality modulo two lifts to a sum over a finite type. -/
 theorem fintype_sum_mod_two_congr {α : Type*} [Fintype α] (f g : α → ℕ)
@@ -169,8 +170,18 @@ theorem finset_sum_sum_mod_two_eq_diag_of_pair_add_mod_two_eq_zero {α : Type*}
       have hdiag :
           (∑ x ∈ insert a s, f x x) = f a a + ∑ x ∈ s, f x x := by
         rw [Finset.sum_insert ha]
-      rw [hsplit, hdiag, Nat.add_mod, Nat.add_mod, hcross, ih']
-      omega
+      rw [hsplit, hdiag]
+      calc
+        (f a a + (∑ b ∈ s, (f a b + f b a)) +
+            ∑ x ∈ s, ∑ y ∈ s, f x y) % 2 =
+          (((f a a % 2 + (∑ b ∈ s, (f a b + f b a)) % 2) % 2) +
+            (∑ x ∈ s, ∑ y ∈ s, f x y) % 2) % 2 := by
+              rw [Nat.add_mod, Nat.add_mod]
+        _ = (((f a a % 2 + 0) % 2) + (∑ x ∈ s, f x x) % 2) % 2 := by
+              rw [hcross, ih']
+        _ = (f a a + ∑ x ∈ s, f x x) % 2 := by
+              rw [Nat.add_mod]
+              simp only [Nat.add_zero, Nat.mod_mod]
 
 /-- Finite-type form of `finset_sum_sum_mod_two_eq_diag_of_pair_add_mod_two_eq_zero`. -/
 theorem fintype_sum_sum_mod_two_eq_diag_of_pair_add_mod_two_eq_zero {α : Type*}
