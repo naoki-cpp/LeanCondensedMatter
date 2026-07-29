@@ -18,7 +18,7 @@ open BinaryShuffle
 
 /-- The unique shuffle of an empty family of slot blocks. -/
 noncomputable def FamilySlotShuffle.nil (size : Fin 0 → ℕ) : FamilySlotShuffle size where
-  slotEquiv := Fintype.equivOfCardEq (by simp [Fintype.card_sigma])
+  slotEquiv := Fintype.equivOfCardEq (by simp)
   strictMono := fun i => Fin.elim0 i
 
 /-- A shuffle of an empty family is unique. -/
@@ -70,6 +70,7 @@ theorem FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod :
           (shuffle.integrand localIntegrand)) =
         ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i)
   | 0, size, β, localIntegrand, _ => by
+      rw [show (∑ i : Fin 0, size i) = 0 by simp]
       simp [FamilySlotShuffle.integrand]
   | k + 1, size, β, localIntegrand, hlocal => by
       classical
@@ -95,7 +96,7 @@ theorem FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod :
               FamilySlotShuffle (FamilySlotShuffle.tailSize size),
             orderedSimplexIntegral (∑ i, size i) β
               ((FamilySlotShuffle.cons size p.1 p.2).integrand localIntegrand) := by
-                rw [Equiv.sum_comp (FamilySlotShuffle.consEquiv size)]
+                rw [← Equiv.sum_comp (FamilySlotShuffle.consEquiv size)]
         _ = ∑ outer : SlotShuffle (size 0) (FamilySlotShuffle.tailTotal size),
               ∑ tail : FamilySlotShuffle (FamilySlotShuffle.tailSize size),
                 orderedSimplexIntegral (size 0 + FamilySlotShuffle.tailTotal size) β
