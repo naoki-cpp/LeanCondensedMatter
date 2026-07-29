@@ -74,6 +74,7 @@ noncomputable def QuarticDiagram.TwoComponentPresentation.partsSigmaEquiv
       Fin ((p.partsEquiv b : d.componentPartition.parts) : Finset (Fin N)).card) ≃
       (Σ B : d.componentPartition.parts, Fin (B : Finset (Fin N)).card) :=
   p.partsEquiv.sigmaCongrLeft
+    (β := fun B : d.componentPartition.parts => Fin (B : Finset (Fin N)).card)
 
 /-- Embed a binary sum of the two local slot families into the sigma type of all component-local
 slots. This direction computes directly on `Sum.inl` and `Sum.inr`. -/
@@ -91,9 +92,8 @@ theorem QuarticDiagram.TwoComponentPresentation.sumToLocalSlotEquiv_inl
     {S : Finset (Fin N)} {d : QuarticDiagram Label N S}
     (p : d.TwoComponentPresentation) (i : Fin p.leftSize) :
     p.sumToLocalSlotEquiv (Sum.inl i) = ⟨p.leftComponent, i⟩ := by
-  simp [QuarticDiagram.TwoComponentPresentation.sumToLocalSlotEquiv,
-    QuarticDiagram.TwoComponentPresentation.partsSigmaEquiv,
-    QuarticDiagram.TwoComponentPresentation.boolSlotFiberEquiv,
+  change p.partsSigmaEquiv ⟨false, i⟩ = ⟨p.leftComponent, i⟩
+  simp [QuarticDiagram.TwoComponentPresentation.partsSigmaEquiv,
     QuarticDiagram.TwoComponentPresentation.leftComponent]
 
 @[simp]
@@ -101,9 +101,8 @@ theorem QuarticDiagram.TwoComponentPresentation.sumToLocalSlotEquiv_inr
     {S : Finset (Fin N)} {d : QuarticDiagram Label N S}
     (p : d.TwoComponentPresentation) (i : Fin p.rightSize) :
     p.sumToLocalSlotEquiv (Sum.inr i) = ⟨p.rightComponent, i⟩ := by
-  simp [QuarticDiagram.TwoComponentPresentation.sumToLocalSlotEquiv,
-    QuarticDiagram.TwoComponentPresentation.partsSigmaEquiv,
-    QuarticDiagram.TwoComponentPresentation.boolSlotFiberEquiv,
+  change p.partsSigmaEquiv ⟨true, i⟩ = ⟨p.rightComponent, i⟩
+  simp [QuarticDiagram.TwoComponentPresentation.partsSigmaEquiv,
     QuarticDiagram.TwoComponentPresentation.rightComponent]
 
 /-- Identify the sigma type of all component-local slots with a binary sum of the two local slot
