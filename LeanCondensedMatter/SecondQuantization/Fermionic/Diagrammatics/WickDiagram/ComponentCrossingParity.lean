@@ -33,11 +33,9 @@ theorem QuarticWickDiagram.card_externalCrossingPairs_add_card_internalCrossingP
       (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).crossingCount := by
   classical
   rw [Common.BlochDeDominicis.Pairing.crossingCount_eq_card_crossingPair]
-  have hsubset := Finset.subset_univ (d.internalCrossingPairs orders shuffle)
-  have hdiff := Finset.card_sdiff_of_subset hsubset
-  have hle := Finset.card_le_card hsubset
-  simp only [QuarticWickDiagram.externalCrossingPairs, Finset.card_univ] at hdiff hle ⊢
-  omega
+  simpa [QuarticWickDiagram.externalCrossingPairs] using
+    Finset.card_sdiff_add_card_eq_card
+      (Finset.subset_univ (d.internalCrossingPairs orders shuffle))
 
 /-- The global crossing count is the sum of all component-local crossing counts plus the external
 crossing contribution. -/
