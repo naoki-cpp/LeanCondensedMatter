@@ -6,7 +6,7 @@ set_option linter.style.header false
 # Endpoints of normalized pairs
 
 Every position of a perfect pairing occurs exactly once among the two endpoints of its normalized
-pairs.  This file packages that fact as an explicit equivalence, used to reindex sums over
+pairs. This file packages that fact as an explicit equivalence, used to reindex sums over
 pair-of-pair endpoint comparisons as sums over the ambient paired positions.
 -/
 
@@ -29,9 +29,12 @@ noncomputable def Pairing.positionToPairEndpoint {n : ℕ} (pairing : Pairing n)
   classical
   intro i
   by_cases h : i < pairing.partner i
-  · exact (⟨(i, pairing.partner i), (pairing.mem_pairs_iff i (pairing.partner i)).2 ⟨h, rfl⟩⟩, 0)
-  · exact (⟨(pairing.partner i, i), (pairing.mem_pairs_iff (pairing.partner i) i).2
-      ⟨lt_of_le_of_ne (le_of_not_gt h) (pairing.partner_ne i), pairing.partner_partner i⟩⟩, 1)
+  · exact (⟨(i, pairing.partner i),
+      (pairing.mem_pairs_iff i (pairing.partner i)).2 ⟨h, rfl⟩⟩, 0)
+  · exact (⟨(pairing.partner i, i),
+      (pairing.mem_pairs_iff (pairing.partner i) i).2
+        ⟨lt_of_le_of_ne (le_of_not_gt h) (pairing.partner_ne i),
+          pairing.partner_partner i⟩⟩, 1)
 
 /-- The two endpoints of all normalized pairs are equivalent to the ambient paired positions. -/
 noncomputable def Pairing.pairEndpointEquiv {n : ℕ} (pairing : Pairing n) :
@@ -60,6 +63,54 @@ theorem Pairing.pairEndpointEquiv_apply {n : ℕ} (pairing : Pairing n)
     (x : pairing.NormalizedPair × Fin 2) :
     pairing.pairEndpointEquiv x = pairing.pairEndpoint x :=
   rfl
+
+/-- Distinct normalized pairs in one pairing cannot share an endpoint. -/
+theorem Pairing.normalizedPair_endpoints_ne_of_ne {n : ℕ} (pairing : Pairing n)
+    (p q : pairing.NormalizedPair) (hpq : p ≠ q) :
+    p.1.1 ≠ q.1.1 ∧ p.1.1 ≠ q.1.2 ∧ p.1.2 ≠ q.1.1 ∧ p.1.2 ≠ q.1.2 := by
+  have hp := (pairing.mem_pairs_iff p.1.1 p.1.2).1 p.2
+  have hq := (pairing.mem_pairs_iff q.1.1 q.1.2).1 q.2
+  have hpPartner : pairing.partner p.1.1 = p.1.2 := hp.2
+  have hqPartner : pairing.partner q.1.1 = q.1.2 := hq.2
+  have hpartnerPRight : pairing.partner p.1.2 = p.1.1 := by
+    rw [← hpPartner, pairing.partner_partner]
+  have hpartnerQRight : pairing.partner q.1.2 = q.1.1 := by
+    rw [← hqPartner, pairing.partner_partner]
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · intro hleft
+    apply hpq
+    apply Subtype.ext
+    apply Prod.ext hleft
+    calc
+      p.1.2 = pairing.partner p.1.1 := hpPartner.symm
+      _ = pairing.partner q.1.1 := congrArg pairing.partner hleft
+      _ = q.1.2 := hqPartner
+  · intro hcross
+    have hright : p.1.2 = q.1.1 := by
+      calc
+        p.1.2 = pairing.partner p.1.1 := hpPartner.symm
+        _ = pairing.partner q.1.2 := congrArg pairing.partner hcross
+        _ = q.1.1 := hpartnerQRight
+    have hreverse : q.1.2 < q.1.1 := by simpa [hcross, hright] using hp.1
+    exact (lt_asymm hq.1 hreverse) hq.1
+  · intro hcross
+    have hleft : p.1.1 = q.1.2 := by
+      calc
+        p.1.1 = pairing.partner p.1.2 := hpartnerPRight.symm
+        _ = pairing.partner q.1.1 := congrArg pairing.partner hcross
+        _ = q.1.2 := hqPartner
+    have hreverse : q.1.2 < q.1.1 := by simpa [hleft, hcross] using hp.1
+    exact (lt_asymm hq.1 hreverse) hq.1
+  · intro hright
+    apply hpq
+    apply Subtype.ext
+    apply Prod.ext
+    · apply pairing.partner.injective
+      calc
+        pairing.partner p.1.1 = p.1.2 := hpPartner
+        _ = q.1.2 := hright
+        _ = pairing.partner q.1.1 := hqPartner.symm
+    · exact hright
 
 end BlochDeDominicis
 end Common
