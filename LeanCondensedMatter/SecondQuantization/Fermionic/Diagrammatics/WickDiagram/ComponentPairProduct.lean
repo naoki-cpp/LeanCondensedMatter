@@ -46,7 +46,7 @@ noncomputable def QuarticWickDiagram.componentOrderedLegEquiv {S : Finset (Fin N
     (d : QuarticWickDiagram Mode N S) (shuffle : d.ComponentShuffle) :
     (Σ B : d.componentPartition.parts,
       Fin (2 * (2 * (B : Finset (Fin N)).card))) ≃ Fin (2 * (2 * S.card)) :=
-  (Equiv.sigmaCongrRight fun B =>
+  (Equiv.sigmaCongrRight fun B : d.componentPartition.parts =>
       orderedQuarticLegEquiv (B : Finset (Fin N)).card).trans
     ((sigmaProdEquiv
         (fun B : d.componentPartition.parts => Fin (B : Finset (Fin N)).card)
@@ -79,15 +79,21 @@ theorem QuarticWickDiagram.componentPairToGlobal_injective {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (orders : d.ComponentVertexOrders)
     (shuffle : d.ComponentShuffle) :
     Function.Injective (d.componentPairToGlobal orders shuffle) := by
-  intro x y hxy
+  rintro ⟨B, ⟨⟨a, b⟩, hab⟩⟩ ⟨C, ⟨⟨c, e⟩, hce⟩⟩ hxy
   have hval := congrArg Subtype.val hxy
   have hfst := congrArg Prod.fst hval
-  have hsigmaFst := (d.componentOrderedLegEquiv shuffle).injective hfst
-  have hsnd := congrArg Prod.snd hval
-  have hsigmaSnd := (d.componentOrderedLegEquiv shuffle).injective hsnd
-  rcases x with ⟨B, ⟨⟨a, b⟩, hab⟩⟩
-  rcases y with ⟨C, ⟨⟨c, e⟩, hce⟩⟩
+  have hfst' :
+      d.componentOrderedLegEquiv shuffle ⟨B, a⟩ =
+        d.componentOrderedLegEquiv shuffle ⟨C, c⟩ := by
+    simpa using hfst
+  have hsigmaFst := (d.componentOrderedLegEquiv shuffle).injective hfst'
   cases hsigmaFst
+  have hsnd := congrArg Prod.snd hval
+  have hsnd' :
+      d.componentOrderedLegEquiv shuffle ⟨B, b⟩ =
+        d.componentOrderedLegEquiv shuffle ⟨B, e⟩ := by
+    simpa using hsnd
+  have hsigmaSnd := (d.componentOrderedLegEquiv shuffle).injective hsnd'
   cases hsigmaSnd
   rfl
 
@@ -97,13 +103,24 @@ theorem QuarticWickDiagram.componentPairToGlobal_surjective {S : Finset (Fin N)}
     (shuffle : d.ComponentShuffle) :
     Function.Surjective (d.componentPairToGlobal orders shuffle) := by
   rintro ⟨⟨a, b⟩, hab⟩
-  obtain ⟨B, localA⟩ := (d.componentOrderedLegEquiv shuffle).symm a
+  let x := (d.componentOrderedLegEquiv shuffle).symm a
+  let B := x.1
+  let localA := x.2
   let localPairing := (d.restrictComponent B.2).pairingInOrder (orders B)
   let localB := localPairing.partner localA
   have ha0 := (d.componentOrderedLegEquiv shuffle).apply_symm_apply a
+  have hxeta : (⟨B, localA⟩ :
+      Σ B : d.componentPartition.parts,
+        Fin (2 * (2 * (B : Finset (Fin N)).card))) = x := by
+    dsimp [B, localA]
+    cases x
+    rfl
   have ha : d.componentOrderedLeg shuffle B localA = a := by
-    change d.componentOrderedLegEquiv shuffle ⟨B, localA⟩ = a at ha0
-    simpa using ha0
+    calc
+      d.componentOrderedLeg shuffle B localA =
+          d.componentOrderedLegEquiv shuffle ⟨B, localA⟩ := by simp
+      _ = d.componentOrderedLegEquiv shuffle x := congrArg _ hxeta
+      _ = a := ha0
   rw [Common.BlochDeDominicis.Pairing.mem_pairs_iff] at hab
   have hb : d.componentOrderedLeg shuffle B localB = b := by
     calc
