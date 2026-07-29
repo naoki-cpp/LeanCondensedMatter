@@ -8,7 +8,7 @@ set_option linter.style.header false
 # Component-local ordered legs and pair values
 
 A component shuffle embeds every component-local ordered flattened leg into the flattened-leg
-enumeration of the assembled global vertex order.  This file proves that the associated fermionic leg
+enumeration of the assembled global vertex order. This file proves that the associated fermionic leg
 operators and normalized pair values agree exactly with those of the restricted component diagram.
 These coordinate lemmas are the first part of the contraction-integrand factorization milestone.
 -/
@@ -17,7 +17,8 @@ namespace SecondQuantization
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] {N : ℕ}
 
-/-- Embed a component-local ordered flattened leg into the assembled global ordered-leg enumeration. -/
+/-- Embed a component-local ordered flattened leg into the assembled global ordered-leg
+enumeration. -/
 noncomputable def QuarticWickDiagram.componentOrderedLeg {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (shuffle : d.ComponentShuffle)
     (B : d.componentPartition.parts) :
@@ -43,6 +44,7 @@ theorem QuarticWickDiagram.componentOrderedLeg_injective {S : Finset (Fin N)}
     Function.Injective (d.componentOrderedLeg shuffle B) := by
   intro a b hab
   have hpair := congrArg (orderedQuarticLegEquiv S.card) hab
+  simp only [d.orderedQuarticLegEquiv_componentOrderedLeg] at hpair
   have hslot :
       shuffle.slotEquiv ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card a).1⟩ =
         shuffle.slotEquiv ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card b).1⟩ :=
@@ -74,8 +76,8 @@ theorem QuarticWickDiagram.assembleVertexOrder_componentSlot_val
     (B : d.componentPartition.parts) (i : Fin (B : Finset (Fin N)).card) :
     ((d.assembleVertexOrder orders shuffle (shuffle.slotEquiv ⟨B, i⟩) : ↥S) : Fin N) =
       ((orders B i : ↥(B : Finset (Fin N))) : Fin N) := by
-  simp [QuarticWickDiagram.assembleVertexOrder, QuarticWickDiagram.componentVertexEquiv,
-    Common.QuarticDiagram.assembleVertexOrder, Common.QuarticDiagram.componentVertexEquiv]
+  simp [QuarticWickDiagram.assembleVertexOrder, Common.QuarticDiagram.assembleVertexOrder,
+    Common.QuarticDiagram.componentVertexEquiv, Finpartition.equivSigmaParts]
 
 /-- Vertex labels agree between the assembled global diagram and a restricted component. -/
 theorem QuarticWickDiagram.restrictComponent_vertexLabel_componentOrder
