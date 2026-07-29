@@ -23,7 +23,7 @@ jobs:
         shell: bash
         run: |
           set +e
-          lake build +LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairing \
+          lake build +LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairs \
             > component-pairing-diagnostic.log 2>&1
           status=$?
           echo "exit_status=$status" >> component-pairing-diagnostic.log
