@@ -154,9 +154,10 @@ theorem QuarticWickDiagram.componentGeometricCrossingCount_mod_two_eq_endpointIn
       d.componentPairEndpointInversionSum orders shuffle B C % 2 := by
   symm
   exact Common.BlochDeDominicis.fintype_sum_mod_two_congr _ _ fun x => by
-    simpa using
+    have h :=
       d.componentPairEndpointInversionCount_mod_two_eq_crossesIndicator
         orders shuffle B C hBC x.1 x.2
+    split_ifs at h ⊢ <;> simpa using h
 
 /-- Reindex the pair-endpoint inversion sum as a sum over all local legs of the two components. -/
 theorem QuarticWickDiagram.componentPairEndpointInversionSum_eq_sum_componentOrderedLeg_inversions
@@ -216,8 +217,10 @@ theorem QuarticWickDiagram.componentPairEndpointInversionSum_eq_sum_componentOrd
           then 1 else 0 := by
             change (∑ x : localPairingB.NormalizedPair × Fin 2,
                 ∑ y : localPairingC.NormalizedPair × Fin 2,
-                  if d.componentOrderedLeg shuffle C (localPairingC.pairEndpoint y) <
-                    d.componentOrderedLeg shuffle B (localPairingB.pairEndpoint x)
+                  if d.componentOrderedLeg shuffle C
+                      (localPairingC.pairEndpointEquiv y) <
+                    d.componentOrderedLeg shuffle B
+                      (localPairingB.pairEndpointEquiv x)
                   then 1 else 0) = _
             rw [Equiv.sum_comp localPairingB.pairEndpointEquiv]
             apply Finset.sum_congr rfl
