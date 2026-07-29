@@ -8,8 +8,8 @@ set_option linter.style.header false
 
 Two normalized pairs `(a, b)` and `(c, d)` cross when `a < c < b < d` (`Crosses`); `crossingCount`
 counts these across a pairing's own `pairs`. The statistics-dependent exchange weight
-`ζ ^ crossingCount` itself — `ζ = +1` for bosons, `ζ = -1` for fermions — is *not* defined here; see
-`Common/Thermal/BlochDeDominicis/PairingWeight.lean`.
+`ζ ^ crossingCount` itself — `ζ = +1` for bosons and `ζ = -1` for fermions — is *not* defined here;
+see `Common/Thermal/BlochDeDominicis/PairingWeight.lean`.
 
 `Pairing.firstPair` is the pair containing position `0`; `crossingsWithFirstPair` counts pairs
 crossing it. `PerfectPairing/CrossingEraseZero.lean` relates both to
@@ -29,11 +29,57 @@ instance decidableCrosses {n : ℕ}
   inferInstanceAs (Decidable (
     left.1 < right.1 ∧ right.1 < left.2 ∧ left.2 < right.2))
 
-/-- The number of geometric crossings.  `Crosses` fixes the order of the left endpoints, so each
+/-- A strictly monotone embedding preserves and reflects the crossing relation. -/
+theorem crosses_map_iff {n m : ℕ} (f : Fin (2 * n) → Fin (2 * m)) (hf : StrictMono f)
+    (a b c e : Fin (2 * n)) :
+    Crosses (f a, f b) (f c, f e) ↔ Crosses (a, b) (c, e) := by
+  constructor
+  · rintro ⟨hac, hcb, hbe⟩
+    refine ⟨?_, ?_, ?_⟩
+    · apply lt_of_not_ge
+      intro hca
+      exact (not_lt_of_ge (hf.monotone hca)) hac
+    · apply lt_of_not_ge
+      intro hbc
+      exact (not_lt_of_ge (hf.monotone hbc)) hcb
+    · apply lt_of_not_ge
+      intro heb
+      exact (not_lt_of_ge (hf.monotone heb)) hbe
+  · rintro ⟨hac, hcb, hbe⟩
+    exact ⟨hf hac, hf hcb, hf hbe⟩
+
+/-- The number of geometric crossings. `Crosses` fixes the order of the left endpoints, so each
 crossing is counted exactly once. -/
 def Pairing.crossingCount {n : ℕ} (pairing : Pairing n) : ℕ :=
   ((pairing.pairs.product pairing.pairs).filter fun pairPair =>
     Crosses pairPair.1 pairPair.2).card
+
+/-- The finite type of ordered pair-of-pairs that contribute to `crossingCount`. -/
+abbrev Pairing.CrossingPair {n : ℕ} (pairing : Pairing n) :=
+  {pairPair :
+      (Fin (2 * n) × Fin (2 * n)) × (Fin (2 * n) × Fin (2 * n)) //
+    pairPair.1 ∈ pairing.pairs ∧ pairPair.2 ∈ pairing.pairs ∧
+      Crosses pairPair.1 pairPair.2}
+
+/-- `crossingCount` is the cardinality of the type of crossing pair-of-pairs. -/
+theorem Pairing.crossingCount_eq_card_crossingPair {n : ℕ} (pairing : Pairing n) :
+    pairing.crossingCount = Fintype.card pairing.CrossingPair := by
+  rw [Pairing.crossingCount]
+  symm
+  exact Fintype.card_of_subtype
+    (p := fun pairPair :
+        (Fin (2 * n) × Fin (2 * n)) × (Fin (2 * n) × Fin (2 * n)) =>
+      pairPair.1 ∈ pairing.pairs ∧ pairPair.2 ∈ pairing.pairs ∧
+        Crosses pairPair.1 pairPair.2)
+    ((pairing.pairs.product pairing.pairs).filter fun pairPair =>
+      Crosses pairPair.1 pairPair.2)
+    (fun pairPair => by
+      simp only [Finset.mem_filter, Finset.product_eq_sprod, Finset.mem_product]
+      constructor
+      · rintro ⟨⟨hleft, hright⟩, hcross⟩
+        exact ⟨hleft, hright, hcross⟩
+      · rintro ⟨hleft, hright, hcross⟩
+        exact ⟨⟨hleft, hright⟩, hcross⟩)
 
 /-- The pair containing position `0`, i.e. `(0, partner 0)`. -/
 def Pairing.firstPair {n : ℕ} (pairing : Pairing (n + 1)) :
