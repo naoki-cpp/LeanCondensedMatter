@@ -226,8 +226,41 @@ theorem QuarticWickDiagram.prod_orderedQuarticPairValue_pairs_eq_prod_components
         ∏ pr ∈ ((d.restrictComponent B.2).pairingInOrder (orders B)).pairs,
           orderedQuarticPairValue ε β (d.restrictComponent B.2) (orders B)
             (d.componentTimeAssignment shuffle τ B) pr.1 pr.2 := by
-  simpa only [Finset.prod_coe_sort] using
-    d.prod_orderedQuarticPairValue_eq_prod_components ε β orders shuffle τ
+  classical
+  have hglobal :
+      (∏ pr : d.GlobalOrderedPair orders shuffle,
+        orderedQuarticPairValue ε β d (d.assembleVertexOrder orders shuffle)
+          τ pr.1.1 pr.1.2) =
+        ∏ pr ∈ (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs,
+          orderedQuarticPairValue ε β d (d.assembleVertexOrder orders shuffle)
+            τ pr.1 pr.2 := by
+    rw [← Finset.attach_eq_univ, Finset.prod_attach]
+  have hlocal (B : d.componentPartition.parts) :
+      (∏ pr : d.LocalOrderedPair orders B,
+        orderedQuarticPairValue ε β (d.restrictComponent B.2) (orders B)
+          (d.componentTimeAssignment shuffle τ B) pr.1.1 pr.1.2) =
+        ∏ pr ∈ ((d.restrictComponent B.2).pairingInOrder (orders B)).pairs,
+          orderedQuarticPairValue ε β (d.restrictComponent B.2) (orders B)
+            (d.componentTimeAssignment shuffle τ B) pr.1 pr.2 := by
+    rw [← Finset.attach_eq_univ, Finset.prod_attach]
+  calc
+    (∏ pr ∈ (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs,
+        orderedQuarticPairValue ε β d (d.assembleVertexOrder orders shuffle) τ pr.1 pr.2) =
+        (∏ pr : d.GlobalOrderedPair orders shuffle,
+          orderedQuarticPairValue ε β d (d.assembleVertexOrder orders shuffle)
+            τ pr.1.1 pr.1.2) := hglobal.symm
+    _ = ∏ B : d.componentPartition.parts,
+        ∏ pr : d.LocalOrderedPair orders B,
+          orderedQuarticPairValue ε β (d.restrictComponent B.2) (orders B)
+            (d.componentTimeAssignment shuffle τ B) pr.1.1 pr.1.2 :=
+      d.prod_orderedQuarticPairValue_eq_prod_components ε β orders shuffle τ
+    _ = ∏ B : d.componentPartition.parts,
+        ∏ pr ∈ ((d.restrictComponent B.2).pairingInOrder (orders B)).pairs,
+          orderedQuarticPairValue ε β (d.restrictComponent B.2) (orders B)
+            (d.componentTimeAssignment shuffle τ B) pr.1 pr.2 := by
+      apply Fintype.prod_congr
+      intro B
+      exact hlocal B
 
 end Fermionic
 
