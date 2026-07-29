@@ -136,6 +136,50 @@ theorem fintype_sum_mod_two_congr {α : Type*} [Fintype α] (f g : α → ℕ)
   simpa using finset_sum_mod_two_congr (Finset.univ : Finset α) f g
     (fun x _ => h x)
 
+/-- If every symmetric off-diagonal pair contributes an even amount, a finite double sum has the
+same parity as its diagonal. -/
+theorem finset_sum_sum_mod_two_eq_diag_of_pair_add_mod_two_eq_zero {α : Type*}
+    (s : Finset α) (f : α → α → ℕ)
+    (hpair : ∀ a ∈ s, ∀ b ∈ s, a ≠ b → (f a b + f b a) % 2 = 0) :
+    (∑ a ∈ s, ∑ b ∈ s, f a b) % 2 = (∑ a ∈ s, f a a) % 2 := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp
+  | @insert a s ha ih =>
+      have hpairS : ∀ x ∈ s, ∀ y ∈ s, x ≠ y → (f x y + f y x) % 2 = 0 := by
+        intro x hx y hy hxy
+        exact hpair x (Finset.mem_insert_of_mem hx) y (Finset.mem_insert_of_mem hy) hxy
+      have ih' := ih hpairS
+      have hcross : (∑ b ∈ s, (f a b + f b a)) % 2 = 0 := by
+        have h := finset_sum_mod_two_congr s (fun b => f a b + f b a) (fun _ => 0)
+          (fun b hb => by
+            have hab : a ≠ b := by
+              intro hab
+              apply ha
+              simpa [hab] using hb
+            simpa using hpair a (Finset.mem_insert_self a s) b
+              (Finset.mem_insert_of_mem hb) hab)
+        simpa using h
+      have hsplit :
+          (∑ x ∈ insert a s, ∑ y ∈ insert a s, f x y) =
+            f a a + (∑ b ∈ s, (f a b + f b a)) +
+              ∑ x ∈ s, ∑ y ∈ s, f x y := by
+        simp [Finset.sum_insert, ha, Finset.sum_add_distrib]
+        ac_rfl
+      have hdiag :
+          (∑ x ∈ insert a s, f x x) = f a a + ∑ x ∈ s, f x x := by
+        rw [Finset.sum_insert ha]
+      rw [hsplit, hdiag, Nat.add_mod, Nat.add_mod, hcross, ih']
+      omega
+
+/-- Finite-type form of `finset_sum_sum_mod_two_eq_diag_of_pair_add_mod_two_eq_zero`. -/
+theorem fintype_sum_sum_mod_two_eq_diag_of_pair_add_mod_two_eq_zero {α : Type*}
+    [Fintype α] (f : α → α → ℕ)
+    (hpair : ∀ a b, a ≠ b → (f a b + f b a) % 2 = 0) :
+    (∑ a, ∑ b, f a b) % 2 = (∑ a, f a a) % 2 := by
+  simpa using finset_sum_sum_mod_two_eq_diag_of_pair_add_mod_two_eq_zero
+    (Finset.univ : Finset α) f (fun a _ b _ hab => hpair a b hab)
+
 end BlochDeDominicis
 end Common
 end SecondQuantization
