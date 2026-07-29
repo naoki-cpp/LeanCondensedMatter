@@ -210,8 +210,24 @@ theorem QuarticWickDiagram.prod_orderedQuarticPairValue_eq_prod_components
   intro B
   apply Fintype.prod_congr
   intro pr
-  exact orderedQuarticPairValue_componentOrderedLeg
-    ε β d orders shuffle τ B pr.1.1 pr.1.2
+  simpa using
+    (orderedQuarticPairValue_componentOrderedLeg
+      ε β d orders shuffle τ B pr.1.1 pr.1.2)
+
+/-- The pair-value product factorization in the same nested-Finset form used by
+`QuarticWickDiagram.contractionIntegrand`. -/
+theorem QuarticWickDiagram.prod_orderedQuarticPairValue_pairs_eq_prod_components
+    (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) (orders : d.ComponentVertexOrders)
+    (shuffle : d.ComponentShuffle) (τ : Fin S.card → ℝ) :
+    (∏ pr ∈ (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs,
+      orderedQuarticPairValue ε β d (d.assembleVertexOrder orders shuffle) τ pr.1 pr.2) =
+      ∏ B : d.componentPartition.parts,
+        ∏ pr ∈ ((d.restrictComponent B.2).pairingInOrder (orders B)).pairs,
+          orderedQuarticPairValue ε β (d.restrictComponent B.2) (orders B)
+            (d.componentTimeAssignment shuffle τ B) pr.1 pr.2 := by
+  simpa only [Finset.prod_coe_sort] using
+    d.prod_orderedQuarticPairValue_eq_prod_components ε β orders shuffle τ
 
 end Fermionic
 
