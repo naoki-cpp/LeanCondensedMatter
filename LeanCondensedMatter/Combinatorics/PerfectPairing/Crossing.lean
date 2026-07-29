@@ -74,7 +74,7 @@ theorem Pairing.crossingCount_eq_card_crossingPair {n : ℕ} (pairing : Pairing 
     ((pairing.pairs.product pairing.pairs).filter fun pairPair =>
       Crosses pairPair.1 pairPair.2)
     (fun pairPair => by
-      simp only [Finset.mem_filter, Finset.mem_product]
+      simp only [Finset.mem_filter, Finset.product_eq_sprod, Finset.mem_product]
       constructor
       · rintro ⟨⟨hleft, hright⟩, hcross⟩
         exact ⟨hleft, hright, hcross⟩
