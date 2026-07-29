@@ -66,15 +66,20 @@ theorem Pairing.crossingCount_eq_card_crossingPair {n : ℕ} (pairing : Pairing 
     pairing.crossingCount = Fintype.card pairing.CrossingPair := by
   rw [Pairing.crossingCount]
   symm
-  change Fintype.card
-      {pairPair :
-          (Fin (2 * n) × Fin (2 * n)) × (Fin (2 * n) × Fin (2 * n)) //
-        pairPair.1 ∈ pairing.pairs ∧ pairPair.2 ∈ pairing.pairs ∧
-          Crosses pairPair.1 pairPair.2} =
+  exact Fintype.subtype_card
+    (p := fun pairPair :
+        (Fin (2 * n) × Fin (2 * n)) × (Fin (2 * n) × Fin (2 * n)) =>
+      pairPair.1 ∈ pairing.pairs ∧ pairPair.2 ∈ pairing.pairs ∧
+        Crosses pairPair.1 pairPair.2)
     ((pairing.pairs.product pairing.pairs).filter fun pairPair =>
-      Crosses pairPair.1 pairPair.2).card
-  exact Fintype.subtype_card _ fun pairPair => by
-    simp [and_assoc]
+      Crosses pairPair.1 pairPair.2)
+    (fun pairPair => by
+      simp only [Finset.mem_filter, Finset.mem_product]
+      constructor
+      · rintro ⟨⟨hleft, hright⟩, hcross⟩
+        exact ⟨hleft, hright, hcross⟩
+      · rintro ⟨hleft, hright, hcross⟩
+        exact ⟨⟨hleft, hright⟩, hcross⟩)
 
 /-- The pair containing position `0`, i.e. `(0, partner 0)`. -/
 def Pairing.firstPair {n : ℕ} (pairing : Pairing (n + 1)) :
