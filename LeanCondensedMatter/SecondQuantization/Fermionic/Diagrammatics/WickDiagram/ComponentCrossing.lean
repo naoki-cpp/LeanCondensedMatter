@@ -120,7 +120,8 @@ theorem QuarticWickDiagram.componentCrossingPairsToGlobal_injective
         d.componentOrderedLegEquiv shuffle ⟨C, y.1.1.1⟩ := by
     simpa only [d.componentOrderedLegEquiv_apply] using hfirst
   have hlocal := (d.componentOrderedLegEquiv shuffle).injective hsigma
-  cases hlocal
+  have hBC : B = C := congrArg Sigma.fst hlocal
+  subst C
   have hxyLocal := d.componentCrossingPairToGlobal_injective orders shuffle B hxy
   cases hxyLocal
   rfl
@@ -148,7 +149,8 @@ theorem QuarticWickDiagram.card_internalCrossingPairs_eq_sum_crossingCount
   simp only [Finset.card_univ, Fintype.card_sigma]
   apply Finset.sum_congr rfl
   intro B _
-  exact (((d.restrictComponent B.2).pairingInOrder (orders B)).
-    crossingCount_eq_card_crossingPair).symm
+  have hcard :=
+    ((d.restrictComponent B.2).pairingInOrder (orders B)).crossingCount_eq_card_crossingPair
+  exact hcard.symm
 
 end SecondQuantization
