@@ -54,6 +54,22 @@ def Pairing.crossingCount {n : ℕ} (pairing : Pairing n) : ℕ :=
   ((pairing.pairs.product pairing.pairs).filter fun pairPair =>
     Crosses pairPair.1 pairPair.2).card
 
+/-- The finite type of ordered pair-of-pairs that contribute to `crossingCount`. -/
+abbrev Pairing.CrossingPair {n : ℕ} (pairing : Pairing n) :=
+  {pairPair :
+      (Fin (2 * n) × Fin (2 * n)) × (Fin (2 * n) × Fin (2 * n)) //
+    pairPair.1 ∈ pairing.pairs ∧ pairPair.2 ∈ pairing.pairs ∧
+      Crosses pairPair.1 pairPair.2}
+
+/-- `crossingCount` is the cardinality of the type of crossing pair-of-pairs. -/
+theorem Pairing.crossingCount_eq_card_crossingPair {n : ℕ} (pairing : Pairing n) :
+    pairing.crossingCount = Fintype.card pairing.CrossingPair := by
+  rw [Pairing.crossingCount]
+  symm
+  apply Fintype.subtype_card
+  intro pairPair
+  simp [Pairing.CrossingPair, and_assoc]
+
 /-- The pair containing position `0`, i.e. `(0, partner 0)`. -/
 def Pairing.firstPair {n : ℕ} (pairing : Pairing (n + 1)) :
     Fin (2 * (n + 1)) × Fin (2 * (n + 1)) :=
