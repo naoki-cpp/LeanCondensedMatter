@@ -66,6 +66,31 @@ noncomputable def QuarticDiagram.TwoComponentPresentation.boolSlotFiberEquiv
       bif b then Fin p.rightSize else Fin p.leftSize := by
   cases b <;> exact Equiv.refl _
 
+/-- Embed a binary sum of the two local slot families into the sigma type of all component-local
+slots. This direction computes directly on `Sum.inl` and `Sum.inr`. -/
+noncomputable def QuarticDiagram.TwoComponentPresentation.sumToLocalSlotEquiv
+    {S : Finset (Fin N)} {d : QuarticDiagram Label N S}
+    (p : d.TwoComponentPresentation) :
+    Fin p.leftSize ⊕ Fin p.rightSize ≃
+      (Σ B : d.componentPartition.parts, Fin (B : Finset (Fin N)).card) :=
+  (Equiv.sumEquivSigmaBool (Fin p.leftSize) (Fin p.rightSize)).trans
+    ((Equiv.sigmaCongrRight fun b => (p.boolSlotFiberEquiv b).symm).trans
+      p.partsEquiv.sigmaCongrLeft)
+
+@[simp]
+theorem QuarticDiagram.TwoComponentPresentation.sumToLocalSlotEquiv_inl
+    {S : Finset (Fin N)} {d : QuarticDiagram Label N S}
+    (p : d.TwoComponentPresentation) (i : Fin p.leftSize) :
+    p.sumToLocalSlotEquiv (Sum.inl i) = ⟨p.leftComponent, i⟩ := by
+  rfl
+
+@[simp]
+theorem QuarticDiagram.TwoComponentPresentation.sumToLocalSlotEquiv_inr
+    {S : Finset (Fin N)} {d : QuarticDiagram Label N S}
+    (p : d.TwoComponentPresentation) (i : Fin p.rightSize) :
+    p.sumToLocalSlotEquiv (Sum.inr i) = ⟨p.rightComponent, i⟩ := by
+  rfl
+
 /-- Identify the sigma type of all component-local slots with a binary sum of the two local slot
 families. -/
 noncomputable def QuarticDiagram.TwoComponentPresentation.localSlotEquiv
@@ -73,43 +98,37 @@ noncomputable def QuarticDiagram.TwoComponentPresentation.localSlotEquiv
     (p : d.TwoComponentPresentation) :
     (Σ B : d.componentPartition.parts, Fin (B : Finset (Fin N)).card) ≃
       Fin p.leftSize ⊕ Fin p.rightSize :=
-  (p.partsEquiv.symm.sigmaCongrLeft').trans
-    ((Equiv.sigmaCongrRight fun b => p.boolSlotFiberEquiv b).trans
-      (Equiv.sumEquivSigmaBool (Fin p.leftSize) (Fin p.rightSize)).symm)
+  p.sumToLocalSlotEquiv.symm
 
 @[simp]
 theorem QuarticDiagram.TwoComponentPresentation.localSlotEquiv_left
     {S : Finset (Fin N)} {d : QuarticDiagram Label N S}
     (p : d.TwoComponentPresentation) (i : Fin p.leftSize) :
     p.localSlotEquiv ⟨p.leftComponent, i⟩ = Sum.inl i := by
-  simp [QuarticDiagram.TwoComponentPresentation.localSlotEquiv,
-    QuarticDiagram.TwoComponentPresentation.leftComponent,
-    QuarticDiagram.TwoComponentPresentation.boolSlotFiberEquiv]
+  apply p.sumToLocalSlotEquiv.injective
+  simp [QuarticDiagram.TwoComponentPresentation.localSlotEquiv]
 
 @[simp]
 theorem QuarticDiagram.TwoComponentPresentation.localSlotEquiv_right
     {S : Finset (Fin N)} {d : QuarticDiagram Label N S}
     (p : d.TwoComponentPresentation) (i : Fin p.rightSize) :
     p.localSlotEquiv ⟨p.rightComponent, i⟩ = Sum.inr i := by
-  simp [QuarticDiagram.TwoComponentPresentation.localSlotEquiv,
-    QuarticDiagram.TwoComponentPresentation.rightComponent,
-    QuarticDiagram.TwoComponentPresentation.boolSlotFiberEquiv]
+  apply p.sumToLocalSlotEquiv.injective
+  simp [QuarticDiagram.TwoComponentPresentation.localSlotEquiv]
 
 @[simp]
 theorem QuarticDiagram.TwoComponentPresentation.localSlotEquiv_symm_inl
     {S : Finset (Fin N)} {d : QuarticDiagram Label N S}
     (p : d.TwoComponentPresentation) (i : Fin p.leftSize) :
     p.localSlotEquiv.symm (Sum.inl i) = ⟨p.leftComponent, i⟩ := by
-  apply p.localSlotEquiv.injective
-  simp
+  exact p.sumToLocalSlotEquiv_inl i
 
 @[simp]
 theorem QuarticDiagram.TwoComponentPresentation.localSlotEquiv_symm_inr
     {S : Finset (Fin N)} {d : QuarticDiagram Label N S}
     (p : d.TwoComponentPresentation) (i : Fin p.rightSize) :
     p.localSlotEquiv.symm (Sum.inr i) = ⟨p.rightComponent, i⟩ := by
-  apply p.localSlotEquiv.injective
-  simp
+  exact p.sumToLocalSlotEquiv_inr i
 
 /-- The two local component sizes add up to the global number of vertices. -/
 theorem QuarticDiagram.TwoComponentPresentation.totalCard
@@ -144,9 +163,11 @@ noncomputable def QuarticDiagram.TwoComponentPresentation.toComponentShuffle
     obtain ⟨b, rfl⟩ := p.partsEquiv.surjective B
     cases b with
     | false =>
-        simpa using (strictMono_finCongr p.totalCard).comp shuffle.strictMonoLeft
+        intro i j hij
+        simpa using (strictMono_finCongr p.totalCard) (shuffle.strictMonoLeft hij)
     | true =>
-        simpa using (strictMono_finCongr p.totalCard).comp shuffle.strictMonoRight
+        intro i j hij
+        simpa using (strictMono_finCongr p.totalCard) (shuffle.strictMonoRight hij)
 
 /-- Read a binary ambient slot shuffle from a component shuffle under a two-component presentation. -/
 noncomputable def QuarticDiagram.TwoComponentPresentation.fromComponentShuffle
@@ -156,13 +177,15 @@ noncomputable def QuarticDiagram.TwoComponentPresentation.fromComponentShuffle
   slotEquiv := p.localSlotEquiv.symm.trans
     (shuffle.slotEquiv.trans (finCongr p.totalCard).symm)
   strictMonoLeft := by
+    intro i j hij
     have hcast : StrictMono (finCongr p.totalCard).symm := by
       simpa using strictMono_finCongr p.totalCard.symm
-    simpa using hcast.comp (shuffle.strictMono p.leftComponent)
+    simpa using hcast ((shuffle.strictMono p.leftComponent) hij)
   strictMonoRight := by
+    intro i j hij
     have hcast : StrictMono (finCongr p.totalCard).symm := by
       simpa using strictMono_finCongr p.totalCard.symm
-    simpa using hcast.comp (shuffle.strictMono p.rightComponent)
+    simpa using hcast ((shuffle.strictMono p.rightComponent) hij)
 
 /-- Binary slot shuffles and component shuffles are equivalent after choosing the two component
 blocks. -/
@@ -174,14 +197,23 @@ noncomputable def QuarticDiagram.TwoComponentPresentation.componentShuffleEquiv
   invFun := p.fromComponentShuffle
   left_inv shuffle := by
     apply SlotShuffle.ext
-    ext x
+    apply Equiv.ext
+    intro x
     simp [QuarticDiagram.TwoComponentPresentation.toComponentShuffle,
       QuarticDiagram.TwoComponentPresentation.fromComponentShuffle]
   right_inv shuffle := by
     apply QuarticDiagram.ComponentShuffle.ext
-    ext x
+    apply Equiv.ext
+    intro x
     simp [QuarticDiagram.TwoComponentPresentation.toComponentShuffle,
       QuarticDiagram.TwoComponentPresentation.fromComponentShuffle]
+
+@[simp]
+theorem QuarticDiagram.TwoComponentPresentation.componentShuffleEquiv_apply
+    {S : Finset (Fin N)} {d : QuarticDiagram Label N S}
+    (p : d.TwoComponentPresentation) (shuffle : SlotShuffle p.leftSize p.rightSize) :
+    p.componentShuffleEquiv shuffle = p.toComponentShuffle shuffle :=
+  rfl
 
 /-- The diagram component-shuffle integrand transported from a binary shuffle is the ordinary binary
 ambient-slot integrand, with only the global dimension cast remaining. -/
@@ -204,15 +236,16 @@ theorem QuarticDiagram.TwoComponentPresentation.componentShuffleIntegrand_toComp
       ∏ b : Bool,
         componentIntegrand (p.partsEquiv b)
           (d.componentTimeAssignment (p.toComponentShuffle shuffle) τ (p.partsEquiv b)) := by
-        refine Fintype.prod_equiv p.partsEquiv.symm _ _ ?_
-        intro B
-        simp
+        symm
+        refine Fintype.prod_equiv p.partsEquiv _ _ ?_
+        intro b
+        rfl
     _ = componentIntegrand p.leftComponent
           (d.componentTimeAssignment (p.toComponentShuffle shuffle) τ p.leftComponent) *
         componentIntegrand p.rightComponent
           (d.componentTimeAssignment (p.toComponentShuffle shuffle) τ p.rightComponent) := by
-        simp [QuarticDiagram.TwoComponentPresentation.leftComponent,
-          QuarticDiagram.TwoComponentPresentation.rightComponent]
+        simpa [QuarticDiagram.TwoComponentPresentation.leftComponent,
+          QuarticDiagram.TwoComponentPresentation.rightComponent, mul_comm]
     _ = componentIntegrand p.leftComponent
           (fun i => τ (finCongr p.totalCard (shuffle.slotEquiv (Sum.inl i)))) *
         componentIntegrand p.rightComponent
@@ -270,8 +303,11 @@ theorem QuarticDiagram.TwoComponentPresentation.sum_componentShuffle_orderedSimp
         (d.componentShuffleIntegrand shuffle componentIntegrand)) =
       orderedSimplexIntegral p.leftSize β (componentIntegrand p.leftComponent) *
         orderedSimplexIntegral p.rightSize β (componentIntegrand p.rightComponent) := by
-  rw [← Equiv.sum_comp p.componentShuffleEquiv]
-  simp_rw [p.orderedSimplexIntegral_toComponentShuffle]
+  rw [← Equiv.sum_comp p.componentShuffleEquiv
+    (fun shuffle => orderedSimplexIntegral S.card β
+      (d.componentShuffleIntegrand shuffle componentIntegrand))]
+  simp_rw [p.componentShuffleEquiv_apply,
+    p.orderedSimplexIntegral_toComponentShuffle]
   exact BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul
     p.leftSize p.rightSize β
     (componentIntegrand p.leftComponent) (componentIntegrand p.rightComponent)
