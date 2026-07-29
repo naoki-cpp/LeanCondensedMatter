@@ -97,4 +97,58 @@ theorem QuarticWickDiagram.componentCrossingPairToGlobal_injective
     · exact d.componentOrderedLeg_injective shuffle B (congrArg (fun z => z.2.1) hval)
     · exact d.componentOrderedLeg_injective shuffle B (congrArg (fun z => z.2.2) hval)
 
+/-- Embed all component-local crossing pair-of-pairs into the assembled global pairing. -/
+noncomputable def QuarticWickDiagram.componentCrossingPairsToGlobal
+    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) :
+    (Σ B : d.componentPartition.parts, d.LocalCrossingPair orders B) →
+      d.GlobalCrossingPair orders shuffle :=
+  fun x => d.componentCrossingPairToGlobal orders shuffle x.1 x.2
+
+/-- Crossing pair-of-pairs coming from different components remain distinct after global assembly. -/
+theorem QuarticWickDiagram.componentCrossingPairsToGlobal_injective
+    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) :
+    Function.Injective (d.componentCrossingPairsToGlobal orders shuffle) := by
+  rintro ⟨B, x⟩ ⟨C, y⟩ hxy
+  have hfirst := congrArg
+    (fun z : d.GlobalCrossingPair orders shuffle => z.1.1.1) hxy
+  change d.componentOrderedLeg shuffle B x.1.1.1 =
+    d.componentOrderedLeg shuffle C y.1.1.1 at hfirst
+  have hsigma :
+      d.componentOrderedLegEquiv shuffle ⟨B, x.1.1.1⟩ =
+        d.componentOrderedLegEquiv shuffle ⟨C, y.1.1.1⟩ := by
+    simpa only [d.componentOrderedLegEquiv_apply] using hfirst
+  have hlocal := (d.componentOrderedLegEquiv shuffle).injective hsigma
+  cases hlocal
+  have hxyLocal := d.componentCrossingPairToGlobal_injective orders shuffle B hxy
+  cases hxyLocal
+  rfl
+
+/-- The subset of assembled global crossings whose two pairs belong to one component. -/
+noncomputable def QuarticWickDiagram.internalCrossingPairs
+    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) :
+    Finset (d.GlobalCrossingPair orders shuffle) := by
+  classical
+  exact Finset.univ.image (d.componentCrossingPairsToGlobal orders shuffle)
+
+/-- The number of assembled within-component crossings is exactly the sum of the local crossing
+counts. -/
+theorem QuarticWickDiagram.card_internalCrossingPairs_eq_sum_crossingCount
+    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) :
+    (d.internalCrossingPairs orders shuffle).card =
+      ∑ B : d.componentPartition.parts,
+        ((d.restrictComponent B.2).pairingInOrder (orders B)).crossingCount := by
+  classical
+  rw [QuarticWickDiagram.internalCrossingPairs,
+    Finset.card_image_of_injective _
+      (d.componentCrossingPairsToGlobal_injective orders shuffle)]
+  simp only [Finset.card_univ, Fintype.card_sigma]
+  apply Finset.sum_congr rfl
+  intro B _
+  exact (((d.restrictComponent B.2).pairingInOrder (orders B)).
+    crossingCount_eq_card_crossingPair).symm
+
 end SecondQuantization
