@@ -183,7 +183,10 @@ theorem finset_sum_sum_mod_two_eq_diag_of_pair_add_mod_two_eq_zero {α : Type*}
                   (∑ x ∈ s, ∑ y ∈ s, f x y) 2
         _ = (((f a a % 2 + (∑ b ∈ s, (f a b + f b a)) % 2) % 2) +
             (∑ x ∈ s, ∑ y ∈ s, f x y) % 2) % 2 := by
-              rw [Nat.add_mod]
+              simpa only [Nat.mod_mod] using congrArg
+                (fun z : ℕ =>
+                  (z + (∑ x ∈ s, ∑ y ∈ s, f x y) % 2) % 2)
+                (Nat.add_mod (f a a) (∑ b ∈ s, (f a b + f b a)) 2)
         _ = (((f a a % 2 + 0) % 2) + (∑ x ∈ s, f x x) % 2) % 2 := by
               rw [hcross, ih']
         _ = (f a a + ∑ x ∈ s, f x x) % 2 := by
