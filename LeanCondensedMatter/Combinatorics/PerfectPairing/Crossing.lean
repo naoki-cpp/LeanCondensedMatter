@@ -66,7 +66,7 @@ theorem Pairing.crossingCount_eq_card_crossingPair {n : ℕ} (pairing : Pairing 
     pairing.crossingCount = Fintype.card pairing.CrossingPair := by
   rw [Pairing.crossingCount]
   symm
-  exact Fintype.subtype_card
+  exact Fintype.card_of_subtype
     (p := fun pairPair :
         (Fin (2 * n) × Fin (2 * n)) × (Fin (2 * n) × Fin (2 * n)) =>
       pairPair.1 ∈ pairing.pairs ∧ pairPair.2 ∈ pairing.pairs ∧
