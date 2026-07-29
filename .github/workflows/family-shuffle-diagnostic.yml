@@ -23,7 +23,7 @@ jobs:
         shell: bash
         run: |
           set +e
-          lake build +LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition \
+          lake build +LeanCondensedMatter.Analysis.FamilyShuffleOrderedSimplex \
             > family-shuffle-diagnostic.log 2>&1
           status=$?
           echo "exit_status=$status" >> family-shuffle-diagnostic.log
