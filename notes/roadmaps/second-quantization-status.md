@@ -62,7 +62,7 @@ The Common API uses five corresponding responsibility groups:
 | `SecondQuantization.Common.ImaginaryTime` | Time ordering, diagonal evolution, interaction pictures, and KMS rotation. |
 | `SecondQuantization.Common.Thermal` | Normalized functionals, diagonal traces, Gibbs infrastructure, and Bloch–de Dominicis. |
 | `SecondQuantization.Common.Perturbation` | Finite-basis coefficientwise operator integration. |
-| `SecondQuantization.Common.Diagrammatics` | Label-generic quartic diagrams, component decomposition, component orders, and component-shuffle integrands. |
+| `SecondQuantization.Common.Diagrammatics` | Label-generic quartic diagrams, component decomposition, component orders, component-shuffle integrands, and the finite-family component-shuffle product identity. |
 
 The extraction decisions, completed thin Bosonic specializations, and remaining analytic blockers are
 recorded in [`second-quantization-common-audit.md`](second-quantization-common-audit.md).
@@ -82,7 +82,7 @@ matching `Common/Algebra/`, `Common/ImaginaryTime/`, `Common/Thermal/`, or
 | Thermal functionals | `Analysis/NormalizedEndomorphismFunctional.lean`, `Common/Thermal/NormalizedOperatorFunctional.lean`, `Common/Thermal/WeightedDiagonalFunctional.lean` | The normalized-functional structure is pure linear algebra; Fock-space and weighted-trace specializations remain in Common. |
 | Bloch–de Dominicis | `Common/Thermal/BlochDeDominicis/Induction.lean` | The pairing expansion is proved abstractly under the stated eigenoperator, commutator, non-resonance, and functional hypotheses. |
 | Quartic diagrams | `Common/Diagrammatics/*.lean`, `Combinatorics/FinpartitionProduct.lean` | Labels, ordered data, connectedness, component restriction/reassembly, decomposition equivalence, component-local orders, global-order decomposition, and component scalar factorization are statistics independent. |
-| Ordered-simplex shuffle calculus | `Analysis/OrderedSimplexIntegralCalculus.lean`, `Analysis/BinaryShuffleOrderedSimplex.lean`, `Combinatorics/BinaryShuffle.lean`, `Combinatorics/BinaryShuffleSlots.lean` | The explicit finite binary-shuffle sum is proved equal to the product of two ordered-simplex integrals, and each recursive shuffle has an order-preserving ambient slot equivalence. |
+| Ordered-simplex shuffle calculus | `Analysis/BinaryShuffleSlotOrderedSimplex.lean`, `Analysis/FamilyShuffleOrderedSimplex.lean`, `Combinatorics/FamilySlotShuffleDecomposition.lean`, `Common/Diagrammatics/ComponentOrderedSimplexProduct.lean` | Binary shuffles are equivalent to ambient slot shuffles; arbitrary finite-family shuffle sums equal products of local ordered-simplex integrals; the result is transported to `QuarticDiagram.ComponentShuffle`. |
 
 The Common dependency direction is one way: `Fermionic/` and `Bosonic/` may import `Common/`, while
 `Common/` must not import either statistics-specific directory. General facts that do not depend on
@@ -109,42 +109,46 @@ The fermionic line currently includes:
 - component decomposition equivalence and scalar-prefactor factorization
   (`Fermionic/Diagrammatics/WickDiagram/ComponentDecompositionEquiv.lean`,
   `Fermionic/Diagrammatics/WickDiagram/AmplitudePrefactorFactorization.lean`);
-- component-local vertex orders, global-order decomposition, component-shuffle integrands, explicit
-  binary shuffles, their ordered-simplex contributions, and ambient slot equivalences.
+- component-local vertex orders, global-order decomposition, component-shuffle integrands, binary and
+  finite-family slot shuffles, and the general component ordered-simplex product identity.
 
-The generic two-factor ordered-simplex shuffle identity is complete. The full Wick-amplitude
-factorization is not complete because two diagram-specific steps remain:
-
-1. extend the binary identity to the finite family of connected components represented by
-   `QuarticDiagram.ComponentShuffle`;
-2. prove that fermionic pairing weights and pair-value products factor under assembled component-local
-   orders.
+The statistics-independent ordered-simplex/component-shuffle milestone is complete. Full
+Wick-amplitude factorization now has one diagram-specific block remaining: prove that fermionic
+pairing sets, pair values, pair products, and pairing weights factor under assembled component-local
+orders.
 
 The pairing-weight theorem is the main risk because `Pairing.weight` is not invariant under arbitrary
 relabeling; the proof must exploit the special block-of-four leg permutation induced by vertex
 shuffles.
 
-## Fermionic LCT critical path
+## Fermionic LCT milestones
 
-The detailed theorem shapes and PR sequence are in
-[`linked-cluster-theorem.md`](linked-cluster-theorem.md). The remaining dependency order is:
+The detailed exit theorems and work packages are in
+[`linked-cluster-theorem.md`](linked-cluster-theorem.md).
 
-1. prove `BinaryShuffle ≃ BinaryShuffle.SlotShuffle` and the required finite-sum reindexing;
-2. transport the binary formula to two diagram components and iterate it to a finite-family
-   `ComponentShuffle` product identity;
-3. factor the fermionic contraction integrand, including pairing restriction, pair-value
-   compatibility, pair-product reindexing, and pairing-sign factorization;
-4. combine that result with the existing scalar-prefactor theorem to obtain complete
-   `quarticWickDiagramAmplitude` factorization;
-5. instantiate `Combinatorics.WeightedDiagramFamily` and prove that `dysonVertexCumulant` is the sum
-   of connected Wick-diagram amplitudes;
-6. prove the general exponential-generating-series bridge between finite-set cumulants and
-   coefficients of `formalLogPartitionFunction`;
-7. specialize the bridge to the normalized Dyson partition series and state the final LCT.
+| Milestone | Deliverable | Status |
+|---|---|---|
+| M0 | Statistics-independent component-shuffle product calculus | complete through PR #247 |
+| M1 | Fermionic contraction-integrand factorization | next |
+| M2 | Full quartic Wick-amplitude factorization | blocked by M1 |
+| M3 | Connected-diagram formula for `dysonVertexCumulant` | blocked by M2 |
+| M4 | General finite-set cumulant / formal-`log` EGF bridge | independent high-risk track |
+| M5 | Final Dyson LCT theorem and Fermionic API export | blocked by M3 and M4 |
 
-The two highest-risk blocks are fermionic pairing-sign factorization and the finite-set
-cumulant/`PowerSeries.log` coefficient bridge. The expected remaining implementation is roughly seven
-to ten focused PRs.
+The remaining dependency order is:
+
+1. pairing restriction, local leg/pair-value compatibility, global pair-product reindexing, and
+   pairing-sign factorization;
+2. contraction-integrand and complete `quarticWickDiagramAmplitude` factorization;
+3. concrete `Combinatorics.WeightedDiagramFamily` and the connected-diagram finite-set cumulant
+   theorem;
+4. the general exponential-generating-series bridge between finite-set cumulants and coefficients of
+   `formalLogPartitionFunction`;
+5. specialization to the normalized Dyson partition series and the final LCT.
+
+The M4 EGF track can proceed in parallel with M1–M3. The two highest-risk blocks are fermionic
+pairing-sign factorization and the finite-set cumulant/`PowerSeries.log` coefficient bridge. The
+expected remaining implementation is roughly six to nine focused PRs.
 
 ## Bosonic line
 
@@ -180,9 +184,10 @@ Wick amplitude, or Dyson diagram expansion.
 | Component decomposition equivalence | done | done | Shared through Common. |
 | Coupling/Dyson scalar-prefactor factorization | done | done | Shared component combinatorics. |
 | Binary ordered-simplex shuffle identity | done | reusable | Pure `Analysis`/`Combinatorics`; no statistics-specific input. |
+| Finite-family component-shuffle product identity | done | reusable | Pure `Analysis`/`Combinatorics` with a Common diagram specialization. |
 | Full quartic Wick amplitude | done | pending | Depends on a bosonic expectation/contraction layer. |
 | Dyson diagram expansion | done | pending | Depends on bosonic Dyson coefficients and the full amplitude. |
-| Full amplitude factorization | pending | pending | Finite-family component shuffles and pairing compatibility remain. |
+| Full amplitude factorization | pending | pending | Fermionic pairing compatibility and sign factorization remain; the ordered-simplex component product is complete. |
 | Connected-diagram finite-set cumulant theorem | abstract theorem done; concrete instance pending | pending | Fermionic instance needs full amplitude factorization. |
 | Formal-log coefficient bridge | pending | pending | General EGF/set-partition theorem remains. |
 
@@ -207,11 +212,11 @@ The remaining bosonic gaps should not be filled by adding a false finite-type as
 
 The fermionic LCT remains the critical path:
 
-1. finish the finite-family component-shuffle identity;
-2. prove pairing/pair-value compatibility and complete fermionic amplitude factorization;
+1. prove pairing/pair-value compatibility, pair-product reindexing, and pairing-sign factorization;
+2. complete fermionic contraction-integrand and amplitude factorization;
 3. instantiate the concrete weighted diagram family and obtain the connected-diagram finite-set
    cumulant theorem;
-4. prove the general finite-set cumulant/formal-log EGF bridge;
+4. prove the general finite-set cumulant/formal-log EGF bridge, in parallel when useful;
 5. specialize to the Dyson partition series and export the final fermionic LCT.
 
 After that milestone, resume the convergence-aware bosonic path:
