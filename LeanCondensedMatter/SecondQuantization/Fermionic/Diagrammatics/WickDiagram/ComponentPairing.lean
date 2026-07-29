@@ -20,14 +20,16 @@ theorem vertexOfLeg_orderedLegToDiagramLeg (S : Finset (Fin N))
     (order : QuarticVertexOrder S) (p : Fin (2 * (2 * S.card))) :
     vertexOfLeg (orderedLegToDiagramLeg S order p) =
       order (orderedQuarticLegEquiv S.card p).1 := by
-  simp [orderedLegToDiagramLeg, vertexOfLeg]
+  change ((quarticLegEquiv S) ((Common.orderedLegToDiagramLeg S order) p)).1 = _
+  simp [Common.orderedLegToDiagramLeg]
 
 @[simp]
 theorem localLegOfLeg_orderedLegToDiagramLeg (S : Finset (Fin N))
     (order : QuarticVertexOrder S) (p : Fin (2 * (2 * S.card))) :
     localLegOfLeg (orderedLegToDiagramLeg S order p) =
       (orderedQuarticLegEquiv S.card p).2 := by
-  simp [orderedLegToDiagramLeg, localLegOfLeg]
+  change ((quarticLegEquiv S) ((Common.orderedLegToDiagramLeg S order) p)).2 = _
+  simp [Common.orderedLegToDiagramLeg]
 
 /-- Embed a flattened leg of a restricted component into the ambient diagram's fixed flattened-leg
 enumeration. -/
@@ -144,6 +146,8 @@ theorem QuarticWickDiagram.pairingInOrder_partner_componentOrderedLeg
   rw [d.orderedLegToDiagramLeg_componentOrderedLeg orders shuffle B]
   rw [d.orderedLegToDiagramLeg_componentOrderedLeg orders shuffle B]
   rw [d.restrictComponent_pairing B.2]
-  exact (d.componentDiagramLeg_restrictedPairing_partner B _).symm
+  simpa only [Equiv.apply_symm_apply] using
+    (d.componentDiagramLeg_restrictedPairing_partner B
+      (orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p)).symm
 
 end SecondQuantization
