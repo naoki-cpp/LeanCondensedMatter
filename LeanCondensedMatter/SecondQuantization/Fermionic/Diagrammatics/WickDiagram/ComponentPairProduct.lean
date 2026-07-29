@@ -81,18 +81,21 @@ theorem QuarticWickDiagram.componentPairToGlobal_injective {S : Finset (Fin N)}
     Function.Injective (d.componentPairToGlobal orders shuffle) := by
   rintro ⟨B, ⟨⟨a, b⟩, hab⟩⟩ ⟨C, ⟨⟨c, e⟩, hce⟩⟩ hxy
   have hval := congrArg Subtype.val hxy
+  change
+    (d.componentOrderedLeg shuffle B a, d.componentOrderedLeg shuffle B b) =
+      (d.componentOrderedLeg shuffle C c, d.componentOrderedLeg shuffle C e) at hval
   have hfst := congrArg Prod.fst hval
   have hfst' :
       d.componentOrderedLegEquiv shuffle ⟨B, a⟩ =
         d.componentOrderedLegEquiv shuffle ⟨C, c⟩ := by
-    simpa using hfst
+    simpa only [d.componentOrderedLegEquiv_apply] using hfst
   have hsigmaFst := (d.componentOrderedLegEquiv shuffle).injective hfst'
   cases hsigmaFst
   have hsnd := congrArg Prod.snd hval
   have hsnd' :
       d.componentOrderedLegEquiv shuffle ⟨B, b⟩ =
         d.componentOrderedLegEquiv shuffle ⟨B, e⟩ := by
-    simpa using hsnd
+    simpa only [d.componentOrderedLegEquiv_apply] using hsnd
   have hsigmaSnd := (d.componentOrderedLegEquiv shuffle).injective hsnd'
   cases hsigmaSnd
   rfl
@@ -114,7 +117,6 @@ theorem QuarticWickDiagram.componentPairToGlobal_surjective {S : Finset (Fin N)}
         Fin (2 * (2 * (B : Finset (Fin N)).card))) = x := by
     dsimp [B, localA]
     cases x
-    rfl
   have ha : d.componentOrderedLeg shuffle B localA = a := by
     calc
       d.componentOrderedLeg shuffle B localA =
@@ -209,7 +211,8 @@ theorem QuarticWickDiagram.prod_orderedQuarticPairValue_eq_prod_components
   intro B
   apply Fintype.prod_congr
   intro pr
-  exact orderedQuarticPairValue_componentOrderedLeg ε β d orders shuffle τ B pr.1.1 pr.1.2
+  exact orderedQuarticPairValue_componentOrderedLeg
+    ε β d orders shuffle τ B pr.1.1 pr.1.2
 
 end Fermionic
 
