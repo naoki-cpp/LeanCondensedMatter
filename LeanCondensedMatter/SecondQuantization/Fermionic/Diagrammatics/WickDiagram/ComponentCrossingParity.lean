@@ -33,9 +33,11 @@ theorem QuarticWickDiagram.card_externalCrossingPairs_add_card_internalCrossingP
       (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).crossingCount := by
   classical
   rw [Common.BlochDeDominicis.Pairing.crossingCount_eq_card_crossingPair]
-  simpa [QuarticWickDiagram.externalCrossingPairs] using
-    (Finset.card_sdiff_of_subset
-      (Finset.subset_univ (d.internalCrossingPairs orders shuffle)))
+  have hsubset := Finset.subset_univ (d.internalCrossingPairs orders shuffle)
+  have hdiff := Finset.card_sdiff_of_subset hsubset
+  have hle := Finset.card_le_card hsubset
+  simp only [QuarticWickDiagram.externalCrossingPairs, Finset.card_univ] at hdiff hle ⊢
+  omega
 
 /-- The global crossing count is the sum of all component-local crossing counts plus the external
 crossing contribution. -/
@@ -65,7 +67,7 @@ theorem QuarticWickDiagram.crossingCount_mod_two_eq_sum_of_externalCrossingPairs
 
 /-- Component-wise pairing-weight factorization follows once the external crossings are proved even. -/
 theorem QuarticWickDiagram.pairingInOrder_weight_eq_prod_components_of_externalCrossingPairs_mod_two_eq_zero
-    (s : Common.Statistics) {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (s : Statistics) {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (hExternal : (d.externalCrossingPairs orders shuffle).card % 2 = 0) :
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).weight s =
