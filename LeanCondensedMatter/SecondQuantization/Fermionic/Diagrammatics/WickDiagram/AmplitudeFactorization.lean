@@ -12,7 +12,8 @@ fixed family of local orders, the M1 contraction-integrand factorization identif
 integrand with the component-shuffle integrand, so the M0 ordered-simplex product theorem applies.
 The remaining finite sum over families of component orders distributes into the product of the local
 order sums. Combining this with the existing coupling/Dyson prefactor factorization gives the full
-M2 quartic Wick-amplitude factorization.
+M2 quartic Wick-amplitude factorization. No new diagram combinatorics or amplitude convention is
+introduced at this assembly boundary.
 -/
 
 namespace SecondQuantization
