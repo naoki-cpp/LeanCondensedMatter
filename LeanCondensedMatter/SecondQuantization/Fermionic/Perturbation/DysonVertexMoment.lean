@@ -6,32 +6,25 @@ set_option linter.style.header false
 /-!
 # Dyson coefficients as `Finset`-indexed vertex moments
 
-Step 6 (PR 2) of the diagram-connectedness plan (`notes/roadmaps/second-quantization.md`): the
-type-level seam between the Dyson series (`ℕ`-indexed perturbation order) and Track B's moment
-type (`Finset α → ℂ`, indexed by a finite vertex set). `dysonVertexMoment` is `S.card!` times the
-*normalized* Dyson partition coefficient at `n := S.card`
-(`normalizedDysonPartitionCoeff`), whose numerator is `dysonPartitionCoeff`, the free-Gibbs-
-weighted trace of the operator-valued `dysonCoeff` — not `dysonCoeff` itself. This lets
-`Combinatorics/DiagramConnectedness.lean`'s abstract `WeightedDiagramFamily` machinery eventually
-be instantiated with a genuine vertex set `S` of interaction insertions rather than a bare
-perturbation order.
+This file is the type-level seam between the Dyson series, indexed by perturbation order `ℕ`, and
+finite-set moment/cumulant combinatorics, indexed by a labelled vertex set `Finset α`.
+
+`dysonVertexMoment` is `S.card!` times the normalized Dyson partition coefficient at
+`n := S.card`. Its numerator is `dysonPartitionCoeff`, the free-Gibbs-weighted trace of the
+operator-valued `dysonCoeff`, not `dysonCoeff` itself.
 
 **The `S.card.factorial` normalization is required, not cosmetic.**
-`normalizePartitionSeries (dysonPartitionSeries ε β V)` — equivalently,
-`normalizedDysonPartitionCoeff`'s own coefficients — is the *ordinary* power series `Z/Z₀ = Σₙ zₙ
-λⁿ` (`dysonPartitionSeries` itself is un-normalized, with constant term `Z₀ :=
-freePartitionFunction`, not `1`); finite-set partition combinatorics (Track B's
-`Finpartition.momentFromCumulant`/`cumulantFromMoment`) is native to *exponential* generating
-series, `Σₙ mₙ λⁿ/n!`. Matching the two conventions forces `mₙ = n! zₙ` — omitting the factorial
-would give set-partition block products the wrong multinomial weighting once diagram families with
-more than one vertex are built on top of this file (`Fermionic/Diagrammatics/QuarticInteraction.lean`,
-`Fermionic/Diagrammatics/WickDiagram.lean`, later PRs in this plan).
+`normalizePartitionSeries (dysonPartitionSeries ε β V)` is an ordinary power series
+`Z/Z₀ = Σₙ zₙ λⁿ`, while finite-set partition combinatorics is naturally exponential-generating,
+`Σₙ mₙ λⁿ/n!`. Matching the conventions forces `mₙ = n! zₙ`; omitting the factorial would give
+set-partition block products the wrong multinomial weights.
 
-**Not yet connected to `PowerSeries.log`'s coefficients.** `dysonVertexCumulant` is only
-`Finpartition.cumulantFromMoment` applied to `dysonVertexMoment` — the finite-set combinatorial
-cumulant, not (yet) identified with any coefficient of `dysonFormalLogPartitionFunction`. That
-identification needs a separate finite-set-cumulant/`exp`-`log` bridge, deliberately out of scope
-here (see `FormalLogPartitionFunction.lean`'s own "What remains" note).
+`dysonVertexCumulant` is the finite-set cumulant of this moment. The general identification of such
+cumulants with factorial-normalized formal-log coefficients is proved in
+`Combinatorics/PowerSeriesCumulant.lean`. The Dyson specialization is
+`factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant`, and the quartic
+connected-diagram result is completed in
+`Fermionic/Diagrammatics/DysonLinkedClusterTheorem.lean`.
 -/
 
 namespace SecondQuantization
@@ -69,9 +62,9 @@ theorem dysonVertexMoment_empty {α : Type*} [DecidableEq α] (ε : Mode → ℝ
   simp [dysonVertexMoment]
 
 /-- **The Dyson vertex cumulant**: `Finpartition.cumulantFromMoment` applied to
-`dysonVertexMoment` — the finite-set combinatorial cumulant of the Dyson vertex moment, via
-Möbius inversion on the partition lattice (`MomentCumulant.lean`). Not yet identified with any
-coefficient of `dysonFormalLogPartitionFunction` — see the module docstring. -/
+`dysonVertexMoment`, using Möbius inversion on the finite-set partition lattice. Its identification
+with factorial-normalized coefficients of `dysonFormalLogPartitionFunction` is proved in
+`Fermionic/Diagrammatics/DysonLinkedClusterTheorem.lean`. -/
 noncomputable def dysonVertexCumulant {α : Type*} [DecidableEq α] (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (S : Finset α) : ℂ :=
   Finpartition.cumulantFromMoment (dysonVertexMoment ε β V) S
