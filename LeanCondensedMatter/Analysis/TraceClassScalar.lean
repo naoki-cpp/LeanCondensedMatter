@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.TraceClassBasic
+import Mathlib.Algebra.GroupWithZero.Units.Equiv
 
 -- No project files currently carry a Mathlib-style copyright/author header; a
 -- project-wide policy for this is a separate open item (see notes/conventions.md).
@@ -39,12 +40,13 @@ theorem eigenspace_smul {c : ℝ} (hc : c ≠ 0) (μ : ℂ) :
 `Equiv` on the base index type `{μ : ℝ // μ ≠ 0}`. This is an implementation detail of the
 scalar trace-class and trace proofs below. -/
 private noncomputable def eigenvalueScaleEquiv {c : ℝ} (hc : c ≠ 0) :
-    { μ : ℝ // μ ≠ 0 } ≃ { μ : ℝ // μ ≠ 0 } where
-  toFun a := ⟨c * a.1, mul_ne_zero hc a.2⟩
-  invFun a := ⟨a.1 / c, div_ne_zero a.2 hc⟩
-  left_inv a := Subtype.ext (mul_div_cancel_left₀ a.1 hc)
-  right_inv a := Subtype.ext (show c * (a.1 / c) = a.1 by
-    rw [← mul_div_assoc]; exact mul_div_cancel_left₀ a.1 hc)
+    { μ : ℝ // μ ≠ 0 } ≃ { μ : ℝ // μ ≠ 0 } :=
+  (Equiv.mulLeft₀ c hc).subtypeEquiv fun μ => by
+    constructor
+    · exact mul_ne_zero hc
+    · intro h hμ
+      apply h
+      simp [hμ]
 
 @[simp] private theorem eigenvalueScaleEquiv_apply {c : ℝ} (hc : c ≠ 0)
     (a : { μ : ℝ // μ ≠ 0 }) :
