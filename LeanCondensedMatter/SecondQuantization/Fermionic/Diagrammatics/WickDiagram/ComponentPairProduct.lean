@@ -17,14 +17,6 @@ namespace SecondQuantization
 
 variable {Mode : Type*} {N : ℕ}
 
-/-- Pull a constant product factor out of a dependent sigma type. -/
-private def sigmaProdEquiv {ι : Type*} (A : ι → Type*) (C : Type*) :
-    (Σ i : ι, A i × C) ≃ (Σ i : ι, A i) × C where
-  toFun x := (⟨x.1, x.2.1⟩, x.2.2)
-  invFun x := ⟨x.1.1, (x.1.2, x.2)⟩
-  left_inv x := by rcases x with ⟨i, a, c⟩; rfl
-  right_inv x := by rcases x with ⟨⟨i, a⟩, c⟩; rfl
-
 /-- The normalized ordered pairs of one restricted component. -/
 abbrev QuarticWickDiagram.LocalOrderedPair {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (orders : d.ComponentVertexOrders)
@@ -48,9 +40,9 @@ noncomputable def QuarticWickDiagram.componentOrderedLegEquiv {S : Finset (Fin N
       Fin (2 * (2 * (B : Finset (Fin N)).card))) ≃ Fin (2 * (2 * S.card)) :=
   (Equiv.sigmaCongrRight fun B : d.componentPartition.parts =>
       orderedQuarticLegEquiv (B : Finset (Fin N)).card).trans
-    ((sigmaProdEquiv
+    (((Equiv.sigmaProdDistrib
         (fun B : d.componentPartition.parts => Fin (B : Finset (Fin N)).card)
-        (Fin 4)).trans
+        (Fin 4)).symm).trans
       ((Equiv.prodCongr shuffle.slotEquiv (Equiv.refl (Fin 4))).trans
         (orderedQuarticLegEquiv S.card).symm))
 
