@@ -37,8 +37,8 @@ private def sigmaFiberPairEquiv {ι α : Type*} (f : α → ι) :
   left_inv := by
     rintro ⟨i, ⟨⟨a, ha⟩, ⟨b, hb⟩⟩⟩
     cases ha
-    cases hb
-    rfl
+    apply Sigma.ext rfl
+    apply Prod.ext <;> apply Subtype.ext <;> rfl
   right_inv := by
     rintro ⟨⟨a, b⟩, hab⟩
     apply Subtype.ext
@@ -171,6 +171,8 @@ private theorem QuarticWickDiagram.globalOrderedPair_sameComponent
   have ha : d.componentOrderedLeg shuffle x.1 x.2 = pr.1.1 := by
     simpa only [d.componentOrderedLegEquiv_apply] using
       (d.componentOrderedLegEquiv shuffle).apply_symm_apply pr.1.1
+  have hpr := pr.2
+  rw [Common.BlochDeDominicis.Pairing.mem_pairs_iff] at hpr
   have hb : d.componentOrderedLeg shuffle x.1 localB = pr.1.2 := by
     calc
       d.componentOrderedLeg shuffle x.1 localB =
@@ -180,11 +182,11 @@ private theorem QuarticWickDiagram.globalOrderedPair_sameComponent
           orders shuffle x.1 x.2).symm
       _ = (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).partner pr.1.1 := by
         rw [ha]
-      _ = pr.1.2 :=
-        (Common.BlochDeDominicis.Pairing.mem_pairs_iff.mp pr.2).2
+      _ = pr.1.2 := hpr.2
   change x.1 = ((d.componentOrderedLegEquiv shuffle).symm pr.1.2).1
   rw [← hb, ← d.componentOrderedLegEquiv_apply]
-  simp
+  exact (congrArg Sigma.fst
+    ((d.componentOrderedLegEquiv shuffle).symm_apply_apply ⟨x.1, localB⟩)).symm
 
 /-- Forget the redundant same-component witness on a normalized global pair. -/
 private def QuarticWickDiagram.globalOrderedPairSubtypeEquiv
