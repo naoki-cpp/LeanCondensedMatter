@@ -26,15 +26,15 @@ noncomputable def quarticWickDiagramWeightedFamily (ε : Mode → ℝ) (β : ℝ
   Diagram S := QuarticWickDiagram Mode N S
   ConnectedDiagram S := ConnectedQuarticWickDiagram Mode N S
   fintypeDiagram S := inferInstance
-  fintypeConnectedDiagram S := by
-    classical
-    exact Fintype.ofFinite _
+  fintypeConnectedDiagram S := inferInstance
   decompose S := QuarticWickDiagram.componentDecompositionEquiv
   diagramWeight d := quarticWickDiagramAmplitude ε β g d
   connectedWeight d := quarticWickDiagramAmplitude ε β g d.1
   weight_decompose d := by
-    simpa only [QuarticWickDiagram.componentDecompose] using
-      (quarticWickDiagramAmplitude_eq_prod_restrictComponentConnected ε β g d)
+    change quarticWickDiagramAmplitude ε β g d =
+      ∏ B : d.componentPartition.parts,
+        quarticWickDiagramAmplitude ε β g (d.restrictComponentConnected B.2).1
+    exact quarticWickDiagramAmplitude_eq_prod_restrictComponentConnected ε β g d
 
 /-- The abstract moment of the quartic Wick-diagram family is the Dyson vertex moment of the quartic
 interaction. -/
@@ -42,9 +42,9 @@ theorem quarticWickDiagramWeightedFamily_diagramMoment (ε : Mode → ℝ) (β :
     (g : QuarticVertexLabel Mode → ℂ) (S : Finset (Fin N)) :
     (quarticWickDiagramWeightedFamily (N := N) ε β g).diagramMoment S =
       dysonVertexMoment ε β (quarticInteraction g) S := by
-  simpa only [quarticWickDiagramWeightedFamily,
-    Combinatorics.WeightedDiagramFamily.diagramMoment] using
-    (dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g S).symm
+  change (∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d) =
+    dysonVertexMoment ε β (quarticInteraction g) S
+  exact (dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g S).symm
 
 /-- The connected contribution of the concrete family is the explicit sum of connected quartic
 Wick-diagram amplitudes. -/
@@ -75,6 +75,7 @@ theorem dysonVertexCumulant_quarticInteraction_eq_sum_connectedQuarticWickDiagra
       D.cumulantFromMoment_diagramMoment hS
     _ = ∑ d : ConnectedQuarticWickDiagram Mode N S,
         quarticWickDiagramAmplitude ε β g d.1 := by
-      exact quarticWickDiagramWeightedFamily_connectedDiagramContribution ε β g S
+      simpa only [D] using
+        quarticWickDiagramWeightedFamily_connectedDiagramContribution ε β g S
 
 end SecondQuantization
