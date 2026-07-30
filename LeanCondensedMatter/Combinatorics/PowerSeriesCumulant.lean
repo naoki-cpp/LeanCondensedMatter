@@ -137,8 +137,8 @@ private def partComplementEquiv (s : Finset α) (a : α) (ha : a ∈ s) :
       apply Subtype.ext
       exact hpart
     apply Sigma.ext hblock
-    apply heq_of_eq
-    exact avoid_extend_eq B.2.1 B.2.2 Q
+    cases hblock
+    exact heq_of_eq (avoid_extend_eq B.2.1 B.2.2 Q)
 
 private theorem partitionProduct_partComplementEquiv_symm
     (κ : Finset α → ℂ) {s : Finset α} {a : α} (ha : a ∈ s)
@@ -178,7 +178,8 @@ private theorem sum_blockContaining_card (s : Finset α) (a : α) (ha : a ∈ s)
   rw [← Equiv.sum_comp (blockContainingEquivPowerset s a ha).symm]
   change (∑ T : {T : Finset α // T ∈ (s.erase a).powerset},
       f (insert a T.1).card) = _
-  rw [← Finset.sum_coe_sort (s.erase a).powerset]
+  rw [← Finset.sum_subtype (s.erase a).powerset (fun _ => Iff.rfl)
+    (fun T => f (insert a T).card)]
   have hcard : (s.erase a).card + 1 = s.card := Finset.card_erase_add_one ha
   rw [Finset.sum_powerset, hcard]
   apply Finset.sum_congr rfl
@@ -322,9 +323,8 @@ private theorem momentFromCumulant_powerSeriesCumulantCoeff
         · intro hB
           simp at hB
       simpa [hparts]
-    letI : Unique (Finpartition (∅ : Finset α)) where
-      default := ⊥
-      uniq := hunique
+    letI : Unique (Finpartition (∅ : Finset α)) :=
+      { default := ⊥, uniq := hunique }
     have hdefault : (default : Finpartition (∅ : Finset α)) = ⊥ := hunique _
     simp [Finpartition.momentFromCumulant, Finpartition.partitionProduct,
       powerSeriesMomentCoeff, hZ, hdefault]
