@@ -37,14 +37,11 @@ theorem pairEndpointInversionCount_eq_sum {n : ℕ}
   simp [pairEndpointInversionCount, pairEndpointAt, Fin.sum_univ_two,
     add_assoc, add_comm, add_left_comm]
 
-/-- Crossing pair-of-pairs represented directly by normalized-pair subtypes. -/
+/-- Compatibility equivalence for callers that used the explicitly normalized representation. -/
 def Pairing.crossingPairEquivNormalized {n : ℕ} (pairing : Pairing n) :
     pairing.CrossingPair ≃
-      {x : pairing.NormalizedPair × pairing.NormalizedPair // Crosses x.1.1 x.2.1} where
-  toFun z := ⟨(⟨z.1.1, z.2.1⟩, ⟨z.1.2, z.2.2.1⟩), z.2.2.2⟩
-  invFun z := ⟨(z.1.1.1, z.1.2.1), z.1.1.2, z.1.2.2, z.2⟩
-  left_inv z := rfl
-  right_inv z := rfl
+      {x : pairing.NormalizedPair × pairing.NormalizedPair // Crosses x.1.1 x.2.1} :=
+  Equiv.refl _
 
 /-- `crossingCount` as a `0`-or-`1` sum over all ordered normalized-pair pairs. -/
 theorem Pairing.crossingCount_eq_sum_crosses {n : ℕ} (pairing : Pairing n) :
