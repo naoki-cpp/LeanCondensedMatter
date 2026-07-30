@@ -219,38 +219,13 @@ theorem QuarticWickDiagram.prod_orderedQuarticPairValue_pairs_eq_prod_components
           orderedQuarticPairValue ε β (d.restrictComponent B.2) (orders B)
             (d.componentTimeAssignment shuffle τ B) pr.1 pr.2 := by
   classical
-  have hglobal :
-      (∏ pr : d.GlobalOrderedPair orders shuffle,
-        orderedQuarticPairValue ε β d (d.assembleVertexOrder orders shuffle)
-          τ pr.1.1 pr.1.2) =
-        ∏ pr ∈ (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs,
-          orderedQuarticPairValue ε β d (d.assembleVertexOrder orders shuffle)
-            τ pr.1 pr.2 := by
-    rw [← Finset.attach_eq_univ]
-    simpa using
-      Finset.prod_attach
-        (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs
-        (fun pr => orderedQuarticPairValue ε β d
-          (d.assembleVertexOrder orders shuffle) τ pr.1 pr.2)
-  have hlocal (B : d.componentPartition.parts) :
-      (∏ pr : d.LocalOrderedPair orders B,
-        orderedQuarticPairValue ε β (d.restrictComponent B.2) (orders B)
-          (d.componentTimeAssignment shuffle τ B) pr.1.1 pr.1.2) =
-        ∏ pr ∈ ((d.restrictComponent B.2).pairingInOrder (orders B)).pairs,
-          orderedQuarticPairValue ε β (d.restrictComponent B.2) (orders B)
-            (d.componentTimeAssignment shuffle τ B) pr.1 pr.2 := by
-    rw [← Finset.attach_eq_univ]
-    simpa using
-      Finset.prod_attach
-        ((d.restrictComponent B.2).pairingInOrder (orders B)).pairs
-        (fun pr => orderedQuarticPairValue ε β (d.restrictComponent B.2)
-          (orders B) (d.componentTimeAssignment shuffle τ B) pr.1 pr.2)
   calc
     (∏ pr ∈ (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs,
         orderedQuarticPairValue ε β d (d.assembleVertexOrder orders shuffle) τ pr.1 pr.2) =
         (∏ pr : d.GlobalOrderedPair orders shuffle,
           orderedQuarticPairValue ε β d (d.assembleVertexOrder orders shuffle)
-            τ pr.1.1 pr.1.2) := hglobal.symm
+            τ pr.1.1 pr.1.2) :=
+      Finset.prod_subtype _ (fun _ => Iff.rfl) _
     _ = ∏ B : d.componentPartition.parts,
         ∏ pr : d.LocalOrderedPair orders B,
           orderedQuarticPairValue ε β (d.restrictComponent B.2) (orders B)
@@ -262,7 +237,7 @@ theorem QuarticWickDiagram.prod_orderedQuarticPairValue_pairs_eq_prod_components
             (d.componentTimeAssignment shuffle τ B) pr.1 pr.2 := by
       apply Fintype.prod_congr
       intro B
-      exact hlocal B
+      exact (Finset.prod_subtype _ (fun _ => Iff.rfl) _).symm
 
 end Fermionic
 
