@@ -76,12 +76,10 @@ theorem QuarticWickDiagram.componentCrossingPairToGlobal_injective
   apply Prod.ext
   · have hfirst := congrArg Prod.fst hval
     have hsigma := (d.componentPairEquiv orders shuffle).injective hfirst
-    cases hsigma
-    rfl
+    exact eq_of_heq (Sigma.mk.inj_iff.mp hsigma).2
   · have hsecond := congrArg Prod.snd hval
     have hsigma := (d.componentPairEquiv orders shuffle).injective hsecond
-    cases hsigma
-    rfl
+    exact eq_of_heq (Sigma.mk.inj_iff.mp hsigma).2
 
 /-- Embed all component-local crossing pair-of-pairs into the assembled global pairing. -/
 noncomputable def QuarticWickDiagram.componentCrossingPairsToGlobal
@@ -100,10 +98,10 @@ theorem QuarticWickDiagram.componentCrossingPairsToGlobal_injective
   have hval := congrArg Subtype.val hxy
   have hfirst := congrArg Prod.fst hval
   have hsigmaFirst := (d.componentPairEquiv orders shuffle).injective hfirst
-  cases hsigmaFirst
-  have hsecond := congrArg Prod.snd hval
-  have hsigmaSecond := (d.componentPairEquiv orders shuffle).injective hsecond
-  cases hsigmaSecond
+  have hBC : B = C := congrArg Sigma.fst hsigmaFirst
+  subst C
+  have hxyLocal := d.componentCrossingPairToGlobal_injective orders shuffle B hxy
+  cases hxyLocal
   rfl
 
 /-- The subset of assembled global crossings whose two pairs belong to one component. -/
