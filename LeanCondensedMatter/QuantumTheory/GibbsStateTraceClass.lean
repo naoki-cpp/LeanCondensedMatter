@@ -61,14 +61,17 @@ noncomputable def gibbsState (Hop : Observable H) (β : ℝ)
     (hZ : ContinuousLinearMap.trace htc ≠ 0) : DensityOperator H where
   op := (ContinuousLinearMap.trace htc)⁻¹ • gibbsOp Hop β
   pos := by
-    rw [show (ContinuousLinearMap.trace htc)⁻¹ • gibbsOp Hop β =
-        ((ContinuousLinearMap.trace htc)⁻¹ : ℂ) • gibbsOp Hop β by
+    let r : ℝ := (ContinuousLinearMap.trace htc)⁻¹
+    change (r • gibbsOp Hop β).IsPositive
+    rw [show r • gibbsOp Hop β = (r : ℂ) • gibbsOp Hop β by
       ext x
       simp]
     refine (gibbsOp_isPositive Hop β).smul_of_nonneg ?_
     have hZnonneg : 0 ≤ ContinuousLinearMap.trace htc :=
       ContinuousLinearMap.trace_nonneg htc (gibbsOp_isPositive Hop β).toLinearMap
-    exact RCLike.ofReal_nonneg.mpr (inv_nonneg.mpr hZnonneg)
+    exact RCLike.ofReal_nonneg.mpr (by
+      dsimp [r]
+      exact inv_nonneg.mpr hZnonneg)
   compact := hcompact.smul _
   traceClass := ContinuousLinearMap.isTraceClass_smul (inv_ne_zero hZ) htc
   trace_eq_one := by
