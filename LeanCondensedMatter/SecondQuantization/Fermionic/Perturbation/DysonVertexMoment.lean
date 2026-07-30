@@ -22,8 +22,8 @@ set-partition block products the wrong multinomial weights.
 `dysonVertexCumulant` is the finite-set cumulant of this moment. The general identification of such
 cumulants with factorial-normalized formal-log coefficients is proved in
 `Combinatorics/PowerSeriesCumulant.lean`. The Dyson specialization is
-`factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant`, and the quartic
-connected-diagram result is completed in
+`factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant`, and the final quartic
+connected-diagram coefficient theorem is in
 `Fermionic/Diagrammatics/DysonLinkedClusterTheorem.lean`.
 -/
 
