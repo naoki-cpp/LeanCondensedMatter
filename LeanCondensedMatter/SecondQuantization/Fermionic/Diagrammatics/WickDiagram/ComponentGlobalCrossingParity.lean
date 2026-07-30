@@ -24,6 +24,12 @@ private theorem crosses_asymm {n : ℕ}
   intro hqp
   exact lt_asymm hpq.1 hqp.1
 
+private theorem indicator_or_eq_add_indicator_of_not_and
+    (p q : Prop) [Decidable p] [Decidable q] (h : ¬ (p ∧ q)) :
+    (if p ∨ q then 1 else 0 : ℕ) =
+      (if p then 1 else 0) + (if q then 1 else 0) := by
+  by_cases hp : p <;> by_cases hq : q <;> simp_all
+
 /-- Oriented crossing count from pairs in component `B` to pairs in component `C`. -/
 noncomputable def QuarticWickDiagram.componentOrientedCrossingCount
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
@@ -35,54 +41,47 @@ noncomputable def QuarticWickDiagram.componentOrientedCrossingCount
         (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
     then 1 else 0
 
-/-- For distinct components, the unoriented geometric crossing count is the sum of its two
-orientations. -/
+/-- The unoriented geometric crossing count is the sum of its two orientations. -/
 theorem QuarticWickDiagram.componentGeometricCrossingCount_eq_oriented_add
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B C : d.componentPartition.parts) (_hBC : B ≠ C) :
+    (B C : d.componentPartition.parts) :
     d.componentGeometricCrossingCount orders shuffle B C =
       d.componentOrientedCrossingCount orders shuffle B C +
         d.componentOrientedCrossingCount orders shuffle C B := by
   classical
-  let crossBC := fun p : d.LocalOrderedPair orders B =>
-    fun q : d.LocalOrderedPair orders C =>
-      Common.BlochDeDominicis.Crosses
-        (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
-        (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
-  let crossCB := fun p : d.LocalOrderedPair orders B =>
-    fun q : d.LocalOrderedPair orders C =>
-      Common.BlochDeDominicis.Crosses
-        (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
-        (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
-  have hpoint : ∀ p q,
-      (if crossBC p q ∨ crossCB p q then 1 else 0) =
-        (if crossBC p q then 1 else 0) + (if crossCB p q then 1 else 0) := by
-    intro p q
-    by_cases hbc : crossBC p q
-    · have hcb : ¬ crossCB p q := crosses_asymm _ _ hbc
-      simp [hbc, hcb]
-    · by_cases hcb : crossCB p q <;> simp [hbc, hcb]
-  have hcomm :
-      (∑ q : d.LocalOrderedPair orders C,
-        ∑ p : d.LocalOrderedPair orders B,
-          if crossCB p q then 1 else 0) =
-        ∑ p : d.LocalOrderedPair orders B,
-          ∑ q : d.LocalOrderedPair orders C,
-            if crossCB p q then 1 else 0 :=
-    Finset.sum_comm
+  let crossBC := fun x :
+      d.LocalOrderedPair orders B × d.LocalOrderedPair orders C =>
+    Common.BlochDeDominicis.Crosses
+      (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
+      (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
+  let crossCB := fun x :
+      d.LocalOrderedPair orders B × d.LocalOrderedPair orders C =>
+    Common.BlochDeDominicis.Crosses
+      (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
+      (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
+  have hswap :
+      (∑ x : d.LocalOrderedPair orders C × d.LocalOrderedPair orders B,
+        if Common.BlochDeDominicis.Crosses
+            (d.componentPairEquiv orders shuffle ⟨C, x.1⟩).1
+            (d.componentPairEquiv orders shuffle ⟨B, x.2⟩).1
+        then 1 else 0) =
+        ∑ x : d.LocalOrderedPair orders B × d.LocalOrderedPair orders C,
+          if crossCB x then 1 else 0 := by
+    rw [← Equiv.sum_comp (Equiv.prodComm
+      (d.LocalOrderedPair orders B) (d.LocalOrderedPair orders C))]
+    rfl
   rw [QuarticWickDiagram.componentGeometricCrossingCount,
     QuarticWickDiagram.componentOrientedCrossingCount,
-    QuarticWickDiagram.componentOrientedCrossingCount,
-    Fintype.sum_prod_type, Fintype.sum_prod_type, Fintype.sum_prod_type]
-  change (∑ p, ∑ q, if crossBC p q ∨ crossCB p q then 1 else 0) = _
-  rw [hcomm, ← Finset.sum_add_distrib]
-  apply Finset.sum_congr rfl
-  intro p _
+    QuarticWickDiagram.componentOrientedCrossingCount, hswap]
+  change (∑ x, if crossBC x ∨ crossCB x then 1 else 0) =
+    (∑ x, if crossBC x then 1 else 0) + ∑ x, if crossCB x then 1 else 0
   rw [← Finset.sum_add_distrib]
   apply Finset.sum_congr rfl
-  intro q _
-  exact hpoint p q
+  intro x _
+  exact indicator_or_eq_add_indicator_of_not_and (crossBC x) (crossCB x) (by
+    rintro ⟨hbc, hcb⟩
+    exact crosses_asymm _ _ hbc hcb)
 
 /-- The diagonal oriented crossing count is the local crossing count of that component. -/
 theorem QuarticWickDiagram.componentOrientedCrossingCount_self
@@ -112,44 +111,24 @@ theorem QuarticWickDiagram.pairingInOrder_crossingCount_eq_sum_componentOriented
   classical
   let globalPairing := d.pairingInOrder (d.assembleVertexOrder orders shuffle)
   let pairEquiv := d.componentPairEquiv orders shuffle
-  let productEquiv := Equiv.prodCongr pairEquiv pairEquiv
+  let componentPairProductEquiv :
+      (Σ BC : d.componentPartition.parts × d.componentPartition.parts,
+        d.LocalOrderedPair orders BC.1 × d.LocalOrderedPair orders BC.2) ≃
+        d.GlobalOrderedPair orders shuffle × d.GlobalOrderedPair orders shuffle :=
+    let sigmaProductEquiv :
+        (Σ BC : d.componentPartition.parts × d.componentPartition.parts,
+          d.LocalOrderedPair orders BC.1 × d.LocalOrderedPair orders BC.2) ≃
+          (Σ B : d.componentPartition.parts, d.LocalOrderedPair orders B) ×
+            (Σ C : d.componentPartition.parts, d.LocalOrderedPair orders C) where
+      toFun x := (⟨x.1.1, x.2.1⟩, ⟨x.1.2, x.2.2⟩)
+      invFun x := ⟨(x.1.1, x.2.1), (x.1.2, x.2.2)⟩
+      left_inv := by rintro ⟨⟨B, C⟩, p, q⟩; rfl
+      right_inv := by rintro ⟨⟨B, p⟩, ⟨C, q⟩⟩; rfl
+    sigmaProductEquiv.trans (Equiv.prodCongr pairEquiv pairEquiv)
   rw [globalPairing.crossingCount_eq_sum_crosses,
-    ← Equiv.sum_comp productEquiv, Fintype.sum_prod_type,
-    Fintype.sum_sigma]
-  apply Finset.sum_congr rfl
-  intro B _
-  calc
-    (∑ p : d.LocalOrderedPair orders B,
-        ∑ y : Σ C : d.componentPartition.parts, d.LocalOrderedPair orders C,
-          if Common.BlochDeDominicis.Crosses
-              (productEquiv (⟨B, p⟩, y)).1.1
-              (productEquiv (⟨B, p⟩, y)).2.1
-          then 1 else 0) =
-      ∑ p : d.LocalOrderedPair orders B,
-        ∑ C : d.componentPartition.parts,
-          ∑ q : d.LocalOrderedPair orders C,
-            if Common.BlochDeDominicis.Crosses
-                (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
-                (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
-            then 1 else 0 := by
-              apply Finset.sum_congr rfl
-              intro p _
-              rw [Fintype.sum_sigma]
-              rfl
-    _ = ∑ C : d.componentPartition.parts,
-        ∑ p : d.LocalOrderedPair orders B,
-          ∑ q : d.LocalOrderedPair orders C,
-            if Common.BlochDeDominicis.Crosses
-                (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
-                (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
-            then 1 else 0 := by
-              rw [Finset.sum_comm]
-    _ = ∑ C : d.componentPartition.parts,
-        d.componentOrientedCrossingCount orders shuffle B C := by
-              apply Finset.sum_congr rfl
-              intro C _
-              rw [QuarticWickDiagram.componentOrientedCrossingCount,
-                Fintype.sum_prod_type]
+    ← Equiv.sum_comp componentPairProductEquiv,
+    Fintype.sum_sigma, Fintype.sum_prod_type]
+  rfl
 
 /-- The assembled global crossing count has the same parity as the sum of component-local crossing
 counts. -/
@@ -171,7 +150,7 @@ theorem QuarticWickDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_component
             (fun B C => d.componentOrientedCrossingCount orders shuffle B C)
             (fun B C hBC => by
               rw [← d.componentGeometricCrossingCount_eq_oriented_add
-                orders shuffle B C hBC,
+                orders shuffle B C,
                 d.componentGeometricCrossingCount_mod_two_eq_zero
                   orders shuffle B C hBC])
     _ = (∑ B : d.componentPartition.parts,
