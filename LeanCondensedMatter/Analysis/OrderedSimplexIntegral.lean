@@ -67,6 +67,15 @@ theorem orderedSimplexIntegral_congr {n : ℕ} {β : ℝ} {f g : (Fin n → ℝ)
     rw [orderedSimplexIntegral_succ, orderedSimplexIntegral_succ]
     exact intervalIntegral.integral_congr fun τ _ => ih fun rest => h (Fin.cons τ rest)
 
+/-- Changing the presentation of the finite coordinate count only precomposes the integrand with the
+corresponding `Fin.cast`. -/
+theorem orderedSimplexIntegral_cast {a b : ℕ} (h : a = b) (β : ℝ)
+    (F : (Fin a → ℝ) → ℂ) :
+    orderedSimplexIntegral a β F =
+      orderedSimplexIntegral b β (fun τ => F (fun i => τ (Fin.cast h i))) := by
+  subst b
+  rfl
+
 @[simp]
 theorem orderedSimplexIntegral_zero_fun (n : ℕ) (β : ℝ) :
     orderedSimplexIntegral n β (fun _ => (0 : ℂ)) = 0 := by
