@@ -321,7 +321,7 @@ theorem QuarticDiagram.TwoComponentPresentation.orderedSimplexIntegral_toCompone
         (shuffle.integrand (componentIntegrand p.leftComponent)
           (componentIntegrand p.rightComponent)) := by
           symm
-          simpa using BinaryShuffle.orderedSimplexIntegral_cast p.totalCard β
+          simpa using intervalIntegral.orderedSimplexIntegral_cast p.totalCard β
             (shuffle.integrand (componentIntegrand p.leftComponent)
               (componentIntegrand p.rightComponent))
 
