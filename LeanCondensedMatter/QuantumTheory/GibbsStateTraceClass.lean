@@ -69,9 +69,7 @@ noncomputable def gibbsState (Hop : Observable H) (β : ℝ)
     refine (gibbsOp_isPositive Hop β).smul_of_nonneg ?_
     have hZnonneg : 0 ≤ ContinuousLinearMap.trace htc :=
       ContinuousLinearMap.trace_nonneg htc (gibbsOp_isPositive Hop β).toLinearMap
-    exact RCLike.ofReal_nonneg.mpr (by
-      dsimp [r]
-      exact inv_nonneg.mpr hZnonneg)
+    exact RCLike.ofReal_nonneg.mpr (inv_nonneg.mpr hZnonneg)
   compact := hcompact.smul _
   traceClass := ContinuousLinearMap.isTraceClass_smul (inv_ne_zero hZ) htc
   trace_eq_one := by
