@@ -20,6 +20,7 @@ import LeanCondensedMatter.Combinatorics.BinaryShuffleSlots
 import LeanCondensedMatter.Combinatorics.IncidenceAlgebraMu
 import LeanCondensedMatter.Combinatorics.PartitionLattice
 import LeanCondensedMatter.Combinatorics.MomentCumulant
+import LeanCondensedMatter.Combinatorics.PowerSeriesCumulant
 import LeanCondensedMatter.Combinatorics.CumulantFactorization
 import LeanCondensedMatter.Combinatorics.DiagramConnectedness
 import LeanCondensedMatter.Combinatorics.Common.DeletedFinPositions
