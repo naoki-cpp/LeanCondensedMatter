@@ -63,10 +63,7 @@ theorem Pairing.crossingCount_eq_sum_crosses {n : ℕ} (pairing : Pairing n) :
         fun x => Crosses x.1.1 x.2.1)
       (fun x => by simp)
   rw [hcard]
-  simpa using
-    (Finset.sum_boole
-      (fun x : pairing.NormalizedPair × pairing.NormalizedPair => Crosses x.1.1 x.2.1)
-      Finset.univ).symm
+  simp
 
 /-- Double-sum form of `crossingCount_eq_sum_crosses`. -/
 theorem Pairing.crossingCount_eq_sum_sum_crosses {n : ℕ} (pairing : Pairing n) :
