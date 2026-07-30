@@ -1,34 +1,31 @@
 # Second Quantization — Current Status
 
-This page is the current-state companion to
-[`second-quantization.md`](second-quantization.md), which retains the longer development narrative and
-phase history. The focused execution plan for the fermionic Linked Cluster Theorem is
-[`linked-cluster-theorem.md`](linked-cluster-theorem.md). The source of truth for each completed claim
-is the referenced Lean module and declaration; all files listed below compile without `sorry`.
+This page summarizes the current architecture and proved results in
+`LeanCondensedMatter/SecondQuantization/`. The longer development narrative is in
+[`second-quantization.md`](second-quantization.md), and the completed fermionic Linked Cluster Theorem
+is documented in [`linked-cluster-theorem.md`](linked-cluster-theorem.md).
+
+The source of truth for every completed claim is the referenced Lean declaration. The files described
+as complete compile without `sorry`.
 
 ## Scope and architecture
 
-The finite-mode fermionic line remains the primary path to the finite-temperature Linked Cluster
-Theorem. The bosonic line is developed in parallel where the construction is algebraic or finite
-combinatorics. The two lines share statistics-independent definitions and proofs through
-[`SecondQuantization/Common/`](../../LeanCondensedMatter/SecondQuantization/Common/).
+The finite-mode fermionic line is the primary completed algebraic path. The bosonic line mirrors the
+statistics-independent and algebraic layers where possible, but its thermal and Dyson layers require
+summability-aware interfaces because a finite set of bosonic modes still has an infinite occupation
+basis.
 
-The parity boundary is analytic rather than combinatorial:
+The current boundary is:
 
-- `FermionOccupation Mode := Finset Mode` is finite when `Mode` is finite.
-- `Bosonic.Occupation Mode := Mode →₀ ℕ` remains infinite when `Mode` is finite.
-- Consequently, finite sums over all fermionic occupation states cannot be copied to the bosonic
-  line; bosonic thermal and Dyson constructions need explicit summability or a convergence-aware
-  functional interface.
+- finite-mode fermionic algebra, thermal theory, Dyson coefficients, Wick diagrams, and the
+  coefficientwise Linked Cluster Theorem are implemented;
+- the fermionic LCT is formal/algebraic and makes no perturbation-series convergence claim;
+- the bosonic line has algebraic Fock, CCR, free thermal results, two-point Bloch–de Dominicis, and
+  quartic diagram data, but not a general Dyson/LCT layer;
+- completed-space unbounded-operator theory, trace-class theory, and thermodynamic limits remain
+  separate tracks.
 
-Sources: `Fermionic/Algebra/Occupation.lean`, `Bosonic/Algebra.lean`,
-`Common/Thermal/WeightedDiagonalFunctional.lean`, and
-`Common/Perturbation/FiniteOperatorIntegral.lean`.
-
-## Public import layouts
-
-The two statistics-specific APIs use parallel umbrellas wherever their mathematics has matching
-responsibilities.
+## Public import layout
 
 | Area | Fermionic import | Bosonic import |
 |---|---|---|
@@ -37,193 +34,169 @@ responsibilities.
 | Free thermal theory | `SecondQuantization.Fermionic.Thermal` | `SecondQuantization.Bosonic.Thermal` |
 | Quartic diagrammatics | `SecondQuantization.Fermionic.Diagrammatics` | `SecondQuantization.Bosonic.Diagrammatics` |
 
-The fermionic line additionally exports `SecondQuantization.Fermionic.Perturbation`, containing the
-formal partition-series logarithm and finite-basis Dyson construction. There is no bosonic umbrella
-with the same role yet because the current operator integral and arbitrary Gibbs expectation depend
-on the finite fermionic occupation basis.
+The fermionic line additionally exports `SecondQuantization.Fermionic.Perturbation`, which contains
+the finite-basis Dyson construction and formal partition-series logarithm.
 
-`SecondQuantization.Fermionic` imports all five fermionic umbrellas, while
-`SecondQuantization.Bosonic` imports the four bosonic umbrellas. Smaller implementation modules remain
-separate when they express a useful proof or dependency boundary; the layouts are not forced to have
-identical file counts.
-
-The physical Fermionic directories match the five umbrella responsibilities. Common follows the same
-five-way layout. Bosonic keeps `Foundations/` and `OperatorAlgebra/` as a useful internal split behind
-`Bosonic.Algebra`, while its imaginary-time, thermal, and diagrammatic implementations live under the
-matching responsibility directories. Statistics-specific Bloch–de Dominicis files are under
-`Bosonic/Thermal/BlochDeDominicis/` and `Fermionic/Thermal/BlochDeDominicis/`; the general recursion
-remains under `Common/Thermal/BlochDeDominicis/`.
-
-The Common API uses five corresponding responsibility groups:
-
-| Common import | Scope |
-|---|---|
-| `SecondQuantization.Common.Algebra` | Algebraic Fock infrastructure, statistics, grading, and CAR/CCR interfaces. |
-| `SecondQuantization.Common.ImaginaryTime` | Time ordering, diagonal evolution, interaction pictures, and KMS rotation. |
-| `SecondQuantization.Common.Thermal` | Normalized functionals, diagonal traces, Gibbs infrastructure, and Bloch–de Dominicis. |
-| `SecondQuantization.Common.Perturbation` | Finite-basis coefficientwise operator integration. |
-| `SecondQuantization.Common.Diagrammatics` | Label-generic quartic diagrams, component decomposition, component orders, component-shuffle integrands, and the finite-family component-shuffle product identity. |
-
-The extraction decisions, completed thin Bosonic specializations, and remaining analytic blockers are
-recorded in [`second-quantization-common-audit.md`](second-quantization-common-audit.md).
+`SecondQuantization.Fermionic` imports all five fermionic umbrellas. The final algebraic Dyson Linked
+Cluster Theorem is exported through `SecondQuantization.Fermionic.Diagrammatics`, so it is also
+available from the top-level Fermionic API.
 
 ## Shared statistics-independent layer
 
-The following infrastructure is shared by both statistics. The listed modules live under the
-matching `Common/Algebra/`, `Common/ImaginaryTime/`, `Common/Thermal/`, or
-`Common/Diagrammatics/` directory, or in the upstream `Analysis/` and `Combinatorics/` layers.
+The dependency direction is one way: `Fermionic/` and `Bosonic/` may import `Common/`, while
+`Common/` does not import a statistics-specific directory. General analysis and finite combinatorics
+live in `Analysis/` and `Combinatorics/`.
 
 | Area | Main modules | Current result |
 |---|---|---|
-| Algebraic Fock space | `Common/Algebra/AlgebraicFock.lean` | Basis states, matrix coefficients, diagonal operators, and linear-map extensionality are generic in the configuration type. |
-| Free evolution | `Common/ImaginaryTime/DiagonalEvolution.lean` | Basis-diagonal evolution and algebraic Heisenberg evolution are generic in the energy function. |
-| Interaction picture | `Common/ImaginaryTime/InteractionPicture.lean` | The operator construction, matrix-coefficient closed form, continuity, and interval integrability are generic in the configuration type and use only finite support of algebraic-Fock vectors. |
-| Exchange relations | `Common/Algebra/ExchangeCommutator.lean`, `Common/Algebra/ExchangeAlgebra.lean` | CAR and CCR are represented through the common statistics-dependent `ζ` relation. |
-| Thermal functionals | `Analysis/NormalizedEndomorphismFunctional.lean`, `Common/Thermal/NormalizedOperatorFunctional.lean`, `Common/Thermal/WeightedDiagonalFunctional.lean` | The normalized-functional structure is pure linear algebra; Fock-space and weighted-trace specializations remain in Common. |
-| Bloch–de Dominicis | `Common/Thermal/BlochDeDominicis/Induction.lean` | The pairing expansion is proved abstractly under the stated eigenoperator, commutator, non-resonance, and functional hypotheses. |
-| Quartic diagrams | `Common/Diagrammatics/*.lean`, `Combinatorics/FinpartitionProduct.lean` | Labels, ordered data, connectedness, component restriction/reassembly, decomposition equivalence, component-local orders, global-order decomposition, and component scalar factorization are statistics independent. |
-| Ordered-simplex shuffle calculus | `Analysis/BinaryShuffleSlotOrderedSimplex.lean`, `Analysis/FamilyShuffleOrderedSimplex.lean`, `Combinatorics/FamilySlotShuffleDecomposition.lean`, `Common/Diagrammatics/ComponentOrderedSimplexProduct.lean` | Binary shuffles are equivalent to ambient slot shuffles; arbitrary finite-family shuffle sums equal products of local ordered-simplex integrals; the result is transported to `QuarticDiagram.ComponentShuffle`. |
-
-The Common dependency direction is one way: `Fermionic/` and `Bosonic/` may import `Common/`, while
-`Common/` must not import either statistics-specific directory. General facts that do not depend on
-Fock spaces, particle statistics, or diagram data belong in `Analysis/` or `Combinatorics/`.
+| Algebraic Fock infrastructure | `Common/Algebra/` | Basis states, matrix coefficients, diagonal maps, grading, and exchange interfaces are generic in the configuration/statistics data. |
+| Imaginary-time infrastructure | `Common/ImaginaryTime/` | Diagonal evolution, interaction-picture formulas, time-ordering primitives, and KMS rotation support both statistics. |
+| Thermal functionals | `Analysis/NormalizedEndomorphismFunctional.lean`, `Common/Thermal/` | Normalized functionals, finite weighted traces, Gibbs infrastructure, and the abstract Bloch–de Dominicis theorem. |
+| Finite operator integration | `Common/Perturbation/FiniteOperatorIntegral.lean` | Coefficientwise operator integration for finite configuration types. |
+| Quartic diagrams | `Common/Diagrammatics/`, `Combinatorics/FinpartitionProduct.lean` | Labels, ordered data, connectedness, component restriction/reassembly, decomposition equivalence, and component-local orders. |
+| Ordered-simplex shuffle calculus | `Analysis/BinaryShuffleSlotOrderedSimplex.lean`, `Analysis/FamilyShuffleOrderedSimplex.lean`, `Common/Diagrammatics/ComponentOrderedSimplexProduct.lean` | Binary and finite-family shuffle sums equal products of local ordered-simplex integrals. |
+| Moment/cumulant and diagram connectedness | `Combinatorics/MomentCumulant.lean`, `Combinatorics/DiagramConnectedness.lean` | Finite-set moment–cumulant inversion and the abstract weighted-diagram connectedness theorem. |
+| Formal-log bridge | `Combinatorics/PowerSeriesCumulant.lean` | Factorial-normalized `log` coefficients equal finite-set cumulants for arbitrary normalized complex power series. |
 
 ## Fermionic line
 
-The fermionic line currently includes:
+The finite-mode fermionic line currently includes:
 
-- free imaginary-time evolution and arbitrary interaction-picture matrix coefficients
-  (`Fermionic/ImaginaryTime/ImaginaryTimeEvolution.lean`,
-  `Fermionic/ImaginaryTime/InteractionPicture.lean`);
-- finite-basis thermal weights, partition/two-point functions, contractions, concrete
-  Bloch–de Dominicis checks, and the occupation-cumulant bridge (`Fermionic/Thermal/`);
-- genuine finite-basis Dyson coefficients and partition-series coefficients
-  (`Fermionic/Perturbation/DysonExpansion.lean`,
-  `Fermionic/Perturbation/DysonPartitionSeries.lean`);
-- a general quartic interaction and local-leg semantics
-  (`Fermionic/Diagrammatics/QuarticInteraction.lean`,
-  `Fermionic/Diagrammatics/QuarticLocalLeg.lean`);
-- ordered quartic Wick-diagram amplitudes and the Dyson diagram expansion
-  (`Fermionic/Diagrammatics/WickDiagram/Amplitude.lean`,
-  `Fermionic/Diagrammatics/DysonDiagramExpansion.lean`);
-- component decomposition equivalence and scalar-prefactor factorization
-  (`Fermionic/Diagrammatics/WickDiagram/ComponentDecompositionEquiv.lean`,
-  `Fermionic/Diagrammatics/WickDiagram/AmplitudePrefactorFactorization.lean`);
-- component-local vertex orders, global-order decomposition, component-shuffle integrands, binary and
-  finite-family slot shuffles, and the general component ordered-simplex product identity.
-
-The statistics-independent ordered-simplex/component-shuffle milestone is complete. Full
-Wick-amplitude factorization now has one diagram-specific block remaining: prove that fermionic
-pairing sets, pair values, pair products, and pairing weights factor under assembled component-local
-orders.
-
-The pairing-weight theorem is the main risk because `Pairing.weight` is not invariant under arbitrary
-relabeling; the proof must exploit the special block-of-four leg permutation induced by vertex
-shuffles.
+- occupation-number Fock space, creation/annihilation operators, CAR, grading, and Hamiltonians;
+- free imaginary-time evolution and arbitrary interaction-picture matrix coefficients;
+- finite-basis Gibbs weights, free partition and two-point functions, contractions, KMS rotation, and
+  the finite-temperature Bloch–de Dominicis pairing theorem;
+- genuine finite-basis Dyson coefficients, normalized partition coefficients, and a formal Dyson
+  partition series;
+- a general non-diagonal quartic interaction and local-leg semantics;
+- ordered quartic Wick diagrams, full amplitudes, and the Dyson diagram expansion;
+- component decomposition, component-order/shuffle calculus, fermionic pairing compatibility, and
+  full amplitude factorization;
+- a concrete weighted-diagram family and the connected-diagram formula for Dyson vertex cumulants;
+- the general formal-log/finite-set-cumulant bridge;
+- the final algebraic Dyson Linked Cluster Theorem.
 
 ## Fermionic LCT milestones
-
-The detailed exit theorems and work packages are in
-[`linked-cluster-theorem.md`](linked-cluster-theorem.md).
 
 | Milestone | Deliverable | Status |
 |---|---|---|
 | M0 | Statistics-independent component-shuffle product calculus | complete through PR #247 |
-| M1 | Fermionic contraction-integrand factorization | next |
-| M2 | Full quartic Wick-amplitude factorization | blocked by M1 |
-| M3 | Connected-diagram formula for `dysonVertexCumulant` | blocked by M2 |
-| M4 | General finite-set cumulant / formal-`log` EGF bridge | independent high-risk track |
-| M5 | Final Dyson LCT theorem and Fermionic API export | blocked by M3 and M4 |
+| M1 | Fermionic contraction-integrand factorization | complete through PR #256; cleanup through PR #282 |
+| M2 | Full quartic Wick-amplitude factorization | complete in PR #287 |
+| M3 | Connected-diagram formula for `dysonVertexCumulant` | complete in PR #291 |
+| M4 | General finite-set cumulant / formal-`log` EGF bridge | complete in PR #295 |
+| M5 | Final Dyson LCT theorem and Fermionic API export | complete in PR #299 |
 
-The remaining dependency order is:
+The final theorem is
 
-1. pairing restriction, local leg/pair-value compatibility, global pair-product reindexing, and
-   pairing-sign factorization;
-2. contraction-integrand and complete `quarticWickDiagramAmplitude` factorization;
-3. concrete `Combinatorics.WeightedDiagramFamily` and the connected-diagram finite-set cumulant
-   theorem;
-4. the general exponential-generating-series bridge between finite-set cumulants and coefficients of
-   `formalLogPartitionFunction`;
-5. specialization to the normalized Dyson partition series and the final LCT.
+```lean
+factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude
+```
 
-The M4 EGF track can proceed in parallel with M1–M3. The two highest-risk blocks are fermionic
-pairing-sign factorization and the finite-set cumulant/`PowerSeries.log` coefficient bridge. The
-expected remaining implementation is roughly six to nine focused PRs.
+and states, for `n ≠ 0`,
+
+```text
+n! [λⁿ] log(normalized Dyson partition series)
+  = ∑ connected n-vertex quartic Wick diagrams, amplitude(diagram).
+```
+
+The proof chain is:
+
+1. global orders decompose into component-local orders and component shuffles;
+2. contraction integrands factor over connected components;
+3. complete quartic Wick amplitudes factor over connected components;
+4. the abstract weighted-diagram theorem identifies finite-set cumulants with connected diagrams;
+5. factorial-normalized formal-log coefficients are finite-set cumulants;
+6. the normalized Dyson coefficient is exactly the Dyson vertex moment coefficient.
+
+## Fermionic capability matrix
+
+| Capability | Status | Main result or module |
+|---|---:|---|
+| Algebraic Fock and CAR | done | `Fermionic.Algebra` |
+| Free imaginary-time evolution | done | `Fermionic.ImaginaryTime` |
+| Finite free Gibbs theory | done | `Fermionic.Thermal` |
+| General finite-temperature pairing theorem | done | `Common/Thermal/BlochDeDominicis/Induction.lean` with fermionic instantiation |
+| Dyson coefficients and partition series | done | `Fermionic/Perturbation/DysonExpansion.lean`, `DysonPartitionSeries.lean` |
+| Full quartic Wick amplitude | done | `Fermionic/Diagrammatics/WickDiagram/Amplitude.lean` |
+| Dyson diagram expansion | done | `Fermionic/Diagrammatics/DysonDiagramExpansion.lean` |
+| Full amplitude factorization | done | `WickDiagram/AmplitudeFactorization.lean` |
+| Connected-diagram cumulant theorem | done | `DysonConnectedDiagramExpansion.lean` |
+| Formal-log coefficient bridge | done | `Combinatorics/PowerSeriesCumulant.lean` |
+| Algebraic Dyson LCT | done | `DysonLinkedClusterTheorem.lean` |
+| Analytic equality with `Tr exp(-β(H₀+λV))` | pending | requires a separate analytic/convergence argument |
 
 ## Bosonic line
 
 The bosonic line currently includes:
 
-- occupation states, algebraic Fock space, ladder operators, CCR, number operators, grading, the
-  public exchange-commutator bridge, and same-charge diagonal selection rules (`Bosonic/Algebra.lean`);
-- free time ordering, diagonal evolution, evolved ladder operators, composition preservation, and the
-  algebraic interaction-picture operator with arbitrary matrix-coefficient, continuity, and
-  interval-integrability formulas (`Bosonic/ImaginaryTime.lean`);
-- convergent free partition and particle-number series, free two-point coefficients, and an uncutoff
-  two-point Bloch–de Dominicis specialization (`Bosonic/Thermal.lean`);
-- quartic interaction vertices and their interaction-picture formulas, local-leg CCR semantics,
-  flattened leg families, ordered diagram data, component decomposition equivalence, and
-  componentwise scalar weights (`Bosonic/Diagrammatics.lean`).
+- occupation states `Mode →₀ ℕ`, algebraic Fock space, ladder operators, CCR, number operators, and
+  grading;
+- free diagonal and interaction-picture imaginary-time evolution;
+- convergent free partition and particle-number series under explicit positivity assumptions;
+- free two-point coefficients and an uncutoff two-point Bloch–de Dominicis specialization;
+- quartic interaction vertices, local-leg CCR semantics, ordered diagram data, component
+  decomposition, and componentwise scalar prefactors.
 
-Thus the bosonic line matches the fermionic line through the algebraic quartic-diagram layer and the
-scalar coupling/Dyson prefactor. It does not yet include the general Dyson coefficient, full quartic
-Wick amplitude, or Dyson diagram expansion.
+The bosonic line does not yet include a general arbitrary-operator Gibbs functional, a compatible
+Dyson coefficient construction, the full quartic Wick amplitude, or a Dyson diagram expansion.
 
-## Parity matrix
+## Fermion/boson parity matrix
 
-| Capability | Fermionic | Bosonic | Reason for any gap |
+| Capability | Fermionic | Bosonic | Reason for a gap |
 |---|---:|---:|---|
 | Algebraic Fock and ladder operators | done | done | — |
 | CAR/CCR through Common exchange algebra | done | done | — |
 | Free imaginary-time evolution | done | done | — |
-| Algebraic interaction-picture operator | done | done | — |
-| Arbitrary interaction-picture matrix-coefficient formula | done | done | Shared through Common and exposed under both statistics-specific APIs. |
-| Free thermal two-point result | done | done | Bosonic proof supplies explicit summability. |
+| Algebraic interaction picture | done | done | — |
+| Free thermal two-point result | done | done | Bosonic proof carries explicit summability assumptions. |
 | General finite-temperature pairing theorem | done | instantiated at two point | Arbitrary bosonic Gibbs functionals need a convergence-aware domain. |
 | Quartic local-leg and ordered-diagram data | done | done | — |
 | Component decomposition equivalence | done | done | Shared through Common. |
-| Coupling/Dyson scalar-prefactor factorization | done | done | Shared component combinatorics. |
-| Binary ordered-simplex shuffle identity | done | reusable | Pure `Analysis`/`Combinatorics`; no statistics-specific input. |
-| Finite-family component-shuffle product identity | done | reusable | Pure `Analysis`/`Combinatorics` with a Common diagram specialization. |
-| Full quartic Wick amplitude | done | pending | Depends on a bosonic expectation/contraction layer. |
-| Dyson diagram expansion | done | pending | Depends on bosonic Dyson coefficients and the full amplitude. |
-| Full amplitude factorization | pending | pending | Fermionic pairing compatibility and sign factorization remain; the ordered-simplex component product is complete. |
-| Connected-diagram finite-set cumulant theorem | abstract theorem done; concrete instance pending | pending | Fermionic instance needs full amplitude factorization. |
-| Formal-log coefficient bridge | pending | pending | General EGF/set-partition theorem remains. |
+| Component-shuffle ordered-simplex product | done | reusable | Statistics independent. |
+| Full quartic Wick amplitude | done | pending | Bosonic expectation/contraction layer is incomplete. |
+| Dyson diagram expansion | done | pending | Bosonic Dyson coefficients are incomplete. |
+| Full amplitude factorization | done | pending | Depends on the full bosonic amplitude. |
+| Connected-diagram finite-set cumulant theorem | done | abstract machinery reusable | Needs a bosonic weighted-diagram instance. |
+| Formal-log coefficient bridge | done and statistics independent | reusable | Already lives in `Combinatorics/`. |
+| Dyson Linked Cluster Theorem | done, formal/algebraic | pending | Bosonic analytic and Dyson layers remain. |
 
 ## Analytic blockers
 
-The remaining bosonic gaps should not be filled by adding a false finite-type assumption.
+### Bosonic operator integration
 
-1. **Operator-valued integration.**
-   `Common/Perturbation/FiniteOperatorIntegral.lean` reconstructs an operator by summing over all
-   output basis states and therefore assumes `[Fintype Config]`. The bosonic version needs a locally
-   finite or summability-controlled operator class.
-2. **Gibbs expectations of arbitrary operators.**
-   The existing bosonic thermal results prove summability for specific diagonal and two-point
-   expressions. A reusable arbitrary-operator functional must carry its summability hypotheses in
-   the type or theorem statement.
-3. **Completed-space operator theory.**
-   Hilbert-space completion, domains of unbounded ladder operators, and trace-class theory remain
-   deferred to Track C; the current Track D results are algebraic unless a theorem explicitly states
-   a convergent series.
+`Common/Perturbation/FiniteOperatorIntegral.lean` reconstructs operators using a finite sum over output
+basis states and therefore requires a finite configuration type. A bosonic replacement needs a locally
+finite, summability-controlled, or completed operator class.
 
-## Recommended implementation order
+### Bosonic Gibbs expectations
 
-The fermionic LCT remains the critical path:
+The existing bosonic thermal results establish summability for specific expressions. A reusable
+arbitrary-operator functional must encode sufficient summability hypotheses in its type or theorem
+statements.
 
-1. prove pairing/pair-value compatibility, pair-product reindexing, and pairing-sign factorization;
-2. complete fermionic contraction-integrand and amplitude factorization;
-3. instantiate the concrete weighted diagram family and obtain the connected-diagram finite-set
-   cumulant theorem;
-4. prove the general finite-set cumulant/formal-log EGF bridge, in parallel when useful;
-5. specialize to the Dyson partition series and export the final fermionic LCT.
+### Analytic fermionic partition function
 
-After that milestone, resume the convergence-aware bosonic path:
+The proved fermionic LCT concerns the formal series assembled from Dyson coefficients. A further
+finite-dimensional analytic theorem should identify that series with the Taylor expansion of
 
-6. define a summability-restricted bosonic thermal functional and prove its linearity, normalization,
-   and KMS rotation properties;
-7. introduce a compatible bosonic operator-integral/Dyson interface;
-8. implement the bosonic quartic Wick amplitude and Dyson diagram expansion;
-9. reuse the statistics-independent component-shuffle and connectedness infrastructure where its
-   hypotheses are available.
+```text
+Tr(exp(-β(H₀ + λV))) / Tr(exp(-βH₀)).
+```
+
+### Completed-space operator theory
+
+Hilbert-space completion, domains of unbounded ladder operators, trace-class theory, and infinite-mode
+limits remain outside the algebraic SecondQuantization layer unless a theorem explicitly introduces
+the required analytic hypotheses.
+
+## Recommended next order
+
+1. add explicit `n = 1, 2, 3` coefficient and connected-diagram regression theorems;
+2. prove the finite-dimensional analytic Dyson evolution identity and identify the formal partition
+   series with the Taylor expansion of the interacting partition function;
+3. extend connectedness to time-ordered correlation functions and diagrams with external legs;
+4. design a summability-restricted bosonic Gibbs functional;
+5. introduce a compatible bosonic operator-integral/Dyson interface;
+6. reuse the Common component-shuffle, cumulant, and connectedness infrastructure for the bosonic
+   line once its analytic hypotheses are available.
