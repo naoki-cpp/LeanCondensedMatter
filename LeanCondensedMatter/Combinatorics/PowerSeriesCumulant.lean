@@ -137,7 +137,7 @@ private def partComplementEquiv (s : Finset α) (a : α) (ha : a ∈ s) :
       apply Subtype.ext
       exact hpart
     apply Sigma.ext hblock
-    cases hblock
+    rw [hpart]
     exact heq_of_eq (avoid_extend_eq B.2.1 B.2.2 Q)
 
 private theorem partitionProduct_partComplementEquiv_symm
@@ -169,6 +169,7 @@ private theorem momentFromCumulant_eq_sum_blockContaining (κ : Finset α → �
   rw [← Finset.mul_sum]
   rfl
 
+set_option linter.unusedDecidableInType false in
 private theorem sum_blockContaining_card (s : Finset α) (a : α) (ha : a ∈ s)
     (f : ℕ → ℂ) :
     (∑ B : BlockContaining s a, f B.1.card) =
