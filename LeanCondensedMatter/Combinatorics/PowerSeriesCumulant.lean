@@ -137,6 +137,7 @@ private def partComplementEquiv (s : Finset α) (a : α) (ha : a ∈ s) :
       apply Subtype.ext
       exact hpart
     apply Sigma.ext hblock
+    change HEq (P.avoid (P.part a)) Q
     rw [hpart]
     exact heq_of_eq (avoid_extend_eq B.2.1 B.2.2 Q)
 
