@@ -26,15 +26,11 @@ theorem QuarticWickDiagram.mem_pairingInOrder_pairs_componentOrderedLeg_iff
       (a, b) ∈ ((d.restrictComponent B.2).pairingInOrder (orders B)).pairs := by
   rw [Common.BlochDeDominicis.Pairing.mem_pairs_iff,
     Common.BlochDeDominicis.Pairing.mem_pairs_iff]
+  let e := d.componentOrderedLegOrderEmbedding shuffle B
   constructor
   · rintro ⟨hab, hpartner⟩
-    have hmono := d.componentOrderedLeg_strictMono shuffle B
-    have habLocal : a < b := by
-      apply lt_of_not_ge
-      intro hba
-      exact (not_lt_of_ge (hmono.monotone hba)) hab
-    refine ⟨habLocal, ?_⟩
-    apply d.componentOrderedLeg_injective shuffle B
+    refine ⟨e.lt_iff_lt.mp hab, ?_⟩
+    apply e.injective
     calc
       d.componentOrderedLeg shuffle B
           (((d.restrictComponent B.2).pairingInOrder (orders B)).partner a) =
@@ -43,7 +39,7 @@ theorem QuarticWickDiagram.mem_pairingInOrder_pairs_componentOrderedLeg_iff
         (d.pairingInOrder_partner_componentOrderedLeg orders shuffle B a).symm
       _ = d.componentOrderedLeg shuffle B b := hpartner
   · rintro ⟨hab, hpartner⟩
-    refine ⟨d.componentOrderedLeg_strictMono shuffle B hab, ?_⟩
+    refine ⟨e.lt_iff_lt.mpr hab, ?_⟩
     rw [d.pairingInOrder_partner_componentOrderedLeg orders shuffle B, hpartner]
 
 end SecondQuantization
