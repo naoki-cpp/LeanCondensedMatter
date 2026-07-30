@@ -39,14 +39,6 @@ theorem SlotShuffle.continuous_integrand {m n : ℕ} (shuffle : SlotShuffle m n)
     continuous_pi fun j => continuous_apply (shuffle.slotEquiv (Sum.inr j))
   exact (hf.comp hleft).mul (hg.comp hright)
 
-/-- Compatibility alias for callers that imported the cast transport from the binary-shuffle
-module. New code should use `intervalIntegral.orderedSimplexIntegral_cast`. -/
-theorem orderedSimplexIntegral_cast {a b : ℕ} (h : a = b) (β : ℝ)
-    (F : (Fin a → ℝ) → ℂ) :
-    orderedSimplexIntegral a β F =
-      orderedSimplexIntegral b β (fun τ => F (fun i => τ (Fin.cast h i))) :=
-  intervalIntegral.orderedSimplexIntegral_cast h β F
-
 /-- One recursive shuffle contribution is the ordinary ordered-simplex integral of its ambient-slot
 shuffled product. -/
 theorem orderedSimplexContribution_eq_orderedSimplexIntegral_integrand :
