@@ -4,31 +4,27 @@ import Mathlib.Data.Complex.Basic
 set_option linter.style.header false
 
 /-!
-# The formal logarithm of a partition function (power-series groundwork)
+# The formal logarithm of a partition function
 
-A formal-power-series prerequisite for the genuine Linked Cluster Theorem, part of Phase 8 of
-Track D's fermionic primary line (`notes/roadmaps/second-quantization.md`) — **not yet a piece of
-the theorem itself**: nothing here proves that any *disconnected* contribution vanishes. This file
-only sets up `log Z` as an object (definition, substitutability, vanishing constant term, its
-order-`1` coefficient); the connected/disconnected distinction is set-partition-lattice content
-that belongs to Track B (`Combinatorics/CumulantFactorization.lean`) and has not yet been related
-to the power-series coefficients defined here. This is a different, narrower bridge than the
-`IsProductWeightAcross` special case already done (`QuantumLinkedCluster.lean`), which covers a
-Hamiltonian that splits cleanly across a mode bipartition rather than perturbation order.
+This file provides the low-level formal-power-series layer used by the completed finite-mode
+fermionic Linked Cluster Theorem. It defines normalization by the zeroth-order partition coefficient
+and the purely formal logarithm of the resulting series.
 
-`log Z` is set up as a formal power series in a perturbation-strength parameter `λ`, for an
-*arbitrary* partition-function series `Z : PowerSeries ℂ` with `Z(0) = 1` (i.e. `Z` already
-normalized by its own zeroth-order value `Z₀` — a genuine perturbative partition function has
-`Z(0) = Z₀ ≠ 1` in general, so `normalizePartitionSeries` below performs that normalization first),
-using Mathlib's `PowerSeries.log` (`log(1+X) = X - X²/2 + X³/3 - ⋯`, defined via substitution
-rather than an analytic limit, so it needs no convergence hypothesis).
+`log Z` is represented as a formal power series in a perturbation-strength parameter `λ`, for an
+arbitrary `Z : PowerSeries ℂ` normalized to `Z(0) = 1`. A physical perturbative partition series
+usually has constant term `Z₀ ≠ 1`, so `normalizePartitionSeries` first rescales by `Z₀⁻¹`.
+`formalLogPartitionFunction` then substitutes `Z - 1` into Mathlib's universal series
+`log(1+X) = X - X²/2 + X³/3 - ⋯`. This construction is coefficientwise and needs no convergence
+hypothesis.
 
-**What remains**, roughly in order: (1) relating Track B's finite-set moment/cumulant duality to
-exponential-generating-series `exp`/`log` (a purely combinatorial bridge, likely its own file);
-(2) the coefficient-level formula for `log Z`'s general `[λⁿ]` term; (3) connecting an actual
-perturbative expansion of `traceFock (formalExpTruncation (H₀ + λ • V) N)` — where `H₀`, `V` are
-genuinely non-commuting operators, so `(H₀ + λV)ⁿ` expands into a non-trivial sum over orderings —
-to that combinatorial structure. See `notes/roadmaps/second-quantization.md` for the full picture.
+The general coefficient bridge now lives in `Combinatorics/PowerSeriesCumulant.lean`: factorial-
+normalized coefficients of `PowerSeries.logOf Z` are finite-set cumulants of the factorial-normalized
+coefficients of `Z`. The fermionic Dyson specialization and connected-diagram theorem are assembled in
+`Fermionic/Diagrammatics/DysonLinkedClusterTheorem.lean`.
+
+This file still makes no analytic claim that a formal Dyson series converges or equals an interacting
+partition function. That is a separate later milestone; see
+`notes/roadmaps/linked-cluster-theorem.md` and `notes/roadmaps/second-quantization.md`.
 -/
 
 namespace SecondQuantization
