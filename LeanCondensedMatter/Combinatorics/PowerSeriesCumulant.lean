@@ -29,7 +29,10 @@ private noncomputable instance blockContainingFintype (s : Finset α) (a : α) :
   classical
   let f : BlockContaining s a → {T : Finset α // T ∈ s.powerset} :=
     fun B => ⟨B.1, Finset.mem_powerset.mpr B.2.1⟩
-  exact Fintype.ofInjective f fun B C h => Subtype.ext (congrArg Subtype.val h)
+  exact Fintype.ofInjective f (by
+    intro B C h
+    apply Subtype.ext
+    exact congrArg (fun T : {T : Finset α // T ∈ s.powerset} => T.1) h)
 
 private def blockContainingEquivPowerset (s : Finset α) (a : α) (ha : a ∈ s) :
     BlockContaining s a ≃ {T : Finset α // T ∈ (s.erase a).powerset} where
@@ -129,7 +132,11 @@ private def partComplementEquiv (s : Finset α) (a : α) (ha : a ∈ s) :
     have hBmem : B.1 ∈ P.parts := by
       exact Finset.mem_insert_self _ _
     have hpart : P.part a = B.1 := P.part_eq_of_mem hBmem B.2.2
-    apply Sigma.ext hpart
+    have hblock :
+        (⟨P.part a, P.part_subset a, P.mem_part ha⟩ : BlockContaining s a) = B := by
+      apply Subtype.ext
+      exact hpart
+    apply Sigma.ext hblock
     apply heq_of_eq
     exact avoid_extend_eq B.2.1 B.2.2 Q
 
@@ -169,15 +176,15 @@ private theorem sum_blockContaining_card (s : Finset α) (a : α) (ha : a ∈ s)
         (Nat.choose (s.card - 1) k : ℂ) * f (k + 1) := by
   classical
   rw [← Equiv.sum_comp (blockContainingEquivPowerset s a ha).symm]
+  change (∑ T : {T : Finset α // T ∈ (s.erase a).powerset},
+      f (insert a T.1).card) = _
   rw [← Finset.sum_coe_sort (s.erase a).powerset]
   have hcard : (s.erase a).card + 1 = s.card := Finset.card_erase_add_one ha
   rw [Finset.sum_powerset, hcard]
   apply Finset.sum_congr rfl
   intro k hk
   calc
-    (∑ T ∈ (s.erase a).powersetCard k,
-        f (((blockContainingEquivPowerset s a ha).symm
-          ⟨T, Finset.mem_powerset.mpr (Finset.powersetCard_subset _ _)⟩).1.card)) =
+    (∑ T ∈ (s.erase a).powersetCard k, f (insert a T).card) =
         ∑ T ∈ (s.erase a).powersetCard k, f (k + 1) := by
       apply Finset.sum_congr rfl
       intro T hT
@@ -186,7 +193,6 @@ private theorem sum_blockContaining_card (s : Finset α) (a : α) (ha : a ∈ s)
         have hsub := (Finset.mem_powersetCard.mp hT).1 hTa
         exact (Finset.mem_erase.mp hsub).1 rfl
       have hTk : T.card = k := (Finset.mem_powersetCard.mp hT).2
-      simp only [blockContainingEquivPowerset, Equiv.coe_fn_symm_mk]
       rw [Finset.card_insert_of_notMem hTa, hTk]
     _ = (Nat.choose (s.card - 1) k : ℂ) * f (k + 1) := by
       rw [Finset.sum_const, Finset.card_powersetCard]
@@ -279,8 +285,21 @@ private theorem powerSeriesMomentCoeff_succ_recurrence {Z : PowerSeries ℂ}
             rw [Nat.factorial_succ]
             ac_rfl
       simp only [powerSeriesMomentCoeff, powerSeriesCumulantCoeff]
-      rw [← hfac]
-      ring
+      calc
+        (n.factorial : ℂ) *
+            (PowerSeries.coeff (k + 1) (PowerSeries.logOf Z) * (k + 1 : ℂ) *
+              PowerSeries.coeff (n - k) Z) =
+            ((n.factorial : ℂ) * (k + 1 : ℂ)) *
+              PowerSeries.coeff (k + 1) (PowerSeries.logOf Z) *
+                PowerSeries.coeff (n - k) Z := by ring
+        _ = ((Nat.choose n k : ℂ) * ((k + 1).factorial : ℂ) *
+              ((n - k).factorial : ℂ)) *
+              PowerSeries.coeff (k + 1) (PowerSeries.logOf Z) *
+                PowerSeries.coeff (n - k) Z := by rw [hfac]
+        _ = (Nat.choose n k : ℂ) *
+              (((k + 1).factorial : ℂ) *
+                PowerSeries.coeff (k + 1) (PowerSeries.logOf Z)) *
+              (((n - k).factorial : ℂ) * PowerSeries.coeff (n - k) Z) := by ring
 
 private theorem momentFromCumulant_powerSeriesCumulantCoeff
     {α : Type*} [DecidableEq α] {Z : PowerSeries ℂ}
@@ -296,13 +315,19 @@ private theorem momentFromCumulant_powerSeriesCumulantCoeff
     have hunique (P : Finpartition (∅ : Finset α)) : P = ⊥ := by
       apply Finpartition.ext
       have hparts : P.parts = ∅ := by
-        apply Finset.eq_empty_iff_forall_not_mem.mpr
-        intro B hB
-        exact (P.ne_bot hB) (Finset.subset_empty.mp (P.subset hB))
+        ext B
+        constructor
+        · intro hB
+          exact (P.ne_bot hB (Finset.subset_empty.mp (P.subset hB))).elim
+        · intro hB
+          simp at hB
       simpa [hparts]
-    letI : Unique (Finpartition (∅ : Finset α)) := ⟨⊥, hunique⟩
+    letI : Unique (Finpartition (∅ : Finset α)) where
+      default := ⊥
+      uniq := hunique
+    have hdefault : (default : Finpartition (∅ : Finset α)) = ⊥ := hunique _
     simp [Finpartition.momentFromCumulant, Finpartition.partitionProduct,
-      powerSeriesMomentCoeff, hZ]
+      powerSeriesMomentCoeff, hZ, hdefault]
   · obtain ⟨a, ha⟩ := Finset.nonempty_iff_ne_empty.mpr hs
     rw [Finpartition.momentFromCumulant_eq_sum_blockContaining _ ha]
     have hsmall : ∀ B : Finpartition.BlockContaining s a,
@@ -326,7 +351,7 @@ private theorem momentFromCumulant_powerSeriesCumulantCoeff
               powerSeriesMomentCoeff Z (s.card - B.1.card) := by
         apply Fintype.sum_congr
         intro B
-        rw [Finset.card_sdiff B.2.1]
+        rw [Finset.card_sdiff, Finset.inter_eq_left.mpr B.2.1]
       _ = ∑ k ∈ Finset.range s.card,
           (Nat.choose (s.card - 1) k : ℂ) *
             (powerSeriesCumulantCoeff Z (k + 1) *
