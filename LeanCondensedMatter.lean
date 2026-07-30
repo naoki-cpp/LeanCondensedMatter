@@ -8,7 +8,7 @@ import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Trace
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
-import LeanCondensedMatter.Analysis.OrderedSimplex.IntegralCalculus
+import LeanCondensedMatter.Analysis.OrderedSimplex.Calculus
 import LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Basic
