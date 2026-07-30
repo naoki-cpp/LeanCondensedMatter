@@ -237,7 +237,11 @@ theorem QuarticWickDiagram.prod_orderedQuarticPairValue_pairs_eq_prod_components
             (d.componentTimeAssignment shuffle τ B) pr.1 pr.2 := by
       apply Fintype.prod_congr
       intro B
-      exact (Finset.prod_subtype _ (fun _ => Iff.rfl) _).symm
+      exact (Finset.prod_subtype
+        ((d.restrictComponent B.2).pairingInOrder (orders B)).pairs
+        (fun _ => Iff.rfl)
+        (fun pr => orderedQuarticPairValue ε β (d.restrictComponent B.2) (orders B)
+          (d.componentTimeAssignment shuffle τ B) pr.1 pr.2)).symm
 
 end Fermionic
 
