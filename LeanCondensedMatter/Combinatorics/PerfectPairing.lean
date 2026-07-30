@@ -1,6 +1,8 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
+import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingEraseZero
 import LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair
 import LeanCondensedMatter.Combinatorics.PerfectPairing.FourPositions
@@ -19,9 +21,12 @@ though the finite pairing combinatorics itself does not depend on a temperature 
 Importing this module brings in the whole `PerfectPairing/` subdirectory:
 - `PerfectPairing/Core.lean`: the `Pairing n` type, its finite enumeration, and normalized
   `pairs`.
+- `PerfectPairing/PairEndpoints.lean`: the equivalence between all normalized-pair endpoints and
+  ambient pairing positions.
 - `PerfectPairing/EraseZero.lean`: `Pairing.eraseZeroPair`, removing position `0` and its
   partner.
 - `PerfectPairing/Crossing.lean`: `Crosses`, `crossingCount`, `firstPair`.
+- `PerfectPairing/CrossingParity.lean`: crossing parity as parity of cross-pair endpoint inversions.
 - `PerfectPairing/CrossingEraseZero.lean`: `crossingCount`'s split along
   `firstPair`/`eraseZeroPair`.
 - `PerfectPairing/InsertFirstPair.lean`: `Pairing.insertFirstPair` and the `equivSigma`
