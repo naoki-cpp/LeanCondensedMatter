@@ -147,7 +147,7 @@ theorem finset_sum_sum_modEq_diag_of_pair_add_modEq_zero {α : Type*}
     Nat.ModEq n (∑ a ∈ s, ∑ b ∈ s, f a b) (∑ a ∈ s, f a a) := by
   classical
   induction s using Finset.induction_on with
-  | empty => simp
+  | empty => exact Nat.ModEq.refl 0
   | @insert a s ha ih =>
       have hpairS : ∀ x ∈ s, ∀ y ∈ s, x ≠ y → Nat.ModEq n (f x y + f y x) 0 := by
         intro x hx y hy hxy
