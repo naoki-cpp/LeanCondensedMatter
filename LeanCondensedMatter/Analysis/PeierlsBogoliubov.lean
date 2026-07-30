@@ -40,15 +40,6 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 open ContinuousLinearMap ComplexOrder
 
-/-- `cfc` of an affine function `m * x + c` is the affine combination `m • T + c • 1` of the
-operator itself and the identity. Used to unfold the tangent-line minorant back into an
-operator-level statement in `peierls_bogoliubov`. -/
-theorem cfc_affine (T : H →L[ℂ] H) (hT : IsSelfAdjoint T) (m c : ℝ) :
-    cfc (R := ℝ) (fun x : ℝ => m * x + c) T = m • T + c • (1 : H →L[ℂ] H) := by
-  rw [cfc_add T (fun x => m * x) (fun x => c) (by fun_prop) (by fun_prop)]
-  rw [cfc_const (R := ℝ) c T, show (fun x : ℝ => m * x) = fun x => m • x from rfl,
-    cfc_smul_id (R := ℝ) m T, Algebra.algebraMap_eq_smul_one]
-
 /-- **The Peierls–Bogoliubov inequality.** For a self-adjoint bounded operator `T`, a unit
 vector `e`, and a continuous `g : ℝ → ℝ` admitting a tangent line at `x₀ = ⟪e, T e⟫` that
 minorizes `g` everywhere (`htangent`, the hypothesis witnessing convexity of `g` at that point;
@@ -62,7 +53,10 @@ theorem peierls_bogoliubov (T : H →L[ℂ] H) (hT : IsSelfAdjoint T) (g : ℝ �
     cfc_mono (fun x _ => htangent x)
   rw [ContinuousLinearMap.le_def] at hle
   have hpos := hle.inner_nonneg_left e
-  rw [cfc_affine T hT] at hpos
+  rw [cfc_add T (fun x => m * x) (fun x => g x₀ - m * x₀) (by fun_prop) (by fun_prop)] at hpos
+  rw [cfc_const (R := ℝ) (g x₀ - m * x₀) T,
+    show (fun x : ℝ => m * x) = fun x => m • x from rfl,
+    cfc_smul_id (R := ℝ) m T, Algebra.algebraMap_eq_smul_one] at hpos
   have hreal : ∀ (r : ℝ) (x y : H), (inner ℂ (r • x) y : ℂ) = (r : ℂ) * inner ℂ x y := by
     intro r x y
     rw [← algebraMap_smul ℂ r x, RCLike.algebraMap_eq_ofReal, inner_smul_real_left,
