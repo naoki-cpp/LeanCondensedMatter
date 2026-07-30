@@ -194,80 +194,46 @@ theorem QuarticWickDiagram.componentPairEndpointInversionSum_eq_sum_componentOrd
   classical
   let localPairingB := (d.restrictComponent B.2).pairingInOrder (orders B)
   let localPairingC := (d.restrictComponent C.2).pairingInOrder (orders C)
+  let endpointPairEquiv :
+      ((d.LocalOrderedPair orders B × d.LocalOrderedPair orders C) × (Fin 2 × Fin 2)) ≃
+        (Fin (2 * (2 * (B : Finset (Fin N)).card)) ×
+          Fin (2 * (2 * (C : Finset (Fin N)).card))) :=
+    (Equiv.prodProdProdComm _ _ _ _).trans
+      (Equiv.prodCongr localPairingB.pairEndpointEquiv localPairingC.pairEndpointEquiv)
   calc
     d.componentPairEndpointInversionSum orders shuffle B C =
-      ∑ p : d.LocalOrderedPair orders B, ∑ q : d.LocalOrderedPair orders C,
-        ∑ i : Fin 2, ∑ j : Fin 2,
-          if d.componentOrderedLeg shuffle C
-              (Common.BlochDeDominicis.pairEndpointAt q.1 j) <
-            d.componentOrderedLeg shuffle B
-              (Common.BlochDeDominicis.pairEndpointAt p.1 i)
-          then 1 else 0 := by
-            rw [QuarticWickDiagram.componentPairEndpointInversionSum,
-              Fintype.sum_prod_type]
-            apply Finset.sum_congr rfl
-            intro p _
-            apply Finset.sum_congr rfl
-            intro q _
-            exact d.componentPairEndpointInversionCount_eq_sum orders shuffle B C p q
-    _ = ∑ p : d.LocalOrderedPair orders B, ∑ i : Fin 2,
-        ∑ q : d.LocalOrderedPair orders C, ∑ j : Fin 2,
-          if d.componentOrderedLeg shuffle C
-              (Common.BlochDeDominicis.pairEndpointAt q.1 j) <
-            d.componentOrderedLeg shuffle B
-              (Common.BlochDeDominicis.pairEndpointAt p.1 i)
-          then 1 else 0 := by
-            apply Finset.sum_congr rfl
-            intro p _
-            rw [Finset.sum_comm]
-    _ = ∑ x : d.LocalOrderedPair orders B × Fin 2,
-        ∑ y : d.LocalOrderedPair orders C × Fin 2,
-          if d.componentOrderedLeg shuffle C
-              (Common.BlochDeDominicis.pairEndpointAt y.1.1 y.2) <
-            d.componentOrderedLeg shuffle B
-              (Common.BlochDeDominicis.pairEndpointAt x.1.1 x.2)
-          then 1 else 0 := by
-            rw [Fintype.sum_prod_type]
-            apply Finset.sum_congr rfl
-            intro p _
-            apply Finset.sum_congr rfl
-            intro i _
-            rw [Fintype.sum_prod_type]
+      ∑ x : (d.LocalOrderedPair orders B × d.LocalOrderedPair orders C) × (Fin 2 × Fin 2),
+        if d.componentOrderedLeg shuffle C
+            (Common.BlochDeDominicis.pairEndpointAt x.1.2.1 x.2.2) <
+          d.componentOrderedLeg shuffle B
+            (Common.BlochDeDominicis.pairEndpointAt x.1.1.1 x.2.1)
+        then 1 else 0 := by
+          simp only [QuarticWickDiagram.componentPairEndpointInversionSum,
+            Fintype.sum_prod_type]
+          apply Finset.sum_congr rfl
+          intro p _
+          apply Finset.sum_congr rfl
+          intro q _
+          exact d.componentPairEndpointInversionCount_eq_sum orders shuffle B C p q
+    _ = ∑ x : Fin (2 * (2 * (B : Finset (Fin N)).card)) ×
+          Fin (2 * (2 * (C : Finset (Fin N)).card)),
+        if d.componentOrderedLeg shuffle C x.2 < d.componentOrderedLeg shuffle B x.1
+        then 1 else 0 := by
+          refine Fintype.sum_equiv endpointPairEquiv
+            (fun x => if d.componentOrderedLeg shuffle C
+                (Common.BlochDeDominicis.pairEndpointAt x.1.2.1 x.2.2) <
+              d.componentOrderedLeg shuffle B
+                (Common.BlochDeDominicis.pairEndpointAt x.1.1.1 x.2.1)
+              then 1 else 0)
+            (fun x => if d.componentOrderedLeg shuffle C x.2 <
+              d.componentOrderedLeg shuffle B x.1 then 1 else 0) ?_
+          intro x
+          rfl
     _ = ∑ p : Fin (2 * (2 * (B : Finset (Fin N)).card)),
         ∑ q : Fin (2 * (2 * (C : Finset (Fin N)).card)),
           if d.componentOrderedLeg shuffle C q < d.componentOrderedLeg shuffle B p
           then 1 else 0 := by
-            change (∑ x : localPairingB.NormalizedPair × Fin 2,
-                ∑ y : localPairingC.NormalizedPair × Fin 2,
-                  if d.componentOrderedLeg shuffle C
-                      (localPairingC.pairEndpointEquiv y) <
-                    d.componentOrderedLeg shuffle B
-                      (localPairingB.pairEndpointEquiv x)
-                  then 1 else 0) = _
-            refine Fintype.sum_equiv localPairingB.pairEndpointEquiv
-              (fun x => ∑ y : localPairingC.NormalizedPair × Fin 2,
-                if d.componentOrderedLeg shuffle C
-                    (localPairingC.pairEndpointEquiv y) <
-                  d.componentOrderedLeg shuffle B
-                    (localPairingB.pairEndpointEquiv x)
-                then 1 else 0)
-              (fun p => ∑ q : Fin (2 * (2 * (C : Finset (Fin N)).card)),
-                if d.componentOrderedLeg shuffle C q <
-                  d.componentOrderedLeg shuffle B p
-                then 1 else 0) ?_
-            intro x
-            refine Fintype.sum_equiv localPairingC.pairEndpointEquiv
-              (fun y => if d.componentOrderedLeg shuffle C
-                  (localPairingC.pairEndpointEquiv y) <
-                d.componentOrderedLeg shuffle B
-                  (localPairingB.pairEndpointEquiv x)
-                then 1 else 0)
-              (fun q => if d.componentOrderedLeg shuffle C q <
-                d.componentOrderedLeg shuffle B
-                  (localPairingB.pairEndpointEquiv x)
-                then 1 else 0) ?_
-            intro y
-            rfl
+          rw [Fintype.sum_prod_type]
 
 /-- The pair-endpoint inversion sum between two distinct components is even. -/
 theorem QuarticWickDiagram.componentPairEndpointInversionSum_mod_two_eq_zero
