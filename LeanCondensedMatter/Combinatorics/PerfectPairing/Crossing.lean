@@ -71,8 +71,8 @@ def Pairing.crossingPairEquivRaw {n : ℕ} (pairing : Pairing n) :
     pairing.CrossingPair ≃ pairing.RawCrossingPair where
   toFun z := ⟨(z.1.1.1, z.1.2.1), z.1.1.2, z.1.2.2, z.2⟩
   invFun z := ⟨(⟨z.1.1, z.2.1⟩, ⟨z.1.2, z.2.2.1⟩), z.2.2.2⟩
-  left_inv z := rfl
-  right_inv z := rfl
+  left_inv _ := rfl
+  right_inv _ := rfl
 
 /-- `crossingCount` is the cardinality of the type of crossing pair-of-pairs. -/
 theorem Pairing.crossingCount_eq_card_crossingPair {n : ℕ} (pairing : Pairing n) :
