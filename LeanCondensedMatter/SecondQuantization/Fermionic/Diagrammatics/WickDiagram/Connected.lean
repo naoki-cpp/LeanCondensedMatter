@@ -30,6 +30,11 @@ abbrev QuarticWickDiagram.IsConnected {S : Finset (Fin N)}
 abbrev ConnectedQuarticWickDiagram (Mode : Type*) (N : ℕ) (S : Finset (Fin N)) : Type _ :=
   Common.ConnectedQuarticDiagram (QuarticVertexLabel Mode) N S
 
+/-- Connected quartic Wick diagrams form a finite type whenever the underlying mode type is finite. -/
+noncomputable instance ConnectedQuarticWickDiagram.instFintype [DecidableEq Mode] [Fintype Mode]
+    {S : Finset (Fin N)} : Fintype (ConnectedQuarticWickDiagram Mode N S) :=
+  Fintype.ofInjective (fun d => d.1) fun _ _ h => Subtype.ext h
+
 end
 
 end SecondQuantization
