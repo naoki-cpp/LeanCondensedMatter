@@ -156,7 +156,7 @@ theorem hasSum_inner_apply_eq_trace (hT : IsCompactOperator T) (hT' : T.IsSymmet
       (1 : ℝ) := fun a => by
     have := d.hasSum_norm_sq_inner (e a)
     rwa [(orthonormal_eigenvectorFamily hT hT').1 a, one_pow] at this
-  -- Pointwise (for each `d i`), `⟪dᵢ,T(dᵢ)⟫` decomposes as a sum over `EigenvectorIndex T`.
+  -- Pointwise (for each `d i`), `⟪dᵢ,T(dᵢ)⟩` decomposes as a sum over `EigenvectorIndex T`.
   have hpoint : ∀ i, HasSum (f · i) (inner ℂ (d i) (T (d i)) : ℂ).re :=
     fun i => hasSum_eigen_expansion_inner_apply hT hT' (d i)
   -- The magnitude family is summable over the product index, via trace-class-ness of `T`.
