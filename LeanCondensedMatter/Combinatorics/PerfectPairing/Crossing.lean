@@ -54,32 +54,50 @@ def Pairing.crossingCount {n : ℕ} (pairing : Pairing n) : ℕ :=
   ((pairing.pairs.product pairing.pairs).filter fun pairPair =>
     Crosses pairPair.1 pairPair.2).card
 
-/-- The finite type of ordered pair-of-pairs that contribute to `crossingCount`. -/
+/-- The finite type of ordered normalized pair-of-pairs that contribute to `crossingCount`. -/
 abbrev Pairing.CrossingPair {n : ℕ} (pairing : Pairing n) :=
+  {pairPair : pairing.NormalizedPair × pairing.NormalizedPair //
+    Crosses pairPair.1.1 pairPair.2.1}
+
+/-- Compatibility representation of crossing pair-of-pairs using raw pairs and membership proofs. -/
+abbrev Pairing.RawCrossingPair {n : ℕ} (pairing : Pairing n) :=
   {pairPair :
       (Fin (2 * n) × Fin (2 * n)) × (Fin (2 * n) × Fin (2 * n)) //
     pairPair.1 ∈ pairing.pairs ∧ pairPair.2 ∈ pairing.pairs ∧
       Crosses pairPair.1 pairPair.2}
 
+/-- Convert between the canonical normalized crossing-pair representation and the legacy raw one. -/
+def Pairing.crossingPairEquivRaw {n : ℕ} (pairing : Pairing n) :
+    pairing.CrossingPair ≃ pairing.RawCrossingPair where
+  toFun z := ⟨(z.1.1.1, z.1.2.1), z.1.1.2, z.1.2.2, z.2⟩
+  invFun z := ⟨(⟨z.1.1, z.2.1⟩, ⟨z.1.2, z.2.2.1⟩), z.2.2.2⟩
+  left_inv z := rfl
+  right_inv z := rfl
+
 /-- `crossingCount` is the cardinality of the type of crossing pair-of-pairs. -/
 theorem Pairing.crossingCount_eq_card_crossingPair {n : ℕ} (pairing : Pairing n) :
     pairing.crossingCount = Fintype.card pairing.CrossingPair := by
-  rw [Pairing.crossingCount]
-  symm
-  exact Fintype.card_of_subtype
-    (p := fun pairPair :
-        (Fin (2 * n) × Fin (2 * n)) × (Fin (2 * n) × Fin (2 * n)) =>
-      pairPair.1 ∈ pairing.pairs ∧ pairPair.2 ∈ pairing.pairs ∧
+  have hraw : pairing.crossingCount = Fintype.card pairing.RawCrossingPair := by
+    rw [Pairing.crossingCount]
+    symm
+    exact Fintype.card_of_subtype
+      (p := fun pairPair :
+          (Fin (2 * n) × Fin (2 * n)) × (Fin (2 * n) × Fin (2 * n)) =>
+        pairPair.1 ∈ pairing.pairs ∧ pairPair.2 ∈ pairing.pairs ∧
+          Crosses pairPair.1 pairPair.2)
+      ((pairing.pairs.product pairing.pairs).filter fun pairPair =>
         Crosses pairPair.1 pairPair.2)
-    ((pairing.pairs.product pairing.pairs).filter fun pairPair =>
-      Crosses pairPair.1 pairPair.2)
-    (fun pairPair => by
-      simp only [Finset.mem_filter, Finset.product_eq_sprod, Finset.mem_product]
-      constructor
-      · rintro ⟨⟨hleft, hright⟩, hcross⟩
-        exact ⟨hleft, hright, hcross⟩
-      · rintro ⟨hleft, hright, hcross⟩
-        exact ⟨⟨hleft, hright⟩, hcross⟩)
+      (fun pairPair => by
+        simp only [Finset.mem_filter, Finset.product_eq_sprod, Finset.mem_product]
+        constructor
+        · rintro ⟨⟨hleft, hright⟩, hcross⟩
+          exact ⟨hleft, hright, hcross⟩
+        · rintro ⟨hleft, hright, hcross⟩
+          exact ⟨⟨hleft, hright⟩, hcross⟩)
+  calc
+    pairing.crossingCount = Fintype.card pairing.RawCrossingPair := hraw
+    _ = Fintype.card pairing.CrossingPair :=
+      (Fintype.card_congr pairing.crossingPairEquivRaw).symm
 
 /-- The pair containing position `0`, i.e. `(0, partner 0)`. -/
 def Pairing.firstPair {n : ℕ} (pairing : Pairing (n + 1)) :
