@@ -26,7 +26,8 @@ theorem QuarticWickDiagram.crosses_componentOrderedLeg_iff {S : Finset (Fin N)}
         (d.componentOrderedLeg shuffle B c, d.componentOrderedLeg shuffle B e) ↔
       Common.BlochDeDominicis.Crosses (a, b) (c, e) :=
   Common.BlochDeDominicis.crosses_map_iff
-    (d.componentOrderedLeg shuffle B) (d.componentOrderedLeg_strictMono shuffle B) a b c e
+    (d.componentOrderedLegOrderEmbedding shuffle B)
+    (d.componentOrderedLegOrderEmbedding shuffle B).strictMono a b c e
 
 /-- Crossing compatibility stated directly through the component-pair equivalence. -/
 @[simp]
