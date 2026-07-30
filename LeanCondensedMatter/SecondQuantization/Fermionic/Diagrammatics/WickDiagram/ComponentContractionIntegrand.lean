@@ -34,5 +34,6 @@ theorem QuarticWickDiagram.contractionIntegrand_assembleVertexOrder_eq_prod_comp
   rw [d.pairingInOrder_weight_eq_prod_components Statistics.fermion orders shuffle,
     d.prod_orderedQuarticPairValue_pairs_eq_prod_components ε β orders shuffle τ,
     ← Finset.prod_mul_distrib]
+  simp only [QuarticWickDiagram.restrictComponentConnected]
 
 end SecondQuantization
