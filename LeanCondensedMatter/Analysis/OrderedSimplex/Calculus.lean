@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.OrderedSimplexIntegral
+import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
 

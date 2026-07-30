@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentOrderDecomposition
-import LeanCondensedMatter.Analysis.OrderedSimplexIntegral
+import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 
 set_option linter.style.header false
 

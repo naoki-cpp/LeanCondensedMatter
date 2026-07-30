@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.HilbertSchmidtBasic
+import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
 
 /-!
 # The Hilbert–Schmidt inner product

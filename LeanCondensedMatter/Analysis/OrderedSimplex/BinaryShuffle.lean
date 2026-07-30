@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.OrderedSimplexShuffleIntegral
+import LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral
 import LeanCondensedMatter.Combinatorics.BinaryShuffle
 
 set_option linter.style.header false

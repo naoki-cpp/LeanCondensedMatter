@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Analysis.HilbertBasisParseval
-import LeanCondensedMatter.Analysis.TraceClassBasic
+import LeanCondensedMatter.Analysis.InnerProductSpace.HilbertBasisParseval
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Basic
 
 -- No project files currently carry a Mathlib-style copyright/author header; a
 -- project-wide policy for this is a separate open item (see notes/conventions.md).
