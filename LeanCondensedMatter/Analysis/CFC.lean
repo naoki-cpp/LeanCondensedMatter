@@ -60,7 +60,9 @@ theorem Polynomial.aeval_apply_eigenvector {T : H →L[ℂ] H} {v : H} {c : ℝ}
     push_cast
     ac_rfl
 
-open Filter Topology in
+open Filter Topology
+
+omit [FiniteDimensional ℂ H] in
 /-- **The continuous functional calculus acts on eigenvectors by evaluation.** For a
 self-adjoint `T` and an eigenvector `v` of `T` with (real) eigenvalue `c`, `cfc f T` acts on
 `v` by scaling it by `f c`, for any continuous `f : ℝ → ℝ`. Proved by approximating `f`
