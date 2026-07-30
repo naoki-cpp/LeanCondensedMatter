@@ -17,6 +17,33 @@ namespace SecondQuantization
 
 variable {Mode : Type*} {N : ℕ}
 
+/-- Move a fiberwise subtype through a sigma type. -/
+private def sigmaSubtypeFiberwiseEquiv {ι : Type*} {α : ι → Type*}
+    (p : ∀ i, α i → Prop) :
+    (Σ i, {x : α i // p i x}) ≃ {x : Σ i, α i // p x.1 x.2} where
+  toFun x := ⟨⟨x.1, x.2.1⟩, x.2.2⟩
+  invFun x := ⟨x.1.1, ⟨x.1.2, x.2⟩⟩
+  left_inv _ := rfl
+  right_inv _ := rfl
+
+/-- Pairs drawn from a common fiber are equivalent to pairs whose fiber labels agree. -/
+private def sigmaFiberPairEquiv {ι α : Type*} (f : α → ι) :
+    (Σ i, {x : α // f x = i} × {x : α // f x = i}) ≃
+      {p : α × α // f p.1 = f p.2} where
+  toFun x :=
+    ⟨(x.2.1.1, x.2.2.1), x.2.1.2.trans x.2.2.2.symm⟩
+  invFun p :=
+    ⟨f p.1.1, ⟨⟨p.1.1, rfl⟩, ⟨p.1.2, p.2.symm⟩⟩⟩
+  left_inv := by
+    rintro ⟨i, ⟨⟨a, ha⟩, ⟨b, hb⟩⟩⟩
+    cases ha
+    cases hb
+    rfl
+  right_inv := by
+    rintro ⟨⟨a, b⟩, hab⟩
+    apply Subtype.ext
+    rfl
+
 /-- The normalized ordered pairs of one restricted component. -/
 abbrev QuarticWickDiagram.LocalOrderedPair {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (orders : d.ComponentVertexOrders)
@@ -54,98 +81,162 @@ theorem QuarticWickDiagram.componentOrderedLegEquiv_apply {S : Finset (Fin N)}
     d.componentOrderedLegEquiv shuffle ⟨B, p⟩ = d.componentOrderedLeg shuffle B p :=
   rfl
 
+/-- The legs of one component are equivalent to the fiber of global legs assigned to it. -/
+private noncomputable def QuarticWickDiagram.componentOrderedLegFiberEquiv
+    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (shuffle : d.ComponentShuffle) (B : d.componentPartition.parts) :
+    Fin (2 * (2 * (B : Finset (Fin N)).card)) ≃
+      {p : Fin (2 * (2 * S.card)) //
+        ((d.componentOrderedLegEquiv shuffle).symm p).1 = B} :=
+  (Equiv.sigmaSubtype B).symm.trans
+    ((d.componentOrderedLegEquiv shuffle).subtypeEquiv (by
+      intro x
+      simp))
+
+@[simp]
+private theorem QuarticWickDiagram.componentOrderedLegFiberEquiv_apply
+    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (shuffle : d.ComponentShuffle) (B : d.componentPartition.parts)
+    (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
+    (d.componentOrderedLegFiberEquiv shuffle B p).1 =
+      d.componentOrderedLeg shuffle B p :=
+  rfl
+
+/-- The product of two component-local legs is the subtype of global leg pairs whose inverse images
+belong to the same component. -/
+private noncomputable def QuarticWickDiagram.componentOrderedLegPairEquiv
+    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (shuffle : d.ComponentShuffle) :
+    (Σ B : d.componentPartition.parts,
+      Fin (2 * (2 * (B : Finset (Fin N)).card)) ×
+        Fin (2 * (2 * (B : Finset (Fin N)).card))) ≃
+      {pr : Fin (2 * (2 * S.card)) × Fin (2 * (2 * S.card)) //
+        ((d.componentOrderedLegEquiv shuffle).symm pr.1).1 =
+          ((d.componentOrderedLegEquiv shuffle).symm pr.2).1} :=
+  (Equiv.sigmaCongrRight fun B : d.componentPartition.parts =>
+      Equiv.prodCongr (d.componentOrderedLegFiberEquiv shuffle B)
+        (d.componentOrderedLegFiberEquiv shuffle B)).trans
+    (sigmaFiberPairEquiv fun p : Fin (2 * (2 * S.card)) =>
+      ((d.componentOrderedLegEquiv shuffle).symm p).1)
+
+@[simp]
+private theorem QuarticWickDiagram.componentOrderedLegPairEquiv_apply
+    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (shuffle : d.ComponentShuffle) (B : d.componentPartition.parts)
+    (a b : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
+    (d.componentOrderedLegPairEquiv shuffle ⟨B, (a, b)⟩).1 =
+      (d.componentOrderedLeg shuffle B a,
+        d.componentOrderedLeg shuffle B b) :=
+  rfl
+
+/-- Package the local pair predicates as one subtype of a sigma type. -/
+private def QuarticWickDiagram.localOrderedPairSigmaEquiv
+    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (orders : d.ComponentVertexOrders) :
+    (Σ B : d.componentPartition.parts, d.LocalOrderedPair orders B) ≃
+      {x : Σ B : d.componentPartition.parts,
+          Fin (2 * (2 * (B : Finset (Fin N)).card)) ×
+            Fin (2 * (2 * (B : Finset (Fin N)).card)) //
+        x.2 ∈ ((d.restrictComponent x.1.2).pairingInOrder (orders x.1)).pairs} :=
+  sigmaSubtypeFiberwiseEquiv fun B pr =>
+    pr ∈ ((d.restrictComponent B.2).pairingInOrder (orders B)).pairs
+
+/-- Restrict the ambient component-pair equivalence to normalized pairing predicates. -/
+private noncomputable def QuarticWickDiagram.componentPairSubtypeEquiv
+    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) :
+    {x : Σ B : d.componentPartition.parts,
+        Fin (2 * (2 * (B : Finset (Fin N)).card)) ×
+          Fin (2 * (2 * (B : Finset (Fin N)).card)) //
+      x.2 ∈ ((d.restrictComponent x.1.2).pairingInOrder (orders x.1)).pairs} ≃
+      {pr : {pr : Fin (2 * (2 * S.card)) × Fin (2 * (2 * S.card)) //
+          ((d.componentOrderedLegEquiv shuffle).symm pr.1).1 =
+            ((d.componentOrderedLegEquiv shuffle).symm pr.2).1} //
+        pr.1 ∈ (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs} :=
+  (d.componentOrderedLegPairEquiv shuffle).subtypeEquiv (by
+    intro x
+    rcases x with ⟨B, ⟨a, b⟩⟩
+    exact (d.mem_pairingInOrder_pairs_componentOrderedLeg_iff
+      orders shuffle B a b).symm)
+
+/-- A normalized global pair has both endpoints in the same component fiber. -/
+private theorem QuarticWickDiagram.globalOrderedPair_sameComponent
+    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
+    (pr : d.GlobalOrderedPair orders shuffle) :
+    ((d.componentOrderedLegEquiv shuffle).symm pr.1.1).1 =
+      ((d.componentOrderedLegEquiv shuffle).symm pr.1.2).1 := by
+  let x := (d.componentOrderedLegEquiv shuffle).symm pr.1.1
+  let localB := ((d.restrictComponent x.1.2).pairingInOrder (orders x.1)).partner x.2
+  have ha : d.componentOrderedLeg shuffle x.1 x.2 = pr.1.1 := by
+    simpa only [d.componentOrderedLegEquiv_apply] using
+      (d.componentOrderedLegEquiv shuffle).apply_symm_apply pr.1.1
+  have hb : d.componentOrderedLeg shuffle x.1 localB = pr.1.2 := by
+    calc
+      d.componentOrderedLeg shuffle x.1 localB =
+          (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).partner
+            (d.componentOrderedLeg shuffle x.1 x.2) :=
+        (d.pairingInOrder_partner_componentOrderedLeg
+          orders shuffle x.1 x.2).symm
+      _ = (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).partner pr.1.1 := by
+        rw [ha]
+      _ = pr.1.2 :=
+        (Common.BlochDeDominicis.Pairing.mem_pairs_iff.mp pr.2).2
+  change x.1 = ((d.componentOrderedLegEquiv shuffle).symm pr.1.2).1
+  rw [← hb, ← d.componentOrderedLegEquiv_apply]
+  simp
+
+/-- Forget the redundant same-component witness on a normalized global pair. -/
+private def QuarticWickDiagram.globalOrderedPairSubtypeEquiv
+    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) :
+    {pr : {pr : Fin (2 * (2 * S.card)) × Fin (2 * (2 * S.card)) //
+        ((d.componentOrderedLegEquiv shuffle).symm pr.1).1 =
+          ((d.componentOrderedLegEquiv shuffle).symm pr.2).1} //
+      pr.1 ∈ (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs} ≃
+      d.GlobalOrderedPair orders shuffle where
+  toFun pr := ⟨pr.1.1, pr.2⟩
+  invFun pr := ⟨⟨pr.1, d.globalOrderedPair_sameComponent orders shuffle pr⟩, pr.2⟩
+  left_inv pr := by
+    apply Subtype.ext
+    apply Subtype.ext
+    rfl
+  right_inv pr := by
+    apply Subtype.ext
+    rfl
+
+/-- Component-local normalized pairs are equivalent to the normalized pairs of the assembled global
+pairing by restricting the ambient product equivalence to the pairing predicates. -/
+noncomputable def QuarticWickDiagram.componentPairEquiv {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) (orders : d.ComponentVertexOrders)
+    (shuffle : d.ComponentShuffle) :
+    (Σ B : d.componentPartition.parts, d.LocalOrderedPair orders B) ≃
+      d.GlobalOrderedPair orders shuffle :=
+  (d.localOrderedPairSigmaEquiv orders).trans
+    ((d.componentPairSubtypeEquiv orders shuffle).trans
+      (d.globalOrderedPairSubtypeEquiv orders shuffle))
+
 /-- Map a component-local normalized pair to its assembled global normalized pair. -/
 noncomputable def QuarticWickDiagram.componentPairToGlobal {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (orders : d.ComponentVertexOrders)
     (shuffle : d.ComponentShuffle) :
     (Σ B : d.componentPartition.parts, d.LocalOrderedPair orders B) →
       d.GlobalOrderedPair orders shuffle :=
-  fun x =>
-    ⟨(d.componentOrderedLeg shuffle x.1 x.2.1.1,
-        d.componentOrderedLeg shuffle x.1 x.2.1.2),
-      (d.mem_pairingInOrder_pairs_componentOrderedLeg_iff
-        orders shuffle x.1 x.2.1.1 x.2.1.2).2 x.2.2⟩
+  d.componentPairEquiv orders shuffle
 
 /-- The component-pair map is injective. -/
 theorem QuarticWickDiagram.componentPairToGlobal_injective {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (orders : d.ComponentVertexOrders)
     (shuffle : d.ComponentShuffle) :
-    Function.Injective (d.componentPairToGlobal orders shuffle) := by
-  rintro ⟨B, ⟨⟨a, b⟩, hab⟩⟩ ⟨C, ⟨⟨c, e⟩, hce⟩⟩ hxy
-  have hval := congrArg Subtype.val hxy
-  change
-    (d.componentOrderedLeg shuffle B a, d.componentOrderedLeg shuffle B b) =
-      (d.componentOrderedLeg shuffle C c, d.componentOrderedLeg shuffle C e) at hval
-  have hfst := congrArg Prod.fst hval
-  have hfstEquiv :
-      d.componentOrderedLegEquiv shuffle ⟨B, a⟩ =
-        d.componentOrderedLegEquiv shuffle ⟨C, c⟩ := by
-    simpa only [d.componentOrderedLegEquiv_apply] using hfst
-  have hsigmaFst := (d.componentOrderedLegEquiv shuffle).injective hfstEquiv
-  cases hsigmaFst
-  have hsnd := congrArg Prod.snd hval
-  have hsndEquiv :
-      d.componentOrderedLegEquiv shuffle ⟨B, b⟩ =
-        d.componentOrderedLegEquiv shuffle ⟨B, e⟩ := by
-    simpa only [d.componentOrderedLegEquiv_apply] using hsnd
-  have hsigmaSnd := (d.componentOrderedLegEquiv shuffle).injective hsndEquiv
-  cases hsigmaSnd
-  rfl
+    Function.Injective (d.componentPairToGlobal orders shuffle) :=
+  (d.componentPairEquiv orders shuffle).injective
 
 /-- Every assembled global normalized pair comes from a component-local normalized pair. -/
 theorem QuarticWickDiagram.componentPairToGlobal_surjective {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (orders : d.ComponentVertexOrders)
     (shuffle : d.ComponentShuffle) :
-    Function.Surjective (d.componentPairToGlobal orders shuffle) := by
-  rintro ⟨⟨a, b⟩, hab⟩
-  let x := (d.componentOrderedLegEquiv shuffle).symm a
-  let B := x.1
-  let localA := x.2
-  let localPairing := (d.restrictComponent B.2).pairingInOrder (orders B)
-  let localB := localPairing.partner localA
-  have ha0 := (d.componentOrderedLegEquiv shuffle).apply_symm_apply a
-  have hxeta : (⟨B, localA⟩ :
-      Σ B : d.componentPartition.parts,
-        Fin (2 * (2 * (B : Finset (Fin N)).card))) = x := by
-    dsimp [B, localA]
-  have ha : d.componentOrderedLeg shuffle B localA = a := by
-    calc
-      d.componentOrderedLeg shuffle B localA =
-          d.componentOrderedLegEquiv shuffle ⟨B, localA⟩ := by simp
-      _ = d.componentOrderedLegEquiv shuffle x := congrArg _ hxeta
-      _ = a := ha0
-  rw [Common.BlochDeDominicis.Pairing.mem_pairs_iff] at hab
-  have hb : d.componentOrderedLeg shuffle B localB = b := by
-    calc
-      d.componentOrderedLeg shuffle B localB =
-          (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).partner
-            (d.componentOrderedLeg shuffle B localA) :=
-        (d.pairingInOrder_partner_componentOrderedLeg orders shuffle B localA).symm
-      _ = (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).partner a := by rw [ha]
-      _ = b := hab.2
-  have hglobal :
-      (d.componentOrderedLeg shuffle B localA,
-        d.componentOrderedLeg shuffle B localB) ∈
-        (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs := by
-    rw [Common.BlochDeDominicis.Pairing.mem_pairs_iff]
-    exact ⟨by simpa only [ha, hb] using hab.1, by simpa only [ha, hb] using hab.2⟩
-  have hlocal : (localA, localB) ∈ localPairing.pairs :=
-    (d.mem_pairingInOrder_pairs_componentOrderedLeg_iff
-      orders shuffle B localA localB).1 hglobal
-  refine ⟨⟨B, ⟨(localA, localB), hlocal⟩⟩, ?_⟩
-  apply Subtype.ext
-  exact Prod.ext ha hb
-
-/-- Component-local normalized pairs are equivalent to the normalized pairs of the assembled global
-pairing. -/
-noncomputable def QuarticWickDiagram.componentPairEquiv {S : Finset (Fin N)}
-    (d : QuarticWickDiagram Mode N S) (orders : d.ComponentVertexOrders)
-    (shuffle : d.ComponentShuffle) :
-    (Σ B : d.componentPartition.parts, d.LocalOrderedPair orders B) ≃
-      d.GlobalOrderedPair orders shuffle :=
-  Equiv.ofBijective (d.componentPairToGlobal orders shuffle)
-    ⟨d.componentPairToGlobal_injective orders shuffle,
-      d.componentPairToGlobal_surjective orders shuffle⟩
+    Function.Surjective (d.componentPairToGlobal orders shuffle) :=
+  (d.componentPairEquiv orders shuffle).surjective
 
 @[simp]
 theorem QuarticWickDiagram.componentPairEquiv_apply {S : Finset (Fin N)}
