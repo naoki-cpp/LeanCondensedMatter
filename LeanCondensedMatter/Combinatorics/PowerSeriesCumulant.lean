@@ -12,6 +12,10 @@ power series with the finite-set cumulants of its factorial-normalized coefficie
 an explicit closed formula for the partition-lattice Möbius function. Instead, it proves the same
 binomial recurrence on both sides: formally from `(log Z)' * Z = Z'`, and combinatorially by splitting
 a set partition at the block containing a distinguished element.
+
+This module is independent of second quantization. The later fermionic specialization only needs to
+instantiate `Z` with the normalized Dyson partition series and rewrite its factorial-normalized
+coefficients as `dysonVertexMoment`.
 -/
 
 open scoped BigOperators
