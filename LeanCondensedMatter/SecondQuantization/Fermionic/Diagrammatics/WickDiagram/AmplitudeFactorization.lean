@@ -26,13 +26,14 @@ theorem QuarticWickDiagram.sum_orderedSimplexContribution_eq_prod_components
     (∑ order : QuarticVertexOrder S, d.orderedSimplexContribution ε β order) =
       ∏ B : d.componentPartition.parts,
         ∑ order : QuarticVertexOrder (B : Finset (Fin N)),
-          (d.restrictComponentConnected B.2).1.orderedSimplexContribution ε β order := by
+          QuarticWickDiagram.orderedSimplexContribution ε β
+            (d.restrictComponentConnected B.2).1 order := by
   classical
   let localContribution :
       ∀ B : d.componentPartition.parts,
         QuarticVertexOrder (B : Finset (Fin N)) → ℂ :=
-    fun B order =>
-      (d.restrictComponentConnected B.2).1.orderedSimplexContribution ε β order
+    fun B order => QuarticWickDiagram.orderedSimplexContribution ε β
+      (d.restrictComponentConnected B.2).1 order
   calc
     (∑ order : QuarticVertexOrder S, d.orderedSimplexContribution ε β order) =
         ∑ x : d.ComponentVertexOrders × d.ComponentShuffle,
@@ -61,9 +62,11 @@ theorem QuarticWickDiagram.sum_orderedSimplexContribution_eq_prod_components
         exact d.contractionIntegrand_assembleVertexOrder_eq_prod_components
           ε β orders shuffle τ
       simp_rw [hglobal]
-      exact d.sum_componentShuffle_orderedSimplexIntegral_eq_prod β componentIntegrand
-        (fun B => continuous_contractionIntegrand ε β
-          (d.restrictComponentConnected B.2).1 (orders B))
+      simpa only [localContribution, QuarticWickDiagram.orderedSimplexContribution,
+        componentIntegrand] using
+        d.sum_componentShuffle_orderedSimplexIntegral_eq_prod β componentIntegrand
+          (fun B => continuous_contractionIntegrand ε β
+            (d.restrictComponentConnected B.2).1 (orders B))
     _ = ∏ B : d.componentPartition.parts,
           ∑ order : QuarticVertexOrder (B : Finset (Fin N)),
             localContribution B order := by
@@ -74,7 +77,8 @@ theorem QuarticWickDiagram.sum_orderedSimplexContribution_eq_prod_components
           localContribution).symm
     _ = ∏ B : d.componentPartition.parts,
           ∑ order : QuarticVertexOrder (B : Finset (Fin N)),
-            (d.restrictComponentConnected B.2).1.orderedSimplexContribution ε β order := by
+            QuarticWickDiagram.orderedSimplexContribution ε β
+              (d.restrictComponentConnected B.2).1 order := by
       rfl
 
 /-- A quartic Wick-diagram amplitude is the product of the amplitudes of its connected-component
@@ -89,6 +93,6 @@ theorem quarticWickDiagramAmplitude_eq_prod_restrictComponentConnected
   simp only [quarticWickDiagramAmplitude]
   rw [d.amplitudePrefactor_eq_prod_restrictComponentConnected,
     d.sum_orderedSimplexContribution_eq_prod_components]
-  rw [Finset.prod_mul_distrib]
+  rw [← Finset.prod_mul_distrib]
 
 end SecondQuantization
