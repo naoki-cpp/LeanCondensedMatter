@@ -91,12 +91,10 @@ noncomputable def QuarticWickDiagram.componentCrossingPairsToGlobal
   toFun x := d.componentCrossingPairToGlobal orders shuffle x.1 x.2
   inj' := by
     rintro ⟨B, x⟩ ⟨C, y⟩ hxy
-    have hfirst :
-        d.componentPairEquiv orders shuffle ⟨B, x.1.1⟩ =
-          d.componentPairEquiv orders shuffle ⟨C, y.1.1⟩ := by
-      simpa [QuarticWickDiagram.componentCrossingPairToGlobal,
-        QuarticWickDiagram.componentPairEmbedding] using
-        congrArg (fun z => z.1.1) hxy
+    have hfirst := congrArg (fun z => z.1.1) hxy
+    change
+      d.componentPairEquiv orders shuffle ⟨B, x.1.1⟩ =
+        d.componentPairEquiv orders shuffle ⟨C, y.1.1⟩ at hfirst
     have hBC : B = C := congrArg Sigma.fst
       ((d.componentPairEquiv orders shuffle).injective hfirst)
     subst C
