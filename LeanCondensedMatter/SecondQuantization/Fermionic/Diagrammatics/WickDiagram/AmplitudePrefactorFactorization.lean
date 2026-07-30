@@ -18,7 +18,7 @@ variable {Mode : Type*} {N : ℕ}
 
 /-- The product of quartic couplings factors over the connected-component restrictions. -/
 theorem QuarticWickDiagram.couplingWeight_eq_prod_restrictComponentConnected
-    [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+    [LinearOrder Mode]
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (g : QuarticVertexLabel Mode → ℂ) :
     d.couplingWeight g =
@@ -40,7 +40,7 @@ theorem QuarticWickDiagram.dysonSign_eq_prod_componentSigns
 components. What remains for the full amplitude theorem is the vertex-order/ordered-simplex shuffle
 factorization. -/
 theorem QuarticWickDiagram.amplitudePrefactor_eq_prod_restrictComponentConnected
-    [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+    [LinearOrder Mode]
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (g : QuarticVertexLabel Mode → ℂ) :
     (-1 : ℂ) ^ S.card * d.couplingWeight g =

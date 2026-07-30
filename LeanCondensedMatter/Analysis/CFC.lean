@@ -27,6 +27,7 @@ open Polynomial
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
   [CompleteSpace H]
 
+omit [FiniteDimensional ℂ H] [CompleteSpace H] in
 /-- An operator's polynomial functional calculus acts on an eigenvector by evaluating the
 polynomial at the eigenvalue. No self-adjointness hypothesis is needed here — this is a
 purely algebraic fact about `Polynomial.aeval`. Self-adjointness only becomes necessary for
@@ -49,18 +50,19 @@ theorem Polynomial.aeval_apply_eigenvector {T : H →L[ℂ] H} {v : H} {c : ℝ}
       induction m with
       | zero => simp
       | succ k ih =>
-        rw [pow_succ, ContinuousLinearMap.mul_apply, hv', map_smul, ih, smul_smul, pow_succ,
+        rw [pow_succ, mul_apply_eq_comp, hv', map_smul, ih, smul_smul, pow_succ,
           mul_comm]
     simp only [eval_mul, eval_C, eval_X_pow, map_mul, aeval_C, map_pow, aeval_X,
       Algebra.algebraMap_eq_smul_one]
-    simp only [ContinuousLinearMap.smul_apply, ContinuousLinearMap.mul_apply,
-      ContinuousLinearMap.one_apply, hTpow (n + 1)]
+    simp only [smul_apply, mul_apply_eq_comp, one_apply_eq_self, hTpow (n + 1)]
     rw [← smul_assoc, RCLike.real_smul_eq_coe_mul]
     congr 1
     push_cast
     ac_rfl
 
-open Filter Topology in
+open Filter Topology
+
+omit [FiniteDimensional ℂ H] in
 /-- **The continuous functional calculus acts on eigenvectors by evaluation.** For a
 self-adjoint `T` and an eigenvector `v` of `T` with (real) eigenvalue `c`, `cfc f T` acts on
 `v` by scaling it by `f c`, for any continuous `f : ℝ → ℝ`. Proved by approximating `f`

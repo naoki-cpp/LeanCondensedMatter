@@ -66,14 +66,14 @@ theorem leftSlot_strictMono : ∀ {m n : ℕ} (σ : BinaryShuffle m n), StrictMo
       induction i using Fin.cases with
       | zero =>
           induction j using Fin.cases with
-          | zero => simpa using hij
+          | zero => simp at hij
           | succ j =>
               simp only [leftSlot_consLeft_zero, leftSlot_consLeft_succ]
               change 0 < (leftSlot σ j).val + 1
               omega
       | succ i =>
           induction j using Fin.cases with
-          | zero => simpa using hij
+          | zero => simp at hij
           | succ j =>
               have hbase : i < j := by simpa using hij
               have h := leftSlot_strictMono σ hbase
@@ -101,14 +101,14 @@ theorem rightSlot_strictMono : ∀ {m n : ℕ} (σ : BinaryShuffle m n), StrictM
       induction i using Fin.cases with
       | zero =>
           induction j using Fin.cases with
-          | zero => simpa using hij
+          | zero => simp at hij
           | succ j =>
               simp only [rightSlot_consRight_zero, rightSlot_consRight_succ]
               change 0 < (rightSlot σ j).val + 1
               omega
       | succ i =>
           induction j using Fin.cases with
-          | zero => simpa using hij
+          | zero => simp at hij
           | succ j =>
               have hbase : i < j := by simpa using hij
               have h := rightSlot_strictMono σ hbase

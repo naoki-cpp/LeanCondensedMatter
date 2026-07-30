@@ -22,10 +22,10 @@ noncomputable def orderedSimplexContribution :
     {m n : ℕ} → BinaryShuffle m n → ℝ →
       ((Fin m → ℝ) → ℂ) → ((Fin n → ℝ) → ℂ) → ℂ
   | 0, 0, .nil, _β, f, g => f Fin.elim0 * g Fin.elim0
-  | m + 1, n, .consLeft σ, β, f, g =>
+  | _m + 1, _n, .consLeft σ, β, f, g =>
       ∫ t in (0 : ℝ)..β,
         orderedSimplexContribution σ t (fun rest => f (Fin.cons t rest)) g
-  | m, n + 1, .consRight σ, β, f, g =>
+  | _m, _n + 1, .consRight σ, β, f, g =>
       ∫ t in (0 : ℝ)..β,
         orderedSimplexContribution σ t f (fun rest => g (Fin.cons t rest))
 
