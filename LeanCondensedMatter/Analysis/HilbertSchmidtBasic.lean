@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.FiberwiseTsum
 import LeanCondensedMatter.Analysis.TraceClassOps
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 
@@ -19,27 +20,6 @@ are both Hilbert–Schmidt, `S† ∘ T` is trace-class regardless of self-adjoi
 (`HilbertSchmidtInnerProduct.lean`). This file lays the groundwork: the Hilbert–Schmidt predicate
 and its basis-independence. See `notes/roadmaps/operator-algebra.md`.
 -/
-
-/-- **Row-first and column-first iterated sums of a summable double family agree, with each
-individually summable.** Given `g : ι × κ → E` summable, together with `HasSum` data for its row
-sums (`row i = Σⱼ g(i,j)`) and column sums (`col j = Σᵢ g(i,j)`), `row` and `col` are themselves
-summable with a common total `Σᵢ row i = Σⱼ col j = Σ g`. The Fubini-style swap
-(`Summable.prod_symm`/`Equiv.prodComm`/`HasSum.prod_fiberwise`) underlying both
-`summable_norm_sq_adjoint_apply_and_tsum_eq` and `summable_inner_adjoint_apply_and_tsum_eq`
-(`HilbertSchmidtInnerProduct.lean`), factored out since neither proof depends on `E` being `ℝ` or
-`ℂ` specifically. -/
-theorem tsum_fiberwise_eq_of_summable {ι κ E : Type*} [NormedAddCommGroup E] [CompleteSpace E]
-    {g : ι × κ → E} {row : ι → E} {col : κ → E} (hg : Summable g)
-    (hrow : ∀ i, HasSum (fun j => g (i, j)) (row i))
-    (hcol : ∀ j, HasSum (fun i => g (i, j)) (col j)) :
-    Summable row ∧ Summable col ∧ ∑' i, row i = ∑' j, col j := by
-  have hg' : Summable (fun q : κ × ι => g q.swap) := hg.prod_symm
-  have hswap : ∑' q : κ × ι, g q.swap = ∑' p : ι × κ, g p := (Equiv.prodComm κ ι).tsum_eq g
-  have haCol' : HasSum (fun q : κ × ι => g q.swap) (∑' p : ι × κ, g p) := by
-    rw [← hswap]; exact hg'.hasSum
-  have haRow : HasSum row (∑' p, g p) := hg.hasSum.prod_fiberwise hrow
-  have haCol : HasSum col (∑' p, g p) := haCol'.prod_fiberwise hcol
-  exact ⟨haRow.summable, haCol.summable, haRow.tsum_eq.trans haCol.tsum_eq.symm⟩
 
 namespace ContinuousLinearMap
 
