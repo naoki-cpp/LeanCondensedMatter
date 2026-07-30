@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
+import Mathlib.Algebra.BigOperators.ModEq
 
 set_option linter.style.header false
 
@@ -114,51 +115,51 @@ theorem pairEndpointInversionCount_mod_two_eq_crossesIndicator {n : ℕ}
     simp [hcross]
     omega
 
+/-- Pointwise natural-number congruence lifts to a finite sum. -/
+theorem finset_sum_modEq {α : Type*} (n : ℕ) (s : Finset α) (f g : α → ℕ)
+    (h : ∀ x ∈ s, Nat.ModEq n (f x) (g x)) :
+    Nat.ModEq n (∑ x ∈ s, f x) (∑ x ∈ s, g x) :=
+  Nat.ModEq.sum h
+
+/-- Pointwise natural-number congruence lifts to a sum over a finite type. -/
+theorem fintype_sum_modEq {α : Type*} [Fintype α] (n : ℕ) (f g : α → ℕ)
+    (h : ∀ x, Nat.ModEq n (f x) (g x)) :
+    Nat.ModEq n (∑ x, f x) (∑ x, g x) := by
+  simpa using finset_sum_modEq n (Finset.univ : Finset α) f g (fun x _ => h x)
+
 /-- Pointwise equality modulo two lifts to a finite sum. -/
 theorem finset_sum_mod_two_congr {α : Type*} (s : Finset α) (f g : α → ℕ)
     (h : ∀ x ∈ s, f x % 2 = g x % 2) :
     (∑ x ∈ s, f x) % 2 = (∑ x ∈ s, g x) % 2 := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simp
-  | @insert a s ha ih =>
-      simp only [Finset.mem_insert] at h
-      rw [Finset.sum_insert ha, Finset.sum_insert ha, Nat.add_mod, Nat.add_mod,
-        h a (Or.inl rfl), ih (fun x hx => h x (Or.inr hx))]
-      simpa only [Nat.mod_mod] using
-        (Nat.add_mod (g a) (∑ x ∈ s, g x) 2).symm
+  exact finset_sum_modEq 2 s f g h
 
 /-- Pointwise equality modulo two lifts to a sum over a finite type. -/
 theorem fintype_sum_mod_two_congr {α : Type*} [Fintype α] (f g : α → ℕ)
     (h : ∀ x, f x % 2 = g x % 2) :
     (∑ x, f x) % 2 = (∑ x, g x) % 2 := by
-  simpa using finset_sum_mod_two_congr (Finset.univ : Finset α) f g
-    (fun x _ => h x)
+  exact fintype_sum_modEq 2 f g h
 
-/-- If every symmetric off-diagonal pair contributes an even amount, a finite double sum has the
-same parity as its diagonal. -/
-theorem finset_sum_sum_mod_two_eq_diag_of_pair_add_mod_two_eq_zero {α : Type*}
-    (s : Finset α) (f : α → α → ℕ)
-    (hpair : ∀ a ∈ s, ∀ b ∈ s, a ≠ b → (f a b + f b a) % 2 = 0) :
-    (∑ a ∈ s, ∑ b ∈ s, f a b) % 2 = (∑ a ∈ s, f a a) % 2 := by
+/-- If every symmetric off-diagonal pair is zero modulo `n`, a finite double sum is congruent to its
+diagonal modulo `n`. -/
+theorem finset_sum_sum_modEq_diag_of_pair_add_modEq_zero {α : Type*}
+    (n : ℕ) (s : Finset α) (f : α → α → ℕ)
+    (hpair : ∀ a ∈ s, ∀ b ∈ s, a ≠ b → Nat.ModEq n (f a b + f b a) 0) :
+    Nat.ModEq n (∑ a ∈ s, ∑ b ∈ s, f a b) (∑ a ∈ s, f a a) := by
   classical
   induction s using Finset.induction_on with
-  | empty => simp
+  | empty => exact Nat.ModEq.refl 0
   | @insert a s ha ih =>
-      have hpairS : ∀ x ∈ s, ∀ y ∈ s, x ≠ y → (f x y + f y x) % 2 = 0 := by
+      have hpairS : ∀ x ∈ s, ∀ y ∈ s, x ≠ y → Nat.ModEq n (f x y + f y x) 0 := by
         intro x hx y hy hxy
         exact hpair x (Finset.mem_insert_of_mem hx) y (Finset.mem_insert_of_mem hy) hxy
       have ih' := ih hpairS
-      have hcross : (∑ b ∈ s, (f a b + f b a)) % 2 = 0 := by
-        have h := finset_sum_mod_two_congr s (fun b => f a b + f b a) (fun _ => 0)
-          (fun b hb => by
-            have hab : a ≠ b := by
-              intro hab
-              apply ha
-              simpa [hab] using hb
-            simpa using hpair a (Finset.mem_insert_self a s) b
-              (Finset.mem_insert_of_mem hb) hab)
-        simpa using h
+      have hcross : Nat.ModEq n (∑ b ∈ s, (f a b + f b a)) 0 := by
+        simpa using Nat.ModEq.sum_zero (s := s) fun b hb => by
+          have hab : a ≠ b := by
+            intro hab
+            apply ha
+            simpa [hab] using hb
+          exact hpair a (Finset.mem_insert_self a s) b (Finset.mem_insert_of_mem hb) hab
       have hsplit :
           (∑ x ∈ insert a s, ∑ y ∈ insert a s, f x y) =
             f a a + (∑ b ∈ s, (f a b + f b a)) +
@@ -169,34 +170,30 @@ theorem finset_sum_sum_mod_two_eq_diag_of_pair_add_mod_two_eq_zero {α : Type*}
           (∑ x ∈ insert a s, f x x) = f a a + ∑ x ∈ s, f x x := by
         rw [Finset.sum_insert ha]
       rw [hsplit, hdiag]
-      calc
-        (f a a + (∑ b ∈ s, (f a b + f b a)) +
-            ∑ x ∈ s, ∑ y ∈ s, f x y) % 2 =
-          ((f a a + (∑ b ∈ s, (f a b + f b a))) % 2 +
-            (∑ x ∈ s, ∑ y ∈ s, f x y) % 2) % 2 := by
-              simpa only [Nat.mod_mod] using
-                Nat.add_mod
-                  (f a a + (∑ b ∈ s, (f a b + f b a)))
-                  (∑ x ∈ s, ∑ y ∈ s, f x y) 2
-        _ = (((f a a % 2 + (∑ b ∈ s, (f a b + f b a)) % 2) % 2) +
-            (∑ x ∈ s, ∑ y ∈ s, f x y) % 2) % 2 := by
-              simpa only [Nat.mod_mod] using congrArg
-                (fun z : ℕ =>
-                  (z + (∑ x ∈ s, ∑ y ∈ s, f x y) % 2) % 2)
-                (Nat.add_mod (f a a) (∑ b ∈ s, (f a b + f b a)) 2)
-        _ = (((f a a % 2 + 0) % 2) + (∑ x ∈ s, f x x) % 2) % 2 := by
-              rw [hcross, ih']
-        _ = (f a a + ∑ x ∈ s, f x x) % 2 := by
-              simp only [Nat.add_zero, Nat.mod_mod]
-              exact (Nat.add_mod (f a a) (∑ x ∈ s, f x x) 2).symm
+      simpa [add_assoc] using
+        (Nat.ModEq.refl (n := n) (f a a)).add (hcross.add ih')
 
-/-- Finite-type form of `finset_sum_sum_mod_two_eq_diag_of_pair_add_mod_two_eq_zero`. -/
+/-- `% 2` compatibility wrapper for `finset_sum_sum_modEq_diag_of_pair_add_modEq_zero`. -/
+theorem finset_sum_sum_mod_two_eq_diag_of_pair_add_mod_two_eq_zero {α : Type*}
+    (s : Finset α) (f : α → α → ℕ)
+    (hpair : ∀ a ∈ s, ∀ b ∈ s, a ≠ b → (f a b + f b a) % 2 = 0) :
+    (∑ a ∈ s, ∑ b ∈ s, f a b) % 2 = (∑ a ∈ s, f a a) % 2 := by
+  exact finset_sum_sum_modEq_diag_of_pair_add_modEq_zero 2 s f hpair
+
+/-- Finite-type form of `finset_sum_sum_modEq_diag_of_pair_add_modEq_zero`. -/
+theorem fintype_sum_sum_modEq_diag_of_pair_add_modEq_zero {α : Type*}
+    [Fintype α] (n : ℕ) (f : α → α → ℕ)
+    (hpair : ∀ a b, a ≠ b → Nat.ModEq n (f a b + f b a) 0) :
+    Nat.ModEq n (∑ a, ∑ b, f a b) (∑ a, f a a) := by
+  simpa using finset_sum_sum_modEq_diag_of_pair_add_modEq_zero
+    n (Finset.univ : Finset α) f (fun a _ b _ hab => hpair a b hab)
+
+/-- `% 2` compatibility wrapper for `fintype_sum_sum_modEq_diag_of_pair_add_modEq_zero`. -/
 theorem fintype_sum_sum_mod_two_eq_diag_of_pair_add_mod_two_eq_zero {α : Type*}
     [Fintype α] (f : α → α → ℕ)
     (hpair : ∀ a b, a ≠ b → (f a b + f b a) % 2 = 0) :
     (∑ a, ∑ b, f a b) % 2 = (∑ a, f a a) % 2 := by
-  simpa using finset_sum_sum_mod_two_eq_diag_of_pair_add_mod_two_eq_zero
-    (Finset.univ : Finset α) f (fun a _ b _ hab => hpair a b hab)
+  exact fintype_sum_sum_modEq_diag_of_pair_add_modEq_zero 2 f hpair
 
 end BlochDeDominicis
 end Common
