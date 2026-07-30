@@ -41,7 +41,7 @@ theorem SlotShuffle.continuous_integrand {m n : ℕ} (shuffle : SlotShuffle m n)
 
 /-- Changing the presentation of the finite coordinate count only precomposes the integrand with the
 corresponding `Fin.cast`. -/
-theorem orderedSimplexIntegral_cast {a b : ℕ} (h : a = b) (β : ℝ)
+private theorem orderedSimplexIntegral_cast {a b : ℕ} (h : a = b) (β : ℝ)
     (F : (Fin a → ℝ) → ℂ) :
     orderedSimplexIntegral a β F =
       orderedSimplexIntegral b β (fun τ => F (fun i => τ (Fin.cast h i))) := by
