@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.HilbertBasisParseval
 import LeanCondensedMatter.Analysis.TraceClassBasic
 
 -- No project files currently carry a Mathlib-style copyright/author header; a
@@ -97,22 +98,6 @@ theorem tsum_norm_sq_orthogonalProjectionOnto_eq_finrank {ι : Type*} (b : Hilbe
   have hnorm1 : ∀ j : Fin (Module.finrank ℂ V), ‖(f j : H)‖ = 1 :=
     fun j => (stdOrthonormalBasis ℂ V).orthonormal.1 j
   simp [hnorm1]
-
-omit [CompleteSpace H] in
-/-- **Parseval's identity for a Hilbert basis, in norm-squared form.** For any `x : H`, the
-squared-magnitude Fourier coefficients of `x` against a Hilbert basis `d` sum (unconditionally)
-to `‖x‖ ^ 2`. -/
-theorem _root_.HilbertBasis.hasSum_norm_sq_inner {ι : Type*} (d : HilbertBasis ι ℂ H) (x : H) :
-    HasSum (fun i => ‖(inner ℂ x (d i) : ℂ)‖ ^ 2) (‖x‖ ^ 2) := by
-  have hterm : (fun i => ‖(inner ℂ x (d i) : ℂ)‖ ^ 2) =
-      (fun i => (inner ℂ x (d i) * inner ℂ (d i) x : ℂ).re) := by
-    funext i
-    rw [inner_mul_inner_conj_eq_norm_sq, Complex.ofReal_re]
-  rw [hterm]
-  have hs : HasSum (fun i => (inner ℂ x (d i) * inner ℂ (d i) x : ℂ).re)
-      ((inner ℂ x x : ℂ).re) := (d.hasSum_inner_mul_inner x x).mapL Complex.reCLM
-  rw [inner_self_eq_norm_sq_to_K] at hs
-  exact_mod_cast hs
 
 /-- **`T`'s eigenvector expansion of `x`, applied back through `⟪x, ·⟫`, sums to `⟪x, T x⟫.re`.**
 For any `x : H`, `Σₐ (eigenvalue a) * ‖⟪eigenvectorFamily a, x⟫‖² = ⟪x, T x⟫.re`. This is

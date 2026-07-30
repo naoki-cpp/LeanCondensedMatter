@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.FiberwiseTsum
-import LeanCondensedMatter.Analysis.TraceClassOps
+import LeanCondensedMatter.Analysis.HilbertBasisParseval
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 
 /-!

@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.HilbertSchmidtInnerProduct
+import LeanCondensedMatter.Analysis.TraceClassOps
 
 /-!
 # Reconciling `innerHS` with `ContinuousLinearMap.trace`
