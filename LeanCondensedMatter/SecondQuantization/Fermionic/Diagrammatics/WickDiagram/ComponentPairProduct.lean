@@ -36,9 +36,13 @@ private def sigmaFiberPairEquiv {ι α : Type*} (f : α → ι) :
     ⟨f p.1.1, ⟨⟨p.1.1, rfl⟩, ⟨p.1.2, p.2.symm⟩⟩⟩
   left_inv := by
     rintro ⟨i, ⟨⟨a, ha⟩, ⟨b, hb⟩⟩⟩
-    cases ha
-    apply Sigma.ext rfl
-    apply Prod.ext <;> apply Subtype.ext <;> rfl
+    apply Sigma.ext ha
+    apply heq_of_eq
+    apply Prod.ext
+    · apply Subtype.ext
+      rfl
+    · apply Subtype.ext
+      rfl
   right_inv := by
     rintro ⟨⟨a, b⟩, hab⟩
     apply Subtype.ext
