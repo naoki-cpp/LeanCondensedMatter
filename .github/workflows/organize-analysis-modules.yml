@@ -1,16 +1,16 @@
 name: Organize Analysis modules
 
 on:
-  push:
-    branches:
-      - agent/organize-analysis-modules
+  pull_request:
+    types: [opened]
+    branches: [main]
 
 permissions:
   contents: write
 
 jobs:
   reorganize:
-    if: github.event.head_commit.message == 'chore: stage Analysis reorganization'
+    if: github.event.pull_request.head.ref == 'agent/organize-analysis-modules'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
