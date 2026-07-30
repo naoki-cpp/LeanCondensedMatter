@@ -39,14 +39,13 @@ theorem SlotShuffle.continuous_integrand {m n : ℕ} (shuffle : SlotShuffle m n)
     continuous_pi fun j => continuous_apply (shuffle.slotEquiv (Sum.inr j))
   exact (hf.comp hleft).mul (hg.comp hright)
 
-/-- Changing the presentation of the finite coordinate count only precomposes the integrand with the
-corresponding `Fin.cast`. -/
+/-- Compatibility alias for callers that imported the cast transport from the binary-shuffle
+module. New code should use `intervalIntegral.orderedSimplexIntegral_cast`. -/
 theorem orderedSimplexIntegral_cast {a b : ℕ} (h : a = b) (β : ℝ)
     (F : (Fin a → ℝ) → ℂ) :
     orderedSimplexIntegral a β F =
-      orderedSimplexIntegral b β (fun τ => F (fun i => τ (Fin.cast h i))) := by
-  subst b
-  rfl
+      orderedSimplexIntegral b β (fun τ => F (fun i => τ (Fin.cast h i))) :=
+  intervalIntegral.orderedSimplexIntegral_cast h β F
 
 /-- One recursive shuffle contribution is the ordinary ordered-simplex integral of its ambient-slot
 shuffled product. -/
@@ -58,7 +57,7 @@ theorem orderedSimplexContribution_eq_orderedSimplexIntegral_integrand :
   | 0, 0, .nil, _β, _f, _g => rfl
   | m + 1, n, .consLeft σ, β, f, g => by
       rw [orderedSimplexContribution]
-      rw [orderedSimplexIntegral_cast
+      rw [intervalIntegral.orderedSimplexIntegral_cast
         (show m + 1 + n = (m + n) + 1 by omega)]
       rw [orderedSimplexIntegral_succ]
       apply intervalIntegral.integral_congr
@@ -80,7 +79,7 @@ theorem orderedSimplexContribution_eq_orderedSimplexIntegral_integrand :
         simp [toSlotShuffle]
   | m, n + 1, .consRight σ, β, f, g => by
       rw [orderedSimplexContribution]
-      rw [orderedSimplexIntegral_cast
+      rw [intervalIntegral.orderedSimplexIntegral_cast
         (show m + (n + 1) = (m + n) + 1 by omega)]
       rw [orderedSimplexIntegral_succ]
       apply intervalIntegral.integral_congr
