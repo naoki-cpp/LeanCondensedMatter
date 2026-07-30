@@ -45,7 +45,7 @@ omit [CompleteSpace H] in
 (`inner_conj_symm`) and `z * conj z = normSq z` (`Complex.mul_conj`). Recurs throughout this file
 whenever a `HasSum`/Parseval argument needs to turn a product of inner products into a real,
 nonnegative quantity. -/
-theorem inner_mul_inner_conj_eq_norm_sq (x y : H) :
+private theorem inner_mul_inner_conj_eq_norm_sq (x y : H) :
     (inner ℂ x y * inner ℂ y x : ℂ) = ((‖(inner ℂ x y : ℂ)‖ ^ 2 : ℝ) : ℂ) := by
   rw [show (inner ℂ y x : ℂ) = starRingEnd ℂ (inner ℂ x y) from (inner_conj_symm y x).symm,
     Complex.mul_conj, Complex.normSq_eq_norm_sq]
@@ -156,7 +156,7 @@ theorem hasSum_inner_apply_eq_trace (hT : IsCompactOperator T) (hT' : T.IsSymmet
       (1 : ℝ) := fun a => by
     have := d.hasSum_norm_sq_inner (e a)
     rwa [(orthonormal_eigenvectorFamily hT hT').1 a, one_pow] at this
-  -- Pointwise (for each `d i`), `⟪dᵢ,T(dᵢ)⟩` decomposes as a sum over `EigenvectorIndex T`.
+  -- Pointwise (for each `d i`), `⟪dᵢ,T(dᵢ)⟫` decomposes as a sum over `EigenvectorIndex T`.
   have hpoint : ∀ i, HasSum (f · i) (inner ℂ (d i) (T (d i)) : ℂ).re :=
     fun i => hasSum_eigen_expansion_inner_apply hT hT' (d i)
   -- The magnitude family is summable over the product index, via trace-class-ness of `T`.
