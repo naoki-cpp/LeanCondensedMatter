@@ -25,6 +25,36 @@ theorem Common.BlochDeDominicis.Pairing.pairEndpoint_eq_pairEndpointAt {n : ℕ}
     pairing.pairEndpoint (p, k) = Common.BlochDeDominicis.pairEndpointAt p.1 k :=
   rfl
 
+/-- Pairs transported from distinct components are distinct normalized global pairs. -/
+theorem QuarticWickDiagram.componentPairEquiv_ne
+    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
+    (B C : d.componentPartition.parts) (hBC : B ≠ C)
+    (p : d.LocalOrderedPair orders B) (q : d.LocalOrderedPair orders C) :
+    d.componentPairEquiv orders shuffle ⟨B, p⟩ ≠
+      d.componentPairEquiv orders shuffle ⟨C, q⟩ := by
+  intro h
+  exact hBC (congrArg Sigma.fst ((d.componentPairEquiv orders shuffle).injective h))
+
+/-- Pairs transported from distinct components have disjoint global endpoints. -/
+theorem QuarticWickDiagram.componentPairEquiv_endpoints_ne
+    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
+    (B C : d.componentPartition.parts) (hBC : B ≠ C)
+    (p : d.LocalOrderedPair orders B) (q : d.LocalOrderedPair orders C) :
+    (d.componentPairEquiv orders shuffle ⟨B, p⟩).1.1 ≠
+        (d.componentPairEquiv orders shuffle ⟨C, q⟩).1.1 ∧
+      (d.componentPairEquiv orders shuffle ⟨B, p⟩).1.1 ≠
+        (d.componentPairEquiv orders shuffle ⟨C, q⟩).1.2 ∧
+      (d.componentPairEquiv orders shuffle ⟨B, p⟩).1.2 ≠
+        (d.componentPairEquiv orders shuffle ⟨C, q⟩).1.1 ∧
+      (d.componentPairEquiv orders shuffle ⟨B, p⟩).1.2 ≠
+        (d.componentPairEquiv orders shuffle ⟨C, q⟩).1.2 := by
+  exact (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).normalizedPair_endpoints_ne_of_ne
+    (d.componentPairEquiv orders shuffle ⟨B, p⟩)
+    (d.componentPairEquiv orders shuffle ⟨C, q⟩)
+    (d.componentPairEquiv_ne orders shuffle B C hBC p q)
+
 /-- A pair from component `B` and a pair from a distinct component `C` cross geometrically exactly
 when their four cross-pair endpoint comparisons have odd parity. -/
 theorem QuarticWickDiagram.componentPairEndpointInversionCount_mod_two_eq_one_iff_crosses
@@ -41,18 +71,14 @@ theorem QuarticWickDiagram.componentPairEndpointInversionCount_mod_two_eq_one_if
         Common.BlochDeDominicis.Crosses
           (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
           (d.componentPairEquiv orders shuffle ⟨B, p⟩).1 := by
-  let globalPairing := d.pairingInOrder (d.assembleVertexOrder orders shuffle)
-  let globalP : globalPairing.NormalizedPair := d.componentPairEquiv orders shuffle ⟨B, p⟩
-  let globalQ : globalPairing.NormalizedPair := d.componentPairEquiv orders shuffle ⟨C, q⟩
-  have hne : globalP ≠ globalQ := by
-    intro h
-    have hsigma := (d.componentPairEquiv orders shuffle).injective h
-    exact hBC (congrArg Sigma.fst hsigma)
-  have hEnds := globalPairing.normalizedPair_endpoints_ne_of_ne globalP globalQ hne
+  have hEnds := d.componentPairEquiv_endpoints_ne orders shuffle B C hBC p q
   exact Common.BlochDeDominicis.pairEndpointInversionCount_mod_two_eq_one_iff_crosses
-    globalP.1 globalQ.1
-    (globalPairing.pairs_normalized globalP.2)
-    (globalPairing.pairs_normalized globalQ.2)
+    (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
+    (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
+    ((d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs_normalized
+      (d.componentPairEquiv orders shuffle ⟨B, p⟩).2)
+    ((d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs_normalized
+      (d.componentPairEquiv orders shuffle ⟨C, q⟩).2)
     hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2
 
 /-- Indicator-valued version of component-pair crossing parity. -/
@@ -71,18 +97,14 @@ theorem QuarticWickDiagram.componentPairEndpointInversionCount_mod_two_eq_crosse
           (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
           (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
       then 1 else 0 := by
-  let globalPairing := d.pairingInOrder (d.assembleVertexOrder orders shuffle)
-  let globalP : globalPairing.NormalizedPair := d.componentPairEquiv orders shuffle ⟨B, p⟩
-  let globalQ : globalPairing.NormalizedPair := d.componentPairEquiv orders shuffle ⟨C, q⟩
-  have hne : globalP ≠ globalQ := by
-    intro h
-    have hsigma := (d.componentPairEquiv orders shuffle).injective h
-    exact hBC (congrArg Sigma.fst hsigma)
-  have hEnds := globalPairing.normalizedPair_endpoints_ne_of_ne globalP globalQ hne
+  have hEnds := d.componentPairEquiv_endpoints_ne orders shuffle B C hBC p q
   exact Common.BlochDeDominicis.pairEndpointInversionCount_mod_two_eq_crossesIndicator
-    globalP.1 globalQ.1
-    (globalPairing.pairs_normalized globalP.2)
-    (globalPairing.pairs_normalized globalQ.2)
+    (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
+    (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
+    ((d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs_normalized
+      (d.componentPairEquiv orders shuffle ⟨B, p⟩).2)
+    ((d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs_normalized
+      (d.componentPairEquiv orders shuffle ⟨C, q⟩).2)
     hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2
 
 /-- Selecting an endpoint after transporting a component-local pair is the same as transporting the
