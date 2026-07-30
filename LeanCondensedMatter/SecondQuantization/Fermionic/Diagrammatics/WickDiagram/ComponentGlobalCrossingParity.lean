@@ -119,11 +119,11 @@ theorem QuarticWickDiagram.pairingInOrder_crossingCount_eq_sum_componentOriented
         (Σ BC : d.componentPartition.parts × d.componentPartition.parts,
           d.LocalOrderedPair orders BC.1 × d.LocalOrderedPair orders BC.2) ≃
           (Σ B : d.componentPartition.parts, d.LocalOrderedPair orders B) ×
-            (Σ C : d.componentPartition.parts, d.LocalOrderedPair orders C) where
+            (Σ C : d.componentPartition.parts, d.LocalOrderedPair orders C) := {
       toFun x := (⟨x.1.1, x.2.1⟩, ⟨x.1.2, x.2.2⟩)
       invFun x := ⟨(x.1.1, x.2.1), (x.1.2, x.2.2)⟩
       left_inv := by rintro ⟨⟨B, C⟩, p, q⟩; rfl
-      right_inv := by rintro ⟨⟨B, p⟩, ⟨C, q⟩⟩; rfl
+      right_inv := by rintro ⟨⟨B, p⟩, ⟨C, q⟩⟩; rfl }
     sigmaProductEquiv.trans (Equiv.prodCongr pairEquiv pairEquiv)
   rw [globalPairing.crossingCount_eq_sum_crosses,
     ← Equiv.sum_comp componentPairProductEquiv,
