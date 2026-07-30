@@ -36,10 +36,9 @@ theorem eigenspace_smul {c : ℝ} (hc : c ≠ 0) (μ : ℂ) :
     rw [h, mul_smul]
 
 /-- The reindexing `μ ↦ c * μ` on nonzero eigenvalues, for a nonzero real `c`, as an
-`Equiv` on the base index type `{μ : ℝ // μ ≠ 0}`. Named separately (rather than inlined into
-`Equiv.sigmaCongr`) so that its `toFun`/`invFun` stay as ordinary function applications instead
-of being left as anonymous unreduced lambdas in later goals. -/
-noncomputable def eigenvalueScaleEquiv {c : ℝ} (hc : c ≠ 0) :
+`Equiv` on the base index type `{μ : ℝ // μ ≠ 0}`. This is an implementation detail of the
+scalar trace-class and trace proofs below. -/
+private noncomputable def eigenvalueScaleEquiv {c : ℝ} (hc : c ≠ 0) :
     { μ : ℝ // μ ≠ 0 } ≃ { μ : ℝ // μ ≠ 0 } where
   toFun a := ⟨c * a.1, mul_ne_zero hc a.2⟩
   invFun a := ⟨a.1 / c, div_ne_zero a.2 hc⟩
@@ -47,7 +46,8 @@ noncomputable def eigenvalueScaleEquiv {c : ℝ} (hc : c ≠ 0) :
   right_inv a := Subtype.ext (show c * (a.1 / c) = a.1 by
     rw [← mul_div_assoc]; exact mul_div_cancel_left₀ a.1 hc)
 
-@[simp] theorem eigenvalueScaleEquiv_apply {c : ℝ} (hc : c ≠ 0) (a : { μ : ℝ // μ ≠ 0 }) :
+@[simp] private theorem eigenvalueScaleEquiv_apply {c : ℝ} (hc : c ≠ 0)
+    (a : { μ : ℝ // μ ≠ 0 }) :
     ((eigenvalueScaleEquiv hc a : { μ : ℝ // μ ≠ 0 }) : ℝ) = c * a.1 := rfl
 
 omit [CompleteSpace H] in
