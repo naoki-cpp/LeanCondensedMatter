@@ -1,6 +1,9 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
+import Mathlib.Algebra.BigOperators.Group.Finset.Sigma
 import Mathlib.Algebra.BigOperators.ModEq
+import Mathlib.Data.Finset.Prod
+import Mathlib.Data.ZMod.Basic
 
 set_option linter.style.header false
 
@@ -136,6 +139,35 @@ theorem fintype_sum_mod_two_congr {α : Type*} [Fintype α] (f g : α → ℕ)
     (∑ x, f x) % 2 = (∑ x, g x) % 2 := by
   exact fintype_sum_modEq 2 f g h
 
+/-- An off-diagonal sum vanishes modulo `n` when each term cancels with its swapped term. -/
+theorem finset_sum_offDiag_modEq_zero_of_pair_add_modEq_zero {α : Type*}
+    (n : ℕ) (s : Finset α) (f : α → α → ℕ)
+    (hpair : ∀ a ∈ s, ∀ b ∈ s, a ≠ b → Nat.ModEq n (f a b + f b a) 0) :
+    Nat.ModEq n (∑ p ∈ s.offDiag, f p.1 p.2) 0 := by
+  classical
+  have hoff : (∑ p ∈ s.offDiag, (f p.1 p.2 : ZMod n)) = 0 := by
+    refine Finset.sum_involution
+      (s := s.offDiag)
+      (f := fun p => (f p.1 p.2 : ZMod n))
+      (fun p _ => p.swap) ?_ ?_ ?_ ?_
+    · rintro ⟨a, b⟩ hp
+      simp only [Finset.mem_offDiag] at hp
+      simpa using
+        (ZMod.natCast_eq_natCast_iff (f a b + f b a) 0 n).2
+          (hpair a hp.1 b hp.2.1 hp.2.2)
+    · rintro ⟨a, b⟩ hp _
+      simp only [Finset.mem_offDiag] at hp
+      intro hswap
+      apply hp.2.2
+      exact (congrArg Prod.fst hswap).symm
+    · rintro ⟨a, b⟩ hp
+      simp only [Finset.mem_offDiag] at hp ⊢
+      exact ⟨hp.2.1, hp.1, hp.2.2.symm⟩
+    · rintro ⟨a, b⟩ hp
+      rfl
+  apply (ZMod.natCast_eq_natCast_iff _ 0 n).1
+  simpa using hoff
+
 /-- If every symmetric off-diagonal pair is zero modulo `n`, a finite double sum is congruent to its
 diagonal modulo `n`. -/
 theorem finset_sum_sum_modEq_diag_of_pair_add_modEq_zero {α : Type*}
@@ -143,32 +175,20 @@ theorem finset_sum_sum_modEq_diag_of_pair_add_modEq_zero {α : Type*}
     (hpair : ∀ a ∈ s, ∀ b ∈ s, a ≠ b → Nat.ModEq n (f a b + f b a) 0) :
     Nat.ModEq n (∑ a ∈ s, ∑ b ∈ s, f a b) (∑ a ∈ s, f a a) := by
   classical
-  induction s using Finset.induction_on with
-  | empty => exact Nat.ModEq.refl 0
-  | @insert a s ha ih =>
-      have hpairS : ∀ x ∈ s, ∀ y ∈ s, x ≠ y → Nat.ModEq n (f x y + f y x) 0 := by
-        intro x hx y hy hxy
-        exact hpair x (Finset.mem_insert_of_mem hx) y (Finset.mem_insert_of_mem hy) hxy
-      have ih' := ih hpairS
-      have hcross : Nat.ModEq n (∑ b ∈ s, (f a b + f b a)) 0 := by
-        simpa using Nat.ModEq.sum_zero (s := s) fun b hb => by
-          have hab : a ≠ b := by
-            intro hab
-            apply ha
-            simpa [hab] using hb
-          exact hpair a (Finset.mem_insert_self a s) b (Finset.mem_insert_of_mem hb) hab
-      have hsplit :
-          (∑ x ∈ insert a s, ∑ y ∈ insert a s, f x y) =
-            f a a + (∑ b ∈ s, (f a b + f b a)) +
-              ∑ x ∈ s, ∑ y ∈ s, f x y := by
-        simp [Finset.sum_insert, ha, Finset.sum_add_distrib]
-        ac_rfl
-      have hdiag :
-          (∑ x ∈ insert a s, f x x) = f a a + ∑ x ∈ s, f x x := by
-        rw [Finset.sum_insert ha]
-      rw [hsplit, hdiag]
-      simpa [add_assoc] using
-        (Nat.ModEq.refl (n := n) (f a a)).add (hcross.add ih')
+  have hoff :=
+    finset_sum_offDiag_modEq_zero_of_pair_add_modEq_zero n s f hpair
+  have hsplit :
+      (∑ a ∈ s, ∑ b ∈ s, f a b) =
+        (∑ p ∈ s.diag, f p.1 p.2) + ∑ p ∈ s.offDiag, f p.1 p.2 := by
+    rw [← Finset.sum_product' s s f]
+    rw [← Finset.sum_union (Finset.disjoint_diag_offDiag s)]
+    rw [Finset.diag_union_offDiag]
+  have hdiag :
+      (∑ p ∈ s.diag, f p.1 p.2) = ∑ a ∈ s, f a a := by
+    simp [Finset.diag]
+  rw [hsplit, hdiag]
+  simpa using
+    (Nat.ModEq.refl (n := n) (∑ a ∈ s, f a a)).add hoff
 
 /-- `% 2` compatibility wrapper for `finset_sum_sum_modEq_diag_of_pair_add_modEq_zero`. -/
 theorem finset_sum_sum_mod_two_eq_diag_of_pair_add_mod_two_eq_zero {α : Type*}
