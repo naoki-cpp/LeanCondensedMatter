@@ -32,14 +32,14 @@ labelled vertex set `Finset.univ : Finset (Fin n)`.
 | Milestone | Deliverable | Status | Depends on | Expected PRs |
 |---|---|---|---|---:|
 | M0 | Statistics-independent component-shuffle product calculus | complete | — | completed in PRs #233–#247 |
-| M1 | Fermionic contraction-integrand factorization | next | M0 | 2–3 |
-| M2 | Full quartic Wick-amplitude factorization | blocked by M1 | M1 | 1 |
+| M1 | Fermionic contraction-integrand factorization | complete | M0 | completed through PR #256 |
+| M2 | Full quartic Wick-amplitude factorization | next | M1 | 1 |
 | M3 | Connected-diagram formula for `dysonVertexCumulant` | blocked by M2 | M2 | 1–2 |
 | M4 | Finite-set cumulant / formal-`log` EGF bridge | independent high-risk track | normalized power-series API | 1–2 |
 | M5 | Final Dyson LCT specialization and public export | blocked by M3 and M4 | M3, M4 | 1 |
 
-The remaining implementation is approximately six to nine focused PRs. M1 and M4 are the two
-high-risk milestones. They should remain isolated from mechanical assembly PRs.
+The remaining implementation is approximately four to six focused PRs. M4 is the main independent
+high-risk milestone; M2 should now be a short assembly PR using the completed M0 and M1 results.
 
 ## M0 — Component-shuffle product calculus
 
@@ -88,55 +88,67 @@ component-integrand infrastructure was completed in PRs #233–#235.
 
 ## M1 — Fermionic contraction-integrand factorization
 
-**Status: next.**
+**Status: complete.**
 
-For an assembled global vertex order, prove that the Wick contraction integrand is the product of the
+For an assembled global vertex order, the Wick contraction integrand is the product of the
 connected-component contraction integrands evaluated on component-restricted times.
 
 ### Exit theorem
 
 ```lean
+QuarticWickDiagram.contractionIntegrand_assembleVertexOrder_eq_prod_components
+```
+
+with theorem shape
+
+```lean
 d.contractionIntegrand ε β (d.assembleVertexOrder orders shuffle) τ =
   ∏ B : d.componentPartition.parts,
-    ((d.restrictComponentConnected B.2).1.contractionIntegrand
-      ε β (orders B) (d.componentTimeAssignment shuffle τ B))
+    QuarticWickDiagram.contractionIntegrand ε β
+      (d.restrictComponentConnected B.2).1 (orders B)
+      (d.componentTimeAssignment shuffle τ B)
 ```
+
+### Completed foundation
+
+- The assembled global pairing and ordered legs restrict compatibly to every connected component.
+- Every assembled global pair value agrees with its component-local pair value.
+- The product over assembled global normalized pairs reindexes as a product over components and
+  component-local normalized pairs.
+- The fermionic pairing weight factors over components for every component shuffle.
+- Cross-component crossing parity is even because each inverted pair of quartic vertex blocks
+  contributes `4 × 4 = 16` ordered-leg inversions.
+- The two component products combine directly into the full fixed-order contraction integrand.
 
 ### Work packages
 
-#### M1a — Pairing restriction and local pair values
+#### M1a — Pairing restriction and local pair values — complete
 
-Prove that:
+Proved that:
 
 1. the global `pairingInOrder` pair set decomposes into component-local pair sets;
 2. the global leg operators agree with restricted component leg operators;
 3. every global pair value agrees with its restricted component pair value.
 
-The preferred first PR should expose small compatibility lemmas rather than attempting the full
-product identity immediately.
+#### M1b — Product reindexing — complete
 
-#### M1b — Product reindexing
+The product over global pairs is reindexed as a product over components and local pairs using
+explicit equivalences of pair index types.
 
-Reindex the product over global pairs as a product over components and local pairs. This should use
-explicit equivalences of pair index types, avoiding large `simp` proofs over nested subtypes.
+#### M1c — Fermionic pairing-sign factorization — complete
 
-#### M1c — Fermionic pairing-sign factorization
-
-Prove that `Pairing.weight` factors over connected components under the assembled order.
-
-This is the main risk in M1. `Pairing.weight` is not invariant under arbitrary relabeling. The proof
-must use the special permutation induced by shuffling blocks of four vertex legs. A vertex-block
-transposition exchanges `4 × 4 = 16` leg pairs, so its cross-component parity contribution should be
-even; this parity fact must be expressed in the concrete pairing-weight API.
+`Pairing.weight` factors over connected components under the assembled order. The proof uses the
+special permutation induced by shuffling blocks of four vertex legs: a vertex-block transposition
+exchanges `4 × 4 = 16` leg pairs, so its cross-component parity contribution is even.
 
 ### Definition of done
 
-M1 is complete only when the full contraction-integrand theorem is available without adding a new
-sign convention or changing `pairingInOrder`.
+M1 is complete: the full contraction-integrand theorem is available without adding a new sign
+convention or changing `pairingInOrder`.
 
 ## M2 — Full quartic Wick-amplitude factorization
 
-**Status: blocked by M1.**
+**Status: next.**
 
 Combine:
 
@@ -246,15 +258,12 @@ proved theorems.
 
 The current recommended sequence is:
 
-1. pairing restriction and leg/pair-value compatibility;
-2. global-pair product reindexing;
-3. fermionic pairing-weight parity factorization;
-4. contraction-integrand and complete amplitude factorization;
-5. concrete `WeightedDiagramFamily` and connected-diagram finite-set cumulant theorem;
-6. general EGF / finite-set cumulant bridge, possibly split into two PRs;
-7. final Dyson specialization and API export.
+1. complete quartic Wick-amplitude factorization from M0 and M1;
+2. concrete `WeightedDiagramFamily` and connected-diagram finite-set cumulant theorem;
+3. general EGF / finite-set cumulant bridge, possibly split into two PRs;
+4. final Dyson specialization and API export.
 
-M4 can be developed in parallel with M1–M3 because the two tracks meet only at M5.
+M4 can be developed in parallel with M2–M3 because the two tracks meet only at M5.
 
 ## Definition of done
 
