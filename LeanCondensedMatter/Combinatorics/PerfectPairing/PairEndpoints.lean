@@ -18,10 +18,30 @@ namespace BlochDeDominicis
 abbrev Pairing.NormalizedPair {n : ℕ} (pairing : Pairing n) :=
   {pair : Fin (2 * n) × Fin (2 * n) // pair ∈ pairing.pairs}
 
+/-- Select endpoint `0` or endpoint `1` of an ordered pair. -/
+def pairEndpointAt {n : ℕ} (pair : Fin (2 * n) × Fin (2 * n)) (k : Fin 2) : Fin (2 * n) :=
+  if k = 0 then pair.1 else pair.2
+
+@[simp]
+theorem pairEndpointAt_zero {n : ℕ} (pair : Fin (2 * n) × Fin (2 * n)) :
+    pairEndpointAt pair 0 = pair.1 := by
+  simp [pairEndpointAt]
+
+@[simp]
+theorem pairEndpointAt_one {n : ℕ} (pair : Fin (2 * n) × Fin (2 * n)) :
+    pairEndpointAt pair 1 = pair.2 := by
+  simp [pairEndpointAt]
+
 /-- Select endpoint `0` or endpoint `1` of a normalized pair. -/
 def Pairing.pairEndpoint {n : ℕ} (pairing : Pairing n) :
     pairing.NormalizedPair × Fin 2 → Fin (2 * n) :=
-  fun x => if x.2 = 0 then x.1.1.1 else x.1.1.2
+  fun x => pairEndpointAt x.1.1 x.2
+
+@[simp]
+theorem Pairing.pairEndpoint_eq_pairEndpointAt {n : ℕ}
+    (pairing : Pairing n) (p : pairing.NormalizedPair) (k : Fin 2) :
+    pairing.pairEndpoint (p, k) = pairEndpointAt p.1 k :=
+  rfl
 
 /-- Recover the normalized pair and endpoint index containing a position. -/
 noncomputable def Pairing.positionToPairEndpoint {n : ℕ} (pairing : Pairing n) :
@@ -49,14 +69,14 @@ noncomputable def Pairing.pairEndpointEquiv {n : ℕ} (pairing : Pairing n) :
     have hpartnerb : pairing.partner b = a := by
       rw [← hpartnera, pairing.partner_partner]
     fin_cases k
-    · simp [Pairing.pairEndpoint, Pairing.positionToPairEndpoint, hablt, hpartnera]
+    · simp [Pairing.pairEndpoint, pairEndpointAt, Pairing.positionToPairEndpoint, hablt, hpartnera]
     · have hba : ¬ b < a := not_lt_of_ge (le_of_lt hablt)
-      simp [Pairing.pairEndpoint, Pairing.positionToPairEndpoint, hba, hpartnerb]
+      simp [Pairing.pairEndpoint, pairEndpointAt, Pairing.positionToPairEndpoint, hba, hpartnerb]
   right_inv := by
     intro i
     by_cases h : i < pairing.partner i
-    · simp [Pairing.pairEndpoint, Pairing.positionToPairEndpoint, h]
-    · simp [Pairing.pairEndpoint, Pairing.positionToPairEndpoint, h]
+    · simp [Pairing.pairEndpoint, pairEndpointAt, Pairing.positionToPairEndpoint, h]
+    · simp [Pairing.pairEndpoint, pairEndpointAt, Pairing.positionToPairEndpoint, h]
 
 @[simp]
 theorem Pairing.pairEndpointEquiv_apply {n : ℕ} (pairing : Pairing n)
@@ -64,53 +84,29 @@ theorem Pairing.pairEndpointEquiv_apply {n : ℕ} (pairing : Pairing n)
     pairing.pairEndpointEquiv x = pairing.pairEndpoint x :=
   rfl
 
+/-- Endpoints selected from distinct normalized pairs are distinct. -/
+theorem Pairing.pairEndpoint_ne_of_normalizedPair_ne {n : ℕ} (pairing : Pairing n)
+    (p q : pairing.NormalizedPair) (hpq : p ≠ q) (i j : Fin 2) :
+    pairing.pairEndpoint (p, i) ≠ pairing.pairEndpoint (q, j) := by
+  intro h
+  have hargs : (p, i) = (q, j) :=
+    pairing.pairEndpointEquiv.injective (by
+      simpa only [pairing.pairEndpointEquiv_apply] using h)
+  exact hpq (congrArg Prod.fst hargs)
+
 /-- Distinct normalized pairs in one pairing cannot share an endpoint. -/
 theorem Pairing.normalizedPair_endpoints_ne_of_ne {n : ℕ} (pairing : Pairing n)
     (p q : pairing.NormalizedPair) (hpq : p ≠ q) :
     p.1.1 ≠ q.1.1 ∧ p.1.1 ≠ q.1.2 ∧ p.1.2 ≠ q.1.1 ∧ p.1.2 ≠ q.1.2 := by
-  have hp := (pairing.mem_pairs_iff p.1.1 p.1.2).1 p.2
-  have hq := (pairing.mem_pairs_iff q.1.1 q.1.2).1 q.2
-  have hpPartner : pairing.partner p.1.1 = p.1.2 := hp.2
-  have hqPartner : pairing.partner q.1.1 = q.1.2 := hq.2
-  have hpartnerPRight : pairing.partner p.1.2 = p.1.1 := by
-    rw [← hpPartner, pairing.partner_partner]
-  have hpartnerQRight : pairing.partner q.1.2 = q.1.1 := by
-    rw [← hqPartner, pairing.partner_partner]
   refine ⟨?_, ?_, ?_, ?_⟩
-  · intro hleft
-    apply hpq
-    apply Subtype.ext
-    apply Prod.ext hleft
-    calc
-      p.1.2 = pairing.partner p.1.1 := hpPartner.symm
-      _ = pairing.partner q.1.1 := congrArg pairing.partner hleft
-      _ = q.1.2 := hqPartner
-  · intro hcross
-    have hright : p.1.2 = q.1.1 := by
-      calc
-        p.1.2 = pairing.partner p.1.1 := hpPartner.symm
-        _ = pairing.partner q.1.2 := congrArg pairing.partner hcross
-        _ = q.1.1 := hpartnerQRight
-    have hreverse : q.1.2 < q.1.1 := by simpa [hcross, hright] using hp.1
-    exact lt_asymm hq.1 hreverse
-  · intro hcross
-    have hleft : p.1.1 = q.1.2 := by
-      calc
-        p.1.1 = pairing.partner p.1.2 := hpartnerPRight.symm
-        _ = pairing.partner q.1.1 := congrArg pairing.partner hcross
-        _ = q.1.2 := hqPartner
-    have hreverse : q.1.2 < q.1.1 := by simpa [hleft, hcross] using hp.1
-    exact lt_asymm hq.1 hreverse
-  · intro hright
-    apply hpq
-    apply Subtype.ext
-    apply Prod.ext
-    · apply pairing.partner.injective
-      calc
-        pairing.partner p.1.1 = p.1.2 := hpPartner
-        _ = q.1.2 := hright
-        _ = pairing.partner q.1.1 := hqPartner.symm
-    · exact hright
+  · simpa [Pairing.pairEndpoint, pairEndpointAt] using
+      pairing.pairEndpoint_ne_of_normalizedPair_ne p q hpq (0 : Fin 2) (0 : Fin 2)
+  · simpa [Pairing.pairEndpoint, pairEndpointAt] using
+      pairing.pairEndpoint_ne_of_normalizedPair_ne p q hpq (0 : Fin 2) (1 : Fin 2)
+  · simpa [Pairing.pairEndpoint, pairEndpointAt] using
+      pairing.pairEndpoint_ne_of_normalizedPair_ne p q hpq (1 : Fin 2) (0 : Fin 2)
+  · simpa [Pairing.pairEndpoint, pairEndpointAt] using
+      pairing.pairEndpoint_ne_of_normalizedPair_ne p q hpq (1 : Fin 2) (1 : Fin 2)
 
 end BlochDeDominicis
 end Common
