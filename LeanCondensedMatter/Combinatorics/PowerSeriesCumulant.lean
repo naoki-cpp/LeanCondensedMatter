@@ -24,6 +24,29 @@ variable {α : Type*} [DecidableEq α]
 private def BlockContaining (s : Finset α) (a : α) :=
   {B : Finset α // B ⊆ s ∧ a ∈ B}
 
+private def blockContainingEquivPowerset (s : Finset α) (a : α) (ha : a ∈ s) :
+    BlockContaining s a ≃ {T : Finset α // T ∈ (s.erase a).powerset} where
+  toFun B := ⟨B.1.erase a, by
+    rw [Finset.mem_powerset]
+    intro x hx
+    have hxB : x ∈ B.1 := Finset.mem_of_mem_erase hx
+    exact Finset.mem_erase.mpr ⟨Finset.ne_of_mem_erase hx, B.2.1 hxB⟩⟩
+  invFun T := ⟨insert a T.1, by
+    constructor
+    · rw [Finset.insert_subset_iff]
+      exact ⟨ha, (Finset.mem_powerset.mp T.2).trans (Finset.erase_subset _ _)⟩
+    · exact Finset.mem_insert_self _ _⟩
+  left_inv B := by
+    apply Subtype.ext
+    exact Finset.insert_erase B.2.2
+  right_inv T := by
+    apply Subtype.ext
+    have haT : a ∉ T.1 := by
+      intro haT
+      have hmem := (Finset.mem_powerset.mp T.2) haT
+      exact (Finset.mem_erase.mp hmem).1 rfl
+    simp [haT]
+
 private theorem insert_part_parts_avoid {s : Finset α} (P : Finpartition s) {a : α}
     (ha : a ∈ s) :
     insert (P.part a) (P.avoid (P.part a)).parts = P.parts := by
@@ -58,7 +81,8 @@ private theorem insert_part_parts_avoid {s : Finset α} (P : Finpartition s) {a 
 private theorem avoid_extend_eq {s B : Finset α} {a : α}
     (hBsub : B ⊆ s) (haB : a ∈ B) (Q : Finpartition (s \ B)) :
     (Q.extend (Finset.ne_empty_of_mem haB) disjoint_sdiff_self_left
-      (by simpa [sup_comm] using sup_sdiff_cancel_right hBsub)).avoid B = Q := by
+      (by simpa [sup_comm] using
+        (sup_sdiff_cancel_right (show B ≤ s from hBsub)))).avoid B = Q := by
   classical
   apply Finpartition.ext
   ext C
@@ -84,10 +108,11 @@ private theorem avoid_extend_eq {s B : Finset α} {a : α}
 
 /-- A partition is equivalent to its distinguished block and a partition of the complement. -/
 private def partComplementEquiv (s : Finset α) (a : α) (ha : a ∈ s) :
-    Finpartition s ≃ Σ B : BlockContaining s a, Finpartition (s \ (B : Finset α)) where
+    Finpartition s ≃ Σ B : BlockContaining s a, Finpartition (s \ B.1) where
   toFun P := ⟨⟨P.part a, P.part_subset a, P.mem_part ha⟩, P.avoid (P.part a)⟩
   invFun x := x.2.extend (Finset.ne_empty_of_mem x.1.2.2) disjoint_sdiff_self_left
-    (by simpa [sup_comm] using sup_sdiff_cancel_right x.1.2.1)
+    (by simpa [sup_comm] using
+      (sup_sdiff_cancel_right (show x.1.1 ≤ s from x.1.2.1)))
   left_inv P := by
     apply Finpartition.ext
     change insert (P.part a) (P.avoid (P.part a)).parts = P.parts
@@ -95,37 +120,39 @@ private def partComplementEquiv (s : Finset α) (a : α) (ha : a ∈ s) :
   right_inv x := by
     rcases x with ⟨B, Q⟩
     let P := Q.extend (Finset.ne_empty_of_mem B.2.2) disjoint_sdiff_self_left
-      (by simpa [sup_comm] using sup_sdiff_cancel_right B.2.1)
-    have hBmem : (B : Finset α) ∈ P.parts := by
+      (by simpa [sup_comm] using
+        (sup_sdiff_cancel_right (show B.1 ≤ s from B.2.1)))
+    have hBmem : B.1 ∈ P.parts := by
       exact Finset.mem_insert_self _ _
-    have hpart : P.part a = B := P.part_eq_of_mem hBmem B.2.2
+    have hpart : P.part a = B.1 := P.part_eq_of_mem hBmem B.2.2
     apply Sigma.ext hpart
     apply heq_of_eq
     exact avoid_extend_eq B.2.1 B.2.2 Q
 
 private theorem partitionProduct_partComplementEquiv_symm
     (κ : Finset α → ℂ) {s : Finset α} {a : α} (ha : a ∈ s)
-    (x : Σ B : BlockContaining s a, Finpartition (s \ (B : Finset α))) :
+    (x : Σ B : BlockContaining s a, Finpartition (s \ B.1)) :
     partitionProduct κ ((partComplementEquiv s a ha).symm x) =
-      κ x.1 * partitionProduct κ x.2 := by
+      κ x.1.1 * partitionProduct κ x.2 := by
   classical
   rcases x with ⟨B, Q⟩
-  change (∏ C ∈ insert (B : Finset α) Q.parts, κ C) =
-    κ B * ∏ C ∈ Q.parts, κ C
+  change (∏ C ∈ insert B.1 Q.parts, κ C) =
+    κ B.1 * ∏ C ∈ Q.parts, κ C
   rw [Finset.prod_insert]
   intro hB
-  have hBsub : (B : Finset α) ⊆ s \ B := Q.le hB
-  exact Finset.ne_empty_of_mem B.2.2
-    (Finset.eq_empty_iff_forall_not_mem.mpr fun x hx =>
-      (Finset.mem_sdiff.mp (hBsub hx)).2 hx)
+  have haDiff : a ∈ s \ B.1 := Q.le hB B.2.2
+  exact (Finset.mem_sdiff.mp haDiff).2 B.2.2
 
 /-- The moment sum splits by the block containing a distinguished element. -/
-theorem momentFromCumulant_eq_sum_blockContaining (κ : Finset α → ℂ)
+private theorem momentFromCumulant_eq_sum_blockContaining (κ : Finset α → ℂ)
     {s : Finset α} {a : α} (ha : a ∈ s) :
     momentFromCumulant κ s =
       ∑ B : BlockContaining s a,
-        κ B * momentFromCumulant κ (s \ (B : Finset α)) := by
+        κ B.1 * momentFromCumulant κ (s \ B.1) := by
   classical
+  letI : Fintype (BlockContaining s a) :=
+    Fintype.ofEquiv {T : Finset α // T ∈ (s.erase a).powerset}
+      (blockContainingEquivPowerset s a ha).symm
   rw [momentFromCumulant, ← Equiv.sum_comp (partComplementEquiv s a ha).symm,
     Fintype.sum_sigma]
   apply Fintype.sum_congr
@@ -134,45 +161,40 @@ theorem momentFromCumulant_eq_sum_blockContaining (κ : Finset α → ℂ)
   rw [← Finset.mul_sum]
   rfl
 
-private def blockContainingEquivPowerset (s : Finset α) (a : α) (ha : a ∈ s) :
-    BlockContaining s a ≃ {T : Finset α // T ∈ (s.erase a).powerset} where
-  toFun B := ⟨B.1.erase a, by
-    rw [Finset.mem_powerset]
-    intro x hx
-    have hxB : x ∈ B := Finset.mem_of_mem_erase hx
-    exact Finset.mem_erase.mpr ⟨Finset.ne_of_mem_erase hx, B.2.1 hxB⟩⟩
-  invFun T := ⟨insert a T.1, by
-    constructor
-    · rw [Finset.insert_subset_iff]
-      exact ⟨ha, (Finset.mem_powerset.mp T.2).trans (Finset.erase_subset _ _)⟩
-    · exact Finset.mem_insert_self _ _⟩
-  left_inv B := by
-    apply Subtype.ext
-    exact Finset.insert_erase B.2.2
-  right_inv T := by
-    apply Subtype.ext
-    simp only
-    rw [Finset.erase_insert]
-    exact fun haT => (Finset.mem_powerset.mp T.2 haT).1 rfl
-
 private theorem sum_blockContaining_card (s : Finset α) (a : α) (ha : a ∈ s)
     (f : ℕ → ℂ) :
     (∑ B : BlockContaining s a, f B.1.card) =
       ∑ k ∈ Finset.range s.card,
         (Nat.choose (s.card - 1) k : ℂ) * f (k + 1) := by
   classical
+  letI : Fintype (BlockContaining s a) :=
+    Fintype.ofEquiv {T : Finset α // T ∈ (s.erase a).powerset}
+      (blockContainingEquivPowerset s a ha).symm
   rw [← Equiv.sum_comp (blockContainingEquivPowerset s a ha).symm]
   rw [← Finset.sum_coe_sort (s.erase a).powerset]
-  rw [Finset.sum_powerset]
+  have hcard : (s.erase a).card + 1 = s.card := Finset.card_erase_add_one ha
+  rw [Finset.sum_powerset, hcard]
   apply Finset.sum_congr rfl
   intro k hk
-  have hk' : k ≤ (s.erase a).card := by
-    exact Nat.lt_succ_iff.mp (Finset.mem_range.mp hk)
-  have hcard : (s.erase a).card = s.card - 1 := by
-    rw [Finset.card_erase_of_mem ha]
-  rw [Finset.sum_powersetCard]
-  simp only [blockContainingEquivPowerset, Equiv.coe_fn_symm_mk]
-  rw [hcard]
+  calc
+    (∑ T ∈ (s.erase a).powersetCard k,
+        f (((blockContainingEquivPowerset s a ha).symm
+          ⟨T, Finset.mem_powerset.mpr (Finset.powersetCard_subset _ _)⟩).1.card)) =
+        ∑ T ∈ (s.erase a).powersetCard k, f (k + 1) := by
+      apply Finset.sum_congr rfl
+      intro T hT
+      have hTa : a ∉ T := by
+        intro hTa
+        have hsub := (Finset.mem_powersetCard.mp hT).1 hTa
+        exact (Finset.mem_erase.mp hsub).1 rfl
+      have hTk : T.card = k := (Finset.mem_powersetCard.mp hT).2
+      simp only [blockContainingEquivPowerset, Equiv.coe_fn_symm_mk]
+      rw [Finset.card_insert_of_notMem hTa, hTk]
+    _ = (Nat.choose (s.card - 1) k : ℂ) * f (k + 1) := by
+      rw [Finset.sum_const, Finset.card_powersetCard]
+      have herase : (s.erase a).card = s.card - 1 := Finset.card_erase_of_mem ha
+      rw [herase]
+      simp [nsmul_eq_mul]
 
 end Finpartition
 
@@ -181,7 +203,7 @@ namespace Combinatorics
 open PowerSeries
 
 /-- The exponential-generating-function normalization of a power-series coefficient. -/
-def powerSeriesMomentCoeff (Z : PowerSeries ℂ) (n : ℕ) : ℂ :=
+noncomputable def powerSeriesMomentCoeff (Z : PowerSeries ℂ) (n : ℕ) : ℂ :=
   (n.factorial : ℂ) * PowerSeries.coeff n Z
 
 /-- The exponential-generating-function normalization of a formal-log coefficient. -/
@@ -203,11 +225,15 @@ private theorem derivative_logOf_mul {Z : PowerSeries ℂ}
     PowerSeries.HasSubst.of_constantCoeff_zero' (by simp [hZ])
   have hgeom := congrArg (fun f : PowerSeries ℂ => f.subst (Z - 1))
     derivative_log_mul_one_add_X
+  have hone : (1 : PowerSeries ℂ).subst (Z - 1) = 1 := by
+    rw [show (1 : PowerSeries ℂ) = PowerSeries.C 1 by rfl, PowerSeries.subst_C]
+    rfl
   have hgeom' :
       (d⁄dX ℂ (PowerSeries.log ℂ)).subst (Z - 1) * Z = 1 := by
-    simpa [PowerSeries.subst_mul hsub, PowerSeries.subst_add hsub,
-      PowerSeries.subst_X hsub] using hgeom
-  rw [PowerSeries.logOf_eq, PowerSeries.derivative_subst hsub]
+    rw [PowerSeries.subst_mul hsub, PowerSeries.subst_add hsub,
+      PowerSeries.subst_X hsub, hone] at hgeom
+    simpa using hgeom
+  rw [PowerSeries.logOf_eq, PowerSeries.derivative_subst ℂ hsub]
   have hderiv : d⁄dX ℂ (Z - 1) = d⁄dX ℂ Z := by simp
   rw [hderiv]
   calc
@@ -223,8 +249,8 @@ private theorem powerSeriesMomentCoeff_succ_recurrence {Z : PowerSeries ℂ}
         (Nat.choose n k : ℂ) * powerSeriesCumulantCoeff Z (k + 1) *
           powerSeriesMomentCoeff Z (n - k) := by
   have hcoeff := congrArg (PowerSeries.coeff n) (derivative_logOf_mul hZ)
-  rw [PowerSeries.coeff_mul, PowerSeries.coeff_derivative,
-    PowerSeries.coeff_derivative] at hcoeff
+  rw [PowerSeries.coeff_mul] at hcoeff
+  simp_rw [PowerSeries.coeff_derivative] at hcoeff
   calc
     powerSeriesMomentCoeff Z (n + 1) =
         (n.factorial : ℂ) * (PowerSeries.coeff (n + 1) Z * (n + 1 : ℂ)) := by
@@ -265,22 +291,45 @@ private theorem momentFromCumulant_powerSeriesCumulantCoeff
         (fun T : Finset α => powerSeriesCumulantCoeff Z T.card) s =
       powerSeriesMomentCoeff Z s.card := by
   classical
-  induction s using Finset.strongInductionOn with
-  | h s ih =>
-      by_cases hs : s = ∅
-      · subst s
-        simp [Finpartition.momentFromCumulant, Finpartition.partitionProduct,
-          powerSeriesMomentCoeff, hZ]
-      · obtain ⟨a, ha⟩ := Finset.nonempty_iff_ne_empty.mpr hs
-        rw [Finpartition.momentFromCumulant_eq_sum_blockContaining _ ha]
-        simp_rw [ih (s \ (· : Finset α)) (Finset.sdiff_ssubset ha)]
-        let n := s.card - 1
-        have hcard : s.card = n + 1 := by
-          dsimp [n]
-          omega
-        rw [Finpartition.sum_blockContaining_card s a ha]
-        subst hcard
-        simpa [Finset.card_sdiff, n] using
+  refine Finset.strongInductionOn s ?_
+  intro s ih
+  by_cases hs : s = ∅
+  · subst s
+    simp [Finpartition.momentFromCumulant, Finpartition.partitionProduct,
+      powerSeriesMomentCoeff, hZ]
+  · obtain ⟨a, ha⟩ := Finset.nonempty_iff_ne_empty.mpr hs
+    rw [Finpartition.momentFromCumulant_eq_sum_blockContaining _ ha]
+    have hsmall : ∀ B : Finpartition.BlockContaining s a,
+        Finpartition.momentFromCumulant
+            (fun T : Finset α => powerSeriesCumulantCoeff Z T.card) (s \ B.1) =
+          powerSeriesMomentCoeff Z (s \ B.1).card := by
+      intro B
+      exact ih (s \ B.1) (Finset.sdiff_ssubset B.2.1 ⟨a, B.2.2⟩)
+    simp_rw [hsmall]
+    let n := s.card - 1
+    have hcard : s.card = n + 1 := by
+      dsimp [n]
+      omega
+    calc
+      (∑ B : Finpartition.BlockContaining s a,
+          powerSeriesCumulantCoeff Z B.1.card *
+            powerSeriesMomentCoeff Z (s \ B.1).card) =
+          ∑ B : Finpartition.BlockContaining s a,
+            powerSeriesCumulantCoeff Z B.1.card *
+              powerSeriesMomentCoeff Z (s.card - B.1.card) := by
+        apply Fintype.sum_congr
+        intro B
+        rw [Finset.card_sdiff B.2.1]
+      _ = ∑ k ∈ Finset.range s.card,
+          (Nat.choose (s.card - 1) k : ℂ) *
+            (powerSeriesCumulantCoeff Z (k + 1) *
+              powerSeriesMomentCoeff Z (s.card - (k + 1))) := by
+        exact Finpartition.sum_blockContaining_card s a ha
+          (fun j => powerSeriesCumulantCoeff Z j *
+            powerSeriesMomentCoeff Z (s.card - j))
+      _ = powerSeriesMomentCoeff Z s.card := by
+        rw [hcard]
+        simpa [Nat.succ_eq_add_one, mul_assoc] using
           (powerSeriesMomentCoeff_succ_recurrence hZ n).symm
 
 /-- Factorial-normalized coefficients of `logOf Z` are the finite-set cumulants of the
@@ -313,8 +362,15 @@ theorem factorial_mul_coeff_logOf_eq_cumulantFromMoment_fin
         (fun S : Finset (Fin n) =>
           (S.card.factorial : ℂ) * PowerSeries.coeff S.card Z)
         Finset.univ := by
+  have hnpos : 0 < n := Nat.pos_of_ne_zero hn
+  have huniv : (Finset.univ : Finset (Fin n)) ≠ ∅ := by
+    intro h
+    have hx : (⟨0, hnpos⟩ : Fin n) ∈ (Finset.univ : Finset (Fin n)) :=
+      Finset.mem_univ _
+    rw [h] at hx
+    exact Finset.not_mem_empty _ hx
   simpa using
     (factorial_mul_coeff_logOf_eq_cumulantFromMoment hZ
-      (s := (Finset.univ : Finset (Fin n))) (by simpa using hn))
+      (s := (Finset.univ : Finset (Fin n))) huniv)
 
 end Combinatorics
