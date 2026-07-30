@@ -26,34 +26,22 @@ theorem QuarticWickDiagram.componentOrderedLeg_lt_componentOrderedLeg_iff_slot_l
           ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩ <
         shuffle.slotEquiv
           ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩ := by
-  have hpLocal :
-      (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).2.val < 4 :=
-    (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).2.isLt
-  have hqLocal :
-      (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).2.val < 4 :=
-    (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).2.isLt
   have hslot_ne :
-      (shuffle.slotEquiv
-        ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩).val ≠
-      (shuffle.slotEquiv
-        ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩).val := by
-    intro hval
-    have hslot :
+      shuffle.slotEquiv
+          ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩ ≠
         shuffle.slotEquiv
-            ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩ =
-          shuffle.slotEquiv
-            ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩ :=
-      Fin.ext hval
+          ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩ := by
+    intro hslot
     have hsigma := shuffle.slotEquiv.injective hslot
     exact hBC (congrArg Sigma.fst hsigma)
-  change (d.componentOrderedLeg shuffle B p).val <
-      (d.componentOrderedLeg shuffle C q).val ↔
+  unfold QuarticWickDiagram.componentOrderedLeg
+  exact orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne S.card
     (shuffle.slotEquiv
-      ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩).val <
+      ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩)
     (shuffle.slotEquiv
-      ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩).val
-  rw [d.componentOrderedLeg_val, d.componentOrderedLeg_val]
-  omega
+      ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩)
+    (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).2
+    (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).2 hslot_ne
 
 /-- A reversed pair of distinct-component vertex slots contributes all `4 × 4 = 16` reversed
 quartic-leg pairs, while a correctly ordered pair contributes none. -/

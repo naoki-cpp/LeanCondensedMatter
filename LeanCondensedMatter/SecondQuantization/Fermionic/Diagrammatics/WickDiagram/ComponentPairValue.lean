@@ -37,36 +37,113 @@ theorem QuarticWickDiagram.orderedQuarticLegEquiv_componentOrderedLeg
         (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).2) := by
   simp [QuarticWickDiagram.componentOrderedLeg]
 
+/-- Recover the flattened ordered-leg value from its vertex slot and local leg. -/
+theorem orderedQuarticLegEquiv_reconstruct_val (n : ℕ) (p : Fin (2 * (2 * n))) :
+    p.val = (orderedQuarticLegEquiv n p).2.val + 4 * (orderedQuarticLegEquiv n p).1.val := by
+  have h := congrArg (fun q => q.val) ((orderedQuarticLegEquiv n).symm_apply_apply p)
+  simpa [orderedQuarticLegEquiv, finProdFinEquiv] using h.symm
+
+/-- Flattened quartic legs in distinct vertex-slot blocks are ordered exactly by their slots. -/
+theorem orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne
+    (n : ℕ) (i j : Fin n) (a b : Fin 4) (hij : i ≠ j) :
+    (orderedQuarticLegEquiv n).symm (i, a) <
+        (orderedQuarticLegEquiv n).symm (j, b) ↔ i < j := by
+  have hp := orderedQuarticLegEquiv_reconstruct_val n
+    ((orderedQuarticLegEquiv n).symm (i, a))
+  have hq := orderedQuarticLegEquiv_reconstruct_val n
+    ((orderedQuarticLegEquiv n).symm (j, b))
+  have hp' : ((orderedQuarticLegEquiv n).symm (i, a)).val = a.val + 4 * i.val := by
+    simpa using hp
+  have hq' : ((orderedQuarticLegEquiv n).symm (j, b)).val = b.val + 4 * j.val := by
+    simpa using hq
+  change ((orderedQuarticLegEquiv n).symm (i, a)).val <
+      ((orderedQuarticLegEquiv n).symm (j, b)).val ↔ i.val < j.val
+  rw [hp', hq']
+  have ha : a.val < 4 := a.isLt
+  have hb : b.val < 4 := b.isLt
+  have hij' : i.val ≠ j.val := by
+    intro h
+    exact hij (Fin.ext h)
+  omega
+
+/-- Numeric form of the component ordered-leg embedding. -/
+@[simp]
+theorem QuarticWickDiagram.componentOrderedLeg_val {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) (shuffle : d.ComponentShuffle)
+    (B : d.componentPartition.parts)
+    (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
+    (d.componentOrderedLeg shuffle B p).val =
+      (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).2.val +
+        4 * (shuffle.slotEquiv
+          ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩).val := by
+  simp [QuarticWickDiagram.componentOrderedLeg, orderedQuarticLegEquiv, finProdFinEquiv]
+
+/-- The component ordered-leg embedding preserves the flattened-leg order. -/
+theorem QuarticWickDiagram.componentOrderedLeg_strictMono {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) (shuffle : d.ComponentShuffle)
+    (B : d.componentPartition.parts) :
+    StrictMono (d.componentOrderedLeg shuffle B) := by
+  intro a b hab
+  let pa := orderedQuarticLegEquiv (B : Finset (Fin N)).card a
+  let pb := orderedQuarticLegEquiv (B : Finset (Fin N)).card b
+  have ha := orderedQuarticLegEquiv_reconstruct_val (B : Finset (Fin N)).card a
+  have hb := orderedQuarticLegEquiv_reconstruct_val (B : Finset (Fin N)).card b
+  change a.val = pa.2.val + 4 * pa.1.val at ha
+  change b.val = pb.2.val + 4 * pb.1.val at hb
+  change a.val < b.val at hab
+  have hpa : pa.2.val < 4 := pa.2.isLt
+  have hpb : pb.2.val < 4 := pb.2.isLt
+  change (d.componentOrderedLeg shuffle B a).val <
+    (d.componentOrderedLeg shuffle B b).val
+  simp only [d.componentOrderedLeg_val]
+  change pa.2.val + 4 * (shuffle.slotEquiv ⟨B, pa.1⟩).val <
+    pb.2.val + 4 * (shuffle.slotEquiv ⟨B, pb.1⟩).val
+  by_cases hslot : pa.1 < pb.1
+  · have hg : (shuffle.slotEquiv ⟨B, pa.1⟩).val <
+        (shuffle.slotEquiv ⟨B, pb.1⟩).val := shuffle.strictMono B hslot
+    omega
+  · have hpb_le : pb.1 ≤ pa.1 := le_of_not_gt hslot
+    have hs : pa.1 = pb.1 := by
+      by_contra hne
+      have hrev : pb.1 < pa.1 := lt_of_le_of_ne hpb_le (Ne.symm hne)
+      have hrev_val : pb.1.val < pa.1.val := hrev
+      omega
+    have hs_val : pa.1.val = pb.1.val := congrArg (fun q => q.val) hs
+    have hlocal : pa.2.val < pb.2.val := by omega
+    have hg_eq : shuffle.slotEquiv ⟨B, pa.1⟩ =
+        shuffle.slotEquiv ⟨B, pb.1⟩ := by rw [hs]
+    have hg_val := congrArg (fun q => q.val) hg_eq
+    omega
+
+/-- The canonical order embedding of one component's flattened legs into the assembled order. -/
+noncomputable def QuarticWickDiagram.componentOrderedLegOrderEmbedding {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) (shuffle : d.ComponentShuffle)
+    (B : d.componentPartition.parts) :
+    Fin (2 * (2 * (B : Finset (Fin N)).card)) ↪o Fin (2 * (2 * S.card)) :=
+  OrderEmbedding.ofStrictMono (d.componentOrderedLeg shuffle B)
+    (d.componentOrderedLeg_strictMono shuffle B)
+
+@[simp]
+theorem QuarticWickDiagram.componentOrderedLegOrderEmbedding_apply {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) (shuffle : d.ComponentShuffle)
+    (B : d.componentPartition.parts)
+    (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
+    d.componentOrderedLegOrderEmbedding shuffle B p = d.componentOrderedLeg shuffle B p :=
+  rfl
+
 /-- The component-local ordered-leg map is injective. -/
 theorem QuarticWickDiagram.componentOrderedLeg_injective {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (shuffle : d.ComponentShuffle)
     (B : d.componentPartition.parts) :
-    Function.Injective (d.componentOrderedLeg shuffle B) := by
-  intro a b hab
-  have hpair := congrArg (orderedQuarticLegEquiv S.card) hab
-  simp only [d.orderedQuarticLegEquiv_componentOrderedLeg] at hpair
-  have hslot :
-      shuffle.slotEquiv ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card a).1⟩ =
-        shuffle.slotEquiv ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card b).1⟩ :=
-    congrArg Prod.fst hpair
-  have hlocal :
-      (orderedQuarticLegEquiv (B : Finset (Fin N)).card a).2 =
-        (orderedQuarticLegEquiv (B : Finset (Fin N)).card b).2 :=
-    congrArg (fun x : Fin S.card × Fin 4 => x.2) hpair
-  have hsigma := shuffle.slotEquiv.injective hslot
-  have hvertex :
-      (orderedQuarticLegEquiv (B : Finset (Fin N)).card a).1 =
-        (orderedQuarticLegEquiv (B : Finset (Fin N)).card b).1 := by
-    simpa using hsigma
-  apply (orderedQuarticLegEquiv (B : Finset (Fin N)).card).injective
-  exact Prod.ext hvertex hlocal
+    Function.Injective (d.componentOrderedLeg shuffle B) :=
+  (d.componentOrderedLegOrderEmbedding shuffle B).injective
 
 /-- The component-local ordered-leg map as an embedding. -/
 noncomputable def QuarticWickDiagram.componentOrderedLegEmbedding {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (shuffle : d.ComponentShuffle)
     (B : d.componentPartition.parts) :
     Fin (2 * (2 * (B : Finset (Fin N)).card)) ↪ Fin (2 * (2 * S.card)) :=
-  ⟨d.componentOrderedLeg shuffle B, d.componentOrderedLeg_injective shuffle B⟩
+  (d.componentOrderedLegOrderEmbedding shuffle B).toEmbedding
 
 /-- The assembled global order sends a component slot to the same underlying labelled vertex as its
 component-local order. -/
