@@ -86,54 +86,50 @@ theorem QuarticWickDiagram.sum_componentOrderedLeg_inversions_eq_sum_vertex_inve
         ∑ j : Fin (C : Finset (Fin N)).card,
           if shuffle.slotEquiv ⟨C, j⟩ < shuffle.slotEquiv ⟨B, i⟩ then 16 else 0 := by
   classical
+  let legPairEquiv :
+      (Fin (2 * (2 * (B : Finset (Fin N)).card)) ×
+        Fin (2 * (2 * (C : Finset (Fin N)).card))) ≃
+        ((Fin (B : Finset (Fin N)).card × Fin (C : Finset (Fin N)).card) ×
+          (Fin 4 × Fin 4)) :=
+    (Equiv.prodCongr
+      (orderedQuarticLegEquiv (B : Finset (Fin N)).card)
+      (orderedQuarticLegEquiv (C : Finset (Fin N)).card)).trans
+      (Equiv.prodProdProdComm _ _ _ _)
   calc
     (∑ p : Fin (2 * (2 * (B : Finset (Fin N)).card)),
         ∑ q : Fin (2 * (2 * (C : Finset (Fin N)).card)),
           if d.componentOrderedLeg shuffle C q < d.componentOrderedLeg shuffle B p
           then 1 else 0) =
-      ∑ x : Fin (B : Finset (Fin N)).card × Fin 4,
-        ∑ y : Fin (C : Finset (Fin N)).card × Fin 4,
-          if d.componentOrderedLeg shuffle C
-              ((orderedQuarticLegEquiv (C : Finset (Fin N)).card).symm y) <
-            d.componentOrderedLeg shuffle B
-              ((orderedQuarticLegEquiv (B : Finset (Fin N)).card).symm x)
-          then 1 else 0 := by
-            rw [← Equiv.sum_comp
-              (orderedQuarticLegEquiv (B : Finset (Fin N)).card).symm]
-            apply Finset.sum_congr rfl
-            intro x _
-            rw [← Equiv.sum_comp
-              (orderedQuarticLegEquiv (C : Finset (Fin N)).card).symm]
-    _ = ∑ i : Fin (B : Finset (Fin N)).card, ∑ localB : Fin 4,
-        ∑ j : Fin (C : Finset (Fin N)).card, ∑ localC : Fin 4,
-          if d.componentOrderedLeg shuffle C
-              ((orderedQuarticLegEquiv (C : Finset (Fin N)).card).symm (j, localC)) <
-            d.componentOrderedLeg shuffle B
-              ((orderedQuarticLegEquiv (B : Finset (Fin N)).card).symm (i, localB))
-          then 1 else 0 := by
-            rw [Fintype.sum_prod_type]
-            apply Finset.sum_congr rfl
-            intro i _
-            apply Finset.sum_congr rfl
-            intro localB _
-            rw [Fintype.sum_prod_type]
-    _ = ∑ i : Fin (B : Finset (Fin N)).card, ∑ j : Fin (C : Finset (Fin N)).card,
-        ∑ localB : Fin 4, ∑ localC : Fin 4,
-          if d.componentOrderedLeg shuffle C
-              ((orderedQuarticLegEquiv (C : Finset (Fin N)).card).symm (j, localC)) <
-            d.componentOrderedLeg shuffle B
-              ((orderedQuarticLegEquiv (B : Finset (Fin N)).card).symm (i, localB))
-          then 1 else 0 := by
-            apply Finset.sum_congr rfl
-            intro i _
-            rw [Finset.sum_comm]
+      ∑ x : Fin (2 * (2 * (B : Finset (Fin N)).card)) ×
+          Fin (2 * (2 * (C : Finset (Fin N)).card)),
+        if d.componentOrderedLeg shuffle C x.2 < d.componentOrderedLeg shuffle B x.1
+        then 1 else 0 := by
+          rw [Fintype.sum_prod_type]
+    _ = ∑ x : (Fin (B : Finset (Fin N)).card × Fin (C : Finset (Fin N)).card) ×
+          (Fin 4 × Fin 4),
+        if d.componentOrderedLeg shuffle C
+            ((orderedQuarticLegEquiv (C : Finset (Fin N)).card).symm (x.1.2, x.2.2)) <
+          d.componentOrderedLeg shuffle B
+            ((orderedQuarticLegEquiv (B : Finset (Fin N)).card).symm (x.1.1, x.2.1))
+        then 1 else 0 := by
+          refine Fintype.sum_equiv legPairEquiv
+            (fun x => if d.componentOrderedLeg shuffle C x.2 <
+              d.componentOrderedLeg shuffle B x.1 then 1 else 0)
+            (fun x => if d.componentOrderedLeg shuffle C
+                ((orderedQuarticLegEquiv (C : Finset (Fin N)).card).symm (x.1.2, x.2.2)) <
+              d.componentOrderedLeg shuffle B
+                ((orderedQuarticLegEquiv (B : Finset (Fin N)).card).symm (x.1.1, x.2.1))
+              then 1 else 0) ?_
+          intro x
+          simp [legPairEquiv]
     _ = ∑ i : Fin (B : Finset (Fin N)).card,
         ∑ j : Fin (C : Finset (Fin N)).card,
           if shuffle.slotEquiv ⟨C, j⟩ < shuffle.slotEquiv ⟨B, i⟩ then 16 else 0 := by
-            apply Finset.sum_congr rfl
-            intro i _
-            apply Finset.sum_congr rfl
-            intro j _
-            exact d.sum_componentOrderedLeg_inversions_at_vertices shuffle B C hBC i j
+          simp only [Fintype.sum_prod_type]
+          apply Finset.sum_congr rfl
+          intro i _
+          apply Finset.sum_congr rfl
+          intro j _
+          exact d.sum_componentOrderedLeg_inversions_at_vertices shuffle B C hBC i j
 
 end SecondQuantization
