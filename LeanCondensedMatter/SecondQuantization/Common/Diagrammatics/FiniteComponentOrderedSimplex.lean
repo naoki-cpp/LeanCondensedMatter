@@ -188,7 +188,7 @@ theorem QuarticDiagram.FiniteComponentPresentation.orderedSimplexIntegral_toComp
     _ = orderedSimplexIntegral (∑ i, p.size i) β
         (shuffle.integrand (fun i => componentIntegrand (p.partsEquiv i))) := by
           symm
-          simpa using BinaryShuffle.orderedSimplexIntegral_cast p.totalCard β
+          simpa using intervalIntegral.orderedSimplexIntegral_cast p.totalCard β
             (shuffle.integrand (fun i => componentIntegrand (p.partsEquiv i)))
 
 /-- Reindex the finite sum over diagram component shuffles as a sum over generic finite-family
