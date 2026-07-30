@@ -44,7 +44,7 @@ theorem FamilySlotShuffle.orderedSimplexIntegral_cons {k : ℕ}
       orderedSimplexIntegral (size 0 + FamilySlotShuffle.tailTotal size) β
         (outer.integrand (localIntegrand 0)
           (tail.integrand (fun i => localIntegrand i.succ))) := by
-  rw [BinaryShuffle.orderedSimplexIntegral_cast
+  rw [intervalIntegral.orderedSimplexIntegral_cast
     (FamilySlotShuffle.sum_eq_head_add_tail size)]
   apply orderedSimplexIntegral_congr
   intro τ
@@ -80,7 +80,7 @@ theorem FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod :
         _ = orderedSimplexIntegral 0 β (fun τ =>
               (default : FamilySlotShuffle size).integrand localIntegrand
                 (fun i => τ (Fin.cast h i))) :=
-          BinaryShuffle.orderedSimplexIntegral_cast h β
+          intervalIntegral.orderedSimplexIntegral_cast h β
             ((default : FamilySlotShuffle size).integrand localIntegrand)
         _ = 1 := by simp [FamilySlotShuffle.integrand]
         _ = ∏ i : Fin 0, orderedSimplexIntegral (size i) β (localIntegrand i) := by simp
