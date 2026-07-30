@@ -7,9 +7,10 @@ defaultTargets = ["LeanCondensedMatter"]
 pp.unicode.fun = true # pretty-prints `fun a ↦ b`
 relaxedAutoImplicit = false
 weak.linter.mathlibStandardSet = true
-# The project intentionally uses concise local headers and allows long mathematical signatures.
+# Keep warning-as-error focused on correctness, API health, and deprecations rather than formatting.
 linter.style.header = false
 linter.style.longLine = false
+linter.unnecessarySimpa = false
 maxSynthPendingDepth = 3
 
 [[require]]
