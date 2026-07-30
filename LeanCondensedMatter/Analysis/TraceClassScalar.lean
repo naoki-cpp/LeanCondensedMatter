@@ -19,14 +19,6 @@ namespace ContinuousLinearMap
 variable {T : H →L[ℂ] H}
 
 omit [CompleteSpace H] in
-/-- A real scalar multiple of a continuous linear map agrees, as an operator, with the complex
-scalar multiple by its cast. Useful for bridging lemmas stated for a general (complex) scalar,
-such as `IsPositive.smul_of_nonneg`, with the real-scalar convention used elsewhere in this file
-(e.g. `trace_smul`, `isTraceClass_smul`). -/
-theorem real_smul_eq_complex_smul (r : ℝ) (T : H →L[ℂ] H) : r • T = (r : ℂ) • T := by
-  ext x; simp
-
-omit [CompleteSpace H] in
 /-- Scaling `T` by a nonzero real `c` scales each eigenvalue by `c` and leaves the
 eigenspaces (as submodules) unchanged. -/
 theorem eigenspace_smul {c : ℝ} (hc : c ≠ 0) (μ : ℂ) :
