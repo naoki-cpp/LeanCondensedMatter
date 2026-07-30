@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
+import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.Combinatorics.Common.FinsetProduct
 
 set_option linter.style.header false
