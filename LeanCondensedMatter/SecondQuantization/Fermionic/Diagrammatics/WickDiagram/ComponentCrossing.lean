@@ -60,16 +60,9 @@ noncomputable def QuarticWickDiagram.componentCrossingPairToGlobal
     (B : d.componentPartition.parts) :
     d.LocalCrossingPair orders B → d.GlobalCrossingPair orders shuffle :=
   fun x =>
-    ⟨((d.componentOrderedLeg shuffle B x.1.1.1,
-        d.componentOrderedLeg shuffle B x.1.1.2),
-      (d.componentOrderedLeg shuffle B x.1.2.1,
-        d.componentOrderedLeg shuffle B x.1.2.2)),
-      (d.mem_pairingInOrder_pairs_componentOrderedLeg_iff
-        orders shuffle B x.1.1.1 x.1.1.2).2 x.2.1,
-      (d.mem_pairingInOrder_pairs_componentOrderedLeg_iff
-        orders shuffle B x.1.2.1 x.1.2.2).2 x.2.2.1,
-      (d.crosses_componentOrderedLeg_iff shuffle B
-        x.1.1.1 x.1.1.2 x.1.2.1 x.1.2.2).2 x.2.2.2⟩
+    ⟨(d.componentPairEquiv orders shuffle ⟨B, x.1.1⟩,
+      d.componentPairEquiv orders shuffle ⟨B, x.1.2⟩),
+      (d.crosses_componentPairEquiv_iff orders shuffle B x.1.1 x.1.2).2 x.2⟩
 
 /-- The component crossing-pair map is injective. -/
 theorem QuarticWickDiagram.componentCrossingPairToGlobal_injective
@@ -80,22 +73,15 @@ theorem QuarticWickDiagram.componentCrossingPairToGlobal_injective
   intro x y hxy
   apply Subtype.ext
   have hval := congrArg Subtype.val hxy
-  change
-    ((d.componentOrderedLeg shuffle B x.1.1.1,
-        d.componentOrderedLeg shuffle B x.1.1.2),
-      (d.componentOrderedLeg shuffle B x.1.2.1,
-        d.componentOrderedLeg shuffle B x.1.2.2)) =
-    ((d.componentOrderedLeg shuffle B y.1.1.1,
-        d.componentOrderedLeg shuffle B y.1.1.2),
-      (d.componentOrderedLeg shuffle B y.1.2.1,
-        d.componentOrderedLeg shuffle B y.1.2.2)) at hval
   apply Prod.ext
-  · apply Prod.ext
-    · exact d.componentOrderedLeg_injective shuffle B (congrArg (fun z => z.1.1) hval)
-    · exact d.componentOrderedLeg_injective shuffle B (congrArg (fun z => z.1.2) hval)
-  · apply Prod.ext
-    · exact d.componentOrderedLeg_injective shuffle B (congrArg (fun z => z.2.1) hval)
-    · exact d.componentOrderedLeg_injective shuffle B (congrArg (fun z => z.2.2) hval)
+  · have hfirst := congrArg Prod.fst hval
+    have hsigma := (d.componentPairEquiv orders shuffle).injective hfirst
+    cases hsigma
+    rfl
+  · have hsecond := congrArg Prod.snd hval
+    have hsigma := (d.componentPairEquiv orders shuffle).injective hsecond
+    cases hsigma
+    rfl
 
 /-- Embed all component-local crossing pair-of-pairs into the assembled global pairing. -/
 noncomputable def QuarticWickDiagram.componentCrossingPairsToGlobal
@@ -111,19 +97,13 @@ theorem QuarticWickDiagram.componentCrossingPairsToGlobal_injective
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) :
     Function.Injective (d.componentCrossingPairsToGlobal orders shuffle) := by
   rintro ⟨B, x⟩ ⟨C, y⟩ hxy
-  have hfirst := congrArg
-    (fun z : d.GlobalCrossingPair orders shuffle => z.1.1.1) hxy
-  change d.componentOrderedLeg shuffle B x.1.1.1 =
-    d.componentOrderedLeg shuffle C y.1.1.1 at hfirst
-  have hsigma :
-      d.componentOrderedLegEquiv shuffle ⟨B, x.1.1.1⟩ =
-        d.componentOrderedLegEquiv shuffle ⟨C, y.1.1.1⟩ := by
-    simpa only [d.componentOrderedLegEquiv_apply] using hfirst
-  have hlocal := (d.componentOrderedLegEquiv shuffle).injective hsigma
-  have hBC : B = C := congrArg Sigma.fst hlocal
-  subst C
-  have hxyLocal := d.componentCrossingPairToGlobal_injective orders shuffle B hxy
-  cases hxyLocal
+  have hval := congrArg Subtype.val hxy
+  have hfirst := congrArg Prod.fst hval
+  have hsigmaFirst := (d.componentPairEquiv orders shuffle).injective hfirst
+  cases hsigmaFirst
+  have hsecond := congrArg Prod.snd hval
+  have hsigmaSecond := (d.componentPairEquiv orders shuffle).injective hsecond
+  cases hsigmaSecond
   rfl
 
 /-- The subset of assembled global crossings whose two pairs belong to one component. -/
