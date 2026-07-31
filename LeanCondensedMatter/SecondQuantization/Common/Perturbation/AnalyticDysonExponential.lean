@@ -65,6 +65,7 @@ theorem continuousDiagonalHamiltonian_pow_basis_apply (energy : Config → ℝ)
       change continuousDiagonalHamiltonian energy
         ((continuousDiagonalHamiltonian energy ^ n) (finiteAnalyticBasis c)) = _
       rw [ih, map_smul, continuousDiagonalHamiltonian_basis_apply, smul_smul]
+      simp [pow_succ]
 
 /-- The interacting Hamiltonian `H₀ + λV` in the finite continuous-operator algebra. -/
 noncomputable def continuousInteractingHamiltonian (energy : Config → ℝ)
@@ -101,8 +102,8 @@ theorem hasDerivAt_analyticDysonExponentialCandidate_raw (energy : Config → �
     (continuousDiagonalHamiltonian energy) τ
   have hinteracting := hasDerivAt_exp_smul_const
     (- continuousInteractingHamiltonian energy V lam) τ
-  simpa only [analyticDysonExponentialCandidate, smul_neg, neg_smul] using
-    hfree.mul hinteracting
+  convert hfree.mul hinteracting using 1 <;>
+    simp only [analyticDysonExponentialCandidate, smul_neg, neg_smul]
 
 end
 end Common
