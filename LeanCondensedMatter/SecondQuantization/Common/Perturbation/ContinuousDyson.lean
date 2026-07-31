@@ -42,7 +42,11 @@ theorem finiteContinuousOperator_add
   apply finiteContinuousOperator_ext_basis
   intro n
   funext m
-  simp only [finiteContinuousOperator_basis_apply, Pi.add_apply, matrixCoeff_add]
+  rw [finiteContinuousOperator_basis_apply, matrixCoeff_add]
+  change matrixCoeff A m n + matrixCoeff B m n =
+    finiteContinuousOperator A (finiteAnalyticBasis n) m +
+      finiteContinuousOperator B (finiteAnalyticBasis n) m
+  rw [finiteContinuousOperator_basis_apply, finiteContinuousOperator_basis_apply]
 
 @[simp]
 theorem finiteContinuousOperator_smul (c : ℂ)
@@ -51,8 +55,10 @@ theorem finiteContinuousOperator_smul (c : ℂ)
   apply finiteContinuousOperator_ext_basis
   intro n
   funext m
-  simp only [finiteContinuousOperator_basis_apply, Pi.smul_apply, matrixCoeff_smul,
-    smul_eq_mul]
+  rw [finiteContinuousOperator_basis_apply, matrixCoeff_smul]
+  change c * matrixCoeff A m n =
+    c * finiteContinuousOperator A (finiteAnalyticBasis n) m
+  rw [finiteContinuousOperator_basis_apply]
 
 @[simp]
 theorem finiteContinuousOperator_neg
