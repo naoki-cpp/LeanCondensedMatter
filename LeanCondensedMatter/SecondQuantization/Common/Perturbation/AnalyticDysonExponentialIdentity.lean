@@ -14,7 +14,8 @@ of the same interaction-picture initial-value problem on each compact nonnegativ
 namespace SecondQuantization
 namespace Common
 
-open Set
+open Set Filter
+open scoped Topology
 
 noncomputable section
 
