@@ -59,8 +59,8 @@ theorem hasDerivWithinAt_analyticDysonEvolution_interactionPicture
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) {β τ : ℝ}
     (hβ : 0 ≤ β) (hτ : τ ∈ Ico (0 : ℝ) β) (lam : ℂ) :
     HasDerivWithinAt (fun σ : ℝ => analyticDysonEvolution energy V σ lam)
-      (-(lam • (continuousInteractionPicture energy V τ *
-        analyticDysonEvolution energy V τ lam))) (Ici τ) τ := by
+      (-(lam • (continuousInteractionPicture energy V τ).comp
+        (analyticDysonEvolution energy V τ lam))) (Ici τ) τ := by
   let g : ℝ → FiniteContinuousOperator Config := fun σ =>
     (continuousInteractionPicture energy V σ).comp
       (analyticDysonEvolution energy V σ lam)
@@ -136,7 +136,7 @@ theorem hasDerivWithinAt_analyticDysonEvolution_interactionPicture
     simpa only [g] using
       analyticDysonEvolution_eq_one_sub_integral energy V hβ hτIcc lam
   have hout := hrhs.congr_of_eventuallyEq heq hpoint
-  simpa only [g] using hout
+  exact hout
 
 end
 end Common
