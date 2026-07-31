@@ -16,21 +16,6 @@ namespace Combinatorics
 open intervalIntegral
 open BinaryShuffle
 
-/-- The unique shuffle of an empty family of slot blocks. -/
-noncomputable def FamilySlotShuffle.nil (size : Fin 0 → ℕ) : FamilySlotShuffle size where
-  slotEquiv := Fintype.equivOfCardEq (by simp)
-  strictMono := fun i => Fin.elim0 i
-
-/-- A shuffle of an empty family is unique. -/
-noncomputable instance FamilySlotShuffle.instUniqueZero (size : Fin 0 → ℕ) :
-    Unique (FamilySlotShuffle size) where
-  default := FamilySlotShuffle.nil size
-  uniq shuffle := by
-    apply FamilySlotShuffle.ext
-    apply Equiv.ext
-    rintro ⟨i, _⟩
-    exact Fin.elim0 i
-
 /-- The ordered-simplex term associated with a recursively constructed family shuffle is the binary
 ambient-slot term whose right integrand is the shuffled tail-family integrand. -/
 theorem FamilySlotShuffle.orderedSimplexIntegral_cons {k : ℕ}
