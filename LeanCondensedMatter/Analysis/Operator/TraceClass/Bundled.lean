@@ -31,6 +31,14 @@ namespace SpectralTraceClass
 
 variable {T T' : H →L[ℂ] H}
 
+/-- Build bundled spectral trace-class data for a positive compact operator with summable real
+eigenvalues. Positivity supplies symmetry. -/
+def ofPositive (hcompact : IsCompactOperator T) (hpos : T.IsPositive)
+    (hsummable : HasSummableRealEigenvalues T) : SpectralTraceClass T where
+  compact := hcompact
+  symmetric := hpos.isSelfAdjoint.isSymmetric
+  summable := hsummable
+
 /-- The spectral trace associated with bundled compactness, symmetry, and summability hypotheses. -/
 noncomputable def trace (h : SpectralTraceClass T) : ℝ :=
   spectralTrace h.summable
@@ -67,6 +75,18 @@ theorem trace_add (hT : SpectralTraceClass T) (hT' : SpectralTraceClass T')
   simpa [trace] using ContinuousLinearMap.trace_add
     hT.compact hT.symmetric hT'.compact hT'.symmetric hadd.compact hadd.symmetric
     hT.summable hT'.summable hadd.summable
+
+/-- Cyclicity of the bundled spectral trace for two products.
+
+This packages the ten proof arguments of `ContinuousLinearMap.trace_comp_comm` into bundled
+hypotheses for the two factors and their products in both orders. -/
+theorem trace_comp_comm (hT : SpectralTraceClass T) (hT' : SpectralTraceClass T')
+    (hTT' : SpectralTraceClass (T * T')) (hT'T : SpectralTraceClass (T' * T)) :
+    hTT'.trace = hT'T.trace := by
+  simpa [trace] using ContinuousLinearMap.trace_comp_comm
+    hT.compact hT.symmetric hT'.compact hT'.symmetric
+    hTT'.compact hTT'.symmetric hT'T.compact hT'T.symmetric
+    hTT'.summable hT'T.summable
 
 end SpectralTraceClass
 end ContinuousLinearMap
