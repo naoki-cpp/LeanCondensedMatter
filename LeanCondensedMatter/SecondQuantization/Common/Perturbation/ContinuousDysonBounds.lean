@@ -96,7 +96,7 @@ theorem integral_mul_dysonMajorant (M τ : ℝ) (n : ℕ) :
     funext σ
     simp only [dysonMajorant, mul_pow]
     ring
-  rw [hfun, intervalIntegral.integral_const_mul, intervalIntegral.integral_pow]
+  rw [hfun, intervalIntegral.integral_const_mul, integral_pow]
   simp only [zero_pow (Nat.succ_ne_zero n), sub_zero, dysonMajorant,
     Nat.factorial_succ, Nat.cast_mul, Nat.cast_add, Nat.cast_one, mul_pow]
   field_simp [Nat.factorial_ne_zero]
@@ -104,7 +104,7 @@ theorem integral_mul_dysonMajorant (M τ : ℝ) (n : ℕ) :
 
 /-- The scalar factorial majorant is summable for every real `M` and `τ`. -/
 theorem summable_dysonMajorant (M τ : ℝ) : Summable (dysonMajorant M τ) := by
-  simpa only [dysonMajorant] using
+  simpa [dysonMajorant, smul_eq_mul] using
     (NormedSpace.expSeries_summable' (𝕂 := ℝ) (𝔸 := ℝ) (M * τ))
 
 /-- A uniform interaction-picture bound `M` implies the standard factorial Dyson coefficient
@@ -154,7 +154,7 @@ theorem norm_continuousDysonCoeff_le (energy : Config → ℝ)
       dysonMajorant (interactionPictureNormBound energy V β) τ n :=
   norm_continuousDysonCoeff_le_of_bound energy V
     (interactionPictureNormBound_nonneg energy V hβ)
-    (fun σ hσ => norm_continuousInteractionPicture_le energy V hβ hσ) n hτ
+    (fun _ hσ => norm_continuousInteractionPicture_le energy V hβ hσ) n hτ
 
 /-- The norms of the perturbatively weighted Dyson coefficients are summable on every compact
 imaginary-time interval. This is the reusable Weierstrass majorant for the analytic Dyson series. -/
