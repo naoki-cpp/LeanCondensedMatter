@@ -144,6 +144,47 @@ theorem analyticDysonExponentialCandidate_zero (energy : Config → ℝ)
     analyticDysonExponentialCandidate energy V 0 lam = 1 := by
   simp [analyticDysonExponentialCandidate]
 
+/-- Rewrite the exact candidate with the existing continuous free evolution. -/
+theorem analyticDysonExponentialCandidate_eq (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (τ : ℝ) (lam : ℂ) :
+    analyticDysonExponentialCandidate energy V τ lam =
+      continuousDiagonalEvolution energy τ *
+        NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)) := by
+  rw [analyticDysonExponentialCandidate, continuousDiagonalEvolution_eq_exp]
+
+/-- Multiplying the exact candidate by the interaction-picture operator cancels the two free
+propagators in the middle. -/
+theorem continuousInteractionPicture_comp_analyticDysonExponentialCandidate
+    (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (τ : ℝ) (lam : ℂ) :
+    (continuousInteractionPicture energy V τ).comp
+        (analyticDysonExponentialCandidate energy V τ lam) =
+      (continuousDiagonalEvolution energy τ).comp
+        ((finiteContinuousOperator V).comp
+          (NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam))) := by
+  rw [continuousInteractionPicture_eq_conj,
+    analyticDysonExponentialCandidate_eq]
+  change
+    (continuousDiagonalEvolution energy τ *
+      (finiteContinuousOperator V * continuousDiagonalEvolution energy (-τ))) *
+      (continuousDiagonalEvolution energy τ *
+        NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam))) =
+    continuousDiagonalEvolution energy τ *
+      (finiteContinuousOperator V *
+        NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)))
+  calc
+    _ = continuousDiagonalEvolution energy τ * finiteContinuousOperator V *
+        (continuousDiagonalEvolution energy (-τ) *
+          continuousDiagonalEvolution energy τ) *
+        NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)) := by
+      noncomm_ring
+    _ = continuousDiagonalEvolution energy τ * finiteContinuousOperator V * 1 *
+        NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)) := by
+      rw [continuousDiagonalEvolution_neg_comp]
+    _ = _ := by noncomm_ring
+
 /-- Product-rule derivative of the exponential candidate, before cancellation of the free
 Hamiltonian terms. -/
 theorem hasDerivAt_analyticDysonExponentialCandidate_raw (energy : Config → ℝ)
@@ -172,6 +213,20 @@ theorem hasDerivAt_analyticDysonExponentialCandidate (energy : Config → ℝ)
   convert hasDerivAt_analyticDysonExponentialCandidate_raw energy V τ lam using 1
   rw [continuousInteractingHamiltonian]
   noncomm_ring
+
+/-- The exact candidate solves the same interaction-picture differential equation as the Dyson
+series. -/
+theorem hasDerivAt_analyticDysonExponentialCandidate_interactionPicture
+    (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (τ : ℝ) (lam : ℂ) :
+    HasDerivAt (fun σ : ℝ => analyticDysonExponentialCandidate energy V σ lam)
+      (-(lam • (continuousInteractionPicture energy V τ).comp
+        (analyticDysonExponentialCandidate energy V τ lam))) τ := by
+  convert hasDerivAt_analyticDysonExponentialCandidate energy V τ lam using 1
+  rw [continuousInteractionPicture_comp_analyticDysonExponentialCandidate,
+    ← continuousDiagonalEvolution_eq_exp]
+  simp [mul_assoc, mul_smul_comm, smul_mul_assoc]
 
 end
 end Common
