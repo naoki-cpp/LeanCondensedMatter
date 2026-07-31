@@ -143,8 +143,9 @@ theorem intervalIntegral_analyticDysonIntegrand (energy : Config → ℝ)
   rw [← intervalIntegral.integral_smul]
   apply intervalIntegral.integral_congr
   intro σ _
-  simp [analyticDysonIntegrand, analyticDysonTerm, pow_succ',
-    mul_smul_comm, smul_smul]
+  simp only [analyticDysonIntegrand, analyticDysonTerm, pow_succ', smul_smul]
+  ext x
+  rfl
 
 /-- The positive-order Dyson tail sums to the negative Volterra integral. -/
 theorem hasSum_analyticDysonTail (energy : Config → ℝ)
