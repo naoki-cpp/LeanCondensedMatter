@@ -121,52 +121,18 @@ theorem finiteContinuousOperator_apply_apply
         finiteContinuousOperator_basis_apply]
       exact Finset.sum_congr rfl fun n _ => mul_comm _ _
 
-/-- A matrix unit on the analytic finite-dimensional realization. -/
-noncomputable def finiteAnalyticMatrixUnit (m n : Config) : FiniteContinuousOperator Config :=
-  ({
-    toFun := fun x => x n • finiteAnalyticBasis m
-    map_add' := by
-      intro x y
-      simp [add_smul]
-    map_smul' := by
-      intro c x
-      simp [smul_smul]
-  } : FiniteAnalyticFock Config →ₗ[ℂ] FiniteAnalyticFock Config).toContinuousLinearMap
+/-- Continuous finite operators are continuously equivalent to their columns on the standard
+coordinate basis. -/
+noncomputable def finiteContinuousOperatorColumns :
+    FiniteContinuousOperator Config ≃L[ℂ] Config → FiniteAnalyticFock Config :=
+  ContinuousLinearEquiv.piRing (𝕜 := ℂ) (E := FiniteAnalyticFock Config) Config
 
 @[simp]
-theorem finiteAnalyticMatrixUnit_apply (m n : Config) (x : FiniteAnalyticFock Config) (k : Config) :
-    finiteAnalyticMatrixUnit m n x k = x n * finiteAnalyticBasis m k := rfl
-
-/-- A transported operator is the finite sum of its matrix coefficients times matrix units. -/
-theorem finiteContinuousOperator_eq_matrixUnit_sum
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    finiteContinuousOperator A =
-      ∑ m : Config, ∑ n : Config, matrixCoeff A m n • finiteAnalyticMatrixUnit m n := by
+theorem finiteContinuousOperatorColumns_apply
+    (A : FiniteContinuousOperator Config) (n : Config) :
+    finiteContinuousOperatorColumns A n = A (finiteAnalyticBasis n) := by
   classical
-  apply finiteContinuousOperator_ext_basis
-  intro p
-  funext k
-  rw [finiteContinuousOperator_basis_apply]
-  simp [finiteAnalyticMatrixUnit, finiteAnalyticBasis]
-  symm
-  calc
-    (∑ m : Config, ∑ n : Config,
-        matrixCoeff A m n * (Pi.single p 1 n * Pi.single m 1 k)) =
-        ∑ m : Config, matrixCoeff A m p * Pi.single m 1 k := by
-      apply Finset.sum_congr rfl
-      intro m _
-      rw [Finset.sum_eq_single p]
-      · simp
-      · intro n _ hnp
-        have hpn : p ≠ n := Ne.symm hnp
-        simp [hpn]
-      · simp
-    _ = matrixCoeff A k p := by
-      rw [Finset.sum_eq_single k]
-      · simp
-      · intro m _ hmk
-        simp [hmk]
-      · simp
+  rfl
 
 /-- Matrix-coefficient continuity implies continuity of the transported operator-valued family. -/
 theorem continuous_finiteContinuousOperator
@@ -174,14 +140,16 @@ theorem continuous_finiteContinuousOperator
     (hF : ∀ m n : Config, Continuous (fun τ : ℝ => matrixCoeff (F τ) m n)) :
     Continuous (fun τ : ℝ => finiteContinuousOperator (F τ)) := by
   classical
-  have heq : (fun τ : ℝ => finiteContinuousOperator (F τ)) =
-      fun τ : ℝ => ∑ m : Config, ∑ n : Config,
-        matrixCoeff (F τ) m n • finiteAnalyticMatrixUnit m n := by
-    funext τ
-    exact finiteContinuousOperator_eq_matrixUnit_sum (F τ)
-  rw [heq]
-  exact continuous_finsetSum _ fun m _ =>
-    continuous_finsetSum _ fun n _ => (hF m n).smul continuous_const
+  have hcolumns : Continuous (fun τ : ℝ =>
+      finiteContinuousOperatorColumns (finiteContinuousOperator (F τ))) := by
+    apply continuous_pi
+    intro n
+    apply continuous_pi
+    intro m
+    simpa only [finiteContinuousOperatorColumns_apply, finiteContinuousOperator_basis_apply]
+      using hF m n
+  have h := finiteContinuousOperatorColumns.symm.continuous.comp hcolumns
+  simpa only [ContinuousLinearEquiv.symm_apply_apply] using h
 
 /-- Coordinate evaluation on the analytic finite-dimensional realization. -/
 noncomputable def finiteAnalyticCoordinate (m : Config) : FiniteAnalyticFock Config →L[ℂ] ℂ :=
@@ -235,6 +203,10 @@ theorem continuousOperatorIntervalIntegral_eq
   apply finiteContinuousOperator_ext_basis
   intro n
   exact continuousOperatorIntervalIntegral_basis F hF a b n
+
+/-- Smoke test for the continuous-operator norm at the pinned Mathlib revision. -/
+noncomputable def finiteContinuousOperatorNorm
+    (A : FiniteContinuousOperator Config) : ℝ := ‖A‖
 
 /-- Smoke test for continuous-operator composition at the pinned Mathlib revision. -/
 noncomputable def finiteContinuousOperatorComp
