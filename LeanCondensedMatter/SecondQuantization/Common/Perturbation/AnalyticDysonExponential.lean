@@ -84,9 +84,9 @@ theorem hasDerivAt_analyticDysonExponentialCandidate_raw (energy : Config → �
         NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
           (NormedSpace.exp ((-τ) • continuousInteractingHamiltonian energy V lam) *
             (- continuousInteractingHamiltonian energy V lam))) τ := by
-  have hfree := NormedSpace.hasDerivAt_exp_smul_const
+  have hfree := hasDerivAt_exp_smul_const
     (continuousDiagonalHamiltonian energy) τ
-  have hinteracting := NormedSpace.hasDerivAt_exp_smul_const
+  have hinteracting := hasDerivAt_exp_smul_const
     (- continuousInteractingHamiltonian energy V lam) τ
   simpa only [analyticDysonExponentialCandidate, smul_neg, neg_smul] using
     hfree.mul hinteracting
