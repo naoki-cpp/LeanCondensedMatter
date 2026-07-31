@@ -67,7 +67,7 @@ theorem finiteContinuousOperator_neg
   apply finiteContinuousOperator_ext_basis
   intro n
   funext m
-  simp only [finiteContinuousOperator_basis_apply, Pi.neg_apply]
+  rw [finiteContinuousOperator_basis_apply]
   simp [matrixCoeff]
 
 @[simp]
