@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Operator-exponential realization of the analytic Dyson evolution
 
 This module places the basis-diagonal free Hamiltonian and the interacting Hamiltonian in the same
-finite-dimensional continuous-operator algebra as `analyticDysonEvolution`.  The exact
+finite-dimensional continuous-operator algebra as `analyticDysonEvolution`. The exact
 interaction-picture candidate is then the ordered product
 
 `exp (τ H₀) * exp (-τ (H₀ + λ V))`.
@@ -68,6 +68,15 @@ theorem continuousDiagonalHamiltonian_pow_basis_apply (energy : Config → ℝ)
       simp [pow_succ]
 
 @[simp]
+theorem smul_continuousDiagonalHamiltonian_basis_apply (energy : Config → ℝ)
+    (τ : ℝ) (c : Config) :
+    (τ • continuousDiagonalHamiltonian energy) (finiteAnalyticBasis c) =
+      ((τ * energy c : ℝ) : ℂ) • finiteAnalyticBasis c := by
+  change τ • continuousDiagonalHamiltonian energy (finiteAnalyticBasis c) = _
+  rw [continuousDiagonalHamiltonian_basis_apply]
+  simp [smul_smul]
+
+@[simp]
 theorem smul_continuousDiagonalHamiltonian_pow_basis_apply (energy : Config → ℝ)
     (τ : ℝ) (c : Config) (n : ℕ) :
     ((τ • continuousDiagonalHamiltonian energy) ^ n) (finiteAnalyticBasis c) =
@@ -78,8 +87,8 @@ theorem smul_continuousDiagonalHamiltonian_pow_basis_apply (energy : Config → 
       rw [pow_succ']
       change (τ • continuousDiagonalHamiltonian energy)
         (((τ • continuousDiagonalHamiltonian energy) ^ n) (finiteAnalyticBasis c)) = _
-      rw [ih, map_smul]
-      simp [continuousDiagonalHamiltonian_basis_apply, smul_smul, pow_succ]
+      rw [ih, map_smul, smul_continuousDiagonalHamiltonian_basis_apply, smul_smul]
+      rw [pow_succ]
 
 /-- The Banach-algebra exponential of the free Hamiltonian acts diagonally with the expected
 scalar exponential. -/
@@ -96,14 +105,24 @@ theorem exp_continuousDiagonalHamiltonian_basis_apply (energy : Config → ℝ)
       (ContinuousLinearMap.toSpanSingleton ℂ (finiteAnalyticBasis c))
   have hterms :
       (fun n : ℕ => evalBasis
-        ((n !⁻¹ : ℂ) • (τ • continuousDiagonalHamiltonian energy) ^ n)) =
+        (((Nat.factorial n : ℂ)⁻¹) • (τ • continuousDiagonalHamiltonian energy) ^ n)) =
       (fun n : ℕ => ContinuousLinearMap.toSpanSingleton ℂ (finiteAnalyticBasis c)
-        ((n !⁻¹ : ℂ) • (((τ * energy c : ℝ) : ℂ) ^ n))) := by
+        (((Nat.factorial n : ℂ)⁻¹) • (((τ * energy c : ℝ) : ℂ) ^ n))) := by
     funext n
     simp [evalBasis, smul_continuousDiagonalHamiltonian_pow_basis_apply, smul_smul]
   rw [hterms] at hop
   have heq := hop.unique hscalar
   simpa [evalBasis, Complex.exp_eq_exp_ℂ] using heq
+
+/-- The continuous free evolution is the Banach-algebra exponential of the diagonal
+Hamiltonian. -/
+theorem continuousDiagonalEvolution_eq_exp (energy : Config → ℝ) (τ : ℝ) :
+    continuousDiagonalEvolution energy τ =
+      NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) := by
+  apply finiteContinuousOperator_ext_basis
+  intro c
+  rw [continuousDiagonalEvolution_basis_apply,
+    exp_continuousDiagonalHamiltonian_basis_apply]
 
 /-- The interacting Hamiltonian `H₀ + λV` in the finite continuous-operator algebra. -/
 noncomputable def continuousInteractingHamiltonian (energy : Config → ℝ)
@@ -123,25 +142,6 @@ theorem analyticDysonExponentialCandidate_zero (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (lam : ℂ) :
     analyticDysonExponentialCandidate energy V 0 lam = 1 := by
   simp [analyticDysonExponentialCandidate]
-
-/-- Product-rule derivative of the exact exponential candidate, before cancelling the free
-Hamiltonian contributions. -/
-theorem hasDerivAt_analyticDysonExponentialCandidate_raw (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-    (τ : ℝ) (lam : ℂ) :
-    HasDerivAt (fun σ : ℝ => analyticDysonExponentialCandidate energy V σ lam)
-      ((NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
-          continuousDiagonalHamiltonian energy) *
-        NormedSpace.exp ((-τ) • continuousInteractingHamiltonian energy V lam) +
-        NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
-          (NormedSpace.exp ((-τ) • continuousInteractingHamiltonian energy V lam) *
-            (- continuousInteractingHamiltonian energy V lam))) τ := by
-  have hfree := hasDerivAt_exp_smul_const
-    (continuousDiagonalHamiltonian energy) τ
-  have hinteracting := hasDerivAt_exp_smul_const
-    (- continuousInteractingHamiltonian energy V lam) τ
-  convert hfree.mul hinteracting using 1 <;>
-    simp only [analyticDysonExponentialCandidate, smul_neg, neg_smul]
 
 end
 end Common
