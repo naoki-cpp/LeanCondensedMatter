@@ -100,12 +100,11 @@ theorem integral_mul_dysonMajorant (M τ : ℝ) (n : ℕ) :
   simp only [zero_pow (Nat.succ_ne_zero n), sub_zero, dysonMajorant,
     Nat.factorial_succ, Nat.cast_mul, Nat.cast_add, Nat.cast_one, mul_pow]
   field_simp [Nat.factorial_ne_zero]
-  ring
 
 /-- The scalar factorial majorant is summable for every real `M` and `τ`. -/
 theorem summable_dysonMajorant (M τ : ℝ) : Summable (dysonMajorant M τ) := by
-  simpa [dysonMajorant, smul_eq_mul] using
-    (NormedSpace.expSeries_summable' (𝕂 := ℝ) (𝔸 := ℝ) (M * τ))
+  simpa [dysonMajorant, div_eq_mul_inv, mul_comm] using
+    Real.summable_pow_div_factorial (M * τ)
 
 /-- A uniform interaction-picture bound `M` implies the standard factorial Dyson coefficient
 bound on `[0, β]`. -/
