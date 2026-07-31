@@ -136,13 +136,29 @@ noncomputable def analyticDysonExponentialCandidate (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (τ : ℝ) (lam : ℂ) : FiniteContinuousOperator Config :=
   NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
-    NormedSpace.exp ((-τ) • continuousInteractingHamiltonian energy V lam)
+    NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam))
 
 @[simp]
 theorem analyticDysonExponentialCandidate_zero (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (lam : ℂ) :
     analyticDysonExponentialCandidate energy V 0 lam = 1 := by
   simp [analyticDysonExponentialCandidate]
+
+/-- Product-rule derivative of the exponential candidate, before cancellation of the free
+Hamiltonian terms. -/
+theorem hasDerivAt_analyticDysonExponentialCandidate_raw (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (τ : ℝ) (lam : ℂ) :
+    HasDerivAt (fun σ : ℝ => analyticDysonExponentialCandidate energy V σ lam)
+      ((NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
+          continuousDiagonalHamiltonian energy) *
+        NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)) +
+        NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
+          ((- continuousInteractingHamiltonian energy V lam) *
+            NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)))) τ := by
+  unfold analyticDysonExponentialCandidate
+  exact (hasDerivAt_exp_smul_const (continuousDiagonalHamiltonian energy) τ).mul
+    (hasDerivAt_exp_smul_const' (- continuousInteractingHamiltonian energy V lam) τ)
 
 end
 end Common
