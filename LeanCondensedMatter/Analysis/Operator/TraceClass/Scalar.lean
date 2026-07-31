@@ -29,8 +29,9 @@ theorem eigenspace_smul {c : ℝ} (hc : c ≠ 0) (μ : ℂ) :
   have hc' : (c : ℂ) ≠ 0 := by exact_mod_cast hc
   change Module.End.eigenspace ((c : ℂ) • f) ((c : ℂ) * μ) =
     Module.End.eigenspace f μ
-  rw [Module.End.eigenspace_def,
-    ← Module.End.eigenspace_div f ((c : ℂ) * μ) (c : ℂ) hc']
+  have hdiv := Module.End.eigenspace_div f ((c : ℂ) * μ) (c : ℂ) hc'
+  simp only [Algebra.algebraMap_eq_smul_one] at hdiv
+  rw [Module.End.eigenspace_def, ← hdiv]
   simp [hc']
 
 /-- The reindexing `μ ↦ c * μ` on nonzero eigenvalues, for a nonzero real `c`, as an
