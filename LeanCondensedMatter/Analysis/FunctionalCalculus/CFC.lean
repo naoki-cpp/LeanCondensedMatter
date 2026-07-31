@@ -39,13 +39,21 @@ theorem Polynomial.aeval_apply_eigenvector {T : H →L[ℂ] H} {v : H} {c : ℝ}
     (Polynomial.aeval T q : H →L[ℂ] H) v = ((q.eval c : ℝ) : ℂ) • v := by
   rw [Polynomial.aeval_eq_aeval_map
     (φ := algebraMap ℝ ℂ) (by ext r; simp [RingHom.comp_apply]) q T]
-  change
-    (Polynomial.aeval (T : H →ₗ[ℂ] H) (q.map (algebraMap ℝ ℂ))) v =
-      ((q.eval c : ℝ) : ℂ) • v
-  have h := Module.End.aeval_apply_of_mem_apply_eq_smul
-    (f := (T : H →ₗ[ℂ] H)) (μ := (c : ℂ)) (x := v)
-    (p := q.map (algebraMap ℝ ℂ)) hv
-  simpa using h
+  let p := q.map (algebraMap ℝ ℂ)
+  have hmap :
+      ContinuousLinearMap.toLinearMapRingHom (Polynomial.aeval T p) =
+        Polynomial.aeval (T : H →ₗ[ℂ] H) p := by
+    simpa [p] using
+      (Polynomial.map_aeval_eq_aeval_map
+        (R := ℂ) (S := H →L[ℂ] H) (T := ℂ) (U := H →ₗ[ℂ] H)
+        (φ := RingHom.id ℂ)
+        (ψ := ContinuousLinearMap.toLinearMapRingHom)
+        (by ext z x; simp [RingHom.comp_apply, Algebra.algebraMap_eq_smul_one]) p T)
+  change (ContinuousLinearMap.toLinearMapRingHom (Polynomial.aeval T p)) v = _
+  rw [hmap]
+  simpa [p] using
+    (Module.End.aeval_apply_of_mem_apply_eq_smul
+      (f := (T : H →ₗ[ℂ] H)) (μ := (c : ℂ)) (x := v) (p := p) hv)
 
 open Filter Topology
 
