@@ -2,7 +2,7 @@ import LeanCondensedMatter.QuantumTheory.EnergyExpValueTraceClass
 import LeanCondensedMatter.QuantumTheory.GibbsStateTraceClass
 import LeanCondensedMatter.QuantumTheory.EntropyTraceClass
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled
 
 /-!
 # The Gibbs–Klein / Helmholtz free-energy inequality (infinite dimensions)
@@ -190,6 +190,8 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop 
   have hd_unit : ∀ a, ‖d a‖ = 1 := eigenvectorFamily_norm_eq_one ρ
   have hGibbsSym : ((gibbsOp Hop β : H →L[ℂ] H) : H →ₗ[ℂ] H).IsSymmetric :=
     ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mp (gibbsOp_isPositive Hop β).isSelfAdjoint
+  let hGibbs : ContinuousLinearMap.SpectralTraceClass (gibbsOp Hop β) :=
+    ⟨hcompact, hGibbsSym, htc⟩
   -- Step 1: pointwise Peierls–Bogoliubov, then take logs.
   have hstep1 : ∀ a, Real.exp (-β * h a) ≤ q a :=
     fun a => exp_neg_beta_energy_le_gibbs_diagonal Hop β (d a) (hd_unit a)
@@ -206,9 +208,9 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop 
   have hp_summable : Summable p :=
     ρ.traceClass.congr (fun b => abs_of_nonneg (eigenvalue_nonneg ρ b))
   obtain ⟨hph_summable, hphsum⟩ := summable_eigenvalue_mul_energy_and_tsum ρ Hop
-  have hq_summable_and_le : Summable q ∧ ∑' a, q a ≤ Z :=
-    ContinuousLinearMap.sum_inner_apply_le_trace hcompact hGibbsSym
-      (gibbsOp_isPositive Hop β).toLinearMap htc hd_orth
+  have hq_summable_and_le : Summable q ∧ ∑' a, q a ≤ Z := by
+    simpa [Z, hGibbs, ContinuousLinearMap.SpectralTraceClass.trace] using
+      hGibbs.sum_inner_apply_le_trace (gibbsOp_isPositive Hop β).toLinearMap hd_orth
   have hqZ_summable : Summable (fun a => q a / Z) := hq_summable_and_le.1.div_const Z
   have hplogZ_summable : Summable (fun a => p a * Real.log Z) := hp_summable.mul_right _
   have hB_summable : Summable
