@@ -160,6 +160,19 @@ theorem hasDerivAt_analyticDysonExponentialCandidate_raw (energy : Config → �
   exact (hasDerivAt_exp_smul_const (continuousDiagonalHamiltonian energy) τ).mul
     (hasDerivAt_exp_smul_const' (- continuousInteractingHamiltonian energy V lam) τ)
 
+/-- After cancellation of the free Hamiltonian, the candidate derivative contains only the
+interaction insertion. -/
+theorem hasDerivAt_analyticDysonExponentialCandidate (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (τ : ℝ) (lam : ℂ) :
+    HasDerivAt (fun σ : ℝ => analyticDysonExponentialCandidate energy V σ lam)
+      (NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
+        (-(lam • finiteContinuousOperator V)) *
+        NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam))) τ := by
+  convert hasDerivAt_analyticDysonExponentialCandidate_raw energy V τ lam using 1
+  rw [continuousInteractingHamiltonian]
+  noncomm_ring
+
 end
 end Common
 end SecondQuantization
