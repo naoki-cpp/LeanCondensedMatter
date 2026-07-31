@@ -1,4 +1,5 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
+import Mathlib.Analysis.Complex.Basic
+import Mathlib.Data.Fintype.Perm
 
 set_option linter.style.header false
 
@@ -11,8 +12,6 @@ diagram-independent form of a component shuffle.
 -/
 
 namespace Combinatorics
-
-open intervalIntegral
 
 variable {ι : Type*} [Fintype ι]
 
