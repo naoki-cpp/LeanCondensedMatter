@@ -76,7 +76,7 @@ theorem norm_continuousInteractionPicture_le (energy : Config → ℝ)
 
 /-- The scalar exponential-series majorant `(M τ)ⁿ / n!`. -/
 noncomputable def dysonMajorant (M τ : ℝ) (n : ℕ) : ℝ :=
-  ((n ! : ℕ) : ℝ)⁻¹ * (M * τ) ^ n
+  (n.factorial : ℝ)⁻¹ * (M * τ) ^ n
 
 @[simp]
 theorem dysonMajorant_zero (M τ : ℝ) : dysonMajorant M τ 0 = 1 := by
@@ -85,26 +85,26 @@ theorem dysonMajorant_zero (M τ : ℝ) : dysonMajorant M τ 0 = 1 := by
 /-- The Dyson majorant is nonnegative for nonnegative `M` and `τ`. -/
 theorem dysonMajorant_nonneg {M τ : ℝ} (hM : 0 ≤ M) (hτ : 0 ≤ τ) (n : ℕ) :
     0 ≤ dysonMajorant M τ n := by
-  unfold dysonMajorant
-  positivity
+  exact mul_nonneg (inv_nonneg.2 (Nat.cast_nonneg _))
+    (pow_nonneg (mul_nonneg hM hτ) n)
 
 /-- Integrating one more interaction-picture factor advances the factorial majorant by one order. -/
 theorem integral_mul_dysonMajorant (M τ : ℝ) (n : ℕ) :
     ∫ σ in (0 : ℝ)..τ, M * dysonMajorant M σ n = dysonMajorant M τ (n + 1) := by
   have hfun : (fun σ : ℝ => M * dysonMajorant M σ n) =
-      fun σ : ℝ => (((n ! : ℕ) : ℝ)⁻¹ * M ^ (n + 1)) * σ ^ n := by
+      fun σ : ℝ => ((n.factorial : ℝ)⁻¹ * M ^ (n + 1)) * σ ^ n := by
     funext σ
     simp only [dysonMajorant, mul_pow]
     ring
   rw [hfun, intervalIntegral.integral_const_mul, intervalIntegral.integral_pow]
-  simp only [zero_pow (Nat.succ_ne_zero n), sub_zero]
-  simp [dysonMajorant, Nat.factorial_succ]
+  simp only [zero_pow (Nat.succ_ne_zero n), sub_zero, dysonMajorant,
+    Nat.factorial_succ, Nat.cast_mul, Nat.cast_add, Nat.cast_one, mul_pow]
   field_simp [Nat.factorial_ne_zero]
   ring
 
 /-- The scalar factorial majorant is summable for every real `M` and `τ`. -/
 theorem summable_dysonMajorant (M τ : ℝ) : Summable (dysonMajorant M τ) := by
-  simpa only [dysonMajorant, smul_eq_mul] using
+  simpa only [dysonMajorant] using
     (NormedSpace.expSeries_summable' (𝕂 := ℝ) (𝔸 := ℝ) (M * τ))
 
 /-- A uniform interaction-picture bound `M` implies the standard factorial Dyson coefficient
@@ -117,8 +117,9 @@ theorem norm_continuousDysonCoeff_le_of_bound (energy : Config → ℝ)
     ‖continuousDysonCoeff energy V n τ‖ ≤ dysonMajorant M τ n := by
   induction n generalizing τ with
   | zero =>
-      rw [continuousDysonCoeff_zero, norm_one]
-      simp
+      rw [continuousDysonCoeff_zero, dysonMajorant_zero]
+      change ‖ContinuousLinearMap.id ℂ (FiniteAnalyticFock Config)‖ ≤ 1
+      exact ContinuousLinearMap.norm_id_le
   | succ n ih =>
       rw [continuousDysonCoeff_succ, norm_neg]
       calc
@@ -127,8 +128,7 @@ theorem norm_continuousDysonCoeff_le_of_bound (energy : Config → ℝ)
               (continuousDysonCoeff energy V n σ)‖ ≤
             ∫ σ in (0 : ℝ)..τ, M * dysonMajorant M σ n := by
           apply intervalIntegral.norm_integral_le_of_norm_le hτ.1
-          · filter_upwards with σ
-            intro hσ
+          · refine Filter.Eventually.of_forall fun σ hσ => ?_
             have hσβ : σ ∈ Icc (0 : ℝ) β := ⟨hσ.1.le, hσ.2.trans hτ.2⟩
             calc
               ‖(continuousInteractionPicture energy V σ).comp
@@ -162,8 +162,6 @@ theorem summable_norm_pow_smul_continuousDysonCoeff (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) {β τ : ℝ}
     (hβ : 0 ≤ β) (hτ : τ ∈ Icc (0 : ℝ) β) (lam : ℂ) :
     Summable (fun n : ℕ => ‖lam ^ n • continuousDysonCoeff energy V n τ‖) := by
-  have hM : 0 ≤ interactionPictureNormBound energy V β :=
-    interactionPictureNormBound_nonneg energy V hβ
   have hmaj : Summable
       (dysonMajorant (‖lam‖ * interactionPictureNormBound energy V β) τ) :=
     summable_dysonMajorant _ _
@@ -178,8 +176,8 @@ theorem summable_norm_pow_smul_continuousDysonCoeff (energy : Config → ℝ)
       mul_le_mul_of_nonneg_left (norm_continuousDysonCoeff_le energy V hβ n hτ)
         (pow_nonneg (norm_nonneg lam) n)
     _ = dysonMajorant (‖lam‖ * interactionPictureNormBound energy V β) τ n := by
-      simp only [dysonMajorant, mul_pow]
-      ring
+      simp only [dysonMajorant]
+      ring_nf
 
 end
 end Common
