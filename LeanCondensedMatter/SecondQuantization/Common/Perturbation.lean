@@ -4,6 +4,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDyson
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDysonBounds
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDyson
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonVolterra
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansionVerification
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
 
@@ -14,6 +15,6 @@ set_option linter.style.header false
 
 Coefficientwise interval integration, its finite-dimensional continuous-operator realization,
 statistics-independent algebraic and continuous Dyson coefficients, factorial norm majorants,
-the norm-convergent analytic Dyson evolution, and finite trace power series for endomorphisms on a
-finite configuration basis.
+the norm-convergent analytic Dyson evolution and Volterra equation, and finite trace power series
+for endomorphisms on a finite configuration basis.
 -/
