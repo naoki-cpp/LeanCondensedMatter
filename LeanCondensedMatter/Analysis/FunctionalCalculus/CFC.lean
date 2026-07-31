@@ -50,7 +50,8 @@ theorem Polynomial.aeval_apply_eigenvector {T : H →L[ℂ] H} {v : H} {c : ℝ}
         (ψ := ContinuousLinearMap.toLinearMapRingHom)
         (by ext z x; simp [RingHom.comp_apply, Algebra.algebraMap_eq_smul_one]) p T)
   have heval : p.eval (c : ℂ) = ((q.eval c : ℝ) : ℂ) := by
-    rw [p, Polynomial.eval_map]
+    change (q.map (algebraMap ℝ ℂ)).eval (c : ℂ) = ((q.eval c : ℝ) : ℂ)
+    rw [Polynomial.eval_map]
     exact Polynomial.eval₂_at_apply (p := q) (algebraMap ℝ ℂ) c
   change (ContinuousLinearMap.toLinearMapRingHom (Polynomial.aeval T p)) v = _
   rw [hmap]
