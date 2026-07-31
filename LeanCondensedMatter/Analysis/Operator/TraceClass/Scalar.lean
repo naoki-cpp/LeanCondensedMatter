@@ -25,16 +25,13 @@ eigenspaces (as submodules) unchanged. -/
 theorem eigenspace_smul {c : ℝ} (hc : c ≠ 0) (μ : ℂ) :
     Module.End.eigenspace (((c • T : H →L[ℂ] H)) : H →ₗ[ℂ] H) ((c : ℂ) * μ) =
       Module.End.eigenspace (T : H →ₗ[ℂ] H) μ := by
-  have hcv : ∀ v, ((c • T : H →L[ℂ] H) : H →ₗ[ℂ] H) v = (c : ℂ) • ((T : H →ₗ[ℂ] H) v) := fun v => by
-    simp
-  ext v
-  simp only [Module.End.mem_eigenspace_iff, hcv]
-  constructor
-  · intro h
-    have h' : (c : ℂ) • ((T : H →ₗ[ℂ] H) v) = (c : ℂ) • ((μ : ℂ) • v) := by rw [h, mul_smul]
-    exact smul_right_injective H (by exact_mod_cast hc) h'
-  · intro h
-    rw [h, mul_smul]
+  let f : Module.End ℂ H := (T : H →ₗ[ℂ] H)
+  have hc' : (c : ℂ) ≠ 0 := by exact_mod_cast hc
+  change Module.End.eigenspace ((c : ℂ) • f) ((c : ℂ) * μ) =
+    Module.End.eigenspace f μ
+  rw [Module.End.eigenspace_def,
+    ← Module.End.eigenspace_div f ((c : ℂ) * μ) (c : ℂ) hc']
+  simp [hc']
 
 /-- The reindexing `μ ↦ c * μ` on nonzero eigenvalues, for a nonzero real `c`, as an
 `Equiv` on the base index type `{μ : ℝ // μ ≠ 0}`. This is an implementation detail of the
