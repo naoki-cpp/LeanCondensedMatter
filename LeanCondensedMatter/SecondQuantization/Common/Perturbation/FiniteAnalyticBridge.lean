@@ -133,11 +133,15 @@ theorem finiteContinuousOperator_eq_matrixUnit_sum
   rw [finiteContinuousOperator_apply_apply]
   simp [finiteAnalyticMatrixUnit, finiteAnalyticBasis]
   symm
-  apply Finset.sum_eq_single k
-  · simp [finiteAnalyticBasis]
-  · intro m _ hmk
-    simp [finiteAnalyticBasis, hmk]
-  · simp
+  calc
+    (∑ m : Config, ∑ n : Config,
+        matrixCoeff A m n * (x n * Pi.single m 1 k)) =
+        ∑ n : Config, matrixCoeff A k n * (x n * Pi.single k 1 k) := by
+      apply Finset.sum_eq_single k
+      · intro m _ hmk
+        simp [hmk]
+      · simp
+    _ = ∑ n : Config, matrixCoeff A k n * x n := by simp
 
 /-- Matrix-coefficient continuity implies continuity of the transported operator-valued family. -/
 theorem continuous_finiteContinuousOperator
