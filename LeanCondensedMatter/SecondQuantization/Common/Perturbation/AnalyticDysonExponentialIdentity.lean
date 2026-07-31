@@ -65,8 +65,11 @@ theorem hasDerivWithinAt_analyticDysonEvolution_interactionPicture
     (continuousInteractionPicture energy V σ).comp
       (analyticDysonEvolution energy V σ lam)
   have hg : ContinuousOn g (Icc (0 : ℝ) β) := by
-    simpa only [g] using
-      continuousOn_interactionPicture_mul_analyticDysonEvolution energy V hβ lam
+    change ContinuousOn (fun σ =>
+      (continuousInteractionPicture energy V σ).comp
+        (analyticDysonEvolution energy V σ lam)) (Icc (0 : ℝ) β)
+    exact (continuous_continuousInteractionPicture energy V).continuousOn.clm_comp
+      (continuousOn_analyticDysonEvolution energy V hβ lam)
   let p : ℝ → ℝ := fun x => (projIcc (0 : ℝ) β hβ x : ℝ)
   let gExt : ℝ → FiniteContinuousOperator Config := fun x => g (p x)
   have hp : Continuous p := by
@@ -84,7 +87,7 @@ theorem hasDerivWithinAt_analyticDysonEvolution_interactionPicture
       change ((projIcc (0 : ℝ) β hβ x : Icc (0 : ℝ) β) : ℝ) = x
       rw [projIcc_of_mem hβ hx]]
   have hτIcc : τ ∈ Icc (0 : ℝ) β := ⟨hτ.1, hτ.2.le⟩
-  have hFTC0 := (hgExt.integral_hasDerivAt (0 : ℝ) τ).hasDerivWithinAt
+  have hFTC0 := (hgExt.integral_hasStrictDerivAt (0 : ℝ) τ).hasDerivAt.hasDerivWithinAt
   have hFTC : HasDerivWithinAt (fun u => ∫ σ in (0 : ℝ)..u, gExt σ)
       (g τ) (Ici τ) τ :=
     hFTC0.congr_deriv (hgExt_eq hτIcc)
