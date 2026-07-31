@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDysonBounds
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonVolterra
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonExpansion
 
 set_option linter.style.header false
@@ -41,6 +41,16 @@ noncomputable abbrev continuousDysonCoeff (ε : Mode → ℝ)
 noncomputable abbrev interactionPictureNormBound (ε : Mode → ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :=
   Common.interactionPictureNormBound (fermionEnergy ε) V
+
+/-- The perturbatively weighted fermionic Dyson term. -/
+noncomputable abbrev analyticDysonTerm (ε : Mode → ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :=
+  Common.analyticDysonTerm (fermionEnergy ε) V
+
+/-- The norm-convergent fermionic interaction-picture Dyson evolution. -/
+noncomputable abbrev analyticDysonEvolution (ε : Mode → ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :=
+  Common.analyticDysonEvolution (fermionEnergy ε) V
 
 omit [LinearOrder Mode] in
 @[simp]
@@ -88,5 +98,44 @@ theorem summable_norm_pow_smul_continuousDysonCoeff (ε : Mode → ℝ)
     (hβ : 0 ≤ β) (hτ : τ ∈ Set.Icc (0 : ℝ) β) (lam : ℂ) :
     Summable (fun n : ℕ => ‖lam ^ n • continuousDysonCoeff ε V n τ‖) :=
   Common.summable_norm_pow_smul_continuousDysonCoeff (fermionEnergy ε) V hβ hτ lam
+
+omit [LinearOrder Mode] in
+/-- The fermionic analytic Dyson series has the declared operator-valued sum. -/
+theorem hasSum_analyticDysonEvolution (ε : Mode → ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) {β τ : ℝ}
+    (hβ : 0 ≤ β) (hτ : τ ∈ Set.Icc (0 : ℝ) β) (lam : ℂ) :
+    HasSum (analyticDysonTerm ε V τ lam)
+      (analyticDysonEvolution ε V τ lam) :=
+  Common.hasSum_analyticDysonEvolution (fermionEnergy ε) V hβ hτ lam
+
+omit [LinearOrder Mode] in
+/-- The fermionic analytic Dyson series converges uniformly on `[0, β]`. -/
+theorem hasSumUniformlyOn_analyticDysonEvolution (ε : Mode → ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) {β : ℝ}
+    (hβ : 0 ≤ β) (lam : ℂ) :
+    HasSumUniformlyOn
+      (fun n τ => analyticDysonTerm ε V τ lam n)
+      (fun τ => analyticDysonEvolution ε V τ lam)
+      (Set.Icc (0 : ℝ) β) :=
+  Common.hasSumUniformlyOn_analyticDysonEvolution (fermionEnergy ε) V hβ lam
+
+omit [LinearOrder Mode] in
+@[simp]
+theorem analyticDysonEvolution_zero (ε : Mode → ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (lam : ℂ) :
+    analyticDysonEvolution ε V 0 lam = 1 :=
+  Common.analyticDysonEvolution_zero (fermionEnergy ε) V lam
+
+omit [LinearOrder Mode] in
+/-- The fermionic analytic Dyson evolution solves the interaction-picture Volterra equation. -/
+theorem analyticDysonEvolution_eq_one_sub_integral (ε : Mode → ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) {β τ : ℝ}
+    (hβ : 0 ≤ β) (hτ : τ ∈ Set.Icc (0 : ℝ) β) (lam : ℂ) :
+    analyticDysonEvolution ε V τ lam =
+      1 - lam • ∫ σ in (0 : ℝ)..τ,
+        continuousInteractionPicture ε V σ *
+          analyticDysonEvolution ε V σ lam :=
+  Common.analyticDysonEvolution_eq_one_sub_integral
+    (fermionEnergy ε) V hβ hτ lam
 
 end SecondQuantization
