@@ -145,6 +145,49 @@ theorem analyticDysonEvolution_eq_exponentialCandidate (energy : Config → ℝ)
     ODE_solution_unique hv hf hf' hg hg' (by simp)
   exact heq hτ
 
+/-- For nonnegative imaginary time, the analytic Dyson evolution is the ordered product of the
+free and interacting operator exponentials. -/
+theorem analyticDysonEvolution_eq_ordered_exp (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    {τ : ℝ} (hτ : 0 ≤ τ) (lam : ℂ) :
+    analyticDysonEvolution energy V τ lam =
+      NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
+        NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)) := by
+  simpa [analyticDysonExponentialCandidate] using
+    analyticDysonEvolution_eq_exponentialCandidate
+      (β := τ) (τ := τ) energy V hτ ⟨hτ, le_rfl⟩ lam
+
+/-- At the thermal endpoint, left multiplication by the inverse free evolution leaves the
+interacting Gibbs exponential. -/
+theorem continuousDiagonalEvolution_neg_mul_analyticDysonEvolution_eq_exp
+    (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    {β : ℝ} (hβ : 0 ≤ β) (lam : ℂ) :
+    continuousDiagonalEvolution energy (-β) *
+        analyticDysonEvolution energy V β lam =
+      NormedSpace.exp ((-β) • continuousInteractingHamiltonian energy V lam) := by
+  rw [analyticDysonEvolution_eq_ordered_exp energy V hβ lam]
+  rw [← continuousDiagonalEvolution_eq_exp energy β]
+  have hinv :
+      continuousDiagonalEvolution energy (-β) *
+        continuousDiagonalEvolution energy β = 1 := by
+    change (continuousDiagonalEvolution energy (-β)).comp
+      (continuousDiagonalEvolution energy β) = 1
+    exact continuousDiagonalEvolution_neg_comp energy β
+  calc
+    continuousDiagonalEvolution energy (-β) *
+        (continuousDiagonalEvolution energy β *
+          NormedSpace.exp (β • (- continuousInteractingHamiltonian energy V lam))) =
+      (continuousDiagonalEvolution energy (-β) *
+        continuousDiagonalEvolution energy β) *
+          NormedSpace.exp (β • (- continuousInteractingHamiltonian energy V lam)) := by
+        rw [mul_assoc]
+    _ = NormedSpace.exp (β • (- continuousInteractingHamiltonian energy V lam)) := by
+      rw [hinv, one_mul]
+    _ = NormedSpace.exp ((-β) • continuousInteractingHamiltonian energy V lam) := by
+      congr 1
+      simp [smul_neg, neg_smul]
+
 end
 end Common
 end SecondQuantization
