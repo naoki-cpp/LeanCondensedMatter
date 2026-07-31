@@ -43,8 +43,7 @@ theorem tsum_norm_sq_orthogonalProjectionOnto_eq_finrank {ι : Type*} (b : Hilbe
     (V : Submodule ℂ H) [FiniteDimensional ℂ V] :
     ∑' i, ‖V.orthogonalProjectionOnto (b i)‖ ^ 2 = (Module.finrank ℂ V : ℝ) := by
   classical
-  set f : Fin (Module.finrank ℂ V) → V := ⇑(stdOrthonormalBasis ℂ V) with hf_def
-  -- Step 1: expand each summand via the (finite) orthonormal basis `f` of `V` itself.
+  let f : Fin (Module.finrank ℂ V) → V := ⇑(stdOrthonormalBasis ℂ V)
   have hpoint : ∀ i, ‖V.orthogonalProjectionOnto (b i)‖ ^ 2 =
       ∑ j, ‖(inner ℂ ((f j : H)) (b i) : ℂ)‖ ^ 2 := by
     intro i
@@ -52,28 +51,8 @@ theorem tsum_norm_sq_orthogonalProjectionOnto_eq_finrank {ι : Type*} (b : Hilbe
     refine Finset.sum_congr rfl fun j _ => ?_
     rw [Submodule.inner_orthogonalProjectionOnto_eq_of_mem_left]
   simp_rw [hpoint]
-  -- Step 2: each individual term, summed over `i`, is summable (Parseval for `b`).
-  have hterm : ∀ x : H, (fun i => ‖(inner ℂ x (b i) : ℂ)‖ ^ 2) =
-      (fun i => (inner ℂ x (b i) * inner ℂ (b i) x : ℂ).re) := by
-    intro x
-    funext i
-    rw [inner_mul_inner_conj_eq_norm_sq, Complex.ofReal_re]
-  have hj : ∀ j, Summable (fun i => ‖(inner ℂ ((f j : H)) (b i) : ℂ)‖ ^ 2) := fun j => by
-    rw [hterm (f j : H)]
-    exact ((b.hasSum_inner_mul_inner (f j : H) (f j : H)).mapL Complex.reCLM).summable
-  -- Step 3: swap the (finite) `Finset.sum` over `j` with the `tsum` over `i`.
-  rw [Summable.tsum_finsetSum (fun j _ => hj j)]
-  -- Step 4: each swapped inner tsum is, again by Parseval for `b`, the norm² of `f j` in `H`.
-  have hbasis : ∀ j : Fin (Module.finrank ℂ V),
-      ∑' i, ‖(inner ℂ ((f j : H)) (b i) : ℂ)‖ ^ 2 = ‖(f j : H)‖ ^ 2 := by
-    intro j
-    rw [hterm (f j : H)]
-    have hs : HasSum (fun i => (inner ℂ ((f j : H)) (b i) * inner ℂ (b i) ((f j : H)) : ℂ).re)
-        (inner ℂ ((f j : H)) ((f j : H)) : ℂ).re :=
-      (b.hasSum_inner_mul_inner (f j : H) (f j : H)).mapL Complex.reCLM
-    rw [hs.tsum_eq, inner_self_eq_norm_sq_to_K]
-    norm_cast
-  simp_rw [hbasis]
+  rw [Summable.tsum_finsetSum fun j _ => (b.hasSum_norm_sq_inner (f j : H)).summable]
+  simp_rw [(b.hasSum_norm_sq_inner (f _ : H)).tsum_eq]
   have hnorm1 : ∀ j : Fin (Module.finrank ℂ V), ‖(f j : H)‖ = 1 :=
     fun j => (stdOrthonormalBasis ℂ V).orthonormal.1 j
   simp [hnorm1]
