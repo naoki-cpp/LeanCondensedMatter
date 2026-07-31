@@ -24,10 +24,17 @@ open PowerSeries
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
-/-- The fermionic specialization of `Common.dysonTraceCoeff`. -/
+/-- The fermionic finite Dyson trace coefficient. Its unfolded form is retained for compatibility
+with existing trace-level proofs; it is definitionally equal to `Common.dysonTraceCoeff`. -/
 noncomputable def dysonPartitionCoeff (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) : ℂ :=
-  Common.dysonTraceCoeff (fermionEnergy ε) β V n
+  Common.traceFock ((imaginaryTimeEvolveFree ε (-β)).comp (dysonCoeff ε V n β))
+
+omit [LinearOrder Mode] in
+/-- The fermionic coefficient is the specialization of the Common finite Dyson trace coefficient. -/
+theorem dysonPartitionCoeff_eq_dysonTraceCoeff (ε : Mode → ℝ) (β : ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) :
+    dysonPartitionCoeff ε β V n = Common.dysonTraceCoeff (fermionEnergy ε) β V n := rfl
 
 /-- The fermionic specialization of `Common.dysonTraceSeries`. -/
 noncomputable def dysonPartitionSeries (ε : Mode → ℝ) (β : ℝ)
@@ -37,8 +44,9 @@ noncomputable def dysonPartitionSeries (ε : Mode → ℝ) (β : ℝ)
 omit [LinearOrder Mode] in
 theorem coeff_dysonPartitionSeries (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) :
-    PowerSeries.coeff n (dysonPartitionSeries ε β V) = dysonPartitionCoeff ε β V n :=
-  Common.coeff_dysonTraceSeries (fermionEnergy ε) β V n
+    PowerSeries.coeff n (dysonPartitionSeries ε β V) = dysonPartitionCoeff ε β V n := by
+  rw [dysonPartitionCoeff_eq_dysonTraceCoeff]
+  exact Common.coeff_dysonTraceSeries (fermionEnergy ε) β V n
 
 omit [LinearOrder Mode] in
 /-- The constant coefficient is the fermionic free partition function. -/
