@@ -68,7 +68,7 @@ noncomputable def finiteAnalyticBasis (n : Config) : FiniteAnalyticFock Config :
 theorem finiteAnalyticFockEquiv_basisState (n : Config) :
     finiteAnalyticFockEquiv (basisState n) = finiteAnalyticBasis n := by
   classical
-  exact Finsupp.linearEquivFunOnFinite_single ℂ n 1
+  exact Finsupp.linearEquivFunOnFinite_single ℂ ℂ Config n 1
 
 @[simp]
 theorem finiteContinuousOperator_basis_apply
@@ -77,37 +77,51 @@ theorem finiteContinuousOperator_basis_apply
   rw [← finiteAnalyticFockEquiv_basisState, finiteContinuousOperator_equiv_apply]
   rfl
 
+private theorem finiteAnalyticFock_eq_sum_basis (x : FiniteAnalyticFock Config) :
+    x = ∑ n : Config, x n • finiteAnalyticBasis n := by
+  classical
+  funext k
+  simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul]
+  rw [Finset.sum_eq_single k]
+  · simp [finiteAnalyticBasis]
+  · intro n _ hnk
+    simp [finiteAnalyticBasis, hnk]
+  · simp
+
 /-- Matrix multiplication formula for the transported continuous operator. -/
 theorem finiteContinuousOperator_apply_apply
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (x : FiniteAnalyticFock Config) (m : Config) :
     finiteContinuousOperator A x m = ∑ n : Config, matrixCoeff A m n * x n := by
   classical
-  have hx : x = ∑ n : Config, x n • finiteAnalyticBasis n := by
-    funext k
-    simp [finiteAnalyticBasis]
-  rw [hx, map_sum]
-  simp only [map_smul, Finset.sum_apply, Pi.smul_apply, smul_eq_mul,
-    finiteContinuousOperator_basis_apply]
-  exact Finset.sum_congr rfl fun n _ => mul_comm _ _
+  have hx := finiteAnalyticFock_eq_sum_basis x
+  calc
+    finiteContinuousOperator A x m =
+        finiteContinuousOperator A (∑ n : Config, x n • finiteAnalyticBasis n) m :=
+      congrArg (fun y => finiteContinuousOperator A y m) hx
+    _ = (∑ n : Config, x n • finiteContinuousOperator A (finiteAnalyticBasis n)) m := by simp
+    _ = ∑ n : Config, matrixCoeff A m n * x n := by
+      simp only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul,
+        finiteContinuousOperator_basis_apply]
+      exact Finset.sum_congr rfl fun n _ => mul_comm _ _
 
 /-- A matrix unit on the analytic finite-dimensional realization. -/
 noncomputable def finiteAnalyticMatrixUnit (m n : Config) : FiniteContinuousOperator Config :=
   ({
-    toFun := fun x k => if m = k then x n else 0
+    toFun := fun x => x n • finiteAnalyticBasis m
     map_add' := by
       intro x y
-      funext k
-      by_cases h : m = k <;> simp [h]
+      simp [add_smul]
     map_smul' := by
       intro c x
-      funext k
-      by_cases h : m = k <;> simp [h]
+      simp [smul_smul]
   } : FiniteAnalyticFock Config →ₗ[ℂ] FiniteAnalyticFock Config).toContinuousLinearMap
 
 @[simp]
 theorem finiteAnalyticMatrixUnit_apply (m n : Config) (x : FiniteAnalyticFock Config) (k : Config) :
-    finiteAnalyticMatrixUnit m n x k = if m = k then x n else 0 := rfl
+    finiteAnalyticMatrixUnit m n x k = if m = k then x n else 0 := by
+  classical
+  simp [finiteAnalyticMatrixUnit, finiteAnalyticBasis]
 
 /-- A transported operator is the finite sum of its matrix coefficients times matrix units. -/
 theorem finiteContinuousOperator_eq_matrixUnit_sum
@@ -119,7 +133,7 @@ theorem finiteContinuousOperator_eq_matrixUnit_sum
   intro x
   funext k
   rw [finiteContinuousOperator_apply_apply]
-  simp [finiteAnalyticMatrixUnit]
+  simp [finiteAnalyticMatrixUnit, finiteAnalyticBasis]
 
 /-- Matrix-coefficient continuity implies continuity of the transported operator-valued family. -/
 theorem continuous_finiteContinuousOperator
@@ -148,16 +162,14 @@ noncomputable def finiteAnalyticCoordinate (m : Config) : FiniteAnalyticFock Con
 theorem finiteAnalyticCoordinate_apply (m : Config) (x : FiniteAnalyticFock Config) :
     finiteAnalyticCoordinate m x = x m := rfl
 
+set_option linter.unusedFintypeInType false in
 /-- Two continuous finite operators that agree on every standard basis vector are equal. -/
 theorem finiteContinuousOperator_ext_basis
     {A B : FiniteContinuousOperator Config}
     (h : ∀ n : Config, A (finiteAnalyticBasis n) = B (finiteAnalyticBasis n)) : A = B := by
   apply ContinuousLinearMap.ext
   intro x
-  classical
-  have hx : x = ∑ n : Config, x n • finiteAnalyticBasis n := by
-    funext k
-    simp [finiteAnalyticBasis]
+  have hx := finiteAnalyticFock_eq_sum_basis x
   calc
     A x = A (∑ n : Config, x n • finiteAnalyticBasis n) := congrArg A hx
     _ = ∑ n : Config, x n • A (finiteAnalyticBasis n) := by simp
@@ -192,7 +204,8 @@ theorem continuousOperatorIntervalIntegral_basis
     finiteAnalyticCoordinate m
       (∫ τ in a..b, finiteContinuousOperator (F τ) (finiteAnalyticBasis n))
   rw [← (finiteAnalyticCoordinate m).intervalIntegral_comp_comm hvecInt]
-  exact intervalIntegral.integral_congr fun τ _ => finiteContinuousOperator_basis_apply (F τ) m n
+  exact intervalIntegral.integral_congr fun τ _ => by
+    simpa using (finiteContinuousOperator_basis_apply (F τ) m n).symm
 
 /-- The transported coefficientwise algebraic interval integral equals Mathlib's Bochner interval
 integral of the transported continuous-operator family. -/
