@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Complex.Basic
+import Mathlib.Data.Fintype.Perm
 
 set_option linter.style.header false
 
