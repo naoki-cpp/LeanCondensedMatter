@@ -88,6 +88,22 @@ private theorem finiteAnalyticFock_eq_sum_basis (x : FiniteAnalyticFock Config) 
     simp [finiteAnalyticBasis, hnk]
   · simp
 
+set_option linter.unusedFintypeInType false in
+/-- Two continuous finite operators that agree on every standard basis vector are equal. -/
+theorem finiteContinuousOperator_ext_basis
+    {A B : FiniteContinuousOperator Config}
+    (h : ∀ n : Config, A (finiteAnalyticBasis n) = B (finiteAnalyticBasis n)) : A = B := by
+  apply ContinuousLinearMap.ext
+  intro x
+  have hx := finiteAnalyticFock_eq_sum_basis x
+  calc
+    A x = A (∑ n : Config, x n • finiteAnalyticBasis n) := congrArg A hx
+    _ = ∑ n : Config, x n • A (finiteAnalyticBasis n) := by simp
+    _ = ∑ n : Config, x n • B (finiteAnalyticBasis n) :=
+      Finset.sum_congr rfl fun n _ => by rw [h n]
+    _ = B (∑ n : Config, x n • finiteAnalyticBasis n) := by simp
+    _ = B x := congrArg B hx.symm
+
 /-- Matrix multiplication formula for the transported continuous operator. -/
 theorem finiteContinuousOperator_apply_apply
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
@@ -127,21 +143,11 @@ theorem finiteContinuousOperator_eq_matrixUnit_sum
     finiteContinuousOperator A =
       ∑ m : Config, ∑ n : Config, matrixCoeff A m n • finiteAnalyticMatrixUnit m n := by
   classical
-  apply ContinuousLinearMap.ext
-  intro x
+  apply finiteContinuousOperator_ext_basis
+  intro p
   funext k
-  rw [finiteContinuousOperator_apply_apply]
+  rw [finiteContinuousOperator_basis_apply]
   simp [finiteAnalyticMatrixUnit, finiteAnalyticBasis]
-  symm
-  calc
-    (∑ m : Config, ∑ n : Config,
-        matrixCoeff A m n * (x n * Pi.single m 1 k)) =
-        ∑ n : Config, matrixCoeff A k n * (x n * Pi.single k 1 k) := by
-      apply Finset.sum_eq_single k
-      · intro m _ hmk
-        simp [hmk]
-      · simp
-    _ = ∑ n : Config, matrixCoeff A k n * x n := by simp
 
 /-- Matrix-coefficient continuity implies continuity of the transported operator-valued family. -/
 theorem continuous_finiteContinuousOperator
@@ -169,22 +175,6 @@ noncomputable def finiteAnalyticCoordinate (m : Config) : FiniteAnalyticFock Con
 @[simp]
 theorem finiteAnalyticCoordinate_apply (m : Config) (x : FiniteAnalyticFock Config) :
     finiteAnalyticCoordinate m x = x m := rfl
-
-set_option linter.unusedFintypeInType false in
-/-- Two continuous finite operators that agree on every standard basis vector are equal. -/
-theorem finiteContinuousOperator_ext_basis
-    {A B : FiniteContinuousOperator Config}
-    (h : ∀ n : Config, A (finiteAnalyticBasis n) = B (finiteAnalyticBasis n)) : A = B := by
-  apply ContinuousLinearMap.ext
-  intro x
-  have hx := finiteAnalyticFock_eq_sum_basis x
-  calc
-    A x = A (∑ n : Config, x n • finiteAnalyticBasis n) := congrArg A hx
-    _ = ∑ n : Config, x n • A (finiteAnalyticBasis n) := by simp
-    _ = ∑ n : Config, x n • B (finiteAnalyticBasis n) :=
-      Finset.sum_congr rfl fun n _ => by rw [h n]
-    _ = B (∑ n : Config, x n • finiteAnalyticBasis n) := by simp
-    _ = B x := congrArg B hx.symm
 
 /-- Compatibility on each analytic basis vector between the coefficientwise algebraic integral and
 Mathlib's Bochner interval integral of transported continuous operators. -/
