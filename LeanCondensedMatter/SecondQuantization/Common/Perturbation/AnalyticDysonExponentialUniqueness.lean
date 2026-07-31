@@ -44,15 +44,19 @@ theorem lipschitzWith_analyticDysonVectorField (energy : Config → ℝ)
   rw [show analyticDysonVectorField energy V β hβ lam τ U = -(lam • A.comp U) by rfl,
     show analyticDysonVectorField energy V β hβ lam τ W = -(lam • A.comp W) by rfl,
     dist_neg_neg, dist_eq_norm, dist_eq_norm, ← smul_sub, hcomp, norm_smul]
+  have hA : ‖A‖ ≤ interactionPictureNormBound energy V β :=
+    norm_continuousInteractionPicture_le energy V hβ
+      (projIcc (0 : ℝ) β hβ τ).property
   calc
     ‖lam‖ * ‖A.comp (U - W)‖ ≤
         ‖lam‖ * (‖A‖ * ‖U - W‖) := by
-      gcongr
-      exact A.opNorm_comp_le (U - W)
-    _ ≤ (‖lam‖ * interactionPictureNormBound energy V β) * ‖U - W‖ := by
-      gcongr
-      exact norm_continuousInteractionPicture_le energy V hβ
-        (projIcc (0 : ℝ) β hβ τ).property
+      exact mul_le_mul_of_nonneg_left
+        (A.opNorm_comp_le (U - W)) (norm_nonneg lam)
+    _ = (‖lam‖ * ‖A‖) * ‖U - W‖ := by ring
+    _ ≤ (‖lam‖ * interactionPictureNormBound energy V β) * ‖U - W‖ :=
+      mul_le_mul_of_nonneg_right
+        (mul_le_mul_of_nonneg_left hA (norm_nonneg lam))
+        (norm_nonneg (U - W))
 
 /-- On `[0, β]`, the projected vector field is the original interaction-picture field. -/
 theorem analyticDysonVectorField_of_mem (energy : Config → ℝ)
@@ -71,8 +75,10 @@ theorem hasDerivWithinAt_analyticDysonEvolution_vectorField
     HasDerivWithinAt (fun σ : ℝ => analyticDysonEvolution energy V σ lam)
       (analyticDysonVectorField energy V β hβ lam τ
         (analyticDysonEvolution energy V τ lam)) (Ici τ) τ := by
-  rw [analyticDysonVectorField_of_mem energy V β hβ lam
-    ⟨hτ.1, hτ.2.le⟩]
+  have hfield := analyticDysonVectorField_of_mem energy V β hβ lam
+    (τ := τ) (⟨hτ.1, hτ.2.le⟩ : τ ∈ Icc (0 : ℝ) β)
+    (analyticDysonEvolution energy V τ lam)
+  rw [hfield]
   exact hasDerivWithinAt_analyticDysonEvolution_interactionPicture
     energy V hβ hτ lam
 
@@ -85,8 +91,10 @@ theorem hasDerivWithinAt_analyticDysonExponentialCandidate_vectorField
       (fun σ : ℝ => analyticDysonExponentialCandidate energy V σ lam)
       (analyticDysonVectorField energy V β hβ lam τ
         (analyticDysonExponentialCandidate energy V τ lam)) (Ici τ) τ := by
-  rw [analyticDysonVectorField_of_mem energy V β hβ lam
-    ⟨hτ.1, hτ.2.le⟩]
+  have hfield := analyticDysonVectorField_of_mem energy V β hβ lam
+    (τ := τ) (⟨hτ.1, hτ.2.le⟩ : τ ∈ Icc (0 : ℝ) β)
+    (analyticDysonExponentialCandidate energy V τ lam)
+  rw [hfield]
   change HasDerivWithinAt
     (fun σ : ℝ => analyticDysonExponentialCandidate energy V σ lam)
     (-(lam • (continuousInteractionPicture energy V τ *
