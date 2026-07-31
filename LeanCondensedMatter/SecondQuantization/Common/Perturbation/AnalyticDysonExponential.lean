@@ -235,8 +235,7 @@ theorem hasDerivAt_analyticDysonExponentialCandidate_interactionPicture
           NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)) =
         -(lam • (continuousInteractionPicture energy V τ *
           analyticDysonExponentialCandidate energy V τ lam)) := by
-    rw [continuousInteractionPicture_mul_analyticDysonExponentialCandidate,
-      ← continuousDiagonalEvolution_eq_exp]
+    rw [continuousInteractionPicture_mul_analyticDysonExponentialCandidate]
     calc
       NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
           (-(lam • finiteContinuousOperator V)) *
@@ -253,6 +252,10 @@ theorem hasDerivAt_analyticDysonExponentialCandidate_interactionPicture
           (finiteContinuousOperator V *
             NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam))))) := by
         rw [mul_assoc]
+      _ = -(lam • (continuousDiagonalEvolution energy τ *
+          (finiteContinuousOperator V *
+            NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam))))) := by
+        rw [continuousDiagonalEvolution_eq_exp]
   rw [← hderiv]
   exact hasDerivAt_analyticDysonExponentialCandidate energy V τ lam
 
