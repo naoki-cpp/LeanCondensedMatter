@@ -174,6 +174,12 @@ theorem continuousInteractionPicture_mul_analyticDysonExponentialCandidate
     continuousDiagonalEvolution energy τ *
       (finiteContinuousOperator V *
         NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)))
+  have hinv :
+      continuousDiagonalEvolution energy (-τ) *
+        continuousDiagonalEvolution energy τ = 1 := by
+    change (continuousDiagonalEvolution energy (-τ)).comp
+      (continuousDiagonalEvolution energy τ) = 1
+    exact continuousDiagonalEvolution_neg_comp energy τ
   calc
     _ = continuousDiagonalEvolution energy τ * finiteContinuousOperator V *
         (continuousDiagonalEvolution energy (-τ) *
@@ -182,7 +188,7 @@ theorem continuousInteractionPicture_mul_analyticDysonExponentialCandidate
       noncomm_ring
     _ = continuousDiagonalEvolution energy τ * finiteContinuousOperator V * 1 *
         NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)) := by
-      rw [continuousDiagonalEvolution_neg_comp]
+      rw [hinv]
     _ = _ := by noncomm_ring
 
 /-- Product-rule derivative of the exponential candidate, before cancellation of the free
@@ -223,25 +229,32 @@ theorem hasDerivAt_analyticDysonExponentialCandidate_interactionPicture
     HasDerivAt (fun σ : ℝ => analyticDysonExponentialCandidate energy V σ lam)
       (-(lam • (continuousInteractionPicture energy V τ *
         analyticDysonExponentialCandidate energy V τ lam))) τ := by
-  convert hasDerivAt_analyticDysonExponentialCandidate energy V τ lam using 1
-  rw [continuousInteractionPicture_mul_analyticDysonExponentialCandidate,
-    ← continuousDiagonalEvolution_eq_exp]
-  calc
-    NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
-        (-(lam • finiteContinuousOperator V)) *
-        NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)) =
-      -(lam • (NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
-        finiteContinuousOperator V)) *
-        NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)) := by
-      rw [mul_neg, mul_smul_comm]
-    _ = -(lam • ((NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
-        finiteContinuousOperator V) *
-        NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)))) := by
-      rw [neg_mul, smul_mul_assoc]
-    _ = -(lam • (NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
-        (finiteContinuousOperator V *
-          NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam))))) := by
-      rw [mul_assoc]
+  have hderiv :
+      NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
+          (-(lam • finiteContinuousOperator V)) *
+          NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)) =
+        -(lam • (continuousInteractionPicture energy V τ *
+          analyticDysonExponentialCandidate energy V τ lam)) := by
+    rw [continuousInteractionPicture_mul_analyticDysonExponentialCandidate,
+      ← continuousDiagonalEvolution_eq_exp]
+    calc
+      NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
+          (-(lam • finiteContinuousOperator V)) *
+          NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)) =
+        -(lam • (NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
+          finiteContinuousOperator V)) *
+          NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)) := by
+        rw [mul_neg, mul_smul_comm]
+      _ = -(lam • ((NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
+          finiteContinuousOperator V) *
+          NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)))) := by
+        rw [neg_mul, smul_mul_assoc]
+      _ = -(lam • (NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
+          (finiteContinuousOperator V *
+            NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam))))) := by
+        rw [mul_assoc]
+  rw [← hderiv]
+  exact hasDerivAt_analyticDysonExponentialCandidate energy V τ lam
 
 end
 end Common
