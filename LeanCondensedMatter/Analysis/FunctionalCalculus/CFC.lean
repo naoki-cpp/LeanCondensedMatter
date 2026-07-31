@@ -4,6 +4,8 @@ import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Isometric
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Instances
 import Mathlib.Topology.ContinuousMap.Weierstrass
 import Mathlib.Analysis.InnerProductSpace.Spectrum
+import Mathlib.LinearAlgebra.Eigenspace.Minpoly
+import Mathlib.Topology.Algebra.Module.ContinuousLinearMap.RestrictScalars
 
 attribute [local instance] IsStarNormal.instContinuousFunctionalCalculus
 
@@ -37,28 +39,11 @@ proved — see `notes/caveats.md`), since Mathlib's `cfc` on `H →L[ℂ] H` is 
 theorem Polynomial.aeval_apply_eigenvector {T : H →L[ℂ] H} {v : H} {c : ℝ}
     (hv : (T : H →ₗ[ℂ] H) v = (c : ℂ) • v) (q : ℝ[X]) :
     (Polynomial.aeval T q : H →L[ℂ] H) v = ((q.eval c : ℝ) : ℂ) • v := by
-  induction q using Polynomial.induction_on with
-  | C r =>
-    simp [Algebra.algebraMap_eq_smul_one]
-  | add p q hp hq =>
-    simp only [map_add, add_apply, hp, hq]
-    rw [eval_add, Complex.ofReal_add, add_smul]
-  | monomial n r _ =>
-    have hv' : T v = (c : ℂ) • v := hv
-    have hTpow : ∀ m : ℕ, (T ^ m : H →L[ℂ] H) v = (c ^ m : ℂ) • v := by
-      intro m
-      induction m with
-      | zero => simp
-      | succ k ih =>
-        rw [pow_succ, mul_apply_eq_comp, hv', map_smul, ih, smul_smul, pow_succ,
-          mul_comm]
-    simp only [eval_mul, eval_C, eval_X_pow, map_mul, aeval_C, map_pow, aeval_X,
-      Algebra.algebraMap_eq_smul_one]
-    simp only [smul_apply, mul_apply_eq_comp, one_apply_eq_self, hTpow (n + 1)]
-    rw [← smul_assoc, RCLike.real_smul_eq_coe_mul]
-    congr 1
-    push_cast
-    ac_rfl
+  change
+    (Polynomial.aeval ((T.restrictScalars ℝ : H →L[ℝ] H) : H →ₗ[ℝ] H) q) v =
+      (q.eval c : ℝ) • v
+  exact Module.End.aeval_apply_of_mem_apply_eq_smul (by
+    simpa [RCLike.real_smul_eq_coe_smul] using hv)
 
 open Filter Topology
 
