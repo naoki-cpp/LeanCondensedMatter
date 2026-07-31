@@ -39,13 +39,17 @@ def DensityOperator.spectralTraceClass (ρ : DensityOperator H) :
 theorem DensityOperator.hasSum_inner_apply_eq_one (ρ : DensityOperator H)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
     HasSum (fun i => (inner ℂ (d i) (ρ.op (d i)) : ℂ).re) 1 := by
-  simpa using ρ.spectralTraceClass.hasSum_inner_apply d
+  have h := ρ.spectralTraceClass.hasSum_inner_apply d
+  rw [ρ.spectralTrace_eq_one] at h
+  exact h
 
 /-- The diagonal sum over any orthonormal family is bounded above by `1`. -/
 theorem DensityOperator.sum_inner_apply_le_one (ρ : DensityOperator H)
     {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d) :
     Summable (fun i => (inner ℂ (d i) (ρ.op (d i)) : ℂ).re) ∧
       ∑' i, (inner ℂ (d i) (ρ.op (d i)) : ℂ).re ≤ 1 := by
-  simpa using ρ.spectralTraceClass.sum_inner_apply_le_trace ρ.pos.toLinearMap hd
+  have h := ρ.spectralTraceClass.sum_inner_apply_le_trace ρ.pos.toLinearMap hd
+  rw [ρ.spectralTrace_eq_one] at h
+  exact h
 
 end QuantumTheory.TraceClass
