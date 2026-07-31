@@ -1,307 +1,265 @@
-# Roadmap — Second Quantization (Track D, feeds into Track A)
+# Roadmap — Second Quantization (Track D)
 
-See [notes/roadmap.md](../roadmap.md) for the status table and how this track fits into the overall
-plan. This track replaces the old "QFT groundwork" placeholder in
-[quantum-theory-foundations.md](quantum-theory-foundations.md#basic-quantum-field-theory-formalization)
-with a concrete, ordered construction, algebraic first — no Hilbert-space completion, closable
-operators, or self-adjointness/spectral theory until the algebraic Linked Cluster Theorem is done.
+Track D develops second quantization as its own construction under
+`LeanCondensedMatter/SecondQuantization/`. It supplies the many-body and diagrammatic layer used by
+the finite-temperature Linked Cluster Theorem (LCT).
 
-Lives in its own directory, `LeanCondensedMatter/SecondQuantization/`, under the `SecondQuantization`
-namespace — deliberately separate from `QuantumTheory/`/`QuantumTheory` (Track A): second
-quantization is its own construction (Fock space, creation/annihilation, CCR/CAR), not an
-extension of the axiomatic single-particle postulates in `Postulates.lean` et al. See
-`notes/conventions.md`'s "one directory per track" rule.
+The finite-mode fermionic algebraic LCT is now complete. The next work is no longer missing
+combinatorics; it is the analytic interpretation of the formal Dyson series, correlation-function
+extensions, and the convergence-aware bosonic line.
 
-## Primary line: finite-mode fermions
+See also:
 
-**As of this redesign, the finite-mode *fermionic* case is the primary line toward the Linked
-Cluster Theorem**, not bosons. The bosonic development (`Bosonic/Foundations/Occupation.lean`) continues in
-parallel but is no longer the critical path. Rationale: condensed-matter LCT applications (the
-project's actual target — see `notes/model-and-assumptions.md`) are lattice-fermion models, and
-finite modes sidestep the analytic issues (completion, unboundedness) this track is explicitly
-deferring past the algebraic result.
+- [`second-quantization-status.md`](second-quantization-status.md) for the current capability matrix;
+- [`linked-cluster-theorem.md`](linked-cluster-theorem.md) for the completed M0–M5 proof chain;
+- [`../roadmap.md`](../roadmap.md) for the repository-wide target table.
 
-`QuantumTheory.Statistics` (`Common/Algebra/Statistics.lean`) — a `boson`/`fermion` enum with an exchange sign
-`zetaInt : Statistics → ℤ` (`+1`/`-1`) — exists so both occupation-number representations, and a
-future unified CCR/CAR statement (`aᵢaⱼ† - ζ aⱼ†aᵢ = δᵢⱼ`), can refer to the same sign convention
-without duplicating it. It does **not** unify the occupation-number *type* itself: bosonic
-occupation (`Mode →₀ ℕ`, arbitrary multiplicity) and fermionic occupation (`Finset Mode`, `0`/`1`
-only) are different types for a reason (Pauli exclusion), and forcing them into one representation
-parameterized by `Statistics` would be more awkward than two separate, simple representations.
+## Scope
 
-## Dependency order (fermionic primary line)
+The current fermionic theorem is deliberately algebraic and finite-mode:
 
+- `Mode` is finite;
+- fermionic occupation states are finite subsets of `Mode`, so the algebraic Fock basis is finite;
+- Dyson coefficients are defined by finite-dimensional operator-valued iterated integrals;
+- the partition function is packaged as a formal power series;
+- no convergence of the full perturbation series is assumed;
+- no equality with an analytic interacting partition function is asserted;
+- Hilbert-space completion, unbounded operators, trace-class theory, and thermodynamic limits are
+  separate later tracks.
+
+## Architecture
+
+```text
+Mode
+  ↓
+occupation representation
+  ↓
+algebraic Fock space
+  ↓
+creation / annihilation operators
+  ↓
+CAR or CCR
+  ↓
+free and interacting operators
+  ↓
+imaginary-time evolution and thermal functionals
+  ↓
+Dyson coefficients
+  ↓
+Wick diagram expansion
+  ↓
+component factorization + cumulants + formal log
+  ↓
+Linked Cluster Theorem
 ```
-One-particle space (Mode, [DecidableEq Mode])
-        ↓
-Fermionic occupation-number basis (Finset Mode)
-        ↓
-Fermionic Fock space (algebraic, finite-particle)
-        ↓
-Fermionic creation / annihilation operators (with sign factors)
-        ↓
-Canonical anticommutation relations
-        ↓
-Hamiltonians (number operator, free, interaction)
-        ↓
-Gibbs state / partition function / free energy (reuse Track A/C infrastructure)
-        ↓
-Dyson/Duhamel expansion
-        ↓
-Linked Cluster Theorem (reuse Track B's mu_eq_prod_restrict)
+
+Statistics-independent definitions and proofs live under `SecondQuantization/Common/`. General
+analysis and combinatorics live under `Analysis/` and `Combinatorics/`. The dependency direction is
+
+```text
+Analysis, Combinatorics
+          ↓
+SecondQuantization/Common
+          ↓
+Fermionic, Bosonic
 ```
 
-The bosonic line (`Bosonic/Foundations/Occupation.lean` onward) mirrors the algebraic and
-diagrammatic responsibilities where the mathematics agrees, while its thermal and Dyson layers use
-separate convergence-aware constructions: see "Bosonic line" below.
+## Fermionic primary line
 
-Field operators `φ(x)` are NOT the starting point in either line — they are introduced only after
-creation and annihilation operators exist, as a later derived construction.
+### Algebraic Fock construction — complete
 
-## Planned files, fermionic primary line
+The fermionic basis is
 
-| # | File | Status |
+```lean
+FermionOccupation Mode := Finset Mode
+```
+
+with algebraic Fock space, signed creation/annihilation operators, CAR, number operators, free
+Hamiltonians, and grading all implemented under `Fermionic/Algebra/`.
+
+The finite occupation basis has cardinality `2^|Mode|`, which is the key reason the fermionic line can
+support a finite-basis Dyson and trace construction without introducing analytic summability
+infrastructure first.
+
+### Imaginary time and thermal theory — complete at the algebraic finite-mode level
+
+Implemented results include:
+
+- basis-diagonal free imaginary-time evolution;
+- arbitrary interaction-picture matrix coefficients;
+- finite weighted traces and normalized Gibbs expectations;
+- free partition and two-point functions;
+- grading selection rules and contractions;
+- KMS rotation infrastructure;
+- the abstract finite-temperature Bloch–de Dominicis pairing theorem and fermionic specializations.
+
+A general many-operator time-ordering API and completed-space analytic formulation remain possible
+extensions, but they are not blockers for the proved coefficientwise LCT.
+
+### Quartic interaction and Wick diagrams — complete
+
+The non-diagonal quartic interaction used by the Dyson/Wick line is implemented in
+`Fermionic/Diagrammatics/QuarticInteraction.lean` and has the schematic form
+
+```text
+V = ∑ᵢⱼₖₗ g(i,j,k,l) cᵢ† cⱼ† cₖ cₗ.
+```
+
+The diagrammatic layer contains:
+
+- ordered quartic vertices and local legs;
+- pairing data and fermionic crossing signs;
+- full quartic Wick-diagram amplitudes;
+- the Dyson vertex-moment diagram expansion;
+- connected components and component restriction/reassembly;
+- component-local vertex orders and global component shuffles.
+
+### Algebraic Linked Cluster Theorem — complete
+
+The completed M0–M5 sequence is:
+
+| Milestone | Result | Status |
 |---|---|---|
-| 1 | `Common/Algebra/OneParticleSpace.lean` — abstract `Mode : Type`, shared by both statistics | `proved` |
-| 1b | `Common/Algebra/Statistics.lean` — `Statistics := boson \| fermion`, exchange sign `zetaInt`, `zeta_sq` | `proved` |
-| 2 | `Fermionic/Algebra/Occupation.lean` — `FermionOccupation Mode := Finset Mode` (the occupied-mode set); `fermionVacuum`, `fermionParticleNumber`, `insertOccupation`/`removeOccupation` (set-level bookkeeping only, no sign factor yet) | `proved` |
-| 3 | `Fermionic/Algebra/FockSpace.lean` — algebraic finite-particle vector space generated by fermionic occupation-number states. No completion, no bounded/unbounded operator theory yet | `proved` |
-| 4 | `Fermionic/Algebra/CreationAnnihilation.lean` — `create`/`annihilate` on basis vectors *with* the Jordan–Wigner-style sign factor, extended linearly; vacuum, particle number, raising/lowering proved before CAR | `proved` |
-| 5 | `Fermionic/Algebra/CanonicalAnticommutationRelations.lean` — `{aᵢ, aⱼ} = 0`, `{aᵢ†, aⱼ†} = 0`, `{aᵢ, aⱼ†} = δᵢⱼ`. Spelled out in full (not abbreviated `CAR.lean`) so the module name says what it proves | `proved` |
-| 6 | `Fermionic/Algebra/Hamiltonian.lean` — `numberOperator`/`totalNumberOperator`, `freeHamiltonian` (dispersion-weighted number operators), `interactionHamiltonian` (density-density coupling, a quartic monomial in creation/annihilation operators — see note below). Finite mode sets still assumed | `proved` |
-| 6.5 | `Common/Thermal/WeightedDiagonalFunctional.lean` — `matrixCoeff`, `traceFock`, `weightedTrace`, `weightSum`, and `normalizedWeightedDiagonal`, for an *arbitrary* weight `w : Config → ℂ` (not yet the genuine Gibbs weight `e^{-βE(n)}`, no analytic `exp` anywhere). The mathematical content is a normalized weighted diagonal functional; the Gibbs interpretation is appropriate only after Gibbs specialization. Isolates the combinatorial "sum over basis states, weighted" structure both a formal and a genuine Gibbs weight will specialize to. Fermionic consumers call this `Common` API directly (the former `Fermionic/WeightedDiagonalFunctional.lean` thin wrapper was removed) | `proved` |
-| 8 | `Fermionic/Thermal/QuantumLinkedCluster.lean` / `Fermionic/Perturbation/FormalLogPartitionFunction.lean` — combinatorial linked-cluster groundwork: occupation-cumulant connectedness under a product weight, and `log Z` as a formal power series. Not yet the genuine (time-ordered, Wick-expanded) Linked Cluster Theorem — see below | `proved` groundwork; full LCT pending |
-| 9 | `Fermionic/ImaginaryTime/ImaginaryTimeEvolution.lean` — the algebraic, basis-diagonal realization of free imaginary-time evolution for the free Hamiltonian, and its Heisenberg-type conjugation of a general algebraic operator. First step of the finite-temperature Green-function / time-ordered-correlator line a genuine LCT needs | `proved` |
+| M0 | finite-family component-shuffle ordered-simplex product | complete |
+| M1 | fermionic contraction-integrand factorization | complete |
+| M2 | complete quartic Wick-amplitude factorization | complete |
+| M3 | Dyson finite-set cumulant equals the connected-diagram sum | complete |
+| M4 | factorial-normalized formal-log coefficient equals the finite-set cumulant | complete |
+| M5 | final Dyson LCT specialization and public export | complete |
 
-**Note on interactions:** `Fermionic/Algebra/Hamiltonian.lean` still contains the diagonal
-`Σᵢⱼ V(i,j) Nᵢ Nⱼ` density-density Hamiltonian. The non-diagonal quartic interaction needed for the
-Wick/Dyson line is now implemented separately in
-`Fermionic/Diagrammatics/QuarticInteraction.lean` as
-`Σᵢⱼₖₗ V(i,j,k,l) cᵢ† cⱼ† cₖ cₗ`; the Dyson diagram expansion uses that general vertex rather than
-the diagonal density-density operator.
+The final declaration is
 
-Track D's aggregate entries in `notes/roadmap.md` remain `stated` while the full Linked
-Cluster Theorem pipeline is unfinished. Individual modules and intermediate phases are marked
-`proved` when they compile without `sorry`; the track-level status describes the unfinished target.
+```lean
+SecondQuantization.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude
+```
 
-## Bosonic line (parallel, not critical path)
+and states, for `n ≠ 0`,
 
-Now developed in parallel with Phase 9 of the fermionic line, per the staged plan below. The
-fermionic line remains the critical path for the condensed-matter LCT target. The concrete
-occupation calculations differ, while shared Fock-space, evolution, exchange, and component
-proofs live in `Common/`. The remaining asymmetry is analytic: bosonic occupation numbers are
-unbounded, so even a finite mode set gives an *infinite-dimensional* Fock space, unlike the
-fermionic `2^|Mode|`-dimensional case. The canonical Fock-space and operator declarations
-(`Occupation`, `basisState`, `create`,
-`annihilate`, etc.) live exclusively under `namespace SecondQuantization.Bosonic`, distinct from
-the fermionic line's plain `SecondQuantization` namespace. The former plain-namespace
-occupation/Fock aliases have been removed.
+```text
+n! [λⁿ] log(normalize(dysonPartitionSeries))
+  = ∑ connected quartic Wick diagrams on Fin n, amplitude(diagram).
+```
 
-**Planned order** (Phase B1: algebraic layer, parallel to fermionic Phases 1–7; Phase B2: free
-imaginary-time evolution, parallel to Phase 9 step 1; Phase B3: the genuine, uncutoff bosonic
-thermal theory, *not* a direct port of the fermionic finite-sum trace/partition-function API —
-bosonic partition sums are genuinely infinite series needing convergence conditions, e.g.
-`βεᵢ > 0` per mode, that have no fermionic analogue):
+The exact proof architecture is documented in
+[`linked-cluster-theorem.md`](linked-cluster-theorem.md).
 
-| # | File | Status |
-|---|---|---|
-| B1a | `Bosonic/Foundations/Occupation.lean` — `Occupation Mode := Mode →₀ ℕ`, the occupation-number basis; `vacuum`, `particleNumber`, `singleOccupation`, `createOccupation`/`removeOccupation` (set-level bookkeeping, mirroring `insertOccupation`/`removeOccupation` on the fermionic side) and their particle-count lemmas. Assumes only what `Finsupp` itself needs (no `Fintype Mode` requirement) | `proved` |
-| B1b | `Bosonic/Foundations/FockSpace.lean` — algebraic finite-particle vector space `Occupation Mode →₀ ℂ` generated by occupation-number states; `basisState`, `fockVacuum`, basic injectivity facts | `proved` |
-| B1c | `Bosonic/OperatorAlgebra/CreationAnnihilation.lean` — `create`/`annihilate` on basis vectors *with* the `√n`/`√(n+1)` normalization factors (no Jordan–Wigner sign, unlike fermions — bosonic modes commute), extended linearly via `Finsupp.lift`; `linearMap_ext_basisState`, basis-level raising/lowering. CCR itself was deferred to a separate file (B1d) — the `√n` bookkeeping makes that telescoping argument genuinely more involved than the fermionic CAR proof | `proved` |
-| B1d | `Bosonic/OperatorAlgebra/CCR.lean` — `[aᵢ, aⱼ] = 0`, `[aᵢ†, aⱼ†] = 0`, `[aᵢ, aⱼ†] = δᵢⱼ`, via `createOccupation_comm`/`removeOccupation_comm`/`removeOccupation_createOccupation_of_ne` (`Bosonic/Foundations/Occupation.lean`) at distinct modes and a `√n · √n = n` telescoping identity (`Real.mul_self_sqrt`) at the diagonal | `proved` |
-| B2 | `Bosonic/ImaginaryTime/ImaginaryTimeEvolution.lean` — real-valued `freeEigenvalue ε n := Σᵢ n(i)·ε(i)`, `freeHamiltonian` (diagonal in the occupation basis with that eigenvalue), the algebraic basis-diagonal realization of `e^{τH₀}` (`imaginaryTimeEvolveFree`, not an operator exponential), algebraic Heisenberg-type `imaginaryTimeEvolve`, and the evolved operators `a_i(τ) = e^{-τεᵢ} a_i`, `a_i†(τ) = e^{τεᵢ} a_i†` | `proved` |
-| B3a | `Bosonic/Thermal/FreePartitionFunction.lean` — the one-mode geometric series `Σ_{k=0}^∞ e^{-βkε} = (1-e^{-βε})⁻¹` (`hasSum_oneModeBoltzmannWeight`/`tsum_oneModeBoltzmannWeight`), converging exactly when `0 < βε` | `proved` |
-| B3b | `Bosonic/Thermal/BoltzmannWeightFactorization.lean` — for `[Fintype Mode]`, the multi-mode Boltzmann weight `boltzmannWeight ε β n := e^{-βE(n)}` factors into one-mode factors, `boltzmannWeight_eq_prod : e^{-βE(n)} = ∏ᵢ oneModeBoltzmannWeight β (εᵢ) (n i)` — the purely algebraic half of the product formula, no summability yet | `proved` |
-| B3c | `Bosonic/Thermal/BoltzmannWeightSummable.lean` — the actual infinite-sum decomposition `Σ_n ∏ᵢ q_i^{n(i)} = ∏ᵢ Σ_k q_i^k`, giving `hasSum_boltzmannWeight : HasSum (boltzmannWeight ε β) (∏ᵢ (1-e^{-βεᵢ})⁻¹)` for any `[Fintype Mode]`, given `∀ i, 0 < βεᵢ` (with `summable_boltzmannWeight`/`tsum_boltzmannWeight`/`tsum_boltzmannWeight_pos`/`tsum_boltzmannWeight_ne_zero` corollaries). Now a thin corollary (via `boltzmannWeight_eq_prod` identifying `boltzmannWeight ε β n` with the multi-index product `∏ᵢ (e^{-βεᵢ})^{n(i)}`) of the general, non-physics `Analysis/FinsuppProductSeries.lean : Finsupp.hasSum_prod_geometric` — a `[Fintype ι]`-indexed finite product of geometric series `HasSum (fun n : ι →₀ ℕ => ∏ i, q i ^ n i) (∏ i, (1 - q i)⁻¹)`, itself built from the general `Finsupp.hasSum_prod`/`Finsupp.hasSum_prod_nonneg` (finite products of absolutely convergent series over `Finsupp`-indexed types, proved by induction on `Fin k` splitting off one mode at a time via `Finsupp.optionEquiv`, then reindexed along an arbitrary `Fintype ι ≃ Fin (Fintype.card ι)` via `Fintype.equivFin`) | `proved` |
-| B3d | `Bosonic/Thermal/FreeTwoPointCoefficient.lean` — `diagonalCoeff A n := A (basisState n) n` (a coordinate evaluation, deliberately *not* named `operatorTrace`: `Bosonic.FockSpace` is the algebraic, finite-particle *dense subspace* of a would-be completed bosonic Fock space, not that completed Hilbert space itself, so there is no inner product yet to make `diagonalCoeff` and `⟨n\|A\|n⟩` provably coincide); the free two-point function's basis coefficient `⟨n\|a_i(τ)a_j†\|n⟩ = δᵢⱼ e^{-τεᵢ}(nᵢ+1)`, computed algebraically with no thermal sum or Hilbert completion needed | `proved` |
-| B3e+ | The Boltzmann-weighted thermal sum over `n` of `B3d`'s coefficient (working name `gibbsDiagonalSum`/`occupationGibbsExpectation`, same naming caveat as `diagonalCoeff`), reducing to the Bose–Einstein distribution `⟨n_i⟩ = 1/(e^{βεᵢ}-1)` via `B3a`'s geometric series. `B3c`'s multi-mode summability is now available for this. **The summability half is now done** — `Bosonic/Thermal/ParticleNumberWeightSummable.lean`'s `hasSum_particleNumber_boltzmannWeight` (added for the `Common/` Bloch–de Dominicis 2-point instantiation below, not for this line directly) gives `Σ_n n(j)·e^{-βE(n)}`'s convergence. The actual normalized-expectation closed form, and connecting it to `gibbsDiagonalSum`/`occupationGibbsExpectation`, is still not started | `idea` |
+## Why the factorial appears
 
-## Common statistics-agnostic layer
+`dysonPartitionSeries` is an ordinary power series
 
-**File layout:** `SecondQuantization.Common`, `SecondQuantization.Fermionic`, and
-`SecondQuantization.Bosonic` are the public aggregate imports. Common and Fermionic use matching
-responsibility directories (`Algebra/`, `ImaginaryTime/`, `Thermal/`, `Perturbation/`, and
-`Diagrammatics/`, with Bosonic omitting `Perturbation/`). Bosonic keeps a finer
-`Foundations/`/`OperatorAlgebra/` split behind `Bosonic.Algebra` because that is a useful proof
-boundary. `Fermionic/Thermal/QuantumLinkedCluster.lean` is exported by the Fermionic Thermal umbrella;
-it is no longer a separate root import. Statistics-specific Bloch–de Dominicis checks live under
-each statistics' `Thermal/BlochDeDominicis/` directory, while the general framework remains in
-`Common/Thermal/BlochDeDominicis/`. The purely combinatorial pairing machinery lives upstream in
-`Combinatorics/PerfectPairing.lean` and related files.
+```text
+Ẑ(λ) = ∑ₙ zₙ λⁿ.
+```
 
-The fermionic and bosonic lines proved the same shape of facts twice — an algebraic Fock space
-built from an occupation-state type, and a basis-diagonal free-Hamiltonian evolution — using
-different concrete occupation types (`FermionOccupation Mode := Finset Mode` vs. `Occupation Mode
-:= Mode →₀ ℕ`) but genuinely identical proofs otherwise. Extracted into `Common/`:
+Finite-set partition combinatorics is naturally exponential-generating:
 
-**Design principle for what belongs in `Common/`.** `Common/` is not a dumping ground for
-"whatever happened to generalize" — it is the layer both statistics enter from their different
-concrete representations. A definition/theorem belongs here only if: (1) it doesn't depend on the
-concrete occupation-state type; (2) `Common/` never imports `Fermionic/`/`Bosonic/` (the
-dependency direction is one-way: statistics-specific code depends on `Common/`, never the
-reverse); (3) in general both statistics' concrete instantiations land in the *same* PR, so
-`Common/` never accumulates an API only one side actually uses; (4) if one side genuinely can't
-supply an instantiation, the docstring says why. **This does not mean forcing artificial
-symmetry** — the *algebraic* layer (Fock space, exchange commutator, occupation-basis interface)
-is symmetric by construction, but genuinely different analytic content stays on each statistics'
-own side: bosonic occupation-number sums are infinite series (even for a finite mode set, since
-`Occupation Mode := Mode →₀ ℕ` is unbounded per mode) where fermionic ones are `Finset.sum`s
-(`FermionOccupation Mode := Finset Mode` is finite), so the bosonic thermal-trace layer needs its
-own convergence-aware implementation, not a forced fit into `Common/Thermal/WeightedDiagonalFunctional.lean`'s
-finite-sum shape.
+```text
+Ẑ(λ) = ∑ₙ mₙ λⁿ / n!.
+```
 
-| File | Contents | Status |
-|---|---|---|
-| `Common/Algebra/AlgebraicFock.lean` | `AlgebraicFock Config := Config →₀ ℂ`, `basisState`, `linearMap_ext_basisState`, `matrixCoeff`/`diagonalCoeff` (coordinate-evaluation APIs), `diagonalOperator` (a generic basis-diagonal-operator constructor), generic over the occupation-state type `Config` | `proved` |
-| `Common/Algebra/OccupationBasis.lean` | `OccupationBasis Mode Config` (a `class`, resolved by instance search) — the architectural interface (`vacuum`, `occupation : Config → Mode → ℕ`, finiteness, faithfulness) both lines' concrete occupation types satisfy; the concrete instances (`SecondQuantization.occupationBasis` — fermionic, plain namespace — and `SecondQuantization.Bosonic.occupationBasis`) live in `Fermionic/Algebra/Occupation.lean` and `Bosonic/Foundations/Occupation.lean` (would invert the `Common/` → statistics-specific dependency direction if supplied here) | `proved`, both instances |
-| `Common/ImaginaryTime/DiagonalEvolution.lean` | `diagonalEvolution energy τ` — the algebraic, basis-diagonal realization of `e^{τH₀}` for a free Hamiltonian diagonal in `AlgebraicFock Config`'s eigenbasis with eigenvalue `energy : Config → ℝ`, and its Heisenberg-type `heisenbergEvolve`; the semigroup law, mutual inversion, `A(0) = A` | `proved` |
-| `Common/Algebra/ExchangeCommutator.lean` | `zetaCommutator`/`exchangeCommutator`, unifying CAR/CCR as one `ζ`-indexed relation | `proved` |
-| `Common/ImaginaryTime/TimeOrdering.lean` | `Common.zetaTimeOrderedProduct`/`Common.timeOrderedProduct` — the imaginary-time-ordered product `T_τ` of two `AlgebraicFock Config` endomorphisms, generic over `Config`, indexed by a raw `ζ : ℤ` or by a `Statistics` value; `Bosonic/ImaginaryTime/ImaginaryTimeEvolution.lean` fixes `Statistics.boson` (fermionic consumers call `Common.timeOrderedProduct Statistics.fermion` directly, the former `Fermionic/ImaginaryTimeOrdering.lean` wrapper was removed) | `proved` |
-| `Common/Algebra/ExchangeAlgebra.lean` | `Common.ExchangeAlgebra s Mode Config` — a `class` packaging the *all-index* exchange relation `a_i a_j† - ζ a_j† a_i = δᵢⱼ`, `a_i a_j - ζ a_j a_i = 0`, `a_i† a_j† - ζ a_j† a_i† = 0` (via `exchangeCommutator s`) that CAR/CCR share; concrete instances live in each statistics' own directory | `proved`, both instances |
-| `Combinatorics/PerfectPairing.lean` | `Common.BlochDeDominicis.Pairing n` — perfect pairings of `Fin (2 * n)` behind a stable `partner` interface, implemented by fixed-point-free involutive permutations; finite enumeration, partner laws, crossing count, `eraseZeroPair`/`insertFirstPair`/`equivSigma` (the `Pairing (n+1) ≃ Σ_{j≠0} Pairing n` decomposition the Bloch–de Dominicis induction recurses on) | `proved` |
-| `Common/Thermal/BlochDeDominicis/PairingWeight.lean` | `Pairing.weight s := (s.zetaInt : ℂ) ^ crossingCount`, `weight_eraseZeroPair` (the crossing-count recurrence), the four-position closed-form check | `proved` |
-| `Combinatorics/Common/DeletedFinPositions.lean` | `deletedPositions n j hzero` and `deletedPositionsOrderIso n j hzero` — the finite ordered-set seam identifying `Fin (2 * n)` with `Fin (2 * (n + 1))` after deleting two positions, used by the pairing-restriction induction | `proved` |
-| `Common/Thermal/WeightedDiagonalFunctional.lean` | `Common.traceFock`/`Common.weightedTrace`/`Common.weightSum`/`Common.normalizedWeightedDiagonal`, generic over the occupation-state type `Config`; fermionic consumers call this API directly | `proved` |
+Therefore
 
-**Retrofit done:** `Fermionic/Algebra/FockSpace.lean` and
-`Bosonic/Foundations/FockSpace.lean` specialize `Common.AlgebraicFock`; the canonical bosonic type is
-`SecondQuantization.Bosonic.FockSpace` (the old `Bosonic.FockSpace` name is compatibility-only).
-`Fermionic/ImaginaryTime/ImaginaryTimeEvolution.lean` and
-`Bosonic/ImaginaryTime/ImaginaryTimeEvolution.lean` specialize `Common.diagonalEvolution` and
-`Common.heisenbergEvolve`, while number operators and diagonal Hamiltonians share
-`Common.diagonalOperator`.
+```text
+mₙ = n! zₙ.
+```
 
-**Still not done:** the unified free two-point coefficient
-`⟨n|aᵢ(τ)aⱼ†|n⟩ = δᵢⱼ e^{-τεᵢ}(1+ζnᵢ)` (specializing to bosonic `B3d`'s
-`e^{-τεᵢ}(nᵢ+1)` at `ζ=+1` and the fermionic Green function's `e^{-τεᵢ}(1-nᵢ)` at `ζ=-1`) —
-a concrete future target now that `ExchangeAlgebra` supplies the unified CCR/CAR interface.
+`dysonVertexMoment` implements this conversion on a labelled finite set `S`:
 
-## Relation to Track C (operator algebra)
+```text
+dysonVertexMoment(S) = |S|! · normalizedDysonPartitionCoeff(|S|).
+```
 
-Analytic issues — Hilbert-space completion of the algebraic Fock space, self-adjointness/domains of
-the unbounded creation/annihilation operators, trace-class questions on the completed space — are
-explicitly deferred past the algebraic Linked Cluster Theorem. When they're eventually needed,
-Track C's Hilbert–Schmidt/trace-class infrastructure should be reused, not reproved.
+`Combinatorics/PowerSeriesCumulant.lean` proves that the same normalization converts coefficients of
+`log Ẑ` into finite-set cumulants.
 
-## Phase 8: combinatorial linked-cluster groundwork
+## Formal versus analytic statements
 
-Not the genuine Linked Cluster Theorem — see "Phase 9" below for what's still missing (time
-ordering, Green functions, Wick contractions, the genuine Dyson series). What's proved so far:
+The proved theorem concerns the formal series assembled from the actual coefficientwise Dyson
+recursion. It does not yet prove the analytic identity
 
-**`Fermionic/Thermal/QuantumLinkedCluster.lean` (fermionic-specific bridge)** — connects the fermionic
-Track D line to Track B's abstract cumulant machinery: `occupationMoment w S` (`⟨∏ᵢ∈S nᵢ⟩_w`),
-`occupationProjector S` (the same observable as an operator), `IsProductWeightAcross w A B` (`w`
-factors across a mode bipartition — **does not cover a genuine interacting Gibbs weight**), and
-the main theorem `occupationMoment_isIndependentAcross` — a product weight makes
-`Finpartition.IsIndependentAcross (occupationMoment w) A B` hold, packaged physics-facing as
-`occupationCumulant`/`occupationCumulant_eq_zero_of_isProductWeightAcross`.
+```text
+∑ₙ λⁿ Dₙ(β) = exp(βH₀) exp(-β(H₀ + λV))
+```
 
-**`Fermionic/Perturbation/FormalLogPartitionFunction.lean`** — `log Z` as a formal power series (via Mathlib's
-`PowerSeries.log`), for an arbitrary `Z : PowerSeries ℂ` normalized to `Z(0) = 1`
-(`normalizePartitionSeries`, `formalLogPartitionFunction`). Not yet physics-connected — no
-coefficient here has been shown to count connected contributions.
+or the corresponding partition-function identity
 
-**Not yet done:** relating Track B's finite-set moment/cumulant duality to exponential-generating-
-series `exp`/`log`; the general `[λⁿ]` coefficient formula for `log Z`; connecting the actual
-perturbative Dyson expansion (Phase 9 below) to that structure.
+```text
+Z_D(λ) = Tr(exp(-β(H₀ + λV))).
+```
 
-## Phase 9: finite-temperature Green functions and time ordering
+For finite fermionic mode sets these statements should be approachable using finite-dimensional
+operator ODEs, matrix exponentials, and analytic Taylor-series uniqueness. They are the next major
+fermionic milestone.
 
-**Status: steps 1–6 done, step 7 not started.** The genuine theorem needs imaginary-time
-evolution, time ordering, free/quasifree thermal `n`-point correlators, the finite-temperature
-Bloch–de Dominicis theorem, and the non-commutative time-ordered Dyson series.
+## Bosonic parallel line
 
-1. `Fermionic/ImaginaryTime/ImaginaryTimeEvolution.lean` — algebraic, basis-diagonal `e^{τH₀}`
-   (`imaginaryTimeEvolveFree`) and Heisenberg-type conjugation (`imaginaryTimeEvolve`), with
-   explicit evolved-operator formulas `c_i(τ) = e^{-τε_i}c_i`, `c_i†(τ) = e^{τε_i}c_i†`.
-2. `Common/ImaginaryTime/TimeOrdering.lean`'s `Common.timeOrderedProduct` — 2-operator imaginary-time ordering
-   `T_τ`, `θ(0) = 1/2` convention, generic over `Config`/indexed by `Statistics`. Fermionic
-   consumers call `Common.timeOrderedProduct Statistics.fermion` directly (no fermionic wrapper);
-   `Bosonic/ImaginaryTime/ImaginaryTimeEvolution.lean` still fixes `Statistics.boson`.
-3. `Fermionic/Thermal/WeightedFreeTwoPointFunction.lean` / `Fermionic/Thermal/FreeBoltzmannWeight.lean` /
-   `Fermionic/Thermal/FreePartitionFunction.lean` / `Fermionic/Thermal/FreeTwoPointFunction.lean` — the free
-   thermal two-point function for an arbitrary weight, specialized to the genuine Gibbs weight
-   `freeBoltzmannWeight`, giving `freeGibbsGreenFunction` and its closed form (`G₀,ᵢⱼ = 0` for
-   `i≠j`; the explicit `i=j` formula recovering the Fermi–Dirac occupation number). **Not done:**
-   KMS antiperiodicity and the `0≤τ,τ'≤β` fundamental-domain package — the equal-time value is
-   discontinuous against both one-sided limits by construction (CAR forces their difference to
-   `-1`), so any future KMS theorem must avoid `τ=τ'`.
-4. `Fermionic/Thermal/WeightedContraction.lean` — same-type contractions (`cc`, `c†c†`) vanish, via the
-   general `U(1)` particle-number selection rule (`Common/Algebra/ParticleNumberSelectionRule.lean`'s
-   `CarriesGradingDegree`, instantiated for both statistics).
+The bosonic occupation basis is
 
-   **The general finite-temperature Bloch–de Dominicis theorem**
-   (`Common/Thermal/BlochDeDominicis/Induction.lean`'s `gibbsExpectation_prodComp_eq_sum_pairing`) is the
-   load-bearing result of this phase: given (a) each operator is a `heisenbergEvolve` eigenoperator,
-   (b) pairwise `zetaCommutator` constants, (c) non-resonance `1 - ζ·exp(qᵢβ) ≠ 0` at every index,
-   it expands `⟨C₀⋯C_{2n-1}⟩_β` as a sum over `Pairing n` of crossing-sign-weighted products of
-   2-point expectations — **proved in full, no `sorry`**, by induction on `Pairing`'s
-   `eraseZeroPair`/`insertFirstPair`/`equivSigma` decomposition, combining trace-cyclicity, a
-   KMS-type rotation identity, and the exchange commutator
-   (`Common/Thermal/WeightedDiagonalFunctional.lean`, `Common/ImaginaryTime/DiagonalEvolution.lean`,
-   `Common/Algebra/ExchangeAlgebra.lean`, `Common/ImaginaryTime/KMSRotation.lean`, assembled via
-   `Common/Thermal/BlochDeDominicis/{Unnormalized/TwoPoint,Unnormalized/PeelFirst,Unnormalized/PeelFirstTrace,Unnormalized/PeelTermsIndexed,GibbsExpectation/Peel,GibbsExpectation/FourPoint}.lean`).
-   The `hne` non-resonance hypothesis is required at *every* index (an early draft without it was
-   shown false by a boson/all-zero counterexample). Validated against the fermionic 2-point closed
-   form (`Fermionic/Thermal/BlochDeDominicis/TwoPoint.lean`) and a genuine bosonic instantiation
-   (`Bosonic/Thermal/BlochDeDominicis/TwoPoint.lean`, given each mode's `0<βεᵢ` convergence condition).
+```lean
+Bosonic.Occupation Mode := Mode →₀ ℕ.
+```
 
-   Not yet done: a general `n`-operator time-ordered product (`timeOrderedProduct` is still
-   2-operator only); a bosonic `tsum`-based Gibbs weighted-expectation construction on arbitrary
-   operators (blocked on `Occupation Mode := Mode →₀ ℕ` not being `[Fintype Config]` — needs either
-   a summability-restricted operator submodule or a more general functional interface, a design
-   question for a later PR).
+Even for finite `Mode`, this type is infinite. The bosonic line therefore mirrors the algebraic and
+statistics-independent layers but cannot reuse the finite-basis trace and operator-integral APIs
+unchanged.
 
-5. **The genuine interaction-picture Dyson series** — continuous imaginary-time iterated integrals
-   (not a formal power series; no convergence claim beyond the `n=0` term):
-   `Common/Perturbation/FiniteOperatorIntegral.lean` (coefficientwise `operatorIntervalIntegral`),
-   `Fermionic/ImaginaryTime/InteractionPicture.lean`, `Fermionic/Perturbation/DysonExpansion.lean` (`dysonCoeff`, the genuine
-   recursion `D₀=id`, `Dₙ₊₁(τ)=-∫₀^τ V_I(σ)∘Dₙ(σ)`), `Fermionic/Perturbation/DysonExpansionVerification.lean`
-   (sanity check against ordinary Taylor coefficients for a time-independent interaction),
-   `Fermionic/Perturbation/DysonPartitionSeries.lean` (`dysonPartitionCoeff`/`dysonPartitionSeries`, connected to
-   `formalLogPartitionFunction`).
+### Completed bosonic layers
 
-6. **Diagrammatics — complete through component decomposition and scalar-prefactor factorization.**
-   The implementation history was staged as follows:
-   - PR 1, `Combinatorics/DiagramConnectedness.lean` — abstract `WeightedDiagramFamily`,
-     `diagramMoment_eq_momentFromCumulant`/`cumulantFromMoment_diagramMoment` connecting to
-     `MomentCumulant.lean`. Purely combinatorial, no `SecondQuantization` import.
-   - PR 2, `Fermionic/Perturbation/DysonVertexMoment.lean` — the `ℕ`-indexed Dyson series ↔ Track B's
-     `Finset α → ℂ` moment type seam (`dysonVertexMoment := S.card! • normalizedDysonPartitionCoeff`,
-     with the factorial converting ordinary to exponential generating coefficients).
-   - PR 3, `Fermionic/Diagrammatics/QuarticInteraction.lean` — the first concrete,
-     generally non-diagonal quartic vertex `Σ g(q) cᵢ†cⱼ†cₗcₖ`, with no
-     Hermiticity, antisymmetry, or momentum conservation built into the definition.
-   - PR 4a/4b introduced the quartic Wick-diagram data and connectedness layer in
-     `Fermionic/Diagrammatics/WickDiagram.lean` and
-     `Fermionic/Diagrammatics/WickDiagram/Connected.lean`.
-   - PR 5a/5b/5c added `Analysis/OrderedSimplexIntegral.lean`, pairing relabelling,
-     `Fermionic/Diagrammatics/WickDiagram/Ordered.lean`, and
-     `Fermionic/Diagrammatics/WickDiagram/Amplitude.lean`.
-   - PR 6 proved the Dyson diagram expansion in
-     `Fermionic/Diagrammatics/DysonDiagramExpansion.lean`, using the flattened local-leg
-     semantics from `Fermionic/Diagrammatics/WickDiagram/LegFamily.lean` and
-     `Fermionic/Diagrammatics/QuarticLocalLeg.lean`.
-   - PR 7 completed component partition, restriction, connectedness, reassembly, the
-     decomposition equivalence, and scalar-prefactor factorization under
-     `Fermionic/Diagrammatics/WickDiagram/`. The remaining full-amplitude factorization is the
-     ordered-simplex shuffle together with pairing-weight and pair-value compatibility under
-     component-local orders; after that come the finite-set LCT and the `PowerSeries.log`
-     coefficient bridge.
+- algebraic Fock space and normalized ladder operators;
+- CCR and number operators;
+- free imaginary-time evolution and interaction-picture ladder formulas;
+- convergent free partition sums under `0 < β εᵢ` assumptions;
+- free two-point functions and a two-point Bloch–de Dominicis specialization;
+- quartic vertex data, local legs, ordered diagrams, connected components, component decomposition,
+  and scalar component prefactors.
 
-7. **Not started**: move/generalize the fermionic linked-cluster bridge (Phase 8's
-   `Fermionic/Thermal/QuantumLinkedCluster.lean`, currently only a product-weight/independent-region toy
-   case) on top of the real Wick-diagram machinery from step 6, and the `PowerSeries.log`
-   coefficient identification that actually states the Linked Cluster Theorem.
+### Remaining bosonic blockers
 
-### Common Bloch–de Dominicis infrastructure (reference index)
+1. **Arbitrary Gibbs functionals.** Existing convergence proofs are expression-specific. A reusable
+   functional must carry summability or domain hypotheses.
+2. **Operator-valued integration.** The current Common construction uses finite output-basis sums.
+3. **Full Wick amplitude and Dyson expansion.** These depend on the preceding two analytic interfaces.
+4. **Bosonic LCT specialization.** The Common component-shuffle, formal-log, and abstract connectedness
+   results are reusable once a valid bosonic weighted-diagram family exists.
 
-Purely combinatorial/algebraic building blocks used throughout step 4's induction, kept here as a
-pointer index rather than a development narrative — see the files themselves for details:
-- `Common/Thermal/BlochDeDominicis/{Unnormalized/TwoPoint,Unnormalized/PeelFirst,Unnormalized/PeelFirstTrace,Unnormalized/PeelTermsIndexed,GibbsExpectation/Peel,GibbsExpectation/FourPoint,Induction}.lean`
-- `Common/ImaginaryTime/KMSRotation.lean`, `Common/Algebra/ExchangeAlgebra.lean`, `Common/Algebra/ExchangeCommutator.lean`,
-  `Common/Thermal/NormalizedOperatorFunctional.lean` (the base linear-functional interface — linearity +
-  `eval id = 1` alone, *not* by itself sufficient for the Bloch–de Dominicis pairing-sum identity)
-- `Combinatorics/PerfectPairing.lean`,
-  `Combinatorics/PerfectPairing/{Relabel,EraseZeroSuccAbove,PairsDecomposition,SumDecomposition}.lean`,
-  `Combinatorics/Common/{DeletedFinPositions,DeletedFinPositionsSuccAbove,EraseIdxOfFn}.lean`
+No false `[Fintype (Bosonic.Occupation Mode)]` assumption should be introduced to close these gaps.
+
+## Next phases
+
+### F1 — Low-order fermionic verification
+
+Prove explicit `n = 1, 2, 3` corollaries and compare them with enumerated connected diagrams:
+
+```text
+1! [λ] log Z = z₁,
+2! [λ²] log Z = 2z₂ - z₁²,
+3! [λ³] log Z = 6z₃ - 6z₁z₂ + 2z₁³.
+```
+
+This provides readable examples and regression coverage for the general theorem.
+
+### F2 — Analytic finite-dimensional Dyson theorem
+
+Establish the interaction-picture evolution equation, convergence of the coefficient series, and
+identification with the finite-dimensional matrix exponential. Then connect the formal partition
+series to the analytic normalized interacting partition function.
+
+### F3 — Correlation functions and external legs
+
+Define source or external-operator insertions and prove that logarithms/cumulants select connected
+contributions for time-ordered Green functions, not only the vacuum/free-energy sector.
+
+### B1 — Convergence-aware bosonic functional interface
+
+Design the smallest reusable summability-restricted class that supports linearity, normalization, KMS
+rotation, and the required Wick contractions.
+
+### B2 — Bosonic Dyson and diagram expansion
+
+Build an operator-integral interface compatible with the bosonic functional, then instantiate the
+existing Common diagram and cumulant machinery.
+
+### A1 — Completed-space and infinite-mode extensions
+
+After suitable trace-class and unbounded-operator infrastructure exists, study infinite mode sets,
+Hilbert-space completion, and thermodynamic limits as separate analytic results.
