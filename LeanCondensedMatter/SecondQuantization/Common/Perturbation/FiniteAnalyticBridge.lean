@@ -132,7 +132,8 @@ theorem finiteContinuousOperator_eq_matrixUnit_sum
   funext k
   rw [finiteContinuousOperator_apply_apply]
   simp [finiteAnalyticMatrixUnit, finiteAnalyticBasis]
-  rw [Finset.sum_eq_single k]
+  symm
+  apply Finset.sum_eq_single k
   · simp [finiteAnalyticBasis]
   · intro m _ hmk
     simp [finiteAnalyticBasis, hmk]
