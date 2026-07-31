@@ -41,13 +41,9 @@ theorem lipschitzWith_analyticDysonVectorField (energy : Config → ℝ)
   have hcomp : A.comp U - A.comp W = A.comp (U - W) := by
     ext x
     simp
-  have hneg :
-      -(lam • A.comp U) - -(lam • A.comp W) =
-        -(lam • (A.comp U - A.comp W)) := by
-    abel_nf
   rw [show analyticDysonVectorField energy V β hβ lam τ U = -(lam • A.comp U) by rfl,
     show analyticDysonVectorField energy V β hβ lam τ W = -(lam • A.comp W) by rfl,
-    dist_eq_norm, dist_eq_norm, hneg, norm_neg, ← smul_sub, hcomp, norm_smul]
+    dist_neg_neg, dist_eq_norm, dist_eq_norm, ← smul_sub, hcomp, norm_smul]
   calc
     ‖lam‖ * ‖A.comp (U - W)‖ ≤
         ‖lam‖ * (‖A‖ * ‖U - W‖) := by
@@ -76,7 +72,7 @@ theorem hasDerivWithinAt_analyticDysonEvolution_vectorField
       (analyticDysonVectorField energy V β hβ lam τ
         (analyticDysonEvolution energy V τ lam)) (Ici τ) τ := by
   rw [analyticDysonVectorField_of_mem energy V β hβ lam
-    (Ico_subset_Icc_self hτ)]
+    ⟨hτ.1, hτ.2.le⟩]
   exact hasDerivWithinAt_analyticDysonEvolution_interactionPicture
     energy V hβ hτ lam
 
@@ -90,7 +86,7 @@ theorem hasDerivWithinAt_analyticDysonExponentialCandidate_vectorField
       (analyticDysonVectorField energy V β hβ lam τ
         (analyticDysonExponentialCandidate energy V τ lam)) (Ici τ) τ := by
   rw [analyticDysonVectorField_of_mem energy V β hβ lam
-    (Ico_subset_Icc_self hτ)]
+    ⟨hτ.1, hτ.2.le⟩]
   change HasDerivWithinAt
     (fun σ : ℝ => analyticDysonExponentialCandidate energy V σ lam)
     (-(lam • (continuousInteractionPicture energy V τ *
