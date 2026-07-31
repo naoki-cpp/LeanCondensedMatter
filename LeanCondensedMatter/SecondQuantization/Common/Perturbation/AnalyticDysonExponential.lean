@@ -18,7 +18,7 @@ namespace Common
 
 noncomputable section
 
-variable {Config : Type*} [Fintype Config]
+variable {Config : Type*}
 
 /-- The algebraic basis-diagonal Hamiltonian with eigenvalue `energy c` on `basisState c`. -/
 noncomputable def diagonalHamiltonian (energy : Config → ℝ) :
@@ -31,7 +31,9 @@ theorem diagonalHamiltonian_basisState (energy : Config → ℝ) (c : Config) :
     diagonalHamiltonian energy (basisState c) =
       (energy c : ℂ) • basisState c := by
   change Finsupp.lift _ ℂ _ _ (Finsupp.single c 1) = _
-  simp [diagonalHamiltonian, Finsupp.lift_apply, Finsupp.sum_single_index]
+  simp [Finsupp.lift_apply, Finsupp.sum_single_index]
+
+variable [Fintype Config]
 
 /-- The continuous realization of the basis-diagonal free Hamiltonian. -/
 noncomputable def continuousDiagonalHamiltonian (energy : Config → ℝ) :
