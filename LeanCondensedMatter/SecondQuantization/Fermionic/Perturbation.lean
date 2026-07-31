@@ -11,6 +11,7 @@ set_option linter.style.header false
 # Fermionic perturbation theory
 
 Formal partition-function logarithms, finite-basis algebraic and continuous Dyson coefficients,
-their verification, partition-series coefficients, and vertex moments. The continuous layer is a
-thin specialization of the statistics-independent Common finite-configuration bridge.
+the norm-convergent analytic Dyson evolution and its Volterra equation, coefficient verification,
+partition-series coefficients, and vertex moments. The continuous analytic layer is a thin
+specialization of the statistics-independent Common finite-configuration bridge.
 -/
