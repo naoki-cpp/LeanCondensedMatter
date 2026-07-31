@@ -31,6 +31,7 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing
 import LeanCondensedMatter.QuantumTheory.Postulates
 import LeanCondensedMatter.QuantumTheory.DensityOperator
 import LeanCondensedMatter.QuantumTheory.DensityOperatorTraceClass
+import LeanCondensedMatter.QuantumTheory.DensityOperatorSpectralTrace
 import LeanCondensedMatter.QuantumTheory.EnergyExpValueTraceClass
 import LeanCondensedMatter.QuantumTheory.Entropy
 import LeanCondensedMatter.QuantumTheory.EntropyTraceClass
