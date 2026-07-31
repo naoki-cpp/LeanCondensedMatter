@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.BinaryShuffleSlotOrderedSimplex
+import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentOrderedSimplex
 import Mathlib.Logic.Equiv.Sum
 

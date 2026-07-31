@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.EigenvectorFamily
+import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
 
 -- No project files currently carry a Mathlib-style copyright/author header; a
 -- project-wide policy for this is a separate open item (see notes/conventions.md).

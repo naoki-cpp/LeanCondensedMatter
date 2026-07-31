@@ -1,8 +1,8 @@
 import LeanCondensedMatter.QuantumTheory.EnergyExpValueTraceClass
 import LeanCondensedMatter.QuantumTheory.GibbsStateTraceClass
 import LeanCondensedMatter.QuantumTheory.EntropyTraceClass
-import LeanCondensedMatter.Analysis.PeierlsBogoliubov
-import LeanCondensedMatter.Analysis.TraceClassOps
+import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
 
 /-!
 # The Gibbs–Klein / Helmholtz free-energy inequality (infinite dimensions)

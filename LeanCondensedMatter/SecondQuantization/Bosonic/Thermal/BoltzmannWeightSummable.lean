@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.FinsuppProductSeries
+import LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannWeightFactorization
 
 set_option linter.style.header false

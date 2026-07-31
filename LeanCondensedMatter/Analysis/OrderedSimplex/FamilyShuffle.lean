@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.BinaryShuffleSlotOrderedSimplex
+import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition
 
 set_option linter.style.header false

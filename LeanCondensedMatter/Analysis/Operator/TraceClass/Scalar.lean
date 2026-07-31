@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.TraceClassBasic
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Basic
 import Mathlib.Algebra.GroupWithZero.Units.Equiv
 
 -- No project files currently carry a Mathlib-style copyright/author header; a

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.OrderedSimplexIntegralCalculus
+import LeanCondensedMatter.Analysis.OrderedSimplex.Calculus
 
 set_option linter.style.header false
 

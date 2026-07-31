@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.TraceClassBasic
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Basic
 import LeanCondensedMatter.QuantumTheory.Postulates
 import Mathlib.Analysis.InnerProductSpace.Positive
 
