@@ -30,8 +30,9 @@ theorem finiteContinuousOperator_zero :
         (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 0 := by
   apply finiteContinuousOperator_ext_basis
   intro n
-  rw [← finiteAnalyticFockEquiv_basisState]
-  simp
+  funext m
+  rw [finiteContinuousOperator_basis_apply]
+  rfl
 
 @[simp]
 theorem finiteContinuousOperator_add
@@ -40,8 +41,8 @@ theorem finiteContinuousOperator_add
       finiteContinuousOperator A + finiteContinuousOperator B := by
   apply finiteContinuousOperator_ext_basis
   intro n
-  rw [← finiteAnalyticFockEquiv_basisState]
-  simp
+  funext m
+  simp only [finiteContinuousOperator_basis_apply, Pi.add_apply, matrixCoeff_add]
 
 @[simp]
 theorem finiteContinuousOperator_smul (c : ℂ)
@@ -49,25 +50,48 @@ theorem finiteContinuousOperator_smul (c : ℂ)
     finiteContinuousOperator (c • A) = c • finiteContinuousOperator A := by
   apply finiteContinuousOperator_ext_basis
   intro n
-  rw [← finiteAnalyticFockEquiv_basisState]
-  simp
+  funext m
+  simp only [finiteContinuousOperator_basis_apply, Pi.smul_apply, matrixCoeff_smul,
+    smul_eq_mul]
 
 @[simp]
 theorem finiteContinuousOperator_neg
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     finiteContinuousOperator (-A) = - finiteContinuousOperator A := by
-  change finiteContinuousOperator ((-1 : ℂ) • A) =
-    (-1 : ℂ) • finiteContinuousOperator A
-  exact finiteContinuousOperator_smul (-1) A
+  apply finiteContinuousOperator_ext_basis
+  intro n
+  funext m
+  simp only [finiteContinuousOperator_basis_apply, Pi.neg_apply]
+  simp [matrixCoeff]
+
+@[simp]
+theorem finiteContinuousOperator_id :
+    finiteContinuousOperator
+        (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) =
+      ContinuousLinearMap.id ℂ (FiniteAnalyticFock Config) := by
+  apply finiteContinuousOperator_ext_basis
+  intro n
+  calc
+    finiteContinuousOperator
+        (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+        (finiteAnalyticBasis n) =
+      finiteAnalyticFockEquiv
+        ((LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+          (basisState n)) := by
+        rw [← finiteAnalyticFockEquiv_basisState, finiteContinuousOperator_equiv_apply]
+    _ = finiteAnalyticBasis n := by
+      simp only [LinearMap.id_apply, finiteAnalyticFockEquiv_basisState]
+    _ = ContinuousLinearMap.id ℂ (FiniteAnalyticFock Config)
+        (finiteAnalyticBasis n) := rfl
 
 @[simp]
 theorem finiteContinuousOperator_one :
     finiteContinuousOperator
         (1 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 1 := by
-  apply finiteContinuousOperator_ext_basis
-  intro n
-  rw [← finiteAnalyticFockEquiv_basisState]
-  simp
+  change finiteContinuousOperator
+      (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) =
+    ContinuousLinearMap.id ℂ (FiniteAnalyticFock Config)
+  exact finiteContinuousOperator_id
 
 @[simp]
 theorem finiteContinuousOperator_comp
@@ -76,8 +100,14 @@ theorem finiteContinuousOperator_comp
       (finiteContinuousOperator A).comp (finiteContinuousOperator B) := by
   apply finiteContinuousOperator_ext_basis
   intro n
-  rw [← finiteAnalyticFockEquiv_basisState]
-  simp
+  funext m
+  rw [finiteContinuousOperator_basis_apply]
+  change matrixCoeff (A.comp B) m n =
+    finiteContinuousOperator A
+      (finiteContinuousOperator B (finiteAnalyticBasis n)) m
+  rw [matrixCoeff_comp, finiteContinuousOperator_apply_apply]
+  exact Finset.sum_congr rfl fun k _ => by
+    rw [finiteContinuousOperator_basis_apply]
 
 @[simp]
 theorem finiteContinuousOperator_mul
@@ -113,13 +143,20 @@ theorem continuousDiagonalEvolution_basis_apply (energy : Config → ℝ) (τ : 
     (n : Config) :
     continuousDiagonalEvolution energy τ (finiteAnalyticBasis n) =
       Complex.exp ((τ * energy n : ℝ) : ℂ) • finiteAnalyticBasis n := by
-  rw [← finiteAnalyticFockEquiv_basisState]
-  simp [continuousDiagonalEvolution, diagonalEvolution_basisState]
+  calc
+    continuousDiagonalEvolution energy τ (finiteAnalyticBasis n) =
+        finiteAnalyticFockEquiv
+          (diagonalEvolution energy τ (basisState n)) := by
+      rw [continuousDiagonalEvolution, ← finiteAnalyticFockEquiv_basisState,
+        finiteContinuousOperator_equiv_apply]
+    _ = Complex.exp ((τ * energy n : ℝ) : ℂ) • finiteAnalyticBasis n := by
+      rw [diagonalEvolution_basisState, map_smul, finiteAnalyticFockEquiv_basisState]
 
 @[simp]
 theorem continuousDiagonalEvolution_zero (energy : Config → ℝ) :
     continuousDiagonalEvolution energy 0 = 1 := by
-  simp [continuousDiagonalEvolution]
+  rw [continuousDiagonalEvolution, diagonalEvolution_zero, finiteContinuousOperator_id]
+  rfl
 
 theorem continuousDiagonalEvolution_add (energy : Config → ℝ) (τ τ' : ℝ) :
     (continuousDiagonalEvolution energy τ).comp
@@ -134,16 +171,18 @@ theorem continuousDiagonalEvolution_comp_neg (energy : Config → ℝ) (τ : ℝ
     (continuousDiagonalEvolution energy τ).comp
         (continuousDiagonalEvolution energy (-τ)) = 1 := by
   rw [continuousDiagonalEvolution, continuousDiagonalEvolution,
-    ← finiteContinuousOperator_comp, diagonalEvolution_comp_neg]
-  simp
+    ← finiteContinuousOperator_comp, diagonalEvolution_comp_neg,
+    finiteContinuousOperator_id]
+  rfl
 
 @[simp]
 theorem continuousDiagonalEvolution_neg_comp (energy : Config → ℝ) (τ : ℝ) :
     (continuousDiagonalEvolution energy (-τ)).comp
         (continuousDiagonalEvolution energy τ) = 1 := by
   rw [continuousDiagonalEvolution, continuousDiagonalEvolution,
-    ← finiteContinuousOperator_comp, diagonalEvolution_neg_comp]
-  simp
+    ← finiteContinuousOperator_comp, diagonalEvolution_neg_comp,
+    finiteContinuousOperator_id]
+  rfl
 
 /-- The transported continuous interaction-picture operator. -/
 noncomputable def continuousInteractionPicture (energy : Config → ℝ)
@@ -224,14 +263,18 @@ theorem continuous_continuousDysonCoeff (energy : Config → ℝ)
 theorem continuousDysonCoeff_zero (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) :
     continuousDysonCoeff energy V 0 τ = 1 := by
-  simp [continuousDysonCoeff, dysonCoeff_zero]
+  rw [continuousDysonCoeff, dysonCoeff_zero, finiteContinuousOperator_id]
+  rfl
 
 @[simp]
 theorem continuousDysonCoeff_at_zero (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) :
     continuousDysonCoeff energy V n 0 = if n = 0 then 1 else 0 := by
   rw [continuousDysonCoeff, dysonCoeff_at_zero]
-  split_ifs <;> simp
+  by_cases h : n = 0
+  · rw [if_pos h, if_pos h, finiteContinuousOperator_id]
+    rfl
+  · rw [if_neg h, if_neg h, finiteContinuousOperator_zero]
 
 /-- The algebraic Dyson recursion transported to Mathlib's Bochner interval integral. -/
 theorem continuousDysonCoeff_succ (energy : Config → ℝ)
