@@ -95,12 +95,14 @@ theorem hasDerivWithinAt_analyticDysonExponentialCandidate_vectorField
     (τ := τ) (⟨hτ.1, hτ.2.le⟩ : τ ∈ Icc (0 : ℝ) β)
     (analyticDysonExponentialCandidate energy V τ lam)
   rw [hfield]
+  have h :=
+    (hasDerivAt_analyticDysonExponentialCandidate_interactionPicture
+      energy V τ lam).hasDerivWithinAt
   change HasDerivWithinAt
     (fun σ : ℝ => analyticDysonExponentialCandidate energy V σ lam)
-    (-(lam • (continuousInteractionPicture energy V τ *
-      analyticDysonExponentialCandidate energy V τ lam))) (Ici τ) τ
-  exact (hasDerivAt_analyticDysonExponentialCandidate_interactionPicture
-    energy V τ lam).hasDerivWithinAt
+    (-(lam • (continuousInteractionPicture energy V τ).comp
+      (analyticDysonExponentialCandidate energy V τ lam))) (Ici τ) τ at h
+  exact h
 
 /-- On every compact nonnegative time interval, the analytic Dyson sum equals the exact ordered
 operator-exponential candidate. -/
