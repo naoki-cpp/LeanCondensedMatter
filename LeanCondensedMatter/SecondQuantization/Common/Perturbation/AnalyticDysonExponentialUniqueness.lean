@@ -97,7 +97,7 @@ theorem hasDerivWithinAt_analyticDysonExponentialCandidate_vectorField
   rw [hfield]
   have h :=
     (hasDerivAt_analyticDysonExponentialCandidate_interactionPicture
-      energy V τ lam).hasDerivWithinAt
+      energy V τ lam).hasDerivWithinAt (s := Ici τ)
   change HasDerivWithinAt
     (fun σ : ℝ => analyticDysonExponentialCandidate energy V σ lam)
     (-(lam • (continuousInteractionPicture energy V τ).comp
