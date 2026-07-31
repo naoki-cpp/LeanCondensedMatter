@@ -26,8 +26,9 @@ theorem continuousOn_analyticDysonEvolution (energy : Config → ℝ)
     (hβ : 0 ≤ β) (lam : ℂ) :
     ContinuousOn (fun τ => analyticDysonEvolution energy V τ lam) (Icc (0 : ℝ) β) := by
   apply (hasSumUniformlyOn_analyticDysonEvolution energy V hβ lam).tendstoUniformlyOn.continuousOn
-  exact Filter.Eventually.of_forall fun s =>
-    (continuous_finsetSum s fun n _ => continuous_analyticDysonTerm energy V lam n).continuousOn
+  exact (Filter.Eventually.of_forall fun s =>
+    (continuous_finsetSum s fun n _ =>
+      continuous_analyticDysonTerm energy V lam n).continuousOn).frequently
 
 /-- The exact operator-exponential candidate is continuous in imaginary time. -/
 theorem continuous_analyticDysonExponentialCandidate (energy : Config → ℝ)
