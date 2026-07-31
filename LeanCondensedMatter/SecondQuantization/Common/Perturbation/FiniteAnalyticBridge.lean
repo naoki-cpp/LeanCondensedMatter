@@ -124,15 +124,18 @@ theorem finiteContinuousOperator_apply_apply
 /-- Continuous finite operators are continuously equivalent to their columns on the standard
 coordinate basis. -/
 noncomputable def finiteContinuousOperatorColumns :
-    FiniteContinuousOperator Config ≃L[ℂ] Config → FiniteAnalyticFock Config :=
-  ContinuousLinearEquiv.piRing (𝕜 := ℂ) (E := FiniteAnalyticFock Config) Config
+    FiniteContinuousOperator Config ≃L[ℂ] Config → FiniteAnalyticFock Config := by
+  classical
+  exact ContinuousLinearEquiv.piRing (𝕜 := ℂ) (E := FiniteAnalyticFock Config) Config
 
+set_option linter.unusedFintypeInType false in
 @[simp]
 theorem finiteContinuousOperatorColumns_apply
     (A : FiniteContinuousOperator Config) (n : Config) :
     finiteContinuousOperatorColumns A n = A (finiteAnalyticBasis n) := by
   classical
-  rfl
+  simp [finiteContinuousOperatorColumns, finiteAnalyticBasis,
+    ContinuousLinearEquiv.piRing, LinearEquiv.piRing_apply]
 
 /-- Matrix-coefficient continuity implies continuity of the transported operator-valued family. -/
 theorem continuous_finiteContinuousOperator
@@ -149,7 +152,7 @@ theorem continuous_finiteContinuousOperator
     simpa only [finiteContinuousOperatorColumns_apply, finiteContinuousOperator_basis_apply]
       using hF m n
   have h := finiteContinuousOperatorColumns.symm.continuous.comp hcolumns
-  simpa only [ContinuousLinearEquiv.symm_apply_apply] using h
+  simpa only [Function.comp_apply, ContinuousLinearEquiv.symm_apply_apply] using h
 
 /-- Coordinate evaluation on the analytic finite-dimensional realization. -/
 noncomputable def finiteAnalyticCoordinate (m : Config) : FiniteAnalyticFock Config →L[ℂ] ℂ :=
