@@ -119,9 +119,7 @@ noncomputable def finiteAnalyticMatrixUnit (m n : Config) : FiniteContinuousOper
 
 @[simp]
 theorem finiteAnalyticMatrixUnit_apply (m n : Config) (x : FiniteAnalyticFock Config) (k : Config) :
-    finiteAnalyticMatrixUnit m n x k = if m = k then x n else 0 := by
-  classical
-  simp [finiteAnalyticMatrixUnit, finiteAnalyticBasis]
+    finiteAnalyticMatrixUnit m n x k = x n * finiteAnalyticBasis m k := rfl
 
 /-- A transported operator is the finite sum of its matrix coefficients times matrix units. -/
 theorem finiteContinuousOperator_eq_matrixUnit_sum
@@ -134,6 +132,11 @@ theorem finiteContinuousOperator_eq_matrixUnit_sum
   funext k
   rw [finiteContinuousOperator_apply_apply]
   simp [finiteAnalyticMatrixUnit, finiteAnalyticBasis]
+  rw [Finset.sum_eq_single k]
+  · simp [finiteAnalyticBasis]
+  · intro m _ hmk
+    simp [finiteAnalyticBasis, hmk]
+  · simp
 
 /-- Matrix-coefficient continuity implies continuity of the transported operator-valued family. -/
 theorem continuous_finiteContinuousOperator
