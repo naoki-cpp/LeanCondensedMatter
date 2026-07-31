@@ -53,6 +53,19 @@ theorem continuousDiagonalHamiltonian_basis_apply (energy : Config → ℝ) (c :
     _ = (energy c : ℂ) • finiteAnalyticBasis c := by
       rw [diagonalHamiltonian_basisState, map_smul, finiteAnalyticFockEquiv_basisState]
 
+@[simp]
+theorem continuousDiagonalHamiltonian_pow_basis_apply (energy : Config → ℝ)
+    (c : Config) (n : ℕ) :
+    (continuousDiagonalHamiltonian energy ^ n) (finiteAnalyticBasis c) =
+      (energy c : ℂ) ^ n • finiteAnalyticBasis c := by
+  induction n with
+  | zero => simp
+  | succ n ih =>
+      rw [pow_succ']
+      change continuousDiagonalHamiltonian energy
+        ((continuousDiagonalHamiltonian energy ^ n) (finiteAnalyticBasis c)) = _
+      rw [ih, map_smul, continuousDiagonalHamiltonian_basis_apply, smul_smul]
+
 /-- The interacting Hamiltonian `H₀ + λV` in the finite continuous-operator algebra. -/
 noncomputable def continuousInteractingHamiltonian (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (lam : ℂ) :
