@@ -111,7 +111,7 @@ theorem analyticDysonEvolution_eq_exponentialCandidate (energy : Config → ℝ)
     (hβ : 0 ≤ β) (hτ : τ ∈ Icc (0 : ℝ) β) (lam : ℂ) :
     analyticDysonEvolution energy V τ lam =
       analyticDysonExponentialCandidate energy V τ lam := by
-  let K : ℝ≥0 :=
+  let K : NNReal :=
     Real.toNNReal (‖lam‖ * interactionPictureNormBound energy V β)
   let v : ℝ → FiniteContinuousOperator Config → FiniteContinuousOperator Config :=
     analyticDysonVectorField energy V β hβ lam
