@@ -72,6 +72,25 @@ theorem analyticDysonExponentialCandidate_zero (energy : Config → ℝ)
     analyticDysonExponentialCandidate energy V 0 lam = 1 := by
   simp [analyticDysonExponentialCandidate]
 
+/-- Product-rule derivative of the exact exponential candidate, before cancelling the free
+Hamiltonian contributions. -/
+theorem hasDerivAt_analyticDysonExponentialCandidate_raw (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (τ : ℝ) (lam : ℂ) :
+    HasDerivAt (fun σ : ℝ => analyticDysonExponentialCandidate energy V σ lam)
+      ((NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
+          continuousDiagonalHamiltonian energy) *
+        NormedSpace.exp ((-τ) • continuousInteractingHamiltonian energy V lam) +
+        NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
+          (NormedSpace.exp ((-τ) • continuousInteractingHamiltonian energy V lam) *
+            (- continuousInteractingHamiltonian energy V lam))) τ := by
+  have hfree := NormedSpace.hasDerivAt_exp_smul_const
+    (continuousDiagonalHamiltonian energy) τ
+  have hinteracting := NormedSpace.hasDerivAt_exp_smul_const
+    (- continuousInteractingHamiltonian energy V lam) τ
+  simpa only [analyticDysonExponentialCandidate, smul_neg, neg_smul] using
+    hfree.mul hinteracting
+
 end
 end Common
 end SecondQuantization
