@@ -29,9 +29,12 @@ theorem coeff_normalizePartitionSeries_dysonPartitionSeries_eq_normalizedDysonPa
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) :
     PowerSeries.coeff n (normalizePartitionSeries (dysonPartitionSeries ε β V)) =
       normalizedDysonPartitionCoeff ε β V n := by
-  simp [normalizePartitionSeries, constantCoeff_dysonPartitionSeries,
-    coeff_dysonPartitionSeries, normalizedDysonPartitionCoeff,
-    div_eq_mul_inv, mul_comm]
+  change PowerSeries.coeff n
+      (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) =
+    dysonPartitionCoeff ε β V n / freePartitionFunction ε β
+  rw [PowerSeries.coeff_normalizeByConstantCoeff, constantCoeff_dysonPartitionSeries,
+    coeff_dysonPartitionSeries, div_eq_mul_inv]
+  exact mul_comm _ _
 
 omit [LinearOrder Mode] in
 /-- The factorial-normalized coefficient of the formal logarithm of the normalized Dyson partition
