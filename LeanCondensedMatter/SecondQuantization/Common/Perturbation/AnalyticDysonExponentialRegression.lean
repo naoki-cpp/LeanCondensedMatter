@@ -54,8 +54,13 @@ theorem analyticDysonEvolution_eq_exp_of_time_independent (energy : Config → �
     simp only [smul_pow, smul_smul]
     congr 1
     field_simp
-  rw [hterms] at hDyson
-  exact hDyson.unique hExp
+  have hDyson' : HasSum
+      (fun n : ℕ => ((Nat.factorial n : ℂ)⁻¹) •
+        ((((-τ : ℂ) * lam) • finiteContinuousOperator V) ^ n))
+      (analyticDysonEvolution energy V τ lam) := by
+    rw [← hterms]
+    exact hDyson
+  exact hDyson'.unique hExp
 
 end
 end Common
