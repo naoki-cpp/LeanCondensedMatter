@@ -37,28 +37,27 @@ proved — see `notes/caveats.md`), since Mathlib's `cfc` on `H →L[ℂ] H` is 
 theorem Polynomial.aeval_apply_eigenvector {T : H →L[ℂ] H} {v : H} {c : ℝ}
     (hv : (T : H →ₗ[ℂ] H) v = (c : ℂ) • v) (q : ℝ[X]) :
     (Polynomial.aeval T q : H →L[ℂ] H) v = ((q.eval c : ℝ) : ℂ) • v := by
-  induction q using Polynomial.induction_on with
-  | C r =>
-    simp [Algebra.algebraMap_eq_smul_one]
-  | add p q hp hq =>
-    simp only [map_add, add_apply, hp, hq]
-    rw [eval_add, Complex.ofReal_add, add_smul]
-  | monomial n r _ =>
-    have hv' : T v = (c : ℂ) • v := hv
-    have hTpow : ∀ m : ℕ, (T ^ m : H →L[ℂ] H) v = (c ^ m : ℂ) • v := by
-      intro m
-      induction m with
-      | zero => simp
-      | succ k ih =>
-        rw [pow_succ, mul_apply_eq_comp, hv', map_smul, ih, smul_smul, pow_succ,
-          mul_comm]
-    simp only [eval_mul, eval_C, eval_X_pow, map_mul, aeval_C, map_pow, aeval_X,
-      Algebra.algebraMap_eq_smul_one]
-    simp only [smul_apply, mul_apply_eq_comp, one_apply_eq_self, hTpow (n + 1)]
-    rw [← smul_assoc, RCLike.real_smul_eq_coe_mul]
-    congr 1
-    push_cast
-    ac_rfl
+  rw [Polynomial.aeval_eq_aeval_map
+    (φ := algebraMap ℝ ℂ) (by ext r; simp [RingHom.comp_apply]) q T]
+  let p := q.map (algebraMap ℝ ℂ)
+  have hmap :
+      ContinuousLinearMap.toLinearMapRingHom (Polynomial.aeval T p) =
+        Polynomial.aeval (T : H →ₗ[ℂ] H) p := by
+    simpa [p] using
+      (Polynomial.map_aeval_eq_aeval_map
+        (R := ℂ) (S := H →L[ℂ] H) (T := ℂ) (U := H →ₗ[ℂ] H)
+        (φ := RingHom.id ℂ)
+        (ψ := ContinuousLinearMap.toLinearMapRingHom)
+        (by ext z x; simp [RingHom.comp_apply, Algebra.algebraMap_eq_smul_one]) p T)
+  have heval : p.eval (c : ℂ) = ((q.eval c : ℝ) : ℂ) := by
+    change (q.map (algebraMap ℝ ℂ)).eval (c : ℂ) = ((q.eval c : ℝ) : ℂ)
+    rw [Polynomial.eval_map]
+    exact Polynomial.eval₂_at_apply (p := q) (algebraMap ℝ ℂ) c
+  change (ContinuousLinearMap.toLinearMapRingHom (Polynomial.aeval T p)) v = _
+  rw [hmap]
+  have h := Module.End.aeval_apply_of_mem_apply_eq_smul
+    (f := (T : H →ₗ[ℂ] H)) (μ := (c : ℂ)) (x := v) (p := p) hv
+  rwa [heval] at h
 
 open Filter Topology
 
