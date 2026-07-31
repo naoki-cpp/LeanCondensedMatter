@@ -87,7 +87,9 @@ theorem hasDerivWithinAt_analyticDysonEvolution_interactionPicture
       change ((projIcc (0 : ℝ) β hβ x : Icc (0 : ℝ) β) : ℝ) = x
       rw [projIcc_of_mem hβ hx]]
   have hτIcc : τ ∈ Icc (0 : ℝ) β := ⟨hτ.1, hτ.2.le⟩
-  have hFTC0 := (hgExt.integral_hasStrictDerivAt (0 : ℝ) τ).hasDerivAt.hasDerivWithinAt
+  have hFTC0 : HasDerivWithinAt (fun u => ∫ σ in (0 : ℝ)..u, gExt σ)
+      (gExt τ) (Ici τ) τ :=
+    (hgExt.integral_hasStrictDerivAt (0 : ℝ) τ).hasDerivAt.hasDerivWithinAt
   have hFTC : HasDerivWithinAt (fun u => ∫ σ in (0 : ℝ)..u, gExt σ)
       (g τ) (Ici τ) τ :=
     hFTC0.congr_deriv (hgExt_eq hτIcc)
