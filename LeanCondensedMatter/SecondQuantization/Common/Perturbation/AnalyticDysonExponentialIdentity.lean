@@ -62,51 +62,76 @@ theorem hasDerivWithinAt_analyticDysonEvolution_interactionPicture
       (-(lam • (continuousInteractionPicture energy V τ *
         analyticDysonEvolution energy V τ lam))) (Ici τ) τ := by
   let g : ℝ → FiniteContinuousOperator Config := fun σ =>
-    continuousInteractionPicture energy V σ * analyticDysonEvolution energy V σ lam
+    (continuousInteractionPicture energy V σ).comp
+      (analyticDysonEvolution energy V σ lam)
   have hg : ContinuousOn g (Icc (0 : ℝ) β) := by
     simpa only [g] using
       continuousOn_interactionPicture_mul_analyticDysonEvolution energy V hβ lam
+  let p : ℝ → ℝ := fun x => (projIcc (0 : ℝ) β hβ x : ℝ)
+  let gExt : ℝ → FiniteContinuousOperator Config := fun x => g (p x)
+  have hp : Continuous p := by
+    exact continuous_subtype_val.comp (LipschitzWith.projIcc hβ).continuous
+  have hpmap : MapsTo p univ (Icc (0 : ℝ) β) := by
+    intro x _
+    exact (projIcc (0 : ℝ) β hβ x).property
+  have hgExt : Continuous gExt := by
+    apply continuousOn_univ.mp
+    exact hg.comp hp.continuousOn hpmap
+  have hgExt_eq : EqOn gExt g (Icc (0 : ℝ) β) := by
+    intro x hx
+    change g (p x) = g x
+    rw [show p x = x by
+      change ((projIcc (0 : ℝ) β hβ x : Icc (0 : ℝ) β) : ℝ) = x
+      rw [projIcc_of_mem hβ hx]]
   have hτIcc : τ ∈ Icc (0 : ℝ) β := ⟨hτ.1, hτ.2.le⟩
-  have hgτ : ContinuousWithinAt g (Icc (0 : ℝ) β) τ := hg τ hτIcc
-  have hIcc_mem_right : Icc (0 : ℝ) β ∈ 𝓝[Ioi τ] τ := by
-    rw [mem_nhdsWithin_iff_exists_mem_nhds_inter]
-    refine ⟨Iio β, Iio_mem_nhds hτ.2, ?_⟩
-    rintro x ⟨hxβ, hτx⟩
-    exact ⟨hτ.1.trans (le_of_lt hτx), le_of_lt hxβ⟩
-  have hfilter : 𝓝[Ioi τ] τ ≤ 𝓝[Icc (0 : ℝ) β] τ := by
-    rw [nhdsWithin, nhdsWithin]
-    exact le_inf inf_le_left (le_principal_iff.mpr hIcc_mem_right)
-  have hright : ContinuousWithinAt g (Ioi τ) τ := hgτ.mono_left hfilter
-  have huIcc : uIcc (0 : ℝ) τ ⊆ Icc (0 : ℝ) β := by
-    rw [uIcc_of_le hτ.1]
-    exact Icc_subset_Icc_right hτ.2.le
-  have hint : IntervalIntegrable g MeasureTheory.volume 0 τ :=
-    (hg.mono huIcc).intervalIntegrable
-  have hFTC : HasDerivWithinAt (fun u => ∫ σ in (0 : ℝ)..u, g σ) (g τ) (Ici τ) τ :=
-    intervalIntegral.integral_hasDerivWithinAt_right hint
-      hright.stronglyMeasurableAtFilter hright
-  have hrhs : HasDerivWithinAt
-      (fun u : ℝ => (1 : FiniteContinuousOperator Config) -
-        lam • ∫ σ in (0 : ℝ)..u, g σ)
-      (-(lam • g τ)) (Ici τ) τ := by
-    simpa using
-      (hasDerivAt_const (x := τ) (c := (1 : FiniteContinuousOperator Config))).hasDerivWithinAt.sub
-        (hFTC.const_smul lam)
+  have hFTC0 := (hgExt.integral_hasDerivAt (0 : ℝ) τ).hasDerivWithinAt
+  have hFTC : HasDerivWithinAt (fun u => ∫ σ in (0 : ℝ)..u, gExt σ)
+      (g τ) (Ici τ) τ :=
+    hFTC0.congr_deriv (hgExt_eq hτIcc)
+  let rhs : ℝ → FiniteContinuousOperator Config :=
+    (fun _ => (1 : FiniteContinuousOperator Config)) -
+      lam • (fun u => ∫ σ in (0 : ℝ)..u, gExt σ)
+  have hrhs0 :=
+    (hasDerivAt_const (x := τ) (c := (1 : FiniteContinuousOperator Config))).hasDerivWithinAt.sub
+      (hFTC.const_smul lam)
+  change HasDerivWithinAt rhs (0 - lam • g τ) (Ici τ) τ at hrhs0
+  have hrhs : HasDerivWithinAt rhs (-(lam • g τ)) (Ici τ) τ :=
+    hrhs0.congr_deriv (by simp)
   have hIcc_mem : Icc (0 : ℝ) β ∈ 𝓝[Ici τ] τ := by
     rw [mem_nhdsWithin_iff_exists_mem_nhds_inter]
     refine ⟨Iio β, Iio_mem_nhds hτ.2, ?_⟩
     rintro x ⟨hxβ, hτx⟩
     exact ⟨hτ.1.trans hτx, le_of_lt hxβ⟩
   have heq :
-      (fun u : ℝ => analyticDysonEvolution energy V u lam) =ᶠ[𝓝[Ici τ] τ]
-        (fun u : ℝ => (1 : FiniteContinuousOperator Config) -
-          lam • ∫ σ in (0 : ℝ)..u, g σ) := by
+      (fun u : ℝ => analyticDysonEvolution energy V u lam) =ᶠ[𝓝[Ici τ] τ] rhs := by
     filter_upwards [hIcc_mem] with u hu
+    have huIcc : uIcc (0 : ℝ) u ⊆ Icc (0 : ℝ) β := by
+      rw [uIcc_of_le hu.1]
+      exact Icc_subset_Icc_right hu.2
+    have hintEq :
+        (∫ σ in (0 : ℝ)..u, gExt σ) = ∫ σ in (0 : ℝ)..u, g σ := by
+      apply intervalIntegral.integral_congr
+      intro σ hσ
+      exact hgExt_eq (huIcc hσ)
+    rw [show rhs u = (1 : FiniteContinuousOperator Config) -
+        lam • ∫ σ in (0 : ℝ)..u, gExt σ by rfl, hintEq]
     simpa only [g] using
       analyticDysonEvolution_eq_one_sub_integral energy V hβ hu lam
-  exact hrhs.congr_of_eventuallyEq heq (by
+  have hpoint : analyticDysonEvolution energy V τ lam = rhs τ := by
+    have hτuIcc : uIcc (0 : ℝ) τ ⊆ Icc (0 : ℝ) β := by
+      rw [uIcc_of_le hτ.1]
+      exact Icc_subset_Icc_right hτ.2.le
+    have hintEq :
+        (∫ σ in (0 : ℝ)..τ, gExt σ) = ∫ σ in (0 : ℝ)..τ, g σ := by
+      apply intervalIntegral.integral_congr
+      intro σ hσ
+      exact hgExt_eq (hτuIcc hσ)
+    rw [show rhs τ = (1 : FiniteContinuousOperator Config) -
+        lam • ∫ σ in (0 : ℝ)..τ, gExt σ by rfl, hintEq]
     simpa only [g] using
-      analyticDysonEvolution_eq_one_sub_integral energy V hβ hτIcc lam)
+      analyticDysonEvolution_eq_one_sub_integral energy V hβ hτIcc lam
+  have hout := hrhs.congr_of_eventuallyEq heq hpoint
+  simpa only [g] using hout
 
 end
 end Common
