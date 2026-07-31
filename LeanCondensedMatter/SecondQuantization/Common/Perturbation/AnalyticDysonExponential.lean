@@ -72,9 +72,8 @@ theorem smul_continuousDiagonalHamiltonian_basis_apply (energy : Config → ℝ)
     (τ : ℝ) (c : Config) :
     (τ • continuousDiagonalHamiltonian energy) (finiteAnalyticBasis c) =
       ((τ * energy c : ℝ) : ℂ) • finiteAnalyticBasis c := by
-  change τ • continuousDiagonalHamiltonian energy (finiteAnalyticBasis c) = _
-  rw [continuousDiagonalHamiltonian_basis_apply]
-  simp [smul_smul]
+  change (τ : ℂ) • continuousDiagonalHamiltonian energy (finiteAnalyticBasis c) = _
+  rw [continuousDiagonalHamiltonian_basis_apply, smul_smul, Complex.ofReal_mul]
 
 @[simp]
 theorem smul_continuousDiagonalHamiltonian_pow_basis_apply (energy : Config → ℝ)
@@ -98,11 +97,23 @@ theorem exp_continuousDiagonalHamiltonian_basis_apply (energy : Config → ℝ)
       Complex.exp ((τ * energy c : ℝ) : ℂ) • finiteAnalyticBasis c := by
   let evalBasis : FiniteContinuousOperator Config →L[ℂ] FiniteAnalyticFock Config :=
     ContinuousLinearMap.apply ℂ (FiniteAnalyticFock Config) (finiteAnalyticBasis c)
-  have hop := (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ)
-    (τ • continuousDiagonalHamiltonian energy)).map evalBasis
-  have hscalar := (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ)
-    (((τ * energy c : ℝ) : ℂ))).map
-      (ContinuousLinearMap.toSpanSingleton ℂ (finiteAnalyticBasis c))
+  have hop : HasSum
+      (fun n : ℕ => evalBasis
+        (((Nat.factorial n : ℂ)⁻¹) • (τ • continuousDiagonalHamiltonian energy) ^ n))
+      (evalBasis (NormedSpace.exp (τ • continuousDiagonalHamiltonian energy))) := by
+    simpa only [Function.comp_apply] using
+      (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ)
+        (τ • continuousDiagonalHamiltonian energy)).map evalBasis evalBasis.continuous
+  have hscalar : HasSum
+      (fun n : ℕ => ContinuousLinearMap.toSpanSingleton ℂ (finiteAnalyticBasis c)
+        (((Nat.factorial n : ℂ)⁻¹) • (((τ * energy c : ℝ) : ℂ) ^ n)))
+      (ContinuousLinearMap.toSpanSingleton ℂ (finiteAnalyticBasis c)
+        (NormedSpace.exp (((τ * energy c : ℝ) : ℂ)))) := by
+    simpa only [Function.comp_apply] using
+      (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ)
+        (((τ * energy c : ℝ) : ℂ))).map
+          (ContinuousLinearMap.toSpanSingleton ℂ (finiteAnalyticBasis c))
+          (ContinuousLinearMap.toSpanSingleton ℂ (finiteAnalyticBasis c)).continuous
   have hterms :
       (fun n : ℕ => evalBasis
         (((Nat.factorial n : ℂ)⁻¹) • (τ • continuousDiagonalHamiltonian energy) ^ n)) =
