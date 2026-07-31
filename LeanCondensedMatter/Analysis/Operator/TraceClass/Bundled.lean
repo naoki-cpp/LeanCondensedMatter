@@ -48,6 +48,15 @@ theorem hasSum_inner_apply (h : SpectralTraceClass T) {ι : Type*} (d : HilbertB
   simpa [trace] using
     ContinuousLinearMap.hasSum_inner_apply_eq_trace h.compact h.symmetric h.summable d
 
+/-- Bound the diagonal sum over an orthonormal family by the bundled spectral trace. -/
+theorem sum_inner_apply_le_trace (h : SpectralTraceClass T)
+    (hpos : (T : H →ₗ[ℂ] H).IsPositive) {ι : Type*} {d : ι → H}
+    (hd : Orthonormal ℂ d) :
+    Summable (fun i => (inner ℂ (d i) (T (d i)) : ℂ).re) ∧
+      ∑' i, (inner ℂ (d i) (T (d i)) : ℂ).re ≤ h.trace := by
+  simpa [trace] using ContinuousLinearMap.sum_inner_apply_le_trace
+    h.compact h.symmetric hpos h.summable hd
+
 /-- Additivity of the bundled spectral trace.
 
 This packages the nine proof arguments of `ContinuousLinearMap.trace_add` into the three bundled
