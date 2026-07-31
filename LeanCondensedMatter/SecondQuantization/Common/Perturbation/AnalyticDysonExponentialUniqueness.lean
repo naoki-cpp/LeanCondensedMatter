@@ -6,7 +6,7 @@ set_option linter.style.header false
 # ODE uniqueness for the analytic Dyson evolution
 
 The interaction-picture vector field is extended from `[0, β]` to the whole real line by projecting
-time to the compact interval.  Its dependence on the operator is globally Lipschitz with the
+time to the compact interval. Its dependence on the operator is globally Lipschitz with the
 uniform interaction-picture norm bound.
 -/
 
@@ -32,10 +32,9 @@ theorem lipschitzWith_analyticDysonVectorField (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (β : ℝ) (hβ : 0 ≤ β) (lam : ℂ) (τ : ℝ) :
     LipschitzWith
-      ⟨‖lam‖ * interactionPictureNormBound energy V β,
-        mul_nonneg (norm_nonneg lam)
-          (interactionPictureNormBound_nonneg energy V hβ)⟩
+      (Real.toNNReal (‖lam‖ * interactionPictureNormBound energy V β))
       (analyticDysonVectorField energy V β hβ lam τ) := by
+  apply LipschitzWith.of_dist_le'
   intro U W
   let A := continuousInteractionPicture energy V
     (projIcc (0 : ℝ) β hβ τ : ℝ)
@@ -45,7 +44,7 @@ theorem lipschitzWith_analyticDysonVectorField (energy : Config → ℝ)
   have hneg :
       -(lam • A.comp U) - -(lam • A.comp W) =
         -(lam • (A.comp U - A.comp W)) := by
-    abel
+    abel_nf
   rw [show analyticDysonVectorField energy V β hβ lam τ U = -(lam • A.comp U) by rfl,
     show analyticDysonVectorField energy V β hβ lam τ W = -(lam • A.comp W) by rfl,
     dist_eq_norm, dist_eq_norm, hneg, norm_neg, ← smul_sub, hcomp, norm_smul]
