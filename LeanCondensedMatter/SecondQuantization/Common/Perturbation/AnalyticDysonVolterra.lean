@@ -47,12 +47,10 @@ theorem continuous_analyticDysonIntegrand (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (lam : ℂ) (n : ℕ) :
     Continuous (analyticDysonIntegrand energy V lam n) := by
-  change Continuous (fun σ => lam •
-    ContinuousLinearMap.compL ℂ
-      (FiniteAnalyticFock Config) (FiniteAnalyticFock Config) (FiniteAnalyticFock Config)
-      (continuousInteractionPicture energy V σ)
-      (analyticDysonTerm energy V σ lam n))
-  fun_prop
+  simpa only [analyticDysonIntegrand] using
+    continuous_const.smul
+      ((continuous_continuousInteractionPicture energy V).clm_comp
+        (continuous_analyticDysonTerm energy V lam n))
 
 /-- Left composition by the interaction-picture operator and scalar multiplication by `λ`
 carry the Dyson `HasSum` to the pointwise Volterra integrand. -/
