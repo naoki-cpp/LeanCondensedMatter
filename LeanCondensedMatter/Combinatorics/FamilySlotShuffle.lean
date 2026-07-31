@@ -34,6 +34,21 @@ noncomputable instance FamilySlotShuffle.instFintype [DecidableEq ι] (size : ι
   Fintype.ofInjective (fun shuffle : FamilySlotShuffle size => shuffle.slotEquiv)
     (fun _ _ h => FamilySlotShuffle.ext h)
 
+/-- The unique shuffle of an empty family of slot blocks. -/
+noncomputable def FamilySlotShuffle.nil (size : Fin 0 → ℕ) : FamilySlotShuffle size where
+  slotEquiv := Fintype.equivOfCardEq (by simp)
+  strictMono := fun i => Fin.elim0 i
+
+/-- A shuffle of an empty family is unique. -/
+noncomputable instance FamilySlotShuffle.instUniqueZero (size : Fin 0 → ℕ) :
+    Unique (FamilySlotShuffle size) where
+  default := FamilySlotShuffle.nil size
+  uniq shuffle := by
+    apply FamilySlotShuffle.ext
+    apply Equiv.ext
+    rintro ⟨i, _⟩
+    exact Fin.elim0 i
+
 /-- Restrict an ambient time assignment to one local block. -/
 def FamilySlotShuffle.timeAssignment {size : ι → ℕ} (shuffle : FamilySlotShuffle size)
     (τ : Fin (∑ i, size i) → ℝ) (i : ι) : Fin (size i) → ℝ :=
