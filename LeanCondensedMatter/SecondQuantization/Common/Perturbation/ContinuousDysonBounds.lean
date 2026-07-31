@@ -103,8 +103,9 @@ theorem integral_mul_dysonMajorant (M τ : ℝ) (n : ℕ) :
 
 /-- The scalar factorial majorant is summable for every real `M` and `τ`. -/
 theorem summable_dysonMajorant (M τ : ℝ) : Summable (dysonMajorant M τ) := by
-  simpa [dysonMajorant, div_eq_mul_inv, mul_comm] using
-    Real.summable_pow_div_factorial (M * τ)
+  refine (Real.summable_pow_div_factorial (M * τ)).congr ?_
+  intro n
+  simp [dysonMajorant, div_eq_mul_inv, mul_comm]
 
 /-- A uniform interaction-picture bound `M` implies the standard factorial Dyson coefficient
 bound on `[0, β]`. -/
