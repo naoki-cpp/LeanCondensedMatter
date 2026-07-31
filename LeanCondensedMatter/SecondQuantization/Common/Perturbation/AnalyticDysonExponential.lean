@@ -63,8 +63,8 @@ noncomputable def continuousInteractingHamiltonian (energy : Config → ℝ)
 noncomputable def analyticDysonExponentialCandidate (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (τ : ℝ) (lam : ℂ) : FiniteContinuousOperator Config :=
-  NormedSpace.exp ((τ : ℂ) • continuousDiagonalHamiltonian energy) *
-    NormedSpace.exp ((-(τ : ℂ)) • continuousInteractingHamiltonian energy V lam)
+  NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
+    NormedSpace.exp ((-τ) • continuousInteractingHamiltonian energy V lam)
 
 @[simp]
 theorem analyticDysonExponentialCandidate_zero (energy : Config → ℝ)
