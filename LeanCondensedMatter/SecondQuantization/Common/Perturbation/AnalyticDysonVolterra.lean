@@ -139,12 +139,12 @@ theorem intervalIntegral_analyticDysonIntegrand (energy : Config → ℝ)
     (τ : ℝ) (lam : ℂ) (n : ℕ) :
     (∫ σ in (0 : ℝ)..τ, analyticDysonIntegrand energy V lam n σ) =
       - analyticDysonTerm energy V τ lam (n + 1) := by
-  rw [analyticDysonTerm, continuousDysonCoeff_succ]
-  simp only [analyticDysonIntegrand, smul_neg, neg_neg, intervalIntegral.integral_smul]
-  congr 1
-  funext σ
-  simp only [pow_succ', mul_smul_comm, smul_smul]
-  rfl
+  rw [analyticDysonTerm, continuousDysonCoeff_succ, smul_neg, neg_neg]
+  rw [← intervalIntegral.integral_smul]
+  apply intervalIntegral.integral_congr
+  intro σ _
+  simp [analyticDysonIntegrand, analyticDysonTerm, pow_succ',
+    mul_smul_comm, smul_smul]
 
 /-- The positive-order Dyson tail sums to the negative Volterra integral. -/
 theorem hasSum_analyticDysonTail (energy : Config → ℝ)
@@ -154,14 +154,13 @@ theorem hasSum_analyticDysonTail (energy : Config → ℝ)
       (- ∫ σ in (0 : ℝ)..τ,
         lam • (continuousInteractionPicture energy V σ *
           analyticDysonEvolution energy V σ lam)) := by
-  have hneg : HasSum
-      (fun n => - analyticDysonTerm energy V τ lam (n + 1))
-      (∫ σ in (0 : ℝ)..τ,
-        lam • (continuousInteractionPicture energy V σ *
-          analyticDysonEvolution energy V σ lam)) := by
-    refine (hasSum_intervalIntegral_analyticDysonIntegrand energy V hβ hτ lam).congr ?_
-    intro n
+  have hneg := hasSum_intervalIntegral_analyticDysonIntegrand energy V hβ hτ lam
+  have hfun :
+      (fun n => ∫ σ in (0 : ℝ)..τ, analyticDysonIntegrand energy V lam n σ) =
+        fun n => - analyticDysonTerm energy V τ lam (n + 1) := by
+    funext n
     exact intervalIntegral_analyticDysonIntegrand energy V τ lam n
+  rw [hfun] at hneg
   simpa only [neg_neg] using hneg.neg
 
 /-- The analytic Dyson evolution solves the interaction-picture Volterra equation. -/
