@@ -133,8 +133,8 @@ theorem analyticDysonEvolution_eq_one_sub_integral (ε : Mode → ℝ)
     (hβ : 0 ≤ β) (hτ : τ ∈ Set.Icc (0 : ℝ) β) (lam : ℂ) :
     analyticDysonEvolution ε V τ lam =
       1 - lam • ∫ σ in (0 : ℝ)..τ,
-        continuousInteractionPicture ε V σ *
-          analyticDysonEvolution ε V σ lam :=
+        (continuousInteractionPicture ε V σ).comp
+          (analyticDysonEvolution ε V σ lam) :=
   Common.analyticDysonEvolution_eq_one_sub_integral
     (fermionEnergy ε) V hβ hτ lam
 
