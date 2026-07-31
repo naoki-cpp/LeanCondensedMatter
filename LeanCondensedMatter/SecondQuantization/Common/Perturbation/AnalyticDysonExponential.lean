@@ -155,15 +155,15 @@ theorem analyticDysonExponentialCandidate_eq (energy : Config → ℝ)
 
 /-- Multiplying the exact candidate by the interaction-picture operator cancels the two free
 propagators in the middle. -/
-theorem continuousInteractionPicture_comp_analyticDysonExponentialCandidate
+theorem continuousInteractionPicture_mul_analyticDysonExponentialCandidate
     (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (τ : ℝ) (lam : ℂ) :
-    (continuousInteractionPicture energy V τ).comp
-        (analyticDysonExponentialCandidate energy V τ lam) =
-      (continuousDiagonalEvolution energy τ).comp
-        ((finiteContinuousOperator V).comp
-          (NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam))) := by
+    continuousInteractionPicture energy V τ *
+        analyticDysonExponentialCandidate energy V τ lam =
+      continuousDiagonalEvolution energy τ *
+        (finiteContinuousOperator V *
+          NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam))) := by
   rw [continuousInteractionPicture_eq_conj,
     analyticDysonExponentialCandidate_eq]
   change
@@ -221,12 +221,27 @@ theorem hasDerivAt_analyticDysonExponentialCandidate_interactionPicture
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (τ : ℝ) (lam : ℂ) :
     HasDerivAt (fun σ : ℝ => analyticDysonExponentialCandidate energy V σ lam)
-      (-(lam • (continuousInteractionPicture energy V τ).comp
-        (analyticDysonExponentialCandidate energy V τ lam))) τ := by
+      (-(lam • (continuousInteractionPicture energy V τ *
+        analyticDysonExponentialCandidate energy V τ lam))) τ := by
   convert hasDerivAt_analyticDysonExponentialCandidate energy V τ lam using 1
-  rw [continuousInteractionPicture_comp_analyticDysonExponentialCandidate,
+  rw [continuousInteractionPicture_mul_analyticDysonExponentialCandidate,
     ← continuousDiagonalEvolution_eq_exp]
-  simp [mul_assoc, mul_smul_comm, smul_mul_assoc]
+  calc
+    NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
+        (-(lam • finiteContinuousOperator V)) *
+        NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)) =
+      -(lam • (NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
+        finiteContinuousOperator V)) *
+        NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)) := by
+      rw [mul_neg, mul_smul_comm]
+    _ = -(lam • ((NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
+        finiteContinuousOperator V) *
+        NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)))) := by
+      rw [neg_mul, smul_mul_assoc]
+    _ = -(lam • (NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
+        (finiteContinuousOperator V *
+          NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam))))) := by
+      rw [mul_assoc]
 
 end
 end Common
