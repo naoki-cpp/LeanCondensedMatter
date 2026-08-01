@@ -65,6 +65,7 @@ theorem Polynomial.isCompactOperator_aeval_of_coeff_zero {T : H →L[ℂ] H}
     IsCompactOperator (Polynomial.aeval T p : H →L[ℂ] H) := by
   obtain ⟨q, rfl⟩ := Polynomial.X_dvd_iff.mpr hp
   rw [map_mul]
+  simp only [aeval_X]
   change IsCompactOperator (fun x : H => T ((Polynomial.aeval T q : H →L[ℂ] H) x))
   exact hT.comp_clm (Polynomial.aeval T q : H →L[ℂ] H)
 
