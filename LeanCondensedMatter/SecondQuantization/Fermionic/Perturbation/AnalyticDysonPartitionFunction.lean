@@ -7,10 +7,9 @@ set_option linter.style.header false
 /-!
 # The analytic finite-dimensional fermionic partition function
 
-For finitely many fermionic modes, the interacting Gibbs operator is a Banach-algebra exponential
-in the continuous finite-dimensional operator realization. Its trace is the genuine analytic
-partition function. The convergent interaction-picture Dyson sum is identified coefficientwise
-with the existing formal `dysonPartitionCoeff` API.
+For finitely many fermionic modes, the interacting Gibbs operator is a Banach-algebra exponential.
+Its Taylor coefficients are the canonical `Common.dysonTraceCoeff` values specialized by the
+fermionic energy function.
 -/
 
 namespace SecondQuantization
@@ -22,8 +21,7 @@ noncomputable section
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
-/-- The genuine finite-dimensional interacting partition function
-`Tr exp(-β (H₀ + λV))`. -/
+/-- The genuine finite-dimensional interacting partition function `Tr exp(-β (H₀ + λV))`. -/
 noncomputable def analyticDysonPartitionFunction (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (lam : ℂ) : ℂ :=
   Common.finiteOperatorTrace
@@ -48,52 +46,44 @@ theorem analyticDysonPartitionFunction_eq_trace_analyticDysonEvolution
     ε V hβ lam).symm
 
 omit [LinearOrder Mode] in
-/-- The existing fermionic Dyson partition coefficients sum to the genuine interacting partition
-function. -/
-theorem hasSum_dysonPartitionCoeff_eq_analyticDysonPartitionFunction
+/-- The specialized Common Dyson trace coefficients sum to the analytic partition function. -/
+theorem hasSum_dysonTraceCoeff_eq_analyticDysonPartitionFunction
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (lam : ℂ) :
-    HasSum (fun n : ℕ => lam ^ n * dysonPartitionCoeff ε β V n)
+    HasSum
+      (fun n : ℕ => lam ^ n * Common.dysonTraceCoeff (fermionEnergy ε) β V n)
       (analyticDysonPartitionFunction ε β V lam) := by
-  have h := Common.hasSum_dysonTraceCoeff_eq_trace_analyticDysonEvolution
-    (fermionEnergy ε) hβ V lam
-  have hterms :
-      (fun n : ℕ => lam ^ n * Common.dysonTraceCoeff (fermionEnergy ε) β V n) =
-      (fun n : ℕ => lam ^ n * dysonPartitionCoeff ε β V n) := by
-    funext n
-    rw [dysonPartitionCoeff_eq_dysonTraceCoeff]
-  rw [hterms] at h
   rw [analyticDysonPartitionFunction_eq_trace_analyticDysonEvolution ε hβ V lam]
-  exact h
+  exact Common.hasSum_dysonTraceCoeff_eq_trace_analyticDysonEvolution
+    (fermionEnergy ε) hβ V lam
 
 omit [LinearOrder Mode] in
-/-- `dysonPartitionSeries` evaluates by a genuine convergent `tsum` to the analytic partition
+/-- The specialized Common Dyson trace coefficients sum by `tsum` to the analytic partition
 function. -/
-theorem tsum_dysonPartitionCoeff_eq_analyticDysonPartitionFunction
+theorem tsum_dysonTraceCoeff_eq_analyticDysonPartitionFunction
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (lam : ℂ) :
-    (∑' n : ℕ, lam ^ n * dysonPartitionCoeff ε β V n) =
+    (∑' n : ℕ, lam ^ n * Common.dysonTraceCoeff (fermionEnergy ε) β V n) =
       analyticDysonPartitionFunction ε β V lam :=
-  (hasSum_dysonPartitionCoeff_eq_analyticDysonPartitionFunction ε hβ V lam).tsum_eq
+  (hasSum_dysonTraceCoeff_eq_analyticDysonPartitionFunction ε hβ V lam).tsum_eq
 
-/-- The one-variable formal multilinear series whose scalar coefficients are exactly the existing
-fermionic Dyson partition coefficients. -/
+/-- The one-variable formal multilinear series of specialized Common Dyson trace coefficients. -/
 noncomputable def dysonPartitionFPowerSeries (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
     FormalMultilinearSeries ℂ ℂ ℂ :=
-  FormalMultilinearSeries.ofScalars ℂ (dysonPartitionCoeff ε β V)
+  FormalMultilinearSeries.ofScalars ℂ
+    (Common.dysonTraceCoeff (fermionEnergy ε) β V)
 
 omit [LinearOrder Mode] in
 @[simp]
 theorem coeff_dysonPartitionFPowerSeries (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) :
     (dysonPartitionFPowerSeries ε β V).coeff n =
-      dysonPartitionCoeff ε β V n := by
+      Common.dysonTraceCoeff (fermionEnergy ε) β V n := by
   simp [dysonPartitionFPowerSeries]
 
 omit [LinearOrder Mode] in
-/-- The formal `PowerSeries` coefficient and the analytic formal-multilinear coefficient are the
-same Dyson partition coefficient. -/
+/-- The formal `PowerSeries` coefficient and analytic formal-multilinear coefficient agree. -/
 theorem coeff_dysonPartitionFPowerSeries_eq_coeff_dysonPartitionSeries
     (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) :
@@ -110,14 +100,13 @@ theorem radius_dysonPartitionFPowerSeries_eq_top
   apply FormalMultilinearSeries.radius_eq_top_of_summable_norm
   intro r
   have hs : Summable (fun n : ℕ =>
-      ‖(r : ℂ) ^ n * dysonPartitionCoeff ε β V n‖) :=
-    (hasSum_dysonPartitionCoeff_eq_analyticDysonPartitionFunction
+      ‖(r : ℂ) ^ n * Common.dysonTraceCoeff (fermionEnergy ε) β V n‖) :=
+    (hasSum_dysonTraceCoeff_eq_analyticDysonPartitionFunction
       ε hβ V (r : ℂ)).summable.norm
   simpa [dysonPartitionFPowerSeries, norm_mul, norm_pow, mul_comm] using hs
 
 omit [LinearOrder Mode] in
-/-- The genuine partition function has the existing Dyson partition coefficients as its Taylor
-series at `λ = 0`, with infinite convergence radius. -/
+/-- The analytic partition function has the Common Dyson trace coefficients as its Taylor series. -/
 theorem hasFPowerSeriesOnBall_analyticDysonPartitionFunction
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
@@ -128,7 +117,7 @@ theorem hasFPowerSeriesOnBall_analyticDysonPartitionFunction
   · intro lam _
     simpa [dysonPartitionFPowerSeries,
       FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul, mul_comm] using
-      hasSum_dysonPartitionCoeff_eq_analyticDysonPartitionFunction ε hβ V lam
+      hasSum_dysonTraceCoeff_eq_analyticDysonPartitionFunction ε hβ V lam
 
 omit [LinearOrder Mode] in
 /-- Taylor-series packaging at zero for downstream analytic logarithms. -/
@@ -154,9 +143,10 @@ theorem analyticDysonPartitionFunction_zero
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
     analyticDysonPartitionFunction ε β V 0 = freePartitionFunction ε β := by
-  rw [← tsum_dysonPartitionCoeff_eq_analyticDysonPartitionFunction ε hβ V 0,
+  rw [← tsum_dysonTraceCoeff_eq_analyticDysonPartitionFunction ε hβ V 0,
     tsum_eq_single 0]
-  · simp
+  · rw [Common.dysonTraceCoeff_zero]
+    exact Common.sum_boltzmannWeight_eq_freePartitionFunction ε β
   · intro n hn
     simp [hn]
 
