@@ -1,3 +1,4 @@
+import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Analysis.InnerProductSpace.LinearMap
 import Mathlib.Analysis.Normed.Operator.Compact.Basic
 
@@ -15,7 +16,7 @@ without representing the generally unbounded Hamiltonian itself as a bounded con
 
 noncomputable section
 
-namespace ContinuousLinearMap.HilbertBasis
+namespace HilbertBasis
 
 variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
@@ -57,6 +58,7 @@ theorem diagonalOp_apply_basis (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
     diagonalOp b a ha (b j) = ∑' i, diagonalTerm b a i (b j) := hmap.tsum_eq.symm
     _ = a j • b j := htsum
 
+omit [CompleteSpace H] in
 /-- Rank-one operators on a Hilbert space are compact. -/
 theorem isCompactOperator_rankOne (x y : H) :
     IsCompactOperator (InnerProductSpace.rankOne ℂ x y : H →L[ℂ] H) := by
@@ -66,8 +68,8 @@ theorem isCompactOperator_rankOne (x y : H) :
 
 /-- Every term of the diagonal operator series is compact. -/
 theorem diagonalTerm_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ) (i : ι) :
-    IsCompactOperator (diagonalTerm b a i) :=
-  (isCompactOperator_rankOne (b i) (b i)).smul (a i)
+    IsCompactOperator (diagonalTerm b a i) := by
+  simpa [diagonalTerm] using (isCompactOperator_rankOne (b i) (b i)).smul (a i)
 
 /-- A diagonal operator with absolutely summable coefficients is compact. -/
 theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
@@ -86,4 +88,4 @@ theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
   · exact hasSum_diagonalTerm b a ha
   · exact Filter.Eventually.of_forall hfinite
 
-end ContinuousLinearMap.HilbertBasis
+end HilbertBasis
