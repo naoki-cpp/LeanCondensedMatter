@@ -81,6 +81,23 @@ def rewrite_dyson_calls(text: str) -> str:
         cursor = end
 
 
+def replace_exact_import(text: str, replacement: str) -> str:
+    output: list[str] = []
+    replaced = False
+    for line in text.splitlines(keepends=True):
+        newline = "\n" if line.endswith("\n") else ""
+        content = line[:-1] if newline else line
+        if content == OLD_IMPORT:
+            replaced = True
+            if replacement:
+                output.append(replacement + newline)
+        else:
+            output.append(line)
+    if not replaced:
+        raise RuntimeError("expected exact old import line was not found")
+    return "".join(output)
+
+
 def rewrite_fermionic_files() -> None:
     for path in sorted(FERMIONIC.rglob("*.lean")):
         if path == OLD_MODULE:
@@ -88,17 +105,39 @@ def rewrite_fermionic_files() -> None:
         original = path.read_text(encoding="utf-8")
         updated = original
 
-        if OLD_IMPORT in updated:
+        if any(line == OLD_IMPORT for line in updated.splitlines()):
             if path not in IMPORT_REPLACEMENTS:
                 raise RuntimeError(
                     f"unclassified old import in {path.relative_to(ROOT)}"
                 )
-            replacement = IMPORT_REPLACEMENTS[path]
-            updated = updated.replace(OLD_IMPORT, replacement)
+            updated = replace_exact_import(updated, IMPORT_REPLACEMENTS[path])
 
         updated = rewrite_dyson_calls(updated)
+
+        # Calls with explicit fermionic parameters need the energy specialization made explicit.
+        updated = updated.replace(
+            "continuous_matrixCoeff_dysonCoeff ε V",
+            "Common.continuous_matrixCoeff_dysonCoeff (fermionEnergy ε) V",
+        )
+        updated = updated.replace(
+            "dysonCoeff_zero ε V",
+            "Common.dysonCoeff_zero (fermionEnergy ε) V",
+        )
+        updated = updated.replace(
+            "dysonCoeff_succ ε V",
+            "Common.dysonCoeff_succ (fermionEnergy ε) V",
+        )
+
         for old, new in BARE_THEOREM_REPLACEMENTS.items():
             updated = re.sub(rf"(?<![\w.]){old}\b", new, updated)
+
+        # The Common recursion exposes the Common interaction-picture normal form. Keep the
+        # surrounding integrability and rewrite expressions in that same normal form.
+        if "Common.dysonCoeff (fermionEnergy ε) V" in updated:
+            updated = updated.replace(
+                "interactionPicture ε V",
+                "Common.interactionPicture (fermionEnergy ε) V",
+            )
 
         if "Common.dysonCoeff" in updated and COMMON_IMPORT not in updated:
             updated = COMMON_IMPORT + "\n" + updated
@@ -148,7 +187,7 @@ def validate() -> None:
     errors: list[str] = []
     for path in sorted(FERMIONIC.rglob("*.lean")):
         text = path.read_text(encoding="utf-8")
-        if OLD_IMPORT in text:
+        if any(line == OLD_IMPORT for line in text.splitlines()):
             errors.append(f"old import: {path.relative_to(ROOT)}")
         if BARE_DYSON_CALL.search(text):
             errors.append(f"bare root dysonCoeff call: {path.relative_to(ROOT)}")
