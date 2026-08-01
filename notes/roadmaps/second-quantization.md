@@ -4,28 +4,47 @@ Track D develops second quantization as its own construction under
 `LeanCondensedMatter/SecondQuantization/`. It supplies the many-body and diagrammatic layer used by
 the finite-temperature Linked Cluster Theorem (LCT).
 
-The finite-mode fermionic algebraic LCT is now complete. The next work is no longer missing
-combinatorics; it is the analytic interpretation of the formal Dyson series, correlation-function
-extensions, and the convergence-aware bosonic line.
+The finite-mode fermionic line now contains both the coefficientwise formal/algebraic LCT and its
+finite-dimensional analytic upgrade. The remaining research work is low-order regression coverage,
+correlation functions with external legs, convergence-aware bosonic perturbation theory, and later
+completed-space or infinite-mode extensions. Canonical API consolidation is tracked separately in
+[`second-quantization-refactor.md`](second-quantization-refactor.md) and issue #345.
 
 See also:
 
 - [`second-quantization-status.md`](second-quantization-status.md) for the current capability matrix;
-- [`linked-cluster-theorem.md`](linked-cluster-theorem.md) for the completed M0–M5 proof chain;
+- [`linked-cluster-theorem.md`](linked-cluster-theorem.md) for the completed formal and analytic proof
+  chain;
+- [`second-quantization-refactor.md`](second-quantization-refactor.md) for the breaking canonical-API
+  migration;
 - [`../roadmap.md`](../roadmap.md) for the repository-wide target table.
 
-## Scope
+## Scope and finiteness boundary
 
-The current fermionic theorem is deliberately algebraic and finite-mode:
+The implementation has two distinct boundaries that should not be conflated.
+
+The following algebraic APIs do not intrinsically require a finite mode or configuration type:
+
+- algebraic Fock vectors, whose individual values have finite support;
+- diagonal evolution and interaction-picture matrix-coefficient formulas;
+- the Heisenberg-evolution semigroup law;
+- fermionic local-leg operators and their CAR/time-evolution identities.
+
+The completed thermal, Dyson, diagrammatic, and analytic fermionic LCT line remains finite-mode:
 
 - `Mode` is finite;
-- fermionic occupation states are finite subsets of `Mode`, so the algebraic Fock basis is finite;
-- Dyson coefficients are defined by finite-dimensional operator-valued iterated integrals;
-- the partition function is packaged as a formal power series;
-- no convergence of the full perturbation series is assumed;
-- no equality with an analytic interacting partition function is asserted;
-- Hilbert-space completion, unbounded operators, trace-class theory, and thermodynamic limits are
-  separate later tracks.
+- fermionic occupation states are finite subsets of `Mode`, so the full algebraic Fock basis is
+  finite;
+- finite weighted traces and Gibbs expectations enumerate that basis;
+- the current operator-valued Dyson integration reconstructs operators through finite basis sums;
+- quartic vertex labels and diagrams are enumerated by finite sums;
+- the analytic partition-function and analytic LCT results use the resulting finite-dimensional
+  operator space.
+
+For this finite-mode line, the Dyson coefficient series is proved to converge to the genuine
+interacting partition function, and the local analytic logarithm is proved to have connected-diagram
+Taylor derivatives. Hilbert-space completion, unbounded operators, trace-class theory, infinite mode
+sets, and thermodynamic limits remain separate later tracks.
 
 ## Architecture
 
@@ -50,7 +69,7 @@ Wick diagram expansion
   ↓
 component factorization + cumulants + formal log
   ↓
-Linked Cluster Theorem
+formal and analytic Linked Cluster Theorems
 ```
 
 Statistics-independent definitions and proofs live under `SecondQuantization/Common/`. General
@@ -64,6 +83,15 @@ SecondQuantization/Common
 Fermionic, Bosonic
 ```
 
+The single full public entry point is
+
+```lean
+import LeanCondensedMatter.SecondQuantization
+```
+
+Responsibility-specific code may instead import a leaf umbrella such as
+`LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation`.
+
 ## Fermionic primary line
 
 ### Algebraic Fock construction — complete
@@ -75,18 +103,19 @@ Fermionic.Occupation Mode := Finset Mode
 ```
 
 with algebraic Fock space, signed creation/annihilation operators, CAR, number operators, free
-Hamiltonians, and grading all implemented under `Fermionic/Algebra/`.
+Hamiltonians, and grading implemented under `Fermionic/Algebra/`.
 
-The finite occupation basis has cardinality `2^|Mode|`, which is the key reason the fermionic line can
-support a finite-basis Dyson and trace construction without introducing analytic summability
-infrastructure first.
+When `Mode` is finite, the occupation basis has cardinality `2^|Mode|`. This is the key reason the
+fermionic thermal and Dyson line can use finite traces and finite-dimensional operator analysis
+without introducing trace-class or summability infrastructure first.
 
-### Imaginary time and thermal theory — complete at the algebraic finite-mode level
+### Imaginary time and thermal theory — complete for the current line
 
 Implemented results include:
 
 - basis-diagonal free imaginary-time evolution;
-- arbitrary interaction-picture matrix coefficients;
+- arbitrary interaction-picture matrix coefficients, including formulas valid for arbitrary
+  configuration types where no full-basis sum is required;
 - finite weighted traces and normalized Gibbs expectations;
 - free partition and two-point functions;
 - grading selection rules and contractions;
@@ -94,7 +123,7 @@ Implemented results include:
 - the abstract finite-temperature Bloch–de Dominicis pairing theorem and fermionic specializations.
 
 A general many-operator time-ordering API and completed-space analytic formulation remain possible
-extensions, but they are not blockers for the proved coefficientwise LCT.
+extensions, but they are not blockers for the completed finite-mode LCT.
 
 ### Quartic interaction and Wick diagrams — complete
 
@@ -114,7 +143,10 @@ The diagrammatic layer contains:
 - connected components and component restriction/reassembly;
 - component-local vertex orders and global component shuffles.
 
-### Algebraic Linked Cluster Theorem — complete
+The local-leg algebra itself no longer requires `[Fintype Mode]`; finiteness enters later when the
+full thermal trace, label family, and diagram family are enumerated.
+
+### Formal/algebraic Linked Cluster Theorem — complete
 
 The completed M0–M5 sequence is:
 
@@ -125,12 +157,13 @@ The completed M0–M5 sequence is:
 | M2 | complete quartic Wick-amplitude factorization | complete |
 | M3 | Dyson finite-set cumulant equals the connected-diagram sum | complete |
 | M4 | factorial-normalized formal-log coefficient equals the finite-set cumulant | complete |
-| M5 | final Dyson LCT specialization and public export | complete |
+| M5 | final formal Dyson LCT specialization | complete |
 
-The final declaration is
+The final formal declaration is
 
 ```lean
-SecondQuantization.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude
+SecondQuantization.Fermionic.
+  factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude
 ```
 
 and states, for `n ≠ 0`,
@@ -140,8 +173,40 @@ n! [λⁿ] log(normalize(dysonPartitionSeries))
   = ∑ connected quartic Wick diagrams on Fin n, amplitude(diagram).
 ```
 
-The exact proof architecture is documented in
+The exact diagrammatic proof architecture is documented in
 [`linked-cluster-theorem.md`](linked-cluster-theorem.md).
+
+### Analytic finite-dimensional upgrade — complete
+
+The finite-mode line also identifies the formal coefficients with the genuine finite-dimensional
+interacting partition function
+
+```text
+Z(λ) = Tr(exp(-β(H₀ + λV))).
+```
+
+The completed analytic chain includes:
+
+- `hasSum_dysonTraceCoeff_eq_analyticDysonPartitionFunction`, identifying the Dyson trace series with
+  `Z(λ)`;
+- `hasFPowerSeriesAt_analyticDysonPartitionFunction`, packaging the same coefficients as the Taylor
+  series at zero coupling;
+- `analyticAt_analyticNormalizedLogPartitionFunction_zero`, selecting the local analytic logarithm
+  through `log 1 = 0`;
+- `iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_formalCoeff`, connecting
+  analytic logarithmic derivatives to the formal logarithm coefficients;
+- `iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAmplitude`, identifying
+  those derivatives with connected quartic Wick-diagram amplitudes.
+
+Thus, for `n ≠ 0`, the analytic endpoint states schematically
+
+```text
+(dⁿ/dλⁿ)|₀ log(Z(λ) / Z(0))
+  = ∑ connected n-vertex quartic Wick diagrams, amplitude(diagram).
+```
+
+This result is analytic in coupling but still finite-mode and finite-dimensional. It does not imply a
+thermodynamic limit or a completed-space treatment of unbounded operators.
 
 ## Why the factorial appears
 
@@ -170,26 +235,24 @@ dysonVertexMoment(S) = |S|! · normalizedDysonPartitionCoeff(|S|).
 ```
 
 `Combinatorics/PowerSeriesCumulant.lean` proves that the same normalization converts coefficients of
-`log Ẑ` into finite-set cumulants.
+`log Ẑ` into finite-set cumulants. The analytic bridge then identifies these factorial-normalized
+formal coefficients with derivatives of the local analytic logarithm.
 
 ## Formal versus analytic statements
 
-The proved theorem concerns the formal series assembled from the actual coefficientwise Dyson
-recursion. It does not yet prove the analytic identity
+The formal theorem and analytic theorem serve different purposes.
 
-```text
-∑ₙ λⁿ Dₙ(β) = exp(βH₀) exp(-β(H₀ + λV))
-```
+The formal theorem is coefficientwise and purely algebraic once the finite Dyson coefficients and
+diagram amplitudes are available. It is the reusable combinatorial core and does not itself require a
+convergence statement.
 
-or the corresponding partition-function identity
+The analytic theorem uses the finite-dimensional Common Dyson evolution and trace API to prove
+convergence for every coupling, identify the resulting sum with the matrix exponential, and transfer
+the formal connected-diagram coefficient identity to derivatives of the genuine normalized
+partition-function logarithm near zero coupling.
 
-```text
-Z_D(λ) = Tr(exp(-β(H₀ + λV))).
-```
-
-For finite fermionic mode sets these statements should be approachable using finite-dimensional
-operator ODEs, matrix exponentials, and analytic Taylor-series uniqueness. They are the next major
-fermionic milestone.
+Both layers remain public: the formal layer is useful for coefficient manipulations and reuse, while
+the analytic layer is the physical finite-mode endpoint.
 
 ## Bosonic parallel line
 
@@ -224,6 +287,17 @@ unchanged.
 
 No false `[Fintype (Bosonic.Occupation Mode)]` assumption should be introduced to close these gaps.
 
+## Active canonical-API refactor
+
+Issue #345 is consolidating SecondQuantization around one authoritative owner for each construction.
+The canonical entry point, namespace ownership, fermionic core names, bosonic algebra layout, and the
+main discrete/continuous Dyson wrapper removals are already in place. Remaining packages continue the
+Common-wrapper audit, make the analytic finite-mode result the public perturbative endpoint, simplify
+proof-internal module boundaries where useful, and finish documentation and migration validation.
+
+The detailed migration state and removed names are maintained in
+[`second-quantization-refactor.md`](second-quantization-refactor.md).
+
 ## Next phases
 
 ### F1 — Low-order fermionic verification
@@ -236,13 +310,14 @@ Prove explicit `n = 1, 2, 3` corollaries and compare them with enumerated connec
 3! [λ³] log Z = 6z₃ - 6z₁z₂ + 2z₁³.
 ```
 
-This provides readable examples and regression coverage for the general theorem.
+These provide readable examples and regression coverage for both the formal and analytic theorems.
 
-### F2 — Analytic finite-dimensional Dyson theorem
+### F2 — Analytic finite-dimensional Dyson theorem — complete
 
-Establish the interaction-picture evolution equation, convergence of the coefficient series, and
-identification with the finite-dimensional matrix exponential. Then connect the formal partition
-series to the analytic normalized interacting partition function.
+The interaction-picture analytic Dyson evolution, convergence of its coefficient series,
+identification with the finite-dimensional matrix exponential and partition function, and transfer to
+an analytic connected-diagram theorem are implemented. Future work should build on this result rather
+than treating the analytic connection as pending.
 
 ### F3 — Correlation functions and external legs
 
