@@ -12,9 +12,9 @@ attribute [local instance] IsStarNormal.instContinuousFunctionalCalculus
 
 Mathlib's continuous functional calculus `cfc f T` (for `T` self-adjoint on a Hilbert space)
 has no lemma connecting it to eigenvectors of `T` in the literature sense: if `T v = c • v`,
-then `cfc f T v = f c • v`. This file proves that fact for finite-dimensional `H`, via
-polynomial approximation (Stone–Weierstrass) — the route recommended after surveying Mathlib
-for a shortcut (none exists; see `notes/caveats.md`).
+then `cfc f T v = f c • v`. This file proves that fact for Hilbert spaces via polynomial
+approximation (Stone–Weierstrass) — the route recommended after surveying Mathlib for a shortcut
+(none exists; see `notes/caveats.md`).
 
 This is foundational infrastructure for Track C (`notes/roadmaps/operator-algebra.md`): the
 continuous functional calculus is the natural infinite-dimensional replacement for the
@@ -24,44 +24,35 @@ since in infinite dimensions there is no finite list of eigenvalues to sum over.
 
 open Polynomial
 
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [FiniteDimensional ℂ H]
-  [CompleteSpace H]
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-omit [FiniteDimensional ℂ H] [CompleteSpace H] in
+omit [CompleteSpace H] in
 /-- An operator's polynomial functional calculus acts on an eigenvector by evaluating the
 polynomial at the eigenvalue. No self-adjointness hypothesis is needed here — this is a
-purely algebraic fact about `Polynomial.aeval`. Self-adjointness only becomes necessary for
-the continuous functional calculus `cfc` itself (in the next step of this file, not yet
-proved — see `notes/caveats.md`), since Mathlib's `cfc` on `H →L[ℂ] H` is only meaningful
-(non-junk) for operators satisfying the `IsSelfAdjoint` predicate. -/
+purely algebraic fact about `Polynomial.aeval`. -/
 theorem Polynomial.aeval_apply_eigenvector {T : H →L[ℂ] H} {v : H} {c : ℝ}
     (hv : (T : H →ₗ[ℂ] H) v = (c : ℂ) • v) (q : ℝ[X]) :
     (Polynomial.aeval T q : H →L[ℂ] H) v = ((q.eval c : ℝ) : ℂ) • v := by
   rw [Polynomial.aeval_eq_aeval_map
     (φ := algebraMap ℝ ℂ) (by ext r; simp [RingHom.comp_apply]) q T]
   let p := q.map (algebraMap ℝ ℂ)
-  have hmap :
-      ContinuousLinearMap.toLinearMapRingHom (Polynomial.aeval T p) =
-        Polynomial.aeval (T : H →ₗ[ℂ] H) p := by
-    simpa [p] using
-      (Polynomial.map_aeval_eq_aeval_map
-        (R := ℂ) (S := H →L[ℂ] H) (T := ℂ) (U := H →ₗ[ℂ] H)
-        (φ := RingHom.id ℂ)
-        (ψ := ContinuousLinearMap.toLinearMapRingHom)
-        (by ext z x; simp [RingHom.comp_apply, Algebra.algebraMap_eq_smul_one]) p T)
+  change (ContinuousLinearMap.toLinearMapRingHom (Polynomial.aeval T p)) v = _
+  rw [Polynomial.map_aeval_eq_aeval_map
+    (R := ℂ) (S := H →L[ℂ] H) (T := ℂ) (U := H →ₗ[ℂ] H)
+    (φ := RingHom.id ℂ)
+    (ψ := ContinuousLinearMap.toLinearMapRingHom)
+    (by ext z x; simp [RingHom.comp_apply, Algebra.algebraMap_eq_smul_one]) p T]
   have heval : p.eval (c : ℂ) = ((q.eval c : ℝ) : ℂ) := by
     change (q.map (algebraMap ℝ ℂ)).eval (c : ℂ) = ((q.eval c : ℝ) : ℂ)
     rw [Polynomial.eval_map]
     exact Polynomial.eval₂_at_apply (p := q) (algebraMap ℝ ℂ) c
-  change (ContinuousLinearMap.toLinearMapRingHom (Polynomial.aeval T p)) v = _
-  rw [hmap]
-  have h := Module.End.aeval_apply_of_mem_apply_eq_smul
-    (f := (T : H →ₗ[ℂ] H)) (μ := (c : ℂ)) (x := v) (p := p) hv
-  rwa [heval] at h
+  simp only [Polynomial.map_id]
+  rw [Module.End.aeval_apply_of_mem_apply_eq_smul
+    (f := ContinuousLinearMap.toLinearMapRingHom T) (μ := (c : ℂ))
+    (x := v) (p := p) (by simpa using hv), heval]
 
 open Filter Topology
 
-omit [FiniteDimensional ℂ H] in
 /-- **The continuous functional calculus acts on eigenvectors by evaluation.** For a
 self-adjoint `T` and an eigenvector `v` of `T` with (real) eigenvalue `c`, `cfc f T` acts on
 `v` by scaling it by `f c`, for any continuous `f : ℝ → ℝ`. Proved by approximating `f`
