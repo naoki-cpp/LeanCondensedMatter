@@ -107,9 +107,15 @@ theorem hasSum_dysonTraceCoeff_eq_trace_analyticDysonEvolution
     (β := β) (τ := β) energy V hβ ⟨hβ, le_rfl⟩ lam).map
       (finiteOperatorTraceLeft (continuousDiagonalEvolution energy (-β)))
       (finiteOperatorTraceLeft (continuousDiagonalEvolution energy (-β))).continuous
-  simpa only [Function.comp_apply, analyticDysonTerm,
-    map_smul, smul_eq_mul, finiteOperatorTraceLeft_continuousDysonCoeff,
-    finiteOperatorTraceLeft_apply] using h
+  have hterms :
+      (finiteOperatorTraceLeft (continuousDiagonalEvolution energy (-β)) ∘
+        analyticDysonTerm energy V β lam) =
+      (fun n : ℕ => lam ^ n * dysonTraceCoeff energy β V n) := by
+    funext n
+    simp [Function.comp_apply, analyticDysonTerm,
+      finiteOperatorTraceLeft_continuousDysonCoeff]
+  rw [hterms] at h
+  exact h
 
 end
 end Common
