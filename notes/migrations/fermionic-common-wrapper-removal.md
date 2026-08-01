@@ -7,11 +7,11 @@ with `fermionEnergy ε`:
 - `Fermionic.interactionPicture_zero`;
 - `Fermionic.matrixCoeff_interactionPicture`;
 - `Fermionic.intervalIntegrable_matrixCoeff_interactionPicture`;
-- `Fermionic.dysonCoeff_eq_of_time_independent`.
+- `Fermionic.dysonCoeff_eq_of_time_independent`;
+- `Fermionic.continuous_matrixCoeff_interactionPicture`.
 
 Use the corresponding `Common` theorem with `fermionEnergy ε` directly.
 
-`Fermionic.interactionPicture` remains as the physics-facing operator name. The specialized
-`Fermionic.continuous_matrixCoeff_interactionPicture` theorem also remains temporarily because the
-quartic Dyson-diagram continuity proofs still consume it; migrating those callers is the next R2
-slice.
+`Fermionic.interactionPicture` remains as the physics-facing operator name. The quartic
+Dyson-diagram continuity proofs now use
+`Common.continuous_matrixCoeff_interactionPicture (fermionEnergy ε)` directly.

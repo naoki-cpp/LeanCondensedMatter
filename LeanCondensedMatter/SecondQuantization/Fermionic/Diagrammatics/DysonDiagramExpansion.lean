@@ -94,7 +94,7 @@ theorem nestedVertexOperatorComp_succ (ε : Mode → ℝ) (n : ℕ)
 omit [LinearOrder Mode] in
 /-- **Continuity in `σ`, at fixed `k n'`, of a matrix coefficient of `(interactionPicture ε V
 σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)`** — the finite sum of products of
-`continuous_matrixCoeff_interactionPicture`/`Common.continuous_matrixCoeff_dysonCoeff` (via
+`Common.continuous_matrixCoeff_interactionPicture`/`Common.continuous_matrixCoeff_dysonCoeff` (via
 `Common.matrixCoeff_comp`), the integrability the inductive step's
 `Common.comp_operatorIntervalIntegral`/`Common.normalizedWeightedDiagonal_operatorIntervalIntegral`
 need. -/
@@ -105,16 +105,16 @@ theorem continuous_matrixCoeff_interactionPicture_comp_dysonCoeff (ε : Mode →
       ((interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)) k n') := by
   simp_rw [Common.matrixCoeff_comp]
   exact continuous_finsetSum _ fun j _ =>
-    (continuous_matrixCoeff_interactionPicture ε V k j).mul
+    (Common.continuous_matrixCoeff_interactionPicture (fermionEnergy ε) V k j).mul
       (Common.continuous_matrixCoeff_dysonCoeff (fermionEnergy ε) V n j n')
 
 set_option linter.unusedFintypeInType false in
 /-- **Joint continuity, in the full time vector `τ`, of a matrix coefficient of
 `nestedVertexOperatorComp`** — by induction on `n`: the base case is constant (`nested...Comp ε 0
 q τ = LinearMap.id`); the successor case's matrix coefficient is a finite sum of products of a
-single-coordinate `Complex.exp` factor (`continuous_matrixCoeff_interactionPicture`, precomposed
-with the coordinate-`0` projection) and the inductive hypothesis (precomposed with the "tail"
-projection `fun i => τ i.succ`). `[Fintype Mode]` is genuinely used (for the finite sum
+single-coordinate `Complex.exp` factor (`Common.continuous_matrixCoeff_interactionPicture`,
+precomposed with the coordinate-`0` projection) and the inductive hypothesis (precomposed with the
+"tail" projection `fun i => τ i.succ`). `[Fintype Mode]` is genuinely used (for the finite sum
 `Common.matrixCoeff_comp` needs), just not in the statement itself — the linter can't see that. -/
 theorem continuous_matrixCoeff_nestedVertexOperatorComp (ε : Mode → ℝ) :
     ∀ (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) (k n' : Occupation Mode),
@@ -130,7 +130,8 @@ theorem continuous_matrixCoeff_nestedVertexOperatorComp (ε : Mode → ℝ) :
       fun τ => by rw [nestedVertexOperatorComp_succ, Common.matrixCoeff_comp]
     simp_rw [heq]
     exact continuous_finsetSum _ fun j _ =>
-      ((continuous_matrixCoeff_interactionPicture ε (quarticVertexOperator (q 0)) k j).comp
+      ((Common.continuous_matrixCoeff_interactionPicture
+          (fermionEnergy ε) (quarticVertexOperator (q 0)) k j).comp
           (continuous_apply 0)).mul
         ((continuous_matrixCoeff_nestedVertexOperatorComp ε n (fun i => q i.succ) j n').comp
           (continuous_pi fun i => continuous_apply i.succ))
