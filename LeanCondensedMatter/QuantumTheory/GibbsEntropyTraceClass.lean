@@ -23,10 +23,10 @@ theorem gibbsState_apply_eigenvector (Hop : Observable H) (β : ℝ)
     (hZ : spectralTrace hsummable ≠ 0) {v : H} {E : ℝ}
     (hv : (Hop.1 : H →ₗ[ℂ] H) v = (E : ℂ) • v) :
     (gibbsState Hop β hcompact hsummable hZ).op v =
-      (((spectralTrace hsummable)⁻¹ * Real.exp (-β * E) : ℝ) : ℂ) • v := by
+      ((((spectralTrace hsummable)⁻¹ : ℝ) : ℂ) *
+        (Real.exp (-β * E) : ℂ)) • v := by
   change ((spectralTrace hsummable)⁻¹ • gibbsOp Hop β) v = _
-  rw [ContinuousLinearMap.smul_apply, gibbsOp_apply_eigenvector Hop β hv]
-  simp [smul_smul]
+  rw [smul_apply, gibbsOp_apply_eigenvector Hop β hv, smul_smul]
 
 /-- In finite dimensions, the trace-class energy expectation agrees with the usual real part of
 `Tr(ρ H)`. The proof extends the nonzero eigenvectors of `ρ` to an orthonormal basis; the added
@@ -52,16 +52,19 @@ theorem energyExpValue_eq_re_linearMap_trace [FiniteDimensional ℂ H]
     rw [hb]
   have hpoint (a : EigenvectorIndex ρ.op) :
       g (j a) = (a.1.1 : ℂ) * inner ℂ (e a) (Hop.1 (e a)) := by
-    change inner ℂ (b (j a)) (ρ.op (Hop.1 (b (j a)))) =
-      (a.1.1 : ℂ) * inner ℂ (e a) (Hop.1 (e a))
+    change inner ℂ (b (j a))
+        ((ρ.op : H →ₗ[ℂ] H) ((Hop.1 : H →ₗ[ℂ] H) (b (j a)))) =
+      (a.1.1 : ℂ) * inner ℂ (e a) ((Hop.1 : H →ₗ[ℂ] H) (e a))
     rw [hb_j]
-    have hsym :
-        inner ℂ ((ρ.op : H →ₗ[ℂ] H) (e a)) ((Hop.1 : H →ₗ[ℂ] H) (e a)) =
-          inner ℂ (e a)
-            ((ρ.op : H →ₗ[ℂ] H) ((Hop.1 : H →ₗ[ℂ] H) (e a))) :=
-      hρsym (e a) ((Hop.1 : H →ₗ[ℂ] H) (e a))
-    rw [← hsym, apply_eigenvectorFamily hρcompact]
-    simp [inner_smul_left]
+    calc
+      inner ℂ (e a)
+          ((ρ.op : H →ₗ[ℂ] H) ((Hop.1 : H →ₗ[ℂ] H) (e a))) =
+          inner ℂ ((ρ.op : H →ₗ[ℂ] H) (e a))
+            ((Hop.1 : H →ₗ[ℂ] H) (e a)) :=
+        (hρsym (e a) ((Hop.1 : H →ₗ[ℂ] H) (e a))).symm
+      _ = (a.1.1 : ℂ) * inner ℂ (e a) ((Hop.1 : H →ₗ[ℂ] H) (e a)) := by
+        rw [apply_eigenvectorFamily hρcompact, inner_smul_left]
+        simp
   have hzero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
     have hspan :
         Submodule.span ℂ (Set.range e) ≤ (ℂ ∙ (b x : H))ᗮ := by
@@ -87,13 +90,15 @@ theorem energyExpValue_eq_re_linearMap_trace [FiniteDimensional ℂ H]
     have hxker : (ρ.op : H →ₗ[ℂ] H) (b x) = 0 := by
       have hxev := Module.End.mem_eigenspace_iff.mp hxker_mem
       simpa using hxev
-    change inner ℂ (b x) (ρ.op (Hop.1 (b x))) = 0
-    have hsym :
-        inner ℂ ((ρ.op : H →ₗ[ℂ] H) (b x)) ((Hop.1 : H →ₗ[ℂ] H) (b x)) =
-          inner ℂ (b x)
-            ((ρ.op : H →ₗ[ℂ] H) ((Hop.1 : H →ₗ[ℂ] H) (b x))) :=
-      hρsym (b x) ((Hop.1 : H →ₗ[ℂ] H) (b x))
-    rw [← hsym, hxker, inner_zero_left]
+    change inner ℂ (b x)
+      ((ρ.op : H →ₗ[ℂ] H) ((Hop.1 : H →ₗ[ℂ] H) (b x))) = 0
+    calc
+      inner ℂ (b x)
+          ((ρ.op : H →ₗ[ℂ] H) ((Hop.1 : H →ₗ[ℂ] H) (b x))) =
+          inner ℂ ((ρ.op : H →ₗ[ℂ] H) (b x))
+            ((Hop.1 : H →ₗ[ℂ] H) (b x)) :=
+        (hρsym (b x) ((Hop.1 : H →ₗ[ℂ] H) (b x))).symm
+      _ = 0 := by rw [hxker, inner_zero_left]
   have hfull : HasSum g (∑ i, g i) := hasSum_fintype _
   have hrestricted : HasSum (g ∘ j) (∑ i, g i) :=
     (hj.hasSum_iff hzero).mpr hfull
