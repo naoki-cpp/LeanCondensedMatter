@@ -691,8 +691,7 @@ product of two `Complex.exp`s of a continuous (coordinate-linear) function of `�
 theorem continuous_freeGibbsExpectation_quarticLegOperatorForSequence_pair {n : ℕ} (ε : Mode → ℝ)
     (β : ℝ) (q : Fin n → QuarticVertexLabel Mode) (a b : Fin (2 * (2 * n))) :
     Continuous (fun τ : Fin n → ℝ => freeGibbsExpectation ε β
-      ((quarticLegOperatorForSequence ε q τ a).comp
-        (quarticLegOperatorForSequence ε q τ b))) := by
+      ((quarticLegOperatorForSequence ε q τ a).comp (quarticLegOperatorForSequence ε q τ b))) := by
   simp only [freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq]
   fun_prop
 
