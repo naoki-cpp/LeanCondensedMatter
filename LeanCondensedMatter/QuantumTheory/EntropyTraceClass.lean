@@ -27,8 +27,9 @@ well-defined, with divergence showing up honestly as `⊤` rather than being sil
 the junk value `0` that a real-valued `tsum` would give.
 
 The bounded operator `entropyOp ρ = -ρ log ρ` is separately available through continuous
-functional calculus. Its existence needs no finite-dimensionality or entropy-summability
-hypothesis; only taking its spectral trace requires the transformed eigenvalues to be summable.
+functional calculus. Its existence and compactness need no finite-dimensionality or
+entropy-summability hypothesis; only taking its spectral trace requires the transformed
+eigenvalues to be summable.
 -/
 
 namespace QuantumTheory.TraceClass
@@ -55,6 +56,14 @@ theorem entropyOp_apply_eigenvector (ρ : DensityOperator H) {v : H} {c : ℝ}
   simpa [entropyOp] using
     (cfc_apply_eigenvector (T := ρ.op) ρ.pos.isSelfAdjoint hv
       (f := Real.negMulLog) Real.continuous_negMulLog)
+
+/-- The entropy operator of a trace-class density operator is compact. This follows because the
+density operator is compact, `Real.negMulLog` is continuous, and `Real.negMulLog 0 = 0`. -/
+theorem entropyOp_isCompact (ρ : DensityOperator H) :
+    IsCompactOperator (entropyOp ρ : H →L[ℂ] H) := by
+  rw [entropyOp]
+  exact isCompactOperator_cfc_of_zero ρ.pos.isSelfAdjoint ρ.spectralTraceClass.compact
+    Real.continuous_negMulLog (by simp)
 
 /-- **The von Neumann entropy `-Tr[ρ ln ρ]` of a density operator (infinite-dimensional)**,
 computed from `ρ`'s eigenvalues via `ContinuousLinearMap.EigenvectorIndex`. `ENNReal`-valued
