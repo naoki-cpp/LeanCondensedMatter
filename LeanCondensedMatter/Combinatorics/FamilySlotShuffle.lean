@@ -1,3 +1,4 @@
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Fintype.Perm
 
 set_option linter.style.header false
@@ -10,6 +11,8 @@ into `Fin (∑ i, size i)`, preserving the order inside each block.  This module
 pure finite combinatorics; shuffled integrands and continuity live in
 `Analysis/OrderedSimplex/FamilyShuffleIntegrand.lean`.
 -/
+
+open scoped BigOperators
 
 namespace Combinatorics
 
