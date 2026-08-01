@@ -1,31 +1,171 @@
-name: Audit R2 Thin Wrappers
+name: Migrate R2 Thin Wrappers
 
 on:
   pull_request:
     branches: [main]
     paths:
       - 'LeanCondensedMatter/SecondQuantization/**'
+      - 'scripts/check_second_quantization_architecture.py'
       - '.github/workflows/audit-r2-thin-wrappers.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  audit:
+  migrate:
+    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: List wrapper references
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: leanprover/lean-action@v1
+      - name: Remove thin fermionic wrappers
         shell: bash
         run: |
-          set -euo pipefail
-          for name in \
-            interactionPicture_zero \
-            matrixCoeff_interactionPicture \
-            continuous_matrixCoeff_interactionPicture \
-            intervalIntegrable_matrixCoeff_interactionPicture \
-            dysonCoeff_eq_of_time_independent
-          do
-            echo "## $name"
-            grep -RIn --include='*.lean' -w "$name" LeanCondensedMatter || true
-          done
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          def read(path: str) -> str:
+              return Path(path).read_text(encoding="utf-8")
+
+          def write(path: str, text: str) -> None:
+              Path(path).write_text(text, encoding="utf-8")
+
+          interaction_path = "LeanCondensedMatter/SecondQuantization/Fermionic/ImaginaryTime/InteractionPicture.lean"
+          text = read(interaction_path)
+          pattern = re.compile(
+              r"\n/-- At zero imaginary time.*?"
+              r"Common\.intervalIntegrable_matrixCoeff_interactionPicture "
+              r"\(fermionEnergy ε\) V m n a b\n",
+              re.S,
+          )
+          text, count = pattern.subn("\n", text)
+          assert count == 1, f"expected one interaction-picture wrapper block, found {count}"
+          write(interaction_path, text)
+
+          verification_path = "LeanCondensedMatter/SecondQuantization/Fermionic/Perturbation/DysonExpansionVerification.lean"
+          text = read(verification_path)
+          pattern = re.compile(
+              r"\nomit \[LinearOrder Mode\] in\n"
+              r"/-- A time-independent fermionic interaction.*?"
+              r"Common\.dysonCoeff_eq_of_time_independent \(fermionEnergy ε\) V hV\n",
+              re.S,
+          )
+          text, count = pattern.subn("\n", text)
+          assert count == 1, f"expected one Dyson wrapper block, found {count}"
+          old = """  dysonCoeff_eq_of_time_independent ε (interactionHamiltonian Vint)
+    (imaginaryTimeEvolve_interactionHamiltonian ε Vint) n τ
+"""
+          new = """  Common.dysonCoeff_eq_of_time_independent
+    (fermionEnergy ε) (interactionHamiltonian Vint)
+    (imaginaryTimeEvolve_interactionHamiltonian ε Vint) n τ
+"""
+          assert old in text, "fermionic Dyson corollary call site not found"
+          text = text.replace(old, new, 1)
+          write(verification_path, text)
+
+          diagram_path = "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion.lean"
+          text = read(diagram_path)
+          replacements = {
+              "`continuous_matrixCoeff_interactionPicture`/`Common.continuous_matrixCoeff_dysonCoeff`":
+                  "`Common.continuous_matrixCoeff_interactionPicture`/`Common.continuous_matrixCoeff_dysonCoeff`",
+              "(continuous_matrixCoeff_interactionPicture ε V k j).mul":
+                  "(Common.continuous_matrixCoeff_interactionPicture (fermionEnergy ε) V k j).mul",
+              "single-coordinate `Complex.exp` factor (`continuous_matrixCoeff_interactionPicture`, precomposed":
+                  "single-coordinate `Complex.exp` factor (`Common.continuous_matrixCoeff_interactionPicture`, precomposed",
+              "((continuous_matrixCoeff_interactionPicture ε (quarticVertexOperator (q 0)) k j).comp":
+                  "((Common.continuous_matrixCoeff_interactionPicture (fermionEnergy ε)\n          (quarticVertexOperator (q 0)) k j).comp",
+          }
+          for old, new in replacements.items():
+              assert old in text, f"diagrammatic call site not found: {old}"
+              text = text.replace(old, new, 1)
+          write(diagram_path, text)
+
+          checker_path = "scripts/check_second_quantization_architecture.py"
+          text = read(checker_path)
+          old = '''LEGACY_FERMIONIC_IDENTIFIER = re.compile(
+    r"FockSpaceFermionic|FermionOccupation|fermionParticleNumber|fermionVacuum"
+)
+NAMESPACE_RE = re.compile'''
+          new = '''LEGACY_FERMIONIC_IDENTIFIER = re.compile(
+    r"FockSpaceFermionic|FermionOccupation|fermionParticleNumber|fermionVacuum"
+)
+REMOVED_FERMIONIC_WRAPPER_DECL = re.compile(
+    r"^\\s*(?:@\\[[^\\]]*\\]\\s*)*"
+    r"(?:(?:private|protected|noncomputable|unsafe|partial)\\s+)*"
+    r"(?:abbrev|def|lemma|theorem)\\s+"
+    r"(interactionPicture_zero|matrixCoeff_interactionPicture|"
+    r"continuous_matrixCoeff_interactionPicture|"
+    r"intervalIntegrable_matrixCoeff_interactionPicture|"
+    r"dysonCoeff_eq_of_time_independent)\\b"
+)
+NAMESPACE_RE = re.compile'''
+          assert old in text, "architecture checker constant insertion point not found"
+          text = text.replace(old, new, 1)
+
+          marker = '''def check_declaration_namespaces(errors: list[str]) -> None:
+'''
+          function = '''def check_removed_fermionic_wrappers(errors: list[str]) -> None:
+    for path in lean_files(SQ / "Fermionic"):
+        for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+            if match := REMOVED_FERMIONIC_WRAPPER_DECL.match(line):
+                errors.append(
+                    f"removed fermionic Common wrapper: "
+                    f"{relative(path)}:{line_no}: {match.group(1)}"
+                )
+
+
+'''
+          assert marker in text, "architecture checker function insertion point not found"
+          text = text.replace(marker, function + marker, 1)
+          old = '''    check_legacy_identifiers(errors)
+    check_declaration_namespaces(errors)
+'''
+          new = '''    check_legacy_identifiers(errors)
+    check_removed_fermionic_wrappers(errors)
+    check_declaration_namespaces(errors)
+'''
+          assert old in text, "architecture checker call insertion point not found"
+          text = text.replace(old, new, 1)
+          write(checker_path, text)
+
+          note = Path("notes/migrations/fermionic-common-wrapper-removal.md")
+          note.write_text("""# Fermionic Common-wrapper removal
+
+The following theorem wrappers were removed without compatibility aliases because they only
+specialized authoritative `SecondQuantization.Common` results with `fermionEnergy ε`:
+
+- `Fermionic.interactionPicture_zero`;
+- `Fermionic.matrixCoeff_interactionPicture`;
+- `Fermionic.continuous_matrixCoeff_interactionPicture`;
+- `Fermionic.intervalIntegrable_matrixCoeff_interactionPicture`;
+- `Fermionic.dysonCoeff_eq_of_time_independent`.
+
+Use the corresponding `Common` theorem with `fermionEnergy ε` directly. The physics-facing
+`Fermionic.interactionPicture` definition and the density-density interaction Hamiltonian corollaries
+remain in the fermionic API.
+""", encoding="utf-8")
+          PY
+      - name: Check canonical architecture
+        run: python3 scripts/check_second_quantization_architecture.py
+      - name: Validate full library
+        run: lake build --wfail
+      - name: Check for sorry
+        shell: bash
+        run: |
+          if grep -RIn --include='*.lean' -E '(^|[^A-Za-z])sorry([^A-Za-z]|$)' LeanCondensedMatter; then
+            echo 'Found sorry in Lean sources' >&2
+            exit 1
+          fi
+      - name: Remove one-shot workflow
+        run: git rm .github/workflows/audit-r2-thin-wrappers.yml
+      - name: Commit wrapper removal
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add LeanCondensedMatter scripts notes
+          git commit -m 'refactor!: remove thin fermionic Common wrappers'
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
