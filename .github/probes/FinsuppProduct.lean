@@ -12,7 +12,8 @@ set_option linter.style.header false
 # A finite product of absolutely convergent series converges as a `Finsupp`-indexed multi-series
 
 The finite-cardinality induction keeps each recursive theorem small. The common successor step is
-proved separately by splitting `Fin (k + 1)` through `finSuccEquiv` and `Finsupp.optionEquiv`.
+split into a pure `Fin (k + 1)`/`Option (Fin k)` reindexing theorem and a separate product-of-series
+theorem.
 -/
 
 namespace Finsupp
@@ -78,6 +79,68 @@ private theorem hasSum_prod_fin_zero
     hasSum_single (0 : Fin 0 →₀ ℕ) (fun n hn => absurd (hzero n) hn)
   simpa using hsum
 
+private def finSuccFamily {k : ℕ} {α : Type*} (f : Fin (k + 1) → α) : Option (Fin k) → α
+  | none => f 0
+  | Option.some i => f i.succ
+
+@[simp]
+private theorem finSuccFamily_none {k : ℕ} {α : Type*} (f : Fin (k + 1) → α) :
+    finSuccFamily f none = f 0 := rfl
+
+@[simp]
+private theorem finSuccFamily_some {k : ℕ} {α : Type*} (f : Fin (k + 1) → α) (i : Fin k) :
+    finSuccFamily f (Option.some i) = f i.succ := rfl
+
+private theorem prod_finSuccFamily
+    {k : ℕ} {R : Type*} [CommMonoid R] (a : Fin (k + 1) → R) :
+    (∏ i : Option (Fin k), finSuccFamily a i) = ∏ i : Fin (k + 1), a i := by
+  rw [Fintype.prod_option, Fin.prod_univ_succ]
+  rfl
+
+private theorem prod_finSucc_finsupp_eq
+    {k : ℕ} {R : Type*} [CommMonoid R] (f : Fin (k + 1) → ℕ → R) :
+    (fun n : Fin (k + 1) →₀ ℕ => ∏ i : Fin (k + 1), f i (n i)) =
+      (fun m : Option (Fin k) →₀ ℕ =>
+        ∏ i : Option (Fin k), finSuccFamily f i (m i)) ∘
+        Finsupp.equivMapDomain (finSuccEquiv k) := by
+  funext n
+  simp only [Function.comp_apply]
+  apply Fintype.prod_equiv (finSuccEquiv k) (fun i => f i (n i))
+    (fun j => finSuccFamily f j ((Finsupp.equivMapDomain (finSuccEquiv k) n) j))
+  intro i
+  rw [Finsupp.equivMapDomain_apply, Equiv.symm_apply_apply]
+  refine Fin.cases ?_ ?_ i
+  · simp [finSuccFamily]
+  · intro j
+    simp [finSuccFamily]
+
+private theorem hasSum_prod_finSucc_reindex
+    {k : ℕ} {R : Type*} [NormedCommRing R]
+    (f : Fin (k + 1) → ℕ → R) (a : Fin (k + 1) → R)
+    (hOption : HasSum
+      (fun n : Option (Fin k) →₀ ℕ =>
+        ∏ i : Option (Fin k), finSuccFamily f i (n i))
+      (∏ i : Option (Fin k), finSuccFamily a i)) :
+    HasSum (fun n : Fin (k + 1) →₀ ℕ => ∏ i : Fin (k + 1), f i (n i))
+      (∏ i : Fin (k + 1), a i) := by
+  rw [prod_finSucc_finsupp_eq f]
+  have h := (Equiv.hasSum_iff (Finsupp.equivCongrLeft (finSuccEquiv k))).mpr hOption
+  rwa [prod_finSuccFamily] at h
+
+private theorem hasSum_prod_finSucc_option
+    {k : ℕ} {R : Type*} [NormedCommRing R] [CompleteSpace R]
+    (f : Fin (k + 1) → ℕ → R) (a : Fin (k + 1) → R)
+    (hhead : HasSum (f 0) (a 0))
+    (htail : HasSum (fun n : Fin k →₀ ℕ => ∏ i : Fin k, f i.succ (n i))
+      (∏ i : Fin k, a i.succ))
+    (habsHead : Summable (fun n => ‖f 0 n‖))
+    (habsTail : Summable (fun n : Fin k →₀ ℕ => ‖∏ i : Fin k, f i.succ (n i)‖)) :
+    HasSum (fun n : Option (Fin k) →₀ ℕ =>
+      ∏ i : Option (Fin k), finSuccFamily f i (n i))
+      (∏ i : Option (Fin k), finSuccFamily a i) := by
+  apply hasSum_prod_option_reindex (finSuccFamily f) (finSuccFamily a)
+  exact hasSum_mul_of_summable_norm' hhead htail habsHead habsTail
+
 private theorem hasSum_prod_fin_succ
     {k : ℕ} {R : Type*} [NormedCommRing R] [CompleteSpace R]
     (f : Fin (k + 1) → ℕ → R) (a : Fin (k + 1) → R)
@@ -87,19 +150,9 @@ private theorem hasSum_prod_fin_succ
     (habsHead : Summable (fun n => ‖f 0 n‖))
     (habsTail : Summable (fun n : Fin k →₀ ℕ => ‖∏ i : Fin k, f i.succ (n i)‖)) :
     HasSum (fun n : Fin (k + 1) →₀ ℕ => ∏ i : Fin (k + 1), f i (n i))
-      (∏ i : Fin (k + 1), a i) := by
-  let e : Fin (k + 1) ≃ Option (Fin k) := finSuccEquiv k
-  have hOption : HasSum
-      (fun n : Option (Fin k) →₀ ℕ =>
-        ∏ i : Option (Fin k), f (e.symm i) (n i))
-      (∏ i : Option (Fin k), a (e.symm i)) := by
-    apply hasSum_prod_option_reindex (fun i => f (e.symm i)) (fun i => a (e.symm i))
-    apply hasSum_mul_of_summable_norm'
-    · simpa [e] using hhead
-    · simpa [e] using htail
-    · simpa [e] using habsHead
-    · simpa [e] using habsTail
-  exact hasSum_prod_equiv e.symm f a hOption
+      (∏ i : Fin (k + 1), a i) :=
+  hasSum_prod_finSucc_reindex f a
+    (hasSum_prod_finSucc_option f a hhead htail habsHead habsTail)
 
 /-! ## The nonnegative-real case -/
 
