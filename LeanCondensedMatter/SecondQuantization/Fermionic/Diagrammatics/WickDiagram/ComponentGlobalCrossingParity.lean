@@ -94,7 +94,7 @@ theorem QuarticWickDiagram.componentOrientedCrossingCount_self
       ((d.restrictComponent B.2).pairingInOrder (orders B)).crossingCount := by
   classical
   rw [QuarticWickDiagram.componentOrientedCrossingCount, Fintype.sum_prod_type,
-    Common.BlochDeDominicis.Pairing.crossingCount_eq_sum_sum_crosses]
+    Combinatorics.Pairing.crossingCount_eq_sum_sum_crosses]
   apply Finset.sum_congr rfl
   intro p _
   apply Finset.sum_congr rfl

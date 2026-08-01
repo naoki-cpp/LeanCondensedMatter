@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.Contraction
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.OperatorTime
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.Contraction
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.Combinatorics.PairingWeight
 
 set_option linter.style.header false
 

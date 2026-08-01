@@ -22,8 +22,8 @@ open Combinatorics
 variable {Mode : Type*} {N : ℕ}
 
 @[simp]
-theorem Common.BlochDeDominicis.Pairing.pairEndpoint_eq_pairEndpointAt {n : ℕ}
-    (pairing : Common.BlochDeDominicis.Pairing n) (p : pairing.NormalizedPair) (k : Fin 2) :
+theorem Combinatorics.Pairing.pairEndpoint_eq_pairEndpointAt {n : ℕ}
+    (pairing : Combinatorics.Pairing n) (p : pairing.NormalizedPair) (k : Fin 2) :
     pairing.pairEndpoint (p, k) = Common.BlochDeDominicis.pairEndpointAt p.1 k :=
   rfl
 

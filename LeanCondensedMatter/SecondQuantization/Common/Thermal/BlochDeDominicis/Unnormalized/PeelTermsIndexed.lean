@@ -21,7 +21,6 @@ erasure/reindexing scheme, built for pairs rather than single positions).
 namespace SecondQuantization
 namespace Common
 
-open Combinatorics
 
 variable {Config : Type*}
 

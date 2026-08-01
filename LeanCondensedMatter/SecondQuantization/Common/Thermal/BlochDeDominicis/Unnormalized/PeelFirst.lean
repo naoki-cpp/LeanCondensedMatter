@@ -36,7 +36,7 @@ equation, the way `FourPointReduction.lean` does for the 3-operator case) is don
 recursively-defined terms. `PeelTermsIndexed.lean`'s `peelTerms_eq_ofFn` further converts this into
 the indexed erasure formula (`ζʲ • cⱼ • prodComp (l.eraseIdx j |>.map Prod.fst)`, via
 `List.eraseIdx`) that lets each term be matched individually against
-`Common.BlochDeDominicis.Pairing`.
+`Combinatorics.Pairing`.
 -/
 
 namespace SecondQuantization

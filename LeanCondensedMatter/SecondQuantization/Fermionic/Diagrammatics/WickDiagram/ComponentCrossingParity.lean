@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentCrossing
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.Combinatorics.PairingWeight
 
 set_option linter.style.header false
 
@@ -34,7 +34,7 @@ theorem QuarticWickDiagram.card_externalCrossingPairs_add_card_internalCrossingP
         (d.internalCrossingPairs orders shuffle).card =
       (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).crossingCount := by
   classical
-  rw [Common.BlochDeDominicis.Pairing.crossingCount_eq_card_crossingPair]
+  rw [Combinatorics.Pairing.crossingCount_eq_card_crossingPair]
   simpa [QuarticWickDiagram.externalCrossingPairs] using
     Finset.card_sdiff_add_card_eq_card
       (Finset.subset_univ (d.internalCrossingPairs orders shuffle))
@@ -73,7 +73,7 @@ theorem QuarticWickDiagram.pairingInOrder_weight_eq_prod_components_of_externalC
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).weight s =
       ∏ B : d.componentPartition.parts,
         ((d.restrictComponent B.2).pairingInOrder (orders B)).weight s := by
-  exact Common.BlochDeDominicis.Pairing.weight_eq_prod_of_crossingCount_mod_two_eq
+  exact Combinatorics.Pairing.weight_eq_prod_of_crossingCount_mod_two_eq
     s
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
     (fun B : d.componentPartition.parts =>

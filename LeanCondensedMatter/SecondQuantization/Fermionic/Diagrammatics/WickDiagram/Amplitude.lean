@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Ordered
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.LegFamily
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannWeight
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.Combinatorics.PairingWeight
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 
 set_option linter.style.header false
@@ -196,8 +196,8 @@ theorem quarticWickDiagramAmplitude_empty (ε : Mode → ℝ) (β : ℝ) (g : Qu
       d.orderedSimplexContribution ε β order = 1 := by
     intro order
     simp only [QuarticWickDiagram.orderedSimplexContribution]
-    simp [QuarticWickDiagram.contractionIntegrand, Common.BlochDeDominicis.Pairing.pairs,
-      Common.BlochDeDominicis.Pairing.crossingCount]
+    simp [QuarticWickDiagram.contractionIntegrand, Combinatorics.Pairing.pairs,
+      Combinatorics.Pairing.crossingCount]
   simp only [quarticWickDiagramAmplitude, QuarticWickDiagram.couplingWeight, hcard, pow_zero,
     one_mul]
   have hcoupling : ∏ v : (↥(∅ : Finset (Fin N))), g (d.vertexLabel v) = 1 := by

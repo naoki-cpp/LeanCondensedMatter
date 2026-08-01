@@ -636,7 +636,7 @@ over `QuarticWickDiagram`s. -/
 theorem freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing (ε : Mode → ℝ) (β : ℝ)
     (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) :
     freeGibbsExpectation ε β (nestedVertexOperatorComp ε n q τ) =
-      ∑ pairing : Common.BlochDeDominicis.Pairing (2 * n),
+      ∑ pairing : Combinatorics.Pairing (2 * n),
         pairing.weight Statistics.fermion *
           ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
             ((quarticLegOperatorForSequence ε q τ pr.1).comp
@@ -690,7 +690,7 @@ constant, times a finite product (over the pairing's pairs) of
 `continuous_freeGibbsExpectation_quarticLegOperatorForSequence_pair`'s continuous pair values. -/
 theorem continuous_flatVertexLegPairingTerm {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
     (q : Fin n → QuarticVertexLabel Mode)
-    (pairing : Common.BlochDeDominicis.Pairing (2 * n)) :
+    (pairing : Combinatorics.Pairing (2 * n)) :
     Continuous (fun τ : Fin n → ℝ => pairing.weight Statistics.fermion *
       ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
         ((quarticLegOperatorForSequence ε q τ pr.1).comp
@@ -710,7 +710,7 @@ theorem orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_
     (ε : Mode → ℝ) (β t : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) :
     intervalIntegral.orderedSimplexIntegral n t
         (fun τ => freeGibbsExpectation ε β (nestedVertexOperatorComp ε n q τ)) =
-      ∑ pairing : Common.BlochDeDominicis.Pairing (2 * n),
+      ∑ pairing : Combinatorics.Pairing (2 * n),
         pairing.weight Statistics.fermion *
           intervalIntegral.orderedSimplexIntegral n t
             (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
@@ -733,7 +733,7 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing {α : Ty
     dysonVertexMoment ε β (quarticInteraction g) S =
       (S.card.factorial : ℂ) * (-1 : ℂ) ^ S.card *
         ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
-          ∑ pairing : Common.BlochDeDominicis.Pairing (2 * S.card),
+          ∑ pairing : Combinatorics.Pairing (2 * S.card),
             pairing.weight Statistics.fermion *
               intervalIntegral.orderedSimplexIntegral S.card β (fun τ =>
                 ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
@@ -746,7 +746,7 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing {α : Ty
         intervalIntegral.orderedSimplexIntegral S.card β
           (fun τ => freeGibbsExpectation ε β (nestedVertexOperatorComp ε S.card q τ)) =
       ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
-        ∑ pairing : Common.BlochDeDominicis.Pairing (2 * S.card),
+        ∑ pairing : Combinatorics.Pairing (2 * S.card),
           pairing.weight Statistics.fermion *
             intervalIntegral.orderedSimplexIntegral S.card β
               (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
@@ -817,7 +817,7 @@ theorem sum_couplingWeight_mul_orderedSimplexContribution_eq {N : ℕ} {S : Fins
     ∑ d : QuarticWickDiagram Mode N S,
         d.couplingWeight g * d.orderedSimplexContribution ε β order =
       ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
-        ∑ pairing : Common.BlochDeDominicis.Pairing (2 * S.card),
+        ∑ pairing : Combinatorics.Pairing (2 * S.card),
           pairing.weight Statistics.fermion *
             intervalIntegral.orderedSimplexIntegral S.card β
               (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
@@ -850,7 +850,7 @@ theorem sum_couplingWeight_mul_orderedSimplexContribution_eq {N : ℕ} {S : Fins
                   ((quarticLegOperatorForSequence ε x.1 τ pr.1).comp
                     (quarticLegOperatorForSequence ε x.1 τ pr.2)))))
     _ = ∑ q : Fin S.card → QuarticVertexLabel Mode,
-          ∑ pairing : Common.BlochDeDominicis.Pairing (2 * S.card),
+          ∑ pairing : Combinatorics.Pairing (2 * S.card),
             (∏ i, g (q i)) * (pairing.weight Statistics.fermion *
               intervalIntegral.orderedSimplexIntegral S.card β
                 (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
@@ -858,7 +858,7 @@ theorem sum_couplingWeight_mul_orderedSimplexContribution_eq {N : ℕ} {S : Fins
                     (quarticLegOperatorForSequence ε q τ pr.2)))) :=
         Fintype.sum_prod_type _
     _ = ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
-          ∑ pairing : Common.BlochDeDominicis.Pairing (2 * S.card),
+          ∑ pairing : Combinatorics.Pairing (2 * S.card),
             pairing.weight Statistics.fermion *
               intervalIntegral.orderedSimplexIntegral S.card β
                 (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
@@ -881,7 +881,7 @@ theorem sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment (ε : Mode → ℝ)
   have hstep : ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d =
       (-1 : ℂ) ^ S.card * ∑ order : QuarticVertexOrder S,
         ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
-          ∑ pairing : Common.BlochDeDominicis.Pairing (2 * S.card),
+          ∑ pairing : Combinatorics.Pairing (2 * S.card),
             pairing.weight Statistics.fermion *
               intervalIntegral.orderedSimplexIntegral S.card β
                 (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
@@ -908,7 +908,7 @@ theorem sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment (ε : Mode → ℝ)
           rw [Finset.sum_comm]
       _ = (-1 : ℂ) ^ S.card * ∑ order : QuarticVertexOrder S,
             ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
-              ∑ pairing : Common.BlochDeDominicis.Pairing (2 * S.card),
+              ∑ pairing : Combinatorics.Pairing (2 * S.card),
                 pairing.weight Statistics.fermion *
                   intervalIntegral.orderedSimplexIntegral S.card β
                     (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β

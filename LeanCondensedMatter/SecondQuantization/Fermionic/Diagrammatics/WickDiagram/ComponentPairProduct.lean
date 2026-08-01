@@ -179,7 +179,7 @@ private theorem QuarticWickDiagram.globalOrderedPair_sameComponent
     simpa only [d.componentOrderedLegEquiv_apply] using
       (d.componentOrderedLegEquiv shuffle).apply_symm_apply pr.1.1
   have hpr := pr.2
-  rw [Common.BlochDeDominicis.Pairing.mem_pairs_iff] at hpr
+  rw [Combinatorics.Pairing.mem_pairs_iff] at hpr
   have hb : d.componentOrderedLeg shuffle x.1 localB = pr.1.2 := by
     calc
       d.componentOrderedLeg shuffle x.1 localB =

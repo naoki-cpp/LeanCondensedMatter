@@ -95,7 +95,7 @@ private theorem QuarticDiagram.restrictComponent_reassemble_pairing
     (hB' : (B : Finset (Fin N)) ∈ (QuarticDiagram.reassemble π F).componentPartition.parts) :
     ((QuarticDiagram.reassemble π F).restrictComponent hB').pairing = (F B).1.pairing := by
   change (QuarticDiagram.reassemble π F).restrictedPairing hB' = (F B).1.pairing
-  apply BlochDeDominicis.Pairing.ext
+  apply Combinatorics.Pairing.ext
   apply Equiv.ext
   intro leg
   have hrestricted :=

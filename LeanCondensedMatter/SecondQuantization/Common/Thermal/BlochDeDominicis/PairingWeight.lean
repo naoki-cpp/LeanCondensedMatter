@@ -20,15 +20,20 @@ respectively (`four_position_pairings_and_weights`) — the sign pattern the fou
 Dominicis formula uses.
 -/
 
+namespace Combinatorics
+
+/-- The exchange-statistics weight `ζ ^ crossings` of a Bloch--de Dominicis pairing. -/
+noncomputable def Pairing.weight (s : SecondQuantization.Common.Statistics)
+    {n : ℕ} (pairing : Pairing n) : ℂ :=
+  (s.zetaInt : ℂ) ^ pairing.crossingCount
+
+end Combinatorics
+
 namespace SecondQuantization
 namespace Common
 namespace BlochDeDominicis
 
 open Combinatorics
-
-/-- The exchange-statistics weight `ζ ^ crossings` of a Bloch--de Dominicis pairing. -/
-noncomputable def Combinatorics.Pairing.weight (s : Statistics) {n : ℕ} (pairing : Pairing n) : ℂ :=
-  (s.zetaInt : ℂ) ^ pairing.crossingCount
 
 @[simp]
 theorem Pairing.weight_boson {n : ℕ} (pairing : Pairing n) :
