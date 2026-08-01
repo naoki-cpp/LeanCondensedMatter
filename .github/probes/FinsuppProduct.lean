@@ -4,15 +4,15 @@ import Mathlib.Analysis.SpecificLimits.Normed
 import Mathlib.Data.Finsupp.Option
 import Mathlib.Data.Fintype.Option
 import Mathlib.Data.Fintype.BigOperators
+import Mathlib.Logic.Equiv.Fin.Basic
 
 set_option linter.style.header false
 
 /-!
 # A finite product of absolutely convergent series converges as a `Finsupp`-indexed multi-series
 
-The proof uses `Fintype.induction_empty_option` directly. Its successor step matches
-`Finsupp.optionEquiv`, avoiding the previous conversion through `Fin (Fintype.card ι)` and the
-second `finSuccEquiv` reindexing layer.
+The finite-cardinality induction keeps each recursive theorem small. The common successor step is
+proved separately by splitting `Fin (k + 1)` through `finSuccEquiv` and `Finsupp.optionEquiv`.
 -/
 
 namespace Finsupp
@@ -46,7 +46,6 @@ private theorem prod_option_finsupp_eq
   simp only [Function.comp_apply, Finsupp.optionEquiv_apply]
   rw [Fintype.prod_option]
   congr 1
-  exact Finset.prod_congr rfl fun i _ => by rw [Finsupp.some_apply]
 
 private theorem hasSum_prod_option_reindex
     {α R : Type*} [Fintype α] [NormedCommRing R]
@@ -70,52 +69,81 @@ private theorem hasSum_mul_of_summable_norm'
     HasSum (fun p : α × β => f p.1 * g p.2) (a * b) :=
   hf.mul hg (summable_mul_of_summable_norm habsF habsG)
 
+private theorem hasSum_prod_fin_zero
+    {R : Type*} [NormedCommRing R] (f : Fin 0 → ℕ → R) (a : Fin 0 → R) :
+    HasSum (fun n : Fin 0 →₀ ℕ => ∏ i : Fin 0, f i (n i)) (∏ i : Fin 0, a i) := by
+  have hzero : ∀ n : Fin 0 →₀ ℕ, n = 0 := fun n => by ext i; exact i.elim0
+  have hsum : HasSum (fun n : Fin 0 →₀ ℕ => ∏ i : Fin 0, f i (n i))
+      (∏ i : Fin 0, f i ((0 : Fin 0 →₀ ℕ) i)) :=
+    hasSum_single (0 : Fin 0 →₀ ℕ) (fun n hn => absurd (hzero n) hn)
+  simpa using hsum
+
+private theorem hasSum_prod_fin_succ
+    {k : ℕ} {R : Type*} [NormedCommRing R] [CompleteSpace R]
+    (f : Fin (k + 1) → ℕ → R) (a : Fin (k + 1) → R)
+    (hhead : HasSum (f 0) (a 0))
+    (htail : HasSum (fun n : Fin k →₀ ℕ => ∏ i : Fin k, f i.succ (n i))
+      (∏ i : Fin k, a i.succ))
+    (habsHead : Summable (fun n => ‖f 0 n‖))
+    (habsTail : Summable (fun n : Fin k →₀ ℕ => ‖∏ i : Fin k, f i.succ (n i)‖)) :
+    HasSum (fun n : Fin (k + 1) →₀ ℕ => ∏ i : Fin (k + 1), f i (n i))
+      (∏ i : Fin (k + 1), a i) := by
+  let e : Fin (k + 1) ≃ Option (Fin k) := finSuccEquiv k
+  have hOption : HasSum
+      (fun n : Option (Fin k) →₀ ℕ =>
+        ∏ i : Option (Fin k), f (e.symm i) (n i))
+      (∏ i : Option (Fin k), a (e.symm i)) := by
+    apply hasSum_prod_option_reindex (fun i => f (e.symm i)) (fun i => a (e.symm i))
+    apply hasSum_mul_of_summable_norm'
+    · simpa [e] using hhead
+    · simpa [e] using htail
+    · simpa [e] using habsHead
+    · simpa [e] using habsTail
+  exact hasSum_prod_equiv e.symm f a hOption
+
 /-! ## The nonnegative-real case -/
 
 section Nonneg
 
 variable {ι : Type*}
 
+private theorem hasSum_prod_nonneg_fin_succ
+    (k : ℕ) (g : Fin (k + 1) → ℕ → ℝ) (b : Fin (k + 1) → ℝ)
+    (hg : ∀ i, HasSum (g i) (b i)) (hnn : ∀ i n, 0 ≤ g i n)
+    (htail : HasSum (fun n : Fin k →₀ ℕ => ∏ i : Fin k, g i.succ (n i))
+      (∏ i : Fin k, b i.succ)) :
+    HasSum (fun n : Fin (k + 1) →₀ ℕ => ∏ i : Fin (k + 1), g i (n i))
+      (∏ i : Fin (k + 1), b i) := by
+  apply hasSum_prod_fin_succ g b (hg 0) htail
+  · rw [show (fun n => ‖g 0 n‖) = g 0 from
+      funext fun n => Real.norm_of_nonneg (hnn 0 n)]
+    exact (hg 0).summable
+  · rw [show (fun n : Fin k →₀ ℕ => ‖∏ i : Fin k, g i.succ (n i)‖) =
+        (fun n => ∏ i : Fin k, g i.succ (n i)) from
+      funext fun n => Real.norm_of_nonneg
+        (Finset.prod_nonneg fun i _ => hnn i.succ (n i))]
+    exact htail.summable
+
+private theorem hasSum_prod_nonneg_fin (k : ℕ) (g : Fin k → ℕ → ℝ) (b : Fin k → ℝ)
+    (hg : ∀ i, HasSum (g i) (b i)) (hnn : ∀ i n, 0 ≤ g i n) :
+    HasSum (fun n : Fin k →₀ ℕ => ∏ i : Fin k, g i (n i)) (∏ i : Fin k, b i) := by
+  induction k with
+  | zero => exact hasSum_prod_fin_zero g b
+  | succ k ih =>
+      apply hasSum_prod_nonneg_fin_succ k g b hg hnn
+      exact ih (fun i => g i.succ) (fun i => b i.succ)
+        (fun i => hg i.succ) (fun i n => hnn i.succ n)
+
 /-- **The nonnegative-real finite product of series converges** to the product of the individual
 sums, as a `Finsupp`-indexed multi-series. -/
 theorem hasSum_prod_nonneg [Fintype ι] (g : ι → ℕ → ℝ) (b : ι → ℝ)
     (hg : ∀ i, HasSum (g i) (b i)) (hnn : ∀ i n, 0 ≤ g i n) :
     HasSum (fun n : ι →₀ ℕ => ∏ i : ι, g i (n i)) (∏ i : ι, b i) := by
-  classical
-  refine @Fintype.induction_empty_option
-    (fun κ _ => ∀ (g : κ → ℕ → ℝ) (b : κ → ℝ),
-      (∀ i, HasSum (g i) (b i)) → (∀ i n, 0 ≤ g i n) →
-      HasSum (fun n : κ →₀ ℕ => ∏ i : κ, g i (n i)) (∏ i : κ, b i))
-    ?_ ?_ ?_ ι _ g b hg hnn
-  · intro α β _ e h
-    letI : Fintype α := Fintype.ofEquiv β e.symm
-    intro g b hg hnn
-    exact hasSum_prod_equiv e g b
-      (h (fun i => g (e i)) (fun i => b (e i))
-        (fun i => hg (e i)) (fun i n => hnn (e i) n))
-  · intro g b hg hnn
-    have hzero : ∀ n : PEmpty →₀ ℕ, n = 0 := fun n => by ext i; exact i.elim
-    have hsum : HasSum (fun n : PEmpty →₀ ℕ => ∏ i : PEmpty, g i (n i))
-        (∏ i : PEmpty, g i ((0 : PEmpty →₀ ℕ) i)) :=
-      hasSum_single (0 : PEmpty →₀ ℕ) (fun n hn => absurd (hzero n) hn)
-    simpa using hsum
-  · intro α _ h g b hg hnn
-    have htail := h (fun i => g (Option.some i)) (fun i => b (Option.some i))
-      (fun i => hg (Option.some i)) (fun i n => hnn (Option.some i) n)
-    have hhead : HasSum (g none) (b none) := hg none
-    have habsHead : Summable (fun n => ‖g none n‖) := by
-      rw [show (fun n => ‖g none n‖) = g none from
-        funext fun n => Real.norm_of_nonneg (hnn none n)]
-      exact hhead.summable
-    have habsTail : Summable
-        (fun n : α →₀ ℕ => ‖∏ i : α, g (Option.some i) (n i)‖) := by
-      rw [show (fun n : α →₀ ℕ => ‖∏ i : α, g (Option.some i) (n i)‖) =
-          (fun n => ∏ i : α, g (Option.some i) (n i)) from
-        funext fun n => Real.norm_of_nonneg
-          (Finset.prod_nonneg fun i _ => hnn (Option.some i) (n i))]
-      exact htail.summable
-    exact hasSum_prod_option_reindex g b
-      (hasSum_mul_of_summable_norm' hhead htail habsHead habsTail)
+  let e : ι ≃ Fin (Fintype.card ι) := Fintype.equivFin ι
+  apply hasSum_prod_equiv e.symm g b
+  exact hasSum_prod_nonneg_fin (Fintype.card ι)
+    (fun i => g (e.symm i)) (fun i => b (e.symm i))
+    (fun i => hg (e.symm i)) (fun i n => hnn (e.symm i) n)
 
 end Nonneg
 
@@ -136,38 +164,36 @@ private theorem summable_norm_prod [Fintype ι] (f : ι → ℕ → R)
   apply Summable.of_nonneg_of_le (fun n => norm_nonneg _) (fun n => ?_) hbound.summable
   exact Finset.norm_prod_le Finset.univ (fun i => f i (n i))
 
+private theorem hasSum_prod_fin_succ_general
+    (k : ℕ) (f : Fin (k + 1) → ℕ → R) (a : Fin (k + 1) → R)
+    (hf : ∀ i, HasSum (f i) (a i)) (habs : ∀ i, Summable (fun n => ‖f i n‖))
+    (htail : HasSum (fun n : Fin k →₀ ℕ => ∏ i : Fin k, f i.succ (n i))
+      (∏ i : Fin k, a i.succ)) :
+    HasSum (fun n : Fin (k + 1) →₀ ℕ => ∏ i : Fin (k + 1), f i (n i))
+      (∏ i : Fin (k + 1), a i) := by
+  apply hasSum_prod_fin_succ f a (hf 0) htail (habs 0)
+  exact summable_norm_prod (fun i => f i.succ) (fun i => habs i.succ)
+
+private theorem hasSum_prod_fin (k : ℕ) (f : Fin k → ℕ → R) (a : Fin k → R)
+    (hf : ∀ i, HasSum (f i) (a i)) (habs : ∀ i, Summable (fun n => ‖f i n‖)) :
+    HasSum (fun n : Fin k →₀ ℕ => ∏ i : Fin k, f i (n i)) (∏ i : Fin k, a i) := by
+  induction k with
+  | zero => exact hasSum_prod_fin_zero f a
+  | succ k ih =>
+      apply hasSum_prod_fin_succ_general k f a hf habs
+      exact ih (fun i => f i.succ) (fun i => a i.succ)
+        (fun i => hf i.succ) (fun i => habs i.succ)
+
 /-- **A finite product of absolutely convergent series converges** as a `Finsupp`-indexed
 multi-series. -/
 theorem hasSum_prod [Fintype ι] (f : ι → ℕ → R) (a : ι → R) (hf : ∀ i, HasSum (f i) (a i))
     (habs : ∀ i, Summable (fun k => ‖f i k‖)) :
     HasSum (fun n : ι →₀ ℕ => ∏ i : ι, f i (n i)) (∏ i : ι, a i) := by
-  classical
-  refine @Fintype.induction_empty_option
-    (fun κ _ => ∀ (f : κ → ℕ → R) (a : κ → R),
-      (∀ i, HasSum (f i) (a i)) → (∀ i, Summable (fun k => ‖f i k‖)) →
-      HasSum (fun n : κ →₀ ℕ => ∏ i : κ, f i (n i)) (∏ i : κ, a i))
-    ?_ ?_ ?_ ι _ f a hf habs
-  · intro α β _ e h
-    letI : Fintype α := Fintype.ofEquiv β e.symm
-    intro f a hf habs
-    exact hasSum_prod_equiv e f a
-      (h (fun i => f (e i)) (fun i => a (e i))
-        (fun i => hf (e i)) (fun i => habs (e i)))
-  · intro f a hf habs
-    have hzero : ∀ n : PEmpty →₀ ℕ, n = 0 := fun n => by ext i; exact i.elim
-    have hsum : HasSum (fun n : PEmpty →₀ ℕ => ∏ i : PEmpty, f i (n i))
-        (∏ i : PEmpty, f i ((0 : PEmpty →₀ ℕ) i)) :=
-      hasSum_single (0 : PEmpty →₀ ℕ) (fun n hn => absurd (hzero n) hn)
-    simpa using hsum
-  · intro α _ h f a hf habs
-    have htail := h (fun i => f (Option.some i)) (fun i => a (Option.some i))
-      (fun i => hf (Option.some i)) (fun i => habs (Option.some i))
-    have hhead : HasSum (f none) (a none) := hf none
-    have habsTail : Summable
-        (fun n : α →₀ ℕ => ‖∏ i : α, f (Option.some i) (n i)‖) :=
-      summable_norm_prod (fun i => f (Option.some i)) (fun i => habs (Option.some i))
-    exact hasSum_prod_option_reindex f a
-      (hasSum_mul_of_summable_norm' hhead htail (habs none) habsTail)
+  let e : ι ≃ Fin (Fintype.card ι) := Fintype.equivFin ι
+  apply hasSum_prod_equiv e.symm f a
+  exact hasSum_prod_fin (Fintype.card ι)
+    (fun i => f (e.symm i)) (fun i => a (e.symm i))
+    (fun i => hf (e.symm i)) (fun i => habs (e.symm i))
 
 /-- **The geometric-series specialization**. -/
 theorem hasSum_prod_geometric {R : Type*} [NormedField R] [CompleteSpace R] {ι : Type*}
