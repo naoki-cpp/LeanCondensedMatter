@@ -8,7 +8,7 @@ import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition
 import LeanCondensedMatter.Combinatorics.IncidenceAlgebraMu
 import LeanCondensedMatter.Combinatorics.PartitionLattice
-import LeanCondensedMatter.Combinatorics.MomentCumulant
+import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
 import LeanCondensedMatter.Combinatorics.Cumulant.Normalized
 import LeanCondensedMatter.Combinatorics.Cumulant.Independence
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
