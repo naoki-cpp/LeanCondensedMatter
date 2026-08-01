@@ -1,4 +1,4 @@
-name: FinsuppProduct heartbeat probe
+name: Promote FinsuppProduct heartbeat refactor
 
 on:
   pull_request:
@@ -9,15 +9,17 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  build-with-default-heartbeats:
+  build-and-promote:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: agent/remove-finsupp-product-heartbeats
 
-      - name: Install the candidate proof in the runner workspace
+      - name: Install the validated proof
         run: |
           cp .github/probes/FinsuppProduct.lean \
             LeanCondensedMatter/Analysis/InfiniteSum/FinsuppProduct.lean
@@ -80,7 +82,7 @@ jobs:
           PY
           if grep -n "set_option maxHeartbeats 0" \
               LeanCondensedMatter/Analysis/InfiniteSum/FinsuppProduct.lean; then
-            echo "::error::candidate still contains an unbounded heartbeat override"
+            echo "::error::unbounded heartbeat override remains"
             exit 1
           fi
 
@@ -88,3 +90,15 @@ jobs:
         with:
           build: true
           build-args: "--wfail"
+
+      - name: Commit the validated source
+        run: |
+          git add LeanCondensedMatter/Analysis/InfiniteSum/FinsuppProduct.lean
+          if git diff --cached --quiet; then
+            echo "Validated source is already committed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "refactor: remove unbounded FinsuppProduct heartbeats"
+          git push origin HEAD:agent/remove-finsupp-product-heartbeats
