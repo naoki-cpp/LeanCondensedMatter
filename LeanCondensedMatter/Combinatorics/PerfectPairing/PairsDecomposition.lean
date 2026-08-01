@@ -5,22 +5,14 @@ set_option linter.style.header false
 /-!
 # `Pairing.pairs`, decomposed into `firstPair` plus the smaller pairing's pairs
 
-`PerfectPairing.lean`'s `crossingCount_eraseZeroPair` splits `crossingCount` along `firstPair`
-internally, but never exposed the underlying `Finset` decomposition of `pairing.pairs` itself as a
-standalone fact. This file states and proves it directly, by the same `eraseZeroOrderIso`/
-`mem_pairs_endpoints_mem_deletedPositions` reasoning `crossingCount_eraseZeroPair`'s proof uses
-internally — needed so a product over `pairing.pairs` (not just a crossing count) can be split
-into the `firstPair` factor times a product over the smaller pairing's own pairs.
+This module exposes the finite-set decomposition underlying the first-pair recursion, so products
+over all pairs can be split into the first-pair factor and the transported smaller pairing.
 -/
 
-namespace SecondQuantization
-namespace Common
-namespace BlochDeDominicis
+namespace Combinatorics
 
-/-- **`pairing.pairs` decomposes into `firstPair` plus the smaller pairing's pairs, pushed forward
-along `eraseZeroOrderIso`**: every pair other than `firstPair` has both endpoints away from `0` and
-`pairing.partner 0` (`mem_pairs_endpoints_mem_deletedPositions`), so it is the image of a unique
-pair of `pairing.eraseZeroPair.pairs` under `eraseZeroOrderIso` (`eraseZeroPair_mem_pairs_iff`). -/
+/-- `pairing.pairs` decomposes into `firstPair` plus the smaller pairing's pairs, pushed forward
+along `eraseZeroOrderIso`. -/
 theorem Pairing.pairs_eq_insert_firstPair {n : ℕ} (pairing : Pairing (n + 1)) :
     pairing.pairs =
       insert pairing.firstPair
@@ -45,9 +37,8 @@ theorem Pairing.pairs_eq_insert_firstPair {n : ℕ} (pairing : Pairing (n + 1)) 
     · rw [pairing.eraseZeroPair_mem_pairs_iff] at hpr
       simpa using hpr
 
-/-- **A product over `pairing.pairs` splits into the `firstPair` factor times a product over the
-smaller pairing's own pairs**, pushed forward along `eraseZeroOrderIso` — the form the general
-`n`-point induction's product term actually needs. -/
+/-- A product over `pairing.pairs` splits into the `firstPair` factor times a product over the
+smaller pairing's own pairs. -/
 theorem Pairing.prod_pairs_eq_firstPair_mul {n : ℕ} {M : Type*} [CommMonoid M]
     (pairing : Pairing (n + 1)) (f : Fin (2 * (n + 1)) × Fin (2 * (n + 1)) → M) :
     ∏ pr ∈ pairing.pairs, f pr =
@@ -71,6 +62,4 @@ theorem Pairing.prod_pairs_eq_firstPair_mul {n : ℕ} {M : Type*} [CommMonoid M]
     rw [heq.1]
     rfl
 
-end BlochDeDominicis
-end Common
-end SecondQuantization
+end Combinatorics
