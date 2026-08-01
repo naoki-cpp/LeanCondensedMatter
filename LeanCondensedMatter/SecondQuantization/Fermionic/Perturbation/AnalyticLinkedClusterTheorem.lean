@@ -76,11 +76,10 @@ theorem coeff_normalizedDysonPartitionFPowerSeries_eq_formal
       PowerSeries.coeff n
         (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) := by
   rw [coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
-  change (freePartitionFunction ε β)⁻¹ *
-      (dysonPartitionFPowerSeries ε β V).coeff n =
-    (freePartitionFunction ε β)⁻¹ *
-      Common.dysonTraceCoeff (fermionEnergy ε) β V n
-  rw [coeff_dysonPartitionFPowerSeries, dysonPartitionCoeff_eq_dysonTraceCoeff]
+  simp only [normalizedDysonPartitionFPowerSeries, FormalMultilinearSeries.coeff,
+    FormalMultilinearSeries.smul_apply, ContinuousMultilinearMap.smul_apply]
+  rw [coeff_dysonPartitionFPowerSeries]
+  simp [normalizedDysonPartitionCoeff, div_eq_mul_inv, mul_comm]
 
 /-- The local analytic logarithm of the normalized partition function.
 
