@@ -1,0 +1,31 @@
+name: Audit R2 Thin Wrappers
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'LeanCondensedMatter/SecondQuantization/**'
+      - '.github/workflows/audit-r2-thin-wrappers.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: List wrapper references
+        shell: bash
+        run: |
+          set -euo pipefail
+          for name in \
+            interactionPicture_zero \
+            matrixCoeff_interactionPicture \
+            continuous_matrixCoeff_interactionPicture \
+            intervalIntegrable_matrixCoeff_interactionPicture \
+            dysonCoeff_eq_of_time_independent
+          do
+            echo "## $name"
+            grep -RIn --include='*.lean' -w "$name" LeanCondensedMatter || true
+          done
