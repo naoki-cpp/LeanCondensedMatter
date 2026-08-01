@@ -13,7 +13,7 @@ Operators, energy shifts, modes, and CAR relations for the four local legs.
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
 
 /-! ## Local-leg operator semantics -/
 
@@ -30,7 +30,6 @@ noncomputable def quarticLocalLegEnergyShift (ε : Mode → ℝ) (q : QuarticVer
     Fin 4 → ℝ :=
   ![ε q.create₁, ε q.create₂, -ε q.annihilate₂, -ε q.annihilate₁]
 
-omit [Fintype Mode] in
 /-- **A local leg's operator evolves as a pure eigenvector** under `imaginaryTimeEvolve`, with
 eigenvalue shift `quarticLocalLegEnergyShift`. The single fact tying `quarticLocalLegOperator`'s
 four cases to `imaginaryTimeEvolve_create`/`imaginaryTimeEvolve_annihilate`. -/
@@ -45,7 +44,6 @@ theorem imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode → ℝ) (q : Qua
 
 /-! ## The bare anticommutator/zeta-commutator of two local legs -/
 
-omit [Fintype Mode] in
 /-- **The mode a local leg's ladder operator acts on** — companion to `quarticLocalLegOperator`'s
 own `0 ↦ create₁, 1 ↦ create₂, 2 ↦ annihilate₂, 3 ↦ annihilate₁` convention. -/
 def quarticLocalLegMode (q : QuarticVertexLabel Mode) : Fin 4 → Mode :=
@@ -54,7 +52,6 @@ def quarticLocalLegMode (q : QuarticVertexLabel Mode) : Fin 4 → Mode :=
 /-- **Whether a local leg is a creation leg** (`0, 1`) or an annihilation leg (`2, 3`). -/
 def quarticLocalLegIsCreate : Fin 4 → Bool := ![true, true, false, false]
 
-omit [Fintype Mode] in
 /-- **The bare anticommutator of two local leg operators**, at possibly different vertex labels:
 `0` if both legs are the same kind (both creation or both annihilation — CAR's
 `anticomm_create_create`/`anticomm_annihilate_annihilate`, *always* `0`, even at the same mode),
@@ -72,7 +69,6 @@ theorem anticomm_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' 
       anticomm_create_create, anticomm_annihilate_annihilate, anticomm_annihilate_create,
       anticomm_create_annihilate]
 
-omit [Fintype Mode] in
 /-- **The general theorem's zeta-commutator hypothesis, for a single vertex's four legs** —
 `Common.zetaCommutator` at `ζ := Statistics.fermion.zetaInt` is exactly `anticomm`
 (`exchangeCommutator_fermion_eq_anticomm`), so `anticomm_quarticLocalLegOperator` transfers

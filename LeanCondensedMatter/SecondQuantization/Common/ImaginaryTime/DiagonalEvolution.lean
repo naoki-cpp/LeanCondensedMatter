@@ -5,7 +5,6 @@ import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 
 set_option linter.style.header false
 set_option linter.style.openClassical false
-set_option linter.unusedFintypeInType false
 
 /-!
 # Imaginary-time evolution under a diagonal free Hamiltonian, generic over the basis type
@@ -165,46 +164,47 @@ theorem matrixCoeff_diagonalEvolution_eq_ite (energy : Config → ℝ) (τ : ℝ
 
 /-- **`heisenbergEvolve`'s matrix coefficients**: `A(τ)`'s `(m, n)` entry is `A`'s own `(m, n)`
 entry, rescaled by `exp(τ(energy m - energy n))` — the interaction-picture matrix-coefficient
-formula, for an *arbitrary* `A`, not just an eigenoperator of `heisenbergEvolve` (contrast
-`diagonalEvolution_comp_eq_smul_comp_diagonalEvolution`'s `hC` hypothesis, which needs `A` to
-already be an eigenoperator). Both `matrixCoeff (diagonalEvolution energy τ)` factors collapse the
-defining `Finset.sum`s (from `matrixCoeff_comp`) to their single nonzero term. -/
-theorem matrixCoeff_heisenbergEvolve [Fintype Config] (energy : Config → ℝ) (τ : ℝ)
+formula, for an arbitrary configuration type. The proof evaluates the two diagonal evolutions
+directly on a finitely supported algebraic-Fock vector, rather than summing over all configurations.
+-/
+theorem matrixCoeff_heisenbergEvolve (energy : Config → ℝ) (τ : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
     matrixCoeff (heisenbergEvolve energy τ A) m n =
       Complex.exp ((τ * (energy m - energy n) : ℝ) : ℂ) * matrixCoeff A m n := by
-  have hinner : matrixCoeff (A.comp (diagonalEvolution energy (-τ))) m n =
-      matrixCoeff A m n * Complex.exp (((-τ) * energy n : ℝ) : ℂ) := by
-    rw [matrixCoeff_comp]
-    have hstep' : ∀ k, matrixCoeff A m k * matrixCoeff (diagonalEvolution energy (-τ)) k n =
-        if k = n then matrixCoeff A m k *
-          Complex.exp (((-τ) * energy n : ℝ) : ℂ) else 0 := by
-      intro k
-      rw [matrixCoeff_diagonalEvolution_eq_ite]
-      by_cases h : k = n <;> simp [h]
-    simp only [hstep', Finset.sum_ite_eq', Finset.mem_univ, if_true]
-  rw [heisenbergEvolve, matrixCoeff_comp]
-  have hstep : ∀ k, matrixCoeff (diagonalEvolution energy τ) m k *
-      matrixCoeff (A.comp (diagonalEvolution energy (-τ))) k n =
-        if m = k then Complex.exp ((τ * energy k : ℝ) : ℂ) *
-          matrixCoeff (A.comp (diagonalEvolution energy (-τ))) k n else 0 := by
-    intro k
-    rw [matrixCoeff_diagonalEvolution_eq_ite]
-    by_cases h : m = k <;> simp [h]
-  simp only [hstep, Finset.sum_ite_eq, Finset.mem_univ, if_true]
-  rw [hinner, mul_comm (matrixCoeff A m n), ← mul_assoc, ← Complex.exp_add]
+  classical
+  have hdiag (t : ℝ) (x : AlgebraicFock Config) (c : Config) :
+      diagonalEvolution energy t x c =
+        Complex.exp ((t * energy c : ℝ) : ℂ) * x c := by
+    let eval : AlgebraicFock Config →ₗ[ℂ] ℂ := Finsupp.lapply c
+    have hmap : eval.comp (diagonalEvolution energy t) =
+        Complex.exp ((t * energy c : ℝ) : ℂ) • eval := by
+      apply Finsupp.lhom_ext
+      intro a b
+      have hb : (Finsupp.single a b : AlgebraicFock Config) = b • basisState a :=
+        (Finsupp.smul_single_one a b).symm
+      rw [hb, LinearMap.comp_apply, map_smul, diagonalEvolution_basisState, map_smul,
+        LinearMap.smul_apply]
+      by_cases h : a = c
+      · subst a
+        simp [eval, basisState, mul_comm]
+      · simp [eval, basisState, h]
+    have hx := congrArg (fun L => L x) hmap
+    simpa only [eval, LinearMap.comp_apply, LinearMap.smul_apply, Finsupp.lapply_apply,
+      smul_eq_mul] using hx
+  rw [heisenbergEvolve, matrixCoeff, LinearMap.comp_apply,
+    LinearMap.comp_apply, diagonalEvolution_basisState, map_smul, map_smul,
+    Finsupp.smul_apply, hdiag]
+  simp only [smul_eq_mul]
+  rw [← mul_assoc, ← Complex.exp_add]
   congr 2
   push_cast
   ring
 
 /-- **`heisenbergEvolve` is a one-parameter semigroup**: `A(s)(t) = A(s + t)`, i.e.
-`heisenbergEvolve energy t (heisenbergEvolve energy s A) = heisenbergEvolve energy (s + t) A` — by
-comparing matrix coefficients (`matrixCoeff_heisenbergEvolve`, which only depends on `energy m -
-energy n`, so composing two evolutions simply adds their `τ` factors) and using `matrixCoeff_ext`.
-Needed to show `imaginaryTimeEvolve`-dressed eigenoperators remain eigenoperators of
-`heisenbergEvolve energy (-β)` with the *same* eigenvalue shift, independent of the dressing
-time. -/
-theorem heisenbergEvolve_heisenbergEvolve [Fintype Config] (energy : Config → ℝ) (s t : ℝ)
+`heisenbergEvolve energy t (heisenbergEvolve energy s A) = heisenbergEvolve energy (s + t) A`.
+The coefficient formula above is valid for arbitrary `Config`, so no global finiteness assumption
+is needed. -/
+theorem heisenbergEvolve_heisenbergEvolve (energy : Config → ℝ) (s t : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     heisenbergEvolve energy t (heisenbergEvolve energy s A) =
       heisenbergEvolve energy (s + t) A := by
