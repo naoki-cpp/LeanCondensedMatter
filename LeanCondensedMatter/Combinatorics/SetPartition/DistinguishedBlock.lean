@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.MomentCumulant
+import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
 import Mathlib.Algebra.BigOperators.Group.Finset.Powerset
 
 set_option linter.style.header false
@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Decomposing a set partition at a distinguished block
 
 A partition of a finite set with a distinguished element is equivalent to the block containing that
-element together with a partition of its complement.  These results are pure set-partition
+element together with a partition of its complement. These results are pure set-partition
 combinatorics and support recurrence arguments such as the power-series/cumulant bridge.
 -/
 
