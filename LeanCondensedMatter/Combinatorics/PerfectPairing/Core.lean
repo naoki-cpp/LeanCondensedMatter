@@ -12,19 +12,13 @@ A perfect pairing of `Fin (2 * n)` is represented by its partner permutation: a 
 involution. Mathlib supplies finite permutations but no naturally suitable bundled perfect-pairing
 type with the linear order needed for crossing signs, so this file owns only that small predicate.
 This representation enumerates `(2 * n)!` permutations and filters the valid ones, instead of
-enumerating the powerset of all possible ordered pairs. It also gives the later Bloch–de Dominicis
-induction direct access to the unique partner of every operator position.
+enumerating the powerset of all possible ordered pairs. It also gives recursive applications direct
+access to the unique partner of every position.
 
-`Pairing.pairs` normalizes each partner orbit to `(a, b)` with `a < b`, one per orbit
-(`Pairing.mem_pairs_iff`/`pair_or_reverse_mem`/`pairs_normalized`).
-
-The declarations keep their `SecondQuantization.Common.BlochDeDominicis` namespace, matching every
-other file in this directory.
+`Pairing.pairs` normalizes each partner orbit to `(a, b)` with `a < b`, one per orbit.
 -/
 
-namespace SecondQuantization
-namespace Common
-namespace BlochDeDominicis
+namespace Combinatorics
 
 /-- A permutation represents a perfect pairing when it is involutive and has no fixed point. -/
 def IsPairing {n : ℕ} (partner : Equiv.Perm (Fin (2 * n))) : Prop :=
@@ -136,6 +130,4 @@ theorem Pairing.pairs_normalized {n : ℕ} (pairing : Pairing n)
   rcases Finset.mem_image.mp hpair with ⟨i, hi, rfl⟩
   exact (Finset.mem_filter.mp hi).2
 
-end BlochDeDominicis
-end Common
-end SecondQuantization
+end Combinatorics

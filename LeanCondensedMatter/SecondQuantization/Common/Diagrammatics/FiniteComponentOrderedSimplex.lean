@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
+import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoComponentOrderedSimplex
 
 set_option linter.style.header false

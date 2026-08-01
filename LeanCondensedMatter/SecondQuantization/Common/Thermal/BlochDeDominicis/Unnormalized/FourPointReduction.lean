@@ -11,7 +11,7 @@ commuting `C₁` through the three remaining factors via the c-number exchange c
 by one KMS cyclicity step (`Common.traceFock_diagonalEvolution_comp_rotate`) to solve the resulting
 self-referential trace equation. This was originally a concrete stepping stone toward the general
 `n`-point induction, built before committing to the general inductive statement and its connection
-to `Common.BlochDeDominicis.Pairing`, to validate that the same commutator-substitution/rotation
+to `Combinatorics.Pairing`, to validate that the same commutator-substitution/rotation
 pattern generalizes past the base case. That general theorem now exists —
 `Common/Thermal/BlochDeDominicis/Induction.lean`'s `gibbsExpectation_prodComp_eq_sum_pairing`, proved by
 genuine induction on `n` rather than by hand-unrolling — so this file is no longer on the critical
@@ -29,14 +29,15 @@ concern), and would need dividing by `traceFock D` (requiring it nonzero) to lan
 normalized 2-point numbers rather than un-normalized traces. Chaining `TwoPoint.lean`'s own theorem
 onto each remaining-pair term, and connecting the resulting three coefficients `1`, `ζ`, `ζ²`
 (which specialize to the `1`, `ζ`, `1` of
-`Common.BlochDeDominicis.PairingWeight.four_position_pairings_and_weights` exactly, since `ζ² = 1`
-for `ζ = ±1`) to a genuine sum over `Common.BlochDeDominicis.Pairing 2` is now subsumed by
+`Combinatorics.PairingWeight.four_position_pairings_and_weights` exactly, since `ζ² = 1`
+for `ζ = ±1`) to a genuine sum over `Combinatorics.Pairing 2` is now subsumed by
 `Induction.lean`'s general theorem (at `n = 2`, matching `GibbsExpectation/FourPoint.lean`'s
 `gibbsExpectation_four_point`) rather than done here specifically.
 -/
 
 namespace SecondQuantization
 namespace Common
+
 
 variable {Config : Type*}
 

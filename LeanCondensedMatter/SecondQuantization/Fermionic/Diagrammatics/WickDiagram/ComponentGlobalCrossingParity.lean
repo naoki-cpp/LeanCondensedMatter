@@ -15,12 +15,14 @@ external crossing set is even, and the fermionic pairing weight factors over con
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} {N : ℕ}
 
 private theorem crosses_asymm {n : ℕ}
     (p q : Fin (2 * n) × Fin (2 * n))
-    (hpq : Common.BlochDeDominicis.Crosses p q) :
-    ¬ Common.BlochDeDominicis.Crosses q p := by
+    (hpq : Combinatorics.Crosses p q) :
+    ¬ Combinatorics.Crosses q p := by
   intro hqp
   exact lt_asymm hpq.1 hqp.1
 
@@ -36,7 +38,7 @@ noncomputable def QuarticWickDiagram.componentOrientedCrossingCount
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (B C : d.componentPartition.parts) : ℕ :=
   ∑ x : d.LocalOrderedPair orders B × d.LocalOrderedPair orders C,
-    if Common.BlochDeDominicis.Crosses
+    if Combinatorics.Crosses
         (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
         (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
     then 1 else 0
@@ -52,17 +54,17 @@ theorem QuarticWickDiagram.componentGeometricCrossingCount_eq_oriented_add
   classical
   let crossBC := fun x :
       d.LocalOrderedPair orders B × d.LocalOrderedPair orders C =>
-    Common.BlochDeDominicis.Crosses
+    Combinatorics.Crosses
       (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
       (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
   let crossCB := fun x :
       d.LocalOrderedPair orders B × d.LocalOrderedPair orders C =>
-    Common.BlochDeDominicis.Crosses
+    Combinatorics.Crosses
       (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
       (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
   have hswap :
       (∑ x : d.LocalOrderedPair orders C × d.LocalOrderedPair orders B,
-        if Common.BlochDeDominicis.Crosses
+        if Combinatorics.Crosses
             (d.componentPairEquiv orders shuffle ⟨C, x.1⟩).1
             (d.componentPairEquiv orders shuffle ⟨B, x.2⟩).1
         then 1 else 0) =
@@ -92,7 +94,7 @@ theorem QuarticWickDiagram.componentOrientedCrossingCount_self
       ((d.restrictComponent B.2).pairingInOrder (orders B)).crossingCount := by
   classical
   rw [QuarticWickDiagram.componentOrientedCrossingCount, Fintype.sum_prod_type,
-    Common.BlochDeDominicis.Pairing.crossingCount_eq_sum_sum_crosses]
+    Combinatorics.Pairing.crossingCount_eq_sum_sum_crosses]
   apply Finset.sum_congr rfl
   intro p _
   apply Finset.sum_congr rfl
@@ -146,7 +148,7 @@ theorem QuarticWickDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_component
           d.componentOrientedCrossingCount orders shuffle B C) % 2 =
       (∑ B : d.componentPartition.parts,
         d.componentOrientedCrossingCount orders shuffle B B) % 2 := by
-          exact Common.BlochDeDominicis.fintype_sum_sum_modEq_diag_of_pair_add_modEq_zero
+          exact Combinatorics.fintype_sum_sum_modEq_diag_of_pair_add_modEq_zero
             2 (fun B C => d.componentOrientedCrossingCount orders shuffle B C)
             (fun B C hBC => by
               rw [← d.componentGeometricCrossingCount_eq_oriented_add

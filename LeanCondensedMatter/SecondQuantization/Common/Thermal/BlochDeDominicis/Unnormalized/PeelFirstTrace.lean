@@ -34,11 +34,12 @@ right side down to a sum of `traceFock`-of-remaining-*pairs* terms (`c₁₂Tr[D
 all — even one level short of `FourPointReduction`'s own reduction — since `peelSum` is defined
 recursively rather than as a closed sum, and unfolding it against `traceFock_add`/`_smul`
 recursively for an arbitrary-length list is deferred to whenever the general induction needs that
-form to match term-by-term against `Common.BlochDeDominicis.Pairing`.
+form to match term-by-term against `Combinatorics.Pairing`.
 -/
 
 namespace SecondQuantization
 namespace Common
+
 
 variable {Config : Type*}
 

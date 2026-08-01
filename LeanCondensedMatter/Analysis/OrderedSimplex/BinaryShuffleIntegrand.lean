@@ -7,8 +7,8 @@ set_option linter.style.header false
 # Integrands associated with ambient binary slot shuffles
 
 This module evaluates two local complex-valued integrands after their coordinates are embedded by an
-order-preserving ambient `BinaryShuffle.SlotShuffle`. The construction and its continuity theorem do
-not depend on ordered-simplex integration.
+order-preserving ambient `BinaryShuffle.SlotShuffle`.  It belongs to the ordered-simplex analysis
+layer rather than the pure combinatorics layer.
 -/
 
 namespace Combinatorics

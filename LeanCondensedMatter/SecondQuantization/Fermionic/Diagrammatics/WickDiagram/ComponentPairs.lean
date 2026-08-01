@@ -12,6 +12,8 @@ partner orbit.
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} {N : ℕ}
 
 /-- A component-local normalized pair maps to, and is reflected by, the corresponding normalized
@@ -24,8 +26,8 @@ theorem QuarticWickDiagram.mem_pairingInOrder_pairs_componentOrderedLeg_iff
     (d.componentOrderedLeg shuffle B a, d.componentOrderedLeg shuffle B b) ∈
         (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs ↔
       (a, b) ∈ ((d.restrictComponent B.2).pairingInOrder (orders B)).pairs := by
-  rw [Common.BlochDeDominicis.Pairing.mem_pairs_iff,
-    Common.BlochDeDominicis.Pairing.mem_pairs_iff]
+  rw [Combinatorics.Pairing.mem_pairs_iff,
+    Combinatorics.Pairing.mem_pairs_iff]
   let e := d.componentOrderedLegOrderEmbedding shuffle B
   constructor
   · rintro ⟨hab, hpartner⟩

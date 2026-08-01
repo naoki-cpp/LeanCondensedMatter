@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle
-import LeanCondensedMatter.Combinatorics.BinaryShuffleIntegrand
+import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffleIntegrand
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 
 set_option linter.style.header false
@@ -8,10 +8,10 @@ set_option linter.style.header false
 # Ambient-slot binary-shuffle ordered-simplex integrals
 
 A recursive `BinaryShuffle` already carries an order-preserving equivalence from its two local slot
-families to the ambient slots. Using the generic ambient-slot integrand from the combinatorics layer,
-this module proves that its ordinary ordered-simplex integral is the recursive contribution attached
-to the shuffle, and then transports the binary shuffle product identity to the ambient
-`SlotShuffle` presentation.
+families to the ambient slots. Using the generic ambient-slot integrand from the ordered-simplex
+analysis layer, this module proves that its ordinary ordered-simplex integral is the recursive
+contribution attached to the shuffle, and then transports the binary shuffle product identity to
+the ambient `SlotShuffle` presentation.
 -/
 
 namespace Combinatorics

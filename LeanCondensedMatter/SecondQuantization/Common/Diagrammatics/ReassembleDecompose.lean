@@ -12,6 +12,8 @@ recovers the original diagram.
 namespace SecondQuantization
 namespace Common
 
+open Combinatorics
+
 variable {Label : Type*} {N : ℕ}
 
 private theorem QuarticDiagram.reassemble_componentPartition_vertexLabel
@@ -133,7 +135,7 @@ theorem QuarticDiagram.reassemble_componentPartition {S : Finset (Fin N)}
     QuarticDiagram.reassemble d.componentPartition
       (fun B => d.restrictComponentConnected B.2) = d := by
   refine QuarticDiagram.ext (funext d.reassemble_componentPartition_vertexLabel) ?_
-  apply BlochDeDominicis.Pairing.ext
+  apply Combinatorics.Pairing.ext
   apply Equiv.ext
   intro leg
   rw [← QuarticDiagram.legOfVertexLocal_vertexOfLeg_localLegOfLeg leg]

@@ -1,5 +1,7 @@
-import Mathlib.Analysis.Complex.Basic
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Data.Fintype.EquivFin
 import Mathlib.Data.Fintype.Perm
+import Mathlib.Data.Fintype.Sigma
 
 set_option linter.style.header false
 
@@ -7,9 +9,12 @@ set_option linter.style.header false
 # Order-preserving shuffles of a finite family of slot blocks
 
 `FamilySlotShuffle size` interleaves one ordered block `Fin (size i)` for every finite index `i`
-into `Fin (∑ i, size i)`, preserving the order inside each block.  This is the statistics- and
-diagram-independent form of a component shuffle.
+into `Fin (∑ i, size i)`, preserving the order inside each block.  This module contains only the
+pure finite combinatorics; shuffled integrands and continuity live in
+`Analysis/OrderedSimplex/FamilyShuffleIntegrand.lean`.
 -/
+
+open scoped BigOperators
 
 namespace Combinatorics
 
@@ -48,40 +53,5 @@ noncomputable instance FamilySlotShuffle.instUniqueZero (size : Fin 0 → ℕ) :
     apply Equiv.ext
     rintro ⟨i, _⟩
     exact Fin.elim0 i
-
-/-- Restrict an ambient time assignment to one local block. -/
-def FamilySlotShuffle.timeAssignment {size : ι → ℕ} (shuffle : FamilySlotShuffle size)
-    (τ : Fin (∑ i, size i) → ℝ) (i : ι) : Fin (size i) → ℝ :=
-  fun j => τ (shuffle.slotEquiv ⟨i, j⟩)
-
-@[simp]
-theorem FamilySlotShuffle.timeAssignment_apply {size : ι → ℕ}
-    (shuffle : FamilySlotShuffle size) (τ : Fin (∑ i, size i) → ℝ)
-    (i : ι) (j : Fin (size i)) :
-    shuffle.timeAssignment τ i j = τ (shuffle.slotEquiv ⟨i, j⟩) :=
-  rfl
-
-/-- Product of local integrands after all local coordinates are embedded by a family shuffle. -/
-noncomputable def FamilySlotShuffle.integrand {size : ι → ℕ}
-    (shuffle : FamilySlotShuffle size)
-    (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
-    (τ : Fin (∑ i, size i) → ℝ) : ℂ :=
-  ∏ i, localIntegrand i (shuffle.timeAssignment τ i)
-
-/-- Coordinate restriction to one local block is continuous. -/
-theorem FamilySlotShuffle.continuous_timeAssignment {size : ι → ℕ}
-    (shuffle : FamilySlotShuffle size) (i : ι) :
-    Continuous (fun τ : Fin (∑ i, size i) → ℝ => shuffle.timeAssignment τ i) := by
-  exact continuous_pi fun j => continuous_apply (shuffle.slotEquiv ⟨i, j⟩)
-
-/-- A finite product of continuous local integrands remains continuous after shuffling. -/
-theorem FamilySlotShuffle.continuous_integrand {size : ι → ℕ}
-    (shuffle : FamilySlotShuffle size)
-    (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
-    (hlocal : ∀ i, Continuous (localIntegrand i)) :
-    Continuous (shuffle.integrand localIntegrand) := by
-  unfold FamilySlotShuffle.integrand
-  exact continuous_finsetProd _ fun i _ =>
-    (hlocal i).comp (shuffle.continuous_timeAssignment i)
 
 end Combinatorics

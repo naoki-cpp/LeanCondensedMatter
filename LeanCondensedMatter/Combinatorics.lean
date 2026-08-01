@@ -1,0 +1,26 @@
+import LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions
+import LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositionsSuccAbove
+import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
+import LeanCondensedMatter.Combinatorics.BinaryShuffle
+import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
+import LeanCondensedMatter.Combinatorics.BinaryShuffleSlots
+import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
+import LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition
+import LeanCondensedMatter.Combinatorics.IncidenceAlgebra.Mobius
+import LeanCondensedMatter.Combinatorics.SetPartition.Refinement
+import LeanCondensedMatter.Combinatorics.SetPartition.Mobius
+import LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock
+import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
+import LeanCondensedMatter.Combinatorics.Cumulant.Normalized
+import LeanCondensedMatter.Combinatorics.Cumulant.Independence
+import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
+import LeanCondensedMatter.Combinatorics.PerfectPairing
+
+set_option linter.style.header false
+
+/-!
+# Combinatorics
+
+Public entry point for the project's pure finite combinatorics. The implementation is organized
+around finite-index operations, shuffles, set partitions and cumulants, and perfect pairings.
+-/

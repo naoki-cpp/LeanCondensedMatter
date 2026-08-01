@@ -12,6 +12,8 @@ fermionic quartic vertex labels.
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} [DecidableEq Mode] [Fintype Mode] {N : ℕ}
 
 /-- A bijection between ordered slots and the diagram's vertex set. -/
@@ -25,7 +27,7 @@ noncomputable abbrev orderedLegToDiagramLeg (S : Finset (Fin N)) (order : Quarti
 /-- A fermionic diagram's pairing transported to a vertex order's slot enumeration. -/
 noncomputable abbrev QuarticWickDiagram.pairingInOrder {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (order : QuarticVertexOrder S) :
-    Common.BlochDeDominicis.Pairing (2 * S.card) :=
+    Combinatorics.Pairing (2 * S.card) :=
   Common.QuarticDiagram.pairingInOrder d order
 
 /-- Slot-indexed fermionic vertex labels and a pairing in the same enumeration. -/

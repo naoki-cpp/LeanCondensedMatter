@@ -17,6 +17,8 @@ Pairing graphs and component proofs are inherited without fermionic sign or CAR 
 namespace SecondQuantization
 namespace Bosonic
 
+open Combinatorics
+
 variable {Mode : Type*} {N : ℕ}
 
 /-- A bosonic quartic diagram on the interaction vertices in `S`. -/
@@ -80,7 +82,7 @@ noncomputable abbrev orderedLegToDiagramLeg (S : Finset (Fin N))
 /-- A bosonic diagram's pairing transported to a vertex order's slot enumeration. -/
 noncomputable abbrev QuarticDiagram.pairingInOrder {S : Finset (Fin N)}
     (d : QuarticDiagram Mode N S) (order : QuarticVertexOrder S) :
-    Common.BlochDeDominicis.Pairing (2 * S.card) :=
+    Combinatorics.Pairing (2 * S.card) :=
   Common.QuarticDiagram.pairingInOrder d order
 
 /-- Slot-indexed bosonic vertex labels and a pairing in the same enumeration. -/

@@ -14,6 +14,8 @@ Connectedness of the restricted diagram and reassembly are developed separately.
 namespace SecondQuantization
 namespace Common
 
+open Combinatorics
+
 variable {Label : Type*} {N : ℕ}
 
 /-- A leg belongs to block `B` iff its vertex does. -/
@@ -165,8 +167,8 @@ private theorem permCongr_partner_ne_self {α β : Type*} (e : α ≃ β) (p : E
 noncomputable def QuarticDiagram.restrictedPairing {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) :
-    BlochDeDominicis.Pairing (2 * B.card) :=
-  BlochDeDominicis.Pairing.ofPartner
+    Combinatorics.Pairing (2 * B.card) :=
+  Combinatorics.Pairing.ofPartner
     ((d.blockLegEquiv hB).permCongr (d.restrictedPartner hB))
     ⟨permCongr_partner_involutive _ _ (d.restrictedPartner_involutive hB),
       permCongr_partner_ne_self _ _ (d.restrictedPartner_ne_self hB)⟩
@@ -178,7 +180,7 @@ theorem QuarticDiagram.restrictedPairing_partner_blockLegEquiv {S : Finset (Fin 
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
     (d.restrictedPairing hB).partner (d.blockLegEquiv hB leg) =
       d.blockLegEquiv hB (d.restrictedPartner hB leg) := by
-  simp [restrictedPairing, BlochDeDominicis.Pairing.ofPartner, Equiv.permCongr_apply]
+  simp [restrictedPairing, Combinatorics.Pairing.ofPartner, Equiv.permCongr_apply]
 
 /-- Restrict `d` to the connected-component part `B`. -/
 noncomputable def QuarticDiagram.restrictComponent {S : Finset (Fin N)}

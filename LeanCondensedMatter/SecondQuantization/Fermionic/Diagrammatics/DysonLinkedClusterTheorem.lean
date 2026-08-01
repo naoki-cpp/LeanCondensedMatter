@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.PowerSeriesCumulant
+import LeanCondensedMatter.Analysis.PowerSeries.Cumulant
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonConnectedDiagramExpansion
 
 set_option linter.style.header false

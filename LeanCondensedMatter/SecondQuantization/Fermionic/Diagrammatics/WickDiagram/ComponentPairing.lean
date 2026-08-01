@@ -13,6 +13,8 @@ intertwines the corresponding partner permutations.
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} {N : ℕ}
 
 @[simp]
@@ -142,7 +144,7 @@ theorem QuarticWickDiagram.pairingInOrder_partner_componentOrderedLeg
         (((d.restrictComponent B.2).pairingInOrder (orders B)).partner p) := by
   apply (orderedLegToDiagramLeg S (d.assembleVertexOrder orders shuffle)).injective
   simp only [Common.QuarticDiagram.pairingInOrder,
-    Common.BlochDeDominicis.Pairing.relabel_partner, Equiv.apply_symm_apply]
+    Combinatorics.Pairing.relabel_partner, Equiv.apply_symm_apply]
   rw [d.orderedLegToDiagramLeg_componentOrderedLeg orders shuffle B]
   rw [d.orderedLegToDiagramLeg_componentOrderedLeg orders shuffle B]
   rw [d.restrictComponent_pairing B.2]

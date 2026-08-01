@@ -14,6 +14,8 @@ quartic diagram and a slot-indexed label sequence together with a pairing.
 namespace SecondQuantization
 namespace Common
 
+open Combinatorics
+
 variable {Label : Type*} {N : ℕ}
 
 /-- A bijection between ordered slots and a finite vertex set. -/
@@ -28,12 +30,12 @@ noncomputable def orderedLegToDiagramLeg (S : Finset (Fin N)) (order : QuarticVe
 /-- A diagram's pairing transported to a vertex order's slot enumeration. -/
 noncomputable def QuarticDiagram.pairingInOrder {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (order : QuarticVertexOrder S) :
-    BlochDeDominicis.Pairing (2 * S.card) :=
+    Combinatorics.Pairing (2 * S.card) :=
   d.pairing.relabel (orderedLegToDiagramLeg S order)
 
 /-- Slot-indexed labels together with a pairing in the same slot enumeration. -/
 abbrev OrderedQuarticDiagramData (Label : Type*) (n : ℕ) :=
-  (Fin n → Label) × BlochDeDominicis.Pairing (2 * n)
+  (Fin n → Label) × Combinatorics.Pairing (2 * n)
 
 /-- A labelled quartic diagram is equivalent to ordered data for any fixed vertex order. -/
 noncomputable def quarticDiagramEquivOrderedData {S : Finset (Fin N)}

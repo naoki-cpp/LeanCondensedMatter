@@ -13,6 +13,8 @@ indexing and pairings, not on the label type or particle statistics.
 namespace SecondQuantization
 namespace Common
 
+open Combinatorics
+
 variable {Label : Type*} {N : ℕ}
 
 /-- The ambient flattened legs, identified with the disjoint union of each partition part's legs. -/
@@ -74,8 +76,8 @@ private theorem permCongr_ne_self {α β : Type*} (e : α ≃ β) (p : Equiv.Per
 /-- The pairing on the ambient legs obtained by gluing the pairings of all partition parts. -/
 noncomputable def QuarticDiagram.reassemblePairing {S : Finset (Fin N)} (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N))) :
-    BlochDeDominicis.Pairing (2 * S.card) :=
-  BlochDeDominicis.Pairing.ofPartner
+    Combinatorics.Pairing (2 * S.card) :=
+  Combinatorics.Pairing.ofPartner
     ((QuarticDiagram.bigLegEquiv π).symm.permCongr
       (Equiv.sigmaCongrRight fun B => (F B).1.pairing.partner))
     ⟨permCongr_involutive _ _

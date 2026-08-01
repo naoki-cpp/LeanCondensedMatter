@@ -14,6 +14,8 @@ and a perfect pairing of the four legs per vertex.
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} {N : ℕ}
 
 /-- A quartic diagram whose vertex labels describe fermionic interaction vertices. -/
@@ -29,7 +31,7 @@ theorem QuarticWickDiagram.ext {S : Finset (Fin N)}
 /-- A fermionic quartic Wick diagram as its vertex-label function and pairing. -/
 def QuarticWickDiagram.equivPair {S : Finset (Fin N)} :
     QuarticWickDiagram Mode N S ≃
-      (↥S → QuarticVertexLabel Mode) × Common.BlochDeDominicis.Pairing (2 * S.card) :=
+      (↥S → QuarticVertexLabel Mode) × Combinatorics.Pairing (2 * S.card) :=
   Common.QuarticDiagram.equivPair
 
 /-- `QuarticWickDiagram Mode N S` has decidable equality when `Mode` does. -/

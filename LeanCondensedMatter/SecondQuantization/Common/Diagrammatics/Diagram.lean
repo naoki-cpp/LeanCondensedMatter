@@ -13,12 +13,14 @@ its four legs. The structure contains no operator algebra, exchange sign, or par
 namespace SecondQuantization
 namespace Common
 
+open Combinatorics
+
 variable {Label : Type*} {N : ℕ}
 
 /-- A labelled four-legged diagram on a finite vertex set. -/
 structure QuarticDiagram (Label : Type*) (N : ℕ) (S : Finset (Fin N)) where
   vertexLabel : ↥S → Label
-  pairing : BlochDeDominicis.Pairing (2 * S.card)
+  pairing : Pairing (2 * S.card)
 
 @[ext]
 theorem QuarticDiagram.ext {S : Finset (Fin N)}
@@ -33,7 +35,7 @@ theorem QuarticDiagram.ext {S : Finset (Fin N)}
 /-- A quartic diagram as its vertex-label function and pairing. -/
 def QuarticDiagram.equivPair {S : Finset (Fin N)} :
     QuarticDiagram Label N S ≃
-      (↥S → Label) × BlochDeDominicis.Pairing (2 * S.card) where
+      (↥S → Label) × Pairing (2 * S.card) where
   toFun d := (d.vertexLabel, d.pairing)
   invFun p := ⟨p.1, p.2⟩
   left_inv _ := rfl

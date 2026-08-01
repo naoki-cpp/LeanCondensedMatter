@@ -14,6 +14,8 @@ remaining statement that the complementary crossing set has even cardinality.
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} {N : ℕ}
 
 /-- The assembled crossings whose two normalized pairs do not both come from one component. -/
@@ -32,7 +34,7 @@ theorem QuarticWickDiagram.card_externalCrossingPairs_add_card_internalCrossingP
         (d.internalCrossingPairs orders shuffle).card =
       (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).crossingCount := by
   classical
-  rw [Common.BlochDeDominicis.Pairing.crossingCount_eq_card_crossingPair]
+  rw [Combinatorics.Pairing.crossingCount_eq_card_crossingPair]
   simpa [QuarticWickDiagram.externalCrossingPairs] using
     Finset.card_sdiff_add_card_eq_card
       (Finset.subset_univ (d.internalCrossingPairs orders shuffle))

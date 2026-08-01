@@ -20,7 +20,7 @@ weight). It matches the previously established four-position pairing weights `1`
 `Common/Thermal/BlochDeDominicis/PairingWeight.lean`'s `four_position_pairings_and_weights` term by term
 (`(12)(34)`, `(13)(24)`, `(14)(23)` for the position labels `1,2,3,4 ↦ cᵢ,cᵢ†,cᵢ,cᵢ†`) — the
 coefficients are hand-written here to match those weights, not obtained by summing over
-`Common.BlochDeDominicis.Pairing 2` itself. `Common/Thermal/BlochDeDominicis/Induction.lean`'s general
+`Combinatorics.Pairing 2` itself. `Common/Thermal/BlochDeDominicis/Induction.lean`'s general
 `gibbsExpectation_prodComp_eq_sum_pairing` now gives that genuine `Pairing 2`-sum connection for
 `gibbsExpectation` (a specific, genuine Gibbs weight); restating *this* file's arbitrary-`w`
 identity as a `Pairing 2` sum (rather than three hand-written terms) remains separate future
@@ -43,6 +43,7 @@ single-mode coincidence), so that part of the argument already generalizes.
 -/
 
 namespace SecondQuantization
+
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 

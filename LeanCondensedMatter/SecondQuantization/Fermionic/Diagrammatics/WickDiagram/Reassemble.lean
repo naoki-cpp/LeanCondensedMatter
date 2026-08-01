@@ -12,6 +12,8 @@ quartic vertex labels while preserving the existing public API.
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} {N : ℕ}
 
 noncomputable section
@@ -42,7 +44,7 @@ theorem QuarticWickDiagram.bigLegEquiv_symm_sigma_mk {S : Finset (Fin N)}
 noncomputable def QuarticWickDiagram.reassemblePairing {S : Finset (Fin N)}
     (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticWickDiagram Mode N (B : Finset (Fin N))) :
-    Common.BlochDeDominicis.Pairing (2 * S.card) :=
+    Combinatorics.Pairing (2 * S.card) :=
   Common.QuarticDiagram.reassemblePairing π F
 
 /-- Reassemble a fermionic quartic diagram from connected diagrams on partition blocks. -/

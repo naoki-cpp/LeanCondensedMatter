@@ -12,6 +12,8 @@ quartic vertex labels while preserving the existing public API.
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} {N : ℕ}
 
 noncomputable section
@@ -112,7 +114,7 @@ theorem QuarticWickDiagram.localLegOfLeg_blockLegEquiv {S : Finset (Fin N)}
 abbrev QuarticWickDiagram.restrictedPairing {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) :
-    Common.BlochDeDominicis.Pairing (2 * B.card) :=
+    Combinatorics.Pairing (2 * B.card) :=
   Common.QuarticDiagram.restrictedPairing d hB
 
 theorem QuarticWickDiagram.restrictedPairing_partner_blockLegEquiv {S : Finset (Fin N)}
