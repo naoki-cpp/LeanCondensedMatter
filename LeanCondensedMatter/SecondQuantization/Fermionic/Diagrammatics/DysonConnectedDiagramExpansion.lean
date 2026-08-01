@@ -22,9 +22,9 @@ noncomputable def quarticWickDiagramConnectedDecomposition :
     Combinatorics.ConnectedDecomposition (Fin N) where
   Object S := QuarticWickDiagram Mode N S
   ConnectedObject S := ConnectedQuarticWickDiagram Mode N S
-  fintypeObject S := inferInstance
-  fintypeConnectedObject S := inferInstance
-  decompose S := QuarticWickDiagram.componentDecompositionEquiv
+  fintypeObject _ := inferInstance
+  fintypeConnectedObject _ := inferInstance
+  decompose _ := QuarticWickDiagram.componentDecompositionEquiv
 
 /-- Multiplicative quartic Wick amplitude on the connected decomposition. -/
 noncomputable def quarticWickDiagramMultiplicativeWeight (ε : Mode → ℝ) (β : ℝ)
