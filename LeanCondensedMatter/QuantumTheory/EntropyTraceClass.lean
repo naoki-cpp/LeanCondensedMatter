@@ -101,10 +101,11 @@ theorem entropyOp_trace_eq_tsum (ρ : DensityOperator H)
     (entropyOpSpectralTraceClass ρ hsummable).hasSum_inner_apply b
   have hb_j (a : EigenvectorIndex ρ.op) : b (j a) = e a := by
     rw [hb]
-    rfl
   have hpoint (a : EigenvectorIndex ρ.op) :
       g (j a) = Real.negMulLog a.1.1 := by
-    rw [g, hb_j]
+    change (inner ℂ (b (j a)) (entropyOp ρ (b (j a))) : ℂ).re =
+      Real.negMulLog a.1.1
+    rw [hb_j]
     rw [entropyOp_apply_eigenvector ρ (apply_eigenvectorFamily hρcompact a)]
     simp [e, (orthonormal_eigenvectorFamily hρcompact hρsym).1 a]
   have hzero (x : w) (hx : x ∉ Set.range j) : g x = 0 := by
@@ -112,7 +113,7 @@ theorem entropyOp_trace_eq_tsum (ρ : DensityOperator H)
         Submodule.span ℂ (Set.range e) ≤ (ℂ ∙ (b x : H))ᗮ := by
       rw [Submodule.span_le]
       rintro y ⟨a, rfl⟩
-      rw [Submodule.mem_orthogonal_singleton_iff_inner_left]
+      refine (Submodule.mem_orthogonal_singleton_iff_inner_left).2 ?_
       have hne : j a ≠ x := by
         intro h
         exact hx ⟨a, h⟩
@@ -123,7 +124,7 @@ theorem entropyOp_trace_eq_tsum (ρ : DensityOperator H)
       rw [Submodule.orthogonal_closure, Submodule.mem_orthogonal]
       intro y hy
       have hy' := hspan hy
-      rwa [Submodule.mem_orthogonal_singleton_iff_inner_left] at hy'
+      exact (Submodule.mem_orthogonal_singleton_iff_inner_left).1 hy'
     have hxker_mem :
         (b x : H) ∈ Module.End.eigenspace (ρ.op : H →ₗ[ℂ] H) (0 : ℂ) := by
       rw [← orthogonal_closure_span_eigenvectorFamily hρcompact hρsym]
@@ -138,11 +139,12 @@ theorem entropyOp_trace_eq_tsum (ρ : DensityOperator H)
   have hrestricted :
       HasSum (g ∘ j) (entropyOpSpectralTraceClass ρ hsummable).trace :=
     (hj.hasSum_iff hzero).mpr hfull
-  have hresult :
-      HasSum (fun a : EigenvectorIndex ρ.op => Real.negMulLog a.1.1)
-        (entropyOpSpectralTraceClass ρ hsummable).trace := by
-    simpa only [Function.comp_apply, hpoint] using hrestricted
-  exact hresult.tsum_eq.symm
+  have hfunctions :
+      (g ∘ j) = fun a : EigenvectorIndex ρ.op => Real.negMulLog a.1.1 := by
+    funext a
+    exact hpoint a
+  rw [hfunctions] at hrestricted
+  exact hrestricted.tsum_eq.symm
 
 /-- **The von Neumann entropy `-Tr[ρ ln ρ]` of a density operator (infinite-dimensional)**,
 computed from `ρ`'s eigenvalues via `ContinuousLinearMap.EigenvectorIndex`. `ENNReal`-valued
