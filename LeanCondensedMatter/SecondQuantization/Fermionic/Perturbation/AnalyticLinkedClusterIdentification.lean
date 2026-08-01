@@ -15,6 +15,8 @@ open scoped BigOperators
 
 namespace SecondQuantization
 
+open PowerSeries
+
 noncomputable section
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
@@ -156,10 +158,13 @@ theorem iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumul
                   Combinatorics.powerSeriesMomentCoeff Z (n - k) := by
             apply Finset.sum_congr rfl
             intro k hk
-            rw [ih (k + 1) (by omega)]
+            have hklt : k < n := Finset.mem_range.mp hk
+            rw [ih (k + 1) (Nat.succ_lt_succ hklt)]
           rw [hprefix] at hsum
           have hlast := add_left_cancel hsum
-          simpa [Combinatorics.powerSeriesMomentCoeff, hZ] using hlast
+          simpa [Z, Combinatorics.powerSeriesMomentCoeff,
+            constantCoeff_dysonPartitionSeries ε β V,
+            freePartitionFunction_ne_zero ε β] using hlast
 
 omit [LinearOrder Mode] in
 /-- Taylor-coefficient form of the analytic/formal logarithm bridge. -/
