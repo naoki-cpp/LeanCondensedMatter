@@ -2,49 +2,28 @@ import Mathlib.Combinatorics.Enumerative.IncidenceAlgebra
 import Mathlib.Logic.Equiv.Prod
 import Mathlib.Data.Finset.Insert
 import Mathlib.Data.Pi.Interval
-import Mathlib.Data.Complex.Basic
 
--- No project files currently carry a Mathlib-style copyright/author header; a
--- project-wide policy for this is a separate open item (see notes/conventions.md).
 set_option linter.style.header false
 
 /-!
-# The Möbius function is invariant under order isomorphism, and multiplicative over finite products
+# Structural properties of the incidence-algebra Möbius function
 
-General facts about `IncidenceAlgebra.mu` (fixed to coefficient ring `ℤ`) needed to factor the
-partition lattice's Möbius function as a product over the parts of a coarser partition
-(`PartitionLattice.lean`), stated here independently of `Finpartition` since they have no
-partition-specific content:
-
-- `IncidenceAlgebra.mu_orderIso_apply`: `mu` is preserved by any order isomorphism.
-- `IncidenceAlgebra.mu_subtype_le_apply`: `mu` computed inside the down-set `{t // t ≤ z}` agrees
-  with `mu` computed in the ambient order.
-- `IncidenceAlgebra.mu_pi_finset_apply`: `mu` on a finite dependent product `∀ i : t, β i`
-  (`t : Finset ι`) is the product of the `mu`'s of each factor.
-
-Placed in the `IncidenceAlgebra` namespace (matching `mu`, `mu_prod_mu`, etc.) rather than a
-project-specific one, so as not to introduce generically-named declarations
-(`mu_orderIso_apply`, ...) into the root namespace.
-
-**Coefficients fixed to `ℤ`.** `IncidenceAlgebra.mu` is defined for any `[AddCommGroup 𝕜] [One
-𝕜]`. The arguments below are expected to generalize to whatever coefficient types
-`IncidenceAlgebra.mu` supports, but that generalization has not been checked in Lean; this file
-fixes coefficients to `ℤ` because that's sufficient for the partition-lattice application — see
-`notes/roadmap.md`.
+The Möbius function is invariant under order isomorphism, agrees with the ambient order when
+computed in a finite down-set, and is multiplicative over finite dependent products.  The
+coefficient ring is an arbitrary commutative ring; no partition-lattice or complex-number
+specialization is built into this module.
 -/
 
 open Finset
 
 namespace IncidenceAlgebra
 
-/-- **The Möbius function is invariant under order isomorphism.** `mu 𝕜 (e x) (e y) = mu 𝕜 x y`
-for any order isomorphism `e`. Proved by strong induction on `(Icc x y).card`, mirroring `mu`'s
-own recursive definition (`mu_eq_neg_sum_Ico_of_ne`): an order isomorphism carries `Ico x y`
-bijectively onto `Ico (e x) (e y)`, so the recursion transports term by term. -/
-theorem mu_orderIso_apply {α β : Type*} [PartialOrder α] [PartialOrder β]
+/-- The Möbius function is invariant under an order isomorphism. -/
+theorem mu_orderIso_apply {R α β : Type*} [CommRing R]
+    [PartialOrder α] [PartialOrder β]
     [LocallyFiniteOrder α] [LocallyFiniteOrder β] [DecidableEq α] [DecidableEq β]
     (e : α ≃o β) (x y : α) :
-    mu ℤ (e x) (e y) = mu ℤ x y := by
+    mu R (e x) (e y) = mu R x y := by
   induction hn : (Finset.Icc x y).card using Nat.strong_induction_on generalizing x y with
   | _ n ih =>
     subst hn
@@ -71,49 +50,17 @@ theorem mu_orderIso_apply {α β : Type*} [PartialOrder α] [PartialOrder β]
       Finset.card_lt_card (Finset.Icc_ssubset_Icc_right (hz.1.trans hz.2.le) le_rfl hz.2)
     exact ih _ hcard x z rfl
 
-/-- **The Möbius function is compatible with casting the coefficient ring `ℤ → ℂ`.** `mu ℤ x y`
-cast to `ℂ` agrees with `mu ℂ x y` computed directly. Proved by strong induction on
-`(Icc x y).card`, mirroring `mu`'s own recursive definition (`mu_eq_neg_sum_Ico_of_ne`): that
-recursion only uses `+`, `-`, `1`, so it commutes with the ring homomorphism `ℤ → ℂ`. Lets
-`PartitionLattice.lean`'s `mu_eq_prod_restrict` (proved once, for `ℤ`) be reused directly for the
-`ℂ`-coefficient application in `MomentCumulant.lean`, instead of redoing the whole
-`mu_orderIso_apply`/`mu_subtype_le_apply`/`mu_pi_finset_apply` development for `ℂ`. -/
-theorem mu_intCast_eq_complex {α : Type*} [PartialOrder α] [LocallyFiniteOrder α] [DecidableEq α]
-    (x y : α) : ((mu ℤ x y : ℤ) : ℂ) = mu ℂ x y := by
-  induction hn : (Finset.Icc x y).card using Nat.strong_induction_on generalizing x y with
-  | _ n ih =>
-    subst hn
-    by_cases hxy : x = y
-    · subst hxy; simp
-    rw [mu_eq_neg_sum_Ico_of_ne hxy, mu_eq_neg_sum_Ico_of_ne hxy]
-    push_cast
-    congr 1
-    apply Finset.sum_congr rfl
-    intro z hz
-    rw [Finset.mem_Ico] at hz
-    have hcard : (Finset.Icc x z).card < (Finset.Icc x y).card :=
-      Finset.card_lt_card (Finset.Icc_ssubset_Icc_right (hz.1.trans hz.2.le) le_rfl hz.2)
-    exact ih _ hcard x z rfl
-
-/-- `LocallyFiniteOrder` on the down-set `{t // t ≤ z}` of a `Fintype`. Needed so
-`mu_subtype_le_apply`'s statement (Möbius function *inside* the down-set) even typechecks, both
-here and at call sites, so it can't be made local to a single proof. Requires `[Fintype α]`,
-matching this file's intended use (`α := Finpartition a`, already a `Fintype`) rather than a
-general `LocallyFiniteOrderBot`. Scoped to the `IncidenceAlgebra` namespace to limit exposure as
-a global instance. -/
+/-- A finite down-set inherits a locally finite order. -/
 noncomputable instance instLocallyFiniteOrderSubtypeLe {α : Type*} [Fintype α] [PartialOrder α]
     [LocallyFiniteOrder α] [DecidableEq α] {z : α} : LocallyFiniteOrder {t : α // t ≤ z} := by
   classical
   exact Fintype.toLocallyFiniteOrder
 
-/-- **The Möbius function computed inside a down-set agrees with the ambient Möbius function.**
-For `x y : {t // t ≤ z}`, `mu ℤ x y = mu ℤ x.1 y.1`. Proved by strong induction on
-`(Icc x.1 y.1).card`, mirroring `mu_orderIso_apply`: every `w` with `x ≤ w < y` in `α` already
-satisfies `w ≤ z` (via `y.2` and transitivity), so `Ico x y` (in the subtype) bijects with
-`Ico x.1 y.1` (in `α`) via the coercion. -/
-theorem mu_subtype_le_apply {α : Type*} [Fintype α] [PartialOrder α] [LocallyFiniteOrder α]
+/-- The Möbius function computed in a finite down-set agrees with the ambient Möbius function. -/
+theorem mu_subtype_le_apply {R α : Type*} [CommRing R]
+    [Fintype α] [PartialOrder α] [LocallyFiniteOrder α]
     [DecidableEq α] {z : α} (x y : {t : α // t ≤ z}) :
-    mu ℤ x y = mu ℤ x.1 y.1 := by
+    mu R x y = mu R x.1 y.1 := by
   induction hn : (Finset.Icc x.1 y.1).card using Nat.strong_induction_on generalizing x y with
   | _ n ih =>
     subst hn
@@ -123,7 +70,7 @@ theorem mu_subtype_le_apply {α : Type*} [Fintype α] [PartialOrder α] [Locally
     have hIco : ∀ w : {t : α // t ≤ z}, w ∈ Finset.Ico x y ↔ w.1 ∈ Finset.Ico x.1 y.1 := by
       intro w
       simp only [Finset.mem_Ico, Subtype.coe_lt_coe, Subtype.coe_le_coe]
-    have hsum : ∑ w ∈ Finset.Ico x y, mu ℤ x w = ∑ t ∈ Finset.Ico x.1 y.1, mu ℤ x.1 t := by
+    have hsum : ∑ w ∈ Finset.Ico x y, mu R x w = ∑ t ∈ Finset.Ico x.1 y.1, mu R x.1 t := by
       refine Finset.sum_bij' (fun w _ => w.1)
         (fun t ht => (⟨t, (Finset.mem_Ico.1 ht).2.le.trans y.2⟩ : {t : α // t ≤ z}))
         ?_ ?_ ?_ ?_ ?_
@@ -143,11 +90,7 @@ theorem mu_subtype_le_apply {α : Type*} [Fintype α] [PartialOrder α] [Locally
 
 end IncidenceAlgebra
 
-/-- **Splitting a dependent product at one index, as an order isomorphism.**
-`∀ i : insert j s, β i ≃o β j × ∀ i : s, β i`, for `j ∉ s`. The order-theoretic analogue of
-`Equiv.piSplitAt` restricted to a `Finset`, used (via `IncidenceAlgebra.mu_orderIso_apply`) to
-induct `IncidenceAlgebra.mu_pi_finset_apply` one index at a time. General order theory, not
-specific to `IncidenceAlgebra`. -/
+/-- Split a finite dependent product at one distinguished index. -/
 noncomputable def piInsertOrderIso {ι : Type*} [DecidableEq ι] (β : ι → Type*)
     [∀ i, Preorder (β i)] {j : ι} {s : Finset ι} (hjs : j ∉ s) :
     (∀ i : (insert j s : Finset ι), β i) ≃o β j × ∀ i : s, β i where
@@ -178,11 +121,7 @@ noncomputable def piInsertOrderIso {ι : Type*} [DecidableEq ι] (β : ι → Ty
     · intro h
       exact ⟨h ⟨j, mem_insert_self j s⟩, fun i => h ⟨i.1, mem_insert_of_mem i.2⟩⟩
 
-/-- **A finite dependent product `∀ i : insert j s, β i`, reindexed via `Subtype.val`, splits
-its product over `j` and `s`.** The `Finset`-level bookkeeping (`Finset.attach_insert`,
-`Finset.prod_insert`, `Finset.prod_image`) needed to turn `piInsertOrderIso`'s index split into a
-`Finset.prod` recursion in `IncidenceAlgebra.mu_pi_finset_apply`. General `Finset`/`CommMonoid`
-fact, not specific to `IncidenceAlgebra`. -/
+/-- Split a product over the subtype of an inserted finite set. -/
 theorem prod_subtype_insert_eq {ι M : Type*} [DecidableEq ι] [CommMonoid M] {j : ι} {s : Finset ι}
     (hjs : j ∉ s) (g : ∀ _i : ↥(insert j s), M) :
     ∏ i : ↥(insert j s), g i =
@@ -194,29 +133,30 @@ theorem prod_subtype_insert_eq {ι M : Type*} [DecidableEq ι] [CommMonoid M] {j
 
 namespace IncidenceAlgebra
 
-/-- **The Möbius function of a finite dependent product is the product of the Möbius functions
-of its factors.** `mu ℤ x y = ∏ i : t, mu ℤ (x i) (y i)`, for `x y : ∀ i : t, β i` (`t : Finset
-ι`). Proved by induction on `t` (`Finset.induction_on`): the empty case is trivial (`mu` of a
-`Subsingleton` type is `1`), and the `insert j s` case combines `piInsertOrderIso` (via
-`mu_orderIso_apply`) with `IncidenceAlgebra.mu_prod_mu` (Mathlib) to split off `j`'s factor, then
-the induction hypothesis and `prod_subtype_insert_eq` reassemble the product. -/
-theorem mu_pi_finset_apply {ι : Type*} [DecidableEq ι] (β : ι → Type*) [∀ i, PartialOrder (β i)]
-    [∀ i, LocallyFiniteOrder (β i)] [∀ i, DecidableEq (β i)] (t : Finset ι) (x y : ∀ i : t, β i) :
-    mu ℤ x y = ∏ i : t, mu ℤ (x i) (y i) := by
+/-- The Möbius function of a finite dependent product is the product of the factor Möbius
+functions. -/
+theorem mu_pi_finset_apply {R ι : Type*} [CommRing R] [DecidableEq ι]
+    (β : ι → Type*) [∀ i, PartialOrder (β i)]
+    [∀ i, LocallyFiniteOrder (β i)] [∀ i, DecidableEq (β i)]
+    (t : Finset ι) (x y : ∀ i : t, β i) :
+    mu R x y = ∏ i : t, mu R (x i) (y i) := by
   classical
   induction t using Finset.induction_on with
   | empty =>
     have hxy : x = y := Subsingleton.elim x y
-    subst hxy; simp
+    subst hxy
+    simp
   | @insert j s hjs ih =>
-    have hmu := (mu_orderIso_apply (piInsertOrderIso β hjs) x y).symm
+    have hmu := (mu_orderIso_apply (R := R) (piInsertOrderIso β hjs) x y).symm
     rw [← mu_prod_mu, IncidenceAlgebra.prod_apply,
       show (piInsertOrderIso β hjs x).1 = x ⟨j, mem_insert_self j s⟩ from rfl,
       show (piInsertOrderIso β hjs y).1 = y ⟨j, mem_insert_self j s⟩ from rfl,
       show (piInsertOrderIso β hjs x).2 = fun i : s => x ⟨i.1, mem_insert_of_mem i.2⟩ from rfl,
       show (piInsertOrderIso β hjs y).2 = fun i : s => y ⟨i.1, mem_insert_of_mem i.2⟩ from rfl]
       at hmu
-    rw [hmu, ih (fun i => x ⟨i.1, mem_insert_of_mem i.2⟩) (fun i => y ⟨i.1, mem_insert_of_mem i.2⟩),
-      prod_subtype_insert_eq hjs (fun i => mu ℤ (x i) (y i))]
+    rw [hmu,
+      ih (fun i => x ⟨i.1, mem_insert_of_mem i.2⟩)
+        (fun i => y ⟨i.1, mem_insert_of_mem i.2⟩),
+      prod_subtype_insert_eq hjs (fun i => mu R (x i) (y i))]
 
 end IncidenceAlgebra
