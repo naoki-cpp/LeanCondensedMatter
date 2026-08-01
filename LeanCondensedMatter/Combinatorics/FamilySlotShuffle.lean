@@ -1,6 +1,7 @@
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Data.Fintype.EquivFin
 import Mathlib.Data.Fintype.Perm
+import Mathlib.Data.Fintype.Sigma
 
 set_option linter.style.header false
 
