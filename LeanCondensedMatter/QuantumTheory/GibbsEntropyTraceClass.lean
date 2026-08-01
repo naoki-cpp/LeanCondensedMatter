@@ -28,7 +28,7 @@ theorem gibbsState_entropyOp_hasSummableRealEigenvalues (Hop : Observable H) (β
   have hEntropyCompact : IsCompactOperator (entropyOp ρ) := entropyOp_isCompact ρ
   have hEntropySelfAdjoint : IsSelfAdjoint (entropyOp ρ) := by
     rw [entropyOp]
-    exact cfc_predicate Real.continuous_negMulLog ρ.pos.isSelfAdjoint
+    exact cfc_predicate _ _
   letI : Finite (EigenvectorIndex (entropyOp ρ)) :=
     (orthonormal_eigenvectorFamily hEntropyCompact hEntropySelfAdjoint.isSymmetric).linearIndependent.finite
   exact Summable.of_finite
