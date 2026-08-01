@@ -7,6 +7,10 @@ on:
     paths:
       - scripts/migrate_fermionic_dyson_forwarding.py
       - .github/workflows/migrate-fermionic-dyson-forwarding.yml
+  pull_request:
+    paths:
+      - scripts/migrate_fermionic_dyson_forwarding.py
+      - .github/workflows/migrate-fermionic-dyson-forwarding.yml
 
 permissions:
   contents: write
