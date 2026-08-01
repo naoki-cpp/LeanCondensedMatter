@@ -65,8 +65,8 @@ theorem Polynomial.isCompactOperator_aeval_of_coeff_zero {T : H →L[ℂ] H}
     IsCompactOperator (Polynomial.aeval T p : H →L[ℂ] H) := by
   obtain ⟨q, rfl⟩ := Polynomial.X_dvd_iff.mpr hp
   rw [map_mul]
-  simpa [Function.comp_def] using
-    hT.comp_clm (Polynomial.aeval T q : H →L[ℂ] H)
+  change IsCompactOperator (fun x : H => T ((Polynomial.aeval T q : H →L[ℂ] H) x))
+  exact hT.comp_clm (Polynomial.aeval T q : H →L[ℂ] H)
 
 open Filter Topology
 
@@ -151,60 +151,69 @@ constant coefficient, and therefore evaluate to compact operators. Compact opera
 the operator norm, so the CFC limit is compact. -/
 theorem isCompactOperator_cfc_of_zero {T : H →L[ℂ] H} (hT : IsSelfAdjoint T)
     (hcompact : IsCompactOperator T) {f : ℝ → ℝ} (hf : Continuous f) (hf0 : f 0 = 0) :
-    IsCompactOperator (cfc f T) := by
-  set R := ‖T‖
-  have hzero_mem : (0 : ℝ) ∈ Set.Icc (-R) R := by
-    simp [R]
-  have hspec_sub : spectrum ℝ T ⊆ Set.Icc (-R) R := by
-    intro x hx
-    have hnorm := spectrum.norm_le_norm_of_mem hx
-    rw [Real.norm_eq_abs] at hnorm
-    exact abs_le.mp hnorm
-  choose q hq using fun n : ℕ =>
-    exists_polynomial_near_of_continuousOn (-R) R f hf.continuousOn (1 / (n + 1))
-      (by positivity)
-  let p : ℕ → ℝ[X] := fun n => q n - C ((q n).eval 0)
-  have hp_near (n : ℕ) (x : ℝ) (hx : x ∈ Set.Icc (-R) R) :
-      |(p n).eval x - f x| < 2 / (n + 1) := by
-    have hxq := hq n x hx
-    have h0q := hq n 0 hzero_mem
-    have hrearrange :
-        (p n).eval x - f x =
-          ((q n).eval x - f x) - ((q n).eval 0 - f 0) := by
-      simp [p, hf0]
-      ring
-    rw [hrearrange]
-    calc
-      |((q n).eval x - f x) - ((q n).eval 0 - f 0)| ≤
-          |(q n).eval x - f x| + |(q n).eval 0 - f 0| := abs_sub _ _
-      _ < 1 / (n + 1) + 1 / (n + 1) := add_lt_add hxq h0q
-      _ = 2 / (n + 1) := by ring
-  have hp_coeff_zero : ∀ n, (p n).coeff 0 = 0 := by
-    intro n
-    rw [Polynomial.coeff_zero_eq_eval_zero]
-    simp [p]
-  have hp_compact : ∀ n, IsCompactOperator (cfc (p n).eval T) := by
-    intro n
-    rw [cfc_polynomial (p n) T]
-    exact Polynomial.isCompactOperator_aeval_of_coeff_zero hcompact (p n) (hp_coeff_zero n)
-  have hconv : Tendsto (fun n => cfc (p n).eval T) atTop (𝓝 (cfc f T)) := by
-    rw [Metric.tendsto_atTop]
-    intro ε hε
-    obtain ⟨N, hN⟩ := exists_nat_gt (2 / ε)
-    refine ⟨N, fun n hn => ?_⟩
-    rw [dist_eq_norm, ← cfc_sub (p n).eval f T]
-    obtain ⟨⟨x₀, hx₀_mem, hx₀_eq⟩, -⟩ :=
-      IsGreatest.norm_cfc (fun x => (p n).eval x - f x) T
-    rw [← hx₀_eq]
-    change ‖(p n).eval x₀ - f x₀‖ < ε
-    rw [Real.norm_eq_abs]
-    calc
-      |(p n).eval x₀ - f x₀| < 2 / (n + 1) := hp_near n x₀ (hspec_sub hx₀_mem)
-      _ ≤ 2 / (N + 1) := by
-          apply div_le_div_of_nonneg_left (by norm_num) (by positivity)
-          exact_mod_cast Nat.succ_le_succ hn
-      _ < ε := by
-          rw [div_lt_iff₀ (by positivity)]
-          rw [div_lt_iff₀ hε] at hN
-          nlinarith [Nat.cast_nonneg (α := ℝ) N]
-  exact isCompactOperator_of_tendsto hconv (Filter.Eventually.of_forall hp_compact)
+    IsCompactOperator (cfc f T : H →L[ℂ] H) := by
+  rcases subsingleton_or_nontrivial H with hH | hH
+  · letI := hH
+    have hz : (cfc f T : H →L[ℂ] H) = 0 := Subsingleton.elim _ _
+    rw [hz]
+    exact isCompactOperator_zero
+  · letI := hH
+    set R := ‖T‖
+    have hzero_mem : (0 : ℝ) ∈ Set.Icc (-R) R := by
+      simp [R]
+    have hspec_sub : spectrum ℝ T ⊆ Set.Icc (-R) R := by
+      intro x hx
+      have hnorm := spectrum.norm_le_norm_of_mem hx
+      rw [Real.norm_eq_abs] at hnorm
+      exact abs_le.mp hnorm
+    choose q hq using fun n : ℕ =>
+      exists_polynomial_near_of_continuousOn (-R) R f hf.continuousOn (1 / (n + 1))
+        (by positivity)
+    let p : ℕ → ℝ[X] := fun n => q n - C ((q n).eval 0)
+    have hp_near (n : ℕ) (x : ℝ) (hx : x ∈ Set.Icc (-R) R) :
+        |(p n).eval x - f x| < 2 / (n + 1) := by
+      have hxq := hq n x hx
+      have h0q := hq n 0 hzero_mem
+      have hrearrange :
+          (p n).eval x - f x =
+            ((q n).eval x - f x) - ((q n).eval 0 - f 0) := by
+        simp [p, hf0]
+        ring
+      rw [hrearrange]
+      calc
+        |((q n).eval x - f x) - ((q n).eval 0 - f 0)| ≤
+            |(q n).eval x - f x| + |(q n).eval 0 - f 0| := abs_sub _ _
+        _ < 1 / (n + 1) + 1 / (n + 1) := add_lt_add hxq h0q
+        _ = 2 / (n + 1) := by ring
+    have hp_coeff_zero : ∀ n, (p n).coeff 0 = 0 := by
+      intro n
+      rw [Polynomial.coeff_zero_eq_eval_zero]
+      simp [p]
+    have hp_compact : ∀ n,
+        IsCompactOperator (cfc (p n).eval T : H →L[ℂ] H) := by
+      intro n
+      rw [cfc_polynomial (p n) T]
+      exact Polynomial.isCompactOperator_aeval_of_coeff_zero hcompact (p n) (hp_coeff_zero n)
+    have hconv :
+        Tendsto (fun n => (cfc (p n).eval T : H →L[ℂ] H)) atTop
+          (𝓝 (cfc f T : H →L[ℂ] H)) := by
+      rw [Metric.tendsto_atTop]
+      intro ε hε
+      obtain ⟨N, hN⟩ := exists_nat_gt (2 / ε)
+      refine ⟨N, fun n hn => ?_⟩
+      rw [dist_eq_norm, ← cfc_sub (p n).eval f T]
+      obtain ⟨⟨x₀, hx₀_mem, hx₀_eq⟩, -⟩ :=
+        IsGreatest.norm_cfc (fun x => (p n).eval x - f x) T
+      rw [← hx₀_eq]
+      change ‖(p n).eval x₀ - f x₀‖ < ε
+      rw [Real.norm_eq_abs]
+      calc
+        |(p n).eval x₀ - f x₀| < 2 / (n + 1) := hp_near n x₀ (hspec_sub hx₀_mem)
+        _ ≤ 2 / (N + 1) := by
+            apply div_le_div_of_nonneg_left (by norm_num) (by positivity)
+            exact_mod_cast Nat.succ_le_succ hn
+        _ < ε := by
+            rw [div_lt_iff₀ (by positivity)]
+            rw [div_lt_iff₀ hε] at hN
+            nlinarith [Nat.cast_nonneg (α := ℝ) N]
+    exact isCompactOperator_of_tendsto hconv (Filter.Eventually.of_forall hp_compact)
