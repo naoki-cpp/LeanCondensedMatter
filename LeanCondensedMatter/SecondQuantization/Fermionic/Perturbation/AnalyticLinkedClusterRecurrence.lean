@@ -72,7 +72,8 @@ theorem iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log
     filter_upwards [hFdiff, hslit] with z hdiff hz
     have hlog := (hdiff.hasDerivAt.clog hz).deriv
     have hG : deriv G z = deriv F z / F z := by
-      simpa [G, F, analyticNormalizedLogPartitionFunction] using hlog
+      change deriv (fun t => Complex.log (F t)) z = deriv F z / F z
+      exact hlog
     rw [hG]
     exact div_mul_cancel₀ _ (Complex.slitPlane_ne_zero hz)
   have hiter := hderiv.iteratedDeriv_eq n
