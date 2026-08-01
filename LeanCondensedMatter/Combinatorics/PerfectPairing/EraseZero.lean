@@ -10,11 +10,9 @@ set_option linter.style.header false
 through the pure finite-index API in `Combinatorics.FiniteIndex`.
 -/
 
-namespace SecondQuantization
-namespace Common
-namespace BlochDeDominicis
+namespace Combinatorics
 
-open Combinatorics.FiniteIndex
+open FiniteIndex
 
 /-- The partner map restricted to the positions remaining after deleting `0` and `partner 0`. -/
 def Pairing.restrictedPartnerMap {n : ℕ} (pairing : Pairing (n + 1))
@@ -140,6 +138,4 @@ theorem Pairing.eraseZeroPair_mem_pairs_iff {n : ℕ} (pairing : Pairing (n + 1)
         Pairing.eraseZeroOrderIso_partner pairing i
       _ = pairing.eraseZeroOrderIso k := hpartner
 
-end BlochDeDominicis
-end Common
-end SecondQuantization
+end Combinatorics
