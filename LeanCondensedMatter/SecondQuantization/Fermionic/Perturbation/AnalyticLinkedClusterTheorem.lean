@@ -75,11 +75,13 @@ theorem coeff_normalizedDysonPartitionFPowerSeries_eq_formal
     (normalizedDysonPartitionFPowerSeries ε β V).coeff n =
       PowerSeries.coeff n
         (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) := by
-  rw [coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
-  simp only [normalizedDysonPartitionFPowerSeries, FormalMultilinearSeries.coeff,
-    FormalMultilinearSeries.smul_apply, ContinuousMultilinearMap.smul_apply]
+  rw [coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff,
+    normalizedDysonPartitionFPowerSeries, normalizedDysonPartitionCoeff]
+  change (freePartitionFunction ε β)⁻¹ *
+      (dysonPartitionFPowerSeries ε β V).coeff n =
+    dysonPartitionCoeff ε β V n / freePartitionFunction ε β
   rw [coeff_dysonPartitionFPowerSeries]
-  simp [normalizedDysonPartitionCoeff, div_eq_mul_inv, mul_comm]
+  simp [div_eq_mul_inv, mul_comm]
 
 /-- The local analytic logarithm of the normalized partition function.
 
