@@ -24,8 +24,8 @@ omit [LinearOrder Mode] in
 theorem normalizedDysonPartitionCoeff_zero (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
     normalizedDysonPartitionCoeff ε β V 0 = 1 := by
-  rw [normalizedDysonPartitionCoeff, ← coeff_dysonPartitionSeries,
-    coeff_zero_dysonPartitionSeries, div_self (freePartitionFunction_ne_zero ε β)]
+  rw [normalizedDysonPartitionCoeff, ← dysonPartitionCoeff_eq_dysonTraceCoeff,
+    dysonPartitionCoeff_zero, div_self (freePartitionFunction_ne_zero ε β)]
 
 /-- The factorial-normalized Dyson vertex moment on a finite vertex set. -/
 noncomputable def dysonVertexMoment {α : Type*} [DecidableEq α] (ε : Mode → ℝ) (β : ℝ)
