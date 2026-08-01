@@ -418,7 +418,7 @@ theorem quarticLegOperatorForSequence_cast_mul_add {n : ℕ} (ε : Mode → ℝ)
       imaginaryTimeEvolve ε (τ i) (quarticLocalLegOperator (q i) j) := by
   rw [quarticLegOperatorForSequence, orderedQuarticLegEquiv_cast_mul_add i j h]
 
-set_option linter.unusedFintypeInType false in
+omit [Fintype Mode] in
 /-- **A single evolved atomic leg operator is an eigenoperator of `heisenbergEvolve (fermionEnergy
 ε) (-β)`, with an eigenvalue shift *independent of the dressing time* `τ`** — the fact the general
 Bloch–de Dominicis theorem's own eigenoperator hypothesis needs, for each of the `4n` legs
@@ -444,7 +444,7 @@ theorem heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode 
   push_cast
   ring
 
-set_option linter.unusedFintypeInType false in
+omit [Fintype Mode] in
 /-- **Every atomic leg operator `quarticLegOperatorForSequence` produces is an eigenoperator of
 `heisenbergEvolve (fermionEnergy ε) (-β)`** — direct specialization of
 `heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator` to the flattened position `p`'s own
