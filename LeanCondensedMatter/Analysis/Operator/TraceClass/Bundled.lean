@@ -33,44 +33,44 @@ def ofPositive (hcompact : IsCompactOperator T) (hpos : T.IsPositive)
   summable := hsummable
 
 /-- The spectral trace associated with the bundled hypotheses. -/
-noncomputable def spectralTrace (h : SpectralTraceClass T) : ℝ :=
+noncomputable def trace (h : SpectralTraceClass T) : ℝ :=
   ContinuousLinearMap.spectralTrace h.summable
 
 omit [CompleteSpace H] in
 /-- The spectral trace of a positive bundled operator is nonnegative. -/
-theorem spectralTrace_nonneg (h : SpectralTraceClass T)
+theorem trace_nonneg (h : SpectralTraceClass T)
     (hpos : (T : H →ₗ[ℂ] H).IsPositive) :
-    0 ≤ h.spectralTrace := by
-  simpa [spectralTrace] using ContinuousLinearMap.spectralTrace_nonneg h.summable hpos
+    0 ≤ h.trace := by
+  simpa [trace] using ContinuousLinearMap.spectralTrace_nonneg h.summable hpos
 
 /-- Compute the bundled spectral trace against any Hilbert basis. -/
 theorem hasSum_inner_apply (h : SpectralTraceClass T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
-    HasSum (fun i => (inner ℂ (d i) (T (d i)) : ℂ).re) h.spectralTrace := by
-  simpa [spectralTrace] using
+    HasSum (fun i => (inner ℂ (d i) (T (d i)) : ℂ).re) h.trace := by
+  simpa [trace] using
     ContinuousLinearMap.hasSum_inner_apply_eq_spectralTrace h.compact h.symmetric h.summable d
 
 /-- Bound the diagonal sum over an orthonormal family by the bundled spectral trace. -/
-theorem sum_inner_apply_le_spectralTrace (h : SpectralTraceClass T)
+theorem sum_inner_apply_le_trace (h : SpectralTraceClass T)
     (hpos : (T : H →ₗ[ℂ] H).IsPositive) {ι : Type*} {d : ι → H}
     (hd : Orthonormal ℂ d) :
     Summable (fun i => (inner ℂ (d i) (T (d i)) : ℂ).re) ∧
-      ∑' i, (inner ℂ (d i) (T (d i)) : ℂ).re ≤ h.spectralTrace := by
-  simpa [spectralTrace] using ContinuousLinearMap.sum_inner_apply_le_spectralTrace
+      ∑' i, (inner ℂ (d i) (T (d i)) : ℂ).re ≤ h.trace := by
+  simpa [trace] using ContinuousLinearMap.sum_inner_apply_le_spectralTrace
     h.compact h.symmetric hpos h.summable hd
 
 /-- Additivity of the bundled spectral trace. -/
-theorem spectralTrace_add (hT : SpectralTraceClass T) (hT' : SpectralTraceClass T')
+theorem trace_add (hT : SpectralTraceClass T) (hT' : SpectralTraceClass T')
     (hadd : SpectralTraceClass (T + T')) :
-    hadd.spectralTrace = hT.spectralTrace + hT'.spectralTrace := by
-  simpa [spectralTrace] using ContinuousLinearMap.spectralTrace_add
+    hadd.trace = hT.trace + hT'.trace := by
+  simpa [trace] using ContinuousLinearMap.spectralTrace_add
     hT.compact hT.symmetric hT'.compact hT'.symmetric hadd.compact hadd.symmetric
     hT.summable hT'.summable hadd.summable
 
 /-- Cyclicity of the bundled spectral trace for two products. -/
-theorem spectralTrace_comp_comm (hT : SpectralTraceClass T) (hT' : SpectralTraceClass T')
+theorem trace_comp_comm (hT : SpectralTraceClass T) (hT' : SpectralTraceClass T')
     (hTT' : SpectralTraceClass (T * T')) (hT'T : SpectralTraceClass (T' * T)) :
-    hTT'.spectralTrace = hT'T.spectralTrace := by
-  simpa [spectralTrace] using ContinuousLinearMap.spectralTrace_comp_comm
+    hTT'.trace = hT'T.trace := by
+  simpa [trace] using ContinuousLinearMap.spectralTrace_comp_comm
     hT.compact hT.symmetric hT'.compact hT'.symmetric
     hTT'.compact hTT'.symmetric hT'T.compact hT'T.symmetric
     hTT'.summable hT'T.summable
