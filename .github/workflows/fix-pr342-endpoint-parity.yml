@@ -1,0 +1,67 @@
+name: Fix PR 342 endpoint parity namespace
+
+on:
+  push:
+    branches:
+      - agent/reorganize-combinatorics
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/reorganize-combinatorics
+          fetch-depth: 0
+
+      - name: Migrate endpoint parity APIs
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          root = Path("LeanCondensedMatter")
+          replacements = [
+              ("Common.BlochDeDominicis.pairEndpointInversionCount_mod_two_eq_crossesIndicator",
+               "Combinatorics.pairEndpointInversionCount_mod_two_eq_crossesIndicator"),
+              ("Common.BlochDeDominicis.pairEndpointInversionCount_mod_two_eq_one_iff_crosses",
+               "Combinatorics.pairEndpointInversionCount_mod_two_eq_one_iff_crosses"),
+              ("Common.BlochDeDominicis.pairEndpointInversionCount_eq_sum",
+               "Combinatorics.pairEndpointInversionCount_eq_sum"),
+              ("Common.BlochDeDominicis.pairEndpointInversionCount",
+               "Combinatorics.pairEndpointInversionCount"),
+              ("Common.BlochDeDominicis.pairEndpointAt",
+               "Combinatorics.pairEndpointAt"),
+              ("Common.BlochDeDominicis.fintype_sum_mod_two_congr",
+               "Combinatorics.fintype_sum_mod_two_congr"),
+              ("Combinatorics.Pairing.weight_eq_prod_of_crossingCount_mod_two_eq",
+               "Common.BlochDeDominicis.Pairing.weight_eq_prod_of_crossingCount_mod_two_eq"),
+          ]
+
+          changed = []
+          for path in root.rglob("*.lean"):
+              text = path.read_text()
+              new_text = text
+              for old, new in replacements:
+                  new_text = new_text.replace(old, new)
+              if new_text != text:
+                  path.write_text(new_text)
+                  changed.append(str(path))
+
+          if not changed:
+              raise SystemExit("no endpoint parity namespace references changed")
+
+          print("Updated endpoint parity references in:")
+          print("\n".join(changed))
+          PY
+
+      - name: Commit fix
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add LeanCondensedMatter
+          git commit -m "fix: complete endpoint parity namespace migration"
+          git push origin HEAD:agent/reorganize-combinatorics
