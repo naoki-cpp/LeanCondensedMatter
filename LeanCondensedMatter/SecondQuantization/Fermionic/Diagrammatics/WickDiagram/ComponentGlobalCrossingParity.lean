@@ -178,7 +178,7 @@ theorem QuarticWickDiagram.externalCrossingPairs_mod_two_eq_zero
 
 /-- Pairing weight factors over connected components for every component shuffle. -/
 theorem QuarticWickDiagram.pairingInOrder_weight_eq_prod_components
-    (s : Statistics) {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (s : Common.Statistics) {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) :
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).weight s =
       ∏ B : d.componentPartition.parts,

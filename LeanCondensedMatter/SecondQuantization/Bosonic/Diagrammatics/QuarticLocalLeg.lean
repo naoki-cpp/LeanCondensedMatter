@@ -79,11 +79,11 @@ theorem comm_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' : Fi
 /-- The Common `ζ`-commutator form of the bosonic quartic local-leg CCR. -/
 theorem zetaCommutator_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode)
     (l l' : Fin 4) :
-    Common.zetaCommutator ((Statistics.boson.zetaInt : ℤ) : ℂ)
+    Common.zetaCommutator ((Common.Statistics.boson.zetaInt : ℤ) : ℂ)
         (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
       quarticLocalLegCommutatorCoeff q q' l l' •
         (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
-  simpa [Common.zetaCommutator, Statistics.zetaInt_boson, comm] using
+  simpa [Common.zetaCommutator, Common.Statistics.zetaInt_boson, comm] using
     comm_quarticLocalLegOperator q q' l l'
 
 end Bosonic

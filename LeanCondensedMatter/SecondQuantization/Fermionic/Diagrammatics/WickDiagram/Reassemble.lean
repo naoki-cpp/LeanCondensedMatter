@@ -27,8 +27,8 @@ noncomputable def QuarticWickDiagram.bigLegEquiv {S : Finset (Fin N)} (π : Finp
 /-- `bigLegEquiv` at a leg constructed from an ambient vertex and a local leg. -/
 theorem QuarticWickDiagram.bigLegEquiv_legOfVertexLocal {S : Finset (Fin N)}
     (π : Finpartition S) (v : ↥S) (i : Fin 4) :
-    QuarticWickDiagram.bigLegEquiv π (legOfVertexLocal v i) =
-      ⟨(π.equivSigmaParts v).1, legOfVertexLocal (π.equivSigmaParts v).2 i⟩ := by
+    QuarticWickDiagram.bigLegEquiv π (Common.legOfVertexLocal v i) =
+      ⟨(π.equivSigmaParts v).1, Common.legOfVertexLocal (π.equivSigmaParts v).2 i⟩ := by
   simpa only [QuarticWickDiagram.bigLegEquiv] using
     (Common.QuarticDiagram.bigLegEquiv_legOfVertexLocal π v i)
 
@@ -37,7 +37,7 @@ theorem QuarticWickDiagram.bigLegEquiv_symm_sigma_mk {S : Finset (Fin N)}
     (π : Finpartition S) (B : π.parts)
     (leg' : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     (QuarticWickDiagram.bigLegEquiv π).symm ⟨B, leg'⟩ =
-      legOfVertexLocal (π.equivSigmaParts.symm ⟨B, vertexOfLeg leg'⟩) (localLegOfLeg leg') := by
+      Common.legOfVertexLocal (π.equivSigmaParts.symm ⟨B, Common.vertexOfLeg leg'⟩) (Common.localLegOfLeg leg') := by
   simpa only [QuarticWickDiagram.bigLegEquiv] using
     (Common.QuarticDiagram.bigLegEquiv_symm_sigma_mk π B leg')
 

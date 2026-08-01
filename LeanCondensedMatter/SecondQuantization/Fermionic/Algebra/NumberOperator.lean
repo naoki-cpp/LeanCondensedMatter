@@ -49,21 +49,21 @@ theorem numberOperator_basisState (i : Mode) (n : Occupation Mode) :
       fermionSign_sq_complex, one_smul]
   · rw [if_neg hi, annihilate_basisState_of_not_mem hi, map_zero]
 
-/-- **`[c_i, c_i†]_ζ = id`, the fermionic case (`ζ = Statistics.zetaInt Statistics.fermion`)**: an
+/-- **`[c_i, c_i†]_ζ = id`, the fermionic case (`ζ = Common.Statistics.zetaInt Common.Statistics.fermion`)**: an
 instance of `Common.exchangeCommutator_annihilate_create_self`, via the fermionic
 `Common.ExchangeAlgebra` instance (`Fermionic/Algebra/ExchangeAlgebra.lean`), whose `annihilate`/`create`
 fields are literally `Fermionic.annihilate`/`create`. -/
 theorem exchangeCommutator_annihilate_create_self (i : Mode) :
-    Common.exchangeCommutator Statistics.fermion (annihilate i) (create i) =
+    Common.exchangeCommutator Common.Statistics.fermion (annihilate i) (create i) =
       (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :=
   Common.exchangeCommutator_annihilate_create_self (Config := Occupation Mode) i
 
 /-- **`c_i c_i† = id - N_i`**, an instance of `Common.annihilate_comp_create_self`. -/
 theorem annihilate_comp_create_self (i : Mode) :
     (annihilate i).comp (create i) = LinearMap.id - numberOperator i := by
-  have h := Common.annihilate_comp_create_self (s := Statistics.fermion)
+  have h := Common.annihilate_comp_create_self (s := Common.Statistics.fermion)
     (Config := Occupation Mode) i
-  rwa [Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one, neg_one_smul,
+  rwa [Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one, neg_one_smul,
     ← sub_eq_add_neg] at h
 
 /-- **`Nᵢ` is idempotent**: `Nᵢ ∘ Nᵢ = Nᵢ`, directly from the number-operator eigenvalue equation

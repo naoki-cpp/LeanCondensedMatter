@@ -10,6 +10,7 @@ fixed enumeration of a finite vertex set.
 -/
 
 namespace SecondQuantization
+namespace Common
 
 variable {N : ℕ}
 
@@ -40,5 +41,7 @@ noncomputable def legOfVertexLocal {S : Finset (Fin N)} (v : ↥S) (l : Fin 4) :
 
 @[simp] theorem localLegOfLeg_legOfVertexLocal {S : Finset (Fin N)} (v : ↥S) (l : Fin 4) :
     localLegOfLeg (legOfVertexLocal v l) = l := by simp [localLegOfLeg, legOfVertexLocal]
+
+end Common
 
 end SecondQuantization

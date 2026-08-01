@@ -24,41 +24,41 @@ noncomputable def QuarticWickDiagram.componentOrderedLeg {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (shuffle : d.ComponentShuffle)
     (B : d.componentPartition.parts) :
     Fin (2 * (2 * (B : Finset (Fin N)).card)) → Fin (2 * (2 * S.card)) :=
-  fun p => (orderedQuarticLegEquiv S.card).symm
-    (shuffle.slotEquiv ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩,
-      (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).2)
+  fun p => (Common.orderedQuarticLegEquiv S.card).symm
+    (shuffle.slotEquiv ⟨B, (Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩,
+      (Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card p).2)
 
 @[simp]
 theorem QuarticWickDiagram.orderedQuarticLegEquiv_componentOrderedLeg
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (shuffle : d.ComponentShuffle) (B : d.componentPartition.parts)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
-    orderedQuarticLegEquiv S.card (d.componentOrderedLeg shuffle B p) =
-      (shuffle.slotEquiv ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩,
-        (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).2) := by
+    Common.orderedQuarticLegEquiv S.card (d.componentOrderedLeg shuffle B p) =
+      (shuffle.slotEquiv ⟨B, (Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩,
+        (Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card p).2) := by
   simp [QuarticWickDiagram.componentOrderedLeg]
 
 /-- Recover the flattened ordered-leg value from its vertex slot and local leg. -/
 theorem orderedQuarticLegEquiv_reconstruct_val (n : ℕ) (p : Fin (2 * (2 * n))) :
-    p.val = (orderedQuarticLegEquiv n p).2.val + 4 * (orderedQuarticLegEquiv n p).1.val := by
-  have h := congrArg (fun q => q.val) ((orderedQuarticLegEquiv n).symm_apply_apply p)
-  simpa [orderedQuarticLegEquiv, finProdFinEquiv] using h.symm
+    p.val = (Common.orderedQuarticLegEquiv n p).2.val + 4 * (Common.orderedQuarticLegEquiv n p).1.val := by
+  have h := congrArg (fun q => q.val) ((Common.orderedQuarticLegEquiv n).symm_apply_apply p)
+  simpa [Common.orderedQuarticLegEquiv, finProdFinEquiv] using h.symm
 
 /-- Flattened quartic legs in distinct vertex-slot blocks are ordered exactly by their slots. -/
 theorem orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne
     (n : ℕ) (i j : Fin n) (a b : Fin 4) (hij : i ≠ j) :
-    (orderedQuarticLegEquiv n).symm (i, a) <
-        (orderedQuarticLegEquiv n).symm (j, b) ↔ i < j := by
+    (Common.orderedQuarticLegEquiv n).symm (i, a) <
+        (Common.orderedQuarticLegEquiv n).symm (j, b) ↔ i < j := by
   have hp := orderedQuarticLegEquiv_reconstruct_val n
-    ((orderedQuarticLegEquiv n).symm (i, a))
+    ((Common.orderedQuarticLegEquiv n).symm (i, a))
   have hq := orderedQuarticLegEquiv_reconstruct_val n
-    ((orderedQuarticLegEquiv n).symm (j, b))
-  have hp' : ((orderedQuarticLegEquiv n).symm (i, a)).val = a.val + 4 * i.val := by
+    ((Common.orderedQuarticLegEquiv n).symm (j, b))
+  have hp' : ((Common.orderedQuarticLegEquiv n).symm (i, a)).val = a.val + 4 * i.val := by
     simpa using hp
-  have hq' : ((orderedQuarticLegEquiv n).symm (j, b)).val = b.val + 4 * j.val := by
+  have hq' : ((Common.orderedQuarticLegEquiv n).symm (j, b)).val = b.val + 4 * j.val := by
     simpa using hq
-  change ((orderedQuarticLegEquiv n).symm (i, a)).val <
-      ((orderedQuarticLegEquiv n).symm (j, b)).val ↔ i.val < j.val
+  change ((Common.orderedQuarticLegEquiv n).symm (i, a)).val <
+      ((Common.orderedQuarticLegEquiv n).symm (j, b)).val ↔ i.val < j.val
   rw [hp', hq']
   have ha : a.val < 4 := a.isLt
   have hb : b.val < 4 := b.isLt
@@ -74,10 +74,10 @@ theorem QuarticWickDiagram.componentOrderedLeg_val {S : Finset (Fin N)}
     (B : d.componentPartition.parts)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
     (d.componentOrderedLeg shuffle B p).val =
-      (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).2.val +
+      (Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card p).2.val +
         4 * (shuffle.slotEquiv
-          ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩).val := by
-  simp [QuarticWickDiagram.componentOrderedLeg, orderedQuarticLegEquiv, finProdFinEquiv]
+          ⟨B, (Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩).val := by
+  simp [QuarticWickDiagram.componentOrderedLeg, Common.orderedQuarticLegEquiv, finProdFinEquiv]
 
 /-- The component ordered-leg embedding preserves the flattened-leg order. -/
 theorem QuarticWickDiagram.componentOrderedLeg_strictMono {S : Finset (Fin N)}
@@ -85,8 +85,8 @@ theorem QuarticWickDiagram.componentOrderedLeg_strictMono {S : Finset (Fin N)}
     (B : d.componentPartition.parts) :
     StrictMono (d.componentOrderedLeg shuffle B) := by
   intro a b hab
-  let pa := orderedQuarticLegEquiv (B : Finset (Fin N)).card a
-  let pb := orderedQuarticLegEquiv (B : Finset (Fin N)).card b
+  let pa := Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card a
+  let pb := Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card b
   have ha := orderedQuarticLegEquiv_reconstruct_val (B : Finset (Fin N)).card a
   have hb := orderedQuarticLegEquiv_reconstruct_val (B : Finset (Fin N)).card b
   change a.val = pa.2.val + 4 * pa.1.val at ha

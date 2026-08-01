@@ -12,7 +12,7 @@ Phase 9, step 3 (`notes/roadmaps/second-quantization.md`):
 previous two steps —
 `ImaginaryTimeEvolution.lean`'s `imaginaryTimeEvolve` (still only defined for evolution under the
 *free* Hamiltonian `H₀ = freeHamiltonian ε`) and `Common/ImaginaryTime/TimeOrdering.lean`'s
-`Common.timeOrderedProduct Statistics.fermion` — applied to `annihilate i`/`create j` and
+`Common.timeOrderedProduct Common.Statistics.fermion` — applied to `annihilate i`/`create j` and
 evaluated with `Common.normalizedWeightedDiagonal w`.
 
 **This is not yet the free Gibbs Green function `G₀` in general.** Two independent restrictions
@@ -42,7 +42,7 @@ hold for this to be the physical free Gibbs Green function `G₀`. -/
 noncomputable def weightedFreeTwoPointFunction (ε : Mode → ℝ) (w : Occupation Mode → ℂ)
     (i j : Mode) (τ τ' : ℝ) : ℂ :=
   - Common.normalizedWeightedDiagonal w
-      (Common.timeOrderedProduct Statistics.fermion
+      (Common.timeOrderedProduct Common.Statistics.fermion
         (imaginaryTimeEvolve ε τ (annihilate i)) (imaginaryTimeEvolve ε τ' (create j)) τ τ')
 
 /-- **For `τ' < τ`**, time-ordering already has `c_i(τ)` to the left: `G_{ij}(τ, τ') =
@@ -54,7 +54,7 @@ theorem weightedFreeTwoPointFunction_of_gt (ε : Mode → ℝ) (w : Occupation M
       - Common.normalizedWeightedDiagonal w
           ((imaginaryTimeEvolve ε τ (annihilate i)).comp
             (imaginaryTimeEvolve ε τ' (create j))) := by
-  rw [weightedFreeTwoPointFunction, Common.timeOrderedProduct_of_gt Statistics.fermion _ _ h]
+  rw [weightedFreeTwoPointFunction, Common.timeOrderedProduct_of_gt Common.Statistics.fermion _ _ h]
 
 /-- **For `τ < τ'`**, time-ordering swaps to `c_j†(τ')` on the left, picking up the fermionic
 exchange sign `-1`, which cancels the definition's outer `-1`: `G_{ij}(τ, τ') =
@@ -67,8 +67,8 @@ theorem weightedFreeTwoPointFunction_of_lt (ε : Mode → ℝ) (w : Occupation M
       Common.normalizedWeightedDiagonal w
         ((imaginaryTimeEvolve ε τ' (create j)).comp
           (imaginaryTimeEvolve ε τ (annihilate i))) := by
-  rw [weightedFreeTwoPointFunction, Common.timeOrderedProduct_of_lt Statistics.fermion _ _ h,
-    Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one, neg_one_smul,
+  rw [weightedFreeTwoPointFunction, Common.timeOrderedProduct_of_lt Common.Statistics.fermion _ _ h,
+    Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one, neg_one_smul,
     Common.normalizedWeightedDiagonal, Common.weightedTrace]
   simp only [Common.matrixCoeff, LinearMap.neg_apply, Finsupp.neg_apply, mul_neg,
     Common.normalizedWeightedDiagonal, Common.weightedTrace, Finset.sum_neg_distrib, neg_div,
@@ -87,8 +87,8 @@ theorem weightedFreeTwoPointFunction_self_time (ε : Mode → ℝ) (w : Occupati
             (-1 : ℂ) •
               ((imaginaryTimeEvolve ε τ (create j)).comp
                 (imaginaryTimeEvolve ε τ (annihilate i))))) := by
-  rw [weightedFreeTwoPointFunction, Common.timeOrderedProduct_self_time Statistics.fermion,
-    Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
+  rw [weightedFreeTwoPointFunction, Common.timeOrderedProduct_self_time Common.Statistics.fermion,
+    Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
 
 end Fermionic
 end SecondQuantization

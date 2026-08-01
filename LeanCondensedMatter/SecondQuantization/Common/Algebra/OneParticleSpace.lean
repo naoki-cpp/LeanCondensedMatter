@@ -17,6 +17,7 @@ finite-first approach already used for `Finpartition`/`IncidenceAlgebra` in Trac
 -/
 
 namespace SecondQuantization
+namespace Common
 
 -- **One-particle mode space.** An abstract label set for single-particle states (momentum
 -- modes, lattice sites, spin components, ...). No algebraic structure beyond `Fintype` and
@@ -25,5 +26,7 @@ variable (Mode : Type*) [Fintype Mode] [DecidableEq Mode]
 
 /-- The number of one-particle mode labels. -/
 abbrev modeCount : ℕ := Fintype.card Mode
+
+end Common
 
 end SecondQuantization

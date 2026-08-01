@@ -13,6 +13,7 @@ refer to it without duplicating the sign convention.
 -/
 
 namespace SecondQuantization
+namespace Common
 
 /-- **Quantum statistics.** Which of the two exchange statistics a species of identical particle
 obeys. -/
@@ -41,5 +42,7 @@ theorem zeta_sq (s : Statistics) : zetaInt s * zetaInt s = 1 := by
   cases s <;> decide
 
 end Statistics
+
+end Common
 
 end SecondQuantization

@@ -22,7 +22,7 @@ noncomputable section
 def QuarticWickDiagram.legInBlock {S : Finset (Fin N)}
     (_d : QuarticWickDiagram Mode N S) (B : Finset (Fin N))
     (leg : Fin (2 * (2 * S.card))) : Prop :=
-  (vertexOfLeg leg : Fin N) ∈ B
+  (Common.vertexOfLeg leg : Fin N) ∈ B
 
 theorem QuarticWickDiagram.componentBlock_eq_iff_mem {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)}
@@ -37,8 +37,8 @@ theorem QuarticWickDiagram.componentPart_subset {S : Finset (Fin N)}
 
 theorem QuarticWickDiagram.componentBlock_vertexOfLeg_partner {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (leg : Fin (2 * (2 * S.card))) :
-    d.componentBlock (vertexOfLeg (d.pairing.partner leg)) =
-      d.componentBlock (vertexOfLeg leg) :=
+    d.componentBlock (Common.vertexOfLeg (d.pairing.partner leg)) =
+      d.componentBlock (Common.vertexOfLeg leg) :=
   Common.QuarticDiagram.componentBlock_vertexOfLeg_partner d leg
 
 theorem QuarticWickDiagram.legInBlock_partner_iff {S : Finset (Fin N)}
@@ -86,7 +86,7 @@ theorem QuarticWickDiagram.subtypeMemBlockEquiv_symm_val {S : Finset (Fin N)}
 
 theorem QuarticWickDiagram.legOfVertexLocal_vertexOfLeg_localLegOfLeg
     {S : Finset (Fin N)} (leg : Fin (2 * (2 * S.card))) :
-    legOfVertexLocal (vertexOfLeg leg) (localLegOfLeg leg) = leg :=
+    Common.legOfVertexLocal (Common.vertexOfLeg leg) (Common.localLegOfLeg leg) = leg :=
   Common.QuarticDiagram.legOfVertexLocal_vertexOfLeg_localLegOfLeg leg
 
 abbrev QuarticWickDiagram.blockLegEquiv {S : Finset (Fin N)}
@@ -99,17 +99,17 @@ theorem QuarticWickDiagram.vertexOfLeg_blockLegEquiv {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts)
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
-    vertexOfLeg (d.blockLegEquiv hB leg) =
+    Common.vertexOfLeg (d.blockLegEquiv hB leg) =
       QuarticWickDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)
-        ⟨vertexOfLeg (leg : Fin (2 * (2 * S.card))), leg.2⟩ :=
+        ⟨Common.vertexOfLeg (leg : Fin (2 * (2 * S.card))), leg.2⟩ :=
   Common.QuarticDiagram.vertexOfLeg_blockLegEquiv d hB leg
 
 theorem QuarticWickDiagram.localLegOfLeg_blockLegEquiv {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts)
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
-    localLegOfLeg (d.blockLegEquiv hB leg) =
-      localLegOfLeg (leg : Fin (2 * (2 * S.card))) :=
+    Common.localLegOfLeg (d.blockLegEquiv hB leg) =
+      Common.localLegOfLeg (leg : Fin (2 * (2 * S.card))) :=
   Common.QuarticDiagram.localLegOfLeg_blockLegEquiv d hB leg
 
 abbrev QuarticWickDiagram.restrictedPairing {S : Finset (Fin N)}

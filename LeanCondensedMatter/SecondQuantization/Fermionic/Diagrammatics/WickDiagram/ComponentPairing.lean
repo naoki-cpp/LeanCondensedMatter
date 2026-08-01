@@ -21,17 +21,17 @@ variable {Mode : Type*} {N : ℕ}
 @[simp]
 theorem vertexOfLeg_orderedLegToDiagramLeg (S : Finset (Fin N))
     (order : QuarticVertexOrder S) (p : Fin (2 * (2 * S.card))) :
-    vertexOfLeg (orderedLegToDiagramLeg S order p) =
-      order (orderedQuarticLegEquiv S.card p).1 := by
-  change ((quarticLegEquiv S) ((Common.orderedLegToDiagramLeg S order) p)).1 = _
+    Common.vertexOfLeg (orderedLegToDiagramLeg S order p) =
+      order (Common.orderedQuarticLegEquiv S.card p).1 := by
+  change ((Common.quarticLegEquiv S) ((Common.orderedLegToDiagramLeg S order) p)).1 = _
   simp [Common.orderedLegToDiagramLeg]
 
 @[simp]
 theorem localLegOfLeg_orderedLegToDiagramLeg (S : Finset (Fin N))
     (order : QuarticVertexOrder S) (p : Fin (2 * (2 * S.card))) :
-    localLegOfLeg (orderedLegToDiagramLeg S order p) =
-      (orderedQuarticLegEquiv S.card p).2 := by
-  change ((quarticLegEquiv S) ((Common.orderedLegToDiagramLeg S order) p)).2 = _
+    Common.localLegOfLeg (orderedLegToDiagramLeg S order p) =
+      (Common.orderedQuarticLegEquiv S.card p).2 := by
+  change ((Common.quarticLegEquiv S) ((Common.orderedLegToDiagramLeg S order) p)).2 = _
   simp [Common.orderedLegToDiagramLeg]
 
 /-- Embed a flattened leg of a restricted component into the ambient diagram's fixed flattened-leg
@@ -46,8 +46,8 @@ theorem QuarticWickDiagram.vertexOfLeg_componentDiagramLeg_val
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (B : d.componentPartition.parts)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
-    ((vertexOfLeg (d.componentDiagramLeg B p) : ↥S) : Fin N) =
-      ((vertexOfLeg p : ↥(B : Finset (Fin N))) : Fin N) := by
+    ((Common.vertexOfLeg (d.componentDiagramLeg B p) : ↥S) : Fin N) =
+      ((Common.vertexOfLeg p : ↥(B : Finset (Fin N))) : Fin N) := by
   let leg := (d.blockLegEquiv B.2).symm p
   have h := d.vertexOfLeg_blockLegEquiv B.2 leg
   have h' := congrArg (fun v : ↥(B : Finset (Fin N)) => (v : Fin N)) h
@@ -59,7 +59,7 @@ theorem QuarticWickDiagram.localLegOfLeg_componentDiagramLeg
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (B : d.componentPartition.parts)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
-    localLegOfLeg (d.componentDiagramLeg B p) = localLegOfLeg p := by
+    Common.localLegOfLeg (d.componentDiagramLeg B p) = Common.localLegOfLeg p := by
   let leg := (d.blockLegEquiv B.2).symm p
   have h := d.localLegOfLeg_blockLegEquiv B.2 leg
   simpa [QuarticWickDiagram.componentDiagramLeg, leg] using h.symm
@@ -75,12 +75,12 @@ theorem QuarticWickDiagram.orderedLegToDiagramLeg_componentOrderedLeg
         (d.componentOrderedLeg shuffle B p) =
       d.componentDiagramLeg B
         (orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p) := by
-  apply (quarticLegEquiv S).injective
+  apply (Common.quarticLegEquiv S).injective
   apply Prod.ext
-  · change vertexOfLeg
+  · change Common.vertexOfLeg
       (orderedLegToDiagramLeg S (d.assembleVertexOrder orders shuffle)
         (d.componentOrderedLeg shuffle B p)) =
-      vertexOfLeg
+      Common.vertexOfLeg
         (d.componentDiagramLeg B
           (orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p))
     apply Subtype.ext
@@ -89,21 +89,21 @@ theorem QuarticWickDiagram.orderedLegToDiagramLeg_componentOrderedLeg
     calc
       ((d.assembleVertexOrder orders shuffle
           (shuffle.slotEquiv
-            ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩) : ↥S) : Fin N) =
-          ((orders B (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1 :
+            ⟨B, (Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩) : ↥S) : Fin N) =
+          ((orders B (Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1 :
             ↥(B : Finset (Fin N))) : Fin N) :=
         d.assembleVertexOrder_componentSlot_val orders shuffle B _
-      _ = ((vertexOfLeg
+      _ = ((Common.vertexOfLeg
           (orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p) :
             ↥(B : Finset (Fin N))) : Fin N) := by simp
-      _ = ((vertexOfLeg
+      _ = ((Common.vertexOfLeg
           (d.componentDiagramLeg B
             (orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p)) : ↥S) : Fin N) :=
         (d.vertexOfLeg_componentDiagramLeg_val B _).symm
-  · change localLegOfLeg
+  · change Common.localLegOfLeg
       (orderedLegToDiagramLeg S (d.assembleVertexOrder orders shuffle)
         (d.componentOrderedLeg shuffle B p)) =
-      localLegOfLeg
+      Common.localLegOfLeg
         (d.componentDiagramLeg B
           (orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p))
     simp [d.localLegOfLeg_componentDiagramLeg]

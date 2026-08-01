@@ -113,20 +113,20 @@ time-ordering branches. -/
 theorem normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate (ε : Mode → ℝ)
     (w : Occupation Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
     Common.normalizedWeightedDiagonal w
-      (Common.timeOrderedProduct Statistics.fermion
+      (Common.timeOrderedProduct Common.Statistics.fermion
         (imaginaryTimeEvolve ε τ (annihilate i)) (imaginaryTimeEvolve ε τ' (annihilate j)) τ τ')
       = 0 := by
   rw [imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_annihilate]
   rcases lt_trichotomy τ' τ with h | h | h
-  · rw [Common.timeOrderedProduct_of_gt Statistics.fermion _ _ h]
+  · rw [Common.timeOrderedProduct_of_gt Common.Statistics.fermion _ _ h]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul,
       normalizedWeightedDiagonal_annihilate_comp_annihilate]
   · subst h
-    rw [Common.timeOrderedProduct_self_time Statistics.fermion]
+    rw [Common.timeOrderedProduct_self_time Common.Statistics.fermion]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul,
       Common.normalizedWeightedDiagonal_add, Common.normalizedWeightedDiagonal_neg,
       normalizedWeightedDiagonal_annihilate_comp_annihilate]
-  · rw [Common.timeOrderedProduct_of_lt Statistics.fermion _ _ h]
+  · rw [Common.timeOrderedProduct_of_lt Common.Statistics.fermion _ _ h]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul,
       Common.normalizedWeightedDiagonal_neg, normalizedWeightedDiagonal_annihilate_comp_annihilate]
 
@@ -135,20 +135,20 @@ theorem normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate (ε 
 theorem normalizedWeightedDiagonal_timeOrderedProduct_create_create (ε : Mode → ℝ)
     (w : Occupation Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
     Common.normalizedWeightedDiagonal w
-      (Common.timeOrderedProduct Statistics.fermion
+      (Common.timeOrderedProduct Common.Statistics.fermion
         (imaginaryTimeEvolve ε τ (create i)) (imaginaryTimeEvolve ε τ' (create j)) τ τ')
       = 0 := by
   rw [imaginaryTimeEvolve_create, imaginaryTimeEvolve_create]
   rcases lt_trichotomy τ' τ with h | h | h
-  · rw [Common.timeOrderedProduct_of_gt Statistics.fermion _ _ h]
+  · rw [Common.timeOrderedProduct_of_gt Common.Statistics.fermion _ _ h]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul,
       normalizedWeightedDiagonal_create_comp_create]
   · subst h
-    rw [Common.timeOrderedProduct_self_time Statistics.fermion]
+    rw [Common.timeOrderedProduct_self_time Common.Statistics.fermion]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul,
       Common.normalizedWeightedDiagonal_add, Common.normalizedWeightedDiagonal_neg,
       normalizedWeightedDiagonal_create_comp_create]
-  · rw [Common.timeOrderedProduct_of_lt Statistics.fermion _ _ h]
+  · rw [Common.timeOrderedProduct_of_lt Common.Statistics.fermion _ _ h]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul,
       Common.normalizedWeightedDiagonal_neg, normalizedWeightedDiagonal_create_comp_create]
 

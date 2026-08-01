@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import re
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SQ = ROOT / "LeanCondensedMatter" / "SecondQuantization"
+OWNERS = {"Common", "Fermionic", "Bosonic"}
 
 REMOVED_FILES = (
     SQ / "Common.lean",
@@ -35,11 +37,41 @@ PHYSICS_IMPORT = re.compile(
 LEGACY_FERMIONIC_IDENTIFIER = re.compile(
     r"FockSpaceFermionic|FermionOccupation|fermionParticleNumber|fermionVacuum"
 )
-FERMIONIC_DECLARATION = re.compile(
-    r"(?m)^\s*(?:(?:private|protected)\s+)?(?:noncomputable\s+)?"
-    r"(?:abbrev|def|theorem|lemma|instance|structure|class|inductive|opaque)\b"
+NAMESPACE_RE = re.compile(r"^\s*namespace\s+([A-Za-z0-9_'.]+)\s*$")
+SECTION_RE = re.compile(r"^\s*(?:noncomputable\s+)?section(?:\s+([A-Za-z0-9_'.]+))?\s*$")
+END_RE = re.compile(r"^\s*end(?:\s+([A-Za-z0-9_'.]+))?\s*$")
+DECL_RE = re.compile(
+    r"^\s*(?:@\[[^\]]*\]\s*)*"
+    r"(?:(?:private|protected|noncomputable|unsafe|partial)\s+)*"
+    r"(abbrev|axiom|class|def|inductive|instance|lemma|opaque|structure|theorem)\b"
+    r"\s*([^\s:({\[]+)?"
 )
-CANONICAL_FERMIONIC_NAMESPACE = "namespace SecondQuantization\nnamespace Fermionic"
+STATISTIC_NAME_RE = re.compile(r"(?:Boson|Bosonic|Fermion|Fermionic)")
+ALLOWED_EXTERNAL_DECLARATIONS = {
+    (
+        "LeanCondensedMatter/SecondQuantization/Common/Thermal/"
+        "BlochDeDominicis/PairingWeight.lean",
+        "Pairing.weight",
+        "Combinatorics",
+    ),
+}
+
+
+@dataclass
+class Frame:
+    kind: str
+    name: str | None
+    namespace_parts: tuple[str, ...] = ()
+
+
+@dataclass
+class Finding:
+    owner: str
+    path: Path
+    line: int
+    kind: str
+    name: str
+    namespace: str
 
 
 def lean_files(root: Path):
@@ -48,6 +80,165 @@ def lean_files(root: Path):
 
 def relative(path: Path) -> str:
     return str(path.relative_to(ROOT))
+
+
+def strip_comments(text: str) -> str:
+    """Remove Lean line and nested block comments while preserving newlines."""
+    out: list[str] = []
+    i = 0
+    depth = 0
+    in_string = False
+    escaped = False
+
+    while i < len(text):
+        ch = text[i]
+        nxt = text[i + 1] if i + 1 < len(text) else ""
+
+        if depth:
+            if ch == "/" and nxt == "-":
+                depth += 1
+                out.extend("  ")
+                i += 2
+            elif ch == "-" and nxt == "/":
+                depth -= 1
+                out.extend("  ")
+                i += 2
+            else:
+                out.append("\n" if ch == "\n" else " ")
+                i += 1
+            continue
+
+        if in_string:
+            out.append(ch)
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+            i += 1
+            continue
+
+        if ch == '"':
+            in_string = True
+            out.append(ch)
+            i += 1
+        elif ch == "/" and nxt == "-":
+            depth = 1
+            out.extend("  ")
+            i += 2
+        elif ch == "-" and nxt == "-":
+            while i < len(text) and text[i] != "\n":
+                out.append(" ")
+                i += 1
+        else:
+            out.append(ch)
+            i += 1
+
+    return "".join(out)
+
+
+def current_namespace(stack: list[Frame]) -> tuple[str, ...]:
+    parts: list[str] = []
+    for frame in stack:
+        if frame.kind == "namespace":
+            parts.extend(frame.namespace_parts)
+    return tuple(parts)
+
+
+def close_scope(stack: list[Frame], name: str | None, path: Path, line_no: int) -> None:
+    if not stack:
+        raise RuntimeError(f"unmatched end in {relative(path)}:{line_no}")
+
+    if name is None:
+        stack.pop()
+        return
+
+    target = tuple(name.split("."))
+    if len(target) > 1:
+        before = current_namespace(stack)
+        if len(before) < len(target) or before[-len(target):] != target:
+            raise RuntimeError(
+                f"qualified end `{name}` does not match namespace `{'.'.join(before)}` "
+                f"in {relative(path)}:{line_no}"
+            )
+        removed: list[str] = []
+        while stack and len(removed) < len(target):
+            frame = stack.pop()
+            if frame.kind == "namespace":
+                removed[0:0] = frame.namespace_parts
+        if tuple(removed[-len(target):]) != target:
+            raise RuntimeError(
+                f"could not close qualified namespace `{name}` in {relative(path)}:{line_no}"
+            )
+        return
+
+    for index in range(len(stack) - 1, -1, -1):
+        frame = stack[index]
+        frame_matches = frame.name == name or (
+            frame.kind == "namespace" and frame.namespace_parts and frame.namespace_parts[-1] == name
+        )
+        if frame_matches:
+            del stack[index:]
+            return
+
+    raise RuntimeError(f"unmatched named end `{name}` in {relative(path)}:{line_no}")
+
+
+def audit_file(path: Path) -> tuple[list[Finding], list[Finding]]:
+    rel = path.relative_to(SQ)
+    owner = rel.parts[0] if rel.parts and rel.parts[0] in OWNERS else "Root"
+    expected = ("SecondQuantization", owner) if owner in OWNERS else ("SecondQuantization",)
+    text = strip_comments(path.read_text(encoding="utf-8"))
+    stack: list[Frame] = []
+    misplaced: list[Finding] = []
+    statistic_names: list[Finding] = []
+
+    for line_no, line in enumerate(text.splitlines(), start=1):
+        if match := NAMESPACE_RE.match(line):
+            raw = match.group(1)
+            stack.append(Frame("namespace", raw, tuple(raw.split("."))))
+            continue
+        if match := SECTION_RE.match(line):
+            stack.append(Frame("section", match.group(1)))
+            continue
+        if match := END_RE.match(line):
+            close_scope(stack, match.group(1), path, line_no)
+            continue
+        if match := DECL_RE.match(line):
+            kind = match.group(1)
+            name = match.group(2) or "<anonymous>"
+            namespace_parts = current_namespace(stack)
+            namespace = ".".join(namespace_parts) or "<root>"
+            finding = Finding(owner, path, line_no, kind, name, namespace)
+            if namespace_parts[: len(expected)] != expected:
+                misplaced.append(finding)
+            if STATISTIC_NAME_RE.search(name):
+                statistic_names.append(finding)
+
+    if stack:
+        scopes = ", ".join(f"{frame.kind}:{frame.name or '<anonymous>'}" for frame in stack)
+        raise RuntimeError(f"unclosed scopes in {relative(path)}: {scopes}")
+
+    return misplaced, statistic_names
+
+
+def collect_namespace_findings() -> tuple[list[Finding], list[Finding]]:
+    misplaced: list[Finding] = []
+    statistic_names: list[Finding] = []
+
+    for path in lean_files(SQ):
+        file_misplaced, file_statistics = audit_file(path)
+        misplaced.extend(file_misplaced)
+        statistic_names.extend(file_statistics)
+
+    misplaced = [
+        finding
+        for finding in misplaced
+        if (relative(finding.path), finding.name, finding.namespace)
+        not in ALLOWED_EXTERNAL_DECLARATIONS
+    ]
+    return misplaced, statistic_names
 
 
 def check_removed_paths(errors: list[str]) -> None:
@@ -92,7 +283,7 @@ def check_dependency_direction(errors: list[str]) -> None:
                     )
 
 
-def check_fermionic_namespace(errors: list[str]) -> None:
+def check_legacy_identifiers(errors: list[str]) -> None:
     for path in lean_files(ROOT / "LeanCondensedMatter"):
         text = path.read_text(encoding="utf-8")
         for match in LEGACY_FERMIONIC_IDENTIFIER.finditer(text):
@@ -101,16 +292,20 @@ def check_fermionic_namespace(errors: list[str]) -> None:
                 f"legacy fermionic identifier: {relative(path)}:{line_no}: {match.group(0)}"
             )
 
-    for path in lean_files(SQ / "Fermionic"):
-        text = path.read_text(encoding="utf-8")
-        if not FERMIONIC_DECLARATION.search(text):
-            continue
-        root_blocks = len(re.findall(r"(?m)^namespace SecondQuantization\s*$", text))
-        canonical_blocks = text.count(CANONICAL_FERMIONIC_NAMESPACE)
-        if root_blocks == 0 or root_blocks != canonical_blocks:
-            errors.append(
-                f"fermionic declarations outside canonical namespace: {relative(path)}"
-            )
+
+def check_declaration_namespaces(errors: list[str]) -> None:
+    misplaced, statistic_names = collect_namespace_findings()
+    for finding in misplaced:
+        errors.append(
+            "declaration outside path-owned namespace: "
+            f"{relative(finding.path)}:{finding.line}: "
+            f"{finding.kind} {finding.name} in {finding.namespace}"
+        )
+    for finding in statistic_names:
+        errors.append(
+            "statistic-encoded declaration name: "
+            f"{relative(finding.path)}:{finding.line}: {finding.name}"
+        )
 
 
 def check_entry_point(errors: list[str]) -> None:
@@ -128,7 +323,8 @@ def main() -> int:
     errors: list[str] = []
     check_removed_paths(errors)
     check_dependency_direction(errors)
-    check_fermionic_namespace(errors)
+    check_legacy_identifiers(errors)
+    check_declaration_namespaces(errors)
     check_entry_point(errors)
 
     if errors:
