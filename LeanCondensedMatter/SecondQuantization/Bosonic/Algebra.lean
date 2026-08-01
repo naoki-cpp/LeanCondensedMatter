@@ -14,5 +14,6 @@ Public umbrella for the algebraic bosonic layer:
 - particle-number grading and number operators.
 
 The underlying declarations live in small proof files under `Algebra/`; consumers normally
-import this module instead of those internal files.
+import this module instead of those internal files. The former `Foundations/` and
+`OperatorAlgebra/` module paths are intentionally not retained.
 -/
