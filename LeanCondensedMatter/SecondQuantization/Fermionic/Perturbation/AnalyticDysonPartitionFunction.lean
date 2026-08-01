@@ -147,6 +147,7 @@ theorem analyticDysonPartitionFunction_zero
   rw [← tsum_dysonTraceCoeff_eq_analyticDysonPartitionFunction ε hβ V 0,
     tsum_eq_single 0]
   · rw [← dysonPartitionCoeff_eq_dysonTraceCoeff, dysonPartitionCoeff_zero]
+    simp
   · intro n hn
     simp [hn]
 
