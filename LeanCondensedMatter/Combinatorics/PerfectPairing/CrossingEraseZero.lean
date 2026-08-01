@@ -10,11 +10,9 @@ set_option linter.style.header false
 entirely among the remaining pairs after removing `firstPair` plus crossings with `firstPair`.
 -/
 
-namespace SecondQuantization
-namespace Common
-namespace BlochDeDominicis
+namespace Combinatorics
 
-open Combinatorics.FiniteIndex
+open FiniteIndex
 
 theorem Pairing.eraseZeroPair_crosses_iff {n : ℕ} (pairing : Pairing (n + 1))
     (i k p q : Fin (2 * n)) :
@@ -261,7 +259,8 @@ theorem Pairing.crossingsWithFirstPair_mod_two {n : ℕ} (pairing : Pairing (n +
       · simp only [hD, hI, Finset.mem_filter, Finset.mem_Ioo] at hkD ⊢
         obtain ⟨⟨h1, h2⟩, h3⟩ := hkD
         exact ⟨⟨h1.trans hklt, h3⟩, by rw [pairing.partner_partner]; exact h2⟩
-      · rw [pairing.partner_partner]; exact hklt
+      · rw [pairing.partner_partner]
+        exact hklt
     · intro k hk
       simp only [hB, Finset.mem_filter] at hk
       obtain ⟨hkD, hklt⟩ := hk
@@ -273,7 +272,8 @@ theorem Pairing.crossingsWithFirstPair_mod_two {n : ℕ} (pairing : Pairing (n +
           lt_of_le_of_ne (Fin.zero_le _)
             (Ne.symm (hpartner_ne0 k (Finset.mem_Ioo.mpr ⟨h1, h2⟩)))
         exact ⟨⟨hpos, h3⟩, by rw [pairing.partner_partner]; exact h2⟩
-      · rw [pairing.partner_partner]; exact hklt
+      · rw [pairing.partner_partner]
+        exact hklt
     · intro k _
       exact pairing.partner_partner k
     · intro k _
@@ -290,6 +290,4 @@ theorem Pairing.crossingsWithFirstPair_mod_two {n : ℕ} (pairing : Pairing (n +
     rw [← hIcard', hIcard, hDcard, hCcard]
   omega
 
-end BlochDeDominicis
-end Common
-end SecondQuantization
+end Combinatorics
