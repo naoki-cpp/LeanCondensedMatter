@@ -27,3 +27,7 @@ The associated quartic-leg inverse lemmas moved with the definitions. All in-rep
 the new names. `Combinatorics.Pairing.weight` intentionally remains in `Combinatorics` as an
 extension of the pairing type, while its statistics argument is now
 `SecondQuantization.Common.Statistics`.
+
+The permanent namespace audit checks every declaration under `SecondQuantization/` against its path
+owner and rejects statistic-encoded declaration names. The pairing-weight extension is the only
+explicitly allowlisted cross-namespace declaration.
