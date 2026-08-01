@@ -142,6 +142,20 @@ The analytic connection is already proved; it is not a pending milestone. In par
 These results remain finite-mode and finite-dimensional. They do not imply completed-space,
 unbounded-operator, infinite-mode, or thermodynamic-limit statements.
 
+### Main roadmap synchronization
+
+The main Track D roadmap, current-status matrix, repository-wide roadmap, completed-target list, and
+LCT completion document now record:
+
+- the analytic Dyson/partition-function connection as complete;
+- the analytic connected-diagram theorem as complete;
+- the distinction between generic algebraic APIs and finite-mode trace/Dyson/diagram layers;
+- the single canonical import and namespace layout;
+- the remaining low-order, correlation-function, bosonic, and infinite-dimensional tracks.
+
+Future documentation changes should build on this boundary rather than reintroducing the obsolete
+claim that the analytic connection is pending.
+
 ## Remaining migration packages
 
 ### R1 — declaration namespaces
@@ -184,13 +198,14 @@ internals rather than a reusable domain concept.
 
 ### R6 — documentation and final validation
 
+The main roadmaps and capability matrices have been synchronized with the implemented analytic line.
 Before closing #345:
 
-- update the main SecondQuantization roadmap and capability matrix;
-- list every removed import and renamed declaration;
-- reject all migrated legacy paths in CI;
-- run `lake build --wfail`, the no-`sorry` check, and Theorem Catalog;
-- verify the dependency direction recorded above.
+- finish the complete inventory of removed imports and renamed declarations;
+- reject all migrated legacy paths and names in CI where practical;
+- run final repository-wide `lake build --wfail`, the no-`sorry` check, and Theorem Catalog;
+- verify the dependency direction recorded above;
+- ensure the canonical analytic endpoint is exposed through the intended leaf and top-level imports.
 
 ## Migration discipline
 
