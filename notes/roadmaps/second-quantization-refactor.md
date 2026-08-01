@@ -72,6 +72,29 @@ PR #351 removed the `Bosonic/Foundations/` and `Bosonic/OperatorAlgebra/` split.
 Fock-space, ladder-operator, CCR, exchange, grading, and number-operator modules now live under
 `Bosonic/Algebra/`.
 
+### Discrete fermionic Dyson ownership
+
+The discrete finite-basis coefficient is now owned only by `Common.dysonCoeff`. The former
+`Fermionic/Perturbation/DysonExpansion.lean` forwarding module and root `SecondQuantization.dysonCoeff`
+name are removed. Fermionic verification, partition-series, and diagrammatic results specialize the
+Common construction explicitly with `fermionEnergy ε`.
+
+The architecture guard rejects reintroduction of the deleted module or import path.
+
+### Continuous fermionic Dyson ownership
+
+The finite-dimensional continuous and analytic Dyson constructions are now also owned only by
+`SecondQuantization.Common`. The former `Fermionic/Perturbation/ContinuousDyson.lean` forwarding
+module is removed. The analytic fermionic partition function states its specialization directly in
+terms of:
+
+- `Common.continuousInteractingHamiltonian (fermionEnergy ε)`;
+- `Common.continuousDiagonalEvolution (fermionEnergy ε)`;
+- `Common.analyticDysonEvolution (fermionEnergy ε)`;
+- `Common.continuousDiagonalEvolution_neg_mul_analyticDysonEvolution_eq_exp`.
+
+The architecture guard rejects reintroduction of this deleted module or import path as well.
+
 ### Analytic finite-mode fermionic line
 
 The analytic connection is already proved; it is not a pending milestone. In particular:
@@ -107,13 +130,9 @@ aliases should remain.
 
 ### R2 — Common ownership and wrapper removal
 
-Remove fermionic files whose public declarations are line-for-line specializations of Common APIs.
-The first confirmed targets are:
-
-- `Fermionic/Perturbation/DysonExpansion.lean`, which forwards `Common.dysonCoeff`, its recursion
-  theorems, matrix-coefficient continuity, and `Common.dysonTruncation`;
-- the generic portions of `Fermionic/Perturbation/ContinuousDyson.lean`, which forward continuous
-  finite-operator and analytic Dyson declarations.
+The confirmed discrete and continuous Dyson forwarding modules are removed. Continue auditing the
+remaining fermionic perturbation and diagrammatic modules for declarations whose implementation is
+only parameter substitution into a Common construction.
 
 Physics-facing corollaries may remain fermionic, but they should state their results directly using
 the authoritative Common construction.

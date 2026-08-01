@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansionVerification
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonExpansion
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.InteractionPicture
 
 set_option linter.style.header false
 
@@ -19,7 +19,7 @@ omit [LinearOrder Mode] in
 theorem dysonCoeff_eq_of_time_independent (ε : Mode → ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode)
     (hV : ∀ τ, interactionPicture ε V τ = V) :
-    ∀ (n : ℕ) (τ : ℝ), dysonCoeff ε V n τ = ((-τ : ℂ) ^ n / n.factorial) • V ^ n :=
+    ∀ (n : ℕ) (τ : ℝ), Common.dysonCoeff (fermionEnergy ε) V n τ = ((-τ : ℂ) ^ n / n.factorial) • V ^ n :=
   Common.dysonCoeff_eq_of_time_independent (fermionEnergy ε) V hV
 
 omit [LinearOrder Mode] [Fintype Mode] in
@@ -41,7 +41,7 @@ omit [LinearOrder Mode] in
 /-- The density-density interaction Hamiltonian has the ordinary Taylor Dyson coefficients. -/
 theorem dysonCoeff_interactionHamiltonian_eq (ε : Mode → ℝ) (Vint : Mode → Mode → ℝ) (n : ℕ)
     (τ : ℝ) :
-    dysonCoeff ε (interactionHamiltonian Vint) n τ =
+    Common.dysonCoeff (fermionEnergy ε) (interactionHamiltonian Vint) n τ =
       ((-τ : ℂ) ^ n / n.factorial) • (interactionHamiltonian Vint) ^ n :=
   dysonCoeff_eq_of_time_independent ε (interactionHamiltonian Vint)
     (imaginaryTimeEvolve_interactionHamiltonian ε Vint) n τ

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Amplitude
@@ -42,13 +43,13 @@ bridge the general Bloch–de Dominicis theorem's own `Common.gibbsExpectation`-
 needs to reach `dysonVertexMoment`. -/
 theorem normalizedDysonPartitionCoeff_eq_freeGibbsExpectation (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) :
-    normalizedDysonPartitionCoeff ε β V n = freeGibbsExpectation ε β (dysonCoeff ε V n β) := by
+    normalizedDysonPartitionCoeff ε β V n = freeGibbsExpectation ε β (Common.dysonCoeff (fermionEnergy ε) V n β) := by
   have hw : Common.boltzmannWeight (fermionEnergy ε) β = freeBoltzmannWeight ε β :=
     funext fun m => (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β m).symm
   rw [normalizedDysonPartitionCoeff, freeGibbsExpectation, Common.normalizedWeightedDiagonal]
   congr 1
   rw [dysonPartitionCoeff, imaginaryTimeEvolveFree]
-  change Common.traceFock (Common.diagonalEvolution (fermionEnergy ε) (-β) ∘ₗ dysonCoeff ε V n β) =
+  change Common.traceFock (Common.diagonalEvolution (fermionEnergy ε) (-β) ∘ₗ Common.dysonCoeff (fermionEnergy ε) V n β) =
     _
   rw [Common.traceFock_diagonalEvolution_comp_eq_weightedTrace, hw]
 
@@ -59,7 +60,7 @@ at order `S.card`** — folding `normalizedDysonPartitionCoeff_eq_freeGibbsExpec
 theorem dysonVertexMoment_eq_freeGibbsExpectation {α : Type*} [DecidableEq α] (ε : Mode → ℝ)
     (β : ℝ) (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (S : Finset α) :
     dysonVertexMoment ε β V S =
-      (S.card.factorial : ℂ) * freeGibbsExpectation ε β (dysonCoeff ε V S.card β) := by
+      (S.card.factorial : ℂ) * freeGibbsExpectation ε β (Common.dysonCoeff (fermionEnergy ε) V S.card β) := by
   rw [dysonVertexMoment, normalizedDysonPartitionCoeff_eq_freeGibbsExpectation]
 
 /-! ## Expanding `dysonCoeff` of `quarticInteraction` into a vertex-label sum -/
@@ -91,8 +92,8 @@ theorem nestedVertexOperatorComp_succ (ε : Mode → ℝ) (n : ℕ)
 
 omit [LinearOrder Mode] in
 /-- **Continuity in `σ`, at fixed `k n'`, of a matrix coefficient of `(interactionPicture ε V
-σ).comp (dysonCoeff ε V n σ)`** — the finite sum of products of
-`continuous_matrixCoeff_interactionPicture`/`continuous_matrixCoeff_dysonCoeff` (via
+σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)`** — the finite sum of products of
+`continuous_matrixCoeff_interactionPicture`/`Common.continuous_matrixCoeff_dysonCoeff` (via
 `Common.matrixCoeff_comp`), the integrability the inductive step's
 `Common.comp_operatorIntervalIntegral`/`Common.normalizedWeightedDiagonal_operatorIntervalIntegral`
 need. -/
@@ -100,11 +101,11 @@ theorem continuous_matrixCoeff_interactionPicture_comp_dysonCoeff (ε : Mode →
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ)
     (k n' : FermionOccupation Mode) :
     Continuous (fun σ : ℝ => Common.matrixCoeff
-      ((interactionPicture ε V σ).comp (dysonCoeff ε V n σ)) k n') := by
+      ((interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)) k n') := by
   simp_rw [Common.matrixCoeff_comp]
   exact continuous_finsetSum _ fun j _ =>
     (continuous_matrixCoeff_interactionPicture ε V k j).mul
-      (continuous_matrixCoeff_dysonCoeff ε V n j n')
+      (Common.continuous_matrixCoeff_dysonCoeff (fermionEnergy ε) V n j n')
 
 set_option linter.unusedFintypeInType false in
 /-- **Joint continuity, in the full time vector `τ`, of a matrix coefficient of
@@ -186,7 +187,7 @@ than requiring a separate lemma for non-`β` bounds. -/
 theorem freeGibbsExpectation_comp_dysonCoeff_quarticInteraction (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) :
     ∀ (n : ℕ) (t : ℝ) (L : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode),
-      freeGibbsExpectation ε β (L.comp (dysonCoeff ε (quarticInteraction g) n t)) =
+      freeGibbsExpectation ε β (L.comp (Common.dysonCoeff (fermionEnergy ε) (quarticInteraction g) n t)) =
         (-1 : ℂ) ^ n * ∑ q : Fin n → QuarticVertexLabel Mode,
           (∏ i, g (q i)) * intervalIntegral.orderedSimplexIntegral n t
             (fun τ => freeGibbsExpectation ε β (L.comp (nestedVertexOperatorComp ε n q τ))) := by
@@ -195,7 +196,7 @@ theorem freeGibbsExpectation_comp_dysonCoeff_quarticInteraction (ε : Mode → �
   | zero =>
     intro t L
     have huniq : Unique (Fin 0 → QuarticVertexLabel Mode) := Pi.uniqueOfIsEmpty _
-    rw [dysonCoeff_zero, LinearMap.comp_id, Fintype.sum_unique]
+    rw [Common.dysonCoeff_zero, LinearMap.comp_id, Fintype.sum_unique]
     simp
   | succ n ih =>
     intro t L
@@ -204,24 +205,31 @@ theorem freeGibbsExpectation_comp_dysonCoeff_quarticInteraction (ε : Mode → �
     -- through `operatorIntervalIntegral`.
     have hcont : ∀ k n' : FermionOccupation Mode,
         IntervalIntegrable (fun σ => Common.matrixCoeff
-          ((interactionPicture ε V σ).comp (dysonCoeff ε V n σ)) k n') MeasureTheory.volume 0 t :=
+          ((interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)) k n') MeasureTheory.volume 0 t :=
       fun k n' =>
         (continuous_matrixCoeff_interactionPicture_comp_dysonCoeff ε V n k n').intervalIntegrable
           0 t
-    rw [dysonCoeff_succ, LinearMap.comp_neg,
+    have hdysonSucc :
+        Common.dysonCoeff (fermionEnergy ε) V (n + 1) t =
+          - Common.operatorIntervalIntegral
+            (fun σ => (interactionPicture ε V σ).comp
+              (Common.dysonCoeff (fermionEnergy ε) V n σ)) 0 t := by
+      simpa only [interactionPicture] using
+        (Common.dysonCoeff_succ (fermionEnergy ε) V n t)
+    rw [hdysonSucc, LinearMap.comp_neg,
       Common.comp_operatorIntervalIntegral _ _ _ _ hcont, freeGibbsExpectation_neg]
     have hcont2 : ∀ n' : FermionOccupation Mode,
         IntervalIntegrable (fun σ => Common.matrixCoeff
-          (L.comp ((interactionPicture ε V σ).comp (dysonCoeff ε V n σ))) n' n')
+          (L.comp ((interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ))) n' n')
           MeasureTheory.volume 0 t := by
       intro n'
       have heq : ∀ σ : ℝ, Common.matrixCoeff
-          (L.comp ((interactionPicture ε V σ).comp (dysonCoeff ε V n σ))) n' n' =
+          (L.comp ((interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ))) n' n' =
           ∑ j : FermionOccupation Mode, Common.matrixCoeff L n' j *
-            Common.matrixCoeff ((interactionPicture ε V σ).comp (dysonCoeff ε V n σ)) j n' :=
+            Common.matrixCoeff ((interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)) j n' :=
         fun σ => Common.matrixCoeff_comp L _ n' n'
       have hc : Continuous (fun σ => Common.matrixCoeff
-          (L.comp ((interactionPicture ε V σ).comp (dysonCoeff ε V n σ))) n' n') := by
+          (L.comp ((interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ))) n' n') := by
         simp_rw [heq]
         exact continuous_finsetSum _ fun j _ => continuous_const.mul
           (continuous_matrixCoeff_interactionPicture_comp_dysonCoeff ε V n j n')
@@ -231,23 +239,23 @@ theorem freeGibbsExpectation_comp_dysonCoeff_quarticInteraction (ε : Mode → �
     -- term, and reindex the resulting (outer label, inner label sequence) double sum into a
     -- single `Fin (n + 1) → QuarticVertexLabel Mode` sum via `Fin.consEquiv`.
     have hpoint : ∀ σ : ℝ, freeGibbsExpectation ε β
-        (L.comp ((interactionPicture ε V σ).comp (dysonCoeff ε V n σ))) =
+        (L.comp ((interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ))) =
         (-1 : ℂ) ^ n * ∑ q : Fin (n + 1) → QuarticVertexLabel Mode,
           (∏ i, g (q i)) * intervalIntegral.orderedSimplexIntegral n σ
             (fun τ' => freeGibbsExpectation ε β
               (L.comp (nestedVertexOperatorComp ε (n + 1) q (Fin.cons σ τ')))) := by
       intro σ
-      have e2 : L.comp ((interactionPicture ε V σ).comp (dysonCoeff ε V n σ)) =
+      have e2 : L.comp ((interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)) =
           ∑ q0 : QuarticVertexLabel Mode,
             g q0 • ((L.comp (interactionPicture ε (quarticVertexOperator q0) σ)).comp
-              (dysonCoeff ε V n σ)) := by
+              (Common.dysonCoeff (fermionEnergy ε) V n σ)) := by
         rw [hV, interactionPicture_quarticInteraction]
         ext x
         simp [LinearMap.sum_apply, LinearMap.comp_apply, LinearMap.comp_assoc]
       rw [e2, freeGibbsExpectation_finsetSum]
       have hstep : ∀ q0 : QuarticVertexLabel Mode, freeGibbsExpectation ε β
           (g q0 • ((L.comp (interactionPicture ε (quarticVertexOperator q0) σ)).comp
-            (dysonCoeff ε V n σ))) =
+            (Common.dysonCoeff (fermionEnergy ε) V n σ))) =
           (-1 : ℂ) ^ n * ∑ q' : Fin n → QuarticVertexLabel Mode,
             g q0 * (∏ i, g (q' i)) * intervalIntegral.orderedSimplexIntegral n σ
               (fun τ' => freeGibbsExpectation ε β
