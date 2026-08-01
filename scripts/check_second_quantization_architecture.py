@@ -15,6 +15,7 @@ REMOVED_FILES = (
     SQ / "Bosonic.lean",
     SQ / "Fermionic" / "Perturbation" / "DysonExpansion.lean",
     SQ / "Fermionic" / "Perturbation" / "ContinuousDyson.lean",
+    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentPairs.lean",
 )
 
 REMOVED_DIRECTORIES = (
@@ -262,6 +263,10 @@ def check_removed_paths(errors: list[str]) -> None:
             if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.ContinuousDyson":
                 errors.append(
                     f"removed fermionic continuous-Dyson import: {relative(path)}:{line_no}: {line.strip()}"
+                )
+            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairs":
+                errors.append(
+                    f"removed fermionic ComponentPairs import: {relative(path)}:{line_no}: {line.strip()}"
                 )
 
 
