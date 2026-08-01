@@ -13,7 +13,8 @@ NAMESPACE_RE = re.compile(r"^\s*namespace\s+([A-Za-z0-9_'.]+)\s*$")
 SECTION_RE = re.compile(r"^\s*(?:noncomputable\s+)?section(?:\s+([A-Za-z0-9_'.]+))?\s*$")
 END_RE = re.compile(r"^\s*end(?:\s+([A-Za-z0-9_'.]+))?\s*$")
 DECL_RE = re.compile(
-    r"^\s*(?:(?:private|protected|noncomputable|unsafe|partial)\s+)*"
+    r"^\s*(?:@\[[^\]]*\]\s*)*"
+    r"(?:(?:private|protected|noncomputable|unsafe|partial)\s+)*"
     r"(abbrev|axiom|class|def|inductive|instance|lemma|opaque|structure|theorem)\b"
     r"\s*([^\s:({\[]+)?"
 )
