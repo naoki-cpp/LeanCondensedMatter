@@ -38,7 +38,6 @@ for `ζ = ±1`) to a genuine sum over `Combinatorics.Pairing 2` is now subsumed 
 namespace SecondQuantization
 namespace Common
 
-open Combinatorics
 
 variable {Config : Type*}
 

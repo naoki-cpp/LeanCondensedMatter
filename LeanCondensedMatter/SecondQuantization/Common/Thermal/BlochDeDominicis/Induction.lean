@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Peel
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.Combinatorics.PairingWeight
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 import LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion
 
 set_option linter.style.header false
