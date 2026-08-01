@@ -65,6 +65,17 @@ theorem entropyOp_isCompact (ρ : DensityOperator H) :
   exact isCompactOperator_cfc_of_zero ρ.pos.isSelfAdjoint ρ.spectralTraceClass.compact
     Real.continuous_negMulLog (by simp)
 
+/-- Bundle the entropy operator as a spectral-trace-class operator once absolute summability of its
+nonzero real eigenvalues is supplied. Compactness and symmetry are derived automatically from the
+density operator and continuous functional calculus. -/
+def entropyOpSpectralTraceClass (ρ : DensityOperator H)
+    (hsummable : HasSummableRealEigenvalues (entropyOp ρ)) :
+    SpectralTraceClass (entropyOp ρ) := by
+  simpa [entropyOp] using
+    (SpectralTraceClass.ofCFC (T := ρ.op) ρ.pos.isSelfAdjoint
+      ρ.spectralTraceClass.compact Real.continuous_negMulLog (by simp)
+      (by simpa [entropyOp] using hsummable))
+
 /-- **The von Neumann entropy `-Tr[ρ ln ρ]` of a density operator (infinite-dimensional)**,
 computed from `ρ`'s eigenvalues via `ContinuousLinearMap.EigenvectorIndex`. `ENNReal`-valued
 (`[0, ∞]`), unlike the finite-dimensional `QuantumTheory.vonNeumannEntropy`: see the module
