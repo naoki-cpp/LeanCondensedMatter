@@ -26,6 +26,8 @@ theorem gibbsState_apply_eigenvector (Hop : Observable H) (β : ℝ)
       (((spectralTrace hsummable)⁻¹ : ℝ) • (Real.exp (-β * E) : ℂ)) • v := by
   change ((spectralTrace hsummable)⁻¹ • gibbsOp Hop β) v = _
   rw [smul_apply, gibbsOp_apply_eigenvector Hop β hv]
+  exact (smul_assoc ((spectralTrace hsummable)⁻¹ : ℝ)
+    (Real.exp (-β * E) : ℂ) v).symm
 
 /-- In finite dimensions, the trace-class energy expectation agrees with the usual real part of
 `Tr(ρ H)`. The proof extends the nonzero eigenvectors of `ρ` to an orthonormal basis; the added
