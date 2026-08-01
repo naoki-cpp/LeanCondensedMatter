@@ -7,6 +7,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 SQ = ROOT / "LeanCondensedMatter" / "SecondQuantization" / "Bosonic"
 TARGET = SQ / "Algebra"
+MIGRATION_FILES = {
+    Path(__file__).resolve(),
+    ROOT / ".github" / "workflows" / "migrate-bosonic-algebra.yml",
+}
 
 OLD_DIRS = (
     SQ / "Foundations",
@@ -25,6 +29,10 @@ REPLACEMENTS = {
 }
 
 TEXT_SUFFIXES = {".lean", ".md", ".tex", ".py", ".yml", ".yaml"}
+
+
+def is_migration_file(path: Path) -> bool:
+    return path.resolve() in MIGRATION_FILES
 
 
 def move_modules() -> None:
@@ -46,7 +54,7 @@ def rewrite_references() -> None:
     for path in ROOT.rglob("*"):
         if not path.is_file() or path.suffix not in TEXT_SUFFIXES:
             continue
-        if ".git" in path.parts or ".lake" in path.parts:
+        if ".git" in path.parts or ".lake" in path.parts or is_migration_file(path):
             continue
         original = path.read_text(encoding="utf-8")
         updated = original
@@ -71,7 +79,7 @@ def validate_layout() -> None:
     for path in ROOT.rglob("*"):
         if not path.is_file() or path.suffix not in TEXT_SUFFIXES:
             continue
-        if ".git" in path.parts or ".lake" in path.parts:
+        if ".git" in path.parts or ".lake" in path.parts or is_migration_file(path):
             continue
         text = path.read_text(encoding="utf-8")
         if "Bosonic.Foundations" in text or "Bosonic.OperatorAlgebra" in text:
