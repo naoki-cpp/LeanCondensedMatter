@@ -22,15 +22,10 @@ finite-dimensional file, needs no finite-dimensionality: `Analysis/CFC.lean`'s o
 and everything built on it are untouched.
 
 **Scope note — explicit hypotheses, not derived assumptions.** A physical Hamiltonian's spectrum
-need not be discrete, so `e^{-βH}` need not be compact or trace-class in general (matching the
-Hilbert space setting used throughout this project). Rather than formalizing a sufficient
-discreteness-of-spectrum condition on `Hop` itself, `gibbsState` below takes compactness and
-trace-class-ness of the (unnormalized) Gibbs operator `e^{-βH}`, and non-vanishing of its
-trace `Z(β)`, as *explicit hypotheses* — matching this project's established style for
-`QuantumTheory.TraceClass.DensityOperator`/`POVM` (see
-`notes/roadmaps/quantum-theory-foundations.md`) of taking such spectral facts as inputs rather
-than deriving them from more primitive physical
-assumptions.
+need not be discrete, so `e^{-βH}` need not be compact or spectrally summable in general. Rather
+than formalizing a sufficient discreteness-of-spectrum condition on `Hop` itself, `gibbsState`
+below takes compactness and summability of the nonzero real eigenvalues of the unnormalized Gibbs
+operator `e^{-βH}`, and non-vanishing of its spectral trace `Z(β)`, as explicit hypotheses.
 -/
 
 namespace QuantumTheory.TraceClass
@@ -53,28 +48,33 @@ theorem gibbsOp_isPositive (Hop : Observable H) (β : ℝ) : (gibbsOp Hop β).Is
 
 /-- **Canonical (Gibbs) density operator (infinite-dimensional).** The normalized Gibbs state
 `e^{-βH}/Z(β)`, given a Hamiltonian `Hop`, inverse temperature `β`, and explicit hypotheses that
-the (unnormalized) Gibbs operator `e^{-βH}` is compact and trace-class with nonzero trace `Z(β)`
-(see the module docstring for why these are taken as hypotheses rather than derived). -/
+the unnormalized Gibbs operator is compact, has summable nonzero real eigenvalues, and has nonzero
+spectral trace. -/
 noncomputable def gibbsState (Hop : Observable H) (β : ℝ)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
-    (htc : ContinuousLinearMap.IsTraceClass (gibbsOp Hop β))
-    (hZ : ContinuousLinearMap.trace htc ≠ 0) : DensityOperator H where
-  op := (ContinuousLinearMap.trace htc)⁻¹ • gibbsOp Hop β
-  pos := by
-    let r : ℝ := (ContinuousLinearMap.trace htc)⁻¹
-    change (r • gibbsOp Hop β).IsPositive
-    rw [show r • gibbsOp Hop β = (r : ℂ) • gibbsOp Hop β by
+    (hsummable : ContinuousLinearMap.HasSummableRealEigenvalues (gibbsOp Hop β))
+    (hZ : ContinuousLinearMap.spectralTrace hsummable ≠ 0) : DensityOperator H := by
+  let Z : ℝ := ContinuousLinearMap.spectralTrace hsummable
+  have hpos : (Z⁻¹ • gibbsOp Hop β).IsPositive := by
+    rw [show Z⁻¹ • gibbsOp Hop β = ((Z⁻¹ : ℝ) : ℂ) • gibbsOp Hop β by
       ext x
       simp]
     refine (gibbsOp_isPositive Hop β).smul_of_nonneg ?_
-    have hZnonneg : 0 ≤ ContinuousLinearMap.trace htc :=
-      ContinuousLinearMap.trace_nonneg htc (gibbsOp_isPositive Hop β).toLinearMap
+    have hZnonneg : 0 ≤ Z :=
+      ContinuousLinearMap.trace_nonneg hsummable (gibbsOp_isPositive Hop β).toLinearMap
     exact RCLike.ofReal_nonneg.mpr (inv_nonneg.mpr hZnonneg)
-  compact := hcompact.smul _
-  traceClass := ContinuousLinearMap.isTraceClass_smul (inv_ne_zero hZ) htc
-  trace_eq_one := by
-    rw [ContinuousLinearMap.trace_smul (inv_ne_zero hZ) htc
-      (ContinuousLinearMap.isTraceClass_smul (inv_ne_zero hZ) htc)]
-    exact inv_mul_cancel₀ hZ
+  have hsummableScaled :
+      ContinuousLinearMap.HasSummableRealEigenvalues (Z⁻¹ • gibbsOp Hop β) :=
+    ContinuousLinearMap.isTraceClass_smul (inv_ne_zero hZ) hsummable
+  exact {
+    op := Z⁻¹ • gibbsOp Hop β
+    pos := hpos
+    spectralTraceClass := ContinuousLinearMap.SpectralTraceClass.ofPositive
+      (hcompact.smul _) hpos hsummableScaled
+    spectralTrace_eq_one := by
+      change ContinuousLinearMap.trace hsummableScaled = 1
+      rw [ContinuousLinearMap.trace_smul (inv_ne_zero hZ) hsummable hsummableScaled]
+      exact inv_mul_cancel₀ hZ
+  }
 
 end QuantumTheory.TraceClass
