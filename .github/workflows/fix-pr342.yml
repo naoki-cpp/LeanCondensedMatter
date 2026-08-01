@@ -1,0 +1,72 @@
+name: Fix PR 342 migration
+
+on:
+  push:
+    branches:
+      - agent/reorganize-combinatorics
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/reorganize-combinatorics
+          fetch-depth: 0
+
+      - name: Apply migration fixes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace(path: str, old: str, new: str) -> None:
+              p = Path(path)
+              text = p.read_text()
+              if old not in text:
+                  raise SystemExit(f"expected text not found in {path}: {old!r}")
+              p.write_text(text.replace(old, new))
+
+          replace(
+              "LeanCondensedMatter/Combinatorics/SetPartition/Refinement.lean",
+              "import Mathlib.Order.Partition.Finpartition\n",
+              "import Mathlib.Order.Partition.Finpartition\nimport Mathlib.Combinatorics.Enumerative.IncidenceAlgebra\n",
+          )
+
+          for path in [
+              "LeanCondensedMatter/SecondQuantization/Common/Thermal/BlochDeDominicis/Unnormalized/PeelFirst.lean",
+              "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/BlochDeDominicis/Examples/SingleMode.lean",
+          ]:
+              replace(path, "\nopen Combinatorics\n", "\n")
+
+          path = "LeanCondensedMatter/SecondQuantization/Common/Thermal/BlochDeDominicis/PairingWeight.lean"
+          replace(
+              path,
+              "import LeanCondensedMatter.Combinatorics.PerfectPairing\n",
+              "import LeanCondensedMatter.Combinatorics.PerfectPairing\nimport LeanCondensedMatter.Combinatorics.PerfectPairing.Examples.Four\n",
+          )
+          replace(
+              path,
+              "noncomputable def Pairing.weight",
+              "noncomputable def Combinatorics.Pairing.weight",
+          )
+
+          replace(
+              "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/Diagram.lean",
+              "BlochDeDominicis.Pairing",
+              "Pairing",
+          )
+          PY
+
+      - name: Commit fixes
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add LeanCondensedMatter
+          if ! git diff --cached --quiet; then
+            git commit -m "fix: repair combinatorics namespace migration"
+            git push origin HEAD:agent/reorganize-combinatorics
+          fi
