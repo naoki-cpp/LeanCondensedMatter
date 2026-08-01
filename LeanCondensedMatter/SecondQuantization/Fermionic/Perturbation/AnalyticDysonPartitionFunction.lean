@@ -89,7 +89,8 @@ theorem coeff_dysonPartitionFPowerSeries_eq_coeff_dysonPartitionSeries
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) :
     (dysonPartitionFPowerSeries ε β V).coeff n =
       PowerSeries.coeff n (dysonPartitionSeries ε β V) := by
-  rw [coeff_dysonPartitionFPowerSeries, coeff_dysonPartitionSeries]
+  rw [coeff_dysonPartitionFPowerSeries, coeff_dysonPartitionSeries,
+    dysonPartitionCoeff_eq_dysonTraceCoeff]
 
 omit [LinearOrder Mode] in
 /-- The Dyson partition Taylor series has infinite radius of convergence. -/
@@ -145,8 +146,7 @@ theorem analyticDysonPartitionFunction_zero
     analyticDysonPartitionFunction ε β V 0 = freePartitionFunction ε β := by
   rw [← tsum_dysonTraceCoeff_eq_analyticDysonPartitionFunction ε hβ V 0,
     tsum_eq_single 0]
-  · rw [Common.dysonTraceCoeff_zero]
-    exact Common.sum_boltzmannWeight_eq_freePartitionFunction ε β
+  · rw [← dysonPartitionCoeff_eq_dysonTraceCoeff, dysonPartitionCoeff_zero]
   · intro n hn
     simp [hn]
 
