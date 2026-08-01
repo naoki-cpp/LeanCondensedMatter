@@ -44,6 +44,18 @@ of measuring the system in the corresponding eigenstate, matching the finite-dim
 theorem eigenvalue_nonneg (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) : 0 ≤ a.1.1 :=
   eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a
 
+/-- Every eigenvalue of a density operator is at most one. This follows because all eigenvalues are
+nonnegative and their spectral sum is one. -/
+theorem eigenvalue_le_one (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) : a.1.1 ≤ 1 := by
+  have hs : Summable (fun b : EigenvectorIndex ρ.op => b.1.1) :=
+    summable_eigenvectorIndex ρ.spectralTraceClass.summable
+  calc
+    a.1.1 = ∑ b ∈ ({a} : Finset (EigenvectorIndex ρ.op)), b.1.1 := by simp
+    _ ≤ ∑' b : EigenvectorIndex ρ.op, b.1.1 :=
+      Summable.sum_le_tsum {a} (fun b _ => eigenvalue_nonneg ρ b) hs
+    _ = ρ.spectralTraceClass.trace := rfl
+    _ = 1 := ρ.spectralTrace_eq_one
+
 /-- The bounded entropy operator obtained by applying `x ↦ -x log x` to a density operator.
 Unlike its spectral trace, this operator exists without a finite-entropy assumption. -/
 noncomputable def entropyOp (ρ : DensityOperator H) : H →L[ℂ] H :=
@@ -76,14 +88,14 @@ def entropyOpSpectralTraceClass (ρ : DensityOperator H)
       ρ.spectralTraceClass.compact Real.continuous_negMulLog (by simp)
       (by simpa [entropyOp] using hsummable))
 
-/-- The spectral trace of the entropy operator is the sum of `-λ log λ` over the density
-operator's nonzero eigenvalues. The proof extends the density operator's orthonormal eigenvector
-family to a Hilbert basis. Every added basis vector lies in `ker ρ`, so its entropy-operator
-diagonal contribution vanishes. -/
-theorem entropyOp_trace_eq_tsum (ρ : DensityOperator H)
+/-- The transformed density-operator eigenvalues `-λ log λ` sum to the spectral trace of the
+entropy operator. The proof extends the density operator's orthonormal eigenvector family to a
+Hilbert basis. Every added basis vector lies in `ker ρ`, so its entropy-operator diagonal
+contribution vanishes. -/
+theorem hasSum_negMulLog_eigenvalues (ρ : DensityOperator H)
     (hsummable : HasSummableRealEigenvalues (entropyOp ρ)) :
-    (entropyOpSpectralTraceClass ρ hsummable).trace =
-      ∑' a : EigenvectorIndex ρ.op, Real.negMulLog a.1.1 := by
+    HasSum (fun a : EigenvectorIndex ρ.op => Real.negMulLog a.1.1)
+      (entropyOpSpectralTraceClass ρ hsummable).trace := by
   classical
   let hρcompact : IsCompactOperator ρ.op := ρ.spectralTraceClass.compact
   let hρsym : ρ.op.IsSymmetric := ρ.pos.isSelfAdjoint.isSymmetric
@@ -146,8 +158,15 @@ theorem entropyOp_trace_eq_tsum (ρ : DensityOperator H)
       (g ∘ j) = fun a : EigenvectorIndex ρ.op => Real.negMulLog a.1.1 := by
     funext a
     exact hpoint a
-  rw [hfunctions] at hrestricted
-  exact hrestricted.tsum_eq.symm
+  rwa [hfunctions] at hrestricted
+
+/-- The spectral trace of the entropy operator is the sum of `-λ log λ` over the density
+operator's nonzero eigenvalues. -/
+theorem entropyOp_trace_eq_tsum (ρ : DensityOperator H)
+    (hsummable : HasSummableRealEigenvalues (entropyOp ρ)) :
+    (entropyOpSpectralTraceClass ρ hsummable).trace =
+      ∑' a : EigenvectorIndex ρ.op, Real.negMulLog a.1.1 :=
+  (hasSum_negMulLog_eigenvalues ρ hsummable).tsum_eq.symm
 
 /-- **The von Neumann entropy `-Tr[ρ ln ρ]` of a density operator (infinite-dimensional)**,
 computed from `ρ`'s eigenvalues via `ContinuousLinearMap.EigenvectorIndex`. `ENNReal`-valued
@@ -155,5 +174,18 @@ computed from `ρ`'s eigenvalues via `ContinuousLinearMap.EigenvectorIndex`. `EN
 docstring above for why the entropy sum can genuinely diverge even for a trace-class `ρ`. -/
 noncomputable def vonNeumannEntropy (ρ : DensityOperator H) : ENNReal :=
   ∑' a : EigenvectorIndex ρ.op, ENNReal.ofReal (Real.negMulLog a.1.1)
+
+/-- Under the finite-entropy summability hypothesis, the `ENNReal`-valued von Neumann entropy is
+the nonnegative-real embedding of the entropy operator's spectral trace. -/
+theorem vonNeumannEntropy_eq_ofReal_entropyOp_trace (ρ : DensityOperator H)
+    (hsummable : HasSummableRealEigenvalues (entropyOp ρ)) :
+    vonNeumannEntropy ρ =
+      ENNReal.ofReal (entropyOpSpectralTraceClass ρ hsummable).trace := by
+  rw [vonNeumannEntropy]
+  symm
+  rw [entropyOp_trace_eq_tsum ρ hsummable]
+  exact ENNReal.ofReal_tsum_of_nonneg
+    (fun a => Real.negMulLog_nonneg (eigenvalue_nonneg ρ a) (eigenvalue_le_one ρ a))
+    (hasSum_negMulLog_eigenvalues ρ hsummable).summable
 
 end QuantumTheory.TraceClass
