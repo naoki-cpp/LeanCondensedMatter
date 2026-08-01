@@ -46,15 +46,19 @@ theorem vonNeumannEntropy_gibbsState (Hop : Observable H) (β : ℝ)
     exact div_pos (Real.exp_pos _) hZpos
   have hweight_diag (i : Fin (Module.finrank ℂ H)) :
       (inner ℂ (bE i) (ρ.op (bE i)) : ℂ).re = w i := by
+    change (inner ℂ (bE i) ((ρ.op : H →ₗ[ℂ] H) (bE i)) : ℂ).re = w i
     rw [hρbE i, inner_smul_right, inner_self_eq_norm_sq_to_K, bE.norm_eq_one]
     simp
   have hw_sum : ∑ i, w i = 1 := by
     have hsum := (ρ.hasSum_inner_apply_eq_one bE.toHilbertBasis).tsum_eq
     rw [tsum_fintype] at hsum
+    have hsum' :
+        ∑ i, (inner ℂ (bE i) (ρ.op (bE i)) : ℂ).re = 1 := by
+      simpa using hsum
     calc
       ∑ i, w i = ∑ i, (inner ℂ (bE i) (ρ.op (bE i)) : ℂ).re := by
         exact Finset.sum_congr rfl fun i _ => (hweight_diag i).symm
-      _ = 1 := hsum
+      _ = 1 := hsum'
   have hw_nonneg (i : Fin (Module.finrank ℂ H)) : 0 ≤ w i := (hw_pos i).le
   have hw_le_one (i : Fin (Module.finrank ℂ H)) : w i ≤ 1 := by
     have hle := (Summable.of_finite : Summable w).le_tsum i
@@ -76,15 +80,21 @@ theorem vonNeumannEntropy_gibbsState (Hop : Observable H) (β : ℝ)
     have hsum :=
       ((entropyOpSpectralTraceClass ρ hsEntropy).hasSum_inner_apply bE.toHilbertBasis).tsum_eq
     rw [tsum_fintype] at hsum
+    have hsum' :
+        ∑ i, (inner ℂ (bE i) (entropyOp ρ (bE i)) : ℂ).re =
+          (entropyOpSpectralTraceClass ρ hsEntropy).trace := by
+      simpa using hsum
     calc
       (entropyOpSpectralTraceClass ρ hsEntropy).trace =
-          ∑ i, (inner ℂ (bE i) (entropyOp ρ (bE i)) : ℂ).re := hsum.symm
+          ∑ i, (inner ℂ (bE i) (entropyOp ρ (bE i)) : ℂ).re := hsum'.symm
       _ = ∑ i, Real.negMulLog (w i) := by
         exact Finset.sum_congr rfl fun i _ => hEntropyDiag i
   have hEnergyDiag (i : Fin (Module.finrank ℂ H)) :
       (inner ℂ (bE i) ((ρ.op ∘L Hop.1) (bE i)) : ℂ).re = w i * E i := by
-    change (inner ℂ (bE i) (ρ.op (Hop.1 (bE i))) : ℂ).re = w i * E i
-    rw [hEbE i, map_smul, hρbE i, smul_smul, inner_smul_right,
+    change (inner ℂ (bE i)
+      ((ρ.op : H →ₗ[ℂ] H) ((Hop.1 : H →ₗ[ℂ] H) (bE i))) : ℂ).re = w i * E i
+    have hrho := congrArg (fun x : H => (ρ.op : H →ₗ[ℂ] H) x) (hEbE i)
+    rw [hrho, map_smul, hρbE i, smul_smul, inner_smul_right,
       inner_self_eq_norm_sq_to_K, bE.norm_eq_one]
     simp
     ring
@@ -92,8 +102,13 @@ theorem vonNeumannEntropy_gibbsState (Hop : Observable H) (β : ℝ)
     rw [energyExpValue_eq_re_linearMap_trace]
     rw [LinearMap.trace_eq_sum_inner
       ((ρ.op ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) bE]
-    rw [map_sum]
-    exact Finset.sum_congr rfl fun i _ => hEnergyDiag i
+    calc
+      (∑ i, inner ℂ (bE i) ((ρ.op ∘L Hop.1) (bE i))).re =
+          ∑ i, (inner ℂ (bE i) ((ρ.op ∘L Hop.1) (bE i)) : ℂ).re := by
+        simpa only [Complex.reCLM_apply] using
+          (map_sum Complex.reCLM
+            (fun i => inner ℂ (bE i) ((ρ.op ∘L Hop.1) (bE i))) Finset.univ)
+      _ = ∑ i, w i * E i := Finset.sum_congr rfl fun i _ => hEnergyDiag i
   have hEntropyTraceNonneg :
       0 ≤ (entropyOpSpectralTraceClass ρ hsEntropy).trace := by
     rw [hEntropyTrace]
