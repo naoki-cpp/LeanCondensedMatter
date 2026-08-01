@@ -121,5 +121,34 @@ theorem analyticAt_analyticDysonPartitionFunction_zero
     AnalyticAt ℂ (analyticDysonPartitionFunction ε β V) 0 :=
   (hasFPowerSeriesAt_analyticDysonPartitionFunction ε hβ V).analyticAt
 
+omit [LinearOrder Mode] in
+/-- At zero coupling, the analytic partition function is the free partition function. -/
+@[simp]
+theorem analyticDysonPartitionFunction_zero
+    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    analyticDysonPartitionFunction ε β V 0 = freePartitionFunction ε β := by
+  rw [← tsum_dysonPartitionCoeff_eq_analyticDysonPartitionFunction ε hβ V 0,
+    tsum_eq_single 0]
+  · simp
+  · intro n hn
+    simp [hn]
+
+omit [LinearOrder Mode] in
+/-- The analytic partition function remains nonzero in a neighborhood of zero coupling. -/
+theorem analyticDysonPartitionFunction_ne_zero_eventually
+    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    ∀ᶠ lam in 𝓝 (0 : ℂ), analyticDysonPartitionFunction ε β V lam ≠ 0 := by
+  have hzero : analyticDysonPartitionFunction ε β V 0 ≠ 0 := by
+    rw [analyticDysonPartitionFunction_zero ε hβ V]
+    exact freePartitionFunction_ne_zero ε β
+  have hmem : analyticDysonPartitionFunction ε β V 0 ∈ ({0} : Set ℂ)ᶜ := by
+    simpa using hzero
+  have hnhds : ({0} : Set ℂ)ᶜ ∈ 𝓝 (analyticDysonPartitionFunction ε β V 0) :=
+    isClosed_singleton.isOpen_compl.mem_nhds hmem
+  simpa using
+    (analyticAt_analyticDysonPartitionFunction_zero ε hβ V).continuousAt.eventually hnhds
+
 end
 end SecondQuantization
