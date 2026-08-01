@@ -1,3 +1,4 @@
+# Trigger the one-shot migration after the workflow definition exists on the PR branch.
 name: Migrate R2 Thin Wrappers
 
 on:
