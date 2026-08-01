@@ -1,5 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.Foundations.FockSpace
-import LeanCondensedMatter.SecondQuantization.Bosonic.OperatorAlgebra.NumberOperator
+import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.FockSpace
+import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.NumberOperator
 
 set_option linter.style.header false
 
@@ -13,6 +13,7 @@ Public umbrella for the algebraic bosonic layer:
 - canonical commutation and exchange-algebra instances;
 - particle-number grading and number operators.
 
-The underlying declarations remain split into small proof files under `Foundations/` and
-`OperatorAlgebra/`; consumers normally import this module instead of those internal groups.
+The underlying declarations live in small proof files under `Algebra/`; consumers normally
+import this module instead of those internal files. The former split module groups are intentionally
+not retained as compatibility paths.
 -/

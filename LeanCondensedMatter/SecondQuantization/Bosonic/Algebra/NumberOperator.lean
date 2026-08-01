@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.OperatorAlgebra.ExchangeAlgebra
+import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.ExchangeAlgebra
 
 set_option linter.style.header false
 
