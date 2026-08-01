@@ -1,5 +1,8 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperatorTraceClass
+import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 import Mathlib.Analysis.SpecialFunctions.Log.NegMulLog
+
+attribute [local instance] IsStarNormal.instContinuousFunctionalCalculus
 
 /-!
 # Von Neumann entropy via trace-class operators (infinite dimensions)
@@ -22,6 +25,10 @@ density operator can have infinite von Neumann entropy), not an artifact of the 
 `vonNeumannEntropy` below is `ENNReal`-valued (`[0, ∞]`) rather than `ℝ`-valued: the sum is always
 well-defined, with divergence showing up honestly as `⊤` rather than being silently truncated to
 the junk value `0` that a real-valued `tsum` would give.
+
+The bounded operator `entropyOp ρ = -ρ log ρ` is separately available through continuous
+functional calculus. Its existence needs no finite-dimensionality or entropy-summability
+hypothesis; only taking its spectral trace requires the transformed eigenvalues to be summable.
 -/
 
 namespace QuantumTheory.TraceClass
@@ -35,6 +42,19 @@ of measuring the system in the corresponding eigenstate, matching the finite-dim
 `QuantumTheory.eigenvalues_nonneg`. -/
 theorem eigenvalue_nonneg (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) : 0 ≤ a.1.1 :=
   eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a
+
+/-- The bounded entropy operator obtained by applying `x ↦ -x log x` to a density operator.
+Unlike its spectral trace, this operator exists without a finite-entropy assumption. -/
+noncomputable def entropyOp (ρ : DensityOperator H) : H →L[ℂ] H :=
+  cfc Real.negMulLog ρ.op
+
+/-- The entropy operator acts on an eigenvector by applying `Real.negMulLog` to its eigenvalue. -/
+theorem entropyOp_apply_eigenvector (ρ : DensityOperator H) {v : H} {λ : ℝ}
+    (hv : (ρ.op : H →ₗ[ℂ] H) v = (λ : ℂ) • v) :
+    entropyOp ρ v = (Real.negMulLog λ : ℂ) • v := by
+  simpa [entropyOp] using
+    (cfc_apply_eigenvector (T := ρ.op) ρ.pos.isSelfAdjoint hv
+      (f := Real.negMulLog) Real.continuous_negMulLog)
 
 /-- **The von Neumann entropy `-Tr[ρ ln ρ]` of a density operator (infinite-dimensional)**,
 computed from `ρ`'s eigenvalues via `ContinuousLinearMap.EigenvectorIndex`. `ENNReal`-valued
