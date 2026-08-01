@@ -35,15 +35,19 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 `P.E m`). -/
 theorem summable_energyExpValue_term (ρ : DensityOperator H) (Hop : Observable H) :
     Summable (fun a : EigenvectorIndex ρ.op => (a.1.1 : ℂ) *
-      (inner ℂ (eigenvectorFamily ρ.compact a) (Hop.1 (eigenvectorFamily ρ.compact a)) : ℂ)) := by
+      (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+        (Hop.1 (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)) := by
   have hnorm := eigenvectorFamily_norm_eq_one ρ
-  refine Summable.of_norm_bounded (ρ.traceClass.mul_right ‖Hop.1‖) fun a => ?_
-  have hle : ‖(inner ℂ (eigenvectorFamily ρ.compact a) (Hop.1 (eigenvectorFamily ρ.compact a)) :
-      ℂ)‖ ≤ ‖Hop.1‖ :=
-    calc ‖(inner ℂ (eigenvectorFamily ρ.compact a) (Hop.1 (eigenvectorFamily ρ.compact a)) : ℂ)‖
-        ≤ ‖eigenvectorFamily ρ.compact a‖ * ‖Hop.1 (eigenvectorFamily ρ.compact a)‖ :=
+  refine Summable.of_norm_bounded (ρ.spectralTraceClass.summable.mul_right ‖Hop.1‖) fun a => ?_
+  have hle : ‖(inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+      (Hop.1 (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)‖ ≤ ‖Hop.1‖ :=
+    calc ‖(inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+          (Hop.1 (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)‖
+        ≤ ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖ *
+            ‖Hop.1 (eigenvectorFamily ρ.spectralTraceClass.compact a)‖ :=
           norm_inner_le_norm _ _
-      _ ≤ ‖eigenvectorFamily ρ.compact a‖ * (‖Hop.1‖ * ‖eigenvectorFamily ρ.compact a‖) := by
+      _ ≤ ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖ *
+          (‖Hop.1‖ * ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖) := by
           gcongr; exact Hop.1.le_opNorm _
       _ = ‖Hop.1‖ := by rw [hnorm a]; ring
   rw [norm_mul, Complex.norm_real]
@@ -55,6 +59,7 @@ for why, unlike the finite-dimensional `QuantumTheory.energyExpValue`, this does
 `ContinuousLinearMap.trace (ρ.op ∘L Hop.1)`). -/
 noncomputable def energyExpValue (ρ : DensityOperator H) (Hop : Observable H) : ℝ :=
   (∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) *
-    (inner ℂ (eigenvectorFamily ρ.compact a) (Hop.1 (eigenvectorFamily ρ.compact a)) : ℂ)).re
+    (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+      (Hop.1 (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)).re
 
 end QuantumTheory.TraceClass

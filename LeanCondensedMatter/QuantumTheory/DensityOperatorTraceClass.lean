@@ -1,30 +1,23 @@
-import LeanCondensedMatter.Analysis.Operator.TraceClass.Basic
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled
 import LeanCondensedMatter.QuantumTheory.Postulates
 import Mathlib.Analysis.InnerProductSpace.Positive
 
 /-!
-# Axiomatic quantum theory: density operators via trace-class operators (infinite dimensions)
+# Axiomatic quantum theory: density operators via spectral trace (infinite dimensions)
 
 Extends the density-operator postulate (`QuantumTheory.DensityOperator` in
-`QuantumTheory/DensityOperator.lean`) beyond finite-dimensional `H`, using the general
-`ContinuousLinearMap.trace` for compact self-adjoint trace-class operators
-(`LeanCondensedMatter/Analysis/TraceClassBasic.lean`) in place of `LinearMap.trace`, which
-requires finite-dimensionality.
+`QuantumTheory/DensityOperator.lean`) beyond finite-dimensional `H`. The infinite-dimensional
+operator carries one canonical `ContinuousLinearMap.SpectralTraceClass` bundle rather than
+separate compactness and spectral-summability fields plus a later compatibility bridge.
 
 **This file is additive, not a replacement**: the finite-dimensional `QuantumTheory.DensityOperator`
 and everything built on it (`POVM`, `prob`, `sum_prob_eq_one`, `purity`, ...) are untouched. This
 namespace develops the infinite-dimensional analogue in parallel.
 
 **On the Born rule (`POVM`/`prob`/`sum_prob_eq_one`, below):** `E_m ∘ ρ` need not be self-adjoint
-even when `E_m`, `ρ` both are (a product of self-adjoint operators is self-adjoint only when they
-commute), so `ContinuousLinearMap.trace` — meaningful only for compact self-adjoint trace-class
-operators — doesn't apply to it directly. The originally-anticipated fix was a Hilbert–Schmidt-class
-trace (`Analysis/HilbertSchmidt.lean`, `notes/roadmaps/operator-algebra.md`), but that turned out to
-be unnecessary: `prob` below is defined directly via `ρ`'s own eigendecomposition (never a general
-Hilbert basis, so `E_m` itself never needs to be Hilbert–Schmidt), sidestepping the need for a
-general non-self-adjoint trace entirely. **Still open:** `purity`, which needs `ρ ∘ ρ`'s own
-compactness/trace-class facts (not yet derived for a general density operator `ρ`) — unlike `prob`,
-`ρ ∘ ρ` genuinely is self-adjoint here, so this doesn't have the same obstacle to begin with.
+even when `E_m`, `ρ` both are, so the compact-self-adjoint spectral trace does not apply to it
+directly. `prob` is therefore defined from `ρ`'s own eigendecomposition, avoiding any need for a
+general non-self-adjoint trace.
 -/
 
 namespace QuantumTheory.TraceClass
@@ -33,30 +26,36 @@ open ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- **Density operator postulate (infinite-dimensional).** A positive, compact, trace-class
-operator of trace `1`. The compactness and trace-class hypotheses are carried explicitly (rather
-than derived from positivity/boundedness alone, which is not in general enough) — matching the
-style of `ContinuousLinearMap.trace_add`/`trace_comp_comm`, which also take these as explicit
-hypotheses. -/
+/-- **Density operator postulate (infinite-dimensional).** A positive operator carrying bundled
+compactness, symmetry, and summability of its nonzero real eigenvalues, with spectral trace `1`. -/
 structure DensityOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] where
   op : H →L[ℂ] H
   pos : op.IsPositive
-  compact : IsCompactOperator op
-  traceClass : op.IsTraceClass
-  trace_eq_one : trace traceClass = 1
+  spectralTraceClass : SpectralTraceClass op
+  spectralTrace_eq_one : spectralTraceClass.trace = 1
 
-/-- A density operator's underlying operator is self-adjoint (in the `IsSymmetric` sense used
-throughout `Analysis/EigenvectorFamily.lean`), inherited from positivity. -/
+/-- A density operator's underlying operator is self-adjoint. -/
 theorem DensityOperator.isSymmetric (ρ : DensityOperator H) : (ρ.op : H →ₗ[ℂ] H).IsSymmetric :=
-  ρ.pos.isSelfAdjoint.isSymmetric
+  ρ.spectralTraceClass.symmetric
+
+/-- The diagonal matrix elements of a density operator sum to `1` against any Hilbert basis. -/
+theorem DensityOperator.hasSum_inner_apply_eq_one (ρ : DensityOperator H)
+    {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    HasSum (fun i => (inner ℂ (d i) (ρ.op (d i)) : ℂ).re) 1 := by
+  have h := ρ.spectralTraceClass.hasSum_inner_apply d
+  rwa [ρ.spectralTrace_eq_one] at h
+
+/-- The diagonal sum over any orthonormal family is bounded above by `1`. -/
+theorem DensityOperator.sum_inner_apply_le_one (ρ : DensityOperator H)
+    {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d) :
+    Summable (fun i => (inner ℂ (d i) (ρ.op (d i)) : ℂ).re) ∧
+      ∑' i, (inner ℂ (d i) (ρ.op (d i)) : ℂ).re ≤ 1 := by
+  have h := ρ.spectralTraceClass.sum_inner_apply_le_trace ρ.pos.toLinearMap hd
+  rwa [ρ.spectralTrace_eq_one] at h
 
 omit [CompleteSpace H] in
-/-- **A rank-one operator `|x⟩⟨y|` is a compact operator**, regardless of the (possibly
-infinite) dimension of `H`: it factors as the composition of the (automatically compact, since
-its codomain `ℂ` is locally compact) functional `y ↦ ⟪y, ·⟫` with the continuous linear map
-`c ↦ c • x`, and `IsCompactOperator` is preserved under post-composition by a continuous linear
-map. -/
+/-- **A rank-one operator `|x⟩⟨y|` is compact**, regardless of the dimension of `H`. -/
 theorem isCompactOperator_rankOne (x y : H) :
     IsCompactOperator (InnerProductSpace.rankOne ℂ x y : H →L[ℂ] H) := by
   rw [InnerProductSpace.rankOne_def']
@@ -65,7 +64,7 @@ theorem isCompactOperator_rankOne (x y : H) :
 
 omit [CompleteSpace H] in
 /-- The rank-one projector `|ψ⟩⟨ψ|` for a unit vector `ψ` has no eigenvectors outside its own
-eigenspace at `1`: any other nonzero eigenvalue's eigenspace is trivial. -/
+eigenspace at `1`. -/
 theorem eigenspace_rankOne_eq_bot {ψ : H} (hψ : ‖ψ‖ = 1) {μ : ℂ} (hμ0 : μ ≠ 0) (hμ1 : μ ≠ 1) :
     Module.End.eigenspace ((InnerProductSpace.rankOne ℂ ψ ψ : H →L[ℂ] H) : H →ₗ[ℂ] H) μ = ⊥ := by
   rw [Submodule.eq_bot_iff]
@@ -84,7 +83,7 @@ theorem eigenspace_rankOne_eq_bot {ψ : H} (hψ : ‖ψ‖ = 1) {μ : ℂ} (hμ0
 
 omit [CompleteSpace H] in
 /-- The rank-one projector `|ψ⟩⟨ψ|` for a unit vector `ψ` has eigenspace `span {ψ}` at
-eigenvalue `1`. -/
+ eigenvalue `1`. -/
 theorem eigenspace_rankOne_one {ψ : H} (hψ : ‖ψ‖ = 1) :
     Module.End.eigenspace ((InnerProductSpace.rankOne ℂ ψ ψ : H →L[ℂ] H) : H →ₗ[ℂ] H) 1 =
       Submodule.span ℂ {ψ} := by
@@ -98,16 +97,14 @@ theorem eigenspace_rankOne_one {ψ : H} (hψ : ‖ψ‖ = 1) :
       inner_self_eq_norm_sq_to_K, hψ]
 
 omit [CompleteSpace H] in
-/-- The rank-one projector `|ψ⟩⟨ψ|`'s eigenspace at eigenvalue `1` has dimension `1`. -/
+/-- The rank-one projector's eigenspace at eigenvalue `1` has dimension `1`. -/
 theorem finrank_eigenspace_rankOne_one {ψ : H} (hψ : ‖ψ‖ = 1) :
     Module.finrank ℂ (Module.End.eigenspace
       ((InnerProductSpace.rankOne ℂ ψ ψ : H →L[ℂ] H) : H →ₗ[ℂ] H) (1 : ℂ)) = 1 := by
   rw [eigenspace_rankOne_one hψ]
   exact finrank_span_singleton (by rw [ne_eq, ← norm_eq_zero, hψ]; norm_num)
 
-/-- **The eigenvector index of a rank-one projector `|ψ⟩⟨ψ|` (unit `ψ`) has a unique element**,
-the single eigenvector `ψ` itself at eigenvalue `1`: every other nonzero eigenvalue's eigenspace
-is trivial (`eigenspace_rankOne_eq_bot`), forcing its `Fin`-indexed fiber to be empty. -/
+/-- The eigenvector index of a unit rank-one projector has a unique element. -/
 @[reducible] def uniqueEigenvectorIndexRankOne {ψ : H} (hψ : ‖ψ‖ = 1) :
     Unique (ContinuousLinearMap.EigenvectorIndex
       (InnerProductSpace.rankOne ℂ ψ ψ : H →L[ℂ] H)) where
@@ -138,15 +135,17 @@ is trivial (`eigenspace_rankOne_eq_bot`), forcing its `Fin`-indexed fiber to be 
     omega
 
 omit [CompleteSpace H] in
-/-- **`pure ψ` is trace-class, with trace `1`.** -/
-theorem rankOne_isTraceClass {ψ : H} (hψ : ‖ψ‖ = 1) :
-    ContinuousLinearMap.IsTraceClass (InnerProductSpace.rankOne ℂ ψ ψ : H →L[ℂ] H) := by
+/-- The nonzero real eigenvalues of a unit rank-one projector are summable. -/
+theorem rankOne_hasSummableRealEigenvalues {ψ : H} (hψ : ‖ψ‖ = 1) :
+    ContinuousLinearMap.HasSummableRealEigenvalues
+      (InnerProductSpace.rankOne ℂ ψ ψ : H →L[ℂ] H) := by
   haveI := uniqueEigenvectorIndexRankOne hψ
   exact Summable.of_finite
 
 omit [CompleteSpace H] in
-theorem rankOne_trace_eq_one {ψ : H} (hψ : ‖ψ‖ = 1) :
-    ContinuousLinearMap.trace (rankOne_isTraceClass hψ) = 1 := by
+/-- A unit rank-one projector has spectral trace `1`. -/
+theorem rankOne_spectralTrace_eq_one {ψ : H} (hψ : ‖ψ‖ = 1) :
+    ContinuousLinearMap.spectralTrace (rankOne_hasSummableRealEigenvalues hψ) = 1 := by
   haveI := uniqueEigenvectorIndexRankOne hψ
   change (∑' a : ContinuousLinearMap.EigenvectorIndex
     (InnerProductSpace.rankOne ℂ ψ ψ : H →L[ℂ] H), a.1.1) = 1
@@ -154,85 +153,79 @@ theorem rankOne_trace_eq_one {ψ : H} (hψ : ‖ψ‖ = 1) :
     absurd (Subsingleton.elim b (uniqueEigenvectorIndexRankOne hψ).default) hb)]
   rfl
 
-/-- **Pure-state density-operator embedding (infinite-dimensional).** A pure state `ψ` gives rise
-to a density operator, the rank-one projector `|ψ⟩⟨ψ|`. This is not a purification of a mixed
-state; purification is reserved for a pure state on a larger Hilbert space whose reduced state is
-the given mixed state. -/
+/-- **Pure-state density-operator embedding (infinite-dimensional).** -/
 noncomputable def pure (ψ : QuantumTheory.State H) : DensityOperator H where
   op := InnerProductSpace.rankOne ℂ ψ.1 ψ.1
   pos := InnerProductSpace.isPositive_rankOne_self ψ.1
-  compact := isCompactOperator_rankOne ψ.1 ψ.1
-  traceClass := rankOne_isTraceClass ψ.2
-  trace_eq_one := rankOne_trace_eq_one ψ.2
+  spectralTraceClass := SpectralTraceClass.ofPositive
+    (isCompactOperator_rankOne ψ.1 ψ.1)
+    (InnerProductSpace.isPositive_rankOne_self ψ.1)
+    (rankOne_hasSummableRealEigenvalues ψ.2)
+  spectralTrace_eq_one := rankOne_spectralTrace_eq_one ψ.2
 
 variable {M : Type*} [Fintype M]
 
-/-- **A (finite-outcome) POVM (infinite-dimensional).** A finite family of positive bounded
-operators summing to the identity. Unlike the finite-dimensional `QuantumTheory.POVM`, the
-individual `E m` need *not* be compact or trace-class — e.g. a single-outcome POVM forces
-`E () = 1`, never compact in infinite dimensions. Only `ρ`'s own trace-class-ness (via its
-eigendecomposition) is needed to make `prob` well-defined below, sidestepping the
-Hilbert–Schmidt-inner-product route (`Analysis/HilbertSchmidt.lean`), which would additionally
-require each `E m` itself to be Hilbert–Schmidt. -/
+/-- **A finite-outcome POVM (infinite-dimensional).** -/
 structure POVM (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
     (M : Type*) [Fintype M] where
   E : M → H →L[ℂ] H
   pos : ∀ m, (E m).IsPositive
   sum_eq_id : (∑ m, E m) = ContinuousLinearMap.id ℂ H
 
-/-- Each vector of `ρ`'s eigenvector family is a unit vector — used by `summable_prob_term` and
-`sum_prob_eq_one`, since each `eᵢ` needs to be a unit vector for the comparison bound
-`|⟪eᵢ, E_m eᵢ⟩| ≤ ‖E_m‖` and for `⟪eᵢ,eᵢ⟩ = 1` to hold. -/
+/-- Each vector of `ρ`'s eigenvector family is a unit vector. -/
 theorem eigenvectorFamily_norm_eq_one (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) :
-    ‖eigenvectorFamily ρ.compact a‖ = 1 :=
-  (orthonormal_eigenvectorFamily ρ.compact ρ.isSymmetric).1 a
+    ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖ = 1 :=
+  (orthonormal_eigenvectorFamily ρ.spectralTraceClass.compact ρ.isSymmetric).1 a
 
-/-- **Born rule (general measurement postulate, infinite-dimensional).** The probability of
-outcome `m` of a POVM measurement `P` on a density operator `ρ`, computed via `ρ`'s own
-eigendecomposition `ρ = Σᵢ λᵢ |eᵢ⟩⟨eᵢ|` (`ContinuousLinearMap.eigenvectorFamily`): `Σᵢ λᵢ ⟪eᵢ,
-E_m eᵢ⟫`. Well-defined (summable, `summable_prob_term`) since `Σᵢ |λᵢ|` converges (`ρ.traceClass`)
-and each `eᵢ` is a unit vector, so `|⟪eᵢ, E_m eᵢ⟫| ≤ ‖E_m‖`. -/
+/-- **Born rule (general measurement postulate, infinite-dimensional).** -/
 noncomputable def prob (P : POVM H M) (ρ : DensityOperator H) (m : M) : ℝ :=
   (∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) *
-    (inner ℂ (eigenvectorFamily ρ.compact a) (P.E m (eigenvectorFamily ρ.compact a)) : ℂ)).re
+    (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+      (P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)).re
 
-/-- Convergence of the series defining `prob`, via comparison against `‖P.E m‖ * |λᵢ|`. -/
+/-- Convergence of the series defining `prob`. -/
 theorem summable_prob_term (P : POVM H M) (ρ : DensityOperator H) (m : M) :
     Summable (fun a : EigenvectorIndex ρ.op => (a.1.1 : ℂ) *
-      (inner ℂ (eigenvectorFamily ρ.compact a) (P.E m (eigenvectorFamily ρ.compact a)) : ℂ)) := by
+      (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+        (P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)) := by
   have hnorm := eigenvectorFamily_norm_eq_one ρ
-  refine Summable.of_norm_bounded (ρ.traceClass.mul_right ‖P.E m‖) fun a => ?_
-  have hle : ‖(inner ℂ (eigenvectorFamily ρ.compact a) (P.E m (eigenvectorFamily ρ.compact a)) :
-      ℂ)‖ ≤ ‖P.E m‖ :=
-    calc ‖(inner ℂ (eigenvectorFamily ρ.compact a) (P.E m (eigenvectorFamily ρ.compact a)) : ℂ)‖
-        ≤ ‖eigenvectorFamily ρ.compact a‖ * ‖P.E m (eigenvectorFamily ρ.compact a)‖ :=
+  refine Summable.of_norm_bounded
+    (ρ.spectralTraceClass.summable.mul_right ‖P.E m‖) fun a => ?_
+  have hle : ‖(inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+      (P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)‖ ≤ ‖P.E m‖ :=
+    calc ‖(inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+          (P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)‖
+        ≤ ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖ *
+            ‖P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a)‖ :=
           norm_inner_le_norm _ _
-      _ ≤ ‖eigenvectorFamily ρ.compact a‖ * (‖P.E m‖ * ‖eigenvectorFamily ρ.compact a‖) := by
+      _ ≤ ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖ *
+          (‖P.E m‖ * ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖) := by
           gcongr; exact (P.E m).le_opNorm _
       _ = ‖P.E m‖ := by rw [hnorm a]; ring
   rw [norm_mul, Complex.norm_real]
   exact mul_le_mul_of_nonneg_left hle (abs_nonneg _)
 
-/-- **The outcome probabilities of a POVM measurement sum to `1`** (infinite-dimensional),
-matching the finite-dimensional `QuantumTheory.sum_prob_eq_one`. Proved by swapping the finite
-sum over `M` with the (absolutely convergent) sum over `ρ`'s eigenvectors
-(`Summable.tsum_finsetSum`), using `P.sum_eq_id` to collapse `Σₘ E_m eᵢ` to `eᵢ`, and finally
-`ρ.trace_eq_one` to evaluate the resulting eigenvalue sum. -/
+/-- **The outcome probabilities of a POVM measurement sum to `1`.** -/
 theorem sum_prob_eq_one (P : POVM H M) (ρ : DensityOperator H) :
     ∑ m, prob P ρ m = 1 := by
   have hswap : ∑ m, ∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) *
-      (inner ℂ (eigenvectorFamily ρ.compact a) (P.E m (eigenvectorFamily ρ.compact a)) : ℂ) =
+      (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+        (P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ) =
       ∑' a : EigenvectorIndex ρ.op, ∑ m, (a.1.1 : ℂ) *
-      (inner ℂ (eigenvectorFamily ρ.compact a) (P.E m (eigenvectorFamily ρ.compact a)) : ℂ) :=
+      (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+        (P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ) :=
     (Summable.tsum_finsetSum (fun m _ => summable_prob_term P ρ m)).symm
   have hnorm := eigenvectorFamily_norm_eq_one ρ
   have hcollapse : ∀ a : EigenvectorIndex ρ.op, ∑ m, (a.1.1 : ℂ) *
-      (inner ℂ (eigenvectorFamily ρ.compact a) (P.E m (eigenvectorFamily ρ.compact a)) : ℂ) =
+      (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+        (P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ) =
       (a.1.1 : ℂ) := fun a => by
     rw [← Finset.mul_sum, ← inner_sum]
-    have hsum : ∑ m, P.E m (eigenvectorFamily ρ.compact a) = eigenvectorFamily ρ.compact a := by
-      have h := map_sum (ContinuousLinearMap.apply ℂ H (eigenvectorFamily ρ.compact a)) P.E
-        Finset.univ
+    have hsum : ∑ m, P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a) =
+        eigenvectorFamily ρ.spectralTraceClass.compact a := by
+      have h := map_sum
+        (ContinuousLinearMap.apply ℂ H (eigenvectorFamily ρ.spectralTraceClass.compact a))
+        P.E Finset.univ
       simp only [ContinuousLinearMap.apply_apply] at h
       rw [← h, P.sum_eq_id, ContinuousLinearMap.id_apply]
     rw [hsum, inner_self_eq_norm_sq_to_K, hnorm a]
@@ -241,6 +234,8 @@ theorem sum_prob_eq_one (P : POVM H M) (ρ : DensityOperator H) :
   simp only [prob]
   rw [← Complex.re_sum, hswap]
   simp_rw [hcollapse]
-  exact_mod_cast ρ.trace_eq_one
+  have htrace := ρ.spectralTrace_eq_one
+  change (∑' a : EigenvectorIndex ρ.op, a.1.1) = 1 at htrace
+  exact_mod_cast htrace
 
 end QuantumTheory.TraceClass
