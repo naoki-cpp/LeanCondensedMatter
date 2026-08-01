@@ -1,0 +1,51 @@
+name: Integrate SecondQuantization R2 Stack
+
+on:
+  push:
+    branches:
+      - agent/integrate-second-quantization-r2
+    paths:
+      - .github/workflows/integrate-second-quantization-r2.yml
+  pull_request:
+    paths:
+      - .github/workflows/integrate-second-quantization-r2.yml
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/integrate-second-quantization-r2
+          fetch-depth: 0
+      - uses: leanprover/lean-action@v1
+        with:
+          build: false
+      - name: Apply the net R2 stack diff
+        run: |
+          git fetch origin 211a897dc871ef37e42666f2b0f8a73234fa10e5 62e6377c80cb9ba2f64b580f73b8a767ba0d5faa
+          git diff --binary 211a897dc871ef37e42666f2b0f8a73234fa10e5 62e6377c80cb9ba2f64b580f73b8a767ba0d5faa -- . > /tmp/second-quantization-r2.patch
+          test -s /tmp/second-quantization-r2.patch
+          git apply --index --3way /tmp/second-quantization-r2.patch
+      - name: Check canonical architecture
+        run: python3 scripts/check_second_quantization_architecture.py
+      - name: Validate full library
+        run: lake build --wfail
+      - name: Check for sorry
+        run: |
+          if grep -rnE '\bsorry\b' --include='*.lean' LeanCondensedMatter; then
+            exit 1
+          fi
+      - name: Remove one-shot integration workflow
+        run: rm .github/workflows/integrate-second-quantization-r2.yml
+      - name: Commit integrated R2 stack
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "refactor: integrate SecondQuantization R2 cleanup"
+          git push origin HEAD:agent/integrate-second-quantization-r2
