@@ -42,9 +42,11 @@ theorem Polynomial.aeval_apply_eigenvector {T : H →L[ℂ] H} {v : H} {c : ℝ}
     (φ := RingHom.id ℂ)
     (ψ := ContinuousLinearMap.toLinearMapRingHom)
     (by ext z x; simp [RingHom.comp_apply, Algebra.algebraMap_eq_smul_one]) p T]
-  simpa [p, Polynomial.eval_map] using
-    (Module.End.aeval_apply_of_mem_apply_eq_smul
-      (f := (T : H →ₗ[ℂ] H)) (μ := (c : ℂ)) (x := v) (p := p) hv)
+  have heval : p.eval (c : ℂ) = ((q.eval c : ℝ) : ℂ) := by
+    change (q.map (algebraMap ℝ ℂ)).eval (c : ℂ) = ((q.eval c : ℝ) : ℂ)
+    rw [Polynomial.eval_map]
+    exact Polynomial.eval₂_at_apply (p := q) (algebraMap ℝ ℂ) c
+  rw [Module.End.aeval_apply_of_mem_apply_eq_smul hv, heval]
 
 open Filter Topology
 
