@@ -58,11 +58,15 @@ theorem finiteDimensional_of_gibbsOp_isCompact (Hop : Observable H) (β : ℝ)
   have hcompact_u : IsCompactOperator (u : H →L[ℂ] H) := by
     rw [hu]
     exact hcompact
-  have hcompact_one : IsCompactOperator (1 : H →L[ℂ] H) := by
-    rw [← u.inv_val]
-    simpa using hcompact_u.clm_comp (↑u⁻¹ : H →L[ℂ] H)
-  apply FiniteDimensional.of_isCompactOperator_id
-  simpa using hcompact_one
+  have hinv_comp :
+      (⇑(↑u⁻¹ : H →L[ℂ] H) ∘ ⇑(u : H →L[ℂ] H)) = id := by
+    funext x
+    have h := congrArg (fun T : H →L[ℂ] H => T x) u.inv_val
+    simpa using h
+  have hcompact_id : IsCompactOperator (id : H → H) := by
+    rw [← hinv_comp]
+    exact hcompact_u.clm_comp (↑u⁻¹ : H →L[ℂ] H)
+  exact FiniteDimensional.of_isCompactOperator_id hcompact_id
 
 /-- `gibbsOp` is positive. -/
 theorem gibbsOp_isPositive (Hop : Observable H) (β : ℝ) : (gibbsOp Hop β).IsPositive := by
