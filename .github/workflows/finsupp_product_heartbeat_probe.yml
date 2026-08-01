@@ -35,7 +35,7 @@ jobs:
               "  have hmul : Summable\n"
               "      (fun p : ℕ × (Fin k →₀ ℕ) =>\n"
               "        f 0 p.1 * ∏ i : Fin k, f i.succ (p.2 i)) :=\n"
-              "    summable_mul_of_summable_norm habsHead habsTail\n"
+              "    (habsHead.mul_norm habsTail).of_norm\n"
               "  have hprod : HasSum\n"
               "      (fun p : ℕ × (Fin k →₀ ℕ) =>\n"
               "        f 0 p.1 * ∏ i : Fin k, f i.succ (p.2 i))\n"
