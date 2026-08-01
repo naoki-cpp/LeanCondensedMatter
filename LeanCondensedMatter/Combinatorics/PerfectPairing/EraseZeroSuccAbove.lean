@@ -11,11 +11,9 @@ This module specializes the general finite-index deletion equivalence to the pai
 connects it to `List.eraseIdx`.
 -/
 
-namespace SecondQuantization
-namespace Common
-namespace BlochDeDominicis
+namespace Combinatorics
 
-open Combinatorics.FiniteIndex
+open FiniteIndex
 
 /-- The increasing map used by `eraseZeroPair` is `succAbove` followed by `succ`. -/
 theorem Pairing.eraseZeroOrderIso_eq_succ_succAbove {n : ℕ} (pairing : Pairing (n + 1))
@@ -39,6 +37,4 @@ theorem Pairing.ofFn_comp_eraseZeroOrderIso_eq_eraseIdx {α : Type*} {n : ℕ}
   funext i
   rw [pairing.eraseZeroOrderIso_eq_succ_succAbove]
 
-end BlochDeDominicis
-end Common
-end SecondQuantization
+end Combinatorics
