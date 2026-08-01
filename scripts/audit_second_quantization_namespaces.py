@@ -19,6 +19,14 @@ DECL_RE = re.compile(
     r"\s*([^\s:({\[]+)?"
 )
 STATISTIC_NAME_RE = re.compile(r"(?:Boson|Bosonic|Fermion|Fermionic)")
+ALLOWED_EXTERNAL_DECLARATIONS = {
+    (
+        "LeanCondensedMatter/SecondQuantization/Common/Thermal/"
+        "BlochDeDominicis/PairingWeight.lean",
+        "Pairing.weight",
+        "Combinatorics",
+    ),
+}
 
 
 @dataclass
@@ -203,7 +211,7 @@ def render(findings: list[Finding], title: str) -> None:
         print()
 
 
-def main() -> int:
+def collect_findings() -> tuple[list[Finding], list[Finding], Counter]:
     misplaced: list[Finding] = []
     statistic_names: list[Finding] = []
     file_counts = Counter()
@@ -214,6 +222,22 @@ def main() -> int:
         file_misplaced, file_statistics = audit_file(path)
         misplaced.extend(file_misplaced)
         statistic_names.extend(file_statistics)
+
+    misplaced = [
+        finding
+        for finding in misplaced
+        if (
+            str(finding.path.relative_to(ROOT)),
+            finding.name,
+            finding.namespace,
+        )
+        not in ALLOWED_EXTERNAL_DECLARATIONS
+    ]
+    return misplaced, statistic_names, file_counts
+
+
+def main() -> int:
+    misplaced, statistic_names, file_counts = collect_findings()
 
     print("# SecondQuantization namespace audit")
     print()
@@ -226,7 +250,7 @@ def main() -> int:
     print()
     render(misplaced, "Declarations outside their path-owned namespace")
     render(statistic_names, "Declaration names containing a statistic suffix")
-    return 0
+    return 1 if misplaced or statistic_names else 0
 
 
 if __name__ == "__main__":

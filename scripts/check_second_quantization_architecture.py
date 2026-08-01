@@ -4,6 +4,8 @@ import re
 import sys
 from pathlib import Path
 
+from audit_second_quantization_namespaces import collect_findings
+
 ROOT = Path(__file__).resolve().parents[1]
 SQ = ROOT / "LeanCondensedMatter" / "SecondQuantization"
 
@@ -113,6 +115,21 @@ def check_fermionic_namespace(errors: list[str]) -> None:
             )
 
 
+def check_declaration_namespaces(errors: list[str]) -> None:
+    misplaced, statistic_names, _ = collect_findings()
+    for finding in misplaced:
+        errors.append(
+            "declaration outside path-owned namespace: "
+            f"{relative(finding.path)}:{finding.line}: "
+            f"{finding.kind} {finding.name} in {finding.namespace}"
+        )
+    for finding in statistic_names:
+        errors.append(
+            "statistic-encoded declaration name: "
+            f"{relative(finding.path)}:{finding.line}: {finding.name}"
+        )
+
+
 def check_entry_point(errors: list[str]) -> None:
     entry = SQ.with_suffix(".lean")
     if not entry.is_file():
@@ -129,6 +146,7 @@ def main() -> int:
     check_removed_paths(errors)
     check_dependency_direction(errors)
     check_fermionic_namespace(errors)
+    check_declaration_namespaces(errors)
     check_entry_point(errors)
 
     if errors:

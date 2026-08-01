@@ -29,7 +29,7 @@ theorem numberOperator_basisState (i : Mode) (n : Occupation Mode) :
 
 /-- The single-mode bosonic exchange commutator is the identity. -/
 theorem exchangeCommutator_annihilate_create_self (i : Mode) :
-    Common.exchangeCommutator Statistics.boson (annihilate i) (create i) =
+    Common.exchangeCommutator Common.Statistics.boson (annihilate i) (create i) =
       (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :=
   Common.exchangeCommutator_annihilate_create_self (Config := Occupation Mode) i
 
@@ -37,8 +37,8 @@ theorem exchangeCommutator_annihilate_create_self (i : Mode) :
 theorem annihilate_comp_create_self (i : Mode) :
     (annihilate i).comp (create i) =
       (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) + numberOperator i := by
-  have h := Common.annihilate_comp_create_self (s := Statistics.boson) (Config := Occupation Mode) i
-  rwa [Statistics.zetaInt_boson, Int.cast_one, one_smul] at h
+  have h := Common.annihilate_comp_create_self (s := Common.Statistics.boson) (Config := Occupation Mode) i
+  rwa [Common.Statistics.zetaInt_boson, Int.cast_one, one_smul] at h
 
 end Bosonic
 end SecondQuantization

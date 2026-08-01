@@ -74,16 +74,16 @@ theorem anticomm_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' 
 
 omit [Fintype Mode] in
 /-- **The general theorem's zeta-commutator hypothesis, for a single vertex's four legs** —
-`Common.zetaCommutator` at `ζ := Statistics.fermion.zetaInt` is exactly `anticomm`
+`Common.zetaCommutator` at `ζ := Common.Statistics.fermion.zetaInt` is exactly `anticomm`
 (`exchangeCommutator_fermion_eq_anticomm`), so `anticomm_quarticLocalLegOperator` transfers
 directly. -/
 theorem zetaCommutator_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' : Fin 4) :
-    Common.zetaCommutator ((Statistics.fermion.zetaInt : ℤ) : ℂ)
+    Common.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
         (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
       (if quarticLocalLegIsCreate l = quarticLocalLegIsCreate l' then (0 : ℂ)
        else if quarticLocalLegMode q l = quarticLocalLegMode q' l' then 1 else 0) •
         (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
-  have hbridge : Common.zetaCommutator ((Statistics.fermion.zetaInt : ℤ) : ℂ)
+  have hbridge : Common.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
       (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
       anticomm (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') :=
     exchangeCommutator_fermion_eq_anticomm _ _

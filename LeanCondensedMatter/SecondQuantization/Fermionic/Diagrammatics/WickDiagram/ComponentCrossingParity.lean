@@ -68,7 +68,7 @@ theorem QuarticWickDiagram.crossingCount_mod_two_eq_sum_of_externalCrossingPairs
 
 /-- Component-wise pairing-weight factorization follows once the external crossings are proved even. -/
 theorem QuarticWickDiagram.pairingInOrder_weight_eq_prod_components_of_externalCrossingPairs_mod_two_eq_zero
-    (s : Statistics) {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (s : Common.Statistics) {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (hExternal : (d.externalCrossingPairs orders shuffle).card % 2 = 0) :
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).weight s =

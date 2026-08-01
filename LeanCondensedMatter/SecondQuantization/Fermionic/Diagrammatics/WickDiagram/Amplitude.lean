@@ -28,7 +28,7 @@ wrong.** Two structurally different signs appear, and neither should be conflate
 or with a `1/n!`:
 - `(-1 : ℂ) ^ S.card`: the sign `dysonCoeff`'s recursion `Dₙ₊₁(τ) = -∫₀^τ V_I(σ) ∘ Dₙ(σ) dσ`
   bakes into the *n*-th coefficient itself.
-- `pairing.weight Statistics.fermion = (-1) ^ pairing.crossingCount`: the fermionic Wick
+- `pairing.weight Common.Statistics.fermion = (-1) ^ pairing.crossingCount`: the fermionic Wick
   contraction sign, computed on the pairing *after* it has been transported onto the vertex
   order's slot enumeration (`QuarticWickDiagram.pairingInOrder`) — crossing count is not invariant
   under an arbitrary relabeling (`PerfectPairing/Relabel.lean`'s module docstring), so this must
@@ -95,7 +95,7 @@ product of pair values over that transported pairing's pairs. -/
 noncomputable def QuarticWickDiagram.contractionIntegrand (ε : Mode → ℝ) (β : ℝ)
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (order : QuarticVertexOrder S)
     (τ : Fin S.card → ℝ) : ℂ :=
-  (d.pairingInOrder order).weight Statistics.fermion *
+  (d.pairingInOrder order).weight Common.Statistics.fermion *
     ∏ pr ∈ (d.pairingInOrder order).pairs, orderedQuarticPairValue ε β d order τ pr.1 pr.2
 
 /-- **The fixed-vertex-order ordered-simplex contribution**: the contraction integrand, integrated
@@ -117,22 +117,22 @@ theorem orderedQuarticPairValue_eq (ε : Mode → ℝ) (β : ℝ) {S : Finset (F
     (a b : Fin (2 * (2 * S.card))) :
     orderedQuarticPairValue ε β d order τ a b =
       Complex.exp
-          ((τ (orderedQuarticLegEquiv S.card a).1 *
+          ((τ (Common.orderedQuarticLegEquiv S.card a).1 *
               quarticLocalLegEnergyShift ε
-                (d.vertexLabel (order (orderedQuarticLegEquiv S.card a).1))
-                (orderedQuarticLegEquiv S.card a).2 : ℝ) : ℂ) *
+                (d.vertexLabel (order (Common.orderedQuarticLegEquiv S.card a).1))
+                (Common.orderedQuarticLegEquiv S.card a).2 : ℝ) : ℂ) *
         Complex.exp
-          ((τ (orderedQuarticLegEquiv S.card b).1 *
+          ((τ (Common.orderedQuarticLegEquiv S.card b).1 *
               quarticLocalLegEnergyShift ε
-                (d.vertexLabel (order (orderedQuarticLegEquiv S.card b).1))
-                (orderedQuarticLegEquiv S.card b).2 : ℝ) : ℂ) *
+                (d.vertexLabel (order (Common.orderedQuarticLegEquiv S.card b).1))
+                (Common.orderedQuarticLegEquiv S.card b).2 : ℝ) : ℂ) *
         freeGibbsExpectation ε β
           ((quarticLocalLegOperator
-              (d.vertexLabel (order (orderedQuarticLegEquiv S.card a).1))
-              (orderedQuarticLegEquiv S.card a).2).comp
+              (d.vertexLabel (order (Common.orderedQuarticLegEquiv S.card a).1))
+              (Common.orderedQuarticLegEquiv S.card a).2).comp
             (quarticLocalLegOperator
-              (d.vertexLabel (order (orderedQuarticLegEquiv S.card b).1))
-              (orderedQuarticLegEquiv S.card b).2)) := by
+              (d.vertexLabel (order (Common.orderedQuarticLegEquiv S.card b).1))
+              (Common.orderedQuarticLegEquiv S.card b).2)) := by
   simp only [orderedQuarticPairValue, orderedQuarticLegOperator, quarticLegOperatorForSequence,
     imaginaryTimeEvolve_quarticLocalLegOperator, LinearMap.smul_comp, LinearMap.comp_smul,
     smul_smul, freeGibbsExpectation_smul]
@@ -155,7 +155,7 @@ theorem continuous_contractionIntegrand (ε : Mode → ℝ) (β : ℝ) {S : Fins
     (d : QuarticWickDiagram Mode N S) (order : QuarticVertexOrder S) :
     Continuous (d.contractionIntegrand ε β order) := by
   have heq : d.contractionIntegrand ε β order = fun τ =>
-      (d.pairingInOrder order).weight Statistics.fermion *
+      (d.pairingInOrder order).weight Common.Statistics.fermion *
         ∏ pr ∈ (d.pairingInOrder order).pairs, orderedQuarticPairValue ε β d order τ pr.1 pr.2 :=
     rfl
   rw [heq]

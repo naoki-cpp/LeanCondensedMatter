@@ -61,7 +61,7 @@ theorem normalizedWeightedDiagonal_annihilate_create_annihilate_create_single_mo
         (((annihilate i).comp (create i)).comp ((annihilate i).comp (create i))) =
       Common.normalizedWeightedDiagonal w ((annihilate i).comp (create i)) *
           Common.normalizedWeightedDiagonal w ((annihilate i).comp (create i)) +
-        (Statistics.zetaInt Statistics.fermion : ℂ) *
+        (Common.Statistics.zetaInt Common.Statistics.fermion : ℂ) *
           (Common.normalizedWeightedDiagonal w ((annihilate i).comp (annihilate i)) *
             Common.normalizedWeightedDiagonal w ((create i).comp (create i))) +
         Common.normalizedWeightedDiagonal w ((annihilate i).comp (create i)) *

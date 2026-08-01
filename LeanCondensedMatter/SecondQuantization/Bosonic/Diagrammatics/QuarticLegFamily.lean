@@ -18,7 +18,7 @@ variable {Mode : Type*} [DecidableEq Mode]
 noncomputable def quarticLegOperatorForSequence (ε : Mode → ℝ) {n : ℕ}
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))) :
     FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
-  let slotLeg := orderedQuarticLegEquiv n p
+  let slotLeg := Common.orderedQuarticLegEquiv n p
   imaginaryTimeEvolve ε (τ slotLeg.1) (quarticLocalLegOperator (q slotLeg.1) slotLeg.2)
 
 end Bosonic

@@ -74,12 +74,12 @@ noncomputable def QuarticWickDiagram.componentOrderedLegEquiv {S : Finset (Fin N
     (Σ B : d.componentPartition.parts,
       Fin (2 * (2 * (B : Finset (Fin N)).card))) ≃ Fin (2 * (2 * S.card)) :=
   (Equiv.sigmaCongrRight fun B : d.componentPartition.parts =>
-      orderedQuarticLegEquiv (B : Finset (Fin N)).card).trans
+      Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card).trans
     (((Equiv.sigmaProdDistrib
         (fun B : d.componentPartition.parts => Fin (B : Finset (Fin N)).card)
         (Fin 4)).symm).trans
       ((Equiv.prodCongr shuffle.slotEquiv (Equiv.refl (Fin 4))).trans
-        (orderedQuarticLegEquiv S.card).symm))
+        (Common.orderedQuarticLegEquiv S.card).symm))
 
 @[simp]
 theorem QuarticWickDiagram.componentOrderedLegEquiv_apply {S : Finset (Fin N)}

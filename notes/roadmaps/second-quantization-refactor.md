@@ -72,6 +72,19 @@ PR #351 removed the `Bosonic/Foundations/` and `Bosonic/OperatorAlgebra/` split.
 Fock-space, ladder-operator, CCR, exchange, grading, and number-operator modules now live under
 `Bosonic/Algebra/`.
 
+### Common declaration namespaces
+
+The remaining path-owned declarations in the root `SecondQuantization` namespace now live under
+`SecondQuantization.Common`:
+
+- `Common.Statistics` and its exchange-sign API;
+- `Common.modeCount`;
+- the quartic-leg indexing equivalences and projections in `Common.Diagrammatics.Leg`.
+
+`Combinatorics.Pairing.weight` remains in `Combinatorics` intentionally because it extends the
+combinatorial pairing type with a physics-supplied weight. The namespace audit records this as the
+single explicit cross-namespace extension.
+
 ### Discrete fermionic Dyson ownership
 
 The discrete finite-basis coefficient is now owned only by `Common.dysonCoeff`. The former
@@ -133,16 +146,10 @@ unbounded-operator, infinite-mode, or thermodynamic-limit statements.
 
 ### R1 — declaration namespaces
 
-Move declarations that still live directly in `SecondQuantization` into exactly one of:
-
-```lean
-SecondQuantization.Common
-SecondQuantization.Fermionic
-SecondQuantization.Bosonic
-```
-
-The migration must update every in-repository caller in the same PR. No root-namespace forwarding
-aliases should remain.
+Complete. Every declaration owned by a `Common`, `Fermionic`, or `Bosonic` module is now in the
+matching namespace. The CI namespace audit rejects future path/namespace mismatches and
+statistic-encoded declaration names. The only allowlisted exception is the intentional extension
+`Combinatorics.Pairing.weight`.
 
 ### R2 — Common ownership and wrapper removal
 

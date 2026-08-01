@@ -49,19 +49,19 @@ theorem traceFock_imaginaryTimeEvolveFree_comp_annihilate_comp_create
     have h := imaginaryTimeEvolve_annihilate ε (-β) i
     rwa [show ((-(ε i) * (-β) : ℝ) : ℂ) = -((-β : ℝ) : ℂ) * (ε i : ℂ) by push_cast; ring]
   have hcomm : (annihilate i).comp (create j) -
-      (Statistics.zetaInt Statistics.fermion : ℂ) • ((create j).comp (annihilate i)) =
+      (Common.Statistics.zetaInt Common.Statistics.fermion : ℂ) • ((create j).comp (annihilate i)) =
         (if i = j then (1 : ℂ) else 0) •
           (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
-    rw [Statistics.zetaInt_fermion]
+    rw [Common.Statistics.zetaInt_fermion]
     have h := anticomm_annihilate_create i j
     rw [anticomm] at h
     push_cast
     rw [neg_one_smul, sub_neg_eq_add, h]
     split_ifs <;> simp
   have h := Common.traceFock_diagonalEvolution_comp_two_point (fermionEnergy ε) β (-(ε i))
-    (Statistics.zetaInt Statistics.fermion : ℂ) (if i = j then (1 : ℂ) else 0)
+    (Common.Statistics.zetaInt Common.Statistics.fermion : ℂ) (if i = j then (1 : ℂ) else 0)
     (annihilate i) (create j) hC1 hcomm
-  rw [Statistics.zetaInt_fermion] at h
+  rw [Common.Statistics.zetaInt_fermion] at h
   rwa [show (1 - ((-1 : ℤ) : ℂ) * Complex.exp ((-(ε i) * β : ℝ) : ℂ)) =
       1 + Complex.exp ((-(ε i) * β : ℝ) : ℂ) by push_cast; ring] at h
 

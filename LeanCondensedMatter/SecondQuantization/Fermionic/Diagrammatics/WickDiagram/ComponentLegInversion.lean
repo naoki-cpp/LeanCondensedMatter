@@ -24,25 +24,25 @@ theorem QuarticWickDiagram.componentOrderedLeg_lt_componentOrderedLeg_iff_slot_l
     (q : Fin (2 * (2 * (C : Finset (Fin N)).card))) :
     d.componentOrderedLeg shuffle B p < d.componentOrderedLeg shuffle C q ↔
       shuffle.slotEquiv
-          ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩ <
+          ⟨B, (Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩ <
         shuffle.slotEquiv
-          ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩ := by
+          ⟨C, (Common.orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩ := by
   have hslot_ne :
       shuffle.slotEquiv
-          ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩ ≠
+          ⟨B, (Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩ ≠
         shuffle.slotEquiv
-          ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩ := by
+          ⟨C, (Common.orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩ := by
     intro hslot
     have hsigma := shuffle.slotEquiv.injective hslot
     exact hBC (congrArg Sigma.fst hsigma)
   unfold QuarticWickDiagram.componentOrderedLeg
   exact orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne S.card
     (shuffle.slotEquiv
-      ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩)
+      ⟨B, (Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩)
     (shuffle.slotEquiv
-      ⟨C, (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩)
-    (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).2
-    (orderedQuarticLegEquiv (C : Finset (Fin N)).card q).2 hslot_ne
+      ⟨C, (Common.orderedQuarticLegEquiv (C : Finset (Fin N)).card q).1⟩)
+    (Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card p).2
+    (Common.orderedQuarticLegEquiv (C : Finset (Fin N)).card q).2 hslot_ne
 
 /-- A reversed pair of distinct-component vertex slots contributes all `4 × 4 = 16` reversed
 quartic-leg pairs, while a correctly ordered pair contributes none. -/
@@ -52,9 +52,9 @@ theorem QuarticWickDiagram.sum_componentOrderedLeg_inversions_at_vertices
     (i : Fin (B : Finset (Fin N)).card) (j : Fin (C : Finset (Fin N)).card) :
     (∑ localB : Fin 4, ∑ localC : Fin 4,
       if d.componentOrderedLeg shuffle C
-          ((orderedQuarticLegEquiv (C : Finset (Fin N)).card).symm (j, localC)) <
+          ((Common.orderedQuarticLegEquiv (C : Finset (Fin N)).card).symm (j, localC)) <
         d.componentOrderedLeg shuffle B
-          ((orderedQuarticLegEquiv (B : Finset (Fin N)).card).symm (i, localB))
+          ((Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card).symm (i, localB))
       then 1 else 0) =
       if shuffle.slotEquiv ⟨C, j⟩ < shuffle.slotEquiv ⟨B, i⟩ then 16 else 0 := by
   classical
@@ -81,8 +81,8 @@ theorem QuarticWickDiagram.sum_componentOrderedLeg_inversions_eq_sum_vertex_inve
         ((Fin (B : Finset (Fin N)).card × Fin (C : Finset (Fin N)).card) ×
           (Fin 4 × Fin 4)) :=
     (Equiv.prodCongr
-      (orderedQuarticLegEquiv (B : Finset (Fin N)).card)
-      (orderedQuarticLegEquiv (C : Finset (Fin N)).card)).trans
+      (Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card)
+      (Common.orderedQuarticLegEquiv (C : Finset (Fin N)).card)).trans
       (Equiv.prodProdProdComm _ _ _ _)
   calc
     (∑ p : Fin (2 * (2 * (B : Finset (Fin N)).card)),
@@ -97,17 +97,17 @@ theorem QuarticWickDiagram.sum_componentOrderedLeg_inversions_eq_sum_vertex_inve
     _ = ∑ x : (Fin (B : Finset (Fin N)).card × Fin (C : Finset (Fin N)).card) ×
           (Fin 4 × Fin 4),
         if d.componentOrderedLeg shuffle C
-            ((orderedQuarticLegEquiv (C : Finset (Fin N)).card).symm (x.1.2, x.2.2)) <
+            ((Common.orderedQuarticLegEquiv (C : Finset (Fin N)).card).symm (x.1.2, x.2.2)) <
           d.componentOrderedLeg shuffle B
-            ((orderedQuarticLegEquiv (B : Finset (Fin N)).card).symm (x.1.1, x.2.1))
+            ((Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card).symm (x.1.1, x.2.1))
         then 1 else 0 := by
           refine Fintype.sum_equiv legPairEquiv
             (fun x => if d.componentOrderedLeg shuffle C x.2 <
               d.componentOrderedLeg shuffle B x.1 then 1 else 0)
             (fun x => if d.componentOrderedLeg shuffle C
-                ((orderedQuarticLegEquiv (C : Finset (Fin N)).card).symm (x.1.2, x.2.2)) <
+                ((Common.orderedQuarticLegEquiv (C : Finset (Fin N)).card).symm (x.1.2, x.2.2)) <
               d.componentOrderedLeg shuffle B
-                ((orderedQuarticLegEquiv (B : Finset (Fin N)).card).symm (x.1.1, x.2.1))
+                ((Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card).symm (x.1.1, x.2.1))
               then 1 else 0) ?_
           intro x
           simp [legPairEquiv]
