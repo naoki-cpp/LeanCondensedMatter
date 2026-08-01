@@ -84,6 +84,24 @@ noncomputable def dysonPartitionFPowerSeries (ε : Mode → ℝ) (β : ℝ)
   FormalMultilinearSeries.ofScalars ℂ (dysonPartitionCoeff ε β V)
 
 omit [LinearOrder Mode] in
+@[simp]
+theorem coeff_dysonPartitionFPowerSeries (ε : Mode → ℝ) (β : ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) :
+    (dysonPartitionFPowerSeries ε β V).coeff n =
+      dysonPartitionCoeff ε β V n := by
+  simp [dysonPartitionFPowerSeries]
+
+omit [LinearOrder Mode] in
+/-- The formal `PowerSeries` coefficient and the analytic formal-multilinear coefficient are the
+same Dyson partition coefficient. -/
+theorem coeff_dysonPartitionFPowerSeries_eq_coeff_dysonPartitionSeries
+    (ε : Mode → ℝ) (β : ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) :
+    (dysonPartitionFPowerSeries ε β V).coeff n =
+      PowerSeries.coeff n (dysonPartitionSeries ε β V) := by
+  rw [coeff_dysonPartitionFPowerSeries, coeff_dysonPartitionSeries]
+
+omit [LinearOrder Mode] in
 /-- The Dyson partition Taylor series has infinite radius of convergence. -/
 theorem radius_dysonPartitionFPowerSeries_eq_top
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
@@ -105,7 +123,7 @@ theorem hasFPowerSeriesOnBall_analyticDysonPartitionFunction
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
     HasFPowerSeriesOnBall (analyticDysonPartitionFunction ε β V)
       (dysonPartitionFPowerSeries ε β V) 0 ⊤ := by
-  refine ⟨?_, ENNReal.top_pos, ?_⟩
+  refine ⟨?_, by simp, ?_⟩
   · rw [radius_dysonPartitionFPowerSeries_eq_top ε hβ V]
   · intro lam _
     simpa [dysonPartitionFPowerSeries,
