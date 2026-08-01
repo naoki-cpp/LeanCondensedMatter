@@ -1,17 +1,15 @@
 name: Agent fold ComponentLegInversion
 
 on:
-  push:
-    branches:
-      - agent/fold-component-leg-inversion
-    paths:
-      - .github/workflows/agent-fold-component-leg-inversion.yml
+  pull_request:
+    types: [opened]
 
 permissions:
   contents: write
 
 jobs:
   migrate:
+    if: github.head_ref == 'agent/fold-component-leg-inversion'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
