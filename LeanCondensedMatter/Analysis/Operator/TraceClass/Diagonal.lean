@@ -40,4 +40,21 @@ theorem hasSum_diagonalTerm (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
     (ha : Summable fun i => ‖a i‖) : HasSum (diagonalTerm b a) (diagonalOp b a ha) :=
   (summable_diagonalTerm b a ha).hasSum
 
+/-- The diagonal operator acts on each basis vector by its corresponding coefficient. -/
+theorem diagonalOp_apply_basis (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
+    (ha : Summable fun i => ‖a i‖) (j : ι) :
+    diagonalOp b a ha (b j) = a j • b j := by
+  classical
+  have hmap := (hasSum_diagonalTerm b a ha).mapL
+    (ContinuousLinearMap.apply ℂ H (b j))
+  have htsum : (∑' i, diagonalTerm b a i (b j)) = a j • b j := by
+    rw [tsum_eq_single j]
+    · simp [diagonalTerm, InnerProductSpace.rankOne_apply,
+        inner_self_eq_norm_sq_to_K, b.norm_eq_one]
+    · intro i hij
+      simp [diagonalTerm, InnerProductSpace.rankOne_apply, b.orthonormal.2 hij]
+  calc
+    diagonalOp b a ha (b j) = ∑' i, diagonalTerm b a i (b j) := hmap.tsum_eq.symm
+    _ = a j • b j := htsum
+
 end ContinuousLinearMap.HilbertBasis
