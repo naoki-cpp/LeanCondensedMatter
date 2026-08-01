@@ -41,7 +41,7 @@ omit [CompleteSpace H] in
 theorem trace_nonneg (h : SpectralTraceClass T)
     (hpos : (T : H →ₗ[ℂ] H).IsPositive) :
     0 ≤ h.trace := by
-  simpa [trace] using ContinuousLinearMap.spectralTrace_nonneg h.summable hpos
+  simpa [trace] using ContinuousLinearMap.trace_nonneg h.summable hpos
 
 /-- Compute the bundled spectral trace against any Hilbert basis. -/
 theorem hasSum_inner_apply (h : SpectralTraceClass T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
