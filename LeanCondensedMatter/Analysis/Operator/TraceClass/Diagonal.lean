@@ -29,11 +29,11 @@ operator series in operator norm. -/
 theorem summable_diagonalTerm (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
     (ha : Summable fun i => ‖a i‖) : Summable (diagonalTerm b a) := by
   refine Summable.of_norm_bounded ha fun i => ?_
-  simp [diagonalTerm, norm_smul, b.norm_eq_one]
+  simp [diagonalTerm, norm_smul, b.orthonormal.1 i]
 
 /-- The bounded diagonal operator with coefficients `a` in the Hilbert basis `b`. -/
 def diagonalOp (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
-    (ha : Summable fun i => ‖a i‖) : H →L[ℂ] H :=
+    (_ha : Summable fun i => ‖a i‖) : H →L[ℂ] H :=
   ∑' i, diagonalTerm b a i
 
 /-- The defining diagonal rank-one series converges to `diagonalOp`. -/
@@ -51,7 +51,7 @@ theorem diagonalOp_apply_basis (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
   have htsum : (∑' i, diagonalTerm b a i (b j)) = a j • b j := by
     rw [tsum_eq_single j]
     · simp [diagonalTerm, InnerProductSpace.rankOne_apply,
-        inner_self_eq_norm_sq_to_K, b.norm_eq_one]
+        inner_self_eq_norm_sq_to_K, b.orthonormal.1 j]
     · intro i hij
       simp [diagonalTerm, InnerProductSpace.rankOne_apply, b.orthonormal.2 hij]
   calc
@@ -69,7 +69,9 @@ theorem isCompactOperator_rankOne (x y : H) :
 /-- Every term of the diagonal operator series is compact. -/
 theorem diagonalTerm_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ) (i : ι) :
     IsCompactOperator (diagonalTerm b a i) := by
-  simpa [diagonalTerm] using (isCompactOperator_rankOne (b i) (b i)).smul (a i)
+  change IsCompactOperator
+    (fun x : H => a i • InnerProductSpace.rankOne ℂ (b i) (b i) x)
+  exact (isCompactOperator_rankOne (b i) (b i)).smul (a i)
 
 /-- A diagonal operator with absolutely summable coefficients is compact. -/
 theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
@@ -83,6 +85,7 @@ theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
         simp only [Finset.sum_insert hi]
         exact (diagonalTerm_isCompact b a i).add ih
   refine isCompactOperator_of_tendsto
+    (l := Filter.atTop)
     (F := fun s : Finset ι => ∑ i ∈ s, diagonalTerm b a i)
     (f := diagonalOp b a ha) ?_ ?_
   · exact hasSum_diagonalTerm b a ha
