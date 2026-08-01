@@ -25,6 +25,4 @@ import LeanCondensedMatter.QuantumTheory.Entropy
 import LeanCondensedMatter.QuantumTheory.EntropyTraceClass
 import LeanCondensedMatter.QuantumTheory.GibbsStateTraceClass
 import LeanCondensedMatter.QuantumTheory.HelmholtzFreeEnergyTraceClass
-import LeanCondensedMatter.SecondQuantization.Common
-import LeanCondensedMatter.SecondQuantization.Bosonic
-import LeanCondensedMatter.SecondQuantization.Fermionic
+import LeanCondensedMatter.SecondQuantization
