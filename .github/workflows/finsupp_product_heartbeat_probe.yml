@@ -21,6 +21,14 @@ jobs:
         run: |
           cp .github/probes/FinsuppProduct.lean \
             LeanCondensedMatter/Analysis/InfiniteSum/FinsuppProduct.lean
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("LeanCondensedMatter/Analysis/InfiniteSum/FinsuppProduct.lean")
+          text = path.read_text(encoding="utf-8")
+          text = text.replace("some i", "Option.some i")
+          path.write_text(text, encoding="utf-8")
+          PY
           if grep -n "set_option maxHeartbeats 0" \
               LeanCondensedMatter/Analysis/InfiniteSum/FinsuppProduct.lean; then
             echo "::error::candidate still contains an unbounded heartbeat override"
