@@ -6,22 +6,14 @@ set_option linter.style.header false
 /-!
 # Fermionic time-independent Dyson verification
 
-The generic time-independent coefficient formula is specialized from `SecondQuantization.Common`.
-The density-density `interactionHamiltonian` corollary remains fermion-specific.
+The generic time-independent coefficient formula is used directly from `SecondQuantization.Common`.
+Only the density-density `interactionHamiltonian` statements remain fermion-specific.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
-
-omit [LinearOrder Mode] in
-/-- A time-independent fermionic interaction has the ordinary Taylor Dyson coefficients. -/
-theorem dysonCoeff_eq_of_time_independent (ε : Mode → ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-    (hV : ∀ τ, interactionPicture ε V τ = V) :
-    ∀ (n : ℕ) (τ : ℝ), Common.dysonCoeff (fermionEnergy ε) V n τ = ((-τ : ℂ) ^ n / n.factorial) • V ^ n :=
-  Common.dysonCoeff_eq_of_time_independent (fermionEnergy ε) V hV
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- `interactionHamiltonian` is time-independent in the interaction picture. -/
@@ -44,7 +36,8 @@ theorem dysonCoeff_interactionHamiltonian_eq (ε : Mode → ℝ) (Vint : Mode �
     (τ : ℝ) :
     Common.dysonCoeff (fermionEnergy ε) (interactionHamiltonian Vint) n τ =
       ((-τ : ℂ) ^ n / n.factorial) • (interactionHamiltonian Vint) ^ n :=
-  dysonCoeff_eq_of_time_independent ε (interactionHamiltonian Vint)
+  Common.dysonCoeff_eq_of_time_independent
+    (fermionEnergy ε) (interactionHamiltonian Vint)
     (imaginaryTimeEvolve_interactionHamiltonian ε Vint) n τ
 
 end Fermionic
