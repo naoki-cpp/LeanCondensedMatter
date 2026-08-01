@@ -1,21 +1,16 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonExpansion
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannWeight
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.FormalLogPartitionFunction
+import LeanCondensedMatter.Analysis.PowerSeries.Normalization
 
 set_option linter.style.header false
 
 /-!
 # The fermionic Dyson partition-function series
 
-The statistics-independent finite Dyson trace coefficient and its formal power series live in
-`SecondQuantization.Common.Perturbation.DysonTraceSeries`. This file retains the existing fermionic
-partition-function API as a thin specialization at
-`Config := FermionOccupation Mode` and `energy := fermionEnergy ε`, and connects the generic
-zeroth-order weight sum to `freePartitionFunction`.
-
-All series here are coefficientwise formal power series. No convergence or equality with a genuine
-analytic partition function is asserted.
+The statistics-independent coefficient and series are supplied by
+`SecondQuantization.Common.Perturbation.DysonTraceSeries`. This file exposes only the genuinely
+fermionic specialization and its relation to the free partition function.
 -/
 
 namespace SecondQuantization
@@ -24,29 +19,18 @@ open PowerSeries
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
-/-- The fermionic finite Dyson trace coefficient. Its unfolded form is retained for compatibility
-with existing trace-level proofs; it is definitionally equal to `Common.dysonTraceCoeff`. -/
-noncomputable def dysonPartitionCoeff (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) : ℂ :=
-  Common.traceFock ((imaginaryTimeEvolveFree ε (-β)).comp (dysonCoeff ε V n β))
-
-omit [LinearOrder Mode] in
-/-- The fermionic coefficient is the specialization of the Common finite Dyson trace coefficient. -/
-theorem dysonPartitionCoeff_eq_dysonTraceCoeff (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) :
-    dysonPartitionCoeff ε β V n = Common.dysonTraceCoeff (fermionEnergy ε) β V n := rfl
-
 /-- The fermionic specialization of `Common.dysonTraceSeries`. -/
 noncomputable def dysonPartitionSeries (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) : PowerSeries ℂ :=
   Common.dysonTraceSeries (fermionEnergy ε) β V
 
 omit [LinearOrder Mode] in
+/-- Coefficients are the canonical statistics-independent Dyson trace coefficients. -/
 theorem coeff_dysonPartitionSeries (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) :
-    PowerSeries.coeff n (dysonPartitionSeries ε β V) = dysonPartitionCoeff ε β V n := by
-  rw [dysonPartitionCoeff_eq_dysonTraceCoeff]
-  exact Common.coeff_dysonTraceSeries (fermionEnergy ε) β V n
+    PowerSeries.coeff n (dysonPartitionSeries ε β V) =
+      Common.dysonTraceCoeff (fermionEnergy ε) β V n :=
+  Common.coeff_dysonTraceSeries (fermionEnergy ε) β V n
 
 omit [LinearOrder Mode] in
 /-- The constant coefficient is the fermionic free partition function. -/
@@ -62,30 +46,33 @@ theorem constantCoeff_dysonPartitionSeries (ε : Mode → ℝ) (β : ℝ)
 
 omit [LinearOrder Mode] in
 @[simp]
-theorem dysonPartitionCoeff_zero (ε : Mode → ℝ) (β : ℝ)
+theorem coeff_zero_dysonPartitionSeries (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
-    dysonPartitionCoeff ε β V 0 = freePartitionFunction ε β := by
-  rw [← coeff_dysonPartitionSeries, PowerSeries.coeff_zero_eq_constantCoeff,
-    constantCoeff_dysonPartitionSeries]
+    PowerSeries.coeff 0 (dysonPartitionSeries ε β V) = freePartitionFunction ε β := by
+  rw [PowerSeries.coeff_zero_eq_constantCoeff, constantCoeff_dysonPartitionSeries]
 
-/-- The normalized/logarithmic fermionic Dyson partition series. -/
+/-- The normalized logarithm of the fermionic Dyson partition series. -/
 noncomputable def dysonFormalLogPartitionFunction (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) : PowerSeries ℂ :=
-  formalLogPartitionFunction (normalizePartitionSeries (dysonPartitionSeries ε β V))
+  PowerSeries.logOf
+    (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V))
 
 omit [LinearOrder Mode] in
-theorem constantCoeff_normalizePartitionSeries_dysonPartitionSeries (ε : Mode → ℝ) (β : ℝ)
+theorem constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries
+    (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
-    PowerSeries.constantCoeff (normalizePartitionSeries (dysonPartitionSeries ε β V)) = 1 :=
-  constantCoeff_normalizePartitionSeries
+    PowerSeries.constantCoeff
+        (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) = 1 :=
+  PowerSeries.constantCoeff_normalizeByConstantCoeff
     (constantCoeff_dysonPartitionSeries ε β V ▸ freePartitionFunction_ne_zero ε β)
 
 omit [LinearOrder Mode] in
 /-- The formal logarithm has vanishing constant coefficient. -/
 theorem constantCoeff_dysonFormalLogPartitionFunction (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
-    PowerSeries.constantCoeff (dysonFormalLogPartitionFunction ε β V) = 0 :=
-  constantCoeff_formalLogPartitionFunction
-    (constantCoeff_normalizePartitionSeries_dysonPartitionSeries ε β V)
+    PowerSeries.constantCoeff (dysonFormalLogPartitionFunction ε β V) = 0 := by
+  rw [dysonFormalLogPartitionFunction]
+  exact PowerSeries.constantCoeff_logOf
+    (constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries ε β V)
 
 end SecondQuantization
