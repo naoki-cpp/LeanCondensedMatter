@@ -76,6 +76,74 @@ def entropyOpSpectralTraceClass (ρ : DensityOperator H)
       ρ.spectralTraceClass.compact Real.continuous_negMulLog (by simp)
       (by simpa [entropyOp] using hsummable))
 
+/-- The spectral trace of the entropy operator is the sum of `-λ log λ` over the density
+operator's nonzero eigenvalues. The proof extends the density operator's orthonormal eigenvector
+family to a Hilbert basis. Every added basis vector lies in `ker ρ`, so its entropy-operator
+diagonal contribution vanishes. -/
+theorem entropyOp_trace_eq_tsum (ρ : DensityOperator H)
+    (hsummable : HasSummableRealEigenvalues (entropyOp ρ)) :
+    (entropyOpSpectralTraceClass ρ hsummable).trace =
+      ∑' a : EigenvectorIndex ρ.op, Real.negMulLog a.1.1 := by
+  classical
+  let hρcompact : IsCompactOperator ρ.op := ρ.spectralTraceClass.compact
+  let hρsym : ρ.op.IsSymmetric := ρ.pos.isSelfAdjoint.isSymmetric
+  let e : EigenvectorIndex ρ.op → H := eigenvectorFamily hρcompact
+  have he : Orthonormal ℂ e := by
+    simpa [e] using orthonormal_eigenvectorFamily hρcompact hρsym
+  obtain ⟨w, b, hsub, hb⟩ := he.toSubtypeRange.exists_hilbertBasis_extension
+  let j : EigenvectorIndex ρ.op → w := fun a => ⟨e a, hsub ⟨a, rfl⟩⟩
+  have hj : Function.Injective j := by
+    intro a a' haa'
+    apply he.linearIndependent.injective
+    exact congrArg Subtype.val haa'
+  let g : w → ℝ := fun i => (inner ℂ (b i) (entropyOp ρ (b i)) : ℂ).re
+  have hfull : HasSum g (entropyOpSpectralTraceClass ρ hsummable).trace :=
+    (entropyOpSpectralTraceClass ρ hsummable).hasSum_inner_apply b
+  have hb_j (a : EigenvectorIndex ρ.op) : b (j a) = e a := by
+    rw [hb]
+    rfl
+  have hpoint (a : EigenvectorIndex ρ.op) :
+      g (j a) = Real.negMulLog a.1.1 := by
+    rw [g, hb_j]
+    rw [entropyOp_apply_eigenvector ρ (apply_eigenvectorFamily hρcompact a)]
+    simp [e, (orthonormal_eigenvectorFamily hρcompact hρsym).1 a]
+  have hzero (x : w) (hx : x ∉ Set.range j) : g x = 0 := by
+    have hspan :
+        Submodule.span ℂ (Set.range e) ≤ (ℂ ∙ (b x : H))ᗮ := by
+      rw [Submodule.span_le]
+      rintro y ⟨a, rfl⟩
+      rw [Submodule.mem_orthogonal_singleton_iff_inner_left]
+      have hne : j a ≠ x := by
+        intro h
+        exact hx ⟨a, h⟩
+      have horth := b.orthonormal.2 hne
+      rwa [hb_j] at horth
+    have hxorth :
+        (b x : H) ∈ (Submodule.span ℂ (Set.range e)).topologicalClosureᗮ := by
+      rw [Submodule.orthogonal_closure, Submodule.mem_orthogonal]
+      intro y hy
+      have hy' := hspan hy
+      rwa [Submodule.mem_orthogonal_singleton_iff_inner_left] at hy'
+    have hxker_mem :
+        (b x : H) ∈ Module.End.eigenspace (ρ.op : H →ₗ[ℂ] H) (0 : ℂ) := by
+      rw [← orthogonal_closure_span_eigenvectorFamily hρcompact hρsym]
+      simpa [e] using hxorth
+    have hxker : (ρ.op : H →ₗ[ℂ] H) (b x) = 0 := by
+      have hxev := Module.End.mem_eigenspace_iff.mp hxker_mem
+      simpa using hxev
+    have hentropy : entropyOp ρ (b x) = 0 := by
+      simpa using
+        (entropyOp_apply_eigenvector ρ (v := b x) (c := 0) (by simpa using hxker))
+    simp [g, hentropy]
+  have hrestricted :
+      HasSum (g ∘ j) (entropyOpSpectralTraceClass ρ hsummable).trace :=
+    (hj.hasSum_iff hzero).mpr hfull
+  have hresult :
+      HasSum (fun a : EigenvectorIndex ρ.op => Real.negMulLog a.1.1)
+        (entropyOpSpectralTraceClass ρ hsummable).trace := by
+    simpa only [Function.comp_apply, hpoint] using hrestricted
+  exact hresult.tsum_eq.symm
+
 /-- **The von Neumann entropy `-Tr[ρ ln ρ]` of a density operator (infinite-dimensional)**,
 computed from `ρ`'s eigenvalues via `ContinuousLinearMap.EigenvectorIndex`. `ENNReal`-valued
 (`[0, ∞]`), unlike the finite-dimensional `QuantumTheory.vonNeumannEntropy`: see the module
