@@ -6,8 +6,10 @@ set_option linter.style.header false
 /-!
 # The fermionic interaction picture
 
-Fermionic specialization of the statistics-independent algebraic interaction-picture API, using
-the free fermionic occupation energy.
+The physical interaction-picture operator is retained as the fermionic specialization of the
+statistics-independent `Common.interactionPicture`. Generic zero-time, matrix-coefficient, and
+integrability facts are consumed from `SecondQuantization.Common` directly rather than re-exported
+under duplicate fermionic theorem names.
 -/
 
 namespace SecondQuantization
@@ -21,36 +23,16 @@ noncomputable def interactionPicture (ε : Mode → ℝ)
     FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   Common.interactionPicture (fermionEnergy ε) V τ
 
-/-- At zero imaginary time, the interaction picture is the original operator. -/
-@[simp]
-theorem interactionPicture_zero (ε : Mode → ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    interactionPicture ε V 0 = V :=
-  Common.interactionPicture_zero (fermionEnergy ε) V
+/-- Every fermionic interaction-picture matrix coefficient is continuous in imaginary time.
 
-/-- Matrix coefficients acquire the free fermionic energy-difference exponential. -/
-theorem matrixCoeff_interactionPicture (ε : Mode → ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (τ : ℝ)
-    (m n : Occupation Mode) :
-    Common.matrixCoeff (interactionPicture ε V τ) m n =
-      Complex.exp ((τ * (fermionEnergy ε m - fermionEnergy ε n) : ℝ) : ℂ) *
-        Common.matrixCoeff V m n :=
-  Common.matrixCoeff_interactionPicture (fermionEnergy ε) V τ m n
-
-/-- Every fermionic interaction-picture matrix coefficient is continuous in imaginary time. -/
+This specialization remains temporarily because it is used by the fermionic quartic-diagram
+continuity proofs; the underlying result is `Common.continuous_matrixCoeff_interactionPicture`.
+-/
 theorem continuous_matrixCoeff_interactionPicture (ε : Mode → ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
     (m n : Occupation Mode) :
     Continuous (fun τ : ℝ => Common.matrixCoeff (interactionPicture ε V τ) m n) :=
   Common.continuous_matrixCoeff_interactionPicture (fermionEnergy ε) V m n
-
-/-- Every fermionic interaction-picture matrix coefficient is interval-integrable. -/
-theorem intervalIntegrable_matrixCoeff_interactionPicture (ε : Mode → ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-    (m n : Occupation Mode) (a b : ℝ) :
-    IntervalIntegrable (fun τ : ℝ => Common.matrixCoeff (interactionPicture ε V τ) m n)
-      MeasureTheory.volume a b :=
-  Common.intervalIntegrable_matrixCoeff_interactionPicture (fermionEnergy ε) V m n a b
 
 end Fermionic
 end SecondQuantization
