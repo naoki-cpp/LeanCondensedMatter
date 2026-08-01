@@ -1,4 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.ContinuousDyson
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonExpansionVerification
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticDysonPartitionFunction
