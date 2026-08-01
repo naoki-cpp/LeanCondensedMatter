@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonVolterra
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonExpansion
 
 set_option linter.style.header false
@@ -51,6 +51,20 @@ noncomputable abbrev analyticDysonTerm (ε : Mode → ℝ)
 noncomputable abbrev analyticDysonEvolution (ε : Mode → ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :=
   Common.analyticDysonEvolution (fermionEnergy ε) V
+
+/-- The continuous basis-diagonal free fermionic Hamiltonian. -/
+noncomputable abbrev continuousDiagonalHamiltonian (ε : Mode → ℝ) :=
+  Common.continuousDiagonalHamiltonian (fermionEnergy ε)
+
+/-- The continuous interacting fermionic Hamiltonian `H₀ + λV`. -/
+noncomputable abbrev continuousInteractingHamiltonian (ε : Mode → ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :=
+  Common.continuousInteractingHamiltonian (fermionEnergy ε) V
+
+/-- The exact ordered-exponential candidate for the fermionic analytic Dyson evolution. -/
+noncomputable abbrev analyticDysonExponentialCandidate (ε : Mode → ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :=
+  Common.analyticDysonExponentialCandidate (fermionEnergy ε) V
 
 omit [LinearOrder Mode] in
 @[simp]
@@ -137,5 +151,38 @@ theorem analyticDysonEvolution_eq_one_sub_integral (ε : Mode → ℝ)
           (analyticDysonEvolution ε V σ lam) :=
   Common.analyticDysonEvolution_eq_one_sub_integral
     (fermionEnergy ε) V hβ hτ lam
+
+omit [LinearOrder Mode] in
+/-- The fermionic analytic Dyson sum equals the exact ordered-exponential candidate. -/
+theorem analyticDysonEvolution_eq_exponentialCandidate (ε : Mode → ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) {β τ : ℝ}
+    (hβ : 0 ≤ β) (hτ : τ ∈ Set.Icc (0 : ℝ) β) (lam : ℂ) :
+    analyticDysonEvolution ε V τ lam =
+      analyticDysonExponentialCandidate ε V τ lam :=
+  Common.analyticDysonEvolution_eq_exponentialCandidate
+    (fermionEnergy ε) V hβ hτ lam
+
+omit [LinearOrder Mode] in
+/-- Explicit ordered-exponential representation of the fermionic analytic Dyson evolution. -/
+theorem analyticDysonEvolution_eq_ordered_exp (ε : Mode → ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode)
+    {τ : ℝ} (hτ : 0 ≤ τ) (lam : ℂ) :
+    analyticDysonEvolution ε V τ lam =
+      NormedSpace.exp (τ • continuousDiagonalHamiltonian ε) *
+        NormedSpace.exp (τ • (- continuousInteractingHamiltonian ε V lam)) :=
+  Common.analyticDysonEvolution_eq_ordered_exp (fermionEnergy ε) V hτ lam
+
+omit [LinearOrder Mode] in
+/-- At inverse temperature `β`, cancelling the free evolution gives the interacting Gibbs
+exponential. -/
+theorem continuousImaginaryTimeEvolveFree_neg_mul_analyticDysonEvolution_eq_exp
+    (ε : Mode → ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode)
+    {β : ℝ} (hβ : 0 ≤ β) (lam : ℂ) :
+    continuousImaginaryTimeEvolveFree ε (-β) *
+        analyticDysonEvolution ε V β lam =
+      NormedSpace.exp ((-β) • continuousInteractingHamiltonian ε V lam) :=
+  Common.continuousDiagonalEvolution_neg_mul_analyticDysonEvolution_eq_exp
+    (fermionEnergy ε) V hβ lam
 
 end SecondQuantization

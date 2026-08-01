@@ -1,0 +1,193 @@
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialIdentity
+
+set_option linter.style.header false
+
+/-!
+# ODE uniqueness for the analytic Dyson evolution
+
+The interaction-picture vector field is extended from `[0, β]` to the whole real line by projecting
+time to the compact interval. Its dependence on the operator is globally Lipschitz with the
+uniform interaction-picture norm bound.
+-/
+
+namespace SecondQuantization
+namespace Common
+
+open Set
+
+noncomputable section
+
+variable {Config : Type*} [Fintype Config]
+
+/-- The interaction-picture Dyson vector field, with time projected to `[0, β]`. -/
+noncomputable def analyticDysonVectorField (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (β : ℝ) (hβ : 0 ≤ β) (lam : ℂ)
+    (τ : ℝ) (U : FiniteContinuousOperator Config) : FiniteContinuousOperator Config :=
+  -(lam • (continuousInteractionPicture energy V
+    (projIcc (0 : ℝ) β hβ τ : ℝ)).comp U)
+
+/-- The projected Dyson vector field is uniformly Lipschitz in the operator variable. -/
+theorem lipschitzWith_analyticDysonVectorField (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (β : ℝ) (hβ : 0 ≤ β) (lam : ℂ) (τ : ℝ) :
+    LipschitzWith
+      (Real.toNNReal (‖lam‖ * interactionPictureNormBound energy V β))
+      (analyticDysonVectorField energy V β hβ lam τ) := by
+  apply LipschitzWith.of_dist_le'
+  intro U W
+  let A := continuousInteractionPicture energy V
+    (projIcc (0 : ℝ) β hβ τ : ℝ)
+  have hcomp : A.comp U - A.comp W = A.comp (U - W) := by
+    ext x
+    simp
+  rw [show analyticDysonVectorField energy V β hβ lam τ U = -(lam • A.comp U) by rfl,
+    show analyticDysonVectorField energy V β hβ lam τ W = -(lam • A.comp W) by rfl,
+    dist_neg_neg, dist_eq_norm, dist_eq_norm, ← smul_sub, hcomp, norm_smul]
+  have hA : ‖A‖ ≤ interactionPictureNormBound energy V β :=
+    norm_continuousInteractionPicture_le energy V hβ
+      (projIcc (0 : ℝ) β hβ τ).property
+  calc
+    ‖lam‖ * ‖A.comp (U - W)‖ ≤
+        ‖lam‖ * (‖A‖ * ‖U - W‖) := by
+      exact mul_le_mul_of_nonneg_left
+        (A.opNorm_comp_le (U - W)) (norm_nonneg lam)
+    _ = (‖lam‖ * ‖A‖) * ‖U - W‖ := by ring
+    _ ≤ (‖lam‖ * interactionPictureNormBound energy V β) * ‖U - W‖ :=
+      mul_le_mul_of_nonneg_right
+        (mul_le_mul_of_nonneg_left hA (norm_nonneg lam))
+        (norm_nonneg (U - W))
+
+/-- On `[0, β]`, the projected vector field is the original interaction-picture field. -/
+theorem analyticDysonVectorField_of_mem (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (β : ℝ) (hβ : 0 ≤ β) (lam : ℂ) {τ : ℝ}
+    (hτ : τ ∈ Icc (0 : ℝ) β) (U : FiniteContinuousOperator Config) :
+    analyticDysonVectorField energy V β hβ lam τ U =
+      -(lam • (continuousInteractionPicture energy V τ).comp U) := by
+  rw [analyticDysonVectorField, projIcc_of_mem hβ hτ]
+
+/-- The analytic Dyson sum solves the projected vector field on `[0, β)`. -/
+theorem hasDerivWithinAt_analyticDysonEvolution_vectorField
+    (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) {β τ : ℝ}
+    (hβ : 0 ≤ β) (hτ : τ ∈ Ico (0 : ℝ) β) (lam : ℂ) :
+    HasDerivWithinAt (fun σ : ℝ => analyticDysonEvolution energy V σ lam)
+      (analyticDysonVectorField energy V β hβ lam τ
+        (analyticDysonEvolution energy V τ lam)) (Ici τ) τ := by
+  have hfield := analyticDysonVectorField_of_mem energy V β hβ lam
+    (τ := τ) (⟨hτ.1, hτ.2.le⟩ : τ ∈ Icc (0 : ℝ) β)
+    (analyticDysonEvolution energy V τ lam)
+  rw [hfield]
+  exact hasDerivWithinAt_analyticDysonEvolution_interactionPicture
+    energy V hβ hτ lam
+
+/-- The ordered exponential candidate solves the projected vector field on `[0, β)`. -/
+theorem hasDerivWithinAt_analyticDysonExponentialCandidate_vectorField
+    (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) {β τ : ℝ}
+    (hβ : 0 ≤ β) (hτ : τ ∈ Ico (0 : ℝ) β) (lam : ℂ) :
+    HasDerivWithinAt
+      (fun σ : ℝ => analyticDysonExponentialCandidate energy V σ lam)
+      (analyticDysonVectorField energy V β hβ lam τ
+        (analyticDysonExponentialCandidate energy V τ lam)) (Ici τ) τ := by
+  have hfield := analyticDysonVectorField_of_mem energy V β hβ lam
+    (τ := τ) (⟨hτ.1, hτ.2.le⟩ : τ ∈ Icc (0 : ℝ) β)
+    (analyticDysonExponentialCandidate energy V τ lam)
+  rw [hfield]
+  have h :=
+    (hasDerivAt_analyticDysonExponentialCandidate_interactionPicture
+      energy V τ lam).hasDerivWithinAt (s := Ici τ)
+  change HasDerivWithinAt
+    (fun σ : ℝ => analyticDysonExponentialCandidate energy V σ lam)
+    (-(lam • (continuousInteractionPicture energy V τ).comp
+      (analyticDysonExponentialCandidate energy V τ lam))) (Ici τ) τ at h
+  exact h
+
+/-- On every compact nonnegative time interval, the analytic Dyson sum equals the exact ordered
+operator-exponential candidate. -/
+theorem analyticDysonEvolution_eq_exponentialCandidate (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) {β τ : ℝ}
+    (hβ : 0 ≤ β) (hτ : τ ∈ Icc (0 : ℝ) β) (lam : ℂ) :
+    analyticDysonEvolution energy V τ lam =
+      analyticDysonExponentialCandidate energy V τ lam := by
+  let K : NNReal :=
+    Real.toNNReal (‖lam‖ * interactionPictureNormBound energy V β)
+  let v : ℝ → FiniteContinuousOperator Config → FiniteContinuousOperator Config :=
+    analyticDysonVectorField energy V β hβ lam
+  have hv : ∀ t, LipschitzWith K (v t) := by
+    intro t
+    exact lipschitzWith_analyticDysonVectorField energy V β hβ lam t
+  have hf : ContinuousOn
+      (fun t : ℝ => analyticDysonEvolution energy V t lam) (Icc (0 : ℝ) β) :=
+    continuousOn_analyticDysonEvolution energy V hβ lam
+  have hf' : ∀ t ∈ Ico (0 : ℝ) β,
+      HasDerivWithinAt (fun s : ℝ => analyticDysonEvolution energy V s lam)
+        (v t (analyticDysonEvolution energy V t lam)) (Ici t) t := by
+    intro t ht
+    exact hasDerivWithinAt_analyticDysonEvolution_vectorField
+      energy V hβ ht lam
+  have hg : ContinuousOn
+      (fun t : ℝ => analyticDysonExponentialCandidate energy V t lam)
+      (Icc (0 : ℝ) β) :=
+    (continuous_analyticDysonExponentialCandidate energy V lam).continuousOn
+  have hg' : ∀ t ∈ Ico (0 : ℝ) β,
+      HasDerivWithinAt
+        (fun s : ℝ => analyticDysonExponentialCandidate energy V s lam)
+        (v t (analyticDysonExponentialCandidate energy V t lam)) (Ici t) t := by
+    intro t ht
+    exact hasDerivWithinAt_analyticDysonExponentialCandidate_vectorField
+      energy V hβ ht lam
+  have heq : EqOn
+      (fun t : ℝ => analyticDysonEvolution energy V t lam)
+      (fun t : ℝ => analyticDysonExponentialCandidate energy V t lam)
+      (Icc (0 : ℝ) β) :=
+    ODE_solution_unique hv hf hf' hg hg' (by simp)
+  exact heq hτ
+
+/-- For nonnegative imaginary time, the analytic Dyson evolution is the ordered product of the
+free and interacting operator exponentials. -/
+theorem analyticDysonEvolution_eq_ordered_exp (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    {τ : ℝ} (hτ : 0 ≤ τ) (lam : ℂ) :
+    analyticDysonEvolution energy V τ lam =
+      NormedSpace.exp (τ • continuousDiagonalHamiltonian energy) *
+        NormedSpace.exp (τ • (- continuousInteractingHamiltonian energy V lam)) := by
+  simpa [analyticDysonExponentialCandidate] using
+    analyticDysonEvolution_eq_exponentialCandidate
+      (β := τ) (τ := τ) energy V hτ ⟨hτ, le_rfl⟩ lam
+
+/-- At the thermal endpoint, left multiplication by the inverse free evolution leaves the
+interacting Gibbs exponential. -/
+theorem continuousDiagonalEvolution_neg_mul_analyticDysonEvolution_eq_exp
+    (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    {β : ℝ} (hβ : 0 ≤ β) (lam : ℂ) :
+    continuousDiagonalEvolution energy (-β) *
+        analyticDysonEvolution energy V β lam =
+      NormedSpace.exp ((-β) • continuousInteractingHamiltonian energy V lam) := by
+  rw [analyticDysonEvolution_eq_ordered_exp energy V hβ lam]
+  rw [← continuousDiagonalEvolution_eq_exp energy β]
+  have hinv :
+      continuousDiagonalEvolution energy (-β) *
+        continuousDiagonalEvolution energy β = 1 := by
+    change (continuousDiagonalEvolution energy (-β)).comp
+      (continuousDiagonalEvolution energy β) = 1
+    exact continuousDiagonalEvolution_neg_comp energy β
+  calc
+    continuousDiagonalEvolution energy (-β) *
+        (continuousDiagonalEvolution energy β *
+          NormedSpace.exp (β • (- continuousInteractingHamiltonian energy V lam))) =
+      (continuousDiagonalEvolution energy (-β) *
+        continuousDiagonalEvolution energy β) *
+          NormedSpace.exp (β • (- continuousInteractingHamiltonian energy V lam)) := by
+        rw [mul_assoc]
+    _ = NormedSpace.exp (β • (- continuousInteractingHamiltonian energy V lam)) := by
+      rw [hinv, one_mul]
+    _ = NormedSpace.exp ((-β) • continuousInteractingHamiltonian energy V lam) := by
+      congr 1
+      simp [smul_neg, neg_smul]
+
+end
+end Common
+end SecondQuantization
