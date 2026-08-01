@@ -1,0 +1,44 @@
+name: Fix PR 342 statistics namespace
+
+on:
+  push:
+    branches:
+      - agent/reorganize-combinatorics
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/reorganize-combinatorics
+          fetch-depth: 0
+
+      - name: Fix Statistics namespace
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path("LeanCondensedMatter/SecondQuantization/Common/Thermal/BlochDeDominicis/PairingWeight.lean")
+          text = path.read_text()
+          old = "SecondQuantization.Common.Statistics"
+          if old not in text:
+              raise SystemExit(f"expected namespace not found in {path}")
+          text = text.replace(old, "SecondQuantization.Statistics")
+          text = text.replace("Common.Statistics.zetaInt", "Statistics.zetaInt")
+          path.write_text(text)
+          PY
+
+      - name: Commit fix
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add LeanCondensedMatter
+          if ! git diff --cached --quiet; then
+            git commit -m "fix: use the canonical Statistics namespace"
+            git push origin HEAD:agent/reorganize-combinatorics
+          fi
