@@ -8,6 +8,7 @@ SQ = ROOT / "LeanCondensedMatter" / "SecondQuantization"
 FERMIONIC = SQ / "Fermionic"
 OLD_MODULE = FERMIONIC / "Perturbation" / "DysonExpansion.lean"
 ARCH_CHECK = ROOT / "scripts" / "check_second_quantization_architecture.py"
+DIAGRAM_EXPANSION = FERMIONIC / "Diagrammatics" / "DysonDiagramExpansion.lean"
 
 OLD_IMPORT = (
     "import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonExpansion"
@@ -98,6 +99,26 @@ def replace_exact_import(text: str, replacement: str) -> str:
     return "".join(output)
 
 
+def bridge_common_recurrence(path: Path, text: str) -> str:
+    if path != DIAGRAM_EXPANSION:
+        return text
+
+    old = """    rw [Common.dysonCoeff_succ, LinearMap.comp_neg,
+"""
+    new = """    have hdysonSucc :
+        Common.dysonCoeff (fermionEnergy ε) V (n + 1) t =
+          - Common.operatorIntervalIntegral
+            (fun σ => (interactionPicture ε V σ).comp
+              (Common.dysonCoeff (fermionEnergy ε) V n σ)) 0 t := by
+      simpa only [interactionPicture] using
+        (Common.dysonCoeff_succ (fermionEnergy ε) V n t)
+    rw [hdysonSucc, LinearMap.comp_neg,
+"""
+    if old not in text:
+        raise RuntimeError("Dyson diagram recurrence rewrite site changed")
+    return text.replace(old, new, 1)
+
+
 def rewrite_fermionic_files() -> None:
     for path in sorted(FERMIONIC.rglob("*.lean")):
         if path == OLD_MODULE:
@@ -131,13 +152,10 @@ def rewrite_fermionic_files() -> None:
         for old, new in BARE_THEOREM_REPLACEMENTS.items():
             updated = re.sub(rf"(?<![\w.]){old}\b", new, updated)
 
-        # The Common recursion exposes the Common interaction-picture normal form. Keep the
-        # surrounding integrability and rewrite expressions in that same normal form.
-        if "Common.dysonCoeff (fermionEnergy ε) V" in updated:
-            updated = updated.replace(
-                "interactionPicture ε V",
-                "Common.interactionPicture (fermionEnergy ε) V",
-            )
+        # Preserve the existing fermionic interaction-picture normal form throughout the
+        # diagrammatic proof. Bridge the Common recurrence locally instead of rewriting every
+        # interaction-picture occurrence and theorem name.
+        updated = bridge_common_recurrence(path, updated)
 
         if "Common.dysonCoeff" in updated and COMMON_IMPORT not in updated:
             updated = COMMON_IMPORT + "\n" + updated
