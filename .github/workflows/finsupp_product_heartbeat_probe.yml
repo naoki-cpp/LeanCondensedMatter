@@ -21,6 +21,40 @@ jobs:
         run: |
           cp .github/probes/FinsuppProduct.lean \
             LeanCondensedMatter/Analysis/InfiniteSum/FinsuppProduct.lean
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("LeanCondensedMatter/Analysis/InfiniteSum/FinsuppProduct.lean")
+          text = path.read_text(encoding="utf-8")
+
+          old_option = '''  apply hasSum_prod_option_reindex (finSuccFamily f) (finSuccFamily a)
+  exact hasSum_mul_of_summable_norm' hhead htail habsHead habsTail
+'''
+          new_option = '''  have hprod : HasSum
+      (fun p : ℕ × (Fin k →₀ ℕ) =>
+        f 0 p.1 * ∏ i : Fin k, f i.succ (p.2 i))
+      (a 0 * ∏ i : Fin k, a i.succ) :=
+    hasSum_mul_of_summable_norm' hhead htail habsHead habsTail
+  exact hasSum_prod_option_reindex (finSuccFamily f) (finSuccFamily a) hprod
+'''
+          if old_option not in text:
+              raise SystemExit("option successor block not found")
+          text = text.replace(old_option, new_option, 1)
+
+          old_general = '''  apply hasSum_prod_fin_succ f a (hf 0) htail (habs 0)
+  exact summable_norm_prod (fun i => f i.succ) (fun i => habs i.succ)
+'''
+          new_general = '''  have habsTail : Summable
+      (fun n : Fin k →₀ ℕ => ‖∏ i : Fin k, f i.succ (n i)‖) :=
+    summable_norm_prod (fun i : Fin k => f i.succ) (fun i => habs i.succ)
+  exact hasSum_prod_fin_succ f a (hf 0) htail (habs 0) habsTail
+'''
+          if old_general not in text:
+              raise SystemExit("general successor block not found")
+          text = text.replace(old_general, new_general, 1)
+
+          path.write_text(text, encoding="utf-8")
+          PY
           if grep -n "set_option maxHeartbeats 0" \
               LeanCondensedMatter/Analysis/InfiniteSum/FinsuppProduct.lean; then
             echo "::error::candidate still contains an unbounded heartbeat override"
