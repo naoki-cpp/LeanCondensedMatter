@@ -18,6 +18,8 @@ namespace SecondQuantization
 namespace Common
 namespace BlochDeDominicis
 
+open Combinatorics.FiniteIndex
+
 /-- Insert a new pair `(0, j)` ahead of a smaller pairing, reindexing it onto the positions left
 after removing `0` and `j`. This is the constructive counterpart to `Pairing.eraseZeroPair` needed
 to let the Bloch--de Dominicis induction build up a `Pairing (n + 1)` from a choice of `j` and a
@@ -118,8 +120,7 @@ theorem Pairing.insertFirstPair_partner_chosen {n : ℕ} (pairing : Pairing n)
     Equiv.swap_apply_right]
 
 /-- On the positions left after removing `0` and `j`, `insertFirstPair`'s partner is exactly the
-smaller pairing's own partner, transported across `deletedPositionsOrderIso`: this is the
-conjugation formula `eraseZeroOrderIso_partner` needs a counterpart of on the insertion side. -/
+smaller pairing's own partner, transported across `deletedPositionsOrderIso`. -/
 @[simp]
 theorem Pairing.insertFirstPair_partner_orderIso {n : ℕ} (pairing : Pairing n)
     (j : Fin (2 * (n + 1))) (hj : (0 : Fin (2 * (n + 1))) ≠ j) (i : Fin (2 * n)) :
@@ -145,8 +146,7 @@ theorem Pairing.insertFirstPair_partner_orderIso {n : ℕ} (pairing : Pairing n)
   exact Equiv.swap_apply_of_ne_of_ne
     (Finset.mem_erase.mp (Finset.mem_erase.mp hmem').2).1 (Finset.mem_erase.mp hmem').1
 
-/-- Inserting a new pair `(0, j)` ahead of `pairing`, then erasing the pair containing position
-`0`, recovers `pairing` unchanged: `eraseZeroPair` is a left inverse of `insertFirstPair j hj`. -/
+/-- Inserting and then erasing the new first pair recovers the smaller pairing. -/
 theorem Pairing.eraseZeroPair_insertFirstPair {n : ℕ} (pairing : Pairing n)
     (j : Fin (2 * (n + 1))) (hj : (0 : Fin (2 * (n + 1))) ≠ j) :
     (pairing.insertFirstPair j hj).eraseZeroPair = pairing := by
@@ -164,9 +164,7 @@ theorem Pairing.eraseZeroPair_insertFirstPair {n : ℕ} (pairing : Pairing n)
   rw [Pairing.eraseZeroOrderIso_partner, hoi_eq, hoi_eq]
   rw [hPdef, pairing.insertFirstPair_partner_orderIso j hj i]
 
-/-- Erasing the pair containing position `0` from `pairing`, then reinserting a pair with the
-same partner, recovers `pairing` unchanged: on the fiber of pairings with `partner 0 = j`,
-`insertFirstPair j hj` is a left inverse of `eraseZeroPair`. -/
+/-- Erasing and reinserting the first pair recovers the original pairing. -/
 theorem Pairing.insertFirstPair_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)) :
     pairing.eraseZeroPair.insertFirstPair (pairing.partner 0)
       (Ne.symm (pairing.partner_ne 0)) = pairing := by
@@ -191,12 +189,7 @@ theorem Pairing.insertFirstPair_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 
       rw [← hxeq]
       exact hkey.trans (Pairing.eraseZeroOrderIso_partner pairing k)
 
-/-- **A `Pairing (n + 1)` decomposes into a choice of position `0`'s partner together with the
-smaller pairing left after removing it.** `eraseZeroPair_insertFirstPair` and
-`insertFirstPair_eraseZeroPair` are exactly the two `Equiv.left_inv`/`right_inv` obligations this
-needs: `eraseZeroPair` is not globally injective on `Pairing (n + 1)` (distinct choices of `0`'s
-partner can erase to the same smaller pairing), so this is an equivalence with the fiber-indexed
-sigma type, not a claim that `eraseZeroPair` alone is a global bijection. -/
+/-- A pairing decomposes into the partner of `0` and the smaller pairing obtained by erasing it. -/
 noncomputable def Pairing.equivSigma (n : ℕ) :
     Pairing (n + 1) ≃ Σ _ : {j : Fin (2 * (n + 1)) // (0 : Fin (2 * (n + 1))) ≠ j}, Pairing n where
   toFun pairing := ⟨⟨pairing.partner 0, Ne.symm (pairing.partner_ne 0)⟩, pairing.eraseZeroPair⟩
