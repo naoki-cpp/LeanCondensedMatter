@@ -24,6 +24,13 @@ theorem gibbsState_entropyOp_hasSummableRealEigenvalues (Hop : Observable H) (β
     (hZ : spectralTrace hsummable ≠ 0) :
     HasSummableRealEigenvalues (entropyOp (gibbsState Hop β hcompact hsummable hZ)) := by
   letI := finiteDimensional_of_gibbsOp_isCompact Hop β hcompact
+  let ρ := gibbsState Hop β hcompact hsummable hZ
+  have hEntropyCompact : IsCompactOperator (entropyOp ρ) := entropyOp_isCompact ρ
+  have hEntropySelfAdjoint : IsSelfAdjoint (entropyOp ρ) := by
+    rw [entropyOp]
+    exact cfc_predicate Real.continuous_negMulLog ρ.pos.isSelfAdjoint
+  letI : Finite (EigenvectorIndex (entropyOp ρ)) :=
+    (orthonormal_eigenvectorFamily hEntropyCompact hEntropySelfAdjoint.isSymmetric).linearIndependent.finite
   exact Summable.of_finite
 
 end QuantumTheory.TraceClass
