@@ -46,7 +46,8 @@ theorem eigenvalue_nonneg (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) 
 
 /-- Every eigenvalue of a density operator is at most one. This follows because all eigenvalues are
 nonnegative and their spectral sum is one. -/
-theorem eigenvalue_le_one (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) : a.1.1 ≤ 1 := by
+theorem density_eigenvalue_le_one (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) :
+    a.1.1 ≤ 1 := by
   have hs : Summable (fun b : EigenvectorIndex ρ.op => b.1.1) :=
     summable_eigenvectorIndex ρ.spectralTraceClass.summable
   calc
@@ -185,7 +186,7 @@ theorem vonNeumannEntropy_eq_ofReal_entropyOp_trace (ρ : DensityOperator H)
   symm
   rw [entropyOp_trace_eq_tsum ρ hsummable]
   exact ENNReal.ofReal_tsum_of_nonneg
-    (fun a => Real.negMulLog_nonneg (eigenvalue_nonneg ρ a) (eigenvalue_le_one ρ a))
+    (fun a => Real.negMulLog_nonneg (eigenvalue_nonneg ρ a) (density_eigenvalue_le_one ρ a))
     (hasSum_negMulLog_eigenvalues ρ hsummable).summable
 
 end QuantumTheory.TraceClass
