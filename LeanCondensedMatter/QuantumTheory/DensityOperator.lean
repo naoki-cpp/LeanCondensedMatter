@@ -14,11 +14,11 @@ Formalizes the density-operator postulate and general (POVM) measurement postula
 extending `QuantumTheory.State`/`QuantumTheory.Observable` from
 `LeanCondensedMatter/QuantumTheory/Postulates.lean` to mixed states.
 
-**Scope note:** restricted to finite-dimensional `H`. Mathlib currently has no
-trace-class / Schatten-class operator theory, so `LinearMap.trace` (which requires
-finite-dimensionality) is the only trace available; extending to the
-countably-infinite-dimensional lattice setting used elsewhere in this project needs
-that machinery first. See `notes/caveats.md`.
+**Scope note:** the trace-based density-operator API is restricted to finite-dimensional `H`.
+Mathlib currently has no trace-class / Schatten-class operator theory, so `LinearMap.trace` (which
+requires finite-dimensionality) is the only trace available; extending to the
+countably-infinite-dimensional lattice setting used elsewhere in this project needs that machinery
+first. The `POVM` structure itself is dimension-agnostic. See `notes/caveats.md`.
 -/
 
 namespace QuantumTheory
@@ -33,7 +33,7 @@ def DensityOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 
 /-- A (finite-outcome) POVM: a finite family of positive operators summing to the identity. -/
 structure POVM (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    [FiniteDimensional ℂ H] (M : Type*) [Fintype M] where
+    (M : Type*) [Fintype M] where
   E : M → H →L[ℂ] H
   pos : ∀ m, (E m).IsPositive
   sum_eq_id : (∑ m, E m) = ContinuousLinearMap.id ℂ H
