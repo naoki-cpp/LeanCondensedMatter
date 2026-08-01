@@ -27,20 +27,35 @@ jobs:
           path = Path("LeanCondensedMatter/Analysis/InfiniteSum/FinsuppProduct.lean")
           text = path.read_text(encoding="utf-8")
 
+          marker = "private theorem hasSum_prod_fin_zero\n"
+          helper = (
+              "private theorem summable_mul_explicit\n"
+              "    {α β R : Type*} [NormedCommRing R] [CompleteSpace R]\n"
+              "    (u : α → R) (v : β → R)\n"
+              "    (hu : Summable (fun i => ‖u i‖))\n"
+              "    (hv : Summable (fun j => ‖v j‖)) :\n"
+              "    Summable (fun p : α × β => u p.1 * v p.2) :=\n"
+              "  (hu.mul_norm hv).of_norm\n\n"
+          )
+          if marker not in text:
+              raise SystemExit("helper insertion marker not found")
+          text = text.replace(marker, helper + marker, 1)
+
           old_option = (
               "  apply hasSum_prod_option_reindex (finSuccFamily f) (finSuccFamily a)\n"
               "  exact hasSum_mul_of_summable_norm' hhead htail habsHead habsTail\n"
           )
           new_option = (
+              "  let tail : (Fin k →₀ ℕ) → R :=\n"
+              "    fun n => ∏ i : Fin k, f i.succ (n i)\n"
               "  have hmul : Summable\n"
-              "      (fun p : ℕ × (Fin k →₀ ℕ) =>\n"
-              "        f 0 p.1 * ∏ i : Fin k, f i.succ (p.2 i)) :=\n"
-              "    (habsHead.mul_norm habsTail).of_norm\n"
+              "      (fun p : ℕ × (Fin k →₀ ℕ) => f 0 p.1 * tail p.2) :=\n"
+              "    summable_mul_explicit (f 0) tail habsHead habsTail\n"
+              "  have htail' : HasSum tail (∏ i : Fin k, a i.succ) := htail\n"
               "  have hprod : HasSum\n"
-              "      (fun p : ℕ × (Fin k →₀ ℕ) =>\n"
-              "        f 0 p.1 * ∏ i : Fin k, f i.succ (p.2 i))\n"
+              "      (fun p : ℕ × (Fin k →₀ ℕ) => f 0 p.1 * tail p.2)\n"
               "      (a 0 * ∏ i : Fin k, a i.succ) :=\n"
-              "    hhead.mul htail hmul\n"
+              "    hhead.mul htail' hmul\n"
               "  exact hasSum_prod_option_reindex (finSuccFamily f) (finSuccFamily a) hprod\n"
           )
           if old_option not in text:
