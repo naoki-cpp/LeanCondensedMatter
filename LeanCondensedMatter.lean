@@ -16,6 +16,7 @@ import LeanCondensedMatter.Analysis.Operator.TraceClass.Basic
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Diagonal
 import LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalPositive
+import LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalSpectralTrace
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar
 import LeanCondensedMatter.Combinatorics
