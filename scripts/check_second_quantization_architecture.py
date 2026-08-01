@@ -11,6 +11,8 @@ REMOVED_FILES = (
     SQ / "Common.lean",
     SQ / "Fermionic.lean",
     SQ / "Bosonic.lean",
+    SQ / "Fermionic" / "Perturbation" / "DysonExpansion.lean",
+    SQ / "Fermionic" / "Perturbation" / "ContinuousDyson.lean",
 )
 
 REMOVED_DIRECTORIES = (
@@ -54,6 +56,14 @@ def check_removed_paths(errors: list[str]) -> None:
                 errors.append(f"removed umbrella import: {relative(path)}:{line_no}: {line.strip()}")
             if REMOVED_BOSONIC_PATH.search(line):
                 errors.append(f"removed bosonic path: {relative(path)}:{line_no}: {line.strip()}")
+            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonExpansion":
+                errors.append(
+                    f"removed fermionic Dyson import: {relative(path)}:{line_no}: {line.strip()}"
+                )
+            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.ContinuousDyson":
+                errors.append(
+                    f"removed fermionic continuous-Dyson import: {relative(path)}:{line_no}: {line.strip()}"
+                )
 
 
 def check_dependency_direction(errors: list[str]) -> None:

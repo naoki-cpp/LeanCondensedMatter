@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonTrace
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.ContinuousDyson
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 
 set_option linter.style.header false
@@ -25,7 +24,7 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 noncomputable def analyticDysonPartitionFunction (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (lam : ℂ) : ℂ :=
   Common.finiteOperatorTrace
-    (NormedSpace.exp ((-β) • continuousInteractingHamiltonian ε V lam))
+    (NormedSpace.exp ((-β) • Common.continuousInteractingHamiltonian (fermionEnergy ε) V lam))
 
 omit [LinearOrder Mode] in
 /-- The analytic partition function is the thermal trace of the interaction-picture Dyson
@@ -35,15 +34,15 @@ theorem analyticDysonPartitionFunction_eq_trace_analyticDysonEvolution
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (lam : ℂ) :
     analyticDysonPartitionFunction ε β V lam =
       Common.finiteOperatorTrace
-        ((continuousImaginaryTimeEvolveFree ε (-β)).comp
-          (analyticDysonEvolution ε V β lam)) := by
+        ((Common.continuousDiagonalEvolution (fermionEnergy ε) (-β)).comp
+          (Common.analyticDysonEvolution (fermionEnergy ε) V β lam)) := by
   unfold analyticDysonPartitionFunction
   apply congrArg Common.finiteOperatorTrace
-  change NormedSpace.exp ((-β) • continuousInteractingHamiltonian ε V lam) =
-    continuousImaginaryTimeEvolveFree ε (-β) *
-      analyticDysonEvolution ε V β lam
-  exact (continuousImaginaryTimeEvolveFree_neg_mul_analyticDysonEvolution_eq_exp
-    ε V hβ lam).symm
+  change NormedSpace.exp ((-β) • Common.continuousInteractingHamiltonian (fermionEnergy ε) V lam) =
+    Common.continuousDiagonalEvolution (fermionEnergy ε) (-β) *
+      Common.analyticDysonEvolution (fermionEnergy ε) V β lam
+  exact (Common.continuousDiagonalEvolution_neg_mul_analyticDysonEvolution_eq_exp
+    (fermionEnergy ε) V hβ lam).symm
 
 omit [LinearOrder Mode] in
 /-- The specialized Common Dyson trace coefficients sum to the analytic partition function. -/
