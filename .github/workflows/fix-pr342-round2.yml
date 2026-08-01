@@ -1,0 +1,94 @@
+name: Fix PR 342 namespace migration round 2
+
+on:
+  push:
+    branches:
+      - agent/reorganize-combinatorics
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/reorganize-combinatorics
+          fetch-depth: 0
+
+      - name: Apply namespace migration fixes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_required(path: Path, old: str, new: str) -> None:
+              text = path.read_text()
+              if old not in text:
+                  raise SystemExit(f"expected text not found in {path}: {old!r}")
+              path.write_text(text.replace(old, new))
+
+          root = Path("LeanCondensedMatter")
+
+          for relative in [
+              "SecondQuantization/Common/Thermal/BlochDeDominicis/Unnormalized/PeelTermsIndexed.lean",
+              "SecondQuantization/Common/Thermal/BlochDeDominicis/Unnormalized/PeelFirstTrace.lean",
+          ]:
+              replace_required(root / relative, "\nopen Combinatorics\n", "\n")
+
+          pairing_weight = root / "SecondQuantization/Common/Thermal/BlochDeDominicis/PairingWeight.lean"
+          old_block = '''namespace SecondQuantization
+          namespace Common
+          namespace BlochDeDominicis
+
+          open Combinatorics
+
+          /-- The exchange-statistics weight `ζ ^ crossings` of a Bloch--de Dominicis pairing. -/
+          noncomputable def Combinatorics.Pairing.weight (s : Statistics) {n : ℕ} (pairing : Pairing n) : ℂ :=
+            (s.zetaInt : ℂ) ^ pairing.crossingCount
+          '''.replace("          ", "")
+          new_block = '''namespace Combinatorics
+
+          /-- The exchange-statistics weight `ζ ^ crossings` of a Bloch--de Dominicis pairing. -/
+          noncomputable def Pairing.weight (s : SecondQuantization.Common.Statistics)
+              {n : ℕ} (pairing : Pairing n) : ℂ :=
+            (s.zetaInt : ℂ) ^ pairing.crossingCount
+
+          end Combinatorics
+
+          namespace SecondQuantization
+          namespace Common
+          namespace BlochDeDominicis
+
+          open Combinatorics
+          '''.replace("          ", "")
+          replace_required(pairing_weight, old_block, new_block)
+
+          replacements = [
+              ("Common.BlochDeDominicis.Pairing", "Combinatorics.Pairing"),
+              ("BlochDeDominicis.Pairing", "Combinatorics.Pairing"),
+          ]
+          changed = []
+          for path in root.rglob("*.lean"):
+              text = path.read_text()
+              new_text = text
+              for old, new in replacements:
+                  new_text = new_text.replace(old, new)
+              if new_text != text:
+                  path.write_text(new_text)
+                  changed.append(str(path))
+
+          print("Updated old Pairing namespace references in:")
+          print("\n".join(changed) if changed else "(none)")
+          PY
+
+      - name: Commit fixes
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add LeanCondensedMatter
+          if ! git diff --cached --quiet; then
+            git commit -m "fix: complete pairing namespace migration"
+            git push origin HEAD:agent/reorganize-combinatorics
+          fi
