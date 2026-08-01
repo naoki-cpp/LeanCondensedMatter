@@ -46,6 +46,7 @@ theorem Polynomial.aeval_apply_eigenvector {T : H →L[ℂ] H} {v : H} {c : ℝ}
     change (q.map (algebraMap ℝ ℂ)).eval (c : ℂ) = ((q.eval c : ℝ) : ℂ)
     rw [Polynomial.eval_map]
     exact Polynomial.eval₂_at_apply (p := q) (algebraMap ℝ ℂ) c
+  simp only [Polynomial.map_id]
   rw [Module.End.aeval_apply_of_mem_apply_eq_smul hv, heval]
 
 open Filter Topology
