@@ -5,11 +5,11 @@ set_option linter.style.header false
 /-!
 # Erasing one `Fin`-indexed entry
 
-`List.ofFn`, erased at position `j`, is `List.ofFn` composed with `Fin.succAbove j`.
+`List.ofFn`, erased at position `j`, is `List.ofFn` composed with `Fin.succAbove j`.  The theorem is
+placed in the `List` namespace while its implementation file belongs to finite-index combinatorics.
 -/
 
-namespace Combinatorics
-namespace FiniteIndex
+namespace List
 
 /-- Erasing an entry from `List.ofFn C` restricts `C` along `Fin.succAbove`. -/
 theorem eraseIdx_ofFn_eq_ofFn_succAbove {α : Type*} :
@@ -31,5 +31,4 @@ theorem eraseIdx_ofFn_eq_ofFn_succAbove {α : Type*} :
           funext i
           rw [Fin.succ_succAbove_succ]
 
-end FiniteIndex
-end Combinatorics
+end List
