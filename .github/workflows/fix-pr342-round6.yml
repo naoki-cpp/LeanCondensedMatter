@@ -1,0 +1,76 @@
+name: Fix PR 342 pairing parity namespaces
+
+on:
+  push:
+    branches:
+      - agent/reorganize-combinatorics
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/reorganize-combinatorics
+          fetch-depth: 0
+
+      - name: Fix parity helper namespaces
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          root = Path("LeanCondensedMatter")
+          pure_names = [
+              "pairEndpointAt",
+              "pairEndpointInversionCount",
+              "pairEndpointInversionCount_eq_sum",
+              "pairEndpointInversionCount_mod_two_eq_one_iff_crosses",
+              "pairEndpointInversionCount_mod_two_eq_crossesIndicator",
+              "finset_sum_modEq",
+              "fintype_sum_modEq",
+              "finset_sum_mod_two_congr",
+              "fintype_sum_mod_two_congr",
+              "finset_sum_offDiag_modEq_zero_of_pair_add_modEq_zero",
+              "finset_sum_sum_modEq_diag_of_pair_add_modEq_zero",
+              "fintype_sum_sum_modEq_diag_of_pair_add_modEq_zero",
+          ]
+
+          changed = []
+          for path in root.rglob("*.lean"):
+              text = path.read_text()
+              new_text = text
+              for name in pure_names:
+                  new_text = new_text.replace(
+                      f"Common.BlochDeDominicis.{name}", f"Combinatorics.{name}")
+                  new_text = new_text.replace(
+                      f"SecondQuantization.Common.BlochDeDominicis.{name}",
+                      f"Combinatorics.{name}")
+              if new_text != text:
+                  path.write_text(new_text)
+                  changed.append(str(path))
+
+          weight_path = root / "SecondQuantization/Fermionic/Diagrammatics/WickDiagram/ComponentCrossingParity.lean"
+          text = weight_path.read_text()
+          old = "Combinatorics.Pairing.weight_eq_prod_of_crossingCount_mod_two_eq"
+          new = "Common.BlochDeDominicis.Pairing.weight_eq_prod_of_crossingCount_mod_two_eq"
+          if old not in text:
+              raise SystemExit(f"expected weight theorem reference not found in {weight_path}")
+          weight_path.write_text(text.replace(old, new))
+
+          print("Updated pure parity helper references in:")
+          print("\n".join(changed) if changed else "(none)")
+          PY
+
+      - name: Commit fixes
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add LeanCondensedMatter
+          if ! git diff --cached --quiet; then
+            git commit -m "fix: align pairing parity namespaces"
+            git push origin HEAD:agent/reorganize-combinatorics
+          fi
