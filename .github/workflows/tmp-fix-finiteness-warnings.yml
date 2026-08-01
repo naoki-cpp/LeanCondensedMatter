@@ -1,0 +1,53 @@
+name: Temporary finiteness warning cleanup
+
+on:
+  push:
+    branches:
+      - agent/remove-unnecessary-finiteness
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/remove-unnecessary-finiteness
+      - name: Replace obsolete linter suppressions
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion.lean")
+          text = path.read_text()
+
+          replacements = [
+              (
+                  "set_option linter.unusedFintypeInType false in\n/-- **A single evolved atomic leg operator",
+                  "omit [Fintype Mode] in\n/-- **A single evolved atomic leg operator",
+              ),
+              (
+                  "set_option linter.unusedFintypeInType false in\n/-- **Every atomic leg operator `quarticLegOperatorForSequence` produces",
+                  "omit [Fintype Mode] in\n/-- **Every atomic leg operator `quarticLegOperatorForSequence` produces",
+              ),
+          ]
+
+          for old, new in replacements:
+              if text.count(old) != 1:
+                  raise SystemExit(f"expected exactly one occurrence of: {old!r}")
+              text = text.replace(old, new)
+
+          path.write_text(text)
+          PY
+      - name: Commit cleanup
+        run: |
+          if git diff --quiet; then
+            exit 0
+          fi
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion.lean
+          git commit -m "refactor: remove propagated finite-mode assumptions"
+          git push origin HEAD:agent/remove-unnecessary-finiteness
