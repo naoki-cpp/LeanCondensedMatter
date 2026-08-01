@@ -26,7 +26,7 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 /-- The interacting partition function normalized by its free value. -/
 noncomputable def normalizedAnalyticDysonPartitionFunction (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (lam : ℂ) : ℂ :=
-  (freePartitionFunction ε β)⁻¹ * analyticDysonPartitionFunction ε β V lam
+  ((freePartitionFunction ε β)⁻¹ • analyticDysonPartitionFunction ε β V) lam
 
 omit [LinearOrder Mode] in
 @[simp]
@@ -34,8 +34,9 @@ theorem normalizedAnalyticDysonPartitionFunction_zero
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
     normalizedAnalyticDysonPartitionFunction ε β V 0 = 1 := by
-  rw [normalizedAnalyticDysonPartitionFunction,
-    analyticDysonPartitionFunction_zero ε hβ V]
+  change (freePartitionFunction ε β)⁻¹ *
+    analyticDysonPartitionFunction ε β V 0 = 1
+  rw [analyticDysonPartitionFunction_zero ε hβ V]
   exact inv_mul_cancel₀ (freePartitionFunction_ne_zero ε β)
 
 omit [LinearOrder Mode] in
@@ -44,9 +45,9 @@ theorem analyticAt_normalizedAnalyticDysonPartitionFunction_zero
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
     AnalyticAt ℂ (normalizedAnalyticDysonPartitionFunction ε β V) 0 := by
-  simpa [normalizedAnalyticDysonPartitionFunction, smul_eq_mul] using
-    (analyticAt_analyticDysonPartitionFunction_zero ε hβ V).const_smul
-      (c := (freePartitionFunction ε β)⁻¹)
+  change AnalyticAt ℂ
+    ((freePartitionFunction ε β)⁻¹ • analyticDysonPartitionFunction ε β V) 0
+  exact (analyticAt_analyticDysonPartitionFunction_zero ε hβ V).const_smul
 
 /-- The Taylor series of the normalized partition function, obtained by scaling the Dyson series. -/
 noncomputable def normalizedDysonPartitionFPowerSeries (ε : Mode → ℝ) (β : ℝ)
@@ -61,10 +62,10 @@ theorem hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
     HasFPowerSeriesAt (normalizedAnalyticDysonPartitionFunction ε β V)
       (normalizedDysonPartitionFPowerSeries ε β V) 0 := by
-  simpa [normalizedAnalyticDysonPartitionFunction,
-    normalizedDysonPartitionFPowerSeries, smul_eq_mul] using
-    (hasFPowerSeriesAt_analyticDysonPartitionFunction ε hβ V).const_smul
-      (c := (freePartitionFunction ε β)⁻¹)
+  change HasFPowerSeriesAt
+    ((freePartitionFunction ε β)⁻¹ • analyticDysonPartitionFunction ε β V)
+    ((freePartitionFunction ε β)⁻¹ • dysonPartitionFPowerSeries ε β V) 0
+  exact (hasFPowerSeriesAt_analyticDysonPartitionFunction ε hβ V).const_smul
 
 omit [LinearOrder Mode] in
 /-- The analytic normalized-series coefficient agrees with the existing formal normalization. -/
@@ -72,8 +73,9 @@ theorem coeff_normalizedDysonPartitionFPowerSeries_eq_formal
     (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) :
     (normalizedDysonPartitionFPowerSeries ε β V).coeff n =
-      PowerSeries.coeff n (normalizePartitionSeries (dysonPartitionSeries ε β V)) := by
-  rw [coeff_normalizePartitionSeries_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
+      PowerSeries.coeff n
+        (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) := by
+  rw [coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
   simp [normalizedDysonPartitionFPowerSeries, normalizedDysonPartitionCoeff,
     coeff_dysonPartitionFPowerSeries, dysonPartitionCoeff_eq_dysonTraceCoeff,
     div_eq_mul_inv, mul_comm]
@@ -92,8 +94,9 @@ theorem analyticNormalizedLogPartitionFunction_zero
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
     analyticNormalizedLogPartitionFunction ε β V 0 = 0 := by
-  simp [analyticNormalizedLogPartitionFunction,
+  rw [analyticNormalizedLogPartitionFunction,
     normalizedAnalyticDysonPartitionFunction_zero ε hβ V]
+  exact Complex.log_one
 
 omit [LinearOrder Mode] in
 /-- The selected logarithm branch is analytic at zero coupling. -/
@@ -101,9 +104,10 @@ theorem analyticAt_analyticNormalizedLogPartitionFunction_zero
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
     AnalyticAt ℂ (analyticNormalizedLogPartitionFunction ε β V) 0 := by
-  simpa [analyticNormalizedLogPartitionFunction] using
-    (analyticAt_normalizedAnalyticDysonPartitionFunction_zero ε hβ V).clog
-      (by simp [normalizedAnalyticDysonPartitionFunction_zero ε hβ V])
+  change AnalyticAt ℂ
+    (fun z => Complex.log (normalizedAnalyticDysonPartitionFunction ε β V z)) 0
+  exact (analyticAt_normalizedAnalyticDysonPartitionFunction_zero ε hβ V).clog
+    (by rw [normalizedAnalyticDysonPartitionFunction_zero ε hβ V]; exact Complex.one_mem_slitPlane)
 
 /-- The Taylor series of the principal complex logarithm at `1`. -/
 noncomputable def complexLogFPowerSeriesAtOne : FormalMultilinearSeries ℂ ℂ ℂ :=
@@ -123,10 +127,17 @@ theorem hasFPowerSeriesAt_analyticNormalizedLogPartitionFunction
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
     HasFPowerSeriesAt (analyticNormalizedLogPartitionFunction ε β V)
       (analyticNormalizedLogFPowerSeries ε β V) 0 := by
-  have h := Complex.hasFPowerSeriesAt_clog_one.comp
+  have hlog : HasFPowerSeriesAt Complex.log complexLogFPowerSeriesAtOne
+      (normalizedAnalyticDysonPartitionFunction ε β V 0) := by
+    rw [normalizedAnalyticDysonPartitionFunction_zero ε hβ V]
+    exact hasFPowerSeriesAt_clog_one
+  have h := hlog.comp
     (hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction ε hβ V)
+  change HasFPowerSeriesAt
+    (Complex.log ∘ normalizedAnalyticDysonPartitionFunction ε β V)
+    (complexLogFPowerSeriesAtOne.comp (normalizedDysonPartitionFPowerSeries ε β V)) 0 at h
   simpa [analyticNormalizedLogPartitionFunction, analyticNormalizedLogFPowerSeries,
-    complexLogFPowerSeriesAtOne, Function.comp_def] using h
+    Function.comp_def] using h
 
 omit [LinearOrder Mode] in
 /-- The `n`-th derivative of the analytic logarithm is `n!` times the scalar coefficient of its
