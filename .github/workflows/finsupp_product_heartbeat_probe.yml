@@ -27,28 +27,32 @@ jobs:
           path = Path("LeanCondensedMatter/Analysis/InfiniteSum/FinsuppProduct.lean")
           text = path.read_text(encoding="utf-8")
 
-          old_option = '''  apply hasSum_prod_option_reindex (finSuccFamily f) (finSuccFamily a)
-  exact hasSum_mul_of_summable_norm' hhead htail habsHead habsTail
-'''
-          new_option = '''  have hprod : HasSum
-      (fun p : ℕ × (Fin k →₀ ℕ) =>
-        f 0 p.1 * ∏ i : Fin k, f i.succ (p.2 i))
-      (a 0 * ∏ i : Fin k, a i.succ) :=
-    hasSum_mul_of_summable_norm' hhead htail habsHead habsTail
-  exact hasSum_prod_option_reindex (finSuccFamily f) (finSuccFamily a) hprod
-'''
+          old_option = (
+              "  apply hasSum_prod_option_reindex (finSuccFamily f) (finSuccFamily a)\n"
+              "  exact hasSum_mul_of_summable_norm' hhead htail habsHead habsTail\n"
+          )
+          new_option = (
+              "  have hprod : HasSum\n"
+              "      (fun p : ℕ × (Fin k →₀ ℕ) =>\n"
+              "        f 0 p.1 * ∏ i : Fin k, f i.succ (p.2 i))\n"
+              "      (a 0 * ∏ i : Fin k, a i.succ) :=\n"
+              "    hasSum_mul_of_summable_norm' hhead htail habsHead habsTail\n"
+              "  exact hasSum_prod_option_reindex (finSuccFamily f) (finSuccFamily a) hprod\n"
+          )
           if old_option not in text:
               raise SystemExit("option successor block not found")
           text = text.replace(old_option, new_option, 1)
 
-          old_general = '''  apply hasSum_prod_fin_succ f a (hf 0) htail (habs 0)
-  exact summable_norm_prod (fun i => f i.succ) (fun i => habs i.succ)
-'''
-          new_general = '''  have habsTail : Summable
-      (fun n : Fin k →₀ ℕ => ‖∏ i : Fin k, f i.succ (n i)‖) :=
-    summable_norm_prod (fun i : Fin k => f i.succ) (fun i => habs i.succ)
-  exact hasSum_prod_fin_succ f a (hf 0) htail (habs 0) habsTail
-'''
+          old_general = (
+              "  apply hasSum_prod_fin_succ f a (hf 0) htail (habs 0)\n"
+              "  exact summable_norm_prod (fun i => f i.succ) (fun i => habs i.succ)\n"
+          )
+          new_general = (
+              "  have habsTail : Summable\n"
+              "      (fun n : Fin k →₀ ℕ => ‖∏ i : Fin k, f i.succ (n i)‖) :=\n"
+              "    summable_norm_prod (fun i : Fin k => f i.succ) (fun i => habs i.succ)\n"
+              "  exact hasSum_prod_fin_succ f a (hf 0) htail (habs 0) habsTail\n"
+          )
           if old_general not in text:
               raise SystemExit("general successor block not found")
           text = text.replace(old_general, new_general, 1)
