@@ -60,7 +60,8 @@ theorem finiteDimensional_of_gibbsOp_isCompact (Hop : Observable H) (β : ℝ)
     exact hcompact
   have hcompact_inv_mul :
       IsCompactOperator ((↑u⁻¹ : H →L[ℂ] H) * (u : H →L[ℂ] H)) := by
-    simpa using hcompact_u.clm_comp (↑u⁻¹ : H →L[ℂ] H)
+    change IsCompactOperator (⇑(↑u⁻¹ : H →L[ℂ] H) ∘ ⇑(u : H →L[ℂ] H))
+    exact hcompact_u.clm_comp (↑u⁻¹ : H →L[ℂ] H)
   have hcompact_one : IsCompactOperator (1 : H →L[ℂ] H) := by
     exact u.inv_val ▸ hcompact_inv_mul
   have hone : (⇑(1 : H →L[ℂ] H)) = (id : H → H) := by
