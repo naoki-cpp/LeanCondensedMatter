@@ -1,0 +1,58 @@
+name: Finalize Combinatorics Refactor
+
+on:
+  push:
+    branches:
+      - agent/reorganize-combinatorics
+    paths:
+      - scripts/finalize_combinatorics_refactor.py
+      - .github/workflows/finalize-combinatorics-refactor.yml
+
+permissions:
+  contents: write
+
+jobs:
+  finalize:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/reorganize-combinatorics
+          fetch-depth: 0
+      - uses: leanprover/lean-action@v1
+        with:
+          build: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Update roadmap
+        run: python scripts/finalize_combinatorics_refactor.py
+      - name: Check obsolete module paths
+        run: |
+          ! grep -R --include='*.lean' -E 'Combinatorics\.(BinaryShuffle|BinaryShuffleSlots|BinaryShuffleSlotEquiv|FamilySlotShuffle|FamilySlotShuffleDecomposition|IncidenceAlgebraMu|PartitionLattice|MomentCumulant|CumulantFactorization|DiagramConnectedness|Common\.DeletedFinPositions|Common\.EraseIdxOfFn)' LeanCondensedMatter
+          ! grep -R --include='*.lean' -E '\b(IsPairing|Pairing)\b' LeanCondensedMatter/Combinatorics/PerfectPairing
+          ! grep -R --include='*.lean' 'namespace SecondQuantization' LeanCondensedMatter/Combinatorics/PerfectPairing
+          test ! -d LeanCondensedMatter/Combinatorics/Common
+      - name: Validate full library
+        run: lake build LeanCondensedMatter
+      - name: Remove temporary migration files
+        run: |
+          rm -f scripts/finish_combinatorics_refactor.py
+          rm -f scripts/finish_combinatorics_namespace.py
+          rm -f scripts/canonicalize_combinatorics_api.py
+          rm -f scripts/finalize_combinatorics_refactor.py
+          rm -f .github/workflows/finish-combinatorics-refactor.yml
+          rm -f .github/workflows/finish-combinatorics-namespace.yml
+          rm -f .github/workflows/canonicalize-combinatorics-api.yml
+          rm -f .github/workflows/finalize-combinatorics-refactor.yml
+      - name: Commit finalization
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "docs: finalize Combinatorics architecture"
+          git push origin HEAD:agent/reorganize-combinatorics
