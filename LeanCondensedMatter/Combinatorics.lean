@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Combinatorics.BinaryShuffle
-import LeanCondensedMatter.Combinatorics.BinaryShuffleIntegrand
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlots
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
