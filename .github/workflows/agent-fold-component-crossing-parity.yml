@@ -1,0 +1,122 @@
+name: Agent fold ComponentCrossingParity
+
+on:
+  push:
+    branches:
+      - agent/fold-component-crossing-parity
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/fold-component-crossing-parity
+          fetch-depth: 0
+
+      - name: Fold crossing parity module
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          root = Path('.')
+          wick = root / 'LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/WickDiagram'
+          source = wick / 'ComponentCrossingParity.lean'
+          target = wick / 'ComponentGlobalCrossingParity.lean'
+          umbrella = root / 'LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics.lean'
+          guard = root / 'scripts/check_second_quantization_architecture.py'
+
+          source_text = source.read_text(encoding='utf-8')
+          start_marker = 'variable {Mode : Type*} {N : ℕ}\n\n'
+          end_marker = '\nend Fermionic\nend SecondQuantization\n'
+          if start_marker not in source_text or end_marker not in source_text:
+              raise SystemExit('could not locate ComponentCrossingParity declaration body')
+          moved_body = source_text.split(start_marker, 1)[1].rsplit(end_marker, 1)[0]
+
+          target_text = target.read_text(encoding='utf-8')
+          old_imports = (
+              'import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairCrossingParity\n'
+              'import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentCrossingParity\n'
+          )
+          new_imports = (
+              'import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentCrossing\n'
+              'import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairCrossingParity\n'
+              'import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight\n'
+          )
+          if old_imports not in target_text:
+              raise SystemExit('could not locate ComponentGlobalCrossingParity imports')
+          target_text = target_text.replace(old_imports, new_imports, 1)
+          if target_text.count(start_marker) != 1:
+              raise SystemExit('unexpected ComponentGlobalCrossingParity variable marker count')
+          target_text = target_text.replace(start_marker, start_marker + moved_body + '\n\n', 1)
+          target.write_text(target_text, encoding='utf-8')
+
+          removed_import = (
+              'import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.'
+              'WickDiagram.ComponentCrossingParity\n'
+          )
+          umbrella_text = umbrella.read_text(encoding='utf-8')
+          if umbrella_text.count(removed_import) != 1:
+              raise SystemExit('unexpected ComponentCrossingParity umbrella import count')
+          umbrella.write_text(umbrella_text.replace(removed_import, '', 1), encoding='utf-8')
+
+          guard_text = guard.read_text(encoding='utf-8')
+          removed_file_marker = (
+              '    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentPairs.lean",\n'
+          )
+          removed_file_line = (
+              '    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / '
+              '"ComponentCrossingParity.lean",\n'
+          )
+          if removed_file_marker not in guard_text:
+              raise SystemExit('could not locate architecture removed-file marker')
+          guard_text = guard_text.replace(
+              removed_file_marker,
+              removed_file_marker + removed_file_line,
+              1,
+          )
+
+          import_check_marker = (
+              '            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.'
+              'Diagrammatics.WickDiagram.ComponentPairs":\n'
+              '                errors.append(\n'
+              '                    f"removed fermionic ComponentPairs import: {relative(path)}:{line_no}: {line.strip()}"\n'
+              '                )\n'
+          )
+          new_import_check = (
+              '            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.'
+              'Diagrammatics.WickDiagram.ComponentCrossingParity":\n'
+              '                errors.append(\n'
+              '                    f"removed fermionic ComponentCrossingParity import: {relative(path)}:{line_no}: {line.strip()}"\n'
+              '                )\n'
+          )
+          if import_check_marker not in guard_text:
+              raise SystemExit('could not locate architecture import-check marker')
+          guard_text = guard_text.replace(
+              import_check_marker,
+              import_check_marker + new_import_check,
+              1,
+          )
+          guard.write_text(guard_text, encoding='utf-8')
+
+          source.unlink()
+          PY
+
+      - name: Validate migration
+        run: |
+          python scripts/check_second_quantization_architecture.py
+          git diff --check
+          test ! -e LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/WickDiagram/ComponentCrossingParity.lean
+          ! grep -R "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentCrossingParity" LeanCondensedMatter
+
+      - name: Commit migration
+        run: |
+          rm .github/workflows/agent-fold-component-crossing-parity.yml
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "refactor: fold ComponentCrossingParity into global parity"
+          git push origin HEAD:agent/fold-component-crossing-parity
