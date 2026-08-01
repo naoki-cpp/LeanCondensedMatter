@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.HelmholtzFreeEnergyTraceClass
+import Mathlib.Analysis.InnerProductSpace.Trace
 
 /-!
 # Gibbs-state entropy equality via trace-class operators
@@ -14,6 +15,81 @@ namespace QuantumTheory.TraceClass
 open ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+/-- In finite dimensions, the trace-class energy expectation agrees with the usual real part of
+`Tr(ρ H)`. The proof extends the nonzero eigenvectors of `ρ` to an orthonormal basis; the added
+basis vectors lie in `ker ρ`, so their diagonal contributions vanish. -/
+theorem energyExpValue_eq_re_linearMap_trace [FiniteDimensional ℂ H]
+    (ρ : DensityOperator H) (Hop : Observable H) :
+    energyExpValue ρ Hop =
+      (LinearMap.trace ℂ H ((ρ.op ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H)).re := by
+  classical
+  let hρcompact : IsCompactOperator ρ.op := ρ.spectralTraceClass.compact
+  let hρsym : ρ.op.IsSymmetric := ρ.isSymmetric
+  let e : EigenvectorIndex ρ.op → H := eigenvectorFamily hρcompact
+  have he : Orthonormal ℂ e := by
+    simpa [e] using orthonormal_eigenvectorFamily hρcompact hρsym
+  obtain ⟨u, b, hsub, hb⟩ := he.toSubtypeRange.exists_orthonormalBasis_extension
+  let j : EigenvectorIndex ρ.op → u := fun a => ⟨e a, hsub ⟨a, rfl⟩⟩
+  have hj : Function.Injective j := by
+    intro a a' haa'
+    apply he.linearIndependent.injective
+    exact congrArg Subtype.val haa'
+  let g : u → ℂ := fun i => inner ℂ (b i) ((ρ.op ∘L Hop.1) (b i))
+  have hb_j (a : EigenvectorIndex ρ.op) : b (j a) = e a := by
+    rw [hb]
+  have hpoint (a : EigenvectorIndex ρ.op) :
+      g (j a) = (a.1.1 : ℂ) * inner ℂ (e a) (Hop.1 (e a)) := by
+    change inner ℂ (b (j a)) (ρ.op (Hop.1 (b (j a)))) =
+      (a.1.1 : ℂ) * inner ℂ (e a) (Hop.1 (e a))
+    rw [hb_j]
+    rw [← hρsym (e a) (Hop.1 (e a)), apply_eigenvectorFamily hρcompact]
+    simp [inner_smul_left]
+  have hzero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
+    have hspan :
+        Submodule.span ℂ (Set.range e) ≤ (ℂ ∙ (b x : H))ᗮ := by
+      rw [Submodule.span_le]
+      rintro y ⟨a, rfl⟩
+      refine (Submodule.mem_orthogonal_singleton_iff_inner_left).2 ?_
+      have hne : j a ≠ x := by
+        intro h
+        exact hx ⟨a, h⟩
+      have horth : inner ℂ (b (j a)) (b x) = 0 := b.orthonormal.2 hne
+      rw [hb_j] at horth
+      exact horth
+    have hxorth :
+        (b x : H) ∈ (Submodule.span ℂ (Set.range e)).topologicalClosureᗮ := by
+      rw [Submodule.orthogonal_closure, Submodule.mem_orthogonal]
+      intro y hy
+      have hy' := hspan hy
+      exact (Submodule.mem_orthogonal_singleton_iff_inner_left).1 hy'
+    have hxker_mem :
+        (b x : H) ∈ Module.End.eigenspace (ρ.op : H →ₗ[ℂ] H) (0 : ℂ) := by
+      rw [← orthogonal_closure_span_eigenvectorFamily hρcompact hρsym]
+      simpa [e] using hxorth
+    have hxker : (ρ.op : H →ₗ[ℂ] H) (b x) = 0 := by
+      have hxev := Module.End.mem_eigenspace_iff.mp hxker_mem
+      simpa using hxev
+    change inner ℂ (b x) (ρ.op (Hop.1 (b x))) = 0
+    rw [← hρsym (b x) (Hop.1 (b x)), hxker, inner_zero_left]
+  have hfull : HasSum g (∑ i, g i) := hasSum_fintype _
+  have hrestricted : HasSum (g ∘ j) (∑ i, g i) :=
+    (hj.hasSum_iff hzero).mpr hfull
+  have hfunctions :
+      (g ∘ j) = fun a : EigenvectorIndex ρ.op =>
+        (a.1.1 : ℂ) * inner ℂ (e a) (Hop.1 (e a)) := by
+    funext a
+    exact hpoint a
+  rw [hfunctions] at hrestricted
+  have hsum :
+      (∑' a : EigenvectorIndex ρ.op,
+        (a.1.1 : ℂ) * inner ℂ (e a) (Hop.1 (e a))) = ∑ i, g i :=
+    (summable_energyExpValue_term ρ Hop).hasSum.unique hrestricted
+  have htrace := LinearMap.trace_eq_sum_inner
+    ((ρ.op ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) b
+  change (∑' a : EigenvectorIndex ρ.op,
+    (a.1.1 : ℂ) * inner ℂ (e a) (Hop.1 (e a))).re = _
+  rw [hsum, ← htrace]
 
 /-- The entropy operator of the normalized Gibbs state has summable nonzero real eigenvalues.
 For the current bounded notion of Hamiltonian this follows from compactness of the Gibbs operator,
