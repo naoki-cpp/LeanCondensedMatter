@@ -11,9 +11,7 @@ crossing representation uses `Pairing.NormalizedPair`; raw pairs with membership
 kept only as a private proof device.
 -/
 
-namespace SecondQuantization
-namespace Common
-namespace BlochDeDominicis
+namespace Combinatorics
 
 /-- The normalized pair `(a, b)` crosses `(c, d)` when `a < c < b < d`. -/
 def Crosses {n : ℕ} (left right : Fin (2 * n) × Fin (2 * n)) : Prop :=
@@ -120,6 +118,4 @@ theorem card_filter_crosses_product_eq_sum {n : ℕ} (T : Finset (Fin (2 * n) ×
       ∑ p ∈ T, (T.filter (fun q => Crosses p q)).card :=
   Finset.card_filter_product_eq_sum_card_filter T Crosses
 
-end BlochDeDominicis
-end Common
-end SecondQuantization
+end Combinatorics
