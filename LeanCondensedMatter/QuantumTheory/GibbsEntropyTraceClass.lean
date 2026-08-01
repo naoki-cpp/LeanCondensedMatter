@@ -16,6 +16,18 @@ open ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/-- The normalized Gibbs state acts diagonally on every energy eigenvector. -/
+theorem gibbsState_apply_eigenvector (Hop : Observable H) (β : ℝ)
+    (hcompact : IsCompactOperator (gibbsOp Hop β))
+    (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
+    (hZ : spectralTrace hsummable ≠ 0) {v : H} {E : ℝ}
+    (hv : (Hop.1 : H →ₗ[ℂ] H) v = (E : ℂ) • v) :
+    (gibbsState Hop β hcompact hsummable hZ).op v =
+      (((spectralTrace hsummable)⁻¹ * Real.exp (-β * E) : ℝ) : ℂ) • v := by
+  change ((spectralTrace hsummable)⁻¹ • gibbsOp Hop β) v = _
+  rw [ContinuousLinearMap.smul_apply, gibbsOp_apply_eigenvector Hop β hv]
+  simp [smul_smul]
+
 /-- In finite dimensions, the trace-class energy expectation agrees with the usual real part of
 `Tr(ρ H)`. The proof extends the nonzero eigenvectors of `ρ` to an orthonormal basis; the added
 basis vectors lie in `ker ρ`, so their diagonal contributions vanish. -/
