@@ -1,3 +1,6 @@
+import LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions
+import LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositionsSuccAbove
+import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
 import LeanCondensedMatter.Combinatorics.BinaryShuffle
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlots
@@ -6,10 +9,10 @@ import LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition
 import LeanCondensedMatter.Combinatorics.IncidenceAlgebraMu
 import LeanCondensedMatter.Combinatorics.PartitionLattice
 import LeanCondensedMatter.Combinatorics.MomentCumulant
+import LeanCondensedMatter.Combinatorics.Cumulant.Normalized
 import LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock
 import LeanCondensedMatter.Combinatorics.CumulantFactorization
 import LeanCondensedMatter.Combinatorics.DiagramConnectedness
-import LeanCondensedMatter.Combinatorics.Common.DeletedFinPositions
 import LeanCondensedMatter.Combinatorics.PerfectPairing
 
 set_option linter.style.header false
