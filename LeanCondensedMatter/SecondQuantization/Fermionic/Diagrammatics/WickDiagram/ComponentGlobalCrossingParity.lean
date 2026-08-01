@@ -148,7 +148,7 @@ theorem QuarticWickDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_component
           d.componentOrientedCrossingCount orders shuffle B C) % 2 =
       (∑ B : d.componentPartition.parts,
         d.componentOrientedCrossingCount orders shuffle B B) % 2 := by
-          exact Common.BlochDeDominicis.fintype_sum_sum_modEq_diag_of_pair_add_modEq_zero
+          exact Combinatorics.fintype_sum_sum_modEq_diag_of_pair_add_modEq_zero
             2 (fun B C => d.componentOrientedCrossingCount orders shuffle B C)
             (fun B C hBC => by
               rw [← d.componentGeometricCrossingCount_eq_oriented_add

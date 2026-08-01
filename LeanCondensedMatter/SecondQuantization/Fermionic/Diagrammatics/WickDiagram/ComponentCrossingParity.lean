@@ -73,7 +73,7 @@ theorem QuarticWickDiagram.pairingInOrder_weight_eq_prod_components_of_externalC
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).weight s =
       ∏ B : d.componentPartition.parts,
         ((d.restrictComponent B.2).pairingInOrder (orders B)).weight s := by
-  exact Combinatorics.Pairing.weight_eq_prod_of_crossingCount_mod_two_eq
+  exact Common.BlochDeDominicis.Pairing.weight_eq_prod_of_crossingCount_mod_two_eq
     s
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
     (fun B : d.componentPartition.parts =>

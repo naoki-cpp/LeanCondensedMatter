@@ -24,7 +24,7 @@ variable {Mode : Type*} {N : ℕ}
 @[simp]
 theorem Combinatorics.Pairing.pairEndpoint_eq_pairEndpointAt {n : ℕ}
     (pairing : Combinatorics.Pairing n) (p : pairing.NormalizedPair) (k : Fin 2) :
-    pairing.pairEndpoint (p, k) = Common.BlochDeDominicis.pairEndpointAt p.1 k :=
+    pairing.pairEndpoint (p, k) = Combinatorics.pairEndpointAt p.1 k :=
   rfl
 
 /-- Pairs transported from distinct components are distinct normalized global pairs. -/
@@ -64,7 +64,7 @@ theorem QuarticWickDiagram.componentPairEndpointInversionCount_mod_two_eq_one_if
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (B C : d.componentPartition.parts) (hBC : B ≠ C)
     (p : d.LocalOrderedPair orders B) (q : d.LocalOrderedPair orders C) :
-    Common.BlochDeDominicis.pairEndpointInversionCount
+    Combinatorics.pairEndpointInversionCount
         (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
         (d.componentPairEquiv orders shuffle ⟨C, q⟩).1 % 2 = 1 ↔
       Combinatorics.Crosses
@@ -74,7 +74,7 @@ theorem QuarticWickDiagram.componentPairEndpointInversionCount_mod_two_eq_one_if
           (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
           (d.componentPairEquiv orders shuffle ⟨B, p⟩).1 := by
   have hEnds := d.componentPairEquiv_endpoints_ne orders shuffle B C hBC p q
-  exact Common.BlochDeDominicis.pairEndpointInversionCount_mod_two_eq_one_iff_crosses
+  exact Combinatorics.pairEndpointInversionCount_mod_two_eq_one_iff_crosses
     (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
     (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
     ((d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs_normalized
@@ -89,7 +89,7 @@ theorem QuarticWickDiagram.componentPairEndpointInversionCount_mod_two_eq_crosse
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (B C : d.componentPartition.parts) (hBC : B ≠ C)
     (p : d.LocalOrderedPair orders B) (q : d.LocalOrderedPair orders C) :
-    Common.BlochDeDominicis.pairEndpointInversionCount
+    Combinatorics.pairEndpointInversionCount
         (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
         (d.componentPairEquiv orders shuffle ⟨C, q⟩).1 % 2 =
       if Combinatorics.Crosses
@@ -100,7 +100,7 @@ theorem QuarticWickDiagram.componentPairEndpointInversionCount_mod_two_eq_crosse
           (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
       then 1 else 0 := by
   have hEnds := d.componentPairEquiv_endpoints_ne orders shuffle B C hBC p q
-  exact Common.BlochDeDominicis.pairEndpointInversionCount_mod_two_eq_crossesIndicator
+  exact Combinatorics.pairEndpointInversionCount_mod_two_eq_crossesIndicator
     (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
     (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
     ((d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs_normalized
@@ -116,12 +116,12 @@ theorem QuarticWickDiagram.pairEndpointAt_componentPairEquiv
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (B : d.componentPartition.parts) (p : d.LocalOrderedPair orders B) (k : Fin 2) :
-    Common.BlochDeDominicis.pairEndpointAt
+    Combinatorics.pairEndpointAt
         (d.componentPairEquiv orders shuffle ⟨B, p⟩).1 k =
       d.componentOrderedLeg shuffle B
-        (Common.BlochDeDominicis.pairEndpointAt p.1 k) := by
+        (Combinatorics.pairEndpointAt p.1 k) := by
   fin_cases k <;>
-  simp [Common.BlochDeDominicis.pairEndpointAt, d.componentPairEquiv_apply]
+  simp [Combinatorics.pairEndpointAt, d.componentPairEquiv_apply]
 
 /-- Endpoint inversion count written using component-local endpoints and their global embeddings. -/
 theorem QuarticWickDiagram.componentPairEndpointInversionCount_eq_sum
@@ -129,16 +129,16 @@ theorem QuarticWickDiagram.componentPairEndpointInversionCount_eq_sum
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (B C : d.componentPartition.parts)
     (p : d.LocalOrderedPair orders B) (q : d.LocalOrderedPair orders C) :
-    Common.BlochDeDominicis.pairEndpointInversionCount
+    Combinatorics.pairEndpointInversionCount
         (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
         (d.componentPairEquiv orders shuffle ⟨C, q⟩).1 =
       ∑ i : Fin 2, ∑ j : Fin 2,
         if d.componentOrderedLeg shuffle C
-            (Common.BlochDeDominicis.pairEndpointAt q.1 j) <
+            (Combinatorics.pairEndpointAt q.1 j) <
           d.componentOrderedLeg shuffle B
-            (Common.BlochDeDominicis.pairEndpointAt p.1 i)
+            (Combinatorics.pairEndpointAt p.1 i)
         then 1 else 0 := by
-  rw [Common.BlochDeDominicis.pairEndpointInversionCount_eq_sum]
+  rw [Combinatorics.pairEndpointInversionCount_eq_sum]
   apply Finset.sum_congr rfl
   intro i _
   apply Finset.sum_congr rfl
@@ -165,7 +165,7 @@ noncomputable def QuarticWickDiagram.componentPairEndpointInversionSum
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (B C : d.componentPartition.parts) : ℕ :=
   ∑ x : d.LocalOrderedPair orders B × d.LocalOrderedPair orders C,
-    Common.BlochDeDominicis.pairEndpointInversionCount
+    Combinatorics.pairEndpointInversionCount
       (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
       (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
 
@@ -177,7 +177,7 @@ theorem QuarticWickDiagram.componentGeometricCrossingCount_mod_two_eq_endpointIn
     d.componentGeometricCrossingCount orders shuffle B C % 2 =
       d.componentPairEndpointInversionSum orders shuffle B C % 2 := by
   symm
-  exact Common.BlochDeDominicis.fintype_sum_mod_two_congr _ _ fun x => by
+  exact Combinatorics.fintype_sum_mod_two_congr _ _ fun x => by
     have h :=
       d.componentPairEndpointInversionCount_mod_two_eq_crossesIndicator
         orders shuffle B C hBC x.1 x.2
@@ -206,9 +206,9 @@ theorem QuarticWickDiagram.componentPairEndpointInversionSum_eq_sum_componentOrd
     d.componentPairEndpointInversionSum orders shuffle B C =
       ∑ x : (d.LocalOrderedPair orders B × d.LocalOrderedPair orders C) × (Fin 2 × Fin 2),
         if d.componentOrderedLeg shuffle C
-            (Common.BlochDeDominicis.pairEndpointAt x.1.2.1 x.2.2) <
+            (Combinatorics.pairEndpointAt x.1.2.1 x.2.2) <
           d.componentOrderedLeg shuffle B
-            (Common.BlochDeDominicis.pairEndpointAt x.1.1.1 x.2.1)
+            (Combinatorics.pairEndpointAt x.1.1.1 x.2.1)
         then 1 else 0 := by
           simp only [QuarticWickDiagram.componentPairEndpointInversionSum,
             Fintype.sum_prod_type]
@@ -223,9 +223,9 @@ theorem QuarticWickDiagram.componentPairEndpointInversionSum_eq_sum_componentOrd
         then 1 else 0 := by
           refine Fintype.sum_equiv endpointPairEquiv
             (fun x => if d.componentOrderedLeg shuffle C
-                (Common.BlochDeDominicis.pairEndpointAt x.1.2.1 x.2.2) <
+                (Combinatorics.pairEndpointAt x.1.2.1 x.2.2) <
               d.componentOrderedLeg shuffle B
-                (Common.BlochDeDominicis.pairEndpointAt x.1.1.1 x.2.1)
+                (Combinatorics.pairEndpointAt x.1.1.1 x.2.1)
               then 1 else 0)
             (fun x => if d.componentOrderedLeg shuffle C x.2 <
               d.componentOrderedLeg shuffle B x.1 then 1 else 0) ?_
