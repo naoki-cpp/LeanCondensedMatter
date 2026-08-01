@@ -7,31 +7,14 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.InsertFirstPair
 set_option linter.style.header false
 
 /-!
-# The Wick/Bloch–de Dominicis pairing recursion, abstracted away from `gibbsExpectation`
+# The abstract first-pair recursion for perfect pairings
 
-`Common/Thermal/BlochDeDominicis/Induction.lean`'s general theorem interleaves two independent kinds of
-reasoning: analytic facts about Gibbs expectations (`gibbsExpectation_peel_indexed`, the two-point
-identity, list reindexing) and purely combinatorial bookkeeping about `Pairing` (the
-`equivSigma`/`insertFirstPair` double-sum reindexing, `crossingCount`'s erase-zero recursion, and
-`pairs`' erase-zero product decomposition). This file isolates the combinatorial half as a
-standalone theorem, `moment_eq_pairing_sum_of_first_pair_recursion`, with no dependence on
-`Statistics`, `ℂ`, `AlgebraicFock`, or any KMS/evolution machinery — only a commutative semiring
-`R` and an involutive scalar `ζ : R` (`ζ * ζ = 1`), general enough to cover both bosonic and
-fermionic exchange statistics while staying recognizable as *this* recursion rather than an
-arbitrary matching framework.
-
-The recursion does **not** hold for an arbitrary family `C : Fin (2 * n) → α`: the concrete
-Gibbs-expectation instance needs `C`'s entries to be eigenoperators of the free evolution, have
-scalar commutators, and avoid resonance, and the induction step must carry those hypotheses down to
-each `succAbove`-erased subfamily. The abstract theorem accordingly takes an explicit `Admissible`
-predicate, closed under the same erasure `fun i => C ((j.succAbove i).succ)` already used
-throughout `EraseZeroSuccAbove.lean`/`InsertFirstPair.lean`, rather than assuming the recursion
-holds unconditionally.
+This file isolates the purely combinatorial half of Wick/Bloch–de Dominicis recursion. It depends
+only on a commutative semiring, an involutive scalar, a first-pair recurrence, and an admissibility
+predicate stable under deletion.
 -/
 
-namespace SecondQuantization
-namespace Common
-namespace BlochDeDominicis
+namespace Combinatorics
 
 /-- A power of an involutive scalar (`ζ * ζ = 1`) only depends on the exponent's parity. -/
 theorem pow_eq_of_mod_two_eq {R : Type*} [CommSemiring R] {ζ : R} (hζ : ζ * ζ = 1) {a b : ℕ}
@@ -40,12 +23,7 @@ theorem pow_eq_of_mod_two_eq {R : Type*} [CommSemiring R] {ζ : R} (hζ : ζ * �
   conv_rhs => rw [← Nat.div_add_mod b 2, ← h]
   rw [pow_add, pow_add, pow_mul, pow_mul, sq, hζ, one_pow, one_pow]
 
-/-- **The abstract Wick/Bloch–de Dominicis pairing recursion.** Given a `moment` function
-satisfying the base case `moment 0 _ = 1` and, on `Admissible` families, the first-pair recursion
-`moment (n+1) C = ∑ j, ζ ^ j * pairValue (C 0) (C j.succ) * moment n (erase j C)` — with
-`Admissible` closed under that same erasure — `moment n C` equals the `Pairing n`-weighted sum of
-products of `pairValue`, matching `∑ pairing, ζ ^ pairing.crossingCount * ∏ pr ∈ pairing.pairs,
-pairValue (C pr.1) (C pr.2)`. -/
+/-- The abstract first-pair recursion. -/
 theorem moment_eq_pairing_sum_of_first_pair_recursion {α R : Type*} [CommSemiring R] (ζ : R)
     (hζ : ζ * ζ = 1) (moment : (n : ℕ) → (Fin (2 * n) → α) → R) (pairValue : α → α → R)
     (Admissible : (n : ℕ) → (Fin (2 * n) → α) → Prop)
@@ -113,6 +91,4 @@ theorem moment_eq_pairing_sum_of_first_pair_recursion {α R : Type*} [CommSemiri
     rw [hweight, hprod]
     ring
 
-end BlochDeDominicis
-end Common
-end SecondQuantization
+end Combinatorics
