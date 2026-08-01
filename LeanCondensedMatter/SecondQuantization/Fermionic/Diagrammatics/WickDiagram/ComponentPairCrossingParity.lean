@@ -67,10 +67,10 @@ theorem QuarticWickDiagram.componentPairEndpointInversionCount_mod_two_eq_one_if
     Common.BlochDeDominicis.pairEndpointInversionCount
         (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
         (d.componentPairEquiv orders shuffle ⟨C, q⟩).1 % 2 = 1 ↔
-      Common.BlochDeDominicis.Crosses
+      Combinatorics.Crosses
           (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
           (d.componentPairEquiv orders shuffle ⟨C, q⟩).1 ∨
-        Common.BlochDeDominicis.Crosses
+        Combinatorics.Crosses
           (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
           (d.componentPairEquiv orders shuffle ⟨B, p⟩).1 := by
   have hEnds := d.componentPairEquiv_endpoints_ne orders shuffle B C hBC p q
@@ -92,10 +92,10 @@ theorem QuarticWickDiagram.componentPairEndpointInversionCount_mod_two_eq_crosse
     Common.BlochDeDominicis.pairEndpointInversionCount
         (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
         (d.componentPairEquiv orders shuffle ⟨C, q⟩).1 % 2 =
-      if Common.BlochDeDominicis.Crosses
+      if Combinatorics.Crosses
           (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
           (d.componentPairEquiv orders shuffle ⟨C, q⟩).1 ∨
-        Common.BlochDeDominicis.Crosses
+        Combinatorics.Crosses
           (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
           (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
       then 1 else 0 := by
@@ -151,10 +151,10 @@ noncomputable def QuarticWickDiagram.componentGeometricCrossingCount
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (B C : d.componentPartition.parts) : ℕ :=
   ∑ x : d.LocalOrderedPair orders B × d.LocalOrderedPair orders C,
-    if Common.BlochDeDominicis.Crosses
+    if Combinatorics.Crosses
         (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
         (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1 ∨
-      Common.BlochDeDominicis.Crosses
+      Combinatorics.Crosses
         (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
         (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
     then 1 else 0

@@ -21,8 +21,8 @@ variable {Mode : Type*} {N : ℕ}
 
 private theorem crosses_asymm {n : ℕ}
     (p q : Fin (2 * n) × Fin (2 * n))
-    (hpq : Common.BlochDeDominicis.Crosses p q) :
-    ¬ Common.BlochDeDominicis.Crosses q p := by
+    (hpq : Combinatorics.Crosses p q) :
+    ¬ Combinatorics.Crosses q p := by
   intro hqp
   exact lt_asymm hpq.1 hqp.1
 
@@ -38,7 +38,7 @@ noncomputable def QuarticWickDiagram.componentOrientedCrossingCount
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (B C : d.componentPartition.parts) : ℕ :=
   ∑ x : d.LocalOrderedPair orders B × d.LocalOrderedPair orders C,
-    if Common.BlochDeDominicis.Crosses
+    if Combinatorics.Crosses
         (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
         (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
     then 1 else 0
@@ -54,17 +54,17 @@ theorem QuarticWickDiagram.componentGeometricCrossingCount_eq_oriented_add
   classical
   let crossBC := fun x :
       d.LocalOrderedPair orders B × d.LocalOrderedPair orders C =>
-    Common.BlochDeDominicis.Crosses
+    Combinatorics.Crosses
       (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
       (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
   let crossCB := fun x :
       d.LocalOrderedPair orders B × d.LocalOrderedPair orders C =>
-    Common.BlochDeDominicis.Crosses
+    Combinatorics.Crosses
       (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
       (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
   have hswap :
       (∑ x : d.LocalOrderedPair orders C × d.LocalOrderedPair orders B,
-        if Common.BlochDeDominicis.Crosses
+        if Combinatorics.Crosses
             (d.componentPairEquiv orders shuffle ⟨C, x.1⟩).1
             (d.componentPairEquiv orders shuffle ⟨B, x.2⟩).1
         then 1 else 0) =
