@@ -150,9 +150,10 @@ theorem QuarticWickDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_component
             2 (fun B C => d.componentOrientedCrossingCount orders shuffle B C)
             (fun B C hBC => by
               rw [← d.componentGeometricCrossingCount_eq_oriented_add
-                orders shuffle B C,
-                d.componentGeometricCrossingCount_mod_two_eq_zero
-                  orders shuffle B C hBC])
+                orders shuffle B C]
+              change d.componentGeometricCrossingCount orders shuffle B C % 2 = 0 % 2
+              simpa using d.componentGeometricCrossingCount_mod_two_eq_zero
+                orders shuffle B C hBC)
     _ = (∑ B : d.componentPartition.parts,
         ((d.restrictComponent B.2).pairingInOrder (orders B)).crossingCount) % 2 := by
           apply congrArg (fun n : ℕ => n % 2)
