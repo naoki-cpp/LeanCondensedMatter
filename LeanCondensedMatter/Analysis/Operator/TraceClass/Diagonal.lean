@@ -66,6 +66,7 @@ theorem isCompactOperator_rankOne (x y : H) :
   exact (isCompactOperator_of_locallyCompactSpace_dom (innerSL ℂ y)).clm_comp
     (ContinuousLinearMap.toSpanSingleton ℂ x)
 
+omit [CompleteSpace H] in
 /-- Every term of the diagonal operator series is compact. -/
 theorem diagonalTerm_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ) (i : ι) :
     IsCompactOperator (diagonalTerm b a i) := by
@@ -78,12 +79,12 @@ theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
     (ha : Summable fun i => ‖a i‖) : IsCompactOperator (diagonalOp b a ha) := by
   classical
   have hfinite (s : Finset ι) :
-      IsCompactOperator (∑ i ∈ s, diagonalTerm b a i) := by
+      IsCompactOperator ⇑(∑ i ∈ s, diagonalTerm b a i : H →L[ℂ] H) := by
     induction s using Finset.induction_on with
     | empty => simpa using isCompactOperator_zero
     | @insert i s hi ih =>
         simp only [Finset.sum_insert hi]
-        exact (diagonalTerm_isCompact b a i).add ih
+        simpa using (diagonalTerm_isCompact b a i).add ih
   refine isCompactOperator_of_tendsto
     (l := Filter.atTop)
     (F := fun s : Finset ι => ∑ i ∈ s, diagonalTerm b a i)
