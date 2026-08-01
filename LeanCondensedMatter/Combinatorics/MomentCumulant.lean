@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PartitionLattice
+import Mathlib.Data.Complex.Basic
 
 set_option linter.style.header false
 
@@ -8,6 +9,9 @@ set_option linter.style.header false
 The moment and cumulant transforms are defined for finite-set functions with values in an arbitrary
 commutative ring.  Their low-level pointwise inversion requires a nonempty finite set; a normalized
 bundled API removes that side condition in `Combinatorics/Cumulant/Normalized.lean`.
+
+`Mathlib.Data.Complex.Basic` is imported here because the existing independence and linked-cluster
+specializations use `ℂ`; the definitions and proofs below remain coefficient-generic.
 -/
 
 open IncidenceAlgebra
