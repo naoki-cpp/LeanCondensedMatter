@@ -1,25 +1,18 @@
-# Trigger the one-shot migration after the workflow definition exists on the PR branch.
 name: Migrate R2 Thin Wrappers
 
 on:
-  pull_request:
-    branches: [main]
-    paths:
-      - 'LeanCondensedMatter/SecondQuantization/**'
-      - 'scripts/check_second_quantization_architecture.py'
-      - '.github/workflows/audit-r2-thin-wrappers.yml'
+  push:
+    branches:
+      - agent/remove-fermionic-common-wrappers
 
 permissions:
   contents: write
 
 jobs:
   migrate:
-    if: github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
       - uses: leanprover/lean-action@v1
       - name: Remove thin fermionic wrappers
         shell: bash
@@ -169,4 +162,4 @@ remain in the fermionic API.
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add LeanCondensedMatter scripts notes
           git commit -m 'refactor!: remove thin fermionic Common wrappers'
-          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          git push origin HEAD:${GITHUB_REF_NAME}
