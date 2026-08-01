@@ -1,0 +1,51 @@
+name: Migrate Bosonic Algebra
+
+on:
+  push:
+    branches:
+      - agent/reorganize-bosonic-algebra
+    paths:
+      - scripts/migrate_bosonic_algebra.py
+      - .github/workflows/migrate-bosonic-algebra.yml
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/reorganize-bosonic-algebra
+          fetch-depth: 0
+      - uses: leanprover/lean-action@v1
+        with:
+          build: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Move bosonic algebra modules
+        run: python scripts/migrate_bosonic_algebra.py
+      - name: Reject obsolete paths
+        run: |
+          test ! -d LeanCondensedMatter/SecondQuantization/Bosonic/Foundations
+          test ! -d LeanCondensedMatter/SecondQuantization/Bosonic/OperatorAlgebra
+          ! grep -R --include='*.lean' --include='*.md' -E 'Bosonic\.(Foundations|OperatorAlgebra)|Bosonic/(Foundations|OperatorAlgebra)' LeanCondensedMatter notes
+      - name: Validate full library
+        run: lake build --wfail
+      - name: Remove one-shot migration files
+        run: |
+          rm scripts/migrate_bosonic_algebra.py
+          rm .github/workflows/migrate-bosonic-algebra.yml
+      - name: Commit migration
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "refactor!: consolidate bosonic algebra modules"
+          git push origin HEAD:agent/reorganize-bosonic-algebra
