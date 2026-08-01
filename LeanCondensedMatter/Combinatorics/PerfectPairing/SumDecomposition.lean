@@ -5,21 +5,13 @@ set_option linter.style.header false
 /-!
 # Reindexing a sum over `Pairing (n + 1)` via `equivSigma`
 
-`PerfectPairing.lean`'s `Pairing.equivSigma` decomposes `Pairing (n + 1)` as a choice of `0`'s
-partner `j` together with the smaller pairing left after removing it. This file turns that `Equiv`
-into a `Finset.sum` reindexing identity: a sum over `Pairing (n + 1)` equals a double sum, first
-over positions `j : Fin (2 * n + 1)` (matching `PeelTermsIndexed.lean`'s peeled-term indexing),
-then over the smaller `Pairing n`, reassembled via `Pairing.insertFirstPair` — the form
-`Common/Thermal/BlochDeDominicis/Induction.lean`'s general theorem needs to reassemble a `Pairing n` sum
-from a peeled-position sum.
+A sum over larger pairings is reindexed as a double sum over the partner of position `0` and the
+smaller pairing obtained by erasing that first pair.
 -/
 
-namespace SecondQuantization
-namespace Common
-namespace BlochDeDominicis
+namespace Combinatorics
 
-/-- **`Fin (m + 1)`'s nonzero elements, as `Fin m`** — the increasing bijection `j ↦ j.pred`,
-inverse `i ↦ i.succ`. -/
+/-- `Fin (m + 1)`'s nonzero elements, as `Fin m`. -/
 private def finSuccSubtypeEquiv (m : ℕ) :
     {j : Fin (m + 1) // (0 : Fin (m + 1)) ≠ j} ≃ Fin m where
   toFun x := x.1.pred (Ne.symm x.2)
@@ -27,18 +19,14 @@ private def finSuccSubtypeEquiv (m : ℕ) :
   left_inv x := Subtype.ext (Fin.succ_pred x.1 (Ne.symm x.2))
   right_inv i := Fin.pred_succ i
 
-/-- **`insertFirstPair` only depends on the *value* of `j`, not on which proof of `0 ≠ j` is
-supplied** — proof irrelevance makes this `rfl` once the values are identified by `subst`, but
-stating it separately avoids the dependent-rewrite issues that arise from rewriting `j` directly
-inside a goal already mentioning `insertFirstPair j hj`. -/
 private theorem Pairing.insertFirstPair_congr {n : ℕ} (Q : Pairing n)
     {j j' : Fin (2 * (n + 1))} (h : j = j') (hj : (0 : Fin (2 * (n + 1))) ≠ j)
     (hj' : (0 : Fin (2 * (n + 1))) ≠ j') : Q.insertFirstPair j hj = Q.insertFirstPair j' hj' := by
   subst h
   rfl
 
-/-- **A sum over `Pairing (n + 1)`, reindexed as a double sum over a peeled position and the
-smaller pairing.** -/
+/-- A sum over `Pairing (n + 1)`, reindexed as a double sum over a peeled position and the smaller
+pairing. -/
 theorem Pairing.sum_eq_sum_sum_insertFirstPair {n : ℕ} {M : Type*} [AddCommMonoid M]
     (F : Pairing (n + 1) → M) :
     ∑ pairing : Pairing (n + 1), F pairing =
@@ -55,6 +43,4 @@ theorem Pairing.sum_eq_sum_sum_insertFirstPair {n : ℕ} {M : Type*} [AddCommMon
   simp only [Pairing.equivSigma, Equiv.coe_fn_symm_mk]
   exact congrArg F (Q.insertFirstPair_congr hx.symm _ _)
 
-end BlochDeDominicis
-end Common
-end SecondQuantization
+end Combinatorics
