@@ -55,7 +55,12 @@ theorem energyExpValue_eq_re_linearMap_trace [FiniteDimensional ℂ H]
     change inner ℂ (b (j a)) (ρ.op (Hop.1 (b (j a)))) =
       (a.1.1 : ℂ) * inner ℂ (e a) (Hop.1 (e a))
     rw [hb_j]
-    rw [← hρsym (e a) (Hop.1 (e a)), apply_eigenvectorFamily hρcompact]
+    have hsym :
+        inner ℂ ((ρ.op : H →ₗ[ℂ] H) (e a)) ((Hop.1 : H →ₗ[ℂ] H) (e a)) =
+          inner ℂ (e a)
+            ((ρ.op : H →ₗ[ℂ] H) ((Hop.1 : H →ₗ[ℂ] H) (e a))) :=
+      hρsym (e a) ((Hop.1 : H →ₗ[ℂ] H) (e a))
+    rw [← hsym, apply_eigenvectorFamily hρcompact]
     simp [inner_smul_left]
   have hzero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
     have hspan :
@@ -83,7 +88,12 @@ theorem energyExpValue_eq_re_linearMap_trace [FiniteDimensional ℂ H]
       have hxev := Module.End.mem_eigenspace_iff.mp hxker_mem
       simpa using hxev
     change inner ℂ (b x) (ρ.op (Hop.1 (b x))) = 0
-    rw [← hρsym (b x) (Hop.1 (b x)), hxker, inner_zero_left]
+    have hsym :
+        inner ℂ ((ρ.op : H →ₗ[ℂ] H) (b x)) ((Hop.1 : H →ₗ[ℂ] H) (b x)) =
+          inner ℂ (b x)
+            ((ρ.op : H →ₗ[ℂ] H) ((Hop.1 : H →ₗ[ℂ] H) (b x))) :=
+      hρsym (b x) ((Hop.1 : H →ₗ[ℂ] H) (b x))
+    rw [← hsym, hxker, inner_zero_left]
   have hfull : HasSum g (∑ i, g i) := hasSum_fintype _
   have hrestricted : HasSum (g ∘ j) (∑ i, g i) :=
     (hj.hasSum_iff hzero).mpr hfull
@@ -99,9 +109,13 @@ theorem energyExpValue_eq_re_linearMap_trace [FiniteDimensional ℂ H]
     (summable_energyExpValue_term ρ Hop).hasSum.unique hrestricted
   have htrace := LinearMap.trace_eq_sum_inner
     ((ρ.op ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) b
+  have hgtrace :
+      LinearMap.trace ℂ H ((ρ.op ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) =
+        ∑ i, g i := by
+    simpa [g] using htrace
   change (∑' a : EigenvectorIndex ρ.op,
     (a.1.1 : ℂ) * inner ℂ (e a) (Hop.1 (e a))).re = _
-  rw [hsum, ← htrace]
+  rw [hsum, ← hgtrace]
 
 /-- The entropy operator of the normalized Gibbs state has summable nonzero real eigenvalues.
 For the current bounded notion of Hamiltonian this follows from compactness of the Gibbs operator,
