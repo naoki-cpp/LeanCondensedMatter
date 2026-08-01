@@ -14,9 +14,7 @@ For two normalized pairs with disjoint endpoints, geometric crossing is equivale
 the four cross-pair endpoint comparisons.
 -/
 
-namespace SecondQuantization
-namespace Common
-namespace BlochDeDominicis
+namespace Combinatorics
 
 /-- Select endpoint `0` or endpoint `1` of an ordered pair. -/
 def pairEndpointAt {n : ℕ} (pair : Fin (2 * n) × Fin (2 * n)) (k : Fin 2) : Fin (2 * n) :=
@@ -188,6 +186,4 @@ theorem fintype_sum_sum_modEq_diag_of_pair_add_modEq_zero {α : Type*}
   simpa using finset_sum_sum_modEq_diag_of_pair_add_modEq_zero
     n (Finset.univ : Finset α) f (fun a _ b _ hab => hpair a b hab)
 
-end BlochDeDominicis
-end Common
-end SecondQuantization
+end Combinatorics
