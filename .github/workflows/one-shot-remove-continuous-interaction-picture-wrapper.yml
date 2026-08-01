@@ -1,0 +1,160 @@
+name: One-shot R2 interaction-picture wrapper removal
+
+on:
+  push:
+    branches:
+      - agent/remove-continuous-interaction-picture-wrapper
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/remove-continuous-interaction-picture-wrapper
+
+      - name: Apply focused R2 migration
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          def replace_once(path: Path, old: str, new: str) -> None:
+              text = path.read_text(encoding="utf-8")
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f"expected exactly one match in {path}, found {count}")
+              path.write_text(text.replace(old, new), encoding="utf-8")
+
+          interaction = Path(
+              "LeanCondensedMatter/SecondQuantization/Fermionic/ImaginaryTime/InteractionPicture.lean"
+          )
+          replace_once(
+              interaction,
+              """The physical interaction-picture operator is retained as the fermionic specialization of the
+statistics-independent `Common.interactionPicture`. Generic zero-time, matrix-coefficient, and
+integrability facts are consumed from `SecondQuantization.Common` directly rather than re-exported
+under duplicate fermionic theorem names.
+""",
+              """The physical interaction-picture operator is retained as the fermionic specialization of the
+statistics-independent `Common.interactionPicture`. Generic algebraic and analytic facts are
+consumed from `SecondQuantization.Common` directly rather than re-exported under duplicate
+fermionic theorem names.
+""",
+          )
+          replace_once(
+              interaction,
+              """/-- Every fermionic interaction-picture matrix coefficient is continuous in imaginary time.
+
+This specialization remains temporarily because it is used by the fermionic quartic-diagram
+continuity proofs; the underlying result is `Common.continuous_matrixCoeff_interactionPicture`.
+-/
+theorem continuous_matrixCoeff_interactionPicture (ε : Mode → ℝ)
+    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
+    (m n : Occupation Mode) :
+    Continuous (fun τ : ℝ => Common.matrixCoeff (interactionPicture ε V τ) m n) :=
+  Common.continuous_matrixCoeff_interactionPicture (fermionEnergy ε) V m n
+
+""",
+              "",
+          )
+
+          dyson = Path(
+              "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion.lean"
+          )
+          replace_once(
+              dyson,
+              """`continuous_matrixCoeff_interactionPicture`/`Common.continuous_matrixCoeff_dysonCoeff` (via
+""",
+              """`Common.continuous_matrixCoeff_interactionPicture`/
+`Common.continuous_matrixCoeff_dysonCoeff` (via
+""",
+          )
+          replace_once(
+              dyson,
+              """    (continuous_matrixCoeff_interactionPicture ε V k j).mul
+      (Common.continuous_matrixCoeff_dysonCoeff (fermionEnergy ε) V n j n')
+""",
+              """    (Common.continuous_matrixCoeff_interactionPicture
+      (fermionEnergy ε) V k j).mul
+      (Common.continuous_matrixCoeff_dysonCoeff (fermionEnergy ε) V n j n')
+""",
+          )
+          replace_once(
+              dyson,
+              """single-coordinate `Complex.exp` factor (`continuous_matrixCoeff_interactionPicture`, precomposed
+""",
+              """single-coordinate `Complex.exp` factor
+(`Common.continuous_matrixCoeff_interactionPicture`, precomposed
+""",
+          )
+          replace_once(
+              dyson,
+              """      ((continuous_matrixCoeff_interactionPicture ε (quarticVertexOperator (q 0)) k j).comp
+          (continuous_apply 0)).mul
+""",
+              """      ((Common.continuous_matrixCoeff_interactionPicture
+          (fermionEnergy ε) (quarticVertexOperator (q 0)) k j).comp
+          (continuous_apply 0)).mul
+""",
+          )
+
+          migration = Path("notes/migrations/fermionic-common-wrapper-removal.md")
+          replace_once(
+              migration,
+              """- `Fermionic.dysonCoeff_eq_of_time_independent`.
+""",
+              """- `Fermionic.dysonCoeff_eq_of_time_independent`;
+- `Fermionic.continuous_matrixCoeff_interactionPicture`.
+""",
+          )
+          replace_once(
+              migration,
+              """`Fermionic.interactionPicture` remains as the physics-facing operator name. The specialized
+`Fermionic.continuous_matrixCoeff_interactionPicture` theorem also remains temporarily because the
+quartic Dyson-diagram continuity proofs still consume it; migrating those callers is the next R2
+slice.
+""",
+              """`Fermionic.interactionPicture` remains as the physics-facing operator name. The quartic
+Dyson-diagram continuity proofs now use
+`Common.continuous_matrixCoeff_interactionPicture (fermionEnergy ε)` directly.
+""",
+          )
+
+          guard = Path("scripts/check_second_quantization_architecture.py")
+          replace_once(
+              guard,
+              """LEGACY_FERMIONIC_IDENTIFIER = re.compile(
+    r\"FockSpaceFermionic|FermionOccupation|fermionParticleNumber|fermionVacuum\"
+)
+""",
+              """LEGACY_FERMIONIC_IDENTIFIER = re.compile(
+    r\"FockSpaceFermionic|FermionOccupation|fermionParticleNumber|fermionVacuum\"
+    r\"|(?<!Common\\.)\\bcontinuous_matrixCoeff_interactionPicture\\b\"
+)
+""",
+          )
+
+          Path(
+              ".github/workflows/one-shot-remove-continuous-interaction-picture-wrapper.yml"
+          ).unlink()
+          PY
+
+      - name: Check architecture guard
+        run: python scripts/check_second_quantization_architecture.py
+
+      - name: Commit migration
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add LeanCondensedMatter/SecondQuantization/Fermionic/ImaginaryTime/InteractionPicture.lean \
+            LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion.lean \
+            notes/migrations/fermionic-common-wrapper-removal.md \
+            scripts/check_second_quantization_architecture.py \
+            .github/workflows/one-shot-remove-continuous-interaction-picture-wrapper.yml
+          git commit -m "Remove continuous interaction-picture wrapper"
+          git push origin HEAD:agent/remove-continuous-interaction-picture-wrapper
