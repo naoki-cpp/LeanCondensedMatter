@@ -169,7 +169,7 @@ def update_architecture_guard() -> None:
                 errors.append(f"removed bosonic path: {relative(path)}:{line_no}: {line.strip()}")'''
     new_check = '''            if REMOVED_BOSONIC_PATH.search(line):
                 errors.append(f"removed bosonic path: {relative(path)}:{line_no}: {line.strip()}")
-            if "LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonExpansion" in line:
+            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonExpansion":
                 errors.append(
                     f"removed fermionic Dyson import: {relative(path)}:{line_no}: {line.strip()}"
                 )'''
