@@ -10,9 +10,9 @@ import LeanCondensedMatter.Combinatorics.IncidenceAlgebraMu
 import LeanCondensedMatter.Combinatorics.PartitionLattice
 import LeanCondensedMatter.Combinatorics.MomentCumulant
 import LeanCondensedMatter.Combinatorics.Cumulant.Normalized
+import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
 import LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock
 import LeanCondensedMatter.Combinatorics.CumulantFactorization
-import LeanCondensedMatter.Combinatorics.DiagramConnectedness
 import LeanCondensedMatter.Combinatorics.PerfectPairing
 
 set_option linter.style.header false
@@ -20,6 +20,6 @@ set_option linter.style.header false
 /-!
 # Combinatorics
 
-Public entry point for the project's pure finite combinatorics.  The implementation is organized
+Public entry point for the project's pure finite combinatorics. The implementation is organized
 around finite-index operations, shuffles, set partitions and cumulants, and perfect pairings.
 -/
