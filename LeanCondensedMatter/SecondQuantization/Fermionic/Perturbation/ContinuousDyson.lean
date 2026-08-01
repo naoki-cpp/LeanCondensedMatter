@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonExpansion
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.InteractionPicture
 
 set_option linter.style.header false
 
