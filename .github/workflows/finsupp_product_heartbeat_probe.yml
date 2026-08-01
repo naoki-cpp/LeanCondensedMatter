@@ -32,11 +32,15 @@ jobs:
               "  exact hasSum_mul_of_summable_norm' hhead htail habsHead habsTail\n"
           )
           new_option = (
+              "  have hmul : Summable\n"
+              "      (fun p : ℕ × (Fin k →₀ ℕ) =>\n"
+              "        f 0 p.1 * ∏ i : Fin k, f i.succ (p.2 i)) :=\n"
+              "    summable_mul_of_summable_norm habsHead habsTail\n"
               "  have hprod : HasSum\n"
               "      (fun p : ℕ × (Fin k →₀ ℕ) =>\n"
               "        f 0 p.1 * ∏ i : Fin k, f i.succ (p.2 i))\n"
               "      (a 0 * ∏ i : Fin k, a i.succ) :=\n"
-              "    hasSum_mul_of_summable_norm' hhead htail habsHead habsTail\n"
+              "    hhead.mul htail hmul\n"
               "  exact hasSum_prod_option_reindex (finSuccFamily f) (finSuccFamily a) hprod\n"
           )
           if old_option not in text:
