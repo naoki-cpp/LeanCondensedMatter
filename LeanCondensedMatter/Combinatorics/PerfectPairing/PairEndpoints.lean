@@ -10,9 +10,7 @@ pairs. This file packages that fact as an explicit equivalence, used to reindex 
 pair-of-pair endpoint comparisons as sums over the ambient paired positions.
 -/
 
-namespace SecondQuantization
-namespace Common
-namespace BlochDeDominicis
+namespace Combinatorics
 
 /-- A normalized pair belonging to a fixed pairing. -/
 abbrev Pairing.NormalizedPair {n : ℕ} (pairing : Pairing n) :=
@@ -96,6 +94,4 @@ theorem Pairing.normalizedPair_endpoints_ne_of_ne {n : ℕ} (pairing : Pairing n
   · simpa using pairing.pairEndpoint_ne_of_normalizedPair_ne p q hpq (1 : Fin 2) (0 : Fin 2)
   · simpa using pairing.pairEndpoint_ne_of_normalizedPair_ne p q hpq (1 : Fin 2) (1 : Fin 2)
 
-end BlochDeDominicis
-end Common
-end SecondQuantization
+end Combinatorics
