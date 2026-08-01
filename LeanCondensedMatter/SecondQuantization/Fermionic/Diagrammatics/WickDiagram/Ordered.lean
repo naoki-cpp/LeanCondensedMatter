@@ -12,6 +12,8 @@ fermionic quartic vertex labels.
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} [DecidableEq Mode] [Fintype Mode] {N : ℕ}
 
 /-- A bijection between ordered slots and the diagram's vertex set. -/

@@ -12,6 +12,8 @@ partner orbit.
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} {N : ℕ}
 
 /-- A component-local normalized pair maps to, and is reflected by, the corresponding normalized

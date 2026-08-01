@@ -23,6 +23,8 @@ namespace SecondQuantization
 namespace Common
 namespace BlochDeDominicis
 
+open Combinatorics
+
 /-- The exchange-statistics weight `ζ ^ crossings` of a Bloch--de Dominicis pairing. -/
 noncomputable def Pairing.weight (s : Statistics) {n : ℕ} (pairing : Pairing n) : ℂ :=
   (s.zetaInt : ℂ) ^ pairing.crossingCount

@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.WeightedNumberOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
-import LeanCondensedMatter.Combinatorics.CumulantFactorization
+import LeanCondensedMatter.Combinatorics.Cumulant.Independence
 import Mathlib.Tactic.FieldSimp
 
 set_option linter.style.header false

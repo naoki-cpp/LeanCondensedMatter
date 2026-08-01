@@ -12,6 +12,8 @@ quartic vertex labels while preserving the existing public API.
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} {N : ℕ}
 
 noncomputable section

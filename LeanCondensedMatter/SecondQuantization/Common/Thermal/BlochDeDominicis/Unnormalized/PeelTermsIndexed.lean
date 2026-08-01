@@ -21,6 +21,8 @@ erasure/reindexing scheme, built for pairs rather than single positions).
 namespace SecondQuantization
 namespace Common
 
+open Combinatorics
+
 variable {Config : Type*}
 
 /-- **`peelTerms`'s `j`-th term, in closed form**: `ζʲ • cⱼ • (remaining product with the `j`-th

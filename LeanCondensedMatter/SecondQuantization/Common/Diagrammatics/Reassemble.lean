@@ -13,6 +13,8 @@ indexing and pairings, not on the label type or particle statistics.
 namespace SecondQuantization
 namespace Common
 
+open Combinatorics
+
 variable {Label : Type*} {N : ℕ}
 
 /-- The ambient flattened legs, identified with the disjoint union of each partition part's legs. -/

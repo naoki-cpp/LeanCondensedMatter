@@ -17,6 +17,8 @@ Pairing graphs and component proofs are inherited without fermionic sign or CAR 
 namespace SecondQuantization
 namespace Bosonic
 
+open Combinatorics
+
 variable {Mode : Type*} {N : ℕ}
 
 /-- A bosonic quartic diagram on the interaction vertices in `S`. -/

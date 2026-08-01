@@ -15,6 +15,8 @@ external crossing set is even, and the fermionic pairing weight factors over con
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} {N : ℕ}
 
 private theorem crosses_asymm {n : ℕ}

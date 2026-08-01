@@ -38,6 +38,8 @@ for `ζ = ±1`) to a genuine sum over `Common.BlochDeDominicis.Pairing 2` is now
 namespace SecondQuantization
 namespace Common
 
+open Combinatorics
+
 variable {Config : Type*}
 
 /-- **The pure operator-algebra identity behind the 4-point reduction**, now a specialization of

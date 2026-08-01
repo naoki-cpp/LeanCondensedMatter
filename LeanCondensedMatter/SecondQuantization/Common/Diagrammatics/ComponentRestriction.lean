@@ -14,6 +14,8 @@ Connectedness of the restricted diagram and reassembly are developed separately.
 namespace SecondQuantization
 namespace Common
 
+open Combinatorics
+
 variable {Label : Type*} {N : ℕ}
 
 /-- A leg belongs to block `B` iff its vertex does. -/

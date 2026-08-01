@@ -48,6 +48,8 @@ trace.
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] {N : ℕ}
 
 /-! ## Time-assigned operators, per vertex order -/

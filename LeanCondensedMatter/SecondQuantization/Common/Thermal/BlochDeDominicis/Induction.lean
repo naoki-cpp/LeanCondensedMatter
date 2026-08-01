@@ -29,6 +29,8 @@ namespace SecondQuantization
 namespace Common
 namespace BlochDeDominicis
 
+open Combinatorics
+
 variable {Config : Type*} [Fintype Config]
 
 /-- **The general finite-temperature Bloch–de Dominicis theorem.** -/

@@ -12,6 +12,8 @@ recovers the original diagram.
 namespace SecondQuantization
 namespace Common
 
+open Combinatorics
+
 variable {Label : Type*} {N : ℕ}
 
 private theorem QuarticDiagram.reassemble_componentPartition_vertexLabel

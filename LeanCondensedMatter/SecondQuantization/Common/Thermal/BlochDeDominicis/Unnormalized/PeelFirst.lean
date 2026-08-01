@@ -42,6 +42,8 @@ the indexed erasure formula (`ζʲ • cⱼ • prodComp (l.eraseIdx j |>.map Pr
 namespace SecondQuantization
 namespace Common
 
+open Combinatorics
+
 variable {Config : Type*}
 
 /-- **The composed product of a list of operators**, `B₁ ∘ B₂ ∘ ⋯ ∘ Bₖ`, right-associated with

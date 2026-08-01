@@ -12,6 +12,8 @@ labelled quartic diagram.
 namespace SecondQuantization
 namespace Common
 
+open Combinatorics
+
 variable {Label : Type*} {N : ℕ}
 
 private theorem QuarticDiagram.reassembleVertex_eq_subtypeMemBlockEquiv_symm

@@ -13,6 +13,8 @@ its four legs. The structure contains no operator algebra, exchange sign, or par
 namespace SecondQuantization
 namespace Common
 
+open Combinatorics
+
 variable {Label : Type*} {N : ℕ}
 
 /-- A labelled four-legged diagram on a finite vertex set. -/

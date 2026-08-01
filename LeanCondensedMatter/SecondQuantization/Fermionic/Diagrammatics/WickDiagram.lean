@@ -14,6 +14,8 @@ and a perfect pairing of the four legs per vertex.
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} {N : ℕ}
 
 /-- A quartic diagram whose vertex labels describe fermionic interaction vertices. -/

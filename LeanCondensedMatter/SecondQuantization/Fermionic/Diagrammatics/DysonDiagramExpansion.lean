@@ -26,6 +26,8 @@ surrounding diagram-connectedness plan.
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
 omit [LinearOrder Mode] in

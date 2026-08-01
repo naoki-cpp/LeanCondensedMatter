@@ -14,6 +14,8 @@ remaining statement that the complementary crossing set has even cardinality.
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} {N : ℕ}
 
 /-- The assembled crossings whose two normalized pairs do not both come from one component. -/

@@ -15,6 +15,8 @@ iterated product over components and local pairs.
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} {N : ℕ}
 
 /-- Move a fiberwise subtype through a sigma type. -/

@@ -17,6 +17,8 @@ then reduces the total parity for two components to quartic vertex-block inversi
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} {N : ℕ}
 
 @[simp]

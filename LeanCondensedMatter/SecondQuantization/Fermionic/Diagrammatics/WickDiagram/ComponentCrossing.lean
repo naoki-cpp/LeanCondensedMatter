@@ -13,6 +13,8 @@ crossings between distinct components.
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} {N : ℕ}
 
 /-- Two pairs belonging to the same component cross in the assembled global order exactly when their

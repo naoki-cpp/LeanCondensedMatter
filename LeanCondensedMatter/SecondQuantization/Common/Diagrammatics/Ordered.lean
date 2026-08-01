@@ -14,6 +14,8 @@ quartic diagram and a slot-indexed label sequence together with a pairing.
 namespace SecondQuantization
 namespace Common
 
+open Combinatorics
+
 variable {Label : Type*} {N : ℕ}
 
 /-- A bijection between ordered slots and a finite vertex set. -/

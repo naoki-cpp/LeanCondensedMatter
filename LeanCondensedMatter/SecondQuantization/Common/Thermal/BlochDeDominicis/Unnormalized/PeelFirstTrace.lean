@@ -40,6 +40,8 @@ form to match term-by-term against `Common.BlochDeDominicis.Pairing`.
 namespace SecondQuantization
 namespace Common
 
+open Combinatorics
+
 variable {Config : Type*}
 
 /-- **The trace-level peel-first identity**: `Common.traceFock_diagonalEvolution_comp_rotate`

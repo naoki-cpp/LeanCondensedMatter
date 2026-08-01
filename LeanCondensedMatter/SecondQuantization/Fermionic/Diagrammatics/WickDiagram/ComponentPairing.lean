@@ -13,6 +13,8 @@ intertwines the corresponding partner permutations.
 
 namespace SecondQuantization
 
+open Combinatorics
+
 variable {Mode : Type*} {N : ℕ}
 
 @[simp]
