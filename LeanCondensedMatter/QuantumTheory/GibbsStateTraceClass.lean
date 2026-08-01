@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperatorTraceClass
+import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar
 import Mathlib.Analysis.CStarAlgebra.ContinuousLinearMap
 import Mathlib.Analysis.CStarAlgebra.ContinuousFunctionalCalculus.Basic
@@ -14,6 +15,14 @@ attribute [local instance] IsStarNormal.instContinuousFunctionalCalculus
 
 The normalized Gibbs state `e^{-βH}/Z(β)` is constructed with explicit compactness and spectral
 summability hypotheses on the unnormalized Gibbs operator.
+
+**Bounded-Hamiltonian limitation.** `QuantumTheory.Observable H` models a Hamiltonian as a bounded
+self-adjoint operator. For bounded `Hop`, the continuous-functional-calculus operator
+`exp (-β Hop)` is invertible, with inverse `exp (β Hop)`. Consequently, if `gibbsOp Hop β` is
+also compact, then the identity is compact and `H` is finite-dimensional. Thus the construction
+below is dimension-independent as an API, but its compactness hypothesis does not describe a
+genuinely infinite-dimensional Gibbs state while Hamiltonians remain bounded. Such states require
+a later theory of unbounded self-adjoint Hamiltonians.
 -/
 
 namespace QuantumTheory.TraceClass
@@ -25,6 +34,14 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 /-- The unnormalized Gibbs operator `e^{-βH}`. -/
 noncomputable def gibbsOp (Hop : Observable H) (β : ℝ) : H →L[ℂ] H :=
   cfc (fun x : ℝ => Real.exp (-β * x)) Hop.1
+
+/-- The Gibbs operator acts on an energy eigenvector by the corresponding Boltzmann factor. -/
+theorem gibbsOp_apply_eigenvector (Hop : Observable H) (β : ℝ) {v : H} {E : ℝ}
+    (hv : (Hop.1 : H →ₗ[ℂ] H) v = (E : ℂ) • v) :
+    gibbsOp Hop β v = (Real.exp (-β * E) : ℂ) • v := by
+  simpa [gibbsOp] using
+    (cfc_apply_eigenvector (T := Hop.1) Hop.2 hv
+      (f := fun x : ℝ => Real.exp (-β * x)) (by fun_prop))
 
 /-- `gibbsOp` is positive. -/
 theorem gibbsOp_isPositive (Hop : Observable H) (β : ℝ) : (gibbsOp Hop β).IsPositive := by
