@@ -6,14 +6,9 @@ set_option linter.style.header false
 /-!
 # Crossings, `crossingCount`, and `firstPair`
 
-Two normalized pairs `(a, b)` and `(c, d)` cross when `a < c < b < d` (`Crosses`); `crossingCount`
-counts these across a pairing's own `pairs`. The statistics-dependent exchange weight
-`ζ ^ crossingCount` itself — `ζ = +1` for bosons and `ζ = -1` for fermions — is *not* defined here;
-see `Common/Thermal/BlochDeDominicis/PairingWeight.lean`.
-
-`Pairing.firstPair` is the pair containing position `0`; `crossingsWithFirstPair` counts pairs
-crossing it. `PerfectPairing/CrossingEraseZero.lean` relates both to
-`Pairing.eraseZeroPair`/`interveningPositionCount`.
+Two normalized pairs `(a, b)` and `(c, d)` cross when `a < c < b < d`. The canonical public
+crossing representation uses `Pairing.NormalizedPair`; raw pairs with membership witnesses are
+kept only as a private proof device.
 -/
 
 namespace SecondQuantization
@@ -48,8 +43,7 @@ theorem crosses_map_iff {n m : ℕ} (f : Fin (2 * n) → Fin (2 * m)) (hf : Stri
   · rintro ⟨hac, hcb, hbe⟩
     exact ⟨hf hac, hf hcb, hf hbe⟩
 
-/-- The number of geometric crossings. `Crosses` fixes the order of the left endpoints, so each
-crossing is counted exactly once. -/
+/-- The number of geometric crossings. -/
 def Pairing.crossingCount {n : ℕ} (pairing : Pairing n) : ℕ :=
   ((pairing.pairs.product pairing.pairs).filter fun pairPair =>
     Crosses pairPair.1 pairPair.2).card
@@ -59,25 +53,23 @@ abbrev Pairing.CrossingPair {n : ℕ} (pairing : Pairing n) :=
   {pairPair : pairing.NormalizedPair × pairing.NormalizedPair //
     Crosses pairPair.1.1 pairPair.2.1}
 
-/-- Compatibility representation of crossing pair-of-pairs using raw pairs and membership proofs. -/
-abbrev Pairing.RawCrossingPair {n : ℕ} (pairing : Pairing n) :=
+private abbrev RawCrossingPair {n : ℕ} (pairing : Pairing n) :=
   {pairPair :
       (Fin (2 * n) × Fin (2 * n)) × (Fin (2 * n) × Fin (2 * n)) //
     pairPair.1 ∈ pairing.pairs ∧ pairPair.2 ∈ pairing.pairs ∧
       Crosses pairPair.1 pairPair.2}
 
-/-- Convert between the canonical normalized crossing-pair representation and the legacy raw one. -/
-def Pairing.crossingPairEquivRaw {n : ℕ} (pairing : Pairing n) :
-    pairing.CrossingPair ≃ pairing.RawCrossingPair where
+private def crossingPairEquivRaw {n : ℕ} (pairing : Pairing n) :
+    pairing.CrossingPair ≃ RawCrossingPair pairing where
   toFun z := ⟨(z.1.1.1, z.1.2.1), z.1.1.2, z.1.2.2, z.2⟩
   invFun z := ⟨(⟨z.1.1, z.2.1⟩, ⟨z.1.2, z.2.2.1⟩), z.2.2.2⟩
   left_inv _ := rfl
   right_inv _ := rfl
 
-/-- `crossingCount` is the cardinality of the type of crossing pair-of-pairs. -/
+/-- `crossingCount` is the cardinality of the canonical crossing-pair type. -/
 theorem Pairing.crossingCount_eq_card_crossingPair {n : ℕ} (pairing : Pairing n) :
     pairing.crossingCount = Fintype.card pairing.CrossingPair := by
-  have hraw : pairing.crossingCount = Fintype.card pairing.RawCrossingPair := by
+  have hraw : pairing.crossingCount = Fintype.card (RawCrossingPair pairing) := by
     rw [Pairing.crossingCount]
     symm
     exact Fintype.card_of_subtype
@@ -95,9 +87,9 @@ theorem Pairing.crossingCount_eq_card_crossingPair {n : ℕ} (pairing : Pairing 
         · rintro ⟨hleft, hright, hcross⟩
           exact ⟨⟨hleft, hright⟩, hcross⟩)
   calc
-    pairing.crossingCount = Fintype.card pairing.RawCrossingPair := hraw
+    pairing.crossingCount = Fintype.card (RawCrossingPair pairing) := hraw
     _ = Fintype.card pairing.CrossingPair :=
-      (Fintype.card_congr pairing.crossingPairEquivRaw).symm
+      (Fintype.card_congr (crossingPairEquivRaw pairing)).symm
 
 /-- The pair containing position `0`, i.e. `(0, partner 0)`. -/
 def Pairing.firstPair {n : ℕ} (pairing : Pairing (n + 1)) :
@@ -109,7 +101,7 @@ theorem Pairing.firstPair_mem_pairs {n : ℕ} (pairing : Pairing (n + 1)) :
   apply (pairing.mem_pairs_iff 0 (pairing.partner 0)).2
   exact ⟨lt_of_le_of_ne (Fin.zero_le _) (Ne.symm (pairing.partner_ne 0)), rfl⟩
 
-/-- The number of pairs (other than `firstPair`) crossing `firstPair`. -/
+/-- The number of pairs crossing `firstPair`. -/
 def Pairing.crossingsWithFirstPair {n : ℕ} (pairing : Pairing (n + 1)) : ℕ :=
   (pairing.pairs.filter fun p => Crosses pairing.firstPair p).card
 
@@ -122,8 +114,7 @@ theorem not_crosses_self {n : ℕ} (p : Fin (2 * n) × Fin (2 * n)) : ¬ Crosses
   rintro ⟨h, -, -⟩
   exact absurd h (lt_irrefl _)
 
-/-- A crossing-count as a product-filter card decomposes into a sum over the left endpoint —
-`Finset.card_filter_product_eq_sum_card_filter` specialized to `Crosses`. -/
+/-- A product-filter crossing count decomposes into a sum over the left endpoint. -/
 theorem card_filter_crosses_product_eq_sum {n : ℕ} (T : Finset (Fin (2 * n) × Fin (2 * n))) :
     ((T.product T).filter (fun pp => Crosses pp.1 pp.2)).card =
       ∑ p ∈ T, (T.filter (fun q => Crosses p q)).card :=

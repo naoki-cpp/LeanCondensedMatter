@@ -6,11 +6,10 @@ import Mathlib.Algebra.GroupWithZero.Units.Equiv
 set_option linter.style.header false
 
 /-!
-# Trace-class compact self-adjoint operators: scalar multiples
+# Spectral trace under scalar multiplication
 
-Extends `TraceClassBasic.lean`'s `IsTraceClass`/`trace` with compatibility under real scalar
-multiplication: `isTraceClass_smul` (trace-class-ness is preserved) and `trace_smul` (the trace
-is homogeneous). See `notes/roadmaps/operator-algebra.md` (Track C).
+Proves that spectral summability is preserved under nonzero real scalar multiplication and that
+`spectralTrace` is homogeneous. See `notes/roadmaps/operator-algebra.md` (Track C).
 -/
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -21,7 +20,7 @@ variable {T : H →L[ℂ] H}
 
 omit [CompleteSpace H] in
 /-- Scaling `T` by a nonzero real `c` scales each eigenvalue by `c` and leaves the
-eigenspaces (as submodules) unchanged. -/
+eigenspaces unchanged. -/
 theorem eigenspace_smul {c : ℝ} (hc : c ≠ 0) (μ : ℂ) :
     Module.End.eigenspace (((c • T : H →L[ℂ] H)) : H →ₗ[ℂ] H) ((c : ℂ) * μ) =
       Module.End.eigenspace (T : H →ₗ[ℂ] H) μ := by
@@ -34,9 +33,6 @@ theorem eigenspace_smul {c : ℝ} (hc : c ≠ 0) (μ : ℂ) :
   rw [Module.End.eigenspace_def, ← hdiv]
   simp [hc']
 
-/-- The reindexing `μ ↦ c * μ` on nonzero eigenvalues, for a nonzero real `c`, as an
-`Equiv` on the base index type `{μ : ℝ // μ ≠ 0}`. This is an implementation detail of the
-scalar trace-class and trace proofs below. -/
 private noncomputable def eigenvalueScaleEquiv {c : ℝ} (hc : c ≠ 0) :
     { μ : ℝ // μ ≠ 0 } ≃ { μ : ℝ // μ ≠ 0 } :=
   (Equiv.mulLeft₀ c hc).subtypeEquiv fun μ => by
@@ -51,18 +47,9 @@ private noncomputable def eigenvalueScaleEquiv {c : ℝ} (hc : c ≠ 0) :
     ((eigenvalueScaleEquiv hc a : { μ : ℝ // μ ≠ 0 }) : ℝ) = c * a.1 := rfl
 
 omit [CompleteSpace H] in
-/-- **Trace-class-ness is preserved under scalar multiplication by a nonzero real.** Unlike
-`trace_smul` (which takes `IsTraceClass (c • T)` as an external hypothesis, matching this
-project's usual style of not deriving compactness/trace-class facts), this genuinely proves it
-from `IsTraceClass T` alone. Proved via `summable_sigma_of_nonneg` (splitting `Summable` over the
-dependent `EigenvectorIndex` type into a nonnegativity-only base+fiber criterion), reindexing only
-the *base* type `{γ : ℝ // γ ≠ 0}` via `eigenvalueScaleEquiv` — deliberately avoiding a literal
-`Equiv (EigenvectorIndex (c • T)) (EigenvectorIndex T)` on the full dependent `Sigma` type (via
-`Equiv.sigmaCongr`), which hits a genuine `(kernel) deterministic timeout` here (its
-`sigmaCongrLeft` implementation goes through a `cast`, unlike the base-only reindexing used
-elsewhere in this file, e.g. `trace_smul`). -/
-theorem isTraceClass_smul {c : ℝ} (hc : c ≠ 0) (h : IsTraceClass T) :
-    IsTraceClass (c • T) := by
+/-- Spectral summability is preserved under multiplication by a nonzero real scalar. -/
+theorem hasSummableRealEigenvalues_smul {c : ℝ} (hc : c ≠ 0)
+    (h : HasSummableRealEigenvalues T) : HasSummableRealEigenvalues (c • T) := by
   set e := eigenvalueScaleEquiv hc with he_def
   have hfin : ∀ μ : { γ : ℝ // γ ≠ 0 },
       Module.finrank ℂ (Module.End.eigenspace ((c • T : H →L[ℂ] H) : H →ₗ[ℂ] H) (μ.1 : ℂ)) =
@@ -106,13 +93,13 @@ theorem isTraceClass_smul {c : ℝ} (hc : c ≠ 0) (h : IsTraceClass T) :
   exact (Equiv.summable_iff e.symm).mpr hT'
 
 omit [CompleteSpace H] in
-/-- **Trace is homogeneous under scalar multiplication by a nonzero real.** -/
-theorem trace_smul {c : ℝ} (hc : c ≠ 0) (h : IsTraceClass T)
-    (hcT : IsTraceClass (c • T)) :
-    trace hcT = c * trace h := by
+/-- `spectralTrace` is homogeneous under multiplication by a nonzero real scalar. -/
+theorem spectralTrace_smul {c : ℝ} (hc : c ≠ 0) (h : HasSummableRealEigenvalues T)
+    (hcT : HasSummableRealEigenvalues (c • T)) :
+    spectralTrace hcT = c * spectralTrace h := by
   change (∑' b : EigenvectorIndex (c • T), b.1.1) = c * ∑' a : EigenvectorIndex T, a.1.1
-  rw [tsum_eigenvectorIndex_eq_tsum_mul_finrank (summable_eigenvectorIndex_of_isTraceClass hcT),
-    tsum_eigenvectorIndex_eq_tsum_mul_finrank (summable_eigenvectorIndex_of_isTraceClass h),
+  rw [tsum_eigenvectorIndex_eq_tsum_mul_finrank (summable_eigenvectorIndex hcT),
+    tsum_eigenvectorIndex_eq_tsum_mul_finrank (summable_eigenvectorIndex h),
     ← (eigenvalueScaleEquiv hc).tsum_eq (fun ν : { γ : ℝ // γ ≠ 0 } =>
       (Module.finrank ℂ (Module.End.eigenspace ((c • T : H →L[ℂ] H) : H →ₗ[ℂ] H)
         (ν.1 : ℂ)) : ℝ) * ν.1),

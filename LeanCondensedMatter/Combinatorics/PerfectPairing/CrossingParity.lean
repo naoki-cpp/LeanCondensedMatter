@@ -11,8 +11,7 @@ set_option linter.style.header false
 # Crossing parity from endpoint inversions
 
 For two normalized pairs with disjoint endpoints, geometric crossing is equivalent to odd parity of
-the four cross-pair endpoint comparisons. This is the local combinatorial fact used to turn
-cross-component crossing parity into the parity of a block-shuffle inversion count.
+the four cross-pair endpoint comparisons.
 -/
 
 namespace SecondQuantization
@@ -23,8 +22,7 @@ namespace BlochDeDominicis
 def pairEndpointAt {n : ℕ} (pair : Fin (2 * n) × Fin (2 * n)) (k : Fin 2) : Fin (2 * n) :=
   if k = 0 then pair.1 else pair.2
 
-/-- Number of endpoints of `right` that occur before endpoints of `left`, counted across all four
-cross-pair endpoint comparisons. -/
+/-- Number of endpoints of `right` that occur before endpoints of `left`. -/
 def pairEndpointInversionCount {n : ℕ}
     (left right : Fin (2 * n) × Fin (2 * n)) : ℕ :=
   (if right.1 < left.1 then 1 else 0) +
@@ -41,23 +39,15 @@ theorem pairEndpointInversionCount_eq_sum {n : ℕ}
   simp [pairEndpointInversionCount, pairEndpointAt, Fin.sum_univ_two,
     add_assoc, add_comm, add_left_comm]
 
-/-- Compatibility equivalence for callers that used the explicitly normalized representation. -/
-def Pairing.crossingPairEquivNormalized {n : ℕ} (pairing : Pairing n) :
-    pairing.CrossingPair ≃
-      {x : pairing.NormalizedPair × pairing.NormalizedPair // Crosses x.1.1 x.2.1} :=
-  Equiv.refl _
-
 /-- `crossingCount` as a `0`-or-`1` sum over all ordered normalized-pair pairs. -/
 theorem Pairing.crossingCount_eq_sum_crosses {n : ℕ} (pairing : Pairing n) :
     pairing.crossingCount =
       ∑ x : pairing.NormalizedPair × pairing.NormalizedPair,
         if Crosses x.1.1 x.2.1 then 1 else 0 := by
   classical
-  rw [pairing.crossingCount_eq_card_crossingPair,
-    Fintype.card_congr pairing.crossingPairEquivNormalized]
+  rw [pairing.crossingCount_eq_card_crossingPair]
   have hcard :
-      Fintype.card
-          {x : pairing.NormalizedPair × pairing.NormalizedPair // Crosses x.1.1 x.2.1} =
+      Fintype.card pairing.CrossingPair =
         ((Finset.univ : Finset (pairing.NormalizedPair × pairing.NormalizedPair)).filter
           fun x => Crosses x.1.1 x.2.1).card := by
     exact Fintype.card_of_subtype
@@ -190,13 +180,6 @@ theorem finset_sum_sum_modEq_diag_of_pair_add_modEq_zero {α : Type*}
   simpa using
     (Nat.ModEq.refl (n := n) (∑ a ∈ s, f a a)).add hoff
 
-/-- `% 2` compatibility wrapper for `finset_sum_sum_modEq_diag_of_pair_add_modEq_zero`. -/
-theorem finset_sum_sum_mod_two_eq_diag_of_pair_add_mod_two_eq_zero {α : Type*}
-    (s : Finset α) (f : α → α → ℕ)
-    (hpair : ∀ a ∈ s, ∀ b ∈ s, a ≠ b → (f a b + f b a) % 2 = 0) :
-    (∑ a ∈ s, ∑ b ∈ s, f a b) % 2 = (∑ a ∈ s, f a a) % 2 := by
-  exact finset_sum_sum_modEq_diag_of_pair_add_modEq_zero 2 s f hpair
-
 /-- Finite-type form of `finset_sum_sum_modEq_diag_of_pair_add_modEq_zero`. -/
 theorem fintype_sum_sum_modEq_diag_of_pair_add_modEq_zero {α : Type*}
     [Fintype α] (n : ℕ) (f : α → α → ℕ)
@@ -204,13 +187,6 @@ theorem fintype_sum_sum_modEq_diag_of_pair_add_modEq_zero {α : Type*}
     Nat.ModEq n (∑ a, ∑ b, f a b) (∑ a, f a a) := by
   simpa using finset_sum_sum_modEq_diag_of_pair_add_modEq_zero
     n (Finset.univ : Finset α) f (fun a _ b _ hab => hpair a b hab)
-
-/-- `% 2` compatibility wrapper for `fintype_sum_sum_modEq_diag_of_pair_add_modEq_zero`. -/
-theorem fintype_sum_sum_mod_two_eq_diag_of_pair_add_mod_two_eq_zero {α : Type*}
-    [Fintype α] (f : α → α → ℕ)
-    (hpair : ∀ a b, a ≠ b → (f a b + f b a) % 2 = 0) :
-    (∑ a, ∑ b, f a b) % 2 = (∑ a, f a a) % 2 := by
-  exact fintype_sum_sum_modEq_diag_of_pair_add_modEq_zero 2 f hpair
 
 end BlochDeDominicis
 end Common
