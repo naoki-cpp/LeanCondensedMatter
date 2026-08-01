@@ -158,3 +158,5 @@ Dyson-diagram continuity proofs now use
             .github/workflows/one-shot-remove-continuous-interaction-picture-wrapper.yml
           git commit -m "Remove continuous interaction-picture wrapper"
           git push origin HEAD:agent/remove-continuous-interaction-picture-wrapper
+
+# Trigger after workflow registration.
