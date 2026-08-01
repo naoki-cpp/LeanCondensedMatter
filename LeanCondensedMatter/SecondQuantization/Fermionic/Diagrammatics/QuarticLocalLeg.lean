@@ -11,6 +11,7 @@ Operators, energy shifts, modes, and CAR relations for the four local legs.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
@@ -19,7 +20,7 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 /-- **The operator a vertex's local leg `Fin 4` stands for**, matching `WickDiagram.lean`'s fixed
 local-leg convention `0 ↦ create₁, 1 ↦ create₂, 2 ↦ annihilate₂, 3 ↦ annihilate₁` exactly. -/
 noncomputable def quarticLocalLegOperator (q : QuarticVertexLabel Mode) :
-    Fin 4 → FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
+    Fin 4 → FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   ![create q.create₁, create q.create₂, annihilate q.annihilate₂, annihilate q.annihilate₁]
 
 /-- **The free-evolution eigenvalue shift** of a vertex's local leg — the exponent
@@ -64,7 +65,7 @@ the vertex label supplied, not on any shared vertex identity. -/
 theorem anticomm_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' : Fin 4) :
     anticomm (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
       if quarticLocalLegIsCreate l = quarticLocalLegIsCreate l' then
-        (0 : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode)
+        (0 : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
       else if quarticLocalLegMode q l = quarticLocalLegMode q' l' then LinearMap.id else 0 := by
   fin_cases l <;> fin_cases l' <;>
     simp [quarticLocalLegOperator, quarticLocalLegIsCreate, quarticLocalLegMode,
@@ -81,7 +82,7 @@ theorem zetaCommutator_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) 
         (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
       (if quarticLocalLegIsCreate l = quarticLocalLegIsCreate l' then (0 : ℂ)
        else if quarticLocalLegMode q l = quarticLocalLegMode q' l' then 1 else 0) •
-        (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) := by
+        (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
   have hbridge : Common.zetaCommutator ((Statistics.fermion.zetaInt : ℤ) : ℂ)
       (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
       anticomm (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') :=
@@ -89,4 +90,5 @@ theorem zetaCommutator_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) 
   rw [hbridge, anticomm_quarticLocalLegOperator]
   split_ifs <;> simp
 
+end Fermionic
 end SecondQuantization

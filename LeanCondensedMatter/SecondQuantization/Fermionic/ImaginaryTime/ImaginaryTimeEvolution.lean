@@ -15,7 +15,7 @@ free evolution for `H₀ = freeHamiltonian ε` only.
 
 This file defines the scalar action of free evolution directly on each basis vector:
 `Complex.exp (τ * E(n)) • |n⟩`, where `E(n) := Σᵢ∈n ε(i) : ℝ`. This is an algebraic,
-basis-diagonal realization, not an analytic operator exponential: `FockSpaceFermionic Mode` has
+basis-diagonal realization, not an analytic operator exponential: `FockSpace Mode` has
 no topology or Hilbert completion in this development. The construction does not require an
 operator-norm limit, but that is because no operator exponential is being constructed here. This
 diagonal definition is specific to a *diagonal* Hamiltonian; it does not extend to a general
@@ -24,27 +24,28 @@ beyond the free theory).
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
 
 /-- **The free Hamiltonian's eigenvalue** on an occupation state, `E(n) := Σᵢ∈n ε(i) : ℝ`
 (`freeHamiltonian_basisState`). Real-valued, matching `Common.DiagonalEvolution`'s `energy`
 parameter — cast to `ℂ` only where `Complex.exp` needs it. -/
-def fermionEnergy (ε : Mode → ℝ) (n : FermionOccupation Mode) : ℝ := ∑ i ∈ n, ε i
+def fermionEnergy (ε : Mode → ℝ) (n : Occupation Mode) : ℝ := ∑ i ∈ n, ε i
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
-theorem fermionEnergy_eq_sum_complex (ε : Mode → ℝ) (n : FermionOccupation Mode) :
+theorem fermionEnergy_eq_sum_complex (ε : Mode → ℝ) (n : Occupation Mode) :
     (fermionEnergy ε n : ℂ) = ∑ i ∈ n, (ε i : ℂ) := by
   simp [fermionEnergy]
 
 /-- **The imaginary-time evolution operator `e^{τH₀}` for the free Hamiltonian**: the algebraic,
 basis-diagonal realization from `Common.diagonalEvolution`, specialized to `fermionEnergy`. -/
 noncomputable def imaginaryTimeEvolveFree (ε : Mode → ℝ) (τ : ℝ) :
-    FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
+    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   Common.diagonalEvolution (fermionEnergy ε) τ
 
 omit [LinearOrder Mode] in
-theorem imaginaryTimeEvolveFree_basisState (ε : Mode → ℝ) (τ : ℝ) (n : FermionOccupation Mode) :
+theorem imaginaryTimeEvolveFree_basisState (ε : Mode → ℝ) (τ : ℝ) (n : Occupation Mode) :
     imaginaryTimeEvolveFree ε τ (basisState n) =
       Complex.exp (τ * ∑ i ∈ n, (ε i : ℂ)) • basisState n := by
   simp only [imaginaryTimeEvolveFree, basisState]
@@ -87,15 +88,15 @@ evolution**: notation `A(τ) := e^{τH₀} A e^{-τH₀}` for the two basis-diag
 It is well-defined for *any* algebraic linear map `A`, but this file does not construct analytic
 operators or a completed Hilbert-space conjugation. -/
 noncomputable def imaginaryTimeEvolve (ε : Mode → ℝ) (τ : ℝ)
-    (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
-    FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
+    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   Common.heisenbergEvolve (fermionEnergy ε) τ A
 
 omit [LinearOrder Mode] in
 /-- **At `τ = 0`, imaginary-time evolution is trivial**: `A(0) = A`. -/
 @[simp]
 theorem imaginaryTimeEvolve_zero (ε : Mode → ℝ)
-    (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     imaginaryTimeEvolve ε 0 A = A :=
   Common.heisenbergEvolve_zero (fermionEnergy ε) A
 
@@ -103,7 +104,7 @@ omit [LinearOrder Mode] in
 /-- Unfolds `imaginaryTimeEvolve` back down to `imaginaryTimeEvolveFree`, matching the shape most
 proofs below need — `A(τ) := e^{τH₀} A e^{-τH₀}`, applied to a vector. -/
 theorem imaginaryTimeEvolve_apply (ε : Mode → ℝ) (τ : ℝ)
-    (A : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (x : FockSpaceFermionic Mode) :
+    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (x : FockSpace Mode) :
     imaginaryTimeEvolve ε τ A x =
       imaginaryTimeEvolveFree ε τ (A (imaginaryTimeEvolveFree ε (-τ) x)) :=
   rfl
@@ -196,4 +197,5 @@ theorem imaginaryTimeEvolveFree_comp_create (ε : Mode → ℝ) (τ : ℝ) (i : 
       rw [hcast]; exact imaginaryTimeEvolve_create ε τ i)
   rwa [hcast] at h
 
+end Fermionic
 end SecondQuantization

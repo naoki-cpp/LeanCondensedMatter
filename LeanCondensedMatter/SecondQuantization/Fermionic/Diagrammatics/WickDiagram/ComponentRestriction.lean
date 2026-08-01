@@ -11,6 +11,7 @@ quartic vertex labels while preserving the existing public API.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 open Combinatorics
 
@@ -138,4 +139,5 @@ theorem QuarticWickDiagram.restrictComponent_pairing {S : Finset (Fin N)}
 
 end
 
+end Fermionic
 end SecondQuantization

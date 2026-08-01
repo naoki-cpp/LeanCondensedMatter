@@ -95,6 +95,22 @@ terms of:
 
 The architecture guard rejects reintroduction of this deleted module or import path as well.
 
+### Fermionic namespace and core types
+
+All declaration-bearing modules under `SecondQuantization/Fermionic/` now live in
+`SecondQuantization.Fermionic`. The core algebraic types match the bosonic naming scheme through
+namespace ownership:
+
+```text
+Fermionic.Occupation
+Fermionic.FockSpace
+Fermionic.vacuum
+Fermionic.particleNumber
+```
+
+The former root names are removed without compatibility aliases, and the architecture guard rejects
+both legacy identifiers and declaration-bearing fermionic files outside the canonical namespace.
+
 ### Analytic finite-mode fermionic line
 
 The analytic connection is already proved; it is not a pending milestone. In particular:
@@ -139,17 +155,10 @@ the authoritative Common construction.
 
 ### R3 — fermionic canonical names
 
-Replace statistic suffixes with namespace ownership. Confirmed examples include:
-
-```text
-FockSpaceFermionic     -> Fermionic.FockSpace
-FermionOccupation      -> Fermionic.Occupation
-ContinuousFockSpaceFermionic -> Fermionic.ContinuousFockSpace
-ContinuousFermionOperator    -> Fermionic.ContinuousOperator
-```
-
-The precise migration should be done as a repository-wide atomic change because these names are used
-through algebra, thermal theory, perturbation theory, and diagrammatics.
+The repository-wide namespace move and the `Occupation` / `FockSpace` core-type migration are
+complete. Continue auditing statistic-encoded names only where the suffix carries no physical or
+mathematical distinction beyond ownership. Keep genuinely physics-facing terminology when removing
+it would make the API less clear.
 
 ### R4 — bosonic convergence boundary
 

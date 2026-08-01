@@ -8,13 +8,13 @@ set_option linter.style.header false
 # The algebraic Fock space, generic over the occupation-state type
 
 Shared infrastructure for Track D's fermionic and bosonic lines
-(`notes/roadmaps/second-quantization.md`): both `FockSpaceFermionic Mode` (basis
-`FermionOccupation Mode := Finset Mode`) and `Bosonic.FockSpace Mode` (basis
+(`notes/roadmaps/second-quantization.md`): both `Fermionic.FockSpace Mode` (basis
+`Fermionic.Occupation Mode := Finset Mode`) and `Bosonic.FockSpace Mode` (basis
 `Bosonic.Occupation Mode := Mode →₀ ℕ`) are the free `ℂ`-vector space on their respective occupation-state
 type — finite `ℂ`-linear combinations of basis states, no completion, no inner product. That shape
 doesn't depend on which occupation-state type is used, so it's extracted here as
 `AlgebraicFock Config` for an arbitrary `Config`, with `Fermionic`/`Bosonic` free to keep their own
-concrete `Config` (`FermionOccupation Mode`/`Bosonic.Occupation Mode`) — this file does not unify those
+concrete `Config` (`Fermionic.Occupation Mode`/`Bosonic.Occupation Mode`) — this file does not unify those
 types themselves, only the vector-space construction built on top of whichever one is supplied.
 
 `matrixCoeff`/`diagonalCoeff` generalize the coordinate-evaluation APIs each statistics line

@@ -11,6 +11,7 @@ fermionic quartic vertex labels.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 open Combinatorics
 
@@ -58,4 +59,5 @@ theorem card_quarticVertexOrder (S : Finset (Fin N)) :
     Fintype.card (QuarticVertexOrder S) = S.card.factorial :=
   Common.card_quarticVertexOrder S
 
+end Fermionic
 end SecondQuantization

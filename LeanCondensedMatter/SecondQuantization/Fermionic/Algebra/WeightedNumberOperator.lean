@@ -14,13 +14,14 @@ thin `Common.WeightedDiagonalFunctional` delegation.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
-theorem weightedTrace_numberOperator (w : FermionOccupation Mode → ℂ) (i : Mode) :
+theorem weightedTrace_numberOperator (w : Occupation Mode → ℂ) (i : Mode) :
     Common.weightedTrace w (numberOperator i) =
-      ∑ n ∈ (Finset.univ : Finset (FermionOccupation Mode)).filter (i ∈ ·), w n := by
-  have h : ∀ n : FermionOccupation Mode,
+      ∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∈ ·), w n := by
+  have h : ∀ n : Occupation Mode,
       Common.matrixCoeff (numberOperator i) n n = if i ∈ n then 1 else 0 := fun n => by
     rcases Finset.decidableMem i n with hi | hi
     · exact Common.matrixCoeff_of_smul_basisState
@@ -33,13 +34,14 @@ theorem weightedTrace_numberOperator (w : FermionOccupation Mode → ℂ) (i : M
   rw [← Finset.sum_filter]
 
 omit [LinearOrder Mode] in
-theorem weightedTrace_totalNumberOperator (w : FermionOccupation Mode → ℂ) :
+theorem weightedTrace_totalNumberOperator (w : Occupation Mode → ℂ) :
     Common.weightedTrace w totalNumberOperator =
-      ∑ n : FermionOccupation Mode, (fermionParticleNumber n : ℂ) * w n := by
-  have h : ∀ n : FermionOccupation Mode,
-      Common.matrixCoeff totalNumberOperator n n = (fermionParticleNumber n : ℂ) :=
+      ∑ n : Occupation Mode, (particleNumber n : ℂ) * w n := by
+  have h : ∀ n : Occupation Mode,
+      Common.matrixCoeff totalNumberOperator n n = (particleNumber n : ℂ) :=
     fun n => Common.matrixCoeff_of_smul_basisState (totalNumberOperator_basisState n)
   simp only [Common.weightedTrace, h]
   exact Finset.sum_congr rfl fun n _ => mul_comm _ _
 
+end Fermionic
 end SecondQuantization

@@ -8,7 +8,7 @@ set_option linter.style.header false
 Phase 6 of Track D's fermionic primary line (`notes/roadmaps/second-quantization.md`): the
 free/interaction Hamiltonians, each a `Common.diagonalOperator` (`Common/Algebra/AlgebraicFock.lean`) whose
 eigenvalue at occupation state `n` is the corresponding occupation-dependent scalar (total particle
-number, free energy, or interaction energy). Since each `n : FermionOccupation Mode := Finset Mode`
+number, free energy, or interaction energy). Since each `n : Occupation Mode := Finset Mode`
 is itself finite regardless of whether `Mode` is, these sums are all over `n` (or `n × n`), **not**
 over all of `Mode` — so, unlike an earlier version of this file built from finite sums of
 `numberOperator i` over `i : Mode`, none of the three definitions below needs `[Fintype Mode]`.
@@ -20,6 +20,7 @@ design principles.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
 
@@ -28,12 +29,12 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
 omit [LinearOrder Mode] in
 /-- **The total number operator**, `N := Σᵢ Nᵢ` — the `Common.diagonalOperator` with eigenvalue
 `n.card` (the total particle number) at each occupation state `n`. -/
-noncomputable def totalNumberOperator : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
-  Common.diagonalOperator fun n : FermionOccupation Mode => (fermionParticleNumber n : ℂ)
+noncomputable def totalNumberOperator : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+  Common.diagonalOperator fun n : Occupation Mode => (particleNumber n : ℂ)
 
 omit [LinearOrder Mode] in
-theorem totalNumberOperator_basisState (n : FermionOccupation Mode) :
-    totalNumberOperator (basisState n) = (fermionParticleNumber n : ℂ) • basisState n :=
+theorem totalNumberOperator_basisState (n : Occupation Mode) :
+    totalNumberOperator (basisState n) = (particleNumber n : ℂ) • basisState n :=
   Common.diagonalOperator_basisState _ n
 
 omit [LinearOrder Mode] in
@@ -41,11 +42,11 @@ omit [LinearOrder Mode] in
 `H₀ := Σᵢ ε(i) Nᵢ` — the `Common.diagonalOperator` with eigenvalue `Σᵢ∈n ε(i)` at each occupation
 state `n`. -/
 noncomputable def freeHamiltonian (ε : Mode → ℝ) :
-    FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
-  Common.diagonalOperator fun n : FermionOccupation Mode => (∑ i ∈ n, (ε i : ℂ))
+    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+  Common.diagonalOperator fun n : Occupation Mode => (∑ i ∈ n, (ε i : ℂ))
 
 omit [LinearOrder Mode] in
-theorem freeHamiltonian_basisState (ε : Mode → ℝ) (n : FermionOccupation Mode) :
+theorem freeHamiltonian_basisState (ε : Mode → ℝ) (n : Occupation Mode) :
     freeHamiltonian ε (basisState n) = (∑ i ∈ n, (ε i : ℂ)) • basisState n :=
   Common.diagonalOperator_basisState _ n
 
@@ -69,13 +70,14 @@ special case, not a general quartic interaction. A general fermionic interaction
 `Σᵢⱼₖₗ V(i,j,k,l) cᵢ† cⱼ† cₖ cₗ` (not basis-diagonal, needed for a non-trivial Wick/Dyson
 expansion) is a separate future target; see `notes/roadmaps/second-quantization.md`. -/
 noncomputable def interactionHamiltonian (V : Mode → Mode → ℝ) :
-    FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
-  Common.diagonalOperator fun n : FermionOccupation Mode => (∑ i ∈ n, ∑ j ∈ n, (V i j : ℂ))
+    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+  Common.diagonalOperator fun n : Occupation Mode => (∑ i ∈ n, ∑ j ∈ n, (V i j : ℂ))
 
 omit [LinearOrder Mode] in
-theorem interactionHamiltonian_basisState (V : Mode → Mode → ℝ) (n : FermionOccupation Mode) :
+theorem interactionHamiltonian_basisState (V : Mode → Mode → ℝ) (n : Occupation Mode) :
     interactionHamiltonian V (basisState n) =
       (∑ i ∈ n, ∑ j ∈ n, (V i j : ℂ)) • basisState n :=
   Common.diagonalOperator_basisState _ n
 
+end Fermionic
 end SecondQuantization

@@ -12,6 +12,7 @@ intertwines the corresponding partner permutations.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 open Combinatorics
 
@@ -152,4 +153,5 @@ theorem QuarticWickDiagram.pairingInOrder_partner_componentOrderedLeg
     (d.componentDiagramLeg_restrictedPairing_partner B
       (orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p)).symm
 
+end Fermionic
 end SecondQuantization

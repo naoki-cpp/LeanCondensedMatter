@@ -20,22 +20,23 @@ of `ζ`.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
 
 /-- **The single-mode number operator** `Nᵢ := aᵢ† aᵢ`. -/
 noncomputable def numberOperator (i : Mode) :
-    FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
+    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   (create i).comp (annihilate i)
 
-theorem numberOperator_apply (i : Mode) (x : FockSpaceFermionic Mode) :
+theorem numberOperator_apply (i : Mode) (x : FockSpace Mode) :
     numberOperator i x = create i (annihilate i x) :=
   rfl
 
 /-- **The number-operator eigenvalue equation**, on basis states: `Nᵢ` acts as the identity on
 occupied modes and as zero on unoccupied ones — occupation-number states are simultaneous
 eigenvectors of every `numberOperator i`, with eigenvalue `0` or `1`. -/
-theorem numberOperator_basisState (i : Mode) (n : FermionOccupation Mode) :
+theorem numberOperator_basisState (i : Mode) (n : Occupation Mode) :
     numberOperator i (basisState n) = if i ∈ n then basisState n else 0 := by
   rw [numberOperator_apply]
   by_cases hi : i ∈ n
@@ -54,14 +55,14 @@ instance of `Common.exchangeCommutator_annihilate_create_self`, via the fermioni
 fields are literally `Fermionic.annihilate`/`create`. -/
 theorem exchangeCommutator_annihilate_create_self (i : Mode) :
     Common.exchangeCommutator Statistics.fermion (annihilate i) (create i) =
-      (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :=
-  Common.exchangeCommutator_annihilate_create_self (Config := FermionOccupation Mode) i
+      (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :=
+  Common.exchangeCommutator_annihilate_create_self (Config := Occupation Mode) i
 
 /-- **`c_i c_i† = id - N_i`**, an instance of `Common.annihilate_comp_create_self`. -/
 theorem annihilate_comp_create_self (i : Mode) :
     (annihilate i).comp (create i) = LinearMap.id - numberOperator i := by
   have h := Common.annihilate_comp_create_self (s := Statistics.fermion)
-    (Config := FermionOccupation Mode) i
+    (Config := Occupation Mode) i
   rwa [Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one, neg_one_smul,
     ← sub_eq_add_neg] at h
 
@@ -89,8 +90,9 @@ theorem annihilate_comp_create_comp_self (i : Mode) :
 together with `Nᵢ = cᵢ† cᵢ` by definition. -/
 theorem annihilate_comp_create_add_create_comp_annihilate (i : Mode) :
     (annihilate i).comp (create i) + (create i).comp (annihilate i) =
-      (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) := by
+      (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
   rw [annihilate_comp_create_self, show (create i).comp (annihilate i) = numberOperator i from rfl]
   abel
 
+end Fermionic
 end SecondQuantization

@@ -7,7 +7,7 @@ set_option linter.style.header false
 
 Shared architectural vocabulary for Track D's fermionic and bosonic lines
 (`notes/roadmaps/second-quantization.md`): both lines represent a Fock-space basis vector by a
-concrete occupation state (`FermionOccupation Mode := Finset Mode` for fermions, `Occupation Mode
+concrete occupation state (`Fermionic.Occupation Mode := Finset Mode` for fermions, `Occupation Mode
 := Mode →₀ ℕ` for bosons) together with a per-mode occupation number extracted from it
 (`i ∈ n ↦ 1`/`0` for fermions, `n i` directly for bosons). `OccupationBasis` packages just that
 common shape — a `vacuum`, an `occupation : Config → Mode → ℕ` reading off each mode's particle

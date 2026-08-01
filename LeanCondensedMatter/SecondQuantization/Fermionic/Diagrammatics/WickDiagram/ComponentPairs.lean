@@ -11,6 +11,7 @@ partner orbit.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 open Combinatorics
 
@@ -44,4 +45,5 @@ theorem QuarticWickDiagram.mem_pairingInOrder_pairs_componentOrderedLeg_iff
     refine ⟨e.lt_iff_lt.mpr hab, ?_⟩
     rw [d.pairingInOrder_partner_componentOrderedLeg orders shuffle B, hpartner]
 
+end Fermionic
 end SecondQuantization

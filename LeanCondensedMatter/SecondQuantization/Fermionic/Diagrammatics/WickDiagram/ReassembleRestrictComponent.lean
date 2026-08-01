@@ -10,6 +10,7 @@ This module preserves the fermionic API while delegating the label-generic proof
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} {N : ℕ}
 
@@ -22,4 +23,5 @@ theorem QuarticWickDiagram.restrictComponent_reassemble {S : Finset (Fin N)}
     (QuarticWickDiagram.reassemble π F).restrictComponent hB' = (F B).1 :=
   Common.QuarticDiagram.restrictComponent_reassemble π F B hB'
 
+end Fermionic
 end SecondQuantization

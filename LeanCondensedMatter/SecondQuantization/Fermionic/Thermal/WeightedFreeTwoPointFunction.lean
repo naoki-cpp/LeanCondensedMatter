@@ -30,6 +30,7 @@ Neither restriction is encoded in the type here; `FreeBoltzmannWeight.lean`'s
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
@@ -38,7 +39,7 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 `c_i(τ) := imaginaryTimeEvolve ε τ (annihilate i)`, `c_j†(τ') := imaginaryTimeEvolve ε τ'
 (create j)`, and an arbitrary weight `w`. See the module docstring for what must additionally
 hold for this to be the physical free Gibbs Green function `G₀`. -/
-noncomputable def weightedFreeTwoPointFunction (ε : Mode → ℝ) (w : FermionOccupation Mode → ℂ)
+noncomputable def weightedFreeTwoPointFunction (ε : Mode → ℝ) (w : Occupation Mode → ℂ)
     (i j : Mode) (τ τ' : ℝ) : ℂ :=
   - Common.normalizedWeightedDiagonal w
       (Common.timeOrderedProduct Statistics.fermion
@@ -46,7 +47,7 @@ noncomputable def weightedFreeTwoPointFunction (ε : Mode → ℝ) (w : FermionO
 
 /-- **For `τ' < τ`**, time-ordering already has `c_i(τ)` to the left: `G_{ij}(τ, τ') =
 -⟨c_i(τ) c_j†(τ')⟩_w`. -/
-theorem weightedFreeTwoPointFunction_of_gt (ε : Mode → ℝ) (w : FermionOccupation Mode → ℂ)
+theorem weightedFreeTwoPointFunction_of_gt (ε : Mode → ℝ) (w : Occupation Mode → ℂ)
     (i j : Mode)
     {τ τ' : ℝ} (h : τ' < τ) :
     weightedFreeTwoPointFunction ε w i j τ τ' =
@@ -60,7 +61,7 @@ exchange sign `-1`, which cancels the definition's outer `-1`: `G_{ij}(τ, τ') 
 +⟨c_j†(τ') c_i(τ)⟩_w`. This sign — the double negative from the fermionic swap composing with the
 Green function's own minus sign — is exactly the standard finite-temperature Green-function
 convention. -/
-theorem weightedFreeTwoPointFunction_of_lt (ε : Mode → ℝ) (w : FermionOccupation Mode → ℂ)
+theorem weightedFreeTwoPointFunction_of_lt (ε : Mode → ℝ) (w : Occupation Mode → ℂ)
     (i j : Mode) {τ τ' : ℝ} (h : τ < τ') :
     weightedFreeTwoPointFunction ε w i j τ τ' =
       Common.normalizedWeightedDiagonal w
@@ -77,7 +78,7 @@ theorem weightedFreeTwoPointFunction_of_lt (ε : Mode → ℝ) (w : FermionOccup
 — an average of the two one-sided orderings, *not* a claim that the fermionic Green function's two
 one-sided limits `G(0⁺)`/`G(0⁻)` agree (they generically don't: `G(0⁺) = -⟨cc†⟩`,
 `G(0⁻) = +⟨c†c⟩`, and CAR gives their difference `-⟨cc†⟩ - ⟨c†c⟩ = -⟨{c,c†}⟩ = -1`). -/
-theorem weightedFreeTwoPointFunction_self_time (ε : Mode → ℝ) (w : FermionOccupation Mode → ℂ)
+theorem weightedFreeTwoPointFunction_self_time (ε : Mode → ℝ) (w : Occupation Mode → ℂ)
     (i j : Mode) (τ : ℝ) :
     weightedFreeTwoPointFunction ε w i j τ τ =
       - Common.normalizedWeightedDiagonal w
@@ -89,4 +90,5 @@ theorem weightedFreeTwoPointFunction_self_time (ε : Mode → ℝ) (w : FermionO
   rw [weightedFreeTwoPointFunction, Common.timeOrderedProduct_self_time Statistics.fermion,
     Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
 
+end Fermionic
 end SecondQuantization

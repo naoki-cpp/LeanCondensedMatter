@@ -21,12 +21,13 @@ occupation number).
 
 The instantiation uses only: `imaginaryTimeEvolve_annihilate`'s eigenvalue-shift fact (`c_i(τ) =
 e^{-τεᵢ}c_i`, giving the KMS relation's `q := -εᵢ`) and CAR's `anticomm_annihilate_create` (the
-c-number exchange commutator, `ζ := -1`) — no case analysis on `FermionOccupation Mode`, unlike
+c-number exchange commutator, `ζ := -1`) — no case analysis on `Occupation Mode`, unlike
 the earlier `Fermionic/BlochDeDominicisSingleMode.lean` (single-mode, hand-derived from CAR
 directly rather than through the general `Common/` framework).
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
@@ -50,7 +51,7 @@ theorem traceFock_imaginaryTimeEvolveFree_comp_annihilate_comp_create
   have hcomm : (annihilate i).comp (create j) -
       (Statistics.zetaInt Statistics.fermion : ℂ) • ((create j).comp (annihilate i)) =
         (if i = j then (1 : ℂ) else 0) •
-          (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) := by
+          (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
     rw [Statistics.zetaInt_fermion]
     have h := anticomm_annihilate_create i j
     rw [anticomm] at h
@@ -64,4 +65,5 @@ theorem traceFock_imaginaryTimeEvolveFree_comp_annihilate_comp_create
   rwa [show (1 - ((-1 : ℤ) : ℂ) * Complex.exp ((-(ε i) * β : ℝ) : ℂ)) =
       1 + Complex.exp ((-(ε i) * β : ℝ) : ℂ) by push_cast; ring] at h
 
+end Fermionic
 end SecondQuantization

@@ -14,6 +14,7 @@ theorem.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] {N : ℕ}
 
@@ -36,4 +37,5 @@ theorem QuarticWickDiagram.contractionIntegrand_assembleVertexOrder_eq_prod_comp
     ← Finset.prod_mul_distrib]
   simp only [QuarticWickDiagram.restrictComponentConnected]
 
+end Fermionic
 end SecondQuantization

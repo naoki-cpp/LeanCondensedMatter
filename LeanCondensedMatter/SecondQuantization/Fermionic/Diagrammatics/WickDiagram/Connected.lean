@@ -11,6 +11,7 @@ quartic vertex labels while preserving the existing public names.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} {N : ℕ}
 
@@ -37,4 +38,5 @@ noncomputable instance ConnectedQuarticWickDiagram.instFintype [DecidableEq Mode
 
 end
 
+end Fermionic
 end SecondQuantization

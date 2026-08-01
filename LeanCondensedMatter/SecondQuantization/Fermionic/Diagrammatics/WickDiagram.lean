@@ -13,6 +13,7 @@ and a perfect pairing of the four legs per vertex.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 open Combinatorics
 
@@ -44,4 +45,5 @@ noncomputable instance QuarticWickDiagram.instFintype [DecidableEq Mode] [Fintyp
     {S : Finset (Fin N)} : Fintype (QuarticWickDiagram Mode N S) :=
   Fintype.ofEquiv _ QuarticWickDiagram.equivPair.symm
 
+end Fermionic
 end SecondQuantization

@@ -11,13 +11,14 @@ The density-density `interactionHamiltonian` corollary remains fermion-specific.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
 omit [LinearOrder Mode] in
 /-- A time-independent fermionic interaction has the ordinary Taylor Dyson coefficients. -/
 theorem dysonCoeff_eq_of_time_independent (ε : Mode → ℝ)
-    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode)
+    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
     (hV : ∀ τ, interactionPicture ε V τ = V) :
     ∀ (n : ℕ) (τ : ℝ), Common.dysonCoeff (fermionEnergy ε) V n τ = ((-τ : ℂ) ^ n / n.factorial) • V ^ n :=
   Common.dysonCoeff_eq_of_time_independent (fermionEnergy ε) V hV
@@ -46,4 +47,5 @@ theorem dysonCoeff_interactionHamiltonian_eq (ε : Mode → ℝ) (Vint : Mode �
   dysonCoeff_eq_of_time_independent ε (interactionHamiltonian Vint)
     (imaginaryTimeEvolve_interactionHamiltonian ε Vint) n τ
 
+end Fermionic
 end SecondQuantization

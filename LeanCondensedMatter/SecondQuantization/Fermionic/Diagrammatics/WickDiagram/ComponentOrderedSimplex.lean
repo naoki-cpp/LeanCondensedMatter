@@ -11,6 +11,7 @@ API used by quartic Wick diagrams.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} {N : ℕ}
 
@@ -61,4 +62,5 @@ theorem QuarticWickDiagram.orderedSimplexIntegral_sum_componentShuffleIntegrand
   Common.QuarticDiagram.orderedSimplexIntegral_sum_componentShuffleIntegrand
     d β componentIntegrand hcomponent
 
+end Fermionic
 end SecondQuantization

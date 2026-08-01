@@ -18,6 +18,7 @@ proves.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
 
@@ -25,13 +26,13 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
 
 omit [LinearOrder Mode] in
 /-- **The anticommutator** of two linear endomorphisms, `{A, B} := AB + BA`. -/
-noncomputable def anticomm (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
-    FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
+noncomputable def anticomm (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   A.comp B + B.comp A
 
 omit [LinearOrder Mode] in
-theorem anticomm_apply (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode)
-    (x : FockSpaceFermionic Mode) : anticomm A B x = A (B x) + B (A x) :=
+theorem anticomm_apply (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
+    (x : FockSpace Mode) : anticomm A B x = A (B x) + B (A x) :=
   rfl
 
 omit [LinearOrder Mode] in
@@ -39,14 +40,14 @@ omit [LinearOrder Mode] in
 the arithmetic core shared by all three CAR proofs below (creation-creation, annihilation-
 annihilation, and the off-diagonal case of annihilation-creation). -/
 theorem cancel_cast_smul_smul {a b c d : ℤ} (h : a * b + c * d = 0)
-    (v : FockSpaceFermionic Mode) :
+    (v : FockSpace Mode) :
     (a : ℂ) • (b : ℂ) • v + (c : ℂ) • (d : ℂ) • v = 0 := by
   rw [smul_smul, smul_smul, ← Int.cast_mul, ← Int.cast_mul, ← add_smul, ← Int.cast_add, h,
     Int.cast_zero, zero_smul]
 
 /-! ## Sign lemmas: how `fermionSign` changes under inserting/removing an unrelated mode -/
 
-theorem fermionSign_insertOccupation_of_lt {i k : Mode} {n : FermionOccupation Mode}
+theorem fermionSign_insertOccupation_of_lt {i k : Mode} {n : Occupation Mode}
     (hk : k ∉ n) (h : k < i) :
     fermionSign i (insertOccupation k n) = -fermionSign i n := by
   have hfilter : (insertOccupation k n).filter (· < i) = insert k (n.filter (· < i)) := by
@@ -55,14 +56,14 @@ theorem fermionSign_insertOccupation_of_lt {i k : Mode} {n : FermionOccupation M
   rw [fermionSign, fermionSign, hfilter, Finset.card_insert_of_notMem hknotmem, pow_succ']
   ring
 
-theorem fermionSign_insertOccupation_of_not_lt {i k : Mode} {n : FermionOccupation Mode}
+theorem fermionSign_insertOccupation_of_not_lt {i k : Mode} {n : Occupation Mode}
     (_hk : k ∉ n) (h : ¬k < i) :
     fermionSign i (insertOccupation k n) = fermionSign i n := by
   have hfilter : (insertOccupation k n).filter (· < i) = n.filter (· < i) := by
     rw [insertOccupation, Finset.filter_insert, if_neg h]
   rw [fermionSign, fermionSign, hfilter]
 
-theorem fermionSign_removeOccupation_of_lt {i k : Mode} {n : FermionOccupation Mode}
+theorem fermionSign_removeOccupation_of_lt {i k : Mode} {n : Occupation Mode}
     (hk : k ∈ n) (h : k < i) :
     fermionSign i (removeOccupation k n) = -fermionSign i n := by
   have hfilter : (removeOccupation k n).filter (· < i) = (n.filter (· < i)).erase k := by
@@ -73,7 +74,7 @@ theorem fermionSign_removeOccupation_of_lt {i k : Mode} {n : FermionOccupation M
   rw [fermionSign, fermionSign, hfilter, ← hcard, pow_succ]
   ring
 
-theorem fermionSign_removeOccupation_of_not_lt {i k : Mode} {n : FermionOccupation Mode}
+theorem fermionSign_removeOccupation_of_not_lt {i k : Mode} {n : Occupation Mode}
     (_hk : k ∈ n) (h : ¬k < i) :
     fermionSign i (removeOccupation k n) = fermionSign i n := by
   have hfilter : (removeOccupation k n).filter (· < i) = n.filter (· < i) := by
@@ -82,21 +83,21 @@ theorem fermionSign_removeOccupation_of_not_lt {i k : Mode} {n : FermionOccupati
   rw [fermionSign, fermionSign, hfilter]
 
 omit [DecidableEq Mode] in
-theorem fermionSign_sq (i : Mode) (n : FermionOccupation Mode) :
+theorem fermionSign_sq (i : Mode) (n : Occupation Mode) :
     fermionSign i n * fermionSign i n = 1 := by
   rw [fermionSign, ← pow_add, ← two_mul, pow_mul]
   norm_num
 
 omit [DecidableEq Mode] in
 @[simp]
-theorem fermionSign_sq_complex (i : Mode) (n : FermionOccupation Mode) :
+theorem fermionSign_sq_complex (i : Mode) (n : Occupation Mode) :
     (fermionSign i n : ℂ) * (fermionSign i n : ℂ) = 1 := by
   rw [← Int.cast_mul, fermionSign_sq, Int.cast_one]
 
 /-- **The sign-cancellation identity behind `{aᵢ†, aⱼ†} = 0`.** For distinct, both-unoccupied
 modes `i, j`, the two orders of inserting `i` then `j` (vs. `j` then `i`) pick up opposite signs.
 Case-split on which of `i`, `j` comes first in the mode order. -/
-theorem fermionSign_create_create_cancel {i j : Mode} {n : FermionOccupation Mode} (hij : i ≠ j)
+theorem fermionSign_create_create_cancel {i j : Mode} {n : Occupation Mode} (hij : i ≠ j)
     (hi : i ∉ n) (hj : j ∉ n) :
     fermionSign j n * fermionSign i (insertOccupation j n) +
       fermionSign i n * fermionSign j (insertOccupation i n) = 0 := by
@@ -110,7 +111,7 @@ theorem fermionSign_create_create_cancel {i j : Mode} {n : FermionOccupation Mod
 
 /-- **The sign-cancellation identity behind `{aᵢ, aⱼ} = 0`.** For distinct, both-occupied modes
 `i, j`, the two orders of removing `i` then `j` (vs. `j` then `i`) pick up opposite signs. -/
-theorem fermionSign_annihilate_annihilate_cancel {i j : Mode} {n : FermionOccupation Mode}
+theorem fermionSign_annihilate_annihilate_cancel {i j : Mode} {n : Occupation Mode}
     (hij : i ≠ j) (hi : i ∈ n) (hj : j ∈ n) :
     fermionSign j n * fermionSign i (removeOccupation j n) +
       fermionSign i n * fermionSign j (removeOccupation i n) = 0 := by
@@ -124,7 +125,7 @@ theorem fermionSign_annihilate_annihilate_cancel {i j : Mode} {n : FermionOccupa
 
 /-! ## `{aᵢ†, aⱼ†} = 0` -/
 
-theorem anticomm_create_create_basisState (i j : Mode) (n : FermionOccupation Mode) :
+theorem anticomm_create_create_basisState (i j : Mode) (n : Occupation Mode) :
     anticomm (create i) (create j) (basisState n) = 0 := by
   rw [anticomm_apply]
   rcases eq_or_ne i j with rfl | hij
@@ -164,7 +165,7 @@ theorem create_comp_self (i : Mode) : (create i).comp (create i) = 0 := by
 
 /-! ## `{aᵢ, aⱼ} = 0` -/
 
-theorem anticomm_annihilate_annihilate_basisState (i j : Mode) (n : FermionOccupation Mode) :
+theorem anticomm_annihilate_annihilate_basisState (i j : Mode) (n : Occupation Mode) :
     anticomm (annihilate i) (annihilate j) (basisState n) = 0 := by
   rw [anticomm_apply]
   rcases eq_or_ne i j with rfl | hij
@@ -209,7 +210,7 @@ theorem annihilate_comp_self (i : Mode) : (annihilate i).comp (annihilate i) = 0
 
 /-! ## `{aᵢ, aⱼ†} = δᵢⱼ` -/
 
-theorem anticomm_annihilate_create_basisState (i j : Mode) (n : FermionOccupation Mode) :
+theorem anticomm_annihilate_create_basisState (i j : Mode) (n : Occupation Mode) :
     anticomm (annihilate i) (create j) (basisState n) = if i = j then basisState n else 0 := by
   rw [anticomm_apply]
   rcases eq_or_ne i j with rfl | hij
@@ -268,7 +269,7 @@ theorem anticomm_annihilate_create (i j : Mode) :
 omit [LinearOrder Mode] in
 /-- **The anticommutator is symmetric**, `{A, B} = {B, A}` — immediate from `anticomm`'s own
 definition `A ∘ B + B ∘ A` via `add_comm`. -/
-theorem anticomm_comm (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+theorem anticomm_comm (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     anticomm A B = anticomm B A := by
   rw [anticomm, anticomm, add_comm]
 
@@ -279,4 +280,5 @@ theorem anticomm_create_annihilate (i j : Mode) :
   rw [anticomm_comm, anticomm_annihilate_create]
   simp only [eq_comm]
 
+end Fermionic
 end SecondQuantization

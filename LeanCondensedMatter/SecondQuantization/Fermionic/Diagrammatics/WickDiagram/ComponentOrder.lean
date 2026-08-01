@@ -11,6 +11,7 @@ Thin public aliases for the statistics-independent component-order API used by q
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} {N : ℕ}
 
@@ -73,4 +74,5 @@ theorem QuarticWickDiagram.assembleVertexOrder_shuffleOfVertexOrder
     d.assembleVertexOrder orders (d.shuffleOfVertexOrder order orders h) = order :=
   Common.QuarticDiagram.assembleVertexOrder_shuffleOfVertexOrder d order orders h
 
+end Fermionic
 end SecondQuantization
