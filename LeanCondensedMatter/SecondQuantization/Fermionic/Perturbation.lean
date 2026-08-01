@@ -3,6 +3,9 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.ContinuousD
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonExpansionVerification
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticDysonPartitionFunction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterTheorem
+import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterRecurrence
+import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.AnalyticLinkedClusterIdentification
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
 
 set_option linter.style.header false
@@ -12,5 +15,6 @@ set_option linter.style.header false
 
 Finite-basis algebraic and continuous Dyson coefficients, the norm-convergent analytic Dyson
 evolution and its Volterra equation, coefficient verification, formal and convergent partition
-series, the analytic partition function, and vertex moments.
+series, the analytic partition function, normalized logarithm, analytic linked-cluster theorem, and
+vertex moments.
 -/
