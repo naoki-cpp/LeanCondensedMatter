@@ -68,5 +68,58 @@ theorem tsum_dysonPartitionCoeff_eq_analyticDysonPartitionFunction
       analyticDysonPartitionFunction ε β V lam :=
   (hasSum_dysonPartitionCoeff_eq_analyticDysonPartitionFunction ε hβ V lam).tsum_eq
 
+/-- The one-variable formal multilinear series whose scalar coefficients are exactly the existing
+fermionic Dyson partition coefficients. -/
+noncomputable def dysonPartitionFPowerSeries (ε : Mode → ℝ) (β : ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    FormalMultilinearSeries ℂ ℂ ℂ :=
+  FormalMultilinearSeries.ofScalars ℂ (dysonPartitionCoeff ε β V)
+
+omit [LinearOrder Mode] in
+/-- The Dyson partition Taylor series has infinite radius of convergence. -/
+theorem radius_dysonPartitionFPowerSeries_eq_top
+    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    (dysonPartitionFPowerSeries ε β V).radius = ∞ := by
+  apply FormalMultilinearSeries.radius_eq_top_of_summable_norm
+  intro r
+  have hs : Summable (fun n : ℕ =>
+      ‖(r : ℂ) ^ n * dysonPartitionCoeff ε β V n‖) :=
+    (hasSum_dysonPartitionCoeff_eq_analyticDysonPartitionFunction
+      ε hβ V (r : ℂ)).summable.norm
+  simpa [dysonPartitionFPowerSeries, norm_mul, norm_pow, mul_comm] using hs
+
+omit [LinearOrder Mode] in
+/-- The genuine partition function has the existing Dyson partition coefficients as its Taylor
+series at `λ = 0`, with infinite convergence radius. -/
+theorem hasFPowerSeriesOnBall_analyticDysonPartitionFunction
+    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    HasFPowerSeriesOnBall (analyticDysonPartitionFunction ε β V)
+      (dysonPartitionFPowerSeries ε β V) 0 ∞ := by
+  refine ⟨?_, ENNReal.top_pos, ?_⟩
+  · rw [radius_dysonPartitionFPowerSeries_eq_top ε hβ V]
+  · intro lam _
+    simpa [dysonPartitionFPowerSeries,
+      FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul, mul_comm] using
+      hasSum_dysonPartitionCoeff_eq_analyticDysonPartitionFunction ε hβ V lam
+
+omit [LinearOrder Mode] in
+/-- Taylor-series packaging at zero for downstream analytic logarithms. -/
+theorem hasFPowerSeriesAt_analyticDysonPartitionFunction
+    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    HasFPowerSeriesAt (analyticDysonPartitionFunction ε β V)
+      (dysonPartitionFPowerSeries ε β V) 0 :=
+  (hasFPowerSeriesOnBall_analyticDysonPartitionFunction ε hβ V).hasFPowerSeriesAt
+
+omit [LinearOrder Mode] in
+/-- The interacting finite-dimensional partition function is analytic at zero coupling. -/
+theorem analyticAt_analyticDysonPartitionFunction_zero
+    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    AnalyticAt ℂ (analyticDysonPartitionFunction ε β V) 0 :=
+  (hasFPowerSeriesAt_analyticDysonPartitionFunction ε hβ V).analyticAt
+
 end
 end SecondQuantization
