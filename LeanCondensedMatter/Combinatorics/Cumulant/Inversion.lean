@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.PartitionLattice
+import LeanCondensedMatter.Combinatorics.SetPartition.Mobius
 import Mathlib.Data.Complex.Basic
 
 set_option linter.style.header false
