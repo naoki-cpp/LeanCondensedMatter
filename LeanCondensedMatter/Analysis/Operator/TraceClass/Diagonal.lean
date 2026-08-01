@@ -57,4 +57,33 @@ theorem diagonalOp_apply_basis (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
     diagonalOp b a ha (b j) = ∑' i, diagonalTerm b a i (b j) := hmap.tsum_eq.symm
     _ = a j • b j := htsum
 
+/-- Rank-one operators on a Hilbert space are compact. -/
+theorem isCompactOperator_rankOne (x y : H) :
+    IsCompactOperator (InnerProductSpace.rankOne ℂ x y : H →L[ℂ] H) := by
+  rw [InnerProductSpace.rankOne_def']
+  exact (isCompactOperator_of_locallyCompactSpace_dom (innerSL ℂ y)).clm_comp
+    (ContinuousLinearMap.toSpanSingleton ℂ x)
+
+/-- Every term of the diagonal operator series is compact. -/
+theorem diagonalTerm_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ) (i : ι) :
+    IsCompactOperator (diagonalTerm b a i) :=
+  (isCompactOperator_rankOne (b i) (b i)).smul (a i)
+
+/-- A diagonal operator with absolutely summable coefficients is compact. -/
+theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
+    (ha : Summable fun i => ‖a i‖) : IsCompactOperator (diagonalOp b a ha) := by
+  classical
+  have hfinite (s : Finset ι) :
+      IsCompactOperator (∑ i ∈ s, diagonalTerm b a i) := by
+    induction s using Finset.induction_on with
+    | empty => simpa using isCompactOperator_zero
+    | @insert i s hi ih =>
+        simp only [Finset.sum_insert hi]
+        exact (diagonalTerm_isCompact b a i).add ih
+  refine isCompactOperator_of_tendsto
+    (F := fun s : Finset ι => ∑ i ∈ s, diagonalTerm b a i)
+    (f := diagonalOp b a ha) ?_ ?_
+  · exact hasSum_diagonalTerm b a ha
+  · exact Filter.Eventually.of_forall hfinite
+
 end ContinuousLinearMap.HilbertBasis
