@@ -21,6 +21,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
+      - name: Check SecondQuantization architecture
+        run: python3 scripts/check_second_quantization_architecture.py
       - uses: leanprover/lean-action@v1
         with:
           # Keep the whole library warning-free, including modules unchanged by the PR.
