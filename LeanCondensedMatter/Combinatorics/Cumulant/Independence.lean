@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.MomentCumulant
+import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
 
 set_option linter.style.header false
 
