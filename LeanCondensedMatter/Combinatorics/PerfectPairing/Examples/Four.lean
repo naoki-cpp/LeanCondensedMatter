@@ -9,9 +9,7 @@ Finite examples, not general API: the adjacent, crossing, and nested pairings of
 crossing counts.
 -/
 
-namespace SecondQuantization
-namespace Common
-namespace BlochDeDominicis
+namespace Combinatorics
 
 /-- The adjacent four-position pairing `(0,1)(2,3)`. -/
 def pairingAdjacent : Pairing 2 :=
@@ -42,6 +40,4 @@ theorem crossingCount_pairingCrossing : pairingCrossing.crossingCount = 1 := by
 theorem crossingCount_pairingNested : pairingNested.crossingCount = 0 := by
   decide
 
-end BlochDeDominicis
-end Common
-end SecondQuantization
+end Combinatorics
