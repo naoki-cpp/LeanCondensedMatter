@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticInteraction
 import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution
-import LeanCondensedMatter.SecondQuantization.Bosonic.OperatorAlgebra.ExchangeAlgebra
+import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.ExchangeAlgebra
 
 set_option linter.style.header false
 

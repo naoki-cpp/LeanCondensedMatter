@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.OperatorAlgebra.CCR
+import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR
 import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution
 
 set_option linter.style.header false

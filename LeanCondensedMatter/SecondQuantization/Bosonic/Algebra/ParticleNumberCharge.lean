@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.OperatorAlgebra.CreationAnnihilation
+import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.ParticleNumberSelectionRule
 
 set_option linter.style.header false

@@ -8,13 +8,13 @@ set_option linter.style.header false
 /-!
 # The fermionic number operator, and the reordering identity `c_i c_i† = id - N_i`
 
-The fermionic counterpart of `Bosonic/OperatorAlgebra/NumberOperator.lean`: `numberOperator i := create i ∘
+The fermionic counterpart of `Bosonic/Algebra/NumberOperator.lean`: `numberOperator i := create i ∘
 annihilate i`, its eigenvalue equation on basis states, and the reordering identity `c_i c_i† =
 id - N_i` (from CAR's `{c_i, c_i†} = id`, via the unified `ζ`-commutator
 `Common.exchangeCommutator`). Split out from `Hamiltonian.lean` (which still holds
 `totalNumberOperator`/`freeHamiltonian`/`interactionHamiltonian`, all built on top of this) so
 both statistics' number-operator layer live in symmetric files — mirroring
-`Bosonic/OperatorAlgebra/NumberOperator.lean`'s `numberOperator`/`numberOperator_apply`/`numberOperator_basisState`/
+`Bosonic/Algebra/NumberOperator.lean`'s `numberOperator`/`numberOperator_apply`/`numberOperator_basisState`/
 `exchangeCommutator_annihilate_create_self`/`annihilate_comp_create_self` exactly, up to the sign
 of `ζ`.
 -/

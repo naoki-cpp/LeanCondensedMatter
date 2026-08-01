@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution
-import LeanCondensedMatter.SecondQuantization.Bosonic.OperatorAlgebra.CCR
+import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CCR
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.TwoPoint
 

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution
-import LeanCondensedMatter.SecondQuantization.Bosonic.OperatorAlgebra.CreationAnnihilation
+import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.VertexLabel
 
 set_option linter.style.header false

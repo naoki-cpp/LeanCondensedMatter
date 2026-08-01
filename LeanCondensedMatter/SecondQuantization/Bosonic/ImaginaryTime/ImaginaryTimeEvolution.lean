@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.OperatorAlgebra.CreationAnnihilation
+import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering
