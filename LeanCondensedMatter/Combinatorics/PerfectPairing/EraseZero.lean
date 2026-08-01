@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
-import LeanCondensedMatter.Combinatorics.Common.DeletedFinPositions
+import LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions
 
 set_option linter.style.header false
 
@@ -7,21 +7,16 @@ set_option linter.style.header false
 # Removing position `0` and its partner from a `Pairing (n + 1)`
 
 `Pairing.eraseZeroPair` removes position `0` and its partner, reindexing the remaining positions
-in increasing order via `Combinatorics/Common/DeletedFinPositions.lean`'s
-`deletedPositionsOrderIso`. This is the combinatorial deletion step the finite-temperature
-Bloch–de Dominicis induction recurses on; `Pairing.insertFirstPair`
-(`PerfectPairing/InsertFirstPair.lean`) is its constructive counterpart.
+through the pure finite-index API in `Combinatorics.FiniteIndex`.
 -/
 
 namespace SecondQuantization
 namespace Common
 namespace BlochDeDominicis
 
-/-- The underlying map of `restrictedPartner`, `x ↦ partner x`, landing back in the same deleted
-positions: `partner` sends any position other than `0`/`partner 0` to another such position,
-since `partner` is an involution and `partner 0`'s own partner is `0`. Extracted once and used for
-both `restrictedPartner`'s `toFun` and `invFun` (an involution has a single underlying map, used
-in both directions), rather than duplicating this argument. -/
+open Combinatorics.FiniteIndex
+
+/-- The partner map restricted to the positions remaining after deleting `0` and `partner 0`. -/
 def Pairing.restrictedPartnerMap {n : ℕ} (pairing : Pairing (n + 1))
     (hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0)
     (x : deletedPositions n (pairing.partner 0) hzero) :
@@ -48,8 +43,7 @@ def Pairing.restrictedPartnerMap {n : ℕ} (pairing : Pairing (n + 1))
   exact ⟨pairing.partner x,
     Finset.mem_erase.mpr ⟨hpxj, Finset.mem_erase.mpr ⟨hpx0, Finset.mem_univ _⟩⟩⟩
 
-/-- Restrict a pairing partner permutation to the positions left after removing `0` and its
-partner.  The order-isomorphism back to `Fin (2 * n)` is applied by `eraseZeroPair`. -/
+/-- Restrict a pairing partner permutation to the surviving positions. -/
 def Pairing.restrictedPartner {n : ℕ} (pairing : Pairing (n + 1))
     (hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0) :
     deletedPositions n (pairing.partner 0) hzero ≃
@@ -71,10 +65,7 @@ theorem Pairing.restrictedPartner_partner_partner {n : ℕ} (pairing : Pairing (
   apply Subtype.ext
   exact pairing.partner_partner x
 
-/-- Remove position `0` and its partner, reindexing the remaining positions in increasing order.
-
-The resulting pairing is the combinatorial deletion step used by the finite-temperature
-Bloch--de Dominicis induction. -/
+/-- Remove position `0` and its partner, reindexing the remaining positions increasingly. -/
 noncomputable def Pairing.eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)) : Pairing n := by
   let hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0 :=
     Ne.symm (pairing.partner_ne 0)
@@ -108,8 +99,7 @@ theorem Pairing.eraseZeroPair_partner_apply {n : ℕ} (pairing : Pairing (n + 1)
       e.symm (pairing.restrictedPartner hzero (e i)) := by
   simp [Pairing.eraseZeroPair]
 
-/-- The order isomorphism used by `eraseZeroPair`, exposed as a named interface for later
-induction lemmas. -/
+/-- Increasing equivalence used by `eraseZeroPair`. -/
 noncomputable def Pairing.eraseZeroOrderIso {n : ℕ} (pairing : Pairing (n + 1)) :
     Fin (2 * n) ≃o
       deletedPositions n (pairing.partner 0)
