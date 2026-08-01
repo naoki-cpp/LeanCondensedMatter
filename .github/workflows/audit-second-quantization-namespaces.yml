@@ -1,0 +1,22 @@
+name: Audit SecondQuantization Namespaces
+
+on:
+  pull_request:
+    paths:
+      - scripts/audit_second_quantization_namespaces.py
+      - .github/workflows/audit-second-quantization-namespaces.yml
+      - LeanCondensedMatter/SecondQuantization/**
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Audit declaration ownership
+        run: python3 scripts/audit_second_quantization_namespaces.py
