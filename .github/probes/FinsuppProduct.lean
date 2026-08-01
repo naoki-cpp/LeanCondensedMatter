@@ -45,6 +45,8 @@ private theorem prod_option_finsupp_eq
   funext n
   simp only [Function.comp_apply, Finsupp.optionEquiv_apply]
   rw [Fintype.prod_option]
+  congr 1
+  exact Finset.prod_congr rfl fun i _ => by rw [Finsupp.some_apply]
 
 private theorem hasSum_prod_option_reindex
     {α R : Type*} [Fintype α] [NormedCommRing R]
@@ -59,27 +61,14 @@ private theorem hasSum_prod_option_reindex
   simpa only [Fintype.prod_option] using
     ((Equiv.hasSum_iff Finsupp.optionEquiv).mpr hprod)
 
-private theorem hasSum_prod_option
-    {α R : Type*} [Fintype α] [NormedCommRing R] [CompleteSpace R]
-    (f : Option α → ℕ → R) (a : Option α → R)
-    (hhead : HasSum (f none) (a none))
-    (htail : HasSum (fun n : α →₀ ℕ => ∏ i : α, f (Option.some i) (n i))
-      (∏ i : α, a (Option.some i)))
-    (habsHead : Summable (fun n => ‖f none n‖))
-    (habsTail : Summable
-      (fun n : α →₀ ℕ => ‖∏ i : α, f (Option.some i) (n i)‖)) :
-    HasSum (fun n : Option α →₀ ℕ => ∏ i : Option α, f i (n i))
-      (∏ i : Option α, a i) := by
-  have hmul : Summable
-      (fun p : ℕ × (α →₀ ℕ) =>
-        f none p.1 * ∏ i : α, f (Option.some i) (p.2 i)) :=
-    summable_mul_of_summable_norm habsHead habsTail
-  have hprod : HasSum
-      (fun p : ℕ × (α →₀ ℕ) =>
-        f none p.1 * ∏ i : α, f (Option.some i) (p.2 i))
-      (a none * ∏ i : α, a (Option.some i)) :=
-    hhead.mul htail hmul
-  exact hasSum_prod_option_reindex f a hprod
+private theorem hasSum_mul_of_summable_norm'
+    {α β R : Type*} [NormedCommRing R] [CompleteSpace R]
+    {f : α → R} {g : β → R} {a b : R}
+    (hf : HasSum f a) (hg : HasSum g b)
+    (habsF : Summable (fun i => ‖f i‖))
+    (habsG : Summable (fun i => ‖g i‖)) :
+    HasSum (fun p : α × β => f p.1 * g p.2) (a * b) :=
+  hf.mul hg (summable_mul_of_summable_norm habsF habsG)
 
 /-! ## The nonnegative-real case -/
 
@@ -125,7 +114,8 @@ theorem hasSum_prod_nonneg [Fintype ι] (g : ι → ℕ → ℝ) (b : ι → ℝ
         funext fun n => Real.norm_of_nonneg
           (Finset.prod_nonneg fun i _ => hnn (Option.some i) (n i))]
       exact htail.summable
-    exact hasSum_prod_option g b hhead htail habsHead habsTail
+    exact hasSum_prod_option_reindex g b
+      (hasSum_mul_of_summable_norm' hhead htail habsHead habsTail)
 
 end Nonneg
 
@@ -176,7 +166,8 @@ theorem hasSum_prod [Fintype ι] (f : ι → ℕ → R) (a : ι → R) (hf : ∀
     have habsTail : Summable
         (fun n : α →₀ ℕ => ‖∏ i : α, f (Option.some i) (n i)‖) :=
       summable_norm_prod (fun i => f (Option.some i)) (fun i => habs (Option.some i))
-    exact hasSum_prod_option f a hhead htail (habs none) habsTail
+    exact hasSum_prod_option_reindex f a
+      (hasSum_mul_of_summable_norm' hhead htail (habs none) habsTail)
 
 /-- **The geometric-series specialization**. -/
 theorem hasSum_prod_geometric {R : Type*} [NormedField R] [CompleteSpace R] {ι : Type*}
