@@ -66,9 +66,7 @@ noncomputable def gibbsState (Hop : Observable H) (β : ℝ)
     refine (gibbsOp_isPositive Hop β).smul_of_nonneg ?_
     have hZnonneg : 0 ≤ Z :=
       ContinuousLinearMap.trace_nonneg hsummable (gibbsOp_isPositive Hop β).toLinearMap
-    exact RCLike.ofReal_nonneg.mpr (by
-      dsimp [r]
-      exact inv_nonneg.mpr hZnonneg)
+    exact RCLike.ofReal_nonneg.mpr (inv_nonneg.mpr hZnonneg)
   have hsummableScaled :
       ContinuousLinearMap.HasSummableRealEigenvalues (r • gibbsOp Hop β) :=
     ContinuousLinearMap.isTraceClass_smul hrne hsummable
