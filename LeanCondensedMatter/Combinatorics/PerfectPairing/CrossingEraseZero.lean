@@ -7,17 +7,14 @@ set_option linter.style.header false
 # `crossingCount` splits along `firstPair`/`eraseZeroPair`
 
 `Pairing.crossingCount_eraseZeroPair` splits a pairing's total crossing count into crossings
-entirely among the remaining pairs after removing `firstPair` (`eraseZeroPair.crossingCount`) plus
-crossings with `firstPair` itself (`crossingsWithFirstPair`).
-`Pairing.crossingsWithFirstPair_mod_two` further identifies `crossingsWithFirstPair`'s parity with
-`interveningPositionCount`'s (the number of positions strictly between `0` and its partner) — the
-exponent-recurrence fact `Common/Thermal/BlochDeDominicis/PairingWeight.lean`'s `weight_eraseZeroPair`
-builds the induction's sign-matching step on.
+entirely among the remaining pairs after removing `firstPair` plus crossings with `firstPair`.
 -/
 
 namespace SecondQuantization
 namespace Common
 namespace BlochDeDominicis
+
+open Combinatorics.FiniteIndex
 
 theorem Pairing.eraseZeroPair_crosses_iff {n : ℕ} (pairing : Pairing (n + 1))
     (i k p q : Fin (2 * n)) :
@@ -39,7 +36,7 @@ theorem Pairing.eraseZeroPair_crosses_iff {n : ℕ} (pairing : Pairing (n + 1))
     · simpa using pairing.eraseZeroOrderIso.symm.strictMono hpq
 
 /-- Every normalized pair other than `firstPair` has both endpoints away from `0` and its
-partner: this is what lets `eraseZeroOrderIso.symm` be applied to it. -/
+partner. -/
 theorem Pairing.mem_pairs_endpoints_mem_deletedPositions {n : ℕ} (pairing : Pairing (n + 1))
     {p : Fin (2 * (n + 1)) × Fin (2 * (n + 1))} (hp : p ∈ pairing.pairs)
     (hne : p ≠ pairing.firstPair) :
@@ -74,9 +71,7 @@ theorem Pairing.mem_pairs_endpoints_mem_deletedPositions {n : ℕ} (pairing : Pa
   · simp [deletedPositions, Finset.mem_erase, h10, h1j]
   · simp [deletedPositions, Finset.mem_erase, h20, h2j]
 
-/-- The crossing count splits along the pair containing position `0`: crossings entirely among
-the remaining pairs (`eraseZeroPair.crossingCount`) plus crossings with `firstPair`
-(`crossingsWithFirstPair`). -/
+/-- The crossing count splits along the pair containing position `0`. -/
 theorem Pairing.crossingCount_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)) :
     pairing.crossingCount =
       pairing.eraseZeroPair.crossingCount + pairing.crossingsWithFirstPair := by
@@ -177,9 +172,7 @@ theorem Pairing.crossingCount_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)
 def Pairing.interveningPositionCount {n : ℕ} (pairing : Pairing (n + 1)) : ℕ :=
   (pairing.partner 0).val - 1
 
-/-- `firstPair`'s crossings correspond exactly to intervening positions whose partner lies past
-`partner 0`; the remaining intervening positions pair off amongst themselves and so contribute an
-even count. Hence `crossingsWithFirstPair` and `interveningPositionCount` agree mod `2`. -/
+/-- `crossingsWithFirstPair` and `interveningPositionCount` agree modulo two. -/
 theorem Pairing.crossingsWithFirstPair_mod_two {n : ℕ} (pairing : Pairing (n + 1)) :
     pairing.crossingsWithFirstPair % 2 = pairing.interveningPositionCount % 2 := by
   classical
