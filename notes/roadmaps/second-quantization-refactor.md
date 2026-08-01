@@ -72,6 +72,15 @@ PR #351 removed the `Bosonic/Foundations/` and `Bosonic/OperatorAlgebra/` split.
 Fock-space, ladder-operator, CCR, exchange, grading, and number-operator modules now live under
 `Bosonic/Algebra/`.
 
+### Discrete fermionic Dyson ownership
+
+The discrete finite-basis coefficient is now owned only by `Common.dysonCoeff`. The former
+`Fermionic/Perturbation/DysonExpansion.lean` forwarding module and root `SecondQuantization.dysonCoeff`
+name are removed. Fermionic verification, partition-series, and diagrammatic results specialize the
+Common construction explicitly with `fermionEnergy ε`.
+
+The architecture guard rejects reintroduction of the deleted module or import path.
+
 ### Analytic finite-mode fermionic line
 
 The analytic connection is already proved; it is not a pending milestone. In particular:
@@ -107,13 +116,10 @@ aliases should remain.
 
 ### R2 — Common ownership and wrapper removal
 
-Remove fermionic files whose public declarations are line-for-line specializations of Common APIs.
-The first confirmed targets are:
-
-- `Fermionic/Perturbation/DysonExpansion.lean`, which forwards `Common.dysonCoeff`, its recursion
-  theorems, matrix-coefficient continuity, and `Common.dysonTruncation`;
-- the generic portions of `Fermionic/Perturbation/ContinuousDyson.lean`, which forward continuous
-  finite-operator and analytic Dyson declarations.
+Continue removing fermionic declarations that are line-for-line specializations of Common APIs. The
+next confirmed target is the generic portion of
+`Fermionic/Perturbation/ContinuousDyson.lean`, which forwards continuous finite-operator and analytic
+Dyson declarations.
 
 Physics-facing corollaries may remain fermionic, but they should state their results directly using
 the authoritative Common construction.
