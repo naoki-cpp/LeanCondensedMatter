@@ -80,7 +80,7 @@ theorem coeff_normalizedDysonPartitionFPowerSeries_eq_formal
   change (freePartitionFunction ε β)⁻¹ *
       (dysonPartitionFPowerSeries ε β V).coeff n =
     dysonPartitionCoeff ε β V n / freePartitionFunction ε β
-  rw [coeff_dysonPartitionFPowerSeries]
+  rw [coeff_dysonPartitionFPowerSeries, dysonPartitionCoeff_eq_dysonTraceCoeff]
   simp [div_eq_mul_inv, mul_comm]
 
 /-- The local analytic logarithm of the normalized partition function.
