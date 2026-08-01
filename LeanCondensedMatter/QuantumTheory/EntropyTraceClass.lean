@@ -107,7 +107,9 @@ theorem entropyOp_trace_eq_tsum (ρ : DensityOperator H)
       Real.negMulLog a.1.1
     rw [hb_j]
     rw [entropyOp_apply_eigenvector ρ (apply_eigenvectorFamily hρcompact a)]
-    simp [e, (orthonormal_eigenvectorFamily hρcompact hρsym).1 a]
+    rw [inner_smul_right, inner_self_eq_norm_sq_to_K,
+      (orthonormal_eigenvectorFamily hρcompact hρsym).1 a]
+    simp
   have hzero (x : w) (hx : x ∉ Set.range j) : g x = 0 := by
     have hspan :
         Submodule.span ℂ (Set.range e) ≤ (ℂ ∙ (b x : H))ᗮ := by
@@ -117,8 +119,9 @@ theorem entropyOp_trace_eq_tsum (ρ : DensityOperator H)
       have hne : j a ≠ x := by
         intro h
         exact hx ⟨a, h⟩
-      have horth := b.orthonormal.2 hne
-      rwa [hb_j] at horth
+      have horth : inner ℂ (b (j a)) (b x) = 0 := b.orthonormal.2 hne
+      rw [hb_j] at horth
+      exact horth
     have hxorth :
         (b x : H) ∈ (Submodule.span ℂ (Set.range e)).topologicalClosureᗮ := by
       rw [Submodule.orthogonal_closure, Submodule.mem_orthogonal]
