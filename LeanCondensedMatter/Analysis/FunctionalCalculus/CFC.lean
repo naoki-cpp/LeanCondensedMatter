@@ -47,7 +47,9 @@ theorem Polynomial.aeval_apply_eigenvector {T : H →L[ℂ] H} {v : H} {c : ℝ}
     rw [Polynomial.eval_map]
     exact Polynomial.eval₂_at_apply (p := q) (algebraMap ℝ ℂ) c
   simp only [Polynomial.map_id]
-  rw [Module.End.aeval_apply_of_mem_apply_eq_smul hv, heval]
+  rw [Module.End.aeval_apply_of_mem_apply_eq_smul
+    (f := ContinuousLinearMap.toLinearMapRingHom T) (μ := (c : ℂ))
+    (x := v) (p := p) (by simpa using hv), heval]
 
 open Filter Topology
 
