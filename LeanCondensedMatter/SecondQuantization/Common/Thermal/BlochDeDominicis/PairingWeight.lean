@@ -11,7 +11,7 @@ set_option linter.style.header false
 `Pairing.lean` is purely combinatorial — `crossingCount`, `eraseZeroPair`, `insertFirstPair`,
 `equivSigma` — with no `Statistics`/`ℂ` dependency. This file adds the one physics-facing quantity
 built on top of it: the exchange-statistics weight `ζ ^ crossingCount`, where `ζ = +1` for bosons
-and `ζ = -1` for fermions (`Common.Statistics.zetaInt`). Splitting this out keeps the pairing
+and `ζ = -1` for fermions (`Statistics.zetaInt`). Splitting this out keeps the pairing
 combinatorics reusable independent of the exchange-statistics choice, and isolates the one place a
 future general/arbitrary-ring generalization of `Statistics` would need to touch.
 
@@ -23,7 +23,7 @@ Dominicis formula uses.
 namespace Combinatorics
 
 /-- The exchange-statistics weight `ζ ^ crossings` of a Bloch--de Dominicis pairing. -/
-noncomputable def Pairing.weight (s : SecondQuantization.Common.Statistics)
+noncomputable def Pairing.weight (s : SecondQuantization.Statistics)
     {n : ℕ} (pairing : Pairing n) : ℂ :=
   (s.zetaInt : ℂ) ^ pairing.crossingCount
 
