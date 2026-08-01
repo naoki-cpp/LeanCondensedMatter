@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - ".github/workflows/finsupp_product_heartbeat_probe.yml"
+      - ".github/probes/FinsuppProduct.lean"
       - "LeanCondensedMatter/Analysis/InfiniteSum/FinsuppProduct.lean"
   workflow_dispatch:
 
@@ -16,31 +17,15 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      - name: Remove unbounded heartbeat overrides in the runner workspace
+      - name: Install the candidate proof in the runner workspace
         run: |
-          python3 - <<'PY'
-          from pathlib import Path
-
-          path = Path("LeanCondensedMatter/Analysis/InfiniteSum/FinsuppProduct.lean")
-          text = path.read_text(encoding="utf-8")
-          text = text.replace(
-              "set_option maxHeartbeats 0 in\n"
-              "-- Unbounded: the induction below carries many local definitions through several rewrite\n"
-              "-- steps, which pushes elaboration past the default heartbeat budget even though each step is\n"
-              "-- individually simple.\n",
-              "",
-              1,
-          )
-          text = text.replace(
-              "set_option maxHeartbeats 0 in\n"
-              "-- Unbounded: same reason as `hasSum_prod_nonneg_fin` above.\n",
-              "",
-              1,
-          )
-          path.write_text(text, encoding="utf-8")
-          if "set_option maxHeartbeats 0" in text:
-              raise SystemExit("heartbeat override remains after probe rewrite")
-          PY
+          cp .github/probes/FinsuppProduct.lean \
+            LeanCondensedMatter/Analysis/InfiniteSum/FinsuppProduct.lean
+          if grep -n "set_option maxHeartbeats 0" \
+              LeanCondensedMatter/Analysis/InfiniteSum/FinsuppProduct.lean; then
+            echo "::error::candidate still contains an unbounded heartbeat override"
+            exit 1
+          fi
 
       - uses: leanprover/lean-action@v1
         with:
