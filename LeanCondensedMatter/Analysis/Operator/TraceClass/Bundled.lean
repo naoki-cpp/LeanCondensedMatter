@@ -1,6 +1,9 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
+import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 
 set_option linter.style.header false
+
+attribute [local instance] IsStarNormal.instContinuousFunctionalCalculus
 
 /-!
 # Bundled compact symmetric spectral-trace hypotheses
@@ -30,6 +33,18 @@ def ofPositive (hcompact : IsCompactOperator T) (hpos : T.IsPositive)
     (hsummable : HasSummableRealEigenvalues T) : SpectralTraceClass T where
   compact := hcompact
   symmetric := hpos.isSelfAdjoint.isSymmetric
+  summable := hsummable
+
+/-- Build bundled spectral-trace data for a continuous functional calculus transform.
+Compactness follows from compactness of the original self-adjoint operator together with `f 0 = 0`;
+self-adjointness of the transform supplies symmetry. Summability of the transformed nonzero
+eigenvalues remains an explicit hypothesis. -/
+def ofCFC {f : ℝ → ℝ} (hself : IsSelfAdjoint T) (hcompact : IsCompactOperator T)
+    (hf : Continuous f) (hf0 : f 0 = 0)
+    (hsummable : HasSummableRealEigenvalues (cfc f T)) :
+    SpectralTraceClass (cfc f T) where
+  compact := isCompactOperator_cfc_of_zero hself hcompact hf hf0
+  symmetric := (IsSelfAdjoint.cfc (f := f) (a := T)).isSymmetric
   summable := hsummable
 
 /-- The spectral trace associated with the bundled hypotheses. -/
