@@ -14,6 +14,7 @@ external crossing set is even, and the fermionic pairing weight factors over con
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 open Combinatorics
 
@@ -185,4 +186,5 @@ theorem QuarticWickDiagram.pairingInOrder_weight_eq_prod_components
   exact d.pairingInOrder_weight_eq_prod_components_of_externalCrossingPairs_mod_two_eq_zero
     s orders shuffle (d.externalCrossingPairs_mod_two_eq_zero orders shuffle)
 
+end Fermionic
 end SecondQuantization

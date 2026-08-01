@@ -26,6 +26,7 @@ surrounding diagram-connectedness plan.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 open Combinatorics
 
@@ -42,7 +43,7 @@ i.e. (via `freeGibbsExpectation_eq_gibbsExpectation`) `freeGibbsExpectation ε �
 bridge the general Bloch–de Dominicis theorem's own `Common.gibbsExpectation`-headed conclusion
 needs to reach `dysonVertexMoment`. -/
 theorem normalizedDysonPartitionCoeff_eq_freeGibbsExpectation (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) :
+    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ) :
     normalizedDysonPartitionCoeff ε β V n = freeGibbsExpectation ε β (Common.dysonCoeff (fermionEnergy ε) V n β) := by
   have hw : Common.boltzmannWeight (fermionEnergy ε) β = freeBoltzmannWeight ε β :=
     funext fun m => (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β m).symm
@@ -58,7 +59,7 @@ omit [LinearOrder Mode] in
 at order `S.card`** — folding `normalizedDysonPartitionCoeff_eq_freeGibbsExpectation` into
 `dysonVertexMoment`'s own `S.card! * normalizedDysonPartitionCoeff ... S.card` definition. -/
 theorem dysonVertexMoment_eq_freeGibbsExpectation {α : Type*} [DecidableEq α] (ε : Mode → ℝ)
-    (β : ℝ) (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (S : Finset α) :
+    (β : ℝ) (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (S : Finset α) :
     dysonVertexMoment ε β V S =
       (S.card.factorial : ℂ) * freeGibbsExpectation ε β (Common.dysonCoeff (fermionEnergy ε) V S.card β) := by
   rw [dysonVertexMoment, normalizedDysonPartitionCoeff_eq_freeGibbsExpectation]
@@ -72,7 +73,7 @@ operator-valued integrand `freeGibbsExpectation_comp_dysonCoeff_quarticInteracti
 `orderedSimplexIntegral`'s own convention. -/
 noncomputable def nestedVertexOperatorComp (ε : Mode → ℝ) :
     (n : ℕ) → (Fin n → QuarticVertexLabel Mode) → (Fin n → ℝ) →
-      FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode
+      FockSpace Mode →ₗ[ℂ] FockSpace Mode
   | 0, _, _ => LinearMap.id
   | _ + 1, q, τ =>
       (interactionPicture ε (quarticVertexOperator (q 0)) (τ 0)).comp
@@ -98,8 +99,8 @@ omit [LinearOrder Mode] in
 `Common.comp_operatorIntervalIntegral`/`Common.normalizedWeightedDiagonal_operatorIntervalIntegral`
 need. -/
 theorem continuous_matrixCoeff_interactionPicture_comp_dysonCoeff (ε : Mode → ℝ)
-    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ)
-    (k n' : FermionOccupation Mode) :
+    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ)
+    (k n' : Occupation Mode) :
     Continuous (fun σ : ℝ => Common.matrixCoeff
       ((interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)) k n') := by
   simp_rw [Common.matrixCoeff_comp]
@@ -116,13 +117,13 @@ with the coordinate-`0` projection) and the inductive hypothesis (precomposed wi
 projection `fun i => τ i.succ`). `[Fintype Mode]` is genuinely used (for the finite sum
 `Common.matrixCoeff_comp` needs), just not in the statement itself — the linter can't see that. -/
 theorem continuous_matrixCoeff_nestedVertexOperatorComp (ε : Mode → ℝ) :
-    ∀ (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) (k n' : FermionOccupation Mode),
+    ∀ (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) (k n' : Occupation Mode),
       Continuous (fun τ : Fin n → ℝ => Common.matrixCoeff (nestedVertexOperatorComp ε n q τ) k n')
   | 0, _, _, _ => continuous_const
   | n + 1, q, k, n' => by
     have heq : ∀ τ : Fin (n + 1) → ℝ, Common.matrixCoeff
         (nestedVertexOperatorComp ε (n + 1) q τ) k n' =
-          ∑ j : FermionOccupation Mode, Common.matrixCoeff
+          ∑ j : Occupation Mode, Common.matrixCoeff
             (interactionPicture ε (quarticVertexOperator (q 0)) (τ 0)) k j *
             Common.matrixCoeff
               (nestedVertexOperatorComp ε n (fun i => q i.succ) (fun i => τ i.succ)) j n' :=
@@ -143,12 +144,12 @@ applies) and each diagonal matrix coefficient of `L.comp (nestedVertexOperatorCo
 induction's successor-case integrand below. -/
 theorem continuous_freeGibbsExpectation_comp_nestedVertexOperatorComp (ε : Mode → ℝ) (β : ℝ)
     (n : ℕ) (q : Fin n → QuarticVertexLabel Mode)
-    (L : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    (L : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     Continuous (fun τ : Fin n → ℝ =>
       freeGibbsExpectation ε β (L.comp (nestedVertexOperatorComp ε n q τ))) := by
   have heq : ∀ τ : Fin n → ℝ, freeGibbsExpectation ε β (L.comp (nestedVertexOperatorComp ε n q τ))
-      = (∑ k' : FermionOccupation Mode, freeBoltzmannWeight ε β k' *
-          ∑ j : FermionOccupation Mode, Common.matrixCoeff L k' j *
+      = (∑ k' : Occupation Mode, freeBoltzmannWeight ε β k' *
+          ∑ j : Occupation Mode, Common.matrixCoeff L k' j *
             Common.matrixCoeff (nestedVertexOperatorComp ε n q τ) j k') /
         freePartitionFunction ε β := fun τ => by
     change Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β)
@@ -186,7 +187,7 @@ recursion's own integration variable `σ`) is exactly an instance of the same st
 than requiring a separate lemma for non-`β` bounds. -/
 theorem freeGibbsExpectation_comp_dysonCoeff_quarticInteraction (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) :
-    ∀ (n : ℕ) (t : ℝ) (L : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode),
+    ∀ (n : ℕ) (t : ℝ) (L : FockSpace Mode →ₗ[ℂ] FockSpace Mode),
       freeGibbsExpectation ε β (L.comp (Common.dysonCoeff (fermionEnergy ε) (quarticInteraction g) n t)) =
         (-1 : ℂ) ^ n * ∑ q : Fin n → QuarticVertexLabel Mode,
           (∏ i, g (q i)) * intervalIntegral.orderedSimplexIntegral n t
@@ -203,7 +204,7 @@ theorem freeGibbsExpectation_comp_dysonCoeff_quarticInteraction (ε : Mode → �
     set V := quarticInteraction g with hV
     -- Step 1: peel the outermost vertex factor off, pushing `L` and `freeGibbsExpectation`
     -- through `operatorIntervalIntegral`.
-    have hcont : ∀ k n' : FermionOccupation Mode,
+    have hcont : ∀ k n' : Occupation Mode,
         IntervalIntegrable (fun σ => Common.matrixCoeff
           ((interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)) k n') MeasureTheory.volume 0 t :=
       fun k n' =>
@@ -218,14 +219,14 @@ theorem freeGibbsExpectation_comp_dysonCoeff_quarticInteraction (ε : Mode → �
         (Common.dysonCoeff_succ (fermionEnergy ε) V n t)
     rw [hdysonSucc, LinearMap.comp_neg,
       Common.comp_operatorIntervalIntegral _ _ _ _ hcont, freeGibbsExpectation_neg]
-    have hcont2 : ∀ n' : FermionOccupation Mode,
+    have hcont2 : ∀ n' : Occupation Mode,
         IntervalIntegrable (fun σ => Common.matrixCoeff
           (L.comp ((interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ))) n' n')
           MeasureTheory.volume 0 t := by
       intro n'
       have heq : ∀ σ : ℝ, Common.matrixCoeff
           (L.comp ((interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ))) n' n' =
-          ∑ j : FermionOccupation Mode, Common.matrixCoeff L n' j *
+          ∑ j : Occupation Mode, Common.matrixCoeff L n' j *
             Common.matrixCoeff ((interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)) j n' :=
         fun σ => Common.matrixCoeff_comp L _ n' n'
       have hc : Continuous (fun σ => Common.matrixCoeff
@@ -337,7 +338,7 @@ omit [LinearOrder Mode] [Fintype Mode] in
 `Common.heisenbergEvolve_comp` at `energy := fermionEnergy ε`. Needed to unfold
 `quarticVertexOperator`'s evolution atom-by-atom. -/
 theorem imaginaryTimeEvolve_comp (ε : Mode → ℝ) (τ : ℝ)
-    (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     imaginaryTimeEvolve ε τ (A.comp B) =
       (imaginaryTimeEvolve ε τ A).comp (imaginaryTimeEvolve ε τ B) :=
   Common.heisenbergEvolve_comp (fermionEnergy ε) τ A B
@@ -576,7 +577,7 @@ theorem zetaCommutator_quarticLegOperatorForSequence {n : ℕ} (ε : Mode → �
     Common.zetaCommutator ((Statistics.fermion.zetaInt : ℤ) : ℂ)
         (quarticLegOperatorForSequence ε q τ p) (quarticLegOperatorForSequence ε q τ p') =
       flatVertexLegCommutatorCoeff ε q τ p p' •
-        (LinearMap.id : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) := by
+        (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
   rw [quarticLegOperatorForSequence_eq_smul, quarticLegOperatorForSequence_eq_smul,
     Common.zetaCommutator_smul_smul, zetaCommutator_quarticLocalLegOperator, smul_smul,
     flatVertexLegCommutatorCoeff]
@@ -938,4 +939,5 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude 
       ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d :=
   (sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment ε β g S).symm
 
+end Fermionic
 end SecondQuantization

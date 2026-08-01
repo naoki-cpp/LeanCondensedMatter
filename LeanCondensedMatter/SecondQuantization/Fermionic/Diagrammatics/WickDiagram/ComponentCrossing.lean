@@ -12,6 +12,7 @@ crossings between distinct components.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 open Combinatorics
 
@@ -136,4 +137,5 @@ theorem QuarticWickDiagram.card_internalCrossingPairs_eq_sum_crossingCount
     ((d.restrictComponent B.2).pairingInOrder (orders B)).crossingCount_eq_card_crossingPair
   exact hcard.symm
 
+end Fermionic
 end SecondQuantization

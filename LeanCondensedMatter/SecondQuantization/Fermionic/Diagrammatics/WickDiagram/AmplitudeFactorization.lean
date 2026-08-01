@@ -17,6 +17,7 @@ introduced at this assembly boundary.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] {N : ℕ}
 
@@ -96,4 +97,5 @@ theorem quarticWickDiagramAmplitude_eq_prod_restrictComponentConnected
     d.sum_orderedSimplexContribution_eq_prod_components]
   rw [← Finset.prod_mul_distrib]
 
+end Fermionic
 end SecondQuantization

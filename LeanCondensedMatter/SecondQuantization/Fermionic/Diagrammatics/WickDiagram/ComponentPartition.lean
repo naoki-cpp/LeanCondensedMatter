@@ -11,6 +11,7 @@ vertex labels while preserving the existing public names.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} {N : ℕ}
 
@@ -56,4 +57,5 @@ theorem QuarticWickDiagram.exists_componentBlock_eq_of_mem {S : Finset (Fin N)}
 
 end
 
+end Fermionic
 end SecondQuantization

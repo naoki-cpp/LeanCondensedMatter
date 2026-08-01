@@ -11,6 +11,7 @@ quartic vertex labels while preserving the existing public API.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 open Combinatorics
 
@@ -55,4 +56,5 @@ noncomputable def QuarticWickDiagram.reassemble {S : Finset (Fin N)} (π : Finpa
 
 end
 
+end Fermionic
 end SecondQuantization

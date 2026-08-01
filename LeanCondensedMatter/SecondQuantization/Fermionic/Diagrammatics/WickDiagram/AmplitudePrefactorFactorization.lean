@@ -13,6 +13,7 @@ shuffle identity for the vertex-order sum of ordered-simplex contributions.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} {N : ℕ}
 
@@ -50,4 +51,5 @@ theorem QuarticWickDiagram.amplitudePrefactor_eq_prod_restrictComponentConnected
   rw [d.dysonSign_eq_prod_componentSigns, d.couplingWeight_eq_prod_restrictComponentConnected]
   rw [Finset.prod_mul_distrib]
 
+end Fermionic
 end SecondQuantization

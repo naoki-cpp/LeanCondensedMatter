@@ -47,6 +47,7 @@ trace.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 open Combinatorics
 
@@ -60,7 +61,7 @@ specialized to the vertex-label sequence `d.vertexLabel ∘ order` induced by th
 vertex order `order`. -/
 noncomputable def orderedQuarticLegOperator (ε : Mode → ℝ) {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (order : QuarticVertexOrder S) (τ : Fin S.card → ℝ) :
-    Fin (2 * (2 * S.card)) → FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
+    Fin (2 * (2 * S.card)) → FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ
 
 /-! ## Pair contraction values -/
@@ -207,4 +208,5 @@ theorem quarticWickDiagramAmplitude_empty (ε : Mode → ℝ) (β : ℝ) (g : Qu
     Finset.sum_const, Finset.card_univ, Fintype.card_unique]
   simp
 
+end Fermionic
 end SecondQuantization

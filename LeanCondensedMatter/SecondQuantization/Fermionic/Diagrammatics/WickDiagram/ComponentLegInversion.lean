@@ -11,6 +11,7 @@ follows that a reversed pair of vertex slots contributes exactly `4 × 4 = 16` r
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} {N : ℕ}
 
@@ -120,4 +121,5 @@ theorem QuarticWickDiagram.sum_componentOrderedLeg_inversions_eq_sum_vertex_inve
           intro j _
           exact d.sum_componentOrderedLeg_inversions_at_vertices shuffle B C hBC i j
 
+end Fermionic
 end SecondQuantization

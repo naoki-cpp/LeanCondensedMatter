@@ -43,6 +43,7 @@ single-mode coincidence), so that part of the argument already generalizes.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
@@ -55,7 +56,7 @@ The middle term vanishes (`⟨cᵢcᵢ⟩_w = 0` from `annihilate_comp_self`), l
 + ⟨cᵢ†cᵢ⟩_w) = ⟨cᵢcᵢ†⟩_w · ⟨id⟩_w = ⟨cᵢcᵢ†⟩_w`, which matches the left side by `cᵢcᵢ†`'s
 idempotency (`annihilate_comp_create_comp_self`). -/
 theorem normalizedWeightedDiagonal_annihilate_create_annihilate_create_single_mode
-    (w : FermionOccupation Mode → ℂ) (hw : Common.weightSum w ≠ 0) (i : Mode) :
+    (w : Occupation Mode → ℂ) (hw : Common.weightSum w ≠ 0) (i : Mode) :
     Common.normalizedWeightedDiagonal w
         (((annihilate i).comp (create i)).comp ((annihilate i).comp (create i))) =
       Common.normalizedWeightedDiagonal w ((annihilate i).comp (create i)) *
@@ -70,4 +71,5 @@ theorem normalizedWeightedDiagonal_annihilate_create_annihilate_create_single_mo
     ← Common.normalizedWeightedDiagonal_add, annihilate_comp_create_add_create_comp_annihilate,
     Common.normalizedWeightedDiagonal_id w hw, mul_one]
 
+end Fermionic
 end SecondQuantization

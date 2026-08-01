@@ -14,6 +14,7 @@ These coordinate lemmas are the first part of the contraction-integrand factoriz
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} {N : ℕ}
 
@@ -207,4 +208,5 @@ theorem orderedQuarticPairValue_componentOrderedLeg (ε : Mode → ℝ) (β : �
 
 end Fermionic
 
+end Fermionic
 end SecondQuantization

@@ -7,7 +7,7 @@ set_option linter.style.header false
 # The fermionic `Common.ExchangeAlgebra` instance
 
 Instantiates `Common/Algebra/ExchangeAlgebra.lean`'s `Common.ExchangeAlgebra` at `Statistics.fermion` for
-`FermionOccupation Mode`, from `CanonicalAnticommutationRelations.lean`'s CAR facts
+`Occupation Mode`, from `CanonicalAnticommutationRelations.lean`'s CAR facts
 (`anticomm_annihilate_create`/`_annihilate_annihilate`/`_create_create`) via the bridging fact
 that `Common.exchangeCommutator Statistics.fermion` and `anticomm` are the same operator, for
 *any* two operators (not just at a single mode — unlike `Fermionic/Algebra/NumberOperator.lean`'s
@@ -16,6 +16,7 @@ induction needs the all-index exchange relation this instance packages).
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
 
@@ -24,7 +25,7 @@ omit [LinearOrder Mode] in
 the `ζ = -1` case of the `ζ`-commutator (`Common.zetaCommutator`), for arbitrary operators `A`, `B`
 (not just at a single mode). -/
 theorem exchangeCommutator_fermion_eq_anticomm
-    (A B : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     Common.exchangeCommutator Statistics.fermion A B = anticomm A B := by
   rw [Common.exchangeCommutator, Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one,
     Common.zetaCommutator, neg_one_smul, sub_neg_eq_add]
@@ -32,7 +33,7 @@ theorem exchangeCommutator_fermion_eq_anticomm
 
 /-- **The fermionic exchange algebra.** -/
 noncomputable instance exchangeAlgebra :
-    Common.ExchangeAlgebra Statistics.fermion Mode (FermionOccupation Mode) where
+    Common.ExchangeAlgebra Statistics.fermion Mode (Occupation Mode) where
   annihilate := annihilate
   create := create
   annihilate_create i j := by
@@ -42,4 +43,5 @@ noncomputable instance exchangeAlgebra :
   create_create i j := by
     rw [exchangeCommutator_fermion_eq_anticomm, anticomm_create_create]
 
+end Fermionic
 end SecondQuantization

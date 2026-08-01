@@ -36,6 +36,7 @@ flags this discontinuity).
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
@@ -47,7 +48,7 @@ omit [Fintype Mode] in
 `i` (removed by `annihilate i`, and never reintroduced since `i ≠ j`) — so it can never return a
 nonzero `n`-coefficient. -/
 theorem matrixCoeff_annihilate_comp_create_of_ne {i j : Mode} (hij : i ≠ j)
-    (n : FermionOccupation Mode) :
+    (n : Occupation Mode) :
     Common.matrixCoeff ((annihilate i).comp (create j)) n n = 0 := by
   change ((annihilate i).comp (create j)) (basisState n) n = 0
   by_cases hj : j ∈ n
@@ -74,7 +75,7 @@ omit [Fintype Mode] in
 (`anticomm_annihilate_create`) at `i ≠ j`: the two orders sum to zero, so one vanishing forces the
 other. -/
 theorem matrixCoeff_create_comp_annihilate_of_ne {i j : Mode} (hij : i ≠ j)
-    (n : FermionOccupation Mode) :
+    (n : Occupation Mode) :
     Common.matrixCoeff ((create j).comp (annihilate i)) n n = 0 := by
   have hanticomm := anticomm_annihilate_create i j
   rw [if_neg hij, anticomm] at hanticomm
@@ -88,20 +89,20 @@ theorem matrixCoeff_create_comp_annihilate_of_ne {i j : Mode} (hij : i ≠ j)
   change ((create j).comp (annihilate i)) (basisState n) n = 0
   linear_combination hcoeff - h1
 
-theorem weightedTrace_annihilate_comp_create_of_ne (w : FermionOccupation Mode → ℂ) {i j : Mode}
+theorem weightedTrace_annihilate_comp_create_of_ne (w : Occupation Mode → ℂ) {i j : Mode}
     (hij : i ≠ j) : Common.weightedTrace w ((annihilate i).comp (create j)) = 0 := by
   simp [Common.weightedTrace, matrixCoeff_annihilate_comp_create_of_ne hij]
 
-theorem weightedTrace_create_comp_annihilate_of_ne (w : FermionOccupation Mode → ℂ) {i j : Mode}
+theorem weightedTrace_create_comp_annihilate_of_ne (w : Occupation Mode → ℂ) {i j : Mode}
     (hij : i ≠ j) : Common.weightedTrace w ((create j).comp (annihilate i)) = 0 := by
   simp [Common.weightedTrace, matrixCoeff_create_comp_annihilate_of_ne hij]
 
-theorem normalizedWeightedDiagonal_annihilate_comp_create_of_ne (w : FermionOccupation Mode → ℂ)
+theorem normalizedWeightedDiagonal_annihilate_comp_create_of_ne (w : Occupation Mode → ℂ)
     {i j : Mode} (hij : i ≠ j) :
     Common.normalizedWeightedDiagonal w ((annihilate i).comp (create j)) = 0 := by
   rw [Common.normalizedWeightedDiagonal, weightedTrace_annihilate_comp_create_of_ne w hij, zero_div]
 
-theorem normalizedWeightedDiagonal_create_comp_annihilate_of_ne (w : FermionOccupation Mode → ℂ)
+theorem normalizedWeightedDiagonal_create_comp_annihilate_of_ne (w : Occupation Mode → ℂ)
     {i j : Mode} (hij : i ≠ j) :
     Common.normalizedWeightedDiagonal w ((create j).comp (annihilate i)) = 0 := by
   rw [Common.normalizedWeightedDiagonal, weightedTrace_create_comp_annihilate_of_ne w hij, zero_div]
@@ -239,4 +240,5 @@ theorem freeGibbsGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mode}
       Common.normalizedWeightedDiagonal_neg,
       normalizedWeightedDiagonal_create_comp_annihilate_of_ne _ hij]
 
+end Fermionic
 end SecondQuantization

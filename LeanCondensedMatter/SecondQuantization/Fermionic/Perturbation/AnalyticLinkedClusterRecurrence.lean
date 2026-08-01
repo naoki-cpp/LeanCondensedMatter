@@ -15,6 +15,7 @@ logarithm.
 open scoped BigOperators Topology
 
 namespace SecondQuantization
+namespace Fermionic
 
 open Filter Set
 
@@ -27,7 +28,7 @@ omit [LinearOrder Mode] in
 coefficients of the normalized formal Dyson partition series. -/
 theorem iteratedDeriv_normalizedAnalyticDysonPartitionFunction_eq_powerSeriesMomentCoeff
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
-    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) :
+    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ) :
     iteratedDeriv n (normalizedAnalyticDysonPartitionFunction ε β V) 0 =
       Combinatorics.powerSeriesMomentCoeff
         (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) n := by
@@ -50,7 +51,7 @@ omit [LinearOrder Mode] in
 normalized analytic partition function. -/
 theorem iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
-    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) :
+    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ) :
     iteratedDeriv (n + 1) (normalizedAnalyticDysonPartitionFunction ε β V) 0 =
       ∑ k ∈ Finset.range (n + 1),
         (Nat.choose n k : ℂ) *
@@ -83,4 +84,5 @@ theorem iteratedDeriv_normalizedAnalyticDysonPartitionFunction_succ_eq_sum_log
   simpa [F, G] using hiter.symm
 
 end
+end Fermionic
 end SecondQuantization

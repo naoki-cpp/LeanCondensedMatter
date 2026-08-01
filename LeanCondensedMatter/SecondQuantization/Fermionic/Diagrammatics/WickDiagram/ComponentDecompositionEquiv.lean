@@ -11,6 +11,7 @@ This module preserves the fermionic API while delegating the label-generic equiv
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} {N : ℕ}
 
@@ -44,4 +45,5 @@ noncomputable abbrev QuarticWickDiagram.componentDecompositionEquiv {S : Finset 
         ∀ B : π.parts, ConnectedQuarticWickDiagram Mode N (B : Finset (Fin N)) :=
   Common.QuarticDiagram.componentDecompositionEquiv
 
+end Fermionic
 end SecondQuantization

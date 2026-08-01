@@ -30,6 +30,7 @@ reference notes' `c_i† c_j† c_l c_k` convention for a vertex labelled `(i, j
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
@@ -39,14 +40,14 @@ abbrev QuarticVertexLabel (Mode : Type*) := Common.QuarticVertexLabel Mode
 /-- **The quartic vertex operator**, `c_{q.create₁}† c_{q.create₂}† c_{q.annihilate₂}
 c_{q.annihilate₁}` — see the module docstring for why this specific operator order is fixed. -/
 noncomputable def quarticVertexOperator (q : QuarticVertexLabel Mode) :
-    FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
+    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   (create q.create₁).comp
     ((create q.create₂).comp ((annihilate q.annihilate₂).comp (annihilate q.annihilate₁)))
 
 /-- **The quartic interaction**, `Σ_q g(q) • quarticVertexOperator q` — a genuine, generally
 non-diagonal number-conserving quartic interaction, for an arbitrary coupling `g`. -/
 noncomputable def quarticInteraction (g : QuarticVertexLabel Mode → ℂ) :
-    FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
+    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   ∑ q, g q • quarticVertexOperator q
 
 omit [Fintype Mode] in
@@ -94,4 +95,5 @@ theorem interactionPicture_quarticInteraction (ε : Mode → ℝ) (g : QuarticVe
   rw [Common.heisenbergEvolve_smul]
   rfl
 
+end Fermionic
 end SecondQuantization

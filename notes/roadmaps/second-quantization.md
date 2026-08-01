@@ -71,7 +71,7 @@ Fermionic, Bosonic
 The fermionic basis is
 
 ```lean
-FermionOccupation Mode := Finset Mode
+Fermionic.Occupation Mode := Finset Mode
 ```
 
 with algebraic Fock space, signed creation/annihilation operators, CAR, number operators, free

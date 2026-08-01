@@ -14,6 +14,7 @@ amplitude sum.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] {N : ℕ}
 
@@ -77,4 +78,5 @@ theorem dysonVertexCumulant_quarticInteraction_eq_sum_connectedQuarticWickDiagra
       simpa only [W] using
         quarticWickDiagramMultiplicativeWeight_connectedContribution ε β g S
 
+end Fermionic
 end SecondQuantization

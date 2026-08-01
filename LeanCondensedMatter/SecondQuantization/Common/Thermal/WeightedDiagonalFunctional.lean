@@ -10,7 +10,7 @@ set_option linter.style.header false
 
 A statistics-agnostic utility for a *finite* occupation-state type `Config` (`[Fintype Config]`):
 generalizes `Fermionic/WeightedDiagonalFunctional.lean`'s finite-mode-set trace, weighted trace,
-total weight, and normalized weighted diagonal functional away from `FermionOccupation Mode`
+total weight, and normalized weighted diagonal functional away from `Fermionic.Occupation Mode`
 specifically — the construction never used anything fermion-specific (Pauli exclusion, the `Finset
 Mode` representation, or any statistics constant), only `matrixCoeff`/`basisState` on
 `AlgebraicFock Config` and finiteness of `Config` for the finite sum.
@@ -32,7 +32,7 @@ thermal (Gibbs-state) expectation only once `w` is specialized to a positive Bol
 
 `Fermionic/WeightedDiagonalFunctional.lean` keeps its own `weightedTrace`/`weightSum`/
 `normalizedWeightedDiagonal`/`traceFock` names as thin specializations of the definitions here
-(`Config := FermionOccupation Mode`), so existing fermionic call sites are unaffected.
+(`Config := Fermionic.Occupation Mode`), so existing fermionic call sites are unaffected.
 -/
 
 namespace SecondQuantization
@@ -190,7 +190,7 @@ theorem matrixCoeff_comp (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock C
 the standard finite-dimensional matrix-trace cyclicity, from `matrixCoeff_comp` and swapping the
 order of a double sum. **This is `[Fintype Config]`-specific finite-configuration infrastructure,
 not a statistics-agnostic building block usable for both lines of Track D as-is**: the fermionic
-`FermionOccupation Mode := Finset Mode` is a `Fintype` once `Mode` is, but the bosonic
+`Fermionic.Occupation Mode := Finset Mode` is a `Fintype` once `Mode` is, but the bosonic
 `Occupation Mode := Mode →₀ ℕ` is genuinely infinite (unbounded occupation per mode) even for a
 finite mode set, so it is *not* an instance of `[Fintype Config]` and this theorem does not apply
 to it. A bosonic thermal-trace cyclicity needs a separate, summability-aware statement — e.g.

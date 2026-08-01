@@ -13,6 +13,7 @@ normalized Dyson partition series and identifies the result with connected quart
 open scoped BigOperators
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
@@ -21,7 +22,7 @@ omit [LinearOrder Mode] in
 partition coefficients. -/
 theorem coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff
     (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) :
+    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ) :
     PowerSeries.coeff n
         (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) =
       normalizedDysonPartitionCoeff ε β V n := by
@@ -34,7 +35,7 @@ omit [LinearOrder Mode] in
 series is its finite-set Dyson vertex cumulant. -/
 theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant
     (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode)
+    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
     (n : ℕ) (hn : n ≠ 0) :
     (n.factorial : ℂ) *
         PowerSeries.coeff n (dysonFormalLogPartitionFunction ε β V) =
@@ -95,4 +96,5 @@ theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmpl
       dysonVertexCumulant_quarticInteraction_eq_sum_connectedQuarticWickDiagramAmplitude
         ε β g huniv
 
+end Fermionic
 end SecondQuantization

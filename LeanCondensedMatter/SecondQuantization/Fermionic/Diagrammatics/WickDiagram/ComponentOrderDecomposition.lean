@@ -11,6 +11,7 @@ Wick diagrams.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode M : Type*} {N : ℕ}
 
@@ -54,4 +55,5 @@ theorem QuarticWickDiagram.sum_vertexOrder_eq_sum_componentOrders_shuffle [AddCo
       ∑ x : d.ComponentVertexOrders × d.ComponentShuffle, F x :=
   Common.QuarticDiagram.sum_vertexOrder_eq_sum_componentOrders_shuffle d F
 
+end Fermionic
 end SecondQuantization

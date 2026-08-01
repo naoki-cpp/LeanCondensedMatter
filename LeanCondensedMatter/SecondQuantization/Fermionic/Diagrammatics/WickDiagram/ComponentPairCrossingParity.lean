@@ -16,6 +16,7 @@ then reduces the total parity for two components to quartic vertex-block inversi
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 open Combinatorics
 
@@ -263,4 +264,5 @@ theorem QuarticWickDiagram.componentGeometricCrossingCount_mod_two_eq_zero
     orders shuffle B C hBC,
     d.componentPairEndpointInversionSum_mod_two_eq_zero orders shuffle B C hBC]
 
+end Fermionic
 end SecondQuantization

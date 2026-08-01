@@ -56,6 +56,7 @@ need to know anything about `w`'s specific values.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
@@ -67,7 +68,7 @@ omit [Fintype Mode] in
 composed via `Common.CarriesGradingDegree.comp`), so by the particle-number selection rule
 (`Common.diagonalCoeff_eq_zero_of_carriesGradingDegree`) its diagonal matrix coefficients
 vanish identically. -/
-theorem matrixCoeff_annihilate_comp_annihilate (i j : Mode) (n : FermionOccupation Mode) :
+theorem matrixCoeff_annihilate_comp_annihilate (i j : Mode) (n : Occupation Mode) :
     Common.matrixCoeff ((annihilate i).comp (annihilate j)) n n = 0 :=
   Common.diagonalCoeff_eq_zero_of_carriesGradingDegree
     ((carriesParticleNumberCharge_annihilate i).comp (carriesParticleNumberCharge_annihilate j))
@@ -77,7 +78,7 @@ omit [Fintype Mode] in
 /-- **Creating twice never returns to the same occupation state**, the creation-side mirror of
 `matrixCoeff_annihilate_comp_annihilate`: `(create i).comp (create j)` carries particle-number
 charge `+2`. -/
-theorem matrixCoeff_create_comp_create (i j : Mode) (n : FermionOccupation Mode) :
+theorem matrixCoeff_create_comp_create (i j : Mode) (n : Occupation Mode) :
     Common.matrixCoeff ((create i).comp (create j)) n n = 0 :=
   Common.diagonalCoeff_eq_zero_of_carriesGradingDegree
     ((carriesParticleNumberCharge_create i).comp (carriesParticleNumberCharge_create j))
@@ -85,20 +86,20 @@ theorem matrixCoeff_create_comp_create (i j : Mode) (n : FermionOccupation Mode)
 
 /-! ## Vanishing at the level of the thermal weighted trace and expectation value -/
 
-theorem weightedTrace_annihilate_comp_annihilate (w : FermionOccupation Mode → ℂ) (i j : Mode) :
+theorem weightedTrace_annihilate_comp_annihilate (w : Occupation Mode → ℂ) (i j : Mode) :
     Common.weightedTrace w ((annihilate i).comp (annihilate j)) = 0 := by
   simp [Common.weightedTrace, matrixCoeff_annihilate_comp_annihilate]
 
-theorem weightedTrace_create_comp_create (w : FermionOccupation Mode → ℂ) (i j : Mode) :
+theorem weightedTrace_create_comp_create (w : Occupation Mode → ℂ) (i j : Mode) :
     Common.weightedTrace w ((create i).comp (create j)) = 0 := by
   simp [Common.weightedTrace, matrixCoeff_create_comp_create]
 
-theorem normalizedWeightedDiagonal_annihilate_comp_annihilate (w : FermionOccupation Mode → ℂ)
+theorem normalizedWeightedDiagonal_annihilate_comp_annihilate (w : Occupation Mode → ℂ)
     (i j : Mode) :
     Common.normalizedWeightedDiagonal w ((annihilate i).comp (annihilate j)) = 0 := by
   rw [Common.normalizedWeightedDiagonal, weightedTrace_annihilate_comp_annihilate, zero_div]
 
-theorem normalizedWeightedDiagonal_create_comp_create (w : FermionOccupation Mode → ℂ)
+theorem normalizedWeightedDiagonal_create_comp_create (w : Occupation Mode → ℂ)
     (i j : Mode) : Common.normalizedWeightedDiagonal w ((create i).comp (create j)) = 0 := by
   rw [Common.normalizedWeightedDiagonal, weightedTrace_create_comp_create, zero_div]
 
@@ -110,7 +111,7 @@ Combines `imaginaryTimeEvolve_annihilate` (each evolved annihilation operator is
 of the un-evolved one) with `normalizedWeightedDiagonal_annihilate_comp_annihilate` on both
 time-ordering branches. -/
 theorem normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate (ε : Mode → ℝ)
-    (w : FermionOccupation Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
+    (w : Occupation Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
     Common.normalizedWeightedDiagonal w
       (Common.timeOrderedProduct Statistics.fermion
         (imaginaryTimeEvolve ε τ (annihilate i)) (imaginaryTimeEvolve ε τ' (annihilate j)) τ τ')
@@ -132,7 +133,7 @@ theorem normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate (ε 
 /-- **`⟨T_τ[c_i†(τ) c_j†(τ')]⟩_w = 0`**: the creation-side mirror of
 `normalizedWeightedDiagonal_timeOrderedProduct_annihilate_annihilate`. -/
 theorem normalizedWeightedDiagonal_timeOrderedProduct_create_create (ε : Mode → ℝ)
-    (w : FermionOccupation Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
+    (w : Occupation Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
     Common.normalizedWeightedDiagonal w
       (Common.timeOrderedProduct Statistics.fermion
         (imaginaryTimeEvolve ε τ (create i)) (imaginaryTimeEvolve ε τ' (create j)) τ τ')
@@ -151,4 +152,5 @@ theorem normalizedWeightedDiagonal_timeOrderedProduct_create_create (ε : Mode �
     simp [LinearMap.smul_comp, LinearMap.comp_smul, Common.normalizedWeightedDiagonal_smul,
       Common.normalizedWeightedDiagonal_neg, normalizedWeightedDiagonal_create_comp_create]
 
+end Fermionic
 end SecondQuantization

@@ -11,6 +11,7 @@ fermionic quartic vertex labels while preserving the existing public API.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} {N : ℕ}
 
@@ -80,4 +81,5 @@ noncomputable def QuarticWickDiagram.restrictComponentConnected {S : Finset (Fin
 
 end
 
+end Fermionic
 end SecondQuantization

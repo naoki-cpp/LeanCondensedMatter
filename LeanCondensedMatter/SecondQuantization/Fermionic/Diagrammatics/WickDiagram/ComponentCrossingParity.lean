@@ -13,6 +13,7 @@ remaining statement that the complementary crossing set has even cardinality.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 open Combinatorics
 
@@ -81,4 +82,5 @@ theorem QuarticWickDiagram.pairingInOrder_weight_eq_prod_components_of_externalC
     (d.crossingCount_mod_two_eq_sum_of_externalCrossingPairs_mod_two_eq_zero
       orders shuffle hExternal)
 
+end Fermionic
 end SecondQuantization

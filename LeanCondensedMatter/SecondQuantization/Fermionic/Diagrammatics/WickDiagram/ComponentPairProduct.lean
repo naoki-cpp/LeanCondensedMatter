@@ -14,6 +14,7 @@ iterated product over components and local pairs.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 open Combinatorics
 
@@ -345,4 +346,5 @@ theorem QuarticWickDiagram.prod_orderedQuarticPairValue_pairs_eq_prod_components
 
 end Fermionic
 
+end Fermionic
 end SecondQuantization

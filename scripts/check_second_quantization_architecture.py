@@ -32,6 +32,14 @@ STATISTICS_IMPORT = re.compile(
 PHYSICS_IMPORT = re.compile(
     r"^\s*import\s+LeanCondensedMatter\.SecondQuantization(?:\.|\s|$)"
 )
+LEGACY_FERMIONIC_IDENTIFIER = re.compile(
+    r"FockSpaceFermionic|FermionOccupation|fermionParticleNumber|fermionVacuum"
+)
+FERMIONIC_DECLARATION = re.compile(
+    r"(?m)^\s*(?:(?:private|protected)\s+)?(?:noncomputable\s+)?"
+    r"(?:abbrev|def|theorem|lemma|instance|structure|class|inductive|opaque)\b"
+)
+CANONICAL_FERMIONIC_NAMESPACE = "namespace SecondQuantization\nnamespace Fermionic"
 
 
 def lean_files(root: Path):
@@ -84,6 +92,27 @@ def check_dependency_direction(errors: list[str]) -> None:
                     )
 
 
+def check_fermionic_namespace(errors: list[str]) -> None:
+    for path in lean_files(ROOT / "LeanCondensedMatter"):
+        text = path.read_text(encoding="utf-8")
+        for match in LEGACY_FERMIONIC_IDENTIFIER.finditer(text):
+            line_no = text.count("\n", 0, match.start()) + 1
+            errors.append(
+                f"legacy fermionic identifier: {relative(path)}:{line_no}: {match.group(0)}"
+            )
+
+    for path in lean_files(SQ / "Fermionic"):
+        text = path.read_text(encoding="utf-8")
+        if not FERMIONIC_DECLARATION.search(text):
+            continue
+        root_blocks = len(re.findall(r"(?m)^namespace SecondQuantization\s*$", text))
+        canonical_blocks = text.count(CANONICAL_FERMIONIC_NAMESPACE)
+        if root_blocks == 0 or root_blocks != canonical_blocks:
+            errors.append(
+                f"fermionic declarations outside canonical namespace: {relative(path)}"
+            )
+
+
 def check_entry_point(errors: list[str]) -> None:
     entry = SQ.with_suffix(".lean")
     if not entry.is_file():
@@ -99,6 +128,7 @@ def main() -> int:
     errors: list[str] = []
     check_removed_paths(errors)
     check_dependency_direction(errors)
+    check_fermionic_namespace(errors)
     check_entry_point(errors)
 
     if errors:

@@ -10,6 +10,7 @@ Atomic time-evolved leg operators for a sequence of quartic vertex labels.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
@@ -19,8 +20,9 @@ and time assignment `τ`**: look up which slot/local-leg the position correspond
 time. -/
 noncomputable def quarticLegOperatorForSequence (ε : Mode → ℝ) {n : ℕ}
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))) :
-    FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode :=
+    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   let slotLeg := orderedQuarticLegEquiv n p
   imaginaryTimeEvolve ε (τ slotLeg.1) (quarticLocalLegOperator (q slotLeg.1) slotLeg.2)
 
+end Fermionic
 end SecondQuantization

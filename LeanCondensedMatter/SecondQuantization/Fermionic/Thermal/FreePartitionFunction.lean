@@ -20,13 +20,14 @@ each fermionic mode's occupation is `0` or `1`, so every sum here is manifestly 
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
 omit [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] in
 /-- **The free Boltzmann weight factorizes mode-by-mode**: `e^{-β E(n)} = ∏_{i ∈ n} e^{-βε_i}`,
 since `E(n) = Σ_{i ∈ n} ε_i`. -/
-theorem freeBoltzmannWeight_eq_prod (ε : Mode → ℝ) (β : ℝ) (n : FermionOccupation Mode) :
+theorem freeBoltzmannWeight_eq_prod (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
     freeBoltzmannWeight ε β n = ∏ i ∈ n, Complex.exp (-(β : ℂ) * (ε i : ℂ)) := by
   rw [freeBoltzmannWeight, Finset.mul_sum, Complex.exp_sum]
 
@@ -59,12 +60,12 @@ theorem freeGibbsExpectation_numberOperator (ε : Mode → ℝ) (β : ℝ) (i : 
   set f : Mode → ℂ := fun j => Complex.exp (-(β : ℂ) * (ε j : ℂ)) with hf
   set P : ℂ := ∏ j ∈ Finset.univ.erase i, (1 + f j) with hP
   have hfilter_not :
-      (Finset.univ : Finset (FermionOccupation Mode)).filter (i ∉ ·) =
+      (Finset.univ : Finset (Occupation Mode)).filter (i ∉ ·) =
         (Finset.univ.erase i : Finset Mode).powerset := by
     ext t
     simp [Finset.mem_powerset, Finset.subset_erase]
   have hsum_not :
-      ∑ n ∈ (Finset.univ : Finset (FermionOccupation Mode)).filter (i ∉ ·),
+      ∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∉ ·),
         freeBoltzmannWeight ε β n = P := by
     rw [hfilter_not]
     exact sum_freeBoltzmannWeight_powerset_eq_prod ε β _
@@ -76,11 +77,11 @@ theorem freeGibbsExpectation_numberOperator (ε : Mode → ℝ) (β : ℝ) (i : 
     rw [← Complex.ofReal_sum]
     refine Complex.ofReal_ne_zero.2 (ne_of_gt ?_)
     apply Finset.sum_pos (fun n _ => Real.exp_pos _)
-    exact ⟨fermionVacuum, Finset.mem_filter.2 ⟨Finset.mem_univ _, by simp [fermionVacuum]⟩⟩
+    exact ⟨vacuum, Finset.mem_filter.2 ⟨Finset.mem_univ _, by simp [vacuum]⟩⟩
   have hnum : Common.weightedTrace (freeBoltzmannWeight ε β) (numberOperator i) = f i * P := by
     have hsplit :
         Common.weightedTrace (freeBoltzmannWeight ε β) (numberOperator i) +
-          ∑ n ∈ (Finset.univ : Finset (FermionOccupation Mode)).filter (i ∉ ·),
+          ∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∉ ·),
             freeBoltzmannWeight ε β n
           = freePartitionFunction ε β := by
       rw [weightedTrace_numberOperator, freePartitionFunction, Common.weightSum]
@@ -97,4 +98,5 @@ theorem freeGibbsExpectation_numberOperator (ε : Mode → ℝ) (β : ℝ) (i : 
   rw [hnum, hZ, hfi]
   field_simp
 
+end Fermionic
 end SecondQuantization

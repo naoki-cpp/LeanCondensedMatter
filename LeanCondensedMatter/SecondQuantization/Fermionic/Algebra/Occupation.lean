@@ -9,7 +9,7 @@ set_option linter.style.header false
 Track D's primary line now targets the finite-mode *fermionic* case first (Linked Cluster
 Theorem groundwork, `notes/roadmaps/second-quantization.md`). Pauli exclusion means a fermionic
 occupation-number state is fully determined by *which* modes are occupied — no mode can hold more
-than one particle — so `FermionOccupation Mode := Finset Mode` (the set of occupied modes), unlike
+than one particle — so `Occupation Mode := Finset Mode` (the set of occupied modes), unlike
 the bosonic case's `Mode →₀ ℕ` (`BosonOccupation.lean`).
 
 This file only covers the occupation-number bookkeeping (vacuum, particle number, inserting/
@@ -20,66 +20,67 @@ in place.
 -/
 
 namespace SecondQuantization
+namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode]
 
 /-- **Fermionic occupation-number state.** The set of occupied modes; Pauli exclusion means each
 mode is either occupied (present) or empty (absent), with no multiplicity. -/
-abbrev FermionOccupation (Mode : Type*) := Finset Mode
+abbrev Occupation (Mode : Type*) := Finset Mode
 
 /-- **The vacuum occupation configuration**: no mode occupied. -/
-def fermionVacuum : FermionOccupation Mode := ∅
+def vacuum : Occupation Mode := ∅
 
 /-- **The total particle number** of a fermionic occupation-number state: the number of occupied
 modes. -/
-def fermionParticleNumber (n : FermionOccupation Mode) : ℕ := n.card
+def particleNumber (n : Occupation Mode) : ℕ := n.card
 
 omit [DecidableEq Mode] in
 @[simp]
-theorem fermionParticleNumber_fermionVacuum :
-    fermionParticleNumber (fermionVacuum : FermionOccupation Mode) = 0 :=
+theorem particleNumber_vacuum :
+    particleNumber (vacuum : Occupation Mode) = 0 :=
   Finset.card_empty
 
 /-- **Occupying mode `i`.** Adds `i` to the occupied set; a no-op if `i` was already occupied
 (Pauli exclusion — this is the set-level bookkeeping only, without the sign factor that
 accompanies the actual fermionic creation operator). -/
-def insertOccupation (i : Mode) (n : FermionOccupation Mode) : FermionOccupation Mode :=
+def insertOccupation (i : Mode) (n : Occupation Mode) : Occupation Mode :=
   insert i n
 
 /-- **Vacating mode `i`.** Removes `i` from the occupied set; a no-op if `i` was already empty. -/
-def removeOccupation (i : Mode) (n : FermionOccupation Mode) : FermionOccupation Mode :=
+def removeOccupation (i : Mode) (n : Occupation Mode) : Occupation Mode :=
   n.erase i
 
-theorem fermionParticleNumber_insertOccupation_of_not_mem {i : Mode} {n : FermionOccupation Mode}
+theorem particleNumber_insertOccupation_of_not_mem {i : Mode} {n : Occupation Mode}
     (h : i ∉ n) :
-    fermionParticleNumber (insertOccupation i n) = fermionParticleNumber n + 1 :=
+    particleNumber (insertOccupation i n) = particleNumber n + 1 :=
   Finset.card_insert_of_notMem h
 
-theorem fermionParticleNumber_insertOccupation_of_mem {i : Mode} {n : FermionOccupation Mode}
+theorem particleNumber_insertOccupation_of_mem {i : Mode} {n : Occupation Mode}
     (h : i ∈ n) :
-    fermionParticleNumber (insertOccupation i n) = fermionParticleNumber n := by
-  rw [fermionParticleNumber, fermionParticleNumber, insertOccupation, Finset.insert_eq_self.2 h]
+    particleNumber (insertOccupation i n) = particleNumber n := by
+  rw [particleNumber, particleNumber, insertOccupation, Finset.insert_eq_self.2 h]
 
-theorem fermionParticleNumber_removeOccupation_of_mem {i : Mode} {n : FermionOccupation Mode}
+theorem particleNumber_removeOccupation_of_mem {i : Mode} {n : Occupation Mode}
     (h : i ∈ n) :
-    fermionParticleNumber (removeOccupation i n) + 1 = fermionParticleNumber n :=
+    particleNumber (removeOccupation i n) + 1 = particleNumber n :=
   Finset.card_erase_add_one h
 
-theorem fermionParticleNumber_removeOccupation_of_not_mem {i : Mode} {n : FermionOccupation Mode}
+theorem particleNumber_removeOccupation_of_not_mem {i : Mode} {n : Occupation Mode}
     (h : i ∉ n) :
-    fermionParticleNumber (removeOccupation i n) = fermionParticleNumber n := by
-  rw [fermionParticleNumber, fermionParticleNumber, removeOccupation, Finset.erase_eq_of_notMem h]
+    particleNumber (removeOccupation i n) = particleNumber n := by
+  rw [particleNumber, particleNumber, removeOccupation, Finset.erase_eq_of_notMem h]
 
 /-! ## The `Common.OccupationBasis` instance -/
 
-/-- **The fermionic occupation-basis instance**: `FermionOccupation Mode` reads off each mode's
+/-- **The fermionic occupation-basis instance**: `Occupation Mode` reads off each mode's
 occupation number as `1`/`0` (occupied/empty) — the concrete side of `Common.OccupationBasis`'s
 shared interface, mirroring `SecondQuantization.Bosonic.occupationBasis`
 (`Bosonic/Algebra/Occupation.lean`). -/
-instance occupationBasis : Common.OccupationBasis Mode (FermionOccupation Mode) where
-  vacuum := fermionVacuum
+instance occupationBasis : Common.OccupationBasis Mode (Occupation Mode) where
+  vacuum := vacuum
   occupation n i := if i ∈ n then 1 else 0
-  occupation_vacuum i := by simp [fermionVacuum]
+  occupation_vacuum i := by simp [vacuum]
   finiteSupport n := (Finset.finite_toSet n).subset fun i hi => by
     by_contra hin
     exact hi (if_neg hin)
@@ -87,4 +88,5 @@ instance occupationBasis : Common.OccupationBasis Mode (FermionOccupation Mode) 
     have hi := h i
     by_cases hm : i ∈ m <;> by_cases hn : i ∈ n <;> simp_all
 
+end Fermionic
 end SecondQuantization
