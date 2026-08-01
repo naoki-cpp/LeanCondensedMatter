@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - agent/remove-continuous-interaction-picture-wrapper
+  pull_request:
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -159,4 +162,4 @@ Dyson-diagram continuity proofs now use
           git commit -m "Remove continuous interaction-picture wrapper"
           git push origin HEAD:agent/remove-continuous-interaction-picture-wrapper
 
-# Trigger after workflow registration.
+# Trigger through the draft PR event.
