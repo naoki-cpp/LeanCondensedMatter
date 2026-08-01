@@ -15,6 +15,9 @@ with the existing formal `dysonPartitionCoeff` API.
 
 namespace SecondQuantization
 
+open Filter Set
+open scoped Topology
+
 noncomputable section
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
@@ -36,8 +39,13 @@ theorem analyticDysonPartitionFunction_eq_trace_analyticDysonEvolution
       Common.finiteOperatorTrace
         ((continuousImaginaryTimeEvolveFree ε (-β)).comp
           (analyticDysonEvolution ε V β lam)) := by
-  rw [analyticDysonPartitionFunction,
-    continuousImaginaryTimeEvolveFree_neg_mul_analyticDysonEvolution_eq_exp ε V hβ lam]
+  unfold analyticDysonPartitionFunction
+  apply congrArg Common.finiteOperatorTrace
+  change NormedSpace.exp ((-β) • continuousInteractingHamiltonian ε V lam) =
+    continuousImaginaryTimeEvolveFree ε (-β) *
+      analyticDysonEvolution ε V β lam
+  exact (continuousImaginaryTimeEvolveFree_neg_mul_analyticDysonEvolution_eq_exp
+    ε V hβ lam).symm
 
 omit [LinearOrder Mode] in
 /-- The existing fermionic Dyson partition coefficients sum to the genuine interacting partition
@@ -54,7 +62,7 @@ theorem hasSum_dysonPartitionCoeff_eq_analyticDysonPartitionFunction
       (fun n : ℕ => lam ^ n * dysonPartitionCoeff ε β V n) := by
     funext n
     rw [dysonPartitionCoeff_eq_dysonTraceCoeff]
-  rw [hterms]
+  rw [hterms] at h
   rw [analyticDysonPartitionFunction_eq_trace_analyticDysonEvolution ε hβ V lam]
   exact h
 
@@ -80,7 +88,7 @@ omit [LinearOrder Mode] in
 theorem radius_dysonPartitionFPowerSeries_eq_top
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
-    (dysonPartitionFPowerSeries ε β V).radius = ∞ := by
+    (dysonPartitionFPowerSeries ε β V).radius = ⊤ := by
   apply FormalMultilinearSeries.radius_eq_top_of_summable_norm
   intro r
   have hs : Summable (fun n : ℕ =>
@@ -96,7 +104,7 @@ theorem hasFPowerSeriesOnBall_analyticDysonPartitionFunction
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
     (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
     HasFPowerSeriesOnBall (analyticDysonPartitionFunction ε β V)
-      (dysonPartitionFPowerSeries ε β V) 0 ∞ := by
+      (dysonPartitionFPowerSeries ε β V) 0 ⊤ := by
   refine ⟨?_, ENNReal.top_pos, ?_⟩
   · rw [radius_dysonPartitionFPowerSeries_eq_top ε hβ V]
   · intro lam _
