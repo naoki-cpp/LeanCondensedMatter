@@ -76,9 +76,11 @@ theorem coeff_normalizedDysonPartitionFPowerSeries_eq_formal
       PowerSeries.coeff n
         (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) := by
   rw [coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
-  simp [normalizedDysonPartitionFPowerSeries, normalizedDysonPartitionCoeff,
-    coeff_dysonPartitionFPowerSeries, dysonPartitionCoeff_eq_dysonTraceCoeff,
-    div_eq_mul_inv, mul_comm]
+  change (freePartitionFunction ε β)⁻¹ *
+      (dysonPartitionFPowerSeries ε β V).coeff n =
+    (freePartitionFunction ε β)⁻¹ *
+      Common.dysonTraceCoeff (fermionEnergy ε) β V n
+  rw [coeff_dysonPartitionFPowerSeries, dysonPartitionCoeff_eq_dysonTraceCoeff]
 
 /-- The local analytic logarithm of the normalized partition function.
 
@@ -134,10 +136,9 @@ theorem hasFPowerSeriesAt_analyticNormalizedLogPartitionFunction
   have h := hlog.comp
     (hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction ε hβ V)
   change HasFPowerSeriesAt
-    (Complex.log ∘ normalizedAnalyticDysonPartitionFunction ε β V)
-    (complexLogFPowerSeriesAtOne.comp (normalizedDysonPartitionFPowerSeries ε β V)) 0 at h
-  simpa [analyticNormalizedLogPartitionFunction, analyticNormalizedLogFPowerSeries,
-    Function.comp_def] using h
+    (fun x => Complex.log (normalizedAnalyticDysonPartitionFunction ε β V x))
+    (complexLogFPowerSeriesAtOne.comp (normalizedDysonPartitionFPowerSeries ε β V)) 0
+  exact h
 
 omit [LinearOrder Mode] in
 /-- The `n`-th derivative of the analytic logarithm is `n!` times the scalar coefficient of its
