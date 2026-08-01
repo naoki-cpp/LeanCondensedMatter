@@ -44,6 +44,13 @@ private theorem finpartition_empty_unique (P : Finpartition (∅ : Finset α)) :
       simp at hB
   simpa [hparts]
 
+private theorem parts_empty (P : Finpartition (∅ : Finset α)) : P.parts = ∅ := by
+  ext B
+  constructor
+  · intro hB
+    exact (P.ne_bot hB (Finset.subset_empty.mp (P.subset hB))).elim
+  · simp
+
 private theorem momentFromCumulant_empty (κ : Finset α → R) :
     Finpartition.momentFromCumulant κ ∅ = 1 := by
   classical
@@ -52,7 +59,8 @@ private theorem momentFromCumulant_empty (κ : Finset α → R) :
       uniq := finpartition_empty_unique }
   have hdefault : (default : Finpartition (∅ : Finset α)) = ⊥ :=
     finpartition_empty_unique _
-  simp [Finpartition.momentFromCumulant, Finpartition.partitionProduct, hdefault]
+  simp [Finpartition.momentFromCumulant, Finpartition.partitionProduct, hdefault,
+    parts_empty]
 
 private theorem cumulantFromMoment_empty (m : Finset α → R) :
     Finpartition.cumulantFromMoment m ∅ = 1 := by
@@ -64,7 +72,8 @@ private theorem cumulantFromMoment_empty (m : Finset α → R) :
     finpartition_empty_unique _
   have hbot_top : (⊥ : Finpartition (∅ : Finset α)) = ⊤ :=
     Subsingleton.elim _ _
-  simp [Finpartition.cumulantFromMoment, Finpartition.partitionProduct, hdefault, hbot_top]
+  simp [Finpartition.cumulantFromMoment, Finpartition.partitionProduct, hdefault, hbot_top,
+    parts_empty]
 
 /-- Moment transform on normalized finite-set functions. -/
 noncomputable def moment (κ : NormalizedSetFunction α R) : NormalizedSetFunction α R where
