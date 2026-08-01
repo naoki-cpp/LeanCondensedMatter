@@ -1,0 +1,180 @@
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonTrace
+import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.ContinuousDyson
+import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
+
+set_option linter.style.header false
+
+/-!
+# The analytic finite-dimensional fermionic partition function
+
+For finitely many fermionic modes, the interacting Gibbs operator is a Banach-algebra exponential
+in the continuous finite-dimensional operator realization. Its trace is the genuine analytic
+partition function. The convergent interaction-picture Dyson sum is identified coefficientwise
+with the existing formal `dysonPartitionCoeff` API.
+-/
+
+namespace SecondQuantization
+
+open Filter Set
+open scoped Topology
+
+noncomputable section
+
+variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+
+/-- The genuine finite-dimensional interacting partition function
+`Tr exp(-β (H₀ + λV))`. -/
+noncomputable def analyticDysonPartitionFunction (ε : Mode → ℝ) (β : ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (lam : ℂ) : ℂ :=
+  Common.finiteOperatorTrace
+    (NormedSpace.exp ((-β) • continuousInteractingHamiltonian ε V lam))
+
+omit [LinearOrder Mode] in
+/-- The analytic partition function is the thermal trace of the interaction-picture Dyson
+operator. -/
+theorem analyticDysonPartitionFunction_eq_trace_analyticDysonEvolution
+    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (lam : ℂ) :
+    analyticDysonPartitionFunction ε β V lam =
+      Common.finiteOperatorTrace
+        ((continuousImaginaryTimeEvolveFree ε (-β)).comp
+          (analyticDysonEvolution ε V β lam)) := by
+  unfold analyticDysonPartitionFunction
+  apply congrArg Common.finiteOperatorTrace
+  change NormedSpace.exp ((-β) • continuousInteractingHamiltonian ε V lam) =
+    continuousImaginaryTimeEvolveFree ε (-β) *
+      analyticDysonEvolution ε V β lam
+  exact (continuousImaginaryTimeEvolveFree_neg_mul_analyticDysonEvolution_eq_exp
+    ε V hβ lam).symm
+
+omit [LinearOrder Mode] in
+/-- The existing fermionic Dyson partition coefficients sum to the genuine interacting partition
+function. -/
+theorem hasSum_dysonPartitionCoeff_eq_analyticDysonPartitionFunction
+    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (lam : ℂ) :
+    HasSum (fun n : ℕ => lam ^ n * dysonPartitionCoeff ε β V n)
+      (analyticDysonPartitionFunction ε β V lam) := by
+  have h := Common.hasSum_dysonTraceCoeff_eq_trace_analyticDysonEvolution
+    (fermionEnergy ε) hβ V lam
+  have hterms :
+      (fun n : ℕ => lam ^ n * Common.dysonTraceCoeff (fermionEnergy ε) β V n) =
+      (fun n : ℕ => lam ^ n * dysonPartitionCoeff ε β V n) := by
+    funext n
+    rw [dysonPartitionCoeff_eq_dysonTraceCoeff]
+  rw [hterms] at h
+  rw [analyticDysonPartitionFunction_eq_trace_analyticDysonEvolution ε hβ V lam]
+  exact h
+
+omit [LinearOrder Mode] in
+/-- `dysonPartitionSeries` evaluates by a genuine convergent `tsum` to the analytic partition
+function. -/
+theorem tsum_dysonPartitionCoeff_eq_analyticDysonPartitionFunction
+    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (lam : ℂ) :
+    (∑' n : ℕ, lam ^ n * dysonPartitionCoeff ε β V n) =
+      analyticDysonPartitionFunction ε β V lam :=
+  (hasSum_dysonPartitionCoeff_eq_analyticDysonPartitionFunction ε hβ V lam).tsum_eq
+
+/-- The one-variable formal multilinear series whose scalar coefficients are exactly the existing
+fermionic Dyson partition coefficients. -/
+noncomputable def dysonPartitionFPowerSeries (ε : Mode → ℝ) (β : ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    FormalMultilinearSeries ℂ ℂ ℂ :=
+  FormalMultilinearSeries.ofScalars ℂ (dysonPartitionCoeff ε β V)
+
+omit [LinearOrder Mode] in
+@[simp]
+theorem coeff_dysonPartitionFPowerSeries (ε : Mode → ℝ) (β : ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) :
+    (dysonPartitionFPowerSeries ε β V).coeff n =
+      dysonPartitionCoeff ε β V n := by
+  simp [dysonPartitionFPowerSeries]
+
+omit [LinearOrder Mode] in
+/-- The formal `PowerSeries` coefficient and the analytic formal-multilinear coefficient are the
+same Dyson partition coefficient. -/
+theorem coeff_dysonPartitionFPowerSeries_eq_coeff_dysonPartitionSeries
+    (ε : Mode → ℝ) (β : ℝ)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) (n : ℕ) :
+    (dysonPartitionFPowerSeries ε β V).coeff n =
+      PowerSeries.coeff n (dysonPartitionSeries ε β V) := by
+  rw [coeff_dysonPartitionFPowerSeries, coeff_dysonPartitionSeries]
+
+omit [LinearOrder Mode] in
+/-- The Dyson partition Taylor series has infinite radius of convergence. -/
+theorem radius_dysonPartitionFPowerSeries_eq_top
+    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    (dysonPartitionFPowerSeries ε β V).radius = ⊤ := by
+  apply FormalMultilinearSeries.radius_eq_top_of_summable_norm
+  intro r
+  have hs : Summable (fun n : ℕ =>
+      ‖(r : ℂ) ^ n * dysonPartitionCoeff ε β V n‖) :=
+    (hasSum_dysonPartitionCoeff_eq_analyticDysonPartitionFunction
+      ε hβ V (r : ℂ)).summable.norm
+  simpa [dysonPartitionFPowerSeries, norm_mul, norm_pow, mul_comm] using hs
+
+omit [LinearOrder Mode] in
+/-- The genuine partition function has the existing Dyson partition coefficients as its Taylor
+series at `λ = 0`, with infinite convergence radius. -/
+theorem hasFPowerSeriesOnBall_analyticDysonPartitionFunction
+    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    HasFPowerSeriesOnBall (analyticDysonPartitionFunction ε β V)
+      (dysonPartitionFPowerSeries ε β V) 0 ⊤ := by
+  refine ⟨?_, by simp, ?_⟩
+  · rw [radius_dysonPartitionFPowerSeries_eq_top ε hβ V]
+  · intro lam _
+    simpa [dysonPartitionFPowerSeries,
+      FormalMultilinearSeries.ofScalars_apply_eq, smul_eq_mul, mul_comm] using
+      hasSum_dysonPartitionCoeff_eq_analyticDysonPartitionFunction ε hβ V lam
+
+omit [LinearOrder Mode] in
+/-- Taylor-series packaging at zero for downstream analytic logarithms. -/
+theorem hasFPowerSeriesAt_analyticDysonPartitionFunction
+    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    HasFPowerSeriesAt (analyticDysonPartitionFunction ε β V)
+      (dysonPartitionFPowerSeries ε β V) 0 :=
+  (hasFPowerSeriesOnBall_analyticDysonPartitionFunction ε hβ V).hasFPowerSeriesAt
+
+omit [LinearOrder Mode] in
+/-- The interacting finite-dimensional partition function is analytic at zero coupling. -/
+theorem analyticAt_analyticDysonPartitionFunction_zero
+    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    AnalyticAt ℂ (analyticDysonPartitionFunction ε β V) 0 :=
+  (hasFPowerSeriesAt_analyticDysonPartitionFunction ε hβ V).analyticAt
+
+omit [LinearOrder Mode] in
+/-- At zero coupling, the analytic partition function is the free partition function. -/
+@[simp]
+theorem analyticDysonPartitionFunction_zero
+    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    analyticDysonPartitionFunction ε β V 0 = freePartitionFunction ε β := by
+  rw [← tsum_dysonPartitionCoeff_eq_analyticDysonPartitionFunction ε hβ V 0,
+    tsum_eq_single 0]
+  · simp
+  · intro n hn
+    simp [hn]
+
+omit [LinearOrder Mode] in
+/-- The analytic partition function remains nonzero in a neighborhood of zero coupling. -/
+theorem analyticDysonPartitionFunction_ne_zero_eventually
+    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
+    (V : FockSpaceFermionic Mode →ₗ[ℂ] FockSpaceFermionic Mode) :
+    ∀ᶠ lam in 𝓝 (0 : ℂ), analyticDysonPartitionFunction ε β V lam ≠ 0 := by
+  have hzero : analyticDysonPartitionFunction ε β V 0 ≠ 0 := by
+    rw [analyticDysonPartitionFunction_zero ε hβ V]
+    exact freePartitionFunction_ne_zero ε β
+  have hmem : analyticDysonPartitionFunction ε β V 0 ∈ ({0} : Set ℂ)ᶜ := by
+    simpa using hzero
+  have hnhds : ({0} : Set ℂ)ᶜ ∈ 𝓝 (analyticDysonPartitionFunction ε β V 0) :=
+    isClosed_singleton.isOpen_compl.mem_nhds hmem
+  simpa using
+    (analyticAt_analyticDysonPartitionFunction_zero ε hβ V).continuousAt.eventually hnhds
+
+end
+end SecondQuantization
