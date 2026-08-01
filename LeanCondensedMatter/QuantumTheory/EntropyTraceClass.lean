@@ -49,9 +49,9 @@ noncomputable def entropyOp (ρ : DensityOperator H) : H →L[ℂ] H :=
   cfc Real.negMulLog ρ.op
 
 /-- The entropy operator acts on an eigenvector by applying `Real.negMulLog` to its eigenvalue. -/
-theorem entropyOp_apply_eigenvector (ρ : DensityOperator H) {v : H} {λ : ℝ}
-    (hv : (ρ.op : H →ₗ[ℂ] H) v = (λ : ℂ) • v) :
-    entropyOp ρ v = (Real.negMulLog λ : ℂ) • v := by
+theorem entropyOp_apply_eigenvector (ρ : DensityOperator H) {v : H} {c : ℝ}
+    (hv : (ρ.op : H →ₗ[ℂ] H) v = (c : ℂ) • v) :
+    entropyOp ρ v = (Real.negMulLog c : ℂ) • v := by
   simpa [entropyOp] using
     (cfc_apply_eigenvector (T := ρ.op) ρ.pos.isSelfAdjoint hv
       (f := Real.negMulLog) Real.continuous_negMulLog)
