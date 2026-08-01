@@ -55,25 +55,32 @@ noncomputable def gibbsState (Hop : Observable H) (β : ℝ)
     (hsummable : ContinuousLinearMap.HasSummableRealEigenvalues (gibbsOp Hop β))
     (hZ : ContinuousLinearMap.spectralTrace hsummable ≠ 0) : DensityOperator H := by
   let Z : ℝ := ContinuousLinearMap.spectralTrace hsummable
-  have hpos : (Z⁻¹ • gibbsOp Hop β).IsPositive := by
-    rw [show Z⁻¹ • gibbsOp Hop β = ((Z⁻¹ : ℝ) : ℂ) • gibbsOp Hop β by
+  let r : ℝ := Z⁻¹
+  have hrne : r ≠ 0 := by
+    dsimp [r, Z]
+    exact inv_ne_zero hZ
+  have hpos : (r • gibbsOp Hop β).IsPositive := by
+    rw [show r • gibbsOp Hop β = (r : ℂ) • gibbsOp Hop β by
       ext x
       simp]
     refine (gibbsOp_isPositive Hop β).smul_of_nonneg ?_
     have hZnonneg : 0 ≤ Z :=
       ContinuousLinearMap.trace_nonneg hsummable (gibbsOp_isPositive Hop β).toLinearMap
-    exact RCLike.ofReal_nonneg.mpr (inv_nonneg.mpr hZnonneg)
+    exact RCLike.ofReal_nonneg.mpr (by
+      dsimp [r]
+      exact inv_nonneg.mpr hZnonneg)
   have hsummableScaled :
-      ContinuousLinearMap.HasSummableRealEigenvalues (Z⁻¹ • gibbsOp Hop β) :=
-    ContinuousLinearMap.isTraceClass_smul (inv_ne_zero hZ) hsummable
+      ContinuousLinearMap.HasSummableRealEigenvalues (r • gibbsOp Hop β) :=
+    ContinuousLinearMap.isTraceClass_smul hrne hsummable
   exact {
-    op := Z⁻¹ • gibbsOp Hop β
+    op := r • gibbsOp Hop β
     pos := hpos
     spectralTraceClass := ContinuousLinearMap.SpectralTraceClass.ofPositive
       (hcompact.smul _) hpos hsummableScaled
     spectralTrace_eq_one := by
       change ContinuousLinearMap.trace hsummableScaled = 1
-      rw [ContinuousLinearMap.trace_smul (inv_ne_zero hZ) hsummable hsummableScaled]
+      rw [ContinuousLinearMap.trace_smul hrne hsummable hsummableScaled]
+      dsimp [r, Z]
       exact inv_mul_cancel₀ hZ
   }
 
