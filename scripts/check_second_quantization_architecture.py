@@ -16,6 +16,7 @@ REMOVED_FILES = (
     SQ / "Fermionic" / "Perturbation" / "DysonExpansion.lean",
     SQ / "Fermionic" / "Perturbation" / "ContinuousDyson.lean",
     SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentPairs.lean",
+    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentCrossingParity.lean",
 )
 
 REMOVED_DIRECTORIES = (
@@ -267,6 +268,10 @@ def check_removed_paths(errors: list[str]) -> None:
             if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairs":
                 errors.append(
                     f"removed fermionic ComponentPairs import: {relative(path)}:{line_no}: {line.strip()}"
+                )
+            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentCrossingParity":
+                errors.append(
+                    f"removed fermionic ComponentCrossingParity import: {relative(path)}:{line_no}: {line.strip()}"
                 )
 
 
