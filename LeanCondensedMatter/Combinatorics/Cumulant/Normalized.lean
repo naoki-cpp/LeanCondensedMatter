@@ -1,11 +1,11 @@
-import LeanCondensedMatter.Combinatorics.MomentCumulant
+import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
 
 set_option linter.style.header false
 
 /-!
 # Normalized finite-set functions and moment–cumulant equivalence
 
-A normalized finite-set function takes the value `1` on the empty set.  On this natural domain the
+A normalized finite-set function takes the value `1` on the empty set. On this natural domain the
 moment and cumulant transforms are genuine mutually inverse endomorphisms, so public users do not
 need to carry a nonemptiness side condition at every evaluation.
 -/
