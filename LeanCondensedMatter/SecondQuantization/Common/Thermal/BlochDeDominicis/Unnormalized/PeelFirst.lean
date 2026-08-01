@@ -42,7 +42,6 @@ the indexed erasure formula (`ζʲ • cⱼ • prodComp (l.eraseIdx j |>.map Pr
 namespace SecondQuantization
 namespace Common
 
-open Combinatorics
 
 variable {Config : Type*}
 

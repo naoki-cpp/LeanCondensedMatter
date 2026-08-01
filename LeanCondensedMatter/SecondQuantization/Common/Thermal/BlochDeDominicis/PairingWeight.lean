@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics
 import LeanCondensedMatter.Combinatorics.PerfectPairing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Examples.Four
 import Mathlib.Data.Complex.Basic
 
 set_option linter.style.header false
@@ -26,7 +27,7 @@ namespace BlochDeDominicis
 open Combinatorics
 
 /-- The exchange-statistics weight `ζ ^ crossings` of a Bloch--de Dominicis pairing. -/
-noncomputable def Pairing.weight (s : Statistics) {n : ℕ} (pairing : Pairing n) : ℂ :=
+noncomputable def Combinatorics.Pairing.weight (s : Statistics) {n : ℕ} (pairing : Pairing n) : ℂ :=
   (s.zetaInt : ℂ) ^ pairing.crossingCount
 
 @[simp]

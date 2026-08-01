@@ -44,7 +44,6 @@ single-mode coincidence), so that part of the argument already generalizes.
 
 namespace SecondQuantization
 
-open Combinatorics
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 

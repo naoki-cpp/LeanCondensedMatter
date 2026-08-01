@@ -1,4 +1,5 @@
 import Mathlib.Order.Partition.Finpartition
+import Mathlib.Combinatorics.Enumerative.IncidenceAlgebra
 
 set_option linter.style.header false
 
