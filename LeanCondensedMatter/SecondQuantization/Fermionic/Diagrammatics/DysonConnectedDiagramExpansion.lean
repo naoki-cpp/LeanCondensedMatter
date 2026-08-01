@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.DiagramConnectedness
+import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.AmplitudeFactorization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion
@@ -9,7 +9,7 @@ set_option linter.style.header false
 # Connected quartic Wick diagrams and Dyson vertex cumulants
 
 The combinatorial connected-component decomposition is separated from the complex-valued Wick
-amplitude.  Their combination identifies the finite-set Dyson cumulant with the connected-diagram
+amplitude. Their combination identifies the finite-set Dyson cumulant with the connected-diagram
 amplitude sum.
 -/
 
