@@ -11,6 +11,7 @@ and applies that closure result to diagonal operators with real nonnegative coef
 noncomputable section
 
 open Filter Topology
+open scoped ComplexOrder
 
 namespace ContinuousLinearMap
 
@@ -40,7 +41,8 @@ theorem isPositive_of_tendsto {α : Type*} {l : Filter α} [NeBot l]
         (𝓝 (inner ℂ (T x) x)) :=
       (tendsto_congr' hreal).mpr hinner
     exact tendsto_nhds_unique hleft hright
-  · exact le_of_tendsto hre (hpos.mono fun i hi => hi.re_inner_nonneg_left x)
+  · exact isClosed_Ici.mem_of_tendsto hre
+      (hpos.mono fun i hi => hi.re_inner_nonneg_left x)
 
 end ContinuousLinearMap
 
@@ -65,6 +67,7 @@ theorem diagonalOp_isPositive (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     simpa [diagonalTerm] using
       (InnerProductSpace.isPositive_rankOne_self (𝕜 := ℂ) (b i)).smul_of_nonneg hcoeff
   apply ContinuousLinearMap.isPositive_of_tendsto
+    (l := Filter.atTop)
     (F := F) (T := diagonalOp b (fun i => (a i : ℂ)) hac)
   · exact hasSum_diagonalTerm b (fun i => (a i : ℂ)) hac
   · exact Filter.Eventually.of_forall hFpos
