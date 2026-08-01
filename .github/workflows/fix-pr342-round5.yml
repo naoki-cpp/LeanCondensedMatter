@@ -1,0 +1,75 @@
+name: Fix PR 342 pure pairing references
+
+on:
+  push:
+    branches:
+      - agent/reorganize-combinatorics
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/reorganize-combinatorics
+          fetch-depth: 0
+
+      - name: Migrate remaining pure pairing references
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path("LeanCondensedMatter")
+          pairing_root = root / "Combinatorics/PerfectPairing"
+
+          decl_pattern = re.compile(
+              r"(?m)^\s*(?:(?:private|noncomputable|protected|local)\s+)*"
+              r"(?:def|theorem|abbrev|structure|inductive)\s+"
+              r"([A-Za-z_][A-Za-z0-9_'.]*)"
+          )
+
+          declarations = {"Pairing", "IsPairing"}
+          for path in pairing_root.rglob("*.lean"):
+              declarations.update(decl_pattern.findall(path.read_text()))
+
+          prefixes = [
+              "SecondQuantization.Common.BlochDeDominicis.",
+              "Common.BlochDeDominicis.",
+              "BlochDeDominicis.",
+          ]
+
+          changed = []
+          replacement_count = 0
+          for path in root.rglob("*.lean"):
+              text = path.read_text()
+              new_text = text
+              for name in sorted(declarations, key=len, reverse=True):
+                  for prefix in prefixes:
+                      old = prefix + name
+                      new = "Combinatorics." + name
+                      count = new_text.count(old)
+                      if count:
+                          new_text = new_text.replace(old, new)
+                          replacement_count += count
+              if new_text != text:
+                  path.write_text(new_text)
+                  changed.append(str(path))
+
+          print(f"Replaced {replacement_count} remaining pure pairing references")
+          print("\n".join(changed) if changed else "(none)")
+          PY
+
+      - name: Commit fixes
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add LeanCondensedMatter
+          if ! git diff --cached --quiet; then
+            git commit -m "fix: migrate remaining pure pairing references"
+            git push origin HEAD:agent/reorganize-combinatorics
+          fi
