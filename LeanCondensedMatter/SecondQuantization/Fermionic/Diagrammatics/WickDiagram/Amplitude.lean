@@ -59,7 +59,8 @@ private theorem finiteGibbsExpectation_smul_apply (ε : Mode → ℝ) (β : ℝ)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     Common.finiteGibbsExpectation (fermionEnergy ε) β (c • A) =
       c * Common.finiteGibbsExpectation (fermionEnergy ε) β A := by
-  simpa only [Common.finiteGibbsExpectation, Common.finiteGibbsExpectationLinearMap] using
+  simpa only [Common.finiteGibbsExpectation, Common.finiteGibbsExpectationLinearMap,
+    smul_eq_mul] using
     (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β).map_smul c A
 
 /-! ## Coupling weight -/
