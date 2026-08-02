@@ -52,6 +52,7 @@ theorem continuous_term {V : ℝ → A} (hV : Continuous V) (lam : ℂ) (n : ℕ
     Continuous (fun τ => term V lam τ n) := by
   exact continuous_const.smul (continuous_coeff hV n)
 
+omit [CompleteSpace A] in
 /-- An explicit uniform bound on the interaction family implies the standard factorial estimate for
 all generic Dyson coefficients on `[0, β]`. -/
 theorem norm_coeff_le_of_bound (V : ℝ → A) {β M : ℝ}
