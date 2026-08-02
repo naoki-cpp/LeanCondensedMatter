@@ -26,36 +26,40 @@ variable {n : ℕ} (hn : Module.finrank ℂ H = n)
 
 /-- Regard a finite-dimensional density operator as a spectral-trace-class density operator. -/
 def DensityOperator.toTraceClass (ρ : DensityOperator H) : TraceClass.DensityOperator H := by
+  have hpos : (ρ.1 : H →L[ℂ] H).IsPositive := ρ.2.1
+  have hsymm : (ρ.1 : H →L[ℂ] H).IsSymmetric := hpos.isSelfAdjoint.isSymmetric
+  have htrace : LinearMap.trace ℂ H (ρ.1 : H →ₗ[ℂ] H) = 1 := ρ.2.2
   have hcompact : IsCompactOperator (ρ.1 : H →L[ℂ] H) :=
     isCompactOperator_of_locallyCompactSpace_dom (ρ.1 : H →L[ℂ] H)
-  have hsymm : (ρ.1 : H →L[ℂ] H).IsSymmetric := ρ.2.1.isSelfAdjoint.isSymmetric
   letI : Finite (EigenvectorIndex (ρ.1 : H →L[ℂ] H)) :=
     (orthonormal_eigenvectorFamily hcompact hsymm).linearIndependent.finite
   have hsummable : HasSummableRealEigenvalues (ρ.1 : H →L[ℂ] H) := Summable.of_finite
   let hstc : SpectralTraceClass (ρ.1 : H →L[ℂ] H) :=
-    SpectralTraceClass.ofPositive hcompact ρ.2.1 hsummable
+    SpectralTraceClass.ofPositive hcompact hpos hsummable
   refine
     { op := ρ.1
-      pos := ρ.2.1
+      pos := hpos
       spectralTraceClass := hstc
       spectralTrace_eq_one := ?_ }
   let b : OrthonormalBasis (Fin (Module.finrank ℂ H)) ℂ H :=
-    ρ.2.1.isSymmetric.eigenvectorBasis rfl
+    hsymm.eigenvectorBasis rfl
+  have hb (i : Fin (Module.finrank ℂ H)) :
+      ρ.1 (b i) = (hsymm.eigenvalues rfl i : ℂ) • b i := by
+    change (ρ.1 : H →ₗ[ℂ] H) (b i) = (hsymm.eigenvalues rfl i : ℂ) • b i
+    simpa [b] using hsymm.apply_eigenvectorBasis rfl i
   have hsum := (hstc.hasSum_inner_apply b.toHilbertBasis).tsum_eq
   rw [tsum_fintype] at hsum
   calc
     hstc.trace = ∑ i, (inner ℂ (b i) (ρ.1 (b i)) : ℂ).re := by
       simpa using hsum.symm
-    _ = ∑ i, ρ.2.1.isSymmetric.eigenvalues rfl i := by
+    _ = ∑ i, hsymm.eigenvalues rfl i := by
       apply Finset.sum_congr rfl
       intro i _
-      rw [ρ.2.1.isSymmetric.apply_eigenvectorBasis rfl i,
-        inner_smul_right, inner_self_eq_norm_sq_to_K, b.norm_eq_one]
-      simp [b]
-    _ = 1 := by
-      have h := ρ.2.1.isSymmetric.re_trace_eq_sum_eigenvalues (hn := rfl)
-      rw [ρ.2.2] at h
-      simpa using h.symm
+      rw [hb i, inner_smul_right, inner_self_eq_norm_sq_to_K, b.norm_eq_one]
+      simp
+    _ = (LinearMap.trace ℂ H (ρ.1 : H →ₗ[ℂ] H)).re :=
+      (hsymm.re_trace_eq_sum_eigenvalues (hn := rfl)).symm
+    _ = 1 := by rw [htrace]; norm_num
 
 @[simp] theorem DensityOperator.toTraceClass_op (ρ : DensityOperator H) :
     ρ.toTraceClass.op = ρ.1 := rfl
@@ -80,10 +84,12 @@ theorem vonNeumannEntropy_eq_entropyOp_spectralTrace (ρ : DensityOperator H) :
         ρ.toTraceClass_entropyOp_hasSummableRealEigenvalues).trace := by
   let b : OrthonormalBasis (Fin n) ℂ H := ρ.2.1.isSymmetric.eigenvectorBasis hn
   let w : Fin n → ℝ := ρ.2.1.isSymmetric.eigenvalues hn
+  have heig (i : Fin n) : ρ.1 (b i) = (w i : ℂ) • b i := by
+    change (ρ.1 : H →ₗ[ℂ] H) (b i) = (w i : ℂ) • b i
+    simpa [b, w] using ρ.2.1.isSymmetric.apply_eigenvectorBasis hn i
   have happly (i : Fin n) :
       ρ.toTraceClass.op (b.toHilbertBasis i) = (w i : ℂ) • b.toHilbertBasis i := by
-    change ρ.1 (b i) = (w i : ℂ) • b i
-    simpa [b, w] using ρ.2.1.isSymmetric.apply_eigenvectorBasis hn i
+    simpa using heig i
   have htrace := TraceClass.entropyOpSpectralTraceClass_trace_eq_tsum_diagonal
     ρ.toTraceClass b.toHilbertBasis w happly
     ρ.toTraceClass_entropyOp_hasSummableRealEigenvalues
@@ -97,9 +103,7 @@ theorem vonNeumannEntropy_eq_sum_of_diagonal (ρ : DensityOperator H)
     vonNeumannEntropy hn ρ = ∑ i, Real.negMulLog (w i) := by
   rw [vonNeumannEntropy_eq_entropyOp_spectralTrace hn ρ]
   have htrace := TraceClass.entropyOpSpectralTraceClass_trace_eq_tsum_diagonal
-    ρ.toTraceClass b.toHilbertBasis w (fun i => by
-      change ρ.1 (b i) = (w i : ℂ) • b i
-      exact happly i)
+    ρ.toTraceClass b.toHilbertBasis w (fun i => by simpa using happly i)
     ρ.toTraceClass_entropyOp_hasSummableRealEigenvalues
   simpa only [tsum_fintype] using htrace
 
