@@ -1,0 +1,333 @@
+name: Apply direct Dyson density-state migration
+
+on:
+  push:
+    branches:
+      - agent/add-density-state-dyson-pairing-kernels
+    paths:
+      - .github/workflows/migrate_dyson_density_state.yml
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/add-density-state-dyson-pairing-kernels
+          fetch-depth: 0
+      - name: Rewrite Dyson API in its authoritative module
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path('.')
+          dyson = root / 'LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion.lean'
+          text = dyson.read_text(encoding='utf-8')
+
+          import_line = 'import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator\n'
+          anchor = 'import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment\n'
+          if import_line not in text:
+              if anchor not in text:
+                  raise SystemExit('Dyson import anchor not found')
+              text = text.replace(anchor, anchor + import_line, 1)
+
+          renames = {
+              'normalizedDysonPartitionCoeff_eq_freeGibbsExpectation':
+                  'normalizedDysonPartitionCoeff_eq_freeGibbsExpectation_coordinate',
+              'dysonVertexMoment_eq_freeGibbsExpectation':
+                  'dysonVertexMoment_eq_freeGibbsExpectation_coordinate',
+              'continuous_freeGibbsExpectation_comp_nestedVertexOperatorComp':
+                  'continuous_freeGibbsExpectation_comp_nestedVertexOperatorComp_coordinate',
+              'freeGibbsExpectation_comp_dysonCoeff_quarticInteraction':
+                  'freeGibbsExpectation_comp_dysonCoeff_quarticInteraction_coordinate',
+              'freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing':
+                  'freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing_coordinate',
+              'freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq':
+                  'freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq_coordinate',
+              'continuous_freeGibbsExpectation_quarticLegOperatorForSequence_pair':
+                  'continuous_freeGibbsExpectation_quarticLegOperatorForSequence_pair_coordinate',
+              'continuous_flatVertexLegPairingTerm':
+                  'continuous_flatVertexLegPairingTerm_coordinate',
+              'orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing':
+                  'orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing_coordinate',
+              'dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing':
+                  'dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing_coordinate',
+              'orderedSimplexContribution_eq_pairing_sum_term':
+                  'orderedSimplexContribution_eq_pairing_sum_term_coordinate',
+              'couplingWeight_mul_orderedSimplexContribution_eq':
+                  'couplingWeight_mul_orderedSimplexContribution_eq_coordinate',
+              'sum_couplingWeight_mul_orderedSimplexContribution_eq':
+                  'sum_couplingWeight_mul_orderedSimplexContribution_eq_coordinate',
+          }
+
+          for old, new in renames.items():
+              pattern = re.compile(rf"(?<![A-Za-z0-9_']){re.escape(old)}(?![A-Za-z0-9_'])")
+              text, count = pattern.subn(new, text)
+              if count == 0:
+                  raise SystemExit(f'identifier not found: {old}')
+
+          for new in renames.values():
+              pattern = re.compile(rf'(^\s*)theorem\s+{re.escape(new)}(?=[\s{{])', re.MULTILINE)
+              text, count = pattern.subn(rf'\1private theorem {new}', text, count=1)
+              if count != 1:
+                  raise SystemExit(f'theorem declaration not uniquely found: {new} ({count})')
+
+          canonical_pairing_block = r'''
+/-! ## Canonical density-state Dyson pairing interface -/
+
+/-- Joint continuity of the canonical density-state expectation of a prefixed nested vertex
+product. The coordinate formula remains private proof machinery during the final E4 cleanup. -/
+theorem continuous_freeGibbsDensityOperator_expectation_comp_nestedVertexOperatorComp
+    (ε : Mode → ℝ) (β : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode)
+    (L : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    Continuous (fun τ : Fin n → ℝ =>
+      (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator
+          (L.comp (nestedVertexOperatorComp ε n q τ)))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    continuous_freeGibbsExpectation_comp_nestedVertexOperatorComp_coordinate ε β n q L
+
+/-- The quartic Dyson coefficient expansion through the canonical free Gibbs density state. -/
+theorem freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
+    ∀ (n : ℕ) (t : ℝ) (L : FockSpace Mode →ₗ[ℂ] FockSpace Mode),
+      (freeGibbsDensityOperator ε β).expectation
+          (Common.finiteHilbertOperator
+            (L.comp (Common.dysonCoeff (fermionEnergy ε) (quarticInteraction g) n t))) =
+        (-1 : ℂ) ^ n * ∑ q : Fin n → QuarticVertexLabel Mode,
+          (∏ i, g (q i)) * intervalIntegral.orderedSimplexIntegral n t
+            (fun τ => (freeGibbsDensityOperator ε β).expectation
+              (Common.finiteHilbertOperator
+                (L.comp (nestedVertexOperatorComp ε n q τ)))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    freeGibbsExpectation_comp_dysonCoeff_quarticInteraction_coordinate ε β g
+
+/-- The nested quartic vertex product satisfies the pairing expansion through the canonical free
+Gibbs density-state expectation. -/
+theorem freeGibbsDensityOperator_expectation_nestedVertexOperatorComp_eq_sum_pairing
+    (ε : Mode → ℝ) (β : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode)
+    (τ : Fin n → ℝ) :
+    (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator (nestedVertexOperatorComp ε n q τ)) =
+      ∑ pairing : Combinatorics.Pairing (2 * n),
+        pairing.weight Common.Statistics.fermion *
+          ∏ pr ∈ pairing.pairs,
+            (freeGibbsDensityOperator ε β).expectation
+              (Common.finiteHilbertOperator
+                ((quarticLegOperatorForSequence ε q τ pr.1).comp
+                  (quarticLegOperatorForSequence ε q τ pr.2))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing_coordinate ε β n q τ
+
+/-- A pair of evolved flattened legs has the expected exponential prefactor through the canonical
+free Gibbs density-state expectation. -/
+theorem freeGibbsDensityOperator_expectation_quarticLegOperatorForSequence_pair_eq
+    {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
+    (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))) :
+    (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator
+          ((quarticLegOperatorForSequence ε q τ a).comp
+            (quarticLegOperatorForSequence ε q τ b))) =
+      Complex.exp ((τ (flatVertexIndex n a) * flatVertexLegEnergyShift ε q a : ℝ) : ℂ) *
+        Complex.exp ((τ (flatVertexIndex n b) * flatVertexLegEnergyShift ε q b : ℝ) : ℂ) *
+        (freeGibbsDensityOperator ε β).expectation
+          (Common.finiteHilbertOperator
+            ((quarticLocalLegOperator (q (flatVertexIndex n a)) (flatLocalLeg n a)).comp
+              (quarticLocalLegOperator (q (flatVertexIndex n b)) (flatLocalLeg n b)))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq_coordinate ε β q τ a b
+
+/-- The canonical density-state pair value is continuous in the vertex-time assignment. -/
+theorem continuous_freeGibbsDensityOperator_expectation_quarticLegOperatorForSequence_pair
+    {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
+    (a b : Fin (2 * (2 * n))) :
+    Continuous (fun τ : Fin n → ℝ =>
+      (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator
+          ((quarticLegOperatorForSequence ε q τ a).comp
+            (quarticLegOperatorForSequence ε q τ b)))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    continuous_freeGibbsExpectation_quarticLegOperatorForSequence_pair_coordinate ε β q a b
+
+/-- A pairing's contraction term is continuous when all contractions are expressed through the
+canonical free Gibbs density state. -/
+theorem continuous_flatVertexLegPairingTerm {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode)
+    (pairing : Combinatorics.Pairing (2 * n)) :
+    Continuous (fun τ : Fin n → ℝ => pairing.weight Common.Statistics.fermion *
+      ∏ pr ∈ pairing.pairs,
+        (freeGibbsDensityOperator ε β).expectation
+          (Common.finiteHilbertOperator
+            ((quarticLegOperatorForSequence ε q τ pr.1).comp
+              (quarticLegOperatorForSequence ε q τ pr.2)))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    continuous_flatVertexLegPairingTerm_coordinate ε β q pairing
+
+/-- The ordered-simplex integral of the canonical density-state nested-vertex expectation is the
+sum of the integrated canonical density-state pairing products. -/
+theorem orderedSimplexIntegral_freeGibbsDensityOperator_expectation_nestedVertexOperatorComp_eq_sum_pairing
+    (ε : Mode → ℝ) (β t : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) :
+    intervalIntegral.orderedSimplexIntegral n t
+        (fun τ => (freeGibbsDensityOperator ε β).expectation
+          (Common.finiteHilbertOperator (nestedVertexOperatorComp ε n q τ))) =
+      ∑ pairing : Combinatorics.Pairing (2 * n),
+        pairing.weight Common.Statistics.fermion *
+          intervalIntegral.orderedSimplexIntegral n t
+            (fun τ => ∏ pr ∈ pairing.pairs,
+              (freeGibbsDensityOperator ε β).expectation
+                (Common.finiteHilbertOperator
+                  ((quarticLegOperatorForSequence ε q τ pr.1).comp
+                    (quarticLegOperatorForSequence ε q τ pr.2)))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing_coordinate
+      ε β t n q
+
+/-- The quartic Dyson vertex moment as a vertex-label/pairing sum whose contractions are canonical
+free Gibbs density-state expectations. -/
+theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing
+    {α : Type*} [DecidableEq α] (ε : Mode → ℝ) (β : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) (S : Finset α) :
+    dysonVertexMoment ε β (quarticInteraction g) S =
+      (S.card.factorial : ℂ) * (-1 : ℂ) ^ S.card *
+        ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
+          ∑ pairing : Combinatorics.Pairing (2 * S.card),
+            pairing.weight Common.Statistics.fermion *
+              intervalIntegral.orderedSimplexIntegral S.card β (fun τ =>
+                ∏ pr ∈ pairing.pairs,
+                  (freeGibbsDensityOperator ε β).expectation
+                    (Common.finiteHilbertOperator
+                      ((quarticLegOperatorForSequence ε q τ pr.1).comp
+                        (quarticLegOperatorForSequence ε q τ pr.2)))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing_coordinate ε β g S
+'''
+
+          marker = '/-! ## Reindexing into a sum over `QuarticWickDiagram`s -/'
+          if marker not in text:
+              raise SystemExit('pairing insertion marker not found')
+          text = text.replace(marker, canonical_pairing_block + '\n' + marker, 1)
+
+          canonical_reindex_block = r'''
+/-- A diagram's fixed-order ordered-simplex contribution through canonical density-state
+contractions. -/
+theorem orderedSimplexContribution_eq_pairing_sum_term {N : ℕ} {S : Finset (Fin N)}
+    (ε : Mode → ℝ) (β : ℝ) (d : QuarticWickDiagram Mode N S)
+    (order : Common.QuarticVertexOrder S) :
+    d.orderedSimplexContribution ε β order =
+      (d.pairingInOrder order).weight Common.Statistics.fermion *
+        intervalIntegral.orderedSimplexIntegral S.card β
+          (fun τ => ∏ pr ∈ (d.pairingInOrder order).pairs,
+            (freeGibbsDensityOperator ε β).expectation
+              (Common.finiteHilbertOperator
+                ((quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ pr.1).comp
+                  (quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ pr.2)))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    orderedSimplexContribution_eq_pairing_sum_term_coordinate ε β d order
+
+/-- A diagram's coupling weight times its fixed-order contribution, expressed through canonical
+free Gibbs density-state contractions. -/
+theorem couplingWeight_mul_orderedSimplexContribution_eq {N : ℕ} {S : Finset (Fin N)}
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) :
+    d.couplingWeight g * d.orderedSimplexContribution ε β order =
+      (∏ i : Fin S.card, g (d.vertexLabel (order i))) *
+        ((d.pairingInOrder order).weight Common.Statistics.fermion *
+          intervalIntegral.orderedSimplexIntegral S.card β
+            (fun τ => ∏ pr ∈ (d.pairingInOrder order).pairs,
+              (freeGibbsDensityOperator ε β).expectation
+                (Common.finiteHilbertOperator
+                  ((quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ pr.1).comp
+                    (quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ pr.2))))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    couplingWeight_mul_orderedSimplexContribution_eq_coordinate ε β g d order
+
+/-- The fixed-order diagram sum as the vertex-label/pairing sum with canonical density-state
+contractions. -/
+theorem sum_couplingWeight_mul_orderedSimplexContribution_eq
+    {N : ℕ} {S : Finset (Fin N)} (ε : Mode → ℝ) (β : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) (order : Common.QuarticVertexOrder S) :
+    ∑ d : QuarticWickDiagram Mode N S,
+        d.couplingWeight g * d.orderedSimplexContribution ε β order =
+      ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
+        ∑ pairing : Combinatorics.Pairing (2 * S.card),
+          pairing.weight Common.Statistics.fermion *
+            intervalIntegral.orderedSimplexIntegral S.card β
+              (fun τ => ∏ pr ∈ pairing.pairs,
+                (freeGibbsDensityOperator ε β).expectation
+                  (Common.finiteHilbertOperator
+                    ((quarticLegOperatorForSequence ε q τ pr.1).comp
+                      (quarticLegOperatorForSequence ε q τ pr.2)))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    sum_couplingWeight_mul_orderedSimplexContribution_eq_coordinate ε β g order
+'''
+
+          final_marker = "/-- **PR 6's final theorem"
+          if final_marker not in text:
+              raise SystemExit('final theorem marker not found')
+          text = text.replace(final_marker, canonical_reindex_block + '\n' + final_marker, 1)
+
+          prefix, suffix = text.split(final_marker, 1)
+          suffix = suffix.replace(
+              'dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing_coordinate',
+              'dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing')
+          suffix = suffix.replace(
+              'sum_couplingWeight_mul_orderedSimplexContribution_eq_coordinate',
+              'sum_couplingWeight_mul_orderedSimplexContribution_eq')
+          text = prefix + final_marker + suffix
+
+          dyson.write_text(text, encoding='utf-8')
+
+          umbrella = root / 'LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics.lean'
+          umbrella_text = umbrella.read_text(encoding='utf-8')
+          forwarding_import = (
+              'import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.'
+              'DysonDensityStateExpansion\n')
+          if forwarding_import not in umbrella_text:
+              raise SystemExit('forwarding import not found')
+          umbrella.write_text(umbrella_text.replace(forwarding_import, '', 1), encoding='utf-8')
+
+          forwarding = root / (
+              'LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/'
+              'DysonDensityStateExpansion.lean')
+          if not forwarding.exists():
+              raise SystemExit('forwarding module not found')
+          forwarding.unlink()
+
+          guard = root / 'scripts/check_second_quantization_removed_identifiers.py'
+          guard_text = guard.read_text(encoding='utf-8')
+          guard_entry = r'''    re.compile(
+        r"(?<![A-Za-z0-9_'])(?:"
+        r"normalizedDysonPartitionCoeff_eq_freeGibbsExpectation|"
+        r"dysonVertexMoment_eq_freeGibbsExpectation|"
+        r"continuous_freeGibbsExpectation_comp_nestedVertexOperatorComp|"
+        r"freeGibbsExpectation_comp_dysonCoeff_quarticInteraction|"
+        r"freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing|"
+        r"freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq|"
+        r"continuous_freeGibbsExpectation_quarticLegOperatorForSequence_pair|"
+        r"orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing|"
+        r"DysonDensityStateExpansion"
+        r")(?![A-Za-z0-9_'])"
+    ): "removed Fermionic coordinate-facing Dyson expectation API",
+'''
+          guard_marker = '}\n\n\ndef relative'
+          if guard_marker not in guard_text:
+              raise SystemExit('removed-identifier guard marker not found')
+          guard_text = guard_text.replace(guard_marker, guard_entry + guard_marker, 1)
+          guard.write_text(guard_text, encoding='utf-8')
+
+          workflow = root / '.github/workflows/migrate_dyson_density_state.yml'
+          workflow.unlink()
+          PY
+      - name: Commit migration
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "Migrate Dyson pairing API directly to density states"
+          git push origin HEAD:agent/add-density-state-dyson-pairing-kernels
