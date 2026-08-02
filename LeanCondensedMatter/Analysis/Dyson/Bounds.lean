@@ -25,7 +25,9 @@ variable {A : Type*} [NormedRing A] [NormedAlgebra ℂ A] [CompleteSpace A]
 theorem continuous_coeff {V : ℝ → A} (hV : Continuous V) (n : ℕ) :
     Continuous (coeff V n) := by
   induction n with
-  | zero => simpa only [coeff_zero] using (continuous_const : Continuous fun _ : ℝ => (1 : A))
+  | zero =>
+      change Continuous (fun _ : ℝ => (1 : A))
+      fun_prop
   | succ n ih =>
       rw [continuous_iff_continuousAt]
       intro τ
@@ -35,10 +37,12 @@ theorem continuous_coeff {V : ℝ → A} (hV : Continuous V) (n : ℕ) :
             (fun t : ℝ => ∫ σ in (0 : ℝ)..t, V σ * coeff V n σ)
             (V τ * coeff V n τ) τ :=
         intervalIntegral.integral_hasDerivAt_right
-          hIntegrand.intervalIntegrable
+          (hIntegrand.intervalIntegrable 0 τ)
           hIntegrand.stronglyMeasurable.stronglyMeasurableAtFilter
           hIntegrand.continuousAt
-      simpa only [coeff_succ] using hPrimitive.continuousAt.neg
+      change ContinuousAt
+        (fun t : ℝ => -∫ σ in (0 : ℝ)..t, V σ * coeff V n σ) τ
+      exact hPrimitive.continuousAt.neg
 
 /-- Perturbatively weighted Dyson coefficients are continuous in time. -/
 theorem continuous_term {V : ℝ → A} (hV : Continuous V) (lam : ℂ) (n : ℕ) :
@@ -52,9 +56,7 @@ theorem norm_coeff_le_of_bound (V : ℝ → A) {β M : ℝ}
     (n : ℕ) {τ : ℝ} (hτ : τ ∈ Icc (0 : ℝ) β) :
     ‖coeff V n τ‖ ≤ majorant M τ n := by
   induction n generalizing τ with
-  | zero =>
-      rw [coeff_zero, majorant_zero]
-      exact norm_one_le
+  | zero => simp
   | succ n ih =>
       rw [coeff_succ, norm_neg]
       calc
@@ -70,7 +72,7 @@ theorem norm_coeff_le_of_bound (V : ℝ → A) {β M : ℝ}
           · have hcont : Continuous (fun σ : ℝ => M * majorant M σ n) := by
               unfold majorant
               fun_prop
-            exact hcont.intervalIntegrable
+            exact hcont.intervalIntegrable 0 τ
         _ = majorant M τ (n + 1) := integral_mul_majorant M τ n
 
 /-- The weighted `n`th coefficient is controlled by the factorial majorant with interaction bound
