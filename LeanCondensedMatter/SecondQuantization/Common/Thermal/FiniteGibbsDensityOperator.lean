@@ -3,6 +3,7 @@ import LeanCondensedMatter.QuantumTheory.DiagonalDensityLemmasTraceClass
 import Mathlib.Analysis.InnerProductSpace.PiL2
 
 set_option linter.style.header false
+set_option linter.unusedFintypeInType false
 
 /-!
 # Finite-configuration Gibbs density operators
@@ -24,7 +25,7 @@ noncomputable section
 
 open QuantumTheory.TraceClass
 
-variable {Config : Type*} [Fintype Config] [Nonempty Config]
+variable {Config : Type*} [Fintype Config]
 
 /-- The finite-dimensional Hilbert realization of the algebraic Fock basis. -/
 abbrev FiniteHilbertFock (Config : Type*) := EuclideanSpace ℂ Config
@@ -50,7 +51,8 @@ theorem finiteHilbertOrthonormalBasis_apply (n : Config) :
 
 @[simp]
 theorem finiteHilbertBasis_apply (n : Config) :
-    finiteHilbertBasis (Config := Config) n = finiteHilbertBasisState n :=
+    finiteHilbertBasis (Config := Config) n = finiteHilbertBasisState n := by
+  change finiteHilbertOrthonormalBasis (Config := Config) n = finiteHilbertBasisState n
   rfl
 
 /-- The positive real Boltzmann weight `exp (-β E(n))`. -/
@@ -65,13 +67,15 @@ noncomputable def finitePartitionFunction (energy : Config → ℝ) (β : ℝ) :
 theorem hasSum_finiteBoltzmannWeight (energy : Config → ℝ) (β : ℝ) :
     HasSum (finiteBoltzmannWeight energy β) (finitePartitionFunction energy β) := by
   rw [finitePartitionFunction]
-  exact hasSum_fintype _
+  exact (Summable.of_finite : Summable (finiteBoltzmannWeight energy β)).hasSum
+
+variable [Nonempty Config]
 
 /-- The finite partition function is strictly positive. -/
 theorem finitePartitionFunction_pos (energy : Config → ℝ) (β : ℝ) :
     0 < finitePartitionFunction energy β := by
   rw [finitePartitionFunction, tsum_fintype]
-  exact Finset.sum_pos (fun n _ => Real.exp_pos _) Finset.univ_nonempty
+  exact Finset.sum_pos (fun _ _ => Real.exp_pos _) Finset.univ_nonempty
 
 /-- The canonical finite Gibbs state as a trace-class density operator. -/
 noncomputable def finiteGibbsDensityOperator (energy : Config → ℝ) (β : ℝ) :
@@ -80,7 +84,7 @@ noncomputable def finiteGibbsDensityOperator (energy : Config → ℝ) (β : ℝ
     (finiteHilbertBasis (Config := Config))
     (finiteBoltzmannWeight energy β)
     Summable.of_finite
-    (fun n => (Real.exp_pos _).le)
+    (fun _ => (Real.exp_pos _).le)
     (finitePartitionFunction_pos energy β)
 
 /-- The finite Gibbs density operator acts diagonally with normalized Boltzmann weights. -/
@@ -94,7 +98,7 @@ theorem finiteGibbsDensityOperator_apply_basis (energy : Config → ℝ) (β : �
       (finiteHilbertBasis (Config := Config))
       (finiteBoltzmannWeight energy β)
       (Summable.of_finite : Summable fun n : Config => ‖finiteBoltzmannWeight energy β n‖)
-      (fun n => (Real.exp_pos _).le)
+      (fun _ => (Real.exp_pos _).le)
       (finitePartitionFunction_pos energy β) n
 
 end
