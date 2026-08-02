@@ -72,13 +72,17 @@ theorem summable_analyticDysonTerm (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) {β τ : ℝ}
     (hβ : 0 ≤ β) (hτ : τ ∈ Set.Icc (0 : ℝ) β) (lam : ℂ) :
     Summable (analyticDysonTerm energy V τ lam) := by
-  simpa only [analyticDysonTerm_eq_term] using
-    (Dyson.summable_term_of_bound
-      (continuousInteractionPicture energy V)
-      ContinuousLinearMap.norm_id_le
-      (interactionPictureNormBound_nonneg energy V hβ)
-      (fun σ hσ => norm_continuousInteractionPicture_le energy V hβ hσ)
-      lam hτ)
+  have hterm : analyticDysonTerm energy V τ lam =
+      Dyson.term (continuousInteractionPicture energy V) lam τ := by
+    funext n
+    exact analyticDysonTerm_eq_term energy V τ lam n
+  rw [hterm]
+  exact Dyson.summable_term_of_bound
+    (continuousInteractionPicture energy V)
+    ContinuousLinearMap.norm_id_le
+    (interactionPictureNormBound_nonneg energy V hβ)
+    (fun σ hσ => norm_continuousInteractionPicture_le energy V hβ hσ)
+    lam hτ
 
 /-- The defining operator series has sum `analyticDysonEvolution`. -/
 theorem hasSum_analyticDysonEvolution (energy : Config → ℝ)
@@ -86,13 +90,17 @@ theorem hasSum_analyticDysonEvolution (energy : Config → ℝ)
     (hβ : 0 ≤ β) (hτ : τ ∈ Set.Icc (0 : ℝ) β) (lam : ℂ) :
     HasSum (analyticDysonTerm energy V τ lam)
       (analyticDysonEvolution energy V τ lam) := by
-  simpa only [analyticDysonTerm_eq_term, analyticDysonEvolution_eq_evolution] using
-    (Dyson.hasSum_evolution_of_bound
-      (continuousInteractionPicture energy V)
-      ContinuousLinearMap.norm_id_le
-      (interactionPictureNormBound_nonneg energy V hβ)
-      (fun σ hσ => norm_continuousInteractionPicture_le energy V hβ hσ)
-      lam hτ)
+  have hterm : analyticDysonTerm energy V τ lam =
+      Dyson.term (continuousInteractionPicture energy V) lam τ := by
+    funext n
+    exact analyticDysonTerm_eq_term energy V τ lam n
+  rw [hterm, analyticDysonEvolution_eq_evolution]
+  exact Dyson.hasSum_evolution_of_bound
+    (continuousInteractionPicture energy V)
+    ContinuousLinearMap.norm_id_le
+    (interactionPictureNormBound_nonneg energy V hβ)
+    (fun σ hσ => norm_continuousInteractionPicture_le energy V hβ hσ)
+    lam hτ
 
 /-- The analytic Dyson series converges uniformly in operator norm on every compact interval
 `[0, β]`. -/
@@ -103,13 +111,21 @@ theorem hasSumUniformlyOn_analyticDysonEvolution (energy : Config → ℝ)
       (fun n τ => analyticDysonTerm energy V τ lam n)
       (fun τ => analyticDysonEvolution energy V τ lam)
       (Set.Icc (0 : ℝ) β) := by
-  simpa only [analyticDysonTerm_eq_term, analyticDysonEvolution_eq_evolution] using
-    (Dyson.hasSumUniformlyOn_evolution_of_bound
-      (continuousInteractionPicture energy V)
-      ContinuousLinearMap.norm_id_le
-      (interactionPictureNormBound_nonneg energy V hβ)
-      (fun σ hσ => norm_continuousInteractionPicture_le energy V hβ hσ)
-      lam)
+  have hterm : (fun n τ => analyticDysonTerm energy V τ lam n) =
+      fun n τ => Dyson.term (continuousInteractionPicture energy V) lam τ n := by
+    funext n τ
+    exact analyticDysonTerm_eq_term energy V τ lam n
+  have hevolution : (fun τ => analyticDysonEvolution energy V τ lam) =
+      fun τ => Dyson.evolution (continuousInteractionPicture energy V) lam τ := by
+    funext τ
+    exact analyticDysonEvolution_eq_evolution energy V τ lam
+  rw [hterm, hevolution]
+  exact Dyson.hasSumUniformlyOn_evolution_of_bound
+    (continuousInteractionPicture energy V)
+    ContinuousLinearMap.norm_id_le
+    (interactionPictureNormBound_nonneg energy V hβ)
+    (fun σ hσ => norm_continuousInteractionPicture_le energy V hβ hσ)
+    lam
 
 /-- At zero imaginary time only the zeroth Dyson coefficient survives. -/
 @[simp]
