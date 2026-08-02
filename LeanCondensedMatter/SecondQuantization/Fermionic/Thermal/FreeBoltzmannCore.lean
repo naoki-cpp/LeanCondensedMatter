@@ -5,8 +5,7 @@ set_option linter.style.header false
 /-!
 # Free-fermion Boltzmann weights and partition function
 
-This module owns the finite free-fermion thermal weight, its identification with the Common
-Boltzmann weight at `fermionEnergy`, and the finite free partition function used by canonical
+This module owns the finite free-fermion thermal weight and partition function used by canonical
 density-state constructions.
 -/
 
@@ -31,15 +30,6 @@ omit [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] in
 theorem freeBoltzmannWeight_ne_zero (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
     freeBoltzmannWeight ε β n ≠ 0 :=
   Complex.exp_ne_zero _
-
-omit [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] in
-/-- The fermionic and Common Boltzmann weights agree at `fermionEnergy`. -/
-theorem freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy (ε : Mode → ℝ) (β : ℝ)
-    (n : Occupation Mode) :
-    freeBoltzmannWeight ε β n = Common.boltzmannWeight (fermionEnergy ε) β n := by
-  rw [freeBoltzmannWeight, Common.boltzmannWeight, fermionEnergy]
-  push_cast
-  ring_nf
 
 /-- The free partition function `Z₀(β)` as its finite occupation-basis sum. -/
 noncomputable def freePartitionFunction (ε : Mode → ℝ) (β : ℝ) : ℂ :=
