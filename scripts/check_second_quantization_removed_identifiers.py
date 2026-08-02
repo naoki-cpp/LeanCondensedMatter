@@ -12,6 +12,9 @@ REMOVED_IDENTIFIERS = {
         "removed Fermionic WickDiagram ext wrapper",
     re.compile(r"(?<![A-Za-z0-9_'])QuarticWickDiagram\.equivPair(?![A-Za-z0-9_'])"):
         "removed Fermionic WickDiagram equivPair wrapper",
+    "OrderedQuarticWickData": "removed Fermionic ordered-data alias",
+    "quarticWickDiagramEquivOrderedData": "removed Fermionic ordered-data equivalence alias",
+    "sum_quarticWickDiagram_eq_sum_orderedData": "removed Fermionic ordered-data sum theorem",
 }
 
 
