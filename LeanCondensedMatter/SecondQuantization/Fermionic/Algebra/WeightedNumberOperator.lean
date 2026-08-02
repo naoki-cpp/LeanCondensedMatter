@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteWeightedTrace
 
 set_option linter.style.header false
 
@@ -10,7 +10,7 @@ set_option linter.style.header false
 `Common.weightedTrace`, specialized to `numberOperator`/`totalNumberOperator` — the one part of
 the old fermionic weighted-diagonal wrapper that was genuinely fermionic content (an actual
 computation against `numberOperator_basisState`/`totalNumberOperator_basisState`), rather than a
-thin `Common.WeightedDiagonalFunctional` delegation.
+thin delegation to the Common finite weighted-trace layer.
 -/
 
 namespace SecondQuantization
