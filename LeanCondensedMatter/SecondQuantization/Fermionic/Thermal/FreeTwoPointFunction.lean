@@ -107,6 +107,7 @@ theorem normalizedWeightedDiagonal_create_comp_annihilate_of_ne (w : Occupation 
     Common.normalizedWeightedDiagonal w ((create j).comp (annihilate i)) = 0 := by
   rw [Common.normalizedWeightedDiagonal, weightedTrace_create_comp_annihilate_of_ne w hij, zero_div]
 
+omit [LinearOrder Mode] in
 private theorem normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation
     (ε : Mode → ℝ) (β : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β) A =
