@@ -22,6 +22,7 @@ REMOVED_FILES = (
     SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentDecompositionEquiv.lean",
     SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentOrderedSimplex.lean",
     SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentOrder.lean",
+    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentPartition.lean",
 )
 
 REMOVED_DIRECTORIES = (
@@ -297,6 +298,10 @@ def check_removed_paths(errors: list[str]) -> None:
             if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentOrder":
                 errors.append(
                     f"removed fermionic ComponentOrder import: {relative(path)}:{line_no}: {line.strip()}"
+                )
+            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPartition":
+                errors.append(
+                    f"removed fermionic ComponentPartition import: {relative(path)}:{line_no}: {line.strip()}"
                 )
 
 
