@@ -66,19 +66,12 @@ theorem traceFock_diagonalEvolution_eq_weightSum (energy : Config → ℝ) (β :
 
 variable [Nonempty Config]
 
-/-- The normalized finite Gibbs expectation, defined by the canonical Gibbs density operator. -/
-noncomputable def gibbsExpectation (energy : Config → ℝ) (β : ℝ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) : ℂ :=
-  finiteGibbsExpectation energy β A
-
-/-- During migration, the density-state expectation can still be evaluated by the former normalized
-coordinate formula. This is a theorem, not the definition of the state. -/
-theorem gibbsExpectation_eq_normalizedWeightedDiagonal (energy : Config → ℝ) (β : ℝ)
+/-- The canonical density-state expectation agrees with the former normalized coordinate formula. -/
+theorem finiteGibbsExpectation_eq_normalizedWeightedDiagonal (energy : Config → ℝ) (β : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    gibbsExpectation energy β A =
+    finiteGibbsExpectation energy β A =
       normalizedWeightedDiagonal (boltzmannWeight energy β) A := by
-  rw [gibbsExpectation, finiteGibbsExpectation_eq_sum, normalizedWeightedDiagonal,
-    weightedTrace, weightSum]
+  rw [finiteGibbsExpectation_eq_sum, normalizedWeightedDiagonal, weightedTrace, weightSum]
   have hZcast : ((finitePartitionFunction energy β : ℝ) : ℂ) =
       ∑ n : Config, boltzmannWeight energy β n := by
     rw [finitePartitionFunction, tsum_fintype]
@@ -95,52 +88,6 @@ theorem gibbsExpectation_eq_normalizedWeightedDiagonal (energy : Config → ℝ)
   rw [← finiteBoltzmannWeight_cast_eq_boltzmannWeight energy β n]
   push_cast
   field_simp
-
-/-- The Gibbs expectation bundled as a complex linear map. -/
-noncomputable def gibbsExpectationLinearMap (energy : Config → ℝ) (β : ℝ) :
-    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ :=
-  finiteGibbsExpectationLinearMap energy β
-
-@[simp]
-theorem gibbsExpectationLinearMap_apply (energy : Config → ℝ) (β : ℝ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    gibbsExpectationLinearMap energy β A = gibbsExpectation energy β A :=
-  rfl
-
-/-- The Gibbs expectation is normalized without an additional partition-function hypothesis. -/
-@[simp]
-theorem gibbsExpectation_id (energy : Config → ℝ) (β : ℝ) :
-    gibbsExpectation energy β
-      (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 1 :=
-  finiteGibbsExpectation_id energy β
-
-@[simp]
-theorem gibbsExpectation_add (energy : Config → ℝ) (β : ℝ)
-    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    gibbsExpectation energy β (A + B) =
-      gibbsExpectation energy β A + gibbsExpectation energy β B :=
-  (gibbsExpectationLinearMap energy β).map_add A B
-
-@[simp]
-theorem gibbsExpectation_smul (energy : Config → ℝ) (β : ℝ) (c : ℂ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    gibbsExpectation energy β (c • A) = c * gibbsExpectation energy β A := by
-  change gibbsExpectationLinearMap energy β (c • A) =
-    c * gibbsExpectationLinearMap energy β A
-  simpa only [smul_eq_mul] using (gibbsExpectationLinearMap energy β).map_smul c A
-
-@[simp]
-theorem gibbsExpectation_zero (energy : Config → ℝ) (β : ℝ) :
-    gibbsExpectation energy β (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 0 :=
-  (gibbsExpectationLinearMap energy β).map_zero
-
-/-- Gibbs expectation distributes across list sums through its linear-map structure. -/
-theorem gibbsExpectation_list_sum (energy : Config → ℝ) (β : ℝ)
-    (L : List (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) :
-    gibbsExpectation energy β L.sum = (L.map (gibbsExpectation energy β)).sum := by
-  induction L with
-  | nil => simp
-  | cons A T ih => simp [List.sum_cons, ih]
 
 end Common
 end SecondQuantization
