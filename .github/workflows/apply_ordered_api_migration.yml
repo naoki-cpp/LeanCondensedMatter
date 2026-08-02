@@ -83,10 +83,9 @@ jobs:
           text = replace_identifier(text, "orderedLegToDiagramLeg", "Common.orderedLegToDiagramLeg")
           text = replace_identifier(text, "someVertexOrder", "Common.someVertexOrder")
           text = replace_identifier(text, "card_quarticVertexOrder", "Common.card_quarticVertexOrder")
-          text = re.sub(
-              r"\bOrderedQuarticWickData\s+Mode\s+S\.card\b",
-              "Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) S.card",
-              text,
+          text = text.replace(
+              "OrderedQuarticWickData Mode",
+              "Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode)",
           )
           text = replace_identifier(
               text,
