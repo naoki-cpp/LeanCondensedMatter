@@ -12,10 +12,11 @@ The normalized Gibbs expectation on a finite configuration space is the canonica
 the trace-class density operator `finiteGibbsDensityOperator`. Positivity, normalization, and
 linearity come from the density-state API.
 
-The unnormalized trace identities remain coordinate statements about `traceFock`, `weightedTrace`,
-and the free diagonal evolution. The normalized Bloch–de Dominicis layer uses only their physical
-trace-ratio combination; comparison with the temporary `normalizedWeightedDiagonal` coordinate
-formula lives in `FiniteGibbsCoordinateBridge.lean`.
+The unnormalized trace identities remain occupation-basis formulas about `traceFock`,
+`weightedTrace`, and the free diagonal evolution. The normalized Bloch–de Dominicis layer uses only
+their physical trace-ratio combination; comparison with the temporary
+`normalizedWeightedDiagonal` occupation-basis formula lives in
+`FiniteGibbsOccupationBasisBridge.lean`.
 -/
 
 namespace SecondQuantization
