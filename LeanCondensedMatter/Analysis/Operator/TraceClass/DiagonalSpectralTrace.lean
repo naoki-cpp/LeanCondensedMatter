@@ -28,11 +28,11 @@ theorem hasSummableRealEigenvalues_of_positive_of_summable_diagonal
   let e : EigenvectorIndex T → H := eigenvectorFamily hcompact
   have he : Orthonormal ℂ e := by
     simpa [e] using orthonormal_eigenvectorFamily hcompact hpos.isSymmetric
-  have hλ_nonneg (a : EigenvectorIndex T) : 0 ≤ a.1.1 :=
+  have heigen_nonneg (a : EigenvectorIndex T) : 0 ≤ a.1.1 :=
     eigenvalue_nonneg_of_isPositive hpos.toLinearMap a
   rw [HasSummableRealEigenvalues]
-  simp_rw [abs_of_nonneg (hλ_nonneg _)]
-  apply summable_of_sum_le (fun a => hλ_nonneg a)
+  simp_rw [abs_of_nonneg (heigen_nonneg _)]
+  apply summable_of_sum_le (fun a => heigen_nonneg a)
   intro s
   let f : ι → ℝ := fun i =>
     ∑ a ∈ s, a.1.1 * ‖(inner ℂ (e a) (d i) : ℂ)‖ ^ 2
@@ -46,12 +46,13 @@ theorem hasSummableRealEigenvalues_of_positive_of_summable_diagonal
   have hf_tsum : ∑' i, f i = ∑ a ∈ s, a.1.1 := by
     unfold f
     rw [Summable.tsum_finsetSum fun a _ => (hparseval a).summable.mul_left a.1.1]
-    exact Finset.sum_congr rfl fun a _ => by rw [tsum_mul_left, (hparseval a).tsum_eq, mul_one]
+    exact Finset.sum_congr rfl fun a _ => by
+      rw [tsum_mul_left, (hparseval a).tsum_eq, mul_one]
   have hf_le (i : ι) : f i ≤ (inner ℂ (d i) (T (d i)) : ℂ).re := by
     have hs := hasSum_eigen_expansion_inner_apply hcompact hpos.isSymmetric (d i)
     rw [← hs.tsum_eq]
     exact hs.summable.sum_le_tsum s fun a _ =>
-      mul_nonneg (hλ_nonneg a) (sq_nonneg _)
+      mul_nonneg (heigen_nonneg a) (sq_nonneg _)
   rw [← hf_tsum]
   exact hf_summable.tsum_le_tsum hf_le hdiag
 
@@ -81,10 +82,14 @@ def diagonalOpSpectralTraceClass (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     SpectralTraceClass (diagonalOp b (fun i => (a i : ℂ)) (by simpa using ha)) := by
   let hac : Summable fun i => ‖(a i : ℂ)‖ := by simpa using ha
   let T := diagonalOp b (fun i => (a i : ℂ)) hac
+  have hdiag_point :
+      (fun i => (inner ℂ (b i) (T (b i)) : ℂ).re) = a := by
+    funext i
+    simp [T, diagonalOp_apply_basis, inner_smul_right,
+      inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
   have hdiag : Summable fun i => (inner ℂ (b i) (T (b i)) : ℂ).re := by
-    have ha' : Summable a := Summable.of_norm ha
-    simpa [T, diagonalOp_apply_basis, inner_smul_right,
-      inner_self_eq_norm_sq_to_K, b.orthonormal.1] using ha'
+    rw [hdiag_point]
+    exact Summable.of_norm ha
   exact SpectralTraceClass.ofPositiveSummableDiagonal
     (diagonalOp_isCompact b (fun i => (a i : ℂ)) hac)
     (diagonalOp_isPositive b a ha ha_nonneg) b hdiag
@@ -93,16 +98,13 @@ def diagonalOpSpectralTraceClass (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
 theorem diagonalOpSpectralTraceClass_trace (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i) :
     (diagonalOpSpectralTraceClass b a ha ha_nonneg).trace = ∑' i, a i := by
-  let hac : Summable fun i => ‖(a i : ℂ)‖ := by simpa using ha
-  let T := diagonalOp b (fun i => (a i : ℂ)) hac
   have htrace := (diagonalOpSpectralTraceClass b a ha ha_nonneg).hasSum_inner_apply b
   have hpoint :
-      (fun i => (inner ℂ (b i) (T (b i)) : ℂ).re) = a := by
+      (fun i => (inner ℂ (b i)
+        (diagonalOp b (fun i => (a i : ℂ)) (by simpa using ha) (b i)) : ℂ).re) = a := by
     funext i
-    rw [T, diagonalOp_apply_basis, inner_smul_right,
+    simp [diagonalOp_apply_basis, inner_smul_right,
       inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
-    simp
-  change (diagonalOpSpectralTraceClass b a ha ha_nonneg).trace = ∑' i, a i
   rw [hpoint] at htrace
   exact htrace.tsum_eq.symm
 
