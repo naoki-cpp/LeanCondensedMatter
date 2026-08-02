@@ -29,12 +29,14 @@ variable {Config : Type*} [Fintype Config]
 noncomputable def boltzmannWeight (energy : Config → ℝ) (β : ℝ) (n : Config) : ℂ :=
   Complex.exp (((-β) * energy n : ℝ) : ℂ)
 
+omit [Fintype Config] in
 /-- The real positive Boltzmann weight used by the density operator casts to the algebraic complex
 Boltzmann weight. -/
 theorem finiteBoltzmannWeight_cast_eq_boltzmannWeight (energy : Config → ℝ) (β : ℝ) (n : Config) :
     ((finiteBoltzmannWeight energy β n : ℝ) : ℂ) = boltzmannWeight energy β n := by
   rw [finiteBoltzmannWeight, boltzmannWeight, Complex.ofReal_exp]
 
+omit [Fintype Config] in
 /-- `diagonalEvolution` is diagonal with the complex Boltzmann weights. -/
 theorem matrixCoeff_diagonalEvolution (energy : Config → ℝ) (β : ℝ) (m n : Config) :
     matrixCoeff (diagonalEvolution energy (-β)) m n =
@@ -98,6 +100,8 @@ theorem gibbsExpectation_add (energy : Config → ℝ) (β : ℝ)
 theorem gibbsExpectation_smul (energy : Config → ℝ) (β : ℝ) (c : ℂ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     gibbsExpectation energy β (c • A) = c * gibbsExpectation energy β A := by
+  change gibbsExpectationLinearMap energy β (c • A) =
+    c * gibbsExpectationLinearMap energy β A
   simpa only [smul_eq_mul] using (gibbsExpectationLinearMap energy β).map_smul c A
 
 @[simp]
