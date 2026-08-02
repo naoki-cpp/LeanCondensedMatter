@@ -40,7 +40,7 @@ theorem QuarticWickDiagram.sum_orderedSimplexContribution_eq_prod_components
     (∑ order : QuarticVertexOrder S, d.orderedSimplexContribution ε β order) =
         ∑ x : d.ComponentVertexOrders × d.ComponentShuffle,
           d.orderedSimplexContribution ε β (d.assembleVertexOrder x.1 x.2) := by
-      rw [← Equiv.sum_comp (d.componentOrderDecompositionEquiv).symm]
+      rw [← Equiv.sum_comp (Common.QuarticDiagram.componentOrderDecompositionEquiv d).symm]
       rfl
     _ = ∑ orders : d.ComponentVertexOrders,
           ∑ shuffle : d.ComponentShuffle,
