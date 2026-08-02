@@ -3,6 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteWeightedTrace
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsCoordinateBridge
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis
 
 set_option linter.style.header false
