@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Ordered
+import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticInteraction
