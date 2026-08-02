@@ -24,6 +24,10 @@ REMOVED_FILES = (
     SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentOrder.lean",
     SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentPartition.lean",
     SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentRestriction.lean",
+    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "Reassemble.lean",
+    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ReassembleDecompose.lean",
+    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ReassembleComponentPartitionEq.lean",
+    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ReassembleRestrictComponent.lean",
 )
 
 REMOVED_DIRECTORIES = (
@@ -56,6 +60,40 @@ DECL_RE = re.compile(
     r"\s*([^\s:({\[]+)?"
 )
 STATISTIC_NAME_RE = re.compile(r"(?:Boson|Bosonic|Fermion|Fermionic)")
+
+REMOVED_IMPORTS = {
+    "import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonExpansion":
+        "removed fermionic Dyson import",
+    "import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.ContinuousDyson":
+        "removed fermionic continuous-Dyson import",
+    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairs":
+        "removed fermionic ComponentPairs import",
+    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentCrossingParity":
+        "removed fermionic ComponentCrossingParity import",
+    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentLegInversion":
+        "removed fermionic ComponentLegInversion import",
+    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentOrderDecomposition":
+        "removed fermionic ComponentOrderDecomposition import",
+    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentDecompositionEquiv":
+        "removed fermionic ComponentDecompositionEquiv import",
+    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentOrderedSimplex":
+        "removed fermionic ComponentOrderedSimplex import",
+    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentOrder":
+        "removed fermionic ComponentOrder import",
+    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPartition":
+        "removed fermionic ComponentPartition import",
+    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentRestriction":
+        "removed fermionic ComponentRestriction import",
+    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Reassemble":
+        "removed fermionic Reassemble import",
+    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ReassembleDecompose":
+        "removed fermionic ReassembleDecompose import",
+    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ReassembleComponentPartitionEq":
+        "removed fermionic ReassembleComponentPartitionEq import",
+    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ReassembleRestrictComponent":
+        "removed fermionic ReassembleRestrictComponent import",
+}
+
 ALLOWED_EXTERNAL_DECLARATIONS = {
     (
         "LeanCondensedMatter/SecondQuantization/Common/Thermal/"
@@ -260,54 +298,13 @@ def check_removed_paths(errors: list[str]) -> None:
 
     for path in lean_files(ROOT / "LeanCondensedMatter"):
         for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+            stripped = line.strip()
             if REMOVED_EXACT_IMPORT.match(line):
-                errors.append(f"removed umbrella import: {relative(path)}:{line_no}: {line.strip()}")
+                errors.append(f"removed umbrella import: {relative(path)}:{line_no}: {stripped}")
             if REMOVED_BOSONIC_PATH.search(line):
-                errors.append(f"removed bosonic path: {relative(path)}:{line_no}: {line.strip()}")
-            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonExpansion":
-                errors.append(
-                    f"removed fermionic Dyson import: {relative(path)}:{line_no}: {line.strip()}"
-                )
-            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.ContinuousDyson":
-                errors.append(
-                    f"removed fermionic continuous-Dyson import: {relative(path)}:{line_no}: {line.strip()}"
-                )
-            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairs":
-                errors.append(
-                    f"removed fermionic ComponentPairs import: {relative(path)}:{line_no}: {line.strip()}"
-                )
-            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentCrossingParity":
-                errors.append(
-                    f"removed fermionic ComponentCrossingParity import: {relative(path)}:{line_no}: {line.strip()}"
-                )
-            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentLegInversion":
-                errors.append(
-                    f"removed fermionic ComponentLegInversion import: {relative(path)}:{line_no}: {line.strip()}"
-                )
-            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentOrderDecomposition":
-                errors.append(
-                    f"removed fermionic ComponentOrderDecomposition import: {relative(path)}:{line_no}: {line.strip()}"
-                )
-            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentDecompositionEquiv":
-                errors.append(
-                    f"removed fermionic ComponentDecompositionEquiv import: {relative(path)}:{line_no}: {line.strip()}"
-                )
-            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentOrderedSimplex":
-                errors.append(
-                    f"removed fermionic ComponentOrderedSimplex import: {relative(path)}:{line_no}: {line.strip()}"
-                )
-            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentOrder":
-                errors.append(
-                    f"removed fermionic ComponentOrder import: {relative(path)}:{line_no}: {line.strip()}"
-                )
-            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPartition":
-                errors.append(
-                    f"removed fermionic ComponentPartition import: {relative(path)}:{line_no}: {line.strip()}"
-                )
-            if line.strip() == "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentRestriction":
-                errors.append(
-                    f"removed fermionic ComponentRestriction import: {relative(path)}:{line_no}: {line.strip()}"
-                )
+                errors.append(f"removed bosonic path: {relative(path)}:{line_no}: {stripped}")
+            if description := REMOVED_IMPORTS.get(stripped):
+                errors.append(f"{description}: {relative(path)}:{line_no}: {stripped}")
 
 
 def check_dependency_direction(errors: list[str]) -> None:
