@@ -1,22 +1,19 @@
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Peel
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
-import LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Recursion
 
 set_option linter.style.header false
 
 /-!
 # The general finite-temperature Bloch–de Dominicis theorem
 
-The genuine `n`-point statement: a normalized finite Gibbs density-state expectation of a
-`2n`-operator product is the `Pairing n`-weighted sum of products of normalized 2-point values.
+The arbitrary-length pairing induction now depends only on
+`ExpectationPairingRecursion`: normalization of the empty product, stability of admissibility under
+erasing a pair, and the KMS/exchange first-pair recurrence.
 
-The combinatorial backbone — induction on `n`, the `equivSigma`/`insertFirstPair` double-sum
-reindexing, and the `crossingCount`/`pairs` erase-zero recursions — is
-`Combinatorics/PerfectPairing/FirstPairRecursion.lean`'s
-`moment_eq_pairing_sum_of_first_pair_recursion`, stated with no `Statistics`/`ℂ`/`AlgebraicFock`
-dependency. This file supplies only the analytic content that lemma's `Admissible`/`moment_succ`
-hypotheses ask for.
+The canonical finite Gibbs density-state implementation is provided separately by
+`GibbsExpectation/Recursion.lean`.  Consequently, the induction in this file has no direct knowledge
+of occupation-basis sums, trace ratios, or the proof of KMS rotation.  A future summability-aware
+bosonic expectation can instantiate the same recursion contract without a false finite-configuration
+assumption.
 -/
 
 namespace SecondQuantization
@@ -42,104 +39,9 @@ theorem finiteGibbsExpectation_prodComp_eq_sum_pairing (s : Statistics)
           pairing.weight s *
             ∏ pr ∈ pairing.pairs,
               finiteGibbsExpectation energy β ((C pr.1).comp (C pr.2)) := by
-  have hζ : (s.zetaInt : ℂ) * (s.zetaInt : ℂ) = 1 := by
-    have h := zetaInt_pow_eq_of_mod_two_eq s (a := 2) (b := 0) (by omega)
-    simpa [pow_two] using h
-  set Admissible : (n : ℕ) →
-      (Fin (2 * n) → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) → Prop :=
-    fun n C => ∃ (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ),
-      (∀ i, heisenbergEvolve energy (-β) (C i) = Complex.exp ((q i * (-β) : ℝ) : ℂ) • C i) ∧
-      (∀ i j, i ≠ j → zetaCommutator (s.zetaInt : ℂ) (C i) (C j) =
-        c i j • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)) ∧
-      (∀ i, (1 : ℂ) - (s.zetaInt : ℂ) * Complex.exp ((q i * β : ℝ) : ℂ) ≠ 0) with hAdmDef
-  have moment_zero : ∀ C : Fin 0 → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config,
-      finiteGibbsExpectation energy β (prodComp (List.ofFn C)) = 1 := by
-    intro C
-    simp only [List.ofFn_zero, prodComp_nil]
-    exact finiteGibbsExpectation_id energy β
-  have admissible_erase : ∀ (n : ℕ)
-      (C : Fin (2 * (n + 1)) → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config),
-      Admissible (n + 1) C → ∀ j : Fin (2 * n + 1),
-        Admissible n (fun i : Fin (2 * n) => C ((j.succAbove i).succ)) := by
-    rintro m C ⟨q, c, hC, hcomm, hne⟩ j
-    exact ⟨fun i => q ((j.succAbove i).succ), fun i i' => c ((j.succAbove i).succ)
-      ((j.succAbove i').succ), fun i => hC _, fun i i' h => hcomm _ _
-        (fun heq => h (Fin.succAbove_right_injective (Fin.succ_injective _ heq))),
-      fun i => hne _⟩
-  have moment_succ : ∀ (m : ℕ)
-      (C : Fin (2 * (m + 1)) → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config),
-      Admissible (m + 1) C →
-      finiteGibbsExpectation energy β (prodComp (List.ofFn C)) =
-        ∑ j : Fin (2 * m + 1), (s.zetaInt : ℂ) ^ (j : ℕ) *
-          finiteGibbsExpectation energy β ((C 0).comp (C j.succ)) *
-          finiteGibbsExpectation energy β
-            (prodComp (List.ofFn fun i : Fin (2 * m) => C ((j.succAbove i).succ))) := by
-    rintro m C ⟨q, c, hC, hcomm, hne⟩
-    have h1 : finiteGibbsExpectation energy β (prodComp (List.ofFn C)) =
-        finiteGibbsExpectation energy β
-          ((C 0).comp (prodComp (List.ofFn (fun i : Fin (2 * m + 1) => C i.succ)))) := by
-      rw [List.ofFn_succ, prodComp_cons]
-      rfl
-    set l : List ((AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) × ℂ) :=
-      List.ofFn (fun i : Fin (2 * m + 1) => (C i.succ, c 0 i.succ)) with hl
-    have hlmap : l.map Prod.fst = List.ofFn (fun i : Fin (2 * m + 1) => C i.succ) := by
-      rw [hl, List.map_ofFn]; rfl
-    have hlen : l.length = 2 * m + 1 := by rw [hl]; simp
-    have hcommL : ∀ p ∈ l, zetaCommutator (s.zetaInt : ℂ) (C 0) p.1 =
-        p.2 • (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) := by
-      intro p hp
-      rw [hl, List.mem_ofFn] at hp
-      obtain ⟨i, rfl⟩ := hp
-      exact hcomm 0 i.succ (Ne.symm (Fin.succ_ne_zero i))
-    have hzl : (s.zetaInt : ℂ) ^ l.length = (s.zetaInt : ℂ) := by
-      rw [hlen]
-      have h := zetaInt_pow_eq_of_mod_two_eq s (a := 2 * m + 1) (b := 1) (by omega)
-      rwa [pow_one] at h
-    have hne0 : (1 : ℂ) - (s.zetaInt : ℂ) ^ l.length *
-        Complex.exp ((q 0 * β : ℝ) : ℂ) ≠ 0 := by
-      rw [hzl]; exact hne 0
-    have hpeel := finiteGibbsExpectation_peel_indexed energy β (q 0) (s.zetaInt : ℂ) (C 0) l
-      (hC 0) hcommL hZ hne0
-    rw [hlmap] at hpeel
-    let hcast : Fin l.length ≃ Fin (2 * m + 1) :=
-      ⟨Fin.cast hlen, Fin.cast hlen.symm, fun i => rfl, fun i => rfl⟩
-    have hreindex :
-        (∑ i : Fin l.length, (s.zetaInt : ℂ) ^ (i : ℕ) * l[(i : ℕ)].2 *
-            finiteGibbsExpectation energy β (prodComp ((l.eraseIdx (i : ℕ)).map Prod.fst))) =
-          ∑ j : Fin (2 * m + 1), (s.zetaInt : ℂ) ^ (j : ℕ) *
-            (l[(j : ℕ)]'(by rw [hlen]; exact j.isLt)).2 *
-              finiteGibbsExpectation energy β
-                (prodComp ((l.eraseIdx (j : ℕ)).map Prod.fst)) :=
-      Fintype.sum_equiv hcast _ _ fun i => by
-        have hv : ((hcast i : Fin (2 * m + 1)) : ℕ) = (i : ℕ) := by
-          change ((Fin.cast hlen i : Fin (2 * m + 1)) : ℕ) = (i : ℕ)
-          rfl
-        simp only [hv]
-    rw [hreindex] at hpeel
-    rw [hzl] at hpeel
-    rw [h1, hpeel, Finset.sum_div]
-    refine Finset.sum_congr rfl fun j _ => ?_
-    have hljfst : (l.eraseIdx (j : ℕ)).map Prod.fst =
-        List.ofFn (fun i : Fin (2 * m) => C ((j.succAbove i).succ)) := by
-      rw [hl, List.eraseIdx_ofFn_eq_ofFn_succAbove, List.map_ofFn]
-      rfl
-    have hljsnd : l[(j : ℕ)]'(by rw [hlen]; exact j.isLt) = (C j.succ, c 0 j.succ) := by
-      simp only [hl, List.getElem_ofFn]
-    have h2 : finiteGibbsExpectation energy β (C 0 |>.comp (C j.succ)) =
-        c 0 j.succ / (1 - (s.zetaInt : ℂ) * Complex.exp ((q 0 * β : ℝ) : ℂ)) :=
-      finiteGibbsExpectation_comp_eq_div_of_zetaCommutator energy β (q 0) (s.zetaInt : ℂ)
-        (c 0 j.succ) (C 0) (C j.succ) (hC 0)
-        (hcomm 0 j.succ (Ne.symm (Fin.succ_ne_zero j))) hZ (hne 0)
-    rw [hljfst, hljsnd, h2]
-    ring
   intro n C q c hC hcomm hne
-  have hmoment := moment_eq_pairing_sum_of_first_pair_recursion (s.zetaInt : ℂ) hζ
-    (fun n C => finiteGibbsExpectation energy β (prodComp (List.ofFn C)))
-    (fun A B => finiteGibbsExpectation energy β (A.comp B)) Admissible moment_zero admissible_erase
-    moment_succ n C ⟨q, c, hC, hcomm, hne⟩
-  rw [hmoment]
-  refine Finset.sum_congr rfl fun pairing _ => ?_
-  rw [Pairing.weight]
+  exact (finiteGibbsExpectationRecursion s energy β hZ).expectation_eq_sum_pairing
+    n C ⟨q, c, hC, hcomm, hne⟩
 
 end BlochDeDominicis
 end Common
