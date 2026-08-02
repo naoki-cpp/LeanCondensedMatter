@@ -31,7 +31,7 @@ namespace BlochDeDominicis
 
 open Combinatorics
 
-variable {Config : Type*} [Fintype Config]
+variable {Config : Type*} [Fintype Config] [Nonempty Config]
 
 /-- **The general finite-temperature Bloch–de Dominicis theorem.** -/
 theorem gibbsExpectation_prodComp_eq_sum_pairing (s : Statistics) (energy : Config → ℝ) (β : ℝ)
@@ -49,9 +49,6 @@ theorem gibbsExpectation_prodComp_eq_sum_pairing (s : Statistics) (energy : Conf
   have hζ : (s.zetaInt : ℂ) * (s.zetaInt : ℂ) = 1 := by
     have h := zetaInt_pow_eq_of_mod_two_eq s (a := 2) (b := 0) (by omega)
     simpa [pow_two] using h
-  -- The `Admissible` predicate packages the eigenoperator, scalar-commutator, and non-resonance
-  -- data `moment_succ`/`admissible_erase` need, existentially so it can be transported to erased
-  -- subfamilies.
   set Admissible : (n : ℕ) →
       (Fin (2 * n) → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) → Prop :=
     fun n C => ∃ (q : Fin (2 * n) → ℝ) (c : Fin (2 * n) → Fin (2 * n) → ℂ),
@@ -62,10 +59,8 @@ theorem gibbsExpectation_prodComp_eq_sum_pairing (s : Statistics) (energy : Conf
   have moment_zero : ∀ C : Fin 0 → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config,
       gibbsExpectation energy β (prodComp (List.ofFn C)) = 1 := by
     intro C
-    have hZw : weightSum (boltzmannWeight energy β) ≠ 0 := by
-      rw [← traceFock_diagonalEvolution_eq_weightSum]; exact hZ
     simp only [List.ofFn_zero, prodComp_nil]
-    exact gibbsExpectation_id energy β hZw
+    exact gibbsExpectation_id energy β
   have admissible_erase : ∀ (n : ℕ)
       (C : Fin (2 * (n + 1)) → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config),
       Admissible (n + 1) C → ∀ j : Fin (2 * n + 1),
