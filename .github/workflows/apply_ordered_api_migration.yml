@@ -89,6 +89,11 @@ jobs:
           )
           text = replace_identifier(
               text,
+              "OrderedQuarticWickData",
+              "Common.OrderedQuarticDiagramData",
+          )
+          text = replace_identifier(
+              text,
               "quarticWickDiagramEquivOrderedData",
               "Common.quarticDiagramEquivOrderedData",
           )
