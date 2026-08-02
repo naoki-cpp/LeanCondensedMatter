@@ -50,6 +50,7 @@ theorem summable_integrandMajorant (M β : ℝ) (lam : ℂ) :
     Summable (integrandMajorant M β lam) := by
   exact (summable_majorant (‖lam‖ * M) β).mul_left (‖lam‖ * M)
 
+omit [CompleteSpace A] in
 /-- Uniform pointwise norm control of every generic Volterra-integrand term on `[0, β]`. -/
 theorem norm_integrand_le_of_bound (V : ℝ → A) {β M σ : ℝ}
     (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
@@ -98,6 +99,7 @@ theorem hasSum_intervalIntegral_integrand_of_bound {V : ℝ → A} (hVcont : Con
       exact hasSum_integrand_of_bound V hOne hM hV
         ⟨hσ'.1, hσ'.2.trans hτ.2⟩ lam
 
+omit [CompleteSpace A] in
 /-- Integrating the `n`th generic Volterra term gives the negative `(n+1)`st Dyson term. -/
 theorem intervalIntegral_integrand (V : ℝ → A) (τ : ℝ) (lam : ℂ) (n : ℕ) :
     (∫ σ in (0 : ℝ)..τ, integrand V lam n σ) = - term V lam τ (n + 1) := by
