@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Ordered
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairValue
 
 set_option linter.style.header false
@@ -20,16 +21,16 @@ variable {Mode : Type*} {N : ℕ}
 
 @[simp]
 theorem vertexOfLeg_orderedLegToDiagramLeg (S : Finset (Fin N))
-    (order : QuarticVertexOrder S) (p : Fin (2 * (2 * S.card))) :
-    Common.vertexOfLeg (orderedLegToDiagramLeg S order p) =
+    (order : Common.QuarticVertexOrder S) (p : Fin (2 * (2 * S.card))) :
+    Common.vertexOfLeg (Common.orderedLegToDiagramLeg S order p) =
       order (Common.orderedQuarticLegEquiv S.card p).1 := by
   change ((Common.quarticLegEquiv S) ((Common.orderedLegToDiagramLeg S order) p)).1 = _
   simp [Common.orderedLegToDiagramLeg]
 
 @[simp]
 theorem localLegOfLeg_orderedLegToDiagramLeg (S : Finset (Fin N))
-    (order : QuarticVertexOrder S) (p : Fin (2 * (2 * S.card))) :
-    Common.localLegOfLeg (orderedLegToDiagramLeg S order p) =
+    (order : Common.QuarticVertexOrder S) (p : Fin (2 * (2 * S.card))) :
+    Common.localLegOfLeg (Common.orderedLegToDiagramLeg S order p) =
       (Common.orderedQuarticLegEquiv S.card p).2 := by
   change ((Common.quarticLegEquiv S) ((Common.orderedLegToDiagramLeg S order) p)).2 = _
   simp [Common.orderedLegToDiagramLeg]
@@ -71,18 +72,18 @@ theorem QuarticWickDiagram.orderedLegToDiagramLeg_componentOrderedLeg
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (B : d.componentPartition.parts)
     (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
-    orderedLegToDiagramLeg S (d.assembleVertexOrder orders shuffle)
+    Common.orderedLegToDiagramLeg S (d.assembleVertexOrder orders shuffle)
         (d.componentOrderedLeg shuffle B p) =
       d.componentDiagramLeg B
-        (orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p) := by
+        (Common.orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p) := by
   apply (Common.quarticLegEquiv S).injective
   apply Prod.ext
   · change Common.vertexOfLeg
-      (orderedLegToDiagramLeg S (d.assembleVertexOrder orders shuffle)
+      (Common.orderedLegToDiagramLeg S (d.assembleVertexOrder orders shuffle)
         (d.componentOrderedLeg shuffle B p)) =
       Common.vertexOfLeg
         (d.componentDiagramLeg B
-          (orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p))
+          (Common.orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p))
     apply Subtype.ext
     simp only [vertexOfLeg_orderedLegToDiagramLeg,
       d.orderedQuarticLegEquiv_componentOrderedLeg]
@@ -94,18 +95,18 @@ theorem QuarticWickDiagram.orderedLegToDiagramLeg_componentOrderedLeg
             ↥(B : Finset (Fin N))) : Fin N) :=
         d.assembleVertexOrder_componentSlot_val orders shuffle B _
       _ = ((Common.vertexOfLeg
-          (orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p) :
+          (Common.orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p) :
             ↥(B : Finset (Fin N))) : Fin N) := by simp
       _ = ((Common.vertexOfLeg
           (d.componentDiagramLeg B
-            (orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p)) : ↥S) : Fin N) :=
+            (Common.orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p)) : ↥S) : Fin N) :=
         (d.vertexOfLeg_componentDiagramLeg_val B _).symm
   · change Common.localLegOfLeg
-      (orderedLegToDiagramLeg S (d.assembleVertexOrder orders shuffle)
+      (Common.orderedLegToDiagramLeg S (d.assembleVertexOrder orders shuffle)
         (d.componentOrderedLeg shuffle B p)) =
       Common.localLegOfLeg
         (d.componentDiagramLeg B
-          (orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p))
+          (Common.orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p))
     simp [d.localLegOfLeg_componentDiagramLeg]
 
 /-- The restricted pairing partner, transported back to ambient fixed diagram-leg coordinates,
@@ -143,7 +144,7 @@ theorem QuarticWickDiagram.pairingInOrder_partner_componentOrderedLeg
         (d.componentOrderedLeg shuffle B p) =
       d.componentOrderedLeg shuffle B
         (((d.restrictComponent B.2).pairingInOrder (orders B)).partner p) := by
-  apply (orderedLegToDiagramLeg S (d.assembleVertexOrder orders shuffle)).injective
+  apply (Common.orderedLegToDiagramLeg S (d.assembleVertexOrder orders shuffle)).injective
   simp only [Common.QuarticDiagram.pairingInOrder,
     Combinatorics.Pairing.relabel_partner, Equiv.apply_symm_apply]
   rw [d.orderedLegToDiagramLeg_componentOrderedLeg orders shuffle B]
@@ -151,7 +152,7 @@ theorem QuarticWickDiagram.pairingInOrder_partner_componentOrderedLeg
   rw [d.restrictComponent_pairing B.2]
   simpa only [Equiv.apply_symm_apply] using
     (d.componentDiagramLeg_restrictedPairing_partner B
-      (orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p)).symm
+      (Common.orderedLegToDiagramLeg (B : Finset (Fin N)) (orders B) p)).symm
 
 
 /-- A component-local normalized pair maps to, and is reflected by, the corresponding normalized

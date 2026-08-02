@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentOrderedSimplexProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentContractionIntegrand
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.AmplitudePrefactorFactorization
@@ -25,19 +26,19 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] {N 
 the corresponding sums for the connected-component restrictions. -/
 theorem QuarticWickDiagram.sum_orderedSimplexContribution_eq_prod_components
     (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) :
-    (∑ order : QuarticVertexOrder S, d.orderedSimplexContribution ε β order) =
+    (∑ order : Common.QuarticVertexOrder S, d.orderedSimplexContribution ε β order) =
       ∏ B : d.componentPartition.parts,
-        ∑ order : QuarticVertexOrder (B : Finset (Fin N)),
+        ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
           QuarticWickDiagram.orderedSimplexContribution ε β
             (d.restrictComponentConnected B.2).1 order := by
   classical
   let localContribution :
       ∀ B : d.componentPartition.parts,
-        QuarticVertexOrder (B : Finset (Fin N)) → ℂ :=
+        Common.QuarticVertexOrder (B : Finset (Fin N)) → ℂ :=
     fun B order => QuarticWickDiagram.orderedSimplexContribution ε β
       (d.restrictComponentConnected B.2).1 order
   calc
-    (∑ order : QuarticVertexOrder S, d.orderedSimplexContribution ε β order) =
+    (∑ order : Common.QuarticVertexOrder S, d.orderedSimplexContribution ε β order) =
         ∑ x : d.ComponentVertexOrders × d.ComponentShuffle,
           d.orderedSimplexContribution ε β (d.assembleVertexOrder x.1 x.2) := by
       rw [← Equiv.sum_comp (Common.QuarticDiagram.componentOrderDecompositionEquiv d).symm]
@@ -70,15 +71,15 @@ theorem QuarticWickDiagram.sum_orderedSimplexContribution_eq_prod_components
           (fun B => continuous_contractionIntegrand ε β
             (d.restrictComponentConnected B.2).1 (orders B))
     _ = ∏ B : d.componentPartition.parts,
-          ∑ order : QuarticVertexOrder (B : Finset (Fin N)),
+          ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
             localContribution B order := by
       simpa using
         (Finset.prod_univ_sum
           (fun B : d.componentPartition.parts =>
-            (Finset.univ : Finset (QuarticVertexOrder (B : Finset (Fin N)))))
+            (Finset.univ : Finset (Common.QuarticVertexOrder (B : Finset (Fin N)))))
           localContribution).symm
     _ = ∏ B : d.componentPartition.parts,
-          ∑ order : QuarticVertexOrder (B : Finset (Fin N)),
+          ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
             QuarticWickDiagram.orderedSimplexContribution ε β
               (d.restrictComponentConnected B.2).1 order := by
       rfl

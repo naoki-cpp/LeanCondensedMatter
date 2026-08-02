@@ -12,6 +12,12 @@ REMOVED_IDENTIFIERS = {
         "removed Fermionic WickDiagram ext wrapper",
     re.compile(r"(?<![A-Za-z0-9_'])QuarticWickDiagram\.equivPair(?![A-Za-z0-9_'])"):
         "removed Fermionic WickDiagram equivPair wrapper",
+    re.compile(r"(?<![A-Za-z0-9_'])OrderedQuarticWickData(?![A-Za-z0-9_'])"):
+        "removed Fermionic ordered-data alias",
+    re.compile(r"(?<![A-Za-z0-9_'])quarticWickDiagramEquivOrderedData(?![A-Za-z0-9_'])"):
+        "removed Fermionic ordered-data equivalence alias",
+    re.compile(r"(?<![A-Za-z0-9_'])sum_quarticWickDiagram_eq_sum_orderedData(?![A-Za-z0-9_'])"):
+        "removed Fermionic ordered-data sum theorem",
 }
 
 
