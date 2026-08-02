@@ -122,6 +122,12 @@ REMOVED_IDENTIFIERS = {
         "removed normalized weighted diagonal functional wrapper",
     re.compile(r"(?<![A-Za-z0-9_'])normalizedWeightedDiagonalLinearMap(?![A-Za-z0-9_'])"):
         "removed normalized weighted diagonal linear-map wrapper",
+    re.compile(r"(?<![A-Za-z0-9_'])weightedTrace_operatorIntervalIntegral(?![A-Za-z0-9_'])"):
+        "removed weighted-trace operator-integral bridge",
+    re.compile(
+        r"(?<![A-Za-z0-9_'])normalizedWeightedDiagonal_operatorIntervalIntegral"
+        r"(?![A-Za-z0-9_'])"
+    ): "removed normalized weighted-diagonal operator-integral bridge",
     re.compile(
         r"^\s*import\s+LeanCondensedMatter\.SecondQuantization\.Fermionic\.Thermal\."
         r"FreeBoltzmannWeight\s*$"
