@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCor
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.WeightedNumberOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core
 
 set_option linter.style.header false
 
@@ -34,6 +35,15 @@ theorem weightSum_freeBoltzmannWeight_ne_zero (ε : Mode → ℝ) (β : ℝ) :
     Common.weightSum (freeBoltzmannWeight ε β) ≠ 0 := by
   rw [weightSum_freeBoltzmannWeight_eq_freePartitionFunction]
   exact freePartitionFunction_ne_zero ε β
+
+omit [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] in
+/-- The fermionic free Boltzmann weight agrees with the Common weight at `fermionEnergy`. -/
+theorem freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy (ε : Mode → ℝ) (β : ℝ)
+    (n : Occupation Mode) :
+    freeBoltzmannWeight ε β n = Common.boltzmannWeight (fermionEnergy ε) β n := by
+  rw [freeBoltzmannWeight, Common.boltzmannWeight, fermionEnergy]
+  push_cast
+  ring_nf
 
 omit [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] in
 /-- **The free Boltzmann weight factorizes mode-by-mode**: `e^{-β E(n)} = ∏_{i ∈ n} e^{-βε_i}`,
