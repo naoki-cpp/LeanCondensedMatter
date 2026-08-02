@@ -21,14 +21,14 @@ noncomputable section
 noncomputable def QuarticWickDiagram.blockVertex {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (v : ↥B) : ↥S :=
-  ((QuarticWickDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)).symm v :
+  ((Common.QuarticDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)).symm v :
     {v : ↥S // (v : Fin N) ∈ B})
 
 theorem QuarticWickDiagram.blockVertex_mem {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (v : ↥B) :
     (d.blockVertex hB v : Fin N) ∈ B :=
-  (((QuarticWickDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)).symm v :
+  (((Common.QuarticDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)).symm v :
     {v : ↥S // (v : Fin N) ∈ B})).2
 
 theorem QuarticWickDiagram.vertexOfLeg_blockLegEquiv_eq_iff {S : Finset (Fin N)}
