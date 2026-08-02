@@ -2,15 +2,16 @@ import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Gi
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Peel
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.FourPoint
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Recursion
 
 set_option linter.style.header false
 
 /-!
-# Umbrella module for the normalized Gibbs expectation
+# Umbrella module for normalized finite Gibbs expectations
 
-Importing this module brings in the whole `GibbsExpectation/` subdirectory: the normalized
-functional itself and its basic algebraic properties (`Core.lean`), the genuine normalized
-2-point value (`TwoPoint.lean`), the normalized peel identities (`Peel.lean`), and the normalized
-4-point identities (`FourPoint.lean`). `Common/Thermal/BlochDeDominicis/Induction.lean` — which needs only
-`Core`/`TwoPoint`/`Peel`, not `FourPoint` — imports those three directly instead of this umbrella.
+Importing this module brings in the normalized finite Gibbs expectation, its two-point, four-point,
+and peel identities, and its implementation of the generic `ExpectationPairingRecursion` contract.
+
+`Common/Thermal/BlochDeDominicis/Induction.lean` imports the finite recursion implementation and then
+applies the statistics-independent expectation recursion theorem.
 -/
