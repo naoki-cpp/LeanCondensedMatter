@@ -33,9 +33,8 @@ theorem finiteGibbsExpectation_peel (energy : Config → ℝ) (β q1 : ℝ) (ζ 
   have h := traceFock_diagonalEvolution_comp_peel energy β q1 ζ C1 l hC1 hcomm
   have hne' : (1 : ℂ) - ζ ^ l.length * Complex.exp ((β * q1 : ℝ) : ℂ) ≠ 0 := by
     rwa [mul_comm β q1]
-  simp only [finiteGibbsExpectation_eq_normalizedWeightedDiagonal, normalizedWeightedDiagonal,
-    ← traceFock_diagonalEvolution_comp_eq_weightedTrace, ← traceFock_diagonalEvolution_eq_weightSum]
-  field_simp [hne']
+  simp only [finiteGibbsExpectation_eq_trace_div]
+  field_simp [hZ, hne']
   linear_combination (norm := ring_nf) h
 
 /-- The expectation of `peelSum`, written as an indexed finite sum. -/

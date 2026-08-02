@@ -16,6 +16,12 @@ REMOVED_PATHS = {
         "removed normalized algebraic-Fock functional module",
     LEAN_ROOT
     / "SecondQuantization"
+    / "Common"
+    / "Thermal"
+    / "FiniteGibbsCoordinateBridge.lean":
+        "renamed ambiguous finite Gibbs coordinate bridge",
+    LEAN_ROOT
+    / "SecondQuantization"
     / "Fermionic"
     / "Diagrammatics"
     / "DysonDensityStateExpansion.lean": "removed Dyson density-state forwarding module",

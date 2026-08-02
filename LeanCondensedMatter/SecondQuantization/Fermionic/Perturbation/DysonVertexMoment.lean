@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core
 import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
 
 set_option linter.style.header false
@@ -8,8 +9,7 @@ set_option linter.style.header false
 # Dyson coefficients as `Finset`-indexed vertex moments
 
 This file is the seam between the fermionic Dyson partition coefficient, indexed by perturbation
-order `ℕ`, and finite-set moment/cumulant combinatorics, indexed by a labelled vertex set
-`Finset α`.
+order `ℕ`, and finite-set moment/cumulant combinatorics, indexed by a labelled vertex set `Finset α`.
 -/
 
 namespace SecondQuantization
@@ -25,7 +25,7 @@ noncomputable def normalizedDysonPartitionCoeff (ε : Mode → ℝ) (β : ℝ)
 omit [LinearOrder Mode] in
 /-- The normalized Dyson coefficient is the canonical free Gibbs density-state expectation of the
 bare Dyson coefficient. This bridge is owned at the perturbative moment layer so diagrammatic
-callers do not need to unfold the coordinate Gibbs functional. -/
+callers do not need to unfold occupation-basis Gibbs formulas. -/
 theorem normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation
     (ε : Mode → ℝ) (β : ℝ) (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ) :
     normalizedDysonPartitionCoeff ε β V n =
@@ -36,16 +36,14 @@ theorem normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation
     rw [freeBoltzmannWeight, Common.boltzmannWeight, fermionEnergy]
     push_cast
     ring_nf
+  have hZ : Common.traceFock (Common.diagonalEvolution (fermionEnergy ε) (-β)) =
+      freePartitionFunction ε β := by
+    rw [Common.traceFock_diagonalEvolution_eq_weightSum, ← hw,
+      Common.weightSum, freePartitionFunction]
   rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
-    Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal,
-    normalizedDysonPartitionCoeff, Common.normalizedWeightedDiagonal,
-    freePartitionFunction, hw]
+    Common.finiteGibbsExpectation_eq_trace_div,
+    normalizedDysonPartitionCoeff, hZ]
   congr 1
-  rw [dysonPartitionCoeff, imaginaryTimeEvolveFree]
-  change Common.traceFock
-      (Common.diagonalEvolution (fermionEnergy ε) (-β) ∘ₗ
-        Common.dysonCoeff (fermionEnergy ε) V n β) = _
-  rw [Common.traceFock_diagonalEvolution_comp_eq_weightedTrace]
 
 omit [LinearOrder Mode] in
 @[simp]
