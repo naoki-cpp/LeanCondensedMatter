@@ -16,7 +16,7 @@ recurses on.
 namespace SecondQuantization
 namespace Common
 
-variable {Config : Type*} [Fintype Config]
+variable {Config : Type*} [Fintype Config] [Nonempty Config]
 
 /-- **The normalized peel-first identity**, dividing `Unnormalized/PeelFirstTrace.lean`'s
 un-normalized `(1 - ζ^{l.length}w₁) Tr[e^{-βH₀}(C₁·B₁⋯Bₖ)] = Tr[e^{-βH₀}·peelSum ζ l]` through by
