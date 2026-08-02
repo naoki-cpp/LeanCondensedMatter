@@ -1,15 +1,13 @@
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ContinuousDysonBounds
-import Mathlib.MeasureTheory.Integral.DominatedConvergence
-import Mathlib.Topology.Algebra.InfiniteSum.TsumUniformlyOn
 
 set_option linter.style.header false
 
 /-!
 # Convergent analytic Dyson evolution
 
-This module sums the finite-dimensional continuous Dyson coefficients in operator norm.  The
-coefficient recursion remains the transported algebraic construction from `ContinuousDyson`; the
-new definition is the genuine `tsum` of those coefficients.
+The finite continuous operators remain the public realization, while their recursion, factorial
+bounds, summability, and uniform convergence are inherited from the dimension-independent
+`Analysis.Dyson` owner.
 -/
 
 namespace SecondQuantization
@@ -31,34 +29,42 @@ noncomputable def analyticDysonEvolution (energy : Config → ℝ)
     (τ : ℝ) (lam : ℂ) : FiniteContinuousOperator Config :=
   ∑' n : ℕ, analyticDysonTerm energy V τ lam n
 
-/-- The weighted `n`th coefficient is controlled by the exponential majorant inherited from
-`ContinuousDysonBounds`. -/
+/-- The finite weighted coefficient is the generic Dyson term specialized to the continuous
+interaction-picture family. -/
+@[simp]
+theorem analyticDysonTerm_eq_term (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (τ : ℝ) (lam : ℂ) (n : ℕ) :
+    analyticDysonTerm energy V τ lam n =
+      Dyson.term (continuousInteractionPicture energy V) lam τ n := by
+  rw [analyticDysonTerm, Dyson.term, continuousDysonCoeff_eq_coeff]
+
+/-- The finite analytic evolution is the generic Dyson evolution specialized to the continuous
+interaction-picture family. -/
+theorem analyticDysonEvolution_eq_evolution (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (τ : ℝ) (lam : ℂ) :
+    analyticDysonEvolution energy V τ lam =
+      Dyson.evolution (continuousInteractionPicture energy V) lam τ := by
+  rw [analyticDysonEvolution, Dyson.evolution]
+  apply tsum_congr
+  intro n
+  exact analyticDysonTerm_eq_term energy V τ lam n
+
+/-- The weighted `n`th coefficient is controlled by the generic exponential majorant. -/
 theorem norm_analyticDysonTerm_le (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) {β τ : ℝ}
     (hβ : 0 ≤ β) (hτ : τ ∈ Set.Icc (0 : ℝ) β) (lam : ℂ) (n : ℕ) :
     ‖analyticDysonTerm energy V τ lam n‖ ≤
-      dysonMajorant
+      Dyson.majorant
         (‖lam‖ * interactionPictureNormBound energy V β) τ n := by
-  calc
-    ‖analyticDysonTerm energy V τ lam n‖ =
-        ‖lam‖ ^ n * ‖continuousDysonCoeff energy V n τ‖ := by
-      rw [analyticDysonTerm, norm_smul, norm_pow]
-    _ ≤ ‖lam‖ ^ n *
-        dysonMajorant (interactionPictureNormBound energy V β) τ n :=
-      mul_le_mul_of_nonneg_left
-        (norm_continuousDysonCoeff_le energy V hβ n hτ)
-        (pow_nonneg (norm_nonneg lam) n)
-    _ = dysonMajorant
-        (‖lam‖ * interactionPictureNormBound energy V β) τ n := by
-      simp only [dysonMajorant]
-      ring_nf
-
-/-- The factorial majorant is monotone in nonnegative imaginary time. -/
-theorem dysonMajorant_mono_tau {M τ β : ℝ} (hM : 0 ≤ M)
-    (hτ : 0 ≤ τ) (hτβ : τ ≤ β) (n : ℕ) :
-    dysonMajorant M τ n ≤ dysonMajorant M β n := by
-  unfold dysonMajorant
-  gcongr
+  rw [analyticDysonTerm_eq_term]
+  exact Dyson.norm_term_le_of_bound
+    (continuousInteractionPicture energy V)
+    ContinuousLinearMap.norm_id_le
+    (interactionPictureNormBound_nonneg energy V hβ)
+    (fun σ hσ => norm_continuousInteractionPicture_le energy V hβ hσ)
+    lam n hτ
 
 /-- On every nonnegative compact imaginary-time interval, the analytic Dyson terms are summable
 in the continuous-operator norm. -/
@@ -66,7 +72,13 @@ theorem summable_analyticDysonTerm (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) {β τ : ℝ}
     (hβ : 0 ≤ β) (hτ : τ ∈ Set.Icc (0 : ℝ) β) (lam : ℂ) :
     Summable (analyticDysonTerm energy V τ lam) := by
-  exact (summable_norm_pow_smul_continuousDysonCoeff energy V hβ hτ lam).of_norm
+  simpa only [analyticDysonTerm_eq_term] using
+    (Dyson.summable_term_of_bound
+      (continuousInteractionPicture energy V)
+      ContinuousLinearMap.norm_id_le
+      (interactionPictureNormBound_nonneg energy V hβ)
+      (fun σ hσ => norm_continuousInteractionPicture_le energy V hβ hσ)
+      lam hτ)
 
 /-- The defining operator series has sum `analyticDysonEvolution`. -/
 theorem hasSum_analyticDysonEvolution (energy : Config → ℝ)
@@ -74,7 +86,13 @@ theorem hasSum_analyticDysonEvolution (energy : Config → ℝ)
     (hβ : 0 ≤ β) (hτ : τ ∈ Set.Icc (0 : ℝ) β) (lam : ℂ) :
     HasSum (analyticDysonTerm energy V τ lam)
       (analyticDysonEvolution energy V τ lam) := by
-  exact (summable_analyticDysonTerm energy V hβ hτ lam).hasSum
+  simpa only [analyticDysonTerm_eq_term, analyticDysonEvolution_eq_evolution] using
+    (Dyson.hasSum_evolution_of_bound
+      (continuousInteractionPicture energy V)
+      ContinuousLinearMap.norm_id_le
+      (interactionPictureNormBound_nonneg energy V hβ)
+      (fun σ hσ => norm_continuousInteractionPicture_le energy V hβ hσ)
+      lam hτ)
 
 /-- The analytic Dyson series converges uniformly in operator norm on every compact interval
 `[0, β]`. -/
@@ -85,28 +103,21 @@ theorem hasSumUniformlyOn_analyticDysonEvolution (energy : Config → ℝ)
       (fun n τ => analyticDysonTerm energy V τ lam n)
       (fun τ => analyticDysonEvolution energy V τ lam)
       (Set.Icc (0 : ℝ) β) := by
-  have hM : 0 ≤ ‖lam‖ * interactionPictureNormBound energy V β :=
-    mul_nonneg (norm_nonneg lam)
+  simpa only [analyticDysonTerm_eq_term, analyticDysonEvolution_eq_evolution] using
+    (Dyson.hasSumUniformlyOn_evolution_of_bound
+      (continuousInteractionPicture energy V)
+      ContinuousLinearMap.norm_id_le
       (interactionPictureNormBound_nonneg energy V hβ)
-  simpa only [analyticDysonEvolution] using
-    (HasSumUniformlyOn.of_norm_le_summable
-      (f := fun n τ => analyticDysonTerm energy V τ lam n)
-      (u := dysonMajorant
-        (‖lam‖ * interactionPictureNormBound energy V β) β)
-      (summable_dysonMajorant _ _)
-      (fun n τ hτ =>
-        (norm_analyticDysonTerm_le energy V hβ hτ lam n).trans
-          (dysonMajorant_mono_tau hM hτ.1 hτ.2 n)))
+      (fun σ hσ => norm_continuousInteractionPicture_le energy V hβ hσ)
+      lam)
 
 /-- At zero imaginary time only the zeroth Dyson coefficient survives. -/
 @[simp]
 theorem analyticDysonEvolution_zero (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (lam : ℂ) :
     analyticDysonEvolution energy V 0 lam = 1 := by
-  rw [analyticDysonEvolution, tsum_eq_single 0]
-  · simp [analyticDysonTerm]
-  · intro n hn
-    simp [analyticDysonTerm, continuousDysonCoeff_at_zero, hn]
+  rw [analyticDysonEvolution_eq_evolution]
+  exact Dyson.evolution_zero (continuousInteractionPicture energy V) lam
 
 end
 end Common
