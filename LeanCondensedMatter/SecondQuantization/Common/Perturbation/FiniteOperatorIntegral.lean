@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.DiagonalTrace
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 
 set_option linter.style.header false
@@ -124,39 +123,6 @@ theorem comp_operatorIntervalIntegral (L : AlgebraicFock Config →ₗ[ℂ] Alge
   simp only [matrixCoeff_comp, matrixCoeff_operatorIntervalIntegral]
   rw [intervalIntegral.integral_finsetSum fun k _ => (hF k n).const_mul (matrixCoeff L m k)]
   exact Finset.sum_congr rfl fun k _ => (intervalIntegral.integral_const_mul _ _).symm
-
-/-! ## Interaction with a finite weighted trace/normalized diagonal functional -/
-
-/-- **A weighted trace commutes with `operatorIntervalIntegral`**: `Tr_w[∫ F] = ∫ Tr_w[F]`, given
-interval-integrability of every matrix coefficient `F` contributes to the (finite) weighted-trace
-sum. Combines `matrixCoeff_operatorIntervalIntegral` (pushing the integral inside each summand)
-with `intervalIntegral.integral_finsetSum` (swapping the now-finite `Config`-indexed sum with the
-integral) — the finite-sum interchange PR 6's ordered-simplex reduction of `dysonCoeff` needs. -/
-theorem weightedTrace_operatorIntervalIntegral (w : Config → ℂ)
-    (F : ℝ → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (a b : ℝ)
-    (hF : ∀ n : Config, IntervalIntegrable (fun τ => matrixCoeff (F τ) n n) MeasureTheory.volume
-      a b) :
-    weightedTrace w (operatorIntervalIntegral F a b) =
-      ∫ τ in a..b, weightedTrace w (F τ) := by
-  simp only [weightedTrace]
-  have hstep : ∀ n : Config, w n * matrixCoeff (operatorIntervalIntegral F a b) n n =
-      ∫ τ in a..b, w n * matrixCoeff (F τ) n n := by
-    intro n
-    rw [matrixCoeff_operatorIntervalIntegral, intervalIntegral.integral_const_mul]
-  simp_rw [hstep]
-  exact (intervalIntegral.integral_finsetSum fun n _ => (hF n).const_mul (w n)).symm
-
-/-- **A normalized weighted diagonal functional commutes with `operatorIntervalIntegral`**,
-dividing `weightedTrace_operatorIntervalIntegral` through by the (`τ`-independent) `weightSum w`
-via `intervalIntegral.integral_div`. -/
-theorem normalizedWeightedDiagonal_operatorIntervalIntegral (w : Config → ℂ)
-    (F : ℝ → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (a b : ℝ)
-    (hF : ∀ n : Config, IntervalIntegrable (fun τ => matrixCoeff (F τ) n n) MeasureTheory.volume
-      a b) :
-    normalizedWeightedDiagonal w (operatorIntervalIntegral F a b) =
-      ∫ τ in a..b, normalizedWeightedDiagonal w (F τ) := by
-  simp only [normalizedWeightedDiagonal]
-  rw [weightedTrace_operatorIntervalIntegral w F a b hF, intervalIntegral.integral_div]
 
 end Common
 end SecondQuantization
