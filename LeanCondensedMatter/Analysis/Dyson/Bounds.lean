@@ -11,6 +11,9 @@ This module proves the analytic estimates for the dimension-independent Dyson re
 `Analysis.Dyson.Basic`.  The interaction family is controlled by an explicit uniform norm bound on
 a compact nonnegative time interval; no finite-dimensional realization or choice-based operator
 bound is used here.
+
+The bound theorems assume `‖1‖ ≤ 1` explicitly.  This is weaker than requiring `NormOneClass` and
+also covers bounded-operator algebras on a trivial space, where the identity operator has norm zero.
 -/
 
 namespace Dyson
@@ -52,11 +55,12 @@ theorem continuous_term {V : ℝ → A} (hV : Continuous V) (lam : ℂ) (n : ℕ
 /-- An explicit uniform bound on the interaction family implies the standard factorial estimate for
 all generic Dyson coefficients on `[0, β]`. -/
 theorem norm_coeff_le_of_bound (V : ℝ → A) {β M : ℝ}
-    (hM : 0 ≤ M) (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M)
+    (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
+    (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M)
     (n : ℕ) {τ : ℝ} (hτ : τ ∈ Icc (0 : ℝ) β) :
     ‖coeff V n τ‖ ≤ majorant M τ n := by
   induction n generalizing τ with
-  | zero => simp
+  | zero => simpa using hOne
   | succ n ih =>
       rw [coeff_succ, norm_neg]
       calc
@@ -78,14 +82,15 @@ theorem norm_coeff_le_of_bound (V : ℝ → A) {β M : ℝ}
 /-- The weighted `n`th coefficient is controlled by the factorial majorant with interaction bound
 `‖λ‖ M`. -/
 theorem norm_term_le_of_bound (V : ℝ → A) {β M : ℝ}
-    (hM : 0 ≤ M) (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M)
+    (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
+    (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M)
     (lam : ℂ) (n : ℕ) {τ : ℝ} (hτ : τ ∈ Icc (0 : ℝ) β) :
     ‖term V lam τ n‖ ≤ majorant (‖lam‖ * M) τ n := by
   calc
     ‖term V lam τ n‖ = ‖lam‖ ^ n * ‖coeff V n τ‖ := by
       rw [term, norm_smul, norm_pow]
     _ ≤ ‖lam‖ ^ n * majorant M τ n :=
-      mul_le_mul_of_nonneg_left (norm_coeff_le_of_bound V hM hV n hτ)
+      mul_le_mul_of_nonneg_left (norm_coeff_le_of_bound V hOne hM hV n hτ)
         (pow_nonneg (norm_nonneg lam) n)
     _ = majorant (‖lam‖ * M) τ n := by
       simp only [majorant]
@@ -93,24 +98,28 @@ theorem norm_term_le_of_bound (V : ℝ → A) {β M : ℝ}
 
 /-- The weighted generic Dyson coefficients are summable at each time in a bounded interval. -/
 theorem summable_term_of_bound (V : ℝ → A) {β M : ℝ}
-    (hM : 0 ≤ M) (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M)
+    (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
+    (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M)
     (lam : ℂ) {τ : ℝ} (hτ : τ ∈ Icc (0 : ℝ) β) :
     Summable (term V lam τ) := by
   have hnorm : Summable (fun n : ℕ => ‖term V lam τ n‖) :=
     (summable_majorant (‖lam‖ * M) τ).of_nonneg_of_le
-      (fun n => norm_nonneg _) (fun n => norm_term_le_of_bound V hM hV lam n hτ)
+      (fun n => norm_nonneg _)
+      (fun n => norm_term_le_of_bound V hOne hM hV lam n hτ)
   exact hnorm.of_norm
 
 /-- The defining series has sum `evolution` whenever the interaction is uniformly bounded. -/
 theorem hasSum_evolution_of_bound (V : ℝ → A) {β M : ℝ}
-    (hM : 0 ≤ M) (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M)
+    (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
+    (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M)
     (lam : ℂ) {τ : ℝ} (hτ : τ ∈ Icc (0 : ℝ) β) :
     HasSum (term V lam τ) (evolution V lam τ) := by
-  exact (summable_term_of_bound V hM hV lam hτ).hasSum
+  exact (summable_term_of_bound V hOne hM hV lam hτ).hasSum
 
 /-- On a bounded nonnegative interval, the generic Dyson series converges uniformly in norm. -/
 theorem hasSumUniformlyOn_evolution_of_bound (V : ℝ → A) {β M : ℝ}
-    (hM : 0 ≤ M) (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M)
+    (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
+    (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M)
     (lam : ℂ) :
     HasSumUniformlyOn
       (fun n τ => term V lam τ n)
@@ -123,7 +132,7 @@ theorem hasSumUniformlyOn_evolution_of_bound (V : ℝ → A) {β M : ℝ}
       (u := majorant (‖lam‖ * M) β)
       (summable_majorant (‖lam‖ * M) β)
       (fun n τ hτ =>
-        (norm_term_le_of_bound V hM hV lam n hτ).trans
+        (norm_term_le_of_bound V hOne hM hV lam n hτ).trans
           (majorant_mono_time hWeighted hτ.1 hτ.2 n)))
 
 end
