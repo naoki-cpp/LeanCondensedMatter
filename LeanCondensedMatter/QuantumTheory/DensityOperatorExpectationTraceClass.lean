@@ -81,25 +81,31 @@ private theorem densityExpectation_smul (ρ : DensityOperator H) (c : ℂ) (A : 
 private theorem densityExpectation_norm_le (ρ : DensityOperator H) (A : H →L[ℂ] H) :
     ‖densityExpectation ρ A‖ ≤ ‖A‖ := by
   rw [densityExpectation]
-  have h := tsum_of_norm_bounded ((ρ.hasSum_abs_eigenvalues_eq_one).mul_right ‖A‖)
-    (fun a => by
-      have hnorm := eigenvectorFamily_norm_eq_one ρ a
-      have hle : ‖(inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-          (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)‖ ≤ ‖A‖ :=
-        calc
-          ‖(inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-              (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)‖
-              ≤ ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖ *
-                  ‖A (eigenvectorFamily ρ.spectralTraceClass.compact a)‖ :=
-            norm_inner_le_norm _ _
-          _ ≤ ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖ *
-              (‖A‖ * ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖) := by
-            gcongr
-            exact A.le_opNorm _
-          _ = ‖A‖ := by rw [hnorm]; ring
-      rw [norm_mul, Complex.norm_real]
-      exact mul_le_mul_of_nonneg_left hle (abs_nonneg _))
-  simpa using h
+  have hsum : HasSum (fun a : EigenvectorIndex ρ.op => |a.1.1| * ‖A‖) (1 * ‖A‖) :=
+    (ρ.hasSum_abs_eigenvalues_eq_one).mul_right ‖A‖
+  have hbound :
+      ‖∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) *
+        (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+          (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)‖ ≤ 1 * ‖A‖ := by
+    apply tsum_of_norm_bounded hsum
+    intro a
+    have hnorm := eigenvectorFamily_norm_eq_one ρ a
+    have hle : ‖(inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+        (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)‖ ≤ ‖A‖ :=
+      calc
+        ‖(inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+            (A (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)‖
+            ≤ ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖ *
+                ‖A (eigenvectorFamily ρ.spectralTraceClass.compact a)‖ :=
+          norm_inner_le_norm _ _
+        _ ≤ ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖ *
+            (‖A‖ * ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖) := by
+          gcongr
+          exact A.le_opNorm _
+        _ = ‖A‖ := by rw [hnorm]; ring
+    rw [norm_mul, Complex.norm_real]
+    exact mul_le_mul_of_nonneg_left hle (abs_nonneg _)
+  simpa using hbound
 
 /-- The normalized complex expectation functional associated with a density operator. -/
 noncomputable def DensityOperator.expectation (ρ : DensityOperator H) :
