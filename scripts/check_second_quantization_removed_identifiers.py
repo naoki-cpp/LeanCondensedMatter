@@ -120,6 +120,8 @@ REMOVED_IDENTIFIERS = {
         "removed normalized algebraic-Fock functional type",
     re.compile(r"(?<![A-Za-z0-9_'])normalizedWeightedDiagonalFunctional(?![A-Za-z0-9_'])"):
         "removed normalized weighted diagonal functional wrapper",
+    re.compile(r"(?<![A-Za-z0-9_'])normalizedWeightedDiagonalLinearMap(?![A-Za-z0-9_'])"):
+        "removed normalized weighted diagonal linear-map wrapper",
     re.compile(
         r"^\s*import\s+LeanCondensedMatter\.SecondQuantization\.Fermionic\.Thermal\."
         r"FreeBoltzmannWeight\s*$"
