@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentRestriction
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPartition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentPartition
 
 set_option linter.style.header false
 
