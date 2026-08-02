@@ -42,7 +42,11 @@ theorem hasSummableRealEigenvalues_of_positive_of_summable_diagonal
     rwa [he.1 a, one_pow] at hs
   have hf_summable : Summable f := by
     unfold f
-    exact Summable.finsetSum s fun a _ => (hparseval a).summable.mul_left a.1.1
+    induction s using Finset.induction_on with
+    | empty => simp
+    | @insert a s ha ih =>
+        rw [Finset.sum_insert ha]
+        exact ((hparseval a).summable.mul_left a.1.1).add ih
   have hf_tsum : ∑' i, f i = ∑ a ∈ s, a.1.1 := by
     unfold f
     rw [Summable.tsum_finsetSum fun a _ => (hparseval a).summable.mul_left a.1.1]
@@ -85,8 +89,10 @@ def diagonalOpSpectralTraceClass (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
   have hdiag_point :
       (fun i => (inner ℂ (b i) (T (b i)) : ℂ).re) = a := by
     funext i
-    simp [T, diagonalOp_apply_basis, inner_smul_right,
-      inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
+    rw [show T (b i) = a i • b i by
+      simpa [T] using diagonalOp_apply_basis b (fun i => (a i : ℂ)) hac i]
+    rw [inner_smul_right_eq_smul, inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
+    simp
   have hdiag : Summable fun i => (inner ℂ (b i) (T (b i)) : ℂ).re := by
     rw [hdiag_point]
     exact Summable.of_norm ha
@@ -98,13 +104,16 @@ def diagonalOpSpectralTraceClass (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
 theorem diagonalOpSpectralTraceClass_trace (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i) :
     (diagonalOpSpectralTraceClass b a ha ha_nonneg).trace = ∑' i, a i := by
+  let hac : Summable fun i => ‖(a i : ℂ)‖ := by simpa using ha
   have htrace := (diagonalOpSpectralTraceClass b a ha ha_nonneg).hasSum_inner_apply b
   have hpoint :
       (fun i => (inner ℂ (b i)
-        (diagonalOp b (fun i => (a i : ℂ)) (by simpa using ha) (b i)) : ℂ).re) = a := by
+        (diagonalOp b (fun i => (a i : ℂ)) hac (b i)) : ℂ).re) = a := by
     funext i
-    simp [diagonalOp_apply_basis, inner_smul_right,
-      inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
+    rw [show diagonalOp b (fun i => (a i : ℂ)) hac (b i) = a i • b i by
+      simpa using diagonalOp_apply_basis b (fun i => (a i : ℂ)) hac i]
+    rw [inner_smul_right_eq_smul, inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
+    simp
   rw [hpoint] at htrace
   exact htrace.tsum_eq.symm
 
