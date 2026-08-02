@@ -105,7 +105,24 @@ theorem finiteHilbertOperator_add
   apply ContinuousLinearMap.ext
   intro x
   rw [← (finiteHilbertFockEquiv (Config := Config)).apply_symm_apply x]
-  simp
+  calc
+    finiteHilbertOperator (A + B)
+        (finiteHilbertFockEquiv ((finiteHilbertFockEquiv (Config := Config)).symm x)) =
+        finiteHilbertFockEquiv
+          ((A + B) ((finiteHilbertFockEquiv (Config := Config)).symm x)) :=
+      finiteHilbertOperator_equiv_apply _ _
+    _ = finiteHilbertFockEquiv
+        (A ((finiteHilbertFockEquiv (Config := Config)).symm x) +
+          B ((finiteHilbertFockEquiv (Config := Config)).symm x)) := by
+      rw [LinearMap.add_apply]
+    _ = finiteHilbertFockEquiv (A ((finiteHilbertFockEquiv (Config := Config)).symm x)) +
+        finiteHilbertFockEquiv (B ((finiteHilbertFockEquiv (Config := Config)).symm x)) :=
+      map_add _ _ _
+    _ = finiteHilbertOperator A
+          (finiteHilbertFockEquiv ((finiteHilbertFockEquiv (Config := Config)).symm x)) +
+        finiteHilbertOperator B
+          (finiteHilbertFockEquiv ((finiteHilbertFockEquiv (Config := Config)).symm x)) := by
+      rw [finiteHilbertOperator_equiv_apply, finiteHilbertOperator_equiv_apply]
 
 @[simp]
 theorem finiteHilbertOperator_smul (c : ℂ)
@@ -114,7 +131,21 @@ theorem finiteHilbertOperator_smul (c : ℂ)
   apply ContinuousLinearMap.ext
   intro x
   rw [← (finiteHilbertFockEquiv (Config := Config)).apply_symm_apply x]
-  simp
+  calc
+    finiteHilbertOperator (c • A)
+        (finiteHilbertFockEquiv ((finiteHilbertFockEquiv (Config := Config)).symm x)) =
+        finiteHilbertFockEquiv
+          ((c • A) ((finiteHilbertFockEquiv (Config := Config)).symm x)) :=
+      finiteHilbertOperator_equiv_apply _ _
+    _ = finiteHilbertFockEquiv
+        (c • A ((finiteHilbertFockEquiv (Config := Config)).symm x)) := by
+      rw [LinearMap.smul_apply]
+    _ = c • finiteHilbertFockEquiv
+        (A ((finiteHilbertFockEquiv (Config := Config)).symm x)) :=
+      map_smul _ _ _
+    _ = c • finiteHilbertOperator A
+        (finiteHilbertFockEquiv ((finiteHilbertFockEquiv (Config := Config)).symm x)) := by
+      rw [finiteHilbertOperator_equiv_apply]
 
 @[simp]
 theorem finiteHilbertOperator_id :
@@ -123,7 +154,17 @@ theorem finiteHilbertOperator_id :
   apply ContinuousLinearMap.ext
   intro x
   rw [← (finiteHilbertFockEquiv (Config := Config)).apply_symm_apply x]
-  simp
+  calc
+    finiteHilbertOperator LinearMap.id
+        (finiteHilbertFockEquiv ((finiteHilbertFockEquiv (Config := Config)).symm x)) =
+        finiteHilbertFockEquiv
+          (LinearMap.id ((finiteHilbertFockEquiv (Config := Config)).symm x)) :=
+      finiteHilbertOperator_equiv_apply _ _
+    _ = finiteHilbertFockEquiv ((finiteHilbertFockEquiv (Config := Config)).symm x) := by
+      rw [LinearMap.id_apply]
+    _ = (ContinuousLinearMap.id ℂ (FiniteHilbertFock Config))
+        (finiteHilbertFockEquiv ((finiteHilbertFockEquiv (Config := Config)).symm x)) := by
+      rw [ContinuousLinearMap.id_apply]
 
 /-- Transport of algebraic Fock endomorphisms to bounded Hilbert operators, bundled linearly. -/
 noncomputable def finiteHilbertOperatorLinearMap :
