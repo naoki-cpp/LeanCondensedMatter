@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.WeightedFreeTwoPointFunction
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannWeight
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeTwoPointFunction

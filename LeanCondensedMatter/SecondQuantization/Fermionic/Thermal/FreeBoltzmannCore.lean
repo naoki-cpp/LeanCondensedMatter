@@ -5,9 +5,8 @@ set_option linter.style.header false
 /-!
 # Free-fermion Boltzmann weights and partition function
 
-This module owns only the finite free-fermion thermal weight and partition-function data needed by
-canonical density-state constructions. Coordinate normalized-expectation compatibility lives in
-`FreeBoltzmannWeight.lean`, above this core layer.
+This module owns the finite free-fermion thermal weight and partition function used by canonical
+density-state constructions.
 -/
 
 namespace SecondQuantization
