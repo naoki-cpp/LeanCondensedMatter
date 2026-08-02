@@ -32,7 +32,7 @@ noncomputable def analyticDysonIntegrandMajorant (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (β : ℝ) (lam : ℂ) (n : ℕ) : ℝ :=
   (‖lam‖ * interactionPictureNormBound energy V β) *
-    dysonMajorant
+    Dyson.majorant
       (‖lam‖ * interactionPictureNormBound energy V β) β n
 
 /-- Every weighted Dyson coefficient is continuous in imaginary time. -/
@@ -75,7 +75,7 @@ theorem summable_analyticDysonIntegrandMajorant (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (β : ℝ) (lam : ℂ) :
     Summable (analyticDysonIntegrandMajorant energy V β lam) := by
-  exact (summable_dysonMajorant
+  exact (Dyson.summable_majorant
     (‖lam‖ * interactionPictureNormBound energy V β) β).mul_left
       (‖lam‖ * interactionPictureNormBound energy V β)
 
@@ -90,10 +90,10 @@ theorem norm_analyticDysonIntegrand_le (energy : Config → ℝ)
   have hweighted : 0 ≤ ‖lam‖ * interactionPictureNormBound energy V β :=
     mul_nonneg (norm_nonneg lam) hM
   have hterm : ‖analyticDysonTerm energy V σ lam n‖ ≤
-      dysonMajorant
+      Dyson.majorant
         (‖lam‖ * interactionPictureNormBound energy V β) β n :=
     (norm_analyticDysonTerm_le energy V hβ hσ lam n).trans
-      (dysonMajorant_mono_tau hweighted hσ.1 hσ.2 n)
+      (Dyson.majorant_mono_time hweighted hσ.1 hσ.2 n)
   calc
     ‖analyticDysonIntegrand energy V lam n σ‖ =
         ‖lam‖ * ‖(continuousInteractionPicture energy V σ).comp
@@ -108,7 +108,7 @@ theorem norm_analyticDysonIntegrand_le (energy : Config → ℝ)
         (norm_nonneg lam)
     _ ≤ ‖lam‖ *
         (interactionPictureNormBound energy V β *
-          dysonMajorant
+          Dyson.majorant
             (‖lam‖ * interactionPictureNormBound energy V β) β n) := by
       gcongr
       exact norm_continuousInteractionPicture_le energy V hβ hσ
