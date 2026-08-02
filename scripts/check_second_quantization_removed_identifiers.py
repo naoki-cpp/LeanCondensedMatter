@@ -184,6 +184,15 @@ REMOVED_IDENTIFIERS = {
         r"summable_norm_pow_smul_continuousDysonCoeff|dysonMajorant_mono_tau"
         r")(?![A-Za-z0-9_'])"
     ): "removed finite-only Dyson analytic API",
+    re.compile(
+        r"(?<![A-Za-z0-9_'])(?:"
+        r"analyticDysonIntegrandMajorant|analyticDysonIntegrand|"
+        r"continuous_analyticDysonIntegrand|hasSum_analyticDysonIntegrand|"
+        r"summable_analyticDysonIntegrandMajorant|norm_analyticDysonIntegrand_le|"
+        r"hasSum_intervalIntegral_analyticDysonIntegrand|"
+        r"intervalIntegral_analyticDysonIntegrand|hasSum_analyticDysonTail"
+        r")(?![A-Za-z0-9_'])"
+    ): "removed finite-only Dyson Volterra API",
 }
 
 
