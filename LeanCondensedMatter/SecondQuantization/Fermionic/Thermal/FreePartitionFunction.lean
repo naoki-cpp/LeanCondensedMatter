@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannWeight
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.WeightedNumberOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 
@@ -7,22 +8,32 @@ set_option linter.style.header false
 /-!
 # The free fermion partition function factorizes, and gives the Fermi–Dirac distribution
 
-Phase 9 follow-up (`notes/roadmaps/second-quantization.md`): closes the gap
-`FreeBoltzmannWeight.lean`'s module docstring flags — the closed-form free-fermion occupation
-number `⟨N_i⟩₀ = 1/(e^{βε_i}+1)` — via the mode-by-mode product factorization of the free
-partition function,
+The closed-form free-fermion occupation number `⟨N_i⟩₀ = 1/(e^{βε_i}+1)` follows from the
+mode-by-mode product factorization of the finite free partition function,
 
-`Z₀(β) = Σₙ e^{-β E(n)} = ∏ᵢ (1 + e^{-βε_i})`,
+`Z₀(β) = Σₙ e^{-β E(n)} = ∏ᵢ (1 + e^{-βε_i})`.
 
-which needs no convergence theory: unlike the bosonic case (`Bosonic/Thermal/FreePartitionFunction.lean`),
-each fermionic mode's occupation is `0` or `1`, so every sum here is manifestly finite (a
-`Finset.sum`/`Finset.prod` over `Fintype Mode`, no infinite series).
+Unlike the bosonic case (`Bosonic/Thermal/FreePartitionFunction.lean`), each fermionic mode's
+occupation is `0` or `1`, so every sum is manifestly finite.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+
+omit [DecidableEq Mode] [LinearOrder Mode] in
+/-- The total free Boltzmann weight is the free partition function. -/
+theorem weightSum_freeBoltzmannWeight_eq_freePartitionFunction (ε : Mode → ℝ) (β : ℝ) :
+    Common.weightSum (freeBoltzmannWeight ε β) = freePartitionFunction ε β := by
+  rw [Common.weightSum, freePartitionFunction]
+
+omit [DecidableEq Mode] [LinearOrder Mode] in
+/-- The total free Boltzmann weight is nonzero. -/
+theorem weightSum_freeBoltzmannWeight_ne_zero (ε : Mode → ℝ) (β : ℝ) :
+    Common.weightSum (freeBoltzmannWeight ε β) ≠ 0 := by
+  rw [weightSum_freeBoltzmannWeight_eq_freePartitionFunction]
+  exact freePartitionFunction_ne_zero ε β
 
 omit [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] in
 /-- **The free Boltzmann weight factorizes mode-by-mode**: `e^{-β E(n)} = ∏_{i ∈ n} e^{-βε_i}`,
