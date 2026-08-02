@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.NormalizedOperatorFunctional
 import Mathlib.Topology.Algebra.InfiniteSum.Constructions
 import Mathlib.Analysis.Complex.Basic
 
@@ -328,9 +327,7 @@ theorem normalizedWeightedDiagonal_diagonalOperator (w a : Config → ℂ) :
 
 /-- **`normalizedWeightedDiagonal w`, bundled as a `LinearMap`** — the same map
 `normalizedWeightedDiagonal_add`/`_smul` already show is linear, packaged once so downstream
-linearity facts (`map_zero`, and any further `LinearMap`-generic API) come from `LinearMap`'s own
-lemmas rather than being re-derived by hand for each. `normalizedWeightedDiagonalFunctional` below
-is exactly this `LinearMap` plus the normalization proof `map_id` needs. -/
+linearity facts can use `LinearMap`'s generic API. -/
 noncomputable def normalizedWeightedDiagonalLinearMap (w : Config → ℂ) :
     (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ where
   toFun := normalizedWeightedDiagonal w
@@ -341,21 +338,6 @@ noncomputable def normalizedWeightedDiagonalLinearMap (w : Config → ℂ) :
 theorem normalizedWeightedDiagonalLinearMap_apply (w : Config → ℂ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     normalizedWeightedDiagonalLinearMap w A = normalizedWeightedDiagonal w A := rfl
-
-/-! ## The `NormalizedOperatorFunctional` instantiation -/
-
-/-- **The finite-sum instantiation** of `NormalizedOperatorFunctional`, for a weight `w : Config →
-ℂ` with nonzero total weight: `toLinearMap := normalizedWeightedDiagonalLinearMap w`, with
-normalization supplied by `normalizedWeightedDiagonal_id`. -/
-noncomputable def normalizedWeightedDiagonalFunctional (w : Config → ℂ) (hw : weightSum w ≠ 0) :
-    NormalizedOperatorFunctional Config where
-  toLinearMap := normalizedWeightedDiagonalLinearMap w
-  map_id := normalizedWeightedDiagonal_id w hw
-
-@[simp]
-theorem normalizedWeightedDiagonalFunctional_apply (w : Config → ℂ) (hw : weightSum w ≠ 0)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    normalizedWeightedDiagonalFunctional w hw A = normalizedWeightedDiagonal w A := rfl
 
 end Common
 end SecondQuantization
