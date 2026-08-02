@@ -33,9 +33,9 @@ theorem hasDerivAt_constantExponential (K : A) (lam : ℂ) (τ : ℝ) :
   · funext u
     rw [constantExponential]
     congr 1
-    rw [smul_neg, ← smul_smul]
-  · rw [constantExponential, smul_neg, ← smul_smul]
-    simp [neg_mul, smul_mul_assoc]
+    simp only [smul_neg, smul_assoc]
+  · rw [constantExponential]
+    simp only [smul_neg, smul_assoc, neg_mul, smul_mul_assoc]
 
 /-- The constant exponential candidate is continuous in time. -/
 theorem continuous_constantExponential (K : A) (lam : ℂ) :
