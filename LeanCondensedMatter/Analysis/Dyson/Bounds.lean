@@ -80,6 +80,7 @@ theorem norm_coeff_le_of_bound (V : ℝ → A) {β M : ℝ}
             exact hcont.intervalIntegrable 0 τ
         _ = majorant M τ (n + 1) := integral_mul_majorant M τ n
 
+omit [CompleteSpace A] in
 /-- The weighted `n`th coefficient is controlled by the factorial majorant with interaction bound
 `‖λ‖ M`. -/
 theorem norm_term_le_of_bound (V : ℝ → A) {β M : ℝ}
