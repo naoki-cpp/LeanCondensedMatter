@@ -1,13 +1,12 @@
 # Second Quantization Common — Structure and Extraction Audit
 
-This note records which declarations belong in statistics-independent second quantization, which are
-more general mathematical facts, and which Common results may later become essentially free Bosonic
-API.  It is a structural audit, not a claim that the fermionic and bosonic developments must have
-identical files or theorem sets.
+This note records the ownership boundary between statistics-independent second-quantization
+infrastructure and the fermionic and bosonic physical APIs. It is a structural audit, not a claim
+that the two statistics-specific developments must expose identical theorem sets.
 
 ## Public Common layout
 
-`SecondQuantization.Common` imports five responsibility-based umbrellas:
+`SecondQuantization.Common` has five responsibility-based areas:
 
 | Import | Responsibility |
 |---|---|
@@ -17,133 +16,133 @@ identical files or theorem sets.
 | `SecondQuantization.Common.Perturbation` | Finite-basis coefficientwise operator integration. |
 | `SecondQuantization.Common.Diagrammatics` | Label-generic quartic diagrams and connected-component decomposition. |
 
-The categories align with the statistics-specific umbrellas where their responsibilities match.
-`Common.Perturbation` is intentionally marked as finite-basis infrastructure rather than presented as
-an already-shared Bosonic layer.
+`Common.Perturbation` is deliberately finite-basis infrastructure. It is not presented as a general
+bosonic operator-integration layer.
 
 ## Extracted to general mathematics
 
 ### Normalized endomorphism functionals
 
-`Analysis/NormalizedEndomorphismFunctional.lean` now defines the general linear-algebra structure of
-a linear functional on `Module.End` that maps the identity to `1`.
+`Analysis/NormalizedEndomorphismFunctional.lean` owns the general linear-algebra structure of a
+linear functional on `Module.End` that maps the identity to `1`.
 
-`Common.NormalizedOperatorFunctional Config` is only the specialization to endomorphisms of
-`AlgebraicFock Config`.  Positivity, traces, Gibbs weights, and quasifree recursion remain separate
+`Common.NormalizedOperatorFunctional Config` is the specialization to endomorphisms of
+`AlgebraicFock Config`. Positivity, traces, Gibbs weights, and quasifree recursion remain separate
 physics-facing properties.
 
 ### Products over finite partitions
 
-`Combinatorics/FinpartitionProduct.lean` now contains:
-
-- decomposition of a product over a finite set into iterated products over partition parts;
-- factorization of `a ^ s.card` into powers indexed by the cardinalities of the parts.
-
-The quartic-diagram component-weight and Dyson-sign theorems now specialize those general facts rather
-than reproving them inside `SecondQuantization.Common`.
+`Combinatorics/FinpartitionProduct.lean` owns the statistics-independent product decomposition and
+cardinality-power factorization results. Quartic-diagram component weights and Dyson signs specialize
+those results rather than reproving them in SecondQuantization.
 
 ## Retained in Common
 
-The following files are generic over statistics but remain second-quantization infrastructure:
+The following constructions are generic over statistics but remain second-quantization
+infrastructure:
 
-- `AlgebraicFock.lean`: mathematically a free complex vector space, but its public names and diagonal
-  operator API are the central basis representation used throughout the physical development.
-- `DiagonalEvolution.lean` and `InteractionPicture.lean`: algebraic rather than analytic operator
-  exponentials, but specifically organized around the occupation-basis/Fock-space representation.
-- `TimeOrdering.lean`, `ExchangeCommutator.lean`, and `ExchangeAlgebra.lean`: explicitly depend on the
-  particle-statistics parameter.
-- `QuarticDiagram*.lean`: label-generic combinatorics, but the fixed four-leg vertex model is a
-  second-quantization diagram object rather than a general graph or partition theorem.
-- `BlochDeDominicis/`: combines perfect-pairing combinatorics with exchange statistics, operator
+- `AlgebraicFock.lean`, including the occupation-basis and diagonal-operator vocabulary;
+- `DiagonalEvolution.lean` and `InteractionPicture.lean`;
+- `TimeOrdering.lean`, `ExchangeCommutator.lean`, and `ExchangeAlgebra.lean`;
+- the fixed-four-leg `QuarticDiagram` combinatorics;
+- `BlochDeDominicis/`, which combines pairing combinatorics, exchange statistics, operator
   functionals, and KMS hypotheses.
+
+Moving these files unchanged into `Analysis` or `Combinatorics` would obscure their physical API
+boundary rather than improve dependency ownership.
 
 ## Candidates for later general extraction
 
 ### Coefficientwise finite operator integration
 
-`Common.FiniteOperatorIntegral` is analytically flavored, but its current definition reconstructs an
-endomorphism specifically on `AlgebraicFock Config` from occupation-basis matrix coefficients.  Moving
-it to `Analysis/` should wait for a genuinely general finite-basis module or matrix-coordinate
-interface; moving the current file unchanged would reverse the intended dependency direction.
+`Common.FiniteOperatorIntegral` reconstructs an endomorphism of `AlgebraicFock Config` from
+occupation-basis matrix coefficients. General extraction should wait for a genuinely reusable
+finite-basis module or matrix-coordinate interface.
 
 ### Finsupp matrix-coordinate infrastructure
 
-`matrixCoeff`, finite-support composition, diagonal operators, and extensionality could eventually be
-factored through a general `Finsupp` linear-map module.  This would be a larger API redesign, not a
-simple file move, because these names currently define the algebraic-Fock vocabulary used throughout
-SecondQuantization.
+`matrixCoeff`, finite-support composition, diagonal operators, and extensionality may eventually be
+factored through a general `Finsupp` linear-map layer. That would be an API redesign, not a file move.
 
-## Bosonic specializations already exposed
+## Statistics-specific specializations
 
-The statistics-independent improvements identified by the original audit have now produced thin
-Bosonic API where no new convergence argument is needed:
+A surviving declaration under `Fermionic` or `Bosonic` should provide at least one of the following:
 
-1. **Interaction-picture regularity.**
-   `Bosonic.matrixCoeff_interactionPicture`, its continuity theorem, and its interval-integrability
-   theorem directly specialize the Common finite-support proof; no finite configuration type is
-   assumed.
-2. **Algebraic free-evolution and quartic formulas.**
-   The Bosonic API exposes Heisenberg-evolution composition together with interaction-picture formulas
-   for quartic vertices and finite quartic interactions.
-3. **Exchange and particle-number bridges.**
-   The ordinary bosonic commutator is connected to `Common.exchangeCommutator`, and same-charge
-   two-ladder diagonal coefficients vanish by the Common particle-number selection rule.
+- a statistic-specific operator, sign, occupation, energy, or convergence statement;
+- a physics-facing name used by downstream theorems;
+- an analytic hypothesis or proof that is not available from Common by parameter substitution alone.
 
-These additions are API specializations rather than duplicated proofs. They do not construct a
-general bosonic Gibbs functional or a bosonic Dyson integral.
+Short files are not removed merely because they call Common lemmas. For example, physical Fock-space
+abbreviations, CAR/CCR identities, free two-point results, and interaction-picture operators remain
+useful public specializations.
 
-## Remaining nearly-free Bosonic candidates
+Compatibility-only theorem wrappers and one-purpose files with no surviving physical use are removed
+rather than retained for import compatibility.
 
-1. **Summability-aware trace cyclicity.**
-   `Common.tsumTrace_comp_comm` and related lemmas apply to arbitrary configuration types once the
-   required double-series summability is supplied. Concrete Bosonic results should prove those
-   hypotheses for a useful operator class rather than recreate the algebraic proof.
-2. **Summability-aware KMS rotation.**
-   The `tsumTrace` KMS path is already generic under explicit summability hypotheses. A public
-   Bosonic theorem still needs the relevant Boltzmann-weight estimates and a clear operator domain.
-3. **Additional quartic component aliases.**
-   Common restriction, reassembly, decomposition, vertex-product, and sign-factorization results are
-   statistics independent. New Bosonic names are worthwhile only where they make the public API
-   easier to use; the proofs should remain in Common.
+## Final #345 audit results
 
-The main remaining Bosonic obstruction is analytic: arbitrary Gibbs expectations and operator-valued
-Dyson integration need a convergence-aware domain. Algebraic and finite-support results should remain
-independent of that larger construction.
+The repository-wide audit after PR #425 found:
+
+- no `Common` module importing `Fermionic` or `Bosonic`;
+- no `Analysis` or `Combinatorics` module importing SecondQuantization;
+- no remaining declaration names carrying obsolete `Fermion*`, `Fermionic*`, `Boson*`, or
+  `Bosonic*` statistic suffixes in the physical source trees;
+- no stale use of the removed fermionic ordered-diagram module;
+- a set of short Common-heavy physical modules that were reviewed as specialization candidates.
+
+The audit identified `Bosonic/Diagrammatics/QuarticLegFamily.lean` as an unused one-declaration public
+module: its `quarticLegOperatorForSequence` declaration had no in-repository caller, and the file was
+imported only by the Bosonic diagrammatics umbrella. It was removed together with the umbrella import.
+A dedicated CI check rejects restoration of the deleted file or import path.
+
+The remaining short modules contain physical definitions, statistic-specific proofs, or actively used
+domain concepts. They are not classified as compatibility forwarding surfaces solely because their
+proofs reuse Common results.
+
+## Bosonic analytic boundary
+
+The remaining Bosonic obstruction is analytic rather than organizational:
+
+1. summability-aware trace cyclicity requires concrete operator classes and double-series estimates;
+2. summability-aware KMS rotation requires Boltzmann-weight estimates and a clear operator domain;
+3. a general bosonic Gibbs state and operator-valued Dyson integration require a completed Hilbert
+   Fock space and convergence-aware bounded or unbounded operator infrastructure.
+
+No false `[Fintype (Bosonic.Occupation Mode)]` assumption is introduced to imitate the finite
+fermionic implementation.
 
 ## Physical source layout
 
-The public responsibility umbrellas and physical source layout now agree wherever the internal
-mathematics has the same boundary:
+The implementation and public responsibility layout now agree:
 
-- `Common/{Algebra,ImaginaryTime,Thermal,Perturbation,Diagrammatics}/` contains the shared
-  statistics-independent implementations;
-- `Fermionic/{Algebra,ImaginaryTime,Thermal,Perturbation,Diagrammatics}/` contains the finite-mode
-  fermionic implementations, with `QuantumLinkedCluster` classified under `Thermal/`;
-- `Bosonic/{ImaginaryTime,Thermal,Diagrammatics}/` follows the same responsibility names, while the
-  algebraic implementation intentionally keeps the finer `Foundations/` and `OperatorAlgebra/`
-  split behind the public `Bosonic.Algebra` umbrella.
+- `Common/{Algebra,ImaginaryTime,Thermal,Perturbation,Diagrammatics}/` owns shared constructions;
+- `Fermionic/{Algebra,ImaginaryTime,Thermal,Perturbation,Diagrammatics}/` owns finite-mode fermionic
+  specializations and the analytic Linked Cluster Theorem;
+- `Bosonic/{Algebra,ImaginaryTime,Thermal,Diagrammatics}/` owns the convergence-aware bosonic line.
 
-No compatibility shims remain at the former flat Common or Fermionic implementation paths, and the
-legacy plain-namespace Bosonic occupation/Fock aliases have also been removed. The
-statistics-specific Bloch–de Dominicis specializations live under each statistics' `Thermal/`
-directory, while the canonical Bosonic API lives exclusively under `SecondQuantization.Bosonic`.
+PR #351 removed the former `Bosonic/Foundations/` and `Bosonic/OperatorAlgebra/` split without
+forwarding paths. The single public entry point remains:
+
+```lean
+import LeanCondensedMatter.SecondQuantization
+```
 
 ### Bloch–de Dominicis layout
 
-The statistics-independent framework is under `Common/Thermal/BlochDeDominicis/` and is split by
-mathematical role:
+The statistics-independent framework is under `Common/Thermal/BlochDeDominicis/`:
 
 - `Unnormalized/` contains operator and trace peel identities before normalization;
 - `GibbsExpectation/` contains the normalized functional and two-/four-point recursion;
 - `Induction.lean` contains the arbitrary-length pairing theorem;
 - `PairingWeight.lean` contains the statistics-dependent crossing weight.
 
-Concrete specializations are colocated with the thermal APIs that discharge their hypotheses:
+Concrete specializations are colocated with the physical thermal APIs that discharge their
+hypotheses:
 
-- `Bosonic/Thermal/BlochDeDominicis/TwoPoint.lean` supplies the uncutoff summability proof;
+- `Bosonic/Thermal/BlochDeDominicis/TwoPoint.lean` supplies uncutoff summability proofs;
 - `Fermionic/Thermal/BlochDeDominicis/TwoPoint.lean` supplies the finite-mode free two-point check;
 - `Fermionic/Thermal/BlochDeDominicis/Examples/SingleMode.lean` records the algebraic four-point
-  example for a normalized diagonal weight.
+  example.
 
-This separates the general recursion mechanism from the statistics-specific analytic or finite-basis
-verification without pretending that the two concrete thermal theories have identical assumptions.
+This separation keeps the generic recursion independent of the statistics-specific analytic or
+finite-basis verification.

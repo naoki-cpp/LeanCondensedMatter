@@ -1,0 +1,17 @@
+name: SecondQuantization Audit
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Check final audit removals
+        run: python3 scripts/check_second_quantization_audit_removals.py

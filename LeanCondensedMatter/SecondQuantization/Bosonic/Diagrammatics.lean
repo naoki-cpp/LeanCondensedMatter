@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticInteraction
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticLocalLeg
-import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticLegFamily
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagram
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagramWeight
 
@@ -14,7 +13,6 @@ general bosonic Gibbs functional:
 
 - quartic interaction labels and ordered vertex operators;
 - local-leg operators, mode labels, free-energy shifts, and CCR constants;
-- flattened time-evolved leg families;
 - labelled quartic diagrams, vertex orders, and ordered pairing data;
 - connected-component restriction, reassembly, and decomposition equivalence;
 - coupling-weight, Dyson-sign, and scalar-prefactor factorization by connected component.
