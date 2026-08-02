@@ -32,7 +32,7 @@ theorem hasSummableRealEigenvalues_of_positive_of_summable_diagonal
     eigenvalue_nonneg_of_isPositive hpos.toLinearMap a
   rw [HasSummableRealEigenvalues]
   simp_rw [abs_of_nonneg (heigen_nonneg _)]
-  apply summable_of_sum_le (fun a => heigen_nonneg a)
+  refine summable_of_sum_le (fun a => heigen_nonneg a) ?_
   intro s
   let f : ι → ℝ := fun i =>
     ∑ a ∈ s, a.1.1 * ‖(inner ℂ (e a) (d i) : ℂ)‖ ^ 2
