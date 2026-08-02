@@ -39,10 +39,10 @@ omit [LinearOrder Mode] in
 against the free Boltzmann weight (`Common.traceFock_diagonalEvolution_comp_eq_weightedTrace`,
 since `imaginaryTimeEvolveFree ε (-β)` unfolds to `Common.diagonalEvolution (fermionEnergy ε)
 (-β)`), so dividing by `freePartitionFunction ε β = Common.weightSum (...)` gives
-`Common.normalizedWeightedDiagonal`, i.e. `Common.gibbsExpectation (fermionEnergy ε) β`,
-i.e. (via `freeGibbsExpectation_eq_gibbsExpectation`) `freeGibbsExpectation ε β`. This is the
-bridge the general Bloch–de Dominicis theorem's own `Common.gibbsExpectation`-headed conclusion
-needs to reach `dysonVertexMoment`. -/
+`Common.normalizedWeightedDiagonal`, which equals
+`Common.finiteGibbsExpectation (fermionEnergy ε) β` and hence, via
+`freeGibbsExpectation_eq_finiteGibbsExpectation`, `freeGibbsExpectation ε β`. This is the bridge
+the general Bloch–de Dominicis density-state conclusion needs to reach `dysonVertexMoment`. -/
 theorem normalizedDysonPartitionCoeff_eq_freeGibbsExpectation (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ) :
     normalizedDysonPartitionCoeff ε β V n = freeGibbsExpectation ε β (Common.dysonCoeff (fermionEnergy ε) V n β) := by
@@ -550,7 +550,7 @@ family — the product of both legs' `Complex.exp` eigenvalue-shift scalars and 
 single-vertex commutator indicator (`quarticLocalLegIsCreate`/`quarticLocalLegMode`-based), exactly
 what `zetaCommutator_quarticLegOperatorForSequence` computes `Common.zetaCommutator` to equal.
 Naming this family is what lets the eventual
-`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing`
+`Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing`
 application read as passing three named families (`quarticLegOperatorForSequence ε q τ`,
 `flatVertexLegEnergyShift ε q`, `flatVertexLegCommutatorCoeff ε q τ`) rather than three copies of
 the same inlined case analysis. -/
@@ -606,7 +606,7 @@ omit [Fintype Mode] [DecidableEq Mode] [LinearOrder Mode] in
 /-- **The general theorem's non-resonance hypothesis, for every flattened leg position** — direct
 specialization of `one_sub_zetaInt_fermion_mul_exp_ne_zero` to `x := flatVertexLegEnergyShift ε q
 p`. This is the *third and final* hypothesis
-`Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` needs; combined with
+`Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing` needs; combined with
 `heisenbergEvolve_quarticLegOperatorForSequence` and
 `zetaCommutator_quarticLegOperatorForSequence`, the general theorem can now be applied to the
 flattened `4n`-leg family. -/
@@ -632,13 +632,13 @@ theorem traceFock_diagonalEvolution_fermionEnergy_ne_zero (ε : Mode → ℝ) (�
   exact freePartitionFunction_ne_zero ε β
 
 /-- **`nestedVertexOperatorComp`'s free Gibbs expectation, as the general theorem's pairing sum**
-— applies `Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` (at its own `n :=
-2 * n`, matching `quarticLegOperatorForSequence`'s `Fin (2 * (2 * n))` domain exactly, with no cast
-needed) to the flattened family `quarticLegOperatorForSequence ε q τ`, using
+— applies `Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing` (at its own
+`n := 2 * n`, matching `quarticLegOperatorForSequence`'s `Fin (2 * (2 * n))` domain exactly, with
+no cast needed) to the flattened family `quarticLegOperatorForSequence ε q τ`, using
 `heisenbergEvolve_quarticLegOperatorForSequence`, `zetaCommutator_quarticLegOperatorForSequence`,
 and `one_sub_zetaInt_fermion_mul_exp_flatVertexLegEnergyShift_ne_zero` for its three hypotheses,
-then bridges the conclusion back from `Common.gibbsExpectation` to `freeGibbsExpectation`
-(`freeGibbsExpectation_eq_gibbsExpectation`) and from `Common.prodComp (List.ofFn
+then bridges the conclusion from `Common.finiteGibbsExpectation` to `freeGibbsExpectation`
+(`freeGibbsExpectation_eq_finiteGibbsExpectation`) and from `Common.prodComp (List.ofFn
 (quarticLegOperatorForSequence ε q τ))` to `nestedVertexOperatorComp ε n q τ`
 (`prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp`). This is all three of
 the general theorem's hypotheses discharged and the theorem itself applied — the last purely
@@ -652,18 +652,21 @@ theorem freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing (ε : Mode 
           ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
             ((quarticLegOperatorForSequence ε q τ pr.1).comp
               (quarticLegOperatorForSequence ε q τ pr.2)) := by
-  have hgen := Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing Common.Statistics.fermion
-    (fermionEnergy ε) β (traceFock_diagonalEvolution_fermionEnergy_ne_zero ε β) (2 * n)
-    (quarticLegOperatorForSequence ε q τ) (flatVertexLegEnergyShift ε q)
-    (flatVertexLegCommutatorCoeff ε q τ)
-    (fun p => heisenbergEvolve_quarticLegOperatorForSequence ε β q τ p)
-    (fun i j _ => zetaCommutator_quarticLegOperatorForSequence ε q τ i j)
-    (fun i => one_sub_zetaInt_fermion_mul_exp_flatVertexLegEnergyShift_ne_zero ε β q i)
+  have hgen :=
+    Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing
+      Common.Statistics.fermion (fermionEnergy ε) β
+      (traceFock_diagonalEvolution_fermionEnergy_ne_zero ε β) (2 * n)
+      (quarticLegOperatorForSequence ε q τ) (flatVertexLegEnergyShift ε q)
+      (flatVertexLegCommutatorCoeff ε q τ)
+      (fun p => heisenbergEvolve_quarticLegOperatorForSequence ε β q τ p)
+      (fun i j _ => zetaCommutator_quarticLegOperatorForSequence ε q τ i j)
+      (fun i => one_sub_zetaInt_fermion_mul_exp_flatVertexLegEnergyShift_ne_zero ε β q i)
   rw [← prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp,
-    freeGibbsExpectation_eq_gibbsExpectation, hgen]
+    freeGibbsExpectation_eq_finiteGibbsExpectation, hgen]
   refine Finset.sum_congr rfl fun pairing _ => ?_
   congr 1
-  exact Finset.prod_congr rfl fun pr _ => (freeGibbsExpectation_eq_gibbsExpectation ε β _).symm
+  exact Finset.prod_congr rfl fun pr _ =>
+    (freeGibbsExpectation_eq_finiteGibbsExpectation ε β _).symm
 
 /-! ## Integrating the pairing sum over the ordered simplex -/
 

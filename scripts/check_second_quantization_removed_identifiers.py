@@ -18,6 +18,18 @@ REMOVED_IDENTIFIERS = {
         "removed Fermionic ordered-data equivalence alias",
     re.compile(r"(?<![A-Za-z0-9_'])sum_quarticWickDiagram_eq_sum_orderedData(?![A-Za-z0-9_'])"):
         "removed Fermionic ordered-data sum theorem",
+    re.compile(r"(?<![A-Za-z0-9_'])gibbsExpectation(?![A-Za-z0-9_'])"):
+        "removed Common Gibbs expectation alias",
+    re.compile(r"(?<![A-Za-z0-9_'])gibbsExpectationLinearMap(?![A-Za-z0-9_'])"):
+        "removed Common Gibbs expectation linear-map wrapper",
+    re.compile(
+        r"(?<![A-Za-z0-9_'])gibbsExpectation_(?:"
+        r"eq_normalizedWeightedDiagonal|id|add|smul|zero|list_sum|"
+        r"comp_eq_div_of_zetaCommutator|comp_eq_div_of_exchangeCommutator|"
+        r"comp_comp_comp_eq_div_of_zetaCommutator|four_point|peel|"
+        r"peelSum_eq_sum|peel_indexed|prodComp_eq_sum_pairing"
+        r")(?![A-Za-z0-9_'])"
+    ): "removed Common Gibbs expectation theorem wrapper",
 }
 
 
