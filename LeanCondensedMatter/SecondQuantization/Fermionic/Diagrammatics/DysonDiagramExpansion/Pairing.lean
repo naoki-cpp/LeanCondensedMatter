@@ -79,6 +79,7 @@ theorem freeGibbsDensityOperator_expectation_nestedVertexOperatorComp_eq_sum_pai
 
 /-! ## Integrating the pairing sum over the ordered simplex -/
 
+omit [LinearOrder Mode] in
 private theorem finiteGibbsExpectation_smul_apply (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     Common.finiteGibbsExpectation (fermionEnergy ε) β (c • A) =
@@ -178,32 +179,30 @@ theorem continuous_flatVertexLegPairingTerm {n : ℕ} (ε : Mode → ℝ) (β : 
       ε β q pr.1 pr.2)
 
 /-- **The ordered-simplex integral of the finite Gibbs expectation of
-`nestedVertexOperatorComp`, as a sum over pairings of integrated contraction terms** — rewrites
-the integrand pointwise via `finiteGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing`
+`nestedVertexOperatorComp`, as a sum
+over pairings of integrated contraction terms** — rewrites the integrand pointwise via
+`finiteGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing`
 (`intervalIntegral.orderedSimplexIntegral_congr`), pulls the finite `Pairing (2 * n)` sum out past
 the integral (`intervalIntegral.orderedSimplexIntegral_finsetSum`, using
-`continuous_finiteGibbsExpectation_flatVertexLegPairingTerm` for its integrability side condition),
-then pulls each pairing's `τ`-independent weight back out of its own integral
+`continuous_finiteGibbsExpectation_flatVertexLegPairingTerm` for its integrability side condition), then pulls each
+pairing's `τ`-independent weight back out of its own integral
 (`intervalIntegral.orderedSimplexIntegral_smul`). -/
 private theorem
     finiteGibbsExpectation_orderedSimplexIntegral_nestedVertexOperatorComp_eq_sum_pairing
     (ε : Mode → ℝ) (β t : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) :
     intervalIntegral.orderedSimplexIntegral n t
-        (fun τ => Common.finiteGibbsExpectation (fermionEnergy ε) β
-          (nestedVertexOperatorComp ε n q τ)) =
+        (fun τ => Common.finiteGibbsExpectation (fermionEnergy ε) β (nestedVertexOperatorComp ε n q τ)) =
       ∑ pairing : Combinatorics.Pairing (2 * n),
         pairing.weight Common.Statistics.fermion *
           intervalIntegral.orderedSimplexIntegral n t
-            (fun τ => ∏ pr ∈ pairing.pairs,
-              Common.finiteGibbsExpectation (fermionEnergy ε) β
-                ((quarticLegOperatorForSequence ε q τ pr.1).comp
-                  (quarticLegOperatorForSequence ε q τ pr.2))) := by
+            (fun τ => ∏ pr ∈ pairing.pairs, Common.finiteGibbsExpectation (fermionEnergy ε) β
+              ((quarticLegOperatorForSequence ε q τ pr.1).comp
+                (quarticLegOperatorForSequence ε q τ pr.2))) := by
   rw [intervalIntegral.orderedSimplexIntegral_congr
       (fun τ => finiteGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing ε β n q τ),
     intervalIntegral.orderedSimplexIntegral_finsetSum _ n t _
       (fun pairing _ => continuous_finiteGibbsExpectation_flatVertexLegPairingTerm ε β q pairing)]
-  exact Finset.sum_congr rfl fun pairing _ =>
-    intervalIntegral.orderedSimplexIntegral_smul n t _ _
+  exact Finset.sum_congr rfl fun pairing _ => intervalIntegral.orderedSimplexIntegral_smul n t _ _
 
 /-- The ordered-simplex integral of the canonical density-state nested-vertex expectation is the
 sum of the integrated canonical density-state pairing products. -/
@@ -221,8 +220,7 @@ theorem orderedSimplexIntegral_freeGibbsDensityOperator_expectation_nestedVertex
                   ((quarticLegOperatorForSequence ε q τ pr.1).comp
                     (quarticLegOperatorForSequence ε q τ pr.2)))) := by
   simpa only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
-    finiteGibbsExpectation_orderedSimplexIntegral_nestedVertexOperatorComp_eq_sum_pairing
-      ε β t n q
+    finiteGibbsExpectation_orderedSimplexIntegral_nestedVertexOperatorComp_eq_sum_pairing ε β t n q
 
 /-- **`dysonVertexMoment` of `quarticInteraction`, as a genuine sum over vertex-label sequences
 and pairings through canonical free Gibbs density-state contractions.** The last remaining step is
