@@ -94,8 +94,11 @@ theorem freeGibbsDensityOperator_expectation_numberOperator
   have hfi : f i = (Complex.exp ((β : ℂ) * (ε i : ℂ)))⁻¹ := by
     change Complex.exp (-(β : ℂ) * (ε i : ℂ)) = (Complex.exp ((β : ℂ) * (ε i : ℂ)))⁻¹
     rw [show -(β : ℂ) * (ε i : ℂ) = -((β : ℂ) * (ε i : ℂ)) by ring, Complex.exp_neg]
-  rw [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation,
-    freeGibbsExpectation, Common.normalizedWeightedDiagonal]
+  have hw : Common.boltzmannWeight (fermionEnergy ε) β = freeBoltzmannWeight ε β :=
+    funext fun n => (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β n).symm
+  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
+    Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal, hw,
+    Common.normalizedWeightedDiagonal]
   change Common.weightedTrace (freeBoltzmannWeight ε β) (numberOperator i) /
     freePartitionFunction ε β = _
   rw [hnum, hZ, hfi]
