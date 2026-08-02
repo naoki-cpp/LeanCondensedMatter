@@ -48,7 +48,7 @@ theorem freeGibbsDensityOperator_expectation_quarticLegOperatorForSequence_pair_
         (freeGibbsDensityOperator ε β).expectation
           (Common.finiteHilbertOperator
             ((quarticLocalLegOperator (q (flatVertexIndex n a)) (flatLocalLeg n a)).comp
-              (quarticLocalLegOperator (q (flatVertexIndex n b)) (flatLocalLeg n b))) := by
+              (quarticLocalLegOperator (q (flatVertexIndex n b)) (flatLocalLeg n b)))) := by
   simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
     freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq ε β q τ a b
 
