@@ -15,7 +15,7 @@ statement.
 namespace SecondQuantization
 namespace Common
 
-variable {Config : Type*} [Fintype Config]
+variable {Config : Type*} [Fintype Config] [Nonempty Config]
 
 /-- **The genuine normalized 2-point Bloch–de Dominicis value**: `⟨C₁Cⱼ⟩ = c₁ⱼ/(1 - ζw₁)`,
 dividing `Unnormalized/TwoPoint.lean`'s `(1 - ζw₁) Tr[e^{-βH₀}(C₁Cⱼ)] = c₁ⱼ Tr[e^{-βH₀}]` through
