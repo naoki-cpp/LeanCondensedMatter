@@ -28,6 +28,7 @@ REMOVED_FILES = (
     SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ReassembleDecompose.lean",
     SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ReassembleComponentPartitionEq.lean",
     SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ReassembleRestrictComponent.lean",
+    SQ / "Bosonic" / "Diagrammatics" / "QuarticDiagramComponentDecompositionEquiv.lean",
 )
 
 REMOVED_DIRECTORIES = (
@@ -92,6 +93,8 @@ REMOVED_IMPORTS = {
         "removed fermionic ReassembleComponentPartitionEq import",
     "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ReassembleRestrictComponent":
         "removed fermionic ReassembleRestrictComponent import",
+    "import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagramComponentDecompositionEquiv":
+        "removed bosonic QuarticDiagramComponentDecompositionEquiv import",
 }
 
 ALLOWED_EXTERNAL_DECLARATIONS = {
