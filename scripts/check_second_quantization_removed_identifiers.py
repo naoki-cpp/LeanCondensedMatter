@@ -122,6 +122,12 @@ REMOVED_IDENTIFIERS = {
         "removed normalized weighted diagonal functional wrapper",
     re.compile(r"(?<![A-Za-z0-9_'])normalizedWeightedDiagonalLinearMap(?![A-Za-z0-9_'])"):
         "removed normalized weighted diagonal linear-map wrapper",
+    re.compile(r"(?<![A-Za-z0-9_'])weightedTrace_operatorIntervalIntegral(?![A-Za-z0-9_'])"):
+        "removed weighted-trace operator-integral bridge",
+    re.compile(
+        r"(?<![A-Za-z0-9_'])normalizedWeightedDiagonal_operatorIntervalIntegral"
+        r"(?![A-Za-z0-9_'])"
+    ): "removed normalized weighted-diagonal operator-integral bridge",
     re.compile(
         r"^\s*import\s+LeanCondensedMatter\.SecondQuantization\.Fermionic\.Thermal\."
         r"FreeBoltzmannWeight\s*$"
@@ -177,6 +183,62 @@ def relative(path: Path) -> str:
     return str(path.relative_to(ROOT))
 
 
+def strip_comments(text: str) -> str:
+    """Remove Lean line and nested block comments while preserving line numbers."""
+    out: list[str] = []
+    i = 0
+    depth = 0
+    in_string = False
+    escaped = False
+
+    while i < len(text):
+        ch = text[i]
+        nxt = text[i + 1] if i + 1 < len(text) else ""
+
+        if depth:
+            if ch == "/" and nxt == "-":
+                depth += 1
+                out.extend("  ")
+                i += 2
+            elif ch == "-" and nxt == "/":
+                depth -= 1
+                out.extend("  ")
+                i += 2
+            else:
+                out.append("\n" if ch == "\n" else " ")
+                i += 1
+            continue
+
+        if in_string:
+            out.append(ch)
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+            i += 1
+            continue
+
+        if ch == '"':
+            in_string = True
+            out.append(ch)
+            i += 1
+        elif ch == "/" and nxt == "-":
+            depth = 1
+            out.extend("  ")
+            i += 2
+        elif ch == "-" and nxt == "-":
+            while i < len(text) and text[i] != "\n":
+                out.append(" ")
+                i += 1
+        else:
+            out.append(ch)
+            i += 1
+
+    return "".join(out)
+
+
 def main() -> int:
     errors: list[str] = []
 
@@ -198,7 +260,8 @@ def main() -> int:
                 errors.append(f"{description}: {relative(path)}: {forbidden}")
 
     for path in sorted(LEAN_ROOT.rglob("*.lean")):
-        for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+        text = strip_comments(path.read_text(encoding="utf-8"))
+        for line_no, line in enumerate(text.splitlines(), start=1):
             for pattern, description in REMOVED_IDENTIFIERS.items():
                 if pattern.search(line):
                     errors.append(

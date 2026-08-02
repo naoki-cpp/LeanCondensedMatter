@@ -57,6 +57,19 @@ theorem matrixCoeff_comp_support (A B : AlgebraicFock Config →ₗ[ℂ] Algebra
   simp only [map_smul, Finsupp.finsetSum_apply, Finsupp.smul_apply, smul_eq_mul]
   exact Finset.sum_congr rfl fun k _ => mul_comm _ _
 
+/-- **`matrixCoeff` under composition is ordinary matrix multiplication** on a finite
+configuration type: `(AB)_{mn} = Σₖ A_{mk} B_{kn}`. -/
+theorem matrixCoeff_comp [Fintype Config]
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
+    matrixCoeff (A.comp B) m n = ∑ k : Config, matrixCoeff A m k * matrixCoeff B k n := by
+  rw [matrixCoeff_comp_support]
+  apply Finset.sum_subset (Finset.subset_univ _)
+  intro k _ hk
+  have hz : matrixCoeff B k n = 0 := by
+    by_contra h
+    exact hk (Finsupp.mem_support_iff.mpr h)
+  rw [hz, mul_zero]
+
 /-! ## The `tsum` diagonal trace -/
 
 /-- **The summability-aware diagonal trace**, `Tr'[A] := Σ'ₙ ⟨n|A|n⟩`.

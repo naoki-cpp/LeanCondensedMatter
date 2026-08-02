@@ -25,18 +25,6 @@ variable {Config : Type*} [Fintype Config]
 noncomputable def traceFock (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) : ℂ :=
   ∑ n : Config, matrixCoeff A n n
 
-/-- **`matrixCoeff` under composition is ordinary matrix multiplication**,
-`(AB)_{mn} = Σₖ A_{mk} B_{kn}` over all of a finite `Config`. -/
-theorem matrixCoeff_comp (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
-    matrixCoeff (A.comp B) m n = ∑ k : Config, matrixCoeff A m k * matrixCoeff B k n := by
-  rw [matrixCoeff_comp_support]
-  apply Finset.sum_subset (Finset.subset_univ _)
-  intro k _ hk
-  have hz : matrixCoeff B k n = 0 := by
-    by_contra h
-    exact hk (Finsupp.mem_support_iff.mpr h)
-  rw [hz, mul_zero]
-
 /-- The finite trace is cyclic under a two-operator swap, `Tr[AB] = Tr[BA]`. -/
 theorem traceFock_comp_comm (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     traceFock (A.comp B) = traceFock (B.comp A) := by
