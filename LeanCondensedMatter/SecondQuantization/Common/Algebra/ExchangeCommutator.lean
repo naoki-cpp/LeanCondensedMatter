@@ -24,9 +24,10 @@ specialized to a statistics-indexed `exchangeCommutator` below, not `gradedCommu
 
 **Nor is this a *contraction*** in the Wick-theorem sense (a thermal two-point function, a
 `ℂ`-number like `⟨T_τ c_i c_j†⟩₀` — see `Fermionic/Thermal/FreeTwoPointFunction.lean`'s
-`freeGibbsExpectation_annihilate_comp_create`/`_create_comp_annihilate`, which *are* contraction
-kernels). `comp_eq_id_add_of_zetaCommutator_eq_id` below is an *operator-level reordering
-identity* — it rewrites `A∘B` in terms of `B∘A`, with no state or expectation value involved.
+`freeGibbsDensityOperator_expectation_annihilate_comp_create` and
+`freeGibbsDensityOperator_expectation_create_comp_annihilate`, which *are* contraction kernels).
+`comp_eq_id_add_of_zetaCommutator_eq_id` below is an *operator-level reordering identity* — it
+rewrites `A∘B` in terms of `B∘A`, with no state or expectation value involved.
 
 This file only sets up the two-operator algebra; it does not touch `Fermionic`/`Bosonic` — those
 still keep their own concrete `anticomm`/`comm`, CAR/CCR proofs, and named reordering theorems
