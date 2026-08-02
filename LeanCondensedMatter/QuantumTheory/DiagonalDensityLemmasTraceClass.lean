@@ -4,7 +4,7 @@ import LeanCondensedMatter.QuantumTheory.EntropyTraceClass
 /-!
 # Generic lemmas for density operators diagonal in a Hilbert basis
 
-These results separate reusable Hilbert-basis calculations from Gibbs-specific proofs.  A density
+These results separate reusable Hilbert-basis calculations from Gibbs-specific proofs. A density
 operator that acts diagonally on a Hilbert basis has weights summing to one, and the spectral trace
 of its entropy operator is the corresponding sum of `-p log p` whenever that entropy operator is
 spectrally trace-class.
@@ -75,5 +75,66 @@ theorem entropyOpSpectralTraceClass_trace_eq_tsum_diagonal (ρ : DensityOperator
     (entropyOpSpectralTraceClass ρ hsummable).trace =
       ∑' i, Real.negMulLog (w i) :=
   (entropyOpSpectralTraceClass_hasSum_diagonal ρ b w happly hsummable).tsum_eq.symm
+
+/-- The normalized weight used by `diagonalDensityOperator`. -/
+def normalizedDiagonalWeight (a : ι → ℝ) (i : ι) : ℝ :=
+  (∑' j, a j)⁻¹ * a i
+
+/-- Absolute summability is preserved by normalization. -/
+theorem summable_norm_normalizedDiagonalWeight (a : ι → ℝ)
+    (ha : Summable fun i => ‖a i‖) :
+    Summable fun i => ‖normalizedDiagonalWeight a i‖ := by
+  have hscaled := ha.mul_left ‖(∑' j, a j)⁻¹‖
+  simpa [normalizedDiagonalWeight, norm_mul] using hscaled
+
+/-- The normalized diagonal density operator acts on its defining basis by the normalized weight. -/
+theorem diagonalDensityOperator_apply_basis (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
+    (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i)
+    (hZ : 0 < ∑' i, a i) (i : ι) :
+    (diagonalDensityOperator b a ha ha_nonneg hZ).op (b i) =
+      (normalizedDiagonalWeight a i : ℂ) • b i := by
+  change HilbertBasis.diagonalOp b
+      (fun i => (normalizedDiagonalWeight a i : ℂ))
+      (by simpa using summable_norm_normalizedDiagonalWeight a ha) (b i) = _
+  simpa using HilbertBasis.diagonalOp_apply_basis b
+    (fun i => (normalizedDiagonalWeight a i : ℂ))
+    (by simpa using summable_norm_normalizedDiagonalWeight a ha) i
+
+/-- Normalized nonnegative weights remain nonnegative. -/
+theorem normalizedDiagonalWeight_nonneg (a : ι → ℝ) (ha_nonneg : ∀ i, 0 ≤ a i)
+    (hZ : 0 < ∑' i, a i) (i : ι) :
+    0 ≤ normalizedDiagonalWeight a i :=
+  mul_nonneg (inv_nonneg.mpr hZ.le) (ha_nonneg i)
+
+/-- The normalized weights used by `diagonalDensityOperator` sum to one. -/
+theorem hasSum_normalizedDiagonalWeight (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
+    (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i)
+    (hZ : 0 < ∑' i, a i) :
+    HasSum (normalizedDiagonalWeight a) 1 :=
+  (diagonalDensityOperator b a ha ha_nonneg hZ).hasSum_diagonal_weights b
+    (normalizedDiagonalWeight a) (diagonalDensityOperator_apply_basis b a ha ha_nonneg hZ)
+
+/-- Every normalized diagonal weight is at most one. -/
+theorem normalizedDiagonalWeight_le_one (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
+    (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i)
+    (hZ : 0 < ∑' i, a i) (i : ι) :
+    normalizedDiagonalWeight a i ≤ 1 :=
+  (diagonalDensityOperator b a ha ha_nonneg hZ).diagonal_weight_le_one b
+    (normalizedDiagonalWeight a) (diagonalDensityOperator_apply_basis b a ha ha_nonneg hZ)
+    (normalizedDiagonalWeight_nonneg a ha_nonneg hZ) i
+
+/-- Entropy trace formula specialized to `diagonalDensityOperator`. -/
+theorem entropyOpSpectralTraceClass_trace_diagonalDensityOperator
+    (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
+    (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i)
+    (hZ : 0 < ∑' i, a i)
+    (hsummable : HasSummableRealEigenvalues
+      (entropyOp (diagonalDensityOperator b a ha ha_nonneg hZ))) :
+    (entropyOpSpectralTraceClass (diagonalDensityOperator b a ha ha_nonneg hZ)
+      hsummable).trace =
+      ∑' i, Real.negMulLog (normalizedDiagonalWeight a i) :=
+  entropyOpSpectralTraceClass_trace_eq_tsum_diagonal
+    (diagonalDensityOperator b a ha ha_nonneg hZ) b (normalizedDiagonalWeight a)
+    (diagonalDensityOperator_apply_basis b a ha ha_nonneg hZ) hsummable
 
 end QuantumTheory.TraceClass
