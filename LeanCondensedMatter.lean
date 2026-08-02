@@ -34,4 +34,5 @@ import LeanCondensedMatter.QuantumTheory.HelmholtzFreeEnergyTraceClass
 import LeanCondensedMatter.QuantumTheory.GibbsEntropyTraceClass
 import LeanCondensedMatter.QuantumTheory.DiagonalEnergyTraceClass
 import LeanCondensedMatter.QuantumTheory.GibbsEntropyEqualityTraceClass
+import LeanCondensedMatter.Transport
 import LeanCondensedMatter.SecondQuantization
