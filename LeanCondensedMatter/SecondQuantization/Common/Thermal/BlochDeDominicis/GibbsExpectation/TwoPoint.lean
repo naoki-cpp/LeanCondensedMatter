@@ -32,9 +32,7 @@ theorem finiteGibbsExpectation_comp_eq_div_of_zetaCommutator (energy : Config �
     finiteGibbsExpectation energy β (C1.comp Cj) =
       c1j / (1 - ζ * Complex.exp ((q1 * β : ℝ) : ℂ)) := by
   have h := traceFock_diagonalEvolution_comp_two_point energy β q1 ζ c1j C1 Cj hC1 hcomm
-  rw [finiteGibbsExpectation_eq_normalizedWeightedDiagonal, normalizedWeightedDiagonal,
-    ← traceFock_diagonalEvolution_comp_eq_weightedTrace, ← traceFock_diagonalEvolution_eq_weightSum,
-    div_eq_div_iff hZ hne]
+  rw [finiteGibbsExpectation_eq_trace_div, div_eq_div_iff hZ hne]
   linear_combination h
 
 /-- **The `Statistics`-indexed presentation**, in terms of `exchangeCommutator s` rather than a
