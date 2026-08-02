@@ -21,7 +21,7 @@ variable {A : Type*} [NormedRing A] [NormedAlgebra ℂ A] [CompleteSpace A]
 
 /-- The Banach-algebra exponential candidate for a constant interaction. -/
 noncomputable def constantExponential (K : A) (lam : ℂ) (τ : ℝ) : A :=
-  NormedSpace.exp (τ • (-(lam • K)))
+  NormedSpace.exp (-(((τ : ℝ) • lam) • K))
 
 /-- The constant exponential candidate solves the expected interaction-picture differential
 equation. -/
@@ -29,7 +29,7 @@ theorem hasDerivAt_constantExponential (K : A) (lam : ℂ) (τ : ℝ) :
     HasDerivAt (constantExponential K lam)
       (-(lam • (K * constantExponential K lam τ))) τ := by
   have h := hasDerivAt_exp_smul_const' (-(lam • K)) τ
-  convert h using 1 <;> simp [constantExponential, neg_mul, smul_mul_assoc]
+  convert h using 1 <;> simp [constantExponential, neg_mul]
 
 /-- The constant exponential candidate is continuous in time. -/
 theorem continuous_constantExponential (K : A) (lam : ℂ) :
@@ -69,7 +69,7 @@ Banach-algebra exponential. -/
 theorem evolution_const_eq_exp_of_nonneg (K : A) (lam : ℂ) {τ : ℝ}
     (hτ : 0 ≤ τ) (hOne : ‖(1 : A)‖ ≤ 1) :
     evolution (fun _ : ℝ => K) lam τ =
-      NormedSpace.exp (τ • (-(lam • K))) := by
+      NormedSpace.exp (-(((τ : ℝ) • lam) • K)) := by
   have hEq := eqOn_evolution_of_volterra_of_bound
     (V := fun _ : ℝ => K) (U := constantExponential K lam)
     (β := τ) (M := ‖K‖)
