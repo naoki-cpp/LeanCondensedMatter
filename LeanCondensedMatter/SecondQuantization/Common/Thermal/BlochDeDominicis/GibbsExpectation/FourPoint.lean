@@ -38,9 +38,8 @@ theorem finiteGibbsExpectation_comp_comp_comp_eq_div_of_zetaCommutator
     C1 C2 C3 C4 hC1 hcomm12 hcomm13 hcomm14
   have hne' : (1 : ℂ) - ζ ^ 3 * Complex.exp ((β * q1 : ℝ) : ℂ) ≠ 0 := by
     rwa [mul_comm β q1]
-  simp only [finiteGibbsExpectation_eq_normalizedWeightedDiagonal, normalizedWeightedDiagonal,
-    ← traceFock_diagonalEvolution_comp_eq_weightedTrace, ← traceFock_diagonalEvolution_eq_weightSum]
-  field_simp [hne']
+  simp only [finiteGibbsExpectation_eq_trace_div]
+  field_simp [hZ, hne']
   linear_combination (norm := ring_nf) h
 
 /-- The genuine normalized 4-point Bloch–de Dominicis expansion. -/
