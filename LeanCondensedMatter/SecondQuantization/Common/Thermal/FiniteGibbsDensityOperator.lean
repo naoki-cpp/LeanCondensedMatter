@@ -52,8 +52,10 @@ theorem finiteHilbertOrthonormalBasis_apply (n : Config) :
 @[simp]
 theorem finiteHilbertBasis_apply (n : Config) :
     finiteHilbertBasis (Config := Config) n = finiteHilbertBasisState n := by
-  change finiteHilbertOrthonormalBasis (Config := Config) n = finiteHilbertBasisState n
-  rfl
+  have h := congrFun
+    (OrthonormalBasis.coe_toHilbertBasis
+      (finiteHilbertOrthonormalBasis (Config := Config))) n
+  simpa [finiteHilbertBasis, finiteHilbertOrthonormalBasis_apply] using h
 
 /-- The positive real Boltzmann weight `exp (-β E(n))`. -/
 noncomputable def finiteBoltzmannWeight (energy : Config → ℝ) (β : ℝ) (n : Config) : ℝ :=
