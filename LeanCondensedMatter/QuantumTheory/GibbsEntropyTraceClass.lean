@@ -112,13 +112,14 @@ theorem energyExpValue_eq_re_linearMap_trace [FiniteDimensional ℂ H]
   have hsum :
       (∑' a : EigenvectorIndex ρ.op,
         (a.1.1 : ℂ) * inner ℂ (e a) (Hop.1 (e a))) = ∑ i, g i :=
-    (summable_energyExpValue_term ρ Hop).hasSum.unique hrestricted
+    (ρ.summable_expectation_term Hop.1).hasSum.unique hrestricted
   have htrace := LinearMap.trace_eq_sum_inner
     ((ρ.op ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) b
   have hgtrace :
       LinearMap.trace ℂ H ((ρ.op ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) =
         ∑ i, g i := by
     simpa [g] using htrace
+  rw [energyExpValue, ρ.expectation_apply]
   change (∑' a : EigenvectorIndex ρ.op,
     (a.1.1 : ℂ) * inner ℂ (e a) (Hop.1 (e a))).re = _
   rw [hsum, ← hgtrace]
