@@ -60,12 +60,20 @@ DYSON_PAIRING_PATH = (
     / "DysonDiagramExpansion"
     / "Pairing.lean"
 )
+WICK_AMPLITUDE_PATH = (
+    LEAN_ROOT
+    / "SecondQuantization"
+    / "Fermionic"
+    / "Diagrammatics"
+    / "WickDiagram"
+    / "Amplitude.lean"
+)
 
 FREE_BOLTZMANN_COMPATIBILITY_IMPORT = (
     "import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannWeight"
 )
 
-FORBIDDEN_DYSON_COMPATIBILITY_TEXT = {
+FORBIDDEN_MIGRATED_COMPATIBILITY_TEXT = {
     DYSON_PARTITION_SERIES_PATH: {
         FREE_BOLTZMANN_COMPATIBILITY_IMPORT:
             "Dyson partition series imports the coordinate compatibility layer",
@@ -87,6 +95,12 @@ FORBIDDEN_DYSON_COMPATIBILITY_TEXT = {
             "Dyson pairing imports the coordinate compatibility layer",
         "freeGibbsExpectation":
             "Dyson pairing mentions the coordinate expectation API",
+    },
+    WICK_AMPLITUDE_PATH: {
+        FREE_BOLTZMANN_COMPATIBILITY_IMPORT:
+            "Wick amplitudes import the coordinate compatibility layer",
+        "freeGibbsExpectation":
+            "Wick amplitudes mention the coordinate expectation API",
     },
 }
 
@@ -154,7 +168,7 @@ def main() -> int:
                 f"{description}: {relative(CANONICAL_FREE_GIBBS_PATH)}: {forbidden}"
             )
 
-    for path, forbidden_text in FORBIDDEN_DYSON_COMPATIBILITY_TEXT.items():
+    for path, forbidden_text in FORBIDDEN_MIGRATED_COMPATIBILITY_TEXT.items():
         text = path.read_text(encoding="utf-8")
         for forbidden, description in forbidden_text.items():
             if forbidden in text:

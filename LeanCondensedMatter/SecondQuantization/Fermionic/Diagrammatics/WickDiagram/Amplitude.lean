@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Ordered
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.LegFamily
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannWeight
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 
@@ -10,40 +10,9 @@ set_option linter.style.header false
 /-!
 # Ordered-simplex quartic Wick-diagram amplitudes
 
-Step 6 (PR 5c) of the diagram-connectedness plan (`notes/roadmaps/second-quantization.md`): the
-final sub-piece of PR 5's design, assembling `Common/Diagrammatics/Ordered.lean`'s vertex-order transport
-and `Analysis/OrderedSimplexIntegral.lean`'s scalar iterated integral into a genuine
-`ℂ`-valued amplitude `quarticWickDiagramAmplitude` for each `QuarticWickDiagram`. This is the
-right-hand side PR 6's diagram-expansion theorem sums over:
-
-```
-dysonVertexMoment ε β (quarticInteraction g) S =
-  ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d
-```
-
-Connectivity (`WickDiagramConnected.lean`) is **not** imported here — the amplitude is defined for
-every diagram, connected or not.
-
-**Sign bookkeeping, spelled out because it is the easiest place for this construction to go
-wrong.** Two structurally different signs appear, and neither should be conflated with the other
-or with a `1/n!`:
-- `(-1 : ℂ) ^ S.card`: the sign `dysonCoeff`'s recursion `Dₙ₊₁(τ) = -∫₀^τ V_I(σ) ∘ Dₙ(σ) dσ`
-  bakes into the *n*-th coefficient itself.
-- `pairing.weight Common.Statistics.fermion = (-1) ^ pairing.crossingCount`: the fermionic Wick
-  contraction sign, computed on the pairing *after* it has been transported onto the vertex
-  order's slot enumeration (`QuarticWickDiagram.pairingInOrder`) — crossing count is not invariant
-  under an arbitrary relabeling (`PerfectPairing/Relabel.lean`'s module docstring), so this must
-  be recomputed there, never reused from `d.pairing.weight` directly.
-
-No `1 / S.card!` appears: the sum below ranges over **all** vertex orders
-(`Common.QuarticVertexOrder S = Fin S.card ≃ ↥S`), not an average over them. The terms for different
-vertex orders are generally *different* — a different order assigns different vertex labels to
-the latest/outermost time slot, different time variables to each vertex, and transports the
-pairing onto different ordered positions, so the individual ordered-simplex contributions differ
-in general too. The sum runs over every assignment of the labelled vertices to the ordered time
-slots, matching `dysonVertexMoment`'s own `S.card!` normalization (PR 6) — not a sum of `S.card!`
-copies of a single value. No `1 / Z₀` appears either: `orderedQuarticPairValue` uses the normalized
-free Gibbs expectation, and its canonical density-state form is given below.
+This module assembles vertex-order transport and scalar ordered-simplex integration into the
+quartic Wick-diagram amplitude. Pair contractions are evaluated through the canonical finite Gibbs
+expectation, with the equivalent density-state presentation exposed by a bridge theorem.
 -/
 
 namespace SecondQuantization
@@ -55,10 +24,7 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] {N 
 
 /-! ## Time-assigned operators, per vertex order -/
 
-/-- **The operator at a flattened leg position, once a vertex order and a time assignment (one
-real time per slot) are fixed** — `quarticLegOperatorForSequence` (`WickDiagram/LegFamily.lean`)
-specialized to the vertex-label sequence `d.vertexLabel ∘ order` induced by the diagram `d` and
-vertex order `order`. -/
+/-- The time-evolved operator at a flattened leg position for a fixed vertex order. -/
 noncomputable def orderedQuarticLegOperator (ε : Mode → ℝ) {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) (τ : Fin S.card → ℝ) :
     Fin (2 * (2 * S.card)) → FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
@@ -66,20 +32,16 @@ noncomputable def orderedQuarticLegOperator (ε : Mode → ℝ) {S : Finset (Fin
 
 /-! ## Pair contraction values -/
 
-/-- **The normalized free Gibbs pair value** of two flattened leg positions, at a fixed vertex
-order and time assignment: `⟨C_a C_b⟩₀`, the operator-sequence-ordered (not time-ordered) free
-Gibbs expectation the general Bloch–de Dominicis theorem's pairing terms use directly — *not*
-`freeGibbsGreenFunction`, which carries its own extra minus sign and 2-operator time ordering that
-would double up against `Pairing.weight`'s crossing sign. -/
+/-- The normalized finite Gibbs pair value of two flattened leg positions. -/
 noncomputable def orderedQuarticPairValue (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) (τ : Fin S.card → ℝ)
     (a b : Fin (2 * (2 * S.card))) : ℂ :=
-  freeGibbsExpectation ε β
-    ((orderedQuarticLegOperator ε d order τ a).comp (orderedQuarticLegOperator ε d order τ b))
+  Common.finiteGibbsExpectation (fermionEnergy ε) β
+    ((orderedQuarticLegOperator ε d order τ a).comp
+      (orderedQuarticLegOperator ε d order τ b))
 
 /-- The Wick pair value is the canonical free Gibbs density-state expectation of the transported
-operator product. This equality lets the Dyson migration stop unfolding the temporary coordinate
-presentation before that presentation is removed. -/
+operator product. -/
 theorem orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation
     (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) (τ : Fin S.card → ℝ)
@@ -90,42 +52,41 @@ theorem orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation
           ((orderedQuarticLegOperator ε d order τ a).comp
             (orderedQuarticLegOperator ε d order τ b))) := by
   rw [orderedQuarticPairValue,
-    freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation]
+    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+
+omit [LinearOrder Mode] in
+private theorem finiteGibbsExpectation_smul_apply (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
+    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    Common.finiteGibbsExpectation (fermionEnergy ε) β (c • A) =
+      c * Common.finiteGibbsExpectation (fermionEnergy ε) β A := by
+  simpa only [Common.finiteGibbsExpectation, Common.finiteGibbsExpectationLinearMap,
+    smul_eq_mul] using
+    (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β).map_smul c A
 
 /-! ## Coupling weight -/
 
-/-- **The diagram's coupling weight**: the product, over every vertex, of the coupling `g` at that
-vertex's label. `quarticInteraction` itself carries no `1/2`/`1/4!` prefactor, so none is added
-here either. -/
+/-- The product of the coupling over all diagram vertices. -/
 noncomputable def QuarticWickDiagram.couplingWeight {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (g : QuarticVertexLabel Mode → ℂ) : ℂ :=
   ∏ v : ↥S, g (d.vertexLabel v)
 
 /-! ## Fixed-order Wick integrand and ordered-simplex contribution -/
 
-/-- **The fixed-vertex-order Wick contraction integrand**: the fermionic crossing sign of the
-diagram's pairing, transported onto `order`'s slot enumeration (`pairingInOrder` — *not* the sign
-of the diagram's own stored pairing, since crossing count is not relabel-invariant), times the
-product of pair values over that transported pairing's pairs. -/
+/-- The fixed-order Wick contraction integrand. -/
 noncomputable def QuarticWickDiagram.contractionIntegrand (ε : Mode → ℝ) (β : ℝ)
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S)
     (τ : Fin S.card → ℝ) : ℂ :=
   (d.pairingInOrder order).weight Common.Statistics.fermion *
     ∏ pr ∈ (d.pairingInOrder order).pairs, orderedQuarticPairValue ε β d order τ pr.1 pr.2
 
-/-- **The fixed-vertex-order ordered-simplex contribution**: the contraction integrand, integrated
-over the ordered simplex `0 ≤ τ_{S.card-1} ≤ ⋯ ≤ τ₀ ≤ β` (`orderedSimplexIntegral`). -/
+/-- The fixed-order contribution integrated over the ordered simplex. -/
 noncomputable def QuarticWickDiagram.orderedSimplexContribution (ε : Mode → ℝ) (β : ℝ)
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) : ℂ :=
   intervalIntegral.orderedSimplexIntegral S.card β (d.contractionIntegrand ε β order)
 
 /-! ## Continuity in the time assignment -/
 
-/-- **Closed form of a pair value**: unfolds both evolved local-leg operators to their
-`Complex.exp` eigenvalue-shift form (`imaginaryTimeEvolve_quarticLocalLegOperator`) and pulls both
-scalars through the density-state expectation, leaving a fixed (`τ`-independent) pair value of the
-two *bare* local-leg operators. The continuity lemma below is this closed form's only consumer —
-the exponentials are visibly continuous (`fun_prop`) in `τ` once written this way. -/
+/-- Closed form of a pair value after extracting the imaginary-time exponential factors. -/
 theorem orderedQuarticPairValue_eq (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) (τ : Fin S.card → ℝ)
     (a b : Fin (2 * (2 * S.card))) :
@@ -149,14 +110,12 @@ theorem orderedQuarticPairValue_eq (ε : Mode → ℝ) (β : ℝ) {S : Finset (F
                 (d.vertexLabel (order (Common.orderedQuarticLegEquiv S.card b).1))
                 (Common.orderedQuarticLegEquiv S.card b).2))) := by
   simp only [orderedQuarticPairValue, orderedQuarticLegOperator, quarticLegOperatorForSequence,
-    freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation,
+    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
     imaginaryTimeEvolve_quarticLocalLegOperator, LinearMap.smul_comp, LinearMap.comp_smul,
-    smul_smul, freeGibbsExpectation_smul]
+    smul_smul, finiteGibbsExpectation_smul_apply]
   ring
 
-/-- **A pair value is continuous in the time assignment `τ`** — directly from the closed form
-`orderedQuarticPairValue_eq`: a product of two `Complex.exp`s of a continuous (coordinate-linear)
-function of `τ`, times a `τ`-independent constant. -/
+/-- A pair value is continuous in the time assignment. -/
 theorem continuous_orderedQuarticPairValue (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S)
     (a b : Fin (2 * (2 * S.card))) :
@@ -164,9 +123,7 @@ theorem continuous_orderedQuarticPairValue (ε : Mode → ℝ) (β : ℝ) {S : F
   simp only [orderedQuarticPairValue_eq]
   fun_prop
 
-/-- **The fixed-vertex-order Wick contraction integrand is continuous in `τ`** — a `τ`-independent
-crossing-sign constant, times a finite product (over the transported pairing's pairs) of
-`continuous_orderedQuarticPairValue`'s continuous pair values. -/
+/-- The fixed-order contraction integrand is continuous. -/
 theorem continuous_contractionIntegrand (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) :
     Continuous (d.contractionIntegrand ε β order) := by
@@ -180,10 +137,7 @@ theorem continuous_contractionIntegrand (ε : Mode → ℝ) (β : ℝ) {S : Fins
 
 /-! ## The diagram amplitude -/
 
-/-- **The quartic Wick-diagram amplitude**: `(-1)^{S.card}` (the Dyson-recursion sign) times the
-diagram's coupling weight, times the sum — over **every** vertex order, with no `1/S.card!` — of
-that order's ordered-simplex contribution. See the module docstring for why neither sign may be
-dropped, combined, or replaced by an average. -/
+/-- The quartic Wick-diagram amplitude, including the Dyson sign and all vertex orders. -/
 noncomputable def quarticWickDiagramAmplitude (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) : ℂ :=
   (-1 : ℂ) ^ S.card * d.couplingWeight g *
@@ -191,9 +145,7 @@ noncomputable def quarticWickDiagramAmplitude (ε : Mode → ℝ) (β : ℝ)
 
 /-! ## Basic lemmas -/
 
-/-- **There is exactly one vertex order on the empty vertex set** — both `Fin 0` and `↥(∅ :
-Finset (Fin N))` are empty types, so `Equiv.equivOfIsEmpty` gives one, and any two equivs between
-empty types agree (`Subsingleton.elim`). -/
+/-- There is exactly one vertex order on the empty vertex set. -/
 instance quarticVertexOrderUniqueEmpty : Unique (Common.QuarticVertexOrder (∅ : Finset (Fin N))) where
   default := by
     haveI : IsEmpty (↥(∅ : Finset (Fin N))) := Finset.isEmpty_coe_sort.2 rfl
@@ -202,8 +154,7 @@ instance quarticVertexOrderUniqueEmpty : Unique (Common.QuarticVertexOrder (∅ 
     exact Equiv.equivOfIsEmpty (Fin (Finset.card (∅ : Finset (Fin N)))) _
   uniq _ := Subsingleton.elim _ _
 
-/-- **The empty-vertex-set amplitude is `1`**, matching `dysonVertexMoment_empty` — the sign,
-coupling product, and order sum all collapse trivially at `S = ∅`. -/
+/-- The empty-vertex-set amplitude is one. -/
 @[simp]
 theorem quarticWickDiagramAmplitude_empty (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (d : QuarticWickDiagram Mode N (∅ : Finset (Fin N))) :
