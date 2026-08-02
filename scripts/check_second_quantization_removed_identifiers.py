@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 
@@ -7,8 +8,10 @@ ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = ROOT / "LeanCondensedMatter"
 
 REMOVED_IDENTIFIERS = {
-    "QuarticWickDiagram.ext": "removed Fermionic WickDiagram ext wrapper",
-    "QuarticWickDiagram.equivPair": "removed Fermionic WickDiagram equivPair wrapper",
+    re.compile(r"(?<![A-Za-z0-9_'])QuarticWickDiagram\.ext(?![A-Za-z0-9_'])"):
+        "removed Fermionic WickDiagram ext wrapper",
+    re.compile(r"(?<![A-Za-z0-9_'])QuarticWickDiagram\.equivPair(?![A-Za-z0-9_'])"):
+        "removed Fermionic WickDiagram equivPair wrapper",
 }
 
 
@@ -21,8 +24,8 @@ def main() -> int:
 
     for path in sorted(LEAN_ROOT.rglob("*.lean")):
         for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
-            for identifier, description in REMOVED_IDENTIFIERS.items():
-                if identifier in line:
+            for pattern, description in REMOVED_IDENTIFIERS.items():
+                if pattern.search(line):
                     errors.append(
                         f"{description}: {relative(path)}:{line_no}: {line.strip()}"
                     )
