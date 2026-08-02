@@ -89,7 +89,7 @@ theorem gibbsExpectation_eq_normalizedWeightedDiagonal (energy : Config → ℝ)
     exact_mod_cast (ne_of_gt (finitePartitionFunction_pos energy β))
   rw [← hZcast]
   field_simp
-  rw [Finset.mul_sum]
+  rw [Finset.sum_mul]
   apply Finset.sum_congr rfl
   intro n _
   rw [← finiteBoltzmannWeight_cast_eq_boltzmannWeight energy β n]
