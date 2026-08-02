@@ -1,0 +1,49 @@
+name: Apply PR 452 Flattening import fix
+
+on:
+  pull_request:
+    types: [synchronize]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pr452-flattening-import-fix
+  cancel-in-progress: true
+
+jobs:
+  apply:
+    if: github.event.pull_request.number == 452 && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Add direct operator-algebra import
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion/Flattening.lean')
+          text = path.read_text(encoding='utf-8')
+          anchor = 'import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticLocalLeg\n'
+          addition = anchor + 'import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst\n'
+          assert text.count(anchor) == 1
+          assert 'import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst\n' not in text
+          path.write_text(text.replace(anchor, addition, 1), encoding='utf-8')
+          PY
+
+      - name: Remove temporary workflow
+        run: rm .github/workflows/apply-pr452-flattening-import-fix.yml
+
+      - name: Commit fix
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "Add direct operator-algebra import to Dyson flattening"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
