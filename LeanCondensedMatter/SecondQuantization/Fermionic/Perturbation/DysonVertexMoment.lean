@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
 
 set_option linter.style.header false
@@ -22,6 +23,28 @@ noncomputable def normalizedDysonPartitionCoeff (ε : Mode → ℝ) (β : ℝ)
   dysonPartitionCoeff ε β V n / freePartitionFunction ε β
 
 omit [LinearOrder Mode] in
+/-- The normalized Dyson coefficient is the canonical free Gibbs density-state expectation of the
+bare Dyson coefficient. This bridge is owned at the perturbative moment layer so diagrammatic
+callers do not need to unfold the coordinate Gibbs functional. -/
+theorem normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation
+    (ε : Mode → ℝ) (β : ℝ) (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ) :
+    normalizedDysonPartitionCoeff ε β V n =
+      (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator (Common.dysonCoeff (fermionEnergy ε) V n β)) := by
+  have hw : freeBoltzmannWeight ε β = Common.boltzmannWeight (fermionEnergy ε) β :=
+    funext (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β)
+  rw [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
+    Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal,
+    normalizedDysonPartitionCoeff, Common.normalizedWeightedDiagonal,
+    freePartitionFunction, hw]
+  congr 1
+  rw [dysonPartitionCoeff, imaginaryTimeEvolveFree]
+  change Common.traceFock
+      (Common.diagonalEvolution (fermionEnergy ε) (-β) ∘ₗ
+        Common.dysonCoeff (fermionEnergy ε) V n β) = _
+  rw [Common.traceFock_diagonalEvolution_comp_eq_weightedTrace]
+
+omit [LinearOrder Mode] in
 @[simp]
 theorem normalizedDysonPartitionCoeff_zero (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
@@ -33,6 +56,20 @@ theorem normalizedDysonPartitionCoeff_zero (ε : Mode → ℝ) (β : ℝ)
 noncomputable def dysonVertexMoment {α : Type*} [DecidableEq α] (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (S : Finset α) : ℂ :=
   (S.card.factorial : ℂ) * normalizedDysonPartitionCoeff ε β V S.card
+
+omit [LinearOrder Mode] in
+/-- The Dyson vertex moment is the factorial times the canonical free Gibbs density-state
+expectation of the bare Dyson coefficient at the corresponding order. -/
+theorem dysonVertexMoment_eq_freeGibbsDensityOperator_expectation
+    {α : Type*} [DecidableEq α] (ε : Mode → ℝ) (β : ℝ)
+    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (S : Finset α) :
+    dysonVertexMoment ε β V S =
+      (S.card.factorial : ℂ) *
+        (freeGibbsDensityOperator ε β).expectation
+          (Common.finiteHilbertOperator
+            (Common.dysonCoeff (fermionEnergy ε) V S.card β)) := by
+  rw [dysonVertexMoment,
+    normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation]
 
 omit [LinearOrder Mode] in
 @[simp]
