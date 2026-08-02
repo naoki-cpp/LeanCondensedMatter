@@ -5,12 +5,12 @@ import Mathlib.Analysis.Complex.Basic
 set_option linter.style.header false
 
 /-!
-# Diagonal matrix coefficients and summability-aware traces
+# Matrix coefficients and summability-aware diagonal traces
 
 Statistics-independent matrix-coefficient and diagonal-trace infrastructure on
-`AlgebraicFock Config`. The support formulas hold for arbitrary configuration types. The `tsum`
-trace API is therefore usable for genuinely infinite configuration spaces, provided callers carry
-the required summability hypotheses explicitly.
+`AlgebraicFock Config`. The extensionality and support formulas hold for arbitrary configuration
+types. The `tsum` trace API is therefore usable for genuinely infinite configuration spaces,
+provided callers carry the required summability hypotheses explicitly.
 -/
 
 namespace SecondQuantization
@@ -18,7 +18,7 @@ namespace Common
 
 variable {Config : Type*}
 
-/-! ## Diagonal matrix coefficients -/
+/-! ## Matrix coefficients -/
 
 /-- **Diagonal matrix coefficients.** If `A` acts on `basisState n` as `c • basisState n`, the
 `(n, n)` matrix coefficient is exactly `c`. -/
@@ -27,6 +27,15 @@ theorem matrixCoeff_of_smul_basisState {A : AlgebraicFock Config →ₗ[ℂ] Alg
     matrixCoeff A n n = c := by
   change A (basisState n) n = c
   rw [h, smul_basisState_apply_self]
+
+/-- **Two operators agreeing on every matrix coefficient are equal.** -/
+theorem matrixCoeff_ext {A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config}
+    (h : ∀ m n, matrixCoeff A m n = matrixCoeff B m n) : A = B := by
+  apply linearMap_ext_basisState
+  intro n
+  apply Finsupp.ext
+  intro m
+  exact h m n
 
 /-! ## Composition of matrix coefficients -/
 
