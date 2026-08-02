@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsDensityOperator
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 import LeanCondensedMatter.QuantumTheory.FiniteDensityOperatorExpectationTraceClass
 
 set_option linter.style.header false
@@ -57,6 +58,35 @@ theorem finiteGibbsExpectation_eq_sum (energy : Config → ℝ) (β : ℝ)
       apply Finset.sum_congr rfl
       intro n _
       rw [hinner n]
+
+/-- The canonical finite Gibbs expectation commutes with coefficientwise finite operator
+integration. -/
+theorem finiteGibbsExpectation_operatorIntervalIntegral
+    (energy : Config → ℝ) (β : ℝ)
+    (F : ℝ → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (a b : ℝ)
+    (hF : ∀ n : Config, IntervalIntegrable
+      (fun τ => matrixCoeff (F τ) n n) MeasureTheory.volume a b) :
+    finiteGibbsExpectation energy β (operatorIntervalIntegral F a b) =
+      ∫ τ in a..b, finiteGibbsExpectation energy β (F τ) := by
+  simp_rw [finiteGibbsExpectation_eq_sum, matrixCoeff_operatorIntervalIntegral,
+    ← intervalIntegral.integral_const_mul]
+  exact (intervalIntegral.integral_finsetSum fun n _ =>
+    (hF n).const_mul
+      ((((finitePartitionFunction energy β)⁻¹ * finiteBoltzmannWeight energy β n : ℝ) : ℂ))).symm
+
+/-- The finite Gibbs density-state expectation commutes with coefficientwise finite operator
+integration after transporting algebraic operators to the finite Hilbert realization. -/
+theorem finiteGibbsDensityOperator_expectation_operatorIntervalIntegral
+    (energy : Config → ℝ) (β : ℝ)
+    (F : ℝ → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (a b : ℝ)
+    (hF : ∀ n : Config, IntervalIntegrable
+      (fun τ => matrixCoeff (F τ) n n) MeasureTheory.volume a b) :
+    (finiteGibbsDensityOperator energy β).expectation
+        (finiteHilbertOperator (operatorIntervalIntegral F a b)) =
+      ∫ τ in a..b,
+        (finiteGibbsDensityOperator energy β).expectation (finiteHilbertOperator (F τ)) := by
+  simpa [finiteGibbsExpectation, finiteGibbsExpectationLinearMap] using
+    finiteGibbsExpectation_operatorIntervalIntegral energy β F a b hF
 
 end
 end Common
