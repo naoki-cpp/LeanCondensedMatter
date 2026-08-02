@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannWeight
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.WeightedNumberOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 
@@ -50,7 +50,7 @@ omit [DecidableEq Mode] in
 `Z₀(β) = ∏ᵢ (1 + e^{-βε_i})`. -/
 theorem freePartitionFunction_eq_prod (ε : Mode → ℝ) (β : ℝ) :
     freePartitionFunction ε β = ∏ i, (1 + Complex.exp (-(β : ℂ) * (ε i : ℂ))) := by
-  rw [freePartitionFunction, Common.weightSum, ← Finset.powerset_univ]
+  rw [freePartitionFunction, ← Finset.powerset_univ]
   exact sum_freeBoltzmannWeight_powerset_eq_prod ε β Finset.univ
 
 /-- **The closed-form Fermi–Dirac occupation number.** `⟨N_i⟩₀,β = 1/(e^{βε_i}+1)`. -/
@@ -86,7 +86,7 @@ theorem freeGibbsDensityOperator_expectation_numberOperator
           ∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∉ ·),
             freeBoltzmannWeight ε β n
           = freePartitionFunction ε β := by
-      rw [weightedTrace_numberOperator, freePartitionFunction, Common.weightSum]
+      rw [weightedTrace_numberOperator, freePartitionFunction]
       exact Finset.sum_filter_add_sum_filter_not Finset.univ (i ∈ ·) (freeBoltzmannWeight ε β)
     rw [hsum_not, hZ] at hsplit
     linear_combination hsplit

@@ -1,4 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.WeightedFreeTwoPointFunction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.GibbsExpectation.Core
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
@@ -6,12 +8,12 @@ import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperator
 set_option linter.style.header false
 
 /-!
-# The free Boltzmann weight, and the genuine free thermal Green function
+# Free-fermion coordinate expectation compatibility
 
-The fermionic free thermal formulas retain their occupation-basis presentation during the E3
-migration, while `freeGibbsExpectation_eq_finiteGibbsExpectation` identifies that presentation with
-the canonical finite Gibbs density state. The fermionic definition itself is removed in the
-following E4 package after all physics-facing callers have moved.
+The free Boltzmann weight and finite partition function are owned by `FreeBoltzmannCore`. This module
+retains the temporary occupation-coordinate expectation and the bridges needed by the remaining
+coordinate proofs. Its dependency direction is intentionally one-way: compatibility imports the
+canonical free Gibbs density state, while the canonical state does not import this module.
 -/
 
 namespace SecondQuantization
@@ -19,43 +21,20 @@ namespace Fermionic
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
-/-- The free Boltzmann weight `e^{-βE(n)}` for `E(n) = Σᵢ∈n ε(i)`. -/
-noncomputable def freeBoltzmannWeight (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) : ℂ :=
-  Complex.exp (-(β : ℂ) * ∑ i ∈ n, (ε i : ℂ))
-
-omit [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] in
-/-- The free Boltzmann weight is a cast of a positive real number. -/
-theorem freeBoltzmannWeight_eq_ofReal (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
-    freeBoltzmannWeight ε β n = ((Real.exp (-β * ∑ i ∈ n, ε i) : ℝ) : ℂ) := by
-  rw [freeBoltzmannWeight,
-    show -(β : ℂ) * ∑ i ∈ n, (ε i : ℂ) = ((-β * ∑ i ∈ n, ε i : ℝ) : ℂ) by push_cast; ring,
-    Complex.ofReal_exp]
-
-omit [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] in
-theorem freeBoltzmannWeight_ne_zero (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
-    freeBoltzmannWeight ε β n ≠ 0 :=
-  Complex.exp_ne_zero _
+omit [DecidableEq Mode] [LinearOrder Mode] in
+/-- The legacy total-weight presentation is the core free partition function. -/
+theorem weightSum_freeBoltzmannWeight_eq_freePartitionFunction (ε : Mode → ℝ) (β : ℝ) :
+    Common.weightSum (freeBoltzmannWeight ε β) = freePartitionFunction ε β := by
+  rw [Common.weightSum, freePartitionFunction]
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
-/-- The free finite fermion partition function is nonzero. -/
+/-- The free finite fermion total weight is nonzero. -/
 theorem weightSum_freeBoltzmannWeight_ne_zero (ε : Mode → ℝ) (β : ℝ) :
     Common.weightSum (freeBoltzmannWeight ε β) ≠ 0 := by
-  rw [Common.weightSum]
-  simp_rw [freeBoltzmannWeight_eq_ofReal]
-  rw [← Complex.ofReal_sum]
-  refine Complex.ofReal_ne_zero.2 (ne_of_gt ?_)
-  exact Finset.sum_pos (fun n _ => Real.exp_pos _) Finset.univ_nonempty
+  rw [weightSum_freeBoltzmannWeight_eq_freePartitionFunction]
+  exact freePartitionFunction_ne_zero ε β
 
-/-- The free partition function `Z₀(β)`. -/
-noncomputable def freePartitionFunction (ε : Mode → ℝ) (β : ℝ) : ℂ :=
-  Common.weightSum (freeBoltzmannWeight ε β)
-
-omit [DecidableEq Mode] [LinearOrder Mode] in
-theorem freePartitionFunction_ne_zero (ε : Mode → ℝ) (β : ℝ) : freePartitionFunction ε β ≠ 0 :=
-  weightSum_freeBoltzmannWeight_ne_zero ε β
-
-/-- The occupation-coordinate presentation of the free Gibbs expectation. It is identified with the
-canonical density-state expectation below and will be removed in E4. -/
+/-- The temporary occupation-coordinate presentation of the free Gibbs expectation. -/
 noncomputable def freeGibbsExpectation (ε : Mode → ℝ) (β : ℝ)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) : ℂ :=
   Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β) A
@@ -97,7 +76,7 @@ theorem freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy (ε : Mode → ℝ)
 
 omit [LinearOrder Mode] in
 /-- The fermionic occupation-coordinate expectation agrees with the canonical finite Gibbs density
-state. This migration theorem is removed together with `freeGibbsExpectation` in E4. -/
+state. -/
 theorem freeGibbsExpectation_eq_finiteGibbsExpectation (ε : Mode → ℝ) (β : ℝ)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     freeGibbsExpectation ε β A = Common.finiteGibbsExpectation (fermionEnergy ε) β A := by
@@ -105,6 +84,32 @@ theorem freeGibbsExpectation_eq_finiteGibbsExpectation (ε : Mode → ℝ) (β :
   have hw : freeBoltzmannWeight ε β = Common.boltzmannWeight (fermionEnergy ε) β :=
     funext (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β)
   rw [freeGibbsExpectation, hw]
+
+omit [LinearOrder Mode] in
+/-- Temporary bridge from the canonical free Gibbs density state to the coordinate presentation. -/
+theorem freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation
+    (ε : Mode → ℝ) (β : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (freeGibbsDensityOperator ε β).expectation (Common.finiteHilbertOperator A) =
+      freeGibbsExpectation ε β A := by
+  rw [freeGibbsExpectation_eq_finiteGibbsExpectation]
+  exact freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation ε β A
+
+omit [LinearOrder Mode] in
+/-- The canonical free Gibbs density-state expectation commutes with the finite algebraic operator
+interval integral. This remains in the compatibility layer until the coordinate proof is replaced
+by a direct transported-operator integral theorem. -/
+theorem freeGibbsDensityOperator_expectation_operatorIntervalIntegral
+    (ε : Mode → ℝ) (β : ℝ)
+    (F : ℝ → FockSpace Mode →ₗ[ℂ] FockSpace Mode) (a b : ℝ)
+    (hF : ∀ n : Occupation Mode, IntervalIntegrable
+      (fun τ => Common.matrixCoeff (F τ) n n) MeasureTheory.volume a b) :
+    (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator (Common.operatorIntervalIntegral F a b)) =
+      ∫ τ in a..b,
+        (freeGibbsDensityOperator ε β).expectation
+          (Common.finiteHilbertOperator (F τ)) := by
+  simp_rw [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation]
+  exact freeGibbsExpectation_operatorIntervalIntegral ε β F a b hF
 
 omit [LinearOrder Mode] in
 theorem freeGibbsExpectation_finsetSum (ε : Mode → ℝ) (β : ℝ) {ι : Type*} (s : Finset ι)

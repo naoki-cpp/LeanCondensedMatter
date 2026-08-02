@@ -15,6 +15,21 @@ REMOVED_PATHS = {
     / "DysonDensityStateExpansion.lean": "removed Dyson density-state forwarding module",
 }
 
+CANONICAL_FREE_GIBBS_PATH = (
+    LEAN_ROOT
+    / "SecondQuantization"
+    / "Fermionic"
+    / "Thermal"
+    / "FreeGibbsDensityOperator.lean"
+)
+
+FORBIDDEN_CANONICAL_FREE_GIBBS_TEXT = {
+    "import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannWeight":
+        "canonical free Gibbs state imports the coordinate compatibility layer",
+    "freeGibbsExpectation":
+        "canonical free Gibbs state mentions the coordinate expectation API",
+}
+
 REMOVED_IDENTIFIERS = {
     re.compile(r"(?<![A-Za-z0-9_'])QuarticWickDiagram\.ext(?![A-Za-z0-9_'])"):
         "removed Fermionic WickDiagram ext wrapper",
@@ -71,6 +86,13 @@ def main() -> int:
     for path, description in REMOVED_PATHS.items():
         if path.exists():
             errors.append(f"{description}: {relative(path)}")
+
+    canonical_text = CANONICAL_FREE_GIBBS_PATH.read_text(encoding="utf-8")
+    for forbidden, description in FORBIDDEN_CANONICAL_FREE_GIBBS_TEXT.items():
+        if forbidden in canonical_text:
+            errors.append(
+                f"{description}: {relative(CANONICAL_FREE_GIBBS_PATH)}: {forbidden}"
+            )
 
     for path in sorted(LEAN_ROOT.rglob("*.lean")):
         for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
