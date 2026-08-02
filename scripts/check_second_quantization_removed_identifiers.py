@@ -36,6 +36,19 @@ REMOVED_IDENTIFIERS = {
         r"create_comp_annihilate|annihilate_comp_create"
         r")(?![A-Za-z0-9_'])"
     ): "removed Fermionic free Gibbs expectation theorem",
+    re.compile(
+        r"(?<![A-Za-z0-9_'])(?:"
+        r"normalizedDysonPartitionCoeff_eq_freeGibbsExpectation|"
+        r"dysonVertexMoment_eq_freeGibbsExpectation|"
+        r"continuous_freeGibbsExpectation_comp_nestedVertexOperatorComp|"
+        r"freeGibbsExpectation_comp_dysonCoeff_quarticInteraction|"
+        r"freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing|"
+        r"freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq|"
+        r"continuous_freeGibbsExpectation_quarticLegOperatorForSequence_pair|"
+        r"orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing|"
+        r"DysonDensityStateExpansion"
+        r")(?![A-Za-z0-9_'])"
+    ): "removed Fermionic coordinate-facing Dyson expectation API",
 }
 
 

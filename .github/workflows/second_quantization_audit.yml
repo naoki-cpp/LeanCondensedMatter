@@ -6,60 +6,9 @@ on:
   pull_request:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  migrate-dyson-density-state:
-    if: github.event_name == 'pull_request' && github.head_ref == 'agent/add-density-state-dyson-pairing-kernels'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          fetch-depth: 0
-      - name: Apply the direct migration
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-
-          workflow = Path('.github/workflows/migrate_dyson_density_state.yml').read_text(
-              encoding='utf-8')
-          start_marker = "          python3 - <<'PY'\n"
-          end_marker = "\n          PY\n"
-          start = workflow.index(start_marker) + len(start_marker)
-          end = workflow.index(end_marker, start)
-          block = workflow[start:end]
-          code = '\n'.join(
-              line[10:] if line.startswith('          ') else line
-              for line in block.splitlines())
-          exec(compile(code, 'migrate_dyson_density_state.py', 'exec'), {})
-          PY
-          cat > .github/workflows/second_quantization_audit.yml <<'YAML'
-          name: SecondQuantization Audit
-
-          on:
-            push:
-              branches: [main]
-            pull_request:
-
-          permissions:
-            contents: read
-
-          jobs:
-            audit:
-              runs-on: ubuntu-latest
-              steps:
-                - uses: actions/checkout@v5
-                - name: Check final audit removals
-                  run: python3 scripts/check_second_quantization_audit_removals.py
-          YAML
-          git config user.name github-actions[bot]
-          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add -A
-          git commit -m "Migrate Dyson pairing API directly to density states"
-          git push origin HEAD:${{ github.event.pull_request.head.ref }}
-
   audit:
     runs-on: ubuntu-latest
     steps:

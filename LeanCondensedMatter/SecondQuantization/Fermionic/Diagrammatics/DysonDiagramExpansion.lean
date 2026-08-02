@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Ordered
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.LegFamily
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticLocalLeg
@@ -43,7 +44,7 @@ since `imaginaryTimeEvolveFree ε (-β)` unfolds to `Common.diagonalEvolution (f
 `Common.finiteGibbsExpectation (fermionEnergy ε) β` and hence, via
 `freeGibbsExpectation_eq_finiteGibbsExpectation`, `freeGibbsExpectation ε β`. This is the bridge
 the general Bloch–de Dominicis density-state conclusion needs to reach `dysonVertexMoment`. -/
-theorem normalizedDysonPartitionCoeff_eq_freeGibbsExpectation (ε : Mode → ℝ) (β : ℝ)
+private theorem normalizedDysonPartitionCoeff_eq_freeGibbsExpectation_coordinate (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ) :
     normalizedDysonPartitionCoeff ε β V n = freeGibbsExpectation ε β (Common.dysonCoeff (fermionEnergy ε) V n β) := by
   have hw : Common.boltzmannWeight (fermionEnergy ε) β = freeBoltzmannWeight ε β :=
@@ -57,19 +58,19 @@ theorem normalizedDysonPartitionCoeff_eq_freeGibbsExpectation (ε : Mode → ℝ
 
 omit [LinearOrder Mode] in
 /-- **`dysonVertexMoment` is `S.card!` times `freeGibbsExpectation` of the bare Dyson coefficient
-at order `S.card`** — folding `normalizedDysonPartitionCoeff_eq_freeGibbsExpectation` into
+at order `S.card`** — folding `normalizedDysonPartitionCoeff_eq_freeGibbsExpectation_coordinate` into
 `dysonVertexMoment`'s own `S.card! * normalizedDysonPartitionCoeff ... S.card` definition. -/
-theorem dysonVertexMoment_eq_freeGibbsExpectation {α : Type*} [DecidableEq α] (ε : Mode → ℝ)
+private theorem dysonVertexMoment_eq_freeGibbsExpectation_coordinate {α : Type*} [DecidableEq α] (ε : Mode → ℝ)
     (β : ℝ) (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (S : Finset α) :
     dysonVertexMoment ε β V S =
       (S.card.factorial : ℂ) * freeGibbsExpectation ε β (Common.dysonCoeff (fermionEnergy ε) V S.card β) := by
-  rw [dysonVertexMoment, normalizedDysonPartitionCoeff_eq_freeGibbsExpectation]
+  rw [dysonVertexMoment, normalizedDysonPartitionCoeff_eq_freeGibbsExpectation_coordinate]
 
 /-! ## Expanding `dysonCoeff` of `quarticInteraction` into a vertex-label sum -/
 
 /-- **The nested interaction-picture vertex-operator composition**, `V_I(τ 0) ∘ V_I(τ 1) ∘ ⋯ ∘
 V_I(τ (n-1))` for a fixed vertex-label sequence `q : Fin n → QuarticVertexLabel Mode` — the
-operator-valued integrand `freeGibbsExpectation_comp_dysonCoeff_quarticInteraction`'s
+operator-valued integrand `freeGibbsExpectation_comp_dysonCoeff_quarticInteraction_coordinate`'s
 `orderedSimplexIntegral` integrates. Coordinate `0` is the latest/outermost time, matching
 `orderedSimplexIntegral`'s own convention. -/
 noncomputable def nestedVertexOperatorComp (ε : Mode → ℝ) :
@@ -144,7 +145,7 @@ applies) and each diagonal matrix coefficient of `L.comp (nestedVertexOperatorCo
 `Common.matrixCoeff_comp`'s finite sum, closed by `continuous_matrixCoeff_nestedVertexOperatorComp`
 — the joint continuity `continuous_orderedSimplexIntegral_of_continuous` needs to apply to the key
 induction's successor-case integrand below. -/
-theorem continuous_freeGibbsExpectation_comp_nestedVertexOperatorComp (ε : Mode → ℝ) (β : ℝ)
+private theorem continuous_freeGibbsExpectation_comp_nestedVertexOperatorComp_coordinate (ε : Mode → ℝ) (β : ℝ)
     (n : ℕ) (q : Fin n → QuarticVertexLabel Mode)
     (L : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     Continuous (fun τ : Fin n → ℝ =>
@@ -187,7 +188,7 @@ factor into `L` before invoking the inductive hypothesis on the remaining `n`-fo
 bound `t` likewise generalizes so the inductive step's inner integral (over `[0, σ]` for the
 recursion's own integration variable `σ`) is exactly an instance of the same statement, rather
 than requiring a separate lemma for non-`β` bounds. -/
-theorem freeGibbsExpectation_comp_dysonCoeff_quarticInteraction (ε : Mode → ℝ) (β : ℝ)
+private theorem freeGibbsExpectation_comp_dysonCoeff_quarticInteraction_coordinate (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) :
     ∀ (n : ℕ) (t : ℝ) (L : FockSpace Mode →ₗ[ℂ] FockSpace Mode),
       freeGibbsExpectation ε β (L.comp (Common.dysonCoeff (fermionEnergy ε) (quarticInteraction g) n t)) =
@@ -313,7 +314,7 @@ theorem freeGibbsExpectation_comp_dysonCoeff_quarticInteraction (ε : Mode → �
       have hcontF : Continuous (Function.uncurry
           (fun (σ : ℝ) (τ' : Fin n → ℝ) => freeGibbsExpectation ε β
             (L.comp (nestedVertexOperatorComp ε (n + 1) q (Fin.cons σ τ'))))) :=
-        (continuous_freeGibbsExpectation_comp_nestedVertexOperatorComp ε β (n + 1) q L).comp
+        (continuous_freeGibbsExpectation_comp_nestedVertexOperatorComp_coordinate ε β (n + 1) q L).comp
           (Continuous.finCons continuous_fst continuous_snd)
       have hcont := intervalIntegral.continuous_orderedSimplexIntegral_of_continuous n
         (id : ℝ → ℝ) _ continuous_id hcontF
@@ -644,7 +645,7 @@ then bridges the conclusion from `Common.finiteGibbsExpectation` to `freeGibbsEx
 the general theorem's hypotheses discharged and the theorem itself applied — the last purely
 combinatorial step is reindexing the resulting `(vertex-label sequence, pairing)` sum into a sum
 over `QuarticWickDiagram`s. -/
-theorem freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing (ε : Mode → ℝ) (β : ℝ)
+private theorem freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing_coordinate (ε : Mode → ℝ) (β : ℝ)
     (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) :
     freeGibbsExpectation ε β (nestedVertexOperatorComp ε n q τ) =
       ∑ pairing : Combinatorics.Pairing (2 * n),
@@ -676,7 +677,7 @@ scalars out of `freeGibbsExpectation` (`freeGibbsExpectation_smul`), leaving a f
 (`τ`-independent) pair value of the two *bare* local-leg operators — the
 `quarticLegOperatorForSequence` analogue of `WickDiagram/Amplitude.lean`'s
 `orderedQuarticPairValue_eq`. -/
-theorem freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
+private theorem freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq_coordinate {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))) :
     freeGibbsExpectation ε β
         ((quarticLegOperatorForSequence ε q τ a).comp (quarticLegOperatorForSequence ε q τ b)) =
@@ -689,20 +690,20 @@ theorem freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq {n : ℕ} (ε
     LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, freeGibbsExpectation_smul]
 
 /-- **A pair value of two flattened leg operators is continuous in the time assignment `τ`** —
-directly from the closed form `freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq`: a
+directly from the closed form `freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq_coordinate`: a
 product of two `Complex.exp`s of a continuous (coordinate-linear) function of `τ`, times a
 `τ`-independent constant. -/
-theorem continuous_freeGibbsExpectation_quarticLegOperatorForSequence_pair {n : ℕ} (ε : Mode → ℝ)
+private theorem continuous_freeGibbsExpectation_quarticLegOperatorForSequence_pair_coordinate {n : ℕ} (ε : Mode → ℝ)
     (β : ℝ) (q : Fin n → QuarticVertexLabel Mode) (a b : Fin (2 * (2 * n))) :
     Continuous (fun τ : Fin n → ℝ => freeGibbsExpectation ε β
       ((quarticLegOperatorForSequence ε q τ a).comp (quarticLegOperatorForSequence ε q τ b))) := by
-  simp only [freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq]
+  simp only [freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq_coordinate]
   fun_prop
 
 /-- **A pairing's contraction term is continuous in `τ`** — a `τ`-independent crossing-sign
 constant, times a finite product (over the pairing's pairs) of
-`continuous_freeGibbsExpectation_quarticLegOperatorForSequence_pair`'s continuous pair values. -/
-theorem continuous_flatVertexLegPairingTerm {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
+`continuous_freeGibbsExpectation_quarticLegOperatorForSequence_pair_coordinate`'s continuous pair values. -/
+private theorem continuous_flatVertexLegPairingTerm_coordinate {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
     (q : Fin n → QuarticVertexLabel Mode)
     (pairing : Combinatorics.Pairing (2 * n)) :
     Continuous (fun τ : Fin n → ℝ => pairing.weight Common.Statistics.fermion *
@@ -710,17 +711,17 @@ theorem continuous_flatVertexLegPairingTerm {n : ℕ} (ε : Mode → ℝ) (β : 
         ((quarticLegOperatorForSequence ε q τ pr.1).comp
           (quarticLegOperatorForSequence ε q τ pr.2))) :=
   continuous_const.mul (continuous_finsetProd _ fun pr _ =>
-    continuous_freeGibbsExpectation_quarticLegOperatorForSequence_pair ε β q pr.1 pr.2)
+    continuous_freeGibbsExpectation_quarticLegOperatorForSequence_pair_coordinate ε β q pr.1 pr.2)
 
 /-- **The ordered-simplex integral of `freeGibbsExpectation ∘ nestedVertexOperatorComp`, as a sum
 over pairings of integrated contraction terms** — rewrites the integrand pointwise via
-`freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing`
+`freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing_coordinate`
 (`intervalIntegral.orderedSimplexIntegral_congr`), pulls the finite `Pairing (2 * n)` sum out past
 the integral (`intervalIntegral.orderedSimplexIntegral_finsetSum`, using
-`continuous_flatVertexLegPairingTerm` for its integrability side condition), then pulls each
+`continuous_flatVertexLegPairingTerm_coordinate` for its integrability side condition), then pulls each
 pairing's `τ`-independent weight back out of its own integral
 (`intervalIntegral.orderedSimplexIntegral_smul`). -/
-theorem orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing
+private theorem orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing_coordinate
     (ε : Mode → ℝ) (β t : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) :
     intervalIntegral.orderedSimplexIntegral n t
         (fun τ => freeGibbsExpectation ε β (nestedVertexOperatorComp ε n q τ)) =
@@ -731,18 +732,18 @@ theorem orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_
               ((quarticLegOperatorForSequence ε q τ pr.1).comp
                 (quarticLegOperatorForSequence ε q τ pr.2))) := by
   rw [intervalIntegral.orderedSimplexIntegral_congr
-      (fun τ => freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing ε β n q τ),
+      (fun τ => freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing_coordinate ε β n q τ),
     intervalIntegral.orderedSimplexIntegral_finsetSum _ n t _
-      (fun pairing _ => continuous_flatVertexLegPairingTerm ε β q pairing)]
+      (fun pairing _ => continuous_flatVertexLegPairingTerm_coordinate ε β q pairing)]
   exact Finset.sum_congr rfl fun pairing _ => intervalIntegral.orderedSimplexIntegral_smul n t _ _
 
 /-- **`dysonVertexMoment` of `quarticInteraction`, as a genuine sum over vertex-label sequences and
-pairings** — combines the key induction `freeGibbsExpectation_comp_dysonCoeff_quarticInteraction`
+pairings** — combines the key induction `freeGibbsExpectation_comp_dysonCoeff_quarticInteraction_coordinate`
 (at `L := LinearMap.id`, `t := β`) with
-`orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing`. The last
+`orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing_coordinate`. The last
 remaining step is reindexing this `(vertex-label sequence, pairing)` double sum, via
 `Common.quarticDiagramEquivOrderedData`, into a genuine sum over `QuarticWickDiagram`s. -/
-theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing {α : Type*}
+private theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing_coordinate {α : Type*}
     [DecidableEq α] (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (S : Finset α) :
     dysonVertexMoment ε β (quarticInteraction g) S =
       (S.card.factorial : ℂ) * (-1 : ℂ) ^ S.card *
@@ -753,7 +754,7 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing {α : Ty
                 ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
                   ((quarticLegOperatorForSequence ε q τ pr.1).comp
                     (quarticLegOperatorForSequence ε q τ pr.2))) := by
-  have hkey := freeGibbsExpectation_comp_dysonCoeff_quarticInteraction ε β g S.card β
+  have hkey := freeGibbsExpectation_comp_dysonCoeff_quarticInteraction_coordinate ε β g S.card β
     LinearMap.id
   simp only [LinearMap.id_comp] at hkey
   have hsum : ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
@@ -767,8 +768,137 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing {α : Ty
                 ((quarticLegOperatorForSequence ε q τ pr.1).comp
                   (quarticLegOperatorForSequence ε q τ pr.2))) :=
     Finset.sum_congr rfl fun q _ => by
-      rw [orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing]
-  rw [dysonVertexMoment_eq_freeGibbsExpectation, hkey, mul_assoc, hsum]
+      rw [orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing_coordinate]
+  rw [dysonVertexMoment_eq_freeGibbsExpectation_coordinate, hkey, mul_assoc, hsum]
+
+
+/-! ## Canonical density-state Dyson pairing interface -/
+
+/-- Joint continuity of the canonical density-state expectation of a prefixed nested vertex
+product. The coordinate formula remains private proof machinery during the final E4 cleanup. -/
+theorem continuous_freeGibbsDensityOperator_expectation_comp_nestedVertexOperatorComp
+    (ε : Mode → ℝ) (β : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode)
+    (L : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    Continuous (fun τ : Fin n → ℝ =>
+      (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator
+(L.comp (nestedVertexOperatorComp ε n q τ)))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    continuous_freeGibbsExpectation_comp_nestedVertexOperatorComp_coordinate ε β n q L
+
+/-- The quartic Dyson coefficient expansion through the canonical free Gibbs density state. -/
+theorem freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
+    ∀ (n : ℕ) (t : ℝ) (L : FockSpace Mode →ₗ[ℂ] FockSpace Mode),
+      (freeGibbsDensityOperator ε β).expectation
+(Common.finiteHilbertOperator
+  (L.comp (Common.dysonCoeff (fermionEnergy ε) (quarticInteraction g) n t))) =
+        (-1 : ℂ) ^ n * ∑ q : Fin n → QuarticVertexLabel Mode,
+(∏ i, g (q i)) * intervalIntegral.orderedSimplexIntegral n t
+  (fun τ => (freeGibbsDensityOperator ε β).expectation
+    (Common.finiteHilbertOperator
+      (L.comp (nestedVertexOperatorComp ε n q τ)))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    freeGibbsExpectation_comp_dysonCoeff_quarticInteraction_coordinate ε β g
+
+/-- The nested quartic vertex product satisfies the pairing expansion through the canonical free
+Gibbs density-state expectation. -/
+theorem freeGibbsDensityOperator_expectation_nestedVertexOperatorComp_eq_sum_pairing
+    (ε : Mode → ℝ) (β : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode)
+    (τ : Fin n → ℝ) :
+    (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator (nestedVertexOperatorComp ε n q τ)) =
+      ∑ pairing : Combinatorics.Pairing (2 * n),
+        pairing.weight Common.Statistics.fermion *
+∏ pr ∈ pairing.pairs,
+  (freeGibbsDensityOperator ε β).expectation
+    (Common.finiteHilbertOperator
+      ((quarticLegOperatorForSequence ε q τ pr.1).comp
+        (quarticLegOperatorForSequence ε q τ pr.2))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing_coordinate ε β n q τ
+
+/-- A pair of evolved flattened legs has the expected exponential prefactor through the canonical
+free Gibbs density-state expectation. -/
+theorem freeGibbsDensityOperator_expectation_quarticLegOperatorForSequence_pair_eq
+    {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
+    (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))) :
+    (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator
+((quarticLegOperatorForSequence ε q τ a).comp
+  (quarticLegOperatorForSequence ε q τ b))) =
+      Complex.exp ((τ (flatVertexIndex n a) * flatVertexLegEnergyShift ε q a : ℝ) : ℂ) *
+        Complex.exp ((τ (flatVertexIndex n b) * flatVertexLegEnergyShift ε q b : ℝ) : ℂ) *
+        (freeGibbsDensityOperator ε β).expectation
+(Common.finiteHilbertOperator
+  ((quarticLocalLegOperator (q (flatVertexIndex n a)) (flatLocalLeg n a)).comp
+    (quarticLocalLegOperator (q (flatVertexIndex n b)) (flatLocalLeg n b)))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq_coordinate ε β q τ a b
+
+/-- The canonical density-state pair value is continuous in the vertex-time assignment. -/
+theorem continuous_freeGibbsDensityOperator_expectation_quarticLegOperatorForSequence_pair
+    {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
+    (a b : Fin (2 * (2 * n))) :
+    Continuous (fun τ : Fin n → ℝ =>
+      (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator
+((quarticLegOperatorForSequence ε q τ a).comp
+  (quarticLegOperatorForSequence ε q τ b)))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    continuous_freeGibbsExpectation_quarticLegOperatorForSequence_pair_coordinate ε β q a b
+
+/-- A pairing's contraction term is continuous when all contractions are expressed through the
+canonical free Gibbs density state. -/
+theorem continuous_flatVertexLegPairingTerm {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode)
+    (pairing : Combinatorics.Pairing (2 * n)) :
+    Continuous (fun τ : Fin n → ℝ => pairing.weight Common.Statistics.fermion *
+      ∏ pr ∈ pairing.pairs,
+        (freeGibbsDensityOperator ε β).expectation
+(Common.finiteHilbertOperator
+  ((quarticLegOperatorForSequence ε q τ pr.1).comp
+    (quarticLegOperatorForSequence ε q τ pr.2)))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    continuous_flatVertexLegPairingTerm_coordinate ε β q pairing
+
+/-- The ordered-simplex integral of the canonical density-state nested-vertex expectation is the
+sum of the integrated canonical density-state pairing products. -/
+theorem orderedSimplexIntegral_freeGibbsDensityOperator_expectation_nestedVertexOperatorComp_eq_sum_pairing
+    (ε : Mode → ℝ) (β t : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) :
+    intervalIntegral.orderedSimplexIntegral n t
+        (fun τ => (freeGibbsDensityOperator ε β).expectation
+(Common.finiteHilbertOperator (nestedVertexOperatorComp ε n q τ))) =
+      ∑ pairing : Combinatorics.Pairing (2 * n),
+        pairing.weight Common.Statistics.fermion *
+intervalIntegral.orderedSimplexIntegral n t
+  (fun τ => ∏ pr ∈ pairing.pairs,
+    (freeGibbsDensityOperator ε β).expectation
+      (Common.finiteHilbertOperator
+        ((quarticLegOperatorForSequence ε q τ pr.1).comp
+          (quarticLegOperatorForSequence ε q τ pr.2)))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing_coordinate
+      ε β t n q
+
+/-- The quartic Dyson vertex moment as a vertex-label/pairing sum whose contractions are canonical
+free Gibbs density-state expectations. -/
+theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing
+    {α : Type*} [DecidableEq α] (ε : Mode → ℝ) (β : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) (S : Finset α) :
+    dysonVertexMoment ε β (quarticInteraction g) S =
+      (S.card.factorial : ℂ) * (-1 : ℂ) ^ S.card *
+        ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
+∑ pairing : Combinatorics.Pairing (2 * S.card),
+  pairing.weight Common.Statistics.fermion *
+    intervalIntegral.orderedSimplexIntegral S.card β (fun τ =>
+      ∏ pr ∈ pairing.pairs,
+        (freeGibbsDensityOperator ε β).expectation
+          (Common.finiteHilbertOperator
+            ((quarticLegOperatorForSequence ε q τ pr.1).comp
+              (quarticLegOperatorForSequence ε q τ pr.2)))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing_coordinate ε β g S
 
 /-! ## Reindexing into a sum over `QuarticWickDiagram`s -/
 
@@ -787,7 +917,7 @@ theorem couplingWeight_eq_prod_vertexLabel_order {N : ℕ} {S : Finset (Fin N)}
 `orderedQuarticPairValue`/`orderedQuarticLegOperator` (a `quarticLegOperatorForSequence`
 specialization), then pulls the `τ`-independent `pairingInOrder`-weight back out of the integral
 (`intervalIntegral.orderedSimplexIntegral_smul`). -/
-theorem orderedSimplexContribution_eq_pairing_sum_term {N : ℕ} {S : Finset (Fin N)} (ε : Mode → ℝ)
+private theorem orderedSimplexContribution_eq_pairing_sum_term_coordinate {N : ℕ} {S : Finset (Fin N)} (ε : Mode → ℝ)
     (β : ℝ) (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) :
     d.orderedSimplexContribution ε β order =
       (d.pairingInOrder order).weight Common.Statistics.fermion *
@@ -810,7 +940,7 @@ theorem orderedSimplexContribution_eq_pairing_sum_term {N : ℕ} {S : Finset (Fi
 /-- **A diagram's coupling weight times its fixed-order ordered-simplex contribution**, entirely in
 terms of the vertex-label sequence `d.vertexLabel ∘ order` and the transported pairing
 `d.pairingInOrder order` — combines the two previous lemmas. -/
-theorem couplingWeight_mul_orderedSimplexContribution_eq {N : ℕ} {S : Finset (Fin N)}
+private theorem couplingWeight_mul_orderedSimplexContribution_eq_coordinate {N : ℕ} {S : Finset (Fin N)}
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (d : QuarticWickDiagram Mode N S)
     (order : Common.QuarticVertexOrder S) :
     d.couplingWeight g * d.orderedSimplexContribution ε β order =
@@ -820,13 +950,13 @@ theorem couplingWeight_mul_orderedSimplexContribution_eq {N : ℕ} {S : Finset (
             (fun τ => ∏ pr ∈ (d.pairingInOrder order).pairs, freeGibbsExpectation ε β
               ((quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ pr.1).comp
                 (quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ pr.2)))) := by
-  rw [couplingWeight_eq_prod_vertexLabel_order, orderedSimplexContribution_eq_pairing_sum_term]
+  rw [couplingWeight_eq_prod_vertexLabel_order, orderedSimplexContribution_eq_pairing_sum_term_coordinate]
 
 /-- **Summing `couplingWeight * orderedSimplexContribution` over all diagrams, at a fixed vertex
 order, is the vertex-label/pairing double sum** — `Common.sum_quarticDiagram_eq_sum_orderedData`
 reindexes the diagram sum into a sum over `Common.OrderedQuarticDiagramData`, then `Fintype.sum_prod_type`/
 `Finset.mul_sum` split the resulting product-type sum into the nested vertex-label/pairing form. -/
-theorem sum_couplingWeight_mul_orderedSimplexContribution_eq {N : ℕ} {S : Finset (Fin N)}
+private theorem sum_couplingWeight_mul_orderedSimplexContribution_eq_coordinate {N : ℕ} {S : Finset (Fin N)}
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (order : Common.QuarticVertexOrder S) :
     ∑ d : QuarticWickDiagram Mode N S,
         d.couplingWeight g * d.orderedSimplexContribution ε β order =
@@ -849,7 +979,7 @@ theorem sum_couplingWeight_mul_orderedSimplexContribution_eq {N : ℕ} {S : Fins
               (Common.quarticDiagramEquivOrderedData order d) :=
         Finset.sum_congr rfl fun d _ => by
           simp only [Common.quarticDiagramEquivOrderedData]
-          exact couplingWeight_mul_orderedSimplexContribution_eq ε β g d order
+          exact couplingWeight_mul_orderedSimplexContribution_eq_coordinate ε β g d order
     _ = ∑ x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) S.card,
           (∏ i, g (x.1 i)) * (x.2.weight Common.Statistics.fermion *
             intervalIntegral.orderedSimplexIntegral S.card β
@@ -879,6 +1009,59 @@ theorem sum_couplingWeight_mul_orderedSimplexContribution_eq {N : ℕ} {S : Fins
                   ((quarticLegOperatorForSequence ε q τ pr.1).comp
                     (quarticLegOperatorForSequence ε q τ pr.2))) :=
         Finset.sum_congr rfl fun q _ => (Finset.mul_sum _ _ _).symm
+
+
+/-- A diagram's fixed-order ordered-simplex contribution through canonical density-state
+contractions. -/
+theorem orderedSimplexContribution_eq_pairing_sum_term {N : ℕ} {S : Finset (Fin N)}
+    (ε : Mode → ℝ) (β : ℝ) (d : QuarticWickDiagram Mode N S)
+    (order : Common.QuarticVertexOrder S) :
+    d.orderedSimplexContribution ε β order =
+      (d.pairingInOrder order).weight Common.Statistics.fermion *
+        intervalIntegral.orderedSimplexIntegral S.card β
+(fun τ => ∏ pr ∈ (d.pairingInOrder order).pairs,
+  (freeGibbsDensityOperator ε β).expectation
+    (Common.finiteHilbertOperator
+      ((quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ pr.1).comp
+        (quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ pr.2)))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    orderedSimplexContribution_eq_pairing_sum_term_coordinate ε β d order
+
+/-- A diagram's coupling weight times its fixed-order contribution, expressed through canonical
+free Gibbs density-state contractions. -/
+theorem couplingWeight_mul_orderedSimplexContribution_eq {N : ℕ} {S : Finset (Fin N)}
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) :
+    d.couplingWeight g * d.orderedSimplexContribution ε β order =
+      (∏ i : Fin S.card, g (d.vertexLabel (order i))) *
+        ((d.pairingInOrder order).weight Common.Statistics.fermion *
+intervalIntegral.orderedSimplexIntegral S.card β
+  (fun τ => ∏ pr ∈ (d.pairingInOrder order).pairs,
+    (freeGibbsDensityOperator ε β).expectation
+      (Common.finiteHilbertOperator
+        ((quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ pr.1).comp
+          (quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ pr.2))))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    couplingWeight_mul_orderedSimplexContribution_eq_coordinate ε β g d order
+
+/-- The fixed-order diagram sum as the vertex-label/pairing sum with canonical density-state
+contractions. -/
+theorem sum_couplingWeight_mul_orderedSimplexContribution_eq
+    {N : ℕ} {S : Finset (Fin N)} (ε : Mode → ℝ) (β : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) (order : Common.QuarticVertexOrder S) :
+    ∑ d : QuarticWickDiagram Mode N S,
+        d.couplingWeight g * d.orderedSimplexContribution ε β order =
+      ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
+        ∑ pairing : Combinatorics.Pairing (2 * S.card),
+pairing.weight Common.Statistics.fermion *
+  intervalIntegral.orderedSimplexIntegral S.card β
+    (fun τ => ∏ pr ∈ pairing.pairs,
+      (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator
+          ((quarticLegOperatorForSequence ε q τ pr.1).comp
+            (quarticLegOperatorForSequence ε q τ pr.2)))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+    sum_couplingWeight_mul_orderedSimplexContribution_eq_coordinate ε β g order
 
 /-- **PR 6's final theorem: `dysonVertexMoment` of `quarticInteraction` is the sum, over every
 `QuarticWickDiagram`, of `quarticWickDiagramAmplitude`.** Swaps the diagram sum's `∑ order`
