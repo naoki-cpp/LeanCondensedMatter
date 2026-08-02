@@ -9,9 +9,9 @@ set_option linter.style.header false
 # The free Boltzmann weight, and the genuine free thermal Green function
 
 The fermionic free thermal formulas retain their occupation-basis presentation during the E3
-migration, while `freeGibbsExpectation_eq_gibbsExpectation` identifies that presentation with the
-canonical finite Gibbs density state. The fermionic definition itself is removed in the following
-E4 package after all physics-facing callers have moved.
+migration, while `freeGibbsExpectation_eq_finiteGibbsExpectation` identifies that presentation with
+the canonical finite Gibbs density state. The fermionic definition itself is removed in the
+following E4 package after all physics-facing callers have moved.
 -/
 
 namespace SecondQuantization
@@ -96,12 +96,12 @@ theorem freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy (ε : Mode → ℝ)
   ring_nf
 
 omit [LinearOrder Mode] in
-/-- The fermionic occupation-coordinate expectation agrees with the canonical Common Gibbs density
+/-- The fermionic occupation-coordinate expectation agrees with the canonical finite Gibbs density
 state. This migration theorem is removed together with `freeGibbsExpectation` in E4. -/
-theorem freeGibbsExpectation_eq_gibbsExpectation (ε : Mode → ℝ) (β : ℝ)
+theorem freeGibbsExpectation_eq_finiteGibbsExpectation (ε : Mode → ℝ) (β : ℝ)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    freeGibbsExpectation ε β A = Common.gibbsExpectation (fermionEnergy ε) β A := by
-  rw [Common.gibbsExpectation_eq_normalizedWeightedDiagonal]
+    freeGibbsExpectation ε β A = Common.finiteGibbsExpectation (fermionEnergy ε) β A := by
+  rw [Common.finiteGibbsExpectation_eq_normalizedWeightedDiagonal]
   have hw : freeBoltzmannWeight ε β = Common.boltzmannWeight (fermionEnergy ε) β :=
     funext (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β)
   rw [freeGibbsExpectation, hw]
@@ -110,8 +110,8 @@ omit [LinearOrder Mode] in
 theorem freeGibbsExpectation_finsetSum (ε : Mode → ℝ) (β : ℝ) {ι : Type*} (s : Finset ι)
     (F : ι → FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     freeGibbsExpectation ε β (∑ i ∈ s, F i) = ∑ i ∈ s, freeGibbsExpectation ε β (F i) := by
-  simp_rw [freeGibbsExpectation_eq_gibbsExpectation]
-  exact map_sum (Common.gibbsExpectationLinearMap (fermionEnergy ε) β) F s
+  simp_rw [freeGibbsExpectation_eq_finiteGibbsExpectation]
+  exact map_sum (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) F s
 
 end Fermionic
 end SecondQuantization
