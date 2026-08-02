@@ -31,8 +31,10 @@ theorem hasDerivAt_constantExponential (K : A) (lam : ℂ) (τ : ℝ) :
   have h := hasDerivAt_exp_smul_const' (-(lam • K)) τ
   convert h using 1
   · funext u
-    rw [constantExponential, smul_smul]
-  · rw [constantExponential, smul_smul]
+    rw [constantExponential]
+    congr 1
+    rw [smul_neg, ← smul_smul]
+  · rw [constantExponential, smul_neg, ← smul_smul]
     simp [neg_mul, smul_mul_assoc]
 
 /-- The constant exponential candidate is continuous in time. -/
