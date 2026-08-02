@@ -10,6 +10,12 @@ LEAN_ROOT = ROOT / "LeanCondensedMatter"
 REMOVED_PATHS = {
     LEAN_ROOT
     / "SecondQuantization"
+    / "Common"
+    / "Thermal"
+    / "NormalizedOperatorFunctional.lean":
+        "removed normalized algebraic-Fock functional module",
+    LEAN_ROOT
+    / "SecondQuantization"
     / "Fermionic"
     / "Diagrammatics"
     / "DysonDensityStateExpansion.lean": "removed Dyson density-state forwarding module",
@@ -110,6 +116,10 @@ FORBIDDEN_MIGRATED_COMPATIBILITY_TEXT = {
 }
 
 REMOVED_IDENTIFIERS = {
+    re.compile(r"(?<![A-Za-z0-9_'])NormalizedOperatorFunctional(?![A-Za-z0-9_'])"):
+        "removed normalized algebraic-Fock functional type",
+    re.compile(r"(?<![A-Za-z0-9_'])normalizedWeightedDiagonalFunctional(?![A-Za-z0-9_'])"):
+        "removed normalized weighted diagonal functional wrapper",
     re.compile(
         r"^\s*import\s+LeanCondensedMatter\.SecondQuantization\.Fermionic\.Thermal\."
         r"FreeBoltzmannWeight\s*$"
