@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.DiagonalTrace
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 
@@ -59,17 +59,6 @@ theorem matrixCoeff_operatorIntervalIntegral
     exact smul_basisState_apply_of_ne _ hne
   · intro h
     exact absurd (Finset.mem_univ m) h
-
-omit [Fintype Config] in
-/-- **Two operators agreeing on every matrix coefficient are equal.** Used repeatedly below to
-reduce operator equalities to scalar (matrix-coefficient) ones. -/
-theorem matrixCoeff_ext {A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config}
-    (h : ∀ m n, matrixCoeff A m n = matrixCoeff B m n) : A = B := by
-  apply linearMap_ext_basisState
-  intro n
-  apply Finsupp.ext
-  intro m
-  exact h m n
 
 @[simp]
 theorem operatorIntervalIntegral_zero (a b : ℝ) :

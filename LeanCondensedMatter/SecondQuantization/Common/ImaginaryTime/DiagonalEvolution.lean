@@ -1,6 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.DiagonalTrace
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 
 set_option linter.style.header false
