@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentDecompositionEquiv
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.AmplitudeFactorization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion
 
@@ -25,7 +25,7 @@ noncomputable def quarticWickDiagramConnectedDecomposition :
   ConnectedObject S := ConnectedQuarticWickDiagram Mode N S
   fintypeObject _ := inferInstance
   fintypeConnectedObject _ := inferInstance
-  decompose _ := QuarticWickDiagram.componentDecompositionEquiv
+  decompose _ := Common.QuarticDiagram.componentDecompositionEquiv
 
 /-- Multiplicative quartic Wick amplitude on the connected decomposition. -/
 noncomputable def quarticWickDiagramMultiplicativeWeight (ε : Mode → ℝ) (β : ℝ)
