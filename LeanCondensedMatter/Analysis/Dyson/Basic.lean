@@ -30,13 +30,16 @@ noncomputable def coeff (V : ℝ → A) : ℕ → ℝ → A
   | 0, _ => 1
   | n + 1, τ => - ∫ σ in (0 : ℝ)..τ, V σ * coeff V n σ
 
+omit [CompleteSpace A] in
 @[simp]
 theorem coeff_zero (V : ℝ → A) (τ : ℝ) : coeff V 0 τ = 1 := rfl
 
+omit [CompleteSpace A] in
 /-- The defining successor recursion for generic Dyson coefficients. -/
 theorem coeff_succ (V : ℝ → A) (n : ℕ) (τ : ℝ) :
     coeff V (n + 1) τ = - ∫ σ in (0 : ℝ)..τ, V σ * coeff V n σ := rfl
 
+omit [CompleteSpace A] in
 /-- At the initial time, only the zeroth Dyson coefficient survives. -/
 @[simp]
 theorem coeff_at_zero (V : ℝ → A) (n : ℕ) :
@@ -49,6 +52,7 @@ theorem coeff_at_zero (V : ℝ → A) (n : ℕ) :
 noncomputable def term (V : ℝ → A) (lam : ℂ) (τ : ℝ) (n : ℕ) : A :=
   lam ^ n • coeff V n τ
 
+omit [CompleteSpace A] in
 @[simp]
 theorem term_zero (V : ℝ → A) (lam : ℂ) (τ : ℝ) : term V lam τ 0 = 1 := by
   simp [term]
