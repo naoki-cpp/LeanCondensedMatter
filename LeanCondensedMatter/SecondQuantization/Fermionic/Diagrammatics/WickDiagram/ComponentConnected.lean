@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentConnected
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentRestriction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Connected
 
 set_option linter.style.header false
 
@@ -45,8 +45,8 @@ theorem QuarticWickDiagram.restrictComponent_vertexGraph_adj_iff {S : Finset (Fi
     (hB : B ∈ d.componentPartition.parts) (u w : ↥B) :
     (d.restrictComponent hB).vertexGraph.Adj u w ↔
       d.vertexGraph.Adj (d.blockVertex hB u) (d.blockVertex hB w) := by
-  simpa only [QuarticWickDiagram.blockVertex, QuarticWickDiagram.restrictComponent,
-    QuarticWickDiagram.vertexGraph, QuarticWickDiagram.subtypeMemBlockEquiv,
+  simpa only [QuarticWickDiagram.blockVertex, Common.QuarticDiagram.restrictComponent,
+    QuarticWickDiagram.vertexGraph, Common.QuarticDiagram.subtypeMemBlockEquiv,
     Common.QuarticDiagram.blockVertex] using
     (Common.QuarticDiagram.restrictComponent_vertexGraph_adj_iff d hB u w)
 
@@ -54,14 +54,14 @@ theorem QuarticWickDiagram.blockVertex_subtypeMemBlockEquiv {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (v : ↥S) (hv : (v : Fin N) ∈ B) :
     d.blockVertex hB
-        (QuarticWickDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB) ⟨v, hv⟩) = v := by
+        (Common.QuarticDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB) ⟨v, hv⟩) = v := by
   unfold QuarticWickDiagram.blockVertex
   rw [Equiv.symm_apply_apply]
 
 theorem QuarticWickDiagram.subtypeMemBlockEquiv_blockVertex {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (v : ↥B) :
-    QuarticWickDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)
+    Common.QuarticDiagram.subtypeMemBlockEquiv B (d.componentPart_subset hB)
         ⟨d.blockVertex hB v, d.blockVertex_mem hB v⟩ = v :=
   Equiv.apply_symm_apply _ v
 
@@ -70,7 +70,7 @@ theorem QuarticWickDiagram.restrictComponent_isConnected {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) :
     (d.restrictComponent hB).IsConnected := by
-  simpa only [QuarticWickDiagram.restrictComponent, QuarticWickDiagram.IsConnected] using
+  simpa only [Common.QuarticDiagram.restrictComponent, QuarticWickDiagram.IsConnected] using
     (Common.QuarticDiagram.restrictComponent_isConnected d hB)
 
 /-- `restrictComponent`, packaged as a connected fermionic quartic diagram. -/
