@@ -98,6 +98,47 @@ theorem finiteHilbertOperator_basis_apply
   rw [← finiteHilbertFockEquiv_basisState, finiteHilbertOperator_equiv_apply]
   rfl
 
+@[simp]
+theorem finiteHilbertOperator_add
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    finiteHilbertOperator (A + B) = finiteHilbertOperator A + finiteHilbertOperator B := by
+  apply ContinuousLinearMap.ext
+  intro x
+  rw [← (finiteHilbertFockEquiv (Config := Config)).apply_symm_apply x]
+  simp
+
+@[simp]
+theorem finiteHilbertOperator_smul (c : ℂ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    finiteHilbertOperator (c • A) = c • finiteHilbertOperator A := by
+  apply ContinuousLinearMap.ext
+  intro x
+  rw [← (finiteHilbertFockEquiv (Config := Config)).apply_symm_apply x]
+  simp
+
+@[simp]
+theorem finiteHilbertOperator_id :
+    finiteHilbertOperator (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) =
+      ContinuousLinearMap.id ℂ (FiniteHilbertFock Config) := by
+  apply ContinuousLinearMap.ext
+  intro x
+  rw [← (finiteHilbertFockEquiv (Config := Config)).apply_symm_apply x]
+  simp
+
+/-- Transport of algebraic Fock endomorphisms to bounded Hilbert operators, bundled linearly. -/
+noncomputable def finiteHilbertOperatorLinearMap :
+    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ]
+      (FiniteHilbertFock Config →L[ℂ] FiniteHilbertFock Config) where
+  toFun := finiteHilbertOperator
+  map_add' := finiteHilbertOperator_add
+  map_smul' := finiteHilbertOperator_smul
+
+@[simp]
+theorem finiteHilbertOperatorLinearMap_apply
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    finiteHilbertOperatorLinearMap A = finiteHilbertOperator A :=
+  rfl
+
 /-- The positive real Boltzmann weight `exp (-β E(n))`. -/
 noncomputable def finiteBoltzmannWeight (energy : Config → ℝ) (β : ℝ) (n : Config) : ℝ :=
   Real.exp (-β * energy n)
@@ -144,10 +185,30 @@ theorem finiteGibbsDensityOperator_apply_basis (energy : Config → ℝ) (β : �
       (fun _ => (Real.exp_pos _).le)
       (finitePartitionFunction_pos energy β) n
 
+/-- The canonical finite Gibbs expectation, bundled as a complex linear map. -/
+noncomputable def finiteGibbsExpectationLinearMap (energy : Config → ℝ) (β : ℝ) :
+    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ :=
+  (finiteGibbsDensityOperator energy β).expectation.toLinearMap.comp
+    (finiteHilbertOperatorLinearMap (Config := Config))
+
 /-- The canonical finite Gibbs expectation of an algebraic Fock operator. -/
 noncomputable def finiteGibbsExpectation (energy : Config → ℝ) (β : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) : ℂ :=
-  (finiteGibbsDensityOperator energy β).expectation (finiteHilbertOperator A)
+  finiteGibbsExpectationLinearMap energy β A
+
+@[simp]
+theorem finiteGibbsExpectationLinearMap_apply (energy : Config → ℝ) (β : ℝ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    finiteGibbsExpectationLinearMap energy β A = finiteGibbsExpectation energy β A :=
+  rfl
+
+@[simp]
+theorem finiteGibbsExpectation_id (energy : Config → ℝ) (β : ℝ) :
+    finiteGibbsExpectation energy β
+      (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 1 := by
+  rw [finiteGibbsExpectation, finiteGibbsExpectationLinearMap, LinearMap.comp_apply,
+    finiteHilbertOperatorLinearMap_apply, finiteHilbertOperator_id]
+  exact (finiteGibbsDensityOperator energy β).expectation_id
 
 end
 end Common
