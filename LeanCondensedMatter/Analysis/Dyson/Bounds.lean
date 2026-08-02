@@ -8,11 +8,11 @@ set_option linter.style.header false
 # Bounds and convergence for generic bounded Dyson coefficients
 
 This module proves the analytic estimates for the dimension-independent Dyson recursion from
-`Analysis.Dyson.Basic`.  The interaction family is controlled by an explicit uniform norm bound on
+`Analysis.Dyson.Basic`. The interaction family is controlled by an explicit uniform norm bound on
 a compact nonnegative time interval; no finite-dimensional realization or choice-based operator
 bound is used here.
 
-The bound theorems assume `‖1‖ ≤ 1` explicitly.  This is weaker than requiring `NormOneClass` and
+The bound theorems assume `‖1‖ ≤ 1` explicitly. This is weaker than requiring `NormOneClass` and
 also covers bounded-operator algebras on a trivial space, where the identity operator has norm zero.
 -/
 
@@ -136,6 +136,16 @@ theorem hasSumUniformlyOn_evolution_of_bound (V : ℝ → A) {β M : ℝ}
       (fun n τ hτ =>
         (norm_term_le_of_bound V hOne hM hV lam n hτ).trans
           (majorant_mono_time hWeighted hτ.1 hτ.2 n)))
+
+/-- A continuous bounded interaction family has a continuous Dyson evolution on the compact
+nonnegative interval where the uniform bound is available. -/
+theorem continuousOn_evolution_of_bound {V : ℝ → A} (hVcont : Continuous V)
+    {β M : ℝ} (hOne : ‖(1 : A)‖ ≤ 1) (hM : 0 ≤ M)
+    (hV : ∀ σ ∈ Icc (0 : ℝ) β, ‖V σ‖ ≤ M) (lam : ℂ) :
+    ContinuousOn (fun τ => evolution V lam τ) (Icc (0 : ℝ) β) := by
+  apply (hasSumUniformlyOn_evolution_of_bound V hOne hM hV lam).tendstoUniformlyOn.continuousOn
+  exact (Filter.Eventually.of_forall fun s =>
+    (continuous_finsetSum s fun n _ => continuous_term hVcont lam n).continuousOn).frequently
 
 end
 end Dyson
