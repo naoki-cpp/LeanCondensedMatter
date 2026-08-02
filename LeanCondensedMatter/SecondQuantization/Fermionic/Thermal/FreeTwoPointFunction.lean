@@ -202,6 +202,7 @@ theorem freeGibbsExpectation_create_comp_annihilate (ε : Mode → ℝ) (β : �
       if i = j then 1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) else 0 := by
   rcases eq_or_ne i j with rfl | hij
   · rw [if_pos rfl]
+    change freeGibbsExpectation ε β (numberOperator i) = _
     simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
       freeGibbsDensityOperator_expectation_numberOperator ε β i
   · rw [if_neg hij]
