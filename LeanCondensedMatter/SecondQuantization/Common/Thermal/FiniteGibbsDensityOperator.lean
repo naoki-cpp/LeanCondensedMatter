@@ -1,6 +1,8 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 import LeanCondensedMatter.QuantumTheory.DiagonalDensityLemmasTraceClass
+import LeanCondensedMatter.QuantumTheory.DensityOperatorExpectationTraceClass
 import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.LinearAlgebra.Finsupp.Pi
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
@@ -57,6 +59,45 @@ theorem finiteHilbertBasis_apply (n : Config) :
       (finiteHilbertOrthonormalBasis (Config := Config))) n
   simpa [finiteHilbertBasis, finiteHilbertOrthonormalBasis_apply] using h
 
+/-- The canonical linear equivalence from algebraic Fock vectors to the finite Hilbert realization. -/
+noncomputable def finiteHilbertFockEquiv :
+    AlgebraicFock Config ≃ₗ[ℂ] FiniteHilbertFock Config :=
+  (Finsupp.linearEquivFunOnFinite ℂ ℂ Config).trans
+    (WithLp.linearEquiv 2 ℂ (Config → ℂ)).symm
+
+@[simp]
+theorem finiteHilbertFockEquiv_basisState (n : Config) :
+    finiteHilbertFockEquiv (basisState n) = finiteHilbertBasisState n := by
+  classical
+  simp [finiteHilbertFockEquiv, finiteHilbertBasisState, basisState,
+    EuclideanSpace.basisFun_apply]
+
+/-- Conjugate an algebraic Fock endomorphism into the finite Hilbert realization. -/
+noncomputable def transportedFiniteHilbertOperatorLinearMap
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    FiniteHilbertFock Config →ₗ[ℂ] FiniteHilbertFock Config :=
+  (finiteHilbertFockEquiv (Config := Config)).toLinearMap.comp
+    (A.comp (finiteHilbertFockEquiv (Config := Config)).symm.toLinearMap)
+
+/-- The bounded operator induced by an algebraic Fock endomorphism in finite dimensions. -/
+noncomputable def finiteHilbertOperator
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    FiniteHilbertFock Config →L[ℂ] FiniteHilbertFock Config :=
+  (transportedFiniteHilbertOperatorLinearMap A).toContinuousLinearMap
+
+@[simp]
+theorem finiteHilbertOperator_equiv_apply
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (x : AlgebraicFock Config) :
+    finiteHilbertOperator A (finiteHilbertFockEquiv x) = finiteHilbertFockEquiv (A x) := by
+  simp [finiteHilbertOperator, transportedFiniteHilbertOperatorLinearMap]
+
+@[simp]
+theorem finiteHilbertOperator_basis_apply
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
+    finiteHilbertOperator A (finiteHilbertBasisState n) m = matrixCoeff A m n := by
+  rw [← finiteHilbertFockEquiv_basisState, finiteHilbertOperator_equiv_apply]
+  rfl
+
 /-- The positive real Boltzmann weight `exp (-β E(n))`. -/
 noncomputable def finiteBoltzmannWeight (energy : Config → ℝ) (β : ℝ) (n : Config) : ℝ :=
   Real.exp (-β * energy n)
@@ -102,6 +143,11 @@ theorem finiteGibbsDensityOperator_apply_basis (energy : Config → ℝ) (β : �
       (Summable.of_finite : Summable fun n : Config => ‖finiteBoltzmannWeight energy β n‖)
       (fun _ => (Real.exp_pos _).le)
       (finitePartitionFunction_pos energy β) n
+
+/-- The canonical finite Gibbs expectation of an algebraic Fock operator. -/
+noncomputable def finiteGibbsExpectation (energy : Config → ℝ) (β : ℝ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) : ℂ :=
+  (finiteGibbsDensityOperator energy β).expectation (finiteHilbertOperator A)
 
 end
 end Common
