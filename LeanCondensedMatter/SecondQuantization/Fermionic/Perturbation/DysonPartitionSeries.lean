@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannWeight
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 import LeanCondensedMatter.Analysis.PowerSeries.Normalization
 
 set_option linter.style.header false
@@ -24,7 +24,9 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 /-- The fermionic finite Dyson partition-function coefficient. -/
 noncomputable def dysonPartitionCoeff (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ) : ℂ :=
-  Common.traceFock ((imaginaryTimeEvolveFree ε (-β)).comp (Common.dysonCoeff (fermionEnergy ε) V n β))
+  Common.traceFock
+    ((imaginaryTimeEvolveFree ε (-β)).comp
+      (Common.dysonCoeff (fermionEnergy ε) V n β))
 
 omit [LinearOrder Mode] in
 /-- The fermionic coefficient is the specialization of the Common Dyson trace coefficient. -/
@@ -55,7 +57,9 @@ theorem constantCoeff_dysonPartitionSeries (ε : Mode → ℝ) (β : ℝ)
   rw [Common.constantCoeff_dysonTraceSeries, freePartitionFunction]
   congr 1
   funext n
-  exact (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β n).symm
+  rw [freeBoltzmannWeight, Common.boltzmannWeight, fermionEnergy]
+  push_cast
+  ring_nf
 
 omit [LinearOrder Mode] in
 @[simp]
