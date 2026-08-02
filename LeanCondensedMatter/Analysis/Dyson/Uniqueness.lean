@@ -95,7 +95,7 @@ theorem hasDerivWithinAt_of_volterra {V U : ℝ → A} (hV : Continuous V)
 
 /-- Two continuous solutions of the same bounded Dyson–Volterra equation agree on `[0, β]`. -/
 theorem eqOn_of_volterra_of_bound {V U W : ℝ → A} (hVcont : Continuous V)
-    {β M : ℝ} (hβ : 0 ≤ β) (hM : 0 ≤ M)
+    {β M : ℝ} (hβ : 0 ≤ β)
     (hV : ∀ t ∈ Icc (0 : ℝ) β, ‖V t‖ ≤ M) (lam : ℂ)
     (hU : ContinuousOn U (Icc (0 : ℝ) β))
     (hW : ContinuousOn W (Icc (0 : ℝ) β))
@@ -146,7 +146,7 @@ theorem eqOn_evolution_of_volterra_of_bound {V U : ℝ → A} (hVcont : Continuo
     (hUEq : ∀ t ∈ Icc (0 : ℝ) β,
       U t = 1 - lam • ∫ σ in (0 : ℝ)..t, V σ * U σ) :
     EqOn U (fun t => evolution V lam t) (Icc (0 : ℝ) β) := by
-  apply eqOn_of_volterra_of_bound hVcont hβ hM hV lam hU
+  apply eqOn_of_volterra_of_bound hVcont hβ hV lam hU
     (continuousOn_evolution_of_bound hVcont hOne hM hV lam) hUEq
   intro t ht
   exact evolution_eq_one_sub_integral_of_bound hVcont hOne hM hV ht lam
