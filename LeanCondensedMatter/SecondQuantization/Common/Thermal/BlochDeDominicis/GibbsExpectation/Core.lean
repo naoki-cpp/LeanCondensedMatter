@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsDensityOperator
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 
 set_option linter.style.header false
 set_option linter.style.openClassical false
@@ -70,6 +70,31 @@ variable [Nonempty Config]
 noncomputable def gibbsExpectation (energy : Config → ℝ) (β : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) : ℂ :=
   finiteGibbsExpectation energy β A
+
+/-- During migration, the density-state expectation can still be evaluated by the former normalized
+coordinate formula. This is a theorem, not the definition of the state. -/
+theorem gibbsExpectation_eq_normalizedWeightedDiagonal (energy : Config → ℝ) (β : ℝ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    gibbsExpectation energy β A =
+      normalizedWeightedDiagonal (boltzmannWeight energy β) A := by
+  rw [gibbsExpectation, finiteGibbsExpectation_eq_sum, normalizedWeightedDiagonal,
+    weightedTrace, weightSum]
+  have hZcast : ((finitePartitionFunction energy β : ℝ) : ℂ) =
+      ∑ n : Config, boltzmannWeight energy β n := by
+    rw [finitePartitionFunction, tsum_fintype]
+    push_cast
+    exact Finset.sum_congr rfl fun n _ =>
+      finiteBoltzmannWeight_cast_eq_boltzmannWeight energy β n
+  have hZne : ((finitePartitionFunction energy β : ℝ) : ℂ) ≠ 0 := by
+    exact_mod_cast (ne_of_gt (finitePartitionFunction_pos energy β))
+  rw [← hZcast]
+  field_simp
+  rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro n _
+  rw [← finiteBoltzmannWeight_cast_eq_boltzmannWeight energy β n]
+  push_cast
+  field_simp
 
 /-- The Gibbs expectation bundled as a complex linear map. -/
 noncomputable def gibbsExpectationLinearMap (energy : Config → ℝ) (β : ℝ) :
