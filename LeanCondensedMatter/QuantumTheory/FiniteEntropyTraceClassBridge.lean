@@ -122,6 +122,9 @@ theorem vonNeumannEntropy_gibbsState_viaTraceClass [NeZero n]
   have hgibbs_apply (j : Fin n) :
       (gibbsState hn Hop β).1 (bE j) = (w j : ℂ) • bE j := by
     rw [hgibbs_eq]
+    change
+      (((∑ i : Fin n, (w i : ℂ) • InnerProductSpace.rankOne ℂ (bE i) (bE i) :
+        H →L[ℂ] H) : H →ₗ[ℂ] H) (bE j)) = (w j : ℂ) • bE j
     have happly :
         ((∑ i : Fin n, (w i : ℂ) • InnerProductSpace.rankOne ℂ (bE i) (bE i) :
           H →L[ℂ] H) : H →ₗ[ℂ] H) (bE j) =
