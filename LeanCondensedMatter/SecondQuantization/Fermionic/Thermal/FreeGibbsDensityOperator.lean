@@ -35,7 +35,7 @@ theorem freeGibbsDensityOperator_apply_basis (ε : Mode → ℝ) (β : ℝ)
   simpa [freeGibbsDensityOperator] using
     Common.finiteGibbsDensityOperator_apply_basis (fermionEnergy ε) β n
 
-omit [DecidableEq Mode] [LinearOrder Mode] in
+omit [LinearOrder Mode] in
 /-- Evaluating the free Gibbs density state on a transported algebraic Fock operator is the
 canonical finite Gibbs expectation at `fermionEnergy ε`. -/
 theorem freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation
