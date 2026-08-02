@@ -13,10 +13,10 @@ self-referential trace equation. This was originally a concrete stepping stone t
 `n`-point induction, built before committing to the general inductive statement and its connection
 to `Combinatorics.Pairing`, to validate that the same commutator-substitution/rotation
 pattern generalizes past the base case. That general theorem now exists —
-`Common/Thermal/BlochDeDominicis/Induction.lean`'s `gibbsExpectation_prodComp_eq_sum_pairing`, proved by
-genuine induction on `n` rather than by hand-unrolling — so this file is no longer on the critical
-path to it; it remains useful in its own right as the concrete, hand-unrolled `n = 2`
-un-normalized first-operator reduction (below).
+`Common/Thermal/BlochDeDominicis/Induction.lean`'s
+`finiteGibbsExpectation_prodComp_eq_sum_pairing`, proved by genuine induction on `n` rather than
+by hand-unrolling — so this file is no longer on the critical path to it; it remains useful in its
+own right as the concrete, hand-unrolled `n = 2` un-normalized first-operator reduction (below).
 
 **Not the genuine 4-point Bloch–de Dominicis *expansion*** — that name refers to the fully-reduced
 normalized identity `⟨C₁C₂C₃C₄⟩_β = ⟨C₁C₂⟩_β⟨C₃C₄⟩_β + ζ⟨C₁C₃⟩_β⟨C₂C₄⟩_β + ⟨C₁C₄⟩_β⟨C₂C₃⟩_β`, a
@@ -32,7 +32,7 @@ onto each remaining-pair term, and connecting the resulting three coefficients `
 `Combinatorics.PairingWeight.four_position_pairings_and_weights` exactly, since `ζ² = 1`
 for `ζ = ±1`) to a genuine sum over `Combinatorics.Pairing 2` is now subsumed by
 `Induction.lean`'s general theorem (at `n = 2`, matching `GibbsExpectation/FourPoint.lean`'s
-`gibbsExpectation_four_point`) rather than done here specifically.
+`finiteGibbsExpectation_four_point`) rather than done here specifically.
 -/
 
 namespace SecondQuantization
