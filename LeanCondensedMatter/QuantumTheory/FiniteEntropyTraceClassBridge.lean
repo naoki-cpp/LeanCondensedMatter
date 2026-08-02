@@ -107,4 +107,59 @@ theorem vonNeumannEntropy_eq_sum_of_diagonal (ρ : DensityOperator H)
     ρ.toTraceClass_entropyOp_hasSummableRealEigenvalues
   simpa only [tsum_fintype] using htrace
 
+/-- The finite-dimensional Gibbs entropy equality proved through the trace-class diagonal bridge. -/
+theorem vonNeumannEntropy_gibbsState_viaTraceClass [NeZero n]
+    (Hop : Observable H) (β : ℝ) :
+    vonNeumannEntropy hn (gibbsState hn Hop β) =
+      β * energyExpValue (gibbsState hn Hop β) Hop +
+        Real.log (partitionFunction hn Hop β) := by
+  set Z := partitionFunction hn Hop β with hZ_def
+  set E := Hop.2.isSymmetric.eigenvalues hn with hE_def
+  set bE := Hop.2.isSymmetric.eigenvectorBasis hn with hbE_def
+  set w : Fin n → ℝ := fun i => Real.exp (-β * E i) / Z with hw_def
+  have hgibbs_eq : (gibbsState hn Hop β).1 =
+      ∑ i : Fin n, (w i : ℂ) • InnerProductSpace.rankOne ℂ (bE i) (bE i) := rfl
+  have hgibbs_apply (j : Fin n) :
+      (gibbsState hn Hop β).1 (bE j) = (w j : ℂ) • bE j := by
+    rw [hgibbs_eq]
+    have happly :
+        ((∑ i : Fin n, (w i : ℂ) • InnerProductSpace.rankOne ℂ (bE i) (bE i) :
+          H →L[ℂ] H) : H →ₗ[ℂ] H) (bE j) =
+          ∑ i : Fin n,
+            (w i : ℂ) • InnerProductSpace.rankOne ℂ (bE i) (bE i) (bE j) := by
+      simp
+    rw [happly, Finset.sum_eq_single j]
+    · simp [InnerProductSpace.rankOne_apply, inner_self_eq_norm_sq_to_K,
+        bE.orthonormal.1 j]
+    · intro i _ hij
+      simp [InnerProductSpace.rankOne_apply, bE.orthonormal.2 hij]
+    · simp
+  have hvN : vonNeumannEntropy hn (gibbsState hn Hop β) =
+      ∑ i, Real.negMulLog (w i) :=
+    vonNeumannEntropy_eq_sum_of_diagonal hn (gibbsState hn Hop β) bE w hgibbs_apply
+  have hEbE : ∀ j, (Hop.1 : H →ₗ[ℂ] H) (bE j) = (E j : ℂ) • bE j :=
+    fun j => Hop.2.isSymmetric.apply_eigenvectorBasis hn j
+  have henergy : energyExpValue (gibbsState hn Hop β) Hop = ∑ i, w i * E i := by
+    rw [energyExpValue, hgibbs_eq]
+    exact trace_diag_mul_apply_eq_sum bE w E hEbE
+  rw [hvN, henergy]
+  have hZpos : 0 < Z := partitionFunction_pos hn Hop β
+  have hlogw : ∀ i, Real.log (w i) = -β * E i - Real.log Z := by
+    intro i
+    change Real.log (Real.exp (-β * E i) / Z) = -β * E i - Real.log Z
+    rw [Real.log_div (Real.exp_pos _).ne' hZpos.ne', Real.log_exp]
+  have hw_sum : ∑ i, w i = 1 := by
+    change (∑ i : Fin n, Real.exp (-β * E i) / Z) = 1
+    rw [← Finset.sum_div]
+    exact div_self hZpos.ne'
+  have hexpand : ∑ i, Real.negMulLog (w i) =
+      β * ∑ i, w i * E i + Real.log Z * ∑ i, w i := by
+    have hterm : ∀ i, Real.negMulLog (w i) =
+        β * (w i * E i) + Real.log Z * w i := by
+      intro i
+      rw [Real.negMulLog, hlogw i]
+      ring
+    simp_rw [hterm, Finset.sum_add_distrib, ← Finset.mul_sum]
+  rw [hexpand, hw_sum, mul_one]
+
 end QuantumTheory
