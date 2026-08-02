@@ -13,6 +13,11 @@ REMOVED_PATHS = {
     / "Fermionic"
     / "Diagrammatics"
     / "DysonDensityStateExpansion.lean": "removed Dyson density-state forwarding module",
+    LEAN_ROOT
+    / "SecondQuantization"
+    / "Fermionic"
+    / "Thermal"
+    / "FreeBoltzmannWeight.lean": "removed free Gibbs coordinate compatibility module",
 }
 
 CANONICAL_FREE_GIBBS_PATH = (
@@ -105,6 +110,12 @@ FORBIDDEN_MIGRATED_COMPATIBILITY_TEXT = {
 }
 
 REMOVED_IDENTIFIERS = {
+    re.compile(
+        r"^\s*import\s+LeanCondensedMatter\.SecondQuantization\.Fermionic\.Thermal\."
+        r"FreeBoltzmannWeight\s*$"
+    ): "removed free Gibbs coordinate compatibility import",
+    re.compile(r"(?<![A-Za-z0-9_'])freeGibbsExpectation(?![A-Za-z0-9_'])"):
+        "removed free Gibbs coordinate expectation",
     re.compile(r"(?<![A-Za-z0-9_'])QuarticWickDiagram\.ext(?![A-Za-z0-9_'])"):
         "removed Fermionic WickDiagram ext wrapper",
     re.compile(r"(?<![A-Za-z0-9_'])QuarticWickDiagram\.equivPair(?![A-Za-z0-9_'])"):
