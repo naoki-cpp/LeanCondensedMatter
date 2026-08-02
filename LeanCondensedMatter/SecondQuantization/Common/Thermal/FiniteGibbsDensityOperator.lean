@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 import LeanCondensedMatter.QuantumTheory.DiagonalDensityLemmasTraceClass
-import LeanCondensedMatter.QuantumTheory.FiniteDensityOperatorExpectationTraceClass
+import LeanCondensedMatter.QuantumTheory.DensityOperatorExpectationTraceClass
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.LinearAlgebra.Finsupp.Pi
 
@@ -148,23 +148,6 @@ theorem finiteGibbsDensityOperator_apply_basis (energy : Config → ℝ) (β : �
 noncomputable def finiteGibbsExpectation (energy : Config → ℝ) (β : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) : ℂ :=
   (finiteGibbsDensityOperator energy β).expectation (finiteHilbertOperator A)
-
-/-- The density-state Gibbs expectation is the normalized Boltzmann-weighted diagonal sum. -/
-theorem finiteGibbsExpectation_eq_sum (energy : Config → ℝ) (β : ℝ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    finiteGibbsExpectation energy β A =
-      ∑ n : Config,
-        (((finitePartitionFunction energy β)⁻¹ * finiteBoltzmannWeight energy β n : ℝ) : ℂ) *
-          matrixCoeff A n n := by
-  rw [finiteGibbsExpectation]
-  have h := (finiteGibbsDensityOperator energy β).expectation_eq_sum_diagonal
-    (finiteHilbertOperator A)
-    (finiteHilbertOrthonormalBasis (Config := Config))
-    (fun n => (finitePartitionFunction energy β)⁻¹ * finiteBoltzmannWeight energy β n)
-    (finiteGibbsDensityOperator_apply_basis energy β)
-  simpa [finiteHilbertOrthonormalBasis_apply, finiteHilbertBasisState,
-    EuclideanSpace.basisFun_apply, EuclideanSpace.inner_single_left,
-    finiteHilbertOperator_basis_apply] using h
 
 end
 end Common
