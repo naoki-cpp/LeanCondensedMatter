@@ -154,7 +154,7 @@ theorem QuarticWickDiagram.assembleVertexOrder_componentSlot_val
     (B : d.componentPartition.parts) (i : Fin (B : Finset (Fin N)).card) :
     ((d.assembleVertexOrder orders shuffle (shuffle.slotEquiv ⟨B, i⟩) : ↥S) : Fin N) =
       ((orders B i : ↥(B : Finset (Fin N))) : Fin N) := by
-  simp [QuarticWickDiagram.assembleVertexOrder, Common.QuarticDiagram.assembleVertexOrder,
+  simp [Common.QuarticDiagram.assembleVertexOrder,
     Common.QuarticDiagram.componentVertexEquiv, Finpartition.equivSigmaParts]
 
 /-- Vertex labels agree between the assembled global diagram and a restricted component. -/
@@ -164,7 +164,7 @@ theorem QuarticWickDiagram.restrictComponent_vertexLabel_componentOrder
     (B : d.componentPartition.parts) (i : Fin (B : Finset (Fin N)).card) :
     (d.restrictComponent B.2).vertexLabel (orders B i) =
       d.vertexLabel (d.assembleVertexOrder orders shuffle (shuffle.slotEquiv ⟨B, i⟩)) := by
-  unfold QuarticWickDiagram.restrictComponent Common.QuarticDiagram.restrictComponent
+  unfold Common.QuarticDiagram.restrictComponent
   apply congrArg d.vertexLabel
   apply Subtype.ext
   simpa using (d.assembleVertexOrder_componentSlot_val orders shuffle B i).symm
