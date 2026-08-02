@@ -170,6 +170,14 @@ REMOVED_IDENTIFIERS = {
         r"DysonDensityStateExpansion"
         r")(?![A-Za-z0-9_'])"
     ): "removed Fermionic coordinate-facing Dyson expectation API",
+    re.compile(
+        r"(?<![A-Za-z0-9_'])(?:"
+        r"dysonMajorant|dysonMajorant_zero|dysonMajorant_nonneg|"
+        r"integral_mul_dysonMajorant|summable_dysonMajorant|"
+        r"norm_continuousDysonCoeff_le_of_bound|norm_continuousDysonCoeff_le|"
+        r"summable_norm_pow_smul_continuousDysonCoeff|dysonMajorant_mono_tau"
+        r")(?![A-Za-z0-9_'])"
+    ): "removed finite-only Dyson analytic API",
 }
 
 
