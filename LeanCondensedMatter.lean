@@ -23,6 +23,7 @@ import LeanCondensedMatter.Combinatorics
 import LeanCondensedMatter.QuantumTheory.Postulates
 import LeanCondensedMatter.QuantumTheory.DensityOperator
 import LeanCondensedMatter.QuantumTheory.DensityOperatorTraceClass
+import LeanCondensedMatter.QuantumTheory.DiagonalDensityOperatorTraceClass
 import LeanCondensedMatter.QuantumTheory.EnergyExpValueTraceClass
 import LeanCondensedMatter.QuantumTheory.Entropy
 import LeanCondensedMatter.QuantumTheory.EntropyTraceClass
