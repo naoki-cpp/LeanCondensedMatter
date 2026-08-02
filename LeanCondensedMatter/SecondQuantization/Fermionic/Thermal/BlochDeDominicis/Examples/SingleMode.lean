@@ -21,11 +21,11 @@ weight). It matches the previously established four-position pairing weights `1`
 (`(12)(34)`, `(13)(24)`, `(14)(23)` for the position labels `1,2,3,4 ↦ cᵢ,cᵢ†,cᵢ,cᵢ†`) — the
 coefficients are hand-written here to match those weights, not obtained by summing over
 `Combinatorics.Pairing 2` itself. `Common/Thermal/BlochDeDominicis/Induction.lean`'s general
-`gibbsExpectation_prodComp_eq_sum_pairing` now gives that genuine `Pairing 2`-sum connection for
-`gibbsExpectation` (a specific, genuine Gibbs weight); restating *this* file's arbitrary-`w`
-identity as a `Pairing 2` sum (rather than three hand-written terms) remains separate future
-work, since `gibbsExpectation_prodComp_eq_sum_pairing` is specific to `gibbsExpectation`, not the
-arbitrary normalized diagonal weight `w` used here.
+`finiteGibbsExpectation_prodComp_eq_sum_pairing` now gives that genuine `Pairing 2`-sum connection
+for `finiteGibbsExpectation`, the canonical finite Gibbs density-state expectation. Restating
+*this* file's arbitrary-`w` identity as a `Pairing 2` sum rather than three hand-written terms
+remains separate future work, because the general theorem is specific to the Gibbs density state,
+not the arbitrary normalized diagonal weight `w` used here.
 
 **Scope.** Deliberately the smallest nontrivial instance: all four operators act at the same mode
 `i`, so no cross-mode independence of the weight is needed — the identity follows from CAR alone
