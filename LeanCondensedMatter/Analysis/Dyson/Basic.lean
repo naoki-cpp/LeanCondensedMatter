@@ -57,6 +57,7 @@ omit [CompleteSpace A] in
 theorem term_zero (V : ℝ → A) (lam : ℂ) (τ : ℝ) : term V lam τ 0 = 1 := by
   simp [term]
 
+omit [CompleteSpace A] in
 /-- At the initial time, all positive-order weighted coefficients vanish. -/
 @[simp]
 theorem term_at_zero (V : ℝ → A) (lam : ℂ) (n : ℕ) :
@@ -70,6 +71,7 @@ theorem term_at_zero (V : ℝ → A) (lam : ℂ) (n : ℕ) :
 noncomputable def evolution (V : ℝ → A) (lam : ℂ) (τ : ℝ) : A :=
   ∑' n : ℕ, term V lam τ n
 
+omit [CompleteSpace A] in
 /-- The generic Dyson evolution starts at the algebra unit. -/
 @[simp]
 theorem evolution_zero (V : ℝ → A) (lam : ℂ) : evolution V lam 0 = 1 := by
