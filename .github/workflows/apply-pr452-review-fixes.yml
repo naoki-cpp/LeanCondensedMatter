@@ -1,0 +1,128 @@
+name: Apply PR 452 review fixes
+
+on:
+  pull_request:
+    types: [synchronize]
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    if: github.event.pull_request.number == 452 && github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+
+      - name: Apply review fixes
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          root = Path('.')
+          core = root / 'LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion/Core.lean'
+          flattening = root / 'LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion/Flattening.lean'
+          pairing = root / 'LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion/Pairing.lean'
+          reindexing = root / 'LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion/Reindexing.lean'
+          guard = root / 'scripts/check_second_quantization_removed_identifiers.py'
+
+          text = core.read_text(encoding='utf-8')
+          old_imports = '''import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
+          import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Ordered
+          import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
+          import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
+          import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
+          import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Amplitude
+          import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.LegFamily
+          import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticLocalLeg
+          import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst
+          import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction
+          '''
+          new_imports = '''import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
+          import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Ordered
+          import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
+          import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
+          import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticInteraction
+          '''
+          assert text.count(old_imports) == 1
+          text = text.replace(old_imports, new_imports)
+          for name in [
+              'continuous_matrixCoeff_interactionPicture_comp_dysonCoeff',
+              'continuous_matrixCoeff_nestedVertexOperatorComp',
+          ]:
+              needle = f'theorem {name}'
+              assert text.count(needle) == 1
+              text = text.replace(needle, f'private theorem {name}', 1)
+          core.write_text(text, encoding='utf-8')
+
+          text = flattening.read_text(encoding='utf-8')
+          old = 'import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core\n'
+          new = old + '''import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.LegFamily
+          import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticLocalLeg
+          '''
+          assert text.count(old) == 1
+          flattening.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          text = pairing.read_text(encoding='utf-8')
+          old = 'import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening\n'
+          new = old + '''import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
+          import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction
+          '''
+          assert text.count(old) == 1
+          text = text.replace(old, new, 1)
+          needle = 'theorem traceFock_diagonalEvolution_fermionEnergy_ne_zero'
+          assert text.count(needle) == 1
+          text = text.replace(needle, 'private theorem traceFock_diagonalEvolution_fermionEnergy_ne_zero', 1)
+          pairing.write_text(text, encoding='utf-8')
+
+          text = reindexing.read_text(encoding='utf-8')
+          old = 'import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Pairing\n'
+          new = old + 'import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Amplitude\n'
+          assert text.count(old) == 1
+          reindexing.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          text = guard.read_text(encoding='utf-8')
+          needle = 'REMOVED_IDENTIFIERS = {\n'
+          replacement = '''REMOVED_PATHS = {
+              LEAN_ROOT
+              / "SecondQuantization"
+              / "Fermionic"
+              / "Diagrammatics"
+              / "DysonDensityStateExpansion.lean": "removed Dyson density-state forwarding module",
+          }
+
+          REMOVED_IDENTIFIERS = {
+          '''
+          assert text.count(needle) == 1
+          text = text.replace(needle, replacement, 1)
+          needle = '''    errors: list[str] = []
+
+              for path in sorted(LEAN_ROOT.rglob("*.lean")):
+          '''
+          replacement = '''    errors: list[str] = []
+
+              for path, description in REMOVED_PATHS.items():
+                  if path.exists():
+                      errors.append(f"{description}: {relative(path)}")
+
+              for path in sorted(LEAN_ROOT.rglob("*.lean")):
+          '''
+          assert text.count(needle) == 1
+          guard.write_text(text.replace(needle, replacement, 1), encoding='utf-8')
+          PY
+
+      - name: Remove temporary workflow
+        run: rm .github/workflows/apply-pr452-review-fixes.yml
+
+      - name: Commit fixes
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "Address PR 452 review findings"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
