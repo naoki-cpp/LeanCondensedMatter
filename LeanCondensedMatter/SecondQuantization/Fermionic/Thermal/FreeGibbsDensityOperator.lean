@@ -58,5 +58,22 @@ theorem freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation
   rw [freeGibbsExpectation_eq_finiteGibbsExpectation]
   exact freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation ε β A
 
+omit [LinearOrder Mode] in
+/-- The canonical free Gibbs density-state expectation commutes with the finite algebraic operator
+interval integral. This is the analytic bridge needed to migrate the Dyson induction without
+exposing the temporary occupation-coordinate expectation at its call sites. -/
+theorem freeGibbsDensityOperator_expectation_operatorIntervalIntegral
+    (ε : Mode → ℝ) (β : ℝ)
+    (F : ℝ → FockSpace Mode →ₗ[ℂ] FockSpace Mode) (a b : ℝ)
+    (hF : ∀ n : Occupation Mode, IntervalIntegrable
+      (fun τ => Common.matrixCoeff (F τ) n n) MeasureTheory.volume a b) :
+    (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator (Common.operatorIntervalIntegral F a b)) =
+      ∫ τ in a..b,
+        (freeGibbsDensityOperator ε β).expectation
+          (Common.finiteHilbertOperator (F τ)) := by
+  simp_rw [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation]
+  exact freeGibbsExpectation_operatorIntervalIntegral ε β F a b hF
+
 end Fermionic
 end SecondQuantization
