@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteWeightedTrace
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 
 set_option linter.style.header false
@@ -9,13 +9,13 @@ set_option linter.style.openClassical false
 # Finite Gibbs expectations from density operators
 
 The normalized Gibbs expectation on a finite configuration space is the canonical expectation of
-the trace-class density operator `finiteGibbsDensityOperator`. The old implementation through an
-arbitrary complex weighted diagonal functional has been removed from this layer: positivity,
-normalization, and linearity now come from the density-state API.
+the trace-class density operator `finiteGibbsDensityOperator`. Positivity, normalization, and
+linearity come from the density-state API.
 
 The unnormalized trace identities remain coordinate statements about `traceFock`, `weightedTrace`,
-and the free diagonal evolution. They are still used by KMS and Bloch–de Dominicis proofs, but no
-longer define the normalized state.
+and the free diagonal evolution. The normalized Bloch–de Dominicis layer uses only their physical
+trace-ratio combination; comparison with the temporary `normalizedWeightedDiagonal` coordinate
+formula lives in `FiniteGibbsCoordinateBridge.lean`.
 -/
 
 namespace SecondQuantization
@@ -66,12 +66,15 @@ theorem traceFock_diagonalEvolution_eq_weightSum (energy : Config → ℝ) (β :
 
 variable [Nonempty Config]
 
-/-- The canonical density-state expectation agrees with the former normalized coordinate formula. -/
-theorem finiteGibbsExpectation_eq_normalizedWeightedDiagonal (energy : Config → ℝ) (β : ℝ)
+/-- The canonical finite Gibbs expectation is the normalized physical trace
+`Tr[e^{-βH₀}A] / Tr[e^{-βH₀}]`. -/
+theorem finiteGibbsExpectation_eq_trace_div (energy : Config → ℝ) (β : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     finiteGibbsExpectation energy β A =
-      normalizedWeightedDiagonal (boltzmannWeight energy β) A := by
-  rw [finiteGibbsExpectation_eq_sum, normalizedWeightedDiagonal, weightedTrace, weightSum]
+      traceFock ((diagonalEvolution energy (-β)).comp A) /
+        traceFock (diagonalEvolution energy (-β)) := by
+  rw [finiteGibbsExpectation_eq_sum, traceFock_diagonalEvolution_comp_eq_weightedTrace,
+    traceFock_diagonalEvolution_eq_weightSum, weightedTrace, weightSum]
   have hZcast : ((finitePartitionFunction energy β : ℝ) : ℂ) =
       ∑ n : Config, boltzmannWeight energy β n := by
     rw [finitePartitionFunction, tsum_fintype]
