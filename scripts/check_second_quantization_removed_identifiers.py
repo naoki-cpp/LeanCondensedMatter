@@ -30,6 +30,12 @@ REMOVED_IDENTIFIERS = {
         r"peelSum_eq_sum|peel_indexed|prodComp_eq_sum_pairing"
         r")(?![A-Za-z0-9_'])"
     ): "removed Common Gibbs expectation theorem wrapper",
+    re.compile(
+        r"(?<![A-Za-z0-9_'])freeGibbsExpectation_(?:"
+        r"numberOperator|annihilate_comp_create_self|"
+        r"create_comp_annihilate|annihilate_comp_create"
+        r")(?![A-Za-z0-9_'])"
+    ): "removed Fermionic free Gibbs expectation theorem",
 }
 
 
