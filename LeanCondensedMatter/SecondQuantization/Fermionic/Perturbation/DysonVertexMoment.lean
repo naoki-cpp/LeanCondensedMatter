@@ -25,7 +25,7 @@ noncomputable def normalizedDysonPartitionCoeff (ε : Mode → ℝ) (β : ℝ)
 omit [LinearOrder Mode] in
 /-- The normalized Dyson coefficient is the canonical free Gibbs density-state expectation of the
 bare Dyson coefficient. This bridge is owned at the perturbative moment layer so diagrammatic
-callers do not need to unfold coordinate Gibbs formulas. -/
+callers do not need to unfold occupation-basis Gibbs formulas. -/
 theorem normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation
     (ε : Mode → ℝ) (β : ℝ) (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ) :
     normalizedDysonPartitionCoeff ε β V n =
