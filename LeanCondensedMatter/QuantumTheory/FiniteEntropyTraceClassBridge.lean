@@ -107,8 +107,8 @@ theorem vonNeumannEntropy_eq_sum_of_diagonal (ρ : DensityOperator H)
     ρ.toTraceClass_entropyOp_hasSummableRealEigenvalues
   simpa only [tsum_fintype] using htrace
 
-/-- The finite-dimensional Gibbs entropy equality proved through the trace-class diagonal bridge. -/
-theorem vonNeumannEntropy_gibbsState_viaTraceClass [NeZero n]
+/-- The canonical finite-dimensional Gibbs state satisfies `S = βE + log Z`. -/
+theorem vonNeumannEntropy_gibbsState [NeZero n]
     (Hop : Observable H) (β : ℝ) :
     vonNeumannEntropy hn (gibbsState hn Hop β) =
       β * energyExpValue (gibbsState hn Hop β) Hop +
