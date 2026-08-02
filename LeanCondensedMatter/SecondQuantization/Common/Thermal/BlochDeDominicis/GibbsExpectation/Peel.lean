@@ -63,7 +63,7 @@ theorem finiteGibbsExpectation_peelSum_eq_sum (energy : Config → ℝ) (β : �
   apply Finset.sum_congr rfl
   intro j _
   simp only [Function.comp]
-  simpa only [smul_eq_mul, mul_assoc] using
+  simpa only [smul_smul, smul_eq_mul, mul_assoc] using
     (finiteGibbsExpectationLinearMap energy β).map_smul
       (ζ ^ (j : ℕ) * (l[(j : ℕ)]'j.isLt).2)
       (prodComp ((l.eraseIdx j).map Prod.fst))
