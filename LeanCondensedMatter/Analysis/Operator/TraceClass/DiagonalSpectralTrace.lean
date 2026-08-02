@@ -42,11 +42,7 @@ theorem hasSummableRealEigenvalues_of_positive_of_summable_diagonal
     rwa [he.1 a, one_pow] at hs
   have hf_summable : Summable f := by
     unfold f
-    induction s using Finset.induction_on with
-    | empty => simp
-    | @insert a s ha ih =>
-        rw [Finset.sum_insert ha]
-        exact ((hparseval a).summable.mul_left a.1.1).add ih
+    exact summable_sum fun a _ => (hparseval a).summable.mul_left a.1.1
   have hf_tsum : ∑' i, f i = ∑ a ∈ s, a.1.1 := by
     unfold f
     rw [Summable.tsum_finsetSum fun a _ => (hparseval a).summable.mul_left a.1.1]
