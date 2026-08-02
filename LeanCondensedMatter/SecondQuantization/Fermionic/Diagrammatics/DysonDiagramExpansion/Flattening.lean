@@ -1,4 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.LegFamily
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticLocalLeg
 
 set_option linter.style.header false
 

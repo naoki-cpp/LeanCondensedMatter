@@ -7,6 +7,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = ROOT / "LeanCondensedMatter"
 
+REMOVED_PATHS = {
+    LEAN_ROOT
+    / "SecondQuantization"
+    / "Fermionic"
+    / "Diagrammatics"
+    / "DysonDensityStateExpansion.lean": "removed Dyson density-state forwarding module",
+}
+
 REMOVED_IDENTIFIERS = {
     re.compile(r"(?<![A-Za-z0-9_'])QuarticWickDiagram\.ext(?![A-Za-z0-9_'])"):
         "removed Fermionic WickDiagram ext wrapper",
@@ -59,6 +67,10 @@ def relative(path: Path) -> str:
 
 def main() -> int:
     errors: list[str] = []
+
+    for path, description in REMOVED_PATHS.items():
+        if path.exists():
+            errors.append(f"{description}: {relative(path)}")
 
     for path in sorted(LEAN_ROOT.rglob("*.lean")):
         for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):

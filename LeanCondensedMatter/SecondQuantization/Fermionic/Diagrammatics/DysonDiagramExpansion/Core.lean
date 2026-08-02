@@ -1,13 +1,8 @@
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Ordered
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
-import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Amplitude
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.LegFamily
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticLocalLeg
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticInteraction
 
 set_option linter.style.header false
 
@@ -68,7 +63,7 @@ omit [LinearOrder Mode] in
 `Common.matrixCoeff_comp`), the integrability the inductive step's
 `Common.comp_operatorIntervalIntegral`/`Common.normalizedWeightedDiagonal_operatorIntervalIntegral`
 need. -/
-theorem continuous_matrixCoeff_interactionPicture_comp_dysonCoeff (ε : Mode → ℝ)
+private theorem continuous_matrixCoeff_interactionPicture_comp_dysonCoeff (ε : Mode → ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ)
     (k n' : Occupation Mode) :
     Continuous (fun σ : ℝ => Common.matrixCoeff
@@ -86,7 +81,7 @@ single-coordinate `Complex.exp` factor (`Common.continuous_matrixCoeff_interacti
 precomposed with the coordinate-`0` projection) and the inductive hypothesis (precomposed with the
 "tail" projection `fun i => τ i.succ`). `[Fintype Mode]` is genuinely used (for the finite sum
 `Common.matrixCoeff_comp` needs), just not in the statement itself — the linter can't see that. -/
-theorem continuous_matrixCoeff_nestedVertexOperatorComp (ε : Mode → ℝ) :
+private theorem continuous_matrixCoeff_nestedVertexOperatorComp (ε : Mode → ℝ) :
     ∀ (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) (k n' : Occupation Mode),
       Continuous (fun τ : Fin n → ℝ => Common.matrixCoeff (nestedVertexOperatorComp ε n q τ) k n')
   | 0, _, _, _ => continuous_const

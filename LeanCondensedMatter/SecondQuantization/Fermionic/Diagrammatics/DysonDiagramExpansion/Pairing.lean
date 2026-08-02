@@ -1,4 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening
+import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction
 
 set_option linter.style.header false
 
@@ -20,7 +22,7 @@ omit [DecidableEq Mode] [LinearOrder Mode] in
 hypothesis, bridged from `freePartitionFunction_ne_zero` via
 `Common.traceFock_diagonalEvolution_eq_weightSum` and
 `freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy`. -/
-theorem traceFock_diagonalEvolution_fermionEnergy_ne_zero (ε : Mode → ℝ) (β : ℝ) :
+private theorem traceFock_diagonalEvolution_fermionEnergy_ne_zero (ε : Mode → ℝ) (β : ℝ) :
     Common.traceFock (Common.diagonalEvolution (fermionEnergy ε) (-β)) ≠ 0 := by
   rw [Common.traceFock_diagonalEvolution_eq_weightSum]
   have hw : Common.boltzmannWeight (fermionEnergy ε) β = freeBoltzmannWeight ε β :=
