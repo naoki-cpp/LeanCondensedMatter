@@ -42,8 +42,8 @@ the latest/outermost time slot, different time variables to each vertex, and tra
 pairing onto different ordered positions, so the individual ordered-simplex contributions differ
 in general too. The sum runs over every assignment of the labelled vertices to the ordered time
 slots, matching `dysonVertexMoment`'s own `S.card!` normalization (PR 6) — not a sum of `S.card!`
-copies of a single value. No `1 / Z₀` appears either: `orderedQuarticPairValue` is already built
-from the normalized free Gibbs density-state expectation, not a raw un-normalized trace.
+copies of a single value. No `1 / Z₀` appears either: `orderedQuarticPairValue` uses the normalized
+free Gibbs expectation, and its canonical density-state form is given below.
 -/
 
 namespace SecondQuantization
@@ -68,16 +68,29 @@ noncomputable def orderedQuarticLegOperator (ε : Mode → ℝ) {S : Finset (Fin
 
 /-- **The normalized free Gibbs pair value** of two flattened leg positions, at a fixed vertex
 order and time assignment: `⟨C_a C_b⟩₀`, the operator-sequence-ordered (not time-ordered) free
-Gibbs density-state expectation the general Bloch–de Dominicis theorem's pairing terms use
-directly — *not* `freeGibbsGreenFunction`, which carries its own extra minus sign and 2-operator
-time ordering that would double up against `Pairing.weight`'s crossing sign. -/
+Gibbs expectation the general Bloch–de Dominicis theorem's pairing terms use directly — *not*
+`freeGibbsGreenFunction`, which carries its own extra minus sign and 2-operator time ordering that
+would double up against `Pairing.weight`'s crossing sign. -/
 noncomputable def orderedQuarticPairValue (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) (τ : Fin S.card → ℝ)
     (a b : Fin (2 * (2 * S.card))) : ℂ :=
-  (freeGibbsDensityOperator ε β).expectation
-    (Common.finiteHilbertOperator
-      ((orderedQuarticLegOperator ε d order τ a).comp
-        (orderedQuarticLegOperator ε d order τ b)))
+  freeGibbsExpectation ε β
+    ((orderedQuarticLegOperator ε d order τ a).comp (orderedQuarticLegOperator ε d order τ b))
+
+/-- The Wick pair value is the canonical free Gibbs density-state expectation of the transported
+operator product. This equality lets the Dyson migration stop unfolding the temporary coordinate
+presentation before that presentation is removed. -/
+theorem orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation
+    (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) (τ : Fin S.card → ℝ)
+    (a b : Fin (2 * (2 * S.card))) :
+    orderedQuarticPairValue ε β d order τ a b =
+      (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator
+          ((orderedQuarticLegOperator ε d order τ a).comp
+            (orderedQuarticLegOperator ε d order τ b))) := by
+  rw [orderedQuarticPairValue,
+    freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation]
 
 /-! ## Coupling weight -/
 
