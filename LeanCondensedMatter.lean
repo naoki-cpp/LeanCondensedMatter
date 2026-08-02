@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.PowerSeries.Normalization
 import LeanCondensedMatter.Analysis.Dyson.Basic
+import LeanCondensedMatter.Analysis.Dyson.Bounds
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
