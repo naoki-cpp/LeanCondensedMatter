@@ -46,6 +46,7 @@ REMOVED_IDENTIFIERS = {
         r"freeGibbsExpectation_quarticLegOperatorForSequence_pair_eq|"
         r"continuous_freeGibbsExpectation_quarticLegOperatorForSequence_pair|"
         r"orderedSimplexIntegral_freeGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing|"
+        r"dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing_densityState|"
         r"DysonDensityStateExpansion"
         r")(?![A-Za-z0-9_'])"
     ): "removed Fermionic coordinate-facing Dyson expectation API",
