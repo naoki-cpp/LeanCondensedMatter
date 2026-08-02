@@ -1,7 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Ordered
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.LegFamily
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannWeight
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 
@@ -42,9 +42,8 @@ the latest/outermost time slot, different time variables to each vertex, and tra
 pairing onto different ordered positions, so the individual ordered-simplex contributions differ
 in general too. The sum runs over every assignment of the labelled vertices to the ordered time
 slots, matching `dysonVertexMoment`'s own `S.card!` normalization (PR 6) — not a sum of `S.card!`
-copies of a single value. No `1 / Z₀` appears either: `orderedQuarticPairValue` is already built
-from `freeGibbsExpectation`, the *normalized* free Gibbs expectation, not a raw un-normalized
-trace.
+copies of a single value. No `1 / Z₀` appears either: `orderedQuarticPairValue` uses the normalized
+free Gibbs expectation, and its canonical density-state form is given below.
 -/
 
 namespace SecondQuantization
@@ -78,6 +77,21 @@ noncomputable def orderedQuarticPairValue (ε : Mode → ℝ) (β : ℝ) {S : Fi
   freeGibbsExpectation ε β
     ((orderedQuarticLegOperator ε d order τ a).comp (orderedQuarticLegOperator ε d order τ b))
 
+/-- The Wick pair value is the canonical free Gibbs density-state expectation of the transported
+operator product. This equality lets the Dyson migration stop unfolding the temporary coordinate
+presentation before that presentation is removed. -/
+theorem orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation
+    (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) (τ : Fin S.card → ℝ)
+    (a b : Fin (2 * (2 * S.card))) :
+    orderedQuarticPairValue ε β d order τ a b =
+      (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator
+          ((orderedQuarticLegOperator ε d order τ a).comp
+            (orderedQuarticLegOperator ε d order τ b))) := by
+  rw [orderedQuarticPairValue,
+    freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation]
+
 /-! ## Coupling weight -/
 
 /-- **The diagram's coupling weight**: the product, over every vertex, of the coupling `g` at that
@@ -109,10 +123,9 @@ noncomputable def QuarticWickDiagram.orderedSimplexContribution (ε : Mode → �
 
 /-- **Closed form of a pair value**: unfolds both evolved local-leg operators to their
 `Complex.exp` eigenvalue-shift form (`imaginaryTimeEvolve_quarticLocalLegOperator`) and pulls both
-scalars out of `freeGibbsExpectation` (`freeGibbsExpectation_smul`), leaving a fixed
-(`τ`-independent) pair value of the two *bare* local-leg operators. The continuity lemma below is
-this closed form's only consumer — the exponentials are visibly continuous (`fun_prop`) in `τ`
-once written this way. -/
+scalars through the density-state expectation, leaving a fixed (`τ`-independent) pair value of the
+two *bare* local-leg operators. The continuity lemma below is this closed form's only consumer —
+the exponentials are visibly continuous (`fun_prop`) in `τ` once written this way. -/
 theorem orderedQuarticPairValue_eq (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) (τ : Fin S.card → ℝ)
     (a b : Fin (2 * (2 * S.card))) :
@@ -127,14 +140,16 @@ theorem orderedQuarticPairValue_eq (ε : Mode → ℝ) (β : ℝ) {S : Finset (F
               quarticLocalLegEnergyShift ε
                 (d.vertexLabel (order (Common.orderedQuarticLegEquiv S.card b).1))
                 (Common.orderedQuarticLegEquiv S.card b).2 : ℝ) : ℂ) *
-        freeGibbsExpectation ε β
-          ((quarticLocalLegOperator
-              (d.vertexLabel (order (Common.orderedQuarticLegEquiv S.card a).1))
-              (Common.orderedQuarticLegEquiv S.card a).2).comp
-            (quarticLocalLegOperator
-              (d.vertexLabel (order (Common.orderedQuarticLegEquiv S.card b).1))
-              (Common.orderedQuarticLegEquiv S.card b).2)) := by
+        (freeGibbsDensityOperator ε β).expectation
+          (Common.finiteHilbertOperator
+            ((quarticLocalLegOperator
+                (d.vertexLabel (order (Common.orderedQuarticLegEquiv S.card a).1))
+                (Common.orderedQuarticLegEquiv S.card a).2).comp
+              (quarticLocalLegOperator
+                (d.vertexLabel (order (Common.orderedQuarticLegEquiv S.card b).1))
+                (Common.orderedQuarticLegEquiv S.card b).2))) := by
   simp only [orderedQuarticPairValue, orderedQuarticLegOperator, quarticLegOperatorForSequence,
+    freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation,
     imaginaryTimeEvolve_quarticLocalLegOperator, LinearMap.smul_comp, LinearMap.comp_smul,
     smul_smul, freeGibbsExpectation_smul]
   ring
