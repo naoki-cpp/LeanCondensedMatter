@@ -116,7 +116,9 @@ theorem freeGibbsExpectation_annihilate_comp_create_self (ε : Mode → ℝ) (β
   rw [annihilate_comp_create_self, freeGibbsExpectation, Common.normalizedWeightedDiagonal_sub,
     Common.normalizedWeightedDiagonal_id _ (weightSum_freeBoltzmannWeight_ne_zero ε β),
     show Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β) (numberOperator i) =
-      freeGibbsExpectation ε β (numberOperator i) from rfl, freeGibbsExpectation_numberOperator]
+      freeGibbsExpectation ε β (numberOperator i) from rfl,
+    ← freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation,
+    freeGibbsDensityOperator_expectation_numberOperator]
   have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
     rw [show Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 =
       ((Real.exp (β * ε i) + 1 : ℝ) : ℂ) by push_cast [Complex.ofReal_exp]; ring]
@@ -151,7 +153,8 @@ theorem freeGibbsGreenFunction_of_lt_self (ε : Mode → ℝ) (β : ℝ) (i : Mo
     LinearMap.comp_smul, smul_smul,
     show (create i).comp (annihilate i) = numberOperator i from rfl,
     Common.normalizedWeightedDiagonal_smul, ← freeGibbsExpectation,
-    freeGibbsExpectation_numberOperator]
+    ← freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation,
+    freeGibbsDensityOperator_expectation_numberOperator]
   rw [show Complex.exp ((τ' : ℂ) * (ε i : ℂ)) * Complex.exp (-(τ : ℂ) * (ε i : ℂ)) =
       Complex.exp (-(τ - τ' : ℝ) * (ε i : ℂ)) by
     rw [← Complex.exp_add]; congr 1; push_cast; ring]
@@ -178,7 +181,9 @@ theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i 
       freeGibbsExpectation ε β ((annihilate i).comp (create i)) from rfl,
     show Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β) (numberOperator i) =
       freeGibbsExpectation ε β (numberOperator i) from rfl,
-    freeGibbsExpectation_annihilate_comp_create_self, freeGibbsExpectation_numberOperator]
+    freeGibbsExpectation_annihilate_comp_create_self,
+    ← freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation,
+    freeGibbsDensityOperator_expectation_numberOperator]
   have hE : Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 ≠ 0 := by
     rw [show Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1 =
       ((Real.exp (β * ε i) + 1 : ℝ) : ℂ) by push_cast [Complex.ofReal_exp]; ring]
@@ -189,7 +194,7 @@ theorem freeGibbsGreenFunction_self_time_self (ε : Mode → ℝ) (β : ℝ) (i 
 /-! ## All-index (`if i = j then ... else 0`) forms, for Wick's theorem's contraction kernel -/
 
 /-- **`⟨c_j† c_i⟩₀,β`, all indices**: `δᵢⱼ · f_i`, `0` off-diagonal. Combines
-`freeGibbsExpectation_numberOperator` (`i = j`) with
+`freeGibbsDensityOperator_expectation_numberOperator` (`i = j`) with
 `normalizedWeightedDiagonal_create_comp_annihilate_of_ne` (`i ≠ j`, which holds for any weight,
 hence specializes directly to `freeBoltzmannWeight`). -/
 theorem freeGibbsExpectation_create_comp_annihilate (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
@@ -197,7 +202,9 @@ theorem freeGibbsExpectation_create_comp_annihilate (ε : Mode → ℝ) (β : �
       if i = j then 1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) else 0 := by
   rcases eq_or_ne i j with rfl | hij
   · rw [if_pos rfl]
-    exact freeGibbsExpectation_numberOperator ε β i
+    change freeGibbsExpectation ε β (numberOperator i) = _
+    simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
+      freeGibbsDensityOperator_expectation_numberOperator ε β i
   · rw [if_neg hij]
     exact normalizedWeightedDiagonal_create_comp_annihilate_of_ne (freeBoltzmannWeight ε β) hij
 

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannWeight
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.WeightedNumberOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 
@@ -34,8 +34,8 @@ theorem freeBoltzmannWeight_eq_prod (ε : Mode → ℝ) (β : ℝ) (n : Occupati
 omit [DecidableEq Mode] [Fintype Mode] in
 /-- **The free Boltzmann weight, summed over all subsets of a fixed mode set `s`, factorizes** as
 a product over `s`: `Σ_{t ⊆ s} e^{-β E(t)} = ∏_{i ∈ s} (1 + e^{-βε_i})`. The general-`s` form (not
-just `s = univ`) is what lets `freeGibbsExpectation_numberOperator` below reuse this for the
-mode-`i`-removed partial product `s = univ.erase i`. -/
+just `s = univ`) is what lets `freeGibbsDensityOperator_expectation_numberOperator` below reuse
+this for the mode-`i`-removed partial product `s = univ.erase i`. -/
 theorem sum_freeBoltzmannWeight_powerset_eq_prod (ε : Mode → ℝ) (β : ℝ) (s : Finset Mode) :
     ∑ t ∈ s.powerset, freeBoltzmannWeight ε β t =
       ∏ j ∈ s, (1 + Complex.exp (-(β : ℂ) * (ε j : ℂ))) := by
@@ -54,8 +54,10 @@ theorem freePartitionFunction_eq_prod (ε : Mode → ℝ) (β : ℝ) :
   exact sum_freeBoltzmannWeight_powerset_eq_prod ε β Finset.univ
 
 /-- **The closed-form Fermi–Dirac occupation number.** `⟨N_i⟩₀,β = 1/(e^{βε_i}+1)`. -/
-theorem freeGibbsExpectation_numberOperator (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
-    freeGibbsExpectation ε β (numberOperator i) =
+theorem freeGibbsDensityOperator_expectation_numberOperator
+    (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
+    (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator (numberOperator i)) =
       1 / (Complex.exp ((β : ℂ) * (ε i : ℂ)) + 1) := by
   set f : Mode → ℂ := fun j => Complex.exp (-(β : ℂ) * (ε j : ℂ)) with hf
   set P : ℂ := ∏ j ∈ Finset.univ.erase i, (1 + f j) with hP
@@ -92,7 +94,8 @@ theorem freeGibbsExpectation_numberOperator (ε : Mode → ℝ) (β : ℝ) (i : 
   have hfi : f i = (Complex.exp ((β : ℂ) * (ε i : ℂ)))⁻¹ := by
     change Complex.exp (-(β : ℂ) * (ε i : ℂ)) = (Complex.exp ((β : ℂ) * (ε i : ℂ)))⁻¹
     rw [show -(β : ℂ) * (ε i : ℂ) = -((β : ℂ) * (ε i : ℂ)) by ring, Complex.exp_neg]
-  rw [freeGibbsExpectation, Common.normalizedWeightedDiagonal]
+  rw [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation,
+    freeGibbsExpectation, Common.normalizedWeightedDiagonal]
   change Common.weightedTrace (freeBoltzmannWeight ε β) (numberOperator i) /
     freePartitionFunction ε β = _
   rw [hnum, hZ, hfi]
