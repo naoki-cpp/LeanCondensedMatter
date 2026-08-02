@@ -44,11 +44,6 @@ theorem normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation
     Common.finiteGibbsExpectation_eq_trace_div,
     normalizedDysonPartitionCoeff, hZ]
   congr 1
-  rw [dysonPartitionCoeff, imaginaryTimeEvolveFree]
-  change Common.traceFock
-      (Common.diagonalEvolution (fermionEnergy ε) (-β) ∘ₗ
-        Common.dysonCoeff (fermionEnergy ε) V n β) = _
-  rw [Common.traceFock_diagonalEvolution_comp_eq_weightedTrace]
 
 omit [LinearOrder Mode] in
 @[simp]
