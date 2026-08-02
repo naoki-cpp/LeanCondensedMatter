@@ -1,5 +1,8 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction
 
 set_option linter.style.header false
@@ -20,35 +23,29 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 omit [DecidableEq Mode] [LinearOrder Mode] in
 /-- **The free partition function's un-normalized trace is nonzero** — the general theorem's `hZ`
 hypothesis, bridged from `freePartitionFunction_ne_zero` via
-`Common.traceFock_diagonalEvolution_eq_weightSum` and
-`freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy`. -/
+`Common.traceFock_diagonalEvolution_eq_weightSum` and a direct identification of the Common and
+free Boltzmann weights. -/
 private theorem traceFock_diagonalEvolution_fermionEnergy_ne_zero (ε : Mode → ℝ) (β : ℝ) :
     Common.traceFock (Common.diagonalEvolution (fermionEnergy ε) (-β)) ≠ 0 := by
   rw [Common.traceFock_diagonalEvolution_eq_weightSum]
-  have hw : Common.boltzmannWeight (fermionEnergy ε) β = freeBoltzmannWeight ε β :=
-    funext fun m => (freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy ε β m).symm
+  have hw : Common.boltzmannWeight (fermionEnergy ε) β = freeBoltzmannWeight ε β := by
+    funext m
+    rw [Common.boltzmannWeight, freeBoltzmannWeight, fermionEnergy]
+    push_cast
+    ring_nf
   rw [hw]
   exact freePartitionFunction_ne_zero ε β
 
-/-- **`nestedVertexOperatorComp`'s free Gibbs expectation, as the general theorem's pairing sum**
-— applies `Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing` (at its own
-`n := 2 * n`, matching `quarticLegOperatorForSequence`'s `Fin (2 * (2 * n))` domain exactly, with
-no cast needed) to the flattened family `quarticLegOperatorForSequence ε q τ`, using
-`heisenbergEvolve_quarticLegOperatorForSequence`, `zetaCommutator_quarticLegOperatorForSequence`,
-and `one_sub_zetaInt_fermion_mul_exp_flatVertexLegEnergyShift_ne_zero` for its three hypotheses,
-then bridges the conclusion from `Common.finiteGibbsExpectation` to `freeGibbsExpectation`
-(`freeGibbsExpectation_eq_finiteGibbsExpectation`) and from `Common.prodComp (List.ofFn
-(quarticLegOperatorForSequence ε q τ))` to `nestedVertexOperatorComp ε n q τ`
-(`prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp`). This is all three of
-the general theorem's hypotheses discharged and the theorem itself applied — the last purely
-combinatorial step is reindexing the resulting `(vertex-label sequence, pairing)` sum into a sum
-over `QuarticWickDiagram`s. -/
-private theorem coordinate_expectation_nestedVertexOperatorComp_eq_sum_pairing (ε : Mode → ℝ) (β : ℝ)
+/-- The canonical finite Gibbs expectation of `nestedVertexOperatorComp` is the pairing sum
+obtained by applying the general finite Bloch–de Dominicis theorem to the flattened `4n`-leg
+family. -/
+private theorem finiteGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing
+    (ε : Mode → ℝ) (β : ℝ)
     (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) :
-    freeGibbsExpectation ε β (nestedVertexOperatorComp ε n q τ) =
+    Common.finiteGibbsExpectation (fermionEnergy ε) β (nestedVertexOperatorComp ε n q τ) =
       ∑ pairing : Combinatorics.Pairing (2 * n),
         pairing.weight Common.Statistics.fermion *
-          ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
+          ∏ pr ∈ pairing.pairs, Common.finiteGibbsExpectation (fermionEnergy ε) β
             ((quarticLegOperatorForSequence ε q τ pr.1).comp
               (quarticLegOperatorForSequence ε q τ pr.2)) := by
   have hgen :=
@@ -60,12 +57,8 @@ private theorem coordinate_expectation_nestedVertexOperatorComp_eq_sum_pairing (
       (fun p => heisenbergEvolve_quarticLegOperatorForSequence ε β q τ p)
       (fun i j _ => zetaCommutator_quarticLegOperatorForSequence ε q τ i j)
       (fun i => one_sub_zetaInt_fermion_mul_exp_flatVertexLegEnergyShift_ne_zero ε β q i)
-  rw [← prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp,
-    freeGibbsExpectation_eq_finiteGibbsExpectation, hgen]
-  refine Finset.sum_congr rfl fun pairing _ => ?_
-  congr 1
-  exact Finset.prod_congr rfl fun pr _ =>
-    (freeGibbsExpectation_eq_finiteGibbsExpectation ε β _).symm
+  rw [← prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp]
+  exact hgen
 
 /-- The nested quartic vertex product satisfies the pairing expansion through the canonical free
 Gibbs density-state expectation. -/
@@ -81,28 +74,38 @@ theorem freeGibbsDensityOperator_expectation_nestedVertexOperatorComp_eq_sum_pai
               (Common.finiteHilbertOperator
                 ((quarticLegOperatorForSequence ε q τ pr.1).comp
                   (quarticLegOperatorForSequence ε q τ pr.2))) := by
-  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
-    coordinate_expectation_nestedVertexOperatorComp_eq_sum_pairing ε β n q τ
+  simpa only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
+    finiteGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing ε β n q τ
 
 /-! ## Integrating the pairing sum over the ordered simplex -/
 
+omit [LinearOrder Mode] in
+private theorem finiteGibbsExpectation_smul_apply (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
+    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    Common.finiteGibbsExpectation (fermionEnergy ε) β (c • A) =
+      c * Common.finiteGibbsExpectation (fermionEnergy ε) β A := by
+  change (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) (c • A) =
+    c * (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) A
+  rw [map_smul, smul_eq_mul]
+
 /-- **A pair value of two flattened leg operators, in closed form**: unfolds both legs to their
 `Complex.exp` eigenvalue-shift form (`quarticLegOperatorForSequence_eq_smul`) and pulls both
-scalars out of `freeGibbsExpectation` (`freeGibbsExpectation_smul`), leaving a fixed
-(`τ`-independent) pair value of the two *bare* local-leg operators — the
+scalars out of `Common.finiteGibbsExpectation` (`finiteGibbsExpectation_smul_apply`), leaving a
+fixed (`τ`-independent) pair value of the two *bare* local-leg operators — the
 `quarticLegOperatorForSequence` analogue of `WickDiagram/Amplitude.lean`'s
 `orderedQuarticPairValue_eq`. -/
-private theorem coordinate_expectation_quarticLegOperatorForSequence_pair_eq {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
+private theorem finiteGibbsExpectation_quarticLegOperatorForSequence_pair_eq {n : ℕ}
+    (ε : Mode → ℝ) (β : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (a b : Fin (2 * (2 * n))) :
-    freeGibbsExpectation ε β
+    Common.finiteGibbsExpectation (fermionEnergy ε) β
         ((quarticLegOperatorForSequence ε q τ a).comp (quarticLegOperatorForSequence ε q τ b)) =
       Complex.exp ((τ (flatVertexIndex n a) * flatVertexLegEnergyShift ε q a : ℝ) : ℂ) *
         Complex.exp ((τ (flatVertexIndex n b) * flatVertexLegEnergyShift ε q b : ℝ) : ℂ) *
-        freeGibbsExpectation ε β
+        Common.finiteGibbsExpectation (fermionEnergy ε) β
           ((quarticLocalLegOperator (q (flatVertexIndex n a)) (flatLocalLeg n a)).comp
             (quarticLocalLegOperator (q (flatVertexIndex n b)) (flatLocalLeg n b))) := by
   rw [quarticLegOperatorForSequence_eq_smul, quarticLegOperatorForSequence_eq_smul,
-    LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, freeGibbsExpectation_smul]
+    LinearMap.smul_comp, LinearMap.comp_smul, smul_smul, finiteGibbsExpectation_smul_apply]
 
 /-- A pair of evolved flattened legs has the expected exponential prefactor through the canonical
 free Gibbs density-state expectation. -/
@@ -119,18 +122,19 @@ theorem freeGibbsDensityOperator_expectation_quarticLegOperatorForSequence_pair_
           (Common.finiteHilbertOperator
             ((quarticLocalLegOperator (q (flatVertexIndex n a)) (flatLocalLeg n a)).comp
               (quarticLocalLegOperator (q (flatVertexIndex n b)) (flatLocalLeg n b)))) := by
-  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
-    coordinate_expectation_quarticLegOperatorForSequence_pair_eq ε β q τ a b
+  simpa only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
+    finiteGibbsExpectation_quarticLegOperatorForSequence_pair_eq ε β q τ a b
 
 /-- **A pair value of two flattened leg operators is continuous in the time assignment `τ`** —
-directly from the closed form `coordinate_expectation_quarticLegOperatorForSequence_pair_eq`: a
+directly from the closed form `finiteGibbsExpectation_quarticLegOperatorForSequence_pair_eq`: a
 product of two `Complex.exp`s of a continuous (coordinate-linear) function of `τ`, times a
 `τ`-independent constant. -/
-private theorem continuous_coordinate_expectation_quarticLegOperatorForSequence_pair {n : ℕ} (ε : Mode → ℝ)
+private theorem continuous_finiteGibbsExpectation_quarticLegOperatorForSequence_pair {n : ℕ}
+    (ε : Mode → ℝ)
     (β : ℝ) (q : Fin n → QuarticVertexLabel Mode) (a b : Fin (2 * (2 * n))) :
-    Continuous (fun τ : Fin n → ℝ => freeGibbsExpectation ε β
+    Continuous (fun τ : Fin n → ℝ => Common.finiteGibbsExpectation (fermionEnergy ε) β
       ((quarticLegOperatorForSequence ε q τ a).comp (quarticLegOperatorForSequence ε q τ b))) := by
-  simp only [coordinate_expectation_quarticLegOperatorForSequence_pair_eq]
+  simp only [finiteGibbsExpectation_quarticLegOperatorForSequence_pair_eq]
   fun_prop
 
 /-- The canonical density-state pair value is continuous in the vertex-time assignment. -/
@@ -142,21 +146,22 @@ theorem continuous_freeGibbsDensityOperator_expectation_quarticLegOperatorForSeq
         (Common.finiteHilbertOperator
           ((quarticLegOperatorForSequence ε q τ a).comp
             (quarticLegOperatorForSequence ε q τ b)))) := by
-  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
-    continuous_coordinate_expectation_quarticLegOperatorForSequence_pair ε β q a b
+  simpa only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
+    continuous_finiteGibbsExpectation_quarticLegOperatorForSequence_pair ε β q a b
 
 /-- **A pairing's contraction term is continuous in `τ`** — a `τ`-independent crossing-sign
 constant, times a finite product (over the pairing's pairs) of
-`continuous_coordinate_expectation_quarticLegOperatorForSequence_pair`'s continuous pair values. -/
-private theorem continuous_coordinate_flatVertexLegPairingTerm {n : ℕ} (ε : Mode → ℝ) (β : ℝ)
+`continuous_finiteGibbsExpectation_quarticLegOperatorForSequence_pair`'s continuous pair values. -/
+private theorem continuous_finiteGibbsExpectation_flatVertexLegPairingTerm {n : ℕ}
+    (ε : Mode → ℝ) (β : ℝ)
     (q : Fin n → QuarticVertexLabel Mode)
     (pairing : Combinatorics.Pairing (2 * n)) :
     Continuous (fun τ : Fin n → ℝ => pairing.weight Common.Statistics.fermion *
-      ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
+      ∏ pr ∈ pairing.pairs, Common.finiteGibbsExpectation (fermionEnergy ε) β
         ((quarticLegOperatorForSequence ε q τ pr.1).comp
           (quarticLegOperatorForSequence ε q τ pr.2))) :=
   continuous_const.mul (continuous_finsetProd _ fun pr _ =>
-    continuous_coordinate_expectation_quarticLegOperatorForSequence_pair ε β q pr.1 pr.2)
+    continuous_finiteGibbsExpectation_quarticLegOperatorForSequence_pair ε β q pr.1 pr.2)
 
 /-- A pairing's canonical density-state contraction term is continuous in the vertex-time
 assignment. -/
@@ -173,28 +178,30 @@ theorem continuous_flatVertexLegPairingTerm {n : ℕ} (ε : Mode → ℝ) (β : 
     continuous_freeGibbsDensityOperator_expectation_quarticLegOperatorForSequence_pair
       ε β q pr.1 pr.2)
 
-/-- **The ordered-simplex integral of `freeGibbsExpectation ∘ nestedVertexOperatorComp`, as a sum
+/-- **The ordered-simplex integral of the finite Gibbs expectation of
+`nestedVertexOperatorComp`, as a sum
 over pairings of integrated contraction terms** — rewrites the integrand pointwise via
-`coordinate_expectation_nestedVertexOperatorComp_eq_sum_pairing`
+`finiteGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing`
 (`intervalIntegral.orderedSimplexIntegral_congr`), pulls the finite `Pairing (2 * n)` sum out past
 the integral (`intervalIntegral.orderedSimplexIntegral_finsetSum`, using
-`continuous_coordinate_flatVertexLegPairingTerm` for its integrability side condition), then pulls each
+`continuous_finiteGibbsExpectation_flatVertexLegPairingTerm` for its integrability side condition), then pulls each
 pairing's `τ`-independent weight back out of its own integral
 (`intervalIntegral.orderedSimplexIntegral_smul`). -/
-private theorem coordinate_orderedSimplexIntegral_nestedVertexOperatorComp_eq_sum_pairing
+private theorem
+    finiteGibbsExpectation_orderedSimplexIntegral_nestedVertexOperatorComp_eq_sum_pairing
     (ε : Mode → ℝ) (β t : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) :
     intervalIntegral.orderedSimplexIntegral n t
-        (fun τ => freeGibbsExpectation ε β (nestedVertexOperatorComp ε n q τ)) =
+        (fun τ => Common.finiteGibbsExpectation (fermionEnergy ε) β (nestedVertexOperatorComp ε n q τ)) =
       ∑ pairing : Combinatorics.Pairing (2 * n),
         pairing.weight Common.Statistics.fermion *
           intervalIntegral.orderedSimplexIntegral n t
-            (fun τ => ∏ pr ∈ pairing.pairs, freeGibbsExpectation ε β
+            (fun τ => ∏ pr ∈ pairing.pairs, Common.finiteGibbsExpectation (fermionEnergy ε) β
               ((quarticLegOperatorForSequence ε q τ pr.1).comp
                 (quarticLegOperatorForSequence ε q τ pr.2))) := by
   rw [intervalIntegral.orderedSimplexIntegral_congr
-      (fun τ => coordinate_expectation_nestedVertexOperatorComp_eq_sum_pairing ε β n q τ),
+      (fun τ => finiteGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing ε β n q τ),
     intervalIntegral.orderedSimplexIntegral_finsetSum _ n t _
-      (fun pairing _ => continuous_coordinate_flatVertexLegPairingTerm ε β q pairing)]
+      (fun pairing _ => continuous_finiteGibbsExpectation_flatVertexLegPairingTerm ε β q pairing)]
   exact Finset.sum_congr rfl fun pairing _ => intervalIntegral.orderedSimplexIntegral_smul n t _ _
 
 /-- The ordered-simplex integral of the canonical density-state nested-vertex expectation is the
@@ -212,8 +219,8 @@ theorem orderedSimplexIntegral_freeGibbsDensityOperator_expectation_nestedVertex
                 (Common.finiteHilbertOperator
                   ((quarticLegOperatorForSequence ε q τ pr.1).comp
                     (quarticLegOperatorForSequence ε q τ pr.2)))) := by
-  simpa only [freeGibbsDensityOperator_expectation_eq_freeGibbsExpectation] using
-    coordinate_orderedSimplexIntegral_nestedVertexOperatorComp_eq_sum_pairing ε β t n q
+  simpa only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
+    finiteGibbsExpectation_orderedSimplexIntegral_nestedVertexOperatorComp_eq_sum_pairing ε β t n q
 
 /-- **`dysonVertexMoment` of `quarticInteraction`, as a genuine sum over vertex-label sequences
 and pairings through canonical free Gibbs density-state contractions.** The last remaining step is
@@ -256,7 +263,6 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing {α : Ty
         orderedSimplexIntegral_freeGibbsDensityOperator_expectation_nestedVertexOperatorComp_eq_sum_pairing
       ]
   rw [dysonVertexMoment_eq_freeGibbsDensityOperator_expectation, hkey, mul_assoc, hsum]
-
 
 end Fermionic
 end SecondQuantization

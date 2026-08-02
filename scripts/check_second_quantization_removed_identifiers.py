@@ -30,6 +30,66 @@ FORBIDDEN_CANONICAL_FREE_GIBBS_TEXT = {
         "canonical free Gibbs state mentions the coordinate expectation API",
 }
 
+DYSON_PARTITION_SERIES_PATH = (
+    LEAN_ROOT
+    / "SecondQuantization"
+    / "Fermionic"
+    / "Perturbation"
+    / "DysonPartitionSeries.lean"
+)
+DYSON_VERTEX_MOMENT_PATH = (
+    LEAN_ROOT
+    / "SecondQuantization"
+    / "Fermionic"
+    / "Perturbation"
+    / "DysonVertexMoment.lean"
+)
+DYSON_CORE_PATH = (
+    LEAN_ROOT
+    / "SecondQuantization"
+    / "Fermionic"
+    / "Diagrammatics"
+    / "DysonDiagramExpansion"
+    / "Core.lean"
+)
+DYSON_PAIRING_PATH = (
+    LEAN_ROOT
+    / "SecondQuantization"
+    / "Fermionic"
+    / "Diagrammatics"
+    / "DysonDiagramExpansion"
+    / "Pairing.lean"
+)
+
+FREE_BOLTZMANN_COMPATIBILITY_IMPORT = (
+    "import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannWeight"
+)
+
+FORBIDDEN_DYSON_COMPATIBILITY_TEXT = {
+    DYSON_PARTITION_SERIES_PATH: {
+        FREE_BOLTZMANN_COMPATIBILITY_IMPORT:
+            "Dyson partition series imports the coordinate compatibility layer",
+    },
+    DYSON_VERTEX_MOMENT_PATH: {
+        FREE_BOLTZMANN_COMPATIBILITY_IMPORT:
+            "Dyson vertex moments import the coordinate compatibility layer",
+        "freeGibbsExpectation":
+            "Dyson vertex moments mention the coordinate expectation API",
+    },
+    DYSON_CORE_PATH: {
+        FREE_BOLTZMANN_COMPATIBILITY_IMPORT:
+            "Dyson core imports the coordinate compatibility layer",
+        "freeGibbsExpectation":
+            "Dyson core mentions the coordinate expectation API",
+    },
+    DYSON_PAIRING_PATH: {
+        FREE_BOLTZMANN_COMPATIBILITY_IMPORT:
+            "Dyson pairing imports the coordinate compatibility layer",
+        "freeGibbsExpectation":
+            "Dyson pairing mentions the coordinate expectation API",
+    },
+}
+
 REMOVED_IDENTIFIERS = {
     re.compile(r"(?<![A-Za-z0-9_'])QuarticWickDiagram\.ext(?![A-Za-z0-9_'])"):
         "removed Fermionic WickDiagram ext wrapper",
@@ -93,6 +153,12 @@ def main() -> int:
             errors.append(
                 f"{description}: {relative(CANONICAL_FREE_GIBBS_PATH)}: {forbidden}"
             )
+
+    for path, forbidden_text in FORBIDDEN_DYSON_COMPATIBILITY_TEXT.items():
+        text = path.read_text(encoding="utf-8")
+        for forbidden, description in forbidden_text.items():
+            if forbidden in text:
+                errors.append(f"{description}: {relative(path)}: {forbidden}")
 
     for path in sorted(LEAN_ROOT.rglob("*.lean")):
         for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
