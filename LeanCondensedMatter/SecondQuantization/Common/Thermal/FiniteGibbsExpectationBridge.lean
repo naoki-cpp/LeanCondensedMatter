@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Coordinate formula for finite Gibbs density-state expectations
 
 This module is the migration bridge between the canonical density-operator expectation and the old
-finite occupation-basis weighted sums.  It will be used to move callers before the old functional
+finite occupation-basis weighted sums. It will be used to move callers before the old functional
 stack is deleted.
 -/
 
@@ -27,6 +27,7 @@ theorem finiteGibbsExpectation_eq_sum (energy : Config → ℝ) (β : ℝ)
       ∑ n : Config,
         (((finitePartitionFunction energy β)⁻¹ * finiteBoltzmannWeight energy β n : ℝ) : ℂ) *
           matrixCoeff A n n := by
+  classical
   have hbase := (finiteGibbsDensityOperator energy β).expectation_eq_sum_diagonal
     (finiteHilbertOperator A)
     (finiteHilbertOrthonormalBasis (Config := Config))
