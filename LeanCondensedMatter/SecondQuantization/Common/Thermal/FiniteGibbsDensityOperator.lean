@@ -1,5 +1,6 @@
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 import LeanCondensedMatter.QuantumTheory.DiagonalDensityLemmasTraceClass
+import Mathlib.Analysis.InnerProductSpace.PiL2
 
 set_option linter.style.header false
 
@@ -9,6 +10,11 @@ set_option linter.style.header false
 A finite occupation/configuration basis carries a canonical Euclidean Hilbert-space realization.
 Positive Boltzmann weights on that basis therefore define a genuine trace-class density operator,
 not merely a normalized coordinate functional.
+
+This Hilbert realization is introduced separately from the existing finite analytic Dyson
+realization, which currently uses the sup-norm function space. The destructive replacement of that
+analytic representation is deferred until its operator-continuity proofs and all callers migrate in
+one package; no compatibility alias between the two spaces is introduced here.
 -/
 
 namespace SecondQuantization
@@ -20,24 +26,31 @@ open QuantumTheory.TraceClass
 
 variable {Config : Type*} [Fintype Config] [Nonempty Config]
 
-/-- The canonical coordinate orthonormal basis of the finite analytic Fock space. -/
-noncomputable def finiteAnalyticOrthonormalBasis :
-    OrthonormalBasis Config ℂ (FiniteAnalyticFock Config) :=
+/-- The finite-dimensional Hilbert realization of the algebraic Fock basis. -/
+abbrev FiniteHilbertFock (Config : Type*) := EuclideanSpace ℂ Config
+
+/-- The standard occupation/configuration basis vector in the finite Hilbert Fock space. -/
+noncomputable def finiteHilbertBasisState (n : Config) : FiniteHilbertFock Config :=
+  EuclideanSpace.basisFun Config ℂ n
+
+/-- The canonical coordinate orthonormal basis of the finite Hilbert Fock space. -/
+noncomputable def finiteHilbertOrthonormalBasis :
+    OrthonormalBasis Config ℂ (FiniteHilbertFock Config) :=
   EuclideanSpace.basisFun Config ℂ
 
-/-- The canonical coordinate Hilbert basis of the finite analytic Fock space. -/
-noncomputable def finiteAnalyticHilbertBasis :
-    HilbertBasis Config ℂ (FiniteAnalyticFock Config) :=
-  (finiteAnalyticOrthonormalBasis (Config := Config)).toHilbertBasis
+/-- The canonical coordinate Hilbert basis of the finite Hilbert Fock space. -/
+noncomputable def finiteHilbertBasis :
+    HilbertBasis Config ℂ (FiniteHilbertFock Config) :=
+  (finiteHilbertOrthonormalBasis (Config := Config)).toHilbertBasis
 
 @[simp]
-theorem finiteAnalyticOrthonormalBasis_apply (n : Config) :
-    finiteAnalyticOrthonormalBasis (Config := Config) n = finiteAnalyticBasis n :=
+theorem finiteHilbertOrthonormalBasis_apply (n : Config) :
+    finiteHilbertOrthonormalBasis (Config := Config) n = finiteHilbertBasisState n :=
   rfl
 
 @[simp]
-theorem finiteAnalyticHilbertBasis_apply (n : Config) :
-    finiteAnalyticHilbertBasis (Config := Config) n = finiteAnalyticBasis n :=
+theorem finiteHilbertBasis_apply (n : Config) :
+    finiteHilbertBasis (Config := Config) n = finiteHilbertBasisState n :=
   rfl
 
 /-- The positive real Boltzmann weight `exp (-β E(n))`. -/
@@ -62,9 +75,9 @@ theorem finitePartitionFunction_pos (energy : Config → ℝ) (β : ℝ) :
 
 /-- The canonical finite Gibbs state as a trace-class density operator. -/
 noncomputable def finiteGibbsDensityOperator (energy : Config → ℝ) (β : ℝ) :
-    QuantumTheory.TraceClass.DensityOperator (FiniteAnalyticFock Config) :=
+    QuantumTheory.TraceClass.DensityOperator (FiniteHilbertFock Config) :=
   diagonalDensityOperator
-    (finiteAnalyticHilbertBasis (Config := Config))
+    (finiteHilbertBasis (Config := Config))
     (finiteBoltzmannWeight energy β)
     Summable.of_finite
     (fun n => (Real.exp_pos _).le)
@@ -73,12 +86,12 @@ noncomputable def finiteGibbsDensityOperator (energy : Config → ℝ) (β : ℝ
 /-- The finite Gibbs density operator acts diagonally with normalized Boltzmann weights. -/
 @[simp]
 theorem finiteGibbsDensityOperator_apply_basis (energy : Config → ℝ) (β : ℝ) (n : Config) :
-    (finiteGibbsDensityOperator energy β).op (finiteAnalyticBasis n) =
+    (finiteGibbsDensityOperator energy β).op (finiteHilbertBasisState n) =
       (((finitePartitionFunction energy β)⁻¹ * finiteBoltzmannWeight energy β n : ℝ) : ℂ) •
-        finiteAnalyticBasis n := by
+        finiteHilbertBasisState n := by
   simpa [finiteGibbsDensityOperator, finitePartitionFunction, normalizedDiagonalWeight] using
     diagonalDensityOperator_apply_basis
-      (finiteAnalyticHilbertBasis (Config := Config))
+      (finiteHilbertBasis (Config := Config))
       (finiteBoltzmannWeight energy β)
       (Summable.of_finite : Summable fun n : Config => ‖finiteBoltzmannWeight energy β n‖)
       (fun n => (Real.exp_pos _).le)
