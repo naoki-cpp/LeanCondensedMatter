@@ -23,6 +23,7 @@ noncomputable def freeGibbsDensityOperator (ε : Mode → ℝ) (β : ℝ) :
     DensityOperator (Common.FiniteHilbertFock (Occupation Mode)) :=
   Common.finiteGibbsDensityOperator (fermionEnergy ε) β
 
+omit [DecidableEq Mode] [LinearOrder Mode] in
 /-- The free Gibbs density operator acts diagonally in the occupation basis. -/
 @[simp]
 theorem freeGibbsDensityOperator_apply_basis (ε : Mode → ℝ) (β : ℝ)
@@ -34,6 +35,7 @@ theorem freeGibbsDensityOperator_apply_basis (ε : Mode → ℝ) (β : ℝ)
   simpa [freeGibbsDensityOperator] using
     Common.finiteGibbsDensityOperator_apply_basis (fermionEnergy ε) β n
 
+omit [DecidableEq Mode] [LinearOrder Mode] in
 /-- Evaluating the free Gibbs density state on a transported algebraic Fock operator is the
 canonical finite Gibbs expectation at `fermionEnergy ε`. -/
 theorem freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation
@@ -43,7 +45,9 @@ theorem freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation
   rw [freeGibbsDensityOperator, Common.finiteGibbsExpectation,
     Common.finiteGibbsExpectationLinearMap, LinearMap.comp_apply,
     Common.finiteHilbertOperatorLinearMap_apply]
+  rfl
 
+omit [LinearOrder Mode] in
 /-- Temporary E4 bridge from the canonical free Gibbs density state to the legacy coordinate
 presentation. This theorem is removed together with `freeGibbsExpectation` after its callers
 migrate. -/
