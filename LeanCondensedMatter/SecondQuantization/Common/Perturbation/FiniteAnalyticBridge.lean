@@ -1,18 +1,22 @@
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 import Mathlib.LinearAlgebra.Finsupp.Pi
-import Mathlib.Analysis.Normed.Module.FiniteDimension
+import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.Normed.Algebra.Exponential
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 
 set_option linter.style.header false
 
 /-!
-# Finite-dimensional analytic realization of algebraic Fock operators
+# Finite-dimensional analytic Hilbert realization of algebraic Fock operators
 
-For a finite configuration type, `AlgebraicFock Config = Config →₀ ℂ` is transported through
-`Finsupp.linearEquivFunOnFinite` to the normed finite-dimensional space `Config → ℂ`. Algebraic
-endomorphisms are conjugated through this equivalence and promoted with
-`LinearMap.toContinuousLinearMap`.
+For a finite configuration type, `AlgebraicFock Config = Config →₀ ℂ` is transported to the
+Euclidean Hilbert space `EuclideanSpace ℂ Config`. Algebraic endomorphisms are conjugated through
+this equivalence and promoted with `LinearMap.toContinuousLinearMap`.
+
+The former realization used the raw function space `Config → ℂ`, whose canonical norm is the sup
+norm and therefore cannot support the standard coordinate inner product. This module now uses the
+L² norm directly, so the analytic Dyson construction and the density-operator thermal construction
+share one genuine finite-dimensional Hilbert space.
 
 The existing coefficientwise `operatorIntervalIntegral` remains the algebraic definition used by
 the Dyson and diagrammatic layers. The theorem `continuousOperatorIntervalIntegral_eq` proves that,
@@ -28,17 +32,18 @@ noncomputable section
 
 variable {Config : Type*} [Fintype Config]
 
-/-- The finite-dimensional normed realization of the algebraic Fock space. -/
-abbrev FiniteAnalyticFock (Config : Type*) := Config → ℂ
+/-- The finite-dimensional Hilbert realization of the algebraic Fock space. -/
+abbrev FiniteAnalyticFock (Config : Type*) := EuclideanSpace ℂ Config
 
 /-- Continuous endomorphisms of the finite-dimensional analytic Fock realization. -/
 abbrev FiniteContinuousOperator (Config : Type*) :=
   FiniteAnalyticFock Config →L[ℂ] FiniteAnalyticFock Config
 
-/-- The canonical finite-support/function linear equivalence for finite `Config`. -/
+/-- The canonical finite-support/Euclidean-space linear equivalence for finite `Config`. -/
 noncomputable def finiteAnalyticFockEquiv :
     AlgebraicFock Config ≃ₗ[ℂ] FiniteAnalyticFock Config :=
-  Finsupp.linearEquivFunOnFinite ℂ ℂ Config
+  (Finsupp.linearEquivFunOnFinite ℂ ℂ Config).trans
+    (WithLp.linearEquiv 2 (Config → ℂ)).symm
 
 /-- Conjugate an algebraic Fock endomorphism through `finiteAnalyticFockEquiv`. -/
 noncomputable def transportedFiniteOperatorLinearMap
@@ -59,16 +64,15 @@ theorem finiteContinuousOperator_equiv_apply
     finiteContinuousOperator A (finiteAnalyticFockEquiv x) = finiteAnalyticFockEquiv (A x) := by
   simp [finiteContinuousOperator, transportedFiniteOperatorLinearMap]
 
-/-- The standard coordinate basis vector in the analytic realization. -/
-noncomputable def finiteAnalyticBasis (n : Config) : FiniteAnalyticFock Config := by
-  classical
-  exact Pi.single n 1
+/-- The standard coordinate basis vector in the analytic Hilbert realization. -/
+noncomputable def finiteAnalyticBasis (n : Config) : FiniteAnalyticFock Config :=
+  EuclideanSpace.basisFun Config ℂ n
 
 @[simp]
 theorem finiteAnalyticFockEquiv_basisState (n : Config) :
     finiteAnalyticFockEquiv (basisState n) = finiteAnalyticBasis n := by
   classical
-  exact Finsupp.linearEquivFunOnFinite_single ℂ ℂ Config n 1
+  simp [finiteAnalyticFockEquiv, finiteAnalyticBasis, EuclideanSpace.basisFun_apply]
 
 @[simp]
 theorem finiteContinuousOperator_basis_apply
