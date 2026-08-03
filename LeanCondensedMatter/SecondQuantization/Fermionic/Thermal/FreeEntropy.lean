@@ -128,7 +128,9 @@ theorem sum_freeGibbsConfigurationProbability_filter_mem
       (1 + Real.exp (-β * ε i)) *
         ∏ j ∈ Finset.univ.erase i, (1 + Real.exp (-β * ε j))
     exact (Finset.mul_prod_erase
-      (fun j => 1 + Real.exp (-β * ε j)) (Finset.mem_univ i)).symm
+      (Finset.univ : Finset Mode)
+      (fun j => 1 + Real.exp (-β * ε j))
+      (Finset.mem_univ i)).symm
   have hPpos : 0 < P := by
     apply Finset.prod_pos
     intro j hj
