@@ -100,6 +100,8 @@ theorem hasDerivAt_perturbedDensityOperator_zero_of_bound
     simpa [Function.comp_def] using hU.star
   have hleft := hU.mul_const ρ.op
   have hprod := hleft.mul hUstar
+  rw [hasDerivAt_iff_tendsto]
+  rw [hasDerivAt_iff_tendsto] at hprod
   simpa [perturbedDensityOperator, densityOperatorFirstVariation] using hprod
 
 /-- If the first propagator variation is skew-adjoint, the density variation is its commutator with
