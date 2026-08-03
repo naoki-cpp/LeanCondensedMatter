@@ -30,6 +30,7 @@ import LeanCondensedMatter.QuantumTheory.Postulates
 import LeanCondensedMatter.QuantumTheory.BoundedDyson
 import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
 import LeanCondensedMatter.QuantumTheory.LinearResponse.InteractionPicture
+import LeanCondensedMatter.QuantumTheory.LinearResponse.FirstVariation
 import LeanCondensedMatter.QuantumTheory.DensityOperator
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal
 import LeanCondensedMatter.QuantumTheory.Entropy.Basic
