@@ -1,24 +1,19 @@
 # Thermal expectation and Bloch–de Dominicis architecture
 
-This document records the ownership boundary established by issue #421. It is the source of truth
-for how normalized thermal expectations, finite occupation-basis formulas, and the generic
-Bloch–de Dominicis pairing induction fit together.
-
-The refactor is deliberately breaking. Superseded Gibbs-functional abstractions, forwarding names,
-and compatibility imports are removed rather than retained.
+This document is the source of truth for normalized thermal expectations, finite coordinate
+formulas, and the generic Bloch–de Dominicis pairing recursion.
 
 ## Canonical normalized expectation
 
-The physical normalized expectation API is owned by the trace-class density state:
+The physical normalized expectation is
 
 ```lean
-QuantumTheory.TraceClass.DensityOperator.expectation
-    (ρ : DensityOperator H) : (H →L[ℂ] H) →L[ℂ] ℂ
+QuantumTheory.DensityOperator.expectation
+    (ρ : QuantumTheory.DensityOperator H) : (H →L[ℂ] H) →L[ℂ] ℂ
 ```
 
-This is the canonical public abstraction for bounded observables. Its API supplies complex
-linearity, normalization, contractivity, finite/diagonal formulas, positivity for positive
-observables, and reality for symmetric or self-adjoint observables.
+It supplies linearity, normalization, contractivity, positivity, and reality results for bounded
+operators. Finite-dimensional trace and diagonal formulas are theorems about this same expectation.
 
 Finite SecondQuantization uses
 
@@ -26,136 +21,113 @@ Finite SecondQuantization uses
 FiniteHilbertFock Config := EuclideanSpace ℂ Config
 ```
 
-and transports algebraic-Fock endomorphisms to bounded Hilbert-space operators through
-`finiteHilbertOperatorAlgHom`. The normalized finite Gibbs state is
-`finiteGibbsDensityOperator`; `finiteGibbsExpectation` is its expectation after this transport.
+for a finite configuration type. Algebraic-Fock endomorphisms are transported to bounded operators
+on this Hilbert realization. `finiteGibbsDensityOperator` is the normalized state and
+`finiteGibbsExpectation` is its expectation after transport.
 
-## Finite trace-ratio realization
+## Finite trace-ratio formula
 
-For finite configuration spaces, the normalized expectation is related to the physical trace ratio
+For finite configurations, the canonical expectation is proved equal to
 
 ```text
 Tr[e^{-βH₀} A] / Tr[e^{-βH₀}]
 ```
 
-by `finiteGibbsExpectation_eq_trace_div` in
-`Common/Thermal/BlochDeDominicis/GibbsExpectation/Core.lean`.
+through `finiteGibbsExpectation_eq_trace_div` in the finite Gibbs Bloch–de Dominicis layer. This
+trace-ratio identity is the physical finite-state formula used by normalized thermal proofs.
 
-The normalized Bloch–de Dominicis proofs use this trace-ratio formula. They do not use the temporary
-normalized occupation-basis functional as their state abstraction.
+## Coordinate proof infrastructure
 
-## Occupation-basis proof infrastructure
-
-Explicit finite sums remain useful when the coordinate formula itself is the mathematical content.
-Their ownership is split as follows:
+Explicit occupation-basis sums remain available when the finite coordinate formula is itself useful.
+They are not alternative state models.
 
 | Layer | Module | Responsibility |
 |---|---|---|
-| Generic diagonal trace | `Common/Thermal/DiagonalTrace.lean` | Matrix coefficients, finite composition/extensionality, and summability-aware `tsumTrace`. |
-| Finite unnormalized sums | `Common/Thermal/FiniteWeightedTrace.lean` | `traceFock`, `weightedTrace`, and `weightSum`. |
-| Normalized finite coordinate formula | `Common/Thermal/WeightedDiagonalFunctional.lean` | Temporary `normalizedWeightedDiagonal` formulas used only by explicit finite-sum proofs. |
-| Density/coordinate comparison | `Common/Thermal/FiniteGibbsOccupationBasisBridge.lean` | Opt-in bridge from the canonical finite Gibbs state to the normalized occupation-basis sum. |
+| Generic diagonal trace | `Common/Thermal/DiagonalTrace.lean` | Matrix coefficients, extensionality, composition, and summability-aware `tsumTrace`. |
+| Finite unnormalized sums | `Common/Thermal/FiniteWeightedTrace.lean` | Finite trace, weighted trace, and total weight. |
+| Normalized coordinate functional | `Common/Thermal/WeightedDiagonalFunctional.lean` | `normalizedWeightedDiagonal` for an arbitrary finite complex weight. |
+| Gibbs occupation-basis comparison | `Common/Thermal/FiniteGibbsOccupationBasisBridge.lean` | Equality between the canonical finite Gibbs expectation and the normalized Boltzmann-weighted sum. |
+| Density-state coordinate formula | `Common/Thermal/FiniteGibbsExpectationBridge.lean` | Diagonal-sum and operator-integral formulas for the canonical finite Gibbs expectation. |
 
-The occupation-basis bridge is intentionally explicit. Importing the canonical finite Gibbs state or
-the generic Bloch–de Dominicis theorem must not silently expose the temporary coordinate
-implementation.
+`normalizedWeightedDiagonal` has no physical interpretation for an arbitrary complex weight. It is
+called a Gibbs expectation only after specialization to positive Boltzmann weights and proof of the
+density-state comparison.
 
-Raw sums remain appropriate for matrix-coefficient identities, partition-function factorizations,
-weighted-trace calculations, and proofs of finite expectation bridges. They are not competing
-physical-state abstractions.
+## Generic pairing recursion
 
-## Generic normalized pairing recursion
-
-The arbitrary-length pairing induction is owned by
-`Common/Thermal/BlochDeDominicis/ExpectationRecursion.lean`.
+`Common/Thermal/BlochDeDominicis/ExpectationRecursion.lean` owns
 
 ```lean
 ExpectationPairingRecursion Operator s
 ```
 
-contains only the data needed by the induction:
+The contract contains only:
 
 - expectation of an ordered operator list;
-- normalized two-operator pair values;
+- normalized pair values;
 - an admissibility predicate;
 - normalization of the empty product;
 - admissibility after deleting a pair;
 - the KMS/exchange first-pair recurrence.
 
-`ExpectationPairingRecursion.expectation_eq_sum_pairing` derives the weighted pairing expansion from
-this contract. It has no configuration type, no `Fintype` assumption, no occupation basis, no trace,
-and no density-operator implementation.
+`ExpectationPairingRecursion.expectation_eq_sum_pairing` derives the complete pairing expansion. The
+module has no configuration type, no occupation basis, no trace implementation, no density-state
+construction, and no finite-dimensional assumption.
 
-The `admissible` predicate is where an implementation records its actual analytic obligations. A
-future bosonic implementation may include summability, integrability, closure under products, and
-domain hypotheses there without changing the combinatorial induction.
+The `admissible` predicate is the extension point for analytic obligations such as summability,
+integrability, domain closure, and KMS hypotheses.
 
 ## Finite Gibbs instance
 
-`Common/Thermal/BlochDeDominicis/GibbsExpectation/Recursion.lean` constructs
-`finiteGibbsExpectationRecursion`. This module is the finite implementation boundary. It discharges
-the generic contract using:
+`Common/Thermal/BlochDeDominicis/GibbsExpectation/Recursion.lean` constructs the finite Gibbs
+instance. It combines:
 
 - the canonical finite Gibbs density-state expectation;
-- finite diagonal evolution and trace-ratio identities;
-- KMS rotation and exchange-commutator hypotheses;
-- the normalized two-point and peel formulas.
+- finite diagonal imaginary-time evolution;
+- the trace-ratio formula;
+- KMS rotation and exchange identities;
+- normalized two-point and pair-deletion formulas.
 
-`Common/Thermal/BlochDeDominicis/Induction.lean` is the public finite specialization. Its proof is a
-single application of the generic recursion theorem to `finiteGibbsExpectationRecursion`.
+`Common/Thermal/BlochDeDominicis/Induction.lean` exposes the finite theorem by applying the generic
+recursion theorem to this instance.
 
-## Bosonic and completed-space boundary
+## Bosonic boundary
 
-A finite set of bosonic modes still has the infinite occupation type
+For finite `Mode`, the bosonic occupation type
 
 ```lean
 Bosonic.Occupation Mode := Mode →₀ ℕ
 ```
 
-Therefore no `[Fintype (Bosonic.Occupation Mode)]` shortcut is permitted.
+is still infinite. A bosonic thermal instance cannot use finite-configuration sums without proving
+summability.
 
-Issue #421 provides the implementation-independent pairing contract but does not claim a bosonic
-thermal-state instance. That work belongs to:
+A completed bosonic implementation must state:
 
-- #435 for a convergence-aware bosonic Gibbs/KMS and perturbative vertical slice;
-- #440 for completed Fock representations, trace-class Gibbs states, and unbounded-operator domains.
+- convergence of the partition function and relevant moments;
+- integrability and interchange-of-sum conditions;
+- stability of operator products on the chosen domain;
+- KMS and positivity hypotheses;
+- boundedness, closability, or self-adjointness facts appropriate to the representation.
 
-The first bosonic instance may be coefficientwise or summability-aware. It must expose every
-summability, integrability, product-closure, and positivity assumption. Creation, annihilation, and
-number operators must not be presented as bounded continuous operators unless boundedness has
-actually been proved on the chosen representation.
-
-## Dependency and CI guards
-
-The intended dependency direction is:
+## Dependency direction
 
 ```text
 ExpectationRecursion
         ↑
-finite Gibbs recursion instance
+concrete expectation/KMS instance
         ↑
-finite public Bloch–de Dominicis theorem
+public Bloch–de Dominicis theorem
 ```
 
-The generic recursion module must not import or mention finite Gibbs, density operators, traces,
-diagonal evolution, algebraic Fock space, occupation-basis formulas, or finite-configuration
-assumptions.
+The generic recursion must remain independent of finite Gibbs implementations and coordinate
+formulas. `scripts/check_bloch_de_dominicis_expectation_boundary.py` enforces this boundary. The
+SecondQuantization architecture checks additionally reject removed compatibility modules and invalid
+dependency directions.
 
-`scripts/check_bloch_de_dominicis_expectation_boundary.py` enforces this boundary in CI. The broader
-SecondQuantization architecture and removed-identifier scripts additionally prevent statistics
-inversion, deleted compatibility paths, and retired functional wrappers from returning.
+## Open work
 
-## Status of issue #421
-
-The following packages are complete:
-
-- canonical density-operator expectation and finite Hilbert-Fock realization;
-- destructive fermionic migration to density-state expectations;
-- separation of generic diagonal traces, finite weighted sums, and occupation-basis bridges;
-- trace-ratio ownership for normalized finite Bloch–de Dominicis proofs;
-- generic `ExpectationPairingRecursion` and finite Gibbs instance;
-- architecture guards for removed APIs and the generic expectation boundary.
-
-Remaining work under #421 is documentation/final repository validation and any deliberately selected
-finite free-fermion entropy corollaries. A genuine bosonic Gibbs/KMS implementation and completed
-unbounded-operator theory remain separate research tracks under #435 and #440.
+- A convergence-aware bosonic Gibbs/KMS instance.
+- Completed Fock-space representations and unbounded operator domains.
+- Correlation-function expansions with external legs.
+- Infinite-mode and thermodynamic-limit statements with explicit analytic hypotheses.

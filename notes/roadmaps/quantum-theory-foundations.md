@@ -1,85 +1,102 @@
 # Roadmap — Quantum theory foundations (Track A)
 
-See [notes/roadmap.md](../roadmap.md) for the status table and how this track fits into the overall plan.
+See [the project roadmap](../roadmap.md) for the cross-track status table and
+[the density-state architecture](../architecture/quantum-density-theory.md) for module ownership.
 
-## Minimal axiomatic quantum theory foundation
+## Minimal axiomatic quantum theory
 
-Status: `stated`.
+Status: `proved` for the current bounded pure-state foundation.
 
-State-space postulate and observable definition (`QuantumTheory.State`, `QuantumTheory.Observable`) and the expectation value they define, with reality of expectation values proved (`expValue_im_eq_zero`) and phase indeterminacy proved (`expValue_smul_of_norm_eq_one`). See `LeanCondensedMatter/QuantumTheory/Postulates.lean` and `notes/model-and-assumptions.md`. Entry point beneath the QFT groundwork target below.
+Implemented in `QuantumTheory/Postulates.lean`:
 
-## Density operators and the Born rule (finite-dimensional)
+- `QuantumTheory.State H`: unit vectors in a complex Hilbert space;
+- `QuantumTheory.Observable H`: bounded self-adjoint operators;
+- `QuantumTheory.expValue`;
+- reality of observable expectation values;
+- invariance under multiplication of a state vector by a unit complex phase.
 
-Status: `stated`.
+A quotient of unit vectors by global phase is not formalized. The current `State` type stores
+representatives.
 
-Density-operator postulate (`QuantumTheory.DensityOperator`, positive trace-1 operator) and general (POVM) measurement postulate (`QuantumTheory.POVM`, `QuantumTheory.prob`), with the Born rule's probabilities proved to sum to `1` (`sum_prob_eq_one`). The pure-state density-operator embedding (`QuantumTheory.pure`) and purity (`QuantumTheory.purity`) are defined, with `purity_pure : purity (pure ψ) = 1` proved. This `pure` map is not the mixed-state purification construction on an enlarged Hilbert space. See `LeanCondensedMatter/QuantumTheory/DensityOperator.lean`. **Scoped to finite-dimensional `H`** — see the trace-class caveat in `notes/caveats.md`.
+## Density operators and expectations
 
-**In progress: infinite-dimensional density operators.** Now that Track C's `ContinuousLinearMap.trace` (with linearity/cyclicity) is done, extending `DensityOperator` beyond finite dimensions is underway in `LeanCondensedMatter/QuantumTheory/DensityOperatorTraceClass.lean` (namespace `QuantumTheory.TraceClass`, additive to the finite-dimensional file above — nothing there is touched). `QuantumTheory.TraceClass.DensityOperator` (positive + compact + trace-class + trace `1`) is defined, and `QuantumTheory.TraceClass.pure : State H → DensityOperator H` (the rank-one projector `|ψ⟩⟨ψ|`) is **fully proved** for arbitrary (possibly infinite-dimensional) `H`:
-- `isCompactOperator_rankOne` — any rank-one operator `|x⟩⟨y|` is compact, via factoring through the locally-compact `ℂ`.
-- `eigenspace_rankOne_eq_bot`/`eigenspace_rankOne_one` — for unit `ψ`, `|ψ⟩⟨ψ|`'s only nonzero eigenvalue is `1`, with eigenspace exactly `span {ψ}` (computed directly from the rank-one operator's formula, rather than via a general "finite rank" argument).
-- `uniqueEigenvectorIndexRankOne` — consequently `EigenvectorIndex |ψ⟩⟨ψ|` has a *unique* element (every other eigenvalue's `Fin`-indexed fiber is empty), giving `rankOne_isTraceClass`/`rankOne_trace_eq_one` (trace-class, with trace exactly `1`, matching the physical `Tr[|ψ⟩⟨ψ|] = 1`) essentially for free.
+Status: `proved`.
 
-Recurring Lean pitfall in this proof (not a math issue): `haveI hu := someDef args` makes `hu` an *opaque* local hypothesis, **not** definitionally equal to `someDef args` (unlike `let`) — so a later `show` restating the goal in terms of `someDef args` directly can fail to unify with a goal stated in terms of `hu`. Fix: either avoid the abbreviation and repeat `someDef args` at each use site, or use `let`/`set` (which preserve defeq) instead of `have`/`haveI` when you need to unfold back to the original term later.
+`QuantumTheory.DensityOperator H` is the canonical dimension-independent mixed-state type. It is a
+positive bounded operator with bundled compact self-adjoint spectral trace-class data and spectral
+trace `1`.
 
-**`POVM`/`prob`/`sum_prob_eq_one` are now ported (infinite-dimensional), in `QuantumTheory.TraceClass`.** The originally-anticipated blocker — `E_m ∘ ρ` need not be self-adjoint, so `ContinuousLinearMap.trace` doesn't directly apply — turned out to have a simpler resolution than the Hilbert–Schmidt inner product route developed for it (`notes/roadmaps/operator-algebra.md`): `prob` is defined directly via `ρ`'s *own* eigendecomposition (`ContinuousLinearMap.EigenvectorIndex`/`eigenvectorFamily`, from `Analysis/CompactSelfAdjoint.lean`) rather than via a general basis-independent trace of `E_m ∘ ρ`:
-- `QuantumTheory.TraceClass.POVM` — a finite family of positive bounded operators summing to the identity. Unlike the finite-dimensional `QuantumTheory.POVM`, the individual `E m` need *not* be compact or trace-class (e.g. a single-outcome POVM forces `E () = 1`, never compact in infinite dimensions) — the definition only uses `ρ`'s trace-class-ness, not `E_m`'s.
-- `QuantumTheory.TraceClass.prob P ρ m := (Σᵢ λᵢ ⟪eᵢ, E_m eᵢ⟫).re`, summing over `ρ`'s eigenvector family `e` with eigenvalues `λ`. Well-defined (`summable_prob_term`) by comparing `|λᵢ ⟪eᵢ,E_m eᵢ⟩| ≤ |λᵢ|·‖E_m‖` (each `eᵢ` a unit vector, `IsTraceClass ρ.op` giving `Σ|λᵢ|` summable) against the trace-class hypothesis.
-- `QuantumTheory.TraceClass.sum_prob_eq_one` — proved by swapping the finite sum over outcomes `M` with the (absolutely convergent) sum over `ρ`'s eigenvectors (`Summable.tsum_finsetSum`), using `P.sum_eq_id` to collapse `Σₘ E_m eᵢ` back to `eᵢ` (via `⟪eᵢ,eᵢ⟩ = 1`, unit vectors), and `ρ.trace_eq_one` to evaluate the resulting eigenvalue sum.
+Implemented results include:
 
-This sidesteps needing `E_m` itself to be Hilbert–Schmidt (which the `innerHS`-based route would have required), since only `ρ`'s eigenbasis — not a general Hilbert basis — is ever used; the Hilbert–Schmidt inner product infrastructure (steps 1–4, complete) remains available for other purposes but wasn't needed for the Born rule after all.
+- the rank-one pure-state embedding `QuantumTheory.pure`;
+- the normalized continuous-linear expectation functional `DensityOperator.expectation`;
+- normalization, contractivity, positivity, and reality theorems for expectations;
+- construction from finite-dimensional positive trace-one operators;
+- equality with the ordinary matrix trace in finite dimensions;
+- diagonal expectation formulas.
 
-**Still needed: `purity` (`Tr[ρ²]`) — deliberately deferred, not just unstarted.** `ρ ∘ ρ` is compact and self-adjoint for free, but proving it's *trace-class* needs a new spectral-theory lemma not yet in `Analysis/CompactSelfAdjoint.lean`: for self-adjoint `T`, `Module.End.eigenspace (T ∘ T) ν = Module.End.eigenspace T √ν` for `ν > 0` (simpler than the fully general statement since `ρ` is positive, so has no negative eigenvalues, ruling out the `eigenspace T (-√ν)` contribution that would otherwise also merge in). This is comparable in scope to the existing eigenvector-family machinery in that file, not a quick corollary — considered and consciously deferred (2026-07-14) in favor of other targets rather than attempted piecemeal.
+The next density-state target is purity `Tr(ρ²)` and its basic bounds. It must be defined for the
+canonical state type rather than through a finite-only trace API.
 
-**Von Neumann entropy is now ported (infinite-dimensional), in `LeanCondensedMatter/QuantumTheory/EntropyTraceClass.lean` (namespace `QuantumTheory.TraceClass`, additive to `QuantumTheory/Entropy.lean`).** `QuantumTheory.TraceClass.vonNeumannEntropy` computes `-Σᵢ λᵢ ln λᵢ` from `ρ`'s eigenvalues via `ContinuousLinearMap.EigenvectorIndex`, just as `prob` above does.
+## Discrete POVMs and the Born rule
 
-**A genuine mathematical wrinkle, not a Lean technicality:** unlike the finite-dimensional `ℝ`-valued `vonNeumannEntropy` (a finite sum, automatically finite), the infinite-dimensional entropy sum `Σᵢ (-λᵢ ln λᵢ)` — every term nonnegative — **can genuinely diverge** even though `Σᵢ λᵢ` converges (`ρ` is trace-class): e.g. `λᵢ = c/(i log² i)` is summable, but `-λᵢ ln λᵢ ~ c/(i log i)` is not. A trace-class density operator really can have infinite von Neumann entropy — this is standard in the physics literature, not a formalization artifact. So `vonNeumannEntropy` is **`ENNReal`-valued** (`[0, ∞]`) rather than `ℝ`-valued: the `tsum` is always well-defined in that codomain (divergence shows up honestly as `⊤`), avoiding the silent-junk-value-`0` problem a real-valued `tsum` would have for a non-summable sequence. `eigenvalue_nonneg` (needed to justify treating each `λᵢ` as a probability) is proved via Mathlib's `eigenvalue_nonneg_of_nonneg`, mirroring `ContinuousLinearMap.trace_nonneg`'s proof.
+Status: `proved` for countable discrete outcomes.
 
-**`gibbsState` is now ported (infinite-dimensional), in `LeanCondensedMatter/QuantumTheory/GibbsStateTraceClass.lean` (namespace `QuantumTheory.TraceClass`, additive to `QuantumTheory/Entropy.lean`).** Rather than deriving a discrete-spectrum/compact-resolvent condition on `Hop` from more primitive assumptions, `gibbsState` takes compactness and trace-class-ness of the (unnormalized) Gibbs operator `e^{-βH}}`, plus non-vanishing of its trace `Z(β)`, as *explicit hypotheses* — matching this project's established style for `DensityOperator`/`POVM` (unnormalized Gibbs operator `e^{-βH}`):
-- `gibbsOp Hop β := cfc (fun x => Real.exp (-β * x)) Hop.1` — the unnormalized Gibbs operator, via Mathlib's continuous functional calculus `cfc` (no finite-dimensionality needed, unlike the finite-dimensional `gibbsState`'s explicit eigenbasis sum).
-- `gibbsOp_isPositive` — via `cfc_nonneg` (the C⋆-algebra order) bridged to `ContinuousLinearMap.IsPositive` via Mathlib's `nonneg_iff_isPositive`.
-- `gibbsState Hop β hcompact htc hZ := (trace htc)⁻¹ • gibbsOp Hop β` — the normalized state, with `pos`/`compact`/`traceClass`/`trace_eq_one` assembled from `gibbsOp_isPositive`, `IsCompactOperator.smul`, the newly-added `ContinuousLinearMap.isTraceClass_smul` (`Analysis/CompactSelfAdjoint.lean`, Track C), and `trace_smul` respectively. `real_smul_eq_complex_smul` bridges the `ℝ`-scalar multiple used for normalization (matching `trace_smul`'s convention) with the `ℂ`-scalar version `IsPositive.smul_of_nonneg` needs.
+`QuantumTheory.POVM H M` accepts any countable outcome type and uses strong pointwise normalization
+of its effects. The Born probability is represented first as a self-adjoint scalar and then as a
+real number.
 
-**`energyExpValue` is now ported (infinite-dimensional), in `LeanCondensedMatter/QuantumTheory/EnergyExpValueTraceClass.lean` (namespace `QuantumTheory.TraceClass`, additive to `QuantumTheory/Entropy.lean`).** The naive analogue of the finite-dimensional `(LinearMap.trace ℂ H (ρ.1 ∘L Hop.1)).re` would route through `ContinuousLinearMap.trace (ρ.op ∘L Hop.1)`, but that trace is only meaningful for *compact self-adjoint* operators, and `ρ.op ∘L Hop.1` need not be self-adjoint (a composition of two self-adjoint operators is self-adjoint only when they commute) — exactly the same obstacle already hit and worked around for the Born-rule `prob` above. So, mirroring `prob`, `QuantumTheory.TraceClass.energyExpValue ρ Hop := (∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) * ⟪eᵢ, Hop.1 eᵢ⟫).re` is computed directly from `ρ`'s own eigendecomposition (`ContinuousLinearMap.eigenvectorFamily`), needing no trace-class/compactness assumption on `Hop` beyond it being a general `Observable H`. This is the same quantity as the finite-dimensional `Tr[ρĤ] = Σₘ p_m ⟨e_m|Ĥ|e_m⟩` (`QuantumTheory.energyExpValue_eq_sum`, specialized to `ρ`'s eigenbasis alone rather than a double sum over both `ρ`'s and `Hop`'s eigenbases). Summability (`summable_energyExpValue_term`) is proved by the same `‖Hop.1‖`-norm-comparison argument as `summable_prob_term`.
+Implemented results include:
 
-**The Gibbs–Klein / Helmholtz free-energy inequality is now ported (infinite-dimensional), in `LeanCondensedMatter/QuantumTheory/HelmholtzFreeEnergyTraceClass.lean` (namespace `QuantumTheory.TraceClass` for the Hilbert-space-specific lemmas; a handful of general real-analysis/infinite-sum lemmas are stated at the top level).** `QuantumTheory.TraceClass.helmholtzFreeEnergy_ge_and_entropy_ne_top` proves, for a density operator `ρ`, Hamiltonian `Hop`, `β > 0`, and explicit compactness/trace-class/nonzero-trace hypotheses on the (unnormalized) Gibbs operator `gibbsOp Hop β` (matching `gibbsState`'s own hypotheses), both `-(1/β)·ln Z(β) ≤ energyExpValue ρ Hop - (1/β)·(vonNeumannEntropy ρ).toReal` and, as a byproduct, `vonNeumannEntropy ρ ≠ ⊤` — i.e. under these hypotheses the entropy sum is provably finite, so the previously-open `ENNReal`-formalization ambiguity resolves itself: a plain `ℝ`-valued inequality suffices once finiteness is established as part of the same proof, with no need for the `EReal`-statement route considered earlier.
+- nonnegativity;
+- probability at most `1`;
+- summability over countable outcomes;
+- total probability `1`;
+- finite-outcome normalization as a specialization of the same theorem.
 
-The Mathlib route originally hoped for (a spectral measure at a vector, with Jensen's inequality) does not exist at the pinned Mathlib revision (no `spectralMeasure` declaration, no Riesz-representation path from `cfcHom` to a measure) — see `notes/roadmaps/operator-algebra.md`'s "Peierls–Bogoliubov spectral inequality" section for the tangent-line-trick alternative actually used (`Analysis/PeierlsBogoliubov.lean`). The free-energy proof itself works entirely in `ρ`'s own eigenbasis (`EigenvectorIndex`/`eigenvectorFamily`), combining:
-- `exp_neg_beta_energy_le_gibbs_diagonal` — Peierls–Bogoliubov, wrapped into diagonal-matrix-element form against a unit eigenvector.
-- `neg_log_le_of_exp_le` and `gibbs_scalar_ineq`/`negMulLog_le_of_neg_log_le` — the elementary real-analysis inequalities (`x ln(x/y) ≥ x - y` and its log/exp consequence) that turn the Peierls–Bogoliubov bound into a termwise entropy bound.
-- `ContinuousLinearMap.sum_inner_apply_le_trace` (new general lemma, `Analysis/CompactSelfAdjoint.lean`) — bounds the sum of diagonal matrix elements of a positive trace-class operator against an *incomplete* orthonormal family (here, `ρ`'s own eigenvectors, which need not span `H`) by its trace; proved by extending the family to a full Hilbert basis (`Orthonormal.exists_hilbertBasis_extension`) and comparing against the full-basis trace sum via `hasSum_le_inj`.
-- `tsum_div_le_one`, `summable_and_tsum_le_of_nonneg_of_le`, `trace_gibbsOp_pos`, `vonNeumannEntropy_ne_top_and_toReal_eq_tsum`, `summable_eigenvalue_mul_energy_and_tsum`, `eigenvalue_le_one` — supporting lemmas factored out so the main theorem's body reads as the physical argument (pointwise bound → summability → sum and rearrange) rather than interleaved bookkeeping.
+Continuous-outcome measurements and measure-valued POVMs are outside the current API.
 
-**Not yet attempted:** the equality-iff-`ρ = gibbsState` direction (uniqueness of the minimizer) and an infinite-dimensional `vonNeumannEntropy_gibbsState` (that `gibbsState` itself attains the bound) — the finite-dimensional file's analogues (`diagOp_eigenvalues_map_eq`, `vonNeumannEntropy_gibbsState`) have no infinite-dimensional counterpart yet.
+## Von Neumann entropy
 
-## Von Neumann entropy / Boltzmann's principle (finite-dimensional)
+Status: `proved` for the spectral definition and its finite-dimensional specialization.
 
-Status: `stated`.
+`QuantumTheory.vonNeumannEntropy` is `ENNReal`-valued because a normalized trace-class density
+operator can have infinite entropy. The implementation includes:
 
-`QuantumTheory.vonNeumannEntropy` (`-Tr[ρ ln ρ]`, computed via the eigenvalues of `ρ`) defined. See `LeanCondensedMatter/QuantumTheory/Entropy.lean`. **Scope note:** only the mathematical quantity is defined; Boltzmann's principle itself (its equality, times `k_B`, with a thermodynamic entropy `S[U,V,N]`) is a postulate connecting to thermodynamics, which stays out of scope — see `notes/model-and-assumptions.md`. No theorems proved yet (e.g. nonnegativity, or entropy `0` for pure states) — natural next steps if this target is picked up again.
+- nonnegative density eigenvalues bounded by `1`;
+- the compact entropy operator `entropyOp ρ = -ρ log ρ` from continuous functional calculus;
+- equality between the entropy eigenvalue sum and the spectral trace of the entropy operator under
+  the required summability hypothesis;
+- diagonal entropy formulas;
+- automatic entropy finiteness and real-valued `.toReal` formulas in finite dimensions.
 
-## Canonical distribution as the Helmholtz free-energy-minimizing state
+Boltzmann’s principle, identifying `k_B` times this quantity with thermodynamic entropy, remains a
+physical postulate outside the formalized mathematical theory.
 
-Status: `stated`.
+## Gibbs states and Helmholtz free energy
 
-Goal: formalize that the canonical/Gibbs state `ρ' = e^{-βH}/Z(β)`, `Z(β) = Tr[e^{-βH}]`, is the (unconstrained) minimizer of the Helmholtz free energy `F[ρ] = Tr[ρĤ] - (1/β)·vonNeumannEntropy ρ` over all density operators `ρ` — *not* "the entropy-maximizing state at fixed energy" (an earlier, less precise phrasing of this target; the free-energy formulation is the one actually derived from Gibbs–Klein, with no separate energy constraint needed). Needed for the finite-temperature theory: this is what identifies `Z(β) = Tr[e^{-βH}]` (used throughout the Linked Cluster Theorem target) as *the* physically realized state, not just a convenient definition.
+Status: `proved` for bounded Hamiltonians under explicit compactness and summability hypotheses.
 
-`QuantumTheory.helmholtzFreeEnergy_ge` — **proved** (`LeanCondensedMatter/QuantumTheory/Entropy.lean`): for any density operator `ρ`, Hamiltonian `Hop : Observable H`, and `β > 0`,
-`-(1/β)·ln Z(β) ≤ energyExpValue ρ Hop - (1/β)·vonNeumannEntropy ρ`, i.e. `F[ρ] ≥ -(1/β)·ln Z(β)`. The proof avoids the originally-anticipated blocker (relating `gibbsState`'s spectral data to Mathlib's canonical sorted eigenbasis): it runs the Gibbs–Klein argument directly against `Hop`'s own eigenbasis, using Boltzmann weights `w_k = e^{-βEₖ}/Z(β)` as plain functions rather than routing through `gibbsState`/`relEntropy` at all, sidestepping the correspondence problem entirely. `energyExpValue` (`Tr[ρĤ]`) and its cross-eigenbasis double-sum expansion (`energyExpValue_eq_sum`) were added to support this.
+Implemented in `QuantumTheory/Gibbs/`:
 
-`QuantumTheory.diagOp_eigenvalues_map_eq` — **proved** (`LeanCondensedMatter/QuantumTheory/Entropy.lean`): a general lemma showing that for a self-adjoint operator presented diagonally as `∑ i, w i • |bᵢ⟩⟨bᵢ|` in a known orthonormal basis `b`, the multiset of weights `w` equals the multiset of the operator's own Mathlib-sorted spectral eigenvalues — proved via the characteristic polynomial (basis-independent, `LinearMap.charpoly_toMatrix`) rather than by exhibiting an explicit reindexing permutation. This closes the originally-anticipated blocker directly (rather than avoiding it as `helmholtzFreeEnergy_ge` did).
+- `gibbsOp Hop β = exp (-β Hop)` through continuous functional calculus;
+- positivity of `gibbsOp`;
+- normalized `gibbsState` when its spectral trace is defined and nonzero;
+- `energyExpValue`;
+- the Helmholtz free-energy lower bound;
+- entropy finiteness under the variational hypotheses;
+- the Gibbs-state entropy identity and attainment of the lower bound.
 
-`QuantumTheory.vonNeumannEntropy_gibbsState` — **proved**: `vonNeumannEntropy hn (gibbsState hn Hop β) = β · energyExpValue (gibbsState hn Hop β) Hop + ln Z(β)`, i.e. `gibbsState`'s own Helmholtz free energy is exactly `-(1/β)·ln Z(β)` — the lower bound of `helmholtzFreeEnergy_ge` is attained by `gibbsState` itself. Uses `diagOp_eigenvalues_map_eq` to identify `gibbsState`'s own spectral data with its Boltzmann weights without an explicit permutation.
+The present bounded-Hamiltonian assumptions imply finite dimensionality whenever `gibbsOp` is
+compact. A genuine infinite-dimensional Gibbs theory therefore requires an unbounded self-adjoint
+Hamiltonian, compact-resolvent or semigroup hypotheses, and explicit operator-domain control.
 
-**Remaining to close this target fully:** the equality-iff-`ρ = gibbsState` direction (uniqueness of the minimizer) is not yet formalized — only that the bound is achieved (by `gibbsState`) and always valid (`helmholtzFreeEnergy_ge`) are proved.
+The uniqueness statement “equality holds only for the Gibbs state” remains open.
 
-## Basic quantum field theory formalization
+## Current next steps
 
-Status: `idea`.
-
-Prerequisite groundwork target: the minimal scaffolding needed before stating either theorem below — creation/annihilation operator algebra (CCR/CAR), Fock space construction, and normal ordering, on the countably infinite-dimensional lattice setting chosen for this project. This groundwork is now tracked in detail as its own track: see [notes/roadmaps/second-quantization.md](second-quantization.md), which lays out the full dependency chain (one-particle space → occupation basis → Fock space → creation/annihilation → CCR → Hamiltonians → Gibbs state/partition function → Dyson expansion → Linked Cluster Theorem) and the planned file order. Precise physical scope (lattice model, interaction form) still to be filled in `notes/model-and-assumptions.md`.
-
-## Finite-temperature Bloch–de Dominicis theorem
-
-Status: `idea`.
-
-Goal: formalize the finite-temperature Bloch–de Dominicis theorem for a finite-mode free/quasifree (Gaussian) Gibbs state — a thermal expectation value of a product of creation/annihilation operators decomposes into a sum over all full pairings (contractions), each a product of two-operator thermal averages. An arbitrary interacting Gibbs state is outside this target. Depends on the second-quantization groundwork ([notes/roadmaps/second-quantization.md](second-quantization.md)) above.
+1. Define purity and prove `0 < purity ρ ≤ 1`, with equality characterization where appropriate.
+2. Prove uniqueness of the Gibbs free-energy minimizer.
+3. Design an unbounded Hamiltonian interface supporting genuine infinite-dimensional Gibbs states.
+4. Connect the canonical density-state expectation to completed Fock-space and KMS constructions.
+5. Add continuous-outcome measurement theory only after a measure-theoretic API is designed.
