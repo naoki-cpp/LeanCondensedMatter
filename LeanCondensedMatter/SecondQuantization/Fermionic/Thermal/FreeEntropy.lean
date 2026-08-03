@@ -161,7 +161,6 @@ theorem sum_freeGibbsConfigurationProbability_filter_mem
   rw [← Finset.mul_sum, hnum, hZ, fermiDiracOccupation]
   rw [show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
   field_simp [hPpos.ne', Real.exp_ne_zero]
-  ring
 
 /-- The mean free energy of the configuration distribution is the mode-energy sum weighted by
 Fermi–Dirac occupations. -/
@@ -260,7 +259,6 @@ private theorem fermiDiracOccupation_eq_exp_neg_div
       Real.exp (-β * ε i) / (1 + Real.exp (-β * ε i)) := by
   rw [fermiDiracOccupation, show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
   field_simp [Real.exp_ne_zero]
-  ring
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
 private theorem one_sub_fermiDiracOccupation_eq_inv_one_add_exp_neg
