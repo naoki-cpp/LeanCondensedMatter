@@ -8,6 +8,7 @@ ROOT = Path(__file__).resolve().parents[1]
 QUANTUM = ROOT / "LeanCondensedMatter" / "QuantumTheory"
 LEAN_ROOT = ROOT / "LeanCondensedMatter"
 NOTES = ROOT / "notes"
+DOCS = ROOT / "docs"
 
 TRACECLASS_NAMESPACE = re.compile(r"\bQuantumTheory\.TraceClass\b")
 TRACECLASS_QUANTUM_IMPORT = re.compile(
@@ -42,8 +43,9 @@ def documentation_files():
     for path in (ROOT / "README.md", ROOT / "PROJECT.md"):
         if path.exists():
             yield path
-    if NOTES.exists():
-        yield from sorted(NOTES.rglob("*.md"))
+    for root in (NOTES, DOCS):
+        if root.exists():
+            yield from sorted(root.rglob("*.md"))
 
 
 def check_documentation(errors: list[str]) -> None:
