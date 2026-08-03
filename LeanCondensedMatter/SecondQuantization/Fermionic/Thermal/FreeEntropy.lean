@@ -67,7 +67,8 @@ theorem sum_freeGibbsConfigurationProbability_eq_one (ε : Mode → ℝ) (β : �
       (∑ n : Occupation Mode,
         Common.finiteBoltzmannWeight (fermionEnergy ε) β n) =
       Common.finitePartitionFunction (fermionEnergy ε) β := by
-    rw [Common.finitePartitionFunction, tsum_fintype]
+    simpa only [tsum_fintype] using
+      (Common.hasSum_finiteBoltzmannWeight (fermionEnergy ε) β).tsum_eq
   rw [hsum]
   exact inv_mul_cancel₀
     (ne_of_gt (Common.finitePartitionFunction_pos (fermionEnergy ε) β))
@@ -118,8 +119,8 @@ theorem sum_freeGibbsConfigurationProbability_filter_mem
     ∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∈ ·),
         freeGibbsConfigurationProbability ε β n =
       fermiDiracOccupation ε β i := by
-  set q : Mode → ℝ := fun j => Real.exp (-β * ε j) with hq
-  set P : ℝ := ∏ j ∈ Finset.univ.erase i, (1 + q j) with hP
+  set P : ℝ :=
+    ∏ j ∈ Finset.univ.erase i, (1 + Real.exp (-β * ε j)) with hP
   have hfilter_not :
       (Finset.univ : Finset (Occupation Mode)).filter (i ∉ ·) =
         (Finset.univ.erase i : Finset Mode).powerset := by
@@ -129,20 +130,21 @@ theorem sum_freeGibbsConfigurationProbability_filter_mem
       ∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∉ ·),
           Common.finiteBoltzmannWeight (fermionEnergy ε) β n = P := by
     rw [hfilter_not]
-    simpa [q, P] using
+    simpa [P] using
       sum_finiteBoltzmannWeight_powerset_eq_prod ε β (Finset.univ.erase i)
   have hZ :
-      Common.finitePartitionFunction (fermionEnergy ε) β = (1 + q i) * P := by
+      Common.finitePartitionFunction (fermionEnergy ε) β =
+        (1 + Real.exp (-β * ε i)) * P := by
     rw [finitePartitionFunction_fermionEnergy_eq_prod, hP,
       ← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]
   have hPpos : 0 < P := by
     apply Finset.prod_pos
     intro j hj
-    dsimp [q]
     positivity
   have hnum :
       ∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∈ ·),
-          Common.finiteBoltzmannWeight (fermionEnergy ε) β n = q i * P := by
+          Common.finiteBoltzmannWeight (fermionEnergy ε) β n =
+        Real.exp (-β * ε i) * P := by
     have hsplit :
         (∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∈ ·),
             Common.finiteBoltzmannWeight (fermionEnergy ε) β n) +
@@ -156,13 +158,10 @@ theorem sum_freeGibbsConfigurationProbability_filter_mem
     rw [hsum_not, hZ] at hsplit
     linear_combination hsplit
   simp_rw [freeGibbsConfigurationProbability]
-  rw [← Finset.mul_sum, hnum, hZ]
-  have hqi : q i = (Real.exp (β * ε i))⁻¹ := by
-    rw [hq]
-    change Real.exp (-β * ε i) = (Real.exp (β * ε i))⁻¹
-    rw [show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
-  rw [hqi, fermiDiracOccupation]
+  rw [← Finset.mul_sum, hnum, hZ, fermiDiracOccupation]
+  rw [show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
   field_simp [hPpos.ne', Real.exp_ne_zero]
+  ring
 
 /-- The mean free energy of the configuration distribution is the mode-energy sum weighted by
 Fermi–Dirac occupations. -/
@@ -195,7 +194,7 @@ theorem sum_freeGibbsConfigurationProbability_mul_fermionEnergy
       rw [Finset.mul_sum, ← Finset.sum_filter]
       apply Finset.sum_congr rfl
       intro n hn
-      by_cases hni : i ∈ n <;> simp [hni, mul_comm]
+      by_cases hni : i ∈ n <;> simp [mul_comm]
     _ = ∑ i, ε i * fermiDiracOccupation ε β i := by
       apply Finset.sum_congr rfl
       intro i hi
@@ -261,6 +260,7 @@ private theorem fermiDiracOccupation_eq_exp_neg_div
       Real.exp (-β * ε i) / (1 + Real.exp (-β * ε i)) := by
   rw [fermiDiracOccupation, show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
   field_simp [Real.exp_ne_zero]
+  ring
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
 private theorem one_sub_fermiDiracOccupation_eq_inv_one_add_exp_neg
