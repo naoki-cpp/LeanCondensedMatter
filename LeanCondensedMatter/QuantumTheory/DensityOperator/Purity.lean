@@ -56,18 +56,22 @@ theorem DensityOperator.expectation_op_re (ρ : DensityOperator H) :
   rw [ρ.expectation_apply, Complex.re_tsum (ρ.summable_expectation_term ρ.op), purity]
   apply tsum_congr
   intro a
-  rw [apply_eigenvectorFamily ρ.spectralTraceClass.compact a,
+  change
+    (((a.1.1 : ℂ) * inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+      ((ρ.op : H →ₗ[ℂ] H) (eigenvectorFamily ρ.spectralTraceClass.compact a))).re) =
+      a.1.1 ^ 2
+  rw [apply_eigenvectorFamily ρ.spectralTraceClass.compact,
     inner_smul_right, inner_self_eq_norm_sq_to_K,
     eigenvectorFamily_norm_eq_one ρ a]
   norm_num
 
 /-- A rank-one density operator has purity one. -/
 theorem purity_pure (ψ : State H) : purity (pure ψ) = 1 := by
-  haveI := uniqueEigenvectorIndexRankOne ψ.2
+  letI := uniqueEigenvectorIndexRankOne ψ.2
   change (∑' a : EigenvectorIndex
     (InnerProductSpace.rankOne ℂ ψ.1 ψ.1 : H →L[ℂ] H), a.1.1 ^ 2) = 1
   rw [tsum_eq_single (uniqueEigenvectorIndexRankOne ψ.2).default (fun b hb =>
     absurd (Subsingleton.elim b (uniqueEigenvectorIndexRankOne ψ.2).default) hb)]
-  rfl
+  norm_num [uniqueEigenvectorIndexRankOne]
 
 end QuantumTheory
