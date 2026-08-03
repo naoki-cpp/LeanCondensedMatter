@@ -79,7 +79,7 @@ theorem freePropagator_add (t s : ℝ) :
     simpa [timeScaledGenerator] using
       ((Commute.refl (schrodingerGenerator system)).smul_left (t : ℂ)).smul_right (s : ℂ)
   rw [freePropagator, timeScaledGenerator_add]
-  exact NormedSpace.exp_add_of_commute hcomm
+  exact NormedSpace.exp_add_of_commute (𝕂 := ℂ) hcomm
 
 /-- The negative-time propagator is a left inverse. -/
 theorem freePropagator_neg_mul (t : ℝ) :
