@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Analysis.PowerSeries.Normalization
 import LeanCondensedMatter.Analysis.Dyson.Basic
 import LeanCondensedMatter.Analysis.Dyson.Bounds
+import LeanCondensedMatter.Analysis.Dyson.FirstVariation
 import LeanCondensedMatter.Analysis.Dyson.Volterra
 import LeanCondensedMatter.Analysis.Dyson.Uniqueness
 import LeanCondensedMatter.Analysis.Dyson.Constant
@@ -29,6 +30,7 @@ import LeanCondensedMatter.QuantumTheory.Postulates
 import LeanCondensedMatter.QuantumTheory.BoundedDyson
 import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
 import LeanCondensedMatter.QuantumTheory.LinearResponse.InteractionPicture
+import LeanCondensedMatter.QuantumTheory.LinearResponse.FirstVariation
 import LeanCondensedMatter.QuantumTheory.DensityOperator
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal
 import LeanCondensedMatter.QuantumTheory.Entropy.Basic
