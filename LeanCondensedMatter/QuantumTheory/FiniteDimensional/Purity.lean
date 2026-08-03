@@ -15,15 +15,14 @@ namespace QuantumTheory
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   [CompleteSpace H] [FiniteDimensional ℂ H]
 
-/-- In finite dimensions, purity is the real part of the ordinary matrix trace `Tr(ρ²)`. -/
-theorem DensityOperator.purity_eq_linearMap_trace_sq (ρ : DensityOperator H) :
-    purity ρ =
-      (LinearMap.trace ℂ H
-        ((ρ.op ∘L ρ.op : H →L[ℂ] H) : H →ₗ[ℂ] H)).re := by
+/-- In finite dimensions, the ordinary matrix trace `Tr(ρ²)` is the complex embedding of purity. -/
+theorem DensityOperator.linearMap_trace_sq_eq_purity (ρ : DensityOperator H) :
+    LinearMap.trace ℂ H
+      ((ρ.op ∘L ρ.op : H →L[ℂ] H) : H →ₗ[ℂ] H) = (purity ρ : ℂ) := by
   calc
-    purity ρ = (ρ.expectation ρ.op).re := ρ.expectation_op_re.symm
-    _ = (LinearMap.trace ℂ H
-        ((ρ.op ∘L ρ.op : H →L[ℂ] H) : H →ₗ[ℂ] H)).re :=
-      congrArg Complex.re (ρ.expectation_eq_linearMap_trace ρ.op)
+    LinearMap.trace ℂ H
+        ((ρ.op ∘L ρ.op : H →L[ℂ] H) : H →ₗ[ℂ] H) = ρ.expectation ρ.op :=
+      (ρ.expectation_eq_linearMap_trace ρ.op).symm
+    _ = (purity ρ : ℂ) := ρ.expectation_op
 
 end QuantumTheory
