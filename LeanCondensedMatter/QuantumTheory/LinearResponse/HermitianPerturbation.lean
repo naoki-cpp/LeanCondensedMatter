@@ -83,7 +83,12 @@ theorem star_timeDependentPropagatorFirstVariation_eq_neg_of_isSelfAdjoint
   have hInt :=
     (isSelfAdjoint_integral_timeDependentInteractionPerturbation_of_isSelfAdjoint
       system V hV t).star_eq
-  simp [timeDependentPropagatorFirstVariation, hInt]
+  unfold timeDependentPropagatorFirstVariation
+  rw [star_smul, hInt, ← neg_smul]
+  congr 1
+  rw [Complex.star_def]
+  simp
+  ring_nf
 
 /-- Under the sufficient physical condition `V(t)† = V(t)`, the first density variation is the
 Liouville commutator `[K_V(t), ρ₀]`. -/
