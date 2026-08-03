@@ -5,6 +5,7 @@ set_option linter.style.header false
 set_option linter.unusedFintypeInType false
 set_option linter.unusedDecidableInType false
 set_option linter.unusedSectionVars false
+set_option linter.unusedSimpArgs false
 
 /-!
 # Entropy of the finite free-fermion Gibbs state
@@ -62,7 +63,12 @@ theorem sum_freeGibbsConfigurationProbability_eq_one (ε : Mode → ℝ) (β : �
   change (Common.finitePartitionFunction (fermionEnergy ε) β)⁻¹ *
       (∑ n : Occupation Mode,
         Common.finiteBoltzmannWeight (fermionEnergy ε) β n) = 1
-  rw [← tsum_fintype, ← Common.finitePartitionFunction]
+  have hsum :
+      (∑ n : Occupation Mode,
+        Common.finiteBoltzmannWeight (fermionEnergy ε) β n) =
+      Common.finitePartitionFunction (fermionEnergy ε) β := by
+    rw [Common.finitePartitionFunction, tsum_fintype]
+  rw [hsum]
   exact inv_mul_cancel₀
     (ne_of_gt (Common.finitePartitionFunction_pos (fermionEnergy ε) β))
 
@@ -152,7 +158,7 @@ theorem sum_freeGibbsConfigurationProbability_filter_mem
   simp_rw [freeGibbsConfigurationProbability]
   rw [← Finset.mul_sum, hnum, hZ]
   have hqi : q i = (Real.exp (β * ε i))⁻¹ := by
-    rw [q, show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
+    rw [hq, show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
   rw [hqi, fermiDiracOccupation]
   field_simp [hPpos.ne', Real.exp_ne_zero]
 
@@ -252,7 +258,7 @@ private theorem fermiDiracOccupation_eq_exp_neg_div
     fermiDiracOccupation ε β i =
       Real.exp (-β * ε i) / (1 + Real.exp (-β * ε i)) := by
   rw [fermiDiracOccupation, show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
-  field_simp [Real.exp_ne_zero]
+  field_simp [Real.exp_ne_zero] <;> ring
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
 private theorem one_sub_fermiDiracOccupation_eq_inv_one_add_exp_neg
@@ -260,7 +266,7 @@ private theorem one_sub_fermiDiracOccupation_eq_inv_one_add_exp_neg
     1 - fermiDiracOccupation ε β i =
       (1 + Real.exp (-β * ε i))⁻¹ := by
   rw [fermiDiracOccupation, show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
-  field_simp [Real.exp_ne_zero]
+  field_simp [Real.exp_ne_zero] <;> ring
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
 private theorem binaryEntropy_fermiDiracOccupation
@@ -300,7 +306,7 @@ theorem vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac
       ∑ i, ((β * ε i) * fermiDiracOccupation ε β i +
         Real.log (1 + Real.exp (-β * ε i))) := by
       rw [Finset.mul_sum, Finset.sum_add_distrib]
-      ring
+      ring_nf
     _ = ∑ i, (Real.negMulLog (fermiDiracOccupation ε β i) +
         Real.negMulLog (1 - fermiDiracOccupation ε β i)) := by
       apply Finset.sum_congr rfl
