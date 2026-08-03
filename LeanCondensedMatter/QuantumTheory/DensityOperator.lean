@@ -2,6 +2,7 @@ import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Pure
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation
 import LeanCondensedMatter.QuantumTheory.DensityOperator.ExpectationOrder
+import LeanCondensedMatter.QuantumTheory.FiniteDimensional.DensityOperator
 import LeanCondensedMatter.QuantumTheory.FiniteDimensional.Expectation
 import LeanCondensedMatter.QuantumTheory.POVM.Basic
 import LeanCondensedMatter.QuantumTheory.POVM.Born
