@@ -29,6 +29,8 @@ theorem energyExpValue_eq_sum_common_eigenbasis (ρ : DensityOperator H) (Hop : 
       _ = ∑ i, ((w i * E i : ℝ) : ℂ) := by
         apply Finset.sum_congr rfl
         intro i _
+        change (w i : ℂ) * inner ℂ (b i)
+          ((Hop.1 : H →ₗ[ℂ] H) (b i)) = (w i * E i : ℂ)
         rw [hE i, inner_smul_right, inner_self_eq_norm_sq_to_K, b.norm_eq_one]
         norm_num
         ring
