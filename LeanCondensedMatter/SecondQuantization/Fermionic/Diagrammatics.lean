@@ -11,6 +11,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagra
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonConnectedDiagramExpansion
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonLinkedClusterTheorem
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonLinkedClusterLowOrder
 
 set_option linter.style.header false
 
@@ -22,5 +23,6 @@ orders, order-preserving shuffle decompositions, shuffled ordered-simplex integr
 leg, pairing, pair-product, crossing compatibility and parity, cross-component block inversion
 counts, pairing-weight and contraction-integrand factorization, and full quartic Wick-amplitude
 factorization over connected components; the Dyson diagram expansion, the connected-diagram formula
-for Dyson vertex cumulants, and the final algebraic Dyson Linked Cluster Theorem.
+for Dyson vertex cumulants, the general algebraic Dyson Linked Cluster Theorem, and its explicit
+orders-one-through-three regression corollaries.
 -/
