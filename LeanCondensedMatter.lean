@@ -27,6 +27,7 @@ import LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar
 import LeanCondensedMatter.Combinatorics
 import LeanCondensedMatter.QuantumTheory.Postulates
 import LeanCondensedMatter.QuantumTheory.BoundedDyson
+import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
 import LeanCondensedMatter.QuantumTheory.DensityOperator
 import LeanCondensedMatter.QuantumTheory.DensityOperatorTraceClass
 import LeanCondensedMatter.QuantumTheory.DiagonalDensityOperatorTraceClass

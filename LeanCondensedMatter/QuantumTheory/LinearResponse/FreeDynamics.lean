@@ -1,0 +1,140 @@
+import LeanCondensedMatter.QuantumTheory.BoundedDyson
+import LeanCondensedMatter.QuantumTheory.Postulates
+
+set_option linter.style.header false
+
+/-!
+# Bounded free quantum dynamics
+
+This module fixes the free-dynamics conventions used by bounded linear response. A free system
+consists of a bounded self-adjoint Hamiltonian `H₀` and a strictly positive reduced Planck constant
+`ℏ`. Its Schrödinger propagator is
+
+`U₀(t) = exp (-(i t / ℏ) H₀)`,
+
+and the corresponding Heisenberg evolution is
+
+`A_I(t) = U₀(-t) A U₀(t)`.
+
+The base API is dimension-independent. It also introduces the minimal normalized continuous
+expectation-functional interface needed for the algebraic first-variation theorem. Positivity is
+not required at this layer; physical state and density-operator instances may add it separately.
+Unbounded Hamiltonians remain outside scope because their exponentials and products require
+operator-domain arguments.
+-/
+
+namespace QuantumTheory
+namespace LinearResponse
+
+noncomputable section
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+/-- Data defining bounded free quantum dynamics with the explicit convention `ℏ > 0`. -/
+structure BoundedFreeSystem (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+    [CompleteSpace H] where
+  hamiltonian : H →L[ℂ] H
+  hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian
+  hbar : ℝ
+  hbar_pos : 0 < hbar
+
+variable (system : BoundedFreeSystem H)
+
+/-- Positivity of `ℏ` implies that it is nonzero. -/
+theorem BoundedFreeSystem.hbar_ne_zero : system.hbar ≠ 0 :=
+  ne_of_gt system.hbar_pos
+
+/-- The bounded Schrödinger generator `-(i/ℏ) H₀`. -/
+noncomputable def schrodingerGenerator : H →L[ℂ] H :=
+  (-(Complex.I / (system.hbar : ℂ))) • system.hamiltonian
+
+/-- The generator scaled by a real time parameter. -/
+noncomputable def timeScaledGenerator (t : ℝ) : H →L[ℂ] H :=
+  (t : ℂ) • schrodingerGenerator system
+
+/-- The free Schrödinger propagator `U₀(t) = exp (-(i t / ℏ) H₀)`. -/
+noncomputable def freePropagator (t : ℝ) : H →L[ℂ] H :=
+  NormedSpace.exp (timeScaledGenerator system t)
+
+@[simp]
+theorem timeScaledGenerator_zero : timeScaledGenerator system 0 = 0 := by
+  simp [timeScaledGenerator]
+
+/-- Scaling the free generator is additive in time. -/
+theorem timeScaledGenerator_add (t s : ℝ) :
+    timeScaledGenerator system (t + s) =
+      timeScaledGenerator system t + timeScaledGenerator system s := by
+  simp [timeScaledGenerator, add_smul]
+
+@[simp]
+theorem freePropagator_zero : freePropagator system 0 = 1 := by
+  simp [freePropagator]
+
+/-- Free propagators form a one-parameter multiplicative group. -/
+theorem freePropagator_add (t s : ℝ) :
+    freePropagator system (t + s) =
+      freePropagator system t * freePropagator system s := by
+  have hcomm :
+      Commute (timeScaledGenerator system t) (timeScaledGenerator system s) := by
+    simpa [timeScaledGenerator] using
+      ((Commute.refl (schrodingerGenerator system)).smul_left (t : ℂ)).smul_right (s : ℂ)
+  rw [freePropagator, timeScaledGenerator_add]
+  exact NormedSpace.exp_add_of_commute_of_mem_ball (𝕂 := ℂ) hcomm
+    ((NormedSpace.expSeries_radius_eq_top ℂ (H →L[ℂ] H)).symm ▸ edist_lt_top _ _)
+    ((NormedSpace.expSeries_radius_eq_top ℂ (H →L[ℂ] H)).symm ▸ edist_lt_top _ _)
+
+/-- The negative-time propagator is a left inverse. -/
+theorem freePropagator_neg_mul (t : ℝ) :
+    freePropagator system (-t) * freePropagator system t = 1 := by
+  calc
+    freePropagator system (-t) * freePropagator system t =
+        freePropagator system (-t + t) := (freePropagator_add system (-t) t).symm
+    _ = 1 := by simp
+
+/-- The negative-time propagator is a right inverse. -/
+theorem freePropagator_mul_neg (t : ℝ) :
+    freePropagator system t * freePropagator system (-t) = 1 := by
+  calc
+    freePropagator system t * freePropagator system (-t) =
+        freePropagator system (t + -t) := (freePropagator_add system t (-t)).symm
+    _ = 1 := by simp
+
+/-- Free Heisenberg evolution of a bounded operator. -/
+noncomputable def heisenbergEvolution (A : H →L[ℂ] H) (t : ℝ) : H →L[ℂ] H :=
+  freePropagator system (-t) * A * freePropagator system t
+
+@[simp]
+theorem heisenbergEvolution_zero (A : H →L[ℂ] H) :
+    heisenbergEvolution system A 0 = A := by
+  simp [heisenbergEvolution]
+
+/-- A normalized continuous linear expectation functional on bounded operators.
+
+Positivity is intentionally not part of this minimal interface: it is unnecessary for the
+algebraic first derivative underlying the Kubo formula. -/
+structure NormalizedExpectation (H : Type*) [NormedAddCommGroup H]
+    [InnerProductSpace ℂ H] [CompleteSpace H] where
+  toContinuousLinearMap : (H →L[ℂ] H) →L[ℂ] ℂ
+  map_one : toContinuousLinearMap 1 = 1
+
+instance : CoeFun (NormalizedExpectation H) fun _ => (H →L[ℂ] H) → ℂ :=
+  ⟨fun expectation => expectation.toContinuousLinearMap⟩
+
+@[simp]
+theorem NormalizedExpectation.apply_one (expectation : NormalizedExpectation H) :
+    expectation (1 : H →L[ℂ] H) = 1 :=
+  expectation.map_one
+
+/-- Stationarity means invariance under the free Heisenberg evolution. -/
+def IsStationary (expectation : NormalizedExpectation H) : Prop :=
+  ∀ t A, expectation (heisenbergEvolution system A t) = expectation A
+
+/-- Every normalized expectation is invariant at the initial time. -/
+theorem expectation_heisenbergEvolution_zero (expectation : NormalizedExpectation H)
+    (A : H →L[ℂ] H) :
+    expectation (heisenbergEvolution system A 0) = expectation A := by
+  simp
+
+end
+end LinearResponse
+end QuantumTheory
