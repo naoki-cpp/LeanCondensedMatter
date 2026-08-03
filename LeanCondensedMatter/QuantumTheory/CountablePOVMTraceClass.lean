@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.InfiniteSum.Fiberwise
-import LeanCondensedMatter.QuantumTheory.DensityOperatorExpectationOrder
+import LeanCondensedMatter.QuantumTheory.DensityOperatorExpectationTraceClass
 
 set_option linter.style.header false
 
@@ -52,8 +52,14 @@ noncomputable def prob (P : CountablePOVM H M) (ρ : DensityOperator H) (m : M) 
 
 /-- Every countable-discrete Born probability is nonnegative. -/
 theorem prob_nonneg (P : CountablePOVM H M) (ρ : DensityOperator H) (m : M) :
-    0 ≤ P.prob ρ m :=
-  ρ.expectation_re_nonneg_of_isPositive (P.pos m)
+    0 ≤ P.prob ρ m := by
+  rw [prob, ρ.expectation_apply, Complex.re_tsum (ρ.summable_expectation_term (P.E m))]
+  apply tsum_nonneg
+  intro a
+  simpa [Complex.mul_re] using
+    mul_nonneg (eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a)
+      ((P.pos m).re_inner_nonneg_right
+        (eigenvectorFamily ρ.spectralTraceClass.compact a))
 
 private noncomputable def probabilityKernel (P : CountablePOVM H M)
     (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) (m : M) : ℝ :=
