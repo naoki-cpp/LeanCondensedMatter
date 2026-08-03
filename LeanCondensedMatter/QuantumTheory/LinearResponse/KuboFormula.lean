@@ -247,16 +247,16 @@ theorem hasDerivAt_timeDependentPerturbedExpectation_zero_of_bound_kubo
 
 /-- A canonical density operator provides the normalized expectation used by the abstract Kubo
 formula. -/
-noncomputable def DensityOperator.normalizedExpectation
+noncomputable def densityOperatorNormalizedExpectation
     (ρ : DensityOperator H) : NormalizedExpectation H where
   toContinuousLinearMap := ρ.expectation
   map_one := by
     simpa using ρ.expectation_id
 
 @[simp]
-theorem DensityOperator.normalizedExpectation_apply
+theorem densityOperatorNormalizedExpectation_apply
     (ρ : DensityOperator H) (A : H →L[ℂ] H) :
-    ρ.normalizedExpectation A = ρ.expectation A :=
+    densityOperatorNormalizedExpectation ρ A = ρ.expectation A :=
   rfl
 
 /-- Density-operator specialization of the general bounded Kubo formula. -/
@@ -282,7 +282,7 @@ theorem hasDerivAt_densityOperatorExpectation_zero_of_bound_kubo
       0 := by
   simpa [timeDependentPerturbedExpectation] using
     (hasDerivAt_timeDependentPerturbedExpectation_zero_of_bound_kubo
-      system ρ.normalizedExpectation hVself A hM hV ht hInt)
+      system (densityOperatorNormalizedExpectation ρ) hVself A hM hV ht hInt)
 
 end
 end LinearResponse
