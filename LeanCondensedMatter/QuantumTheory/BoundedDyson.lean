@@ -27,6 +27,7 @@ noncomputable section
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+omit [CompleteSpace H] in
 /-- The identity bounded operator has norm at most one, including on the trivial Hilbert space. -/
 theorem norm_one_le : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
   change ‖ContinuousLinearMap.id ℂ H‖ ≤ 1
