@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Pure
-import LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation
+import LeanCondensedMatter.QuantumTheory.DensityOperator.ExpectationOrder
 
 /-!
 # Purity of density operators
@@ -51,20 +51,25 @@ theorem purity_le_one (ρ : DensityOperator H) : purity ρ ≤ 1 := by
       exact htrace
 
 /-- The expectation of the density operator itself is its purity. -/
-theorem DensityOperator.expectation_op_re (ρ : DensityOperator H) :
-    (ρ.expectation ρ.op).re = purity ρ := by
-  rw [ρ.expectation_apply, Complex.re_tsum (ρ.summable_expectation_term ρ.op), purity]
-  apply tsum_congr
-  intro a
-  change
-    (((a.1.1 : ℂ) * inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-      ((ρ.op : H →ₗ[ℂ] H) (eigenvectorFamily ρ.spectralTraceClass.compact a))).re) =
-      a.1.1 ^ 2
-  rw [apply_eigenvectorFamily ρ.spectralTraceClass.compact,
-    inner_smul_right, inner_self_eq_norm_sq_to_K,
-    eigenvectorFamily_norm_eq_one ρ a]
-  norm_num
-  ring
+@[simp]
+theorem DensityOperator.expectation_op (ρ : DensityOperator H) :
+    ρ.expectation ρ.op = (purity ρ : ℂ) := by
+  apply Complex.ext
+  · have hre : (ρ.expectation ρ.op).re = purity ρ := by
+      rw [ρ.expectation_apply, Complex.re_tsum (ρ.summable_expectation_term ρ.op), purity]
+      apply tsum_congr
+      intro a
+      change
+        (((a.1.1 : ℂ) * inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+          ((ρ.op : H →ₗ[ℂ] H) (eigenvectorFamily ρ.spectralTraceClass.compact a))).re) =
+          a.1.1 ^ 2
+      rw [apply_eigenvectorFamily ρ.spectralTraceClass.compact,
+        inner_smul_right, inner_self_eq_norm_sq_to_K,
+        eigenvectorFamily_norm_eq_one ρ a]
+      norm_num
+      ring
+    simpa using hre
+  · simpa using ρ.expectation_im_eq_zero_of_isSymmetric ρ.isSymmetric
 
 /-- A rank-one density operator has purity one. -/
 theorem purity_pure (ψ : State H) : purity (pure ψ) = 1 := by
