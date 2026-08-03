@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.InfiniteSum.Fiberwise
-import LeanCondensedMatter.QuantumTheory.DensityOperatorExpectationTraceClass
+import LeanCondensedMatter.QuantumTheory.DensityOperatorExpectationOrder
+import Mathlib.LinearAlgebra.Complex.Module
 
 set_option linter.style.header false
 
@@ -12,9 +13,10 @@ outcome types. The normalization is stated in the strong operator topology:
 `∀ x, HasSum (fun m => E m x) x`.
 
 This is weaker than operator-norm summability and is the natural convergence notion for countable
-families of positive measurement effects. The Born probability is evaluated with the canonical
-trace-class density-state expectation. Its normalization is proved by an explicitly summable,
-nonnegative double-series argument over density eigenvectors and measurement outcomes.
+families of positive measurement effects. The Born probability is first represented as a
+self-adjoint complex scalar and then transported, without loss of information, to `ℝ` through
+`Complex.selfAdjointEquiv`. Its normalization is proved by an explicitly summable, nonnegative
+double-series argument over density eigenvectors and measurement outcomes.
 
 General measurable POVMs and unbounded observables remain outside this discrete bounded-operator
 interface.
@@ -46,20 +48,35 @@ theorem hasSum_inner_apply (P : CountablePOVM H M) (x : H) :
     HasSum (fun m => (inner ℂ x (P.E m x) : ℂ)) (inner ℂ x x) := by
   exact (innerSL ℂ x).hasSum (P.hasSum_apply x)
 
-/-- The Born probability of one countable discrete outcome. -/
+/-- The self-adjoint complex scalar `Tr(ρ Eₘ)` representing one Born probability. -/
+noncomputable def probSelfAdjoint
+    (P : CountablePOVM H M) (ρ : DensityOperator H) (m : M) : selfAdjoint ℂ :=
+  ⟨ρ.expectation (P.E m),
+    ρ.expectation_isSelfAdjoint_of_isPositive (P.pos m)⟩
+
+@[simp]
+theorem coe_probSelfAdjoint
+    (P : CountablePOVM H M) (ρ : DensityOperator H) (m : M) :
+    (P.probSelfAdjoint ρ m : ℂ) = ρ.expectation (P.E m) :=
+  rfl
+
+/-- The real Born probability obtained losslessly from the self-adjoint scalar `Tr(ρ Eₘ)`. -/
 noncomputable def prob (P : CountablePOVM H M) (ρ : DensityOperator H) (m : M) : ℝ :=
-  (ρ.expectation (P.E m)).re
+  Complex.selfAdjointEquiv (P.probSelfAdjoint ρ m)
+
+/-- The real-coordinate formula for a Born probability. This is a consequence of transporting a
+self-adjoint complex scalar to `ℝ`, rather than discarding an imaginary part. -/
+@[simp]
+theorem prob_eq_expectation_re
+    (P : CountablePOVM H M) (ρ : DensityOperator H) (m : M) :
+    P.prob ρ m = (ρ.expectation (P.E m)).re :=
+  rfl
 
 /-- Every countable-discrete Born probability is nonnegative. -/
 theorem prob_nonneg (P : CountablePOVM H M) (ρ : DensityOperator H) (m : M) :
     0 ≤ P.prob ρ m := by
-  rw [prob, ρ.expectation_apply, Complex.re_tsum (ρ.summable_expectation_term (P.E m))]
-  apply tsum_nonneg
-  intro a
-  simpa [Complex.mul_re] using
-    mul_nonneg (eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a)
-      ((P.pos m).re_inner_nonneg_right
-        (eigenvectorFamily ρ.spectralTraceClass.compact a))
+  rw [P.prob_eq_expectation_re]
+  exact ρ.expectation_re_nonneg_of_isPositive (P.pos m)
 
 private noncomputable def probabilityKernel (P : CountablePOVM H M)
     (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) (m : M) : ℝ :=
@@ -90,7 +107,7 @@ private theorem hasSum_probabilityKernel_eigenvector (P : CountablePOVM H M)
     (ρ : DensityOperator H) (m : M) :
     HasSum (fun a => probabilityKernel P ρ a m) (P.prob ρ m) := by
   have h := Complex.reCLM.hasSum (ρ.summable_expectation_term (P.E m)).hasSum
-  simpa [prob, probabilityKernel, DensityOperator.expectation_apply, Complex.mul_re] using h
+  simpa [probabilityKernel, DensityOperator.expectation_apply, Complex.mul_re] using h
 
 /-- The countable family of Born probabilities is summable and normalized. -/
 theorem summable_prob_and_tsum_eq_one (P : CountablePOVM H M) (ρ : DensityOperator H) :
@@ -155,6 +172,7 @@ noncomputable def POVM.toCountable (P : POVM H M) : CountablePOVM H M where
 @[simp]
 theorem POVM.toCountable_prob (P : POVM H M) (ρ : DensityOperator H) (m : M) :
     P.toCountable.prob ρ m = prob P ρ m := by
+  rw [CountablePOVM.prob_eq_expectation_re, ρ.expectation_apply]
   rfl
 
 end FiniteCompatibility
