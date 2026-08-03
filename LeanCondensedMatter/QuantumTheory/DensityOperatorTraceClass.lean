@@ -10,14 +10,13 @@ Extends the density-operator postulate (`QuantumTheory.DensityOperator` in
 operator carries one canonical `ContinuousLinearMap.SpectralTraceClass` bundle rather than
 separate compactness and spectral-summability fields plus a later compatibility bridge.
 
-**This file is additive, not a replacement**: the finite-dimensional `QuantumTheory.DensityOperator`
-and everything built on it (`POVM`, `prob`, `sum_prob_eq_one`, `purity`, ...) are untouched. This
-namespace develops the infinite-dimensional analogue in parallel.
+The trace-class namespace also contains the canonical discrete `POVM` data type. Its outcome type
+may be any countable type, and normalization is expressed by strong pointwise summation. The Born
+probability API is defined downstream in `QuantumTheory/POVMTraceClass.lean`, after the normalized
+complex expectation functional is available.
 
-**On the Born rule (`POVM`/`prob`/`sum_prob_eq_one`, below):** `E_m ∘ ρ` need not be self-adjoint
-even when `E_m`, `ρ` both are, so the compact-self-adjoint spectral trace does not apply to it
-directly. `prob` is therefore defined from `ρ`'s own eigendecomposition, avoiding any need for a
-general non-self-adjoint trace.
+The finite-dimensional `QuantumTheory.DensityOperator` and `QuantumTheory.POVM` remain separate
+because they use the finite-dimensional state representation rather than the trace-class state.
 -/
 
 namespace QuantumTheory.TraceClass
@@ -75,7 +74,8 @@ theorem eigenspace_rankOne_eq_bot {ψ : H} (hψ : ‖ψ‖ = 1) {μ : ℂ} (hμ0
     have hcast := congrArg (fun w => (inner ℂ ψ w : ℂ)) hv
     simpa [inner_smul_right, inner_self_eq_norm_sq_to_K, hψ] using hcast
   have h1' : (inner ℂ ψ v : ℂ) * (1 - μ) = 0 := by
-    rw [mul_sub, mul_one, sub_eq_zero, mul_comm]; exact h1
+    rw [mul_sub, mul_one, sub_eq_zero, mul_comm]
+    exact h1
   have h2 : (inner ℂ ψ v : ℂ) = 0 :=
     (mul_eq_zero.mp h1').resolve_right (sub_ne_zero.mpr hμ1.symm)
   rw [h2, zero_smul] at hv
@@ -111,7 +111,8 @@ theorem finrank_eigenspace_rankOne_one {ψ : H} (hψ : ‖ψ‖ = 1) :
   default := ⟨⟨1, one_ne_zero⟩, ⟨0, by
     change 0 < Module.finrank ℂ (Module.End.eigenspace
       ((InnerProductSpace.rankOne ℂ ψ ψ : H →L[ℂ] H) : H →ₗ[ℂ] H) (1 : ℂ))
-    rw [finrank_eigenspace_rankOne_one hψ]; norm_num⟩⟩
+    rw [finrank_eigenspace_rankOne_one hψ]
+    norm_num⟩⟩
   uniq := by
     rintro ⟨⟨μ, hμ0⟩, i⟩
     have hμ1 : μ = 1 := by
@@ -120,7 +121,8 @@ theorem finrank_eigenspace_rankOne_one {ψ : H} (hψ : ‖ψ‖ = 1) :
         (by exact_mod_cast hμ0) (by exact_mod_cast hne)
       have hfr : Module.finrank ℂ (Module.End.eigenspace
           ((InnerProductSpace.rankOne ℂ ψ ψ : H →L[ℂ] H) : H →ₗ[ℂ] H) (μ : ℂ)) = 0 := by
-        rw [hbot]; exact finrank_bot ℂ H
+        rw [hbot]
+        exact finrank_bot ℂ H
       exact (Nat.not_lt_zero i.1) (hfr ▸ i.isLt)
     subst hμ1
     change (⟨⟨(1 : ℝ), hμ0⟩, i⟩ : ContinuousLinearMap.EigenvectorIndex
@@ -163,79 +165,16 @@ noncomputable def pure (ψ : QuantumTheory.State H) : DensityOperator H where
     (rankOne_hasSummableRealEigenvalues ψ.2)
   spectralTrace_eq_one := rankOne_spectralTrace_eq_one ψ.2
 
-variable {M : Type*} [Fintype M]
-
-/-- **A finite-outcome POVM (infinite-dimensional).** -/
-structure POVM (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-    (M : Type*) [Fintype M] where
-  E : M → H →L[ℂ] H
-  pos : ∀ m, (E m).IsPositive
-  sum_eq_id : (∑ m, E m) = ContinuousLinearMap.id ℂ H
-
 /-- Each vector of `ρ`'s eigenvector family is a unit vector. -/
 theorem eigenvectorFamily_norm_eq_one (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) :
     ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖ = 1 :=
   (orthonormal_eigenvectorFamily ρ.spectralTraceClass.compact ρ.isSymmetric).1 a
 
-/-- **Born rule (general measurement postulate, infinite-dimensional).** -/
-noncomputable def prob (P : POVM H M) (ρ : DensityOperator H) (m : M) : ℝ :=
-  (∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) *
-    (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-      (P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)).re
-
-/-- Convergence of the series defining `prob`. -/
-theorem summable_prob_term (P : POVM H M) (ρ : DensityOperator H) (m : M) :
-    Summable (fun a : EigenvectorIndex ρ.op => (a.1.1 : ℂ) *
-      (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-        (P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)) := by
-  have hnorm := eigenvectorFamily_norm_eq_one ρ
-  refine Summable.of_norm_bounded
-    (ρ.spectralTraceClass.summable.mul_right ‖P.E m‖) fun a => ?_
-  have hle : ‖(inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-      (P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)‖ ≤ ‖P.E m‖ :=
-    calc ‖(inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-          (P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)‖
-        ≤ ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖ *
-            ‖P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a)‖ :=
-          norm_inner_le_norm _ _
-      _ ≤ ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖ *
-          (‖P.E m‖ * ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖) := by
-          gcongr; exact (P.E m).le_opNorm _
-      _ = ‖P.E m‖ := by rw [hnorm a]; ring
-  rw [norm_mul, Complex.norm_real]
-  exact mul_le_mul_of_nonneg_left hle (abs_nonneg _)
-
-/-- **The outcome probabilities of a POVM measurement sum to `1`.** -/
-theorem sum_prob_eq_one (P : POVM H M) (ρ : DensityOperator H) :
-    ∑ m, prob P ρ m = 1 := by
-  have hswap : ∑ m, ∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) *
-      (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-        (P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ) =
-      ∑' a : EigenvectorIndex ρ.op, ∑ m, (a.1.1 : ℂ) *
-      (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-        (P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ) :=
-    (Summable.tsum_finsetSum (fun m _ => summable_prob_term P ρ m)).symm
-  have hnorm := eigenvectorFamily_norm_eq_one ρ
-  have hcollapse : ∀ a : EigenvectorIndex ρ.op, ∑ m, (a.1.1 : ℂ) *
-      (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-        (P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ) =
-      (a.1.1 : ℂ) := fun a => by
-    rw [← Finset.mul_sum, ← inner_sum]
-    have hsum : ∑ m, P.E m (eigenvectorFamily ρ.spectralTraceClass.compact a) =
-        eigenvectorFamily ρ.spectralTraceClass.compact a := by
-      have h := map_sum
-        (ContinuousLinearMap.apply ℂ H (eigenvectorFamily ρ.spectralTraceClass.compact a))
-        P.E Finset.univ
-      simp only [ContinuousLinearMap.apply_apply] at h
-      rw [← h, P.sum_eq_id, ContinuousLinearMap.id_apply]
-    rw [hsum, inner_self_eq_norm_sq_to_K, hnorm a]
-    push_cast
-    ring
-  simp only [prob]
-  rw [← Complex.re_sum, hswap]
-  simp_rw [hcollapse]
-  have htrace := ρ.spectralTrace_eq_one
-  change (∑' a : EigenvectorIndex ρ.op, a.1.1) = 1 at htrace
-  exact_mod_cast htrace
+/-- A discrete POVM with countably many positive bounded effects summing strongly to the identity. -/
+structure POVM (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+    [CompleteSpace H] (M : Type*) [Countable M] where
+  E : M → H →L[ℂ] H
+  pos : ∀ m, (E m).IsPositive
+  hasSum_apply : ∀ x, HasSum (fun m => E m x) x
 
 end QuantumTheory.TraceClass

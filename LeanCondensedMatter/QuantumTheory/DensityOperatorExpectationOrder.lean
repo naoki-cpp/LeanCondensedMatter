@@ -22,6 +22,7 @@ open scoped ComplexOrder
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+omit [CompleteSpace H] in
 private theorem inner_apply_im_eq_zero_of_isSymmetric
     {A : H →L[ℂ] H} (hA : (A : H →ₗ[ℂ] H).IsSymmetric) (x : H) :
     (inner ℂ x (A x) : ℂ).im = 0 := by
@@ -53,6 +54,7 @@ theorem DensityOperator.expectation_isSelfAdjoint_of_isSymmetric
   (Complex.im_eq_zero_iff_isSelfAdjoint _).mp
     (ρ.expectation_im_eq_zero_of_isSymmetric hA)
 
+omit [CompleteSpace H] in
 private theorem inner_apply_im_eq_zero_of_isPositive
     {A : H →L[ℂ] H} (hA : A.IsPositive) (x : H) :
     (inner ℂ x (A x) : ℂ).im = 0 := by
