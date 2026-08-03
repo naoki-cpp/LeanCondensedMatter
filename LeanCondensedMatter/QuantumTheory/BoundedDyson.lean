@@ -33,6 +33,7 @@ theorem norm_one_le : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
   change ‖ContinuousLinearMap.id ℂ H‖ ≤ 1
   exact ContinuousLinearMap.norm_id_le
 
+omit [CompleteSpace H] in
 /-- Factorial norm control for bounded-operator Dyson coefficients. -/
 theorem norm_coeff_le_of_bound (V : ℝ → (H →L[ℂ] H)) {β M : ℝ}
     (hM : 0 ≤ M)
@@ -41,6 +42,7 @@ theorem norm_coeff_le_of_bound (V : ℝ → (H →L[ℂ] H)) {β M : ℝ}
     ‖Dyson.coeff V n τ‖ ≤ Dyson.majorant M τ n := by
   exact Dyson.norm_coeff_le_of_bound V norm_one_le hM hV n hτ
 
+omit [CompleteSpace H] in
 /-- Factorial norm control for perturbatively weighted bounded-operator Dyson terms. -/
 theorem norm_term_le_of_bound (V : ℝ → (H →L[ℂ] H)) {β M : ℝ}
     (hM : 0 ≤ M)
