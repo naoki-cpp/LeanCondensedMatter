@@ -31,6 +31,7 @@ specializations, not parallel APIs.
 | Maximal-purity rank-one characterization | A/C | `idea` | [quantum-theory next steps](roadmaps/quantum-theory-foundations.md#current-next-steps) |
 | Countable discrete POVMs and Born normalization | A | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#discrete-povms-and-the-born-rule) |
 | Von Neumann entropy with finite-dimensional specialization | A/C | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#von-neumann-entropy) |
+| Finite free-fermion Gibbs entropy and Fermi–Dirac binary decomposition | A/D | `proved` | [worked example](examples/free-fermion-entropy.md) |
 | Bounded Gibbs state, free-energy bound, and Gibbs entropy identity | A/C | `proved` under explicit compactness and summability hypotheses | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#gibbs-states-and-helmholtz-free-energy) |
 | Uniqueness of the Gibbs free-energy minimizer | A | `idea` | [quantum-theory next steps](roadmaps/quantum-theory-foundations.md#current-next-steps) |
 | Unbounded Hamiltonian and genuine infinite-dimensional Gibbs theory | A/C | `idea` | [operator algebra](roadmaps/operator-algebra.md#unbounded-and-completed-space-boundary) |
