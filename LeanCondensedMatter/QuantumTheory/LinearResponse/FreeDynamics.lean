@@ -74,6 +74,7 @@ theorem star_schrodingerGenerator :
   congr 1
   rw [Complex.star_def]
   simp
+  ring_nf
 
 /-- Taking the adjoint of the time-scaled generator reverses time. -/
 theorem star_timeScaledGenerator (t : ℝ) :
