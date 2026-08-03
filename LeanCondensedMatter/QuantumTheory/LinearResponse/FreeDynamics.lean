@@ -72,7 +72,8 @@ theorem star_schrodingerGenerator :
   unfold schrodingerGenerator
   rw [star_smul, system.hamiltonian_selfAdjoint.star_eq, ← neg_smul]
   congr 1
-  ring
+  rw [Complex.star_def]
+  simp
 
 /-- Taking the adjoint of the time-scaled generator reverses time. -/
 theorem star_timeScaledGenerator (t : ℝ) :
