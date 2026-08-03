@@ -5,7 +5,6 @@ set_option linter.style.header false
 set_option linter.unusedFintypeInType false
 set_option linter.unusedDecidableInType false
 set_option linter.unusedSectionVars false
-set_option linter.unusedSimpArgs false
 
 /-!
 # Entropy of the finite free-fermion Gibbs state
@@ -35,18 +34,16 @@ noncomputable def freeGibbsConfigurationProbability
     Common.finiteBoltzmannWeight (fermionEnergy ε) β n
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
-/-- The free Gibbs state acts on an occupation basis vector by its configuration probability. -/
 @[simp]
 theorem freeGibbsDensityOperator_apply_basis_probability
     (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
     (freeGibbsDensityOperator ε β).op (Common.finiteHilbertBasisState n) =
-      ((freeGibbsConfigurationProbability ε β n : ℝ) : ℂ) •
+      (freeGibbsConfigurationProbability ε β n : ℂ) •
         Common.finiteHilbertBasisState n := by
   simpa [freeGibbsConfigurationProbability] using
     freeGibbsDensityOperator_apply_basis ε β n
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
-/-- Every free Gibbs configuration has strictly positive probability. -/
 theorem freeGibbsConfigurationProbability_pos
     (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
     0 < freeGibbsConfigurationProbability ε β n := by
@@ -55,26 +52,20 @@ theorem freeGibbsConfigurationProbability_pos
     (Real.exp_pos _)
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
-/-- The free Gibbs configuration probabilities sum to one. -/
 theorem sum_freeGibbsConfigurationProbability_eq_one (ε : Mode → ℝ) (β : ℝ) :
     ∑ n : Occupation Mode, freeGibbsConfigurationProbability ε β n = 1 := by
   simp_rw [freeGibbsConfigurationProbability]
   rw [← Finset.mul_sum]
-  change (Common.finitePartitionFunction (fermionEnergy ε) β)⁻¹ *
-      (∑ n : Occupation Mode,
-        Common.finiteBoltzmannWeight (fermionEnergy ε) β n) = 1
   have hsum :
       (∑ n : Occupation Mode,
         Common.finiteBoltzmannWeight (fermionEnergy ε) β n) =
-      Common.finitePartitionFunction (fermionEnergy ε) β := by
-    simpa only [tsum_fintype] using
-      (Common.hasSum_finiteBoltzmannWeight (fermionEnergy ε) β).tsum_eq
+        Common.finitePartitionFunction (fermionEnergy ε) β := by
+    rw [Common.finitePartitionFunction, tsum_fintype]
   rw [hsum]
   exact inv_mul_cancel₀
     (ne_of_gt (Common.finitePartitionFunction_pos (fermionEnergy ε) β))
 
 omit [LinearOrder Mode] in
-/-- The real finite free-fermion partition function factorizes mode by mode. -/
 theorem finitePartitionFunction_fermionEnergy_eq_prod
     (ε : Mode → ℝ) (β : ℝ) :
     Common.finitePartitionFunction (fermionEnergy ε) β =
@@ -89,7 +80,6 @@ theorem finitePartitionFunction_fermionEnergy_eq_prod
   exact Finset.prod_congr rfl fun i _ => add_comm _ _
 
 omit [LinearOrder Mode] in
-/-- The logarithm of the real free partition function is the sum of one-mode contributions. -/
 theorem log_finitePartitionFunction_fermionEnergy_eq_sum
     (ε : Mode → ℝ) (β : ℝ) :
     Real.log (Common.finitePartitionFunction (fermionEnergy ε) β) =
@@ -119,8 +109,7 @@ theorem sum_freeGibbsConfigurationProbability_filter_mem
     ∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∈ ·),
         freeGibbsConfigurationProbability ε β n =
       fermiDiracOccupation ε β i := by
-  set P : ℝ :=
-    ∏ j ∈ Finset.univ.erase i, (1 + Real.exp (-β * ε j)) with hP
+  let P : ℝ := ∏ j ∈ Finset.univ.erase i, (1 + Real.exp (-β * ε j))
   have hfilter_not :
       (Finset.univ : Finset (Occupation Mode)).filter (i ∉ ·) =
         (Finset.univ.erase i : Finset Mode).powerset := by
@@ -130,13 +119,16 @@ theorem sum_freeGibbsConfigurationProbability_filter_mem
       ∑ n ∈ (Finset.univ : Finset (Occupation Mode)).filter (i ∉ ·),
           Common.finiteBoltzmannWeight (fermionEnergy ε) β n = P := by
     rw [hfilter_not]
-    simpa [P] using
-      sum_finiteBoltzmannWeight_powerset_eq_prod ε β (Finset.univ.erase i)
+    exact sum_finiteBoltzmannWeight_powerset_eq_prod ε β (Finset.univ.erase i)
   have hZ :
       Common.finitePartitionFunction (fermionEnergy ε) β =
         (1 + Real.exp (-β * ε i)) * P := by
-    rw [finitePartitionFunction_fermionEnergy_eq_prod, hP,
-      ← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]
+    rw [finitePartitionFunction_fermionEnergy_eq_prod]
+    change (∏ j, (1 + Real.exp (-β * ε j))) =
+      (1 + Real.exp (-β * ε i)) *
+        ∏ j ∈ Finset.univ.erase i, (1 + Real.exp (-β * ε j))
+    exact (Finset.mul_prod_erase
+      (fun j => 1 + Real.exp (-β * ε j)) (Finset.mem_univ i)).symm
   have hPpos : 0 < P := by
     apply Finset.prod_pos
     intro j hj
@@ -162,8 +154,7 @@ theorem sum_freeGibbsConfigurationProbability_filter_mem
   rw [show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
   field_simp [hPpos.ne', Real.exp_ne_zero]
 
-/-- The mean free energy of the configuration distribution is the mode-energy sum weighted by
-Fermi–Dirac occupations. -/
+/-- The mean free energy is the mode-energy sum weighted by Fermi–Dirac occupations. -/
 theorem sum_freeGibbsConfigurationProbability_mul_fermionEnergy
     (ε : Mode → ℝ) (β : ℝ) :
     ∑ n : Occupation Mode,
@@ -193,14 +184,13 @@ theorem sum_freeGibbsConfigurationProbability_mul_fermionEnergy
       rw [Finset.mul_sum, ← Finset.sum_filter]
       apply Finset.sum_congr rfl
       intro n hn
-      by_cases hni : i ∈ n <;> simp [mul_comm]
+      by_cases hni : i ∈ n <;> simp_all [mul_comm]
     _ = ∑ i, ε i * fermiDiracOccupation ε β i := by
       apply Finset.sum_congr rfl
       intro i hi
       rw [sum_freeGibbsConfigurationProbability_filter_mem]
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
-/-- The configuration entropy satisfies the finite Gibbs identity `S = βE + log Z`. -/
 theorem sum_negMulLog_freeGibbsConfigurationProbability
     (ε : Mode → ℝ) (β : ℝ) :
     ∑ n : Occupation Mode,
@@ -227,7 +217,6 @@ theorem sum_negMulLog_freeGibbsConfigurationProbability
   rw [sum_freeGibbsConfigurationProbability_eq_one, mul_one]
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
-/-- The real value of the free Gibbs von Neumann entropy is the configuration Shannon entropy. -/
 theorem vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_configuration
     (ε : Mode → ℝ) (β : ℝ) :
     (vonNeumannEntropy (freeGibbsDensityOperator ε β)).toReal =
@@ -266,8 +255,7 @@ private theorem one_sub_fermiDiracOccupation_eq_inv_one_add_exp_neg
     1 - fermiDiracOccupation ε β i =
       (1 + Real.exp (-β * ε i))⁻¹ := by
   rw [fermiDiracOccupation, show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
-  field_simp [Real.exp_ne_zero]
-  ring
+  field_simp [Real.exp_ne_zero] <;> ring
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
 private theorem binaryEntropy_fermiDiracOccupation
