@@ -27,12 +27,15 @@ theorem gibbsState_apply_eigenvector (Hop : Observable H) (β : ℝ)
   exact (smul_assoc ((spectralTrace hsummable)⁻¹ : ℝ)
     (Real.exp (-β * E) : ℂ) v).symm
 
-/-- In finite dimensions, energy expectation agrees with the real part of `Tr(ρH)`. -/
-theorem energyExpValue_eq_re_linearMap_trace [FiniteDimensional ℂ H]
+/-- In finite dimensions, `Tr(ρH)` is exactly the complex embedding of the real energy value. -/
+theorem linearMap_trace_mul_observable_eq_energyExpValue [FiniteDimensional ℂ H]
     (ρ : DensityOperator H) (Hop : Observable H) :
-    energyExpValue ρ Hop =
-      (LinearMap.trace ℂ H ((ρ.op ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H)).re := by
-  simpa [energyExpValue] using congrArg Complex.re (ρ.expectation_eq_linearMap_trace Hop.1)
+    LinearMap.trace ℂ H ((ρ.op ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) =
+      (energyExpValue ρ Hop : ℂ) := by
+  calc
+    LinearMap.trace ℂ H ((ρ.op ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) =
+        ρ.expectation Hop.1 := (ρ.expectation_eq_linearMap_trace Hop.1).symm
+    _ = (energyExpValue ρ Hop : ℂ) := ρ.expectation_observable Hop
 
 /-- The entropy operator of the normalized Gibbs state has summable nonzero eigenvalues. -/
 theorem gibbsState_entropyOp_hasSummableRealEigenvalues (Hop : Observable H) (β : ℝ)
