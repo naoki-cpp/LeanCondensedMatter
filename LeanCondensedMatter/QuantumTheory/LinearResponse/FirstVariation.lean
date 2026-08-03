@@ -23,6 +23,7 @@ namespace QuantumTheory
 namespace LinearResponse
 
 open Filter Set
+open scoped Topology
 
 noncomputable section
 
