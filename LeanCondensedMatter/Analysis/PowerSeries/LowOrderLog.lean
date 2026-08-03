@@ -113,7 +113,7 @@ theorem powerSeriesCumulantCoeff_one_eq {Z : PowerSeries ℂ}
     (hZ : PowerSeries.constantCoeff Z = 1) :
     powerSeriesCumulantCoeff Z 1 = powerSeriesMomentCoeff Z 1 := by
   have hrec := powerSeriesMomentCoeff_succ_recurrence_lowOrder hZ 0
-  norm_num [powerSeriesMomentCoeff_zero_eq_one hZ] at hrec
+  norm_num [Finset.sum_range_succ, powerSeriesMomentCoeff_zero_eq_one hZ] at hrec
   simpa using hrec.symm
 
 /-- The second cumulant coefficient subtracts the disconnected product of two first moments. -/
@@ -122,7 +122,7 @@ theorem powerSeriesCumulantCoeff_two_eq {Z : PowerSeries ℂ}
     powerSeriesCumulantCoeff Z 2 =
       powerSeriesMomentCoeff Z 2 - powerSeriesMomentCoeff Z 1 ^ 2 := by
   have hrec := powerSeriesMomentCoeff_succ_recurrence_lowOrder hZ 1
-  norm_num [powerSeriesMomentCoeff_zero_eq_one hZ] at hrec
+  norm_num [Finset.sum_range_succ, powerSeriesMomentCoeff_zero_eq_one hZ] at hrec
   rw [powerSeriesCumulantCoeff_one_eq hZ] at hrec
   ring_nf at hrec ⊢
   linear_combination -hrec
@@ -135,7 +135,7 @@ theorem powerSeriesCumulantCoeff_three_eq {Z : PowerSeries ℂ}
         3 * powerSeriesMomentCoeff Z 1 * powerSeriesMomentCoeff Z 2 +
           2 * powerSeriesMomentCoeff Z 1 ^ 3 := by
   have hrec := powerSeriesMomentCoeff_succ_recurrence_lowOrder hZ 2
-  norm_num [powerSeriesMomentCoeff_zero_eq_one hZ] at hrec
+  norm_num [Finset.sum_range_succ, powerSeriesMomentCoeff_zero_eq_one hZ] at hrec
   rw [powerSeriesCumulantCoeff_one_eq hZ, powerSeriesCumulantCoeff_two_eq hZ] at hrec
   ring_nf at hrec ⊢
   linear_combination -hrec
@@ -154,7 +154,7 @@ theorem factorial_mul_coeff_logOf_two_eq {Z : PowerSeries ℂ}
     ((2 : ℕ).factorial : ℂ) * PowerSeries.coeff 2 (PowerSeries.logOf Z) =
       2 * PowerSeries.coeff 2 Z - PowerSeries.coeff 1 Z ^ 2 := by
   have h := powerSeriesCumulantCoeff_two_eq hZ
-  norm_num [powerSeriesCumulantCoeff, powerSeriesMomentCoeff] at h ⊢
+  norm_num [powerSeriesCumulantCoeff, powerSeriesMomentCoeff, Nat.factorial] at h ⊢
   exact h
 
 /-- Third factorial-normalized coefficient of `logOf Z`. -/
@@ -165,7 +165,7 @@ theorem factorial_mul_coeff_logOf_three_eq {Z : PowerSeries ℂ}
         6 * PowerSeries.coeff 1 Z * PowerSeries.coeff 2 Z +
           2 * PowerSeries.coeff 1 Z ^ 3 := by
   have h := powerSeriesCumulantCoeff_three_eq hZ
-  norm_num [powerSeriesCumulantCoeff, powerSeriesMomentCoeff] at h ⊢
+  norm_num [powerSeriesCumulantCoeff, powerSeriesMomentCoeff, Nat.factorial] at h ⊢
   ring_nf at h ⊢
   exact h
 
