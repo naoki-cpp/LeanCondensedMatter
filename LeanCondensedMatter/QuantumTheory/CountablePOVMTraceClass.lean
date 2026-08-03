@@ -54,28 +54,14 @@ noncomputable def probSelfAdjoint
   ⟨ρ.expectation (P.E m),
     ρ.expectation_isSelfAdjoint_of_isPositive (P.pos m)⟩
 
-@[simp]
-theorem coe_probSelfAdjoint
-    (P : CountablePOVM H M) (ρ : DensityOperator H) (m : M) :
-    (P.probSelfAdjoint ρ m : ℂ) = ρ.expectation (P.E m) :=
-  rfl
-
 /-- The real Born probability obtained losslessly from the self-adjoint scalar `Tr(ρ Eₘ)`. -/
 noncomputable def prob (P : CountablePOVM H M) (ρ : DensityOperator H) (m : M) : ℝ :=
   Complex.selfAdjointEquiv (P.probSelfAdjoint ρ m)
 
-/-- The real-coordinate formula for a Born probability. This is a consequence of transporting a
-self-adjoint complex scalar to `ℝ`, rather than discarding an imaginary part. -/
-@[simp]
-theorem prob_eq_expectation_re
-    (P : CountablePOVM H M) (ρ : DensityOperator H) (m : M) :
-    P.prob ρ m = (ρ.expectation (P.E m)).re :=
-  rfl
-
 /-- Every countable-discrete Born probability is nonnegative. -/
 theorem prob_nonneg (P : CountablePOVM H M) (ρ : DensityOperator H) (m : M) :
     0 ≤ P.prob ρ m := by
-  rw [P.prob_eq_expectation_re]
+  change 0 ≤ (ρ.expectation (P.E m)).re
   exact ρ.expectation_re_nonneg_of_isPositive (P.pos m)
 
 private noncomputable def probabilityKernel (P : CountablePOVM H M)
@@ -106,6 +92,7 @@ private theorem hasSum_probabilityKernel_outcome (P : CountablePOVM H M)
 private theorem hasSum_probabilityKernel_eigenvector (P : CountablePOVM H M)
     (ρ : DensityOperator H) (m : M) :
     HasSum (fun a => probabilityKernel P ρ a m) (P.prob ρ m) := by
+  change HasSum (fun a => probabilityKernel P ρ a m) (ρ.expectation (P.E m)).re
   have h := Complex.reCLM.hasSum (ρ.summable_expectation_term (P.E m)).hasSum
   simpa [probabilityKernel, DensityOperator.expectation_apply, Complex.mul_re] using h
 
@@ -172,7 +159,8 @@ noncomputable def POVM.toCountable (P : POVM H M) : CountablePOVM H M where
 @[simp]
 theorem POVM.toCountable_prob (P : POVM H M) (ρ : DensityOperator H) (m : M) :
     P.toCountable.prob ρ m = prob P ρ m := by
-  rw [CountablePOVM.prob_eq_expectation_re, ρ.expectation_apply]
+  change (ρ.expectation (P.E m)).re = prob P ρ m
+  rw [ρ.expectation_apply]
   rfl
 
 end FiniteCompatibility
