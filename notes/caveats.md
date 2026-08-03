@@ -48,10 +48,6 @@ applies.
 - **POVMs are countable and discrete.** The current `QuantumTheory.POVM` does not model continuous
   outcomes, measurable operator-valued measures, or instruments/state update.
 
-- **Purity is not yet part of the canonical density-state API.** Do not refer to a finite-only
-  `Tr(ρ²)` definition. A future definition must use the canonical state type and prove the required
-  spectral summability facts.
-
 ## Second quantization
 
 - **Algebraic Fock space is not a completed Hilbert space.** Coordinate identities on
