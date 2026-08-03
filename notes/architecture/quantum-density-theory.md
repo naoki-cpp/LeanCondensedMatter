@@ -65,6 +65,9 @@ In finite dimensions, `DensityOperator.expectation_eq_linearMap_trace` identifie
 with the ordinary matrix trace `Tr(ρA)`. Diagonal finite-sum formulas are specialization theorems of
 the same expectation.
 
+Real-valued physical quantities are obtained from a proved self-adjoint complex scalar through
+`Complex.selfAdjointEquiv`; they are not defined by discarding an arbitrary imaginary part.
+
 ## Pure states and purity
 
 `QuantumTheory.pure` maps a unit vector to the rank-one projector `|ψ⟩⟨ψ|` and proves that it is a
@@ -76,10 +79,10 @@ embedding, not purification of a mixed state on a larger space.
 ```text
 0 ≤ purity ρ ≤ 1
 purity (pure ψ) = 1
+ρ.expectation ρ.op = (purity ρ : ℂ)
 ```
 
-and identifies purity with the real part of the expectation of the density operator itself. In
-finite dimensions it agrees with `Re Tr(ρ²)`.
+In finite dimensions, `Tr(ρ²) = (purity ρ : ℂ)` exactly.
 
 ## Discrete measurements
 
@@ -118,7 +121,9 @@ domain-aware theory.
 
 The bounded theory includes:
 
-- `energyExpValue`;
+- `energyExpectationSelfAdjoint`, the self-adjoint scalar representing `Tr(ρH)`;
+- `energyExpValue`, its lossless real image under `Complex.selfAdjointEquiv`;
+- the exact identity `ρ.expectation Hop.1 = (energyExpValue ρ Hop : ℂ)`;
 - the Helmholtz free-energy lower bound;
 - finiteness of entropy under the variational hypotheses;
 - the entropy/free-energy identity for the normalized Gibbs state.
@@ -133,7 +138,8 @@ Finite-dimensional code uses the same `DensityOperator` type. The specialization
 - equivalence with ordinary `LinearMap.trace` normalization;
 - ordinary trace formulas for expectations;
 - finite diagonal expectation formulas;
-- the matrix formula `purity ρ = Re Tr(ρ²)`;
+- the exact matrix formula `Tr(ρ²) = (purity ρ : ℂ)`;
+- the exact energy formula `Tr(ρH) = (energyExpValue ρ Hop : ℂ)`;
 - automatic entropy summability and finiteness.
 
 There is no separate finite-dimensional state or measurement model.
