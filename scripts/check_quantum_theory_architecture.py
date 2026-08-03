@@ -7,10 +7,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 QUANTUM = ROOT / "LeanCondensedMatter" / "QuantumTheory"
 LEAN_ROOT = ROOT / "LeanCondensedMatter"
+NOTES = ROOT / "notes"
 
 TRACECLASS_NAMESPACE = re.compile(r"\bQuantumTheory\.TraceClass\b")
 TRACECLASS_QUANTUM_IMPORT = re.compile(
     r"^\s*import\s+LeanCondensedMatter\.QuantumTheory\.[A-Za-z0-9_.]*TraceClass(?:\s|$)"
+)
+LEGACY_QUANTUM_MODULE = re.compile(
+    r"(?:LeanCondensedMatter/)?QuantumTheory/[A-Za-z0-9_./-]*TraceClass\.lean"
 )
 DENSITY_DECL = re.compile(r"^\s*structure\s+DensityOperator\b", re.MULTILINE)
 POVM_DECL = re.compile(r"^\s*structure\s+POVM\b", re.MULTILINE)
@@ -21,6 +25,9 @@ LEGACY_ALIAS = re.compile(
 
 EXPECTED_DENSITY = QUANTUM / "DensityOperator" / "Basic.lean"
 EXPECTED_POVM = QUANTUM / "POVM" / "Basic.lean"
+REMOVED_DOCUMENTS = (
+    NOTES / "migrations" / "canonical-quantum-density-theory.md",
+)
 
 
 def relative(path: Path) -> str:
@@ -29,6 +36,32 @@ def relative(path: Path) -> str:
 
 def lean_files(root: Path):
     yield from sorted(root.rglob("*.lean"))
+
+
+def documentation_files():
+    for path in (ROOT / "README.md", ROOT / "PROJECT.md"):
+        if path.exists():
+            yield path
+    if NOTES.exists():
+        yield from sorted(NOTES.rglob("*.md"))
+
+
+def check_documentation(errors: list[str]) -> None:
+    for path in REMOVED_DOCUMENTS:
+        if path.exists():
+            errors.append(f"obsolete migration document exists: {relative(path)}")
+
+    for path in documentation_files():
+        text = path.read_text(encoding="utf-8")
+        for line_no, line in enumerate(text.splitlines(), start=1):
+            if TRACECLASS_NAMESPACE.search(line):
+                errors.append(
+                    f"obsolete public namespace in docs: {relative(path)}:{line_no}: {line.strip()}"
+                )
+            if LEGACY_QUANTUM_MODULE.search(line):
+                errors.append(
+                    f"obsolete QuantumTheory module in docs: {relative(path)}:{line_no}: {line.strip()}"
+                )
 
 
 def main() -> int:
@@ -73,6 +106,8 @@ def main() -> int:
             "canonical POVM must be declared exactly once in "
             f"{relative(EXPECTED_POVM)}; found: {rendered}"
         )
+
+    check_documentation(errors)
 
     if errors:
         print("QuantumTheory architecture audit failed:", file=sys.stderr)
