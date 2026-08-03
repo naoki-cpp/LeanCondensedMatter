@@ -20,9 +20,12 @@ theorem energyExpValue_eq_sum_common_eigenbasis (ρ : DensityOperator H) (Hop : 
     (hE : ∀ i, (Hop.1 : H →ₗ[ℂ] H) (b i) = (E i : ℂ) • b i) :
     energyExpValue ρ Hop = ∑ i, w i * E i := by
   have hdiag (i : ι) :
-      inner ℂ (b i) ((ρ.op ∘L Hop.1) (b i)) = (w i * E i : ℂ) := by
+      inner ℂ (b i)
+        (((ρ.op ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) (b i)) =
+          ((w i * E i : ℝ) : ℂ) := by
     change inner ℂ (b i)
-      ((ρ.op : H →ₗ[ℂ] H) ((Hop.1 : H →ₗ[ℂ] H) (b i))) = (w i * E i : ℂ)
+      ((ρ.op : H →ₗ[ℂ] H) ((Hop.1 : H →ₗ[ℂ] H) (b i))) =
+        ((w i * E i : ℝ) : ℂ)
     have hrho := congrArg (fun x : H => (ρ.op : H →ₗ[ℂ] H) x) (hE i)
     rw [hrho, map_smul, hρ i, smul_smul, inner_smul_right,
       inner_self_eq_norm_sq_to_K, b.norm_eq_one]
