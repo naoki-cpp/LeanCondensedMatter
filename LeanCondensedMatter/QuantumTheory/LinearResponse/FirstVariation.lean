@@ -134,7 +134,6 @@ theorem hasDerivAt_interactionPropagator_zero_of_bound
             mul_le_mul_of_nonneg_left hrem' (inv_nonneg.mpr (abs_nonneg lam))
         _ = |lam| * (C / system.hbar ^ 2) := by
           field_simp [habs0, system.hbar_ne_zero]
-          <;> ring
   · simpa using habs.mul_const (C / system.hbar ^ 2)
 
 end
