@@ -158,7 +158,9 @@ theorem sum_freeGibbsConfigurationProbability_filter_mem
   simp_rw [freeGibbsConfigurationProbability]
   rw [← Finset.mul_sum, hnum, hZ]
   have hqi : q i = (Real.exp (β * ε i))⁻¹ := by
-    rw [hq, show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
+    rw [hq]
+    change Real.exp (-β * ε i) = (Real.exp (β * ε i))⁻¹
+    rw [show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
   rw [hqi, fermiDiracOccupation]
   field_simp [hPpos.ne', Real.exp_ne_zero]
 
@@ -258,7 +260,7 @@ private theorem fermiDiracOccupation_eq_exp_neg_div
     fermiDiracOccupation ε β i =
       Real.exp (-β * ε i) / (1 + Real.exp (-β * ε i)) := by
   rw [fermiDiracOccupation, show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
-  field_simp [Real.exp_ne_zero] <;> ring
+  field_simp [Real.exp_ne_zero]
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
 private theorem one_sub_fermiDiracOccupation_eq_inv_one_add_exp_neg
@@ -266,7 +268,8 @@ private theorem one_sub_fermiDiracOccupation_eq_inv_one_add_exp_neg
     1 - fermiDiracOccupation ε β i =
       (1 + Real.exp (-β * ε i))⁻¹ := by
   rw [fermiDiracOccupation, show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
-  field_simp [Real.exp_ne_zero] <;> ring
+  field_simp [Real.exp_ne_zero]
+  ring
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
 private theorem binaryEntropy_fermiDiracOccupation
