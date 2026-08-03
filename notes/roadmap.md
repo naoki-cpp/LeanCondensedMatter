@@ -1,65 +1,55 @@
 # Roadmap
 
-Formalization targets and their status, at a glance. Details live in per-track files; major completed
-targets are also recorded in [`completed.md`](completed.md).
+Formalization targets and their current status. Detailed ownership and open problems live in the
+per-track roadmaps; completed milestones are summarized in [`completed.md`](completed.md).
 
-Status values: `idea` → `stated` (definition/statement written, may contain `sorry`) → `proved`
-(compiles, no `sorry`).
+Status values:
 
-## Approach
+- `idea`: no stable formal statement yet;
+- `stated`: a target or interface is fixed, but the intended theorem set is incomplete;
+- `proved`: the stated target compiles without `sorry`.
 
-The project develops four interacting tracks:
+## Tracks
 
 ```text
-Track A: quantum theory     Track B: combinatorics       Track C: operator algebra      Track D: second quantization
-  axioms and thermal states   partitions and cumulants     compact/trace-class tools      Fock space, CAR/CCR,
-                                                                                          Dyson and diagrams
-               \                        /                            /                              /
-                \                      /                            /                              /
-                 -> finite-temperature many-body theorems <---------------------------------------
+Track A: quantum theory     Track B: combinatorics       Track C: operator analysis      Track D: second quantization
+states, measurements,        partitions, cumulants,       compact, spectral trace,         Fock algebra, thermal states,
+entropy, Gibbs theory        connected structures         Hilbert–Schmidt tools            Dyson and diagrams
 ```
 
-Track B has become an independent reusable Lean combinatorics library. Track D now contains a
-completed finite-mode fermionic Dyson theory in both forms:
-
-- the coefficientwise formal/algebraic Linked Cluster Theorem;
-- the finite-dimensional analytic partition-function identity and analytic connected-diagram
-  theorem near zero coupling.
-
-The remaining SecondQuantization research work is low-order regression coverage, time-ordered
-correlation functions with external legs, convergence-aware bosonic perturbation theory, and later
-completed-space, infinite-mode, or thermodynamic-limit extensions. The breaking canonical-API
-consolidation is tracked by issue #345 and
-[`roadmaps/second-quantization-refactor.md`](roadmaps/second-quantization-refactor.md).
+The tracks meet in finite-temperature many-body theorems. The current public density-state and
+thermal expectation architecture is dimension-independent; finite-dimensional results are
+specializations, not parallel APIs.
 
 ## Targets
 
 | Target | Track | Status | Details |
 |---|---|---|---|
-| Minimal axiomatic quantum theory foundation | A | `stated` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#minimal-axiomatic-quantum-theory-foundation) |
-| Density operators and the Born rule (finite-dimensional) | A | `stated` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#density-operators-and-the-born-rule-finite-dimensional) |
-| Von Neumann entropy / Boltzmann's principle (finite-dimensional) | A | `stated` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#von-neumann-entropy--boltzmanns-principle-finite-dimensional) |
-| Canonical distribution as the Helmholtz free-energy-minimizing state | A | `stated` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#canonical-distribution-as-the-helmholtz-free-energy-minimizing-state) |
-| Finite-temperature many-body perturbation theory | A/D | `proved` for the finite-mode fermionic Dyson evolution, partition-function Taylor series, and linked-cluster theorem; broader bosonic and infinite-dimensional generalizations remain `stated` | [second quantization](roadmaps/second-quantization.md) |
-| Finite-temperature Bloch–de Dominicis theorem | A/D | `proved` in the abstract finite-basis setting, with fermionic and bosonic two-point specializations | [second-quantization status](roadmaps/second-quantization-status.md) |
-| Partition-lattice refinement/Möbius factorization | B | `proved` | [combinatorics](roadmaps/combinatorics.md#partition-lattice-möbius--moment-cumulant-formula) |
-| Explicit partition-lattice Möbius formula `(-1)^(n-1)(n-1)!` | B | `stated` | [combinatorics](roadmaps/combinatorics.md#partition-lattice-möbius--moment-cumulant-formula) |
-| Moment–cumulant inversion formula | B | `proved` | [combinatorics](roadmaps/combinatorics.md#moment–cumulant-inversion) |
-| Cumulants vanish across independence | B | `proved` | [combinatorics](roadmaps/combinatorics.md#cumulants-vanish-across-independence) |
+| Minimal bounded axiomatic quantum theory | A | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#minimal-axiomatic-quantum-theory) |
+| Canonical density operators and expectations | A/C | `proved` | [architecture](architecture/quantum-density-theory.md) |
+| Countable discrete POVMs and Born normalization | A | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#discrete-povms-and-the-born-rule) |
+| Von Neumann entropy with finite-dimensional specialization | A/C | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#von-neumann-entropy) |
+| Bounded Gibbs state, free-energy bound, and Gibbs entropy identity | A/C | `proved` under explicit compactness and summability hypotheses | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#gibbs-states-and-helmholtz-free-energy) |
+| Purity and equality characterizations | A/C | `idea` | [quantum-theory next steps](roadmaps/quantum-theory-foundations.md#current-next-steps) |
+| Uniqueness of the Gibbs free-energy minimizer | A | `idea` | [quantum-theory next steps](roadmaps/quantum-theory-foundations.md#current-next-steps) |
+| Unbounded Hamiltonian and genuine infinite-dimensional Gibbs theory | A/C | `idea` | [operator algebra](roadmaps/operator-algebra.md#unbounded-and-completed-space-boundary) |
+| Partition-lattice refinement and Möbius factorization | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
+| Explicit partition-lattice Möbius formula | B | `stated` | [combinatorics](roadmaps/combinatorics.md) |
+| Moment–cumulant inversion | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
+| Cumulants vanish across independence | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Formal-log coefficient / finite-set cumulant bridge | B | `proved` | `Combinatorics/PowerSeriesCumulant.lean` |
-| Bounded/compact operator groundwork | C | `proved` | [operator algebra](roadmaps/operator-algebra.md#continuous-functional-calculus-acts-on-eigenvectors-by-evaluation) |
-| Hilbert–Schmidt operator theory | C | `stated` | [operator algebra](roadmaps/operator-algebra.md#hilbert–schmidt-operators) |
-| Trace-class operator theory | C | `stated` | [operator algebra](roadmaps/operator-algebra.md#trace-class--hilbert-schmidt-operator-theory) |
-| Fredholm determinant | C | `idea` | [operator algebra](roadmaps/operator-algebra.md) |
-| Second quantization, generic algebraic evolution and local-operator layer | D | `proved` — key matrix-coefficient, Heisenberg-semigroup, fermionic interaction-picture, and quartic local-leg results no longer require a finite global mode/configuration type | [finiteness boundary](roadmaps/second-quantization-status.md#finiteness-boundary) |
-| Second quantization, fermionic finite-mode line | D | `proved` — Fock/CAR, thermal theory, Dyson coefficients, full quartic Wick diagrams, component factorization, connected cumulants, formal LCT, analytic partition function, and analytic LCT are complete | [current status](roadmaps/second-quantization-status.md#fermionic-line) · [development roadmap](roadmaps/second-quantization.md) |
-| Second quantization, bosonic parallel line | D | `stated` — algebraic, free thermal, two-point Bloch–de Dominicis, and quartic component data are proved; general Gibbs/Dyson/amplitude layers remain convergence-limited | [current status](roadmaps/second-quantization-status.md#bosonic-line) · [development roadmap](roadmaps/second-quantization.md#bosonic-parallel-line) |
-| Fermionic Dyson Linked Cluster Theorem, formal/algebraic finite-mode form | Combined | `proved` | [completed roadmap](roadmaps/linked-cluster-theorem.md) · `SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude` |
-| Analytic finite-dimensional Dyson/partition-function connection | D | `proved` | `SecondQuantization.Fermionic.hasSum_dysonTraceCoeff_eq_analyticDysonPartitionFunction` · [analytic upgrade](roadmaps/second-quantization.md#analytic-finite-dimensional-upgrade--complete) |
-| Analytic finite-dimensional fermionic Linked Cluster Theorem | Combined | `proved` | `SecondQuantization.Fermionic.iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAmplitude` · [analytic upgrade](roadmaps/second-quantization.md#analytic-finite-dimensional-upgrade--complete) |
-| Low-order fermionic `n = 1,2,3` regression corollaries | D | `idea` | [next phases](roadmaps/second-quantization.md#f1--low-order-fermionic-verification) |
-| Connected time-ordered correlation-function expansion | D | `idea` | [next phases](roadmaps/second-quantization.md#f3--correlation-functions-and-external-legs) |
-| Convergence-aware bosonic Gibbs/Dyson interface | D | `idea` | [bosonic blockers](roadmaps/second-quantization.md#remaining-bosonic-blockers) |
-| Completed-space and infinite-mode second quantization | C/D | `idea` | [next phases](roadmaps/second-quantization.md#a1--completed-space-and-infinite-mode-extensions) |
+| Compact self-adjoint spectral decomposition | C | `proved` | [operator algebra](roadmaps/operator-algebra.md#compact-self-adjoint-spectral-tools) |
+| Spectral trace-class theory and trace identities | C | `proved` | [operator algebra](roadmaps/operator-algebra.md#spectral-trace-class-operators) |
+| Hilbert–Schmidt basic, inner-product, and trace infrastructure | C | `proved` | [operator algebra](roadmaps/operator-algebra.md#hilbert–schmidt-operators) |
+| General non-self-adjoint trace-class ideal | C | `idea` | [operator algebra](roadmaps/operator-algebra.md#remaining-operator-analysis) |
+| Fredholm determinant | C | `idea` | [operator algebra](roadmaps/operator-algebra.md#remaining-operator-analysis) |
+| Generic bounded Dyson–Volterra theory | C/D | `proved` | `Analysis/Dyson/` · `QuantumTheory/BoundedDyson.lean` |
+| Generic algebraic second-quantization evolution and local-operator layer | D | `proved` | [second-quantization status](roadmaps/second-quantization-status.md) |
+| Finite-mode fermionic thermal, Dyson, and linked-cluster line | D | `proved` | [second quantization](roadmaps/second-quantization.md) |
+| Finite-temperature Bloch–de Dominicis pairing recursion and finite Gibbs instance | A/D | `proved` | [thermal expectation architecture](roadmaps/thermal-expectation-architecture.md) |
+| Bosonic algebraic and two-point thermal layer | D | `proved` for current stated results; general Gibbs/Dyson layer remains `idea` | [second-quantization status](roadmaps/second-quantization-status.md) |
+| Convergence-aware bosonic Gibbs and perturbation theory | C/D | `idea` | [second quantization](roadmaps/second-quantization.md) |
+| Completed-space and infinite-mode second quantization | C/D | `idea` | [second quantization](roadmaps/second-quantization.md) |
+| Connected time-ordered correlation functions with external legs | D | `idea` | [second quantization](roadmaps/second-quantization.md) |
 
-See [`completed.md`](completed.md) for a compact list of major targets that have reached `proved`.
+See [`completed.md`](completed.md) for the compact list of major proved milestones.
