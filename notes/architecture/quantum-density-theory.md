@@ -23,6 +23,7 @@ QuantumTheory/
 ├── DensityOperator/
 │   ├── Basic.lean
 │   ├── Pure.lean
+│   ├── Purity.lean
 │   ├── Expectation.lean
 │   ├── ExpectationOrder.lean
 │   └── Diagonal.lean
@@ -36,6 +37,7 @@ QuantumTheory/
 ├── FiniteDimensional/
 │   ├── DensityOperator.lean
 │   ├── Expectation.lean
+│   ├── Purity.lean
 │   └── Entropy.lean
 └── Gibbs/
     ├── State.lean
@@ -63,11 +65,21 @@ In finite dimensions, `DensityOperator.expectation_eq_linearMap_trace` identifie
 with the ordinary matrix trace `Tr(ρA)`. Diagonal finite-sum formulas are specialization theorems of
 the same expectation.
 
-## Pure states
+## Pure states and purity
 
 `QuantumTheory.pure` maps a unit vector to the rank-one projector `|ψ⟩⟨ψ|` and proves that it is a
 normalized density operator on an arbitrary complete complex Hilbert space. This is a pure-state
 embedding, not purification of a mixed state on a larger space.
+
+`QuantumTheory.purity ρ` is the convergent spectral sum `∑ᵢ λᵢ²`. The API proves
+
+```text
+0 ≤ purity ρ ≤ 1
+purity (pure ψ) = 1
+```
+
+and identifies purity with the real part of the expectation of the density operator itself. In
+finite dimensions it agrees with `Re Tr(ρ²)`.
 
 ## Discrete measurements
 
@@ -121,6 +133,7 @@ Finite-dimensional code uses the same `DensityOperator` type. The specialization
 - equivalence with ordinary `LinearMap.trace` normalization;
 - ordinary trace formulas for expectations;
 - finite diagonal expectation formulas;
+- the matrix formula `purity ρ = Re Tr(ρ²)`;
 - automatic entropy summability and finiteness.
 
 There is no separate finite-dimensional state or measurement model.
