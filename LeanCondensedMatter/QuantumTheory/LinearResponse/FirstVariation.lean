@@ -96,20 +96,29 @@ theorem hasDerivAt_interactionPropagator_zero_of_bound
       habs (Iio_mem_nhds system.hbar_pos)
     filter_upwards [hevent] with lam hlam
     exact (div_le_one system.hbar_pos).2 hlam.le
-  apply squeeze_zero'
+  refine squeeze_zero'
+    (g := fun lam : ℝ => |lam| * (C / system.hbar ^ 2)) ?_ ?_ ?_
   · exact Filter.Eventually.of_forall fun lam =>
       mul_nonneg (inv_nonneg.mpr (norm_nonneg _)) (norm_nonneg _)
   · filter_upwards [hsmall] with lam hlam
     have hrem := norm_interactionPropagator_sub_firstOrder_le_sq_mul_of_bound
       system hM hV ht lam hlam
+    have hlin :
+        lam • ((Complex.I / (system.hbar : ℂ)) •
+            ∫ s in (0 : ℝ)..t, interactionPerturbation system B f s) =
+          ((lam : ℂ) * (Complex.I / (system.hbar : ℂ))) •
+            ∫ s in (0 : ℝ)..t, interactionPerturbation system B f s := by
+      rw [← smul_smul]
+      rfl
     have hrem' :
         ‖interactionPropagator system B f lam t -
             interactionPropagator system B f 0 t -
             lam • ((Complex.I / (system.hbar : ℂ)) •
               ∫ s in (0 : ℝ)..t, interactionPerturbation system B f s)‖ ≤
           (|lam| / system.hbar) ^ 2 * C := by
-      simpa [C, interactionPropagator_zero_coupling, smul_smul, sub_eq_add_neg,
-        add_assoc] using hrem
+      rw [hlin]
+      simpa [C, interactionPropagator_zero_coupling, sub_eq_add_neg,
+        add_comm, add_left_comm, add_assoc] using hrem
     by_cases hlam0 : lam = 0
     · subst lam
       simp
