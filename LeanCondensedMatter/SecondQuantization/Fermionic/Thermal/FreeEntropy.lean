@@ -2,11 +2,14 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFun
 import LeanCondensedMatter.QuantumTheory.FiniteDimensional.Entropy
 
 set_option linter.style.header false
+set_option linter.unusedFintypeInType false
+set_option linter.unusedDecidableInType false
+set_option linter.unusedSectionVars false
 
 /-!
 # Entropy of the finite free-fermion Gibbs state
 
-The canonical free Gibbs density operator is diagonal in the occupation basis.  Its von Neumann
+The canonical free Gibbs density operator is diagonal in the occupation basis. Its von Neumann
 entropy therefore reduces to the Shannon entropy of the normalized occupation weights, which
 factorizes into the sum of independent one-mode binary entropies.
 -/
@@ -54,7 +57,8 @@ omit [DecidableEq Mode] [LinearOrder Mode] in
 /-- The free Gibbs configuration probabilities sum to one. -/
 theorem sum_freeGibbsConfigurationProbability_eq_one (ε : Mode → ℝ) (β : ℝ) :
     ∑ n : Occupation Mode, freeGibbsConfigurationProbability ε β n = 1 := by
-  rw [freeGibbsConfigurationProbability, ← Finset.mul_sum]
+  simp_rw [freeGibbsConfigurationProbability]
+  rw [← Finset.mul_sum]
   change (Common.finitePartitionFunction (fermionEnergy ε) β)⁻¹ *
       (∑ n : Occupation Mode,
         Common.finiteBoltzmannWeight (fermionEnergy ε) β n) = 1
@@ -68,7 +72,7 @@ theorem finitePartitionFunction_fermionEnergy_eq_prod
     (ε : Mode → ℝ) (β : ℝ) :
     Common.finitePartitionFunction (fermionEnergy ε) β =
       ∏ i, (1 + Real.exp (-β * ε i)) := by
-  rw [Common.finitePartitionFunction, tsum_fintype]
+  rw [Common.finitePartitionFunction, tsum_fintype, ← Finset.powerset_univ]
   simp_rw [Common.finiteBoltzmannWeight, fermionEnergy, Finset.mul_sum, Real.exp_sum]
   have h := Finset.prod_add
     (fun i => Real.exp (-β * ε i)) (fun _ => (1 : ℝ))
@@ -84,7 +88,7 @@ theorem log_finitePartitionFunction_fermionEnergy_eq_sum
     Real.log (Common.finitePartitionFunction (fermionEnergy ε) β) =
       ∑ i, Real.log (1 + Real.exp (-β * ε i)) := by
   rw [finitePartitionFunction_fermionEnergy_eq_prod]
-  simpa only [Finset.prod_univ, Finset.sum_univ] using
+  simpa using
     (Real.log_prod
       (s := (Finset.univ : Finset Mode))
       (f := fun i => 1 + Real.exp (-β * ε i))
@@ -125,7 +129,6 @@ theorem sum_freeGibbsConfigurationProbability_filter_mem
       Common.finitePartitionFunction (fermionEnergy ε) β = (1 + q i) * P := by
     rw [finitePartitionFunction_fermionEnergy_eq_prod, hP,
       ← Finset.mul_prod_erase _ _ (Finset.mem_univ i)]
-    simp [q]
   have hPpos : 0 < P := by
     apply Finset.prod_pos
     intro j hj
@@ -146,7 +149,8 @@ theorem sum_freeGibbsConfigurationProbability_filter_mem
         (Common.finiteBoltzmannWeight (fermionEnergy ε) β)
     rw [hsum_not, hZ] at hsplit
     linear_combination hsplit
-  rw [freeGibbsConfigurationProbability, ← Finset.mul_sum, hnum, hZ]
+  simp_rw [freeGibbsConfigurationProbability]
+  rw [← Finset.mul_sum, hnum, hZ]
   have hqi : q i = (Real.exp (β * ε i))⁻¹ := by
     rw [q, show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
   rw [hqi, fermiDiracOccupation]
@@ -180,7 +184,10 @@ theorem sum_freeGibbsConfigurationProbability_mul_fermionEnergy
             freeGibbsConfigurationProbability ε β n) := by
       apply Finset.sum_congr rfl
       intro i hi
-      simp [Finset.mul_sum, mul_comm]
+      rw [Finset.mul_sum, ← Finset.sum_filter]
+      apply Finset.sum_congr rfl
+      intro n hn
+      by_cases hni : i ∈ n <;> simp [hni, mul_comm]
     _ = ∑ i, ε i * fermiDiracOccupation ε β i := by
       apply Finset.sum_congr rfl
       intro i hi
@@ -203,7 +210,7 @@ theorem sum_negMulLog_freeGibbsConfigurationProbability
     rw [freeGibbsConfigurationProbability, Common.finiteBoltzmannWeight,
       Real.log_mul (inv_ne_zero hZpos.ne') (ne_of_gt (Real.exp_pos _)),
       Real.log_inv, Real.log_exp]
-    rfl
+    ring
   have hterm (n : Occupation Mode) :
       Real.negMulLog (freeGibbsConfigurationProbability ε β n) =
         β * (freeGibbsConfigurationProbability ε β n * fermionEnergy ε n) +
@@ -246,7 +253,6 @@ private theorem fermiDiracOccupation_eq_exp_neg_div
       Real.exp (-β * ε i) / (1 + Real.exp (-β * ε i)) := by
   rw [fermiDiracOccupation, show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
   field_simp [Real.exp_ne_zero]
-  ring
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
 private theorem one_sub_fermiDiracOccupation_eq_inv_one_add_exp_neg
@@ -255,7 +261,6 @@ private theorem one_sub_fermiDiracOccupation_eq_inv_one_add_exp_neg
       (1 + Real.exp (-β * ε i))⁻¹ := by
   rw [fermiDiracOccupation, show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
   field_simp [Real.exp_ne_zero]
-  ring
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
 private theorem binaryEntropy_fermiDiracOccupation
@@ -295,8 +300,6 @@ theorem vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac
       ∑ i, ((β * ε i) * fermiDiracOccupation ε β i +
         Real.log (1 + Real.exp (-β * ε i))) := by
       rw [Finset.mul_sum, Finset.sum_add_distrib]
-      apply Finset.sum_congr rfl
-      intro i hi
       ring
     _ = ∑ i, (Real.negMulLog (fermiDiracOccupation ε β i) +
         Real.negMulLog (1 - fermiDiracOccupation ε β i)) := by
