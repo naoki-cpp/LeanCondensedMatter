@@ -29,7 +29,8 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 /-- The identity bounded operator has norm at most one, including on the trivial Hilbert space. -/
 theorem norm_one_le : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
-  simpa using (ContinuousLinearMap.norm_id_le (𝕜 := ℂ) (E := H))
+  change ‖ContinuousLinearMap.id ℂ H‖ ≤ 1
+  exact ContinuousLinearMap.norm_id_le
 
 /-- Factorial norm control for bounded-operator Dyson coefficients. -/
 theorem norm_coeff_le_of_bound (V : ℝ → (H →L[ℂ] H)) {β M : ℝ}
