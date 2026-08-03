@@ -11,7 +11,17 @@ set_option linter.style.header false
 /-!
 # Statistics-independent thermal states, occupation-basis formulas, and pairing expansions
 
-Generic diagonal traces, finite weighted occupation-basis sums, their temporary normalized
-occupation-basis layer, canonical finite Gibbs density operators and bridges, and the abstract
-Bloch–de Dominicis pairing theorem.
+This umbrella exposes five distinct layers:
+
+- generic diagonal and summability-aware trace infrastructure;
+- finite unnormalized weighted occupation-basis sums;
+- the temporary normalized occupation-basis formula used by explicit finite-sum proofs;
+- canonical finite Gibbs density operators and opt-in expectation/occupation-basis bridges;
+- the implementation-independent Bloch–de Dominicis expectation recursion and its finite Gibbs
+  specialization.
+
+The canonical physical expectation is the density-state expectation. Occupation-basis formulas are
+proof infrastructure, not a competing normalized-state API. The generic pairing recursion has no
+finite-configuration assumption; a future bosonic implementation must provide honest summability or
+domain hypotheses rather than a false finite occupation basis.
 -/
