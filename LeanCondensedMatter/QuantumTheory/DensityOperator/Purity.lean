@@ -1,11 +1,11 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Pure
+import LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation
 
 /-!
 # Purity of density operators
 
 Purity is the sum of the squared spectral eigenvalues of the canonical density operator. This
-definition is dimension-independent and honestly uses only the spectral probability distribution of
-the state.
+definition is dimension-independent and uses the spectral probability distribution of the state.
 -/
 
 noncomputable section
@@ -49,6 +49,17 @@ theorem purity_le_one (ρ : DensityOperator H) : purity ρ ≤ 1 := by
       have htrace := ρ.spectralTrace_eq_one
       change (∑' a : EigenvectorIndex ρ.op, a.1.1) = 1 at htrace
       exact htrace
+
+/-- The expectation of the density operator itself is its purity. -/
+theorem DensityOperator.expectation_op_re (ρ : DensityOperator H) :
+    (ρ.expectation ρ.op).re = purity ρ := by
+  rw [ρ.expectation_apply, Complex.re_tsum (ρ.summable_expectation_term ρ.op), purity]
+  apply tsum_congr
+  intro a
+  rw [apply_eigenvectorFamily ρ.spectralTraceClass.compact a,
+    inner_smul_right, inner_self_eq_norm_sq_to_K,
+    eigenvectorFamily_norm_eq_one ρ a]
+  norm_num
 
 /-- A rank-one density operator has purity one. -/
 theorem purity_pure (ψ : State H) : purity (pure ψ) = 1 := by
