@@ -66,9 +66,24 @@ theorem timeScaledGenerator_add (t s : ℝ) :
       timeScaledGenerator system t + timeScaledGenerator system s := by
   simp [timeScaledGenerator, add_smul]
 
+/-- The Schrödinger generator is skew-adjoint. -/
+theorem star_schrodingerGenerator :
+    star (schrodingerGenerator system) = -schrodingerGenerator system := by
+  simp [schrodingerGenerator, system.hamiltonian_selfAdjoint.star_eq]
+
+/-- Taking the adjoint of the time-scaled generator reverses time. -/
+theorem star_timeScaledGenerator (t : ℝ) :
+    star (timeScaledGenerator system t) = timeScaledGenerator system (-t) := by
+  simp [timeScaledGenerator, star_schrodingerGenerator]
+
 @[simp]
 theorem freePropagator_zero : freePropagator system 0 = 1 := by
   simp [freePropagator]
+
+/-- The adjoint of the free propagator is the negative-time propagator. -/
+theorem star_freePropagator (t : ℝ) :
+    star (freePropagator system t) = freePropagator system (-t) := by
+  simp [freePropagator, NormedSpace.star_exp, star_timeScaledGenerator]
 
 /-- Free propagators form a one-parameter multiplicative group. -/
 theorem freePropagator_add (t s : ℝ) :
@@ -107,6 +122,13 @@ noncomputable def heisenbergEvolution (A : H →L[ℂ] H) (t : ℝ) : H →L[ℂ
 theorem heisenbergEvolution_zero (A : H →L[ℂ] H) :
     heisenbergEvolution system A 0 = A := by
   simp [heisenbergEvolution]
+
+/-- Free Heisenberg evolution preserves self-adjointness. -/
+theorem isSelfAdjoint_heisenbergEvolution
+    (A : H →L[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) :
+    IsSelfAdjoint (heisenbergEvolution system A t) := by
+  rw [isSelfAdjoint_iff]
+  simp [heisenbergEvolution, star_freePropagator, hA.star_eq, mul_assoc]
 
 /-- A normalized continuous linear expectation functional on bounded operators.
 
