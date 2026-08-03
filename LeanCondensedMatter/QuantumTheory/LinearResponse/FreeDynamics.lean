@@ -69,7 +69,7 @@ theorem timeScaledGenerator_add (t s : ℝ) :
 /-- The Schrödinger generator is skew-adjoint. -/
 theorem star_schrodingerGenerator :
     star (schrodingerGenerator system) = -schrodingerGenerator system := by
-  simp [schrodingerGenerator, system.hamiltonian_selfAdjoint.star_eq]
+  simp [schrodingerGenerator, system.hamiltonian_selfAdjoint.star_eq, neg_smul]
 
 /-- Taking the adjoint of the time-scaled generator reverses time. -/
 theorem star_timeScaledGenerator (t : ℝ) :
