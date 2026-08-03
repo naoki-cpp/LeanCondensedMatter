@@ -1,27 +1,21 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalSpectralTrace
-import LeanCondensedMatter.QuantumTheory.DensityOperatorTraceClass
+import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
 
 /-!
-# Normalized diagonal density operators
+# Diagonal density operators
 
-Constructs a genuine infinite-dimensional density operator from a Hilbert basis and summable
-nonnegative weights. If `Z = ∑' i, a i` is positive, the normalized weights `Z⁻¹ a i` define a
-positive compact spectral-trace-class operator with trace one.
-
-This is the bounded heat-operator backend needed by a future discrete unbounded Hamiltonian API:
-the Hamiltonian itself need not be represented as a bounded continuous linear map; it can instead
-provide an energy basis and summable Boltzmann weights.
+Constructs a density operator from a Hilbert basis and summable nonnegative weights.
 -/
 
 noncomputable section
 
-namespace QuantumTheory.TraceClass
+namespace QuantumTheory
 
 open ContinuousLinearMap
 
 variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- Normalize summable nonnegative diagonal weights to obtain a trace-class density operator. -/
+/-- Normalize summable nonnegative diagonal weights to obtain a density operator. -/
 def diagonalDensityOperator (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i)
     (hZ : 0 < ∑' i, a i) : DensityOperator H := by
@@ -51,4 +45,4 @@ def diagonalDensityOperator (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
       change Z⁻¹ * Z = 1
       exact inv_mul_cancel₀ hZ_ne
 
-end QuantumTheory.TraceClass
+end QuantumTheory

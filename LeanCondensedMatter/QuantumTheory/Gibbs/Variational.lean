@@ -1,22 +1,20 @@
-import LeanCondensedMatter.QuantumTheory.DiagonalDensityLemmasTraceClass
-import LeanCondensedMatter.QuantumTheory.DiagonalEnergyTraceClass
+import LeanCondensedMatter.QuantumTheory.Entropy.Diagonal
+import LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy
 
 /-!
-# Gibbs-state entropy equality via trace-class operators
+# Gibbs-state variational equality
 
-The normalized Gibbs state attains the trace-class Helmholtz lower bound. Under the current
-bounded-Hamiltonian API the compactness assumption on `exp (-βH)` forces finite dimensionality;
-the proof evaluates normalization, energy, and entropy against one common energy eigenbasis.
+The normalized Gibbs state attains the Helmholtz lower bound. Under the bounded-Hamiltonian API,
+compactness of `exp (-βH)` forces finite dimensionality, so one common energy eigenbasis can be used.
 -/
 
-namespace QuantumTheory.TraceClass
+namespace QuantumTheory
 
 open ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- The trace-class Gibbs state has finite von Neumann entropy and satisfies
-`S(ρβ) = β E(ρβ) + log Z`. -/
+/-- The Gibbs state has finite entropy and satisfies `S(ρβ) = β E(ρβ) + log Z`. -/
 theorem vonNeumannEntropy_gibbsState (Hop : Observable H) (β : ℝ)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
@@ -91,4 +89,4 @@ theorem vonNeumannEntropy_gibbsState (Hop : Observable H) (β : ℝ)
   · rw [hEntropyBridge, ENNReal.toReal_ofReal hEntropyTraceNonneg,
       hEntropyTrace, hEnergy, hEntropyExpand, hw_sum, mul_one]
 
-end QuantumTheory.TraceClass
+end QuantumTheory

@@ -14,7 +14,7 @@ normalized-expectation compatibility is kept in the higher `FreeBoltzmannWeight`
 namespace SecondQuantization
 namespace Fermionic
 
-open QuantumTheory.TraceClass
+open QuantumTheory
 
 variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 

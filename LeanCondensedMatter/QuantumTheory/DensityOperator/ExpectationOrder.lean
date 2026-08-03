@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.DensityOperatorExpectationTraceClass
+import LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation
 import Mathlib.Analysis.InnerProductSpace.Positive
 import Mathlib.Analysis.InnerProductSpace.Symmetric
 
@@ -7,15 +7,13 @@ set_option linter.style.header false
 /-!
 # Order and reality properties of density-operator expectations
 
-A symmetric bounded observable has a real expectation in every trace-class density state. A
-positive bounded observable additionally has a nonnegative expectation. These lemmas complement
-the complex-linear and contractive expectation API with the reality and order facts used for
-observables, probabilities, and positive operators.
+A symmetric bounded observable has a real expectation in every density state. A positive bounded
+observable additionally has a nonnegative expectation.
 -/
 
 noncomputable section
 
-namespace QuantumTheory.TraceClass
+namespace QuantumTheory
 
 open ContinuousLinearMap
 open scoped ComplexOrder
@@ -45,8 +43,7 @@ theorem DensityOperator.expectation_im_eq_zero_of_isSymmetric
       simp [Complex.mul_im, inner_apply_im_eq_zero_of_isSymmetric hA]
     _ = 0 := tsum_zero
 
-/-- The expectation of a symmetric bounded observable is a self-adjoint complex scalar,
-equivalently a real number embedded in `ℂ`. -/
+/-- The expectation of a symmetric bounded observable is a self-adjoint complex scalar. -/
 theorem DensityOperator.expectation_isSelfAdjoint_of_isSymmetric
     (ρ : DensityOperator H) {A : H →L[ℂ] H}
     (hA : (A : H →ₗ[ℂ] H).IsSymmetric) :
@@ -77,8 +74,7 @@ theorem DensityOperator.expectation_im_eq_zero_of_isPositive
       simp [Complex.mul_im, inner_apply_im_eq_zero_of_isPositive hA]
     _ = 0 := tsum_zero
 
-/-- The expectation of a positive observable is a self-adjoint complex scalar, equivalently a real
-number embedded in `ℂ`. -/
+/-- The expectation of a positive observable is a self-adjoint complex scalar. -/
 theorem DensityOperator.expectation_isSelfAdjoint_of_isPositive
     (ρ : DensityOperator H) {A : H →L[ℂ] H} (hA : A.IsPositive) :
     IsSelfAdjoint (ρ.expectation A) :=
@@ -104,4 +100,4 @@ theorem DensityOperator.expectation_nonneg_of_isPositive
     (ρ.expectation_isSelfAdjoint_of_isPositive hA)).mp
       (ρ.expectation_re_nonneg_of_isPositive hA)
 
-end QuantumTheory.TraceClass
+end QuantumTheory

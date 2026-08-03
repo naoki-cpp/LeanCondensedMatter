@@ -1,16 +1,14 @@
-import LeanCondensedMatter.QuantumTheory.HelmholtzFreeEnergyTraceClass
-import LeanCondensedMatter.QuantumTheory.FiniteDensityOperatorExpectationTraceClass
+import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
+import LeanCondensedMatter.QuantumTheory.FiniteDimensional.Expectation
 
 /-!
-# Gibbs-state entropy equality via trace-class operators
+# Gibbs-state entropy
 
-This file develops the equality case of the trace-class Helmholtz free-energy inequality for the
-normalized Gibbs state. Under the current bounded-Hamiltonian API, compactness of the Gibbs
-operator forces the ambient Hilbert space to be finite-dimensional; that fact is used only to
-discharge summability of the Gibbs state's entropy operator.
+Equality-side lemmas for the normalized Gibbs state. Under the bounded-Hamiltonian API, compactness
+of the Gibbs operator forces finite dimension and hence entropy summability.
 -/
 
-namespace QuantumTheory.TraceClass
+namespace QuantumTheory
 
 open ContinuousLinearMap
 
@@ -29,17 +27,14 @@ theorem gibbsState_apply_eigenvector (Hop : Observable H) (β : ℝ)
   exact (smul_assoc ((spectralTrace hsummable)⁻¹ : ℝ)
     (Real.exp (-β * E) : ℂ) v).symm
 
-/-- In finite dimensions, the trace-class energy expectation agrees with the usual real part of
-`Tr(ρ H)`. -/
+/-- In finite dimensions, energy expectation agrees with the real part of `Tr(ρH)`. -/
 theorem energyExpValue_eq_re_linearMap_trace [FiniteDimensional ℂ H]
     (ρ : DensityOperator H) (Hop : Observable H) :
     energyExpValue ρ Hop =
       (LinearMap.trace ℂ H ((ρ.op ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H)).re := by
   simpa [energyExpValue] using congrArg Complex.re (ρ.expectation_eq_linearMap_trace Hop.1)
 
-/-- The entropy operator of the normalized Gibbs state has summable nonzero real eigenvalues.
-For the current bounded notion of Hamiltonian this follows from compactness of the Gibbs operator,
-which forces `H` to be finite-dimensional. -/
+/-- The entropy operator of the normalized Gibbs state has summable nonzero eigenvalues. -/
 theorem gibbsState_entropyOp_hasSummableRealEigenvalues (Hop : Observable H) (β : ℝ)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
@@ -55,4 +50,4 @@ theorem gibbsState_entropyOp_hasSummableRealEigenvalues (Hop : Observable H) (β
     (orthonormal_eigenvectorFamily hEntropyCompact hEntropySelfAdjoint.isSymmetric).linearIndependent.finite
   exact Summable.of_finite
 
-end QuantumTheory.TraceClass
+end QuantumTheory

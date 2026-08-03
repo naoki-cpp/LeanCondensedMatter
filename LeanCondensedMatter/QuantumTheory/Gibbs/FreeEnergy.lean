@@ -1,15 +1,14 @@
-import LeanCondensedMatter.QuantumTheory.EnergyExpValueTraceClass
-import LeanCondensedMatter.QuantumTheory.GibbsStateTraceClass
-import LeanCondensedMatter.QuantumTheory.EntropyTraceClass
+import LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation
+import LeanCondensedMatter.QuantumTheory.Gibbs.State
+import LeanCondensedMatter.QuantumTheory.Entropy.Basic
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled
 
 /-!
-# The Gibbs–Klein / Helmholtz free-energy inequality (infinite dimensions)
+# Helmholtz free-energy inequality
 
-Extends `QuantumTheory.helmholtzFreeEnergy_ge` beyond finite-dimensional `H`: for any density
-operator `ρ`, Hamiltonian `Hop`, and inverse temperature `β > 0`, the Helmholtz free energy is
-bounded below by the free energy determined by the spectral trace of `e^{-βH}`.
+For any density operator, bounded Hamiltonian, and positive inverse temperature, the Helmholtz free
+energy is bounded below by the free energy determined by the spectral trace of `e^{-βH}`.
 -/
 
 /-- From `exp(-u) ≤ q`, obtain `-log q ≤ u`. -/
@@ -44,7 +43,7 @@ theorem negMulLog_le_of_neg_log_le {p q Z u : ℝ} (hp : 0 ≤ p) (hq : 0 < q) (
     nlinarith [this]
   nlinarith [hgibbs, hlogdiv, hmul]
 
-/-- The sum of `q i / Z` is at most `1` when `∑' i, q i ≤ Z` and `Z > 0`. -/
+/-- The sum of `q i / Z` is at most one when `∑' i, q i ≤ Z` and `Z > 0`. -/
 theorem tsum_div_le_one {ι : Type*} {q : ι → ℝ} {Z : ℝ} (_hq : Summable q)
     (hsum : ∑' i, q i ≤ Z) (hZ : 0 < Z) : ∑' i, q i / Z ≤ 1 := by
   rw [show (∑' i, q i / Z) = (∑' i, q i) * Z⁻¹ by
@@ -52,19 +51,20 @@ theorem tsum_div_le_one {ι : Type*} {q : ι → ℝ} {Z : ℝ} (_hq : Summable 
   calc (∑' i, q i) * Z⁻¹ ≤ Z * Z⁻¹ := mul_le_mul_of_nonneg_right hsum (inv_nonneg.mpr hZ.le)
     _ = 1 := mul_inv_cancel₀ hZ.ne'
 
-namespace QuantumTheory.TraceClass
+namespace QuantumTheory
 
 open ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /-- Comparison test packaged with `tsum` monotonicity. -/
-theorem summable_and_tsum_le_of_nonneg_of_le {ι : Type*} {f g : ι → ℝ} (hf_nonneg : ∀ i, 0 ≤ f i)
-    (hfg : ∀ i, f i ≤ g i) (hg : Summable g) : Summable f ∧ ∑' i, f i ≤ ∑' i, g i :=
+theorem summable_and_tsum_le_of_nonneg_of_le {ι : Type*} {f g : ι → ℝ}
+    (hf_nonneg : ∀ i, 0 ≤ f i) (hfg : ∀ i, f i ≤ g i) (hg : Summable g) :
+    Summable f ∧ ∑' i, f i ≤ ∑' i, g i :=
   have hf : Summable f := Summable.of_nonneg_of_le hf_nonneg hfg hg
   ⟨hf, hf.tsum_mono hg hfg⟩
 
-/-- A density operator's eigenvalues are at most `1`. -/
+/-- A density operator's eigenvalues are at most one. -/
 theorem eigenvalue_le_one (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) : a.1.1 ≤ 1 := by
   have hsum : Summable (fun b : EigenvectorIndex ρ.op => b.1.1) :=
     ρ.spectralTraceClass.summable.congr (fun b => abs_of_nonneg (eigenvalue_nonneg ρ b))
@@ -73,14 +73,14 @@ theorem eigenvalue_le_one (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) 
   change ∑' b : EigenvectorIndex ρ.op, b.1.1 = 1 at heq
   rwa [heq] at hle
 
-/-- The spectral trace of the unnormalized Gibbs operator is positive when it is nonzero. -/
+/-- The spectral trace of the unnormalized Gibbs operator is positive when nonzero. -/
 theorem spectralTrace_gibbsOp_pos (Hop : Observable H) (β : ℝ)
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
     (hZ : spectralTrace hsummable ≠ 0) : 0 < spectralTrace hsummable :=
   (ContinuousLinearMap.trace_nonneg hsummable (gibbsOp_isPositive Hop β).toLinearMap).lt_of_ne
     (Ne.symm hZ)
 
-/-- `vonNeumannEntropy` is finite, with real value the entropy `tsum`, when that sum converges. -/
+/-- Entropy is finite with real value the entropy `tsum` when that sum converges. -/
 theorem vonNeumannEntropy_ne_top_and_toReal_eq_tsum (ρ : DensityOperator H)
     (hsum : Summable (fun a : EigenvectorIndex ρ.op => Real.negMulLog a.1.1)) :
     vonNeumannEntropy ρ ≠ ⊤ ∧
@@ -138,7 +138,7 @@ theorem summable_eigenvalue_mul_energy_and_tsum (ρ : DensityOperator H) (Hop : 
     funext a
     rw [Complex.re_ofReal_mul]
 
-/-- The Gibbs–Klein / Helmholtz free-energy inequality in infinite dimensions. -/
+/-- The Gibbs–Klein / Helmholtz free-energy inequality. -/
 theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop : Observable H)
     (β : ℝ) (hβ : 0 < β) (hcompact : IsCompactOperator (gibbsOp Hop β))
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
@@ -158,7 +158,7 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop 
   have hd_unit : ∀ a, ‖d a‖ = 1 := eigenvectorFamily_norm_eq_one ρ
   have hGibbsSym : ((gibbsOp Hop β : H →L[ℂ] H) : H →ₗ[ℂ] H).IsSymmetric :=
     ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mp (gibbsOp_isPositive Hop β).isSelfAdjoint
-  let hGibbs : ContinuousLinearMap.SpectralTraceClass (gibbsOp Hop β) :=
+  let hGibbs : SpectralTraceClass (gibbsOp Hop β) :=
     ⟨hcompact, hGibbsSym, hsummable⟩
   have hstep1 : ∀ a, Real.exp (-β * h a) ≤ q a :=
     fun a => exp_neg_beta_energy_le_gibbs_diagonal Hop β (d a) (hd_unit a)
@@ -175,7 +175,7 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop 
     ρ.spectralTraceClass.summable.congr (fun b => abs_of_nonneg (eigenvalue_nonneg ρ b))
   obtain ⟨hph_summable, hphsum⟩ := summable_eigenvalue_mul_energy_and_tsum ρ Hop
   have hq_summable_and_le : Summable q ∧ ∑' a, q a ≤ Z := by
-    simpa [Z, hGibbs, ContinuousLinearMap.SpectralTraceClass.trace] using
+    simpa [Z, hGibbs, SpectralTraceClass.trace] using
       hGibbs.sum_inner_apply_le_trace (gibbsOp_isPositive Hop β).toLinearMap hd_orth
   have hqZ_summable : Summable (fun a => q a / Z) := hq_summable_and_le.1.div_const Z
   have hplogZ_summable : Summable (fun a => p a * Real.log Z) := hp_summable.mul_right _
@@ -215,4 +215,4 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop 
   rw [mul_add, hcancel] at hmul
   linarith [hmul]
 
-end QuantumTheory.TraceClass
+end QuantumTheory

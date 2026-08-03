@@ -1,16 +1,16 @@
-import LeanCondensedMatter.QuantumTheory.DensityOperatorTraceClass
+import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
 
 /-!
-# Complex expectations of bounded operators in trace-class density states
+# Expectations of bounded operators
 
-A trace-class density operator defines a normalized continuous complex-linear functional on the
-bounded operators.  The definition uses the density operator's own spectral decomposition, so the
-observed operator need not be compact, self-adjoint, or trace-class.
+A density operator defines a normalized continuous complex-linear functional on bounded operators.
+The definition uses the density operator's spectral decomposition, so the observed operator need
+not be compact, self-adjoint, or trace-class.
 -/
 
 noncomputable section
 
-namespace QuantumTheory.TraceClass
+namespace QuantumTheory
 
 open ContinuousLinearMap
 
@@ -150,4 +150,4 @@ theorem DensityOperator.expectation_id (ρ : DensityOperator H) :
         simpa [SpectralTraceClass.trace, spectralTrace] using ρ.spectralTrace_eq_one
       exact_mod_cast htrace
 
-end QuantumTheory.TraceClass
+end QuantumTheory

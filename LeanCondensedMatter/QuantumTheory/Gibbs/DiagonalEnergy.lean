@@ -1,14 +1,13 @@
-import LeanCondensedMatter.QuantumTheory.GibbsEntropyTraceClass
+import LeanCondensedMatter.QuantumTheory.Gibbs.Entropy
 
 /-!
 # Energy expectation in a common diagonal basis
 
-This module extracts the finite-dimensional basis calculation used by the Gibbs entropy equality.
-Whenever a density operator and an observable are diagonal in the same orthonormal basis, their
+When a density operator and an observable are diagonal in the same finite orthonormal basis, their
 energy expectation is the weighted sum of the corresponding diagonal values.
 -/
 
-namespace QuantumTheory.TraceClass
+namespace QuantumTheory
 
 variable {ι H : Type*} [Fintype ι] [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   [FiniteDimensional ℂ H] [CompleteSpace H]
@@ -40,4 +39,4 @@ theorem energyExpValue_eq_sum_common_eigenbasis (ρ : DensityOperator H) (Hop : 
           (fun i => inner ℂ (b i) ((ρ.op ∘L Hop.1) (b i))) Finset.univ)
     _ = ∑ i, w i * E i := Finset.sum_congr rfl fun i _ => hdiag i
 
-end QuantumTheory.TraceClass
+end QuantumTheory

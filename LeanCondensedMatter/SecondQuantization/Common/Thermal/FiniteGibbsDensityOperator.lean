@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
-import LeanCondensedMatter.QuantumTheory.DiagonalDensityLemmasTraceClass
-import LeanCondensedMatter.QuantumTheory.DensityOperatorExpectationTraceClass
+import LeanCondensedMatter.QuantumTheory.Entropy.Diagonal
+import LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.LinearAlgebra.Finsupp.Pi
 
@@ -11,8 +11,8 @@ set_option linter.unusedFintypeInType false
 # Finite-configuration Gibbs density operators
 
 A finite occupation/configuration basis carries a canonical Euclidean Hilbert-space realization.
-Positive Boltzmann weights on that basis therefore define a genuine trace-class density operator,
-not merely a normalized coordinate functional.
+Positive Boltzmann weights on that basis therefore define a genuine density operator, not merely a
+normalized coordinate functional.
 
 This Hilbert realization is introduced separately from the existing finite analytic Dyson
 realization, which currently uses the sup-norm function space. The destructive replacement of that
@@ -25,7 +25,7 @@ namespace Common
 
 noncomputable section
 
-open QuantumTheory.TraceClass
+open QuantumTheory
 
 variable {Config : Type*} [Fintype Config]
 
@@ -202,9 +202,9 @@ theorem finitePartitionFunction_pos (energy : Config → ℝ) (β : ℝ) :
   rw [finitePartitionFunction, tsum_fintype]
   exact Finset.sum_pos (fun _ _ => Real.exp_pos _) Finset.univ_nonempty
 
-/-- The canonical finite Gibbs state as a trace-class density operator. -/
+/-- The canonical finite Gibbs state. -/
 noncomputable def finiteGibbsDensityOperator (energy : Config → ℝ) (β : ℝ) :
-    QuantumTheory.TraceClass.DensityOperator (FiniteHilbertFock Config) :=
+    QuantumTheory.DensityOperator (FiniteHilbertFock Config) :=
   diagonalDensityOperator
     (finiteHilbertBasis (Config := Config))
     (finiteBoltzmannWeight energy β)

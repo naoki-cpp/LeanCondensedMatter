@@ -1,24 +1,23 @@
-import LeanCondensedMatter.QuantumTheory.DensityOperatorExpectationTraceClass
+import LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation
 import Mathlib.Analysis.InnerProductSpace.Trace
 
 /-!
-# Finite-dimensional trace formulas for density-state expectations
+# Finite-dimensional expectation formulas
 
-In finite dimensions, the spectral definition of a density operator's expectation agrees with the
-ordinary complex linear trace `Tr(ρA)`.  This supplies the basis-independent bridge used by finite
-SecondQuantization Gibbs states.
+In finite dimensions, the canonical spectral expectation agrees with the ordinary complex linear
+trace. No separate finite-dimensional density-state type is introduced.
 -/
 
 noncomputable section
 
-namespace QuantumTheory.TraceClass
+namespace QuantumTheory
 
 open ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   [CompleteSpace H] [FiniteDimensional ℂ H]
 
-/-- In finite dimensions, the spectral expectation equals the ordinary complex trace `Tr(ρA)`. -/
+/-- In finite dimensions, the spectral expectation equals the ordinary trace `Tr(ρA)`. -/
 theorem DensityOperator.expectation_eq_linearMap_trace (ρ : DensityOperator H)
     (A : H →L[ℂ] H) :
     ρ.expectation A =
@@ -101,6 +100,13 @@ theorem DensityOperator.expectation_eq_linearMap_trace (ρ : DensityOperator H)
     simpa [g] using htrace
   rw [ρ.expectation_apply, hsum, ← hgtrace]
 
+/-- In finite dimensions, the ordinary trace of a density operator is one. -/
+theorem DensityOperator.linearMap_trace_eq_one (ρ : DensityOperator H) :
+    LinearMap.trace ℂ H (ρ.op : H →ₗ[ℂ] H) = 1 := by
+  have h := (ρ.expectation_eq_linearMap_trace (ContinuousLinearMap.id ℂ H)).symm.trans
+    ρ.expectation_id
+  simpa using h
+
 /-- If a density operator is diagonal in an orthonormal basis, its expectation is the corresponding
 weighted sum of diagonal matrix elements. -/
 theorem DensityOperator.expectation_eq_sum_diagonal {ι : Type*} [Fintype ι]
@@ -121,4 +127,4 @@ theorem DensityOperator.expectation_eq_sum_diagonal {ι : Type*} [Fintype ι]
       rw [hρ i, inner_smul_left]
       simp
 
-end QuantumTheory.TraceClass
+end QuantumTheory

@@ -1,15 +1,14 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
-import LeanCondensedMatter.QuantumTheory.FiniteDensityOperatorExpectationTraceClass
+import LeanCondensedMatter.QuantumTheory.FiniteDimensional.Expectation
 
 set_option linter.style.header false
 
 /-!
 # Coordinate formula for finite Gibbs density-state expectations
 
-This module is the migration bridge between the canonical density-operator expectation and the old
-finite occupation-basis weighted sums. It will be used to move callers before the old functional
-stack is deleted.
+This module identifies the canonical density-operator expectation with finite occupation-basis
+weighted sums.
 -/
 
 namespace SecondQuantization
@@ -17,7 +16,7 @@ namespace Common
 
 noncomputable section
 
-open QuantumTheory.TraceClass
+open QuantumTheory
 
 variable {Config : Type*} [Fintype Config] [Nonempty Config]
 

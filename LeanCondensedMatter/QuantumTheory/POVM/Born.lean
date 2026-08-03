@@ -1,42 +1,33 @@
 import LeanCondensedMatter.Analysis.InfiniteSum.Fiberwise
-import LeanCondensedMatter.QuantumTheory.DensityOperatorExpectationOrder
+import LeanCondensedMatter.QuantumTheory.DensityOperator.ExpectationOrder
+import LeanCondensedMatter.QuantumTheory.POVM.Basic
 import Mathlib.LinearAlgebra.Complex.Module
 
 set_option linter.style.header false
 
 /-!
-# Discrete POVMs for trace-class density states
+# Born probabilities for discrete POVMs
 
-This module equips the canonical `QuantumTheory.TraceClass.POVM` type with the Born probability API
-for arbitrary countable discrete outcome types. The normalization is stated in the strong operator
-topology:
-
-`∀ x, HasSum (fun m => E m x) x`.
-
-The Born scalar is first represented as a self-adjoint complex number and then transported, without
-loss of information, to `ℝ` through `Complex.selfAdjointEquiv`. Probability normalization follows
-from an explicitly nonnegative, summable double-series argument over density eigenvectors and
-measurement outcomes.
-
-General measurable POVMs, continuous outcomes, and unbounded observables remain outside this
-bounded discrete interface.
+The Born scalar is first represented as a self-adjoint complex number and then transported to `ℝ`
+through `Complex.selfAdjointEquiv`. Probability normalization follows from a nonnegative summable
+double series over density eigenvectors and measurement outcomes.
 -/
 
 noncomputable section
 
-namespace QuantumTheory.TraceClass
+namespace QuantumTheory
 
 open ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 variable {M : Type*} [Countable M]
 
-/-- Strong normalization implies the corresponding diagonal weak-operator normalization. -/
+/-- Strong normalization implies diagonal weak-operator normalization. -/
 theorem POVM.hasSum_inner_apply (P : POVM H M) (x : H) :
     HasSum (fun m => (inner ℂ x (P.E m x) : ℂ)) (inner ℂ x x) := by
   exact (innerSL ℂ x).hasSum (P.hasSum_apply x)
 
-/-- The self-adjoint complex scalar `Tr(ρ Eₘ)` representing one Born probability. -/
+/-- The self-adjoint complex scalar `Tr(ρ Eₘ)` representing a Born probability. -/
 noncomputable def probSelfAdjoint
     (P : POVM H M) (ρ : DensityOperator H) (m : M) : selfAdjoint ℂ :=
   ⟨ρ.expectation (P.E m),
@@ -84,7 +75,7 @@ private theorem hasSum_probabilityKernel_eigenvector (P : POVM H M)
   simpa [prob, probSelfAdjoint, probabilityKernel, DensityOperator.expectation_apply,
     Complex.mul_re] using h
 
-/-- The countable family of Born probabilities is summable and normalized. -/
+/-- The family of Born probabilities is summable and normalized. -/
 theorem summable_prob_and_tsum_eq_one (P : POVM H M) (ρ : DensityOperator H) :
     Summable (prob P ρ) ∧ ∑' m, prob P ρ m = 1 := by
   let g : EigenvectorIndex ρ.op × M → ℝ :=
@@ -135,4 +126,4 @@ theorem sum_prob_eq_one (P : POVM H M) (ρ : DensityOperator H) :
 
 end FiniteOutcomes
 
-end QuantumTheory.TraceClass
+end QuantumTheory
