@@ -27,10 +27,11 @@ specializations, not parallel APIs.
 |---|---|---|---|
 | Minimal bounded axiomatic quantum theory | A | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#minimal-axiomatic-quantum-theory) |
 | Canonical density operators and expectations | A/C | `proved` | [architecture](architecture/quantum-density-theory.md) |
+| Canonical purity, bounds, pure-state value, and finite-dimensional trace formula | A/C | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#density-operators-expectations-and-purity) |
+| Maximal-purity rank-one characterization | A/C | `idea` | [quantum-theory next steps](roadmaps/quantum-theory-foundations.md#current-next-steps) |
 | Countable discrete POVMs and Born normalization | A | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#discrete-povms-and-the-born-rule) |
 | Von Neumann entropy with finite-dimensional specialization | A/C | `proved` | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#von-neumann-entropy) |
 | Bounded Gibbs state, free-energy bound, and Gibbs entropy identity | A/C | `proved` under explicit compactness and summability hypotheses | [quantum-theory foundations](roadmaps/quantum-theory-foundations.md#gibbs-states-and-helmholtz-free-energy) |
-| Purity and equality characterizations | A/C | `idea` | [quantum-theory next steps](roadmaps/quantum-theory-foundations.md#current-next-steps) |
 | Uniqueness of the Gibbs free-energy minimizer | A | `idea` | [quantum-theory next steps](roadmaps/quantum-theory-foundations.md#current-next-steps) |
 | Unbounded Hamiltonian and genuine infinite-dimensional Gibbs theory | A/C | `idea` | [operator algebra](roadmaps/operator-algebra.md#unbounded-and-completed-space-boundary) |
 | Partition-lattice refinement and Möbius factorization | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |

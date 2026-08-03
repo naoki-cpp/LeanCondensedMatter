@@ -18,7 +18,7 @@ Implemented in `QuantumTheory/Postulates.lean`:
 A quotient of unit vectors by global phase is not formalized. The current `State` type stores
 representatives.
 
-## Density operators and expectations
+## Density operators, expectations, and purity
 
 Status: `proved`.
 
@@ -33,10 +33,14 @@ Implemented results include:
 - normalization, contractivity, positivity, and reality theorems for expectations;
 - construction from finite-dimensional positive trace-one operators;
 - equality with the ordinary matrix trace in finite dimensions;
-- diagonal expectation formulas.
+- diagonal expectation formulas;
+- spectral purity `QuantumTheory.purity ρ = ∑' i, λᵢ²`;
+- `0 ≤ purity ρ ≤ 1`;
+- `purity (pure ψ) = 1`;
+- equality of purity with the real part of `ρ.expectation ρ.op`;
+- the finite-dimensional formula `purity ρ = Re Tr(ρ²)`.
 
-The next density-state target is purity `Tr(ρ²)` and its basic bounds. It must be defined for the
-canonical state type rather than through a finite-only trace API.
+A converse characterization of `purity ρ = 1` as rank one is not part of the current API.
 
 ## Discrete POVMs and the Born rule
 
@@ -95,8 +99,8 @@ The uniqueness statement “equality holds only for the Gibbs state” remains o
 
 ## Current next steps
 
-1. Define purity and prove `0 < purity ρ ≤ 1`, with equality characterization where appropriate.
-2. Prove uniqueness of the Gibbs free-energy minimizer.
-3. Design an unbounded Hamiltonian interface supporting genuine infinite-dimensional Gibbs states.
-4. Connect the canonical density-state expectation to completed Fock-space and KMS constructions.
+1. Prove uniqueness of the Gibbs free-energy minimizer.
+2. Design an unbounded Hamiltonian interface supporting genuine infinite-dimensional Gibbs states.
+3. Connect the canonical density-state expectation to completed Fock-space and KMS constructions.
+4. Decide whether the rank-one characterization of maximal purity warrants a focused theorem issue.
 5. Add continuous-outcome measurement theory only after a measure-theoretic API is designed.

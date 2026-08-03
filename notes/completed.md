@@ -6,6 +6,7 @@ architectural context and later infinite-dimensional or convergence-aware extens
 | Target | Track | Lean declaration(s) | Source |
 |---|---|---|---|
 | Continuous functional calculus acts on eigenvectors by evaluation | C | `Polynomial.aeval_apply_eigenvector`, `cfc_apply_eigenvector` | `LeanCondensedMatter/Analysis/FunctionalCalculus/CFC.lean` |
+| Canonical density-state purity and finite-dimensional `Tr(ρ²)` formula | A/C | `QuantumTheory.purity`, `QuantumTheory.purity_nonneg`, `QuantumTheory.purity_le_one`, `QuantumTheory.purity_pure`, `QuantumTheory.DensityOperator.purity_eq_linearMap_trace_sq` | `LeanCondensedMatter/QuantumTheory/DensityOperator/Purity.lean`, `LeanCondensedMatter/QuantumTheory/FiniteDimensional/Purity.lean` |
 | Finite-set moment–cumulant inversion | B | `Finpartition.momentFromCumulant_cumulantFromMoment`, `Finpartition.cumulantFromMoment_momentFromCumulant` | `LeanCondensedMatter/Combinatorics/MomentCumulant.lean` |
 | Formal-log coefficient / finite-set cumulant bridge | B | `Combinatorics.factorial_mul_coeff_logOf_eq_cumulantFromMoment`, `Combinatorics.factorial_mul_coeff_logOf_eq_cumulantFromMoment_fin` | `LeanCondensedMatter/Combinatorics/PowerSeriesCumulant.lean` |
 | Finite-temperature Bloch–de Dominicis pairing theorem | A/D | `SecondQuantization.Common.BlochDeDominicis.gibbsExpectation_prodComp_eq_sum_pairing` | `LeanCondensedMatter/SecondQuantization/Common/Thermal/BlochDeDominicis/Induction.lean` |
@@ -17,5 +18,6 @@ architectural context and later infinite-dimensional or convergence-aware extens
 
 The finite-mode fermionic line is complete through the analytic normalized partition-function
 logarithm: its derivatives at zero coupling equal sums of connected quartic Wick-diagram amplitudes.
-Thermodynamic limits, completed-space unbounded-operator theory, trace-class formulations,
-infinite-mode extensions, and the convergence-aware bosonic Dyson line remain separate targets.
+Thermodynamic limits, completed-space unbounded-operator theory, infinite-mode extensions, a general
+non-self-adjoint trace-class ideal, and the convergence-aware bosonic Dyson line remain separate
+targets.

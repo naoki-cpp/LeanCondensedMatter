@@ -30,6 +30,21 @@ structure DensityOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace 
 theorem DensityOperator.isSymmetric (ρ : DensityOperator H) : (ρ.op : H →ₗ[ℂ] H).IsSymmetric :=
   ρ.spectralTraceClass.symmetric
 
+/-- Every nonzero spectral eigenvalue of a density operator is nonnegative. -/
+theorem DensityOperator.eigenvalue_nonneg (ρ : DensityOperator H)
+    (a : EigenvectorIndex ρ.op) : 0 ≤ a.1.1 :=
+  eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a
+
+/-- Every nonzero spectral eigenvalue of a density operator is at most one. -/
+theorem DensityOperator.eigenvalue_le_one (ρ : DensityOperator H)
+    (a : EigenvectorIndex ρ.op) : a.1.1 ≤ 1 := by
+  have hsum : Summable (fun b : EigenvectorIndex ρ.op => b.1.1) :=
+    ρ.spectralTraceClass.summable.congr (fun b => abs_of_nonneg (ρ.eigenvalue_nonneg b))
+  have hle := hsum.le_tsum a (fun b _ => ρ.eigenvalue_nonneg b)
+  have htrace := ρ.spectralTrace_eq_one
+  change (∑' b : EigenvectorIndex ρ.op, b.1.1) = 1 at htrace
+  rwa [htrace] at hle
+
 /-- The diagonal matrix elements of a density operator sum to one against any Hilbert basis. -/
 theorem DensityOperator.hasSum_inner_apply_eq_one (ρ : DensityOperator H)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
