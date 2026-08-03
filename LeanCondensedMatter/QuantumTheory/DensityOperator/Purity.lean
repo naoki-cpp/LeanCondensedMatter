@@ -64,6 +64,7 @@ theorem DensityOperator.expectation_op_re (ρ : DensityOperator H) :
     inner_smul_right, inner_self_eq_norm_sq_to_K,
     eigenvectorFamily_norm_eq_one ρ a]
   norm_num
+  ring
 
 /-- A rank-one density operator has purity one. -/
 theorem purity_pure (ψ : State H) : purity (pure ψ) = 1 := by
@@ -72,6 +73,7 @@ theorem purity_pure (ψ : State H) : purity (pure ψ) = 1 := by
     (InnerProductSpace.rankOne ℂ ψ.1 ψ.1 : H →L[ℂ] H), a.1.1 ^ 2) = 1
   rw [tsum_eq_single (uniqueEigenvectorIndexRankOne ψ.2).default (fun b hb =>
     absurd (Subsingleton.elim b (uniqueEigenvectorIndexRankOne ψ.2).default) hb)]
+  change ((uniqueEigenvectorIndexRankOne ψ.2).default.1.1 ^ 2) = 1
   norm_num [uniqueEigenvectorIndexRankOne]
 
 end QuantumTheory
