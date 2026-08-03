@@ -30,8 +30,7 @@ variable (system : BoundedFreeSystem H)
 /-- The norm of the generic Dyson parameter induced by the real physical coupling. -/
 theorem norm_physicalDysonCoupling (lam : ℝ) :
     ‖physicalDysonCoupling system lam‖ = |lam| / system.hbar := by
-  simp [physicalDysonCoupling, norm_mul, norm_div, abs_of_pos system.hbar_pos,
-    div_eq_mul_inv]
+  simp [physicalDysonCoupling, abs_of_pos system.hbar_pos, div_eq_mul_inv]
 
 /-- The interaction-picture propagator differs from its constant and linear Dyson terms by a
 series beginning at quadratic order in the physical coupling. -/
