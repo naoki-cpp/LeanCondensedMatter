@@ -13,5 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Check final audit removals
-        run: python3 scripts/check_second_quantization_audit_removals.py
+      - name: Check architecture and final removals
+        run: |
+          python3 scripts/check_quantum_theory_architecture.py
+          python3 scripts/check_second_quantization_audit_removals.py
