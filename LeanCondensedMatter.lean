@@ -3,6 +3,7 @@ import LeanCondensedMatter.Analysis.Dyson.Basic
 import LeanCondensedMatter.Analysis.Dyson.Bounds
 import LeanCondensedMatter.Analysis.Dyson.Volterra
 import LeanCondensedMatter.Analysis.Dyson.Uniqueness
+import LeanCondensedMatter.Analysis.Dyson.Constant
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
