@@ -37,8 +37,8 @@ Implemented results include:
 - spectral purity `QuantumTheory.purity ρ = ∑' i, λᵢ²`;
 - `0 ≤ purity ρ ≤ 1`;
 - `purity (pure ψ) = 1`;
-- equality of purity with the real part of `ρ.expectation ρ.op`;
-- the finite-dimensional formula `purity ρ = Re Tr(ρ²)`.
+- the exact identity `ρ.expectation ρ.op = (purity ρ : ℂ)`;
+- the finite-dimensional formula `Tr(ρ²) = (purity ρ : ℂ)`.
 
 A converse characterization of `purity ρ = 1` as rank one is not part of the current API.
 
@@ -86,7 +86,9 @@ Implemented in `QuantumTheory/Gibbs/`:
 - `gibbsOp Hop β = exp (-β Hop)` through continuous functional calculus;
 - positivity of `gibbsOp`;
 - normalized `gibbsState` when its spectral trace is defined and nonzero;
-- `energyExpValue`;
+- `energyExpectationSelfAdjoint` and the lossless real value `energyExpValue`;
+- `ρ.expectation Hop.1 = (energyExpValue ρ Hop : ℂ)`;
+- the finite-dimensional identity `Tr(ρH) = (energyExpValue ρ Hop : ℂ)`;
 - the Helmholtz free-energy lower bound;
 - entropy finiteness under the variational hypotheses;
 - the Gibbs-state entropy identity and attainment of the lower bound.
