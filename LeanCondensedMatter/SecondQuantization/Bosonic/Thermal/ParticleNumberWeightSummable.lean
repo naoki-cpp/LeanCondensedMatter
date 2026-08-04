@@ -17,6 +17,7 @@ noncomputable section
 
 variable {Mode : Type*} [Fintype Mode]
 
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
 local instance instDecidableEqParticleNumberWeightSummable : DecidableEq Mode := Classical.decEq Mode
 
 /-- The particle-number-weighted free Boltzmann series has its product closed form. -/

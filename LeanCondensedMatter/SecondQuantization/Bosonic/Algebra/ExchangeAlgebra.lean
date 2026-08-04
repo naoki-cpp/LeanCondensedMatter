@@ -18,6 +18,7 @@ noncomputable section
 
 variable {Mode : Type*}
 
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
 local instance instDecidableEqExchangeAlgebra : DecidableEq Mode := Classical.decEq Mode
 
 /-- The bosonic exchange commutator is the ordinary commutator. -/

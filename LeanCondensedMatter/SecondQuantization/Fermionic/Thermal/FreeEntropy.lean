@@ -24,6 +24,7 @@ noncomputable section
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
 local instance instDecidableEqFreeEntropy : DecidableEq Mode := Classical.decEq Mode
 
 /-- The real Fermi–Dirac occupation of a single mode. -/

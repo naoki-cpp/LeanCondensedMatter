@@ -19,6 +19,7 @@ noncomputable section
 
 variable {Mode : Type*}
 
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
 local instance instDecidableEqQuarticLocalLeg : DecidableEq Mode := Classical.decEq Mode
 
 /-- The bosonic operator represented by a local leg of a quartic vertex. -/

@@ -18,6 +18,7 @@ noncomputable section
 
 variable {Mode : Type*}
 
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
 local instance instDecidableEqBoltzmannWeightFactorization : DecidableEq Mode := Classical.decEq Mode
 
 /-- The free bosonic Boltzmann weight `e^{-βE(n)}`. -/

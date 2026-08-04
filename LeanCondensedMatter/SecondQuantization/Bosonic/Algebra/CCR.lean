@@ -23,6 +23,7 @@ noncomputable section
 
 variable {Mode : Type*}
 
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
 local instance instDecidableEqCCR : DecidableEq Mode := Classical.decEq Mode
 
 /-- The ordinary commutator of bosonic Fock-space endomorphisms. -/

@@ -16,6 +16,7 @@ noncomputable section
 
 variable {Mode : Type*}
 
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
 local instance instDecidableEqNumberOperator : DecidableEq Mode := Classical.decEq Mode
 
 /-- The single-mode number operator `N_i = a_i† a_i`. -/

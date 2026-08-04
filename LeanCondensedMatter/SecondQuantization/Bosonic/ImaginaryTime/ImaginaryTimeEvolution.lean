@@ -30,6 +30,7 @@ noncomputable section
 
 variable {Mode : Type*}
 
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
 local instance instDecidableEqImaginaryTimeEvolution : DecidableEq Mode := Classical.decEq Mode
 
 /-- The bosonic imaginary-time-ordered product of two operators. -/

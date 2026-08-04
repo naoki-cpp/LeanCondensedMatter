@@ -24,6 +24,7 @@ noncomputable section
 
 variable {Mode : Type*}
 
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
 local instance instDecidableEqCreationAnnihilation : DecidableEq Mode := Classical.decEq Mode
 
 /-- Creation on a basis state: `√(n_i + 1) • |n + e_i⟩`. -/

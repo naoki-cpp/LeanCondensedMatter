@@ -55,6 +55,7 @@ noncomputable section
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
 local instance instDecidableEqQuantumLinkedCluster : DecidableEq Mode := Classical.decEq Mode
 
 /-- **The weighted occupation-correlator moment.** `occupationMoment w S` is the normalized

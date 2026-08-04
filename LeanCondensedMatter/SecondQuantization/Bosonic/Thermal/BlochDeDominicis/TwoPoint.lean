@@ -25,6 +25,7 @@ noncomputable section
 
 variable {Mode : Type*} [Fintype Mode]
 
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
 local instance instDecidableEqBosonicBlochDeDominicisTwoPoint : DecidableEq Mode :=
   Classical.decEq Mode
 
