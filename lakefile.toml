@@ -2,7 +2,8 @@ name = "LeanCondensedMatter"
 version = "0.1.0"
 keywords = ["math"]
 defaultTargets = ["LeanCondensedMatter"]
-# Run the Batteries linter over the curated public library target.
+# Run the Batteries linter over the curated public library target. Individual `nolint` annotations
+# are reserved for proof witnesses or compatibility parameters intentionally retained in public APIs.
 lintDriver = "batteries/runLinter"
 
 [leanOptions]
