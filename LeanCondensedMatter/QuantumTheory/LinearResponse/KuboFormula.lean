@@ -103,7 +103,6 @@ theorem timeDependentPerturbedObservable_zero_coupling
 
 /-- At zero coupling, the perturbed functional is the ordinary expectation composed with free
 Heisenberg evolution. -/
-@[simp, nolint simpNF]
 theorem timeDependentPerturbedExpectationFunctional_zero_coupling_apply
     (expectation : NormalizedExpectation H)
     (V : ℝ → (H →L[ℂ] H)) (A : H →L[ℂ] H) (t : ℝ) :

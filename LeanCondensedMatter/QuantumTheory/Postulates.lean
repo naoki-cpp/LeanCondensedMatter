@@ -23,8 +23,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 /-- **State space postulate.** A pure state of a quantum system is a unit vector in a
 complex Hilbert space `H`. (Global-phase equivalence of states is not yet formalized;
 `State H` is the space of representatives, not of physical states.) -/
-@[nolint unusedArguments]
-def State (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H] :=
+def State (H : Type*) [NormedAddCommGroup H] :=
   { ψ : H // ‖ψ‖ = 1 }
 
 /-- **Observable (definition).** An observable is a self-adjoint bounded linear operator

@@ -33,7 +33,7 @@ noncomputable def energyExpValue (ρ : DensityOperator H) (Hop : Observable H) :
   Complex.selfAdjointEquiv (energyExpectationSelfAdjoint ρ Hop)
 
 /-- The canonical complex expectation is exactly the complex embedding of the real energy value. -/
-@[simp, nolint simpNF]
+@[simp]
 theorem DensityOperator.expectation_observable (ρ : DensityOperator H) (Hop : Observable H) :
     ρ.expectation Hop.1 = (energyExpValue ρ Hop : ℂ) := by
   apply Complex.ext

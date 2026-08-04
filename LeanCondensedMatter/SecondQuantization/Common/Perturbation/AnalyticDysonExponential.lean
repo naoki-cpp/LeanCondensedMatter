@@ -67,7 +67,6 @@ theorem continuousDiagonalHamiltonian_pow_basis_apply (energy : Config → ℝ)
       rw [ih, map_smul, continuousDiagonalHamiltonian_basis_apply, smul_smul]
       simp [pow_succ]
 
-@[simp, nolint simpNF]
 theorem smul_continuousDiagonalHamiltonian_basis_apply (energy : Config → ℝ)
     (τ : ℝ) (c : Config) :
     (τ • continuousDiagonalHamiltonian energy) (finiteAnalyticBasis c) =

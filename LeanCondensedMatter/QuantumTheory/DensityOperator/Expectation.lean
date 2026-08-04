@@ -117,7 +117,6 @@ noncomputable def DensityOperator.expectation (ρ : DensityOperator H) :
         simpa only [smul_eq_mul] using densityExpectation_smul ρ c A
       bound := ⟨1, zero_lt_one, fun A => by simpa using densityExpectation_norm_le ρ A⟩ }
 
-@[simp]
 theorem DensityOperator.expectation_apply (ρ : DensityOperator H) (A : H →L[ℂ] H) :
     ρ.expectation A =
       ∑' a : EigenvectorIndex ρ.op, (a.1.1 : ℂ) *
@@ -131,7 +130,7 @@ theorem DensityOperator.norm_expectation_le (ρ : DensityOperator H) (A : H →L
   densityExpectation_norm_le ρ A
 
 /-- The expectation of the identity operator is one. -/
-@[simp, nolint simpNF]
+@[simp]
 theorem DensityOperator.expectation_id (ρ : DensityOperator H) :
     ρ.expectation (ContinuousLinearMap.id ℂ H) = 1 := by
   rw [ρ.expectation_apply]
