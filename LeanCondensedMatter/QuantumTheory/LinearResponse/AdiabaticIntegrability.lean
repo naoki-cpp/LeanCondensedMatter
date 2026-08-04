@@ -81,8 +81,9 @@ theorem continuous_commutatorSusceptibility_timeDifference
       (heisenbergEvolution system A τ * B -
         B * heisenbergEvolution system A τ)) :=
     expectation.toContinuousLinearMap.continuous.comp hcomm
-  simpa only [commutatorSusceptibility, heisenbergEvolution_zero] using
-    continuous_const.mul hexpect
+  convert continuous_const.mul hexpect using 1
+  funext τ
+  simp only [Pi.mul_apply, commutatorSusceptibility, heisenbergEvolution_zero]
 
 /-- The causal time-difference kernel is Borel measurable; its only possible jump is at zero. -/
 theorem measurable_retardedTimeDifferenceKernel
@@ -196,7 +197,11 @@ theorem adiabaticIntegrable_of_pos
   have hintegrand : IntegrableOn
       (adiabaticFrequencySusceptibilityIntegrand system expectation A B ω η)
       S volume := by
-    simpa only [adiabaticFrequencySusceptibilityIntegrand, mul_comm] using hprod
+    apply hprod.congr_fun
+    · intro τ _
+      rw [adiabaticFrequencySusceptibilityIntegrand]
+      exact mul_comm _ _
+    · exact measurableSet_Ioi
   have hpiece : Integrable
       (S.piecewise
         (adiabaticFrequencySusceptibilityIntegrand system expectation A B ω η)
