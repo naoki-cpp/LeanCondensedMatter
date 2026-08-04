@@ -103,7 +103,9 @@ theorem diagonalOpSpectralTraceClass_trace (b : HilbertBasis ι ℂ H) (a : ι �
     (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i) :
     (diagonalOpSpectralTraceClass b a ha ha_nonneg).trace = ∑' i, a i := by
   let hac : Summable fun i => ‖(a i : ℂ)‖ := by simpa using ha
-  have htrace := (diagonalOpSpectralTraceClass b a ha ha_nonneg).hasSum_inner_apply b
+  let hstc := diagonalOpSpectralTraceClass b a ha ha_nonneg
+  have htrace := ContinuousLinearMap.hasSum_inner_apply_eq_spectralTrace
+    hstc.compact hstc.symmetric hstc.summable b
   have hpoint :
       (fun i => (inner ℂ (b i)
         (diagonalOp b (fun i => (a i : ℂ)) hac (b i)) : ℂ).re) = a := by
