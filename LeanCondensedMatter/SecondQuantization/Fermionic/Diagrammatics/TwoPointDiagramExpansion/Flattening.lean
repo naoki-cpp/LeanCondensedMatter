@@ -58,6 +58,7 @@ theorem twoPointTimedEventAtomicOperators_length {n : ℕ} (ε : Mode → ℝ) (
       twoPointTimedEventAtomicArity event := by
   cases event <;> simp [twoPointTimedEventAtomicArity]
 
+omit [LinearOrder Mode] in
 private theorem prodComp_singleton (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     Common.prodComp [A] = A := by
   rw [Common.prodComp_cons, Common.prodComp_nil, LinearMap.comp_id]
@@ -81,7 +82,7 @@ theorem prodComp_twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → ℝ)
   | inr v =>
       rw [twoPointTimedEventAtomicOperators_interaction,
         twoPointTimedEventOperator_interaction]
-      exact interactionPicture_quarticVertexOperator_eq_prodComp ε (q v) (σ v)
+      exact (interactionPicture_quarticVertexOperator_eq_prodComp ε (q v) (σ v)).symm
 
 /-- The complete atomic operator list in mixed imaginary-time order. -/
 noncomputable def mixedTimeOrderedAtomicOperators {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
@@ -113,7 +114,7 @@ private theorem sum_ofFn_const_four :
     ∀ n : ℕ, (List.ofFn (fun _ : Fin n => 4)).sum = 4 * n
   | 0 => rfl
   | n + 1 => by
-      rw [List.ofFn_succ, sum_ofFn_const_four n]
+      rw [List.ofFn_succ, List.sum_cons, sum_ofFn_const_four n]
       omega
 
 private theorem canonicalTwoPointTimedEventAtomicAritySum (n : ℕ) :
