@@ -178,7 +178,9 @@ theorem hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bou
     (expectation.toContinuousLinearMap.restrictScalars ℝ).hasFDerivAt
   have hcomp := hExpectation.comp 0 hObs.hasFDerivAt
   have hderiv := hcomp.hasDerivAt
-  simpa [timeDependentPerturbedExpectationFunctional_apply] using hderiv
+  rw [hasDerivAt_iff_tendsto]
+  rw [hasDerivAt_iff_tendsto] at hderiv
+  simpa [timeDependentPerturbedExpectationFunctional_apply, Function.comp_def] using hderiv
 
 /-- For a Hermitian perturbation, the expectation first variation is the ordinary expectation of
 `[A_I(t), K_V(t)]`. -/
