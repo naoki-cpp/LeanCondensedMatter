@@ -167,6 +167,7 @@ theorem mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
       rw [hstar]
       simp only [q', q]
       noncomm_ring
+      module
     rw [hcomm] at hsub
     simpa [q] using hsub
   have hq0 : q 0 = 0 := by
