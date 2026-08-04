@@ -133,13 +133,12 @@ positive-rate exponential envelope, so the comparison constant is independent of
 theorem summable_integral_norm_purePointAdiabaticTransitionIntegrand_Ioi_zero
     [Countable ι]
     (data : PurePointLehmannData system ι)
-    (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta)
+    (A B : H →L[ℂ] H) (omega eta : ℝ) (_hη : 0 < eta)
     (hsum : PurePointTimeDomainSummable system data A B) :
     Summable fun mn : ι × ι =>
       ∫ τ : ℝ in Ioi 0,
         ‖purePointAdiabaticTransitionIntegrand system data A B omega eta mn τ‖ := by
   let C : ℝ := ∫ τ : ℝ in Ioi 0, ‖adiabaticFrequencyPhase omega eta τ‖
-  have hphase := integrableOn_adiabaticFrequencyPhase_Ioi omega eta 0 hη
   have hweight : Summable fun mn : ι × ι =>
       ‖purePointTransitionWeight system data A B mn‖ := by
     simpa only [PurePointLehmannSummable] using hsum.2.2
@@ -160,11 +159,12 @@ theorem summable_integral_norm_purePointAdiabaticTransitionIntegrand_Ioi_zero
         apply setIntegral_congr_fun measurableSet_Ioi
         intro τ _
         simp [purePointAdiabaticTransitionIntegrand,
-          purePointTimeDomainTerm, norm_mul]
+          purePointTimeDomainTerm]
         ring
     _ = ‖purePointTransitionWeight system data A B mn‖ * C := by
       rw [integral_const_mul]
     _ = C * ‖purePointTransitionWeight system data A B mn‖ := by ring
+    _ ≤ C * ‖purePointTransitionWeight system data A B mn‖ := le_rfl
 
 /-- The countable transition sum may be exchanged with the causal fixed-rate Bochner integral. -/
 theorem integral_tsum_purePointAdiabaticTransitionIntegrand_Ioi_zero
@@ -217,8 +217,8 @@ theorem adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_lehman
           (Ici (0 : ℝ)).indicator
             (adiabaticFrequencySusceptibilityIntegrand system
               (purePointNormalizedExpectation system data) A B omega eta) τ := by
-        apply integral_congr
-        intro τ
+        apply integral_congr_ae
+        filter_upwards [] with τ
         by_cases hτ : τ ∈ Ici (0 : ℝ)
         · simp [Set.indicator_of_mem hτ]
         · have hneg : τ < 0 := by simpa [Set.mem_Ici, not_le] using hτ
