@@ -71,7 +71,12 @@ theorem integral_lehmannMode_Ioi_zero_eq_resolvent
     (∫ t : ℝ in Ioi 0, lehmannMode hbar omega eta energyGap t) =
       1 / ((eta : ℂ) - Complex.I * ((omega + energyGap / hbar : ℝ) : ℂ)) := by
   rw [integral_lehmannMode_Ioi_zero hbar omega eta energyGap heta]
-  simp [lehmannModeExponent]
+  have hden : lehmannModeExponent hbar omega eta energyGap =
+      -((eta : ℂ) - Complex.I * ((omega + energyGap / hbar : ℝ) : ℂ)) := by
+    simp [lehmannModeExponent]
+    ring
+  rw [hden]
+  simp
 
 /-- One scalar term in a finite Lehmann representation. -/
 noncomputable def lehmannTerm
