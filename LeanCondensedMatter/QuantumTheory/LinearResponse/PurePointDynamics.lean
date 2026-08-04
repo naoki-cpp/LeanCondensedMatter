@@ -217,7 +217,7 @@ theorem freePropagator_apply_purePointBasis
     · ext n
       simp only [ContinuousLinearMap.apply_apply, smul_apply]
       rw [pow_timeScaledGenerator_apply_purePointBasis]
-      simp [T, c, v, smul_smul]
+      simp [c, v, smul_smul]
     · rfl
   have hscalar :=
     (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) c).mapL
@@ -227,8 +227,8 @@ theorem freePropagator_apply_purePointBasis
       (purePointSchrodingerPhase system data i t • v) := by
     convert hscalar using 1
     · ext n
-      simp [smul_smul]
-    · rw [purePointSchrodingerPhase, Complex.exp_eq_exp_ℂ]
+      simp
+    · simp [purePointSchrodingerPhase, Complex.exp_eq_exp_ℂ, c, v]
   exact hop'.unique hscalar'
 
 /-- The relative phase carried by a Heisenberg-picture matrix element. -/
@@ -251,7 +251,6 @@ theorem purePointTransitionPhase_eq_exp_energyDifference
   rw [NormedSpace.star_exp, ← NormedSpace.exp_add]
   congr 1
   simp [purePointSchrodingerExponent]
-  push_cast
   ring
 
 /-- Matrix elements of a freely evolved observable acquire the energy-difference phase. -/
