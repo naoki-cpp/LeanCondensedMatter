@@ -14,7 +14,7 @@ nonzero real eigenvalues. Bundled declarations are the public operator API; the 
 in `Basic` and `Ops` are implementation infrastructure.
 
 The lossless diagonal-expectation API transports self-adjoint matrix elements to `ℝ` only after
-proving that they are real. The older `.re`-based theorems remain as compatibility bridges.
+proving that they are real.
 -/
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -103,24 +103,6 @@ theorem sum_diagonalExpectationValue_le_trace (h : SpectralTraceClass T)
     rw [coe_diagonalExpectationValue_right]
     exact (h.symmetric.coe_re_inner_self_apply (d i)).symm
   rwa [hpoint]
-
-/-- Compatibility bridge: compute the bundled spectral trace against any Hilbert basis after
-projecting each diagonal matrix element to its real part. Prefer
-`hasSum_diagonalExpectationValue`. -/
-theorem hasSum_inner_apply (h : SpectralTraceClass T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
-    HasSum (fun i => (inner ℂ (d i) (T (d i)) : ℂ).re) h.trace := by
-  simpa [trace] using
-    ContinuousLinearMap.hasSum_inner_apply_eq_spectralTrace h.compact h.symmetric h.summable d
-
-/-- Compatibility bridge: bound the `.re`-projected diagonal sum over an orthonormal family by the
-bundled spectral trace. Prefer `sum_diagonalExpectationValue_le_trace`. -/
-theorem sum_inner_apply_le_trace (h : SpectralTraceClass T)
-    (hpos : (T : H →ₗ[ℂ] H).IsPositive) {ι : Type*} {d : ι → H}
-    (hd : Orthonormal ℂ d) :
-    Summable (fun i => (inner ℂ (d i) (T (d i)) : ℂ).re) ∧
-      ∑' i, (inner ℂ (d i) (T (d i)) : ℂ).re ≤ h.trace := by
-  simpa [trace] using ContinuousLinearMap.sum_inner_apply_le_spectralTrace
-    h.compact h.symmetric hpos h.summable hd
 
 /-- Additivity of the bundled spectral trace. -/
 theorem trace_add (hT : SpectralTraceClass T) (hT' : SpectralTraceClass T')
