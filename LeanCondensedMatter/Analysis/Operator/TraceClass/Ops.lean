@@ -66,8 +66,13 @@ theorem hasSum_eigen_expansion_diagonalExpectationValue
         = (a.1.1 : ℂ) * (inner ℂ (e a) x * inner ℂ x (e a) : ℂ) := by
       simp
     rw [hstep, inner_mul_inner_conj_eq_norm_sq, ← Complex.ofReal_mul]
-  rw [heq, ← coe_diagonalExpectationValue_right T hTself x] at hs
-  exact_mod_cast hs
+  have hs' :
+      HasSum (fun a : EigenvectorIndex T =>
+        ((a.1.1 * ‖(inner ℂ (e a) x : ℂ)‖ ^ 2 : ℝ) : ℂ))
+        (inner ℂ x (T x)) := by
+    simpa [heq] using hs
+  rw [← coe_diagonalExpectationValue_right T hTself x] at hs'
+  exact_mod_cast hs'
 
 /-- `spectralTrace` can be computed against any Hilbert basis using lossless diagonal expectation
 values. -/
@@ -172,10 +177,13 @@ theorem spectralTrace_comp_comm {T' : H →L[ℂ] H} (_hT : IsCompactOperator T)
     have h2' : (inner ℂ (d i) (T' (T (d i))) : ℂ) =
         inner ℂ (T' (d i)) (T (d i)) :=
       (hT'sym (d i) (T (d i))).symm
-    have hz : IsSelfAdjoint (inner ℂ (T (d i)) (T' (d i))) := by
-      rw [← h1']
+    have hzdiag : IsSelfAdjoint (inner ℂ (d i) (T (T' (d i)))) := by
+      rw [← hTT'sym (d i) (d i)]
       exact ((LinearMap.isSymmetric_iff_inner_map_self_real
         ((T * T' : H →L[ℂ] H) : H →ₗ[ℂ] H)).mp hTT'sym (d i))
+    have hz : IsSelfAdjoint (inner ℂ (T (d i)) (T' (d i))) := by
+      rw [← h1']
+      exact hzdiag
     have hconj : (inner ℂ (T' (d i)) (T (d i)) : ℂ) =
         starRingEnd ℂ (inner ℂ (T (d i)) (T' (d i))) :=
       (inner_conj_symm (T' (d i)) (T (d i))).symm
