@@ -38,7 +38,11 @@ theorem heisenbergEvolution_heisenbergEvolution
     (A : H →L[ℂ] H) (t s : ℝ) :
     heisenbergEvolution system (heisenbergEvolution system A t) s =
       heisenbergEvolution system A (t + s) := by
-  rw [heisenbergEvolution, heisenbergEvolution]
+  change
+    freePropagator system (-s) *
+        (freePropagator system (-t) * A * freePropagator system t) *
+        freePropagator system s =
+      freePropagator system (-(t + s)) * A * freePropagator system (t + s)
   rw [show -(t + s) = -s + -t by ring, freePropagator_add, freePropagator_add]
   noncomm_ring
 
@@ -48,7 +52,19 @@ theorem heisenbergEvolution_mul
     (A B : H →L[ℂ] H) (t : ℝ) :
     heisenbergEvolution system (A * B) t =
       heisenbergEvolution system A t * heisenbergEvolution system B t := by
-  simp [heisenbergEvolution, mul_assoc, freePropagator_mul_neg]
+  change
+    freePropagator system (-t) * (A * B) * freePropagator system t =
+      (freePropagator system (-t) * A * freePropagator system t) *
+        (freePropagator system (-t) * B * freePropagator system t)
+  calc
+    _ = freePropagator system (-t) * A * 1 * B * freePropagator system t := by
+      noncomm_ring
+    _ = freePropagator system (-t) * A *
+        (freePropagator system t * freePropagator system (-t)) * B *
+          freePropagator system t := by
+      rw [freePropagator_mul_neg]
+    _ = _ := by
+      noncomm_ring
 
 /-- Free Heisenberg evolution preserves operator subtraction. -/
 @[simp]
@@ -171,8 +187,8 @@ theorem integral_commutatorSusceptibility_eq_retardedSusceptibility
         (f s : ℂ) * retardedSusceptibility system expectation A B t s := by
   apply intervalIntegral.integral_congr
   intro s hs
-  have hs' : s ∈ Ioc (0 : ℝ) t := by
-    simpa [uIoc_of_le ht] using hs
+  have hs' : s ∈ Icc (0 : ℝ) t := by
+    simpa [uIcc_of_le ht] using hs
   simp [retardedSusceptibility, hs'.2]
 
 /-- The scalar-source response integral is the causal convolution with the retarded
