@@ -66,11 +66,12 @@ theorem hasSum_eigen_expansion_diagonalExpectationValue
         = (a.1.1 : ℂ) * (inner ℂ (e a) x * inner ℂ x (e a) : ℂ) := by
       simp
     rw [hstep, inner_mul_inner_conj_eq_norm_sq, ← Complex.ofReal_mul]
+  rw [← he_def, heq] at hs
   have hs' :
       HasSum (fun a : EigenvectorIndex T =>
         ((a.1.1 * ‖(inner ℂ (e a) x : ℂ)‖ ^ 2 : ℝ) : ℂ))
         (inner ℂ x (T x)) := by
-    simpa [heq] using hs
+    simpa using hs
   rw [← coe_diagonalExpectationValue_right T hTself x] at hs'
   exact_mod_cast hs'
 
@@ -178,9 +179,8 @@ theorem spectralTrace_comp_comm {T' : H →L[ℂ] H} (_hT : IsCompactOperator T)
         inner ℂ (T' (d i)) (T (d i)) :=
       (hT'sym (d i) (T (d i))).symm
     have hzdiag : IsSelfAdjoint (inner ℂ (d i) (T (T' (d i)))) := by
-      rw [← hTT'sym (d i) (d i)]
-      exact ((LinearMap.isSymmetric_iff_inner_map_self_real
-        ((T * T' : H →L[ℂ] H) : H →ₗ[ℂ] H)).mp hTT'sym (d i))
+      apply (Complex.im_eq_zero_iff_isSelfAdjoint _).mp
+      simpa only [mul_apply_eq_comp] using hTT'sym.im_inner_self_apply (d i)
     have hz : IsSelfAdjoint (inner ℂ (T (d i)) (T' (d i))) := by
       rw [← h1']
       exact hzdiag
