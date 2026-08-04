@@ -103,8 +103,7 @@ theorem integral_lehmannMode_Ioi_zero_eq_resolvent
       (lehmannDenominator hbar omega eta energyGap)⁻¹ := by
   rw [integral_lehmannMode_Ioi_zero hbar omega eta energyGap heta]
   unfold lehmannModeExponent lehmannDenominator
-  congr 1
-  ring
+  ring_nf
 
 /-- One scalar term in a Lehmann representation. -/
 noncomputable def lehmannTerm
@@ -200,9 +199,7 @@ theorem purePointLehmannSummable_of_finite
     [Finite ι] (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) :
     PurePointLehmannSummable system data A B := by
-  classical
-  letI := Fintype.ofFinite ι
-  exact summable_fintype _
+  exact Summable.of_finite
 
 /-- For a finite spectral index, the countable-series definition reduces to the usual finite
 double sum. -/
