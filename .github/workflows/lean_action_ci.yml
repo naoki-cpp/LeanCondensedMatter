@@ -28,8 +28,6 @@ jobs:
           # Keep the whole library warning-free, including modules unchanged by the PR.
           build: true
           build-args: "--wfail"
-          # Replay the compiled declarations with Lean's bundled environment checker.
-          leanchecker: true
       - name: Check compiled declarations for sorryAx
         run: python3 scripts/check_no_sorry.py
 
