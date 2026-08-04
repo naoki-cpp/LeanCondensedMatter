@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.Gibbs.Variational
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Equality
 
 /-!
 # Equality cases for Gibbs variational inequalities
@@ -63,10 +64,37 @@ theorem gibbsOp_diagonal_pos_of_norm_eq_one (Hop : Observable H) (β : ℝ) (v :
   rw [hdiag_zero] at hpb
   exact (not_le_of_gt (Real.exp_pos _)) (by simpa using hpb)
 
+/-- The lossless real Gibbs diagonal value is strictly positive on every unit vector. -/
+theorem gibbsOp_diagonalExpectationValue_pos_of_norm_eq_one
+    (Hop : Observable H) (β : ℝ) (v : H) (hv : ‖v‖ = 1) :
+    0 < ContinuousLinearMap.diagonalExpectationValue
+      (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint v := by
+  have hpos := gibbsOp_diagonal_pos_of_norm_eq_one Hop β v hv
+  rw [← ContinuousLinearMap.coe_diagonalExpectationValue_right
+    (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint v] at hpos
+  exact_mod_cast hpos
+
 /-- Every vector in an orthonormal family has a strictly positive Gibbs diagonal weight. -/
 theorem gibbsOp_diagonal_pos_of_orthonormal (Hop : Observable H) (β : ℝ)
     {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d) (i : ι) :
     (0 : ℂ) < inner ℂ (d i) (gibbsOp Hop β (d i)) :=
   gibbsOp_diagonal_pos_of_norm_eq_one Hop β (d i) (hd.1 i)
+
+/-- If an orthonormal family saturates the Gibbs spectral trace, its span has trivial orthogonal
+complement. -/
+theorem gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace
+    (Hop : Observable H) (β : ℝ)
+    (hcompact : IsCompactOperator (gibbsOp Hop β))
+    (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
+    {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d)
+    (heq : ∑' i, ContinuousLinearMap.diagonalExpectationValue
+        (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint (d i) =
+      ContinuousLinearMap.spectralTrace hsummable) :
+    (Submodule.span ℂ (Set.range d))ᗮ = ⊥ := by
+  apply ContinuousLinearMap
+    .orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace
+      hcompact (gibbsOp_isPositive Hop β) hsummable hd ?_ heq
+  intro v hv
+  exact gibbsOp_diagonalExpectationValue_pos_of_norm_eq_one Hop β v hv
 
 end QuantumTheory
