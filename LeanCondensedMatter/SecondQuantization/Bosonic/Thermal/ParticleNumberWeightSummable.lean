@@ -34,9 +34,9 @@ theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
   have hg' : ∀ i, HasSum (g' i) (b' i) := by
     intro i
     rw [hg'def, hb'def]
-    by_cases hi : i = j
+    dsimp only
+    split_ifs with hi
     · subst j
-      rw [if_pos rfl, if_pos rfl]
       have hr : ‖Real.exp (-β * ε i)‖ < 1 := by
         rw [Real.norm_eq_abs, abs_of_nonneg (Real.exp_nonneg _), Real.exp_lt_one_iff]
         linarith [hpos i]
@@ -48,19 +48,14 @@ theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
         rw [Real.exp_nat_mul]
       rw [heq]
       exact h
-    · rw [if_neg hi, if_neg hi]
-      exact hasSum_oneModeBoltzmannWeight (hpos i)
+    · exact hasSum_oneModeBoltzmannWeight (hpos i)
   have hnn' : ∀ i n, 0 ≤ g' i n := by
     intro i n
     rw [hg'def]
-    change 0 ≤ if i = j then
-      (n : ℝ) * oneModeBoltzmannWeight β (ε i) n
-    else oneModeBoltzmannWeight β (ε i) n
-    by_cases hi : i = j
-    · rw [if_pos hi]
-      exact mul_nonneg (Nat.cast_nonneg _) (Real.exp_nonneg _)
-    · rw [if_neg hi]
-      exact Real.exp_nonneg _
+    dsimp only
+    split_ifs
+    · exact mul_nonneg (Nat.cast_nonneg _) (Real.exp_nonneg _)
+    · exact Real.exp_nonneg _
   have H := Finsupp.hasSum_prod_nonneg g' b' hg' hnn'
   have hprod : ∀ i, i ∈ Finset.univ.erase j →
       b' i = (1 - Real.exp (-β * ε i))⁻¹ := fun i hi => by
@@ -89,5 +84,6 @@ theorem summable_particleNumber_boltzmannWeight [Finite Mode]
   letI := Fintype.ofFinite Mode
   exact (hasSum_particleNumber_boltzmannWeight ε β hpos j).summable
 
+end
 end Bosonic
 end SecondQuantization
