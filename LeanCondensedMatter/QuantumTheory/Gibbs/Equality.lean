@@ -39,18 +39,28 @@ theorem gibbs_scalar_ineq_eq_iff (x y : ℝ) (hx : 0 ≤ x) (hy : 0 < y) :
 
 namespace QuantumTheory
 
+open scoped ComplexOrder
+
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- The Gibbs operator has a strictly positive diagonal matrix element on every unit vector. -/
+/-- The Gibbs operator has a strictly positive diagonal matrix element on every unit vector.
+
+The conclusion uses the complex positive order directly: it asserts both that the matrix element is
+real and that its real value is strictly positive, rather than merely projecting it with `.re`. -/
 theorem gibbsOp_diagonal_pos_of_norm_eq_one (Hop : Observable H) (β : ℝ) (v : H)
     (hv : ‖v‖ = 1) :
-    0 < (inner ℂ v (gibbsOp Hop β v) : ℂ).re :=
-  (Real.exp_pos _).trans_le (exp_neg_beta_energy_le_gibbs_diagonal Hop β v hv)
+    (0 : ℂ) < inner ℂ v (gibbsOp Hop β v) := by
+  rw [lt_iff_le_and_ne]
+  refine ⟨(gibbsOp_isPositive Hop β).inner_nonneg_right v, ?_⟩
+  intro hzero
+  have hpb := exp_neg_beta_energy_le_gibbs_diagonal Hop β v hv
+  rw [← hzero] at hpb
+  exact (not_le_of_gt (Real.exp_pos _)) (by simpa using hpb)
 
-/-- Every vector in an orthonormal family has strictly positive Gibbs diagonal weight. -/
+/-- Every vector in an orthonormal family has a strictly positive Gibbs diagonal weight. -/
 theorem gibbsOp_diagonal_pos_of_orthonormal (Hop : Observable H) (β : ℝ)
     {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d) (i : ι) :
-    0 < (inner ℂ (d i) (gibbsOp Hop β (d i)) : ℂ).re :=
+    (0 : ℂ) < inner ℂ (d i) (gibbsOp Hop β (d i)) :=
   gibbsOp_diagonal_pos_of_norm_eq_one Hop β (d i) (hd.1 i)
 
 end QuantumTheory
