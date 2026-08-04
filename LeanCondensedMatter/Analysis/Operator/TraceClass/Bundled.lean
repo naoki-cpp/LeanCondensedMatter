@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
-import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
 
 set_option linter.style.header false
 
@@ -13,8 +12,8 @@ attribute [local instance] IsStarNormal.instContinuousFunctionalCalculus
 nonzero real eigenvalues. Bundled declarations are the public operator API; the unbundled theorems
 in `Basic` and `Ops` are implementation infrastructure.
 
-The lossless diagonal-expectation API transports self-adjoint matrix elements to `ℝ` only after
-proving that they are real.
+The diagonal-expectation API transports self-adjoint matrix elements to `ℝ` only after proving that
+they are real. Both the public API and its trace-series implementation use this lossless path.
 -/
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -71,38 +70,20 @@ expectation values. -/
 theorem hasSum_diagonalExpectationValue (h : SpectralTraceClass T)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
     HasSum (fun i => diagonalExpectationValue T h.isSelfAdjoint (d i)) h.trace := by
-  have hraw : HasSum (fun i => (inner ℂ (d i) (T (d i)) : ℂ).re) h.trace := by
-    simpa [trace] using
-      ContinuousLinearMap.hasSum_inner_apply_eq_spectralTrace h.compact h.symmetric h.summable d
-  have hpoint :
-      (fun i => diagonalExpectationValue T h.isSelfAdjoint (d i)) =
-        fun i => (inner ℂ (d i) (T (d i)) : ℂ).re := by
-    funext i
-    apply Complex.ofReal_injective
-    rw [coe_diagonalExpectationValue_right]
-    exact (h.symmetric.coe_re_inner_self_apply (d i)).symm
-  rwa [hpoint]
+  simpa [trace] using
+    ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace
+      h.compact h.isSelfAdjoint h.summable d
 
 /-- Bound the lossless diagonal-expectation sum over an orthonormal family by the bundled spectral
 trace. -/
 theorem sum_diagonalExpectationValue_le_trace (h : SpectralTraceClass T)
-    (hpos : (T : H →ₗ[ℂ] H).IsPositive) {ι : Type*} {d : ι → H}
+    (hpos : T.IsPositive) {ι : Type*} {d : ι → H}
     (hd : Orthonormal ℂ d) :
     Summable (fun i => diagonalExpectationValue T h.isSelfAdjoint (d i)) ∧
       ∑' i, diagonalExpectationValue T h.isSelfAdjoint (d i) ≤ h.trace := by
-  have hraw :
-      Summable (fun i => (inner ℂ (d i) (T (d i)) : ℂ).re) ∧
-        ∑' i, (inner ℂ (d i) (T (d i)) : ℂ).re ≤ h.trace := by
-    simpa [trace] using ContinuousLinearMap.sum_inner_apply_le_spectralTrace
-      h.compact h.symmetric hpos h.summable hd
-  have hpoint :
-      (fun i => diagonalExpectationValue T h.isSelfAdjoint (d i)) =
-        fun i => (inner ℂ (d i) (T (d i)) : ℂ).re := by
-    funext i
-    apply Complex.ofReal_injective
-    rw [coe_diagonalExpectationValue_right]
-    exact (h.symmetric.coe_re_inner_self_apply (d i)).symm
-  rwa [hpoint]
+  simpa [trace] using
+    ContinuousLinearMap.sum_diagonalExpectationValue_le_spectralTrace
+      h.compact hpos h.summable hd
 
 /-- Additivity of the bundled spectral trace. -/
 theorem trace_add (hT : SpectralTraceClass T) (hT' : SpectralTraceClass T')
