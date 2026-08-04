@@ -11,4 +11,4 @@ The branch:
 5. replaces erased convergence/integrability witnesses with explicit total value definitions and theorem-level hypotheses;
 6. keeps style-only linters separate from mathematical/API correctness.
 
-The cross-cutting refactor and two downstream compatibility passes have been applied. The current validation checks the bundled trace bridge, local classical equality instances for bosonic APIs, and the retained equality requirement in finite fermionic cluster combinatorics. Temporary inventory scaffolding will be removed before merge.
+The cross-cutting refactor and its downstream compatibility passes have been applied. The latest pass places classical bosonic equality instances in noncomputable sections, rewrites density normalization through the bundled trace bridge, and closes the normalized singleton moment proof explicitly. Temporary inventory scaffolding will be removed before merge.
