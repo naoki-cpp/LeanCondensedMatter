@@ -1,0 +1,52 @@
+name: Document local decidable instances
+
+on:
+  push:
+    branches:
+      - agent/lint-api-cleanup-all
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/lint-api-cleanup-all
+      - name: Add instance documentation
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          marker = "local instance instDecidableEq"
+          doc = "/-- File-local classical decidable equality, kept out of public theorem signatures. -/\n"
+          changed = []
+          count = 0
+          for path in Path("LeanCondensedMatter").rglob("*.lean"):
+              text = path.read_text()
+              lines = text.splitlines(keepends=True)
+              output = []
+              local_count = 0
+              for line in lines:
+                  if line.startswith(marker):
+                      if output and "File-local classical decidable equality" in output[-1]:
+                          raise RuntimeError(f"already documented: {path}")
+                      output.append(doc)
+                      local_count += 1
+                  output.append(line)
+              if local_count:
+                  path.write_text("".join(output))
+                  changed.append(str(path))
+                  count += local_count
+          if count != 11:
+              raise RuntimeError(f"expected 11 local instances, found {count}: {changed}")
+          print("\n".join(changed))
+          PY
+          git diff --check
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add LeanCondensedMatter
+          git commit -m "docs: explain file-local decidable equality instances"
+          git push origin HEAD:agent/lint-api-cleanup-all
