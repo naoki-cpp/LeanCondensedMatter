@@ -38,6 +38,7 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.KuboFormula
 import LeanCondensedMatter.QuantumTheory.LinearResponse.UnitaryPerturbation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.SourceCoupling
 import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
+import LeanCondensedMatter.QuantumTheory.LinearResponse.FrequencyDomain
 import LeanCondensedMatter.QuantumTheory.DensityOperator
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal
 import LeanCondensedMatter.QuantumTheory.Entropy.Basic
