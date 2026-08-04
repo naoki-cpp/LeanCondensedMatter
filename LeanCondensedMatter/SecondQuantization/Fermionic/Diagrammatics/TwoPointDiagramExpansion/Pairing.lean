@@ -21,7 +21,7 @@ namespace Fermionic
 
 open Combinatorics
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
+variable {Mode : Type*} [LinearOrder Mode]
 
 /-- A single creation or annihilation field together with its imaginary time. -/
 structure TimedField (Mode : Type*) where
