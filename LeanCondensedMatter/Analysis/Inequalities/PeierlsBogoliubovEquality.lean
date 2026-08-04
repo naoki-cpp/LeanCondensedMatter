@@ -213,6 +213,5 @@ theorem gibbs_peierls_bogoliubov_eq_iff_eigenvector
       exact cfc_apply_eigenvector (T := T) hT heigen
         (f := fun x : ℝ => Real.exp (-β * x)) (by fun_prop)
     rw [hcfc, inner_smul_left, inner_self_eq_norm_sq_to_K, he]
-    rw [← Complex.exp_conj]
-    congr 1
-    simp
+    norm_num only [one_pow, mul_one]
+    exact (Complex.conj_ofReal (Real.exp (-β * x₀))).symm
