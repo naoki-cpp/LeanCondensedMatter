@@ -38,6 +38,7 @@ def HasSummableRealEigenvalues (T : H →L[ℂ] H) : Prop :=
   Summable (fun a : EigenvectorIndex T => |a.1.1|)
 
 /-- The spectral sum of the indexed nonzero real eigenvalues of `T`, with multiplicity. -/
+@[nolint unusedArguments]
 noncomputable def spectralTrace {T : H →L[ℂ] H} (_h : HasSummableRealEigenvalues T) : ℝ :=
   ∑' a : EigenvectorIndex T, a.1.1
 

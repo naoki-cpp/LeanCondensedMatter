@@ -19,6 +19,7 @@ open Combinatorics
 variable {Label : Type*} {N : ℕ}
 
 /-- A leg belongs to block `B` iff its vertex does. -/
+@[nolint unusedArguments]
 def QuarticDiagram.legInBlock {S : Finset (Fin N)} (_d : QuarticDiagram Label N S)
     (B : Finset (Fin N)) (leg : Fin (2 * (2 * S.card))) : Prop :=
   (vertexOfLeg leg : Fin N) ∈ B

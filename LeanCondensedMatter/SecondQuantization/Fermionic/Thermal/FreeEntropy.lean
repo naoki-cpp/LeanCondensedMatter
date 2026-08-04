@@ -35,6 +35,7 @@ noncomputable def freeGibbsConfigurationProbability
     Common.finiteBoltzmannWeight (fermionEnergy ε) β n
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
+@[nolint simpNF]
 @[simp]
 theorem freeGibbsDensityOperator_apply_basis_probability
     (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :

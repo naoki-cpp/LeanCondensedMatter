@@ -13,6 +13,7 @@ namespace Combinatorics
 namespace FiniteIndex
 
 /-- Positions left after deleting `0` and a distinct position `j`. -/
+@[nolint unusedArguments]
 def deletedPositions (n : ℕ) (j : Fin (2 * (n + 1)))
     (_hzero : (0 : Fin (2 * (n + 1))) ≠ j) : Finset (Fin (2 * (n + 1))) :=
   (Finset.univ.erase 0).erase j
@@ -29,7 +30,6 @@ noncomputable def deletedPositionsOrderIso (n : ℕ) (j : Fin (2 * (n + 1)))
     Fin (2 * n) ≃o deletedPositions n j hzero :=
   (deletedPositions n j hzero).orderIsoOfFin (card_deletedPositions n j hzero)
 
-@[simp]
 theorem deletedPositionsOrderIso_mem (n : ℕ) (j : Fin (2 * (n + 1)))
     (hzero : (0 : Fin (2 * (n + 1))) ≠ j) (i : Fin (2 * n)) :
     ((deletedPositionsOrderIso n j hzero i : Fin (2 * (n + 1))) ∈

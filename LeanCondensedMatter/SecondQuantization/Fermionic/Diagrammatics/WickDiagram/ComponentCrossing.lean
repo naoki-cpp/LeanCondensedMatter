@@ -33,6 +33,7 @@ theorem QuarticWickDiagram.crosses_componentOrderedLeg_iff {S : Finset (Fin N)}
     (d.componentOrderedLegOrderEmbedding shuffle B).strictMono a b c e
 
 /-- Crossing compatibility stated directly through the component-pair equivalence. -/
+@[nolint simpNF]
 @[simp]
 theorem QuarticWickDiagram.crosses_componentPairEquiv_iff {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (orders : d.ComponentVertexOrders)

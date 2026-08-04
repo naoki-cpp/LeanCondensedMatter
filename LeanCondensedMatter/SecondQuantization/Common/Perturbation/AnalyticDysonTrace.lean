@@ -42,7 +42,6 @@ theorem finiteOperatorTrace_apply (A : FiniteContinuousOperator Config) :
   simp [finiteOperatorTrace]
 
 /-- The continuous trace agrees with the existing algebraic `traceFock` after transport. -/
-@[simp]
 theorem finiteOperatorTrace_finiteContinuousOperator
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     finiteOperatorTrace (finiteContinuousOperator A) = traceFock A := by
