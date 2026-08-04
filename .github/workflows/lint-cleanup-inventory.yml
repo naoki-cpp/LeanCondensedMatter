@@ -19,9 +19,14 @@ jobs:
           grep -RIn -B 3 -A 8 -E '@\[[^]]*nolint|@\[nolint' LeanCondensedMatter || true
           echo '=== global and module linter options ==='
           grep -RIn -E 'linter\.(style\.)?(header|longLine|unnecessarySimpa)|set_option linter' lakefile.toml LeanCondensedMatter || true
-          echo '=== FockSpace declarations and section constraints ==='
-          grep -RIn -B 2 -A 4 -E 'abbrev FockSpace|variable .*DecidableEq Mode|section.*Mode' LeanCondensedMatter/SecondQuantization/{Bosonic,Fermionic} || true
-          echo '=== deletedPositions references ==='
-          grep -RIn -B 2 -A 3 'deletedPositions' LeanCondensedMatter/Combinatorics || true
-          echo '=== legInBlock references ==='
-          grep -RIn -B 2 -A 4 'legInBlock' LeanCondensedMatter/SecondQuantization || true
+          echo '=== focused simp dependencies ==='
+          grep -RIn -B 2 -A 4 -E 'pairEndpoint_eq_pairEndpointAt|componentPairEquiv_apply|freeGibbsDensityOperator_apply_basis|deletedPositionsOrderIso_mem' LeanCondensedMatter || true
+      - name: Package source tree
+        run: |
+          tar -czf lint-cleanup-source.tar.gz \
+            LeanCondensedMatter lakefile.toml lake-manifest.json lean-toolchain scripts notes
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lint-cleanup-source
+          path: lint-cleanup-source.tar.gz
+          retention-days: 1
