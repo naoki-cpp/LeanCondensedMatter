@@ -120,7 +120,6 @@ theorem orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace
       obtain ⟨i, hi⟩ := he_surj j
       have hbdi : b j = d i := by
         rw [← hi]
-        change b (e i) = d i
         rw [hb_eq]
       rw [hbdi]
       exact Submodule.inner_right_of_mem_orthogonal
