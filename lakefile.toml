@@ -3,7 +3,7 @@ version = "0.1.0"
 keywords = ["math"]
 defaultTargets = ["LeanCondensedMatter"]
 # Run the Batteries linter over the curated public library target. Remaining `nolint` annotations
-# document proof witnesses, compatibility parameters, or deliberately chosen high-level simp APIs.
+# record intentional proof witnesses, compatibility parameters, or high-level simp APIs.
 lintDriver = "batteries/runLinter"
 
 [leanOptions]
