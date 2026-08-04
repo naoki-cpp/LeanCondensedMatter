@@ -28,6 +28,7 @@ namespace QuantumTheory
 namespace LinearResponse
 
 open Set Filter Topology
+open scoped BigOperators
 
 noncomputable section
 
@@ -92,7 +93,7 @@ theorem hasStaticLimit_lehmannTerm_of_pos
     exact continuousAt_const.mul
       (hden.inv₀ (lehmannDenominator_ne_zero_of_pos
         hbar 0 eta energyGap heta))
-  simpa [HasStaticLimit] using hcont
+  simpa [HasStaticLimit] using hcont.tendsto
 
 /-- A scalar term has a regulator-removal limit whenever its weight vanishes or its detuning is
 nonzero. -/
@@ -128,8 +129,11 @@ theorem hasStaticLimit_unswitchedLehmannTerm
   rcases hregular with hweight | hgap
   · subst weight
     simp [HasStaticLimit, unswitchedLehmannTerm, lehmannTerm]
-  · have hdetuning : (0 : ℝ) + energyGap / hbar ≠ 0 := by
-      simpa using div_ne_zero hgap hhbar
+  · have hgapDiv : energyGap / hbar ≠ 0 := by
+      rw [div_ne_zero]
+      exact ⟨hgap, hhbar⟩
+    have hdetuning : (0 : ℝ) + energyGap / hbar ≠ 0 := by
+      simpa using hgapDiv
     have hden : ContinuousAt
         (fun omega : ℝ => lehmannDenominator hbar omega 0 energyGap) 0 := by
       unfold lehmannDenominator
@@ -140,7 +144,7 @@ theorem hasStaticLimit_unswitchedLehmannTerm
       exact continuousAt_const.mul
         (hden.inv₀ (lehmannDenominator_zero_rate_ne_zero
           hbar 0 energyGap hdetuning))
-    simpa [HasStaticLimit] using hcont
+    simpa [HasStaticLimit] using hcont.tendsto
 
 /-- A finite family of fixed-rate Lehmann terms. -/
 noncomputable def finiteLehmannLimitSum
@@ -253,7 +257,9 @@ theorem eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum
         · exact Filter.Eventually.of_forall fun omega =>
             hasAdiabaticRemovalLimit_lehmannTerm
               hbar omega (energyGap a) (weight a) (Or.inl hweight)
-        · have hgapDiv : energyGap a / hbar ≠ 0 := div_ne_zero hgap hhbar
+        · have hgapDiv : energyGap a / hbar ≠ 0 := by
+            rw [div_ne_zero]
+            exact ⟨hgap, hhbar⟩
           have hcont : ContinuousAt
               (fun omega : ℝ => omega + energyGap a / hbar) 0 := by
             fun_prop
@@ -289,7 +295,10 @@ theorem finiteLehmannLimitSum_has_both_local_iterated_limits
       intro j hj
       rcases hregular j hj with hweight | hgap
       · exact Or.inl hweight
-      · exact Or.inr (by simpa using div_ne_zero hgap hhbar)
+      · have hgapDiv : energyGap j / hbar ≠ 0 := by
+          rw [div_ne_zero]
+          exact ⟨hgap, hhbar⟩
+        exact Or.inr (by simpa using hgapDiv)
   · refine ⟨fun omega =>
       finiteUnswitchedLehmannSum s hbar omega energyGap weight, ?_, ?_⟩
     · exact eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum
