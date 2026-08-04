@@ -82,7 +82,7 @@ private theorem insertTwoPointTimedEvent_length {n : ℕ} (τ τ' : ℝ) (σ : F
 
 private theorem insertTwoPointTimedEvent_perm {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
     (a : TwoPointTimedEvent n) (l : List (TwoPointTimedEvent n)) :
-    insertTwoPointTimedEvent τ τ' σ a l ~ a :: l := by
+    List.Perm (insertTwoPointTimedEvent τ τ' σ a l) (a :: l) := by
   induction l with
   | nil => simp [insertTwoPointTimedEvent]
   | cons b l ih =>
@@ -111,8 +111,8 @@ theorem orderedTwoPointTimedEvents_length {n : ℕ} (τ τ' : ℝ) (σ : Fin n �
 /-- Time ordering permutes, but neither duplicates nor removes, the two external events and the
 interaction events. -/
 theorem orderedTwoPointTimedEvents_perm {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    orderedTwoPointTimedEvents τ τ' σ ~
-      [Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n := by
+    List.Perm (orderedTwoPointTimedEvents τ τ' σ)
+      ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n) := by
   rw [orderedTwoPointTimedEvents]
   have h0 := insertTwoPointTimedEvent_perm τ τ' σ
     (Sum.inl 0 : TwoPointTimedEvent n) (twoPointInteractionEventList n)
