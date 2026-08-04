@@ -4,16 +4,31 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   audit:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+
     steps:
       - uses: actions/checkout@v5
-      - name: Check architecture and final removals
-        run: |
-          python3 scripts/check_quantum_theory_architecture.py
-          python3 scripts/check_second_quantization_audit_removals.py
+
+      - name: Check SecondQuantization architecture
+        run: python3 scripts/check_second_quantization_architecture.py
+
+      - name: Check removed SecondQuantization APIs
+        run: python3 scripts/check_second_quantization_removed_identifiers.py
+
+      - name: Check Bloch-de Dominicis boundary
+        run: python3 scripts/check_bloch_de_dominicis_expectation_boundary.py
+
+      - name: Check final audit removals
+        run: python3 scripts/check_second_quantization_audit_removals.py
