@@ -1,0 +1,430 @@
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Flattening
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Induction
+
+set_option linter.style.header false
+
+/-!
+# Pairing expansion for a two-point insertion
+
+This module applies the finite-temperature Bloch--de Dominicis theorem to the `4n + 2` atomic
+operator list constructed by `TwoPointDiagramExpansion.Flattening`.
+
+The result is first stated as a sum over `Pairing (2n + 1)`. Reindexing that sum into
+`TwoPointWickDiagram` is intentionally left to the next layer.
+-/
+
+namespace SecondQuantization
+namespace Fermionic
+
+open Combinatorics
+
+variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+
+/-- A single creation or annihilation field together with its imaginary time. -/
+structure TimedFermionField (Mode : Type*) where
+  time : ℝ
+  label : ExternalFieldLabel Mode
+
+/-- The mode carried by an external fermionic field label. -/
+def externalFieldLabelMode : ExternalFieldLabel Mode → Mode
+  | .annihilation i => i
+  | .creation i => i
+
+/-- Whether an external fermionic field label is a creation field. -/
+def externalFieldLabelIsCreate : ExternalFieldLabel Mode → Bool
+  | .annihilation _ => false
+  | .creation _ => true
+
+/-- The bare creation or annihilation operator represented by an external field label. -/
+noncomputable def bareExternalFieldOperator :
+    ExternalFieldLabel Mode → FockSpace Mode →ₗ[ℂ] FockSpace Mode
+  | .annihilation i => annihilate i
+  | .creation i => create i
+
+/-- The free-evolution eigenvalue shift of an external field label. -/
+def externalFieldLabelEnergyShift (ε : Mode → ℝ) : ExternalFieldLabel Mode → ℝ
+  | .annihilation i => -ε i
+  | .creation i => ε i
+
+/-- A time-labelled fermionic field as an evolved linear operator. -/
+noncomputable def timedFermionFieldOperator (ε : Mode → ℝ)
+    (field : TimedFermionField Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+  externalFieldOperator ε field.time field.label
+
+/-- Every evolved external field is its bare ladder operator times the expected exponential. -/
+theorem externalFieldOperator_eq_smul_bare (ε : Mode → ℝ) (τ : ℝ)
+    (label : ExternalFieldLabel Mode) :
+    externalFieldOperator ε τ label =
+      Complex.exp (((τ * externalFieldLabelEnergyShift ε label : ℝ) : ℂ)) •
+        bareExternalFieldOperator label := by
+  cases label with
+  | annihilation i =>
+      rw [externalFieldOperator_annihilation_eq_smul]
+      change Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i =
+        Complex.exp (((τ * -ε i : ℝ) : ℂ)) • annihilate i
+      congr 2
+      push_cast
+      ring
+  | creation i =>
+      rw [externalFieldOperator_creation_eq_smul]
+      change Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i =
+        Complex.exp (((τ * ε i : ℝ) : ℂ)) • create i
+      congr 2
+      push_cast
+      ring
+
+/-- The bare fermionic zeta-commutator of two labelled fields is a scalar identity operator. -/
+theorem zetaCommutator_bareExternalFieldOperator
+    (A B : ExternalFieldLabel Mode) :
+    Common.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
+        (bareExternalFieldOperator A) (bareExternalFieldOperator B) =
+      (if externalFieldLabelIsCreate A = externalFieldLabelIsCreate B then (0 : ℂ)
+       else if externalFieldLabelMode A = externalFieldLabelMode B then 1 else 0) •
+        (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
+  rw [exchangeCommutator_fermion_eq_anticomm]
+  cases A <;> cases B <;>
+    simp [bareExternalFieldOperator, externalFieldLabelIsCreate, externalFieldLabelMode,
+      anticomm_annihilate_annihilate, anticomm_annihilate_create,
+      anticomm_create_annihilate, anticomm_create_create]
+
+/-- The scalar coefficient in the zeta-commutator of two evolved fermionic fields. -/
+noncomputable def timedFermionFieldCommutatorCoeff (ε : Mode → ℝ)
+    (A B : TimedFermionField Mode) : ℂ :=
+  Complex.exp (((A.time * externalFieldLabelEnergyShift ε A.label : ℝ) : ℂ)) *
+    Complex.exp (((B.time * externalFieldLabelEnergyShift ε B.label : ℝ) : ℂ)) *
+    (if externalFieldLabelIsCreate A.label = externalFieldLabelIsCreate B.label then (0 : ℂ)
+     else if externalFieldLabelMode A.label = externalFieldLabelMode B.label then 1 else 0)
+
+/-- A time-labelled fermionic field has the expected scalar-times-bare normal form. -/
+theorem timedFermionFieldOperator_eq_smul (ε : Mode → ℝ)
+    (field : TimedFermionField Mode) :
+    timedFermionFieldOperator ε field =
+      Complex.exp (((field.time * externalFieldLabelEnergyShift ε field.label : ℝ) : ℂ)) •
+        bareExternalFieldOperator field.label :=
+  externalFieldOperator_eq_smul_bare ε field.time field.label
+
+/-- Two evolved fermionic fields satisfy the scalar zeta-commutator hypothesis. -/
+theorem zetaCommutator_timedFermionFieldOperator (ε : Mode → ℝ)
+    (A B : TimedFermionField Mode) :
+    Common.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
+        (timedFermionFieldOperator ε A) (timedFermionFieldOperator ε B) =
+      timedFermionFieldCommutatorCoeff ε A B •
+        (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
+  rw [timedFermionFieldOperator_eq_smul, timedFermionFieldOperator_eq_smul,
+    Common.zetaCommutator_smul_smul, zetaCommutator_bareExternalFieldOperator, smul_smul,
+    timedFermionFieldCommutatorCoeff]
+
+/-- A time-labelled fermionic field remains an eigenoperator after a further evolution by `-β`. -/
+theorem heisenbergEvolve_timedFermionFieldOperator (ε : Mode → ℝ) (β : ℝ)
+    (field : TimedFermionField Mode) :
+    Common.heisenbergEvolve (fermionEnergy ε) (-β) (timedFermionFieldOperator ε field) =
+      Complex.exp (((externalFieldLabelEnergyShift ε field.label * (-β) : ℝ) : ℂ)) •
+        timedFermionFieldOperator ε field := by
+  obtain ⟨τ, label⟩ := field
+  cases label with
+  | annihilation i =>
+      change Common.heisenbergEvolve (fermionEnergy ε) (-β)
+          (imaginaryTimeEvolve ε τ (annihilate i)) =
+        Complex.exp ((((-ε i) * (-β) : ℝ) : ℂ)) •
+          imaginaryTimeEvolve ε τ (annihilate i)
+      have step : Common.heisenbergEvolve (fermionEnergy ε) (-β)
+          (imaginaryTimeEvolve ε τ (annihilate i)) =
+        imaginaryTimeEvolve ε (τ + -β) (annihilate i) :=
+        Common.heisenbergEvolve_heisenbergEvolve (fermionEnergy ε) τ (-β) (annihilate i)
+      rw [step, imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_annihilate, smul_smul,
+        ← Complex.exp_add]
+      congr 2
+      push_cast
+      ring
+  | creation i =>
+      change Common.heisenbergEvolve (fermionEnergy ε) (-β)
+          (imaginaryTimeEvolve ε τ (create i)) =
+        Complex.exp ((((ε i) * (-β) : ℝ) : ℂ)) • imaginaryTimeEvolve ε τ (create i)
+      have step : Common.heisenbergEvolve (fermionEnergy ε) (-β)
+          (imaginaryTimeEvolve ε τ (create i)) =
+        imaginaryTimeEvolve ε (τ + -β) (create i) :=
+        Common.heisenbergEvolve_heisenbergEvolve (fermionEnergy ε) τ (-β) (create i)
+      rw [step, imaginaryTimeEvolve_create, imaginaryTimeEvolve_create, smul_smul,
+        ← Complex.exp_add]
+      congr 2
+      push_cast
+      ring
+
+/-- View one quartic local leg as an external-style annihilation or creation field label. -/
+def quarticLocalLegExternalFieldLabel (q : QuarticVertexLabel Mode) (l : Fin 4) :
+    ExternalFieldLabel Mode :=
+  if quarticLocalLegIsCreate l then
+    .creation (quarticLocalLegMode q l)
+  else
+    .annihilation (quarticLocalLegMode q l)
+
+@[simp]
+theorem bareExternalFieldOperator_quarticLocalLegExternalFieldLabel
+    (q : QuarticVertexLabel Mode) (l : Fin 4) :
+    bareExternalFieldOperator (quarticLocalLegExternalFieldLabel q l) =
+      quarticLocalLegOperator q l := by
+  fin_cases l <;>
+    simp [quarticLocalLegExternalFieldLabel, quarticLocalLegIsCreate, quarticLocalLegMode,
+      bareExternalFieldOperator, quarticLocalLegOperator]
+
+@[simp]
+theorem externalFieldLabelEnergyShift_quarticLocalLegExternalFieldLabel
+    (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) (l : Fin 4) :
+    externalFieldLabelEnergyShift ε (quarticLocalLegExternalFieldLabel q l) =
+      quarticLocalLegEnergyShift ε q l := by
+  fin_cases l <;>
+    simp [quarticLocalLegExternalFieldLabel, quarticLocalLegIsCreate, quarticLocalLegMode,
+      externalFieldLabelEnergyShift, quarticLocalLegEnergyShift]
+
+/-- The time-labelled field corresponding to one quartic local leg has the existing local-leg
+operator semantics. -/
+theorem timedFermionFieldOperator_quarticLocalLeg (ε : Mode → ℝ) (τ : ℝ)
+    (q : QuarticVertexLabel Mode) (l : Fin 4) :
+    timedFermionFieldOperator ε
+        ⟨τ, quarticLocalLegExternalFieldLabel q l⟩ =
+      imaginaryTimeEvolve ε τ (quarticLocalLegOperator q l) := by
+  rw [timedFermionFieldOperator_eq_smul,
+    bareExternalFieldOperator_quarticLocalLegExternalFieldLabel,
+    externalFieldLabelEnergyShift_quarticLocalLegExternalFieldLabel,
+    imaginaryTimeEvolve_quarticLocalLegOperator]
+
+/-- The field descriptors contributed by one external or quartic interaction event. -/
+noncomputable def twoPointTimedEventAtomicFields {n : ℕ} (i j : Mode)
+    (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    TwoPointTimedEvent n → List (TimedFermionField Mode)
+  | .inl e => [⟨twoPointExternalTimes τ τ' e, twoPointExternalLabels i j e⟩]
+  | .inr v => List.ofFn fun l : Fin 4 =>
+      ⟨σ v, quarticLocalLegExternalFieldLabel (q v) l⟩
+
+/-- Mapping one event's field descriptors to operators recovers its atomic operator list. -/
+theorem map_timedFermionFieldOperator_twoPointTimedEventAtomicFields {n : ℕ}
+    (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
+    (event : TwoPointTimedEvent n) :
+    (twoPointTimedEventAtomicFields i j τ τ' q σ event).map
+        (timedFermionFieldOperator ε) =
+      twoPointTimedEventAtomicOperators ε i j τ τ' q σ event := by
+  cases event with
+  | inl e =>
+      simp [twoPointTimedEventAtomicFields, timedFermionFieldOperator]
+  | inr v =>
+      rw [twoPointTimedEventAtomicFields, twoPointTimedEventAtomicOperators_interaction,
+        List.map_ofFn]
+      apply List.ofFn_injective
+      funext l
+      exact timedFermionFieldOperator_quarticLocalLeg ε (σ v) (q v) l
+
+/-- The complete mixed-time-ordered list of time-labelled atomic fermionic fields. -/
+noncomputable def mixedTimeOrderedAtomicFields {n : ℕ} (i j : Mode)
+    (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    List (TimedFermionField Mode) :=
+  (orderedTwoPointTimedEvents τ τ' σ).flatMap
+    (twoPointTimedEventAtomicFields i j τ τ' q σ)
+
+private theorem map_timedFermionFieldOperator_flatMap_twoPointTimedEventAtomicFields {n : ℕ}
+    (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
+    (events : List (TwoPointTimedEvent n)) :
+    (events.flatMap (twoPointTimedEventAtomicFields i j τ τ' q σ)).map
+        (timedFermionFieldOperator ε) =
+      events.flatMap (twoPointTimedEventAtomicOperators ε i j τ τ' q σ) := by
+  induction events with
+  | nil => rfl
+  | cons event events ih =>
+      rw [List.flatMap_cons, List.map_append, List.flatMap_cons,
+        map_timedFermionFieldOperator_twoPointTimedEventAtomicFields, ih]
+
+/-- Mapping all mixed-time-ordered field descriptors to operators recovers the atomic operator list. -/
+theorem map_timedFermionFieldOperator_mixedTimeOrderedAtomicFields {n : ℕ}
+    (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    (mixedTimeOrderedAtomicFields i j τ τ' q σ).map (timedFermionFieldOperator ε) =
+      mixedTimeOrderedAtomicOperators ε i j τ τ' q σ := by
+  rw [mixedTimeOrderedAtomicFields, mixedTimeOrderedAtomicOperators]
+  exact map_timedFermionFieldOperator_flatMap_twoPointTimedEventAtomicFields
+    ε i j τ τ' q σ (orderedTwoPointTimedEvents τ τ' σ)
+
+/-- The descriptor list has the same `4n + 2` cardinality as the atomic operator list. -/
+@[simp]
+theorem mixedTimeOrderedAtomicFields_length {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
+    (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    (mixedTimeOrderedAtomicFields i j τ τ' q σ).length = 2 * (2 * n + 1) := by
+  calc
+    (mixedTimeOrderedAtomicFields i j τ τ' q σ).length =
+        ((mixedTimeOrderedAtomicFields i j τ τ' q σ).map
+          (timedFermionFieldOperator ε)).length := by simp
+    _ = (mixedTimeOrderedAtomicOperators ε i j τ τ' q σ).length :=
+      congrArg List.length
+        (map_timedFermionFieldOperator_mixedTimeOrderedAtomicFields ε i j τ τ' q σ)
+    _ = 2 * (2 * n + 1) := mixedTimeOrderedAtomicOperators_length ε i j τ τ' q σ
+
+/-- The `Fin (4n + 2)`-indexed time-labelled field family underlying the mixed operator list. -/
+noncomputable def mixedTimeOrderedAtomicFieldFamily {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
+    (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    Fin (2 * (2 * n + 1)) → TimedFermionField Mode :=
+  fun p => (mixedTimeOrderedAtomicFields i j τ τ' q σ).get
+    (Fin.cast (mixedTimeOrderedAtomicFields_length ε i j τ τ' q σ).symm p)
+
+/-- The corresponding `Fin (4n + 2)`-indexed atomic operator family. -/
+noncomputable def mixedTimeOrderedAtomicOperatorFamily {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
+    (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    Fin (2 * (2 * n + 1)) → FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+  fun p => timedFermionFieldOperator ε
+    (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ p)
+
+/-- The eigenvalue-shift family used by the general pairing theorem. -/
+noncomputable def mixedTimeOrderedAtomicEnergyShift {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
+    (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    Fin (2 * (2 * n + 1)) → ℝ :=
+  fun p => externalFieldLabelEnergyShift ε
+    (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ p).label
+
+/-- The scalar zeta-commutator coefficient family used by the general pairing theorem. -/
+noncomputable def mixedTimeOrderedAtomicCommutatorCoeff {n : ℕ}
+    (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    Fin (2 * (2 * n + 1)) → Fin (2 * (2 * n + 1)) → ℂ :=
+  fun a b => timedFermionFieldCommutatorCoeff ε
+    (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ a)
+    (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ b)
+
+/-- Rebuilding the descriptor list from its fixed-cardinality family recovers the original list. -/
+theorem ofFn_mixedTimeOrderedAtomicFieldFamily_eq {n : ℕ}
+    (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    List.ofFn (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ) =
+      mixedTimeOrderedAtomicFields i j τ τ' q σ := by
+  let l := mixedTimeOrderedAtomicFields i j τ τ' q σ
+  have h : l.length = 2 * (2 * n + 1) :=
+    mixedTimeOrderedAtomicFields_length ε i j τ τ' q σ
+  simpa [mixedTimeOrderedAtomicFieldFamily, l] using
+    (List.ofFn_congr h l.get).symm.trans (List.ofFn_get l)
+
+/-- Rebuilding the operator list from its fixed-cardinality family recovers the flattened list. -/
+theorem ofFn_mixedTimeOrderedAtomicOperatorFamily_eq {n : ℕ}
+    (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    List.ofFn (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ) =
+      mixedTimeOrderedAtomicOperators ε i j τ τ' q σ := by
+  rw [mixedTimeOrderedAtomicOperatorFamily, List.ofFn_comp',
+    ofFn_mixedTimeOrderedAtomicFieldFamily_eq,
+    map_timedFermionFieldOperator_mixedTimeOrderedAtomicFields]
+
+/-- Every member of the mixed atomic family satisfies the general theorem's eigenoperator
+hypothesis. -/
+theorem heisenbergEvolve_mixedTimeOrderedAtomicOperatorFamily {n : ℕ}
+    (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
+    (p : Fin (2 * (2 * n + 1))) :
+    Common.heisenbergEvolve (fermionEnergy ε) (-β)
+        (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ p) =
+      Complex.exp (((mixedTimeOrderedAtomicEnergyShift ε i j τ τ' q σ p * (-β) : ℝ) : ℂ)) •
+        mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ p :=
+  heisenbergEvolve_timedFermionFieldOperator ε β
+    (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ p)
+
+/-- Every pair of members of the mixed atomic family satisfies the scalar zeta-commutator
+hypothesis. -/
+theorem zetaCommutator_mixedTimeOrderedAtomicOperatorFamily {n : ℕ}
+    (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
+    (a b : Fin (2 * (2 * n + 1))) :
+    Common.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
+        (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ a)
+        (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ b) =
+      mixedTimeOrderedAtomicCommutatorCoeff ε i j τ τ' q σ a b •
+        (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :=
+  zetaCommutator_timedFermionFieldOperator ε
+    (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ a)
+    (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ b)
+
+omit [DecidableEq Mode] [LinearOrder Mode] in
+private theorem traceFock_diagonalEvolution_fermionEnergy_ne_zero
+    (ε : Mode → ℝ) (β : ℝ) :
+    Common.traceFock (Common.diagonalEvolution (fermionEnergy ε) (-β)) ≠ 0 := by
+  rw [Common.traceFock_diagonalEvolution_eq_weightSum]
+  have hw : Common.boltzmannWeight (fermionEnergy ε) β = freeBoltzmannWeight ε β := by
+    funext m
+    rw [Common.boltzmannWeight, freeBoltzmannWeight, fermionEnergy]
+    push_cast
+    ring_nf
+  rw [hw]
+  exact freePartitionFunction_ne_zero ε β
+
+omit [LinearOrder Mode] in
+private theorem finiteGibbsExpectation_smul_apply (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
+    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    Common.finiteGibbsExpectation (fermionEnergy ε) β (c • A) =
+      c * Common.finiteGibbsExpectation (fermionEnergy ε) β A := by
+  change (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) (c • A) =
+    c * (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) A
+  rw [map_smul, smul_eq_mul]
+
+/-- The finite Gibbs expectation of the flattened mixed product is a sum over all pairings of its
+`4n + 2` atomic operators. -/
+theorem finiteGibbsExpectation_prodComp_mixedTimeOrderedAtomicOperators_eq_sum_pairing
+    {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    Common.finiteGibbsExpectation (fermionEnergy ε) β
+        (Common.prodComp (mixedTimeOrderedAtomicOperators ε i j τ τ' q σ)) =
+      ∑ pairing : Pairing (2 * n + 1),
+        pairing.weight Common.Statistics.fermion *
+          ∏ pr ∈ pairing.pairs,
+            Common.finiteGibbsExpectation (fermionEnergy ε) β
+              ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ pr.1).comp
+                (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ pr.2)) := by
+  have hgen :=
+    Common.BlochDeDominicis.finiteGibbsExpectation_prodComp_eq_sum_pairing
+      Common.Statistics.fermion (fermionEnergy ε) β
+      (traceFock_diagonalEvolution_fermionEnergy_ne_zero ε β) (2 * n + 1)
+      (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ)
+      (mixedTimeOrderedAtomicEnergyShift ε i j τ τ' q σ)
+      (mixedTimeOrderedAtomicCommutatorCoeff ε i j τ τ' q σ)
+      (fun p => heisenbergEvolve_mixedTimeOrderedAtomicOperatorFamily ε β i j τ τ' q σ p)
+      (fun a b _ => zetaCommutator_mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ a b)
+      (fun p => one_sub_zetaInt_fermion_mul_exp_ne_zero
+        (mixedTimeOrderedAtomicEnergyShift ε i j τ τ' q σ p) β)
+  rw [← ofFn_mixedTimeOrderedAtomicOperatorFamily_eq]
+  exact hgen
+
+/-- The mixed event-level product satisfies the pairing expansion, including the fermionic sign
+from exchanging the two external fields. -/
+theorem finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairing
+    {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    Common.finiteGibbsExpectation (fermionEnergy ε) β
+        (mixedTimeOrderedVertexComp ε i j τ τ' q σ) =
+      twoPointExternalOrderSign τ τ' *
+        ∑ pairing : Pairing (2 * n + 1),
+          pairing.weight Common.Statistics.fermion *
+            ∏ pr ∈ pairing.pairs,
+              Common.finiteGibbsExpectation (fermionEnergy ε) β
+                ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ pr.1).comp
+                  (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ pr.2)) := by
+  rw [mixedTimeOrderedVertexComp_eq_prodComp_atomicOperators,
+    finiteGibbsExpectation_smul_apply,
+    finiteGibbsExpectation_prodComp_mixedTimeOrderedAtomicOperators_eq_sum_pairing]
+
+/-- Canonical free Gibbs density-state form of the mixed two-point pairing expansion. -/
+theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairing
+    {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator (mixedTimeOrderedVertexComp ε i j τ τ' q σ)) =
+      twoPointExternalOrderSign τ τ' *
+        ∑ pairing : Pairing (2 * n + 1),
+          pairing.weight Common.Statistics.fermion *
+            ∏ pr ∈ pairing.pairs,
+              (freeGibbsDensityOperator ε β).expectation
+                (Common.finiteHilbertOperator
+                  ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ pr.1).comp
+                    (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ pr.2))) := by
+  simpa only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
+    finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairing
+      ε β i j τ τ' q σ
+
+end Fermionic
+end SecondQuantization
