@@ -13,7 +13,7 @@ theorem gibbs_scalar_ineq_strict (x y : ℝ) (hx : 0 ≤ x) (hy : 0 < y) (hxy : 
     Real.negMulLog x + x - y < -x * Real.log y := by
   rcases eq_or_lt_of_le hx with hx0 | hx0
   · subst x
-    simp only [Real.negMulLog, zero_mul, zero_add]
+    simp only [Real.negMulLog]
     linarith
   · have hratio_pos : 0 < y / x := div_pos hy hx0
     have hratio_ne : y / x ≠ 1 := by
