@@ -19,6 +19,7 @@ namespace ContinuousLinearMap
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   [FiniteDimensional ℂ H] [CompleteSpace H]
 
+omit [FiniteDimensional ℂ H] in
 /-- In finite dimension, the lossless diagonal expectation of a self-adjoint operator is the
 weighted sum of the eigenvalues in any supplied orthonormal eigenbasis, with squared basis
 coordinates as weights. -/
@@ -29,8 +30,16 @@ theorem diagonalExpectationValue_eq_sum_orthonormal_eigenbasis
     diagonalExpectationValue T hT x =
       ∑ i, E i * ‖b.repr x i‖ ^ 2 := by
   have hcoord (i : ι) : b.repr (T x) i = (E i : ℂ) * b.repr x i := by
-    rw [b.repr_apply_apply, ← hT.isSymmetric (b i) x, hE i, inner_smul_left]
-    simp [b.repr_apply_apply]
+    calc
+      b.repr (T x) i = inner ℂ (b i) (T x) := b.repr_apply_apply (T x) i
+      _ = inner ℂ (T (b i)) x := (hT.isSymmetric (b i) x).symm
+      _ = inner ℂ ((E i : ℂ) • b i) x := by
+        apply congrArg (fun y : H => inner ℂ y x)
+        exact hE i
+      _ = (E i : ℂ) * inner ℂ (b i) x := by
+        rw [inner_smul_left]
+        simp
+      _ = (E i : ℂ) * b.repr x i := by rw [b.repr_apply_apply]
   apply Complex.ofReal_injective
   rw [coe_diagonalExpectationValue]
   have hinner := b.repr.inner_map_map (T x) x
@@ -41,8 +50,8 @@ theorem diagonalExpectationValue_eq_sum_orthonormal_eigenbasis
   intro i hi
   rw [hcoord i]
   change
-    ((E i : ℂ) * (‖b.repr x i‖ : ℂ) ^ 2) =
-      inner ℂ ((E i : ℂ) * b.repr x i) (b.repr x i)
+    inner ℂ ((E i : ℂ) * b.repr x i) (b.repr x i) =
+      (E i : ℂ) * (‖b.repr x i‖ : ℂ) ^ 2
   rw [show (E i : ℂ) * b.repr x i = (E i : ℂ) • b.repr x i from rfl]
   rw [inner_smul_left, inner_self_eq_norm_sq_to_K]
   simp

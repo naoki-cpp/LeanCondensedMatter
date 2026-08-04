@@ -1,0 +1,125 @@
+import LeanCondensedMatter.QuantumTheory.Gibbs.Uniqueness
+
+/-!
+# Uniqueness of the Gibbs minimizer
+
+The equality components recovered in `Gibbs.Uniqueness` imply that the spectral eigenvectors of a
+minimizing density operator form a complete energy eigenbasis and carry exactly the normalized
+Gibbs weights.  Hence the density operator is the canonical Gibbs state.
+-/
+
+namespace QuantumTheory
+
+open ContinuousLinearMap
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+/-- Density operators are determined by their underlying continuous linear operators. -/
+@[ext]
+theorem DensityOperator.ext {ρ σ : DensityOperator H} (h : ρ.op = σ.op) : ρ = σ := by
+  cases ρ
+  cases σ
+  cases h
+  rfl
+
+/-- A density operator attaining the Gibbs Helmholtz lower bound is the canonical Gibbs state. -/
+theorem eq_gibbsState_of_helmholtzFreeEnergy_eq
+    (ρ : DensityOperator H) (Hop : Observable H) (β : ℝ) (hβ : 0 < β)
+    (hcompact : IsCompactOperator (gibbsOp Hop β))
+    (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
+    (hZ : spectralTrace hsummable ≠ 0)
+    (hfree : energyExpValue ρ Hop -
+        (1 / β) * (vonNeumannEntropy ρ).toReal =
+      -(1 / β) * Real.log (spectralTrace hsummable)) :
+    ρ = gibbsState Hop β hcompact hsummable hZ := by
+  letI := finiteDimensional_of_gibbsOp_isCompact Hop β hcompact
+  let σ := gibbsState Hop β hcompact hsummable hZ
+  set d := eigenvectorFamily ρ.spectralTraceClass.compact with hd_def
+  set h : EigenvectorIndex ρ.op → ℝ :=
+    fun a => diagonalExpectationValue Hop.1 Hop.2 (d a) with hh_def
+  set q : EigenvectorIndex ρ.op → ℝ := fun a =>
+    diagonalExpectationValue (gibbsOp Hop β)
+      (gibbsOp_isPositive Hop β).isSelfAdjoint (d a) with hq_def
+  set Z : ℝ := spectralTrace hsummable with hZ_def
+  obtain ⟨hqsum, hpq, hpeierls⟩ :=
+    helmholtzFreeEnergy_eq_components ρ Hop β hβ hcompact hsummable hZ hfree
+  have hd_orth : Orthonormal ℂ d :=
+    orthonormal_eigenvectorFamily ρ.spectralTraceClass.compact ρ.isSymmetric
+  have hd_unit : ∀ a, ‖d a‖ = 1 := eigenvectorFamily_norm_eq_one ρ
+  have hqsum' : ∑' a, q a = Z := by
+    simpa [d, q, Z] using hqsum
+  have hpq' : ∀ a, a.1.1 = q a / Z := by
+    intro a
+    simpa [d, q, Z] using hpq a
+  have hpeierls' : ∀ a, Real.exp (-β * h a) = q a := by
+    intro a
+    simpa [d, h, q] using hpeierls a
+  have hcomplete : (Submodule.span ℂ (Set.range d))ᗮ = ⊥ := by
+    apply gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace
+      Hop β hcompact hsummable hd_orth
+    simpa [q, Z] using hqsum'
+  have henergyEigen : ∀ a,
+      (Hop.1 : H →ₗ[ℂ] H) (d a) = (h a : ℂ) • d a := by
+    intro a
+    apply (gibbs_peierls_bogoliubov_eq_iff_eigenvector
+      Hop.1 Hop.2 β hβ.ne' (d a) (hd_unit a)).mp
+    have heqComplex :
+        (Real.exp (-β * h a) : ℂ) =
+          inner ℂ (gibbsOp Hop β (d a)) (d a) := by
+      rw [← coe_diagonalExpectationValue
+        (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint (d a)]
+      exact_mod_cast hpeierls' a
+    simpa [h, gibbsOp] using heqComplex
+  have honFamily : ∀ a, ρ.op (d a) = σ.op (d a) := by
+    intro a
+    have hρ := apply_eigenvectorFamily ρ.spectralTraceClass.compact a
+    have hσ := gibbsState_apply_eigenvector Hop β hcompact hsummable hZ (henergyEigen a)
+    have hcoeffReal : a.1.1 = Z⁻¹ * Real.exp (-β * h a) := by
+      rw [hpq' a, hpeierls' a]
+      ring
+    have hcoeffComplex :
+        (a.1.1 : ℂ) = ((Z⁻¹ : ℝ) • (Real.exp (-β * h a) : ℂ)) := by
+      rw [Complex.real_smul]
+      exact_mod_cast hcoeffReal
+    calc
+      ρ.op (d a) = (a.1.1 : ℂ) • d a := hρ
+      _ = (((Z⁻¹ : ℝ) • (Real.exp (-β * h a) : ℂ)) • d a) := by
+        rw [hcoeffComplex]
+      _ = σ.op (d a) := by
+        simpa [σ, Z] using hσ.symm
+  have hspan_top : Submodule.span ℂ (Set.range d) = ⊤ :=
+    Submodule.orthogonal_eq_bot_iff.mp hcomplete
+  apply DensityOperator.ext
+  apply ContinuousLinearMap.ext
+  intro x
+  have hx : x ∈ Submodule.span ℂ (Set.range d) := by
+    rw [hspan_top]
+    exact Submodule.mem_top
+  have hspan_le :
+      Submodule.span ℂ (Set.range d) ≤
+        LinearMap.ker ((ρ.op : H →ₗ[ℂ] H) - (σ.op : H →ₗ[ℂ] H)) := by
+    rw [Submodule.span_le]
+    rintro y ⟨a, rfl⟩
+    change ρ.op (d a) - σ.op (d a) = 0
+    exact sub_eq_zero.mpr (honFamily a)
+  have hxker := hspan_le hx
+  change ρ.op x - σ.op x = 0 at hxker
+  exact sub_eq_zero.mp hxker
+
+/-- The Helmholtz lower bound is attained exactly by the canonical Gibbs state. -/
+theorem helmholtzFreeEnergy_eq_iff_eq_gibbsState
+    (ρ : DensityOperator H) (Hop : Observable H) (β : ℝ) (hβ : 0 < β)
+    (hcompact : IsCompactOperator (gibbsOp Hop β))
+    (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
+    (hZ : spectralTrace hsummable ≠ 0) :
+    energyExpValue ρ Hop - (1 / β) * (vonNeumannEntropy ρ).toReal =
+        -(1 / β) * Real.log (spectralTrace hsummable) ↔
+      ρ = gibbsState Hop β hcompact hsummable hZ := by
+  constructor
+  · exact eq_gibbsState_of_helmholtzFreeEnergy_eq
+      ρ Hop β hβ hcompact hsummable hZ
+  · intro hρ
+    rw [hρ]
+    exact gibbsState_helmholtzFreeEnergy_eq Hop β hβ hcompact hsummable hZ
+
+end QuantumTheory
