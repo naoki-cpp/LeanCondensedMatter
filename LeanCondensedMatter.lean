@@ -36,6 +36,7 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.DensityFirstVariation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.HermitianPerturbation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.KuboFormula
 import LeanCondensedMatter.QuantumTheory.LinearResponse.UnitaryPerturbation
+import LeanCondensedMatter.QuantumTheory.LinearResponse.SourceCoupling
 import LeanCondensedMatter.QuantumTheory.DensityOperator
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal
 import LeanCondensedMatter.QuantumTheory.Entropy.Basic
