@@ -110,7 +110,9 @@ theorem orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace
       simpa [g] using hdiag_pos (b j) (b.orthonormal.1 j)
     have hlt := htr.summable.tsum_comp_injective_lt_of_exists_not_mem
       hgnonneg e he_inj hjrange hgjpos
-    exact (ne_of_lt hlt) heqg
+    have hlt_trace : ∑' i, g (e i) < spectralTrace h := by
+      rwa [htr.tsum_eq] at hlt
+    exact (ne_of_lt hlt_trace) heqg
   apply le_antisymm
   · intro x hx
     have hinner : ∀ j : w, inner ℂ (b j) x = 0 := by
@@ -122,7 +124,7 @@ theorem orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace
         rw [hb_eq]
       rw [hbdi]
       exact Submodule.inner_right_of_mem_orthogonal
-        (Submodule.subset_span ⟨i, rfl⟩) hx
+        (Submodule.subset_span (Set.mem_range_self i)) hx
     have hrepr : b.repr x = 0 := by
       ext j
       rw [b.repr_apply_apply]
