@@ -43,20 +43,22 @@ jobs:
               "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint.lean"
           )
           text = path.read_text(encoding="utf-8")
-          old = """  externalLabel : Fin 2 → ExternalLabel
-          vertexLabel : ↥S → InternalLabel
-          pairing : Pairing (2 * S.card + 1)
-          """
-          new = """  /-- Labels attached to the two distinguished external vertices. -/
-          externalLabel : Fin 2 → ExternalLabel
-          /-- Labels attached to the quartic interaction vertices. -/
-          vertexLabel : ↥S → InternalLabel
-          /-- Perfect pairing of all external and interaction legs. -/
-          pairing : Pairing (2 * S.card + 1)
-          """
-          if old not in text:
-              raise SystemExit("TwoPointDiagram field block not found")
-          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          replacements = {
+              "externalLabel : Fin 2 → ExternalLabel":
+                  "/-- Labels attached to the two distinguished external vertices. -/\n"
+                  "  externalLabel : Fin 2 → ExternalLabel",
+              "vertexLabel : ↥S → InternalLabel":
+                  "/-- Labels attached to the quartic interaction vertices. -/\n"
+                  "  vertexLabel : ↥S → InternalLabel",
+              "pairing : Pairing (2 * S.card + 1)":
+                  "/-- Perfect pairing of all external and interaction legs. -/\n"
+                  "  pairing : Pairing (2 * S.card + 1)",
+          }
+          for old, new in replacements.items():
+              if old not in text:
+                  raise SystemExit(f"TwoPointDiagram field not found: {old}")
+              text = text.replace(old, new, 1)
+          path.write_text(text, encoding="utf-8")
           PY
 
           git add LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint.lean
