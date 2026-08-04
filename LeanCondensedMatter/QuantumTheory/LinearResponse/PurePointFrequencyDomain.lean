@@ -222,7 +222,7 @@ theorem adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_lehman
         by_cases hτ : τ ∈ Ici (0 : ℝ)
         · simp [Set.indicator_of_mem hτ]
         · have hneg : τ < 0 := by simpa [Set.mem_Ici, not_le] using hτ
-          simp [Set.indicator_of_not_mem hτ,
+          simp [hτ,
             adiabaticFrequencySusceptibilityIntegrand_eq_zero_of_neg
               system (purePointNormalizedExpectation system data) A B omega eta hneg]
       _ = _ := integral_indicator measurableSet_Ici
