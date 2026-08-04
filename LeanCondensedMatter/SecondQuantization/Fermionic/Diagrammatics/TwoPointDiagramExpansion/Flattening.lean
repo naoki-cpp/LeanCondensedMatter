@@ -76,7 +76,7 @@ private theorem length_flatMap_twoPointTimedEventAtomicOperators {n : ℕ}
       simp [ih]
 
 private theorem sum_map_eq_of_perm {α : Type*} (f : α → ℕ) {l₁ l₂ : List α}
-    (h : l₁ ~ l₂) : (l₁.map f).sum = (l₂.map f).sum := by
+    (h : List.Perm l₁ l₂) : (l₁.map f).sum = (l₂.map f).sum := by
   induction h with
   | nil => rfl
   | cons x h ih => simp [ih]
