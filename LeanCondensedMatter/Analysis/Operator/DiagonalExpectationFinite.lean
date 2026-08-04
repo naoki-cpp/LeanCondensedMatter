@@ -19,6 +19,7 @@ namespace ContinuousLinearMap
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
   [FiniteDimensional ℂ H] [CompleteSpace H]
 
+omit [FiniteDimensional ℂ H] in
 /-- In finite dimension, the lossless diagonal expectation of a self-adjoint operator is the
 weighted sum of the eigenvalues in any supplied orthonormal eigenbasis, with squared basis
 coordinates as weights. -/
