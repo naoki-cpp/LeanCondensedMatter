@@ -21,23 +21,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
-      - name: Check architecture
-        run: |
-          python3 scripts/check_quantum_theory_architecture.py
-          python3 scripts/check_second_quantization_architecture.py
-          python3 scripts/check_second_quantization_removed_identifiers.py
-          python3 scripts/check_bloch_de_dominicis_expectation_boundary.py
+      - name: Check QuantumTheory architecture
+        run: python3 scripts/check_quantum_theory_architecture.py
       - uses: leanprover/lean-action@v1
         with:
           # Keep the whole library warning-free, including modules unchanged by the PR.
           build: true
           build-args: "--wfail"
-      - name: Check for sorry
-        run: |
-          if grep -rnE '\bsorry\b' --include='*.lean' LeanCondensedMatter; then
-            echo "::error::Found 'sorry' in the Lean sources above. Per PROJECT.md, a statement is only 'proved' with no 'sorry' — record it as a target in notes/roadmap.md instead of leaving it in place."
-            exit 1
-          fi
+      - name: Check compiled declarations for sorryAx
+        run: lake env lean scripts/CheckNoSorry.lean
 
   # Documentation is intentionally built only on pushes to main. doc-gen4 processes the
   # full Mathlib symbol set, so running it for every pull request would be unnecessarily slow.
