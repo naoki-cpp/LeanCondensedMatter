@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Automatic integrability of fixed-rate adiabatic response
 
 For bounded observables, free Heisenberg evolution is isometric because it is conjugation by a
-unitary propagator.  Consequently the retarded commutator kernel is uniformly bounded.  Combining
+unitary propagator. Consequently the retarded commutator kernel is uniformly bounded. Combining
 that bound with the exponential factor `exp ((i ω - η) τ)` proves that every strictly positive
 switching rate is Bochner integrable; no extra convergence assumption is needed at fixed `η > 0`.
 
@@ -51,7 +51,9 @@ theorem continuous_freePropagator : Continuous (freePropagator system) := by
   have hcomplex : Continuous (fun z : ℂ =>
       NormedSpace.exp (z • schrodingerGenerator system)) :=
     (differentiable_exp_smul_const ℂ (schrodingerGenerator system)).continuous
-  simpa [freePropagator, timeScaledGenerator] using
+  change Continuous (fun t : ℝ =>
+    NormedSpace.exp ((t : ℂ) • schrodingerGenerator system))
+  simpa only [Function.comp_apply] using
     hcomplex.comp Complex.continuous_ofReal
 
 /-- Free Heisenberg evolution of a fixed bounded observable is norm-continuous in time. -/
@@ -59,8 +61,10 @@ theorem continuous_heisenbergEvolution (A : H →L[ℂ] H) :
     Continuous (fun t : ℝ => heisenbergEvolution system A t) := by
   have hneg : Continuous (fun t : ℝ => freePropagator system (-t)) :=
     (continuous_freePropagator system).comp continuous_neg
-  simpa [heisenbergEvolution] using
-    (hneg.mul continuous_const).mul (continuous_freePropagator system)
+  change Continuous
+    (((fun t : ℝ => freePropagator system (-t)) * (fun _ : ℝ => A)) *
+      freePropagator system)
+  exact (hneg.mul continuous_const).mul (continuous_freePropagator system)
 
 /-- The unswitched commutator kernel with source time fixed to zero is continuous. -/
 theorem continuous_commutatorSusceptibility_timeDifference
@@ -77,7 +81,12 @@ theorem continuous_commutatorSusceptibility_timeDifference
       (heisenbergEvolution system A τ * B -
         B * heisenbergEvolution system A τ)) :=
     expectation.toContinuousLinearMap.continuous.comp hcomm
-  simpa [commutatorSusceptibility] using continuous_const.mul hexpect
+  change Continuous (fun τ : ℝ =>
+    (Complex.I / (system.hbar : ℂ)) *
+      expectation
+        (heisenbergEvolution system A τ * B -
+          B * heisenbergEvolution system A τ))
+  exact continuous_const.mul hexpect
 
 /-- The causal time-difference kernel is Borel measurable; its only possible jump is at zero. -/
 theorem measurable_retardedTimeDifferenceKernel
@@ -86,12 +95,11 @@ theorem measurable_retardedTimeDifferenceKernel
     Measurable (retardedTimeDifferenceKernel system expectation A B) := by
   have hcomm :=
     (continuous_commutatorSusceptibility_timeDifference system expectation A B).measurable
-  have hpiece : Measurable (fun τ : ℝ =>
-      if τ ∈ Ici (0 : ℝ) then
-        commutatorSusceptibility system expectation A B τ 0
-      else 0) :=
-    measurableSet_Ici.ite hcomm measurable_const
-  simpa [retardedTimeDifferenceKernel, retardedSusceptibility] using hpiece
+  change Measurable (fun τ : ℝ =>
+    if τ ∈ Ici (0 : ℝ) then
+      commutatorSusceptibility system expectation A B τ 0
+    else 0)
+  exact Measurable.ite measurableSet_Ici hcomm measurable_const
 
 /-- A uniform scalar bound for the causal bounded-operator kernel. -/
 noncomputable def retardedTimeDifferenceKernelNormBound
@@ -106,7 +114,10 @@ theorem retardedTimeDifferenceKernelNormBound_nonneg
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) :
     0 ≤ retardedTimeDifferenceKernelNormBound system expectation A B := by
-  positivity
+  unfold retardedTimeDifferenceKernelNormBound
+  exact mul_nonneg
+    (mul_nonneg (norm_nonneg _) (norm_nonneg _))
+    (mul_nonneg (mul_nonneg (by norm_num) (norm_nonneg _)) (norm_nonneg _))
 
 /-- Uniform norm control of the causal retarded kernel. -/
 theorem norm_retardedTimeDifferenceKernel_le
@@ -157,17 +168,18 @@ theorem integrableOn_adiabaticFrequencyPhase_Ioi
     (ω η c : ℝ) (hη : 0 < η) :
     IntegrableOn (adiabaticFrequencyPhase ω η) (Ioi c) volume := by
   have hre : (Complex.I * (ω : ℂ) - (η : ℂ)).re < 0 := by
-    simp
-    exact neg_lt_zero.mpr hη
-  simpa [adiabaticFrequencyPhase] using
-    (integrableOn_exp_mul_complex_Ioi
-      (a := Complex.I * (ω : ℂ) - (η : ℂ)) hre c)
+    simpa using hη
+  change IntegrableOn (fun τ : ℝ =>
+    Complex.exp ((Complex.I * (ω : ℂ) - (η : ℂ)) * (τ : ℂ)))
+      (Ioi c) volume
+  exact integrableOn_exp_mul_complex_Ioi hre c
 
 /-- Every strictly positive switching rate is automatically integrable for bounded observables. -/
 theorem adiabaticIntegrable_of_pos
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) (ω η : ℝ) (hη : 0 < η) :
     AdiabaticIntegrable system expectation A B ω η := by
+  classical
   refine ⟨hη, ?_⟩
   let C := retardedTimeDifferenceKernelNormBound system expectation A B
   let S : Set ℝ := Ioi (-1 : ℝ)
@@ -182,19 +194,28 @@ theorem adiabaticIntegrable_of_pos
     Filter.Eventually.of_forall fun τ =>
       norm_retardedTimeDifferenceKernel_le system expectation A B τ
   have hprod : IntegrableOn (fun τ : ℝ =>
-      retardedTimeDifferenceKernel system expectation A B τ *
-        adiabaticFrequencyPhase ω η τ) S volume := by
-    exact hphase.bdd_mul' hkernelMeas hkernelBound
+      adiabaticFrequencyPhase ω η τ *
+        retardedTimeDifferenceKernel system expectation A B τ) S volume := by
+    exact hphase.bdd_mul hkernelMeas hkernelBound
   have hintegrand : IntegrableOn
       (adiabaticFrequencySusceptibilityIntegrand system expectation A B ω η)
       S volume := by
-    simpa [adiabaticFrequencySusceptibilityIntegrand, mul_comm] using hprod
-  apply hintegrand.integrable_of_forall_not_mem_eq_zero
-  intro τ hτ
-  have hle : τ ≤ -1 := le_of_not_gt hτ
-  have hneg : τ < 0 := lt_of_le_of_lt hle (by norm_num)
-  exact adiabaticFrequencySusceptibilityIntegrand_eq_zero_of_neg
-    system expectation A B ω η hneg
+    simpa only [adiabaticFrequencySusceptibilityIntegrand] using hprod
+  have hpiece : Integrable
+      (S.piecewise
+        (adiabaticFrequencySusceptibilityIntegrand system expectation A B ω η)
+        (fun _ : ℝ => (0 : ℂ))) volume :=
+    Integrable.piecewise measurableSet_Ioi hintegrand integrableOn_zero
+  refine hpiece.congr (Filter.Eventually.of_forall fun τ => ?_)
+  by_cases hτ : τ ∈ S
+  · simp [Set.piecewise, hτ]
+  · have hnot : ¬ (-1 : ℝ) < τ := by
+      simpa [S] using hτ
+    have hle : τ ≤ -1 := le_of_not_gt hnot
+    have hneg : τ < 0 := lt_of_le_of_lt hle (by norm_num)
+    have hzero := adiabaticFrequencySusceptibilityIntegrand_eq_zero_of_neg
+      system expectation A B ω η hneg
+    simp [Set.piecewise, hτ, hzero]
 
 /-- Fixed-rate susceptibility requiring only the physical hypothesis `η > 0`.
 
