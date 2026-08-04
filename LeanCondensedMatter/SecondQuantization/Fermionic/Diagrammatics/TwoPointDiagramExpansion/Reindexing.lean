@@ -87,7 +87,7 @@ private theorem twoPointTimedEventAtomicLegs_nodup {n : ℕ}
       rw [twoPointTimedEventAtomicLegs]
       apply List.nodup_ofFn_ofInjective
       intro a b h
-      injection h
+      exact congrArg Prod.snd (Sum.inr.inj h)
 
 private theorem twoPointTimedEventAtomicLegs_disjoint {n : ℕ}
     {a b : TwoPointTimedEvent n} (h : a ≠ b) :
@@ -106,7 +106,7 @@ private theorem twoPointTimedEventAtomicLegs_disjoint {n : ℕ}
             apply h
             cases hv
             rfl
-          simp [hv]
+          simpa using hv.symm
 
 private theorem canonicalTwoPointAtomicLegs_nodup (n : ℕ) :
     (canonicalTwoPointAtomicLegs n).Nodup := by
@@ -226,13 +226,16 @@ noncomputable def fixedExternalTwoPointWickDiagramEquivOrderedData
     · exact d.2.symm
     · funext _
       rfl
-    · simp [FixedExternalTwoPointWickDiagram.pairingInMixedOrder]
+    · rw [Pairing.relabel_relabel_symm]
+      exact (orderedTwoPointPairingCastEquiv n).left_inv d.1.pairing
   right_inv x := by
     obtain ⟨labels, pairing⟩ := x
     apply Prod.ext
     · funext _
       rfl
-    · simp [FixedExternalTwoPointWickDiagram.pairingInMixedOrder]
+    · rw [(orderedTwoPointPairingCastEquiv n).right_inv]
+      exact Pairing.relabel_symm_relabel pairing
+        (standardToMixedAtomicPositionEquiv τ τ' σ)
 
 noncomputable instance FixedExternalTwoPointWickDiagram.instFintype
     [Fintype Mode] {n : ℕ} {i j : Mode} :
