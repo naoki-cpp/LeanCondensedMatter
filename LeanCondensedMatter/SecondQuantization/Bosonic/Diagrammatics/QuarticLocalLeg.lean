@@ -15,6 +15,8 @@ operator-composition order.
 namespace SecondQuantization
 namespace Bosonic
 
+noncomputable section
+
 variable {Mode : Type*}
 
 local instance instDecidableEqQuarticLocalLeg : DecidableEq Mode := Classical.decEq Mode
