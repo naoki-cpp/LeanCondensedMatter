@@ -1,0 +1,90 @@
+name: Apply CI fixes
+
+on:
+  push:
+    branches:
+      - agent/lint-api-cleanup-all
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/lint-api-cleanup-all
+      - name: Apply focused fixes
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          replacements = {
+              "LeanCondensedMatter/SecondQuantization/Bosonic/Thermal/BoltzmannWeightFactorization.lean": [
+                  ("\nomit in\n/-- The free energy", "\n/-- The free energy"),
+                  ("\nomit in\n/-- The free Boltzmann", "\n/-- The free Boltzmann"),
+              ],
+              "LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/CreationAnnihilation.lean": [
+                  ("local instance : DecidableEq Mode := Classical.decEq Mode",
+                   "local instance instDecidableEqCreationAnnihilation : DecidableEq Mode := Classical.decEq Mode"),
+              ],
+              "LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/CCR.lean": [
+                  ("local instance : DecidableEq Mode := Classical.decEq Mode",
+                   "local instance instDecidableEqCCR : DecidableEq Mode := Classical.decEq Mode"),
+              ],
+              "LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/ExchangeAlgebra.lean": [
+                  ("local instance : DecidableEq Mode := Classical.decEq Mode",
+                   "local instance instDecidableEqExchangeAlgebra : DecidableEq Mode := Classical.decEq Mode"),
+              ],
+              "LeanCondensedMatter/SecondQuantization/Bosonic/ImaginaryTime/ImaginaryTimeEvolution.lean": [
+                  ("local instance : DecidableEq Mode := Classical.decEq Mode",
+                   "local instance instDecidableEqImaginaryTimeEvolution : DecidableEq Mode := Classical.decEq Mode"),
+              ],
+              "LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/NumberOperator.lean": [
+                  ("variable {Mode : Type*}\n",
+                   "variable {Mode : Type*}\n\nlocal instance instDecidableEqNumberOperator : DecidableEq Mode := Classical.decEq Mode\n"),
+              ],
+              "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreeEntropy.lean": [
+                  ("variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]\n",
+                   "variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]\n\nlocal instance instDecidableEqFreeEntropy : DecidableEq Mode := Classical.decEq Mode\n"),
+              ],
+              "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/QuantumLinkedCluster.lean": [
+                  ("  exact congrArg (fun z : ℂ => z / Common.weightSum w)\n    (Finset.sum_congr hfilter (fun _ _ => rfl))",
+                   "  rw [hfilter]"),
+              ],
+              "LeanCondensedMatter/QuantumTheory/Gibbs/FreeEnergy.lean": [
+                  ("    (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))",
+                   "    (_hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))"),
+              ],
+              "LeanCondensedMatter/SecondQuantization/Fermionic/Perturbation/DysonVertexMoment.lean": [
+                  ("    {α : Type*} [DecidableEq α] (ε : Mode → ℝ) (β : ℝ)",
+                   "    {α : Type*} (ε : Mode → ℝ) (β : ℝ)"),
+                  ("theorem dysonVertexMoment_empty {α : Type*} [DecidableEq α] (ε : Mode → ℝ) (β : ℝ)",
+                   "theorem dysonVertexMoment_empty {α : Type*} (ε : Mode → ℝ) (β : ℝ)"),
+              ],
+              "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonDiagramExpansion/Pairing.lean": [
+                  ("theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing {α : Type*}\n    [DecidableEq α] (ε : Mode → ℝ)",
+                   "theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing {α : Type*}\n    (ε : Mode → ℝ)"),
+              ],
+              "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Flattening.lean": [
+                  ("variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]",
+                   "variable {Mode : Type*} [LinearOrder Mode]"),
+              ],
+          }
+
+          for filename, edits in replacements.items():
+              path = Path(filename)
+              text = path.read_text()
+              for old, new in edits:
+                  if old not in text:
+                      raise RuntimeError(f"pattern not found in {filename}: {old[:100]!r}")
+                  text = text.replace(old, new, 1)
+              path.write_text(text)
+          PY
+          git diff --check
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add LeanCondensedMatter
+          git commit -m "fix: repair cross-cutting lint refactor build"
+          git push origin HEAD:agent/lint-api-cleanup-all
