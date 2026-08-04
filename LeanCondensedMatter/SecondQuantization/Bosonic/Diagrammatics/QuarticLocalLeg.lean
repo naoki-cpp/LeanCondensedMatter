@@ -15,7 +15,9 @@ operator-composition order.
 namespace SecondQuantization
 namespace Bosonic
 
-variable {Mode : Type*} [DecidableEq Mode]
+variable {Mode : Type*}
+
+local instance instDecidableEqQuarticLocalLeg : DecidableEq Mode := Classical.decEq Mode
 
 /-- The bosonic operator represented by a local leg of a quartic vertex. -/
 noncomputable def quarticLocalLegOperator (q : QuarticVertexLabel Mode) :
