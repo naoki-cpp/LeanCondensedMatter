@@ -1,0 +1,38 @@
+name: Apply Pairing unused DecidableEq fix
+
+on:
+  push:
+    branches:
+      - fix/main-pairing-unused-decidable-actual
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: fix/main-pairing-unused-decidable-actual
+      - name: Remove redundant DecidableEq constraint
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Pairing.lean")
+          text = path.read_text()
+          old = "variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]"
+          new = "variable {Mode : Type*} [LinearOrder Mode]"
+          if old not in text:
+              raise RuntimeError("expected section variable declaration not found")
+          text = text.replace(old, new, 1)
+          path.write_text(text)
+          Path(".github/workflows/apply-pairing-unused-decidable-fix.yml").unlink()
+          PY
+          git diff --check
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Pairing.lean .github/workflows/apply-pairing-unused-decidable-fix.yml
+          git commit -m "fix: remove redundant pairing DecidableEq constraint"
+          git push origin HEAD:fix/main-pairing-unused-decidable-actual
