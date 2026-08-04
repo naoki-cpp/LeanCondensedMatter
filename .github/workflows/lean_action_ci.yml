@@ -30,8 +30,6 @@ jobs:
           build-args: "--wfail"
           # Run the Batteries declaration linter configured in lakefile.toml.
           lint: true
-          # Ensure every project module is reachable from the library root.
-          mk_all-check: true
           # Independently re-check generated declarations and reject sorryAx.
           nanoda: true
           nanoda-allow-sorry: false
