@@ -69,7 +69,7 @@ theorem eq_gibbsState_of_helmholtzFreeEnergy_eq
       rw [← coe_diagonalExpectationValue
         (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint (d a)]
       exact_mod_cast hpeierls' a
-    simpa [gibbsOp] using heqComplex
+    simpa [h, gibbsOp] using heqComplex
   have honFamily : ∀ a, ρ.op (d a) = σ.op (d a) := by
     intro a
     have hρ := apply_eigenvectorFamily ρ.spectralTraceClass.compact a
@@ -79,7 +79,7 @@ theorem eq_gibbsState_of_helmholtzFreeEnergy_eq
       ring
     have hcoeffComplex :
         (a.1.1 : ℂ) = ((Z⁻¹ : ℝ) • (Real.exp (-β * h a) : ℂ)) := by
-      change (a.1.1 : ℂ) = (Z⁻¹ : ℂ) * (Real.exp (-β * h a) : ℂ)
+      rw [Complex.real_smul]
       exact_mod_cast hcoeffReal
     calc
       ρ.op (d a) = (a.1.1 : ℂ) • d a := hρ
@@ -88,21 +88,23 @@ theorem eq_gibbsState_of_helmholtzFreeEnergy_eq
       _ = σ.op (d a) := by
         simpa [σ, Z] using hσ.symm
   have hspan_top : Submodule.span ℂ (Set.range d) = ⊤ :=
-    (Submodule.orthogonal_eq_bot_iff.mp hcomplete)
+    Submodule.orthogonal_eq_bot_iff.mp hcomplete
   apply DensityOperator.ext
   apply ContinuousLinearMap.ext
   intro x
   have hx : x ∈ Submodule.span ℂ (Set.range d) := by
     rw [hspan_top]
     exact Submodule.mem_top
-  refine Submodule.span_induction hx ?_ ?_ ?_ ?_
-  · rintro y ⟨a, rfl⟩
-    exact honFamily a
-  · simp
-  · intro x y hx hy
-    simp [hx, hy]
-  · intro c x hx
-    simp [hx]
+  have hspan_le :
+      Submodule.span ℂ (Set.range d) ≤
+        LinearMap.ker ((ρ.op : H →ₗ[ℂ] H) - (σ.op : H →ₗ[ℂ] H)) := by
+    rw [Submodule.span_le]
+    rintro y ⟨a, rfl⟩
+    change ρ.op (d a) - σ.op (d a) = 0
+    exact sub_eq_zero.mpr (honFamily a)
+  have hxker := hspan_le hx
+  change ρ.op x - σ.op x = 0 at hxker
+  exact sub_eq_zero.mp hxker
 
 /-- The Helmholtz lower bound is attained exactly by the canonical Gibbs state. -/
 theorem helmholtzFreeEnergy_eq_iff_eq_gibbsState
