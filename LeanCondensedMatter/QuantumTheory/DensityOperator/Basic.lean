@@ -26,9 +26,13 @@ structure DensityOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace 
   spectralTraceClass : SpectralTraceClass op
   spectralTrace_eq_one : spectralTraceClass.trace = 1
 
-/-- A density operator's underlying operator is self-adjoint. -/
+/-- A density operator's underlying operator is symmetric. -/
 theorem DensityOperator.isSymmetric (ρ : DensityOperator H) : (ρ.op : H →ₗ[ℂ] H).IsSymmetric :=
   ρ.spectralTraceClass.symmetric
+
+/-- A density operator's underlying operator is self-adjoint. -/
+theorem DensityOperator.isSelfAdjoint (ρ : DensityOperator H) : IsSelfAdjoint ρ.op :=
+  ρ.spectralTraceClass.isSelfAdjoint
 
 /-- Every nonzero spectral eigenvalue of a density operator is nonnegative. -/
 theorem DensityOperator.eigenvalue_nonneg (ρ : DensityOperator H)
@@ -45,14 +49,32 @@ theorem DensityOperator.eigenvalue_le_one (ρ : DensityOperator H)
   change (∑' b : EigenvectorIndex ρ.op, b.1.1) = 1 at htrace
   rwa [htrace] at hle
 
-/-- The diagonal matrix elements of a density operator sum to one against any Hilbert basis. -/
+/-- The lossless diagonal expectation values of a density operator sum to one against any Hilbert
+basis. -/
+theorem DensityOperator.hasSum_diagonalExpectationValue_eq_one (ρ : DensityOperator H)
+    {ι : Type*} (d : HilbertBasis ι ℂ H) :
+    HasSum (fun i => diagonalExpectationValue ρ.op ρ.isSelfAdjoint (d i)) 1 := by
+  have h := ρ.spectralTraceClass.hasSum_diagonalExpectationValue d
+  rwa [ρ.spectralTrace_eq_one] at h
+
+/-- The lossless diagonal-expectation sum over any orthonormal family is bounded above by one. -/
+theorem DensityOperator.sum_diagonalExpectationValue_le_one (ρ : DensityOperator H)
+    {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d) :
+    Summable (fun i => diagonalExpectationValue ρ.op ρ.isSelfAdjoint (d i)) ∧
+      ∑' i, diagonalExpectationValue ρ.op ρ.isSelfAdjoint (d i) ≤ 1 := by
+  have h := ρ.spectralTraceClass.sum_diagonalExpectationValue_le_trace ρ.pos.toLinearMap hd
+  rwa [ρ.spectralTrace_eq_one] at h
+
+/-- Compatibility bridge: the `.re`-projected diagonal matrix elements of a density operator sum
+to one against any Hilbert basis. Prefer `hasSum_diagonalExpectationValue_eq_one`. -/
 theorem DensityOperator.hasSum_inner_apply_eq_one (ρ : DensityOperator H)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
     HasSum (fun i => (inner ℂ (d i) (ρ.op (d i)) : ℂ).re) 1 := by
   have h := ρ.spectralTraceClass.hasSum_inner_apply d
   rwa [ρ.spectralTrace_eq_one] at h
 
-/-- The diagonal sum over any orthonormal family is bounded above by one. -/
+/-- Compatibility bridge: the `.re`-projected diagonal sum over any orthonormal family is bounded
+above by one. Prefer `sum_diagonalExpectationValue_le_one`. -/
 theorem DensityOperator.sum_inner_apply_le_one (ρ : DensityOperator H)
     {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d) :
     Summable (fun i => (inner ℂ (d i) (ρ.op (d i)) : ℂ).re) ∧
