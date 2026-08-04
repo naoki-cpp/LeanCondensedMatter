@@ -1,8 +1,11 @@
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
+import LeanCondensedMatter.Analysis.Operator.DiagonalExpectationFinite
 
 -- No project files currently carry a Mathlib-style copyright/author header; a
 -- project-wide policy for this is a separate open item (see notes/conventions.md).
 set_option linter.style.header false
+
+attribute [local instance] IsStarNormal.instContinuousFunctionalCalculus
 
 /-!
 # Equality cases for the Peierls–Bogoliubov inequality
@@ -95,3 +98,118 @@ theorem exp_tangent_weighted_sum_eq_support
     (mul_eq_zero.mp (htermzero i)).resolve_left hwi.ne'
   apply (exp_tangent_eq_iff β x₀ (E i) hβ).mp
   linarith
+
+noncomputable section
+
+open ContinuousLinearMap
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
+  [FiniteDimensional ℂ H] [CompleteSpace H]
+
+/-- In finite dimension and for `β ≠ 0`, equality in the Gibbs specialization of the
+Peierls–Bogoliubov inequality holds exactly when the unit vector is an eigenvector of the original
+self-adjoint operator, with eigenvalue equal to its lossless diagonal expectation. -/
+theorem gibbs_peierls_bogoliubov_eq_iff_eigenvector
+    (T : H →L[ℂ] H) (hT : IsSelfAdjoint T) (β : ℝ) (hβ : β ≠ 0)
+    (e : H) (he : ‖e‖ = 1) :
+    (Real.exp (-β * diagonalExpectationValue T hT e) : ℂ) =
+        inner ℂ (cfc (R := ℝ) (fun x => Real.exp (-β * x)) T e) e ↔
+      (T : H →ₗ[ℂ] H) e = (diagonalExpectationValue T hT e : ℂ) • e := by
+  let x₀ : ℝ := diagonalExpectationValue T hT e
+  change (Real.exp (-β * x₀) : ℂ) =
+      inner ℂ (cfc (R := ℝ) (fun x => Real.exp (-β * x)) T e) e ↔
+    (T : H →ₗ[ℂ] H) e = (x₀ : ℂ) • e
+  constructor
+  · intro heq
+    let E : Fin (Module.finrank ℂ H) → ℝ := hT.isSymmetric.eigenvalues rfl
+    let b : OrthonormalBasis (Fin (Module.finrank ℂ H)) ℂ H :=
+      hT.isSymmetric.eigenvectorBasis rfl
+    let w : Fin (Module.finrank ℂ H) → ℝ := fun i => ‖b.repr e i‖ ^ 2
+    let G : H →L[ℂ] H := cfc (R := ℝ) (fun x => Real.exp (-β * x)) T
+    let hG : IsSelfAdjoint G := IsSelfAdjoint.cfc (f := fun x : ℝ => Real.exp (-β * x)) (a := T)
+    have hTb (i : Fin (Module.finrank ℂ H)) :
+        (T : H →ₗ[ℂ] H) (b i) = (E i : ℂ) • b i := by
+      simpa [E, b] using hT.isSymmetric.apply_eigenvectorBasis rfl i
+    have hGb (i : Fin (Module.finrank ℂ H)) :
+        (G : H →ₗ[ℂ] H) (b i) = (Real.exp (-β * E i) : ℂ) • b i := by
+      simpa [G] using
+        (cfc_apply_eigenvector (T := T) hT (hTb i)
+          (f := fun x : ℝ => Real.exp (-β * x)) (by fun_prop))
+    have hw_nonneg (i : Fin (Module.finrank ℂ H)) : 0 ≤ w i := by
+      exact sq_nonneg _
+    have hw_sum : ∑ i, w i = 1 := by
+      have hnorm := (EuclideanSpace.norm_sq_eq (b.repr e)).symm
+      simpa [w, he] using hnorm
+    have hTsum := diagonalExpectationValue_eq_sum_orthonormal_eigenbasis
+      T hT b E hTb e
+    have hmean : ∑ i, w i * E i = x₀ := by
+      calc
+        ∑ i, w i * E i = ∑ i, E i * ‖b.repr e i‖ ^ 2 := by
+          apply Finset.sum_congr rfl
+          intro i hi
+          simp [w, mul_comm]
+        _ = diagonalExpectationValue T hT e := hTsum.symm
+        _ = x₀ := rfl
+    have hGsum : diagonalExpectationValue G hG e =
+        ∑ i, Real.exp (-β * E i) * w i := by
+      simpa [w] using
+        (diagonalExpectationValue_eq_sum_orthonormal_eigenbasis
+          G hG b (fun i => Real.exp (-β * E i)) hGb e)
+    have heqG : Real.exp (-β * x₀) = diagonalExpectationValue G hG e := by
+      apply Complex.ofReal_injective
+      rw [coe_diagonalExpectationValue]
+      simpa [G] using heq
+    let m : ℝ := -β * Real.exp (-β * x₀)
+    let c : ℝ := Real.exp (-β * x₀) - m * x₀
+    have hleft : ∑ i, w i * (m * E i + c) = Real.exp (-β * x₀) := by
+      calc
+        ∑ i, w i * (m * E i + c) =
+            ∑ i, (m * (w i * E i) + w i * c) := by
+          apply Finset.sum_congr rfl
+          intro i hi
+          ring
+        _ = m * (∑ i, w i * E i) + (∑ i, w i) * c := by
+          rw [Finset.sum_add_distrib, ← Finset.mul_sum, ← Finset.sum_mul]
+        _ = Real.exp (-β * x₀) := by
+          rw [hmean, hw_sum]
+          dsimp [m, c]
+          ring
+    have hright : ∑ i, w i * Real.exp (-β * E i) = Real.exp (-β * x₀) := by
+      calc
+        ∑ i, w i * Real.exp (-β * E i) =
+            ∑ i, Real.exp (-β * E i) * w i := by
+          apply Finset.sum_congr rfl
+          intro i hi
+          ring
+        _ = diagonalExpectationValue G hG e := hGsum.symm
+        _ = Real.exp (-β * x₀) := heqG.symm
+    have hweighted :
+        ∑ i, w i *
+            ((-β * Real.exp (-β * x₀)) * E i +
+              (Real.exp (-β * x₀) - (-β * Real.exp (-β * x₀)) * x₀)) =
+          ∑ i, w i * Real.exp (-β * E i) := by
+      simpa [m, c] using hleft.trans hright.symm
+    have hsupport := exp_tangent_weighted_sum_eq_support
+      β x₀ hβ w E hw_nonneg hweighted
+    apply b.repr.injective
+    ext i
+    have hcoord := hT.isSymmetric.eigenvectorBasis_apply_self_apply rfl e i
+    change b.repr (T e) i = b.repr ((x₀ : ℂ) • e) i
+    rw [show b.repr (T e) i = (E i : ℂ) * b.repr e i by
+      simpa [E, b] using hcoord]
+    simp only [map_smul]
+    change (E i : ℂ) * b.repr e i = (x₀ : ℂ) * b.repr e i
+    by_cases hcoordzero : b.repr e i = 0
+    · simp [hcoordzero]
+    · have hwpos : 0 < w i := by
+        dsimp [w]
+        exact sq_pos_of_pos (norm_pos_iff.mpr hcoordzero)
+      rw [hsupport i hwpos]
+  · intro heigen
+    have hcfc :
+        cfc (R := ℝ) (fun x => Real.exp (-β * x)) T e =
+          (Real.exp (-β * x₀) : ℂ) • e := by
+      exact cfc_apply_eigenvector (T := T) hT heigen
+        (f := fun x : ℝ => Real.exp (-β * x)) (by fun_prop)
+    rw [hcfc, inner_smul_left, inner_self_eq_norm_sq_to_K, he]
+    norm_num
