@@ -32,9 +32,11 @@ Details belong in `notes/`; do not add content sections to this file.
 
 ## Writing rules — notes (`notes/*.md`)
 
-- **Every claim needs a source.** When stating a physical or mathematical claim, value, mechanism, or formula, cite its provenance (reference, equation number, Mathlib declaration name). Do not write claims you cannot source.
-- **Separate the source's claims from your own inference.** Distinguish what a reference states from your interpretation or extrapolation; mark inference explicitly (e.g. "(inferred)"). Do not add words absent from the original when summarizing, and do not present open questions as settled.
-- **When unsure, verify before writing.** Do not assert from memory; check the original source or the Lean code itself first.
+- Keep notes consistent with the current Lean code.
+- Use “proved” only for results that compile without `sorry`.
+- Link relevant Lean files or declarations when useful.
+- Cite external sources only for imported results or physical assumptions.
+- Separate source claims from project interpretation.
 
 ## Writing rules — Lean code
 
