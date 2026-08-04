@@ -160,13 +160,13 @@ theorem mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
       simpa [c] using star_timeDependentPhysicalDysonCoupling_eq_neg system lam
     have hstar :
         star (-(c • (VI s * U s))) = c • (star (U s) * VI s) := by
-      simp [hc, hVIstar, star_smul, star_mul, mul_assoc]
+      simp [hc, hVIstar, star_smul, star_mul]
     have hcomm :
         -(c • (VI s * U s)) * star (U s) +
             U s * star (-(c • (VI s * U s))) = q' s := by
       rw [hstar]
-      simp [q', q, sub_mul, mul_sub, mul_assoc, sub_eq_add_neg,
-        add_comm, add_left_comm, add_assoc]
+      simp only [q', q]
+      noncomm_ring
     rw [hcomm] at hsub
     simpa [q] using hsub
   have hq0 : q 0 = 0 := by
