@@ -54,7 +54,13 @@ theorem gibbsOp_diagonal_pos_of_norm_eq_one (Hop : Observable H) (β : ℝ) (v :
   refine ⟨(gibbsOp_isPositive Hop β).inner_nonneg_right v, ?_⟩
   intro hzero
   have hpb := exp_neg_beta_energy_le_gibbs_diagonal Hop β v hv
-  rw [← hzero] at hpb
+  have hdiag_zero :
+      ContinuousLinearMap.diagonalExpectationValue
+        (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint v = 0 := by
+    apply Complex.ofReal_injective
+    rw [ContinuousLinearMap.coe_diagonalExpectationValue_right, hzero]
+    rfl
+  rw [hdiag_zero] at hpb
   exact (not_le_of_gt (Real.exp_pos _)) (by simpa using hpb)
 
 /-- Every vector in an orthonormal family has a strictly positive Gibbs diagonal weight. -/
