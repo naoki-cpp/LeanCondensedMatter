@@ -180,7 +180,7 @@ variable {Mode : Type*}
 
 /-- Two-point Wick diagrams whose external labels are fixed to
 `Tτ cᵢ(τ) cⱼ†(τ')`. -/
-def FixedExternalTwoPointWickDiagram (Mode : Type*) (n : ℕ) (i j : Mode) : Type _ :=
+abbrev FixedExternalTwoPointWickDiagram (Mode : Type*) (n : ℕ) (i j : Mode) : Type _ :=
   {d : TwoPointWickDiagram Mode n (Finset.univ : Finset (Fin n)) //
     d.externalLabel = twoPointExternalLabels i j}
 
@@ -226,14 +226,22 @@ noncomputable def fixedExternalTwoPointWickDiagramEquivOrderedData
     · exact d.2.symm
     · funext _
       rfl
-    · rw [Pairing.relabel_relabel_symm]
+    · change (orderedTwoPointPairingCastEquiv n).symm
+        (((orderedTwoPointPairingCastEquiv n d.1.pairing).relabel
+          (standardToMixedAtomicPositionEquiv τ τ' σ).symm).relabel
+            (standardToMixedAtomicPositionEquiv τ τ' σ)) = d.1.pairing
+      rw [Pairing.relabel_relabel_symm]
       exact (orderedTwoPointPairingCastEquiv n).left_inv d.1.pairing
   right_inv x := by
     obtain ⟨labels, pairing⟩ := x
     apply Prod.ext
     · funext _
       rfl
-    · rw [(orderedTwoPointPairingCastEquiv n).right_inv]
+    · change ((orderedTwoPointPairingCastEquiv n
+        ((orderedTwoPointPairingCastEquiv n).symm
+          (pairing.relabel (standardToMixedAtomicPositionEquiv τ τ' σ)))).relabel
+            (standardToMixedAtomicPositionEquiv τ τ' σ).symm) = pairing
+      rw [(orderedTwoPointPairingCastEquiv n).right_inv]
       exact Pairing.relabel_symm_relabel pairing
         (standardToMixedAtomicPositionEquiv τ τ' σ)
 
