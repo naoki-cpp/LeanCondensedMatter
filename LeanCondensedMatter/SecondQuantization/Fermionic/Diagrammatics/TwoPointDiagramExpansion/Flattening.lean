@@ -51,8 +51,8 @@ theorem prodComp_twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → ℝ)
       twoPointTimedEventOperator ε i j τ τ' q σ event := by
   cases event with
   | inl e =>
-      fin_cases e <;>
-        simp [twoPointTimedEventAtomicOperators, twoPointTimedEventOperator, Common.prodComp]
+      simp only [twoPointTimedEventAtomicOperators, Common.prodComp_cons, Common.prodComp_nil,
+        LinearMap.comp_id, twoPointTimedEventOperator]
   | inr v =>
       simpa [twoPointTimedEventAtomicOperators, twoPointTimedEventOperator] using
         interactionPicture_quarticVertexOperator_eq_prodComp ε (q v) (σ v)
@@ -80,13 +80,25 @@ private theorem sum_map_eq_of_perm {α : Type*} (f : α → ℕ) {l₁ l₂ : Li
   induction h with
   | nil => rfl
   | cons x h ih => simp [ih]
-  | swap x y l => simp [Nat.add_comm, Nat.add_left_comm, Nat.add_assoc]
+  | swap x y l => simp [Nat.add_left_comm]
   | trans h₁ h₂ ih₁ ih₂ => exact ih₁.trans ih₂
+
+private theorem sum_ofFn_const_four :
+    ∀ n : ℕ, (List.ofFn (fun _ : Fin n => 4)).sum = 4 * n
+  | 0 => rfl
+  | n + 1 => by
+      rw [List.ofFn_succ]
+      simp [sum_ofFn_const_four n]
 
 private theorem canonicalTwoPointTimedEventAtomicAritySum (n : ℕ) :
     (([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n).map
       twoPointTimedEventAtomicArity).sum = 2 * (2 * n + 1) := by
-  simp [twoPointInteractionEventList, twoPointTimedEventAtomicArity]
+  have hinteraction :
+      ((twoPointInteractionEventList n).map twoPointTimedEventAtomicArity).sum = 4 * n := by
+    simpa [twoPointInteractionEventList, twoPointTimedEventAtomicArity] using
+      sum_ofFn_const_four n
+  rw [List.map_append, List.sum_append, hinteraction]
+  simp [twoPointTimedEventAtomicArity]
   omega
 
 /-- A two-point insertion with `n` quartic vertices contains exactly `4n + 2` atomic operators. -/
