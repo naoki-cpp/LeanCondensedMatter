@@ -1,0 +1,65 @@
+name: Restore lint branch changes
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  restore:
+    if: github.head_ref == 'agent/lake-lint-foundations'
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/lake-lint-foundations
+          fetch-depth: 0
+
+      - name: Reapply lint cleanup on current main
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin \
+            main:refs/remotes/origin/main \
+            agent/lake-lint-foundations-backup:refs/remotes/origin/agent/lake-lint-foundations-backup
+
+          git diff --binary \
+            origin/main...origin/agent/lake-lint-foundations-backup -- \
+            . \
+            ':(exclude)LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint.lean' \
+            > /tmp/lint-cleanup.patch
+          git apply --3way --index /tmp/lint-cleanup.patch
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path(
+              "LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint.lean"
+          )
+          text = path.read_text(encoding="utf-8")
+          old = """  externalLabel : Fin 2 → ExternalLabel
+          vertexLabel : ↥S → InternalLabel
+          pairing : Pairing (2 * S.card + 1)
+          """
+          new = """  /-- Labels attached to the two distinguished external vertices. -/
+          externalLabel : Fin 2 → ExternalLabel
+          /-- Labels attached to the quartic interaction vertices. -/
+          vertexLabel : ↥S → InternalLabel
+          /-- Perfect pairing of all external and interaction legs. -/
+          pairing : Pairing (2 * S.card + 1)
+          """
+          if old not in text:
+              raise SystemExit("TwoPointDiagram field block not found")
+          path.write_text(text.replace(old, new, 1), encoding="utf-8")
+          PY
+
+          git add LeanCondensedMatter/SecondQuantization/Common/Diagrammatics/TwoPoint.lean
+          git rm .github/workflows/restore_lint_changes.yml
+          git commit -m "chore: rebase lint cleanup onto current main"
+          git push origin HEAD:agent/lake-lint-foundations
