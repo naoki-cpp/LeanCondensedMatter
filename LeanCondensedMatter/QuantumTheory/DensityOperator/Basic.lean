@@ -62,7 +62,7 @@ theorem DensityOperator.sum_diagonalExpectationValue_le_one (ρ : DensityOperato
     {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d) :
     Summable (fun i => diagonalExpectationValue ρ.op ρ.isSelfAdjoint (d i)) ∧
       ∑' i, diagonalExpectationValue ρ.op ρ.isSelfAdjoint (d i) ≤ 1 := by
-  have h := ρ.spectralTraceClass.sum_diagonalExpectationValue_le_trace ρ.pos.toLinearMap hd
+  have h := ρ.spectralTraceClass.sum_diagonalExpectationValue_le_trace ρ.pos hd
   rwa [ρ.spectralTrace_eq_one] at h
 
 /-- Each vector of the density operator's spectral eigenvector family is a unit vector. -/
