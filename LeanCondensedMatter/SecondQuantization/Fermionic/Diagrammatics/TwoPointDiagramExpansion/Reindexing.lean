@@ -14,7 +14,7 @@ two external legs and four legs at every interaction vertex.
 
 This module records the atomic leg identity parallel to the operator list, proves that the resulting
 list enumerates every two-point leg exactly once, and transports pairings between the mixed-time and
-standard diagram enumerations.  Crossing weights are deliberately evaluated only after transporting
+standard diagram enumerations. Crossing weights are deliberately evaluated only after transporting
 a diagram pairing back to mixed-time order.
 -/
 
@@ -69,31 +69,35 @@ theorem mixedTimeOrderedAtomicLegs_perm_canonical {n : ℕ}
 
 private theorem canonicalTwoPointTimedEvents_nodup (n : ℕ) :
     ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n).Nodup := by
-  simp [twoPointInteractionEventList]
+  have hinteraction :
+      (List.ofFn (fun v : Fin n => (Sum.inr v : TwoPointTimedEvent n))).Nodup :=
+    List.nodup_ofFn_ofInjective Sum.inr_injective
+  simpa [twoPointInteractionEventList] using
+    (List.nodup_cons.2 ⟨by simp, List.nodup_cons.2 ⟨by simp, hinteraction⟩⟩)
 
 private theorem twoPointTimedEventAtomicLegs_nodup {n : ℕ}
     (event : TwoPointTimedEvent n) :
     (twoPointTimedEventAtomicLegs event).Nodup := by
-  cases event <;> simp [twoPointTimedEventAtomicLegs]
+  cases event <;> simp [twoPointTimedEventAtomicLegs, List.nodup_ofFn_ofInjective]
 
 private theorem twoPointTimedEventAtomicLegs_disjoint {n : ℕ}
     {a b : TwoPointTimedEvent n} (h : a ≠ b) :
-    Disjoint (twoPointTimedEventAtomicLegs a) (twoPointTimedEventAtomicLegs b) := by
+    List.Disjoint (twoPointTimedEventAtomicLegs a) (twoPointTimedEventAtomicLegs b) := by
   cases a with
   | inl e =>
       cases b with
-      | inl e' => simp [twoPointTimedEventAtomicLegs, h]
-      | inr v => simp [twoPointTimedEventAtomicLegs]
+      | inl e' => simpa using h
+      | inr v => simp [List.disjoint_left, List.mem_ofFn]
   | inr v =>
       cases b with
-      | inl e => simp [twoPointTimedEventAtomicLegs]
+      | inl e => simp [List.disjoint_left, List.mem_ofFn]
       | inr v' =>
           have hv : v ≠ v' := by
             intro hv
             apply h
             cases hv
             rfl
-          simp [twoPointTimedEventAtomicLegs, hv]
+          simp [List.disjoint_left, List.mem_ofFn, hv]
 
 private theorem canonicalTwoPointAtomicLegs_nodup (n : ℕ) :
     (canonicalTwoPointAtomicLegs n).Nodup := by
@@ -111,10 +115,10 @@ private theorem canonicalTwoPointAtomicLegs_all_mem (n : ℕ) :
         simp [canonicalTwoPointAtomicLegs, twoPointTimedEventAtomicLegs,
           twoPointInteractionEventList]
   | inr p =>
-      rcases p with ⟨v, l⟩
-      rcases v with ⟨v, hv⟩
-      simp [canonicalTwoPointAtomicLegs, twoPointTimedEventAtomicLegs,
-        twoPointInteractionEventList]
+      rcases p with ⟨⟨v, hv⟩, l⟩
+      fin_cases l <;>
+        simp [canonicalTwoPointAtomicLegs, twoPointTimedEventAtomicLegs,
+          twoPointInteractionEventList]
 
 /-- The mixed-time leg list has no duplicate leg identities. -/
 theorem mixedTimeOrderedAtomicLegs_nodup {n : ℕ}
@@ -159,19 +163,20 @@ mixed-time atomic position. -/
 noncomputable def standardToMixedAtomicPositionEquiv {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     Equiv.Perm (Fin (2 * (2 * n + 1))) :=
-  (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).trans
-    (mixedTimeOrderedAtomicLegEquiv τ τ' σ).symm
+  (finCongr (by simp)).trans
+    ((Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).trans
+      (mixedTimeOrderedAtomicLegEquiv τ τ' σ).symm)
 
 variable {Mode : Type*}
 
 /-- Two-point Wick diagrams whose external labels are fixed to
 `Tτ cᵢ(τ) cⱼ†(τ')`. -/
-def FixedExternalTwoPointWickDiagram (Mode : Type*) (n : ℕ) (i j : Mode) : Type :=
+def FixedExternalTwoPointWickDiagram (Mode : Type*) (n : ℕ) (i j : Mode) : Type _ :=
   {d : TwoPointWickDiagram Mode n (Finset.univ : Finset (Fin n)) //
     d.externalLabel = twoPointExternalLabels i j}
 
 /-- Slot-indexed quartic labels together with a pairing in mixed-time atomic order. -/
-abbrev OrderedTwoPointWickDiagramData (Mode : Type*) (n : ℕ) : Type :=
+abbrev OrderedTwoPointWickDiagramData (Mode : Type*) (n : ℕ) : Type _ :=
   (Fin n → QuarticVertexLabel Mode) × Pairing (2 * n + 1)
 
 /-- The slot-indexed interaction labels of a fixed-external two-point diagram. -/
@@ -203,20 +208,22 @@ noncomputable def fixedExternalTwoPointWickDiagramEquivOrderedData
     apply Subtype.ext
     apply Common.TwoPointDiagram.ext
     · exact d.2.symm
-    · funext v
+    · funext _
       rfl
     · simp [FixedExternalTwoPointWickDiagram.pairingInMixedOrder]
   right_inv x := by
     obtain ⟨labels, pairing⟩ := x
     apply Prod.ext
-    · funext v
+    · funext _
       rfl
     · simp [FixedExternalTwoPointWickDiagram.pairingInMixedOrder]
 
 noncomputable instance FixedExternalTwoPointWickDiagram.instFintype
     [Fintype Mode] {n : ℕ} {i j : Mode} :
     Fintype (FixedExternalTwoPointWickDiagram Mode n i j) :=
-  Fintype.ofInjective Subtype.val fun _ _ h => Subtype.ext h
+  Fintype.ofInjective
+    (fun d : FixedExternalTwoPointWickDiagram Mode n i j => d.1)
+    (fun _ _ h => Subtype.ext h)
 
 /-- Reindex a finite sum over fixed-external diagrams as a sum over slot labels and mixed-order
 pairings. -/
