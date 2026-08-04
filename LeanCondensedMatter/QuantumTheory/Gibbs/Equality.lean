@@ -40,6 +40,7 @@ theorem gibbs_scalar_ineq_eq_iff (x y : ℝ) (hx : 0 ≤ x) (hy : 0 < y) :
 
 namespace QuantumTheory
 
+open ContinuousLinearMap
 open scoped ComplexOrder
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -56,10 +57,10 @@ theorem gibbsOp_diagonal_pos_of_norm_eq_one (Hop : Observable H) (β : ℝ) (v :
   intro hzero
   have hpb := exp_neg_beta_energy_le_gibbs_diagonal Hop β v hv
   have hdiag_zero :
-      ContinuousLinearMap.diagonalExpectationValue
+      diagonalExpectationValue
         (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint v = 0 := by
     apply Complex.ofReal_injective
-    rw [ContinuousLinearMap.coe_diagonalExpectationValue_right]
+    rw [coe_diagonalExpectationValue_right]
     exact hzero.symm
   rw [hdiag_zero] at hpb
   exact (not_le_of_gt (Real.exp_pos _)) (by simpa using hpb)
@@ -67,10 +68,10 @@ theorem gibbsOp_diagonal_pos_of_norm_eq_one (Hop : Observable H) (β : ℝ) (v :
 /-- The lossless real Gibbs diagonal value is strictly positive on every unit vector. -/
 theorem gibbsOp_diagonalExpectationValue_pos_of_norm_eq_one
     (Hop : Observable H) (β : ℝ) (v : H) (hv : ‖v‖ = 1) :
-    0 < ContinuousLinearMap.diagonalExpectationValue
+    0 < diagonalExpectationValue
       (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint v := by
   have hpos := gibbsOp_diagonal_pos_of_norm_eq_one Hop β v hv
-  rw [← ContinuousLinearMap.coe_diagonalExpectationValue_right
+  rw [← coe_diagonalExpectationValue_right
     (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint v] at hpos
   exact_mod_cast hpos
 
@@ -87,12 +88,12 @@ theorem gibbsOp_orthogonal_span_eq_bot_of_diagonal_sum_eq_spectralTrace
     (hcompact : IsCompactOperator (gibbsOp Hop β))
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
     {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d)
-    (heq : ∑' i, ContinuousLinearMap.diagonalExpectationValue
+    (heq : ∑' i, diagonalExpectationValue
         (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint (d i) =
-      ContinuousLinearMap.spectralTrace hsummable) :
+      spectralTrace hsummable) :
     (Submodule.span ℂ (Set.range d))ᗮ = ⊥ := by
-  apply ContinuousLinearMap
-    .orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace
+  apply
+    ContinuousLinearMap.orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace
       hcompact (gibbsOp_isPositive Hop β) hsummable hd ?_ heq
   intro v hv
   exact gibbsOp_diagonalExpectationValue_pos_of_norm_eq_one Hop β v hv
