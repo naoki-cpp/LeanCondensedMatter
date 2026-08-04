@@ -38,6 +38,7 @@ noncomputable def sourceCoupledPerturbation
     (f : ℝ → ℝ) (B : H →L[ℂ] H) (t : ℝ) : H →L[ℂ] H :=
   (-(f t : ℂ)) • B
 
+omit [CompleteSpace H] in
 @[simp]
 theorem sourceCoupledPerturbation_apply
     (f : ℝ → ℝ) (B : H →L[ℂ] H) (t : ℝ) :
@@ -58,7 +59,7 @@ theorem timeDependentInteractionPerturbation_sourceCoupledPerturbation
     timeDependentInteractionPerturbation system (sourceCoupledPerturbation f B) t =
       (-(f t : ℂ)) • heisenbergEvolution system B t := by
   simp [timeDependentInteractionPerturbation, sourceCoupledPerturbation,
-    heisenbergEvolution, mul_smul_comm, smul_mul_assoc, mul_assoc]
+    heisenbergEvolution, mul_assoc]
 
 /-- The instantaneous commutator response for `V(t) = -f(t) B` carries one overall minus sign. -/
 theorem sourceCoupled_commutatorExpectation
