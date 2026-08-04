@@ -25,6 +25,7 @@ abbrev QuarticDiagram.ComponentVertexOrders {S : Finset (Fin N)}
 /-- An order-preserving interleaving of all component-local slots into the ambient global slots. -/
 structure QuarticDiagram.ComponentShuffle {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) where
+  /-- Equivalence between component-local slots and global vertex slots. -/
   slotEquiv :
     (Σ B : d.componentPartition.parts, Fin (B : Finset (Fin N)).card) ≃ Fin S.card
   strictMono : ∀ B, StrictMono (fun i => slotEquiv ⟨B, i⟩)

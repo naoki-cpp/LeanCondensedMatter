@@ -21,6 +21,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 /-- A density operator is a positive spectral-trace-class operator with trace one. -/
 structure DensityOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] where
+  /-- The bounded operator representing the mixed state. -/
   op : H →L[ℂ] H
   pos : op.IsPositive
   spectralTraceClass : SpectralTraceClass op

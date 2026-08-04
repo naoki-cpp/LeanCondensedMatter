@@ -64,7 +64,7 @@ namespace SpectralTraceClass
 
 /-- Construct spectral-trace data from compactness, positivity, and summability of one Hilbert-basis
 lossless diagonal. -/
-def ofPositiveSummableDiagonal (hcompact : IsCompactOperator T) (hpos : T.IsPositive)
+theorem ofPositiveSummableDiagonal (hcompact : IsCompactOperator T) (hpos : T.IsPositive)
     (d : HilbertBasis ι ℂ H)
     (hdiag : Summable fun i => diagonalExpectationValue T hpos.isSelfAdjoint (d i)) :
     SpectralTraceClass T :=
@@ -81,7 +81,7 @@ open ContinuousLinearMap
 variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 /-- Bundle a diagonal operator with summable nonnegative real weights as spectral-trace-class. -/
-def diagonalOpSpectralTraceClass (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
+theorem diagonalOpSpectralTraceClass (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i) :
     SpectralTraceClass (diagonalOp b (fun i => (a i : ℂ)) (by simpa using ha)) := by
   let hac : Summable fun i => ‖(a i : ℂ)‖ := by simpa using ha

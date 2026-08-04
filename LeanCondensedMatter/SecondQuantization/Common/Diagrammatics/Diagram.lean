@@ -19,7 +19,9 @@ variable {Label : Type*} {N : ℕ}
 
 /-- A labelled four-legged diagram on a finite vertex set. -/
 structure QuarticDiagram (Label : Type*) (N : ℕ) (S : Finset (Fin N)) where
+  /-- Label attached to each diagram vertex. -/
   vertexLabel : ↥S → Label
+  /-- Perfect pairing of all quartic legs. -/
   pairing : Pairing (2 * S.card)
 
 @[ext]

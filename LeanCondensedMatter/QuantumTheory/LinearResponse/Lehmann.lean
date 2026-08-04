@@ -152,10 +152,13 @@ The basis vectors diagonalize `system.hamiltonian`; `probability` gives the corr
 state weights. The index type may be infinite. -/
 structure PurePointLehmannData
     (system : BoundedFreeSystem H) (ι : Type*) where
+  /-- Hilbert basis of energy eigenvectors. -/
   basis : HilbertBasis ι ℂ H
+  /-- Energy assigned to each basis vector. -/
   energy : ι → ℝ
   hamiltonian_apply_basis : ∀ i,
     system.hamiltonian (basis i) = (energy i : ℂ) • basis i
+  /-- Normalized diagonal probability assigned to each basis vector. -/
   probability : ι → ℝ
   probability_nonneg : ∀ i, 0 ≤ probability i
   probability_summable : Summable probability

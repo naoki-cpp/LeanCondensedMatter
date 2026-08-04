@@ -14,6 +14,7 @@ namespace Combinatorics
 
 /-- A finite-set function normalized to `1` on the empty set. -/
 structure NormalizedSetFunction (α R : Type*) [One R] where
+  /-- The underlying function on finite subsets. -/
   toFun : Finset α → R
   map_empty : toFun ∅ = 1
 

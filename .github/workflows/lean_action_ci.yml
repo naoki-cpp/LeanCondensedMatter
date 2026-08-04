@@ -28,6 +28,7 @@ jobs:
           # Keep the whole library warning-free, including modules unchanged by the PR.
           build: true
           build-args: "--wfail"
+          lint: true
       - name: Check compiled declarations for sorryAx
         run: lake env lean scripts/CheckNoSorry.lean
 

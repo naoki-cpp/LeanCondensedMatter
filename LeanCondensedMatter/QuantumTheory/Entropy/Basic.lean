@@ -56,7 +56,7 @@ theorem entropyOp_isCompact (ρ : DensityOperator H) :
     Real.continuous_negMulLog (by simp)
 
 /-- Bundle the entropy operator as spectral-trace-class once summability is supplied. -/
-def entropyOpSpectralTraceClass (ρ : DensityOperator H)
+theorem entropyOpSpectralTraceClass (ρ : DensityOperator H)
     (hsummable : HasSummableRealEigenvalues (entropyOp ρ)) :
     SpectralTraceClass (entropyOp ρ) := by
   simpa [entropyOp] using

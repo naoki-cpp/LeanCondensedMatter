@@ -32,6 +32,7 @@ instance decidableIsPairing {n : ℕ} (partner : Equiv.Perm (Fin (2 * n))) :
 /-- A perfect pairing of the ordered positions `Fin (2 * n)`, represented through the stable
 `partner` interface rather than exposing the subtype used for finite enumeration. -/
 structure Pairing (n : ℕ) where
+  /-- The fixed-point-free involution sending each position to its paired partner. -/
   partner : Equiv.Perm (Fin (2 * n))
   partner_involutive : Function.Involutive partner
   partner_ne_self : ∀ i, partner i ≠ i

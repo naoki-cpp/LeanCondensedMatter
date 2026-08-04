@@ -32,7 +32,7 @@ variable {T T' : H →L[ℂ] H}
 
 /-- Build bundled spectral-trace data for a positive compact operator with summable real
 eigenvalues. Positivity supplies symmetry. -/
-def ofPositive (hcompact : IsCompactOperator T) (hpos : T.IsPositive)
+theorem ofPositive (hcompact : IsCompactOperator T) (hpos : T.IsPositive)
     (hsummable : HasSummableRealEigenvalues T) : SpectralTraceClass T where
   compact := hcompact
   symmetric := hpos.isSelfAdjoint.isSymmetric
@@ -42,7 +42,7 @@ def ofPositive (hcompact : IsCompactOperator T) (hpos : T.IsPositive)
 Compactness follows from compactness of the original self-adjoint operator together with `f 0 = 0`;
 self-adjointness of the transform supplies symmetry. Summability of the transformed nonzero
 eigenvalues remains an explicit hypothesis. -/
-def ofCFC {f : ℝ → ℝ} (hself : IsSelfAdjoint T) (hcompact : IsCompactOperator T)
+theorem ofCFC {f : ℝ → ℝ} (hself : IsSelfAdjoint T) (hcompact : IsCompactOperator T)
     (hf : Continuous f) (hf0 : f 0 = 0)
     (hsummable : HasSummableRealEigenvalues (cfc f T)) :
     SpectralTraceClass (cfc f T) where
