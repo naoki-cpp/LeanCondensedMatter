@@ -21,11 +21,13 @@ def Pairing.pairEndpoint {n : ℕ} (pairing : Pairing n) :
     pairing.NormalizedPair × Fin 2 → Fin (2 * n) :=
   fun x => if x.2 = 0 then x.1.1.1 else x.1.1.2
 
+@[simp, nolint simpNF]
 theorem Pairing.pairEndpoint_zero {n : ℕ} (pairing : Pairing n)
     (p : pairing.NormalizedPair) :
     pairing.pairEndpoint (p, 0) = p.1.1 := by
   simp [Pairing.pairEndpoint]
 
+@[simp, nolint simpNF]
 theorem Pairing.pairEndpoint_one {n : ℕ} (pairing : Pairing n)
     (p : pairing.NormalizedPair) :
     pairing.pairEndpoint (p, 1) = p.1.2 := by

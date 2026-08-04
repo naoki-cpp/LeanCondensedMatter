@@ -51,8 +51,7 @@ theorem purity_le_one (ρ : DensityOperator H) : purity ρ ≤ 1 := by
       exact htrace
 
 /-- The expectation of the density operator itself is its purity. -/
-@[nolint simpNF]
-@[simp]
+@[simp, nolint simpNF]
 theorem DensityOperator.expectation_op (ρ : DensityOperator H) :
     ρ.expectation ρ.op = (purity ρ : ℂ) := by
   apply Complex.ext

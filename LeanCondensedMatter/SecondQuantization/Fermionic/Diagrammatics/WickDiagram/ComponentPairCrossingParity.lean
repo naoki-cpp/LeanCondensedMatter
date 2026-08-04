@@ -217,8 +217,7 @@ theorem QuarticWickDiagram.componentPairEndpointInversionCount_mod_two_eq_crosse
 
 /-- Selecting an endpoint after transporting a component-local pair is the same as transporting the
 selected local endpoint. -/
-@[nolint simpNF]
-@[simp]
+@[simp, nolint simpNF]
 theorem QuarticWickDiagram.pairEndpointAt_componentPairEquiv
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
