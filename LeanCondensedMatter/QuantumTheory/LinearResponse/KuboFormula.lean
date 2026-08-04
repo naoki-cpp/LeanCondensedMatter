@@ -307,7 +307,8 @@ noncomputable def densityNormalizedExpectation
     (ρ : DensityOperator H) : NormalizedExpectation H where
   toContinuousLinearMap := ρ.expectation
   map_one := by
-    simpa using ρ.expectation_id
+    change ρ.expectation (ContinuousLinearMap.id ℂ H) = 1
+    exact ρ.expectation_id
 
 @[simp]
 theorem densityNormalizedExpectation_apply

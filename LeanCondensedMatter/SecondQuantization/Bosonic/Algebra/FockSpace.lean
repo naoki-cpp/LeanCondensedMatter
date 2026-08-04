@@ -20,7 +20,9 @@ namespace Bosonic
 variable {Mode : Type*} [DecidableEq Mode]
 
 /-- The algebraic bosonic Fock space on occupation-number states. -/
-abbrev FockSpace (Mode : Type*) := Common.AlgebraicFock (Occupation Mode)
+@[nolint unusedArguments]
+abbrev FockSpace (Mode : Type*) [DecidableEq Mode] :=
+  Common.AlgebraicFock (Occupation Mode)
 
 /-- The basis vector corresponding to occupation state `n`. -/
 noncomputable def basisState (n : Occupation Mode) : FockSpace Mode :=
