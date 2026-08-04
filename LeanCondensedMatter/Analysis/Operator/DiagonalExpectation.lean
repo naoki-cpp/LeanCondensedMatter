@@ -20,7 +20,7 @@ complex scalar. -/
 noncomputable def diagonalExpectationSelfAdjoint
     (T : H →L[ℂ] H) (hT : IsSelfAdjoint T) (x : H) : selfAdjoint ℂ :=
   ⟨inner ℂ (T x) x, by
-    show IsSelfAdjoint (inner ℂ (T x) x)
+    change IsSelfAdjoint (inner ℂ (T x) x)
     have hsym : (T : H →ₗ[ℂ] H).IsSymmetric :=
       ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mp hT
     exact ((LinearMap.isSymmetric_iff_inner_map_self_real (T : H →ₗ[ℂ] H)).mp hsym x)⟩
