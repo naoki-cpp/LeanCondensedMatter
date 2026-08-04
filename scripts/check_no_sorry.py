@@ -5,7 +5,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE_ROOT = ROOT / "LeanCondensedMatter"
-CHECK_FILE = ROOT / ".lake" / "CheckNoSorry.lean"
+CHECK_FILE = SOURCE_ROOT / "CheckNoSorry.lean"
+CHECK_MODULE = "LeanCondensedMatter.CheckNoSorry"
 
 
 def module_name(path: Path) -> str:
@@ -14,7 +15,11 @@ def module_name(path: Path) -> str:
 
 
 def generated_source() -> str:
-    modules = sorted(module_name(path) for path in SOURCE_ROOT.rglob("*.lean"))
+    modules = sorted(
+        module_name(path)
+        for path in SOURCE_ROOT.rglob("*.lean")
+        if path != CHECK_FILE
+    )
     if not modules:
         raise RuntimeError(f"no Lean modules found under {SOURCE_ROOT}")
 
@@ -49,11 +54,10 @@ assert_project_no_sorry
 
 
 def main() -> int:
-    CHECK_FILE.parent.mkdir(parents=True, exist_ok=True)
     CHECK_FILE.write_text(generated_source(), encoding="utf-8")
     try:
         subprocess.run(
-            ["lake", "env", "lean", str(CHECK_FILE)],
+            ["lake", "build", CHECK_MODULE, "--wfail"],
             cwd=ROOT,
             check=True,
         )
