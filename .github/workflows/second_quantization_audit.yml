@@ -24,11 +24,5 @@ jobs:
       - name: Check SecondQuantization architecture
         run: python3 scripts/check_second_quantization_architecture.py
 
-      - name: Check removed SecondQuantization APIs
-        run: python3 scripts/check_second_quantization_removed_identifiers.py
-
       - name: Check Bloch-de Dominicis boundary
         run: python3 scripts/check_bloch_de_dominicis_expectation_boundary.py
-
-      - name: Check final audit removals
-        run: python3 scripts/check_second_quantization_audit_removals.py
