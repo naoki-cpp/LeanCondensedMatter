@@ -228,8 +228,8 @@ The underlying explicit `AdiabaticIntegrable` proof is supplied by
 noncomputable def adiabaticFrequencyDomainSusceptibilityOfPositiveRate
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) (ω η : ℝ) (hη : 0 < η) : ℂ :=
-  adiabaticFrequencyDomainSusceptibility system expectation A B ω η
-    (adiabaticIntegrable_of_pos system expectation A B ω η hη)
+  let rate : {η : ℝ // 0 < η} := ⟨η, hη⟩
+  adiabaticFrequencyDomainSusceptibility system expectation A B ω rate.1
 
 end
 end LinearResponse

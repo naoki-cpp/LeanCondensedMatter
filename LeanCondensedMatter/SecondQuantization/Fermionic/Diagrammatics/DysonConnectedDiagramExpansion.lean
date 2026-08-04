@@ -16,7 +16,7 @@ amplitude sum.
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] {N : ℕ}
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
 
 /-- Connected-component decomposition of quartic Wick diagrams. -/
 noncomputable def quarticWickDiagramConnectedDecomposition :

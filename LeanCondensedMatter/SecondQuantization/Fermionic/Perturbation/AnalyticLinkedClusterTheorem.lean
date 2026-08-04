@@ -22,7 +22,7 @@ open Filter Set
 
 noncomputable section
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- The interacting partition function normalized by its free value. -/
 noncomputable def normalizedAnalyticDysonPartitionFunction (ε : Mode → ℝ) (β : ℝ)

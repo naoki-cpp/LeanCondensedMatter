@@ -27,6 +27,13 @@ structure DensityOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace 
   spectralTraceClass : SpectralTraceClass op
   spectralTrace_eq_one : spectralTraceClass.trace = 1
 
+/-- The totalized spectral trace of a density operator is one. -/
+@[simp]
+theorem DensityOperator.spectralTrace_op_eq_one (ρ : DensityOperator H) :
+    spectralTrace ρ.op = 1 := by
+  rw [← ρ.spectralTraceClass.trace_eq_spectralTrace]
+  exact ρ.spectralTrace_eq_one
+
 /-- A density operator's underlying operator is symmetric. -/
 theorem DensityOperator.isSymmetric (ρ : DensityOperator H) : (ρ.op : H →ₗ[ℂ] H).IsSymmetric :=
   ρ.spectralTraceClass.symmetric
@@ -46,7 +53,7 @@ theorem DensityOperator.eigenvalue_le_one (ρ : DensityOperator H)
   have hsum : Summable (fun b : EigenvectorIndex ρ.op => b.1.1) :=
     ρ.spectralTraceClass.summable.congr (fun b => abs_of_nonneg (ρ.eigenvalue_nonneg b))
   have hle := hsum.le_tsum a (fun b _ => ρ.eigenvalue_nonneg b)
-  have htrace := ρ.spectralTrace_eq_one
+  have htrace := ρ.spectralTrace_op_eq_one
   change (∑' b : EigenvectorIndex ρ.op, b.1.1) = 1 at htrace
   rwa [htrace] at hle
 

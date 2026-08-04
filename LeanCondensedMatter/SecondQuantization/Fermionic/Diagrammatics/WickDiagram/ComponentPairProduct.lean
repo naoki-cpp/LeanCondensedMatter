@@ -248,7 +248,6 @@ theorem QuarticWickDiagram.componentPairToGlobal_surjective {S : Finset (Fin N)}
     Function.Surjective (d.componentPairToGlobal orders shuffle) :=
   (d.componentPairEquiv orders shuffle).surjective
 
-@[simp]
 theorem QuarticWickDiagram.componentPairEquiv_apply {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (orders : d.ComponentVertexOrders)
     (shuffle : d.ComponentShuffle) (B : d.componentPartition.parts)
@@ -284,7 +283,7 @@ theorem QuarticWickDiagram.prod_componentPairs {S : Finset (Fin N)}
 
 section Fermionic
 
-variable [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable [LinearOrder Mode] [Fintype Mode]
 
 /-- The product of pair values in an assembled global order is the iterated product of the
 component-local pair values. -/
@@ -303,9 +302,9 @@ theorem QuarticWickDiagram.prod_orderedQuarticPairValue_eq_prod_components
   intro B
   apply Fintype.prod_congr
   intro pr
-  simpa using
-    (orderedQuarticPairValue_componentOrderedLeg
-      ε β d orders shuffle τ B pr.1.1 pr.1.2)
+  rw [d.componentPairEquiv_apply orders shuffle B pr]
+  exact orderedQuarticPairValue_componentOrderedLeg
+    ε β d orders shuffle τ B pr.1.1 pr.1.2
 
 /-- The pair-value product factorization in the same nested-Finset form used by
 `QuarticWickDiagram.contractionIntegrand`. -/

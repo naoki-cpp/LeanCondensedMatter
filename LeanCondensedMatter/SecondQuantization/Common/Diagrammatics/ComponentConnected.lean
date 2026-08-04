@@ -61,18 +61,20 @@ theorem QuarticDiagram.restrictComponent_vertexGraph_adj_iff {S : Finset (Fin N)
       (leg : Fin (2 * (2 * S.card))), ?_, ?_⟩
     · rw [← d.vertexOfLeg_blockLegEquiv_eq_iff hB leg u, hleg', hu]
     · rw [← hleg', d.restrictedPairing_partner_blockLegEquiv hB,
-        d.vertexOfLeg_blockLegEquiv_eq_iff hB (d.restrictedPartner hB leg) w] at hw
+        d.vertexOfLeg_blockLegEquiv_eq_iff hB (d.restrictedPartner B leg) w] at hw
       rwa [d.restrictedPartner_val] at hw
   · rintro ⟨hne, leg0, hu0, hw0⟩
     have hleg0 : d.legInBlock B leg0 := by
-      rw [QuarticDiagram.legInBlock, hu0]
+      unfold QuarticDiagram.legInBlock
+      apply (d.componentBlock_eq_iff_mem hB _).mpr
+      rw [hu0]
       exact d.blockVertex_mem hB u
     refine ⟨fun h => hne (congrArg (d.blockVertex hB) h),
       d.blockLegEquiv hB ⟨leg0, hleg0⟩, ?_, ?_⟩
     · exact (d.vertexOfLeg_blockLegEquiv_eq_iff hB ⟨leg0, hleg0⟩ u).mpr hu0
     · rw [d.restrictComponent_pairing hB, d.restrictedPairing_partner_blockLegEquiv hB]
       apply (d.vertexOfLeg_blockLegEquiv_eq_iff
-        hB (d.restrictedPartner hB ⟨leg0, hleg0⟩) w).mpr
+        hB (d.restrictedPartner B ⟨leg0, hleg0⟩) w).mpr
       rw [d.restrictedPartner_val]
       exact hw0
 

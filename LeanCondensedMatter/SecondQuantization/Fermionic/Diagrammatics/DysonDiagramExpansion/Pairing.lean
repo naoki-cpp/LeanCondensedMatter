@@ -16,11 +16,11 @@ namespace Fermionic
 
 open Combinatorics
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-! ## Applying the general theorem to the flattened `4n`-leg family -/
 
-omit [DecidableEq Mode] [LinearOrder Mode] in
+omit [LinearOrder Mode] in
 /-- **The free partition function's un-normalized trace is nonzero** — the general theorem's `hZ`
 hypothesis, bridged from `freePartitionFunction_ne_zero` via
 `Common.traceFock_diagonalEvolution_eq_weightSum` and a direct identification of the Common and
@@ -227,7 +227,7 @@ and pairings through canonical free Gibbs density-state contractions.** The last
 reindexing this `(vertex-label sequence, pairing)` double sum into a sum over
 `QuarticWickDiagram`s. -/
 theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing {α : Type*}
-    [DecidableEq α] (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (S : Finset α) :
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (S : Finset α) :
     dysonVertexMoment ε β (quarticInteraction g) S =
       (S.card.factorial : ℂ) * (-1 : ℂ) ^ S.card *
         ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
@@ -239,6 +239,7 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing {α : Ty
                     (Common.finiteHilbertOperator
                       ((quarticLegOperatorForSequence ε q τ pr.1).comp
                         (quarticLegOperatorForSequence ε q τ pr.2)))) := by
+  classical
   have hkey :=
     freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction
       ε β g S.card β LinearMap.id

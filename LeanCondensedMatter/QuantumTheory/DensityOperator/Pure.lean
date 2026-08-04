@@ -105,7 +105,7 @@ theorem rankOne_hasSummableRealEigenvalues {ψ : H} (hψ : ‖ψ‖ = 1) :
 omit [CompleteSpace H] in
 /-- A unit rank-one projector has spectral trace one. -/
 theorem rankOne_spectralTrace_eq_one {ψ : H} (hψ : ‖ψ‖ = 1) :
-    spectralTrace (rankOne_hasSummableRealEigenvalues hψ) = 1 := by
+    spectralTrace (InnerProductSpace.rankOne ℂ ψ ψ) = 1 := by
   haveI := uniqueEigenvectorIndexRankOne hψ
   change (∑' a : EigenvectorIndex
     (InnerProductSpace.rankOne ℂ ψ ψ : H →L[ℂ] H), a.1.1) = 1
@@ -114,13 +114,19 @@ theorem rankOne_spectralTrace_eq_one {ψ : H} (hψ : ‖ψ‖ = 1) :
   rfl
 
 /-- A normalized pure state defines its rank-one density operator. -/
-noncomputable def pure (ψ : State H) : DensityOperator H where
-  op := InnerProductSpace.rankOne ℂ ψ.1 ψ.1
-  pos := InnerProductSpace.isPositive_rankOne_self ψ.1
-  spectralTraceClass := SpectralTraceClass.ofPositive
-    (isCompactOperator_rankOne ψ.1 ψ.1)
-    (InnerProductSpace.isPositive_rankOne_self ψ.1)
-    (rankOne_hasSummableRealEigenvalues ψ.2)
-  spectralTrace_eq_one := rankOne_spectralTrace_eq_one ψ.2
+noncomputable def pure (ψ : State H) : DensityOperator H := by
+  let htraceClass : SpectralTraceClass
+      (InnerProductSpace.rankOne ℂ ψ.1 ψ.1 : H →L[ℂ] H) :=
+    SpectralTraceClass.ofPositive
+      (isCompactOperator_rankOne ψ.1 ψ.1)
+      (InnerProductSpace.isPositive_rankOne_self ψ.1)
+      (rankOne_hasSummableRealEigenvalues ψ.2)
+  exact {
+    op := InnerProductSpace.rankOne ℂ ψ.1 ψ.1
+    pos := InnerProductSpace.isPositive_rankOne_self ψ.1
+    spectralTraceClass := htraceClass
+    spectralTrace_eq_one := by
+      rw [htraceClass.trace_eq_spectralTrace]
+      exact rankOne_spectralTrace_eq_one ψ.2 }
 
 end QuantumTheory

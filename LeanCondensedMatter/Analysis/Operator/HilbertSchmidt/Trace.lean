@@ -18,7 +18,7 @@ trace of `A`. -/
 theorem innerHS_one_eq_spectralTrace {A : H →L[ℂ] H} (hAcpt : IsCompactOperator A)
     (hAsym : A.IsSymmetric) (hAsum : HasSummableRealEigenvalues A)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
-    innerHS d 1 A = (spectralTrace hAsum : ℂ) := by
+    innerHS d 1 A = (spectralTrace A : ℂ) := by
   have hone : (fun i => (inner ℂ ((1 : H →L[ℂ] H) (d i)) (A (d i)) : ℂ)) =
       (fun i => (inner ℂ (d i) (A (d i)) : ℂ)) := by
     funext i

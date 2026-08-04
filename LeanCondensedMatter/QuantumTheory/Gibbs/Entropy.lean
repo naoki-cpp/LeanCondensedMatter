@@ -18,13 +18,13 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 theorem gibbsState_apply_eigenvector (Hop : Observable H) (β : ℝ)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
-    (hZ : spectralTrace hsummable ≠ 0) {v : H} {E : ℝ}
+    (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) {v : H} {E : ℝ}
     (hv : (Hop.1 : H →ₗ[ℂ] H) v = (E : ℂ) • v) :
     (gibbsState Hop β hcompact hsummable hZ).op v =
-      (((spectralTrace hsummable)⁻¹ : ℝ) • (Real.exp (-β * E) : ℂ)) • v := by
-  change ((spectralTrace hsummable)⁻¹ • gibbsOp Hop β) v = _
+      (((spectralTrace (gibbsOp Hop β))⁻¹ : ℝ) • (Real.exp (-β * E) : ℂ)) • v := by
+  change ((spectralTrace (gibbsOp Hop β))⁻¹ • gibbsOp Hop β) v = _
   rw [smul_apply, gibbsOp_apply_eigenvector Hop β hv]
-  exact (smul_assoc ((spectralTrace hsummable)⁻¹ : ℝ)
+  exact (smul_assoc ((spectralTrace (gibbsOp Hop β))⁻¹ : ℝ)
     (Real.exp (-β * E) : ℂ) v).symm
 
 /-- In finite dimensions, `Tr(ρH)` is exactly the complex embedding of the real energy value. -/
@@ -41,7 +41,7 @@ theorem linearMap_trace_mul_observable_eq_energyExpValue [FiniteDimensional ℂ 
 theorem gibbsState_entropyOp_hasSummableRealEigenvalues (Hop : Observable H) (β : ℝ)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
-    (hZ : spectralTrace hsummable ≠ 0) :
+    (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) :
     HasSummableRealEigenvalues (entropyOp (gibbsState Hop β hcompact hsummable hZ)) := by
   letI := finiteDimensional_of_gibbsOp_isCompact Hop β hcompact
   let ρ := gibbsState Hop β hcompact hsummable hZ

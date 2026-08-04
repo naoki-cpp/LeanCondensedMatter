@@ -109,20 +109,18 @@ def FrequencyIntegrable
 
 /-- Frequency-domain retarded susceptibility with convention `exp (i ω τ)`.
 
-The proof argument makes the required Bochner integrability assumption explicit. -/
-@[nolint unusedArguments]
+The integral is totalized in the same sense as Mathlib's Bochner integral.  Results that use its
+analytic properties carry `FrequencyIntegrable` explicitly. -/
 noncomputable def frequencyDomainSusceptibility
     (expectation : NormalizedExpectation H)
-    (A B : H →L[ℂ] H) (ω : ℝ)
-    (_hInt : FrequencyIntegrable system expectation A B ω) : ℂ :=
+    (A B : H →L[ℂ] H) (ω : ℝ) : ℂ :=
   ∫ τ : ℝ, frequencySusceptibilityIntegrand system expectation A B ω τ
 
 /-- At zero frequency, the transform is the integral of the causal time-difference kernel. -/
 theorem frequencyDomainSusceptibility_zero_frequency
     (expectation : NormalizedExpectation H)
-    (A B : H →L[ℂ] H)
-    (hInt : FrequencyIntegrable system expectation A B 0) :
-    frequencyDomainSusceptibility system expectation A B 0 hInt =
+    (A B : H →L[ℂ] H) :
+    frequencyDomainSusceptibility system expectation A B 0 =
       ∫ τ : ℝ, retardedTimeDifferenceKernel system expectation A B τ := by
   simp [frequencyDomainSusceptibility, frequencySusceptibilityIntegrand]
 

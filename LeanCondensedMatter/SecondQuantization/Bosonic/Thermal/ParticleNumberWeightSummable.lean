@@ -1,8 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BoltzmannWeightSummable
 
 set_option linter.style.header false
-set_option linter.unusedFintypeInType false
-set_option linter.unusedDecidableInType false
 
 /-!
 # Summability of particle-number-weighted bosonic Gibbs weights
@@ -15,7 +13,12 @@ index-weighted version and applies the same finite-product `Finsupp` summation t
 namespace SecondQuantization
 namespace Bosonic
 
-variable {Mode : Type*} [Fintype Mode] [DecidableEq Mode]
+noncomputable section
+
+variable {Mode : Type*} [Fintype Mode]
+
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
+local instance instDecidableEqParticleNumberWeightSummable : DecidableEq Mode := Classical.decEq Mode
 
 /-- The particle-number-weighted free Boltzmann series has its product closed form. -/
 theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
@@ -32,9 +35,9 @@ theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
   have hg' : ∀ i, HasSum (g' i) (b' i) := by
     intro i
     rw [hg'def, hb'def]
-    by_cases hi : i = j
-    · subst hi
-      simp only [if_true]
+    dsimp only
+    split_ifs with hi
+    · subst j
       have hr : ‖Real.exp (-β * ε i)‖ < 1 := by
         rw [Real.norm_eq_abs, abs_of_nonneg (Real.exp_nonneg _), Real.exp_lt_one_iff]
         linarith [hpos i]
@@ -46,16 +49,14 @@ theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
         rw [Real.exp_nat_mul]
       rw [heq]
       exact h
-    · simp only [if_neg hi]
-      exact hasSum_oneModeBoltzmannWeight (hpos i)
+    · exact hasSum_oneModeBoltzmannWeight (hpos i)
   have hnn' : ∀ i n, 0 ≤ g' i n := by
     intro i n
     rw [hg'def]
-    by_cases hi : i = j
-    · simp only [if_pos hi]
-      exact mul_nonneg (Nat.cast_nonneg _) (Real.exp_nonneg _)
-    · simp only [if_neg hi]
-      exact Real.exp_nonneg _
+    dsimp only
+    split_ifs
+    · exact mul_nonneg (Nat.cast_nonneg _) (Real.exp_nonneg _)
+    · exact Real.exp_nonneg _
   have H := Finsupp.hasSum_prod_nonneg g' b' hg' hnn'
   have hprod : ∀ i, i ∈ Finset.univ.erase j →
       b' i = (1 - Real.exp (-β * ε i))⁻¹ := fun i hi => by
@@ -76,10 +77,14 @@ theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
         (Finset.mem_univ j)]
   rwa [heq] at H
 
-theorem summable_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
-    (hpos : ∀ i, 0 < β * ε i) (j : Mode) :
-    Summable (fun n : Occupation Mode => (n j : ℝ) * boltzmannWeight ε β n) :=
-  (hasSum_particleNumber_boltzmannWeight ε β hpos j).summable
+omit [Fintype Mode] in
+/-- The particle-number-weighted free Boltzmann series is summable for any finite mode type. -/
+theorem summable_particleNumber_boltzmannWeight [Finite Mode]
+    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i) (j : Mode) :
+    Summable (fun n : Occupation Mode => (n j : ℝ) * boltzmannWeight ε β n) := by
+  letI := Fintype.ofFinite Mode
+  exact (hasSum_particleNumber_boltzmannWeight ε β hpos j).summable
 
+end
 end Bosonic
 end SecondQuantization

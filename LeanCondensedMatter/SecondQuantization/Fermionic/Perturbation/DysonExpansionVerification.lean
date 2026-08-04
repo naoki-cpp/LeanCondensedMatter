@@ -13,7 +13,7 @@ Only the density-density `interactionHamiltonian` statements remain fermion-spec
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- `interactionHamiltonian` is time-independent in the interaction picture. -/

@@ -14,7 +14,12 @@ summability and partition-function product formulas.
 namespace SecondQuantization
 namespace Bosonic
 
-variable {Mode : Type*} [DecidableEq Mode]
+noncomputable section
+
+variable {Mode : Type*}
+
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
+local instance instDecidableEqBoltzmannWeightFactorization : DecidableEq Mode := Classical.decEq Mode
 
 /-- The free bosonic Boltzmann weight `e^{-βE(n)}`. -/
 noncomputable def boltzmannWeight (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) : ℝ :=
@@ -22,7 +27,6 @@ noncomputable def boltzmannWeight (ε : Mode → ℝ) (β : ℝ) (n : Occupation
 
 variable [Fintype Mode]
 
-omit [DecidableEq Mode] in
 /-- The free energy is the sum over all modes; terms outside the support vanish. -/
 theorem freeEigenvalue_eq_sum_univ (ε : Mode → ℝ) (n : Occupation Mode) :
     freeEigenvalue ε n = ∑ i, (n i : ℝ) * ε i := by
@@ -33,7 +37,6 @@ theorem freeEigenvalue_eq_sum_univ (ε : Mode → ℝ) (n : Occupation Mode) :
   rw [hi]
   simp
 
-omit [DecidableEq Mode] in
 /-- The free Boltzmann weight factors into one-mode Boltzmann weights. -/
 theorem boltzmannWeight_eq_prod (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
     boltzmannWeight ε β n = ∏ i, oneModeBoltzmannWeight β (ε i) (n i) := by
@@ -42,6 +45,8 @@ theorem boltzmannWeight_eq_prod (ε : Mode → ℝ) (β : ℝ) (n : Occupation M
   congr 1
   rw [Finset.mul_sum]
   exact Finset.sum_congr rfl fun i _ => by ring
+
+end
 
 end Bosonic
 end SecondQuantization

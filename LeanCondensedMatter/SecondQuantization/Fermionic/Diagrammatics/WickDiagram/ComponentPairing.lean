@@ -125,12 +125,12 @@ theorem QuarticWickDiagram.componentDiagramLeg_restrictedPairing_partner
         Fin (2 * (2 * S.card)))) h
   calc
     d.componentDiagramLeg B ((d.restrictedPairing B.2).partner p) =
-        ((d.restrictedPartner B.2 leg :
+        ((d.restrictedPartner (B : Finset (Fin N)) leg :
           {leg : Fin (2 * (2 * S.card)) // d.legInBlock (B : Finset (Fin N)) leg}) :
             Fin (2 * (2 * S.card))) := by
       simpa [QuarticWickDiagram.componentDiagramLeg, leg] using h'
     _ = d.pairing.partner (d.componentDiagramLeg B p) := by
-      rw [d.restrictedPartner_val B.2]
+      rw [d.restrictedPartner_val (B : Finset (Fin N))]
       rfl
 
 /-- The assembled global ordered pairing partner is the component ordered-leg embedding of the

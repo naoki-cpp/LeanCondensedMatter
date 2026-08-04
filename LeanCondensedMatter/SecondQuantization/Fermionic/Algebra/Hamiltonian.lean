@@ -22,7 +22,7 @@ design principles.
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
+variable {Mode : Type*} [LinearOrder Mode]
 
 /-! ## Free and interaction Hamiltonians -/
 

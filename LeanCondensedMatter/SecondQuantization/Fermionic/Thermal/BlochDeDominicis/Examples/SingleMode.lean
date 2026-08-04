@@ -46,7 +46,7 @@ namespace SecondQuantization
 namespace Fermionic
 
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- **The single-mode 4-point Wick identity for normalized diagonal weights**:
 `⟨cᵢcᵢ†cᵢcᵢ†⟩_w = ⟨cᵢcᵢ†⟩_w² + ζ⟨cᵢcᵢ⟩_w⟨cᵢ†cᵢ†⟩_w + ⟨cᵢcᵢ†⟩_w⟨cᵢ†cᵢ⟩_w`, matching

@@ -15,7 +15,7 @@ open scoped BigOperators
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 omit [LinearOrder Mode] in
 /-- Coefficients of the normalized Dyson partition series are the normalized fermionic Dyson

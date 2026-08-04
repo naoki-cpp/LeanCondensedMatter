@@ -30,7 +30,7 @@ def diagonalDensityOperator (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     have hscaled := ha.mul_left ‖Z⁻¹‖
     simpa [p, norm_mul] using hscaled
   refine
-    { op := HilbertBasis.diagonalOp b (fun i => (p i : ℂ)) (by simpa using hp_norm)
+    { op := HilbertBasis.diagonalOp b (fun i => (p i : ℂ))
       pos := HilbertBasis.diagonalOp_isPositive b p hp_norm hp_nonneg
       spectralTraceClass := HilbertBasis.diagonalOpSpectralTraceClass b p hp_norm hp_nonneg
       spectralTrace_eq_one := ?_ }

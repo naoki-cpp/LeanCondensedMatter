@@ -17,7 +17,7 @@ the general particle-number selection rule.
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
+variable {Mode : Type*} [LinearOrder Mode]
 
 /-- **`annihilate i` carries particle-number charge `-1`**: it only ever connects a basis state
 `m` to a basis state `n` with one fewer particle, `particleNumber m = particleNumber

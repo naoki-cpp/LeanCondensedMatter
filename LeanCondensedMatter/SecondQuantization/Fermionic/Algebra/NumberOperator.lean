@@ -22,7 +22,7 @@ of `ζ`.
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
+variable {Mode : Type*} [LinearOrder Mode]
 
 /-- **The single-mode number operator** `Nᵢ := aᵢ† aᵢ`. -/
 noncomputable def numberOperator (i : Mode) :

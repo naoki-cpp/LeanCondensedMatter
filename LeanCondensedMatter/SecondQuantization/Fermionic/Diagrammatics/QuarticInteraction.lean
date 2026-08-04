@@ -32,7 +32,7 @@ reference notes' `c_i† c_j† c_l c_k` convention for a vertex labelled `(i, j
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- Compatibility alias for the statistics-independent quartic vertex label. -/
 abbrev QuarticVertexLabel (Mode : Type*) := Common.QuarticVertexLabel Mode

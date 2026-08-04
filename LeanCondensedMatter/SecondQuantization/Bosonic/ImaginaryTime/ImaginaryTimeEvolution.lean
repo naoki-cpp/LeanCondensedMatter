@@ -26,7 +26,12 @@ algebraic-Fock vectors, not finiteness of the bosonic occupation type.
 namespace SecondQuantization
 namespace Bosonic
 
-variable {Mode : Type*} [DecidableEq Mode]
+noncomputable section
+
+variable {Mode : Type*}
+
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
+local instance instDecidableEqImaginaryTimeEvolution : DecidableEq Mode := Classical.decEq Mode
 
 /-- The bosonic imaginary-time-ordered product of two operators. -/
 noncomputable def timeOrderedProduct
@@ -66,22 +71,18 @@ theorem timeOrderedProduct_swap
 def freeEigenvalue (ε : Mode → ℝ) (n : Occupation Mode) : ℝ :=
   n.sum fun i k => (k : ℝ) * ε i
 
-omit [DecidableEq Mode] in
 theorem freeEigenvalue_add (ε : Mode → ℝ) (m n : Occupation Mode) :
     freeEigenvalue ε (m + n) = freeEigenvalue ε m + freeEigenvalue ε n :=
   Finsupp.sum_add_index' (fun i => by simp) (fun i k1 k2 => by push_cast; ring)
 
-omit [DecidableEq Mode] in
 theorem freeEigenvalue_singleOccupation (ε : Mode → ℝ) (i : Mode) :
     freeEigenvalue ε (singleOccupation i) = ε i := by
   simp [freeEigenvalue, singleOccupation]
 
-omit [DecidableEq Mode] in
 theorem freeEigenvalue_createOccupation (ε : Mode → ℝ) (i : Mode) (n : Occupation Mode) :
     freeEigenvalue ε (createOccupation i n) = freeEigenvalue ε n + ε i := by
   rw [createOccupation, freeEigenvalue_add, freeEigenvalue_singleOccupation]
 
-omit [DecidableEq Mode] in
 theorem freeEigenvalue_removeOccupation_of_pos {ε : Mode → ℝ} {i : Mode} {n : Occupation Mode}
     (h : n i ≠ 0) :
     freeEigenvalue ε (removeOccupation i n) = freeEigenvalue ε n - ε i := by
@@ -268,6 +269,8 @@ theorem intervalIntegrable_matrixCoeff_interactionPicture (ε : Mode → ℝ)
     IntervalIntegrable (fun τ : ℝ => Common.matrixCoeff (interactionPicture ε V τ) m n)
       MeasureTheory.volume a b :=
   Common.intervalIntegrable_matrixCoeff_interactionPicture (freeEigenvalue ε) V m n a b
+
+end
 
 end Bosonic
 end SecondQuantization

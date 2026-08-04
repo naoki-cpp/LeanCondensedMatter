@@ -106,7 +106,7 @@ private theorem QuarticDiagram.restrictComponent_reassemble_pairing
   apply ((QuarticDiagram.reassemble π F).blockLegEquiv hB').symm.injective
   rw [Equiv.symm_apply_apply]
   apply Subtype.ext
-  rw [(QuarticDiagram.reassemble π F).restrictedPartner_val,
+  rw [(QuarticDiagram.reassemble π F).restrictedPartner_val B,
     QuarticDiagram.blockLegEquiv_symm_reassemble_val π F B hB' leg,
     QuarticDiagram.reassemble_partner_bigLegEquiv_symm_sigma_mk π F B leg,
     QuarticDiagram.blockLegEquiv_symm_reassemble_val π F B hB'

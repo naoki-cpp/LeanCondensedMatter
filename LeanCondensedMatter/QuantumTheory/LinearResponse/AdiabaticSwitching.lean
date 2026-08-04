@@ -113,37 +113,33 @@ theorem not_adiabaticIntegrable_zero_rate
     ¬ AdiabaticIntegrable system expectation A B ω 0 := by
   simp [AdiabaticIntegrable]
 
-/-- Fixed-positive-rate adiabatically switched retarded susceptibility. -/
-@[nolint unusedArguments]
+/-- Totalized fixed-rate adiabatically switched retarded susceptibility.  Theorems using
+convergence carry `AdiabaticIntegrable` explicitly. -/
 noncomputable def adiabaticFrequencyDomainSusceptibility
     (expectation : NormalizedExpectation H)
-    (A B : H →L[ℂ] H) (ω η : ℝ)
-    (_hInt : AdiabaticIntegrable system expectation A B ω η) : ℂ :=
+    (A B : H →L[ℂ] H) (ω η : ℝ) : ℂ :=
   ∫ τ : ℝ,
     adiabaticFrequencySusceptibilityIntegrand system expectation A B ω η τ
 
 /-- At zero frequency, only the exponential damping remains. -/
 theorem adiabaticFrequencyDomainSusceptibility_zero_frequency
     (expectation : NormalizedExpectation H)
-    (A B : H →L[ℂ] H) (η : ℝ)
-    (hInt : AdiabaticIntegrable system expectation A B 0 η) :
-    adiabaticFrequencyDomainSusceptibility system expectation A B 0 η hInt =
+    (A B : H →L[ℂ] H) (η : ℝ) :
+    adiabaticFrequencyDomainSusceptibility system expectation A B 0 η =
       ∫ τ : ℝ,
         Complex.exp (-(η : ℂ) * (τ : ℂ)) *
           retardedTimeDifferenceKernel system expectation A B τ := by
   simp [adiabaticFrequencyDomainSusceptibility,
     adiabaticFrequencySusceptibilityIntegrand]
 
-/-- At zero switching rate, the raw switched integral is exactly the unswitched transform whenever
-the latter's explicit integrability assumption is supplied.  This is an identity at fixed rate,
-not a statement about the limit `η → 0⁺`. -/
+/-- At zero switching rate, the totalized switched integral is exactly the unswitched transform.
+This is an identity at fixed rate, not a statement about the limit `η → 0⁺`. -/
 theorem integral_adiabaticFrequencySusceptibilityIntegrand_zero_rate_eq_frequencyDomain
     (expectation : NormalizedExpectation H)
-    (A B : H →L[ℂ] H) (ω : ℝ)
-    (hInt : FrequencyIntegrable system expectation A B ω) :
+    (A B : H →L[ℂ] H) (ω : ℝ) :
     (∫ τ : ℝ,
         adiabaticFrequencySusceptibilityIntegrand system expectation A B ω 0 τ) =
-      frequencyDomainSusceptibility system expectation A B ω hInt := by
+      frequencyDomainSusceptibility system expectation A B ω := by
   simp [frequencyDomainSusceptibility]
 
 end

@@ -15,7 +15,7 @@ order `ℕ`, and finite-set moment/cumulant combinatorics, indexed by a labelled
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- The normalized fermionic Dyson partition coefficient. -/
 noncomputable def normalizedDysonPartitionCoeff (ε : Mode → ℝ) (β : ℝ)
@@ -54,8 +54,7 @@ theorem normalizedDysonPartitionCoeff_zero (ε : Mode → ℝ) (β : ℝ)
     div_self (freePartitionFunction_ne_zero ε β)]
 
 /-- The factorial-normalized Dyson vertex moment on a finite vertex set. -/
-@[nolint unusedArguments]
-noncomputable def dysonVertexMoment {α : Type*} [DecidableEq α] (ε : Mode → ℝ) (β : ℝ)
+noncomputable def dysonVertexMoment {α : Type*} (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (S : Finset α) : ℂ :=
   (S.card.factorial : ℂ) * normalizedDysonPartitionCoeff ε β V S.card
 
@@ -63,7 +62,7 @@ omit [LinearOrder Mode] in
 /-- The Dyson vertex moment is the factorial times the canonical free Gibbs density-state
 expectation of the bare Dyson coefficient at the corresponding order. -/
 theorem dysonVertexMoment_eq_freeGibbsDensityOperator_expectation
-    {α : Type*} [DecidableEq α] (ε : Mode → ℝ) (β : ℝ)
+    {α : Type*} (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (S : Finset α) :
     dysonVertexMoment ε β V S =
       (S.card.factorial : ℂ) *
@@ -75,9 +74,10 @@ theorem dysonVertexMoment_eq_freeGibbsDensityOperator_expectation
 
 omit [LinearOrder Mode] in
 @[simp]
-theorem dysonVertexMoment_empty {α : Type*} [DecidableEq α] (ε : Mode → ℝ) (β : ℝ)
+theorem dysonVertexMoment_empty {α : Type*} (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     dysonVertexMoment ε β V (∅ : Finset α) = 1 := by
+  classical
   simp [dysonVertexMoment]
 
 /-- The finite-set cumulant of the Dyson vertex moment. -/

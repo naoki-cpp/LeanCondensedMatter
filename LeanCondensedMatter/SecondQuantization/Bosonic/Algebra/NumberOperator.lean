@@ -12,7 +12,12 @@ the exchange-algebra interface gives the reordering identity `a_i a_i† = id + 
 namespace SecondQuantization
 namespace Bosonic
 
-variable {Mode : Type*} [DecidableEq Mode]
+noncomputable section
+
+variable {Mode : Type*}
+
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
+local instance instDecidableEqNumberOperator : DecidableEq Mode := Classical.decEq Mode
 
 /-- The single-mode number operator `N_i = a_i† a_i`. -/
 noncomputable def numberOperator (i : Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
@@ -39,6 +44,8 @@ theorem annihilate_comp_create_self (i : Mode) :
       (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) + numberOperator i := by
   have h := Common.annihilate_comp_create_self (s := Common.Statistics.boson) (Config := Occupation Mode) i
   rwa [Common.Statistics.zetaInt_boson, Int.cast_one, one_smul] at h
+
+end
 
 end Bosonic
 end SecondQuantization

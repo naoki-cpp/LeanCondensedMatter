@@ -16,7 +16,7 @@ thin delegation to the Common finite weighted-trace layer.
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 theorem weightedTrace_numberOperator (w : Occupation Mode → ℂ) (i : Mode) :
     Common.weightedTrace w (numberOperator i) =

@@ -29,7 +29,7 @@ directly rather than through the general `Common/` framework).
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- **The finite-mode fermionic 2-point identity**: `(1 + e^{-εᵢβ}) Tr[e^{-βH₀}(cᵢcⱼ†)] = δᵢⱼ
 Tr[e^{-βH₀}]`, a direct instantiation of `Common.traceFock_diagonalEvolution_comp_two_point` with

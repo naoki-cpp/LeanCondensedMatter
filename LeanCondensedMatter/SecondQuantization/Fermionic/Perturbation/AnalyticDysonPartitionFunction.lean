@@ -19,7 +19,7 @@ open scoped Topology
 
 noncomputable section
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- The genuine finite-dimensional interacting partition function `Tr exp(-β (H₀ + λV))`. -/
 noncomputable def analyticDysonPartitionFunction (ε : Mode → ℝ) (β : ℝ)

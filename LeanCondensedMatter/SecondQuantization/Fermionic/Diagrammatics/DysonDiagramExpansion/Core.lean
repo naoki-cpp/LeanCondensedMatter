@@ -29,7 +29,7 @@ namespace Fermionic
 
 open Combinatorics
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-! ## Expanding `dysonCoeff` of `quarticInteraction` into a vertex-label sum -/
 

@@ -46,7 +46,7 @@ theorem DensityOperator.hasSum_abs_eigenvalues_eq_one (ρ : DensityOperator H) :
   have hsum : HasSum (fun a : EigenvectorIndex ρ.op => a.1.1) 1 := by
     have h := (summable_eigenvectorIndex ρ.spectralTraceClass.summable).hasSum
     have htrace : (∑' a : EigenvectorIndex ρ.op, a.1.1) = 1 := by
-      simpa [SpectralTraceClass.trace, spectralTrace] using ρ.spectralTrace_eq_one
+      simpa [spectralTrace] using ρ.spectralTrace_op_eq_one
     rwa [htrace] at h
   have hfun : (fun a : EigenvectorIndex ρ.op => |a.1.1|) =
       (fun a : EigenvectorIndex ρ.op => a.1.1) := by
@@ -146,7 +146,7 @@ theorem DensityOperator.expectation_id (ρ : DensityOperator H) :
       norm_num
     _ = 1 := by
       have htrace : (∑' a : EigenvectorIndex ρ.op, a.1.1) = 1 := by
-        simpa [SpectralTraceClass.trace, spectralTrace] using ρ.spectralTrace_eq_one
+        simpa [spectralTrace] using ρ.spectralTrace_op_eq_one
       exact_mod_cast htrace
 
 end QuantumTheory

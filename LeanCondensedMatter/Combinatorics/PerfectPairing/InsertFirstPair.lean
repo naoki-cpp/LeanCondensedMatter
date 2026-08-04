@@ -25,10 +25,10 @@ noncomputable def Pairing.insertFirstPair {n : ℕ} (pairing : Pairing n) (j : F
     Equiv.Perm.extendDomain_apply_not_subtype _ _ (by simp [deletedPositions])
   have hextInv : ∀ x : Fin (2 * (n + 1)), extended (extended x) = x := by
     intro x
-    by_cases hx : x ∈ deletedPositions n j hj
+    by_cases hx : x ∈ deletedPositions n j
     · have h1 : extended x = (oi (pairing.partner (oi.symm ⟨x, hx⟩)) : Fin (2 * (n + 1))) :=
         Equiv.Perm.extendDomain_apply_subtype _ _ hx
-      have hx2 : extended x ∈ deletedPositions n j hj := by
+      have hx2 : extended x ∈ deletedPositions n j := by
         rw [h1]
         exact (oi (pairing.partner (oi.symm ⟨x, hx⟩))).property
       have h2 : extended (extended x) =
@@ -42,7 +42,7 @@ noncomputable def Pairing.insertFirstPair {n : ℕ} (pairing : Pairing n) (j : F
       simp
     · have hx' : extended x = x := Equiv.Perm.extendDomain_apply_not_subtype _ _ hx
       rw [hx', hx']
-  have hextNe : ∀ x : Fin (2 * (n + 1)), x ∈ deletedPositions n j hj → extended x ≠ x := by
+  have hextNe : ∀ x : Fin (2 * (n + 1)), x ∈ deletedPositions n j → extended x ≠ x := by
     intro x hx h
     have h1 : extended x = (oi (pairing.partner (oi.symm ⟨x, hx⟩)) : Fin (2 * (n + 1))) :=
       Equiv.Perm.extendDomain_apply_subtype _ _ hx
@@ -61,8 +61,8 @@ noncomputable def Pairing.insertFirstPair {n : ℕ} (pairing : Pairing n) (j : F
     · by_cases hxj : x = j
       · subst hxj
         rw [hextj, Equiv.swap_apply_right, hext0, Equiv.swap_apply_left]
-      · have hxmem : x ∈ deletedPositions n j hj := by simp [deletedPositions, hx0, hxj]
-        have hex : extended x ∈ deletedPositions n j hj := by
+      · have hxmem : x ∈ deletedPositions n j := by simp [deletedPositions, hx0, hxj]
+        have hex : extended x ∈ deletedPositions n j := by
           have h1 : extended x = (oi (pairing.partner (oi.symm ⟨x, hxmem⟩)) : Fin (2 * (n + 1))) :=
             Equiv.Perm.extendDomain_apply_subtype _ _ hxmem
           rw [h1]
@@ -80,8 +80,8 @@ noncomputable def Pairing.insertFirstPair {n : ℕ} (pairing : Pairing n) (j : F
       · subst hxj
         rw [hextj, Equiv.swap_apply_right]
         exact hj
-      · have hxmem : x ∈ deletedPositions n j hj := by simp [deletedPositions, hx0, hxj]
-        have hex : extended x ∈ deletedPositions n j hj := by
+      · have hxmem : x ∈ deletedPositions n j := by simp [deletedPositions, hx0, hxj]
+        have hex : extended x ∈ deletedPositions n j := by
           have h1 : extended x = (oi (pairing.partner (oi.symm ⟨x, hxmem⟩)) : Fin (2 * (n + 1))) :=
             Equiv.Perm.extendDomain_apply_subtype _ _ hxmem
           rw [h1]
@@ -120,7 +120,7 @@ theorem Pairing.insertFirstPair_partner_orderIso {n : ℕ} (pairing : Pairing n)
   change (Equiv.swap 0 j * (pairing.partner.extendDomain oi.toEquiv)) (oi i : Fin (2 * (n + 1))) =
     (oi (pairing.partner i) : Fin (2 * (n + 1)))
   rw [Equiv.Perm.mul_apply]
-  have hmem : (oi i : Fin (2 * (n + 1))) ∈ deletedPositions n j hj := (oi i).property
+  have hmem : (oi i : Fin (2 * (n + 1))) ∈ deletedPositions n j := (oi i).property
   have h1 : pairing.partner.extendDomain oi.toEquiv (oi i : Fin (2 * (n + 1))) =
       (oi (pairing.partner (oi.symm ⟨(oi i : Fin (2 * (n + 1))), hmem⟩)) :
         Fin (2 * (n + 1))) :=
@@ -130,7 +130,7 @@ theorem Pairing.insertFirstPair_partner_orderIso {n : ℕ} (pairing : Pairing n)
     apply oi.injective
     simp
   rw [hsymm]
-  have hmem' : (oi (pairing.partner i) : Fin (2 * (n + 1))) ∈ deletedPositions n j hj :=
+  have hmem' : (oi (pairing.partner i) : Fin (2 * (n + 1))) ∈ deletedPositions n j :=
     (oi (pairing.partner i)).property
   exact Equiv.swap_apply_of_ne_of_ne
     (Finset.mem_erase.mp (Finset.mem_erase.mp hmem').2).1 (Finset.mem_erase.mp hmem').1
@@ -169,7 +169,7 @@ theorem Pairing.insertFirstPair_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 
       rw [pairing.eraseZeroPair.insertFirstPair_partner_chosen (pairing.partner 0)
         (Ne.symm (pairing.partner_ne 0))]
       exact (pairing.partner_partner 0).symm
-    · have hxmem : x ∈ deletedPositions n (pairing.partner 0) (Ne.symm (pairing.partner_ne 0)) := by
+    · have hxmem : x ∈ deletedPositions n (pairing.partner 0) := by
         simp [deletedPositions, hx0, hxj]
       set k := pairing.eraseZeroOrderIso.symm ⟨x, hxmem⟩ with hkdef
       have hxeq : (pairing.eraseZeroOrderIso k : Fin (2 * (n + 1))) = x := by simp [hkdef]

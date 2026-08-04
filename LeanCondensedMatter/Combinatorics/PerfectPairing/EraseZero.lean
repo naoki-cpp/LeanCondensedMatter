@@ -16,9 +16,8 @@ open FiniteIndex
 
 /-- The partner map restricted to the positions remaining after deleting `0` and `partner 0`. -/
 def Pairing.restrictedPartnerMap {n : ℕ} (pairing : Pairing (n + 1))
-    (hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0)
-    (x : deletedPositions n (pairing.partner 0) hzero) :
-    deletedPositions n (pairing.partner 0) hzero := by
+    (x : deletedPositions n (pairing.partner 0)) :
+    deletedPositions n (pairing.partner 0) := by
   have hxj : (x : Fin (2 * (n + 1))) ≠ pairing.partner 0 :=
     (Finset.mem_erase.mp x.property).1
   have hx0 : (x : Fin (2 * (n + 1))) ≠ 0 :=
@@ -42,12 +41,11 @@ def Pairing.restrictedPartnerMap {n : ℕ} (pairing : Pairing (n + 1))
     Finset.mem_erase.mpr ⟨hpxj, Finset.mem_erase.mpr ⟨hpx0, Finset.mem_univ _⟩⟩⟩
 
 /-- Restrict a pairing partner permutation to the surviving positions. -/
-def Pairing.restrictedPartner {n : ℕ} (pairing : Pairing (n + 1))
-    (hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0) :
-    deletedPositions n (pairing.partner 0) hzero ≃
-      deletedPositions n (pairing.partner 0) hzero where
-  toFun := pairing.restrictedPartnerMap hzero
-  invFun := pairing.restrictedPartnerMap hzero
+def Pairing.restrictedPartner {n : ℕ} (pairing : Pairing (n + 1)) :
+    deletedPositions n (pairing.partner 0) ≃
+      deletedPositions n (pairing.partner 0) where
+  toFun := pairing.restrictedPartnerMap
+  invFun := pairing.restrictedPartnerMap
   left_inv x := by
     apply Subtype.ext
     exact pairing.partner_partner x
@@ -57,9 +55,8 @@ def Pairing.restrictedPartner {n : ℕ} (pairing : Pairing (n + 1))
 
 @[simp]
 theorem Pairing.restrictedPartner_partner_partner {n : ℕ} (pairing : Pairing (n + 1))
-    (hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0)
-    (x : deletedPositions n (pairing.partner 0) hzero) :
-    pairing.restrictedPartner hzero (pairing.restrictedPartner hzero x) = x := by
+    (x : deletedPositions n (pairing.partner 0)) :
+    pairing.restrictedPartner (pairing.restrictedPartner x) = x := by
   apply Subtype.ext
   exact pairing.partner_partner x
 
@@ -68,7 +65,7 @@ noncomputable def Pairing.eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)) : 
   let hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0 :=
     Ne.symm (pairing.partner_ne 0)
   let e := deletedPositionsOrderIso n (pairing.partner 0) hzero
-  let r := pairing.restrictedPartner hzero
+  let r := pairing.restrictedPartner
   let newPartner : Equiv.Perm (Fin (2 * n)) :=
     e.toEquiv.trans (r.trans e.symm.toEquiv)
   refine
@@ -94,14 +91,13 @@ theorem Pairing.eraseZeroPair_partner_apply {n : ℕ} (pairing : Pairing (n + 1)
       let hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0 :=
         Ne.symm (pairing.partner_ne 0)
       let e := deletedPositionsOrderIso n (pairing.partner 0) hzero
-      e.symm (pairing.restrictedPartner hzero (e i)) := by
+      e.symm (pairing.restrictedPartner (e i)) := by
   simp [Pairing.eraseZeroPair]
 
 /-- Increasing equivalence used by `eraseZeroPair`. -/
 noncomputable def Pairing.eraseZeroOrderIso {n : ℕ} (pairing : Pairing (n + 1)) :
     Fin (2 * n) ≃o
-      deletedPositions n (pairing.partner 0)
-        (Ne.symm (pairing.partner_ne 0)) :=
+      deletedPositions n (pairing.partner 0) :=
   deletedPositionsOrderIso n (pairing.partner 0) (Ne.symm (pairing.partner_ne 0))
 
 @[simp]

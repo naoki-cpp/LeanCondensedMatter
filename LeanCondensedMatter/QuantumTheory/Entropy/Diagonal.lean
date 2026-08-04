@@ -95,8 +95,7 @@ theorem diagonalDensityOperator_apply_basis (b : HilbertBasis ι ℂ H) (a : ι 
     (diagonalDensityOperator b a ha ha_nonneg hZ).op (b i) =
       (normalizedDiagonalWeight a i : ℂ) • b i := by
   change HilbertBasis.diagonalOp b
-      (fun i => (normalizedDiagonalWeight a i : ℂ))
-      (by simpa using summable_norm_normalizedDiagonalWeight a ha) (b i) = _
+      (fun i => (normalizedDiagonalWeight a i : ℂ)) (b i) = _
   simpa using HilbertBasis.diagonalOp_apply_basis b
     (fun i => (normalizedDiagonalWeight a i : ℂ))
     (by simpa using summable_norm_normalizedDiagonalWeight a ha) i

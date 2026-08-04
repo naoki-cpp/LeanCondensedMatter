@@ -18,22 +18,22 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 theorem vonNeumannEntropy_gibbsState (Hop : Observable H) (β : ℝ)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
-    (hZ : spectralTrace hsummable ≠ 0) :
+    (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) :
     vonNeumannEntropy (gibbsState Hop β hcompact hsummable hZ) ≠ ⊤ ∧
       (vonNeumannEntropy (gibbsState Hop β hcompact hsummable hZ)).toReal =
         β * energyExpValue (gibbsState Hop β hcompact hsummable hZ) Hop +
-          Real.log (spectralTrace hsummable) := by
+          Real.log (spectralTrace (gibbsOp Hop β)) := by
   classical
   letI := finiteDimensional_of_gibbsOp_isCompact Hop β hcompact
   let ρ := gibbsState Hop β hcompact hsummable hZ
-  let Z : ℝ := spectralTrace hsummable
+  let Z : ℝ := spectralTrace (gibbsOp Hop β)
   let E : Fin (Module.finrank ℂ H) → ℝ :=
     Hop.2.isSymmetric.eigenvalues rfl
   let bE : OrthonormalBasis (Fin (Module.finrank ℂ H)) ℂ H :=
     Hop.2.isSymmetric.eigenvectorBasis rfl
   let w : Fin (Module.finrank ℂ H) → ℝ := fun i => Real.exp (-β * E i) / Z
   have hZpos : 0 < Z := by
-    simpa [Z] using spectralTrace_gibbsOp_pos Hop β hsummable hZ
+    simpa [Z] using spectralTrace_gibbsOp_pos Hop β hZ
   have hEbE (i : Fin (Module.finrank ℂ H)) :
       (Hop.1 : H →ₗ[ℂ] H) (bE i) = (E i : ℂ) • bE i := by
     simpa [E, bE] using Hop.2.isSymmetric.apply_eigenvectorBasis rfl i
@@ -93,11 +93,11 @@ theorem vonNeumannEntropy_gibbsState (Hop : Observable H) (β : ℝ)
 theorem gibbsState_helmholtzFreeEnergy_eq (Hop : Observable H) (β : ℝ) (hβ : 0 < β)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
-    (hZ : spectralTrace hsummable ≠ 0) :
+    (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) :
     energyExpValue (gibbsState Hop β hcompact hsummable hZ) Hop -
         (1 / β) * (vonNeumannEntropy
           (gibbsState Hop β hcompact hsummable hZ)).toReal =
-      -(1 / β) * Real.log (spectralTrace hsummable) := by
+      -(1 / β) * Real.log (spectralTrace (gibbsOp Hop β)) := by
   have hEntropy :=
     (vonNeumannEntropy_gibbsState Hop β hcompact hsummable hZ).2
   rw [hEntropy, mul_add]
@@ -114,7 +114,7 @@ theorem gibbsState_helmholtzFreeEnergy_eq (Hop : Observable H) (β : ℝ) (hβ :
 theorem gibbsState_minimizes_helmholtzFreeEnergy (ρ : DensityOperator H) (Hop : Observable H)
     (β : ℝ) (hβ : 0 < β) (hcompact : IsCompactOperator (gibbsOp Hop β))
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
-    (hZ : spectralTrace hsummable ≠ 0) :
+    (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) :
     energyExpValue (gibbsState Hop β hcompact hsummable hZ) Hop -
         (1 / β) * (vonNeumannEntropy
           (gibbsState Hop β hcompact hsummable hZ)).toReal ≤

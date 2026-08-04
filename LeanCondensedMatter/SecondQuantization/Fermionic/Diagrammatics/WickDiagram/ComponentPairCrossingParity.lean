@@ -127,7 +127,6 @@ theorem QuarticWickDiagram.sum_componentOrderedLeg_inversions_eq_sum_vertex_inve
           intro j _
           exact d.sum_componentOrderedLeg_inversions_at_vertices shuffle B C hBC i j
 
-@[simp]
 theorem Combinatorics.Pairing.pairEndpoint_eq_pairEndpointAt {n : ℕ}
     (pairing : Combinatorics.Pairing n) (p : pairing.NormalizedPair) (k : Fin 2) :
     pairing.pairEndpoint (p, k) = Combinatorics.pairEndpointAt p.1 k :=
@@ -217,7 +216,7 @@ theorem QuarticWickDiagram.componentPairEndpointInversionCount_mod_two_eq_crosse
 
 /-- Selecting an endpoint after transporting a component-local pair is the same as transporting the
 selected local endpoint. -/
-@[simp, nolint simpNF]
+@[simp]
 theorem QuarticWickDiagram.pairEndpointAt_componentPairEquiv
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)

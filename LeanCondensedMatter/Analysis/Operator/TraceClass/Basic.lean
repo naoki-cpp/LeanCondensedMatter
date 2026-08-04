@@ -37,9 +37,10 @@ dimensions, not on which orthonormal basis `stdOrthonormalBasis` happens to pick
 def HasSummableRealEigenvalues (T : H →L[ℂ] H) : Prop :=
   Summable (fun a : EigenvectorIndex T => |a.1.1|)
 
-/-- The spectral sum of the indexed nonzero real eigenvalues of `T`, with multiplicity. -/
-@[nolint unusedArguments]
-noncomputable def spectralTrace {T : H →L[ℂ] H} (_h : HasSummableRealEigenvalues T) : ℝ :=
+/-- The (totalized) spectral sum of the indexed nonzero real eigenvalues of `T`, with
+multiplicity.  As for Mathlib's `tsum`, this definition is available for every operator; theorems
+that identify or manipulate the sum state `HasSummableRealEigenvalues T` explicitly. -/
+noncomputable def spectralTrace (T : H →L[ℂ] H) : ℝ :=
   ∑' a : EigenvectorIndex T, a.1.1
 
 omit [CompleteSpace H] in
@@ -56,8 +57,8 @@ theorem eigenvalue_nonneg_of_isPositive {T : H →L[ℂ] H} (hpos : (T : H →�
 
 omit [CompleteSpace H] in
 /-- The spectral trace of a positive spectrally summable operator is nonnegative. -/
-theorem trace_nonneg {T : H →L[ℂ] H} (h : HasSummableRealEigenvalues T)
-    (hpos : (T : H →ₗ[ℂ] H).IsPositive) : 0 ≤ spectralTrace h :=
+theorem trace_nonneg {T : H →L[ℂ] H}
+    (hpos : (T : H →ₗ[ℂ] H).IsPositive) : 0 ≤ spectralTrace T :=
   tsum_nonneg fun a => eigenvalue_nonneg_of_isPositive hpos a
 
 omit [CompleteSpace H] in

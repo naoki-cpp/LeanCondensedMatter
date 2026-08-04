@@ -81,11 +81,12 @@ private theorem QuarticDiagram.reassemble_componentPartition_partner
   have hleg0 : d.legInBlock B.1 (legOfVertexLocal v i) := by
     unfold QuarticDiagram.legInBlock
     rw [vertexOfLeg_legOfVertexLocal]
-    exact hv
+    exact (d.componentBlock_eq_iff_mem B.2 v).mpr hv
   have hv1 : vertexOfLeg (d.blockLegEquiv B.2 ⟨legOfVertexLocal v i, hleg0⟩) = v' := by
     rw [QuarticDiagram.vertexOfLeg_blockLegEquiv]
     refine (congrArg (QuarticDiagram.subtypeMemBlockEquiv B.1 (d.componentPart_subset B.2))
-      (Subtype.ext (a1 := (⟨vertexOfLeg (legOfVertexLocal v i), hleg0⟩ :
+      (Subtype.ext (a1 := (⟨vertexOfLeg (legOfVertexLocal v i), by
+            simpa only [vertexOfLeg_legOfVertexLocal] using hv⟩ :
           {x : ↥S // (x : Fin N) ∈ B.1}))
         (a2 := (⟨v, hv⟩ : {x : ↥S // (x : Fin N) ∈ B.1}))
         (vertexOfLeg_legOfVertexLocal v i))).trans ?_
@@ -98,20 +99,20 @@ private theorem QuarticDiagram.reassemble_componentPartition_partner
     rw [hv1, hl1]
   set w := vertexOfLeg (d.pairing.partner (legOfVertexLocal v i))
   have hw : (w : Fin N) ∈ B.1 := by
-    have hpartner := (d.legInBlock_partner_iff B.2 (legOfVertexLocal v i)).mp hleg0
+    have hpartner := (d.legInBlock_partner_iff (B := B.1) (legOfVertexLocal v i)).mp hleg0
     unfold QuarticDiagram.legInBlock at hpartner
-    exact hpartner
+    exact (d.componentBlock_eq_iff_mem B.2 _).mp hpartner
   have hv2 : vertexOfLeg
-      (d.blockLegEquiv B.2 (d.restrictedPartner B.2 ⟨legOfVertexLocal v i, hleg0⟩)) =
+      (d.blockLegEquiv B.2 (d.restrictedPartner B.1 ⟨legOfVertexLocal v i, hleg0⟩)) =
       QuarticDiagram.subtypeMemBlockEquiv B.1 (d.componentPart_subset B.2) ⟨w, hw⟩ := by
     rw [QuarticDiagram.vertexOfLeg_blockLegEquiv]
     refine congrArg (QuarticDiagram.subtypeMemBlockEquiv B.1 (d.componentPart_subset B.2)) ?_
     apply Subtype.ext
-    change (vertexOfLeg (d.restrictedPartner B.2 ⟨legOfVertexLocal v i, hleg0⟩ :
+    change (vertexOfLeg (d.restrictedPartner B.1 ⟨legOfVertexLocal v i, hleg0⟩ :
       Fin (2 * (2 * S.card))) : ↥S) = w
     rw [QuarticDiagram.restrictedPartner_val]
   have hl2 : localLegOfLeg
-      (d.blockLegEquiv B.2 (d.restrictedPartner B.2 ⟨legOfVertexLocal v i, hleg0⟩)) =
+      (d.blockLegEquiv B.2 (d.restrictedPartner B.1 ⟨legOfVertexLocal v i, hleg0⟩)) =
       localLegOfLeg (d.pairing.partner (legOfVertexLocal v i)) := by
     rw [QuarticDiagram.localLegOfLeg_blockLegEquiv, QuarticDiagram.restrictedPartner_val]
   have hlhs :

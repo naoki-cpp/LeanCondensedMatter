@@ -18,7 +18,7 @@ required by the existing Bloch--de Dominicis pairing theorem.
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
+variable {Mode : Type*} [LinearOrder Mode]
 
 /-- The atomic operator list contributed by one time-ordered external or quartic interaction event. -/
 noncomputable def twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → ℝ) (i j : Mode)

@@ -83,9 +83,9 @@ variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Comple
 /-- Bundle a diagonal operator with summable nonnegative real weights as spectral-trace-class. -/
 theorem diagonalOpSpectralTraceClass (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i) :
-    SpectralTraceClass (diagonalOp b (fun i => (a i : ℂ)) (by simpa using ha)) := by
+    SpectralTraceClass (diagonalOp b (fun i => (a i : ℂ))) := by
   let hac : Summable fun i => ‖(a i : ℂ)‖ := by simpa using ha
-  let T := diagonalOp b (fun i => (a i : ℂ)) hac
+  let T := diagonalOp b (fun i => (a i : ℂ))
   let hpos : T.IsPositive := diagonalOp_isPositive b a ha ha_nonneg
   have hdiag_point :
       (fun i => diagonalExpectationValue T hpos.isSelfAdjoint (b i)) = a := by
@@ -107,7 +107,7 @@ theorem diagonalOpSpectralTraceClass_trace (b : HilbertBasis ι ℂ H) (a : ι �
     (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i) :
     (diagonalOpSpectralTraceClass b a ha ha_nonneg).trace = ∑' i, a i := by
   let hac : Summable fun i => ‖(a i : ℂ)‖ := by simpa using ha
-  let T := diagonalOp b (fun i => (a i : ℂ)) hac
+  let T := diagonalOp b (fun i => (a i : ℂ))
   let hstc := diagonalOpSpectralTraceClass b a ha ha_nonneg
   have htrace := hstc.hasSum_diagonalExpectationValue b
   have hpoint :

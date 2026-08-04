@@ -14,7 +14,12 @@ basis-state proofs with the Common statistics-indexed exchange commutator.
 namespace SecondQuantization
 namespace Bosonic
 
-variable {Mode : Type*} [DecidableEq Mode]
+noncomputable section
+
+variable {Mode : Type*}
+
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
+local instance instDecidableEqExchangeAlgebra : DecidableEq Mode := Classical.decEq Mode
 
 /-- The bosonic exchange commutator is the ordinary commutator. -/
 theorem exchangeCommutator_boson_eq_comm
@@ -34,6 +39,8 @@ noncomputable instance exchangeAlgebra :
     rw [exchangeCommutator_boson_eq_comm, comm_annihilate_annihilate]
   create_create i j := by
     rw [exchangeCommutator_boson_eq_comm, comm_create_create]
+
+end
 
 end Bosonic
 end SecondQuantization

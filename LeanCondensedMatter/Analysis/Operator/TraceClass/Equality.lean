@@ -74,13 +74,13 @@ theorem orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace
     (hdiag_pos : ∀ v : H, ‖v‖ = 1 →
       0 < diagonalExpectationValue T hTpos.isSelfAdjoint v)
     (heq : ∑' i, diagonalExpectationValue T hTpos.isSelfAdjoint (d i) =
-      spectralTrace h) :
+      spectralTrace T) :
     (Submodule.span ℂ (Set.range d))ᗮ = ⊥ := by
   classical
   obtain ⟨w, b, hsub, hb_eq⟩ := hd.toSubtypeRange.exists_hilbertBasis_extension
   set g : w → ℝ := fun j =>
     diagonalExpectationValue T hTpos.isSelfAdjoint (b j) with hg_def
-  have htr : HasSum g (spectralTrace h) :=
+  have htr : HasSum g (spectralTrace T) :=
     hasSum_diagonalExpectationValue_eq_spectralTrace hT hTpos.isSelfAdjoint h b
   have hgnonneg : ∀ j : w, 0 ≤ g j := fun j => by
     simpa [g] using diagonalExpectationValue_nonneg T hTpos (b j)
@@ -92,12 +92,12 @@ theorem orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace
       diagonalExpectationValue T hTpos.isSelfAdjoint (d i) := fun i => by
     change diagonalExpectationValue T hTpos.isSelfAdjoint (b (e i)) = _
     rw [show (b (e i) : H) = d i from by rw [hb_eq]]
-  have heqg : ∑' i, g (e i) = spectralTrace h := by
+  have heqg : ∑' i, g (e i) = spectralTrace T := by
     calc
       ∑' i, g (e i) =
           ∑' i, diagonalExpectationValue T hTpos.isSelfAdjoint (d i) :=
         tsum_congr hge
-      _ = spectralTrace h := heq
+      _ = spectralTrace T := heq
   have he_surj : Function.Surjective e := by
     by_contra hsurj
     have hsurj' : ∃ j, ∀ i, e i ≠ j := by
@@ -110,7 +110,7 @@ theorem orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace
       simpa [g] using hdiag_pos (b j) (b.orthonormal.1 j)
     have hlt := htr.summable.tsum_comp_injective_lt_of_exists_not_mem
       hgnonneg e he_inj hjrange hgjpos
-    have hlt_trace : ∑' i, g (e i) < spectralTrace h := by
+    have hlt_trace : ∑' i, g (e i) < spectralTrace T := by
       rwa [htr.tsum_eq] at hlt
     exact (ne_of_lt hlt_trace) heqg
   apply le_antisymm

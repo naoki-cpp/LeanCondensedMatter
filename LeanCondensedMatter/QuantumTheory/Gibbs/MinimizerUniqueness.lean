@@ -27,10 +27,10 @@ theorem eq_gibbsState_of_helmholtzFreeEnergy_eq
     (ρ : DensityOperator H) (Hop : Observable H) (β : ℝ) (hβ : 0 < β)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
-    (hZ : spectralTrace hsummable ≠ 0)
+    (hZ : spectralTrace (gibbsOp Hop β) ≠ 0)
     (hfree : energyExpValue ρ Hop -
         (1 / β) * (vonNeumannEntropy ρ).toReal =
-      -(1 / β) * Real.log (spectralTrace hsummable)) :
+      -(1 / β) * Real.log (spectralTrace (gibbsOp Hop β))) :
     ρ = gibbsState Hop β hcompact hsummable hZ := by
   letI := finiteDimensional_of_gibbsOp_isCompact Hop β hcompact
   let σ := gibbsState Hop β hcompact hsummable hZ
@@ -40,7 +40,7 @@ theorem eq_gibbsState_of_helmholtzFreeEnergy_eq
   set q : EigenvectorIndex ρ.op → ℝ := fun a =>
     diagonalExpectationValue (gibbsOp Hop β)
       (gibbsOp_isPositive Hop β).isSelfAdjoint (d a) with hq_def
-  set Z : ℝ := spectralTrace hsummable with hZ_def
+  set Z : ℝ := spectralTrace (gibbsOp Hop β) with hZ_def
   obtain ⟨hqsum, hpq, hpeierls⟩ :=
     helmholtzFreeEnergy_eq_components ρ Hop β hβ hcompact hsummable hZ hfree
   have hd_orth : Orthonormal ℂ d :=
@@ -111,9 +111,9 @@ theorem helmholtzFreeEnergy_eq_iff_eq_gibbsState
     (ρ : DensityOperator H) (Hop : Observable H) (β : ℝ) (hβ : 0 < β)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
-    (hZ : spectralTrace hsummable ≠ 0) :
+    (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) :
     energyExpValue ρ Hop - (1 / β) * (vonNeumannEntropy ρ).toReal =
-        -(1 / β) * Real.log (spectralTrace hsummable) ↔
+        -(1 / β) * Real.log (spectralTrace (gibbsOp Hop β)) ↔
       ρ = gibbsState Hop β hcompact hsummable hZ := by
   constructor
   · exact eq_gibbsState_of_helmholtzFreeEnergy_eq

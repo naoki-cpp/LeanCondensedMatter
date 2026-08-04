@@ -19,7 +19,7 @@ namespace Fermionic
 
 open PowerSeries
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- The fermionic finite Dyson partition-function coefficient. -/
 noncomputable def dysonPartitionCoeff (ε : Mode → ℝ) (β : ℝ)

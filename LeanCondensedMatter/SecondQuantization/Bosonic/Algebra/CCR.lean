@@ -19,7 +19,12 @@ operators. `Bosonic.ExchangeAlgebra` packages these relations through the statis
 namespace SecondQuantization
 namespace Bosonic
 
-variable {Mode : Type*} [DecidableEq Mode]
+noncomputable section
+
+variable {Mode : Type*}
+
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
+local instance instDecidableEqCCR : DecidableEq Mode := Classical.decEq Mode
 
 /-- The ordinary commutator of bosonic Fock-space endomorphisms. -/
 noncomputable def comm (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
@@ -150,6 +155,8 @@ theorem comm_annihilate_create (i j : Mode) :
   · rw [if_neg hij]
     exact linearMap_ext_basisState fun n => by
       rw [comm_annihilate_create_basisState, if_neg hij, LinearMap.zero_apply]
+
+end
 
 end Bosonic
 end SecondQuantization

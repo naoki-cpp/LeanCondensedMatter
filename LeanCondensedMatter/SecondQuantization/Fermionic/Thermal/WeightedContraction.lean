@@ -58,7 +58,7 @@ need to know anything about `w`'s specific values.
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-! ## Basis-level vanishing -/
 
