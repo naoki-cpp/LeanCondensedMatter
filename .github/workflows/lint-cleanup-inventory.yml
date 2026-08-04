@@ -1,0 +1,27 @@
+name: Lint cleanup inventory
+
+on:
+  push:
+    branches:
+      - agent/lint-api-cleanup-all
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: List targeted lint suppressions
+        run: |
+          echo '=== nolint declarations ==='
+          grep -RIn -B 3 -A 8 -E '@\[[^]]*nolint|@\[nolint' LeanCondensedMatter || true
+          echo '=== global and module linter options ==='
+          grep -RIn -E 'linter\.(style\.)?(header|longLine|unnecessarySimpa)|set_option linter' lakefile.toml LeanCondensedMatter || true
+          echo '=== FockSpace declarations and section constraints ==='
+          grep -RIn -B 2 -A 4 -E 'abbrev FockSpace|variable .*DecidableEq Mode|section.*Mode' LeanCondensedMatter/SecondQuantization/{Bosonic,Fermionic} || true
+          echo '=== deletedPositions references ==='
+          grep -RIn -B 2 -A 3 'deletedPositions' LeanCondensedMatter/Combinatorics || true
+          echo '=== legInBlock references ==='
+          grep -RIn -B 2 -A 4 'legInBlock' LeanCondensedMatter/SecondQuantization || true
