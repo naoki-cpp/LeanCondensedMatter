@@ -69,16 +69,25 @@ theorem mixedTimeOrderedAtomicLegs_perm_canonical {n : ℕ}
 
 private theorem canonicalTwoPointTimedEvents_nodup (n : ℕ) :
     ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n).Nodup := by
-  have hinteraction :
-      (List.ofFn (fun v : Fin n => (Sum.inr v : TwoPointTimedEvent n))).Nodup :=
-    List.nodup_ofFn_ofInjective Sum.inr_injective
-  simpa [twoPointInteractionEventList] using
-    (List.nodup_cons.2 ⟨by simp, List.nodup_cons.2 ⟨by simp, hinteraction⟩⟩)
+  rw [twoPointInteractionEventList]
+  change ((Sum.inl (0 : Fin 2) : TwoPointTimedEvent n) ::
+    (Sum.inl (1 : Fin 2) : TwoPointTimedEvent n) ::
+      List.ofFn (fun v : Fin n => (Sum.inr v : TwoPointTimedEvent n))).Nodup
+  refine List.nodup_cons.2 ⟨?_, List.nodup_cons.2 ⟨?_, ?_⟩⟩
+  · simp
+  · simp
+  · exact List.nodup_ofFn_ofInjective Sum.inr_injective
 
 private theorem twoPointTimedEventAtomicLegs_nodup {n : ℕ}
     (event : TwoPointTimedEvent n) :
     (twoPointTimedEventAtomicLegs event).Nodup := by
-  cases event <;> simp [twoPointTimedEventAtomicLegs, List.nodup_ofFn_ofInjective]
+  cases event with
+  | inl e => simp
+  | inr v =>
+      rw [twoPointTimedEventAtomicLegs]
+      apply List.nodup_ofFn_ofInjective
+      intro a b h
+      injection h
 
 private theorem twoPointTimedEventAtomicLegs_disjoint {n : ℕ}
     {a b : TwoPointTimedEvent n} (h : a ≠ b) :
@@ -86,18 +95,18 @@ private theorem twoPointTimedEventAtomicLegs_disjoint {n : ℕ}
   cases a with
   | inl e =>
       cases b with
-      | inl e' => simpa using h
-      | inr v => simp [List.disjoint_left, List.mem_ofFn]
+      | inl e' => simpa using h.symm
+      | inr v => simp
   | inr v =>
       cases b with
-      | inl e => simp [List.disjoint_left, List.mem_ofFn]
+      | inl e => simp
       | inr v' =>
           have hv : v ≠ v' := by
             intro hv
             apply h
             cases hv
             rfl
-          simp [List.disjoint_left, List.mem_ofFn, hv]
+          simp [hv]
 
 private theorem canonicalTwoPointAtomicLegs_nodup (n : ℕ) :
     (canonicalTwoPointAtomicLegs n).Nodup := by
@@ -179,6 +188,11 @@ def FixedExternalTwoPointWickDiagram (Mode : Type*) (n : ℕ) (i j : Mode) : Typ
 abbrev OrderedTwoPointWickDiagramData (Mode : Type*) (n : ℕ) : Type _ :=
   (Fin n → QuarticVertexLabel Mode) × Pairing (2 * n + 1)
 
+/-- Cast the standard diagram pairing cardinality from `univ.card` to the explicit slot count. -/
+noncomputable def orderedTwoPointPairingCastEquiv (n : ℕ) :
+    Pairing (2 * (Finset.univ : Finset (Fin n)).card + 1) ≃ Pairing (2 * n + 1) :=
+  Equiv.cast (by simp)
+
 /-- The slot-indexed interaction labels of a fixed-external two-point diagram. -/
 def FixedExternalTwoPointWickDiagram.vertexLabelSequence {n : ℕ} {i j : Mode}
     (d : FixedExternalTwoPointWickDiagram Mode n i j) :
@@ -189,7 +203,8 @@ def FixedExternalTwoPointWickDiagram.vertexLabelSequence {n : ℕ} {i j : Mode}
 noncomputable def FixedExternalTwoPointWickDiagram.pairingInMixedOrder {n : ℕ} {i j : Mode}
     (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ) : Pairing (2 * n + 1) :=
-  d.1.pairing.relabel (standardToMixedAtomicPositionEquiv τ τ' σ).symm
+  (orderedTwoPointPairingCastEquiv n d.1.pairing).relabel
+    (standardToMixedAtomicPositionEquiv τ τ' σ).symm
 
 /-- Fixed-external two-point diagrams are equivalent to slot-indexed vertex labels and a pairing
 in the mixed-time atomic enumeration. -/
@@ -202,7 +217,8 @@ noncomputable def fixedExternalTwoPointWickDiagramEquivOrderedData
     ⟨{
       externalLabel := twoPointExternalLabels i j
       vertexLabel := fun v => x.1 v.1
-      pairing := x.2.relabel (standardToMixedAtomicPositionEquiv τ τ' σ)
+      pairing := (orderedTwoPointPairingCastEquiv n).symm
+        (x.2.relabel (standardToMixedAtomicPositionEquiv τ τ' σ))
     }, rfl⟩
   left_inv d := by
     apply Subtype.ext
