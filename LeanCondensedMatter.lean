@@ -46,4 +46,5 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
 import LeanCondensedMatter.QuantumTheory.Gibbs.Entropy
 import LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy
 import LeanCondensedMatter.QuantumTheory.Gibbs.Variational
+import LeanCondensedMatter.QuantumTheory.Gibbs.Equality
 import LeanCondensedMatter.SecondQuantization
