@@ -10,14 +10,14 @@ For the physical coupling in
 
 `H_λ(t) = H₀ + λ V(t)`, `λ ∈ ℝ`,
 
-the Dyson scalar is `c = λ i / ℏ`, hence `c† = -c`.  If `V(t)` is pointwise self-adjoint, then the
-interaction-picture perturbation is also pointwise self-adjoint.  The Volterra equation gives
+the Dyson scalar is `c = λ i / ℏ`, hence `c† = -c`. If `V(t)` is pointwise self-adjoint, then the
+interaction-picture perturbation is also pointwise self-adjoint. The Volterra equation gives
 
 `U'(t) = -c V_I(t) U(t)`.
 
 Consequently `(U(t)† U(t))' = 0`, and the initial condition `U(0) = 1` implies
 `U(t)† U(t) = 1` on every compact nonnegative interval where the existing continuity and boundedness
-hypotheses hold.  This is the normalization identity needed to bundle the finite-coupling pullback
+hypotheses hold. This is the normalization identity needed to bundle the finite-coupling pullback
 of an ordinary normalized expectation as another `NormalizedExpectation`.
 -/
 
@@ -79,13 +79,18 @@ theorem star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
     have hUd := hUderiv s hs
     have hprod := hUd.star.mul hUd
     have hsub := hprod.sub_const (1 : H →L[ℂ] H)
-    have hVIstar :=
-      (isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint
-        system V hVself s).star_eq
-    have hc := star_timeDependentPhysicalDysonCoupling_eq_neg system lam
-    convert hsub using 1
-    · rfl
-    · simp [VI, c, hc, hVIstar, star_smul, star_mul, mul_assoc]
+    have hVIstar : star (VI s) = VI s := by
+      simpa [VI] using
+        (isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint
+          system V hVself s).star_eq
+    have hc : star c = -c := by
+      simpa [c] using star_timeDependentPhysicalDysonCoupling_eq_neg system lam
+    have hzero :
+        star (-(c • (VI s * U s))) * U s +
+            star (U s) * -(c • (VI s * U s)) = 0 := by
+      simp [hc, hVIstar, star_smul, star_mul, mul_assoc]
+    rw [hzero] at hsub
+    simpa [q] using hsub
   have hq0 : q 0 = 0 := by
     simp [q, U, timeDependentInteractionPropagator]
   have hqbound : ∀ s ∈ Ico (0 : ℝ) β,
@@ -111,8 +116,8 @@ noncomputable def timeDependentPerturbedNormalizedExpectation
     timeDependentPerturbedExpectationFunctional system expectation V lam t
   map_one := by
     simp [timeDependentPerturbedExpectationFunctional_apply,
-      timeDependentPerturbedObservable, heisenbergEvolution, mul_assoc,
-      freePropagator_neg_mul, freePropagator_mul_neg,
+      timeDependentPerturbedObservable, heisenbergEvolution,
+      freePropagator_neg_mul,
       star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
         system hVself lam hβ hM hVcont hVbound ht]
 
