@@ -90,5 +90,6 @@ theorem zetaCommutator_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode)
   simpa [Common.zetaCommutator, Common.Statistics.zetaInt_boson, comm] using
     comm_quarticLocalLegOperator q q' l l'
 
+end
 end Bosonic
 end SecondQuantization
