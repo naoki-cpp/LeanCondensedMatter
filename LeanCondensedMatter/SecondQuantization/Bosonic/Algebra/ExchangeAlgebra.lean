@@ -18,7 +18,7 @@ noncomputable section
 
 variable {Mode : Type*}
 
-local instance : DecidableEq Mode := Classical.decEq Mode
+local instance instDecidableEqExchangeAlgebra : DecidableEq Mode := Classical.decEq Mode
 
 /-- The bosonic exchange commutator is the ordinary commutator. -/
 theorem exchangeCommutator_boson_eq_comm

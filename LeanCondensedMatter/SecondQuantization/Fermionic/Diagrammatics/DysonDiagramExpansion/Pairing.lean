@@ -227,7 +227,7 @@ and pairings through canonical free Gibbs density-state contractions.** The last
 reindexing this `(vertex-label sequence, pairing)` double sum into a sum over
 `QuarticWickDiagram`s. -/
 theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing {α : Type*}
-    [DecidableEq α] (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (S : Finset α) :
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (S : Finset α) :
     dysonVertexMoment ε β (quarticInteraction g) S =
       (S.card.factorial : ℂ) * (-1 : ℂ) ^ S.card *
         ∑ q : Fin S.card → QuarticVertexLabel Mode, (∏ i, g (q i)) *
@@ -239,6 +239,7 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairing {α : Ty
                     (Common.finiteHilbertOperator
                       ((quarticLegOperatorForSequence ε q τ pr.1).comp
                         (quarticLegOperatorForSequence ε q τ pr.2)))) := by
+  classical
   have hkey :=
     freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction
       ε β g S.card β LinearMap.id

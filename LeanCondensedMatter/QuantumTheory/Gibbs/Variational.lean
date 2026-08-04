@@ -33,7 +33,7 @@ theorem vonNeumannEntropy_gibbsState (Hop : Observable H) (β : ℝ)
     Hop.2.isSymmetric.eigenvectorBasis rfl
   let w : Fin (Module.finrank ℂ H) → ℝ := fun i => Real.exp (-β * E i) / Z
   have hZpos : 0 < Z := by
-    simpa [Z] using spectralTrace_gibbsOp_pos Hop β hsummable hZ
+    simpa [Z] using spectralTrace_gibbsOp_pos Hop β hZ
   have hEbE (i : Fin (Module.finrank ℂ H)) :
       (Hop.1 : H →ₗ[ℂ] H) (bE i) = (E i : ℂ) • bE i := by
     simpa [E, bE] using Hop.2.isSymmetric.apply_eigenvectorBasis rfl i

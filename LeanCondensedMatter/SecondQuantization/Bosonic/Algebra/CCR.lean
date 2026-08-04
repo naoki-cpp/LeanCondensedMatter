@@ -23,7 +23,7 @@ noncomputable section
 
 variable {Mode : Type*}
 
-local instance : DecidableEq Mode := Classical.decEq Mode
+local instance instDecidableEqCCR : DecidableEq Mode := Classical.decEq Mode
 
 /-- The ordinary commutator of bosonic Fock-space endomorphisms. -/
 noncomputable def comm (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :

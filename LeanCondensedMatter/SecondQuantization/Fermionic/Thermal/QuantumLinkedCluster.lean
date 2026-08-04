@@ -51,7 +51,11 @@ of cross-region interaction — see `notes/roadmaps/second-quantization.md` for 
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+noncomputable section
+
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+
+local instance instDecidableEqQuantumLinkedCluster : DecidableEq Mode := Classical.decEq Mode
 
 /-- **The weighted occupation-correlator moment.** `occupationMoment w S` is the normalized
 weighted occupation correlator under the weight `w` — the diagonal functional `⟨∏ᵢ∈S nᵢ⟩_w` of the
@@ -83,12 +87,12 @@ functional. -/
 theorem occupationMoment_singleton (w : Occupation Mode → ℂ) (i : Mode) :
     occupationMoment w {i} = Common.normalizedWeightedDiagonal w (numberOperator i) := by
   rw [occupationMoment, Common.normalizedWeightedDiagonal, weightedTrace_numberOperator]
-  have hfilter : (Finset.univ : Finset (Occupation Mode)).filter
-      (({i} : Finset Mode) ⊆ ·) = (Finset.univ : Finset (Occupation Mode)).filter
-      (i ∈ ·) := by
-    ext n; simp [Finset.subset_iff]
-  exact congrArg (fun z : ℂ => z / Common.weightSum w)
-    (Finset.sum_congr hfilter (fun _ _ => rfl))
+  congr 1
+  apply Finset.sum_congr
+  · ext n
+    simp [Finset.subset_iff]
+  · intro n hn
+    rfl
 
 /-! ## The occupation projector: an operator-level witness for `occupationMoment` -/
 
@@ -315,6 +319,8 @@ theorem occupationCumulant_eq_zero_of_isProductWeightAcross {w : Occupation Mode
     (hA : A ≠ ⊥) (hB : B ≠ ⊥) : occupationCumulant w (A ⊔ B) = 0 :=
   Finpartition.cumulantFromMoment_eq_zero_of_isIndependentAcross
     (occupationMoment_isIndependentAcross hw hZ) hA hB
+
+end
 
 end Fermionic
 end SecondQuantization

@@ -112,7 +112,7 @@ theorem helmholtzFreeEnergy_eq_components
     diagonalExpectationValue (gibbsOp Hop β)
       (gibbsOp_isPositive Hop β).isSelfAdjoint (d a) with hq_def
   set Z : ℝ := spectralTrace (gibbsOp Hop β) with hZ_def
-  have hZpos : 0 < Z := spectralTrace_gibbsOp_pos Hop β hsummable hZ
+  have hZpos : 0 < Z := spectralTrace_gibbsOp_pos Hop β hZ
   have hd_orth : Orthonormal ℂ d :=
     orthonormal_eigenvectorFamily ρ.spectralTraceClass.compact ρ.isSymmetric
   have hd_unit : ∀ a, ‖d a‖ = 1 := eigenvectorFamily_norm_eq_one ρ

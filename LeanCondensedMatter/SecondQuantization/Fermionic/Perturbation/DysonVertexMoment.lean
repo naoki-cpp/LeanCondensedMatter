@@ -62,7 +62,7 @@ omit [LinearOrder Mode] in
 /-- The Dyson vertex moment is the factorial times the canonical free Gibbs density-state
 expectation of the bare Dyson coefficient at the corresponding order. -/
 theorem dysonVertexMoment_eq_freeGibbsDensityOperator_expectation
-    {α : Type*} [DecidableEq α] (ε : Mode → ℝ) (β : ℝ)
+    {α : Type*} (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (S : Finset α) :
     dysonVertexMoment ε β V S =
       (S.card.factorial : ℂ) *
@@ -74,9 +74,10 @@ theorem dysonVertexMoment_eq_freeGibbsDensityOperator_expectation
 
 omit [LinearOrder Mode] in
 @[simp]
-theorem dysonVertexMoment_empty {α : Type*} [DecidableEq α] (ε : Mode → ℝ) (β : ℝ)
+theorem dysonVertexMoment_empty {α : Type*} (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     dysonVertexMoment ε β V (∅ : Finset α) = 1 := by
+  classical
   simp [dysonVertexMoment]
 
 /-- The finite-set cumulant of the Dyson vertex moment. -/

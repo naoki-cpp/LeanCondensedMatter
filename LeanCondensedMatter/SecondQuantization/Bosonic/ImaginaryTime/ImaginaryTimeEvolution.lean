@@ -30,7 +30,7 @@ noncomputable section
 
 variable {Mode : Type*}
 
-local instance : DecidableEq Mode := Classical.decEq Mode
+local instance instDecidableEqImaginaryTimeEvolution : DecidableEq Mode := Classical.decEq Mode
 
 /-- The bosonic imaginary-time-ordered product of two operators. -/
 noncomputable def timeOrderedProduct

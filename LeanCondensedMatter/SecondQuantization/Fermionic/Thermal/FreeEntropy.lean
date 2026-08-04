@@ -24,6 +24,8 @@ noncomputable section
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
+local instance instDecidableEqFreeEntropy : DecidableEq Mode := Classical.decEq Mode
+
 /-- The real Fermi–Dirac occupation of a single mode. -/
 noncomputable def fermiDiracOccupation (ε : Mode → ℝ) (β : ℝ) (i : Mode) : ℝ :=
   (Real.exp (β * ε i) + 1)⁻¹
