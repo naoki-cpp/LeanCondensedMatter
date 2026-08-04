@@ -93,7 +93,7 @@ theorem summable_prob_and_tsum_eq_one (P : POVM H M) (ρ : DensityOperator H) :
   obtain ⟨_, hprob, htot⟩ :=
     tsum_fiberwise_eq_of_summable hg_summable hrow hcol
   have htrace : (∑' a : EigenvectorIndex ρ.op, a.1.1) = 1 := by
-    simpa [SpectralTraceClass.trace, spectralTrace] using ρ.spectralTrace_eq_one
+    simpa [spectralTrace] using ρ.spectralTrace_op_eq_one
   exact ⟨hprob, htot.symm.trans htrace⟩
 
 /-- Discrete Born probabilities are summable. -/

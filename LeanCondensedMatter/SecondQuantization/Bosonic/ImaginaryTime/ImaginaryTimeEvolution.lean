@@ -269,5 +269,7 @@ theorem intervalIntegrable_matrixCoeff_interactionPicture (ε : Mode → ℝ)
       MeasureTheory.volume a b :=
   Common.intervalIntegrable_matrixCoeff_interactionPicture (freeEigenvalue ε) V m n a b
 
+end
+
 end Bosonic
 end SecondQuantization

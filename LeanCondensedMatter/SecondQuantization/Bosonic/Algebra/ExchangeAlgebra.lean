@@ -39,5 +39,7 @@ noncomputable instance exchangeAlgebra :
   create_create i j := by
     rw [exchangeCommutator_boson_eq_comm, comm_create_create]
 
+end
+
 end Bosonic
 end SecondQuantization

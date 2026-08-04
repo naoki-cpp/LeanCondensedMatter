@@ -46,7 +46,7 @@ theorem purity_le_one (ρ : DensityOperator H) : purity ρ ≤ 1 := by
       ρ.summable_eigenvalue_sq.tsum_mono heigen
         (fun a => by nlinarith [ρ.eigenvalue_nonneg a, ρ.eigenvalue_le_one a])
     _ = 1 := by
-      have htrace := ρ.spectralTrace_eq_one
+      have htrace := ρ.spectralTrace_op_eq_one
       change (∑' a : EigenvectorIndex ρ.op, a.1.1) = 1 at htrace
       exact htrace
 

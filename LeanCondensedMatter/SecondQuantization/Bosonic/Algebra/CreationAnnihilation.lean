@@ -73,5 +73,7 @@ theorem annihilate_fockVacuum (i : Mode) :
     annihilate i (fockVacuum : FockSpace Mode) = 0 :=
   annihilate_basisState_of_zero (by simp [vacuum])
 
+end
+
 end Bosonic
 end SecondQuantization

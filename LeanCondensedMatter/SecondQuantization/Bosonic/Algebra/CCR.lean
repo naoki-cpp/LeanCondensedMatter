@@ -155,5 +155,7 @@ theorem comm_annihilate_create (i j : Mode) :
     exact linearMap_ext_basisState fun n => by
       rw [comm_annihilate_create_basisState, if_neg hij, LinearMap.zero_apply]
 
+end
+
 end Bosonic
 end SecondQuantization

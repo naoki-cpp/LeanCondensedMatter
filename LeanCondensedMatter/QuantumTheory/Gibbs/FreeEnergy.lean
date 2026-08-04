@@ -70,7 +70,7 @@ theorem eigenvalue_le_one (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) 
   have hsum : Summable (fun b : EigenvectorIndex ρ.op => b.1.1) :=
     ρ.spectralTraceClass.summable.congr (fun b => abs_of_nonneg (eigenvalue_nonneg ρ b))
   have hle := hsum.le_tsum a (fun j _ => eigenvalue_nonneg ρ j)
-  have heq := ρ.spectralTrace_eq_one
+  have heq := ρ.spectralTrace_op_eq_one
   change ∑' b : EigenvectorIndex ρ.op, b.1.1 = 1 at heq
   rwa [heq] at hle
 
@@ -172,9 +172,10 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop 
     ρ.spectralTraceClass.summable.congr (fun b => abs_of_nonneg (eigenvalue_nonneg ρ b))
   obtain ⟨hph_summable, hphsum⟩ := summable_eigenvalue_mul_energy_and_tsum ρ Hop
   have hq_summable_and_le : Summable q ∧ ∑' a, q a ≤ Z := by
-    simpa [Z, hq_def, hGibbs, SpectralTraceClass.trace] using
-      hGibbs.sum_diagonalExpectationValue_le_trace
-        (gibbsOp_isPositive Hop β).toLinearMap hd_orth
+    have hbound := hGibbs.sum_diagonalExpectationValue_le_trace
+      (gibbsOp_isPositive Hop β).toLinearMap hd_orth
+    rw [hGibbs.trace_eq_spectralTrace] at hbound
+    simpa [Z, hq_def] using hbound
   have hqZ_summable : Summable (fun a => q a / Z) := hq_summable_and_le.1.div_const Z
   have hplogZ_summable : Summable (fun a => p a * Real.log Z) := hp_summable.mul_right _
   have hB_summable : Summable
@@ -195,7 +196,7 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop 
       show (fun a => p a * Real.log Z) = (fun a => Real.log Z * p a) by
         funext a
         ring, tsum_mul_left]
-  have hpsum := ρ.spectralTrace_eq_one
+  have hpsum := ρ.spectralTrace_op_eq_one
   change ∑' a : EigenvectorIndex ρ.op, p a = 1 at hpsum
   have hqZsum_le : ∑' a, q a / Z ≤ 1 :=
     tsum_div_le_one hq_summable_and_le.1 hq_summable_and_le.2 hZpos

@@ -33,8 +33,8 @@ theorem density_eigenvalue_le_one (ρ : DensityOperator H) (a : EigenvectorIndex
     a.1.1 = ∑ b ∈ ({a} : Finset (EigenvectorIndex ρ.op)), b.1.1 := by simp
     _ ≤ ∑' b : EigenvectorIndex ρ.op, b.1.1 :=
       Summable.sum_le_tsum {a} (fun b _ => eigenvalue_nonneg ρ b) hs
-    _ = ρ.spectralTraceClass.trace := rfl
-    _ = 1 := ρ.spectralTrace_eq_one
+    _ = spectralTrace ρ.op := rfl
+    _ = 1 := ρ.spectralTrace_op_eq_one
 
 /-- The bounded entropy operator obtained by applying `x ↦ -x log x` to a density operator. -/
 noncomputable def entropyOp (ρ : DensityOperator H) : H →L[ℂ] H :=

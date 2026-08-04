@@ -80,18 +80,19 @@ noncomputable def gibbsState (Hop : Observable H) (β : ℝ)
       simp]
     refine (gibbsOp_isPositive Hop β).smul_of_nonneg ?_
     have hZnonneg : 0 ≤ Z :=
-      trace_nonneg hsummable (gibbsOp_isPositive Hop β).toLinearMap
+      trace_nonneg (gibbsOp_isPositive Hop β).toLinearMap
     exact RCLike.ofReal_nonneg.mpr (inv_nonneg.mpr hZnonneg)
   have hsummableScaled :
       HasSummableRealEigenvalues (r • gibbsOp Hop β) :=
     hasSummableRealEigenvalues_smul hrne hsummable
+  let htraceClass : SpectralTraceClass (r • gibbsOp Hop β) :=
+    SpectralTraceClass.ofPositive (hcompact.smul _) hpos hsummableScaled
   exact {
     op := r • gibbsOp Hop β
     pos := hpos
-    spectralTraceClass := SpectralTraceClass.ofPositive
-      (hcompact.smul _) hpos hsummableScaled
+    spectralTraceClass := htraceClass
     spectralTrace_eq_one := by
-      change spectralTrace (r • gibbsOp Hop β) = 1
+      rw [htraceClass.trace_eq_spectralTrace]
       rw [spectralTrace_smul hrne hsummable hsummableScaled]
       dsimp [r, Z]
       exact inv_mul_cancel₀ hZ

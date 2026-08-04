@@ -87,8 +87,8 @@ theorem occupationMoment_singleton (w : Occupation Mode → ℂ) (i : Mode) :
       (({i} : Finset Mode) ⊆ ·) = (Finset.univ : Finset (Occupation Mode)).filter
       (i ∈ ·) := by
     ext n; simp [Finset.subset_iff]
-  rw [hfilter]
-  rfl
+  exact congrArg (fun z : ℂ => z / Common.weightSum w)
+    (Finset.sum_congr hfilter (fun _ _ => rfl))
 
 /-! ## The occupation projector: an operator-level witness for `occupationMoment` -/
 
