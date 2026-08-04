@@ -1,0 +1,44 @@
+name: Apply Pairing omit cleanup
+
+on:
+  push:
+    branches:
+      - fix/main-pairing-unused-decidable-actual
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: fix/main-pairing-unused-decidable-actual
+      - name: Clean obsolete omit clauses
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path("LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Pairing.lean")
+          text = path.read_text()
+
+          combined = "omit [DecidableEq Mode] [LinearOrder Mode] in"
+          if text.count(combined) != 2:
+              raise RuntimeError(f"expected 2 combined omit clauses, found {text.count(combined)}")
+          text = text.replace(combined, "omit [LinearOrder Mode] in")
+
+          decidable_only = "omit [DecidableEq Mode] in\n"
+          if text.count(decidable_only) != 2:
+              raise RuntimeError(f"expected 2 decidable-only omit clauses, found {text.count(decidable_only)}")
+          text = text.replace(decidable_only, "")
+
+          path.write_text(text)
+          Path(".github/workflows/apply-pairing-omit-cleanup.yml").unlink()
+          PY
+          git diff --check
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/Pairing.lean .github/workflows/apply-pairing-omit-cleanup.yml
+          git commit -m "fix: clean obsolete Pairing omit clauses"
+          git push origin HEAD:fix/main-pairing-unused-decidable-actual
