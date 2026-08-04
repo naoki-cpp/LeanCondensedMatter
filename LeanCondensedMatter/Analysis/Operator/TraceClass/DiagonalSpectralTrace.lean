@@ -4,10 +4,11 @@ import LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalPositive
 /-!
 # Spectral trace of positive diagonal operators
 
-A positive compact operator is spectrally trace-class whenever its diagonal against one Hilbert
-basis is summable. The proof bounds every finite sum of nonzero eigenvalues by that basis-diagonal
-sum, using the compact spectral expansion and Parseval. This criterion packages diagonal operators
-with summable nonnegative weights as `SpectralTraceClass` without reindexing repeated eigenspaces.
+A positive compact operator is spectrally trace-class whenever its lossless diagonal expectation
+values against one Hilbert basis are summable. The proof bounds every finite sum of nonzero
+eigenvalues by that basis-diagonal sum, using the compact spectral expansion and Parseval. This
+criterion packages diagonal operators with summable nonnegative weights as `SpectralTraceClass`
+without reindexing repeated eigenspaces.
 -/
 
 noncomputable section
@@ -17,12 +18,12 @@ namespace ContinuousLinearMap
 variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 variable {T : H →L[ℂ] H}
 
-/-- A positive compact operator whose diagonal is summable against one Hilbert basis has summable
-nonzero real eigenvalues. -/
+/-- A positive compact operator whose lossless diagonal values are summable against one Hilbert
+basis has summable nonzero real eigenvalues. -/
 theorem hasSummableRealEigenvalues_of_positive_of_summable_diagonal
     (hcompact : IsCompactOperator T) (hpos : T.IsPositive)
     (d : HilbertBasis ι ℂ H)
-    (hdiag : Summable fun i => (inner ℂ (d i) (T (d i)) : ℂ).re) :
+    (hdiag : Summable fun i => diagonalExpectationValue T hpos.isSelfAdjoint (d i)) :
     HasSummableRealEigenvalues T := by
   classical
   let e : EigenvectorIndex T → H := eigenvectorFamily hcompact
@@ -33,7 +34,7 @@ theorem hasSummableRealEigenvalues_of_positive_of_summable_diagonal
   rw [HasSummableRealEigenvalues]
   simp_rw [abs_of_nonneg (heigen_nonneg _)]
   refine summable_of_sum_le
-    (c := ∑' i, (inner ℂ (d i) (T (d i)) : ℂ).re)
+    (c := ∑' i, diagonalExpectationValue T hpos.isSelfAdjoint (d i))
     (fun a => heigen_nonneg a) ?_
   intro s
   let f : ι → ℝ := fun i =>
@@ -50,8 +51,9 @@ theorem hasSummableRealEigenvalues_of_positive_of_summable_diagonal
     rw [Summable.tsum_finsetSum fun a _ => (hparseval a).summable.mul_left a.1.1]
     exact Finset.sum_congr rfl fun a _ => by
       rw [tsum_mul_left, (hparseval a).tsum_eq, mul_one]
-  have hf_le (i : ι) : f i ≤ (inner ℂ (d i) (T (d i)) : ℂ).re := by
-    have hs := hasSum_eigen_expansion_inner_apply hcompact hpos.isSymmetric (d i)
+  have hf_le (i : ι) : f i ≤ diagonalExpectationValue T hpos.isSelfAdjoint (d i) := by
+    have hs := hasSum_eigen_expansion_diagonalExpectationValue
+      hcompact hpos.isSelfAdjoint (d i)
     rw [← hs.tsum_eq]
     exact hs.summable.sum_le_tsum s fun a _ =>
       mul_nonneg (heigen_nonneg a) (sq_nonneg _)
@@ -61,10 +63,10 @@ theorem hasSummableRealEigenvalues_of_positive_of_summable_diagonal
 namespace SpectralTraceClass
 
 /-- Construct spectral-trace data from compactness, positivity, and summability of one Hilbert-basis
-diagonal. -/
+lossless diagonal. -/
 def ofPositiveSummableDiagonal (hcompact : IsCompactOperator T) (hpos : T.IsPositive)
     (d : HilbertBasis ι ℂ H)
-    (hdiag : Summable fun i => (inner ℂ (d i) (T (d i)) : ℂ).re) :
+    (hdiag : Summable fun i => diagonalExpectationValue T hpos.isSelfAdjoint (d i)) :
     SpectralTraceClass T :=
   ofPositive hcompact hpos
     (hasSummableRealEigenvalues_of_positive_of_summable_diagonal hcompact hpos d hdiag)
@@ -84,34 +86,40 @@ def diagonalOpSpectralTraceClass (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     SpectralTraceClass (diagonalOp b (fun i => (a i : ℂ)) (by simpa using ha)) := by
   let hac : Summable fun i => ‖(a i : ℂ)‖ := by simpa using ha
   let T := diagonalOp b (fun i => (a i : ℂ)) hac
+  let hpos : T.IsPositive := diagonalOp_isPositive b a ha ha_nonneg
   have hdiag_point :
-      (fun i => (inner ℂ (b i) (T (b i)) : ℂ).re) = a := by
+      (fun i => diagonalExpectationValue T hpos.isSelfAdjoint (b i)) = a := by
     funext i
+    apply Complex.ofReal_injective
+    rw [coe_diagonalExpectationValue_right]
     rw [show T (b i) = a i • b i by
       simpa [T] using diagonalOp_apply_basis b (fun i => (a i : ℂ)) hac i]
     rw [inner_smul_right_eq_smul, inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
     simp
-  have hdiag : Summable fun i => (inner ℂ (b i) (T (b i)) : ℂ).re := by
+  have hdiag : Summable fun i => diagonalExpectationValue T hpos.isSelfAdjoint (b i) := by
     rw [hdiag_point]
     exact Summable.of_norm ha
   exact SpectralTraceClass.ofPositiveSummableDiagonal
-    (diagonalOp_isCompact b (fun i => (a i : ℂ)) hac)
-    (diagonalOp_isPositive b a ha ha_nonneg) b hdiag
+    (diagonalOp_isCompact b (fun i => (a i : ℂ)) hac) hpos b hdiag
 
 /-- The spectral trace of a diagonal operator with nonnegative weights is their sum. -/
 theorem diagonalOpSpectralTraceClass_trace (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i) :
     (diagonalOpSpectralTraceClass b a ha ha_nonneg).trace = ∑' i, a i := by
   let hac : Summable fun i => ‖(a i : ℂ)‖ := by simpa using ha
-  have htrace := (diagonalOpSpectralTraceClass b a ha ha_nonneg).hasSum_inner_apply b
+  let T := diagonalOp b (fun i => (a i : ℂ)) hac
+  let hstc := diagonalOpSpectralTraceClass b a ha ha_nonneg
+  have htrace := hstc.hasSum_diagonalExpectationValue b
   have hpoint :
-      (fun i => (inner ℂ (b i)
-        (diagonalOp b (fun i => (a i : ℂ)) hac (b i)) : ℂ).re) = a := by
+      (fun i => diagonalExpectationValue T hstc.isSelfAdjoint (b i)) = a := by
     funext i
-    rw [show diagonalOp b (fun i => (a i : ℂ)) hac (b i) = a i • b i by
-      simpa using diagonalOp_apply_basis b (fun i => (a i : ℂ)) hac i]
+    apply Complex.ofReal_injective
+    rw [coe_diagonalExpectationValue_right]
+    rw [show T (b i) = a i • b i by
+      simpa [T] using diagonalOp_apply_basis b (fun i => (a i : ℂ)) hac i]
     rw [inner_smul_right_eq_smul, inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
     simp
+  change HasSum (fun i => diagonalExpectationValue T hstc.isSelfAdjoint (b i)) hstc.trace at htrace
   rw [hpoint] at htrace
   exact htrace.tsum_eq.symm
 

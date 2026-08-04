@@ -42,19 +42,26 @@ noncomputable def DensityOperator.ofFiniteDimensional
       ρ (b i) = (hsymm.eigenvalues rfl i : ℂ) • b i := by
     change (ρ : H →ₗ[ℂ] H) (b i) = (hsymm.eigenvalues rfl i : ℂ) • b i
     simpa [b] using hsymm.apply_eigenvectorBasis rfl i
-  have hsum := (hstc.hasSum_inner_apply b.toHilbertBasis).tsum_eq
+  have hsum := (hstc.hasSum_diagonalExpectationValue b.toHilbertBasis).tsum_eq
   rw [tsum_fintype] at hsum
+  have heigenComplex :
+      ((∑ i, hsymm.eigenvalues rfl i : ℝ) : ℂ) =
+        LinearMap.trace ℂ H (ρ : H →ₗ[ℂ] H) :=
+    (hsymm.trace_eq_sum_eigenvalues (hn := rfl)).symm
+  rw [htrace] at heigenComplex
+  have heigen : ∑ i, hsymm.eigenvalues rfl i = 1 := by
+    exact_mod_cast heigenComplex
   calc
-    hstc.trace = ∑ i, (inner ℂ (b i) (ρ (b i)) : ℂ).re := by
+    hstc.trace = ∑ i, diagonalExpectationValue ρ hstc.isSelfAdjoint (b i) := by
       simpa using hsum.symm
     _ = ∑ i, hsymm.eigenvalues rfl i := by
       apply Finset.sum_congr rfl
       intro i _
-      rw [hb i, inner_smul_right, inner_self_eq_norm_sq_to_K, b.norm_eq_one]
+      apply Complex.ofReal_injective
+      rw [coe_diagonalExpectationValue_right, hb i, inner_smul_right,
+        inner_self_eq_norm_sq_to_K, b.norm_eq_one]
       simp
-    _ = (LinearMap.trace ℂ H (ρ : H →ₗ[ℂ] H)).re :=
-      (hsymm.re_trace_eq_sum_eigenvalues (hn := rfl)).symm
-    _ = 1 := by rw [htrace]; norm_num
+    _ = 1 := heigen
 
 @[simp]
 theorem DensityOperator.ofFiniteDimensional_op

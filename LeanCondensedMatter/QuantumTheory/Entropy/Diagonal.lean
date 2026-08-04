@@ -20,11 +20,13 @@ theorem DensityOperator.hasSum_diagonal_weights (ρ : DensityOperator H)
     (b : HilbertBasis ι ℂ H) (w : ι → ℝ)
     (happly : ∀ i, ρ.op (b i) = (w i : ℂ) • b i) :
     HasSum w 1 := by
-  have hsum := ρ.hasSum_inner_apply_eq_one b
+  have hsum := ρ.hasSum_diagonalExpectationValue_eq_one b
   have hpoint :
-      (fun i => (inner ℂ (b i) (ρ.op (b i)) : ℂ).re) = w := by
+      (fun i => diagonalExpectationValue ρ.op ρ.isSelfAdjoint (b i)) = w := by
     funext i
-    rw [happly i, inner_smul_right, inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
+    apply Complex.ofReal_injective
+    rw [coe_diagonalExpectationValue_right, happly i, inner_smul_right,
+      inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
     simp
   rwa [hpoint] at hsum
 
@@ -53,12 +55,15 @@ theorem entropyOpSpectralTraceClass_hasSum_diagonal (ρ : DensityOperator H)
     (hsummable : HasSummableRealEigenvalues (entropyOp ρ)) :
     HasSum (fun i => Real.negMulLog (w i))
       (entropyOpSpectralTraceClass ρ hsummable).trace := by
-  have hsum := (entropyOpSpectralTraceClass ρ hsummable).hasSum_inner_apply b
+  have hsum := (entropyOpSpectralTraceClass ρ hsummable).hasSum_diagonalExpectationValue b
   have hpoint :
-      (fun i => (inner ℂ (b i) (entropyOp ρ (b i)) : ℂ).re) =
+      (fun i => diagonalExpectationValue (entropyOp ρ)
+        (entropyOpSpectralTraceClass ρ hsummable).isSelfAdjoint (b i)) =
         fun i => Real.negMulLog (w i) := by
     funext i
-    rw [entropyOp_apply_eigenvector ρ (by simpa using happly i),
+    apply Complex.ofReal_injective
+    rw [coe_diagonalExpectationValue_right,
+      entropyOp_apply_eigenvector ρ (by simpa using happly i),
       inner_smul_right, inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
     simp
   rwa [hpoint] at hsum
