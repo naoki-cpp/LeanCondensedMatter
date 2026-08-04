@@ -176,7 +176,7 @@ theorem bareExternalFieldOperator_quarticLocalLegExternalFieldLabel
     simp [quarticLocalLegExternalFieldLabel, quarticLocalLegIsCreate, quarticLocalLegMode,
       bareExternalFieldOperator, quarticLocalLegOperator]
 
-omit [DecidableEq Mode] [LinearOrder Mode] in
+omit [LinearOrder Mode] in
 @[simp]
 theorem externalFieldLabelEnergyShift_quarticLocalLegExternalFieldLabel
     (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) (l : Fin 4) :
@@ -251,7 +251,6 @@ theorem map_timedFieldOperator_mixedTimeOrderedAtomicFields {n : ℕ}
   exact map_timedFieldOperator_flatMap_twoPointTimedEventAtomicFields
     ε i j τ τ' q σ (orderedTwoPointTimedEvents τ τ' σ)
 
-omit [DecidableEq Mode] in
 /-- The descriptor list has the same `4n + 2` cardinality as the atomic operator list. -/
 theorem mixedTimeOrderedAtomicFields_length {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
@@ -293,7 +292,6 @@ noncomputable def mixedTimeOrderedAtomicCommutatorCoeff {n : ℕ}
     (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ a)
     (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ b)
 
-omit [DecidableEq Mode] in
 /-- Rebuilding the descriptor list from its fixed-cardinality family recovers the original list. -/
 theorem ofFn_mixedTimeOrderedAtomicFieldFamily_eq {n : ℕ}
     (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
@@ -347,7 +345,7 @@ theorem zetaCommutator_mixedTimeOrderedAtomicOperatorFamily {n : ℕ}
 
 variable [Fintype Mode]
 
-omit [DecidableEq Mode] [LinearOrder Mode] in
+omit [LinearOrder Mode] in
 private theorem traceFock_diagonalEvolution_fermionEnergy_ne_zero
     (ε : Mode → ℝ) (β : ℝ) :
     Common.traceFock (Common.diagonalEvolution (fermionEnergy ε) (-β)) ≠ 0 := by
