@@ -13,6 +13,8 @@ index-weighted version and applies the same finite-product `Finsupp` summation t
 namespace SecondQuantization
 namespace Bosonic
 
+noncomputable section
+
 variable {Mode : Type*} [Fintype Mode]
 
 local instance instDecidableEqParticleNumberWeightSummable : DecidableEq Mode := Classical.decEq Mode
@@ -33,8 +35,8 @@ theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
     intro i
     rw [hg'def, hb'def]
     by_cases hi : i = j
-    · subst hi
-      simp
+    · subst j
+      rw [if_pos rfl, if_pos rfl]
       have hr : ‖Real.exp (-β * ε i)‖ < 1 := by
         rw [Real.norm_eq_abs, abs_of_nonneg (Real.exp_nonneg _), Real.exp_lt_one_iff]
         linarith [hpos i]
@@ -46,11 +48,14 @@ theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
         rw [Real.exp_nat_mul]
       rw [heq]
       exact h
-    · simp
+    · rw [if_neg hi, if_neg hi]
       exact hasSum_oneModeBoltzmannWeight (hpos i)
   have hnn' : ∀ i n, 0 ≤ g' i n := by
     intro i n
     rw [hg'def]
+    change 0 ≤ if i = j then
+      (n : ℝ) * oneModeBoltzmannWeight β (ε i) n
+    else oneModeBoltzmannWeight β (ε i) n
     by_cases hi : i = j
     · rw [if_pos hi]
       exact mul_nonneg (Nat.cast_nonneg _) (Real.exp_nonneg _)
@@ -76,10 +81,13 @@ theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
         (Finset.mem_univ j)]
   rwa [heq] at H
 
-theorem summable_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)
-    (hpos : ∀ i, 0 < β * ε i) (j : Mode) :
-    Summable (fun n : Occupation Mode => (n j : ℝ) * boltzmannWeight ε β n) :=
-  (hasSum_particleNumber_boltzmannWeight ε β hpos j).summable
+omit [Fintype Mode] in
+/-- The particle-number-weighted free Boltzmann series is summable for any finite mode type. -/
+theorem summable_particleNumber_boltzmannWeight [Finite Mode]
+    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i) (j : Mode) :
+    Summable (fun n : Occupation Mode => (n j : ℝ) * boltzmannWeight ε β n) := by
+  letI := Fintype.ofFinite Mode
+  exact (hasSum_particleNumber_boltzmannWeight ε β hpos j).summable
 
 end Bosonic
 end SecondQuantization
