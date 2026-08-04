@@ -4,7 +4,7 @@ import Mathlib.LinearAlgebra.Complex.Module
 /-!
 # Lossless diagonal expectations
 
-For a self-adjoint operator, a diagonal matrix element is a real scalar.  This module packages that
+For a self-adjoint operator, a diagonal matrix element is a real scalar. This module packages that
 fact before transporting the scalar to `ℝ`, so public propositions do not silently discard an
 imaginary part with `.re`.
 -/
@@ -20,10 +20,10 @@ complex scalar. -/
 noncomputable def diagonalExpectationSelfAdjoint
     (T : H →L[ℂ] H) (hT : IsSelfAdjoint T) (x : H) : selfAdjoint ℂ :=
   ⟨inner ℂ (T x) x, by
+    show IsSelfAdjoint (inner ℂ (T x) x)
     have hsym : (T : H →ₗ[ℂ] H).IsSymmetric :=
       ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mp hT
-    simpa only [starRingEnd_apply] using
-      ((LinearMap.isSymmetric_iff_inner_map_self_real (T : H →ₗ[ℂ] H)).mp hsym x)⟩
+    exact ((LinearMap.isSymmetric_iff_inner_map_self_real (T : H →ₗ[ℂ] H)).mp hsym x)⟩
 
 /-- The real value of a self-adjoint diagonal matrix element, obtained losslessly through
 `Complex.selfAdjointEquiv`. -/
@@ -42,7 +42,7 @@ theorem coe_diagonalExpectationValue
   apply Complex.ext
   · rfl
   · simpa [diagonalExpectationValue, diagonalExpectationSelfAdjoint,
-      Complex.selfAdjointEquiv] using hsym.im_inner_apply_self x
+      Complex.selfAdjointEquiv] using (hsym.im_inner_apply_self x).symm
 
 /-- The same lossless coercion identity in the physicists' inner-product orientation. -/
 @[simp]
@@ -51,7 +51,9 @@ theorem coe_diagonalExpectationValue_right
     (diagonalExpectationValue T hT x : ℂ) = inner ℂ x (T x) := by
   have hsym : (T : H →ₗ[ℂ] H).IsSymmetric :=
     ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mp hT
-  rw [← hsym x x]
-  exact coe_diagonalExpectationValue T hT x
+  calc
+    (diagonalExpectationValue T hT x : ℂ) = inner ℂ (T x) x :=
+      coe_diagonalExpectationValue T hT x
+    _ = inner ℂ x (T x) := hsym x x
 
 end ContinuousLinearMap
