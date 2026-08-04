@@ -29,7 +29,7 @@ jobs:
           build: true
           build-args: "--wfail"
       - name: Check compiled declarations for sorryAx
-        run: python3 scripts/check_no_sorry.py
+        run: lake env lean scripts/CheckNoSorry.lean
 
   # Documentation is intentionally built only on pushes to main. doc-gen4 processes the
   # full Mathlib symbol set, so running it for every pull request would be unnecessarily slow.
