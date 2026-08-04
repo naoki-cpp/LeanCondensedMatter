@@ -47,6 +47,7 @@ theorem DensityOperator.eigenvalue_le_one (ρ : DensityOperator H)
     ρ.spectralTraceClass.summable.congr (fun b => abs_of_nonneg (ρ.eigenvalue_nonneg b))
   have hle := hsum.le_tsum a (fun b _ => ρ.eigenvalue_nonneg b)
   have htrace := ρ.spectralTrace_eq_one
+  rw [ρ.spectralTraceClass.trace_eq_spectralTrace] at htrace
   change (∑' b : EigenvectorIndex ρ.op, b.1.1) = 1 at htrace
   rwa [htrace] at hle
 

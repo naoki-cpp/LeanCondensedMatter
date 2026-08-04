@@ -26,6 +26,8 @@ algebraic-Fock vectors, not finiteness of the bosonic occupation type.
 namespace SecondQuantization
 namespace Bosonic
 
+noncomputable section
+
 variable {Mode : Type*}
 
 local instance : DecidableEq Mode := Classical.decEq Mode

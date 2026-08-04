@@ -20,6 +20,8 @@ The square-root factors give the standard canonical commutation relations and ma
 namespace SecondQuantization
 namespace Bosonic
 
+noncomputable section
+
 variable {Mode : Type*}
 
 local instance : DecidableEq Mode := Classical.decEq Mode

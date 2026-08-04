@@ -14,6 +14,8 @@ basis-state proofs with the Common statistics-indexed exchange commutator.
 namespace SecondQuantization
 namespace Bosonic
 
+noncomputable section
+
 variable {Mode : Type*}
 
 local instance : DecidableEq Mode := Classical.decEq Mode

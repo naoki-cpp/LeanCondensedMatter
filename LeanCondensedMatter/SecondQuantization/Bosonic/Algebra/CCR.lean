@@ -19,6 +19,8 @@ operators. `Bosonic.ExchangeAlgebra` packages these relations through the statis
 namespace SecondQuantization
 namespace Bosonic
 
+noncomputable section
+
 variable {Mode : Type*}
 
 local instance : DecidableEq Mode := Classical.decEq Mode

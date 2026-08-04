@@ -88,6 +88,7 @@ theorem occupationMoment_singleton (w : Occupation Mode → ℂ) (i : Mode) :
       (i ∈ ·) := by
     ext n; simp [Finset.subset_iff]
   rw [hfilter]
+  rfl
 
 /-! ## The occupation projector: an operator-level witness for `occupationMoment` -/
 
