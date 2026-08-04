@@ -18,8 +18,6 @@ import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.Analysis.OrderedSimplex.Calculus
 import LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
-import LeanCondensedMatter.Analysis.Operator.DiagonalExpectationFinite
-import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Basic
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Diagonal
