@@ -78,9 +78,9 @@ theorem hasSum_diagonalExpectationValue (h : SpectralTraceClass T)
       (fun i => diagonalExpectationValue T h.isSelfAdjoint (d i)) =
         fun i => (inner ℂ (d i) (T (d i)) : ℂ).re := by
     funext i
-    have hcoe := congrArg Complex.re
-      (coe_diagonalExpectationValue_right T h.isSelfAdjoint (d i))
-    simpa using hcoe
+    apply Complex.ofReal_injective
+    rw [coe_diagonalExpectationValue_right]
+    exact (h.symmetric.coe_re_inner_self_apply (d i)).symm
   rwa [hpoint]
 
 /-- Bound the lossless diagonal-expectation sum over an orthonormal family by the bundled spectral
@@ -99,9 +99,9 @@ theorem sum_diagonalExpectationValue_le_trace (h : SpectralTraceClass T)
       (fun i => diagonalExpectationValue T h.isSelfAdjoint (d i)) =
         fun i => (inner ℂ (d i) (T (d i)) : ℂ).re := by
     funext i
-    have hcoe := congrArg Complex.re
-      (coe_diagonalExpectationValue_right T h.isSelfAdjoint (d i))
-    simpa using hcoe
+    apply Complex.ofReal_injective
+    rw [coe_diagonalExpectationValue_right]
+    exact (h.symmetric.coe_re_inner_self_apply (d i)).symm
   rwa [hpoint]
 
 /-- Compatibility bridge: compute the bundled spectral trace against any Hilbert basis after
