@@ -25,7 +25,9 @@ variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
 
 /-- A single creation or annihilation field together with its imaginary time. -/
 structure TimedField (Mode : Type*) where
+  /-- The imaginary time attached to the field. -/
   time : ℝ
+  /-- The creation or annihilation label carried by the field. -/
   label : ExternalFieldLabel Mode
 
 /-- The mode carried by an external fermionic field label. -/
@@ -251,7 +253,6 @@ theorem map_timedFieldOperator_mixedTimeOrderedAtomicFields {n : ℕ}
 
 omit [DecidableEq Mode] in
 /-- The descriptor list has the same `4n + 2` cardinality as the atomic operator list. -/
-@[simp]
 theorem mixedTimeOrderedAtomicFields_length {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     (mixedTimeOrderedAtomicFields i j τ τ' q σ).length = 2 * (2 * n + 1) := by
