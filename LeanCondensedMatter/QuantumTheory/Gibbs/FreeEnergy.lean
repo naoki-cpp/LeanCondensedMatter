@@ -78,7 +78,7 @@ theorem eigenvalue_le_one (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) 
 theorem spectralTrace_gibbsOp_pos (Hop : Observable H) (β : ℝ)
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
     (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) : 0 < spectralTrace (gibbsOp Hop β) :=
-  (ContinuousLinearMap.trace_nonneg hsummable (gibbsOp_isPositive Hop β).toLinearMap).lt_of_ne
+  (ContinuousLinearMap.trace_nonneg (gibbsOp_isPositive Hop β).toLinearMap).lt_of_ne
     (Ne.symm hZ)
 
 /-- Entropy is finite with real value the entropy `tsum` when that sum converges. -/

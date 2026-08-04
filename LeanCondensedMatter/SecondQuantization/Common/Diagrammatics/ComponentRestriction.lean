@@ -54,38 +54,34 @@ theorem QuarticDiagram.componentBlock_vertexOfLeg_partner {S : Finset (Fin N)}
 /-- A leg's partner stays inside the same component part. -/
 theorem QuarticDiagram.legInBlock_partner_iff {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
-    (hB : B ∈ d.componentPartition.parts) (leg : Fin (2 * (2 * S.card))) :
+    (leg : Fin (2 * (2 * S.card))) :
     d.legInBlock B leg ↔ d.legInBlock B (d.pairing.partner leg) := by
   unfold QuarticDiagram.legInBlock
   rw [d.componentBlock_vertexOfLeg_partner]
 
 /-- The partner permutation restricted to legs belonging to component part `B`. -/
 noncomputable def QuarticDiagram.restrictedPartner {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
-    (hB : B ∈ d.componentPartition.parts) :
+    (d : QuarticDiagram Label N S) (B : Finset (Fin N)) :
     Equiv.Perm {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg} :=
-  d.pairing.partner.subtypePerm fun leg => (d.legInBlock_partner_iff hB leg).symm
+  d.pairing.partner.subtypePerm fun leg => (d.legInBlock_partner_iff leg).symm
 
 theorem QuarticDiagram.restrictedPartner_val {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
-    (hB : B ∈ d.componentPartition.parts)
+    (d : QuarticDiagram Label N S) (B : Finset (Fin N))
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
-    (d.restrictedPartner hB leg : Fin (2 * (2 * S.card))) = d.pairing.partner leg :=
+    (d.restrictedPartner B leg : Fin (2 * (2 * S.card))) = d.pairing.partner leg :=
   congrArg Subtype.val (Equiv.Perm.subtypePerm_apply _ _ leg)
 
 theorem QuarticDiagram.restrictedPartner_involutive {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
-    (hB : B ∈ d.componentPartition.parts) :
-    Function.Involutive (d.restrictedPartner hB) := fun leg => by
+    (d : QuarticDiagram Label N S) (B : Finset (Fin N)) :
+    Function.Involutive (d.restrictedPartner B) := fun leg => by
   apply Subtype.ext
   rw [d.restrictedPartner_val, d.restrictedPartner_val, d.pairing.partner_involutive]
 
 theorem QuarticDiagram.restrictedPartner_ne_self {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
-    (hB : B ∈ d.componentPartition.parts)
+    (d : QuarticDiagram Label N S) (B : Finset (Fin N))
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
-    d.restrictedPartner hB leg ≠ leg := fun h =>
-  d.pairing.partner_ne_self leg (by rw [← d.restrictedPartner_val hB, h])
+    d.restrictedPartner B leg ≠ leg := fun h =>
+  d.pairing.partner_ne_self leg (by rw [← d.restrictedPartner_val B, h])
 
 /-- Vertices of `S` lying in `B`, identified with `↥B`. -/
 def QuarticDiagram.subtypeMemBlockEquiv {S : Finset (Fin N)} (B : Finset (Fin N))
@@ -172,9 +168,9 @@ noncomputable def QuarticDiagram.restrictedPairing {S : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) :
     Combinatorics.Pairing (2 * B.card) :=
   Combinatorics.Pairing.ofPartner
-    ((d.blockLegEquiv hB).permCongr (d.restrictedPartner hB))
-    ⟨permCongr_partner_involutive _ _ (d.restrictedPartner_involutive hB),
-      permCongr_partner_ne_self _ _ (d.restrictedPartner_ne_self hB)⟩
+    ((d.blockLegEquiv hB).permCongr (d.restrictedPartner B))
+    ⟨permCongr_partner_involutive _ _ (d.restrictedPartner_involutive B),
+      permCongr_partner_ne_self _ _ (d.restrictedPartner_ne_self B)⟩
 
 /-- The restricted pairing agrees with the original partner under `blockLegEquiv`. -/
 theorem QuarticDiagram.restrictedPairing_partner_blockLegEquiv {S : Finset (Fin N)}
@@ -182,7 +178,7 @@ theorem QuarticDiagram.restrictedPairing_partner_blockLegEquiv {S : Finset (Fin 
     (hB : B ∈ d.componentPartition.parts)
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
     (d.restrictedPairing hB).partner (d.blockLegEquiv hB leg) =
-      d.blockLegEquiv hB (d.restrictedPartner hB leg) := by
+      d.blockLegEquiv hB (d.restrictedPartner B leg) := by
   simp [restrictedPairing, Combinatorics.Pairing.ofPartner, Equiv.permCongr_apply]
 
 /-- Restrict `d` to the connected-component part `B`. -/

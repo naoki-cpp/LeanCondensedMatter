@@ -18,7 +18,7 @@ with the same `ε`. The specialization `freeGibbsGreenFunction` below fixes exac
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- **The fermionic two-point (imaginary-)time-ordered correlator**,
 `G_{ij}(τ, τ') := -⟨T_τ c_i(τ) c_j†(τ')⟩_w`, for the free Hamiltonian's imaginary-time evolution

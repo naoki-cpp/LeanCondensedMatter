@@ -12,7 +12,7 @@ the exchange-algebra interface gives the reordering identity `a_i a_i† = id + 
 namespace SecondQuantization
 namespace Bosonic
 
-variable {Mode : Type*} [DecidableEq Mode]
+variable {Mode : Type*}
 
 /-- The single-mode number operator `N_i = a_i† a_i`. -/
 noncomputable def numberOperator (i : Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=

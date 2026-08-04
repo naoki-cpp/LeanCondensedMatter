@@ -13,7 +13,7 @@ Operators, energy shifts, modes, and CAR relations for the four local legs.
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
+variable {Mode : Type*} [LinearOrder Mode]
 
 /-! ## Local-leg operator semantics -/
 

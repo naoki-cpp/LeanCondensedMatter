@@ -14,7 +14,7 @@ namespace Fermionic
 
 open Combinatorics
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-! ## Flattening `nestedVertexOperatorComp` into a `4n`-atom `Common.prodComp` -/
 
@@ -285,7 +285,7 @@ theorem one_sub_zetaInt_fermion_mul_exp_ne_zero (x β : ℝ) :
   rw [heq]
   exact_mod_cast hpos.ne'
 
-omit [Fintype Mode] [DecidableEq Mode] [LinearOrder Mode] in
+omit [Fintype Mode] [LinearOrder Mode] in
 /-- **The general theorem's non-resonance hypothesis, for every flattened leg position** — direct
 specialization of `one_sub_zetaInt_fermion_mul_exp_ne_zero` to `x := flatVertexLegEnergyShift ε q
 p`. This is the *third and final* hypothesis

@@ -17,11 +17,11 @@ The public type is `Bosonic.FockSpace`.
 namespace SecondQuantization
 namespace Bosonic
 
-variable {Mode : Type*}
-
 /-- The algebraic bosonic Fock space on occupation-number states. -/
 abbrev FockSpace (Mode : Type*) :=
   Common.AlgebraicFock (Occupation Mode)
+
+variable {Mode : Type*}
 
 /-- The basis vector corresponding to occupation state `n`. -/
 noncomputable def basisState (n : Occupation Mode) : FockSpace Mode :=

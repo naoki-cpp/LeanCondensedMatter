@@ -15,7 +15,7 @@ index-weighted version and applies the same finite-product `Finsupp` summation t
 namespace SecondQuantization
 namespace Bosonic
 
-variable {Mode : Type*} [Fintype Mode] [DecidableEq Mode]
+variable {Mode : Type*} [Fintype Mode]
 
 /-- The particle-number-weighted free Boltzmann series has its product closed form. -/
 theorem hasSum_particleNumber_boltzmannWeight (ε : Mode → ℝ) (β : ℝ)

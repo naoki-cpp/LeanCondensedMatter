@@ -14,7 +14,7 @@ summability and partition-function product formulas.
 namespace SecondQuantization
 namespace Bosonic
 
-variable {Mode : Type*} [DecidableEq Mode]
+variable {Mode : Type*}
 
 /-- The free bosonic Boltzmann weight `e^{-βE(n)}`. -/
 noncomputable def boltzmannWeight (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) : ℝ :=
@@ -22,7 +22,7 @@ noncomputable def boltzmannWeight (ε : Mode → ℝ) (β : ℝ) (n : Occupation
 
 variable [Fintype Mode]
 
-omit [DecidableEq Mode] in
+omit in
 /-- The free energy is the sum over all modes; terms outside the support vanish. -/
 theorem freeEigenvalue_eq_sum_univ (ε : Mode → ℝ) (n : Occupation Mode) :
     freeEigenvalue ε n = ∑ i, (n i : ℝ) * ε i := by
@@ -33,7 +33,7 @@ theorem freeEigenvalue_eq_sum_univ (ε : Mode → ℝ) (n : Occupation Mode) :
   rw [hi]
   simp
 
-omit [DecidableEq Mode] in
+omit in
 /-- The free Boltzmann weight factors into one-mode Boltzmann weights. -/
 theorem boltzmannWeight_eq_prod (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
     boltzmannWeight ε β n = ∏ i, oneModeBoltzmannWeight β (ε i) (n i) := by

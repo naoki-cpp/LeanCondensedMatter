@@ -18,7 +18,7 @@ induction needs the all-index exchange relation this instance packages).
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
+variable {Mode : Type*} [LinearOrder Mode]
 
 omit [LinearOrder Mode] in
 /-- **`Common.exchangeCommutator Common.Statistics.fermion = anticomm`**: CAR's anticommutator is exactly

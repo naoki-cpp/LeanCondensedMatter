@@ -16,7 +16,7 @@ The main results compute the coefficients of `a_i(τ) a_j†`: the equal-mode co
 namespace SecondQuantization
 namespace Bosonic
 
-variable {Mode : Type*} [DecidableEq Mode]
+variable {Mode : Type*}
 
 /-- The coefficient of `basisState n` in `A (basisState n)`. -/
 noncomputable def diagonalCoeff (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode)

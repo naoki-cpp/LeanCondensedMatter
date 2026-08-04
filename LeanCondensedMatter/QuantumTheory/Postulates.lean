@@ -18,8 +18,6 @@ scope notes.
 
 namespace QuantumTheory
 
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-
 /-- **State space postulate.** A pure state of a quantum system is a unit vector in a
 complex Hilbert space `H`. (Global-phase equivalence of states is not yet formalized;
 `State H` is the space of representatives, not of physical states.) -/
@@ -33,6 +31,7 @@ represent a measurable physical quantity. -/
 def Observable (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H] :=
   { A : H →L[ℂ] H // IsSelfAdjoint A }
 
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 variable (A : Observable H) (ψ : State H)
 
 /-- The expectation value of an observable `A` in a state `ψ`, `⟨ψ|A|ψ⟩`. -/

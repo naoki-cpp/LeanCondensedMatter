@@ -22,7 +22,7 @@ open QuantumTheory
 
 noncomputable section
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- The real Fermi–Dirac occupation of a single mode. -/
 noncomputable def fermiDiracOccupation (ε : Mode → ℝ) (β : ℝ) (i : Mode) : ℝ :=
@@ -34,7 +34,7 @@ noncomputable def freeGibbsConfigurationProbability
   (Common.finitePartitionFunction (fermionEnergy ε) β)⁻¹ *
     Common.finiteBoltzmannWeight (fermionEnergy ε) β n
 
-omit [DecidableEq Mode] [LinearOrder Mode] in
+omit [LinearOrder Mode] in
 @[simp]
 theorem freeGibbsDensityOperator_apply_basis_probability
     (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
@@ -44,7 +44,7 @@ theorem freeGibbsDensityOperator_apply_basis_probability
   simpa [freeGibbsConfigurationProbability] using
     freeGibbsDensityOperator_apply_basis ε β n
 
-omit [DecidableEq Mode] [LinearOrder Mode] in
+omit [LinearOrder Mode] in
 theorem freeGibbsConfigurationProbability_pos
     (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
     0 < freeGibbsConfigurationProbability ε β n := by
@@ -52,7 +52,7 @@ theorem freeGibbsConfigurationProbability_pos
     (inv_pos.mpr (Common.finitePartitionFunction_pos (fermionEnergy ε) β))
     (Real.exp_pos _)
 
-omit [DecidableEq Mode] [LinearOrder Mode] in
+omit [LinearOrder Mode] in
 theorem sum_freeGibbsConfigurationProbability_eq_one (ε : Mode → ℝ) (β : ℝ) :
     ∑ n : Occupation Mode, freeGibbsConfigurationProbability ε β n = 1 := by
   simp_rw [freeGibbsConfigurationProbability]
@@ -193,7 +193,7 @@ theorem sum_freeGibbsConfigurationProbability_mul_fermionEnergy
       intro i hi
       rw [sum_freeGibbsConfigurationProbability_filter_mem]
 
-omit [DecidableEq Mode] [LinearOrder Mode] in
+omit [LinearOrder Mode] in
 theorem sum_negMulLog_freeGibbsConfigurationProbability
     (ε : Mode → ℝ) (β : ℝ) :
     ∑ n : Occupation Mode,
@@ -219,7 +219,7 @@ theorem sum_negMulLog_freeGibbsConfigurationProbability
   simp_rw [hterm, Finset.sum_add_distrib, ← Finset.mul_sum]
   rw [sum_freeGibbsConfigurationProbability_eq_one, mul_one]
 
-omit [DecidableEq Mode] [LinearOrder Mode] in
+omit [LinearOrder Mode] in
 theorem vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_configuration
     (ε : Mode → ℝ) (β : ℝ) :
     (vonNeumannEntropy (freeGibbsDensityOperator ε β)).toReal =
@@ -244,7 +244,7 @@ theorem vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_configuration
   rw [vonNeumannEntropy_eq_ofReal_entropyOp_trace ρ hs,
     ENNReal.toReal_ofReal htrace_nonneg, htrace, tsum_fintype]
 
-omit [DecidableEq Mode] [LinearOrder Mode] in
+omit [LinearOrder Mode] in
 private theorem fermiDiracOccupation_eq_exp_neg_div
     (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
     fermiDiracOccupation ε β i =
@@ -252,7 +252,7 @@ private theorem fermiDiracOccupation_eq_exp_neg_div
   rw [fermiDiracOccupation, show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
   field_simp [Real.exp_ne_zero]
 
-omit [DecidableEq Mode] [LinearOrder Mode] in
+omit [LinearOrder Mode] in
 private theorem one_sub_fermiDiracOccupation_eq_inv_one_add_exp_neg
     (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
     1 - fermiDiracOccupation ε β i =
@@ -260,7 +260,7 @@ private theorem one_sub_fermiDiracOccupation_eq_inv_one_add_exp_neg
   rw [fermiDiracOccupation, show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
   field_simp [Real.exp_ne_zero] <;> ring
 
-omit [DecidableEq Mode] [LinearOrder Mode] in
+omit [LinearOrder Mode] in
 private theorem binaryEntropy_fermiDiracOccupation
     (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
     Real.negMulLog (fermiDiracOccupation ε β i) +

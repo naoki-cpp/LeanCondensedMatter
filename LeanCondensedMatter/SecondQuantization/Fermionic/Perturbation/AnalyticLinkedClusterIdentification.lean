@@ -20,7 +20,7 @@ open PowerSeries
 
 noncomputable section
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 private theorem derivative_log_mul_one_add_X_for_analytic_bridge :
     d⁄dX ℂ (PowerSeries.log ℂ) * (1 + PowerSeries.X) = 1 := by

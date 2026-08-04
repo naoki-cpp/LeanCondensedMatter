@@ -20,7 +20,7 @@ introduced at this assembly boundary.
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] {N : ℕ}
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
 
 /-- The sum of ordered-simplex contributions over all global vertex orders factors as the product of
 the corresponding sums for the connected-component restrictions. -/

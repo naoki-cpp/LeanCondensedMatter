@@ -12,7 +12,7 @@ Atomic time-evolved leg operators for a sequence of quartic vertex labels.
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- **The atomic operator at a flattened leg position, for an arbitrary vertex-label sequence `q`
 and time assignment `τ`**: look up which slot/local-leg the position corresponds to

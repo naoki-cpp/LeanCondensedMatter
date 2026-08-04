@@ -15,7 +15,7 @@ order `ℕ`, and finite-set moment/cumulant combinatorics, indexed by a labelled
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- The normalized fermionic Dyson partition coefficient. -/
 noncomputable def normalizedDysonPartitionCoeff (ε : Mode → ℝ) (β : ℝ)

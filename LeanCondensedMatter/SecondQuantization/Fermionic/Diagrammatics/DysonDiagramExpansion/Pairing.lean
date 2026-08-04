@@ -16,11 +16,11 @@ namespace Fermionic
 
 open Combinatorics
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-! ## Applying the general theorem to the flattened `4n`-leg family -/
 
-omit [DecidableEq Mode] [LinearOrder Mode] in
+omit [LinearOrder Mode] in
 /-- **The free partition function's un-normalized trace is nonzero** — the general theorem's `hZ`
 hypothesis, bridged from `freePartitionFunction_ne_zero` via
 `Common.traceFock_diagonalEvolution_eq_weightSum` and a direct identification of the Common and

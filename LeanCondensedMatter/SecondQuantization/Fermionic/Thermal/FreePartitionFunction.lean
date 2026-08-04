@@ -20,22 +20,22 @@ occupation is `0` or `1`, so every sum is manifestly finite.
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-omit [DecidableEq Mode] [LinearOrder Mode] in
+omit [LinearOrder Mode] in
 /-- The total free Boltzmann weight is the free partition function. -/
 theorem weightSum_freeBoltzmannWeight_eq_freePartitionFunction (ε : Mode → ℝ) (β : ℝ) :
     Common.weightSum (freeBoltzmannWeight ε β) = freePartitionFunction ε β := by
   rw [Common.weightSum, freePartitionFunction]
 
-omit [DecidableEq Mode] [LinearOrder Mode] in
+omit [LinearOrder Mode] in
 /-- The total free Boltzmann weight is nonzero. -/
 theorem weightSum_freeBoltzmannWeight_ne_zero (ε : Mode → ℝ) (β : ℝ) :
     Common.weightSum (freeBoltzmannWeight ε β) ≠ 0 := by
   rw [weightSum_freeBoltzmannWeight_eq_freePartitionFunction]
   exact freePartitionFunction_ne_zero ε β
 
-omit [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The fermionic free Boltzmann weight agrees with the Common weight at `fermionEnergy`. -/
 theorem freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy (ε : Mode → ℝ) (β : ℝ)
     (n : Occupation Mode) :
@@ -44,14 +44,14 @@ theorem freeBoltzmannWeight_eq_boltzmannWeight_fermionEnergy (ε : Mode → ℝ)
   push_cast
   ring_nf
 
-omit [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- **The free Boltzmann weight factorizes mode-by-mode**: `e^{-β E(n)} = ∏_{i ∈ n} e^{-βε_i}`,
 since `E(n) = Σ_{i ∈ n} ε_i`. -/
 theorem freeBoltzmannWeight_eq_prod (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
     freeBoltzmannWeight ε β n = ∏ i ∈ n, Complex.exp (-(β : ℂ) * (ε i : ℂ)) := by
   rw [freeBoltzmannWeight, Finset.mul_sum, Complex.exp_sum]
 
-omit [DecidableEq Mode] [Fintype Mode] in
+omit [Fintype Mode] in
 /-- **The free Boltzmann weight, summed over all subsets of a fixed mode set `s`, factorizes** as
 a product over `s`: `Σ_{t ⊆ s} e^{-β E(t)} = ∏_{i ∈ s} (1 + e^{-βε_i})`. The general-`s` form (not
 just `s = univ`) is what lets `freeGibbsDensityOperator_expectation_numberOperator` below reuse
@@ -65,7 +65,7 @@ theorem sum_freeBoltzmannWeight_powerset_eq_prod (ε : Mode → ℝ) (β : ℝ) 
   rw [← h]
   exact Finset.prod_congr rfl fun j _ => add_comm _ _
 
-omit [DecidableEq Mode] in
+
 /-- **The free partition function factorizes into a product over modes**:
 `Z₀(β) = ∏ᵢ (1 + e^{-βε_i})`. -/
 theorem freePartitionFunction_eq_prod (ε : Mode → ℝ) (β : ℝ) :

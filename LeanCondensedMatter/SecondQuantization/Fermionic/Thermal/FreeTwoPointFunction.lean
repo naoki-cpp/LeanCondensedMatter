@@ -38,7 +38,7 @@ flags this discontinuity).
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-! ## Off-diagonal (`i ≠ j`): both mixed contractions vanish identically, for any weight -/
 

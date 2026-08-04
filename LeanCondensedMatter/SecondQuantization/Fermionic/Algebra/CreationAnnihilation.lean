@@ -23,7 +23,7 @@ exclusion) but stops short of CAR itself (`{aᵢ, aⱼ†} = δᵢⱼ` etc.), wh
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
+variable {Mode : Type*} [LinearOrder Mode]
 
 /-- **The fermionic exchange sign** for acting at mode `i` on occupation state `n`: `(-1)^k`
 where `k` is the number of modes in `n` ordered strictly before `i`. Used identically for both
@@ -32,7 +32,7 @@ which operation is being performed). -/
 def fermionSign (i : Mode) (n : Occupation Mode) : ℤ :=
   (-1) ^ (n.filter (· < i)).card
 
-omit [DecidableEq Mode] in
+
 @[simp]
 theorem fermionSign_vacuum (i : Mode) :
     fermionSign i (vacuum : Occupation Mode) = 1 := by

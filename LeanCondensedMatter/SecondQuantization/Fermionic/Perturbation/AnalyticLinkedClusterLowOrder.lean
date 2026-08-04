@@ -18,7 +18,7 @@ namespace Fermionic
 
 noncomputable section
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- First derivative of the analytic normalized logarithm. -/
 theorem iteratedDeriv_analyticNormalizedLogPartitionFunction_order_one

@@ -171,7 +171,7 @@ theorem QuarticWickDiagram.restrictComponent_vertexLabel_componentOrder
 
 section Fermionic
 
-variable [DecidableEq Mode] [LinearOrder Mode]
+variable [LinearOrder Mode]
 
 /-- A global ordered leg at a component-embedded position equals the corresponding ordered leg of
 its restricted component diagram. -/

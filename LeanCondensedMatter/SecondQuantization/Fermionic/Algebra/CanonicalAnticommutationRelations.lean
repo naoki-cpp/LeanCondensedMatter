@@ -20,7 +20,7 @@ proves.
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
+variable {Mode : Type*} [LinearOrder Mode]
 
 /-! ## The anticommutator, and reduction to basis states -/
 
@@ -82,13 +82,13 @@ theorem fermionSign_removeOccupation_of_not_lt {i k : Mode} {n : Occupation Mode
     exact fun hmem => h (Finset.mem_filter.1 hmem).2
   rw [fermionSign, fermionSign, hfilter]
 
-omit [DecidableEq Mode] in
+
 theorem fermionSign_sq (i : Mode) (n : Occupation Mode) :
     fermionSign i n * fermionSign i n = 1 := by
   rw [fermionSign, ← pow_add, ← two_mul, pow_mul]
   norm_num
 
-omit [DecidableEq Mode] in
+
 @[simp]
 theorem fermionSign_sq_complex (i : Mode) (n : Occupation Mode) :
     (fermionSign i n : ℂ) * (fermionSign i n : ℂ) = 1 := by

@@ -21,7 +21,7 @@ open Filter Set
 
 noncomputable section
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 omit [LinearOrder Mode] in
 /-- Derivatives of the normalized analytic partition function are the exponential-generating

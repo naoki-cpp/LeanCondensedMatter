@@ -16,14 +16,14 @@ namespace Fermionic
 
 open QuantumTheory
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- The canonical finite free-fermion Gibbs state. -/
 noncomputable def freeGibbsDensityOperator (ε : Mode → ℝ) (β : ℝ) :
     DensityOperator (Common.FiniteHilbertFock (Occupation Mode)) :=
   Common.finiteGibbsDensityOperator (fermionEnergy ε) β
 
-omit [DecidableEq Mode] [LinearOrder Mode] in
+omit [LinearOrder Mode] in
 /-- The free Gibbs density operator acts diagonally in the occupation basis. -/
 theorem freeGibbsDensityOperator_apply_basis (ε : Mode → ℝ) (β : ℝ)
     (n : Occupation Mode) :

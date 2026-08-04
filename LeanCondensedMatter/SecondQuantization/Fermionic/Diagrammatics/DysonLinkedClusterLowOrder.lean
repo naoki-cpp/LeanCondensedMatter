@@ -15,7 +15,7 @@ open scoped BigOperators
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- At first order, the factorial-normalized logarithmic coefficient is the first normalized Dyson
 coefficient. -/

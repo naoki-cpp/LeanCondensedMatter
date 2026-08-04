@@ -24,7 +24,7 @@ exchange sign through `Common.timeOrderedProduct Statistics.fermion`.
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
+variable {Mode : Type*} [LinearOrder Mode]
 
 /-- The imaginary-time evolved operator represented by an external field label. -/
 noncomputable def externalFieldOperator (ε : Mode → ℝ) (τ : ℝ) :

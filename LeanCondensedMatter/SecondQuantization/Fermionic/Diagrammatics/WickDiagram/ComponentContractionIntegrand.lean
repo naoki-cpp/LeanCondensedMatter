@@ -16,7 +16,7 @@ theorem.
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode] {N : ℕ}
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
 
 /-- The Wick contraction integrand of an assembled vertex order is the product of the contraction
 integrands of its connected components, evaluated on the corresponding restricted time

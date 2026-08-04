@@ -26,14 +26,14 @@ beyond the free theory).
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
+variable {Mode : Type*} [LinearOrder Mode]
 
 /-- **The free Hamiltonian's eigenvalue** on an occupation state, `E(n) := Σᵢ∈n ε(i) : ℝ`
 (`freeHamiltonian_basisState`). Real-valued, matching `Common.DiagonalEvolution`'s `energy`
 parameter — cast to `ℂ` only where `Complex.exp` needs it. -/
 def fermionEnergy (ε : Mode → ℝ) (n : Occupation Mode) : ℝ := ∑ i ∈ n, ε i
 
-omit [DecidableEq Mode] [LinearOrder Mode] in
+omit [LinearOrder Mode] in
 theorem fermionEnergy_eq_sum_complex (ε : Mode → ℝ) (n : Occupation Mode) :
     (fermionEnergy ε n : ℂ) = ∑ i ∈ n, (ε i : ℂ) := by
   simp [fermionEnergy]

@@ -15,7 +15,7 @@ vertex convention while using bosonic ladder operators.
 namespace SecondQuantization
 namespace Bosonic
 
-variable {Mode : Type*} [DecidableEq Mode]
+variable {Mode : Type*}
 
 /-- Compatibility alias for the statistics-independent quartic vertex label. -/
 abbrev QuarticVertexLabel (Mode : Type*) := Common.QuarticVertexLabel Mode

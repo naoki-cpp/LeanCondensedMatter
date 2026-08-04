@@ -26,7 +26,7 @@ times.
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode]
+variable {Mode : Type*} [LinearOrder Mode]
 
 /-- The event type for a two-point insertion with `n` quartic interaction vertices. -/
 abbrev TwoPointTimedEvent (n : ℕ) : Type := Fin 2 ⊕ Fin n

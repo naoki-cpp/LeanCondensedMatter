@@ -12,11 +12,11 @@ namespace Fermionic
 
 open Combinatorics
 
-variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-! ## Reindexing into a sum over `QuarticWickDiagram`s -/
 
-omit [DecidableEq Mode] [Fintype Mode] [LinearOrder Mode] in
+omit [Fintype Mode] [LinearOrder Mode] in
 /-- **A diagram's coupling weight, reindexed along a vertex order** — `Equiv.prod_comp` at `order`
 turns the product over the vertex set `↥S` into a product over time slots `Fin S.card`. -/
 theorem couplingWeight_eq_prod_vertexLabel_order {N : ℕ} {S : Finset (Fin N)}
