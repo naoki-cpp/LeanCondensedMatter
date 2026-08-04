@@ -4,7 +4,7 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.KuboFormula
 set_option linter.style.header false
 
 /-!
-# Isometry of Hermitian time-dependent Dyson evolution
+# Unitarity of Hermitian time-dependent Dyson evolution
 
 For the physical coupling in
 
@@ -15,10 +15,19 @@ interaction-picture perturbation is also pointwise self-adjoint. The Volterra eq
 
 `U'(t) = -c V_I(t) U(t)`.
 
-Consequently `(U(t)† U(t))' = 0`, and the initial condition `U(0) = 1` implies
-`U(t)† U(t) = 1` on every compact nonnegative interval where the existing continuity and boundedness
-hypotheses hold. This is the normalization identity needed to bundle the finite-coupling pullback
-of an ordinary normalized expectation as another `NormalizedExpectation`.
+The left product has zero derivative,
+
+`(U(t)† U(t))' = 0`,
+
+while the right-product defect `Q(t) = U(t) U(t)† - 1` satisfies the homogeneous commutator
+ordinary differential equation
+
+`Q'(t) = c (Q(t) V_I(t) - V_I(t) Q(t))`.
+
+Both defects vanish initially. The existing vector-valued Grönwall theorem therefore proves the
+two unitary identities on every compact nonnegative interval where the continuity and boundedness
+hypotheses hold. The left identity also bundles the finite-coupling pullback of an ordinary
+normalized expectation as another `NormalizedExpectation`.
 -/
 
 namespace QuantumTheory
@@ -101,6 +110,107 @@ theorem star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
     (a := (0 : ℝ)) (b := β) hqcont hqderiv hq0 hqbound
   have := hqzero t ht
   simpa [q, U, sub_eq_zero] using this
+
+/-- For a pointwise Hermitian perturbation, the interaction-picture Dyson propagator also satisfies
+`U(t) U(t)† = 1`. The proof applies Grönwall to the right-product defect, whose derivative is a
+homogeneous commutator with `V_I(t)`. -/
+theorem mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
+    {V : ℝ → (H →L[ℂ] H)} (hVself : ∀ s, IsSelfAdjoint (V s))
+    (lam : ℝ) {β M t : ℝ} (hβ : 0 ≤ β) (hM : 0 ≤ M)
+    (hVcont : Continuous (timeDependentInteractionPerturbation system V))
+    (hVbound : ∀ s ∈ Icc (0 : ℝ) β,
+      ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
+    (ht : t ∈ Icc (0 : ℝ) β) :
+    timeDependentInteractionPropagator system V lam t *
+        star (timeDependentInteractionPropagator system V lam t) = 1 := by
+  let VI : ℝ → (H →L[ℂ] H) := timeDependentInteractionPerturbation system V
+  let c : ℂ := timeDependentPhysicalDysonCoupling system lam
+  let U : ℝ → (H →L[ℂ] H) := fun s =>
+    timeDependentInteractionPropagator system V lam s
+  let q : ℝ → (H →L[ℂ] H) := fun s => U s * star (U s) - 1
+  let q' : ℝ → (H →L[ℂ] H) := fun s =>
+    c • (q s * VI s - VI s * q s)
+  have hUcont : ContinuousOn U (Icc (0 : ℝ) β) := by
+    simpa [U, VI, c, timeDependentInteractionPropagator] using
+      (Dyson.continuousOn_evolution_of_bound hVcont BoundedDyson.norm_one_le
+        hM hVbound c)
+  have hUEq : ∀ s ∈ Icc (0 : ℝ) β,
+      U s = 1 - c • ∫ u in (0 : ℝ)..s, VI u * U u := by
+    intro s hs
+    simpa [U, VI, c, timeDependentInteractionPropagator] using
+      (Dyson.evolution_eq_one_sub_integral_of_bound hVcont BoundedDyson.norm_one_le
+        hM hVbound hs c)
+  have hUderiv : ∀ s ∈ Ico (0 : ℝ) β,
+      HasDerivWithinAt U (-(c • (VI s * U s))) (Ici s) s := by
+    intro s hs
+    exact Dyson.hasDerivWithinAt_of_volterra hVcont hβ hs c hUcont hUEq
+  have hqcont : ContinuousOn q (Icc (0 : ℝ) β) := by
+    exact (hUcont.mul hUcont.star).sub continuousOn_const
+  have hqderiv : ∀ s ∈ Ico (0 : ℝ) β,
+      HasDerivWithinAt q (q' s) (Ici s) s := by
+    intro s hs
+    have hUd := hUderiv s hs
+    have hprod := hUd.mul hUd.star
+    have hsub := hprod.sub_const (1 : H →L[ℂ] H)
+    have hVIstar : star (VI s) = VI s := by
+      simpa [VI] using
+        (isSelfAdjoint_timeDependentInteractionPerturbation_of_isSelfAdjoint
+          system V hVself s).star_eq
+    have hc : star c = -c := by
+      simpa [c] using star_timeDependentPhysicalDysonCoupling_eq_neg system lam
+    have hstar :
+        star (-(c • (VI s * U s))) = c • (star (U s) * VI s) := by
+      simp [hc, hVIstar, star_smul, star_mul, mul_assoc]
+    have hcomm :
+        -(c • (VI s * U s)) * star (U s) +
+            U s * star (-(c • (VI s * U s))) = q' s := by
+      rw [hstar]
+      simp [q', q, sub_mul, mul_sub, mul_assoc, sub_eq_add_neg,
+        add_comm, add_left_comm, add_assoc]
+    rw [hcomm] at hsub
+    simpa [q] using hsub
+  have hq0 : q 0 = 0 := by
+    simp [q, U, timeDependentInteractionPropagator]
+  have hqbound : ∀ s ∈ Ico (0 : ℝ) β,
+      ‖q' s‖ ≤ (2 * ‖c‖ * M) * ‖q s‖ := by
+    intro s hs
+    have hsIcc : s ∈ Icc (0 : ℝ) β := ⟨hs.1, hs.2.le⟩
+    rw [show q' s = c • (q s * VI s - VI s * q s) by rfl, norm_smul]
+    calc
+      ‖c‖ * ‖q s * VI s - VI s * q s‖ ≤
+          ‖c‖ * (‖q s * VI s‖ + ‖VI s * q s‖) := by
+        gcongr
+        exact norm_sub_le _ _
+      _ ≤ ‖c‖ * (‖q s‖ * M + M * ‖q s‖) := by
+        gcongr
+        · exact (norm_mul_le _ _).trans
+            (mul_le_mul_of_nonneg_left (hVbound s hsIcc) (norm_nonneg _))
+        · exact (norm_mul_le _ _).trans
+            (mul_le_mul_of_nonneg_right (hVbound s hsIcc) (norm_nonneg _))
+      _ = (2 * ‖c‖ * M) * ‖q s‖ := by ring
+  have hqzero := eq_zero_of_abs_deriv_le_mul_abs_self_of_eq_zero_right
+    (f := q) (f' := q') (K := 2 * ‖c‖ * M)
+    (a := (0 : ℝ)) (b := β) hqcont hqderiv hq0 hqbound
+  have := hqzero t ht
+  simpa [q, U, sub_eq_zero] using this
+
+/-- The two unitary identities for the physical interaction-picture Dyson propagator. -/
+theorem timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint
+    {V : ℝ → (H →L[ℂ] H)} (hVself : ∀ s, IsSelfAdjoint (V s))
+    (lam : ℝ) {β M t : ℝ} (hβ : 0 ≤ β) (hM : 0 ≤ M)
+    (hVcont : Continuous (timeDependentInteractionPerturbation system V))
+    (hVbound : ∀ s ∈ Icc (0 : ℝ) β,
+      ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
+    (ht : t ∈ Icc (0 : ℝ) β) :
+    star (timeDependentInteractionPropagator system V lam t) *
+          timeDependentInteractionPropagator system V lam t = 1 ∧
+      timeDependentInteractionPropagator system V lam t *
+          star (timeDependentInteractionPropagator system V lam t) = 1 := by
+  exact ⟨
+    star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
+      system hVself lam hβ hM hVcont hVbound ht,
+    mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
+      system hVself lam hβ hM hVcont hVbound ht⟩
 
 /-- The finite-coupling perturbed expectation, bundled as a normalized expectation using
 `U(t)† U(t) = 1`. -/
