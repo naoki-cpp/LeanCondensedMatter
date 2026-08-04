@@ -160,8 +160,19 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop 
     ⟨hcompact, hGibbsSym, hsummable⟩
   have hstep1 : ∀ a, Real.exp (-β * h a) ≤ q a := fun a => by
     have hpb := exp_neg_beta_energy_le_gibbs_diagonal Hop β (d a) (hd_unit a)
-    simpa [hh_def, hq_def, diagonalExpectationValue, diagonalExpectationSelfAdjoint,
-      Complex.selfAdjointEquiv, hHopSym (d a) (d a), hGibbsSym (d a) (d a)] using hpb
+    have henergy : diagonalExpectationValue Hop.1 Hop.2 (d a) = h a := by
+      rw [hh_def]
+      apply Complex.ofReal_injective
+      rw [coe_diagonalExpectationValue_right]
+      exact (hHopSym.coe_re_inner_self_apply (d a)).symm
+    have hgibbs :
+        diagonalExpectationValue (gibbsOp Hop β)
+          (gibbsOp_isPositive Hop β).isSelfAdjoint (d a) = q a := by
+      rw [hq_def]
+      apply Complex.ofReal_injective
+      rw [coe_diagonalExpectationValue_right]
+      exact (hGibbsSym.coe_re_inner_self_apply (d a)).symm
+    rwa [henergy, hgibbs] at hpb
   have hqpos : ∀ a, 0 < q a := fun a => (Real.exp_pos _).trans_le (hstep1 a)
   have hstep2 : ∀ a, -Real.log (q a) ≤ β * h a := fun a =>
     neg_log_le_of_exp_le (u := β * h a) (by rw [← neg_mul]; exact hstep1 a)
