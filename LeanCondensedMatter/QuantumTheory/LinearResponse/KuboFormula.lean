@@ -12,11 +12,15 @@ For the bounded time-dependent perturbation convention
 
 `H_λ(t) = H₀ + λ V(t)`,
 
-this module differentiates the interaction-picture observable expectation
+this module derives the perturbed expectation from an ordinary normalized expectation `ω`.  The
+interaction-picture observable evolution defines the pullback functional
 
-`ω(U_{I,λ}(t)† A_I(t) U_{I,λ}(t))`
+`ω_{λ,t}(A) = ω(U_{I,λ}(t)† A_I(t) U_{I,λ}(t))`.
 
-at zero coupling. For a pointwise self-adjoint perturbation, the derivative is
+At zero coupling this is the ordinary expectation composed with free Heisenberg evolution, and it
+reduces to `ω(A)` whenever `ω` is stationary.
+
+For a pointwise self-adjoint perturbation, the derivative at zero coupling is
 
 `ω([A_I(t), K_V(t)])`,
 
@@ -28,7 +32,9 @@ When `V_I` is interval-integrable, continuity and linearity of `ω` give the gen
 
 `-(i / ℏ) ∫₀ᵗ ω([A_I(t), V_I(s)]) ds`.
 
-No separated source form such as `f(t) B` is assumed.
+The finite-coupling pullback is kept as a continuous linear functional rather than bundled as a
+`NormalizedExpectation`: normalization would require full unitarity of the Dyson propagator, which
+is a separate theorem.
 -/
 
 namespace QuantumTheory
@@ -50,12 +56,43 @@ noncomputable def timeDependentPerturbedObservable
     heisenbergEvolution system A t *
       timeDependentInteractionPropagator system V lam t
 
-/-- The expectation of the perturbed interaction-picture observable. -/
-noncomputable def timeDependentPerturbedExpectation
+/-- The continuous linear map sending an ordinary observable `A` to its perturbed
+interaction-picture representative `U_I† A_I U_I`. -/
+noncomputable def timeDependentPerturbedObservableMap
+    (V : ℝ → (H →L[ℂ] H)) (lam t : ℝ) :
+    (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H) :=
+  let U := timeDependentInteractionPropagator system V lam t
+  let left := star U * freePropagator system (-t)
+  let right := freePropagator system t * U
+  ((ContinuousLinearMap.mul ℂ (H →L[ℂ] H)).flip right).comp
+    ((ContinuousLinearMap.mul ℂ (H →L[ℂ] H)) left)
+
+@[simp]
+theorem timeDependentPerturbedObservableMap_apply
+    (V : ℝ → (H →L[ℂ] H)) (A : H →L[ℂ] H)
+    (lam t : ℝ) :
+    timeDependentPerturbedObservableMap system V lam t A =
+      timeDependentPerturbedObservable system V A lam t := by
+  simp [timeDependentPerturbedObservableMap, timeDependentPerturbedObservable,
+    heisenbergEvolution, mul_assoc]
+
+/-- The perturbed expectation functional derived from the ordinary expectation by pullback along
+`A ↦ U_I† A_I U_I`. -/
+noncomputable def timeDependentPerturbedExpectationFunctional
+    (expectation : NormalizedExpectation H)
+    (V : ℝ → (H →L[ℂ] H)) (lam t : ℝ) :
+    (H →L[ℂ] H) →L[ℂ] ℂ :=
+  expectation.toContinuousLinearMap.comp
+    (timeDependentPerturbedObservableMap system V lam t)
+
+@[simp]
+theorem timeDependentPerturbedExpectationFunctional_apply
     (expectation : NormalizedExpectation H)
     (V : ℝ → (H →L[ℂ] H)) (A : H →L[ℂ] H)
-    (lam t : ℝ) : ℂ :=
-  expectation (timeDependentPerturbedObservable system V A lam t)
+    (lam t : ℝ) :
+    timeDependentPerturbedExpectationFunctional system expectation V lam t A =
+      expectation (timeDependentPerturbedObservable system V A lam t) := by
+  simp [timeDependentPerturbedExpectationFunctional]
 
 @[simp]
 theorem timeDependentPerturbedObservable_zero_coupling
@@ -64,13 +101,25 @@ theorem timeDependentPerturbedObservable_zero_coupling
       heisenbergEvolution system A t := by
   simp [timeDependentPerturbedObservable]
 
+/-- At zero coupling, the perturbed functional is the ordinary expectation composed with free
+Heisenberg evolution. -/
 @[simp]
-theorem timeDependentPerturbedExpectation_zero_coupling
+theorem timeDependentPerturbedExpectationFunctional_zero_coupling_apply
     (expectation : NormalizedExpectation H)
     (V : ℝ → (H →L[ℂ] H)) (A : H →L[ℂ] H) (t : ℝ) :
-    timeDependentPerturbedExpectation system expectation V A 0 t =
+    timeDependentPerturbedExpectationFunctional system expectation V 0 t A =
       expectation (heisenbergEvolution system A t) := by
-  simp [timeDependentPerturbedExpectation]
+  simp
+
+/-- For a stationary ordinary expectation, the zero-coupling pullback is exactly the original
+expectation. -/
+theorem timeDependentPerturbedExpectationFunctional_zero_coupling_apply_of_stationary
+    (expectation : NormalizedExpectation H)
+    (hstationary : IsStationary system expectation)
+    (V : ℝ → (H →L[ℂ] H)) (A : H →L[ℂ] H) (t : ℝ) :
+    timeDependentPerturbedExpectationFunctional system expectation V 0 t A =
+      expectation A := by
+  simpa using hstationary t A
 
 /-- The first variation of `U† A_I U` before imposing Hermiticity of the perturbation. -/
 theorem hasDerivAt_timeDependentPerturbedObservable_zero_of_bound
@@ -102,8 +151,9 @@ theorem hasDerivAt_timeDependentPerturbedObservable_zero_of_bound
   rw [hasDerivAt_iff_tendsto] at hprod
   simpa [timeDependentPerturbedObservable, mul_assoc] using hprod
 
-/-- Applying a normalized continuous expectation functional to the observable first variation. -/
-theorem hasDerivAt_timeDependentPerturbedExpectation_zero_of_bound
+/-- Applying the ordinary expectation to the observable first variation gives the derivative of the
+pulled-back perturbed expectation. -/
+theorem hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound
     (expectation : NormalizedExpectation H)
     {V : ℝ → (H →L[ℂ] H)} (A : H →L[ℂ] H)
     {β M t : ℝ} (hM : 0 ≤ M)
@@ -111,7 +161,8 @@ theorem hasDerivAt_timeDependentPerturbedExpectation_zero_of_bound
       ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
     (ht : t ∈ Icc (0 : ℝ) β) :
     HasDerivAt
-      (fun lam : ℝ => timeDependentPerturbedExpectation system expectation V A lam t)
+      (fun lam : ℝ =>
+        timeDependentPerturbedExpectationFunctional system expectation V lam t A)
       (expectation
         (star (timeDependentPropagatorFirstVariation system V t) *
             heisenbergEvolution system A t +
@@ -127,11 +178,11 @@ theorem hasDerivAt_timeDependentPerturbedExpectation_zero_of_bound
     (expectation.toContinuousLinearMap.restrictScalars ℝ).hasFDerivAt
   have hcomp := hExpectation.comp 0 hObs.hasFDerivAt
   have hderiv := hcomp.hasDerivAt
-  simpa [timeDependentPerturbedExpectation, Function.comp_def] using hderiv
+  simpa [timeDependentPerturbedExpectationFunctional_apply] using hderiv
 
-/-- For a Hermitian perturbation, the expectation first variation is the expectation of
+/-- For a Hermitian perturbation, the expectation first variation is the ordinary expectation of
 `[A_I(t), K_V(t)]`. -/
-theorem hasDerivAt_timeDependentPerturbedExpectation_zero_of_bound_of_isSelfAdjoint
+theorem hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_of_isSelfAdjoint
     (expectation : NormalizedExpectation H)
     {V : ℝ → (H →L[ℂ] H)} (hVself : ∀ s, IsSelfAdjoint (V s))
     (A : H →L[ℂ] H) {β M t : ℝ} (hM : 0 ≤ M)
@@ -139,15 +190,17 @@ theorem hasDerivAt_timeDependentPerturbedExpectation_zero_of_bound_of_isSelfAdjo
       ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
     (ht : t ∈ Icc (0 : ℝ) β) :
     HasDerivAt
-      (fun lam : ℝ => timeDependentPerturbedExpectation system expectation V A lam t)
+      (fun lam : ℝ =>
+        timeDependentPerturbedExpectationFunctional system expectation V lam t A)
       (expectation
         (heisenbergEvolution system A t *
             timeDependentPropagatorFirstVariation system V t -
           timeDependentPropagatorFirstVariation system V t *
             heisenbergEvolution system A t))
       0 := by
-  have h := hasDerivAt_timeDependentPerturbedExpectation_zero_of_bound
-    system expectation A hM hV ht
+  have h :=
+    hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound
+      system expectation A hM hV ht
   have hK := star_timeDependentPropagatorFirstVariation_eq_neg_of_isSelfAdjoint
     system V hVself t
   simpa [hK, sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using h
@@ -218,8 +271,9 @@ theorem expectation_commutator_firstVariation_eq_integral
                 heisenbergEvolution system A t) := by
       simp [L]
 
-/-- The general bounded Kubo formula for a pointwise Hermitian, interval-integrable perturbation. -/
-theorem hasDerivAt_timeDependentPerturbedExpectation_zero_of_bound_kubo
+/-- The general bounded Kubo formula for the pullback of an ordinary expectation by a pointwise
+Hermitian, interval-integrable perturbation. -/
+theorem hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_kubo
     (expectation : NormalizedExpectation H)
     {V : ℝ → (H →L[ℂ] H)} (hVself : ∀ s, IsSelfAdjoint (V s))
     (A : H →L[ℂ] H) {β M t : ℝ} (hM : 0 ≤ M)
@@ -229,7 +283,8 @@ theorem hasDerivAt_timeDependentPerturbedExpectation_zero_of_bound_kubo
     (hInt : IntervalIntegrable
       (timeDependentInteractionPerturbation system V) MeasureTheory.volume 0 t) :
     HasDerivAt
-      (fun lam : ℝ => timeDependentPerturbedExpectation system expectation V A lam t)
+      (fun lam : ℝ =>
+        timeDependentPerturbedExpectationFunctional system expectation V lam t A)
       ((-(Complex.I / (system.hbar : ℂ))) •
         ∫ s in (0 : ℝ)..t,
           expectation
@@ -239,24 +294,24 @@ theorem hasDerivAt_timeDependentPerturbedExpectation_zero_of_bound_kubo
                 heisenbergEvolution system A t))
       0 := by
   have h :=
-    hasDerivAt_timeDependentPerturbedExpectation_zero_of_bound_of_isSelfAdjoint
+    hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_of_isSelfAdjoint
       system expectation hVself A hM hV ht
   rw [expectation_commutator_firstVariation_eq_integral
     system expectation V A t hInt] at h
   exact h
 
-/-- A canonical density operator provides the normalized expectation used by the abstract Kubo
-formula. -/
-noncomputable def densityOperatorNormalizedExpectation
+/-- A canonical density operator provides the ordinary normalized expectation used by the abstract
+Kubo formula. -/
+noncomputable def densityNormalizedExpectation
     (ρ : DensityOperator H) : NormalizedExpectation H where
   toContinuousLinearMap := ρ.expectation
   map_one := by
     simpa using ρ.expectation_id
 
 @[simp]
-theorem densityOperatorNormalizedExpectation_apply
+theorem densityNormalizedExpectation_apply
     (ρ : DensityOperator H) (A : H →L[ℂ] H) :
-    densityOperatorNormalizedExpectation ρ A = ρ.expectation A :=
+    densityNormalizedExpectation ρ A = ρ.expectation A :=
   rfl
 
 /-- Density-operator specialization of the general bounded Kubo formula. -/
@@ -280,9 +335,9 @@ theorem hasDerivAt_densityOperatorExpectation_zero_of_bound_kubo
               timeDependentInteractionPerturbation system V s *
                 heisenbergEvolution system A t))
       0 := by
-  simpa [timeDependentPerturbedExpectation] using
-    (hasDerivAt_timeDependentPerturbedExpectation_zero_of_bound_kubo
-      system (densityOperatorNormalizedExpectation ρ) hVself A hM hV ht hInt)
+  simpa using
+    (hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_kubo
+      system (densityNormalizedExpectation ρ) hVself A hM hV ht hInt)
 
 end
 end LinearResponse
