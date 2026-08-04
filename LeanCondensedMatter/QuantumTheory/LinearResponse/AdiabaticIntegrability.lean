@@ -51,10 +51,10 @@ theorem continuous_freePropagator : Continuous (freePropagator system) := by
   have hcomplex : Continuous (fun z : ℂ =>
       NormedSpace.exp (z • schrodingerGenerator system)) :=
     (differentiable_exp_smul_const ℂ (schrodingerGenerator system)).continuous
-  change Continuous (fun t : ℝ =>
-    NormedSpace.exp ((t : ℂ) • schrodingerGenerator system))
-  simpa only [Function.comp_apply] using
-    hcomplex.comp Complex.continuous_ofReal
+  change Continuous
+    ((fun z : ℂ => NormedSpace.exp (z • schrodingerGenerator system)) ∘
+      Complex.ofReal)
+  exact hcomplex.comp Complex.continuous_ofReal
 
 /-- Free Heisenberg evolution of a fixed bounded observable is norm-continuous in time. -/
 theorem continuous_heisenbergEvolution (A : H →L[ℂ] H) :
@@ -81,12 +81,8 @@ theorem continuous_commutatorSusceptibility_timeDifference
       (heisenbergEvolution system A τ * B -
         B * heisenbergEvolution system A τ)) :=
     expectation.toContinuousLinearMap.continuous.comp hcomm
-  change Continuous (fun τ : ℝ =>
-    (Complex.I / (system.hbar : ℂ)) *
-      expectation
-        (heisenbergEvolution system A τ * B -
-          B * heisenbergEvolution system A τ))
-  exact continuous_const.mul hexpect
+  simpa only [commutatorSusceptibility, heisenbergEvolution_zero] using
+    continuous_const.mul hexpect
 
 /-- The causal time-difference kernel is Borel measurable; its only possible jump is at zero. -/
 theorem measurable_retardedTimeDifferenceKernel
@@ -194,13 +190,13 @@ theorem adiabaticIntegrable_of_pos
     Filter.Eventually.of_forall fun τ =>
       norm_retardedTimeDifferenceKernel_le system expectation A B τ
   have hprod : IntegrableOn (fun τ : ℝ =>
-      adiabaticFrequencyPhase ω η τ *
-        retardedTimeDifferenceKernel system expectation A B τ) S volume := by
+      retardedTimeDifferenceKernel system expectation A B τ *
+        adiabaticFrequencyPhase ω η τ) S volume := by
     exact hphase.bdd_mul hkernelMeas hkernelBound
   have hintegrand : IntegrableOn
       (adiabaticFrequencySusceptibilityIntegrand system expectation A B ω η)
       S volume := by
-    simpa only [adiabaticFrequencySusceptibilityIntegrand] using hprod
+    simpa only [adiabaticFrequencySusceptibilityIntegrand, mul_comm] using hprod
   have hpiece : Integrable
       (S.piecewise
         (adiabaticFrequencySusceptibilityIntegrand system expectation A B ω η)
