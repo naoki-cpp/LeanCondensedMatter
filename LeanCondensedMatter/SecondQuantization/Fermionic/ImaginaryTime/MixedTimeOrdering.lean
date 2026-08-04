@@ -89,7 +89,7 @@ private theorem insertTwoPointTimedEvent_perm {n : ℕ} (τ τ' : ℝ) (σ : Fin
       rw [insertTwoPointTimedEvent]
       split
       · exact List.Perm.refl _
-      · exact (List.Perm.cons b ih).trans (List.Perm.swap b a l)
+      · exact (List.Perm.cons b ih).trans (List.Perm.swap b a l).symm
 
 /-- The interaction events in their ordered-simplex order. -/
 def twoPointInteractionEventList (n : ℕ) : List (TwoPointTimedEvent n) :=
@@ -120,7 +120,7 @@ theorem orderedTwoPointTimedEvents_perm {n : ℕ} (τ τ' : ℝ) (σ : Fin n →
     (Sum.inl 1 : TwoPointTimedEvent n)
     (insertTwoPointTimedEvent τ τ' σ (Sum.inl 0) (twoPointInteractionEventList n))
   simpa using h1.trans ((List.Perm.cons _ h0).trans
-    (List.Perm.swap (Sum.inl 1) (Sum.inl 0) (twoPointInteractionEventList n)))
+    (List.Perm.swap (Sum.inl 1) (Sum.inl 0) (twoPointInteractionEventList n)).symm)
 
 /-- The operator represented by a mixed external/interaction event. -/
 noncomputable def twoPointTimedEventOperator {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
