@@ -18,12 +18,15 @@ import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.Analysis.OrderedSimplex.Calculus
 import LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
+import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality
+import LeanCondensedMatter.Analysis.Operator.DiagonalExpectationFinite
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Basic
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Diagonal
 import LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalPositive
 import LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalSpectralTrace
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Equality
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar
 import LeanCondensedMatter.Combinatorics
 import LeanCondensedMatter.QuantumTheory.Postulates
@@ -54,4 +57,6 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.Entropy
 import LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy
 import LeanCondensedMatter.QuantumTheory.Gibbs.Variational
 import LeanCondensedMatter.QuantumTheory.Gibbs.Equality
+import LeanCondensedMatter.QuantumTheory.Gibbs.Uniqueness
+import LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness
 import LeanCondensedMatter.SecondQuantization
