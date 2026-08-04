@@ -71,7 +71,9 @@ expectation values. -/
 theorem hasSum_diagonalExpectationValue (h : SpectralTraceClass T)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
     HasSum (fun i => diagonalExpectationValue T h.isSelfAdjoint (d i)) h.trace := by
-  have hraw := h.hasSum_inner_apply d
+  have hraw : HasSum (fun i => (inner ℂ (d i) (T (d i)) : ℂ).re) h.trace := by
+    simpa [trace] using
+      ContinuousLinearMap.hasSum_inner_apply_eq_spectralTrace h.compact h.symmetric h.summable d
   have hpoint :
       (fun i => diagonalExpectationValue T h.isSelfAdjoint (d i)) =
         fun i => (inner ℂ (d i) (T (d i)) : ℂ).re := by
@@ -88,6 +90,11 @@ theorem sum_diagonalExpectationValue_le_trace (h : SpectralTraceClass T)
     (hd : Orthonormal ℂ d) :
     Summable (fun i => diagonalExpectationValue T h.isSelfAdjoint (d i)) ∧
       ∑' i, diagonalExpectationValue T h.isSelfAdjoint (d i) ≤ h.trace := by
+  have hraw :
+      Summable (fun i => (inner ℂ (d i) (T (d i)) : ℂ).re) ∧
+        ∑' i, (inner ℂ (d i) (T (d i)) : ℂ).re ≤ h.trace := by
+    simpa [trace] using ContinuousLinearMap.sum_inner_apply_le_spectralTrace
+      h.compact h.symmetric hpos h.summable hd
   have hpoint :
       (fun i => diagonalExpectationValue T h.isSelfAdjoint (d i)) =
         fun i => (inner ℂ (d i) (T (d i)) : ℂ).re := by
@@ -95,8 +102,7 @@ theorem sum_diagonalExpectationValue_le_trace (h : SpectralTraceClass T)
     have hcoe := congrArg Complex.re
       (coe_diagonalExpectationValue_right T h.isSelfAdjoint (d i))
     simpa using hcoe
-  rw [hpoint]
-  exact h.sum_inner_apply_le_trace hpos hd
+  rwa [hpoint]
 
 /-- Compatibility bridge: compute the bundled spectral trace against any Hilbert basis after
 projecting each diagonal matrix element to its real part. Prefer
