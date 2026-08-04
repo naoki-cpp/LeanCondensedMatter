@@ -11,4 +11,4 @@ The branch:
 5. replaces erased convergence/integrability witnesses with explicit total value definitions and theorem-level hypotheses;
 6. keeps style-only linters separate from mathematical/API correctness.
 
-The cross-cutting refactor and its downstream compatibility passes have been applied. Density normalization now uses the public `DensityOperator.spectralTrace_op_eq_one` bridge rather than unfolding bundled trace proofs. Bosonic noncomputable sections and normalized singleton moments have also been corrected. Temporary inventory scaffolding will be removed before merge.
+The branch is now based on current `main`. Local implementation equality instances are uniquely named and no longer leak into public APIs; malformed `omit` blocks and newly exposed unused arguments were removed across Gibbs, Dyson, and two-point flattening modules. The next validation run checks the complete integrated tree. Temporary inventory scaffolding will be removed before merge.
