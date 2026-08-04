@@ -42,6 +42,7 @@ import LeanCondensedMatter.QuantumTheory.LinearResponse.FrequencyDomain
 import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticSwitching
 import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann
+import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics
 import LeanCondensedMatter.QuantumTheory.DensityOperator
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal
 import LeanCondensedMatter.QuantumTheory.Entropy.Basic
