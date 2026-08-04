@@ -96,14 +96,22 @@ theorem norm_inv_lehmannDenominator_le
   simpa [one_div] using one_div_le_one_div_of_le heta
     (eta_le_norm_lehmannDenominator hbar omega eta energyGap)
 
+/-- The denominator is the negative of the corresponding damped-mode exponent. -/
+theorem lehmannDenominator_eq_neg_exponent
+    (hbar omega eta energyGap : ℝ) :
+    lehmannDenominator hbar omega eta energyGap =
+      -lehmannModeExponent hbar omega eta energyGap := by
+  unfold lehmannModeExponent lehmannDenominator
+  ring
+
 /-- The mode integral written in conventional resolvent-denominator form. -/
 theorem integral_lehmannMode_Ioi_zero_eq_resolvent
     (hbar omega eta energyGap : ℝ) (heta : 0 < eta) :
     (∫ t : ℝ in Ioi 0, lehmannMode hbar omega eta energyGap t) =
       (lehmannDenominator hbar omega eta energyGap)⁻¹ := by
   rw [integral_lehmannMode_Ioi_zero hbar omega eta energyGap heta]
-  unfold lehmannModeExponent lehmannDenominator
-  ring_nf
+  rw [lehmannDenominator_eq_neg_exponent]
+  simp [div_eq_mul_inv]
 
 /-- One scalar term in a Lehmann representation. -/
 noncomputable def lehmannTerm
