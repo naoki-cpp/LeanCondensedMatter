@@ -149,8 +149,9 @@ theorem hasStaticLimit_finiteLehmannLimitSum_of_pos
         finiteLehmannLimitSum s hbar omega eta energyGap weight)
       (finiteLehmannLimitSum s hbar 0 eta energyGap weight) := by
   classical
+  unfold HasStaticLimit
   induction s using Finset.induction_on with
-  | empty => simp [finiteLehmannLimitSum, HasStaticLimit]
+  | empty => simp [finiteLehmannLimitSum]
   | @insert a s ha ih =>
       simpa [finiteLehmannLimitSum, Finset.sum_insert, ha] using
         (hasStaticLimit_lehmannTerm_of_pos
@@ -167,10 +168,9 @@ theorem hasAdiabaticRemovalLimit_finiteLehmannLimitSum
         finiteLehmannLimitSum s hbar omega eta energyGap weight)
       (finiteUnswitchedLehmannSum s hbar omega energyGap weight) := by
   classical
+  unfold HasAdiabaticRemovalLimit
   induction s using Finset.induction_on with
-  | empty =>
-      simp [finiteLehmannLimitSum, finiteUnswitchedLehmannSum,
-        HasAdiabaticRemovalLimit]
+  | empty => simp [finiteLehmannLimitSum, finiteUnswitchedLehmannSum]
   | @insert a s ha ih =>
       have haRegular := hregular a (Finset.mem_insert_self a s)
       have hsRegular : ∀ j ∈ s,
@@ -194,11 +194,13 @@ theorem hasStaticLimit_finiteUnswitchedLehmannSum
         finiteUnswitchedLehmannSum s hbar omega energyGap weight)
       (finiteUnswitchedLehmannSum s hbar 0 energyGap weight) := by
   classical
+  unfold HasStaticLimit
   induction s using Finset.induction_on with
-  | empty => simp [finiteUnswitchedLehmannSum, HasStaticLimit]
+  | empty => simp [finiteUnswitchedLehmannSum]
   | @insert a s ha ih =>
       have haRegular := hregular a (Finset.mem_insert_self a s)
-      have hsRegular : ∀ j ∈ s, weight j = 0 ∨ energyGap j ≠ 0 := by
+      have hsRegular : ∀ j ∈ s,
+          weight j = 0 ∨ energyGap j ≠ 0 := by
         intro j hj
         exact hregular j (Finset.mem_insert_of_mem hj)
       simpa [finiteUnswitchedLehmannSum, Finset.sum_insert, ha] using
@@ -248,6 +250,7 @@ theorem eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum
           exact hasAdiabaticRemovalLimit_lehmannTerm
             hbar omega (energyGap a) (weight a) (Or.inr hdetuning)
       filter_upwards [hterm, ih hsRegular] with omega htermOmega hsOmega
+      unfold HasAdiabaticRemovalLimit at htermOmega hsOmega ⊢
       simpa [finiteLehmannLimitSum, finiteUnswitchedLehmannSum,
         Finset.sum_insert, ha] using htermOmega.add hsOmega
 
