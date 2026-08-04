@@ -18,7 +18,7 @@ theorem Summable.tsum_comp_injective_lt_of_exists_not_mem
     (hf_nonneg : ∀ k, 0 ≤ f k) (e : ι → κ) (he : Function.Injective e)
     {j : κ} (hj : j ∉ Set.range e) (hjpos : 0 < f j) :
     ∑' i, f (e i) < ∑' k, f k := by
-  let e' : ι ⊕ PUnit → κ := Sum.elim e (fun _ => j)
+  let e' : ι ⊕ Unit → κ := Sum.elim e (fun _ => j)
   have he' : Function.Injective e' := by
     intro a b hab
     cases a with
@@ -45,16 +45,16 @@ theorem Summable.tsum_comp_injective_lt_of_exists_not_mem
             exact hab.symm
         | inr u' =>
             exact congrArg Sum.inr (Subsingleton.elim u u')
-  have haug : Summable (fun q : ι ⊕ PUnit => f (e' q)) :=
+  have haug : Summable (fun q : ι ⊕ Unit => f (e' q)) :=
     hf.comp_injective he'
-  have hleft : Summable ((fun q : ι ⊕ PUnit => f (e' q)) ∘ Sum.inl) :=
+  have hleft : Summable ((fun q : ι ⊕ Unit => f (e' q)) ∘ Sum.inl) :=
     haug.comp_injective Sum.inl_injective
-  have hright : Summable ((fun q : ι ⊕ PUnit => f (e' q)) ∘ Sum.inr) :=
+  have hright : Summable ((fun q : ι ⊕ Unit => f (e' q)) ∘ Sum.inr) :=
     haug.comp_injective Sum.inr_injective
   have hsplit :
-      (∑' q : ι ⊕ PUnit, f (e' q)) = (∑' i, f (e i)) + f j := by
+      (∑' q : ι ⊕ Unit, f (e' q)) = (∑' i, f (e i)) + f j := by
     simpa [Function.comp_def, e'] using hleft.tsum_sum hright
-  have hle : ∑' q : ι ⊕ PUnit, f (e' q) ≤ ∑' k, f k :=
+  have hle : ∑' q : ι ⊕ Unit, f (e' q) ≤ ∑' k, f k :=
     hasSum_le_inj e' he' (fun k _ => hf_nonneg k) (fun _ => le_rfl)
       haug.hasSum hf.hasSum
   rw [hsplit] at hle
@@ -100,8 +100,9 @@ theorem orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace
       _ = spectralTrace h := heq
   have he_surj : Function.Surjective e := by
     by_contra hsurj
-    push_neg at hsurj
-    obtain ⟨j, hj⟩ := hsurj
+    have hsurj' : ∃ j, ∀ i, e i ≠ j := by
+      simpa only [Function.Surjective, not_forall, not_exists] using hsurj
+    obtain ⟨j, hj⟩ := hsurj'
     have hjrange : j ∉ Set.range e := by
       rintro ⟨i, hi⟩
       exact hj i hi
@@ -120,13 +121,13 @@ theorem orthogonal_span_eq_bot_of_sum_diagonalExpectationValue_eq_spectralTrace
         change b (e i) = d i
         rw [hb_eq]
       rw [hbdi]
-      exact (Submodule.mem_orthogonal.mp hx) (d i)
-        (Submodule.subset_span ⟨i, rfl⟩)
+      exact Submodule.inner_right_of_mem_orthogonal
+        (Submodule.subset_span ⟨i, rfl⟩) hx
     have hrepr : b.repr x = 0 := by
       ext j
       rw [b.repr_apply_apply]
       exact hinner j
-    have hx0 : x = 0 := b.repr.injective hrepr
+    have hx0 : x = 0 := b.repr.injective (by simpa using hrepr)
     rw [hx0]
     exact Submodule.zero_mem _
   · exact bot_le
