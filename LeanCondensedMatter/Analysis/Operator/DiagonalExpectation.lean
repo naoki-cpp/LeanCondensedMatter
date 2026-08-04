@@ -5,13 +5,15 @@ import Mathlib.LinearAlgebra.Complex.Module
 # Lossless diagonal expectations
 
 For a self-adjoint operator, a diagonal matrix element is a real scalar. This module packages that
-fact before transporting the scalar to `ℝ`, so public propositions do not silently discard an
-imaginary part with `.re`.
+fact before transporting the scalar to `ℝ`, so propositions and implementations do not silently
+discard an imaginary part with `.re`.
 -/
 
 noncomputable section
 
 namespace ContinuousLinearMap
+
+open scoped ComplexOrder
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
@@ -55,5 +57,32 @@ theorem coe_diagonalExpectationValue_right
     (diagonalExpectationValue T hT x : ℂ) = inner ℂ (T x) x :=
       coe_diagonalExpectationValue T hT x
     _ = inner ℂ x (T x) := hsym x x
+
+/-- A positive operator has a nonnegative lossless diagonal expectation. -/
+theorem diagonalExpectationValue_nonneg
+    (T : H →L[ℂ] H) (hT : T.IsPositive) (x : H) :
+    0 ≤ diagonalExpectationValue T hT.isSelfAdjoint x := by
+  have hcomplex : (0 : ℂ) ≤ inner ℂ x (T x) := hT.inner_nonneg_right x
+  rw [← coe_diagonalExpectationValue_right T hT.isSelfAdjoint x] at hcomplex
+  exact_mod_cast hcomplex
+
+/-- Lossless diagonal expectation is additive in the operator. -/
+@[simp]
+theorem diagonalExpectationValue_add
+    (T S : H →L[ℂ] H) (hT : IsSelfAdjoint T) (hS : IsSelfAdjoint S) (x : H) :
+    diagonalExpectationValue (T + S) (hT.add hS) x =
+      diagonalExpectationValue T hT x + diagonalExpectationValue S hS x := by
+  apply Complex.ofReal_injective
+  rw [coe_diagonalExpectationValue_right, Complex.ofReal_add,
+    coe_diagonalExpectationValue_right, coe_diagonalExpectationValue_right]
+  simp [inner_add_right]
+
+/-- Equal diagonal matrix elements give equal lossless diagonal-expectation values. -/
+theorem diagonalExpectationValue_eq_of_inner_eq
+    {T S : H →L[ℂ] H} (hT : IsSelfAdjoint T) (hS : IsSelfAdjoint S) (x : H)
+    (h : inner ℂ x (T x) = inner ℂ x (S x)) :
+    diagonalExpectationValue T hT x = diagonalExpectationValue S hS x := by
+  apply Complex.ofReal_injective
+  rw [coe_diagonalExpectationValue_right, coe_diagonalExpectationValue_right, h]
 
 end ContinuousLinearMap
