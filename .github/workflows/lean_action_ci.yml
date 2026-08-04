@@ -28,9 +28,8 @@ jobs:
           # Keep the whole library warning-free, including modules unchanged by the PR.
           build: true
           build-args: "--wfail"
-          # Independently re-check generated declarations and reject sorryAx.
-          nanoda: true
-          nanoda-allow-sorry: false
+      - name: Check environment with nanoda
+        run: bash scripts/check_with_nanoda.sh LeanCondensedMatter
 
   # Documentation is intentionally built only on pushes to main. doc-gen4 processes the
   # full Mathlib symbol set, so running it for every pull request would be unnecessarily slow.
