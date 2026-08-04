@@ -80,6 +80,17 @@ private theorem insertTwoPointTimedEvent_length {n : ℕ} (τ τ' : ℝ) (σ : F
       rw [insertTwoPointTimedEvent]
       split <;> simp [ih]
 
+private theorem insertTwoPointTimedEvent_perm {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (a : TwoPointTimedEvent n) (l : List (TwoPointTimedEvent n)) :
+    List.Perm (insertTwoPointTimedEvent τ τ' σ a l) (a :: l) := by
+  induction l with
+  | nil => simp [insertTwoPointTimedEvent]
+  | cons b l ih =>
+      rw [insertTwoPointTimedEvent]
+      split
+      · exact List.Perm.refl _
+      · exact (List.Perm.cons b ih).trans (List.Perm.swap b a l).symm
+
 /-- The interaction events in their ordered-simplex order. -/
 def twoPointInteractionEventList (n : ℕ) : List (TwoPointTimedEvent n) :=
   List.ofFn fun v : Fin n => Sum.inr v
@@ -96,6 +107,20 @@ theorem orderedTwoPointTimedEvents_length {n : ℕ} (τ τ' : ℝ) (σ : Fin n �
   rw [orderedTwoPointTimedEvents, insertTwoPointTimedEvent_length,
     insertTwoPointTimedEvent_length]
   simp [twoPointInteractionEventList]
+
+/-- Time ordering permutes, but neither duplicates nor removes, the two external events and the
+interaction events. -/
+theorem orderedTwoPointTimedEvents_perm {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    List.Perm (orderedTwoPointTimedEvents τ τ' σ)
+      ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n) := by
+  rw [orderedTwoPointTimedEvents]
+  have h0 := insertTwoPointTimedEvent_perm τ τ' σ
+    (Sum.inl 0 : TwoPointTimedEvent n) (twoPointInteractionEventList n)
+  have h1 := insertTwoPointTimedEvent_perm τ τ' σ
+    (Sum.inl 1 : TwoPointTimedEvent n)
+    (insertTwoPointTimedEvent τ τ' σ (Sum.inl 0) (twoPointInteractionEventList n))
+  simpa using h1.trans ((List.Perm.cons _ h0).trans
+    (List.Perm.swap (Sum.inl 1) (Sum.inl 0) (twoPointInteractionEventList n)).symm)
 
 /-- The operator represented by a mixed external/interaction event. -/
 noncomputable def twoPointTimedEventOperator {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
