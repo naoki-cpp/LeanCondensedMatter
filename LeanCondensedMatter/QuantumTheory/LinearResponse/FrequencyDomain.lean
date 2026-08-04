@@ -110,6 +110,7 @@ def FrequencyIntegrable
 /-- Frequency-domain retarded susceptibility with convention `exp (i ω τ)`.
 
 The proof argument makes the required Bochner integrability assumption explicit. -/
+@[nolint unusedArguments]
 noncomputable def frequencyDomainSusceptibility
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) (ω : ℝ)

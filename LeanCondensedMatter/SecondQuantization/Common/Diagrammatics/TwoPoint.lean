@@ -72,8 +72,11 @@ theorem twoPointVertexOfLeg_interactionLeg {S : Finset (Fin N)} (v : ↥S) (l : 
 perfect pairing of all `4 |S| + 2` legs. -/
 structure TwoPointDiagram (ExternalLabel InternalLabel : Type*) (N : ℕ)
     (S : Finset (Fin N)) where
+  /-- Labels attached to the two distinguished external vertices. -/
   externalLabel : Fin 2 → ExternalLabel
+  /-- Labels attached to the quartic interaction vertices. -/
   vertexLabel : ↥S → InternalLabel
+  /-- Perfect pairing of all external and interaction legs. -/
   pairing : Pairing (2 * S.card + 1)
 
 @[ext]

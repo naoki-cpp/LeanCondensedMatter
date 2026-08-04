@@ -22,6 +22,7 @@ variable {ι : Type*} [Fintype ι]
 
 /-- An order-preserving interleaving of a finite family of local slot blocks. -/
 structure FamilySlotShuffle (size : ι → ℕ) where
+  /-- Equivalence between tagged local slots and ambient slots. -/
   slotEquiv : (Σ i : ι, Fin (size i)) ≃ Fin (∑ i, size i)
   strictMono : ∀ i, StrictMono (fun j => slotEquiv ⟨i, j⟩)
 

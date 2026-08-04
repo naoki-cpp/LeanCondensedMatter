@@ -25,6 +25,7 @@ variable {Label : Type*} {N : ℕ}
 is regarded as the left block and the `true` component as the right block. -/
 structure QuarticDiagram.TwoComponentPresentation {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) where
+  /-- Equivalence between Boolean component labels and component blocks. -/
   partsEquiv : Bool ≃ d.componentPartition.parts
 
 /-- A two-component presentation exists whenever the component type has cardinality two. -/

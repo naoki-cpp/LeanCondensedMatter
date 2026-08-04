@@ -23,6 +23,7 @@ variable {Label : Type*} {N : ℕ}
 /-- An enumeration of all connected-component blocks of a diagram by `Fin k`. -/
 structure QuarticDiagram.FiniteComponentPresentation {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (k : ℕ) where
+  /-- Equivalence between finite component indices and component blocks. -/
   partsEquiv : Fin k ≃ d.componentPartition.parts
 
 /-- The canonical finite presentation obtained by enumerating the component type. -/

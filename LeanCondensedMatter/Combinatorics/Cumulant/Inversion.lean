@@ -32,7 +32,7 @@ noncomputable def momentFromCumulant (κ : Finset α → R) (S : Finset α) : R 
 noncomputable def cumulantFromMoment (m : Finset α → R) (S : Finset α) : R :=
   ∑ π : Finpartition S, mu R π ⊤ * partitionProduct m π
 
-@[simp]
+@[simp, nolint simpNF]
 theorem partitionProduct_top {S : Finset α} (hS : S ≠ ⊥) (f : Finset α → R) :
     partitionProduct f (⊤ : Finpartition S) = f S := by
   have hparts : (⊤ : Finpartition S).parts = {S} := by

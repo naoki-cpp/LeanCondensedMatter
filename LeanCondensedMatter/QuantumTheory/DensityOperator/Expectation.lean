@@ -131,7 +131,7 @@ theorem DensityOperator.norm_expectation_le (ρ : DensityOperator H) (A : H →L
   densityExpectation_norm_le ρ A
 
 /-- The expectation of the identity operator is one. -/
-@[simp]
+@[simp, nolint simpNF]
 theorem DensityOperator.expectation_id (ρ : DensityOperator H) :
     ρ.expectation (ContinuousLinearMap.id ℂ H) = 1 := by
   rw [ρ.expectation_apply]

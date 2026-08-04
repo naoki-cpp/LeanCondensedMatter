@@ -32,6 +32,7 @@ theorem summable_diagonalTerm (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
   simp [diagonalTerm, norm_smul, b.orthonormal.1 i]
 
 /-- The bounded diagonal operator with coefficients `a` in the Hilbert basis `b`. -/
+@[nolint unusedArguments]
 def diagonalOp (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
     (_ha : Summable fun i => ‖a i‖) : H →L[ℂ] H :=
   ∑' i, diagonalTerm b a i

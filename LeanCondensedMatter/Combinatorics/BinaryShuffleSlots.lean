@@ -191,6 +191,7 @@ theorem slotEquiv_inr {m n : ℕ} (σ : BinaryShuffle m n) (j : Fin n) :
 
 /-- An order-preserving equivalence of two local slot families with the ambient slots. -/
 structure SlotShuffle (m n : ℕ) where
+  /-- Equivalence between tagged local slots and ambient slots. -/
   slotEquiv : Fin m ⊕ Fin n ≃ Fin (m + n)
   strictMonoLeft : StrictMono (fun i => slotEquiv (Sum.inl i))
   strictMonoRight : StrictMono (fun j => slotEquiv (Sum.inr j))

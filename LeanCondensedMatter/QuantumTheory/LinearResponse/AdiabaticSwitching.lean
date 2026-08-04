@@ -114,6 +114,7 @@ theorem not_adiabaticIntegrable_zero_rate
   simp [AdiabaticIntegrable]
 
 /-- Fixed-positive-rate adiabatically switched retarded susceptibility. -/
+@[nolint unusedArguments]
 noncomputable def adiabaticFrequencyDomainSusceptibility
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) (ω η : ℝ)

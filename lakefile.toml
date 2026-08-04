@@ -2,6 +2,9 @@ name = "LeanCondensedMatter"
 version = "0.1.0"
 keywords = ["math"]
 defaultTargets = ["LeanCondensedMatter"]
+# Run the Batteries linter over the curated public library target. Individual `nolint` annotations
+# are reserved for proof witnesses, compatibility parameters, or deliberate high-level simp APIs.
+lintDriver = "batteries/runLinter"
 
 [leanOptions]
 pp.unicode.fun = true # pretty-prints `fun a ↦ b`

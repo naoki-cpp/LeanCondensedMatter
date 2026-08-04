@@ -33,8 +33,10 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 /-- Data defining bounded free quantum dynamics with the explicit convention `ℏ > 0`. -/
 structure BoundedFreeSystem (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] where
+  /-- The bounded self-adjoint free Hamiltonian. -/
   hamiltonian : H →L[ℂ] H
   hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian
+  /-- The reduced Planck constant used to scale time evolution. -/
   hbar : ℝ
   hbar_pos : 0 < hbar
 
@@ -141,6 +143,7 @@ Positivity is intentionally not part of this minimal interface: it is unnecessar
 algebraic first derivative underlying the Kubo formula. -/
 structure NormalizedExpectation (H : Type*) [NormedAddCommGroup H]
     [InnerProductSpace ℂ H] [CompleteSpace H] where
+  /-- The underlying continuous linear functional on bounded operators. -/
   toContinuousLinearMap : (H →L[ℂ] H) →L[ℂ] ℂ
   map_one : toContinuousLinearMap 1 = 1
 

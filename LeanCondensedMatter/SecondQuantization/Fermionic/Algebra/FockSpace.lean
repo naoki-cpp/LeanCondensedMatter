@@ -28,6 +28,7 @@ variable {Mode : Type*} [DecidableEq Mode]
 /-- **The algebraic fermionic Fock space.** The free `ℂ`-vector space on the basis
 `Occupation Mode` — finite `ℂ`-linear combinations of occupation-number states, reusing
 `Common.AlgebraicFock`. -/
+@[nolint unusedArguments]
 abbrev FockSpace (Mode : Type*) [DecidableEq Mode] :=
   Common.AlgebraicFock (Occupation Mode)
 
