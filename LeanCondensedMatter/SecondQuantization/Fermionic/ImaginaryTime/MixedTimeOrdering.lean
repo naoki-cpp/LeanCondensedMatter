@@ -63,12 +63,13 @@ def twoPointTimedEventBeforeOrEqual {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ
     (twoPointTimedEventTime τ τ' σ a = twoPointTimedEventTime τ τ' σ b ∧
       twoPointTimedEventRank a ≤ twoPointTimedEventRank b)
 
-private def insertTwoPointTimedEvent {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
+private noncomputable def insertTwoPointTimedEvent {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
     (a : TwoPointTimedEvent n) : List (TwoPointTimedEvent n) → List (TwoPointTimedEvent n)
   | [] => [a]
   | b :: l =>
-      if twoPointTimedEventBeforeOrEqual τ τ' σ a b then a :: b :: l
-      else b :: insertTwoPointTimedEvent τ τ' σ a l
+      @ite (List (TwoPointTimedEvent n)) (twoPointTimedEventBeforeOrEqual τ τ' σ a b)
+        (Classical.propDecidable _)
+        (a :: b :: l) (b :: insertTwoPointTimedEvent τ τ' σ a l)
 
 private theorem insertTwoPointTimedEvent_length {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
     (a : TwoPointTimedEvent n) (l : List (TwoPointTimedEvent n)) :
@@ -76,7 +77,7 @@ private theorem insertTwoPointTimedEvent_length {n : ℕ} (τ τ' : ℝ) (σ : F
   induction l with
   | nil => rfl
   | cons b l ih =>
-      simp only [insertTwoPointTimedEvent]
+      rw [insertTwoPointTimedEvent]
       split <;> simp [ih]
 
 /-- The interaction events in their ordered-simplex order. -/
@@ -84,7 +85,7 @@ def twoPointInteractionEventList (n : ℕ) : List (TwoPointTimedEvent n) :=
   List.ofFn fun v : Fin n => Sum.inr v
 
 /-- Insert the two external events into the supplied interaction-vertex order by decreasing time. -/
-def orderedTwoPointTimedEvents {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
+noncomputable def orderedTwoPointTimedEvents {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
     List (TwoPointTimedEvent n) :=
   insertTwoPointTimedEvent τ τ' σ (Sum.inl 1)
     (insertTwoPointTimedEvent τ τ' σ (Sum.inl 0) (twoPointInteractionEventList n))
@@ -126,8 +127,9 @@ theorem twoPointTimedEventOperator_interaction {n : ℕ} (ε : Mode → ℝ) (i 
   rfl
 
 /-- The exchange sign coming from the relative order of the two odd external fields. -/
-def twoPointExternalOrderSign (τ τ' : ℝ) : ℂ :=
-  if τ < τ' then (Common.Statistics.fermion.zetaInt : ℂ) else 1
+noncomputable def twoPointExternalOrderSign (τ τ' : ℝ) : ℂ :=
+  @ite ℂ (τ < τ') (Classical.propDecidable _)
+    (Common.Statistics.fermion.zetaInt : ℂ) 1
 
 /-- The mixed time-ordered operator product of two external fields and `n` quartic interaction
 vertices.  The interaction vertices are assumed to be supplied in decreasing-time order, as in an
@@ -139,16 +141,34 @@ noncomputable def mixedTimeOrderedVertexComp {n : ℕ} (ε : Mode → ℝ) (i j 
     Common.prodComp ((orderedTwoPointTimedEvents τ τ' σ).map
       (twoPointTimedEventOperator ε i j τ τ' q σ))
 
+set_option linter.unusedSimpArgs false in
+private theorem orderedTwoPointTimedEvents_zero_of_gt (σ : Fin 0 → ℝ)
+    {τ τ' : ℝ} (h : τ' < τ) :
+    orderedTwoPointTimedEvents τ τ' σ =
+      [Sum.inl 0, Sum.inl 1] := by
+  have hnot : ¬ τ < τ' := not_lt_of_ge h.le
+  have hne : τ' ≠ τ := ne_of_lt h
+  simp [orderedTwoPointTimedEvents, twoPointInteractionEventList, insertTwoPointTimedEvent,
+    twoPointTimedEventBeforeOrEqual, twoPointTimedEventTime, twoPointTimedEventRank,
+    hnot, hne]
+
+set_option linter.unusedSimpArgs false in
+private theorem orderedTwoPointTimedEvents_zero_of_lt (σ : Fin 0 → ℝ)
+    {τ τ' : ℝ} (h : τ < τ') :
+    orderedTwoPointTimedEvents τ τ' σ =
+      [Sum.inl 1, Sum.inl 0] := by
+  simp [orderedTwoPointTimedEvents, twoPointInteractionEventList, insertTwoPointTimedEvent,
+    twoPointTimedEventBeforeOrEqual, twoPointTimedEventTime, twoPointTimedEventRank, h]
+
 /-- At interaction order zero and `τ' < τ`, mixed ordering reduces to the ordinary two-point
 ordered product with the annihilation field on the left. -/
 theorem mixedTimeOrderedVertexComp_zero_of_gt (ε : Mode → ℝ) (i j : Mode)
     (q : Fin 0 → QuarticVertexLabel Mode) (σ : Fin 0 → ℝ) {τ τ' : ℝ} (h : τ' < τ) :
     mixedTimeOrderedVertexComp ε i j τ τ' q σ =
       twoPointTimeOrderedProduct ε i j τ τ' := by
-  rw [twoPointTimeOrderedProduct_of_gt ε i j h]
-  simp [mixedTimeOrderedVertexComp, twoPointExternalOrderSign, orderedTwoPointTimedEvents,
-    twoPointInteractionEventList, insertTwoPointTimedEvent, twoPointTimedEventBeforeOrEqual,
-    twoPointTimedEventTime, twoPointTimedEventRank, h, not_lt_of_ge h.le]
+  rw [twoPointTimeOrderedProduct_of_gt ε i j h, mixedTimeOrderedVertexComp,
+    orderedTwoPointTimedEvents_zero_of_gt σ h]
+  simp [twoPointExternalOrderSign, not_lt_of_ge h.le, Common.prodComp]
 
 /-- At interaction order zero and `τ < τ'`, mixed ordering reduces to the ordinary two-point
 ordered product with the creation field moved left and the fermionic exchange sign. -/
@@ -156,10 +176,9 @@ theorem mixedTimeOrderedVertexComp_zero_of_lt (ε : Mode → ℝ) (i j : Mode)
     (q : Fin 0 → QuarticVertexLabel Mode) (σ : Fin 0 → ℝ) {τ τ' : ℝ} (h : τ < τ') :
     mixedTimeOrderedVertexComp ε i j τ τ' q σ =
       twoPointTimeOrderedProduct ε i j τ τ' := by
-  rw [twoPointTimeOrderedProduct_of_lt ε i j h]
-  simp [mixedTimeOrderedVertexComp, twoPointExternalOrderSign, orderedTwoPointTimedEvents,
-    twoPointInteractionEventList, insertTwoPointTimedEvent, twoPointTimedEventBeforeOrEqual,
-    twoPointTimedEventTime, twoPointTimedEventRank, h, not_lt_of_ge h.le]
+  rw [twoPointTimeOrderedProduct_of_lt ε i j h, mixedTimeOrderedVertexComp,
+    orderedTwoPointTimedEvents_zero_of_lt σ h]
+  simp [twoPointExternalOrderSign, h, Common.prodComp]
 
 end Fermionic
 end SecondQuantization
