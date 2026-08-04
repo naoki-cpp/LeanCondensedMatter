@@ -201,8 +201,12 @@ theorem helmholtzFreeEnergy_eq_components
     hnML_summable.eq_of_le_of_tsum_eq hB_summable hbound hnML_eq_B
   have hp_pos : ∀ a, 0 < p a := fun a => by
     exact lt_of_le_of_ne (eigenvalue_nonneg ρ a) (Ne.symm a.1.2)
-  have hscalar : ∀ a, p a = q a / Z ∧ -Real.log (q a) = β * h a := fun a =>
-    (negMulLog_bound_eq_iff (hp_pos a) (hqpos a) hZpos (hstep2 a)).mp (hterm_eq a)
+  have hscalar : ∀ a, p a = q a / Z ∧ -Real.log (q a) = β * h a := fun a => by
+    apply (negMulLog_bound_eq_iff (hp_pos a) (hqpos a) hZpos (hstep2 a)).mp
+    calc
+      Real.negMulLog (p a) =
+          β * (p a * h a) + p a * Real.log Z - p a + q a / Z := hterm_eq a
+      _ = p a * (β * h a) + p a * Real.log Z - p a + q a / Z := by ring
   have hpeq : ∀ a, p a = q a / Z := fun a => (hscalar a).1
   have hpeierls : ∀ a, Real.exp (-β * h a) = q a := fun a => by
     have hlogeq : Real.log (q a) = -β * h a := by
