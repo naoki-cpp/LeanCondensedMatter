@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectationFinite
+import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 
 -- No project files currently carry a Mathlib-style copyright/author header; a
 -- project-wide policy for this is a separate open item (see notes/conventions.md).
@@ -212,4 +213,6 @@ theorem gibbs_peierls_bogoliubov_eq_iff_eigenvector
       exact cfc_apply_eigenvector (T := T) hT heigen
         (f := fun x : ℝ => Real.exp (-β * x)) (by fun_prop)
     rw [hcfc, inner_smul_left, inner_self_eq_norm_sq_to_K, he]
-    norm_num
+    change (Real.exp (-β * x₀) : ℂ) =
+      starRingEnd ℂ (Real.exp (-β * x₀) : ℂ)
+    simp
