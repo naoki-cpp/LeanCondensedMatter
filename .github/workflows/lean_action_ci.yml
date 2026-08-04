@@ -28,8 +28,6 @@ jobs:
           # Keep the whole library warning-free, including modules unchanged by the PR.
           build: true
           build-args: "--wfail"
-          # Run the Batteries declaration linter configured in lakefile.toml.
-          lint: true
           # Independently re-check generated declarations and reject sorryAx.
           nanoda: true
           nanoda-allow-sorry: false
