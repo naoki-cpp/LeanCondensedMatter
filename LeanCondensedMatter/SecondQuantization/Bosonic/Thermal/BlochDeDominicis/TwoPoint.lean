@@ -21,7 +21,12 @@ particle-number-weighted Boltzmann summability.
 namespace SecondQuantization
 namespace Bosonic
 
-variable {Mode : Type*} [DecidableEq Mode] [Fintype Mode]
+noncomputable section
+
+variable {Mode : Type*} [Fintype Mode]
+
+local instance instDecidableEqBosonicBlochDeDominicisTwoPoint : DecidableEq Mode :=
+  Classical.decEq Mode
 
 /-- Bridge `Common.matrixCoeff` to the local occupation-basis notation. -/
 private theorem matrixCoeff_eq (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
@@ -202,5 +207,6 @@ theorem tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create
       (1 : ℂ) (if i = j then (1 : ℂ) else 0) (annihilate i) (create j) hC1 hcomm hSummD h
     simpa using hthm
 
+end
 end Bosonic
 end SecondQuantization
