@@ -7,8 +7,9 @@ set_option linter.style.header false
 /-!
 # Equality cases for the Peierls–Bogoliubov inequality
 
-This file isolates the strict scalar step needed to reverse the tangent-line proof of the
-Peierls–Bogoliubov inequality for the Gibbs weight `x ↦ exp (-β x)`.
+This file isolates the strict scalar and finite weighted-sum steps needed to reverse the
+tangent-line proof of the Peierls–Bogoliubov inequality for the Gibbs weight
+`x ↦ exp (-β x)`.
 -/
 
 /-- For nonzero `β`, the tangent line to `x ↦ exp (-β x)` at `x₀` lies strictly below the
@@ -47,3 +48,50 @@ theorem exp_tangent_eq_iff (β x₀ x : ℝ) (hβ : β ≠ 0) :
     exact (ne_of_lt (exp_tangent_strict β x₀ x hβ hx)) heq
   · rintro rfl
     ring
+
+/-- Equality between a finite nonnegative weighted sum of exponential values and the corresponding
+weighted tangent values forces every point with positive weight to be the tangency point. -/
+theorem exp_tangent_weighted_sum_eq_support
+    {ι : Type*} [Fintype ι] (β x₀ : ℝ) (hβ : β ≠ 0)
+    (w E : ι → ℝ) (hw : ∀ i, 0 ≤ w i)
+    (heq :
+      ∑ i, w i *
+          ((-β * Real.exp (-β * x₀)) * E i +
+            (Real.exp (-β * x₀) - (-β * Real.exp (-β * x₀)) * x₀)) =
+        ∑ i, w i * Real.exp (-β * E i)) :
+    ∀ i, 0 < w i → E i = x₀ := by
+  have hgap_nonneg (i : ι) :
+      0 ≤ Real.exp (-β * E i) -
+        ((-β * Real.exp (-β * x₀)) * E i +
+          (Real.exp (-β * x₀) - (-β * Real.exp (-β * x₀)) * x₀)) :=
+    sub_nonneg.mpr (exp_tangent β x₀ (E i))
+  have hsumzero :
+      ∑ i, w i *
+          (Real.exp (-β * E i) -
+            ((-β * Real.exp (-β * x₀)) * E i +
+              (Real.exp (-β * x₀) - (-β * Real.exp (-β * x₀)) * x₀))) = 0 := by
+    calc
+      _ = (∑ i, w i * Real.exp (-β * E i)) -
+          ∑ i, w i *
+            ((-β * Real.exp (-β * x₀)) * E i +
+              (Real.exp (-β * x₀) - (-β * Real.exp (-β * x₀)) * x₀)) := by
+        rw [← Finset.sum_sub_distrib]
+        apply Finset.sum_congr rfl
+        intro i hi
+        ring
+      _ = 0 := sub_eq_zero.mpr heq.symm
+  have htermzero : ∀ i, w i *
+      (Real.exp (-β * E i) -
+        ((-β * Real.exp (-β * x₀)) * E i +
+          (Real.exp (-β * x₀) - (-β * Real.exp (-β * x₀)) * x₀))) = 0 := by
+    intro i
+    exact (Finset.sum_eq_zero_iff_of_nonneg
+      (fun j _ => mul_nonneg (hw j) (hgap_nonneg j))).mp hsumzero i (Finset.mem_univ i)
+  intro i hwi
+  have hgapzero :
+      Real.exp (-β * E i) -
+        ((-β * Real.exp (-β * x₀)) * E i +
+          (Real.exp (-β * x₀) - (-β * Real.exp (-β * x₀)) * x₀)) = 0 :=
+    (mul_eq_zero.mp (htermzero i)).resolve_left hwi.ne'
+  apply (exp_tangent_eq_iff β x₀ (E i) hβ).mp
+  linarith
