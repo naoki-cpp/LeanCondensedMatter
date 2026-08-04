@@ -30,6 +30,21 @@ noncomputable def twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → ℝ
       List.ofFn fun l : Fin 4 =>
         imaginaryTimeEvolve ε (σ v) (quarticLocalLegOperator (q v) l)
 
+@[simp]
+theorem twoPointTimedEventAtomicOperators_external {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
+    (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) (e : Fin 2) :
+    twoPointTimedEventAtomicOperators ε i j τ τ' q σ (Sum.inl e) =
+      [externalFieldOperator ε (twoPointExternalTimes τ τ' e) (twoPointExternalLabels i j e)] :=
+  rfl
+
+@[simp]
+theorem twoPointTimedEventAtomicOperators_interaction {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
+    (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) (v : Fin n) :
+    twoPointTimedEventAtomicOperators ε i j τ τ' q σ (Sum.inr v) =
+      List.ofFn (fun l : Fin 4 =>
+        imaginaryTimeEvolve ε (σ v) (quarticLocalLegOperator (q v) l)) :=
+  rfl
+
 /-- The number of atomic operators contributed by one mixed event. -/
 def twoPointTimedEventAtomicArity {n : ℕ} : TwoPointTimedEvent n → ℕ
   | .inl _ => 1
@@ -41,7 +56,17 @@ theorem twoPointTimedEventAtomicOperators_length {n : ℕ} (ε : Mode → ℝ) (
     (event : TwoPointTimedEvent n) :
     (twoPointTimedEventAtomicOperators ε i j τ τ' q σ event).length =
       twoPointTimedEventAtomicArity event := by
-  cases event <;> simp [twoPointTimedEventAtomicOperators, twoPointTimedEventAtomicArity]
+  cases event <;> simp [twoPointTimedEventAtomicArity]
+
+private theorem prodComp_singleton (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    Common.prodComp [A] = A := by
+  rw [Common.prodComp_cons, Common.prodComp_nil, LinearMap.comp_id]
+
+private theorem twoPointTimedEventOperator_external {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
+    (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) (e : Fin 2) :
+    twoPointTimedEventOperator ε i j τ τ' q σ (Sum.inl e) =
+      externalFieldOperator ε (twoPointExternalTimes τ τ' e) (twoPointExternalLabels i j e) :=
+  rfl
 
 /-- Expanding one mixed event into atomic operators preserves its represented operator product. -/
 theorem prodComp_twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
@@ -51,11 +76,12 @@ theorem prodComp_twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → ℝ)
       twoPointTimedEventOperator ε i j τ τ' q σ event := by
   cases event with
   | inl e =>
-      simp only [twoPointTimedEventAtomicOperators, Common.prodComp_cons, Common.prodComp_nil,
-        LinearMap.comp_id, twoPointTimedEventOperator]
+      rw [twoPointTimedEventAtomicOperators_external, twoPointTimedEventOperator_external,
+        prodComp_singleton]
   | inr v =>
-      simpa [twoPointTimedEventAtomicOperators, twoPointTimedEventOperator] using
-        interactionPicture_quarticVertexOperator_eq_prodComp ε (q v) (σ v)
+      rw [twoPointTimedEventAtomicOperators_interaction,
+        twoPointTimedEventOperator_interaction]
+      exact interactionPicture_quarticVertexOperator_eq_prodComp ε (q v) (σ v)
 
 /-- The complete atomic operator list in mixed imaginary-time order. -/
 noncomputable def mixedTimeOrderedAtomicOperators {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
@@ -87,16 +113,17 @@ private theorem sum_ofFn_const_four :
     ∀ n : ℕ, (List.ofFn (fun _ : Fin n => 4)).sum = 4 * n
   | 0 => rfl
   | n + 1 => by
-      rw [List.ofFn_succ]
-      simp [sum_ofFn_const_four n]
+      rw [List.ofFn_succ, sum_ofFn_const_four n]
+      omega
 
 private theorem canonicalTwoPointTimedEventAtomicAritySum (n : ℕ) :
     (([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n).map
       twoPointTimedEventAtomicArity).sum = 2 * (2 * n + 1) := by
   have hinteraction :
       ((twoPointInteractionEventList n).map twoPointTimedEventAtomicArity).sum = 4 * n := by
-    simpa [twoPointInteractionEventList, twoPointTimedEventAtomicArity] using
-      sum_ofFn_const_four n
+    rw [twoPointInteractionEventList, List.map_ofFn]
+    change (List.ofFn (fun _ : Fin n => 4)).sum = 4 * n
+    exact sum_ofFn_const_four n
   rw [List.map_append, List.sum_append, hinteraction]
   simp [twoPointTimedEventAtomicArity]
   omega
