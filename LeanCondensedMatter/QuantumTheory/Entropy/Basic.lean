@@ -81,16 +81,21 @@ theorem hasSum_negMulLog_eigenvalues (ρ : DensityOperator H)
     intro a a' haa'
     apply he.linearIndependent.injective
     exact congrArg Subtype.val haa'
-  let g : w → ℝ := fun i => (inner ℂ (b i) (entropyOp ρ (b i)) : ℂ).re
-  have hfull : HasSum g (entropyOpSpectralTraceClass ρ hsummable).trace :=
-    (entropyOpSpectralTraceClass ρ hsummable).hasSum_inner_apply b
+  let g : w → ℝ := fun i =>
+    diagonalExpectationValue (entropyOp ρ)
+      (entropyOpSpectralTraceClass ρ hsummable).isSelfAdjoint (b i)
+  have hfull : HasSum g (entropyOpSpectralTraceClass ρ hsummable).trace := by
+    simpa [g] using
+      (entropyOpSpectralTraceClass ρ hsummable).hasSum_diagonalExpectationValue b
   have hb_j (a : EigenvectorIndex ρ.op) : b (j a) = e a := by
     rw [hb]
   have hpoint (a : EigenvectorIndex ρ.op) :
       g (j a) = Real.negMulLog a.1.1 := by
-    change (inner ℂ (b (j a)) (entropyOp ρ (b (j a))) : ℂ).re =
-      Real.negMulLog a.1.1
-    rw [hb_j]
+    change diagonalExpectationValue (entropyOp ρ)
+      (entropyOpSpectralTraceClass ρ hsummable).isSelfAdjoint (b (j a)) =
+        Real.negMulLog a.1.1
+    apply Complex.ofReal_injective
+    rw [coe_diagonalExpectationValue_right, hb_j]
     rw [entropyOp_apply_eigenvector ρ (apply_eigenvectorFamily hρcompact a)]
     rw [inner_smul_right, inner_self_eq_norm_sq_to_K,
       (orthonormal_eigenvectorFamily hρcompact hρsym).1 a]
@@ -123,7 +128,11 @@ theorem hasSum_negMulLog_eigenvalues (ρ : DensityOperator H)
     have hentropy : entropyOp ρ (b x) = 0 := by
       simpa using
         (entropyOp_apply_eigenvector ρ (v := b x) (c := 0) (by simpa using hxker))
-    simp [g, hentropy]
+    change diagonalExpectationValue (entropyOp ρ)
+      (entropyOpSpectralTraceClass ρ hsummable).isSelfAdjoint (b x) = 0
+    apply Complex.ofReal_injective
+    rw [coe_diagonalExpectationValue_right, hentropy]
+    simp
   have hrestricted :
       HasSum (g ∘ j) (entropyOpSpectralTraceClass ρ hsummable).trace :=
     (hj.hasSum_iff hzero).mpr hfull
