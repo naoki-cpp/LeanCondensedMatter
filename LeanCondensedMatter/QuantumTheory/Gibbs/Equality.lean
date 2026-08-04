@@ -3,9 +3,9 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.Variational
 /-!
 # Equality cases for Gibbs variational inequalities
 
-This file isolates the strict scalar step needed to characterize equality in the Gibbs–Klein
-free-energy bound. Operator-level equality and uniqueness of the Gibbs minimizer are developed on
-top of these reusable scalar lemmas.
+This file isolates the strict scalar and operator-positivity steps needed to characterize equality
+in the Gibbs–Klein free-energy bound. Operator-level equality and uniqueness of the Gibbs minimizer
+are developed on top of these reusable lemmas.
 -/
 
 /-- Gibbs' scalar inequality is strict unless the two positive weights agree. -/
@@ -36,3 +36,21 @@ theorem gibbs_scalar_ineq_eq_iff (x y : ℝ) (hx : 0 ≤ x) (hy : 0 < y) :
     exact (ne_of_lt (gibbs_scalar_ineq_strict x y hx hy hxy)) heq
   · rintro rfl
     simp [Real.negMulLog]
+
+namespace QuantumTheory
+
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+/-- The Gibbs operator has a strictly positive diagonal matrix element on every unit vector. -/
+theorem gibbsOp_diagonal_pos_of_norm_eq_one (Hop : Observable H) (β : ℝ) (v : H)
+    (hv : ‖v‖ = 1) :
+    0 < (inner ℂ v (gibbsOp Hop β v) : ℂ).re :=
+  (Real.exp_pos _).trans_le (exp_neg_beta_energy_le_gibbs_diagonal Hop β v hv)
+
+/-- Every vector in an orthonormal family has strictly positive Gibbs diagonal weight. -/
+theorem gibbsOp_diagonal_pos_of_orthonormal (Hop : Observable H) (β : ℝ)
+    {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d) (i : ι) :
+    0 < (inner ℂ (d i) (gibbsOp Hop β (d i)) : ℂ).re :=
+  gibbsOp_diagonal_pos_of_norm_eq_one Hop β (d i) (hd.1 i)
+
+end QuantumTheory
