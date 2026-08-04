@@ -57,8 +57,8 @@ commutator series. -/
 def PurePointTimeDomainSummable
     (data : PurePointLehmannData system ι)
     (A B : H →L[ℂ] H) : Prop :=
-  Summable fun mn : ι × ι => ‖purePointForwardWeight system data A B mn‖ ∧
-  Summable fun mn : ι × ι => ‖purePointBackwardWeight system data A B mn‖ ∧
+  (Summable fun mn : ι × ι => ‖purePointForwardWeight system data A B mn‖) ∧
+  (Summable fun mn : ι × ι => ‖purePointBackwardWeight system data A B mn‖) ∧
   PurePointLehmannSummable system data A B
 
 /-- In finite dimension all time-domain rearrangement assumptions are automatic. -/
@@ -83,7 +83,7 @@ theorem norm_purePointTransitionPhase
     (data : PurePointLehmannData system ι)
     (m n : ι) (t : ℝ) :
     ‖purePointTransitionPhase system data m n t‖ = 1 := by
-  simp [purePointTransitionPhase, norm_mul]
+  simp [purePointTransitionPhase]
 
 /-- One forward ordered transition at time `τ`. -/
 noncomputable def purePointForwardTimeTerm
@@ -173,7 +173,7 @@ theorem purePointExpectation_heisenberg_mul_eq_tsum
   intro m
   simp only [mul_apply_eq_comp]
   have hinner := data.basis.hasSum_inner_mul_inner
-    ((heisenbergEvolution system A τ)† (data.basis m))
+    (((heisenbergEvolution system A τ)†) (data.basis m))
     (B (data.basis m))
   have hscaled := hinner.mul_left (data.probability m : ℂ)
   rw [← ContinuousLinearMap.adjoint_inner_left]
@@ -201,7 +201,7 @@ theorem purePointExpectation_mul_heisenberg_eq_tsum
   intro m
   simp only [mul_apply_eq_comp]
   have hinner := data.basis.hasSum_inner_mul_inner
-    (B† (data.basis m))
+    ((B†) (data.basis m))
     (heisenbergEvolution system A τ (data.basis m))
   have hscaled := hinner.mul_left (data.probability m : ℂ)
   rw [← ContinuousLinearMap.adjoint_inner_left]
@@ -228,7 +228,9 @@ theorem purePoint_forward_sub_backward_eq_timeDomainSeries
   have hbackward := summable_purePointBackwardTimeTerm system data A B τ hsum
   have hbackwardSwap : Summable fun mn : ι × ι =>
       purePointBackwardTimeTerm system data A B τ mn.swap := by
-    simpa using hbackward.comp_injective (Equiv.prodComm ι ι).injective
+    change Summable
+      (purePointBackwardTimeTerm system data A B τ ∘ Prod.swap)
+    exact hbackward.comp_injective (Equiv.prodComm ι ι).injective
   have hswap :
       (∑' mn : ι × ι,
           purePointBackwardTimeTerm system data A B τ mn) =
