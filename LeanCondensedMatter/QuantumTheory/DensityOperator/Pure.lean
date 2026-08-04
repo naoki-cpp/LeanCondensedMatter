@@ -105,7 +105,7 @@ theorem rankOne_hasSummableRealEigenvalues {ψ : H} (hψ : ‖ψ‖ = 1) :
 omit [CompleteSpace H] in
 /-- A unit rank-one projector has spectral trace one. -/
 theorem rankOne_spectralTrace_eq_one {ψ : H} (hψ : ‖ψ‖ = 1) :
-    spectralTrace (rankOne_hasSummableRealEigenvalues hψ) = 1 := by
+    spectralTrace (InnerProductSpace.rankOne ℂ ψ ψ) = 1 := by
   haveI := uniqueEigenvectorIndexRankOne hψ
   change (∑' a : EigenvectorIndex
     (InnerProductSpace.rankOne ℂ ψ ψ : H →L[ℂ] H), a.1.1) = 1

@@ -80,7 +80,7 @@ values. -/
 theorem hasSum_diagonalExpectationValue_eq_spectralTrace
     (hT : IsCompactOperator T) (hTself : IsSelfAdjoint T)
     (h : HasSummableRealEigenvalues T) {ι : Type*} (d : HilbertBasis ι ℂ H) :
-    HasSum (fun i => diagonalExpectationValue T hTself (d i)) (spectralTrace h) := by
+    HasSum (fun i => diagonalExpectationValue T hTself (d i)) (spectralTrace T) := by
   classical
   change HasSum (fun i => diagonalExpectationValue T hTself (d i))
     (∑' a : EigenvectorIndex T, a.1.1)
@@ -132,7 +132,7 @@ theorem spectralTrace_add {T' : H →L[ℂ] H} (hT : IsCompactOperator T) (hTsym
     (hTT' : IsCompactOperator (T + T')) (hTT'sym : (T + T' : H →L[ℂ] H).IsSymmetric)
     (h : HasSummableRealEigenvalues T) (h' : HasSummableRealEigenvalues T')
     (hsum : HasSummableRealEigenvalues (T + T')) :
-    spectralTrace hsum = spectralTrace h + spectralTrace h' := by
+    spectralTrace (T + T') = spectralTrace T + spectralTrace T' := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
   let hTself : IsSelfAdjoint T := ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr hTsym
   let hT'self : IsSelfAdjoint T' := ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr hT'sym
@@ -158,7 +158,7 @@ theorem spectralTrace_comp_comm {T' : H →L[ℂ] H} (_hT : IsCompactOperator T)
     (hT'T : IsCompactOperator (T' * T)) (hT'Tsym : (T' * T : H →L[ℂ] H).IsSymmetric)
     (h1 : HasSummableRealEigenvalues (T * T'))
     (h2 : HasSummableRealEigenvalues (T' * T)) :
-    spectralTrace h1 = spectralTrace h2 := by
+    spectralTrace (T * T') = spectralTrace (T' * T) := by
   obtain ⟨w, d, -⟩ := exists_hilbertBasis (𝕜 := ℂ) (E := H)
   let hTT'self : IsSelfAdjoint (T * T') :=
     ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mpr hTT'sym
@@ -199,11 +199,11 @@ theorem sum_diagonalExpectationValue_le_spectralTrace
     {T : H →L[ℂ] H} (hT : IsCompactOperator T) (hTpos : T.IsPositive)
     (h : HasSummableRealEigenvalues T) {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d) :
     Summable (fun i => diagonalExpectationValue T hTpos.isSelfAdjoint (d i)) ∧
-      ∑' i, diagonalExpectationValue T hTpos.isSelfAdjoint (d i) ≤ spectralTrace h := by
+      ∑' i, diagonalExpectationValue T hTpos.isSelfAdjoint (d i) ≤ spectralTrace T := by
   obtain ⟨w, b, hsub, hb_eq⟩ := hd.toSubtypeRange.exists_hilbertBasis_extension
   set g : w → ℝ := fun j =>
     diagonalExpectationValue T hTpos.isSelfAdjoint (b j) with hg_def
-  have htr : HasSum g (spectralTrace h) :=
+  have htr : HasSum g (spectralTrace T) :=
     hasSum_diagonalExpectationValue_eq_spectralTrace hT hTpos.isSelfAdjoint h b
   have hgnonneg : ∀ j : w, 0 ≤ g j := fun j => by
     simpa [g] using diagonalExpectationValue_nonneg T hTpos (b j)
@@ -214,7 +214,7 @@ theorem sum_diagonalExpectationValue_le_spectralTrace
     change diagonalExpectationValue T hTpos.isSelfAdjoint (b (e i)) = _
     rw [show (b (e i) : H) = d i from by rw [hb_eq]]
   have hfsum : Summable (fun i => g (e i)) := htr.summable.comp_injective he_inj
-  have hle : ∑' i, g (e i) ≤ spectralTrace h :=
+  have hle : ∑' i, g (e i) ≤ spectralTrace T :=
     hasSum_le_inj e he_inj (fun j _ => hgnonneg j) (fun _ => le_rfl) hfsum.hasSum htr
   refine ⟨hfsum.congr hge, ?_⟩
   rwa [tsum_congr hge] at hle

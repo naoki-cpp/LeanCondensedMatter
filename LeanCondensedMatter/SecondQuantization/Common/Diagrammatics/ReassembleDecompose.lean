@@ -81,7 +81,7 @@ private theorem QuarticDiagram.reassemble_componentPartition_partner
   have hleg0 : d.legInBlock B.1 (legOfVertexLocal v i) := by
     unfold QuarticDiagram.legInBlock
     rw [vertexOfLeg_legOfVertexLocal]
-    exact hv
+    exact (d.componentBlock_eq_iff_mem B.2 v).mpr hv
   have hv1 : vertexOfLeg (d.blockLegEquiv B.2 ⟨legOfVertexLocal v i, hleg0⟩) = v' := by
     rw [QuarticDiagram.vertexOfLeg_blockLegEquiv]
     refine (congrArg (QuarticDiagram.subtypeMemBlockEquiv B.1 (d.componentPart_subset B.2))
@@ -100,7 +100,7 @@ private theorem QuarticDiagram.reassemble_componentPartition_partner
   have hw : (w : Fin N) ∈ B.1 := by
     have hpartner := (d.legInBlock_partner_iff B.2 (legOfVertexLocal v i)).mp hleg0
     unfold QuarticDiagram.legInBlock at hpartner
-    exact hpartner
+    exact (d.componentBlock_eq_iff_mem B.2 _).mp hpartner
   have hv2 : vertexOfLeg
       (d.blockLegEquiv B.2 (d.restrictedPartner B.2 ⟨legOfVertexLocal v i, hleg0⟩)) =
       QuarticDiagram.subtypeMemBlockEquiv B.1 (d.componentPart_subset B.2) ⟨w, hw⟩ := by

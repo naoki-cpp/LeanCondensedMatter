@@ -17,8 +17,8 @@ open FiniteIndex
 /-- The partner map restricted to the positions remaining after deleting `0` and `partner 0`. -/
 def Pairing.restrictedPartnerMap {n : ℕ} (pairing : Pairing (n + 1))
     (hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0)
-    (x : deletedPositions n (pairing.partner 0) hzero) :
-    deletedPositions n (pairing.partner 0) hzero := by
+    (x : deletedPositions n (pairing.partner 0)) :
+    deletedPositions n (pairing.partner 0) := by
   have hxj : (x : Fin (2 * (n + 1))) ≠ pairing.partner 0 :=
     (Finset.mem_erase.mp x.property).1
   have hx0 : (x : Fin (2 * (n + 1))) ≠ 0 :=
@@ -44,8 +44,8 @@ def Pairing.restrictedPartnerMap {n : ℕ} (pairing : Pairing (n + 1))
 /-- Restrict a pairing partner permutation to the surviving positions. -/
 def Pairing.restrictedPartner {n : ℕ} (pairing : Pairing (n + 1))
     (hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0) :
-    deletedPositions n (pairing.partner 0) hzero ≃
-      deletedPositions n (pairing.partner 0) hzero where
+    deletedPositions n (pairing.partner 0) ≃
+      deletedPositions n (pairing.partner 0) where
   toFun := pairing.restrictedPartnerMap hzero
   invFun := pairing.restrictedPartnerMap hzero
   left_inv x := by
@@ -58,7 +58,7 @@ def Pairing.restrictedPartner {n : ℕ} (pairing : Pairing (n + 1))
 @[simp]
 theorem Pairing.restrictedPartner_partner_partner {n : ℕ} (pairing : Pairing (n + 1))
     (hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0)
-    (x : deletedPositions n (pairing.partner 0) hzero) :
+    (x : deletedPositions n (pairing.partner 0)) :
     pairing.restrictedPartner hzero (pairing.restrictedPartner hzero x) = x := by
   apply Subtype.ext
   exact pairing.partner_partner x
@@ -100,8 +100,7 @@ theorem Pairing.eraseZeroPair_partner_apply {n : ℕ} (pairing : Pairing (n + 1)
 /-- Increasing equivalence used by `eraseZeroPair`. -/
 noncomputable def Pairing.eraseZeroOrderIso {n : ℕ} (pairing : Pairing (n + 1)) :
     Fin (2 * n) ≃o
-      deletedPositions n (pairing.partner 0)
-        (Ne.symm (pairing.partner_ne 0)) :=
+      deletedPositions n (pairing.partner 0) :=
   deletedPositionsOrderIso n (pairing.partner 0) (Ne.symm (pairing.partner_ne 0))
 
 @[simp]

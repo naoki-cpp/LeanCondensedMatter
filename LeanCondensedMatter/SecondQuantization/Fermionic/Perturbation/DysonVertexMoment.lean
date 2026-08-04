@@ -54,8 +54,7 @@ theorem normalizedDysonPartitionCoeff_zero (ε : Mode → ℝ) (β : ℝ)
     div_self (freePartitionFunction_ne_zero ε β)]
 
 /-- The factorial-normalized Dyson vertex moment on a finite vertex set. -/
-@[nolint unusedArguments]
-noncomputable def dysonVertexMoment {α : Type*} [DecidableEq α] (ε : Mode → ℝ) (β : ℝ)
+noncomputable def dysonVertexMoment {α : Type*} (ε : Mode → ℝ) (β : ℝ)
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (S : Finset α) : ℂ :=
   (S.card.factorial : ℂ) * normalizedDysonPartitionCoeff ε β V S.card
 

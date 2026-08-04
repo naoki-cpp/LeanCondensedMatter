@@ -53,7 +53,7 @@ variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Comple
 /-- A diagonal operator with summable real nonnegative coefficients is positive. -/
 theorem diagonalOp_isPositive (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i) :
-    (diagonalOp b (fun i => (a i : ℂ)) (by simpa using ha)).IsPositive := by
+    (diagonalOp b (fun i => (a i : ℂ))).IsPositive := by
   classical
   let hac : Summable fun i => ‖(a i : ℂ)‖ := by simpa using ha
   let F : Finset ι → H →L[ℂ] H := fun s =>
@@ -68,14 +68,14 @@ theorem diagonalOp_isPositive (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
       (InnerProductSpace.isPositive_rankOne_self (𝕜 := ℂ) (b i)).smul_of_nonneg hcoeff
   apply ContinuousLinearMap.isPositive_of_tendsto
     (l := Filter.atTop)
-    (F := F) (T := diagonalOp b (fun i => (a i : ℂ)) hac)
+    (F := F) (T := diagonalOp b (fun i => (a i : ℂ)))
   · exact hasSum_diagonalTerm b (fun i => (a i : ℂ)) hac
   · exact Filter.Eventually.of_forall hFpos
 
 /-- A diagonal operator with summable real nonnegative coefficients is self-adjoint. -/
 theorem diagonalOp_isSelfAdjoint (b : HilbertBasis ι ℂ H) (a : ι → ℝ)
     (ha : Summable fun i => ‖a i‖) (ha_nonneg : ∀ i, 0 ≤ a i) :
-    IsSelfAdjoint (diagonalOp b (fun i => (a i : ℂ)) (by simpa using ha)) :=
+    IsSelfAdjoint (diagonalOp b (fun i => (a i : ℂ))) :=
   (diagonalOp_isPositive b a ha ha_nonneg).isSelfAdjoint
 
 end HilbertBasis

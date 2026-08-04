@@ -68,8 +68,8 @@ theorem gibbsOp_isPositive (Hop : Observable H) (β : ℝ) : (gibbsOp Hop β).Is
 noncomputable def gibbsState (Hop : Observable H) (β : ℝ)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
-    (hZ : spectralTrace hsummable ≠ 0) : DensityOperator H := by
-  let Z : ℝ := spectralTrace hsummable
+    (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) : DensityOperator H := by
+  let Z : ℝ := spectralTrace (gibbsOp Hop β)
   let r : ℝ := Z⁻¹
   have hrne : r ≠ 0 := by
     dsimp [r, Z]
@@ -91,7 +91,7 @@ noncomputable def gibbsState (Hop : Observable H) (β : ℝ)
     spectralTraceClass := SpectralTraceClass.ofPositive
       (hcompact.smul _) hpos hsummableScaled
     spectralTrace_eq_one := by
-      change spectralTrace hsummableScaled = 1
+      change spectralTrace (r • gibbsOp Hop β) = 1
       rw [spectralTrace_smul hrne hsummable hsummableScaled]
       dsimp [r, Z]
       exact inv_mul_cancel₀ hZ

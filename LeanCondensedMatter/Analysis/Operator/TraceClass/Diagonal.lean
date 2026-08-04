@@ -31,21 +31,20 @@ theorem summable_diagonalTerm (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
   refine Summable.of_norm_bounded ha fun i => ?_
   simp [diagonalTerm, norm_smul, b.orthonormal.1 i]
 
-/-- The bounded diagonal operator with coefficients `a` in the Hilbert basis `b`. -/
-@[nolint unusedArguments]
-def diagonalOp (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
-    (_ha : Summable fun i => ‖a i‖) : H →L[ℂ] H :=
+/-- The totalized diagonal operator series with coefficients `a` in the Hilbert basis `b`.
+Analytic results about its action and compactness state absolute summability explicitly. -/
+def diagonalOp (b : HilbertBasis ι ℂ H) (a : ι → ℂ) : H →L[ℂ] H :=
   ∑' i, diagonalTerm b a i
 
 /-- The defining diagonal rank-one series converges to `diagonalOp`. -/
 theorem hasSum_diagonalTerm (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
-    (ha : Summable fun i => ‖a i‖) : HasSum (diagonalTerm b a) (diagonalOp b a ha) :=
+    (ha : Summable fun i => ‖a i‖) : HasSum (diagonalTerm b a) (diagonalOp b a) :=
   (summable_diagonalTerm b a ha).hasSum
 
 /-- The diagonal operator acts on each basis vector by its corresponding coefficient. -/
 theorem diagonalOp_apply_basis (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
     (ha : Summable fun i => ‖a i‖) (j : ι) :
-    diagonalOp b a ha (b j) = a j • b j := by
+    diagonalOp b a (b j) = a j • b j := by
   classical
   have hmap := (hasSum_diagonalTerm b a ha).mapL
     (ContinuousLinearMap.apply ℂ H (b j))
@@ -56,7 +55,7 @@ theorem diagonalOp_apply_basis (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
     · intro i hij
       simp [diagonalTerm, InnerProductSpace.rankOne_apply, b.orthonormal.2 hij]
   calc
-    diagonalOp b a ha (b j) = ∑' i, diagonalTerm b a i (b j) := hmap.tsum_eq.symm
+    diagonalOp b a (b j) = ∑' i, diagonalTerm b a i (b j) := hmap.tsum_eq.symm
     _ = a j • b j := htsum
 
 omit [CompleteSpace H] in
@@ -77,7 +76,7 @@ theorem diagonalTerm_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ) (i :
 
 /-- A diagonal operator with absolutely summable coefficients is compact. -/
 theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
-    (ha : Summable fun i => ‖a i‖) : IsCompactOperator (diagonalOp b a ha) := by
+    (ha : Summable fun i => ‖a i‖) : IsCompactOperator (diagonalOp b a) := by
   classical
   have hfinite (s : Finset ι) :
       IsCompactOperator ⇑(∑ i ∈ s, diagonalTerm b a i : H →L[ℂ] H) := by
@@ -93,7 +92,7 @@ theorem diagonalOp_isCompact (b : HilbertBasis ι ℂ H) (a : ι → ℂ)
   refine isCompactOperator_of_tendsto
     (l := Filter.atTop)
     (F := fun s : Finset ι => ∑ i ∈ s, diagonalTerm b a i)
-    (f := diagonalOp b a ha) ?_ ?_
+    (f := diagonalOp b a) ?_ ?_
   · exact hasSum_diagonalTerm b a ha
   · exact Filter.Eventually.of_forall hfinite
 

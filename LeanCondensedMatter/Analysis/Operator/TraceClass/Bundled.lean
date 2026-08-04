@@ -56,7 +56,7 @@ theorem isSelfAdjoint (h : SpectralTraceClass T) : IsSelfAdjoint T :=
 
 /-- The spectral trace associated with the bundled hypotheses. -/
 noncomputable def trace (h : SpectralTraceClass T) : ℝ :=
-  ContinuousLinearMap.spectralTrace h.summable
+  ContinuousLinearMap.spectralTrace T
 
 omit [CompleteSpace H] in
 /-- The spectral trace of a positive bundled operator is nonnegative. -/

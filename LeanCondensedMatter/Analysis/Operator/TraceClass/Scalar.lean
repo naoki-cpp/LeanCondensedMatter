@@ -96,7 +96,7 @@ omit [CompleteSpace H] in
 /-- `spectralTrace` is homogeneous under multiplication by a nonzero real scalar. -/
 theorem spectralTrace_smul {c : ℝ} (hc : c ≠ 0) (h : HasSummableRealEigenvalues T)
     (hcT : HasSummableRealEigenvalues (c • T)) :
-    spectralTrace hcT = c * spectralTrace h := by
+    spectralTrace (c • T) = c * spectralTrace T := by
   change (∑' b : EigenvectorIndex (c • T), b.1.1) = c * ∑' a : EigenvectorIndex T, a.1.1
   rw [tsum_eigenvectorIndex_eq_tsum_mul_finrank (summable_eigenvectorIndex hcT),
     tsum_eigenvectorIndex_eq_tsum_mul_finrank (summable_eigenvectorIndex h),

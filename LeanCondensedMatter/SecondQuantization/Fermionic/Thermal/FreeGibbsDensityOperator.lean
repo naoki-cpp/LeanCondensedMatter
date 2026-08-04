@@ -25,7 +25,6 @@ noncomputable def freeGibbsDensityOperator (ε : Mode → ℝ) (β : ℝ) :
 
 omit [DecidableEq Mode] [LinearOrder Mode] in
 /-- The free Gibbs density operator acts diagonally in the occupation basis. -/
-@[simp]
 theorem freeGibbsDensityOperator_apply_basis (ε : Mode → ℝ) (β : ℝ)
     (n : Occupation Mode) :
     (freeGibbsDensityOperator ε β).op (Common.finiteHilbertBasisState n) =

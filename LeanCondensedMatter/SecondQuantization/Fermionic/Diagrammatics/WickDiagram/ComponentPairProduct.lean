@@ -248,7 +248,6 @@ theorem QuarticWickDiagram.componentPairToGlobal_surjective {S : Finset (Fin N)}
     Function.Surjective (d.componentPairToGlobal orders shuffle) :=
   (d.componentPairEquiv orders shuffle).surjective
 
-@[simp]
 theorem QuarticWickDiagram.componentPairEquiv_apply {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (orders : d.ComponentVertexOrders)
     (shuffle : d.ComponentShuffle) (B : d.componentPartition.parts)

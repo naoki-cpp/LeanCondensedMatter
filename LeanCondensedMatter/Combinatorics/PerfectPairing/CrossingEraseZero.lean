@@ -38,8 +38,8 @@ partner. -/
 theorem Pairing.mem_pairs_endpoints_mem_deletedPositions {n : ℕ} (pairing : Pairing (n + 1))
     {p : Fin (2 * (n + 1)) × Fin (2 * (n + 1))} (hp : p ∈ pairing.pairs)
     (hne : p ≠ pairing.firstPair) :
-    p.1 ∈ deletedPositions n (pairing.partner 0) (Ne.symm (pairing.partner_ne 0)) ∧
-      p.2 ∈ deletedPositions n (pairing.partner 0) (Ne.symm (pairing.partner_ne 0)) := by
+    p.1 ∈ deletedPositions n (pairing.partner 0) ∧
+      p.2 ∈ deletedPositions n (pairing.partner 0) := by
   obtain ⟨hlt, hpartner⟩ := (pairing.mem_pairs_iff p.1 p.2).1 (by simpa using hp)
   have h10 : p.1 ≠ 0 := by
     intro h

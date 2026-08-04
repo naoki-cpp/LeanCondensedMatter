@@ -23,13 +23,12 @@ principles). Creation and annihilation operators, with their sign factors, come 
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [DecidableEq Mode]
+variable {Mode : Type*}
 
 /-- **The algebraic fermionic Fock space.** The free `ℂ`-vector space on the basis
 `Occupation Mode` — finite `ℂ`-linear combinations of occupation-number states, reusing
 `Common.AlgebraicFock`. -/
-@[nolint unusedArguments]
-abbrev FockSpace (Mode : Type*) [DecidableEq Mode] :=
+abbrev FockSpace (Mode : Type*) :=
   Common.AlgebraicFock (Occupation Mode)
 
 /-- **The basis vector** corresponding to occupation-number state `n`. -/

@@ -77,7 +77,7 @@ theorem eigenvalue_le_one (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) 
 /-- The spectral trace of the unnormalized Gibbs operator is positive when nonzero. -/
 theorem spectralTrace_gibbsOp_pos (Hop : Observable H) (β : ℝ)
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
-    (hZ : spectralTrace hsummable ≠ 0) : 0 < spectralTrace hsummable :=
+    (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) : 0 < spectralTrace (gibbsOp Hop β) :=
   (ContinuousLinearMap.trace_nonneg hsummable (gibbsOp_isPositive Hop β).toLinearMap).lt_of_ne
     (Ne.symm hZ)
 
@@ -138,9 +138,9 @@ theorem summable_eigenvalue_mul_energy_and_tsum (ρ : DensityOperator H) (Hop : 
 theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop : Observable H)
     (β : ℝ) (hβ : 0 < β) (hcompact : IsCompactOperator (gibbsOp Hop β))
     (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
-    (hZ : spectralTrace hsummable ≠ 0) :
+    (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) :
     vonNeumannEntropy ρ ≠ ⊤ ∧
-      -(1 / β) * Real.log (spectralTrace hsummable) ≤
+      -(1 / β) * Real.log (spectralTrace (gibbsOp Hop β)) ≤
         energyExpValue ρ Hop - (1 / β) * (vonNeumannEntropy ρ).toReal := by
   set d := eigenvectorFamily ρ.spectralTraceClass.compact with hd_def
   set p : EigenvectorIndex ρ.op → ℝ := fun a => a.1.1 with hp_def
@@ -149,7 +149,7 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop 
   set q : EigenvectorIndex ρ.op → ℝ := fun a =>
     diagonalExpectationValue (gibbsOp Hop β)
       (gibbsOp_isPositive Hop β).isSelfAdjoint (d a) with hq_def
-  set Z : ℝ := spectralTrace hsummable with hZ_def
+  set Z : ℝ := spectralTrace (gibbsOp Hop β) with hZ_def
   have hZpos : 0 < Z := spectralTrace_gibbsOp_pos Hop β hsummable hZ
   have hd_orth : Orthonormal ℂ d :=
     orthonormal_eigenvectorFamily ρ.spectralTraceClass.compact ρ.isSymmetric
