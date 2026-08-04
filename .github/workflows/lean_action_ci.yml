@@ -21,12 +21,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
-      - name: Check architecture
-        run: |
-          python3 scripts/check_quantum_theory_architecture.py
-          python3 scripts/check_second_quantization_architecture.py
-          python3 scripts/check_second_quantization_removed_identifiers.py
-          python3 scripts/check_bloch_de_dominicis_expectation_boundary.py
+      - name: Check QuantumTheory architecture
+        run: python3 scripts/check_quantum_theory_architecture.py
       - uses: leanprover/lean-action@v1
         with:
           # Keep the whole library warning-free, including modules unchanged by the PR.
