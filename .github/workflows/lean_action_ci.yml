@@ -32,12 +32,13 @@ jobs:
           # Keep the whole library warning-free, including modules unchanged by the PR.
           build: true
           build-args: "--wfail"
-      - name: Check for sorry
-        run: |
-          if grep -rnE '\bsorry\b' --include='*.lean' LeanCondensedMatter; then
-            echo "::error::Found 'sorry' in the Lean sources above. Per PROJECT.md, a statement is only 'proved' with no 'sorry' — record it as a target in notes/roadmap.md instead of leaving it in place."
-            exit 1
-          fi
+          # Run the Batteries declaration linter configured in lakefile.toml.
+          lint: true
+          # Ensure every project module is reachable from the library root.
+          mk_all-check: true
+          # Independently re-check generated declarations and reject sorryAx.
+          nanoda: true
+          nanoda-allow-sorry: false
 
   # Documentation is intentionally built only on pushes to main. doc-gen4 processes the
   # full Mathlib symbol set, so running it for every pull request would be unnecessarily slow.
