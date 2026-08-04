@@ -32,8 +32,12 @@ theorem diagonalExpectationValue_eq_sum_orthonormal_eigenbasis
     calc
       b.repr (T x) i = inner ℂ (b i) (T x) := b.repr_apply_apply (T x) i
       _ = inner ℂ (T (b i)) x := (hT.isSymmetric (b i) x).symm
-      _ = inner ℂ ((E i : ℂ) • b i) x := by rw [hE i]
-      _ = (E i : ℂ) * inner ℂ (b i) x := by simp
+      _ = inner ℂ ((E i : ℂ) • b i) x := by
+        apply congrArg (fun y : H => inner ℂ y x)
+        exact hE i
+      _ = (E i : ℂ) * inner ℂ (b i) x := by
+        rw [inner_smul_left]
+        simp
       _ = (E i : ℂ) * b.repr x i := by rw [b.repr_apply_apply]
   apply Complex.ofReal_injective
   rw [coe_diagonalExpectationValue]
