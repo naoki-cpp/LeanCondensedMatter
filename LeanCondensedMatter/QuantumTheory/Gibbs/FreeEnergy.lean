@@ -106,33 +106,56 @@ theorem exp_neg_beta_energy_le_gibbs_diagonal (Hop : Observable H) (β : ℝ) (v
     (gibbsOp Hop β) (gibbsOp_isPositive Hop β).isSelfAdjoint v] at hpb
   exact_mod_cast hpb
 
-/-- The eigenvalue-weighted energy sum is summable, with total `energyExpValue ρ Hop`. -/
+/-- The eigenvalue-weighted lossless energy-expectation sum is summable, with total
+`energyExpValue ρ Hop`. -/
 theorem summable_eigenvalue_mul_energy_and_tsum (ρ : DensityOperator H) (Hop : Observable H) :
     Summable (fun a : EigenvectorIndex ρ.op =>
-        a.1.1 * (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-          (Hop.1 (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ).re) ∧
+        a.1.1 * diagonalExpectationValue Hop.1 Hop.2
+          (eigenvectorFamily ρ.spectralTraceClass.compact a)) ∧
       ∑' a : EigenvectorIndex ρ.op,
-          a.1.1 * (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-            (Hop.1 (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ).re =
+          a.1.1 * diagonalExpectationValue Hop.1 Hop.2
+            (eigenvectorFamily ρ.spectralTraceClass.compact a) =
         energyExpValue ρ Hop := by
   set d := eigenvectorFamily ρ.spectralTraceClass.compact
   have hE := summable_energyExpValue_term ρ Hop
-  refine ⟨?_, ?_⟩
-  · have hre := Complex.reCLM.summable hE
-    have heq : (fun a : EigenvectorIndex ρ.op =>
-        Complex.reCLM (((a.1.1 : ℝ) : ℂ) * (inner ℂ (d a) (Hop.1 (d a)) : ℂ))) =
-        (fun a => a.1.1 * (inner ℂ (d a) (Hop.1 (d a)) : ℂ).re) := by
+  have hraw :
+      Summable (fun a : EigenvectorIndex ρ.op =>
+          a.1.1 * (inner ℂ (d a) (Hop.1 (d a)) : ℂ).re) ∧
+        ∑' a : EigenvectorIndex ρ.op,
+            a.1.1 * (inner ℂ (d a) (Hop.1 (d a)) : ℂ).re =
+          energyExpValue ρ Hop := by
+    refine ⟨?_, ?_⟩
+    · have hre := Complex.reCLM.summable hE
+      have heq : (fun a : EigenvectorIndex ρ.op =>
+          Complex.reCLM (((a.1.1 : ℝ) : ℂ) * (inner ℂ (d a) (Hop.1 (d a)) : ℂ))) =
+          (fun a => a.1.1 * (inner ℂ (d a) (Hop.1 (d a)) : ℂ).re) := by
+        funext a
+        change (((a.1.1 : ℝ) : ℂ) * (inner ℂ (d a) (Hop.1 (d a)) : ℂ)).re =
+          a.1.1 * (inner ℂ (d a) (Hop.1 (d a)) : ℂ).re
+        rw [Complex.re_ofReal_mul]
+      rwa [heq] at hre
+    · rw [show energyExpValue ρ Hop =
+          (∑' a, ((a.1.1 : ℝ) : ℂ) * (inner ℂ (d a) (Hop.1 (d a)) : ℂ)).re from rfl,
+        Complex.re_tsum hE]
+      congr 1
       funext a
-      change (((a.1.1 : ℝ) : ℂ) * (inner ℂ (d a) (Hop.1 (d a)) : ℂ)).re =
-        a.1.1 * (inner ℂ (d a) (Hop.1 (d a)) : ℂ).re
       rw [Complex.re_ofReal_mul]
-    rwa [heq] at hre
-  · rw [show energyExpValue ρ Hop =
-        (∑' a, ((a.1.1 : ℝ) : ℂ) * (inner ℂ (d a) (Hop.1 (d a)) : ℂ)).re from rfl,
-      Complex.re_tsum hE]
-    congr 1
+  have hHopSym : (Hop.1 : H →ₗ[ℂ] H).IsSymmetric :=
+    ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mp Hop.2
+  have hpoint :
+      (fun a : EigenvectorIndex ρ.op =>
+        a.1.1 * diagonalExpectationValue Hop.1 Hop.2 (d a)) =
+        fun a => a.1.1 * (inner ℂ (d a) (Hop.1 (d a)) : ℂ).re := by
     funext a
-    rw [Complex.re_ofReal_mul]
+    congr 1
+    apply Complex.ofReal_injective
+    rw [coe_diagonalExpectationValue_right]
+    exact (hHopSym.coe_re_inner_self_apply (d a)).symm
+  change Summable (fun a : EigenvectorIndex ρ.op =>
+      a.1.1 * diagonalExpectationValue Hop.1 Hop.2 (d a)) ∧
+    ∑' a : EigenvectorIndex ρ.op,
+        a.1.1 * diagonalExpectationValue Hop.1 Hop.2 (d a) = energyExpValue ρ Hop
+  simpa only [hpoint] using hraw
 
 /-- The Gibbs–Klein / Helmholtz free-energy inequality. -/
 theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop : Observable H)
@@ -144,35 +167,21 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop 
         energyExpValue ρ Hop - (1 / β) * (vonNeumannEntropy ρ).toReal := by
   set d := eigenvectorFamily ρ.spectralTraceClass.compact with hd_def
   set p : EigenvectorIndex ρ.op → ℝ := fun a => a.1.1 with hp_def
-  set h : EigenvectorIndex ρ.op → ℝ := fun a => (inner ℂ (d a) (Hop.1 (d a)) : ℂ).re with hh_def
-  set q : EigenvectorIndex ρ.op → ℝ :=
-    fun a => (inner ℂ (d a) (gibbsOp Hop β (d a)) : ℂ).re with hq_def
+  set h : EigenvectorIndex ρ.op → ℝ :=
+    fun a => diagonalExpectationValue Hop.1 Hop.2 (d a) with hh_def
+  set q : EigenvectorIndex ρ.op → ℝ := fun a =>
+    diagonalExpectationValue (gibbsOp Hop β)
+      (gibbsOp_isPositive Hop β).isSelfAdjoint (d a) with hq_def
   set Z : ℝ := spectralTrace hsummable with hZ_def
   have hZpos : 0 < Z := spectralTrace_gibbsOp_pos Hop β hsummable hZ
   have hd_orth : Orthonormal ℂ d :=
     orthonormal_eigenvectorFamily ρ.spectralTraceClass.compact ρ.isSymmetric
   have hd_unit : ∀ a, ‖d a‖ = 1 := eigenvectorFamily_norm_eq_one ρ
-  have hHopSym : (Hop.1 : H →ₗ[ℂ] H).IsSymmetric :=
-    ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mp Hop.2
-  have hGibbsSym : ((gibbsOp Hop β : H →L[ℂ] H) : H →ₗ[ℂ] H).IsSymmetric :=
-    ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mp (gibbsOp_isPositive Hop β).isSelfAdjoint
   let hGibbs : SpectralTraceClass (gibbsOp Hop β) :=
-    ⟨hcompact, hGibbsSym, hsummable⟩
+    SpectralTraceClass.ofPositive hcompact (gibbsOp_isPositive Hop β) hsummable
   have hstep1 : ∀ a, Real.exp (-β * h a) ≤ q a := fun a => by
-    have hpb := exp_neg_beta_energy_le_gibbs_diagonal Hop β (d a) (hd_unit a)
-    have henergy : diagonalExpectationValue Hop.1 Hop.2 (d a) = h a := by
-      rw [hh_def]
-      apply Complex.ofReal_injective
-      rw [coe_diagonalExpectationValue_right]
-      exact (hHopSym.coe_re_inner_self_apply (d a)).symm
-    have hgibbs :
-        diagonalExpectationValue (gibbsOp Hop β)
-          (gibbsOp_isPositive Hop β).isSelfAdjoint (d a) = q a := by
-      rw [hq_def]
-      apply Complex.ofReal_injective
-      rw [coe_diagonalExpectationValue_right]
-      exact (hGibbsSym.coe_re_inner_self_apply (d a)).symm
-    rwa [henergy, hgibbs] at hpb
+    simpa [hh_def, hq_def] using
+      exp_neg_beta_energy_le_gibbs_diagonal Hop β (d a) (hd_unit a)
   have hqpos : ∀ a, 0 < q a := fun a => (Real.exp_pos _).trans_le (hstep1 a)
   have hstep2 : ∀ a, -Real.log (q a) ≤ β * h a := fun a =>
     neg_log_le_of_exp_le (u := β * h a) (by rw [← neg_mul]; exact hstep1 a)
@@ -186,8 +195,9 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop 
     ρ.spectralTraceClass.summable.congr (fun b => abs_of_nonneg (eigenvalue_nonneg ρ b))
   obtain ⟨hph_summable, hphsum⟩ := summable_eigenvalue_mul_energy_and_tsum ρ Hop
   have hq_summable_and_le : Summable q ∧ ∑' a, q a ≤ Z := by
-    simpa [Z, hGibbs, SpectralTraceClass.trace] using
-      hGibbs.sum_inner_apply_le_trace (gibbsOp_isPositive Hop β).toLinearMap hd_orth
+    simpa [Z, hq_def, hGibbs, SpectralTraceClass.trace] using
+      hGibbs.sum_diagonalExpectationValue_le_trace
+        (gibbsOp_isPositive Hop β).toLinearMap hd_orth
   have hqZ_summable : Summable (fun a => q a / Z) := hq_summable_and_le.1.div_const Z
   have hplogZ_summable : Summable (fun a => p a * Real.log Z) := hp_summable.mul_right _
   have hB_summable : Summable
