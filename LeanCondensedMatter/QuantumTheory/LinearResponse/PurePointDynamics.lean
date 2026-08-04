@@ -103,8 +103,10 @@ private theorem purePointExpectationValue_norm_le
     have hprob : HasSum data.probability 1 := by
       rw [← data.probability_tsum]
       exact data.probability_summable.hasSum
-    exact hprob.congr fun i => by
+    have hfun : (fun i => |data.probability i|) = data.probability := by
+      funext i
       rw [abs_of_nonneg (data.probability_nonneg i)]
+    simpa only [hfun] using hprob
   have hbound : HasSum (fun i => |data.probability i| * ‖A‖) (1 * ‖A‖) :=
     hp.mul_right ‖A‖
   have hle :
@@ -177,7 +179,7 @@ theorem timeScaledGenerator_apply_purePointBasis
     timeScaledGenerator system t (data.basis i) =
       purePointSchrodingerExponent system data i t • data.basis i := by
   rw [timeScaledGenerator, schrodingerGenerator]
-  simp only [ContinuousLinearMap.smul_apply, data.hamiltonian_apply_basis, smul_smul]
+  simp only [smul_apply, data.hamiltonian_apply_basis, smul_smul]
   congr 1
   rw [purePointSchrodingerExponent]
   push_cast
@@ -186,13 +188,13 @@ theorem timeScaledGenerator_apply_purePointBasis
 /-- Every power of the time-scaled generator remains diagonal on the energy basis. -/
 theorem pow_timeScaledGenerator_apply_purePointBasis
     (data : PurePointLehmannData system ι) (i : ι) (t : ℝ) (n : ℕ) :
-    (timeScaledGenerator system t) ^ n (data.basis i) =
+    ((timeScaledGenerator system t) ^ n) (data.basis i) =
       (purePointSchrodingerExponent system data i t) ^ n • data.basis i := by
   induction n with
   | zero => simp
   | succ n ih =>
       rw [pow_succ]
-      simp only [ContinuousLinearMap.mul_apply,
+      simp only [mul_apply_eq_comp,
         timeScaledGenerator_apply_purePointBasis, map_smul, ih, smul_smul]
       congr 1
       ring
@@ -209,11 +211,11 @@ theorem freePropagator_apply_purePointBasis
     (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) T).mapL
       (ContinuousLinearMap.apply ℂ H v)
   have hop' : HasSum
-      (fun n : ℕ => ((n !⁻¹ : ℂ) * c ^ n) • v)
+      (fun n : ℕ => (((n.factorial : ℂ)⁻¹ * c ^ n) • v))
       (freePropagator system t v) := by
     convert hop using 1
     · ext n
-      simp only [ContinuousLinearMap.apply_apply, ContinuousLinearMap.smul_apply]
+      simp only [ContinuousLinearMap.apply_apply, smul_apply]
       rw [pow_timeScaledGenerator_apply_purePointBasis]
       simp [T, c, v, smul_smul]
     · rfl
@@ -221,7 +223,7 @@ theorem freePropagator_apply_purePointBasis
     (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) c).mapL
       (ContinuousLinearMap.toSpanSingleton ℂ v)
   have hscalar' : HasSum
-      (fun n : ℕ => ((n !⁻¹ : ℂ) * c ^ n) • v)
+      (fun n : ℕ => (((n.factorial : ℂ)⁻¹ * c ^ n) • v))
       (purePointSchrodingerPhase system data i t • v) := by
     convert hscalar using 1
     · ext n
@@ -245,9 +247,8 @@ theorem purePointTransitionPhase_eq_exp_energyDifference
         (Complex.I * ((((data.energy m - data.energy n) * t) /
           system.hbar : ℝ) : ℂ)) := by
   rw [purePointTransitionPhase, purePointSchrodingerPhase,
-    purePointSchrodingerPhase, Complex.exp_eq_exp_ℂ, Complex.exp_eq_exp_ℂ]
+    purePointSchrodingerPhase, Complex.exp_eq_exp_ℂ]
   rw [NormedSpace.star_exp, ← NormedSpace.exp_add]
-  rw [← Complex.exp_eq_exp_ℂ]
   congr 1
   simp [purePointSchrodingerExponent]
   push_cast
@@ -262,10 +263,11 @@ theorem inner_purePointBasis_heisenbergEvolution
       purePointTransitionPhase system data m n t *
         inner ℂ (data.basis m) (A (data.basis n)) := by
   rw [heisenbergEvolution]
-  simp only [ContinuousLinearMap.mul_apply]
+  simp only [mul_apply_eq_comp]
   rw [freePropagator_apply_purePointBasis system data n t]
   rw [map_smul]
   rw [← star_freePropagator system t]
+  rw [ContinuousLinearMap.star_eq_adjoint]
   rw [ContinuousLinearMap.adjoint_inner_right]
   rw [freePropagator_apply_purePointBasis system data m t]
   simp [purePointTransitionPhase, inner_smul_left, inner_smul_right]
