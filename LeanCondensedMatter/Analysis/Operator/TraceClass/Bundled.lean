@@ -59,6 +59,7 @@ noncomputable def trace (h : SpectralTraceClass T) : ℝ :=
   match h with
   | ⟨_, _, _⟩ => ContinuousLinearMap.spectralTrace T
 
+omit [CompleteSpace H] in
 @[simp]
 theorem trace_eq_spectralTrace (h : SpectralTraceClass T) :
     h.trace = ContinuousLinearMap.spectralTrace T := by
@@ -70,15 +71,16 @@ omit [CompleteSpace H] in
 theorem trace_nonneg (h : SpectralTraceClass T)
     (hpos : (T : H →ₗ[ℂ] H).IsPositive) :
     0 ≤ h.trace := by
-  simpa using ContinuousLinearMap.trace_nonneg hpos
+  rw [h.trace_eq_spectralTrace]
+  exact ContinuousLinearMap.trace_nonneg hpos
 
 /-- Compute the bundled spectral trace against any Hilbert basis using lossless diagonal
 expectation values. -/
 theorem hasSum_diagonalExpectationValue (h : SpectralTraceClass T)
     {ι : Type*} (d : HilbertBasis ι ℂ H) :
     HasSum (fun i => diagonalExpectationValue T h.isSelfAdjoint (d i)) h.trace := by
-  simpa using
-    ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace
+  rw [h.trace_eq_spectralTrace]
+  exact ContinuousLinearMap.hasSum_diagonalExpectationValue_eq_spectralTrace
       h.compact h.isSelfAdjoint h.summable d
 
 /-- Bound the lossless diagonal-expectation sum over an orthonormal family by the bundled spectral
@@ -88,15 +90,16 @@ theorem sum_diagonalExpectationValue_le_trace (h : SpectralTraceClass T)
     (hd : Orthonormal ℂ d) :
     Summable (fun i => diagonalExpectationValue T h.isSelfAdjoint (d i)) ∧
       ∑' i, diagonalExpectationValue T h.isSelfAdjoint (d i) ≤ h.trace := by
-  simpa using
-    ContinuousLinearMap.sum_diagonalExpectationValue_le_spectralTrace
+  rw [h.trace_eq_spectralTrace]
+  exact ContinuousLinearMap.sum_diagonalExpectationValue_le_spectralTrace
       h.compact hpos h.summable hd
 
 /-- Additivity of the bundled spectral trace. -/
 theorem trace_add (hT : SpectralTraceClass T) (hT' : SpectralTraceClass T')
     (hadd : SpectralTraceClass (T + T')) :
     hadd.trace = hT.trace + hT'.trace := by
-  simpa using ContinuousLinearMap.spectralTrace_add
+  rw [hadd.trace_eq_spectralTrace, hT.trace_eq_spectralTrace, hT'.trace_eq_spectralTrace]
+  exact ContinuousLinearMap.spectralTrace_add
     hT.compact hT.symmetric hT'.compact hT'.symmetric hadd.compact hadd.symmetric
     hT.summable hT'.summable hadd.summable
 
@@ -104,7 +107,8 @@ theorem trace_add (hT : SpectralTraceClass T) (hT' : SpectralTraceClass T')
 theorem trace_comp_comm (hT : SpectralTraceClass T) (hT' : SpectralTraceClass T')
     (hTT' : SpectralTraceClass (T * T')) (hT'T : SpectralTraceClass (T' * T)) :
     hTT'.trace = hT'T.trace := by
-  simpa using ContinuousLinearMap.spectralTrace_comp_comm
+  rw [hTT'.trace_eq_spectralTrace, hT'T.trace_eq_spectralTrace]
+  exact ContinuousLinearMap.spectralTrace_comp_comm
     hT.compact hT.symmetric hT'.compact hT'.symmetric
     hTT'.compact hTT'.symmetric hT'T.compact hT'T.symmetric
     hTT'.summable hT'T.summable

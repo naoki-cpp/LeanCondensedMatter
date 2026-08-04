@@ -28,6 +28,8 @@ namespace Bosonic
 
 variable {Mode : Type*}
 
+local instance : DecidableEq Mode := Classical.decEq Mode
+
 /-- The bosonic imaginary-time-ordered product of two operators. -/
 noncomputable def timeOrderedProduct
     (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (τA τB : ℝ) :
@@ -66,22 +68,18 @@ theorem timeOrderedProduct_swap
 def freeEigenvalue (ε : Mode → ℝ) (n : Occupation Mode) : ℝ :=
   n.sum fun i k => (k : ℝ) * ε i
 
-omit in
 theorem freeEigenvalue_add (ε : Mode → ℝ) (m n : Occupation Mode) :
     freeEigenvalue ε (m + n) = freeEigenvalue ε m + freeEigenvalue ε n :=
   Finsupp.sum_add_index' (fun i => by simp) (fun i k1 k2 => by push_cast; ring)
 
-omit in
 theorem freeEigenvalue_singleOccupation (ε : Mode → ℝ) (i : Mode) :
     freeEigenvalue ε (singleOccupation i) = ε i := by
   simp [freeEigenvalue, singleOccupation]
 
-omit in
 theorem freeEigenvalue_createOccupation (ε : Mode → ℝ) (i : Mode) (n : Occupation Mode) :
     freeEigenvalue ε (createOccupation i n) = freeEigenvalue ε n + ε i := by
   rw [createOccupation, freeEigenvalue_add, freeEigenvalue_singleOccupation]
 
-omit in
 theorem freeEigenvalue_removeOccupation_of_pos {ε : Mode → ℝ} {i : Mode} {n : Occupation Mode}
     (h : n i ≠ 0) :
     freeEigenvalue ε (removeOccupation i n) = freeEigenvalue ε n - ε i := by

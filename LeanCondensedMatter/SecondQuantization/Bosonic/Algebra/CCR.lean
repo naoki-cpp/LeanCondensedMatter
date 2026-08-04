@@ -19,7 +19,9 @@ operators. `Bosonic.ExchangeAlgebra` packages these relations through the statis
 namespace SecondQuantization
 namespace Bosonic
 
-variable {Mode : Type*} [DecidableEq Mode]
+variable {Mode : Type*}
+
+local instance : DecidableEq Mode := Classical.decEq Mode
 
 /-- The ordinary commutator of bosonic Fock-space endomorphisms. -/
 noncomputable def comm (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :

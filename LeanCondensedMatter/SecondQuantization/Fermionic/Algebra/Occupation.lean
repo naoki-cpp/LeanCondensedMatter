@@ -36,6 +36,7 @@ modes. -/
 def particleNumber (n : Occupation Mode) : ℕ := n.card
 
 
+omit [DecidableEq Mode] in
 @[simp]
 theorem particleNumber_vacuum :
     particleNumber (vacuum : Occupation Mode) = 0 :=

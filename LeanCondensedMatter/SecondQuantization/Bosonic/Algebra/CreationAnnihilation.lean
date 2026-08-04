@@ -20,7 +20,9 @@ The square-root factors give the standard canonical commutation relations and ma
 namespace SecondQuantization
 namespace Bosonic
 
-variable {Mode : Type*} [DecidableEq Mode]
+variable {Mode : Type*}
+
+local instance : DecidableEq Mode := Classical.decEq Mode
 
 /-- Creation on a basis state: `√(n_i + 1) • |n + e_i⟩`. -/
 noncomputable def createBasis (i : Mode) (n : Occupation Mode) : FockSpace Mode :=

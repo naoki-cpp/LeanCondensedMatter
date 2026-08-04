@@ -51,7 +51,7 @@ of cross-region interaction — see `notes/roadmaps/second-quantization.md` for 
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*} [DecidableEq Mode] [LinearOrder Mode] [Fintype Mode]
 
 /-- **The weighted occupation-correlator moment.** `occupationMoment w S` is the normalized
 weighted occupation correlator under the weight `w` — the diagonal functional `⟨∏ᵢ∈S nᵢ⟩_w` of the
