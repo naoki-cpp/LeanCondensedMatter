@@ -11,4 +11,4 @@ The branch:
 5. replaces erased convergence/integrability witnesses with explicit total value definitions and theorem-level hypotheses;
 6. keeps style-only linters separate from mathematical/API correctness.
 
-The initial cross-cutting refactor has been applied. CI findings are used to complete downstream API and section-variable cleanup. The temporary inventory workflow will be removed before merge.
+The cross-cutting refactor and its first downstream compatibility pass have been applied. CI findings are now limited to validating the revised public signatures and remaining section-variable cleanup. The temporary inventory workflow will be removed before merge.
