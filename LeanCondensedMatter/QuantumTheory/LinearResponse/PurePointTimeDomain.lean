@@ -152,9 +152,12 @@ theorem summable_purePointTimeDomainTerm
     (A B : H →L[ℂ] H) (τ : ℝ)
     (hsum : PurePointTimeDomainSummable system data A B) :
     Summable (purePointTimeDomainTerm system data A B τ) := by
+  have hweight : Summable fun mn : ι × ι =>
+      ‖purePointTransitionWeight system data A B mn‖ := by
+    simpa only [PurePointLehmannSummable] using hsum.2.2
   have hnorm : Summable fun mn : ι × ι =>
       ‖purePointTimeDomainTerm system data A B τ mn‖ := by
-    simpa [purePointTimeDomainTerm, norm_mul] using hsum.2.2
+    simpa [purePointTimeDomainTerm, norm_mul] using hweight
   exact hnorm.of_norm
 
 /-- Expansion of `ω(A_I(τ) B)` into the forward ordered transition series. -/
@@ -248,7 +251,6 @@ theorem purePoint_forward_sub_backward_eq_timeDomainSeries
   simp [purePointTimeDomainTerm, purePointTransitionWeight,
     purePointForwardTimeTerm, purePointForwardWeight,
     purePointBackwardTimeTerm, purePointBackwardWeight]
-  push_cast
   ring
 
 /-- The physical commutator susceptibility equals the countable time-domain Lehmann series. -/
