@@ -92,7 +92,7 @@ theorem twoPointTimeOrderedProduct_self_time (ε : Mode → ℝ) (i j : Mode) (�
             (externalFieldOperator ε τ (.creation j)) +
           (Common.Statistics.fermion.zetaInt : ℂ) •
             ((externalFieldOperator ε τ (.creation j)).comp
-              (externalFieldOperator ε τ (.annihilation i))) := by
+              (externalFieldOperator ε τ (.annihilation i)))) := by
   exact Common.timeOrderedProduct_self_time Common.Statistics.fermion _ _ τ
 
 /-- Swapping both external fields and their times produces the fermionic exchange sign. -/
