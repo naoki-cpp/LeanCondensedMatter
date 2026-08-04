@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticInteraction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointWickDiagram
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairValue
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairProduct
@@ -16,13 +17,13 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonLinke
 set_option linter.style.header false
 
 /-!
-# Fermionic quartic diagrammatics
+# Fermionic diagrammatics
 
-Quartic interaction vertices, local-leg semantics, ordered Wick diagrams and amplitudes, component
-orders, order-preserving shuffle decompositions, shuffled ordered-simplex integrands, component-local
-leg, pairing, pair-product, crossing compatibility and parity, cross-component block inversion
-counts, pairing-weight and contraction-integrand factorization, and full quartic Wick-amplitude
-factorization over connected components; the Dyson diagram expansion, the connected-diagram formula
-for Dyson vertex cumulants, the general algebraic Dyson Linked Cluster Theorem, and its explicit
-orders-one-through-three regression corollaries.
+Quartic interaction vertices, the two-point external-leg foundation, local-leg semantics, ordered
+Wick diagrams and amplitudes, component orders, order-preserving shuffle decompositions, shuffled
+ordered-simplex integrands, component-local leg, pairing, pair-product, crossing compatibility and
+parity, cross-component block inversion counts, pairing-weight and contraction-integrand
+factorization, and full quartic Wick-amplitude factorization over connected components; the Dyson
+diagram expansion, the connected-diagram formula for Dyson vertex cumulants, the general algebraic
+Dyson Linked Cluster Theorem, and its explicit orders-one-through-three regression corollaries.
 -/
