@@ -116,46 +116,23 @@ theorem summable_eigenvalue_mul_energy_and_tsum (ρ : DensityOperator H) (Hop : 
           a.1.1 * diagonalExpectationValue Hop.1 Hop.2
             (eigenvectorFamily ρ.spectralTraceClass.compact a) =
         energyExpValue ρ Hop := by
-  set d := eigenvectorFamily ρ.spectralTraceClass.compact
-  have hE := summable_energyExpValue_term ρ Hop
-  have hraw :
-      Summable (fun a : EigenvectorIndex ρ.op =>
-          a.1.1 * (inner ℂ (d a) (Hop.1 (d a)) : ℂ).re) ∧
-        ∑' a : EigenvectorIndex ρ.op,
-            a.1.1 * (inner ℂ (d a) (Hop.1 (d a)) : ℂ).re =
-          energyExpValue ρ Hop := by
-    refine ⟨?_, ?_⟩
-    · have hre := Complex.reCLM.summable hE
-      have heq : (fun a : EigenvectorIndex ρ.op =>
-          Complex.reCLM (((a.1.1 : ℝ) : ℂ) * (inner ℂ (d a) (Hop.1 (d a)) : ℂ))) =
-          (fun a => a.1.1 * (inner ℂ (d a) (Hop.1 (d a)) : ℂ).re) := by
-        funext a
-        change (((a.1.1 : ℝ) : ℂ) * (inner ℂ (d a) (Hop.1 (d a)) : ℂ)).re =
-          a.1.1 * (inner ℂ (d a) (Hop.1 (d a)) : ℂ).re
-        rw [Complex.re_ofReal_mul]
-      rwa [heq] at hre
-    · rw [show energyExpValue ρ Hop =
-          (∑' a, ((a.1.1 : ℝ) : ℂ) * (inner ℂ (d a) (Hop.1 (d a)) : ℂ)).re from rfl,
-        Complex.re_tsum hE]
-      congr 1
-      funext a
-      rw [Complex.re_ofReal_mul]
-  have hHopSym : (Hop.1 : H →ₗ[ℂ] H).IsSymmetric :=
-    ContinuousLinearMap.isSelfAdjoint_iff_isSymmetric.mp Hop.2
+  set d := eigenvectorFamily ρ.spectralTraceClass.compact with hd_def
+  have hsComplex := (summable_energyExpValue_term ρ Hop).hasSum
+  rw [← ρ.expectation_apply Hop.1, ρ.expectation_observable] at hsComplex
+  rw [← hd_def] at hsComplex
   have hpoint :
       (fun a : EigenvectorIndex ρ.op =>
-        a.1.1 * diagonalExpectationValue Hop.1 Hop.2 (d a)) =
-        fun a => a.1.1 * (inner ℂ (d a) (Hop.1 (d a)) : ℂ).re := by
+        (a.1.1 : ℂ) * inner ℂ (d a) (Hop.1 (d a))) =
+      (fun a => ((a.1.1 * diagonalExpectationValue Hop.1 Hop.2 (d a) : ℝ) : ℂ)) := by
     funext a
-    congr 1
-    apply Complex.ofReal_injective
-    rw [coe_diagonalExpectationValue_right]
-    exact (hHopSym.coe_re_inner_self_apply (d a)).symm
-  change Summable (fun a : EigenvectorIndex ρ.op =>
-      a.1.1 * diagonalExpectationValue Hop.1 Hop.2 (d a)) ∧
-    ∑' a : EigenvectorIndex ρ.op,
-        a.1.1 * diagonalExpectationValue Hop.1 Hop.2 (d a) = energyExpValue ρ Hop
-  simpa only [hpoint] using hraw
+    rw [Complex.ofReal_mul, coe_diagonalExpectationValue_right]
+  rw [hpoint] at hsComplex
+  have hsReal : HasSum
+      (fun a : EigenvectorIndex ρ.op =>
+        a.1.1 * diagonalExpectationValue Hop.1 Hop.2 (d a))
+      (energyExpValue ρ Hop) := by
+    exact_mod_cast hsComplex
+  exact ⟨hsReal.summable, hsReal.tsum_eq⟩
 
 /-- The Gibbs–Klein / Helmholtz free-energy inequality. -/
 theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop : Observable H)
