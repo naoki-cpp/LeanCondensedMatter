@@ -65,23 +65,6 @@ theorem DensityOperator.sum_diagonalExpectationValue_le_one (ρ : DensityOperato
   have h := ρ.spectralTraceClass.sum_diagonalExpectationValue_le_trace ρ.pos.toLinearMap hd
   rwa [ρ.spectralTrace_eq_one] at h
 
-/-- Compatibility bridge: the `.re`-projected diagonal matrix elements of a density operator sum
-to one against any Hilbert basis. Prefer `hasSum_diagonalExpectationValue_eq_one`. -/
-theorem DensityOperator.hasSum_inner_apply_eq_one (ρ : DensityOperator H)
-    {ι : Type*} (d : HilbertBasis ι ℂ H) :
-    HasSum (fun i => (inner ℂ (d i) (ρ.op (d i)) : ℂ).re) 1 := by
-  have h := ρ.spectralTraceClass.hasSum_inner_apply d
-  rwa [ρ.spectralTrace_eq_one] at h
-
-/-- Compatibility bridge: the `.re`-projected diagonal sum over any orthonormal family is bounded
-above by one. Prefer `sum_diagonalExpectationValue_le_one`. -/
-theorem DensityOperator.sum_inner_apply_le_one (ρ : DensityOperator H)
-    {ι : Type*} {d : ι → H} (hd : Orthonormal ℂ d) :
-    Summable (fun i => (inner ℂ (d i) (ρ.op (d i)) : ℂ).re) ∧
-      ∑' i, (inner ℂ (d i) (ρ.op (d i)) : ℂ).re ≤ 1 := by
-  have h := ρ.spectralTraceClass.sum_inner_apply_le_trace ρ.pos.toLinearMap hd
-  rwa [ρ.spectralTrace_eq_one] at h
-
 /-- Each vector of the density operator's spectral eigenvector family is a unit vector. -/
 theorem eigenvectorFamily_norm_eq_one (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) :
     ‖eigenvectorFamily ρ.spectralTraceClass.compact a‖ = 1 :=
