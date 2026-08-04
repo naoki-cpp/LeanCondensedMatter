@@ -1,9 +1,9 @@
 name: Lint cleanup inventory
 
 on:
-  push:
+  pull_request:
     branches:
-      - agent/lint-api-cleanup-all
+      - main
 
 permissions:
   contents: read
