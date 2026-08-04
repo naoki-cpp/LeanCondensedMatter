@@ -21,7 +21,8 @@ variable {Mode : Type*} [DecidableEq Mode]
 
 /-- The algebraic bosonic Fock space on occupation-number states. -/
 @[nolint unusedArguments]
-abbrev FockSpace (Mode : Type*) [DecidableEq Mode] := Common.AlgebraicFock (Occupation Mode)
+abbrev FockSpace (Mode : Type*) [DecidableEq Mode] :=
+  Common.AlgebraicFock (Occupation Mode)
 
 /-- The basis vector corresponding to occupation state `n`. -/
 noncomputable def basisState (n : Occupation Mode) : FockSpace Mode :=

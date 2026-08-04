@@ -27,8 +27,7 @@ instance QuarticWickDiagram.instDecidableEq [DecidableEq Mode] {S : Finset (Fin 
   Common.QuarticDiagram.equivPair.decidableEq
 
 /-- `QuarticWickDiagram Mode N S` is finite when `Mode` is finite. -/
-@[nolint unusedArguments]
-noncomputable instance QuarticWickDiagram.instFintype [DecidableEq Mode] [Fintype Mode]
+noncomputable instance QuarticWickDiagram.instFintype [Fintype Mode]
     {S : Finset (Fin N)} : Fintype (QuarticWickDiagram Mode N S) :=
   Fintype.ofEquiv _ Common.QuarticDiagram.equivPair.symm
 

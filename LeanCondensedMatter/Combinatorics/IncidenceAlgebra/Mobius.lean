@@ -51,9 +51,8 @@ theorem mu_orderIso_apply {R α β : Type*} [CommRing R]
     exact ih _ hcard x z rfl
 
 /-- A finite down-set inherits a locally finite order. -/
-@[nolint unusedArguments]
-noncomputable instance instLocallyFiniteOrderSubtypeLe {α : Type*} [Fintype α] [PartialOrder α]
-    [LocallyFiniteOrder α] [DecidableEq α] {z : α} : LocallyFiniteOrder {t : α // t ≤ z} := by
+noncomputable instance instLocallyFiniteOrderSubtypeLe {α : Type*} [Fintype α]
+    [PartialOrder α] {z : α} : LocallyFiniteOrder {t : α // t ≤ z} := by
   classical
   exact Fintype.toLocallyFiniteOrder
 

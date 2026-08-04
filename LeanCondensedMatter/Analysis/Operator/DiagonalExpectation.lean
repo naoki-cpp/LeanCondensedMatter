@@ -35,7 +35,6 @@ noncomputable def diagonalExpectationValue
 
 /-- Transporting a self-adjoint diagonal expectation to `ℝ` and back to `ℂ` recovers the original
 matrix element exactly. -/
-@[simp]
 theorem coe_diagonalExpectationValue
     (T : H →L[ℂ] H) (hT : IsSelfAdjoint T) (x : H) :
     (diagonalExpectationValue T hT x : ℂ) = inner ℂ (T x) x := by
@@ -47,7 +46,7 @@ theorem coe_diagonalExpectationValue
       Complex.selfAdjointEquiv] using (hsym.im_inner_apply_self x).symm
 
 /-- The same lossless coercion identity in the physicists' inner-product orientation. -/
-@[simp, nolint simpNF]
+@[simp]
 theorem coe_diagonalExpectationValue_right
     (T : H →L[ℂ] H) (hT : IsSelfAdjoint T) (x : H) :
     (diagonalExpectationValue T hT x : ℂ) = inner ℂ x (T x) := by
