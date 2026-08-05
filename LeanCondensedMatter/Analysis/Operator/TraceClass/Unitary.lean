@@ -129,7 +129,7 @@ theorem IsPositive.unitaryConjugate {T : H →L[ℂ] H} (hT : T.IsPositive)
 noncomputable def SpectralTraceClass.unitaryConjugate {T : H →L[ℂ] H}
     (hT : SpectralTraceClass T) (U : H →L[ℂ] H)
     (hleft : star U * U = 1) (hright : U * star U = 1) :
-    SpectralTraceClass (unitaryConjugate U T) where
+    SpectralTraceClass (ContinuousLinearMap.unitaryConjugate U T) where
   compact := isCompactOperator_unitaryConjugate U T hT.compact
   symmetric := by
     have hself : IsSelfAdjoint T := hT.symmetric.isSelfAdjoint
@@ -142,8 +142,9 @@ theorem SpectralTraceClass.trace_unitaryConjugate {T : H →L[ℂ] H}
     (hT : SpectralTraceClass T) (U : H →L[ℂ] H)
     (hleft : star U * U = 1) (hright : U * star U = 1) :
     (hT.unitaryConjugate U hleft hright).trace = hT.trace := by
-  change spectralTrace (unitaryConjugate U T) = spectralTrace T
-  exact spectralTrace_unitaryConjugate U T hleft hright hT.summable
+  change spectralTrace (ContinuousLinearMap.unitaryConjugate U T) = spectralTrace T
+  exact ContinuousLinearMap.spectralTrace_unitaryConjugate
+    U T hleft hright hT.summable
     (hT.unitaryConjugate U hleft hright).summable
 
 end ContinuousLinearMap
