@@ -30,35 +30,26 @@ theorem exteriorBasis_eq_sort_prod
       ((n.sort (· ≤ ·)).map fun i => oneParticle 𝓗₁ (b i)).prod := by
   rw [ExteriorAlgebra.basis_apply_ofCard (n := n.card) b rfl]
   simp only [ExteriorAlgebra.ιMulti_family, ExteriorAlgebra.ιMulti_apply,
-    oneParticle, Set.powersetCard.ofFinEmbEquiv_symm_apply]
+    oneParticle, Set.powersetCard.ofFinEmbEquiv_symm_apply,
+    List.ofFn_eq_map]
   let t : Set.powersetCard Mode n.card := Set.powersetCard.ofCard rfl
-  have hlist :
-      (List.finRange n.card).map
-          ((↑t : Finset Mode).orderEmbOfFin t.prop) =
-        n.sort (· ≤ ·) := by
-    simpa [t] using
-      (Finset.listMap_orderEmbOfFin_finRange (↑t : Finset Mode) t.prop)
-  have hmap := congrArg
-    (List.map fun x : Mode => ExteriorAlgebra.ι ℂ (b x)) hlist
-  have hprod := congrArg List.prod hmap
-  have hemb :
-      n.orderEmbOfFin rfl =
-        (↑t : Finset Mode).orderEmbOfFin t.prop := by
-    symm
-    apply Finset.orderEmbOfFin_unique' rfl
-    intro j
-    simpa [t] using
-      (Finset.orderEmbOfFin_mem (↑t : Finset Mode) t.prop j)
-  have htarget :
-      (List.map
-          (fun j : Fin n.card =>
-            ExteriorAlgebra.ι ℂ (b (n.orderEmbOfFin rfl j)))
-          (List.finRange n.card)).prod =
+  change
+    (List.map
+        (fun i : Fin n.card =>
+          ExteriorAlgebra.ι ℂ
+            (b (((↑t : Finset Mode).orderEmbOfFin t.prop) i)))
+        (List.finRange n.card)).prod =
+      (List.map (fun x => ExteriorAlgebra.ι ℂ (b x))
+        (n.sort (· ≤ ·))).prod
+  calc
+    _ =
         (List.map (fun x => ExteriorAlgebra.ι ℂ (b x))
-          (n.sort (· ≤ ·))).prod := by
-    rw [hemb]
-    simpa [List.map_map, Function.comp_def] using hprod
-  simpa only [List.ofFn_eq_map] using htarget
+          ((List.finRange n.card).map
+            ((↑t : Finset Mode).orderEmbOfFin t.prop))).prod := by
+      rw [List.map_map]
+    _ = _ := by
+      rw [Finset.listMap_orderEmbOfFin_finRange]
+      rfl
 
 /-- A basis vector inserted before every occupied mode creates the new exterior-basis state with
 no permutation sign. -/
