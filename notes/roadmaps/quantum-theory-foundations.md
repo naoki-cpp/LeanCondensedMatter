@@ -23,7 +23,8 @@ representatives.
 
 ## Bounded one-particle dynamics
 
-Status: `in progress` under #580; unitary propagation and normalized pure-state evolution are proved.
+Status: `in progress` under #580; unitary propagation and Schrödinger/Heisenberg picture equivalence
+for pure and density states are proved.
 
 `QuantumTheory/LinearResponse/FreeDynamics.lean` defines the bounded free system and propagator
 
@@ -41,8 +42,24 @@ for a bounded self-adjoint Hamiltonian and `ℏ > 0`. The pure-state dynamics la
 - exact compatibility of evolution with unit-modulus global-phase representatives through
   `phaseState`, without introducing a ray quotient.
 
-The remaining #580 packages are Schrödinger/Heisenberg picture equivalence for pure and density
-states, bounded equations of motion, and conservation laws.
+`QuantumTheory/LinearResponse/PictureEquivalence.lean` adds:
+
+- `heisenbergObservable`, bundling the Heisenberg evolution of a self-adjoint observable;
+- exact complex and lossless real pure-state expectation identities between Schrödinger and
+  Heisenberg pictures;
+- `evolveDensityOperator system ρ t = U₀(t) ρ U₀(t)†` as a canonical density operator;
+- preservation of positivity, compact spectral trace-class data, and spectral trace one;
+- unitary transport of Hilbert bases;
+- exact complex density-state picture equivalence for every bounded operator;
+- the corresponding lossless real identity for observables.
+
+`Analysis/Operator/TraceClass/Unitary.lean` owns the reusable analytic boundary: unitary conjugation
+preserves eigenspaces up to linear equivalence, eigenspace multiplicities, spectral summability,
+compactness, positivity, spectral trace class, and spectral trace. The density-state expectation
+proof remains dimension-independent by diagonalizing the original state, transporting its Hilbert
+basis, and comparing the two absolutely convergent diagonal series.
+
+The remaining #580 packages are bounded equations of motion and conservation laws.
 
 ## Density operators, expectations, and purity
 
@@ -67,6 +84,8 @@ Implemented results include:
   `ρ.expectation A = innerHS b ρ.sqrtOp (A * ρ.sqrtOp)`;
 - absolutely convergent countable `HilbertBasis` formulas for arbitrary bounded operators;
 - lossless real countable diagonal formulas for observables through `diagonalExpectationValue`;
+- existence of a Hilbert basis diagonalizing every density operator, extending the canonical
+  nonzero spectral eigenvector family by kernel vectors of weight zero;
 - construction from finite-dimensional positive trace-one operators;
 - equality with the ordinary matrix trace in finite dimensions;
 - finite diagonal formulas as specializations of the countable theory;
@@ -149,7 +168,7 @@ The uniqueness statement “equality holds only for the Gibbs state” remains o
 
 ## Current next steps
 
-1. Complete #580 with pure/density picture equivalence, bounded equations of motion, and conservation
+1. Complete #580 with bounded Schrödinger, Heisenberg, and von Neumann equations and conservation
    laws.
 2. Prove uniqueness of the Gibbs free-energy minimizer.
 3. Design an unbounded Hamiltonian interface supporting genuine infinite-dimensional Gibbs states.
