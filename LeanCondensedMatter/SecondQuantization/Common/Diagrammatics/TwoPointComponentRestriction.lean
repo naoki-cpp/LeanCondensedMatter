@@ -155,9 +155,11 @@ noncomputable def TwoPointDiagram.vacuumLegDataEquiv {S : Finset (Fin N)}
       ↥(d.componentInteractionVertices B) × Fin 4 where
   toFun leg :=
     match leg.1 with
-    | .inl e => False.elim (hVac ⟨e, leg.2⟩)
+    | .inl e => False.elim (hVac ⟨e, by
+        simpa [TwoPointDiagram.unflattenedLegInComponent] using leg.2⟩)
     | .inr p =>
-        (⟨p.1.1, (d.mem_componentInteractionVertices B p.1).2 leg.2⟩, p.2)
+        (⟨p.1.1, (d.mem_componentInteractionVertices B p.1).2 (by
+          simpa [TwoPointDiagram.unflattenedLegInComponent] using leg.2)⟩, p.2)
   invFun p :=
     let v : ↥S :=
       ⟨p.1.1, d.componentInteractionVertices_subset B p.1.2⟩
@@ -167,7 +169,8 @@ noncomputable def TwoPointDiagram.vacuumLegDataEquiv {S : Finset (Fin N)}
   left_inv leg := by
     rcases leg with ⟨leg, hleg⟩
     cases leg with
-    | inl e => exact False.elim (hVac ⟨e, hleg⟩)
+    | inl e => exact False.elim (hVac ⟨e, by
+        simpa [TwoPointDiagram.unflattenedLegInComponent] using hleg⟩)
     | inr p =>
         rcases p with ⟨v, l⟩
         apply Subtype.ext
