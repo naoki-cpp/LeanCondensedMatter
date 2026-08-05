@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion
+import LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence
 
 set_option linter.style.header false
 
