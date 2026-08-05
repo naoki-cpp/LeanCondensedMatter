@@ -134,8 +134,10 @@ theorem hasDerivAt_evolution_linear_coupling_zero_of_bound
         lam • ((-κ) • ∫ σ in (0 : ℝ)..τ, V σ) =
           term V ((lam : ℂ) * κ) τ 1 := by
       rw [term_one]
+      change ((lam : ℂ) * (-κ)) • (∫ σ in (0 : ℝ)..τ, V σ) =
+        (-((lam : ℂ) * κ)) • (∫ σ in (0 : ℝ)..τ, V σ)
       congr 1
-      simp [smul_eq_mul]
+      ring
     have hrem' :
         ‖evolution V ((lam : ℂ) * κ) τ -
             evolution V (((0 : ℝ) : ℂ) * κ) τ -
