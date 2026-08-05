@@ -136,7 +136,13 @@ theorem hasDerivAt_evolution_linear_coupling_zero_of_bound
         lam • ((-κ) • ∫ σ in (0 : ℝ)..τ, V σ) =
           term V ((lam : ℂ) * κ) τ 1 := by
       rw [term_one]
-      exact congrArg (fun z : ℂ => z • ∫ σ in (0 : ℝ)..τ, V σ) hscalar
+      calc
+        lam • ((-κ) • ∫ σ in (0 : ℝ)..τ, V σ) =
+            (lam • (-κ)) • ∫ σ in (0 : ℝ)..τ, V σ :=
+          (IsScalarTower.smul_assoc lam (-κ)
+            (∫ σ in (0 : ℝ)..τ, V σ)).symm
+        _ = (-((lam : ℂ) * κ)) • ∫ σ in (0 : ℝ)..τ, V σ :=
+          congrArg (fun z : ℂ => z • ∫ σ in (0 : ℝ)..τ, V σ) hscalar
     have hrem' :
         ‖evolution V ((lam : ℂ) * κ) τ -
             evolution V (((0 : ℝ) : ℂ) * κ) τ -
