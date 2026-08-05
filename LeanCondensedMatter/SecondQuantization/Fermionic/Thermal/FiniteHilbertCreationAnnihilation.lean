@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteHilbertSelfAd
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations
 
 set_option linter.style.header false
+set_option linter.unusedFintypeInType false
 
 /-!
 # Adjointness of finite fermionic creation and annihilation operators
@@ -27,6 +28,8 @@ theorem star_matrixCoeff_create_eq_matrixCoeff_annihilate
     star (Common.matrixCoeff (create i) n m) =
       Common.matrixCoeff (annihilate i) m n := by
   unfold Common.matrixCoeff
+  change star ((create i) (basisState m) n) =
+    (annihilate i) (basisState n) m
   by_cases hm : i ∈ m
   · rw [create_basisState_of_mem hm]
     simp only [LinearMap.zero_apply, star_zero]
@@ -89,8 +92,8 @@ theorem star_finiteHilbertCreate (i : Mode) :
 @[simp]
 theorem star_finiteHilbertAnnihilate (i : Mode) :
     star (finiteHilbertAnnihilate i) = finiteHilbertCreate i := by
-  have h := congrArg star (star_finiteHilbertCreate i)
-  simpa using h
+  rw [← star_finiteHilbertCreate i]
+  simp
 
 end
 end Fermionic
