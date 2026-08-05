@@ -28,7 +28,11 @@ theorem oneParticle_basis_eq_exteriorBasis_singleton
     (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) :
     oneParticle 𝓗₁ (b i) = b.ExteriorAlgebra ({i} : Finset Mode) := by
   rw [ExteriorAlgebra.basis_apply_ofCard (n := 1) b (by simp)]
-  simp [oneParticle, ExteriorAlgebra.ιMulti_family]
+  simp only [oneParticle, ExteriorAlgebra.ιMulti_family,
+    ExteriorAlgebra.ιMulti_apply, List.ofFn_succ, List.prod_cons,
+    List.prod_nil, mul_one, Function.comp_apply]
+  congr 1
+  simp [Set.powersetCard.ofFinEmbEquiv_symm_apply]
 
 /-- Exterior multiplication by a basis vector has the occupation-sign action on exterior-basis
 vectors. -/
@@ -62,10 +66,10 @@ theorem occupationEquiv_create_basisState
   rw [occupationEquiv_basisState]
   by_cases hi : i ∈ n
   · rw [SecondQuantization.Fermionic.create_basisState_of_mem hi, map_zero]
-    simp [create_exteriorBasis, hi]
+    simpa [hi] using (create_exteriorBasis b i n).symm
   · rw [SecondQuantization.Fermionic.create_basisState_of_not_mem hi, map_smul,
       occupationEquiv_basisState]
-    simp [create_exteriorBasis, hi]
+    simpa [hi] using (create_exteriorBasis b i n).symm
 
 /-- The basis-induced equivalence intertwines the full creation operators. -/
 theorem occupationEquiv_create
@@ -73,9 +77,10 @@ theorem occupationEquiv_create
     (occupationEquiv b).toLinearMap.comp
         (SecondQuantization.Fermionic.create i) =
       (create 𝓗₁ (b i)).comp (occupationEquiv b).toLinearMap := by
-  apply linearMap_ext_basisState
-  intro n
-  exact occupationEquiv_create_basisState b i n
+  apply Finsupp.lhom_ext
+  intro n c
+  have h := occupationEquiv_create_basisState b i n
+  simpa [basisState, Common.basisState] using congrArg (fun Ψ => c • Ψ) h
 
 end
 end Field
