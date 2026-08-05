@@ -23,15 +23,38 @@ noncomputable section
 variable {Mode : Type*} [LinearOrder Mode]
 variable {𝓗₁ : Type*} [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
+/-- The canonical exterior basis is the ordered product of its one-particle basis vectors. -/
+theorem exteriorBasis_eq_sort_prod
+    (b : Module.Basis Mode ℂ 𝓗₁) (n : Finset Mode) :
+    b.ExteriorAlgebra n =
+      ((n.sort (· ≤ ·)).map fun i => oneParticle 𝓗₁ (b i)).prod := by
+  rw [ExteriorAlgebra.basis_apply_ofCard (n := n.card) b rfl]
+  simp only [ExteriorAlgebra.ιMulti_family, ExteriorAlgebra.ιMulti_apply,
+    oneParticle, Set.powersetCard.ofFinEmbEquiv_symm_apply]
+  rw [List.ofFn_eq_map, ← List.map_map,
+    Finset.listMap_orderEmbOfFin_finRange]
+
+/-- A basis vector inserted before every occupied mode creates the new exterior-basis state with
+no permutation sign. -/
+theorem create_exteriorBasis_of_lt
+    (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) (n : Finset Mode)
+    (hi : ∀ x ∈ n, i < x) :
+    create 𝓗₁ (b i) (b.ExteriorAlgebra n) =
+      b.ExteriorAlgebra (insert i n) := by
+  have hin : i ∉ n := by
+    intro h
+    exact (lt_irrefl i) (hi i h)
+  rw [create_apply, exteriorBasis_eq_sort_prod b n,
+    exteriorBasis_eq_sort_prod b (insert i n),
+    Finset.sort_insert (fun x hx => (hi x hx).le) hin]
+  simp only [List.map_cons, List.prod_cons]
+
 /-- A one-particle basis vector is the singleton exterior-basis vector. -/
 theorem oneParticle_basis_eq_exteriorBasis_singleton
     (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) :
     oneParticle 𝓗₁ (b i) = b.ExteriorAlgebra ({i} : Finset Mode) := by
-  rw [ExteriorAlgebra.basis_apply_ofCard (n := 1) b (by simp)]
-  simp only [oneParticle, ExteriorAlgebra.ιMulti_family,
-    ExteriorAlgebra.ιMulti_apply, List.ofFn_succ, List.prod_cons,
-    Function.comp_apply]
-  simp [Set.powersetCard.ofFinEmbEquiv_symm_apply]
+  have h := create_exteriorBasis_of_lt b i (∅ : Finset Mode) (by simp)
+  simpa [create_apply, exteriorBasis_eq_sort_prod] using h
 
 /-- Exterior multiplication by a basis vector has the occupation-sign action on exterior-basis
 vectors. -/
@@ -40,22 +63,73 @@ theorem create_exteriorBasis
     create 𝓗₁ (b i) (b.ExteriorAlgebra n) =
       if i ∈ n then 0
       else (fermionSign i n : ℂ) • b.ExteriorAlgebra (insertOccupation i n) := by
-  by_cases hi : i ∈ n
-  · rw [if_pos hi, create_apply, oneParticle_basis_eq_exteriorBasis_singleton]
-    let s : Set.powersetCard Mode 1 :=
-      Set.powersetCard.ofCard (by simp : ({i} : Finset Mode).card = 1)
-    let t : Set.powersetCard Mode n.card := Set.powersetCard.ofCard rfl
-    have hnot : ¬ Disjoint (↑s : Finset Mode) (↑t : Finset Mode) := by
-      simp [s, t, hi]
-    simpa [s, t] using ExteriorAlgebra.basis_mul_of_not_disjoint b s t hnot
-  · rw [if_neg hi, create_apply, oneParticle_basis_eq_exteriorBasis_singleton]
-    let s : Set.powersetCard Mode 1 :=
-      Set.powersetCard.ofCard (by simp : ({i} : Finset Mode).card = 1)
-    let t : Set.powersetCard Mode n.card := Set.powersetCard.ofCard rfl
-    have hdisj : Disjoint (↑s : Finset Mode) (↑t : Finset Mode) := by
-      simp [s, t, hi]
-    have hmul := ExteriorAlgebra.basis_mul_of_disjoint b s t hdisj
-    simpa [s, t, fermionSign, insertOccupation] using hmul
+  induction n using Finset.induction_on_min generalizing i with
+  | empty =>
+      have h := create_exteriorBasis_of_lt b i (∅ : Finset Mode) (by simp)
+      simpa [fermionSign, insertOccupation] using h
+  | insert a s hmin ih =>
+      have ha : a ∉ s := by
+        intro ha
+        exact (lt_irrefl a) (hmin a ha)
+      have hbase :
+          create 𝓗₁ (b a) (b.ExteriorAlgebra s) =
+            b.ExteriorAlgebra (insert a s) :=
+        create_exteriorBasis_of_lt b a s hmin
+      rw [← hbase]
+      by_cases hia : i = a
+      · subst i
+        rw [if_pos (Finset.mem_insert_self a s)]
+        change
+          ((create 𝓗₁ (b a)).comp (create 𝓗₁ (b a)))
+              (b.ExteriorAlgebra s) = 0
+        rw [create_comp_self, LinearMap.zero_apply]
+      by_cases his : i ∈ s
+      · rw [if_pos (Finset.mem_insert_of_mem his)]
+        have hcar := LinearMap.congr_fun
+          (create_comp_add_swap 𝓗₁ (b i) (b a)) (b.ExteriorAlgebra s)
+        have hiZero := ih i
+        rw [if_pos his] at hiZero
+        simp only [LinearMap.add_apply, LinearMap.comp_apply,
+          LinearMap.zero_apply] at hcar
+        rw [hiZero, map_zero, add_zero] at hcar
+        exact hcar
+      · have hiInsert : i ∉ insert a s := by
+          simp [hia, his]
+        rw [if_neg hiInsert]
+        rcases lt_or_gt_of_ne hia with hlt | hgt
+        · rw [hbase]
+          have hmin' : ∀ x ∈ insert a s, i < x := by
+            intro x hx
+            rcases Finset.mem_insert.mp hx with rfl | hx
+            · exact hlt
+            · exact lt_trans hlt (hmin x hx)
+          have hnew := create_exteriorBasis_of_lt b i (insert a s) hmin'
+          rw [hnew]
+          have hfilter : (insert a s).filter (fun x => x < i) = ∅ := by
+            apply Finset.eq_empty_iff_forall_not_mem.mpr
+            intro x hx
+            have hx' := Finset.mem_filter.mp hx
+            exact (lt_asymm hx'.2 (hmin' x hx'.1))
+          simp [fermionSign, hfilter, insertOccupation]
+        · have hcar := LinearMap.congr_fun
+            (create_comp_add_swap 𝓗₁ (b i) (b a)) (b.ExteriorAlgebra s)
+          have hswap :
+              create 𝓗₁ (b i) (create 𝓗₁ (b a) (b.ExteriorAlgebra s)) =
+                -create 𝓗₁ (b a) (create 𝓗₁ (b i) (b.ExteriorAlgebra s)) := by
+            simpa only [LinearMap.add_apply, LinearMap.comp_apply,
+              LinearMap.zero_apply] using eq_neg_of_add_eq_zero_right hcar
+          rw [hswap]
+          have hiStep := ih i
+          rw [if_neg his] at hiStep
+          rw [hiStep, map_smul]
+          have hamin : ∀ x ∈ insert i s, a < x := by
+            intro x hx
+            rcases Finset.mem_insert.mp hx with rfl | hx
+            · exact hgt
+            · exact hmin x hx
+          have haStep := create_exteriorBasis_of_lt b a (insert i s) hamin
+          rw [haStep, fermionSign_insertOccupation_of_lt ha hgt]
+          simp [insertOccupation, Finset.insert_comm]
 
 /-- The basis-induced occupation/exterior equivalence intertwines creation on basis states. -/
 theorem occupationEquiv_create_basisState
