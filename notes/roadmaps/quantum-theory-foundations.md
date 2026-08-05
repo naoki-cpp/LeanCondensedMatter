@@ -23,8 +23,8 @@ representatives.
 
 ## Bounded one-particle dynamics
 
-Status: `in progress` under #580; unitary propagation and Schrödinger/Heisenberg picture equivalence
-for pure and density states are proved.
+Status: `in progress` under #580; unitary propagation, picture equivalence, and the bounded
+Schrödinger, Heisenberg, and von Neumann equations are proved.
 
 `QuantumTheory/LinearResponse/FreeDynamics.lean` defines the bounded free system and propagator
 
@@ -59,7 +59,21 @@ compactness, positivity, spectral trace class, and spectral trace. The density-s
 proof remains dimension-independent by diagonalizing the original state, transporting its Hilbert
 basis, and comparing the two absolutely convergent diagonal series.
 
-The remaining #580 packages are bounded equations of motion and conservation laws.
+`QuantumTheory/LinearResponse/EquationsOfMotion.lean` supplies norm derivatives throughout the
+bounded theory:
+
+- operator-norm differentiability of `freePropagator system t` and its negative-time form;
+- the generator relation and explicit bounded Schrödinger equation
+  `dψ/dt = -(i/ℏ) H₀ ψ` for state-vector representatives;
+- the generator relation and explicit bounded Heisenberg equation
+  `dA_H/dt = (i/ℏ) (H₀ A_H - A_H H₀)`;
+- the generator relation and explicit bounded von Neumann equation
+  `dρ/dt = -(i/ℏ) (H₀ ρ - ρ H₀)`;
+- dimension-independent proofs based only on Banach-algebra exponential differentiation,
+  continuous-linear evaluation, product rules, and the generator–propagator commutation law.
+
+The remaining #580 package is conservation laws and downstream reuse of these canonical dynamics
+APIs.
 
 ## Density operators, expectations, and purity
 
@@ -168,8 +182,8 @@ The uniqueness statement “equality holds only for the Gibbs state” remains o
 
 ## Current next steps
 
-1. Complete #580 with bounded Schrödinger, Heisenberg, and von Neumann equations and conservation
-   laws.
+1. Complete #580 with conservation of Hamiltonian and commuting-observable expectations, then reuse
+   the canonical dynamics APIs in linear response where they remove duplicate picture changes.
 2. Prove uniqueness of the Gibbs free-energy minimizer.
 3. Design an unbounded Hamiltonian interface supporting genuine infinite-dimensional Gibbs states.
 4. Connect the canonical density-state expectation to completed Fock-space and KMS constructions.
