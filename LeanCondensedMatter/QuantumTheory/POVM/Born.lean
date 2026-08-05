@@ -107,7 +107,9 @@ private theorem hasSum_probabilityKernel_outcome (P : POVM H M)
     funext m
     have h := congrArg Complex.re
       (coe_diagonalExpectationValue_right (P.E m) (P.pos m).isSelfAdjoint e)
-    simpa using h.symm
+    change diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint e =
+      (inner ℂ e (P.E m e) : ℂ).re at h
+    exact h.symm
   rw [hfun] at hre
   simpa [probabilityKernel, e] using hre.mul_left a.1.1
 
