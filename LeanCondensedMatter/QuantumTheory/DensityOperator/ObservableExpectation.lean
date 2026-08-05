@@ -19,6 +19,14 @@ open ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/-- The spectral series used by an observable expectation is summable. -/
+theorem DensityOperator.summable_observableExpectation_term
+    (ρ : DensityOperator H) (A : Observable H) :
+    Summable (fun a : EigenvectorIndex ρ.op => (a.1.1 : ℂ) *
+      (inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
+        (A.1 (eigenvectorFamily ρ.spectralTraceClass.compact a)) : ℂ)) :=
+  ρ.summable_expectation_term A.1
+
 /-- The complex density-state expectation of an observable, bundled with its self-adjointness. -/
 noncomputable def DensityOperator.observableExpectationSelfAdjoint
     (ρ : DensityOperator H) (A : Observable H) : selfAdjoint ℂ :=
