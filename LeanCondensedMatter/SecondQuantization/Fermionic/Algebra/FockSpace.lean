@@ -46,14 +46,16 @@ theorem basisState_injective : Function.Injective (basisState : Occupation Mode 
 
 /-- Basis vectors are injective on all fermionic occupation states. -/
 theorem basisState_injOn : Set.InjOn (basisState : Occupation Mode → _) Set.univ := by
-  simpa [basisState] using
-    (Common.basisState_injOn (Config := Occupation Mode))
+  change Set.InjOn
+    (Common.basisState : Occupation Mode → Common.AlgebraicFock (Occupation Mode)) Set.univ
+  exact Common.basisState_injOn
 
 /-- The fermionic occupation-number basis vectors are linearly independent. -/
 theorem basisState_linearIndependent :
     LinearIndependent ℂ (basisState : Occupation Mode → FockSpace Mode) := by
-  simpa [basisState] using
-    (Common.basisState_linearIndependent (Config := Occupation Mode))
+  change LinearIndependent ℂ
+    (Common.basisState : Occupation Mode → Common.AlgebraicFock (Occupation Mode))
+  exact Common.basisState_linearIndependent
 
 /-- Two linear maps out of `FockSpace Mode` that agree on every basis state are equal —
 the basis-level facts proved in `CreationAnnihilation.lean`/`CanonicalAnticommutationRelations.lean`
