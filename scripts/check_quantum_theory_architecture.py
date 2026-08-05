@@ -1,10 +1,18 @@
 from __future__ import annotations
 
 import re
-import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+from architecture_audit_common import (
+    check_absent_paths,
+    finish_audit,
+    lean_files,
+    numbered_lines,
+    relative as relative_to,
+    repository_root,
+)
+
+ROOT = repository_root(__file__)
 QUANTUM = ROOT / "LeanCondensedMatter" / "QuantumTheory"
 LEAN_ROOT = ROOT / "LeanCondensedMatter"
 NOTES = ROOT / "notes"
@@ -32,11 +40,7 @@ REMOVED_DOCUMENTS = (
 
 
 def relative(path: Path) -> str:
-    return str(path.relative_to(ROOT))
-
-
-def lean_files(root: Path):
-    yield from sorted(root.rglob("*.lean"))
+    return relative_to(ROOT, path)
 
 
 def documentation_files():
@@ -49,13 +53,15 @@ def documentation_files():
 
 
 def check_documentation(errors: list[str]) -> None:
-    for path in REMOVED_DOCUMENTS:
-        if path.exists():
-            errors.append(f"obsolete migration document exists: {relative(path)}")
+    check_absent_paths(
+        errors,
+        REMOVED_DOCUMENTS,
+        root=ROOT,
+        description="obsolete migration document exists",
+    )
 
     for path in documentation_files():
-        text = path.read_text(encoding="utf-8")
-        for line_no, line in enumerate(text.splitlines(), start=1):
+        for line_no, line in numbered_lines(path):
             if TRACECLASS_NAMESPACE.search(line):
                 errors.append(
                     f"obsolete public namespace in docs: {relative(path)}:{line_no}: {line.strip()}"
@@ -111,14 +117,11 @@ def main() -> int:
 
     check_documentation(errors)
 
-    if errors:
-        print("QuantumTheory architecture audit failed:", file=sys.stderr)
-        for error in errors:
-            print(f"- {error}", file=sys.stderr)
-        return 1
-
-    print("QuantumTheory architecture audit passed.")
-    return 0
+    return finish_audit(
+        errors,
+        failure_heading="QuantumTheory architecture audit failed:",
+        success_message="QuantumTheory architecture audit passed.",
+    )
 
 
 if __name__ == "__main__":
