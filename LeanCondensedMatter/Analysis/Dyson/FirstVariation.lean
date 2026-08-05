@@ -133,11 +133,12 @@ theorem hasDerivAt_evolution_linear_coupling_zero_of_bound
     have hlin :
         lam • ((-κ) • ∫ σ in (0 : ℝ)..τ, V σ) =
           term V ((lam : ℂ) * κ) τ 1 := by
-      rw [term_one, ← smul_smul]
+      rw [term_one]
       congr 1
-      simp
+      simp [smul_eq_mul]
     have hrem' :
-        ‖evolution V ((lam : ℂ) * κ) τ - evolution V 0 τ -
+        ‖evolution V ((lam : ℂ) * κ) τ -
+            evolution V (((0 : ℝ) : ℂ) * κ) τ -
             lam • ((-κ) • ∫ σ in (0 : ℝ)..τ, V σ)‖ ≤
           (|lam| * ‖κ‖) ^ 2 * C := by
       rw [hlin]
@@ -148,7 +149,8 @@ theorem hasDerivAt_evolution_linear_coupling_zero_of_bound
     · have habs0 : |lam| ≠ 0 := abs_ne_zero.mpr hlam0
       calc
         ‖lam - 0‖⁻¹ *
-            ‖evolution V ((lam : ℂ) * κ) τ - evolution V 0 τ -
+            ‖evolution V ((lam : ℂ) * κ) τ -
+              evolution V (((0 : ℝ) : ℂ) * κ) τ -
               (lam - 0) • ((-κ) • ∫ σ in (0 : ℝ)..τ, V σ)‖ ≤
             |lam|⁻¹ * ((|lam| * ‖κ‖) ^ 2 * C) := by
           simpa [Real.norm_eq_abs] using
