@@ -14,22 +14,20 @@ not just the single-mode `a_i a_i† = id + ζ N_i` reordering identity
 `annihilate_comp_create_self`).
 CAR (`ζ = -1`) and CCR (`ζ = 1`) both have exactly this shape once stated via
 `Common.exchangeCommutator`, so `ExchangeAlgebra` packages it as a single interface both
-statistics instantiate, letting a future `Common/Thermal/BlochDeDominicis.lean` induction reference
+statistics instantiate, letting the common thermal induction reference
 `ExchangeAlgebra.annihilate_create`/`_annihilate_annihilate`/`_create_create` directly instead of
-fermionic `anticomm_*`/bosonic `comm_*` facts.
+fermionic `anticomm_*` or bosonic `comm_*` facts.
 
-Mirrors `Common/Algebra/OccupationBasis.lean`'s architecture exactly: the interface is a `class` here in
-`Common/`, and the concrete instances (`SecondQuantization.exchangeAlgebra` for the fermionic line,
-which uses the plain `SecondQuantization` namespace rather than a `Fermionic` sub-namespace;
-`SecondQuantization.Bosonic.exchangeAlgebra` for the bosonic line)
-live in each statistics' own directory — a `Common/` file importing `Fermionic/`/`Bosonic/` would
-invert the intended dependency direction (`notes/conventions.md`'s "one directory per track"
-rule).
+Mirrors `Common/Algebra/OccupationBasis.lean`'s architecture exactly: the interface is a `class` in
+`Common/`, and the concrete instances (`SecondQuantization.Fermionic.exchangeAlgebra` and
+`SecondQuantization.Bosonic.exchangeAlgebra`) live in each statistics-specific directory. A
+`Common/` file importing `Fermionic/` or `Bosonic/` would invert the intended dependency direction
+(`notes/conventions.md`'s "one directory per track" rule).
 
-**This PR does not replace the existing public `annihilate`/`create` functions or the CAR/CCR
-theorems** (`Fermionic.annihilate`/`create`, `anticomm_*`, `Bosonic.annihilate`/`create`,
-`comm_*`) — the `ExchangeAlgebra` instances' fields simply reference them, so downstream files
-using the statistics-specific names directly are unaffected.
+The interface does not replace the existing public `annihilate`/`create` functions or the CAR/CCR
+theorems (`Fermionic.annihilate`/`create`, `anticomm_*`, `Bosonic.annihilate`/`create`, `comm_*`).
+The `ExchangeAlgebra` instances' fields simply reference them, so downstream files using the
+statistics-specific names directly are unaffected.
 -/
 
 namespace SecondQuantization
