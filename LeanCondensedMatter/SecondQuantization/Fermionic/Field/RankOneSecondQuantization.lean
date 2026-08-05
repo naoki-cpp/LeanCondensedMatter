@@ -52,21 +52,28 @@ theorem dGamma_dualRankOne (f : 𝓗₁) (d : Module.Dual ℂ 𝓗₁) :
   | add x y hx hy =>
       simp only [map_add, hx, hy]
   | ι_mul x g hx =>
-      rw [dGamma_oneParticle_mul, annihilateDual_create_apply]
+      rw [dGamma_oneParticle_mul]
       change
         oneParticle 𝓗₁ (d g • f) * x +
             oneParticle 𝓗₁ g * dGamma 𝓗₁ (dualRankOne 𝓗₁ f d) x =
           create 𝓗₁ f
-            (d g • x - create 𝓗₁ g (annihilateDual 𝓗₁ d x))
-      rw [hx]
-      have hcar := LinearMap.congr_fun (create_comp_add_swap 𝓗₁ f g)
-        (annihilateDual 𝓗₁ d x)
-      simp only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.zero_apply] at hcar
-      simp only [create_apply, map_sub, map_smul, oneParticle, map_smul]
-      rw [mul_sub, smul_mul_assoc]
+            (annihilateDual 𝓗₁ d (create 𝓗₁ g x))
+      rw [annihilateDual_create_apply, hx]
+      have hcar := congrArg
+        (fun z => z * annihilateDual 𝓗₁ d x)
+        (oneParticle_mul_add_swap 𝓗₁ f g)
+      have hswap :
+          oneParticle 𝓗₁ g *
+              (oneParticle 𝓗₁ f * annihilateDual 𝓗₁ d x) =
+            -(oneParticle 𝓗₁ f *
+              (oneParticle 𝓗₁ g * annihilateDual 𝓗₁ d x)) := by
+        rw [add_mul, zero_mul, mul_assoc, mul_assoc] at hcar
+        exact eq_neg_of_add_eq_zero_right hcar
+      simp only [create_apply, LinearMap.comp_apply, map_sub, map_smul]
+      rw [smul_mul_assoc, hswap]
       abel
 
-variable {Site : Type*} [DecidableEq Site]
+variable {Site : Type*}
 
 /-- Coordinate evaluation at a lattice site as an algebraic dual vector. -/
 def latticeCoordinateDual (y : Site) : Module.Dual ℂ (LatticeState Site) where
@@ -83,7 +90,9 @@ theorem latticeCoordinateDual_apply (y : Site) (ψ : LatticeState Site) :
 theorem dualRankOne_latticeKet_latticeCoordinateDual (x y : Site) :
     dualRankOne (LatticeState Site) (latticeKet x) (latticeCoordinateDual y) =
       matrixUnit x y := by
-  rfl
+  apply LinearMap.ext
+  intro ψ
+  simp [dualRankOne, latticeKet, latticeCoordinateDual, matrixUnit]
 
 /-- The second quantization of a lattice matrix unit factors into creation and annihilation fields. -/
 theorem dGamma_matrixUnit (x y : Site) :

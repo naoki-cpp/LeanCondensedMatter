@@ -37,7 +37,11 @@ theorem occupationEquiv_occupationConjugate_apply
     (A : FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁)
     (Ψ : FockSpace Mode) :
     occupationEquiv b (occupationConjugate b A Ψ) = A (occupationEquiv b Ψ) := by
-  simp [occupationConjugate, LinearMap.comp_apply]
+  change
+    occupationEquiv b
+        ((occupationEquiv b).symm (A (occupationEquiv b Ψ))) =
+      A (occupationEquiv b Ψ)
+  exact (occupationEquiv b).apply_symm_apply _
 
 /-- An occupation-Fock endomorphism is uniquely determined as `annihilate i` by its vacuum value
 and mixed CAR with all creation operators. -/
@@ -61,6 +65,7 @@ theorem eq_annihilate_of_vacuum_of_mixedCAR
               SecondQuantization.Fermionic.create j (basisState n) := by
         rw [SecondQuantization.Fermionic.create_basisState_of_not_mem hj,
           smul_smul, fermionSign_sq_complex, one_smul]
+        simp [insertOccupation]
       rw [hrecover, map_smul, map_smul]
       congr 1
       have hB := hCAR j n
@@ -91,17 +96,39 @@ theorem occupationAnnihilateFromField_eq_annihilate
     occupationAnnihilateFromField b i =
       SecondQuantization.Fermionic.annihilate i := by
   apply eq_annihilate_of_vacuum_of_mixedCAR
-  · simp [occupationAnnihilateFromField, occupationConjugate]
+  · apply (occupationEquiv b).injective
+    change
+      occupationEquiv b
+          (occupationConjugate b (annihilateDual 𝓗₁ (b.coord i))
+            (basisState (∅ : Occupation Mode))) =
+        occupationEquiv b 0
+    rw [occupationEquiv_occupationConjugate_apply, map_zero,
+      occupationEquiv_basisState, exteriorBasis_eq_sort_prod]
+    simpa [vacuum] using annihilateDual_vacuum 𝓗₁ (b.coord i)
   · intro j n
     apply (occupationEquiv b).injective
+    rw [map_add]
+    unfold occupationAnnihilateFromField
     have hCreateBasis := occupationEquiv_create_basisState b j n
     have hCreateGeneral := LinearMap.congr_fun (occupationEquiv_create b j)
-      (occupationAnnihilateFromField b i (basisState n))
-    rw [map_add, if_apply, map_zero]
+      (occupationConjugate b (annihilateDual 𝓗₁ (b.coord i)) (basisState n))
+    simp only [LinearMap.comp_apply] at hCreateGeneral
+    have hSecond :
+        occupationEquiv b
+            (SecondQuantization.Fermionic.create j
+              (occupationConjugate b (annihilateDual 𝓗₁ (b.coord i))
+                (basisState n))) =
+          create 𝓗₁ (b j)
+            (annihilateDual 𝓗₁ (b.coord i) (occupationEquiv b (basisState n))) := by
+      calc
+        _ = create 𝓗₁ (b j)
+              (occupationEquiv b
+                (occupationConjugate b (annihilateDual 𝓗₁ (b.coord i))
+                  (basisState n))) := hCreateGeneral
+        _ = _ := by rw [occupationEquiv_occupationConjugate_apply]
     rw [occupationEquiv_occupationConjugate_apply]
     rw [hCreateBasis]
-    rw [hCreateGeneral]
-    rw [occupationEquiv_occupationConjugate_apply]
+    rw [hSecond]
     rw [annihilateDual_create_apply]
     by_cases hij : i = j
     · subst j
@@ -112,7 +139,7 @@ theorem occupationAnnihilateFromField_eq_annihilate
 theorem occupationEquiv_annihilate
     (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) :
     (occupationEquiv b).toLinearMap.comp
-        SecondQuantization.Fermionic.annihilate i =
+        (SecondQuantization.Fermionic.annihilate i) =
       (annihilateDual 𝓗₁ (b.coord i)).comp
         (occupationEquiv b).toLinearMap := by
   have h := occupationAnnihilateFromField_eq_annihilate b i
@@ -121,7 +148,7 @@ theorem occupationEquiv_annihilate
   have hApply := LinearMap.congr_fun h Ψ
   apply (occupationEquiv b).symm.injective
   simpa [occupationAnnihilateFromField, occupationConjugate,
-    LinearMap.comp_apply] using congrArg (occupationEquiv b) hApply
+    LinearMap.comp_apply] using (congrArg (occupationEquiv b) hApply).symm
 
 end
 end Field

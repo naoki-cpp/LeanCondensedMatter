@@ -52,19 +52,31 @@ theorem boundedBondOperator_eq (K : LocallyFiniteHopping Site) (x y : Site) :
       K.amplitude x y • boundedDgammaMatrixUnit x y -
         K.amplitude y x • boundedDgammaMatrixUnit y x := by
   unfold boundedBondOperator LocallyFiniteHopping.bondOperator
-  change boundedLatticeOperatorLinearMap
-      (dGammaLinear (LatticeState Site)
-        (K.amplitude x y • matrixUnit x y -
-          K.amplitude y x • matrixUnit y x)) = _
-  simp [boundedDgammaMatrixUnit]
+  have hdGamma :
+      dGamma (LatticeState Site)
+          (K.amplitude x y • matrixUnit x y -
+            K.amplitude y x • matrixUnit y x) =
+        K.amplitude x y •
+            dGamma (LatticeState Site) (matrixUnit x y) -
+          K.amplitude y x •
+            dGamma (LatticeState Site) (matrixUnit y x) := by
+    change
+      dGammaLinear (LatticeState Site)
+          (K.amplitude x y • matrixUnit x y -
+            K.amplitude y x • matrixUnit y x) = _
+    rw [map_sub, map_smul, map_smul]
+    rfl
+  rw [hdGamma, boundedLatticeOperator_sub,
+    boundedLatticeOperator_smul, boundedLatticeOperator_smul]
+  rfl
 
 /-- Under Hermitian hopping amplitudes, the oriented hopping difference is skew-adjoint. -/
 theorem star_boundedBondOperator
     (K : LocallyFiniteHopping Site) (hK : K.HasHermitianAmplitudes)
     (x y : Site) :
     star (K.boundedBondOperator x y) = -K.boundedBondOperator x y := by
-  rw [K.boundedBondOperator_eq, K.boundedBondOperator_eq]
-  simp only [map_sub, map_smul, star_boundedDgammaMatrixUnit, hK x y, hK y x]
+  rw [K.boundedBondOperator_eq]
+  simp only [star_sub, star_smul, star_boundedDgammaMatrixUnit, hK x y, hK y x]
   abel
 
 end LocallyFiniteHopping
@@ -83,6 +95,7 @@ theorem star_peierlsCoupling_ofReal (ℏ q : ℝ) :
     star (peierlsCoupling (ℏ : ℂ) (q : ℂ)) =
       -peierlsCoupling (ℏ : ℂ) (q : ℂ) := by
   simp [peierlsCoupling]
+  ring
 
 /-- A pure-imaginary multiple of the skew-adjoint oriented hopping difference is self-adjoint. -/
 theorem isSelfAdjoint_boundedBondCurrent_of_star_peierlsCoupling
@@ -91,7 +104,7 @@ theorem isSelfAdjoint_boundedBondCurrent_of_star_peierlsCoupling
     (x y : Site) :
     IsSelfAdjoint (boundedBondCurrent ℏ q K x y) := by
   rw [isSelfAdjoint_iff, boundedBondCurrent_eq_peierlsCoupling_smul]
-  rw [map_smul, hc, K.star_boundedBondOperator hK]
+  rw [star_smul, hc, K.star_boundedBondOperator hK]
   simp
 
 /-- Physical real parameters automatically give a self-adjoint bounded bond current. -/

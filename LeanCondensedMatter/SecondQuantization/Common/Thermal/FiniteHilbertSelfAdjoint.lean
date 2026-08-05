@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteHilbertOperat
 import Mathlib.Analysis.Matrix.Hermitian
 
 set_option linter.style.header false
+set_option linter.unusedDecidableInType false
 
 /-!
 # Adjointness of finite-Hilbert operator transport
@@ -36,8 +37,14 @@ noncomputable def finiteHilbertOperatorMatrix
 theorem finiteHilbertOperatorMatrix_apply
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
     finiteHilbertOperatorMatrix A m n = matrixCoeff A m n := by
-  simp [finiteHilbertOperatorMatrix, LinearMap.toMatrix_apply,
-    finiteHilbertOrthonormalBasis_apply, finiteHilbertOperator_basis_apply]
+  unfold finiteHilbertOperatorMatrix
+  rw [LinearMap.toMatrix_apply]
+  change
+    ((EuclideanSpace.basisFun Config ℂ).repr
+      (finiteHilbertOperator A (finiteHilbertBasisState n))).ofLp m =
+        matrixCoeff A m n
+  rw [EuclideanSpace.basisFun_repr]
+  exact finiteHilbertOperator_basis_apply A m n
 
 /-- Adjointness after finite-Hilbert transport is exactly conjugate transposition of the algebraic
 coordinate matrix. -/
@@ -56,7 +63,9 @@ theorem star_finiteHilbertOperator_eq_iff_matrixCoeff
       exact congrArg ContinuousLinearMap.toLinearMap h
     have hmat := congrArg (fun T => LinearMap.toMatrix b b T m n) hlin
     rw [LinearMap.toMatrix_adjoint] at hmat
-    simpa [b, finiteHilbertOperatorMatrix] using hmat
+    change star (finiteHilbertOperatorMatrix A n m) =
+      finiteHilbertOperatorMatrix B m n at hmat
+    simpa using hmat
   · intro h
     have hmat :
         LinearMap.toMatrix b b
@@ -64,7 +73,9 @@ theorem star_finiteHilbertOperator_eq_iff_matrixCoeff
           LinearMap.toMatrix b b (finiteHilbertOperator B).toLinearMap := by
       ext m n
       rw [LinearMap.toMatrix_adjoint]
-      simpa [b, finiteHilbertOperatorMatrix] using h m n
+      change star (finiteHilbertOperatorMatrix A n m) =
+        finiteHilbertOperatorMatrix B m n
+      simpa using h m n
     have hlin :
         LinearMap.adjoint (finiteHilbertOperator A).toLinearMap =
           (finiteHilbertOperator B).toLinearMap :=

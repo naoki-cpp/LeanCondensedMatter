@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteHilbertSelfAd
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations
 
 set_option linter.style.header false
+set_option linter.unusedFintypeInType false
 
 /-!
 # Adjointness of finite fermionic creation and annihilation operators
@@ -19,7 +20,7 @@ namespace Fermionic
 
 noncomputable section
 
-variable {Mode : Type*} [Fintype Mode] [LinearOrder Mode]
+variable {Mode : Type*} [LinearOrder Mode]
 
 /-- The creation and annihilation coordinate matrices are conjugate transposes. -/
 theorem star_matrixCoeff_create_eq_matrixCoeff_annihilate
@@ -27,9 +28,11 @@ theorem star_matrixCoeff_create_eq_matrixCoeff_annihilate
     star (Common.matrixCoeff (create i) n m) =
       Common.matrixCoeff (annihilate i) m n := by
   unfold Common.matrixCoeff
+  change star ((create i) (basisState m) n) =
+    (annihilate i) (basisState n) m
   by_cases hm : i ∈ m
   · rw [create_basisState_of_mem hm]
-    simp only [LinearMap.zero_apply, star_zero]
+    simp only [Finsupp.zero_apply, star_zero]
     by_cases hn : i ∈ n
     · rw [annihilate_basisState_of_mem hn]
       have hne : removeOccupation i n ≠ m := by
@@ -65,6 +68,10 @@ theorem star_matrixCoeff_create_eq_matrixCoeff_annihilate
         exact hn hi
       simp [basisState, Common.basisState, hne]
 
+section Finite
+
+variable [Fintype Mode]
+
 /-- Bounded creation on the canonical finite-Hilbert fermionic Fock space. -/
 noncomputable def finiteHilbertCreate (i : Mode) :
     Common.FiniteHilbertFock (Occupation Mode) →L[ℂ]
@@ -89,8 +96,12 @@ theorem star_finiteHilbertCreate (i : Mode) :
 @[simp]
 theorem star_finiteHilbertAnnihilate (i : Mode) :
     star (finiteHilbertAnnihilate i) = finiteHilbertCreate i := by
-  have h := congrArg star (star_finiteHilbertCreate i)
-  simpa using h
+  have h' :
+      finiteHilbertCreate i = star (finiteHilbertAnnihilate i) := by
+    simpa only [star_star] using congrArg star (star_finiteHilbertCreate i)
+  exact h'.symm
+
+end Finite
 
 end
 end Fermionic

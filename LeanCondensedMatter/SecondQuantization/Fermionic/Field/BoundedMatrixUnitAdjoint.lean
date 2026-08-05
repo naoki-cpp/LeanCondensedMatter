@@ -44,7 +44,17 @@ theorem occupationConjugate_comp
   apply LinearMap.ext
   intro Ψ
   apply (occupationEquiv b).injective
-  simp [occupationConjugate, LinearMap.comp_apply]
+  calc
+    occupationEquiv b (occupationConjugate b (A.comp B) Ψ) =
+        (A.comp B) (occupationEquiv b Ψ) :=
+      occupationEquiv_occupationConjugate_apply b (A.comp B) Ψ
+    _ = A (B (occupationEquiv b Ψ)) := rfl
+    _ = A (occupationEquiv b (occupationConjugate b B Ψ)) := by
+      rw [occupationEquiv_occupationConjugate_apply]
+    _ = occupationEquiv b
+        (occupationConjugate b A (occupationConjugate b B Ψ)) :=
+      (occupationEquiv_occupationConjugate_apply b A
+        (occupationConjugate b B Ψ)).symm
 
 /-- Exterior creation by a basis vector conjugates to occupation creation in the corresponding
 mode. -/
@@ -59,7 +69,7 @@ theorem occupationConjugate_create
   have h := LinearMap.congr_fun (occupationEquiv_create b i) Ψ
   simpa [LinearMap.comp_apply] using h.symm
 
-variable {Site : Type*} [LinearOrder Site]
+variable {Site : Type*}
 
 @[simp]
 theorem latticeBasis_apply_eq_latticeKet (x : Site) :
@@ -72,6 +82,8 @@ theorem latticeBasis_coord_eq_latticeCoordinateDual (y : Site) :
   apply LinearMap.ext
   intro ψ
   simp [latticeBasis, latticeCoordinateDual]
+
+variable [LinearOrder Site]
 
 /-- In occupation representation, a second-quantized lattice matrix unit is the standard
 creation-annihilation bilinear. -/
@@ -115,7 +127,10 @@ theorem star_boundedDgammaMatrixUnit (x y : Site) :
     star (boundedDgammaMatrixUnit x y) = boundedDgammaMatrixUnit y x := by
   rw [boundedDgammaMatrixUnit_eq_create_comp_annihilate,
     boundedDgammaMatrixUnit_eq_create_comp_annihilate]
-  simp
+  change
+    star (finiteHilbertCreate x * finiteHilbertAnnihilate y) =
+      finiteHilbertCreate y * finiteHilbertAnnihilate x
+  rw [star_mul, star_finiteHilbertAnnihilate, star_finiteHilbertCreate]
 
 end Finite
 
