@@ -136,7 +136,6 @@ theorem DensityOperator.expectation_eq_innerHS (ρ : DensityOperator H)
         starRingEnd ℂ (Real.sqrt a.1.1 : ℂ) = (Real.sqrt a.1.1 : ℂ) := by
       simp
     rw [hstar, ← mul_assoc, hsqrt_sq]
-    simp [e]
   have hzero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
     have hspan : Submodule.span ℂ (Set.range e) ≤ (ℂ ∙ (b x : H))ᗮ := by
       rw [Submodule.span_le]
