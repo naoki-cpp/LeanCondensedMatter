@@ -1,11 +1,19 @@
 from __future__ import annotations
 
 import re
-import sys
 from dataclasses import dataclass
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+from architecture_audit_common import (
+    check_absent_paths,
+    finish_audit,
+    lean_files,
+    numbered_lines,
+    relative as relative_to,
+    repository_root,
+)
+
+ROOT = repository_root(__file__)
 SQ = ROOT / "LeanCondensedMatter" / "SecondQuantization"
 OWNERS = {"Common", "Fermionic", "Bosonic"}
 
@@ -127,12 +135,8 @@ class Finding:
     namespace: str
 
 
-def lean_files(root: Path):
-    yield from sorted(root.rglob("*.lean"))
-
-
 def relative(path: Path) -> str:
-    return str(path.relative_to(ROOT))
+    return relative_to(ROOT, path)
 
 
 def strip_comments(text: str) -> str:
@@ -295,15 +299,21 @@ def collect_namespace_findings() -> tuple[list[Finding], list[Finding]]:
 
 
 def check_removed_paths(errors: list[str]) -> None:
-    for path in REMOVED_FILES:
-        if path.exists():
-            errors.append(f"removed compatibility module exists: {relative(path)}")
-    for path in REMOVED_DIRECTORIES:
-        if path.exists():
-            errors.append(f"removed directory exists: {relative(path)}")
+    check_absent_paths(
+        errors,
+        REMOVED_FILES,
+        root=ROOT,
+        description="removed compatibility module exists",
+    )
+    check_absent_paths(
+        errors,
+        REMOVED_DIRECTORIES,
+        root=ROOT,
+        description="removed directory exists",
+    )
 
     for path in lean_files(ROOT / "LeanCondensedMatter"):
-        for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+        for line_no, line in numbered_lines(path):
             stripped = line.strip()
             if REMOVED_EXACT_IMPORT.match(line):
                 errors.append(f"removed umbrella import: {relative(path)}:{line_no}: {stripped}")
@@ -315,7 +325,7 @@ def check_removed_paths(errors: list[str]) -> None:
 
 def check_dependency_direction(errors: list[str]) -> None:
     for path in lean_files(SQ / "Common"):
-        for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+        for line_no, line in numbered_lines(path):
             if STATISTICS_IMPORT.match(line):
                 errors.append(
                     f"Common imports statistics-specific code: {relative(path)}:{line_no}: {line.strip()}"
@@ -324,7 +334,7 @@ def check_dependency_direction(errors: list[str]) -> None:
     for area in ("Analysis", "Combinatorics"):
         root = ROOT / "LeanCondensedMatter" / area
         for path in lean_files(root):
-            for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+            for line_no, line in numbered_lines(path):
                 if PHYSICS_IMPORT.match(line):
                     errors.append(
                         f"{area} imports SecondQuantization: {relative(path)}:{line_no}: {line.strip()}"
@@ -375,14 +385,11 @@ def main() -> int:
     check_declaration_namespaces(errors)
     check_entry_point(errors)
 
-    if errors:
-        print("SecondQuantization architecture check failed:", file=sys.stderr)
-        for error in errors:
-            print(f"- {error}", file=sys.stderr)
-        return 1
-
-    print("SecondQuantization architecture check passed")
-    return 0
+    return finish_audit(
+        errors,
+        failure_heading="SecondQuantization architecture check failed:",
+        success_message="SecondQuantization architecture check passed",
+    )
 
 
 if __name__ == "__main__":
