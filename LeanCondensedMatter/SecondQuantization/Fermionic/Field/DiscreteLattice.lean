@@ -122,11 +122,23 @@ theorem column_eq_sum_single (K : LocallyFiniteHopping Site) (x : Site) :
       ∑ y ∈ K.incident x, Finsupp.single y (K.amplitude y x) := by
   classical
   ext z
+  rw [Finsupp.finsetSum_apply]
   by_cases hz : z ∈ K.incident x
-  · simp [hz, amplitude]
-  · have hzero : K.amplitude z x = 0 :=
-      K.amplitude_swap_eq_zero_of_not_mem hz
-    simp [hz, amplitude, hzero]
+  · rw [Finset.sum_eq_single z]
+    · rfl
+    · intro y _ hyz
+      simp [hyz]
+    · intro hnot
+      exact (hnot hz).elim
+  · have hzero : K.column x z = 0 := (K.outside_incident hz).2
+    rw [Finset.sum_eq_zero]
+    · exact hzero
+    · intro y hy
+      have hyz : y ≠ z := by
+        intro h
+        subst y
+        exact hz hy
+      simp [hyz]
 
 /-- The one-particle operator entering the oriented bond current from `x` to `y`:
 
@@ -150,8 +162,16 @@ theorem operator_comp_siteProjector (K : LocallyFiniteHopping Site) (x : Site) :
   intro z c
   by_cases hzx : z = x
   · subst z
-    simp [K.column_eq_sum_single, Finset.smul_sum, mul_comm]
-  · simp [hzx]
+    change K.operator (Finsupp.single x c) =
+      ∑ y ∈ K.incident x,
+        (K.amplitude y x • matrixUnit y x) (Finsupp.single x c)
+    rw [K.operator_single, K.column_eq_sum_single]
+    simp only [Finset.smul_sum]
+    apply Finset.sum_congr rfl
+    intro y _
+    simp [mul_comm]
+  · have hxz : x ≠ z := Ne.symm hzx
+    simp [LinearMap.comp_apply, hxz]
 
 /-- `Pₓ h` is a finite sum over the incident sites of `x`. -/
 theorem siteProjector_comp_operator (K : LocallyFiniteHopping Site) (x : Site) :
@@ -160,10 +180,25 @@ theorem siteProjector_comp_operator (K : LocallyFiniteHopping Site) (x : Site) :
   classical
   apply Finsupp.lhom_ext
   intro z c
+  change Finsupp.single x (c * K.column z x) =
+    ∑ y ∈ K.incident x,
+      (K.amplitude x y • matrixUnit x y) (Finsupp.single z c)
   by_cases hz : z ∈ K.incident x
-  · simp [hz, amplitude, mul_comm]
-  · have hzero : K.amplitude x z = 0 := K.amplitude_eq_zero_of_not_mem hz
-    simp [hz, amplitude, hzero]
+  · rw [Finset.sum_eq_single z]
+    · simp [amplitude, mul_comm]
+    · intro y _ hyz
+      simp [hyz]
+    · intro hnot
+      exact (hnot hz).elim
+  · have hzero : K.column z x = 0 := (K.outside_incident hz).1
+    rw [Finset.sum_eq_zero]
+    · simp [hzero]
+    · intro y hy
+      have hyz : y ≠ z := by
+        intro h
+        subst y
+        exact hz hy
+      simp [hyz]
 
 /-- The local one-particle commutator is the negative finite sum of oriented bond operators. -/
 theorem linearCommutator_siteProjector (K : LocallyFiniteHopping Site) (x : Site) :
