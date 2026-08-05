@@ -101,14 +101,15 @@ private theorem hasSum_probabilityKernel_outcome (P : POVM H M)
   have hre : HasSum (fun m => (inner ℂ e (P.E m e) : ℂ).re) 1 := by
     have h := Complex.reCLM.hasSum hinner
     simpa [inner_self_eq_norm_sq_to_K, e, eigenvectorFamily_norm_eq_one ρ a] using h
-  have hreal : HasSum
-      (fun m => diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint e) 1 := by
-    refine hre.congr ?_
-    intro m
+  have hfun :
+      (fun m => (inner ℂ e (P.E m e) : ℂ).re) =
+      (fun m => diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint e) := by
+    funext m
     have h := congrArg Complex.re
       (coe_diagonalExpectationValue_right (P.E m) (P.pos m).isSelfAdjoint e)
     simpa using h.symm
-  simpa [probabilityKernel, e] using hreal.mul_left a.1.1
+  rw [hfun] at hre
+  simpa [probabilityKernel, e] using hre.mul_left a.1.1
 
 private theorem hasSum_probabilityKernel_eigenvector (P : POVM H M)
     (ρ : DensityOperator H) (m : M) :
@@ -163,7 +164,8 @@ theorem hasSum_probNNReal (P : POVM H M) (ρ : DensityOperator H) :
   have hreal : HasSum (prob P ρ) 1 := by
     rw [← tsum_prob_eq_one P ρ]
     exact (summable_prob P ρ).hasSum
-  exact (NNReal.hasSum_coe).mp (by simpa [prob] using hreal)
+  change HasSum (fun m => (probNNReal P ρ m : ℝ)) 1 at hreal
+  exact (NNReal.hasSum_coe).mp hreal
 
 /-- The canonical nonnegative Born probabilities are summable. -/
 theorem summable_probNNReal (P : POVM H M) (ρ : DensityOperator H) :
