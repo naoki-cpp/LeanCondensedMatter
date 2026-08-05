@@ -63,7 +63,7 @@ theorem add {F G : ℂ → V} {F' G' : V} {A : ℂ}
     (hF : HasAlgebraicDerivAt F F' A) (hG : HasAlgebraicDerivAt G G' A) :
     HasAlgebraicDerivAt (fun z => F z + G z) (F' + G') A := by
   intro ℓ
-  simpa only [map_add] using (hF ℓ).add (hG ℓ)
+  simpa only [Pi.add_apply, map_add] using (hF ℓ).add (hG ℓ)
 
 /-- A complex-linear map transports algebraic derivatives. -/
 theorem map {F : ℂ → V} {F' : V} {A : ℂ}
@@ -103,14 +103,18 @@ private theorem hasDerivAt_exp_const_mul_zero (c : ℂ) :
 /-- The forward Peierls phase has derivative `-i q / ℏ` at zero. -/
 theorem hasDerivAt_peierlsForwardPhase_zero (ℏ q : ℂ) :
     HasDerivAt (peierlsForwardPhase ℏ q) (-(peierlsCoupling ℏ q)) 0 := by
-  simpa [peierlsForwardPhase] using
-    hasDerivAt_exp_const_mul_zero (-(peierlsCoupling ℏ q))
+  change HasDerivAt
+    (fun A : ℂ => Complex.exp (-(peierlsCoupling ℏ q) * A))
+    (-(peierlsCoupling ℏ q)) 0
+  exact hasDerivAt_exp_const_mul_zero (-(peierlsCoupling ℏ q))
 
 /-- The reverse Peierls phase has derivative `i q / ℏ` at zero. -/
 theorem hasDerivAt_peierlsReversePhase_zero (ℏ q : ℂ) :
     HasDerivAt (peierlsReversePhase ℏ q) (peierlsCoupling ℏ q) 0 := by
-  simpa [peierlsReversePhase] using
-    hasDerivAt_exp_const_mul_zero (peierlsCoupling ℏ q)
+  change HasDerivAt
+    (fun A : ℂ => Complex.exp (peierlsCoupling ℏ q * A))
+    (peierlsCoupling ℏ q) 0
+  exact hasDerivAt_exp_const_mul_zero (peierlsCoupling ℏ q)
 
 variable {Site : Type*} [DecidableEq Site]
 
@@ -157,7 +161,7 @@ theorem hasAlgebraicDerivAt_peierlsBondHamiltonian_zero
   have hsum := hforward.add hreverse
   unfold peierlsBondHamiltonian oneParticleBondCurrent bondOperator
   convert hsum using 1
-  simp [smul_sub]
+  abel
 
 end LocallyFiniteHopping
 
@@ -177,8 +181,15 @@ theorem hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero
   have h :=
     (K.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero ℏ q x y).map
       (dGammaLinear (LatticeState Site))
-  simpa [peierlsBondHamiltonianFock, LocallyFiniteHopping.oneParticleBondCurrent,
-    bondCurrent, peierlsCoupling] using h
+  convert h using 1
+  · rfl
+  · change
+      dGammaLinear (LatticeState Site) (-K.oneParticleBondCurrent ℏ q x y) =
+        -bondCurrent ℏ q K x y
+    rw [map_neg]
+    unfold LocallyFiniteHopping.oneParticleBondCurrent bondCurrent peierlsCoupling
+    rw [dGamma_smul]
+    rfl
 
 end Field
 end Fermionic
