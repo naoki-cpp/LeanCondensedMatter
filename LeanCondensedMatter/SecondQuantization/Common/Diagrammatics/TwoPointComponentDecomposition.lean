@@ -81,9 +81,9 @@ theorem TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (f : d.componentPartition.parts → M) :
     (∏ B : d.componentPartition.parts, f B) =
-      f d.externalComponentPart * (∏ B in d.vacuumComponentParts, f B) := by
+      f d.externalComponentPart * d.vacuumComponentParts.prod f := by
   classical
-  change (∏ B in (Finset.univ : Finset d.componentPartition.parts), f B) = _
+  change (Finset.univ : Finset d.componentPartition.parts).prod f = _
   rw [d.univ_componentParts_eq_insert_external_vacuum,
     Finset.prod_insert d.externalComponentPart_not_mem_vacuumComponentParts]
 
@@ -93,9 +93,9 @@ theorem TwoPointDiagram.sum_componentParts_eq_external_add_sum_vacuum
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (f : d.componentPartition.parts → A) :
     (∑ B : d.componentPartition.parts, f B) =
-      f d.externalComponentPart + (∑ B in d.vacuumComponentParts, f B) := by
+      f d.externalComponentPart + d.vacuumComponentParts.sum f := by
   classical
-  change (∑ B in (Finset.univ : Finset d.componentPartition.parts), f B) = _
+  change (Finset.univ : Finset d.componentPartition.parts).sum f = _
   rw [d.univ_componentParts_eq_insert_external_vacuum,
     Finset.sum_insert d.externalComponentPart_not_mem_vacuumComponentParts]
 
