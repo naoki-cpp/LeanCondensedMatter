@@ -19,7 +19,7 @@ variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 open Classical in
 /-- The interaction vertices contained in a full external-plus-interaction component part. -/
 noncomputable def TwoPointDiagram.interactionPart {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (_d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : Finset (TwoPointVertex S)) : Finset (Fin N) :=
   S.filter fun v =>
     ∃ hv : v ∈ S, (Sum.inr ⟨v, hv⟩ : TwoPointVertex S) ∈ B
