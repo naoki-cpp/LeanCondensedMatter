@@ -282,7 +282,9 @@ theorem heisenberg_siteChargeDensity (ℏ q : ℂ)
         ∑ y ∈ K.incident x,
           dGammaLinear (LatticeState Site) (K.bondOperator x y) := by
     induction K.incident x using Finset.induction_on with
-    | empty => simp
+    | empty =>
+        change dGammaLinear (LatticeState Site) 0 = 0
+        exact map_zero (dGammaLinear (LatticeState Site))
     | @insert a s ha ih =>
         simp only [Finset.sum_insert, ha]
         rw [map_add, ih]
