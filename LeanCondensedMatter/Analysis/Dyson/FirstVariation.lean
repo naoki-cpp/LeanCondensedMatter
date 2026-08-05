@@ -130,14 +130,12 @@ theorem hasDerivAt_evolution_linear_coupling_zero_of_bound
       simpa using hlam
     have hrem := norm_evolution_sub_one_add_term_one_le_sq_mul_of_bound
       V hOne hM hV ((lam : ℂ) * κ) hlam' hτ
+    have hscalar : lam • (-κ) = -((lam : ℂ) * κ) := by
+      simpa [Algebra.smul_def] using (mul_neg (lam : ℂ) κ)
     have hlin :
         lam • ((-κ) • ∫ σ in (0 : ℝ)..τ, V σ) =
           term V ((lam : ℂ) * κ) τ 1 := by
-      rw [term_one]
-      change ((lam : ℂ) * (-κ)) • (∫ σ in (0 : ℝ)..τ, V σ) =
-        (-((lam : ℂ) * κ)) • (∫ σ in (0 : ℝ)..τ, V σ)
-      congr 1
-      ring
+      rw [term_one, hscalar]
     have hrem' :
         ‖evolution V ((lam : ℂ) * κ) τ -
             evolution V (((0 : ℝ) : ℂ) * κ) τ -
