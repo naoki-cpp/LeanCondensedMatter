@@ -31,8 +31,17 @@ theorem exteriorBasis_eq_sort_prod
   rw [ExteriorAlgebra.basis_apply_ofCard (n := n.card) b rfl]
   simp only [ExteriorAlgebra.ιMulti_family, ExteriorAlgebra.ιMulti_apply,
     oneParticle, Set.powersetCard.ofFinEmbEquiv_symm_apply]
-  rw [List.ofFn_eq_map, ← List.map_map,
-    Finset.listMap_orderEmbOfFin_finRange]
+  change
+    (List.map
+      (fun j : Fin n.card => ExteriorAlgebra.ι ℂ (b (n.orderEmbOfFin rfl j)))
+      (List.finRange n.card)).prod =
+      (List.map (fun x => ExteriorAlgebra.ι ℂ (b x))
+        (n.sort (· ≤ ·))).prod
+  simpa [List.map_map, Function.comp_def] using
+    congrArg
+      (fun l : List Mode =>
+        (l.map (fun x => ExteriorAlgebra.ι ℂ (b x))).prod)
+      (Finset.listMap_orderEmbOfFin_finRange n rfl)
 
 /-- A basis vector inserted before every occupied mode creates the new exterior-basis state with
 no permutation sign. -/
@@ -44,9 +53,12 @@ theorem create_exteriorBasis_of_lt
   have hin : i ∉ n := by
     intro h
     exact (lt_irrefl i) (hi i h)
+  have hle : ∀ x ∈ n, i ≤ x := fun x hx => (hi x hx).le
+  have hsort :
+      (insert i n).sort (· ≤ ·) = i :: n.sort (· ≤ ·) :=
+    Finset.sort_insert (r := fun x y : Mode => x ≤ y) hle hin
   rw [create_apply, exteriorBasis_eq_sort_prod b n,
-    exteriorBasis_eq_sort_prod b (insert i n),
-    Finset.sort_insert (fun x hx => (hi x hx).le) hin]
+    exteriorBasis_eq_sort_prod b (insert i n), hsort]
   simp only [List.map_cons, List.prod_cons]
 
 /-- A one-particle basis vector is the singleton exterior-basis vector. -/
@@ -106,18 +118,24 @@ theorem create_exteriorBasis
           have hnew := create_exteriorBasis_of_lt b i (insert a s) hmin'
           rw [hnew]
           have hfilter : (insert a s).filter (fun x => x < i) = ∅ := by
-            apply Finset.eq_empty_iff_forall_not_mem.mpr
-            intro x hx
-            have hx' := Finset.mem_filter.mp hx
-            exact (lt_asymm hx'.2 (hmin' x hx'.1))
+            ext x
+            simp only [Finset.mem_filter, Finset.not_mem_empty, iff_false]
+            intro hx
+            exact (lt_asymm hx.2 (hmin' x hx.1))
           simp [fermionSign, hfilter, insertOccupation]
-        · have hcar := LinearMap.congr_fun
-            (create_comp_add_swap 𝓗₁ (b i) (b a)) (b.ExteriorAlgebra s)
+        · have hcar := congrArg
+            (fun z => z * b.ExteriorAlgebra s)
+            (oneParticle_mul_add_swap 𝓗₁ (b i) (b a))
           have hswap :
               create 𝓗₁ (b i) (create 𝓗₁ (b a) (b.ExteriorAlgebra s)) =
                 -create 𝓗₁ (b a) (create 𝓗₁ (b i) (b.ExteriorAlgebra s)) := by
-            simpa only [LinearMap.add_apply, LinearMap.comp_apply,
-              LinearMap.zero_apply] using eq_neg_of_add_eq_zero_right hcar
+            change
+              oneParticle 𝓗₁ (b i) *
+                  (oneParticle 𝓗₁ (b a) * b.ExteriorAlgebra s) =
+                -(oneParticle 𝓗₁ (b a) *
+                  (oneParticle 𝓗₁ (b i) * b.ExteriorAlgebra s))
+            rw [add_mul, zero_mul, mul_assoc, mul_assoc] at hcar
+            exact eq_neg_of_add_eq_zero_right hcar
           rw [hswap]
           have hiStep := ih i
           rw [if_neg his] at hiStep
@@ -128,6 +146,12 @@ theorem create_exteriorBasis
             · exact hgt
             · exact hmin x hx
           have haStep := create_exteriorBasis_of_lt b a (insert i s) hamin
+          change
+            -((fermionSign i s : ℂ) •
+                create 𝓗₁ (b a) (b.ExteriorAlgebra (insert i s))) =
+              (fermionSign i (insertOccupation a s) : ℂ) •
+                b.ExteriorAlgebra
+                  (insertOccupation i (insertOccupation a s))
           rw [haStep, fermionSign_insertOccupation_of_lt ha hgt]
           simp [insertOccupation, Finset.insert_comm]
 
@@ -159,7 +183,7 @@ theorem occupationEquiv_create
       simp [basisState, Common.basisState]
     · simp [basisState, Common.basisState, hmn]
   rw [hsingle]
-  simp only [map_smul]
+  simp only [map_smul, LinearMap.comp_apply]
   rw [occupationEquiv_create_basisState]
 
 end
