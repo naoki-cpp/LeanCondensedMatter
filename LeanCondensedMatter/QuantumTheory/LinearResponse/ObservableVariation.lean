@@ -1,6 +1,7 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
 
 attribute [-instance] Complex.addCommGroup
+attribute [-instance] Complex.instRing.toAddCommGroup
 
 set_option linter.style.header false
 
