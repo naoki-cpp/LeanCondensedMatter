@@ -30,19 +30,19 @@ open scoped BigOperators
 
 noncomputable section
 
-variable {Site : Type*} [Fintype Site] [LinearOrder Site]
-
 /-- The finite-dimensional Hilbert realization of the full fermionic Fock space on a finite site
 cutoff. -/
 abbrev FiniteLatticeHilbertFock (Site : Type*) [Fintype Site] :=
   Common.FiniteHilbertFock (Occupation Site)
+
+variable {Site : Type*} [LinearOrder Site]
 
 /-- The canonical site basis of finitely supported one-particle lattice states. -/
 noncomputable def latticeBasis : Module.Basis Site ℂ (LatticeState Site) :=
   Finsupp.basisSingleOne
 
 /-- The canonical equivalence from occupation-subset Fock space to the exterior-algebra Fock space
-for a finite ordered site type. -/
+for an ordered site type. -/
 noncomputable def latticeOccupationEquiv :
     FockSpace Site ≃ₗ[ℂ] FiniteParticleFock (LatticeState Site) :=
   occupationEquiv (latticeBasis (Site := Site))
@@ -81,7 +81,7 @@ theorem occupationOperator_id :
       (LinearMap.id : FockSpace Site →ₗ[ℂ] FockSpace Site) := by
   apply LinearMap.ext
   intro Ψ
-  simp [occupationOperator, LinearMap.comp_apply]
+  simp [occupationOperator]
 
 @[simp]
 theorem occupationOperator_comp
@@ -111,6 +111,10 @@ theorem occupationOperatorAlgHom_apply
       FiniteParticleFock (LatticeState Site)) :
     occupationOperatorAlgHom A = occupationOperator A :=
   rfl
+
+section FiniteLattice
+
+variable [Fintype Site]
 
 /-- The complete bridge from basis-independent algebraic Fock endomorphisms to bounded operators on
 the finite-lattice Hilbert Fock space. -/
@@ -165,16 +169,19 @@ theorem hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero
   have h :=
     (hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero K ℏ q x y).map
       (boundedLatticeOperatorAlgHom (Site := Site)).toLinearMap
-  simpa [boundedPeierlsBondHamiltonian, boundedBondCurrent,
-    boundedLatticeOperator] using h
+  change HasAlgebraicDerivAt
+    (fun A => boundedLatticeOperatorAlgHom
+      (peierlsBondHamiltonianFock K ℏ q x y A))
+    (-boundedLatticeOperatorAlgHom (bondCurrent ℏ q K x y)) 0
+  simpa only [map_neg] using h
 
 /-- Reversing a bond negates its bounded current observable. -/
 theorem boundedBondCurrent_swap (ℏ q : ℂ) (K : LocallyFiniteHopping Site)
     (x y : Site) :
     boundedBondCurrent ℏ q K y x = -boundedBondCurrent ℏ q K x y := by
-  have h := congrArg (boundedLatticeOperator (Site := Site))
-    (bondCurrent_swap ℏ q K x y)
-  simpa [boundedBondCurrent] using h
+  change boundedLatticeOperatorAlgHom (bondCurrent ℏ q K y x) =
+    -boundedLatticeOperatorAlgHom (bondCurrent ℏ q K x y)
+  rw [bondCurrent_swap, map_neg]
 
 /-- The bounded current-current retarded kernel supplied to the general Kubo API.
 
@@ -191,6 +198,8 @@ noncomputable def boundedBondCurrentRetardedSusceptibility
   QuantumTheory.LinearResponse.retardedSusceptibility system expectation
     (boundedBondCurrent ℏ q K x y)
     (boundedBondCurrent ℏ q K u v) t s
+
+end FiniteLattice
 
 end
 end Field
