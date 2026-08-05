@@ -20,7 +20,7 @@ namespace Common
 
 noncomputable section
 
-variable {Config : Type*} [Fintype Config] [DecidableEq Config]
+variable {Config : Type*} [Fintype Config]
 
 /-- Matrix of an algebraic Fock endomorphism in the canonical finite-Hilbert occupation basis. -/
 noncomputable def finiteHilbertOperatorMatrix
@@ -36,8 +36,12 @@ noncomputable def finiteHilbertOperatorMatrix
 theorem finiteHilbertOperatorMatrix_apply
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
     finiteHilbertOperatorMatrix A m n = matrixCoeff A m n := by
-  simp [finiteHilbertOperatorMatrix, LinearMap.toMatrix_apply,
-    finiteHilbertOrthonormalBasis_apply, finiteHilbertOperator_basis_apply]
+  change
+    ((EuclideanSpace.basisFun Config ℂ).repr
+      (finiteHilbertOperator A (finiteHilbertBasisState n))) m =
+        matrixCoeff A m n
+  rw [EuclideanSpace.basisFun_repr]
+  exact finiteHilbertOperator_basis_apply A m n
 
 /-- Adjointness after finite-Hilbert transport is exactly conjugate transposition of the algebraic
 coordinate matrix. -/
@@ -56,7 +60,9 @@ theorem star_finiteHilbertOperator_eq_iff_matrixCoeff
       exact congrArg ContinuousLinearMap.toLinearMap h
     have hmat := congrArg (fun T => LinearMap.toMatrix b b T m n) hlin
     rw [LinearMap.toMatrix_adjoint] at hmat
-    simpa [b, finiteHilbertOperatorMatrix] using hmat
+    change star (finiteHilbertOperatorMatrix A n m) =
+      finiteHilbertOperatorMatrix B m n at hmat
+    simpa using hmat
   · intro h
     have hmat :
         LinearMap.toMatrix b b
@@ -64,7 +70,9 @@ theorem star_finiteHilbertOperator_eq_iff_matrixCoeff
           LinearMap.toMatrix b b (finiteHilbertOperator B).toLinearMap := by
       ext m n
       rw [LinearMap.toMatrix_adjoint]
-      simpa [b, finiteHilbertOperatorMatrix] using h m n
+      change star (finiteHilbertOperatorMatrix A n m) =
+        finiteHilbertOperatorMatrix B m n
+      simpa using h m n
     have hlin :
         LinearMap.adjoint (finiteHilbertOperator A).toLinearMap =
           (finiteHilbertOperator B).toLinearMap :=
