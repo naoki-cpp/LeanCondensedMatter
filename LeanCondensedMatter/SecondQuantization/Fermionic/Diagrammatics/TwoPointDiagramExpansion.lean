@@ -3,6 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Reindexing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairEquiv
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DysonCoefficient
 
@@ -13,6 +14,7 @@ set_option linter.style.header false
 
 Atomic flattening, the finite-temperature pairing expansion, transport of mixed-time pairings to
 external-leg Wick diagrams, restriction of mixed-order positions, partners, and normalized pairs to
-full components, fixed-time diagram amplitudes, and the ordered-simplex perturbative coefficient for
-the imaginary-time two-point function with quartic interaction vertices.
+full components, factorization of mixed-time contraction products, fixed-time diagram amplitudes,
+and the ordered-simplex perturbative coefficient for the imaginary-time two-point function with
+quartic interaction vertices.
 -/
