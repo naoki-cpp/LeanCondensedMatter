@@ -164,8 +164,10 @@ theorem TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent {S : Fin
     refine ⟨e, ?_⟩
     have hblock := (d.componentBlock_eq_iff_mem B.2 (Sum.inl e)).2 he
     simpa only [TwoPointDiagram.externalComponent] using hblock.symm
-  · rintro ⟨e, rfl⟩
-    exact ⟨e, d.self_mem_componentBlock (Sum.inl e)⟩
+  · rintro ⟨e, hB⟩
+    refine ⟨e, ?_⟩
+    rw [hB]
+    exact d.self_mem_componentBlock (Sum.inl e)
 
 /-- `HasNoVacuumComponent` means precisely that every component-partition part meets the external
 sector. -/
@@ -217,15 +219,13 @@ theorem TwoPointDiagram.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty
   rw [d.hasNoVacuumComponent_iff_forall_component_meetsExternal]
   constructor
   · intro h
-    apply Finset.eq_empty_iff_forall_not_mem.2
-    intro B hB
-    exact ((d.mem_vacuumComponentParts B).1 hB) (h B)
+    ext B
+    simp [TwoPointDiagram.vacuumComponentParts, TwoPointDiagram.ComponentIsVacuum, h B]
   · intro h B
     by_contra hB
     have hmem : B ∈ d.vacuumComponentParts :=
       (d.mem_vacuumComponentParts B).2 hB
-    rw [h] at hmem
-    exact Finset.not_mem_empty B hmem
+    simpa [h] using hmem
 
 /-- The two external vertices are connected exactly when their component blocks agree. -/
 theorem TwoPointDiagram.externalVerticesConnected_iff_externalComponent_eq {S : Finset (Fin N)}
