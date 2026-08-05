@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentPartition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentRestriction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticInteraction
 
 set_option linter.style.header false
@@ -9,7 +9,8 @@ set_option linter.style.header false
 This module specializes the mixed one-leg/four-leg diagram data to a fermionic two-point function.
 The two external labels record an annihilation field and a creation field; their imaginary times are
 parameters of the future amplitude rather than part of the finite diagram enumeration. The full
-external-plus-interaction component partition is inherited from the statistics-independent layer.
+external-plus-interaction component partition and vacuum-component restriction are inherited from
+the statistics-independent layer.
 -/
 
 namespace SecondQuantization
