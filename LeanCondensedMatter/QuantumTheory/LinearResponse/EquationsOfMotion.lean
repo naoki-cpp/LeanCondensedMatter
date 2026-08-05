@@ -110,7 +110,14 @@ theorem hasDerivAt_heisenbergEvolution_generator
     dsimp [G, U, Uneg] at hcomm hcommNeg ⊢
     simp only [heisenbergEvolution]
     rw [neg_mul, hcommNeg.eq, hcomm.eq]
-    noncomm_ring
+    have hmove :
+        schrodingerGenerator system *
+            (freePropagator system (-t) * (A * freePropagator system t)) =
+          freePropagator system (-t) *
+            (schrodingerGenerator system * (A * freePropagator system t)) := by
+      rw [← mul_assoc, hcommNeg.eq, mul_assoc]
+    rw [hmove]
+    abel
   rw [← hderiv]
   exact hraw
 
@@ -160,9 +167,16 @@ theorem hasDerivAt_evolveDensityOperator_op_generator
         G * (evolveDensityOperator system ρ t).op -
           (evolveDensityOperator system ρ t).op * G := by
     dsimp [G, U, Uneg] at hcomm hcommNeg ⊢
-    simp only [evolveDensityOperator_op, unitaryConjugate, star_freePropagator]
+    simp only [unitaryConjugate, star_freePropagator]
     rw [neg_mul, hcomm.eq, hcommNeg.eq]
-    noncomm_ring
+    have hmove :
+        schrodingerGenerator system *
+            (freePropagator system t * (ρ.op * freePropagator system (-t))) =
+          freePropagator system t *
+            (schrodingerGenerator system * (ρ.op * freePropagator system (-t))) := by
+      rw [← mul_assoc, hcomm.eq, mul_assoc]
+    rw [hmove]
+    abel
   rw [← hderiv]
   exact hraw
 
