@@ -26,12 +26,11 @@ private theorem even_card_of_fixedPointFreeInvolution {α : Type*} [Fintype α]
     Even (Fintype.card α) := by
   let G : SimpleGraph α where
     Adj x y := p x = y
-    symm := ⟨by
-      intro x y h
+    symm.symm x y h := by
       change p y = x
       rw [← h]
-      exact hp x⟩
-    loopless := ⟨hne⟩
+      exact hp x
+    loopless.irrefl x h := hne x h
   let M : G.Subgraph where
     verts := Set.univ
     Adj := G.Adj
