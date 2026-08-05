@@ -26,6 +26,7 @@ jobs:
           python3 scripts/check_quantum_theory_architecture.py
           python3 scripts/check_quantum_physical_scalar_boundary.py
           python3 scripts/check_quantum_pure_state_dynamics.py
+          python3 scripts/check_quantum_picture_equivalence.py
       - uses: leanprover/lean-action@v1
         with:
           # Keep the whole library warning-free, including modules unchanged by the PR.
