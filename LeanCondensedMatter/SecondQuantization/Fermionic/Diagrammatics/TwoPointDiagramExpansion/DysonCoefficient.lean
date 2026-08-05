@@ -81,8 +81,8 @@ coefficient at every perturbation order. -/
 theorem twoPointDiagramCoefficient_eq_twoPointDysonCoefficient {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (i j : Mode) (τ τ' : ℝ) :
-    twoPointDiagramCoefficient ε β g i j τ τ' =
-      twoPointDysonCoefficient ε β g i j τ τ' := by
+    twoPointDiagramCoefficient (n := n) ε β g i j τ τ' =
+      twoPointDysonCoefficient (n := n) ε β g i j τ τ' := by
   apply congrArg (fun z : ℂ => (-1 : ℂ) ^ n * z)
   apply intervalIntegral.orderedSimplexIntegral_congr
   intro σ
@@ -118,8 +118,8 @@ noncomputable def twoPointDensityDysonCoefficient {n : ℕ}
 theorem twoPointDensityDysonCoefficient_eq_twoPointDysonCoefficient {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (i j : Mode) (τ τ' : ℝ) :
-    twoPointDensityDysonCoefficient ε β g i j τ τ' =
-      twoPointDysonCoefficient ε β g i j τ τ' := by
+    twoPointDensityDysonCoefficient (n := n) ε β g i j τ τ' =
+      twoPointDysonCoefficient (n := n) ε β g i j τ τ' := by
   apply congrArg (fun z : ℂ => (-1 : ℂ) ^ n * z)
   apply intervalIntegral.orderedSimplexIntegral_congr
   intro σ
@@ -129,8 +129,8 @@ theorem twoPointDensityDysonCoefficient_eq_twoPointDysonCoefficient {n : ℕ}
 theorem twoPointDiagramCoefficient_eq_twoPointDensityDysonCoefficient {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (i j : Mode) (τ τ' : ℝ) :
-    twoPointDiagramCoefficient ε β g i j τ τ' =
-      twoPointDensityDysonCoefficient ε β g i j τ τ' := by
+    twoPointDiagramCoefficient (n := n) ε β g i j τ τ' =
+      twoPointDensityDysonCoefficient (n := n) ε β g i j τ τ' := by
   rw [twoPointDiagramCoefficient_eq_twoPointDysonCoefficient,
     twoPointDensityDysonCoefficient_eq_twoPointDysonCoefficient]
 
