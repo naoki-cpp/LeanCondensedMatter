@@ -39,8 +39,13 @@ theorem expValue_evolveState_eq_heisenberg
     inner ℂ ψ.1
       (freePropagator system (-t) (A.1 (freePropagator system t ψ.1)))
   rw [← star_freePropagator system t]
-  exact ContinuousLinearMap.adjoint_inner_right
-    (freePropagator system t) ψ.1 (A.1 (freePropagator system t ψ.1))
+  change inner ℂ (freePropagator system t ψ.1)
+      (A.1 (freePropagator system t ψ.1)) =
+    inner ℂ ψ.1
+      ((ContinuousLinearMap.adjoint (freePropagator system t))
+        (A.1 (freePropagator system t ψ.1)))
+  exact (ContinuousLinearMap.adjoint_inner_right
+    (freePropagator system t) ψ.1 (A.1 (freePropagator system t ψ.1))).symm
 
 /-- The lossless real observable expectation is identical in the Schrödinger and Heisenberg
 pictures. -/
