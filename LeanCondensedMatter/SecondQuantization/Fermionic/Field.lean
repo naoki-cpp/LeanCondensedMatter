@@ -13,6 +13,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.BoundedKuboBridge
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.PeierlsContact
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeometricCurrent
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.FrequencyResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.HarmonicSourceResponse
 
 set_option linter.style.header false
 
@@ -37,4 +38,6 @@ term. The geometric layer derives bond-current self-adjointness from Hermitian h
 aggregates oriented bond observables into spatial current components and their chain-rule contact
 operators. The frequency-response layer keeps observation time, adiabatic switching, and driving
 frequency as independent regulators and records the possible orders of their limits explicitly.
+The harmonic-source layer realizes the complex adiabatic coefficient through two physical real
+source quadratures and proves their separate bounded response theorems.
 -/
