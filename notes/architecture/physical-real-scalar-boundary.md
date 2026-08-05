@@ -17,7 +17,8 @@ noncomputable def badExpectation (z : ℂ) : ℝ := z.re
 
 The type `ℝ` alone does not prove that the discarded imaginary component was zero. Such a definition
 can silently hide an orientation error, a missing self-adjointness hypothesis, or a genuinely
-complex response function.
+complex response function. Using `Complex.reCLM` in a public real-valued definition has the same
+information-discarding semantics and is governed by the same rule.
 
 ### 2. Lossless transport after a reality proof
 
@@ -47,16 +48,17 @@ bodies.
 ## Automated audit
 
 The physical scalar boundary audit scans `LeanCondensedMatter/QuantumTheory/**/*.lean` and rejects a
-public `def` or `abbrev` when all of the following hold:
+public `def`, `abbrev`, or `opaque` declaration when all of the following hold:
 
 - its explicitly declared result is `ℝ`, `Real`, `NNReal`, `ENNReal`, `ℝ≥0`, or `ℝ≥0∞`, including a
   function type ending in one of those scalars;
-- its definition body contains direct `.re` or `Complex.re` projection;
-- the declaration is not `private`;
+- its definition body contains direct `.re`, `Complex.re`, or `Complex.reCLM` projection;
+- the declaration is neither `private` nor `local`;
 - no declaration-specific allowlist entry exists.
 
-Both ordinary `:=` definitions and equation-style definitions are recognized. Complex-valued
-functions, theorem bodies, and private implementation helpers are outside this public API guard.
+Both ordinary `:=` definitions and equation-style definitions are recognized, including declarations
+with attributes such as `@[simp]`. Complex-valued functions, theorem bodies, and private or local
+implementation helpers are outside this public API guard.
 
 ## Allowlist policy
 
