@@ -30,9 +30,9 @@ open scoped BigOperators
 
 noncomputable section
 
-/-- The finite-dimensional Hilbert realization of the full fermionic Fock space on a finite site
-cutoff. -/
-abbrev FiniteLatticeHilbertFock (Site : Type*) [Fintype Site] :=
+/-- The finite-dimensional Hilbert realization of the full fermionic Fock space on a site type. The
+finiteness assumption is introduced by the bounded transport, not by this type abbreviation. -/
+abbrev FiniteLatticeHilbertFock (Site : Type*) :=
   Common.FiniteHilbertFock (Occupation Site)
 
 variable {Site : Type*} [LinearOrder Site]
@@ -155,6 +155,66 @@ theorem boundedLatticeOperatorAlgHom_apply
     boundedLatticeOperatorAlgHom A = boundedLatticeOperator A :=
   rfl
 
+@[simp]
+theorem boundedLatticeOperator_add
+    (A B : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
+      FiniteParticleFock (LatticeState Site)) :
+    boundedLatticeOperator (A + B) =
+      boundedLatticeOperator A + boundedLatticeOperator B :=
+  map_add (boundedLatticeOperatorLinearMap (Site := Site)) A B
+
+@[simp]
+theorem boundedLatticeOperator_sub
+    (A B : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
+      FiniteParticleFock (LatticeState Site)) :
+    boundedLatticeOperator (A - B) =
+      boundedLatticeOperator A - boundedLatticeOperator B :=
+  map_sub (boundedLatticeOperatorLinearMap (Site := Site)) A B
+
+@[simp]
+theorem boundedLatticeOperator_smul (c : ℂ)
+    (A : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
+      FiniteParticleFock (LatticeState Site)) :
+    boundedLatticeOperator (c • A) = c • boundedLatticeOperator A :=
+  map_smul (boundedLatticeOperatorLinearMap (Site := Site)) c A
+
+@[simp]
+theorem boundedLatticeOperator_zero :
+    boundedLatticeOperator
+        (0 : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
+          FiniteParticleFock (LatticeState Site)) = 0 :=
+  map_zero (boundedLatticeOperatorLinearMap (Site := Site))
+
+@[simp]
+theorem boundedLatticeOperator_sum {ι : Type*} (s : Finset ι)
+    (F : ι → FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
+      FiniteParticleFock (LatticeState Site)) :
+    boundedLatticeOperator (∑ i ∈ s, F i) =
+      ∑ i ∈ s, boundedLatticeOperator (F i) := by
+  change boundedLatticeOperatorLinearMap (∑ i ∈ s, F i) = _
+  rw [map_sum]
+
+@[simp]
+theorem boundedLatticeOperator_comp
+    (A B : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
+      FiniteParticleFock (LatticeState Site)) :
+    boundedLatticeOperator (A.comp B) =
+      (boundedLatticeOperator A).comp (boundedLatticeOperator B) := by
+  change boundedLatticeOperatorAlgHom (A.comp B) =
+    (boundedLatticeOperatorAlgHom A).comp (boundedLatticeOperatorAlgHom B)
+  exact map_mul (boundedLatticeOperatorAlgHom (Site := Site)) A B
+
+/-- Bounded transport preserves the ordinary algebraic commutator. -/
+theorem boundedLatticeOperator_linearCommutator
+    (A B : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
+      FiniteParticleFock (LatticeState Site)) :
+    boundedLatticeOperator (linearCommutator A B) =
+      (boundedLatticeOperator A).comp (boundedLatticeOperator B) -
+        (boundedLatticeOperator B).comp (boundedLatticeOperator A) := by
+  unfold linearCommutator
+  rw [boundedLatticeOperator_sub, boundedLatticeOperator_comp,
+    boundedLatticeOperator_comp]
+
 /-- Bounded many-particle hopping Hamiltonian on the finite-lattice Hilbert Fock space. -/
 noncomputable def boundedHoppingHamiltonian (K : LocallyFiniteHopping Site) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
@@ -198,6 +258,21 @@ theorem boundedBondCurrent_swap (ℏ q : ℂ) (K : LocallyFiniteHopping Site)
   change boundedLatticeOperatorLinearMap (bondCurrent ℏ q K y x) =
     -boundedLatticeOperatorLinearMap (bondCurrent ℏ q K x y)
   rw [bondCurrent_swap, map_neg]
+
+/-- The algebraic local continuity equation survives exactly in the bounded finite-lattice Hilbert
+representation. -/
+theorem bounded_discrete_continuity (ℏ q : ℂ)
+    (K : LocallyFiniteHopping Site) (x : Site) :
+    (Complex.I / ℏ) •
+          ((boundedHoppingHamiltonian K).comp (boundedSiteChargeDensity q x) -
+            (boundedSiteChargeDensity q x).comp (boundedHoppingHamiltonian K)) +
+        ∑ y ∈ K.incident x, boundedBondCurrent ℏ q K x y = 0 := by
+  have h := congrArg (boundedLatticeOperator (Site := Site))
+    (discrete_continuity ℏ q K x)
+  simpa only [boundedLatticeOperator_add, boundedLatticeOperator_smul,
+    boundedLatticeOperator_sum, boundedLatticeOperator_zero,
+    boundedLatticeOperator_linearCommutator, boundedHoppingHamiltonian,
+    boundedSiteChargeDensity, boundedBondCurrent] using h
 
 /-- The bounded current-current retarded kernel supplied to the general Kubo API.
 
