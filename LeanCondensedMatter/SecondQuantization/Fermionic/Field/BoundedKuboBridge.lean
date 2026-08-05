@@ -93,15 +93,22 @@ theorem occupationOperator_comp
   intro Ψ
   simp [occupationOperator, LinearMap.comp_apply]
 
+/-- Occupation-representation transport bundled as a complex-linear map. -/
+noncomputable def occupationOperatorLinearMap :
+    (FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
+        FiniteParticleFock (LatticeState Site)) →ₗ[ℂ]
+      (FockSpace Site →ₗ[ℂ] FockSpace Site) where
+  toFun := occupationOperator
+  map_add' := occupationOperator_add
+  map_smul' := occupationOperator_smul
+
 /-- Occupation-representation transport bundled as a complex algebra homomorphism. -/
 noncomputable def occupationOperatorAlgHom :
     (FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
         FiniteParticleFock (LatticeState Site)) →ₐ[ℂ]
       (FockSpace Site →ₗ[ℂ] FockSpace Site) :=
   AlgHom.ofLinearMap
-    { toFun := occupationOperator
-      map_add' := occupationOperator_add
-      map_smul' := occupationOperator_smul }
+    (occupationOperatorLinearMap (Site := Site))
     occupationOperator_id
     occupationOperator_comp
 
@@ -116,8 +123,17 @@ section FiniteLattice
 
 variable [Fintype Site]
 
-/-- The complete bridge from basis-independent algebraic Fock endomorphisms to bounded operators on
+/-- The linear bridge from basis-independent algebraic Fock endomorphisms to bounded operators on
 the finite-lattice Hilbert Fock space. -/
+noncomputable def boundedLatticeOperatorLinearMap :
+    (FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
+        FiniteParticleFock (LatticeState Site)) →ₗ[ℂ]
+      (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
+  (Common.finiteHilbertOperatorLinearMap (Config := Occupation Site)).comp
+    (occupationOperatorLinearMap (Site := Site))
+
+/-- The complete multiplicative bridge from basis-independent algebraic Fock endomorphisms to
+bounded operators on the finite-lattice Hilbert Fock space. -/
 noncomputable def boundedLatticeOperatorAlgHom :
     (FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
         FiniteParticleFock (LatticeState Site)) →ₐ[ℂ]
@@ -130,7 +146,7 @@ noncomputable def boundedLatticeOperator
     (A : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
       FiniteParticleFock (LatticeState Site)) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
-  boundedLatticeOperatorAlgHom A
+  boundedLatticeOperatorLinearMap A
 
 @[simp]
 theorem boundedLatticeOperatorAlgHom_apply
@@ -168,19 +184,19 @@ theorem hasAlgebraicDerivAt_boundedPeierlsBondHamiltonian_zero
       (-boundedBondCurrent ℏ q K x y) 0 := by
   have h :=
     (hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero K ℏ q x y).map
-      (boundedLatticeOperatorAlgHom (Site := Site)).toLinearMap
+      (boundedLatticeOperatorLinearMap (Site := Site))
   change HasAlgebraicDerivAt
-    (fun A => boundedLatticeOperatorAlgHom
+    (fun A => boundedLatticeOperatorLinearMap
       (peierlsBondHamiltonianFock K ℏ q x y A))
-    (-boundedLatticeOperatorAlgHom (bondCurrent ℏ q K x y)) 0
+    (-boundedLatticeOperatorLinearMap (bondCurrent ℏ q K x y)) 0
   simpa only [map_neg] using h
 
 /-- Reversing a bond negates its bounded current observable. -/
 theorem boundedBondCurrent_swap (ℏ q : ℂ) (K : LocallyFiniteHopping Site)
     (x y : Site) :
     boundedBondCurrent ℏ q K y x = -boundedBondCurrent ℏ q K x y := by
-  change boundedLatticeOperatorAlgHom (bondCurrent ℏ q K y x) =
-    -boundedLatticeOperatorAlgHom (bondCurrent ℏ q K x y)
+  change boundedLatticeOperatorLinearMap (bondCurrent ℏ q K y x) =
+    -boundedLatticeOperatorLinearMap (bondCurrent ℏ q K x y)
   rw [bondCurrent_swap, map_neg]
 
 /-- The bounded current-current retarded kernel supplied to the general Kubo API.
