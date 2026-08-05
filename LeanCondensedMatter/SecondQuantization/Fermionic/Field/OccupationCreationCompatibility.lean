@@ -41,8 +41,24 @@ theorem exteriorBasis_eq_sort_prod
   have hmap := congrArg
     (List.map fun x : Mode => ExteriorAlgebra.ι ℂ (b x)) hlist
   have hprod := congrArg List.prod hmap
-  convert hprod using 1 <;>
-    simp [t, List.ofFn_eq_map, List.map_map, Function.comp_def]
+  have hemb :
+      n.orderEmbOfFin rfl =
+        (↑t : Finset Mode).orderEmbOfFin t.prop := by
+    symm
+    apply Finset.orderEmbOfFin_unique' rfl
+    intro j
+    simpa [t] using
+      (Finset.orderEmbOfFin_mem (↑t : Finset Mode) t.prop j)
+  have htarget :
+      (List.map
+          (fun j : Fin n.card =>
+            ExteriorAlgebra.ι ℂ (b (n.orderEmbOfFin rfl j)))
+          (List.finRange n.card)).prod =
+        (List.map (fun x => ExteriorAlgebra.ι ℂ (b x))
+          (n.sort (· ≤ ·))).prod := by
+    rw [hemb]
+    simpa [List.map_map, Function.comp_def] using hprod
+  simpa only [List.ofFn_eq_map] using htarget
 
 /-- A basis vector inserted before every occupied mode creates the new exterior-basis state with
 no permutation sign. -/
