@@ -34,7 +34,7 @@ space, and exposes the derived bond current as a bounded observable accepted by 
 API. The subsequent transport layer differentiates the Peierls current itself, identifies its
 contact operator, and combines the retarded current-current response with the explicit contact
 term. The geometric layer derives bond-current self-adjointness from Hermitian hopping, aggregates
-oriented bond observables into spatial current components, and proves that the geometric current
-and squared-coordinate contact are the first two source derivatives of a uniform-direction Peierls
-family.
+oriented bond observables into spatial current components, and proves that the directional current
+and squared-coordinate contact arise respectively from differentiating the uniform-direction
+Peierls Hamiltonian and its source-dependent current.
 -/
