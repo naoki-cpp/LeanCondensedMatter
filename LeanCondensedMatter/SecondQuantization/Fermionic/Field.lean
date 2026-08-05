@@ -14,6 +14,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.PeierlsContact
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeometricCurrent
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeometricPeierls
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.FrequencyResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.HarmonicSourceResponse
 
 set_option linter.style.header false
 
@@ -39,5 +40,7 @@ oriented bond observables into spatial current components, and proves that the d
 and squared-coordinate contact arise respectively from differentiating the uniform-direction
 Peierls Hamiltonian and its source-dependent current. The frequency-response layer keeps
 observation time, adiabatic switching, and driving frequency as independent regulators and records
-the possible orders of their limits explicitly.
+the possible orders of their limits explicitly. The harmonic-source layer realizes the complex
+adiabatic coefficient through two physical real source quadratures coupled to the same
+self-adjoint directional current and proves their separate bounded response theorems.
 -/
