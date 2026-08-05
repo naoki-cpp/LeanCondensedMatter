@@ -5,6 +5,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Diagram
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentPartition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentRestriction
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointExternalConnectivity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointExternalRestriction
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Connected
@@ -30,8 +31,9 @@ set_option linter.style.header false
 # Statistics-independent diagrammatics
 
 Quartic vertex labels, shared local-leg semantics and operator constructors, leg indexing, two-point
-diagrams with distinguished external legs, full component partitions, and vacuum/external component
-restriction data; ordered diagram data, connected components, component-local orders,
-order-preserving shuffle decompositions, and shuffled ordered-simplex integrands; quartic component
-restriction and reassembly, decomposition equivalences, and componentwise scalar factorization.
+diagrams with distinguished external legs, full component partitions, automatic connectivity of the
+two one-legged external vertices, and vacuum/external component restriction data; ordered diagram
+data, connected components, component-local orders, order-preserving shuffle decompositions, and
+shuffled ordered-simplex integrands; quartic component restriction and reassembly, decomposition
+equivalences, and componentwise scalar factorization.
 -/
