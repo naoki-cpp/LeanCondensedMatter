@@ -50,6 +50,11 @@ General cautions distilled from past sessions; detailed incident records live in
 - **Do not build after a docstring/comment-only change.** If a diff touches only `/-!  -/`/`/-- -/`
   comments (no code, no `omit`/`variable`/import changes), skip `lake build` entirely — check with
   a quick read for syntax sanity instead. This also applies to `notes/`-only changes.
+- **Add regression protection after implementation.** Once the completed implementation reveals the
+  stable invariant that must not regress, add the narrowest practical automated check before the work
+  is declared complete. Prefer theorem- or type-level enforcement; use targeted scripts and CI for
+  repository structure, dependency direction, forbidden compatibility layers, or other cross-file
+  constraints that Lean does not directly express. Avoid redundant or comment-sensitive grep rules.
 
 ## Dependencies
 

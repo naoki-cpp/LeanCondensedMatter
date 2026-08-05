@@ -27,6 +27,14 @@ analytic Linked Cluster Theorems. In particular, the repository now contains:
 The analytic results are finite-mode and finite-dimensional. They do not provide completed-space
 unbounded-operator theory, infinite-mode limits, or thermodynamic limits.
 
+The foundational mode-label and finite-support algebra is not finite-mode: `Mode` is an arbitrary
+type, fermionic configurations are finite subsets, bosonic configurations are finitely supported
+functions, and algebraic Fock vectors are finite linear combinations. The dead global `modeCount`
+declaration has been removed. Finiteness is introduced only by results that enumerate every mode or
+configuration, construct a finite Hilbert realization, or take finite thermal and diagrammatic sums.
+The CI mode-boundary audit prevents the foundational modules from reacquiring a global finite-mode
+assumption.
+
 The bosonic line mirrors the statistics-independent and algebraic layers where the mathematics is
 valid, but a finite set of bosonic modes still has an infinite occupation basis. General bosonic
 Gibbs, operator-integration, Dyson, and LCT APIs therefore remain blocked on explicit summability-aware
@@ -75,13 +83,14 @@ SecondQuantization.Fermionic, SecondQuantization.Bosonic
 
 `Common/` does not import `Fermionic/` or `Bosonic/`, and generic `Analysis/` and `Combinatorics/`
 modules do not import physics modules. The architecture and declaration/path namespace checks are run
-by `scripts/check_second_quantization_architecture.py` in CI.
+by `scripts/check_second_quantization_architecture.py` in CI. The independent foundational-mode
+boundary is checked by `scripts/check_second_quantization_mode_boundary.py`.
 
 ## Shared statistics-independent layer
 
 | Area | Main modules | Current result |
 |---|---|---|
-| Algebraic Fock infrastructure | `Common/Algebra/` | Basis states, matrix coefficients, diagonal maps, grading, exchange signs, and finite configuration infrastructure. |
+| Algebraic Fock infrastructure | `Common/Algebra/` | Arbitrary mode labels, finite-support occupation interfaces, basis states, matrix coefficients, diagonal maps, grading, exchange signs, and explicitly finite configuration infrastructure where required. |
 | Imaginary-time infrastructure | `Common/ImaginaryTime/` | Diagonal evolution, interaction-picture matrix coefficients, continuity/integrability results, time ordering, and KMS rotation. |
 | Thermal functionals | `Analysis/NormalizedEndomorphismFunctional.lean`, `Common/Thermal/` | Normalized functionals, finite weighted traces, Gibbs infrastructure, and the abstract Bloch–de Dominicis theorem. |
 | Finite operator integration | `Common/Perturbation/FiniteOperatorIntegral.lean`, `FiniteAnalyticBridge.lean` | Coefficientwise integration and its continuous-operator realization for finite configuration types. |
