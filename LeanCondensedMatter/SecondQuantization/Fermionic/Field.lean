@@ -12,6 +12,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Peierls
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.BoundedKuboBridge
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.PeierlsContact
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeometricCurrent
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeometricPeierls
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.FrequencyResponse
 
 set_option linter.style.header false
@@ -33,8 +34,10 @@ boundary to a finite site cutoff, transports the complete fermionic Fock space t
 space, and exposes the derived bond current as a bounded observable accepted by the general Kubo
 API. The subsequent transport layer differentiates the Peierls current itself, identifies its
 contact operator, and combines the retarded current-current response with the explicit contact
-term. The geometric layer derives bond-current self-adjointness from Hermitian hopping and then
-aggregates oriented bond observables into spatial current components and their chain-rule contact
-operators. The frequency-response layer keeps observation time, adiabatic switching, and driving
-frequency as independent regulators and records the possible orders of their limits explicitly.
+term. The geometric layer derives bond-current self-adjointness from Hermitian hopping, aggregates
+oriented bond observables into spatial current components, and proves that the directional current
+and squared-coordinate contact arise respectively from differentiating the uniform-direction
+Peierls Hamiltonian and its source-dependent current. The frequency-response layer keeps
+observation time, adiabatic switching, and driving frequency as independent regulators and records
+the possible orders of their limits explicitly.
 -/
