@@ -193,6 +193,7 @@ theorem boundedLatticeOperator_sum {ι : Type*} (s : Finset ι)
       ∑ i ∈ s, boundedLatticeOperator (F i) := by
   change boundedLatticeOperatorLinearMap (∑ i ∈ s, F i) = _
   rw [map_sum]
+  rfl
 
 @[simp]
 theorem boundedLatticeOperator_comp
