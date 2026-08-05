@@ -3,6 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Creation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Annihilation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Mode
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.OccupationEquivalence
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.SecondQuantization
 
 set_option linter.style.header false
 
@@ -10,9 +11,8 @@ set_option linter.style.header false
 # Fermionic fields
 
 Basis-independent fermionic finite-particle Fock spaces, smeared fields, second quantization, and
-continuity-derived currents. The completed F2 layer contains exterior-multiplication creation,
-inner-product contraction annihilation, the three smeared canonical anticommutation relations,
-their Kronecker-delta specialization along an orthonormal one-particle family, and the basis-induced
-linear equivalence with the existing occupation-subset Fock representation. Later issue #524 slices
-add `dΓ` and current equivalence theorems.
+continuity-derived currents. The completed F2 layer contains creation and annihilation fields,
+smeared and mode CAR, and the basis-induced equivalence with the occupation-subset representation.
+The initial F3 layer defines the algebraic second-quantization map `dGamma` by its basis-independent
+Leibniz rule. Later issue #524 slices add its functorial identities and current equivalence theorems.
 -/
