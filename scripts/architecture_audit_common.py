@@ -30,6 +30,62 @@ def numbered_lines(path: Path) -> Iterator[tuple[int, str]]:
     yield from enumerate(path.read_text(encoding="utf-8").splitlines(), start=1)
 
 
+def strip_lean_comments(text: str) -> str:
+    """Remove Lean line and nested block comments while preserving lines and strings."""
+    out: list[str] = []
+    i = 0
+    depth = 0
+    in_string = False
+    escaped = False
+
+    while i < len(text):
+        ch = text[i]
+        nxt = text[i + 1] if i + 1 < len(text) else ""
+
+        if depth:
+            if ch == "/" and nxt == "-":
+                depth += 1
+                out.extend("  ")
+                i += 2
+            elif ch == "-" and nxt == "/":
+                depth -= 1
+                out.extend("  ")
+                i += 2
+            else:
+                out.append("\n" if ch == "\n" else " ")
+                i += 1
+            continue
+
+        if in_string:
+            out.append(ch)
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+            i += 1
+            continue
+
+        if ch == '"':
+            in_string = True
+            out.append(ch)
+            i += 1
+        elif ch == "/" and nxt == "-":
+            depth = 1
+            out.extend("  ")
+            i += 2
+        elif ch == "-" and nxt == "-":
+            while i < len(text) and text[i] != "\n":
+                out.append(" ")
+                i += 1
+        else:
+            out.append(ch)
+            i += 1
+
+    return "".join(out)
+
+
 def check_absent_paths(
     errors: list[str],
     paths: Iterable[Path],
