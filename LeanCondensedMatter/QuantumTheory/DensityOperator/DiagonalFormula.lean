@@ -108,11 +108,9 @@ theorem DensityOperator.hasSum_observableExpectation_diagonal (ρ : DensityOpera
     norm_cast
   rw [hfunctions, ρ.expectation_observable A] at hcomplex
   have hreal := Complex.reCLM.hasSum hcomplex
-  have hdiag (i : ι) :
-      (inner ℂ (b i) (A.1 (b i))).re = diagonalExpectationValue A.1 A.2 (b i) := by
-    have h := congrArg Complex.re (coe_diagonalExpectationValue_right A.1 A.2 (b i))
-    simpa using h.symm
-  simpa only [hdiag] using hreal
+  change HasSum (fun i => w i * diagonalExpectationValue A.1 A.2 (b i))
+    (ρ.observableExpectation A) at hreal
+  exact hreal
 
 /-- The real-valued observable expectation is the `tsum` of the weighted diagonal values. -/
 theorem DensityOperator.observableExpectation_eq_tsum_diagonal (ρ : DensityOperator H)
