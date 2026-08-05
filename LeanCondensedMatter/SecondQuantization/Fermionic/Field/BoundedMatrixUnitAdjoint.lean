@@ -52,8 +52,9 @@ theorem occupationConjugate_comp
     _ = A (occupationEquiv b (occupationConjugate b B Ψ)) := by
       rw [occupationEquiv_occupationConjugate_apply]
     _ = occupationEquiv b
-        (occupationConjugate b A (occupationConjugate b B Ψ)) := by
-      rw [occupationEquiv_occupationConjugate_apply]
+        (occupationConjugate b A (occupationConjugate b B Ψ)) :=
+      (occupationEquiv_occupationConjugate_apply b A
+        (occupationConjugate b B Ψ)).symm
 
 /-- Exterior creation by a basis vector conjugates to occupation creation in the corresponding
 mode. -/
