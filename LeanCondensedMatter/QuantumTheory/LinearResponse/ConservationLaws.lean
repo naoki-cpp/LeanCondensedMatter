@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion
 
 set_option linter.style.header false
@@ -6,13 +7,12 @@ set_option linter.style.header false
 # Conservation laws for bounded free quantum dynamics
 
 For the bounded free system `U₀(t) = exp (-(i t / ℏ) H₀)`, every bounded operator commuting with
-`H₀` is fixed by Heisenberg evolution.  Schrödinger–Heisenberg picture equivalence then gives the
+`H₀` is fixed by Heisenberg evolution. Schrödinger–Heisenberg picture equivalence then gives the
 corresponding pure- and density-state expectation conservation laws without integrating the
 equations of motion.
 
-The density-state expectation is also exposed through the pre-existing `NormalizedExpectation`
-interface.  A density operator commuting with the Hamiltonian therefore supplies a stationary
-linear-response expectation directly from the canonical density dynamics.
+A density operator commuting with the Hamiltonian is also stationary under Schrödinger evolution
+and supplies a stationary normalized expectation for the existing linear-response API.
 -/
 
 namespace QuantumTheory
@@ -156,20 +156,6 @@ theorem evolveDensityOperator_eq_self_of_commute_hamiltonian
     evolveDensityOperator system ρ t = ρ := by
   apply DensityOperator.ext
   exact unitaryConjugate_freePropagator_eq_self_of_commute_hamiltonian system ρ.op hρ t
-
-/-- A density operator as the normalized expectation interface used by linear response. -/
-noncomputable def DensityOperator.toNormalizedExpectation
-    (ρ : DensityOperator H) : NormalizedExpectation H where
-  toContinuousLinearMap := ρ.expectation
-  map_one := by
-    change ρ.expectation (ContinuousLinearMap.id ℂ H) = 1
-    exact ρ.expectation_id
-
-@[simp]
-theorem DensityOperator.toNormalizedExpectation_apply
-    (ρ : DensityOperator H) (A : H →L[ℂ] H) :
-    ρ.toNormalizedExpectation A = ρ.expectation A :=
-  rfl
 
 /-- A density operator commuting with the Hamiltonian defines a stationary normalized expectation
 for the existing linear-response API. -/
