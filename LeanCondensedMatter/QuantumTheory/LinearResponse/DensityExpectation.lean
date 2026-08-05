@@ -12,7 +12,6 @@ the Kubo formula lets response and conservation modules share one construction.
 -/
 
 namespace QuantumTheory
-namespace LinearResponse
 
 noncomputable section
 
@@ -20,7 +19,7 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 /-- A density operator as the normalized expectation interface used by linear response. -/
 noncomputable def DensityOperator.toNormalizedExpectation
-    (ρ : DensityOperator H) : NormalizedExpectation H where
+    (ρ : DensityOperator H) : LinearResponse.NormalizedExpectation H where
   toContinuousLinearMap := ρ.expectation
   map_one := by
     change ρ.expectation (ContinuousLinearMap.id ℂ H) = 1
@@ -33,5 +32,4 @@ theorem DensityOperator.toNormalizedExpectation_apply
   rfl
 
 end
-end LinearResponse
 end QuantumTheory
