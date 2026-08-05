@@ -38,6 +38,18 @@ PURE_REAL_EXPECTATION_DECL = re.compile(
 DENSITY_REAL_EXPECTATION_DECL = re.compile(
     r"^\s*noncomputable\s+def\s+DensityOperator\.observableExpectation\b", re.MULTILINE
 )
+PROB_NNREAL_DECL = re.compile(
+    r"^\s*noncomputable\s+def\s+probNNReal\b", re.MULTILINE
+)
+BORN_PMF_DECL = re.compile(
+    r"^\s*noncomputable\s+def\s+bornPMF\b", re.MULTILINE
+)
+PROBABILITY_KERNEL_DEF = re.compile(
+    r"\bprivate\s+noncomputable\s+def\s+probabilityKernel\b"
+    r"(?P<body>.*?)"
+    r"(?=\n\s*private\s+theorem\s+probabilityKernel_nonneg\b)",
+    re.DOTALL,
+)
 LEGACY_ENERGY_SELF_ADJOINT = re.compile(r"\benergyExpectationSelfAdjoint\b")
 
 EXPECTED_DENSITY = QUANTUM / "DensityOperator" / "Basic.lean"
@@ -46,6 +58,7 @@ EXPECTED_PURE_REAL_EXPECTATION = QUANTUM / "Postulates.lean"
 EXPECTED_DENSITY_REAL_EXPECTATION = (
     QUANTUM / "DensityOperator" / "ObservableExpectation.lean"
 )
+EXPECTED_BORN = QUANTUM / "POVM" / "Born.lean"
 GIBBS_ENERGY_EXPECTATION = QUANTUM / "Gibbs" / "EnergyExpectation.lean"
 REMOVED_DOCUMENTS = (
     NOTES / "migrations" / "canonical-quantum-density-theory.md",
@@ -60,6 +73,15 @@ LEGACY_REVERSED_PURE_EXPECTATION_BODY = (
 ENERGY_EXPECTATION_SPECIALIZATION = (
     "noncomputable def energyExpValue (ρ : DensityOperator H) "
     "(Hop : Observable H) : ℝ := ρ.observableExpectation Hop"
+)
+BORN_REAL_COMPATIBILITY = (
+    "noncomputable def prob (P : POVM H M) (ρ : DensityOperator H) "
+    "(m : M) : ℝ := probNNReal P ρ m"
+)
+BORN_PMF_SPECIALIZATION = (
+    "noncomputable def bornPMF (P : POVM H M) (ρ : DensityOperator H) : PMF M := "
+    "⟨fun m => (probNNReal P ρ m : ENNReal), "
+    "(ENNReal.hasSum_coe).mpr (hasSum_probNNReal P ρ)⟩"
 )
 
 
@@ -148,6 +170,66 @@ def check_observable_expectation_boundary(errors: list[str]) -> None:
         )
 
 
+def check_born_probability_boundary(errors: list[str]) -> None:
+    prob_nnreal_declarations: list[Path] = []
+    born_pmf_declarations: list[Path] = []
+
+    for path in lean_files(QUANTUM):
+        code = strip_lean_comments(path.read_text(encoding="utf-8"))
+        if PROB_NNREAL_DECL.search(code):
+            prob_nnreal_declarations.append(path)
+        if BORN_PMF_DECL.search(code):
+            born_pmf_declarations.append(path)
+
+    if prob_nnreal_declarations != [EXPECTED_BORN]:
+        rendered = ", ".join(relative(path) for path in prob_nnreal_declarations) or "<none>"
+        errors.append(
+            "canonical nonnegative Born probability must be declared exactly once in "
+            f"{relative(EXPECTED_BORN)}; found: {rendered}"
+        )
+
+    if born_pmf_declarations != [EXPECTED_BORN]:
+        rendered = ", ".join(relative(path) for path in born_pmf_declarations) or "<none>"
+        errors.append(
+            "canonical Born probability mass function must be declared exactly once in "
+            f"{relative(EXPECTED_BORN)}; found: {rendered}"
+        )
+
+    born_code = strip_lean_comments(EXPECTED_BORN.read_text(encoding="utf-8"))
+    born_normalized = " ".join(born_code.split())
+
+    if BORN_REAL_COMPATIBILITY not in born_normalized:
+        errors.append(
+            "prob must remain a direct real coercion of probNNReal in "
+            f"{relative(EXPECTED_BORN)}"
+        )
+
+    if BORN_PMF_SPECIALIZATION not in born_normalized:
+        errors.append(
+            "bornPMF must remain the normalized ENNReal embedding of probNNReal in "
+            f"{relative(EXPECTED_BORN)}"
+        )
+
+    kernel_match = PROBABILITY_KERNEL_DEF.search(born_code)
+    if kernel_match is None:
+        errors.append(
+            f"missing canonical Born probability kernel in {relative(EXPECTED_BORN)}"
+        )
+        return
+
+    kernel_body = kernel_match.group("body")
+    if "diagonalExpectationValue" not in kernel_body:
+        errors.append(
+            "Born probability kernel must use lossless diagonalExpectationValue in "
+            f"{relative(EXPECTED_BORN)}"
+        )
+    if ".re" in kernel_body:
+        errors.append(
+            "Born probability kernel must not define a physical real value by direct .re in "
+            f"{relative(EXPECTED_BORN)}"
+        )
+
+
 def main() -> int:
     errors: list[str] = []
     density_declarations: list[Path] = []
@@ -192,6 +274,7 @@ def main() -> int:
         )
 
     check_observable_expectation_boundary(errors)
+    check_born_probability_boundary(errors)
     check_documentation(errors)
 
     return finish_audit(
