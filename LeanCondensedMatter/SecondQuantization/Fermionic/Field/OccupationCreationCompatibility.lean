@@ -31,17 +31,17 @@ theorem exteriorBasis_eq_sort_prod
   rw [ExteriorAlgebra.basis_apply_ofCard (n := n.card) b rfl]
   simp only [ExteriorAlgebra.ιMulti_family, ExteriorAlgebra.ιMulti_apply,
     oneParticle, Set.powersetCard.ofFinEmbEquiv_symm_apply]
-  change
-    (List.map
-      (fun j : Fin n.card => ExteriorAlgebra.ι ℂ (b (n.orderEmbOfFin rfl j)))
-      (List.finRange n.card)).prod =
-      (List.map (fun x => ExteriorAlgebra.ι ℂ (b x))
-        (n.sort (· ≤ ·))).prod
-  simpa [List.map_map, Function.comp_def] using
-    congrArg
-      (fun l : List Mode =>
-        (l.map (fun x => ExteriorAlgebra.ι ℂ (b x))).prod)
-      (Finset.listMap_orderEmbOfFin_finRange n rfl)
+  let t : Set.powersetCard Mode n.card := Set.powersetCard.ofCard rfl
+  have hlist :
+      (List.finRange n.card).map
+          ((↑t : Finset Mode).orderEmbOfFin t.prop) =
+        n.sort (· ≤ ·) := by
+    simpa [t] using
+      (Finset.listMap_orderEmbOfFin_finRange (↑t : Finset Mode) t.prop)
+  have hmap := congrArg
+    (List.map fun x : Mode => ExteriorAlgebra.ι ℂ (b x)) hlist
+  have hprod := congrArg List.prod hmap
+  simpa [t, List.ofFn_eq_map, List.map_map, Function.comp_def] using hprod
 
 /-- A basis vector inserted before every occupied mode creates the new exterior-basis state with
 no permutation sign. -/
@@ -119,7 +119,7 @@ theorem create_exteriorBasis
           rw [hnew]
           have hfilter : (insert a s).filter (fun x => x < i) = ∅ := by
             ext x
-            simp only [Finset.mem_filter, Finset.not_mem_empty, iff_false]
+            simp only [Finset.mem_filter, Finset.mem_empty, iff_false]
             intro hx
             exact (lt_asymm hx.2 (hmin' x hx.1))
           simp [fermionSign, hfilter, insertOccupation]
@@ -135,7 +135,7 @@ theorem create_exteriorBasis
                 -(oneParticle 𝓗₁ (b a) *
                   (oneParticle 𝓗₁ (b i) * b.ExteriorAlgebra s))
             rw [add_mul, zero_mul, mul_assoc, mul_assoc] at hcar
-            exact eq_neg_of_add_eq_zero_right hcar
+            exact eq_neg_of_add_eq_zero_left hcar
           rw [hswap]
           have hiStep := ih i
           rw [if_neg his] at hiStep
@@ -184,7 +184,7 @@ theorem occupationEquiv_create
     · simp [basisState, Common.basisState, hmn]
   rw [hsingle]
   simp only [map_smul, LinearMap.comp_apply]
-  rw [occupationEquiv_create_basisState]
+  exact congrArg (fun Ψ => c • Ψ) (occupationEquiv_create_basisState b i n)
 
 end
 end Field
