@@ -284,7 +284,6 @@ theorem heisenberg_siteChargeDensity (ℏ q : ℂ)
     induction K.incident x using Finset.induction_on with
     | empty => simp
     | @insert a s ha ih =>
-        simp only [Finset.sum_insert, ha]
         change
           dGammaLinear (LatticeState Site)
               (K.bondOperator x a + ∑ y ∈ s, K.bondOperator x y) =
