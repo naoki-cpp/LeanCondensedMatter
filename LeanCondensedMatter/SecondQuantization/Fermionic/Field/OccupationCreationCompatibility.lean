@@ -41,7 +41,8 @@ theorem exteriorBasis_eq_sort_prod
   have hmap := congrArg
     (List.map fun x : Mode => ExteriorAlgebra.ι ℂ (b x)) hlist
   have hprod := congrArg List.prod hmap
-  simpa [t, List.ofFn_eq_map, List.map_map, Function.comp_def] using hprod
+  convert hprod using 1 <;>
+    simp [t, List.ofFn_eq_map, List.map_map, Function.comp_def]
 
 /-- A basis vector inserted before every occupied mode creates the new exterior-basis state with
 no permutation sign. -/
@@ -119,9 +120,13 @@ theorem create_exteriorBasis
           rw [hnew]
           have hfilter : (insert a s).filter (fun x => x < i) = ∅ := by
             ext x
-            simp only [Finset.mem_filter, Finset.mem_empty, iff_false]
-            intro hx
-            exact (lt_asymm hx.2 (hmin' x hx.1))
+            simp only [Finset.mem_filter]
+            constructor
+            · intro hx
+              exact (lt_asymm hx.2 (hmin' x hx.1)).elim
+            · intro hx
+              have hfalse : False := by simpa using hx
+              exact hfalse.elim
           simp [fermionSign, hfilter, insertOccupation]
         · have hcar := congrArg
             (fun z => z * b.ExteriorAlgebra s)
