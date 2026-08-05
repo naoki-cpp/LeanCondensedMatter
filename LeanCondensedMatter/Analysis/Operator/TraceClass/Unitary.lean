@@ -77,4 +77,71 @@ theorem finrank_eigenspace_unitaryConjugate (U T : H →L[ℂ] H)
   rw [eigenspace_unitaryConjugate U T hleft hright μ]
   exact (unitaryLinearEquiv U hleft hright).finrank_map_eq _
 
+/-- Absolute summability of real eigenvalues with multiplicity is invariant under unitary
+conjugation. -/
+theorem hasSummableRealEigenvalues_unitaryConjugate (U T : H →L[ℂ] H)
+    (hleft : star U * U = 1) (hright : U * star U = 1)
+    (hT : HasSummableRealEigenvalues T) :
+    HasSummableRealEigenvalues (unitaryConjugate U T) := by
+  have hweighted : Summable (fun μ : {γ : ℝ // γ ≠ 0} =>
+      (Module.finrank ℂ
+        (Module.End.eigenspace (T : H →ₗ[ℂ] H) (μ.1 : ℂ)) : ℝ) * |μ.1|) := by
+    have hsig := (summable_sigma_of_nonneg
+      (f := fun a : EigenvectorIndex T => |a.1.1|)
+      (fun a => abs_nonneg _)).mp hT
+    simpa only [tsum_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+      nsmul_eq_mul] using hsig.2
+  change Summable (fun a : EigenvectorIndex (unitaryConjugate U T) => |a.1.1|)
+  apply (summable_sigma_of_nonneg
+    (f := fun a : EigenvectorIndex (unitaryConjugate U T) => |a.1.1|)
+    (fun a => abs_nonneg _)).mpr
+  refine ⟨fun _ => Summable.of_finite, ?_⟩
+  simpa only [tsum_fintype, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+    nsmul_eq_mul, finrank_eigenspace_unitaryConjugate U T hleft hright] using hweighted
+
+/-- The spectral trace is invariant under unitary conjugation. -/
+theorem spectralTrace_unitaryConjugate (U T : H →L[ℂ] H)
+    (hleft : star U * U = 1) (hright : U * star U = 1)
+    (hT : HasSummableRealEigenvalues T)
+    (hconj : HasSummableRealEigenvalues (unitaryConjugate U T)) :
+    spectralTrace (unitaryConjugate U T) = spectralTrace T := by
+  change (∑' b : EigenvectorIndex (unitaryConjugate U T), b.1.1) =
+    ∑' a : EigenvectorIndex T, a.1.1
+  rw [tsum_eigenvectorIndex_eq_tsum_mul_finrank (summable_eigenvectorIndex hconj),
+    tsum_eigenvectorIndex_eq_tsum_mul_finrank (summable_eigenvectorIndex hT)]
+  apply tsum_congr
+  intro μ
+  rw [finrank_eigenspace_unitaryConjugate U T hleft hright]
+
+/-- Compactness is preserved under bounded unitary conjugation. -/
+theorem isCompactOperator_unitaryConjugate (U T : H →L[ℂ] H)
+    (hT : IsCompactOperator T) : IsCompactOperator (unitaryConjugate U T) := by
+  change IsCompactOperator (⇑U ∘ ⇑T ∘ ⇑(star U))
+  exact (hT.comp_clm (star U)).clm_comp U
+
+/-- Positivity is preserved under conjugation by any bounded operator. -/
+theorem IsPositive.unitaryConjugate {T : H →L[ℂ] H} (hT : T.IsPositive)
+    (U : H →L[ℂ] H) : (unitaryConjugate U T).IsPositive := by
+  simpa [unitaryConjugate, mul_apply_eq_comp] using hT.conj_adjoint U
+
+/-- Spectral trace-class data transports canonically through unitary conjugation. -/
+noncomputable def SpectralTraceClass.unitaryConjugate {T : H →L[ℂ] H}
+    (hT : SpectralTraceClass T) (U : H →L[ℂ] H)
+    (hleft : star U * U = 1) (hright : U * star U = 1) :
+    SpectralTraceClass (unitaryConjugate U T) where
+  compact := isCompactOperator_unitaryConjugate U T hT.compact
+  symmetric := by
+    have hself : IsSelfAdjoint T := hT.symmetric.isSelfAdjoint
+    have hconj := hself.conj_adjoint U
+    simpa [unitaryConjugate, mul_apply_eq_comp] using hconj.isSymmetric
+  summable := hasSummableRealEigenvalues_unitaryConjugate U T hleft hright hT.summable
+
+@[simp]
+theorem SpectralTraceClass.trace_unitaryConjugate {T : H →L[ℂ] H}
+    (hT : SpectralTraceClass T) (U : H →L[ℂ] H)
+    (hleft : star U * U = 1) (hright : U * star U = 1) :
+    (hT.unitaryConjugate U hleft hright).trace = hT.trace := by
+  exact spectralTrace_unitaryConjugate U T hleft hright hT.summable
+    (hT.unitaryConjugate U hleft hright).summable
+
 end ContinuousLinearMap
