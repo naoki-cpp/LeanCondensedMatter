@@ -113,10 +113,22 @@ theorem occupationAnnihilateFromField_eq_annihilate
     have hCreateGeneral := LinearMap.congr_fun (occupationEquiv_create b j)
       (occupationConjugate b (annihilateDual 𝓗₁ (b.coord i)) (basisState n))
     simp only [LinearMap.comp_apply] at hCreateGeneral
+    have hSecond :
+        occupationEquiv b
+            (SecondQuantization.Fermionic.create j
+              (occupationConjugate b (annihilateDual 𝓗₁ (b.coord i))
+                (basisState n))) =
+          create 𝓗₁ (b j)
+            (annihilateDual 𝓗₁ (b.coord i) (occupationEquiv b (basisState n))) := by
+      calc
+        _ = create 𝓗₁ (b j)
+              (occupationEquiv b
+                (occupationConjugate b (annihilateDual 𝓗₁ (b.coord i))
+                  (basisState n))) := hCreateGeneral
+        _ = _ := by rw [occupationEquiv_occupationConjugate_apply]
     rw [occupationEquiv_occupationConjugate_apply]
     rw [hCreateBasis]
-    rw [hCreateGeneral]
-    rw [occupationEquiv_occupationConjugate_apply]
+    rw [hSecond]
     rw [annihilateDual_create_apply]
     by_cases hij : i = j
     · subst j
