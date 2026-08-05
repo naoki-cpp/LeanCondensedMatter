@@ -98,15 +98,16 @@ private theorem hasSum_probabilityKernel_outcome (P : POVM H M)
   let e := eigenvectorFamily ρ.spectralTraceClass.compact a
   have hinner : HasSum (fun m => (inner ℂ e (P.E m e) : ℂ)) (inner ℂ e e) :=
     P.hasSum_inner_apply e
-  have hcomplex : HasSum
-      (fun m => ((diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint e : ℝ) : ℂ))
-      (1 : ℂ) := by
-    simpa [coe_diagonalExpectationValue_right, inner_self_eq_norm_sq_to_K, e,
-      eigenvectorFamily_norm_eq_one ρ a] using hinner
-  have hrealComplex := Complex.reCLM.hasSum hcomplex
+  have hre : HasSum (fun m => (inner ℂ e (P.E m e) : ℂ).re) 1 := by
+    have h := Complex.reCLM.hasSum hinner
+    simpa [inner_self_eq_norm_sq_to_K, e, eigenvectorFamily_norm_eq_one ρ a] using h
   have hreal : HasSum
       (fun m => diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint e) 1 := by
-    simpa using hrealComplex
+    refine hre.congr ?_
+    intro m
+    have h := congrArg Complex.re
+      (coe_diagonalExpectationValue_right (P.E m) (P.pos m).isSelfAdjoint e)
+    simpa using h.symm
   simpa [probabilityKernel, e] using hreal.mul_left a.1.1
 
 private theorem hasSum_probabilityKernel_eigenvector (P : POVM H M)
@@ -162,7 +163,7 @@ theorem hasSum_probNNReal (P : POVM H M) (ρ : DensityOperator H) :
   have hreal : HasSum (prob P ρ) 1 := by
     rw [← tsum_prob_eq_one P ρ]
     exact (summable_prob P ρ).hasSum
-  exact (NNReal.hasSum_coe).mp (by simpa using hreal)
+  exact (NNReal.hasSum_coe).mp (by simpa [prob] using hreal)
 
 /-- The canonical nonnegative Born probabilities are summable. -/
 theorem summable_probNNReal (P : POVM H M) (ρ : DensityOperator H) :
