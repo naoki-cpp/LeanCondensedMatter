@@ -130,53 +130,11 @@ theorem hasDerivAt_timeDependentInteractionPropagator_zero_of_bound
       (fun lam : ℝ => timeDependentInteractionPropagator system V lam t)
       (timeDependentPropagatorFirstVariation system V t)
       0 := by
-  rw [hasDerivAt_iff_tendsto]
-  let C : ℝ := ∑' n : ℕ, Dyson.majorant M t (n + 2)
-  have hC : 0 ≤ C := by
-    exact tsum_nonneg fun n => Dyson.majorant_nonneg hM ht.1 (n + 2)
-  have habs : Tendsto (fun lam : ℝ => |lam|) (𝓝 0) (𝓝 0) := by
-    simpa [Real.norm_eq_abs] using (continuous_norm.tendsto (0 : ℝ))
-  have hsmall : ∀ᶠ lam : ℝ in 𝓝 0, |lam| / system.hbar ≤ 1 := by
-    have hevent : ∀ᶠ lam : ℝ in 𝓝 0, |lam| < system.hbar :=
-      habs (Iio_mem_nhds system.hbar_pos)
-    filter_upwards [hevent] with lam hlam
-    exact (div_le_one system.hbar_pos).2 hlam.le
-  refine squeeze_zero'
-    (g := fun lam : ℝ => |lam| * (C / system.hbar ^ 2)) ?_ ?_ ?_
-  · exact Filter.Eventually.of_forall fun lam =>
-      mul_nonneg (inv_nonneg.mpr (norm_nonneg _)) (norm_nonneg _)
-  · filter_upwards [hsmall] with lam hlam
-    have hrem := norm_timeDependentInteractionPropagator_sub_firstOrder_le_sq_mul_of_bound
-      system hM hV ht lam hlam
-    have hlin :
-        lam • timeDependentPropagatorFirstVariation system V t =
-          ((lam : ℂ) * (-(Complex.I / (system.hbar : ℂ)))) •
-            ∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s := by
-      rw [timeDependentPropagatorFirstVariation, ← smul_smul]
-      rfl
-    have hrem' :
-        ‖timeDependentInteractionPropagator system V lam t -
-            timeDependentInteractionPropagator system V 0 t -
-            lam • timeDependentPropagatorFirstVariation system V t‖ ≤
-          (|lam| / system.hbar) ^ 2 * C := by
-      rw [hlin]
-      simpa [C, timeDependentInteractionPropagator_zero_coupling,
-        sub_eq_add_neg, add_comm, add_left_comm, add_assoc] using hrem
-    by_cases hlam0 : lam = 0
-    · subst lam
-      simp
-    · have habs0 : |lam| ≠ 0 := abs_ne_zero.mpr hlam0
-      calc
-        ‖lam - 0‖⁻¹ *
-            ‖timeDependentInteractionPropagator system V lam t -
-              timeDependentInteractionPropagator system V 0 t -
-              (lam - 0) • timeDependentPropagatorFirstVariation system V t‖ ≤
-            |lam|⁻¹ * ((|lam| / system.hbar) ^ 2 * C) := by
-          simpa [Real.norm_eq_abs] using
-            mul_le_mul_of_nonneg_left hrem' (inv_nonneg.mpr (abs_nonneg lam))
-        _ = |lam| * (C / system.hbar ^ 2) := by
-          field_simp [habs0, system.hbar_ne_zero]
-  · simpa using habs.mul_const (C / system.hbar ^ 2)
+  simpa [timeDependentInteractionPropagator, timeDependentPhysicalDysonCoupling,
+    timeDependentPropagatorFirstVariation] using
+    Dyson.hasDerivAt_evolution_linear_coupling_zero_of_bound
+      (timeDependentInteractionPerturbation system V) BoundedDyson.norm_one_le hM hV ht
+      (Complex.I / (system.hbar : ℂ))
 
 end
 end LinearResponse
