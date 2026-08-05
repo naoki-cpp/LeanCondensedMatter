@@ -24,13 +24,17 @@ variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 private theorem even_card_of_fixedPointFreeInvolution {α : Type*} [Fintype α]
     (p : Equiv.Perm α) (hp : Function.Involutive p) (hne : ∀ x, p x ≠ x) :
     Even (Fintype.card α) := by
-  let G : SimpleGraph α where
-    Adj x y := p x = y
-    symm.symm x y h := by
-      change p y = x
-      rw [← h]
-      exact hp x
-    loopless.irrefl x h := hne x h
+  let adj : α → α → Prop := fun x y => p x = y
+  have hadjSymm : Std.Symm adj := ⟨by
+    intro x y h
+    change p y = x
+    calc
+      p y = p (p x) := congrArg p h.symm
+      _ = x := hp x⟩
+  have hadjIrrefl : Std.Irrefl adj := ⟨by
+    intro x h
+    exact hne x h⟩
+  let G : SimpleGraph α := ⟨adj, hadjSymm, hadjIrrefl⟩
   let M : G.Subgraph where
     verts := Set.univ
     Adj := G.Adj
