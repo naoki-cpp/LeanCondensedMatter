@@ -53,8 +53,8 @@ noncomputable def TwoPointDiagram.interactionVertexComponentEquiv
           d.componentBlock_mem_componentPartition (Sum.inr vS)⟩ :
             d.componentPartition.parts) = B :=
       Subtype.ext hblock
-    cases hB
-    rfl
+    apply Sigma.ext hB
+    exact heq_of_eq (Subtype.ext (by rfl))
 
 @[simp]
 theorem TwoPointDiagram.interactionVertexComponentEquiv_symm_val
