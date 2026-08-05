@@ -44,6 +44,7 @@ Details belong in `notes/`; do not add content sections to this file.
 - **Cite physical assumptions where they enter, not everywhere.** When a `def`/`structure`/hypothesis embeds a physical modeling choice (not a pure math fact), a short docstring/comment citing the source is warranted. Routine lemmas need no citation.
 - **Formal vs. informal.** A statement is only "proved" when it compiles with no `sorry`; otherwise record it as a target or conjecture in `notes/roadmap.md`, not as a claim in prose.
 - **Do not use `.re` as a conversion to `ℝ`.** If a complex expression is mathematically real, prove that fact and expose a real-valued API instead. Use `.re` only when the real part itself is intended.
+- **Finish implementations with regression protection.** After the implementation makes its intended invariant clear, add or extend the narrowest practical automated check before calling the work complete. Prefer a Lean theorem or type-level guarantee; use a targeted build, linter, architecture audit, or CI workflow for cross-file constraints. Do not duplicate guarantees already enforced by the kernel or add brittle text checks without a stable architectural invariant.
 - **Names and structures track the physics dictionary.** Keep `def`/`theorem` names aligned with the physical notions they formalize, per the physics-to-Lean dictionary in `notes/model-and-assumptions.md`; update that dictionary when a new correspondence is introduced.
 
 ## Commit conventions
