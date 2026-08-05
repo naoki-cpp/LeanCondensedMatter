@@ -13,7 +13,7 @@ set_option linter.style.header false
 
 A Born probability is represented canonically as a nonnegative real number. The underlying complex
 expectation is first proved self-adjoint and transported losslessly to `ℝ`; its nonnegativity then
-bundles the value as `ℝ≥0`. The compatibility API `prob` exposes the same value in `ℝ`, while
+bundles the value as `NNReal`. The compatibility API `prob` exposes the same value in `ℝ`, while
 `bornPMF` packages all countable outcomes as a normalized probability mass function.
 
 Probability normalization follows from a nonnegative summable double series over density
@@ -43,8 +43,8 @@ noncomputable def probSelfAdjoint
 
 /-- The canonical nonnegative Born probability. The real value is obtained losslessly from the
 proved-self-adjoint complex expectation, and positivity of the effect supplies the nonnegativity
-proof required by `ℝ≥0`. -/
-noncomputable def probNNReal (P : POVM H M) (ρ : DensityOperator H) (m : M) : ℝ≥0 :=
+proof required by `NNReal`. -/
+noncomputable def probNNReal (P : POVM H M) (ρ : DensityOperator H) (m : M) : NNReal :=
   NNReal.mk
     (Complex.selfAdjointEquiv (probSelfAdjoint P ρ m))
     (by
@@ -103,9 +103,10 @@ private theorem hasSum_probabilityKernel_outcome (P : POVM H M)
       (1 : ℂ) := by
     simpa [coe_diagonalExpectationValue_right, inner_self_eq_norm_sq_to_K, e,
       eigenvectorFamily_norm_eq_one ρ a] using hinner
+  have hrealComplex := Complex.reCLM.hasSum hcomplex
   have hreal : HasSum
       (fun m => diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint e) 1 := by
-    exact_mod_cast hcomplex
+    simpa using hrealComplex
   simpa [probabilityKernel, e] using hreal.mul_left a.1.1
 
 private theorem hasSum_probabilityKernel_eigenvector (P : POVM H M)
@@ -158,11 +159,10 @@ theorem tsum_prob_eq_one (P : POVM H M) (ρ : DensityOperator H) :
 /-- The canonical nonnegative Born probabilities have sum one. -/
 theorem hasSum_probNNReal (P : POVM H M) (ρ : DensityOperator H) :
     HasSum (probNNReal P ρ) 1 := by
-  apply (NNReal.hasSum_coe).mp
   have hreal : HasSum (prob P ρ) 1 := by
     rw [← tsum_prob_eq_one P ρ]
     exact (summable_prob P ρ).hasSum
-  simpa using hreal
+  exact (NNReal.hasSum_coe).mp (by simpa using hreal)
 
 /-- The canonical nonnegative Born probabilities are summable. -/
 theorem summable_probNNReal (P : POVM H M) (ρ : DensityOperator H) :
@@ -176,20 +176,22 @@ theorem tsum_probNNReal_eq_one (P : POVM H M) (ρ : DensityOperator H) :
 
 /-- The normalized countable Born distribution associated with a POVM and density state. -/
 noncomputable def bornPMF (P : POVM H M) (ρ : DensityOperator H) : PMF M :=
-  ⟨fun m => (probNNReal P ρ m : ℝ≥0∞),
+  ⟨fun m => (probNNReal P ρ m : ENNReal),
     (ENNReal.hasSum_coe).mpr (hasSum_probNNReal P ρ)⟩
 
 /-- Evaluation of the Born probability mass function recovers the canonical nonnegative
-probability, embedded in `ℝ≥0∞`. -/
+probability, embedded in `ENNReal`. -/
 @[simp]
 theorem bornPMF_apply (P : POVM H M) (ρ : DensityOperator H) (m : M) :
-    bornPMF P ρ m = (probNNReal P ρ m : ℝ≥0∞) :=
+    bornPMF P ρ m = (probNNReal P ρ m : ENNReal) :=
   rfl
 
 /-- Every canonical discrete Born probability is at most one. -/
 theorem probNNReal_le_one (P : POVM H M) (ρ : DensityOperator H) (m : M) :
     probNNReal P ρ m ≤ 1 := by
-  exact_mod_cast PMF.coe_le_one (bornPMF P ρ) m
+  have h : (probNNReal P ρ m : ENNReal) ≤ 1 := by
+    simpa using PMF.coe_le_one (bornPMF P ρ) m
+  exact_mod_cast h
 
 /-- Every compatibility real Born probability is at most one. -/
 theorem prob_le_one (P : POVM H M) (ρ : DensityOperator H) (m : M) :
