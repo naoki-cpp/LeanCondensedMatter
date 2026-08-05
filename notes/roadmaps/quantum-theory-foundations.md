@@ -11,9 +11,12 @@ Implemented in `QuantumTheory/Postulates.lean`:
 
 - `QuantumTheory.State H`: unit vectors in a complex Hilbert space;
 - `QuantumTheory.Observable H`: bounded self-adjoint operators;
-- `QuantumTheory.expValue`;
+- the canonical complex expectation `QuantumTheory.expValue A ψ = inner ℂ ψ (A ψ)`;
+- exact agreement with the formerly used reversed orientation `inner ℂ (A ψ) ψ`;
+- the lossless real observable expectation `QuantumTheory.observableExpValue`;
 - reality of observable expectation values;
-- invariance under multiplication of a state vector by a unit complex phase.
+- invariance of both complex and real expectations under multiplication of a state vector by a
+  unit complex phase.
 
 A quotient of unit vectors by global phase is not formalized. The current `State` type stores
 representatives.
@@ -29,7 +32,11 @@ trace `1`.
 Implemented results include:
 
 - the rank-one pure-state embedding `QuantumTheory.pure`;
-- the normalized continuous-linear expectation functional `DensityOperator.expectation`;
+- the normalized continuous-linear complex expectation functional `DensityOperator.expectation`;
+- the lossless real observable expectation `DensityOperator.observableExpectation`;
+- the exact coercion identity
+  `ρ.expectation A.1 = (ρ.observableExpectation A : ℂ)`;
+- agreement of pure vector-state and rank-one density-state expectations, both complex and real;
 - normalization, contractivity, positivity, and reality theorems for expectations;
 - construction from finite-dimensional positive trace-one operators;
 - equality with the ordinary matrix trace in finite dimensions;
@@ -86,8 +93,9 @@ Implemented in `QuantumTheory/Gibbs/`:
 - `gibbsOp Hop β = exp (-β Hop)` through continuous functional calculus;
 - positivity of `gibbsOp`;
 - normalized `gibbsState` when its spectral trace is defined and nonzero;
-- `energyExpectationSelfAdjoint` and the lossless real value `energyExpValue`;
-- `ρ.expectation Hop.1 = (energyExpValue ρ Hop : ℂ)`;
+- `energyExpValue ρ Hop`, retained as the Hamiltonian-facing specialization of
+  `ρ.observableExpectation Hop`;
+- `ρ.expectation Hop.1 = (energyExpValue ρ Hop : ℂ)` through the generic observable coercion theorem;
 - the finite-dimensional identity `Tr(ρH) = (energyExpValue ρ Hop : ℂ)`;
 - the Helmholtz free-energy lower bound;
 - entropy finiteness under the variational hypotheses;
@@ -101,8 +109,10 @@ The uniqueness statement “equality holds only for the Gibbs state” remains o
 
 ## Current next steps
 
-1. Prove uniqueness of the Gibbs free-energy minimizer.
-2. Design an unbounded Hamiltonian interface supporting genuine infinite-dimensional Gibbs states.
-3. Connect the canonical density-state expectation to completed Fock-space and KMS constructions.
-4. Decide whether the rank-one characterization of maximal purity warrants a focused theorem issue.
-5. Add continuous-outcome measurement theory only after a measure-theoretic API is designed.
+1. Bundle Born probabilities with a nonnegative codomain and a normalized discrete distribution.
+2. Generalize diagonal expectation formulas to countable Hilbert bases and `tsum`.
+3. Prove uniqueness of the Gibbs free-energy minimizer.
+4. Design an unbounded Hamiltonian interface supporting genuine infinite-dimensional Gibbs states.
+5. Connect the canonical density-state expectation to completed Fock-space and KMS constructions.
+6. Decide whether the rank-one characterization of maximal purity warrants a focused theorem issue.
+7. Add continuous-outcome measurement theory only after a measure-theoretic API is designed.
