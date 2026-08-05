@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteHilbertOperat
 import Mathlib.Analysis.Matrix.Hermitian
 
 set_option linter.style.header false
+set_option linter.unusedDecidableInType false
 
 /-!
 # Adjointness of finite-Hilbert operator transport
@@ -20,7 +21,7 @@ namespace Common
 
 noncomputable section
 
-variable {Config : Type*} [Fintype Config]
+variable {Config : Type*} [Fintype Config] [DecidableEq Config]
 
 /-- Matrix of an algebraic Fock endomorphism in the canonical finite-Hilbert occupation basis. -/
 noncomputable def finiteHilbertOperatorMatrix
@@ -36,12 +37,9 @@ noncomputable def finiteHilbertOperatorMatrix
 theorem finiteHilbertOperatorMatrix_apply
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
     finiteHilbertOperatorMatrix A m n = matrixCoeff A m n := by
-  change
-    ((EuclideanSpace.basisFun Config ℂ).repr
-      (finiteHilbertOperator A (finiteHilbertBasisState n))) m =
-        matrixCoeff A m n
-  rw [EuclideanSpace.basisFun_repr]
-  exact finiteHilbertOperator_basis_apply A m n
+  simpa [finiteHilbertOperatorMatrix, LinearMap.toMatrix_apply,
+    finiteHilbertOrthonormalBasis, EuclideanSpace.basisFun_repr] using
+    finiteHilbertOperator_basis_apply A m n
 
 /-- Adjointness after finite-Hilbert transport is exactly conjugate transposition of the algebraic
 coordinate matrix. -/
