@@ -122,7 +122,8 @@ theorem isCompactOperator_unitaryConjugate (U T : H →L[ℂ] H)
 /-- Positivity is preserved under conjugation by any bounded operator. -/
 theorem IsPositive.unitaryConjugate {T : H →L[ℂ] H} (hT : T.IsPositive)
     (U : H →L[ℂ] H) : (unitaryConjugate U T).IsPositive := by
-  simpa [unitaryConjugate, mul_apply_eq_comp] using hT.conj_adjoint U
+  change (U ∘SL T ∘SL ContinuousLinearMap.adjoint U).IsPositive
+  exact hT.conj_adjoint U
 
 /-- Spectral trace-class data transports canonically through unitary conjugation. -/
 noncomputable def SpectralTraceClass.unitaryConjugate {T : H →L[ℂ] H}
@@ -132,8 +133,8 @@ noncomputable def SpectralTraceClass.unitaryConjugate {T : H →L[ℂ] H}
   compact := isCompactOperator_unitaryConjugate U T hT.compact
   symmetric := by
     have hself : IsSelfAdjoint T := hT.symmetric.isSelfAdjoint
-    have hconj := hself.conj_adjoint U
-    simpa [unitaryConjugate, mul_apply_eq_comp] using hconj.isSymmetric
+    change (U ∘SL T ∘SL ContinuousLinearMap.adjoint U).IsSymmetric
+    exact (hself.conj_adjoint U).isSymmetric
   summable := hasSummableRealEigenvalues_unitaryConjugate U T hleft hright hT.summable
 
 @[simp]
@@ -141,6 +142,7 @@ theorem SpectralTraceClass.trace_unitaryConjugate {T : H →L[ℂ] H}
     (hT : SpectralTraceClass T) (U : H →L[ℂ] H)
     (hleft : star U * U = 1) (hright : U * star U = 1) :
     (hT.unitaryConjugate U hleft hright).trace = hT.trace := by
+  change spectralTrace (unitaryConjugate U T) = spectralTrace T
   exact spectralTrace_unitaryConjugate U T hleft hright hT.summable
     (hT.unitaryConjugate U hleft hright).summable
 
