@@ -14,6 +14,7 @@ from architecture_audit_common import (
 ROOT = repository_root(__file__)
 QUANTUM = ROOT / "LeanCondensedMatter" / "QuantumTheory"
 CONSERVATION = QUANTUM / "LinearResponse" / "ConservationLaws.lean"
+DENSITY_EXPECTATION = QUANTUM / "LinearResponse" / "DensityExpectation.lean"
 DENSITY_BASIC = QUANTUM / "DensityOperator" / "Basic.lean"
 ROOT_UMBRELLA = ROOT / "LeanCondensedMatter.lean"
 CONSERVATION_IMPORT = (
@@ -22,8 +23,11 @@ CONSERVATION_IMPORT = (
 PICTURE_IMPORT = (
     "import LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence"
 )
+DENSITY_EXPECTATION_IMPORT = (
+    "import LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation"
+)
 
-REQUIRED_DECLARATIONS = (
+CONSERVATION_DECLARATIONS = (
     "noncomputable def hamiltonianObservable",
     "theorem coe_hamiltonianObservable",
     "theorem commute_freePropagator_of_commute_hamiltonian",
@@ -39,12 +43,13 @@ REQUIRED_DECLARATIONS = (
     "theorem observableExpectation_hamiltonian_evolveDensityOperator",
     "theorem unitaryConjugate_freePropagator_eq_self_of_commute_hamiltonian",
     "theorem evolveDensityOperator_eq_self_of_commute_hamiltonian",
-    "noncomputable def DensityOperator.toNormalizedExpectation",
-    "theorem DensityOperator.toNormalizedExpectation_apply",
     "theorem isStationary_toNormalizedExpectation_of_commute_hamiltonian",
 )
 
-CANONICAL_NAMES = tuple(declaration.split()[-1] for declaration in REQUIRED_DECLARATIONS)
+DENSITY_EXPECTATION_DECLARATIONS = (
+    "noncomputable def DensityOperator.toNormalizedExpectation",
+    "theorem DensityOperator.toNormalizedExpectation_apply",
+)
 
 
 def relative(path: Path) -> str:
@@ -58,10 +63,29 @@ def declaration_pattern(name: str) -> re.Pattern[str]:
     )
 
 
+def check_owned_declarations(
+    errors: list[str], declarations: tuple[str, ...], owner: Path
+) -> None:
+    for declaration in declarations:
+        name = declaration.split()[-1]
+        owners: list[Path] = []
+        pattern = declaration_pattern(name)
+        for path in lean_files(QUANTUM):
+            code = strip_lean_comments(path.read_text(encoding="utf-8"))
+            if pattern.search(code):
+                owners.append(path)
+        if owners != [owner]:
+            rendered = ", ".join(relative(path) for path in owners) or "<none>"
+            errors.append(
+                f"canonical declaration `{name}` must be owned exactly once by "
+                f"{relative(owner)}; found: {rendered}"
+            )
+
+
 def main() -> int:
     errors: list[str] = []
 
-    for path in (CONSERVATION, DENSITY_BASIC):
+    for path in (CONSERVATION, DENSITY_EXPECTATION, DENSITY_BASIC):
         if not path.exists():
             errors.append(f"missing bounded conservation boundary file: {relative(path)}")
 
@@ -73,14 +97,25 @@ def main() -> int:
         )
 
     conservation_code = strip_lean_comments(CONSERVATION.read_text(encoding="utf-8"))
-    normalized = " ".join(conservation_code.split())
+    conservation_normalized = " ".join(conservation_code.split())
+    density_expectation_code = strip_lean_comments(
+        DENSITY_EXPECTATION.read_text(encoding="utf-8")
+    )
+    density_expectation_normalized = " ".join(density_expectation_code.split())
     density_code = strip_lean_comments(DENSITY_BASIC.read_text(encoding="utf-8"))
     root_code = ROOT_UMBRELLA.read_text(encoding="utf-8")
 
-    for declaration in REQUIRED_DECLARATIONS:
+    for declaration in CONSERVATION_DECLARATIONS:
         if declaration not in conservation_code:
             errors.append(
                 f"missing conservation declaration `{declaration}` in {relative(CONSERVATION)}"
+            )
+
+    for declaration in DENSITY_EXPECTATION_DECLARATIONS:
+        if declaration not in density_expectation_code:
+            errors.append(
+                "missing density-expectation declaration "
+                f"`{declaration}` in {relative(DENSITY_EXPECTATION)}"
             )
 
     if CONSERVATION_IMPORT not in root_code:
@@ -89,11 +124,11 @@ def main() -> int:
             f"{relative(ROOT_UMBRELLA)}"
         )
 
-    if PICTURE_IMPORT not in conservation_code:
-        errors.append(
-            "conservation laws must depend directly on picture equivalence rather than the later "
-            f"equations-of-motion layer in {relative(CONSERVATION)}"
-        )
+    for required_import in (PICTURE_IMPORT, DENSITY_EXPECTATION_IMPORT):
+        if required_import not in conservation_code:
+            errors.append(
+                f"conservation laws must import `{required_import}` in {relative(CONSERVATION)}"
+            )
 
     if "EquationsOfMotion" in conservation_code:
         errors.append(
@@ -101,19 +136,10 @@ def main() -> int:
             f"{relative(CONSERVATION)}"
         )
 
-    for name in CANONICAL_NAMES:
-        owners: list[Path] = []
-        pattern = declaration_pattern(name)
-        for path in lean_files(QUANTUM):
-            code = strip_lean_comments(path.read_text(encoding="utf-8"))
-            if pattern.search(code):
-                owners.append(path)
-        if owners != [CONSERVATION]:
-            rendered = ", ".join(relative(path) for path in owners) or "<none>"
-            errors.append(
-                f"canonical declaration `{name}` must be owned exactly once by "
-                f"{relative(CONSERVATION)}; found: {rendered}"
-            )
+    check_owned_declarations(errors, CONSERVATION_DECLARATIONS, CONSERVATION)
+    check_owned_declarations(
+        errors, DENSITY_EXPECTATION_DECLARATIONS, DENSITY_EXPECTATION
+    )
 
     ext_owners: list[Path] = []
     ext_pattern = declaration_pattern("DensityOperator.ext")
@@ -128,7 +154,7 @@ def main() -> int:
             f"{relative(DENSITY_BASIC)}; found: {rendered}"
         )
 
-    required_boundaries = (
+    conservation_boundaries = (
         "Commute system.hamiltonian A",
         "freePropagator_neg_mul system t",
         "freePropagator_mul_neg system t",
@@ -137,14 +163,29 @@ def main() -> int:
         "DensityOperator.ext",
         "IsStationary system ρ.toNormalizedExpectation",
     )
-    for boundary in required_boundaries:
-        if boundary not in normalized:
+    for boundary in conservation_boundaries:
+        if boundary not in conservation_normalized:
             errors.append(
                 f"bounded conservation implementation must retain `{boundary}` in "
                 f"{relative(CONSERVATION)}"
             )
 
-    for path, code in ((CONSERVATION, conservation_code), (DENSITY_BASIC, density_code)):
+    density_expectation_boundaries = (
+        "toContinuousLinearMap := ρ.expectation",
+        "exact ρ.expectation_id",
+    )
+    for boundary in density_expectation_boundaries:
+        if boundary not in density_expectation_normalized:
+            errors.append(
+                f"density expectation bridge must retain `{boundary}` in "
+                f"{relative(DENSITY_EXPECTATION)}"
+            )
+
+    for path, code in (
+        (CONSERVATION, conservation_code),
+        (DENSITY_EXPECTATION, density_expectation_code),
+        (DENSITY_BASIC, density_code),
+    ):
         for finite_assumption in ("[FiniteDimensional", "[Fintype"):
             if finite_assumption in code:
                 errors.append(
