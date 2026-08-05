@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary
 import LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics
 
 set_option linter.style.header false
