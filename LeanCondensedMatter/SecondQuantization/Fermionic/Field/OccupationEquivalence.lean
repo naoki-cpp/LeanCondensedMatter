@@ -48,7 +48,6 @@ theorem occupationEquiv_basisState (b : Module.Basis Mode ℂ 𝓗₁) (n : Occu
     (b.ExteriorAlgebra.repr_symm_single_one n)
 
 /-- Exterior-algebra basis vectors return to the corresponding occupation basis vectors. -/
-@[simp]
 theorem occupationEquiv_symm_exteriorBasis
     (b : Module.Basis Mode ℂ 𝓗₁) (n : Occupation Mode) :
     (occupationEquiv b).symm (b.ExteriorAlgebra n) = basisState n := by
