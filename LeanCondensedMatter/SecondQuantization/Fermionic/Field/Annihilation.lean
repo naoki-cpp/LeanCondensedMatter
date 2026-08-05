@@ -142,12 +142,16 @@ noncomputable def annihilate (f : 𝓗₁) :
 /-- Smeared annihilation is additive in the smearing vector. -/
 theorem annihilate_add (f g : 𝓗₁) :
     annihilate 𝓗₁ (f + g) = annihilate 𝓗₁ f + annihilate 𝓗₁ g := by
-  rw [annihilate, innerDual_add, annihilateDual_add]
+  change annihilateDual 𝓗₁ (innerDual 𝓗₁ (f + g)) =
+    annihilateDual 𝓗₁ (innerDual 𝓗₁ f) + annihilateDual 𝓗₁ (innerDual 𝓗₁ g)
+  rw [innerDual_add, annihilateDual_add]
 
 /-- Smeared annihilation is conjugate-linear in the smearing vector. -/
 theorem annihilate_smul (c : ℂ) (f : 𝓗₁) :
     annihilate 𝓗₁ (c • f) = star c • annihilate 𝓗₁ f := by
-  rw [annihilate, innerDual_smul, annihilateDual_smul]
+  change annihilateDual 𝓗₁ (innerDual 𝓗₁ (c • f)) =
+    star c • annihilateDual 𝓗₁ (innerDual 𝓗₁ f)
+  rw [innerDual_smul, annihilateDual_smul]
 
 /-- A smeared annihilation field kills the vacuum. -/
 @[simp]
