@@ -59,7 +59,13 @@ EXPECTED_DENSITY_REAL_EXPECTATION = (
     QUANTUM / "DensityOperator" / "ObservableExpectation.lean"
 )
 EXPECTED_BORN = QUANTUM / "POVM" / "Born.lean"
+DENSITY_UMBRELLA = QUANTUM / "DensityOperator.lean"
+COUNTABLE_DIAGONAL_BRIDGE = (
+    QUANTUM / "DensityOperator" / "DiagonalExpectation.lean"
+)
+COUNTABLE_DIAGONAL_FORMULA = QUANTUM / "DensityOperator" / "DiagonalFormula.lean"
 GIBBS_ENERGY_EXPECTATION = QUANTUM / "Gibbs" / "EnergyExpectation.lean"
+GIBBS_DIAGONAL_ENERGY = QUANTUM / "Gibbs" / "DiagonalEnergy.lean"
 REMOVED_DOCUMENTS = (
     NOTES / "migrations" / "canonical-quantum-density-theory.md",
 )
@@ -82,6 +88,12 @@ BORN_PMF_SPECIALIZATION = (
     "noncomputable def bornPMF (P : POVM H M) (ρ : DensityOperator H) : PMF M := "
     "⟨fun m => (probNNReal P ρ m : ENNReal), "
     "(ENNReal.hasSum_coe).mpr (hasSum_probNNReal P ρ)⟩"
+)
+COUNTABLE_BRIDGE_IMPORT = (
+    "import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalExpectation"
+)
+COUNTABLE_FORMULA_IMPORT = (
+    "import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
 )
 
 
@@ -230,6 +242,86 @@ def check_born_probability_boundary(errors: list[str]) -> None:
         )
 
 
+def check_countable_diagonal_boundary(errors: list[str]) -> None:
+    bridge_code = strip_lean_comments(
+        COUNTABLE_DIAGONAL_BRIDGE.read_text(encoding="utf-8")
+    )
+    formula_code = strip_lean_comments(
+        COUNTABLE_DIAGONAL_FORMULA.read_text(encoding="utf-8")
+    )
+    energy_code = strip_lean_comments(GIBBS_DIAGONAL_ENERGY.read_text(encoding="utf-8"))
+    umbrella_code = DENSITY_UMBRELLA.read_text(encoding="utf-8")
+
+    required_bridge = (
+        "noncomputable def DensityOperator.sqrtOp",
+        "theorem DensityOperator.sqrtOp_isHilbertSchmidt",
+        "theorem DensityOperator.expectation_eq_innerHS",
+    )
+    for declaration in required_bridge:
+        if declaration not in bridge_code:
+            errors.append(
+                f"missing countable diagonal bridge `{declaration}` in "
+                f"{relative(COUNTABLE_DIAGONAL_BRIDGE)}"
+            )
+
+    required_formula = (
+        "theorem DensityOperator.hasSum_expectation_diagonal",
+        "theorem DensityOperator.summable_expectation_diagonal",
+        "theorem DensityOperator.expectation_eq_tsum_diagonal",
+        "theorem DensityOperator.observableExpectation_eq_tsum_diagonal",
+    )
+    for declaration in required_formula:
+        if declaration not in formula_code:
+            errors.append(
+                f"missing countable diagonal formula `{declaration}` in "
+                f"{relative(COUNTABLE_DIAGONAL_FORMULA)}"
+            )
+
+    for path, code in (
+        (COUNTABLE_DIAGONAL_BRIDGE, bridge_code),
+        (COUNTABLE_DIAGONAL_FORMULA, formula_code),
+    ):
+        if "[FiniteDimensional" in code:
+            errors.append(
+                f"generic countable diagonal module has a finite-dimensional assumption: "
+                f"{relative(path)}"
+            )
+        if "[Fintype" in code:
+            errors.append(
+                f"generic countable diagonal module has a finite-index assumption: "
+                f"{relative(path)}"
+            )
+
+    if COUNTABLE_BRIDGE_IMPORT not in umbrella_code:
+        errors.append(
+            "density-state umbrella must import the Hilbert-Schmidt diagonal bridge: "
+            f"{relative(DENSITY_UMBRELLA)}"
+        )
+    if COUNTABLE_FORMULA_IMPORT not in umbrella_code:
+        errors.append(
+            "density-state umbrella must import the countable diagonal formulas: "
+            f"{relative(DENSITY_UMBRELLA)}"
+        )
+
+    if "theorem energyExpValue_eq_tsum_common_eigenbasis" not in energy_code:
+        errors.append(
+            "Gibbs diagonal energy must retain the HilbertBasis/tsum foundation in "
+            f"{relative(GIBBS_DIAGONAL_ENERGY)}"
+        )
+    if "simpa using energyExpValue_eq_tsum_common_eigenbasis" not in normalized_code(
+        GIBBS_DIAGONAL_ENERGY
+    ):
+        errors.append(
+            "finite common-eigenbasis energy must delegate to the countable theorem in "
+            f"{relative(GIBBS_DIAGONAL_ENERGY)}"
+        )
+    if "LinearMap.trace_eq_sum_inner" in energy_code:
+        errors.append(
+            "Gibbs diagonal energy must not rebuild the finite theorem through matrix trace in "
+            f"{relative(GIBBS_DIAGONAL_ENERGY)}"
+        )
+
+
 def main() -> int:
     errors: list[str] = []
     density_declarations: list[Path] = []
@@ -275,6 +367,7 @@ def main() -> int:
 
     check_observable_expectation_boundary(errors)
     check_born_probability_boundary(errors)
+    check_countable_diagonal_boundary(errors)
     check_documentation(errors)
 
     return finish_audit(
