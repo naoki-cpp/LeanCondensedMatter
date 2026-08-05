@@ -23,8 +23,7 @@ representatives.
 
 ## Bounded one-particle dynamics
 
-Status: `in progress` under #580; unitary propagation, picture equivalence, and the bounded
-Schrödinger, Heisenberg, and von Neumann equations are proved.
+Status: `proved` for the bounded, dimension-independent dynamics package coordinated by #580.
 
 `QuantumTheory/LinearResponse/FreeDynamics.lean` defines the bounded free system and propagator
 
@@ -72,8 +71,23 @@ bounded theory:
 - dimension-independent proofs based only on Banach-algebra exponential differentiation,
   continuous-linear evaluation, product rules, and the generator–propagator commutation law.
 
-The remaining #580 package is conservation laws and downstream reuse of these canonical dynamics
-APIs.
+`QuantumTheory/LinearResponse/DensityExpectation.lean` supplies the canonical bridge from a density
+operator to the `NormalizedExpectation` interface used by bounded linear response. Keeping this
+bridge upstream lets Kubo-response and conservation modules consume one physical density-state
+construction rather than defining parallel functionals.
+
+`QuantumTheory/LinearResponse/ConservationLaws.lean` completes the bounded dynamics package:
+
+- every bounded operator commuting with `H₀` commutes with `U₀(t)` and is fixed by Heisenberg
+  evolution;
+- complex and lossless real expectations of commuting observables are conserved for both pure and
+  density states;
+- Hamiltonian expectation conservation follows as the reflexive-commutation specialization;
+- a density operator commuting with `H₀` is fixed by Schrödinger evolution;
+- its canonical normalized expectation is stationary for the existing linear-response API.
+
+These conservation results use exact propagator and picture-equivalence identities rather than
+re-integrating the equations of motion, and retain no finite-dimensional assumption.
 
 ## Density operators, expectations, and purity
 
@@ -81,7 +95,7 @@ Status: `proved`.
 
 `QuantumTheory.DensityOperator H` is the canonical dimension-independent mixed-state type. It is a
 positive bounded operator with bundled compact self-adjoint spectral trace-class data and spectral
-trace `1`.
+trace `1`. Density operators are extensionally determined by their underlying bounded operators.
 
 Implemented results include:
 
@@ -172,20 +186,18 @@ Implemented in `QuantumTheory/Gibbs/`:
 - the finite-dimensional identity `Tr(ρH) = (energyExpValue ρ Hop : ℂ)`;
 - the Helmholtz free-energy lower bound;
 - entropy finiteness under the variational hypotheses;
-- the Gibbs-state entropy identity and attainment of the lower bound.
+- the Gibbs-state entropy identity and attainment of the lower bound;
+- equality characterization and uniqueness of the Gibbs free-energy minimizer.
 
 The present bounded-Hamiltonian assumptions imply finite dimensionality whenever `gibbsOp` is
 compact. A genuine infinite-dimensional Gibbs theory therefore requires an unbounded self-adjoint
 Hamiltonian, compact-resolvent or semigroup hypotheses, and explicit operator-domain control.
 
-The uniqueness statement “equality holds only for the Gibbs state” remains open.
-
 ## Current next steps
 
-1. Complete #580 with conservation of Hamiltonian and commuting-observable expectations, then reuse
-   the canonical dynamics APIs in linear response where they remove duplicate picture changes.
-2. Prove uniqueness of the Gibbs free-energy minimizer.
-3. Design an unbounded Hamiltonian interface supporting genuine infinite-dimensional Gibbs states.
-4. Connect the canonical density-state expectation to completed Fock-space and KMS constructions.
-5. Decide whether the rank-one characterization of maximal purity warrants a focused theorem issue.
-6. Add continuous-outcome measurement theory only after a measure-theoretic API is designed.
+1. Reuse the canonical state, density, and stationary-expectation APIs in downstream response and
+   condensed-matter model specializations where they remove local picture-change constructions.
+2. Design an unbounded Hamiltonian interface supporting genuine infinite-dimensional Gibbs states.
+3. Connect the canonical density-state expectation to completed Fock-space and KMS constructions.
+4. Decide whether the rank-one characterization of maximal purity warrants a focused theorem issue.
+5. Add continuous-outcome measurement theory only after a measure-theoretic API is designed.
