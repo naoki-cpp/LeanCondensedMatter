@@ -8,6 +8,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.SecondQuantization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.SecondQuantizationCommutator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ChargeDensity
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.DiscreteLattice
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Peierls
 
 set_option linter.style.header false
 
@@ -21,6 +22,7 @@ The F3 layer defines the algebraic second-quantization map `dGamma`, proves its 
 commutator functoriality, and identifies total particle number as `dGamma id`. The initial F4 layer
 defines smeared charge density and its algebraic Heisenberg commutator identity. The F5 lattice
 layer starts directly on arbitrary site types with row-and-column locally finite hopping, rather
-than assuming a finite lattice. Later issue #524 slices derive the local continuity and Peierls
-current-equivalence theorems.
+than assuming a finite lattice. The F6 layer introduces oriented Peierls link phases and proves
+that the continuity-derived bond current is minus the algebraic weak derivative of the
+Peierls-coupled link Hamiltonian at zero gauge field.
 -/
