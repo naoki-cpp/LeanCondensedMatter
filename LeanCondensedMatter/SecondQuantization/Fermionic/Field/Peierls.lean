@@ -164,7 +164,7 @@ theorem hasAlgebraicDerivAt_peierlsBondHamiltonian_zero
   unfold peierlsBondHamiltonian oneParticleBondCurrent bondOperator
   convert hsum using 1
   rw [smul_sub, neg_sub]
-  abel
+  simp only [smul_smul] <;> abel
 
 end LocallyFiniteHopping
 
