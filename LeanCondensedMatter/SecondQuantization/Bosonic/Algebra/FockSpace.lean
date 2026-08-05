@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.Occupation
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
-import Mathlib.LinearAlgebra.Finsupp.VectorSpace
 
 set_option linter.style.header false
 
@@ -37,15 +36,16 @@ theorem basisState_ne_zero (n : Occupation Mode) : basisState n ≠ 0 :=
 theorem basisState_injective : Function.Injective (basisState : Occupation Mode → _) :=
   Common.basisState_injective
 
-/-- Basis vectors are injective on all occupation states. -/
-theorem basisState_injOn : Set.InjOn (basisState : Occupation Mode → _) Set.univ :=
-  fun _ _ _ _ h => basisState_injective h
+/-- Basis vectors are injective on all bosonic occupation states. -/
+theorem basisState_injOn : Set.InjOn (basisState : Occupation Mode → _) Set.univ := by
+  simpa [basisState] using
+    (Common.basisState_injOn (Config := Occupation Mode))
 
 /-- The occupation-number basis vectors are linearly independent. -/
 theorem basisState_linearIndependent :
     LinearIndependent ℂ (basisState : Occupation Mode → FockSpace Mode) := by
-  change LinearIndependent ℂ (fun n => Finsupp.single n (1 : ℂ))
-  exact Finsupp.basisSingleOne.linearIndependent
+  simpa [basisState] using
+    (Common.basisState_linearIndependent (Config := Occupation Mode))
 
 /-- Linear maps out of `FockSpace Mode` are determined by their values on basis states. -/
 theorem linearMap_ext_basisState {f g : FockSpace Mode →ₗ[ℂ] FockSpace Mode}
