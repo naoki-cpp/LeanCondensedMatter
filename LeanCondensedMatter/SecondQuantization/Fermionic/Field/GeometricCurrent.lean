@@ -47,34 +47,39 @@ structure LatticeGeometry (Site E : Type*) where
 
 namespace LatticeGeometry
 
-variable {Site E : Type*} [AddCommGroup E] [Module ℝ E]
+variable {Site E : Type*} [AddCommGroup E]
 
 /-- Oriented displacement from `x` to `y`. -/
 def bondDisplacement (geometry : LatticeGeometry Site E) (x y : Site) : E :=
   geometry.position y - geometry.position x
+
+/-- Reversing a bond reverses its displacement. -/
+theorem bondDisplacement_swap (geometry : LatticeGeometry Site E) (x y : Site) :
+    geometry.bondDisplacement y x = -geometry.bondDisplacement x y := by
+  unfold bondDisplacement
+  abel
+
+variable [Module ℝ E]
 
 /-- Scalar bond coordinate measured by a real linear functional. -/
 def bondCoordinate (geometry : LatticeGeometry Site E)
     (direction : E →ₗ[ℝ] ℝ) (x y : Site) : ℝ :=
   direction (geometry.bondDisplacement x y)
 
-@[simp]
-theorem bondDisplacement_swap (geometry : LatticeGeometry Site E) (x y : Site) :
-    geometry.bondDisplacement y x = -geometry.bondDisplacement x y := by
-  simp [bondDisplacement, sub_eq_add_neg, add_comm]
-
-@[simp]
+/-- Reversing a bond negates its scalar coordinate. -/
 theorem bondCoordinate_swap (geometry : LatticeGeometry Site E)
     (direction : E →ₗ[ℝ] ℝ) (x y : Site) :
     geometry.bondCoordinate direction y x =
       -geometry.bondCoordinate direction x y := by
-  simp [bondCoordinate]
+  unfold bondCoordinate
+  rw [bondDisplacement_swap, map_neg]
 
 @[simp]
 theorem bondCoordinate_self (geometry : LatticeGeometry Site E)
     (direction : E →ₗ[ℝ] ℝ) (x : Site) :
     geometry.bondCoordinate direction x x = 0 := by
-  simp [bondCoordinate, bondDisplacement]
+  unfold bondCoordinate bondDisplacement
+  simp
 
 end LatticeGeometry
 
@@ -118,7 +123,23 @@ theorem isSelfAdjoint_boundedDirectionalCurrent
         boundedBondCurrent (ℏ : ℂ) (q : ℂ) K x y :=
     fun x y => (isSelfAdjoint_boundedBondCurrent_ofReal K hK ℏ q x y).star_eq
   rw [isSelfAdjoint_iff]
-  simp [boundedDirectionalCurrent, hJ]
+  unfold boundedDirectionalCurrent
+  rw [star_smul]
+  have hhalf : star ((2 : ℂ)⁻¹) = (2 : ℂ)⁻¹ := by norm_num
+  rw [hhalf]
+  congr 1
+  rw [map_sum]
+  apply Finset.sum_congr rfl
+  intro x _
+  rw [map_sum]
+  apply Finset.sum_congr rfl
+  intro y _
+  rw [star_smul, hJ x y]
+  have hw :
+      star (geometry.bondCoordinate direction x y : ℂ) =
+        (geometry.bondCoordinate direction x y : ℂ) := by
+    simp
+  rw [hw]
 
 /-- Retarded response of a geometric current component with the source-dependent geometric contact
 term retained. Current self-adjointness is derived from Hermitian hopping and the real physical
