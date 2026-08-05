@@ -38,7 +38,7 @@ theorem energyExpValue_eq_tsum_common_eigenbasis (ρ : DensityOperator H) (Hop :
 
 section FiniteOutcomes
 
-variable [Fintype ι] [FiniteDimensional ℂ H]
+variable [Fintype ι]
 
 /-- For a finite orthonormal basis, the countable common-eigenbasis theorem reduces to the ordinary
 finite weighted sum. -/
