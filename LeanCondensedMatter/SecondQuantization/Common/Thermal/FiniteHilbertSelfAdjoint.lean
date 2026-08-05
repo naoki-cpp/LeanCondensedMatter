@@ -37,9 +37,14 @@ noncomputable def finiteHilbertOperatorMatrix
 theorem finiteHilbertOperatorMatrix_apply
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
     finiteHilbertOperatorMatrix A m n = matrixCoeff A m n := by
-  simpa [finiteHilbertOperatorMatrix, LinearMap.toMatrix_apply,
-    finiteHilbertOrthonormalBasis, EuclideanSpace.basisFun_repr] using
-    finiteHilbertOperator_basis_apply A m n
+  unfold finiteHilbertOperatorMatrix
+  rw [LinearMap.toMatrix_apply]
+  change
+    ((EuclideanSpace.basisFun Config ℂ).repr
+      (finiteHilbertOperator A (finiteHilbertBasisState n))).ofLp m =
+        matrixCoeff A m n
+  rw [EuclideanSpace.basisFun_repr]
+  exact finiteHilbertOperator_basis_apply A m n
 
 /-- Adjointness after finite-Hilbert transport is exactly conjugate transposition of the algebraic
 coordinate matrix. -/
