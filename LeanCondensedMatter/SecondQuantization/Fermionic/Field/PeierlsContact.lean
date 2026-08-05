@@ -18,12 +18,12 @@ The measured current must therefore be treated as the source-dependent family
 J(A) = -∂ₐ H(A) = J₀ + A J₁ + O(A²),
 ```
 
-where `J₁ = -∂ₐ² H(0)`.  This module constructs `J(A)` and its algebraic derivative `J₁`, transports
+where `J₁ = -∂ₐ² H(0)`. This module constructs `J(A)` and its algebraic derivative `J₁`, transports
 both through `dGamma` and the finite-lattice bounded realization, and specializes the general
-observable-variation Kubo theorem.  The final response contains both the retarded current-current
+observable-variation Kubo theorem. The final response contains both the retarded current-current
 kernel and the explicit contact term.
 
-The foundational derivative remains complexified and algebraic.  The response theorem uses a real
+The foundational derivative remains complexified and algebraic. The response theorem uses a real
 source profile `f`; at observation time `t`, the affine current coefficient is `f(t) J₁`.
 -/
 
@@ -32,6 +32,8 @@ namespace Fermionic
 namespace Field
 
 noncomputable section
+
+section Algebraic
 
 variable {Site : Type*} [DecidableEq Site]
 
@@ -47,7 +49,7 @@ noncomputable def peierlsBondCurrentOperator (K : LocallyFiniteHopping Site)
     ((-peierlsCoupling ℏ q) * peierlsReversePhase ℏ q A) •
       (K.amplitude y x • matrixUnit y x)
 
-/-- The first source derivative of the Peierls current.  Both hopping orientations carry the
+/-- The first source derivative of the Peierls current. Both hopping orientations carry the
 coefficient `-(i q / ℏ)²`; it is kept in factorized form to match the derivative construction. -/
 noncomputable def oneParticleBondContact (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) :
@@ -64,7 +66,7 @@ theorem peierlsBondCurrentOperator_zero (K : LocallyFiniteHopping Site)
     K.peierlsBondCurrentOperator ℏ q x y 0 =
       K.oneParticleBondCurrent ℏ q x y := by
   unfold peierlsBondCurrentOperator oneParticleBondCurrent bondOperator
-  simp [smul_sub, sub_eq_add_neg]
+  simp [sub_eq_add_neg]
 
 /-- The source derivative of the Peierls current is the one-particle contact operator. -/
 theorem hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero
@@ -79,7 +81,8 @@ theorem hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero
     ((hasDerivAt_peierlsReversePhase_zero ℏ q).const_mul
       (-peierlsCoupling ℏ q))
     (K.amplitude y x • matrixUnit y x)
-  simpa [peierlsBondCurrentOperator, oneParticleBondContact] using hforward.add hreverse
+  unfold peierlsBondCurrentOperator oneParticleBondContact
+  exact hforward.add hreverse
 
 end LocallyFiniteHopping
 
@@ -103,8 +106,8 @@ noncomputable def bondContact (K : LocallyFiniteHopping Site)
 theorem peierlsBondCurrentFock_zero (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) :
     peierlsBondCurrentFock K ℏ q x y 0 = bondCurrent ℏ q K x y := by
-  change dGamma (LatticeState Site) (K.oneParticleBondCurrent ℏ q x y) =
-    bondCurrent ℏ q K x y
+  unfold peierlsBondCurrentFock
+  rw [K.peierlsBondCurrentOperator_zero]
   unfold LocallyFiniteHopping.oneParticleBondCurrent bondCurrent peierlsCoupling
   change dGammaLinear (LatticeState Site)
       (((Complex.I * q) / ℏ) • K.bondOperator x y) =
@@ -116,12 +119,15 @@ theorem hasAlgebraicDerivAt_peierlsBondCurrentFock_zero
     (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site) :
     HasAlgebraicDerivAt (peierlsBondCurrentFock K ℏ q x y)
       (bondContact K ℏ q x y) 0 := by
+  unfold peierlsBondCurrentFock bondContact
   exact (K.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero ℏ q x y).map
     (dGammaLinear (LatticeState Site))
 
+end Algebraic
+
 section Bounded
 
-variable [LinearOrder Site] [Fintype Site]
+variable {Site : Type*} [LinearOrder Site] [Fintype Site]
 
 /-- Bounded Peierls-dependent current family on the finite-lattice Hilbert Fock space. -/
 noncomputable def boundedPeierlsBondCurrent (K : LocallyFiniteHopping Site)
@@ -149,13 +155,14 @@ theorem hasAlgebraicDerivAt_boundedPeierlsBondCurrent_zero
     (K : LocallyFiniteHopping Site) (ℏ q : ℂ) (x y : Site) :
     HasAlgebraicDerivAt (boundedPeierlsBondCurrent K ℏ q x y)
       (boundedBondContact K ℏ q x y) 0 := by
+  unfold boundedPeierlsBondCurrent boundedBondContact
   exact (hasAlgebraicDerivAt_peierlsBondCurrentFock_zero K ℏ q x y).map
     (boundedLatticeOperatorLinearMap (Site := Site))
 
 /-- Peierls current response with the contact term retained.
 
 The Hamiltonian source coupling is `-λ f(s) J₀`, while the measured current at time `t` has affine
-coefficient `f(t) J₁`.  Therefore the total derivative is the retarded `J₀`–`J₀` response plus the
+coefficient `f(t) J₁`. Therefore the total derivative is the retarded `J₀`–`J₀` response plus the
 explicit expectation of the evolved contact operator. -/
 theorem hasDerivAt_boundedPeierlsAffineCurrentExpectation_zero_of_bound_retarded
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
