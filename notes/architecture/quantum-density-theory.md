@@ -12,8 +12,8 @@ bounded Gibbs-state APIs.
 - a bundled compact self-adjoint spectral trace-class witness;
 - normalization of the spectral trace to `1`.
 
-The type is dimension-independent. Finite dimensionality is an additional typeclass hypothesis used
-only by specialization theorems.
+The type is dimension-independent. Finite dimensionality is an additional hypothesis only where an
+ordinary finite matrix trace or another genuinely finite construction is used.
 
 The canonical modules are:
 
@@ -28,7 +28,9 @@ QuantumTheory/
 │   ├── Expectation.lean
 │   ├── ExpectationOrder.lean
 │   ├── ObservableExpectation.lean
-│   └── Diagonal.lean
+│   ├── Diagonal.lean
+│   ├── DiagonalExpectation.lean
+│   └── DiagonalFormula.lean
 ├── POVM/
 │   ├── Basic.lean
 │   └── Born.lean
@@ -65,13 +67,9 @@ For a self-adjoint observable this equals the formerly used reversed orientation
 `Complex.selfAdjointEquiv`, and both values are invariant under global phase.
 
 `DensityOperator.expectation` is a continuous complex-linear functional on arbitrary bounded
-operators. It is defined from the density operator’s spectral decomposition and supplies:
-
-- complex linearity;
-- normalization on the identity;
-- a norm bound;
-- nonnegativity on positive operators;
-- reality on symmetric, self-adjoint, or positive operators.
+operators. It is defined from the density operator’s spectral decomposition and supplies complex
+linearity, normalization on the identity, a norm bound, nonnegativity on positive operators, and
+reality on symmetric, self-adjoint, or positive operators.
 
 For an `Observable H`, `DensityOperator.observableExpectation : ℝ` is the canonical real-valued
 mixed-state API. Its exact boundary theorem is
@@ -88,9 +86,43 @@ vector-state expectations:
 (pure ψ).observableExpectation A = observableExpValue A ψ.
 ```
 
-In finite dimensions, `DensityOperator.expectation_eq_linearMap_trace` identifies the complex
-functional with the ordinary matrix trace `Tr(ρA)`. Diagonal finite-sum formulas are specialization
-theorems of the same expectation.
+### Countable diagonal formulas
+
+`DensityOperator.sqrtOp ρ = cfc Real.sqrt ρ.op` is the positive square root of the density
+operator. Trace-one spectral summability proves
+
+```lean
+DensityOperator.sqrtOp_isHilbertSchmidt : IsHilbertSchmidt ρ.sqrtOp.
+```
+
+This yields the basis-independent bridge for every bounded operator `A` and every Hilbert basis
+`b`:
+
+```lean
+ρ.expectation A = innerHS b ρ.sqrtOp (A * ρ.sqrtOp).
+```
+
+The right side is an absolutely convergent Hilbert–Schmidt pairing. Consequently, whenever `b`
+diagonalizes `ρ` with real weights `w`, no finite-dimensional hypothesis is needed for
+
+```lean
+ρ.expectation A = ∑' i, (w i : ℂ) * inner ℂ (b i) (A (b i)).
+```
+
+The implementation also exposes the corresponding `HasSum` and `Summable` theorems. For a
+self-adjoint observable, the lossless real specialization is
+
+```lean
+ρ.observableExpectation A =
+  ∑' i, w i * diagonalExpectationValue A.1 A.2 (b i).
+```
+
+The real theorem is obtained by transporting an already identified real complex series; the
+physical value is not defined by applying `.re` to an arbitrary scalar.
+
+In finite dimensions, `DensityOperator.expectation_eq_linearMap_trace` additionally identifies the
+complex functional with the ordinary matrix trace `Tr(ρA)`. Finite-sum formulas are corollaries of
+the countable diagonal foundation whenever a finite Hilbert basis is supplied.
 
 Real-valued physical quantities are obtained from a proved self-adjoint complex scalar through
 `Complex.selfAdjointEquiv`; they are not defined by discarding an arbitrary imaginary part.
@@ -173,9 +205,19 @@ The bounded theory includes:
   `ρ.observableExpectation Hop`;
 - the exact identity `ρ.expectation Hop.1 = (energyExpValue ρ Hop : ℂ)` inherited from the generic
   observable boundary;
+- the countable common-eigenbasis formula
+
+  ```lean
+  energyExpValue ρ Hop = ∑' i, w i * E i;
+  ```
+
+- the finite common-eigenbasis sum as a direct corollary of the countable theorem;
 - the Helmholtz free-energy lower bound;
 - finiteness of entropy under the variational hypotheses;
 - the entropy/free-energy identity for the normalized Gibbs state.
+
+The finite common-eigenbasis corollary needs a finite index type but no separate
+`FiniteDimensional ℂ H` hypothesis once a complete finite orthonormal basis is explicitly supplied.
 
 Uniqueness of the Gibbs minimizer is not yet formalized.
 
@@ -186,7 +228,7 @@ Finite-dimensional code uses the same `DensityOperator` type. The specialization
 - `DensityOperator.ofFiniteDimensional`;
 - equivalence with ordinary `LinearMap.trace` normalization;
 - ordinary trace formulas for expectations;
-- finite diagonal expectation formulas;
+- finite diagonal expectation formulas derived from the countable `HilbertBasis` theory;
 - the exact matrix formula `Tr(ρ²) = (purity ρ : ℂ)`;
 - the exact energy formula `Tr(ρH) = (energyExpValue ρ Hop : ℂ)`;
 - automatic entropy summability and finiteness.
@@ -206,7 +248,15 @@ The QuantumTheory architecture audit enforces:
 - unique ownership of `probNNReal` and `bornPMF` in `POVM/Born.lean`;
 - `prob` remaining a direct real coercion of `probNNReal`;
 - the Born normalization kernel using `diagonalExpectationValue` and containing no direct `.re`
-  projection in its definition body.
+  projection in its definition body;
+- ownership of the density square-root/Hilbert–Schmidt bridge in
+  `DensityOperator/DiagonalExpectation.lean`;
+- ownership of countable complex and real diagonal formulas in
+  `DensityOperator/DiagonalFormula.lean`;
+- absence of `Fintype` and `FiniteDimensional` assumptions from the generic countable diagonal
+  modules;
+- `Gibbs/DiagonalEnergy.lean` retaining the `HilbertBasis`/`tsum` theorem as its foundation, with
+  the finite sum delegating to it instead of rebuilding the result through matrix trace.
 
 Proof-local extraction of the real component of a proved equality remains allowed. The audit guards
 public physical definitions and canonical internal kernels, not ordinary proof techniques.
