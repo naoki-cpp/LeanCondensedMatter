@@ -52,7 +52,8 @@ theorem DensityOperator.sqrtOp_isHilbertSchmidt (ρ : DensityOperator H) :
   have hb_j (a : EigenvectorIndex ρ.op) : b (j a) = e a := by
     rw [hb]
   have hpoint (a : EigenvectorIndex ρ.op) : g (j a) = a.1.1 := by
-    rw [g, hb_j, ρ.sqrtOp_apply_eigenvector (apply_eigenvectorFamily hρcompact a),
+    change ‖ρ.sqrtOp (b (j a))‖ ^ 2 = a.1.1
+    rw [hb_j, ρ.sqrtOp_apply_eigenvector (apply_eigenvectorFamily hρcompact a),
       norm_smul, he.1 a]
     simp [Real.sq_sqrt (eigenvalue_nonneg_of_isPositive ρ.pos.toLinearMap a)]
   have hzero (x : u) (hx : x ∉ Set.range j) : g x = 0 := by
@@ -80,8 +81,9 @@ theorem DensityOperator.sqrtOp_isHilbertSchmidt (ρ : DensityOperator H) :
       simpa using hxev
     have hsqrt : ρ.sqrtOp (b x) = 0 := by
       simpa using ρ.sqrtOp_apply_eigenvector (v := b x) (c := 0) (by simpa using hxker)
-    simp [g, hsqrt]
-  have hλ : HasSum (fun a : EigenvectorIndex ρ.op => a.1.1) 1 := by
+    change ‖ρ.sqrtOp (b x)‖ ^ 2 = 0
+    simp [hsqrt]
+  have hweights : HasSum (fun a : EigenvectorIndex ρ.op => a.1.1) 1 := by
     have h := (summable_eigenvectorIndex ρ.spectralTraceClass.summable).hasSum
     have htrace : (∑' a : EigenvectorIndex ρ.op, a.1.1) = 1 := by
       simpa [spectralTrace] using ρ.spectralTrace_op_eq_one
@@ -90,7 +92,8 @@ theorem DensityOperator.sqrtOp_isHilbertSchmidt (ρ : DensityOperator H) :
     have hfunctions : (g ∘ j) = fun a : EigenvectorIndex ρ.op => a.1.1 := by
       funext a
       exact hpoint a
-    rwa [hfunctions]
+    rw [hfunctions]
+    exact hweights
   have hfull : HasSum g 1 := (hj.hasSum_iff hzero).mp hrestricted
   exact IsHilbertSchmidt.of_isHilbertSchmidtWrt hfull.summable
 
