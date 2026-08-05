@@ -45,14 +45,16 @@ theorem matrixUnit_apply (x y : Site) (ψ : LatticeState Site) :
   rfl
 
 @[simp]
-theorem matrixUnit_single (x y z : Site) (c : ℂ) :
-    matrixUnit x y (Finsupp.single z c) =
-      if y = z then Finsupp.single x c else 0 := by
+theorem matrixUnit_single_same (x y : Site) (c : ℂ) :
+    matrixUnit x y (Finsupp.single y c) = Finsupp.single x c := by
   classical
-  by_cases h : y = z
-  · subst z
-    simp [matrixUnit]
-  · simp [matrixUnit, h]
+  simp [matrixUnit]
+
+@[simp]
+theorem matrixUnit_single_of_ne (x y z : Site) (c : ℂ) (h : y ≠ z) :
+    matrixUnit x y (Finsupp.single z c) = 0 := by
+  classical
+  simp [matrixUnit, h]
 
 /-- The one-particle projector `|x⟩⟨x|` onto a lattice site. -/
 noncomputable def siteProjector (x : Site) :
