@@ -38,14 +38,16 @@ theorem basisState_injective : Function.Injective (basisState : Occupation Mode 
 
 /-- Basis vectors are injective on all bosonic occupation states. -/
 theorem basisState_injOn : Set.InjOn (basisState : Occupation Mode → _) Set.univ := by
-  simpa [basisState] using
-    (Common.basisState_injOn (Config := Occupation Mode))
+  change Set.InjOn
+    (Common.basisState : Occupation Mode → Common.AlgebraicFock (Occupation Mode)) Set.univ
+  exact Common.basisState_injOn
 
 /-- The occupation-number basis vectors are linearly independent. -/
 theorem basisState_linearIndependent :
     LinearIndependent ℂ (basisState : Occupation Mode → FockSpace Mode) := by
-  simpa [basisState] using
-    (Common.basisState_linearIndependent (Config := Occupation Mode))
+  change LinearIndependent ℂ
+    (Common.basisState : Occupation Mode → Common.AlgebraicFock (Occupation Mode))
+  exact Common.basisState_linearIndependent
 
 /-- Linear maps out of `FockSpace Mode` are determined by their values on basis states. -/
 theorem linearMap_ext_basisState {f g : FockSpace Mode →ₗ[ℂ] FockSpace Mode}
