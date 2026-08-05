@@ -97,7 +97,6 @@ theorem evolveDensityOperator_isPositive (ρ : DensityOperator H) (t : ℝ) :
   (evolveDensityOperator system ρ t).pos
 
 /-- Evolved density operators retain spectral trace one. -/
-@[simp]
 theorem evolveDensityOperator_trace_eq_one (ρ : DensityOperator H) (t : ℝ) :
     (evolveDensityOperator system ρ t).spectralTraceClass.trace = 1 :=
   (evolveDensityOperator system ρ t).spectralTrace_eq_one
