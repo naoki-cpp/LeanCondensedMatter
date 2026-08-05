@@ -25,7 +25,6 @@ namespace Fermionic
 namespace Field
 
 variable {Mode 𝓗₁ : Type*}
-variable [DecidableEq Mode]
 variable [NormedAddCommGroup 𝓗₁] [InnerProductSpace ℂ 𝓗₁]
 
 /-- Creation in mode `i`, obtained by smearing with the corresponding one-particle vector. -/
@@ -60,8 +59,9 @@ theorem modeAnnihilate_comp_add_swap (e : Mode → 𝓗₁) (i j : Mode) :
       (modeAnnihilate e j).comp (modeAnnihilate e i) = 0 := by
   simpa [modeAnnihilate] using annihilate_comp_add_swap 𝓗₁ (e i) (e j)
 
+set_option linter.unusedDecidableInType false in
 /-- For an orthonormal family, the mixed smeared CAR becomes the Kronecker-delta mode CAR. -/
-theorem modeAnnihilate_comp_modeCreate_add_swap
+theorem modeAnnihilate_comp_modeCreate_add_swap [DecidableEq Mode]
     {e : Mode → 𝓗₁} (he : Orthonormal ℂ e) (i j : Mode) :
     (modeAnnihilate e i).comp (modeCreate e j) +
       (modeCreate e j).comp (modeAnnihilate e i) =
@@ -77,6 +77,7 @@ theorem modeAnnihilate_comp_modeCreate_add_self
     (modeAnnihilate e i).comp (modeCreate e i) +
       (modeCreate e i).comp (modeAnnihilate e i) =
         (LinearMap.id : FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁) := by
+  classical
   simpa using modeAnnihilate_comp_modeCreate_add_swap he i i
 
 /-- Distinct modes have zero mixed anticommutator. -/
@@ -84,6 +85,7 @@ theorem modeAnnihilate_comp_modeCreate_add_of_ne
     {e : Mode → 𝓗₁} (he : Orthonormal ℂ e) {i j : Mode} (hij : i ≠ j) :
     (modeAnnihilate e i).comp (modeCreate e j) +
       (modeCreate e j).comp (modeAnnihilate e i) = 0 := by
+  classical
   simpa [hij] using modeAnnihilate_comp_modeCreate_add_swap he i j
 
 end Field
