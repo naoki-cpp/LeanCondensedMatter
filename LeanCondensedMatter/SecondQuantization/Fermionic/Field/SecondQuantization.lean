@@ -34,22 +34,37 @@ noncomputable def secondQuantizationStep (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
         oneParticle 𝓗₁ (T f) * xdx.1 + oneParticle 𝓗₁ f * xdx.2
       map_add' := by
         intro x y
-        simp only [Prod.fst_add, Prod.snd_add, mul_add]
+        change
+          oneParticle 𝓗₁ (T f) * (x.1 + y.1) +
+              oneParticle 𝓗₁ f * (x.2 + y.2) =
+            (oneParticle 𝓗₁ (T f) * x.1 + oneParticle 𝓗₁ f * x.2) +
+              (oneParticle 𝓗₁ (T f) * y.1 + oneParticle 𝓗₁ f * y.2)
+        simp only [mul_add]
         abel
       map_smul' := by
         intro c x
-        simp only [Prod.fst_smul, Prod.snd_smul, mul_smul, smul_add] }
+        change
+          oneParticle 𝓗₁ (T f) * (c • x.1) + oneParticle 𝓗₁ f * (c • x.2) =
+            c • (oneParticle 𝓗₁ (T f) * x.1 + oneParticle 𝓗₁ f * x.2)
+        simp [smul_add] }
   map_add' := by
     intro f g
     apply LinearMap.ext
     intro xdx
-    simp only [map_add, add_mul, LinearMap.add_apply]
+    change
+      oneParticle 𝓗₁ (T (f + g)) * xdx.1 + oneParticle 𝓗₁ (f + g) * xdx.2 =
+        (oneParticle 𝓗₁ (T f) * xdx.1 + oneParticle 𝓗₁ f * xdx.2) +
+          (oneParticle 𝓗₁ (T g) * xdx.1 + oneParticle 𝓗₁ g * xdx.2)
+    simp only [map_add, add_mul]
     abel
   map_smul' := by
     intro c f
     apply LinearMap.ext
     intro xdx
-    simp only [map_smul, smul_mul_assoc, LinearMap.smul_apply, smul_add]
+    change
+      oneParticle 𝓗₁ (T (c • f)) * xdx.1 + oneParticle 𝓗₁ (c • f) * xdx.2 =
+        c • (oneParticle 𝓗₁ (T f) * xdx.1 + oneParticle 𝓗₁ f * xdx.2)
+    simp [smul_add]
 
 @[simp]
 theorem secondQuantizationStep_apply (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : 𝓗₁)
@@ -67,13 +82,23 @@ theorem secondQuantizationStep_square (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : �
   rw [← add_assoc, ← add_mul, oneParticle_mul_add_swap, zero_mul]
   simp [oneParticle]
 
+/-- The exact compatibility condition required by `CliffordAlgebra.foldr'` at the zero quadratic
+form. -/
+theorem secondQuantizationStep_fold_condition (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : 𝓗₁)
+    (x dx : FiniteParticleFock 𝓗₁) :
+    secondQuantizationStep 𝓗₁ T f
+        (CliffordAlgebra.ι (0 : QuadraticForm ℂ 𝓗₁) f * x,
+          secondQuantizationStep 𝓗₁ T f (x, dx)) =
+      (0 : QuadraticForm ℂ 𝓗₁) f • dx := by
+  simpa [oneParticle] using secondQuantizationStep_square 𝓗₁ T f x dx
+
 /-- The algebraic second quantization `dΓ(T)` of a one-particle linear operator `T`.
 
 It acts on each finite wedge by applying `T` in every slot and summing the results. -/
 noncomputable def dGamma (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
     FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁ :=
   CliffordAlgebra.foldr' (0 : QuadraticForm ℂ 𝓗₁)
-    (secondQuantizationStep 𝓗₁ T) (secondQuantizationStep_square 𝓗₁ T)
+    (secondQuantizationStep 𝓗₁ T) (secondQuantizationStep_fold_condition 𝓗₁ T)
     (0 : FiniteParticleFock 𝓗₁)
 
 /-- Second quantization kills the vacuum. -/
@@ -83,7 +108,7 @@ theorem dGamma_vacuum (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
   simpa [dGamma, vacuum] using
     (CliffordAlgebra.foldr'_algebraMap
       (Q := (0 : QuadraticForm ℂ 𝓗₁))
-      (secondQuantizationStep 𝓗₁ T) (secondQuantizationStep_square 𝓗₁ T)
+      (secondQuantizationStep 𝓗₁ T) (secondQuantizationStep_fold_condition 𝓗₁ T)
       (0 : FiniteParticleFock 𝓗₁) (1 : ℂ))
 
 /-- On a one-particle state, `dΓ(T)` agrees with `T`. -/
@@ -93,7 +118,7 @@ theorem dGamma_oneParticle (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : 𝓗₁) :
   simpa [dGamma, oneParticle, secondQuantizationStep] using
     (CliffordAlgebra.foldr'_ι
       (Q := (0 : QuadraticForm ℂ 𝓗₁))
-      (secondQuantizationStep 𝓗₁ T) (secondQuantizationStep_square 𝓗₁ T)
+      (secondQuantizationStep 𝓗₁ T) (secondQuantizationStep_fold_condition 𝓗₁ T)
       (0 : FiniteParticleFock 𝓗₁) f)
 
 /-- The defining Leibniz rule of `dΓ(T)` on a left one-particle wedge. -/
@@ -104,7 +129,7 @@ theorem dGamma_oneParticle_mul (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : 𝓗₁)
   simpa [dGamma, oneParticle, secondQuantizationStep] using
     (CliffordAlgebra.foldr'_ι_mul
       (Q := (0 : QuadraticForm ℂ 𝓗₁))
-      (secondQuantizationStep 𝓗₁ T) (secondQuantizationStep_square 𝓗₁ T)
+      (secondQuantizationStep 𝓗₁ T) (secondQuantizationStep_fold_condition 𝓗₁ T)
       (0 : FiniteParticleFock 𝓗₁) f Ψ)
 
 end Field
