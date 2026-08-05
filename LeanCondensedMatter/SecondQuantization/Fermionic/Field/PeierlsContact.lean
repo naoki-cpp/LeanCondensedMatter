@@ -112,7 +112,7 @@ theorem peierlsBondCurrentFock_zero (K : LocallyFiniteHopping Site)
   change dGammaLinear (LatticeState Site)
       (((Complex.I * q) / ℏ) • K.bondOperator x y) =
     ((Complex.I * q) / ℏ) • dGamma (LatticeState Site) (K.bondOperator x y)
-  rw [map_smul]
+  rw [map_smul, dGammaLinear_apply]
 
 /-- The Fock-space Peierls current has algebraic derivative equal to the contact operator. -/
 theorem hasAlgebraicDerivAt_peierlsBondCurrentFock_zero
