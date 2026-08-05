@@ -25,8 +25,9 @@ PUBLIC_DEFINITION_START = re.compile(
     re.MULTILINE,
 )
 TOP_LEVEL_LINE = re.compile(r"^(?=\S)", re.MULTILINE)
-REAL_SCALAR_CODOMAIN = re.compile(
-    r":\s*(?:ℝ|NNReal|ENNReal|ℝ≥0|ℝ≥0∞)(?=\s|$|\)|,|:=)"
+EQUATION_BODY_START = re.compile(r"^\s+\|", re.MULTILINE)
+REAL_SCALAR_RESULT = re.compile(
+    r"^(?:.*→\s*)?(?:ℝ|Real|NNReal|ENNReal|ℝ≥0|ℝ≥0∞)$"
 )
 DIRECT_REAL_PROJECTION = re.compile(r"(?:\.\s*re\b|\bComplex\.re\b)")
 
@@ -50,8 +51,7 @@ def relative(path: Path) -> str:
     return relative_to(ROOT, path)
 
 
-def public_definitions(path: Path) -> list[PublicDefinition]:
-    code = strip_lean_comments(path.read_text(encoding="utf-8"))
+def split_public_definitions(code: str, path: Path) -> list[PublicDefinition]:
     definitions: list[PublicDefinition] = []
 
     for match in PUBLIC_DEFINITION_START.finditer(code):
@@ -62,34 +62,52 @@ def public_definitions(path: Path) -> list[PublicDefinition]:
         if "private" in modifiers:
             continue
 
-        assignment = code.find(":=", match.end())
-        if assignment < 0:
-            continue
-
-        # A declaration header and its `:=` must belong to the same top-level command. This avoids
-        # accidentally pairing an equation-style definition with a later declaration.
-        intervening_top_level = TOP_LEVEL_LINE.search(code, match.end(), assignment)
-        if intervening_top_level is not None:
-            continue
-
-        next_top_level = TOP_LEVEL_LINE.search(code, assignment + 2)
+        next_top_level = TOP_LEVEL_LINE.search(code, match.end())
         end = next_top_level.start() if next_top_level is not None else len(code)
+        command = code[match.end():end]
+
+        assignment = command.find(":=")
+        if assignment >= 0:
+            header = command[:assignment]
+            body = command[assignment + 2:]
+        else:
+            equation = EQUATION_BODY_START.search(command)
+            if equation is None:
+                continue
+            header = command[:equation.start()]
+            body = command[equation.start():]
+
         definitions.append(
             PublicDefinition(
                 path=path,
                 name=match.group("name"),
                 line=code.count("\n", 0, match.start()) + 1,
-                header=code[match.end():assignment],
-                body=code[assignment + 2:end],
+                header=header,
+                body=body,
             )
         )
 
     return definitions
 
 
+def public_definitions(path: Path) -> list[PublicDefinition]:
+    code = strip_lean_comments(path.read_text(encoding="utf-8"))
+    return split_public_definitions(code, path)
+
+
+def has_explicit_real_scalar_result(header: str) -> bool:
+    if ":" not in header:
+        return False
+
+    result = " ".join(header.rsplit(":", 1)[1].split())
+    while result.startswith("(") and result.endswith(")"):
+        result = result[1:-1].strip()
+    return REAL_SCALAR_RESULT.fullmatch(result) is not None
+
+
 def direct_real_projection(definition: PublicDefinition) -> bool:
     return (
-        REAL_SCALAR_CODOMAIN.search(definition.header) is not None
+        has_explicit_real_scalar_result(definition.header)
         and DIRECT_REAL_PROJECTION.search(definition.body) is not None
     )
 
@@ -111,36 +129,24 @@ theorem proofLocal (z : ℂ) : z.re = z.re := by
 def projectedNNReal (z : ℂ) : NNReal :=
   ⟨Complex.re z, by positivity⟩
 
+def projectedFunction (z : ℂ) : Bool → ℝ :=
+  fun _ => z.re
+
+def projectedByEquation (z : ℂ) : Bool → ℝ
+  | true => z.re
+  | false => 0
+
 def complexDefinition (z : ℂ) : ℂ :=
   z.re
 """
-    path = Path("SelfTest.lean")
-    code = strip_lean_comments(fixture)
-    found: list[PublicDefinition] = []
-
-    for match in PUBLIC_DEFINITION_START.finditer(code):
-        if match.group("indent") or "private" in match.group("modifiers").split():
-            continue
-        assignment = code.find(":=", match.end())
-        if assignment < 0:
-            continue
-        intervening_top_level = TOP_LEVEL_LINE.search(code, match.end(), assignment)
-        if intervening_top_level is not None:
-            continue
-        next_top_level = TOP_LEVEL_LINE.search(code, assignment + 2)
-        end = next_top_level.start() if next_top_level is not None else len(code)
-        found.append(
-            PublicDefinition(
-                path=path,
-                name=match.group("name"),
-                line=code.count("\n", 0, match.start()) + 1,
-                header=code[match.end():assignment],
-                body=code[assignment + 2:end],
-            )
-        )
-
+    found = split_public_definitions(strip_lean_comments(fixture), Path("SelfTest.lean"))
     rejected = {definition.name for definition in found if direct_real_projection(definition)}
-    expected = {"projected", "projectedNNReal"}
+    expected = {
+        "projected",
+        "projectedNNReal",
+        "projectedFunction",
+        "projectedByEquation",
+    }
     if rejected != expected:
         return [
             "physical scalar audit parser self-test failed: "
@@ -152,6 +158,13 @@ def complexDefinition (z : ℂ) : ℂ :=
 def main() -> int:
     errors = run_parser_self_tests()
     seen_allowlist_entries: set[tuple[str, str]] = set()
+
+    for key, rationale in DIRECT_REAL_PROJECTION_ALLOWLIST.items():
+        if not rationale.strip():
+            errors.append(
+                "physical scalar projection allowlist entry lacks a rationale: "
+                f"{key[0]}: {key[1]}"
+            )
 
     for path in lean_files(QUANTUM):
         for definition in public_definitions(path):
