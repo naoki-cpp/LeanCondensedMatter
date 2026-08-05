@@ -47,7 +47,6 @@ theorem chargeDensity_apply (q : ℂ)
   rfl
 
 /-- Every smeared charge density kills the vacuum. -/
-@[simp]
 theorem chargeDensity_vacuum (q : ℂ)
     (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁)) (f : Test) :
     chargeDensity 𝓗₁ q M f (vacuum 𝓗₁) = 0 := by
