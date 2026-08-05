@@ -27,7 +27,7 @@ namespace Field
 but the site type itself need not be finite. -/
 abbrev LatticeState (Site : Type*) := Site →₀ ℂ
 
-variable {Site : Type*} [DecidableEq Site]
+variable {Site : Type*}
 
 /-- The canonical one-particle ket localized at a lattice site. -/
 noncomputable def latticeKet (x : Site) : LatticeState Site :=
@@ -49,7 +49,10 @@ theorem matrixUnit_single (x y z : Site) (c : ℂ) :
     matrixUnit x y (Finsupp.single z c) =
       if y = z then Finsupp.single x c else 0 := by
   classical
-  simp [matrixUnit]
+  by_cases h : y = z
+  · subst z
+    simp [matrixUnit]
+  · simp [matrixUnit, h]
 
 /-- The one-particle projector `|x⟩⟨x|` onto a lattice site. -/
 noncomputable def siteProjector (x : Site) :
@@ -60,6 +63,8 @@ noncomputable def siteProjector (x : Site) :
 theorem siteProjector_apply (x : Site) (ψ : LatticeState Site) :
     siteProjector x ψ = Finsupp.single x (ψ x) := by
   rfl
+
+variable [DecidableEq Site]
 
 /-- A row-and-column locally finite hopping model on an arbitrary discrete site type.
 
@@ -121,7 +126,6 @@ noncomputable def bondOperator (K : LocallyFiniteHopping Site) (x y : Site) :
 theorem bondOperator_swap (K : LocallyFiniteHopping Site) (x y : Site) :
     K.bondOperator y x = -K.bondOperator x y := by
   simp [bondOperator]
-  abel
 
 end LocallyFiniteHopping
 
@@ -143,7 +147,17 @@ noncomputable def bondCurrent (ℏ q : ℂ) (K : LocallyFiniteHopping Site) (x y
 /-- Bond current is antisymmetric under orientation reversal. -/
 theorem bondCurrent_swap (ℏ q : ℂ) (K : LocallyFiniteHopping Site) (x y : Site) :
     bondCurrent ℏ q K y x = -bondCurrent ℏ q K x y := by
-  simp [bondCurrent, K.bondOperator_swap, dGamma_smul]
+  unfold bondCurrent
+  rw [K.bondOperator_swap]
+  have hneg :
+      dGamma (LatticeState Site) (-K.bondOperator x y) =
+        -dGamma (LatticeState Site) (K.bondOperator x y) := by
+    change
+      dGammaLinear (LatticeState Site) (-K.bondOperator x y) =
+        -dGammaLinear (LatticeState Site) (K.bondOperator x y)
+    exact map_neg (dGammaLinear (LatticeState Site)) (K.bondOperator x y)
+  rw [hneg]
+  exact smul_neg _ _
 
 end Field
 end Fermionic
