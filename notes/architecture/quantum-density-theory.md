@@ -19,6 +19,7 @@ The canonical modules are:
 
 ```text
 QuantumTheory/
+├── Postulates.lean
 ├── DensityOperator.lean
 ├── DensityOperator/
 │   ├── Basic.lean
@@ -26,6 +27,7 @@ QuantumTheory/
 │   ├── Purity.lean
 │   ├── Expectation.lean
 │   ├── ExpectationOrder.lean
+│   ├── ObservableExpectation.lean
 │   └── Diagonal.lean
 ├── POVM/
 │   ├── Basic.lean
@@ -52,8 +54,18 @@ QuantumTheory/
 
 ## Expectations
 
-`DensityOperator.expectation` is a continuous complex-linear functional on bounded operators. It is
-defined from the density operator’s spectral decomposition and supplies:
+The pure-state complex expectation uses the canonical physicists’ orientation
+
+```lean
+expValue A ψ = inner ℂ ψ (A ψ).
+```
+
+For a self-adjoint observable this equals the formerly used reversed orientation
+`inner ℂ (A ψ) ψ`. `observableExpValue A ψ : ℝ` transports the proved-real complex scalar through
+`Complex.selfAdjointEquiv`, and both values are invariant under global phase.
+
+`DensityOperator.expectation` is a continuous complex-linear functional on arbitrary bounded
+operators. It is defined from the density operator’s spectral decomposition and supplies:
 
 - complex linearity;
 - normalization on the identity;
@@ -61,9 +73,24 @@ defined from the density operator’s spectral decomposition and supplies:
 - nonnegativity on positive operators;
 - reality on symmetric, self-adjoint, or positive operators.
 
-In finite dimensions, `DensityOperator.expectation_eq_linearMap_trace` identifies this definition
-with the ordinary matrix trace `Tr(ρA)`. Diagonal finite-sum formulas are specialization theorems of
-the same expectation.
+For an `Observable H`, `DensityOperator.observableExpectation : ℝ` is the canonical real-valued
+mixed-state API. Its exact boundary theorem is
+
+```lean
+ρ.expectation A.1 = (ρ.observableExpectation A : ℂ).
+```
+
+For a rank-one density operator, the complex and real APIs agree exactly with the corresponding
+vector-state expectations:
+
+```lean
+(pure ψ).expectation A.1 = expValue A ψ
+(pure ψ).observableExpectation A = observableExpValue A ψ.
+```
+
+In finite dimensions, `DensityOperator.expectation_eq_linearMap_trace` identifies the complex
+functional with the ordinary matrix trace `Tr(ρA)`. Diagonal finite-sum formulas are specialization
+theorems of the same expectation.
 
 Real-valued physical quantities are obtained from a proved self-adjoint complex scalar through
 `Complex.selfAdjointEquiv`; they are not defined by discarding an arbitrary imaginary part.
@@ -121,9 +148,10 @@ domain-aware theory.
 
 The bounded theory includes:
 
-- `energyExpectationSelfAdjoint`, the self-adjoint scalar representing `Tr(ρH)`;
-- `energyExpValue`, its lossless real image under `Complex.selfAdjointEquiv`;
-- the exact identity `ρ.expectation Hop.1 = (energyExpValue ρ Hop : ℂ)`;
+- `energyExpValue ρ Hop`, the Hamiltonian-facing specialization of
+  `ρ.observableExpectation Hop`;
+- the exact identity `ρ.expectation Hop.1 = (energyExpValue ρ Hop : ℂ)` inherited from the generic
+  observable boundary;
 - the Helmholtz free-energy lower bound;
 - finiteness of entropy under the variational hypotheses;
 - the entropy/free-energy identity for the normalized Gibbs state.
@@ -143,6 +171,17 @@ Finite-dimensional code uses the same `DensityOperator` type. The specialization
 - automatic entropy summability and finiteness.
 
 There is no separate finite-dimensional state or measurement model.
+
+## Regression boundary
+
+The QuantumTheory architecture audit enforces:
+
+- the canonical pure-state orientation `inner ℂ ψ (A ψ)`;
+- unique ownership of `observableExpValue` in `Postulates.lean`;
+- unique ownership of `DensityOperator.observableExpectation` in
+  `DensityOperator/ObservableExpectation.lean`;
+- `energyExpValue` remaining a direct thermodynamic specialization rather than a duplicate generic
+  implementation.
 
 ## Scope boundaries
 
