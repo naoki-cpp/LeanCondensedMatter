@@ -61,27 +61,32 @@ theorem dGamma_linearCommutator (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
         dGamma 𝓗₁ S (dGamma 𝓗₁ T (oneParticle 𝓗₁ f * x)) -
             dGamma 𝓗₁ T (dGamma 𝓗₁ S (oneParticle 𝓗₁ f * x)) =
           dGamma 𝓗₁ (linearCommutator S T) (oneParticle 𝓗₁ f * x)
-      simp only [dGamma_oneParticle_mul, map_add, linearCommutator_apply, map_sub, sub_mul,
-        sub_eq_add_neg]
-      have hmul :
-          oneParticle 𝓗₁ f * dGamma 𝓗₁ S (dGamma 𝓗₁ T x) -
-              oneParticle 𝓗₁ f * dGamma 𝓗₁ T (dGamma 𝓗₁ S x) =
-            oneParticle 𝓗₁ f * dGamma 𝓗₁ (linearCommutator S T) x := by
-        rw [← mul_sub, hx]
       calc
-        oneParticle 𝓗₁ (S (T f)) * x +
-              (oneParticle 𝓗₁ f * dGamma 𝓗₁ S (dGamma 𝓗₁ T x) +
-                (-(oneParticle 𝓗₁ (T (S f)) * x) +
-                  -(oneParticle 𝓗₁ f * dGamma 𝓗₁ T (dGamma 𝓗₁ S x)))) =
-            oneParticle 𝓗₁ (S (T f)) * x +
-              (-(oneParticle 𝓗₁ (T (S f)) * x) +
-                (oneParticle 𝓗₁ f * dGamma 𝓗₁ S (dGamma 𝓗₁ T x) -
-                  oneParticle 𝓗₁ f * dGamma 𝓗₁ T (dGamma 𝓗₁ S x))) := by
+        dGamma 𝓗₁ S (dGamma 𝓗₁ T (oneParticle 𝓗₁ f * x)) -
+              dGamma 𝓗₁ T (dGamma 𝓗₁ S (oneParticle 𝓗₁ f * x)) =
+            (oneParticle 𝓗₁ (S (T f)) * x +
+                oneParticle 𝓗₁ (T f) * dGamma 𝓗₁ S x +
+              (oneParticle 𝓗₁ (S f) * dGamma 𝓗₁ T x +
+                oneParticle 𝓗₁ f * dGamma 𝓗₁ S (dGamma 𝓗₁ T x))) -
+            (oneParticle 𝓗₁ (T (S f)) * x +
+                oneParticle 𝓗₁ (S f) * dGamma 𝓗₁ T x +
+              (oneParticle 𝓗₁ (T f) * dGamma 𝓗₁ S x +
+                oneParticle 𝓗₁ f * dGamma 𝓗₁ T (dGamma 𝓗₁ S x))) := by
+          rw [dGamma_oneParticle_mul, dGamma_oneParticle_mul]
+          rw [map_add, map_add]
+          rw [dGamma_oneParticle_mul, dGamma_oneParticle_mul,
+            dGamma_oneParticle_mul, dGamma_oneParticle_mul]
+        _ = oneParticle 𝓗₁ (S (T f) - T (S f)) * x +
+              oneParticle 𝓗₁ f *
+                (dGamma 𝓗₁ S (dGamma 𝓗₁ T x) -
+                  dGamma 𝓗₁ T (dGamma 𝓗₁ S x)) := by
+          rw [map_sub, sub_mul, mul_sub]
           abel
-        _ = oneParticle 𝓗₁ (S (T f)) * x +
-              (-(oneParticle 𝓗₁ (T (S f)) * x) +
-                oneParticle 𝓗₁ f * dGamma 𝓗₁ (linearCommutator S T) x) := by
-          rw [hmul]
+        _ = oneParticle 𝓗₁ (S (T f) - T (S f)) * x +
+              oneParticle 𝓗₁ f * dGamma 𝓗₁ (linearCommutator S T) x := by
+          rw [hx]
+        _ = dGamma 𝓗₁ (linearCommutator S T) (oneParticle 𝓗₁ f * x) := by
+          rw [dGamma_oneParticle_mul, linearCommutator_apply]
 
 /-- The algebraic total particle-number operator, identified as `dGamma id`.
 
