@@ -47,6 +47,7 @@ private theorem even_card_of_fixedPointFreeInvolution {α : Type*} [Fintype α]
     refine ⟨p x, ?_, ?_⟩
     · rfl
     · intro y hy
+      change p x = y at hy
       exact hy.symm
   exact hM.even_card
 
