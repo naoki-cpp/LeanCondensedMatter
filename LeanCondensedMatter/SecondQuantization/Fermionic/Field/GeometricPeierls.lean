@@ -53,7 +53,7 @@ theorem comp_const_mul_zero {F : ℂ → V} {F' : V}
   have houter : HasDerivAt (fun z => ℓ (F z)) (ℓ F') (c * 0) := by
     simpa using hF ℓ
   have hcomp := HasDerivAt.comp 0 houter hinner
-  simpa only [map_smul, smul_eq_mul, mul_comm] using hcomp
+  simpa only [Function.comp_apply, map_smul, smul_eq_mul, mul_comm] using hcomp
 
 /-- Finite sums preserve algebraic derivatives. -/
 theorem sum {ι : Type*} (s : Finset ι) {F : ι → ℂ → V} {F' : ι → V} {A : ℂ}
@@ -198,14 +198,27 @@ theorem hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero
       HasAlgebraicDerivAt.sum (Finset.univ : Finset Site)
         (fun x _ => hy x)
   have hscaled := hsum.const_smul ((2 : ℂ)⁻¹)
-  have hcoeff : ∀ x y : Site,
-      (geometry.bondCoordinate direction x y : ℂ) *
-          (geometry.bondCoordinate direction x y : ℂ) =
-        ((geometry.bondCoordinate direction x y) ^ 2 : ℝ) := by
-    intro x y
+  have hderiv :
+      (2 : ℂ)⁻¹ •
+          ∑ x : Site, ∑ y : Site,
+            (geometry.bondCoordinate direction x y : ℂ) •
+              ((geometry.bondCoordinate direction x y : ℂ) •
+                boundedBondContact K ℏ q x y) =
+        (2 : ℂ)⁻¹ •
+          ∑ x : Site, ∑ y : Site,
+            ((geometry.bondCoordinate direction x y) ^ 2 : ℂ) •
+              boundedBondContact K ℏ q x y := by
+    congr 1
+    apply Finset.sum_congr rfl
+    intro x _
+    apply Finset.sum_congr rfl
+    intro y _
+    rw [smul_smul]
+    congr 1
     norm_num [pow_two]
   unfold boundedDirectionalPeierlsCurrent boundedDirectionalContact
-  simpa [smul_smul, hcoeff] using hscaled
+  rw [← hderiv]
+  exact hscaled
 
 end
 end Field
