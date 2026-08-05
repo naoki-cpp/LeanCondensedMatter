@@ -41,6 +41,7 @@ noncomputable def affineObservableFamily
     (A₀ A₁ : H →L[ℂ] H) (lam : ℝ) : H →L[ℂ] H :=
   A₀ + lam • A₁
 
+omit [CompleteSpace H] in
 @[simp]
 theorem affineObservableFamily_zero (A₀ A₁ : H →L[ℂ] H) :
     affineObservableFamily A₀ A₁ 0 = A₀ := by
@@ -67,34 +68,22 @@ theorem affinePerturbedObservable_eq
       timeDependentPerturbedObservable system V A₀ lam t +
         lam • timeDependentPerturbedObservable system V A₁ lam t := by
   simp [affinePerturbedObservable, affineObservableFamily,
-    timeDependentPerturbedObservable, heisenbergEvolution,
-    mul_add, add_mul, mul_smul_comm, smul_mul_assoc]
+    timeDependentPerturbedObservable, heisenbergEvolution, mul_add, add_mul]
 
-/-- First variation of an affine source-dependent measured observable. The derivative is the fixed
-observable state variation plus free Heisenberg evolution of the explicit observable coefficient. -/
-theorem hasDerivAt_affinePerturbedObservable_zero_of_bound
-    {V : ℝ → (H →L[ℂ] H)} (A₀ A₁ : H →L[ℂ] H)
-    {β M t : ℝ} (hM : 0 ≤ M)
-    (hV : ∀ s ∈ Icc (0 : ℝ) β,
-      ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
-    (ht : t ∈ Icc (0 : ℝ) β) :
-    HasDerivAt
-      (fun lam : ℝ => affinePerturbedObservable system V A₀ A₁ lam t)
-      (star (timeDependentPropagatorFirstVariation system V t) *
-          heisenbergEvolution system A₀ t +
-        heisenbergEvolution system A₀ t *
-          timeDependentPropagatorFirstVariation system V t +
-        heisenbergEvolution system A₁ t)
-      0 := by
-  have hfixed := hasDerivAt_timeDependentPerturbedObservable_zero_of_bound
-    system A₀ hM hV ht
-  have hcontact := hasDerivAt_timeDependentPerturbedObservable_zero_of_bound
-    system A₁ hM hV ht
-  have hscaled := (hasDerivAt_id (x := (0 : ℝ))).smul hcontact
-  have hsum := hfixed.add hscaled
-  simpa [affinePerturbedObservable_eq, add_comm, add_left_comm, add_assoc] using hsum
+/-- The affine source-dependent expectation is the sum of two fixed-observable pullbacks. -/
+theorem affinePerturbedExpectation_eq
+    (expectation : NormalizedExpectation H)
+    (V : ℝ → (H →L[ℂ] H)) (A₀ A₁ : H →L[ℂ] H)
+    (lam t : ℝ) :
+    affinePerturbedExpectation system expectation V A₀ A₁ lam t =
+      timeDependentPerturbedExpectationFunctional system expectation V lam t A₀ +
+        lam • timeDependentPerturbedExpectationFunctional system expectation V lam t A₁ := by
+  rw [affinePerturbedExpectation, affinePerturbedObservable_eq]
+  simp
 
-/-- Applying the ordinary expectation to the affine source-dependent observable variation. -/
+/-- First variation of the affine source-dependent measured expectation. The derivative is the
+fixed-observable state variation plus free Heisenberg evolution of the explicit observable
+coefficient. -/
 theorem hasDerivAt_affinePerturbedExpectation_zero_of_bound
     (expectation : NormalizedExpectation H)
     {V : ℝ → (H →L[ℂ] H)} (A₀ A₁ : H →L[ℂ] H)
@@ -105,21 +94,21 @@ theorem hasDerivAt_affinePerturbedExpectation_zero_of_bound
     HasDerivAt
       (fun lam : ℝ => affinePerturbedExpectation system expectation V A₀ A₁ lam t)
       (expectation
-        (star (timeDependentPropagatorFirstVariation system V t) *
-            heisenbergEvolution system A₀ t +
-          heisenbergEvolution system A₀ t *
-            timeDependentPropagatorFirstVariation system V t +
-          heisenbergEvolution system A₁ t))
+          (star (timeDependentPropagatorFirstVariation system V t) *
+              heisenbergEvolution system A₀ t +
+            heisenbergEvolution system A₀ t *
+              timeDependentPropagatorFirstVariation system V t) +
+        expectation (heisenbergEvolution system A₁ t))
       0 := by
-  have hObs := hasDerivAt_affinePerturbedObservable_zero_of_bound
-    system A₀ A₁ hM hV ht
-  have hExpectation : HasFDerivAt
-      (fun X : H →L[ℂ] H => expectation X)
-      (expectation.toContinuousLinearMap.restrictScalars ℝ)
-      (affinePerturbedObservable system V A₀ A₁ 0 t) :=
-    (expectation.toContinuousLinearMap.restrictScalars ℝ).hasFDerivAt
-  have hcomp := hExpectation.comp 0 hObs.hasFDerivAt
-  simpa [affinePerturbedExpectation, Function.comp_def] using hcomp.hasDerivAt
+  have hfixed :=
+    hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound
+      system expectation A₀ hM hV ht
+  have hcontact :=
+    hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound
+      system expectation A₁ hM hV ht
+  have hscaled := (hasDerivAt_id (x := (0 : ℝ))).smul hcontact
+  have hsum := hfixed.add hscaled
+  simpa [affinePerturbedExpectation_eq] using hsum
 
 /-- For a Hermitian perturbation, the state contribution is a commutator and the explicit
 observable coefficient remains as a separate contact term. -/
@@ -134,11 +123,11 @@ theorem hasDerivAt_affinePerturbedExpectation_zero_of_bound_of_isSelfAdjoint
     HasDerivAt
       (fun lam : ℝ => affinePerturbedExpectation system expectation V A₀ A₁ lam t)
       (expectation
-        (heisenbergEvolution system A₀ t *
+          (heisenbergEvolution system A₀ t *
               timeDependentPropagatorFirstVariation system V t -
             timeDependentPropagatorFirstVariation system V t *
-              heisenbergEvolution system A₀ t +
-          heisenbergEvolution system A₁ t))
+              heisenbergEvolution system A₀ t) +
+        expectation (heisenbergEvolution system A₁ t))
       0 := by
   have h := hasDerivAt_affinePerturbedExpectation_zero_of_bound
     system expectation A₀ A₁ hM hV ht
@@ -172,21 +161,6 @@ theorem hasDerivAt_affinePerturbedExpectation_zero_of_bound_kubo
   have h :=
     hasDerivAt_affinePerturbedExpectation_zero_of_bound_of_isSelfAdjoint
       system expectation hVself A₀ A₁ hM hV ht
-  have hsplit :
-      expectation
-          (heisenbergEvolution system A₀ t *
-                timeDependentPropagatorFirstVariation system V t -
-              timeDependentPropagatorFirstVariation system V t *
-                heisenbergEvolution system A₀ t +
-            heisenbergEvolution system A₁ t) =
-        expectation
-            (heisenbergEvolution system A₀ t *
-                timeDependentPropagatorFirstVariation system V t -
-              timeDependentPropagatorFirstVariation system V t *
-                heisenbergEvolution system A₀ t) +
-          expectation (heisenbergEvolution system A₁ t) := by
-    exact map_add expectation.toContinuousLinearMap _ _
-  rw [hsplit] at h
   rw [expectation_commutator_firstVariation_eq_integral
     system expectation V A₀ t hInt] at h
   exact h
