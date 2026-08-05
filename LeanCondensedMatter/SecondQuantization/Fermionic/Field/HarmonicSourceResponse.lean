@@ -179,7 +179,7 @@ theorem hasDerivAt_boundedDirectionalSineExpectation_zero_of_bound_retarded
     hasDerivAt_boundedDirectionalCurrentExpectation_zero_of_bound_retarded
       system expectation (adiabaticSineSource ω η T)
       geometry direction K hK q hM hV hT hInt
-  simpa [finiteTimeAdiabaticDirectionalSineResponse] using h
+  simpa [finiteTimeAdiabaticDirectionalSineResponse, map_zero] using h
 
 end
 end Field
