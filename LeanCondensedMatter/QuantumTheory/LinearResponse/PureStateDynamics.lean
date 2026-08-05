@@ -57,11 +57,11 @@ theorem norm_freePropagator_apply (t : ℝ) (x : H) :
       ContinuousLinearMap.adjoint (freePropagator system t) ∘SL
           freePropagator system t = 1 := by
     ext y
-    change ContinuousLinearMap.adjoint (freePropagator system t)
-        (freePropagator system t y) = y
     have h := congrArg (fun U : H →L[ℂ] H => U y)
       (star_mul_freePropagator system t)
-    simpa only [mul_apply_eq_comp, one_apply] using h
+    change ContinuousLinearMap.adjoint (freePropagator system t)
+        (freePropagator system t y) = y at h
+    exact h
   exact
     ((ContinuousLinearMap.norm_map_iff_adjoint_comp_self
       (freePropagator system t)).2 hcomp) x
@@ -70,6 +70,7 @@ theorem norm_freePropagator_apply (t : ℝ) (x : H) :
 def phaseState (c : ℂ) (hc : ‖c‖ = 1) (ψ : State H) : State H :=
   ⟨c • ψ.1, by rw [norm_smul, hc, ψ.2, one_mul]⟩
 
+omit [CompleteSpace H] in
 @[simp]
 theorem phaseState_val (c : ℂ) (hc : ‖c‖ = 1) (ψ : State H) :
     (phaseState c hc ψ).1 = c • ψ.1 :=
