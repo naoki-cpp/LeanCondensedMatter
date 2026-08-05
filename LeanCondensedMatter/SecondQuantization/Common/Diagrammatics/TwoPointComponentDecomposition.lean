@@ -46,7 +46,6 @@ theorem TwoPointDiagram.componentIsVacuum_iff_ne_externalComponentPart
   rw [d.componentMeetsExternal_iff_eq_externalComponentPart B]
 
 /-- The canonical external component is not a vacuum component. -/
-@[simp]
 theorem TwoPointDiagram.externalComponentPart_not_mem_vacuumComponentParts
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     d.externalComponentPart ∉ d.vacuumComponentParts := by
