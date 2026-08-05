@@ -57,31 +57,16 @@ theorem interactionPerturbation_zero_source (B : H →L[ℂ] H) (t : ℝ) :
     interactionPerturbation system B (fun _ => 0) t = 0 := by
   simp [interactionPerturbation]
 
-omit [CompleteSpace H] in
-/-- A generic Dyson evolution is the identity at zero coupling. -/
-theorem dysonEvolution_zero_coupling (V : ℝ → (H →L[ℂ] H)) (t : ℝ) :
-    Dyson.evolution V 0 t = 1 := by
-  rw [Dyson.evolution, tsum_eq_single 0]
-  · simp [Dyson.term]
-  · intro n hn
-    simp [Dyson.term, hn]
-
 @[simp]
 theorem interactionPropagator_zero_coupling (B : H →L[ℂ] H) (f : ℝ → ℝ) (t : ℝ) :
     interactionPropagator system B f 0 t = 1 := by
-  simp [interactionPropagator, dysonEvolution_zero_coupling]
+  simpa [interactionPropagator] using
+    Dyson.evolution_zero_coupling (interactionPerturbation system B f) t
 
 @[simp]
 theorem interactionPropagator_zero_time (B : H →L[ℂ] H) (f : ℝ → ℝ) (lam : ℝ) :
     interactionPropagator system B f lam 0 = 1 := by
   simp [interactionPropagator]
-
-omit [CompleteSpace H] in
-/-- The first generic Dyson coefficient is the negative integral of the interaction. -/
-theorem dysonCoeff_one (V : ℝ → (H →L[ℂ] H)) (t : ℝ) :
-    Dyson.coeff V 1 t = -∫ s in (0 : ℝ)..t, V s := by
-  rw [show (1 : ℕ) = 0 + 1 by rfl, Dyson.coeff_succ]
-  simp
 
 /-- The first weighted Dyson term for `H_λ = H₀ - λ f B` has coefficient `+iλ/ℏ`. -/
 theorem interactionDysonTerm_one (B : H →L[ℂ] H) (f : ℝ → ℝ)
@@ -89,7 +74,8 @@ theorem interactionDysonTerm_one (B : H →L[ℂ] H) (f : ℝ → ℝ)
     Dyson.term (interactionPerturbation system B f) (physicalDysonCoupling system lam) t 1 =
       ((lam : ℂ) * (Complex.I / (system.hbar : ℂ))) •
         ∫ s in (0 : ℝ)..t, interactionPerturbation system B f s := by
-  simp [Dyson.term, physicalDysonCoupling, dysonCoeff_one]
+  simpa [physicalDysonCoupling] using
+    Dyson.term_one (interactionPerturbation system B f) (physicalDysonCoupling system lam) t
 
 /-- Under explicit continuity and uniform boundedness hypotheses, the physical interaction-picture
 propagator satisfies the Volterra equation with the sign dictated by

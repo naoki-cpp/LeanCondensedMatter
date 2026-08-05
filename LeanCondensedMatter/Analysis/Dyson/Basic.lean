@@ -40,6 +40,13 @@ theorem coeff_succ (V : ℝ → A) (n : ℕ) (τ : ℝ) :
     coeff V (n + 1) τ = - ∫ σ in (0 : ℝ)..τ, V σ * coeff V n σ := rfl
 
 omit [CompleteSpace A] in
+/-- The first generic Dyson coefficient is the negative integral of the interaction. -/
+theorem coeff_one (V : ℝ → A) (τ : ℝ) :
+    coeff V 1 τ = -∫ σ in (0 : ℝ)..τ, V σ := by
+  rw [show (1 : ℕ) = 0 + 1 by rfl, coeff_succ]
+  simp
+
+omit [CompleteSpace A] in
 /-- At the initial time, only the zeroth Dyson coefficient survives. -/
 @[simp]
 theorem coeff_at_zero (V : ℝ → A) (n : ℕ) :
@@ -56,6 +63,12 @@ omit [CompleteSpace A] in
 @[simp]
 theorem term_zero (V : ℝ → A) (lam : ℂ) (τ : ℝ) : term V lam τ 0 = 1 := by
   simp [term]
+
+omit [CompleteSpace A] in
+/-- The first weighted Dyson term. -/
+theorem term_one (V : ℝ → A) (lam : ℂ) (τ : ℝ) :
+    term V lam τ 1 = (-lam) • ∫ σ in (0 : ℝ)..τ, V σ := by
+  simp [term, coeff_one]
 
 omit [CompleteSpace A] in
 /-- At the initial time, all positive-order weighted coefficients vanish. -/
@@ -79,6 +92,15 @@ theorem evolution_zero (V : ℝ → A) (lam : ℂ) : evolution V lam 0 = 1 := by
   · simp [term]
   · intro n hn
     simp [term, coeff_at_zero, hn]
+
+omit [CompleteSpace A] in
+/-- The generic Dyson evolution is the algebra unit at zero scalar coupling. -/
+@[simp]
+theorem evolution_zero_coupling (V : ℝ → A) (τ : ℝ) : evolution V 0 τ = 1 := by
+  rw [evolution, tsum_eq_single 0]
+  · simp [term]
+  · intro n hn
+    simp [term, hn]
 
 /-- The scalar exponential-series majorant `(M τ)ⁿ / n!`. -/
 noncomputable def majorant (M τ : ℝ) (n : ℕ) : ℝ :=

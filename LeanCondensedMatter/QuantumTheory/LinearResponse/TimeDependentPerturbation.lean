@@ -65,29 +65,12 @@ noncomputable def timeDependentPropagatorFirstVariation
   (-(Complex.I / (system.hbar : ℂ))) •
     ∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s
 
-omit [CompleteSpace H] in
-/-- A generic Dyson evolution is the identity at zero scalar coupling. -/
-theorem timeDependentDysonEvolution_zero_coupling
-    (V : ℝ → (H →L[ℂ] H)) (t : ℝ) :
-    Dyson.evolution V 0 t = 1 := by
-  rw [Dyson.evolution, tsum_eq_single 0]
-  · simp [Dyson.term]
-  · intro n hn
-    simp [Dyson.term, hn]
-
 @[simp]
 theorem timeDependentInteractionPropagator_zero_coupling
     (V : ℝ → (H →L[ℂ] H)) (t : ℝ) :
     timeDependentInteractionPropagator system V 0 t = 1 := by
-  simp [timeDependentInteractionPropagator, timeDependentPhysicalDysonCoupling,
-    timeDependentDysonEvolution_zero_coupling]
-
-omit [CompleteSpace H] in
-/-- The first generic Dyson coefficient is the negative integral of the interaction. -/
-theorem timeDependentDysonCoeff_one (V : ℝ → (H →L[ℂ] H)) (t : ℝ) :
-    Dyson.coeff V 1 t = -∫ s in (0 : ℝ)..t, V s := by
-  rw [show (1 : ℕ) = 0 + 1 by rfl, Dyson.coeff_succ]
-  simp
+  simpa [timeDependentInteractionPropagator, timeDependentPhysicalDysonCoupling] using
+    Dyson.evolution_zero_coupling (timeDependentInteractionPerturbation system V) t
 
 /-- The exact first weighted Dyson term for `H₀ + λ V(t)`. -/
 theorem timeDependentDysonTerm_one
@@ -96,7 +79,9 @@ theorem timeDependentDysonTerm_one
         (timeDependentPhysicalDysonCoupling system lam) t 1 =
       ((lam : ℂ) * (-(Complex.I / (system.hbar : ℂ)))) •
         ∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s := by
-  simp [Dyson.term, timeDependentPhysicalDysonCoupling, timeDependentDysonCoeff_one]
+  rw [Dyson.term_one]
+  congr 1
+  simp [timeDependentPhysicalDysonCoupling]
 
 /-- After subtracting the identity and exact first term, the propagator remainder starts at order
 `λ²`. -/
