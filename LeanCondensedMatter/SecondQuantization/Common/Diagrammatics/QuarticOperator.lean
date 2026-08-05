@@ -45,7 +45,7 @@ def quarticVertexEnergyShift (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) :
   ε q.create₁ + ε q.create₂ - ε q.annihilate₁ - ε q.annihilate₂
 
 /-- Local quartic-leg operators constructed from arbitrary creation and annihilation maps. -/
-def quarticLocalLegOperator
+abbrev quarticLocalLegOperator
     (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (q : QuarticVertexLabel Mode) : Fin 4 → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
   ![create q.create₁, create q.create₂, annihilate q.annihilate₂, annihilate q.annihilate₁]
@@ -66,7 +66,7 @@ theorem heisenbergEvolve_quarticLocalLegOperator
     simp [quarticLocalLegOperator, quarticLocalLegEnergyShift, hcreate, hannihilate, mul_comm]
 
 /-- The fixed ordered quartic vertex operator constructed from arbitrary ladder maps. -/
-def quarticVertexOperator
+abbrev quarticVertexOperator
     (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (q : QuarticVertexLabel Mode) : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
   (create q.create₁).comp
