@@ -26,11 +26,11 @@ private theorem even_card_of_fixedPointFreeInvolution {α : Type*} [Fintype α]
     Even (Fintype.card α) := by
   let G : SimpleGraph α where
     Adj x y := p x = y
-    symm := by
+    symm := ⟨by
       intro x y h
       change p y = x
       rw [← h]
-      exact hp x
+      exact hp x⟩
     loopless := ⟨hne⟩
   let M : G.Subgraph where
     verts := Set.univ
@@ -82,9 +82,11 @@ noncomputable def TwoPointDiagram.disconnectedExternalLegDataEquiv {S : Finset (
     rcases leg with ⟨leg, hleg⟩
     cases leg with
     | inl e =>
-        fin_cases e
+        by_cases he : e = 0
         · exact Sum.inl 0
-        · exact False.elim (d.externalOne_not_mem_externalComponentPart hExt hleg)
+        · have he1 : e = 1 := by omega
+          subst e
+          exact False.elim (d.externalOne_not_mem_externalComponentPart hExt hleg)
     | inr p =>
         exact Sum.inr
           (⟨p.1.1, (TwoPointDiagram.mem_interactionPart_subtype
@@ -142,6 +144,7 @@ noncomputable def TwoPointDiagram.disconnectedExternalBlockLegEquiv {S : Finset 
       d.legInComponent_iff_unflattened d.externalComponentPart leg).trans
     (d.disconnectedExternalLegDataEquiv hExt)
 
+open Classical in
 private theorem TwoPointDiagram.card_disconnectedExternalBlockLegs {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (hExt : ¬ d.ExternalVerticesConnected) :
