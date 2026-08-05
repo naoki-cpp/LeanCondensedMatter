@@ -120,9 +120,30 @@ sum strongly to the identity:
 hasSum_apply : ∀ x, HasSum (fun m => E m x) x
 ```
 
-`probSelfAdjoint` records the Born expectation as a self-adjoint complex scalar. `prob` transports it
-to `ℝ` through `Complex.selfAdjointEquiv`. The API proves nonnegativity, the upper bound `≤ 1`,
-summability over outcomes, and total probability `1`. Finite-outcome sums use the same POVM type.
+The Born scalar boundary is represented in four deliberately distinct forms:
+
+- `probSelfAdjoint P ρ m : selfAdjoint ℂ` records the proved-real complex expectation
+  `Tr(ρ Eₘ)`;
+- `probNNReal P ρ m : NNReal` is the canonical scalar probability and expresses nonnegativity in
+  its type;
+- `prob P ρ m : ℝ` is only the compatibility coercion of `probNNReal`;
+- `bornPMF P ρ : PMF M` packages the whole countable family as a normalized probability mass
+  function.
+
+The exact complex boundary theorem is
+
+```lean
+ρ.expectation (P.E m) = ((probNNReal P ρ m : ℝ) : ℂ).
+```
+
+The internal double-series kernel uses `diagonalExpectationValue` for every positive effect, so its
+physical real value is transported through a self-adjointness proof rather than defined by applying
+`.re` to an arbitrary complex expression. Uses of `Complex.reCLM` inside normalization proofs are
+proof-only transport of already identified real scalars and do not define the probability API.
+
+The API proves nonnegativity, the upper bound `≤ 1`, countable summability, total probability `1`,
+and finite-outcome normalization. Both `NNReal` and compatibility `ℝ` normalization theorems are
+available, while `bornPMF` carries normalization intrinsically.
 
 ## Entropy
 
@@ -181,7 +202,14 @@ The QuantumTheory architecture audit enforces:
 - unique ownership of `DensityOperator.observableExpectation` in
   `DensityOperator/ObservableExpectation.lean`;
 - `energyExpValue` remaining a direct thermodynamic specialization rather than a duplicate generic
-  implementation.
+  implementation;
+- unique ownership of `probNNReal` and `bornPMF` in `POVM/Born.lean`;
+- `prob` remaining a direct real coercion of `probNNReal`;
+- the Born normalization kernel using `diagonalExpectationValue` and containing no direct `.re`
+  projection in its definition body.
+
+Proof-local extraction of the real component of a proved equality remains allowed. The audit guards
+public physical definitions and canonical internal kernels, not ordinary proof techniques.
 
 ## Scope boundaries
 
