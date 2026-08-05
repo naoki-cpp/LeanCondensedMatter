@@ -1,18 +1,24 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentPartition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentRestriction
 
 set_option linter.style.header false
 
 /-!
-# Restriction data for components of two-point diagrams
+# Restricting components of two-point diagrams
 
-This module prepares restriction of a two-point diagram to its external component and vacuum
-components.  It extracts the interaction vertices belonging to a full component part and restricts
-the partner permutation to the legs of that component.  Reindexing those legs as either a smaller
-two-point diagram or a quartic vacuum diagram is developed separately.
+This module extracts the interaction vertices belonging to a full external-plus-interaction
+component and restricts the ambient pairing to its legs.  For a vacuum component, those legs are
+reindexed as the four local legs of an ordinary quartic diagram, producing the diagram needed for
+vacuum-bubble factorization.
+
+Restriction to the component containing the external legs and amplitude factorization are developed
+separately.
 -/
 
 namespace SecondQuantization
 namespace Common
+
+open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 
@@ -37,6 +43,22 @@ theorem TwoPointDiagram.mem_interactionPart {N : ℕ} {S : Finset (Fin N)}
   · intro h
     exact ⟨h.choose, h⟩
 
+/-- Membership in the interaction part for a vertex already carrying its ambient-membership proof. -/
+@[simp]
+theorem TwoPointDiagram.mem_interactionPart_subtype {N : ℕ} {S : Finset (Fin N)}
+    (B : Finset (TwoPointVertex S)) (v : ↥S) :
+    (v : Fin N) ∈ TwoPointDiagram.interactionPart B ↔
+      (Sum.inr v : TwoPointVertex S) ∈ B := by
+  rw [TwoPointDiagram.mem_interactionPart]
+  constructor
+  · rintro ⟨hv, h⟩
+    have hvEq : (⟨(v : Fin N), hv⟩ : ↥S) = v := Subtype.ext (by rfl)
+    simpa only [hvEq] using h
+  · intro h
+    refine ⟨v.2, ?_⟩
+    have hvEq : (⟨(v : Fin N), v.2⟩ : ↥S) = v := Subtype.ext (by rfl)
+    simpa only [hvEq] using h
+
 /-- The interaction part of a full component is contained in the ambient interaction-vertex set. -/
 theorem TwoPointDiagram.interactionPart_subset {N : ℕ} {S : Finset (Fin N)}
     (B : Finset (TwoPointVertex S)) :
@@ -44,6 +66,21 @@ theorem TwoPointDiagram.interactionPart_subset {N : ℕ} {S : Finset (Fin N)}
   intro v hv
   obtain ⟨hvS, _⟩ := (TwoPointDiagram.mem_interactionPart B v).1 hv
   exact hvS
+
+/-- The vertex incident to an unflattened two-point leg. -/
+def twoPointLegVertex {S : Finset (Fin N)} : TwoPointLeg S → TwoPointVertex S
+  | .inl e => .inl e
+  | .inr p => .inr p.1
+
+@[simp]
+theorem twoPointLegVertex_external {S : Finset (Fin N)} (e : Fin 2) :
+    twoPointLegVertex (Sum.inl e : TwoPointLeg S) = (Sum.inl e : TwoPointVertex S) :=
+  rfl
+
+@[simp]
+theorem twoPointLegVertex_interaction {S : Finset (Fin N)} (v : ↥S) (l : Fin 4) :
+    twoPointLegVertex (Sum.inr (v, l) : TwoPointLeg S) = (Sum.inr v : TwoPointVertex S) :=
+  rfl
 
 /-- A flattened leg belongs to `B` when the component block of its incident vertex is `B`. -/
 def TwoPointDiagram.legInComponent {S : Finset (Fin N)}
@@ -60,6 +97,21 @@ theorem TwoPointDiagram.legInComponent_iff_vertex_mem {S : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card + 1))) :
     d.legInComponent B leg ↔ twoPointVertexOfLeg leg ∈ B :=
   d.componentBlock_eq_iff_mem hB _
+
+/-- Membership of an unflattened leg in a component part. -/
+def TwoPointDiagram.unflattenedLegInComponent {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (B : d.componentPartition.parts) (leg : TwoPointLeg S) : Prop :=
+  twoPointLegVertex leg ∈ (B : Finset (TwoPointVertex S))
+
+/-- Flattening preserves the component-membership predicate. -/
+theorem TwoPointDiagram.legInComponent_iff_unflattened {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (B : d.componentPartition.parts) (leg : Fin (2 * (2 * S.card + 1))) :
+    d.legInComponent B leg ↔
+      d.unflattenedLegInComponent B (twoPointLegEquiv S leg) := by
+  rw [d.legInComponent_iff_vertex_mem B.2 leg]
+  rfl
 
 /-- A leg and its partner have incident vertices in the same full component block. -/
 theorem TwoPointDiagram.componentBlock_vertexOfLeg_partner {S : Finset (Fin N)}
@@ -112,6 +164,109 @@ theorem TwoPointDiagram.restrictedPartner_ne_self {S : Finset (Fin N)}
     (leg : {leg : Fin (2 * (2 * S.card + 1)) // d.legInComponent B leg}) :
     d.restrictedPartner B leg ≠ leg := fun h =>
   d.pairing.partner_ne_self leg (by rw [← d.restrictedPartner_val B, h])
+
+/-- For a vacuum part, unflattened component legs are exactly the four local legs of the extracted
+interaction vertices. -/
+noncomputable def TwoPointDiagram.vacuumLegDataEquiv {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) :
+    {leg : TwoPointLeg S // d.unflattenedLegInComponent B leg} ≃
+      ↥(TwoPointDiagram.interactionPart (B : Finset (TwoPointVertex S))) × Fin 4 where
+  toFun leg := by
+    rcases leg with ⟨leg, hleg⟩
+    cases leg with
+    | inl e => exact False.elim (hVac ⟨e, hleg⟩)
+    | inr p =>
+        exact (⟨p.1.1,
+          (TwoPointDiagram.mem_interactionPart_subtype
+            (B : Finset (TwoPointVertex S)) p.1).2 hleg⟩, p.2)
+  invFun p :=
+    let v : ↥S :=
+      ⟨p.1.1, TwoPointDiagram.interactionPart_subset
+        (B : Finset (TwoPointVertex S)) p.1.2⟩
+    ⟨Sum.inr (v, p.2), by
+      change (Sum.inr v : TwoPointVertex S) ∈ (B : Finset (TwoPointVertex S))
+      exact (TwoPointDiagram.mem_interactionPart_subtype
+        (B : Finset (TwoPointVertex S)) v).1 p.1.2⟩
+  left_inv leg := by
+    rcases leg with ⟨leg, hleg⟩
+    cases leg with
+    | inl e => exact False.elim (hVac ⟨e, hleg⟩)
+    | inr p =>
+        rcases p with ⟨v, l⟩
+        apply Subtype.ext
+        rfl
+  right_inv p := by
+    rcases p with ⟨v, l⟩
+    apply Prod.ext
+    · exact Subtype.ext (by rfl)
+    · rfl
+
+/-- Reindex the legs of a vacuum component as the flattened legs of an ordinary quartic diagram. -/
+noncomputable def TwoPointDiagram.vacuumBlockLegEquiv {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) :
+    {leg : Fin (2 * (2 * S.card + 1)) // d.legInComponent B leg} ≃
+      Fin (2 * (2 * (TwoPointDiagram.interactionPart
+        (B : Finset (TwoPointVertex S))).card)) :=
+  ((twoPointLegEquiv S).subtypeEquiv fun leg => d.legInComponent_iff_unflattened B leg).trans
+    ((d.vacuumLegDataEquiv B hVac).trans
+      (quarticLegEquiv (TwoPointDiagram.interactionPart
+        (B : Finset (TwoPointVertex S)))).symm)
+
+private theorem permCongr_involutive {α β : Type*} (e : α ≃ β)
+    (p : Equiv.Perm α) (hp : Function.Involutive p) :
+    Function.Involutive (e.permCongr p) := by
+  intro x
+  simp [Equiv.permCongr_apply, hp (e.symm x)]
+
+private theorem permCongr_ne_self {α β : Type*} (e : α ≃ β)
+    (p : Equiv.Perm α) (hp : ∀ x, p x ≠ x) (x : β) :
+    e.permCongr p x ≠ x := by
+  intro h
+  rw [Equiv.permCongr_apply, Equiv.apply_eq_iff_eq_symm_apply] at h
+  exact hp _ h
+
+/-- The perfect pairing induced on a vacuum component. -/
+noncomputable def TwoPointDiagram.restrictedVacuumPairing {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) :
+    Pairing (2 * (TwoPointDiagram.interactionPart
+      (B : Finset (TwoPointVertex S))).card) :=
+  Pairing.ofPartner
+    ((d.vacuumBlockLegEquiv B hVac).permCongr (d.restrictedPartner B))
+    ⟨permCongr_involutive _ _ (d.restrictedPartner_involutive B),
+      permCongr_ne_self _ _ (d.restrictedPartner_ne_self B)⟩
+
+/-- The restricted vacuum pairing agrees with the ambient partner under the vacuum leg
+reindexing. -/
+theorem TwoPointDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv
+    {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B)
+    (leg : {leg : Fin (2 * (2 * S.card + 1)) // d.legInComponent B leg}) :
+    (d.restrictedVacuumPairing B hVac).partner (d.vacuumBlockLegEquiv B hVac leg) =
+      d.vacuumBlockLegEquiv B hVac (d.restrictedPartner B leg) := by
+  simp [TwoPointDiagram.restrictedVacuumPairing, Pairing.ofPartner,
+    Equiv.permCongr_apply]
+
+/-- Restrict a vacuum component of a two-point diagram to an ordinary quartic diagram. -/
+noncomputable def TwoPointDiagram.restrictVacuumComponent {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) :
+    QuarticDiagram InternalLabel N
+      (TwoPointDiagram.interactionPart (B : Finset (TwoPointVertex S))) where
+  vertexLabel v :=
+    d.vertexLabel ⟨v.1, TwoPointDiagram.interactionPart_subset
+      (B : Finset (TwoPointVertex S)) v.2⟩
+  pairing := d.restrictedVacuumPairing B hVac
+
+@[simp]
+theorem TwoPointDiagram.restrictVacuumComponent_pairing {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) :
+    (d.restrictVacuumComponent B hVac).pairing = d.restrictedVacuumPairing B hVac :=
+  rfl
 
 end Common
 end SecondQuantization
