@@ -1,5 +1,3 @@
-set_option linter.style.header false
-
 /-!
 # One-particle mode labels
 
