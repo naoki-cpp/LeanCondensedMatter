@@ -32,7 +32,7 @@ theorem star_matrixCoeff_create_eq_matrixCoeff_annihilate
     (annihilate i) (basisState n) m
   by_cases hm : i ∈ m
   · rw [create_basisState_of_mem hm]
-    change 0 = (annihilate i) (basisState n) m
+    simp only [Finsupp.zero_apply, star_zero]
     by_cases hn : i ∈ n
     · rw [annihilate_basisState_of_mem hn]
       have hne : removeOccupation i n ≠ m := by
@@ -92,8 +92,10 @@ theorem star_finiteHilbertCreate (i : Mode) :
 @[simp]
 theorem star_finiteHilbertAnnihilate (i : Mode) :
     star (finiteHilbertAnnihilate i) = finiteHilbertCreate i := by
-  have h := congrArg star (star_finiteHilbertCreate i)
-  exact (by simpa only [star_star] using h).symm
+  have h' :
+      finiteHilbertCreate i = star (finiteHilbertAnnihilate i) := by
+    simpa only [star_star] using congrArg star (star_finiteHilbertCreate i)
+  exact h'.symm
 
 end
 end Fermionic
