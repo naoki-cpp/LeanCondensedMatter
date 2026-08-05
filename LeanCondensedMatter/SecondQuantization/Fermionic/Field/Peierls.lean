@@ -63,7 +63,8 @@ theorem add {F G : ℂ → V} {F' G' : V} {A : ℂ}
     (hF : HasAlgebraicDerivAt F F' A) (hG : HasAlgebraicDerivAt G G' A) :
     HasAlgebraicDerivAt (fun z => F z + G z) (F' + G') A := by
   intro ℓ
-  simpa only [Pi.add_apply, map_add] using (hF ℓ).add (hG ℓ)
+  apply ((hF ℓ).add (hG ℓ)).congr_of_eventuallyEq
+  exact Filter.Eventually.of_forall (fun z => by simp)
 
 /-- A complex-linear map transports algebraic derivatives. -/
 theorem map {F : ℂ → V} {F' : V} {A : ℂ}
@@ -161,7 +162,7 @@ theorem hasAlgebraicDerivAt_peierlsBondHamiltonian_zero
   have hsum := hforward.add hreverse
   unfold peierlsBondHamiltonian oneParticleBondCurrent bondOperator
   convert hsum using 1
-  abel
+  abel_nf
 
 end LocallyFiniteHopping
 
@@ -184,8 +185,9 @@ theorem hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero
   convert h using 1
   · rfl
   · change
-      dGammaLinear (LatticeState Site) (-K.oneParticleBondCurrent ℏ q x y) =
-        -bondCurrent ℏ q K x y
+      -bondCurrent ℏ q K x y =
+        dGammaLinear (LatticeState Site) (-K.oneParticleBondCurrent ℏ q x y)
+    symm
     rw [map_neg]
     unfold LocallyFiniteHopping.oneParticleBondCurrent bondCurrent peierlsCoupling
     rw [dGamma_smul]
