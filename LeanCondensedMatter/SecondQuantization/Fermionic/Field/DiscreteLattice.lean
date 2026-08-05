@@ -116,6 +116,18 @@ theorem amplitude_swap_eq_zero_of_not_mem (K : LocallyFiniteHopping Site)
     K.amplitude y x = 0 :=
   (K.outside_incident hy).2
 
+/-- Reconstruct one hopping column from the finite incident set at its source site. -/
+theorem column_eq_sum_single (K : LocallyFiniteHopping Site) (x : Site) :
+    K.column x =
+      ∑ y ∈ K.incident x, Finsupp.single y (K.amplitude y x) := by
+  classical
+  ext z
+  by_cases hz : z ∈ K.incident x
+  · simp [hz, amplitude]
+  · have hzero : K.amplitude z x = 0 :=
+      K.amplitude_swap_eq_zero_of_not_mem hz
+    simp [hz, amplitude, hzero]
+
 /-- The one-particle operator entering the oriented bond current from `x` to `y`:
 
 `h_xy |x⟩⟨y| - h_yx |y⟩⟨x|`.
@@ -128,6 +140,38 @@ noncomputable def bondOperator (K : LocallyFiniteHopping Site) (x y : Site) :
 theorem bondOperator_swap (K : LocallyFiniteHopping Site) (x y : Site) :
     K.bondOperator y x = -K.bondOperator x y := by
   simp [bondOperator]
+
+/-- `h Pₓ` is a finite sum over the incident sites of `x`. -/
+theorem operator_comp_siteProjector (K : LocallyFiniteHopping Site) (x : Site) :
+    K.operator.comp (siteProjector x) =
+      ∑ y ∈ K.incident x, K.amplitude y x • matrixUnit y x := by
+  classical
+  apply Finsupp.lhom_ext
+  intro z c
+  by_cases hzx : z = x
+  · subst z
+    simp [K.column_eq_sum_single, Finset.smul_sum, mul_comm]
+  · simp [hzx]
+
+/-- `Pₓ h` is a finite sum over the incident sites of `x`. -/
+theorem siteProjector_comp_operator (K : LocallyFiniteHopping Site) (x : Site) :
+    (siteProjector x).comp K.operator =
+      ∑ y ∈ K.incident x, K.amplitude x y • matrixUnit x y := by
+  classical
+  apply Finsupp.lhom_ext
+  intro z c
+  by_cases hz : z ∈ K.incident x
+  · simp [hz, amplitude, mul_comm]
+  · have hzero : K.amplitude x z = 0 := K.amplitude_eq_zero_of_not_mem hz
+    simp [hz, amplitude, hzero]
+
+/-- The local one-particle commutator is the negative finite sum of oriented bond operators. -/
+theorem linearCommutator_siteProjector (K : LocallyFiniteHopping Site) (x : Site) :
+    linearCommutator K.operator (siteProjector x) =
+      -∑ y ∈ K.incident x, K.bondOperator x y := by
+  simp only [linearCommutator, K.operator_comp_siteProjector,
+    K.siteProjector_comp_operator, bondOperator, Finset.sum_sub_distrib]
+  abel
 
 end LocallyFiniteHopping
 
