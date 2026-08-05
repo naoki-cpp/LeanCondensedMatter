@@ -1,32 +1,18 @@
-import Mathlib.Data.Fintype.Card
-
 set_option linter.style.header false
 
 /-!
 # One-particle mode labels
 
-The starting point of second quantization (Track D, `notes/roadmaps/second-quantization.md`):
-an abstract type of one-particle mode labels (momentum modes, lattice sites, or any other
-single-particle label). This deliberately carries no linear or Hilbert-space structure yet —
-that structure appears once modes are combined into occupation-number states
-(`BosonOccupation.lean`/`Fermionic.Occupation.lean`) and then Fock space.
+The occupation-basis algebra is parameterized by an arbitrary type `Mode`. A mode may represent a
+momentum label, lattice site, internal spin/orbital label, or any other one-particle identifier.
+The foundational label boundary deliberately imposes no finiteness, decidable-equality, linear, or
+Hilbert-space structure.
 
-`Fintype Mode` is assumed for now to avoid analytical complications (summability, completions);
-the countably-infinite-mode case is deferred to a later generalization, mirroring the same
-finite-first approach already used for `Finpartition`/`IncidenceAlgebra` in Track B.
+Individual fermionic and bosonic occupation configurations remain finite-support objects even when
+the mode type is infinite. Additional assumptions belong only on operations that need them:
+decidable equality for concrete membership operations, finiteness for sums over every mode, and
+analytic or Hilbert-space hypotheses for completed and thermal constructions.
+
+There is therefore no project-wide mode count in the foundational API. Finite-mode cardinalities are
+local data of explicitly finite specializations.
 -/
-
-namespace SecondQuantization
-namespace Common
-
--- **One-particle mode space.** An abstract label set for single-particle states (momentum
--- modes, lattice sites, spin components, ...). No algebraic structure beyond `Fintype` and
--- decidable equality is assumed at this stage.
-variable (Mode : Type*) [Fintype Mode] [DecidableEq Mode]
-
-/-- The number of one-particle mode labels. -/
-abbrev modeCount : ℕ := Fintype.card Mode
-
-end Common
-
-end SecondQuantization
