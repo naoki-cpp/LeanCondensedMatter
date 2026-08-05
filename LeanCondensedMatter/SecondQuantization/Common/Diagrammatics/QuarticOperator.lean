@@ -50,6 +50,21 @@ def quarticLocalLegOperator
     (q : QuarticVertexLabel Mode) : Fin 4 → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
   ![create q.create₁, create q.create₂, annihilate q.annihilate₂, annihilate q.annihilate₁]
 
+/-- A local quartic leg assembled from ladder eigenoperators evolves with its signed energy shift. -/
+theorem heisenbergEvolve_quarticLocalLegOperator
+    (energy : Config → ℝ) (ε : Mode → ℝ)
+    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (q : QuarticVertexLabel Mode) (l : Fin 4) (τ : ℝ)
+    (hcreate : ∀ i, heisenbergEvolve energy τ (create i) =
+      Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i)
+    (hannihilate : ∀ i, heisenbergEvolve energy τ (annihilate i) =
+      Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i) :
+    heisenbergEvolve energy τ (quarticLocalLegOperator create annihilate q l) =
+      Complex.exp (((τ * quarticLocalLegEnergyShift ε q l : ℝ) : ℂ)) •
+        quarticLocalLegOperator create annihilate q l := by
+  fin_cases l <;>
+    simp [quarticLocalLegOperator, quarticLocalLegEnergyShift, hcreate, hannihilate, mul_comm]
+
 /-- The fixed ordered quartic vertex operator constructed from arbitrary ladder maps. -/
 def quarticVertexOperator
     (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
