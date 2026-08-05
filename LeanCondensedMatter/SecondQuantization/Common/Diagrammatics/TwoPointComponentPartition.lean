@@ -128,16 +128,16 @@ theorem TwoPointDiagram.componentBlock_eq_iff_mem {S : Finset (Fin N)}
       rwa [hw]
     exact (d.componentBlock_eq_of_reachable ((d.mem_componentBlock w v).1 hv')).trans hw
 
-/-- A component contains at least one of the two external vertices. -/
+/-- A component part contains at least one of the two external vertices. -/
 def TwoPointDiagram.ComponentMeetsExternal {S : Finset (Fin N)}
-    (_d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (B : Finset (TwoPointVertex S)) : Prop :=
-  ∃ e : Fin 2, (Sum.inl e : TwoPointVertex S) ∈ B
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (B : d.componentPartition.parts) : Prop :=
+  ∃ e : Fin 2, (Sum.inl e : TwoPointVertex S) ∈ (B : Finset (TwoPointVertex S))
 
-/-- A component is a vacuum component when it contains neither external vertex. -/
+/-- A component part is a vacuum component when it contains neither external vertex. -/
 def TwoPointDiagram.ComponentIsVacuum {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (B : Finset (TwoPointVertex S)) : Prop :=
+    (B : d.componentPartition.parts) : Prop :=
   ¬ d.ComponentMeetsExternal B
 
 /-- The component containing external vertex `e`. -/
@@ -157,7 +157,7 @@ components. -/
 theorem TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : d.componentPartition.parts) :
-    d.ComponentMeetsExternal (B : Finset (TwoPointVertex S)) ↔
+    d.ComponentMeetsExternal B ↔
       ∃ e : Fin 2, (B : Finset (TwoPointVertex S)) = d.externalComponent e := by
   constructor
   · rintro ⟨e, he⟩
@@ -174,8 +174,7 @@ sector. -/
 theorem TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     d.HasNoVacuumComponent ↔
-      ∀ B : d.componentPartition.parts,
-        d.ComponentMeetsExternal (B : Finset (TwoPointVertex S)) := by
+      ∀ B : d.componentPartition.parts, d.ComponentMeetsExternal B := by
   constructor
   · intro h B
     obtain ⟨v, hv⟩ := d.exists_componentBlock_eq_of_mem B.2
@@ -200,15 +199,13 @@ open Classical in
 noncomputable def TwoPointDiagram.vacuumComponentParts {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     Finset d.componentPartition.parts :=
-  Finset.univ.filter fun B =>
-    d.ComponentIsVacuum (B : Finset (TwoPointVertex S))
+  Finset.univ.filter d.ComponentIsVacuum
 
 @[simp]
 theorem TwoPointDiagram.mem_vacuumComponentParts {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : d.componentPartition.parts) :
-    B ∈ d.vacuumComponentParts ↔
-      d.ComponentIsVacuum (B : Finset (TwoPointVertex S)) := by
+    B ∈ d.vacuumComponentParts ↔ d.ComponentIsVacuum B := by
   simp [TwoPointDiagram.vacuumComponentParts]
 
 /-- A two-point diagram has no vacuum component exactly when its finite set of vacuum component
