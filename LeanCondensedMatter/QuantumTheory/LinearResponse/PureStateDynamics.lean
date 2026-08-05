@@ -56,18 +56,23 @@ theorem norm_freePropagator_apply (t : ℝ) (x : H) :
   have hcomp :
       ContinuousLinearMap.adjoint (freePropagator system t) ∘SL
           freePropagator system t = 1 := by
-    simpa using star_mul_freePropagator system t
+    ext y
+    change ContinuousLinearMap.adjoint (freePropagator system t)
+        (freePropagator system t y) = y
+    have h := congrArg (fun U : H →L[ℂ] H => U y)
+      (star_mul_freePropagator system t)
+    simpa only [mul_apply_eq_comp, one_apply] using h
   exact
     ((ContinuousLinearMap.norm_map_iff_adjoint_comp_self
       (freePropagator system t)).2 hcomp) x
 
 /-- Multiplication of a normalized state representative by a unit complex phase. -/
-def State.phaseSmul (c : ℂ) (hc : ‖c‖ = 1) (ψ : State H) : State H :=
+def phaseState (c : ℂ) (hc : ‖c‖ = 1) (ψ : State H) : State H :=
   ⟨c • ψ.1, by rw [norm_smul, hc, ψ.2, one_mul]⟩
 
 @[simp]
-theorem State.coe_phaseSmul (c : ℂ) (hc : ‖c‖ = 1) (ψ : State H) :
-    (ψ.phaseSmul c hc : H) = c • ψ.1 :=
+theorem phaseState_val (c : ℂ) (hc : ‖c‖ = 1) (ψ : State H) :
+    (phaseState c hc ψ).1 = c • ψ.1 :=
   rfl
 
 /-- Schrödinger-picture evolution of a normalized pure state. -/
@@ -75,8 +80,8 @@ noncomputable def evolveState (ψ : State H) (t : ℝ) : State H :=
   ⟨freePropagator system t ψ.1, by simp [ψ.2]⟩
 
 @[simp]
-theorem coe_evolveState (ψ : State H) (t : ℝ) :
-    (evolveState system ψ t : H) = freePropagator system t ψ.1 :=
+theorem evolveState_val (ψ : State H) (t : ℝ) :
+    (evolveState system ψ t).1 = freePropagator system t ψ.1 :=
   rfl
 
 /-- Pure-state evolution is the identity at time zero. -/
@@ -116,11 +121,11 @@ theorem evolveState_after_neg (ψ : State H) (t : ℝ) :
 
 /-- Schrödinger evolution commutes exactly with a change of global-phase representative. -/
 @[simp]
-theorem evolveState_phaseSmul (ψ : State H) (c : ℂ) (hc : ‖c‖ = 1) (t : ℝ) :
-    evolveState system (ψ.phaseSmul c hc) t =
-      (evolveState system ψ t).phaseSmul c hc := by
+theorem evolveState_phaseState (ψ : State H) (c : ℂ) (hc : ‖c‖ = 1) (t : ℝ) :
+    evolveState system (phaseState c hc ψ) t =
+      phaseState c hc (evolveState system ψ t) := by
   apply Subtype.ext
-  simp [evolveState, State.phaseSmul]
+  simp [evolveState, phaseState]
 
 end
 end LinearResponse
