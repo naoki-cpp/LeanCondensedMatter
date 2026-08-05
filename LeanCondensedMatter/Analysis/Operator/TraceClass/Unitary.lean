@@ -21,7 +21,7 @@ namespace ContinuousLinearMap
 noncomputable def unitaryLinearEquiv (U : H →L[ℂ] H)
     (hleft : star U * U = 1) (hright : U * star U = 1) : H ≃ₗ[ℂ] H where
   toFun := U
-  invFun := star U
+  invFun := fun x => (star U) x
   left_inv := fun x => by
     have h := congrArg (fun A : H →L[ℂ] H => A x) hleft
     simpa [mul_apply_eq_comp] using h
@@ -48,23 +48,24 @@ theorem eigenspace_unitaryConjugate (U T : H →L[ℂ] H)
     rw [Submodule.mem_map]
     refine ⟨star U x, ?_, ?_⟩
     · rw [Module.End.mem_eigenspace_iff] at hx ⊢
-      have h := congrArg (fun y : H => star U y) hx
-      have hcancel : star U (U (T (star U x))) = T (star U x) := by
-        have h' := congrArg (fun A : H →L[ℂ] H => A (T (star U x))) hleft
+      change U (T ((star U) x)) = μ • x at hx
+      have h := congrArg (fun y : H => (star U) y) hx
+      have hcancel : (star U) (U (T ((star U) x))) = T ((star U) x) := by
+        have h' := congrArg (fun A : H →L[ℂ] H => A (T ((star U) x))) hleft
         simpa [mul_apply_eq_comp] using h'
-      rw [unitaryConjugate, mul_apply_eq_comp] at hx
-      rw [hcancel, map_smul] at h
-      exact h
-    · have h := congrArg (fun A : H →L[ℂ] H => A x) hright
+      simpa [hcancel, map_smul] using h
+    · change U ((star U) x) = x
+      have h := congrArg (fun A : H →L[ℂ] H => A x) hright
       simpa [mul_apply_eq_comp] using h
   · intro hx
     rw [Submodule.mem_map] at hx
     rcases hx with ⟨y, hy, rfl⟩
     rw [Module.End.mem_eigenspace_iff] at hy ⊢
-    have hcancel : star U (U y) = y := by
+    change U (T ((star U) (U y))) = μ • U y
+    have hcancel : (star U) (U y) = y := by
       have h := congrArg (fun A : H →L[ℂ] H => A y) hleft
       simpa [mul_apply_eq_comp] using h
-    rw [unitaryConjugate, mul_apply_eq_comp, hcancel, hy, map_smul]
+    rw [hcancel, hy, map_smul]
 
 /-- Corresponding eigenspaces have the same finite dimension under unitary conjugation. -/
 theorem finrank_eigenspace_unitaryConjugate (U T : H →L[ℂ] H)
