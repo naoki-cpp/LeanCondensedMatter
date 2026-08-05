@@ -15,6 +15,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeometricCurrent
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeometricPeierls
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.FrequencyResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.HarmonicSourceResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StationaryFrequencyResponse
 
 set_option linter.style.header false
 
@@ -42,5 +43,7 @@ Peierls Hamiltonian and its source-dependent current. The frequency-response lay
 observation time, adiabatic switching, and driving frequency as independent regulators and records
 the possible orders of their limits explicitly. The harmonic-source layer realizes the complex
 adiabatic coefficient through two physical real source quadratures coupled to the same
-self-adjoint directional current and proves their separate bounded response theorems.
+self-adjoint directional current and proves their separate bounded response theorems. The
+stationary layer rewrites the finite-time response exactly as a positive-lag transform and makes
+the contact expectation time independent without taking any regulator limit.
 -/
