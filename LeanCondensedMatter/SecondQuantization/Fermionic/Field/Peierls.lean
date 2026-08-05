@@ -163,7 +163,8 @@ theorem hasAlgebraicDerivAt_peierlsBondHamiltonian_zero
   have hsum := hforward.add hreverse
   unfold peierlsBondHamiltonian oneParticleBondCurrent bondOperator
   convert hsum using 1
-  simp only [neg_smul, one_smul, smul_add, smul_neg, neg_neg]
+  rw [smul_sub, neg_sub]
+  abel
 
 end LocallyFiniteHopping
 
