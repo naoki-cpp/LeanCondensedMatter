@@ -129,12 +129,12 @@ theorem isSelfAdjoint_boundedDirectionalCurrent
   rw [hhalf]
   congr 1
   change
-    star (∑ x in Finset.univ, ∑ y in Finset.univ,
+    star (Finset.univ.sum (fun x => Finset.univ.sum (fun y =>
       (geometry.bondCoordinate direction x y : ℂ) •
-        boundedBondCurrent (ℏ : ℂ) (q : ℂ) K x y) =
-      ∑ x in Finset.univ, ∑ y in Finset.univ,
+        boundedBondCurrent (ℏ : ℂ) (q : ℂ) K x y))) =
+      Finset.univ.sum (fun x => Finset.univ.sum (fun y =>
         (geometry.bondCoordinate direction x y : ℂ) •
-          boundedBondCurrent (ℏ : ℂ) (q : ℂ) K x y
+          boundedBondCurrent (ℏ : ℂ) (q : ℂ) K x y))
   rw [star_sum]
   apply Finset.sum_congr rfl
   intro x _
