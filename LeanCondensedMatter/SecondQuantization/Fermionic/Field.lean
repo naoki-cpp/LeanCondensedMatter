@@ -12,6 +12,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Peierls
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.BoundedKuboBridge
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.PeierlsContact
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeometricCurrent
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.FrequencyResponse
 
 set_option linter.style.header false
 
@@ -34,5 +35,6 @@ API. The subsequent transport layer differentiates the Peierls current itself, i
 contact operator, and combines the retarded current-current response with the explicit contact
 term. The geometric layer derives bond-current self-adjointness from Hermitian hopping and then
 aggregates oriented bond observables into spatial current components and their chain-rule contact
-operators.
+operators. The frequency-response layer keeps observation time, adiabatic switching, and driving
+frequency as independent regulators and records the possible orders of their limits explicitly.
 -/
