@@ -161,7 +161,9 @@ theorem evolveDensityOperator_eq_self_of_commute_hamiltonian
 noncomputable def DensityOperator.toNormalizedExpectation
     (ρ : DensityOperator H) : NormalizedExpectation H where
   toContinuousLinearMap := ρ.expectation
-  map_one := by simpa using ρ.expectation_id
+  map_one := by
+    change ρ.expectation (ContinuousLinearMap.id ℂ H) = 1
+    exact ρ.expectation_id
 
 @[simp]
 theorem DensityOperator.toNormalizedExpectation_apply
