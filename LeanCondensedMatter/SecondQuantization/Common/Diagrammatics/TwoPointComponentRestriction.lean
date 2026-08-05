@@ -18,18 +18,16 @@ variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 
 open Classical in
 /-- The interaction vertices contained in a full external-plus-interaction component part. -/
-noncomputable def TwoPointDiagram.interactionPart {S : Finset (Fin N)}
-    (_d : TwoPointDiagram ExternalLabel InternalLabel N S)
+noncomputable def TwoPointDiagram.interactionPart {N : ℕ} {S : Finset (Fin N)}
     (B : Finset (TwoPointVertex S)) : Finset (Fin N) :=
   S.filter fun v =>
     ∃ hv : v ∈ S, (Sum.inr ⟨v, hv⟩ : TwoPointVertex S) ∈ B
 
 /-- Membership in the interaction part is membership of the corresponding interaction vertex in the
 full component part. -/
-theorem TwoPointDiagram.mem_interactionPart {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+theorem TwoPointDiagram.mem_interactionPart {N : ℕ} {S : Finset (Fin N)}
     (B : Finset (TwoPointVertex S)) (v : Fin N) :
-    v ∈ d.interactionPart B ↔
+    v ∈ TwoPointDiagram.interactionPart B ↔
       ∃ hv : v ∈ S, (Sum.inr ⟨v, hv⟩ : TwoPointVertex S) ∈ B := by
   classical
   unfold TwoPointDiagram.interactionPart
@@ -40,12 +38,11 @@ theorem TwoPointDiagram.mem_interactionPart {S : Finset (Fin N)}
     exact ⟨h.choose, h⟩
 
 /-- The interaction part of a full component is contained in the ambient interaction-vertex set. -/
-theorem TwoPointDiagram.interactionPart_subset {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+theorem TwoPointDiagram.interactionPart_subset {N : ℕ} {S : Finset (Fin N)}
     (B : Finset (TwoPointVertex S)) :
-    d.interactionPart B ⊆ S := by
+    TwoPointDiagram.interactionPart B ⊆ S := by
   intro v hv
-  obtain ⟨hvS, _⟩ := (d.mem_interactionPart B v).1 hv
+  obtain ⟨hvS, _⟩ := (TwoPointDiagram.mem_interactionPart B v).1 hv
   exact hvS
 
 /-- A flattened leg belongs to `B` when the component block of its incident vertex is `B`. -/
