@@ -128,10 +128,17 @@ theorem isSelfAdjoint_boundedDirectionalCurrent
   have hhalf : star ((2 : ℂ)⁻¹) = (2 : ℂ)⁻¹ := by norm_num
   rw [hhalf]
   congr 1
-  rw [map_sum]
+  change
+    star (∑ x in Finset.univ, ∑ y in Finset.univ,
+      (geometry.bondCoordinate direction x y : ℂ) •
+        boundedBondCurrent (ℏ : ℂ) (q : ℂ) K x y) =
+      ∑ x in Finset.univ, ∑ y in Finset.univ,
+        (geometry.bondCoordinate direction x y : ℂ) •
+          boundedBondCurrent (ℏ : ℂ) (q : ℂ) K x y
+  rw [star_sum]
   apply Finset.sum_congr rfl
   intro x _
-  rw [map_sum]
+  rw [star_sum]
   apply Finset.sum_congr rfl
   intro y _
   rw [star_smul, hJ x y]
