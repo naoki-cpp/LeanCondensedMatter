@@ -1,14 +1,15 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentRestriction
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointExternalConnectivity
 
 set_option linter.style.header false
 
 /-!
 # Restricting the external component of a two-point diagram
 
-When the two distinguished external vertices are connected, their common component contains both
-one-legged external vertices together with a subset of the quartic interaction vertices.  This
-module reindexes the legs of that component, transports its restricted partner permutation to a
-new perfect pairing, and packages the result as a smaller `TwoPointDiagram`.
+The two distinguished external vertices are necessarily connected: a component containing only one
+external leg would have odd cardinality and could not carry the restricted perfect pairing. Their
+common component therefore contains both one-legged external vertices together with a subset of the
+quartic interaction vertices. This module reindexes its legs, transports the restricted partner
+permutation to a new perfect pairing, and packages the result as a smaller `TwoPointDiagram`.
 
 Reassembly and amplitude factorization are developed separately.
 -/
@@ -20,34 +21,23 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 
-/-- The component-partition part containing external vertex `0`. -/
-noncomputable def TwoPointDiagram.externalComponentPart {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
-    d.componentPartition.parts :=
-  ⟨d.externalComponent 0, d.externalComponent_mem_componentPartition 0⟩
-
-/-- If the two external vertices are connected, every external vertex lies in their common
-component. -/
+/-- Every external vertex lies in the common external component. -/
 theorem TwoPointDiagram.externalVertex_mem_externalComponentPart {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (hExt : d.ExternalVerticesConnected) (e : Fin 2) :
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) (e : Fin 2) :
     (Sum.inl e : TwoPointVertex S) ∈
       (d.externalComponentPart : Finset (TwoPointVertex S)) := by
   fin_cases e
   · simpa [TwoPointDiagram.externalComponentPart, TwoPointDiagram.externalComponent] using
       d.self_mem_componentBlock (Sum.inl (0 : Fin 2) : TwoPointVertex S)
-  · have hcomp : d.externalComponent 0 = d.externalComponent 1 :=
-      (d.externalVerticesConnected_iff_externalComponent_eq).1 hExt
-    rw [show (d.externalComponentPart : Finset (TwoPointVertex S)) =
-      d.externalComponent 0 by rfl, hcomp]
+  · rw [show (d.externalComponentPart : Finset (TwoPointVertex S)) =
+      d.externalComponent 0 by rfl, d.externalComponent_zero_eq_one]
     simpa [TwoPointDiagram.externalComponent] using
       d.self_mem_componentBlock (Sum.inl (1 : Fin 2) : TwoPointVertex S)
 
 /-- The unflattened legs in the common external component are exactly two external legs and the four
 local legs of each interaction vertex in that component. -/
 noncomputable def TwoPointDiagram.externalLegDataEquiv {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (hExt : d.ExternalVerticesConnected) :
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     {leg : TwoPointLeg S // d.unflattenedLegInComponent d.externalComponentPart leg} ≃
       TwoPointLeg (TwoPointDiagram.interactionPart (d.externalComponent 0)) where
   toFun leg := by
@@ -61,7 +51,7 @@ noncomputable def TwoPointDiagram.externalLegDataEquiv {S : Finset (Fin N)}
   invFun leg := by
     cases leg with
     | inl e =>
-        exact ⟨Sum.inl e, d.externalVertex_mem_externalComponentPart hExt e⟩
+        exact ⟨Sum.inl e, d.externalVertex_mem_externalComponentPart e⟩
     | inr p =>
         let v : ↥S :=
           ⟨p.1.1, TwoPointDiagram.interactionPart_subset
@@ -93,14 +83,13 @@ noncomputable def TwoPointDiagram.externalLegDataEquiv {S : Finset (Fin N)}
 /-- Reindex the flattened legs of the common external component as the flattened legs of a smaller
 two-point diagram. -/
 noncomputable def TwoPointDiagram.externalBlockLegEquiv {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (hExt : d.ExternalVerticesConnected) :
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     {leg : Fin (2 * (2 * S.card + 1)) // d.legInComponent (d.externalComponent 0) leg} ≃
       Fin (2 * (2 * (TwoPointDiagram.interactionPart
         (d.externalComponent 0)).card + 1)) :=
   ((twoPointLegEquiv S).subtypeEquiv fun leg =>
       d.legInComponent_iff_unflattened d.externalComponentPart leg).trans
-    ((d.externalLegDataEquiv hExt).trans
+    ((d.externalLegDataEquiv).trans
       (twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))).symm)
 
 private theorem external_permCongr_involutive {α β : Type*} (e : α ≃ β)
@@ -118,11 +107,10 @@ private theorem external_permCongr_ne_self {α β : Type*} (e : α ≃ β)
 
 /-- The perfect pairing induced on the common external component. -/
 noncomputable def TwoPointDiagram.restrictedExternalPairing {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (hExt : d.ExternalVerticesConnected) :
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     Pairing (2 * (TwoPointDiagram.interactionPart (d.externalComponent 0)).card + 1) :=
   Pairing.ofPartner
-    ((d.externalBlockLegEquiv hExt).permCongr
+    ((d.externalBlockLegEquiv).permCongr
       (d.restrictedPartner (d.externalComponent 0)))
     ⟨external_permCongr_involutive _ _
         (d.restrictedPartner_involutive (d.externalComponent 0)),
@@ -134,39 +122,35 @@ reindexing. -/
 theorem TwoPointDiagram.restrictedExternalPairing_partner_externalBlockLegEquiv
     {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (hExt : d.ExternalVerticesConnected)
     (leg : {leg : Fin (2 * (2 * S.card + 1)) //
       d.legInComponent (d.externalComponent 0) leg}) :
-    (d.restrictedExternalPairing hExt).partner (d.externalBlockLegEquiv hExt leg) =
-      d.externalBlockLegEquiv hExt
+    d.restrictedExternalPairing.partner (d.externalBlockLegEquiv leg) =
+      d.externalBlockLegEquiv
         (d.restrictedPartner (d.externalComponent 0) leg) := by
   simp [TwoPointDiagram.restrictedExternalPairing, Pairing.ofPartner,
     Equiv.permCongr_apply]
 
 /-- Restrict the common external component to a smaller two-point diagram. -/
 noncomputable def TwoPointDiagram.restrictExternalComponent {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (hExt : d.ExternalVerticesConnected) :
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     TwoPointDiagram ExternalLabel InternalLabel N
       (TwoPointDiagram.interactionPart (d.externalComponent 0)) where
   externalLabel := d.externalLabel
   vertexLabel v :=
     d.vertexLabel ⟨v.1, TwoPointDiagram.interactionPart_subset
       (d.externalComponent 0) v.2⟩
-  pairing := d.restrictedExternalPairing hExt
+  pairing := d.restrictedExternalPairing
 
 @[simp]
 theorem TwoPointDiagram.restrictExternalComponent_externalLabel {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (hExt : d.ExternalVerticesConnected) (e : Fin 2) :
-    (d.restrictExternalComponent hExt).externalLabel e = d.externalLabel e :=
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) (e : Fin 2) :
+    d.restrictExternalComponent.externalLabel e = d.externalLabel e :=
   rfl
 
 @[simp]
 theorem TwoPointDiagram.restrictExternalComponent_pairing {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (hExt : d.ExternalVerticesConnected) :
-    (d.restrictExternalComponent hExt).pairing = d.restrictedExternalPairing hExt :=
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
+    d.restrictExternalComponent.pairing = d.restrictedExternalPairing :=
   rfl
 
 end Common
