@@ -11,6 +11,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointCompo
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentPairProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointRestrictedPairEquiv
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointRestrictedPairOrientation
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Connected
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentPartition
@@ -38,9 +39,10 @@ Quartic vertex labels, shared local-leg semantics and operator constructors, leg
 diagrams with distinguished external legs, full component partitions, automatic connectivity of the
 two one-legged external vertices, vacuum/external component restriction data, the canonical
 external-plus-vacuum decomposition of component indices and interaction vertices, componentwise
-interaction-vertex products and Dyson signs, componentwise normalized-pair sums and products, and
-equivalences between ambient component pairs and restricted external/vacuum pairings; ordered
-diagram data, connected components, component-local orders, order-preserving shuffle decompositions,
-and shuffled ordered-simplex integrands; quartic component restriction and reassembly,
-decomposition equivalences, and componentwise scalar factorization.
+interaction-vertex products and Dyson signs, componentwise normalized-pair sums and products,
+equivalences between ambient component pairs and restricted external/vacuum pairings, and the
+resulting pair-orientation dichotomy; ordered diagram data, connected components, component-local
+orders, order-preserving shuffle decompositions, and shuffled ordered-simplex integrands; quartic
+component restriction and reassembly, decomposition equivalences, and componentwise scalar
+factorization.
 -/
