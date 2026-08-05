@@ -21,6 +21,29 @@ Implemented in `QuantumTheory/Postulates.lean`:
 A quotient of unit vectors by global phase is not formalized. The current `State` type stores
 representatives.
 
+## Bounded one-particle dynamics
+
+Status: `in progress` under #580; unitary propagation and normalized pure-state evolution are proved.
+
+`QuantumTheory/LinearResponse/FreeDynamics.lean` defines the bounded free system and propagator
+
+```lean
+U₀(t) = exp (-(i t / ℏ) H₀)
+```
+
+for a bounded self-adjoint Hamiltonian and `ℏ > 0`. The pure-state dynamics layer proves:
+
+- the two unitary identities `U₀(t)† U₀(t) = 1` and `U₀(t) U₀(t)† = 1`;
+- `freePropagatorUnitary`, bundling `U₀(t)` as a unitary element;
+- norm preservation `‖U₀(t) x‖ = ‖x‖` on an arbitrary complete complex Hilbert space;
+- normalized Schrödinger-picture evolution `evolveState system ψ t : State H`;
+- identity, additive-time action, and positive/negative-time inverse laws;
+- exact compatibility of evolution with unit-modulus global-phase representatives through
+  `phaseState`, without introducing a ray quotient.
+
+The remaining #580 packages are Schrödinger/Heisenberg picture equivalence for pure and density
+states, bounded equations of motion, and conservation laws.
+
 ## Density operators, expectations, and purity
 
 Status: `proved`.
@@ -126,7 +149,8 @@ The uniqueness statement “equality holds only for the Gibbs state” remains o
 
 ## Current next steps
 
-1. Extend the physical-scalar architecture audit from canonical APIs to new public definitions.
+1. Complete #580 with pure/density picture equivalence, bounded equations of motion, and conservation
+   laws.
 2. Prove uniqueness of the Gibbs free-energy minimizer.
 3. Design an unbounded Hamiltonian interface supporting genuine infinite-dimensional Gibbs states.
 4. Connect the canonical density-state expectation to completed Fock-space and KMS constructions.
