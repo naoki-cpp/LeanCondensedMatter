@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime.ImaginaryTimeEvolution
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.VertexLabel
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.QuarticOperator
 
 set_option linter.style.header false
 
@@ -9,7 +9,8 @@ set_option linter.style.header false
 
 A quartic vertex carries two creation modes and two annihilation modes. The operator order is fixed
 as `a†_{create₁} a†_{create₂} a_{annihilate₂} a_{annihilate₁}`, matching the fermionic quartic
-vertex convention while using bosonic ladder operators.
+vertex convention while using bosonic ladder operators.  The statistics-independent constructor
+and its free-evolution proof are inherited from `SecondQuantization.Common`.
 -/
 
 namespace SecondQuantization
@@ -23,13 +24,12 @@ abbrev QuarticVertexLabel (Mode : Type*) := Common.QuarticVertexLabel Mode
 /-- The ordered bosonic quartic vertex operator. -/
 noncomputable def quarticVertexOperator (q : QuarticVertexLabel Mode) :
     FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
-  (create q.create₁).comp
-    ((create q.create₂).comp ((annihilate q.annihilate₂).comp (annihilate q.annihilate₁)))
+  Common.quarticVertexOperator create annihilate q
 
 /-- The finite bosonic quartic interaction with coupling `g`. -/
 noncomputable def quarticInteraction [Fintype Mode] (g : QuarticVertexLabel Mode → ℂ) :
     FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
-  ∑ q, g q • quarticVertexOperator q
+  Common.quarticInteraction create annihilate g
 
 /-- A single bosonic quartic vertex evolves by its total free-energy shift. -/
 theorem interactionPicture_quarticVertexOperator (ε : Mode → ℝ) (q : QuarticVertexLabel Mode)
@@ -37,37 +37,22 @@ theorem interactionPicture_quarticVertexOperator (ε : Mode → ℝ) (q : Quarti
     interactionPicture ε (quarticVertexOperator q) τ =
       Complex.exp (((τ : ℂ)) * ((ε q.create₁ : ℂ) + (ε q.create₂ : ℂ) -
         (ε q.annihilate₁ : ℂ) - (ε q.annihilate₂ : ℂ))) • quarticVertexOperator q := by
-  change imaginaryTimeEvolve ε τ (quarticVertexOperator q) = _
-  have hcomp : imaginaryTimeEvolve ε τ (quarticVertexOperator q) =
-      (imaginaryTimeEvolve ε τ (create q.create₁)).comp
-        ((imaginaryTimeEvolve ε τ (create q.create₂)).comp
-          ((imaginaryTimeEvolve ε τ (annihilate q.annihilate₂)).comp
-            (imaginaryTimeEvolve ε τ (annihilate q.annihilate₁)))) := by
-    simp only [quarticVertexOperator, imaginaryTimeEvolve_comp]
-  rw [hcomp, imaginaryTimeEvolve_create, imaginaryTimeEvolve_create,
-    imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_annihilate]
-  simp only [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul]
-  rw [show (create q.create₁).comp
-      ((create q.create₂).comp ((annihilate q.annihilate₂).comp (annihilate q.annihilate₁))) =
-      quarticVertexOperator q from rfl]
-  congr 1
-  rw [← Complex.exp_add, ← Complex.exp_add, ← Complex.exp_add]
-  congr 1
-  ring
+  simpa [interactionPicture, Common.interactionPicture, quarticVertexOperator,
+    Common.quarticVertexEnergyShift] using
+    (Common.heisenbergEvolve_quarticVertexOperator
+      (freeEigenvalue ε) ε create annihilate q τ
+      (fun i => imaginaryTimeEvolve_create ε τ i)
+      (fun i => imaginaryTimeEvolve_annihilate ε τ i))
 
 /-- The interaction picture distributes over the finite sum of bosonic quartic vertices. -/
 theorem interactionPicture_quarticInteraction [Fintype Mode] (ε : Mode → ℝ)
     (g : QuarticVertexLabel Mode → ℂ) (τ : ℝ) :
     interactionPicture ε (quarticInteraction g) τ =
       ∑ q, g q • interactionPicture ε (quarticVertexOperator q) τ := by
-  change imaginaryTimeEvolve ε τ (quarticInteraction g) = _
-  rw [quarticInteraction]
-  change Common.heisenbergEvolve (freeEigenvalue ε) τ
-    (∑ q, g q • quarticVertexOperator q) = _
-  rw [Common.heisenbergEvolve_sum]
-  refine Finset.sum_congr rfl fun q _ => ?_
-  rw [Common.heisenbergEvolve_smul]
-  rfl
+  simpa [interactionPicture, Common.interactionPicture, quarticInteraction,
+    quarticVertexOperator] using
+    (Common.heisenbergEvolve_quarticInteraction
+      (freeEigenvalue ε) τ create annihilate g)
 
 end Bosonic
 end SecondQuantization

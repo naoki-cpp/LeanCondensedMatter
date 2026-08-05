@@ -7,9 +7,9 @@ set_option linter.style.header false
 /-!
 # Local legs of a bosonic quartic vertex
 
-Operators, free-energy shifts, modes, and CCR constants for the four local legs. The local-leg order
-matches the fermionic diagram convention: two creation legs followed by the two annihilation legs in
-operator-composition order.
+The statistics-independent local-leg order, modes, kinds, energy shifts, and operator constructor are
+specialized to bosonic ladder operators here.  CCR coefficients and their physical consequences
+remain owned by the bosonic layer.
 -/
 
 namespace SecondQuantization
@@ -25,12 +25,12 @@ local instance instDecidableEqQuarticLocalLeg : DecidableEq Mode := Classical.de
 /-- The bosonic operator represented by a local leg of a quartic vertex. -/
 noncomputable def quarticLocalLegOperator (q : QuarticVertexLabel Mode) :
     Fin 4 → FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
-  ![create q.create₁, create q.create₂, annihilate q.annihilate₂, annihilate q.annihilate₁]
+  Common.quarticLocalLegOperator create annihilate q
 
 /-- The free-energy shift of a quartic local-leg operator. -/
 noncomputable def quarticLocalLegEnergyShift (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) :
     Fin 4 → ℝ :=
-  ![ε q.create₁, ε q.create₂, -ε q.annihilate₂, -ε q.annihilate₁]
+  Common.quarticLocalLegEnergyShift ε q
 
 /-- Every quartic local-leg operator is an eigenoperator of the free imaginary-time evolution. -/
 theorem imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode → ℝ)
@@ -38,17 +38,19 @@ theorem imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode → ℝ)
     imaginaryTimeEvolve ε τ (quarticLocalLegOperator q l) =
       Complex.exp (((τ * quarticLocalLegEnergyShift ε q l : ℝ) : ℂ)) •
         quarticLocalLegOperator q l := by
-  fin_cases l <;>
-    simp [quarticLocalLegOperator, quarticLocalLegEnergyShift, imaginaryTimeEvolve_create,
-      imaginaryTimeEvolve_annihilate, mul_comm]
+  simpa [imaginaryTimeEvolve, quarticLocalLegOperator, quarticLocalLegEnergyShift] using
+    (Common.heisenbergEvolve_quarticLocalLegOperator
+      (freeEigenvalue ε) ε create annihilate q l τ
+      (fun i => imaginaryTimeEvolve_create ε τ i)
+      (fun i => imaginaryTimeEvolve_annihilate ε τ i))
 
 /-- The mode on which a quartic local-leg operator acts. -/
 def quarticLocalLegMode (q : QuarticVertexLabel Mode) : Fin 4 → Mode :=
-  ![q.create₁, q.create₂, q.annihilate₂, q.annihilate₁]
+  Common.quarticLocalLegMode q
 
 /-- Whether a quartic local leg is a creation leg. -/
 def quarticLocalLegIsCreate : Fin 4 → Bool :=
-  ![true, true, false, false]
+  Common.quarticLocalLegIsCreate
 
 /-- The reverse mixed CCR, `[aᵢ†, aⱼ] = -δᵢⱼ`. -/
 theorem comm_create_annihilate (i j : Mode) :
@@ -78,7 +80,8 @@ theorem comm_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' : Fi
         (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
   fin_cases l <;> fin_cases l' <;>
     simp [quarticLocalLegOperator, quarticLocalLegCommutatorCoeff, quarticLocalLegIsCreate,
-      quarticLocalLegMode, comm_create_create, comm_annihilate_annihilate,
+      quarticLocalLegMode, Common.quarticLocalLegOperator, Common.quarticLocalLegIsCreate,
+      Common.quarticLocalLegMode, comm_create_create, comm_annihilate_annihilate,
       comm_annihilate_create, comm_create_annihilate]
 
 /-- The Common `ζ`-commutator form of the bosonic quartic local-leg CCR. -/
