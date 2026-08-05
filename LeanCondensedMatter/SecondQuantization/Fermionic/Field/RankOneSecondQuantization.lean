@@ -67,7 +67,7 @@ theorem dGamma_dualRankOne (f : 𝓗₁) (d : Module.Dual ℂ 𝓗₁) :
             -(oneParticle 𝓗₁ f *
               (oneParticle 𝓗₁ g * annihilateDual 𝓗₁ d x)) := by
         simpa only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.zero_apply,
-          create_apply] using eq_neg_of_add_eq_zero_left hcar
+          create_apply] using eq_neg_of_add_eq_zero_right hcar
       simp only [create_apply, LinearMap.comp_apply, map_sub, map_smul]
       rw [smul_mul_assoc, hswap]
       abel
