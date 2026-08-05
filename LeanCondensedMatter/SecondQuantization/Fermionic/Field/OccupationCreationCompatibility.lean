@@ -30,8 +30,7 @@ theorem oneParticle_basis_eq_exteriorBasis_singleton
   rw [ExteriorAlgebra.basis_apply_ofCard (n := 1) b (by simp)]
   simp only [oneParticle, ExteriorAlgebra.ιMulti_family,
     ExteriorAlgebra.ιMulti_apply, List.ofFn_succ, List.prod_cons,
-    List.prod_nil, mul_one, Function.comp_apply]
-  congr 1
+    Function.comp_apply]
   simp [Set.powersetCard.ofFinEmbEquiv_symm_apply]
 
 /-- Exterior multiplication by a basis vector has the occupation-sign action on exterior-basis
@@ -79,8 +78,15 @@ theorem occupationEquiv_create
       (create 𝓗₁ (b i)).comp (occupationEquiv b).toLinearMap := by
   apply Finsupp.lhom_ext
   intro n c
-  have h := occupationEquiv_create_basisState b i n
-  simpa [basisState, Common.basisState] using congrArg (fun Ψ => c • Ψ) h
+  have hsingle : Finsupp.single n c = c • basisState n := by
+    ext m
+    by_cases hmn : n = m
+    · subst m
+      simp [basisState, Common.basisState]
+    · simp [basisState, Common.basisState, hmn]
+  rw [hsingle]
+  simp only [map_smul]
+  rw [occupationEquiv_create_basisState]
 
 end
 end Field
