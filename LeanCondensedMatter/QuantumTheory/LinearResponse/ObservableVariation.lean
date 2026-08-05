@@ -32,6 +32,9 @@ open Set
 
 noncomputable section
 
+local instance (priority := 2000) complexAddCommGroupFromNorm : AddCommGroup ℂ :=
+  Complex.instNormedAddCommGroup.toAddCommGroup
+
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 variable (system : BoundedFreeSystem H)
