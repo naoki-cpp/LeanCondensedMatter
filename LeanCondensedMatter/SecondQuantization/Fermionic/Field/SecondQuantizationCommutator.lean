@@ -47,15 +47,41 @@ theorem dGamma_linearCommutator (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
   | algebraMap c => simp
   | add x y hx hy =>
       simp only [map_add]
-      rw [hx, hy]
-      abel
+      calc
+        dGamma 𝓗₁ S (dGamma 𝓗₁ T x) + dGamma 𝓗₁ S (dGamma 𝓗₁ T y) -
+              (dGamma 𝓗₁ T (dGamma 𝓗₁ S x) + dGamma 𝓗₁ T (dGamma 𝓗₁ S y)) =
+            (dGamma 𝓗₁ S (dGamma 𝓗₁ T x) - dGamma 𝓗₁ T (dGamma 𝓗₁ S x)) +
+              (dGamma 𝓗₁ S (dGamma 𝓗₁ T y) - dGamma 𝓗₁ T (dGamma 𝓗₁ S y)) := by
+          abel
+        _ = dGamma 𝓗₁ (linearCommutator S T) x +
+              dGamma 𝓗₁ (linearCommutator S T) y := by
+          rw [hx, hy]
   | ι_mul x f hx =>
       change
         dGamma 𝓗₁ S (dGamma 𝓗₁ T (oneParticle 𝓗₁ f * x)) -
             dGamma 𝓗₁ T (dGamma 𝓗₁ S (oneParticle 𝓗₁ f * x)) =
           dGamma 𝓗₁ (linearCommutator S T) (oneParticle 𝓗₁ f * x)
-      simp only [dGamma_oneParticle_mul, map_add, linearCommutator_apply, map_sub, sub_mul, hx]
-      abel
+      simp only [dGamma_oneParticle_mul, map_add, linearCommutator_apply, map_sub, sub_mul,
+        sub_eq_add_neg]
+      have hmul :
+          oneParticle 𝓗₁ f * dGamma 𝓗₁ S (dGamma 𝓗₁ T x) -
+              oneParticle 𝓗₁ f * dGamma 𝓗₁ T (dGamma 𝓗₁ S x) =
+            oneParticle 𝓗₁ f * dGamma 𝓗₁ (linearCommutator S T) x := by
+        rw [← mul_sub, hx]
+      calc
+        oneParticle 𝓗₁ (S (T f)) * x +
+              (oneParticle 𝓗₁ f * dGamma 𝓗₁ S (dGamma 𝓗₁ T x) +
+                (-(oneParticle 𝓗₁ (T (S f)) * x) +
+                  -(oneParticle 𝓗₁ f * dGamma 𝓗₁ T (dGamma 𝓗₁ S x)))) =
+            oneParticle 𝓗₁ (S (T f)) * x +
+              (-(oneParticle 𝓗₁ (T (S f)) * x) +
+                (oneParticle 𝓗₁ f * dGamma 𝓗₁ S (dGamma 𝓗₁ T x) -
+                  oneParticle 𝓗₁ f * dGamma 𝓗₁ T (dGamma 𝓗₁ S x))) := by
+          abel
+        _ = oneParticle 𝓗₁ (S (T f)) * x +
+              (-(oneParticle 𝓗₁ (T (S f)) * x) +
+                oneParticle 𝓗₁ f * dGamma 𝓗₁ (linearCommutator S T) x) := by
+          rw [hmul]
 
 /-- The algebraic total particle-number operator, identified as `dGamma id`.
 
