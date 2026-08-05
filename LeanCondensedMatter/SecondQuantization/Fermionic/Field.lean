@@ -10,6 +10,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ChargeDensity
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.DiscreteLattice
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Peierls
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.BoundedKuboBridge
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.PeierlsContact
 
 set_option linter.style.header false
 
@@ -28,5 +29,7 @@ that the continuity-derived bond current is minus the algebraic weak derivative 
 Peierls-coupled link Hamiltonian at zero gauge field. The F7 bridge restricts only at the response
 boundary to a finite site cutoff, transports the complete fermionic Fock space to a finite Hilbert
 space, and exposes the derived bond current as a bounded observable accepted by the general Kubo
-API.
+API. The subsequent transport layer differentiates the Peierls current itself, identifies its
+contact operator, and combines the retarded current-current response with the explicit contact
+term.
 -/
