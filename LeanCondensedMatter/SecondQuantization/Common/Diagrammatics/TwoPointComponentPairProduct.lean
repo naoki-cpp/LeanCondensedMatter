@@ -9,6 +9,7 @@ Every normalized pair of a two-point diagram belongs to the unique full componen
 endpoint.  Partner stability implies that both endpoints determine the same component.  Reindexing
 normalized pairs by this component map factors arbitrary pair-local sums and commutative products
 over all components, and then over the canonical external component and the vacuum components.
+The resulting equivalence is independent of statistics and of the eventual pair-value semantics.
 -/
 
 namespace SecondQuantization
