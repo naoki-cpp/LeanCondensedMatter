@@ -19,9 +19,10 @@ QUANTUM = ROOT / "LeanCondensedMatter" / "QuantumTheory"
 # scanner, so proof-local `Complex.re`, `.re`, and `Complex.reCLM` remain ordinary proof tools.
 PUBLIC_DEFINITION_START = re.compile(
     r"^(?P<indent>[ \t]*)"
-    r"(?P<modifiers>(?:(?:noncomputable|protected|unsafe|private)\s+)*)"
-    r"(?P<kind>def|abbrev)\s+"
-    r"(?P<name>[A-Za-z0-9_'.]+)\b",
+    r"(?:@\[[^\n]*\]\s*)*"
+    r"(?P<modifiers>(?:(?:noncomputable|protected|unsafe|private|local)\s+)*)"
+    r"(?P<kind>def|abbrev|opaque)\s+"
+    r"(?P<name>[^\s(:]+)",
     re.MULTILINE,
 )
 TOP_LEVEL_LINE = re.compile(r"^(?=\S)", re.MULTILINE)
@@ -29,7 +30,9 @@ EQUATION_BODY_START = re.compile(r"^\s+\|", re.MULTILINE)
 REAL_SCALAR_RESULT = re.compile(
     r"^(?:.*→\s*)?(?:ℝ|Real|NNReal|ENNReal|ℝ≥0|ℝ≥0∞)$"
 )
-DIRECT_REAL_PROJECTION = re.compile(r"(?:\.\s*re\b|\bComplex\.re\b)")
+DIRECT_REAL_PROJECTION = re.compile(
+    r"(?:\.\s*re\b|\bComplex\.re\b|\bComplex\.reCLM\b)"
+)
 
 
 @dataclass(frozen=True)
@@ -59,7 +62,7 @@ def split_public_definitions(code: str, path: Path) -> list[PublicDefinition]:
             continue
 
         modifiers = match.group("modifiers").split()
-        if "private" in modifiers:
+        if "private" in modifiers or "local" in modifiers:
             continue
 
         next_top_level = TOP_LEVEL_LINE.search(code, match.end())
@@ -123,6 +126,9 @@ def projected (z : ℂ) : ℝ :=
 private def privateProjected (z : ℂ) : ℝ :=
   z.re
 
+local def localProjected (z : ℂ) : ℝ :=
+  z.re
+
 theorem proofLocal (z : ℂ) : z.re = z.re := by
   rfl
 
@@ -136,6 +142,12 @@ def projectedByEquation (z : ℂ) : Bool → ℝ
   | true => z.re
   | false => 0
 
+@[simp] def projectedByCLM (z : ℂ) : ℝ :=
+  Complex.reCLM z
+
+opaque opaqueProjected (z : ℂ) : ℝ :=
+  z.re
+
 def complexDefinition (z : ℂ) : ℂ :=
   z.re
 """
@@ -146,6 +158,8 @@ def complexDefinition (z : ℂ) : ℂ :=
         "projectedNNReal",
         "projectedFunction",
         "projectedByEquation",
+        "projectedByCLM",
+        "opaqueProjected",
     }
     if rejected != expected:
         return [
