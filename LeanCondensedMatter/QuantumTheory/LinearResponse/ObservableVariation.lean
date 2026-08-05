@@ -1,7 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
-
-attribute [-instance] Complex.addCommGroup
-attribute [-instance] Complex.instRing.toAddCommGroup
+import Mathlib.Analysis.Complex.RealDeriv
 
 set_option linter.style.header false
 
@@ -38,11 +36,11 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 variable (system : BoundedFreeSystem H)
 
-/-- First-order source dependence of a measured observable. The scalar action is the real scalar
-structure underlying the complex operator space. -/
+/-- First-order source dependence of a measured observable. The real source parameter is embedded
+in `ℂ` before acting on the complex operator space. -/
 noncomputable def affineObservableFamily
     (A₀ A₁ : H →L[ℂ] H) (lam : ℝ) : H →L[ℂ] H :=
-  A₀ + lam • A₁
+  A₀ + (lam : ℂ) • A₁
 
 omit [CompleteSpace H] in
 @[simp]
@@ -69,7 +67,7 @@ theorem affinePerturbedObservable_eq
     (lam t : ℝ) :
     affinePerturbedObservable system V A₀ A₁ lam t =
       timeDependentPerturbedObservable system V A₀ lam t +
-        lam • timeDependentPerturbedObservable system V A₁ lam t := by
+        (lam : ℂ) • timeDependentPerturbedObservable system V A₁ lam t := by
   simp [affinePerturbedObservable, affineObservableFamily,
     timeDependentPerturbedObservable, heisenbergEvolution, mul_add, add_mul]
 
@@ -80,7 +78,7 @@ theorem affinePerturbedExpectation_eq
     (lam t : ℝ) :
     affinePerturbedExpectation system expectation V A₀ A₁ lam t =
       timeDependentPerturbedExpectationFunctional system expectation V lam t A₀ +
-        lam • timeDependentPerturbedExpectationFunctional system expectation V lam t A₁ := by
+        (lam : ℂ) * timeDependentPerturbedExpectationFunctional system expectation V lam t A₁ := by
   rw [affinePerturbedExpectation, affinePerturbedObservable_eq]
   simp
 
@@ -109,7 +107,9 @@ theorem hasDerivAt_affinePerturbedExpectation_zero_of_bound
   have hcontact :=
     hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound
       system expectation A₁ hM hV ht
-  have hscaled := (hasDerivAt_id (x := (0 : ℝ))).smul hcontact
+  have hsource : HasDerivAt (fun lam : ℝ => (lam : ℂ)) 1 0 :=
+    (hasDerivAt_id (x := (0 : ℝ))).ofReal_comp
+  have hscaled := hsource.mul hcontact
   have hsum := hfixed.add hscaled
   simpa [affinePerturbedExpectation_eq] using hsum
 
