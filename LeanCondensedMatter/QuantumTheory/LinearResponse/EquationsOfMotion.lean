@@ -156,7 +156,7 @@ theorem hasDerivAt_evolveDensityOperator_op_generator
   have hderivRaw :
       (G * U * ρ.op * Uneg + U * ρ.op * ((-G) * Uneg)) =
         G * (U * ρ.op * Uneg) - (U * ρ.op * Uneg) * G := by
-    rw [hcommNeg.eq]
+    rw [neg_mul, hcommNeg.eq]
     noncomm_ring
   have hderiv :
       (G * U * ρ.op * Uneg + U * ρ.op * ((-G) * Uneg)) =
