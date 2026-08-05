@@ -101,10 +101,8 @@ theorem hasDerivAt_sourceDependentPerturbedObservable_zero_of_bound
     simpa [Function.comp_def] using hU.star
   have hAI := hasDerivAt_heisenbergEvolution_comp system hA t
   have hprod := (hUstar.mul hAI).mul hU
-  convert hprod using 1
-  · rfl
-  · simp
-    abel
+  simpa [sourceDependentPerturbedObservable, timeDependentPerturbedObservable,
+    add_comm, add_left_comm, add_assoc] using hprod
 
 /-- Applying the ordinary expectation to the source-dependent observable variation. -/
 theorem hasDerivAt_sourceDependentPerturbedExpectation_zero_of_bound
