@@ -153,17 +153,12 @@ noncomputable def TwoPointDiagram.vacuumLegDataEquiv {S : Finset (Fin N)}
     (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) :
     {leg : TwoPointLeg S // d.unflattenedLegInComponent B leg} ≃
       ↥(d.componentInteractionVertices B) × Fin 4 where
-  toFun leg :=
-    match hleg : leg.1 with
-    | .inl e => False.elim (hVac ⟨e, by
-        have hmem := leg.2
-        rw [TwoPointDiagram.unflattenedLegInComponent, hleg] at hmem
-        exact hmem⟩)
-    | .inr p =>
-        (⟨p.1.1, (d.mem_componentInteractionVertices B p.1).2 (by
-          have hmem := leg.2
-          rw [TwoPointDiagram.unflattenedLegInComponent, hleg] at hmem
-          exact hmem)⟩, p.2)
+  toFun leg := by
+    rcases leg with ⟨leg, hleg⟩
+    cases leg with
+    | inl e => exact False.elim (hVac ⟨e, hleg⟩)
+    | inr p =>
+        exact (⟨p.1.1, (d.mem_componentInteractionVertices B p.1).2 hleg⟩, p.2)
   invFun p :=
     let v : ↥S :=
       ⟨p.1.1, d.componentInteractionVertices_subset B p.1.2⟩
@@ -177,10 +172,7 @@ noncomputable def TwoPointDiagram.vacuumLegDataEquiv {S : Finset (Fin N)}
     | inr p =>
         rcases p with ⟨v, l⟩
         apply Subtype.ext
-        apply Sum.inr.inj
-        apply Prod.ext
-        · exact Subtype.ext (by rfl)
-        · rfl
+        rfl
   right_inv p := by
     rcases p with ⟨v, l⟩
     apply Prod.ext
