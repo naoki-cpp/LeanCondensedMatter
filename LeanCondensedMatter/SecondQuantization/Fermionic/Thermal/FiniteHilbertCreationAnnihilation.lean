@@ -20,7 +20,7 @@ namespace Fermionic
 
 noncomputable section
 
-variable {Mode : Type*} [Fintype Mode] [LinearOrder Mode]
+variable {Mode : Type*} [LinearOrder Mode]
 
 /-- The creation and annihilation coordinate matrices are conjugate transposes. -/
 theorem star_matrixCoeff_create_eq_matrixCoeff_annihilate
@@ -68,6 +68,10 @@ theorem star_matrixCoeff_create_eq_matrixCoeff_annihilate
         exact hn hi
       simp [basisState, Common.basisState, hne]
 
+section Finite
+
+variable [Fintype Mode]
+
 /-- Bounded creation on the canonical finite-Hilbert fermionic Fock space. -/
 noncomputable def finiteHilbertCreate (i : Mode) :
     Common.FiniteHilbertFock (Occupation Mode) →L[ℂ]
@@ -96,6 +100,8 @@ theorem star_finiteHilbertAnnihilate (i : Mode) :
       finiteHilbertCreate i = star (finiteHilbertAnnihilate i) := by
     simpa only [star_star] using congrArg star (star_finiteHilbertCreate i)
   exact h'.symm
+
+end Finite
 
 end
 end Fermionic
