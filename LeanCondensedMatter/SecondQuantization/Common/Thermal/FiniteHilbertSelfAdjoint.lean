@@ -4,14 +4,14 @@ import Mathlib.Analysis.Matrix.Hermitian
 set_option linter.style.header false
 
 /-!
-# Self-adjointness of finite-Hilbert operator transport
+# Adjointness of finite-Hilbert operator transport
 
 The canonical finite-Hilbert realization of an algebraic Fock operator is written in the
-configuration basis.  Its matrix in the corresponding orthonormal basis is exactly the algebraic
-coordinate matrix `matrixCoeff A`.  Consequently self-adjointness of the bounded transported
-operator is equivalent to the usual Hermitian symmetry of those coefficients.
+configuration basis. Its matrix in the corresponding orthonormal basis is exactly the algebraic
+coordinate matrix `matrixCoeff A`. Consequently adjoints and self-adjointness of bounded
+transported operators are equivalent to conjugate-transpose identities for those coefficients.
 
-This module is model-independent.  In particular, hopping and current models can establish
+This module is model-independent. In particular, hopping and current models can establish
 self-adjointness by proving a coefficient identity before entering the analytic Kubo layer.
 -/
 
@@ -38,6 +38,39 @@ theorem finiteHilbertOperatorMatrix_apply
     finiteHilbertOperatorMatrix A m n = matrixCoeff A m n := by
   simp [finiteHilbertOperatorMatrix, LinearMap.toMatrix_apply,
     finiteHilbertOrthonormalBasis_apply, finiteHilbertOperator_basis_apply]
+
+/-- Adjointness after finite-Hilbert transport is exactly conjugate transposition of the algebraic
+coordinate matrix. -/
+theorem star_finiteHilbertOperator_eq_iff_matrixCoeff
+    (A B : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    star (finiteHilbertOperator A) = finiteHilbertOperator B ↔
+      ∀ m n : Config, star (matrixCoeff A n m) = matrixCoeff B m n := by
+  rw [ContinuousLinearMap.star_eq_adjoint]
+  let b := (finiteHilbertOrthonormalBasis (Config := Config)).toBasis
+  constructor
+  · intro h m n
+    have hlin :
+        LinearMap.adjoint (finiteHilbertOperator A).toLinearMap =
+          (finiteHilbertOperator B).toLinearMap := by
+      rw [ContinuousLinearMap.adjoint_toLinearMap]
+      exact congrArg ContinuousLinearMap.toLinearMap h
+    have hmat := congrArg (fun T => LinearMap.toMatrix b b T m n) hlin
+    rw [LinearMap.toMatrix_adjoint] at hmat
+    simpa [b, finiteHilbertOperatorMatrix] using hmat
+  · intro h
+    have hmat :
+        LinearMap.toMatrix b b
+            (LinearMap.adjoint (finiteHilbertOperator A).toLinearMap) =
+          LinearMap.toMatrix b b (finiteHilbertOperator B).toLinearMap := by
+      ext m n
+      rw [LinearMap.toMatrix_adjoint]
+      simpa [b, finiteHilbertOperatorMatrix] using h m n
+    have hlin :
+        LinearMap.adjoint (finiteHilbertOperator A).toLinearMap =
+          (finiteHilbertOperator B).toLinearMap :=
+      (LinearMap.toMatrix b b).injective hmat
+    rw [ContinuousLinearMap.adjoint_toLinearMap] at hlin
+    exact ContinuousLinearMap.ext fun x => LinearMap.congr_fun hlin x
 
 /-- The transported bounded operator is self-adjoint exactly when its canonical matrix is
 Hermitian. -/
