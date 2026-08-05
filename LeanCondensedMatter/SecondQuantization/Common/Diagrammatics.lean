@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.VertexLabel
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.QuarticOperator
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Leg
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Diagram
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint
@@ -25,8 +26,9 @@ set_option linter.style.header false
 /-!
 # Statistics-independent diagrammatics
 
-Quartic vertex labels and leg indexing, two-point diagrams with distinguished external legs,
-ordered diagram data, connected components, component-local orders, order-preserving shuffle
-decompositions, and shuffled ordered-simplex integrands; component restriction and reassembly,
-decomposition equivalences, and componentwise scalar factorization.
+Quartic vertex labels, shared local-leg semantics and operator constructors, leg indexing, two-point
+diagrams with distinguished external legs, ordered diagram data, connected components,
+component-local orders, order-preserving shuffle decompositions, and shuffled ordered-simplex
+integrands; component restriction and reassembly, decomposition equivalences, and componentwise
+scalar factorization.
 -/
