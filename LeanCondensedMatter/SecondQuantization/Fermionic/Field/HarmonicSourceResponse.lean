@@ -179,15 +179,8 @@ theorem hasDerivAt_boundedDirectionalSineExpectation_zero_of_bound_retarded
     hasDerivAt_boundedDirectionalCurrentExpectation_zero_of_bound_retarded
       system expectation (adiabaticSineSource ω η T)
       geometry direction K hK q hM hV hT hInt
-  have hzero :
-      expectation.toContinuousLinearMap
-        (QuantumTheory.LinearResponse.heisenbergEvolution system
-          (0 : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) T) = 0 := by
-    rw [QuantumTheory.LinearResponse.heisenbergEvolution_zero]
-    exact map_zero expectation.toContinuousLinearMap
-  simp only [adiabaticSineSource_at_observation, map_zero, zero_smul] at h
-  rw [hzero, add_zero] at h
-  simpa [finiteTimeAdiabaticDirectionalSineResponse] using h
+  simpa [finiteTimeAdiabaticDirectionalSineResponse,
+    QuantumTheory.LinearResponse.heisenbergEvolution] using h
 
 end
 end Field
