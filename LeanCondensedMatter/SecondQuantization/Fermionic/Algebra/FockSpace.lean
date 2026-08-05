@@ -12,12 +12,11 @@ fermionic occupation-number basis `Occupation Mode` (`Occupation.lean`).
 
 Built directly on `Common.AlgebraicFock`: `FockSpace Mode := Common.AlgebraicFock
 (Occupation Mode)`, with `basisState`/`linearMap_ext_basisState` reusing the generic
-`Common` versions rather than re-proving them (fermionic-specific facts like `basisState_injOn`
-and the vacuum still live here). Deliberately algebraic only: no inner product, no Hilbert-space
-completion, no bounded/unbounded operator theory. Those analytic questions are out of scope until
-the algebraic Linked Cluster Theorem is done (see `notes/roadmaps/second-quantization.md`'s design
-principles). Creation and annihilation operators, with their sign factors, come next
-(`CreationAnnihilation.lean`).
+`Common` versions rather than re-proving them. Deliberately algebraic only: no inner product, no
+Hilbert-space completion, no bounded/unbounded operator theory. Those analytic questions are out of
+scope until the algebraic Linked Cluster Theorem is done (see
+`notes/roadmaps/second-quantization.md`'s design principles). Creation and annihilation operators,
+with their sign factors, come next (`CreationAnnihilation.lean`).
 -/
 
 namespace SecondQuantization
@@ -45,10 +44,18 @@ theorem basisState_ne_zero (n : Occupation Mode) : basisState n ≠ 0 :=
 theorem basisState_injective : Function.Injective (basisState : Occupation Mode → _) :=
   Common.basisState_injective
 
-/-- Distinct occupation-number states give linearly-independent (in fact, orthogonal-support)
-basis vectors: `basisState m` and `basisState n` never coincide for `m ≠ n`. -/
-theorem basisState_injOn : Set.InjOn (basisState : Occupation Mode → _) Set.univ :=
-  fun _ _ _ _ h => basisState_injective h
+/-- Basis vectors are injective on all fermionic occupation states. -/
+theorem basisState_injOn : Set.InjOn (basisState : Occupation Mode → _) Set.univ := by
+  change Set.InjOn
+    (Common.basisState : Occupation Mode → Common.AlgebraicFock (Occupation Mode)) Set.univ
+  exact Common.basisState_injOn
+
+/-- The fermionic occupation-number basis vectors are linearly independent. -/
+theorem basisState_linearIndependent :
+    LinearIndependent ℂ (basisState : Occupation Mode → FockSpace Mode) := by
+  change LinearIndependent ℂ
+    (Common.basisState : Occupation Mode → Common.AlgebraicFock (Occupation Mode))
+  exact Common.basisState_linearIndependent
 
 /-- Two linear maps out of `FockSpace Mode` that agree on every basis state are equal —
 the basis-level facts proved in `CreationAnnihilation.lean`/`CanonicalAnticommutationRelations.lean`
