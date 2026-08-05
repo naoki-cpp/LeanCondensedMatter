@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary
+import LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics
 
 set_option linter.style.header false
@@ -7,14 +8,17 @@ set_option linter.style.header false
 # Schrödinger and Heisenberg picture equivalence
 
 This module connects normalized Schrödinger-picture state evolution with the existing bounded
-Heisenberg evolution.  The pure-state layer remains dimension-independent and uses vector
-representatives; no quotient by global phase is introduced.
+Heisenberg evolution.  Pure states remain vector representatives rather than rays.  Mixed states
+are transported by the unitary conjugation `ρ(t) = U(t) ρ U(t)†`, with positivity and spectral
+normalization preserved by construction.
 -/
 
 namespace QuantumTheory
 namespace LinearResponse
 
 noncomputable section
+
+open ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 variable (system : BoundedFreeSystem H)
@@ -57,6 +61,46 @@ theorem observableExpValue_evolveState_eq_heisenberg
   apply Complex.ofReal_injective
   rw [coe_observableExpValue, coe_observableExpValue,
     expValue_evolveState_eq_heisenberg system]
+
+/-- Schrödinger-picture evolution of a density operator by unitary conjugation. -/
+noncomputable def evolveDensityOperator (ρ : DensityOperator H) (t : ℝ) :
+    DensityOperator H where
+  op := unitaryConjugate (freePropagator system t) ρ.op
+  pos := ρ.pos.unitaryConjugate (freePropagator system t)
+  spectralTraceClass :=
+    ρ.spectralTraceClass.unitaryConjugate
+      (freePropagator system t)
+      (star_mul_freePropagator system t)
+      (freePropagator_mul_star system t)
+  spectralTrace_eq_one := by
+    calc
+      (ρ.spectralTraceClass.unitaryConjugate
+        (freePropagator system t)
+        (star_mul_freePropagator system t)
+        (freePropagator_mul_star system t)).trace =
+          ρ.spectralTraceClass.trace :=
+        SpectralTraceClass.trace_unitaryConjugate
+          ρ.spectralTraceClass (freePropagator system t)
+          (star_mul_freePropagator system t)
+          (freePropagator_mul_star system t)
+      _ = 1 := ρ.spectralTrace_eq_one
+
+@[simp]
+theorem evolveDensityOperator_op (ρ : DensityOperator H) (t : ℝ) :
+    (evolveDensityOperator system ρ t).op =
+      unitaryConjugate (freePropagator system t) ρ.op :=
+  rfl
+
+/-- Evolved density operators remain positive. -/
+theorem evolveDensityOperator_isPositive (ρ : DensityOperator H) (t : ℝ) :
+    (evolveDensityOperator system ρ t).op.IsPositive :=
+  (evolveDensityOperator system ρ t).pos
+
+/-- Evolved density operators retain spectral trace one. -/
+@[simp]
+theorem evolveDensityOperator_trace_eq_one (ρ : DensityOperator H) (t : ℝ) :
+    (evolveDensityOperator system ρ t).spectralTraceClass.trace = 1 :=
+  (evolveDensityOperator system ρ t).spectralTrace_eq_one
 
 end
 end LinearResponse
