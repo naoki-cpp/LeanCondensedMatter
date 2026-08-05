@@ -164,7 +164,6 @@ theorem hasDerivAt_evolution_linear_coupling_zero_of_bound
             mul_le_mul_of_nonneg_left hrem' (inv_nonneg.mpr (abs_nonneg lam))
         _ = |lam| * (‖κ‖ ^ 2 * C) := by
           field_simp [habs0]
-          <;> ring
   · simpa using habs.mul_const (‖κ‖ ^ 2 * C)
 
 end
