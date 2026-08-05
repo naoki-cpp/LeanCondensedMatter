@@ -58,13 +58,18 @@ theorem dGamma_dualRankOne (f : 𝓗₁) (d : Module.Dual ℂ 𝓗₁) :
             oneParticle 𝓗₁ g * dGamma 𝓗₁ (dualRankOne 𝓗₁ f d) x =
           create 𝓗₁ f
             (annihilateDual 𝓗₁ d (create 𝓗₁ g x))
-      rw [annihilateDual_create_apply]
-      rw [hx]
+      rw [annihilateDual_create_apply, hx]
       have hcar := LinearMap.congr_fun (create_comp_add_swap 𝓗₁ f g)
         (annihilateDual 𝓗₁ d x)
-      simp only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.zero_apply] at hcar
-      simp only [create_apply, map_sub, map_smul, oneParticle, map_smul]
-      rw [mul_sub, smul_mul_assoc]
+      have hswap :
+          oneParticle 𝓗₁ g *
+              (oneParticle 𝓗₁ f * annihilateDual 𝓗₁ d x) =
+            -(oneParticle 𝓗₁ f *
+              (oneParticle 𝓗₁ g * annihilateDual 𝓗₁ d x)) := by
+        simpa only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.zero_apply,
+          create_apply] using eq_neg_of_add_eq_zero_left hcar
+      simp only [create_apply, LinearMap.comp_apply, map_sub, map_smul]
+      rw [smul_mul_assoc, hswap]
       abel
 
 variable {Site : Type*}
