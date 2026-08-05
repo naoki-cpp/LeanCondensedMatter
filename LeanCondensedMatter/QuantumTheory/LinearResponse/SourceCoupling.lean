@@ -13,7 +13,7 @@ to the standard source coupling
 
 `V(t) = -f(t) B`,
 
-where `f : ℝ → ℝ` is a real source and `B` is a bounded coupling observable.  The interaction-picture
+where `f : ℝ → ℝ` is a real source and `B` is a bounded coupling observable. The interaction-picture
 perturbation is proved to be
 
 `V_I(t) = -f(t) B_I(t)`,
@@ -197,7 +197,7 @@ theorem hasDerivAt_densityOperatorSourceCoupledExpectation_zero_of_bound_kubo
       0 := by
   simpa using
     (hasDerivAt_sourceCoupledPerturbedExpectation_zero_of_bound_kubo
-      system (densityNormalizedExpectation ρ) f hB A hM hV ht hInt)
+      system ρ.toNormalizedExpectation f hB A hM hV ht hInt)
 
 end
 end LinearResponse
