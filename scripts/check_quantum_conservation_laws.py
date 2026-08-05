@@ -156,8 +156,8 @@ def main() -> int:
 
     conservation_boundaries = (
         "Commute system.hamiltonian A",
-        "freePropagator_neg_mul system t",
-        "freePropagator_mul_neg system t",
+        "freePropagator_neg_mul",
+        "freePropagator_mul_neg",
         "expValue_evolveState_eq_heisenberg system",
         "expectation_evolveDensityOperator_eq_heisenberg system",
         "DensityOperator.ext",
