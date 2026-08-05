@@ -32,6 +32,7 @@ import LeanCondensedMatter.Combinatorics
 import LeanCondensedMatter.QuantumTheory.Postulates
 import LeanCondensedMatter.QuantumTheory.BoundedDyson
 import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
+import LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics
 import LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence
 import LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion
