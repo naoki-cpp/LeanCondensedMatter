@@ -146,7 +146,9 @@ theorem expectation_evolveDensityOperator_eq_heisenberg
         (star (freePropagator system t)) (freePropagator system t (b i)) = b i := by
       have h := congrArg (fun U : H →L[ℂ] H => U (b i))
         (star_mul_freePropagator system t)
-      simpa [mul_apply_eq_comp] using h
+      change (star (freePropagator system t))
+        (freePropagator system t (b i)) = b i at h
+      exact h
     rw [hcancel]
     simpa using congrArg (fun x : H => freePropagator system t x) (hρ i)
   rw [(evolveDensityOperator system ρ t).expectation_eq_tsum_diagonal A b' w hρ',
