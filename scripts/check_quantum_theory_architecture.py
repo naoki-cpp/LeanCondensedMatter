@@ -31,16 +31,99 @@ LEGACY_ALIAS = re.compile(
     r"^\s*(?:abbrev|def)\s+(?:QuantumTheory\.)?TraceClass\.(?:DensityOperator|POVM)\b",
     re.MULTILINE,
 )
+PURE_REAL_EXPECTATION_DECL = re.compile(
+    r"^\s*noncomputable\s+def\s+observableExpValue\b", re.MULTILINE
+)
+DENSITY_REAL_EXPECTATION_DECL = re.compile(
+    r"^\s*noncomputable\s+def\s+DensityOperator\.observableExpectation\b", re.MULTILINE
+)
+LEGACY_ENERGY_SELF_ADJOINT = re.compile(r"\benergyExpectationSelfAdjoint\b")
 
 EXPECTED_DENSITY = QUANTUM / "DensityOperator" / "Basic.lean"
 EXPECTED_POVM = QUANTUM / "POVM" / "Basic.lean"
+EXPECTED_PURE_REAL_EXPECTATION = QUANTUM / "Postulates.lean"
+EXPECTED_DENSITY_REAL_EXPECTATION = (
+    QUANTUM / "DensityOperator" / "ObservableExpectation.lean"
+)
+GIBBS_ENERGY_EXPECTATION = QUANTUM / "Gibbs" / "EnergyExpectation.lean"
 REMOVED_DOCUMENTS = (
     NOTES / "migrations" / "canonical-quantum-density-theory.md",
+)
+
+CANONICAL_PURE_EXPECTATION_BODY = (
+    "noncomputable def expValue : ℂ := inner ℂ ψ.1 (A.1 ψ.1)"
+)
+LEGACY_REVERSED_PURE_EXPECTATION_BODY = (
+    "noncomputable def expValue : ℂ := inner ℂ (A.1 ψ.1) ψ.1"
+)
+ENERGY_EXPECTATION_SPECIALIZATION = (
+    "noncomputable def energyExpValue (ρ : DensityOperator H) "
+    "(Hop : Observable H) : ℝ := ρ.observableExpectation Hop"
 )
 
 
 def relative(path: Path) -> str:
     return relative_to(ROOT, path)
+
+
+def strip_comments(text: str) -> str:
+    """Remove Lean line and nested block comments while preserving newlines."""
+    out: list[str] = []
+    i = 0
+    depth = 0
+    in_string = False
+    escaped = False
+
+    while i < len(text):
+        ch = text[i]
+        nxt = text[i + 1] if i + 1 < len(text) else ""
+
+        if depth:
+            if ch == "/" and nxt == "-":
+                depth += 1
+                out.extend("  ")
+                i += 2
+            elif ch == "-" and nxt == "/":
+                depth -= 1
+                out.extend("  ")
+                i += 2
+            else:
+                out.append("\n" if ch == "\n" else " ")
+                i += 1
+            continue
+
+        if in_string:
+            out.append(ch)
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+            i += 1
+            continue
+
+        if ch == '"':
+            in_string = True
+            out.append(ch)
+            i += 1
+        elif ch == "/" and nxt == "-":
+            depth = 1
+            out.extend("  ")
+            i += 2
+        elif ch == "-" and nxt == "-":
+            while i < len(text) and text[i] != "\n":
+                out.append(" ")
+                i += 1
+        else:
+            out.append(ch)
+            i += 1
+
+    return "".join(out)
+
+
+def normalized_code(path: Path) -> str:
+    return " ".join(strip_comments(path.read_text(encoding="utf-8")).split())
 
 
 def documentation_files():
@@ -70,6 +153,54 @@ def check_documentation(errors: list[str]) -> None:
                 errors.append(
                     f"obsolete QuantumTheory module in docs: {relative(path)}:{line_no}: {line.strip()}"
                 )
+
+
+def check_observable_expectation_boundary(errors: list[str]) -> None:
+    postulates = normalized_code(EXPECTED_PURE_REAL_EXPECTATION)
+    if CANONICAL_PURE_EXPECTATION_BODY not in postulates:
+        errors.append(
+            "pure-state expectation must use the canonical inner ψ (A ψ) orientation in "
+            f"{relative(EXPECTED_PURE_REAL_EXPECTATION)}"
+        )
+    if LEGACY_REVERSED_PURE_EXPECTATION_BODY in postulates:
+        errors.append(
+            "legacy reversed pure-state expectation orientation in "
+            f"{relative(EXPECTED_PURE_REAL_EXPECTATION)}"
+        )
+
+    pure_real_declarations: list[Path] = []
+    density_real_declarations: list[Path] = []
+    for path in lean_files(QUANTUM):
+        code = strip_comments(path.read_text(encoding="utf-8"))
+        if PURE_REAL_EXPECTATION_DECL.search(code):
+            pure_real_declarations.append(path)
+        if DENSITY_REAL_EXPECTATION_DECL.search(code):
+            density_real_declarations.append(path)
+        if LEGACY_ENERGY_SELF_ADJOINT.search(code):
+            errors.append(
+                f"legacy Gibbs-owned generic observable expectation: {relative(path)}"
+            )
+
+    if pure_real_declarations != [EXPECTED_PURE_REAL_EXPECTATION]:
+        rendered = ", ".join(relative(path) for path in pure_real_declarations) or "<none>"
+        errors.append(
+            "canonical pure-state real observable expectation must be declared exactly once in "
+            f"{relative(EXPECTED_PURE_REAL_EXPECTATION)}; found: {rendered}"
+        )
+
+    if density_real_declarations != [EXPECTED_DENSITY_REAL_EXPECTATION]:
+        rendered = ", ".join(relative(path) for path in density_real_declarations) or "<none>"
+        errors.append(
+            "canonical density-state real observable expectation must be declared exactly once in "
+            f"{relative(EXPECTED_DENSITY_REAL_EXPECTATION)}; found: {rendered}"
+        )
+
+    energy_code = normalized_code(GIBBS_ENERGY_EXPECTATION)
+    if ENERGY_EXPECTATION_SPECIALIZATION not in energy_code:
+        errors.append(
+            "energyExpValue must remain a direct specialization of "
+            f"DensityOperator.observableExpectation in {relative(GIBBS_ENERGY_EXPECTATION)}"
+        )
 
 
 def main() -> int:
@@ -115,6 +246,7 @@ def main() -> int:
             f"{relative(EXPECTED_POVM)}; found: {rendered}"
         )
 
+    check_observable_expectation_boundary(errors)
     check_documentation(errors)
 
     return finish_audit(
