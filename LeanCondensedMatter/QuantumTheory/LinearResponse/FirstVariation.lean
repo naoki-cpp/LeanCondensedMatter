@@ -85,56 +85,10 @@ theorem hasDerivAt_interactionPropagator_zero_of_bound
       ((Complex.I / (system.hbar : ℂ)) •
         ∫ s in (0 : ℝ)..t, interactionPerturbation system B f s)
       0 := by
-  rw [hasDerivAt_iff_tendsto]
-  let C : ℝ := ∑' n : ℕ, Dyson.majorant M t (n + 2)
-  have hC : 0 ≤ C := by
-    exact tsum_nonneg fun n => Dyson.majorant_nonneg hM ht.1 (n + 2)
-  have habs : Tendsto (fun lam : ℝ => |lam|) (𝓝 0) (𝓝 0) := by
-    simpa [Real.norm_eq_abs] using (continuous_norm.tendsto (0 : ℝ))
-  have hsmall : ∀ᶠ lam : ℝ in 𝓝 0, |lam| / system.hbar ≤ 1 := by
-    have hevent : ∀ᶠ lam : ℝ in 𝓝 0, |lam| < system.hbar :=
-      habs (Iio_mem_nhds system.hbar_pos)
-    filter_upwards [hevent] with lam hlam
-    exact (div_le_one system.hbar_pos).2 hlam.le
-  refine squeeze_zero'
-    (g := fun lam : ℝ => |lam| * (C / system.hbar ^ 2)) ?_ ?_ ?_
-  · exact Filter.Eventually.of_forall fun lam =>
-      mul_nonneg (inv_nonneg.mpr (norm_nonneg _)) (norm_nonneg _)
-  · filter_upwards [hsmall] with lam hlam
-    have hrem := norm_interactionPropagator_sub_firstOrder_le_sq_mul_of_bound
-      system hM hV ht lam hlam
-    have hlin :
-        lam • ((Complex.I / (system.hbar : ℂ)) •
-            ∫ s in (0 : ℝ)..t, interactionPerturbation system B f s) =
-          ((lam : ℂ) * (Complex.I / (system.hbar : ℂ))) •
-            ∫ s in (0 : ℝ)..t, interactionPerturbation system B f s := by
-      rw [← smul_smul]
-      rfl
-    have hrem' :
-        ‖interactionPropagator system B f lam t -
-            interactionPropagator system B f 0 t -
-            lam • ((Complex.I / (system.hbar : ℂ)) •
-              ∫ s in (0 : ℝ)..t, interactionPerturbation system B f s)‖ ≤
-          (|lam| / system.hbar) ^ 2 * C := by
-      rw [hlin]
-      simpa [C, interactionPropagator_zero_coupling, sub_eq_add_neg,
-        add_comm, add_left_comm, add_assoc] using hrem
-    by_cases hlam0 : lam = 0
-    · subst lam
-      simp
-    · have habs0 : |lam| ≠ 0 := abs_ne_zero.mpr hlam0
-      calc
-        ‖lam - 0‖⁻¹ *
-            ‖interactionPropagator system B f lam t -
-              interactionPropagator system B f 0 t -
-              (lam - 0) • ((Complex.I / (system.hbar : ℂ)) •
-                ∫ s in (0 : ℝ)..t, interactionPerturbation system B f s)‖ ≤
-            |lam|⁻¹ * ((|lam| / system.hbar) ^ 2 * C) := by
-          simpa [Real.norm_eq_abs] using
-            mul_le_mul_of_nonneg_left hrem' (inv_nonneg.mpr (abs_nonneg lam))
-        _ = |lam| * (C / system.hbar ^ 2) := by
-          field_simp [habs0, system.hbar_ne_zero]
-  · simpa using habs.mul_const (C / system.hbar ^ 2)
+  simpa [interactionPropagator, physicalDysonCoupling] using
+    Dyson.hasDerivAt_evolution_linear_coupling_zero_of_bound
+      (interactionPerturbation system B f) BoundedDyson.norm_one_le hM hV ht
+      (-(Complex.I / (system.hbar : ℂ)))
 
 end
 end LinearResponse
