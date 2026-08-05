@@ -54,7 +54,14 @@ noncomputable def TwoPointDiagram.interactionVertexComponentEquiv
             d.componentPartition.parts) = B :=
       Subtype.ext hblock
     apply Sigma.ext hB
-    exact (Subtype.heq_iff_coe_eq (fun x => by rw [hblock])).2 rfl
+    refine (Subtype.heq_iff_coe_eq ?_).2 ?_
+    · intro x
+      change x ∈ TwoPointDiagram.interactionPart
+          (d.componentBlock (Sum.inr vS)) ↔
+        x ∈ TwoPointDiagram.interactionPart
+          (B : Finset (TwoPointVertex S))
+      rw [hblock]
+    · rfl
 
 @[simp]
 theorem TwoPointDiagram.interactionVertexComponentEquiv_symm_val
