@@ -65,7 +65,8 @@ theorem eigenspace_unitaryConjugate (U T : H →L[ℂ] H)
     have hcancel : (star U) (U y) = y := by
       have h := congrArg (fun A : H →L[ℂ] H => A y) hleft
       simpa [mul_apply_eq_comp] using h
-    rw [hcancel, hy, map_smul]
+    rw [hcancel]
+    simpa using congrArg (fun z : H => U z) hy
 
 /-- Corresponding eigenspaces have the same finite dimension under unitary conjugation. -/
 theorem finrank_eigenspace_unitaryConjugate (U T : H →L[ℂ] H)
