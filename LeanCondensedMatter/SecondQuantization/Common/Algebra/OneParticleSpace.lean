@@ -1,3 +1,5 @@
+import Mathlib.Data.Finsupp.Basic
+
 /-!
 # One-particle mode labels
 
