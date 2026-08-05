@@ -1,0 +1,150 @@
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ChargeDensity
+import Mathlib.LinearAlgebra.Finsupp.LSum
+
+set_option linter.style.header false
+
+/-!
+# Locally finite discrete-lattice fermionic currents
+
+This module begins F5 of issue #524 without assuming that the lattice itself is finite. For an
+arbitrary site type `Site`, the algebraic one-particle space is the free complex vector space
+`Site →₀ ℂ`. A hopping model is specified by the finitely supported image of every site ket together
+with a finite incident set at every site that contains all incoming and outgoing nonzero matrix
+elements.
+
+Thus the lattice may be infinite (for example `ℤ`, `ℤ × ℤ`, or the vertices of an arbitrary locally
+finite graph). Only the hopping neighborhood of each individual site is finite. This layer remains
+algebraic; an `ℓ²` completion and boundedness or domain statements are separate analytic concerns.
+-/
+
+open scoped BigOperators
+
+namespace SecondQuantization
+namespace Fermionic
+namespace Field
+
+/-- Algebraic one-particle states on an arbitrary discrete lattice. Every vector has finite support,
+but the site type itself need not be finite. -/
+abbrev LatticeState (Site : Type*) := Site →₀ ℂ
+
+variable {Site : Type*} [DecidableEq Site]
+
+/-- The canonical one-particle ket localized at a lattice site. -/
+noncomputable def latticeKet (x : Site) : LatticeState Site :=
+  Finsupp.single x 1
+
+/-- The matrix unit `|x⟩⟨y|` on the algebraic lattice one-particle space. -/
+noncomputable def matrixUnit (x y : Site) :
+    LatticeState Site →ₗ[ℂ] LatticeState Site :=
+  (Finsupp.lsingle x : ℂ →ₗ[ℂ] LatticeState Site).comp
+    (Finsupp.lapply y : LatticeState Site →ₗ[ℂ] ℂ)
+
+@[simp]
+theorem matrixUnit_apply (x y : Site) (ψ : LatticeState Site) :
+    matrixUnit x y ψ = Finsupp.single x (ψ y) := by
+  rfl
+
+@[simp]
+theorem matrixUnit_single (x y z : Site) (c : ℂ) :
+    matrixUnit x y (Finsupp.single z c) =
+      if y = z then Finsupp.single x c else 0 := by
+  classical
+  simp [matrixUnit]
+
+/-- The one-particle projector `|x⟩⟨x|` onto a lattice site. -/
+noncomputable def siteProjector (x : Site) :
+    LatticeState Site →ₗ[ℂ] LatticeState Site :=
+  matrixUnit x x
+
+@[simp]
+theorem siteProjector_apply (x : Site) (ψ : LatticeState Site) :
+    siteProjector x ψ = Finsupp.single x (ψ x) := by
+  rfl
+
+/-- A row-and-column locally finite hopping model on an arbitrary discrete site type.
+
+`column y` is the finitely supported vector `h |y⟩`. The finite set `incident x` contains `x` and
+all sites `y` for which either matrix element `⟨x|h|y⟩` or `⟨y|h|x⟩` can be nonzero. -/
+structure LocallyFiniteHopping (Site : Type*) [DecidableEq Site] where
+  column : Site → LatticeState Site
+  incident : Site → Finset Site
+  self_mem : ∀ x, x ∈ incident x
+  outside_incident : ∀ {x y}, y ∉ incident x → column y x = 0 ∧ column x y = 0
+
+namespace LocallyFiniteHopping
+
+/-- The algebraic one-particle hopping operator determined by its finitely supported columns. -/
+noncomputable def operator (K : LocallyFiniteHopping Site) :
+    LatticeState Site →ₗ[ℂ] LatticeState Site :=
+  (Finsupp.lift (LatticeState Site) ℂ Site) K.column
+
+@[simp]
+theorem operator_single (K : LocallyFiniteHopping Site) (x : Site) (c : ℂ) :
+    K.operator (Finsupp.single x c) = c • K.column x := by
+  simp [operator, Finsupp.lift_apply]
+
+@[simp]
+theorem operator_latticeKet (K : LocallyFiniteHopping Site) (x : Site) :
+    K.operator (latticeKet x) = K.column x := by
+  simp [latticeKet]
+
+/-- Matrix element `⟨x|h|y⟩`, with `x` the target site and `y` the source site. -/
+noncomputable def amplitude (K : LocallyFiniteHopping Site) (x y : Site) : ℂ :=
+  K.column y x
+
+@[simp]
+theorem amplitude_eq (K : LocallyFiniteHopping Site) (x y : Site) :
+    K.amplitude x y = K.column y x :=
+  rfl
+
+/-- Outside the finite incident set, the incoming matrix element vanishes. -/
+theorem amplitude_eq_zero_of_not_mem (K : LocallyFiniteHopping Site)
+    {x y : Site} (hy : y ∉ K.incident x) :
+    K.amplitude x y = 0 :=
+  (K.outside_incident hy).1
+
+/-- Outside the finite incident set, the outgoing matrix element also vanishes. -/
+theorem amplitude_swap_eq_zero_of_not_mem (K : LocallyFiniteHopping Site)
+    {x y : Site} (hy : y ∉ K.incident x) :
+    K.amplitude y x = 0 :=
+  (K.outside_incident hy).2
+
+/-- The one-particle operator entering the oriented bond current from `x` to `y`:
+
+`h_xy |x⟩⟨y| - h_yx |y⟩⟨x|`.
+-/
+noncomputable def bondOperator (K : LocallyFiniteHopping Site) (x y : Site) :
+    LatticeState Site →ₗ[ℂ] LatticeState Site :=
+  K.amplitude x y • matrixUnit x y - K.amplitude y x • matrixUnit y x
+
+/-- Reversing the bond orientation negates the one-particle bond operator. -/
+theorem bondOperator_swap (K : LocallyFiniteHopping Site) (x y : Site) :
+    K.bondOperator y x = -K.bondOperator x y := by
+  simp [bondOperator]
+  abel
+
+end LocallyFiniteHopping
+
+/-- Many-particle charge localized at one lattice site. -/
+noncomputable def siteChargeDensity (q : ℂ) (x : Site) :
+    FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
+      FiniteParticleFock (LatticeState Site) :=
+  q • dGamma (LatticeState Site) (siteProjector x)
+
+/-- The oriented many-particle bond current. The convention is
+
+`J_(x→y) = (i q / ℏ) dΓ(h_xy |x⟩⟨y| - h_yx |y⟩⟨x|)`.
+-/
+noncomputable def bondCurrent (ℏ q : ℂ) (K : LocallyFiniteHopping Site) (x y : Site) :
+    FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
+      FiniteParticleFock (LatticeState Site) :=
+  ((Complex.I * q) / ℏ) • dGamma (LatticeState Site) (K.bondOperator x y)
+
+/-- Bond current is antisymmetric under orientation reversal. -/
+theorem bondCurrent_swap (ℏ q : ℂ) (K : LocallyFiniteHopping Site) (x y : Site) :
+    bondCurrent ℏ q K y x = -bondCurrent ℏ q K x y := by
+  simp [bondCurrent, K.bondOperator_swap, dGamma_smul]
+
+end Field
+end Fermionic
+end SecondQuantization
