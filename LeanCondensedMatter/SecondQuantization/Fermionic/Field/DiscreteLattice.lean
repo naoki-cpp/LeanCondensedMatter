@@ -276,6 +276,15 @@ theorem heisenberg_siteChargeDensity (ℏ q : ℂ)
   rw [linearCommutator_smul_right]
   rw [dGamma_linearCommutator]
   rw [K.linearCommutator_siteProjector]
+  have hmap :
+      dGammaLinear (LatticeState Site)
+          (∑ y ∈ K.incident x, K.bondOperator x y) =
+        ∑ y ∈ K.incident x,
+          dGammaLinear (LatticeState Site) (K.bondOperator x y) := by
+    induction K.incident x using Finset.induction_on with
+    | empty => simp
+    | @insert a s ha ih =>
+        simp [ha, ih]
   have hdGamma :
       dGamma (LatticeState Site) (-∑ y ∈ K.incident x, K.bondOperator x y) =
         -∑ y ∈ K.incident x,
@@ -284,7 +293,7 @@ theorem heisenberg_siteChargeDensity (ℏ q : ℂ)
       dGammaLinear (LatticeState Site) (-∑ y ∈ K.incident x, K.bondOperator x y) =
         -∑ y ∈ K.incident x,
           dGammaLinear (LatticeState Site) (K.bondOperator x y)
-    simp
+    rw [map_neg, hmap]
   rw [hdGamma]
   unfold bondCurrent
   simp only [smul_smul, smul_neg, Finset.smul_sum]
