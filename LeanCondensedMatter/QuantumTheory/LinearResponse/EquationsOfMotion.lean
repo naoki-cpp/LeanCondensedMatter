@@ -101,23 +101,16 @@ theorem hasDerivAt_heisenbergEvolution_generator
     simpa [G, U, Uneg, heisenbergEvolution, mul_assoc] using hprod
   have hcomm : Commute G U := by
     simpa [G, U] using schrodingerGenerator_commute_freePropagator system t
-  have hcommNeg : Commute G Uneg := by
-    simpa [G, Uneg] using schrodingerGenerator_commute_freePropagator system (-t)
+  have hderivRaw :
+      ((-G) * Uneg * A * U + Uneg * A * (G * U)) =
+        (Uneg * A * U) * G - G * (Uneg * A * U) := by
+    rw [hcomm.eq]
+    noncomm_ring
   have hderiv :
       ((-G) * Uneg * A * U + Uneg * A * (G * U)) =
         heisenbergEvolution system A t * G -
           G * heisenbergEvolution system A t := by
-    dsimp [G, U, Uneg] at hcomm hcommNeg ⊢
-    simp only [heisenbergEvolution]
-    rw [neg_mul, hcommNeg.eq, hcomm.eq]
-    have hmove :
-        schrodingerGenerator system *
-            (freePropagator system (-t) * (A * freePropagator system t)) =
-          freePropagator system (-t) *
-            (schrodingerGenerator system * (A * freePropagator system t)) := by
-      rw [← mul_assoc, hcommNeg.eq, mul_assoc]
-    rw [hmove]
-    abel
+    simpa [G, U, Uneg, heisenbergEvolution] using hderivRaw
   rw [← hderiv]
   exact hraw
 
@@ -158,25 +151,19 @@ theorem hasDerivAt_evolveDensityOperator_op_generator
     rw [hasDerivAt_iff_tendsto] at hprod
     simpa [G, U, Uneg, evolveDensityOperator_op, unitaryConjugate,
       star_freePropagator, mul_assoc] using hprod
-  have hcomm : Commute G U := by
-    simpa [G, U] using schrodingerGenerator_commute_freePropagator system t
   have hcommNeg : Commute G Uneg := by
     simpa [G, Uneg] using schrodingerGenerator_commute_freePropagator system (-t)
+  have hderivRaw :
+      (G * U * ρ.op * Uneg + U * ρ.op * ((-G) * Uneg)) =
+        G * (U * ρ.op * Uneg) - (U * ρ.op * Uneg) * G := by
+    rw [hcommNeg.eq]
+    noncomm_ring
   have hderiv :
       (G * U * ρ.op * Uneg + U * ρ.op * ((-G) * Uneg)) =
         G * (evolveDensityOperator system ρ t).op -
           (evolveDensityOperator system ρ t).op * G := by
-    dsimp [G, U, Uneg] at hcomm hcommNeg ⊢
-    simp only [unitaryConjugate, star_freePropagator]
-    rw [neg_mul, hcomm.eq, hcommNeg.eq]
-    have hmove :
-        schrodingerGenerator system *
-            (freePropagator system t * (ρ.op * freePropagator system (-t))) =
-          freePropagator system t *
-            (schrodingerGenerator system * (ρ.op * freePropagator system (-t))) := by
-      rw [← mul_assoc, hcomm.eq, mul_assoc]
-    rw [hmove]
-    abel
+    simpa [G, U, Uneg, evolveDensityOperator_op, unitaryConjugate,
+      star_freePropagator] using hderivRaw
   rw [← hderiv]
   exact hraw
 
