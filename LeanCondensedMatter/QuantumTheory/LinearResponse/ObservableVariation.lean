@@ -32,9 +32,6 @@ open Set
 
 noncomputable section
 
-local instance (priority := 2000) complexAddCommGroupFromNorm : AddCommGroup ℂ :=
-  Complex.instNormedAddCommGroup.toAddCommGroup
-
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
 variable (system : BoundedFreeSystem H)
@@ -114,6 +111,8 @@ theorem hasDerivAt_affinePerturbedExpectation_zero_of_bound
     (hasDerivAt_id (x := (0 : ℝ))).ofReal_comp
   have hscaled := hsource.mul hcontact
   have hsum := hfixed.add hscaled
+  rw [hasDerivAt_iff_tendsto]
+  rw [hasDerivAt_iff_tendsto] at hsum
   simpa [affinePerturbedExpectation_eq] using hsum
 
 /-- For a Hermitian perturbation, the state contribution is a commutator and the explicit
