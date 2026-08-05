@@ -27,6 +27,17 @@ structure DensityOperator (H : Type*) [NormedAddCommGroup H] [InnerProductSpace 
   spectralTraceClass : SpectralTraceClass op
   spectralTrace_eq_one : spectralTraceClass.trace = 1
 
+/-- Density operators are determined by their underlying bounded operators; all remaining fields
+are proof data. -/
+@[ext]
+theorem DensityOperator.ext {ρ σ : DensityOperator H} (h : ρ.op = σ.op) : ρ = σ := by
+  cases ρ with
+  | mk op hpos htrace hnorm =>
+    cases σ with
+    | mk op' hpos' htrace' hnorm' =>
+      cases h
+      rfl
+
 /-- The totalized spectral trace of a density operator is one. -/
 @[simp]
 theorem DensityOperator.spectralTrace_op_eq_one (ρ : DensityOperator H) :
