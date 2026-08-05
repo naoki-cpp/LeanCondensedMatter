@@ -67,7 +67,7 @@ theorem coe_observableExpValue :
   apply Complex.ext
   · rfl
   · simpa [observableExpValue, expValueSelfAdjoint, Complex.selfAdjointEquiv] using
-      expValue_im_eq_zero A ψ
+      (expValue_im_eq_zero A ψ).symm
 
 /-- **Phase indeterminacy.** Multiplying a state by a unit-modulus complex number (a global
 phase) does not change the expectation value of any observable — quantum states are physically
