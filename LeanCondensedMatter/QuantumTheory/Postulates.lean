@@ -1,5 +1,6 @@
 import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Analysis.InnerProductSpace.Symmetric
+import Mathlib.LinearAlgebra.Complex.Module
 
 -- No project files currently carry a Mathlib-style copyright/author header; a
 -- project-wide policy for this is a separate open item (see notes/conventions.md).
@@ -34,22 +35,57 @@ def Observable (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Com
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 variable (A : Observable H) (ψ : State H)
 
-/-- The expectation value of an observable `A` in a state `ψ`, `⟨ψ|A|ψ⟩`. -/
-noncomputable def expValue : ℂ := inner ℂ (A.1 ψ.1) ψ.1
+/-- The canonical complex expectation of an observable `A` in a state `ψ`, `⟨ψ|A|ψ⟩`. -/
+noncomputable def expValue : ℂ := inner ℂ ψ.1 (A.1 ψ.1)
+
+/-- For a self-adjoint observable, the canonical `⟨ψ|A|ψ⟩` orientation agrees exactly with the
+formerly used reversed orientation `⟨Aψ|ψ⟩`. -/
+theorem expValue_eq_inner_apply_left :
+    expValue A ψ = inner ℂ (A.1 ψ.1) ψ.1 :=
+  (A.2.isSymmetric ψ.1 ψ.1).symm
 
 /-- Expectation values of observables are real, as required for them to represent
 measurable physical quantities. -/
-theorem expValue_im_eq_zero : (expValue A ψ).im = 0 :=
-  A.2.isSymmetric.im_inner_apply_self ψ.1
+theorem expValue_im_eq_zero : (expValue A ψ).im = 0 := by
+  simpa [expValue] using A.2.isSymmetric.im_inner_self_apply ψ.1
+
+/-- The complex pure-state expectation bundled with the proof that it is self-adjoint. -/
+noncomputable def expValueSelfAdjoint : selfAdjoint ℂ :=
+  ⟨expValue A ψ,
+    (Complex.im_eq_zero_iff_isSelfAdjoint _).mp (expValue_im_eq_zero A ψ)⟩
+
+/-- The real expectation value of an observable in a pure state, obtained losslessly from the
+proved-self-adjoint complex expectation rather than by projecting an arbitrary scalar with `.re`. -/
+noncomputable def observableExpValue : ℝ :=
+  Complex.selfAdjointEquiv (expValueSelfAdjoint A ψ)
+
+/-- Embedding the real pure-state observable expectation back into `ℂ` recovers the canonical
+complex expectation exactly. -/
+@[simp]
+theorem coe_observableExpValue :
+    (observableExpValue A ψ : ℂ) = expValue A ψ := by
+  apply Complex.ext
+  · rfl
+  · simpa [observableExpValue, expValueSelfAdjoint, Complex.selfAdjointEquiv] using
+      (expValue_im_eq_zero A ψ).symm
 
 /-- **Phase indeterminacy.** Multiplying a state by a unit-modulus complex number (a global
 phase) does not change the expectation value of any observable — quantum states are physically
 determined only up to a global phase. -/
 theorem expValue_smul_of_norm_eq_one {c : ℂ} (hc : ‖c‖ = 1) (hψ' : ‖c • ψ.1‖ = 1) :
     expValue A ⟨c • ψ.1, hψ'⟩ = expValue A ψ := by
+  rw [expValue_eq_inner_apply_left, expValue_eq_inner_apply_left]
   have h1 : c * (starRingEnd ℂ) c = 1 := by
     rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, hc]; norm_num
-  simp only [expValue, map_smul, inner_smul_left, inner_smul_right]
+  simp only [map_smul, inner_smul_left, inner_smul_right]
   rw [← mul_assoc, h1, one_mul]
+
+/-- The lossless real pure-state observable expectation is also invariant under global phase. -/
+theorem observableExpValue_smul_of_norm_eq_one {c : ℂ} (hc : ‖c‖ = 1)
+    (hψ' : ‖c • ψ.1‖ = 1) :
+    observableExpValue A ⟨c • ψ.1, hψ'⟩ = observableExpValue A ψ := by
+  apply Complex.ofReal_injective
+  rw [coe_observableExpValue, coe_observableExpValue,
+    expValue_smul_of_norm_eq_one A ψ hc hψ']
 
 end QuantumTheory
