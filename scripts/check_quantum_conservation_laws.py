@@ -13,8 +13,11 @@ from architecture_audit_common import (
 
 ROOT = repository_root(__file__)
 QUANTUM = ROOT / "LeanCondensedMatter" / "QuantumTheory"
-CONSERVATION = QUANTUM / "LinearResponse" / "ConservationLaws.lean"
-DENSITY_EXPECTATION = QUANTUM / "LinearResponse" / "DensityExpectation.lean"
+LINEAR_RESPONSE = QUANTUM / "LinearResponse"
+CONSERVATION = LINEAR_RESPONSE / "ConservationLaws.lean"
+DENSITY_EXPECTATION = LINEAR_RESPONSE / "DensityExpectation.lean"
+KUBO_FORMULA = LINEAR_RESPONSE / "KuboFormula.lean"
+SOURCE_COUPLING = LINEAR_RESPONSE / "SourceCoupling.lean"
 DENSITY_BASIC = QUANTUM / "DensityOperator" / "Basic.lean"
 ROOT_UMBRELLA = ROOT / "LeanCondensedMatter.lean"
 CONSERVATION_IMPORT = (
@@ -85,7 +88,13 @@ def check_owned_declarations(
 def main() -> int:
     errors: list[str] = []
 
-    for path in (CONSERVATION, DENSITY_EXPECTATION, DENSITY_BASIC):
+    for path in (
+        CONSERVATION,
+        DENSITY_EXPECTATION,
+        KUBO_FORMULA,
+        SOURCE_COUPLING,
+        DENSITY_BASIC,
+    ):
         if not path.exists():
             errors.append(f"missing bounded conservation boundary file: {relative(path)}")
 
@@ -102,6 +111,10 @@ def main() -> int:
         DENSITY_EXPECTATION.read_text(encoding="utf-8")
     )
     density_expectation_normalized = " ".join(density_expectation_code.split())
+    kubo_code = strip_lean_comments(KUBO_FORMULA.read_text(encoding="utf-8"))
+    kubo_normalized = " ".join(kubo_code.split())
+    source_code = strip_lean_comments(SOURCE_COUPLING.read_text(encoding="utf-8"))
+    source_normalized = " ".join(source_code.split())
     density_code = strip_lean_comments(DENSITY_BASIC.read_text(encoding="utf-8"))
     root_code = ROOT_UMBRELLA.read_text(encoding="utf-8")
 
@@ -179,6 +192,30 @@ def main() -> int:
             errors.append(
                 f"density expectation bridge must retain `{boundary}` in "
                 f"{relative(DENSITY_EXPECTATION)}"
+            )
+
+    downstream_boundaries = (
+        (
+            KUBO_FORMULA,
+            kubo_normalized,
+            "system ρ.toNormalizedExpectation hVself A hM hV ht hInt",
+        ),
+        (
+            SOURCE_COUPLING,
+            source_normalized,
+            "system ρ.toNormalizedExpectation f hB A hM hV ht hInt",
+        ),
+    )
+    for path, code, boundary in downstream_boundaries:
+        if boundary not in code:
+            errors.append(
+                "density-state response specializations must reuse the canonical normalized "
+                f"expectation bridge; missing `{boundary}` in {relative(path)}"
+            )
+        if "densityNormalizedExpectation" in code:
+            errors.append(
+                "retired local density expectation bridge must not be reintroduced in "
+                f"{relative(path)}"
             )
 
     for path, code in (
