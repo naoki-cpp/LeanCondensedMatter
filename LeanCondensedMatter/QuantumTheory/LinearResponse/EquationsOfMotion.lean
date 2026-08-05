@@ -33,6 +33,8 @@ theorem hasDerivAt_freePropagator (t : ℝ) :
     HasDerivAt (freePropagator system)
       (schrodingerGenerator system * freePropagator system t) t := by
   have h := hasDerivAt_exp_smul_const' (schrodingerGenerator system) t
+  rw [hasDerivAt_iff_tendsto]
+  rw [hasDerivAt_iff_tendsto] at h
   simpa only [freePropagator, timeScaledGenerator, Complex.coe_smul] using h
 
 /-- The negative-time propagator is differentiable with generator `-G`, where
@@ -41,6 +43,8 @@ theorem hasDerivAt_freePropagator_neg (t : ℝ) :
     HasDerivAt (fun s : ℝ => freePropagator system (-s))
       ((-schrodingerGenerator system) * freePropagator system (-t)) t := by
   have h := hasDerivAt_exp_smul_const' (-schrodingerGenerator system) t
+  rw [hasDerivAt_iff_tendsto]
+  rw [hasDerivAt_iff_tendsto] at h
   simpa only [freePropagator, timeScaledGenerator, Complex.coe_smul, smul_neg,
     neg_smul] using h
 
@@ -63,10 +67,12 @@ theorem hasDerivAt_evolveState_val (ψ : State H) (t : ℝ) :
       ((ContinuousLinearMap.apply ℂ H ψ.1).restrictScalars ℝ)
       (freePropagator system t) :=
     ((ContinuousLinearMap.apply ℂ H ψ.1).restrictScalars ℝ).hasFDerivAt
-  have hcomp := hEval.comp t hU
+  have hderiv := (hEval.comp t hU).hasDerivAt
   change HasDerivAt (fun s : ℝ => freePropagator system s ψ.1)
     (schrodingerGenerator system (freePropagator system t ψ.1)) t
-  simpa only [Function.comp_apply, mul_apply_eq_comp] using hcomp.hasDerivAt
+  rw [hasDerivAt_iff_tendsto]
+  rw [hasDerivAt_iff_tendsto] at hderiv
+  simpa [Function.comp_def, mul_apply_eq_comp] using hderiv
 
 /-- Explicit bounded Schrödinger equation
 `dψ/dt = -(i/ℏ) H₀ ψ`. -/
@@ -90,6 +96,8 @@ theorem hasDerivAt_heisenbergEvolution_generator
   have hprod := hleft.mul (hasDerivAt_freePropagator system t)
   have hraw : HasDerivAt (heisenbergEvolution system A)
       ((-G) * Uneg * A * U + Uneg * A * (G * U)) t := by
+    rw [hasDerivAt_iff_tendsto]
+    rw [hasDerivAt_iff_tendsto] at hprod
     simpa [G, U, Uneg, heisenbergEvolution, mul_assoc] using hprod
   have hcomm : Commute G U := by
     simpa [G, U] using schrodingerGenerator_commute_freePropagator system t
@@ -99,6 +107,7 @@ theorem hasDerivAt_heisenbergEvolution_generator
       ((-G) * Uneg * A * U + Uneg * A * (G * U)) =
         heisenbergEvolution system A t * G -
           G * heisenbergEvolution system A t := by
+    dsimp [G, U, Uneg] at hcomm hcommNeg ⊢
     simp only [heisenbergEvolution]
     rw [neg_mul, hcommNeg.eq, hcomm.eq]
     noncomm_ring
@@ -138,6 +147,8 @@ theorem hasDerivAt_evolveDensityOperator_op_generator
   have hprod := hleft.mul (hasDerivAt_freePropagator_neg system t)
   have hraw : HasDerivAt (fun s : ℝ => (evolveDensityOperator system ρ s).op)
       (G * U * ρ.op * Uneg + U * ρ.op * ((-G) * Uneg)) t := by
+    rw [hasDerivAt_iff_tendsto]
+    rw [hasDerivAt_iff_tendsto] at hprod
     simpa [G, U, Uneg, evolveDensityOperator_op, unitaryConjugate,
       star_freePropagator, mul_assoc] using hprod
   have hcomm : Commute G U := by
@@ -148,6 +159,7 @@ theorem hasDerivAt_evolveDensityOperator_op_generator
       (G * U * ρ.op * Uneg + U * ρ.op * ((-G) * Uneg)) =
         G * (evolveDensityOperator system ρ t).op -
           (evolveDensityOperator system ρ t).op * G := by
+    dsimp [G, U, Uneg] at hcomm hcommNeg ⊢
     simp only [evolveDensityOperator_op, unitaryConjugate, star_freePropagator]
     rw [neg_mul, hcomm.eq, hcommNeg.eq]
     noncomm_ring
