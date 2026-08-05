@@ -46,7 +46,7 @@ theorem exteriorBasis_eq_sort_prod
         (List.map (fun x => ExteriorAlgebra.ι ℂ (b x))
           ((List.finRange n.card).map
             ((↑t : Finset Mode).orderEmbOfFin t.prop))).prod := by
-      rw [List.map_map]
+      simp only [List.map_map, Function.comp_apply]
     _ = _ := by
       rw [Finset.listMap_orderEmbOfFin_finRange]
       rfl
