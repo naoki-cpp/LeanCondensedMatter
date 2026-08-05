@@ -27,7 +27,7 @@ variable {𝓗₁ : Type*} [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 theorem oneParticle_basis_eq_exteriorBasis_singleton
     (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) :
     oneParticle 𝓗₁ (b i) = b.ExteriorAlgebra ({i} : Finset Mode) := by
-  rw [ExteriorAlgebra.basis_apply_ofCard b (by simp)]
+  rw [ExteriorAlgebra.basis_apply_ofCard (n := 1) b (by simp)]
   simp [oneParticle, ExteriorAlgebra.ιMulti_family]
 
 /-- Exterior multiplication by a basis vector has the occupation-sign action on exterior-basis
@@ -39,13 +39,15 @@ theorem create_exteriorBasis
       else (fermionSign i n : ℂ) • b.ExteriorAlgebra (insertOccupation i n) := by
   by_cases hi : i ∈ n
   · rw [if_pos hi, create_apply, oneParticle_basis_eq_exteriorBasis_singleton]
-    let s : Set.powersetCard Mode 1 := Set.powersetCard.ofCard (by simp : ({i} : Finset Mode).card = 1)
+    let s : Set.powersetCard Mode 1 :=
+      Set.powersetCard.ofCard (by simp : ({i} : Finset Mode).card = 1)
     let t : Set.powersetCard Mode n.card := Set.powersetCard.ofCard rfl
     have hnot : ¬ Disjoint (↑s : Finset Mode) (↑t : Finset Mode) := by
       simp [s, t, hi]
     simpa [s, t] using ExteriorAlgebra.basis_mul_of_not_disjoint b s t hnot
   · rw [if_neg hi, create_apply, oneParticle_basis_eq_exteriorBasis_singleton]
-    let s : Set.powersetCard Mode 1 := Set.powersetCard.ofCard (by simp : ({i} : Finset Mode).card = 1)
+    let s : Set.powersetCard Mode 1 :=
+      Set.powersetCard.ofCard (by simp : ({i} : Finset Mode).card = 1)
     let t : Set.powersetCard Mode n.card := Set.powersetCard.ofCard rfl
     have hdisj : Disjoint (↑s : Finset Mode) (↑t : Finset Mode) := by
       simp [s, t, hi]
@@ -57,7 +59,7 @@ theorem occupationEquiv_create_basisState
     (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) (n : Occupation Mode) :
     occupationEquiv b (SecondQuantization.Fermionic.create i (basisState n)) =
       create 𝓗₁ (b i) (occupationEquiv b (basisState n)) := by
-  rw [occupationEquiv_basisState, occupationEquiv_basisState]
+  rw [occupationEquiv_basisState]
   by_cases hi : i ∈ n
   · rw [SecondQuantization.Fermionic.create_basisState_of_mem hi, map_zero]
     simp [create_exteriorBasis, hi]
@@ -68,7 +70,8 @@ theorem occupationEquiv_create_basisState
 /-- The basis-induced equivalence intertwines the full creation operators. -/
 theorem occupationEquiv_create
     (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) :
-    (occupationEquiv b).toLinearMap.comp SecondQuantization.Fermionic.create i =
+    (occupationEquiv b).toLinearMap.comp
+        (SecondQuantization.Fermionic.create i) =
       (create 𝓗₁ (b i)).comp (occupationEquiv b).toLinearMap := by
   apply linearMap_ext_basisState
   intro n
