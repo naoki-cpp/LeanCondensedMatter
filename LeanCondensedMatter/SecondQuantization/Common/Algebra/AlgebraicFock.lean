@@ -1,6 +1,7 @@
 import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Finsupp.Basic
 import Mathlib.LinearAlgebra.Finsupp.LSum
+import Mathlib.LinearAlgebra.Finsupp.VectorSpace
 
 set_option linter.style.header false
 
@@ -42,6 +43,17 @@ theorem basisState_ne_zero {Config : Type*} (c : Config) :
 theorem basisState_injective {Config : Type*} :
     Function.Injective (basisState : Config → AlgebraicFock Config) :=
   fun _ _ h => Finsupp.single_left_injective one_ne_zero h
+
+/-- Basis vectors are injective on the full configuration type. -/
+theorem basisState_injOn {Config : Type*} :
+    Set.InjOn (basisState : Config → AlgebraicFock Config) Set.univ :=
+  fun _ _ _ _ h => basisState_injective h
+
+/-- The canonical basis states of an algebraic Fock space are linearly independent. -/
+theorem basisState_linearIndependent {Config : Type*} :
+    LinearIndependent ℂ (basisState : Config → AlgebraicFock Config) := by
+  change LinearIndependent ℂ (fun c => Finsupp.single c (1 : ℂ))
+  exact Finsupp.basisSingleOne.linearIndependent
 
 /-- Two linear maps out of `AlgebraicFock Config` that agree on every basis state are equal. -/
 theorem linearMap_ext_basisState {Config : Type*}
