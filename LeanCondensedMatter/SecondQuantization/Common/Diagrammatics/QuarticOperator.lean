@@ -25,19 +25,19 @@ inductive QuarticLocalLegKind where
   deriving DecidableEq
 
 /-- The mode on which a local quartic leg acts, in fixed operator-composition order. -/
-def quarticLocalLegMode (q : QuarticVertexLabel Mode) : Fin 4 → Mode :=
+abbrev quarticLocalLegMode (q : QuarticVertexLabel Mode) : Fin 4 → Mode :=
   ![q.create₁, q.create₂, q.annihilate₂, q.annihilate₁]
 
 /-- The creation/annihilation kind of each local quartic leg. -/
-def quarticLocalLegKind : Fin 4 → QuarticLocalLegKind :=
+abbrev quarticLocalLegKind : Fin 4 → QuarticLocalLegKind :=
   ![.create, .create, .annihilate, .annihilate]
 
 /-- Boolean compatibility view of `quarticLocalLegKind`. -/
-def quarticLocalLegIsCreate : Fin 4 → Bool :=
+abbrev quarticLocalLegIsCreate : Fin 4 → Bool :=
   ![true, true, false, false]
 
 /-- The free-energy shift of each local quartic leg. -/
-def quarticLocalLegEnergyShift (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) : Fin 4 → ℝ :=
+abbrev quarticLocalLegEnergyShift (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) : Fin 4 → ℝ :=
   ![ε q.create₁, ε q.create₂, -ε q.annihilate₂, -ε q.annihilate₁]
 
 /-- The total free-energy shift of a quartic vertex. -/
