@@ -142,7 +142,8 @@ theorem SpectralTraceClass.trace_unitaryConjugate {T : H →L[ℂ] H}
     (hT : SpectralTraceClass T) (U : H →L[ℂ] H)
     (hleft : star U * U = 1) (hright : U * star U = 1) :
     (hT.unitaryConjugate U hleft hright).trace = hT.trace := by
-  change spectralTrace (ContinuousLinearMap.unitaryConjugate U T) = spectralTrace T
+  rw [(hT.unitaryConjugate U hleft hright).trace_eq_spectralTrace,
+    hT.trace_eq_spectralTrace]
   exact ContinuousLinearMap.spectralTrace_unitaryConjugate
     U T hleft hright hT.summable
     (hT.unitaryConjugate U hleft hright).summable
