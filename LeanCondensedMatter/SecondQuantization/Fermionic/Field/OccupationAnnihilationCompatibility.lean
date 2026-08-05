@@ -107,15 +107,8 @@ theorem occupationAnnihilateFromField_eq_annihilate
     simpa [vacuum] using annihilateDual_vacuum 𝓗₁ (b.coord i)
   · intro j n
     apply (occupationEquiv b).injective
-    change
-      occupationEquiv b
-          (occupationConjugate b (annihilateDual 𝓗₁ (b.coord i))
-            (SecondQuantization.Fermionic.create j (basisState n))) +
-        occupationEquiv b
-          (SecondQuantization.Fermionic.create j
-            (occupationConjugate b (annihilateDual 𝓗₁ (b.coord i))
-              (basisState n))) =
-        occupationEquiv b (if i = j then basisState n else 0)
+    rw [map_add]
+    unfold occupationAnnihilateFromField
     have hCreateBasis := occupationEquiv_create_basisState b j n
     have hCreateGeneral := LinearMap.congr_fun (occupationEquiv_create b j)
       (occupationConjugate b (annihilateDual 𝓗₁ (b.coord i)) (basisState n))
