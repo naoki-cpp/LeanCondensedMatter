@@ -26,7 +26,14 @@ theorem finiteHilbertOperator_comp
   apply ContinuousLinearMap.ext
   intro x
   rw [← (finiteHilbertFockEquiv (Config := Config)).apply_symm_apply x]
-  simp [ContinuousLinearMap.comp_apply, LinearMap.comp_apply]
+  let y := (finiteHilbertFockEquiv (Config := Config)).symm x
+  change
+    finiteHilbertOperator (A.comp B) (finiteHilbertFockEquiv y) =
+      finiteHilbertOperator A (finiteHilbertOperator B (finiteHilbertFockEquiv y))
+  rw [finiteHilbertOperator_equiv_apply]
+  rw [finiteHilbertOperator_equiv_apply]
+  rw [finiteHilbertOperator_equiv_apply]
+  rfl
 
 /-- Transport of algebraic Fock endomorphisms to bounded Hilbert operators, bundled as a
 complex algebra homomorphism. -/
