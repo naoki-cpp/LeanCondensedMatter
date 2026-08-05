@@ -51,21 +51,29 @@ A converse characterization of `purity ρ = 1` as rank one is not part of the cu
 
 ## Discrete POVMs and the Born rule
 
-Status: `proved` for countable discrete outcomes.
+Status: `proved` for countable discrete outcomes with physically typed probabilities.
 
 `QuantumTheory.POVM H M` accepts any countable outcome type and uses strong pointwise normalization
-of its effects. The Born probability is represented first as a self-adjoint scalar and then as a
-real number.
+of its effects. The Born expectation is first represented as a self-adjoint complex scalar, then
+transported losslessly to the canonical nonnegative value
+`probNNReal P ρ m : NNReal`.
 
 Implemented results include:
 
-- nonnegativity;
-- probability at most `1`;
-- summability over countable outcomes;
+- the exact complex boundary
+  `ρ.expectation (P.E m) = ((probNNReal P ρ m : ℝ) : ℂ)`;
+- `prob P ρ m : ℝ` as a compatibility coercion of `probNNReal`;
+- a normalization kernel defined through `diagonalExpectationValue`, with no direct `.re`
+  projection in the physical definition;
+- nonnegativity and probability at most `1`;
+- summability over countable outcomes in both `NNReal` and compatibility `ℝ` forms;
 - total probability `1`;
-- finite-outcome normalization as a specialization of the same theorem.
+- `bornPMF P ρ : PMF M`, which packages the countable normalized Born distribution;
+- finite-outcome normalization as a specialization of the same countable theorem.
 
-Continuous-outcome measurements and measure-valued POVMs are outside the current API.
+Proof-local use of `Complex.reCLM` only transports an already identified real equality and is not the
+definition of a physical probability. Continuous-outcome measurements and measure-valued POVMs are
+outside the current API.
 
 ## Von Neumann entropy
 
@@ -109,8 +117,8 @@ The uniqueness statement “equality holds only for the Gibbs state” remains o
 
 ## Current next steps
 
-1. Bundle Born probabilities with a nonnegative codomain and a normalized discrete distribution.
-2. Generalize diagonal expectation formulas to countable Hilbert bases and `tsum`.
+1. Generalize diagonal expectation formulas to countable Hilbert bases and `tsum`.
+2. Extend the physical-scalar architecture audit from canonical APIs to new public definitions.
 3. Prove uniqueness of the Gibbs free-energy minimizer.
 4. Design an unbounded Hamiltonian interface supporting genuine infinite-dimensional Gibbs states.
 5. Connect the canonical density-state expectation to completed Fock-space and KMS constructions.
