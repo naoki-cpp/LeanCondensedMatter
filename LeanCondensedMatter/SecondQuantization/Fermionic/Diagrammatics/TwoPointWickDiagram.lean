@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointRestrictedPairEquiv
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointRestrictedPairOrientation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticInteraction
 
 set_option linter.style.header false
@@ -10,8 +10,8 @@ This module specializes the mixed one-leg/four-leg diagram data to a fermionic t
 The two external labels record an annihilation field and a creation field; their imaginary times are
 parameters of the future amplitude rather than part of the finite diagram enumeration. The full
 external-plus-interaction component partition, vacuum/external component restrictions,
-componentwise vertex and normalized-pair product decompositions, and restricted-pair equivalences
-are inherited from the statistics-independent layer.
+componentwise vertex and normalized-pair product decompositions, restricted-pair equivalences, and
+restricted pair-orientation dichotomies are inherited from the statistics-independent layer.
 -/
 
 namespace SecondQuantization
