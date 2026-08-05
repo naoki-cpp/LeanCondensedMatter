@@ -10,6 +10,7 @@ from architecture_audit_common import (
     numbered_lines,
     relative as relative_to,
     repository_root,
+    strip_lean_comments,
 )
 
 ROOT = repository_root(__file__)
@@ -66,64 +67,8 @@ def relative(path: Path) -> str:
     return relative_to(ROOT, path)
 
 
-def strip_comments(text: str) -> str:
-    """Remove Lean line and nested block comments while preserving newlines."""
-    out: list[str] = []
-    i = 0
-    depth = 0
-    in_string = False
-    escaped = False
-
-    while i < len(text):
-        ch = text[i]
-        nxt = text[i + 1] if i + 1 < len(text) else ""
-
-        if depth:
-            if ch == "/" and nxt == "-":
-                depth += 1
-                out.extend("  ")
-                i += 2
-            elif ch == "-" and nxt == "/":
-                depth -= 1
-                out.extend("  ")
-                i += 2
-            else:
-                out.append("\n" if ch == "\n" else " ")
-                i += 1
-            continue
-
-        if in_string:
-            out.append(ch)
-            if escaped:
-                escaped = False
-            elif ch == "\\":
-                escaped = True
-            elif ch == '"':
-                in_string = False
-            i += 1
-            continue
-
-        if ch == '"':
-            in_string = True
-            out.append(ch)
-            i += 1
-        elif ch == "/" and nxt == "-":
-            depth = 1
-            out.extend("  ")
-            i += 2
-        elif ch == "-" and nxt == "-":
-            while i < len(text) and text[i] != "\n":
-                out.append(" ")
-                i += 1
-        else:
-            out.append(ch)
-            i += 1
-
-    return "".join(out)
-
-
 def normalized_code(path: Path) -> str:
-    return " ".join(strip_comments(path.read_text(encoding="utf-8")).split())
+    return " ".join(strip_lean_comments(path.read_text(encoding="utf-8")).split())
 
 
 def documentation_files():
@@ -171,7 +116,7 @@ def check_observable_expectation_boundary(errors: list[str]) -> None:
     pure_real_declarations: list[Path] = []
     density_real_declarations: list[Path] = []
     for path in lean_files(QUANTUM):
-        code = strip_comments(path.read_text(encoding="utf-8"))
+        code = strip_lean_comments(path.read_text(encoding="utf-8"))
         if PURE_REAL_EXPECTATION_DECL.search(code):
             pure_real_declarations.append(path)
         if DENSITY_REAL_EXPECTATION_DECL.search(code):
