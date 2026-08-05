@@ -1,4 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary
+import LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal
+import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
 import LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics
 
@@ -100,6 +102,83 @@ theorem evolveDensityOperator_isPositive (ρ : DensityOperator H) (t : ℝ) :
 theorem evolveDensityOperator_trace_eq_one (ρ : DensityOperator H) (t : ℝ) :
     (evolveDensityOperator system ρ t).spectralTraceClass.trace = 1 :=
   (evolveDensityOperator system ρ t).spectralTrace_eq_one
+
+/-- The free propagator as a linear isometric equivalence of the Hilbert space. -/
+noncomputable def freePropagatorLinearIsometryEquiv (t : ℝ) : H ≃ₗᵢ[ℂ] H where
+  toLinearEquiv :=
+    unitaryLinearEquiv (freePropagator system t)
+      (star_mul_freePropagator system t)
+      (freePropagator_mul_star system t)
+  norm_map' := norm_freePropagator_apply system t
+
+/-- Transport a Hilbert basis through the free propagator. -/
+noncomputable def evolveHilbertBasis {ι : Type*}
+    (b : HilbertBasis ι ℂ H) (t : ℝ) : HilbertBasis ι ℂ H :=
+  HilbertBasis.ofRepr ((freePropagatorLinearIsometryEquiv system t).symm.trans b.repr)
+
+@[simp]
+theorem evolveHilbertBasis_apply {ι : Type*}
+    (b : HilbertBasis ι ℂ H) (t : ℝ) (i : ι) :
+    evolveHilbertBasis system b t i = freePropagator system t (b i) := by
+  classical
+  change (freePropagatorLinearIsometryEquiv system t)
+      (b.repr.symm (lp.single 2 i 1)) = freePropagator system t (b i)
+  rw [b.repr_symm_single]
+  rfl
+
+/-- The complex density-state expectation is identical in the Schrödinger and Heisenberg
+pictures for every bounded operator. -/
+theorem expectation_evolveDensityOperator_eq_heisenberg
+    (ρ : DensityOperator H) (A : H →L[ℂ] H) (t : ℝ) :
+    (evolveDensityOperator system ρ t).expectation A =
+      ρ.expectation (heisenbergEvolution system A t) := by
+  classical
+  obtain ⟨ι, b, w, hρ⟩ := ρ.exists_diagonal_hilbertBasis
+  let b' : HilbertBasis ι ℂ H := evolveHilbertBasis system b t
+  have hρ' : ∀ i,
+      (evolveDensityOperator system ρ t).op (b' i) = (w i : ℂ) • b' i := by
+    intro i
+    rw [evolveDensityOperator_op]
+    change freePropagator system t
+        (ρ.op ((star (freePropagator system t)) (freePropagator system t (b i)))) =
+      (w i : ℂ) • freePropagator system t (b i)
+    have hcancel :
+        (star (freePropagator system t)) (freePropagator system t (b i)) = b i := by
+      have h := congrArg (fun U : H →L[ℂ] H => U (b i))
+        (star_mul_freePropagator system t)
+      simpa [mul_apply_eq_comp] using h
+    rw [hcancel]
+    simpa using congrArg (fun x : H => freePropagator system t x) (hρ i)
+  rw [(evolveDensityOperator system ρ t).expectation_eq_tsum_diagonal A b' w hρ',
+    ρ.expectation_eq_tsum_diagonal (heisenbergEvolution system A t) b w hρ]
+  apply tsum_congr
+  intro i
+  apply congrArg (fun z : ℂ => (w i : ℂ) * z)
+  rw [show b' i = freePropagator system t (b i) from
+    evolveHilbertBasis_apply system b t i]
+  change inner ℂ (freePropagator system t (b i))
+      (A (freePropagator system t (b i))) =
+    inner ℂ (b i)
+      (freePropagator system (-t) (A (freePropagator system t (b i))))
+  rw [← star_freePropagator system t]
+  change inner ℂ (freePropagator system t (b i))
+      (A (freePropagator system t (b i))) =
+    inner ℂ (b i)
+      ((ContinuousLinearMap.adjoint (freePropagator system t))
+        (A (freePropagator system t (b i))))
+  exact (ContinuousLinearMap.adjoint_inner_right
+    (freePropagator system t) (b i) (A (freePropagator system t (b i)))).symm
+
+/-- The lossless real density-state observable expectation is identical in the Schrödinger and
+Heisenberg pictures. -/
+theorem observableExpectation_evolveDensityOperator_eq_heisenberg
+    (ρ : DensityOperator H) (A : Observable H) (t : ℝ) :
+    (evolveDensityOperator system ρ t).observableExpectation A =
+      ρ.observableExpectation (heisenbergObservable system A t) := by
+  apply Complex.ofReal_injective
+  rw [← (evolveDensityOperator system ρ t).expectation_observable A,
+    ← ρ.expectation_observable (heisenbergObservable system A t)]
+  exact expectation_evolveDensityOperator_eq_heisenberg system ρ A.1 t
 
 end
 end LinearResponse
