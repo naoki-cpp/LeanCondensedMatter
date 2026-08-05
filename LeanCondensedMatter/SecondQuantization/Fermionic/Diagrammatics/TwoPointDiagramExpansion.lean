@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Pairing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Reindexing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Amplitude
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DysonOrder
 
 set_option linter.style.header false
 
@@ -9,6 +10,6 @@ set_option linter.style.header false
 # Fermionic two-point diagram expansion
 
 Atomic flattening, the finite-temperature pairing expansion, transport of mixed-time pairings to
-external-leg Wick diagrams, and the resulting fixed-time diagram-amplitude expansion for the
-imaginary-time two-point function with quartic interaction vertices.
+external-leg Wick diagrams, fixed-time diagram amplitudes, and the ordered-simplex perturbative
+coefficient for the imaginary-time two-point function with quartic interaction vertices.
 -/
