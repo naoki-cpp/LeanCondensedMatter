@@ -51,7 +51,7 @@ specializations, not parallel APIs.
 | Finite-temperature Bloch–de Dominicis pairing recursion and finite Gibbs instance | A/D | `proved` | [thermal expectation architecture](roadmaps/thermal-expectation-architecture.md) |
 | Bosonic algebraic and two-point thermal layer | D | `proved` for current stated results; general Gibbs/Dyson layer remains `idea` | [second-quantization status](roadmaps/second-quantization-status.md) |
 | Convergence-aware bosonic Gibbs and perturbation theory | C/D | `idea` | [second quantization](roadmaps/second-quantization.md) |
-| Completed-space and infinite-mode second quantization | C/D | `idea` | [second quantization](roadmaps/second-quantization.md) |
+| Completed-space and infinite-mode second quantization | C/D | `stated` | [completed-space boundary](roadmaps/completed-space-and-infinite-mode.md) |
 | Connected time-ordered correlation functions with external legs | D | `idea` | [second quantization](roadmaps/second-quantization.md) |
 
 See [`completed.md`](completed.md) for the compact list of major proved milestones.
