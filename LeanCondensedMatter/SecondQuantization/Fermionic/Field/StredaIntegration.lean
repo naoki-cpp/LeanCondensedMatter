@@ -149,9 +149,14 @@ theorem RegularizedStredaRepresentation.response_eq_surface_add_sea
     response =
       regularizedStredaFermiSurface representation.toRegularizedStredaIntegralData +
         regularizedStredaFermiSea representation.toRegularizedStredaIntegralData := by
-  rw [representation.response_eq_energyIntegral]
-  exact regularizedBastinEnergyIntegral_eq_surface_add_sea
-    representation.toRegularizedStredaIntegralData
+  calc
+    response = regularizedBastinEnergyIntegral
+        representation.toRegularizedStredaIntegralData :=
+      representation.response_eq_energyIntegral
+    _ = regularizedStredaFermiSurface representation.toRegularizedStredaIntegralData +
+        regularizedStredaFermiSea representation.toRegularizedStredaIntegralData :=
+      regularizedBastinEnergyIntegral_eq_surface_add_sea
+        representation.toRegularizedStredaIntegralData
 
 variable {Site E ι : Type*}
 variable [LinearOrder Site] [Fintype Site]
