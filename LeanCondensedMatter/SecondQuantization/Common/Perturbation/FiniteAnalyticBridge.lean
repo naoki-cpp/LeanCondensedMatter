@@ -1,7 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 import Mathlib.LinearAlgebra.Finsupp.Pi
 import Mathlib.Analysis.Normed.Module.FiniteDimension
-import Mathlib.Analysis.Normed.Algebra.Exponential
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 
 set_option linter.style.header false
