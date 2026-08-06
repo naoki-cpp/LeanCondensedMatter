@@ -17,6 +17,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.FrequencyResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.HarmonicSourceResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StationaryFrequencyResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.InfiniteTimeFrequencyResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.SpectralFrequencyResponse
 
 set_option linter.style.header false
 
@@ -47,6 +48,6 @@ adiabatic coefficient through two physical real source quadratures coupled to th
 self-adjoint directional current and proves their separate bounded response theorems. The
 stationary layer rewrites the finite-time response exactly as a positive-lag transform and makes
 the contact expectation time independent. The infinite-time layer proves the observation-time
-limit under an explicit integrability hypothesis while leaving switching, frequency, and volume
-limits untouched.
+limit at every positive switching rate. The spectral layer identifies that limit with the finite
+pure-point Lehmann double sum plus the explicit geometric contact expectation.
 -/
