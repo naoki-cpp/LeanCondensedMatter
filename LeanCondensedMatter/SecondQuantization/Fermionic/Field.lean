@@ -18,6 +18,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.HarmonicSourceResp
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StationaryFrequencyResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.InfiniteTimeFrequencyResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.SpectralFrequencyResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ConductivityNormalization
 
 set_option linter.style.header false
 
@@ -49,5 +50,7 @@ self-adjoint directional current and proves their separate bounded response theo
 stationary layer rewrites the finite-time response exactly as a positive-lag transform and makes
 the contact expectation time independent. The infinite-time layer proves the observation-time
 limit at every positive switching rate. The spectral layer identifies that limit with the finite
-pure-point Lehmann double sum plus the explicit geometric contact expectation.
+pure-point Lehmann double sum plus the explicit geometric contact expectation. The final
+normalization layer supplies a positive finite volume and the electric-field factor `-η + iω`,
+turning the total-current vector-potential response into an intensive regularized conductivity.
 -/
