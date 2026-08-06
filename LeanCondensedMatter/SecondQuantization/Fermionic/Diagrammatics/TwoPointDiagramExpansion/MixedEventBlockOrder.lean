@@ -22,13 +22,14 @@ namespace Fermionic
 /-- In a duplicate-free flattened list, two elements of one block have the same order relation to an
 element outside that block. -/
 private theorem idxOf_flatMap_block_lt_uniform
-    {α β : Type*} [DecidableEq β] (f : α → List β)
+    {α β : Type*} [BEq β] [LawfulBEq β] (f : α → List β)
     (events : List α) (event : α) (x y z : β)
     (hNodup : (events.flatMap f).Nodup)
     (hEvent : event ∈ events) (hx : x ∈ f event) (hy : y ∈ f event)
     (hz : z ∈ events.flatMap f) (hzOutside : z ∉ f event) :
     ((events.flatMap f).idxOf x < (events.flatMap f).idxOf z) =
       ((events.flatMap f).idxOf y < (events.flatMap f).idxOf z) := by
+  classical
   induction events generalizing event x y z with
   | nil => simp at hEvent
   | cons a events ih =>
@@ -91,12 +92,13 @@ private theorem idxOf_flatMap_block_lt_uniform
 
 /-- Inside one block of a duplicate-free flattened list, global order is exactly local block order. -/
 private theorem idxOf_flatMap_block_lt_iff
-    {α β : Type*} [DecidableEq β] (f : α → List β)
+    {α β : Type*} [BEq β] [LawfulBEq β] (f : α → List β)
     (events : List α) (event : α) (x y : β)
     (hNodup : (events.flatMap f).Nodup)
     (hEvent : event ∈ events) (hx : x ∈ f event) (hy : y ∈ f event) :
     (events.flatMap f).idxOf x < (events.flatMap f).idxOf y ↔
       (f event).idxOf x < (f event).idxOf y := by
+  classical
   induction events generalizing event x y with
   | nil => simp at hEvent
   | cons a events ih =>
@@ -126,65 +128,69 @@ private theorem idxOf_flatMap_block_lt_iff
 /-- If one event occurs before another in a duplicate-free event list, every leg in the first event
 block occurs before every leg in the second block of the duplicate-free flattened list. -/
 private theorem idxOf_flatMap_lt_of_event_idxOf_lt
-    {α β : Type*} [DecidableEq α] [DecidableEq β] (f : α → List β)
-    (events : List α) (a b : α) (x y : β)
+    {α β : Type*} [BEq α] [LawfulBEq α] [BEq β] [LawfulBEq β]
+    (f : α → List β) (events : List α) (a b : α) (x y : β)
     (hEventsNodup : events.Nodup) (hFlatNodup : (events.flatMap f).Nodup)
     (ha : a ∈ events) (hb : b ∈ events) (hx : x ∈ f a) (hy : y ∈ f b)
     (hab : events.idxOf a < events.idxOf b) :
     (events.flatMap f).idxOf x < (events.flatMap f).idxOf y := by
+  classical
   induction events generalizing a b x y with
   | nil => simp at ha
-  | cons c events ih =>
-      have hcNotMem : c ∉ events := (List.nodup_cons.1 hEventsNodup).1
-      have hEventsNodupTail : events.Nodup := (List.nodup_cons.1 hEventsNodup).2
+  | cons head tail ih =>
+      have hheadNotMem : head ∉ tail := (List.nodup_cons.1 hEventsNodup).1
+      have hEventsNodupTail : tail.Nodup := (List.nodup_cons.1 hEventsNodup).2
       simp only [List.flatMap_cons] at hFlatNodup ⊢
-      have hFlatNodupTail : (events.flatMap f).Nodup := hFlatNodup.of_append_right
-      have hDisjoint : List.Disjoint (f c) (events.flatMap f) := hFlatNodup.disjoint
+      have hFlatNodupTail : (tail.flatMap f).Nodup := hFlatNodup.of_append_right
+      have hDisjoint : List.Disjoint (f head) (tail.flatMap f) := hFlatNodup.disjoint
       rw [List.mem_cons] at ha hb
-      rcases ha with rfl | ha
-      · rcases hb with rfl | hb
-        · exact (lt_irrefl _ hab).elim
-        · have hyTail : y ∈ events.flatMap f := by
+      rcases ha with haEq | ha
+      · subst a
+        rcases hb with hbEq | hb
+        · subst b
+          exact (lt_irrefl _ hab).elim
+        · have hyTail : y ∈ tail.flatMap f := by
             rw [List.mem_flatMap]
             exact ⟨b, hb, hy⟩
-          have hyNotHead : y ∉ f c := by
-            intro hyc
-            exact (List.disjoint_left.1 hDisjoint) hyc hyTail
+          have hyNotHead : y ∉ f head := by
+            intro hyHead
+            exact (List.disjoint_left.1 hDisjoint) hyHead hyTail
           rw [List.idxOf_append_of_mem hx,
             List.idxOf_append_of_notMem hyNotHead]
-          have hxLt : (f c).idxOf x < (f c).length :=
+          have hxLt : (f head).idxOf x < (f head).length :=
             List.idxOf_lt_length_of_mem hx
           omega
-      · rcases hb with rfl | hb
-        · have hca : c ≠ a := by
-            intro hca
+      · rcases hb with hbEq | hb
+        · subst b
+          have hheadNeA : head ≠ a := by
+            intro hEq
             subst a
-            exact hcNotMem ha
-          rw [List.idxOf_cons_ne events hca, List.idxOf_cons_self] at hab
+            exact hheadNotMem ha
+          rw [List.idxOf_cons_ne tail hheadNeA, List.idxOf_cons_self] at hab
           omega
-        · have hca : c ≠ a := by
-            intro hca
+        · have hheadNeA : head ≠ a := by
+            intro hEq
             subst a
-            exact hcNotMem ha
-          have hcb : c ≠ b := by
-            intro hcb
+            exact hheadNotMem ha
+          have hheadNeB : head ≠ b := by
+            intro hEq
             subst b
-            exact hcNotMem hb
-          have habTail : events.idxOf a < events.idxOf b := by
-            simpa [List.idxOf_cons_ne events hca,
-              List.idxOf_cons_ne events hcb] using hab
-          have hxTail : x ∈ events.flatMap f := by
+            exact hheadNotMem hb
+          have habTail : tail.idxOf a < tail.idxOf b := by
+            simpa [List.idxOf_cons_ne tail hheadNeA,
+              List.idxOf_cons_ne tail hheadNeB] using hab
+          have hxTail : x ∈ tail.flatMap f := by
             rw [List.mem_flatMap]
             exact ⟨a, ha, hx⟩
-          have hyTail : y ∈ events.flatMap f := by
+          have hyTail : y ∈ tail.flatMap f := by
             rw [List.mem_flatMap]
             exact ⟨b, hb, hy⟩
-          have hxNotHead : x ∉ f c := by
-            intro hxc
-            exact (List.disjoint_left.1 hDisjoint) hxc hxTail
-          have hyNotHead : y ∉ f c := by
-            intro hyc
-            exact (List.disjoint_left.1 hDisjoint) hyc hyTail
+          have hxNotHead : x ∉ f head := by
+            intro hxHead
+            exact (List.disjoint_left.1 hDisjoint) hxHead hxTail
+          have hyNotHead : y ∉ f head := by
+            intro hyHead
+            exact (List.disjoint_left.1 hDisjoint) hyHead hyTail
           rw [List.idxOf_append_of_notMem hxNotHead,
             List.idxOf_append_of_notMem hyNotHead]
           simpa only [Nat.add_lt_add_iff_left] using
@@ -203,7 +209,7 @@ theorem orderedTwoPointLeg_mem_eventAtomicLegs {n : ℕ} (leg : OrderedTwoPointL
   | inl e => simp [orderedTwoPointLegEvent]
   | inr p =>
       rcases p with ⟨⟨v, hv⟩, l⟩
-      simp [orderedTwoPointLegEvent, twoPointTimedEventAtomicLegs]
+      fin_cases l <;> simp [orderedTwoPointLegEvent, twoPointTimedEventAtomicLegs]
 
 /-- The mixed position occupied by a standard two-point leg identity. -/
 noncomputable def mixedTimeOrderedAtomicLegPosition {n : ℕ}
