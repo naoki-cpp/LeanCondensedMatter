@@ -19,8 +19,6 @@ namespace Bosonic
 
 noncomputable section
 
-open scoped Classical
-
 variable {Mode : Type*} [Fintype Mode]
 
 /-- The normalized free-boson annihilation/creation two-point equation, together with the explicit
@@ -32,6 +30,7 @@ theorem freeGibbsExpectation_annihilate_comp_create
       (1 - Complex.exp ((-(ε i) * β : ℝ) : ℂ)) *
           freeGibbsExpectation ε β ((annihilate i).comp (create j)) =
         if i = j then (1 : ℂ) else 0 := by
+  classical
   refine ⟨hSumm, ?_⟩
   have htrace :=
     tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create ε β hpos i j
@@ -49,6 +48,7 @@ theorem freeGibbsFunctional_value_annihilate_comp_create
     (1 - Complex.exp ((-(ε i) * β : ℝ) : ℂ)) *
         (freeGibbsFunctional ε β hpos).value ((annihilate i).comp (create j)) =
       if i = j then (1 : ℂ) else 0 := by
+  classical
   rw [(freeGibbsFunctional ε β hpos).value_of_mem hSumm]
   change (1 - Complex.exp ((-(ε i) * β : ℝ) : ℂ)) *
       freeGibbsExpectation ε β ((annihilate i).comp (create j)) = _
