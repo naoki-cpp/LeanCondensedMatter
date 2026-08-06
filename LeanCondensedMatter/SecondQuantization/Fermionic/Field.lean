@@ -29,6 +29,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaIntegration
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaOccupation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaCommonKernel
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaTraceRepresentation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaSpectralEnergyIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.TransportConductivityBridge
 
 set_option linter.style.header false
@@ -89,7 +90,8 @@ It deliberately stops before treating that discontinuous kernel as a differentia
 primitive. The traced-representation layer inserts the smooth finite-dimensional ordinary-trace
 surface primitive and residual sea kernel into the abstract integration data, proves that its
 energy integral is the canonical occupation-weighted Bastin trace integral, and leaves equality
-with any chosen response as an explicit hypothesis. The transport bridge reuses the general
-finite-volume system convention without importing the fermionic model into the
-dimension-independent transport layer.
+with any chosen response as an explicit hypothesis. The spectral-energy layer lifts the finite
+pure-point trace expansion through the occupation-weighted interval integral at every positive
+broadening. The transport bridge reuses the general finite-volume system convention without
+importing the fermionic model into the dimension-independent transport layer.
 -/
