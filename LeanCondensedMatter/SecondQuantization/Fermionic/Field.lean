@@ -20,6 +20,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.InfiniteTimeFreque
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.SpectralFrequencyResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ConductivityNormalization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboGreenwood
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinSpectral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.TransportConductivityBridge
 
 set_option linter.style.header false
@@ -57,7 +58,9 @@ normalization layer supplies a positive finite volume and the electric-field fac
 turning the total-current vector-potential response into an intensive regularized conductivity.
 The Kubo–Greenwood layer gives this derived finite spectral expression a public name, keeps
 its diagonal, degenerate, contact, and regulator conventions explicit, and exposes it as the input
-to the later Kubo–Bastin resolvent rewrite. The transport bridge reuses the general finite-volume
-system convention without importing the fermionic model into the dimension-independent transport
-layer.
+to the later Kubo–Bastin resolvent rewrite. The finite Bastin spectral layer converts the switching
+rate to the energy broadening `ℏη`, proves the retarded resolvent action on the energy basis, and
+rewrites every transition and the full conductivity without changing the contact term. The
+transport bridge reuses the general finite-volume system convention without importing the
+fermionic model into the dimension-independent transport layer.
 -/
