@@ -6,18 +6,16 @@ set_option linter.style.header false
 /-!
 # Mode fields from an orthonormal one-particle family
 
-This module completes the mode-recovery part of F2 in issue #524. Given an orthonormal family
-`e : Mode → 𝓗₁` in the one-particle Hilbert space, its vectors smear the basis-independent fields:
+An orthonormal family `e : Mode → 𝓗₁` defines mode creation and annihilation operators by smearing
+the basis-independent fields with `e i`:
 
 ```text
 cᵢ† = a†(eᵢ),
 cᵢ  = a(eᵢ).
 ```
 
-The smeared CAR then specialize to the usual Kronecker-delta mode relations. This does not yet
-identify the exterior-algebra Fock representation with the existing occupation-subset
-representation; that comparison requires a basis-induced algebra equivalence and remains a
-separate slice.
+The smeared canonical anticommutation relations then specialize to the usual Kronecker-delta mode
+relations.
 -/
 
 namespace SecondQuantization
