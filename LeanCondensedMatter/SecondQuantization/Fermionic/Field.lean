@@ -22,6 +22,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ConductivityNormal
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboGreenwood
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinSpectral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinTrace
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StaticKuboBastinResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaIntegration
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaOccupation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaCommonKernel
@@ -68,20 +69,22 @@ rate to the energy broadening `ℏη`, proves the retarded resolvent action on t
 rewrites every transition and the full conductivity without changing the contact term. The
 ordinary-trace layer packages those finite resolvent coefficients into an energy-basis trace
 carrier, proves its spectral expansion, and identifies the resulting named finite-dimensional
-Kubo–Bastin conductivity with the upstream causal Kubo response. The Středa integration layer
-records the additional finite-energy representation, derivative, integrability, and boundary
-hypotheses required for integration by parts, names the regularized surface and sea contributions,
-and proves their sum without assigning a magnetic-derivative interpretation. The occupation layer
-then makes the first concrete spectral-to-energy bridge: a differentiable occupation is required to
-reproduce the discrete pure-point probabilities, and every transition difference is rewritten as
-an oriented integral of its energy derivative. The common-kernel layer localizes each transition
-to its oriented spectral interval, combines the finite family into one globally integrable
-piecewise energy kernel, and proves that its full-line integral is the current-current Bastin sum.
-It deliberately stops before treating that discontinuous kernel as a differentiable Středa
-primitive. The traced-representation layer inserts the smooth finite-dimensional ordinary-trace
-surface primitive and residual sea kernel into the abstract integration data, proves that its
-energy integral is the canonical occupation-weighted Bastin trace integral, and leaves equality
-with any chosen response as an explicit hypothesis. The transport bridge reuses the general
-finite-volume system convention without importing the fermionic model into the
-dimension-independent transport layer.
+Kubo–Bastin conductivity with the upstream causal Kubo response. The static-target layer names the
+exact zero-frequency specialization while retaining finite switching, the Peierls contact term,
+and the finite-volume electric-field normalization. The Středa integration layer records the
+additional finite-energy representation, derivative, integrability, and boundary hypotheses
+required for integration by parts, names the regularized surface and sea contributions, and proves
+their sum without assigning a magnetic-derivative interpretation. The occupation layer then makes
+the first concrete spectral-to-energy bridge: a differentiable occupation is required to reproduce
+the discrete pure-point probabilities, and every transition difference is rewritten as an oriented
+integral of its energy derivative. The common-kernel layer localizes each transition to its
+oriented spectral interval, combines the finite family into one globally integrable piecewise
+energy kernel, and proves that its full-line integral is the current-current Bastin sum. It
+deliberately stops before treating that discontinuous kernel as a differentiable Středa primitive.
+The traced-representation layer inserts the smooth finite-dimensional ordinary-trace surface
+primitive and residual sea kernel into the abstract integration data, proves that its energy
+integral is the canonical occupation-weighted Bastin trace integral, and leaves equality with any
+chosen response as an explicit hypothesis. The transport bridge reuses the general finite-volume
+system convention without importing the fermionic model into the dimension-independent transport
+layer.
 -/
