@@ -11,6 +11,7 @@ import LeanCondensedMatter.Combinatorics.SetPartition.Refinement
 import LeanCondensedMatter.Combinatorics.SetPartition.Coarsening
 import LeanCondensedMatter.Combinatorics.SetPartition.Mobius
 import LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock
+import LeanCondensedMatter.Combinatorics.SetPartition.MobiusFormula
 import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
 import LeanCondensedMatter.Combinatorics.Cumulant.Normalized
 import LeanCondensedMatter.Combinatorics.Cumulant.Independence
