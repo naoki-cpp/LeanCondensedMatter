@@ -2,3 +2,4 @@ import LeanCondensedMatter.Transport.System
 import LeanCondensedMatter.Transport.LinearResponse
 import LeanCondensedMatter.Transport.Resolvent
 import LeanCondensedMatter.Transport.ResolventEnergyDerivative
+import LeanCondensedMatter.Transport.StredaOperatorKernel
