@@ -73,6 +73,14 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue_local
   intro σ υ hσυ
   unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue
   unfold FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
+  change d.mixedComponentDysonSign B *
+      (d.mixedComponentVertexWeight g B *
+        d.mixedComponentPairingValue ε β τ τ'
+          (ambientToTwoPointSlotTime σ) B) =
+    d.mixedComponentDysonSign B *
+      (d.mixedComponentVertexWeight g B *
+        d.mixedComponentPairingValue ε β τ τ'
+          (ambientToTwoPointSlotTime υ) B)
   rw [hPairing σ υ hσυ]
 
 /-- Once every signed component factor is local along `shuffle`, the pointwise Dyson amplitude is the
