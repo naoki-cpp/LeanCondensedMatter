@@ -16,6 +16,8 @@ The project uses Mathlib directly for:
 
 - bounded and compact continuous linear maps;
 - finite-dimensional matrix trace and orthonormal-basis formulas;
+- finite-dimensional determinants through `ContinuousLinearMap.det`;
+- infinite products through `HasProd`, `Multipliable`, and `tprod`;
 - self-adjoint operator spectrum and eigenspaces;
 - continuous functional calculus on C⋆-algebras;
 - Bochner integration and interval integrals;
@@ -45,6 +47,10 @@ The following remain because their statements match recurring project boundaries
 - fiberwise `HasSum` and `tsum` rearrangements used by spectral and thermal proofs.
 
 These modules are physics-independent.
+
+The diagonal Fredholm slice in #659 should first reuse Mathlib's general infinite-product API. Any
+missing reindexing or absolute-summability-to-product-convergence lemma should be isolated as a
+generic analysis result rather than hidden in operator-specific code.
 
 ## Project-specific compact spectral packaging
 
@@ -82,8 +88,31 @@ non-self-adjoint trace-class maps.
 ## Hilbert–Schmidt API
 
 `Analysis/Operator/HilbertSchmidt/` contains the project-local Hilbert–Schmidt predicate,
-basis-independence results, inner product, and trace reconciliation used by current proofs. No
-pinned-Mathlib replacement covers the same package.
+basis-independence results, adjoint and bounded-composition closure, inner product, and trace
+reconciliation used by current proofs. No pinned-Mathlib replacement covers the same package.
+
+The package does not yet supply a general non-self-adjoint trace-class ideal or a trace on every
+product of two Hilbert–Schmidt operators.
+
+## Determinant boundary
+
+`Mathlib.Topology.Algebra.Module.Determinant` provides `ContinuousLinearMap.det` as the determinant of
+the underlying linear endomorphism. It is appropriate only for finite-dimensional compatibility
+results in the present roadmap and must not be used as an infinite-dimensional definition.
+
+The first determinant implementation in #659 is instead a genuinely infinite-dimensional diagonal
+slice. For a countable Hilbert basis and absolutely summable diagonal coefficients `λ i`, it uses the
+convergent product
+
+```text
+∏' i, (1 + λ i).
+```
+
+This does not provide a determinant for arbitrary compact, normal, or trace-class operators. A
+general implementation still requires a non-self-adjoint trace-class ideal, a trace norm and
+completeness theory, a general trace, a convergent determinant construction, and structural
+identities on the valid domain. The scoped dependency graph is recorded in
+`notes/roadmaps/fredholm-determinant.md`.
 
 ## Ordered-simplex and Dyson analysis
 
@@ -116,6 +145,9 @@ Current general-purpose candidates include:
 - `tsum_fiberwise_eq_of_summable`;
 - `HilbertBasis.hasSum_norm_sq_inner`.
 
+Any generic infinite-product reindexing or convergence lemmas added for #659 should be evaluated as
+additional upstream candidates.
+
 Each candidate must be rechecked against the then-current Mathlib API before submission.
 
 ## Remaining technical debt
@@ -132,9 +164,10 @@ unbounded heartbeat setting. Before upstreaming or broadening this API:
 
 The repository does not yet provide:
 
+- the stated countable diagonal infinite-dimensional Fredholm slice until #659 is implemented;
 - a general non-self-adjoint trace-class ideal;
 - a complete Schatten hierarchy;
-- Fredholm determinants;
+- a Fredholm determinant on general trace-class operators;
 - unbounded spectral/functional calculus with domains;
 - completed infinite-mode Fock-space operator theory.
 
