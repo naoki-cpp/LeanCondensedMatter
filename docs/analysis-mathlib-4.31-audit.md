@@ -18,6 +18,8 @@ The project uses Mathlib directly for:
 - finite-dimensional matrix trace and orthonormal-basis formulas;
 - finite-dimensional determinants through `ContinuousLinearMap.det`;
 - infinite products through `HasProd`, `Multipliable`, and `tprod`;
+- convergence of `∏' i, (1 + coeff i)` from `Summable (fun i => ‖coeff i‖)` through
+  `multipliable_one_add_of_summable`;
 - self-adjoint operator spectrum and eigenspaces;
 - continuous functional calculus on C⋆-algebras;
 - Bochner integration and interval integrals;
@@ -48,9 +50,8 @@ The following remain because their statements match recurring project boundaries
 
 These modules are physics-independent.
 
-The diagonal Fredholm slice in #659 should first reuse Mathlib's general infinite-product API. Any
-missing reindexing or absolute-summability-to-product-convergence lemma should be isolated as a
-generic analysis result rather than hidden in operator-specific code.
+The diagonal Fredholm slice reuses Mathlib's infinite-product convergence and reindexing APIs
+directly. No new generic infinite-product theorem was needed for the current vertical slice.
 
 ## Project-specific compact spectral packaging
 
@@ -94,25 +95,31 @@ reconciliation used by current proofs. No pinned-Mathlib replacement covers the 
 The package does not yet supply a general non-self-adjoint trace-class ideal or a trace on every
 product of two Hilbert–Schmidt operators.
 
-## Determinant boundary
+## Diagonal Fredholm determinant API
 
-`Mathlib.Topology.Algebra.Module.Determinant` provides `ContinuousLinearMap.det` as the determinant of
-the underlying linear endomorphism. It is appropriate only for finite-dimensional compatibility
-results in the present roadmap and must not be used as an infinite-dimensional definition.
+`Analysis/Operator/Fredholm/Diagonal.lean` provides the project-specific interpretation of Mathlib's
+infinite product as a Fredholm determinant for explicit diagonal data:
 
-The first determinant implementation in #659 is instead a genuinely infinite-dimensional diagonal
-slice. For a countable Hilbert basis and absolutely summable diagonal coefficients `λ i`, it uses the
-convergent product
-
-```text
-∏' i, (1 + λ i).
+```lean
+Fredholm.diagonalDet coeff = ∏' i, (1 + coeff i).
 ```
 
-This does not provide a determinant for arbitrary compact, normal, or trace-class operators. A
-general implementation still requires a non-self-adjoint trace-class ideal, a trace norm and
-completeness theory, a general trace, a convergent determinant construction, and structural
-identities on the valid domain. The scoped dependency graph is recorded in
-`notes/roadmaps/fredholm-determinant.md`.
+The module reuses Mathlib for convergence, reindexing of `tprod`, finite-product reduction, and
+nonvanishing of absolutely convergent products. Project-specific theorems connect the coefficient
+family to `HilbertBasis.diagonalOp`, including the action of `1 + diagonalOp b coeff` on basis vectors
+and the nonzero kernel vector produced by a coefficient equal to `-1`.
+
+This is a genuine infinite-dimensional diagonal slice. It is not a determinant on arbitrary compact,
+normal, or trace-class operators and is not independent of unrelated diagonal presentations.
+
+`Mathlib.Topology.Algebra.Module.Determinant` provides `ContinuousLinearMap.det` as the determinant of
+the underlying linear endomorphism. It is appropriate only for future finite-dimensional
+compatibility results and is not used as the infinite-dimensional definition.
+
+A general implementation still requires a non-self-adjoint trace-class ideal, a trace norm and
+completeness theory, a general trace, a convergent presentation-independent determinant
+construction, and structural identities on the valid domain. The scoped dependency graph is
+recorded in `notes/roadmaps/fredholm-determinant.md`.
 
 ## Ordered-simplex and Dyson analysis
 
@@ -145,9 +152,6 @@ Current general-purpose candidates include:
 - `tsum_fiberwise_eq_of_summable`;
 - `HilbertBasis.hasSum_norm_sq_inner`.
 
-Any generic infinite-product reindexing or convergence lemmas added for #659 should be evaluated as
-additional upstream candidates.
-
 Each candidate must be rechecked against the then-current Mathlib API before submission.
 
 ## Remaining technical debt
@@ -164,10 +168,10 @@ unbounded heartbeat setting. Before upstreaming or broadening this API:
 
 The repository does not yet provide:
 
-- the stated countable diagonal infinite-dimensional Fredholm slice until #659 is implemented;
 - a general non-self-adjoint trace-class ideal;
 - a complete Schatten hierarchy;
 - a Fredholm determinant on general trace-class operators;
+- basis independence for unrelated diagonal presentations without spectral uniqueness;
 - unbounded spectral/functional calculus with domains;
 - completed infinite-mode Fock-space operator theory.
 
