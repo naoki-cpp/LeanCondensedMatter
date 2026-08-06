@@ -52,6 +52,7 @@ theorem finiteDimensionalOperatorTrace_eq_sum_inner_purePointBasis
   rw [finiteDimensionalOperatorTrace_apply]
   rw [LinearMap.trace_eq_sum_inner
     (operator : H →ₗ[ℂ] H) data.basis.toOrthonormalBasis]
+  simpa only [HilbertBasis.coe_toOrthonormalBasis]
 
 /-- Matrix element of `left * diagonal * right` when the middle operator is diagonal in the
 supplied pure-point basis. -/
@@ -67,7 +68,6 @@ theorem inner_purePointBasis_mul_diagonal_mul
   change inner ℂ (data.basis m)
     (left (diagonal (right (data.basis m)))) = _
   have hrepr := data.basis.toOrthonormalBasis.sum_repr' (right (data.basis m))
-  simp only [HilbertBasis.coe_toOrthonormalBasis] at hrepr
   rw [← hrepr]
   simp_rw [map_sum, map_smul, hdiagonal, smul_smul, inner_sum, inner_smul_right]
   apply Finset.sum_congr rfl
@@ -135,6 +135,7 @@ theorem regularizedBastinTraceIntegrand_eq_spectral_sum
         system.hamiltonian.1 current₁ current₂ energy broadening =
       regularizedBastinSpectralTraceSum
         system data current₁ current₂ energy broadening := by
+  unfold regularizedBastinTraceIntegrand
   rw [finiteDimensionalOperatorTrace_eq_sum_inner_purePointBasis
     system data
     (regularizedBastinOperatorIntegrand
