@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Toggle
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Operators
 
 set_option linter.style.header false
 
@@ -8,9 +9,9 @@ set_option linter.style.header false
 
 The public entry point for the completed fermionic representation. The current slice contains the
 `ℓ²` occupation representation, the dense algebraic core, the bounded single-mode number
-projection, and the occupation-toggle equivalence used to construct bounded CAR operators.
+projection, the occupation-toggle equivalence, and its continuous linear isometric lift.
 
-Later modules may add the completed creation and annihilation maps, partial linear maps for
-unbounded Hamiltonians, and trace-class thermal constructions without changing the algebraic Fock
-API.
+Completed creation and annihilation maps are built from the toggle, the occupation projections, and
+the fermionic phase. Partial linear maps for unbounded Hamiltonians and trace-class thermal
+constructions remain later slices.
 -/
