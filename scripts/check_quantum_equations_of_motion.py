@@ -23,11 +23,8 @@ REQUIRED_DECLARATIONS = (
     "theorem hasDerivAt_freePropagator",
     "theorem hasDerivAt_freePropagator_neg",
     "theorem schrodingerGenerator_commute_freePropagator",
-    "theorem hasDerivAt_evolveState_val",
     "theorem schrodingerEquation",
-    "theorem hasDerivAt_heisenbergEvolution_generator",
     "theorem heisenbergEquation",
-    "theorem hasDerivAt_evolveDensityOperator_op_generator",
     "theorem vonNeumannEquation",
 )
 

@@ -56,11 +56,12 @@ theorem schrodingerGenerator_commute_freePropagator (t : ℝ) :
     (Commute.refl (schrodingerGenerator system)).smul_right (t : ℂ)
   simpa [freePropagator, timeScaledGenerator] using h.exp_right
 
-/-- The Schrödinger-picture vector representative satisfies the generator form of the bounded
-Schrödinger equation. -/
-theorem hasDerivAt_evolveState_val (ψ : State H) (t : ℝ) :
+/-- Explicit bounded Schrödinger equation
+`dψ/dt = -(i/ℏ) H₀ ψ`. -/
+theorem schrodingerEquation (ψ : State H) (t : ℝ) :
     HasDerivAt (fun s : ℝ => (evolveState system ψ s).1)
-      (schrodingerGenerator system ((evolveState system ψ t).1)) t := by
+      ((-(Complex.I / (system.hbar : ℂ))) •
+        system.hamiltonian.1 ((evolveState system ψ t).1)) t := by
   have hU := (hasDerivAt_freePropagator system t).hasFDerivAt
   have hEval : HasFDerivAt
       (fun T : H →L[ℂ] H => T ψ.1)
@@ -68,27 +69,23 @@ theorem hasDerivAt_evolveState_val (ψ : State H) (t : ℝ) :
       (freePropagator system t) :=
     ((ContinuousLinearMap.apply ℂ H ψ.1).restrictScalars ℝ).hasFDerivAt
   have hderiv := (hEval.comp t hU).hasDerivAt
-  change HasDerivAt (fun s : ℝ => freePropagator system s ψ.1)
-    (schrodingerGenerator system (freePropagator system t ψ.1)) t
-  rw [hasDerivAt_iff_tendsto]
-  rw [hasDerivAt_iff_tendsto] at hderiv
-  simpa [Function.comp_def, mul_apply_eq_comp] using hderiv
+  have hgenerator :
+      HasDerivAt (fun s : ℝ => (evolveState system ψ s).1)
+        (schrodingerGenerator system ((evolveState system ψ t).1)) t := by
+    change HasDerivAt (fun s : ℝ => freePropagator system s ψ.1)
+      (schrodingerGenerator system (freePropagator system t ψ.1)) t
+    rw [hasDerivAt_iff_tendsto]
+    rw [hasDerivAt_iff_tendsto] at hderiv
+    simpa [Function.comp_def, mul_apply_eq_comp] using hderiv
+  simpa [schrodingerGenerator, smul_apply] using hgenerator
 
-/-- Explicit bounded Schrödinger equation
-`dψ/dt = -(i/ℏ) H₀ ψ`. -/
-theorem schrodingerEquation (ψ : State H) (t : ℝ) :
-    HasDerivAt (fun s : ℝ => (evolveState system ψ s).1)
-      ((-(Complex.I / (system.hbar : ℂ))) •
-        system.hamiltonian.1 ((evolveState system ψ t).1)) t := by
-  simpa [schrodingerGenerator, smul_apply] using
-    hasDerivAt_evolveState_val system ψ t
-
-/-- Generator form of the bounded Heisenberg equation. -/
-theorem hasDerivAt_heisenbergEvolution_generator
-    (A : H →L[ℂ] H) (t : ℝ) :
+/-- Explicit bounded Heisenberg equation
+`dA_H/dt = (i/ℏ) [H₀, A_H]`. -/
+theorem heisenbergEquation (A : H →L[ℂ] H) (t : ℝ) :
     HasDerivAt (heisenbergEvolution system A)
-      (heisenbergEvolution system A t * schrodingerGenerator system -
-        schrodingerGenerator system * heisenbergEvolution system A t) t := by
+      ((Complex.I / (system.hbar : ℂ)) •
+        (system.hamiltonian.1 * heisenbergEvolution system A t -
+          heisenbergEvolution system A t * system.hamiltonian.1)) t := by
   let G := schrodingerGenerator system
   let U := freePropagator system t
   let Uneg := freePropagator system (-t)
@@ -106,22 +103,17 @@ theorem hasDerivAt_heisenbergEvolution_generator
         (Uneg * A * U) * G - G * (Uneg * A * U) := by
     rw [hcomm.eq]
     noncomm_ring
-  have hderiv :
-      ((-G) * Uneg * A * U + Uneg * A * (G * U)) =
-        heisenbergEvolution system A t * G -
-          G * heisenbergEvolution system A t := by
-    simpa [G, U, Uneg, heisenbergEvolution] using hderivRaw
-  rw [← hderiv]
-  exact hraw
-
-/-- Explicit bounded Heisenberg equation
-`dA_H/dt = (i/ℏ) [H₀, A_H]`. -/
-theorem heisenbergEquation (A : H →L[ℂ] H) (t : ℝ) :
-    HasDerivAt (heisenbergEvolution system A)
-      ((Complex.I / (system.hbar : ℂ)) •
-        (system.hamiltonian.1 * heisenbergEvolution system A t -
-          heisenbergEvolution system A t * system.hamiltonian.1)) t := by
-  have h := hasDerivAt_heisenbergEvolution_generator system A t
+  have hgenerator :
+      HasDerivAt (heisenbergEvolution system A)
+        (heisenbergEvolution system A t * schrodingerGenerator system -
+          schrodingerGenerator system * heisenbergEvolution system A t) t := by
+    have hderiv :
+        ((-G) * Uneg * A * U + Uneg * A * (G * U)) =
+          heisenbergEvolution system A t * G -
+            G * heisenbergEvolution system A t := by
+      simpa [G, U, Uneg, heisenbergEvolution] using hderivRaw
+    rw [← hderiv]
+    exact hraw
   have hderiv :
       heisenbergEvolution system A t * schrodingerGenerator system -
           schrodingerGenerator system * heisenbergEvolution system A t =
@@ -132,14 +124,15 @@ theorem heisenbergEquation (A : H →L[ℂ] H) (t : ℝ) :
     simp only [mul_smul_comm, smul_mul_assoc]
     module
   rw [← hderiv]
-  exact h
+  exact hgenerator
 
-/-- Generator form of the bounded von Neumann equation for the evolved density operator. -/
-theorem hasDerivAt_evolveDensityOperator_op_generator
-    (ρ : DensityOperator H) (t : ℝ) :
+/-- Explicit bounded von Neumann equation
+`dρ/dt = -(i/ℏ) [H₀, ρ]`. -/
+theorem vonNeumannEquation (ρ : DensityOperator H) (t : ℝ) :
     HasDerivAt (fun s : ℝ => (evolveDensityOperator system ρ s).op)
-      (schrodingerGenerator system * (evolveDensityOperator system ρ t).op -
-        (evolveDensityOperator system ρ t).op * schrodingerGenerator system) t := by
+      ((-(Complex.I / (system.hbar : ℂ))) •
+        (system.hamiltonian.1 * (evolveDensityOperator system ρ t).op -
+          (evolveDensityOperator system ρ t).op * system.hamiltonian.1)) t := by
   let G := schrodingerGenerator system
   let U := freePropagator system t
   let Uneg := freePropagator system (-t)
@@ -158,23 +151,18 @@ theorem hasDerivAt_evolveDensityOperator_op_generator
         G * (U * ρ.op * Uneg) - (U * ρ.op * Uneg) * G := by
     rw [neg_mul, hcommNeg.eq]
     noncomm_ring
-  have hderiv :
-      (G * U * ρ.op * Uneg + U * ρ.op * ((-G) * Uneg)) =
-        G * (evolveDensityOperator system ρ t).op -
-          (evolveDensityOperator system ρ t).op * G := by
-    simpa [G, U, Uneg, evolveDensityOperator_op, unitaryConjugate,
-      star_freePropagator] using hderivRaw
-  rw [← hderiv]
-  exact hraw
-
-/-- Explicit bounded von Neumann equation
-`dρ/dt = -(i/ℏ) [H₀, ρ]`. -/
-theorem vonNeumannEquation (ρ : DensityOperator H) (t : ℝ) :
-    HasDerivAt (fun s : ℝ => (evolveDensityOperator system ρ s).op)
-      ((-(Complex.I / (system.hbar : ℂ))) •
-        (system.hamiltonian.1 * (evolveDensityOperator system ρ t).op -
-          (evolveDensityOperator system ρ t).op * system.hamiltonian.1)) t := by
-  have h := hasDerivAt_evolveDensityOperator_op_generator system ρ t
+  have hgenerator :
+      HasDerivAt (fun s : ℝ => (evolveDensityOperator system ρ s).op)
+        (schrodingerGenerator system * (evolveDensityOperator system ρ t).op -
+          (evolveDensityOperator system ρ t).op * schrodingerGenerator system) t := by
+    have hderiv :
+        (G * U * ρ.op * Uneg + U * ρ.op * ((-G) * Uneg)) =
+          G * (evolveDensityOperator system ρ t).op -
+            (evolveDensityOperator system ρ t).op * G := by
+      simpa [G, U, Uneg, evolveDensityOperator_op, unitaryConjugate,
+        star_freePropagator] using hderivRaw
+    rw [← hderiv]
+    exact hraw
   have hderiv :
       schrodingerGenerator system * (evolveDensityOperator system ρ t).op -
           (evolveDensityOperator system ρ t).op * schrodingerGenerator system =
@@ -185,7 +173,7 @@ theorem vonNeumannEquation (ρ : DensityOperator H) (t : ℝ) :
     simp only [mul_smul_comm, smul_mul_assoc]
     module
   rw [← hderiv]
-  exact h
+  exact hgenerator
 
 end
 end LinearResponse
