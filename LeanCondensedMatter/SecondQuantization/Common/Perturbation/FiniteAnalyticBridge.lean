@@ -214,22 +214,6 @@ theorem continuousOperatorIntervalIntegral_eq
   intro n
   exact continuousOperatorIntervalIntegral_basis F hF a b n
 
-/-- Smoke test for the continuous-operator norm at the pinned Mathlib revision. -/
-noncomputable def finiteContinuousOperatorNorm
-    (A : FiniteContinuousOperator Config) : ℝ := ‖A‖
-
-/-- Smoke test for continuous-operator composition at the pinned Mathlib revision. -/
-noncomputable def finiteContinuousOperatorComp
-    (A B : FiniteContinuousOperator Config) : FiniteContinuousOperator Config := A.comp B
-
-/-- Smoke test for powers in the continuous endomorphism algebra. -/
-noncomputable def finiteContinuousOperatorPower
-    (A : FiniteContinuousOperator Config) (n : ℕ) : FiniteContinuousOperator Config := A ^ n
-
-/-- Smoke test for the Banach-algebra exponential on continuous finite operators. -/
-noncomputable def finiteContinuousOperatorExp
-    (A : FiniteContinuousOperator Config) : FiniteContinuousOperator Config := NormedSpace.exp A
-
 end
 end Common
 end SecondQuantization
