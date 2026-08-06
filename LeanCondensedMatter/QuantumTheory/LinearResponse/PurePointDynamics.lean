@@ -103,15 +103,10 @@ theorem purePointNormalizedExpectation_apply
   exact (purePointDensityOperator system data).expectation_eq_tsum_diagonal
     A data.basis data.probability (purePointDensityOperator_apply_basis system data)
 
-/-- The exponent of the free Schrödinger phase of one energy-basis vector. -/
-noncomputable def purePointSchrodingerExponent
-    (data : PurePointLehmannData system ι) (i : ι) (t : ℝ) : ℂ :=
-  -(Complex.I * (((t * data.energy i) / system.hbar : ℝ) : ℂ))
-
 /-- The scalar free Schrödinger phase of one energy-basis vector. -/
 noncomputable def purePointSchrodingerPhase
     (data : PurePointLehmannData system ι) (i : ι) (t : ℝ) : ℂ :=
-  Complex.exp (purePointSchrodingerExponent system data i t)
+  Complex.exp (-(Complex.I * (((t * data.energy i) / system.hbar : ℝ) : ℂ)))
 
 /-- The free propagator acts on an energy-basis vector by the expected Schrödinger phase. -/
 theorem freePropagator_apply_purePointBasis
@@ -119,14 +114,13 @@ theorem freePropagator_apply_purePointBasis
     freePropagator system t (data.basis i) =
       purePointSchrodingerPhase system data i t • data.basis i := by
   let T : H →L[ℂ] H := timeScaledGenerator system t
-  let c : ℂ := purePointSchrodingerExponent system data i t
+  let c : ℂ := -(Complex.I * (((t * data.energy i) / system.hbar : ℝ) : ℂ))
   let v : H := data.basis i
   have hT : T v = c • v := by
     dsimp [T, c, v]
     rw [timeScaledGenerator, schrodingerGenerator]
     simp only [smul_apply, data.hamiltonian_apply_basis, smul_smul]
     congr 1
-    rw [purePointSchrodingerExponent]
     push_cast
     ring
   have hpow (n : ℕ) : (T ^ n) v = c ^ n • v := by
@@ -180,7 +174,7 @@ theorem purePointTransitionPhase_eq_exp_energyDifference
     purePointSchrodingerPhase, Complex.exp_eq_exp_ℂ]
   rw [NormedSpace.star_exp, ← NormedSpace.exp_add]
   congr 1
-  simp [purePointSchrodingerExponent]
+  simp
   ring
 
 /-- Matrix elements of a freely evolved observable acquire the energy-difference phase. -/
