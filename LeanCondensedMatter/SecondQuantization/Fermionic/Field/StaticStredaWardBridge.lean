@@ -148,9 +148,23 @@ theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_tracedBastin
   rw [finiteDimensionalStaticKuboBastinDirectionalConductivity_eq_vectorPotential]
   rw [ward.vectorPotentialResponse_eq_scaledTracedBastin]
   rw [finiteVolumeConductivityNormalization_zero_frequency]
-  have hdenom : (convention.volume : ℂ) * (-(eta : ℂ)) ≠ 0 := by
+  let denominator : ℂ := (convention.volume : ℂ) * (-(eta : ℂ))
+  let integral : ℂ := regularizedTracedBastinEnergyIntegral
+    system.hamiltonian.1
+    (boundedDirectionalCurrent geometry direction
+      (system.hbar : ℂ) (q : ℂ) K)
+    (boundedDirectionalCurrent geometry direction
+      (system.hbar : ℂ) (q : ℂ) K)
+    (kuboBastinEnergyBroadening system.hbar eta)
+    lowerEnergy upperEnergy occupation
+  have hdenominator : denominator ≠ 0 := by
+    dsimp [denominator]
     simpa using finiteVolumeConductivityDenominator_ne_zero convention 0 eta heta
-  field_simp [hdenom]
+  change (denominator * integral) * denominator⁻¹ = integral
+  calc
+    (denominator * integral) * denominator⁻¹ =
+        integral * (denominator * denominator⁻¹) := by ring
+    _ = integral := by simp [hdenominator]
 
 /-- The same bridge written directly in the finite pure-point spectral energy-integral form. -/
 theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_spectralEnergyIntegral
