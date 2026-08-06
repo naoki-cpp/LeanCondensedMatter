@@ -31,6 +31,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaCommonKernel
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaTraceRepresentation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaSpectralEnergyIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StaticStredaWardBridge
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.FiniteDisorderConductivity
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Validation.FiniteToys
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Validation.TwoLevelExplicit
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Validation.TwoSiteDimer
@@ -98,12 +99,15 @@ with any chosen response as an explicit hypothesis. The spectral-energy layer li
 pure-point trace expansion through the occupation-weighted interval integral at every positive
 broadening. The static Ward bridge exposes the remaining model-specific Peierls f-sum identity at
 the current-current level, keeps contact and `V(-η)` explicit, and constructs the concrete Středa
-representation under that visible assumption. The finite-toy validation layer supplies a concrete
-degenerate two-level model, independent currents, zero-current and sign-reversal checks, and a
-Hermitian two-site dimer hopping model. Its explicit-value extension evaluates the identity-current
-toy at `E = γ = 1`, providing a nonzero sign and trace-multiplicity check. The two-site dimer
-extension constructs a bounded self-adjoint hopping Hamiltonian and bond current on the finite Fock
-space and instantiates the pointwise Bastin–Středa identity. The transport bridge reuses the general
+representation under that visible assumption. The finite-disorder layer applies the exact static
+conductivity configuration-wise to `Hω = H₀ + Vω`, forms the normalized finite ensemble average,
+and lifts the visible Ward/Středa equalities through that average without introducing a
+weak-disorder approximation. The finite-toy validation layer supplies a concrete degenerate
+two-level model, independent currents, zero-current and sign-reversal checks, and a Hermitian
+two-site dimer hopping model. Its explicit-value extension evaluates the identity-current toy at
+`E = γ = 1`, providing a nonzero sign and trace-multiplicity check. The two-site dimer extension
+constructs a bounded self-adjoint hopping Hamiltonian and bond current on the finite Fock space and
+instantiates the pointwise Bastin–Středa identity. The transport bridge reuses the general
 finite-volume system convention without importing the fermionic model into the dimension-independent
 transport layer.
 -/
