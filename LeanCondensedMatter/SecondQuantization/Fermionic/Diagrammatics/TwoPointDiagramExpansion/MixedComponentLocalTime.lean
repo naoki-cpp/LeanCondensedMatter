@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentLocalTime
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentOrderedSimplex
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentDysonValue
 
 set_option linter.style.header false
@@ -6,17 +6,15 @@ set_option linter.style.header false
 /-!
 # Local interaction-time interface for two-point Dyson component factors
 
-The Common component-shuffle API can split an ordered-simplex integral once every signed component
-factor has been identified with a function of that component's local interaction times. This module
-packages that identification for the fermionic two-point expansion.
-
-The complete locality statement is reduced to the mixed component pairing value: the Dyson sign and
-quartic coupling product are independent of the interaction-time assignment. The remaining work is
-therefore the order-theoretic locality of the component crossing weight and pair-contraction product.
+The generic dependent-slot API localizes every signed component factor to its interaction-time
+fiber. The complete locality statement is reduced to the mixed component pairing value: the Dyson
+sign and quartic coupling product are independent of the interaction-time assignment.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
+
+open Combinatorics
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
@@ -53,7 +51,7 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonLocalInteg
     (τ τ' : ℝ) (shuffle : d.1.ComponentInteractionShuffle)
     (B : d.1.componentPartition.parts) :
     (Fin (d.1.interactionComponentSize B) → ℝ) → ℂ :=
-  d.1.localizeInteractionComponentIntegrand shuffle B
+  DependentSlotEquiv.localize shuffle.slotEquiv B
     (fun σ => d.mixedComponentDysonFixedTimeValue ε β g τ τ'
       (ambientToTwoPointSlotTime σ) B)
 
@@ -64,10 +62,10 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue_local
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (shuffle : d.1.ComponentInteractionShuffle)
     (B : d.1.componentPartition.parts)
-    (hPairing : d.1.InteractionComponentLocal shuffle B
+    (hPairing : DependentSlotEquiv.Local shuffle.slotEquiv B
       (fun σ => d.mixedComponentPairingValue ε β τ τ'
         (ambientToTwoPointSlotTime σ) B)) :
-    d.1.InteractionComponentLocal shuffle B
+    DependentSlotEquiv.Local shuffle.slotEquiv B
       (fun σ => d.mixedComponentDysonFixedTimeValue ε β g τ τ'
         (ambientToTwoPointSlotTime σ) B) := by
   intro σ υ hσυ
@@ -96,7 +94,7 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (shuffle : d.1.ComponentInteractionShuffle)
     (hLocal : ∀ B : d.1.componentPartition.parts,
-      d.1.InteractionComponentLocal shuffle B
+      DependentSlotEquiv.Local shuffle.slotEquiv B
         (fun σ => d.mixedComponentDysonFixedTimeValue ε β g τ τ'
           (ambientToTwoPointSlotTime σ) B))
     (σ : Fin n → ℝ) :
@@ -120,9 +118,16 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign
       intro B
       simp [F]
     _ = d.1.interactionComponentShuffleIntegrand shuffle
-        (fun B => d.1.localizeInteractionComponentIntegrand shuffle B (F B))
-        (twoPointSlotToAmbientTime σ) :=
-      d.1.prod_eq_interactionComponentShuffleIntegrand_localize shuffle F hLocal
+        (fun B => DependentSlotEquiv.localize shuffle.slotEquiv B (F B))
+        (twoPointSlotToAmbientTime σ) := by
+      unfold SecondQuantization.Common.TwoPointDiagram.interactionComponentShuffleIntegrand
+      apply Fintype.prod_congr
+      intro B
+      change F B (twoPointSlotToAmbientTime σ) =
+        DependentSlotEquiv.localize shuffle.slotEquiv B (F B)
+          (DependentSlotEquiv.assignment shuffle.slotEquiv
+            (twoPointSlotToAmbientTime σ) B)
+      exact DependentSlotEquiv.eq_localize shuffle.slotEquiv B (F B) (hLocal B)
         (twoPointSlotToAmbientTime σ)
     _ = d.1.interactionComponentShuffleIntegrand shuffle
         (d.mixedComponentDysonLocalIntegrand ε β g τ τ' shuffle)
@@ -136,7 +141,7 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (shuffle : d.1.ComponentInteractionShuffle)
     (hPairing : ∀ B : d.1.componentPartition.parts,
-      d.1.InteractionComponentLocal shuffle B
+      DependentSlotEquiv.Local shuffle.slotEquiv B
         (fun σ => d.mixedComponentPairingValue ε β τ τ'
           (ambientToTwoPointSlotTime σ) B))
     (σ : Fin n → ℝ) :
