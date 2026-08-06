@@ -66,12 +66,10 @@ theorem lehmannDenominator_eq_retardedSpectralShift
             (kuboBastinRetardedEnergy hbar omega energyₘ)
             (kuboBastinEnergyBroadening hbar eta) -
           (energyₙ : ℂ)) := by
-  apply Complex.ext
-  · simp [lehmannDenominator, retardedSpectralParameter,
-      kuboBastinRetardedEnergy, kuboBastinEnergyBroadening]
-  · simp [lehmannDenominator, retardedSpectralParameter,
-      kuboBastinRetardedEnergy, kuboBastinEnergyBroadening]
-    field_simp [hhbar]
+  apply Complex.ext <;>
+    simp [lehmannDenominator, retardedSpectralParameter,
+      kuboBastinRetardedEnergy, kuboBastinEnergyBroadening] <;>
+    field_simp [hhbar] <;>
     ring
 
 /-- The retarded spectral shift is nonzero at positive switching rate. -/
@@ -211,7 +209,6 @@ theorem finiteKuboGreenwoodDirectionalCurrentTerm_eq_bastinSpectral
   rw [inner_purePointBasis_retardedResolvent system data omega eta heta mn.1 mn.2]
   unfold purePointTransitionWeight
   field_simp [hhbar, hhbarComplex, hshift]
-  ring
 
 /-- Finite regularized Kubo–Bastin conductivity in spectral resolvent form, with the Peierls contact
 term retained explicitly. -/
