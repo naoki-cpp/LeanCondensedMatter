@@ -10,11 +10,13 @@ infinite-dimensional.
 - Hilbert–Schmidt basic, inner-product, and spectral-trace comparison modules are `proved`.
 - The countable diagonal infinite-product slice is `proved` in
   `Analysis/Operator/Fredholm/Diagonal.lean`.
+- Finite-dimensional agreement with Mathlib's ordinary determinant is `proved` in
+  `Analysis/Operator/Fredholm/FiniteDimensional.lean`.
 - A general non-self-adjoint trace-class ideal is not implemented.
 - A general Fredholm determinant is not implemented.
 
-The diagonal infinite-dimensional target is `proved`; the general trace-class target remains
-`idea`.
+The diagonal infinite-dimensional target and its finite-dimensional compatibility are `proved`;
+the general trace-class target remains `idea`.
 
 ## Existing Hilbert–Schmidt boundary
 
@@ -47,9 +49,9 @@ At Mathlib `v4.31.0`:
   package;
 - the project does not rely on a Mathlib general trace-class/Schatten/Fredholm package.
 
-`ContinuousLinearMap.det` is not used as an infinite-dimensional determinant definition. Its role is
-limited to a later compatibility theorem on finite-dimensional diagonal specializations. The
-implemented slice instead uses a convergent infinite product.
+`ContinuousLinearMap.det` is not used as an infinite-dimensional determinant definition. It is used
+only by the proved finite-dimensional compatibility theorem for diagonal specializations. The
+infinite-dimensional slice itself remains defined by a convergent infinite product.
 
 ## Implemented slice: countable diagonal operators
 
@@ -86,12 +88,25 @@ The public API currently provides:
 - `HilbertBasis.one_add_diagonalOp_apply_basis`: diagonal action of
   `1 + diagonalOp b coeff`;
 - `HilbertBasis.one_add_diagonalOp_has_nonzero_kernel_vector_of_coeff_eq_neg_one`: a coefficient
-  equal to `-1` produces a nonzero kernel vector.
+  equal to `-1` produces a nonzero kernel vector;
+- `Fredholm.diagonalDet_eq_det_one_add_diagonalOp`: agreement with
+  `ContinuousLinearMap.det (1 + diagonalOp b coeff)` when the index type is finite.
 
 The determinant is defined from explicit coefficient data rather than bundled with a Hilbert basis
 or operator. The operator theorems connect that coefficient-level definition to the repository's
 existing `HilbertBasis.diagonalOp` construction without pretending that a general trace-class ideal
 already exists.
+
+## Finite-dimensional compatibility
+
+`Analysis/Operator/Fredholm/FiniteDimensional.lean` converts a finite `HilbertBasis` to its ordinary
+basis, identifies the matrix of `1 + diagonalOp b coeff` as
+`Matrix.diagonal (fun i => 1 + coeff i)`, and applies Mathlib's `LinearMap.det_toMatrix` and
+`Matrix.det_diagonal` theorems. Thus both the infinite-product definition and the ordinary
+determinant reduce to the same finite product.
+
+This theorem is compatibility only. It does not redefine `Fredholm.diagonalDet`, weaken its analytic
+boundary, or turn `ContinuousLinearMap.det` into an infinite-dimensional determinant.
 
 ## Independence boundary
 
@@ -114,8 +129,9 @@ countable diagonal trace-class data
   → general Fredholm determinant.
 ```
 
-The first step now provides a nontrivial infinite-dimensional determinant. Later steps widen the
-operator domain and strengthen presentation independence.
+The first step now provides a nontrivial infinite-dimensional determinant, together with agreement
+with ordinary determinants on finite diagonal specializations. Later steps widen the operator domain
+and strengthen presentation independence.
 
 ## Candidate general constructions
 
@@ -185,12 +201,11 @@ operators does require it:
 - regularized determinants such as `det₂`;
 - thermodynamic or infinite-volume determinant limits.
 
-## Remaining work for #659
+## Remaining extensions after #659 and #677
 
-The core acceptance criteria are implemented. Optional extensions that can be split or added only
-when cleanly supported include:
+The diagonal determinant and its finite-dimensional determinant compatibility are implemented.
+Further extensions should be added only when cleanly supported:
 
-- agreement with `ContinuousLinearMap.det` for a finite-dimensional diagonal operator;
 - a converse relating determinant zero to a `-1` coefficient;
 - invertibility of `1 + diagonalOp b coeff` under exact diagonal bounded-inverse hypotheses;
 - comparison with the existing spectral trace on a self-adjoint overlap.
