@@ -50,7 +50,7 @@ theorem hasDerivAt_retardedResolvent_energy
     HasDerivAt (fun x : ℝ => retardedResolvent hamiltonian x broadening)
       (-(retardedResolvent hamiltonian energy broadening) ^ 2) energy := by
   have houter : HasFDerivAt (resolvent hamiltonian)
-      ((ContinuousLinearMap.smulRight 1
+      ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ)
         (-(retardedResolvent hamiltonian energy broadening) ^ 2) :
           ℂ →L[ℂ] (H →L[ℂ] H)).restrictScalars ℝ)
       (retardedSpectralParameter energy broadening) :=
@@ -60,10 +60,10 @@ theorem hasDerivAt_retardedResolvent_energy
     (hasDerivAt_retardedSpectralParameter_energy energy broadening).hasFDerivAt
   have hcomp := (houter.comp energy hinner).hasDerivAt
   have hvalue :
-      (((ContinuousLinearMap.smulRight 1
+      (((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ)
           (-(retardedResolvent hamiltonian energy broadening) ^ 2) :
             ℂ →L[ℂ] (H →L[ℂ] H)).restrictScalars ℝ ∘SL
-        ContinuousLinearMap.toSpanSingleton ℝ 1) 1) =
+        ContinuousLinearMap.toSpanSingleton ℝ (1 : ℂ)) 1) =
         -(retardedResolvent hamiltonian energy broadening) ^ 2 := by
     change (1 : ℂ) • (-(retardedResolvent hamiltonian energy broadening) ^ 2) = _
     simp
@@ -80,7 +80,7 @@ theorem hasDerivAt_advancedResolvent_energy
     HasDerivAt (fun x : ℝ => advancedResolvent hamiltonian x broadening)
       (-(advancedResolvent hamiltonian energy broadening) ^ 2) energy := by
   have houter : HasFDerivAt (resolvent hamiltonian)
-      ((ContinuousLinearMap.smulRight 1
+      ((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ)
         (-(advancedResolvent hamiltonian energy broadening) ^ 2) :
           ℂ →L[ℂ] (H →L[ℂ] H)).restrictScalars ℝ)
       (advancedSpectralParameter energy broadening) :=
@@ -90,10 +90,10 @@ theorem hasDerivAt_advancedResolvent_energy
     (hasDerivAt_advancedSpectralParameter_energy energy broadening).hasFDerivAt
   have hcomp := (houter.comp energy hinner).hasDerivAt
   have hvalue :
-      (((ContinuousLinearMap.smulRight 1
+      (((ContinuousLinearMap.smulRight (1 : ℂ →L[ℂ] ℂ)
           (-(advancedResolvent hamiltonian energy broadening) ^ 2) :
             ℂ →L[ℂ] (H →L[ℂ] H)).restrictScalars ℝ ∘SL
-        ContinuousLinearMap.toSpanSingleton ℝ 1) 1) =
+        ContinuousLinearMap.toSpanSingleton ℝ (1 : ℂ)) 1) =
         -(advancedResolvent hamiltonian energy broadening) ^ 2 := by
     change (1 : ℂ) • (-(advancedResolvent hamiltonian energy broadening) ^ 2) = _
     simp
