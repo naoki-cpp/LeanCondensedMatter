@@ -134,8 +134,7 @@ theorem retardedResolvent_sq_apply_purePointBasis_at_energy
   rw [map_smul]
   rw [retardedResolvent_apply_purePointBasis_at_energy
     system data energy broadening hbroadening n]
-  rw [smul_smul]
-  rfl
+  rw [smul_smul, pow_two]
 
 /-- The square of the advanced resolvent has the squared scalar denominator on the energy basis. -/
 theorem advancedResolvent_sq_apply_purePointBasis_at_energy
@@ -151,8 +150,7 @@ theorem advancedResolvent_sq_apply_purePointBasis_at_energy
   rw [map_smul]
   rw [advancedResolvent_apply_purePointBasis_at_energy
     system data energy broadening hbroadening n]
-  rw [smul_smul]
-  rfl
+  rw [smul_smul, pow_two]
 
 /-- Diagonal matrix element of the arbitrary-energy retarded resolvent. -/
 theorem inner_purePointBasis_retardedResolvent_at_energy
