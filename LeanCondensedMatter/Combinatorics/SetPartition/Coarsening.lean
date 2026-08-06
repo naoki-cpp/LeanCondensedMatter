@@ -202,6 +202,8 @@ def coarseningsOrderIsoBlockPartitions (π : Finpartition a) :
     intro σ τ
     constructor
     · intro h
+      change quotientByCoarsening π σ.1 σ.2 ≤
+        quotientByCoarsening π τ.1 τ.2 at h
       have hlift := liftBlockPartition_mono π h
       rw [lift_quotientByCoarsening_eq σ.2, lift_quotientByCoarsening_eq τ.2] at hlift
       exact hlift
