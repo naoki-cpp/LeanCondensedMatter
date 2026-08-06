@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinSpectral
-import Mathlib.Analysis.InnerProductSpace.Trace
+import LeanCondensedMatter.QuantumTheory.FiniteDimensional.Expectation
 
 set_option linter.style.header false
 
@@ -7,21 +7,22 @@ set_option linter.style.header false
 # Ordinary finite-dimensional trace form of the Kubo–Bastin response
 
 This module packages the finite resolvent spectral expression proved in
-`KuboBastinSpectral` as an ordinary complex linear trace. The trace carrier is constructed on the
-same finite energy basis: each retarded-resolvent transition coefficient multiplies the rank-one
-projector onto its first energy state. The ordinary trace of that projector is one, so expanding
-the carrier trace recovers exactly the finite spectral double sum.
+`KuboBastinSpectral` as an ordinary complex linear trace. The finite trace carrier multiplies the
+canonical normalized pure-point density operator by the complete retarded-resolvent spectral sum.
+Because that density operator has ordinary trace one in finite dimension, expanding the carrier
+trace recovers exactly the same finite spectral double sum.
 
-This is the finite equivalent permitted at the B2 boundary of issue #367. It is intentionally
-basis-resolved because the resolvent energy `Eₘ + ℏω` depends on the outer spectral index. The
-main theorem does not introduce a disconnected Bastin law: it proves that the named trace response
-is equal to the conductivity already obtained through time-dependent perturbation theory, the
-causal Kubo theorem, the finite observation-time limit, and the Kubo–Greenwood expansion.
+This is the finite equivalent permitted at the B2 boundary of issue #367. It is basis-resolved
+through the scalar coefficient because the resolvent energy `Eₘ + ℏω` depends on the outer
+spectral index. The main theorem does not introduce a disconnected Bastin law: it proves that the
+named trace response is equal to the conductivity already obtained through time-dependent
+perturbation theory, the causal Kubo theorem, the finite observation-time limit, and the
+Kubo–Greenwood expansion.
 
-The Peierls contact expectation, positive finite volume, electric-field conversion factor,
-frequency, and positive switching rate remain explicit. No cyclic energy-integral formula,
-zero-broadening limit, DC limit, disorder average, trace per unit volume, or thermodynamic limit is
-claimed.
+The current, Hamiltonian, pure-point Fermi probabilities, Peierls contact expectation, positive
+finite volume, electric-field conversion factor, frequency, and positive switching rate remain
+explicit. No cyclic energy-integral formula, zero-broadening limit, DC limit, disorder average,
+trace per unit volume, or thermodynamic limit is claimed.
 
 A future infinite-dimensional finite-volume extension would require an actual complex trace ideal
 for the generally non-self-adjoint current–resolvent products, closure of that ideal under bounded
@@ -35,7 +36,7 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Field
 
-open QuantumTheory.LinearResponse
+open QuantumTheory QuantumTheory.LinearResponse
 
 noncomputable section
 
@@ -44,54 +45,22 @@ variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
 variable [Fintype ι]
 
-/-- Rank-one orthogonal projector onto one vector of the supplied pure-point energy basis. -/
-noncomputable def purePointBasisProjector
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι) (m : ι) :
-    FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
-  ContinuousLinearMap.toSpanSingleton ℂ (data.basis m) ∘L
-    ContinuousLinearMap.innerSL ℂ (data.basis m)
-
-/-- The energy-basis projector acts by the corresponding Kronecker coefficient. -/
-@[simp]
-theorem purePointBasisProjector_apply
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι) (m n : ι) :
-    purePointBasisProjector system data m (data.basis n) =
-      (if m = n then (1 : ℂ) else 0) • data.basis m := by
-  classical
-  simp [purePointBasisProjector,
-    orthonormal_iff_ite.mp data.basis.orthonormal]
-
-/-- The ordinary finite-dimensional trace of one normalized energy-basis projector is one. -/
-theorem linearMap_trace_purePointBasisProjector
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι) (m : ι) :
-    LinearMap.trace ℂ (FiniteLatticeHilbertFock Site)
-        (purePointBasisProjector system data m :
-          FiniteLatticeHilbertFock Site →ₗ[ℂ] FiniteLatticeHilbertFock Site) = 1 := by
-  classical
-  rw [LinearMap.trace_eq_sum_inner
-    (purePointBasisProjector system data m :
-      FiniteLatticeHilbertFock Site →ₗ[ℂ] FiniteLatticeHilbertFock Site) data.basis]
-  simp [purePointBasisProjector,
-    orthonormal_iff_ite.mp data.basis.orthonormal, eq_comm]
-
 /-- Finite-dimensional trace carrier for the regularized Kubo–Bastin current-current response.
 
-All current, Hamiltonian, Fermi-probability, frequency, and resolvent dependence is contained in
-the transition coefficients inherited from `finiteKuboBastinSpectralDirectionalCurrentTerm`. -/
+All current, Hamiltonian, pure-point probability, frequency, and resolvent dependence is contained
+in the finite spectral coefficient. Multiplication by the canonical density operator turns that
+coefficient into an endomorphism whose ordinary trace is unchanged. -/
 noncomputable def finiteKuboBastinDirectionalTraceCarrier
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
     FiniteLatticeHilbertFock Site →ₗ[ℂ] FiniteLatticeHilbertFock Site :=
-  ∑ mn : ι × ι,
-    finiteKuboBastinSpectralDirectionalCurrentTerm
-        system data geometry direction K q omega eta mn •
-      (purePointBasisProjector system data mn.1 :
-        FiniteLatticeHilbertFock Site →ₗ[ℂ] FiniteLatticeHilbertFock Site)
+  (∑ mn : ι × ι,
+      finiteKuboBastinSpectralDirectionalCurrentTerm
+        system data geometry direction K q omega eta mn) •
+    ((purePointDensityOperator system data).op :
+      FiniteLatticeHilbertFock Site →ₗ[ℂ] FiniteLatticeHilbertFock Site)
 
 /-- Expanding the ordinary trace carrier gives the finite retarded-resolvent spectral sum. -/
 theorem linearMap_trace_finiteKuboBastinDirectionalTraceCarrier
@@ -105,9 +74,10 @@ theorem linearMap_trace_finiteKuboBastinDirectionalTraceCarrier
       ∑ mn : ι × ι,
         finiteKuboBastinSpectralDirectionalCurrentTerm
           system data geometry direction K q omega eta mn := by
-  classical
   unfold finiteKuboBastinDirectionalTraceCarrier
-  simp [linearMap_trace_purePointBasisProjector]
+  rw [map_smul]
+  rw [DensityOperator.linearMap_trace_eq_one]
+  simp
 
 /-- Named ordinary finite-dimensional Kubo–Bastin conductivity.
 
