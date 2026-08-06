@@ -82,23 +82,38 @@ Schatten classes.
 
 ## Fredholm determinant
 
-Status: `stated` for an explicitly finite-dimensional compatibility slice; `idea` for a genuine
-infinite-dimensional determinant.
+Status: `stated` for a countable diagonal infinite-dimensional slice; `idea` for a determinant on
+general trace-class operators.
 
 The design gate is recorded in [the Fredholm determinant roadmap](fredholm-determinant.md). The first
-implementation issue is #659 and must reuse Mathlib's finite-dimensional
-`ContinuousLinearMap.det` on `1 + K` under explicit finite-dimensional hypotheses.
+implementation issue is #659. It starts with a countable Hilbert basis, an operator diagonal in that
+basis with coefficients `λ i`, and the explicit condition
 
-A genuine Fredholm determinant remains blocked on:
+```text
+Summable (fun i => ‖λ i‖).
+```
+
+The determinant is to be defined by the convergent infinite product
+
+```text
+∏' i, (1 + λ i).
+```
+
+This is already genuinely infinite-dimensional. `ContinuousLinearMap.det` is reserved for a later
+finite-dimensional compatibility theorem and must not be used as the infinite-dimensional
+definition.
+
+A determinant on arbitrary trace-class operators remains blocked on:
 
 - a non-self-adjoint trace-class ideal;
 - ideal norm and completeness;
 - a general trace agreeing with matrix and spectral traces on overlaps;
-- a convergent exterior-power, eigenvalue-product, or finite-rank approximation construction;
+- a convergent exterior-power, general eigenvalue-product, or finite-rank approximation
+  construction;
 - determinant identities on the correctly stated domain.
 
-No current theorem should use the finite-dimensional determinant as an implicit infinite-dimensional
-definition or claim trace-log identities without explicit convergence and logarithm-branch
+No current theorem should claim basis independence beyond proved reindexing or spectral-uniqueness
+results, or claim trace-log identities without explicit convergence and logarithm-branch
 hypotheses.
 
 ## Continuous functional calculus
@@ -141,9 +156,11 @@ These cannot be obtained by treating unbounded operators as bounded continuous m
 
 ## Remaining operator analysis
 
+- The countable diagonal infinite-dimensional Fredholm determinant slice in #659.
 - General trace-class and Schatten ideals for non-self-adjoint operators.
 - Product/ideal closure sufficient for a general trace `Tr(ρA)` in infinite dimensions.
-- The finite-dimensional Fredholm compatibility slice in #659.
-- General Fredholm determinants and logarithmic determinant expansions after the ideal prerequisites.
+- Extension from diagonal to normal trace-class spectral data.
+- General Fredholm determinants and logarithmic determinant expansions after the ideal
+  prerequisites.
 - Unbounded spectral and functional calculus with domain control.
 - Completed infinite-mode Fock representations and closability/self-adjointness results.
