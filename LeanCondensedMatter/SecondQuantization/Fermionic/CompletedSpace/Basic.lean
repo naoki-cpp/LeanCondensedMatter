@@ -27,6 +27,8 @@ here; those require separate boundedness or `LinearPMap` domain proofs.
 namespace SecondQuantization
 namespace Fermionic
 
+open scoped BigOperators ENNReal
+
 noncomputable section
 
 /-- The completed fermionic Fock space: square-summable amplitudes on finite occupation states. -/
@@ -65,8 +67,13 @@ theorem algebraicToCompleted_basisState (n : Occupation Mode) :
   classical
   apply lp.ext
   funext m
-  simp [algebraicToCompleted, basisState, Common.basisState, completedBasisState,
-    Finsupp.single_apply, lp.single_apply, eq_comm]
+  by_cases h : m = n
+  · subst m
+    simp [algebraicToCompleted, basisState, Common.basisState, completedBasisState,
+      Finsupp.single_apply, lp.single_apply]
+  · have hnm : n ≠ m := Ne.symm h
+    simp [algebraicToCompleted, basisState, Common.basisState, completedBasisState,
+      Finsupp.single_apply, lp.single_apply, h, hnm, Pi.single_eq_of_ne]
 
 /-- The algebraic-to-completed inclusion loses no finite-support vector. -/
 theorem algebraicToCompleted_injective :
@@ -138,7 +145,7 @@ theorem completedNumberOperator_basisState (i : Mode) (n : Occupation Mode) :
   apply lp.ext
   funext m
   by_cases hi : i ∈ n <;> by_cases hm : m = n <;>
-    simp [completedBasisState, completedNumberOperator_apply, hi, hm, lp.single_apply, eq_comm]
+    simp [completedBasisState, completedNumberOperator_apply, hi, hm, lp.single_apply]
 
 /-- The completed single-mode number operator agrees with the algebraic number operator on the
 whole finite-support core, not only on individual basis states. -/
@@ -151,9 +158,7 @@ theorem completedNumberOperator_comp_algebraicToCompleted (i : Mode) :
     (Finsupp.smul_single_one n c).symm
   rw [hc]
   simp only [LinearMap.comp_apply, map_smul]
-  rw [algebraicToCompleted_basisState, completedNumberOperator_basisState,
-    numberOperator_basisState]
-  split_ifs <;> simp
+  simp [numberOperator_basisState]
 
 end
 end Fermionic
