@@ -71,4 +71,5 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.Variational
 import LeanCondensedMatter.QuantumTheory.Gibbs.Equality
 import LeanCondensedMatter.QuantumTheory.Gibbs.Uniqueness
 import LeanCondensedMatter.QuantumTheory.Gibbs.MinimizerUniqueness
+import LeanCondensedMatter.Transport
 import LeanCondensedMatter.SecondQuantization
