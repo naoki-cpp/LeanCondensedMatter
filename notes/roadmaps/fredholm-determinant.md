@@ -11,7 +11,7 @@ infinite-dimensional.
 - The countable diagonal infinite-product slice is `proved` in
   `Analysis/Operator/Fredholm/Diagonal.lean`.
 - The zero set of the absolutely summable diagonal determinant is characterized by the presence of a
-  coefficient equal to `-1`.
+  coefficient equal to `-1` (#694).
 - Finite-dimensional agreement with Mathlib's ordinary determinant is `proved` in
   `Analysis/Operator/Fredholm/FiniteDimensional.lean`.
 - A general non-self-adjoint trace-class ideal is not implemented.
@@ -104,7 +104,7 @@ or operator. The operator theorems connect that coefficient-level definition to 
 existing `HilbertBasis.diagonalOp` construction without pretending that a general trace-class ideal
 already exists.
 
-## Zero and kernel boundary
+## Zero and kernel boundary (#694)
 
 For absolutely summable diagonal data,
 
