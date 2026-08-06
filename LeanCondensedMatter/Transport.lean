@@ -3,3 +3,4 @@ import LeanCondensedMatter.Transport.LinearResponse
 import LeanCondensedMatter.Transport.Resolvent
 import LeanCondensedMatter.Transport.ResolventEnergyDerivative
 import LeanCondensedMatter.Transport.StredaOperatorKernel
+import LeanCondensedMatter.Transport.StredaTraceKernel
