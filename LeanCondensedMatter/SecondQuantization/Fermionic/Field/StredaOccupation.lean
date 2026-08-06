@@ -141,6 +141,7 @@ theorem finiteKuboBastinSpectralDirectionalCurrentTerm_eq_occupationResolved
     finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
     finiteKuboBastinDirectionalTransitionFactor
   rw [interpolation.probabilityDifference_eq_integral system mn.1 mn.2]
+  ring
 
 variable [Fintype ι]
 
