@@ -54,7 +54,8 @@ theorem finiteDimensionalOperatorTrace_eq_sum_inner_purePointBasis
     (operator : H →ₗ[ℂ] H) data.basis.toOrthonormalBasis]
   apply Finset.sum_congr rfl
   intro m _
-  rfl
+  rw [show data.basis.toOrthonormalBasis m = data.basis m by
+    exact congrFun (HilbertBasis.coe_toOrthonormalBasis data.basis) m]
 
 /-- Matrix element of `left * diagonal * right` when the middle operator is diagonal in the
 supplied pure-point basis. -/
@@ -69,12 +70,15 @@ theorem inner_purePointBasis_mul_diagonal_mul
           inner ℂ (data.basis n) (right (data.basis m)) := by
   change inner ℂ (data.basis m)
     (left (diagonal (right (data.basis m)))) = _
+  have hb : ∀ n : ι, data.basis.toOrthonormalBasis n = data.basis n :=
+    fun n => congrFun (HilbertBasis.coe_toOrthonormalBasis data.basis) n
   have hrepr := data.basis.toOrthonormalBasis.sum_repr' (right (data.basis m))
   conv_lhs => rw [← hrepr]
-  simp only [map_sum, map_smul, hdiagonal, smul_smul, inner_sum, inner_smul_right]
+  simp only [map_sum, map_smul, inner_sum, inner_smul_right]
   apply Finset.sum_congr rfl
   intro n _
-  ring
+  rw [hb n, hdiagonal n, map_smul, inner_smul_right]
+  ring_nf
 
 /-- Matrix element of `left * middle * right * terminal` when both inserted operators are diagonal
 in the supplied pure-point basis. -/
