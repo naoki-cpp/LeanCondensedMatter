@@ -11,6 +11,18 @@ applies.
   non-self-adjoint trace-class operator, a full Schatten hierarchy, or all ideal/product closure
   theorems.
 
+- **The Hilbert–Schmidt API does not yet supply a general trace-class product ideal.**
+  The project proves basis independence, adjoint invariance, bounded-composition closure, and the
+  Hilbert–Schmidt pairing. It has not yet bundled arbitrary products of two Hilbert–Schmidt
+  operators as non-self-adjoint trace-class operators carrying a general trace.
+
+- **A finite-dimensional `det (1 + K)` theorem is not an infinite-dimensional Fredholm
+  determinant.** Mathlib's `ContinuousLinearMap.det` is the correct basis-independent determinant
+  for the finite-dimensional compatibility slice in #659. It must not be used through fallback
+  behavior or weakened hypotheses to claim a determinant for arbitrary operators on an
+  infinite-dimensional Hilbert space. General Fredholm theory still requires a non-self-adjoint
+  trace-class ideal, convergence, and determinant identities on the valid domain.
+
 - **Density-state expectations are more general than the available spectral trace of a product.**
   For a density operator `ρ` and bounded operator `A`, the product `ρ.op ∘L A` need not be
   self-adjoint. `DensityOperator.expectation` is therefore defined from `ρ`’s spectral decomposition.
