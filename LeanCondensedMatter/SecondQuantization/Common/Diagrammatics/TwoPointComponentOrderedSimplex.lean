@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoComponentOrderedSimplex
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentVertexProduct
 
 set_option linter.style.header false
@@ -7,11 +8,11 @@ set_option linter.style.header false
 # Ordered-simplex shuffles over two-point diagram interaction components
 
 The full components of a two-point diagram partition its interaction vertices, although the unique
-external component also contains the two distinguished external vertices.  This module therefore
+external component also contains the two distinguished external vertices. This module therefore
 uses the interaction part of every full component as its local ordered-simplex slot block.
 
 An order-preserving shuffle interleaves those local interaction slots into the ambient interaction
-slots.  The generic finite-family shuffle identity then identifies the sum of shuffled ambient
+slots. The generic finite-family shuffle identity then identifies the sum of shuffled ambient
 ordered-simplex integrals with the product of the component-local ordered-simplex integrals.
 -/
 
@@ -22,6 +23,8 @@ open intervalIntegral
 open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
+
+noncomputable section
 
 /-- Number of interaction-time slots belonging to one full component. -/
 abbrev TwoPointDiagram.interactionComponentSize {S : Finset (Fin N)}
@@ -49,16 +52,6 @@ theorem TwoPointDiagram.ComponentInteractionShuffle.ext {S : Finset (Fin N)}
   cases h
   rfl
 
-/-- Component-local interaction slots are canonically equivalent to the ambient interaction
-vertices.  Each component is ordered by the inherited order on `Fin N`. -/
-noncomputable def TwoPointDiagram.interactionComponentSlotEquiv {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
-    (Σ B : d.componentPartition.parts, Fin (d.interactionComponentSize B)) ≃ ↥S :=
-  (Equiv.sigmaCongrRight fun B =>
-      ((TwoPointDiagram.interactionPart
-        (B : Finset (TwoPointVertex S))).orderIsoOfFin rfl).toEquiv).trans
-    d.interactionVertexComponentEquiv.symm
-
 /-- The component-local interaction-slot family has the ambient number of interaction vertices. -/
 theorem TwoPointDiagram.sum_interactionComponentSize {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
@@ -66,13 +59,16 @@ theorem TwoPointDiagram.sum_interactionComponentSize {S : Finset (Fin N)}
   calc
     (∑ B : d.componentPartition.parts, d.interactionComponentSize B) =
         Fintype.card
-          (Σ B : d.componentPartition.parts, Fin (d.interactionComponentSize B)) := by
+          (Σ B : d.componentPartition.parts,
+            ↥(TwoPointDiagram.interactionPart
+              (B : Finset (TwoPointVertex S)))) := by
       simp [Fintype.card_sigma]
-    _ = Fintype.card ↥S := Fintype.card_congr d.interactionComponentSlotEquiv
-    _ = S.card := Fintype.card_coe _
+    _ = Fintype.card ↥S :=
+      Fintype.card_congr d.interactionVertexComponentEquiv.symm
+    _ = S.card := Fintype.card_coe S
 
 /-- Two-point component interaction shuffles form a finite type. -/
-noncomputable instance TwoPointDiagram.ComponentInteractionShuffle.instFintype
+instance TwoPointDiagram.ComponentInteractionShuffle.instFintype
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     Fintype d.ComponentInteractionShuffle :=
   Fintype.ofInjective
@@ -109,7 +105,7 @@ theorem TwoPointDiagram.continuous_interactionComponentTimeAssignment
 
 /-- Product of component-local interaction-time integrands after embedding their coordinates by a
 shuffle. -/
-noncomputable def TwoPointDiagram.interactionComponentShuffleIntegrand
+def TwoPointDiagram.interactionComponentShuffleIntegrand
     {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (shuffle : d.ComponentInteractionShuffle)
@@ -143,24 +139,23 @@ structure TwoPointDiagram.FiniteInteractionComponentPresentation
   /-- Equivalence between finite component indices and full component parts. -/
   partsEquiv : Fin k ≃ d.componentPartition.parts
 
+namespace TwoPointDiagram.FiniteInteractionComponentPresentation
+
 /-- The canonical finite presentation obtained by enumerating the component type. -/
-noncomputable def TwoPointDiagram.FiniteInteractionComponentPresentation.canonical
-    {S : Finset (Fin N)}
+def canonical {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     d.FiniteInteractionComponentPresentation
       (Fintype.card d.componentPartition.parts) where
   partsEquiv := (Fintype.equivFin d.componentPartition.parts).symm
 
 /-- Number of local interaction slots in the component with finite index `i`. -/
-abbrev TwoPointDiagram.FiniteInteractionComponentPresentation.size
-    {S : Finset (Fin N)}
+abbrev size {S : Finset (Fin N)}
     {d : TwoPointDiagram ExternalLabel InternalLabel N S} {k : ℕ}
     (p : d.FiniteInteractionComponentPresentation k) (i : Fin k) : ℕ :=
   d.interactionComponentSize (p.partsEquiv i)
 
 /-- Reindex finite-family local slots by the chosen component enumeration. -/
-noncomputable def TwoPointDiagram.FiniteInteractionComponentPresentation.localSlotEquiv
-    {S : Finset (Fin N)}
+def localSlotEquiv {S : Finset (Fin N)}
     {d : TwoPointDiagram ExternalLabel InternalLabel N S} {k : ℕ}
     (p : d.FiniteInteractionComponentPresentation k) :
     (Σ i : Fin k, Fin (p.size i)) ≃
@@ -169,17 +164,15 @@ noncomputable def TwoPointDiagram.FiniteInteractionComponentPresentation.localSl
     (β := fun B : d.componentPartition.parts => Fin (d.interactionComponentSize B))
 
 @[simp]
-theorem TwoPointDiagram.FiniteInteractionComponentPresentation.localSlotEquiv_apply
-    {S : Finset (Fin N)}
+theorem localSlotEquiv_apply {S : Finset (Fin N)}
     {d : TwoPointDiagram ExternalLabel InternalLabel N S} {k : ℕ}
     (p : d.FiniteInteractionComponentPresentation k)
     (i : Fin k) (j : Fin (p.size i)) :
     p.localSlotEquiv ⟨i, j⟩ = ⟨p.partsEquiv i, j⟩ := by
-  simp [TwoPointDiagram.FiniteInteractionComponentPresentation.localSlotEquiv]
+  simp [localSlotEquiv]
 
 @[simp]
-theorem TwoPointDiagram.FiniteInteractionComponentPresentation.localSlotEquiv_symm_apply
-    {S : Finset (Fin N)}
+theorem localSlotEquiv_symm_apply {S : Finset (Fin N)}
     {d : TwoPointDiagram ExternalLabel InternalLabel N S} {k : ℕ}
     (p : d.FiniteInteractionComponentPresentation k)
     (i : Fin k) (j : Fin (p.size i)) :
@@ -188,8 +181,7 @@ theorem TwoPointDiagram.FiniteInteractionComponentPresentation.localSlotEquiv_sy
   simp
 
 /-- The sum of the enumerated interaction-component sizes is the ambient interaction order. -/
-theorem TwoPointDiagram.FiniteInteractionComponentPresentation.totalCard
-    {S : Finset (Fin N)}
+theorem totalCard {S : Finset (Fin N)}
     {d : TwoPointDiagram ExternalLabel InternalLabel N S} {k : ℕ}
     (p : d.FiniteInteractionComponentPresentation k) :
     (∑ i, p.size i) = S.card := by
@@ -200,8 +192,7 @@ theorem TwoPointDiagram.FiniteInteractionComponentPresentation.totalCard
     _ = S.card := d.sum_interactionComponentSize
 
 /-- Transport a generic finite-family slot shuffle to a two-point component interaction shuffle. -/
-noncomputable def TwoPointDiagram.FiniteInteractionComponentPresentation.toComponentShuffle
-    {S : Finset (Fin N)}
+def toComponentShuffle {S : Finset (Fin N)}
     {d : TwoPointDiagram ExternalLabel InternalLabel N S} {k : ℕ}
     (p : d.FiniteInteractionComponentPresentation k)
     (shuffle : FamilySlotShuffle p.size) : d.ComponentInteractionShuffle where
@@ -219,8 +210,7 @@ noncomputable def TwoPointDiagram.FiniteInteractionComponentPresentation.toCompo
     exact (strictMono_finCongr p.totalCard) (shuffle.strictMono i hab)
 
 /-- Read a generic finite-family slot shuffle from a two-point component interaction shuffle. -/
-noncomputable def TwoPointDiagram.FiniteInteractionComponentPresentation.fromComponentShuffle
-    {S : Finset (Fin N)}
+def fromComponentShuffle {S : Finset (Fin N)}
     {d : TwoPointDiagram ExternalLabel InternalLabel N S} {k : ℕ}
     (p : d.FiniteInteractionComponentPresentation k)
     (shuffle : d.ComponentInteractionShuffle) : FamilySlotShuffle p.size where
@@ -239,8 +229,7 @@ noncomputable def TwoPointDiagram.FiniteInteractionComponentPresentation.fromCom
 
 /-- Generic finite-family slot shuffles and two-point component interaction shuffles are equivalent
 under a finite presentation. -/
-noncomputable def TwoPointDiagram.FiniteInteractionComponentPresentation.componentShuffleEquiv
-    {S : Finset (Fin N)}
+def componentShuffleEquiv {S : Finset (Fin N)}
     {d : TwoPointDiagram ExternalLabel InternalLabel N S} {k : ℕ}
     (p : d.FiniteInteractionComponentPresentation k) :
     FamilySlotShuffle p.size ≃ d.ComponentInteractionShuffle where
@@ -249,18 +238,15 @@ noncomputable def TwoPointDiagram.FiniteInteractionComponentPresentation.compone
   left_inv shuffle := by
     apply FamilySlotShuffle.ext
     ext x
-    simp [TwoPointDiagram.FiniteInteractionComponentPresentation.toComponentShuffle,
-      TwoPointDiagram.FiniteInteractionComponentPresentation.fromComponentShuffle]
+    simp [toComponentShuffle, fromComponentShuffle]
   right_inv shuffle := by
     apply TwoPointDiagram.ComponentInteractionShuffle.ext
     ext x
-    simp [TwoPointDiagram.FiniteInteractionComponentPresentation.toComponentShuffle,
-      TwoPointDiagram.FiniteInteractionComponentPresentation.fromComponentShuffle]
+    simp [toComponentShuffle, fromComponentShuffle]
 
 /-- The component-shuffle integrand transported from a generic finite-family shuffle is its family
 integrand, up to the global finite-dimension cast. -/
-theorem TwoPointDiagram.FiniteInteractionComponentPresentation.
-    interactionComponentShuffleIntegrand_toComponentShuffle
+theorem interactionComponentShuffleIntegrand_toComponentShuffle
     {S : Finset (Fin N)}
     {d : TwoPointDiagram ExternalLabel InternalLabel N S} {k : ℕ}
     (p : d.FiniteInteractionComponentPresentation k)
@@ -297,13 +283,11 @@ theorem TwoPointDiagram.FiniteInteractionComponentPresentation.
       apply congrArg (componentIntegrand (p.partsEquiv i))
       funext j
       simp [TwoPointDiagram.interactionComponentTimeAssignment,
-        TwoPointDiagram.FiniteInteractionComponentPresentation.toComponentShuffle,
-        FamilySlotShuffle.timeAssignment]
+        toComponentShuffle, FamilySlotShuffle.timeAssignment]
 
 /-- One transported component-shuffle ordered-simplex term is the corresponding generic family
 term. -/
-theorem TwoPointDiagram.FiniteInteractionComponentPresentation.
-    orderedSimplexIntegral_toComponentShuffle
+theorem orderedSimplexIntegral_toComponentShuffle
     {S : Finset (Fin N)}
     {d : TwoPointDiagram ExternalLabel InternalLabel N S} {k : ℕ}
     (p : d.FiniteInteractionComponentPresentation k)
@@ -335,8 +319,7 @@ theorem TwoPointDiagram.FiniteInteractionComponentPresentation.
 
 /-- Reindex the finite sum over two-point component interaction shuffles as a sum over generic
 finite-family shuffles. -/
-theorem TwoPointDiagram.FiniteInteractionComponentPresentation.
-    sum_componentShuffle_orderedSimplexIntegral
+theorem sum_componentShuffle_orderedSimplexIntegral
     {S : Finset (Fin N)}
     {d : TwoPointDiagram ExternalLabel InternalLabel N S} {k : ℕ}
     (p : d.FiniteInteractionComponentPresentation k) (β : ℝ)
@@ -356,6 +339,8 @@ theorem TwoPointDiagram.FiniteInteractionComponentPresentation.
       (d.interactionComponentShuffleIntegrand
         (p.toComponentShuffle shuffle) componentIntegrand) = _
   exact p.orderedSimplexIntegral_toComponentShuffle shuffle β componentIntegrand
+
+end TwoPointDiagram.FiniteInteractionComponentPresentation
 
 /-- Finite-family ordered-simplex shuffle product identity for the interaction parts of all full
 two-point components. -/
@@ -394,6 +379,8 @@ theorem TwoPointDiagram.sum_componentInteractionShuffle_orderedSimplexIntegral_e
       refine Fintype.prod_equiv p.partsEquiv _ _ ?_
       intro i
       rfl
+
+end
 
 end Common
 end SecondQuantization
