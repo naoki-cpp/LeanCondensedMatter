@@ -67,44 +67,11 @@ theorem configurationAdvancedGreen_eq_free_add_dyson
         ensemble.configurationAdvancedGreen energy broadening ω *
           (ensemble.impurityPotential ω).1 *
             ensemble.freeAdvancedGreen energy broadening := by
-  unfold configurationAdvancedGreen freeAdvancedGreen
-  let shift₀ : H →L[ℂ] H :=
-    algebraMap ℂ (H →L[ℂ] H) (advancedSpectralParameter energy broadening) -
-      ensemble.baseHamiltonian.1
-  let shiftω : H →L[ℂ] H :=
-    algebraMap ℂ (H →L[ℂ] H) (advancedSpectralParameter energy broadening) -
-      (ensemble.configurationHamiltonian ω).1
-  have hshift : shift₀ = shiftω + (ensemble.impurityPotential ω).1 := by
-    dsimp [shift₀, shiftω, FiniteDisorderEnsemble.configurationHamiltonian]
-    noncomm_ring
-  have hfree := advancedShift_mul_resolvent
-    ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2
-      energy broadening hbroadening
-  have hconfiguration := resolvent_mul_advancedShift
-    (ensemble.configurationHamiltonian ω).1
-    (ensemble.configurationHamiltonian ω).2
-      energy broadening hbroadening
-  change advancedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening = _
-  calc
-    advancedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening =
-        advancedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening *
-          shift₀ * advancedResolvent ensemble.baseHamiltonian.1 energy broadening := by
-      rw [← mul_assoc, hfree, mul_one]
-    _ = advancedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening *
-          (shiftω + (ensemble.impurityPotential ω).1) *
-            advancedResolvent ensemble.baseHamiltonian.1 energy broadening := by
-      rw [hshift]
-    _ = (advancedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening *
-            shiftω) * advancedResolvent ensemble.baseHamiltonian.1 energy broadening +
-        advancedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening *
-          (ensemble.impurityPotential ω).1 *
-            advancedResolvent ensemble.baseHamiltonian.1 energy broadening := by
-      noncomm_ring
-    _ = advancedResolvent ensemble.baseHamiltonian.1 energy broadening +
-        advancedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening *
-          (ensemble.impurityPotential ω).1 *
-            advancedResolvent ensemble.baseHamiltonian.1 energy broadening := by
-      rw [hconfiguration, one_mul]
+  have hretarded := congrArg star
+    (configurationRetardedGreen_eq_free_add_dyson
+      ensemble energy broadening hbroadening ω)
+  simpa [star_add, star_mul, star_configurationRetardedGreen,
+    star_freeRetardedGreen, (ensemble.impurityPotential ω).2.star_eq, mul_assoc] using hretarded
 
 /-- Exact second-order advanced Dyson expansion with the full configuration Green operator retained
 in the remainder. This remains an identity rather than a Born closure. -/
