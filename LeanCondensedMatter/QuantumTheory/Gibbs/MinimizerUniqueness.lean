@@ -14,14 +14,6 @@ open ContinuousLinearMap
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- Density operators are determined by their underlying continuous linear operators. -/
-@[ext]
-theorem DensityOperator.ext {ρ σ : DensityOperator H} (h : ρ.op = σ.op) : ρ = σ := by
-  cases ρ
-  cases σ
-  cases h
-  rfl
-
 /-- A density operator attaining the Gibbs Helmholtz lower bound is the canonical Gibbs state. -/
 theorem eq_gibbsState_of_helmholtzFreeEnergy_eq
     (ρ : DensityOperator H) (Hop : Observable H) (β : ℝ) (hβ : 0 < β)

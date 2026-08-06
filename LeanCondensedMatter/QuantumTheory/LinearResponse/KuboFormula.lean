@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.HermitianPerturbation
 import Mathlib.Analysis.Calculus.FDeriv.Comp
 import Mathlib.Analysis.Calculus.FDeriv.Linear
@@ -12,7 +13,7 @@ For the bounded time-dependent perturbation convention
 
 `H_λ(t) = H₀ + λ V(t)`,
 
-this module derives the perturbed expectation from an ordinary normalized expectation `ω`.  The
+this module derives the perturbed expectation from an ordinary normalized expectation `ω`. The
 interaction-picture observable evolution defines the pullback functional
 
 `ω_{λ,t}(A) = ω(U_{I,λ}(t)† A_I(t) U_{I,λ}(t))`.
@@ -301,21 +302,6 @@ theorem hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bou
     system expectation V A t hInt] at h
   exact h
 
-/-- A canonical density operator provides the ordinary normalized expectation used by the abstract
-Kubo formula. -/
-noncomputable def densityNormalizedExpectation
-    (ρ : DensityOperator H) : NormalizedExpectation H where
-  toContinuousLinearMap := ρ.expectation
-  map_one := by
-    change ρ.expectation (ContinuousLinearMap.id ℂ H) = 1
-    exact ρ.expectation_id
-
-@[simp]
-theorem densityNormalizedExpectation_apply
-    (ρ : DensityOperator H) (A : H →L[ℂ] H) :
-    densityNormalizedExpectation ρ A = ρ.expectation A :=
-  rfl
-
 /-- Density-operator specialization of the general bounded Kubo formula. -/
 theorem hasDerivAt_densityOperatorExpectation_zero_of_bound_kubo
     (ρ : DensityOperator H)
@@ -339,7 +325,7 @@ theorem hasDerivAt_densityOperatorExpectation_zero_of_bound_kubo
       0 := by
   simpa using
     (hasDerivAt_timeDependentPerturbedExpectationFunctional_apply_zero_of_bound_kubo
-      system (densityNormalizedExpectation ρ) hVself A hM hV ht hInt)
+      system ρ.toNormalizedExpectation hVself A hM hV ht hInt)
 
 end
 end LinearResponse
