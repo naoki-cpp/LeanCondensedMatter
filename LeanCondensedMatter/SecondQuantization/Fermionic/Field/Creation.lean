@@ -5,15 +5,15 @@ set_option linter.style.header false
 /-!
 # Basis-independent fermionic creation fields
 
-This module begins F2 of issue #524. Creation by a one-particle vector `f` is exterior
-multiplication by its canonical degree-one image:
+Creation by a one-particle vector `f` is left exterior multiplication by its canonical degree-one
+image:
 
 ```text
 a†(f) Ψ = f ∧ Ψ.
 ```
 
-The construction is basis-independent and uses only the complex vector-space structure of the
-one-particle space. Inner products enter only when the annihilation field is added as contraction.
+The construction uses only the complex vector-space structure of the one-particle space. The
+exterior-algebra relations give the creation-creation canonical anticommutation relations directly.
 -/
 
 namespace SecondQuantization

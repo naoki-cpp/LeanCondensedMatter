@@ -1,17 +1,17 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.OccupationEquivalence
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Creation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Annihilation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations
 import Mathlib.LinearAlgebra.ExteriorAlgebra.Basis
 
 set_option linter.style.header false
 
 /-!
-# Compatibility of occupation and exterior-field creation
+# Field operators under the occupation/exterior equivalence
 
-The occupation-subset Fock representation and the basis-independent exterior-algebra representation
-use the same ordered wedge convention. This module proves that the basis-induced equivalence
-intertwines the existing mode creation operator with exterior multiplication by the corresponding
-one-particle basis vector.
+For a linearly ordered one-particle basis, the basis-induced equivalence between occupation Fock
+space and exterior Fock space intertwines the corresponding creation and annihilation operators.
+Creation is exterior multiplication by a basis vector, while annihilation is contraction by the
+matching coordinate functional.
 -/
 
 namespace SecondQuantization
@@ -23,8 +23,7 @@ noncomputable section
 variable {Mode : Type*} [LinearOrder Mode]
 variable {𝓗₁ : Type*} [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
-/-- The canonical exterior basis is the ordered product of its one-particle basis vectors. -/
-theorem exteriorBasis_eq_sort_prod
+private theorem exteriorBasis_eq_sort_prod
     (b : Module.Basis Mode ℂ 𝓗₁) (n : Finset Mode) :
     b.ExteriorAlgebra n =
       ((n.sort (· ≤ ·)).map fun i => oneParticle 𝓗₁ (b i)).prod := by
@@ -59,9 +58,7 @@ theorem exteriorBasis_eq_sort_prod
       rw [Finset.listMap_orderEmbOfFin_finRange]
       rfl
 
-/-- A basis vector inserted before every occupied mode creates the new exterior-basis state with
-no permutation sign. -/
-theorem create_exteriorBasis_of_lt
+private theorem create_exteriorBasis_of_lt
     (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) (n : Finset Mode)
     (hi : ∀ x ∈ n, i < x) :
     create 𝓗₁ (b i) (b.ExteriorAlgebra n) =
@@ -77,16 +74,7 @@ theorem create_exteriorBasis_of_lt
     exteriorBasis_eq_sort_prod b (insert i n), hsort]
   simp only [List.map_cons, List.prod_cons]
 
-/-- A one-particle basis vector is the singleton exterior-basis vector. -/
-theorem oneParticle_basis_eq_exteriorBasis_singleton
-    (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) :
-    oneParticle 𝓗₁ (b i) = b.ExteriorAlgebra ({i} : Finset Mode) := by
-  have h := create_exteriorBasis_of_lt b i (∅ : Finset Mode) (by simp)
-  simpa [create_apply, exteriorBasis_eq_sort_prod] using h
-
-/-- Exterior multiplication by a basis vector has the occupation-sign action on exterior-basis
-vectors. -/
-theorem create_exteriorBasis
+private theorem create_exteriorBasis
     (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) (n : Finset Mode) :
     create 𝓗₁ (b i) (b.ExteriorAlgebra n) =
       if i ∈ n then 0
@@ -175,8 +163,7 @@ theorem create_exteriorBasis
           rw [haStep, fermionSign_insertOccupation_of_lt ha hgt]
           simp [insertOccupation, Finset.insert_comm]
 
-/-- The basis-induced occupation/exterior equivalence intertwines creation on basis states. -/
-theorem occupationEquiv_create_basisState
+private theorem occupationEquiv_create_basisState
     (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) (n : Occupation Mode) :
     occupationEquiv b (SecondQuantization.Fermionic.create i (basisState n)) =
       create 𝓗₁ (b i) (occupationEquiv b (basisState n)) := by
@@ -188,7 +175,8 @@ theorem occupationEquiv_create_basisState
       occupationEquiv_basisState]
     simpa [hi] using (create_exteriorBasis b i n).symm
 
-/-- The basis-induced equivalence intertwines the full creation operators. -/
+/-- The basis-induced equivalence intertwines occupation creation with exterior multiplication by
+the matching basis vector. -/
 theorem occupationEquiv_create
     (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) :
     (occupationEquiv b).toLinearMap.comp
@@ -205,6 +193,97 @@ theorem occupationEquiv_create
   rw [hsingle]
   simp only [map_smul, LinearMap.comp_apply]
   exact congrArg (fun Ψ => c • Ψ) (occupationEquiv_create_basisState b i n)
+
+private theorem eq_annihilate_of_vacuum_of_mixedCAR
+    (B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (i : Mode)
+    (hVac : B (basisState (∅ : Occupation Mode)) = 0)
+    (hCAR : ∀ (j : Mode) (n : Occupation Mode),
+      B (SecondQuantization.Fermionic.create j (basisState n)) +
+          SecondQuantization.Fermionic.create j (B (basisState n)) =
+        if i = j then basisState n else 0) :
+    B = SecondQuantization.Fermionic.annihilate i := by
+  apply linearMap_ext_basisState
+  intro n
+  induction n using Finset.induction with
+  | empty =>
+      simpa using hVac
+  | @insert j n hj ih =>
+      have hrecover :
+          basisState (insert j n) =
+            (fermionSign j n : ℂ) •
+              SecondQuantization.Fermionic.create j (basisState n) := by
+        rw [SecondQuantization.Fermionic.create_basisState_of_not_mem hj,
+          smul_smul, fermionSign_sq_complex, one_smul]
+        simp [insertOccupation]
+      rw [hrecover, map_smul, map_smul]
+      congr 1
+      have hB := hCAR j n
+      have hA := anticomm_annihilate_create_basisState i j n
+      rw [anticomm_apply] at hA
+      calc
+        B (SecondQuantization.Fermionic.create j (basisState n)) =
+            (if i = j then basisState n else 0) -
+              SecondQuantization.Fermionic.create j (B (basisState n)) := by
+          exact eq_sub_of_add_eq hB
+        _ = (if i = j then basisState n else 0) -
+              SecondQuantization.Fermionic.create j
+                (SecondQuantization.Fermionic.annihilate i (basisState n)) := by
+          rw [ih]
+        _ = SecondQuantization.Fermionic.annihilate i
+              (SecondQuantization.Fermionic.create j (basisState n)) := by
+          exact (eq_sub_of_add_eq hA).symm
+
+/-- Coordinate contraction transported to the occupation representation. -/
+noncomputable def occupationAnnihilateFromField
+    (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) :
+    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+  occupationConjugate b (annihilateDual 𝓗₁ (b.coord i))
+
+/-- Transported coordinate contraction is the occupation annihilation operator in the matching
+mode. -/
+theorem occupationAnnihilateFromField_eq_annihilate
+    (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) :
+    occupationAnnihilateFromField b i =
+      SecondQuantization.Fermionic.annihilate i := by
+  apply eq_annihilate_of_vacuum_of_mixedCAR
+  · apply (occupationEquiv b).injective
+    change
+      occupationEquiv b
+          (occupationConjugate b (annihilateDual 𝓗₁ (b.coord i))
+            (basisState (∅ : Occupation Mode))) =
+        occupationEquiv b 0
+    rw [occupationEquiv_occupationConjugate_apply, map_zero,
+      occupationEquiv_basisState, exteriorBasis_eq_sort_prod]
+    simpa [vacuum] using annihilateDual_vacuum 𝓗₁ (b.coord i)
+  · intro j n
+    apply (occupationEquiv b).injective
+    rw [map_add]
+    unfold occupationAnnihilateFromField
+    have hCreateBasis := occupationEquiv_create_basisState b j n
+    have hCreateGeneral := LinearMap.congr_fun (occupationEquiv_create b j)
+      (occupationConjugate b (annihilateDual 𝓗₁ (b.coord i)) (basisState n))
+    simp only [LinearMap.comp_apply] at hCreateGeneral
+    have hSecond :
+        occupationEquiv b
+            (SecondQuantization.Fermionic.create j
+              (occupationConjugate b (annihilateDual 𝓗₁ (b.coord i))
+                (basisState n))) =
+          create 𝓗₁ (b j)
+            (annihilateDual 𝓗₁ (b.coord i) (occupationEquiv b (basisState n))) := by
+      calc
+        _ = create 𝓗₁ (b j)
+              (occupationEquiv b
+                (occupationConjugate b (annihilateDual 𝓗₁ (b.coord i))
+                  (basisState n))) := hCreateGeneral
+        _ = _ := by rw [occupationEquiv_occupationConjugate_apply]
+    rw [occupationEquiv_occupationConjugate_apply]
+    rw [hCreateBasis]
+    rw [hSecond]
+    rw [annihilateDual_create_apply]
+    by_cases hij : i = j
+    · subst j
+      simp
+    · simp [hij]
 
 end
 end Field

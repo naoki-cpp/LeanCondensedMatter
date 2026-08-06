@@ -1,27 +1,19 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FockSpace
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Mode
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.FiniteParticleFock
 import Mathlib.LinearAlgebra.ExteriorAlgebra.Basis
 
 set_option linter.style.header false
 
 /-!
-# Occupation-basis equivalence for basis-independent fermionic Fock space
+# Occupation and exterior-algebra Fock-space equivalence
 
-This module closes the representation-comparison part of F2 in issue #524. Once a linearly ordered
-basis `b : Basis Mode ℂ 𝓗₁` is chosen for the one-particle space, mathlib supplies a basis
-`b.ExteriorAlgebra` of the full exterior algebra indexed by finite subsets of `Mode`.
+A linearly ordered basis `b : Module.Basis Mode ℂ 𝓗₁` identifies the occupation-subset Fock space
+with the algebraic exterior Fock space. The occupation basis state indexed by a finite subset is
+sent to the corresponding ordered exterior-basis vector.
 
-The existing occupation representation is exactly the free complex vector space on those finite
-subsets:
-
-```text
-FockSpace Mode = Finset Mode →₀ ℂ.
-```
-
-Therefore the inverse coordinate map of `b.ExteriorAlgebra` gives a canonical linear equivalence
-between the occupation-subset representation and the basis-independent exterior-algebra
-representation. No finite-dimensionality assumption is required; only the chosen basis and its
-linear order enter this comparison.
+The equivalence is algebraic and requires neither finite-dimensionality nor a Hilbert-space
+completion. `occupationConjugate` transports exterior-Fock endomorphisms into the occupation
+representation through this equivalence.
 -/
 
 namespace SecondQuantization
@@ -67,6 +59,27 @@ theorem occupationEquiv_symm_apply
     (b : Module.Basis Mode ℂ 𝓗₁) (Ψ : FiniteParticleFock 𝓗₁) :
     (occupationEquiv b).symm Ψ = (b.ExteriorAlgebra).repr Ψ :=
   rfl
+
+/-- Transport an exterior-Fock endomorphism into the occupation representation through a chosen
+one-particle basis. -/
+noncomputable def occupationConjugate
+    (b : Module.Basis Mode ℂ 𝓗₁)
+    (A : FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁) :
+    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+  (occupationEquiv b).symm.toLinearMap.comp
+    (A.comp (occupationEquiv b).toLinearMap)
+
+@[simp]
+theorem occupationEquiv_occupationConjugate_apply
+    (b : Module.Basis Mode ℂ 𝓗₁)
+    (A : FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁)
+    (Ψ : FockSpace Mode) :
+    occupationEquiv b (occupationConjugate b A Ψ) = A (occupationEquiv b Ψ) := by
+  change
+    occupationEquiv b
+        ((occupationEquiv b).symm (A (occupationEquiv b Ψ))) =
+      A (occupationEquiv b Ψ)
+  exact (occupationEquiv b).apply_symm_apply _
 
 end Field
 end Fermionic

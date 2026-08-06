@@ -6,21 +6,17 @@ set_option linter.style.header false
 /-!
 # Basis-independent finite-particle fermionic Fock space
 
-This module starts the field-theoretic line tracked by issue #524. For a complex one-particle
-space `𝓗₁`, the algebraic finite-particle fermionic Fock space is represented by the exterior
-algebra
+For a complex one-particle space `𝓗₁`, the algebraic finite-particle fermionic Fock space is the
+exterior algebra
 
 ```text
 Λ(𝓗₁) = ⨁ₙ^alg Λⁿ(𝓗₁).
 ```
 
-The construction is basis-independent and does not require `𝓗₁` to be finite-dimensional. At this
-layer only the complex vector-space structure is needed. An inner product and completeness belong
-to later modules that define smeared annihilation fields and analytic Hilbert-space realizations.
-
-This is deliberately separate from `Fermionic.FockSpace Mode`, which is the free vector space on
-finite occupation subsets of a chosen ordered mode type. A comparison between the two
-representations requires a chosen basis and is deferred until the field operators are in place.
+The construction is basis-independent and does not require finite-dimensionality. It is deliberately
+algebraic: it is not the completed Hilbert direct sum, and general second-quantized operators are not
+assumed bounded. The occupation-subset representation is related to this space only after choosing a
+linearly ordered one-particle basis.
 -/
 
 namespace SecondQuantization
