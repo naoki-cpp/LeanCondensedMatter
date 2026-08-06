@@ -8,6 +8,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal
@@ -24,8 +25,8 @@ This is the single public entry point for the second-quantization hierarchy.
 The implementation is owned by three explicit namespaces and directory trees:
 
 - `SecondQuantization.Common` for statistics-independent constructions;
-- `SecondQuantization.Fermionic` for fermionic algebra, fields, thermal theory, perturbation theory,
-  and diagrammatics;
+- `SecondQuantization.Fermionic` for fermionic algebra, completed-space analysis, fields, thermal
+  theory, perturbation theory, and diagrammatics;
 - `SecondQuantization.Bosonic` for the convergence-aware bosonic line.
 
 The former top-level import modules `SecondQuantization.Common`, `SecondQuantization.Fermionic`, and
