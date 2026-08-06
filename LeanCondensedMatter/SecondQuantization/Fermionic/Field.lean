@@ -32,6 +32,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaTraceReprese
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaSpectralEnergyIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StaticStredaWardBridge
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Validation.FiniteToys
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Validation.TwoLevelExplicit
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.TransportConductivityBridge
 
 set_option linter.style.header false
@@ -98,7 +99,8 @@ broadening. The static Ward bridge exposes the remaining model-specific Peierls 
 the current-current level, keeps contact and `V(-η)` explicit, and constructs the concrete Středa
 representation under that visible assumption. The finite-toy validation layer supplies a concrete
 degenerate two-level model, independent currents, zero-current and sign-reversal checks, and a
-Hermitian two-site dimer hopping model. The transport bridge reuses the general finite-volume
-system convention without importing the fermionic model into the dimension-independent transport
-layer.
+Hermitian two-site dimer hopping model. Its explicit-value extension evaluates the identity-current
+toy at `E = γ = 1`, providing a nonzero sign and trace-multiplicity check. The transport bridge
+reuses the general finite-volume system convention without importing the fermionic model into the
+dimension-independent transport layer.
 -/
