@@ -101,8 +101,7 @@ theorem configurationRetardedGreen_eq_free_add_dyson
     algebraMap ℂ (H →L[ℂ] H) (retardedSpectralParameter energy broadening) -
       (ensemble.configurationHamiltonian ω).1
   have hshift : shift₀ = shiftω + (ensemble.impurityPotential ω).1 := by
-    dsimp [shift₀, shiftω]
-    rw [ensemble.configurationHamiltonian_apply]
+    dsimp [shift₀, shiftω, FiniteDisorderEnsemble.configurationHamiltonian]
     noncomm_ring
   have hfree := resolvent_mul_retardedShift
     ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2
@@ -150,8 +149,8 @@ theorem configurationRetardedGreen_eq_secondOrder_add_exactRemainder
             ensemble.freeRetardedGreen energy broadening *
               (ensemble.impurityPotential ω).1 *
                 ensemble.configurationRetardedGreen energy broadening ω := by
-  have hdyson := ensemble.configurationRetardedGreen_eq_free_add_dyson
-    energy broadening hbroadening ω
+  have hdyson := configurationRetardedGreen_eq_free_add_dyson
+    ensemble energy broadening hbroadening ω
   calc
     ensemble.configurationRetardedGreen energy broadening ω =
         ensemble.freeRetardedGreen energy broadening +
@@ -165,8 +164,14 @@ theorem configurationRetardedGreen_eq_secondOrder_add_exactRemainder
                 ensemble.freeRetardedGreen energy broadening *
                   (ensemble.impurityPotential ω).1 *
                     ensemble.configurationRetardedGreen energy broadening ω) := by
-      rw [hdyson]
-    _ = _ := by noncomm_ring
+      exact congrArg
+        (fun green : H →L[ℂ] H =>
+          ensemble.freeRetardedGreen energy broadening +
+            ensemble.freeRetardedGreen energy broadening *
+              (ensemble.impurityPotential ω).1 * green)
+        hdyson
+    _ = _ := by
+      noncomm_ring
 
 /-- Explicit centered-disorder and covariance assumptions for a finite ensemble. The covariance is
 an operator-valued action on a supplied kernel; its exact finite second-moment realization is stored
@@ -181,17 +186,16 @@ structure FiniteDisorderMomentData where
         (ensemble.impurityPotential ω).1 * kernel *
           (ensemble.impurityPotential ω).1)
 
-variable (moments : FiniteDisorderMomentData ensemble)
-
 /-- The first-order averaged Dyson term vanishes exactly for centered disorder. -/
 theorem operatorAverage_firstOrderRetardedTerm_eq_zero
+    (moments : FiniteDisorderMomentData ensemble)
     (energy broadening : ℝ) :
     ensemble.operatorAverage (fun ω =>
       ensemble.freeRetardedGreen energy broadening *
         (ensemble.impurityPotential ω).1 *
           ensemble.freeRetardedGreen energy broadening) = 0 := by
-  rw [ensemble.operatorAverage_mul_left_right]
-  rw [moments.centered]
+  rw [operatorAverage_mul_left_right ensemble]
+  rw [FiniteDisorderMomentData.centered moments]
   simp
 
 /-- Exact finite average of the full second-order Dyson remainder. -/
@@ -207,6 +211,7 @@ noncomputable def exactSecondOrderRetardedRemainder
 /-- For centered disorder, the averaged exact resolvent is the clean resolvent plus the full exact
 second-order remainder. No Born closure has been made. -/
 theorem operatorAverage_configurationRetardedGreen_eq_free_add_exactRemainder
+    (moments : FiniteDisorderMomentData ensemble)
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
     ensemble.operatorAverage
         (fun ω => ensemble.configurationRetardedGreen energy broadening ω) =
@@ -227,15 +232,15 @@ theorem operatorAverage_configurationRetardedGreen_eq_free_add_exactRemainder
                 ensemble.configurationRetardedGreen energy broadening ω) := by
       apply congrArg ensemble.operatorAverage
       funext ω
-      exact ensemble.configurationRetardedGreen_eq_secondOrder_add_exactRemainder
-        energy broadening hbroadening ω
+      exact configurationRetardedGreen_eq_secondOrder_add_exactRemainder
+        ensemble energy broadening hbroadening ω
     _ = ensemble.operatorAverage (fun ω =>
           ensemble.freeRetardedGreen energy broadening +
             ensemble.freeRetardedGreen energy broadening *
               (ensemble.impurityPotential ω).1 *
                 ensemble.freeRetardedGreen energy broadening) +
         ensemble.exactSecondOrderRetardedRemainder energy broadening := by
-      rw [ensemble.operatorAverage_add]
+      rw [operatorAverage_add ensemble]
       rfl
     _ = (ensemble.operatorAverage
           (fun _ => ensemble.freeRetardedGreen energy broadening) +
@@ -244,57 +249,62 @@ theorem operatorAverage_configurationRetardedGreen_eq_free_add_exactRemainder
             (ensemble.impurityPotential ω).1 *
               ensemble.freeRetardedGreen energy broadening)) +
         ensemble.exactSecondOrderRetardedRemainder energy broadening := by
-      rw [ensemble.operatorAverage_add]
+      rw [operatorAverage_add ensemble]
     _ = ensemble.freeRetardedGreen energy broadening +
         ensemble.exactSecondOrderRetardedRemainder energy broadening := by
-      rw [ensemble.operatorAverage_const]
-      rw [moments.operatorAverage_firstOrderRetardedTerm_eq_zero]
+      rw [operatorAverage_const ensemble]
+      rw [operatorAverage_firstOrderRetardedTerm_eq_zero ensemble moments]
       simp
 
 /-- Weak-scattering Born self-energy: covariance acting on the clean retarded Green operator. The
 name records its approximation status; no dressed self-consistent propagator is inserted. -/
 noncomputable def bornRetardedSelfEnergy
+    (moments : FiniteDisorderMomentData ensemble)
     (energy broadening : ℝ) : H →L[ℂ] H :=
   moments.covariance (ensemble.freeRetardedGreen energy broadening)
 
 /-- The Born self-energy is the exact finite second moment with a clean internal propagator. -/
 theorem bornRetardedSelfEnergy_eq_secondMoment
+    (moments : FiniteDisorderMomentData ensemble)
     (energy broadening : ℝ) :
-    moments.bornRetardedSelfEnergy energy broadening =
+    bornRetardedSelfEnergy ensemble moments energy broadening =
       ensemble.operatorAverage (fun ω =>
         (ensemble.impurityPotential ω).1 *
           ensemble.freeRetardedGreen energy broadening *
             (ensemble.impurityPotential ω).1) :=
-  moments.covariance_eq_secondMoment
+  FiniteDisorderMomentData.covariance_eq_secondMoment moments
     (ensemble.freeRetardedGreen energy broadening)
 
 /-- Canonical second-order Born approximation to the averaged retarded resolvent. This definition
 is deliberately not an equality theorem for the exact average. -/
 noncomputable def bornRetardedResolventApproximation
+    (moments : FiniteDisorderMomentData ensemble)
     (energy broadening : ℝ) : H →L[ℂ] H :=
   ensemble.freeRetardedGreen energy broadening +
     ensemble.freeRetardedGreen energy broadening *
-      moments.bornRetardedSelfEnergy energy broadening *
+      bornRetardedSelfEnergy ensemble moments energy broadening *
         ensemble.freeRetardedGreen energy broadening
 
 /-- Exact error between the full averaged Dyson remainder and the Born second-order closure. -/
 noncomputable def bornRetardedClosureError
+    (moments : FiniteDisorderMomentData ensemble)
     (energy broadening : ℝ) : H →L[ℂ] H :=
   ensemble.exactSecondOrderRetardedRemainder energy broadening -
     ensemble.freeRetardedGreen energy broadening *
-      moments.bornRetardedSelfEnergy energy broadening *
+      bornRetardedSelfEnergy ensemble moments energy broadening *
         ensemble.freeRetardedGreen energy broadening
 
 /-- Exact decomposition of the averaged resolvent into the named Born approximation plus its
 closure error. This theorem does not assert that the error is small or zero. -/
 theorem operatorAverage_configurationRetardedGreen_eq_bornApproximation_add_error
+    (moments : FiniteDisorderMomentData ensemble)
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
     ensemble.operatorAverage
         (fun ω => ensemble.configurationRetardedGreen energy broadening ω) =
-      moments.bornRetardedResolventApproximation energy broadening +
-        moments.bornRetardedClosureError energy broadening := by
-  rw [moments.operatorAverage_configurationRetardedGreen_eq_free_add_exactRemainder
-    energy broadening hbroadening]
+      bornRetardedResolventApproximation ensemble moments energy broadening +
+        bornRetardedClosureError ensemble moments energy broadening := by
+  rw [operatorAverage_configurationRetardedGreen_eq_free_add_exactRemainder
+    ensemble moments energy broadening hbroadening]
   unfold bornRetardedResolventApproximation bornRetardedClosureError
   noncomm_ring
 
@@ -302,21 +312,23 @@ theorem operatorAverage_configurationRetardedGreen_eq_bornApproximation_add_erro
 equality statement. In weak-scattering applications this field represents the neglected higher
 order remainder; it is not derived in this module. -/
 structure RetardedBornClosureHypothesis
+    (moments : FiniteDisorderMomentData ensemble)
     (energy broadening : ℝ) : Prop where
   closureError_eq_zero :
-    moments.bornRetardedClosureError energy broadening = 0
+    bornRetardedClosureError ensemble moments energy broadening = 0
 
 /-- Equality with the Born approximation follows only after supplying the explicit closure
 hypothesis. -/
 theorem operatorAverage_configurationRetardedGreen_eq_bornApproximation
+    (moments : FiniteDisorderMomentData ensemble)
     (energy broadening : ℝ) (hbroadening : 0 < broadening)
-    (closure : RetardedBornClosureHypothesis moments energy broadening) :
+    (closure : RetardedBornClosureHypothesis ensemble moments energy broadening) :
     ensemble.operatorAverage
         (fun ω => ensemble.configurationRetardedGreen energy broadening ω) =
-      moments.bornRetardedResolventApproximation energy broadening := by
-  rw [moments.operatorAverage_configurationRetardedGreen_eq_bornApproximation_add_error
-    energy broadening hbroadening]
-  rw [closure.closureError_eq_zero, add_zero]
+      bornRetardedResolventApproximation ensemble moments energy broadening := by
+  rw [operatorAverage_configurationRetardedGreen_eq_bornApproximation_add_error
+    ensemble moments energy broadening hbroadening]
+  rw [RetardedBornClosureHypothesis.closureError_eq_zero closure, add_zero]
 
 end FiniteDisorderEnsemble
 
