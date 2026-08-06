@@ -36,5 +36,10 @@ def QuarticDiagram.IsConnected {S : Finset (Fin N)} (d : QuarticDiagram Label N 
 def ConnectedQuarticDiagram (Label : Type*) (N : ℕ) (S : Finset (Fin N)) : Type _ :=
   {d : QuarticDiagram Label N S // d.IsConnected}
 
+/-- Connected labelled quartic diagrams form a finite type when their labels do. -/
+noncomputable instance ConnectedQuarticDiagram.instFintype [Fintype Label]
+    {S : Finset (Fin N)} : Fintype (ConnectedQuarticDiagram Label N S) :=
+  Fintype.ofInjective (fun d => d.1) fun _ _ h => Subtype.ext h
+
 end Common
 end SecondQuantization
