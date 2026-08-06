@@ -21,6 +21,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.SpectralFrequencyR
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ConductivityNormalization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboGreenwood
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinSpectral
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinTrace
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.TransportConductivityBridge
 
 set_option linter.style.header false
@@ -61,6 +62,9 @@ its diagonal, degenerate, contact, and regulator conventions explicit, and expos
 to the later Kubo–Bastin resolvent rewrite. The finite Bastin spectral layer converts the switching
 rate to the energy broadening `ℏη`, proves the retarded resolvent action on the energy basis, and
 rewrites every transition and the full conductivity without changing the contact term. The
-transport bridge reuses the general finite-volume system convention without importing the
-fermionic model into the dimension-independent transport layer.
+ordinary-trace layer packages those finite resolvent coefficients into an energy-basis trace
+carrier, proves its spectral expansion, and identifies the resulting named finite-dimensional
+Kubo–Bastin conductivity with the upstream causal Kubo response. The transport bridge reuses the
+general finite-volume system convention without importing the fermionic model into the
+dimension-independent transport layer.
 -/
