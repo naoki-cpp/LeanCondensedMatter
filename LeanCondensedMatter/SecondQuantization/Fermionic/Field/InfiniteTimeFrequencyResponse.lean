@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StationaryFrequencyResponse
+import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability
 import Mathlib.MeasureTheory.Integral.IntegralEqImproper
 
 set_option linter.style.header false
@@ -14,8 +15,10 @@ module takes the first regulator limit under an explicit Bochner-integrability h
   ⟶ ∫_(0,∞) dτ exp ((-η + iω) τ) K(τ)
 ```
 
-as `T → +∞`. The switching rate and driving frequency remain fixed. No zero-switching,
-thermodynamic, or DC limit is taken or inferred.
+as `T → +∞`. For bounded observables, the general linear-response layer proves this integrability
+automatically whenever `η > 0`; the directional-current specialization therefore needs only
+stationarity and a strictly positive switching rate. Frequency, switching, volume, and DC limits
+remain separate and untaken.
 -/
 
 namespace SecondQuantization
@@ -23,6 +26,16 @@ namespace Fermionic
 namespace Field
 
 noncomputable section
+
+/-- The field-layer lag factor agrees with the general linear-response adiabatic phase. -/
+theorem adiabaticFrequencyFactor_eq_adiabaticFrequencyPhase
+    (ω η τ : ℝ) :
+    adiabaticFrequencyFactor ω η τ =
+      QuantumTheory.LinearResponse.adiabaticFrequencyPhase ω η τ := by
+  unfold adiabaticFrequencyFactor
+    QuantumTheory.LinearResponse.adiabaticFrequencyPhase
+  congr 2
+  ring
 
 /-- Explicit integrability hypothesis for the adiabatically weighted positive-lag kernel. -/
 def AdiabaticLagIntegrable (kernel : ℝ → ℂ) (ω η : ℝ) : Prop :=
@@ -47,7 +60,7 @@ theorem hasInfiniteObservationTimeLimit_finiteTimeAdiabaticTransform
     (MeasureTheory.intervalIntegral_tendsto_integral_Ioi
       (μ := MeasureTheory.volume)
       (f := fun τ : ℝ => adiabaticFrequencyFactor ω η τ * kernel τ)
-      (b := fun T : ℝ => T) (0 : ℝ) hInt tendsto_id)
+      (b := fun T : ℝ => T) (0 : ℝ) hInt Filter.tendsto_id)
 
 variable {Site E : Type*}
 variable [LinearOrder Site] [Fintype Site]
@@ -64,6 +77,38 @@ def StationaryDirectionalAdiabaticIntegrable
   AdiabaticLagIntegrable
     (stationaryDirectionalCurrentKernel
       system expectation geometry direction K q) ω η
+
+/-- For bounded directional currents, every strictly positive switching rate supplies the required
+positive-lag integrability automatically. -/
+theorem stationaryDirectionalAdiabaticIntegrable_of_pos
+    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
+      (FiniteLatticeHilbertFock Site))
+    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
+      (FiniteLatticeHilbertFock Site))
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (q ω η : ℝ) (hη : 0 < η) :
+    StationaryDirectionalAdiabaticIntegrable
+      system expectation geometry direction K q ω η := by
+  let J := boundedDirectionalCurrent geometry direction
+    (system.hbar : ℂ) (q : ℂ) K
+  have hglobal :=
+    QuantumTheory.LinearResponse.adiabaticIntegrable_of_pos
+      system expectation J J ω η hη
+  have hIoi : MeasureTheory.IntegrableOn
+      (QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand
+        system expectation J J ω η)
+      (Set.Ioi (0 : ℝ)) MeasureTheory.volume :=
+    hglobal.integrable.integrableOn
+  unfold StationaryDirectionalAdiabaticIntegrable AdiabaticLagIntegrable
+  apply hIoi.congr_fun
+  · intro τ hτ
+    have hτnonneg : 0 ≤ τ := le_of_lt hτ
+    rw [QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand]
+    rw [QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg
+      system expectation J J hτnonneg]
+    rw [← adiabaticFrequencyFactor_eq_adiabaticFrequencyPhase]
+    rfl
+  · exact Set.measurableSet_Ioi
 
 /-- Infinite-observation-time retarded coefficient in a stationary state. -/
 noncomputable def infiniteTimeAdiabaticDirectionalRetardedCoefficient
@@ -113,7 +158,7 @@ theorem hasInfiniteObservationTimeLimit_directionalRetarded_of_stationary
       system expectation geometry direction K q) ω η hInt
   unfold HasInfiniteObservationTimeLimit at h ⊢
   apply h.congr'
-  filter_upwards [eventually_ge_atTop (0 : ℝ)] with T hT
+  filter_upwards [Filter.eventually_ge_atTop (0 : ℝ)] with T hT
   exact
     (finiteTimeAdiabaticDirectionalRetardedCoefficient_eq_stationaryLag
       system expectation hstationary geometry direction K q ω η hT).symm
@@ -135,16 +180,71 @@ theorem hasInfiniteObservationTimeLimit_directional_of_stationary
         system expectation geometry direction K q ω η)
       (infiniteTimeAdiabaticDirectionalCoefficient
         system expectation geometry direction K q ω η) := by
+  let C : ℂ := expectation
+    (boundedDirectionalContact geometry direction
+      (system.hbar : ℂ) (q : ℂ) K)
   have h := hasInfiniteObservationTimeLimit_finiteTimeAdiabaticTransform
     (stationaryDirectionalCurrentKernel
       system expectation geometry direction K q) ω η hInt
   unfold HasInfiniteObservationTimeLimit at h ⊢
-  have hsum := h.add tendsto_const_nhds
-  apply hsum.congr'
-  filter_upwards [eventually_ge_atTop (0 : ℝ)] with T hT
-  exact
-    (finiteTimeAdiabaticDirectionalCoefficient_eq_stationaryLag
-      system expectation hstationary geometry direction K q ω η hT).symm
+  have hC : Filter.Tendsto (fun _ : ℝ => C) Filter.atTop (nhds C) :=
+    tendsto_const_nhds
+  have hsum := h.add hC
+  have htotal : Filter.Tendsto
+      (finiteTimeAdiabaticDirectionalCoefficient
+        system expectation geometry direction K q ω η)
+      Filter.atTop
+      (nhds
+        (infiniteTimeAdiabaticTransform
+            (stationaryDirectionalCurrentKernel
+              system expectation geometry direction K q) ω η + C)) := by
+    apply hsum.congr'
+    filter_upwards [Filter.eventually_ge_atTop (0 : ℝ)] with T hT
+    exact
+      (finiteTimeAdiabaticDirectionalCoefficient_eq_stationaryLag
+        system expectation hstationary geometry direction K q ω η hT).symm
+  simpa [infiniteTimeAdiabaticDirectionalCoefficient,
+    infiniteTimeAdiabaticDirectionalRetardedCoefficient, C] using htotal
+
+/-- At every strictly positive switching rate, stationarity alone gives the retarded
+observation-time limit. -/
+theorem hasInfiniteObservationTimeLimit_directionalRetarded_of_stationary_pos
+    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
+      (FiniteLatticeHilbertFock Site))
+    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
+      (FiniteLatticeHilbertFock Site))
+    (hstationary : QuantumTheory.LinearResponse.IsStationary system expectation)
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (q ω η : ℝ) (hη : 0 < η) :
+    HasInfiniteObservationTimeLimit
+      (finiteTimeAdiabaticDirectionalRetardedCoefficient
+        system expectation geometry direction K q ω η)
+      (infiniteTimeAdiabaticDirectionalRetardedCoefficient
+        system expectation geometry direction K q ω η) :=
+  hasInfiniteObservationTimeLimit_directionalRetarded_of_stationary
+    system expectation hstationary geometry direction K q ω η
+      (stationaryDirectionalAdiabaticIntegrable_of_pos
+        system expectation geometry direction K q ω η hη)
+
+/-- At every strictly positive switching rate, stationarity alone gives the full observation-time
+limit including the Peierls contact response. -/
+theorem hasInfiniteObservationTimeLimit_directional_of_stationary_pos
+    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
+      (FiniteLatticeHilbertFock Site))
+    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
+      (FiniteLatticeHilbertFock Site))
+    (hstationary : QuantumTheory.LinearResponse.IsStationary system expectation)
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (q ω η : ℝ) (hη : 0 < η) :
+    HasInfiniteObservationTimeLimit
+      (finiteTimeAdiabaticDirectionalCoefficient
+        system expectation geometry direction K q ω η)
+      (infiniteTimeAdiabaticDirectionalCoefficient
+        system expectation geometry direction K q ω η) :=
+  hasInfiniteObservationTimeLimit_directional_of_stationary
+    system expectation hstationary geometry direction K q ω η
+      (stationaryDirectionalAdiabaticIntegrable_of_pos
+        system expectation geometry direction K q ω η hη)
 
 end
 end Field
