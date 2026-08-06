@@ -56,7 +56,9 @@ theorem finiteDimensionalOperatorTrace_eq_sum_inner_purePointBasis
   intro m _
   rw [show data.basis.toOrthonormalBasis m = data.basis m by
     exact congrFun (HilbertBasis.coe_toOrthonormalBasis data.basis) m]
+  rfl
 
+omit [FiniteDimensional ℂ H] in
 /-- Matrix element of `left * diagonal * right` when the middle operator is diagonal in the
 supplied pure-point basis. -/
 theorem inner_purePointBasis_mul_diagonal_mul
@@ -80,6 +82,7 @@ theorem inner_purePointBasis_mul_diagonal_mul
   rw [hb n, hdiagonal n, map_smul, inner_smul_right]
   ring_nf
 
+omit [FiniteDimensional ℂ H] in
 /-- Matrix element of `left * middle * right * terminal` when both inserted operators are diagonal
 in the supplied pure-point basis. -/
 theorem inner_purePointBasis_mul_diagonal_mul_mul_diagonal
