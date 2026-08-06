@@ -47,7 +47,10 @@ theorem diagonalDet_eq_det_one_add_diagonalOp [Finite ι]
         Matrix.diagonal (fun i => 1 + coeff i) := by
     ext i j
     rw [LinearMap.toMatrix_apply, happly j]
-    simp [Matrix.diagonal_apply]
+    by_cases hij : i = j
+    · subst i
+      simp
+    · simp [Matrix.diagonal_apply, hij, Ne.symm hij]
   rw [hmatrix, Matrix.det_diagonal]
 
 end Fredholm
