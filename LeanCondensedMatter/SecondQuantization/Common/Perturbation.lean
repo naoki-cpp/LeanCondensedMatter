@@ -8,8 +8,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonV
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponential
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialIdentity
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonExponentialUniqueness
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansionVerification
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonTimeIndependent
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTimeIndependent
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonTraceSeries
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonTrace
 
@@ -21,6 +20,6 @@ set_option linter.style.header false
 Coefficientwise interval integration, its finite-dimensional continuous-operator realization,
 statistics-independent algebraic and continuous Dyson coefficients, factorial norm majorants,
 the norm-convergent analytic Dyson evolution, its Volterra equation and exact operator-exponential
-identity, its time-independent specialization, convergent finite trace series, and finite trace power
-series for endomorphisms on a finite configuration basis.
+identity, the algebraic and analytic time-independent specialization, convergent finite trace series,
+and finite trace power series for endomorphisms on a finite configuration basis.
 -/
