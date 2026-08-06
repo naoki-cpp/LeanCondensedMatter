@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGi
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint
 
 set_option linter.style.header false
+set_option linter.unusedFintypeInType false
 
 /-!
 # Normalized free-boson two-point Gibbs identity
@@ -35,7 +36,7 @@ theorem freeGibbsExpectation_annihilate_comp_create
     tsumTrace_imaginaryTimeEvolveFree_comp_annihilate_comp_create ε β hpos i j
   have hZ := freeGibbsPartition_ne_zero ε β hpos
   unfold freeGibbsExpectation
-  rw [mul_div_assoc]
+  rw [← mul_div_assoc]
   apply (div_eq_iff hZ).2
   simpa [freeGibbsPartition] using htrace
 
