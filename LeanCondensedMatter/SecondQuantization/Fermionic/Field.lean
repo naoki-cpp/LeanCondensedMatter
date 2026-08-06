@@ -24,6 +24,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinSpectral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinTrace
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaIntegration
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaOccupation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaCommonKernel
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.TransportConductivityBridge
 
 set_option linter.style.header false
@@ -72,7 +73,10 @@ hypotheses required for integration by parts, names the regularized surface and 
 and proves their sum without assigning a magnetic-derivative interpretation. The occupation layer
 then makes the first concrete spectral-to-energy bridge: a differentiable occupation is required to
 reproduce the discrete pure-point probabilities, and every transition difference is rewritten as
-an oriented integral of its energy derivative without yet claiming a common full-energy kernel.
-The transport bridge reuses the general finite-volume system convention without importing the
-fermionic model into the dimension-independent transport layer.
+an oriented integral of its energy derivative. The common-kernel layer localizes each transition
+to its oriented spectral interval, combines the finite family into one globally integrable
+piecewise energy kernel, and proves that its full-line integral is the current-current Bastin sum.
+It deliberately stops before treating that discontinuous kernel as a differentiable Středa
+primitive. The transport bridge reuses the general finite-volume system convention without
+importing the fermionic model into the dimension-independent transport layer.
 -/
