@@ -6,3 +6,4 @@ import LeanCondensedMatter.Transport.StredaOperatorKernel
 import LeanCondensedMatter.Transport.StredaTraceKernel
 import LeanCondensedMatter.Transport.FiniteDisorder
 import LeanCondensedMatter.Transport.FiniteDisorderBorn
+import LeanCondensedMatter.Transport.FiniteDisorderAdvancedBorn
