@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint
 
 set_option linter.style.header false
+set_option linter.unusedFintypeInType false
 
 /-!
 # Convergence-aware bosonic Gibbs functionals
@@ -87,16 +88,20 @@ noncomputable def freeGibbsDomain (ε : Mode → ℝ) (β : ℝ) :
     Submodule ℂ (FockSpace Mode →ₗ[ℂ] FockSpace Mode) where
   carrier := {A | freeGibbsSummable ε β A}
   zero_mem' := by
+    change freeGibbsSummable ε β
+      (0 : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
     unfold freeGibbsSummable
     simpa [LinearMap.comp_zero, Common.matrixCoeff] using
       (summable_zero : Summable (fun _ : Occupation Mode => (0 : ℂ)))
   add_mem' := by
     intro A B hA hB
+    change freeGibbsSummable ε β (A + B)
     unfold freeGibbsSummable at hA hB ⊢
     have h := hA.add hB
     simpa only [LinearMap.comp_add, Common.matrixCoeff_add] using h
   smul_mem' := by
     intro c A hA
+    change freeGibbsSummable ε β (c • A)
     unfold freeGibbsSummable at hA ⊢
     have h := hA.mul_left c
     simpa only [LinearMap.comp_smul, Common.matrixCoeff_smul] using h
@@ -120,13 +125,15 @@ theorem freeGibbsExpectation_add (ε : Mode → ℝ) (β : ℝ)
     (hA : freeGibbsSummable ε β A) (hB : freeGibbsSummable ε β B) :
     freeGibbsExpectation ε β (A + B) =
       freeGibbsExpectation ε β A + freeGibbsExpectation ε β B := by
-  rw [freeGibbsExpectation, LinearMap.comp_add, Common.tsumTrace_add hA hB, add_div]
+  unfold freeGibbsExpectation
+  rw [LinearMap.comp_add, Common.tsumTrace_add hA hB, add_div]
 
 /-- The normalized free Gibbs expectation is homogeneous on algebraic-Fock endomorphisms. -/
 theorem freeGibbsExpectation_smul (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     freeGibbsExpectation ε β (c • A) = c * freeGibbsExpectation ε β A := by
-  rw [freeGibbsExpectation, LinearMap.comp_smul, Common.tsumTrace_smul, mul_div_assoc]
+  unfold freeGibbsExpectation
+  rw [LinearMap.comp_smul, Common.tsumTrace_smul, mul_div_assoc]
 
 /-- The free Gibbs expectation as a linear map on the summable-operator submodule. -/
 noncomputable def freeGibbsExpectationLinear (ε : Mode → ℝ) (β : ℝ) :
