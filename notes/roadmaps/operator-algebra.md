@@ -1,8 +1,9 @@
 # Roadmap — Operator analysis (Track C)
 
 Track C owns dimension-independent analytic infrastructure used by quantum theory and second
-quantization. See [the project roadmap](../roadmap.md) and
-[the density-state architecture](../architecture/quantum-density-theory.md).
+quantization. See [the project roadmap](../roadmap.md),
+[the density-state architecture](../architecture/quantum-density-theory.md), and the
+[Fredholm determinant roadmap](fredholm-determinant.md).
 
 ## Infinite-sum infrastructure
 
@@ -61,13 +62,44 @@ from the state’s spectral decomposition and agrees with matrix trace in finite
 
 Status: `proved` for the current basic, inner-product, and trace modules.
 
-`Analysis/Operator/HilbertSchmidt/` provides the Hilbert–Schmidt condition and the associated
-inner-product/trace infrastructure needed by current operator calculations. It is a separate analytic
-layer and is not used as an alternative public density-state representation.
+`Analysis/Operator/HilbertSchmidt/` provides:
+
+- a basis-defined squared-norm summability predicate;
+- basis independence and the basis-independent `IsHilbertSchmidt` predicate;
+- adjoint invariance;
+- closure under bounded composition on either side;
+- the basis-independent Hilbert–Schmidt pairing `innerHS`;
+- comparison of `innerHS d 1 A` with `spectralTrace A` on the compact self-adjoint spectrally
+  summable overlap.
+
+This is a separate analytic layer and is not used as an alternative public density-state
+representation. It also does not yet package the product of two Hilbert–Schmidt operators as an
+arbitrary non-self-adjoint trace-class operator with a general trace.
 
 Remaining work, if required by a concrete theorem, includes a more complete ideal API, composition
 closure with broader trace-class operators, and systematic comparison with singular-value-based
 Schatten classes.
+
+## Fredholm determinant
+
+Status: `stated` for an explicitly finite-dimensional compatibility slice; `idea` for a genuine
+infinite-dimensional determinant.
+
+The design gate is recorded in [the Fredholm determinant roadmap](fredholm-determinant.md). The first
+implementation issue is #659 and must reuse Mathlib's finite-dimensional
+`ContinuousLinearMap.det` on `1 + K` under explicit finite-dimensional hypotheses.
+
+A genuine Fredholm determinant remains blocked on:
+
+- a non-self-adjoint trace-class ideal;
+- ideal norm and completeness;
+- a general trace agreeing with matrix and spectral traces on overlaps;
+- a convergent exterior-power, eigenvalue-product, or finite-rank approximation construction;
+- determinant identities on the correctly stated domain.
+
+No current theorem should use the finite-dimensional determinant as an implicit infinite-dimensional
+definition or claim trace-log identities without explicit convergence and logarithm-branch
+hypotheses.
 
 ## Continuous functional calculus
 
@@ -111,6 +143,7 @@ These cannot be obtained by treating unbounded operators as bounded continuous m
 
 - General trace-class and Schatten ideals for non-self-adjoint operators.
 - Product/ideal closure sufficient for a general trace `Tr(ρA)` in infinite dimensions.
-- Fredholm determinants and logarithmic determinant expansions.
+- The finite-dimensional Fredholm compatibility slice in #659.
+- General Fredholm determinants and logarithmic determinant expansions after the ideal prerequisites.
 - Unbounded spectral and functional calculus with domain control.
 - Completed infinite-mode Fock representations and closability/self-adjointness results.
