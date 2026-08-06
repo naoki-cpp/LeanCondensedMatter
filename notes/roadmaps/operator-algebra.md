@@ -82,26 +82,35 @@ Schatten classes.
 
 ## Fredholm determinant
 
-Status: `stated` for a countable diagonal infinite-dimensional slice; `idea` for a determinant on
+Status: `proved` for the countable diagonal infinite-dimensional slice; `idea` for a determinant on
 general trace-class operators.
 
-The design gate is recorded in [the Fredholm determinant roadmap](fredholm-determinant.md). The first
-implementation issue is #659. It starts with a countable Hilbert basis, an operator diagonal in that
-basis with coefficients `λ i`, and the explicit condition
+`Analysis/Operator/Fredholm/Diagonal.lean` defines
 
 ```text
-Summable (fun i => ‖λ i‖).
+Fredholm.diagonalDet coeff = ∏' i, (1 + coeff i)
 ```
 
-The determinant is to be defined by the convergent infinite product
+for explicit diagonal coefficient data. Under
 
 ```text
-∏' i, (1 + λ i).
+Summable (fun i => ‖coeff i‖),
 ```
 
-This is already genuinely infinite-dimensional. `ContinuousLinearMap.det` is reserved for a later
-finite-dimensional compatibility theorem and must not be used as the infinite-dimensional
-definition.
+Mathlib's infinite-product theorem proves the defining family is `Multipliable`. The current API
+also provides:
+
+- invariance under reindexing by an equivalence;
+- the zero-coefficient value;
+- finite-support and finite-index product formulas;
+- nonvanishing when every factor is nonzero;
+- the basis action of `1 + HilbertBasis.diagonalOp b coeff`;
+- a nonzero kernel vector when one coefficient equals `-1`.
+
+This is genuinely infinite-dimensional when the index type is infinite. It is explicitly tied to
+the supplied diagonal presentation. `ContinuousLinearMap.det` is not used as the
+infinite-dimensional definition and remains relevant only to a future finite-dimensional
+compatibility theorem.
 
 A determinant on arbitrary trace-class operators remains blocked on:
 
@@ -156,10 +165,10 @@ These cannot be obtained by treating unbounded operators as bounded continuous m
 
 ## Remaining operator analysis
 
-- The countable diagonal infinite-dimensional Fredholm determinant slice in #659.
 - General trace-class and Schatten ideals for non-self-adjoint operators.
 - Product/ideal closure sufficient for a general trace `Tr(ρA)` in infinite dimensions.
 - Extension from diagonal to normal trace-class spectral data.
+- Finite-dimensional determinant compatibility for the diagonal slice.
 - General Fredholm determinants and logarithmic determinant expansions after the ideal
   prerequisites.
 - Unbounded spectral and functional calculus with domain control.
