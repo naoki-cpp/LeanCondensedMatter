@@ -39,8 +39,8 @@ noncomputable def retardedAdvancedResolventDifference
 /-- Real-energy derivative of the retarded-minus-advanced resolvent difference. -/
 noncomputable def retardedAdvancedResolventDifferenceDerivative
     (hamiltonian : H →L[ℂ] H) (energy broadening : ℝ) : H →L[ℂ] H :=
-  -(retardedResolvent hamiltonian energy broadening) ^ 2 +
-    (advancedResolvent hamiltonian energy broadening) ^ 2
+  -(retardedResolvent hamiltonian energy broadening) ^ 2 -
+    (-(advancedResolvent hamiltonian energy broadening) ^ 2)
 
 /-- The operator factor multiplying the occupation derivative in the traditional
 Smrčka–Středa `I` contribution, before its overall scalar normalization. -/
@@ -55,8 +55,8 @@ noncomputable def smrckaStredaSurfaceFactor
 noncomputable def smrckaStredaSurfaceFactorDerivative
     (hamiltonian current₁ current₂ : H →L[ℂ] H)
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  (-(current₁ * (retardedResolvent hamiltonian energy broadening) ^ 2 * current₂) +
-      current₂ * (advancedResolvent hamiltonian energy broadening) ^ 2 * current₁) *
+  (current₁ * (-(retardedResolvent hamiltonian energy broadening) ^ 2) * current₂ -
+      current₂ * (-(advancedResolvent hamiltonian energy broadening) ^ 2) * current₁) *
       retardedAdvancedResolventDifference hamiltonian energy broadening +
     (current₁ * retardedResolvent hamiltonian energy broadening * current₂ -
       current₂ * advancedResolvent hamiltonian energy broadening * current₁) *
@@ -89,8 +89,8 @@ theorem hasDerivAt_retardedAdvancedResolventDifference
   change HasDerivAt
     ((fun x : ℝ => retardedResolvent hamiltonian x broadening) -
       fun x : ℝ => advancedResolvent hamiltonian x broadening)
-    (-(retardedResolvent hamiltonian energy broadening) ^ 2 +
-      (advancedResolvent hamiltonian energy broadening) ^ 2)
+    (-(retardedResolvent hamiltonian energy broadening) ^ 2 -
+      (-(advancedResolvent hamiltonian energy broadening) ^ 2))
     energy
   exact
     (hasDerivAt_retardedResolvent_energy
@@ -124,8 +124,8 @@ theorem hasDerivAt_smrckaStredaSurfaceFactor
       fun x : ℝ =>
         current₂ * advancedResolvent hamiltonian x broadening * current₁) *
       fun x : ℝ => retardedAdvancedResolventDifference hamiltonian x broadening)
-    ((-(current₁ * (retardedResolvent hamiltonian energy broadening) ^ 2 * current₂) +
-        current₂ * (advancedResolvent hamiltonian energy broadening) ^ 2 * current₁) *
+    ((current₁ * (-(retardedResolvent hamiltonian energy broadening) ^ 2) * current₂ -
+        current₂ * (-(advancedResolvent hamiltonian energy broadening) ^ 2) * current₁) *
         retardedAdvancedResolventDifference hamiltonian energy broadening +
       (current₁ * retardedResolvent hamiltonian energy broadening * current₂ -
         current₂ * advancedResolvent hamiltonian energy broadening * current₁) *
@@ -161,8 +161,8 @@ physical prefactor omitted. -/
 noncomputable def regularizedBastinOperatorIntegrand
     (hamiltonian current₁ current₂ : H →L[ℂ] H)
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  -((-(current₁ * (retardedResolvent hamiltonian energy broadening) ^ 2 * current₂) +
-      current₂ * (advancedResolvent hamiltonian energy broadening) ^ 2 * current₁) *
+  -((current₁ * (-(retardedResolvent hamiltonian energy broadening) ^ 2) * current₂ -
+      current₂ * (-(advancedResolvent hamiltonian energy broadening) ^ 2) * current₁) *
     retardedAdvancedResolventDifference hamiltonian energy broadening)
 
 /-- Finite-broadening residual after removing the derivative of the chosen surface primitive from
@@ -177,9 +177,9 @@ noncomputable def regularizedStredaResidualSeaOperatorKernel
 
 /-- Pointwise finite-broadening decomposition into the surface-primitive derivative and the
 residual sea kernel. -/
-omit [CompleteSpace H] in
 theorem regularizedBastinOperatorIntegrand_eq_surfaceDerivative_add_residualSea
-    (hamiltonian current₁ current₂ : H →L[ℂ] H)
+    {KSpace : Type*} [NormedAddCommGroup KSpace] [InnerProductSpace ℂ KSpace]
+    (hamiltonian current₁ current₂ : KSpace →L[ℂ] KSpace)
     (energy broadening : ℝ) :
     regularizedBastinOperatorIntegrand
         hamiltonian current₁ current₂ energy broadening =
