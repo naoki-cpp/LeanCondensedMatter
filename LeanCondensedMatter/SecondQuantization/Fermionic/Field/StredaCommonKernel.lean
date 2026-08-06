@@ -64,7 +64,6 @@ theorem integral_orientedIntervalIntegrand
 variable {Site E ι : Type*}
 variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
-variable [Fintype ι]
 
 /-- The globally defined energy integrand associated with one finite Bastin transition. -/
 noncomputable def finiteKuboBastinCommonTransitionIntegrand
@@ -75,10 +74,9 @@ noncomputable def finiteKuboBastinCommonTransitionIntegrand
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ)
     (mn : ι × ι) (energy : ℝ) : ℂ :=
   orientedIntervalIntegrand
-    (fun x =>
-      (-finiteKuboBastinDirectionalTransitionFactor
-        system data geometry direction K q omega eta mn) *
-        interpolation.occupationDerivative x)
+    ((-finiteKuboBastinDirectionalTransitionFactor
+      system data geometry direction K q omega eta mn) •
+      interpolation.occupationDerivative)
     (data.energy mn.2) (data.energy mn.1) energy
 
 /-- Every localized finite-transition integrand is globally integrable. -/
@@ -92,10 +90,9 @@ theorem integrable_finiteKuboBastinCommonTransitionIntegrand
     Integrable (finiteKuboBastinCommonTransitionIntegrand
       system data interpolation geometry direction K q omega eta mn) := by
   apply integrable_orientedIntervalIntegrand
-  simpa only [Pi.smul_apply, smul_eq_mul] using
-    (interpolation.occupationDerivative_intervalIntegrable mn.1 mn.2).smul
-      (-finiteKuboBastinDirectionalTransitionFactor
-        system data geometry direction K q omega eta mn)
+  exact (interpolation.occupationDerivative_intervalIntegrable mn.1 mn.2).smul
+    (-finiteKuboBastinDirectionalTransitionFactor
+      system data geometry direction K q omega eta mn)
 
 /-- Integrating one globally localized transition gives its occupation-resolved finite Bastin
 term. -/
@@ -114,22 +111,21 @@ theorem integral_finiteKuboBastinCommonTransitionIntegrand
   let factor := finiteKuboBastinDirectionalTransitionFactor
     system data geometry direction K q omega eta mn
   have hint : IntervalIntegrable
-      (fun x => (-factor) * interpolation.occupationDerivative x)
-      volume (data.energy mn.2) (data.energy mn.1) := by
-    simpa only [Pi.smul_apply, smul_eq_mul] using
-      (interpolation.occupationDerivative_intervalIntegrable mn.1 mn.2).smul (-factor)
+      ((-factor) • interpolation.occupationDerivative)
+      volume (data.energy mn.2) (data.energy mn.1) :=
+    (interpolation.occupationDerivative_intervalIntegrable mn.1 mn.2).smul (-factor)
   rw [show finiteKuboBastinCommonTransitionIntegrand
       system data interpolation geometry direction K q omega eta mn =
       orientedIntervalIntegrand
-        (fun x => (-factor) * interpolation.occupationDerivative x)
+        ((-factor) • interpolation.occupationDerivative)
         (data.energy mn.2) (data.energy mn.1) by rfl]
   rw [integral_orientedIntervalIntegrand _ _ _ hint]
-  rw [intervalIntegral.integral_const_mul]
+  rw [intervalIntegral.integral_smul]
   unfold finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
-  change (-factor) *
-      (∫ energy in data.energy mn.2..data.energy mn.1,
-        interpolation.occupationDerivative energy) = _
+  simp only [smul_eq_mul]
   ring
+
+variable [Fintype ι]
 
 /-- The single piecewise full-energy kernel obtained by summing all finite spectral transitions. -/
 noncomputable def finiteKuboBastinCommonEnergyKernel
@@ -153,7 +149,7 @@ theorem integrable_finiteKuboBastinCommonEnergyKernel
     Integrable (finiteKuboBastinCommonEnergyKernel
       system data interpolation geometry direction K q omega eta) := by
   unfold finiteKuboBastinCommonEnergyKernel
-  apply integrable_finset_sum
+  apply integrable_finsetSum
   intro mn _
   exact integrable_finiteKuboBastinCommonTransitionIntegrand
     system data interpolation geometry direction K q omega eta mn
