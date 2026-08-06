@@ -27,7 +27,7 @@ here; those require separate boundedness or `LinearPMap` domain proofs.
 namespace SecondQuantization
 namespace Fermionic
 
-open scoped BigOperators ENNReal
+open scoped ENNReal
 
 noncomputable section
 
@@ -92,8 +92,8 @@ theorem algebraicToCompleted_denseRange :
   refine mem_closure_of_tendsto (lp.hasSum_single (p := (2 : ℝ≥0∞)) (by norm_num) ψ)
     (Eventually.of_forall ?_)
   intro s
-  refine ⟨∑ n in s, ψ n • basisState n, ?_⟩
-  simp [map_sum, algebraicToCompleted_basisState, completedBasisState]
+  refine ⟨s.sum (fun n => ψ n • basisState n), ?_⟩
+  simp [algebraicToCompleted_basisState, completedBasisState]
 
 variable [LinearOrder Mode]
 
@@ -158,7 +158,8 @@ theorem completedNumberOperator_comp_algebraicToCompleted (i : Mode) :
     (Finsupp.smul_single_one n c).symm
   rw [hc]
   simp only [LinearMap.comp_apply, map_smul]
-  simp [numberOperator_basisState]
+  by_cases hi : i ∈ n <;>
+    simp [numberOperator_basisState, hi]
 
 end
 end Fermionic
