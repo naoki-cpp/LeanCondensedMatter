@@ -30,17 +30,24 @@ noncomputable section
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- Data defining bounded free quantum dynamics with the explicit convention `ℏ > 0`. -/
+/-- Data defining bounded free quantum dynamics with the explicit convention `ℏ > 0`.
+
+The Hamiltonian is stored in the canonical physical type `Observable H`; self-adjointness is not
+carried as a parallel proof field. -/
 structure BoundedFreeSystem (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
     [CompleteSpace H] where
   /-- The bounded self-adjoint free Hamiltonian. -/
-  hamiltonian : H →L[ℂ] H
-  hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian
+  hamiltonian : Observable H
   /-- The reduced Planck constant used to scale time evolution. -/
   hbar : ℝ
   hbar_pos : 0 < hbar
 
 variable (system : BoundedFreeSystem H)
+
+/-- Self-adjointness of the free Hamiltonian, exposed from its canonical observable data. -/
+theorem BoundedFreeSystem.hamiltonian_selfAdjoint :
+    IsSelfAdjoint system.hamiltonian.1 :=
+  system.hamiltonian.2
 
 /-- Positivity of `ℏ` implies that it is nonzero. -/
 theorem BoundedFreeSystem.hbar_ne_zero : system.hbar ≠ 0 :=
@@ -48,7 +55,7 @@ theorem BoundedFreeSystem.hbar_ne_zero : system.hbar ≠ 0 :=
 
 /-- The bounded Schrödinger generator `-(i/ℏ) H₀`. -/
 noncomputable def schrodingerGenerator : H →L[ℂ] H :=
-  (-(Complex.I / (system.hbar : ℂ))) • system.hamiltonian
+  (-(Complex.I / (system.hbar : ℂ))) • system.hamiltonian.1
 
 /-- The generator scaled by a real time parameter. -/
 noncomputable def timeScaledGenerator (t : ℝ) : H →L[ℂ] H :=

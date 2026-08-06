@@ -79,7 +79,7 @@ theorem hasDerivAt_evolveState_val (ψ : State H) (t : ℝ) :
 theorem schrodingerEquation (ψ : State H) (t : ℝ) :
     HasDerivAt (fun s : ℝ => (evolveState system ψ s).1)
       ((-(Complex.I / (system.hbar : ℂ))) •
-        system.hamiltonian ((evolveState system ψ t).1)) t := by
+        system.hamiltonian.1 ((evolveState system ψ t).1)) t := by
   simpa [schrodingerGenerator, smul_apply] using
     hasDerivAt_evolveState_val system ψ t
 
@@ -119,15 +119,15 @@ theorem hasDerivAt_heisenbergEvolution_generator
 theorem heisenbergEquation (A : H →L[ℂ] H) (t : ℝ) :
     HasDerivAt (heisenbergEvolution system A)
       ((Complex.I / (system.hbar : ℂ)) •
-        (system.hamiltonian * heisenbergEvolution system A t -
-          heisenbergEvolution system A t * system.hamiltonian)) t := by
+        (system.hamiltonian.1 * heisenbergEvolution system A t -
+          heisenbergEvolution system A t * system.hamiltonian.1)) t := by
   have h := hasDerivAt_heisenbergEvolution_generator system A t
   have hderiv :
       heisenbergEvolution system A t * schrodingerGenerator system -
           schrodingerGenerator system * heisenbergEvolution system A t =
         (Complex.I / (system.hbar : ℂ)) •
-          (system.hamiltonian * heisenbergEvolution system A t -
-            heisenbergEvolution system A t * system.hamiltonian) := by
+          (system.hamiltonian.1 * heisenbergEvolution system A t -
+            heisenbergEvolution system A t * system.hamiltonian.1) := by
     rw [schrodingerGenerator]
     simp only [mul_smul_comm, smul_mul_assoc]
     module
@@ -172,15 +172,15 @@ theorem hasDerivAt_evolveDensityOperator_op_generator
 theorem vonNeumannEquation (ρ : DensityOperator H) (t : ℝ) :
     HasDerivAt (fun s : ℝ => (evolveDensityOperator system ρ s).op)
       ((-(Complex.I / (system.hbar : ℂ))) •
-        (system.hamiltonian * (evolveDensityOperator system ρ t).op -
-          (evolveDensityOperator system ρ t).op * system.hamiltonian)) t := by
+        (system.hamiltonian.1 * (evolveDensityOperator system ρ t).op -
+          (evolveDensityOperator system ρ t).op * system.hamiltonian.1)) t := by
   have h := hasDerivAt_evolveDensityOperator_op_generator system ρ t
   have hderiv :
       schrodingerGenerator system * (evolveDensityOperator system ρ t).op -
           (evolveDensityOperator system ρ t).op * schrodingerGenerator system =
         (-(Complex.I / (system.hbar : ℂ))) •
-          (system.hamiltonian * (evolveDensityOperator system ρ t).op -
-            (evolveDensityOperator system ρ t).op * system.hamiltonian) := by
+          (system.hamiltonian.1 * (evolveDensityOperator system ρ t).op -
+            (evolveDensityOperator system ρ t).op * system.hamiltonian.1) := by
     rw [schrodingerGenerator]
     simp only [mul_smul_comm, smul_mul_assoc]
     module
