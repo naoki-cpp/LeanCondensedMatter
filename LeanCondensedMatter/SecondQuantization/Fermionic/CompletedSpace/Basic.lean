@@ -42,19 +42,6 @@ noncomputable def completedBasisState (n : Occupation Mode) : CompletedFockSpace
   classical
   exact lp.single 2 n 1
 
-/-- Scalar multiplication of a completed occupation-basis vector is the corresponding `lp.single`. -/
-@[simp]
-theorem smul_completedBasisState (c : ℂ) (n : Occupation Mode) :
-    c • completedBasisState n = lp.single 2 n c := by
-  classical
-  apply lp.ext
-  funext m
-  by_cases h : m = n
-  · subst m
-    simp [completedBasisState, lp.single_apply]
-  · have hnm : n ≠ m := Ne.symm h
-    simp [completedBasisState, lp.single_apply, h, hnm, Pi.single_eq_of_ne]
-
 /-- The coordinate-preserving inclusion of algebraic fermionic Fock space into its `ℓ²` completion. -/
 noncomputable def algebraicToCompleted :
     FockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode where
@@ -106,7 +93,17 @@ theorem algebraicToCompleted_denseRange :
   refine mem_closure_of_tendsto (lp.hasSum_single (p := (2 : ℝ≥0∞)) (by norm_num) ψ) ?_
   filter_upwards [] with s
   refine ⟨s.sum (fun n => ψ n • basisState n), ?_⟩
-  simp [algebraicToCompleted_basisState]
+  rw [map_sum]
+  apply Finset.sum_congr rfl
+  intro n _hn
+  rw [map_smul, algebraicToCompleted_basisState]
+  apply lp.ext
+  funext m
+  by_cases h : m = n
+  · subst m
+    simp [completedBasisState, lp.single_apply]
+  · have hnm : n ≠ m := Ne.symm h
+    simp [completedBasisState, lp.single_apply, h, hnm, Pi.single_eq_of_ne]
 
 variable [LinearOrder Mode]
 
