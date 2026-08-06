@@ -32,14 +32,16 @@ theorem hasDerivAt_retardedSpectralParameter_energy
     (energy broadening : ℝ) :
     HasDerivAt (fun x : ℝ => retardedSpectralParameter x broadening)
       (1 : ℂ) energy := by
-  fun_prop
+  simpa [retardedSpectralParameter] using
+    (Complex.ofRealCLM.hasDerivAt.add_const ((broadening : ℂ) * Complex.I))
 
 /-- At fixed broadening, the advanced spectral parameter has real-energy derivative one. -/
 theorem hasDerivAt_advancedSpectralParameter_energy
     (energy broadening : ℝ) :
     HasDerivAt (fun x : ℝ => advancedSpectralParameter x broadening)
       (1 : ℂ) energy := by
-  fun_prop
+  simpa [advancedSpectralParameter, sub_eq_add_neg] using
+    (Complex.ofRealCLM.hasDerivAt.add_const (-((broadening : ℂ) * Complex.I)))
 
 /-- The retarded resolvent differentiated along the real-energy axis is `-(Gᴿ)^2`. -/
 theorem hasDerivAt_retardedResolvent_energy
@@ -47,9 +49,16 @@ theorem hasDerivAt_retardedResolvent_energy
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
     HasDerivAt (fun x : ℝ => retardedResolvent hamiltonian x broadening)
       (-(retardedResolvent hamiltonian energy broadening) ^ 2) energy := by
-  simpa [retardedResolvent] using
-    (hasDerivAt_resolvent_retarded hamiltonian hself energy broadening hbroadening).comp
-      energy (hasDerivAt_retardedSpectralParameter_energy energy broadening)
+  have houter : HasFDerivAt (resolvent hamiltonian)
+      ((ContinuousLinearMap.smulRight 1
+        (-(retardedResolvent hamiltonian energy broadening) ^ 2) :
+          ℂ →L[ℂ] (H →L[ℂ] H)).restrictScalars ℝ)
+      (retardedSpectralParameter energy broadening) :=
+    (hasDerivAt_resolvent_retarded hamiltonian hself energy broadening hbroadening).hasFDerivAt
+      |>.restrictScalars ℝ
+  have hinner :=
+    (hasDerivAt_retardedSpectralParameter_energy energy broadening).hasFDerivAt
+  simpa [retardedResolvent] using (houter.comp energy hinner).hasDerivAt
 
 /-- The advanced resolvent differentiated along the real-energy axis is `-(Gᴬ)^2`. -/
 theorem hasDerivAt_advancedResolvent_energy
@@ -57,9 +66,16 @@ theorem hasDerivAt_advancedResolvent_energy
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
     HasDerivAt (fun x : ℝ => advancedResolvent hamiltonian x broadening)
       (-(advancedResolvent hamiltonian energy broadening) ^ 2) energy := by
-  simpa [advancedResolvent] using
-    (hasDerivAt_resolvent_advanced hamiltonian hself energy broadening hbroadening).comp
-      energy (hasDerivAt_advancedSpectralParameter_energy energy broadening)
+  have houter : HasFDerivAt (resolvent hamiltonian)
+      ((ContinuousLinearMap.smulRight 1
+        (-(advancedResolvent hamiltonian energy broadening) ^ 2) :
+          ℂ →L[ℂ] (H →L[ℂ] H)).restrictScalars ℝ)
+      (advancedSpectralParameter energy broadening) :=
+    (hasDerivAt_resolvent_advanced hamiltonian hself energy broadening hbroadening).hasFDerivAt
+      |>.restrictScalars ℝ
+  have hinner :=
+    (hasDerivAt_advancedSpectralParameter_energy energy broadening).hasFDerivAt
+  simpa [advancedResolvent] using (houter.comp energy hinner).hasDerivAt
 
 namespace BoundedSystem
 
@@ -68,18 +84,22 @@ theorem hasDerivAt_retardedGreen_energy
     (system : BoundedSystem H) (energy : ℝ) :
     HasDerivAt system.retardedGreen
       (-(system.retardedGreen energy) ^ 2) energy := by
-  simpa [retardedGreen] using
-    hasDerivAt_retardedResolvent_energy system.hamiltonian.1 system.hamiltonian.2
-      energy system.broadening system.broadening_pos
+  change HasDerivAt
+    (fun x : ℝ => retardedResolvent system.hamiltonian.1 x system.broadening)
+    (-(retardedResolvent system.hamiltonian.1 energy system.broadening) ^ 2) energy
+  exact hasDerivAt_retardedResolvent_energy system.hamiltonian.1 system.hamiltonian.2
+    energy system.broadening system.broadening_pos
 
 /-- System-level real-energy derivative of the stored-broadening advanced Green operator. -/
 theorem hasDerivAt_advancedGreen_energy
     (system : BoundedSystem H) (energy : ℝ) :
     HasDerivAt system.advancedGreen
       (-(system.advancedGreen energy) ^ 2) energy := by
-  simpa [advancedGreen] using
-    hasDerivAt_advancedResolvent_energy system.hamiltonian.1 system.hamiltonian.2
-      energy system.broadening system.broadening_pos
+  change HasDerivAt
+    (fun x : ℝ => advancedResolvent system.hamiltonian.1 x system.broadening)
+    (-(advancedResolvent system.hamiltonian.1 energy system.broadening) ^ 2) energy
+  exact hasDerivAt_advancedResolvent_energy system.hamiltonian.1 system.hamiltonian.2
+    energy system.broadening system.broadening_pos
 
 end BoundedSystem
 
