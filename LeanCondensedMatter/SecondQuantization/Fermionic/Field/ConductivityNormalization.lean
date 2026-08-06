@@ -143,13 +143,22 @@ theorem hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_po
   have hlimit := hasInfiniteObservationTimeLimit_directional_of_stationary_pos
     system expectation hstationary geometry direction K q ω η hη
   unfold HasInfiniteObservationTimeLimit at hlimit ⊢
-  let c : ℂ := finiteVolumeConductivityNormalization convention ω η
-  have hc : Filter.Tendsto (fun _ : ℝ => c) Filter.atTop (nhds c) :=
-    tendsto_const_nhds
-  have hmul := hlimit.mul hc
-  simpa [finiteTimeAdiabaticDirectionalConductivity,
-    infiniteTimeAdiabaticDirectionalConductivity,
-    finiteVolumeConductivityFromVectorPotential, c] using hmul
+  change Filter.Tendsto
+    (fun T : ℝ =>
+      finiteTimeAdiabaticDirectionalCoefficient
+          system expectation geometry direction K q ω η T *
+        finiteVolumeConductivityNormalization convention ω η)
+    Filter.atTop
+    (nhds
+      (infiniteTimeAdiabaticDirectionalCoefficient
+          system expectation geometry direction K q ω η *
+        finiteVolumeConductivityNormalization convention ω η))
+  exact hlimit.mul
+    (tendsto_const_nhds :
+      Filter.Tendsto
+        (fun _ : ℝ => finiteVolumeConductivityNormalization convention ω η)
+        Filter.atTop
+        (nhds (finiteVolumeConductivityNormalization convention ω η)))
 
 variable {ι : Type*}
 
