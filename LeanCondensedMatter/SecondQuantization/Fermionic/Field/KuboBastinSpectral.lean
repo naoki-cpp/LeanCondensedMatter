@@ -70,7 +70,6 @@ theorem lehmannDenominator_eq_retardedSpectralShift
   · simp [lehmannDenominator, retardedSpectralParameter,
       kuboBastinRetardedEnergy, kuboBastinEnergyBroadening]
     field_simp [hhbar]
-    ring
   · simp [lehmannDenominator, retardedSpectralParameter,
       kuboBastinRetardedEnergy, kuboBastinEnergyBroadening]
     field_simp [hhbar]
