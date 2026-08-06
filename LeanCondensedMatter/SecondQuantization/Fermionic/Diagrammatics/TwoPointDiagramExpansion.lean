@@ -11,6 +11,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedVacuumEventBlocks
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedVacuumEventBlockOrder
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentCrossingEven
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairingValue
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DysonCoefficient
 
@@ -24,7 +25,7 @@ external-leg Wick diagrams, ordering inside mixed event blocks and their standar
 restriction of mixed-order positions, partners, and normalized pairs to full components,
 factorization of mixed-time contraction products, decomposition of mixed crossing counts, reduction
 of their parity to complete component-position inversions and concrete vacuum four-leg event blocks,
-unconditional component factorization of mixed pairing weights, fixed-time diagram amplitudes, and
-the ordered-simplex perturbative coefficient for the imaginary-time two-point function with quartic
-interaction vertices.
+unconditional factorization of mixed pairing weights and pairing values, fixed-time diagram
+amplitudes, and the ordered-simplex perturbative coefficient for the imaginary-time two-point
+function with quartic interaction vertices.
 -/
