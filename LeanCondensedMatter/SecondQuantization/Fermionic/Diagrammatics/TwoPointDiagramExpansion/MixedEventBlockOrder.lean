@@ -228,6 +228,7 @@ theorem mixedTimeOrderedAtomicLegPosition_lt_uniform {n : ℕ}
       (mixedTimeOrderedAtomicLegPosition τ τ' σ y <
         mixedTimeOrderedAtomicLegPosition τ τ' σ z) := by
   classical
+  letI : BEq (OrderedTwoPointLeg n) := instBEqOfDecidableEq
   have h := idxOf_flatMap_block_lt_uniform twoPointTimedEventAtomicLegs
     (orderedTwoPointTimedEvents τ τ' σ) event x y z
     (mixedTimeOrderedAtomicLegs_nodup τ τ' σ) hEvent hx hy hz hzOutside
@@ -241,6 +242,8 @@ private theorem mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt {n : �
     mixedTimeOrderedAtomicLegPosition τ τ' σ x <
       mixedTimeOrderedAtomicLegPosition τ τ' σ y := by
   classical
+  letI : BEq (TwoPointTimedEvent n) := instBEqOfDecidableEq
+  letI : BEq (OrderedTwoPointLeg n) := instBEqOfDecidableEq
   have hEventIdx :
       (orderedTwoPointTimedEvents τ τ' σ).idxOf (orderedTwoPointLegEvent x) <
         (orderedTwoPointTimedEvents τ τ' σ).idxOf (orderedTwoPointLegEvent y) := by
@@ -292,6 +295,7 @@ theorem mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventTime_eq {n : ℕ}
       (mixedTimeOrderedAtomicLegPosition τ τ' υ x <
         mixedTimeOrderedAtomicLegPosition τ τ' υ y) := by
   classical
+  letI : BEq (OrderedTwoPointLeg n) := instBEqOfDecidableEq
   by_cases hxy : orderedTwoPointLegEvent x = orderedTwoPointLegEvent y
   · let event := orderedTwoPointLegEvent x
     have hx : x ∈ twoPointTimedEventAtomicLegs event := by
