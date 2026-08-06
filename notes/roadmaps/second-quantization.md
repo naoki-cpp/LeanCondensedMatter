@@ -8,6 +8,8 @@ See also:
 - [`second-quantization-status.md`](second-quantization-status.md) for the current public API,
   capability matrix, and ownership boundaries;
 - [`linked-cluster-theorem.md`](linked-cluster-theorem.md) for the formal and analytic theorem chain;
+- [`completed-space-and-infinite-mode.md`](completed-space-and-infinite-mode.md) for the completed
+  representation, operator-domain, Gibbs-state, and infinite-mode boundaries;
 - [`../roadmap.md`](../roadmap.md) for repository-wide research targets.
 
 ## Current boundary
@@ -17,9 +19,14 @@ finite-basis operator integration, quartic diagram sums, and the analytic fermio
 introduce finite-mode or finite-configuration hypotheses explicitly.
 
 The fermionic line proves both the coefficientwise formal Linked Cluster Theorem and its
-finite-dimensional analytic partition-function form. These results do not imply completed-space
-unbounded-operator theory, trace-class infinite-dimensional Gibbs states, infinite-mode limits, or a
-thermodynamic limit.
+finite-dimensional analytic partition-function form. These results do not imply trace-class
+infinite-dimensional Gibbs states, general unbounded-operator theory, infinite-mode thermal limits,
+or a thermodynamic limit.
+
+The repository also has an initial completed fermionic representation on
+`ℓ²(Fermionic.Occupation Mode, ℂ)`. The algebraic Fock space embeds injectively with dense range, and
+the single-mode number operator extends as a bounded coordinate projection. Completed ladder
+operators, unbounded Hamiltonian domains, and completed Gibbs states remain separate analytic work.
 
 The bosonic occupation basis is infinite even for finitely many modes. Bosonic perturbation theory
 therefore requires explicit summability domains, product closure, KMS control, and a compatible
@@ -138,6 +145,22 @@ schematically that
 The formal theorem remains useful for coefficient manipulations. The analytic logarithmic derivative
 is the physical finite-mode endpoint.
 
+## Completed fermionic representation
+
+The completed space is
+
+```lean
+Fermionic.CompletedFockSpace Mode := ℓ²(Fermionic.Occupation Mode, ℂ).
+```
+
+The implemented core provides canonical basis vectors, the coordinate-preserving
+`algebraicToCompleted` inclusion, injectivity and dense range, a bounded single-mode number operator,
+and agreement with the algebraic number operator on the dense core.
+
+This establishes the representation without treating every algebraic operator as bounded. The next
+completed-space results must distinguish bounded CAR operators from unbounded diagonal operators and
+state product domains explicitly.
+
 ## Bosonic line
 
 The bosonic occupation basis is
@@ -204,7 +227,19 @@ summability-aware KMS identities for the convergence-aware Gibbs functional.
 Construct a domain-compatible operator integral, establish Dyson convergence, and reuse the Common
 shuffle and cumulant infrastructure for bosonic amplitudes.
 
-### Completed-space and infinite-mode analysis
+### Completed bounded CAR operators
 
-Develop completed Fock representations, domains and functional calculus for unbounded operators,
-trace-class Gibbs states, infinite-mode limits, and thermodynamic limits as separate analytic results.
+Construct completed fermionic creation and annihilation maps as bounded signed reindexings, prove
+basis action and norm bounds, connect them to the algebraic core, and establish CAR as bounded-operator
+identities.
+
+### Unbounded operators and Gibbs states
+
+Define weighted domains for free Hamiltonians and total number operators, separate core identities
+from closure and self-adjointness, construct trace-class diagonal Gibbs states under explicit
+summability hypotheses, and connect finite-mode and completed realizations.
+
+### Infinite-mode and thermodynamic limits
+
+Specify the directed systems, observable algebras, state topologies, and uniform estimates needed for
+infinite-mode approximations and thermodynamic limits.
