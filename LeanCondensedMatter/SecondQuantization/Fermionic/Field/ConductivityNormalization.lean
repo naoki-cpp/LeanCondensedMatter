@@ -40,6 +40,7 @@ noncomputable section
 
 /-- Positive finite volume used to convert the total directional current into current density. -/
 structure FiniteVolumeConductivityConvention where
+  /-- Physical volume of the finite sample represented by the bounded hopping model. -/
   volume : ℝ
   volume_pos : 0 < volume
 
