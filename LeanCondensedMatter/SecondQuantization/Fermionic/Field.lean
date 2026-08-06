@@ -30,6 +30,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaOccupation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaCommonKernel
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaTraceRepresentation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaSpectralEnergyIntegral
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StaticStredaWardBridge
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.TransportConductivityBridge
 
 set_option linter.style.header false
@@ -92,6 +93,9 @@ surface primitive and residual sea kernel into the abstract integration data, pr
 energy integral is the canonical occupation-weighted Bastin trace integral, and leaves equality
 with any chosen response as an explicit hypothesis. The spectral-energy layer lifts the finite
 pure-point trace expansion through the occupation-weighted interval integral at every positive
-broadening. The transport bridge reuses the general finite-volume system convention without
-importing the fermionic model into the dimension-independent transport layer.
+broadening. The static Ward bridge exposes the remaining model-specific Peierls f-sum identity at
+the current-current level, keeps contact and `V(-η)` explicit, and constructs the concrete Středa
+representation under that visible assumption. The transport bridge reuses the general finite-volume
+system convention without importing the fermionic model into the dimension-independent transport
+layer.
 -/
