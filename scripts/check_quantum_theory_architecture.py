@@ -80,10 +80,6 @@ ENERGY_EXPECTATION_SPECIALIZATION = (
     "noncomputable def energyExpValue (ρ : DensityOperator H) "
     "(Hop : Observable H) : ℝ := ρ.observableExpectation Hop"
 )
-BORN_REAL_COMPATIBILITY = (
-    "noncomputable def prob (P : POVM H M) (ρ : DensityOperator H) "
-    "(m : M) : ℝ := probNNReal P ρ m"
-)
 BORN_PMF_SPECIALIZATION = (
     "noncomputable def bornPMF (P : POVM H M) (ρ : DensityOperator H) : PMF M := "
     "⟨fun m => (probNNReal P ρ m : ENNReal), "
@@ -209,12 +205,6 @@ def check_born_probability_boundary(errors: list[str]) -> None:
 
     born_code = strip_lean_comments(EXPECTED_BORN.read_text(encoding="utf-8"))
     born_normalized = " ".join(born_code.split())
-
-    if BORN_REAL_COMPATIBILITY not in born_normalized:
-        errors.append(
-            "prob must remain a direct real coercion of probNNReal in "
-            f"{relative(EXPECTED_BORN)}"
-        )
 
     if BORN_PMF_SPECIALIZATION not in born_normalized:
         errors.append(

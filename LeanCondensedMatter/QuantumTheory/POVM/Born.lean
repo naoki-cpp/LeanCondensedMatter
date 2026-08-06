@@ -13,8 +13,8 @@ set_option linter.style.header false
 
 A Born probability is represented canonically as a nonnegative real number. The underlying complex
 expectation is first proved self-adjoint and transported losslessly to `ℝ`; its nonnegativity then
-bundles the value as `NNReal`. The compatibility API `prob` exposes the same value in `ℝ`, while
-`bornPMF` packages all countable outcomes as a normalized probability mass function.
+bundles the value as `NNReal`. `bornPMF` packages all countable outcomes as a normalized probability
+mass function.
 
 Probability normalization follows from a nonnegative summable double series over density
 eigenvectors and measurement outcomes. The internal kernel uses lossless diagonal expectations of
@@ -51,18 +51,6 @@ noncomputable def probNNReal (P : POVM H M) (ρ : DensityOperator H) (m : M) : N
       unfold probSelfAdjoint Complex.selfAdjointEquiv
       exact ρ.expectation_re_nonneg_of_isPositive (P.pos m))
 
-/-- Compatibility real-valued Born probability. The canonical probability is `probNNReal`; this
-function is only its coercion to `ℝ`. -/
-noncomputable def prob (P : POVM H M) (ρ : DensityOperator H) (m : M) : ℝ :=
-  probNNReal P ρ m
-
-/-- The compatibility real probability is exactly the real coercion of the canonical nonnegative
-probability. -/
-@[simp]
-theorem prob_eq_coe_probNNReal (P : POVM H M) (ρ : DensityOperator H) (m : M) :
-    prob P ρ m = (probNNReal P ρ m : ℝ) :=
-  rfl
-
 /-- The complex density-state expectation of a POVM effect is exactly the complex embedding of the
 canonical nonnegative Born probability. -/
 @[simp]
@@ -73,11 +61,6 @@ theorem DensityOperator.expectation_effect_eq_probNNReal
   · rfl
   · simpa [probNNReal, probSelfAdjoint, Complex.selfAdjointEquiv] using
       ρ.expectation_im_eq_zero_of_isPositive (P.pos m)
-
-/-- Every discrete Born probability is nonnegative. -/
-theorem prob_nonneg (P : POVM H M) (ρ : DensityOperator H) (m : M) :
-    0 ≤ prob P ρ m :=
-  (probNNReal P ρ m).property
 
 private noncomputable def probabilityKernel (P : POVM H M)
     (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) (m : M) : ℝ :=
@@ -115,7 +98,7 @@ private theorem hasSum_probabilityKernel_outcome (P : POVM H M)
 
 private theorem hasSum_probabilityKernel_eigenvector (P : POVM H M)
     (ρ : DensityOperator H) (m : M) :
-    HasSum (fun a => probabilityKernel P ρ a m) (prob P ρ m) := by
+    HasSum (fun a => probabilityKernel P ρ a m) (probNNReal P ρ m : ℝ) := by
   have hcomplex := (ρ.summable_expectation_term (P.E m)).hasSum
   rw [← ρ.expectation_apply (P.E m), ρ.expectation_effect_eq_probNNReal P m] at hcomplex
   have hpoint :
@@ -129,9 +112,9 @@ private theorem hasSum_probabilityKernel_eigenvector (P : POVM H M)
   rw [hpoint] at hcomplex
   exact_mod_cast hcomplex
 
-/-- The compatibility family of real Born probabilities is summable and normalized. -/
-theorem summable_prob_and_tsum_eq_one (P : POVM H M) (ρ : DensityOperator H) :
-    Summable (prob P ρ) ∧ ∑' m, prob P ρ m = 1 := by
+/-- The canonical nonnegative Born probabilities have sum one. -/
+theorem hasSum_probNNReal (P : POVM H M) (ρ : DensityOperator H) :
+    HasSum (probNNReal P ρ) 1 := by
   let g : EigenvectorIndex ρ.op × M → ℝ :=
     fun p => probabilityKernel P ρ p.1 p.2
   have hg_nonneg : ∀ p, 0 ≤ g p := fun p =>
@@ -142,42 +125,16 @@ theorem summable_prob_and_tsum_eq_one (P : POVM H M) (ρ : DensityOperator H) :
     (summable_prod_of_nonneg hg_nonneg).mpr ⟨fun a => (hrow a).summable, by
       simpa only [fun a => (hrow a).tsum_eq] using
         summable_eigenvectorIndex ρ.spectralTraceClass.summable⟩
-  have hcol : ∀ m, HasSum (fun a => g (a, m)) (prob P ρ m) := fun m => by
+  have hcol : ∀ m, HasSum (fun a => g (a, m)) (probNNReal P ρ m : ℝ) := fun m => by
     simpa [g] using hasSum_probabilityKernel_eigenvector P ρ m
   obtain ⟨_, hprob, htot⟩ :=
     tsum_fiberwise_eq_of_summable hg_summable hrow hcol
   have htrace : (∑' a : EigenvectorIndex ρ.op, a.1.1) = 1 := by
     simpa [spectralTrace] using ρ.spectralTrace_op_eq_one
-  exact ⟨hprob, htot.symm.trans htrace⟩
-
-/-- Compatibility real Born probabilities are summable. -/
-theorem summable_prob (P : POVM H M) (ρ : DensityOperator H) :
-    Summable (prob P ρ) :=
-  (summable_prob_and_tsum_eq_one P ρ).1
-
-/-- The countable sum of the compatibility real Born probabilities is one. -/
-theorem tsum_prob_eq_one (P : POVM H M) (ρ : DensityOperator H) :
-    ∑' m, prob P ρ m = 1 :=
-  (summable_prob_and_tsum_eq_one P ρ).2
-
-/-- The canonical nonnegative Born probabilities have sum one. -/
-theorem hasSum_probNNReal (P : POVM H M) (ρ : DensityOperator H) :
-    HasSum (probNNReal P ρ) 1 := by
-  have hreal : HasSum (prob P ρ) 1 := by
-    rw [← tsum_prob_eq_one P ρ]
-    exact (summable_prob P ρ).hasSum
-  change HasSum (fun m => (probNNReal P ρ m : ℝ)) 1 at hreal
+  have hreal : HasSum (fun m => (probNNReal P ρ m : ℝ)) 1 := by
+    rw [← htot.symm.trans htrace]
+    exact hprob.hasSum
   exact (NNReal.hasSum_coe).mp hreal
-
-/-- The canonical nonnegative Born probabilities are summable. -/
-theorem summable_probNNReal (P : POVM H M) (ρ : DensityOperator H) :
-    Summable (probNNReal P ρ) :=
-  (hasSum_probNNReal P ρ).summable
-
-/-- The countable sum of the canonical nonnegative Born probabilities is one. -/
-theorem tsum_probNNReal_eq_one (P : POVM H M) (ρ : DensityOperator H) :
-    ∑' m, probNNReal P ρ m = 1 :=
-  (hasSum_probNNReal P ρ).tsum_eq
 
 /-- The normalized countable Born distribution associated with a POVM and density state. -/
 noncomputable def bornPMF (P : POVM H M) (ρ : DensityOperator H) : PMF M :=
@@ -197,27 +154,5 @@ theorem probNNReal_le_one (P : POVM H M) (ρ : DensityOperator H) (m : M) :
   have h : (probNNReal P ρ m : ENNReal) ≤ 1 := by
     simpa using PMF.coe_le_one (bornPMF P ρ) m
   exact_mod_cast h
-
-/-- Every compatibility real Born probability is at most one. -/
-theorem prob_le_one (P : POVM H M) (ρ : DensityOperator H) (m : M) :
-    prob P ρ m ≤ 1 := by
-  exact_mod_cast probNNReal_le_one P ρ m
-
-section FiniteOutcomes
-
-variable {M : Type*} [Fintype M]
-
-/-- For finite outcome types, canonical nonnegative normalization reduces to the ordinary finite
-sum. -/
-theorem sum_probNNReal_eq_one (P : POVM H M) (ρ : DensityOperator H) :
-    ∑ m, probNNReal P ρ m = 1 := by
-  simpa using tsum_probNNReal_eq_one P ρ
-
-/-- For finite outcome types, compatibility real normalization reduces to the ordinary finite sum. -/
-theorem sum_prob_eq_one (P : POVM H M) (ρ : DensityOperator H) :
-    ∑ m, prob P ρ m = 1 := by
-  simpa using tsum_prob_eq_one P ρ
-
-end FiniteOutcomes
 
 end QuantumTheory
