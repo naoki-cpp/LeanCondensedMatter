@@ -65,7 +65,6 @@ theorem hasDerivAt_retardedResolvent_energy
             ℂ →L[ℂ] (H →L[ℂ] H)).restrictScalars ℝ ∘SL
         ContinuousLinearMap.toSpanSingleton ℝ (1 : ℂ)) 1) =
         -(retardedResolvent hamiltonian energy broadening) ^ 2 := by
-    change (1 : ℂ) • (-(retardedResolvent hamiltonian energy broadening) ^ 2) = _
     simp
   rw [hvalue] at hcomp
   change HasDerivAt
@@ -95,7 +94,6 @@ theorem hasDerivAt_advancedResolvent_energy
             ℂ →L[ℂ] (H →L[ℂ] H)).restrictScalars ℝ ∘SL
         ContinuousLinearMap.toSpanSingleton ℝ (1 : ℂ)) 1) =
         -(advancedResolvent hamiltonian energy broadening) ^ 2 := by
-    change (1 : ℂ) • (-(advancedResolvent hamiltonian energy broadening) ^ 2) = _
     simp
   rw [hvalue] at hcomp
   change HasDerivAt
