@@ -16,6 +16,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeometricPeierls
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.FrequencyResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.HarmonicSourceResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StationaryFrequencyResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.InfiniteTimeFrequencyResponse
 
 set_option linter.style.header false
 
@@ -45,5 +46,7 @@ the possible orders of their limits explicitly. The harmonic-source layer realiz
 adiabatic coefficient through two physical real source quadratures coupled to the same
 self-adjoint directional current and proves their separate bounded response theorems. The
 stationary layer rewrites the finite-time response exactly as a positive-lag transform and makes
-the contact expectation time independent without taking any regulator limit.
+the contact expectation time independent. The infinite-time layer proves the observation-time
+limit under an explicit integrability hypothesis while leaving switching, frequency, and volume
+limits untouched.
 -/
