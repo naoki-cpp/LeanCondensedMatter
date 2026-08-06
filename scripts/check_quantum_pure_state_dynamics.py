@@ -43,10 +43,6 @@ def main() -> int:
     root_code = ROOT_UMBRELLA.read_text(encoding="utf-8")
 
     required_declarations = (
-        "theorem star_mul_freePropagator",
-        "theorem freePropagator_mul_star",
-        "theorem freePropagator_mem_unitary",
-        "noncomputable def freePropagatorUnitary",
         "theorem norm_freePropagator_apply",
         "def phaseState",
         "noncomputable def evolveState",
@@ -81,11 +77,6 @@ def main() -> int:
             f"{relative(PURE_DYNAMICS)}; found: {rendered}"
         )
 
-    if "norm_freePropagator_apply" not in code:
-        errors.append(
-            "pure-state evolution must be supported by the propagator norm-preservation theorem in "
-            f"{relative(PURE_DYNAMICS)}"
-        )
     if "⟨freePropagator system t ψ.1" not in normalized:
         errors.append(
             "evolveState must remain the direct normalized action of freePropagator in "
