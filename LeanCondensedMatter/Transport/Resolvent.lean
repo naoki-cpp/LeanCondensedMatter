@@ -3,6 +3,7 @@ import Mathlib.Analysis.CStarAlgebra.Spectrum
 import Mathlib.Analysis.Normed.Algebra.GelfandFormula
 
 set_option linter.style.header false
+set_option maxHeartbeats 2000000
 
 /-!
 # Dimension-independent retarded and advanced resolvents
