@@ -187,18 +187,28 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPositionTimeEquiv_lt_iff
   have hyTime := d.componentPosition_eventTime_eq τ τ' σ υ B hTime q
   have hOrder := mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventTime_eq
     τ τ' σ υ x y hxTime hyTime
+  have hpSource : mixedTimeOrderedAtomicLegPosition τ τ' σ x = p.1 := by
+    dsimp [x]
+    exact mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
+  have hqSource : mixedTimeOrderedAtomicLegPosition τ τ' σ y = q.1 := by
+    dsimp [y]
+    exact mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
   have hpTarget :
       mixedTimeOrderedAtomicLegPosition τ τ' υ x =
         (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 := by
+    change mixedTimeOrderedAtomicLegPosition τ τ' υ
+      (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1) = _
     rw [← d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p]
     exact mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
   have hqTarget :
       mixedTimeOrderedAtomicLegPosition τ τ' υ y =
         (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1 := by
+    change mixedTimeOrderedAtomicLegPosition τ τ' υ
+      (mixedTimeOrderedAtomicLegEquiv τ τ' σ q.1) = _
     rw [← d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B q]
     exact mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
-  change p.1 < q.1 ↔ _
-  simpa [x, y, hpTarget, hqTarget] using hOrder
+  rw [hpSource, hqSource, hpTarget, hqTarget] at hOrder
+  exact hOrder
 
 /-- External-component restricted position coordinates are unchanged by time transport. -/
 @[simp]
