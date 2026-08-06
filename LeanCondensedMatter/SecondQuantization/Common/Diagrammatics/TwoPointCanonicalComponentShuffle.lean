@@ -114,7 +114,7 @@ def TwoPointDiagram.interactionComponentSlotOfVertex
   ((TwoPointDiagram.interactionPart
     (B : Finset (TwoPointVertex S))).orderIsoOfFin rfl).symm v
 
-@[simp]
+/-- The canonical shuffle sends the local slot of an interaction vertex to its ambient rank. -/
 theorem TwoPointDiagram.canonicalComponentInteractionShuffle_slotOfVertex
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : d.componentPartition.parts)
@@ -157,7 +157,6 @@ theorem TwoPointDiagram.canonicalComponentTimeAssignment_eq_iff
 
 /-- For the full finset of `Fin N`, converting the increasing ambient rank back to `Fin N` recovers
 the underlying vertex. -/
-@[simp]
 theorem finCast_univOrderIsoOfFin_symm
     (x : ↥(Finset.univ : Finset (Fin N))) :
     Fin.cast (by simp)
