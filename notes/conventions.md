@@ -13,8 +13,22 @@ Lean/Mathlib style and project-wide conventions.
 
 - **One directory per track:** `Analysis/` for general mathematical infrastructure (Track C), `Combinatorics/` for Track B, `QuantumTheory/` for the physics postulates and what is built on them (Track A), `SecondQuantization/` for Track D (Fock space, creation/annihilation, CCR/CAR — kept separate from `QuantumTheory/` since second quantization is its own construction, not an extension of the axiomatic single-particle postulates). Physics files import analysis files, never the reverse.
 - **Lemmas live as far upstream as they can be stated.** A fact about a general structure belongs in the infrastructure file, not in the physics file that first needed it.
-- **Generalizations get a parallel file**, named after the original plus the enabling machinery, leaving the original file untouched.
-- **Every unit of work updates its track's roadmap** (`notes/roadmaps/*.md`) in the same PR: what was proved, the route taken, and what remains.
+- **Create parallel files only for semantically distinct APIs.** When a generalization subsumes an older construction, move the canonical declaration upstream and migrate callers instead of retaining a specialized copy merely for compatibility.
+- **Documentation describes the current repository.** Update architecture notes and roadmaps when the current design, constraints, or remaining work changes. Do not append completed-work logs to permanent documentation.
+
+## Refactoring and compatibility
+
+- **The current canonical API is the source of truth.** Outside the exact scope of an active pull request, refactors do not preserve backward compatibility unless the user explicitly requires it for the current task.
+- **Inspect active pull requests before editing.** Avoid files, declarations, and architectural decisions currently being changed elsewhere. Unrelated old APIs and paths receive no compatibility protection.
+- **Prefer complete breaking migrations.** Rename, move, merge, or delete declarations and modules when doing so yields a clearer ownership boundary, dependency direction, or public API. Migrate all in-repository callers in the same pull request.
+- **Do not add compatibility layers by default.** Remove obsolete aliases, forwarding theorems, forwarding modules, duplicate instances, duplicate re-exports, old import paths, and specialized wrappers around canonical generic declarations. Do not replace them with deprecation aliases or forwarding imports.
+- **Preserve mathematics, not historical packaging.** A distinct representation, theorem, or physical construction remains when it has independent semantic value. A module or declaration whose only purpose is to preserve an older name, path, layering decision, or proof organization should be removed or folded into its canonical owner.
+- **Move general facts upstream.** When a statistics-specific or physics-specific declaration is only a parameter specialization of a general result, use the general declaration directly. If genuinely reusable infrastructure is missing, add it at the most general layer rather than restoring a downstream wrapper.
+- **Keep proof helpers private.** Public declarations should express reusable mathematical or physical content. Intermediate uniqueness lemmas, transport steps, and basis calculations used by one proof should be private or local unless an independent caller exists.
+- **Delete historical prose during refactors.** Module documentation and permanent notes should state the present model, API, assumptions, dependency boundary, and unresolved limitations. Remove issue and PR numbers, phase or slice labels, migration instructions, completed roadmaps, former-path inventories, and prose whose only content is what used to exist.
+- **Retain design rationale only when it constrains current work.** A past decision belongs in permanent documentation only when understanding it is necessary to use, extend, or safely modify the current implementation.
+- **Regression checks enforce invariants, not archaeology.** Prefer checks for dependency direction, namespace ownership, canonical imports, or forbidden classes of compatibility layers. Avoid indefinitely enumerating every deleted file, declaration, or import path when a structural invariant can prevent the same regression.
+- **Measure refactors by the resulting structure.** Line reduction is useful but secondary. The primary test is whether the repository has fewer competing APIs, clearer ownership, narrower imports, less public proof machinery, and documentation that matches the code now present.
 
 ## Proof style
 
@@ -28,7 +42,7 @@ General cautions distilled from past sessions; detailed incident records live in
   and hope it compiles. Check the found lemma's exact signature with `#check` before using it.
 - **Search Mathlib by compiling, not only by text.** When a lemma or instance is hard to locate by name, write a scratch file probing with `#check`/`#synth`/`exact?` and build it; delete the file afterwards.
 - **Never leave search scaffolding or `sorry` in the final result.** `#check`/`exact?`/`#find` calls and any placeholder `sorry` are for the search process only; remove them (and delete scratch files) before the change is considered done.
-- **Extend additively.** When generalizing an existing formalization (e.g. beyond a restrictive typeclass), add a parallel file/namespace; leave the original untouched.
+- **Generalize canonically.** Preserve an older specialized declaration only when it expresses a distinct theorem or usable abstraction; otherwise replace it with the general declaration and migrate callers.
 - **Name recurring proof idioms.** When the same proof block appears in more than one declaration, extract it as a named lemma in the most upstream file that can state it.
 
 ## Lean workflow
@@ -59,7 +73,7 @@ General cautions distilled from past sessions; detailed incident records live in
 ## Dependencies
 
 - **Mathlib only.** No other external Lean libraries; the toolchain and Mathlib revision are pinned (`lean-toolchain`, `lake-manifest.json`) and upgraded deliberately, not as a side effect of other work.
-- **Survey Mathlib before building new theory.** Record the survey's outcome (what exists, what is missing, at which revision) in the relevant roadmap file, so the decision to build in-project is traceable and re-checkable after upgrades.
+- **Survey Mathlib before building new theory.** Record the current survey outcome and the resulting design constraint in the relevant architecture note or active roadmap so it can be re-checked after upgrades; do not preserve a chronological search log.
 - **Prefer Mathlib's general machinery over bespoke constructions** when both can close a goal, even if the bespoke route is locally shorter.
 
 ## Branch and PR workflow
