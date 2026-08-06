@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentOrderedSimplex
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentDysonValue
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairTimeTransport
 
 set_option linter.style.header false
 
@@ -8,7 +9,8 @@ set_option linter.style.header false
 
 The generic dependent-slot API localizes every signed component factor to its interaction-time
 fiber. The complete locality statement is reduced to the mixed component pairing value: the Dyson
-sign and quartic coupling product are independent of the interaction-time assignment.
+sign and quartic coupling product are independent of the interaction-time assignment. Preservation
+of component crossings and Gibbs contractions under pair transport supplies that pairing locality.
 -/
 
 namespace SecondQuantization
@@ -155,6 +157,61 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign
   intro B
   exact d.mixedComponentDysonFixedTimeValue_local_of_pairingValue_local
     ε β g τ τ' shuffle B (hPairing B)
+
+/-- Crossing and contraction preservation under equal component-local coordinates imply locality of
+that component's complete mixed pairing value. -/
+theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_local_of_timeTransport
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ)
+    (shuffle : d.1.ComponentInteractionShuffle)
+    (B : d.1.componentPartition.parts)
+    (hCross : ∀ σ υ : Fin (Finset.univ : Finset (Fin n)).card → ℝ,
+      DependentSlotEquiv.assignment shuffle.slotEquiv σ B =
+          DependentSlotEquiv.assignment shuffle.slotEquiv υ B →
+        d.MixedComponentCrossingPreserving τ τ'
+          (ambientToTwoPointSlotTime σ) (ambientToTwoPointSlotTime υ) B)
+    (hContraction : ∀ σ υ : Fin (Finset.univ : Finset (Fin n)).card → ℝ,
+      DependentSlotEquiv.assignment shuffle.slotEquiv σ B =
+          DependentSlotEquiv.assignment shuffle.slotEquiv υ B →
+        d.MixedComponentContractionPreserving ε β τ τ'
+          (ambientToTwoPointSlotTime σ) (ambientToTwoPointSlotTime υ) B) :
+    DependentSlotEquiv.Local shuffle.slotEquiv B
+      (fun σ => d.mixedComponentPairingValue ε β τ τ'
+        (ambientToTwoPointSlotTime σ) B) := by
+  intro σ υ hσυ
+  exact d.mixedComponentPairingValue_eq_of_timeTransport ε β τ τ'
+    (ambientToTwoPointSlotTime σ) (ambientToTwoPointSlotTime υ) B
+    (hCross σ υ hσυ) (hContraction σ υ hσυ)
+
+/-- Crossing and contraction preservation for every component expose the signed pointwise Dyson
+amplitude as the corresponding component-shuffle integrand. -/
+theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign_mul_componentShuffleIntegrand_of_timeTransport
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (τ τ' : ℝ) (shuffle : d.1.ComponentInteractionShuffle)
+    (hCross : ∀ (B : d.1.componentPartition.parts)
+        (σ υ : Fin (Finset.univ : Finset (Fin n)).card → ℝ),
+      DependentSlotEquiv.assignment shuffle.slotEquiv σ B =
+          DependentSlotEquiv.assignment shuffle.slotEquiv υ B →
+        d.MixedComponentCrossingPreserving τ τ'
+          (ambientToTwoPointSlotTime σ) (ambientToTwoPointSlotTime υ) B)
+    (hContraction : ∀ (B : d.1.componentPartition.parts)
+        (σ υ : Fin (Finset.univ : Finset (Fin n)).card → ℝ),
+      DependentSlotEquiv.assignment shuffle.slotEquiv σ B =
+          DependentSlotEquiv.assignment shuffle.slotEquiv υ B →
+        d.MixedComponentContractionPreserving ε β τ τ'
+          (ambientToTwoPointSlotTime σ) (ambientToTwoPointSlotTime υ) B)
+    (σ : Fin n → ℝ) :
+    d.dysonFixedTimeAmplitude ε β g τ τ' σ =
+      twoPointExternalOrderSign τ τ' *
+        d.1.interactionComponentShuffleIntegrand shuffle
+          (d.mixedComponentDysonLocalIntegrand ε β g τ τ' shuffle)
+          (twoPointSlotToAmbientTime σ) := by
+  apply d.dysonFixedTimeAmplitude_eq_externalSign_mul_componentShuffleIntegrand_of_pairingValue_local
+    ε β g τ τ' shuffle
+  intro B
+  exact d.mixedComponentPairingValue_local_of_timeTransport
+    ε β τ τ' shuffle B (hCross B) (hContraction B)
 
 /-- The localized signed component integrands satisfy the finite-family ordered-simplex shuffle
 product identity. This is the analytic exit point once their continuity has been proved. -/
