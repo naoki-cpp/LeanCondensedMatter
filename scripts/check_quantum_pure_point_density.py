@@ -105,12 +105,17 @@ def main() -> int:
             )
 
     required_pure_point_boundaries = (
+        "import LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws",
         "noncomputable def purePointDensityOperator",
         "diagonalDensityOperator data.basis data.probability",
+        "theorem commute_hamiltonian_purePointDensityOperator",
+        "data.basis.hasSum_repr",
         "noncomputable def purePointNormalizedExpectation",
         "(purePointDensityOperator system data).toNormalizedExpectation",
         "DensityOperator.toNormalizedExpectation_apply",
         "expectation_eq_tsum_diagonal",
+        "isStationary_toNormalizedExpectation_of_commute_hamiltonian system",
+        "commute_hamiltonian_purePointDensityOperator system data",
     )
     for boundary in required_pure_point_boundaries:
         if boundary not in pure_point_normalized:
@@ -123,6 +128,7 @@ def main() -> int:
         "IsBoundedLinearMap.toContinuousLinearMap",
         "toContinuousLinearMap :=",
         "import LeanCondensedMatter.QuantumTheory.Entropy",
+        "rw [inner_purePointBasis_heisenbergEvolution system data A i i t]",
     )
     for fragment in forbidden_pure_point_fragments:
         if fragment in pure_point_code:
