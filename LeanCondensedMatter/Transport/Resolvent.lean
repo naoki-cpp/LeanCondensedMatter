@@ -40,7 +40,9 @@ noncomputable def advancedResolvent
     (hamiltonian : H →L[ℂ] H) (energy broadening : ℝ) : H →L[ℂ] H :=
   resolvent hamiltonian (advancedSpectralParameter energy broadening)
 
-/-- A nonreal scalar cannot belong to the spectrum of a self-adjoint bounded operator. -/
+set_option maxHeartbeats 2000000 in
+/-- Mathlib's proof that a self-adjoint spectrum is real passes through the exponential map, so
+this declaration needs a larger local elaboration budget. -/
 theorem spectralParameter_not_mem_spectrum_of_im_ne_zero
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
     (z : ℂ) (hz : z.im ≠ 0) :
