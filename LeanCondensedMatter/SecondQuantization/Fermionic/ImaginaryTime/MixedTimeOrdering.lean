@@ -8,19 +8,20 @@ set_option linter.style.header false
 /-!
 # Mixed imaginary-time ordering for a two-point insertion
 
-This module combines the two odd external fields of a fermionic two-point function with an
-already time-ordered list of even quartic interaction vertices.  The interaction times are supplied
-in the order used by the ordered-simplex Dyson expansion; the two external events are inserted into
-that order by decreasing imaginary time.
+This module combines the two odd external fields of a fermionic two-point function with quartic
+interaction vertices. All external and interaction events are ordered together by decreasing
+imaginary time. Equal-time events use a deterministic stable rank: external event `0`, then external
+event `1`, then interaction vertices in their supplied order.
 
-Only exchanging the two external fields contributes a fermionic sign.  Moving either external
-field past a quartic interaction vertex contributes no sign because the quartic vertex is even.
+On the ordered simplex, the interaction vertices already occur in decreasing-time slot order, so
+this full event sort agrees with the Dyson ordering used by the perturbative expansion. Away from the
+ordered simplex it provides a canonical extension whose relative order on any subset of events
+depends only on those events' own times and stable ranks.
 
-Ties involving an interaction time use a deterministic stable order: external event `0`, then
-external event `1`, then interaction vertices in their supplied order.  This convention is intended
-for the measure-zero chamber boundaries of later ordered-simplex integrals.  The standalone
-`twoPointTimeOrderedProduct` retains the symmetric `theta(0) = 1/2` convention for equal external
-times.
+Only exchanging the two external fields contributes the explicit fermionic prefactor. Moving an
+external field past a quartic interaction vertex contributes no sign because the quartic vertex is
+even. The standalone `twoPointTimeOrderedProduct` retains the symmetric `theta(0) = 1/2` convention
+for equal external times.
 -/
 
 namespace SecondQuantization
@@ -91,21 +92,45 @@ private theorem insertTwoPointTimedEvent_perm {n : ℕ} (τ τ' : ℝ) (σ : Fin
       · exact List.Perm.refl _
       · exact (List.Perm.cons b ih).trans (List.Perm.swap b a l).symm
 
-/-- The interaction events in their ordered-simplex order. -/
+/-- Insertion-sort all mixed events by decreasing imaginary time and stable rank. -/
+private noncomputable def sortTwoPointTimedEvents {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    List (TwoPointTimedEvent n) → List (TwoPointTimedEvent n)
+  | [] => []
+  | a :: l => insertTwoPointTimedEvent τ τ' σ a
+      (sortTwoPointTimedEvents τ τ' σ l)
+
+private theorem sortTwoPointTimedEvents_length {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (l : List (TwoPointTimedEvent n)) :
+    (sortTwoPointTimedEvents τ τ' σ l).length = l.length := by
+  induction l with
+  | nil => rfl
+  | cons a l ih =>
+      rw [sortTwoPointTimedEvents, insertTwoPointTimedEvent_length, ih]
+      simp
+
+private theorem sortTwoPointTimedEvents_perm {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (l : List (TwoPointTimedEvent n)) :
+    List.Perm (sortTwoPointTimedEvents τ τ' σ l) l := by
+  induction l with
+  | nil => exact List.Perm.refl []
+  | cons a l ih =>
+      exact (insertTwoPointTimedEvent_perm τ τ' σ a
+        (sortTwoPointTimedEvents τ τ' σ l)).trans (List.Perm.cons a ih)
+
+/-- The interaction events in their canonical supplied slot order. -/
 def twoPointInteractionEventList (n : ℕ) : List (TwoPointTimedEvent n) :=
   List.ofFn fun v : Fin n => Sum.inr v
 
-/-- Insert the two external events into the supplied interaction-vertex order by decreasing time. -/
+/-- Order the two external events and every interaction event together by decreasing time. -/
 noncomputable def orderedTwoPointTimedEvents {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
     List (TwoPointTimedEvent n) :=
-  insertTwoPointTimedEvent τ τ' σ (Sum.inl 1)
-    (insertTwoPointTimedEvent τ τ' σ (Sum.inl 0) (twoPointInteractionEventList n))
+  sortTwoPointTimedEvents τ τ' σ
+    ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n)
 
 @[simp]
 theorem orderedTwoPointTimedEvents_length {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
     (orderedTwoPointTimedEvents τ τ' σ).length = n + 2 := by
-  rw [orderedTwoPointTimedEvents, insertTwoPointTimedEvent_length,
-    insertTwoPointTimedEvent_length]
+  rw [orderedTwoPointTimedEvents, sortTwoPointTimedEvents_length]
   simp [twoPointInteractionEventList]
 
 /-- Time ordering permutes, but neither duplicates nor removes, the two external events and the
@@ -113,14 +138,7 @@ interaction events. -/
 theorem orderedTwoPointTimedEvents_perm {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
     List.Perm (orderedTwoPointTimedEvents τ τ' σ)
       ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n) := by
-  rw [orderedTwoPointTimedEvents]
-  have h0 := insertTwoPointTimedEvent_perm τ τ' σ
-    (Sum.inl 0 : TwoPointTimedEvent n) (twoPointInteractionEventList n)
-  have h1 := insertTwoPointTimedEvent_perm τ τ' σ
-    (Sum.inl 1 : TwoPointTimedEvent n)
-    (insertTwoPointTimedEvent τ τ' σ (Sum.inl 0) (twoPointInteractionEventList n))
-  simpa using h1.trans ((List.Perm.cons _ h0).trans
-    (List.Perm.swap (Sum.inl 1) (Sum.inl 0) (twoPointInteractionEventList n)).symm)
+  exact sortTwoPointTimedEvents_perm τ τ' σ _
 
 /-- The operator represented by a mixed external/interaction event. -/
 noncomputable def twoPointTimedEventOperator {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
@@ -157,8 +175,7 @@ noncomputable def twoPointExternalOrderSign (τ τ' : ℝ) : ℂ :=
     (Common.Statistics.fermion.zetaInt : ℂ) 1
 
 /-- The mixed time-ordered operator product of two external fields and `n` quartic interaction
-vertices.  The interaction vertices are assumed to be supplied in decreasing-time order, as in an
-ordered-simplex Dyson integrand. -/
+vertices. -/
 noncomputable def mixedTimeOrderedVertexComp {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
@@ -173,7 +190,8 @@ private theorem orderedTwoPointTimedEvents_zero_of_gt (σ : Fin 0 → ℝ)
       [Sum.inl 0, Sum.inl 1] := by
   have hnot : ¬ τ < τ' := not_lt_of_ge h.le
   have hne : τ' ≠ τ := ne_of_lt h
-  simp [orderedTwoPointTimedEvents, twoPointInteractionEventList, insertTwoPointTimedEvent,
+  simp [orderedTwoPointTimedEvents, sortTwoPointTimedEvents,
+    twoPointInteractionEventList, insertTwoPointTimedEvent,
     twoPointTimedEventBeforeOrEqual, twoPointTimedEventTime, twoPointTimedEventRank,
     hnot, hne]
 
@@ -182,7 +200,8 @@ private theorem orderedTwoPointTimedEvents_zero_of_lt (σ : Fin 0 → ℝ)
     {τ τ' : ℝ} (h : τ < τ') :
     orderedTwoPointTimedEvents τ τ' σ =
       [Sum.inl 1, Sum.inl 0] := by
-  simp [orderedTwoPointTimedEvents, twoPointInteractionEventList, insertTwoPointTimedEvent,
+  simp [orderedTwoPointTimedEvents, sortTwoPointTimedEvents,
+    twoPointInteractionEventList, insertTwoPointTimedEvent,
     twoPointTimedEventBeforeOrEqual, twoPointTimedEventTime, twoPointTimedEventRank, h]
 
 /-- At interaction order zero and `τ' < τ`, mixed ordering reduces to the ordinary two-point
