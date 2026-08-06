@@ -88,10 +88,10 @@ theorem algebraicToCompleted_injective :
 theorem algebraicToCompleted_denseRange :
     DenseRange
       (algebraicToCompleted : FockSpace Mode → CompletedFockSpace Mode) := by
+  classical
   intro ψ
-  refine mem_closure_of_tendsto (lp.hasSum_single (p := (2 : ℝ≥0∞)) (by norm_num) ψ)
-    (Eventually.of_forall ?_)
-  intro s
+  refine mem_closure_of_tendsto (lp.hasSum_single (p := (2 : ℝ≥0∞)) (by norm_num) ψ) ?_
+  filter_upwards [] with s
   refine ⟨s.sum (fun n => ψ n • basisState n), ?_⟩
   simp [algebraicToCompleted_basisState, completedBasisState]
 
