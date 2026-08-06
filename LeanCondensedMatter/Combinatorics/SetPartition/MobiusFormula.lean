@@ -36,11 +36,12 @@ private theorem partitionProduct_atomMoment_ne_bot {S : Finset α} (π : Finpart
   classical
   have hlarge : ∃ B ∈ π.parts, ¬B.card ≤ 1 := by
     by_contra h
-    push_neg at h
+    push Not at h
     have hπbot : π ≤ (⊥ : Finpartition S) := by
       intro B hB
       have hB0 : B ≠ ∅ := π.ne_bot hB
       have hBpos : 0 < B.card := Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hB0)
+      have hBle : B.card ≤ 1 := h B hB
       have hBcard : B.card = 1 := by omega
       obtain ⟨x, rfl⟩ := Finset.card_eq_one.mp hBcard
       have hxS : x ∈ S := π.le hB (Finset.mem_singleton_self x)
@@ -59,7 +60,7 @@ private theorem cumulantFromMoment_atomMoment_eq_mu (S : Finset α) :
       (fun h => absurd (Finset.mem_univ _) h),
     partitionProduct_atomMoment_bot, mul_one]
 
-private theorem factorial_coeff_one_add_X (S : Finset α) :
+private theorem factorial_coeff_one_add_X {β : Type*} (S : Finset β) :
     (S.card.factorial : ℂ) *
         PowerSeries.coeff S.card (1 + PowerSeries.X : PowerSeries ℂ) = atomMoment S := by
   cases hcard : S.card with
@@ -67,7 +68,7 @@ private theorem factorial_coeff_one_add_X (S : Finset α) :
   | succ n =>
     cases n with
     | zero => simp [atomMoment, hcard]
-    | succ n => simp [atomMoment, hcard]
+    | succ n => simp [atomMoment, hcard, PowerSeries.coeff_X]
 
 private theorem factorial_coeff_log_one_add_X (n : ℕ) (hn : n ≠ 0) :
     (n.factorial : ℂ) *
@@ -99,7 +100,8 @@ private theorem factorial_coeff_log_one_add_X (n : ℕ) (hn : n ≠ 0) :
 private theorem mu_bot_top_complex {S : Finset α} (hS : S ≠ ∅) :
     mu ℂ (⊥ : Finpartition S) ⊤ =
       (((-1 : ℤ) ^ (S.card - 1) * (S.card - 1).factorial : ℤ) : ℂ) := by
-  have hcard : S.card ≠ 0 := Finset.card_ne_zero.mpr hS
+  have hcard : S.card ≠ 0 :=
+    Finset.card_ne_zero.mpr (Finset.nonempty_iff_ne_empty.mpr hS)
   have hbridge :=
     Combinatorics.factorial_mul_coeff_logOf_eq_cumulantFromMoment
       (Z := (1 + PowerSeries.X : PowerSeries ℂ)) (by simp) hS
@@ -138,7 +140,7 @@ indiscrete partition is `(-1)^(n - 1) (n - 1)!`. -/
 theorem mu_bot_top_eq_factorial {S : Finset α} (hS : S ≠ ∅) :
     mu ℤ (⊥ : Finpartition S) ⊤ =
       (-1 : ℤ) ^ (S.card - 1) * (S.card - 1).factorial := by
-  apply Int.cast_injective (R := ℂ)
+  apply Int.cast_injective (α := ℂ)
   rw [intCast_mu_apply]
   exact mu_bot_top_complex hS
 
@@ -148,7 +150,7 @@ theorem mu_bot_top_eq_factorial_ite (S : Finset α) :
       if S = ∅ then 1 else (-1 : ℤ) ^ (S.card - 1) * (S.card - 1).factorial := by
   by_cases hS : S = ∅
   · subst S
-    have hbotTop : (⊥ : Finpartition (∅ : Finset α)) = ⊤ := Subsingleton.elim _ _
+    have hbotTop : (⊥ : Finpartition (⊥ : Finset α)) = ⊤ := Subsingleton.elim _ _
     simp [hbotTop]
   · rw [if_neg hS, mu_bot_top_eq_factorial hS]
 
