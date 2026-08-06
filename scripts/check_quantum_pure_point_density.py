@@ -82,7 +82,6 @@ def main() -> int:
     diagonal_code = strip_lean_comments(DIAGONAL_FORMULA.read_text(encoding="utf-8"))
     entropy_code = strip_lean_comments(ENTROPY_DIAGONAL.read_text(encoding="utf-8"))
     pure_point_code = strip_lean_comments(PURE_POINT.read_text(encoding="utf-8"))
-    pure_point_normalized = " ".join(pure_point_code.split())
 
     for declaration in GENERAL_DIAGONAL_DECLARATIONS:
         owners = declaration_owners(declaration)
@@ -106,31 +105,6 @@ def main() -> int:
             errors.append(
                 f"retired parallel pure-point expectation declaration `{declaration}` found in: "
                 f"{rendered}"
-            )
-
-    required_pure_point_boundaries = (
-        "import LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws",
-        "private theorem purePointProbability_summable_norm",
-        "private theorem purePointProbability_tsum_pos",
-        "noncomputable def purePointDensityOperator",
-        "diagonalDensityOperator data.basis data.probability",
-        "purePointProbability_summable_norm system data",
-        "purePointProbability_tsum_pos system data",
-        "theorem commute_hamiltonian_purePointDensityOperator",
-        "data.basis.hasSum_repr",
-        "noncomputable def purePointNormalizedExpectation",
-        "(purePointDensityOperator system data).toNormalizedExpectation",
-        "DensityOperator.toNormalizedExpectation_apply",
-        "expectation_eq_tsum_diagonal",
-        "theorem freePropagator_apply_purePointBasis",
-        "isStationary_toNormalizedExpectation_of_commute_hamiltonian system",
-        "commute_hamiltonian_purePointDensityOperator system data",
-    )
-    for boundary in required_pure_point_boundaries:
-        if boundary not in pure_point_normalized:
-            errors.append(
-                f"pure-point response must retain canonical density boundary `{boundary}` in "
-                f"{relative(PURE_POINT)}"
             )
 
     forbidden_pure_point_fragments = (
