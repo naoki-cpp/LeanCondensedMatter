@@ -14,6 +14,7 @@ from architecture_audit_common import (
 ROOT = repository_root(__file__)
 QUANTUM = ROOT / "LeanCondensedMatter" / "QuantumTheory"
 LINEAR_RESPONSE = QUANTUM / "LinearResponse"
+FREE_DYNAMICS = LINEAR_RESPONSE / "FreeDynamics.lean"
 CONSERVATION = LINEAR_RESPONSE / "ConservationLaws.lean"
 DENSITY_EXPECTATION = LINEAR_RESPONSE / "DensityExpectation.lean"
 KUBO_FORMULA = LINEAR_RESPONSE / "KuboFormula.lean"
@@ -31,8 +32,6 @@ DENSITY_EXPECTATION_IMPORT = (
 )
 
 CONSERVATION_DECLARATIONS = (
-    "noncomputable def hamiltonianObservable",
-    "theorem coe_hamiltonianObservable",
     "theorem commute_freePropagator_of_commute_hamiltonian",
     "theorem heisenbergEvolution_eq_self_of_commute_hamiltonian",
     "theorem heisenbergObservable_eq_self_of_commute_hamiltonian",
@@ -89,6 +88,7 @@ def main() -> int:
     errors: list[str] = []
 
     for path in (
+        FREE_DYNAMICS,
         CONSERVATION,
         DENSITY_EXPECTATION,
         KUBO_FORMULA,
@@ -105,6 +105,8 @@ def main() -> int:
             success_message="QuantumTheory conservation-law audit passed.",
         )
 
+    free_dynamics_code = strip_lean_comments(FREE_DYNAMICS.read_text(encoding="utf-8"))
+    free_dynamics_normalized = " ".join(free_dynamics_code.split())
     conservation_code = strip_lean_comments(CONSERVATION.read_text(encoding="utf-8"))
     conservation_normalized = " ".join(conservation_code.split())
     density_expectation_code = strip_lean_comments(
@@ -131,6 +133,21 @@ def main() -> int:
                 f"`{declaration}` in {relative(DENSITY_EXPECTATION)}"
             )
 
+    if "hamiltonian : Observable H" not in free_dynamics_normalized:
+        errors.append(
+            "bounded free systems must store the Hamiltonian in the canonical observable type: "
+            f"{relative(FREE_DYNAMICS)}"
+        )
+    for retired_boundary in (
+        "hamiltonian : H →L[ℂ] H",
+        "hamiltonian_selfAdjoint : IsSelfAdjoint hamiltonian",
+    ):
+        if retired_boundary in free_dynamics_normalized:
+            errors.append(
+                "bounded free systems must not split observable data into parallel fields; found "
+                f"`{retired_boundary}` in {relative(FREE_DYNAMICS)}"
+            )
+
     if CONSERVATION_IMPORT not in root_code:
         errors.append(
             "root import surface must expose bounded conservation laws: "
@@ -148,6 +165,13 @@ def main() -> int:
             "algebraic conservation laws must not depend on equations of motion in "
             f"{relative(CONSERVATION)}"
         )
+
+    for retired_wrapper in ("hamiltonianObservable", "coe_hamiltonianObservable"):
+        if retired_wrapper in conservation_code:
+            errors.append(
+                "conservation laws must use `system.hamiltonian` directly rather than rewrapping "
+                f"it as `{retired_wrapper}` in {relative(CONSERVATION)}"
+            )
 
     check_owned_declarations(errors, CONSERVATION_DECLARATIONS, CONSERVATION)
     check_owned_declarations(
@@ -168,11 +192,11 @@ def main() -> int:
         )
 
     conservation_boundaries = (
-        "Commute system.hamiltonian A",
+        "Commute system.hamiltonian.1 A",
         "freePropagator_neg_mul",
-        "freePropagator_mul_neg",
         "expValue_evolveState_eq_heisenberg system",
         "expectation_evolveDensityOperator_eq_heisenberg system",
+        "heisenbergEvolution_eq_self_of_commute_hamiltonian system A hA (-t)",
         "DensityOperator.ext",
         "IsStationary system ρ.toNormalizedExpectation",
     )
@@ -219,6 +243,7 @@ def main() -> int:
             )
 
     for path, code in (
+        (FREE_DYNAMICS, free_dynamics_code),
         (CONSERVATION, conservation_code),
         (DENSITY_EXPECTATION, density_expectation_code),
         (DENSITY_BASIC, density_code),
