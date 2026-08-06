@@ -22,6 +22,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ConductivityNormal
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboGreenwood
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinSpectral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinTrace
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaIntegration
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.TransportConductivityBridge
 
 set_option linter.style.header false
@@ -64,7 +65,10 @@ rate to the energy broadening `ℏη`, proves the retarded resolvent action on t
 rewrites every transition and the full conductivity without changing the contact term. The
 ordinary-trace layer packages those finite resolvent coefficients into an energy-basis trace
 carrier, proves its spectral expansion, and identifies the resulting named finite-dimensional
-Kubo–Bastin conductivity with the upstream causal Kubo response. The transport bridge reuses the
-general finite-volume system convention without importing the fermionic model into the
+Kubo–Bastin conductivity with the upstream causal Kubo response. The Středa integration layer
+records the additional finite-energy representation, derivative, integrability, and boundary
+hypotheses required for integration by parts, names the regularized surface and sea contributions,
+and proves their sum without assigning a magnetic-derivative interpretation. The transport bridge
+reuses the general finite-volume system convention without importing the fermionic model into the
 dimension-independent transport layer.
 -/
