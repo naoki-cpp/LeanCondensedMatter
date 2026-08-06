@@ -22,14 +22,13 @@ namespace Fermionic
 /-- In a duplicate-free flattened list, two elements of one block have the same order relation to an
 element outside that block. -/
 private theorem idxOf_flatMap_block_lt_uniform
-    {α β : Type*} [BEq β] [LawfulBEq β] (f : α → List β)
+    {α β : Type*} [DecidableEq β] (f : α → List β)
     (events : List α) (event : α) (x y z : β)
     (hNodup : (events.flatMap f).Nodup)
     (hEvent : event ∈ events) (hx : x ∈ f event) (hy : y ∈ f event)
     (hz : z ∈ events.flatMap f) (hzOutside : z ∉ f event) :
     ((events.flatMap f).idxOf x < (events.flatMap f).idxOf z) =
       ((events.flatMap f).idxOf y < (events.flatMap f).idxOf z) := by
-  classical
   induction events generalizing event x y z with
   | nil => simp at hEvent
   | cons a events ih =>
@@ -92,13 +91,12 @@ private theorem idxOf_flatMap_block_lt_uniform
 
 /-- Inside one block of a duplicate-free flattened list, global order is exactly local block order. -/
 private theorem idxOf_flatMap_block_lt_iff
-    {α β : Type*} [BEq β] [LawfulBEq β] (f : α → List β)
+    {α β : Type*} [DecidableEq β] (f : α → List β)
     (events : List α) (event : α) (x y : β)
     (hNodup : (events.flatMap f).Nodup)
     (hEvent : event ∈ events) (hx : x ∈ f event) (hy : y ∈ f event) :
     (events.flatMap f).idxOf x < (events.flatMap f).idxOf y ↔
       (f event).idxOf x < (f event).idxOf y := by
-  classical
   induction events generalizing event x y with
   | nil => simp at hEvent
   | cons a events ih =>
@@ -128,13 +126,12 @@ private theorem idxOf_flatMap_block_lt_iff
 /-- If one event occurs before another in a duplicate-free event list, every leg in the first event
 block occurs before every leg in the second block of the duplicate-free flattened list. -/
 private theorem idxOf_flatMap_lt_of_event_idxOf_lt
-    {α β : Type*} [BEq α] [LawfulBEq α] [BEq β] [LawfulBEq β]
+    {α β : Type*} [DecidableEq α] [DecidableEq β]
     (f : α → List β) (events : List α) (a b : α) (x y : β)
     (hEventsNodup : events.Nodup) (hFlatNodup : (events.flatMap f).Nodup)
     (ha : a ∈ events) (hb : b ∈ events) (hx : x ∈ f a) (hy : y ∈ f b)
     (hab : events.idxOf a < events.idxOf b) :
     (events.flatMap f).idxOf x < (events.flatMap f).idxOf y := by
-  classical
   induction events generalizing a b x y with
   | nil => simp at ha
   | cons head tail ih =>
