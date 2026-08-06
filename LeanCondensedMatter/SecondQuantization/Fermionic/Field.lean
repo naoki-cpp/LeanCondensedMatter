@@ -25,6 +25,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinTrace
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaIntegration
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaOccupation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaCommonKernel
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaTraceRepresentation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.TransportConductivityBridge
 
 set_option linter.style.header false
@@ -77,6 +78,10 @@ an oriented integral of its energy derivative. The common-kernel layer localizes
 to its oriented spectral interval, combines the finite family into one globally integrable
 piecewise energy kernel, and proves that its full-line integral is the current-current Bastin sum.
 It deliberately stops before treating that discontinuous kernel as a differentiable Středa
-primitive. The transport bridge reuses the general finite-volume system convention without
-importing the fermionic model into the dimension-independent transport layer.
+primitive. The traced-representation layer inserts the smooth finite-dimensional ordinary-trace
+surface primitive and residual sea kernel into the abstract integration data, proves that its
+energy integral is the canonical occupation-weighted Bastin trace integral, and leaves equality
+with any chosen response as an explicit hypothesis. The transport bridge reuses the general
+finite-volume system convention without importing the fermionic model into the
+dimension-independent transport layer.
 -/
