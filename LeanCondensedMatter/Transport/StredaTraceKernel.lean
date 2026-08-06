@@ -62,7 +62,11 @@ theorem hasDerivAt_finiteDimensionalOperatorTrace_comp
       ((finiteDimensionalOperatorTrace (H := H)).restrictScalars ℝ)
       (operatorPath energy) :=
     ((finiteDimensionalOperatorTrace (H := H)).hasFDerivAt).restrictScalars ℝ
-  simpa using (houter.comp energy hoperator.hasFDerivAt).hasDerivAt
+  change HasDerivAt
+    ((finiteDimensionalOperatorTrace (H := H)) ∘ operatorPath)
+    (finiteDimensionalOperatorTrace (H := H) operatorDerivative)
+    energy
+  exact (houter.comp energy hoperator.hasFDerivAt).hasDerivAt
 
 /-- Scalar trace of the regularized Středa surface primitive. -/
 noncomputable def regularizedStredaSurfacePrimitiveTrace
