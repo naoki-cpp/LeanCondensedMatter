@@ -123,7 +123,7 @@ theorem advancedResolvent_apply_purePointBasis_at_energy
 /-- The square of the retarded resolvent has the squared scalar denominator on the energy basis. -/
 theorem retardedResolvent_sq_apply_purePointBasis_at_energy
     (energy broadening : ℝ) (hbroadening : 0 < broadening) (n : ι) :
-    (retardedResolvent system.hamiltonian.1 energy broadening) ^ 2 (data.basis n) =
+    ((retardedResolvent system.hamiltonian.1 energy broadening) ^ 2) (data.basis n) =
       ((retardedSpectralParameter energy broadening - (data.energy n : ℂ))⁻¹) ^ 2 •
         data.basis n := by
   rw [pow_two]
@@ -140,7 +140,7 @@ theorem retardedResolvent_sq_apply_purePointBasis_at_energy
 /-- The square of the advanced resolvent has the squared scalar denominator on the energy basis. -/
 theorem advancedResolvent_sq_apply_purePointBasis_at_energy
     (energy broadening : ℝ) (hbroadening : 0 < broadening) (n : ι) :
-    (advancedResolvent system.hamiltonian.1 energy broadening) ^ 2 (data.basis n) =
+    ((advancedResolvent system.hamiltonian.1 energy broadening) ^ 2) (data.basis n) =
       ((advancedSpectralParameter energy broadening - (data.energy n : ℂ))⁻¹) ^ 2 •
         data.basis n := by
   rw [pow_two]
