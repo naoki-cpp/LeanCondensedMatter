@@ -201,13 +201,11 @@ def coarseningsOrderIsoBlockPartitions (π : Finpartition a) :
   map_rel_iff' := by
     intro σ τ
     constructor
-    · exact quotientByCoarsening_mono σ.2 τ.2
     · intro h
-      change liftBlockPartition π
-          (quotientByCoarsening π σ.1 σ.2) ≤
-        liftBlockPartition π (quotientByCoarsening π τ.1 τ.2)
-      rw [lift_quotientByCoarsening_eq σ.2, lift_quotientByCoarsening_eq τ.2]
-      exact liftBlockPartition_mono π h
+      have hlift := liftBlockPartition_mono π h
+      rw [lift_quotientByCoarsening_eq σ.2, lift_quotientByCoarsening_eq τ.2] at hlift
+      exact hlift
+    · exact quotientByCoarsening_mono σ.2 τ.2
 
 /-- The Möbius function from a partition to the top depends only on its block set. -/
 theorem mu_to_top_eq_mu_bot_top_parts {R : Type*} [CommRing R] (π : Finpartition a) :
@@ -224,7 +222,9 @@ theorem mu_to_top_eq_mu_bot_top_parts {R : Type*} [CommRing R] (π : Finpartitio
   have hey : e y = (⊤ : Finpartition π.parts) := by
     apply le_antisymm
     · exact le_top
-    · have hxy : e.symm (⊤ : Finpartition π.parts) ≤ y := le_top
+    · have hxy : e.symm (⊤ : Finpartition π.parts) ≤ y := by
+        change (e.symm (⊤ : Finpartition π.parts)).1 ≤ (⊤ : Finpartition a)
+        exact le_top
       simpa using e.monotone hxy
   have hiso := IncidenceAlgebra.mu_orderIso_apply (R := R) e x y
   have hambient := IncidenceAlgebra.mu_subtype_ge_apply (R := R) x y
