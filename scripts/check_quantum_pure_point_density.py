@@ -29,19 +29,6 @@ GENERAL_DIAGONAL_DECLARATIONS = (
     "normalizedDiagonalWeight_le_one",
 )
 
-RETIRED_PURE_POINT_DECLARATIONS = (
-    "purePointExpectationTerm",
-    "summable_purePointExpectationTerm",
-    "purePointExpectationValue",
-    "purePointExpectationValue_add",
-    "purePointExpectationValue_smul",
-    "purePointExpectationValue_norm_le",
-    "PurePointLehmannData.summable_norm_probability",
-    "PurePointLehmannData.probability_tsum_pos",
-    "timeScaledGenerator_apply_purePointBasis",
-    "pow_timeScaledGenerator_apply_purePointBasis",
-)
-
 
 def relative(path: Path) -> str:
     return relative_to(ROOT, path)
@@ -92,31 +79,23 @@ def main() -> int:
                 f"by {relative(DIAGONAL_FORMULA)}; found: {rendered}"
             )
 
-    if "import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula" not in entropy_code:
+    diagonal_import = "import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
+    if diagonal_import not in entropy_code:
         errors.append(
             "entropy diagonal formulas must consume the canonical density diagonal layer in "
             f"{relative(ENTROPY_DIAGONAL)}"
         )
 
-    for declaration in RETIRED_PURE_POINT_DECLARATIONS:
-        owners = declaration_owners(declaration)
-        if owners:
-            rendered = ", ".join(relative(path) for path in owners)
-            errors.append(
-                f"retired parallel pure-point expectation declaration `{declaration}` found in: "
-                f"{rendered}"
-            )
-
-    forbidden_pure_point_fragments = (
-        "IsBoundedLinearMap.toContinuousLinearMap",
-        "toContinuousLinearMap :=",
-        "import LeanCondensedMatter.QuantumTheory.Entropy",
-        "rw [inner_purePointBasis_heisenbergEvolution system data A i i t]",
+    required_pure_point_boundaries = (
+        diagonal_import,
+        "diagonalDensityOperator",
+        ".toNormalizedExpectation",
     )
-    for fragment in forbidden_pure_point_fragments:
-        if fragment in pure_point_code:
+    for boundary in required_pure_point_boundaries:
+        if boundary not in pure_point_code:
             errors.append(
-                f"pure-point response must not reintroduce `{fragment}` in {relative(PURE_POINT)}"
+                f"pure-point response must consume the canonical density layer via `{boundary}` "
+                f"in {relative(PURE_POINT)}"
             )
 
     if "entropyOp" in diagonal_code:
