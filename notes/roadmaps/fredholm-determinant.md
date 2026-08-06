@@ -8,11 +8,13 @@ infinite-dimensional.
 ## Current status
 
 - Hilbert–Schmidt basic, inner-product, and spectral-trace comparison modules are `proved`.
+- The countable diagonal infinite-product slice is `proved` in
+  `Analysis/Operator/Fredholm/Diagonal.lean`.
 - A general non-self-adjoint trace-class ideal is not implemented.
 - A general Fredholm determinant is not implemented.
-- The first implementation slice is the countable diagonal infinite-product target in #659.
 
-The diagonal infinite-dimensional target is `stated`; the general trace-class target remains `idea`.
+The diagonal infinite-dimensional target is `proved`; the general trace-class target remains
+`idea`.
 
 ## Existing Hilbert–Schmidt boundary
 
@@ -37,71 +39,68 @@ At Mathlib `v4.31.0`:
 
 - bounded and compact continuous linear maps are available;
 - infinite products are available through the general `HasProd`, `Multipliable`, and `tprod` APIs;
+- `multipliable_one_add_of_summable` proves convergence of `∏' i, (1 + coeff i)` from
+  `Summable (fun i => ‖coeff i‖)`;
 - finite-dimensional determinants are available through
   `Mathlib.Topology.Algebra.Module.Determinant`, including `ContinuousLinearMap.det`;
 - the project audit has not found a Mathlib replacement for the repository's Hilbert–Schmidt
   package;
 - the project does not rely on a Mathlib general trace-class/Schatten/Fredholm package.
 
-`ContinuousLinearMap.det` must not be used as an infinite-dimensional determinant definition. Its
-role is limited to a later compatibility theorem on finite-dimensional diagonal specializations.
-The first implementation instead uses a convergent infinite product.
+`ContinuousLinearMap.det` is not used as an infinite-dimensional determinant definition. Its role is
+limited to a later compatibility theorem on finite-dimensional diagonal specializations. The
+implemented slice instead uses a convergent infinite product.
 
-## First implementation slice: countable diagonal operators
+## Implemented slice: countable diagonal operators
 
-Issue #659 owns the first machine-checked Fredholm determinant slice. Let
+For explicit coefficient data
 
 ```text
-d : HilbertBasis ι ℂ H
-K : H →L[ℂ] H
-λ : ι → ℂ
+coeff : ι → ℂ
 ```
 
-with countable index type `ι`, diagonalization
+with absolute summability
 
 ```text
-K (d i) = λ i • d i,
+Summable (fun i => ‖coeff i‖),
 ```
 
-and absolute summability
+`Fredholm.diagonalDet` is defined by
 
 ```text
-Summable (fun i => ‖λ i‖).
-```
-
-The intended determinant is
-
-```text
-Det(I + K) = ∏' i, (1 + λ i).
+Fredholm.diagonalDet coeff = ∏' i, (1 + coeff i).
 ```
 
 This target is genuinely infinite-dimensional when `ι` is infinite. The absolute-summability
 hypothesis supplies the convergence needed for the infinite product and is the diagonal analogue of
 the trace-class condition.
 
-The first slice should provide:
+The public API currently provides:
 
-1. convergence of the product from `Summable (fun i => ‖λ i‖)`;
-2. a definition based on `tprod`, guarded by proved `Multipliable` or `HasProd` evidence;
-3. invariance under reindexing by an equivalence of index types;
-4. the zero-operator value;
-5. finite-support reduction to a finite product;
-6. finite-dimensional compatibility with `ContinuousLinearMap.det` where the existing basis/matrix
-   API supports a clean proof;
-7. a kernel statement when one factor satisfies `1 + λ i = 0`.
+- `Fredholm.diagonalDet_multipliable`: convergence of the defining product;
+- `Fredholm.diagonalDet_reindex`: invariance under an equivalence of index types;
+- `Fredholm.diagonalDet_zero`: the zero-coefficient value;
+- `Fredholm.diagonalDet_eq_finsetProd`: finite-support reduction;
+- `Fredholm.diagonalDet_fintype`: reduction to the ordinary finite product on a finite index type;
+- `Fredholm.diagonalDet_ne_zero`: nonvanishing when every factor is nonzero;
+- `HilbertBasis.one_add_diagonalOp_apply_basis`: diagonal action of
+  `1 + diagonalOp b coeff`;
+- `HilbertBasis.one_add_diagonalOp_has_nonzero_kernel_vector_of_coeff_eq_neg_one`: a coefficient
+  equal to `-1` produces a nonzero kernel vector.
 
-The initial API may bundle the Hilbert basis, coefficient family, diagonalization equation, and
-summability proof, or expose them as theorem parameters. The representation should be chosen for
-proof stability rather than to imitate a general trace-class ideal prematurely.
+The determinant is defined from explicit coefficient data rather than bundled with a Hilbert basis
+or operator. The operator theorems connect that coefficient-level definition to the repository's
+existing `HilbertBasis.diagonalOp` construction without pretending that a general trace-class ideal
+already exists.
 
 ## Independence boundary
 
-Reindexing invariance is required: equivalent enumerations of the same diagonal data must give the
-same determinant.
+Reindexing invariance is proved: equivalent enumerations of the same diagonal data give the same
+determinant.
 
-Full independence from an arbitrary choice of diagonalizing Hilbert basis is not part of the first
-slice unless it follows from a separately proved uniqueness theorem for the spectral data. In
-particular, the first implementation must not silently identify unrelated diagonal presentations.
+Full independence from an arbitrary choice of diagonalizing Hilbert basis is not part of the current
+slice. It requires a separately proved uniqueness theorem for the spectral data. In particular, the
+implementation does not silently identify unrelated diagonal presentations.
 
 ## Extension path
 
@@ -115,8 +114,8 @@ countable diagonal trace-class data
   → general Fredholm determinant.
 ```
 
-The first arrow already produces a nontrivial infinite-dimensional determinant. Later arrows widen
-the operator domain and strengthen presentation independence.
+The first step now provides a nontrivial infinite-dimensional determinant. Later steps widen the
+operator domain and strengthen presentation independence.
 
 ## Candidate general constructions
 
@@ -186,10 +185,15 @@ operators does require it:
 - regularized determinants such as `det₂`;
 - thermodynamic or infinite-volume determinant limits.
 
-## Completion rule
+## Remaining work for #659
 
-#439 can be completed once this design boundary is merged, the existing Hilbert–Schmidt results are
-linked from the issue, the caveats are updated, and #659 owns the countable diagonal
-infinite-dimensional implementation. A future general Fredholm issue should be opened only after
-the non-self-adjoint trace-class ideal has a concrete compiled API rather than a proposed
-compatibility layer.
+The core acceptance criteria are implemented. Optional extensions that can be split or added only
+when cleanly supported include:
+
+- agreement with `ContinuousLinearMap.det` for a finite-dimensional diagonal operator;
+- a converse relating determinant zero to a `-1` coefficient;
+- invertibility of `1 + diagonalOp b coeff` under exact diagonal bounded-inverse hypotheses;
+- comparison with the existing spectral trace on a self-adjoint overlap.
+
+The current slice must not be broadened by weakening hypotheses or by using a finite-dimensional
+fallback outside its valid domain.

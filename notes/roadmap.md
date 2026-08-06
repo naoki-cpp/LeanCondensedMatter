@@ -43,7 +43,7 @@ specializations, not parallel APIs.
 | Compact self-adjoint spectral decomposition | C | `proved` | [operator algebra](roadmaps/operator-algebra.md#compact-self-adjoint-spectral-tools) |
 | Spectral trace-class theory and trace identities | C | `proved` | [operator algebra](roadmaps/operator-algebra.md#spectral-trace-class-operators) |
 | Hilbert–Schmidt basic, inner-product, and trace infrastructure | C | `proved` | [operator algebra](roadmaps/operator-algebra.md#hilbert–schmidt-operators) |
-| Countable diagonal infinite-dimensional Fredholm determinant | C | `stated` | [Fredholm determinant roadmap](roadmaps/fredholm-determinant.md) · #659 |
+| Countable diagonal infinite-dimensional Fredholm determinant | C | `proved` | [Fredholm determinant roadmap](roadmaps/fredholm-determinant.md) · #659 |
 | General non-self-adjoint trace-class ideal | C | `idea` | [operator algebra](roadmaps/operator-algebra.md#remaining-operator-analysis) |
 | General Fredholm determinant | C | `idea` | [Fredholm determinant roadmap](roadmaps/fredholm-determinant.md#dependency-graph-for-a-general-fredholm-determinant) |
 | Generic bounded Dyson–Volterra theory | C/D | `proved` | `Analysis/Dyson/` · `QuantumTheory/BoundedDyson.lean` |

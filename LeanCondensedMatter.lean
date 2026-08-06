@@ -14,6 +14,7 @@ import LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Trace
+import LeanCondensedMatter.Analysis.Operator.Fredholm.Diagonal
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.Analysis.OrderedSimplex.Calculus
 import LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral
