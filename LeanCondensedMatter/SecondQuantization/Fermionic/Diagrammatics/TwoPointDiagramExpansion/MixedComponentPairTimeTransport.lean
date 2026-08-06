@@ -23,7 +23,7 @@ namespace Fermionic
 
 open Combinatorics
 
-variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*}
 
 /-- Canonical comparison of the mixed normalized pairs of one full component at two interaction-time
 assignments.  The comparison passes through the time-independent restricted external or vacuum
@@ -52,9 +52,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv_refl
   by_cases hB : B = d.1.externalComponentPart
   · subst B
     simp [FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv]
-  · have hVac : d.1.ComponentIsVacuum B :=
-      (d.1.componentIsVacuum_iff_ne_externalComponentPart B).2 hB
-    simp [FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv, hB, hVac]
+  · simp [FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv, hB]
 
 /-- The canonical pair transport preserves the component-internal crossing predicate. -/
 def FixedExternalTwoPointWickDiagram.MixedComponentCrossingPreserving
@@ -65,24 +63,6 @@ def FixedExternalTwoPointWickDiagram.MixedComponentCrossingPreserving
       Crosses
         (d.mixedComponentPairTimeEquiv τ τ' σ υ B p).1.1
         (d.mixedComponentPairTimeEquiv τ τ' σ υ B q).1.1
-
-/-- The canonical pair transport preserves the finite Gibbs contraction attached to every pair. -/
-def FixedExternalTwoPointWickDiagram.MixedComponentContractionPreserving
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts) : Prop :=
-  ∀ p : d.MixedComponentPair τ τ' σ B,
-    d.mixedPairContractionValue ε β τ τ' σ p.1 =
-      d.mixedPairContractionValue ε β τ τ' υ
-        (d.mixedComponentPairTimeEquiv τ τ' σ υ B p).1
-
-/-- Product of finite Gibbs contractions internal to one full component. -/
-noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentContractionProduct
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts) : ℂ :=
-  ∏ pr : d.MixedComponentPair τ τ' σ B,
-    d.mixedPairContractionValue ε β τ τ' σ pr.1
 
 /-- Crossing preservation under the canonical time transport gives equality of the component-
 internal crossing counts. -/
@@ -121,6 +101,28 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentWeight_eq_of_timeTranspor
       d.mixedComponentWeight s τ τ' υ B := by
   unfold FixedExternalTwoPointWickDiagram.mixedComponentWeight
   rw [d.mixedComponentCrossingCount_eq_of_timeTransport τ τ' σ υ B hCross]
+
+section GibbsContractions
+
+variable [LinearOrder Mode] [Fintype Mode]
+
+/-- The canonical pair transport preserves the finite Gibbs contraction attached to every pair. -/
+def FixedExternalTwoPointWickDiagram.MixedComponentContractionPreserving
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)
+    (B : d.1.componentPartition.parts) : Prop :=
+  ∀ p : d.MixedComponentPair τ τ' σ B,
+    d.mixedPairContractionValue ε β τ τ' σ p.1 =
+      d.mixedPairContractionValue ε β τ τ' υ
+        (d.mixedComponentPairTimeEquiv τ τ' σ υ B p).1
+
+/-- Product of finite Gibbs contractions internal to one full component. -/
+noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentContractionProduct
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (B : d.1.componentPartition.parts) : ℂ :=
+  ∏ pr : d.MixedComponentPair τ τ' σ B,
+    d.mixedPairContractionValue ε β τ τ' σ pr.1
 
 /-- Contraction preservation under the canonical time transport gives equality of the complete
 component pair-contraction products. -/
@@ -175,6 +177,8 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_eq_of_timeTr
       τ τ' σ υ B hCross,
     d.mixedComponentContractionProduct_eq_of_timeTransport
       ε β τ τ' σ υ B hContraction]
+
+end GibbsContractions
 
 end Fermionic
 end SecondQuantization
