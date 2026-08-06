@@ -11,11 +11,22 @@ FINITE_GIBBS = (
     / "Thermal"
     / "FiniteGibbsDensityOperator.lean"
 )
+FREE_ENTROPY = (
+    ROOT
+    / "LeanCondensedMatter"
+    / "SecondQuantization"
+    / "Fermionic"
+    / "Thermal"
+    / "FreeEntropy.lean"
+)
 
 DENSITY_IMPORT = (
     "import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
 )
-ENTROPY_IMPORT = "import LeanCondensedMatter.QuantumTheory.Entropy"
+ENTROPY_PREFIX = "import LeanCondensedMatter.QuantumTheory.Entropy"
+ENTROPY_DIAGONAL_IMPORT = (
+    "import LeanCondensedMatter.QuantumTheory.Entropy.Diagonal"
+)
 
 
 def main() -> int:
@@ -36,7 +47,7 @@ def main() -> int:
                 f"directly in {relative}"
             )
 
-        if ENTROPY_IMPORT in code:
+        if ENTROPY_PREFIX in code:
             errors.append(
                 "finite Gibbs density construction must not depend on the entropy layer in "
                 f"{relative}"
@@ -52,6 +63,27 @@ def main() -> int:
                     f"finite Gibbs density construction must retain density API `{boundary}` in "
                     f"{relative}"
                 )
+
+    if not FREE_ENTROPY.exists():
+        errors.append(
+            "missing free-fermion entropy boundary file: "
+            f"{FREE_ENTROPY.relative_to(ROOT)}"
+        )
+    else:
+        code = strip_lean_comments(FREE_ENTROPY.read_text(encoding="utf-8"))
+        relative = FREE_ENTROPY.relative_to(ROOT)
+
+        if ENTROPY_DIAGONAL_IMPORT not in code:
+            errors.append(
+                "free-fermion entropy must import the entropy diagonal theorem owner directly in "
+                f"{relative}"
+            )
+
+        if "entropyOpSpectralTraceClass_trace_eq_tsum_diagonal" not in code:
+            errors.append(
+                "free-fermion entropy must retain its diagonal entropy theorem use in "
+                f"{relative}"
+            )
 
     return finish_audit(
         errors,
