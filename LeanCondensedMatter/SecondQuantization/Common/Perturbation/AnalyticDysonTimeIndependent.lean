@@ -4,11 +4,11 @@ import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
 set_option linter.style.header false
 
 /-!
-# Time-independent regression for the analytic Dyson evolution
+# Time-independent analytic Dyson evolution
 
-When the interaction-picture operator is constant, the existing coefficientwise verification
-reduces every Dyson term to the ordinary exponential-series coefficient. This gives a regression
-test for the ordering and signs in the general operator-exponential identity.
+When the interaction-picture operator is constant, every Dyson term reduces to the corresponding
+ordinary exponential-series coefficient. Consequently, the norm-convergent analytic Dyson
+evolution is exactly the operator exponential of `-τ λ V`.
 -/
 
 namespace SecondQuantization
@@ -33,8 +33,8 @@ theorem analyticDysonTerm_eq_of_time_independent (energy : Config → ℝ)
   congr 1
   ring
 
-/-- If the interaction picture is time-independent, the analytic Dyson sum collapses to the
-ordinary exponential of `-τ λ V`. -/
+/-- If the interaction picture is time-independent, the analytic Dyson sum is the ordinary
+operator exponential of `-τ λ V`. -/
 theorem analyticDysonEvolution_eq_exp_of_time_independent (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hV : ∀ τ, interactionPicture energy V τ = V)
