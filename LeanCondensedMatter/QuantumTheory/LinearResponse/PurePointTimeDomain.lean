@@ -75,7 +75,7 @@ theorem norm_purePointSchrodingerPhase
     (data : PurePointLehmannData system ι) (i : ι) (t : ℝ) :
     ‖purePointSchrodingerPhase system data i t‖ = 1 := by
   rw [purePointSchrodingerPhase, Complex.norm_exp]
-  simp [purePointSchrodingerExponent]
+  simp
 
 /-- Relative transition phases have unit norm. -/
 @[simp]
