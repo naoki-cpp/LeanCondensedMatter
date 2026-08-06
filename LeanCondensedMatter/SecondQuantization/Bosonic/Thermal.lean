@@ -1,6 +1,8 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeTwoPointCoefficient
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ExpectationRecursion
 
 set_option linter.style.header false
 
@@ -12,8 +14,11 @@ Public umbrella for the convergence-aware free bosonic thermal layer:
 - one- and multi-mode Boltzmann weights;
 - partition-series and particle-number-weighted summability;
 - free two-point basis coefficients;
-- the uncutoff bosonic two-point specialization of the Common Bloch–de Dominicis framework.
+- the uncutoff bosonic two-point specialization of the Common Bloch–de Dominicis framework;
+- a normalized free Gibbs functional on an explicit summable-operator submodule;
+- an analytic adapter from bosonic domain/KMS hypotheses to the Common pairing recursion.
 
-General Gibbs expectations of arbitrary operators and interacting Dyson/Wick expansions remain outside
-this module because they require additional summability-aware operator interfaces.
+The functional interface does not claim that arbitrary algebraic-Fock endomorphisms are summable or
+bounded.  Interacting Dyson/Wick expansions still require explicit product-closure and
+operator-integration hypotheses at each order.
 -/
