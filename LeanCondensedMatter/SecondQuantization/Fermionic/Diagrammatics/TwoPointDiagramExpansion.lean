@@ -16,6 +16,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentFixedTimeValue
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentDysonValue
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentLocalTime
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentLocalTimeTransport
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DysonCoefficient
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentDysonIntegral
@@ -32,6 +33,7 @@ factorization of mixed-time contraction products, decomposition of mixed crossin
 of their parity to complete component-position inversions and concrete vacuum four-leg event blocks,
 unconditional factorization of mixed pairing weights, pairing values, comparison of component pairs
 across interaction-time assignments, coupling products, fixed-time values, and component-local Dyson
-signs, together with the local interaction-time interface, factorized ordered-simplex integrand, and
-perturbative coefficient for the imaginary-time two-point function with quartic interaction vertices.
+signs, together with the bridge from pair transport to local interaction-time dependence, the
+factorized ordered-simplex integrand, and the perturbative coefficient for the imaginary-time
+two-point function with quartic interaction vertices.
 -/
