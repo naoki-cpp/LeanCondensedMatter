@@ -12,6 +12,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedVacuumEventBlockOrder
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentCrossingEven
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairingValue
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairTimeTransport
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentFixedTimeValue
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentDysonValue
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentLocalTime
@@ -29,8 +30,8 @@ external-leg Wick diagrams, ordering inside mixed event blocks and their standar
 restriction of mixed-order positions, partners, and normalized pairs to full components,
 factorization of mixed-time contraction products, decomposition of mixed crossing counts, reduction
 of their parity to complete component-position inversions and concrete vacuum four-leg event blocks,
-unconditional factorization of mixed pairing weights, pairing values, coupling products, fixed-time
-values, and component-local Dyson signs, together with the local interaction-time interface,
-factorized ordered-simplex integrand, and perturbative coefficient for the imaginary-time two-point
-function with quartic interaction vertices.
+unconditional factorization of mixed pairing weights, pairing values, comparison of component pairs
+across interaction-time assignments, coupling products, fixed-time values, and component-local Dyson
+signs, together with the local interaction-time interface, factorized ordered-simplex integrand, and
+perturbative coefficient for the imaginary-time two-point function with quartic interaction vertices.
 -/
