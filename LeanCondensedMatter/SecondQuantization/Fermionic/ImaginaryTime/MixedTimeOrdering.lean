@@ -190,10 +190,11 @@ private theorem orderedTwoPointTimedEvents_zero_of_gt (σ : Fin 0 → ℝ)
       [Sum.inl 0, Sum.inl 1] := by
   have hnot : ¬ τ < τ' := not_lt_of_ge h.le
   have hne : τ' ≠ τ := ne_of_lt h
+  have hnotle : ¬ τ ≤ τ' := not_le_of_gt h
   simp [orderedTwoPointTimedEvents, sortTwoPointTimedEvents,
     twoPointInteractionEventList, insertTwoPointTimedEvent,
     twoPointTimedEventBeforeOrEqual, twoPointTimedEventTime, twoPointTimedEventRank,
-    hnot, hne]
+    hnot, hne, hnotle]
 
 set_option linter.unusedSimpArgs false in
 private theorem orderedTwoPointTimedEvents_zero_of_lt (σ : Fin 0 → ℝ)
@@ -202,7 +203,8 @@ private theorem orderedTwoPointTimedEvents_zero_of_lt (σ : Fin 0 → ℝ)
       [Sum.inl 1, Sum.inl 0] := by
   simp [orderedTwoPointTimedEvents, sortTwoPointTimedEvents,
     twoPointInteractionEventList, insertTwoPointTimedEvent,
-    twoPointTimedEventBeforeOrEqual, twoPointTimedEventTime, twoPointTimedEventRank, h]
+    twoPointTimedEventBeforeOrEqual, twoPointTimedEventTime, twoPointTimedEventRank,
+    h, h.le, h.ne]
 
 /-- At interaction order zero and `τ' < τ`, mixed ordering reduces to the ordinary two-point
 ordered product with the annihilation field on the left. -/
