@@ -66,10 +66,14 @@ theorem lehmannDenominator_eq_retardedSpectralShift
             (kuboBastinRetardedEnergy hbar omega energyₘ)
             (kuboBastinEnergyBroadening hbar eta) -
           (energyₙ : ℂ)) := by
-  apply Complex.ext <;>
-    simp [lehmannDenominator, retardedSpectralParameter,
-      kuboBastinRetardedEnergy, kuboBastinEnergyBroadening] <;>
-    field_simp [hhbar] <;>
+  apply Complex.ext
+  · simp [lehmannDenominator, retardedSpectralParameter,
+      kuboBastinRetardedEnergy, kuboBastinEnergyBroadening]
+    field_simp [hhbar]
+    ring
+  · simp [lehmannDenominator, retardedSpectralParameter,
+      kuboBastinRetardedEnergy, kuboBastinEnergyBroadening]
+    field_simp [hhbar]
     ring
 
 /-- The retarded spectral shift is nonzero at positive switching rate. -/
