@@ -39,8 +39,8 @@ noncomputable def retardedAdvancedResolventDifference
 /-- Real-energy derivative of the retarded-minus-advanced resolvent difference. -/
 noncomputable def retardedAdvancedResolventDifferenceDerivative
     (hamiltonian : H →L[ℂ] H) (energy broadening : ℝ) : H →L[ℂ] H :=
-  -(retardedResolvent hamiltonian energy broadening) ^ 2 -
-    (-(advancedResolvent hamiltonian energy broadening) ^ 2)
+  -(retardedResolvent hamiltonian energy broadening) ^ 2 +
+    (advancedResolvent hamiltonian energy broadening) ^ 2
 
 /-- The operator factor multiplying the occupation derivative in the traditional
 Smrčka–Středa `I` contribution, before its overall scalar normalization. -/
@@ -55,8 +55,8 @@ noncomputable def smrckaStredaSurfaceFactor
 noncomputable def smrckaStredaSurfaceFactorDerivative
     (hamiltonian current₁ current₂ : H →L[ℂ] H)
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  (current₁ * (-(retardedResolvent hamiltonian energy broadening) ^ 2) * current₂ -
-      current₂ * (-(advancedResolvent hamiltonian energy broadening) ^ 2) * current₁) *
+  (-(current₁ * (retardedResolvent hamiltonian energy broadening) ^ 2 * current₂) +
+      current₂ * (advancedResolvent hamiltonian energy broadening) ^ 2 * current₁) *
       retardedAdvancedResolventDifference hamiltonian energy broadening +
     (current₁ * retardedResolvent hamiltonian energy broadening * current₂ -
       current₂ * advancedResolvent hamiltonian energy broadening * current₁) *
@@ -86,8 +86,13 @@ theorem hasDerivAt_retardedAdvancedResolventDifference
       (fun x : ℝ => retardedAdvancedResolventDifference hamiltonian x broadening)
       (retardedAdvancedResolventDifferenceDerivative hamiltonian energy broadening)
       energy := by
-  simpa [retardedAdvancedResolventDifference,
-    retardedAdvancedResolventDifferenceDerivative] using
+  change HasDerivAt
+    ((fun x : ℝ => retardedResolvent hamiltonian x broadening) -
+      fun x : ℝ => advancedResolvent hamiltonian x broadening)
+    (-(retardedResolvent hamiltonian energy broadening) ^ 2 +
+      (advancedResolvent hamiltonian energy broadening) ^ 2)
+    energy
+  exact
     (hasDerivAt_retardedResolvent_energy
       hamiltonian hself energy broadening hbroadening).sub
       (hasDerivAt_advancedResolvent_energy
@@ -113,8 +118,20 @@ theorem hasDerivAt_smrckaStredaSurfaceFactor
   have hleft := hleftRetarded.sub hleftAdvanced
   have hdifference := hasDerivAt_retardedAdvancedResolventDifference
     hamiltonian hself energy broadening hbroadening
-  simpa [smrckaStredaSurfaceFactor, smrckaStredaSurfaceFactorDerivative,
-    retardedAdvancedResolventDifferenceDerivative] using hleft.mul hdifference
+  change HasDerivAt
+    (((fun x : ℝ =>
+        current₁ * retardedResolvent hamiltonian x broadening * current₂) -
+      fun x : ℝ =>
+        current₂ * advancedResolvent hamiltonian x broadening * current₁) *
+      fun x : ℝ => retardedAdvancedResolventDifference hamiltonian x broadening)
+    ((-(current₁ * (retardedResolvent hamiltonian energy broadening) ^ 2 * current₂) +
+        current₂ * (advancedResolvent hamiltonian energy broadening) ^ 2 * current₁) *
+        retardedAdvancedResolventDifference hamiltonian energy broadening +
+      (current₁ * retardedResolvent hamiltonian energy broadening * current₂ -
+        current₂ * advancedResolvent hamiltonian energy broadening * current₁) *
+        retardedAdvancedResolventDifferenceDerivative hamiltonian energy broadening)
+    energy
+  exact hleft.mul hdifference
 
 /-- The scaled surface primitive has the explicitly stored derivative. -/
 theorem hasDerivAt_regularizedStredaSurfacePrimitiveOperator
@@ -127,8 +144,14 @@ theorem hasDerivAt_regularizedStredaSurfacePrimitiveOperator
       (regularizedStredaSurfacePrimitiveOperatorDerivative
         hamiltonian current₁ current₂ energy broadening)
       energy := by
-  simpa [regularizedStredaSurfacePrimitiveOperator,
-    regularizedStredaSurfacePrimitiveOperatorDerivative] using
+  change HasDerivAt
+    ((-(1 / 2 : ℂ)) • fun x : ℝ =>
+      smrckaStredaSurfaceFactor hamiltonian current₁ current₂ x broadening)
+    ((-(1 / 2 : ℂ)) •
+      smrckaStredaSurfaceFactorDerivative
+        hamiltonian current₁ current₂ energy broadening)
+    energy
+  exact
     (hasDerivAt_smrckaStredaSurfaceFactor
       hamiltonian hself current₁ current₂ energy broadening hbroadening).const_smul
       (-(1 / 2 : ℂ))
@@ -138,8 +161,8 @@ physical prefactor omitted. -/
 noncomputable def regularizedBastinOperatorIntegrand
     (hamiltonian current₁ current₂ : H →L[ℂ] H)
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  -((current₁ * (-(retardedResolvent hamiltonian energy broadening) ^ 2) * current₂ -
-      current₂ * (-(advancedResolvent hamiltonian energy broadening) ^ 2) * current₁) *
+  -((-(current₁ * (retardedResolvent hamiltonian energy broadening) ^ 2 * current₂) +
+      current₂ * (advancedResolvent hamiltonian energy broadening) ^ 2 * current₁) *
     retardedAdvancedResolventDifference hamiltonian energy broadening)
 
 /-- Finite-broadening residual after removing the derivative of the chosen surface primitive from
@@ -154,6 +177,7 @@ noncomputable def regularizedStredaResidualSeaOperatorKernel
 
 /-- Pointwise finite-broadening decomposition into the surface-primitive derivative and the
 residual sea kernel. -/
+omit [CompleteSpace H] in
 theorem regularizedBastinOperatorIntegrand_eq_surfaceDerivative_add_residualSea
     (hamiltonian current₁ current₂ : H →L[ℂ] H)
     (energy broadening : ℝ) :
