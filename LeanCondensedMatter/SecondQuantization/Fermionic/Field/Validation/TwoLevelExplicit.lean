@@ -57,8 +57,10 @@ theorem twoLevel_scalarCurrent_spectralTraceSum_one_one :
         twoLevelScalarCurrent twoLevelScalarCurrent 1 1 = -2 := by
   rw [twoLevel_scalarCurrent_spectralTraceSum]
   apply Complex.ext
-  · norm_num [retardedSpectralParameter, advancedSpectralParameter]
-  · norm_num [retardedSpectralParameter, advancedSpectralParameter]
+  · norm_num [retardedSpectralParameter, advancedSpectralParameter,
+      Complex.normSq, pow_two]
+  · norm_num [retardedSpectralParameter, advancedSpectralParameter,
+      Complex.normSq, pow_two]
 
 /-- The canonical ordinary-trace Bastin integrand has the same explicit nonzero value. -/
 theorem twoLevel_scalarCurrent_bastinTrace_one_one :
