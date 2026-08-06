@@ -102,8 +102,7 @@ theorem algebraicToCompleted_denseRange :
   by_cases h : m = n
   · subst m
     simp [completedBasisState, lp.single_apply]
-  · have hnm : n ≠ m := Ne.symm h
-    simp [completedBasisState, lp.single_apply, h, hnm, Pi.single_eq_of_ne]
+  · simp [completedBasisState, lp.single_apply, h, Pi.single_eq_of_ne]
 
 variable [LinearOrder Mode]
 
