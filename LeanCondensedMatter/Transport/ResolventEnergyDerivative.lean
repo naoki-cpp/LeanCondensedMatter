@@ -60,9 +60,9 @@ theorem hasDerivAt_retardedResolvent_energy
     (hasDerivAt_retardedSpectralParameter_energy energy broadening).hasFDerivAt
   have hcomp := (houter.comp energy hinner).hasDerivAt
   have hvalue :
-      ((ContinuousLinearMap.restrictScalars ℝ
-          (ContinuousLinearMap.smulRight 1
-            (-(retardedResolvent hamiltonian energy broadening) ^ 2)) ∘SL
+      (((ContinuousLinearMap.smulRight 1
+          (-(retardedResolvent hamiltonian energy broadening) ^ 2) :
+            ℂ →L[ℂ] (H →L[ℂ] H)).restrictScalars ℝ ∘SL
         ContinuousLinearMap.toSpanSingleton ℝ 1) 1) =
         -(retardedResolvent hamiltonian energy broadening) ^ 2 := by
     change (1 : ℂ) • (-(retardedResolvent hamiltonian energy broadening) ^ 2) = _
@@ -90,9 +90,9 @@ theorem hasDerivAt_advancedResolvent_energy
     (hasDerivAt_advancedSpectralParameter_energy energy broadening).hasFDerivAt
   have hcomp := (houter.comp energy hinner).hasDerivAt
   have hvalue :
-      ((ContinuousLinearMap.restrictScalars ℝ
-          (ContinuousLinearMap.smulRight 1
-            (-(advancedResolvent hamiltonian energy broadening) ^ 2)) ∘SL
+      (((ContinuousLinearMap.smulRight 1
+          (-(advancedResolvent hamiltonian energy broadening) ^ 2) :
+            ℂ →L[ℂ] (H →L[ℂ] H)).restrictScalars ℝ ∘SL
         ContinuousLinearMap.toSpanSingleton ℝ 1) 1) =
         -(advancedResolvent hamiltonian energy broadening) ^ 2 := by
     change (1 : ℂ) • (-(advancedResolvent hamiltonian energy broadening) ^ 2) = _
