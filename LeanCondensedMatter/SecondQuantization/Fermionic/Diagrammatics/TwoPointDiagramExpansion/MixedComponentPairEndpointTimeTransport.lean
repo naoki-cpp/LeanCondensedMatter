@@ -8,11 +8,13 @@ set_option linter.style.header false
 
 Pair transport across interaction-time assignments is defined through the time-independent
 restricted external or vacuum pairing. Position transport is defined through the time-independent
-standard component-leg fiber. This module proves that the two transports agree on pair endpoints up
-to the unavoidable normalization swap of a `Pairing.NormalizedPair`.
+standard component-leg fiber. This module first proves that the two transports agree on pair
+endpoints up to the normalization swap of a `Pairing.NormalizedPair`.
 
-This is the endpoint-coordinate bridge needed before local interaction-time equality can be used to
-rule out the swap and prove preservation of crossings and finite Gibbs contractions.
+When the interaction times agree on the component, component-position transport preserves strict
+order. The normalization swap is then impossible, so pair transport agrees with position transport
+on both endpoints in their original order. This is the endpoint-coordinate bridge needed for
+preservation of crossings and finite Gibbs contractions.
 -/
 
 namespace SecondQuantization
@@ -153,6 +155,58 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv_endpoints_e
         simpa using congrArg Prod.snd hcoords
       · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
         simpa using congrArg Prod.fst hcoords
+
+/-- Under component-local equality of interaction times, canonical pair-time transport preserves the
+normalized endpoint order exactly; the swap alternative is impossible. -/
+theorem FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv_endpoints_eq
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.1.componentPartition.parts)
+    (hTime : d.ComponentTimeEq B σ υ)
+    (pr : d.MixedComponentPair τ τ' σ B) :
+    let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
+    d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
+        d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+          (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) ∧
+      d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
+        d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+          (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) := by
+  classical
+  let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
+  change d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) = _ ∧
+    d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) = _
+  have hCases :
+      (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
+          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) ∧
+        d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
+          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1))) ∨
+      (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
+          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) ∧
+        d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
+          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+            (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) := by
+    simpa [q] using
+      d.mixedComponentPairTimeEquiv_endpoints_eq_or_swap τ τ' σ υ B pr
+  rcases hCases with hSame | hSwap
+  · exact hSame
+  · have hSource :
+        (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)).1 <
+          (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)).1 :=
+      ((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff
+        pr.1.1.1 pr.1.1.2).mp pr.1.2 |>.1
+    have hTransport :=
+      (d.mixedComponentPositionTimeEquiv_lt_iff τ τ' σ υ B hTime
+        (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))
+        (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1))).1 hSource
+    have hTarget :
+        (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0)).1 <
+          (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1)).1 :=
+      ((d.pairingInMixedOrder τ τ' υ).mem_pairs_iff
+        q.1.1.1 q.1.1.2).mp q.1.2 |>.1
+    rw [hSwap.1, hSwap.2] at hTarget
+    exact (lt_asymm hTarget hTransport).elim
 
 end Fermionic
 end SecondQuantization
