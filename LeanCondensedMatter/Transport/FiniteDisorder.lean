@@ -47,7 +47,7 @@ variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
 /-- Exact configuration Hamiltonian `Hω = H₀ + Vω`. -/
 noncomputable def configurationHamiltonian (ω : Ω) : Observable H :=
-  ⟨ensemble.baseHamiltonian.1 + ensemble.impurityPotential ω |>.1, by
+  ⟨ensemble.baseHamiltonian.1 + (ensemble.impurityPotential ω).1, by
     exact ensemble.baseHamiltonian.2.add (ensemble.impurityPotential ω).2⟩
 
 @[simp]
