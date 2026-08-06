@@ -9,7 +9,7 @@ set_option linter.style.header false
 # Structural properties of the incidence-algebra Möbius function
 
 The Möbius function is invariant under order isomorphism, agrees with the ambient order when
-computed in a finite down-set, and is multiplicative over finite dependent products. The
+computed in a finite principal interval, and is multiplicative over finite dependent products. The
 coefficient ring is an arbitrary commutative ring; no partition-lattice or complex-number
 specialization is built into this module.
 -/
@@ -50,13 +50,14 @@ theorem mu_orderIso_apply {R α β : Type*} [CommRing R]
       Finset.card_lt_card (Finset.Icc_ssubset_Icc_right (hz.1.trans hz.2.le) le_rfl hz.2)
     exact ih _ hcard x z rfl
 
-/-- A finite down-set inherits a locally finite order. -/
+/-- A finite principal lower interval inherits a locally finite order. -/
 noncomputable instance instLocallyFiniteOrderSubtypeLe {α : Type*} [Fintype α]
     [PartialOrder α] {z : α} : LocallyFiniteOrder {t : α // t ≤ z} := by
   classical
   exact Fintype.toLocallyFiniteOrder
 
-/-- The Möbius function computed in a finite down-set agrees with the ambient Möbius function. -/
+/-- The Möbius function computed in a finite principal lower interval agrees with the ambient
+Möbius function. -/
 theorem mu_subtype_le_apply {R α : Type*} [CommRing R]
     [Fintype α] [PartialOrder α] [LocallyFiniteOrder α]
     [DecidableEq α] {z : α} (x y : {t : α // t ≤ z}) :
@@ -73,6 +74,45 @@ theorem mu_subtype_le_apply {R α : Type*} [CommRing R]
     have hsum : ∑ w ∈ Finset.Ico x y, mu R x w = ∑ t ∈ Finset.Ico x.1 y.1, mu R x.1 t := by
       refine Finset.sum_bij' (fun w _ => w.1)
         (fun t ht => (⟨t, (Finset.mem_Ico.1 ht).2.le.trans y.2⟩ : {t : α // t ≤ z}))
+        ?_ ?_ ?_ ?_ ?_
+      · intro w hw; exact (hIco w).1 hw
+      · intro t ht; exact (hIco _).2 (by simpa using ht)
+      · intro w _; rfl
+      · intro t _; rfl
+      · intro w hw
+        have hw' : w ∈ Finset.Ico x y := hw
+        rw [Finset.mem_Ico] at hw'
+        have hcard : (Finset.Icc x.1 w.1).card < (Finset.Icc x.1 y.1).card :=
+          Finset.card_lt_card (Finset.Icc_ssubset_Icc_right
+            ((Subtype.coe_le_coe.2 hw'.1).trans (Subtype.coe_lt_coe.2 hw'.2).le) le_rfl
+            (Subtype.coe_lt_coe.2 hw'.2))
+        exact ih _ hcard x w rfl
+    rw [mu_eq_neg_sum_Ico_of_ne hxy, mu_eq_neg_sum_Ico_of_ne hxy1, hsum]
+
+/-- A finite principal upper interval inherits a locally finite order. -/
+noncomputable instance instLocallyFiniteOrderSubtypeGe {α : Type*} [Fintype α]
+    [PartialOrder α] {z : α} : LocallyFiniteOrder {t : α // z ≤ t} := by
+  classical
+  exact Fintype.toLocallyFiniteOrder
+
+/-- The Möbius function computed in a finite principal upper interval agrees with the ambient
+Möbius function. -/
+theorem mu_subtype_ge_apply {R α : Type*} [CommRing R]
+    [Fintype α] [PartialOrder α] [LocallyFiniteOrder α]
+    [DecidableEq α] {z : α} (x y : {t : α // z ≤ t}) :
+    mu R x y = mu R x.1 y.1 := by
+  induction hn : (Finset.Icc x.1 y.1).card using Nat.strong_induction_on generalizing x y with
+  | _ n ih =>
+    subst hn
+    by_cases hxy : x = y
+    · subst hxy; simp
+    have hxy1 : x.1 ≠ y.1 := fun h => hxy (Subtype.ext h)
+    have hIco : ∀ w : {t : α // z ≤ t}, w ∈ Finset.Ico x y ↔ w.1 ∈ Finset.Ico x.1 y.1 := by
+      intro w
+      simp only [Finset.mem_Ico, Subtype.coe_lt_coe, Subtype.coe_le_coe]
+    have hsum : ∑ w ∈ Finset.Ico x y, mu R x w = ∑ t ∈ Finset.Ico x.1 y.1, mu R x.1 t := by
+      refine Finset.sum_bij' (fun w _ => w.1)
+        (fun t ht => (⟨t, x.2.trans (Finset.mem_Ico.1 ht).1⟩ : {t : α // z ≤ t}))
         ?_ ?_ ?_ ?_ ?_
       · intro w hw; exact (hIco w).1 hw
       · intro t ht; exact (hIco _).2 (by simpa using ht)

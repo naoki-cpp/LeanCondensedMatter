@@ -6,8 +6,7 @@ See [notes/roadmap.md](../roadmap.md) for the status table and how this track fi
 
 Status: split into three sub-targets, tracked separately in `notes/roadmap.md`'s table:
 - **Partition-lattice refinement/Möbius factorization — `proved`.**
-- **Explicit partition-lattice Möbius formula (`(-1)^(n-1)(n-1)!`) — `stated`** (not yet proved; see
-  "Not yet done" below).
+- **Explicit partition-lattice Möbius formula (`(-1)^(n-1)(n-1)!`) — `proved`.**
 - **Moment–cumulant inversion formula — `proved`**, in
   `LeanCondensedMatter/Combinatorics/MomentCumulant.lean`. See that section below.
 
@@ -33,9 +32,29 @@ This exhibits the interval `[⊥, σ]` in the partition lattice as (in bijection
 
 In `PartitionLattice.lean` itself, `restrict_self_part_eq_top` (`σ.restrict (σ.le hB) = ⊤` for `B ∈ σ.parts`) identifies `σ`'s own image under the fiber correspondence with the all-`⊤` element, closing the argument.
 
-**Not yet done (Möbius formula):** the explicit closed-form factorial formula for each
-`mu ℤ (π.restrict (σ.le hB)) ⊤` (a single-block Möbius function) is not yet proved — see
-`notes/caveats.md` for attempted routes and next steps.
+**The explicit Möbius formula is now proved.**
+`LeanCondensedMatter/Combinatorics/SetPartition/Coarsening.lean` identifies the upper interval
+`{σ // π ≤ σ}` with `Finpartition π.parts` through
+`Finpartition.coarseningsOrderIsoBlockPartitions`. Consequently
+`Finpartition.mu_to_top_eq_mu_bot_top_parts` reduces `mu R π ⊤` to the bottom-to-top coefficient
+of the partition lattice on the block set `π.parts`.
+
+`LeanCondensedMatter/Combinatorics/SetPartition/MobiusFormula.lean` then evaluates that coefficient.
+The proof chooses the moment function that is `1` on sets of cardinality at most one and `0`
+otherwise. Its partition product is supported only at the discrete partition, so its cumulant is
+exactly `mu ℂ ⊥ ⊤`. The existing formal-log/cumulant coefficient bridge evaluates the same
+cumulant from `log (1 + X)`, giving the alternating factorial coefficient; a recursive cast lemma
+returns the result to `ℤ`.
+
+The public conclusions are:
+- `Finpartition.mu_bot_top_eq_factorial` — for `S ≠ ∅`,
+  `mu ℤ (⊥ : Finpartition S) ⊤ = (-1)^(S.card - 1) * (S.card - 1)!`;
+- `Finpartition.mu_bot_top_eq_factorial_ite` — the total formula, with value `1` for the empty
+  partition lattice;
+- `Finpartition.mu_to_top_eq_factorial` — the same formula for an arbitrary partition `π`, in
+  terms of `π.parts.card`;
+- `Finpartition.mu_eq_prod_factorial` — the explicit formula for every interval `π ≤ σ`, obtained
+  by substituting the single-block result into `mu_eq_prod_restrict`.
 
 ## Moment–cumulant inversion
 
@@ -115,8 +134,8 @@ result; `log` and diagram connectedness are not yet formalized.
   `(π.restrict hb).parts`.
 - `Finpartition.partitionProduct_eq_mul_of_isIndependentAcross` — the partition-level
   factorization: under `IsIndependentAcross m A B`, for any `π : Finpartition (A ⊔ B)`,
-  `partitionProduct m π = partitionProduct m (π.restrict le_sup_left) * partitionProduct m
-  (π.restrict le_sup_right)`.
+  `partitionProduct m π = partitionProduct m (π.restrict le_sup_left) *
+  partitionProduct m (π.restrict le_sup_right)`.
 - `Finpartition.splitCumulant m A B T := if T ≤ A ∨ T ≤ B then cumulantFromMoment m T else 0` — a
   *candidate* cumulant that is forced to vanish on sets straddling both `A` and `B`, sidestepping
   the "partial matching between blocks" combinatorics a direct fiber-sum argument would need.
