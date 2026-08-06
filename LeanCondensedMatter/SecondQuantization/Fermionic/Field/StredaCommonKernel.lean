@@ -16,6 +16,7 @@ open MeasureTheory QuantumTheory.LinearResponse Set
 
 noncomputable section
 
+/-- A full-line function encoding the oriented interval integral from `a` to `b`. -/
 noncomputable def orientedIntervalIntegrand
     (f : ℝ → ℂ) (a b energy : ℝ) : ℂ :=
   (Ioc a b).indicator f energy - (Ioc b a).indicator f energy
@@ -43,6 +44,7 @@ variable {Site E ι : Type*}
 variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
 
+/-- The full-line localized integrand associated with one finite Bastin transition. -/
 noncomputable def finiteKuboBastinCommonTransitionIntegrand
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -98,6 +100,7 @@ theorem integral_finiteKuboBastinCommonTransitionIntegrand
 
 variable [Fintype ι]
 
+/-- The finite sum of all localized transition integrands on the full energy axis. -/
 noncomputable def finiteKuboBastinCommonEnergyKernel
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -141,6 +144,7 @@ theorem integral_finiteKuboBastinCommonEnergyKernel
     exact integrable_finiteKuboBastinCommonTransitionIntegrand
       system data interpolation geometry direction K q omega eta mn
 
+/-- The common-energy-kernel conductivity with contact and finite-volume normalization. -/
 noncomputable def finiteKuboBastinCommonEnergyDirectionalConductivity
     (convention : FiniteVolumeConductivityConvention)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
