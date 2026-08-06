@@ -157,7 +157,7 @@ structure PurePointLehmannData
   /-- Energy assigned to each basis vector. -/
   energy : ι → ℝ
   hamiltonian_apply_basis : ∀ i,
-    system.hamiltonian (basis i) = (energy i : ℂ) • basis i
+    system.hamiltonian.1 (basis i) = (energy i : ℂ) • basis i
   /-- Normalized diagonal probability assigned to each basis vector. -/
   probability : ι → ℝ
   probability_nonneg : ∀ i, 0 ≤ probability i
