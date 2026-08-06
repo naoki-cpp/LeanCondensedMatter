@@ -50,7 +50,7 @@ theorem diagonalDet_eq_det_one_add_diagonalOp [Finite ι]
     by_cases hij : i = j
     · subst i
       simp
-    · simp [Matrix.diagonal_apply, hij, Ne.symm hij]
+    · simp [hij]
   rw [hmatrix, Matrix.det_diagonal]
 
 end Fredholm
