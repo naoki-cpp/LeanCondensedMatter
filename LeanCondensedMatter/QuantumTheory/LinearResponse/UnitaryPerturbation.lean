@@ -26,8 +26,8 @@ ordinary differential equation
 
 Both defects vanish initially. The existing vector-valued Grönwall theorem therefore proves the
 two unitary identities on every compact nonnegative interval where the continuity and boundedness
-hypotheses hold. The left identity also bundles the finite-coupling pullback of an ordinary
-normalized expectation as another `NormalizedExpectation`.
+hypotheses hold. The left identity also proves that the finite-coupling observable map is unital, so
+the ordinary expectation can be pulled back through the canonical `NormalizedExpectation` API.
 -/
 
 namespace QuantumTheory
@@ -213,8 +213,24 @@ theorem timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint
     mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
       system hVself lam hβ hM hVcont hVbound ht⟩
 
-/-- The finite-coupling perturbed expectation, bundled as a normalized expectation using
-`U(t)† U(t) = 1`. -/
+/-- For a pointwise Hermitian perturbation, the finite-coupling observable map preserves the
+identity. This is the exact hypothesis needed to pull back a normalized expectation. -/
+theorem timeDependentPerturbedObservableMap_one_of_isSelfAdjoint
+    {V : ℝ → (H →L[ℂ] H)} (hVself : ∀ s, IsSelfAdjoint (V s))
+    (lam : ℝ) {β M t : ℝ} (hβ : 0 ≤ β) (hM : 0 ≤ M)
+    (hVcont : Continuous (timeDependentInteractionPerturbation system V))
+    (hVbound : ∀ s ∈ Icc (0 : ℝ) β,
+      ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
+    (ht : t ∈ Icc (0 : ℝ) β) :
+    timeDependentPerturbedObservableMap system V lam t 1 = 1 := by
+  rw [timeDependentPerturbedObservableMap_apply]
+  simp [timeDependentPerturbedObservable, heisenbergEvolution,
+    freePropagator_neg_mul,
+    star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
+      system hVself lam hβ hM hVcont hVbound ht]
+
+/-- The finite-coupling perturbed expectation is the pullback of the ordinary expectation along the
+unital perturbed-observable map. -/
 noncomputable def timeDependentPerturbedNormalizedExpectation
     (expectation : NormalizedExpectation H)
     {V : ℝ → (H →L[ℂ] H)} (hVself : ∀ s, IsSelfAdjoint (V s))
@@ -222,15 +238,10 @@ noncomputable def timeDependentPerturbedNormalizedExpectation
     (hVcont : Continuous (timeDependentInteractionPerturbation system V))
     (hVbound : ∀ s ∈ Icc (0 : ℝ) β,
       ‖timeDependentInteractionPerturbation system V s‖ ≤ M)
-    (ht : t ∈ Icc (0 : ℝ) β) : NormalizedExpectation H where
-  toContinuousLinearMap :=
-    timeDependentPerturbedExpectationFunctional system expectation V lam t
-  map_one := by
-    simp [timeDependentPerturbedExpectationFunctional_apply,
-      timeDependentPerturbedObservable, heisenbergEvolution,
-      freePropagator_neg_mul,
-      star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
-        system hVself lam hβ hM hVcont hVbound ht]
+    (ht : t ∈ Icc (0 : ℝ) β) : NormalizedExpectation H :=
+  expectation.pullback (timeDependentPerturbedObservableMap system V lam t)
+    (timeDependentPerturbedObservableMap_one_of_isSelfAdjoint
+      system hVself lam hβ hM hVcont hVbound ht)
 
 @[simp]
 theorem timeDependentPerturbedNormalizedExpectation_apply
@@ -244,7 +255,8 @@ theorem timeDependentPerturbedNormalizedExpectation_apply
     timeDependentPerturbedNormalizedExpectation system expectation hVself lam
         hβ hM hVcont hVbound ht A =
       expectation (timeDependentPerturbedObservable system V A lam t) := by
-  rfl
+  simp [timeDependentPerturbedNormalizedExpectation,
+    timeDependentPerturbedObservableMap_apply]
 
 end
 end LinearResponse

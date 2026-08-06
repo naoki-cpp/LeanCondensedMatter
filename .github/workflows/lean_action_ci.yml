@@ -30,6 +30,7 @@ jobs:
           python3 scripts/check_quantum_equations_of_motion.py
           python3 scripts/check_quantum_conservation_laws.py
           python3 scripts/check_quantum_pure_point_density.py
+          python3 scripts/check_quantum_normalized_expectation.py
       - uses: leanprover/lean-action@v1
         with:
           # Keep the whole library warning-free, including modules unchanged by the PR.
