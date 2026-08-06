@@ -28,6 +28,14 @@ theorem diagonalDet_eq_det_one_add_diagonalOp [Finite ι]
   have hB (i : ι) : B i = b i := by
     simp [B]
   have hcoeff : Summable fun i => ‖coeff i‖ := Summable.of_finite
+  have happly (j : ι) :
+      ((↑(1 : H →L[ℂ] H) +
+          ↑(HilbertBasis.diagonalOp b coeff) : H →ₗ[ℂ] H) (B j)) =
+        (1 + coeff j) • B j := by
+    rw [hB j]
+    change b j + HilbertBasis.diagonalOp b coeff (b j) = _
+    rw [HilbertBasis.diagonalOp_apply_basis b coeff hcoeff j]
+    simp [add_smul]
   rw [diagonalDet_fintype]
   change (∏ i, (1 + coeff i)) =
     LinearMap.det
@@ -38,8 +46,7 @@ theorem diagonalDet_eq_det_one_add_diagonalOp [Finite ι]
           (((1 : H →L[ℂ] H) + HilbertBasis.diagonalOp b coeff) : H →ₗ[ℂ] H) =
         Matrix.diagonal (fun i => 1 + coeff i) := by
     ext i j
-    rw [LinearMap.toMatrix_apply, hB j,
-      HilbertBasis.one_add_diagonalOp_apply_basis b coeff hcoeff j, ← hB j]
+    rw [LinearMap.toMatrix_apply, happly j]
     simp [Matrix.diagonal_apply]
   rw [hmatrix, Matrix.det_diagonal]
 
