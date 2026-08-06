@@ -193,16 +193,18 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv_endpoints_e
   · exact hSame
   · have hSource :
         (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)).1 <
-          (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)).1 := by
-      simpa using pr.1.2
+          (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)).1 :=
+      ((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff
+        pr.1.1.1 pr.1.1.2).mp pr.1.2 |>.1
     have hTransport :=
       (d.mixedComponentPositionTimeEquiv_lt_iff τ τ' σ υ B hTime
         (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))
         (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1))).1 hSource
     have hTarget :
         (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0)).1 <
-          (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1)).1 := by
-      simpa using q.1.2
+          (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1)).1 :=
+      ((d.pairingInMixedOrder τ τ' υ).mem_pairs_iff
+        q.1.1.1 q.1.1.2).mp q.1.2 |>.1
     rw [hSwap.1, hSwap.2] at hTarget
     exact (lt_asymm hTarget hTransport).elim
 
