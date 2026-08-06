@@ -7,32 +7,17 @@ import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering
 set_option linter.style.header false
 
 /-!
-# The closed-form free Gibbs Green function
+# Closed-form free Gibbs Green function
 
-Phase 9 follow-up (`notes/roadmaps/second-quantization.md`): the mixed contraction closed forms
-`⟨c_i c_j†⟩` and `⟨c_j† c_i⟩` that `weightedFreeTwoPointFunction_of_gt`/`_of_lt` reduce
-`freeGibbsGreenFunction` to, closing the remaining gap `FreeBoltzmannWeight.lean`'s module
-docstring flags: `G₀,ᵢⱼ = 0` for `i ≠ j`.
+This module evaluates the finite free-fermion imaginary-time Green function in the occupation basis.
+It proves off-diagonal mixed contractions vanish for any diagonal weight, derives the diagonal Gibbs
+contractions from the canonical density operator, and gives the one-sided and equal-time closed
+forms of `freeGibbsGreenFunction`.
 
-**Off-diagonal (`i ≠ j`) vanishing is *not* an instance of the `U(1)` particle-number selection
-rule** (`Common/Algebra/ParticleNumberSelectionRule.lean`): `(annihilate i).comp (create j)` carries
-charge `-1 + 1 = 0`, so the selection rule says nothing about it. The vanishing here is a
-different, finer fact — a basis-level mismatch specific to *which* mode is toggled: acting with
-`create j` then `annihilate i` (`i ≠ j`) on `basisState n` either returns `0` outright, or lands on
-`basisState ((n \ {i}) ∪ {j})`, a set that differs from `n` at mode `i` (removed) whenever it's
-nonzero — so it can never contribute to a diagonal matrix coefficient, regardless of any weight.
-This holds for *any* weight `w`, not just the free Boltzmann one.
-
-The diagonal (`i = j`) case, by contrast, does *not* need a new argument here: `NumberOperator.lean`
-already rewrites `(annihilate i).comp (create i)` as `id - numberOperator i`
-(`annihilate_comp_create_self`, from CAR's `{c_i, c_i†} = id`), so its thermal expectation is
-`1 - ⟨N_i⟩₀,β`, already computed in `FreePartitionFunction.lean`. **The equal-time,
-same-mode case `G₀,ᵢᵢ(τ,τ)` is a separate, third closed form**
-(`freeGibbsGreenFunction_self_time_self`), not a limit of either one-sided formula: it comes from
-`timeOrderedProduct`'s `θ(0) = 1/2` symmetrization convention, and is genuinely discontinuous
-against both one-sided limits (`G₀,ᵢᵢ(τ,τ'⁺) → -(1-f_i)`, `G₀,ᵢᵢ(τ,τ'⁻) → f_i` as `τ' → τ`, their
-difference forced to `-1` by CAR — `WeightedFreeTwoPointFunction.lean`'s module docstring already
-flags this discontinuity).
+Off-diagonal vanishing is mode-specific rather than a consequence of the `U(1)` particle-number
+selection rule: the mixed operators have zero total charge, but toggling distinct modes cannot
+return an occupation basis state to itself. At equal times, the `θ(0) = 1/2` convention in
+`timeOrderedProduct` gives a value distinct from both one-sided limits.
 -/
 
 namespace SecondQuantization

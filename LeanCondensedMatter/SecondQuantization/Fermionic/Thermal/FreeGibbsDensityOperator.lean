@@ -7,8 +7,8 @@ set_option linter.style.header false
 # The canonical free-fermion Gibbs density operator
 
 The finite free-fermion thermal state is the canonical finite Gibbs density operator specialized to
-`fermionEnergy ε`. The canonical state depends only on the free thermal core; coordinate
-normalized-expectation compatibility is kept in the higher `FreeBoltzmannWeight` migration layer.
+`fermionEnergy ε`. This module records its occupation-basis action and identifies density-operator
+expectations of transported algebraic observables with the canonical finite Gibbs expectation.
 -/
 
 namespace SecondQuantization
