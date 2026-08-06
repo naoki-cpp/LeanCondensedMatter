@@ -5,6 +5,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedPositionLeg
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairEquiv
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPositionTimeTransport
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentCrossingParity
@@ -28,12 +29,12 @@ set_option linter.style.header false
 
 Atomic flattening, the finite-temperature pairing expansion, transport of mixed-time pairings to
 external-leg Wick diagrams, ordering inside mixed event blocks and their standard-leg coordinates,
-restriction of mixed-order positions, partners, and normalized pairs to full components,
-factorization of mixed-time contraction products, decomposition of mixed crossing counts, reduction
-of their parity to complete component-position inversions and concrete vacuum four-leg event blocks,
-unconditional factorization of mixed pairing weights, pairing values, comparison of component pairs
-across interaction-time assignments, coupling products, fixed-time values, and component-local Dyson
-signs, together with the bridge from pair transport to local interaction-time dependence, the
-factorized ordered-simplex integrand, and the perturbative coefficient for the imaginary-time
-two-point function with quartic interaction vertices.
+restriction of mixed-order positions, partners, and normalized pairs to full components, canonical
+comparison of component positions and pairs across interaction-time assignments, factorization of
+mixed-time contraction products, decomposition of mixed crossing counts, reduction of their parity
+to complete component-position inversions and concrete vacuum four-leg event blocks, unconditional
+factorization of mixed pairing weights, pairing values, coupling products, fixed-time values, and
+component-local Dyson signs, together with the bridge from pair transport to local interaction-time
+dependence, the factorized ordered-simplex integrand, and the perturbative coefficient for the
+imaginary-time two-point function with quartic interaction vertices.
 -/
