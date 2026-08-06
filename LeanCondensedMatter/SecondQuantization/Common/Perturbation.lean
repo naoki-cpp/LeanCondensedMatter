@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.MatrixCoefficientDyson
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteAnalyticBridge
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.DysonExpansion
@@ -15,11 +16,10 @@ import LeanCondensedMatter.SecondQuantization.Common.Perturbation.AnalyticDysonT
 set_option linter.style.header false
 
 /-!
-# Finite-basis perturbative infrastructure
+# Perturbative infrastructure
 
-Coefficientwise interval integration, its finite-dimensional continuous-operator realization,
-statistics-independent algebraic and continuous Dyson coefficients, factorial norm majorants,
-the norm-convergent analytic Dyson evolution, its Volterra equation and exact operator-exponential
-identity, the algebraic and analytic time-independent specialization, convergent finite trace series,
-and finite trace power series for endomorphisms on a finite configuration basis.
+The public layer includes a matrix-coefficient first-Dyson boundary valid for arbitrary
+configuration types.  The remaining operator-valued integration, continuous-operator realization,
+full Dyson recursion, norm bounds, analytic evolution, trace series, and exponential identities are
+finite-basis constructions and retain their explicit finiteness assumptions.
 -/
