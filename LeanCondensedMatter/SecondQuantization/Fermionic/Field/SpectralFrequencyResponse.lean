@@ -38,7 +38,7 @@ theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) :
     infiniteTimeAdiabaticDirectionalRetardedCoefficient
         system expectation geometry direction K q ω η =
-      QuantumTheory.LinearResponse.ad​iabaticFrequencyDomainSusceptibility
+      QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility
         system expectation
           (boundedDirectionalCurrent geometry direction
             (system.hbar : ℂ) (q : ℂ) K)
@@ -52,19 +52,19 @@ theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility
         QuantumTheory.LinearResponse.commutatorSusceptibility
           system expectation J J τ 0) =
       ∫ τ : ℝ,
-        QuantumTheory.LinearResponse.ad​iabaticFrequencySusceptibilityIntegrand
+        QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand
           system expectation J J ω η τ
   have hcausal :
       (∫ τ : ℝ,
-          QuantumTheory.LinearResponse.ad​iabaticFrequencySusceptibilityIntegrand
+          QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand
             system expectation J J ω η τ) =
         ∫ τ : ℝ in Ioi 0,
-          QuantumTheory.LinearResponse.ad​iabaticFrequencySusceptibilityIntegrand
+          QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand
             system expectation J J ω η τ := by
     calc
       _ = ∫ τ : ℝ,
           (Ici (0 : ℝ)).indicator
-            (QuantumTheory.LinearResponse.ad​iabaticFrequencySusceptibilityIntegrand
+            (QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand
               system expectation J J ω η) τ := by
         apply integral_congr_ae
         filter_upwards [] with τ
@@ -73,10 +73,10 @@ theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility
         · have hneg : τ < 0 := by
             simpa [Set.mem_Ici, not_le] using hτ
           simp [hτ,
-            QuantumTheory.LinearResponse.ad​iabaticFrequencySusceptibilityIntegrand_eq_zero_of_neg
+            QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand_eq_zero_of_neg
               system expectation J J ω η hneg]
       _ = ∫ τ : ℝ in Ici 0,
-          QuantumTheory.LinearResponse.ad​iabaticFrequencySusceptibilityIntegrand
+          QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand
             system expectation J J ω η τ :=
         integral_indicator measurableSet_Ici
       _ = _ := integral_Ici_eq_integral_Ioi
@@ -84,7 +84,7 @@ theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility
   apply setIntegral_congr_fun measurableSet_Ioi
   intro τ hτ
   have hτnonneg : 0 ≤ τ := le_of_lt hτ
-  rw [QuantumTheory.LinearResponse.ad​iabaticFrequencySusceptibilityIntegrand]
+  rw [QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand]
   rw [QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg
     system expectation J J hτnonneg]
   rw [← adiabaticFrequencyFactor_eq_adiabaticFrequencyPhase]
