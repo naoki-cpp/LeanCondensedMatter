@@ -347,20 +347,19 @@ private theorem twoPointTimedEventBeforeOrEqual_of_position_lt {n : ℕ}
     simpa [pa, pb] using h
   have hrel := (orderedTwoPointTimedEvents_pairwise τ τ' σ).rel_get_of_lt hp
   have ha : l.get pa = a := by
-    change (List.Nodup.getEquivOfForallMemList l
-      (orderedTwoPointTimedEvents_nodup τ τ' σ)
-      (orderedTwoPointTimedEvents_all_mem τ τ' σ)) pa = a
-    simpa [pa, orderedTwoPointTimedEventPosition,
+    simpa [l, pa, orderedTwoPointTimedEventPosition,
       orderedTwoPointTimedEventEquiv] using
-      (orderedTwoPointTimedEventEquiv τ τ' σ).apply_symm_apply a
+      (List.idxOf_get
+        ((List.idxOf_lt_length_iff).2
+          (orderedTwoPointTimedEvents_all_mem τ τ' σ a)))
   have hb : l.get pb = b := by
-    change (List.Nodup.getEquivOfForallMemList l
-      (orderedTwoPointTimedEvents_nodup τ τ' σ)
-      (orderedTwoPointTimedEvents_all_mem τ τ' σ)) pb = b
-    simpa [pb, orderedTwoPointTimedEventPosition,
+    simpa [l, pb, orderedTwoPointTimedEventPosition,
       orderedTwoPointTimedEventEquiv] using
-      (orderedTwoPointTimedEventEquiv τ τ' σ).apply_symm_apply b
-  simpa [l, ha, hb] using hrel
+      (List.idxOf_get
+        ((List.idxOf_lt_length_iff).2
+          (orderedTwoPointTimedEvents_all_mem τ τ' σ b)))
+  rw [ha, hb] at hrel
+  exact hrel
 
 /-- Event-position comparison is exactly strict stable time precedence. -/
 theorem orderedTwoPointTimedEventPosition_lt_iff {n : ℕ}
