@@ -44,7 +44,8 @@ specializations, not parallel APIs.
 | Spectral trace-class theory and trace identities | C | `proved` | [operator algebra](roadmaps/operator-algebra.md#spectral-trace-class-operators) |
 | Hilbert–Schmidt basic, inner-product, and trace infrastructure | C | `proved` | [operator algebra](roadmaps/operator-algebra.md#hilbert–schmidt-operators) |
 | General non-self-adjoint trace-class ideal | C | `idea` | [operator algebra](roadmaps/operator-algebra.md#remaining-operator-analysis) |
-| Fredholm determinant | C | `idea` | [operator algebra](roadmaps/operator-algebra.md#remaining-operator-analysis) |
+| Finite-dimensional Fredholm determinant compatibility | C | `stated` | [Fredholm determinant roadmap](roadmaps/fredholm-determinant.md) · #659 |
+| General Fredholm determinant | C | `idea` | [Fredholm determinant roadmap](roadmaps/fredholm-determinant.md#dependency-graph-for-a-genuine-fredholm-determinant) |
 | Generic bounded Dyson–Volterra theory | C/D | `proved` | `Analysis/Dyson/` · `QuantumTheory/BoundedDyson.lean` |
 | Generic algebraic second-quantization evolution and local-operator layer | D | `proved` | [second-quantization status](roadmaps/second-quantization-status.md) |
 | Finite-mode fermionic thermal, Dyson, and linked-cluster line | D | `proved` | [second quantization](roadmaps/second-quantization.md) |
