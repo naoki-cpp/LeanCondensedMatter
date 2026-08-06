@@ -38,9 +38,9 @@ The bridge `BoundedSystem.toBoundedFreeSystem` forgets transport-specific data a
 Hamiltonian and `ℏ` to the general bounded linear-response API. The reverse direction is
 intentionally unavailable because a free-dynamics system does not determine current or Fermi data.
 
-## Derived response chain
+## Implemented clean response chain
 
-The implemented logical chain is
+The proved logical chain is
 
 ```text
 time-dependent perturbation
@@ -50,40 +50,86 @@ time-dependent perturbation
   → stationary positive-lag representation
   → fixed-positive-rate observation-time limit
   → finite pure-point Lehmann sum plus contact term
-  → finite-volume electric-field conductivity normalization.
+  → finite-volume electric-field conductivity normalization
+  → finite Kubo–Greenwood and Kubo–Bastin forms
+  → static finite-rate target with contact and normalization retained
+  → regularized Středa surface-plus-sea decomposition.
 ```
 
-The fermionic conductivity layer can reuse the volume of `FiniteVolumeSystem` through
-`FiniteVolumeConductivityConvention.ofTransportSystem`. This copies only volume data; matching a
-model Hamiltonian and current with the abstract transport observables remains an explicit theorem
-obligation.
+The dimension-independent resolvent layer proves retarded/advanced invertibility, adjoint,
+difference, and energy-derivative identities for bounded self-adjoint Hamiltonians. Finite
+dimensionality is added only where ordinary traces and finite pure-point sums require it.
 
-## Next resolvent layer
+The static bridge does not identify the causal conductivity with an occupation-weighted Bastin
+integral by definition. The Peierls contact cancellation, switching-rate/energy-broadening
+conversion, volume normalization, and scalar prefactors remain visible in a finite Ward hypothesis.
 
-Issue #366 should define
+Finite two-level and two-site dimer models validate zero-current cases, simultaneous current-sign
+reversal, nonzero traced values, self-adjoint hopping/current constructions, and pointwise
+Bastin–Středa agreement.
+
+## Implemented exact disorder and first Born boundary
+
+The exact finite-disorder layer now provides:
 
 ```text
-Gᴿ(E, η) = (zᴿ(E, η) I - H)⁻¹,
-Gᴬ(E, η) = (zᴬ(E, η) I - H)⁻¹
+finite normalized ensemble Ω
+  → self-adjoint impurity potentials Vω
+  → exact configuration Hamiltonians Hω = H₀ + Vω
+  → configuration-wise finite static conductivities
+  → normalized finite conductivity average
+  → configuration-wise Ward/Bastin representation
+  → averaged traced and spectral Bastin representations.
 ```
 
-and prove invertibility for `η > 0`, the adjoint relation, the resolvent identity, and the energy
-derivative identity at the strongest dimension-independent bounded-operator level supported by
-Mathlib.
+No probability law beyond an explicit normalized finite weight is assumed. The ensemble average
+remains outside each exact configuration response, and contact plus finite-volume normalization
+remain inside it.
 
-Issue #367 should then add finite-dimensionality only where ordinary traces and finite spectral
-sums require it. Its Kubo–Bastin expression must be proved equal to the already-derived finite
-conductivity, including the same current, charge, `ℏ`, volume, frequency, broadening, degeneracy,
-and contact conventions.
+The weak-scattering Born boundary then separates exact and approximate statements:
+
+- exact operator-valued finite averages;
+- explicit centering and covariance data;
+- exact first and once-iterated retarded Dyson identities;
+- exact vanishing of the averaged first-order term under centering;
+- an exact second-order remainder retaining the full configuration resolvent;
+- a clean-propagator Born self-energy;
+- a named Born resolvent approximation;
+- an exact closure error;
+- equality with the approximation only under an explicit closure hypothesis.
+
+This layer does not include SCBA, a dressed internal propagator, or a vertex correction.
+
+## Selected conserving vertex continuation
+
+Issue #372 selects the next vertical slice, documented in
+`notes/roadmaps/impurity-vertex-correction.md` and implemented by #688:
+
+```text
+finite-dimensional SCBA retarded/advanced fixed points
+  + one complex-linear adjoint-compatible covariance superoperator
+  → retarded–advanced ladder kernel from the same covariance
+  → corrected bounded vertex under explicit invertibility
+  → finite charge-vertex Ward-consistency theorem.
+```
+
+The SCBA solution is not defined to be the exact disorder average. The ladder retains non-crossing
+impurity contractions and excludes crossed diagrams. The first conservation result is weaker than
+a full electromagnetic Ward–Takahashi identity and does not yet identify a vertex-corrected dressed
+bubble with the exact Kubo–Středa conductivity.
 
 ## Explicit deferrals
 
-The current bounded clean slice does not claim:
+The current program does not claim:
 
 - unbounded Hamiltonian, current, position, or polarization operators;
 - equivalence of electromagnetic gauges;
-- finite-temperature Fermi–Dirac response;
-- disorder averaging, Born approximations, or vertex corrections;
+- a general finite-temperature Fermi–Dirac response theorem;
+- uncontrolled equality between exact disorder averages and Born or SCBA solutions;
+- crossed impurity diagrams, weak localization, or localization transitions;
+- skew-scattering or side-jump decompositions;
+- a complete electromagnetic Ward–Takahashi identity;
+- a vertex-corrected Kubo–Bastin or Středa conductivity theorem before its source/contact bridge is proved;
 - a general non-self-adjoint trace-class ideal;
 - trace per unit volume or a thermodynamic limit;
 - a DC or zero-broadening limit without an explicit convergence theorem.
