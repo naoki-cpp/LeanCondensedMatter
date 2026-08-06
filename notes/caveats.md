@@ -85,10 +85,6 @@ applies.
 
 ## Combinatorics
 
-- **The explicit closed formula for the partition-lattice Möbius function remains incomplete.** The
-  abstract locally finite order, Möbius inversion, and moment–cumulant infrastructure are available,
-  but the formula `(-1)^(n-1)(n-1)!` and its interval generalization still require a dedicated proof.
-
 - **Formal linked-cluster identities do not imply analytic convergence.** Coefficientwise cumulant
   and connected-diagram theorems are valid independently of convergence of the perturbation series,
   existence of `log Z` outside a formal neighborhood, or a thermodynamic limit.
