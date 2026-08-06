@@ -36,7 +36,7 @@ specializations, not parallel APIs.
 | Uniqueness of the Gibbs free-energy minimizer | A | `idea` | [quantum-theory next steps](roadmaps/quantum-theory-foundations.md#current-next-steps) |
 | Unbounded Hamiltonian and genuine infinite-dimensional Gibbs theory | A/C | `idea` | [operator algebra](roadmaps/operator-algebra.md#unbounded-and-completed-space-boundary) |
 | Partition-lattice refinement and Möbius factorization | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
-| Explicit partition-lattice Möbius formula | B | `stated` | [combinatorics](roadmaps/combinatorics.md) |
+| Explicit partition-lattice Möbius formula | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Moment–cumulant inversion | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Cumulants vanish across independence | B | `proved` | [combinatorics](roadmaps/combinatorics.md) |
 | Formal-log coefficient / finite-set cumulant bridge | B | `proved` | `Combinatorics/PowerSeriesCumulant.lean` |
