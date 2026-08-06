@@ -16,6 +16,7 @@ The project uses Mathlib directly for:
 
 - bounded and compact continuous linear maps;
 - finite-dimensional matrix trace and orthonormal-basis formulas;
+- finite-dimensional determinants through `ContinuousLinearMap.det`;
 - self-adjoint operator spectrum and eigenspaces;
 - continuous functional calculus on C⋆-algebras;
 - Bochner integration and interval integrals;
@@ -82,8 +83,23 @@ non-self-adjoint trace-class maps.
 ## Hilbert–Schmidt API
 
 `Analysis/Operator/HilbertSchmidt/` contains the project-local Hilbert–Schmidt predicate,
-basis-independence results, inner product, and trace reconciliation used by current proofs. No
-pinned-Mathlib replacement covers the same package.
+basis-independence results, adjoint and bounded-composition closure, inner product, and trace
+reconciliation used by current proofs. No pinned-Mathlib replacement covers the same package.
+
+The package does not yet supply a general non-self-adjoint trace-class ideal or a trace on every
+product of two Hilbert–Schmidt operators.
+
+## Determinant boundary
+
+`Mathlib.Topology.Algebra.Module.Determinant` provides `ContinuousLinearMap.det` as the determinant of
+the underlying linear endomorphism. This is the correct API for the explicitly finite-dimensional
+compatibility slice in #659.
+
+The project must not treat that finite-dimensional determinant as a general Fredholm determinant.
+A future infinite-dimensional implementation still requires a non-self-adjoint trace-class ideal,
+a trace norm and completeness theory, a convergent determinant construction, and proofs of the
+structural identities on the valid domain. The scoped dependency graph is recorded in
+`notes/roadmaps/fredholm-determinant.md`.
 
 ## Ordered-simplex and Dyson analysis
 
@@ -134,7 +150,7 @@ The repository does not yet provide:
 
 - a general non-self-adjoint trace-class ideal;
 - a complete Schatten hierarchy;
-- Fredholm determinants;
+- an infinite-dimensional Fredholm determinant;
 - unbounded spectral/functional calculus with domains;
 - completed infinite-mode Fock-space operator theory.
 
