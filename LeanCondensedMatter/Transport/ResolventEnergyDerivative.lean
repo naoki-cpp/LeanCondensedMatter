@@ -58,7 +58,11 @@ theorem hasDerivAt_retardedResolvent_energy
       |>.restrictScalars ℝ
   have hinner :=
     (hasDerivAt_retardedSpectralParameter_energy energy broadening).hasFDerivAt
-  simpa [retardedResolvent] using (houter.comp energy hinner).hasDerivAt
+  have hcomp := (houter.comp energy hinner).hasDerivAt
+  change HasDerivAt
+    (resolvent hamiltonian ∘ fun x : ℝ => retardedSpectralParameter x broadening)
+    (-(resolvent hamiltonian (retardedSpectralParameter energy broadening)) ^ 2) energy
+  exact hcomp
 
 /-- The advanced resolvent differentiated along the real-energy axis is `-(Gᴬ)^2`. -/
 theorem hasDerivAt_advancedResolvent_energy
@@ -75,7 +79,11 @@ theorem hasDerivAt_advancedResolvent_energy
       |>.restrictScalars ℝ
   have hinner :=
     (hasDerivAt_advancedSpectralParameter_energy energy broadening).hasFDerivAt
-  simpa [advancedResolvent] using (houter.comp energy hinner).hasDerivAt
+  have hcomp := (houter.comp energy hinner).hasDerivAt
+  change HasDerivAt
+    (resolvent hamiltonian ∘ fun x : ℝ => advancedSpectralParameter x broadening)
+    (-(resolvent hamiltonian (advancedSpectralParameter energy broadening)) ^ 2) energy
+  exact hcomp
 
 namespace BoundedSystem
 
