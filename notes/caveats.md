@@ -16,12 +16,18 @@ applies.
   Hilbert–Schmidt pairing. It has not yet bundled arbitrary products of two Hilbert–Schmidt
   operators as non-self-adjoint trace-class operators carrying a general trace.
 
-- **A finite-dimensional `det (1 + K)` theorem is not an infinite-dimensional Fredholm
-  determinant.** Mathlib's `ContinuousLinearMap.det` is the correct basis-independent determinant
-  for the finite-dimensional compatibility slice in #659. It must not be used through fallback
-  behavior or weakened hypotheses to claim a determinant for arbitrary operators on an
-  infinite-dimensional Hilbert space. General Fredholm theory still requires a non-self-adjoint
-  trace-class ideal, convergence, and determinant identities on the valid domain.
+- **The first Fredholm determinant slice is diagonal, not general.**
+  Issue #659 targets a genuinely infinite-dimensional determinant for an operator diagonal in an
+  explicit countable Hilbert basis, with absolutely summable coefficients `λ i`, using the
+  convergent product `∏' i, (1 + λ i)`. This does not define a determinant for arbitrary compact,
+  normal, or trace-class operators. Reindexing invariance is required, but independence from an
+  unrelated diagonalizing basis needs a separate spectral-uniqueness theorem.
+
+- **`ContinuousLinearMap.det` is not an infinite-dimensional Fredholm determinant.**
+  Mathlib's determinant is used only for finite-dimensional compatibility. It must not be applied
+  through fallback behavior or weakened hypotheses to define the infinite-dimensional quantity.
+  The general Fredholm theory still requires a non-self-adjoint trace-class ideal, convergence, and
+  determinant identities on the valid domain.
 
 - **Density-state expectations are more general than the available spectral trace of a product.**
   For a density operator `ρ` and bounded operator `A`, the product `ρ.op ∘L A` need not be
