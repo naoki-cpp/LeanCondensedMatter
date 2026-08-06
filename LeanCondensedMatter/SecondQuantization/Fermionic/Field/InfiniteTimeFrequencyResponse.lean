@@ -56,11 +56,16 @@ theorem hasInfiniteObservationTimeLimit_finiteTimeAdiabaticTransform
       (finiteTimeAdiabaticTransform kernel ω η)
       (infiniteTimeAdiabaticTransform kernel ω η) := by
   unfold HasInfiniteObservationTimeLimit
-  simpa only [finiteTimeAdiabaticTransform, infiniteTimeAdiabaticTransform] using
-    (MeasureTheory.intervalIntegral_tendsto_integral_Ioi
-      (μ := MeasureTheory.volume)
-      (f := fun τ : ℝ => adiabaticFrequencyFactor ω η τ * kernel τ)
-      (b := fun T : ℝ => T) (0 : ℝ) hInt Filter.tendsto_id)
+  change Filter.Tendsto
+    (fun T : ℝ => ∫ τ in (0 : ℝ)..T,
+      adiabaticFrequencyFactor ω η τ * kernel τ)
+    Filter.atTop
+    (nhds (∫ τ in Set.Ioi (0 : ℝ),
+      adiabaticFrequencyFactor ω η τ * kernel τ))
+  exact MeasureTheory.intervalIntegral_tendsto_integral_Ioi
+    (μ := MeasureTheory.volume)
+    (f := fun τ : ℝ => adiabaticFrequencyFactor ω η τ * kernel τ)
+    (b := fun T : ℝ => T) (0 : ℝ) hInt Filter.tendsto_id
 
 variable {Site E : Type*}
 variable [LinearOrder Site] [Fintype Site]
@@ -108,7 +113,7 @@ theorem stationaryDirectionalAdiabaticIntegrable_of_pos
       system expectation J J hτnonneg]
     rw [← adiabaticFrequencyFactor_eq_adiabaticFrequencyPhase]
     rfl
-  · exact Set.measurableSet_Ioi
+  · exact measurableSet_Ioi
 
 /-- Infinite-observation-time retarded coefficient in a stationary state. -/
 noncomputable def infiniteTimeAdiabaticDirectionalRetardedCoefficient
