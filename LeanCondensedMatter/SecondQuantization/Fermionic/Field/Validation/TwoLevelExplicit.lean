@@ -47,7 +47,7 @@ theorem twoLevel_scalarCurrent_spectralTraceSum
   classical
   simp [regularizedBastinSpectralTraceSum,
     stredaRetardedSpectralFactor, stredaAdvancedSpectralFactor,
-    twoLevelScalarCurrent, Fin.sum_univ_two]
+    twoLevelScalarCurrent]
   ring
 
 /-- At `E = 1` and `γ = 1`, the two-level scalar-current spectral trace is exactly `-2`. -/
@@ -57,8 +57,8 @@ theorem twoLevel_scalarCurrent_spectralTraceSum_one_one :
         twoLevelScalarCurrent twoLevelScalarCurrent 1 1 = -2 := by
   rw [twoLevel_scalarCurrent_spectralTraceSum]
   apply Complex.ext
-  · norm_num [retardedSpectralParameter, advancedSpectralParameter, Complex.inv_def]
-  · norm_num [retardedSpectralParameter, advancedSpectralParameter, Complex.inv_def]
+  · norm_num [retardedSpectralParameter, advancedSpectralParameter]
+  · norm_num [retardedSpectralParameter, advancedSpectralParameter]
 
 /-- The canonical ordinary-trace Bastin integrand has the same explicit nonzero value. -/
 theorem twoLevel_scalarCurrent_bastinTrace_one_one :
