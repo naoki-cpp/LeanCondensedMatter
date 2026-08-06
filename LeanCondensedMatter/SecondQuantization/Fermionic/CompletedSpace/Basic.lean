@@ -6,7 +6,7 @@ set_option linter.style.header false
 /-!
 # Completed fermionic Fock space
 
-This file starts the completed-space vertical slice tracked by issue #440.  For a mode type `Mode`,
+This file starts the completed-space vertical slice tracked by issue #440. For a mode type `Mode`,
 the completed fermionic Fock space is the Hilbert space of square-summable complex amplitudes on
 finite occupation configurations:
 
@@ -15,11 +15,11 @@ finite occupation configurations:
 ```
 
 The existing algebraic Fock space consists of finitely supported amplitudes on the same occupation
-basis.  Its coordinate-preserving map into the completed space is injective and has dense range.
+basis. Its coordinate-preserving map into the completed space is injective and has dense range.
 
-As the first completed operator, this file defines the single-mode occupation projection.  It is a
+As the first completed operator, this file defines the single-mode occupation projection. It is a
 bounded continuous linear map of norm at most one and agrees with the existing algebraic number
-operator on the full algebraic core.  Creation, annihilation, free Hamiltonians with unbounded
+operator on the full algebraic core. Creation, annihilation, free Hamiltonians with unbounded
 one-particle energies, and their domains are deliberately not bundled as continuous linear maps
 here; those require separate boundedness or `LinearPMap` domain proofs.
 -/
@@ -33,7 +33,7 @@ noncomputable section
 abbrev CompletedFockSpace (Mode : Type*) :=
   lp (fun _ : Occupation Mode => ℂ) 2
 
-variable {Mode : Type*} [LinearOrder Mode]
+variable {Mode : Type*}
 
 /-- The canonical occupation-basis vector in completed fermionic Fock space. -/
 noncomputable def completedBasisState (n : Occupation Mode) : CompletedFockSpace Mode := by
@@ -66,7 +66,7 @@ theorem algebraicToCompleted_basisState (n : Occupation Mode) :
   apply lp.ext
   funext m
   simp [algebraicToCompleted, basisState, Common.basisState, completedBasisState,
-    Finsupp.single_apply, lp.single_apply]
+    Finsupp.single_apply, lp.single_apply, eq_comm]
 
 /-- The algebraic-to-completed inclusion loses no finite-support vector. -/
 theorem algebraicToCompleted_injective :
@@ -85,8 +85,10 @@ theorem algebraicToCompleted_denseRange :
   refine mem_closure_of_tendsto (lp.hasSum_single (p := (2 : ℝ≥0∞)) (by norm_num) ψ)
     (Eventually.of_forall ?_)
   intro s
-  refine ⟨∑ n ∈ s, ψ n • basisState n, ?_⟩
+  refine ⟨∑ n in s, ψ n • basisState n, ?_⟩
   simp [map_sum, algebraicToCompleted_basisState, completedBasisState]
+
+variable [LinearOrder Mode]
 
 /-- The underlying linear map of the completed single-mode occupation projection. -/
 noncomputable def completedNumberOperatorLinear (i : Mode) :
@@ -110,15 +112,15 @@ theorem completedNumberOperatorLinear_apply (i : Mode) (ψ : CompletedFockSpace 
     completedNumberOperatorLinear i ψ n = if i ∈ n then ψ n else 0 :=
   rfl
 
-/-- The completed single-mode number operator.  It is the orthogonal coordinate projection onto
+/-- The completed single-mode number operator. It is the orthogonal coordinate projection onto
 occupation configurations containing `i`, hence has operator norm at most one. -/
 noncomputable def completedNumberOperator (i : Mode) :
     CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
   (completedNumberOperatorLinear i).mkContinuous 1 fun ψ => by
     simpa only [one_mul] using
       lp.norm_mono (p := (2 : ℝ≥0∞)) (by norm_num)
-        (x := completedNumberOperatorLinear i ψ) (y := ψ) fun n => by
-          by_cases h : i ∈ n <;> simp [h]
+        (x := completedNumberOperatorLinear i ψ) (y := ψ) (fun n => by
+          by_cases h : i ∈ n <;> simp [h])
 
 @[simp]
 theorem completedNumberOperator_apply (i : Mode) (ψ : CompletedFockSpace Mode)
@@ -136,7 +138,7 @@ theorem completedNumberOperator_basisState (i : Mode) (n : Occupation Mode) :
   apply lp.ext
   funext m
   by_cases hi : i ∈ n <;> by_cases hm : m = n <;>
-    simp [completedBasisState, completedNumberOperator_apply, hi, hm, lp.single_apply]
+    simp [completedBasisState, completedNumberOperator_apply, hi, hm, lp.single_apply, eq_comm]
 
 /-- The completed single-mode number operator agrees with the algebraic number operator on the
 whole finite-support core, not only on individual basis states. -/
@@ -148,10 +150,11 @@ theorem completedNumberOperator_comp_algebraicToCompleted (i : Mode) :
   have hc : (Finsupp.single n c : FockSpace Mode) = c • basisState n :=
     (Finsupp.smul_single_one n c).symm
   rw [hc]
-  simp only [map_smul]
+  simp only [LinearMap.comp_apply, map_smul]
   rw [algebraicToCompleted_basisState, completedNumberOperator_basisState,
     numberOperator_basisState]
   split_ifs <;> simp
 
+end
 end Fermionic
 end SecondQuantization
