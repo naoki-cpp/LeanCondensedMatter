@@ -215,7 +215,6 @@ theorem timeDependentInteractionPropagator_unitary_relations_of_isSelfAdjoint
 
 /-- For a pointwise Hermitian perturbation, the finite-coupling observable map preserves the
 identity. This is the exact hypothesis needed to pull back a normalized expectation. -/
-@[simp]
 theorem timeDependentPerturbedObservableMap_one_of_isSelfAdjoint
     {V : ℝ → (H →L[ℂ] H)} (hVself : ∀ s, IsSelfAdjoint (V s))
     (lam : ℝ) {β M t : ℝ} (hβ : 0 ≤ β) (hM : 0 ≤ M)
