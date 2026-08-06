@@ -18,13 +18,14 @@ variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [Comple
 
 /-- On a finite Hilbert basis, the diagonal Fredholm determinant agrees with Mathlib's ordinary
 determinant of `1 + diagonalOp b coeff`. -/
-theorem diagonalDet_eq_det_one_add_diagonalOp [Fintype ι]
+theorem diagonalDet_eq_det_one_add_diagonalOp [Finite ι]
     (b : HilbertBasis ι ℂ H) (coeff : ι → ℂ) :
     diagonalDet coeff =
       ((1 : H →L[ℂ] H) + HilbertBasis.diagonalOp b coeff).det := by
   classical
-  let B : Basis ι ℂ H := b.toOrthonormalBasis.toBasis
-  have hcoeff : Summable fun i => ‖coeff i‖ := summable_fintype _
+  letI := Fintype.ofFinite ι
+  let B : Module.Basis ι ℂ H := b.toOrthonormalBasis.toBasis
+  have hcoeff : Summable fun i => ‖coeff i‖ := summable_of_finite _
   rw [diagonalDet_fintype]
   change (∏ i, (1 + coeff i)) =
     LinearMap.det
