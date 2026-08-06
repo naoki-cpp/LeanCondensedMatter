@@ -7,9 +7,9 @@ set_option linter.style.header false
 /-!
 # Basis-independent fermionic annihilation fields and CAR
 
-This module continues F2 of issue #524. A dual vector contracts the exterior algebra from the
-left. For a complex inner-product space, a one-particle vector `f` supplies the dual functional
-`g ↦ inner ℂ f g`, so the physical annihilation field is conjugate-linear in `f`.
+A dual vector acts on exterior Fock space by left contraction. For a complex inner-product space, a
+one-particle vector `f` supplies the dual functional `g ↦ inner ℂ f g`, so the physical annihilation
+field is conjugate-linear in `f`.
 
 The contraction identity
 
