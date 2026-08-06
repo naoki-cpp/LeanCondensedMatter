@@ -1,6 +1,6 @@
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentConnected
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentGlobalCrossingParity
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentConnected
 
 set_option linter.style.header false
 
@@ -35,7 +35,7 @@ theorem QuarticWickDiagram.contractionIntegrand_assembleVertexOrder_eq_prod_comp
   rw [d.pairingInOrder_weight_eq_prod_components Common.Statistics.fermion orders shuffle,
     d.prod_orderedQuarticPairValue_pairs_eq_prod_components ε β orders shuffle τ,
     ← Finset.prod_mul_distrib]
-  simp only [QuarticWickDiagram.restrictComponentConnected]
+  simp only [Common.QuarticDiagram.restrictComponentConnected]
 
 end Fermionic
 end SecondQuantization
