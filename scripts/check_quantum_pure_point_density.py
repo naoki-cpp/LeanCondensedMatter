@@ -36,6 +36,8 @@ RETIRED_PURE_POINT_DECLARATIONS = (
     "purePointExpectationValue_add",
     "purePointExpectationValue_smul",
     "purePointExpectationValue_norm_le",
+    "PurePointLehmannData.summable_norm_probability",
+    "PurePointLehmannData.probability_tsum_pos",
 )
 
 
@@ -106,8 +108,12 @@ def main() -> int:
 
     required_pure_point_boundaries = (
         "import LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws",
+        "private theorem purePointProbability_summable_norm",
+        "private theorem purePointProbability_tsum_pos",
         "noncomputable def purePointDensityOperator",
         "diagonalDensityOperator data.basis data.probability",
+        "purePointProbability_summable_norm system data",
+        "purePointProbability_tsum_pos system data",
         "theorem commute_hamiltonian_purePointDensityOperator",
         "data.basis.hasSum_repr",
         "noncomputable def purePointNormalizedExpectation",

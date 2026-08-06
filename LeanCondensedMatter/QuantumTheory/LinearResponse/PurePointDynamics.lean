@@ -32,8 +32,8 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 variable {ι : Type*}
 variable (system : BoundedFreeSystem H)
 
-/-- Nonnegative summable pure-point probabilities are absolutely summable. -/
-theorem PurePointLehmannData.summable_norm_probability
+/-- File-local absolute summability proof required by the diagonal density constructor. -/
+private theorem purePointProbability_summable_norm
     (data : PurePointLehmannData system ι) :
     Summable fun i => ‖data.probability i‖ := by
   have h : Summable fun i => |data.probability i| :=
@@ -41,8 +41,8 @@ theorem PurePointLehmannData.summable_norm_probability
       rw [abs_of_nonneg (data.probability_nonneg i)]
   simpa only [Real.norm_eq_abs] using h
 
-/-- The total pure-point probability is strictly positive. -/
-theorem PurePointLehmannData.probability_tsum_pos
+/-- File-local positivity proof required by the diagonal density constructor. -/
+private theorem purePointProbability_tsum_pos
     (data : PurePointLehmannData system ι) :
     0 < ∑' i, data.probability i := by
   rw [data.probability_tsum]
@@ -52,7 +52,8 @@ theorem PurePointLehmannData.probability_tsum_pos
 noncomputable def purePointDensityOperator
     (data : PurePointLehmannData system ι) : DensityOperator H :=
   diagonalDensityOperator data.basis data.probability
-    data.summable_norm_probability data.probability_nonneg data.probability_tsum_pos
+    (purePointProbability_summable_norm system data) data.probability_nonneg
+    (purePointProbability_tsum_pos system data)
 
 /-- The pure-point density operator acts diagonally with the original normalized probabilities. -/
 @[simp]
@@ -62,7 +63,8 @@ theorem purePointDensityOperator_apply_basis
       (data.probability i : ℂ) • data.basis i := by
   simpa [purePointDensityOperator, normalizedDiagonalWeight, data.probability_tsum] using
     diagonalDensityOperator_apply_basis data.basis data.probability
-      data.summable_norm_probability data.probability_nonneg data.probability_tsum_pos i
+      (purePointProbability_summable_norm system data) data.probability_nonneg
+      (purePointProbability_tsum_pos system data) i
 
 /-- The pure-point density operator commutes with the Hamiltonian because both are diagonal in the
 same Hilbert basis. -/
