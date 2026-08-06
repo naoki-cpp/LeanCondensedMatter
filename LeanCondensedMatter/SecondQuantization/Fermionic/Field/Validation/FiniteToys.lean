@@ -178,31 +178,30 @@ noncomputable def twoSiteDimerHopping (t : ℂ) : LocallyFiniteHopping TwoSite w
     simp at hy
 
 @[simp]
-theorem twoSiteDimerHopping_amplitude_one_zero (t : ℂ) :
-    (twoSiteDimerHopping t).amplitude 1 0 = t := by
-  simp [twoSiteDimerHopping, LocallyFiniteHopping.amplitude]
+theorem twoSiteDimerHopping_column_zero_one (t : ℂ) :
+    ((twoSiteDimerHopping t).column 0) 1 = t := by
+  simp [twoSiteDimerHopping]
 
 @[simp]
-theorem twoSiteDimerHopping_amplitude_zero_one (t : ℂ) :
-    (twoSiteDimerHopping t).amplitude 0 1 = star t := by
-  simp [twoSiteDimerHopping, LocallyFiniteHopping.amplitude]
+theorem twoSiteDimerHopping_column_one_zero (t : ℂ) :
+    ((twoSiteDimerHopping t).column 1) 0 = star t := by
+  simp [twoSiteDimerHopping]
 
 @[simp]
-theorem twoSiteDimerHopping_amplitude_zero_zero (t : ℂ) :
-    (twoSiteDimerHopping t).amplitude 0 0 = 0 := by
-  simp [twoSiteDimerHopping, LocallyFiniteHopping.amplitude]
+theorem twoSiteDimerHopping_column_zero_zero (t : ℂ) :
+    ((twoSiteDimerHopping t).column 0) 0 = 0 := by
+  simp [twoSiteDimerHopping]
 
 @[simp]
-theorem twoSiteDimerHopping_amplitude_one_one (t : ℂ) :
-    (twoSiteDimerHopping t).amplitude 1 1 = 0 := by
-  simp [twoSiteDimerHopping, LocallyFiniteHopping.amplitude]
+theorem twoSiteDimerHopping_column_one_one (t : ℂ) :
+    ((twoSiteDimerHopping t).column 1) 1 = 0 := by
+  simp [twoSiteDimerHopping]
 
 /-- The two oriented hopping amplitudes are Hermitian conjugates. -/
 theorem twoSiteDimerHopping_hermitian_pair (t : ℂ) :
     star ((twoSiteDimerHopping t).amplitude 1 0) =
       (twoSiteDimerHopping t).amplitude 0 1 := by
-  rw [twoSiteDimerHopping_amplitude_one_zero,
-    twoSiteDimerHopping_amplitude_zero_one]
+  simp [LocallyFiniteHopping.amplitude_eq]
 
 end
 end Validation
