@@ -20,7 +20,7 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Field
 
-open Set MeasureTheory
+open Set MeasureTheory QuantumTheory.LinearResponse
 
 noncomputable section
 
@@ -30,41 +30,37 @@ variable [AddCommGroup E] [Module ℝ E]
 
 /-- The positive-lag field coefficient is exactly the general whole-line causal susceptibility. -/
 theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock Site))
-    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
-      (FiniteLatticeHilbertFock Site))
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (expectation : NormalizedExpectation (FiniteLatticeHilbertFock Site))
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) :
     infiniteTimeAdiabaticDirectionalRetardedCoefficient
         system expectation geometry direction K q ω η =
-      QuantumTheory.LinearResponse.adiabaticFrequencyDomainSusceptibility
-        system expectation
-          (boundedDirectionalCurrent geometry direction
-            (system.hbar : ℂ) (q : ℂ) K)
-          (boundedDirectionalCurrent geometry direction
-            (system.hbar : ℂ) (q : ℂ) K) ω η := by
+      adiabaticFrequencyDomainSusceptibility system expectation
+        (boundedDirectionalCurrent geometry direction
+          (system.hbar : ℂ) (q : ℂ) K)
+        (boundedDirectionalCurrent geometry direction
+          (system.hbar : ℂ) (q : ℂ) K) ω η := by
   let J := boundedDirectionalCurrent geometry direction
     (system.hbar : ℂ) (q : ℂ) K
   change
     (∫ τ : ℝ in Ioi 0,
       adiabaticFrequencyFactor ω η τ *
-        QuantumTheory.LinearResponse.commutatorSusceptibility
-          system expectation J J τ 0) =
+        commutatorSusceptibility system expectation J J τ 0) =
       ∫ τ : ℝ,
-        QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand
+        adiabaticFrequencySusceptibilityIntegrand
           system expectation J J ω η τ
   have hcausal :
       (∫ τ : ℝ,
-          QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand
+          adiabaticFrequencySusceptibilityIntegrand
             system expectation J J ω η τ) =
         ∫ τ : ℝ in Ioi 0,
-          QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand
+          adiabaticFrequencySusceptibilityIntegrand
             system expectation J J ω η τ := by
     calc
       _ = ∫ τ : ℝ,
           (Ici (0 : ℝ)).indicator
-            (QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand
+            (adiabaticFrequencySusceptibilityIntegrand
               system expectation J J ω η) τ := by
         apply integral_congr_ae
         filter_upwards [] with τ
@@ -73,10 +69,10 @@ theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility
         · have hneg : τ < 0 := by
             simpa [Set.mem_Ici, not_le] using hτ
           simp [hτ,
-            QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand_eq_zero_of_neg
+            adiabaticFrequencySusceptibilityIntegrand_eq_zero_of_neg
               system expectation J J ω η hneg]
       _ = ∫ τ : ℝ in Ici 0,
-          QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand
+          adiabaticFrequencySusceptibilityIntegrand
             system expectation J J ω η τ :=
         integral_indicator measurableSet_Ici
       _ = _ := integral_Ici_eq_integral_Ioi
@@ -84,8 +80,8 @@ theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility
   apply setIntegral_congr_fun measurableSet_Ioi
   intro τ hτ
   have hτnonneg : 0 ≤ τ := le_of_lt hτ
-  rw [QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand]
-  rw [QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg
+  rw [adiabaticFrequencySusceptibilityIntegrand]
+  rw [retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg
     system expectation J J hτnonneg]
   rw [← adiabaticFrequencyFactor_eq_adiabaticFrequencyPhase]
 
@@ -94,35 +90,33 @@ variable {ι : Type*}
 /-- A diagonal current-current transition has zero Lehmann weight. -/
 @[simp]
 theorem purePointDirectionalCurrentTransitionWeight_diag
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock Site))
-    (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q : ℝ) (i : ι) :
-    QuantumTheory.LinearResponse.purePointTransitionWeight system data
+    purePointTransitionWeight system data
       (boundedDirectionalCurrent geometry direction
         (system.hbar : ℂ) (q : ℂ) K)
       (boundedDirectionalCurrent geometry direction
         (system.hbar : ℂ) (q : ℂ) K) (i, i) = 0 := by
-  simp [QuantumTheory.LinearResponse.purePointTransitionWeight]
+  simp [purePointTransitionWeight]
 
 /-- Equal-energy off-diagonal transitions retain the regularized denominator `η - iω`; their
 weight is not assumed to vanish without an additional equality of state probabilities. -/
 theorem purePointDirectionalCurrentLehmannTerm_of_equal_energy
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock Site))
-    (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) {m n : ι}
     (henergy : data.energy m = data.energy n) :
-    QuantumTheory.LinearResponse.lehmannTerm system.hbar ω η
+    lehmannTerm system.hbar ω η
         (data.energy m - data.energy n)
-        (QuantumTheory.LinearResponse.purePointTransitionWeight system data
+        (purePointTransitionWeight system data
           (boundedDirectionalCurrent geometry direction
             (system.hbar : ℂ) (q : ℂ) K)
           (boundedDirectionalCurrent geometry direction
             (system.hbar : ℂ) (q : ℂ) K) (m, n)) =
-      QuantumTheory.LinearResponse.purePointTransitionWeight system data
+      purePointTransitionWeight system data
           (boundedDirectionalCurrent geometry direction
             (system.hbar : ℂ) (q : ℂ) K)
           (boundedDirectionalCurrent geometry direction
@@ -130,32 +124,30 @@ theorem purePointDirectionalCurrentLehmannTerm_of_equal_energy
         ((η : ℂ) - Complex.I * (ω : ℂ))⁻¹ := by
   have hgap : data.energy m - data.energy n = 0 := sub_eq_zero.mpr henergy
   rw [hgap]
-  simp [QuantumTheory.LinearResponse.lehmannTerm,
-    QuantumTheory.LinearResponse.lehmannDenominator]
+  simp [lehmannTerm, lehmannDenominator]
 
 /-- In a finite pure-point basis, the retarded directional coefficient is the conventional finite
 double Lehmann sum at every `η > 0`. -/
 theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_purePoint_eq_finite_sum
     [Fintype ι]
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock Site))
-    (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) (hη : 0 < η) :
     infiniteTimeAdiabaticDirectionalRetardedCoefficient
-        system (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data)
+        system (purePointNormalizedExpectation system data)
         geometry direction K q ω η =
       ∑ mn : ι × ι,
-        QuantumTheory.LinearResponse.lehmannTerm system.hbar ω η
+        lehmannTerm system.hbar ω η
           (data.energy mn.1 - data.energy mn.2)
-          (QuantumTheory.LinearResponse.purePointTransitionWeight system data
+          (purePointTransitionWeight system data
             (boundedDirectionalCurrent geometry direction
               (system.hbar : ℂ) (q : ℂ) K)
             (boundedDirectionalCurrent geometry direction
               (system.hbar : ℂ) (q : ℂ) K) mn) := by
   rw [infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility]
-  simpa [QuantumTheory.LinearResponse.ad​iabaticFrequencyDomainSusceptibilityOfPositiveRate] using
-    (QuantumTheory.LinearResponse.ad​iabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite_sum
+  simpa [adiabaticFrequencyDomainSusceptibilityOfPositiveRate] using
+    (adiabaticFrequencyDomainSusceptibilityOfPositiveRate_purePoint_eq_finite_sum
       system data
       (boundedDirectionalCurrent geometry direction
         (system.hbar : ℂ) (q : ℂ) K)
@@ -166,23 +158,22 @@ theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_purePoint_eq_finite_
 geometric Peierls contact expectation. -/
 theorem infiniteTimeAdiabaticDirectionalCoefficient_purePoint_eq_finite_sum
     [Fintype ι]
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock Site))
-    (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) (hη : 0 < η) :
     infiniteTimeAdiabaticDirectionalCoefficient
-        system (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data)
+        system (purePointNormalizedExpectation system data)
         geometry direction K q ω η =
       (∑ mn : ι × ι,
-        QuantumTheory.LinearResponse.lehmannTerm system.hbar ω η
+        lehmannTerm system.hbar ω η
           (data.energy mn.1 - data.energy mn.2)
-          (QuantumTheory.LinearResponse.purePointTransitionWeight system data
+          (purePointTransitionWeight system data
             (boundedDirectionalCurrent geometry direction
               (system.hbar : ℂ) (q : ℂ) K)
             (boundedDirectionalCurrent geometry direction
               (system.hbar : ℂ) (q : ℂ) K) mn)) +
-        QuantumTheory.LinearResponse.purePointNormalizedExpectation system data
+        purePointNormalizedExpectation system data
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K) := by
   rw [infiniteTimeAdiabaticDirectionalCoefficient]
@@ -193,29 +184,28 @@ theorem infiniteTimeAdiabaticDirectionalCoefficient_purePoint_eq_finite_sum
 term for a diagonal pure-point stationary state. -/
 theorem hasInfiniteObservationTimeLimit_directional_purePoint_finite_sum
     [Fintype ι]
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock Site))
-    (data : QuantumTheory.LinearResponse.PurePointLehmannData system ι)
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) (hη : 0 < η) :
     HasInfiniteObservationTimeLimit
       (finiteTimeAdiabaticDirectionalCoefficient
-        system (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data)
+        system (purePointNormalizedExpectation system data)
           geometry direction K q ω η)
       ((∑ mn : ι × ι,
-        QuantumTheory.LinearResponse.lehmannTerm system.hbar ω η
+        lehmannTerm system.hbar ω η
           (data.energy mn.1 - data.energy mn.2)
-          (QuantumTheory.LinearResponse.purePointTransitionWeight system data
+          (purePointTransitionWeight system data
             (boundedDirectionalCurrent geometry direction
               (system.hbar : ℂ) (q : ℂ) K)
             (boundedDirectionalCurrent geometry direction
               (system.hbar : ℂ) (q : ℂ) K) mn)) +
-        QuantumTheory.LinearResponse.purePointNormalizedExpectation system data
+        purePointNormalizedExpectation system data
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K)) := by
   have hlimit := hasInfiniteObservationTimeLimit_directional_of_stationary_pos
-    system (QuantumTheory.LinearResponse.purePointNormalizedExpectation system data)
-      (QuantumTheory.LinearResponse.isStationary_purePointNormalizedExpectation system data)
+    system (purePointNormalizedExpectation system data)
+      (isStationary_purePointNormalizedExpectation system data)
       geometry direction K q ω η hη
   rw [infiniteTimeAdiabaticDirectionalCoefficient_purePoint_eq_finite_sum
     system data geometry direction K q ω η hη] at hlimit
