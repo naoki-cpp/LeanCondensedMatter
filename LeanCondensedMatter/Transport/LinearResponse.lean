@@ -24,15 +24,14 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 /-- Forget transport-specific data and retain the bounded free dynamics used by linear response. -/
 def BoundedSystem.toBoundedFreeSystem
     (system : BoundedSystem H) : LinearResponse.BoundedFreeSystem H where
-  hamiltonian := system.hamiltonian.1
-  hamiltonian_selfAdjoint := system.hamiltonian.2
+  hamiltonian := system.hamiltonian
   hbar := system.reducedPlanckConstant
   hbar_pos := system.reducedPlanckConstant_pos
 
 @[simp]
 theorem BoundedSystem.toBoundedFreeSystem_hamiltonian
     (system : BoundedSystem H) :
-    system.toBoundedFreeSystem.hamiltonian = system.hamiltonian.1 :=
+    system.toBoundedFreeSystem.hamiltonian = system.hamiltonian :=
   rfl
 
 @[simp]
