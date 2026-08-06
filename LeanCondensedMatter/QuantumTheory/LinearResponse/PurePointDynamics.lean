@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
-import LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation
+import LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann
 import Mathlib.Analysis.SpecialFunctions.Exponential
 
@@ -14,7 +14,8 @@ Lehmann series with the retarded susceptibility.
 A `PurePointLehmannData` probability distribution is first realized as the canonical diagonal
 `DensityOperator`. Its normalized expectation is then obtained through
 `DensityOperator.toNormalizedExpectation`; no parallel linear-functional construction is retained.
-The module also proves the free energy-basis phases and stationarity of that expectation.
+The module proves that this density state commutes with the Hamiltonian and derives stationarity
+from the general conservation law. It also proves the free energy-basis phases used downstream.
 
 The countable double-sum expansion of the commutator and the exchange of that sum with the time
 integral are intentionally left to the next layer.
@@ -62,6 +63,26 @@ theorem purePointDensityOperator_apply_basis
   simpa [purePointDensityOperator, normalizedDiagonalWeight, data.probability_tsum] using
     diagonalDensityOperator_apply_basis data.basis data.probability
       data.summable_norm_probability data.probability_nonneg data.probability_tsum_pos i
+
+/-- The pure-point density operator commutes with the Hamiltonian because both are diagonal in the
+same Hilbert basis. -/
+theorem commute_hamiltonian_purePointDensityOperator
+    (data : PurePointLehmannData system ι) :
+    Commute system.hamiltonian.1 (purePointDensityOperator system data).op := by
+  change system.hamiltonian.1 * (purePointDensityOperator system data).op =
+    (purePointDensityOperator system data).op * system.hamiltonian.1
+  apply ContinuousLinearMap.ext
+  intro x
+  have hleft :=
+    (data.basis.hasSum_repr x).mapL
+      (system.hamiltonian.1 * (purePointDensityOperator system data).op)
+  have hright :=
+    (data.basis.hasSum_repr x).mapL
+      ((purePointDensityOperator system data).op * system.hamiltonian.1)
+  apply hleft.unique
+  convert hright using 1
+  funext i
+  simp [mul_apply_eq_comp, data.hamiltonian_apply_basis, smul_smul, mul_comm]
 
 /-- The normalized response expectation is the canonical expectation of the pure-point density
 operator. -/
@@ -193,13 +214,10 @@ theorem inner_purePointBasis_heisenbergEvolution
 theorem isStationary_purePointNormalizedExpectation
     (data : PurePointLehmannData system ι) :
     IsStationary system (purePointNormalizedExpectation system data) := by
-  intro t A
-  simp only [purePointNormalizedExpectation_apply]
-  apply tsum_congr
-  intro i
-  rw [inner_purePointBasis_heisenbergEvolution system data A i i t]
-  rw [purePointTransitionPhase_eq_exp_energyDifference]
-  simp
+  simpa [purePointNormalizedExpectation] using
+    isStationary_toNormalizedExpectation_of_commute_hamiltonian system
+      (purePointDensityOperator system data)
+      (commute_hamiltonian_purePointDensityOperator system data)
 
 end
 end LinearResponse
