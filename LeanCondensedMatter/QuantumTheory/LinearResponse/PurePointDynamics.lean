@@ -114,7 +114,7 @@ noncomputable def purePointSchrodingerPhase
   Complex.exp (purePointSchrodingerExponent system data i t)
 
 /-- The time-scaled Schrödinger generator acts diagonally on the energy basis. -/
-theorem timeScaledGenerator_apply_purePointBasis
+private theorem timeScaledGenerator_apply_purePointBasis
     (data : PurePointLehmannData system ι) (i : ι) (t : ℝ) :
     timeScaledGenerator system t (data.basis i) =
       purePointSchrodingerExponent system data i t • data.basis i := by
@@ -126,7 +126,7 @@ theorem timeScaledGenerator_apply_purePointBasis
   ring
 
 /-- Every power of the time-scaled generator remains diagonal on the energy basis. -/
-theorem pow_timeScaledGenerator_apply_purePointBasis
+private theorem pow_timeScaledGenerator_apply_purePointBasis
     (data : PurePointLehmannData system ι) (i : ι) (t : ℝ) (n : ℕ) :
     ((timeScaledGenerator system t) ^ n) (data.basis i) =
       (purePointSchrodingerExponent system data i t) ^ n • data.basis i := by
