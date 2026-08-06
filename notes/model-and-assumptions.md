@@ -95,10 +95,22 @@ must state all summability, integrability, product-domain, and KMS assumptions e
 
 - `AlgebraicFock Config` is a finite-support algebraic representation.
 - `FiniteHilbertFock Config` is the Euclidean Hilbert realization used when `Config` is finite.
+- `Fermionic.CompletedFockSpace Mode` is the completed Hilbert representation
+  `ℓ²(Fermionic.Occupation Mode, ℂ)` and does not require a finite mode type.
+- `Fermionic.algebraicToCompleted` embeds the finite-support fermionic core injectively with dense
+  range while preserving occupation coordinates.
+- `Fermionic.completedNumberOperator` is a bounded occupation-coordinate projection and agrees with
+  the algebraic number operator on the full finite-support core.
 - Matrix coefficients in the algebraic layer are coordinate evaluations, not automatically
   Hilbert-space inner products.
 - Bosonic creation, annihilation, and number operators are generally unbounded on completed Fock
   space. They must not be exposed as bounded continuous operators without a boundedness proof.
+- Infinite-mode free Hamiltonians and total number operators may also be unbounded in the fermionic
+  completed representation; completion alone does not supply their domains or self-adjointness.
+
+The staged boundary for completed operators, trace-class Gibbs states, finite-mode compatibility,
+and later thermodynamic limits is documented in
+[`roadmaps/completed-space-and-infinite-mode.md`](roadmaps/completed-space-and-infinite-mode.md).
 
 ## Assumptions by target
 
@@ -121,6 +133,14 @@ must state all summability, integrability, product-domain, and KMS assumptions e
 - Bounded observables are used.
 - Entropy may be infinite unless an additional summability theorem applies.
 
+### Completed infinite-mode Fock theory
+
+- Completion is represented independently of any Hamiltonian or thermal state.
+- A continuous-linear-map operator requires an explicit norm bound.
+- An unbounded operator requires an explicit domain and a domain-aware operator type.
+- A Gibbs state requires separate spectral or partition-weight summability hypotheses.
+- Thermodynamic limits require a separately stated directed system, topology, and uniform estimates.
+
 ## Physics-to-Lean dictionary
 
 | Physical notion | Lean counterpart | Primary module |
@@ -137,6 +157,10 @@ must state all summability, integrability, product-domain, and KMS assumptions e
 | Gibbs operator | `QuantumTheory.gibbsOp` | `QuantumTheory/Gibbs/State.lean` |
 | Gibbs state | `QuantumTheory.gibbsState` | `QuantumTheory/Gibbs/State.lean` |
 | Energy expectation | `QuantumTheory.energyExpValue` | `QuantumTheory/Gibbs/EnergyExpectation.lean` |
+| Algebraic Fock core | `SecondQuantization.Common.AlgebraicFock` | `SecondQuantization/Common/Algebra/AlgebraicFock.lean` |
+| Completed fermionic Fock space | `SecondQuantization.Fermionic.CompletedFockSpace` | `SecondQuantization/Fermionic/CompletedSpace/Basic.lean` |
+| Algebraic-to-completed Fock inclusion | `SecondQuantization.Fermionic.algebraicToCompleted` | `SecondQuantization/Fermionic/CompletedSpace/Basic.lean` |
+| Completed single-mode number projection | `SecondQuantization.Fermionic.completedNumberOperator` | `SecondQuantization/Fermionic/CompletedSpace/Basic.lean` |
 | Finite Hilbert Fock realization | `SecondQuantization.Common.FiniteHilbertFock` | `SecondQuantization/Common/Thermal/FiniteGibbsDensityOperator.lean` |
 | Finite Gibbs expectation | `SecondQuantization.Common.finiteGibbsExpectation` | `SecondQuantization/Common/Thermal/FiniteGibbsDensityOperator.lean` |
 | Perfect pairing | `Combinatorics.PerfectPairing` | `Combinatorics/PerfectPairing.lean` |
