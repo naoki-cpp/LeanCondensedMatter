@@ -3,7 +3,6 @@ import Mathlib.Analysis.CStarAlgebra.Spectrum
 import Mathlib.Analysis.Normed.Algebra.GelfandFormula
 
 set_option linter.style.header false
-set_option maxHeartbeats 2000000
 
 /-!
 # Dimension-independent retarded and advanced resolvents
@@ -47,7 +46,8 @@ theorem spectralParameter_not_mem_spectrum_of_im_ne_zero
     (z : ℂ) (hz : z.im ≠ 0) :
     z ∉ spectrum ℂ hamiltonian := by
   intro hmem
-  exact hz (hself.im_eq_zero_of_mem_spectrum hmem)
+  exact hz (IsSelfAdjoint.im_eq_zero_of_mem_spectrum
+    (A := H →L[ℂ] H) hself hmem)
 
 /-- A positive imaginary part excludes the retarded parameter from the real spectrum. -/
 theorem retardedSpectralParameter_not_mem_spectrum
