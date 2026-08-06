@@ -10,13 +10,15 @@ infinite-dimensional.
 - Hilbert–Schmidt basic, inner-product, and spectral-trace comparison modules are `proved`.
 - The countable diagonal infinite-product slice is `proved` in
   `Analysis/Operator/Fredholm/Diagonal.lean`.
+- The zero set of the absolutely summable diagonal determinant is characterized by the presence of a
+  coefficient equal to `-1`.
 - Finite-dimensional agreement with Mathlib's ordinary determinant is `proved` in
   `Analysis/Operator/Fredholm/FiniteDimensional.lean`.
 - A general non-self-adjoint trace-class ideal is not implemented.
 - A general Fredholm determinant is not implemented.
 
-The diagonal infinite-dimensional target and its finite-dimensional compatibility are `proved`;
-the general trace-class target remains `idea`.
+The diagonal infinite-dimensional target, its zero characterization, and its finite-dimensional
+compatibility are `proved`; the general trace-class target remains `idea`.
 
 ## Existing Hilbert–Schmidt boundary
 
@@ -43,6 +45,7 @@ At Mathlib `v4.31.0`:
 - infinite products are available through the general `HasProd`, `Multipliable`, and `tprod` APIs;
 - `multipliable_one_add_of_summable` proves convergence of `∏' i, (1 + coeff i)` from
   `Summable (fun i => ‖coeff i‖)`;
+- `tprod_of_exists_eq_zero` supplies the vanishing direction when a factor is zero;
 - finite-dimensional determinants are available through
   `Mathlib.Topology.Algebra.Module.Determinant`, including `ContinuousLinearMap.det`;
 - the project audit has not found a Mathlib replacement for the repository's Hilbert–Schmidt
@@ -85,10 +88,14 @@ The public API currently provides:
 - `Fredholm.diagonalDet_eq_finsetProd`: finite-support reduction;
 - `Fredholm.diagonalDet_fintype`: reduction to the ordinary finite product on a finite index type;
 - `Fredholm.diagonalDet_ne_zero`: nonvanishing when every factor is nonzero;
+- `Fredholm.diagonalDet_eq_zero_iff_exists_coeff_eq_neg_one`: exact zero characterization under
+  absolute summability;
 - `HilbertBasis.one_add_diagonalOp_apply_basis`: diagonal action of
   `1 + diagonalOp b coeff`;
 - `HilbertBasis.one_add_diagonalOp_has_nonzero_kernel_vector_of_coeff_eq_neg_one`: a coefficient
   equal to `-1` produces a nonzero kernel vector;
+- `HilbertBasis.one_add_diagonalOp_has_nonzero_kernel_vector_of_diagonalDet_eq_zero`: determinant
+  vanishing produces such a kernel vector;
 - `Fredholm.diagonalDet_eq_det_one_add_diagonalOp`: agreement with
   `ContinuousLinearMap.det (1 + diagonalOp b coeff)` when the index type is finite.
 
@@ -96,6 +103,23 @@ The determinant is defined from explicit coefficient data rather than bundled wi
 or operator. The operator theorems connect that coefficient-level definition to the repository's
 existing `HilbertBasis.diagonalOp` construction without pretending that a general trace-class ideal
 already exists.
+
+## Zero and kernel boundary
+
+For absolutely summable diagonal data,
+
+```text
+Fredholm.diagonalDet coeff = 0 ↔ ∃ i, coeff i = -1.
+```
+
+The forward direction uses the proved nonvanishing result when every factor is nonzero. The reverse
+direction uses the general infinite-product fact that a zero factor forces the total product to
+vanish. Combined with the basis action theorem, determinant zero produces a nonzero basis vector in
+the kernel of `1 + diagonalOp b coeff`.
+
+This is not yet a full operator-level equivalence between determinant zero, failure of invertibility,
+and a nontrivial kernel. The converse kernel theorem and a bundled inverse require additional
+coordinate or bounded-inverse arguments.
 
 ## Finite-dimensional compatibility
 
@@ -129,9 +153,9 @@ countable diagonal trace-class data
   → general Fredholm determinant.
 ```
 
-The first step now provides a nontrivial infinite-dimensional determinant, together with agreement
-with ordinary determinants on finite diagonal specializations. Later steps widen the operator domain
-and strengthen presentation independence.
+The first step now provides a nontrivial infinite-dimensional determinant, its exact zero set, and
+agreement with ordinary determinants on finite diagonal specializations. Later steps widen the
+operator domain and strengthen presentation independence.
 
 ## Candidate general constructions
 
@@ -201,12 +225,12 @@ operators does require it:
 - regularized determinants such as `det₂`;
 - thermodynamic or infinite-volume determinant limits.
 
-## Remaining extensions after #659 and #677
+## Remaining extensions after #659, #677, and #694
 
-The diagonal determinant and its finite-dimensional determinant compatibility are implemented.
-Further extensions should be added only when cleanly supported:
+The diagonal determinant, its zero characterization, and its finite-dimensional determinant
+compatibility are implemented. Further extensions should be added only when cleanly supported:
 
-- a converse relating determinant zero to a `-1` coefficient;
+- a converse from a nonzero kernel vector to determinant zero;
 - invertibility of `1 + diagonalOp b coeff` under exact diagonal bounded-inverse hypotheses;
 - comparison with the existing spectral trace on a self-adjoint overlap.
 
