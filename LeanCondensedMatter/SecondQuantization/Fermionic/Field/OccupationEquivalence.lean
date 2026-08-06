@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FockSpace
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Mode
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.FiniteParticleFock
 import Mathlib.LinearAlgebra.ExteriorAlgebra.Basis
 
 set_option linter.style.header false
