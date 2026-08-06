@@ -33,13 +33,13 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 /-- Retarded Green operator `((E + iη) I - H)⁻¹`. -/
 noncomputable def retardedResolvent
     (hamiltonian : Observable H) (energy broadening : ℝ) : H →L[ℂ] H :=
-  spectrum.resolvent hamiltonian.1
+  resolvent hamiltonian.1
     (retardedSpectralParameter energy broadening)
 
 /-- Advanced Green operator `((E - iη) I - H)⁻¹`. -/
 noncomputable def advancedResolvent
     (hamiltonian : Observable H) (energy broadening : ℝ) : H →L[ℂ] H :=
-  spectrum.resolvent hamiltonian.1
+  resolvent hamiltonian.1
     (advancedSpectralParameter energy broadening)
 
 /-- A positive imaginary part excludes the retarded parameter from the real spectrum. -/
@@ -137,7 +137,7 @@ theorem star_retardedResolvent
     (hamiltonian : Observable H) (energy broadening : ℝ) :
     star (retardedResolvent hamiltonian energy broadening) =
       advancedResolvent hamiltonian energy broadening := by
-  unfold retardedResolvent advancedResolvent spectrum.resolvent
+  unfold retardedResolvent advancedResolvent resolvent
   rw [← Ring.inverse_star]
   congr 1
   simp [retardedSpectralParameter, advancedSpectralParameter, hamiltonian.2]
@@ -166,7 +166,7 @@ theorem retardedResolvent_sub_retardedResolvent
     hamiltonian energy₁ broadening hbroadening
   have h₂ := retardedSpectralParameter_mem_resolventSet
     hamiltonian energy₂ broadening hbroadening
-  unfold retardedResolvent spectrum.resolvent
+  unfold retardedResolvent resolvent
   exact Ring.inverse_sub_inverse (iff_of_true h₁ h₂)
 
 /-- Raw resolvent identity at two advanced spectral parameters. -/
@@ -185,14 +185,14 @@ theorem advancedResolvent_sub_advancedResolvent
     hamiltonian energy₁ broadening hbroadening
   have h₂ := advancedSpectralParameter_mem_resolventSet
     hamiltonian energy₂ broadening hbroadening
-  unfold advancedResolvent spectrum.resolvent
+  unfold advancedResolvent resolvent
   exact Ring.inverse_sub_inverse (iff_of_true h₁ h₂)
 
 /-- Complex spectral-parameter derivative of the resolvent at the retarded point. -/
 theorem hasDerivAt_resolvent_retarded
     (hamiltonian : Observable H) (energy broadening : ℝ)
     (hbroadening : 0 < broadening) :
-    HasDerivAt (spectrum.resolvent hamiltonian.1)
+    HasDerivAt (resolvent hamiltonian.1)
       (-(retardedResolvent hamiltonian energy broadening) ^ 2)
       (retardedSpectralParameter energy broadening) := by
   exact spectrum.hasDerivAt_resolvent_const_left
@@ -203,7 +203,7 @@ theorem hasDerivAt_resolvent_retarded
 theorem hasDerivAt_resolvent_advanced
     (hamiltonian : Observable H) (energy broadening : ℝ)
     (hbroadening : 0 < broadening) :
-    HasDerivAt (spectrum.resolvent hamiltonian.1)
+    HasDerivAt (resolvent hamiltonian.1)
       (-(advancedResolvent hamiltonian energy broadening) ^ 2)
       (advancedSpectralParameter energy broadening) := by
   exact spectrum.hasDerivAt_resolvent_const_left
@@ -245,7 +245,7 @@ theorem retardedGreen_sub_retardedGreen
 /-- System-level complex spectral-parameter derivative at the retarded point. -/
 theorem hasDerivAt_resolvent_retardedGreen
     (system : BoundedSystem H) (energy : ℝ) :
-    HasDerivAt (spectrum.resolvent system.hamiltonian.1)
+    HasDerivAt (resolvent system.hamiltonian.1)
       (-(system.retardedGreen energy) ^ 2)
       (retardedSpectralParameter energy system.broadening) :=
   hasDerivAt_resolvent_retarded system.hamiltonian
