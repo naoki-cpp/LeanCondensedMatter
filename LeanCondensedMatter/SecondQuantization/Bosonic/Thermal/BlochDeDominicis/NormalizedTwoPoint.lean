@@ -19,6 +19,8 @@ namespace Bosonic
 
 noncomputable section
 
+open scoped Classical
+
 variable {Mode : Type*} [Fintype Mode]
 
 /-- The normalized free-boson annihilation/creation two-point equation, together with the explicit
