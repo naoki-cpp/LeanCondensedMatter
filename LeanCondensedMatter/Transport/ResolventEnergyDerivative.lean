@@ -62,7 +62,7 @@ theorem hasDerivAt_retardedResolvent_energy
   change HasDerivAt
     (resolvent hamiltonian ∘ fun x : ℝ => retardedSpectralParameter x broadening)
     (-(resolvent hamiltonian (retardedSpectralParameter energy broadening)) ^ 2) energy
-  convert hcomp using 1 <;> simp
+  convert hcomp using 1 <;> rfl
 
 /-- The advanced resolvent differentiated along the real-energy axis is `-(Gᴬ)^2`. -/
 theorem hasDerivAt_advancedResolvent_energy
@@ -83,7 +83,7 @@ theorem hasDerivAt_advancedResolvent_energy
   change HasDerivAt
     (resolvent hamiltonian ∘ fun x : ℝ => advancedSpectralParameter x broadening)
     (-(resolvent hamiltonian (advancedSpectralParameter energy broadening)) ^ 2) energy
-  convert hcomp using 1 <;> simp
+  convert hcomp using 1 <;> rfl
 
 namespace BoundedSystem
 
