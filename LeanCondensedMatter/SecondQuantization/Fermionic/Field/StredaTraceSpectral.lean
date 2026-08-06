@@ -52,7 +52,9 @@ theorem finiteDimensionalOperatorTrace_eq_sum_inner_purePointBasis
   rw [finiteDimensionalOperatorTrace_apply]
   rw [LinearMap.trace_eq_sum_inner
     (operator : H →ₗ[ℂ] H) data.basis.toOrthonormalBasis]
-  simpa only [HilbertBasis.coe_toOrthonormalBasis]
+  apply Finset.sum_congr rfl
+  intro m _
+  rfl
 
 /-- Matrix element of `left * diagonal * right` when the middle operator is diagonal in the
 supplied pure-point basis. -/
@@ -68,8 +70,8 @@ theorem inner_purePointBasis_mul_diagonal_mul
   change inner ℂ (data.basis m)
     (left (diagonal (right (data.basis m)))) = _
   have hrepr := data.basis.toOrthonormalBasis.sum_repr' (right (data.basis m))
-  rw [← hrepr]
-  simp_rw [map_sum, map_smul, hdiagonal, smul_smul, inner_sum, inner_smul_right]
+  conv_lhs => rw [← hrepr]
+  simp only [map_sum, map_smul, hdiagonal, smul_smul, inner_sum, inner_smul_right]
   apply Finset.sum_congr rfl
   intro n _
   ring
@@ -145,7 +147,7 @@ theorem regularizedBastinTraceIntegrand_eq_spectral_sum
   intro m _
   rw [regularizedBastinOperatorIntegrand_eq_expanded
     system current₁ current₂ energy broadening]
-  rw [ContinuousLinearMap.sub_apply, inner_sub_right]
+  rw [sub_apply, inner_sub_right]
   have hretardedMiddle : ∀ n : ι,
       ((retardedResolvent system.hamiltonian.1 energy broadening) ^ 2) (data.basis n) =
         (stredaRetardedSpectralFactor system data energy broadening n) ^ 2 • data.basis n := by
@@ -165,7 +167,7 @@ theorem regularizedBastinTraceIntegrand_eq_spectral_sum
           stredaAdvancedSpectralFactor system data energy broadening n) • data.basis n := by
     intro n
     unfold retardedAdvancedResolventDifference
-    rw [ContinuousLinearMap.sub_apply]
+    rw [sub_apply]
     rw [retardedResolvent_apply_purePointBasis_at_energy
       system data energy broadening hbroadening n]
     rw [advancedResolvent_apply_purePointBasis_at_energy
