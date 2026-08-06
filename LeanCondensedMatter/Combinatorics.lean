@@ -8,6 +8,7 @@ import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition
 import LeanCondensedMatter.Combinatorics.IncidenceAlgebra.Mobius
 import LeanCondensedMatter.Combinatorics.SetPartition.Refinement
+import LeanCondensedMatter.Combinatorics.SetPartition.Coarsening
 import LeanCondensedMatter.Combinatorics.SetPartition.Mobius
 import LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock
 import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
