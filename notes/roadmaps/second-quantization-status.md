@@ -17,9 +17,13 @@ Finiteness is introduced only by results that enumerate all modes or configurati
 operator from a finite basis, or take finite thermal and diagrammatic sums.
 
 The fermionic line is complete through the coefficientwise and finite-dimensional analytic Linked
-Cluster Theorems. Its analytic results remain finite-mode and finite-dimensional; they do not provide
-completed-space unbounded-operator theory, trace-class infinite-dimensional Gibbs states,
-thermodynamic limits, or infinite-mode partition functions.
+Cluster Theorems. Those analytic results remain finite-mode and finite-dimensional.
+
+The repository also contains an initial completed fermionic representation on
+`ℓ²(Fermionic.Occupation Mode, ℂ)`, with an injective dense algebraic core and a bounded single-mode
+number operator. It does not yet provide completed creation and annihilation operators, general
+unbounded Hamiltonian domains, trace-class infinite-dimensional Gibbs states, infinite-mode thermal
+limits, or a thermodynamic limit.
 
 A finite bosonic mode type still has an infinite occupation basis. The bosonic line therefore uses
 explicit summability domains and cannot inherit the finite-configuration trace and operator-integral
@@ -42,6 +46,7 @@ Responsibility-specific code may import a leaf umbrella:
 | Thermal theory | `LeanCondensedMatter.SecondQuantization.Common.Thermal` | `LeanCondensedMatter.SecondQuantization.Fermionic.Thermal` | `LeanCondensedMatter.SecondQuantization.Bosonic.Thermal` |
 | Perturbation | `LeanCondensedMatter.SecondQuantization.Common.Perturbation` | `LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation` | not exposed until the convergence-aware operator-integral boundary exists |
 | Diagrammatics | `LeanCondensedMatter.SecondQuantization.Common.Diagrammatics` | `LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics` | `LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics` |
+| Completed fermionic space | — | `LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace` | not yet exposed |
 
 ## Ownership and dependency direction
 
@@ -160,6 +165,21 @@ connected logarithmic derivatives are the physical finite-mode endpoint.
 | Formal Dyson LCT | done | `DysonLinkedClusterTheorem.lean` |
 | Analytic finite-mode Dyson LCT | done | `Fermionic/Perturbation/AnalyticLinkedClusterTheorem.lean` |
 
+## Completed fermionic representation
+
+`Fermionic/CompletedSpace/Basic.lean` provides:
+
+- `Fermionic.CompletedFockSpace Mode := ℓ²(Fermionic.Occupation Mode, ℂ)`;
+- canonical occupation basis vectors;
+- the coordinate-preserving inclusion `algebraicToCompleted`;
+- injectivity and dense range of the algebraic inclusion;
+- a bounded single-mode occupation projection;
+- agreement of the completed and algebraic number operators on the algebraic core.
+
+This establishes the completed representation without treating all algebraic operators as bounded.
+The remaining operator and thermal boundaries are documented in
+[`completed-space-and-infinite-mode.md`](completed-space-and-infinite-mode.md).
+
 ## Bosonic line and convergence boundary
 
 The bosonic line includes:
@@ -206,6 +226,7 @@ The following are extensions rather than missing steps of the finite-mode fermio
 - low-order explicit examples;
 - time-ordered correlation functions with external operators;
 - convergence-aware bosonic Dyson and linked-cluster theory;
-- completed Hilbert-space Fock representations;
+- bounded completed creation and annihilation operators and completed CAR;
 - domains and functional calculus for unbounded operators;
-- infinite-mode and thermodynamic-limit results.
+- trace-class Gibbs states, finite-mode compatibility, infinite-mode limits, and thermodynamic
+  limits.
