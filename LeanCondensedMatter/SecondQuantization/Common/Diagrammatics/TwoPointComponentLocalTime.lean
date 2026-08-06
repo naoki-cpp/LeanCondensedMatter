@@ -47,8 +47,14 @@ theorem TwoPointDiagram.interactionComponentTimeAssignment_ofComponents
         (d.interactionTimeAssignmentOfComponents shuffle componentTime) B =
       componentTime B := by
   funext i
-  simp [TwoPointDiagram.interactionComponentTimeAssignment,
-    TwoPointDiagram.interactionTimeAssignmentOfComponents]
+  change componentTime
+      (shuffle.slotEquiv.symm (shuffle.slotEquiv ⟨B, i⟩)).1
+      (shuffle.slotEquiv.symm (shuffle.slotEquiv ⟨B, i⟩)).2 =
+    componentTime B i
+  exact congrArg
+    (fun x : Σ C : d.componentPartition.parts,
+      Fin (d.interactionComponentSize C) => componentTime x.1 x.2)
+    (shuffle.slotEquiv.symm_apply_apply ⟨B, i⟩)
 
 @[simp]
 theorem TwoPointDiagram.interactionTimeAssignmentOfComponents_componentTimeAssignment
@@ -121,7 +127,7 @@ component-shuffle integrand of their localized functions. -/
 theorem TwoPointDiagram.prod_eq_interactionComponentShuffleIntegrand_localize
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (shuffle : d.ComponentInteractionShuffle)
-    (F : ∀ B : d.componentPartition.parts, (Fin S.card → ℝ) → ℂ)
+    (F : ∀ _B : d.componentPartition.parts, (Fin S.card → ℝ) → ℂ)
     (hF : ∀ B, d.InteractionComponentLocal shuffle B (F B))
     (τ : Fin S.card → ℝ) :
     (∏ B : d.componentPartition.parts, F B τ) =
