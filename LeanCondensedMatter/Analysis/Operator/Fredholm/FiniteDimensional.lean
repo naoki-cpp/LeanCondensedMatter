@@ -25,7 +25,9 @@ theorem diagonalDet_eq_det_one_add_diagonalOp [Finite ι]
   classical
   letI := Fintype.ofFinite ι
   let B : Module.Basis ι ℂ H := b.toOrthonormalBasis.toBasis
-  have hcoeff : Summable fun i => ‖coeff i‖ := summable_of_finite _
+  have hB (i : ι) : B i = b i := by
+    simp [B]
+  have hcoeff : Summable fun i => ‖coeff i‖ := Summable.of_finite
   rw [diagonalDet_fintype]
   change (∏ i, (1 + coeff i)) =
     LinearMap.det
@@ -36,8 +38,9 @@ theorem diagonalDet_eq_det_one_add_diagonalOp [Finite ι]
           (((1 : H →L[ℂ] H) + HilbertBasis.diagonalOp b coeff) : H →ₗ[ℂ] H) =
         Matrix.diagonal (fun i => 1 + coeff i) := by
     ext i j
-    rw [LinearMap.toMatrix_apply]
-    simp [B, HilbertBasis.one_add_diagonalOp_apply_basis, hcoeff, Matrix.diagonal_apply]
+    rw [LinearMap.toMatrix_apply, hB j,
+      HilbertBasis.one_add_diagonalOp_apply_basis b coeff hcoeff j, ← hB j]
+    simp [Matrix.diagonal_apply]
   rw [hmatrix, Matrix.det_diagonal]
 
 end Fredholm
