@@ -27,7 +27,7 @@ namespace QuantumTheory.Transport
 noncomputable section
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-  [CompleteSpace H] [FiniteDimensional ℂ H]
+  [FiniteDimensional ℂ H]
 
 /-- Ordinary finite-dimensional trace, bundled as a continuous linear functional on bounded
 endomorphisms. Continuity follows because the bounded-endomorphism space is finite-dimensional. -/
@@ -37,15 +37,15 @@ noncomputable def finiteDimensionalOperatorTrace :
 
 @[simp]
 theorem finiteDimensionalOperatorTrace_apply (operator : H →L[ℂ] H) :
-    finiteDimensionalOperatorTrace operator =
+    finiteDimensionalOperatorTrace (H := H) operator =
       LinearMap.trace ℂ H (operator : H →ₗ[ℂ] H) :=
   rfl
 
 /-- Cyclicity of the bundled ordinary trace for two bounded endomorphisms. -/
 theorem finiteDimensionalOperatorTrace_mul_comm
     (left right : H →L[ℂ] H) :
-    finiteDimensionalOperatorTrace (left * right) =
-      finiteDimensionalOperatorTrace (right * left) := by
+    finiteDimensionalOperatorTrace (H := H) (left * right) =
+      finiteDimensionalOperatorTrace (H := H) (right * left) := by
   simp only [finiteDimensionalOperatorTrace_apply]
   exact LinearMap.trace_mul_comm ℂ (left : H →ₗ[ℂ] H) (right : H →ₗ[ℂ] H)
 
@@ -55,19 +55,20 @@ theorem hasDerivAt_finiteDimensionalOperatorTrace_comp
     {operatorPath : ℝ → H →L[ℂ] H} {operatorDerivative : H →L[ℂ] H}
     {energy : ℝ} (hoperator : HasDerivAt operatorPath operatorDerivative energy) :
     HasDerivAt
-      (fun x : ℝ => finiteDimensionalOperatorTrace (operatorPath x))
-      (finiteDimensionalOperatorTrace operatorDerivative)
+      (fun x : ℝ => finiteDimensionalOperatorTrace (H := H) (operatorPath x))
+      (finiteDimensionalOperatorTrace (H := H) operatorDerivative)
       energy := by
-  have houter : HasFDerivAt finiteDimensionalOperatorTrace
-      (finiteDimensionalOperatorTrace.restrictScalars ℝ) (operatorPath energy) :=
-    finiteDimensionalOperatorTrace.hasFDerivAt.restrictScalars ℝ
+  have houter : HasFDerivAt (finiteDimensionalOperatorTrace (H := H))
+      ((finiteDimensionalOperatorTrace (H := H)).restrictScalars ℝ)
+      (operatorPath energy) :=
+    ((finiteDimensionalOperatorTrace (H := H)).hasFDerivAt).restrictScalars ℝ
   simpa using (houter.comp energy hoperator.hasFDerivAt).hasDerivAt
 
 /-- Scalar trace of the regularized Středa surface primitive. -/
 noncomputable def regularizedStredaSurfacePrimitiveTrace
     (hamiltonian current₁ current₂ : H →L[ℂ] H)
     (energy broadening : ℝ) : ℂ :=
-  finiteDimensionalOperatorTrace
+  finiteDimensionalOperatorTrace (H := H)
     (regularizedStredaSurfacePrimitiveOperator
       hamiltonian current₁ current₂ energy broadening)
 
@@ -75,7 +76,7 @@ noncomputable def regularizedStredaSurfacePrimitiveTrace
 noncomputable def regularizedStredaSurfacePrimitiveTraceDerivative
     (hamiltonian current₁ current₂ : H →L[ℂ] H)
     (energy broadening : ℝ) : ℂ :=
-  finiteDimensionalOperatorTrace
+  finiteDimensionalOperatorTrace (H := H)
     (regularizedStredaSurfacePrimitiveOperatorDerivative
       hamiltonian current₁ current₂ energy broadening)
 
@@ -83,7 +84,7 @@ noncomputable def regularizedStredaSurfacePrimitiveTraceDerivative
 noncomputable def regularizedBastinTraceIntegrand
     (hamiltonian current₁ current₂ : H →L[ℂ] H)
     (energy broadening : ℝ) : ℂ :=
-  finiteDimensionalOperatorTrace
+  finiteDimensionalOperatorTrace (H := H)
     (regularizedBastinOperatorIntegrand
       hamiltonian current₁ current₂ energy broadening)
 
@@ -91,12 +92,13 @@ noncomputable def regularizedBastinTraceIntegrand
 noncomputable def regularizedStredaResidualSeaTraceKernel
     (hamiltonian current₁ current₂ : H →L[ℂ] H)
     (energy broadening : ℝ) : ℂ :=
-  finiteDimensionalOperatorTrace
+  finiteDimensionalOperatorTrace (H := H)
     (regularizedStredaResidualSeaOperatorKernel
       hamiltonian current₁ current₂ energy broadening)
 
 /-- The traced surface primitive has the traced operator derivative at every positive broadening. -/
 theorem hasDerivAt_regularizedStredaSurfacePrimitiveTrace
+    [CompleteSpace H]
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
     (current₁ current₂ : H →L[ℂ] H)
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
@@ -126,7 +128,7 @@ theorem regularizedBastinTraceIntegrand_eq_surfaceDerivative_add_residualSea
     regularizedStredaSurfacePrimitiveTraceDerivative
     regularizedStredaResidualSeaTraceKernel
   rw [regularizedBastinOperatorIntegrand_eq_surfaceDerivative_add_residualSea]
-  exact map_add finiteDimensionalOperatorTrace _ _
+  exact map_add (finiteDimensionalOperatorTrace (H := H)) _ _
 
 end
 
