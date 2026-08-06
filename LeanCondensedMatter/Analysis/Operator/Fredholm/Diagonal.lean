@@ -68,6 +68,23 @@ theorem diagonalDet_ne_zero (coeff : ι → ℂ)
     (hfactor : ∀ i, 1 + coeff i ≠ 0) : diagonalDet coeff ≠ 0 :=
   tprod_one_add_ne_zero_of_summable hfactor hcoeff
 
+/-- For absolutely summable diagonal data, the determinant vanishes exactly when one coefficient is
+`-1`, equivalently when one factor `1 + coeff i` vanishes. -/
+theorem diagonalDet_eq_zero_iff_exists_coeff_eq_neg_one (coeff : ι → ℂ)
+    (hcoeff : Summable fun i => ‖coeff i‖) :
+    diagonalDet coeff = 0 ↔ ∃ i, coeff i = -1 := by
+  constructor
+  · intro hdet
+    by_contra hmissing
+    apply (diagonalDet_ne_zero coeff hcoeff ?_) hdet
+    intro i hzero
+    apply hmissing
+    exact ⟨i, eq_neg_of_add_eq_zero_left hzero⟩
+  · rintro ⟨i, hi⟩
+    unfold diagonalDet
+    apply tprod_of_exists_eq_zero
+    exact ⟨i, by simp [hi]⟩
+
 end Fredholm
 
 namespace HilbertBasis
@@ -94,5 +111,15 @@ theorem one_add_diagonalOp_has_nonzero_kernel_vector_of_coeff_eq_neg_one
     simp [hzero] at hnorm
   · rw [one_add_diagonalOp_apply_basis b coeff hcoeff i, hi]
     simp
+
+/-- Vanishing of the absolutely summable diagonal Fredholm determinant produces a nonzero kernel
+vector of `1 + diagonalOp b coeff`. -/
+theorem one_add_diagonalOp_has_nonzero_kernel_vector_of_diagonalDet_eq_zero
+    (b : HilbertBasis ι ℂ H) (coeff : ι → ℂ)
+    (hcoeff : Summable fun i => ‖coeff i‖) (hdet : Fredholm.diagonalDet coeff = 0) :
+    ∃ x : H, x ≠ 0 ∧ ((1 : H →L[ℂ] H) + diagonalOp b coeff) x = 0 := by
+  obtain ⟨i, hi⟩ :=
+    (Fredholm.diagonalDet_eq_zero_iff_exists_coeff_eq_neg_one coeff hcoeff).mp hdet
+  exact one_add_diagonalOp_has_nonzero_kernel_vector_of_coeff_eq_neg_one b coeff hcoeff i hi
 
 end HilbertBasis
