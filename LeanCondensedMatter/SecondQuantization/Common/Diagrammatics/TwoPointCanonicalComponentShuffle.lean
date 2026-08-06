@@ -150,6 +150,46 @@ theorem TwoPointDiagram.canonicalComponentTimeAssignment_eq_iff
     exact h ((TwoPointDiagram.interactionPart
       (B : Finset (TwoPointVertex S))).orderIsoOfFin rfl i)
 
+/-- For the full finset of `Fin N`, converting the increasing ambient rank back to `Fin N` recovers
+the underlying vertex. -/
+@[simp]
+theorem finCast_univOrderIsoOfFin_symm
+    (x : ↥(Finset.univ : Finset (Fin N))) :
+    Fin.cast (by simp)
+        (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm x) = x.1 := by
+  let castEmb : Fin (Finset.univ : Finset (Fin N)).card ↪o Fin N :=
+    (Fin.castOrderIso (by simp)).toOrderEmbedding
+  have hcast : castEmb =
+      (Finset.univ : Finset (Fin N)).orderEmbOfFin rfl :=
+    Finset.orderEmbOfFin_unique' rfl (fun _ => Finset.mem_univ _)
+  have hx := congrArg Subtype.val
+    (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).apply_symm_apply x)
+  change ((Finset.univ : Finset (Fin N)).orderEmbOfFin rfl)
+      (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm x) = x.1 at hx
+  rw [← hcast] at hx
+  exact hx
+
+/-- For diagrams indexed by all `Fin N` interaction slots, canonical local-time equality is exactly
+pointwise equality of the original slot-time functions on the component's interaction vertices. -/
+theorem TwoPointDiagram.canonicalComponentTimeAssignment_univ_eq_iff
+    (d : TwoPointDiagram ExternalLabel InternalLabel N
+      (Finset.univ : Finset (Fin N)))
+    (σ υ : Fin N → ℝ) (B : d.componentPartition.parts) :
+    d.interactionComponentTimeAssignment d.canonicalComponentInteractionShuffle
+        (fun i => σ (Fin.cast (by simp) i)) B =
+      d.interactionComponentTimeAssignment d.canonicalComponentInteractionShuffle
+        (fun i => υ (Fin.cast (by simp) i)) B ↔
+      ∀ v : ↥(TwoPointDiagram.interactionPart
+        (B : Finset (TwoPointVertex
+          (Finset.univ : Finset (Fin N))))),
+        σ v.1 = υ v.1 := by
+  rw [d.canonicalComponentTimeAssignment_eq_iff]
+  constructor
+  · intro h v
+    simpa using h v
+  · intro h v
+    simpa using h v
+
 end
 
 end Common
