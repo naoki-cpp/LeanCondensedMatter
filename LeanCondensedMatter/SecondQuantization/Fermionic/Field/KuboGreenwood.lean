@@ -41,7 +41,6 @@ noncomputable section
 variable {Site E ι : Type*}
 variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
-variable [Fintype ι]
 
 /-- One finite Kubo–Greenwood current-current transition term. -/
 noncomputable def finiteKuboGreenwoodDirectionalCurrentTerm
@@ -66,7 +65,7 @@ theorem finiteKuboGreenwoodDirectionalCurrentTerm_diag
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) (i : ι) :
     finiteKuboGreenwoodDirectionalCurrentTerm
       system data geometry direction K q ω η (i, i) = 0 := by
-  simp [finiteKuboGreenwoodDirectionalCurrentTerm]
+  simp [finiteKuboGreenwoodDirectionalCurrentTerm, lehmannTerm]
 
 /-- Equal-energy off-diagonal transitions keep the finite-rate denominator `η - iω`. -/
 theorem finiteKuboGreenwoodDirectionalCurrentTerm_of_equal_energy
@@ -92,6 +91,7 @@ theorem finiteKuboGreenwoodDirectionalCurrentTerm_of_equal_energy
 The current-current sum, Peierls contact expectation, positive finite volume, and electric-field
 conversion factor are all explicit in the definition. -/
 noncomputable def finiteKuboGreenwoodDirectionalConductivity
+    [Fintype ι]
     (convention : FiniteVolumeConductivityConvention)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -108,6 +108,7 @@ noncomputable def finiteKuboGreenwoodDirectionalConductivity
 /-- The named finite Kubo–Greenwood expression is exactly the conductivity derived from the
 upstream Kubo response chain, at fixed positive switching rate. -/
 theorem infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood
+    [Fintype ι]
     (convention : FiniteVolumeConductivityConvention)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -124,6 +125,7 @@ theorem infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood
 
 /-- The contact term remains a separate explicit contribution after conductivity normalization. -/
 theorem finiteKuboGreenwoodDirectionalConductivity_eq_current_sum_add_contact
+    [Fintype ι]
     (convention : FiniteVolumeConductivityConvention)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
