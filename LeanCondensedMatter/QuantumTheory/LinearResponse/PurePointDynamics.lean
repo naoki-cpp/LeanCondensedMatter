@@ -1,21 +1,20 @@
+import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
+import LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann
 import Mathlib.Analysis.SpecialFunctions.Exponential
 
 set_option linter.style.header false
 
 /-!
-# Pure-point expectations and free dynamics
+# Pure-point density states and free dynamics
 
 This module supplies the state and dynamics bridge needed to identify the countable pure-point
-Lehmann series with the previously defined retarded susceptibility.
+Lehmann series with the retarded susceptibility.
 
-From `PurePointLehmannData` it constructs the normalized diagonal expectation
-
-`ω(A) = ∑' i, pᵢ ⟪i, A i⟫`,
-
-proves that the free propagator acts on every energy-basis vector by its Schrödinger phase, derives
-the corresponding Heisenberg-picture matrix-element phase, and proves stationarity of the diagonal
-expectation.
+A `PurePointLehmannData` probability distribution is first realized as the canonical diagonal
+`DensityOperator`. Its normalized expectation is then obtained through
+`DensityOperator.toNormalizedExpectation`; no parallel linear-functional construction is retained.
+The module also proves the free energy-basis phases and stationarity of that expectation.
 
 The countable double-sum expansion of the commutator and the exchange of that sum with the time
 integral are intentionally left to the next layer.
@@ -32,127 +31,43 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 variable {ι : Type*}
 variable (system : BoundedFreeSystem H)
 
-/-- One diagonal pure-point expectation term. -/
-noncomputable def purePointExpectationTerm
-    (data : PurePointLehmannData system ι)
-    (A : H →L[ℂ] H) (i : ι) : ℂ :=
-  (data.probability i : ℂ) *
-    inner ℂ (data.basis i) (A (data.basis i))
-
-/-- The diagonal expectation series is summable for every bounded observable. -/
-theorem summable_purePointExpectationTerm
-    (data : PurePointLehmannData system ι)
-    (A : H →L[ℂ] H) :
-    Summable (purePointExpectationTerm system data A) := by
-  have hp : Summable fun i => |data.probability i| :=
+/-- Nonnegative summable pure-point probabilities are absolutely summable. -/
+theorem PurePointLehmannData.summable_norm_probability
+    (data : PurePointLehmannData system ι) :
+    Summable fun i => ‖data.probability i‖ := by
+  have h : Summable fun i => |data.probability i| :=
     data.probability_summable.congr fun i => by
       rw [abs_of_nonneg (data.probability_nonneg i)]
-  refine Summable.of_norm_bounded (hp.mul_right ‖A‖) fun i => ?_
-  have hinner :
-      ‖inner ℂ (data.basis i) (A (data.basis i))‖ ≤ ‖A‖ := by
-    calc
-      ‖inner ℂ (data.basis i) (A (data.basis i))‖ ≤
-          ‖data.basis i‖ * ‖A (data.basis i)‖ :=
-        norm_inner_le_norm _ _
-      _ ≤ ‖data.basis i‖ * (‖A‖ * ‖data.basis i‖) := by
-        gcongr
-        exact A.le_opNorm _
-      _ = ‖A‖ := by
-        rw [data.basis.orthonormal.1 i]
-        ring
-  rw [purePointExpectationTerm, norm_mul, Complex.norm_real]
-  exact mul_le_mul_of_nonneg_left hinner (abs_nonneg _)
+  simpa only [Real.norm_eq_abs] using h
 
-/-- The unbundled diagonal expectation value. -/
-noncomputable def purePointExpectationValue
-    (data : PurePointLehmannData system ι)
-    (A : H →L[ℂ] H) : ℂ :=
-  ∑' i, purePointExpectationTerm system data A i
+/-- The total pure-point probability is strictly positive. -/
+theorem PurePointLehmannData.probability_tsum_pos
+    (data : PurePointLehmannData system ι) :
+    0 < ∑' i, data.probability i := by
+  rw [data.probability_tsum]
+  exact zero_lt_one
 
-private theorem purePointExpectationValue_add
-    (data : PurePointLehmannData system ι)
-    (A B : H →L[ℂ] H) :
-    purePointExpectationValue system data (A + B) =
-      purePointExpectationValue system data A +
-        purePointExpectationValue system data B := by
-  rw [purePointExpectationValue, purePointExpectationValue, purePointExpectationValue,
-    ← ((summable_purePointExpectationTerm system data A).hasSum.add
-      (summable_purePointExpectationTerm system data B).hasSum).tsum_eq]
-  apply tsum_congr
-  intro i
-  simp [purePointExpectationTerm, inner_add_right, mul_add]
+/-- The canonical density operator represented by the pure-point probabilities. -/
+noncomputable def purePointDensityOperator
+    (data : PurePointLehmannData system ι) : DensityOperator H :=
+  diagonalDensityOperator data.basis data.probability
+    data.summable_norm_probability data.probability_nonneg data.probability_tsum_pos
 
-private theorem purePointExpectationValue_smul
-    (data : PurePointLehmannData system ι)
-    (c : ℂ) (A : H →L[ℂ] H) :
-    purePointExpectationValue system data (c • A) =
-      c * purePointExpectationValue system data A := by
-  rw [purePointExpectationValue, purePointExpectationValue,
-    ← ((summable_purePointExpectationTerm system data A).hasSum.mul_left c).tsum_eq]
-  apply tsum_congr
-  intro i
-  simp [purePointExpectationTerm, inner_smul_right]
-  ring
+/-- The pure-point density operator acts diagonally with the original normalized probabilities. -/
+@[simp]
+theorem purePointDensityOperator_apply_basis
+    (data : PurePointLehmannData system ι) (i : ι) :
+    (purePointDensityOperator system data).op (data.basis i) =
+      (data.probability i : ℂ) • data.basis i := by
+  simpa [purePointDensityOperator, normalizedDiagonalWeight, data.probability_tsum] using
+    diagonalDensityOperator_apply_basis data.basis data.probability
+      data.summable_norm_probability data.probability_nonneg data.probability_tsum_pos i
 
-private theorem purePointExpectationValue_norm_le
-    (data : PurePointLehmannData system ι)
-    (A : H →L[ℂ] H) :
-    ‖purePointExpectationValue system data A‖ ≤ ‖A‖ := by
-  rw [purePointExpectationValue]
-  have hp : HasSum (fun i => |data.probability i|) 1 := by
-    have hprob : HasSum data.probability 1 := by
-      rw [← data.probability_tsum]
-      exact data.probability_summable.hasSum
-    have hfun : (fun i => |data.probability i|) = data.probability := by
-      funext i
-      rw [abs_of_nonneg (data.probability_nonneg i)]
-    simpa only [hfun] using hprob
-  have hbound : HasSum (fun i => |data.probability i| * ‖A‖) (1 * ‖A‖) :=
-    hp.mul_right ‖A‖
-  have hle :
-      ‖∑' i, purePointExpectationTerm system data A i‖ ≤ 1 * ‖A‖ := by
-    apply tsum_of_norm_bounded hbound
-    intro i
-    have hinner :
-        ‖inner ℂ (data.basis i) (A (data.basis i))‖ ≤ ‖A‖ := by
-      calc
-        ‖inner ℂ (data.basis i) (A (data.basis i))‖ ≤
-            ‖data.basis i‖ * ‖A (data.basis i)‖ :=
-          norm_inner_le_norm _ _
-        _ ≤ ‖data.basis i‖ * (‖A‖ * ‖data.basis i‖) := by
-          gcongr
-          exact A.le_opNorm _
-        _ = ‖A‖ := by
-          rw [data.basis.orthonormal.1 i]
-          ring
-    rw [purePointExpectationTerm, norm_mul, Complex.norm_real]
-    exact mul_le_mul_of_nonneg_left hinner (abs_nonneg _)
-  simpa using hle
-
-/-- The normalized expectation associated with the pure-point probabilities. -/
+/-- The normalized response expectation is the canonical expectation of the pure-point density
+operator. -/
 noncomputable def purePointNormalizedExpectation
-    (data : PurePointLehmannData system ι) : NormalizedExpectation H where
-  toContinuousLinearMap :=
-    IsBoundedLinearMap.toContinuousLinearMap
-      (fun A : H →L[ℂ] H => purePointExpectationValue system data A)
-      { map_add := purePointExpectationValue_add system data
-        map_smul := fun c A => by
-          simpa only [smul_eq_mul] using
-            purePointExpectationValue_smul system data c A
-        bound := ⟨1, zero_lt_one, fun A => by
-          simpa using purePointExpectationValue_norm_le system data A⟩ }
-  map_one := by
-    change purePointExpectationValue system data 1 = 1
-    rw [purePointExpectationValue]
-    calc
-      (∑' i, purePointExpectationTerm system data 1 i) =
-          ∑' i, (data.probability i : ℂ) := by
-        apply tsum_congr
-        intro i
-        simp [purePointExpectationTerm, inner_self_eq_norm_sq_to_K,
-          data.basis.orthonormal.1 i]
-      _ = 1 := by
-        exact_mod_cast data.probability_tsum
+    (data : PurePointLehmannData system ι) : NormalizedExpectation H :=
+  (purePointDensityOperator system data).toNormalizedExpectation
 
 @[simp]
 theorem purePointNormalizedExpectation_apply
@@ -160,8 +75,10 @@ theorem purePointNormalizedExpectation_apply
     (A : H →L[ℂ] H) :
     purePointNormalizedExpectation system data A =
       ∑' i, (data.probability i : ℂ) *
-        inner ℂ (data.basis i) (A (data.basis i)) :=
-  rfl
+        inner ℂ (data.basis i) (A (data.basis i)) := by
+  rw [purePointNormalizedExpectation, DensityOperator.toNormalizedExpectation_apply]
+  exact (purePointDensityOperator system data).expectation_eq_tsum_diagonal
+    A data.basis data.probability (purePointDensityOperator_apply_basis system data)
 
 /-- The exponent of the free Schrödinger phase of one energy-basis vector. -/
 noncomputable def purePointSchrodingerExponent
@@ -272,7 +189,7 @@ theorem inner_purePointBasis_heisenbergEvolution
   simp [purePointTransitionPhase, inner_smul_left, inner_smul_right]
   ring
 
-/-- The diagonal pure-point expectation is stationary under the free dynamics. -/
+/-- The canonical pure-point density expectation is stationary under the free dynamics. -/
 theorem isStationary_purePointNormalizedExpectation
     (data : PurePointLehmannData system ι) :
     IsStationary system (purePointNormalizedExpectation system data) := by
