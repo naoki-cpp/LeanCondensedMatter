@@ -43,23 +43,27 @@ noncomputable def advancedResolvent
     (advancedSpectralParameter energy broadening)
 
 /-- A positive imaginary part excludes the retarded parameter from the real spectrum. -/
+set_option maxHeartbeats 1000000 in
 theorem retardedSpectralParameter_not_mem_spectrum
     (hamiltonian : Observable H) (energy broadening : ℝ)
     (hbroadening : 0 < broadening) :
     retardedSpectralParameter energy broadening ∉ spectrum ℂ hamiltonian.1 := by
   intro hmem
-  have him := hamiltonian.2.im_eq_zero_of_mem_spectrum hmem
+  have him : (retardedSpectralParameter energy broadening).im = 0 :=
+    hamiltonian.2.im_eq_zero_of_mem_spectrum hmem
   have hzero : broadening = 0 := by
     simpa using him
   exact (ne_of_gt hbroadening) hzero
 
 /-- A negative imaginary part excludes the advanced parameter from the real spectrum. -/
+set_option maxHeartbeats 1000000 in
 theorem advancedSpectralParameter_not_mem_spectrum
     (hamiltonian : Observable H) (energy broadening : ℝ)
     (hbroadening : 0 < broadening) :
     advancedSpectralParameter energy broadening ∉ spectrum ℂ hamiltonian.1 := by
   intro hmem
-  have him := hamiltonian.2.im_eq_zero_of_mem_spectrum hmem
+  have him : (advancedSpectralParameter energy broadening).im = 0 :=
+    hamiltonian.2.im_eq_zero_of_mem_spectrum hmem
   have hzero : -broadening = 0 := by
     simpa using him
   exact (ne_of_gt hbroadening) (neg_eq_zero.mp hzero)
@@ -132,6 +136,22 @@ theorem resolvent_mul_advancedShift
   rw [advancedResolvent, spectrum.resolvent_eq hres]
   exact hres.val_inv_mul
 
+/-- Complex conjugation exchanges the retarded and advanced spectral parameters. -/
+@[simp]
+theorem star_retardedSpectralParameter (energy broadening : ℝ) :
+    star (retardedSpectralParameter energy broadening) =
+      advancedSpectralParameter energy broadening := by
+  apply Complex.ext <;>
+    simp [retardedSpectralParameter, advancedSpectralParameter]
+
+/-- Complex conjugation exchanges the advanced and retarded spectral parameters. -/
+@[simp]
+theorem star_advancedSpectralParameter (energy broadening : ℝ) :
+    star (advancedSpectralParameter energy broadening) =
+      retardedSpectralParameter energy broadening := by
+  apply Complex.ext <;>
+    simp [retardedSpectralParameter, advancedSpectralParameter]
+
 /-- The advanced resolvent is the adjoint of the retarded resolvent. -/
 theorem star_retardedResolvent
     (hamiltonian : Observable H) (energy broadening : ℝ) :
@@ -140,7 +160,10 @@ theorem star_retardedResolvent
   unfold retardedResolvent advancedResolvent resolvent
   rw [← Ring.inverse_star]
   congr 1
-  simp [retardedSpectralParameter, advancedSpectralParameter, hamiltonian.2]
+  rw [map_sub]
+  rw [hamiltonian.2.eq]
+  simp only [Algebra.algebraMap_eq_smul_one, star_smul, star_one,
+    star_retardedSpectralParameter]
 
 /-- The advanced resolvent adjoints back to the retarded resolvent. -/
 theorem star_advancedResolvent
