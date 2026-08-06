@@ -27,5 +27,8 @@ jobs:
       - name: Check dimension-independent mode boundary
         run: python3 scripts/check_second_quantization_mode_boundary.py
 
+      - name: Check density dependency boundary
+        run: python3 scripts/check_second_quantization_density_boundary.py
+
       - name: Check Bloch-de Dominicis boundary
         run: python3 scripts/check_bloch_de_dominicis_expectation_boundary.py
