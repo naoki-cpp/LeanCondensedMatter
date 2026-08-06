@@ -66,13 +66,13 @@ theorem lehmannDenominator_eq_retardedSpectralShift
             (kuboBastinRetardedEnergy hbar omega energyₘ)
             (kuboBastinEnergyBroadening hbar eta) -
           (energyₙ : ℂ)) := by
-  have hhbarComplex : (hbar : ℂ) ≠ 0 := by
-    exact_mod_cast hhbar
-  unfold lehmannDenominator retardedSpectralParameter
-    kuboBastinRetardedEnergy kuboBastinEnergyBroadening
-  field_simp [hhbar, hhbarComplex]
-  simp [pow_two]
-  ring
+  apply Complex.ext
+  · simp [lehmannDenominator, retardedSpectralParameter,
+      kuboBastinRetardedEnergy, kuboBastinEnergyBroadening]
+  · simp [lehmannDenominator, retardedSpectralParameter,
+      kuboBastinRetardedEnergy, kuboBastinEnergyBroadening]
+    field_simp [hhbar]
+    ring
 
 /-- The retarded spectral shift is nonzero at positive switching rate. -/
 theorem retardedSpectralShift_ne_zero
@@ -83,11 +83,10 @@ theorem retardedSpectralShift_ne_zero
           (kuboBastinEnergyBroadening hbar eta) -
         (energyₙ : ℂ) ≠ 0 := by
   intro hzero
-  have him := congrArg Complex.im hzero
-  simp [retardedSpectralParameter, kuboBastinEnergyBroadening] at him
-  rcases him with hhbarZero | hetaZero
-  · exact (ne_of_gt hhbar) hhbarZero
-  · exact (ne_of_gt heta) hetaZero
+  have him : hbar * eta = 0 := by
+    have himZero := congrArg Complex.im hzero
+    simpa [retardedSpectralParameter, kuboBastinEnergyBroadening] using himZero
+  exact (mul_ne_zero (ne_of_gt hhbar) (ne_of_gt heta)) him
 
 variable
   (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
@@ -168,8 +167,7 @@ theorem inner_purePointBasis_retardedResolvent
         (data.energy n : ℂ))⁻¹ := by
   rw [retardedResolvent_apply_purePointBasis system data omega eta heta m n]
   rw [inner_smul_right]
-  rw [orthonormal_iff_ite.mp data.basis.orthonormal n n]
-  simp
+  simp [inner_self_eq_norm_sq_to_K, data.basis.orthonormal.norm_eq_one]
 
 variable [LinearOrder Site]
 variable
@@ -209,10 +207,10 @@ theorem finiteKuboGreenwoodDirectionalCurrentTerm_eq_bastinSpectral
   unfold finiteKuboGreenwoodDirectionalCurrentTerm lehmannTerm
   rw [lehmannDenominator_eq_retardedSpectralShift
     system.hbar omega eta (data.energy mn.1) (data.energy mn.2) hhbar]
+  unfold finiteKuboBastinSpectralDirectionalCurrentTerm
   rw [inner_purePointBasis_retardedResolvent system data omega eta heta mn.1 mn.2]
-  unfold finiteKuboBastinSpectralDirectionalCurrentTerm purePointTransitionWeight
+  unfold purePointTransitionWeight
   field_simp [hhbar, hhbarComplex, hshift]
-  simp [pow_two]
   ring
 
 /-- Finite regularized Kubo–Bastin conductivity in spectral resolvent form, with the Peierls contact
