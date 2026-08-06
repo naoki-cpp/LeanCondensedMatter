@@ -128,6 +128,20 @@ theorem freePropagator_mul_neg (t : ℝ) :
         freePropagator system (t + -t) := (freePropagator_add system t (-t)).symm
     _ = 1 := by simp
 
+/-- The adjoint of the free propagator is its left inverse. -/
+@[simp]
+theorem star_mul_freePropagator (t : ℝ) :
+    star (freePropagator system t) * freePropagator system t = 1 := by
+  rw [star_freePropagator]
+  exact freePropagator_neg_mul system t
+
+/-- The adjoint of the free propagator is its right inverse. -/
+@[simp]
+theorem freePropagator_mul_star (t : ℝ) :
+    freePropagator system t * star (freePropagator system t) = 1 := by
+  rw [star_freePropagator]
+  exact freePropagator_mul_neg system t
+
 /-- Free Heisenberg evolution of a bounded operator. -/
 noncomputable def heisenbergEvolution (A : H →L[ℂ] H) (t : ℝ) : H →L[ℂ] H :=
   freePropagator system (-t) * A * freePropagator system t

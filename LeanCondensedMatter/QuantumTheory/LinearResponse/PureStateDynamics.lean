@@ -1,15 +1,13 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
-import Mathlib.Algebra.Star.Unitary
 
 set_option linter.style.header false
 
 /-!
 # Bounded pure-state dynamics
 
-This module exposes the unitary content of the bounded free propagator and uses it to define the
-canonical Schrödinger-picture evolution of normalized pure states. The API keeps vector
-representatives rather than quotienting by global phase; phase compatibility is expressed by an
-exact theorem.
+This module uses norm preservation of the bounded free propagator to define the canonical
+Schrödinger-picture evolution of normalized pure states. The API keeps vector representatives
+rather than quotienting by global phase; phase compatibility is expressed by an exact theorem.
 -/
 
 namespace QuantumTheory
@@ -19,35 +17,6 @@ noncomputable section
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 variable (system : BoundedFreeSystem H)
-
-/-- The adjoint of the free propagator is its left inverse. -/
-@[simp]
-theorem star_mul_freePropagator (t : ℝ) :
-    star (freePropagator system t) * freePropagator system t = 1 := by
-  rw [star_freePropagator]
-  exact freePropagator_neg_mul system t
-
-/-- The adjoint of the free propagator is its right inverse. -/
-@[simp]
-theorem freePropagator_mul_star (t : ℝ) :
-    freePropagator system t * star (freePropagator system t) = 1 := by
-  rw [star_freePropagator]
-  exact freePropagator_mul_neg system t
-
-/-- Every bounded free propagator is a unitary element of the endomorphism algebra. -/
-theorem freePropagator_mem_unitary (t : ℝ) :
-    freePropagator system t ∈ unitary (H →L[ℂ] H) := by
-  rw [Unitary.mem_iff]
-  exact ⟨star_mul_freePropagator system t, freePropagator_mul_star system t⟩
-
-/-- The bounded free propagator bundled as a unitary operator. -/
-noncomputable def freePropagatorUnitary (t : ℝ) : unitary (H →L[ℂ] H) :=
-  ⟨freePropagator system t, freePropagator_mem_unitary system t⟩
-
-@[simp]
-theorem coe_freePropagatorUnitary (t : ℝ) :
-    (freePropagatorUnitary system t : H →L[ℂ] H) = freePropagator system t :=
-  rfl
 
 /-- A bounded free propagator preserves vector norms. -/
 @[simp]
