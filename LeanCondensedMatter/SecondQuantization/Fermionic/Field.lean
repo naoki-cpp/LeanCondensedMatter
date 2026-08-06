@@ -19,6 +19,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StationaryFrequenc
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.InfiniteTimeFrequencyResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.SpectralFrequencyResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ConductivityNormalization
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.TransportConductivityBridge
 
 set_option linter.style.header false
 
@@ -53,4 +54,6 @@ limit at every positive switching rate. The spectral layer identifies that limit
 pure-point Lehmann double sum plus the explicit geometric contact expectation. The final
 normalization layer supplies a positive finite volume and the electric-field factor `-η + iω`,
 turning the total-current vector-potential response into an intensive regularized conductivity.
+The transport bridge reuses the general finite-volume system convention without importing the
+fermionic model into the dimension-independent transport layer.
 -/
