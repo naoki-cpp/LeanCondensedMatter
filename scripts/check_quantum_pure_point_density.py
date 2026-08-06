@@ -38,9 +38,6 @@ RETIRED_PURE_POINT_DECLARATIONS = (
     "purePointExpectationValue_norm_le",
     "PurePointLehmannData.summable_norm_probability",
     "PurePointLehmannData.probability_tsum_pos",
-)
-
-PRIVATE_PURE_POINT_HELPERS = (
     "timeScaledGenerator_apply_purePointBasis",
     "pow_timeScaledGenerator_apply_purePointBasis",
 )
@@ -111,26 +108,6 @@ def main() -> int:
                 f"{rendered}"
             )
 
-    for declaration in PRIVATE_PURE_POINT_HELPERS:
-        private_pattern = re.compile(
-            rf"^\s*private\s+theorem\s+{re.escape(declaration)}\b",
-            re.MULTILINE,
-        )
-        public_pattern = re.compile(
-            rf"^\s*theorem\s+{re.escape(declaration)}\b",
-            re.MULTILINE,
-        )
-        if not private_pattern.search(pure_point_code):
-            errors.append(
-                f"pure-point generator proof `{declaration}` must remain file-private in "
-                f"{relative(PURE_POINT)}"
-            )
-        if public_pattern.search(pure_point_code):
-            errors.append(
-                f"pure-point generator proof `{declaration}` must not be public in "
-                f"{relative(PURE_POINT)}"
-            )
-
     required_pure_point_boundaries = (
         "import LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws",
         "private theorem purePointProbability_summable_norm",
@@ -145,8 +122,6 @@ def main() -> int:
         "(purePointDensityOperator system data).toNormalizedExpectation",
         "DensityOperator.toNormalizedExpectation_apply",
         "expectation_eq_tsum_diagonal",
-        "private theorem timeScaledGenerator_apply_purePointBasis",
-        "private theorem pow_timeScaledGenerator_apply_purePointBasis",
         "theorem freePropagator_apply_purePointBasis",
         "isStationary_toNormalizedExpectation_of_commute_hamiltonian system",
         "commute_hamiltonian_purePointDensityOperator system data",

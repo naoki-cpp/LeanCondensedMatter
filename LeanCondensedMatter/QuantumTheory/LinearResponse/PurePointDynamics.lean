@@ -113,32 +113,6 @@ noncomputable def purePointSchrodingerPhase
     (data : PurePointLehmannData system ι) (i : ι) (t : ℝ) : ℂ :=
   Complex.exp (purePointSchrodingerExponent system data i t)
 
-/-- The time-scaled Schrödinger generator acts diagonally on the energy basis. -/
-private theorem timeScaledGenerator_apply_purePointBasis
-    (data : PurePointLehmannData system ι) (i : ι) (t : ℝ) :
-    timeScaledGenerator system t (data.basis i) =
-      purePointSchrodingerExponent system data i t • data.basis i := by
-  rw [timeScaledGenerator, schrodingerGenerator]
-  simp only [smul_apply, data.hamiltonian_apply_basis, smul_smul]
-  congr 1
-  rw [purePointSchrodingerExponent]
-  push_cast
-  ring
-
-/-- Every power of the time-scaled generator remains diagonal on the energy basis. -/
-private theorem pow_timeScaledGenerator_apply_purePointBasis
-    (data : PurePointLehmannData system ι) (i : ι) (t : ℝ) (n : ℕ) :
-    ((timeScaledGenerator system t) ^ n) (data.basis i) =
-      (purePointSchrodingerExponent system data i t) ^ n • data.basis i := by
-  induction n with
-  | zero => simp
-  | succ n ih =>
-      rw [pow_succ]
-      simp only [mul_apply_eq_comp,
-        timeScaledGenerator_apply_purePointBasis, map_smul, ih, smul_smul]
-      congr 1
-      ring
-
 /-- The free propagator acts on an energy-basis vector by the expected Schrödinger phase. -/
 theorem freePropagator_apply_purePointBasis
     (data : PurePointLehmannData system ι) (i : ι) (t : ℝ) :
@@ -147,6 +121,22 @@ theorem freePropagator_apply_purePointBasis
   let T : H →L[ℂ] H := timeScaledGenerator system t
   let c : ℂ := purePointSchrodingerExponent system data i t
   let v : H := data.basis i
+  have hT : T v = c • v := by
+    dsimp [T, c, v]
+    rw [timeScaledGenerator, schrodingerGenerator]
+    simp only [smul_apply, data.hamiltonian_apply_basis, smul_smul]
+    congr 1
+    rw [purePointSchrodingerExponent]
+    push_cast
+    ring
+  have hpow (n : ℕ) : (T ^ n) v = c ^ n • v := by
+    induction n with
+    | zero => simp
+    | succ n ih =>
+        rw [pow_succ]
+        simp only [mul_apply_eq_comp, ih, map_smul, hT, smul_smul]
+        congr 1
+        ring
   have hop :=
     (NormedSpace.exp_series_hasSum_exp' (𝕂 := ℂ) T).mapL
       (ContinuousLinearMap.apply ℂ H v)
@@ -156,7 +146,7 @@ theorem freePropagator_apply_purePointBasis
     convert hop using 1
     · ext n
       simp only [ContinuousLinearMap.apply_apply, smul_apply]
-      rw [pow_timeScaledGenerator_apply_purePointBasis]
+      rw [hpow]
       simp [c, v, smul_smul]
     · rfl
   have hscalar :=
