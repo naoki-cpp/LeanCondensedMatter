@@ -10,6 +10,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointExter
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentOrderedSimplex
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointCanonicalComponentShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentLocalTime
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentPairProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointRestrictedPairEquiv
@@ -41,11 +42,11 @@ Quartic vertex labels, shared local-leg semantics and operator constructors, leg
 diagrams with distinguished external legs, full component partitions, automatic connectivity of the
 two one-legged external vertices, vacuum/external component restriction data, the canonical
 external-plus-vacuum decomposition of component indices and interaction vertices, componentwise
-interaction-vertex products and Dyson signs, order-preserving shuffles, local-time reconstruction,
-and ordered-simplex products for component interaction-time slots, componentwise normalized-pair
-sums and products, equivalences between ambient component pairs and restricted external/vacuum
-pairings, and the resulting pair-orientation dichotomy; ordered diagram data, connected components,
-component-local orders, order-preserving shuffle decompositions, and shuffled ordered-simplex
-integrands; quartic component restriction and reassembly, decomposition equivalences, and
-componentwise scalar factorization.
+interaction-vertex products and Dyson signs, order-preserving shuffles, the canonical shuffle induced
+by the original interaction-vertex order, local-time reconstruction, and ordered-simplex products for
+component interaction-time slots, componentwise normalized-pair sums and products, equivalences
+between ambient component pairs and restricted external/vacuum pairings, and the resulting
+pair-orientation dichotomy; ordered diagram data, connected components, component-local orders,
+order-preserving shuffle decompositions, and shuffled ordered-simplex integrands; quartic component
+restriction and reassembly, decomposition equivalences, and componentwise scalar factorization.
 -/
