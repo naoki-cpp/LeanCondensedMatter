@@ -201,7 +201,8 @@ theorem twoSiteDimerHopping_amplitude_one_one (t : ℂ) :
 theorem twoSiteDimerHopping_hermitian_pair (t : ℂ) :
     star ((twoSiteDimerHopping t).amplitude 1 0) =
       (twoSiteDimerHopping t).amplitude 0 1 := by
-  simp
+  rw [twoSiteDimerHopping_amplitude_one_zero,
+    twoSiteDimerHopping_amplitude_zero_one]
 
 end
 end Validation
