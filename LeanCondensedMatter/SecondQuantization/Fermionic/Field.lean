@@ -23,6 +23,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboGreenwood
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinSpectral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinTrace
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaIntegration
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaOccupation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.TransportConductivityBridge
 
 set_option linter.style.header false
@@ -68,7 +69,10 @@ carrier, proves its spectral expansion, and identifies the resulting named finit
 Kubo–Bastin conductivity with the upstream causal Kubo response. The Středa integration layer
 records the additional finite-energy representation, derivative, integrability, and boundary
 hypotheses required for integration by parts, names the regularized surface and sea contributions,
-and proves their sum without assigning a magnetic-derivative interpretation. The transport bridge
-reuses the general finite-volume system convention without importing the fermionic model into the
-dimension-independent transport layer.
+and proves their sum without assigning a magnetic-derivative interpretation. The occupation layer
+then makes the first concrete spectral-to-energy bridge: a differentiable occupation is required to
+reproduce the discrete pure-point probabilities, and every transition difference is rewritten as
+an oriented integral of its energy derivative without yet claiming a common full-energy kernel.
+The transport bridge reuses the general finite-volume system convention without importing the
+fermionic model into the dimension-independent transport layer.
 -/
