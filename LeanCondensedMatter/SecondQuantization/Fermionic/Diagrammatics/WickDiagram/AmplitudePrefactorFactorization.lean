@@ -1,5 +1,5 @@
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentConnected
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentVertexProduct
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentConnected
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Amplitude
 
 set_option linter.style.header false
@@ -26,7 +26,7 @@ theorem QuarticWickDiagram.couplingWeight_eq_prod_restrictComponentConnected
       ∏ B : d.componentPartition.parts,
         QuarticWickDiagram.couplingWeight ((d.restrictComponentConnected B.2).1) g := by
   simpa only [QuarticWickDiagram.couplingWeight,
-    QuarticWickDiagram.restrictComponentConnected] using
+    Common.QuarticDiagram.restrictComponentConnected] using
       (Common.QuarticDiagram.prod_vertexLabel_eq_prod_restrictComponent (d := d) (w := g))
 
 /-- The Dyson recursion sign `(-1)^|S|` is the product of the corresponding signs on the component
