@@ -84,12 +84,11 @@ theorem PurePointOccupationInterpolation.probabilityDifference_eq_integral
     (((data.probability m - data.probability n : ℝ) : ℂ)) =
       ∫ energy in data.energy n..data.energy m,
         interpolation.occupationDerivative energy := by
-  simpa using interpolation.probability_sub_eq_integral m n
+  simpa using interpolation.probability_sub_eq_integral system m n
 
 variable {Site E : Type*}
 variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
-variable [Fintype ι]
 
 /-- The current matrix elements and retarded resolvent factor of one finite Bastin transition,
 with the occupation difference removed. -/
@@ -141,7 +140,9 @@ theorem finiteKuboBastinSpectralDirectionalCurrentTerm_eq_occupationResolved
   unfold finiteKuboBastinSpectralDirectionalCurrentTerm
     finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
     finiteKuboBastinDirectionalTransitionFactor
-  rw [interpolation.probabilityDifference_eq_integral mn.1 mn.2]
+  rw [interpolation.probabilityDifference_eq_integral system mn.1 mn.2]
+
+variable [Fintype ι]
 
 /-- The complete finite conductivity after replacing every discrete probability difference by its
 oriented occupation-derivative integral. The contact term and finite-volume normalization remain
