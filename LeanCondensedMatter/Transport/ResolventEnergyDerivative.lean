@@ -59,10 +59,19 @@ theorem hasDerivAt_retardedResolvent_energy
   have hinner :=
     (hasDerivAt_retardedSpectralParameter_energy energy broadening).hasFDerivAt
   have hcomp := (houter.comp energy hinner).hasDerivAt
+  have hvalue :
+      ((ContinuousLinearMap.restrictScalars ℝ
+          (ContinuousLinearMap.smulRight 1
+            (-(retardedResolvent hamiltonian energy broadening) ^ 2)) ∘SL
+        ContinuousLinearMap.toSpanSingleton ℝ 1) 1) =
+        -(retardedResolvent hamiltonian energy broadening) ^ 2 := by
+    change (1 : ℂ) • (-(retardedResolvent hamiltonian energy broadening) ^ 2) = _
+    simp
+  rw [hvalue] at hcomp
   change HasDerivAt
     (resolvent hamiltonian ∘ fun x : ℝ => retardedSpectralParameter x broadening)
-    (-(resolvent hamiltonian (retardedSpectralParameter energy broadening)) ^ 2) energy
-  convert hcomp using 1 <;> rfl
+    (-(retardedResolvent hamiltonian energy broadening) ^ 2) energy
+  exact hcomp
 
 /-- The advanced resolvent differentiated along the real-energy axis is `-(Gᴬ)^2`. -/
 theorem hasDerivAt_advancedResolvent_energy
@@ -80,10 +89,19 @@ theorem hasDerivAt_advancedResolvent_energy
   have hinner :=
     (hasDerivAt_advancedSpectralParameter_energy energy broadening).hasFDerivAt
   have hcomp := (houter.comp energy hinner).hasDerivAt
+  have hvalue :
+      ((ContinuousLinearMap.restrictScalars ℝ
+          (ContinuousLinearMap.smulRight 1
+            (-(advancedResolvent hamiltonian energy broadening) ^ 2)) ∘SL
+        ContinuousLinearMap.toSpanSingleton ℝ 1) 1) =
+        -(advancedResolvent hamiltonian energy broadening) ^ 2 := by
+    change (1 : ℂ) • (-(advancedResolvent hamiltonian energy broadening) ^ 2) = _
+    simp
+  rw [hvalue] at hcomp
   change HasDerivAt
     (resolvent hamiltonian ∘ fun x : ℝ => advancedSpectralParameter x broadening)
-    (-(resolvent hamiltonian (advancedSpectralParameter energy broadening)) ^ 2) energy
-  convert hcomp using 1 <;> rfl
+    (-(advancedResolvent hamiltonian energy broadening) ^ 2) energy
+  exact hcomp
 
 namespace BoundedSystem
 
