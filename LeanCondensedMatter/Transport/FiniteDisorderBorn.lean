@@ -177,9 +177,12 @@ theorem configurationRetardedGreen_eq_secondOrder_add_exactRemainder
 an operator-valued action on a supplied kernel; its exact finite second-moment realization is stored
 as a field. -/
 structure FiniteDisorderMomentData where
+  /-- Operator-valued covariance action on an inserted bounded kernel. -/
   covariance : (H →L[ℂ] H) → H →L[ℂ] H
+  /-- Exact centering condition `E[Vω] = 0`. -/
   centered :
     ensemble.operatorAverage (fun ω => (ensemble.impurityPotential ω).1) = 0
+  /-- Identification of the covariance action with the exact weighted finite second moment. -/
   covariance_eq_secondMoment : ∀ kernel,
     covariance kernel =
       ensemble.operatorAverage (fun ω =>
