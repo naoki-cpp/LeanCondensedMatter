@@ -17,11 +17,11 @@ applies.
   operators as non-self-adjoint trace-class operators carrying a general trace.
 
 - **The first Fredholm determinant slice is diagonal, not general.**
-  Issue #659 targets a genuinely infinite-dimensional determinant for an operator diagonal in an
-  explicit countable Hilbert basis, with absolutely summable coefficients `λ i`, using the
-  convergent product `∏' i, (1 + λ i)`. This does not define a determinant for arbitrary compact,
-  normal, or trace-class operators. Reindexing invariance is required, but independence from an
-  unrelated diagonalizing basis needs a separate spectral-uniqueness theorem.
+  `Analysis/Operator/Fredholm/Diagonal.lean` provides a genuinely infinite-dimensional determinant
+  for explicit absolutely summable diagonal coefficients `coeff i`, using the convergent product
+  `∏' i, (1 + coeff i)`. This does not define a determinant for arbitrary compact, normal, or
+  trace-class operators. Reindexing invariance is proved, but independence from an unrelated
+  diagonalizing basis needs a separate spectral-uniqueness theorem.
 
 - **`ContinuousLinearMap.det` is not an infinite-dimensional Fredholm determinant.**
   Mathlib's determinant is used only for finite-dimensional compatibility. It must not be applied
