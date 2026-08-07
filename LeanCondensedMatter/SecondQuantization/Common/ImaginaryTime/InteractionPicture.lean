@@ -63,6 +63,20 @@ theorem matrixCoeff_interactionPicture (energy : Config → ℝ)
   push_cast
   ring
 
+/-- Diagonal imaginary-time evolution changes coefficients but does not create new output basis
+states in a fixed matrix column. -/
+theorem support_interactionPicture_basisState_subset (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) (n : Config) :
+    (interactionPicture energy V τ (basisState n)).support ⊆
+      (V (basisState n)).support := by
+  intro m hm
+  rw [Finsupp.mem_support_iff] at hm ⊢
+  change matrixCoeff (interactionPicture energy V τ) m n ≠ 0 at hm
+  change matrixCoeff V m n ≠ 0
+  rw [matrixCoeff_interactionPicture] at hm
+  intro hzero
+  exact hm (by simp [hzero])
+
 /-- Every interaction-picture matrix coefficient is continuous in imaginary time. -/
 theorem continuous_matrixCoeff_interactionPicture (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
