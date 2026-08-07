@@ -7,7 +7,8 @@ set_option linter.style.header false
 # Ordered-simplex two-point Dyson coefficients
 
 This module integrates the fixed-time external-leg Wick expansion over the ordered simplex and
-attaches the `(-1)^n` Dyson sign.
+attaches the `(-1)^n` Dyson sign. The operator presentation uses the canonical free Gibbs density
+state directly; no parallel finite-Gibbs coefficient API is maintained.
 
 The unconditional public theorem integrates the pointwise finite sum over diagrams.  It deliberately
 does not yet commute that finite diagram sum with the ordered-simplex integral: mixed time ordering
@@ -28,23 +29,24 @@ noncomputable def twoPointDiagramIntegrand {n : ℕ}
   ∑ d : FixedExternalTwoPointWickDiagram Mode n i j,
     d.fixedTimeAmplitude ε β g τ τ' σ
 
-/-- The coupling-weighted mixed time-ordered finite Gibbs expectation at fixed interaction times. -/
+/-- The coupling-weighted mixed time-ordered density-state expectation at fixed interaction times. -/
 noncomputable def twoPointDysonIntegrand {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (i j : Mode) (τ τ' : ℝ) (σ : Fin n → ℝ) : ℂ :=
   ∑ q : Fin n → QuarticVertexLabel Mode,
     orderedTwoPointVertexWeight g q *
-      Common.finiteGibbsExpectation (fermionEnergy ε) β
-        (mixedTimeOrderedVertexComp ε i j τ τ' q σ)
+      (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator
+          (mixedTimeOrderedVertexComp ε i j τ τ' q σ))
 
 /-- Pointwise, the external-leg diagram integrand is the coupling-weighted mixed time-ordered
-finite Gibbs expectation. -/
+canonical density-state expectation. -/
 theorem twoPointDiagramIntegrand_eq_twoPointDysonIntegrand {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (i j : Mode) (τ τ' : ℝ) (σ : Fin n → ℝ) :
     twoPointDiagramIntegrand ε β g i j τ τ' σ =
       twoPointDysonIntegrand ε β g i j τ τ' σ := by
-  exact sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_sum_vertexLabel_expectation
+  exact sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_sum_vertexLabel_densityExpectation
     ε β g i j τ τ' σ
 
 /-- Ordered-simplex contribution of one fixed-external diagram, before the Dyson sign. -/
@@ -69,7 +71,8 @@ noncomputable def twoPointDiagramCoefficient {n : ℕ}
   (-1 : ℂ) ^ n * intervalIntegral.orderedSimplexIntegral n β
     (twoPointDiagramIntegrand ε β g i j τ τ')
 
-/-- The order-`n` perturbative two-point coefficient in the vertex-label/operator presentation. -/
+/-- The canonical order-`n` perturbative two-point coefficient in the density-state operator
+presentation. -/
 noncomputable def twoPointDysonCoefficient {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (i j : Mode) (τ τ' : ℝ) : ℂ :=
@@ -87,52 +90,6 @@ theorem twoPointDiagramCoefficient_eq_twoPointDysonCoefficient {n : ℕ}
   apply intervalIntegral.orderedSimplexIntegral_congr
   intro σ
   exact twoPointDiagramIntegrand_eq_twoPointDysonIntegrand ε β g i j τ τ' σ
-
-/-- Density-state form of the fixed-time Dyson integrand. -/
-noncomputable def twoPointDensityDysonIntegrand {n : ℕ}
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (i j : Mode) (τ τ' : ℝ) (σ : Fin n → ℝ) : ℂ :=
-  ∑ q : Fin n → QuarticVertexLabel Mode,
-    orderedTwoPointVertexWeight g q *
-      (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperator
-          (mixedTimeOrderedVertexComp ε i j τ τ' q σ))
-
-/-- The finite Gibbs and density-state Dyson integrands agree pointwise. -/
-theorem twoPointDensityDysonIntegrand_eq_twoPointDysonIntegrand {n : ℕ}
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (i j : Mode) (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    twoPointDensityDysonIntegrand ε β g i j τ τ' σ =
-      twoPointDysonIntegrand ε β g i j τ τ' σ := by
-  simp only [twoPointDensityDysonIntegrand, twoPointDysonIntegrand,
-    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
-
-/-- Density-state presentation of the order-`n` perturbative two-point coefficient. -/
-noncomputable def twoPointDensityDysonCoefficient {n : ℕ}
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (i j : Mode) (τ τ' : ℝ) : ℂ :=
-  (-1 : ℂ) ^ n * intervalIntegral.orderedSimplexIntegral n β
-    (twoPointDensityDysonIntegrand ε β g i j τ τ')
-
-/-- The density-state and finite Gibbs presentations of the two-point Dyson coefficient agree. -/
-theorem twoPointDensityDysonCoefficient_eq_twoPointDysonCoefficient {n : ℕ}
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (i j : Mode) (τ τ' : ℝ) :
-    twoPointDensityDysonCoefficient (n := n) ε β g i j τ τ' =
-      twoPointDysonCoefficient (n := n) ε β g i j τ τ' := by
-  apply congrArg (fun z : ℂ => (-1 : ℂ) ^ n * z)
-  apply intervalIntegral.orderedSimplexIntegral_congr
-  intro σ
-  exact twoPointDensityDysonIntegrand_eq_twoPointDysonIntegrand ε β g i j τ τ' σ
-
-/-- The integrated external-leg diagram coefficient also has the canonical density-state form. -/
-theorem twoPointDiagramCoefficient_eq_twoPointDensityDysonCoefficient {n : ℕ}
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (i j : Mode) (τ τ' : ℝ) :
-    twoPointDiagramCoefficient (n := n) ε β g i j τ τ' =
-      twoPointDensityDysonCoefficient (n := n) ε β g i j τ τ' := by
-  rw [twoPointDiagramCoefficient_eq_twoPointDysonCoefficient,
-    twoPointDensityDysonCoefficient_eq_twoPointDysonCoefficient]
 
 end Fermionic
 end SecondQuantization

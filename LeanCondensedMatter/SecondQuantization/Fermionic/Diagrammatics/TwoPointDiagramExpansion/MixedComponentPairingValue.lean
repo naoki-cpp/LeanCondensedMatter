@@ -1,14 +1,15 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentCrossingEven
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Amplitude
 
 set_option linter.style.header false
 
 /-!
 # Component-local mixed-time pairing values
 
-The mixed two-point pairing value consists of a fermionic crossing weight and a product of finite
-Gibbs contractions.  The preceding layers factor those two pieces over the full external-plus-
-interaction components.  This module assembles them into one component-local pairing value and
-identifies the external and vacuum factors with products over the corresponding restricted
+The mixed two-point pairing value consists of a fermionic crossing weight and a product of canonical
+free Gibbs density-state contractions.  The preceding layers factor those two pieces over the full
+external-plus-interaction components.  This module assembles them into one component-local pairing
+value and identifies the external and vacuum factors with products over the corresponding restricted
 pairings.
 
 The contraction values on restricted pairings remain defined by pullback from the actual mixed-time

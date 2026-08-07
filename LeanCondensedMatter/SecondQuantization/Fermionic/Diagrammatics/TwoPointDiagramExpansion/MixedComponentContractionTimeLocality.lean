@@ -3,12 +3,12 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 set_option linter.style.header false
 
 /-!
-# Component-locality of mixed finite Gibbs contractions
+# Component-locality of mixed density-state contractions
 
 A mixed atomic operator is determined by its standard two-point leg and the imaginary time of the
 supporting event. Canonical component-position transport preserves the standard leg, while
 `ComponentTimeEq` preserves the supporting event time. Consequently each transported normalized
-pair has the same two finite Gibbs contraction operators.
+pair has the same two operators in the canonical free Gibbs density-state contraction.
 -/
 
 namespace SecondQuantization
@@ -139,8 +139,8 @@ section GibbsContractions
 
 variable [Fintype Mode]
 
-/-- Component-local equality of interaction times preserves the finite Gibbs contraction attached to
-one normalized pair under canonical pair-time transport. -/
+/-- Component-local equality of interaction times preserves the canonical density-state contraction
+attached to one normalized pair under canonical pair-time transport. -/
 theorem FixedExternalTwoPointWickDiagram.mixedPairContractionValue_eq_of_componentTimeEq
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)
@@ -176,6 +176,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedPairContractionValue_eq_of_compone
         mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence υ tp.1.1.2 := by
     simpa [p1, tp] using hOp1.symm
   unfold FixedExternalTwoPointWickDiagram.mixedPairContractionValue
+    mixedTimeOrderedAtomicPairValue
   rw [hEndpoint0, hEndpoint1]
 
 /-- `ComponentTimeEq` discharges the contraction-preservation hypothesis of component pair-time

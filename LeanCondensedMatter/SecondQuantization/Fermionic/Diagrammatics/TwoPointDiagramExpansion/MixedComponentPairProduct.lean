@@ -1,15 +1,15 @@
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Pairing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairEquiv
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Amplitude
 
 set_option linter.style.header false
 
 /-!
 # Products over mixed-time two-point component pairs
 
-The fixed-time two-point amplitude evaluates contractions on normalized pairs of
+The canonical two-point pairing value evaluates contractions on normalized pairs of
 `pairingInMixedOrder`.  This module partitions those pairs by the full diagram component containing
 their endpoints, factors arbitrary commutative pair products into the external component and vacuum
-components, and specializes the result to the finite Gibbs contraction product.
+components, and specializes the result to the canonical free Gibbs density-state contraction product.
 
 The external and vacuum restricted-pair equivalences are used only by pullback: local restricted pair
 values are defined from the corresponding original mixed-time pair.  This avoids assuming that a
@@ -112,14 +112,14 @@ section Fermionic
 
 variable [LinearOrder Mode] [Fintype Mode]
 
-/-- The finite Gibbs contraction attached to one normalized pair in the actual mixed-time pairing. -/
+/-- Canonical free Gibbs density-state contraction attached to one normalized pair in the actual
+mixed-time pairing. -/
 noncomputable def FixedExternalTwoPointWickDiagram.mixedPairContractionValue
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair) : ℂ :=
-  Common.finiteGibbsExpectation (fermionEnergy ε) β
-    ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ pr.1.1).comp
-      (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ pr.1.2))
+  mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
+    pr.1.1 pr.1.2
 
 /-- The mixed-time contraction product factors into the external component and all vacuum
 components. -/
@@ -136,8 +136,8 @@ theorem FixedExternalTwoPointWickDiagram.prod_mixedPairContractionValue_eq_exter
   d.prod_mixedComponentPairs_eq_external_mul_prod_vacuum τ τ' σ
     (d.mixedPairContractionValue ε β τ τ' σ)
 
-/-- The pairing value used by the fixed-time amplitude exposes the component-factorized contraction
-product while retaining the global mixed-order fermionic pairing weight. -/
+/-- The canonical pairing value exposes the component-factorized contraction product while retaining
+the global mixed-order fermionic pairing weight. -/
 theorem FixedExternalTwoPointWickDiagram.orderedTwoPointPairingValue_eq_weight_mul_components
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ) :
@@ -150,7 +150,6 @@ theorem FixedExternalTwoPointWickDiagram.orderedTwoPointPairingValue_eq_weight_m
             ∏ pr : d.MixedComponentPair τ τ' σ B,
               d.mixedPairContractionValue ε β τ τ' σ pr.1)) := by
   unfold orderedTwoPointPairingValue Common.pairingEvaluation
-  simp only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
   rw [d.prod_mixedPairValues_eq_external_mul_prod_vacuum τ τ' σ]
   rfl
 
