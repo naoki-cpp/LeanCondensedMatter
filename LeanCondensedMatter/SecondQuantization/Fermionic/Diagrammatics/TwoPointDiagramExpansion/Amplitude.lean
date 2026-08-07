@@ -29,18 +29,24 @@ noncomputable def orderedTwoPointVertexWeight {n : ℕ}
     (q : Fin n → QuarticVertexLabel Mode) : ℂ :=
   ∏ v, g (q v)
 
-/-- The mixed-time contraction value of one slot-indexed pairing, evaluated from the canonical free
-Gibbs density-state pair kernel. -/
+/-- Canonical free Gibbs density-state contraction of two mixed-time atomic positions. -/
+noncomputable def mixedTimeOrderedAtomicPairValue {n : ℕ}
+    (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
+    (σ : Fin n → ℝ) (q : Fin n → QuarticVertexLabel Mode)
+    (a b : Fin (2 * (2 * n + 1))) : ℂ :=
+  (freeGibbsDensityOperator ε β).expectation
+    (Common.finiteHilbertOperator
+      ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ a).comp
+        (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ b)))
+
+/-- The mixed-time contraction value of one slot-indexed pairing through the shared generic pairing
+evaluator and the canonical density-state pair kernel. -/
 noncomputable def orderedTwoPointPairingValue {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
     (σ : Fin n → ℝ) (q : Fin n → QuarticVertexLabel Mode)
     (pairing : Pairing (2 * n + 1)) : ℂ :=
   Common.pairingEvaluation pairing (pairing.weight Common.Statistics.fermion)
-    (fun a b =>
-      (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperator
-          ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ a).comp
-            (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ b))))
+    (mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ q)
 
 /-- Fixed-time amplitude in the slot-label/pairing representation. -/
 noncomputable def orderedTwoPointFixedTimeAmplitude {n : ℕ}
@@ -102,26 +108,6 @@ theorem sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_pairingSum
       intro q _
       ring
 
-/-- The fixed-time external-leg Wick-diagram sum equals the coupling-weighted mixed time-ordered
-finite Gibbs expectation, summed over every quartic vertex-label assignment. -/
-theorem sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_sum_vertexLabel_expectation
-    {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (i j : Mode) (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    ∑ d : FixedExternalTwoPointWickDiagram Mode n i j,
-        d.fixedTimeAmplitude ε β g τ τ' σ =
-      ∑ q : Fin n → QuarticVertexLabel Mode,
-        orderedTwoPointVertexWeight g q *
-          Common.finiteGibbsExpectation (fermionEnergy ε) β
-            (mixedTimeOrderedVertexComp ε i j τ τ' q σ) := by
-  rw [sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_pairingSum]
-  rw [Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro q _
-  rw [finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairing]
-  simp only [orderedTwoPointPairingValue, Common.pairingEvaluation,
-    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
-  ring
-
 /-- Density-state form of the fixed-time external-leg Wick expansion. -/
 theorem sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_sum_vertexLabel_densityExpectation
     {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
@@ -133,9 +119,14 @@ theorem sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_sum_vertexLab
           (freeGibbsDensityOperator ε β).expectation
             (Common.finiteHilbertOperator
               (mixedTimeOrderedVertexComp ε i j τ τ' q σ)) := by
-  simpa only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
-    sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_sum_vertexLabel_expectation
-      ε β g i j τ τ' σ
+  rw [sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_pairingSum]
+  rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro q _
+  rw [freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairing]
+  simp only [orderedTwoPointPairingValue, mixedTimeOrderedAtomicPairValue,
+    Common.pairingEvaluation]
+  ring
 
 end Fermionic
 end SecondQuantization
