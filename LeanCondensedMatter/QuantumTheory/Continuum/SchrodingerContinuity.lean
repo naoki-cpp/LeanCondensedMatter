@@ -82,7 +82,8 @@ theorem hasDerivAt_probabilityDensityValue
         ((realPart ψt * realPart (ψ t) + realPart (ψ t) * realPart ψt) +
           (imaginaryPart ψt * imaginaryPart (ψ t) +
             imaginaryPart (ψ t) * imaginaryPart ψt)) t := by
-    simpa only [Pi.mul_apply, Pi.add_apply] using (hre.mul hre).add (him.mul him)
+    simpa only [Pi.mul_apply, Pi.add_apply] using
+      HasDerivAt.add (HasDerivAt.mul hre hre) (HasDerivAt.mul him him)
   have hderiv :
       (realPart ψt * realPart (ψ t) + realPart (ψ t) * realPart ψt) +
           (imaginaryPart ψt * imaginaryPart (ψ t) +
@@ -113,7 +114,7 @@ theorem hasDerivAt_probabilityCurrentValue1D
           (imaginaryPart (ψx x) * realPart (ψx x) +
             imaginaryPart (ψ x) * realPart ψxx)) x := by
     simpa only [Pi.mul_apply, Pi.sub_apply] using
-      (hψre.mul hψxim).sub (hψim.mul hψxre)
+      HasDerivAt.sub (HasDerivAt.mul hψre hψxim) (HasDerivAt.mul hψim hψxre)
   have hderiv :
       (realPart (ψx x) * imaginaryPart (ψx x) +
             realPart (ψ x) * imaginaryPart ψxx) -
