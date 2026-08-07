@@ -36,7 +36,9 @@ theorem completedFiniteHilbertContinuousEquiv_apply (ψ : CompletedFockSpace Mod
   rfl
 
 omit [Fintype Mode] in
-private theorem continuousLinearMap_ext_algebraicCore_to_finite
+/-- Continuous maps from completed Fock space into the finite Hilbert realization are determined by
+their values on the dense algebraic core. -/
+theorem continuousLinearMap_ext_algebraicCore_to_finite
     {A B : CompletedFockSpace Mode →L[ℂ] Common.FiniteHilbertFock (Occupation Mode)}
     (h : ∀ x : FockSpace Mode, A (algebraicToCompleted x) = B (algebraicToCompleted x)) :
     A = B := by
@@ -44,6 +46,26 @@ private theorem continuousLinearMap_ext_algebraicCore_to_finite
   exact (map_continuous A).ext_on algebraicToCompleted_denseRange (map_continuous B) <| by
     rintro _ ⟨x, rfl⟩
     exact h x
+
+omit [Fintype Mode] in
+/-- It suffices to compare two continuous maps on the completed occupation basis. -/
+theorem continuousLinearMap_ext_completedBasis_to_finite
+    {A B : CompletedFockSpace Mode →L[ℂ] Common.FiniteHilbertFock (Occupation Mode)}
+    (h : ∀ n : Occupation Mode, A (completedBasisState n) = B (completedBasisState n)) :
+    A = B := by
+  apply continuousLinearMap_ext_algebraicCore_to_finite
+  intro x
+  have hmaps : A.toLinearMap.comp algebraicToCompleted =
+      B.toLinearMap.comp algebraicToCompleted := by
+    apply Finsupp.lhom_ext
+    intro n c
+    have hc : (Finsupp.single n c : FockSpace Mode) = c • basisState n :=
+      (Finsupp.smul_single_one n c).symm
+    rw [hc]
+    simp only [LinearMap.comp_apply, map_smul, algebraicToCompleted_basisState]
+    rw [h n]
+  exact congrArg (fun f : FockSpace Mode →ₗ[ℂ]
+    Common.FiniteHilbertFock (Occupation Mode) => f x) hmaps
 
 /-- Any bounded completed operator that agrees with an algebraic Fock endomorphism on the canonical
 core becomes the existing finite-Hilbert transport of that algebraic operator after applying the
@@ -60,13 +82,24 @@ theorem completedFiniteHilbertEquiv_intertwines_of_core
   intro x
   have hx := congrArg (fun f : FockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode => f x) hcore
   simp only [LinearMap.comp_apply] at hx
+  have hx' : Ahat (algebraicToCompleted x) = algebraicToCompleted (A x) := by
+    change Ahat.toLinearMap (algebraicToCompleted x) = algebraicToCompleted (A x)
+    exact hx
   simp only [ContinuousLinearMap.comp_apply]
   change completedFiniteHilbertEquiv (Mode := Mode) (Ahat (algebraicToCompleted x)) =
     Common.finiteHilbertOperator A
       (completedFiniteHilbertEquiv (Mode := Mode) (algebraicToCompleted x))
-  rw [hx, completedFiniteHilbertEquiv_algebraicToCompleted,
-    completedFiniteHilbertEquiv_algebraicToCompleted,
-    Common.finiteHilbertOperator_equiv_apply]
+  calc
+    completedFiniteHilbertEquiv (Mode := Mode) (Ahat (algebraicToCompleted x)) =
+        completedFiniteHilbertEquiv (Mode := Mode) (algebraicToCompleted (A x)) :=
+      congrArg (completedFiniteHilbertEquiv (Mode := Mode)) hx'
+    _ = Common.finiteHilbertFockEquiv (A x) :=
+      completedFiniteHilbertEquiv_algebraicToCompleted (A x)
+    _ = Common.finiteHilbertOperator A (Common.finiteHilbertFockEquiv x) :=
+      (Common.finiteHilbertOperator_equiv_apply A x).symm
+    _ = Common.finiteHilbertOperator A
+        (completedFiniteHilbertEquiv (Mode := Mode) (algebraicToCompleted x)) := by
+      rw [completedFiniteHilbertEquiv_algebraicToCompleted]
 
 variable [LinearOrder Mode]
 
