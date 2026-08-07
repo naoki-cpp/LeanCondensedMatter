@@ -43,7 +43,7 @@ theorem completedDiagonalOperator_isFormalAdjoint_self (w : Occupation Mode → 
   rw [completedDiagonalOperator_apply, completedDiagonalOperator_apply]
   have hwn : (starRingEnd ℂ) (w n) = w n := by
     simpa using hw n
-  simp [hwn, mul_assoc, mul_left_comm, mul_comm]
+  simp [hwn, mul_assoc, mul_left_comm]
 
 /-- A formally symmetric maximal diagonal operator is closable. -/
 theorem completedDiagonalOperator_isClosable_of_star (w : Occupation Mode → ℂ)
