@@ -45,9 +45,9 @@ noncomputable def continuumMaximalLaplacianDomain1D :
     l2ToTemperedDistribution1D φ = Δ (l2ToTemperedDistribution1D ψ)}
   zero_mem' := by
     refine ⟨0, ?_⟩
-    change l2ToTemperedDistribution1D 0 =
-      (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)) (l2ToTemperedDistribution1D 0)
-    rw [map_zero, map_zero]
+    rw [map_zero]
+    simpa only [TemperedDistribution.laplacianCLM_apply] using
+      (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).map_zero.symm
   add_mem' := by
     rintro ψ φ ⟨u, hu⟩ ⟨v, hv⟩
     refine ⟨u + v, ?_⟩
@@ -192,11 +192,15 @@ theorem continuumMaximalLaplacian1D_isClosed : continuumMaximalLaplacian1D.IsClo
   · exact l2ToTemperedDistribution1D.continuous.comp
       (continuous_snd : Continuous
         (fun z : ContinuumL2Wavefunction1D × ContinuumL2Wavefunction1D => z.2))
-  · simpa only [TemperedDistribution.laplacianCLM_apply] using
-      (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).continuous.comp
+  · have hcont :
+        Continuous (fun z : ContinuumL2Wavefunction1D × ContinuumL2Wavefunction1D =>
+          (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ))
+            (l2ToTemperedDistribution1D z.1)) := by
+      exact (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).continuous.comp
         (l2ToTemperedDistribution1D.continuous.comp
           (continuous_fst : Continuous
             (fun z : ContinuumL2Wavefunction1D × ContinuumL2Wavefunction1D => z.1)))
+    simpa only [TemperedDistribution.laplacianCLM_apply] using hcont
 
 /-- The maximal distributional Laplacian is densely defined because it contains the dense `H²`
 domain. -/
