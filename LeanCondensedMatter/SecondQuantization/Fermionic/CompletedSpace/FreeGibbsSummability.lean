@@ -86,7 +86,14 @@ theorem completedFreeBoltzmannRealWeight_summable_of_mode
         ∏ i ∈ n, completedFreeModeBoltzmannWeight ε β i :=
     summable_finsetProd_of_summable_nonneg
       (completedFreeModeBoltzmannWeight_nonneg ε β) hmode
-  simpa only [completedFreeBoltzmannRealWeight_eq_prod] using hprod
+  have hweights :
+      completedFreeBoltzmannRealWeight ε β =
+        fun n : Occupation Mode =>
+          ∏ i ∈ n, completedFreeModeBoltzmannWeight ε β i := by
+    funext n
+    exact completedFreeBoltzmannRealWeight_eq_prod ε β n
+  rw [hweights]
+  exact hprod
 
 /-- The one-particle summability criterion is sufficient for the trace-class Gibbs hypothesis used
 by `completedFreeGibbsDensityOperator`. -/
