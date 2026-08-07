@@ -75,8 +75,7 @@ noncomputable def firstDysonCoeff (energy : Config → ℝ)
 theorem firstDysonCoeff_basisState (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) (n : Config) :
     firstDysonCoeff energy V τ (basisState n) = firstDysonBasis energy V τ n := by
-  change Finsupp.lift _ ℂ _ (firstDysonBasis energy V τ) (Finsupp.single n 1) = _
-  simp [Finsupp.lift_apply, Finsupp.sum_single_index]
+  simp [firstDysonCoeff, firstDysonBasis, Finsupp.lift_apply]
 
 @[simp]
 theorem firstDysonCoeff_zero (energy : Config → ℝ)
@@ -84,26 +83,26 @@ theorem firstDysonCoeff_zero (energy : Config → ℝ)
     firstDysonCoeff energy V 0 = 0 := by
   apply Finsupp.lhom_ext
   intro n c
-  simp [firstDysonCoeff, firstDysonBasis, Finsupp.lift_apply, Finsupp.sum_single_index]
+  simp [firstDysonCoeff, firstDysonBasis, Finsupp.lift_apply]
 
 /-- The first Dyson image of `basisState n` is supported inside the original finite output support
 of `V (basisState n)`. -/
 theorem support_firstDysonCoeff_basisState_subset (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) (n : Config) :
     (firstDysonCoeff energy V τ (basisState n)).support ⊆ (V (basisState n)).support := by
-  classical
-  rw [firstDysonCoeff_basisState, firstDysonBasis]
+  rw [firstDysonCoeff_basisState]
   intro m hm
   by_contra hnot
-  have hmzero :
-      (∑ k ∈ (V (basisState n)).support,
-        firstDysonMatrixCoeff energy V τ k n • basisState k) m = 0 := by
-    simp [basisState, hnot]
-  have hmne :
-      (∑ k ∈ (V (basisState n)).support,
-        firstDysonMatrixCoeff energy V τ k n • basisState k) m ≠ 0 := by
-    simpa using hm
-  exact hmne hmzero
+  have hzero : firstDysonBasis energy V τ n m = 0 := by
+    rw [firstDysonBasis, Finsupp.finsetSum_apply]
+    apply Finset.sum_eq_zero
+    intro c hc
+    have hcm : c ≠ m := by
+      intro h
+      subst c
+      exact hnot hc
+    simp [basisState, hcm]
+  exact (Finsupp.mem_support_iff.mp hm) hzero
 
 end Common
 end SecondQuantization
