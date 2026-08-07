@@ -29,6 +29,7 @@ theorem IntervalIntegrable.absolutelyContinuousOnInterval_intervalIntegral_of_no
     AbsolutelyContinuousOnInterval (fun x => ∫ t in c..x, h t) a b := by
   let K : NNReal := ⟨C, hC⟩
   have hLip : LipschitzOnWith K (fun x => ∫ t in c..x, h t) (Set.uIcc a b) := by
+    apply LipschitzOnWith.of_dist_le_mul
     intro x hx y hy
     rw [dist_eq_norm]
     have hcx : IntervalIntegrable h volume c x := by
@@ -63,7 +64,7 @@ theorem integral_eq_sub_of_absolutelyContinuousOnInterval_of_ae_hasDerivAt_of_no
       hF' (by simp) hC hbound
   let G : ℝ → ℂ := fun x => F x - ∫ t in a..x, F' t
   have hG : AbsolutelyContinuousOnInterval G a b := hF.sub hprim
-  have hAeInt := IntervalIntegrable.ae_hasDerivAt_integral (f := F') hF'
+  have hAeInt := IntervalIntegrable.ae_hasDerivAt_integral (E := ℂ) hF'
   have hGzero : ∀ᵐ x, x ∈ Set.uIcc a b → HasDerivAt G 0 x := by
     filter_upwards [hderiv, hAeInt] with x hxF hxInt hx
     have hInt := hxInt hx a (by simp)
