@@ -96,11 +96,16 @@ theorem norm_matrixCoeff_quarticVertexOperator_le (q : QuarticVertexLabel Mode)
         exact_mod_cast (show n3 q.create₁ + 1 ≤ particleNumber n + 2 by omega)
       have hR0 : 0 ≤ (particleNumber n : ℝ) + 2 := by positivity
       have hsqrt := sqrt_four_mul_le_sq hR0 ha1 ha2 hc2 hc1
+      let r : ℝ :=
+        Real.sqrt (n q.annihilate₁ : ℝ) *
+        Real.sqrt (n1 q.annihilate₂ : ℝ) *
+        Real.sqrt (n2 q.create₂ + 1 : ℝ) *
+        Real.sqrt (n3 q.create₁ + 1 : ℝ)
+      have hr0 : 0 ≤ r := by
+        dsimp [r]
+        positivity
       have haction : quarticVertexOperator q (basisState n) =
-          ((Real.sqrt (n q.annihilate₁ : ℝ) : ℂ) *
-            (Real.sqrt (n1 q.annihilate₂ : ℝ) : ℂ) *
-            (Real.sqrt (n2 q.create₂ + 1 : ℝ) : ℂ) *
-            (Real.sqrt (n3 q.create₁ + 1 : ℝ) : ℂ)) • basisState n4 := by
+          (r : ℂ) • basisState n4 := by
         simp only [quarticVertexOperator, Common.quarticVertexOperator, LinearMap.comp_apply]
         rw [annihilate_basisState_of_pos h1, map_smul]
         change create q.create₁
@@ -111,15 +116,12 @@ theorem norm_matrixCoeff_quarticVertexOperator_le (q : QuarticVertexLabel Mode)
         rw [create_basisState_eq]
         simp only [map_smul]
         rw [create_basisState_eq]
-        simp [n1, n2, n3, n4, smul_smul, mul_assoc]
+        simp [r, n1, n2, n3, n4, smul_smul, mul_assoc]
       rw [haction]
       by_cases hn4 : n4 = n
       · subst n4
-        change ‖(Real.sqrt (n q.annihilate₁ : ℝ) : ℂ) *
-          (Real.sqrt (n1 q.annihilate₂ : ℝ) : ℂ) *
-          (Real.sqrt (n2 q.create₂ + 1 : ℝ) : ℂ) *
-          (Real.sqrt (n3 q.create₁ + 1 : ℝ) : ℂ)‖ ≤ _
-        simpa [norm_mul, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), mul_assoc] using hsqrt
+        simp only [Common.smul_basisState_apply_self]
+        simpa [r, abs_of_nonneg hr0] using hsqrt
       · simp [basisState, Common.basisState, hn4]
         positivity
 
