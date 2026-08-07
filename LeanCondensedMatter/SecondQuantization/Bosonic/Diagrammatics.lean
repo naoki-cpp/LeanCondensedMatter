@@ -3,6 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticLocal
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagram
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagramWeight
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticWickExpansion
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticThermalAmplitude
 
 set_option linter.style.header false
 
@@ -17,10 +18,11 @@ This umbrella module exposes the bosonic quartic-diagram layer:
 - connected-component restriction, reassembly, and decomposition equivalence;
 - coupling-weight, Dyson-sign, and scalar-prefactor factorization by connected component;
 - convergence-aware free Gibbs Wick expansion for the flattened local legs of any finite list of
-  quartic vertices.
+  quartic vertices;
+- coefficientwise scalar amplitudes placing the free thermal pair kernel on each ordered quartic
+  diagram pairing.
 
 Graph and component proofs are inherited from the statistics-independent `Common.QuarticDiagram`
-API. The Wick specialization keeps its Gibbs-domain, deletion-closure, and first-pair recurrence
-hypotheses explicit. A full bosonic Wick-diagram amplitude and connected Dyson theorem remain later
-layers.
+API. The thermal amplitude keeps its Gibbs-domain, deletion-closure, and first-pair recurrence
+hypotheses explicit and does not yet claim ordered-simplex integration or a connected Dyson theorem.
 -/
