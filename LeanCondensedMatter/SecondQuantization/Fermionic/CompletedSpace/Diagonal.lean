@@ -189,8 +189,12 @@ theorem completedDiagonalOperator_comp_algebraicCore (w : Occupation Mode → �
   have hright :
       algebraicToCompleted (Common.diagonalOperator w (basisState n)) =
         w n • completedBasisState n := by
-    rw [Common.diagonalOperator_basisState, map_smul, algebraicToCompleted_basisState]
-  rw [hleft, hright]
+    change algebraicToCompleted (Common.diagonalOperator w (Common.basisState n)) =
+      w n • completedBasisState n
+    rw [Common.diagonalOperator_basisState, map_smul]
+    congr 1
+    simpa [basisState] using algebraicToCompleted_basisState (Mode := Mode) n
+  exact congrArg (fun y : CompletedFockSpace Mode => c • y) (hleft.trans hright.symm)
 
 /-! ## Free Hamiltonian and total particle number -/
 
