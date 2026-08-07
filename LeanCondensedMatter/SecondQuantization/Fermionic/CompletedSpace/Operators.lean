@@ -45,12 +45,15 @@ theorem completedToggleLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
 /-- Toggling occupation coordinates preserves the `ℓ²` norm. -/
 theorem norm_completedToggleLinear (i : Mode) (ψ : CompletedFockSpace Mode) :
     ‖completedToggleLinear i ψ‖ = ‖ψ‖ := by
-  have hsq : ‖completedToggleLinear i ψ‖ ^ (2 : ℕ) = ‖ψ‖ ^ (2 : ℕ) := by
+  have hrpow :
+      ‖completedToggleLinear i ψ‖ ^ (2 : ℝ) = ‖ψ‖ ^ (2 : ℝ) := by
     rw [lp.norm_rpow_eq_tsum (p := (2 : ℝ≥0∞)) (by norm_num),
       lp.norm_rpow_eq_tsum (p := (2 : ℝ≥0∞)) (by norm_num)]
     simpa [completedToggleLinear_apply, toggleOccupationEquiv_apply] using
       (Equiv.tsum_eq (toggleOccupationEquiv i)
-        (fun n : Occupation Mode => ‖ψ n‖ ^ (2 : ℝ≥0∞).toReal))
+        (fun n : Occupation Mode => ‖ψ n‖ ^ (2 : ℝ)))
+  have hsq : ‖completedToggleLinear i ψ‖ ^ (2 : ℕ) = ‖ψ‖ ^ (2 : ℕ) := by
+    simpa [Real.rpow_natCast] using hrpow
   nlinarith [norm_nonneg (completedToggleLinear i ψ), norm_nonneg ψ]
 
 /-- The occupation toggle as a continuous linear isometry. -/
