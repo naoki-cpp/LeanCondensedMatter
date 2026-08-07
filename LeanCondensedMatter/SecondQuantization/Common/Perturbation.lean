@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteSupportIntegral
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ReachableSupport
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.MatrixCoefficientDyson
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
@@ -19,8 +20,9 @@ set_option linter.style.header false
 /-!
 # Perturbative infrastructure
 
-The public layer includes finite reachable supports and a first-Dyson operator boundary valid for
-arbitrary configuration types. The remaining continuous-operator realization, full Dyson recursion,
-norm bounds, analytic evolution, trace series, and exponential identities are finite-basis
-constructions and retain their explicit finiteness assumptions.
+The public layer includes finite reachable supports, finite-support coefficientwise integration, and
+a first-Dyson operator boundary valid for arbitrary configuration types. The remaining continuous-
+operator realization, full Dyson recursion, norm bounds, analytic evolution, trace series, and
+exponential identities are finite-basis constructions and retain their explicit finiteness
+assumptions.
 -/
