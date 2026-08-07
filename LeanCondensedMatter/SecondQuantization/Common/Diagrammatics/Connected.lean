@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Diagram
+import LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 
 set_option linter.style.header false
@@ -17,16 +18,8 @@ variable {Label : Type*} {N : ℕ}
 
 /-- The graph connecting distinct vertices whose legs are paired. -/
 noncomputable def QuarticDiagram.vertexGraph {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) : SimpleGraph (↥S) where
-  Adj v w := v ≠ w ∧ ∃ leg : Fin (2 * (2 * S.card)),
-    vertexOfLeg leg = v ∧ vertexOfLeg (d.pairing.partner leg) = w
-  symm := ⟨by
-    rintro v w ⟨hvw, leg, hv, hw⟩
-    refine ⟨hvw.symm, d.pairing.partner leg, hw, ?_⟩
-    rw [d.pairing.partner_involutive leg, hv]⟩
-  loopless := ⟨by
-    rintro v ⟨hvv, -⟩
-    exact hvv rfl⟩
+    (d : QuarticDiagram Label N S) : SimpleGraph (↥S) :=
+  d.pairing.vertexGraph vertexOfLeg
 
 /-- A quartic diagram is connected when its vertex graph is preconnected and `S` is nonempty. -/
 def QuarticDiagram.IsConnected {S : Finset (Fin N)} (d : QuarticDiagram Label N S) : Prop :=
