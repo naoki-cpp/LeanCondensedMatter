@@ -104,24 +104,39 @@ theorem norm_matrixCoeff_quarticVertexOperator_le (q : QuarticVertexLabel Mode)
       have hr0 : 0 ≤ r := by
         dsimp [r]
         positivity
+      have hscalar :
+          (Real.sqrt (n q.annihilate₁ : ℝ) : ℂ) *
+              (Real.sqrt (n1 q.annihilate₂ : ℝ) : ℂ) *
+              (Real.sqrt (n2 q.create₂ + 1 : ℝ) : ℂ) *
+              (Real.sqrt (n3 q.create₁ + 1 : ℝ) : ℂ) = (r : ℂ) := by
+        norm_cast
+        rfl
       have haction : quarticVertexOperator q (basisState n) =
           (r : ℂ) • basisState n4 := by
-        simp only [quarticVertexOperator, Common.quarticVertexOperator, LinearMap.comp_apply]
-        rw [annihilate_basisState_of_pos h1, map_smul]
-        change create q.create₁
-          (create q.create₂ ((Real.sqrt (n q.annihilate₁ : ℝ) : ℂ) •
-            annihilate q.annihilate₂ (basisState n1))) = _
-        rw [annihilate_basisState_of_pos h2]
-        simp only [map_smul]
-        rw [create_basisState_eq]
-        simp only [map_smul]
-        rw [create_basisState_eq]
-        simp [r, n1, n2, n3, n4, smul_smul, mul_assoc]
+        calc
+          quarticVertexOperator q (basisState n) =
+              ((Real.sqrt (n q.annihilate₁ : ℝ) : ℂ) *
+                (Real.sqrt (n1 q.annihilate₂ : ℝ) : ℂ) *
+                (Real.sqrt (n2 q.create₂ + 1 : ℝ) : ℂ) *
+                (Real.sqrt (n3 q.create₁ + 1 : ℝ) : ℂ)) • basisState n4 := by
+            simp only [quarticVertexOperator, Common.quarticVertexOperator, LinearMap.comp_apply]
+            rw [annihilate_basisState_of_pos h1, map_smul]
+            change create q.create₁
+              (create q.create₂ ((Real.sqrt (n q.annihilate₁ : ℝ) : ℂ) •
+                annihilate q.annihilate₂ (basisState n1))) = _
+            rw [annihilate_basisState_of_pos h2]
+            simp only [map_smul]
+            rw [create_basisState_eq]
+            simp only [map_smul]
+            rw [create_basisState_eq]
+            simp [n1, n2, n3, n4, smul_smul, mul_assoc]
+          _ = (r : ℂ) • basisState n4 := by rw [hscalar]
       rw [haction]
       by_cases hn4 : n4 = n
       · subst n4
         simp only [Common.smul_basisState_apply_self]
-        simpa [r, abs_of_nonneg hr0] using hsqrt
+        rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hr0]
+        simpa [r] using hsqrt
       · simp [basisState, Common.basisState, hn4]
         positivity
 
