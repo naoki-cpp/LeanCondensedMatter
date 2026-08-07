@@ -46,7 +46,8 @@ theorem completedToggleLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
 theorem norm_completedToggleLinear (i : Mode) (ψ : CompletedFockSpace Mode) :
     ‖completedToggleLinear i ψ‖ = ‖ψ‖ := by
   have hsq : ‖completedToggleLinear i ψ‖ ^ (2 : ℕ) = ‖ψ‖ ^ (2 : ℕ) := by
-    rw [lp.norm_rpow_eq_tsum (by norm_num), lp.norm_rpow_eq_tsum (by norm_num)]
+    rw [lp.norm_rpow_eq_tsum (p := (2 : ℝ≥0∞)) (by norm_num),
+      lp.norm_rpow_eq_tsum (p := (2 : ℝ≥0∞)) (by norm_num)]
     simpa [completedToggleLinear_apply, toggleOccupationEquiv_apply] using
       (Equiv.tsum_eq (toggleOccupationEquiv i)
         (fun n : Occupation Mode => ‖ψ n‖ ^ (2 : ℝ≥0∞).toReal))
