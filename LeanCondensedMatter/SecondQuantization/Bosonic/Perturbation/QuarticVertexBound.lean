@@ -62,6 +62,7 @@ theorem norm_matrixCoeff_quarticVertexOperator_le (q : QuarticVertexLabel Mode)
   · simp only [quarticVertexOperator, Common.quarticVertexOperator, LinearMap.comp_apply]
     rw [annihilate_basisState_of_zero h1]
     simp
+    positivity
   · let n1 := removeOccupation q.annihilate₁ n
     have hN1 : particleNumber n1 + 1 = particleNumber n := by
       simpa [n1] using particleNumber_removeOccupation_of_pos h1
@@ -73,6 +74,7 @@ theorem norm_matrixCoeff_quarticVertexOperator_le (q : QuarticVertexLabel Mode)
           annihilate q.annihilate₂ (basisState n1)))) n‖ ≤ _
       rw [annihilate_basisState_of_zero h2]
       simp
+      positivity
     · let n2 := removeOccupation q.annihilate₂ n1
       let n3 := createOccupation q.create₂ n2
       let n4 := createOccupation q.create₁ n3
@@ -108,19 +110,18 @@ theorem norm_matrixCoeff_quarticVertexOperator_le (q : QuarticVertexLabel Mode)
         simp only [map_smul]
         rw [create_basisState_eq]
         simp only [map_smul]
-        change create q.create₁
-          (((Real.sqrt (n q.annihilate₁ : ℝ) : ℂ) *
-            (Real.sqrt (n1 q.annihilate₂ : ℝ) : ℂ) *
-            (Real.sqrt (n2 q.create₂ + 1 : ℝ) : ℂ)) • basisState n3) = _
-        rw [map_smul, create_basisState_eq]
-        simp [n2, n3, n4, smul_smul, mul_assoc]
+        rw [create_basisState_eq]
+        simp [n1, n2, n3, n4, smul_smul, mul_assoc]
       rw [haction]
       by_cases hn4 : n4 = n
       · subst n4
-        simp only [Common.smul_basisState_apply_self]
+        change ‖(Real.sqrt (n q.annihilate₁ : ℝ) : ℂ) *
+          (Real.sqrt (n1 q.annihilate₂ : ℝ) : ℂ) *
+          (Real.sqrt (n2 q.create₂ + 1 : ℝ) : ℂ) *
+          (Real.sqrt (n3 q.create₁ + 1 : ℝ) : ℂ)‖ ≤ _
         simpa [norm_mul, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _), mul_assoc] using hsqrt
-      · rw [Common.smul_basisState_apply_of_ne _ hn4]
-        simp
+      · simp [basisState, Common.basisState, hn4]
+        positivity
 
 end
 end Bosonic
