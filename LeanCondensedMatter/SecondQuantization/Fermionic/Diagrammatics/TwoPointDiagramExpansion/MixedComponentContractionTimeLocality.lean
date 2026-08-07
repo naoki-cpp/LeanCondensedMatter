@@ -41,8 +41,7 @@ private theorem map_orderedTwoPointLegOperator_twoPointTimedEventAtomicLegs
   | inl e =>
       simp [twoPointTimedEventAtomicLegs, orderedTwoPointLegOperator]
   | inr v =>
-      simp [twoPointTimedEventAtomicLegs, orderedTwoPointLegOperator,
-        Function.comp_def]
+      simp [twoPointTimedEventAtomicLegs, orderedTwoPointLegOperator]
 
 private theorem map_orderedTwoPointLegOperator_mixedTimeOrderedAtomicLegs
     {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
@@ -70,12 +69,41 @@ private theorem mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegOperat
     mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ p =
       orderedTwoPointLegOperator ε i j τ τ' q σ
         (mixedTimeOrderedAtomicLegEquiv τ τ' σ p) := by
-  unfold mixedTimeOrderedAtomicOperatorFamily mixedTimeOrderedAtomicFieldFamily
-  rw [← List.get_map]
-  rw [map_timedFieldOperator_mixedTimeOrderedAtomicFields]
-  rw [← map_orderedTwoPointLegOperator_mixedTimeOrderedAtomicLegs]
-  rw [List.get_map]
-  rfl
+  let fields := mixedTimeOrderedAtomicFields i j τ τ' q σ
+  let legs := mixedTimeOrderedAtomicLegs τ τ' σ
+  have hFieldsLen : fields.length = 2 * (2 * n + 1) := by
+    exact mixedTimeOrderedAtomicFields_length ε i j τ τ' q σ
+  have hLegsLen : legs.length = 2 * (2 * n + 1) := by
+    exact mixedTimeOrderedAtomicLegs_length τ τ' σ
+  have hpFields : p.1 < fields.length := by
+    rw [hFieldsLen]
+    exact p.2
+  have hpLegs : p.1 < legs.length := by
+    rw [hLegsLen]
+    exact p.2
+  have hMaps :
+      fields.map (timedFieldOperator ε) =
+        legs.map (orderedTwoPointLegOperator ε i j τ τ' q σ) := by
+    calc
+      fields.map (timedFieldOperator ε) =
+          mixedTimeOrderedAtomicOperators ε i j τ τ' q σ := by
+        exact map_timedFieldOperator_mixedTimeOrderedAtomicFields ε i j τ τ' q σ
+      _ = legs.map (orderedTwoPointLegOperator ε i j τ τ' q σ) := by
+        exact (map_orderedTwoPointLegOperator_mixedTimeOrderedAtomicLegs
+          ε i j τ τ' q σ).symm
+  change timedFieldOperator ε (fields[p.1]'hpFields) = _
+  calc
+    timedFieldOperator ε (fields[p.1]'hpFields) =
+        (fields.map (timedFieldOperator ε))[p.1]'(by simpa using hpFields) :=
+      List.getElem_map_rev (timedFieldOperator ε)
+    _ = (legs.map (orderedTwoPointLegOperator ε i j τ τ' q σ))[p.1]'(by
+          simpa using hpLegs) := by
+      rw [hMaps]
+    _ = orderedTwoPointLegOperator ε i j τ τ' q σ (legs[p.1]'hpLegs) :=
+      (List.getElem_map_rev (orderedTwoPointLegOperator ε i j τ τ' q σ)).symm
+    _ = orderedTwoPointLegOperator ε i j τ τ' q σ
+        (mixedTimeOrderedAtomicLegEquiv τ τ' σ p) := by
+      rfl
 
 /-- Component-position time transport preserves the represented atomic operator whenever the two
 interaction-time assignments agree on that component. -/
@@ -99,7 +127,8 @@ theorem FixedExternalTwoPointWickDiagram.mixedTimeOrderedAtomicOperatorFamily_po
       rcases leg with ⟨v, l⟩
       have hv : σ v.1 = υ v.1 := by
         simpa [orderedTwoPointLegEvent, twoPointTimedEventTime] using hEventTime
-      rw [hv]
+      simp only [orderedTwoPointLegOperator]
+      rw [← hv]
 
 section GibbsContractions
 
