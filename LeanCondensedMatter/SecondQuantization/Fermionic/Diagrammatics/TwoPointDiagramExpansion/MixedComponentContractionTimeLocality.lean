@@ -1,0 +1,174 @@
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentCrossingTimeLocality
+
+set_option linter.style.header false
+
+/-!
+# Component-locality of mixed finite Gibbs contractions
+
+A mixed atomic operator is determined by its standard two-point leg and the imaginary time of the
+supporting event. Canonical component-position transport preserves the standard leg, while
+`ComponentTimeEq` preserves the supporting event time. Consequently each transported normalized
+pair has the same two finite Gibbs contraction operators.
+-/
+
+namespace SecondQuantization
+namespace Fermionic
+
+open Combinatorics
+
+variable {Mode : Type*} [LinearOrder Mode]
+
+/-- Read the atomic operator carried by a standard two-point leg at a given interaction-time
+assignment. -/
+private noncomputable def orderedTwoPointLegOperator {n : ℕ}
+    (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    OrderedTwoPointLeg n → FockSpace Mode →ₗ[ℂ] FockSpace Mode
+  | .inl e =>
+      externalFieldOperator ε (twoPointExternalTimes τ τ' e) (twoPointExternalLabels i j e)
+  | .inr leg =>
+      imaginaryTimeEvolve ε (σ leg.1.1)
+        (quarticLocalLegOperator (q leg.1.1) leg.2)
+
+private theorem map_orderedTwoPointLegOperator_twoPointTimedEventAtomicLegs
+    {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
+    (event : TwoPointTimedEvent n) :
+    (twoPointTimedEventAtomicLegs event).map
+        (orderedTwoPointLegOperator ε i j τ τ' q σ) =
+      twoPointTimedEventAtomicOperators ε i j τ τ' q σ event := by
+  cases event with
+  | inl e =>
+      simp [twoPointTimedEventAtomicLegs, orderedTwoPointLegOperator]
+  | inr v =>
+      simp [twoPointTimedEventAtomicLegs, orderedTwoPointLegOperator,
+        Function.comp_def]
+
+private theorem map_orderedTwoPointLegOperator_mixedTimeOrderedAtomicLegs
+    {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    (mixedTimeOrderedAtomicLegs τ τ' σ).map
+        (orderedTwoPointLegOperator ε i j τ τ' q σ) =
+      mixedTimeOrderedAtomicOperators ε i j τ τ' q σ := by
+  unfold mixedTimeOrderedAtomicLegs mixedTimeOrderedAtomicOperators
+  let events := orderedTwoPointTimedEvents τ τ' σ
+  change (events.flatMap twoPointTimedEventAtomicLegs).map
+      (orderedTwoPointLegOperator ε i j τ τ' q σ) =
+    events.flatMap (twoPointTimedEventAtomicOperators ε i j τ τ' q σ)
+  induction events with
+  | nil => rfl
+  | cons event events ih =>
+      rw [List.flatMap_cons, List.map_append, List.flatMap_cons,
+        map_orderedTwoPointLegOperator_twoPointTimedEventAtomicLegs, ih]
+
+/-- The mixed atomic operator family can be read directly from the standard leg represented at each
+mixed position. -/
+private theorem mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegOperator
+    {n : ℕ} (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
+    (p : Fin (2 * (2 * n + 1))) :
+    mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ p =
+      orderedTwoPointLegOperator ε i j τ τ' q σ
+        (mixedTimeOrderedAtomicLegEquiv τ τ' σ p) := by
+  unfold mixedTimeOrderedAtomicOperatorFamily mixedTimeOrderedAtomicFieldFamily
+  rw [← List.get_map]
+  rw [map_timedFieldOperator_mixedTimeOrderedAtomicFields]
+  rw [← map_orderedTwoPointLegOperator_mixedTimeOrderedAtomicLegs]
+  rw [List.get_map]
+  rfl
+
+/-- Component-position time transport preserves the represented atomic operator whenever the two
+interaction-time assignments agree on that component. -/
+theorem FixedExternalTwoPointWickDiagram.mixedTimeOrderedAtomicOperatorFamily_positionTimeEquiv
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)
+    (B : d.1.componentPartition.parts) (hTime : d.ComponentTimeEq B σ υ)
+    (p : d.MixedComponentPosition τ τ' σ B) :
+    mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence υ
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 =
+      mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ p.1 := by
+  rw [mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegOperator,
+    mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegOperator,
+    d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p]
+  have hEventTime := d.componentPosition_eventTime_eq τ τ' σ υ B hTime p
+  generalize hleg : mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1 = leg at hEventTime ⊢
+  cases leg with
+  | inl e =>
+      rfl
+  | inr leg =>
+      rcases leg with ⟨v, l⟩
+      have hv : σ v.1 = υ v.1 := by
+        simpa [orderedTwoPointLegEvent, twoPointTimedEventTime] using hEventTime
+      rw [hv]
+
+section GibbsContractions
+
+variable [Fintype Mode]
+
+/-- Component-local equality of interaction times preserves the finite Gibbs contraction attached to
+one normalized pair under canonical pair-time transport. -/
+theorem FixedExternalTwoPointWickDiagram.mixedPairContractionValue_eq_of_componentTimeEq
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)
+    (B : d.1.componentPartition.parts) (hTime : d.ComponentTimeEq B σ υ)
+    (p : d.MixedComponentPair τ τ' σ B) :
+    d.mixedPairContractionValue ε β τ τ' σ p.1 =
+      d.mixedPairContractionValue ε β τ τ' υ
+        (d.mixedComponentPairTimeEquiv τ τ' σ υ B p).1 := by
+  let tp := d.mixedComponentPairTimeEquiv τ τ' σ υ B p
+  let p0 := d.mixedComponentPairEndpointEquiv τ τ' σ B (p, 0)
+  let p1 := d.mixedComponentPairEndpointEquiv τ τ' σ B (p, 1)
+  have hEnds :
+      d.mixedComponentPairEndpointEquiv τ τ' υ B (tp, 0) =
+          d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0 ∧
+        d.mixedComponentPairEndpointEquiv τ τ' υ B (tp, 1) =
+          d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1 := by
+    simpa [tp, p0, p1] using
+      d.mixedComponentPairTimeEquiv_endpoints_eq τ τ' σ υ B hTime p
+  have hOp0 :=
+    d.mixedTimeOrderedAtomicOperatorFamily_positionTimeEquiv
+      ε τ τ' σ υ B hTime p0
+  have hOp1 :=
+    d.mixedTimeOrderedAtomicOperatorFamily_positionTimeEquiv
+      ε τ τ' σ υ B hTime p1
+  rw [← hEnds.1] at hOp0
+  rw [← hEnds.2] at hOp1
+  have hEndpoint0 :
+      mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ p.1.1.1 =
+        mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence υ tp.1.1.1 := by
+    simpa [p0, tp] using hOp0.symm
+  have hEndpoint1 :
+      mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ p.1.1.2 =
+        mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence υ tp.1.1.2 := by
+    simpa [p1, tp] using hOp1.symm
+  unfold FixedExternalTwoPointWickDiagram.mixedPairContractionValue
+  rw [hEndpoint0, hEndpoint1]
+
+/-- `ComponentTimeEq` discharges the contraction-preservation hypothesis of component pair-time
+transport. -/
+theorem FixedExternalTwoPointWickDiagram.mixedComponentContractionPreserving_of_componentTimeEq
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)
+    (B : d.1.componentPartition.parts) (hTime : d.ComponentTimeEq B σ υ) :
+    d.MixedComponentContractionPreserving ε β τ τ' σ υ B := by
+  intro p
+  exact d.mixedPairContractionValue_eq_of_componentTimeEq
+    ε β τ τ' σ υ B hTime p
+
+/-- The complete mixed component pairing value depends only on the interaction times of that
+component. -/
+theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_eq_of_componentTimeEq
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)
+    (B : d.1.componentPartition.parts) (hTime : d.ComponentTimeEq B σ υ) :
+    d.mixedComponentPairingValue ε β τ τ' σ B =
+      d.mixedComponentPairingValue ε β τ τ' υ B :=
+  d.mixedComponentPairingValue_eq_of_timeTransport ε β τ τ' σ υ B
+    (d.mixedComponentCrossingPreserving_of_componentTimeEq τ τ' σ υ B hTime)
+    (d.mixedComponentContractionPreserving_of_componentTimeEq
+      ε β τ τ' σ υ B hTime)
+
+end GibbsContractions
+
+end Fermionic
+end SecondQuantization
