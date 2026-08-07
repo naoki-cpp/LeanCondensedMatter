@@ -26,7 +26,7 @@ open Combinatorics
 
 noncomputable section
 
-variable {Mode : Type*} [Fintype Mode] [DecidableEq Mode] {N : ℕ}
+variable {Mode : Type*} [DecidableEq Mode] {N : ℕ}
 
 /-- Diagram-level coefficientwise thermal amplitude, defined as the average over all vertex orders. -/
 noncomputable def QuarticDiagram.thermalAmplitude
@@ -35,7 +35,7 @@ noncomputable def QuarticDiagram.thermalAmplitude
   (S.card.factorial : ℂ)⁻¹ *
     ∑ order : Common.QuarticVertexOrder S, d.orderedThermalAmplitude ε β g order
 
-omit [Fintype Mode] [DecidableEq Mode] in
+omit [DecidableEq Mode] in
 private theorem QuarticDiagram.card_componentVertexOrders
     {S : Finset (Fin N)} (d : QuarticDiagram Mode N S) :
     Fintype.card d.ComponentVertexOrders =
@@ -44,7 +44,7 @@ private theorem QuarticDiagram.card_componentVertexOrders
   simp only [Common.QuarticDiagram.ComponentVertexOrders, Fintype.card_pi,
     Common.card_quarticVertexOrder]
 
-omit [Fintype Mode] [DecidableEq Mode] in
+omit [DecidableEq Mode] in
 private theorem QuarticDiagram.card_componentShuffle_mul_componentFactorials
     {S : Finset (Fin N)} (d : QuarticDiagram Mode N S) :
     Fintype.card d.ComponentShuffle *
@@ -56,7 +56,6 @@ private theorem QuarticDiagram.card_componentShuffle_mul_componentFactorials
     d.card_componentVertexOrders] at hcard
   simpa [Nat.mul_comm] using hcard.symm
 
-omit [Fintype Mode] in
 private theorem QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_componentSums
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {S : Finset (Fin N)} (d : QuarticDiagram Mode N S) :
@@ -110,7 +109,6 @@ private theorem QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_compon
 
 /-- Averaging over global vertex orders removes the shuffle multiplicity, so the coefficientwise
 thermal amplitude factors exactly over connected components. -/
-omit [Fintype Mode] in
 theorem QuarticDiagram.thermalAmplitude_eq_prod_restrictComponentConnected
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {S : Finset (Fin N)} (d : QuarticDiagram Mode N S) :
@@ -137,10 +135,19 @@ theorem QuarticDiagram.thermalAmplitude_eq_prod_restrictComponentConnected
     exact_mod_cast hcard.symm
   rw [hcardC]
   simp only [mul_inv_rev]
+  rw [mul_assoc
+    (∏ B : d.componentPartition.parts,
+      ((B : Finset (Fin N)).card.factorial : ℂ))⁻¹
+    (Fintype.card d.ComponentShuffle : ℂ)⁻¹
+    ((Fintype.card d.ComponentShuffle : ℂ) *
+      ∏ B : d.componentPartition.parts,
+        ∑ order : Common.QuarticVertexOrder (B : Finset (Fin N)),
+          QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent B.2) order)]
   rw [← mul_assoc (Fintype.card d.ComponentShuffle : ℂ)⁻¹
-    (Fintype.card d.ComponentShuffle : ℂ)]
-  rw [inv_mul_cancel₀ hshuffle, one_mul]
+    (Fintype.card d.ComponentShuffle : ℂ), inv_mul_cancel₀ hshuffle, one_mul]
   rw [Finset.prod_inv_distrib]
+
+variable [Fintype Mode]
 
 /-- Connected-component decomposition of bosonic quartic diagrams. -/
 noncomputable def quarticThermalDiagramConnectedDecomposition :
