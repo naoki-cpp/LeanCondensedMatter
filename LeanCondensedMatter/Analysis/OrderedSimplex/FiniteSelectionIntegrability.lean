@@ -22,6 +22,10 @@ namespace intervalIntegral
 
 open MeasureTheory
 
+/-- Product Lebesgue measure on an order-`n` time-assignment space. -/
+noncomputable def orderedSimplexTimeMeasure (n : ℕ) : Measure (Fin n → ℝ) :=
+  Measure.pi fun _ : Fin n => (volume : Measure ℝ)
+
 /-- The unordered compact coordinate box containing every order-`n` recursively oriented
 ordered-simplex time assignment with outer bound `β`. -/
 def orderedSimplexTimeBox (n : ℕ) (β : ℝ) : Set (Fin n → ℝ) :=
@@ -70,18 +74,19 @@ theorem exists_norm_bound_on_compact_of_finite_continuous_selection
   exact hterm.trans hEnvelopeLe
 
 /-- A measurable complex-valued pointwise selection from finitely many continuous branches is
-integrable on an ordered-simplex coordinate box. -/
+integrable on an ordered-simplex coordinate box with respect to product Lebesgue measure. -/
 theorem integrableOn_orderedSimplexTimeBox_of_finite_continuous_selection
     {ι : Type*} [Finite ι]
     (n : ℕ) (β : ℝ) (f : (Fin n → ℝ) → ℂ) (g : ι → (Fin n → ℝ) → ℂ)
     (hf : Measurable f) (hg : ∀ i, Continuous (g i))
     (hselect : ∀ x ∈ orderedSimplexTimeBox n β, ∃ i, f x = g i x) :
-    IntegrableOn f (orderedSimplexTimeBox n β) := by
+    IntegrableOn f (orderedSimplexTimeBox n β) (orderedSimplexTimeMeasure n) := by
   obtain ⟨C, hC⟩ :=
     exists_norm_bound_on_compact_of_finite_continuous_selection
       (orderedSimplexTimeBox n β) (isCompact_orderedSimplexTimeBox n β) f g hg hselect
   exact MeasureTheory.IntegrableOn.of_bound
-    (lt_top_iff_ne_top.mpr (isCompact_orderedSimplexTimeBox n β).measure_ne_top)
+    (μ := orderedSimplexTimeMeasure n)
+    (isCompact_orderedSimplexTimeBox n β).measure_lt_top
     hf.aestronglyMeasurable C
     (MeasureTheory.ae_restrict_of_forall_mem
       (measurableSet_orderedSimplexTimeBox n β) hC)
