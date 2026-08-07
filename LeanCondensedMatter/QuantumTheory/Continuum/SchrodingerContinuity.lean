@@ -1,5 +1,4 @@
 import Mathlib.Analysis.Calculus.Deriv.Mul
-import Mathlib.Analysis.Complex.RealDeriv
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -60,42 +59,39 @@ def probabilityCurrentDivergenceValue1D (ℏ κ : ℝ) (ψ ψxx : ℂ) : ℝ :=
   (2 * κ / ℏ) *
     (realPart ψ * imaginaryPart ψxx - imaginaryPart ψ * realPart ψxx)
 
-private theorem hasDerivAt_re
-    {ψ : ℝ → ℂ} {ψ' : ℂ} {x : ℝ} (hψ : HasDerivAt ψ ψ' x) :
-    HasDerivAt (fun y => (ψ y).re) ψ'.re x := by
-  simpa using Complex.reCLM.hasFDerivAt.comp_hasDerivAt x hψ
+/-- Coordinatewise differentiability gives the expected real probability-density derivative.
 
-private theorem hasDerivAt_im
-    {ψ : ℝ → ℂ} {ψ' : ℂ} {x : ℝ} (hψ : HasDerivAt ψ ψ' x) :
-    HasDerivAt (fun y => (ψ y).im) ψ'.im x := by
-  simpa using Complex.imCLM.hasFDerivAt.comp_hasDerivAt x hψ
-
-/-- A differentiable complex wave amplitude has the expected real density derivative. -/
+The coordinate hypotheses are explicit in this first pointwise layer. A later convenience theorem
+may bundle them behind a stable complex-to-real differentiability bridge. -/
 theorem hasDerivAt_probabilityDensityValue
-    {ψ : ℝ → ℂ} {ψt : ℂ} {t : ℝ} (hψ : HasDerivAt ψ ψt t) :
+    {ψ : ℝ → ℂ} {ψt : ℂ} {t : ℝ}
+    (hre : HasDerivAt (fun s => realPart (ψ s)) (realPart ψt) t)
+    (him : HasDerivAt (fun s => imaginaryPart (ψ s)) (imaginaryPart ψt) t) :
     HasDerivAt (fun s => probabilityDensityValue (ψ s))
       (probabilityDensityTimeDerivativeValue (ψ t) ψt) t := by
-  have hre := hasDerivAt_re hψ
-  have him := hasDerivAt_im hψ
   convert (hre.mul hre).add (him.mul him) using 1 <;>
-    simp [probabilityDensityValue, probabilityDensityTimeDerivativeValue, realPart,
-      imaginaryPart] <;> ring
+    simp [probabilityDensityValue, probabilityDensityTimeDerivativeValue] <;> ring_nf
 
 /-- Differentiating the standard one-dimensional current cancels the two mixed first-derivative
 terms, leaving only the second spatial derivative. -/
 theorem hasDerivAt_probabilityCurrentValue1D
     (ℏ κ : ℝ) {ψ ψx : ℝ → ℂ} {ψxx : ℂ} {x : ℝ}
-    (hψ : HasDerivAt ψ (ψx x) x) (hψx : HasDerivAt ψx ψxx x) :
+    (hψre : HasDerivAt (fun y => realPart (ψ y)) (realPart (ψx x)) x)
+    (hψim : HasDerivAt (fun y => imaginaryPart (ψ y)) (imaginaryPart (ψx x)) x)
+    (hψxre : HasDerivAt (fun y => realPart (ψx y)) (realPart ψxx) x)
+    (hψxim : HasDerivAt (fun y => imaginaryPart (ψx y)) (imaginaryPart ψxx) x) :
     HasDerivAt (fun y => probabilityCurrentValue1D ℏ κ (ψ y) (ψx y))
       (probabilityCurrentDivergenceValue1D ℏ κ (ψ x) ψxx) x := by
-  have hψre := hasDerivAt_re hψ
-  have hψim := hasDerivAt_im hψ
-  have hψxre := hasDerivAt_re hψx
-  have hψxim := hasDerivAt_im hψx
-  have hbracket := (hψre.mul hψxim).sub (hψim.mul hψxre)
+  have hbracket :
+      HasDerivAt
+        (fun y =>
+          realPart (ψ y) * imaginaryPart (ψx y) -
+            imaginaryPart (ψ y) * realPart (ψx y))
+        (realPart (ψ x) * imaginaryPart ψxx -
+          imaginaryPart (ψ x) * realPart ψxx) x := by
+    convert (hψre.mul hψxim).sub (hψim.mul hψxre) using 1 <;> ring_nf
   convert hbracket.const_mul (2 * κ / ℏ) using 1 <;>
-    simp [probabilityCurrentValue1D, probabilityCurrentDivergenceValue1D, realPart,
-      imaginaryPart] <;> ring
+    simp [probabilityCurrentValue1D, probabilityCurrentDivergenceValue1D] <;> ring_nf
 
 /-- Real and imaginary component equations extracted from the pointwise Schrödinger equation. -/
 theorem schrodinger_component_equations
@@ -136,8 +132,8 @@ theorem probability_continuity_balance_of_schrodinger
   exact probability_continuity_balance_of_components
     ℏ κ potential ψ ψt ψxx hℏ hreal himag
 
-/-- One-dimensional pointwise continuity equation for differentiable time and space slices of a
-wavefunction.
+/-- One-dimensional pointwise continuity equation for coordinatewise differentiable time and space
+slices of a wavefunction.
 
 The two supplied functions represent the time slice through a fixed spatial point and the spatial
 slice at a fixed time. `hsame` identifies their value at the spacetime point under consideration.
@@ -146,16 +142,20 @@ theorem oneDimensional_schrodinger_continuity
     (ℏ κ potential : ℝ) (hℏ : ℏ ≠ 0)
     {ψTime ψSpace ψx : ℝ → ℂ} {ψt ψxx : ℂ} {t x : ℝ}
     (hsame : ψTime t = ψSpace x)
-    (htime : HasDerivAt ψTime ψt t)
-    (hspace : HasDerivAt ψSpace (ψx x) x)
-    (hspaceDerivative : HasDerivAt ψx ψxx x)
+    (htimeRe : HasDerivAt (fun s => realPart (ψTime s)) (realPart ψt) t)
+    (htimeIm : HasDerivAt (fun s => imaginaryPart (ψTime s)) (imaginaryPart ψt) t)
+    (hspaceRe : HasDerivAt (fun y => realPart (ψSpace y)) (realPart (ψx x)) x)
+    (hspaceIm : HasDerivAt (fun y => imaginaryPart (ψSpace y)) (imaginaryPart (ψx x)) x)
+    (hspaceDerivativeRe : HasDerivAt (fun y => realPart (ψx y)) (realPart ψxx) x)
+    (hspaceDerivativeIm : HasDerivAt (fun y => imaginaryPart (ψx y)) (imaginaryPart ψxx) x)
     (hschrodinger :
       Complex.I * (ℏ : ℂ) * ψt =
         -(κ : ℂ) * ψxx + (potential : ℂ) * ψSpace x) :
     deriv (fun s => probabilityDensityValue (ψTime s)) t +
       deriv (fun y => probabilityCurrentValue1D ℏ κ (ψSpace y) (ψx y)) x = 0 := by
-  rw [(hasDerivAt_probabilityDensityValue htime).deriv,
-    (hasDerivAt_probabilityCurrentValue1D ℏ κ hspace hspaceDerivative).deriv]
+  rw [(hasDerivAt_probabilityDensityValue htimeRe htimeIm).deriv,
+    (hasDerivAt_probabilityCurrentValue1D ℏ κ hspaceRe hspaceIm
+      hspaceDerivativeRe hspaceDerivativeIm).deriv]
   rw [hsame]
   exact probability_continuity_balance_of_schrodinger
     ℏ κ potential (ψSpace x) ψt ψxx hℏ hschrodinger
