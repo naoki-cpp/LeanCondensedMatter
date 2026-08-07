@@ -22,6 +22,7 @@ noncomputable section
 
 variable {Mode : Type*} [Fintype Mode]
 
+omit [Fintype Mode] in
 /-- Coordinate formula for the free diagonal evolution on an arbitrary algebraic-Fock vector. -/
 private theorem imaginaryTimeEvolveFree_apply_coord
     (ε : Mode → ℝ) (τ : ℝ) (x : FockSpace Mode) (n : Occupation Mode) :
@@ -32,18 +33,25 @@ private theorem imaginaryTimeEvolveFree_apply_coord
       Complex.exp ((τ * freeEigenvalue ε n : ℝ) : ℂ) • eval := by
     apply Finsupp.lhom_ext
     intro a b
-    have hb : (Finsupp.single a b : FockSpace Mode) = b • basisState a :=
+    have hb : (Finsupp.single a b : FockSpace Mode) = b • Common.basisState a :=
       (Finsupp.smul_single_one a b).symm
     rw [hb, LinearMap.comp_apply, map_smul, imaginaryTimeEvolveFree_basisState, map_smul,
       LinearMap.smul_apply]
     by_cases h : a = n
     · subst a
-      simp [eval, basisState, mul_comm]
-    · simp [eval, basisState, h]
+      have hself : (Common.basisState n : FockSpace Mode) n = 1 := by
+        simp [Common.basisState]
+      rw [hself]
+      ring
+    · have hne : (Common.basisState a : FockSpace Mode) n = 0 := by
+        simp [Common.basisState, h]
+      rw [hne]
+      ring
   have hx := congrArg (fun L => L x) hmap
   simpa only [eval, LinearMap.comp_apply, LinearMap.smul_apply, Finsupp.lapply_apply,
     smul_eq_mul] using hx
 
+omit [Fintype Mode] in
 /-- Left composition by the free diagonal evolution rescales a matrix coefficient by the output
 occupation's Boltzmann phase. -/
 theorem matrixCoeff_imaginaryTimeEvolveFree_comp
@@ -52,7 +60,9 @@ theorem matrixCoeff_imaginaryTimeEvolveFree_comp
     Common.matrixCoeff ((imaginaryTimeEvolveFree ε τ).comp A) m n =
       Complex.exp ((τ * freeEigenvalue ε m : ℝ) : ℂ) * Common.matrixCoeff A m n := by
   rw [Common.matrixCoeff, LinearMap.comp_apply, imaginaryTimeEvolveFree_apply_coord]
+  rfl
 
+omit [Fintype Mode] in
 /-- The diagonal free-Gibbs numerator is invariant under interaction-picture conjugation. -/
 theorem matrixCoeff_freeGibbs_interactionPicture_self
     (ε : Mode → ℝ) (β σ : ℝ) (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
@@ -64,15 +74,17 @@ theorem matrixCoeff_freeGibbs_interactionPicture_self
     matrixCoeff_imaginaryTimeEvolveFree_comp, matrixCoeff_interactionPicture]
   simp
 
+omit [Fintype Mode] in
 /-- Free Gibbs summability is preserved by free interaction-picture conjugation. -/
 theorem freeGibbsSummable_interactionPicture_iff
     (ε : Mode → ℝ) (β σ : ℝ) (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     freeGibbsSummable ε β (interactionPicture ε V σ) ↔ freeGibbsSummable ε β V := by
   unfold freeGibbsSummable
   constructor <;> intro h
-  · exact h.congr fun n => (matrixCoeff_freeGibbs_interactionPicture_self ε β σ V n).symm
   · exact h.congr fun n => matrixCoeff_freeGibbs_interactionPicture_self ε β σ V n
+  · exact h.congr fun n => (matrixCoeff_freeGibbs_interactionPicture_self ε β σ V n).symm
 
+omit [Fintype Mode] in
 /-- The normalized free Gibbs expectation is invariant under free interaction-picture conjugation.
 This equality is pointwise on the diagonal numerator, so no extra summability hypothesis is needed
 for the equality itself. -/
@@ -83,6 +95,7 @@ theorem freeGibbsExpectation_interactionPicture
   congr 1
   exact tsum_congr fun n => matrixCoeff_freeGibbs_interactionPicture_self ε β σ V n
 
+omit [Fintype Mode] in
 /-- At first Dyson order, summability of the bare interaction automatically supplies the recursive
 Gibbs-domain closure condition because the zeroth Dyson coefficient is the identity. -/
 theorem firstDysonIntegrand_mem_freeGibbsDomain
