@@ -32,10 +32,9 @@ namespace Continuum
 
 noncomputable section
 
-/-- Use the real normed-space structure carried by the real normed-algebra structure on `ℂ`.
-This keeps real derivatives of complex products on the same scalar-module instance. -/
-local instance complexNormedSpaceRealFromAlgebra : NormedSpace ℝ ℂ :=
-  (inferInstance : NormedAlgebra ℝ ℂ).toNormedSpace
+-- Complex multiplication carries its own real normed-algebra structure. Give the inherited
+-- normed-space projection priority so real derivatives of complex products use that exact instance.
+attribute [local instance 1001] NormedAlgebra.toNormedSpace
 
 /-- Pointwise probability density, represented in `ℂ` as `ψ† ψ`. -/
 def probabilityDensityValue (ψ : ℂ) : ℂ :=
