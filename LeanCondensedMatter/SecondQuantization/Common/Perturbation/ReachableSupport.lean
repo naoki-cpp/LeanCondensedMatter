@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.AlgebraicFock
+import LeanCondensedMatter.SecondQuantization.Common.Perturbation.MatrixCoefficientDyson
 
 set_option linter.style.header false
 
