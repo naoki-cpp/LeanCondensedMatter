@@ -5,8 +5,10 @@ set_option linter.style.header false
 /-!
 # Bounded operators on completed fermionic Fock space
 
-This file lifts the occupation toggle equivalence to the completed `ℓ²` representation. The toggle
-is the common isometric reindexing underlying fermionic creation and annihilation operators.
+This file lifts occupation-basis reindexing to the completed `ℓ²` representation and uses it to
+construct the bounded fermionic creation and annihilation operators. Both ladder maps are a
+unit-modulus fermionic phase times the occupation toggle, restricted to the appropriate output
+sector.
 -/
 
 namespace SecondQuantization
@@ -86,6 +88,108 @@ theorem completedToggle_completedToggle (i : Mode) (ψ : CompletedFockSpace Mode
   apply lp.ext
   funext n
   rw [completedToggle_apply, completedToggle_apply, toggleOccupation_involutive i n]
+
+/-- The completed fermionic creation map before continuity is bundled. At output occupation `n`,
+creation reads the amplitude at the toggled (hence unoccupied) source configuration, multiplies by
+the source fermionic phase, and vanishes unless `i` is occupied in `n`. -/
+noncomputable def completedCreateLinear (i : Mode) :
+    CompletedFockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode where
+  toFun ψ := by
+    refine ⟨fun n => if i ∈ n then fermionPhase i (toggleOccupation i n) *
+      ψ (toggleOccupation i n) else 0, ?_⟩
+    exact (lp.memℓp (completedToggleLinear i ψ)).mono' fun n => by
+      by_cases h : i ∈ n
+      · simp [h, norm_fermionPhase]
+      · simp [h]
+  map_add' ψ φ := by
+    apply lp.ext
+    funext n
+    by_cases h : i ∈ n <;> simp [h, mul_add]
+  map_smul' c ψ := by
+    apply lp.ext
+    funext n
+    by_cases h : i ∈ n <;> simp [h, mul_assoc]
+
+@[simp]
+theorem completedCreateLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
+    (n : Occupation Mode) :
+    completedCreateLinear i ψ n =
+      if i ∈ n then fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) else 0 :=
+  rfl
+
+/-- The completed fermionic annihilation map before continuity is bundled. It is the complementary
+output-sector restriction of the same signed occupation toggle. -/
+noncomputable def completedAnnihilateLinear (i : Mode) :
+    CompletedFockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode where
+  toFun ψ := by
+    refine ⟨fun n => if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) *
+      ψ (toggleOccupation i n), ?_⟩
+    exact (lp.memℓp (completedToggleLinear i ψ)).mono' fun n => by
+      by_cases h : i ∈ n
+      · simp [h]
+      · simp [h, norm_fermionPhase]
+  map_add' ψ φ := by
+    apply lp.ext
+    funext n
+    by_cases h : i ∈ n <;> simp [h, mul_add]
+  map_smul' c ψ := by
+    apply lp.ext
+    funext n
+    by_cases h : i ∈ n <;> simp [h, mul_assoc]
+
+@[simp]
+theorem completedAnnihilateLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
+    (n : Occupation Mode) :
+    completedAnnihilateLinear i ψ n =
+      if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) :=
+  rfl
+
+private theorem norm_completedCreateLinear_le (i : Mode) (ψ : CompletedFockSpace Mode) :
+    ‖completedCreateLinear i ψ‖ ≤ ‖ψ‖ := by
+  calc
+    ‖completedCreateLinear i ψ‖ ≤ ‖completedToggleLinear i ψ‖ :=
+      lp.norm_mono (p := (2 : ℝ≥0∞)) (by norm_num) fun n => by
+        by_cases h : i ∈ n
+        · simp [completedCreateLinear_apply, completedToggleLinear_apply, h, norm_fermionPhase]
+        · simp [completedCreateLinear_apply, completedToggleLinear_apply, h]
+    _ = ‖ψ‖ := norm_completedToggleLinear i ψ
+
+private theorem norm_completedAnnihilateLinear_le (i : Mode) (ψ : CompletedFockSpace Mode) :
+    ‖completedAnnihilateLinear i ψ‖ ≤ ‖ψ‖ := by
+  calc
+    ‖completedAnnihilateLinear i ψ‖ ≤ ‖completedToggleLinear i ψ‖ :=
+      lp.norm_mono (p := (2 : ℝ≥0∞)) (by norm_num) fun n => by
+        by_cases h : i ∈ n
+        · simp [completedAnnihilateLinear_apply, completedToggleLinear_apply, h]
+        · simp [completedAnnihilateLinear_apply, completedToggleLinear_apply, h,
+            norm_fermionPhase]
+    _ = ‖ψ‖ := norm_completedToggleLinear i ψ
+
+/-- Bounded fermionic creation on completed Fock space. -/
+noncomputable def completedCreate (i : Mode) :
+    CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
+  (completedCreateLinear i).mkContinuous 1 fun ψ => by
+    simpa only [one_mul] using norm_completedCreateLinear_le i ψ
+
+/-- Bounded fermionic annihilation on completed Fock space. -/
+noncomputable def completedAnnihilate (i : Mode) :
+    CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
+  (completedAnnihilateLinear i).mkContinuous 1 fun ψ => by
+    simpa only [one_mul] using norm_completedAnnihilateLinear_le i ψ
+
+@[simp]
+theorem completedCreate_apply (i : Mode) (ψ : CompletedFockSpace Mode)
+    (n : Occupation Mode) :
+    completedCreate i ψ n =
+      if i ∈ n then fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) else 0 :=
+  rfl
+
+@[simp]
+theorem completedAnnihilate_apply (i : Mode) (ψ : CompletedFockSpace Mode)
+    (n : Occupation Mode) :
+    completedAnnihilate i ψ n =
+      if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) * ψ (toggleOccupation i n) :=
+  rfl
 
 end
 end Fermionic
