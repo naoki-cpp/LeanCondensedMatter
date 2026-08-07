@@ -7,6 +7,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairEquiv
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPositionTimeTransport
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairProduct
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedPairContractionRegularity
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentCrossingParity
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedVacuumEventBlocks
@@ -37,11 +38,11 @@ restriction of mixed-order positions, partners, and normalized pairs to full com
 comparison of component positions and pairs across interaction-time assignments, exact endpoint,
 component-internal crossing, and finite Gibbs contraction preservation under component-local time
 equality, chamberwise preservation of component position order, normalized pair orientation, and
-crossing combinatorics, factorization of mixed-time contraction products, decomposition of mixed
-crossing counts, reduction of their parity to complete component-position inversions and concrete
-vacuum four-leg event blocks, unconditional factorization of mixed pairing weights, pairing values,
-coupling products, fixed-time values, and component-local Dyson signs, together with canonical
-component-locality of the pointwise Dyson integrand, the factorized ordered-simplex interface, and
-the perturbative coefficient for the imaginary-time two-point function with quartic interaction
-vertices.
+crossing combinatorics, explicit globally continuous fixed-standard-leg Gibbs contractions,
+factorization of mixed-time contraction products, decomposition of mixed crossing counts, reduction
+of their parity to complete component-position inversions and concrete vacuum four-leg event blocks,
+unconditional factorization of mixed pairing weights, pairing values, coupling products, fixed-time
+values, and component-local Dyson signs, together with canonical component-locality of the pointwise
+Dyson integrand, the factorized ordered-simplex interface, and the perturbative coefficient for the
+imaginary-time two-point function with quartic interaction vertices.
 -/
