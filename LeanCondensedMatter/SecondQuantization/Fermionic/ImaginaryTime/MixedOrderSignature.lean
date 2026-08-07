@@ -48,8 +48,17 @@ theorem sameTwoPointOrderChamber_iff_orderSignature_eq {n : ℕ}
     rcases p with ⟨a, b⟩
     simpa only [mem_twoPointOrderSignature_iff] using h a b
   · intro h a b
-    have hp := congrArg (fun s : TwoPointOrderSignature n => (a, b) ∈ s) h
-    simpa only [mem_twoPointOrderSignature_iff] using hp
+    constructor
+    · intro hab
+      have hm : (a, b) ∈ twoPointOrderSignature τ τ' σ :=
+        (mem_twoPointOrderSignature_iff τ τ' σ a b).2 hab
+      rw [h] at hm
+      exact (mem_twoPointOrderSignature_iff τ τ' υ a b).1 hm
+    · intro hab
+      have hm : (a, b) ∈ twoPointOrderSignature τ τ' υ :=
+        (mem_twoPointOrderSignature_iff τ τ' υ a b).2 hab
+      rw [← h] at hm
+      exact (mem_twoPointOrderSignature_iff τ τ' σ a b).1 hm
 
 /-- The strict-comparison locus of two fixed mixed events. -/
 def twoPointEventStrictComparisonSet {n : ℕ} (τ τ' : ℝ)
