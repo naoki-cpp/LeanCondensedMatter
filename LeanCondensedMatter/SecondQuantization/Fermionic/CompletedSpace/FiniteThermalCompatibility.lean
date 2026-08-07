@@ -18,13 +18,7 @@ open QuantumTheory
 
 noncomputable section
 
-variable {Mode : Type*} [Fintype Mode]
-
-/-- In finite mode dimension the completed free Gibbs summability hypothesis is automatic. -/
-theorem completedFreeGibbsSummable_fintype (ε : Mode → ℝ) (β : ℝ) :
-    CompletedFreeGibbsSummable ε β := by
-  unfold CompletedFreeGibbsSummable
-  exact Summable.of_finite
+variable {Mode : Type*}
 
 /-- The completed free Boltzmann weight is definitionally the finite thermal weight with occupation
 energy `fermionEnergy ε`. -/
@@ -35,7 +29,7 @@ theorem completedFreeBoltzmannRealWeight_eq_finiteBoltzmannWeight
       Common.finiteBoltzmannWeight (fermionEnergy ε) β n := by
   rfl
 
-/-- The completed occupation `tsum` specializes to the existing finite partition function. -/
+/-- The completed occupation `tsum` is the same expression as the finite partition function. -/
 @[simp]
 theorem completedFreePartitionFunction_eq_finitePartitionFunction
     (ε : Mode → ℝ) (β : ℝ) :
@@ -52,6 +46,14 @@ theorem completedFreeGibbsProbability_eq_finite
         Common.finiteBoltzmannWeight (fermionEnergy ε) β n := by
   rfl
 
+/-- In finite mode dimension the completed free Gibbs summability hypothesis is automatic. -/
+theorem completedFreeGibbsSummable_finite [Finite Mode]
+    (ε : Mode → ℝ) (β : ℝ) : CompletedFreeGibbsSummable ε β := by
+  unfold CompletedFreeGibbsSummable
+  exact Summable.of_finite
+
+variable [Fintype Mode]
+
 /-- Under the canonical finite-mode isometry, the completed free Gibbs density operator is exactly
 the existing finite Gibbs density operator. -/
 theorem completedFiniteHilbertEquiv_intertwines_freeGibbsDensity
@@ -63,18 +65,19 @@ theorem completedFiniteHilbertEquiv_intertwines_freeGibbsDensity
   apply continuousLinearMap_ext_completedBasis_to_finite
   intro n
   simp only [ContinuousLinearMap.comp_apply]
-  rw [completedFreeGibbsDensityOperator_apply_basis, map_smul,
-    completedFiniteHilbertContinuousEquiv_apply,
-    completedFiniteHilbertEquiv_basisState,
-    completedFiniteHilbertContinuousEquiv_apply,
-    completedFiniteHilbertEquiv_basisState,
+  rw [completedFreeGibbsDensityOperator_apply_basis, map_smul]
+  change (completedFreeGibbsProbability ε β n : ℂ) •
+      completedFiniteHilbertEquiv (Mode := Mode) (completedBasisState n) =
+    (Common.finiteGibbsDensityOperator (fermionEnergy ε) β).op
+      (completedFiniteHilbertEquiv (Mode := Mode) (completedBasisState n))
+  rw [completedFiniteHilbertEquiv_basisState,
     Common.finiteGibbsDensityOperator_apply_basis,
     completedFreeGibbsProbability_eq_finite]
 
 /-- Canonical finite-mode specialization of the completed free Gibbs density operator. -/
 noncomputable def completedFiniteFreeGibbsDensityOperator
     (ε : Mode → ℝ) (β : ℝ) : DensityOperator (CompletedFockSpace Mode) :=
-  completedFreeGibbsDensityOperator ε β (completedFreeGibbsSummable_fintype ε β)
+  completedFreeGibbsDensityOperator ε β (completedFreeGibbsSummable_finite ε β)
 
 /-- The canonical finite-mode completed Gibbs state intertwines with the existing finite state. -/
 theorem completedFiniteHilbertEquiv_intertwines_canonicalFreeGibbsDensity
@@ -84,7 +87,7 @@ theorem completedFiniteHilbertEquiv_intertwines_canonicalFreeGibbsDensity
       (Common.finiteGibbsDensityOperator (fermionEnergy ε) β).op.comp
         (completedFiniteHilbertContinuousEquiv (Mode := Mode)).toContinuousLinearMap := by
   exact completedFiniteHilbertEquiv_intertwines_freeGibbsDensity ε β
-    (completedFreeGibbsSummable_fintype ε β)
+    (completedFreeGibbsSummable_finite ε β)
 
 end
 end Fermionic
