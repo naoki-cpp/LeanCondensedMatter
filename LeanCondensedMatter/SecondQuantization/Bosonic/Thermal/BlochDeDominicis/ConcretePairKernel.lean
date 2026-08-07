@@ -22,11 +22,16 @@ noncomputable section
 
 variable {Mode : Type*}
 
+/-- File-local classical decidable equality used by the concrete pair kernel. -/
+local instance instDecidableEqConcretePairKernel : DecidableEq Mode := Classical.decEq Mode
+
 /-- A pair of creation operators has zero diagonal occupation-basis coefficient. -/
 theorem matrixCoeff_create_comp_create_self (i j : Mode) (n : Occupation Mode) :
     Common.matrixCoeff ((create i).comp (create j)) n n = 0 := by
   unfold Common.matrixCoeff
-  rw [LinearMap.comp_apply, create_basisState_eq, map_smul, create_basisState_eq, smul_smul]
+  rw [LinearMap.comp_apply]
+  change (create i (create j (basisState n))) n = 0
+  rw [create_basisState_eq, map_smul, create_basisState_eq, smul_smul]
   have hne : createOccupation i (createOccupation j n) ≠ n := by
     intro h
     have hp := congrArg particleNumber h
@@ -39,6 +44,7 @@ theorem matrixCoeff_annihilate_comp_annihilate_self (i j : Mode) (n : Occupation
     Common.matrixCoeff ((annihilate i).comp (annihilate j)) n n = 0 := by
   unfold Common.matrixCoeff
   rw [LinearMap.comp_apply]
+  change (annihilate i (annihilate j (basisState n))) n = 0
   by_cases hj : n j = 0
   · rw [annihilate_basisState_of_zero hj, map_zero]
     rfl
@@ -58,8 +64,6 @@ theorem matrixCoeff_annihilate_comp_annihilate_self (i j : Mode) (n : Occupation
         omega
       change (_ • Common.basisState (removeOccupation i n1)) n = 0
       exact Common.smul_basisState_apply_of_ne _ hne
-
-variable [Fintype Mode]
 
 /-- Two creators have a summable, identically zero free-Gibbs diagonal numerator. -/
 theorem freeGibbsSummable_create_comp_create
@@ -106,6 +110,8 @@ theorem freeGibbsExpectation_annihilate_comp_annihilate
   simp_rw [Common.matrixCoeff_diagonalEvolution_comp,
     matrixCoeff_annihilate_comp_annihilate_self, mul_zero]
   simp
+
+variable [Fintype Mode]
 
 /-- Every ordered product of two free thermal fields belongs to the explicit free-Gibbs domain. -/
 theorem FreeThermalField.orderedProduct_pair_mem_freeGibbsDomain
