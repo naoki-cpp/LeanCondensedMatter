@@ -24,7 +24,8 @@ noncomputable section
 
 variable {Mode : Type*}
 
-local instance : DecidableEq Mode := Classical.decEq Mode
+/-- Classical decidable equality used internally by finite-mode truncation. -/
+local instance completedModeTruncationDecidableEq : DecidableEq Mode := Classical.decEq Mode
 
 /-- Linear finite-mode truncation: retain an occupation amplitude exactly when all occupied modes
 belong to `S`. -/
