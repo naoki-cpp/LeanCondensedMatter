@@ -60,6 +60,24 @@ theorem support_infiniteDysonBasis_subset_reachableSupport (energy : Config → 
         (fun σ => interactionPicture energy V σ (infiniteDysonBasis energy V order σ n))
         0 τ
 
+/-- The finite-support reconstruction agrees at every coordinate with the recursive Dyson
+integral; no matrix coefficient outside the reachable support is discarded. -/
+theorem infiniteDysonBasis_succ_apply (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (order : ℕ) (τ : ℝ) (m n : Config) :
+    infiniteDysonBasis energy V (order + 1) τ n m =
+      - ∫ σ in (0 : ℝ)..τ,
+          interactionPicture energy V σ (infiniteDysonBasis energy V order σ n) m := by
+  rw [infiniteDysonBasis_succ]
+  change - finiteSupportIntervalIntegral (reachableSupport V (order + 1) n)
+      (fun σ => interactionPicture energy V σ (infiniteDysonBasis energy V order σ n))
+      0 τ m = _
+  rw [finiteSupportIntervalIntegral_apply]
+  intro σ
+  exact support_interactionPicture_apply_subset_reachableSupport_succ energy V σ order n
+    (infiniteDysonBasis energy V order σ n)
+    (support_infiniteDysonBasis_subset_reachableSupport energy V order σ n)
+
 /-- The finite-order Dyson coefficient as a genuine algebraic-Fock linear operator on an arbitrary
 configuration type. -/
 noncomputable def infiniteDysonCoeff (energy : Config → ℝ)
@@ -95,6 +113,17 @@ theorem infiniteDysonCoeff_succ_basisState (energy : Config → ℝ)
           (fun σ => interactionPicture energy V σ
             (infiniteDysonCoeff energy V order σ (basisState n))) 0 τ := by
   simp only [infiniteDysonCoeff_basisState, infiniteDysonBasis_succ]
+
+/-- Matrix-coordinate form of the recursive Dyson equation on a basis input. -/
+theorem infiniteDysonCoeff_succ_basisState_apply (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (order : ℕ) (τ : ℝ) (m n : Config) :
+    infiniteDysonCoeff energy V (order + 1) τ (basisState n) m =
+      - ∫ σ in (0 : ℝ)..τ,
+          interactionPicture energy V σ
+            (infiniteDysonCoeff energy V order σ (basisState n)) m := by
+  simp only [infiniteDysonCoeff_basisState]
+  exact infiniteDysonBasis_succ_apply energy V order τ m n
 
 /-- Every finite-order operator column is supported in the corresponding reachable set. -/
 theorem support_infiniteDysonCoeff_basisState_subset_reachableSupport (energy : Config → ℝ)
