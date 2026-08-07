@@ -138,6 +138,7 @@ theorem completedModeTruncation_algebraicToCompleted_of_subset
 
 /-- Finite-mode truncations converge strongly to the identity as the finite mode set increases.
 This is a net convergence theorem over `Finset Mode`, not a sequential statement. -/
+set_option maxHeartbeats 800000 in
 theorem tendsto_completedModeTruncation (ψ : CompletedFockSpace Mode) :
     Tendsto (fun S : Finset Mode => completedModeTruncation S ψ) atTop (𝓝 ψ) := by
   classical
