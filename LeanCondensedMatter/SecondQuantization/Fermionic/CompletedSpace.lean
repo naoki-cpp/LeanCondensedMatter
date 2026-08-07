@@ -5,6 +5,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Diagonal
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.DiagonalAnalytic
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbs
 
 set_option linter.style.header false
 
@@ -22,6 +23,10 @@ operators are densely defined and closed, their adjoints are the conjugate-weigh
 operators, and conjugation-fixed weights are self-adjoint; in particular this applies to the free
 Hamiltonian and total-number operator.
 
-Trace-class thermal constructions and later infinite-mode thermodynamics remain subsequent analytic
-work.
+Under explicit absolute summability of the occupation Boltzmann weights, the completed free Gibbs
+state is a genuine trace-class `DensityOperator`. Bounded expectations are connected to the
+canonical density-state expectation as an occupation-basis `tsum`, while unbounded diagonal
+observables remain behind a separate thermal integrability predicate.
+
+Finite-mode compatibility, approximation, and thermodynamic-limit constructions remain later work.
 -/
