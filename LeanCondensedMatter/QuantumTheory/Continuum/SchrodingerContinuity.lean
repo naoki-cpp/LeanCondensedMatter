@@ -32,12 +32,6 @@ namespace Continuum
 
 noncomputable section
 
--- Complex multiplication carries its own normed additive-group and real normed-algebra structures.
--- Give their parent projections priority so real derivatives of complex products use the exact
--- structures expected by the multiplication calculus API.
-attribute [local instance 1001]
-  NormedAddCommGroup.toAddCommGroup NormedAlgebra.toNormedSpace
-
 /-- Pointwise probability density, represented in `ℂ` as `ψ† ψ`. -/
 def probabilityDensityValue (ψ : ℂ) : ℂ :=
   star ψ * ψ
@@ -73,7 +67,8 @@ theorem hasDerivAt_probabilityDensityValue
     {ψ : ℝ → ℂ} {ψt : ℂ} {t : ℝ} (hψ : HasDerivAt ψ ψt t) :
     HasDerivAt (fun s => probabilityDensityValue (ψ s))
       (probabilityDensityTimeDerivativeValue (ψ t) ψt) t := by
-  simpa [probabilityDensityValue, probabilityDensityTimeDerivativeValue] using hψ.star.mul hψ
+  with_reducible_and_instances
+    simpa [probabilityDensityValue, probabilityDensityTimeDerivativeValue] using hψ.star.mul hψ
 
 /-- Differentiating the standard one-dimensional current cancels the two mixed first-derivative
 terms, leaving only the second spatial derivative. -/
@@ -82,13 +77,14 @@ theorem hasDerivAt_probabilityCurrentValue1D
     (hψ : HasDerivAt ψ (ψx x) x) (hψx : HasDerivAt ψx ψxx x) :
     HasDerivAt (fun y => probabilityCurrentValue1D ℏ κ (ψ y) (ψx y))
       (probabilityCurrentDivergenceValue1D ℏ κ (ψ x) ψxx) x := by
-  have hbracket :
-      HasDerivAt
-        (fun y => star (ψ y) * ψx y - ψ y * star (ψx y))
-        (star (ψ x) * ψxx - ψ x * star ψxx) x := by
-    convert (hψ.star.mul hψx).sub (hψ.mul hψx.star) using 1 <;> ring_nf
-  simpa [probabilityCurrentValue1D, probabilityCurrentDivergenceValue1D] using
-    hbracket.const_mul (-(Complex.I * (κ : ℂ) / (ℏ : ℂ)))
+  with_reducible_and_instances
+    have hbracket :
+        HasDerivAt
+          (fun y => star (ψ y) * ψx y - ψ y * star (ψx y))
+          (star (ψ x) * ψxx - ψ x * star ψxx) x := by
+      convert (hψ.star.mul hψx).sub (hψ.mul hψx.star) using 1 <;> ring_nf
+    simpa [probabilityCurrentValue1D, probabilityCurrentDivergenceValue1D] using
+      hbracket.const_mul (-(Complex.I * (κ : ℂ) / (ℏ : ℂ)))
 
 /-- The local continuity balance after substituting the solved Schrödinger time derivative.
 
