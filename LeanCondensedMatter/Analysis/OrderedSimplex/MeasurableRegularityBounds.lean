@@ -1,0 +1,141 @@
+import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity
+
+set_option linter.style.header false
+
+/-!
+# Bounds and recursive interval integrability for measurable ordered-simplex integrands
+
+A measurable locally bounded integrand remains controlled after exposing the outermost ordered
+coordinate.  The rough bound below deliberately uses the surrounding cube volume scale `|β|^n`
+rather than the sharper simplex factor `1 / n!`; only finiteness is needed by the shuffle theorem.
+-/
+
+namespace intervalIntegral
+
+open MeasureTheory Set
+
+/-- Enlarging the radius enlarges the centered ordered-simplex coordinate cube. -/
+theorem orderedSimplexTimeCube_mono {n : ℕ} {R S : ℝ} (hRS : R ≤ S) :
+    orderedSimplexTimeCube n R ⊆ orderedSimplexTimeCube n S := by
+  intro x hx
+  rw [orderedSimplexTimeCube, Set.mem_Icc] at hx ⊢
+  exact ⟨fun i => (neg_le_neg hRS).trans (hx.1 i),
+    fun i => (hx.2 i).trans hRS⟩
+
+/-- Prepending a coordinate whose absolute value is at most the cube radius stays inside the cube. -/
+theorem finCons_mem_orderedSimplexTimeCube {n : ℕ} {R t : ℝ}
+    {rest : Fin n → ℝ} (ht : |t| ≤ R)
+    (hrest : rest ∈ orderedSimplexTimeCube n R) :
+    Fin.cons t rest ∈ orderedSimplexTimeCube (n + 1) R := by
+  rw [orderedSimplexTimeCube, Set.mem_Icc] at hrest ⊢
+  constructor
+  · intro i
+    induction i using Fin.cases with
+    | zero => exact (neg_le_neg ht).trans (neg_abs_le t)
+    | succ i => exact hrest.1 i
+  · intro i
+    induction i using Fin.cases with
+    | zero => exact (le_abs_self t).trans ht
+    | succ i => exact hrest.2 i
+
+/-- Every point of the unoriented interval between `0` and `β` has absolute value at most `|β|`. -/
+theorem abs_le_abs_of_mem_uIoc_zero {β t : ℝ} (ht : t ∈ Set.uIoc (0 : ℝ) β) :
+    |t| ≤ |β| := by
+  rcases le_total (0 : ℝ) β with hβ | hβ
+  · rw [uIoc_of_le hβ] at ht
+    rw [abs_of_nonneg hβ, abs_of_nonneg ht.1.le]
+    exact ht.2
+  · rw [uIoc_of_ge hβ] at ht
+    rw [abs_of_nonpos hβ, abs_of_nonpos ht.2]
+    exact neg_le_neg ht.1.le
+
+/-- A uniform norm bound on the centered cube gives a rough `|β|^n` bound for the recursively
+oriented ordered-simplex integral. -/
+theorem norm_orderedSimplexIntegral_le_of_cube_bound :
+    ∀ (n : ℕ) (β : ℝ) (f : (Fin n → ℝ) → ℂ) (C : ℝ),
+      0 ≤ C →
+      (∀ x ∈ orderedSimplexTimeCube n |β|, ‖f x‖ ≤ C) →
+      ‖orderedSimplexIntegral n β f‖ ≤ C * |β| ^ n
+  | 0, β, f, C, _hC, hbound => by
+      have hzero : (Fin.elim0 : Fin 0 → ℝ) ∈ orderedSimplexTimeCube 0 |β| := by
+        rw [orderedSimplexTimeCube, Set.mem_Icc]
+        exact ⟨fun i => Fin.elim0 i, fun i => Fin.elim0 i⟩
+      simpa using hbound (Fin.elim0 : Fin 0 → ℝ) hzero
+  | n + 1, β, f, C, hC, hbound => by
+      rw [orderedSimplexIntegral_succ]
+      have houter : ∀ t ∈ Set.uIoc (0 : ℝ) β,
+          ‖orderedSimplexIntegral n t (fun rest => f (Fin.cons t rest))‖ ≤
+            C * |β| ^ n := by
+        intro t ht
+        have htAbs : |t| ≤ |β| := abs_le_abs_of_mem_uIoc_zero ht
+        have hslice : ∀ rest ∈ orderedSimplexTimeCube n |t|,
+            ‖f (Fin.cons t rest)‖ ≤ C := by
+          intro rest hrest
+          apply hbound
+          exact finCons_mem_orderedSimplexTimeCube htAbs
+            (orderedSimplexTimeCube_mono htAbs hrest)
+        have hi := norm_orderedSimplexIntegral_le_of_cube_bound n t
+          (fun rest => f (Fin.cons t rest)) C hC hslice
+        calc
+          ‖orderedSimplexIntegral n t (fun rest => f (Fin.cons t rest))‖ ≤
+              C * |t| ^ n := hi
+          _ ≤ C * |β| ^ n := by gcongr
+      calc
+        ‖∫ t in (0 : ℝ)..β,
+            orderedSimplexIntegral n t (fun rest => f (Fin.cons t rest))‖ ≤
+            (C * |β| ^ n) * |β - 0| :=
+          intervalIntegral.norm_integral_le_of_norm_le_const houter
+        _ = C * |β| ^ (n + 1) := by
+          rw [sub_zero, pow_succ]
+          ring
+
+/-- Measurability of the recursively exposed outer boundary of an ordered-simplex integrand. -/
+theorem measurable_orderedSimplexIntegral_boundary {n : ℕ}
+    (f : (Fin (n + 1) → ℝ) → ℂ) (hf : Measurable f) :
+    Measurable (fun β : ℝ =>
+      orderedSimplexIntegral n β (fun rest => f (Fin.cons β rest))) := by
+  exact measurable_orderedSimplexIntegral_of_measurable n id
+    (fun β rest => f (Fin.cons β rest)) measurable_id
+    (hf.comp (Continuous.finCons continuous_fst continuous_snd).measurable)
+
+/-- The recursively exposed outer boundary of a measurable locally bounded ordered-simplex
+integrand is interval integrable on every finite oriented interval. -/
+theorem MeasurableLocallyBounded.intervalIntegrable_orderedSimplexIntegral_boundary
+    {n : ℕ} {f : (Fin (n + 1) → ℝ) → ℂ} (hf : MeasurableLocallyBounded f)
+    (β : ℝ) :
+    IntervalIntegrable
+      (fun t : ℝ => orderedSimplexIntegral n t (fun rest => f (Fin.cons t rest)))
+      volume 0 β := by
+  let H : ℝ → ℂ := fun t =>
+    orderedSimplexIntegral n t (fun rest => f (Fin.cons t rest))
+  have hMeas : Measurable H := by
+    simpa [H] using measurable_orderedSimplexIntegral_boundary f hf.1
+  obtain ⟨C, hC0, hC⟩ := hf.2 |β| (abs_nonneg β)
+  have hNorm : ∀ t ∈ Set.uIcc (0 : ℝ) β, ‖H t‖ ≤ C * |β| ^ n := by
+    intro t ht
+    have htIoc : |t| ≤ |β| := by
+      rcases le_total (0 : ℝ) β with hβ | hβ
+      · rw [uIcc_of_le hβ] at ht
+        rw [abs_of_nonneg hβ, abs_of_nonneg ht.1]
+        exact ht.2
+      · rw [uIcc_of_ge hβ] at ht
+        rw [abs_of_nonpos hβ, abs_of_nonpos ht.2]
+        exact neg_le_neg ht.1
+    have hslice : ∀ rest ∈ orderedSimplexTimeCube n |t|,
+        ‖f (Fin.cons t rest)‖ ≤ C := by
+      intro rest hrest
+      apply hC
+      exact finCons_mem_orderedSimplexTimeCube htIoc
+        (orderedSimplexTimeCube_mono htIoc hrest)
+    have hi := norm_orderedSimplexIntegral_le_of_cube_bound n t
+      (fun rest => f (Fin.cons t rest)) C hC0 hslice
+    calc
+      ‖H t‖ ≤ C * |t| ^ n := by simpa [H] using hi
+      _ ≤ C * |β| ^ n := by gcongr
+  have hIntOn : IntegrableOn H (Set.uIcc (0 : ℝ) β) := by
+    exact MeasureTheory.IntegrableOn.of_bound
+      isCompact_uIcc.measure_lt_top hMeas.aestronglyMeasurable (C * |β| ^ n)
+      (MeasureTheory.ae_restrict_of_forall_mem measurableSet_uIcc hNorm)
+  exact hIntOn.intervalIntegrable
+
+end intervalIntegral
