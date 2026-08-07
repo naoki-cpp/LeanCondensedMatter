@@ -78,7 +78,7 @@ noncomputable def completedDiagonalOperator (w : Occupation Mode → ℂ) :
         apply lp.ext
         funext n
         change w n * (c * (ψ : CompletedFockSpace Mode) n) =
-          c * (w n * (ψ : CompletedFockSpace Space Mode) n)
+          c * (w n * (ψ : CompletedFockSpace Mode) n)
         ring }
 
 @[simp]
