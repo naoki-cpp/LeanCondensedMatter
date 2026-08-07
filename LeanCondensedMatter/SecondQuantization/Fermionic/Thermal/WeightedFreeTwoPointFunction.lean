@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TwoPoint
-import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 
 set_option linter.style.header false
 
@@ -11,8 +10,8 @@ set_option linter.style.header false
 normalized occupation-diagonal weight `w` to the canonical free two-point operator from
 `Fermionic/ImaginaryTime/TwoPoint.lean`.
 
-This is not the physical free Gibbs Green function until `w` is the free Boltzmann weight associated
-with the same `ε`. The specialization `freeGibbsGreenFunction` below fixes exactly that weight.
+The physical free Gibbs Green function is defined separately from the canonical Gibbs density
+operator in `Fermionic/Thermal/FreeGibbsGreenFunction.lean`.
 -/
 
 namespace SecondQuantization
@@ -62,12 +61,6 @@ theorem weightedFreeTwoPointFunction_self_time (ε : Mode → ℝ) (w : Occupati
                 (imaginaryTimeEvolve ε τ (annihilate i))))) := by
   rw [weightedFreeTwoPointFunction, twoPointTimeOrderedProduct_self_time,
     Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
-
-/-- The free Gibbs two-point Green function, obtained by specializing the diagonal weight to the
-free Boltzmann weight associated with the same one-particle energy `ε`. -/
-noncomputable def freeGibbsGreenFunction (ε : Mode → ℝ) (β : ℝ)
-    (i j : Mode) (τ τ' : ℝ) : ℂ :=
-  weightedFreeTwoPointFunction ε (freeBoltzmannWeight ε β) i j τ τ'
 
 end Fermionic
 end SecondQuantization
