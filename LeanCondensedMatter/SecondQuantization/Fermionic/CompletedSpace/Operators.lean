@@ -42,21 +42,23 @@ theorem completedToggleLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
     completedToggleLinear i ψ n = ψ (toggleOccupation i n) :=
   rfl
 
+private theorem norm_completedToggleLinear_le (i : Mode) (ψ : CompletedFockSpace Mode) :
+    ‖completedToggleLinear i ψ‖ ≤ ‖ψ‖ := by
+  apply lp.norm_le_of_tsum_le (p := (2 : ℝ≥0∞)) (by norm_num) (norm_nonneg ψ)
+  rw [lp.norm_rpow_eq_tsum (p := (2 : ℝ≥0∞)) (by norm_num) ψ]
+  exact le_of_eq <| by
+    simpa [completedToggleLinear_apply, toggleOccupationEquiv_apply] using
+      (Equiv.tsum_eq (toggleOccupationEquiv i)
+        (fun n : Occupation Mode => ‖ψ n‖ ^ (2 : ℝ≥0∞).toReal))
+
 /-- Toggling occupation coordinates preserves the `ℓ²` norm. -/
 theorem norm_completedToggleLinear (i : Mode) (ψ : CompletedFockSpace Mode) :
     ‖completedToggleLinear i ψ‖ = ‖ψ‖ := by
-  have hrpow :
-      ‖completedToggleLinear i ψ‖ ^ (2 : ℝ) = ‖ψ‖ ^ (2 : ℝ) := by
-    rw [lp.norm_rpow_eq_tsum (p := (2 : ℝ≥0∞)) (by norm_num),
-      lp.norm_rpow_eq_tsum (p := (2 : ℝ≥0∞)) (by norm_num)]
-    simpa [completedToggleLinear_apply, toggleOccupationEquiv_apply] using
-      (Equiv.tsum_eq (toggleOccupationEquiv i)
-        (fun n : Occupation Mode => ‖ψ n‖ ^ (2 : ℝ)))
-  have hsq : ‖completedToggleLinear i ψ‖ ^ (2 : ℕ) = ‖ψ‖ ^ (2 : ℕ) := by
-    simpa [Real.rpow_natCast] using hrpow
-  nlinarith [norm_nonneg (completedToggleLinear i ψ), norm_nonneg ψ]
+  apply le_antisymm (norm_completedToggleLinear_le i ψ)
+  have h := norm_completedToggleLinear_le i (completedToggleLinear i ψ)
+  simpa only [completedToggleLinear_apply, toggleOccupation_involutive] using h
 
-/-- The occupation toggle as a continuous linear isometry. -/
+/-- The occupation toggle as a norm-preserving continuous linear map. -/
 noncomputable def completedToggle (i : Mode) :
     CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
   (completedToggleLinear i).mkContinuous (1 : ℝ) fun ψ => by
