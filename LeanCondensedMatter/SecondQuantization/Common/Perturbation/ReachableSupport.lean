@@ -64,6 +64,35 @@ theorem support_interactionPicture_basisState_subset_reachableSupport_one
   (support_interactionPicture_basisState_subset energy V τ n).trans
     (support_basisImage_subset_reachableSupport_one V n)
 
+/-- Applying an interaction-picture insertion to a vector supported at one reachable order produces
+only configurations reachable at the next order. -/
+theorem support_interactionPicture_apply_subset_reachableSupport_succ
+    (energy : Config → ℝ) (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (τ : ℝ) (order : ℕ) (n : Config) (x : AlgebraicFock Config)
+    (hx : x.support ⊆ reachableSupport V order n) :
+    (interactionPicture energy V τ x).support ⊆ reachableSupport V (order + 1) n := by
+  intro m hm
+  rw [mem_reachableSupport_succ_iff]
+  have hxRep : x = ∑ k ∈ x.support, x k • basisState k := by
+    conv_lhs => rw [← Finsupp.sum_single x]
+    rw [Finsupp.sum]
+    exact Finset.sum_congr rfl fun k _ => (Finsupp.smul_single_one k _).symm
+  by_contra hnot
+  have hzero : interactionPicture energy V τ x m = 0 := by
+    rw [hxRep, map_sum, Finsupp.finsetSum_apply]
+    apply Finset.sum_eq_zero
+    intro k hk
+    have hkReach : k ∈ reachableSupport V order n := hx hk
+    have hmk : m ∉ (interactionPicture energy V τ (basisState k)).support := by
+      intro hmem
+      apply hnot
+      exact ⟨k, hkReach,
+        support_interactionPicture_basisState_subset energy V τ k hmem⟩
+    have hcol : interactionPicture energy V τ (basisState k) m = 0 :=
+      Finsupp.not_mem_support_iff.mp hmk
+    simp [hcol]
+  exact (Finsupp.mem_support_iff.mp hm) hzero
+
 /-- The reconstructed first Dyson basis image remains in the same first reachable support. -/
 theorem support_firstDysonCoeff_basisState_subset_reachableSupport_one
     (energy : Config → ℝ) (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
