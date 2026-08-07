@@ -19,8 +19,9 @@ namespace Pairing
 variable {R : Type*} [CommMonoid R]
 
 /-- Evaluate a perfect pairing from a global scalar weight and a scalar kernel on its pair
-endpoints. -/
-def evaluation {n : ℕ} (pairing : Pairing n) (weight : R)
+endpoints. The evaluator is reducible because it is only notation for the underlying finite product,
+and downstream factorization proofs intentionally expose that product. -/
+abbrev evaluation {n : ℕ} (pairing : Pairing n) (weight : R)
     (pairValue : Fin (2 * n) → Fin (2 * n) → R) : R :=
   weight * ∏ pr ∈ pairing.pairs, pairValue pr.1 pr.2
 
