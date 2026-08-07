@@ -4,15 +4,18 @@ import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 set_option linter.style.header false
 
 /-!
-# Matrix-coefficient Dyson boundary for infinite configuration spaces
+# First Dyson operator on an infinite configuration space
 
-The finite operator integral reconstructs an algebraic-Fock operator by summing over every output
-basis state, so it requires `[Fintype Config]`.  That reconstruction is not available for bosonic
-occupation configurations, which remain infinite even when the mode type is finite.
+The existing finite operator integral reconstructs an algebraic-Fock operator by summing over every
+output basis state, and therefore assumes `[Fintype Config]`.  That global enumeration is not
+necessary for the interaction-picture integral of a fixed algebraic operator.
 
-This file keeps only the scalar matrix coefficient of the first Dyson term.  The scalar interval
-integral is meaningful for an arbitrary configuration type and does not assert that the resulting
-family of coefficients reconstructs an algebraic operator, bounded operator, or quadratic form.
+For each input basis state `n`, the vector `V (basisState n)` already has finite support because its
+codomain is `AlgebraicFock Config = Config →₀ ℂ`.  Imaginary-time diagonal evolution changes only
+the coefficients, not this support.  The first Dyson coefficient can therefore be reconstructed by
+integrating over that finite support, even when `Config` itself is infinite.
+
+No boundedness, completed-space convergence, or infinite Dyson-series convergence is asserted.
 -/
 
 namespace SecondQuantization
@@ -20,10 +23,7 @@ namespace Common
 
 variable {Config : Type*}
 
-/-- The first interaction-picture Dyson coefficient at a fixed pair of basis configurations.
-
-This is the safe infinite-configuration replacement for the matrix coefficient of
-`dysonCoeff energy V 1 τ`: no operator-valued integral is reconstructed. -/
+/-- The first interaction-picture Dyson coefficient at a fixed pair of basis configurations. -/
 noncomputable def firstDysonMatrixCoeff (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) (m n : Config) : ℂ :=
   - ∫ σ in (0 : ℝ)..τ, matrixCoeff (interactionPicture energy V σ) m n
@@ -52,7 +52,48 @@ theorem continuous_firstDysonMatrixCoeff (energy : Config → ℝ)
     Continuous (fun τ : ℝ => firstDysonMatrixCoeff energy V τ m n) := by
   unfold firstDysonMatrixCoeff
   exact (intervalIntegral.continuous_primitive
-    (fun a b => (intervalIntegrable_matrixCoeff_interactionPicture energy V m n a b)) 0).neg
+    (fun a b => intervalIntegrable_matrixCoeff_interactionPicture energy V m n a b) 0).neg
+
+/-- The image of one basis state under the first Dyson coefficient.
+
+Only the finite support of `V (basisState n)` is used; the ambient configuration type need not be
+finite. -/
+noncomputable def firstDysonBasis (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) (n : Config) :
+    AlgebraicFock Config :=
+  ∑ m in (V (basisState n)).support,
+    firstDysonMatrixCoeff energy V τ m n • basisState m
+
+/-- The first interaction-picture Dyson coefficient as a genuine algebraic-Fock operator on an
+arbitrary configuration type. -/
+noncomputable def firstDysonCoeff (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) :
+    AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
+  Finsupp.lift (AlgebraicFock Config) ℂ Config (firstDysonBasis energy V τ)
+
+@[simp]
+theorem firstDysonCoeff_basisState (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) (n : Config) :
+    firstDysonCoeff energy V τ (basisState n) = firstDysonBasis energy V τ n := by
+  change Finsupp.lift _ ℂ _ (firstDysonBasis energy V τ) (Finsupp.single n 1) = _
+  simp [Finsupp.lift_apply, Finsupp.sum_single_index]
+
+@[simp]
+theorem firstDysonCoeff_zero (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    firstDysonCoeff energy V 0 = 0 := by
+  apply Finsupp.lhom_ext
+  intro n c
+  rw [firstDysonCoeff_basisState]
+  simp [firstDysonBasis]
+
+/-- The first Dyson image of `basisState n` is supported inside the original finite output support
+of `V (basisState n)`. -/
+theorem support_firstDysonCoeff_basisState_subset (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) (n : Config) :
+    (firstDysonCoeff energy V τ (basisState n)).support ⊆ (V (basisState n)).support := by
+  rw [firstDysonCoeff_basisState, firstDysonBasis]
+  exact Finsupp.support_finsetSum_subset _ _
 
 end Common
 end SecondQuantization
