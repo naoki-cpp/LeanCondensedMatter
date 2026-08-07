@@ -45,6 +45,7 @@ private theorem imaginaryTimeEvolveFree_apply_coord
     · have hne : (basisState a : FockSpace Mode) n = 0 := by
         simp [basisState, Common.basisState, h]
       rw [hne]
+      simp
   have hx := congrArg (fun L => L x) hmap
   simpa only [eval, LinearMap.comp_apply, LinearMap.smul_apply, Finsupp.lapply_apply,
     smul_eq_mul] using hx
