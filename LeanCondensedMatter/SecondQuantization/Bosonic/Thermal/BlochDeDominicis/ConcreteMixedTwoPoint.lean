@@ -21,12 +21,14 @@ noncomputable section
 
 variable {Mode : Type*} [Fintype Mode]
 
+/-- File-local classical decidable equality for mode comparisons in the concrete contractions. -/
+local instance instDecidableEqConcreteMixedTwoPoint : DecidableEq Mode := Classical.decEq Mode
+
 /-- The diagonal coefficient of `aᵢ aⱼ†` is `nᵢ + 1` for equal modes and zero otherwise. -/
 theorem matrixCoeff_annihilate_comp_create_self
     (i j : Mode) (n : Occupation Mode) :
     Common.matrixCoeff ((annihilate i).comp (create j)) n n =
       if i = j then (n i : ℂ) + 1 else 0 := by
-  classical
   by_cases hij : i = j
   · subst j
     rw [if_pos rfl, Common.matrixCoeff, LinearMap.comp_apply,
@@ -96,7 +98,6 @@ and linear closure, so no second occupation-space convergence proof is needed. -
 theorem create_comp_annihilate_mem_freeGibbsDomain
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ k, 0 < β * ε k) (i j : Mode) :
     (create j).comp (annihilate i) ∈ freeGibbsDomain ε β := by
-  classical
   have hA := annihilate_comp_create_mem_freeGibbsDomain ε β hpos i j
   by_cases hij : i = j
   · subst j
@@ -130,6 +131,7 @@ theorem freeGibbsSummable_create_comp_annihilate
     freeGibbsSummable ε β ((create j).comp (annihilate i)) :=
   create_comp_annihilate_mem_freeGibbsDomain ε β hpos i j
 
+omit [Fintype Mode] in
 /-- The Bose denominator is nonzero under the same positivity hypothesis that makes the partition
 series converge. -/
 theorem freeGibbs_boseDenominator_ne_zero
@@ -164,7 +166,6 @@ theorem freeGibbsExpectation_create_comp_annihilate_concrete
         Complex.exp (((-(ε j) * β : ℝ) : ℂ)) *
           (1 - Complex.exp (((-(ε j) * β : ℝ) : ℂ)))⁻¹
       else 0 := by
-  classical
   by_cases hij : i = j
   · subst j
     have hA := freeGibbsSummable_annihilate_comp_create ε β hpos i i
