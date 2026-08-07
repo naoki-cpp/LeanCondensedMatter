@@ -27,25 +27,25 @@ theorem IntervalIntegrable.absolutelyContinuousOnInterval_intervalIntegral_of_no
     (hbound : ∀ t ∈ Set.uIcc a b, ‖h t‖ ≤ C) :
     AbsolutelyContinuousOnInterval (fun x => ∫ t in c..x, h t) a b := by
   let K : ℝ≥0 := ⟨C, hC⟩
-  apply (show LipschitzOnWith K (fun x => ∫ t in c..x, h t) (Set.uIcc a b) from ?_)
-    |>.absolutelyContinuousOnInterval
-  intro x hx y hy
-  rw [dist_eq_norm]
-  have hcx : IntervalIntegrable h volume c x := by
-    apply hh.mono_set'
-    grind [Set.uIoc, Set.uIcc]
-  have hcy : IntervalIntegrable h volume c y := by
-    apply hh.mono_set'
-    grind [Set.uIoc, Set.uIcc]
-  rw [intervalIntegral.integral_interval_sub_left hcx hcy]
-  calc
-    ‖∫ t in y..x, h t‖ ≤ C * |x - y| := by
-      apply intervalIntegral.norm_integral_le_of_norm_le_const
-      intro t ht
-      apply hbound
+  have hLip : LipschitzOnWith K (fun x => ∫ t in c..x, h t) (Set.uIcc a b) := by
+    intro x hx y hy
+    rw [dist_eq_norm]
+    have hcx : IntervalIntegrable h volume c x := by
+      apply hh.mono_set'
       grind [Set.uIoc, Set.uIcc]
-    _ = (K : ℝ) * dist x y := by
-      simp [K, Real.dist_eq, abs_sub_comm]
+    have hcy : IntervalIntegrable h volume c y := by
+      apply hh.mono_set'
+      grind [Set.uIoc, Set.uIcc]
+    rw [intervalIntegral.integral_interval_sub_left hcx hcy]
+    calc
+      ‖∫ t in y..x, h t‖ ≤ C * |x - y| := by
+        apply intervalIntegral.norm_integral_le_of_norm_le_const
+        intro t ht
+        apply hbound
+        grind [Set.uIoc, Set.uIcc]
+      _ = (K : ℝ) * dist x y := by
+        simp [K, Real.dist_eq, abs_sub_comm]
+  exact hLip.absolutelyContinuousOnInterval
 
 /-- Fundamental theorem of calculus for an absolutely continuous complex-valued primitive with a
 specified a.e. derivative.  The derivative is assumed bounded only to construct the absolutely
@@ -58,18 +58,22 @@ theorem integral_eq_sub_of_absolutelyContinuousOnInterval_of_ae_hasDerivAt_of_no
     (hderiv : ∀ᵐ x, x ∈ Set.uIcc a b → HasDerivAt F (F' x) x) :
     (∫ x in a..b, F' x) = F b - F a := by
   have hprim : AbsolutelyContinuousOnInterval (fun x => ∫ t in a..x, F' t) a b :=
-    hF'.absolutelyContinuousOnInterval_intervalIntegral_of_norm_le
-      (by simp) hC hbound
+    IntervalIntegrable.absolutelyContinuousOnInterval_intervalIntegral_of_norm_le
+      hF' (by simp) hC hbound
   let G : ℝ → ℂ := fun x => F x - ∫ t in a..x, F' t
   have hG : AbsolutelyContinuousOnInterval G a b := hF.sub hprim
+  have hAeInt := IntervalIntegrable.ae_hasDerivAt_integral (f := F') hF'
   have hGzero : ∀ᵐ x, x ∈ Set.uIcc a b → HasDerivAt G 0 x := by
-    filter_upwards [hderiv, hF'.ae_hasDerivAt_integral] with x hxF hxInt hx
+    filter_upwards [hderiv, hAeInt] with x hxF hxInt hx
     have hInt := hxInt hx a (by simp)
     simpa [G] using (hxF hx).sub hInt
   obtain ⟨D, hD⟩ := hG.const_of_ae_hasDerivAt_zero hGzero
   have ha := hD a (by simp)
   have hb := hD b (by simp)
   simp [G] at ha hb
-  linear_combination hb - ha
+  rw [← ha] at hb
+  calc
+    (∫ x in a..b, F' x) = F b - (F b - ∫ x in a..b, F' x) := by abel
+    _ = F b - F a := by rw [hb]
 
 end intervalIntegral
