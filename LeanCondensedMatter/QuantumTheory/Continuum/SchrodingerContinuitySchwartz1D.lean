@@ -23,30 +23,30 @@ namespace Continuum
 noncomputable section
 
 /-- The first spatial derivative of a complex Schwartz wavefunction, still in Schwartz space. -/
-def schwartzSpatialDerivative1D (ψ : 𝓢(ℝ, ℂ)) : 𝓢(ℝ, ℂ) :=
+def schwartzSpatialDerivative1D (ψ : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℂ :=
   SchwartzMap.derivCLM ℂ ℂ ψ
 
 /-- The second spatial derivative of a complex Schwartz wavefunction, still in Schwartz space. -/
-def schwartzSpatialSecondDerivative1D (ψ : 𝓢(ℝ, ℂ)) : 𝓢(ℝ, ℂ) :=
+def schwartzSpatialSecondDerivative1D (ψ : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℂ :=
   SchwartzMap.derivCLM ℂ ℂ (schwartzSpatialDerivative1D ψ)
 
 @[simp]
-theorem schwartzSpatialDerivative1D_apply (ψ : 𝓢(ℝ, ℂ)) (x : ℝ) :
+theorem schwartzSpatialDerivative1D_apply (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     schwartzSpatialDerivative1D ψ x = deriv ψ x :=
   rfl
 
 @[simp]
-theorem schwartzSpatialSecondDerivative1D_apply (ψ : 𝓢(ℝ, ℂ)) (x : ℝ) :
+theorem schwartzSpatialSecondDerivative1D_apply (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     schwartzSpatialSecondDerivative1D ψ x = deriv (schwartzSpatialDerivative1D ψ) x :=
   rfl
 
 /-- A Schwartz wavefunction has the canonical first derivative at every spatial point. -/
-theorem hasDerivAt_schwartzSpatialDerivative1D (ψ : 𝓢(ℝ, ℂ)) (x : ℝ) :
+theorem hasDerivAt_schwartzSpatialDerivative1D (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     HasDerivAt (fun y : ℝ => ψ y) (schwartzSpatialDerivative1D ψ x) x := by
   simpa [schwartzSpatialDerivative1D] using (SchwartzMap.hasDerivAt (𝕜 := ℂ) ψ x)
 
 /-- The first Schwartz derivative has the canonical second derivative at every spatial point. -/
-theorem hasDerivAt_schwartzSpatialSecondDerivative1D (ψ : 𝓢(ℝ, ℂ)) (x : ℝ) :
+theorem hasDerivAt_schwartzSpatialSecondDerivative1D (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     HasDerivAt (fun y : ℝ => schwartzSpatialDerivative1D ψ y)
       (schwartzSpatialSecondDerivative1D ψ x) x := by
   simpa [schwartzSpatialSecondDerivative1D] using
@@ -55,33 +55,37 @@ theorem hasDerivAt_schwartzSpatialSecondDerivative1D (ψ : 𝓢(ℝ, ℂ)) (x : 
 private theorem hasDerivAt_realPart_of_complex
     {f : ℝ → ℂ} {f' : ℂ} {x : ℝ} (h : HasDerivAt f f' x) :
     HasDerivAt (fun y => (f y).re) f'.re x := by
-  have hcomp := Complex.reCLM.hasFDerivAt.comp x h.hasFDerivAt
-  simpa using hcomp.hasDerivAt
+  have hderiv := (Complex.reCLM.hasFDerivAt.comp x h.hasFDerivAt).hasDerivAt
+  rw [hasDerivAt_iff_tendsto]
+  rw [hasDerivAt_iff_tendsto] at hderiv
+  simpa using hderiv
 
 private theorem hasDerivAt_imaginaryPart_of_complex
     {f : ℝ → ℂ} {f' : ℂ} {x : ℝ} (h : HasDerivAt f f' x) :
     HasDerivAt (fun y => (f y).im) f'.im x := by
-  have hcomp := Complex.imCLM.hasFDerivAt.comp x h.hasFDerivAt
-  simpa using hcomp.hasDerivAt
+  have hderiv := (Complex.imCLM.hasFDerivAt.comp x h.hasFDerivAt).hasDerivAt
+  rw [hasDerivAt_iff_tendsto]
+  rw [hasDerivAt_iff_tendsto] at hderiv
+  simpa using hderiv
 
 /-- Real-coordinate derivative data for a Schwartz wavefunction is automatic. -/
-theorem hasDerivAt_schwartzSpatialDerivative1D_re (ψ : 𝓢(ℝ, ℂ)) (x : ℝ) :
+theorem hasDerivAt_schwartzSpatialDerivative1D_re (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     HasDerivAt (fun y => (ψ y).re) (schwartzSpatialDerivative1D ψ x).re x :=
   hasDerivAt_realPart_of_complex (hasDerivAt_schwartzSpatialDerivative1D ψ x)
 
 /-- Imaginary-coordinate derivative data for a Schwartz wavefunction is automatic. -/
-theorem hasDerivAt_schwartzSpatialDerivative1D_im (ψ : 𝓢(ℝ, ℂ)) (x : ℝ) :
+theorem hasDerivAt_schwartzSpatialDerivative1D_im (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     HasDerivAt (fun y => (ψ y).im) (schwartzSpatialDerivative1D ψ x).im x :=
   hasDerivAt_imaginaryPart_of_complex (hasDerivAt_schwartzSpatialDerivative1D ψ x)
 
 /-- Real-coordinate second derivative data for a Schwartz wavefunction is automatic. -/
-theorem hasDerivAt_schwartzSpatialSecondDerivative1D_re (ψ : 𝓢(ℝ, ℂ)) (x : ℝ) :
+theorem hasDerivAt_schwartzSpatialSecondDerivative1D_re (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     HasDerivAt (fun y => (schwartzSpatialDerivative1D ψ y).re)
       (schwartzSpatialSecondDerivative1D ψ x).re x :=
   hasDerivAt_realPart_of_complex (hasDerivAt_schwartzSpatialSecondDerivative1D ψ x)
 
 /-- Imaginary-coordinate second derivative data for a Schwartz wavefunction is automatic. -/
-theorem hasDerivAt_schwartzSpatialSecondDerivative1D_im (ψ : 𝓢(ℝ, ℂ)) (x : ℝ) :
+theorem hasDerivAt_schwartzSpatialSecondDerivative1D_im (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     HasDerivAt (fun y => (schwartzSpatialDerivative1D ψ y).im)
       (schwartzSpatialSecondDerivative1D ψ x).im x :=
   hasDerivAt_imaginaryPart_of_complex (hasDerivAt_schwartzSpatialSecondDerivative1D ψ x)
@@ -91,7 +95,7 @@ wavefunction. Only the time-slice differentiability and pointwise equation of mo
 explicit. -/
 theorem oneDimensional_schrodinger_continuity_of_schwartz
     (ℏ κ potential : ℝ) (hℏ : ℏ ≠ 0)
-    {ψTime : ℝ → ℂ} (ψSpace : 𝓢(ℝ, ℂ)) {ψt : ℂ} {t x : ℝ}
+    {ψTime : ℝ → ℂ} (ψSpace : SchwartzMap ℝ ℂ) {ψt : ℂ} {t x : ℝ}
     (hsame : ψTime t = ψSpace x)
     (htimeRe : HasDerivAt (fun s => (ψTime s).re) ψt.re t)
     (htimeIm : HasDerivAt (fun s => (ψTime s).im) ψt.im t)
@@ -110,13 +114,13 @@ theorem oneDimensional_schrodinger_continuity_of_schwartz
     (hasDerivAt_schwartzSpatialSecondDerivative1D_im ψSpace x)
     hschrodinger
 
-/-- Interval weak Schrödinger continuity with all spatial differentiability supplied by a family of
-Schwartz spatial wavefunctions. The remaining current-divergence integrability hypothesis is kept
-explicit for this first Schwartz slice. -/
+/-- Interval weak Schrödinger continuity with all spatial differentiability supplied by a Schwartz
+wavefunction. The remaining current-divergence integrability hypothesis is kept explicit for this
+first Schwartz slice. -/
 theorem schrodinger_weak_continuity_interval_of_schwartz
     (a b ℏ κ : ℝ) (hℏ : ℏ ≠ 0)
     {test testDerivative : ℝ → ℝ}
-    (ψ : 𝓢(ℝ, ℂ)) {ψt : ℝ → ℂ} {potential : ℝ → ℝ}
+    (ψ : SchwartzMap ℝ ℂ) {ψt : ℝ → ℂ} {potential : ℝ → ℝ}
     (htest : ∀ x ∈ Set.uIcc a b, HasDerivAt test (testDerivative x) x)
     (hschrodinger : ∀ x,
       Complex.I * (ℏ : ℂ) * ψt x =
