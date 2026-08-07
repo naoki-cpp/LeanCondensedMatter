@@ -32,14 +32,13 @@ namespace Continuum
 
 noncomputable section
 
--- Use the exact additive and scalar structures inherited from Mathlib's canonical real normed and
--- inner-product structures. This keeps the explicit theorem boundaries definitionally aligned with
--- the scalar product-rule implementation.
-local instance realAddCommGroupFromNormed : AddCommGroup ℝ :=
-  Real.normedAddCommGroup.toAddCommGroup
+-- Use the exact normed additive and scalar structures used by Mathlib's scalar product-rule API.
+-- Their parent `AddCommGroup` and `Module` structures then agree definitionally at theorem boundaries.
+local instance realNormedAddCommGroup : NormedAddCommGroup ℝ :=
+  Real.normedAddCommGroup
 
-local instance realModuleFromInnerProduct : Module ℝ ℝ :=
-  RCLike.toInnerProductSpaceReal.toModule
+local instance realNormedSpaceFromInnerProduct : NormedSpace ℝ ℝ :=
+  RCLike.toInnerProductSpaceReal.toNormedSpace
 
 /-- Real-coordinate access used only inside the explicit coordinate implementation. -/
 private def realPart (z : ℂ) : ℝ :=
