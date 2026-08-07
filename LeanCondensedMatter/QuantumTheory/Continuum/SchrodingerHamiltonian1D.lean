@@ -121,7 +121,7 @@ noncomputable def continuumH2Laplacian1D :
     rw [l2ToTemperedDistribution1D_continuumH2LaplacianValue1D,
       l2ToTemperedDistribution1D_continuumH2LaplacianValue1D]
     simp only [Submodule.coe_smul, map_smul]
-    simpa only [TemperedDistribution.laplacianCLM_apply] using
+    simpa only [TemperedDistribution.laplacianCLM_apply, RingHom.id_apply] using
       (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).map_smul c
         (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D))
 
