@@ -9,12 +9,12 @@ set_option linter.style.header false
 # Coefficientwise connected theorem for bosonic quartic thermal diagrams
 
 The ordered thermal amplitude factors over connected components once a global vertex order is
-written as component-local orders plus a shuffle.  A raw sum over global vertex orders therefore
-contains a shuffle multiplicity.  Dividing by the number of vertex orders removes exactly that
+written as component-local orders plus a shuffle. A raw sum over global vertex orders therefore
+contains a shuffle multiplicity. Dividing by the number of vertex orders removes exactly that
 multiplicity, so the resulting diagram-level amplitude is multiplicative under connected-component
 decomposition.
 
-This gives a direct input to the generic cumulant/connected-decomposition theorem.  Everything in
+This gives a direct input to the generic cumulant/connected-decomposition theorem. Everything in
 this file is finite and coefficientwise: no ordered-simplex integration, infinite Dyson-series
 convergence, or completed-Fock-space assertion is made.
 -/
@@ -35,14 +35,16 @@ noncomputable def QuarticDiagram.thermalAmplitude
   (S.card.factorial : ℂ)⁻¹ *
     ∑ order : Common.QuarticVertexOrder S, d.orderedThermalAmplitude ε β g order
 
+omit [Fintype Mode] [DecidableEq Mode] in
 private theorem QuarticDiagram.card_componentVertexOrders
     {S : Finset (Fin N)} (d : QuarticDiagram Mode N S) :
     Fintype.card d.ComponentVertexOrders =
       ∏ B : d.componentPartition.parts, (B : Finset (Fin N)).card.factorial := by
   classical
-  simp only [QuarticDiagram.ComponentVertexOrders, Fintype.card_pi,
+  simp only [Common.QuarticDiagram.ComponentVertexOrders, Fintype.card_pi,
     Common.card_quarticVertexOrder]
 
+omit [Fintype Mode] [DecidableEq Mode] in
 private theorem QuarticDiagram.card_componentShuffle_mul_componentFactorials
     {S : Finset (Fin N)} (d : QuarticDiagram Mode N S) :
     Fintype.card d.ComponentShuffle *
@@ -54,6 +56,7 @@ private theorem QuarticDiagram.card_componentShuffle_mul_componentFactorials
     d.card_componentVertexOrders] at hcard
   simpa [Nat.mul_comm] using hcard.symm
 
+omit [Fintype Mode] in
 private theorem QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_componentSums
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {S : Finset (Fin N)} (d : QuarticDiagram Mode N S) :
@@ -77,13 +80,12 @@ private theorem QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_compon
         intro order _
         change d.orderedThermalAmplitude ε β g order =
           d.orderedThermalAmplitude ε β g
-            (d.assembleVertexOrder
-              (d.componentOrderDecompositionEquiv order).1
-              (d.componentOrderDecompositionEquiv order).2)
-        rw [← d.componentOrderDecompositionEquiv_apply]
+            ((d.componentOrderDecompositionEquiv).symm
+              (d.componentOrderDecompositionEquiv order))
+        exact congrArg (d.orderedThermalAmplitude ε β g)
+          ((d.componentOrderDecompositionEquiv).symm_apply_apply order).symm
       _ = ∑ x : d.ComponentVertexOrders × d.ComponentShuffle, F x := hreindex
-  rw [hleft]
-  rw [Fintype.sum_prod_type]
+  rw [hleft, Fintype.sum_prod_type]
   simp only [F]
   have hfactor : ∀ orders : d.ComponentVertexOrders,
       (∑ shuffle : d.ComponentShuffle,
@@ -108,6 +110,7 @@ private theorem QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_compon
 
 /-- Averaging over global vertex orders removes the shuffle multiplicity, so the coefficientwise
 thermal amplitude factors exactly over connected components. -/
+omit [Fintype Mode] in
 theorem QuarticDiagram.thermalAmplitude_eq_prod_restrictComponentConnected
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {S : Finset (Fin N)} (d : QuarticDiagram Mode N S) :
@@ -126,12 +129,6 @@ theorem QuarticDiagram.thermalAmplitude_eq_prod_restrictComponentConnected
     letI : Nonempty d.ComponentShuffle :=
       ⟨(d.componentOrderDecompositionEquiv order).2⟩
     exact_mod_cast Fintype.card_ne_zero
-  have hfactorials :
-      ((∏ B : d.componentPartition.parts,
-          (B : Finset (Fin N)).card.factorial : ℕ) : ℂ) ≠ 0 := by
-    exact_mod_cast Finset.prod_ne_zero_iff.mpr (by
-      intro B _
-      exact Nat.factorial_ne_zero _)
   have hcardC :
       (S.card.factorial : ℂ) =
         (Fintype.card d.ComponentShuffle : ℂ) *
@@ -140,9 +137,10 @@ theorem QuarticDiagram.thermalAmplitude_eq_prod_restrictComponentConnected
     exact_mod_cast hcard.symm
   rw [hcardC]
   simp only [mul_inv_rev]
-  rw [mul_assoc, inv_mul_cancel₀ hshuffle, one_mul]
+  rw [← mul_assoc (Fintype.card d.ComponentShuffle : ℂ)⁻¹
+    (Fintype.card d.ComponentShuffle : ℂ)]
+  rw [inv_mul_cancel₀ hshuffle, one_mul]
   rw [Finset.prod_inv_distrib]
-  ring
 
 /-- Connected-component decomposition of bosonic quartic diagrams. -/
 noncomputable def quarticThermalDiagramConnectedDecomposition :
@@ -158,10 +156,10 @@ noncomputable def quarticThermalDiagramMultiplicativeWeight
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
     Combinatorics.MultiplicativeWeight
       (quarticThermalDiagramConnectedDecomposition (Mode := Mode) (N := N)) ℂ where
-  objectWeight d := d.thermalAmplitude ε β g
-  connectedWeight d := d.1.thermalAmplitude ε β g
+  objectWeight d := QuarticDiagram.thermalAmplitude ε β g d
+  connectedWeight d := QuarticDiagram.thermalAmplitude ε β g d.1
   weight_decompose d := by
-    change d.thermalAmplitude ε β g =
+    change QuarticDiagram.thermalAmplitude ε β g d =
       ∏ B : d.componentPartition.parts,
         QuarticDiagram.thermalAmplitude ε β g (d.restrictComponentConnected B.2).1
     exact d.thermalAmplitude_eq_prod_restrictComponentConnected ε β g
@@ -184,14 +182,17 @@ theorem quarticThermalCumulant_eq_sum_connectedQuarticDiagramAmplitude
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {S : Finset (Fin N)} (hS : S ≠ ∅) :
     quarticThermalCumulant (N := N) ε β g S =
-      ∑ d : ConnectedQuarticDiagram Mode N S, d.1.thermalAmplitude ε β g := by
+      ∑ d : ConnectedQuarticDiagram Mode N S,
+        QuarticDiagram.thermalAmplitude ε β g d.1 := by
   let W := quarticThermalDiagramMultiplicativeWeight (N := N) ε β g
   change Finpartition.cumulantFromMoment W.objectMoment S =
-    ∑ d : ConnectedQuarticDiagram Mode N S, d.1.thermalAmplitude ε β g
+    ∑ d : ConnectedQuarticDiagram Mode N S,
+      QuarticDiagram.thermalAmplitude ε β g d.1
   calc
     Finpartition.cumulantFromMoment W.objectMoment S = W.connectedContribution S :=
       W.cumulantFromMoment_objectMoment hS
-    _ = ∑ d : ConnectedQuarticDiagram Mode N S, d.1.thermalAmplitude ε β g := rfl
+    _ = ∑ d : ConnectedQuarticDiagram Mode N S,
+        QuarticDiagram.thermalAmplitude ε β g d.1 := rfl
 
 end
 end Bosonic
