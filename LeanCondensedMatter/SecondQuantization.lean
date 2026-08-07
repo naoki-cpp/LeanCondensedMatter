@@ -6,6 +6,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra
 import LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal
+import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace
@@ -27,7 +28,8 @@ The implementation is owned by three explicit namespaces and directory trees:
 - `SecondQuantization.Common` for statistics-independent constructions;
 - `SecondQuantization.Fermionic` for fermionic algebra, completed-space analysis, fields, thermal
   theory, perturbation theory, and diagrammatics;
-- `SecondQuantization.Bosonic` for the convergence-aware bosonic line.
+- `SecondQuantization.Bosonic` for the convergence-aware bosonic algebra, thermal, perturbative, and
+  diagrammatic line.
 
 The former top-level import modules `SecondQuantization.Common`, `SecondQuantization.Fermionic`, and
 `SecondQuantization.Bosonic` are intentionally not retained as compatibility surfaces. Import this
