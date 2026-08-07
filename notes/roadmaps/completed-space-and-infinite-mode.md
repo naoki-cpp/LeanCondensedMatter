@@ -148,10 +148,18 @@ isometrically with `Common.FiniteHilbertFock (Occupation Mode)` using Mathlib's 
 the existing finite Hilbert basis, and makes the algebraic-to-completed and algebraic-to-finite
 Hilbert maps commute.
 
-The remaining finite compatibility work is to transport the concrete bounded operators and Gibbs
-density state through this equivalence.  That is distinct from the algebraic-to-completed inclusion:
-the latter embeds the finite-support core for any mode type, while the finite equivalence compares
-two complete Hilbert realizations under finite hypotheses.
+`CompletedSpace/FiniteOperatorCompatibility.lean` lifts algebraic-core agreement through this
+isometry: any bounded completed operator that agrees with an algebraic Fock endomorphism transports
+to the existing `Common.finiteHilbertOperator`.  In particular the completed number, creation, and
+annihilation operators coincide with their finite-Hilbert realizations.
+
+`CompletedSpace/FiniteThermalCompatibility.lean` identifies the thermal data.  Finite mode sets make
+the completed Gibbs summability condition automatic; the completed and finite Boltzmann weights,
+partition functions, and normalized probabilities agree; and the completed free Gibbs density
+operator intertwines with the existing finite Gibbs density operator under the same isometry.
+
+The remaining C5 work is approximation: define explicit finite-mode or finite-energy truncations and
+prove convergence in a stated operator/state topology.
 
 ## Staged work
 
@@ -190,7 +198,7 @@ two complete Hilbert realizations under finite hypotheses.
 ### C5 — compatibility and approximation
 
 - [x] Identify finite-mode completed Fock space with `FiniteHilbertFock`.
-- [ ] Show finite Gibbs density/operator APIs commute with the finite compatibility equivalence.
+- [x] Show finite Gibbs density/operator APIs commute with the finite compatibility equivalence.
 - [ ] Define finite-mode or finite-energy truncations.
 - [ ] Prove the first strong or norm convergence statements with topology explicit.
 
