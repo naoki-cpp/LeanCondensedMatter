@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.InteractionPicture
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.QuarticOperator
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.Quartic
 
 set_option linter.style.header false
 
