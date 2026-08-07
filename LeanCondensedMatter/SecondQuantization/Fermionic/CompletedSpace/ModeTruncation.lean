@@ -24,6 +24,8 @@ noncomputable section
 
 variable {Mode : Type*}
 
+local instance : DecidableEq Mode := Classical.decEq Mode
+
 /-- Linear finite-mode truncation: retain an occupation amplitude exactly when all occupied modes
 belong to `S`. -/
 noncomputable def completedModeTruncationLinear (S : Finset Mode) :
@@ -47,13 +49,11 @@ noncomputable def completedModeTruncationLinear (S : Finset Mode) :
 theorem completedModeTruncationLinear_apply (S : Finset Mode)
     (ψ : CompletedFockSpace Mode) (n : Occupation Mode) :
     completedModeTruncationLinear S ψ n = if n ⊆ S then ψ n else 0 := by
-  classical
   rfl
 
 /-- Finite-mode truncation as a bounded projection of norm at most one. -/
 noncomputable def completedModeTruncation (S : Finset Mode) :
     CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode := by
-  classical
   exact (completedModeTruncationLinear S).mkContinuous 1 fun ψ => by
     simpa only [one_mul] using
       lp.norm_mono (p := (2 : ℝ≥0∞)) (by norm_num)
@@ -64,13 +64,11 @@ noncomputable def completedModeTruncation (S : Finset Mode) :
 theorem completedModeTruncation_apply (S : Finset Mode)
     (ψ : CompletedFockSpace Mode) (n : Occupation Mode) :
     completedModeTruncation S ψ n = if n ⊆ S then ψ n else 0 := by
-  classical
   rfl
 
 /-- Finite-mode truncation is contractive. -/
 theorem norm_completedModeTruncation_le (S : Finset Mode) (ψ : CompletedFockSpace Mode) :
     ‖completedModeTruncation S ψ‖ ≤ ‖ψ‖ := by
-  classical
   simpa only [one_mul] using
     lp.norm_mono (p := (2 : ℝ≥0∞)) (by norm_num)
       (x := completedModeTruncation S ψ) (y := ψ) (fun n => by
