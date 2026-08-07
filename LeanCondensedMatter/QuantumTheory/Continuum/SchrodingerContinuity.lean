@@ -69,8 +69,24 @@ theorem hasDerivAt_probabilityDensityValue
     (him : HasDerivAt (fun s => imaginaryPart (ψ s)) (imaginaryPart ψt) t) :
     HasDerivAt (fun s => probabilityDensityValue (ψ s))
       (probabilityDensityTimeDerivativeValue (ψ t) ψt) t := by
-  convert (hre.mul hre).add (him.mul him) using 1 <;>
-    simp [probabilityDensityValue, probabilityDensityTimeDerivativeValue] <;> ring_nf
+  have hraw :
+      HasDerivAt
+        (fun s =>
+          realPart (ψ s) * realPart (ψ s) +
+            imaginaryPart (ψ s) * imaginaryPart (ψ s))
+        ((realPart ψt * realPart (ψ t) + realPart (ψ t) * realPart ψt) +
+          (imaginaryPart ψt * imaginaryPart (ψ t) +
+            imaginaryPart (ψ t) * imaginaryPart ψt)) t := by
+    simpa only [Pi.mul_apply, Pi.add_apply] using (hre.mul hre).add (him.mul him)
+  have hderiv :
+      (realPart ψt * realPart (ψ t) + realPart (ψ t) * realPart ψt) +
+          (imaginaryPart ψt * imaginaryPart (ψ t) +
+            imaginaryPart (ψ t) * imaginaryPart ψt) =
+        probabilityDensityTimeDerivativeValue (ψ t) ψt := by
+    simp [probabilityDensityTimeDerivativeValue]
+    ring
+  rw [hderiv] at hraw
+  simpa [probabilityDensityValue, pow_two] using hraw
 
 /-- Differentiating the standard one-dimensional current cancels the two mixed first-derivative
 terms, leaving only the second spatial derivative. -/
@@ -82,16 +98,28 @@ theorem hasDerivAt_probabilityCurrentValue1D
     (hψxim : HasDerivAt (fun y => imaginaryPart (ψx y)) (imaginaryPart ψxx) x) :
     HasDerivAt (fun y => probabilityCurrentValue1D ℏ κ (ψ y) (ψx y))
       (probabilityCurrentDivergenceValue1D ℏ κ (ψ x) ψxx) x := by
-  have hbracket :
+  have hraw :
       HasDerivAt
         (fun y =>
           realPart (ψ y) * imaginaryPart (ψx y) -
             imaginaryPart (ψ y) * realPart (ψx y))
-        (realPart (ψ x) * imaginaryPart ψxx -
-          imaginaryPart (ψ x) * realPart ψxx) x := by
-    convert (hψre.mul hψxim).sub (hψim.mul hψxre) using 1 <;> ring_nf
-  convert hbracket.const_mul (2 * κ / ℏ) using 1 <;>
-    simp [probabilityCurrentValue1D, probabilityCurrentDivergenceValue1D] <;> ring_nf
+        ((realPart (ψx x) * imaginaryPart (ψx x) +
+            realPart (ψ x) * imaginaryPart ψxx) -
+          (imaginaryPart (ψx x) * realPart (ψx x) +
+            imaginaryPart (ψ x) * realPart ψxx)) x := by
+    simpa only [Pi.mul_apply, Pi.sub_apply] using
+      (hψre.mul hψxim).sub (hψim.mul hψxre)
+  have hderiv :
+      (realPart (ψx x) * imaginaryPart (ψx x) +
+            realPart (ψ x) * imaginaryPart ψxx) -
+          (imaginaryPart (ψx x) * realPart (ψx x) +
+            imaginaryPart (ψ x) * realPart ψxx) =
+        realPart (ψ x) * imaginaryPart ψxx -
+          imaginaryPart (ψ x) * realPart ψxx := by
+    ring
+  rw [hderiv] at hraw
+  simpa [probabilityCurrentValue1D, probabilityCurrentDivergenceValue1D] using
+    hraw.const_mul (2 * κ / ℏ)
 
 /-- Real and imaginary component equations extracted from the pointwise Schrödinger equation. -/
 theorem schrodinger_component_equations
