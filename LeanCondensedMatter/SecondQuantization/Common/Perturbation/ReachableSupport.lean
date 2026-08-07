@@ -19,7 +19,8 @@ namespace Common
 
 variable {Config : Type*}
 
-noncomputable local instance : DecidableEq Config := Classical.decEq Config
+/-- Classical decidable equality used only to construct finite reachable supports. -/
+noncomputable local instance configDecidableEq : DecidableEq Config := Classical.decEq Config
 
 /-- Configurations reachable from `n` after exactly `order` applications of the algebraic operator
 `V`, with possible cancellation deliberately ignored. -/
