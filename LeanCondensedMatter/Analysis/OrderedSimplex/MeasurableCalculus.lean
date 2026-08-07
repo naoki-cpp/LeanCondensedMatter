@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.AbsolutelyContinuousFun
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.LebesgueDifferentiationThm
 
 set_option linter.style.header false
 
@@ -26,7 +27,7 @@ theorem IntervalIntegrable.absolutelyContinuousOnInterval_intervalIntegral_of_no
     (hc : c ∈ Set.uIcc a b) (hC : 0 ≤ C)
     (hbound : ∀ t ∈ Set.uIcc a b, ‖h t‖ ≤ C) :
     AbsolutelyContinuousOnInterval (fun x => ∫ t in c..x, h t) a b := by
-  let K : ℝ≥0 := ⟨C, hC⟩
+  let K : NNReal := ⟨C, hC⟩
   have hLip : LipschitzOnWith K (fun x => ∫ t in c..x, h t) (Set.uIcc a b) := by
     intro x hx y hy
     rw [dist_eq_norm]
