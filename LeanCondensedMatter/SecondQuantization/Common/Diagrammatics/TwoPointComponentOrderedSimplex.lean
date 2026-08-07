@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoComponentOrderedSimplex
+import LeanCondensedMatter.Analysis.OrderedSimplex.FinCast
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentVertexProduct
 
 set_option linter.style.header false
