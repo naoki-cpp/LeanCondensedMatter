@@ -202,13 +202,14 @@ theorem continuous_orderedTwoPointLegPairContraction
       orderedTwoPointLegPairContraction ε β i j τ τ' q σ x y) := by
   have hTimes : Continuous (fun σ : Fin n → ℝ =>
       (orderedTwoPointLegTime τ τ' σ x, orderedTwoPointLegTime τ τ' σ y)) :=
-    (continuous_orderedTwoPointLegTime τ τ' x).prod_mk
+    (continuous_orderedTwoPointLegTime τ τ' x).prodMk
       (continuous_orderedTwoPointLegTime τ τ' y)
   have hContraction :=
     (continuous_timedFieldPairContraction_times ε β
       (orderedTwoPointLegFieldLabel i j q x)
       (orderedTwoPointLegFieldLabel i j q y)).comp hTimes
-  simpa only [orderedTwoPointLegPairContraction, orderedTwoPointLegField] using hContraction
+  simpa only [Function.comp_apply, orderedTwoPointLegPairContraction,
+    orderedTwoPointLegField] using hContraction
 
 /-- The contraction used by a normalized mixed pair is the globally continuous contraction of the
 two fixed standard legs represented by its endpoints. -/
