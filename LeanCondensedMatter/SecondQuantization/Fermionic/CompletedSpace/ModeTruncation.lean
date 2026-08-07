@@ -94,7 +94,7 @@ theorem completedModeTruncation_basisState (S : Finset Mode) (n : Occupation Mod
       simp [completedModeTruncation_apply, completedBasisState, lp.single_apply, hn]
     · by_cases hmS : m ⊆ S <;>
         simp [completedModeTruncation_apply, completedBasisState, lp.single_apply,
-          hn, hmn, hmS, Pi.single_eq_of_ne]
+          hmn, hmS, Pi.single_eq_of_ne]
   · simp only [hn, if_false]
     by_cases hmS : m ⊆ S
     · have hmn : m ≠ n := by
@@ -144,8 +144,7 @@ theorem tendsto_completedModeTruncation (ψ : CompletedFockSpace Mode) :
   refine Metric.tendsto_atTop.2 ?_
   intro ε hε
   have hhalf : 0 < ε / 2 := half_pos hε
-  rcases (Metric.mem_closure_iff.1 (algebraicToCompleted_denseRange ψ) (ε / 2) hhalf) with
-    ⟨y, ⟨x, rfl⟩, hxy⟩
+  rcases algebraicToCompleted_denseRange.exists_dist_lt ψ hhalf with ⟨x, hxy⟩
   refine ⟨algebraicModeSupport x, ?_⟩
   intro S hS
   have hfix := completedModeTruncation_algebraicToCompleted_of_subset S x hS
@@ -162,7 +161,7 @@ theorem tendsto_completedModeTruncation (ψ : CompletedFockSpace Mode) :
     _ ≤ dist ψ (algebraicToCompleted x) + dist (algebraicToCompleted x) ψ :=
       add_le_add_right hcontract _
     _ < ε := by
-      rw [dist_comm ψ (algebraicToCompleted x)]
+      rw [dist_comm (algebraicToCompleted x) ψ]
       linarith
 
 end
