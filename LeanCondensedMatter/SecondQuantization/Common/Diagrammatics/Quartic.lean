@@ -2,12 +2,20 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Leg
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Diagram
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Connected
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPartition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentRestriction
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentConnected
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Reassemble
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ReassembleComponentPartitionEq
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ReassembleRestrictComponent
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ReassembleDecompose
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentDecompositionEquiv
 
 set_option linter.style.header false
 
 /-!
-# Quartic diagram core
+# Quartic diagram infrastructure
 
-Statistics-independent quartic leg indexing, labelled diagram syntax, vertex ordering, and
-connectivity.
+Statistics-independent quartic leg indexing, labelled diagram syntax, vertex ordering, connectivity,
+connected-component restriction, reassembly, and component-decomposition equivalence.
 -/
