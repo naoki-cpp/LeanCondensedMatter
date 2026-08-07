@@ -45,6 +45,7 @@ noncomputable def continuumMultiplicationOperator1D
   map_smul' := by
     intro c ψ
     funext x
+    change f x * (c * ψ x) = c * (f x * ψ x)
     ring
 
 @[simp]
@@ -69,7 +70,8 @@ noncomputable def continuumMultiplication1D :
     apply LinearMap.ext
     intro ψ
     funext x
-    simp [continuumMultiplicationOperator1D]
+    change c * f x * ψ x = c * (f x * ψ x)
+    exact mul_assoc c (f x) (ψ x)
 
 @[simp]
 theorem continuumMultiplication1D_apply
