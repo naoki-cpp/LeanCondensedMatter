@@ -51,8 +51,9 @@ theorem hasDerivAt_schwartzSpatialDerivative1D (ψ : SchwartzMap ℝ ℂ) (x : �
 theorem hasDerivAt_schwartzSpatialSecondDerivative1D (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     HasDerivAt (fun y : ℝ => schwartzSpatialDerivative1D ψ y)
       (schwartzSpatialSecondDerivative1D ψ x) x := by
-  simpa [schwartzSpatialSecondDerivative1D] using
-    (SchwartzMap.hasDerivAt (schwartzSpatialDerivative1D ψ) x)
+  change HasDerivAt (schwartzSpatialDerivative1D ψ)
+    (deriv (schwartzSpatialDerivative1D ψ) x) x
+  exact SchwartzMap.hasDerivAt (schwartzSpatialDerivative1D ψ) x
 
 private theorem hasDerivAt_realPart_of_complex
     {f : ℝ → ℂ} {f' : ℂ} {x : ℝ} (h : HasDerivAt f f' x) :
