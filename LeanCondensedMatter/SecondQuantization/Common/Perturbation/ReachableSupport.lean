@@ -88,8 +88,9 @@ theorem support_interactionPicture_apply_subset_reachableSupport_succ
       apply hnot
       exact ⟨k, hkReach,
         support_interactionPicture_basisState_subset energy V τ k hmem⟩
-    have hcol : interactionPicture energy V τ (basisState k) m = 0 :=
-      Finsupp.not_mem_support_iff.mp hmk
+    have hcol : interactionPicture energy V τ (basisState k) m = 0 := by
+      by_contra hne
+      exact hmk (Finsupp.mem_support_iff.mpr hne)
     simp [hcol]
   exact (Finsupp.mem_support_iff.mp hm) hzero
 
