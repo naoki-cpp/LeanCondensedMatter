@@ -94,8 +94,8 @@ corresponding coordinate. -/
 theorem inner_completedBasisState_left (n : Occupation Mode) (ψ : CompletedFockSpace Mode) :
     inner ℂ (completedBasisState n) ψ = ψ n := by
   classical
-  rw [lp.inner_eq_tsum]
-  simp [completedBasisState, lp.single_apply]
+  unfold completedBasisState
+  simpa using lp.inner_single_left (𝕜 := ℂ) n (1 : ℂ) ψ
 
 /-- The maximal diagonal operator with conjugated weights is a formal adjoint of the original
 operator. -/
@@ -128,7 +128,7 @@ theorem completedDiagonalOperator_adjoint_apply (w : Occupation Mode → ℂ)
   have he : completedDiagonalOperator w e = w n • completedBasisState n := by
     exact completedDiagonalOperator_basisState w n
   rw [he] at h
-  simpa using h.symm
+  simpa [e] using h.symm
 
 /-- Every vector in the adjoint domain belongs to the conjugate-weight maximal diagonal domain. -/
 theorem completedDiagonalOperator_adjoint_domain_le_conj (w : Occupation Mode → ℂ) :
@@ -167,8 +167,10 @@ theorem completedDiagonalOperator_adjoint_eq (w : Occupation Mode → ℂ) :
 theorem completedDiagonalOperator_isFormalAdjoint_self (w : Occupation Mode → ℂ)
     (hw : ∀ n, star (w n) = w n) :
     (completedDiagonalOperator w).IsFormalAdjoint (completedDiagonalOperator w) := by
-  simpa [show (fun n => star (w n)) = w from funext hw] using
-    completedDiagonalOperator_isFormalAdjoint_conj w
+  have h := completedDiagonalOperator_isFormalAdjoint_conj w
+  have hwfun : (fun n => star (w n)) = w := funext hw
+  rw [hwfun] at h
+  exact h
 
 /-- A maximal diagonal operator with conjugation-fixed weights is self-adjoint. -/
 theorem completedDiagonalOperator_isSelfAdjoint_of_star (w : Occupation Mode → ℂ)
