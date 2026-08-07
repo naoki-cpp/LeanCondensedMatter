@@ -29,20 +29,21 @@ def twoPointExternalTimeWall {n : ℕ} (v : Fin n) (t : ℝ) : Set (Fin n → �
 /-- A fixed-coordinate external-time wall has zero Lebesgue volume. -/
 theorem volume_twoPointExternalTimeWall_eq_zero {n : ℕ} (v : Fin n) (t : ℝ) :
     volume (twoPointExternalTimeWall v t) = 0 := by
-  simpa [twoPointExternalTimeWall] using
-    (MeasureTheory.Measure.pi_hyperplane
-      (fun _ : Fin n => (volume : Measure ℝ)) v t)
+  rw [volume_pi]
+  exact MeasureTheory.Measure.pi_hyperplane
+    (fun _ : Fin n => (volume : Measure ℝ)) v t
 
 /-- The linear subspace on which two interaction-time coordinates coincide. -/
 def twoPointInteractionCoincidenceSubmodule {n : ℕ} (v w : Fin n) :
     Submodule ℝ (Fin n → ℝ) :=
-  (LinearMap.proj v - LinearMap.proj w).ker
+  ((LinearMap.proj v : (Fin n → ℝ) →ₗ[ℝ] ℝ) -
+    (LinearMap.proj w : (Fin n → ℝ) →ₗ[ℝ] ℝ)).ker
 
 @[simp]
 theorem mem_twoPointInteractionCoincidenceSubmodule_iff {n : ℕ}
     (v w : Fin n) (σ : Fin n → ℝ) :
     σ ∈ twoPointInteractionCoincidenceSubmodule v w ↔ σ v = σ w := by
-  simp [twoPointInteractionCoincidenceSubmodule, LinearMap.mem_ker, sub_eq_zero]
+  simp [twoPointInteractionCoincidenceSubmodule]
 
 /-- The coincidence wall of two interaction-time coordinates. -/
 def twoPointInteractionCoincidenceWall {n : ℕ} (v w : Fin n) : Set (Fin n → ℝ) :=
@@ -64,12 +65,15 @@ private theorem twoPointInteractionCoincidenceSubmodule_ne_top {n : ℕ}
 theorem volume_twoPointInteractionCoincidenceWall_eq_zero {n : ℕ}
     {v w : Fin n} (hvw : v ≠ w) :
     volume (twoPointInteractionCoincidenceWall v w) = 0 := by
-  have hsub := MeasureTheory.Measure.addHaar_submodule
+  have hset : twoPointInteractionCoincidenceWall v w =
+      (twoPointInteractionCoincidenceSubmodule v w : Set (Fin n → ℝ)) := by
+    ext σ
+    simp [twoPointInteractionCoincidenceWall]
+  rw [hset]
+  exact MeasureTheory.Measure.addHaar_submodule
     (volume : Measure (Fin n → ℝ))
     (twoPointInteractionCoincidenceSubmodule v w)
     (twoPointInteractionCoincidenceSubmodule_ne_top hvw)
-  simpa [twoPointInteractionCoincidenceWall,
-    Set.ext_iff, mem_twoPointInteractionCoincidenceSubmodule_iff] using hsub
 
 /-- Union of all interaction crossings with one fixed external time. -/
 def twoPointExternalTimeWalls {n : ℕ} (t : ℝ) : Set (Fin n → ℝ) :=
@@ -117,7 +121,9 @@ theorem volume_twoPointMixedOrderWallSet_eq_zero {n : ℕ} (τ τ' : ℝ) :
 /-- Almost every ambient interaction-time assignment lies away from all mixed-order walls. -/
 theorem ae_not_mem_twoPointMixedOrderWallSet {n : ℕ} (τ τ' : ℝ) :
     ∀ᵐ σ : Fin n → ℝ, σ ∉ twoPointMixedOrderWallSet (n := n) τ τ' := by
-  exact ae_iff.2 (volume_twoPointMixedOrderWallSet_eq_zero (n := n) τ τ')
+  rw [ae_iff]
+  simpa only [not_not] using
+    (volume_twoPointMixedOrderWallSet_eq_zero (n := n) τ τ')
 
 end Fermionic
 end SecondQuantization
