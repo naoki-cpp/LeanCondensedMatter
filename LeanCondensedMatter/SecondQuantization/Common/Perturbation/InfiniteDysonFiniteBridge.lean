@@ -37,7 +37,6 @@ theorem infiniteDysonCoeff_eq_dysonCoeff [Fintype Config] (energy : Config → �
       apply intervalIntegral.integral_congr
       intro σ _
       simp_rw [ih σ]
-      change interactionPicture energy V σ (dysonCoeff energy V order σ (basisState n)) m = _
       change matrixCoeff ((interactionPicture energy V σ).comp (dysonCoeff energy V order σ)) m n = _
       exact matrixCoeff_comp _ _ m n
 
