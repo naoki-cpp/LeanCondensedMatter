@@ -33,18 +33,18 @@ private theorem imaginaryTimeEvolveFree_apply_coord
       Complex.exp ((τ * freeEigenvalue ε n : ℝ) : ℂ) • eval := by
     apply Finsupp.lhom_ext
     intro a b
-    have hb : (Finsupp.single a b : FockSpace Mode) = b • Common.basisState a :=
+    have hb : (Finsupp.single a b : FockSpace Mode) = b • basisState a :=
       (Finsupp.smul_single_one a b).symm
     rw [hb, LinearMap.comp_apply, map_smul, imaginaryTimeEvolveFree_basisState, map_smul,
       LinearMap.smul_apply]
     by_cases h : a = n
     · subst a
-      have hself : (Common.basisState n : FockSpace Mode) n = 1 := by
-        simp [Common.basisState]
+      have hself : (basisState n : FockSpace Mode) n = 1 := by
+        simp [basisState, Common.basisState]
       rw [hself]
       ring
-    · have hne : (Common.basisState a : FockSpace Mode) n = 0 := by
-        simp [Common.basisState, h]
+    · have hne : (basisState a : FockSpace Mode) n = 0 := by
+        simp [basisState, Common.basisState, h]
       rw [hne]
       ring
   have hx := congrArg (fun L => L x) hmap
