@@ -43,7 +43,8 @@ def twoPointInteractionCoincidenceSubmodule {n : ℕ} (v w : Fin n) :
 theorem mem_twoPointInteractionCoincidenceSubmodule_iff {n : ℕ}
     (v w : Fin n) (σ : Fin n → ℝ) :
     σ ∈ twoPointInteractionCoincidenceSubmodule v w ↔ σ v = σ w := by
-  simp [twoPointInteractionCoincidenceSubmodule]
+  change σ v - σ w = 0 ↔ σ v = σ w
+  exact sub_eq_zero
 
 /-- The coincidence wall of two interaction-time coordinates. -/
 def twoPointInteractionCoincidenceWall {n : ℕ} (v w : Fin n) : Set (Fin n → ℝ) :=
@@ -122,8 +123,8 @@ theorem volume_twoPointMixedOrderWallSet_eq_zero {n : ℕ} (τ τ' : ℝ) :
 theorem ae_not_mem_twoPointMixedOrderWallSet {n : ℕ} (τ τ' : ℝ) :
     ∀ᵐ σ : Fin n → ℝ, σ ∉ twoPointMixedOrderWallSet (n := n) τ τ' := by
   rw [ae_iff]
-  simpa only [not_not] using
-    (volume_twoPointMixedOrderWallSet_eq_zero (n := n) τ τ')
+  change volume (twoPointMixedOrderWallSet (n := n) τ τ') = 0
+  exact volume_twoPointMixedOrderWallSet_eq_zero (n := n) τ τ'
 
 end Fermionic
 end SecondQuantization
