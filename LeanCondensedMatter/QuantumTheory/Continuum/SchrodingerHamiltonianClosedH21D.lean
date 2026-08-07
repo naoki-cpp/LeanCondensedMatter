@@ -116,11 +116,8 @@ theorem mem_continuumSchrodingerHamiltonian1D_graph_iff
     rw [l2ToTemperedDistribution1D_continuumSchrodingerHamiltonian1D]
     rw [map_sub] at hz
     rw [← hz]
-    change l2ToTemperedDistribution1D z.2 +
-        (-1 • l2ToTemperedDistribution1D (potential • z.1) +
-          l2ToTemperedDistribution1D (l2MultiplicationOperator1D potential z.1)) =
-      l2ToTemperedDistribution1D z.2
-    rw [l2MultiplicationOperator1D_apply]
+    have hψcoe : (ψ : ContinuumL2Wavefunction1D) = z.1 := rfl
+    rw [hψcoe, l2MultiplicationOperator1D_apply]
     abel
 
 /-- The one-dimensional Schrödinger Hamiltonian with an essentially bounded potential is closed on
