@@ -25,14 +25,12 @@ open scoped ENNReal MeasureTheory SchwartzMap Laplacian LineDeriv Real
 
 private theorem besselPotential_two_eq_sub_laplacian (f : 𝓢'(ℝ, ℂ)) :
     TemperedDistribution.besselPotential ℝ ℂ 2 f =
-      f - ((((2 * Real.pi) ^ 2 : ℝ)⁻¹ : ℝ) : ℂ) • Δ f := by
+      f - (((2 * Real.pi) ^ 2 : ℝ)⁻¹) • Δ f := by
   rw [TemperedDistribution.besselPotential,
     TemperedDistribution.laplacian_eq_fourierMultiplierCLM]
   have hpi : (2 * Real.pi : ℝ) ≠ 0 := mul_ne_zero (by norm_num) Real.pi_ne_zero
   have hcoef :
-      (((((2 * Real.pi) ^ 2 : ℝ)⁻¹ : ℝ) : ℂ) *
-        (-((2 * Real.pi) ^ 2 : ℝ) : ℂ)) = -1 := by
-    norm_cast
+      (((2 * Real.pi) ^ 2 : ℝ)⁻¹) * (-((2 * Real.pi) ^ 2 : ℝ)) = -1 := by
     field_simp [hpi]
   rw [smul_smul, hcoef, neg_one_smul, sub_neg_eq_add]
   have hconst :
@@ -53,10 +51,13 @@ theorem continuumMaximalLaplacianDomain1D_le_continuumH2Domain1D :
   obtain ⟨φ, hφ⟩ :=
     (mem_continuumMaximalLaplacianDomain1D_iff ψ).mp hψ
   rw [TemperedDistribution.MemSobolev]
-  refine ⟨ψ - ((((2 * Real.pi) ^ 2 : ℝ)⁻¹ : ℝ) : ℂ) • φ, ?_⟩
-  rw [besselPotential_two_eq_sub_laplacian, ← hφ]
-  simp only [map_sub, map_smul]
-  rfl
+  let c : ℝ := ((2 * Real.pi) ^ 2)⁻¹
+  refine ⟨ψ - (c : ℂ) • φ, ?_⟩
+  change TemperedDistribution.besselPotential ℝ ℂ 2
+      (l2ToTemperedDistribution1D ψ) =
+    l2ToTemperedDistribution1D (ψ - (c : ℂ) • φ)
+  rw [besselPotential_two_eq_sub_laplacian, ← hφ, map_sub, map_smul]
+  simp [c]
 
 /-- The explicit `H²` domain equals the maximal distributional Laplacian domain. -/
 theorem continuumH2Domain1D_eq_continuumMaximalLaplacianDomain1D :
