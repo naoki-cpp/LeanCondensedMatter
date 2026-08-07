@@ -75,7 +75,8 @@ noncomputable def firstDysonCoeff (energy : Config → ℝ)
 theorem firstDysonCoeff_basisState (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) (n : Config) :
     firstDysonCoeff energy V τ (basisState n) = firstDysonBasis energy V τ n := by
-  simp [firstDysonCoeff, firstDysonBasis, Finsupp.lift_apply]
+  change Finsupp.lift _ ℂ _ (firstDysonBasis energy V τ) (Finsupp.single n 1) = _
+  simp [Finsupp.lift_apply, Finsupp.sum_single_index]
 
 @[simp]
 theorem firstDysonCoeff_zero (energy : Config → ℝ)
