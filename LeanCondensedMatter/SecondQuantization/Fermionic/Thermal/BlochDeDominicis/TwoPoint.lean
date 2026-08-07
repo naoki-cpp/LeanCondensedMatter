@@ -6,24 +6,16 @@ import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Un
 set_option linter.style.header false
 
 /-!
-# The finite-mode fermionic 2-point function, from the general Bloch–de Dominicis base case
+# Finite-mode fermionic Bloch–de Dominicis two-point identity
 
-Phase 9, step 4 of Track D's finite-mode fermionic primary line
-(`notes/roadmaps/second-quantization.md`): the first concrete instantiation of
-`Common.traceFock_diagonalEvolution_comp_two_point` (from `Common/Thermal/BlochDeDominicis/Unnormalized/TwoPoint.lean`,
-itself built from `Common/Thermal/WeightedDiagonalFunctional.lean`'s trace cyclicity and
-`Common/ImaginaryTime/DiagonalEvolution.lean`'s KMS-type relation) against real fermionic `annihilate`/`create`
-operators — validating the whole general `Common/` Bloch–de Dominicis chain (PRs building trace
-cyclicity, the KMS relation, and their combination) by cross-checking it reproduces the already
-independently-established closed-form fermionic 2-point function
-(`Fermionic/Thermal/FreeTwoPointFunction.lean`'s `freeGibbsGreenFunction_of_gt_self`/Fermi–Dirac
-occupation number).
+This module instantiates the Common unnormalized Bloch–de Dominicis two-point theorem for finite
+free fermions. The imaginary-time evolution supplies the eigenvalue shift
+`c_i(τ) = e^{-τε_i} c_i`, while CAR supplies the exchange relation
+`{c_i, c_j†} = δ_{ij}`.
 
-The instantiation uses only: `imaginaryTimeEvolve_annihilate`'s eigenvalue-shift fact (`c_i(τ) =
-e^{-τεᵢ}c_i`, giving the KMS relation's `q := -εᵢ`) and CAR's `anticomm_annihilate_create` (the
-c-number exchange commutator, `ζ := -1`) — no case analysis on `Occupation Mode`, unlike
-the earlier `Fermionic/BlochDeDominicisSingleMode.lean` (single-mode, hand-derived from CAR
-directly rather than through the general `Common/` framework).
+The resulting trace identity reproduces the same Fermi–Dirac mixed contraction evaluated directly
+in `Fermionic/Thermal/FreeGibbsGreenFunction.lean`. The proof uses the general KMS/reordering
+infrastructure and does not inspect occupation configurations mode by mode.
 -/
 
 namespace SecondQuantization
@@ -31,13 +23,13 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- **The finite-mode fermionic 2-point identity**: `(1 + e^{-εᵢβ}) Tr[e^{-βH₀}(cᵢcⱼ†)] = δᵢⱼ
-Tr[e^{-βH₀}]`, a direct instantiation of `Common.traceFock_diagonalEvolution_comp_two_point` with
-`C₁ := annihilate i`, `Cⱼ := create j`, `q₁ := -εᵢ` (from `imaginaryTimeEvolve_annihilate`), and
-`ζ := -1`, `c₁ⱼ := δᵢⱼ` (from `anticomm_annihilate_create`, CAR's mixed exchange relation). At
-`i = j` this recovers `⟨cᵢcᵢ†⟩ = 1/(1 + e^{-εᵢβ}) = e^{εᵢβ}/(e^{εᵢβ}+1) = 1 - ⟨Nᵢ⟩`, matching the
-Fermi–Dirac distribution already established independently in
-`Fermionic/Thermal/FreeTwoPointFunction.lean`. -/
+/-- **The finite-mode fermionic two-point identity**:
+`(1 + e^{-εᵢβ}) Tr[e^{-βH₀}(cᵢcⱼ†)] = δᵢⱼ Tr[e^{-βH₀}]`.
+
+This is the fermionic specialization of `Common.traceFock_diagonalEvolution_comp_two_point`, with
+`q₁ := -εᵢ`, exchange sign `ζ := -1`, and c-number exchange term `δᵢⱼ`. At `i = j` it gives
+`⟨cᵢcᵢ†⟩ = 1 - ⟨Nᵢ⟩`, matching the closed form in
+`Fermionic/Thermal/FreeGibbsGreenFunction.lean`. -/
 theorem traceFock_imaginaryTimeEvolveFree_comp_annihilate_comp_create
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) :
     (1 + Complex.exp ((-(ε i) * β : ℝ) : ℂ)) *
