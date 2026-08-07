@@ -8,24 +8,24 @@ set_option linter.style.header false
 
 When the ambient configuration type is finite, the reachable-support reconstruction from
 `InfiniteDyson` agrees exactly with the older globally reconstructed finite-basis coefficient
-`dysonCoeff`.  This provides a regression bridge between the two implementations.
+`dysonCoeff`. This provides a regression bridge between the two implementations.
 -/
 
 namespace SecondQuantization
 namespace Common
 
-variable {Config : Type*} [Fintype Config]
+variable {Config : Type*}
 
 /-- On a finite configuration type, the finite-reachable-support Dyson coefficient agrees with the
 existing globally reconstructed finite-basis Dyson coefficient at every finite order. -/
-theorem infiniteDysonCoeff_eq_dysonCoeff (energy : Config → ℝ)
+theorem infiniteDysonCoeff_eq_dysonCoeff [Fintype Config] (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     ∀ order τ, infiniteDysonCoeff energy V order τ = dysonCoeff energy V order τ := by
   intro order
   induction order with
   | zero =>
       intro τ
-      simp
+      rw [infiniteDysonCoeff_zero, dysonCoeff_zero]
   | succ order ih =>
       intro τ
       apply matrixCoeff_ext
@@ -36,27 +36,29 @@ theorem infiniteDysonCoeff_eq_dysonCoeff (energy : Config → ℝ)
       congr 1
       apply intervalIntegral.integral_congr
       intro σ _
-      rw [ih σ]
+      simp_rw [ih σ]
       change interactionPicture energy V σ (dysonCoeff energy V order σ (basisState n)) m = _
       change matrixCoeff ((interactionPicture energy V σ).comp (dysonCoeff energy V order σ)) m n = _
       exact matrixCoeff_comp _ _ m n
 
-/-- The arbitrary-configuration construction inherits continuity of every matrix coefficient in the
-finite-configuration specialization. -/
-theorem continuous_matrixCoeff_infiniteDysonCoeff_of_fintype (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (order : ℕ) (m n : Config) :
+/-- On any finite configuration type, every matrix coefficient of the reachable-support Dyson
+construction is continuous in imaginary time. -/
+theorem continuous_matrixCoeff_infiniteDysonCoeff_of_finite [Finite Config]
+    (energy : Config → ℝ) (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (order : ℕ) (m n : Config) :
     Continuous (fun τ : ℝ => matrixCoeff (infiniteDysonCoeff energy V order τ) m n) := by
+  letI := Fintype.ofFinite Config
   simpa only [infiniteDysonCoeff_eq_dysonCoeff energy V order] using
     continuous_matrixCoeff_dysonCoeff energy V order m n
 
-/-- The arbitrary-configuration construction inherits interval-integrability of every matrix
-coefficient in the finite-configuration specialization. -/
-theorem intervalIntegrable_matrixCoeff_infiniteDysonCoeff_of_fintype (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (order : ℕ)
+/-- On any finite configuration type, every matrix coefficient of the reachable-support Dyson
+construction is interval-integrable. -/
+theorem intervalIntegrable_matrixCoeff_infiniteDysonCoeff_of_finite [Finite Config]
+    (energy : Config → ℝ) (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (order : ℕ)
     (m n : Config) (a b : ℝ) :
     IntervalIntegrable (fun τ : ℝ => matrixCoeff (infiniteDysonCoeff energy V order τ) m n)
       MeasureTheory.volume a b :=
-  (continuous_matrixCoeff_infiniteDysonCoeff_of_fintype energy V order m n).intervalIntegrable a b
+  (continuous_matrixCoeff_infiniteDysonCoeff_of_finite energy V order m n).intervalIntegrable a b
 
 end Common
 end SecondQuantization
