@@ -67,7 +67,8 @@ theorem integral_eq_sub_of_absolutelyContinuousOnInterval_of_ae_hasDerivAt_of_no
   have hAeInt :
       ∀ᵐ x, x ∈ Set.uIcc a b → ∀ c ∈ Set.uIcc a b,
         HasDerivAt (fun y => ∫ t in c..y, F' t) (F' x) x :=
-    _root_.IntervalIntegrable.ae_hasDerivAt_integral hF'
+    _root_.IntervalIntegrable.ae_hasDerivAt_integral
+      (f := F') (a := a) (b := b) hF'
   have hGzero : ∀ᵐ x, x ∈ Set.uIcc a b → HasDerivAt G 0 x := by
     filter_upwards [hderiv, hAeInt] with x hxF hxInt hx
     have hInt := hxInt hx a (by simp)
