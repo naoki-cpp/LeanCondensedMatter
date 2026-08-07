@@ -33,6 +33,7 @@ import LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar
 import LeanCondensedMatter.Combinatorics
 import LeanCondensedMatter.QuantumTheory.Postulates
 import LeanCondensedMatter.QuantumTheory.Continuum.SchrodingerContinuity
+import LeanCondensedMatter.QuantumTheory.Continuum.SchrodingerContinuityFiniteDimensional
 import LeanCondensedMatter.QuantumTheory.BoundedDyson
 import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
 import LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation
