@@ -136,34 +136,43 @@ theorem completedModeTruncation_algebraicToCompleted_of_subset
   · have hnsub : n ⊆ S := (occupation_subset_algebraicModeSupport x n hn).trans hS
     simp [algebraicToCompleted_apply, hnsub]
 
-/-- Finite-mode truncations converge strongly to the identity as the finite mode set increases.
-This is a net convergence theorem over `Finset Mode`, not a sequential statement. -/
-set_option maxHeartbeats 800000 in
-theorem tendsto_completedModeTruncation (ψ : CompletedFockSpace Mode) :
-    Tendsto (fun S : Finset Mode => completedModeTruncation S ψ) atTop (𝓝 ψ) := by
-  classical
-  refine Metric.tendsto_atTop.2 ?_
-  intro ε hε
+/-- A contraction that fixes `φ` moves `ψ` by at most twice the distance from `ψ` to `φ`. -/
+theorem dist_completedModeTruncation_le_two_mul_of_fixed
+    (S : Finset Mode) (ψ φ : CompletedFockSpace Mode)
+    (hφ : completedModeTruncation S φ = φ) :
+    dist (completedModeTruncation S ψ) ψ ≤ 2 * dist ψ φ := by
+  calc
+    dist (completedModeTruncation S ψ) ψ ≤
+        dist (completedModeTruncation S ψ) (completedModeTruncation S φ) +
+          dist (completedModeTruncation S φ) ψ :=
+      dist_triangle _ _ _
+    _ = dist (completedModeTruncation S ψ) (completedModeTruncation S φ) + dist φ ψ := by
+      rw [hφ]
+    _ ≤ dist ψ φ + dist φ ψ :=
+      add_le_add_right (dist_completedModeTruncation_le S ψ φ) _
+    _ = 2 * dist ψ φ := by
+      rw [dist_comm φ ψ, two_mul]
+
+private theorem eventually_dist_completedModeTruncation_lt
+    (ψ : CompletedFockSpace Mode) {ε : ℝ} (hε : 0 < ε) :
+    ∃ S₀ : Finset Mode, ∀ S, S₀ ⊆ S → dist (completedModeTruncation S ψ) ψ < ε := by
   have hhalf : 0 < ε / 2 := half_pos hε
-  rcases algebraicToCompleted_denseRange.exists_dist_lt ψ hhalf with ⟨x, hxy⟩
+  rcases algebraicToCompleted_denseRange.exists_dist_lt ψ hhalf with ⟨x, hx⟩
   refine ⟨algebraicModeSupport x, ?_⟩
   intro S hS
   have hfix := completedModeTruncation_algebraicToCompleted_of_subset S x hS
-  have hcontract := dist_completedModeTruncation_le S ψ (algebraicToCompleted x)
   calc
-    dist (completedModeTruncation S ψ) ψ ≤
-        dist (completedModeTruncation S ψ)
-            (completedModeTruncation S (algebraicToCompleted x)) +
-          dist (completedModeTruncation S (algebraicToCompleted x)) ψ :=
-      dist_triangle _ _ _
-    _ = dist (completedModeTruncation S ψ)
-          (completedModeTruncation S (algebraicToCompleted x)) +
-        dist (algebraicToCompleted x) ψ := by rw [hfix]
-    _ ≤ dist ψ (algebraicToCompleted x) + dist (algebraicToCompleted x) ψ :=
-      add_le_add_right hcontract _
-    _ < ε := by
-      rw [dist_comm (algebraicToCompleted x) ψ]
-      linarith
+    dist (completedModeTruncation S ψ) ψ ≤ 2 * dist ψ (algebraicToCompleted x) :=
+      dist_completedModeTruncation_le_two_mul_of_fixed S ψ (algebraicToCompleted x) hfix
+    _ < ε := by linarith
+
+/-- Finite-mode truncations converge strongly to the identity as the finite mode set increases.
+This is a net convergence theorem over `Finset Mode`, not a sequential statement. -/
+theorem tendsto_completedModeTruncation (ψ : CompletedFockSpace Mode) :
+    Tendsto (fun S : Finset Mode => completedModeTruncation S ψ) atTop (𝓝 ψ) := by
+  rw [Metric.tendsto_atTop]
+  intro ε hε
+  exact eventually_dist_completedModeTruncation_lt ψ hε
 
 end
 end Fermionic
