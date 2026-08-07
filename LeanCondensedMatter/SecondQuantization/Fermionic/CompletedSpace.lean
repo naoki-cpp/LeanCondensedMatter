@@ -7,6 +7,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Diagonal
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.DiagonalAnalytic
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbs
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnboundedExpectation
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbsSummability
 
 set_option linter.style.header false
 
@@ -30,6 +31,11 @@ density-state API, while integrable unbounded diagonal observables are represent
 absolutely convergent occupation-basis series. In particular this gives explicit expectation
 interfaces for the completed free Hamiltonian and total particle number without coercing either
 unbounded operator into `ContinuousLinearMap`.
+
+For the free fermion state, summability of the one-particle Boltzmann factors
+`exp (-β εᵢ)` is a concrete sufficient condition for occupation-level Gibbs summability. Under this
+condition the partition function satisfies the infinite product formula
+`Z(β) = ∏' i, (1 + exp (-β εᵢ))`.
 
 Finite-mode compatibility, approximation, and thermodynamic-limit constructions remain later work.
 -/
