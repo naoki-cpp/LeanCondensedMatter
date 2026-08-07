@@ -23,7 +23,7 @@ abbrev TwoPointOrderSignature (n : ℕ) :=
   Finset (TwoPointTimedEvent n × TwoPointTimedEvent n)
 
 /-- The strict mixed-event comparisons that hold for one interaction-time assignment. -/
-def twoPointOrderSignature {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
+noncomputable def twoPointOrderSignature {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
     TwoPointOrderSignature n :=
   Finset.univ.filter fun p =>
     twoPointTimedEventTime τ τ' σ p.1 < twoPointTimedEventTime τ τ' σ p.2
@@ -33,6 +33,7 @@ theorem mem_twoPointOrderSignature_iff {n : ℕ} (τ τ' : ℝ) (σ : Fin n → 
     (a b : TwoPointTimedEvent n) :
     (a, b) ∈ twoPointOrderSignature τ τ' σ ↔
       twoPointTimedEventTime τ τ' σ a < twoPointTimedEventTime τ τ' σ b := by
+  classical
   simp [twoPointOrderSignature]
 
 /-- Equality of finite order signatures is exactly equality of mixed-order chambers. -/
@@ -40,12 +41,14 @@ theorem sameTwoPointOrderChamber_iff_orderSignature_eq {n : ℕ}
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) :
     SameTwoPointOrderChamber τ τ' σ υ ↔
       twoPointOrderSignature τ τ' σ = twoPointOrderSignature τ τ' υ := by
+  classical
   constructor
   · intro h
     ext p
-    simpa only [mem_twoPointOrderSignature_iff] using h p.1 p.2
+    rcases p with ⟨a, b⟩
+    simpa only [mem_twoPointOrderSignature_iff] using h a b
   · intro h a b
-    have hp := Finset.ext_iff.mp h (a, b)
+    have hp := congrArg (fun s : TwoPointOrderSignature n => (a, b) ∈ s) h
     simpa only [mem_twoPointOrderSignature_iff] using hp
 
 /-- The strict-comparison locus of two fixed mixed events. -/
@@ -84,22 +87,28 @@ private theorem twoPointOrderSignatureFiber_eq_iInter {n : ℕ} (τ τ' : ℝ)
       ⋂ p : TwoPointTimedEvent n × TwoPointTimedEvent n,
         if p ∈ s then twoPointEventStrictComparisonSet τ τ' p.1 p.2
         else (twoPointEventStrictComparisonSet τ τ' p.1 p.2)ᶜ := by
+  classical
   ext σ
-  simp only [twoPointOrderSignatureFiber, Set.mem_setOf_eq, Set.mem_iInter,
-    Set.mem_ite_iff, Set.mem_compl_iff, twoPointEventStrictComparisonSet, Set.mem_setOf_eq]
+  simp only [twoPointOrderSignatureFiber, Set.mem_setOf_eq, Set.mem_iInter]
   constructor
   · intro h p
-    have hp := Finset.ext_iff.mp h p
+    have hp : p ∈ twoPointOrderSignature τ τ' σ ↔ p ∈ s := by
+      rw [h]
     by_cases hps : p ∈ s
-    · left
-      refine ⟨hps, ?_⟩
-      simpa only [mem_twoPointOrderSignature_iff] using hp.mpr hps
-    · right
-      refine ⟨hps, ?_⟩
-      intro hlt
-      have : p ∈ twoPointOrderSignature τ τ' σ := by
-        simpa only [mem_twoPointOrderSignature_iff] using hlt
-      exact hps (hp.mp this)
+    · have hmem : p ∈ twoPointOrderSignature τ τ' σ := hp.mpr hps
+      have hlt :
+          twoPointTimedEventTime τ τ' σ p.1 < twoPointTimedEventTime τ τ' σ p.2 := by
+        rcases p with ⟨a, b⟩
+        simpa only [mem_twoPointOrderSignature_iff] using hmem
+      simpa [hps, twoPointEventStrictComparisonSet] using hlt
+    · have hnot : p ∉ twoPointOrderSignature τ τ' σ := by
+        intro hmem
+        exact hps (hp.mp hmem)
+      have hnlt :
+          ¬ twoPointTimedEventTime τ τ' σ p.1 < twoPointTimedEventTime τ τ' σ p.2 := by
+        rcases p with ⟨a, b⟩
+        simpa only [mem_twoPointOrderSignature_iff] using hnot
+      simpa [hps, twoPointEventStrictComparisonSet] using hnlt
   · intro h
     apply Finset.ext
     intro p
@@ -108,17 +117,23 @@ private theorem twoPointOrderSignatureFiber_eq_iInter {n : ℕ} (τ τ' : ℝ)
     · have hlt :
           twoPointTimedEventTime τ τ' σ p.1 < twoPointTimedEventTime τ τ' σ p.2 := by
         simpa [hps, twoPointEventStrictComparisonSet] using hp
-      simpa only [mem_twoPointOrderSignature_iff, hps] using hlt
+      have hmem : p ∈ twoPointOrderSignature τ τ' σ := by
+        rcases p with ⟨a, b⟩
+        simpa only [mem_twoPointOrderSignature_iff] using hlt
+      exact iff_of_true hmem hps
     · have hnlt :
           ¬ twoPointTimedEventTime τ τ' σ p.1 < twoPointTimedEventTime τ τ' σ p.2 := by
         simpa [hps, twoPointEventStrictComparisonSet] using hp
-      simp only [mem_twoPointOrderSignature_iff, hps, iff_false]
-      exact hnlt
+      have hnot : p ∉ twoPointOrderSignature τ τ' σ := by
+        rcases p with ⟨a, b⟩
+        simpa only [mem_twoPointOrderSignature_iff] using hnlt
+      exact iff_of_false hnot hps
 
 /-- Every finite mixed-order signature fiber is Borel measurable. -/
 theorem measurableSet_twoPointOrderSignatureFiber {n : ℕ} (τ τ' : ℝ)
     (s : TwoPointOrderSignature n) :
     MeasurableSet (twoPointOrderSignatureFiber τ τ' s) := by
+  classical
   rw [twoPointOrderSignatureFiber_eq_iInter]
   apply MeasurableSet.iInter
   intro p
@@ -130,8 +145,9 @@ theorem measurableSet_twoPointOrderSignatureFiber {n : ℕ} (τ τ' : ℝ)
 /-- A chosen ambient assignment realizing a signature, falling back to the zero assignment for an
 unrealized signature. -/
 noncomputable def twoPointOrderSignatureBase {n : ℕ} (τ τ' : ℝ)
-    (s : TwoPointOrderSignature n) : Fin n → ℝ :=
-  if h : ∃ σ : Fin n → ℝ, twoPointOrderSignature τ τ' σ = s then
+    (s : TwoPointOrderSignature n) : Fin n → ℝ := by
+  classical
+  exact if h : ∃ σ : Fin n → ℝ, twoPointOrderSignature τ τ' σ = s then
     Classical.choose h
   else
     0
@@ -141,7 +157,8 @@ theorem twoPointOrderSignature_twoPointOrderSignatureBase_eq {n : ℕ} (τ τ' :
     (s : TwoPointOrderSignature n)
     (h : ∃ σ : Fin n → ℝ, twoPointOrderSignature τ τ' σ = s) :
     twoPointOrderSignature τ τ' (twoPointOrderSignatureBase τ τ' s) = s := by
-  rw [twoPointOrderSignatureBase, dif_pos h]
+  classical
+  simp only [twoPointOrderSignatureBase, dif_pos h]
   exact Classical.choose_spec h
 
 /-- Every assignment lies in the same order chamber as the chosen base of its own signature. -/
