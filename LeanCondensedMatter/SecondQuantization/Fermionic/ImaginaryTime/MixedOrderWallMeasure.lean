@@ -1,0 +1,123 @@
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.MixedOrderChamber
+import Mathlib.LinearAlgebra.Pi
+import Mathlib.MeasureTheory.Constructions.Pi
+import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
+
+set_option linter.style.header false
+
+/-!
+# Measure-zero walls for mixed two-point order chambers
+
+The mixed two-point event order can change only when an interaction time crosses one of the two fixed
+external times or when two distinct interaction times coincide.  In the finite-dimensional ambient
+time space `Fin n → ℝ`, every such locus is a codimension-one affine or linear hyperplane and hence
+has Lebesgue measure zero.  Their finite/countable-indexed union is therefore null as well.
+
+This module packages that null set for later almost-everywhere measurability and integrability
+arguments.  It does not change the deterministic equal-time ordering convention.
+-/
+
+namespace SecondQuantization
+namespace Fermionic
+
+open MeasureTheory
+
+/-- The hyperplane on which one interaction time equals a fixed external time. -/
+def twoPointExternalTimeWall {n : ℕ} (v : Fin n) (t : ℝ) : Set (Fin n → ℝ) :=
+  {σ | σ v = t}
+
+/-- A fixed-coordinate external-time wall has zero Lebesgue volume. -/
+theorem volume_twoPointExternalTimeWall_eq_zero {n : ℕ} (v : Fin n) (t : ℝ) :
+    volume (twoPointExternalTimeWall v t) = 0 := by
+  simpa [twoPointExternalTimeWall] using
+    (MeasureTheory.Measure.pi_hyperplane
+      (fun _ : Fin n => (volume : Measure ℝ)) v t)
+
+/-- The linear subspace on which two interaction-time coordinates coincide. -/
+def twoPointInteractionCoincidenceSubmodule {n : ℕ} (v w : Fin n) :
+    Submodule ℝ (Fin n → ℝ) :=
+  (LinearMap.proj v - LinearMap.proj w).ker
+
+@[simp]
+theorem mem_twoPointInteractionCoincidenceSubmodule_iff {n : ℕ}
+    (v w : Fin n) (σ : Fin n → ℝ) :
+    σ ∈ twoPointInteractionCoincidenceSubmodule v w ↔ σ v = σ w := by
+  simp [twoPointInteractionCoincidenceSubmodule, LinearMap.mem_ker, sub_eq_zero]
+
+/-- The coincidence wall of two interaction-time coordinates. -/
+def twoPointInteractionCoincidenceWall {n : ℕ} (v w : Fin n) : Set (Fin n → ℝ) :=
+  {σ | σ v = σ w}
+
+private theorem twoPointInteractionCoincidenceSubmodule_ne_top {n : ℕ}
+    {v w : Fin n} (hvw : v ≠ w) :
+    twoPointInteractionCoincidenceSubmodule v w ≠ ⊤ := by
+  intro htop
+  let σ : Fin n → ℝ := fun k => if k = v then 1 else 0
+  have hσ : σ ∈ twoPointInteractionCoincidenceSubmodule v w := by
+    rw [htop]
+    trivial
+  rw [mem_twoPointInteractionCoincidenceSubmodule_iff] at hσ
+  have hwv : w ≠ v := hvw.symm
+  simpa [σ, hwv] using hσ
+
+/-- A distinct-coordinate interaction coincidence wall has zero Lebesgue volume. -/
+theorem volume_twoPointInteractionCoincidenceWall_eq_zero {n : ℕ}
+    {v w : Fin n} (hvw : v ≠ w) :
+    volume (twoPointInteractionCoincidenceWall v w) = 0 := by
+  have hsub := MeasureTheory.Measure.addHaar_submodule
+    (volume : Measure (Fin n → ℝ))
+    (twoPointInteractionCoincidenceSubmodule v w)
+    (twoPointInteractionCoincidenceSubmodule_ne_top hvw)
+  simpa [twoPointInteractionCoincidenceWall,
+    Set.ext_iff, mem_twoPointInteractionCoincidenceSubmodule_iff] using hsub
+
+/-- Union of all interaction crossings with one fixed external time. -/
+def twoPointExternalTimeWalls {n : ℕ} (t : ℝ) : Set (Fin n → ℝ) :=
+  ⋃ v : Fin n, twoPointExternalTimeWall v t
+
+/-- All interaction/external walls for one fixed time are null. -/
+theorem volume_twoPointExternalTimeWalls_eq_zero {n : ℕ} (t : ℝ) :
+    volume (twoPointExternalTimeWalls (n := n) t) = 0 := by
+  unfold twoPointExternalTimeWalls
+  exact measure_iUnion_null fun v => volume_twoPointExternalTimeWall_eq_zero v t
+
+/-- Union of all pairwise coincidence walls of distinct interaction coordinates. -/
+def twoPointInteractionCoincidenceWalls {n : ℕ} : Set (Fin n → ℝ) :=
+  ⋃ v : Fin n, ⋃ w : Fin n,
+    if v = w then ∅ else twoPointInteractionCoincidenceWall v w
+
+/-- The union of all distinct interaction-time coincidence walls is null. -/
+theorem volume_twoPointInteractionCoincidenceWalls_eq_zero {n : ℕ} :
+    volume (twoPointInteractionCoincidenceWalls (n := n)) = 0 := by
+  unfold twoPointInteractionCoincidenceWalls
+  apply measure_iUnion_null
+  intro v
+  apply measure_iUnion_null
+  intro w
+  by_cases hvw : v = w
+  · simp [hvw]
+  · simp [hvw, volume_twoPointInteractionCoincidenceWall_eq_zero hvw]
+
+/-- The complete set of mixed-order walls for fixed external times `τ` and `τ'`. -/
+def twoPointMixedOrderWallSet {n : ℕ} (τ τ' : ℝ) : Set (Fin n → ℝ) :=
+  twoPointExternalTimeWalls (n := n) τ ∪
+    twoPointExternalTimeWalls (n := n) τ' ∪
+      twoPointInteractionCoincidenceWalls (n := n)
+
+/-- The complete mixed-order wall set has zero Lebesgue volume. -/
+theorem volume_twoPointMixedOrderWallSet_eq_zero {n : ℕ} (τ τ' : ℝ) :
+    volume (twoPointMixedOrderWallSet (n := n) τ τ') = 0 := by
+  unfold twoPointMixedOrderWallSet
+  exact measure_union_null
+    (measure_union_null
+      (volume_twoPointExternalTimeWalls_eq_zero (n := n) τ)
+      (volume_twoPointExternalTimeWalls_eq_zero (n := n) τ'))
+    (volume_twoPointInteractionCoincidenceWalls_eq_zero (n := n))
+
+/-- Almost every ambient interaction-time assignment lies away from all mixed-order walls. -/
+theorem ae_not_mem_twoPointMixedOrderWallSet {n : ℕ} (τ τ' : ℝ) :
+    ∀ᵐ σ : Fin n → ℝ, σ ∉ twoPointMixedOrderWallSet (n := n) τ τ' := by
+  exact ae_iff.2 (volume_twoPointMixedOrderWallSet_eq_zero (n := n) τ τ')
+
+end Fermionic
+end SecondQuantization
