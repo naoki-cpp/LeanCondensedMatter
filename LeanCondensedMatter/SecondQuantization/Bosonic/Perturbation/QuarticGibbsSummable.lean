@@ -78,7 +78,7 @@ theorem quarticInteraction_mem_freeGibbsDomain
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (g : QuarticVertexLabel Mode → ℂ) :
     quarticInteraction g ∈ freeGibbsDomain ε β := by
-  simpa [quarticInteraction, Common.quarticInteraction] using
+  simpa [quarticInteraction, quarticInteractionOn, Common.quarticInteraction] using
     (quarticInteractionOn_mem_freeGibbsDomain
       (support := (Finset.univ : Finset (QuarticVertexLabel Mode))) ε β hpos g)
 
