@@ -35,8 +35,8 @@ private theorem imaginaryTimeEvolveFree_apply_coord
     intro a b
     have hb : (Finsupp.single a b : FockSpace Mode) = b • basisState a :=
       (Finsupp.smul_single_one a b).symm
-    rw [hb, LinearMap.comp_apply, map_smul, imaginaryTimeEvolveFree_basisState, map_smul,
-      LinearMap.smul_apply]
+    rw [hb, LinearMap.comp_apply, map_smul, imaginaryTimeEvolveFree_basisState]
+    simp only [map_smul, LinearMap.smul_apply, eval, Finsupp.lapply_apply, smul_eq_mul]
     by_cases h : a = n
     · subst a
       have hself : (basisState n : FockSpace Mode) n = 1 := by
