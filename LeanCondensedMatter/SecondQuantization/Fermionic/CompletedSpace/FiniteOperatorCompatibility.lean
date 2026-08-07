@@ -63,7 +63,7 @@ theorem continuousLinearMap_ext_completedBasis_to_finite
       (Finsupp.smul_single_one n c).symm
     rw [hc]
     simp only [LinearMap.comp_apply, map_smul, algebraicToCompleted_basisState]
-    rw [h n]
+    exact congrArg (fun y : Common.FiniteHilbertFock (Occupation Mode) => c • y) (h n)
   exact congrArg (fun f : FockSpace Mode →ₗ[ℂ]
     Common.FiniteHilbertFock (Occupation Mode) => f x) hmaps
 
