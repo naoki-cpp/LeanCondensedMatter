@@ -9,8 +9,11 @@ set_option linter.style.header false
 
 A quartic vertex carries two creation modes and two annihilation modes. The operator order is fixed
 as `a†_{create₁} a†_{create₂} a_{annihilate₂} a_{annihilate₁}`, matching the fermionic quartic
-vertex convention while using bosonic ladder operators.  The statistics-independent constructor
+vertex convention while using bosonic ladder operators. The statistics-independent constructor
 and its free-evolution proof are inherited from `SecondQuantization.Common`.
+
+For an infinite mode type, `quarticInteractionOn support g` constructs the operator from a finite set
+of active quartic labels. The all-label `quarticInteraction g` remains the finite-mode specialization.
 -/
 
 namespace SecondQuantization
@@ -26,7 +29,12 @@ noncomputable def quarticVertexOperator (q : QuarticVertexLabel Mode) :
     FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   Common.quarticVertexOperator create annihilate q
 
-/-- The finite bosonic quartic interaction with coupling `g`. -/
+/-- A bosonic quartic interaction supported on a finite set of vertex labels. -/
+noncomputable def quarticInteractionOn (support : Finset (QuarticVertexLabel Mode))
+    (g : QuarticVertexLabel Mode → ℂ) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+  Common.quarticInteractionOn support create annihilate g
+
+/-- The all-label bosonic quartic interaction on a finite mode type. -/
 noncomputable def quarticInteraction [Fintype Mode] (g : QuarticVertexLabel Mode → ℂ) :
     FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   Common.quarticInteraction create annihilate g
@@ -44,7 +52,17 @@ theorem interactionPicture_quarticVertexOperator (ε : Mode → ℝ) (q : Quarti
       (fun i => imaginaryTimeEvolve_create ε τ i)
       (fun i => imaginaryTimeEvolve_annihilate ε τ i))
 
-/-- The interaction picture distributes over the finite sum of bosonic quartic vertices. -/
+/-- The interaction picture distributes over a finite support of bosonic quartic vertices. -/
+theorem interactionPicture_quarticInteractionOn (support : Finset (QuarticVertexLabel Mode))
+    (ε : Mode → ℝ) (g : QuarticVertexLabel Mode → ℂ) (τ : ℝ) :
+    interactionPicture ε (quarticInteractionOn support g) τ =
+      ∑ q ∈ support, g q • interactionPicture ε (quarticVertexOperator q) τ := by
+  simpa [interactionPicture, Common.interactionPicture, quarticInteractionOn,
+    quarticVertexOperator] using
+    (Common.heisenbergEvolve_quarticInteractionOn
+      support (freeEigenvalue ε) τ create annihilate g)
+
+/-- The interaction picture distributes over the all-label finite-mode quartic interaction. -/
 theorem interactionPicture_quarticInteraction [Fintype Mode] (ε : Mode → ℝ)
     (g : QuarticVertexLabel Mode → ℂ) (τ : ℝ) :
     interactionPicture ε (quarticInteraction g) τ =
