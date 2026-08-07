@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Normed.Group.Bounded
+import Mathlib.MeasureTheory.Constructions.Pi
 import Mathlib.MeasureTheory.Integral.IntegrableOn
 import Mathlib.Topology.Order.Compact
 
@@ -41,12 +42,13 @@ theorem measurableSet_orderedSimplexTimeBox (n : ℕ) (β : ℝ) :
 /-- A pointwise selection from finitely many continuous branches is uniformly norm-bounded on a
 compact set.  No regularity of the branch selector itself is required. -/
 theorem exists_norm_bound_on_compact_of_finite_continuous_selection
-    {ι X E : Type*} [Fintype ι] [TopologicalSpace X] [SeminormedAddGroup E]
+    {ι X E : Type*} [Finite ι] [TopologicalSpace X] [SeminormedAddGroup E]
     (K : Set X) (hK : IsCompact K) (f : X → E) (g : ι → X → E)
     (hg : ∀ i, Continuous (g i))
     (hselect : ∀ x ∈ K, ∃ i, f x = g i x) :
     ∃ C : ℝ, ∀ x ∈ K, ‖f x‖ ≤ C := by
   classical
+  letI := Fintype.ofFinite ι
   let envelope : X → ℝ := fun x => ∑ i : ι, ‖g i x‖
   have hEnvelope : Continuous envelope := by
     dsimp [envelope]
@@ -67,21 +69,21 @@ theorem exists_norm_bound_on_compact_of_finite_continuous_selection
     simpa [Real.norm_eq_abs, abs_of_nonneg hnonneg] using hbound
   exact hterm.trans hEnvelopeLe
 
-/-- A measurable pointwise selection from finitely many continuous branches is integrable on an
-ordered-simplex coordinate box. -/
+/-- A measurable complex-valued pointwise selection from finitely many continuous branches is
+integrable on an ordered-simplex coordinate box. -/
 theorem integrableOn_orderedSimplexTimeBox_of_finite_continuous_selection
-    {ι E : Type*} [Fintype ι] [NormedAddCommGroup E]
-    (n : ℕ) (β : ℝ) (f : (Fin n → ℝ) → E) (g : ι → (Fin n → ℝ) → E)
+    {ι : Type*} [Finite ι]
+    (n : ℕ) (β : ℝ) (f : (Fin n → ℝ) → ℂ) (g : ι → (Fin n → ℝ) → ℂ)
     (hf : Measurable f) (hg : ∀ i, Continuous (g i))
     (hselect : ∀ x ∈ orderedSimplexTimeBox n β, ∃ i, f x = g i x) :
     IntegrableOn f (orderedSimplexTimeBox n β) := by
   obtain ⟨C, hC⟩ :=
     exists_norm_bound_on_compact_of_finite_continuous_selection
       (orderedSimplexTimeBox n β) (isCompact_orderedSimplexTimeBox n β) f g hg hselect
-  apply MeasureTheory.integrableOn_of_bounded
-  · exact (isCompact_orderedSimplexTimeBox n β).measure_ne_top
-  · exact hf.aestronglyMeasurable
-  · filter_upwards [MeasureTheory.ae_restrict_mem (measurableSet_orderedSimplexTimeBox n β)] with x hx
-    exact hC x hx
+  exact MeasureTheory.IntegrableOn.of_bound
+    (lt_top_iff_ne_top.mpr (isCompact_orderedSimplexTimeBox n β).measure_ne_top)
+    hf.aestronglyMeasurable C
+    (MeasureTheory.ae_restrict_of_forall_mem
+      (measurableSet_orderedSimplexTimeBox n β) hC)
 
 end intervalIntegral
