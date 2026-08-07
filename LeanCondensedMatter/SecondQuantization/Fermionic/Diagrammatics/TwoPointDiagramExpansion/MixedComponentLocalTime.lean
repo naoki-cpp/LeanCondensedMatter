@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentOrderedSimplex
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentDysonValue
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentMeasurability
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairTimeTransport
 
 set_option linter.style.header false
@@ -31,6 +31,13 @@ private def twoPointSlotToAmbientTime {n : ℕ}
     (σ : Fin n → ℝ) : Fin (Finset.univ : Finset (Fin n)).card → ℝ :=
   fun i => σ (Fin.cast (by simp) i)
 
+/-- The coordinate conversion from the finite-set ambient API to explicit order-`n` slots is
+continuous. -/
+private theorem continuous_ambientToTwoPointSlotTime {n : ℕ} :
+    Continuous (fun σ : Fin (Finset.univ : Finset (Fin n)).card → ℝ =>
+      ambientToTwoPointSlotTime σ) := by
+  exact continuous_pi fun i => continuous_apply (Fin.cast (by simp) i)
+
 @[simp]
 private theorem ambientToTwoPointSlotTime_twoPointSlotToAmbientTime
     {n : ℕ} (σ : Fin n → ℝ) :
@@ -56,6 +63,25 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonLocalInteg
   DependentSlotEquiv.localize shuffle.slotEquiv B
     (fun σ => d.mixedComponentDysonFixedTimeValue ε β g τ τ'
       (ambientToTwoPointSlotTime σ) B)
+
+/-- Every canonical localized Dyson-signed component factor is globally measurable.  The result is
+obtained by composing the ambient finite-signature measurability theorem with the continuous
+single-fiber coordinate embedding; it does not assert continuity across mixed-order walls. -/
+theorem FixedExternalTwoPointWickDiagram.measurable_mixedComponentDysonLocalIntegrand
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (τ τ' : ℝ) (shuffle : d.1.ComponentInteractionShuffle)
+    (B : d.1.componentPartition.parts) :
+    Measurable (d.mixedComponentDysonLocalIntegrand ε β g τ τ' shuffle B) := by
+  have hAmbient := d.measurable_mixedComponentDysonFixedTimeValue ε β g τ τ' B
+  have hEmbed : Continuous (fun localTime : Fin (d.1.interactionComponentSize B) → ℝ =>
+      ambientToTwoPointSlotTime
+        (DependentSlotEquiv.ofAssignment shuffle.slotEquiv B localTime)) :=
+    continuous_ambientToTwoPointSlotTime.comp
+      (DependentSlotEquiv.continuous_ofAssignment shuffle.slotEquiv B)
+  unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonLocalIntegrand
+  unfold DependentSlotEquiv.localize
+  exact hAmbient.comp hEmbed.measurable
 
 /-- Locality of the mixed component pairing value implies locality of the complete Dyson-signed
 component factor, because its Dyson sign and coupling weight do not depend on interaction times. -/
