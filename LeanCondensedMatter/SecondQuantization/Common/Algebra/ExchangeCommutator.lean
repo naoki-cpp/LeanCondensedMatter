@@ -4,35 +4,24 @@ import LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics
 set_option linter.style.header false
 
 /-!
-# The `ζ`-commutator, and its statistics-indexed specialization
+# The `ζ`-commutator and its statistics-indexed specialization
 
-Groundwork for the general (fermionic *and* bosonic) finite-temperature Bloch–de Dominicis theorem
-(`notes/roadmaps/second-quantization.md`): the reordering identities
-`Fermionic/Thermal/FreeTwoPointFunction.lean`'s `annihilate_comp_create_self` (`c_i c_i† = id - N_i`, from
-CAR's *anti*commutator `{c_i, c_i†} = id`) and the bosonic analogue `a_i a_i† = id + N_i` (from
-CCR's *ordinary* commutator `[a_i, a_i†] = id`) are the same algebraic fact once the
-`+`-vs-`-` distinction is absorbed into `Statistics.zetaInt`'s sign `ζ = -1` (fermion) / `ζ = +1`
-(boson): both are instances of `[a_i, a_i†]_ζ = id` for the **`ζ`-commutator**
-`[A, B]_ζ := A∘B - ζ•(B∘A)`, which specializes to the ordinary commutator at `ζ = 1` and to the
-anticommutator at `ζ = -1`.
+The reordering identities for fermionic and bosonic ladder operators have one common algebraic
+shape. Fermionic CAR gives `c_i c_i† = id - c_i† c_i`, while bosonic CCR gives
+`a_i a_i† = id + a_i† a_i`. The sign is encoded by `Statistics.zetaInt`: `-1` for fermions and
+`+1` for bosons.
 
-**Naming note.** This is *not* the graded commutator of a `ℤ`/`ℤ₂`-graded algebra in the usual
-sense (`[A, B]_gr := AB - (-1)^{|A||B|} BA`, where the sign is determined by the operators' *own*
-degrees). Here `ζ` is a single fixed constant applied uniformly to every pair `A, B`, indexing the
-*ambient exchange statistics* rather than a per-operator grading — hence `zetaCommutator`,
-specialized to a statistics-indexed `exchangeCommutator` below, not `gradedCommutator`.
+This module defines
 
-**Nor is this a *contraction*** in the Wick-theorem sense (a thermal two-point function, a
-`ℂ`-number like `⟨T_τ c_i c_j†⟩₀` — see `Fermionic/Thermal/FreeTwoPointFunction.lean`'s
-`freeGibbsDensityOperator_expectation_annihilate_comp_create` and
-`freeGibbsDensityOperator_expectation_create_comp_annihilate`, which *are* contraction kernels).
-`comp_eq_id_add_of_zetaCommutator_eq_id` below is an *operator-level reordering identity* — it
-rewrites `A∘B` in terms of `B∘A`, with no state or expectation value involved.
+`[A, B]_ζ := A ∘ B - ζ • (B ∘ A)`
 
-This file only sets up the two-operator algebra; it does not touch `Fermionic`/`Bosonic` — those
-still keep their own concrete `anticomm`/`comm`, CAR/CCR proofs, and named reordering theorems
-(`exchangeCommutator` is a *presentation* of the same fact, not a replacement for the
-statistics-specific basis-level proofs that establish it).
+and its statistics-indexed specialization. This is not the usual graded commutator of a graded
+algebra: `ζ` is one fixed exchange-statistics sign rather than a sign computed from the individual
+operator degrees.
+
+It is also not a Wick contraction. A contraction is a scalar thermal two-point value, such as the
+kernels in `Fermionic/Thermal/FreeGibbsGreenFunction.lean`; the declarations here are operator-level
+reordering identities with no state or expectation value.
 -/
 
 namespace SecondQuantization
