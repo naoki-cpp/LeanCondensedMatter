@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentDecompositionEquiv
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagram
 
