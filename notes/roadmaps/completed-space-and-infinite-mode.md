@@ -142,13 +142,16 @@ conditions; the recursion itself should not acquire occupation-basis or finitene
 ## Finite-mode compatibility
 
 When `Mode` is finite, `Fermionic.Occupation Mode` is finite and the completed `ℓ²` representation is
-finite dimensional.  A later compatibility theorem should identify it isometrically with the current
-`Common.FiniteHilbertFock` realization and show that the density-state, finite trace, and completed
-number-operator APIs commute with that identification.
+finite dimensional. `CompletedSpace/FiniteCompatibility.lean` identifies it canonically and
+isometrically with `Common.FiniteHilbertFock (Occupation Mode)` using Mathlib's finite-index
+`lpPiLpₗᵢ`.  The equivalence preserves every occupation coordinate, sends completed basis vectors to
+the existing finite Hilbert basis, and makes the algebraic-to-completed and algebraic-to-finite
+Hilbert maps commute.
 
-This compatibility theorem is distinct from the algebraic-to-completed inclusion: the former relates
-two Hilbert realizations under finite hypotheses, while the latter embeds the finite-support core for
-any mode type.
+The remaining finite compatibility work is to transport the concrete bounded operators and Gibbs
+density state through this equivalence.  That is distinct from the algebraic-to-completed inclusion:
+the latter embeds the finite-support core for any mode type, while the finite equivalence compares
+two complete Hilbert realizations under finite hypotheses.
 
 ## Staged work
 
@@ -186,7 +189,8 @@ any mode type.
 
 ### C5 — compatibility and approximation
 
-- [ ] Identify finite-mode completed Fock space with `FiniteHilbertFock`.
+- [x] Identify finite-mode completed Fock space with `FiniteHilbertFock`.
+- [ ] Show finite Gibbs density/operator APIs commute with the finite compatibility equivalence.
 - [ ] Define finite-mode or finite-energy truncations.
 - [ ] Prove the first strong or norm convergence statements with topology explicit.
 
