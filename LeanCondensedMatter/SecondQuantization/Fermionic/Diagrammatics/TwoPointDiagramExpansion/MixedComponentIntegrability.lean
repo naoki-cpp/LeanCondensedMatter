@@ -38,6 +38,7 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentLocalSlotTime
       (Fin.cast (by simp) k)
 
 /-- The component-local to explicit order-`n` slot map is continuous. -/
+omit [LinearOrder Mode] [Fintype Mode] in
 theorem FixedExternalTwoPointWickDiagram.continuous_mixedComponentLocalSlotTime
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (shuffle : d.1.ComponentInteractionShuffle)
