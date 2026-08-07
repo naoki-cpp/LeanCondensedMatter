@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable
 
 set_option linter.style.header false
+set_option linter.unusedFintypeInType false
 
 /-!
 # Summability of quadratic particle-number-weighted bosonic Gibbs weights
@@ -76,56 +77,29 @@ theorem summable_particleNumber_mul_particleNumber_boltzmannWeight (ε : Mode �
     (hpos : ∀ i, 0 < β * ε i) (i j : Mode) :
     Summable (fun n : Occupation Mode =>
       (n i : ℝ) * (n j : ℝ) * boltzmannWeight ε β n) := by
-  by_cases hij : i = j
-  · subst j
-    simpa [pow_two] using summable_particleNumber_sq_boltzmannWeight ε β hpos i
-  · set g : Mode → ℕ → ℝ := fun m k =>
-      if m = i ∨ m = j then (k : ℝ) * oneModeBoltzmannWeight β (ε m) k
-      else oneModeBoltzmannWeight β (ε m) k with hgdef
-    have hg : ∀ m, Summable (g m) := by
-      intro m
-      rw [hgdef]
-      dsimp only
-      split_ifs with hm
-      · rcases hm with rfl | rfl
-        · exact (hasSum_particleNumber_boltzmannWeight ε β hpos i).summable.comp_injective
-            (fun k => Finsupp.single i k) (fun _ _ h => Finsupp.single_left_injective (by simp) h)
-        · exact (hasSum_particleNumber_boltzmannWeight ε β hpos j).summable.comp_injective
-            (fun k => Finsupp.single j k) (fun _ _ h => Finsupp.single_left_injective (by simp) h)
-      · exact (hasSum_oneModeBoltzmannWeight (hpos m)).summable
-    have hnonneg : ∀ m k, 0 ≤ g m k := by
-      intro m k
-      rw [hgdef]
-      dsimp only
-      split_ifs
-      · exact mul_nonneg (Nat.cast_nonneg _) (Real.exp_nonneg _)
-      · exact Real.exp_nonneg _
-    have H := Finsupp.hasSum_prod_nonneg g (fun m => ∑' k, g m k)
-      (fun m => (hg m).hasSum) hnonneg
-    have heq : (fun n : Occupation Mode => ∏ m, g m (n m)) =
-        fun n : Occupation Mode => (n i : ℝ) * (n j : ℝ) * boltzmannWeight ε β n := by
-      funext n
-      rw [← Finset.mul_prod_erase Finset.univ (fun m => g m (n m)) (Finset.mem_univ i), hgdef]
-      simp only [if_pos (Or.inl rfl)]
-      have hjmem : j ∈ Finset.univ.erase i := by simp [hij]
-      rw [← Finset.mul_prod_erase (Finset.univ.erase i) (fun m => g m (n m)) hjmem, hgdef]
-      simp only [if_pos (Or.inr rfl)]
-      have hrest : ∀ m, m ∈ (Finset.univ.erase i).erase j →
-          g m (n m) = oneModeBoltzmannWeight β (ε m) (n m) := fun m hm => by
-        rw [hgdef]
-        have hmi : m ≠ i := by
-          exact fun h => (Finset.ne_of_mem_erase (Finset.mem_of_mem_erase hm)) h
-        have hmj : m ≠ j := Finset.ne_of_mem_erase hm
-        simp [hmi, hmj]
-      rw [Finset.prod_congr rfl hrest]
-      rw [boltzmannWeight_eq_prod]
-      rw [← Finset.mul_prod_erase Finset.univ
-        (fun m => oneModeBoltzmannWeight β (ε m) (n m)) (Finset.mem_univ i)]
-      rw [← Finset.mul_prod_erase (Finset.univ.erase i)
-        (fun m => oneModeBoltzmannWeight β (ε m) (n m)) hjmem]
-      ring
-    rw [heq] at H
-    exact H.summable
+  have hi := summable_particleNumber_sq_boltzmannWeight ε β hpos i
+  have hj := summable_particleNumber_sq_boltzmannWeight ε β hpos j
+  have hmajorant : Summable (fun n : Occupation Mode =>
+      (1 / 2 : ℝ) *
+        ((n i : ℝ) ^ 2 * boltzmannWeight ε β n +
+          (n j : ℝ) ^ 2 * boltzmannWeight ε β n)) := by
+    exact (hi.add hj).mul_left (1 / 2 : ℝ)
+  apply hmajorant.of_norm_bounded
+  intro n
+  have hni : 0 ≤ (n i : ℝ) := Nat.cast_nonneg _
+  have hnj : 0 ≤ (n j : ℝ) := Nat.cast_nonneg _
+  have hw : 0 ≤ boltzmannWeight ε β n := by
+    exact Real.exp_nonneg _
+  have hab : (n i : ℝ) * (n j : ℝ) ≤ ((n i : ℝ) ^ 2 + (n j : ℝ) ^ 2) / 2 := by
+    nlinarith [sq_nonneg ((n i : ℝ) - (n j : ℝ))]
+  rw [Real.norm_eq_abs, abs_of_nonneg (mul_nonneg (mul_nonneg hni hnj) hw)]
+  calc
+    (n i : ℝ) * (n j : ℝ) * boltzmannWeight ε β n ≤
+        (((n i : ℝ) ^ 2 + (n j : ℝ) ^ 2) / 2) * boltzmannWeight ε β n :=
+      mul_le_mul_of_nonneg_right hab hw
+    _ = (1 / 2 : ℝ) *
+        ((n i : ℝ) ^ 2 * boltzmannWeight ε β n +
+          (n j : ℝ) ^ 2 * boltzmannWeight ε β n) := by ring
 
 end
 end Bosonic
