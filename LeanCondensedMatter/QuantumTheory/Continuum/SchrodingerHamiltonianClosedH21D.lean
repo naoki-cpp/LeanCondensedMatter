@@ -88,10 +88,8 @@ theorem mem_continuumSchrodingerHamiltonian1D_graph_iff
   · intro hz
     rw [LinearPMap.mem_graph_iff] at hz
     obtain ⟨ψ, hx, hy⟩ := hz
-    rw [hx]
     have hH := l2ToTemperedDistribution1D_continuumSchrodingerHamiltonian1D κ potential ψ
-    rw [hy]
-    rw [map_sub, hH]
+    rw [← hx, ← hy, map_sub, hH]
     abel
   · intro hz
     have hκc : (κ : ℂ) ≠ 0 := by exact_mod_cast hκ
@@ -100,16 +98,24 @@ theorem mem_continuumSchrodingerHamiltonian1D_graph_iff
     have hφ :
         l2ToTemperedDistribution1D φ = Δ (l2ToTemperedDistribution1D z.1) := by
       dsimp [φ]
-      rw [map_smul, map_neg, hz, smul_smul]
-      field_simp [hκc]
+      rw [map_smul, hz, smul_smul]
+      have hcoef : -((κ : ℂ)⁻¹) * -(κ : ℂ) = 1 := by
+        field_simp [hκc]
+      rw [hcoef, one_smul]
     have hmax : z.1 ∈ continuumMaximalLaplacianDomain1D := ⟨φ, hφ⟩
     have hH2 : z.1 ∈ continuumH2Domain1D :=
       continuumMaximalLaplacianDomain1D_le_continuumH2Domain1D hmax
     rw [LinearPMap.mem_graph_iff]
-    refine ⟨⟨z.1, hH2⟩, rfl, ?_⟩
+    let ψ : continuumH2Domain1D := ⟨z.1, hH2⟩
+    refine ⟨ψ, rfl, ?_⟩
     apply l2ToTemperedDistribution1D_injective_closedH2
-    rw [l2ToTemperedDistribution1D_continuumSchrodingerHamiltonian1D, map_sub] at hz ⊢
-    linear_combination hz
+    change l2ToTemperedDistribution1D
+        (continuumSchrodingerHamiltonian1D κ potential ψ) =
+      l2ToTemperedDistribution1D z.2
+    rw [l2ToTemperedDistribution1D_continuumSchrodingerHamiltonian1D]
+    rw [map_sub] at hz
+    rw [← hz]
+    abel
 
 /-- The one-dimensional Schrödinger Hamiltonian with an essentially bounded potential is closed on
 `H²(ℝ)` whenever the kinetic coefficient is nonzero. -/
