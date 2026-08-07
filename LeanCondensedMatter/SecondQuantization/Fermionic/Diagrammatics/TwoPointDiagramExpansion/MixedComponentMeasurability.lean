@@ -85,12 +85,8 @@ theorem FixedExternalTwoPointWickDiagram.measurable_mixedComponentDysonSignature
   have hRep :=
     (d.continuous_mixedComponentDysonFixedTimeChamberRepresentative
       ε β g τ τ' (twoPointOrderSignatureBase τ τ' s) B).measurable
-  change Measurable (fun σ : Fin n → ℝ =>
-    if σ ∈ twoPointOrderSignatureFiber τ τ' s then
-      d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ'
-        (twoPointOrderSignatureBase τ τ' s) B σ
-    else 0)
-  exact hFiber.ite hRep measurable_const
+  simpa only [twoPointOrderSignatureFiber, Set.mem_setOf_eq] using
+    hFiber.ite hRep measurable_const
 
 /-- The actual Dyson-signed mixed component factor is globally measurable, although in general only
 chamberwise continuous. -/
