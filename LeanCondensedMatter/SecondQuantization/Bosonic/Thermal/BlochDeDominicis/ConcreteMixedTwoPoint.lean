@@ -19,7 +19,7 @@ namespace Bosonic
 
 noncomputable section
 
-variable {Mode : Type*} [Fintype Mode]
+variable {Mode : Type*}
 
 /-- File-local classical decidable equality for mode comparisons in the concrete contractions. -/
 local instance instDecidableEqConcreteMixedTwoPoint : DecidableEq Mode := Classical.decEq Mode
@@ -69,6 +69,8 @@ theorem norm_matrixCoeff_annihilate_comp_create_self_le
     positivity
   · rw [norm_zero]
     positivity
+
+variable [Fintype Mode]
 
 /-- `aᵢ aⱼ†` has a summable free-Gibbs numerator under positive one-mode Boltzmann exponents. -/
 theorem freeGibbsSummable_annihilate_comp_create
@@ -200,10 +202,9 @@ theorem freeGibbsExpectation_create_comp_annihilate_concrete
       freeGibbsExpectation_annihilate_comp_create_concrete ε β hpos i i]
     simp only [if_true]
     have hden := freeGibbs_boseDenominator_ne_zero ε β hpos i
-    have hden' :
-        1 - Complex.exp (((-(ε i * β) : ℝ) : ℂ)) ≠ 0 := by
-      convert hden using 1 <;> ring
-    field_simp [hden']
+    have harg : (-(ε i) * β : ℝ) = -(ε i * β) := by ring
+    rw [harg] at hden
+    field_simp [hden]
     ring
   · have hc := comm_annihilate_create j i
     rw [comm, if_neg (Ne.symm hij)] at hc
