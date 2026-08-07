@@ -38,13 +38,14 @@ theorem linearMap_apply_eq_finsetSum_of_support_subset
       have hsingle : (Finsupp.single k (x k) : AlgebraicFock Config) =
           x k • basisState k := (Finsupp.smul_single_one k (x k)).symm
       rw [hsingle, map_smul, Finsupp.smul_apply]
-      rfl
+      change x k * matrixCoeff A m k = matrixCoeff A m k * x k
+      exact mul_comm _ _
 
 /-- Every basis matrix coordinate of the arbitrary-configuration finite-order Dyson recursion is
 continuous in imaginary time. -/
 theorem continuous_infiniteDysonCoeff_basisState_apply (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    ∀ order m n : Config,
+    ∀ (order : ℕ) (m n : Config),
       Continuous (fun τ : ℝ => infiniteDysonCoeff energy V order τ (basisState n) m) := by
   intro order
   induction order with
