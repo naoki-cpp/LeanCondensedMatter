@@ -45,8 +45,8 @@ theorem IntervalIntegrable.absolutelyContinuousOnInterval_intervalIntegral_of_no
         intro t ht
         apply hbound
         grind [Set.uIoc, Set.uIcc]
-      _ = (K : ℝ) * dist x y := by
-        simp [K, Real.dist_eq, abs_sub_comm]
+      _ = C * dist x y := by rw [Real.dist_eq]
+      _ = (K : ℝ) * dist x y := by rfl
   exact hLip.absolutelyContinuousOnInterval
 
 /-- Fundamental theorem of calculus for an absolutely continuous complex-valued primitive with a
@@ -64,7 +64,10 @@ theorem integral_eq_sub_of_absolutelyContinuousOnInterval_of_ae_hasDerivAt_of_no
       hF' (by simp) hC hbound
   let G : ℝ → ℂ := fun x => F x - ∫ t in a..x, F' t
   have hG : AbsolutelyContinuousOnInterval G a b := hF.sub hprim
-  have hAeInt := IntervalIntegrable.ae_hasDerivAt_integral (E := ℂ) hF'
+  have hAeInt :
+      ∀ᵐ x, x ∈ Set.uIcc a b → ∀ c ∈ Set.uIcc a b,
+        HasDerivAt (fun y => ∫ t in c..y, F' t) (F' x) x :=
+    _root_.IntervalIntegrable.ae_hasDerivAt_integral hF'
   have hGzero : ∀ᵐ x, x ∈ Set.uIcc a b → HasDerivAt G 0 x := by
     filter_upwards [hderiv, hAeInt] with x hxF hxInt hx
     have hInt := hxInt hx a (by simp)
