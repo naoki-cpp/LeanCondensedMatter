@@ -32,6 +32,11 @@ namespace Continuum
 
 noncomputable section
 
+/-- Use the real normed-space structure carried by the real normed-algebra structure on `ℂ`.
+This keeps real derivatives of complex products on the same scalar-module instance. -/
+local instance complexNormedSpaceRealFromAlgebra : NormedSpace ℝ ℂ :=
+  (inferInstance : NormedAlgebra ℝ ℂ).toNormedSpace
+
 /-- Pointwise probability density, represented in `ℂ` as `ψ† ψ`. -/
 def probabilityDensityValue (ψ : ℂ) : ℂ :=
   star ψ * ψ
@@ -80,7 +85,7 @@ theorem hasDerivAt_probabilityCurrentValue1D
       HasDerivAt
         (fun y => star (ψ y) * ψx y - ψ y * star (ψx y))
         (star (ψ x) * ψxx - ψ x * star ψxx) x := by
-    convert (hψ.star.mul hψx).sub (hψ.mul hψx.star) using 1 <;> ring
+    convert (hψ.star.mul hψx).sub (hψ.mul hψx.star) using 1 <;> ring_nf
   simpa [probabilityCurrentValue1D, probabilityCurrentDivergenceValue1D] using
     hbracket.const_mul (-(Complex.I * (κ : ℂ) / (ℏ : ℂ)))
 
@@ -106,7 +111,7 @@ theorem schrodingerTimeDerivativeValue_eq_of_equation
   calc
     ψt = (-Complex.I / (ℏ : ℂ)) * (Complex.I * (ℏ : ℂ) * ψt) := by
       field_simp [hℏc]
-      ring
+      simp [Complex.I_sq]
     _ = (-Complex.I / (ℏ : ℂ)) * (-(κ : ℂ) * ψxx + (potential : ℂ) * ψ) := by
       rw [hschrodinger]
     _ = schrodingerTimeDerivativeValue ℏ κ potential ψ ψxx := by
