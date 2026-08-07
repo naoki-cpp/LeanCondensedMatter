@@ -128,7 +128,10 @@ theorem completedDiagonalOperator_adjoint_apply (w : Occupation Mode → ℂ)
   have he : completedDiagonalOperator w e = w n • completedBasisState n := by
     exact completedDiagonalOperator_basisState w n
   rw [he] at h
-  simpa [e] using h.symm
+  change inner ℂ (w n • completedBasisState n) (y : CompletedFockSpace Mode) =
+    inner ℂ (completedBasisState n) ((completedDiagonalOperator w).adjoint y) at h
+  rw [inner_smul_left, inner_completedBasisState_left, inner_completedBasisState_left] at h
+  exact h.symm
 
 /-- Every vector in the adjoint domain belongs to the conjugate-weight maximal diagonal domain. -/
 theorem completedDiagonalOperator_adjoint_domain_le_conj (w : Occupation Mode → ℂ) :
