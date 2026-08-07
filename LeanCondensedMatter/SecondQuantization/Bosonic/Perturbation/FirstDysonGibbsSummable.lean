@@ -40,7 +40,10 @@ theorem matrixCoeff_infiniteDysonCoeff_one_self
     rw [matrixCoeff_interactionPicture]
     simp
   simp_rw [hdiag]
-  simp
+  rw [intervalIntegral.integral_const]
+  simp only [sub_zero]
+  change -((t : ℂ) * Common.matrixCoeff V n n) = _
+  rfl
 
 omit [Fintype Mode] in
 /-- The first Dyson coefficient's full free-Gibbs numerator is a fixed scalar multiple of the bare
