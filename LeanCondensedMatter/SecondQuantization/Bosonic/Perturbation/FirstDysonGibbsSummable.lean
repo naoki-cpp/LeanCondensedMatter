@@ -34,10 +34,12 @@ theorem matrixCoeff_infiniteDysonCoeff_one_self
     Common.infiniteDysonCoeff_succ_basisState_apply]
   simp only [Common.infiniteDysonCoeff_zero, LinearMap.id_apply]
   have hdiag : ∀ σ : ℝ,
-      interactionPicture ε V σ (Common.basisState n) n = Common.matrixCoeff V n n := by
+      Common.interactionPicture (freeEigenvalue ε) V σ (Common.basisState n) n =
+        Common.matrixCoeff V n n := by
     intro σ
-    change Common.matrixCoeff (interactionPicture ε V σ) n n = Common.matrixCoeff V n n
-    rw [matrixCoeff_interactionPicture]
+    change Common.matrixCoeff
+      (Common.interactionPicture (freeEigenvalue ε) V σ) n n = Common.matrixCoeff V n n
+    rw [Common.matrixCoeff_interactionPicture]
     norm_num
   simp_rw [hdiag]
   rw [intervalIntegral.integral_const]
@@ -96,7 +98,7 @@ theorem infiniteDysonCoeff_one_quarticInteractionOn_mem_freeGibbsDomain
   infiniteDysonCoeff_one_mem_freeGibbsDomain ε β (quarticInteractionOn support g) t
     (quarticInteractionOn_mem_freeGibbsDomain support ε β hpos g)
 
-/-- On a finite mode type, the first Dyson coefficient of the all-label quartic interaction belongs
+/-- On a finite mode type, the first Dyson coefficient of the all-label bosonic quartic interaction belongs
 to the free-Gibbs domain. -/
 theorem infiniteDysonCoeff_one_quarticInteraction_mem_freeGibbsDomain
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
