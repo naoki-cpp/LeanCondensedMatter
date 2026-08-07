@@ -91,14 +91,19 @@ private theorem mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegOperat
       _ = legs.map (orderedTwoPointLegOperator ε i j τ τ' q σ) := by
         exact (map_orderedTwoPointLegOperator_mixedTimeOrderedAtomicLegs
           ε i j τ τ' q σ).symm
+  have hMappedAt :
+      (fields.map (timedFieldOperator ε))[p.1]'(by simpa using hpFields) =
+        (legs.map (orderedTwoPointLegOperator ε i j τ τ' q σ))[p.1]'(by
+          simpa using hpLegs) := by
+    have hOpt := congrArg (fun xs => xs[p.1]?) hMaps
+    simpa [hpFields, hpLegs] using hOpt
   change timedFieldOperator ε (fields[p.1]'hpFields) = _
   calc
     timedFieldOperator ε (fields[p.1]'hpFields) =
         (fields.map (timedFieldOperator ε))[p.1]'(by simpa using hpFields) :=
       List.getElem_map_rev (timedFieldOperator ε)
     _ = (legs.map (orderedTwoPointLegOperator ε i j τ τ' q σ))[p.1]'(by
-          simpa using hpLegs) := by
-      rw [hMaps]
+          simpa using hpLegs) := hMappedAt
     _ = orderedTwoPointLegOperator ε i j τ τ' q σ (legs[p.1]'hpLegs) :=
       (List.getElem_map_rev (orderedTwoPointLegOperator ε i j τ τ' q σ)).symm
     _ = orderedTwoPointLegOperator ε i j τ τ' q σ
