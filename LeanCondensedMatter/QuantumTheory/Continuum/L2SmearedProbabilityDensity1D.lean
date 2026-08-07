@@ -44,7 +44,8 @@ theorem realTestMultiplier1D_coeFn
 
 private theorem probabilityDensityValue_eq_normSq (z : ℂ) :
     probabilityDensityValue z = Complex.normSq z := by
-  simp [probabilityDensityValue, Complex.normSq_apply, pow_two]
+  change z.re ^ 2 + z.im ^ 2 = z.re * z.re + z.im * z.im
+  ring
 
 private theorem inner_real_mul_self_eq_probabilityDensityValue (r : ℝ) (z : ℂ) :
     inner ℂ z ((r : ℂ) * z) = (r * probabilityDensityValue z : ℂ) := by
@@ -71,7 +72,7 @@ theorem inner_realTestMultiplicationOperator1D_eq_wholeSpaceSmearedProbabilityDe
   apply integral_congr_ae
   filter_upwards [realTestMultiplier1D_coeFn test htest] with x hx
   rw [hx]
-  exact inner_real_mul_self_eq_probabilityDensityValue (test x) (ψ x)
+  simpa using inner_real_mul_self_eq_probabilityDensityValue (test x) (ψ x)
 
 end
 end Continuum
