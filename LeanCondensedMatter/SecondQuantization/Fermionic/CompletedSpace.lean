@@ -17,9 +17,10 @@ projection, the occupation-toggle equivalence, bounded creation and annihilation
 occupation-basis action, agreement with the algebraic ladder operators on the finite-support core,
 and the canonical anticommutation relations lifted to the completion by density and continuity.
 It also exposes domain-carrying diagonal partial operators, including the completed free Hamiltonian
-and total-number operator on their natural weighted `ℓ²` domains, together with dense-domain,
-formal-symmetry, and closability results for conjugation-fixed diagonal weights.
+and total-number operator on their natural weighted `ℓ²` domains, together with dense-domain and
+closedness results for arbitrary complex diagonal weights and formal symmetry for
+conjugation-fixed weights.
 
-Closedness, adjoint identification, self-adjointness, and trace-class thermal constructions remain
-later analytic work.
+Adjoint identification, self-adjointness, and trace-class thermal constructions remain later
+analytic work.
 -/
