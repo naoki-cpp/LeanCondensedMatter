@@ -149,7 +149,8 @@ theorem FixedExternalTwoPointWickDiagram.orderedTwoPointPairingValue_eq_weight_m
           d.1.vacuumComponentParts.prod (fun B =>
             ∏ pr : d.MixedComponentPair τ τ' σ B,
               d.mixedPairContractionValue ε β τ τ' σ pr.1)) := by
-  unfold orderedTwoPointPairingValue
+  unfold orderedTwoPointPairingValue Common.pairingEvaluation
+  simp only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
   rw [d.prod_mixedPairValues_eq_external_mul_prod_vacuum τ τ' σ]
   rfl
 
