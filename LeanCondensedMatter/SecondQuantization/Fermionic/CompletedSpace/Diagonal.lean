@@ -172,16 +172,25 @@ theorem completedDiagonalOperator_comp_algebraicCore (w : Occupation Mode → �
     (Finsupp.smul_single_one n c).symm
   rw [hc]
   simp only [LinearMap.comp_apply, map_smul]
-  congr 1
-  apply lp.ext
-  funext m
-  rw [completedDiagonalOperator_toFun_apply,
-    algebraicToCompletedDiagonalDomain_apply, algebraicToCompleted_apply,
-    Common.diagonalOperator_basisState]
-  by_cases hmn : m = n
-  · subst m
-    simp [basisState, Common.basisState]
-  · simp [basisState, Common.basisState, hmn]
+  have hdomain :
+      algebraicToCompletedDiagonalDomain w (basisState n) =
+        ⟨completedBasisState n, completedBasisState_mem_completedDiagonalDomain w n⟩ := by
+    apply Subtype.ext
+    exact algebraicToCompleted_basisState n
+  have hleft :
+      (completedDiagonalOperator w).toFun
+          (algebraicToCompletedDiagonalDomain w (basisState n)) =
+        w n • completedBasisState n := by
+    rw [hdomain]
+    change completedDiagonalOperator w
+        ⟨completedBasisState n, completedBasisState_mem_completedDiagonalDomain w n⟩ =
+      w n • completedBasisState n
+    exact completedDiagonalOperator_basisState w n
+  have hright :
+      algebraicToCompleted (Common.diagonalOperator w (basisState n)) =
+        w n • completedBasisState n := by
+    rw [Common.diagonalOperator_basisState, map_smul, algebraicToCompleted_basisState]
+  rw [hleft, hright]
 
 /-! ## Free Hamiltonian and total particle number -/
 
