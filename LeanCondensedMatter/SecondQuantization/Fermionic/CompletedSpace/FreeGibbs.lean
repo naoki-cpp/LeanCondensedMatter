@@ -33,7 +33,8 @@ noncomputable def completedOccupationHilbertBasis :
 @[simp]
 theorem completedOccupationHilbertBasis_apply (n : Occupation Mode) :
     completedOccupationHilbertBasis (Mode := Mode) n = completedBasisState n := by
-  rfl
+  classical
+  simp [completedOccupationHilbertBasis, completedBasisState]
 
 /-- The positive real free Boltzmann weight `exp (-β E(n))` on an occupation configuration. -/
 noncomputable def completedFreeBoltzmannRealWeight (ε : Mode → ℝ) (β : ℝ)
@@ -44,7 +45,7 @@ noncomputable def completedFreeBoltzmannRealWeight (ε : Mode → ℝ) (β : ℝ
 theorem completedFreeBoltzmannRealWeight_pos (ε : Mode → ℝ) (β : ℝ)
     (n : Occupation Mode) :
     0 < completedFreeBoltzmannRealWeight ε β n := by
-  simp [completedFreeBoltzmannRealWeight]
+  simpa [completedFreeBoltzmannRealWeight] using Real.exp_pos (-β * fermionEnergy ε n)
 
 @[simp]
 theorem completedFreeBoltzmannRealWeight_nonneg (ε : Mode → ℝ) (β : ℝ)
@@ -52,6 +53,7 @@ theorem completedFreeBoltzmannRealWeight_nonneg (ε : Mode → ℝ) (β : ℝ)
     0 ≤ completedFreeBoltzmannRealWeight ε β n :=
   (completedFreeBoltzmannRealWeight_pos ε β n).le
 
+omit [LinearOrder Mode] in
 /-- The completed real Boltzmann weight is the real scalar underlying the existing algebraic
 complex Boltzmann weight. -/
 theorem coe_completedFreeBoltzmannRealWeight (ε : Mode → ℝ) (β : ℝ)
@@ -69,6 +71,7 @@ def CompletedFreeGibbsSummable (ε : Mode → ℝ) (β : ℝ) : Prop :=
 noncomputable def completedFreePartitionFunction (ε : Mode → ℝ) (β : ℝ) : ℝ :=
   ∑' n : Occupation Mode, completedFreeBoltzmannRealWeight ε β n
 
+omit [LinearOrder Mode] in
 /-- Absolute Boltzmann summability implies ordinary summability of the positive weights. -/
 theorem completedFreeBoltzmannRealWeight_summable (ε : Mode → ℝ) (β : ℝ)
     (hsum : CompletedFreeGibbsSummable ε β) :
@@ -103,13 +106,18 @@ theorem hasSum_completedFreeGibbsProbability (ε : Mode → ℝ) (β : ℝ)
     HasSum (completedFreeGibbsProbability ε β) 1 := by
   have hZ : 0 < completedFreePartitionFunction ε β :=
     completedFreePartitionFunction_pos ε β hsum
-  have hweight := (completedFreeBoltzmannRealWeight_summable ε β hsum).hasSum
-  have hscaled := hweight.mul_left (completedFreePartitionFunction ε β)⁻¹
-  convert hscaled using 1
-  · funext n
-    rfl
-  · rw [completedFreePartitionFunction]
-    exact inv_mul_cancel₀ (ne_of_gt hZ)
+  change HasSum
+    (fun n : Occupation Mode =>
+      (completedFreePartitionFunction ε β)⁻¹ * completedFreeBoltzmannRealWeight ε β n) 1
+  have hscaled :=
+    (completedFreeBoltzmannRealWeight_summable ε β hsum).hasSum.mul_left
+      (completedFreePartitionFunction ε β)⁻¹
+  change HasSum
+    (fun n : Occupation Mode =>
+      (completedFreePartitionFunction ε β)⁻¹ * completedFreeBoltzmannRealWeight ε β n)
+    ((completedFreePartitionFunction ε β)⁻¹ * completedFreePartitionFunction ε β) at hscaled
+  rw [inv_mul_cancel₀ (ne_of_gt hZ)] at hscaled
+  exact hscaled
 
 /-- The completed free Gibbs density operator.  Its only analytic input is absolute summability of
 the Boltzmann weights. -/
@@ -144,9 +152,11 @@ theorem completedFreeGibbsDensityOperator_expectation_eq_tsum
       ∑' n : Occupation Mode,
         (completedFreeGibbsProbability ε β n : ℂ) *
           inner ℂ (completedBasisState n) (A (completedBasisState n)) := by
-  exact (completedFreeGibbsDensityOperator ε β hsum).expectation_eq_tsum_diagonal
-    A completedOccupationHilbertBasis (completedFreeGibbsProbability ε β)
-    (completedFreeGibbsDensityOperator_apply_basis ε β hsum)
+  simpa using
+    (completedFreeGibbsDensityOperator ε β hsum).expectation_eq_tsum_diagonal
+      A completedOccupationHilbertBasis (completedFreeGibbsProbability ε β)
+      (fun n => by
+        simpa using completedFreeGibbsDensityOperator_apply_basis ε β hsum n)
 
 /-- Separate integrability condition for an unbounded diagonal observable with real occupation
 values.  Such observables are deliberately not passed to `DensityOperator.expectation`, whose
