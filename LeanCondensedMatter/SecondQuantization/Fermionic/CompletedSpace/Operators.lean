@@ -104,11 +104,15 @@ noncomputable def completedCreateLinear (i : Mode) :
   map_add' ψ φ := by
     apply lp.ext
     funext n
-    by_cases h : i ∈ n <;> simp [h, mul_add]
+    by_cases h : i ∈ n
+    · simp [h, toggleOccupation_of_mem h, mul_add]
+    · simp [h]
   map_smul' c ψ := by
     apply lp.ext
     funext n
-    by_cases h : i ∈ n <;> simp [h, mul_assoc]
+    by_cases h : i ∈ n
+    · simp [h, toggleOccupation_of_mem h, mul_comm, mul_left_comm, mul_assoc]
+    · simp [h]
 
 @[simp]
 theorem completedCreateLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
@@ -131,11 +135,15 @@ noncomputable def completedAnnihilateLinear (i : Mode) :
   map_add' ψ φ := by
     apply lp.ext
     funext n
-    by_cases h : i ∈ n <;> simp [h, mul_add]
+    by_cases h : i ∈ n
+    · simp [h]
+    · simp [h, toggleOccupation_of_not_mem h, mul_add]
   map_smul' c ψ := by
     apply lp.ext
     funext n
-    by_cases h : i ∈ n <;> simp [h, mul_assoc]
+    by_cases h : i ∈ n
+    · simp [h]
+    · simp [h, toggleOccupation_of_not_mem h, mul_comm, mul_left_comm, mul_assoc]
 
 @[simp]
 theorem completedAnnihilateLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
