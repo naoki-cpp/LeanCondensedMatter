@@ -3,16 +3,17 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 set_option linter.style.header false
 
 /-!
-# Regularity of mixed two-point finite Gibbs pair contractions
+# Regularity of mixed two-point density-state pair contractions
 
 A fermionic atomic field at imaginary time is an explicit exponential scalar multiplying a bare
-creation or annihilation operator.  Therefore the finite Gibbs contraction of two fixed field labels
-has all of its time dependence in two complex exponentials.
+creation or annihilation operator.  Therefore the canonical free Gibbs density-state contraction of
+two fixed field labels has all of its time dependence in two complex exponentials.
 
 This module packages that scalar normal form, lifts it to fixed standard two-point legs, and proves
 continuity in the ambient interaction-time assignment.  It also identifies the contraction used by a
-mixed normalized pair with the corresponding standard-leg contraction.  No chamber or pair-transport
-argument is used here.
+mixed normalized pair with the corresponding standard-leg contraction.  Finite Gibbs coordinate
+formulas appear only inside the closed-form proof.  No chamber or pair-transport argument is used
+here.
 -/
 
 namespace SecondQuantization
@@ -22,11 +23,12 @@ open Combinatorics
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- Finite Gibbs contraction of two time-labelled fermionic fields. -/
+/-- Canonical free Gibbs density-state contraction of two time-labelled fermionic fields. -/
 noncomputable def timedFieldPairContraction
     (ε : Mode → ℝ) (β : ℝ) (A B : TimedField Mode) : ℂ :=
-  Common.finiteGibbsExpectation (fermionEnergy ε) β
-    ((timedFieldOperator ε A).comp (timedFieldOperator ε B))
+  (freeGibbsDensityOperator ε β).expectation
+    (Common.finiteHilbertOperator
+      ((timedFieldOperator ε A).comp (timedFieldOperator ε B)))
 
 omit [LinearOrder Mode] in
 private theorem finiteGibbsExpectation_smul_apply_regularity
@@ -38,21 +40,24 @@ private theorem finiteGibbsExpectation_smul_apply_regularity
     c * (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) A
   rw [map_smul, smul_eq_mul]
 
-/-- Closed form of a pair contraction after extracting the two imaginary-time exponential factors. -/
+/-- Closed form of a density-state pair contraction after extracting the two imaginary-time
+exponential factors. -/
 theorem timedFieldPairContraction_eq
     (ε : Mode → ℝ) (β : ℝ) (A B : TimedField Mode) :
     timedFieldPairContraction ε β A B =
       Complex.exp (((A.time * externalFieldLabelEnergyShift ε A.label : ℝ) : ℂ)) *
         Complex.exp (((B.time * externalFieldLabelEnergyShift ε B.label : ℝ) : ℂ)) *
-          Common.finiteGibbsExpectation (fermionEnergy ε) β
-            ((bareExternalFieldOperator A.label).comp
-              (bareExternalFieldOperator B.label)) := by
-  unfold timedFieldPairContraction
+          (freeGibbsDensityOperator ε β).expectation
+            (Common.finiteHilbertOperator
+              ((bareExternalFieldOperator A.label).comp
+                (bareExternalFieldOperator B.label))) := by
+  simp only [timedFieldPairContraction,
+    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
   rw [timedFieldOperator_eq_smul, timedFieldOperator_eq_smul,
     LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
     finiteGibbsExpectation_smul_apply_regularity]
 
-/-- For two fixed field labels, their finite Gibbs contraction is jointly continuous in both
+/-- For two fixed field labels, their density-state contraction is jointly continuous in both
 imaginary times. -/
 theorem continuous_timedFieldPairContraction_times
     (ε : Mode → ℝ) (β : ℝ) (A B : ExternalFieldLabel Mode) :
@@ -184,7 +189,7 @@ theorem continuous_orderedTwoPointLegTime {n : ℕ} (τ τ' : ℝ)
       change Continuous (fun σ : Fin n → ℝ => σ leg.1.1)
       fun_prop
 
-/-- Finite Gibbs contraction associated with two fixed standard two-point legs. -/
+/-- Density-state contraction associated with two fixed standard two-point legs. -/
 noncomputable def orderedTwoPointLegPairContraction
     {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
@@ -193,7 +198,7 @@ noncomputable def orderedTwoPointLegPairContraction
     (orderedTwoPointLegField i j τ τ' q σ x)
     (orderedTwoPointLegField i j τ τ' q σ y)
 
-/-- For every fixed pair of standard two-point legs, the finite Gibbs contraction is globally
+/-- For every fixed pair of standard two-point legs, the density-state contraction is globally
 continuous in the ambient interaction-time assignment. -/
 theorem continuous_orderedTwoPointLegPairContraction
     {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
@@ -217,8 +222,8 @@ theorem continuous_orderedTwoPointLegPairContraction
         (orderedTwoPointLegTime τ τ' σ x, orderedTwoPointLegTime τ τ' σ y))
   exact hContraction
 
-/-- The contraction used by a normalized mixed pair is the globally continuous contraction of the
-two fixed standard legs represented by its endpoints. -/
+/-- The contraction used by a normalized mixed pair is the globally continuous density-state
+contraction of the two fixed standard legs represented by its endpoints. -/
 theorem FixedExternalTwoPointWickDiagram.mixedPairContractionValue_eq_orderedTwoPointLegPairContraction
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)
@@ -228,7 +233,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedPairContractionValue_eq_orderedTwo
         (mixedTimeOrderedAtomicLegEquiv τ τ' σ pr.1.1)
         (mixedTimeOrderedAtomicLegEquiv τ τ' σ pr.1.2) := by
   unfold FixedExternalTwoPointWickDiagram.mixedPairContractionValue
-    orderedTwoPointLegPairContraction timedFieldPairContraction
+    mixedTimeOrderedAtomicPairValue orderedTwoPointLegPairContraction timedFieldPairContraction
   rw [mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegField,
     mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegField]
 
