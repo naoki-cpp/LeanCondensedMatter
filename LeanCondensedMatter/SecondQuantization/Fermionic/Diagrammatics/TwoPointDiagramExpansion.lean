@@ -19,6 +19,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentCrossingTimeLocality
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentChamberCombinatorics
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentChamberRegularity
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentMeasurability
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentContractionTimeLocality
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentFixedTimeValue
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentDysonValue
@@ -39,13 +40,13 @@ restriction of mixed-order positions, partners, and normalized pairs to full com
 comparison of component positions and pairs across interaction-time assignments, exact endpoint,
 component-internal crossing, and finite Gibbs contraction preservation under component-local time
 equality, chamberwise preservation of component position order, normalized pair orientation, and
-crossing combinatorics, explicit globally continuous fixed-standard-leg Gibbs contractions, and
-fixed-index globally continuous representatives for pairing, fixed-time, and Dyson component factors
-that agree with the actual values on each mixed-order chamber, together with factorization of
-mixed-time contraction products, decomposition of mixed crossing counts, reduction of their parity to
-complete component-position inversions and concrete vacuum four-leg event blocks, unconditional
-factorization of mixed pairing weights, pairing values, coupling products, fixed-time values, and
-component-local Dyson signs, canonical component-locality of the pointwise Dyson integrand, the
-factorized ordered-simplex interface, and the perturbative coefficient for the imaginary-time
-two-point function with quartic interaction vertices.
+crossing combinatorics, explicit globally continuous fixed-standard-leg Gibbs contractions,
+fixed-index globally continuous chamber representatives, and finite-signature piecewise presentations
+that prove global measurability of the actual Dyson component factors without claiming continuity
+across order walls, together with factorization of mixed-time contraction products, decomposition of
+mixed crossing counts, reduction of their parity to complete component-position inversions and
+concrete vacuum four-leg event blocks, unconditional factorization of mixed pairing weights, pairing
+values, coupling products, fixed-time values, and component-local Dyson signs, canonical
+component-locality of the pointwise Dyson integrand, the factorized ordered-simplex interface, and the
+perturbative coefficient for the imaginary-time two-point function with quartic interaction vertices.
 -/
