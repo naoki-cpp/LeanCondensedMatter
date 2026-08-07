@@ -34,9 +34,8 @@ noncomputable def completedOccupationHilbertBasis :
 theorem completedOccupationHilbertBasis_apply (n : Occupation Mode) :
     completedOccupationHilbertBasis (Mode := Mode) n = completedBasisState n := by
   classical
-  change (LinearIsometryEquiv.refl ℂ (CompletedFockSpace Mode)).symm
-      (lp.single 2 n (1 : ℂ)) = lp.single 2 n (1 : ℂ)
-  rfl
+  have h := (completedOccupationHilbertBasis (Mode := Mode)).repr_self n
+  simpa [completedOccupationHilbertBasis, completedBasisState] using h
 
 /-- The positive real free Boltzmann weight `exp (-β E(n))` on an occupation configuration. -/
 noncomputable def completedFreeBoltzmannRealWeight (ε : Mode → ℝ) (β : ℝ)
