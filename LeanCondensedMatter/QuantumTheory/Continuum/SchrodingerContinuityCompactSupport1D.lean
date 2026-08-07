@@ -133,13 +133,12 @@ theorem weak_continuity_wholeSpace_of_pointwise
   have htest : ∀ x ∈ [[a, b]], HasDerivAt test (deriv test x) x := by
     intro x _
     exact (htestDifferentiable x).hasDerivAt
+  rcases endpoint_values_eq_zero_of_tsupport_subset_Ioo htestSupport with ⟨ha, hb⟩
   have hweak := weak_continuity_interval_of_pointwise_zero_boundary
-    a b hcontinuity htest hcurrent htestDerivIntegrable hcurrentIntegrable
-  · rw [intervalSmearedDensityRate1D_eq_wholeSpace a b htestSupport,
-      intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace a b htestSupport] at hweak
-    exact hweak
-  · exact (endpoint_values_eq_zero_of_tsupport_subset_Ioo htestSupport).1
-  · exact (endpoint_values_eq_zero_of_tsupport_subset_Ioo htestSupport).2
+    a b hcontinuity htest hcurrent htestDerivIntegrable hcurrentIntegrable ha hb
+  rw [intervalSmearedDensityRate1D_eq_wholeSpace a b htestSupport,
+    intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace a b htestSupport] at hweak
+  exact hweak
 
 /-- The scalar-potential Schrödinger equation gives the whole-space weak continuity identity against
 a differentiable compactly supported test function. -/
