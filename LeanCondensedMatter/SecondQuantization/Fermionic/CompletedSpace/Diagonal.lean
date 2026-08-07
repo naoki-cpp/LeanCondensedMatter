@@ -125,6 +125,13 @@ theorem algebraicToCompletedDiagonalDomain_coe (w : Occupation Mode → ℂ)
   rfl
 
 @[simp]
+theorem algebraicToCompletedDiagonalDomain_apply (w : Occupation Mode → ℂ)
+    (x : FockSpace Mode) (n : Occupation Mode) :
+    (((algebraicToCompletedDiagonalDomain w x : completedDiagonalDomain w) :
+      CompletedFockSpace Mode) n) = x n :=
+  rfl
+
+@[simp]
 theorem algebraicToCompletedDiagonalDomain_basisState (w : Occupation Mode → ℂ)
     (n : Occupation Mode) :
     ((algebraicToCompletedDiagonalDomain w (basisState n) : completedDiagonalDomain w) :
@@ -169,12 +176,12 @@ theorem completedDiagonalOperator_comp_algebraicCore (w : Occupation Mode → �
   apply lp.ext
   funext m
   rw [completedDiagonalOperator_toFun_apply,
-    algebraicToCompletedDiagonalDomain_basisState]
-  rw [Common.diagonalOperator_basisState, map_smul, algebraicToCompleted_basisState]
+    algebraicToCompletedDiagonalDomain_apply, algebraicToCompleted_apply,
+    Common.diagonalOperator_basisState]
   by_cases hmn : m = n
   · subst m
-    simp
-  · simp [completedBasisState_apply_of_ne hmn]
+    simp [basisState, Common.basisState]
+  · simp [basisState, Common.basisState, hmn]
 
 /-! ## Free Hamiltonian and total particle number -/
 
