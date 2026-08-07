@@ -120,7 +120,12 @@ theorem measurable_parametric_intervalIntegral_zero
   have heq : (fun x => ∫ t in (0 : ℝ)..bound x, F x t) =
       fun x => (∫ t, left x t) - ∫ t, right x t := by
     funext x
-    simp [intervalIntegral, left, right, MeasureTheory.integral_indicator]
+    rw [intervalIntegral]
+    apply congrArg₂ (· - ·)
+    · rw [← MeasureTheory.integral_indicator measurableSet_Ioc]
+      rfl
+    · rw [← MeasureTheory.integral_indicator measurableSet_Ioc]
+      rfl
   rw [heq]
   exact hsub.measurable
 
@@ -130,7 +135,8 @@ theorem measurable_orderedSimplexIntegral_of_measurable {X : Type*} [MeasurableS
       Measurable bound → Measurable (Function.uncurry f) →
       Measurable (fun x => orderedSimplexIntegral n (bound x) (f x))
   | 0, _bound, f, _hbound, hf => by
-      have hpair : Measurable (fun x : X => (x, (0 : Fin 0 → ℝ))) := by
+      have hpair : Measurable
+          (fun x : X => (x, (Fin.elim0 : Fin 0 → ℝ))) := by
         measurability
       simpa only [orderedSimplexIntegral_zero] using hf.comp hpair
   | n + 1, bound, f, hbound, hf => by
