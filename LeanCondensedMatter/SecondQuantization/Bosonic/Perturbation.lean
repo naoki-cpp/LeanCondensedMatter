@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.DysonGibbsBou
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.GibbsInteractionPicture
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticVertexBound
 import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.QuarticGibbsSummable
+import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation.FirstDysonGibbsSummable
 
 set_option linter.style.header false
 
@@ -14,5 +15,6 @@ arbitrary-configuration Dyson recursion to normalized thermal coefficients.  Int
 invariance of the free Gibbs numerator supplies the first-order recursive domain-closure slice
 directly from summability of the bare interaction.  Quartic matrix coefficients admit a uniform
 quadratic particle-number bound, which together with the free Boltzmann moments proves concrete
-Gibbs-domain membership for single vertices and finite quartic interactions.
+Gibbs-domain membership for finite quartic interactions.  Their first Dyson coefficients are again
+Gibbs-summable because diagonal interaction-picture evolution is constant in imaginary time.
 -/
