@@ -79,7 +79,9 @@ theorem diagonalDet_eq_zero_iff_exists_coeff_eq_neg_one (coeff : ι → ℂ)
     apply (diagonalDet_ne_zero coeff hcoeff ?_) hdet
     intro i hzero
     apply hmissing
-    exact ⟨i, eq_neg_of_add_eq_zero_left hzero⟩
+    have hzero' : coeff i + 1 = 0 := by
+      simpa [add_comm] using hzero
+    exact ⟨i, eq_neg_of_add_eq_zero_left hzero'⟩
   · rintro ⟨i, hi⟩
     unfold diagonalDet
     apply tprod_of_exists_eq_zero
