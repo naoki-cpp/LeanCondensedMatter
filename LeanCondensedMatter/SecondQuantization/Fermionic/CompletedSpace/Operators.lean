@@ -110,7 +110,10 @@ noncomputable def completedCreateLinear (i : Mode) :
         ψ (toggleOccupation i n) else 0) +
       (if i ∈ n then fermionPhase i (toggleOccupation i n) *
         φ (toggleOccupation i n) else 0)
-    by_cases h : i ∈ n <;> simp [h, mul_add]
+    by_cases h : i ∈ n
+    · rw [toggleOccupation_of_mem h]
+      simp [h, mul_add]
+    · simp [h]
   map_smul' c ψ := by
     apply lp.ext
     funext n
@@ -118,8 +121,10 @@ noncomputable def completedCreateLinear (i : Mode) :
       (c • ψ) (toggleOccupation i n) else 0) =
       c * (if i ∈ n then fermionPhase i (toggleOccupation i n) *
         ψ (toggleOccupation i n) else 0)
-    by_cases h : i ∈ n <;>
-      simp [h, mul_comm, mul_left_comm, mul_assoc]
+    by_cases h : i ∈ n
+    · rw [toggleOccupation_of_mem h]
+      simp [h, mul_left_comm]
+    · simp [h]
 
 @[simp]
 theorem completedCreateLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
@@ -148,7 +153,10 @@ noncomputable def completedAnnihilateLinear (i : Mode) :
         ψ (toggleOccupation i n)) +
       (if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) *
         φ (toggleOccupation i n))
-    by_cases h : i ∈ n <;> simp [h, mul_add]
+    by_cases h : i ∈ n
+    · simp [h]
+    · rw [toggleOccupation_of_not_mem h]
+      simp [h, mul_add]
   map_smul' c ψ := by
     apply lp.ext
     funext n
@@ -156,8 +164,10 @@ noncomputable def completedAnnihilateLinear (i : Mode) :
       (c • ψ) (toggleOccupation i n)) =
       c * (if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) *
         ψ (toggleOccupation i n))
-    by_cases h : i ∈ n <;>
-      simp [h, mul_comm, mul_left_comm, mul_assoc]
+    by_cases h : i ∈ n
+    · simp [h]
+    · rw [toggleOccupation_of_not_mem h]
+      simp [h, mul_left_comm]
 
 @[simp]
 theorem completedAnnihilateLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
