@@ -72,8 +72,8 @@ theorem continuous_ofAssignment (e : (Σ i, slot i) ≃ κ) (i : ι) :
   by_cases hi : i' = i
   · subst i'
     simpa using (continuous_apply j : Continuous (fun τ : slot i → ℝ => τ j))
-  · rw [Function.update_noteq hi]
-    exact continuous_const
+  · simpa [hi] using
+      (continuous_const : Continuous (fun _ : slot i → ℝ => (0 : ℝ)))
 
 /-- An ambient scalar function is local to fiber `i` when it depends only on that restriction. -/
 def Local (e : (Σ i, slot i) ≃ κ) (i : ι) (F : (κ → ℝ) → ℂ) : Prop :=
