@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.Calculus
+import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularity
 
 set_option linter.style.header false
 
