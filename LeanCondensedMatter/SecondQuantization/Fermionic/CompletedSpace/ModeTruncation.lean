@@ -18,6 +18,7 @@ namespace SecondQuantization
 namespace Fermionic
 
 open Filter Topology
+open scoped ENNReal
 
 noncomputable section
 
@@ -26,30 +27,34 @@ variable {Mode : Type*}
 /-- Linear finite-mode truncation: retain an occupation amplitude exactly when all occupied modes
 belong to `S`. -/
 noncomputable def completedModeTruncationLinear (S : Finset Mode) :
-    CompletedFockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode where
-  toFun ψ :=
-    ⟨fun n => if n ⊆ S then ψ n else 0,
-      (lp.memℓp ψ).mono' fun n => by
-        by_cases h : n ⊆ S <;> simp [h]⟩
-  map_add' ψ φ := by
-    apply lp.ext
-    funext n
-    by_cases h : n ⊆ S <;> simp [h]
-  map_smul' c ψ := by
-    apply lp.ext
-    funext n
-    by_cases h : n ⊆ S <;> simp [h]
+    CompletedFockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode := by
+  classical
+  exact
+    { toFun := fun ψ =>
+        ⟨fun n => if n ⊆ S then ψ n else 0,
+          (lp.memℓp ψ).mono' fun n => by
+            by_cases h : n ⊆ S <;> simp [h]⟩
+      map_add' := fun ψ φ => by
+        apply lp.ext
+        funext n
+        by_cases h : n ⊆ S <;> simp [h]
+      map_smul' := fun c ψ => by
+        apply lp.ext
+        funext n
+        by_cases h : n ⊆ S <;> simp [h] }
 
 @[simp]
 theorem completedModeTruncationLinear_apply (S : Finset Mode)
     (ψ : CompletedFockSpace Mode) (n : Occupation Mode) :
-    completedModeTruncationLinear S ψ n = if n ⊆ S then ψ n else 0 :=
+    completedModeTruncationLinear S ψ n = if n ⊆ S then ψ n else 0 := by
+  classical
   rfl
 
 /-- Finite-mode truncation as a bounded projection of norm at most one. -/
 noncomputable def completedModeTruncation (S : Finset Mode) :
-    CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
-  (completedModeTruncationLinear S).mkContinuous 1 fun ψ => by
+    CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode := by
+  classical
+  exact (completedModeTruncationLinear S).mkContinuous 1 fun ψ => by
     simpa only [one_mul] using
       lp.norm_mono (p := (2 : ℝ≥0∞)) (by norm_num)
         (x := completedModeTruncationLinear S ψ) (y := ψ) (fun n => by
@@ -58,12 +63,14 @@ noncomputable def completedModeTruncation (S : Finset Mode) :
 @[simp]
 theorem completedModeTruncation_apply (S : Finset Mode)
     (ψ : CompletedFockSpace Mode) (n : Occupation Mode) :
-    completedModeTruncation S ψ n = if n ⊆ S then ψ n else 0 :=
+    completedModeTruncation S ψ n = if n ⊆ S then ψ n else 0 := by
+  classical
   rfl
 
 /-- Finite-mode truncation is contractive. -/
 theorem norm_completedModeTruncation_le (S : Finset Mode) (ψ : CompletedFockSpace Mode) :
     ‖completedModeTruncation S ψ‖ ≤ ‖ψ‖ := by
+  classical
   simpa only [one_mul] using
     lp.norm_mono (p := (2 : ℝ≥0∞)) (by norm_num)
       (x := completedModeTruncation S ψ) (y := ψ) (fun n => by
@@ -113,7 +120,8 @@ theorem occupation_subset_algebraicModeSupport (x : FockSpace Mode) (n : Occupat
   classical
   intro i hi
   have hnsupp : n ∈ x.support := Finsupp.mem_support_iff.mpr hn
-  simp [algebraicModeSupport, hnsupp, hi]
+  simp only [algebraicModeSupport, Finset.mem_biUnion]
+  exact ⟨n, hnsupp, hi⟩
 
 /-- Once `S` contains every mode appearing in an algebraic vector, finite-mode truncation fixes its
 completed image exactly. -/
@@ -121,6 +129,7 @@ theorem completedModeTruncation_algebraicToCompleted_of_subset
     (S : Finset Mode) (x : FockSpace Mode)
     (hS : algebraicModeSupport x ⊆ S) :
     completedModeTruncation S (algebraicToCompleted x) = algebraicToCompleted x := by
+  classical
   apply lp.ext
   funext n
   rw [completedModeTruncation_apply]
@@ -133,6 +142,7 @@ theorem completedModeTruncation_algebraicToCompleted_of_subset
 This is a net convergence theorem over `Finset Mode`, not a sequential statement. -/
 theorem tendsto_completedModeTruncation (ψ : CompletedFockSpace Mode) :
     Tendsto (fun S : Finset Mode => completedModeTruncation S ψ) atTop (𝓝 ψ) := by
+  classical
   refine Metric.tendsto_atTop.2 ?_
   intro ε hε
   have hhalf : 0 < ε / 2 := half_pos hε
