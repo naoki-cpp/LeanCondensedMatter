@@ -104,19 +104,22 @@ noncomputable def completedCreateLinear (i : Mode) :
   map_add' ψ φ := by
     apply lp.ext
     funext n
-    by_cases h : i ∈ n
-    · simp only [Pi.add_apply, h, if_pos]
-      rw [toggleOccupation_of_mem h]
-      ring
-    · simp [h]
+    change (if i ∈ n then fermionPhase i (toggleOccupation i n) *
+      (ψ + φ) (toggleOccupation i n) else 0) =
+      (if i ∈ n then fermionPhase i (toggleOccupation i n) *
+        ψ (toggleOccupation i n) else 0) +
+      (if i ∈ n then fermionPhase i (toggleOccupation i n) *
+        φ (toggleOccupation i n) else 0)
+    by_cases h : i ∈ n <;> simp [h, mul_add]
   map_smul' c ψ := by
     apply lp.ext
     funext n
-    by_cases h : i ∈ n
-    · simp only [Pi.smul_apply, h, if_pos]
-      rw [toggleOccupation_of_mem h]
-      ring
-    · simp [h]
+    change (if i ∈ n then fermionPhase i (toggleOccupation i n) *
+      (c • ψ) (toggleOccupation i n) else 0) =
+      c * (if i ∈ n then fermionPhase i (toggleOccupation i n) *
+        ψ (toggleOccupation i n) else 0)
+    by_cases h : i ∈ n <;>
+      simp [h, mul_comm, mul_left_comm, mul_assoc]
 
 @[simp]
 theorem completedCreateLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
@@ -139,19 +142,22 @@ noncomputable def completedAnnihilateLinear (i : Mode) :
   map_add' ψ φ := by
     apply lp.ext
     funext n
-    by_cases h : i ∈ n
-    · simp [h]
-    · simp only [Pi.add_apply, h, if_false]
-      rw [toggleOccupation_of_not_mem h]
-      ring
+    change (if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) *
+      (ψ + φ) (toggleOccupation i n)) =
+      (if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) *
+        ψ (toggleOccupation i n)) +
+      (if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) *
+        φ (toggleOccupation i n))
+    by_cases h : i ∈ n <;> simp [h, mul_add]
   map_smul' c ψ := by
     apply lp.ext
     funext n
-    by_cases h : i ∈ n
-    · simp [h]
-    · simp only [Pi.smul_apply, h, if_false]
-      rw [toggleOccupation_of_not_mem h]
-      ring
+    change (if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) *
+      (c • ψ) (toggleOccupation i n)) =
+      c * (if i ∈ n then 0 else fermionPhase i (toggleOccupation i n) *
+        ψ (toggleOccupation i n))
+    by_cases h : i ∈ n <;>
+      simp [h, mul_comm, mul_left_comm, mul_assoc]
 
 @[simp]
 theorem completedAnnihilateLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
