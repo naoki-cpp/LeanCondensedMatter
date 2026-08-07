@@ -131,8 +131,11 @@ theorem norm_matrixCoeff_quarticVertexOperator_le (q : QuarticVertexLabel Mode)
         rw [hscalar]
       rw [haction]
       by_cases hn4 : n4 = n
-      · subst n4
-        rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hr0]
+      · have hself : ((r : ℂ) • basisState n4) n = (r : ℂ) := by
+          change ((r : ℂ) • Common.basisState n4) n = (r : ℂ)
+          rw [hn4]
+          exact Common.smul_basisState_apply_self (r : ℂ) n
+        rw [hself, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hr0]
         calc
           r = Real.sqrt (n q.annihilate₁ : ℝ) *
               Real.sqrt (n1 q.annihilate₂ : ℝ) *
