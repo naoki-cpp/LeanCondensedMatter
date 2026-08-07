@@ -79,7 +79,7 @@ theorem finiteSupportIntervalIntegral_apply (S : Finset Config)
       by_contra hne
       exact hm (hf τ (Finsupp.mem_support_iff.mpr hne))
     rw [hzero]
-    simp
+    exact intervalIntegral.integral_zero.symm
 
 end Common
 end SecondQuantization
