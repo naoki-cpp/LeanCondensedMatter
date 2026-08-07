@@ -105,13 +105,17 @@ noncomputable def completedCreateLinear (i : Mode) :
     apply lp.ext
     funext n
     by_cases h : i ∈ n
-    · simp [h, toggleOccupation_of_mem h, mul_add]
+    · simp only [Pi.add_apply, h, if_pos]
+      rw [toggleOccupation_of_mem h]
+      ring
     · simp [h]
   map_smul' c ψ := by
     apply lp.ext
     funext n
     by_cases h : i ∈ n
-    · simp [h, toggleOccupation_of_mem h, mul_comm, mul_left_comm, mul_assoc]
+    · simp only [Pi.smul_apply, h, if_pos]
+      rw [toggleOccupation_of_mem h]
+      ring
     · simp [h]
 
 @[simp]
@@ -137,13 +141,17 @@ noncomputable def completedAnnihilateLinear (i : Mode) :
     funext n
     by_cases h : i ∈ n
     · simp [h]
-    · simp [h, toggleOccupation_of_not_mem h, mul_add]
+    · simp only [Pi.add_apply, h, if_false]
+      rw [toggleOccupation_of_not_mem h]
+      ring
   map_smul' c ψ := by
     apply lp.ext
     funext n
     by_cases h : i ∈ n
     · simp [h]
-    · simp [h, toggleOccupation_of_not_mem h, mul_comm, mul_left_comm, mul_assoc]
+    · simp only [Pi.smul_apply, h, if_false]
+      rw [toggleOccupation_of_not_mem h]
+      ring
 
 @[simp]
 theorem completedAnnihilateLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
