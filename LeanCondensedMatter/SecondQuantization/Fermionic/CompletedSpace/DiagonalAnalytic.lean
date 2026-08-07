@@ -32,6 +32,62 @@ theorem completedDiagonalOperator_denseDomain (w : Occupation Mode → ℂ) :
       Set (CompletedFockSpace Mode)) := by
   exact completedDiagonalDomain_dense w
 
+/-- Membership in the graph of the maximal diagonal operator is exactly the coordinatewise
+multiplication equation. The converse uses maximality of the weighted `ℓ²` domain: if the proposed
+output already lies in `ℓ²`, then the weighted input automatically belongs to the domain. -/
+theorem mem_completedDiagonalOperator_graph_iff (w : Occupation Mode → ℂ)
+    (z : CompletedFockSpace Mode × CompletedFockSpace Mode) :
+    z ∈ (completedDiagonalOperator w).graph ↔
+      ∀ n : Occupation Mode, z.2 n = w n * z.1 n := by
+  constructor
+  · intro hz n
+    rw [LinearPMap.mem_graph_iff] at hz
+    obtain ⟨x, hx, hfx⟩ := hz
+    calc
+      z.2 n = (completedDiagonalOperator w x) n :=
+        (congrArg (fun ψ : CompletedFockSpace Mode => ψ n) hfx).symm
+      _ = w n * (x : CompletedFockSpace Mode) n := completedDiagonalOperator_apply w x n
+      _ = w n * z.1 n := by rw [hx]
+  · intro hz
+    have hdomain : z.1 ∈ completedDiagonalDomain w := by
+      rw [mem_completedDiagonalDomain_iff]
+      have hout := lp.memℓp z.2
+      convert hout using 1
+      funext n
+      exact (hz n).symm
+    rw [LinearPMap.mem_graph_iff]
+    refine ⟨⟨z.1, hdomain⟩, rfl, ?_⟩
+    apply lp.ext
+    funext n
+    rw [completedDiagonalOperator_apply]
+    exact (hz n).symm
+
+/-- A maximal diagonal multiplication operator is closed for an arbitrary complex weight. -/
+theorem completedDiagonalOperator_isClosed (w : Occupation Mode → ℂ) :
+    (completedDiagonalOperator w).IsClosed := by
+  rw [LinearPMap.IsClosed]
+  have hgraph :
+      ((completedDiagonalOperator w).graph :
+        Set (CompletedFockSpace Mode × CompletedFockSpace Mode)) =
+        ⋂ n : Occupation Mode,
+          {z : CompletedFockSpace Mode × CompletedFockSpace Mode |
+            z.2 n = w n * z.1 n} := by
+    ext z
+    rw [Set.mem_iInter]
+    exact mem_completedDiagonalOperator_graph_iff w z
+  rw [hgraph]
+  apply isClosed_iInter
+  intro n
+  apply isClosed_eq
+  · exact (lp.evalCLM ℂ (fun _ : Occupation Mode => ℂ) 2 n).continuous.comp continuous_snd
+  · exact continuous_const.mul
+      ((lp.evalCLM ℂ (fun _ : Occupation Mode => ℂ) 2 n).continuous.comp continuous_fst)
+
+/-- Every maximal diagonal operator is therefore closable, without any reality assumption. -/
+theorem completedDiagonalOperator_isClosable (w : Occupation Mode → ℂ) :
+    (completedDiagonalOperator w).IsClosable :=
+  (completedDiagonalOperator_isClosed w).isClosable
+
 /-- A diagonal operator whose weights are fixed by complex conjugation is formally symmetric. -/
 theorem completedDiagonalOperator_isFormalAdjoint_self (w : Occupation Mode → ℂ)
     (hw : ∀ n, star (w n) = w n) :
@@ -45,16 +101,6 @@ theorem completedDiagonalOperator_isFormalAdjoint_self (w : Occupation Mode → 
     simpa using hw n
   simp [hwn, mul_assoc, mul_left_comm]
 
-/-- A formally symmetric maximal diagonal operator is closable. -/
-theorem completedDiagonalOperator_isClosable_of_star (w : Occupation Mode → ℂ)
-    (hw : ∀ n, star (w n) = w n) :
-    (completedDiagonalOperator w).IsClosable := by
-  have hdense := completedDiagonalOperator_denseDomain w
-  have hsymm := completedDiagonalOperator_isFormalAdjoint_self w hw
-  have hle : completedDiagonalOperator w ≤ (completedDiagonalOperator w).adjoint :=
-    hsymm.le_adjoint hdense
-  exact ((completedDiagonalOperator w).adjoint_isClosed hdense).isClosable.leIsClosable hle
-
 /-- Free-Hamiltonian occupation energies are fixed by complex conjugation. -/
 theorem star_freeHamiltonianWeight (ε : Mode → ℝ) (n : Occupation Mode) :
     star (freeHamiltonianWeight ε n) = freeHamiltonianWeight ε n := by
@@ -66,6 +112,11 @@ theorem completedFreeHamiltonian_denseDomain (ε : Mode → ℝ) :
       Set (CompletedFockSpace Mode)) := by
   exact completedDiagonalOperator_denseDomain (freeHamiltonianWeight ε)
 
+/-- The completed free Hamiltonian is closed. -/
+theorem completedFreeHamiltonian_isClosed (ε : Mode → ℝ) :
+    (completedFreeHamiltonian ε).IsClosed := by
+  exact completedDiagonalOperator_isClosed (freeHamiltonianWeight ε)
+
 /-- The completed free Hamiltonian is formally symmetric. -/
 theorem completedFreeHamiltonian_isFormalAdjoint_self (ε : Mode → ℝ) :
     (completedFreeHamiltonian ε).IsFormalAdjoint (completedFreeHamiltonian ε) := by
@@ -74,9 +125,8 @@ theorem completedFreeHamiltonian_isFormalAdjoint_self (ε : Mode → ℝ) :
 
 /-- The completed free Hamiltonian is closable. -/
 theorem completedFreeHamiltonian_isClosable (ε : Mode → ℝ) :
-    (completedFreeHamiltonian ε).IsClosable := by
-  exact completedDiagonalOperator_isClosable_of_star (freeHamiltonianWeight ε)
-    (star_freeHamiltonianWeight ε)
+    (completedFreeHamiltonian ε).IsClosable :=
+  (completedFreeHamiltonian_isClosed ε).isClosable
 
 /-- Total-particle-number weights are fixed by complex conjugation. -/
 theorem star_particleNumberWeight (n : Occupation Mode) :
@@ -90,6 +140,12 @@ theorem completedTotalNumberOperator_denseDomain {Mode : Type*} :
   exact completedDiagonalOperator_denseDomain
     (fun n : Occupation Mode => (particleNumber n : ℂ))
 
+/-- The completed total number operator is closed. -/
+theorem completedTotalNumberOperator_isClosed {Mode : Type*} :
+    (completedTotalNumberOperator (Mode := Mode)).IsClosed := by
+  exact completedDiagonalOperator_isClosed
+    (fun n : Occupation Mode => (particleNumber n : ℂ))
+
 /-- The completed total number operator is formally symmetric. -/
 theorem completedTotalNumberOperator_isFormalAdjoint_self {Mode : Type*} :
     (completedTotalNumberOperator (Mode := Mode)).IsFormalAdjoint
@@ -100,10 +156,8 @@ theorem completedTotalNumberOperator_isFormalAdjoint_self {Mode : Type*} :
 
 /-- The completed total number operator is closable. -/
 theorem completedTotalNumberOperator_isClosable {Mode : Type*} :
-    (completedTotalNumberOperator (Mode := Mode)).IsClosable := by
-  exact completedDiagonalOperator_isClosable_of_star
-    (fun n : Occupation Mode => (particleNumber n : ℂ))
-    (star_particleNumberWeight (Mode := Mode))
+    (completedTotalNumberOperator (Mode := Mode)).IsClosable :=
+  (completedTotalNumberOperator_isClosed (Mode := Mode)).isClosable
 
 end
 end Fermionic
