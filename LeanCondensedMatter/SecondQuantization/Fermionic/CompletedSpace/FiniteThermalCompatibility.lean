@@ -22,7 +22,6 @@ variable {Mode : Type*}
 
 /-- The completed free Boltzmann weight is definitionally the finite thermal weight with occupation
 energy `fermionEnergy ε`. -/
-@[simp]
 theorem completedFreeBoltzmannRealWeight_eq_finiteBoltzmannWeight
     (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
     completedFreeBoltzmannRealWeight ε β n =
@@ -30,7 +29,6 @@ theorem completedFreeBoltzmannRealWeight_eq_finiteBoltzmannWeight
   rfl
 
 /-- The completed occupation `tsum` is the same expression as the finite partition function. -/
-@[simp]
 theorem completedFreePartitionFunction_eq_finitePartitionFunction
     (ε : Mode → ℝ) (β : ℝ) :
     completedFreePartitionFunction ε β =
@@ -38,7 +36,6 @@ theorem completedFreePartitionFunction_eq_finitePartitionFunction
   rfl
 
 /-- The normalized completed Gibbs probability is the normalized finite Boltzmann weight. -/
-@[simp]
 theorem completedFreeGibbsProbability_eq_finite
     (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
     completedFreeGibbsProbability ε β n =
