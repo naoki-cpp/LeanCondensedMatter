@@ -27,6 +27,7 @@ theorem particleNumber_eq_sum_univ (n : Occupation Mode) :
   simp only [Finsupp.mem_support_iff, not_not] at hi
   simp [hi]
 
+omit [Fintype Mode] in
 /-- A finite sum of summable occupation-indexed functions is summable. -/
 private theorem summable_finset_sum
     (s : Finset Mode) (f : Mode → Occupation Mode → ℝ)
