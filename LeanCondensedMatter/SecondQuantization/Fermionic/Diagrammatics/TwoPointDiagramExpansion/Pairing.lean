@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.PairingEvaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Flattening
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
@@ -10,10 +11,11 @@ set_option linter.style.header false
 # Pairing expansion for a two-point insertion
 
 This module applies the finite-temperature Bloch--de Dominicis theorem to the `4n + 2` atomic
-operator list constructed by `TwoPointDiagramExpansion.Flattening`.
+operator list constructed by `TwoPointDiagramExpansion.Flattening` and exposes its physical result
+through the shared pairing evaluator with a canonical free Gibbs density-state pair kernel.
 
-The result is first stated as a sum over `Pairing (2n + 1)`. Reindexing that sum into
-`TwoPointWickDiagram` is intentionally left to the next layer.
+Finite-Gibbs product formulas remain private coordinate proof infrastructure. Reindexing the pairing
+sum into `TwoPointWickDiagram` is intentionally left to the next layer.
 -/
 
 namespace SecondQuantization
@@ -345,6 +347,24 @@ theorem zetaCommutator_mixedTimeOrderedAtomicOperatorFamily {n : ℕ}
 
 variable [Fintype Mode]
 
+/-- Canonical free Gibbs density-state contraction of two mixed-time atomic positions. -/
+noncomputable def mixedTimeOrderedAtomicPairValue {n : ℕ}
+    (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
+    (σ : Fin n → ℝ) (q : Fin n → QuarticVertexLabel Mode)
+    (a b : Fin (2 * (2 * n + 1))) : ℂ :=
+  (freeGibbsDensityOperator ε β).expectation
+    (Common.finiteHilbertOperator
+      ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ a).comp
+        (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ b)))
+
+/-- Canonical scalar value of one mixed-time pairing through the shared generic evaluator. -/
+noncomputable def orderedTwoPointPairingValue {n : ℕ}
+    (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
+    (σ : Fin n → ℝ) (q : Fin n → QuarticVertexLabel Mode)
+    (pairing : Pairing (2 * n + 1)) : ℂ :=
+  Common.pairingEvaluation pairing (pairing.weight Common.Statistics.fermion)
+    (mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ q)
+
 omit [LinearOrder Mode] in
 private theorem traceFock_diagonalEvolution_fermionEnergy_ne_zero
     (ε : Mode → ℝ) (β : ℝ) :
@@ -367,9 +387,7 @@ private theorem finiteGibbsExpectation_smul_apply (ε : Mode → ℝ) (β : ℝ)
     c * (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) A
   rw [map_smul, smul_eq_mul]
 
-/-- The finite Gibbs expectation of the flattened mixed product is a sum over all pairings of its
-`4n + 2` atomic operators. -/
-theorem finiteGibbsExpectation_prodComp_mixedTimeOrderedAtomicOperators_eq_sum_pairing
+private theorem finiteGibbsExpectation_prodComp_mixedTimeOrderedAtomicOperators_eq_sum_pairing
     {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     Common.finiteGibbsExpectation (fermionEnergy ε) β
@@ -394,9 +412,7 @@ theorem finiteGibbsExpectation_prodComp_mixedTimeOrderedAtomicOperators_eq_sum_p
   rw [← ofFn_mixedTimeOrderedAtomicOperatorFamily_eq]
   exact hgen
 
-/-- The mixed event-level product satisfies the pairing expansion, including the fermionic sign
-from exchanging the two external fields. -/
-theorem finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairing
+private theorem finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairing
     {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     Common.finiteGibbsExpectation (fermionEnergy ε) β
@@ -412,23 +428,21 @@ theorem finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairing
     finiteGibbsExpectation_smul_apply,
     finiteGibbsExpectation_prodComp_mixedTimeOrderedAtomicOperators_eq_sum_pairing]
 
-/-- Canonical free Gibbs density-state form of the mixed two-point pairing expansion. -/
-theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairing
+/-- The mixed event-level density-state expectation is the external-order sign times the sum of
+canonical pairing evaluations. -/
+theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue
     {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperator (mixedTimeOrderedVertexComp ε i j τ τ' q σ)) =
       twoPointExternalOrderSign τ τ' *
         ∑ pairing : Pairing (2 * n + 1),
-          pairing.weight Common.Statistics.fermion *
-            ∏ pr ∈ pairing.pairs,
-              (freeGibbsDensityOperator ε β).expectation
-                (Common.finiteHilbertOperator
-                  ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ pr.1).comp
-                    (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ pr.2))) := by
-  simpa only [freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
-    finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairing
-      ε β i j τ τ' q σ
+          orderedTwoPointPairingValue ε β i j τ τ' σ q pairing := by
+  simpa only [orderedTwoPointPairingValue, Common.pairingEvaluation,
+    mixedTimeOrderedAtomicPairValue,
+    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
+      finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairing
+        ε β i j τ τ' q σ
 
 end Fermionic
 end SecondQuantization
