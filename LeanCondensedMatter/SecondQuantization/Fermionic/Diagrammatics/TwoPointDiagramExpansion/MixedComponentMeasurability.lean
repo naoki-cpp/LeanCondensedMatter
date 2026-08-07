@@ -56,11 +56,14 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonSignatureRepresentat
         else 0) =
       d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ'
         (twoPointOrderSignatureBase τ τ' s₀) B σ := by
-    apply Finset.sum_eq_single_of_mem s₀ (Finset.mem_univ s₀)
-    intro s _ hs
-    have hne : twoPointOrderSignature τ τ' σ ≠ s := by
-      simpa [s₀] using hs.symm
-    simp [hne]
+    change (∑ s : TwoPointOrderSignature n,
+        if s₀ = s then
+          d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ'
+            (twoPointOrderSignatureBase τ τ' s) B σ
+        else 0) =
+      d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ'
+        (twoPointOrderSignatureBase τ τ' s₀) B σ
+    simp
   rw [hsum]
   exact d.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber
     ε β g τ τ'
@@ -74,6 +77,7 @@ theorem FixedExternalTwoPointWickDiagram.measurable_mixedComponentDysonSignature
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (B : d.1.componentPartition.parts) :
     Measurable (d.mixedComponentDysonSignatureRepresentative ε β g τ τ' B) := by
+  classical
   unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonSignatureRepresentative
   apply Finset.measurable_sum
   intro s _
