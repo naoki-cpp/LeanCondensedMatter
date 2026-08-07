@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticWickExpansion
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagramWeight
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Ordered
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 
 set_option linter.style.header false
 
@@ -10,7 +11,7 @@ set_option linter.style.header false
 This module places the free-boson thermal pair kernel from the convergence-aware Wick layer on the
 existing ordered quartic-diagram structure.  A vertex order turns the diagram labels into a finite
 ordered list, and `pairingInOrder` selects one perfect pairing of the resulting local thermal fields.
-The scalar diagram value is evaluated through the shared `Common.pairingEvaluation` API.
+The scalar diagram value is evaluated through `Combinatorics.Pairing.evaluation`.
 
 The amplitude here is coefficientwise/algebraic.  It includes the quartic coupling product and Dyson
 sign, but no ordered-simplex time integration and no completed-space boundedness claim.
@@ -35,7 +36,7 @@ noncomputable def QuarticDiagram.orderedFreeThermalFieldFamily {S : Finset (Fin 
 noncomputable def QuarticDiagram.orderedThermalPairingValue [DecidableEq Mode]
     (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : QuarticDiagram Mode N S) (order : Common.QuarticVertexOrder S) : ℂ :=
-  Common.pairingEvaluation (d.pairingInOrder order)
+  (d.pairingInOrder order).evaluation
     ((d.pairingInOrder order).weight .boson)
     (fun a b => freeThermalPairValue ε β
       (d.orderedFreeThermalFieldFamily order a)
@@ -54,7 +55,7 @@ noncomputable def QuarticDiagram.orderedThermalWickSum [DecidableEq Mode]
     (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : QuarticDiagram Mode N S) (order : Common.QuarticVertexOrder S) : ℂ :=
   ∑ pairing : Pairing (2 * S.card),
-    Common.pairingEvaluation pairing (pairing.weight .boson)
+    pairing.evaluation (pairing.weight .boson)
       (fun a b => freeThermalPairValue ε β
         (d.orderedFreeThermalFieldFamily order a)
         (d.orderedFreeThermalFieldFamily order b))

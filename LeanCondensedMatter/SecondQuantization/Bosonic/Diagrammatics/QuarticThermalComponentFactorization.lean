@@ -67,7 +67,7 @@ theorem QuarticDiagram.orderedThermalPairingValue_eq_prod_components
         QuarticDiagram.orderedThermalPairingValue ε β (d.restrictComponent B.2) (orders B) := by
   classical
   simp only [QuarticDiagram.orderedThermalPairingValue,
-    Common.BlochDeDominicis.Pairing.weight_boson, Common.pairingEvaluation_one]
+    Common.BlochDeDominicis.Pairing.weight_boson, Combinatorics.Pairing.evaluation_one]
   exact d.prod_pairKernel_pairs_eq_prod_components orders shuffle
     (fun a b => freeThermalPairValue ε β
       (d.orderedFreeThermalFieldFamily (d.assembleVertexOrder orders shuffle) a)

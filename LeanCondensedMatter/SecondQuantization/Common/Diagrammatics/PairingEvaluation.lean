@@ -1,17 +1,14 @@
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 
 set_option linter.style.header false
 
 /-!
-# Scalar evaluation of perfect pairings
+# Temporary pairing-evaluation migration bridge
 
-This module separates the scalar evaluation of a perfect pairing from the physical construction of
-its pair contractions.  A caller supplies one global pairing weight and a value for each ordered
-pair endpoint; the evaluator multiplies the weight by the finite product of pair values.
-
-The definition is statistics- and state-independent.  In particular, it does not know about Gibbs
-states, occupation bases, fermionic or bosonic operators, imaginary-time evolution, or integration.
-Those layers provide concrete weights and pair kernels downstream.
+The authoritative scalar evaluator is `Combinatorics.Pairing.evaluation`.  The old Common definition
+is retained temporarily with its original reducible body so existing factorization proofs keep their
+current unfolding boundary while call sites are migrated in #750.  This module will then be deleted;
+it is not a second authoritative API.
 -/
 
 namespace SecondQuantization
@@ -22,11 +19,16 @@ open scoped BigOperators
 
 variable {R : Type*} [CommMonoid R]
 
-/-- Evaluate a perfect pairing from a global scalar weight and a scalar kernel on its pair
-endpoints. -/
+/-- Temporary migration definition preserving the old proof-level unfolding behavior. -/
 def pairingEvaluation {n : ℕ} (pairing : Pairing n) (weight : R)
     (pairValue : Fin (2 * n) → Fin (2 * n) → R) : R :=
   weight * ∏ pr ∈ pairing.pairs, pairValue pr.1 pr.2
+
+/-- The temporary Common evaluator agrees with the authoritative combinatorics evaluator. -/
+theorem pairingEvaluation_eq_evaluation {n : ℕ} (pairing : Pairing n) (weight : R)
+    (pairValue : Fin (2 * n) → Fin (2 * n) → R) :
+    pairingEvaluation pairing weight pairValue = pairing.evaluation weight pairValue :=
+  rfl
 
 /-- Pairing evaluation depends only on the supplied global weight and the pair kernel on pairs that
 actually occur in the pairing. -/
