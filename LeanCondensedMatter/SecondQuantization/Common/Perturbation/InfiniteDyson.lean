@@ -82,7 +82,9 @@ theorem infiniteDysonCoeff_zero (energy : Config → ℝ)
     infiniteDysonCoeff energy V 0 τ = LinearMap.id := by
   apply Finsupp.lhom_ext
   intro n c
-  simp [infiniteDysonCoeff, infiniteDysonBasis, Finsupp.lift_apply]
+  simp only [infiniteDysonCoeff, infiniteDysonBasis, Finsupp.lift_apply,
+    Finsupp.sum_single_index, LinearMap.id_apply]
+  simpa [basisState] using (Finsupp.smul_single_one n c).symm
 
 /-- Basis-state form of the recursive Dyson equation. -/
 theorem infiniteDysonCoeff_succ_basisState (energy : Config → ℝ)
