@@ -159,6 +159,7 @@ theorem completedDiagonalOperator_comp_algebraicCore (w : Occupation Mode â†’ â„
     (Finsupp.smul_single_one n c).symm
   rw [hc, map_smul, map_smul]
   congr 1
+  simp only [LinearMap.comp_apply]
   apply lp.ext
   funext m
   rw [completedDiagonalOperator_apply]
