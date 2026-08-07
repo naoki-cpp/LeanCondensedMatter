@@ -61,7 +61,7 @@ finite. -/
 noncomputable def firstDysonBasis (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) (n : Config) :
     AlgebraicFock Config :=
-  ∑ m in (V (basisState n)).support,
+  ∑ m ∈ (V (basisState n)).support,
     firstDysonMatrixCoeff energy V τ m n • basisState m
 
 /-- The first interaction-picture Dyson coefficient as a genuine algebraic-Fock operator on an
@@ -84,16 +84,26 @@ theorem firstDysonCoeff_zero (energy : Config → ℝ)
     firstDysonCoeff energy V 0 = 0 := by
   apply Finsupp.lhom_ext
   intro n c
-  rw [firstDysonCoeff_basisState]
-  simp [firstDysonBasis]
+  simp [firstDysonCoeff, firstDysonBasis, Finsupp.lift_apply, Finsupp.sum_single_index]
 
 /-- The first Dyson image of `basisState n` is supported inside the original finite output support
 of `V (basisState n)`. -/
 theorem support_firstDysonCoeff_basisState_subset (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) (n : Config) :
     (firstDysonCoeff energy V τ (basisState n)).support ⊆ (V (basisState n)).support := by
+  classical
   rw [firstDysonCoeff_basisState, firstDysonBasis]
-  exact Finsupp.support_finsetSum_subset _ _
+  intro m hm
+  by_contra hnot
+  have hmzero :
+      (∑ k ∈ (V (basisState n)).support,
+        firstDysonMatrixCoeff energy V τ k n • basisState k) m = 0 := by
+    simp [basisState, hnot]
+  have hmne :
+      (∑ k ∈ (V (basisState n)).support,
+        firstDysonMatrixCoeff energy V τ k n • basisState k) m ≠ 0 := by
+    simpa using hm
+  exact hmne hmzero
 
 end Common
 end SecondQuantization
