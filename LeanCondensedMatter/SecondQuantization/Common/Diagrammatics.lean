@@ -21,6 +21,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentPart
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentRestriction
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentPairing
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentPairProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentOrderDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentOrderedSimplex
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoComponentOrderedSimplex
@@ -49,7 +50,7 @@ interaction-vertex order, local-time reconstruction, and ordered-simplex product
 interaction-time slots, componentwise normalized-pair sums and products, equivalences between ambient
 component pairs and restricted external/vacuum pairings, and the resulting pair-orientation
 dichotomy; ordered diagram data, connected components, component-local orders, order-preserving
-shuffle decompositions, component-local/global pairing compatibility, and shuffled ordered-simplex
-integrands; quartic component restriction and reassembly, decomposition equivalences, and
-componentwise scalar factorization.
+shuffle decompositions, component-local/global pairing compatibility and pair-product reindexing, and
+shuffled ordered-simplex integrands; quartic component restriction and reassembly, decomposition
+equivalences, and componentwise scalar factorization.
 -/
