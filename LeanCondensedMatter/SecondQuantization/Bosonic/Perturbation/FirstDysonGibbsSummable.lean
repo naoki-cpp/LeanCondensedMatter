@@ -38,7 +38,7 @@ theorem matrixCoeff_infiniteDysonCoeff_one_self
     intro σ
     change Common.matrixCoeff (interactionPicture ε V σ) n n = Common.matrixCoeff V n n
     rw [matrixCoeff_interactionPicture]
-    simp
+    norm_num
   simp_rw [hdiag]
   rw [intervalIntegral.integral_const]
   simp only [sub_zero]
