@@ -141,6 +141,9 @@ theorem dist_completedModeTruncation_le_two_mul_of_fixed
     (S : Finset Mode) (ψ φ : CompletedFockSpace Mode)
     (hφ : completedModeTruncation S φ = φ) :
     dist (completedModeTruncation S ψ) ψ ≤ 2 * dist ψ φ := by
+  have hcontract :
+      dist (completedModeTruncation S ψ) (completedModeTruncation S φ) ≤ dist ψ φ :=
+    dist_completedModeTruncation_le S ψ φ
   calc
     dist (completedModeTruncation S ψ) ψ ≤
         dist (completedModeTruncation S ψ) (completedModeTruncation S φ) +
@@ -148,8 +151,8 @@ theorem dist_completedModeTruncation_le_two_mul_of_fixed
       dist_triangle _ _ _
     _ = dist (completedModeTruncation S ψ) (completedModeTruncation S φ) + dist φ ψ := by
       rw [hφ]
-    _ ≤ dist ψ φ + dist φ ψ :=
-      add_le_add_right (dist_completedModeTruncation_le S ψ φ) _
+    _ ≤ dist ψ φ + dist φ ψ := by
+      exact add_le_add hcontract (le_refl _)
     _ = 2 * dist ψ φ := by
       rw [dist_comm φ ψ, two_mul]
 
