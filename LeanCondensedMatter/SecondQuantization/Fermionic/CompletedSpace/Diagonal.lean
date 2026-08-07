@@ -131,7 +131,6 @@ theorem algebraicToCompletedDiagonalDomain_apply (w : Occupation Mode → ℂ)
       CompletedFockSpace Mode) n) = x n :=
   rfl
 
-@[simp]
 theorem algebraicToCompletedDiagonalDomain_basisState (w : Occupation Mode → ℂ)
     (n : Occupation Mode) :
     ((algebraicToCompletedDiagonalDomain w (basisState n) : completedDiagonalDomain w) :
