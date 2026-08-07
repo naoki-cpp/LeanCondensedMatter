@@ -126,7 +126,7 @@ theorem schrodinger_weak_continuity_interval
       intervalSmearedCurrentPairing1D a b testDerivative
           (fun x => probabilityCurrentValue1D ℏ κ (ψ x) (ψx x)) -
         weightedBoundaryCurrent1D a b test
-          (fun x => probabilityCurrentValueValue1D ℏ κ (ψ x) (ψx x)) := by
+          (fun x => probabilityCurrentValue1D ℏ κ (ψ x) (ψx x)) := by
   apply weak_continuity_interval_of_pointwise a b
   · intro x
     exact probability_continuity_balance_of_schrodinger
