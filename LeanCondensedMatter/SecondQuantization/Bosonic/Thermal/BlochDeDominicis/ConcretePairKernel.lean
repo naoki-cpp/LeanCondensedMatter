@@ -35,7 +35,8 @@ theorem matrixCoeff_create_comp_create_self (i j : Mode) (n : Occupation Mode) :
   have hne : createOccupation i (createOccupation j n) ≠ n := by
     intro h
     have hp := congrArg particleNumber h
-    simp at hp
+    simp only [particleNumber_createOccupation] at hp
+    omega
   change (_ • Common.basisState (createOccupation i (createOccupation j n))) n = 0
   exact Common.smul_basisState_apply_of_ne _ hne
 
