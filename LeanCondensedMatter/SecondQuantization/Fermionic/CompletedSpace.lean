@@ -6,6 +6,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Canonical
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Diagonal
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.DiagonalAnalytic
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbs
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnboundedExpectation
 
 set_option linter.style.header false
 
@@ -24,9 +25,11 @@ operators, and conjugation-fixed weights are self-adjoint; in particular this ap
 Hamiltonian and total-number operator.
 
 Under explicit absolute summability of the occupation Boltzmann weights, the completed free Gibbs
-state is a genuine trace-class `DensityOperator`. Bounded expectations are connected to the
-canonical density-state expectation as an occupation-basis `tsum`, while unbounded diagonal
-observables remain behind a separate thermal integrability predicate.
+state is a genuine trace-class `DensityOperator`. Bounded expectations use the canonical
+density-state API, while integrable unbounded diagonal observables are represented separately by
+absolutely convergent occupation-basis series. In particular this gives explicit expectation
+interfaces for the completed free Hamiltonian and total particle number without coercing either
+unbounded operator into `ContinuousLinearMap`.
 
 Finite-mode compatibility, approximation, and thermodynamic-limit constructions remain later work.
 -/
