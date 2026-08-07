@@ -12,13 +12,18 @@ obligation belongs.
 
 ## Initial representation choice
 
-The first sector is fermionic.  For an arbitrary linearly ordered mode type `Mode`, use
+The first sector is fermionic.  The completed representation itself is defined for an arbitrary
+mode type `Mode` by
 
 ```lean
 SecondQuantization.Fermionic.CompletedFockSpace Mode
   := ℓ²(Fermionic.Occupation Mode, ℂ)
   =  ℓ²(Finset Mode, ℂ).
 ```
+
+A linear order is introduced only where the existing fermionic sign convention for ladder
+operators requires it.  The completion and diagonal thermal constructions do not need a
+`LinearOrder Mode` assumption.
 
 The choice is intentionally asymmetric between statistics sectors.
 
@@ -35,7 +40,7 @@ The bosonic completed space is also naturally an `ℓ²` space, but its ladder a
 unbounded.  Starting there would force completion and domain theory to be solved simultaneously,
 which is contrary to the issue boundary.
 
-## Implemented first slice
+## Completed representation and bounded CAR layer
 
 `Fermionic/CompletedSpace/Basic.lean` provides:
 
@@ -45,6 +50,11 @@ which is contrary to the issue boundary.
 - injectivity and dense range of that inclusion;
 - `completedNumberOperator`, the bounded projection onto configurations containing one mode;
 - agreement of the completed and algebraic number operators on the full algebraic core.
+
+The subsequent toggle/operator/core/CAR files construct bounded completed fermionic creation and
+annihilation operators, prove their occupation-basis action and norm bounds, identify them with the
+algebraic ladder maps on the dense finite-support core, and lift the canonical anticommutation
+relations to the completed Hilbert space.
 
 This validates the representation without pretending that every algebraic operator is bounded.
 
@@ -59,38 +69,71 @@ number operator is a coordinate mask and satisfies
 ‖Nᵢ ψ‖ ≤ ‖ψ‖.
 ```
 
-Fermionic creation and annihilation operators are expected to extend boundedly, but their completed
-versions should be introduced only after the signed partial reindexing is constructed and its norm
-bound is proved.  CAR should then be stated as an identity of bounded operators and connected back to
+The completed fermionic creation and annihilation maps are likewise bounded signed partial
+reindexings, so CAR is correctly stated as an identity of bounded operators and connected back to
 the existing algebraic theorem on the dense core.
 
 ### Unbounded operators
 
 A free Hamiltonian with an unbounded one-particle dispersion and a total number operator over
-infinitely many modes are generally unbounded.  They must use a domain-carrying interface such as
-Mathlib's `LinearPMap`, or a later closed/self-adjoint specialization, rather than
-`ContinuousLinearMap`.
+infinitely many modes are generally unbounded.  They use Mathlib's domain-carrying `LinearPMap`
+interface rather than `ContinuousLinearMap`.
 
-The first domain should be an explicit weighted square-summability condition on occupation
-amplitudes.  Agreement with the algebraic operator is a core theorem; essential self-adjointness or
-closure is a later result, not part of the definition.
+`CompletedSpace/Diagonal.lean` defines the maximal weighted `ℓ²` domain for diagonal multiplication,
+packages the free Hamiltonian and total number operator on their natural domains, and proves
+agreement with the algebraic operators on the finite-support core.  `DiagonalAnalytic.lean` then
+proves dense domain, closedness, adjoint identification by conjugating the diagonal weight, and
+self-adjointness for real weights.  These analytic results remain separate from the operator
+definitions.
 
-Products used in KMS or Dyson expressions must state their product domains.  A formal expression
-such as `A * exp (-β H)` is not admitted merely because it is meaningful in finite dimensions.
+Products used in KMS or Dyson expressions must still state their product domains.  A formal
+expression such as `A * exp (-β H)` is not admitted merely because it is meaningful in finite
+dimensions.
 
 ## Thermal-state route
 
-The completed representation alone does not produce a Gibbs state.  A later slice should assume:
+`CompletedSpace/FreeGibbs.lean` constructs the free completed Gibbs state from the minimal explicit
+occupation-level hypothesis
 
-- a countable configuration basis or an equivalent spectral enumeration;
-- a real occupation energy `E` bounded below;
-- explicit summability of `exp (-β E n)`;
-- positivity and nonzero normalization of the partition sum.
+```text
+Summable (fun n : Occupation Mode => ‖exp (-β E(n))‖).
+```
 
-Under those hypotheses, the diagonal Gibbs operator can be shown trace class and normalized into the
-existing `QuantumTheory.DensityOperator`.  Bounded observables then use the canonical
-`DensityOperator.expectation` from #421.  Expectations of unbounded observables need a separate
-integrability/domain statement and must not be routed through the bounded-observable API.
+The hypothesis gives a positive finite partition sum and a normalized diagonal trace-class
+`QuantumTheory.DensityOperator`.  Bounded observables therefore use the canonical
+`DensityOperator.expectation` from #421, with an explicit occupation-basis `tsum` formula.
+
+Unbounded diagonal observables are not passed through that bounded API.
+`CompletedSpace/UnboundedExpectation.lean` instead uses the separate condition
+
+```text
+Summable (fun n => ‖pβ(n) * a(n)‖)
+```
+
+and defines the corresponding real occupation-series expectation, including specializations to the
+free Hamiltonian energy and total particle number.
+
+For free fermions, `CompletedSpace/FreeGibbsSummability.lean` supplies a more practical one-particle
+sufficient condition.  With
+
+```text
+qᵢ := exp (-β εᵢ),
+```
+
+`Summable q` implies the occupation-level Gibbs summability because
+
+```text
+exp (-β E(n)) = ∏ i ∈ n, qᵢ.
+```
+
+The same finite-subset summability theorem yields the infinite product identity
+
+```text
+Z(β) = ∏' i, (1 + qᵢ).
+```
+
+No separate countability typeclass is required by this API: the summability hypothesis itself is
+the analytic restriction on the mode family.
 
 The generic `ExpectationPairingRecursion` from #421 remains representation independent.  A completed
 fermionic or bosonic instance must supply its own admissibility predicate, KMS laws, and product-domain
@@ -117,24 +160,29 @@ any mode type.
 
 ### C2 — bounded CAR operators
 
-- [ ] Construct completed creation and annihilation maps as signed partial reindexings.
-- [ ] Prove norm bounds and basis action.
-- [ ] Prove agreement on the algebraic core and completed CAR identities.
-- [ ] Record the resulting bounded-operator admissibility for generic thermal recursion.
+- [x] Construct completed creation and annihilation maps as signed partial reindexings.
+- [x] Prove norm bounds and basis action.
+- [x] Prove agreement on the algebraic core and completed CAR identities.
+- [ ] Record a completed-space admissibility/KMS instance for generic thermal recursion when its
+  product-domain requirements are available.
 
 ### C3 — diagonal unbounded operators
 
-- [ ] Define weighted diagonal domains for free Hamiltonians and total number operators.
-- [ ] Package the operators with a partial-linear-map or closed-operator interface.
-- [ ] Prove algebraic-core agreement and basic domain invariance.
-- [ ] Separate core identities from closure and self-adjointness theorems.
+- [x] Define weighted diagonal domains for free Hamiltonians and total number operators.
+- [x] Package the operators with a domain-carrying partial-linear-map interface.
+- [x] Prove algebraic-core agreement.
+- [x] Prove dense-domain, closedness, adjoint, and self-adjointness results separately from the core
+  definitions.
+- [ ] Add product-domain/domain-invariance lemmas required by later KMS or unbounded Dyson products.
 
 ### C4 — trace-class free Gibbs state
 
-- [ ] State countability and Boltzmann-weight summability hypotheses.
-- [ ] Construct the diagonal trace-class Gibbs state.
-- [ ] Connect bounded expectations to `DensityOperator.expectation`.
-- [ ] State the separate integrability interface for unbounded observables.
+- [x] State explicit occupation-level Boltzmann summability and a useful mode-level sufficient
+  criterion.
+- [x] Construct the diagonal trace-class Gibbs state with positive normalization.
+- [x] Connect bounded expectations to `DensityOperator.expectation`.
+- [x] Provide a separate integrability and expectation interface for unbounded diagonal observables.
+- [x] Prove the free-fermion partition product formula under mode-level summability.
 
 ### C5 — compatibility and approximation
 
