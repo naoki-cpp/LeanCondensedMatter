@@ -7,8 +7,12 @@ set_option linter.style.header false
 # Statistics-independent quartic operator structure
 
 The four local-leg modes, creation/annihilation kinds, free-energy shifts, and fixed operator order of
-a number-conserving quartic vertex do not depend on exchange statistics.  This module packages that
+a number-conserving quartic vertex do not depend on exchange statistics. This module packages that
 shared structure while leaving concrete CAR/CCR relations in the fermionic and bosonic layers.
+
+A quartic interaction only needs finitely many nonzero vertex labels, not a finite ambient mode type.
+`quarticInteractionOn` takes that finite support explicitly. The finite-mode constructor
+`quarticInteraction` is its `Finset.univ` specialization.
 -/
 
 namespace SecondQuantization
@@ -72,11 +76,19 @@ abbrev quarticVertexOperator
   (create q.create₁).comp
     ((create q.create₂).comp ((annihilate q.annihilate₂).comp (annihilate q.annihilate₁)))
 
-/-- A finite quartic interaction constructed from arbitrary ladder maps. -/
+/-- A quartic interaction supported on a specified finite set of vertex labels.
+
+The ambient mode type may be infinite; only the labels in `support` contribute. -/
+def quarticInteractionOn (support : Finset (QuarticVertexLabel Mode))
+    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (g : QuarticVertexLabel Mode → ℂ) : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
+  ∑ q ∈ support, g q • quarticVertexOperator create annihilate q
+
+/-- The all-label quartic interaction on a finite mode type. -/
 def quarticInteraction [Fintype Mode]
     (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (g : QuarticVertexLabel Mode → ℂ) : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config :=
-  ∑ q, g q • quarticVertexOperator create annihilate q
+  quarticInteractionOn Finset.univ create annihilate g
 
 /-- A quartic vertex assembled from ladder eigenoperators evolves with their total energy shift. -/
 theorem heisenbergEvolve_quarticVertexOperator
@@ -100,17 +112,27 @@ theorem heisenbergEvolve_quarticVertexOperator
   push_cast
   ring
 
-/-- Diagonal Heisenberg evolution distributes over a finite quartic interaction. -/
+/-- Diagonal Heisenberg evolution distributes over a finitely supported quartic interaction. -/
+theorem heisenbergEvolve_quarticInteractionOn
+    (support : Finset (QuarticVertexLabel Mode)) (energy : Config → ℝ) (τ : ℝ)
+    (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (g : QuarticVertexLabel Mode → ℂ) :
+    heisenbergEvolve energy τ (quarticInteractionOn support create annihilate g) =
+      ∑ q ∈ support, g q • heisenbergEvolve energy τ (quarticVertexOperator create annihilate q) := by
+  rw [quarticInteractionOn, heisenbergEvolve_sum]
+  refine Finset.sum_congr rfl fun q _ => ?_
+  rw [heisenbergEvolve_smul]
+
+/-- Diagonal Heisenberg evolution distributes over the all-label finite-mode interaction. -/
 theorem heisenbergEvolve_quarticInteraction [Fintype Mode]
     (energy : Config → ℝ) (τ : ℝ)
     (create annihilate : Mode → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (g : QuarticVertexLabel Mode → ℂ) :
     heisenbergEvolve energy τ (quarticInteraction create annihilate g) =
       ∑ q, g q • heisenbergEvolve energy τ (quarticVertexOperator create annihilate q) := by
-  rw [quarticInteraction]
-  rw [heisenbergEvolve_sum]
-  refine Finset.sum_congr rfl fun q _ => ?_
-  rw [heisenbergEvolve_smul]
+  simpa [quarticInteraction] using
+    (heisenbergEvolve_quarticInteractionOn
+      (support := (Finset.univ : Finset (QuarticVertexLabel Mode))) energy τ create annihilate g)
 
 end
 end Common
