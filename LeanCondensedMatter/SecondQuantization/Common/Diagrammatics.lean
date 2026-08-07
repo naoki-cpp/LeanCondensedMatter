@@ -1,6 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentPartition
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentRestriction
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentPairProduct
@@ -9,12 +7,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentOrde
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.FiniteComponentOrderedSimplex
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentOrderedSimplexProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentVertexProduct
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentConnected
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Reassemble
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ReassembleComponentPartitionEq
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ReassembleRestrictComponent
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ReassembleDecompose
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentPartition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentRestriction
@@ -33,16 +25,13 @@ set_option linter.style.header false
 /-!
 # Statistics-independent diagrammatics
 
-Quartic leg indexing, labelled quartic diagram syntax, two-point diagrams with distinguished external
+Quartic leg indexing, labelled quartic diagram syntax, connected-component restriction/reassembly and
+component-decomposition equivalences; component-local orders, order-preserving shuffle decompositions,
+component-local/global pairing compatibility and pair-product reindexing, shuffled ordered-simplex
+integrands, and componentwise scalar factorization; two-point diagrams with distinguished external
 legs, full component partitions, automatic connectivity of the two one-legged external vertices,
 vacuum/external component restriction data, the canonical external-plus-vacuum decomposition of
 component indices and interaction vertices, componentwise interaction-vertex products and Dyson
-signs, order-preserving shuffles, the canonical shuffle induced by the original interaction-vertex
-order, local-time reconstruction, and ordered-simplex products for component interaction-time slots,
-componentwise normalized-pair sums and products, equivalences between ambient component pairs and
-restricted external/vacuum pairings, and the resulting pair-orientation dichotomy; ordered diagram
-data, connected components, component-local orders, order-preserving shuffle decompositions,
-component-local/global pairing compatibility and pair-product reindexing, and shuffled ordered-simplex
-integrands; quartic component restriction and reassembly, decomposition equivalences, and componentwise
-scalar factorization.
+signs, order-preserving shuffles, local-time reconstruction, ordered-simplex products, normalized-pair
+transport, and pair-orientation results.
 -/

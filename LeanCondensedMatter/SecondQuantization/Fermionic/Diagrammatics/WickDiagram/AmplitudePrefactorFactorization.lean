@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentConnected
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentConnected
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Amplitude
 

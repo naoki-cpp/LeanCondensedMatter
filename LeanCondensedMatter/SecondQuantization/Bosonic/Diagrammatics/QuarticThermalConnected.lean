@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticThermalComponentFactorization
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentDecompositionEquiv
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentOrderDecomposition
 
 set_option linter.style.header false

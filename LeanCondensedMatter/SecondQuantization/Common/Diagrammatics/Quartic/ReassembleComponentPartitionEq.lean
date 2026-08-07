@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Reassemble
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Reassemble
 
 set_option linter.style.header false
 
