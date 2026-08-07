@@ -58,6 +58,21 @@ theorem assignment_ofAssignment_self (e : (Σ i, slot i) ≃ κ) (i : ι)
   classical
   simp [ofAssignment]
 
+/-- Embedding one dependent-slot fiber into the ambient assignment space is continuous. -/
+theorem continuous_ofAssignment (e : (Σ i, slot i) ≃ κ) (i : ι) :
+    Continuous (ofAssignment e i) := by
+  classical
+  apply continuous_pi
+  intro k
+  rcases h : e.symm k with ⟨i', j⟩
+  by_cases hi : i' = i
+  · subst i'
+    simpa [ofAssignment, ofAssignments, h] using
+      (continuous_apply j : Continuous (fun τ : slot i → ℝ => τ j))
+  · change Continuous (fun τ : slot i → ℝ =>
+      (Function.update (fun _ => 0) i τ) i' j)
+    simp [hi]
+
 /-- An ambient scalar function is local to fiber `i` when it depends only on that restriction. -/
 def Local (e : (Σ i, slot i) ≃ κ) (i : ι) (F : (κ → ℝ) → ℂ) : Prop :=
   ∀ τ υ, assignment e τ i = assignment e υ i → F τ = F υ
