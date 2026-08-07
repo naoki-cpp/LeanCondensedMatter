@@ -2,7 +2,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFun
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.WeightedFreeTwoPointFunction
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering
 
 set_option linter.style.header false
 
@@ -196,20 +195,20 @@ theorem freeGibbsGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mode}
     (τ τ' : ℝ) : freeGibbsGreenFunction ε β i j τ τ' = 0 := by
   rw [freeGibbsGreenFunction, weightedFreeTwoPointFunction]
   rcases lt_trichotomy τ' τ with h | h | h
-  · rw [Common.timeOrderedProduct_of_gt Common.Statistics.fermion _ _ h,
+  · rw [twoPointTimeOrderedProduct_of_gt ε i j h,
       imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
       Common.normalizedWeightedDiagonal_smul,
       normalizedWeightedDiagonal_annihilate_comp_create_of_ne _ hij]
   · subst h
-    rw [Common.timeOrderedProduct_self_time Common.Statistics.fermion,
+    rw [twoPointTimeOrderedProduct_self_time ε i j τ',
       imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
       Common.normalizedWeightedDiagonal_smul,
       Common.normalizedWeightedDiagonal_add, Common.normalizedWeightedDiagonal_neg,
       normalizedWeightedDiagonal_annihilate_comp_create_of_ne _ hij,
       normalizedWeightedDiagonal_create_comp_annihilate_of_ne _ hij]
-  · rw [Common.timeOrderedProduct_of_lt Common.Statistics.fermion _ _ h,
+  · rw [twoPointTimeOrderedProduct_of_lt ε i j h,
       imaginaryTimeEvolve_annihilate, imaginaryTimeEvolve_create]
     simp [LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
       Common.normalizedWeightedDiagonal_smul,
