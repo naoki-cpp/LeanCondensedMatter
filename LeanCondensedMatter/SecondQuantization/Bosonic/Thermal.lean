@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeTwoPointCoefficient
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.QuadraticParticleNumberWeightSummable
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint
@@ -14,7 +15,7 @@ set_option linter.style.header false
 Public umbrella for the convergence-aware free bosonic thermal layer:
 
 - one- and multi-mode Boltzmann weights;
-- partition-series and particle-number-weighted summability;
+- partition-series and particle-number-weighted summability, including quadratic occupation moments;
 - free two-point basis coefficients;
 - the uncutoff bosonic two-point specialization of the Common Bloch–de Dominicis framework;
 - a normalized free Gibbs functional on an explicit summable-operator submodule;
