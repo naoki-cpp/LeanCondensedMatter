@@ -37,10 +37,25 @@ private theorem besselPotential_two_eq_sub_laplacian (f : 𝓢'(ℝ, ℂ)) :
       TemperedDistribution.fourierMultiplierCLM ℂ (fun _ : ℝ => (1 : ℂ)) f = f := by
     simp
   rw [← hconst]
+  have hsymbol :
+      (fun x : ℝ => Complex.ofReal ((1 + ‖x‖ ^ 2) ^ ((2 : ℝ) / 2))) =
+        (fun x : ℝ => (1 : ℂ) + Complex.ofReal (‖x‖ ^ 2)) := by
+    funext x
+    norm_num
+    simp
+  rw [hsymbol]
   simp only [TemperedDistribution.fourierMultiplierCLM_apply]
-  rw [← map_add]
-  congr 1
-  ext x
+  have hadd :
+      TemperedDistribution.smulLeftCLM ℂ
+          (fun x : ℝ => (1 : ℂ) + Complex.ofReal (‖x‖ ^ 2)) =
+        TemperedDistribution.smulLeftCLM ℂ (fun _ : ℝ => (1 : ℂ)) +
+          TemperedDistribution.smulLeftCLM ℂ
+            (fun x : ℝ => Complex.ofReal (‖x‖ ^ 2)) := by
+    simpa only [Pi.add_apply] using
+      (TemperedDistribution.smulLeftCLM_add (F := ℂ)
+        (g₁ := fun _ : ℝ => (1 : ℂ))
+        (g₂ := fun x : ℝ => Complex.ofReal (‖x‖ ^ 2)) (by fun_prop) (by fun_prop))
+  rw [hadd]
   simp
 
 /-- If an `L²` wavefunction has an `L²` distributional Laplacian, then it belongs to `H²`. -/
@@ -52,12 +67,13 @@ theorem continuumMaximalLaplacianDomain1D_le_continuumH2Domain1D :
     (mem_continuumMaximalLaplacianDomain1D_iff ψ).mp hψ
   rw [TemperedDistribution.MemSobolev]
   let c : ℝ := ((2 * Real.pi) ^ 2)⁻¹
-  refine ⟨ψ - (c : ℂ) • φ, ?_⟩
+  refine ⟨ψ - c • φ, ?_⟩
   change TemperedDistribution.besselPotential ℝ ℂ 2
       (l2ToTemperedDistribution1D ψ) =
-    l2ToTemperedDistribution1D (ψ - (c : ℂ) • φ)
-  rw [besselPotential_two_eq_sub_laplacian, ← hφ, map_sub, map_smul]
-  simp [c]
+    l2ToTemperedDistribution1D (ψ - c • φ)
+  rw [besselPotential_two_eq_sub_laplacian, ← hφ, map_sub,
+    l2ToTemperedDistribution1D.map_smul_of_tower]
+  rfl
 
 /-- The explicit `H²` domain equals the maximal distributional Laplacian domain. -/
 theorem continuumH2Domain1D_eq_continuumMaximalLaplacianDomain1D :
