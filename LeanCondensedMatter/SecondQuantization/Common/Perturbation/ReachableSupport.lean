@@ -19,7 +19,7 @@ namespace Common
 
 variable {Config : Type*}
 
-local instance : DecidableEq Config := Classical.decEq Config
+noncomputable local instance : DecidableEq Config := Classical.decEq Config
 
 /-- Configurations reachable from `n` after exactly `order` applications of the algebraic operator
 `V`, with possible cancellation deliberately ignored. -/
