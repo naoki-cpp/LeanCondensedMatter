@@ -19,7 +19,6 @@ open Combinatorics
 
 variable {Mode : Type*} {N : ℕ}
 
-@[simp]
 theorem vertexOfLeg_orderedLegToDiagramLeg (S : Finset (Fin N))
     (order : Common.QuarticVertexOrder S) (p : Fin (2 * (2 * S.card))) :
     Common.vertexOfLeg (Common.orderedLegToDiagramLeg S order p) =
@@ -27,7 +26,6 @@ theorem vertexOfLeg_orderedLegToDiagramLeg (S : Finset (Fin N))
   change ((Common.quarticLegEquiv S) ((Common.orderedLegToDiagramLeg S order) p)).1 = _
   simp [Common.orderedLegToDiagramLeg]
 
-@[simp]
 theorem localLegOfLeg_orderedLegToDiagramLeg (S : Finset (Fin N))
     (order : Common.QuarticVertexOrder S) (p : Fin (2 * (2 * S.card))) :
     Common.localLegOfLeg (Common.orderedLegToDiagramLeg S order p) =
