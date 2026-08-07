@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.Calculus
-import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds
+import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableCalculus
 
 set_option linter.style.header false
 
