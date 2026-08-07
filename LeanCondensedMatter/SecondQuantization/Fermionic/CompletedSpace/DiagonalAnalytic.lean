@@ -88,18 +88,96 @@ theorem completedDiagonalOperator_isClosable (w : Occupation Mode → ℂ) :
     (completedDiagonalOperator w).IsClosable :=
   (completedDiagonalOperator_isClosed w).isClosable
 
-/-- A diagonal operator whose weights are fixed by complex conjugation is formally symmetric. -/
-theorem completedDiagonalOperator_isFormalAdjoint_self (w : Occupation Mode → ℂ)
-    (hw : ∀ n, star (w n) = w n) :
-    (completedDiagonalOperator w).IsFormalAdjoint (completedDiagonalOperator w) := by
+/-- Inner product with a completed occupation basis vector in the first slot evaluates the
+corresponding coordinate. -/
+@[simp]
+theorem inner_completedBasisState_left (n : Occupation Mode) (ψ : CompletedFockSpace Mode) :
+    inner ℂ (completedBasisState n) ψ = ψ n := by
+  classical
+  rw [lp.inner_eq_tsum]
+  simp [completedBasisState, lp.single_apply]
+
+/-- The maximal diagonal operator with conjugated weights is a formal adjoint of the original
+operator. -/
+theorem completedDiagonalOperator_isFormalAdjoint_conj (w : Occupation Mode → ℂ) :
+    (completedDiagonalOperator w).IsFormalAdjoint
+      (completedDiagonalOperator fun n => star (w n)) := by
   intro x y
   rw [lp.inner_eq_tsum, lp.inner_eq_tsum]
   apply tsum_congr
   intro n
   rw [completedDiagonalOperator_apply, completedDiagonalOperator_apply]
-  have hwn : (starRingEnd ℂ) (w n) = w n := by
-    simpa using hw n
-  simp [hwn, mul_assoc, mul_left_comm]
+  simp [mul_assoc, mul_left_comm]
+
+/-- The conjugate-weight diagonal operator is contained in the Hilbert-space adjoint. -/
+theorem completedDiagonalOperator_conj_le_adjoint (w : Occupation Mode → ℂ) :
+    completedDiagonalOperator (fun n => star (w n)) ≤
+      (completedDiagonalOperator w).adjoint := by
+  exact (completedDiagonalOperator_isFormalAdjoint_conj w).le_adjoint
+    (completedDiagonalOperator_denseDomain w)
+
+/-- The adjoint acts coordinatewise by the conjugated diagonal weight. -/
+theorem completedDiagonalOperator_adjoint_apply (w : Occupation Mode → ℂ)
+    (y : (completedDiagonalOperator w).adjoint.domain) (n : Occupation Mode) :
+    (completedDiagonalOperator w).adjoint y n =
+      star (w n) * (y : CompletedFockSpace Mode) n := by
+  let e : (completedDiagonalOperator w).domain :=
+    ⟨completedBasisState n, completedBasisState_mem_completedDiagonalDomain w n⟩
+  have h := ((completedDiagonalOperator w).adjoint_isFormalAdjoint
+    (completedDiagonalOperator_denseDomain w)).symm e y
+  have he : completedDiagonalOperator w e = w n • completedBasisState n := by
+    exact completedDiagonalOperator_basisState w n
+  rw [he] at h
+  simpa using h.symm
+
+/-- Every vector in the adjoint domain belongs to the conjugate-weight maximal diagonal domain. -/
+theorem completedDiagonalOperator_adjoint_domain_le_conj (w : Occupation Mode → ℂ) :
+    (completedDiagonalOperator w).adjoint.domain ≤
+      completedDiagonalDomain (fun n => star (w n)) := by
+  intro y hy
+  rw [mem_completedDiagonalDomain_iff]
+  let y' : (completedDiagonalOperator w).adjoint.domain := ⟨y, hy⟩
+  have hout := lp.memℓp ((completedDiagonalOperator w).adjoint y')
+  convert hout using 1
+  funext n
+  exact (completedDiagonalOperator_adjoint_apply w y' n).symm
+
+/-- The Hilbert-space adjoint is contained in the conjugate-weight maximal diagonal operator. -/
+theorem completedDiagonalOperator_adjoint_le_conj (w : Occupation Mode → ℂ) :
+    (completedDiagonalOperator w).adjoint ≤
+      completedDiagonalOperator (fun n => star (w n)) := by
+  refine ⟨completedDiagonalOperator_adjoint_domain_le_conj w, ?_⟩
+  intro x y hxy
+  apply lp.ext
+  funext n
+  rw [completedDiagonalOperator_adjoint_apply, completedDiagonalOperator_apply]
+  change star (w n) * (x : CompletedFockSpace Mode) n =
+    star (w n) * (y : CompletedFockSpace Mode) n
+  rw [hxy]
+
+/-- The adjoint of a maximal diagonal multiplication operator is exactly multiplication by the
+complex-conjugated weight, with the corresponding maximal weighted `ℓ²` domain. -/
+theorem completedDiagonalOperator_adjoint_eq (w : Occupation Mode → ℂ) :
+    (completedDiagonalOperator w).adjoint =
+      completedDiagonalOperator (fun n => star (w n)) := by
+  exact le_antisymm (completedDiagonalOperator_adjoint_le_conj w)
+    (completedDiagonalOperator_conj_le_adjoint w)
+
+/-- A diagonal operator whose weights are fixed by complex conjugation is formally symmetric. -/
+theorem completedDiagonalOperator_isFormalAdjoint_self (w : Occupation Mode → ℂ)
+    (hw : ∀ n, star (w n) = w n) :
+    (completedDiagonalOperator w).IsFormalAdjoint (completedDiagonalOperator w) := by
+  simpa [show (fun n => star (w n)) = w from funext hw] using
+    completedDiagonalOperator_isFormalAdjoint_conj w
+
+/-- A maximal diagonal operator with conjugation-fixed weights is self-adjoint. -/
+theorem completedDiagonalOperator_isSelfAdjoint_of_star (w : Occupation Mode → ℂ)
+    (hw : ∀ n, star (w n) = w n) :
+    IsSelfAdjoint (completedDiagonalOperator w) := by
+  rw [LinearPMap.isSelfAdjoint_def, completedDiagonalOperator_adjoint_eq]
+  congr 1
+  funext n
+  exact hw n
 
 /-- Free-Hamiltonian occupation energies are fixed by complex conjugation. -/
 theorem star_freeHamiltonianWeight (ε : Mode → ℝ) (n : Occupation Mode) :
@@ -121,6 +199,12 @@ theorem completedFreeHamiltonian_isClosed (ε : Mode → ℝ) :
 theorem completedFreeHamiltonian_isFormalAdjoint_self (ε : Mode → ℝ) :
     (completedFreeHamiltonian ε).IsFormalAdjoint (completedFreeHamiltonian ε) := by
   exact completedDiagonalOperator_isFormalAdjoint_self (freeHamiltonianWeight ε)
+    (star_freeHamiltonianWeight ε)
+
+/-- The completed free Hamiltonian is self-adjoint. -/
+theorem completedFreeHamiltonian_isSelfAdjoint (ε : Mode → ℝ) :
+    IsSelfAdjoint (completedFreeHamiltonian ε) := by
+  exact completedDiagonalOperator_isSelfAdjoint_of_star (freeHamiltonianWeight ε)
     (star_freeHamiltonianWeight ε)
 
 /-- The completed free Hamiltonian is closable. -/
@@ -151,6 +235,13 @@ theorem completedTotalNumberOperator_isFormalAdjoint_self {Mode : Type*} :
     (completedTotalNumberOperator (Mode := Mode)).IsFormalAdjoint
       (completedTotalNumberOperator (Mode := Mode)) := by
   exact completedDiagonalOperator_isFormalAdjoint_self
+    (fun n : Occupation Mode => (particleNumber n : ℂ))
+    (star_particleNumberWeight (Mode := Mode))
+
+/-- The completed total number operator is self-adjoint. -/
+theorem completedTotalNumberOperator_isSelfAdjoint {Mode : Type*} :
+    IsSelfAdjoint (completedTotalNumberOperator (Mode := Mode)) := by
+  exact completedDiagonalOperator_isSelfAdjoint_of_star
     (fun n : Occupation Mode => (particleNumber n : ℂ))
     (star_particleNumberWeight (Mode := Mode))
 
