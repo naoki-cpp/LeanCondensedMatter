@@ -123,9 +123,11 @@ theorem measurable_parametric_intervalIntegral_zero
     rw [intervalIntegral]
     apply congrArg₂ (· - ·)
     · rw [← MeasureTheory.integral_indicator measurableSet_Ioc]
-      rfl
+      apply MeasureTheory.integral_congr_ae
+      exact Filter.Eventually.of_forall fun t => by simp [left, Set.indicator]
     · rw [← MeasureTheory.integral_indicator measurableSet_Ioc]
-      rfl
+      apply MeasureTheory.integral_congr_ae
+      exact Filter.Eventually.of_forall fun t => by simp [right, Set.indicator]
   rw [heq]
   exact hsub.measurable
 
@@ -138,7 +140,7 @@ theorem measurable_orderedSimplexIntegral_of_measurable {X : Type*} [MeasurableS
       have hpair : Measurable
           (fun x : X => (x, (Fin.elim0 : Fin 0 → ℝ))) := by
         measurability
-      simpa only [orderedSimplexIntegral_zero] using hf.comp hpair
+      simpa only [orderedSimplexIntegral_zero, Function.comp_apply] using hf.comp hpair
   | n + 1, bound, f, hbound, hf => by
       simp_rw [orderedSimplexIntegral_succ]
       have hf' : Measurable (Function.uncurry
