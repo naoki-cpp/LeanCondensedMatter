@@ -140,7 +140,9 @@ theorem measurable_orderedSimplexIntegral_of_measurable {X : Type*} [MeasurableS
       have hpair : Measurable
           (fun x : X => (x, (Fin.elim0 : Fin 0 → ℝ))) := by
         measurability
-      simpa only [orderedSimplexIntegral_zero, Function.comp_apply] using hf.comp hpair
+      change Measurable
+        (fun x : X => Function.uncurry f (x, (Fin.elim0 : Fin 0 → ℝ)))
+      exact hf.comp hpair
   | n + 1, bound, f, hbound, hf => by
       simp_rw [orderedSimplexIntegral_succ]
       have hf' : Measurable (Function.uncurry
