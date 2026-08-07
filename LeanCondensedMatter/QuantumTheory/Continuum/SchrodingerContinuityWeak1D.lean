@@ -70,7 +70,7 @@ theorem weak_continuity_interval_of_pointwise
       (∫ x in a..b, test x * densityTimeDerivative x) =
           ∫ x in a..b, -(test x * currentDerivative x) := by
             apply intervalIntegral.integral_congr_ae
-            exact Filter.Eventually.of_forall fun x => by
+            exact Filter.Eventually.of_forall fun x _ => by
               have hx := hcontinuity x
               have hdensity : densityTimeDerivative x = -currentDerivative x := by
                 linarith
@@ -126,7 +126,7 @@ theorem schrodinger_weak_continuity_interval
       intervalSmearedCurrentPairing1D a b testDerivative
           (fun x => probabilityCurrentValue1D ℏ κ (ψ x) (ψx x)) -
         weightedBoundaryCurrent1D a b test
-          (fun x => probabilityCurrentValue1D ℏ κ (ψ x) (ψx x)) := by
+          (fun x => probabilityCurrentValueValue1D ℏ κ (ψ x) (ψx x)) := by
   apply weak_continuity_interval_of_pointwise a b
   · intro x
     exact probability_continuity_balance_of_schrodinger
