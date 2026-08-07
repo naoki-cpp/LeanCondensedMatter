@@ -48,12 +48,16 @@ private theorem continuousLinearMap_ext_algebraicCore
 
 private theorem completedCreate_algebraicToCompleted (i : Mode) (x : FockSpace Mode) :
     completedCreate i (algebraicToCompleted x) = algebraicToCompleted (create i x) := by
+  change (completedCreate i).toLinearMap (algebraicToCompleted x) =
+    algebraicToCompleted (create i x)
   simpa only [LinearMap.comp_apply] using
     congrArg (fun f : FockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode => f x)
       (completedCreate_comp_algebraicToCompleted i)
 
 private theorem completedAnnihilate_algebraicToCompleted (i : Mode) (x : FockSpace Mode) :
     completedAnnihilate i (algebraicToCompleted x) = algebraicToCompleted (annihilate i x) := by
+  change (completedAnnihilate i).toLinearMap (algebraicToCompleted x) =
+    algebraicToCompleted (annihilate i x)
   simpa only [LinearMap.comp_apply] using
     congrArg (fun f : FockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode => f x)
       (completedAnnihilate_comp_algebraicToCompleted i)
@@ -107,7 +111,9 @@ theorem completedAnticomm_annihilate_create (i j : Mode) :
       annihilate i (create j x) + create j (annihilate i x) = if i = j then x else 0 := by
     have h := congrArg (fun f : FockSpace Mode →ₗ[ℂ] FockSpace Mode => f x)
       (anticomm_annihilate_create i j)
-    simpa [anticomm_apply] using h
+    by_cases hij : i = j
+    · simpa [anticomm_apply, hij] using h
+    · simpa [anticomm_apply, hij] using h
   rw [hcar]
   by_cases hij : i = j <;> simp [hij]
 
