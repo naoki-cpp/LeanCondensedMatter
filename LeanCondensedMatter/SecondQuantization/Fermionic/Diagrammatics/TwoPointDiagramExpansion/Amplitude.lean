@@ -1,4 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.PairingEvaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Reindexing
 
 set_option linter.style.header false
@@ -6,14 +5,12 @@ set_option linter.style.header false
 /-!
 # Fixed-time two-point Wick-diagram amplitudes
 
-This module packages the mixed-time pairing term from the finite-temperature
-Bloch--de Dominicis theorem as an amplitude of a two-point Wick diagram with fixed
-external annihilation/creation labels.
+This module packages the canonical mixed-time pairing value as an amplitude of a two-point Wick
+diagram with fixed external annihilation/creation labels. Pair construction and free Gibbs
+state evaluation are owned by the preceding pairing layer.
 
-The interaction times are still parameters. Ordered-simplex integration and the
-Dyson factor are deliberately left to the next layer. Pair contractions are evaluated through the
-canonical free Gibbs density state; finite Gibbs coordinate formulas are used only for evaluation
-bridges.
+The interaction times are still parameters. Ordered-simplex integration and the Dyson factor are
+deliberately left to the next layer.
 -/
 
 namespace SecondQuantization
@@ -28,40 +25,6 @@ noncomputable def orderedTwoPointVertexWeight {n : ℕ}
     (g : QuarticVertexLabel Mode → ℂ)
     (q : Fin n → QuarticVertexLabel Mode) : ℂ :=
   ∏ v, g (q v)
-
-/-- Canonical free Gibbs density-state contraction of two mixed-time atomic positions. -/
-noncomputable def mixedTimeOrderedAtomicPairValue {n : ℕ}
-    (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
-    (σ : Fin n → ℝ) (q : Fin n → QuarticVertexLabel Mode)
-    (a b : Fin (2 * (2 * n + 1))) : ℂ :=
-  (freeGibbsDensityOperator ε β).expectation
-    (Common.finiteHilbertOperator
-      ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ a).comp
-        (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ b)))
-
-/-- The mixed-time contraction value of one slot-indexed pairing through the shared generic pairing
-evaluator and the canonical density-state pair kernel. -/
-noncomputable def orderedTwoPointPairingValue {n : ℕ}
-    (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
-    (σ : Fin n → ℝ) (q : Fin n → QuarticVertexLabel Mode)
-    (pairing : Pairing (2 * n + 1)) : ℂ :=
-  Common.pairingEvaluation pairing (pairing.weight Common.Statistics.fermion)
-    (mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ q)
-
-/-- The mixed event-level density-state expectation is the external-order sign times the sum of
-canonical pairing evaluations.  This is the semantic pairing boundary used by downstream amplitudes;
-the raw finite-product expansion remains confined to the Bloch--de Dominicis specialization. -/
-theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue
-    {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperator (mixedTimeOrderedVertexComp ε i j τ τ' q σ)) =
-      twoPointExternalOrderSign τ τ' *
-        ∑ pairing : Pairing (2 * n + 1),
-          orderedTwoPointPairingValue ε β i j τ τ' σ q pairing := by
-  rw [freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairing]
-  simp only [orderedTwoPointPairingValue, mixedTimeOrderedAtomicPairValue,
-    Common.pairingEvaluation]
 
 /-- Fixed-time amplitude in the slot-label/pairing representation. -/
 noncomputable def orderedTwoPointFixedTimeAmplitude {n : ℕ}
