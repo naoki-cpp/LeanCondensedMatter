@@ -35,6 +35,7 @@ theorem completedFiniteHilbertContinuousEquiv_apply (ψ : CompletedFockSpace Mod
       completedFiniteHilbertEquiv (Mode := Mode) ψ :=
   rfl
 
+omit [Fintype Mode] in
 private theorem continuousLinearMap_ext_algebraicCore_to_finite
     {A B : CompletedFockSpace Mode →L[ℂ] Common.FiniteHilbertFock (Occupation Mode)}
     (h : ∀ x : FockSpace Mode, A (algebraicToCompleted x) = B (algebraicToCompleted x)) :
@@ -60,9 +61,10 @@ theorem completedFiniteHilbertEquiv_intertwines_of_core
   have hx := congrArg (fun f : FockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode => f x) hcore
   simp only [LinearMap.comp_apply] at hx
   simp only [ContinuousLinearMap.comp_apply]
-  rw [hx, completedFiniteHilbertContinuousEquiv_apply,
-    completedFiniteHilbertEquiv_algebraicToCompleted,
-    completedFiniteHilbertContinuousEquiv_apply,
+  change completedFiniteHilbertEquiv (Mode := Mode) (Ahat (algebraicToCompleted x)) =
+    Common.finiteHilbertOperator A
+      (completedFiniteHilbertEquiv (Mode := Mode) (algebraicToCompleted x))
+  rw [hx, completedFiniteHilbertEquiv_algebraicToCompleted,
     completedFiniteHilbertEquiv_algebraicToCompleted,
     Common.finiteHilbertOperator_equiv_apply]
 
