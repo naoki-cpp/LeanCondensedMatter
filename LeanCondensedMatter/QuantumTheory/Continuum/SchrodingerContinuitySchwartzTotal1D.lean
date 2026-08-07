@@ -45,19 +45,29 @@ theorem schwartzImaginaryPart1D_apply (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
 @[simp]
 theorem deriv_schwartzRealPart1D (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     deriv (schwartzRealPart1D ψ) x = (schwartzSpatialDerivative1D ψ x).re := by
-  simpa [schwartzRealPart1D] using
-    (hasDerivAt_schwartzSpatialDerivative1D_re ψ x).deriv
+  have h : HasDerivAt (schwartzRealPart1D ψ)
+      (schwartzSpatialDerivative1D ψ x).re x := by
+    change HasDerivAt (fun y : ℝ => (ψ y).re)
+      (schwartzSpatialDerivative1D ψ x).re x
+    exact hasDerivAt_schwartzSpatialDerivative1D_re ψ x
+  exact h.deriv
 
 @[simp]
 theorem deriv_schwartzImaginaryPart1D (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     deriv (schwartzImaginaryPart1D ψ) x = (schwartzSpatialDerivative1D ψ x).im := by
-  simpa [schwartzImaginaryPart1D] using
-    (hasDerivAt_schwartzSpatialDerivative1D_im ψ x).deriv
+  have h : HasDerivAt (schwartzImaginaryPart1D ψ)
+      (schwartzSpatialDerivative1D ψ x).im x := by
+    change HasDerivAt (fun y : ℝ => (ψ y).im)
+      (schwartzSpatialDerivative1D ψ x).im x
+    exact hasDerivAt_schwartzSpatialDerivative1D_im ψ x
+  exact h.deriv
 
 private theorem integrable_mul_schwartz1D (f g : SchwartzMap ℝ ℝ) :
-    Integrable (fun x => f x * g x) := by
-  simpa using
-    (SchwartzMap.pairing (ContinuousLinearMap.mul ℝ ℝ) f g).integrable
+    Integrable (fun x : ℝ => f x * g x) (volume : Measure ℝ) := by
+  change Integrable
+    (fun x : ℝ => (SchwartzMap.pairing (ContinuousLinearMap.mul ℝ ℝ) f g) x)
+    (volume : Measure ℝ)
+  exact (SchwartzMap.pairing (ContinuousLinearMap.mul ℝ ℝ) f g).integrable
 
 /-- The integral of the probability-current divergence vanishes for a Schwartz wavefunction.
 
@@ -83,14 +93,24 @@ theorem integral_probabilityCurrentDivergenceValue1D_of_schwartz_eq_zero
       (SchwartzMap.integral_mul_deriv_eq_neg_deriv_mul
         (schwartzImaginaryPart1D ψ)
         (schwartzRealPart1D (schwartzSpatialDerivative1D ψ)))
-  have hCross :
-      (∫ x, (ψ x).re * (schwartzSpatialSecondDerivative1D ψ x).im) =
-        ∫ x, (ψ x).im * (schwartzSpatialSecondDerivative1D ψ x).re := by
-    rw [hReIm, hImRe]
-    congr 2
+  have hMixed :
+      (∫ x, (schwartzSpatialDerivative1D ψ x).re *
+        (schwartzSpatialDerivative1D ψ x).im) =
+      ∫ x, (schwartzSpatialDerivative1D ψ x).im *
+        (schwartzSpatialDerivative1D ψ x).re := by
     apply integral_congr_ae
     filter_upwards with x
     exact mul_comm _ _
+  have hCross :
+      (∫ x, (ψ x).re * (schwartzSpatialSecondDerivative1D ψ x).im) =
+        ∫ x, (ψ x).im * (schwartzSpatialSecondDerivative1D ψ x).re := by
+    calc
+      (∫ x, (ψ x).re * (schwartzSpatialSecondDerivative1D ψ x).im) =
+          -∫ x, (schwartzSpatialDerivative1D ψ x).re *
+            (schwartzSpatialDerivative1D ψ x).im := hReIm
+      _ = -∫ x, (schwartzSpatialDerivative1D ψ x).im *
+            (schwartzSpatialDerivative1D ψ x).re := by rw [hMixed]
+      _ = ∫ x, (ψ x).im * (schwartzSpatialSecondDerivative1D ψ x).re := hImRe.symm
   have hLeft : Integrable
       (fun x => (ψ x).re * (schwartzSpatialSecondDerivative1D ψ x).im) := by
     simpa using integrable_mul_schwartz1D
@@ -101,10 +121,24 @@ theorem integral_probabilityCurrentDivergenceValue1D_of_schwartz_eq_zero
     simpa using integrable_mul_schwartz1D
       (schwartzImaginaryPart1D ψ)
       (schwartzRealPart1D (schwartzSpatialSecondDerivative1D ψ))
-  simp only [probabilityCurrentDivergenceValue1D]
-  rw [← integral_smul]
-  · rw [integral_sub hLeft hRight, hCross, sub_self, smul_zero]
-  · exact hLeft.sub hRight
+  calc
+    (∫ x, probabilityCurrentDivergenceValue1D ℏ κ (ψ x)
+        (schwartzSpatialSecondDerivative1D ψ x)) =
+      ∫ x, (2 * κ / ℏ) •
+        ((ψ x).re * (schwartzSpatialSecondDerivative1D ψ x).im -
+          (ψ x).im * (schwartzSpatialSecondDerivative1D ψ x).re) := by
+        apply integral_congr_ae
+        filter_upwards with x
+        rfl
+    _ = (2 * κ / ℏ) •
+        (∫ x, (ψ x).re * (schwartzSpatialSecondDerivative1D ψ x).im -
+          (ψ x).im * (schwartzSpatialSecondDerivative1D ψ x).re) := by
+        rw [integral_smul]
+    _ = (2 * κ / ℏ) •
+        ((∫ x, (ψ x).re * (schwartzSpatialSecondDerivative1D ψ x).im) -
+          ∫ x, (ψ x).im * (schwartzSpatialSecondDerivative1D ψ x).re) := by
+        rw [integral_sub hLeft hRight]
+    _ = 0 := by rw [hCross, sub_self, smul_zero]
 
 /-- A scalar-potential Schrödinger equation has zero whole-space probability-density rate for a
 Schwartz spatial wavefunction. -/
@@ -125,9 +159,18 @@ theorem integral_probabilityDensityTimeDerivativeValue_of_schrodinger_schwartz_e
       ℏ κ (potential x) (ψ x) (ψt x)
         (schwartzSpatialSecondDerivative1D ψ x) hℏ (hschrodinger x)
     linarith
-  rw [integral_congr (fun x => hpointwise x)]
-  rw [integral_neg, integral_probabilityCurrentDivergenceValue1D_of_schwartz_eq_zero]
-  simp
+  calc
+    (∫ x, probabilityDensityTimeDerivativeValue (ψ x) (ψt x)) =
+        ∫ x, -probabilityCurrentDivergenceValue1D ℏ κ (ψ x)
+          (schwartzSpatialSecondDerivative1D ψ x) := by
+      apply integral_congr_ae
+      filter_upwards with x
+      exact hpointwise x
+    _ = -(∫ x, probabilityCurrentDivergenceValue1D ℏ κ (ψ x)
+          (schwartzSpatialSecondDerivative1D ψ x)) := by rw [integral_neg]
+    _ = 0 := by
+      rw [integral_probabilityCurrentDivergenceValue1D_of_schwartz_eq_zero]
+      simp
 
 end
 end Continuum
