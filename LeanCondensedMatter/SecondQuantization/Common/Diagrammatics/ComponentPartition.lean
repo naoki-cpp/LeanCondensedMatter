@@ -37,8 +37,9 @@ private noncomputable def QuarticDiagram.componentSetoid {S : Finset (Fin N)}
 private theorem QuarticDiagram.componentSetoid_rel_iff_reachable {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (v w : ↥S) :
     d.componentSetoid (v : Fin N) (w : Fin N) ↔ d.vertexGraph.Reachable v w := by
-  simp [QuarticDiagram.componentSetoid, QuarticDiagram.componentClass, v.2, w.2,
-    SimpleGraph.ConnectedComponent.eq]
+  rw [QuarticDiagram.componentSetoid, Setoid.ker_def]
+  simp only [QuarticDiagram.componentClass, dif_pos v.2, dif_pos w.2, Sum.inr.injEq]
+  exact SimpleGraph.ConnectedComponent.eq
 
 open Classical in
 /-- The partition of `S` into connected components of the diagram's vertex graph. -/
@@ -93,8 +94,9 @@ theorem QuarticDiagram.componentBlock_disjoint_of_not_reachable {S : Finset (Fin
   · intro hEq
     apply h
     have hmem : (v : Fin N) ∈ d.componentBlock w := by
+      change (v : Fin N) ∈ d.componentPartition.part (w : Fin N)
       rw [← hEq]
-      exact d.self_mem_componentBlock v
+      exact d.componentPartition.mem_part v.2
     obtain ⟨hv, hreach⟩ := (d.mem_componentBlock w).1 hmem
     have hvEq : (⟨(v : Fin N), hv⟩ : ↥S) = v := Subtype.ext (by rfl)
     rwa [hvEq] at hreach
