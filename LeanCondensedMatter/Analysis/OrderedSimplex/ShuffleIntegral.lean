@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.Calculus
-import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableCalculus
+import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableProductSplit
 
 set_option linter.style.header false
 
@@ -10,7 +10,7 @@ The product of two ordered-simplex integrals is a sum over all order-preserving 
 their time coordinates. This module packages that sum recursively, splitting the interleavings by
 whether their outermost (largest) time comes from the left or right factor.
 
-The recursive definition deliberately precedes an explicit finite shuffle type. It isolates the
+The recursive definition deliberately preced an explicit finite shuffle type. It isolates the
 analytic identity from the later combinatorial task of identifying this recursion with a concrete
 sum over order-preserving shuffle equivalences and, ultimately, diagram component shuffles.
 -/
