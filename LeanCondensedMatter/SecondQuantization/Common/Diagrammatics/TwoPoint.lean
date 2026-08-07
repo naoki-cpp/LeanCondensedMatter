@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Diagram
+import LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 
 set_option linter.style.header false
@@ -112,16 +113,8 @@ noncomputable instance TwoPointDiagram.instFintype [Fintype ExternalLabel]
 
 /-- The graph joining distinct external or interaction vertices whose legs are paired. -/
 noncomputable def TwoPointDiagram.vertexGraph {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S) : SimpleGraph (TwoPointVertex S) where
-  Adj v w := v ≠ w ∧ ∃ leg : Fin (2 * (2 * S.card + 1)),
-    twoPointVertexOfLeg leg = v ∧ twoPointVertexOfLeg (d.pairing.partner leg) = w
-  symm := ⟨by
-    rintro v w ⟨hvw, leg, hv, hw⟩
-    refine ⟨hvw.symm, d.pairing.partner leg, hw, ?_⟩
-    rw [d.pairing.partner_involutive leg, hv]⟩
-  loopless := ⟨by
-    rintro v ⟨hvv, -⟩
-    exact hvv rfl⟩
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) : SimpleGraph (TwoPointVertex S) :=
+  d.pairing.vertexGraph twoPointVertexOfLeg
 
 /-- Every interaction component meets at least one of the two external vertices.  Equivalently, the
 diagram has no vacuum component. -/
