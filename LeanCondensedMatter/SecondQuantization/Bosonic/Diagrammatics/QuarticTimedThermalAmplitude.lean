@@ -6,13 +6,13 @@ set_option linter.style.header false
 /-!
 # Imaginary-time-dependent bosonic quartic thermal amplitudes
 
-The coefficientwise connected theorem uses a static thermal amplitude.  A Dyson coefficient carries
-one imaginary-time variable per interaction vertex.  For a free quartic vertex this time dependence
+The coefficientwise connected theorem uses a static thermal amplitude. A Dyson coefficient carries
+one imaginary-time variable per interaction vertex. For a free quartic vertex this time dependence
 is scalar, because the whole vertex is an eigenoperator of free imaginary-time evolution.
 
-This file isolates that missing analytic seam.  It dresses each ordered coefficientwise diagram by
+This file isolates that missing analytic seam. It dresses each ordered coefficientwise diagram by
 the product of its vertex evolution phases and then integrates that scalar dressing over the ordered
-simplex.  No identification with the convergence-aware Gibbs expectation of the recursive bosonic
+simplex. No identification with the convergence-aware Gibbs expectation of the recursive bosonic
 Dyson operator is made here; that interchange of the Gibbs functional with the recursive integral
 remains a separate analytic obligation.
 -/
@@ -24,7 +24,7 @@ open Combinatorics
 
 noncomputable section
 
-variable {Mode : Type*} [Fintype Mode] [DecidableEq Mode] {N : ℕ}
+variable {Mode : Type*} [DecidableEq Mode] {N : ℕ}
 
 /-- Scalar imaginary-time phase of one quartic interaction vertex. -/
 noncomputable def quarticVertexThermalPhase (ε : Mode → ℝ)
@@ -37,7 +37,7 @@ noncomputable def QuarticDiagram.orderedVertexThermalPhase
     (order : Common.QuarticVertexOrder S) (τ : Fin S.card → ℝ) : ℂ :=
   ∏ i, quarticVertexThermalPhase ε (d.vertexLabel (order i)) (τ i)
 
-/-- The time-dependent ordered thermal amplitude.  All time dependence is carried by the scalar
+/-- The time-dependent ordered thermal amplitude. All time dependence is carried by the scalar
 free-evolution phase; the Wick/contraction value remains the coefficientwise amplitude proved
 previously. -/
 noncomputable def QuarticDiagram.orderedTimedThermalAmplitude
@@ -54,6 +54,7 @@ noncomputable def QuarticDiagram.orderedSimplexThermalAmplitude
   intervalIntegral.orderedSimplexIntegral S.card β
     (d.orderedTimedThermalAmplitude ε β g order)
 
+omit [DecidableEq Mode] in
 /-- The vertex phase is continuous in imaginary time. -/
 theorem continuous_quarticVertexThermalPhase (ε : Mode → ℝ)
     (q : QuarticVertexLabel Mode) :
@@ -62,6 +63,7 @@ theorem continuous_quarticVertexThermalPhase (ε : Mode → ℝ)
   exact Complex.continuous_exp.comp
     ((Complex.continuous_ofReal.comp continuous_id).mul continuous_const)
 
+omit [DecidableEq Mode] in
 /-- The full ordered vertex-phase product is jointly continuous in all vertex times. -/
 theorem QuarticDiagram.continuous_orderedVertexThermalPhase
     (ε : Mode → ℝ) {S : Finset (Fin N)} (d : QuarticDiagram Mode N S)
@@ -69,7 +71,7 @@ theorem QuarticDiagram.continuous_orderedVertexThermalPhase
     Continuous (d.orderedVertexThermalPhase ε order) := by
   classical
   unfold QuarticDiagram.orderedVertexThermalPhase
-  exact continuous_finset_prod _ fun i _ =>
+  exact continuous_finsetProd _ fun i _ =>
     (continuous_quarticVertexThermalPhase ε (d.vertexLabel (order i))).comp (continuous_apply i)
 
 /-- The timed ordered amplitude is jointly continuous in the vertex times. -/
