@@ -31,9 +31,12 @@ theorem matrixCoeff_annihilate_comp_create_self
       if i = j then (n i : ℂ) + 1 else 0 := by
   by_cases hij : i = j
   · subst j
-    rw [if_pos rfl, Common.matrixCoeff, LinearMap.comp_apply,
-      annihilate_create_basisState_same, Common.smul_basisState_apply_self]
-  · rw [if_neg hij, Common.matrixCoeff, LinearMap.comp_apply, create_basisState_eq, map_smul]
+    rw [if_pos rfl, Common.matrixCoeff, LinearMap.comp_apply]
+    change (annihilate i (create i (basisState n))) n = (n i : ℂ) + 1
+    rw [annihilate_create_basisState_same, Common.smul_basisState_apply_self]
+  · rw [if_neg hij, Common.matrixCoeff, LinearMap.comp_apply]
+    change (annihilate i (create j (basisState n))) n = 0
+    rw [create_basisState_eq, map_smul]
     by_cases hi : n i = 0
     · have hzero : createOccupation j n i = 0 := by
         rw [createOccupation_apply_ne hij]
@@ -180,13 +183,18 @@ theorem freeGibbsExpectation_create_comp_annihilate_concrete
             (annihilate i).comp (create i) -
               ((annihilate i).comp (create i) - (create i).comp (annihilate i)) := by abel
         _ = (annihilate i).comp (create i) - LinearMap.id := by rw [hc]
-    rw [if_pos rfl, hop]
-    change freeGibbsExpectation ε β
-        ((annihilate i).comp (create i) +
-          (-1 : ℂ) • (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode)) = _
-    rw [freeGibbsExpectation_add ε β hA
-      ((freeGibbsDomain ε β).smul_mem (-1 : ℂ) hId),
-      freeGibbsExpectation_smul, freeGibbsExpectation_id ε β hpos,
+    rw [if_pos rfl, hop, sub_eq_add_neg]
+    have hnegId : -(LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) ∈
+        freeGibbsDomain ε β := (freeGibbsDomain ε β).neg_mem hId
+    rw [freeGibbsExpectation_add ε β hA hnegId]
+    have hnegExpectation :
+        freeGibbsExpectation ε β
+            (-(LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode)) = -1 := by
+      rw [show -(LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) =
+          (-1 : ℂ) • (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) by simp,
+        freeGibbsExpectation_smul, freeGibbsExpectation_id ε β hpos]
+      ring
+    rw [hnegExpectation,
       freeGibbsExpectation_annihilate_comp_create_concrete ε β hpos i i]
     have hden := freeGibbs_boseDenominator_ne_zero ε β hpos i
     field_simp
