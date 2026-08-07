@@ -41,7 +41,7 @@ theorem orderedSimplexContribution_eq_pairingEvaluation {N : ℕ} {S : Finset (F
   apply intervalIntegral.orderedSimplexIntegral_congr
   intro τ
   simp only [QuarticWickDiagram.contractionIntegrand, flatVertexLegPairingEvaluation,
-    Common.pairingEvaluation, flatVertexLegPairValue]
+    Combinatorics.Pairing.evaluation, flatVertexLegPairValue]
   refine congrArg (_ * ·) (Finset.prod_congr rfl fun pr _ => ?_)
   rw [orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation,
     orderedQuarticLegOperator]

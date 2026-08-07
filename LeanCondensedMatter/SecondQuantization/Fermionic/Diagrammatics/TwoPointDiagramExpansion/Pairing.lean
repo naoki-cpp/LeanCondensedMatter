@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.PairingEvaluation
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Flattening
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
@@ -362,7 +362,7 @@ noncomputable def orderedTwoPointPairingValue {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
     (σ : Fin n → ℝ) (q : Fin n → QuarticVertexLabel Mode)
     (pairing : Pairing (2 * n + 1)) : ℂ :=
-  Common.pairingEvaluation pairing (pairing.weight Common.Statistics.fermion)
+  pairing.evaluation (pairing.weight Common.Statistics.fermion)
     (mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ q)
 
 omit [LinearOrder Mode] in
@@ -438,7 +438,7 @@ theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_p
       twoPointExternalOrderSign τ τ' *
         ∑ pairing : Pairing (2 * n + 1),
           orderedTwoPointPairingValue ε β i j τ τ' σ q pairing := by
-  simpa only [orderedTwoPointPairingValue, Common.pairingEvaluation,
+  simpa only [orderedTwoPointPairingValue, Combinatorics.Pairing.evaluation,
     mixedTimeOrderedAtomicPairValue,
     freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
       finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairing

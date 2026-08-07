@@ -1,7 +1,7 @@
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticLocalLeg
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Leg
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.PairingEvaluation
 
 set_option linter.style.header false
 
@@ -81,12 +81,12 @@ theorem freeGibbsQuarticExpectation_eq_sum_pairing
     (hq : admissible (2 * n) (quarticFreeThermalFieldFamily q)) :
     (freeGibbsFunctional ε β hpos).value (quarticFreeThermalOrderedProduct q) =
       ∑ pairing : Pairing (2 * n),
-        Common.pairingEvaluation pairing (pairing.weight .boson)
+        pairing.evaluation (pairing.weight .boson)
           (fun a b => freeThermalPairValue ε β
             (quarticFreeThermalFieldFamily q a) (quarticFreeThermalFieldFamily q b)) := by
   have hwick := freeGibbsExpectation_eq_sum_pairing ε β hpos admissible hmem herase hrec
     (2 * n) (quarticFreeThermalFieldFamily q) hq
-  simpa [quarticFreeThermalOrderedProduct, Common.pairingEvaluation] using hwick
+  simpa [quarticFreeThermalOrderedProduct, Combinatorics.Pairing.evaluation] using hwick
 
 end
 end Bosonic

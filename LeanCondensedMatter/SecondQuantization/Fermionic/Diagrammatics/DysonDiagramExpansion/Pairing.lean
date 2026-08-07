@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.PairingEvaluation
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Flattening
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
@@ -12,8 +12,8 @@ set_option linter.style.header false
 # Dyson diagram expansion: canonical pairing evaluation
 
 The finite Bloch--de Dominicis calculation remains private coordinate proof infrastructure. Public
-Dyson pairing statements are expressed through the shared `Common.pairingEvaluation` boundary with
-the canonical free Gibbs density-state pair kernel.
+Dyson pairing statements are expressed through the combinatorics-owned `Pairing.evaluation` boundary
+with the canonical free Gibbs density-state pair kernel.
 -/
 
 namespace SecondQuantization
@@ -71,7 +71,7 @@ noncomputable def flatVertexLegPairValue {n : ℕ}
 noncomputable def flatVertexLegPairingEvaluation {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
     (τ : Fin n → ℝ) (pairing : Pairing (2 * n)) : ℂ :=
-  Common.pairingEvaluation pairing (pairing.weight Common.Statistics.fermion)
+  pairing.evaluation (pairing.weight Common.Statistics.fermion)
     (flatVertexLegPairValue ε β q τ)
 
 @[simp]
@@ -91,7 +91,7 @@ theorem freeGibbsDensityOperator_expectation_nestedVertexOperatorComp_eq_sum_pai
         (Common.finiteHilbertOperator (nestedVertexOperatorComp ε n q τ)) =
       ∑ pairing : Pairing (2 * n),
         flatVertexLegPairingEvaluation ε β q τ pairing := by
-  simpa only [flatVertexLegPairingEvaluation, Common.pairingEvaluation, flatVertexLegPairValue,
+  simpa only [flatVertexLegPairingEvaluation, Combinatorics.Pairing.evaluation, flatVertexLegPairValue,
     freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation] using
     finiteGibbsExpectation_nestedVertexOperatorComp_eq_sum_pairing ε β n q τ
 
@@ -147,7 +147,7 @@ theorem continuous_flatVertexLegPairingEvaluation {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (q : Fin n → QuarticVertexLabel Mode)
     (pairing : Pairing (2 * n)) :
     Continuous (fun τ : Fin n → ℝ => flatVertexLegPairingEvaluation ε β q τ pairing) := by
-  simp only [flatVertexLegPairingEvaluation, Common.pairingEvaluation]
+  simp only [flatVertexLegPairingEvaluation, Combinatorics.Pairing.evaluation]
   exact continuous_const.mul (continuous_finsetProd _ fun pr _ =>
     continuous_flatVertexLegPairValue ε β q pr.1 pr.2)
 
