@@ -54,12 +54,14 @@ theorem orderedSimplexIntegral_succ_mul_succ_of_measurableLocallyBounded
       (c := (0 : ℝ)) (by simp) hDv0 hDv'
     simpa [v, v', orderedSimplexIntegral_succ] using h
 
+  have huAeInt := _root_.IntervalIntegrable.ae_hasDerivAt_integral huInt
+  have hvAeInt := _root_.IntervalIntegrable.ae_hasDerivAt_integral hvInt
   have huDeriv : ∀ᵐ t, t ∈ Set.uIcc (0 : ℝ) β → HasDerivAt u (u' t) t := by
-    filter_upwards [huInt.ae_hasDerivAt_integral] with t ht hmem
+    filter_upwards [huAeInt] with t ht hmem
     have h := ht hmem 0 (by simp)
     simpa [u, u', orderedSimplexIntegral_succ] using h
   have hvDeriv : ∀ᵐ t, t ∈ Set.uIcc (0 : ℝ) β → HasDerivAt v (v' t) t := by
-    filter_upwards [hvInt.ae_hasDerivAt_integral] with t ht hmem
+    filter_upwards [hvAeInt] with t ht hmem
     have h := ht hmem 0 (by simp)
     simpa [v, v', orderedSimplexIntegral_succ] using h
 
