@@ -9,9 +9,9 @@ set_option linter.style.header false
 
 The public entry point for the completed fermionic representation. The current slice contains the
 `ℓ²` occupation representation, the dense algebraic core, the bounded single-mode number
-projection, the occupation-toggle equivalence, and its continuous linear isometric lift.
+projection, the occupation-toggle equivalence, and its norm-preserving continuous linear lift.
 
-Completed creation and annihilation maps are built from the toggle, the occupation projections, and
-the fermionic phase. Partial linear maps for unbounded Hamiltonians and trace-class thermal
+Completed creation and annihilation maps will be built from the toggle, the occupation projections,
+and the fermionic phase. Partial linear maps for unbounded Hamiltonians and trace-class thermal
 constructions remain later slices.
 -/
