@@ -25,14 +25,14 @@ open MeasureTheory Set
 /-- The centered coordinate cube of radius `R`.  It is used instead of `[0, β]^n` so that fixing a
 coordinate preserves local boundedness even when later bounds have the opposite sign. -/
 def orderedSimplexTimeCube (n : ℕ) (R : ℝ) : Set (Fin n → ℝ) :=
-  Set.pi Set.univ fun _ => Set.Icc (-R) R
+  Set.Icc (fun _ => -R) (fun _ => R)
 
 /-- Every centered finite-dimensional coordinate cube is compact. -/
 theorem isCompact_orderedSimplexTimeCube (n : ℕ) (R : ℝ) :
     IsCompact (orderedSimplexTimeCube n R) := by
   simpa [orderedSimplexTimeCube] using
-    (isCompact_pi_infinite (s := fun _ : Fin n => Set.Icc (-R) R)
-      (fun _ => isCompact_Icc))
+    (isCompact_Icc : IsCompact
+      (Set.Icc (fun _ : Fin n => -R) (fun _ : Fin n => R)))
 
 /-- Every centered coordinate cube is Borel measurable. -/
 theorem measurableSet_orderedSimplexTimeCube (n : ℕ) (R : ℝ) :
@@ -74,20 +74,22 @@ theorem MeasurableLocallyBounded.finCons {n : ℕ}
   refine ⟨C, hC0, ?_⟩
   intro rest hrest
   apply hC
-  simp only [orderedSimplexTimeCube, Set.mem_pi, Set.mem_univ, forall_const] at hrest ⊢
-  intro i
-  induction i using Fin.cases with
-  | zero =>
-      change t ∈ Set.Icc (-R') R'
-      rw [Set.mem_Icc]
-      have ht : |t| ≤ R' := le_max_right _ _
-      exact ⟨(neg_le.2 (le_trans (le_abs_self t) ht)), (le_trans (le_abs_self t) ht)⟩
-  | succ i =>
-      have hi := hrest i
-      rw [Set.mem_Icc] at hi ⊢
-      constructor
-      · exact (neg_le_neg (le_max_left R |t|)).trans hi.1
-      · exact hi.2.trans (le_max_left R |t|)
+  rw [orderedSimplexTimeCube, Set.mem_Icc] at hrest ⊢
+  constructor
+  · intro i
+    induction i using Fin.cases with
+    | zero =>
+        have ht : |t| ≤ R' := le_max_right _ _
+        exact (neg_le_neg ht).trans (neg_abs_le t)
+    | succ i =>
+        exact (neg_le_neg (le_max_left R |t|)).trans (hrest.1 i)
+  · intro i
+    induction i using Fin.cases with
+    | zero =>
+        have ht : |t| ≤ R' := le_max_right _ _
+        exact (le_abs_self t).trans ht
+    | succ i =>
+        exact (hrest.2 i).trans (le_max_left R |t|)
 
 /-- A jointly measurable integrand remains measurable after integration from `0` to a measurable
 parameter-dependent upper bound. -/
@@ -112,8 +114,8 @@ theorem measurable_parametric_intervalIntegral_zero
     exact (hF.ite hleftSet measurable_const).stronglyMeasurable
   have hright : StronglyMeasurable (Function.uncurry right) := by
     exact (hF.ite hrightSet measurable_const).stronglyMeasurable
-  have hleftInt := hleft.integral_prod_right
-  have hrightInt := hright.integral_prod_right
+  have hleftInt := hleft.integral_prod_right (ν := volume)
+  have hrightInt := hright.integral_prod_right (ν := volume)
   have hsub := hleftInt.sub hrightInt
   have heq : (fun x => ∫ t in (0 : ℝ)..bound x, F x t) =
       fun x => (∫ t, left x t) - ∫ t, right x t := by
@@ -128,20 +130,18 @@ theorem measurable_orderedSimplexIntegral_of_measurable {X : Type*} [MeasurableS
       Measurable bound → Measurable (Function.uncurry f) →
       Measurable (fun x => orderedSimplexIntegral n (bound x) (f x))
   | 0, _bound, f, _hbound, hf => by
-      simpa only [orderedSimplexIntegral_zero] using
-        hf.comp (measurable_id.prod_mk measurable_const)
+      have hpair : Measurable (fun x : X => (x, (0 : Fin 0 → ℝ))) := by
+        measurability
+      simpa only [orderedSimplexIntegral_zero] using hf.comp hpair
   | n + 1, bound, f, hbound, hf => by
       simp_rw [orderedSimplexIntegral_succ]
       have hf' : Measurable (Function.uncurry
           (fun y : X × ℝ => fun rest : Fin n → ℝ => f y.1 (Fin.cons y.2 rest))) := by
-        have hcons : Measurable
+        have hmap : Measurable
             (fun z : (X × ℝ) × (Fin n → ℝ) =>
-              (Fin.cons z.1.2 z.2 : Fin (n + 1) → ℝ)) := by
-          exact measurable_pi fun i => by
-            induction i using Fin.cases with
-            | zero => exact measurable_snd.comp measurable_fst
-            | succ i => exact measurable_apply i measurable_snd
-        exact hf.comp ((measurable_fst.comp measurable_fst).prod_mk hcons)
+              (z.1.1, (Fin.cons z.1.2 z.2 : Fin (n + 1) → ℝ))) := by
+          measurability
+        exact hf.comp hmap
       have hinner := measurable_orderedSimplexIntegral_of_measurable n Prod.snd
         (fun y : X × ℝ => fun rest => f y.1 (Fin.cons y.2 rest)) measurable_snd hf'
       exact measurable_parametric_intervalIntegral_zero bound
