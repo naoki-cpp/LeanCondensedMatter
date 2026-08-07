@@ -32,11 +32,11 @@ namespace Continuum
 
 noncomputable section
 
--- Complex multiplication carries its own normed-ring and real normed-algebra structures. Give their
--- additive-group and normed-space projections priority so real derivatives of complex products use
--- the exact structures expected by the multiplication calculus API.
+-- Complex multiplication carries its own normed additive-group and real normed-algebra structures.
+-- Give their parent projections priority so real derivatives of complex products use the exact
+-- structures expected by the multiplication calculus API.
 attribute [local instance 1001]
-  NormedRing.toAddCommGroup NormedAlgebra.toNormedSpace
+  NormedAddCommGroup.toAddCommGroup NormedAlgebra.toNormedSpace
 
 /-- Pointwise probability density, represented in `ℂ` as `ψ† ψ`. -/
 def probabilityDensityValue (ψ : ℂ) : ℂ :=
