@@ -1,5 +1,5 @@
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Ordered
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.PairingEvaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.LegFamily
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
@@ -77,7 +77,7 @@ noncomputable def QuarticWickDiagram.couplingWeight {S : Finset (Fin N)}
 noncomputable def QuarticWickDiagram.contractionIntegrand (ε : Mode → ℝ) (β : ℝ)
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S)
     (τ : Fin S.card → ℝ) : ℂ :=
-  Common.pairingEvaluation (d.pairingInOrder order)
+  (d.pairingInOrder order).evaluation
     ((d.pairingInOrder order).weight Common.Statistics.fermion)
     (orderedQuarticPairValue ε β d order τ)
 
@@ -166,7 +166,7 @@ theorem quarticWickDiagramAmplitude_empty (ε : Mode → ℝ) (β : ℝ) (g : Qu
       d.orderedSimplexContribution ε β order = 1 := by
     intro order
     simp only [QuarticWickDiagram.orderedSimplexContribution]
-    simp [QuarticWickDiagram.contractionIntegrand, Common.pairingEvaluation,
+    simp [QuarticWickDiagram.contractionIntegrand, Combinatorics.Pairing.evaluation,
       Combinatorics.Pairing.pairs, Combinatorics.Pairing.crossingCount]
   simp only [quarticWickDiagramAmplitude, QuarticWickDiagram.couplingWeight, hcard, pow_zero,
     one_mul]
