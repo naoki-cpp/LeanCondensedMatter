@@ -19,7 +19,7 @@ namespace Fermionic
 
 open Combinatorics
 
-variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*}
 
 private def ambientToTwoPointSlotTimeCanonical {n : ℕ}
     (σ : Fin (Finset.univ : Finset (Fin n)).card → ℝ) : Fin n → ℝ :=
@@ -67,6 +67,8 @@ private theorem FixedExternalTwoPointWickDiagram.componentTimeEq_of_canonicalAss
     simpa [ambientToTwoPointSlotTimeCanonical] using hRestricted
   intro v hv
   exact hVertices ⟨v, hv⟩
+
+variable [LinearOrder Mode] [Fintype Mode]
 
 /-- The mixed component pairing value is local along the canonical interaction-component shuffle. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_local_canonical
