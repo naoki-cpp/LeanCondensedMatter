@@ -49,13 +49,28 @@ theorem mem_reachableSupport_succ_iff
       ∃ k ∈ reachableSupport V order n, m ∈ (V (basisState k)).support := by
   simp [reachableSupport]
 
-/-- The first reachable support is exactly large enough to contain the support used by the
-first-order infinite-configuration Dyson construction. -/
+/-- The first reachable support is exactly large enough to contain one algebraic basis image. -/
 theorem support_basisImage_subset_reachableSupport_one
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : Config) :
     (V (basisState n)).support ⊆ reachableSupport V 1 n := by
   intro m hm
   simp [reachableSupport, hm]
+
+/-- Every first-order interaction-picture integrand is supported in the first reachable support. -/
+theorem support_interactionPicture_basisState_subset_reachableSupport_one
+    (energy : Config → ℝ) (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (τ : ℝ) (n : Config) :
+    (interactionPicture energy V τ (basisState n)).support ⊆ reachableSupport V 1 n :=
+  (support_interactionPicture_basisState_subset energy V τ n).trans
+    (support_basisImage_subset_reachableSupport_one V n)
+
+/-- The reconstructed first Dyson basis image remains in the same first reachable support. -/
+theorem support_firstDysonCoeff_basisState_subset_reachableSupport_one
+    (energy : Config → ℝ) (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
+    (τ : ℝ) (n : Config) :
+    (firstDysonCoeff energy V τ (basisState n)).support ⊆ reachableSupport V 1 n :=
+  (support_firstDysonCoeff_basisState_subset energy V τ n).trans
+    (support_basisImage_subset_reachableSupport_one V n)
 
 end Common
 end SecondQuantization
