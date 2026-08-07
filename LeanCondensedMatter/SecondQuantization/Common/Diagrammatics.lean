@@ -1,5 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.VertexLabel
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.QuarticOperator
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Leg
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Diagram
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint
@@ -39,16 +37,16 @@ set_option linter.style.header false
 /-!
 # Statistics-independent diagrammatics
 
-Quartic vertex labels, shared local-leg semantics and operator constructors, leg indexing, two-point
-diagrams with distinguished external legs, full component partitions, automatic connectivity of the
-two one-legged external vertices, vacuum/external component restriction data, the canonical
-external-plus-vacuum decomposition of component indices and interaction vertices, componentwise
-interaction-vertex products and Dyson signs, order-preserving shuffles, the canonical shuffle induced
-by the original interaction-vertex order, local-time reconstruction, and ordered-simplex products for
-component interaction-time slots, componentwise normalized-pair sums and products, equivalences
-between ambient component pairs and restricted external/vacuum pairings, and the resulting
-pair-orientation dichotomy; ordered diagram data, connected components, component-local orders,
-order-preserving shuffle decompositions, component-local/global pairing compatibility and pair-product
-reindexing, and shuffled ordered-simplex integrands; quartic component restriction and reassembly,
-decomposition equivalences, and componentwise scalar factorization.
+Quartic leg indexing, labelled quartic diagram syntax, two-point diagrams with distinguished external
+legs, full component partitions, automatic connectivity of the two one-legged external vertices,
+vacuum/external component restriction data, the canonical external-plus-vacuum decomposition of
+component indices and interaction vertices, componentwise interaction-vertex products and Dyson
+signs, order-preserving shuffles, the canonical shuffle induced by the original interaction-vertex
+order, local-time reconstruction, and ordered-simplex products for component interaction-time slots,
+componentwise normalized-pair sums and products, equivalences between ambient component pairs and
+restricted external/vacuum pairings, and the resulting pair-orientation dichotomy; ordered diagram
+data, connected components, component-local orders, order-preserving shuffle decompositions,
+component-local/global pairing compatibility and pair-product reindexing, and shuffled ordered-simplex
+integrands; quartic component restriction and reassembly, decomposition equivalences, and componentwise
+scalar factorization.
 -/
