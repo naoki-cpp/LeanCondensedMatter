@@ -5,6 +5,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.TotalParticleNumbe
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ConvergenceAwareGibbs
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.NormalizedTwoPoint
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteMixedTwoPoint
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ExpectationRecursion
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion
 
@@ -20,7 +21,7 @@ Public umbrella for the convergence-aware free bosonic thermal layer:
 - free two-point basis coefficients;
 - the uncutoff bosonic two-point specialization of the Common Bloch–de Dominicis framework;
 - a normalized free Gibbs functional on an explicit summable-operator submodule;
-- the normalized annihilation/creation two-point identity with explicit product admissibility;
+- concrete summability and normalized values for both mixed creation/annihilation contractions;
 - an analytic adapter from bosonic domain/KMS hypotheses to the Common pairing recursion;
 - concrete free thermal field labels, pair kernel, and the inherited Wick pairing expansion.
 
