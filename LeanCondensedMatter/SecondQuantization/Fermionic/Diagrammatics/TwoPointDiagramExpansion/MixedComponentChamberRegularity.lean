@@ -28,6 +28,7 @@ open Combinatorics
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- Inside one order chamber, canonical transport of a normalized component pair preserves the two
 underlying standard atomic legs in their normalized order. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber
@@ -109,6 +110,8 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingChamberRepresentat
     d.mixedComponentWeight_eq_of_sameOrderChamber
       Common.Statistics.fermion τ τ' σ₀ σ B hChamber]
   unfold FixedExternalTwoPointWickDiagram.mixedComponentContractionProduct
+  apply congrArg (fun z : ℂ =>
+    d.mixedComponentWeight Common.Statistics.fermion τ τ' σ B * z)
   let e := d.mixedComponentPairTimeEquiv τ τ' σ₀ σ B
   calc
     (∏ pr : d.MixedComponentPair τ τ' σ₀ B,
