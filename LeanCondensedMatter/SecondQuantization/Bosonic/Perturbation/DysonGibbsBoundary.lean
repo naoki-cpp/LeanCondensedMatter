@@ -8,12 +8,12 @@ set_option linter.style.header false
 # Convergence-aware Gibbs boundary for bosonic Dyson coefficients
 
 Finite reachable support makes every matrix coefficient of `Common.infiniteDysonCoeff` continuous
-and interval-integrable on the genuinely infinite bosonic occupation space.  That coefficientwise
+and interval-integrable on the genuinely infinite bosonic occupation space. That coefficientwise
 fact is not enough to move the normalized Gibbs expectation through the recursive Dyson integral:
 the Gibbs numerator is an infinite occupation sum.
 
-This module records the missing analytic obligations explicitly.  It does not prove them from
-coefficientwise continuity and it does not introduce a false finite occupation basis.  A future
+This module records the missing analytic obligations explicitly. It does not prove them from
+coefficientwise continuity and it does not introduce a false finite occupation basis. A future
 quartic Dyson/partition-function theorem can consume this boundary together with the existing Wick
 and ordered-simplex diagram layers.
 -/
@@ -58,8 +58,10 @@ noncomputable def freeGibbsDysonCoeff
     (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (order : ℕ) (t : ℝ) : ℂ :=
   freeGibbsExpectation ε β (Common.infiniteDysonCoeff (freeEigenvalue ε) V order t)
 
+set_option linter.unusedFintypeInType false in
 /-- The zeroth normalized bosonic Dyson coefficient is one under the explicit positive Gibbs
-hypothesis. -/
+hypothesis. The finite mode instance is used in the summability proof behind
+`freeGibbsExpectation_id`, although it is not syntactically visible in the conclusion. -/
 @[simp]
 theorem freeGibbsDysonCoeff_zero
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
@@ -68,6 +70,7 @@ theorem freeGibbsDysonCoeff_zero
   rw [freeGibbsDysonCoeff, Common.infiniteDysonCoeff_zero]
   exact freeGibbsExpectation_id ε β hpos
 
+omit [Fintype Mode] in
 /-- Under the explicit analytic boundary, the Gibbs-evaluated Dyson coefficient obeys the expected
 recursive scalar integral equation. -/
 theorem freeGibbsDysonCoeff_succ
@@ -82,6 +85,7 @@ theorem freeGibbsDysonCoeff_succ
               (Common.infiniteDysonCoeff (freeEigenvalue ε) V order σ)) :=
   H.expectation_succ order t
 
+omit [Fintype Mode] in
 /-- The analytic boundary visibly supplies Gibbs-domain membership for every Dyson coefficient. -/
 theorem freeGibbsDysonCoeff_mem
     (ε : Mode → ℝ) (β : ℝ)
@@ -91,6 +95,7 @@ theorem freeGibbsDysonCoeff_mem
     Common.infiniteDysonCoeff (freeEigenvalue ε) V order t ∈ freeGibbsDomain ε β :=
   H.coeff_mem order t
 
+omit [Fintype Mode] in
 /-- The analytic boundary explicitly records closure of the Gibbs domain under the interaction-picture
 product used at every recursive Dyson order. -/
 theorem freeGibbsDysonIntegrand_mem
