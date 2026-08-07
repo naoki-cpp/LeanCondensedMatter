@@ -78,13 +78,19 @@ noncomputable def completedDiagonalOperator (w : Occupation Mode → ℂ) :
         apply lp.ext
         funext n
         change w n * (c * (ψ : CompletedFockSpace Mode) n) =
-          c * (w n * (ψ : CompletedFockSpace Mode) n)
+          c * (w n * (ψ : CompletedFockSpace Space Mode) n)
         ring }
 
 @[simp]
 theorem completedDiagonalOperator_apply (w : Occupation Mode → ℂ)
     (ψ : (completedDiagonalOperator w).domain) (n : Occupation Mode) :
     completedDiagonalOperator w ψ n = w n * (ψ : CompletedFockSpace Mode) n :=
+  rfl
+
+@[simp]
+theorem completedDiagonalOperator_toFun_apply (w : Occupation Mode → ℂ)
+    (ψ : (completedDiagonalOperator w).domain) (n : Occupation Mode) :
+    (completedDiagonalOperator w).toFun ψ n = w n * (ψ : CompletedFockSpace Mode) n :=
   rfl
 
 /-- Every finite-support algebraic Fock vector belongs to every weighted diagonal domain. -/
@@ -157,19 +163,18 @@ theorem completedDiagonalOperator_comp_algebraicCore (w : Occupation Mode → �
   intro n c
   have hc : (Finsupp.single n c : FockSpace Mode) = c • basisState n :=
     (Finsupp.smul_single_one n c).symm
-  rw [hc, map_smul, map_smul]
+  rw [hc]
+  simp only [LinearMap.comp_apply, map_smul]
   congr 1
-  simp only [LinearMap.comp_apply]
   apply lp.ext
   funext m
-  rw [completedDiagonalOperator_apply]
-  change w m * completedBasisState n m =
-    (algebraicToCompleted (Common.diagonalOperator w (basisState n))) m
-  rw [algebraicToCompleted_apply, Common.diagonalOperator_basisState]
+  rw [completedDiagonalOperator_toFun_apply,
+    algebraicToCompletedDiagonalDomain_basisState]
+  rw [Common.diagonalOperator_basisState, map_smul, algebraicToCompleted_basisState]
   by_cases hmn : m = n
   · subst m
     simp
-  · simp [completedBasisState_apply_of_ne hmn, hmn]
+  · simp [completedBasisState_apply_of_ne hmn]
 
 /-! ## Free Hamiltonian and total particle number -/
 
