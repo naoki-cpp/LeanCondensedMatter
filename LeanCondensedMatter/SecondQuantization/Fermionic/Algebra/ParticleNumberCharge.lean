@@ -4,14 +4,15 @@ import LeanCondensedMatter.SecondQuantization.Common.Algebra.ParticleNumberSelec
 set_option linter.style.header false
 
 /-!
-# Fermionic creation/annihilation operators carry particle-number charge `±1`
+# Fermionic particle-number charge
 
-Instantiates `Common.CarriesGradingDegree` (`Common/Algebra/ParticleNumberSelectionRule.lean`) for
-`annihilate i`/`create i`, with grading `particleNumber` (cast to `ℤ`): `annihilate i`
-carries charge `-1`, `create i` carries charge `+1`. Combined with
-`Common.CarriesGradingDegree.comp` and `Common.diagonalCoeff_eq_zero_of_carriesGradingDegree`,
-this reduces the same-type contraction vanishing proved by hand in `WeightedContraction.lean` to
-the general particle-number selection rule.
+This module instantiates `Common.CarriesGradingDegree` for fermionic creation and annihilation
+operators, with the occupation particle number as grading. An annihilation operator carries degree
+`-1`, while a creation operator carries degree `+1`.
+
+As an algebraic consequence, products of two annihilation operators or two creation operators carry
+nonzero degree and therefore have vanishing diagonal occupation-basis coefficients. Thermal modules
+may lift these basis-level statements to weighted traces and time-ordered correlators.
 -/
 
 namespace SecondQuantization
@@ -58,6 +59,24 @@ theorem carriesParticleNumberCharge_create (i : Mode) :
         (particleNumber n : ℤ) + 1
       omega
     · exact absurd (Common.smul_basisState_apply_of_ne _ (Ne.symm hm)) hmn
+
+/-! ## Same-type products have zero diagonal coefficients -/
+
+/-- Two annihilation operators have zero diagonal matrix coefficient because their product carries
+particle-number charge `-2`. -/
+theorem matrixCoeff_annihilate_comp_annihilate (i j : Mode) (n : Occupation Mode) :
+    Common.matrixCoeff ((annihilate i).comp (annihilate j)) n n = 0 :=
+  Common.diagonalCoeff_eq_zero_of_carriesGradingDegree
+    ((carriesParticleNumberCharge_annihilate i).comp (carriesParticleNumberCharge_annihilate j))
+    (by norm_num) n
+
+/-- Two creation operators have zero diagonal matrix coefficient because their product carries
+particle-number charge `+2`. -/
+theorem matrixCoeff_create_comp_create (i j : Mode) (n : Occupation Mode) :
+    Common.matrixCoeff ((create i).comp (create j)) n n = 0 :=
+  Common.diagonalCoeff_eq_zero_of_carriesGradingDegree
+    ((carriesParticleNumberCharge_create i).comp (carriesParticleNumberCharge_create j))
+    (by norm_num) n
 
 end Fermionic
 end SecondQuantization
