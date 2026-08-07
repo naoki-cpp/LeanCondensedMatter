@@ -3,6 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.Interactio
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ExternalField
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.MixedTimeOrdering
+import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.MixedOrderChamber
 
 set_option linter.style.header false
 
@@ -11,6 +12,6 @@ set_option linter.style.header false
 
 Free diagonal evolution, evolved creation and annihilation operators, the canonical fermionic
 two-point operator, labelled external fields, their time ordering together with even quartic
-interaction vertices, the algebraic interaction picture, and its finite-basis matrix-coefficient
-regularity results.
+interaction vertices, mixed-event order chambers, the algebraic interaction picture, and its
+finite-basis matrix-coefficient regularity results.
 -/
