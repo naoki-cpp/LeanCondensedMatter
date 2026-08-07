@@ -59,8 +59,10 @@ theorem completedFiniteHilbertEquiv_basisState (n : Occupation Mode) :
     completedFiniteHilbertEquiv (Mode := Mode) (completedBasisState n) =
       Common.finiteHilbertBasisState n := by
   rw [← algebraicToCompleted_basisState,
-    completedFiniteHilbertEquiv_algebraicToCompleted,
-    Common.finiteHilbertFockEquiv_basisState]
+    completedFiniteHilbertEquiv_algebraicToCompleted]
+  change Common.finiteHilbertFockEquiv (Common.basisState n) =
+    Common.finiteHilbertBasisState n
+  exact Common.finiteHilbertFockEquiv_basisState n
 
 /-- Linear-map form of the finite compatibility square on the full algebraic Fock core. -/
 theorem completedFiniteHilbertEquiv_comp_algebraicToCompleted :
