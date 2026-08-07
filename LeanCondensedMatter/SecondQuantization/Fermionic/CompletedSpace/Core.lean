@@ -70,7 +70,6 @@ theorem completedCreate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (
       rw [← toggleOccupation_of_not_mem hi]
       exact toggleOccupation_involutive i n
     rw [if_pos him, ht, completedBasisState_apply_self, completedBasisState_apply_self]
-    simp
   · have htoggle : toggleOccupation i m ≠ n := by
       intro h
       apply hm
@@ -124,7 +123,6 @@ theorem completedAnnihilate_basisState_of_mem {i : Mode} {n : Occupation Mode} (
       rw [← toggleOccupation_of_mem hi]
       exact toggleOccupation_involutive i n
     rw [if_neg him, ht, completedBasisState_apply_self, completedBasisState_apply_self]
-    simp
   · have htoggle : toggleOccupation i m ≠ n := by
       intro h
       apply hm
