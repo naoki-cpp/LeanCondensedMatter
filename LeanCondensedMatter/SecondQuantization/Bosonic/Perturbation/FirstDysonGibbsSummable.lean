@@ -45,7 +45,7 @@ theorem matrixCoeff_infiniteDysonCoeff_one_self
   rw [intervalIntegral.integral_const]
   simp only [sub_zero]
   change -((t : ℂ) * Common.matrixCoeff V n n) = _
-  rfl
+  exact (neg_mul (t : ℂ) (Common.matrixCoeff V n n)).symm
 
 omit [Fintype Mode] in
 /-- The first Dyson coefficient's full free-Gibbs numerator is a fixed scalar multiple of the bare
@@ -98,8 +98,8 @@ theorem infiniteDysonCoeff_one_quarticInteractionOn_mem_freeGibbsDomain
   infiniteDysonCoeff_one_mem_freeGibbsDomain ε β (quarticInteractionOn support g) t
     (quarticInteractionOn_mem_freeGibbsDomain support ε β hpos g)
 
-/-- On a finite mode type, the first Dyson coefficient of the all-label bosonic quartic interaction belongs
-to the free-Gibbs domain. -/
+/-- On a finite mode type, the first Dyson coefficient of the all-label bosonic quartic interaction
+belongs to the free-Gibbs domain. -/
 theorem infiniteDysonCoeff_one_quarticInteraction_mem_freeGibbsDomain
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (g : QuarticVertexLabel Mode → ℂ) (t : ℝ) :
