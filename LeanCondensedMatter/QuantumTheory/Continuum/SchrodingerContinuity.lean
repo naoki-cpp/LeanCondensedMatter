@@ -31,6 +31,11 @@ namespace Continuum
 
 noncomputable section
 
+-- Keep scalar derivatives on the same canonical real normed and inner-product structures used by
+-- Mathlib's product-rule implementation.
+attribute [local instance 1001]
+  Real.normedAddCommGroup RCLike.toInnerProductSpaceReal
+
 /-- Real-coordinate access used only inside the explicit coordinate implementation. -/
 private def realPart (z : ℂ) : ℝ :=
   z.re
