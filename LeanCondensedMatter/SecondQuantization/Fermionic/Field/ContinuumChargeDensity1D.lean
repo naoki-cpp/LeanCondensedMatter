@@ -45,7 +45,7 @@ noncomputable def continuumMultiplicationOperator1D
   map_smul' := by
     intro c ψ
     funext x
-    simp [mul_assoc]
+    ring
 
 @[simp]
 theorem continuumMultiplicationOperator1D_apply
@@ -69,7 +69,7 @@ noncomputable def continuumMultiplication1D :
     apply LinearMap.ext
     intro ψ
     funext x
-    simp [continuumMultiplicationOperator1D, mul_assoc]
+    simp [continuumMultiplicationOperator1D]
 
 @[simp]
 theorem continuumMultiplication1D_apply
@@ -99,7 +99,8 @@ theorem continuumChargeDensity1D_oneParticle
         (oneParticle ContinuumWavefunction1D ψ) =
       oneParticle ContinuumWavefunction1D (fun x => q * f x * ψ x) := by
   rw [continuumChargeDensity1D_apply]
-  simp only [LinearMap.smul_apply, dGamma_oneParticle, map_smul]
+  simp only [LinearMap.smul_apply, dGamma_oneParticle]
+  rw [← map_smul]
   congr 1
   funext x
   simp [continuumMultiplication1D, continuumMultiplicationOperator1D, mul_assoc]
@@ -123,11 +124,8 @@ theorem continuumChargeDensity1D_oneParticle_real
         (oneParticle ContinuumWavefunction1D ψ) =
       oneParticle ContinuumWavefunction1D
         (fun x => ((q * test x : ℝ) : ℂ) * ψ x) := by
-  rw [continuumChargeDensity1D_oneParticle]
-  congr 1
-  funext x
-  push_cast
-  ring
+  simpa [complexTestOfReal1D] using
+    (continuumChargeDensity1D_oneParticle (q : ℂ) (complexTestOfReal1D test) ψ)
 
 end
 end Field
