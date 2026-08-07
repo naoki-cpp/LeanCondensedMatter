@@ -32,23 +32,33 @@ namespace Continuum
 
 noncomputable section
 
+/-- Real-coordinate access used only inside the explicit coordinate implementation. -/
+private def realPart (z : ℂ) : ℝ :=
+  z.re
+
+/-- Imaginary-coordinate access used only inside the explicit coordinate implementation. -/
+private def imaginaryPart (z : ℂ) : ℝ :=
+  z.im
+
 /-- Pointwise probability density `|ψ|²`, written in real coordinates. -/
 def probabilityDensityValue (ψ : ℂ) : ℝ :=
-  ψ.re ^ 2 + ψ.im ^ 2
+  realPart ψ ^ 2 + imaginaryPart ψ ^ 2
 
 /-- Pointwise one-dimensional probability current for kinetic coefficient `κ`.
 
 This is `(2κ / ℏ) Im (star ψ * ψₓ)`, expanded into real coordinates. -/
 def probabilityCurrentValue1D (ℏ κ : ℝ) (ψ ψx : ℂ) : ℝ :=
-  (2 * κ / ℏ) * (ψ.re * ψx.im - ψ.im * ψx.re)
+  (2 * κ / ℏ) *
+    (realPart ψ * imaginaryPart ψx - imaginaryPart ψ * realPart ψx)
 
 /-- The value obtained by differentiating probability density in time. -/
 def probabilityDensityTimeDerivativeValue (ψ ψt : ℂ) : ℝ :=
-  2 * (ψ.re * ψt.re + ψ.im * ψt.im)
+  2 * (realPart ψ * realPart ψt + imaginaryPart ψ * imaginaryPart ψt)
 
 /-- The value obtained by differentiating the one-dimensional probability current in space. -/
 def probabilityCurrentDivergenceValue1D (ℏ κ : ℝ) (ψ ψxx : ℂ) : ℝ :=
-  (2 * κ / ℏ) * (ψ.re * ψxx.im - ψ.im * ψxx.re)
+  (2 * κ / ℏ) *
+    (realPart ψ * imaginaryPart ψxx - imaginaryPart ψ * realPart ψxx)
 
 private theorem hasDerivAt_re
     {ψ : ℝ → ℂ} {ψ' : ℂ} {x : ℝ} (hψ : HasDerivAt ψ ψ' x) :
@@ -68,7 +78,8 @@ theorem hasDerivAt_probabilityDensityValue
   have hre := hasDerivAt_re hψ
   have him := hasDerivAt_im hψ
   convert (hre.mul hre).add (him.mul him) using 1 <;>
-    simp [probabilityDensityValue, probabilityDensityTimeDerivativeValue] <;> ring
+    simp [probabilityDensityValue, probabilityDensityTimeDerivativeValue, realPart,
+      imaginaryPart] <;> ring
 
 /-- Differentiating the standard one-dimensional current cancels the two mixed first-derivative
 terms, leaving only the second spatial derivative. -/
@@ -83,7 +94,8 @@ theorem hasDerivAt_probabilityCurrentValue1D
   have hψxim := hasDerivAt_im hψx
   have hbracket := (hψre.mul hψxim).sub (hψim.mul hψxre)
   convert hbracket.const_mul (2 * κ / ℏ) using 1 <;>
-    simp [probabilityCurrentValue1D, probabilityCurrentDivergenceValue1D] <;> ring
+    simp [probabilityCurrentValue1D, probabilityCurrentDivergenceValue1D, realPart,
+      imaginaryPart] <;> ring
 
 /-- Real and imaginary component equations extracted from the pointwise Schrödinger equation. -/
 theorem schrodinger_component_equations
@@ -107,6 +119,7 @@ theorem probability_continuity_balance_of_components
     probabilityDensityTimeDerivativeValue ψ ψt +
       probabilityCurrentDivergenceValue1D ℏ κ ψ ψxx = 0 := by
   unfold probabilityDensityTimeDerivativeValue probabilityCurrentDivergenceValue1D
+  simp only [realPart, imaginaryPart]
   field_simp [hℏ]
   linear_combination 2 * ψ.re * himag + 2 * ψ.im * hreal
 
