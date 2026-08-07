@@ -38,6 +38,7 @@ theorem TwoPointDiagram.mem_componentBlock {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (v w : TwoPointVertex S) :
     w ∈ d.componentBlock v ↔ d.vertexGraph.Reachable w v := by
+  classical
   change w ∈ (Finpartition.ofSetoid d.vertexGraph.reachableSetoid).part v ↔ _
   rw [Finpartition.mem_part_ofSetoid_iff_rel]
   exact d.vertexGraph.reachable_comm
