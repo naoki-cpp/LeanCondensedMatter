@@ -6,6 +6,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticWickE
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticThermalAmplitude
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticThermalComponentFactorization
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticThermalConnected
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticTimedThermalAmplitude
 
 set_option linter.style.header false
 
@@ -26,11 +27,14 @@ This umbrella module exposes the bosonic quartic-diagram layer:
 - connected-component factorization of the bosonic thermal pairing value and full coefficientwise
   ordered amplitude through the statistics-independent Common pair-product decomposition;
 - order-averaged diagram amplitudes, their multiplicative connected decomposition, and the resulting
-  coefficientwise cumulant-equals-connected-diagram theorem.
+  coefficientwise cumulant-equals-connected-diagram theorem;
+- imaginary-time vertex-phase dressing and ordered-simplex integration of individual ordered
+  coefficientwise diagram amplitudes.
 
 Graph, component, and cumulant combinatorics are inherited from the statistics-independent Common
 and Combinatorics APIs. The thermal expectation layer keeps its Gibbs-domain, deletion-closure, and
-first-pair recurrence hypotheses explicit. The connected theorem exposed here is coefficientwise; it
-does not claim ordered-simplex integration, infinite Dyson-series convergence, or completed-space
-analytic convergence.
+first-pair recurrence hypotheses explicit. The connected theorem exposed here is coefficientwise.
+The timed amplitude layer supplies the scalar ordered-simplex integral but still does not identify it
+with the recursive convergence-aware bosonic Dyson expectation or claim infinite-series/completed-
+space analytic convergence.
 -/
