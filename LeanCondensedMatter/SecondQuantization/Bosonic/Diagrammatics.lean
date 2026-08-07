@@ -5,6 +5,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagr
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticWickExpansion
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticThermalAmplitude
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticThermalComponentFactorization
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticThermalConnected
 
 set_option linter.style.header false
 
@@ -23,9 +24,13 @@ This umbrella module exposes the bosonic quartic-diagram layer:
 - coefficientwise scalar amplitudes placing the free thermal pair kernel on each ordered quartic
   diagram pairing;
 - connected-component factorization of the bosonic thermal pairing value and full coefficientwise
-  ordered amplitude through the statistics-independent Common pair-product decomposition.
+  ordered amplitude through the statistics-independent Common pair-product decomposition;
+- order-averaged diagram amplitudes, their multiplicative connected decomposition, and the resulting
+  coefficientwise cumulant-equals-connected-diagram theorem.
 
-Graph and component proofs are inherited from the statistics-independent `Common.QuarticDiagram`
-API. The thermal amplitude keeps its Gibbs-domain, deletion-closure, and first-pair recurrence
-hypotheses explicit and does not yet claim ordered-simplex integration or a connected Dyson theorem.
+Graph, component, and cumulant combinatorics are inherited from the statistics-independent Common
+and Combinatorics APIs. The thermal expectation layer keeps its Gibbs-domain, deletion-closure, and
+first-pair recurrence hypotheses explicit. The connected theorem exposed here is coefficientwise; it
+does not claim ordered-simplex integration, infinite Dyson-series convergence, or completed-space
+analytic convergence.
 -/
