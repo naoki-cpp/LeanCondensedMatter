@@ -30,7 +30,13 @@ theorem finiteSupportIntervalIntegral_apply_of_mem (S : Finset Config)
     (f : ℝ → AlgebraicFock Config) (a b : ℝ) {m : Config} (hm : m ∈ S) :
     finiteSupportIntervalIntegral S f a b m = ∫ τ in a..b, f τ m := by
   classical
-  simp [finiteSupportIntervalIntegral, Finsupp.finsetSum_apply, basisState, hm]
+  rw [finiteSupportIntervalIntegral, Finsupp.finsetSum_apply]
+  apply Finset.sum_eq_single m
+  · simp [basisState]
+  · intro k hk hkm
+    simp [basisState, hkm]
+  · intro hnot
+    exact (hnot hm).elim
 
 /-- A reconstructed coordinate outside the prescribed support vanishes. -/
 theorem finiteSupportIntervalIntegral_apply_of_not_mem (S : Finset Config)
@@ -70,7 +76,7 @@ theorem finiteSupportIntervalIntegral_apply (S : Finset Config)
       by_contra hne
       exact hm (hf τ (Finsupp.mem_support_iff.mpr hne))
     rw [hzero]
-    simp
+    exact intervalIntegral.integral_zero
 
 end Common
 end SecondQuantization
