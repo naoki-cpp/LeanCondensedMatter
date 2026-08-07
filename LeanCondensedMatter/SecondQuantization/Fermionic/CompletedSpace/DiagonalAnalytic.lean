@@ -41,7 +41,10 @@ theorem completedDiagonalOperator_isFormalAdjoint_self (w : Occupation Mode → 
   apply tsum_congr
   intro n
   rw [completedDiagonalOperator_apply, completedDiagonalOperator_apply]
-  simp [RCLike.inner_apply', hw, mul_assoc, mul_left_comm, mul_comm]
+  have hwn : (starRingEnd ℂ) (w n) = w n := by
+    simpa using hw n
+  rw [hwn]
+  ring
 
 /-- A formally symmetric maximal diagonal operator is closable. -/
 theorem completedDiagonalOperator_isClosable_of_star (w : Occupation Mode → ℂ)
@@ -82,23 +85,26 @@ theorem star_particleNumberWeight (n : Occupation Mode) :
   simp
 
 /-- The completed total number operator is densely defined. -/
-theorem completedTotalNumberOperator_denseDomain :
-    Dense ((completedTotalNumberOperator.domain : Submodule ℂ (CompletedFockSpace Mode)) :
-      Set (CompletedFockSpace Mode)) := by
+theorem completedTotalNumberOperator_denseDomain {Mode : Type*} :
+    Dense (((completedTotalNumberOperator (Mode := Mode)).domain :
+      Submodule ℂ (CompletedFockSpace Mode)) : Set (CompletedFockSpace Mode)) := by
   exact completedDiagonalOperator_denseDomain
     (fun n : Occupation Mode => (particleNumber n : ℂ))
 
 /-- The completed total number operator is formally symmetric. -/
-theorem completedTotalNumberOperator_isFormalAdjoint_self :
-    completedTotalNumberOperator.IsFormalAdjoint completedTotalNumberOperator := by
+theorem completedTotalNumberOperator_isFormalAdjoint_self {Mode : Type*} :
+    (completedTotalNumberOperator (Mode := Mode)).IsFormalAdjoint
+      (completedTotalNumberOperator (Mode := Mode)) := by
   exact completedDiagonalOperator_isFormalAdjoint_self
-    (fun n : Occupation Mode => (particleNumber n : ℂ)) star_particleNumberWeight
+    (fun n : Occupation Mode => (particleNumber n : ℂ))
+    (star_particleNumberWeight (Mode := Mode))
 
 /-- The completed total number operator is closable. -/
-theorem completedTotalNumberOperator_isClosable :
-    completedTotalNumberOperator.IsClosable := by
+theorem completedTotalNumberOperator_isClosable {Mode : Type*} :
+    (completedTotalNumberOperator (Mode := Mode)).IsClosable := by
   exact completedDiagonalOperator_isClosable_of_star
-    (fun n : Occupation Mode => (particleNumber n : ℂ)) star_particleNumberWeight
+    (fun n : Occupation Mode => (particleNumber n : ℂ))
+    (star_particleNumberWeight (Mode := Mode))
 
 end
 end Fermionic
