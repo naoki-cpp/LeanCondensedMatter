@@ -22,7 +22,7 @@ open scoped ENNReal MeasureTheory InnerProductSpace
 private theorem inner_real_mul_left_eq_inner_real_mul_right
     (r : ℝ) (z w : ℂ) :
     inner ℂ ((r : ℂ) * z) w = inner ℂ z ((r : ℂ) * w) := by
-  simp [RCLike.inner_apply, mul_assoc, mul_left_comm, mul_comm]
+  simp [RCLike.inner_apply, mul_assoc, mul_comm]
 
 /-- Multiplication by a bounded real function is symmetric on `L²(ℝ, ℂ)`. -/
 theorem l2RealMultiplicationOperator1D_symmetric
