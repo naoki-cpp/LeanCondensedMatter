@@ -33,7 +33,9 @@ theorem matrixCoeff_annihilate_comp_create_self
   · subst j
     rw [if_pos rfl, Common.matrixCoeff, LinearMap.comp_apply]
     change (annihilate i (create i (basisState n))) n = (n i : ℂ) + 1
-    rw [annihilate_create_basisState_same, Common.smul_basisState_apply_self]
+    rw [annihilate_create_basisState_same]
+    change (((n i : ℂ) + 1) • Common.basisState n) n = (n i : ℂ) + 1
+    exact Common.smul_basisState_apply_self ((n i : ℂ) + 1) n
   · rw [if_neg hij, Common.matrixCoeff, LinearMap.comp_apply]
     change (annihilate i (create j (basisState n))) n = 0
     rw [create_basisState_eq, map_smul]
@@ -50,7 +52,7 @@ theorem matrixCoeff_annihilate_comp_create_self
       have hne : removeOccupation i (createOccupation j n) ≠ n := by
         intro h
         have hj := congrArg (fun x : Occupation Mode => x j) h
-        rw [removeOccupation_apply_ne hij.symm, createOccupation_apply_same] at hj
+        rw [removeOccupation_apply_ne (Ne.symm hij), createOccupation_apply_same] at hj
         omega
       exact Common.smul_basisState_apply_of_ne _ hne
 
@@ -196,8 +198,12 @@ theorem freeGibbsExpectation_create_comp_annihilate_concrete
       ring
     rw [hnegExpectation,
       freeGibbsExpectation_annihilate_comp_create_concrete ε β hpos i i]
+    simp only [if_true]
     have hden := freeGibbs_boseDenominator_ne_zero ε β hpos i
-    field_simp
+    have hden' :
+        1 - Complex.exp (((-(ε i * β) : ℝ) : ℂ)) ≠ 0 := by
+      convert hden using 1 <;> ring
+    field_simp [hden']
     ring
   · have hc := comm_annihilate_create j i
     rw [comm, if_neg (Ne.symm hij)] at hc
