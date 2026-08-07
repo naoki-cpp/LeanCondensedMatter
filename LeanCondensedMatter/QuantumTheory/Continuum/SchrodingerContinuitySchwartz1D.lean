@@ -22,6 +22,8 @@ namespace Continuum
 
 noncomputable section
 
+open MeasureTheory
+
 /-- The first spatial derivative of a complex Schwartz wavefunction, still in Schwartz space. -/
 def schwartzSpatialDerivative1D (ψ : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℂ :=
   SchwartzMap.derivCLM ℂ ℂ ψ
@@ -43,14 +45,14 @@ theorem schwartzSpatialSecondDerivative1D_apply (ψ : SchwartzMap ℝ ℂ) (x : 
 /-- A Schwartz wavefunction has the canonical first derivative at every spatial point. -/
 theorem hasDerivAt_schwartzSpatialDerivative1D (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     HasDerivAt (fun y : ℝ => ψ y) (schwartzSpatialDerivative1D ψ x) x := by
-  simpa [schwartzSpatialDerivative1D] using (SchwartzMap.hasDerivAt (𝕜 := ℂ) ψ x)
+  simpa [schwartzSpatialDerivative1D] using (SchwartzMap.hasDerivAt ψ x)
 
 /-- The first Schwartz derivative has the canonical second derivative at every spatial point. -/
 theorem hasDerivAt_schwartzSpatialSecondDerivative1D (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     HasDerivAt (fun y : ℝ => schwartzSpatialDerivative1D ψ y)
       (schwartzSpatialSecondDerivative1D ψ x) x := by
   simpa [schwartzSpatialSecondDerivative1D] using
-    (SchwartzMap.hasDerivAt (𝕜 := ℂ) (schwartzSpatialDerivative1D ψ) x)
+    (SchwartzMap.hasDerivAt (schwartzSpatialDerivative1D ψ) x)
 
 private theorem hasDerivAt_realPart_of_complex
     {f : ℝ → ℂ} {f' : ℂ} {x : ℝ} (h : HasDerivAt f f' x) :
