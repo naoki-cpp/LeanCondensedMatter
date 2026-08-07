@@ -29,12 +29,12 @@ theorem matrixCoeff_infiniteDysonCoeff_one_self
     Common.matrixCoeff
         (Common.infiniteDysonCoeff (freeEigenvalue ε) V 1 t) n n =
       -(t : ℂ) * Common.matrixCoeff V n n := by
-  change Common.infiniteDysonCoeff (freeEigenvalue ε) V 1 t (basisState n) n = _
+  change Common.infiniteDysonCoeff (freeEigenvalue ε) V 1 t (Common.basisState n) n = _
   rw [show 1 = 0 + 1 by omega,
     Common.infiniteDysonCoeff_succ_basisState_apply]
   simp only [Common.infiniteDysonCoeff_zero, LinearMap.id_apply]
   have hdiag : ∀ σ : ℝ,
-      interactionPicture ε V σ (basisState n) n = Common.matrixCoeff V n n := by
+      interactionPicture ε V σ (Common.basisState n) n = Common.matrixCoeff V n n := by
     intro σ
     change Common.matrixCoeff (interactionPicture ε V σ) n n = Common.matrixCoeff V n n
     rw [matrixCoeff_interactionPicture]
