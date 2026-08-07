@@ -20,6 +20,7 @@ noncomputable section
 
 variable {Mode : Type*} [Fintype Mode]
 
+/-- File-local classical decidable equality used by finite-mode product decompositions. -/
 local instance instDecidableEqQuadraticParticleNumberWeightSummable : DecidableEq Mode :=
   Classical.decEq Mode
 
