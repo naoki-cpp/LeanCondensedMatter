@@ -19,6 +19,8 @@ namespace Common
 
 variable {Config : Type*}
 
+local instance : DecidableEq Config := Classical.decEq Config
+
 /-- Configurations reachable from `n` after exactly `order` applications of the algebraic operator
 `V`, with possible cancellation deliberately ignored. -/
 noncomputable def reachableSupport
@@ -44,7 +46,6 @@ theorem mem_reachableSupport_succ_iff
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (order : ℕ) (m n : Config) :
     m ∈ reachableSupport V (order + 1) n ↔
       ∃ k ∈ reachableSupport V order n, m ∈ (V (basisState k)).support := by
-  classical
   simp [reachableSupport]
 
 /-- The first reachable support is exactly large enough to contain the support used by the
@@ -52,7 +53,6 @@ first-order infinite-configuration Dyson construction. -/
 theorem support_basisImage_subset_reachableSupport_one
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : Config) :
     (V (basisState n)).support ⊆ reachableSupport V 1 n := by
-  classical
   intro m hm
   simp [reachableSupport, hm]
 
