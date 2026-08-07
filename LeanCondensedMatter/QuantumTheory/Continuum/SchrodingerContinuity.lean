@@ -32,14 +32,6 @@ namespace Continuum
 
 noncomputable section
 
--- Use the exact normed additive and scalar structures used by Mathlib's scalar product-rule API.
--- Their parent `AddCommGroup` and `Module` structures then agree definitionally at theorem boundaries.
-local instance realNormedAddCommGroup : NormedAddCommGroup ℝ :=
-  Real.normedAddCommGroup
-
-local instance realNormedSpaceFromInnerProduct : NormedSpace ℝ ℝ :=
-  RCLike.toInnerProductSpaceReal.toNormedSpace
-
 /-- Real-coordinate access used only inside the explicit coordinate implementation. -/
 private def realPart (z : ℂ) : ℝ :=
   z.re
@@ -78,16 +70,7 @@ theorem hasDerivAt_probabilityDensityValue
     (him : HasDerivAt (fun s => imaginaryPart (ψ s)) (imaginaryPart ψt) t) :
     HasDerivAt (fun s => probabilityDensityValue (ψ s))
       (probabilityDensityTimeDerivativeValue (ψ t) ψt) t := by
-  have hraw :
-      HasDerivAt
-        (fun s =>
-          realPart (ψ s) * realPart (ψ s) +
-            imaginaryPart (ψ s) * imaginaryPart (ψ s))
-        ((realPart ψt * realPart (ψ t) + realPart (ψ t) * realPart ψt) +
-          (imaginaryPart ψt * imaginaryPart (ψ t) +
-            imaginaryPart (ψ t) * imaginaryPart ψt)) t := by
-    simpa only [Pi.mul_apply, Pi.add_apply] using
-      HasDerivAt.add (HasDerivAt.mul hre hre) (HasDerivAt.mul him him)
+  have hraw := HasDerivAt.add (HasDerivAt.mul hre hre) (HasDerivAt.mul him him)
   have hderiv :
       (realPart ψt * realPart (ψ t) + realPart (ψ t) * realPart ψt) +
           (imaginaryPart ψt * imaginaryPart (ψ t) +
@@ -96,7 +79,9 @@ theorem hasDerivAt_probabilityDensityValue
     simp [probabilityDensityTimeDerivativeValue]
     ring
   rw [hderiv] at hraw
-  simpa [probabilityDensityValue, pow_two] using hraw
+  rw [hasDerivAt_iff_tendsto]
+  rw [hasDerivAt_iff_tendsto] at hraw
+  simpa [probabilityDensityValue, pow_two, Pi.mul_apply, Pi.add_apply] using hraw
 
 /-- Differentiating the standard one-dimensional current cancels the two mixed first-derivative
 terms, leaving only the second spatial derivative. -/
@@ -108,17 +93,8 @@ theorem hasDerivAt_probabilityCurrentValue1D
     (hψxim : HasDerivAt (fun y => imaginaryPart (ψx y)) (imaginaryPart ψxx) x) :
     HasDerivAt (fun y => probabilityCurrentValue1D ℏ κ (ψ y) (ψx y))
       (probabilityCurrentDivergenceValue1D ℏ κ (ψ x) ψxx) x := by
-  have hraw :
-      HasDerivAt
-        (fun y =>
-          realPart (ψ y) * imaginaryPart (ψx y) -
-            imaginaryPart (ψ y) * realPart (ψx y))
-        ((realPart (ψx x) * imaginaryPart (ψx x) +
-            realPart (ψ x) * imaginaryPart ψxx) -
-          (imaginaryPart (ψx x) * realPart (ψx x) +
-            imaginaryPart (ψ x) * realPart ψxx)) x := by
-    simpa only [Pi.mul_apply, Pi.sub_apply] using
-      HasDerivAt.sub (HasDerivAt.mul hψre hψxim) (HasDerivAt.mul hψim hψxre)
+  have hraw := HasDerivAt.sub
+    (HasDerivAt.mul hψre hψxim) (HasDerivAt.mul hψim hψxre)
   have hderiv :
       (realPart (ψx x) * imaginaryPart (ψx x) +
             realPart (ψ x) * imaginaryPart ψxx) -
@@ -128,8 +104,11 @@ theorem hasDerivAt_probabilityCurrentValue1D
           imaginaryPart (ψ x) * realPart ψxx := by
     ring
   rw [hderiv] at hraw
-  simpa [probabilityCurrentValue1D, probabilityCurrentDivergenceValue1D] using
-    hraw.const_mul (2 * κ / ℏ)
+  have hscaled := hraw.const_mul (2 * κ / ℏ)
+  rw [hasDerivAt_iff_tendsto]
+  rw [hasDerivAt_iff_tendsto] at hscaled
+  simpa [probabilityCurrentValue1D, probabilityCurrentDivergenceValue1D,
+    Pi.mul_apply, Pi.sub_apply] using hscaled
 
 /-- Real and imaginary component equations extracted from the pointwise Schrödinger equation. -/
 theorem schrodinger_component_equations
