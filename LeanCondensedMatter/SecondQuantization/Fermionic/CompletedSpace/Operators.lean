@@ -42,6 +42,15 @@ theorem completedToggleLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
     completedToggleLinear i ψ n = ψ (toggleOccupation i n) :=
   rfl
 
+@[simp]
+theorem completedToggleLinear_completedToggleLinear (i : Mode)
+    (ψ : CompletedFockSpace Mode) :
+    completedToggleLinear i (completedToggleLinear i ψ) = ψ := by
+  apply lp.ext
+  funext n
+  rw [completedToggleLinear_apply, completedToggleLinear_apply,
+    toggleOccupation_involutive i n]
+
 private theorem norm_completedToggleLinear_le (i : Mode) (ψ : CompletedFockSpace Mode) :
     ‖completedToggleLinear i ψ‖ ≤ ‖ψ‖ := by
   apply lp.norm_le_of_tsum_le (p := (2 : ℝ≥0∞)) (by norm_num) (norm_nonneg ψ)
@@ -56,7 +65,7 @@ theorem norm_completedToggleLinear (i : Mode) (ψ : CompletedFockSpace Mode) :
     ‖completedToggleLinear i ψ‖ = ‖ψ‖ := by
   apply le_antisymm (norm_completedToggleLinear_le i ψ)
   have h := norm_completedToggleLinear_le i (completedToggleLinear i ψ)
-  simpa only [completedToggleLinear_apply, toggleOccupation_involutive] using h
+  simpa only [completedToggleLinear_completedToggleLinear] using h
 
 /-- The occupation toggle as a norm-preserving continuous linear map. -/
 noncomputable def completedToggle (i : Mode) :
