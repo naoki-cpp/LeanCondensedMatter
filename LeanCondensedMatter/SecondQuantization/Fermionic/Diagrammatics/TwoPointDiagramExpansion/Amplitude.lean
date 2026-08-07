@@ -48,6 +48,21 @@ noncomputable def orderedTwoPointPairingValue {n : ℕ}
   Common.pairingEvaluation pairing (pairing.weight Common.Statistics.fermion)
     (mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ q)
 
+/-- The mixed event-level density-state expectation is the external-order sign times the sum of
+canonical pairing evaluations.  This is the semantic pairing boundary used by downstream amplitudes;
+the raw finite-product expansion remains confined to the Bloch--de Dominicis specialization. -/
+theorem freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue
+    {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
+    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
+    (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator (mixedTimeOrderedVertexComp ε i j τ τ' q σ)) =
+      twoPointExternalOrderSign τ τ' *
+        ∑ pairing : Pairing (2 * n + 1),
+          orderedTwoPointPairingValue ε β i j τ τ' σ q pairing := by
+  rw [freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairing]
+  simp only [orderedTwoPointPairingValue, mixedTimeOrderedAtomicPairValue,
+    Common.pairingEvaluation]
+
 /-- Fixed-time amplitude in the slot-label/pairing representation. -/
 noncomputable def orderedTwoPointFixedTimeAmplitude {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
@@ -123,9 +138,7 @@ theorem sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_sum_vertexLab
   rw [Finset.mul_sum]
   apply Finset.sum_congr rfl
   intro q _
-  rw [freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairing]
-  simp only [orderedTwoPointPairingValue, mixedTimeOrderedAtomicPairValue,
-    Common.pairingEvaluation]
+  rw [freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue]
   ring
 
 end Fermionic
