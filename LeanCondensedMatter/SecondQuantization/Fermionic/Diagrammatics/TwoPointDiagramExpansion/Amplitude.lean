@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.PairingEvaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Reindexing
 
 set_option linter.style.header false
@@ -10,7 +11,9 @@ Bloch--de Dominicis theorem as an amplitude of a two-point Wick diagram with fix
 external annihilation/creation labels.
 
 The interaction times are still parameters. Ordered-simplex integration and the
-Dyson factor are deliberately left to the next layer.
+Dyson factor are deliberately left to the next layer. Pair contractions are evaluated through the
+canonical free Gibbs density state; finite Gibbs coordinate formulas are used only for evaluation
+bridges.
 -/
 
 namespace SecondQuantization
@@ -26,16 +29,18 @@ noncomputable def orderedTwoPointVertexWeight {n : ℕ}
     (q : Fin n → QuarticVertexLabel Mode) : ℂ :=
   ∏ v, g (q v)
 
-/-- The mixed-time contraction value of one slot-indexed pairing. -/
+/-- The mixed-time contraction value of one slot-indexed pairing, evaluated from the canonical free
+Gibbs density-state pair kernel. -/
 noncomputable def orderedTwoPointPairingValue {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
     (σ : Fin n → ℝ) (q : Fin n → QuarticVertexLabel Mode)
     (pairing : Pairing (2 * n + 1)) : ℂ :=
-  pairing.weight Common.Statistics.fermion *
-    ∏ pr ∈ pairing.pairs,
-      Common.finiteGibbsExpectation (fermionEnergy ε) β
-        ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ pr.1).comp
-          (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ pr.2))
+  Common.pairingEvaluation pairing (pairing.weight Common.Statistics.fermion)
+    (fun a b =>
+      (freeGibbsDensityOperator ε β).expectation
+        (Common.finiteHilbertOperator
+          ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ a).comp
+            (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ b))))
 
 /-- Fixed-time amplitude in the slot-label/pairing representation. -/
 noncomputable def orderedTwoPointFixedTimeAmplitude {n : ℕ}
@@ -113,7 +118,8 @@ theorem sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_sum_vertexLab
   apply Finset.sum_congr rfl
   intro q _
   rw [finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairing]
-  simp only [orderedTwoPointPairingValue]
+  simp only [orderedTwoPointPairingValue, Common.pairingEvaluation,
+    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
   ring
 
 /-- Density-state form of the fixed-time external-leg Wick expansion. -/
