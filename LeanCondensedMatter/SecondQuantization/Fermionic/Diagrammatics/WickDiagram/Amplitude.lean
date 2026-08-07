@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Ordered
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.PairingEvaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.LegFamily
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
@@ -11,8 +12,8 @@ set_option linter.style.header false
 # Ordered-simplex quartic Wick-diagram amplitudes
 
 This module assembles vertex-order transport and scalar ordered-simplex integration into the
-quartic Wick-diagram amplitude. Pair contractions are evaluated through the canonical finite Gibbs
-expectation, with the equivalent density-state presentation exposed by a bridge theorem.
+quartic Wick-diagram amplitude. Pair contractions are defined through the canonical free Gibbs
+density-state expectation; finite Gibbs coordinate formulas remain downstream evaluation tools.
 -/
 
 namespace SecondQuantization
@@ -32,13 +33,14 @@ noncomputable def orderedQuarticLegOperator (ε : Mode → ℝ) {S : Finset (Fin
 
 /-! ## Pair contraction values -/
 
-/-- The normalized finite Gibbs pair value of two flattened leg positions. -/
+/-- The canonical free Gibbs density-state value of two flattened leg positions. -/
 noncomputable def orderedQuarticPairValue (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) (τ : Fin S.card → ℝ)
     (a b : Fin (2 * (2 * S.card))) : ℂ :=
-  Common.finiteGibbsExpectation (fermionEnergy ε) β
-    ((orderedQuarticLegOperator ε d order τ a).comp
-      (orderedQuarticLegOperator ε d order τ b))
+  (freeGibbsDensityOperator ε β).expectation
+    (Common.finiteHilbertOperator
+      ((orderedQuarticLegOperator ε d order τ a).comp
+        (orderedQuarticLegOperator ε d order τ b)))
 
 /-- The Wick pair value is the canonical free Gibbs density-state expectation of the transported
 operator product. -/
@@ -50,9 +52,8 @@ theorem orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation
       (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperator
           ((orderedQuarticLegOperator ε d order τ a).comp
-            (orderedQuarticLegOperator ε d order τ b))) := by
-  rw [orderedQuarticPairValue,
-    freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
+            (orderedQuarticLegOperator ε d order τ b))) :=
+  rfl
 
 omit [LinearOrder Mode] in
 private theorem finiteGibbsExpectation_smul_apply (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
@@ -76,8 +77,9 @@ noncomputable def QuarticWickDiagram.couplingWeight {S : Finset (Fin N)}
 noncomputable def QuarticWickDiagram.contractionIntegrand (ε : Mode → ℝ) (β : ℝ)
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S)
     (τ : Fin S.card → ℝ) : ℂ :=
-  (d.pairingInOrder order).weight Common.Statistics.fermion *
-    ∏ pr ∈ (d.pairingInOrder order).pairs, orderedQuarticPairValue ε β d order τ pr.1 pr.2
+  Common.pairingEvaluation (d.pairingInOrder order)
+    ((d.pairingInOrder order).weight Common.Statistics.fermion)
+    (orderedQuarticPairValue ε β d order τ)
 
 /-- The fixed-order contribution integrated over the ordered simplex. -/
 noncomputable def QuarticWickDiagram.orderedSimplexContribution (ε : Mode → ℝ) (β : ℝ)
@@ -164,8 +166,8 @@ theorem quarticWickDiagramAmplitude_empty (ε : Mode → ℝ) (β : ℝ) (g : Qu
       d.orderedSimplexContribution ε β order = 1 := by
     intro order
     simp only [QuarticWickDiagram.orderedSimplexContribution]
-    simp [QuarticWickDiagram.contractionIntegrand, Combinatorics.Pairing.pairs,
-      Combinatorics.Pairing.crossingCount]
+    simp [QuarticWickDiagram.contractionIntegrand, Common.pairingEvaluation,
+      Combinatorics.Pairing.pairs, Combinatorics.Pairing.crossingCount]
   simp only [quarticWickDiagramAmplitude, QuarticWickDiagram.couplingWeight, hcard, pow_zero,
     one_mul]
   have hcoupling : ∏ v : (↥(∅ : Finset (Fin N))), g (d.vertexLabel v) = 1 := by
