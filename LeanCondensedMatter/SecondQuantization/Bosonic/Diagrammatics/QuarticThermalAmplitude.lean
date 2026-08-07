@@ -32,7 +32,7 @@ noncomputable def QuarticDiagram.orderedFreeThermalFieldFamily {S : Finset (Fin 
   quarticFreeThermalFieldFamily (fun i => d.vertexLabel (order i))
 
 /-- The convergence-aware free thermal contraction value of one ordered bosonic quartic diagram. -/
-noncomputable def QuarticDiagram.orderedThermalPairingValue [Fintype Mode] [DecidableEq Mode]
+noncomputable def QuarticDiagram.orderedThermalPairingValue [DecidableEq Mode]
     (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : QuarticDiagram Mode N S) (order : Common.QuarticVertexOrder S) : ℂ :=
   Common.pairingEvaluation (d.pairingInOrder order)
@@ -43,14 +43,14 @@ noncomputable def QuarticDiagram.orderedThermalPairingValue [Fintype Mode] [Deci
 
 /-- The coefficientwise scalar amplitude of one ordered bosonic quartic diagram, including the
 Dyson sign and quartic coupling product. -/
-noncomputable def QuarticDiagram.orderedThermalAmplitude [Fintype Mode] [DecidableEq Mode]
+noncomputable def QuarticDiagram.orderedThermalAmplitude [DecidableEq Mode]
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {S : Finset (Fin N)} (d : QuarticDiagram Mode N S)
     (order : Common.QuarticVertexOrder S) : ℂ :=
   (-1 : ℂ) ^ S.card * d.couplingWeight g * d.orderedThermalPairingValue ε β order
 
 /-- The full Wick pairing sum for the ordered vertex labels underlying a quartic diagram. -/
-noncomputable def QuarticDiagram.orderedThermalWickSum [Fintype Mode] [DecidableEq Mode]
+noncomputable def QuarticDiagram.orderedThermalWickSum [DecidableEq Mode]
     (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)}
     (d : QuarticDiagram Mode N S) (order : Common.QuarticVertexOrder S) : ℂ :=
   ∑ pairing : Pairing (2 * S.card),
