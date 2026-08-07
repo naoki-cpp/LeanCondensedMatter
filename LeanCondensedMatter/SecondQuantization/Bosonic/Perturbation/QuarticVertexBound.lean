@@ -28,8 +28,7 @@ private theorem occupation_le_particleNumber (n : Occupation Mode) (i : Mode) :
 /-- Four square-root ladder factors bounded by the same nonnegative number have product bounded by
 its square. -/
 private theorem sqrt_four_mul_le_sq {a b c d R : ℝ}
-    (ha0 : 0 ≤ a) (hb0 : 0 ≤ b) (hc0 : 0 ≤ c) (hd0 : 0 ≤ d) (hR0 : 0 ≤ R)
-    (ha : a ≤ R) (hb : b ≤ R) (hc : c ≤ R) (hd : d ≤ R) :
+    (hR0 : 0 ≤ R) (ha : a ≤ R) (hb : b ≤ R) (hc : c ≤ R) (hd : d ≤ R) :
     Real.sqrt a * Real.sqrt b * Real.sqrt c * Real.sqrt d ≤ R ^ 2 := by
   have hsa : Real.sqrt a ≤ Real.sqrt R := Real.sqrt_le_sqrt ha
   have hsb : Real.sqrt b ≤ Real.sqrt R := Real.sqrt_le_sqrt hb
@@ -57,16 +56,22 @@ theorem norm_matrixCoeff_quarticVertexOperator_le (q : QuarticVertexLabel Mode)
     (n : Occupation Mode) :
     ‖Common.matrixCoeff (quarticVertexOperator q) n n‖ ≤ ((particleNumber n : ℝ) + 2) ^ 2 := by
   classical
+  unfold Common.matrixCoeff
+  change ‖(quarticVertexOperator q (basisState n)) n‖ ≤ ((particleNumber n : ℝ) + 2) ^ 2
   by_cases h1 : n q.annihilate₁ = 0
-  · simp [Common.matrixCoeff, quarticVertexOperator, Common.quarticVertexOperator,
-      LinearMap.comp_apply, annihilate_basisState_of_zero h1]
+  · simp only [quarticVertexOperator, Common.quarticVertexOperator, LinearMap.comp_apply]
+    rw [annihilate_basisState_of_zero h1]
+    simp
   · let n1 := removeOccupation q.annihilate₁ n
     have hN1 : particleNumber n1 + 1 = particleNumber n := by
       simpa [n1] using particleNumber_removeOccupation_of_pos h1
     by_cases h2 : n1 q.annihilate₂ = 0
-    · unfold Common.matrixCoeff
-      simp only [quarticVertexOperator, Common.quarticVertexOperator, LinearMap.comp_apply]
-      rw [annihilate_basisState_of_pos h1, map_smul, annihilate_basisState_of_zero h2]
+    · simp only [quarticVertexOperator, Common.quarticVertexOperator, LinearMap.comp_apply]
+      rw [annihilate_basisState_of_pos h1, map_smul]
+      change ‖(create q.create₁
+        (create q.create₂ ((Real.sqrt (n q.annihilate₁ : ℝ) : ℂ) •
+          annihilate q.annihilate₂ (basisState n1)))) n‖ ≤ _
+      rw [annihilate_basisState_of_zero h2]
       simp
     · let n2 := removeOccupation q.annihilate₂ n1
       let n3 := createOccupation q.create₂ n2
@@ -88,22 +93,28 @@ theorem norm_matrixCoeff_quarticVertexOperator_le (q : QuarticVertexLabel Mode)
       have hc1 : (n3 q.create₁ : ℝ) + 1 ≤ (particleNumber n : ℝ) + 2 := by
         exact_mod_cast (show n3 q.create₁ + 1 ≤ particleNumber n + 2 by omega)
       have hR0 : 0 ≤ (particleNumber n : ℝ) + 2 := by positivity
-      have hsqrt := sqrt_four_mul_le_sq
-        (show 0 ≤ (n q.annihilate₁ : ℝ) by positivity)
-        (show 0 ≤ (n1 q.annihilate₂ : ℝ) by positivity)
-        (show 0 ≤ (n2 q.create₂ : ℝ) + 1 by positivity)
-        (show 0 ≤ (n3 q.create₁ : ℝ) + 1 by positivity)
-        hR0 ha1 ha2 hc2 hc1
+      have hsqrt := sqrt_four_mul_le_sq hR0 ha1 ha2 hc2 hc1
       have haction : quarticVertexOperator q (basisState n) =
           ((Real.sqrt (n q.annihilate₁ : ℝ) : ℂ) *
             (Real.sqrt (n1 q.annihilate₂ : ℝ) : ℂ) *
             (Real.sqrt (n2 q.create₂ + 1 : ℝ) : ℂ) *
             (Real.sqrt (n3 q.create₁ + 1 : ℝ) : ℂ)) • basisState n4 := by
         simp only [quarticVertexOperator, Common.quarticVertexOperator, LinearMap.comp_apply]
-        rw [annihilate_basisState_of_pos h1, map_smul, annihilate_basisState_of_pos h2,
-          map_smul, create_basisState_eq, map_smul, create_basisState_eq]
-        simp [n1, n2, n3, n4, smul_smul, mul_assoc]
-      rw [Common.matrixCoeff, haction]
+        rw [annihilate_basisState_of_pos h1, map_smul]
+        change create q.create₁
+          (create q.create₂ ((Real.sqrt (n q.annihilate₁ : ℝ) : ℂ) •
+            annihilate q.annihilate₂ (basisState n1))) = _
+        rw [annihilate_basisState_of_pos h2]
+        simp only [map_smul]
+        rw [create_basisState_eq]
+        simp only [map_smul]
+        change create q.create₁
+          (((Real.sqrt (n q.annihilate₁ : ℝ) : ℂ) *
+            (Real.sqrt (n1 q.annihilate₂ : ℝ) : ℂ) *
+            (Real.sqrt (n2 q.create₂ + 1 : ℝ) : ℂ)) • basisState n3) = _
+        rw [map_smul, create_basisState_eq]
+        simp [n2, n3, n4, smul_smul, mul_assoc]
+      rw [haction]
       by_cases hn4 : n4 = n
       · subst n4
         simp only [Common.smul_basisState_apply_self]
