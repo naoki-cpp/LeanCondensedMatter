@@ -136,19 +136,20 @@ theorem FixedExternalTwoPointWickDiagram.exists_norm_bound_mixedComponentDysonLo
       ε β g τ τ' shuffle B localTime
 
 /-- Every canonical localized Dyson-signed component factor is Bochner integrable on the compact
-coordinate box containing its ordered-simplex integration domain, with respect to product Lebesgue
-measure. -/
+coordinate box containing its ordered-simplex integration domain for every measure finite on compact
+sets. -/
 theorem FixedExternalTwoPointWickDiagram.integrableOn_mixedComponentDysonLocalIntegrand
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (shuffle : d.1.ComponentInteractionShuffle)
-    (B : d.1.componentPartition.parts) :
+    (B : d.1.componentPartition.parts)
+    (μ : Measure (Fin (d.1.interactionComponentSize B) → ℝ))
+    [IsFiniteMeasureOnCompacts μ] :
     IntegrableOn
       (d.mixedComponentDysonLocalIntegrand ε β g τ τ' shuffle B)
-      (intervalIntegral.orderedSimplexTimeBox (d.1.interactionComponentSize B) β)
-      (intervalIntegral.orderedSimplexTimeMeasure (d.1.interactionComponentSize B)) := by
+      (intervalIntegral.orderedSimplexTimeBox (d.1.interactionComponentSize B) β) μ := by
   apply intervalIntegral.integrableOn_orderedSimplexTimeBox_of_finite_continuous_selection
-    (n := d.1.interactionComponentSize B) (β := β)
+    (n := d.1.interactionComponentSize B) (β := β) (μ := μ)
     (f := d.mixedComponentDysonLocalIntegrand ε β g τ τ' shuffle B)
     (g := fun s : TwoPointOrderSignature n =>
       d.mixedComponentDysonLocalChamberRepresentative ε β g τ τ'
