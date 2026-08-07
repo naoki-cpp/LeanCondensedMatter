@@ -61,7 +61,7 @@ theorem norm_matrixCoeff_quarticVertexOperator_le (q : QuarticVertexLabel Mode)
   by_cases h1 : n q.annihilate₁ = 0
   · simp only [quarticVertexOperator, Common.quarticVertexOperator, LinearMap.comp_apply]
     rw [annihilate_basisState_of_zero h1]
-    simp
+    simp only [map_zero, Finsupp.coe_zero, Pi.zero_apply, norm_zero]
     positivity
   · let n1 := removeOccupation q.annihilate₁ n
     have hN1 : particleNumber n1 + 1 = particleNumber n := by
@@ -73,7 +73,7 @@ theorem norm_matrixCoeff_quarticVertexOperator_le (q : QuarticVertexLabel Mode)
         (create q.create₂ ((Real.sqrt (n q.annihilate₁ : ℝ) : ℂ) •
           annihilate q.annihilate₂ (basisState n1)))) n‖ ≤ _
       rw [annihilate_basisState_of_zero h2]
-      simp
+      simp only [smul_zero, map_zero, Finsupp.coe_zero, Pi.zero_apply, norm_zero]
       positivity
     · let n2 := removeOccupation q.annihilate₂ n1
       let n3 := createOccupation q.create₂ n2
