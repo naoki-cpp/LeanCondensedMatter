@@ -8,6 +8,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.DiagonalA
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbs
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnboundedExpectation
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbsSummability
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteCompatibility
 
 set_option linter.style.header false
 
@@ -37,5 +38,10 @@ For the free fermion state, summability of the one-particle Boltzmann factors
 condition the partition function satisfies the infinite product formula
 `Z(β) = ∏' i, (1 + exp (-β εᵢ))`.
 
-Finite-mode compatibility, approximation, and thermodynamic-limit constructions remain later work.
+When the mode type is finite, the completed `ℓ²` representation is canonically linearly isometric to
+the existing `Common.FiniteHilbertFock` occupation realization, with occupation coordinates, basis
+vectors, and the algebraic-core embedding identified explicitly.
+
+Finite Gibbs-state/operator compatibility, approximation, and thermodynamic-limit constructions
+remain later work.
 -/
