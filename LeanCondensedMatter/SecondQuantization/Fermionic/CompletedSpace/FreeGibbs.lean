@@ -23,7 +23,7 @@ open QuantumTheory
 
 noncomputable section
 
-variable {Mode : Type*} [LinearOrder Mode]
+variable {Mode : Type*}
 
 /-- The canonical occupation Hilbert basis of the completed fermionic Fock space. -/
 noncomputable def completedOccupationHilbertBasis :
@@ -34,7 +34,9 @@ noncomputable def completedOccupationHilbertBasis :
 theorem completedOccupationHilbertBasis_apply (n : Occupation Mode) :
     completedOccupationHilbertBasis (Mode := Mode) n = completedBasisState n := by
   classical
-  simp [completedOccupationHilbertBasis, completedBasisState]
+  change (LinearIsometryEquiv.refl ℂ (CompletedFockSpace Mode)).symm
+      (lp.single 2 n (1 : ℂ)) = lp.single 2 n (1 : ℂ)
+  rfl
 
 /-- The positive real free Boltzmann weight `exp (-β E(n))` on an occupation configuration. -/
 noncomputable def completedFreeBoltzmannRealWeight (ε : Mode → ℝ) (β : ℝ)
@@ -53,7 +55,6 @@ theorem completedFreeBoltzmannRealWeight_nonneg (ε : Mode → ℝ) (β : ℝ)
     0 ≤ completedFreeBoltzmannRealWeight ε β n :=
   (completedFreeBoltzmannRealWeight_pos ε β n).le
 
-omit [LinearOrder Mode] in
 /-- The completed real Boltzmann weight is the real scalar underlying the existing algebraic
 complex Boltzmann weight. -/
 theorem coe_completedFreeBoltzmannRealWeight (ε : Mode → ℝ) (β : ℝ)
@@ -71,7 +72,6 @@ def CompletedFreeGibbsSummable (ε : Mode → ℝ) (β : ℝ) : Prop :=
 noncomputable def completedFreePartitionFunction (ε : Mode → ℝ) (β : ℝ) : ℝ :=
   ∑' n : Occupation Mode, completedFreeBoltzmannRealWeight ε β n
 
-omit [LinearOrder Mode] in
 /-- Absolute Boltzmann summability implies ordinary summability of the positive weights. -/
 theorem completedFreeBoltzmannRealWeight_summable (ε : Mode → ℝ) (β : ℝ)
     (hsum : CompletedFreeGibbsSummable ε β) :
