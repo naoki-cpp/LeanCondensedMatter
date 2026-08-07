@@ -8,10 +8,10 @@ set_option linter.style.header false
 # Diagonal unbounded operators on completed fermionic Fock space
 
 A diagonal occupation operator with weight `w : Occupation Mode → ℂ` need not be bounded on the
-completed `ℓ²` Fock space.  Its natural domain consists exactly of vectors `ψ` for which the
+completed `ℓ²` Fock space. Its natural domain consists exactly of vectors `ψ` for which the
 weighted coordinate function `n ↦ w n * ψ n` is again square summable.
 
-This file packages that operator as a `LinearPMap`.  It deliberately stops at the domain-carrying
+This file packages that operator as a `LinearPMap`. It deliberately stops at the domain-carrying
 linear operator: closedness, adjoints, and self-adjointness are later analytic theorems rather than
 part of the definition.
 -/
@@ -25,7 +25,7 @@ noncomputable section
 
 variable {Mode : Type*}
 
-/-- Raw coordinate multiplication by an occupation-dependent scalar weight.  The codomain is the
+/-- Raw coordinate multiplication by an occupation-dependent scalar weight. The codomain is the
 ambient `PreLp` function space because multiplication by an unbounded weight need not preserve
 `ℓ²`. -/
 noncomputable def completedDiagonalCoordinates (w : Occupation Mode → ℂ) :
@@ -47,7 +47,7 @@ theorem completedDiagonalCoordinates_apply (w : Occupation Mode → ℂ)
   rfl
 
 /-- Natural domain of a diagonal occupation operator: the weighted amplitudes must remain in
-`ℓ²`.  Defining it as a preimage of `lpSubmodule` makes linearity of the domain structural rather
+`ℓ²`. Defining it as a preimage of `lpSubmodule` makes linearity of the domain structural rather
 than a separate summability proof. -/
 noncomputable def completedDiagonalDomain (w : Occupation Mode → ℂ) :
     Submodule ℂ (CompletedFockSpace Mode) :=
@@ -157,58 +157,57 @@ theorem completedDiagonalOperator_comp_algebraicCore (w : Occupation Mode → �
   intro n c
   have hc : (Finsupp.single n c : FockSpace Mode) = c • basisState n :=
     (Finsupp.smul_single_one n c).symm
-  rw [hc]
-  simp only [map_smul, LinearMap.comp_apply]
+  rw [hc, map_smul, map_smul]
+  congr 1
   apply lp.ext
   funext m
+  rw [completedDiagonalOperator_apply]
+  change w m * completedBasisState n m =
+    (algebraicToCompleted (Common.diagonalOperator w (basisState n))) m
+  rw [algebraicToCompleted_apply, Common.diagonalOperator_basisState]
   by_cases hmn : m = n
   · subst m
-    simp [completedDiagonalOperator_apply, Common.diagonalOperator_basisState]
-  · simp [completedDiagonalOperator_apply, Common.diagonalOperator_basisState,
-      completedBasisState_apply_of_ne hmn, hmn]
+    simp
+  · simp [completedBasisState_apply_of_ne hmn, hmn]
 
 /-! ## Free Hamiltonian and total particle number -/
 
-omit [LinearOrder Mode] in
 /-- Occupation energy used by the free Hamiltonian. -/
 noncomputable def freeHamiltonianWeight (ε : Mode → ℝ) (n : Occupation Mode) : ℂ :=
   ∑ i ∈ n, (ε i : ℂ)
 
-omit [LinearOrder Mode] in
 /-- Natural weighted `ℓ²` domain of the free Hamiltonian. -/
 noncomputable def completedFreeHamiltonianDomain (ε : Mode → ℝ) :
     Submodule ℂ (CompletedFockSpace Mode) :=
   completedDiagonalDomain (freeHamiltonianWeight ε)
 
-omit [LinearOrder Mode] in
 /-- Free Hamiltonian on completed Fock space, with its natural weighted square-summability domain. -/
 noncomputable def completedFreeHamiltonian (ε : Mode → ℝ) :
     CompletedFockSpace Mode →ₗ.[ℂ] CompletedFockSpace Mode :=
   completedDiagonalOperator (freeHamiltonianWeight ε)
 
-omit [LinearOrder Mode] in
 /-- Natural domain of the total number operator on the completed Fock space. -/
 noncomputable def completedTotalNumberDomain :
     Submodule ℂ (CompletedFockSpace Mode) :=
   completedDiagonalDomain fun n : Occupation Mode => (particleNumber n : ℂ)
 
-omit [LinearOrder Mode] in
 /-- Total particle-number operator as an unbounded diagonal partial linear map. -/
 noncomputable def completedTotalNumberOperator :
     CompletedFockSpace Mode →ₗ.[ℂ] CompletedFockSpace Mode :=
   completedDiagonalOperator fun n : Occupation Mode => (particleNumber n : ℂ)
 
-omit [LinearOrder Mode] in
 /-- The completed free Hamiltonian extends the existing algebraic free Hamiltonian on the entire
 finite-support core. -/
 theorem completedFreeHamiltonian_comp_algebraicCore (ε : Mode → ℝ) :
     (completedFreeHamiltonian ε).toFun.comp
         (algebraicToCompletedDiagonalDomain (freeHamiltonianWeight ε)) =
       algebraicToCompleted.comp (freeHamiltonian ε) := by
-  simpa [completedFreeHamiltonian, freeHamiltonianWeight, freeHamiltonian] using
-    completedDiagonalOperator_comp_algebraicCore (Mode := Mode) (freeHamiltonianWeight ε)
+  change
+    (completedDiagonalOperator (freeHamiltonianWeight ε)).toFun.comp
+        (algebraicToCompletedDiagonalDomain (freeHamiltonianWeight ε)) =
+      algebraicToCompleted.comp (Common.diagonalOperator (freeHamiltonianWeight ε))
+  exact completedDiagonalOperator_comp_algebraicCore (freeHamiltonianWeight ε)
 
-omit [LinearOrder Mode] in
 /-- The completed total-number operator extends the algebraic total-number operator on the entire
 finite-support core. -/
 theorem completedTotalNumberOperator_comp_algebraicCore :
@@ -216,9 +215,14 @@ theorem completedTotalNumberOperator_comp_algebraicCore :
         (algebraicToCompletedDiagonalDomain
           (fun n : Occupation Mode => (particleNumber n : ℂ))) =
       algebraicToCompleted.comp (totalNumberOperator : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
-  simpa [completedTotalNumberOperator, totalNumberOperator] using
-    completedDiagonalOperator_comp_algebraicCore (Mode := Mode)
-      (fun n : Occupation Mode => (particleNumber n : ℂ))
+  change
+    (completedDiagonalOperator (fun n : Occupation Mode => (particleNumber n : ℂ))).toFun.comp
+        (algebraicToCompletedDiagonalDomain
+          (fun n : Occupation Mode => (particleNumber n : ℂ))) =
+      algebraicToCompleted.comp
+        (Common.diagonalOperator fun n : Occupation Mode => (particleNumber n : ℂ))
+  exact completedDiagonalOperator_comp_algebraicCore
+    (fun n : Occupation Mode => (particleNumber n : ℂ))
 
 end
 end Fermionic
