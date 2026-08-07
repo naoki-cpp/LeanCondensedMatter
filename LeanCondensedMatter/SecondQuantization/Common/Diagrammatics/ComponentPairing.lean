@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentOrder
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentRestriction
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentRestriction
 
 set_option linter.style.header false
 
