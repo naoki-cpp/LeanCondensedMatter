@@ -18,19 +18,32 @@ noncomputable section
 variable {Mode : Type*} [LinearOrder Mode]
 
 @[simp]
+theorem completedBasisState_apply_self (n : Occupation Mode) :
+    completedBasisState n n = 1 := by
+  classical
+  simp [completedBasisState, lp.single_apply]
+
+@[simp]
+theorem completedBasisState_apply_of_ne {m n : Occupation Mode} (h : m ≠ n) :
+    completedBasisState n m = 0 := by
+  classical
+  simp [completedBasisState, lp.single_apply, h, Pi.single_eq_of_ne]
+
+@[simp]
 theorem completedCreate_basisState_of_mem {i : Mode} {n : Occupation Mode} (hi : i ∈ n) :
     completedCreate i (completedBasisState n) = 0 := by
   classical
   apply lp.ext
   funext m
   by_cases hm : i ∈ m
-  · have hne : toggleOccupation i m ≠ n := by
+  · have htoggle : toggleOccupation i m ≠ n := by
       intro h
-      have : i ∉ n := by
-        rw [← h]
-        exact (mem_toggleOccupation i m).mp rfl
-      exact this hi
-    simp [completedCreate_apply, completedBasisState, hm, hne, lp.single_apply]
+      have hnot : i ∉ toggleOccupation i m := by
+        intro ht
+        exact hm ((mem_toggleOccupation i m).mp ht)
+      exact hnot (h ▸ hi)
+    have hne : n ≠ toggleOccupation i m := Ne.symm htoggle
+    simp [completedCreate_apply, hm, completedBasisState_apply_of_ne hne]
   · simp [completedCreate_apply, hm]
 
 @[simp]
@@ -42,8 +55,10 @@ theorem completedCreate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (
   funext m
   by_cases hm : m = insertOccupation i n
   · subst m
-    simp [completedCreate_apply, completedBasisState, hi, lp.single_apply,
-      toggleOccupation_of_mem, insertOccupation]
+    have ht : toggleOccupation i (insertOccupation i n) = n := by
+      rw [← toggleOccupation_of_not_mem hi]
+      exact toggleOccupation_involutive i n
+    simp [completedCreate_apply, ht, completedBasisState_apply_self]
   · have htoggle : toggleOccupation i m ≠ n := by
       intro h
       apply hm
@@ -52,9 +67,10 @@ theorem completedCreate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (
           (toggleOccupation_involutive i m).symm
         _ = toggleOccupation i n := congrArg (toggleOccupation i) h
         _ = insertOccupation i n := toggleOccupation_of_not_mem hi
+    have hne : n ≠ toggleOccupation i m := Ne.symm htoggle
     by_cases him : i ∈ m
-    · simp [completedCreate_apply, completedBasisState, him, hm, htoggle, lp.single_apply]
-    · simp [completedCreate_apply, him, completedBasisState, hm, lp.single_apply]
+    · simp [completedCreate_apply, him, hm, completedBasisState_apply_of_ne hne]
+    · simp [completedCreate_apply, him, hm, completedBasisState_apply_of_ne]
 
 @[simp]
 theorem completedAnnihilate_basisState_of_not_mem {i : Mode} {n : Occupation Mode} (hi : i ∉ n) :
@@ -64,13 +80,13 @@ theorem completedAnnihilate_basisState_of_not_mem {i : Mode} {n : Occupation Mod
   funext m
   by_cases hm : i ∈ m
   · simp [completedAnnihilate_apply, hm]
-  · have hne : toggleOccupation i m ≠ n := by
+  · have htoggle : toggleOccupation i m ≠ n := by
       intro h
-      have : i ∈ n := by
-        rw [← h]
-        exact (mem_toggleOccupation i m).mpr hm
-      exact hi this
-    simp [completedAnnihilate_apply, completedBasisState, hm, hne, lp.single_apply]
+      have hmem : i ∈ toggleOccupation i m :=
+        (mem_toggleOccupation i m).mpr hm
+      exact hi (h ▸ hmem)
+    have hne : n ≠ toggleOccupation i m := Ne.symm htoggle
+    simp [completedAnnihilate_apply, hm, completedBasisState_apply_of_ne hne]
 
 @[simp]
 theorem completedAnnihilate_basisState_of_mem {i : Mode} {n : Occupation Mode} (hi : i ∈ n) :
@@ -81,8 +97,10 @@ theorem completedAnnihilate_basisState_of_mem {i : Mode} {n : Occupation Mode} (
   funext m
   by_cases hm : m = removeOccupation i n
   · subst m
-    simp [completedAnnihilate_apply, completedBasisState, hi, lp.single_apply,
-      toggleOccupation_of_not_mem, removeOccupation]
+    have ht : toggleOccupation i (removeOccupation i n) = n := by
+      rw [← toggleOccupation_of_mem hi]
+      exact toggleOccupation_involutive i n
+    simp [completedAnnihilate_apply, ht, completedBasisState_apply_self]
   · have htoggle : toggleOccupation i m ≠ n := by
       intro h
       apply hm
@@ -91,9 +109,10 @@ theorem completedAnnihilate_basisState_of_mem {i : Mode} {n : Occupation Mode} (
           (toggleOccupation_involutive i m).symm
         _ = toggleOccupation i n := congrArg (toggleOccupation i) h
         _ = removeOccupation i n := toggleOccupation_of_mem hi
+    have hne : n ≠ toggleOccupation i m := Ne.symm htoggle
     by_cases him : i ∈ m
-    · simp [completedAnnihilate_apply, him]
-    · simp [completedAnnihilate_apply, completedBasisState, him, hm, htoggle, lp.single_apply]
+    · simp [completedAnnihilate_apply, him, hm, completedBasisState_apply_of_ne]
+    · simp [completedAnnihilate_apply, him, hm, completedBasisState_apply_of_ne hne]
 
 /-- Completed creation agrees with algebraic creation on every finite-support vector. -/
 theorem completedCreate_comp_algebraicToCompleted (i : Mode) :
