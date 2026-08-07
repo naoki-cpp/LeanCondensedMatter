@@ -4,6 +4,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagr
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagramWeight
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticWickExpansion
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticThermalAmplitude
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticThermalComponentFactorization
 
 set_option linter.style.header false
 
@@ -20,7 +21,9 @@ This umbrella module exposes the bosonic quartic-diagram layer:
 - convergence-aware free Gibbs Wick expansion for the flattened local legs of any finite list of
   quartic vertices;
 - coefficientwise scalar amplitudes placing the free thermal pair kernel on each ordered quartic
-  diagram pairing.
+  diagram pairing;
+- connected-component factorization of the bosonic thermal pairing value and full coefficientwise
+  ordered amplitude through the statistics-independent Common pair-product decomposition.
 
 Graph and component proofs are inherited from the statistics-independent `Common.QuarticDiagram`
 API. The thermal amplitude keeps its Gibbs-domain, deletion-closure, and first-pair recurrence
