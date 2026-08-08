@@ -6,7 +6,7 @@ set_option linter.style.header false
 # Almost-everywhere congruence for ordered-simplex integrals
 
 The recursive ordered-simplex integral is insensitive to finitely many forbidden values in each
-time coordinate.  This packages the null-diagonal argument needed when a finite-time integrand is
+time coordinate. This packages the null-diagonal argument needed when a finite-time integrand is
 only covariant for injective coordinate assignments.
 -/
 
@@ -32,7 +32,7 @@ private theorem finCons_injective_of_injective_avoids
           exfalso
           exact ht a (by simpa using hab)
       | succ b =>
-          exact Fin.succ_injective (hrest (by simpa using hab))
+          exact congrArg Fin.succ (hrest (by simpa using hab))
 
 private theorem orderedSimplexIntegral_congr_avoiding_finset :
     ∀ (n : ℕ) (β : ℝ) (f g : (Fin n → ℝ) → ℂ) (forbidden : Finset ℝ),
@@ -44,9 +44,10 @@ private theorem orderedSimplexIntegral_congr_avoiding_finset :
       rw [orderedSimplexIntegral_succ, orderedSimplexIntegral_succ]
       apply intervalIntegral.integral_congr_ae
       have havoid : ∀ᵐ t : ℝ ∂volume, t ∉ forbidden := by
-        rw [ae_iff]
-        simp
+        simpa using ((measure_eq_zero_iff_ae_notMem).1
+          (Finset.measure_zero forbidden volume))
       filter_upwards [havoid] with t ht
+      intro _ht
       apply orderedSimplexIntegral_congr_avoiding_finset n t
         (fun rest => f (Fin.cons t rest))
         (fun rest => g (Fin.cons t rest)) (insert t forbidden)
@@ -61,7 +62,7 @@ private theorem orderedSimplexIntegral_congr_avoiding_finset :
         | succ i => exact (Finset.not_mem_insert.mp (hforbidden i)).2
 
 /-- Two ordered-simplex integrands have the same integral when they agree on injective time
-assignments.  The complement consists only of recursively encountered coordinate-collision
+assignments. The complement consists only of recursively encountered coordinate-collision
 hyperplanes and is discarded by one-dimensional a.e. congruence at each integration level. -/
 theorem orderedSimplexIntegral_congr_of_injective
     {n : ℕ} {β : ℝ} {f g : (Fin n → ℝ) → ℂ}
