@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 import Mathlib.Data.Finset.Sort
+import Mathlib.Logic.Equiv.Set
 
 set_option linter.style.header false
 
@@ -194,6 +195,18 @@ theorem FamilySlotShuffle.mem_tailSlots_iff_not_mem_headSlots
           rw [← hz]
           exact shuffle.slotEquiv.apply_symm_apply x⟩
 
+/-- The head local slots, viewed as the subtype of ambient head slots. -/
+noncomputable def FamilySlotShuffle.headSlotSubtypeEquiv
+    {size : Fin (k + 1) → ℕ} (shuffle : FamilySlotShuffle size) :
+    Fin (size 0) ≃ ↥shuffle.headSlots :=
+  Equiv.ofBijective
+    (fun j => ⟨shuffle.slotEquiv ⟨0, j⟩,
+      (shuffle.mem_headSlots_iff _).2 ⟨j, rfl⟩⟩)
+    ⟨fun _ _ h => (shuffle.strictMono 0).injective (congrArg Subtype.val h), by
+      intro x
+      obtain ⟨j, hj⟩ := (shuffle.mem_headSlots_iff x).1 x.2
+      exact ⟨j, Subtype.ext hj⟩⟩
+
 /-- The tail local slots, viewed as the subtype of ambient tail slots. -/
 noncomputable def FamilySlotShuffle.tailSlotSubtypeEquiv
     {size : Fin (k + 1) → ℕ} (shuffle : FamilySlotShuffle size) :
@@ -214,6 +227,14 @@ noncomputable def FamilySlotShuffle.tailSlotSubtypeEquiv
       refine ⟨y, Subtype.ext ?_⟩
       exact hy⟩
 
+/-- The ambient tail-slot subtype is the set-theoretic complement of the ambient head-slot subtype. -/
+theorem FamilySlotShuffle.tailSlots_set_eq_compl_headSlots
+    {size : Fin (k + 1) → ℕ} (shuffle : FamilySlotShuffle size) :
+    (↑shuffle.tailSlots : Set (Fin (∑ i, size i))) =
+      (↑shuffle.headSlots : Set (Fin (∑ i, size i)))ᶜ := by
+  ext x
+  simp [shuffle.mem_tailSlots_iff_not_mem_headSlots x]
+
 /-- Extract the shuffle internal to the tail family. -/
 noncomputable def FamilySlotShuffle.tailShuffle {size : Fin (k + 1) → ℕ}
     (shuffle : FamilySlotShuffle size) :
@@ -229,83 +250,47 @@ noncomputable def FamilySlotShuffle.tailShuffle {size : Fin (k + 1) → ℕ}
         ((FamilySlotShuffle.headTailLocalSlotEquiv size).symm (Sum.inr ⟨i, b⟩))
     simpa using shuffle.strictMono i.succ hab
 
-/-- The ambient slot map of the extracted head-versus-tail binary shuffle. -/
-def FamilySlotShuffle.outerSlot {size : Fin (k + 1) → ℕ}
+/-- The head-versus-tail ambient slot equivalence, assembled from the head subset, its complement,
+and the canonical finite order on tail slots. -/
+noncomputable def FamilySlotShuffle.outerSlotEquiv {size : Fin (k + 1) → ℕ}
     (shuffle : FamilySlotShuffle size) :
-    Fin (size 0) ⊕ Fin (FamilySlotShuffle.tailTotal size) →
-      Fin (size 0 + FamilySlotShuffle.tailTotal size)
-  | Sum.inl j => finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)
-      (shuffle.slotEquiv ⟨0, j⟩)
-  | Sum.inr r => finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)
-      ((shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots r :
-        ↥shuffle.tailSlots) : Fin (∑ i, size i))
+    Fin (size 0) ⊕ Fin (FamilySlotShuffle.tailTotal size) ≃
+      Fin (size 0 + FamilySlotShuffle.tailTotal size) :=
+  (Equiv.sumCongr shuffle.headSlotSubtypeEquiv
+      ((shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots).toEquiv.trans
+        (Equiv.setCongr shuffle.tailSlots_set_eq_compl_headSlots))).trans
+    ((Equiv.Set.sumCompl (↑shuffle.headSlots : Set (Fin (∑ i, size i)))).trans
+      (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)))
 
-/-- The extracted head-versus-tail slot map is injective. -/
-theorem FamilySlotShuffle.outerSlot_injective {size : Fin (k + 1) → ℕ}
-    (shuffle : FamilySlotShuffle size) : Function.Injective shuffle.outerSlot := by
-  intro x y h
-  cases x with
-  | inl a =>
-      cases y with
-      | inl b =>
-          have hab : a = b := (shuffle.strictMono 0).injective
-            ((finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)).injective h)
-          cases hab
-          rfl
-      | inr r =>
-          exfalso
-          have hval := (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)).injective h
-          have hhead : shuffle.slotEquiv ⟨0, a⟩ ∈ shuffle.headSlots :=
-            (shuffle.mem_headSlots_iff _).2 ⟨a, rfl⟩
-          have htail :
-              (((shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots r :
-                ↥shuffle.tailSlots) : Fin (∑ i, size i))) ∈ shuffle.tailSlots :=
-            (shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots r).2
-          exact ((shuffle.mem_tailSlots_iff_not_mem_headSlots _).1 htail)
-            (hval ▸ hhead)
-  | inr r =>
-      cases y with
-      | inl a =>
-          exfalso
-          have hval := (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)).injective h
-          have htail :
-              (((shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots r :
-                ↥shuffle.tailSlots) : Fin (∑ i, size i))) ∈ shuffle.tailSlots :=
-            (shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots r).2
-          have hhead : shuffle.slotEquiv ⟨0, a⟩ ∈ shuffle.headSlots :=
-            (shuffle.mem_headSlots_iff _).2 ⟨a, rfl⟩
-          exact ((shuffle.mem_tailSlots_iff_not_mem_headSlots _).1 htail)
-            (hval.symm ▸ hhead)
-      | inr s =>
-          have hrs : r = s :=
-            (shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots).injective (by
-              apply Subtype.ext
-              exact (finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)).injective h)
-          cases hrs
-          rfl
+@[simp]
+theorem FamilySlotShuffle.outerSlotEquiv_apply_inl {size : Fin (k + 1) → ℕ}
+    (shuffle : FamilySlotShuffle size) (j : Fin (size 0)) :
+    shuffle.outerSlotEquiv (Sum.inl j) =
+      finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)
+        (shuffle.slotEquiv ⟨0, j⟩) := by
+  rfl
+
+@[simp]
+theorem FamilySlotShuffle.outerSlotEquiv_apply_inr {size : Fin (k + 1) → ℕ}
+    (shuffle : FamilySlotShuffle size) (r : Fin (FamilySlotShuffle.tailTotal size)) :
+    shuffle.outerSlotEquiv (Sum.inr r) =
+      finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)
+        ((shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots r :
+          ↥shuffle.tailSlots) : Fin (∑ i, size i)) := by
+  rfl
 
 /-- Extract the binary shuffle of the head block against all tail slots. -/
 noncomputable def FamilySlotShuffle.outerShuffle {size : Fin (k + 1) → ℕ}
     (shuffle : FamilySlotShuffle size) :
     SlotShuffle (size 0) (FamilySlotShuffle.tailTotal size) where
-  slotEquiv := Equiv.ofBijective shuffle.outerSlot
-    ((Fintype.bijective_iff_injective_and_card shuffle.outerSlot).2
-      ⟨shuffle.outerSlot_injective, by simp⟩)
+  slotEquiv := shuffle.outerSlotEquiv
   strictMonoLeft := by
     intro a b hab
-    change finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)
-        (shuffle.slotEquiv ⟨0, a⟩) <
-      finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)
-        (shuffle.slotEquiv ⟨0, b⟩)
+    rw [shuffle.outerSlotEquiv_apply_inl, shuffle.outerSlotEquiv_apply_inl]
     simpa using shuffle.strictMono 0 hab
   strictMonoRight := by
     intro a b hab
-    change finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)
-        (((shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots a :
-          ↥shuffle.tailSlots) : Fin (∑ i, size i))) <
-      finCongr (FamilySlotShuffle.sum_eq_head_add_tail size)
-        (((shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots b :
-          ↥shuffle.tailSlots) : Fin (∑ i, size i)))
+    rw [shuffle.outerSlotEquiv_apply_inr, shuffle.outerSlotEquiv_apply_inr]
     simpa using (shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots).strictMono hab
 
 /-- Recombining the extracted outer and tail shuffles recovers the original family shuffle. -/
@@ -317,10 +302,10 @@ theorem FamilySlotShuffle.cons_outerShuffle_tailShuffle
   rintro ⟨i, j⟩
   cases i using Fin.cases with
   | zero =>
-      simp [FamilySlotShuffle.outerShuffle, FamilySlotShuffle.outerSlot]
+      simp [FamilySlotShuffle.outerShuffle]
   | succ r =>
       simp [FamilySlotShuffle.tailShuffle, FamilySlotShuffle.tailSlotSubtypeEquiv,
-        FamilySlotShuffle.outerShuffle, FamilySlotShuffle.outerSlot]
+        FamilySlotShuffle.outerShuffle]
 
 /-- The recursive constructor is injective. -/
 theorem FamilySlotShuffle.cons_injective (size : Fin (k + 1) → ℕ) :
