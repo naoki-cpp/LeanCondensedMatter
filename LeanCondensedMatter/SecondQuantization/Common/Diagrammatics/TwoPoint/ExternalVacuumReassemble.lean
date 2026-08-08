@@ -81,6 +81,23 @@ noncomputable def TwoPointDiagram.externalVacuumLegEquiv
     (TwoPointDiagram.externalVacuumLegDataEquiv hE).trans <|
       Equiv.sumCongr (twoPointLegEquiv E).symm (quarticLegEquiv (S \ E)).symm
 
+/-- Embed an external-core vertex into the ambient two-point vertex type. -/
+def TwoPointDiagram.externalVertexEmbed {S E : Finset (Fin N)} (hE : E ⊆ S) :
+    TwoPointVertex E → TwoPointVertex S
+  | Sum.inl e => Sum.inl e
+  | Sum.inr v => Sum.inr ⟨v.1, hE v.2⟩
+
+/-- Embed a vacuum interaction vertex into the ambient two-point vertex type. -/
+def TwoPointDiagram.vacuumVertexEmbed {S E : Finset (Fin N)} (hE : E ⊆ S) :
+    ↥(S \ E) → TwoPointVertex S :=
+  fun v => Sum.inr ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩
+
+private theorem externalVertexEmbed_injective {S E : Finset (Fin N)} (hE : E ⊆ S) :
+    Function.Injective (TwoPointDiagram.externalVertexEmbed hE) := by
+  intro v w h
+  rcases v with e | v <;> rcases w with e' | w <;> simp_all [TwoPointDiagram.externalVertexEmbed]
+  exact Subtype.ext (Sum.inr.inj h)
+
 private theorem sumPerm_involutive {α β : Type*}
     (p : Equiv.Perm α) (q : Equiv.Perm β)
     (hp : Function.Involutive p) (hq : Function.Involutive q) :
@@ -140,6 +157,81 @@ theorem TwoPointDiagram.reassembleExternalVacuum_externalLabel
     (TwoPointDiagram.reassembleExternalVacuum hE external vacuum).externalLabel =
       external.1.externalLabel :=
   rfl
+
+@[simp]
+theorem TwoPointDiagram.reassembleExternalVacuum_partner_external
+    {S E : Finset (Fin N)} (hE : E ⊆ S)
+    (external : ExternallyConnectedTwoPointDiagram ExternalLabel InternalLabel N E)
+    (vacuum : QuarticDiagram InternalLabel N (S \ E))
+    (leg : Fin (2 * (2 * E.card + 1))) :
+    (TwoPointDiagram.reassembleExternalVacuum hE external vacuum).pairing.partner
+        ((TwoPointDiagram.externalVacuumLegEquiv hE).symm (Sum.inl leg)) =
+      (TwoPointDiagram.externalVacuumLegEquiv hE).symm
+        (Sum.inl (external.1.pairing.partner leg)) := by
+  simp [TwoPointDiagram.reassembleExternalVacuum, Pairing.ofPartner, Equiv.permCongr_apply]
+
+@[simp]
+theorem TwoPointDiagram.reassembleExternalVacuum_partner_vacuum
+    {S E : Finset (Fin N)} (hE : E ⊆ S)
+    (external : ExternallyConnectedTwoPointDiagram ExternalLabel InternalLabel N E)
+    (vacuum : QuarticDiagram InternalLabel N (S \ E))
+    (leg : Fin (2 * (2 * (S \ E).card))) :
+    (TwoPointDiagram.reassembleExternalVacuum hE external vacuum).pairing.partner
+        ((TwoPointDiagram.externalVacuumLegEquiv hE).symm (Sum.inr leg)) =
+      (TwoPointDiagram.externalVacuumLegEquiv hE).symm
+        (Sum.inr (vacuum.pairing.partner leg)) := by
+  simp [TwoPointDiagram.reassembleExternalVacuum, Pairing.ofPartner, Equiv.permCongr_apply]
+
+@[simp]
+theorem TwoPointDiagram.vertexOfLeg_externalVacuumLegEquiv_symm_external
+    {S E : Finset (Fin N)} (hE : E ⊆ S)
+    (leg : Fin (2 * (2 * E.card + 1))) :
+    twoPointVertexOfLeg
+        ((TwoPointDiagram.externalVacuumLegEquiv hE).symm (Sum.inl leg)) =
+      TwoPointDiagram.externalVertexEmbed hE (twoPointVertexOfLeg leg) := by
+  change twoPointLegVertex
+      (twoPointLegEquiv S ((TwoPointDiagram.externalVacuumLegEquiv hE).symm (Sum.inl leg))) = _
+  have h := (TwoPointDiagram.externalVacuumLegEquiv hE).apply_symm_apply (Sum.inl leg)
+  change
+    (Equiv.sumCongr (twoPointLegEquiv E).symm (quarticLegEquiv (S \ E)).symm)
+      (TwoPointDiagram.externalVacuumLegDataEquiv hE
+        (twoPointLegEquiv S ((TwoPointDiagram.externalVacuumLegEquiv hE).symm (Sum.inl leg)))) =
+      Sum.inl leg at h
+  rcases hleg : twoPointLegEquiv E leg with e | ⟨v, l⟩
+  · have : twoPointLegEquiv S
+        ((TwoPointDiagram.externalVacuumLegEquiv hE).symm (Sum.inl leg)) = Sum.inl e := by
+      apply (TwoPointDiagram.externalVacuumLegDataEquiv hE).injective
+      simpa [hleg] using h
+    simp [twoPointLegVertex, this, hleg, TwoPointDiagram.externalVertexEmbed]
+  · have : twoPointLegEquiv S
+        ((TwoPointDiagram.externalVacuumLegEquiv hE).symm (Sum.inl leg)) =
+          Sum.inr ((TwoPointDiagram.interactionExternalVacuumEquiv hE).symm (Sum.inl v), l) := by
+      apply (TwoPointDiagram.externalVacuumLegDataEquiv hE).injective
+      simpa [hleg] using h
+    simp [twoPointLegVertex, this, hleg, TwoPointDiagram.externalVertexEmbed]
+
+@[simp]
+theorem TwoPointDiagram.vertexOfLeg_externalVacuumLegEquiv_symm_vacuum
+    {S E : Finset (Fin N)} (hE : E ⊆ S)
+    (leg : Fin (2 * (2 * (S \ E).card))) :
+    twoPointVertexOfLeg
+        ((TwoPointDiagram.externalVacuumLegEquiv hE).symm (Sum.inr leg)) =
+      TwoPointDiagram.vacuumVertexEmbed hE (vertexOfLeg leg) := by
+  change twoPointLegVertex
+      (twoPointLegEquiv S ((TwoPointDiagram.externalVacuumLegEquiv hE).symm (Sum.inr leg))) = _
+  have h := (TwoPointDiagram.externalVacuumLegEquiv hE).apply_symm_apply (Sum.inr leg)
+  change
+    (Equiv.sumCongr (twoPointLegEquiv E).symm (quarticLegEquiv (S \ E)).symm)
+      (TwoPointDiagram.externalVacuumLegDataEquiv hE
+        (twoPointLegEquiv S ((TwoPointDiagram.externalVacuumLegEquiv hE).symm (Sum.inr leg)))) =
+      Sum.inr leg at h
+  rcases hleg : quarticLegEquiv (S \ E) leg with ⟨v, l⟩
+  have : twoPointLegEquiv S
+      ((TwoPointDiagram.externalVacuumLegEquiv hE).symm (Sum.inr leg)) =
+        Sum.inr ((TwoPointDiagram.interactionExternalVacuumEquiv hE).symm (Sum.inr v), l) := by
+    apply (TwoPointDiagram.externalVacuumLegDataEquiv hE).injective
+    simpa [hleg] using h
+  simp [twoPointLegVertex, this, hleg, TwoPointDiagram.vacuumVertexEmbed, vertexOfLeg]
 
 end Common
 end SecondQuantization
