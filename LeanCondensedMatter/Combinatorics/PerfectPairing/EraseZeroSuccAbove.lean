@@ -23,7 +23,7 @@ theorem Pairing.eraseZeroOrderIso_eq_succ_succAbove {n : ℕ} (pairing : Pairing
   rw [Pairing.eraseZeroOrderIso]
   exact deletedPositionsOrderIso_eq_succ_succAbove n
     ((pairing.partner 0).pred (pairing.partner_ne 0)) (pairing.partner 0)
-    (Fin.succ_pred _ _).symm (Ne.symm (pairing.partner_ne 0)) i
+    (Fin.succ_pred _ _).symm (pairing.partner_ne 0) i
 
 /-- Reindexing a family along `eraseZeroOrderIso` equals erasing the partner position from the
 tail list. -/
