@@ -32,33 +32,8 @@ diagram's ambient component shuffles. -/
 noncomputable def QuarticDiagram.componentFamilyShuffleEquiv {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) :
     FamilySlotShuffle (fun B : d.componentPartition.parts => (B : Finset (Fin N)).card) ≃
-      d.ComponentShuffle where
-  toFun shuffle :=
-    { slotEquiv := shuffle.slotEquiv.trans (Fin.castOrderIso d.sum_componentCard).toEquiv
-      strictMono := by
-        intro B a b hab
-        exact (Fin.castOrderIso d.sum_componentCard).strictMono
-          (shuffle.strictMono B hab) }
-  invFun shuffle :=
-    { slotEquiv := shuffle.slotEquiv.trans (Fin.castOrderIso d.sum_componentCard).symm.toEquiv
-      strictMono := by
-        intro B a b hab
-        exact (Fin.castOrderIso d.sum_componentCard).symm.strictMono
-          (shuffle.strictMono B hab) }
-  left_inv shuffle := by
-    apply FamilySlotShuffle.ext
-    apply Equiv.ext
-    intro x
-    change Fin.cast d.sum_componentCard.symm
-        (Fin.cast d.sum_componentCard (shuffle.slotEquiv x)) = shuffle.slotEquiv x
-    simp
-  right_inv shuffle := by
-    apply QuarticDiagram.ComponentShuffle.ext
-    apply Equiv.ext
-    intro x
-    change Fin.cast d.sum_componentCard
-        (Fin.cast d.sum_componentCard.symm (shuffle.slotEquiv x)) = shuffle.slotEquiv x
-    simp
+      d.ComponentShuffle :=
+  FamilySlotShuffleTo.castTotalEquiv d.sum_componentCard
 
 /-- Transporting a generic component-indexed family shuffle to ambient diagram coordinates only
 precomposes the generic shuffled integrand by the total-cardinality cast. -/
