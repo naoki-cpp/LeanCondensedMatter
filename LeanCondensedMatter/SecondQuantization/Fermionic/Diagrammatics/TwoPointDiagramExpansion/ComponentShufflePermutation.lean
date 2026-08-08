@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentShufflePermutation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentCanonicalLocality
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.InteractionVertexRelabel
 
 set_option linter.style.header false
 
@@ -12,8 +13,12 @@ product is exactly the pointwise Dyson amplitude up to the external ordering sig
 facts identifies every non-canonical shuffled product with the canonical component-local product
 evaluated on permuted interaction-time coordinates.
 
-This deliberately stops before calling the right-hand side the amplitude of a relabeled diagram:
-that requires a separate interaction-vertex relabeling construction carrying labels and pairings.
+The ambient permutation naturally acts on `Fin univ.card`, while a fixed fermionic diagram uses the
+explicit slot type `Fin n`.  This file also transports that permutation to `Fin n` and records the
+interaction-vertex relabeling with the inverse permutation.  The inverse is forced by the convention
+of `relabelInteractionVertices`: its permutation maps a new slot to the old slot whose data it
+inherits, whereas the component-shuffle permutation acts by precomposition on the old diagram's
+time assignment.
 -/
 
 namespace SecondQuantization
@@ -23,9 +28,35 @@ open Combinatorics
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-private def ambientToTwoPointSlotTimePermutation {n : ℕ}
+/-- Convert an ambient time assignment indexed by `univ.card` to the explicit interaction-slot type
+`Fin n`. -/
+def ambientToTwoPointSlotTimePermutation {n : ℕ}
     (σ : Fin (Finset.univ : Finset (Fin n)).card → ℝ) : Fin n → ℝ :=
   fun i => σ (Fin.cast (by simp) i)
+
+/-- The component-shuffle ambient permutation transported from `Fin univ.card` to the explicit
+interaction-slot type `Fin n`. -/
+noncomputable def FixedExternalTwoPointWickDiagram.componentShuffleSlotPermutation
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (shuffle : d.1.ComponentInteractionShuffle) : Equiv.Perm (Fin n) :=
+  (finCongr (by simp)).trans
+    (shuffle.ambientPermutation.trans (finCongr (by simp)).symm)
+
+/-- The diagram relabeling corresponding to a component shuffle.  Because
+`relabelInteractionVertices` maps new slots to the old slots whose data they inherit, the inverse of
+the shuffle slot permutation is used here. -/
+noncomputable def FixedExternalTwoPointWickDiagram.relabelForComponentShuffle
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (shuffle : d.1.ComponentInteractionShuffle) : FixedExternalTwoPointWickDiagram Mode n i j :=
+  d.relabelInteractionVertices (d.componentShuffleSlotPermutation shuffle).symm
+
+@[simp]
+theorem FixedExternalTwoPointWickDiagram.relabelForComponentShuffle_vertexLabelSequence
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (shuffle : d.1.ComponentInteractionShuffle) (v : Fin n) :
+    (d.relabelForComponentShuffle shuffle).vertexLabelSequence v =
+      d.vertexLabelSequence ((d.componentShuffleSlotPermutation shuffle).symm v) :=
+  rfl
 
 /-- Any component-shuffle integrand of the canonical localized factors is the canonical
 component-shuffle integrand after the ambient interaction times are permuted by the shuffle's
