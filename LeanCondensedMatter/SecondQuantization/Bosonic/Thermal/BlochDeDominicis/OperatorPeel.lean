@@ -52,8 +52,7 @@ theorem FreeThermalField.operator_comp_operator_eq_exchangeValue
       | create j =>
           by_cases hij : i = j
           · subst j
-            simp only [FreeThermalField.operator, FreeThermalField.exchangeValue,
-              if_pos rfl, one_smul]
+            simp only [FreeThermalField.operator, FreeThermalField.exchangeValue, if_true, one_smul]
             have h := comm_annihilate_create i i
             rw [if_pos rfl] at h
             unfold comm at h
@@ -70,7 +69,7 @@ theorem FreeThermalField.operator_comp_operator_eq_exchangeValue
           by_cases hij : i = j
           · subst j
             simp only [FreeThermalField.operator, FreeThermalField.exchangeValue,
-              if_pos rfl, neg_one_smul]
+              if_true, neg_one_smul]
             have h := comm_annihilate_create i i
             rw [if_pos rfl] at h
             unfold comm at h
