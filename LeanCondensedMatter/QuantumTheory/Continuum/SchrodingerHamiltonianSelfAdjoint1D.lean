@@ -54,8 +54,12 @@ theorem continuumRealPotentialSchrodingerHamiltonian1D_adjoint_domain_le
         inner ℂ u
           (-(κ : ℂ) • continuumH2Laplacian1D ψ +
             M (ψ : ContinuumL2Wavefunction1D)) := by
-    simpa [H, M, wH, uAdj, continuumRealPotentialSchrodingerHamiltonian1D,
-      continuumSchrodingerHamiltonian1D, continuumSchrodingerHamiltonianOnH2Domain1D] using hadj
+    change
+      inner ℂ wH (ψ : ContinuumL2Wavefunction1D) =
+        inner ℂ u
+          (-(κ : ℂ) • continuumH2Laplacian1D ψ +
+            M (ψ : ContinuumL2Wavefunction1D)) at hadj
+    exact hadj
   have hM :
       inner ℂ (M u) (ψ : ContinuumL2Wavefunction1D) =
         inner ℂ u (M (ψ : ContinuumL2Wavefunction1D)) := by
@@ -82,6 +86,7 @@ theorem continuumRealPotentialSchrodingerHamiltonian1D_adjoint_domain_le
       rw [inner_add_right, inner_smul_right]
       have hκc : (κ : ℂ) ≠ 0 := by exact_mod_cast hκ
       field_simp [hκc]
+      ring
 
 /-- The one-dimensional Schrödinger Hamiltonian with nonzero real kinetic coefficient and bounded
 real scalar potential is self-adjoint on the explicit `H²(ℝ)` domain. -/
