@@ -72,8 +72,7 @@ noncomputable def completedFreeGibbsExpectationRecursion
               change ((Fin.cast hlen i : Fin (2 * n + 1)) : ℕ) = (i : ℕ)
               rfl
             simp only [hv]
-            rw [hl]
-            simp only [List.getElem_ofFn]
+            simp only [hl, List.getElem_ofFn]
         rw [hreindex]
         refine Finset.sum_congr rfl fun j _ => ?_
         rw [hl, List.eraseIdx_ofFn_eq_ofFn_succAbove]
