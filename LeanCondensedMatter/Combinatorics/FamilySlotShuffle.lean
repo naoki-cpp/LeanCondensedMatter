@@ -9,9 +9,9 @@ set_option linter.style.header false
 /-!
 # Order-preserving shuffles of a finite family of slot blocks
 
-`FamilySlotShuffleTo size total` interleaves one ordered block `Fin (size i)` for every finite index
-`i` into `Fin total`, preserving the order inside each block.  The canonical
-`FamilySlotShuffle size` specializes the ambient cardinality to `∑ i, size i`.
+`FamilySlotShuffleTo size total` interleaves one ordered block `Fin (size i)` for every index `i`
+into `Fin total`, preserving the order inside each block.  The canonical `FamilySlotShuffle size`
+specializes the ambient cardinality to `∑ i, size i` when the index type is finite.
 
 This module contains only the pure finite combinatorics; shuffled integrands and continuity live in
 `Analysis/OrderedSimplex/FamilyShuffleIntegrand.lean`.
@@ -21,9 +21,9 @@ open scoped BigOperators
 
 namespace Combinatorics
 
-variable {ι : Type*} [Fintype ι]
+variable {ι : Type*}
 
-/-- An order-preserving interleaving of a finite family of local slot blocks into `Fin total`. -/
+/-- An order-preserving interleaving of a family of local slot blocks into `Fin total`. -/
 structure FamilySlotShuffleTo (size : ι → ℕ) (total : ℕ) where
   /-- Equivalence between tagged local slots and ambient slots. -/
   slotEquiv : (Σ i : ι, Fin (size i)) ≃ Fin total
@@ -38,9 +38,9 @@ theorem FamilySlotShuffleTo.ext {size : ι → ℕ} {total : ℕ}
   cases h
   rfl
 
-/-- Ambient family shuffles form a finite type. -/
-noncomputable instance FamilySlotShuffleTo.instFintype (size : ι → ℕ) (total : ℕ) :
-    Fintype (FamilySlotShuffleTo size total) := by
+/-- Ambient family shuffles form a finite type when the block index type is finite. -/
+noncomputable instance FamilySlotShuffleTo.instFintype [Fintype ι]
+    (size : ι → ℕ) (total : ℕ) : Fintype (FamilySlotShuffleTo size total) := by
   classical
   exact Fintype.ofInjective (fun shuffle : FamilySlotShuffleTo size total => shuffle.slotEquiv)
     (fun _ _ h => FamilySlotShuffleTo.ext h)
@@ -72,10 +72,11 @@ noncomputable def FamilySlotShuffleTo.castTotalEquiv {size : ι → ℕ} {m n : 
     simp
 
 /-- A family shuffle whose ambient cardinality is exactly the sum of its local block sizes. -/
-abbrev FamilySlotShuffle (size : ι → ℕ) := FamilySlotShuffleTo size (∑ i, size i)
+abbrev FamilySlotShuffle [Fintype ι] (size : ι → ℕ) :=
+  FamilySlotShuffleTo size (∑ i, size i)
 
 @[ext]
-theorem FamilySlotShuffle.ext {size : ι → ℕ} {σ τ : FamilySlotShuffle size}
+theorem FamilySlotShuffle.ext [Fintype ι] {size : ι → ℕ} {σ τ : FamilySlotShuffle size}
     (h : σ.slotEquiv = τ.slotEquiv) : σ = τ :=
   FamilySlotShuffleTo.ext h
 
