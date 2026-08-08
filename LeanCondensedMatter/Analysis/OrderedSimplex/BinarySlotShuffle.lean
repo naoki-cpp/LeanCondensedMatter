@@ -206,9 +206,9 @@ theorem sum_orderedSimplexContribution_eq_shuffleIntegral_of_measurableLocallyBo
           exact hIntRight σ
         · intro σ _
           exact hIntLeft σ
-      · simpa only [Finset.sum_apply] using
+      · simpa only [Finset.sum_fn] using
           (IntervalIntegrable.sum Finset.univ (fun σ _ => hIntLeft σ))
-      · simpa only [Finset.sum_apply] using
+      · simpa only [Finset.sum_fn] using
           (IntervalIntegrable.sum Finset.univ (fun σ _ => hIntRight σ))
 
 /-- Explicit binary ordered-simplex shuffle identity under measurable local boundedness. -/
