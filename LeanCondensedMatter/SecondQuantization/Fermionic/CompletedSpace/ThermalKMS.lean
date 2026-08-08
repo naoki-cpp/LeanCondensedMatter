@@ -36,9 +36,29 @@ theorem fermionPhase_toggleOccupation (i : Mode) (n : Occupation Mode) :
     fermionPhase i (toggleOccupation i n) = fermionPhase i n := by
   by_cases hi : i ∈ n
   · rw [toggleOccupation_of_mem hi]
-    simp [fermionPhase, fermionSign, removeOccupation]
+    have hf :
+        (removeOccupation i n).filter (· < i) = n.filter (· < i) := by
+      ext x
+      simp only [removeOccupation, Finset.mem_filter, Finset.mem_erase]
+      constructor
+      · rintro ⟨⟨_, hxn⟩, hlt⟩
+        exact ⟨hxn, hlt⟩
+      · rintro ⟨hxn, hlt⟩
+        exact ⟨⟨ne_of_lt hlt, hxn⟩, hlt⟩
+    simp only [fermionPhase, fermionSign, hf]
   · rw [toggleOccupation_of_not_mem hi]
-    simp [fermionPhase, fermionSign, insertOccupation, hi]
+    have hf :
+        (insertOccupation i n).filter (· < i) = n.filter (· < i) := by
+      ext x
+      simp only [insertOccupation, Finset.mem_filter, Finset.mem_insert]
+      constructor
+      · rintro ⟨hx, hlt⟩
+        rcases hx with rfl | hxn
+        · exact (lt_irrefl i hlt).elim
+        · exact ⟨hxn, hlt⟩
+      · rintro ⟨hxn, hlt⟩
+        exact ⟨Or.inr hxn, hlt⟩
+    simp only [fermionPhase, fermionSign, hf]
 
 /-- Completed free-Gibbs KMS rotation for one thermal ladder and an arbitrary bounded operator:
 `⟨C A⟩β = gβ(C) ⟨A C⟩β`.  The scalar `gβ(C)` is the same factor appearing in
@@ -69,11 +89,12 @@ theorem completedFreeGibbsExpectation_operator_comp
           apply tsum_congr
           intro n
           by_cases hi : i ∈ n
-          · have hit : i ∉ toggleOccupation i n := (mem_toggleOccupation i n).mp (by simp [hi])
+          · have hit : i ∉ toggleOccupation i n := by simp [hi]
             have htoggle : toggleOccupation i (toggleOccupation i n) = n :=
               toggleOccupation_involutive i n
+            dsimp [f]
             rw [ContinuousLinearMap.comp_apply, inner_completedBasisState,
-              completedCreate_apply, if_pos hi, f, toggleOccupation_of_mem hi,
+              completedCreate_apply, if_pos hi, toggleOccupation_of_mem hi,
               coe_completedFreeGibbsProbability_removeOccupation_of_mem ε β hi,
               ContinuousLinearMap.comp_apply,
               completedCreate_basisState_of_not_mem hit, map_smul, inner_smul_right,
@@ -81,9 +102,10 @@ theorem completedFreeGibbsExpectation_operator_comp
             rw [← Complex.exp_add]
             ring_nf
             simp
-          · have hit : i ∈ toggleOccupation i n := (mem_toggleOccupation i n).mpr hi
+          · have hit : i ∈ toggleOccupation i n := by simp [hi]
+            dsimp [f]
             rw [ContinuousLinearMap.comp_apply, inner_completedBasisState,
-              completedCreate_apply, if_neg hi, f, ContinuousLinearMap.comp_apply,
+              completedCreate_apply, if_neg hi, ContinuousLinearMap.comp_apply,
               completedCreate_basisState_of_mem hit]
             simp
         _ = ∑' n : Occupation Mode, f n := by
@@ -111,16 +133,18 @@ theorem completedFreeGibbsExpectation_operator_comp
           apply tsum_congr
           intro n
           by_cases hi : i ∈ n
-          · have hit : i ∉ toggleOccupation i n := (mem_toggleOccupation i n).mp (by simp [hi])
+          · have hit : i ∉ toggleOccupation i n := by simp [hi]
+            dsimp [f]
             rw [ContinuousLinearMap.comp_apply, inner_completedBasisState,
-              completedAnnihilate_apply, if_pos hi, f, ContinuousLinearMap.comp_apply,
+              completedAnnihilate_apply, if_pos hi, ContinuousLinearMap.comp_apply,
               completedAnnihilate_basisState_of_not_mem hit]
             simp
-          · have hit : i ∈ toggleOccupation i n := (mem_toggleOccupation i n).mpr hi
+          · have hit : i ∈ toggleOccupation i n := by simp [hi]
             have htoggle : toggleOccupation i (toggleOccupation i n) = n :=
               toggleOccupation_involutive i n
+            dsimp [f]
             rw [ContinuousLinearMap.comp_apply, inner_completedBasisState,
-              completedAnnihilate_apply, if_neg hi, f, toggleOccupation_of_not_mem hi,
+              completedAnnihilate_apply, if_neg hi, toggleOccupation_of_not_mem hi,
               coe_completedFreeGibbsProbability_insertOccupation_of_not_mem ε β hi,
               ContinuousLinearMap.comp_apply,
               completedAnnihilate_basisState_of_mem hit, map_smul, inner_smul_right,
