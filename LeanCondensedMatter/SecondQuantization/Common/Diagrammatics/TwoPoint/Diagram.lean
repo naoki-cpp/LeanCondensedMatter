@@ -163,12 +163,12 @@ def ExternallyConnectedTwoPointDiagram (ExternalLabel InternalLabel : Type*) (N 
 noncomputable instance VacuumFreeTwoPointDiagram.instFintype [Fintype ExternalLabel]
     [Fintype InternalLabel] {S : Finset (Fin N)} :
     Fintype (VacuumFreeTwoPointDiagram ExternalLabel InternalLabel N S) :=
-  Fintype.ofFinite _
+  Fintype.ofFinite {d : TwoPointDiagram ExternalLabel InternalLabel N S // d.HasNoVacuumComponent}
 
 noncomputable instance ExternallyConnectedTwoPointDiagram.instFintype [Fintype ExternalLabel]
     [Fintype InternalLabel] {S : Finset (Fin N)} :
     Fintype (ExternallyConnectedTwoPointDiagram ExternalLabel InternalLabel N S) :=
-  Fintype.ofFinite _
+  Fintype.ofFinite {d : TwoPointDiagram ExternalLabel InternalLabel N S // d.IsExternallyConnected}
 
 end Common
 end SecondQuantization
