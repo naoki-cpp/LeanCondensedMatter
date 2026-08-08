@@ -9,6 +9,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDo
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbs
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.GibbsLadderIntertwining
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalLadder
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnboundedExpectation
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbsSummability
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteCompatibility
@@ -45,8 +46,10 @@ absolutely convergent occupation-basis series. In particular this gives explicit
 interfaces for the completed free Hamiltonian and total particle number without coercing either
 unbounded operator into `ContinuousLinearMap`. The Gibbs density operator also obeys the bounded
 thermal-intertwining relations `ρβ aᵢ† = exp (-β εᵢ) aᵢ† ρβ` and
-`ρβ aᵢ = exp (β εᵢ) aᵢ ρβ`. These identities provide the first completed-space KMS-facing product
-layer without forming a formal exponential of the unbounded Hamiltonian.
+`ρβ aᵢ = exp (β εᵢ) aᵢ ρβ`. Creation and annihilation are additionally packaged as a single
+completed thermal-ladder type carrying its Gibbs factor and scalar CAR coefficient, so the next KMS
+and first-pair recurrence layer can consume uniform representation-specific data without duplicating
+case splits or the generic pairing recursion.
 
 For the free fermion state, summability of the one-particle Boltzmann factors
 `exp (-β εᵢ)` is a concrete sufficient condition for occupation-level Gibbs summability. Under this
