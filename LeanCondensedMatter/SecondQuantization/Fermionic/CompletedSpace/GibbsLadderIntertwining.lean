@@ -84,6 +84,7 @@ theorem coe_completedFreeGibbsProbability_insertOccupation_of_not_mem
         (completedFreeGibbsProbability ε β n : ℂ) := by
   rw [completedFreeGibbsProbability_insertOccupation_of_not_mem ε β hi]
   push_cast
+  rfl
 
 /-- Complex form of the Gibbs removal ratio, matching the scalar used in operator identities. -/
 theorem coe_completedFreeGibbsProbability_removeOccupation_of_mem
@@ -93,12 +94,14 @@ theorem coe_completedFreeGibbsProbability_removeOccupation_of_mem
         (completedFreeGibbsProbability ε β n : ℂ) := by
   rw [completedFreeGibbsProbability_removeOccupation_of_mem ε β hi]
   push_cast
+  rfl
 
 /-- Two bounded operators on completed Fock space are equal when they agree on every occupation
 basis vector.  The proof passes through the dense algebraic finite-support core. -/
 private theorem continuousLinearMap_ext_completedBasis
     {A B : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode}
-    (h : ∀ n : Occupation Mode, A (completedBasisState n) = B (completedBasisState n)) :
+    (h : ∀ n : Occupation Mode,
+      A.toLinearMap (completedBasisState n) = B.toLinearMap (completedBasisState n)) :
     A = B := by
   apply DFunLike.ext'
   exact (map_continuous A).ext_on algebraicToCompleted_denseRange (map_continuous B) <| by
@@ -112,8 +115,7 @@ private theorem continuousLinearMap_ext_completedBasis
         (Finsupp.smul_single_one n c).symm
       rw [hc]
       simp only [LinearMap.comp_apply, map_smul, algebraicToCompleted_basisState]
-      simpa only using
-        congrArg (fun v : CompletedFockSpace Mode => c • v) (h n)
+      rw [h n]
     exact congrArg (fun f : FockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode => f x) hcore
 
 /-- Completed free-Gibbs creation intertwining:
