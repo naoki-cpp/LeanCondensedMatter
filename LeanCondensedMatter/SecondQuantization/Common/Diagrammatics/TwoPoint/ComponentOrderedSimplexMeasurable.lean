@@ -6,7 +6,7 @@ set_option linter.style.header false
 # Measurable bounded ordered-simplex shuffles over two-point components
 
 The generic arbitrary-finite-index family shuffle theorem applies directly to the finite type of
-full two-point components, so no finite presentation or component enumeration is required.
+full two-point component blocks, so no finite presentation or component enumeration is required.
 -/
 
 namespace SecondQuantization
