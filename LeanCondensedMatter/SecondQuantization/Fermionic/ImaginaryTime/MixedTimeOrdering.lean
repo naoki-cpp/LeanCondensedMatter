@@ -185,7 +185,8 @@ noncomputable def orderedTwoPointTimedEvents {n : ℕ} (τ τ' : ℝ) (σ : Fin 
 theorem orderedTwoPointTimedEvents_length {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
     (orderedTwoPointTimedEvents τ τ' σ).length = n + 2 := by
   classical
-  simp [orderedTwoPointTimedEvents, twoPointInteractionEventList]
+  rw [orderedTwoPointTimedEvents, List.length_insertionSort]
+  simp [twoPointInteractionEventList]
 
 /-- Time ordering permutes, but neither duplicates nor removes, the two external events and the
 interaction events. -/
