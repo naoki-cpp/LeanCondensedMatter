@@ -68,17 +68,6 @@ theorem mixedTimeOrderedAtomicLegs_perm_canonical {n : ℕ}
     (orderedTwoPointTimedEvents_perm τ τ' σ).flatMap
       (fun event _ => List.Perm.refl (twoPointTimedEventAtomicLegs event))
 
-private theorem canonicalTwoPointTimedEvents_nodup (n : ℕ) :
-    ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n).Nodup := by
-  rw [twoPointInteractionEventList]
-  change ((Sum.inl (0 : Fin 2) : TwoPointTimedEvent n) ::
-    (Sum.inl (1 : Fin 2) : TwoPointTimedEvent n) ::
-      List.ofFn (fun v : Fin n => (Sum.inr v : TwoPointTimedEvent n))).Nodup
-  refine List.nodup_cons.2 ⟨?_, List.nodup_cons.2 ⟨?_, ?_⟩⟩
-  · simp
-  · simp
-  · exact List.nodup_ofFn_ofInjective Sum.inr_injective
-
 private theorem twoPointTimedEventAtomicLegs_nodup {n : ℕ}
     (event : TwoPointTimedEvent n) :
     (twoPointTimedEventAtomicLegs event).Nodup := by
@@ -109,41 +98,28 @@ private theorem twoPointTimedEventAtomicLegs_disjoint {n : ℕ}
             rfl
           simpa using hv.symm
 
-private theorem canonicalTwoPointAtomicLegs_nodup (n : ℕ) :
-    (canonicalTwoPointAtomicLegs n).Nodup := by
-  rw [canonicalTwoPointAtomicLegs, List.nodup_flatMap]
-  refine ⟨fun event _ => twoPointTimedEventAtomicLegs_nodup event, ?_⟩
-  exact (canonicalTwoPointTimedEvents_nodup n).pairwise_of_forall_ne
-    (fun _ _ _ _ h => twoPointTimedEventAtomicLegs_disjoint h)
-
-private theorem canonicalTwoPointAtomicLegs_all_mem (n : ℕ) :
-    ∀ leg : OrderedTwoPointLeg n, leg ∈ canonicalTwoPointAtomicLegs n := by
-  intro leg
-  cases leg with
-  | inl e =>
-      fin_cases e <;>
-        simp [canonicalTwoPointAtomicLegs, twoPointTimedEventAtomicLegs,
-          twoPointInteractionEventList]
-  | inr p =>
-      rcases p with ⟨⟨v, hv⟩, l⟩
-      fin_cases l <;>
-        simp [canonicalTwoPointAtomicLegs, twoPointTimedEventAtomicLegs,
-          twoPointInteractionEventList]
-
 /-- The mixed-time leg list has no duplicate leg identities. -/
 theorem mixedTimeOrderedAtomicLegs_nodup {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    (mixedTimeOrderedAtomicLegs τ τ' σ).Nodup :=
-  (mixedTimeOrderedAtomicLegs_perm_canonical τ τ' σ).nodup_iff.mpr
-    (canonicalTwoPointAtomicLegs_nodup n)
+    (mixedTimeOrderedAtomicLegs τ τ' σ).Nodup := by
+  rw [mixedTimeOrderedAtomicLegs, List.nodup_flatMap]
+  refine ⟨fun event _ => twoPointTimedEventAtomicLegs_nodup event, ?_⟩
+  exact (orderedTwoPointTimedEvents_nodup τ τ' σ).pairwise_of_forall_ne
+    (fun _ _ _ _ h => twoPointTimedEventAtomicLegs_disjoint h)
 
 /-- Every standard external or interaction leg occurs in the mixed-time leg list. -/
 theorem mixedTimeOrderedAtomicLegs_all_mem {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     ∀ leg : OrderedTwoPointLeg n, leg ∈ mixedTimeOrderedAtomicLegs τ τ' σ := by
   intro leg
-  exact (mixedTimeOrderedAtomicLegs_perm_canonical τ τ' σ).symm.subset
-    (canonicalTwoPointAtomicLegs_all_mem n leg)
+  rw [mixedTimeOrderedAtomicLegs, List.mem_flatMap]
+  cases leg with
+  | inl e =>
+      exact ⟨Sum.inl e, orderedTwoPointTimedEvents_all_mem τ τ' σ (Sum.inl e), by simp⟩
+  | inr p =>
+      rcases p with ⟨⟨v, hv⟩, l⟩
+      refine ⟨Sum.inr v, orderedTwoPointTimedEvents_all_mem τ τ' σ (Sum.inr v), ?_⟩
+      fin_cases l <;> simp [twoPointTimedEventAtomicLegs]
 
 /-- The mixed-time leg list has exactly `4n + 2` entries. -/
 theorem mixedTimeOrderedAtomicLegs_length {n : ℕ}
