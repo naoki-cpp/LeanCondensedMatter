@@ -25,22 +25,25 @@ theorem TwoPointDiagram.externalVacuumLegEquiv_apply_externalBlockLeg
       d.legInComponent (d.externalComponent 0) leg}) :
     TwoPointDiagram.externalVacuumLegEquiv d.externalInteractionPart_subset leg.1 =
       Sum.inl (d.externalBlockLegEquiv leg) := by
-  have hunflat := (d.legInComponent_iff_unflattened d.externalComponentPart leg.1).1 leg.2
-  cases hleg : twoPointLegEquiv S leg.1 with
-  | inl e =>
-      simp [TwoPointDiagram.externalVacuumLegEquiv,
-        TwoPointDiagram.externalVacuumLegDataEquiv,
-        TwoPointDiagram.externalBlockLegEquiv, TwoPointDiagram.externalLegDataEquiv,
-        hleg]
-  | inr p =>
-      have hp : p.1.1 ∈ d.externalInteractionPart :=
-        (TwoPointDiagram.mem_interactionPart_subtype (d.externalComponent 0) p.1).2 (by
-          simpa [hleg] using hunflat)
-      simp [TwoPointDiagram.externalVacuumLegEquiv,
-        TwoPointDiagram.externalVacuumLegDataEquiv,
-        TwoPointDiagram.externalBlockLegEquiv, TwoPointDiagram.externalLegDataEquiv,
-        TwoPointDiagram.interactionExternalVacuumEquiv,
-        TwoPointDiagram.externalInteractionPart, hleg, hp]
+  let legU : {u : TwoPointLeg S //
+      d.unflattenedLegInComponent d.externalComponentPart u} :=
+    ((twoPointLegEquiv S).subtypeEquiv fun p =>
+      d.legInComponent_iff_unflattened d.externalComponentPart p) leg
+  apply (Equiv.sumCongr
+    (twoPointLegEquiv d.externalInteractionPart)
+    (quarticLegEquiv (S \ d.externalInteractionPart))).injective
+  change TwoPointDiagram.externalVacuumLegDataEquiv d.externalInteractionPart_subset
+      (twoPointLegEquiv S leg.1) = Sum.inl (d.externalLegDataEquiv legU)
+  rcases hleg : twoPointLegEquiv S leg.1 with e | ⟨v, l⟩
+  · rfl
+  · have hvcomp : (Sum.inr v : TwoPointVertex S) ∈ d.externalComponent 0 := by
+      exact legU.2
+    have hv : v.1 ∈ d.externalInteractionPart :=
+      (TwoPointDiagram.mem_interactionPart_subtype (d.externalComponent 0) v).2 hvcomp
+    simp [TwoPointDiagram.externalVacuumLegDataEquiv,
+      TwoPointDiagram.interactionExternalVacuumEquiv,
+      TwoPointDiagram.externalInteractionPart, hleg, hv, legU,
+      TwoPointDiagram.externalLegDataEquiv]
 
 /-- Vacuum-remainder legs use the right summand of the binary external/vacuum leg split. -/
 theorem TwoPointDiagram.externalVacuumLegEquiv_apply_vacuumRemainderBlockLeg
@@ -49,25 +52,24 @@ theorem TwoPointDiagram.externalVacuumLegEquiv_apply_vacuumRemainderBlockLeg
       ¬ d.legInComponent (d.externalComponent 0) leg}) :
     TwoPointDiagram.externalVacuumLegEquiv d.externalInteractionPart_subset leg.1 =
       Sum.inr (d.vacuumRemainderBlockLegEquiv leg) := by
-  have hunflat : d.unflattenedLegInVacuumRemainder (twoPointLegEquiv S leg.1) := by
-    rw [← d.legInComponent_iff_unflattened d.externalComponentPart leg.1]
-    exact leg.2
-  cases hleg : twoPointLegEquiv S leg.1 with
-  | inl e =>
-      exact False.elim (hunflat (by
-        simpa [hleg] using d.externalVertex_mem_externalComponentPart e))
-  | inr p =>
-      have hp : p.1.1 ∉ d.externalInteractionPart := by
-        intro hmem
-        apply hunflat
-        change (Sum.inr p.1 : TwoPointVertex S) ∈ d.externalComponent 0
-        exact (TwoPointDiagram.mem_interactionPart_subtype
-          (d.externalComponent 0) p.1).1 hmem
-      simp [TwoPointDiagram.externalVacuumLegEquiv,
-        TwoPointDiagram.externalVacuumLegDataEquiv,
-        TwoPointDiagram.vacuumRemainderBlockLegEquiv,
-        TwoPointDiagram.vacuumRemainderLegDataEquiv,
-        TwoPointDiagram.interactionExternalVacuumEquiv, hleg, hp]
+  let legU : {u : TwoPointLeg S // d.unflattenedLegInVacuumRemainder u} :=
+    ((twoPointLegEquiv S).subtypeEquiv fun p =>
+      not_congr (d.legInComponent_iff_unflattened d.externalComponentPart p)) leg
+  apply (Equiv.sumCongr
+    (twoPointLegEquiv d.externalInteractionPart)
+    (quarticLegEquiv (S \ d.externalInteractionPart))).injective
+  change TwoPointDiagram.externalVacuumLegDataEquiv d.externalInteractionPart_subset
+      (twoPointLegEquiv S leg.1) = Sum.inr (d.vacuumRemainderLegDataEquiv legU)
+  rcases hleg : twoPointLegEquiv S leg.1 with e | ⟨v, l⟩
+  · exact False.elim (legU.2 (d.externalVertex_mem_externalComponentPart e))
+  · have hv : v.1 ∉ d.externalInteractionPart := by
+      intro hmem
+      apply legU.2
+      exact (TwoPointDiagram.mem_interactionPart_subtype
+        (d.externalComponent 0) v).1 hmem
+    simp [TwoPointDiagram.externalVacuumLegDataEquiv,
+      TwoPointDiagram.interactionExternalVacuumEquiv,
+      hleg, hv, legU, TwoPointDiagram.vacuumRemainderLegDataEquiv]
 
 /-- The vacuum-remainder pairing agrees with the ambient restricted partner under its leg
 reindexing. -/
@@ -98,7 +100,7 @@ theorem TwoPointDiagram.legInExternalComponent_iff_split_left
       ¬ d.legInComponent (d.externalComponent 0) leg} := ⟨leg, hnot⟩
     have hr := d.externalVacuumLegEquiv_apply_vacuumRemainderBlockLeg legB
     rw [ha] at hr
-    exact Sum.noConfusion hr
+    cases hr
 
 /-- Reassembling the external restriction and the complete vacuum remainder recovers the original
 two-point diagram. -/
@@ -111,26 +113,12 @@ theorem TwoPointDiagram.reassemble_restrictExternal_restrictVacuumRemainder
   · rfl
   · funext v
     by_cases hv : v.1 ∈ d.externalInteractionPart
-    · have hsplit : TwoPointDiagram.interactionExternalVacuumEquiv
-          d.externalInteractionPart_subset v =
-          Sum.inl ⟨v.1, hv⟩ := by
-        simp [TwoPointDiagram.interactionExternalVacuumEquiv, hv]
-      change (match TwoPointDiagram.interactionExternalVacuumEquiv
-        d.externalInteractionPart_subset v with
-        | Sum.inl w => d.restrictExternalComponent.vertexLabel w
-        | Sum.inr w => d.restrictVacuumRemainder.vertexLabel w) = d.vertexLabel v
-      rw [hsplit]
-      rfl
-    · have hsplit : TwoPointDiagram.interactionExternalVacuumEquiv
-          d.externalInteractionPart_subset v =
-          Sum.inr ⟨v.1, Finset.mem_sdiff.mpr ⟨v.2, hv⟩⟩ := by
-        simp [TwoPointDiagram.interactionExternalVacuumEquiv, hv]
-      change (match TwoPointDiagram.interactionExternalVacuumEquiv
-        d.externalInteractionPart_subset v with
-        | Sum.inl w => d.restrictExternalComponent.vertexLabel w
-        | Sum.inr w => d.restrictVacuumRemainder.vertexLabel w) = d.vertexLabel v
-      rw [hsplit]
-      rfl
+    · simp [TwoPointDiagram.reassembleExternalVacuum,
+        TwoPointDiagram.interactionExternalVacuumEquiv, hv,
+        TwoPointDiagram.restrictExternalComponent]
+    · simp [TwoPointDiagram.reassembleExternalVacuum,
+        TwoPointDiagram.interactionExternalVacuumEquiv, hv,
+        TwoPointDiagram.restrictVacuumRemainder]
   · apply Pairing.ext
     ext leg
     let split := TwoPointDiagram.externalVacuumLegEquiv d.externalInteractionPart_subset
@@ -141,47 +129,77 @@ theorem TwoPointDiagram.reassemble_restrictExternal_restrictVacuumRemainder
         let legB : {leg : Fin (2 * (2 * S.card + 1)) //
           d.legInComponent (d.externalComponent 0) leg} := ⟨leg, hins⟩
         have halign := d.externalVacuumLegEquiv_apply_externalBlockLeg legB
-        rw [hsplit] at halign
-        have ha : a = d.externalBlockLegEquiv legB := Sum.inl.inj halign
-        have hleg : leg = split.symm (Sum.inl a) := by
+        have ha : a = d.externalBlockLegEquiv legB :=
+          Sum.inl.inj (hsplit.symm.trans halign)
+        have hleg : split.symm (Sum.inl a) = leg := by
           rw [← hsplit]
           exact split.symm_apply_apply leg
-        rw [hleg, TwoPointDiagram.reassembleExternalVacuum_partner_external]
-        apply split.injective
-        simp only [split, Equiv.apply_symm_apply]
-        rw [ha, d.restrictedExternalPairing_partner_externalBlockLegEquiv]
-        have hpartnerInside : d.legInComponent (d.externalComponent 0) (d.pairing.partner leg) :=
+        have hpartnerInside : d.legInComponent (d.externalComponent 0)
+            (d.pairing.partner leg) :=
           (d.legInComponent_partner_iff (d.externalComponent 0) leg).mp hins
         let pB : {leg : Fin (2 * (2 * S.card + 1)) //
           d.legInComponent (d.externalComponent 0) leg} :=
           ⟨d.pairing.partner leg, hpartnerInside⟩
         have hpAlign := d.externalVacuumLegEquiv_apply_externalBlockLeg pB
-        simpa [legB, pB, TwoPointDiagram.restrictedPartner_val] using hpAlign.symm
+        calc
+          (TwoPointDiagram.reassembleExternalVacuum d.externalInteractionPart_subset
+              ⟨d.restrictExternalComponent, d.restrictExternalComponent_isExternallyConnected⟩
+              d.restrictVacuumRemainder).pairing.partner leg =
+              (TwoPointDiagram.reassembleExternalVacuum d.externalInteractionPart_subset
+                ⟨d.restrictExternalComponent, d.restrictExternalComponent_isExternallyConnected⟩
+                d.restrictVacuumRemainder).pairing.partner (split.symm (Sum.inl a)) := by
+                rw [hleg]
+          _ = split.symm (Sum.inl (d.restrictedExternalPairing.partner a)) := by
+                exact TwoPointDiagram.reassembleExternalVacuum_partner_external
+                  d.externalInteractionPart_subset
+                  ⟨d.restrictExternalComponent, d.restrictExternalComponent_isExternallyConnected⟩
+                  d.restrictVacuumRemainder a
+          _ = split.symm (Sum.inl
+                (d.externalBlockLegEquiv (d.restrictedPartner (d.externalComponent 0) legB))) := by
+                rw [ha, d.restrictedExternalPairing_partner_externalBlockLegEquiv]
+          _ = d.pairing.partner leg := by
+                have hp := congrArg split.symm hpAlign
+                simpa [pB, legB, TwoPointDiagram.restrictedPartner_val] using hp.symm
     | inr a =>
         have hout : ¬ d.legInComponent (d.externalComponent 0) leg := by
           intro hins
           obtain ⟨b, hb⟩ := (d.legInExternalComponent_iff_split_left leg).1 hins
           rw [hsplit] at hb
-          exact Sum.noConfusion hb
+          cases hb
         let legB : {leg : Fin (2 * (2 * S.card + 1)) //
           ¬ d.legInComponent (d.externalComponent 0) leg} := ⟨leg, hout⟩
         have halign := d.externalVacuumLegEquiv_apply_vacuumRemainderBlockLeg legB
-        rw [hsplit] at halign
-        have ha : a = d.vacuumRemainderBlockLegEquiv legB := Sum.inr.inj halign
-        have hleg : leg = split.symm (Sum.inr a) := by
+        have ha : a = d.vacuumRemainderBlockLegEquiv legB :=
+          Sum.inr.inj (hsplit.symm.trans halign)
+        have hleg : split.symm (Sum.inr a) = leg := by
           rw [← hsplit]
           exact split.symm_apply_apply leg
-        rw [hleg, TwoPointDiagram.reassembleExternalVacuum_partner_vacuum]
-        apply split.injective
-        simp only [split, Equiv.apply_symm_apply]
-        rw [ha, d.restrictedVacuumRemainderPairing_partner_blockLegEquiv]
-        have hpartnerOut : ¬ d.legInComponent (d.externalComponent 0) (d.pairing.partner leg) :=
+        have hpartnerOut : ¬ d.legInComponent (d.externalComponent 0)
+            (d.pairing.partner leg) :=
           fun hp => hout ((d.legInComponent_partner_iff (d.externalComponent 0) leg).mpr hp)
         let pB : {leg : Fin (2 * (2 * S.card + 1)) //
           ¬ d.legInComponent (d.externalComponent 0) leg} :=
           ⟨d.pairing.partner leg, hpartnerOut⟩
         have hpAlign := d.externalVacuumLegEquiv_apply_vacuumRemainderBlockLeg pB
-        simpa [legB, pB, TwoPointDiagram.restrictedVacuumRemainderPartner_val] using hpAlign.symm
+        calc
+          (TwoPointDiagram.reassembleExternalVacuum d.externalInteractionPart_subset
+              ⟨d.restrictExternalComponent, d.restrictExternalComponent_isExternallyConnected⟩
+              d.restrictVacuumRemainder).pairing.partner leg =
+              (TwoPointDiagram.reassembleExternalVacuum d.externalInteractionPart_subset
+                ⟨d.restrictExternalComponent, d.restrictExternalComponent_isExternallyConnected⟩
+                d.restrictVacuumRemainder).pairing.partner (split.symm (Sum.inr a)) := by
+                rw [hleg]
+          _ = split.symm (Sum.inr (d.restrictedVacuumRemainderPairing.partner a)) := by
+                exact TwoPointDiagram.reassembleExternalVacuum_partner_vacuum
+                  d.externalInteractionPart_subset
+                  ⟨d.restrictExternalComponent, d.restrictExternalComponent_isExternallyConnected⟩
+                  d.restrictVacuumRemainder a
+          _ = split.symm (Sum.inr
+                (d.vacuumRemainderBlockLegEquiv (d.restrictedVacuumRemainderPartner legB))) := by
+                rw [ha, d.restrictedVacuumRemainderPairing_partner_blockLegEquiv]
+          _ = d.pairing.partner leg := by
+                have hp := congrArg split.symm hpAlign
+                simpa [pB, legB, TwoPointDiagram.restrictedVacuumRemainderPartner_val] using hp.symm
 
 /-- Binary external/vacuum decomposition data on an ambient interaction set. -/
 abbrev TwoPointDiagram.ExternalVacuumDecomposition
