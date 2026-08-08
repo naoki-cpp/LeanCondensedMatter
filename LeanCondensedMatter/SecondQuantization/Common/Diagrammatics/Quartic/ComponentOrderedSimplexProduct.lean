@@ -138,8 +138,8 @@ theorem QuarticDiagram.sum_componentShuffle_orderedSimplexIntegral_eq_prod
         orderedSimplexIntegral (B : Finset (Fin N)).card β (componentIntegrand B) := by
   rw [d.sum_componentShuffle_orderedSimplexIntegral_eq_familyShuffle β componentIntegrand]
   exact FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype
-    (fun B : d.componentPartition.parts => (B : Finset (Fin N)).card)
-    β componentIntegrand hcomponent
+    (ι := d.componentPartition.parts)
+    (fun B => (B : Finset (Fin N)).card) β componentIntegrand hcomponent
 
 end Common
 end SecondQuantization
