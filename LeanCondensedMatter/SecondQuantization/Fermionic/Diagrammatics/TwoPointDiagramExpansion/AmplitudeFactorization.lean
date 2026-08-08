@@ -20,6 +20,16 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
 
+/-- Explicit fixed-external diagrams whose complete graph is externally connected. -/
+abbrev ExternallyConnectedFixedExternalTwoPointWickDiagram
+    (Mode : Type*) (n : ℕ) (i j : Mode) :=
+  {d : FixedExternalTwoPointWickDiagram Mode n i j // d.1.IsExternallyConnected}
+
+/-- Arbitrary-set fixed-external diagrams whose complete graph is externally connected. -/
+abbrev ExternallyConnectedFixedExternalTwoPointWickDiagramOn
+    (Mode : Type*) (N : ℕ) (S : Finset (Fin N)) (i j : Mode) :=
+  {d : FixedExternalTwoPointWickDiagramOn Mode N S i j // d.1.IsExternallyConnected}
+
 /-- The explicit diagram produced by the fixed-order equivalence is exactly the Common ordered
 reindexing of the underlying arbitrary-set diagram. -/
 theorem fixedExternalTwoPointWickDiagramOrderEquiv_val_eq_inInteractionOrder
@@ -45,6 +55,28 @@ theorem fixedExternalTwoPointWickDiagramOrderEquiv_isExternallyConnected_iff
       d.1.IsExternallyConnected := by
   rw [fixedExternalTwoPointWickDiagramOrderEquiv_val_eq_inInteractionOrder]
   exact d.1.inInteractionOrder_isExternallyConnected_iff order
+
+/-- Restrict the fixed-order diagram equivalence to externally connected diagrams. -/
+noncomputable def externallyConnectedFixedExternalTwoPointWickDiagramOrderEquiv
+    {S : Finset (Fin N)} (i j : Mode) (order : Common.QuarticVertexOrder S) :
+    ExternallyConnectedFixedExternalTwoPointWickDiagramOn Mode N S i j ≃
+      ExternallyConnectedFixedExternalTwoPointWickDiagram Mode S.card i j :=
+  (fixedExternalTwoPointWickDiagramOrderEquiv i j order).subtypeEquiv fun d =>
+    (fixedExternalTwoPointWickDiagramOrderEquiv_isExternallyConnected_iff i j order d).symm
+
+/-- At one fixed interaction order, the sum over connected arbitrary-set external cores is exactly
+the explicit connected-diagram coefficient sum at that order. -/
+theorem sum_connected_orderedDysonAmplitude_eq_sum_connected_dysonAmplitude
+    {S : Finset (Fin N)} (i j : Mode) (order : Common.QuarticVertexOrder S)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (τ τ' : ℝ) :
+    (∑ d : ExternallyConnectedFixedExternalTwoPointWickDiagramOn Mode N S i j,
+        d.1.orderedDysonAmplitude order ε β g τ τ') =
+      ∑ d : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode S.card i j,
+        d.1.dysonAmplitude ε β g τ τ' := by
+  exact Equiv.sum_comp
+    (externallyConnectedFixedExternalTwoPointWickDiagramOrderEquiv i j order)
+    (fun d => d.1.dysonAmplitude ε β g τ τ')
 
 /-- For any chosen order on a finite vacuum vertex set, the Dyson-signed sum of fixed-order Wick
 contributions is already the normalized partition coefficient. The factorial in
