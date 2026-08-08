@@ -6,9 +6,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Compo
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentRestriction
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentConnected
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Reassemble
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ReassembleComponentPartitionEq
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ReassembleRestrictComponent
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ReassembleDecompose
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ReassembleLaws
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPairing
@@ -25,6 +23,7 @@ set_option linter.style.header false
 # Quartic diagram infrastructure
 
 Statistics-independent quartic leg indexing, labelled diagram syntax, vertex ordering, connectivity,
-connected-component restriction, reassembly, component-decomposition equivalence, component-local
-orders and pairing compatibility, ordered-simplex factorization, and componentwise scalar products.
+connected-component restriction, reassembly and its inverse laws, component-decomposition equivalence,
+component-local orders and pairing compatibility, ordered-simplex factorization, and componentwise
+scalar products.
 -/
