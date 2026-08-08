@@ -84,7 +84,7 @@ theorem TwoPointDiagram.reassembleExternalVacuumData_injective
   subst F
   have hdata : xdata = ydata :=
     TwoPointDiagram.reassembleExternalVacuum_injective_fixed E.2 hxy
-  exact Sigma.ext rfl (HEq.of_eq hdata)
+  exact Sigma.ext rfl (heq_of_eq hdata)
 
 /-- Every full two-point diagram is in the image of binary external/vacuum reassembly. -/
 theorem TwoPointDiagram.reassembleExternalVacuumData_surjective
