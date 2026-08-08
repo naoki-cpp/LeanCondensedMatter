@@ -73,24 +73,33 @@ theorem summable_shiftedPow_oneModeBoltzmannWeight
       ((k + shift : ℕ) : ℝ) ^ power * oneModeBoltzmannWeight β energy k) := by
   let r : ℝ := Real.exp (-β * energy)
   have hr : ‖r‖ < 1 := by
-    rw [r, Real.norm_eq_abs, abs_of_nonneg (Real.exp_nonneg _), Real.exp_lt_one_iff]
+    change ‖Real.exp (-β * energy)‖ < 1
+    rw [Real.norm_eq_abs, abs_of_nonneg (Real.exp_nonneg _), Real.exp_lt_one_iff]
     linarith
   have hr0 : r ≠ 0 := by
+    dsimp [r]
     exact Real.exp_ne_zero _
   have h := summable_pow_mul_geometric_of_norm_lt_one (R := ℝ) power hr
   have htail : Summable (fun k : ℕ =>
       ((k + shift : ℕ) : ℝ) ^ power * r ^ (k + shift)) := by
-    exact h.comp_injective (fun k : ℕ => k + shift) (fun _ _ hk => Nat.add_right_cancel hk)
+    change Summable ((fun n : ℕ => (n : ℝ) ^ power * r ^ n) ∘ fun k : ℕ => k + shift)
+    exact h.comp_injective (fun _ _ hk => Nat.add_right_cancel hk)
   have hscaled := htail.mul_left (r ^ shift)⁻¹
-  convert hscaled using 1
-  funext k
-  unfold oneModeBoltzmannWeight
-  rw [Real.exp_nat_mul]
-  change ((↑(k + shift) : ℝ) ^ power * r ^ k) =
-    (r ^ shift)⁻¹ * ((↑(k + shift) : ℝ) ^ power * r ^ (k + shift))
-  rw [pow_add]
-  field_simp [hr0]
-  ring
+  have heq :
+      (fun k : ℕ =>
+        ((k + shift : ℕ) : ℝ) ^ power * oneModeBoltzmannWeight β energy k) =
+      fun k : ℕ =>
+        (r ^ shift)⁻¹ * (((k + shift : ℕ) : ℝ) ^ power * r ^ (k + shift)) := by
+    funext k
+    unfold oneModeBoltzmannWeight
+    rw [Real.exp_nat_mul]
+    change ((↑(k + shift) : ℝ) ^ power * r ^ k) =
+      (r ^ shift)⁻¹ * ((↑(k + shift) : ℝ) ^ power * r ^ (k + shift))
+    rw [pow_add]
+    field_simp [hr0]
+    ring
+  rw [heq]
+  exact hscaled
 
 /-- A uniform shifted power in every mode is summable against the free bosonic Gibbs weight.
 
