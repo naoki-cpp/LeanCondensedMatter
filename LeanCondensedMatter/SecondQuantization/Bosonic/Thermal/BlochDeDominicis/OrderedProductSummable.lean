@@ -9,11 +9,11 @@ set_option linter.unusedFintypeInType false
 
 A finite ordered product of bosonic creation and annihilation operators sends every occupation-basis
 state either to zero or to one occupation-basis state multiplied by a product of square-root ladder
-factors.  During a list of length `L`, no mode occupation can rise by more than `L`.
+factors. During a list of length `L`, no mode occupation can rise by more than `L`.
 
-We dominate every ladder factor by a finite-mode product of shifted occupations.  The shifted
+We dominate every ladder factor by a finite-mode product of shifted occupations. The shifted
 polynomial Gibbs moments proved in `PolynomialOccupationWeightSummable` then make the diagonal Gibbs
-numerator summable for every fixed finite list.  This discharges the product-domain part of the
+numerator summable for every fixed finite list. This discharges the product-domain part of the
 multi-point free-boson Wick/KMS boundary without any finite occupation-basis assumption.
 -/
 
@@ -42,7 +42,9 @@ private theorem shiftedOccupation_le_orderedProductMajorant
       (fun j => ((n j + K + 1 : ℕ) : ℝ)) (Finset.mem_univ i)]
   have hfactor : 0 ≤ ((n i + K + 1 : ℕ) : ℝ) := by positivity
   have hrest : 1 ≤ ∏ j ∈ Finset.univ.erase i, ((n j + K + 1 : ℕ) : ℝ) := by
-    exact Finset.one_le_prod fun j _ => by positivity
+    apply Finset.one_le_prod
+    intro j hj
+    exact_mod_cast (show 1 ≤ n j + K + 1 by omega)
   nlinarith
 
 /-- The product majorant is nonnegative. -/
@@ -51,9 +53,48 @@ private theorem orderedProductMajorant_nonneg (n : Occupation Mode) (K : ℕ) :
   rw [orderedProductMajorant]
   exact Finset.prod_nonneg fun i _ => by positivity
 
+/-- Coordinate formula for the free diagonal evolution, kept in the thermal layer to avoid a
+Thermal-to-Perturbation dependency. -/
+omit [Fintype Mode] in
+private theorem imaginaryTimeEvolveFree_apply_coord_orderedProduct
+    (ε : Mode → ℝ) (τ : ℝ) (x : FockSpace Mode) (n : Occupation Mode) :
+    imaginaryTimeEvolveFree ε τ x n =
+      Complex.exp ((τ * freeEigenvalue ε n : ℝ) : ℂ) * x n := by
+  let eval : FockSpace Mode →ₗ[ℂ] ℂ := Finsupp.lapply n
+  have hmap : eval.comp (imaginaryTimeEvolveFree ε τ) =
+      Complex.exp ((τ * freeEigenvalue ε n : ℝ) : ℂ) • eval := by
+    apply Finsupp.lhom_ext
+    intro a b
+    have hb : (Finsupp.single a b : FockSpace Mode) = b • basisState a :=
+      (Finsupp.smul_single_one a b).symm
+    rw [hb, LinearMap.comp_apply, map_smul, imaginaryTimeEvolveFree_basisState]
+    simp only [map_smul, LinearMap.smul_apply, eval, Finsupp.lapply_apply, smul_eq_mul]
+    by_cases h : a = n
+    · subst a
+      have hself : (basisState n : FockSpace Mode) n = 1 := by
+        simp [basisState, Common.basisState]
+      rw [hself]
+    · have hne : (basisState a : FockSpace Mode) n = 0 := by
+        simp [basisState, Common.basisState, h]
+      rw [hne]
+      simp
+  have hx := congrArg (fun L => L x) hmap
+  simpa only [eval, LinearMap.comp_apply, LinearMap.smul_apply, Finsupp.lapply_apply,
+    smul_eq_mul] using hx
+
+omit [Fintype Mode] in
+private theorem matrixCoeff_imaginaryTimeEvolveFree_comp_orderedProduct
+    (ε : Mode → ℝ) (τ : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
+    (m n : Occupation Mode) :
+    Common.matrixCoeff ((imaginaryTimeEvolveFree ε τ).comp A) m n =
+      Complex.exp ((τ * freeEigenvalue ε m : ℝ) : ℂ) * Common.matrixCoeff A m n := by
+  rw [Common.matrixCoeff, LinearMap.comp_apply,
+    imaginaryTimeEvolveFree_apply_coord_orderedProduct]
+  rfl
+
 /-- Basis-state action of an arbitrary free-thermal-field list, with a uniform coefficient bound.
 
-`K` is an external upper bound on the list length.  Keeping it fixed through the induction avoids
+`K` is an external upper bound on the list length. Keeping it fixed through the induction avoids
 changing the majorant while fields are peeled from the left. -/
 private theorem FreeThermalField.orderedProduct_basisState_bound_aux
     (fields : List (FreeThermalField Mode)) (n : Occupation Mode) (K : ℕ)
@@ -81,8 +122,8 @@ private theorem FreeThermalField.orderedProduct_basisState_bound_aux
           · simp only [FreeThermalField.orderedProduct, LinearMap.comp_apply,
               FreeThermalField.operator]
             rw [haction, map_smul, create_basisState_eq, smul_smul]
-            rfl
           · intro j
+            simp only [List.length_cons]
             rcases eq_or_ne j i with rfl | hji
             · rw [createOccupation_apply_same]
               have hmi := hm i
@@ -98,21 +139,23 @@ private theorem FreeThermalField.orderedProduct_basisState_bound_aux
                 exact_mod_cast hmK
               have hs := Real.sqrt_le_sqrt hle
               have hR0 : 0 ≤ ((n i + K + 1 : ℕ) : ℝ) := by positivity
-              have hsR0 := Real.sqrt_nonneg (((n i + K + 1 : ℕ) : ℝ))
               have hsRsq := Real.sq_sqrt hR0
-              have hR1 : 1 ≤ ((n i + K + 1 : ℕ) : ℝ) := by positivity
+              have hR1 : 1 ≤ ((n i + K + 1 : ℕ) : ℝ) := by
+                exact_mod_cast (show 1 ≤ n i + K + 1 by omega)
               have hsR : Real.sqrt (((n i + K + 1 : ℕ) : ℝ)) ≤
                   ((n i + K + 1 : ℕ) : ℝ) := by
-                nlinarith
+                nlinarith [Real.sqrt_nonneg (((n i + K + 1 : ℕ) : ℝ))]
               exact hs.trans hsR
             have haB : a ≤ orderedProductMajorant n K :=
               hsqrt.trans (shiftedOccupation_le_orderedProductMajorant n K i)
-            rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (Real.sqrt_nonneg _)]
+            rw [norm_mul, Complex.norm_real, Real.norm_eq_abs,
+              abs_of_nonneg (Real.sqrt_nonneg _)]
             calc
               ‖c‖ * a ≤ (orderedProductMajorant n K) ^ fields.length *
                   orderedProductMajorant n K :=
                 mul_le_mul hc haB (Real.sqrt_nonneg _) (pow_nonneg hB0 _)
-              _ = (orderedProductMajorant n K) ^ (field :: fields).length := by
+              _ = (orderedProductMajorant n K) ^
+                    (FreeThermalField.create i :: fields).length := by
                 simp only [List.length_cons, pow_succ]
       | annihilate i =>
           by_cases hi : m i = 0
@@ -120,19 +163,20 @@ private theorem FreeThermalField.orderedProduct_basisState_bound_aux
             · simp only [FreeThermalField.orderedProduct, LinearMap.comp_apply,
                 FreeThermalField.operator]
               rw [haction, map_smul, annihilate_basisState_of_zero hi, smul_zero]
+              simp
             · intro j
               have hmj := hm j
               simp only [List.length_cons]
               omega
             · simp only [norm_zero]
-              positivity
+              exact pow_nonneg hB0 _
           · let a : ℝ := Real.sqrt (m i : ℝ)
             refine ⟨c * (a : ℂ), removeOccupation i m, ?_, ?_, ?_⟩
             · simp only [FreeThermalField.orderedProduct, LinearMap.comp_apply,
                 FreeThermalField.operator]
               rw [haction, map_smul, annihilate_basisState_of_pos hi, smul_smul]
-              rfl
             · intro j
+              simp only [List.length_cons]
               rcases eq_or_ne j i with rfl | hji
               · rw [removeOccupation_apply_same]
                 have hmi := hm i
@@ -148,12 +192,12 @@ private theorem FreeThermalField.orderedProduct_basisState_bound_aux
                   exact_mod_cast hmK
                 have hs := Real.sqrt_le_sqrt hle
                 have hR0 : 0 ≤ ((n i + K + 1 : ℕ) : ℝ) := by positivity
-                have hsR0 := Real.sqrt_nonneg (((n i + K + 1 : ℕ) : ℝ))
                 have hsRsq := Real.sq_sqrt hR0
-                have hR1 : 1 ≤ ((n i + K + 1 : ℕ) : ℝ) := by positivity
+                have hR1 : 1 ≤ ((n i + K + 1 : ℕ) : ℝ) := by
+                  exact_mod_cast (show 1 ≤ n i + K + 1 by omega)
                 have hsR : Real.sqrt (((n i + K + 1 : ℕ) : ℝ)) ≤
                     ((n i + K + 1 : ℕ) : ℝ) := by
-                  nlinarith
+                  nlinarith [Real.sqrt_nonneg (((n i + K + 1 : ℕ) : ℝ))]
                 exact hs.trans hsR
               have haB : a ≤ orderedProductMajorant n K :=
                 hsqrt.trans (shiftedOccupation_le_orderedProductMajorant n K i)
@@ -163,7 +207,8 @@ private theorem FreeThermalField.orderedProduct_basisState_bound_aux
                 ‖c‖ * a ≤ (orderedProductMajorant n K) ^ fields.length *
                     orderedProductMajorant n K :=
                   mul_le_mul hc haB (Real.sqrt_nonneg _) (pow_nonneg hB0 _)
-                _ = (orderedProductMajorant n K) ^ (FreeThermalField.annihilate i :: fields).length := by
+                _ = (orderedProductMajorant n K) ^
+                      (FreeThermalField.annihilate i :: fields).length := by
                   simp only [List.length_cons, pow_succ]
 
 /-- Diagonal matrix coefficients of an arbitrary fixed free-thermal-field list have polynomial
@@ -175,6 +220,7 @@ theorem FreeThermalField.norm_matrixCoeff_orderedProduct_le
   rcases FreeThermalField.orderedProduct_basisState_bound_aux
       fields n fields.length (le_refl _) with ⟨c, m, haction, _, hc⟩
   unfold Common.matrixCoeff
+  change ‖(FreeThermalField.orderedProduct fields (basisState n)) n‖ ≤ _
   rw [haction]
   by_cases hmn : m = n
   · change ‖(c • Common.basisState m) n‖ ≤ _
@@ -195,7 +241,7 @@ theorem FreeThermalField.freeGibbsSummable_orderedProduct
     ε β hpos (fields.length + 1) fields.length
   apply hmajorant.of_norm_bounded
   intro n
-  rw [matrixCoeff_imaginaryTimeEvolveFree_comp, norm_mul, Complex.norm_exp]
+  rw [matrixCoeff_imaginaryTimeEvolveFree_comp_orderedProduct, norm_mul, Complex.norm_exp]
   change boltzmannWeight ε β n *
       ‖Common.matrixCoeff (FreeThermalField.orderedProduct fields) n n‖ ≤ _
   have hcoeff := FreeThermalField.norm_matrixCoeff_orderedProduct_le fields n
