@@ -38,33 +38,45 @@ noncomputable def completedFreeGibbsExpectationRecursion
   expectation_succ := by
     intro n C hC
     rw [List.ofFn_succ]
+    set l : List (CompletedThermalLadder Mode) :=
+      List.ofFn (fun i : Fin (2 * n + 1) => C i.succ) with hl
+    have hlen : l.length = 2 * n + 1 := by
+      rw [hl]
+      simp
     calc
-      completedFreeGibbsExpectation ε β hsum
-          (C 0 :: List.ofFn fun i : Fin (2 * n + 1) => C i.succ) =
+      completedFreeGibbsExpectation ε β hsum (C 0 :: l) =
         ((C 0).gibbsFactor ε β / ((1 : ℂ) + (C 0).gibbsFactor ε β)) *
           (completedFreeGibbsDensityOperator ε β hsum).expectation
-            (thermalPeelSum (C 0) (List.ofFn fun i : Fin (2 * n + 1) => C i.succ)) :=
+            (thermalPeelSum (C 0) l) :=
         completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
-          ε β hsum n (C 0) (List.ofFn fun i : Fin (2 * n + 1) => C i.succ)
-            (by simp) (hC 0)
+          ε β hsum n (C 0) l hlen (hC 0)
       _ = ∑ j : Fin (2 * n + 1),
           (Common.Statistics.fermion.zetaInt : ℂ) ^ (j : ℕ) *
             completedFreeGibbsExpectation ε β hsum [C 0, C j.succ] *
               completedFreeGibbsExpectation ε β hsum
                 (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ)) := by
-        have hpeel :
-            (completedFreeGibbsDensityOperator ε β hsum).expectation
-                (thermalPeelSum (C 0) (List.ofFn fun i : Fin (2 * n + 1) => C i.succ)) =
+        rw [completedFreeGibbsExpectation_thermalPeelSum_eq_sum, Finset.mul_sum]
+        let hcast : Fin l.length ≃ Fin (2 * n + 1) :=
+          ⟨Fin.cast hlen, Fin.cast hlen.symm, fun i => rfl, fun i => rfl⟩
+        have hreindex :
+            (∑ i : Fin l.length,
+              ((C 0).gibbsFactor ε β / ((1 : ℂ) + (C 0).gibbsFactor ε β)) *
+                (((-1 : ℂ) ^ (i : ℕ)) * (C 0).anticommutatorValue (l[(i : ℕ)]'i.isLt) *
+                  completedFreeGibbsExpectation ε β hsum (l.eraseIdx i))) =
               ∑ j : Fin (2 * n + 1),
-                ((-1 : ℂ) ^ (j : ℕ)) * (C 0).anticommutatorValue (C j.succ) *
-                  completedFreeGibbsExpectation ε β hsum
-                    ((List.ofFn fun i : Fin (2 * n + 1) => C i.succ).eraseIdx j) := by
-          simpa only [List.length_ofFn, List.getElem_ofFn] using
-            (completedFreeGibbsExpectation_thermalPeelSum_eq_sum ε β hsum (C 0)
-              (List.ofFn fun i : Fin (2 * n + 1) => C i.succ))
-        rw [hpeel, Finset.mul_sum]
+                ((C 0).gibbsFactor ε β / ((1 : ℂ) + (C 0).gibbsFactor ε β)) *
+                  (((-1 : ℂ) ^ (j : ℕ)) * (C 0).anticommutatorValue (C j.succ) *
+                    completedFreeGibbsExpectation ε β hsum (l.eraseIdx j)) :=
+          Fintype.sum_equiv hcast _ _ fun i => by
+            have hv : ((hcast i : Fin (2 * n + 1)) : ℕ) = (i : ℕ) := by
+              change ((Fin.cast hlen i : Fin (2 * n + 1)) : ℕ) = (i : ℕ)
+              rfl
+            simp only [hv]
+            rw [hl]
+            simp only [List.getElem_ofFn]
+        rw [hreindex]
         refine Finset.sum_congr rfl fun j _ => ?_
-        rw [List.eraseIdx_ofFn_eq_ofFn_succAbove]
+        rw [hl, List.eraseIdx_ofFn_eq_ofFn_succAbove]
         have hpair := completedFreeGibbsExpectation_pair_eq
           ε β hsum (C 0) (C j.succ) (hC 0)
         rw [hpair]
