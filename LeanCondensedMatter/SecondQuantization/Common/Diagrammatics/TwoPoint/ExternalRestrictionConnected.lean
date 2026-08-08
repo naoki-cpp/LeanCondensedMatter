@@ -51,6 +51,18 @@ noncomputable def TwoPointDiagram.externalBlockVertexEquiv {S : Finset (Fin N)}
     · apply congrArg Sum.inr
       exact Subtype.ext (by rfl)
 
+/-- The unflattened external-leg equivalence preserves the incident vertex. -/
+@[simp]
+theorem TwoPointDiagram.twoPointLegVertex_externalLegDataEquiv
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (leg : {leg : TwoPointLeg S //
+      d.unflattenedLegInComponent d.externalComponentPart leg}) :
+    twoPointLegVertex (d.externalLegDataEquiv leg) =
+      d.externalBlockVertexEquiv ⟨twoPointLegVertex leg.1, leg.2⟩ := by
+  rcases leg with ⟨e | ⟨v, l⟩, hleg⟩
+  · rfl
+  · rfl
+
 /-- The external-component leg equivalence carries the incident vertex through the corresponding
 vertex equivalence. -/
 @[simp]
@@ -62,14 +74,21 @@ theorem TwoPointDiagram.twoPointVertexOfLeg_externalBlockLegEquiv
       d.externalBlockVertexEquiv
         ⟨twoPointVertexOfLeg leg.1,
           (d.legInComponent_iff_vertex_mem d.externalComponentPart.2 leg.1).1 leg.2⟩ := by
+  let legU : {u : TwoPointLeg S //
+      d.unflattenedLegInComponent d.externalComponentPart u} :=
+    ((twoPointLegEquiv S).subtypeEquiv fun p =>
+      d.legInComponent_iff_unflattened d.externalComponentPart p) leg
   change twoPointLegVertex (twoPointLegEquiv
       (TwoPointDiagram.interactionPart (d.externalComponent 0))
       (d.externalBlockLegEquiv leg)) = _
-  rcases hleg : twoPointLegEquiv S leg.1 with e | ⟨v, l⟩
-  · simp [TwoPointDiagram.externalBlockLegEquiv, TwoPointDiagram.externalLegDataEquiv,
-      TwoPointDiagram.externalBlockVertexEquiv, twoPointLegVertex, twoPointVertexOfLeg, hleg]
-  · simp [TwoPointDiagram.externalBlockLegEquiv, TwoPointDiagram.externalLegDataEquiv,
-      TwoPointDiagram.externalBlockVertexEquiv, twoPointLegVertex, twoPointVertexOfLeg, hleg]
+  have hflat :
+      twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))
+          (d.externalBlockLegEquiv leg) = d.externalLegDataEquiv legU := by
+    rfl
+  rw [hflat, d.twoPointLegVertex_externalLegDataEquiv legU]
+  apply congrArg d.externalBlockVertexEquiv
+  apply Subtype.ext
+  rfl
 
 /-- An ambient edge whose endpoints lie in the external component becomes an edge of the restricted
 external diagram. -/
