@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentOrderDecomposition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.OrderedConnectivity
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.IntegratedComponentFactorization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.OrderedAmplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.AmplitudeFactorization
@@ -18,6 +19,32 @@ namespace SecondQuantization
 namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
+
+/-- The explicit diagram produced by the fixed-order equivalence is exactly the Common ordered
+reindexing of the underlying arbitrary-set diagram. -/
+theorem fixedExternalTwoPointWickDiagramOrderEquiv_val_eq_inInteractionOrder
+    {S : Finset (Fin N)} (i j : Mode) (order : Common.QuarticVertexOrder S)
+    (d : FixedExternalTwoPointWickDiagramOn Mode N S i j) :
+    (fixedExternalTwoPointWickDiagramOrderEquiv i j order d).1 =
+      d.1.inInteractionOrder order := by
+  apply Common.TwoPointDiagram.ext
+  · exact d.2.symm
+  · funext v
+    rfl
+  · simp [fixedExternalTwoPointWickDiagramOrderEquiv,
+      fixedExternalTwoPointWickDiagramOnEquivOrderedData,
+      orderedFixedExternalTwoPointDataEquivFixedDiagram,
+      Common.TwoPointDiagram.inInteractionOrder,
+      orderedTwoPointPairingCastEquiv]
+
+/-- External connectedness is preserved by the fixed-order diagram equivalence. -/
+theorem fixedExternalTwoPointWickDiagramOrderEquiv_isExternallyConnected_iff
+    {S : Finset (Fin N)} (i j : Mode) (order : Common.QuarticVertexOrder S)
+    (d : FixedExternalTwoPointWickDiagramOn Mode N S i j) :
+    (fixedExternalTwoPointWickDiagramOrderEquiv i j order d).1.IsExternallyConnected ↔
+      d.1.IsExternallyConnected := by
+  rw [fixedExternalTwoPointWickDiagramOrderEquiv_val_eq_inInteractionOrder]
+  exact d.1.inInteractionOrder_isExternallyConnected_iff order
 
 /-- For any chosen order on a finite vacuum vertex set, the Dyson-signed sum of fixed-order Wick
 contributions is already the normalized partition coefficient. The factorial in
