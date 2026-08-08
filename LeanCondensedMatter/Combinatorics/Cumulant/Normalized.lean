@@ -34,47 +34,22 @@ namespace NormalizedSetFunction
 
 variable {α R : Type*} [DecidableEq α] [CommRing R]
 
-private theorem finpartition_empty_unique (P : Finpartition (∅ : Finset α)) : P = ⊥ := by
-  apply Finpartition.ext
-  have hparts : P.parts = ∅ := by
-    ext B
-    constructor
-    · intro hB
-      exact (P.ne_bot hB (Finset.subset_empty.mp (P.subset hB))).elim
-    · intro hB
-      simp at hB
-  simpa [hparts]
-
-private theorem parts_empty (P : Finpartition (∅ : Finset α)) : P.parts = ∅ := by
-  ext B
-  constructor
-  · intro hB
-    exact (P.ne_bot hB (Finset.subset_empty.mp (P.subset hB))).elim
-  · simp
-
 private theorem momentFromCumulant_empty (κ : Finset α → R) :
     Finpartition.momentFromCumulant κ ∅ = 1 := by
   classical
-  letI : Unique (Finpartition (∅ : Finset α)) :=
-    { default := ⊥
-      uniq := finpartition_empty_unique }
-  have hdefault : (default : Finpartition (∅ : Finset α)) = ⊥ :=
-    finpartition_empty_unique _
-  simp [Finpartition.momentFromCumulant, Finpartition.partitionProduct, hdefault,
-    parts_empty]
+  rw [Finpartition.momentFromCumulant, Fintype.sum_unique]
+  have hparts : (default : Finpartition (∅ : Finset α)).parts = ∅ := by simp
+  simp [Finpartition.partitionProduct, hparts]
 
 private theorem cumulantFromMoment_empty (m : Finset α → R) :
     Finpartition.cumulantFromMoment m ∅ = 1 := by
   classical
-  letI : Unique (Finpartition (∅ : Finset α)) :=
-    { default := ⊥
-      uniq := finpartition_empty_unique }
-  have hdefault : (default : Finpartition (∅ : Finset α)) = ⊥ :=
-    finpartition_empty_unique _
-  have hbot_top : (⊥ : Finpartition (∅ : Finset α)) = ⊤ :=
+  rw [Finpartition.cumulantFromMoment, Fintype.sum_unique]
+  have hdefault_top : (default : Finpartition (∅ : Finset α)) = ⊤ :=
     Subsingleton.elim _ _
-  simp [Finpartition.cumulantFromMoment, Finpartition.partitionProduct, hdefault, hbot_top,
-    parts_empty]
+  have hparts_top : (⊤ : Finpartition (∅ : Finset α)).parts = ∅ := by simp
+  rw [hdefault_top]
+  simp [Finpartition.partitionProduct, hparts_top]
 
 /-- Moment transform on normalized finite-set functions. -/
 noncomputable def moment (κ : NormalizedSetFunction α R) : NormalizedSetFunction α R where
