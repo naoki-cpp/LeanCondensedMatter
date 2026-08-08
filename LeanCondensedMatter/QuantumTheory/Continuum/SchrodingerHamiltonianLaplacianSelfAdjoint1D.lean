@@ -44,7 +44,9 @@ private theorem deriv_schwartzConj1D (f : SchwartzMap ℝ ℂ) (x : ℝ) :
   have h :=
     (((RCLike.conjCLE (K := ℂ)).toContinuousLinearMap : ℂ →L[ℝ] ℂ).hasFDerivAt.comp x
       (SchwartzMap.hasDerivAt f x).hasFDerivAt).hasDerivAt
-  simpa [schwartzConj1D] using h.deriv
+  change deriv ((starRingEnd ℂ) ∘ (f : ℝ → ℂ)) x =
+    (starRingEnd ℂ) (deriv (f : ℝ → ℂ) x)
+  exact h.deriv
 
 private theorem derivCLM_schwartzConj1D (f : SchwartzMap ℝ ℂ) :
     SchwartzMap.derivCLM ℂ ℂ (schwartzConj1D f) =
@@ -100,14 +102,14 @@ theorem continuumH2LaplacianPMap1D_adjoint_domain_le :
           inner ℂ (continuumH2Laplacian1D fH2) u := by
       calc
         inner ℂ (f.toLp 2 (volume : Measure ℝ)) w =
-            star (inner ℂ w (f.toLp 2 (volume : Measure ℝ))) := by
-              rw [← inner_conj_symm]
-        _ = star (inner ℂ u (continuumH2Laplacian1D fH2)) := by
+            (starRingEnd ℂ) (inner ℂ w (f.toLp 2 (volume : Measure ℝ))) := by
+              exact (inner_conj_symm (f.toLp 2 (volume : Measure ℝ)) w).symm
+        _ = (starRingEnd ℂ) (inner ℂ u (continuumH2Laplacian1D fH2)) := by
               rw [show inner ℂ w (f.toLp 2 (volume : Measure ℝ)) =
                 inner ℂ u (continuumH2Laplacian1D fH2) by
                   simpa [w, uAdj, fH2, continuumH2LaplacianPMap1D] using hadj]
         _ = inner ℂ (continuumH2Laplacian1D fH2) u := by
-              rw [inner_conj_symm]
+              exact inner_conj_symm (continuumH2Laplacian1D fH2) u
     simpa [fH2] using hswap
   have hcore := hinner (schwartzConj1D g)
   rw [continuumH2Laplacian1D_schwartz_toLp] at hcore
