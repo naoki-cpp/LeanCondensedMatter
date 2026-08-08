@@ -49,11 +49,6 @@ theorem TwoPointDiagram.externalVacuumLegEquiv_apply_externalBlockLeg
           (d.externalComponentPart : Finset (TwoPointVertex S)) at hmem
         rw [hraw] at hmem
         exact hmem
-      have hv : v.1 ∈ d.externalInteractionPart :=
-        (TwoPointDiagram.mem_interactionPart_subtype (d.externalComponent 0) v).2 hvcomp
-      have hsplit : TwoPointDiagram.interactionExternalVacuumEquiv
-          d.externalInteractionPart_subset v = Sum.inl ⟨v.1, hv⟩ := by
-        simp [TwoPointDiagram.interactionExternalVacuumEquiv, hv]
       have hlocal : d.unflattenedLegInComponent d.externalComponentPart
           (Sum.inr (v, l) : TwoPointLeg S) := by
         exact hvcomp
@@ -61,16 +56,15 @@ theorem TwoPointDiagram.externalVacuumLegEquiv_apply_externalBlockLeg
         apply Subtype.ext
         exact hraw
       rw [hU]
-      simp only [TwoPointDiagram.externalVacuumLegDataEquiv, Equiv.trans_apply,
-        Equiv.sumCongr_apply]
-      rw [hsplit]
-      rfl
+      simp [TwoPointDiagram.externalVacuumLegDataEquiv,
+        TwoPointDiagram.interactionExternalVacuumEquiv,
+        TwoPointDiagram.externalLegDataEquiv, hvcomp]
   have h := congrArg
     (Equiv.sumCongr (twoPointLegEquiv d.externalInteractionPart).symm
       (quarticLegEquiv (S \ d.externalInteractionPart)).symm) hdata
   rw [← hblock] at h
   simpa [TwoPointDiagram.externalVacuumLegEquiv, Equiv.trans_apply,
-    Equiv.sumCongr_apply] using h
+    Equiv.sumCongr_apply, Equiv.apply_symm_apply] using h
 
 /-- Vacuum-remainder legs use the right summand of the binary external/vacuum leg split. -/
 theorem TwoPointDiagram.externalVacuumLegEquiv_apply_vacuumRemainderBlockLeg
@@ -103,34 +97,32 @@ theorem TwoPointDiagram.externalVacuumLegEquiv_apply_vacuumRemainderBlockLeg
         (twoPointLegEquiv S leg.1) at hnot
       rw [hraw] at hnot
       exact False.elim (hnot (d.externalVertex_mem_externalComponentPart e))
-    · have hnot := legU.2
-      change ¬ d.unflattenedLegInComponent d.externalComponentPart
-        (twoPointLegEquiv S leg.1) at hnot
-      rw [hraw] at hnot
-      have hv : v.1 ∉ d.externalInteractionPart := by
-        intro hmem
-        apply hnot
-        change (Sum.inr v : TwoPointVertex S) ∈ d.externalComponent 0
-        exact (TwoPointDiagram.mem_interactionPart_subtype
-          (d.externalComponent 0) v).1 hmem
-      have hsplit : TwoPointDiagram.interactionExternalVacuumEquiv
-          d.externalInteractionPart_subset v =
-          Sum.inr ⟨v.1, Finset.mem_sdiff.mpr ⟨v.2, hv⟩⟩ := by
-        simp [TwoPointDiagram.interactionExternalVacuumEquiv, hv]
-      have hU : legU = ⟨Sum.inr (v, l), hnot⟩ := by
+    · have hnot : ¬ d.unflattenedLegInComponent d.externalComponentPart
+          (Sum.inr (v, l) : TwoPointLeg S) := by
+        have h := legU.2
+        change ¬ d.unflattenedLegInComponent d.externalComponentPart
+          (twoPointLegEquiv S leg.1) at h
+        rwa [hraw] at h
+      have hvnotcomp : (Sum.inr v : TwoPointVertex S) ∉ d.externalComponent 0 := by
+        exact hnot
+      have hnotR : d.unflattenedLegInVacuumRemainder
+          (Sum.inr (v, l) : TwoPointLeg S) := by
+        exact hnot
+      let iU : {u : TwoPointLeg S // d.unflattenedLegInVacuumRemainder u} :=
+        ⟨Sum.inr (v, l), hnotR⟩
+      have hU : legU = iU := by
         apply Subtype.ext
         exact hraw
       rw [hU]
-      simp only [TwoPointDiagram.externalVacuumLegDataEquiv, Equiv.trans_apply,
-        Equiv.sumCongr_apply]
-      rw [hsplit]
-      rfl
+      simp [iU, TwoPointDiagram.externalVacuumLegDataEquiv,
+        TwoPointDiagram.interactionExternalVacuumEquiv,
+        TwoPointDiagram.vacuumRemainderLegDataEquiv, hvnotcomp]
   have h := congrArg
     (Equiv.sumCongr (twoPointLegEquiv d.externalInteractionPart).symm
       (quarticLegEquiv (S \ d.externalInteractionPart)).symm) hdata
   rw [← hblock] at h
   simpa [TwoPointDiagram.externalVacuumLegEquiv, Equiv.trans_apply,
-    Equiv.sumCongr_apply] using h
+    Equiv.sumCongr_apply, Equiv.apply_symm_apply] using h
 
 /-- The vacuum-remainder pairing agrees with the ambient restricted partner under its leg
 reindexing. -/
