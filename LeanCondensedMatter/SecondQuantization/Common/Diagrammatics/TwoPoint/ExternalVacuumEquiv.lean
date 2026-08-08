@@ -27,14 +27,16 @@ private theorem TwoPointDiagram.reassembleExternalVacuum_injective_fixed
   apply Prod.ext
   · apply Subtype.ext
     apply TwoPointDiagram.ext
-    · exact congrArg TwoPointDiagram.externalLabel hfull
+    · have h := congrArg TwoPointDiagram.externalLabel hfull
+      simpa [TwoPointDiagram.reassembleExternalVacuum] using h
     · funext v
       let vS : ↥S :=
         (TwoPointDiagram.interactionExternalVacuumEquiv hE).symm (Sum.inl v)
       have h := congrArg (fun d => d.vertexLabel vS) hfull
       simpa [vS, TwoPointDiagram.reassembleExternalVacuum] using h
     · apply Pairing.ext
-      ext leg
+      apply Equiv.ext
+      intro leg
       let split := TwoPointDiagram.externalVacuumLegEquiv hE
       have h := congrArg
         (fun d => d.pairing.partner (split.symm (Sum.inl leg))) hfull
@@ -46,7 +48,8 @@ private theorem TwoPointDiagram.reassembleExternalVacuum_injective_fixed
       have h := congrArg (fun d => d.vertexLabel vS) hfull
       simpa [vS, TwoPointDiagram.reassembleExternalVacuum] using h
     · apply Pairing.ext
-      ext leg
+      apply Equiv.ext
+      intro leg
       let split := TwoPointDiagram.externalVacuumLegEquiv hE
       have h := congrArg
         (fun d => d.pairing.partner (split.symm (Sum.inr leg))) hfull
@@ -77,8 +80,9 @@ theorem TwoPointDiagram.reassembleExternalVacuumData_injective
       _ = y.1.1 :=
         TwoPointDiagram.interactionPart_externalComponent_reassembleExternalVacuum
           y.1.2 y.2.1 y.2.2
-  apply Sigma.ext hE
-  subst hE
+  have hEsub : x.1 = y.1 := Subtype.ext hE
+  cases hEsub
+  apply Sigma.ext rfl
   apply heq_of_eq
   exact TwoPointDiagram.reassembleExternalVacuum_injective_fixed x.1.2 hxy
 
@@ -109,8 +113,19 @@ theorem TwoPointDiagram.externalVacuumDecompositionEquiv_apply
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     TwoPointDiagram.externalVacuumDecompositionEquiv S d = d.decomposeExternalVacuum := by
   apply TwoPointDiagram.reassembleExternalVacuumData_injective
-  rw [Equiv.symm_apply_apply]
-  exact d.reassemble_restrictExternal_restrictVacuumRemainder
+  change TwoPointDiagram.reassembleExternalVacuumData
+      (TwoPointDiagram.externalVacuumDecompositionEquiv S d) =
+    TwoPointDiagram.reassembleExternalVacuumData d.decomposeExternalVacuum
+  calc
+    TwoPointDiagram.reassembleExternalVacuumData
+        (TwoPointDiagram.externalVacuumDecompositionEquiv S d) = d := by
+      exact (Equiv.ofBijective
+        (TwoPointDiagram.reassembleExternalVacuumData
+          (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) (N := N) (S := S))
+        ⟨TwoPointDiagram.reassembleExternalVacuumData_injective,
+          TwoPointDiagram.reassembleExternalVacuumData_surjective⟩).apply_symm_apply d
+    _ = TwoPointDiagram.reassembleExternalVacuumData d.decomposeExternalVacuum :=
+      d.reassemble_restrictExternal_restrictVacuumRemainder.symm
 
 end Common
 end SecondQuantization
