@@ -35,8 +35,9 @@ private theorem probabilityDensityValue_eq_normSq (z : ℂ) :
 private theorem inner_self_complex_eq_probabilityDensityValue (z : ℂ) :
     inner ℂ z z = (probabilityDensityValue z : ℂ) := by
   rw [probabilityDensityValue_eq_normSq]
-  rw [Complex.normSq_eq_conj_mul_self]
-  simp
+  rw [inner_self_eq_norm_sq_to_K]
+  norm_cast
+  simpa [pow_two] using Complex.norm_mul_self_eq_normSq z
 
 /-- The whole-space probability integral of the canonical representative of an `L²` wavefunction
 is its squared Hilbert norm. -/
