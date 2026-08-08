@@ -72,14 +72,14 @@ theorem completedFreeGibbsExpectation_operator_comp
               inner_completedBasisState, htoggle]
             rw [← Complex.exp_add]
             ring_nf
-            simp
+            rfl
           · have hit : i ∈ toggleOccupation i n := by
               simp [toggleOccupation, insertOccupation, hi]
             dsimp [f]
             simp only [ContinuousLinearMap.comp_apply]
             rw [inner_completedBasisState, completedCreate_apply, if_neg hi,
               completedCreate_basisState_of_mem hit]
-            simp
+            rfl
         _ = ∑' n : Occupation Mode, f n := by
           simpa [toggleOccupationEquiv_apply] using
             (Equiv.tsum_eq (toggleOccupationEquiv i) f)
@@ -111,7 +111,7 @@ theorem completedFreeGibbsExpectation_operator_comp
             simp only [ContinuousLinearMap.comp_apply]
             rw [inner_completedBasisState, completedAnnihilate_apply, if_pos hi,
               completedAnnihilate_basisState_of_not_mem hit]
-            simp
+            rfl
           · have hit : i ∈ toggleOccupation i n := by
               simp [toggleOccupation, insertOccupation, hi]
             have htoggle : toggleOccupation i (toggleOccupation i n) = n :=
@@ -125,7 +125,7 @@ theorem completedFreeGibbsExpectation_operator_comp
               inner_completedBasisState, htoggle]
             rw [← Complex.exp_add]
             ring_nf
-            simp
+            rfl
         _ = ∑' n : Occupation Mode, f n := by
           simpa [toggleOccupationEquiv_apply] using
             (Equiv.tsum_eq (toggleOccupationEquiv i) f)
