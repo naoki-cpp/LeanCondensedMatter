@@ -44,7 +44,8 @@ private theorem inner_laplacianFourierSymbol1D_mul
       inner ℂ z (laplacianFourierSymbol1D x * w) := by
   let r : ℝ := -((2 * Real.pi) ^ 2) * ‖x‖ ^ 2
   change inner ℂ ((r : ℂ) • z) w = inner ℂ z ((r : ℂ) • w)
-  rw [inner_smul_ofReal_left, inner_smul_ofReal_right]
+  rw [inner_smul_left, inner_smul_right]
+  simp
 
 /-- Fourier-transforming the distributional `H²` Laplacian gives multiplication by the usual
 real Laplacian symbol. This statement is still at the tempered-distribution level. -/
@@ -59,6 +60,7 @@ theorem fourier_l2ToTemperedDistribution1D_continuumH2Laplacian1D
     TemperedDistribution.fourierMultiplierCLM_apply,
     ← Complex.coe_smul (-(2 * Real.pi) ^ 2),
     FourierTransform.fourier_smul, FourierTransform.fourier_fourierInv_eq]
+  push_cast
 
 private theorem ae_eq_mul_of_l2ToTemperedDistribution_eq_smulLeft
     (u v : ContinuumL2Wavefunction1D) (g : ℝ → ℂ) (hg : g.HasTemperateGrowth)
@@ -119,6 +121,13 @@ theorem fourier_continuumH2Laplacian1D_ae
       (MeasureTheory.Lp.fourier_toTemperedDistribution_eq
         (ψ : ContinuumL2Wavefunction1D)).symm
   rw [hleft, hright, fourier_l2ToTemperedDistribution1D_continuumH2Laplacian1D]
+  change
+    (((-(2 * Real.pi) ^ 2 : ℂ) •
+        TemperedDistribution.smulLeftCLM ℂ
+          (fun x : ℝ => Complex.ofReal (‖x‖ ^ 2)))
+      (𝓕 (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D)))) =
+      TemperedDistribution.smulLeftCLM ℂ laplacianFourierSymbol1D
+        (𝓕 (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D)))
   rw [← TemperedDistribution.smulLeftCLM_smul (F := ℂ) (by fun_prop)
     (-(2 * Real.pi) ^ 2 : ℂ)]
   congr 2
