@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel
 import LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph
+import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 
 set_option linter.style.header false
 
@@ -26,8 +27,8 @@ theorem vertexGraph_relabel_adj_iff
     (vertexOfLeg₂ : Fin (2 * n) → Vertex₂)
     (hvertex : ∀ leg, vertexOfLeg₁ (e leg) = vertexEquiv (vertexOfLeg₂ leg))
     (v w : Vertex₂) :
-    (P.relabel e).vertexGraph vertexOfLeg₂ |>.Adj v w ↔
-      P.vertexGraph vertexOfLeg₁ |>.Adj (vertexEquiv v) (vertexEquiv w) := by
+    ((P.relabel e).vertexGraph vertexOfLeg₂).Adj v w ↔
+      (P.vertexGraph vertexOfLeg₁).Adj (vertexEquiv v) (vertexEquiv w) := by
   constructor
   · rintro ⟨hvw, leg, hv, hw⟩
     refine ⟨fun h => hvw (vertexEquiv.injective h), e leg, ?_, ?_⟩
@@ -54,8 +55,8 @@ theorem vertexGraph_relabel_reachable_iff
     (vertexOfLeg₂ : Fin (2 * n) → Vertex₂)
     (hvertex : ∀ leg, vertexOfLeg₁ (e leg) = vertexEquiv (vertexOfLeg₂ leg))
     (v w : Vertex₂) :
-    (P.relabel e).vertexGraph vertexOfLeg₂ |>.Reachable v w ↔
-      P.vertexGraph vertexOfLeg₁ |>.Reachable (vertexEquiv v) (vertexEquiv w) := by
+    ((P.relabel e).vertexGraph vertexOfLeg₂).Reachable v w ↔
+      (P.vertexGraph vertexOfLeg₁).Reachable (vertexEquiv v) (vertexEquiv w) := by
   rw [SimpleGraph.reachable_iff_reflTransGen, SimpleGraph.reachable_iff_reflTransGen]
   constructor
   · intro h
