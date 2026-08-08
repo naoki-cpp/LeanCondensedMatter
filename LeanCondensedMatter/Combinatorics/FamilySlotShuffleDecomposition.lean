@@ -302,7 +302,7 @@ theorem FamilySlotShuffle.cons_outerShuffle_tailShuffle
       simp [FamilySlotShuffle.outerShuffle]
   | succ r =>
       simp [FamilySlotShuffle.tailShuffle, FamilySlotShuffle.tailSlotSubtypeEquiv,
-        FamilySlotShuffle.outerShuffle]
+        FamilySlotShuffle.outerShuffle, Equiv.setCongr_apply]
 
 /-- The recursive constructor is injective. -/
 theorem FamilySlotShuffle.cons_injective (size : Fin (k + 1) → ℕ) :
