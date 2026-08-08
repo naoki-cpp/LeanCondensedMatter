@@ -286,10 +286,12 @@ noncomputable def FamilySlotShuffle.outerShuffle {size : Fin (k + 1) → ℕ}
   slotEquiv := shuffle.outerSlotEquiv
   strictMonoLeft := by
     intro a b hab
+    change shuffle.outerSlotEquiv (Sum.inl a) < shuffle.outerSlotEquiv (Sum.inl b)
     rw [shuffle.outerSlotEquiv_apply_inl, shuffle.outerSlotEquiv_apply_inl]
     simpa using shuffle.strictMono 0 hab
   strictMonoRight := by
     intro a b hab
+    change shuffle.outerSlotEquiv (Sum.inr a) < shuffle.outerSlotEquiv (Sum.inr b)
     rw [shuffle.outerSlotEquiv_apply_inr, shuffle.outerSlotEquiv_apply_inr]
     simpa using (shuffle.tailSlots.orderIsoOfFin shuffle.card_tailSlots).strictMono hab
 
