@@ -204,7 +204,7 @@ abbrev LeftSlotSet (m n : ℕ) :=
 def SlotShuffle.toLeftSlotSet {m n : ℕ} (σ : SlotShuffle m n) : LeftSlotSet m n :=
   ⟨σ.leftSlots, σ.card_leftSlots⟩
 
-/-- A slot shuffle is uniquely determined by its left-slot set. -/
+/-- The left-slot set determines the whole slot shuffle. -/
 theorem SlotShuffle.toLeftSlotSet_injective {m n : ℕ} :
     Function.Injective (SlotShuffle.toLeftSlotSet : SlotShuffle m n → LeftSlotSet m n) := by
   intro σ τ h
@@ -249,17 +249,6 @@ theorem card_slotShuffle (m n : ℕ) :
   rw [card_eq_choose] at hlower
   rw [card_leftSlotSet] at hupper
   omega
-
-/-- Ambient slot shuffles are equivalent to their left-slot subsets. -/
-noncomputable def slotShuffleEquivLeftSlotSet (m n : ℕ) :
-    SlotShuffle m n ≃ LeftSlotSet m n :=
-  Equiv.ofBijective SlotShuffle.toLeftSlotSet
-    ((Fintype.bijective_iff_injective_and_card _).2
-      ⟨SlotShuffle.toLeftSlotSet_injective, by rw [card_slotShuffle, card_leftSlotSet]⟩)
-
-@[simp]
-theorem slotShuffleEquivLeftSlotSet_apply {m n : ℕ} (σ : SlotShuffle m n) :
-    slotShuffleEquivLeftSlotSet m n σ = σ.toLeftSlotSet := rfl
 
 /-- Recursive binary shuffles are equivalent to order-preserving ambient slot shuffles. -/
 noncomputable def slotShuffleEquiv (m n : ℕ) :
