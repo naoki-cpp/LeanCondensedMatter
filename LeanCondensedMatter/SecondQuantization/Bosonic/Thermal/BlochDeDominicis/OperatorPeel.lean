@@ -44,28 +44,22 @@ theorem FreeThermalField.operator_comp_operator_eq_exchangeValue
   | annihilate i =>
       cases D with
       | annihilate j =>
-          change (Bosonic.annihilate i).comp (Bosonic.annihilate j) =
-            0 • (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) +
-              (Bosonic.annihilate j).comp (Bosonic.annihilate i)
-          simp only [zero_smul, zero_add]
+          simp only [FreeThermalField.operator, FreeThermalField.exchangeValue,
+            zero_smul, zero_add]
           have h := comm_annihilate_annihilate i j
           unfold comm at h
           exact sub_eq_zero.mp h
       | create j =>
           by_cases hij : i = j
           · subst j
-            change (Bosonic.annihilate i).comp (Bosonic.create i) =
-              1 • (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) +
-                (Bosonic.create i).comp (Bosonic.annihilate i)
-            simp only [one_smul]
+            simp only [FreeThermalField.operator, FreeThermalField.exchangeValue,
+              if_pos rfl, one_smul]
             have h := comm_annihilate_create i i
             rw [if_pos rfl] at h
             unfold comm at h
             exact (sub_eq_iff_eq_add).mp h
-          · change (Bosonic.annihilate i).comp (Bosonic.create j) =
-              0 • (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) +
-                (Bosonic.create j).comp (Bosonic.annihilate i)
-            simp only [zero_smul, zero_add]
+          · simp only [FreeThermalField.operator, FreeThermalField.exchangeValue,
+              if_neg hij, zero_smul, zero_add]
             have h := comm_annihilate_create i j
             rw [if_neg hij] at h
             unfold comm at h
@@ -75,20 +69,16 @@ theorem FreeThermalField.operator_comp_operator_eq_exchangeValue
       | annihilate j =>
           by_cases hij : i = j
           · subst j
-            change (Bosonic.create i).comp (Bosonic.annihilate i) =
-              (-1 : ℂ) • (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) +
-                (Bosonic.annihilate i).comp (Bosonic.create i)
-            simp only [neg_one_smul]
+            simp only [FreeThermalField.operator, FreeThermalField.exchangeValue,
+              if_pos rfl, neg_one_smul]
             have h := comm_annihilate_create i i
             rw [if_pos rfl] at h
             unfold comm at h
             have hcomp := (sub_eq_iff_eq_add).mp h
             rw [hcomp]
             module
-          · change (Bosonic.create i).comp (Bosonic.annihilate j) =
-              0 • (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) +
-                (Bosonic.annihilate j).comp (Bosonic.create i)
-            simp only [zero_smul, zero_add]
+          · simp only [FreeThermalField.operator, FreeThermalField.exchangeValue,
+              if_neg hij, zero_smul, zero_add]
             have h := comm_annihilate_create j i
             rw [if_neg (Ne.symm hij)] at h
             unfold comm at h
@@ -96,10 +86,8 @@ theorem FreeThermalField.operator_comp_operator_eq_exchangeValue
                 (Bosonic.create i).comp (Bosonic.annihilate j) := sub_eq_zero.mp h
             exact hcomp.symm
       | create j =>
-          change (Bosonic.create i).comp (Bosonic.create j) =
-            0 • (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) +
-              (Bosonic.create j).comp (Bosonic.create i)
-          simp only [zero_smul, zero_add]
+          simp only [FreeThermalField.operator, FreeThermalField.exchangeValue,
+            zero_smul, zero_add]
           have h := comm_create_create i j
           unfold comm at h
           exact sub_eq_zero.mp h
