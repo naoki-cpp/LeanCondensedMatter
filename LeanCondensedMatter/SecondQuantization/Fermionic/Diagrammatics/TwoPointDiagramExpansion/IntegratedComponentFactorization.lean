@@ -35,15 +35,22 @@ theorem FixedExternalTwoPointWickDiagram.externalSign_mul_orderedSimplexIntegral
             (d.mixedComponentDysonLocalIntegrand ε β g τ τ'
               d.1.canonicalComponentInteractionShuffle)) =
       (d.relabelForComponentShuffle shuffle).dysonAmplitude ε β g τ τ' := by
-  rw [show (Finset.univ : Finset (Fin n)).card = n by simp]
   rw [← intervalIntegral.orderedSimplexIntegral_smul]
   rw [FixedExternalTwoPointWickDiagram.dysonAmplitude_eq_orderedSimplexIntegral_dysonFixedTimeAmplitude
     (d.relabelForComponentShuffle shuffle) ε β g τ τ']
+  let hdim : (Finset.univ : Finset (Fin n)).card = n := by simp
+  rw [intervalIntegral.orderedSimplexIntegral_cast hdim]
   apply intervalIntegral.orderedSimplexIntegral_congr_of_injective
   intro σ hσ
-  simpa [ambientToTwoPointSlotTimePermutation] using
+  let σambient : Fin (Finset.univ : Finset (Fin n)).card → ℝ :=
+    fun i => σ (Fin.cast hdim i)
+  have hσambient : Function.Injective σambient := by
+    intro a b hab
+    apply (finCongr hdim).injective
+    exact hσ hab
+  simpa [σambient, ambientToTwoPointSlotTimePermutation, hdim] using
     d.externalSign_mul_componentShuffleIntegrand_eq_relabelForComponentShuffle_dysonFixedTimeAmplitude_of_injective
-      ε β g τ τ' shuffle σ hσ
+      ε β g τ τ' shuffle σambient hσambient
 
 /-- Summing the integrated relabeled amplitudes over all component shuffles gives the product of
 component-local ordered-simplex integrals, with the common external ordering sign. -/
