@@ -10,7 +10,7 @@ set_option linter.unusedFintypeInType false
 For a single bosonic ladder operator, diagonal `tsumTrace` cyclicity can be proved directly on the
 infinite occupation basis: creation gives a bijection from all occupations to the subtype with a
 positive occupation in the chosen mode, while the complementary zero-occupation diagonal terms
-vanish.  No finite occupation-basis shortcut and no blanket trace-class assertion is used.
+vanish. No finite occupation-basis shortcut and no blanket trace-class assertion is used.
 
 Combining this reindexing with the algebraic relation moving a ladder operator through
 `e^{-βH₀}` gives the free-Gibbs KMS rotation needed by the multi-point Bloch–de Dominicis
@@ -74,6 +74,7 @@ theorem annihilate_apply_coord (i : Mode) (x : FockSpace Mode) (n : Occupation M
         subst a
         simp [evalN, evalC, basisState, Common.basisState,
           removeOccupation_createOccupation, createOccupation_apply_same]
+        exact mul_comm _ _
       · have hne : a ≠ createOccupation i n := by
           intro h
           apply hrem
@@ -124,9 +125,12 @@ theorem create_apply_coord_of_pos (i : Mode) (x : FockSpace Mode) (n : Occupatio
             (removeOccupation_createOccupation i a).symm
           _ = removeOccupation i n := by rw [hca]
       subst a
-      have hcoord := congrArg (fun m : Occupation Mode => m i) hca
-      rw [createOccupation_apply_same] at hcoord
-      simp [evalN, evalR, basisState, Common.basisState, hca, hcoord]
+      have hni : 1 ≤ n i := Nat.one_le_iff_ne_zero.mpr hi
+      have hcast : ((n i - 1 : ℕ) : ℝ) + 1 = (n i : ℝ) := by
+        exact_mod_cast Nat.sub_add_cancel hni
+      simp [evalN, evalR, basisState, Common.basisState, hca]
+      rw [hcast]
+      exact mul_comm _ _
     · have hane : a ≠ removeOccupation i n := by
         intro h
         apply hca
@@ -147,8 +151,9 @@ theorem tsumTrace_annihilate_comp (i : Mode)
       Common.matrixCoeff ((annihilate i).comp A) n n = f (createOccupation i n) := by
     intro n
     unfold f Common.matrixCoeff
-    rw [LinearMap.comp_apply, annihilate_apply_coord, LinearMap.comp_apply,
-      annihilate_basisState_of_pos]
+    change annihilate i (A (basisState n)) n =
+      (A (annihilate i (basisState (createOccupation i n)))) (createOccupation i n)
+    rw [annihilate_apply_coord, annihilate_basisState_of_pos]
     · rw [removeOccupation_createOccupation, createOccupation_apply_same]
       simp only [map_smul, Finsupp.smul_apply, smul_eq_mul]
     · simp [createOccupation_apply_same]
@@ -158,7 +163,8 @@ theorem tsumTrace_annihilate_comp (i : Mode)
     intro hi
     apply hn
     unfold f Common.matrixCoeff
-    rw [LinearMap.comp_apply, annihilate_basisState_of_zero hi, map_zero]
+    change (A (annihilate i (basisState n))) n = 0
+    rw [annihilate_basisState_of_zero hi, map_zero]
     rfl
   unfold Common.tsumTrace
   calc
@@ -180,7 +186,9 @@ theorem tsumTrace_create_comp (i : Mode)
       Common.matrixCoeff (A.comp (create i)) n n = f (createOccupation i n) := by
     intro n
     unfold f Common.matrixCoeff
-    rw [LinearMap.comp_apply, create_basisState_eq, map_smul, Finsupp.smul_apply,
+    change (A (create i (basisState n))) n =
+      create i (A (basisState (createOccupation i n))) (createOccupation i n)
+    rw [create_basisState_eq, map_smul, Finsupp.smul_apply,
       create_apply_coord_of_pos]
     · rw [removeOccupation_createOccupation, createOccupation_apply_same]
       simp only [smul_eq_mul]
@@ -191,7 +199,8 @@ theorem tsumTrace_create_comp (i : Mode)
     intro hi
     apply hn
     unfold f Common.matrixCoeff
-    rw [LinearMap.comp_apply, create_apply_coord_of_zero i (A (basisState n)) n hi]
+    change create i (A (basisState n)) n = 0
+    exact create_apply_coord_of_zero i (A (basisState n)) n hi
   unfold Common.tsumTrace
   calc
     (∑' n, Common.matrixCoeff ((create i).comp A) n n) = ∑' n, f n := rfl
@@ -214,7 +223,11 @@ theorem freeGibbsTsum_annihilate_rotate (ε : Mode → ℝ) (β : ℝ) (i : Mode
   let q : ℂ := Complex.exp ((β : ℂ) * (ε i : ℂ))
   have hmove : D.comp (annihilate i) = q • ((annihilate i).comp D) := by
     dsimp [D, q]
-    simpa only [neg_neg] using imaginaryTimeEvolveFree_comp_annihilate ε (-β) i
+    have h := imaginaryTimeEvolveFree_comp_annihilate ε (-β) i
+    have hexp : -((-β : ℝ) : ℂ) * (ε i : ℂ) = (β : ℂ) * (ε i : ℂ) := by
+      push_cast
+      ring
+    rwa [hexp] at h
   calc
     Common.tsumTrace (D.comp ((annihilate i).comp A)) =
         Common.tsumTrace ((D.comp (annihilate i)).comp A) := by
@@ -243,7 +256,11 @@ theorem freeGibbsTsum_create_rotate (ε : Mode → ℝ) (β : ℝ) (i : Mode)
   let q : ℂ := Complex.exp (-(β : ℂ) * (ε i : ℂ))
   have hmove : D.comp (create i) = q • ((create i).comp D) := by
     dsimp [D, q]
-    simpa only [neg_mul] using imaginaryTimeEvolveFree_comp_create ε (-β) i
+    have h := imaginaryTimeEvolveFree_comp_create ε (-β) i
+    have hexp : (((-β : ℝ) : ℂ) * (ε i : ℂ)) = -(β : ℂ) * (ε i : ℂ) := by
+      push_cast
+      ring
+    rwa [hexp] at h
   calc
     Common.tsumTrace (D.comp ((create i).comp A)) =
         Common.tsumTrace ((D.comp (create i)).comp A) := by
@@ -259,8 +276,6 @@ theorem freeGibbsTsum_create_rotate (ε : Mode → ℝ) (β : ℝ) (i : Mode)
       rw [tsumTrace_create_comp]
     _ = q * Common.tsumTrace (D.comp (A.comp (create i))) := by
       rw [LinearMap.comp_assoc]
-
-variable [Fintype Mode]
 
 /-- Normalized free-Gibbs KMS rotation for annihilation. -/
 theorem freeGibbsExpectation_annihilate_rotate (ε : Mode → ℝ) (β : ℝ) (i : Mode)
