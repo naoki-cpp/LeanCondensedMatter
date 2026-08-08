@@ -72,8 +72,9 @@ theorem annihilate_apply_coord (i : Mode) (x : FockSpace Mode) (n : Occupation M
               (createOccupation_removeOccupation_of_pos ha).symm
             _ = createOccupation i n := by rw [hrem]
         subst a
-        simp [evalN, evalC, basisState, Common.basisState,
-          removeOccupation_createOccupation, createOccupation_apply_same]
+        simp only [createOccupation_apply_same, Nat.cast_add, Nat.cast_one,
+          Complex.coe_smul, map_smul, LinearMap.map_smul_of_tower,
+          Complex.real_smul, smul_eq_mul]
         exact mul_comm _ _
       · have hne : a ≠ createOccupation i n := by
           intro h
@@ -128,7 +129,8 @@ theorem create_apply_coord_of_pos (i : Mode) (x : FockSpace Mode) (n : Occupatio
       have hni : 1 ≤ n i := Nat.one_le_iff_ne_zero.mpr hi
       have hcast : ((n i - 1 : ℕ) : ℝ) + 1 = (n i : ℝ) := by
         exact_mod_cast Nat.sub_add_cancel hni
-      simp [evalN, evalR, basisState, Common.basisState, hca]
+      simp only [removeOccupation_apply_same, Complex.coe_smul, map_smul,
+        LinearMap.map_smul_of_tower, Complex.real_smul, smul_eq_mul]
       rw [hcast]
       exact mul_comm _ _
     · have hane : a ≠ removeOccupation i n := by
@@ -155,7 +157,8 @@ theorem tsumTrace_annihilate_comp (i : Mode)
       (A (annihilate i (basisState (createOccupation i n)))) (createOccupation i n)
     rw [annihilate_apply_coord, annihilate_basisState_of_pos]
     · rw [removeOccupation_createOccupation, createOccupation_apply_same]
-      simp only [map_smul, Finsupp.smul_apply, smul_eq_mul]
+      simp only [map_smul, Finsupp.smul_apply, smul_eq_mul,
+        Nat.cast_add, Nat.cast_one]
     · simp [createOccupation_apply_same]
   have hsupport : Function.support f ⊆ positiveOccupationSet i := by
     intro n hn
@@ -191,7 +194,7 @@ theorem tsumTrace_create_comp (i : Mode)
     rw [create_basisState_eq, map_smul, Finsupp.smul_apply,
       create_apply_coord_of_pos]
     · rw [removeOccupation_createOccupation, createOccupation_apply_same]
-      simp only [smul_eq_mul]
+      simp only [smul_eq_mul, Nat.cast_add, Nat.cast_one]
     · simp [createOccupation_apply_same]
   have hsupport : Function.support f ⊆ positiveOccupationSet i := by
     intro n hn
