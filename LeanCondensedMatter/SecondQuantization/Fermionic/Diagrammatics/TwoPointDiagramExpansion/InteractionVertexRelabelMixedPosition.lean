@@ -122,5 +122,35 @@ theorem interactionVertexMixedPositionRelabel_lt_iff_of_eventTime_ne {n : ℕ}
     simp [x, y, mixedTimeOrderedAtomicLegPosition]
   · simpa [x, y] using hTime
 
+/-- With injective interaction times, transported mixed positions preserve order whenever their
+supporting events are distinct.  Equal external/interaction times are allowed: their stable rank is
+unchanged by interaction-slot relabeling. -/
+theorem interactionVertexMixedPositionRelabel_lt_iff_of_injective_of_event_ne {n : ℕ}
+    (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (hσ : Function.Injective σ) (p q : Fin (2 * (2 * n + 1)))
+    (hEvent :
+      orderedTwoPointLegEvent (mixedTimeOrderedAtomicLegEquiv τ τ' σ p) ≠
+        orderedTwoPointLegEvent (mixedTimeOrderedAtomicLegEquiv τ τ' σ q)) :
+    (interactionVertexMixedPositionRelabel π τ τ' σ p <
+        interactionVertexMixedPositionRelabel π τ τ' σ q) ↔ p < q := by
+  let x := mixedTimeOrderedAtomicLegEquiv τ τ' σ p
+  let y := mixedTimeOrderedAtomicLegEquiv τ τ' σ q
+  have hRelabeledXY :
+      orderedTwoPointLegEvent (interactionVertexLegRelabel π x) ≠
+        orderedTwoPointLegEvent (interactionVertexLegRelabel π y) := by
+    simpa [orderedTwoPointLegEvent_interactionVertexLegRelabel] using
+      (interactionVertexEventRelabel π).injective.ne hEvent
+  rw [interactionVertexMixedPositionRelabel_apply,
+    interactionVertexMixedPositionRelabel_apply]
+  rw [mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt
+    τ τ' (fun v => σ (π.symm v))
+    (interactionVertexLegRelabel π x) (interactionVertexLegRelabel π y) hRelabeledXY]
+  rw [orderedTwoPointLegEvent_interactionVertexLegRelabel,
+    orderedTwoPointLegEvent_interactionVertexLegRelabel]
+  rw [orderedTwoPointTimedEventPosition_interactionVertexEventRelabel_lt_iff_of_injective
+    π τ τ' σ hσ (orderedTwoPointLegEvent x) (orderedTwoPointLegEvent y)]
+  rw [← mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt τ τ' σ x y hEvent]
+  simp [x, y, mixedTimeOrderedAtomicLegPosition]
+
 end Fermionic
 end SecondQuantization
