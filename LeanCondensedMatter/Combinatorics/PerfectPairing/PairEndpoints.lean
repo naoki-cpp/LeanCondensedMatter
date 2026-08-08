@@ -81,6 +81,13 @@ theorem Pairing.positionToPairEndpoint_fst_pairEndpoint {n : ℕ}
     (pairing.positionToPairEndpoint (pairing.pairEndpoint (pr, k))).1 = pr :=
   congrArg Prod.fst (pairing.pairEndpointEquiv.left_inv (pr, k))
 
+/-- Normalize endpoint zero after transporting an abstract two-endpoint fiber into `pairing`. -/
+noncomputable def Pairing.normalizedPairOfEndpointEquiv
+    {A P : Type*} {n : ℕ} (pairing : Pairing n)
+    (endpointEquiv : A × Fin 2 ≃ P) (e : P ≃ Fin (2 * n)) :
+    A → pairing.NormalizedPair :=
+  fun a => (pairing.positionToPairEndpoint (e (endpointEquiv (a, 0)))).1
+
 /-- Transport an abstract family of paired endpoint fibers to the normalized pairs of `pairing`.
 
 The source type `A` need not itself be a `Pairing`. It is enough to know that every source object has
@@ -92,9 +99,8 @@ noncomputable def Pairing.normalizedPairEquivOfEndpointEquiv
     (hpartner : ∀ a : A,
       pairing.partner (e (endpointEquiv (a, 0))) = e (endpointEquiv (a, 1))) :
     A ≃ pairing.NormalizedPair := by
-  let transport : A → pairing.NormalizedPair := fun a =>
-    (pairing.positionToPairEndpoint (e (endpointEquiv (a, 0)))).1
-  have hsurj : Function.Surjective transport := by
+  have hsurj : Function.Surjective
+      (pairing.normalizedPairOfEndpointEquiv endpointEquiv e) := by
     intro localPr
     let p : P := e.symm localPr.1.1
     let x : A × Fin 2 := endpointEquiv.symm p
@@ -106,7 +112,7 @@ noncomputable def Pairing.normalizedPairEquivOfEndpointEquiv
         calc
           e (endpointEquiv (a, 0)) = e p := congrArg e (by simpa using hx)
           _ = localPr.1.1 := e.apply_symm_apply localPr.1.1
-      change (pairing.positionToPairEndpoint (e (endpointEquiv (a, 0)))).1 = localPr
+      unfold Pairing.normalizedPairOfEndpointEquiv
       rw [hfirst]
       simpa using pairing.positionToPairEndpoint_fst_pairEndpoint localPr 0
     · have hsecond : e (endpointEquiv (a, 1)) = localPr.1.1 := by
@@ -123,7 +129,7 @@ noncomputable def Pairing.normalizedPairEquivOfEndpointEquiv
             rw [pairing.partner_partner]
           _ = pairing.partner localPr.1.1 := by rw [hlocalPartner]
           _ = localPr.1.2 := hpair.2
-      change (pairing.positionToPairEndpoint (e (endpointEquiv (a, 0)))).1 = localPr
+      unfold Pairing.normalizedPairOfEndpointEquiv
       rw [hfirst]
       simpa using pairing.positionToPairEndpoint_fst_pairEndpoint localPr 1
   have hcard : Fintype.card A = Fintype.card pairing.NormalizedPair := by
@@ -135,7 +141,7 @@ noncomputable def Pairing.normalizedPairEquivOfEndpointEquiv
           (Fintype.card_congr pairing.pairEndpointEquiv).symm)
     simp only [Fintype.card_prod, Fintype.card_fin] at h
     omega
-  exact Equiv.ofBijective transport
+  exact Equiv.ofBijective (pairing.normalizedPairOfEndpointEquiv endpointEquiv e)
     ((Fintype.bijective_iff_surjective_and_card _).2 ⟨hsurj, hcard⟩)
 
 /-- Endpoints selected from distinct normalized pairs are distinct. -/
