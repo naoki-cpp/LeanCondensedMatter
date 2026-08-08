@@ -25,10 +25,10 @@ noncomputable section
 
 variable {Mode : Type*} [LinearOrder Mode]
 
+omit [LinearOrder Mode] in
 /-- Membership in a diagonal weighted `ℓ²` domain is stable under adding a constant to the weight.
 The proof packages the shifted weighted coordinates as the sum of the original diagonal image and
 a scalar multiple of the original `ℓ²` vector. -/
-omit [LinearOrder Mode] in
 theorem mem_completedDiagonalDomain_add_const
     (w : Occupation Mode → ℂ) (c : ℂ) {ψ : CompletedFockSpace Mode}
     (hψ : ψ ∈ completedDiagonalDomain w) :
