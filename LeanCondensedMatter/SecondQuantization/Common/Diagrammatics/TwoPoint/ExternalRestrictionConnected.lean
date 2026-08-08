@@ -67,7 +67,7 @@ theorem TwoPointDiagram.twoPointLegEquiv_externalBlockLegEquiv
           (((twoPointLegEquiv S).subtypeEquiv fun p =>
             d.legInComponent_iff_unflattened d.externalComponentPart p) leg))) = _
   rw [Equiv.apply_symm_apply]
-  apply congrArg d.externalLegDataEquiv
+  apply d.externalLegDataEquiv.injective
   apply Subtype.ext
   rfl
 
@@ -125,18 +125,13 @@ theorem TwoPointDiagram.restrictExternalComponent_adj
   · change twoPointVertexOfLeg
       (d.restrictedExternalPairing.partner (d.externalBlockLegEquiv legB)) = _
     rw [d.restrictedExternalPairing_partner_externalBlockLegEquiv legB]
-    rw [d.twoPointVertexOfLeg_externalBlockLegEquiv
-      (d.restrictedPartner (d.externalComponent 0) legB)]
+    let partnerB := d.restrictedPartner (d.externalComponent 0) legB
+    have htransport := d.twoPointVertexOfLeg_externalBlockLegEquiv partnerB
+    refine htransport.trans ?_
     apply congrArg d.externalBlockVertexEquiv
-    have hval : twoPointVertexOfLeg
-        ((d.restrictedPartner (d.externalComponent 0) legB :
-          {leg : Fin (2 * (2 * S.card + 1)) //
-            d.legInComponent (d.externalComponent 0) leg}) :
-          Fin (2 * (2 * S.card + 1))) = w.1 := by
-      rw [d.restrictedPartner_val]
-      exact hw
     apply Subtype.ext
-    exact hval
+    change twoPointVertexOfLeg (d.pairing.partner leg) = w.1
+    simpa [partnerB] using hw
 
 private theorem TwoPointDiagram.mem_externalComponent_of_reachable_right
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
