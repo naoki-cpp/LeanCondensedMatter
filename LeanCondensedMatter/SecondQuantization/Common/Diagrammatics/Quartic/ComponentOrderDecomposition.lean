@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrder
 import Mathlib.Data.Finset.Sort
+import Mathlib.Logic.Equiv.Set
 
 set_option linter.style.header false
 
@@ -61,18 +62,11 @@ noncomputable def QuarticDiagram.componentGlobalSlotEquiv {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (order : QuarticVertexOrder S)
     (B : d.componentPartition.parts) :
     ↥(B : Finset (Fin N)) ≃ ↥(d.componentGlobalSlots order B) :=
-  Equiv.ofBijective
-    (fun v => ⟨d.componentGlobalSlot order B v,
-      d.componentGlobalSlot_mem_componentGlobalSlots order B v⟩)
-    ⟨by
-      intro v w h
-      apply d.componentGlobalSlot_injective order B
-      exact congrArg Subtype.val h,
-    by
-      intro slot
-      obtain ⟨v, _, hv⟩ := Finset.mem_image.1 slot.2
-      refine ⟨v, Subtype.ext ?_⟩
-      exact hv⟩
+  (Equiv.ofInjective (d.componentGlobalSlot order B)
+      (d.componentGlobalSlot_injective order B)).trans
+    (Equiv.setCongr (by
+      ext x
+      simp [QuarticDiagram.componentGlobalSlots]))
 
 @[simp]
 theorem QuarticDiagram.componentGlobalSlot_componentGlobalSlotEquiv_symm

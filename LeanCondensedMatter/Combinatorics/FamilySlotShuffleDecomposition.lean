@@ -199,33 +199,37 @@ theorem FamilySlotShuffle.mem_tailSlots_iff_not_mem_headSlots
 noncomputable def FamilySlotShuffle.headSlotSubtypeEquiv
     {size : Fin (k + 1) → ℕ} (shuffle : FamilySlotShuffle size) :
     Fin (size 0) ≃ ↥shuffle.headSlots :=
-  Equiv.ofBijective
-    (fun j => ⟨shuffle.slotEquiv ⟨0, j⟩,
-      (shuffle.mem_headSlots_iff _).2 ⟨j, rfl⟩⟩)
-    ⟨fun _ _ h => (shuffle.strictMono 0).injective (congrArg Subtype.val h), by
-      intro x
-      obtain ⟨j, hj⟩ := (shuffle.mem_headSlots_iff x).1 x.2
-      exact ⟨j, Subtype.ext hj⟩⟩
+  (Equiv.ofInjective (fun j : Fin (size 0) => shuffle.slotEquiv ⟨0, j⟩)
+      (shuffle.strictMono 0).injective).trans
+    (Equiv.setCongr (by
+      ext x
+      simp [FamilySlotShuffle.headSlots]))
 
 /-- The tail local slots, viewed as the subtype of ambient tail slots. -/
 noncomputable def FamilySlotShuffle.tailSlotSubtypeEquiv
     {size : Fin (k + 1) → ℕ} (shuffle : FamilySlotShuffle size) :
     (Σ i : Fin k, Fin (size i.succ)) ≃ ↥shuffle.tailSlots :=
-  Equiv.ofBijective
-    (fun y => ⟨shuffle.slotEquiv
-      ((FamilySlotShuffle.headTailLocalSlotEquiv size).symm (Sum.inr y)),
-      (shuffle.mem_tailSlots_iff _).2 ⟨y, rfl⟩⟩)
-    ⟨by
-      intro x y h
-      have hval := congrArg Subtype.val h
-      have hlocal := shuffle.slotEquiv.injective hval
-      have htag := (FamilySlotShuffle.headTailLocalSlotEquiv size).symm.injective hlocal
-      exact Sum.inr.inj htag,
-    by
-      intro x
-      obtain ⟨y, hy⟩ := (shuffle.mem_tailSlots_iff x).1 x.2
-      refine ⟨y, Subtype.ext ?_⟩
-      exact hy⟩
+  (Equiv.ofInjective
+      (fun y : Σ i : Fin k, Fin (size i.succ) =>
+        shuffle.slotEquiv
+          ((FamilySlotShuffle.headTailLocalSlotEquiv size).symm (Sum.inr y)))
+      (by
+        intro x y h
+        have hlocal := shuffle.slotEquiv.injective h
+        have htag := (FamilySlotShuffle.headTailLocalSlotEquiv size).symm.injective hlocal
+        exact Sum.inr.inj htag)).trans
+    (Equiv.setCongr (by
+      ext x
+      simp [FamilySlotShuffle.tailSlots]))
+
+@[simp]
+theorem FamilySlotShuffle.tailSlotSubtypeEquiv_val
+    {size : Fin (k + 1) → ℕ} (shuffle : FamilySlotShuffle size)
+    (y : Σ i : Fin k, Fin (size i.succ)) :
+    ((shuffle.tailSlotSubtypeEquiv y : ↥shuffle.tailSlots) : Fin (∑ i, size i)) =
+      shuffle.slotEquiv
+        ((FamilySlotShuffle.headTailLocalSlotEquiv size).symm (Sum.inr y)) := by
+  rfl
 
 /-- The ambient tail-slot subtype is the set-theoretic complement of the ambient head-slot subtype. -/
 theorem FamilySlotShuffle.tailSlots_set_eq_compl_headSlots
@@ -306,8 +310,7 @@ theorem FamilySlotShuffle.cons_outerShuffle_tailShuffle
   | zero =>
       simp [FamilySlotShuffle.outerShuffle]
   | succ r =>
-      simp [FamilySlotShuffle.tailShuffle, FamilySlotShuffle.tailSlotSubtypeEquiv,
-        FamilySlotShuffle.outerShuffle]
+      simp [FamilySlotShuffle.tailShuffle, FamilySlotShuffle.outerShuffle]
 
 /-- The recursive constructor is injective. -/
 theorem FamilySlotShuffle.cons_injective (size : Fin (k + 1) → ℕ) :
