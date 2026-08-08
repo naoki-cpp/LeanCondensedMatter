@@ -12,6 +12,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.GibbsLadd
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalLadder
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalPeel
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalKMS
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalFirstPair
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnboundedExpectation
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbsSummability
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteCompatibility
@@ -51,9 +52,13 @@ thermal-intertwining relations `ρβ aᵢ† = exp (-β εᵢ) aᵢ† ρβ` and
 `ρβ aᵢ = exp (β εᵢ) aᵢ ρβ`. Creation and annihilation are additionally packaged as a single
 completed thermal-ladder type carrying its Gibbs factor and scalar CAR coefficient. Repeated CAR
 exchange is exposed as a bounded thermal peel identity. The canonical occupation-basis Gibbs
-expectation now also satisfies the completed KMS rotation `⟨C A⟩β = gβ(C) ⟨A C⟩β` for a thermal
+expectation also satisfies the completed KMS rotation `⟨C A⟩β = gβ(C) ⟨A C⟩β` for a thermal
 ladder `C` and arbitrary bounded `A`, proved by reindexing the absolutely convergent Gibbs series by
-the one-mode occupation toggle rather than introducing general trace cyclicity.
+the one-mode occupation toggle rather than introducing general trace cyclicity. Combining the peel
+identity with this KMS rotation solves the wrapped term for odd tails with coefficient
+`gβ(C) / (1 + gβ(C))`; the same coefficient gives the normalized completed two-point Gibbs value
+from the scalar CAR coefficient. This is the representation-specific thermal input needed before
+instantiating the generic `Common.BlochDeDominicis.ExpectationPairingRecursion` contract.
 
 For the free fermion state, summability of the one-particle Boltzmann factors
 `exp (-β εᵢ)` is a concrete sufficient condition for occupation-level Gibbs summability. Under this
