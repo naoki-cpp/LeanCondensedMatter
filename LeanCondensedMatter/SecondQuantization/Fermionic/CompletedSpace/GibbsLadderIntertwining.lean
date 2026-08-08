@@ -82,14 +82,8 @@ theorem coe_completedFreeGibbsProbability_insertOccupation_of_not_mem
     (completedFreeGibbsProbability ε β (insertOccupation i n) : ℂ) =
       Complex.exp (-(β : ℂ) * (ε i : ℂ)) *
         (completedFreeGibbsProbability ε β n : ℂ) := by
-  have hexp :
-      ((Real.exp (-β * ε i) : ℝ) : ℂ) =
-        Complex.exp (-(β : ℂ) * (ε i : ℂ)) := by
-    rw [show -(β : ℂ) * (ε i : ℂ) = ((-β * ε i : ℝ) : ℂ) by push_cast; ring,
-      ← Complex.ofReal_exp]
   rw [completedFreeGibbsProbability_insertOccupation_of_not_mem ε β hi]
   push_cast
-  rw [hexp]
 
 /-- Complex form of the Gibbs removal ratio, matching the scalar used in operator identities. -/
 theorem coe_completedFreeGibbsProbability_removeOccupation_of_mem
@@ -97,14 +91,8 @@ theorem coe_completedFreeGibbsProbability_removeOccupation_of_mem
     (completedFreeGibbsProbability ε β (removeOccupation i n) : ℂ) =
       Complex.exp ((β : ℂ) * (ε i : ℂ)) *
         (completedFreeGibbsProbability ε β n : ℂ) := by
-  have hexp :
-      ((Real.exp (β * ε i) : ℝ) : ℂ) =
-        Complex.exp ((β : ℂ) * (ε i : ℂ)) := by
-    rw [show (β : ℂ) * (ε i : ℂ) = ((β * ε i : ℝ) : ℂ) by push_cast; ring,
-      ← Complex.ofReal_exp]
   rw [completedFreeGibbsProbability_removeOccupation_of_mem ε β hi]
   push_cast
-  rw [hexp]
 
 /-- Two bounded operators on completed Fock space are equal when they agree on every occupation
 basis vector.  The proof passes through the dense algebraic finite-support core. -/
@@ -124,7 +112,8 @@ private theorem continuousLinearMap_ext_completedBasis
         (Finsupp.smul_single_one n c).symm
       rw [hc]
       simp only [LinearMap.comp_apply, map_smul, algebraicToCompleted_basisState]
-      rw [h n]
+      simpa only using
+        congrArg (fun v : CompletedFockSpace Mode => c • v) (h n)
     exact congrArg (fun f : FockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode => f x) hcore
 
 /-- Completed free-Gibbs creation intertwining:
