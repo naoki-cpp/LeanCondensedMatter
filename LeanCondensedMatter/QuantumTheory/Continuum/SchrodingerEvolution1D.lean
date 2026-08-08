@@ -112,7 +112,8 @@ theorem ContinuumSchrodingerEvolution1D.norm_propagator_apply
     ‖evolution.propagator t ψ‖ = ‖ψ‖ := by
   have hcomp :
       ContinuousLinearMap.adjoint (evolution.propagator t) ∘SL evolution.propagator t = 1 := by
-    ext x
+    apply ContinuousLinearMap.ext
+    intro x
     have h := congrArg
       (fun U : ContinuumL2Wavefunction1D →L[ℂ] ContinuumL2Wavefunction1D => U x)
       (evolution.star_mul_propagator t)
