@@ -59,17 +59,16 @@ theorem completedFreeGibbsExpectation_operator_comp
           apply tsum_congr
           intro n
           by_cases hi : i ∈ n
-          · have hit : i ∉ toggleOccupation i n := by
-              intro hit
-              exact ((mem_toggleOccupation i n).mp hit) hi
-            have htoggle : toggleOccupation i (toggleOccupation i n) = n :=
-              toggleOccupation_involutive i n
+          · have hremove : i ∉ removeOccupation i n := by
+              simp [removeOccupation]
+            have hrestore : insertOccupation i (removeOccupation i n) = n := by
+              simpa [insertOccupation, removeOccupation] using Finset.insert_erase hi
             dsimp [f]
             rw [inner_completedBasisState, completedCreate_apply, if_pos hi,
               toggleOccupation_of_mem hi,
               coe_completedFreeGibbsProbability_removeOccupation_of_mem ε β hi,
-              completedCreate_basisState_of_not_mem hit, map_smul, inner_smul_right,
-              inner_completedBasisState, htoggle]
+              completedCreate_basisState_of_not_mem hremove, map_smul, inner_smul_right,
+              inner_completedBasisState, hrestore]
             rw [← Complex.exp_add]
             ring_nf
             rfl
@@ -77,8 +76,8 @@ theorem completedFreeGibbsExpectation_operator_comp
               (mem_toggleOccupation i n).mpr hi
             dsimp [f]
             rw [inner_completedBasisState, completedCreate_apply, if_neg hi,
-              completedCreate_basisState_of_mem hit]
-            rfl
+              completedCreate_basisState_of_mem hit, map_zero, inner_zero_right]
+            ring
         _ = ∑' n : Occupation Mode, f n := by
           simpa [toggleOccupationEquiv_apply] using
             (Equiv.tsum_eq (toggleOccupationEquiv i) f)
@@ -109,18 +108,18 @@ theorem completedFreeGibbsExpectation_operator_comp
               exact ((mem_toggleOccupation i n).mp hit) hi
             dsimp [f]
             rw [inner_completedBasisState, completedAnnihilate_apply, if_pos hi,
-              completedAnnihilate_basisState_of_not_mem hit]
-            rfl
-          · have hit : i ∈ toggleOccupation i n :=
-              (mem_toggleOccupation i n).mpr hi
-            have htoggle : toggleOccupation i (toggleOccupation i n) = n :=
-              toggleOccupation_involutive i n
+              completedAnnihilate_basisState_of_not_mem hit, map_zero, inner_zero_right]
+            ring
+          · have hinsert : i ∈ insertOccupation i n := by
+              simp [insertOccupation]
+            have hrestore : removeOccupation i (insertOccupation i n) = n := by
+              simp [removeOccupation, insertOccupation, hi]
             dsimp [f]
             rw [inner_completedBasisState, completedAnnihilate_apply, if_neg hi,
               toggleOccupation_of_not_mem hi,
               coe_completedFreeGibbsProbability_insertOccupation_of_not_mem ε β hi,
-              completedAnnihilate_basisState_of_mem hit, map_smul, inner_smul_right,
-              inner_completedBasisState, htoggle]
+              completedAnnihilate_basisState_of_mem hinsert, map_smul, inner_smul_right,
+              inner_completedBasisState, hrestore]
             rw [← Complex.exp_add]
             ring_nf
             rfl
