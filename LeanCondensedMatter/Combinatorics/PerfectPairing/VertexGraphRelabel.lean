@@ -46,6 +46,7 @@ theorem vertexGraph_relabel_adj_iff
       exact hnew.symm.trans hv
     · apply vertexEquiv.injective
       rw [Pairing.relabel_partner]
+      simp only [newLeg, Equiv.apply_symm_apply]
       have hpartner := hvertex (e.symm (P.partner leg))
       simp only [Equiv.apply_symm_apply] at hpartner
       exact hpartner.symm.trans hw
