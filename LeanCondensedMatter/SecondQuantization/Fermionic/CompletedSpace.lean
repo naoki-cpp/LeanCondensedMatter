@@ -6,6 +6,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Canonical
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Diagonal
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.DiagonalAnalytic
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbs
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnboundedExpectation
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbsSummability
@@ -32,7 +33,9 @@ operators are densely defined and closed, their adjoints are the conjugate-weigh
 operators, and conjugation-fixed weights are self-adjoint; in particular this applies to the free
 Hamiltonian and total-number operator. The bounded fermionic ladder operators preserve the maximal
 free-Hamiltonian domain, so the products `H a†`, `a† H`, `H a`, and `a H` are available as explicit
-linear maps on `Dom(H)` rather than informal products of an unbounded operator.
+linear maps on `Dom(H)` rather than informal products of an unbounded operator. On that explicit
+domain they satisfy the free-energy relations `[H, aᵢ†] = εᵢ aᵢ†` and
+`[H, aᵢ] = -εᵢ aᵢ` as identities of linear maps.
 
 Under explicit absolute summability of the occupation Boltzmann weights, the completed free Gibbs
 state is a genuine trace-class `DensityOperator`. Bounded expectations use the canonical
