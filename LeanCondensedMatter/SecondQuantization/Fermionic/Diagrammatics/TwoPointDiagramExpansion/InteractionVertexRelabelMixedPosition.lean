@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.InteractionVertexRelabelTime
 import Mathlib.Order.Preorder.Finite
+import Mathlib.Order.WellFounded
 
 set_option linter.style.header false
 
@@ -160,9 +161,12 @@ private theorem mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt {n :
     (hEvent : orderedTwoPointLegEvent x = orderedTwoPointLegEvent y) :
     (mixedTimeOrderedAtomicLegPosition τ τ' σ x <
         mixedTimeOrderedAtomicLegPosition τ τ' σ y) ↔
-      (twoPointTimedEventAtomicLegs (orderedTwoPointLegEvent x)).idxOf x <
-        (twoPointTimedEventAtomicLegs (orderedTwoPointLegEvent x)).idxOf y := by
+      @List.idxOf (OrderedTwoPointLeg n) instBEqOfDecidableEq x
+          (twoPointTimedEventAtomicLegs (orderedTwoPointLegEvent x)) <
+        @List.idxOf (OrderedTwoPointLeg n) instBEqOfDecidableEq y
+          (twoPointTimedEventAtomicLegs (orderedTwoPointLegEvent x)) := by
   classical
+  letI : BEq (OrderedTwoPointLeg n) := instBEqOfDecidableEq
   let event := orderedTwoPointLegEvent x
   have hx : x ∈ twoPointTimedEventAtomicLegs event := by
     simpa [event] using orderedTwoPointLeg_mem_eventAtomicLegs x
@@ -179,16 +183,19 @@ private theorem mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt {n :
 index inside the corresponding event-local atomic list. -/
 private theorem twoPointTimedEventAtomicLegs_idxOf_interactionVertexLegRelabel {n : ℕ}
     (π : Equiv.Perm (Fin n)) (leg : OrderedTwoPointLeg n) :
-    (twoPointTimedEventAtomicLegs
-        (orderedTwoPointLegEvent (interactionVertexLegRelabel π leg))).idxOf
-      (interactionVertexLegRelabel π leg) =
-    (twoPointTimedEventAtomicLegs (orderedTwoPointLegEvent leg)).idxOf leg := by
+    @List.idxOf (OrderedTwoPointLeg n) instBEqOfDecidableEq
+      (interactionVertexLegRelabel π leg)
+      (twoPointTimedEventAtomicLegs
+        (orderedTwoPointLegEvent (interactionVertexLegRelabel π leg))) =
+    @List.idxOf (OrderedTwoPointLeg n) instBEqOfDecidableEq leg
+      (twoPointTimedEventAtomicLegs (orderedTwoPointLegEvent leg)) := by
   classical
+  letI : BEq (OrderedTwoPointLeg n) := instBEqOfDecidableEq
   rcases leg with e | ⟨⟨v, hv⟩, l⟩
-  · simp [interactionVertexLegRelabel, orderedTwoPointLegEvent]
+  · simp [interactionVertexLegRelabel, orderedTwoPointLegEvent, List.idxOf_cons_eq]
   · fin_cases l <;>
       simp [interactionVertexLegRelabel, orderedTwoPointLegEvent,
-        twoPointTimedEventAtomicLegs]
+        twoPointTimedEventAtomicLegs, List.idxOf_cons_eq]
 
 /-- With injective interaction times, the mixed atomic position relabeling preserves the full strict
 order, including pairs of legs inside the same quartic interaction block. -/
@@ -217,7 +224,15 @@ theorem interactionVertexMixedPositionRelabel_lt_iff_of_injective {n : ℕ}
     have hq : mixedTimeOrderedAtomicLegPosition τ τ' σ y = q := by
       simp [y, mixedTimeOrderedAtomicLegPosition]
     rw [← hp, ← hq]
-    simp only [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
+    have hxinv :
+        mixedTimeOrderedAtomicLegEquiv τ τ' σ
+            (mixedTimeOrderedAtomicLegPosition τ τ' σ x) = x :=
+      (mixedTimeOrderedAtomicLegEquiv τ τ' σ).apply_symm_apply x
+    have hyinv :
+        mixedTimeOrderedAtomicLegEquiv τ τ' σ
+            (mixedTimeOrderedAtomicLegPosition τ τ' σ y) = y :=
+      (mixedTimeOrderedAtomicLegEquiv τ τ' σ).apply_symm_apply y
+    simp only [hxinv, hyinv]
     rw [mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt
       τ τ' (fun v => σ (π.symm v))
       (interactionVertexLegRelabel π x) (interactionVertexLegRelabel π y) hRelabeledEvent]
@@ -226,8 +241,7 @@ theorem interactionVertexMixedPositionRelabel_lt_iff_of_injective {n : ℕ}
     rw [twoPointTimedEventAtomicLegs_idxOf_interactionVertexLegRelabel π x,
       twoPointTimedEventAtomicLegs_idxOf_interactionVertexLegRelabel π y]
 
-/-- The mixed atomic position relabeling is strictly monotone away from interaction-time diagonals.
--/
+/-- The mixed atomic position relabeling is strictly monotone away from interaction-time diagonals. -/
 theorem interactionVertexMixedPositionRelabel_strictMono_of_injective {n : ℕ}
     (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : Function.Injective σ) :
@@ -243,8 +257,8 @@ theorem interactionVertexMixedPositionRelabel_apply_eq_of_injective {n : ℕ}
     (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : Function.Injective σ) (p : Fin (2 * (2 * n + 1))) :
     interactionVertexMixedPositionRelabel π τ τ' σ p = p := by
-  exact StrictMono.apply_eq
-    (interactionVertexMixedPositionRelabel_strictMono_of_injective π τ τ' σ hσ)
+  have hmono := interactionVertexMixedPositionRelabel_strictMono_of_injective π τ τ' σ hσ
+  exact le_antisymm (StrictMono.apply_le hmono) (StrictMono.le_apply hmono)
 
 /-- On injective interaction-time assignments the induced mixed-position permutation is exactly the
 identity permutation. -/
