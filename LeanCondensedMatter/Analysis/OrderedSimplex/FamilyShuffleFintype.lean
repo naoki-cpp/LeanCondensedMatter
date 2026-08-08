@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
-import LeanCondensedMatter.Analysis.OrderedSimplex.FinCast
 
 set_option linter.style.header false
 
@@ -31,18 +30,17 @@ noncomputable def FamilySlotShuffle.reindexEquiv (e : ι ≃ κ) (size : κ → 
     e.sigmaCongrLeft (β := fun j : κ => Fin (size j))
   exact
     { toFun := fun shuffle =>
-        { slotEquiv := localEquiv.trans (shuffle.slotEquiv.trans (finCongr hsum.symm))
+        { slotEquiv := localEquiv.trans
+            (shuffle.slotEquiv.trans (Fin.castOrderIso hsum.symm).toEquiv)
           strictMono := by
             intro i a b hab
-            change (finCongr hsum.symm)
-                (shuffle.slotEquiv (localEquiv ⟨i, a⟩)) <
-              (finCongr hsum.symm)
-                (shuffle.slotEquiv (localEquiv ⟨i, b⟩))
+            change Fin.cast hsum.symm (shuffle.slotEquiv (localEquiv ⟨i, a⟩)) <
+              Fin.cast hsum.symm (shuffle.slotEquiv (localEquiv ⟨i, b⟩))
             simpa [localEquiv] using
-              (intervalIntegral.strictMono_finCongr hsum.symm)
-                (shuffle.strictMono (e i) hab) }
+              (Fin.castOrderIso hsum.symm).strictMono (shuffle.strictMono (e i) hab) }
       invFun := fun shuffle =>
-        { slotEquiv := localEquiv.symm.trans (shuffle.slotEquiv.trans (finCongr hsum))
+        { slotEquiv := localEquiv.symm.trans
+            (shuffle.slotEquiv.trans (Fin.castOrderIso hsum).toEquiv)
           strictMono := by
             intro j
             obtain ⟨i, rfl⟩ := e.surjective j
@@ -53,20 +51,17 @@ noncomputable def FamilySlotShuffle.reindexEquiv (e : ι ≃ κ) (size : κ → 
             have hb : localEquiv.symm ⟨e i, b⟩ = ⟨i, b⟩ := by
               apply localEquiv.injective
               simp [localEquiv]
-            change (finCongr hsum)
-                (shuffle.slotEquiv (localEquiv.symm ⟨e i, a⟩)) <
-              (finCongr hsum)
-                (shuffle.slotEquiv (localEquiv.symm ⟨e i, b⟩))
+            change Fin.cast hsum (shuffle.slotEquiv (localEquiv.symm ⟨e i, a⟩)) <
+              Fin.cast hsum (shuffle.slotEquiv (localEquiv.symm ⟨e i, b⟩))
             rw [ha, hb]
-            exact (intervalIntegral.strictMono_finCongr hsum)
-              (shuffle.strictMono i hab) }
+            exact (Fin.castOrderIso hsum).strictMono (shuffle.strictMono i hab) }
       left_inv := by
         intro shuffle
         apply FamilySlotShuffle.ext
         apply Equiv.ext
         intro x
-        change (finCongr hsum)
-            ((finCongr hsum.symm)
+        change Fin.cast hsum
+            (Fin.cast hsum.symm
               (shuffle.slotEquiv (localEquiv (localEquiv.symm x)))) =
           shuffle.slotEquiv x
         rw [localEquiv.apply_symm_apply]
@@ -76,8 +71,8 @@ noncomputable def FamilySlotShuffle.reindexEquiv (e : ι ≃ κ) (size : κ → 
         apply FamilySlotShuffle.ext
         apply Equiv.ext
         intro x
-        change (finCongr hsum.symm)
-            ((finCongr hsum)
+        change Fin.cast hsum.symm
+            (Fin.cast hsum
               (shuffle.slotEquiv (localEquiv.symm (localEquiv x)))) =
           shuffle.slotEquiv x
         rw [localEquiv.symm_apply_apply]
