@@ -19,9 +19,6 @@ variable {ι κ : Type*} [Fintype ι] [Fintype κ]
 
 noncomputable section
 
-local instance instDecidableEqIota : DecidableEq ι := Classical.decEq ι
-local instance instDecidableEqKappa : DecidableEq κ := Classical.decEq κ
-
 private theorem sum_size_comp_equiv (e : ι ≃ κ) (size : κ → ℕ) :
     (∑ i : ι, size (e i)) = ∑ j : κ, size j :=
   Equiv.sum_comp e size
