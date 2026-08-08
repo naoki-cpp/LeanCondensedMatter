@@ -137,6 +137,7 @@ theorem twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_inj
           twoPointTimedEventRank]
         simp only [twoPointTimedEventTime] at hEq
         rw [hEq]
+        have ha : (a : ℕ) < 2 := a.isLt
         omega
     · rcases b with b | b
       · simp only [twoPointTimedEventTime, interactionVertexEventRelabel_external,
@@ -144,6 +145,7 @@ theorem twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_inj
           twoPointTimedEventRank]
         simp only [twoPointTimedEventTime] at hEq
         rw [hEq]
+        have hb : (b : ℕ) < 2 := b.isLt
         omega
       · have hab : a = b := hσ (by simpa [twoPointTimedEventTime] using hEq)
         subst b
