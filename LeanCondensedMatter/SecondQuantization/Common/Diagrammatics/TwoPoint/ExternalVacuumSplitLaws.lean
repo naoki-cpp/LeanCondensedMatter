@@ -6,7 +6,7 @@ set_option linter.style.header false
 /-!
 # Leg laws for the binary external/vacuum split
 
-These are the four structural identities needed by the external/vacuum decomposition inverse.  They
+These are the four structural identities needed by the external/vacuum decomposition inverse. They
 keep dependent subtype transport out of the final decomposition theorem.
 -/
 
@@ -29,10 +29,12 @@ theorem TwoPointDiagram.externalVacuumLegEquiv_apply_externalBlockLeg
     ((twoPointLegEquiv S).subtypeEquiv fun p =>
       d.legInComponent_iff_unflattened d.externalComponentPart p) leg
   apply (Equiv.sumCongr
-    (twoPointLegEquiv d.externalInteractionPart)
-    (quarticLegEquiv (S \ d.externalInteractionPart))).injective
-  simp only [TwoPointDiagram.externalVacuumLegEquiv, Equiv.trans_apply,
-    Equiv.sumCongr_apply, Equiv.apply_symm_apply]
+    (twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0)))
+    (quarticLegEquiv (S \ TwoPointDiagram.interactionPart (d.externalComponent 0)))).injective
+  change TwoPointDiagram.externalVacuumLegDataEquiv d.externalInteractionPart_subset
+      (twoPointLegEquiv S leg.1) =
+    Sum.inl (twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))
+      (d.externalBlockLegEquiv leg))
   rw [d.twoPointLegEquiv_externalBlockLegEquiv leg]
   rcases hraw : twoPointLegEquiv S leg.1 with e | ⟨v, l⟩
   · simp [TwoPointDiagram.externalVacuumLegDataEquiv,
@@ -69,10 +71,12 @@ theorem TwoPointDiagram.externalVacuumLegEquiv_apply_vacuumRemainderBlockLeg
               not_congr (d.legInComponent_iff_unflattened d.externalComponentPart p)) leg))) = _
     rw [Equiv.apply_symm_apply]
   apply (Equiv.sumCongr
-    (twoPointLegEquiv d.externalInteractionPart)
-    (quarticLegEquiv (S \ d.externalInteractionPart))).injective
-  simp only [TwoPointDiagram.externalVacuumLegEquiv, Equiv.trans_apply,
-    Equiv.sumCongr_apply, Equiv.apply_symm_apply]
+    (twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0)))
+    (quarticLegEquiv (S \ TwoPointDiagram.interactionPart (d.externalComponent 0)))).injective
+  change TwoPointDiagram.externalVacuumLegDataEquiv d.externalInteractionPart_subset
+      (twoPointLegEquiv S leg.1) =
+    Sum.inr (quarticLegEquiv (S \ d.externalInteractionPart)
+      (d.vacuumRemainderBlockLegEquiv leg))
   rw [hblock]
   rcases hraw : twoPointLegEquiv S leg.1 with e | ⟨v, l⟩
   · exfalso
