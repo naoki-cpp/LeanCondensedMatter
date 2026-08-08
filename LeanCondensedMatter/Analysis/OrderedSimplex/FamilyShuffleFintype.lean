@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
-import LeanCondensedMatter.Analysis.OrderedSimplex.FinCast
 
 set_option linter.style.header false
 
@@ -39,7 +38,7 @@ noncomputable def FamilySlotShuffle.reindexEquiv (e : ι ≃ κ) (size : κ → 
               (finCongr hsum.symm)
                 (shuffle.slotEquiv (localEquiv ⟨i, b⟩))
             simpa [localEquiv] using
-              (intervalIntegral.strictMono_finCongr hsum.symm)
+              (Fin.castOrderIso hsum.symm).strictMono
                 (shuffle.strictMono (e i) hab) }
       invFun := fun shuffle =>
         { slotEquiv := localEquiv.symm.trans (shuffle.slotEquiv.trans (finCongr hsum))
@@ -58,7 +57,7 @@ noncomputable def FamilySlotShuffle.reindexEquiv (e : ι ≃ κ) (size : κ → 
               (finCongr hsum)
                 (shuffle.slotEquiv (localEquiv.symm ⟨e i, b⟩))
             rw [ha, hb]
-            exact (intervalIntegral.strictMono_finCongr hsum)
+            exact (Fin.castOrderIso hsum).strictMono
               (shuffle.strictMono i hab) }
       left_inv := by
         intro shuffle
