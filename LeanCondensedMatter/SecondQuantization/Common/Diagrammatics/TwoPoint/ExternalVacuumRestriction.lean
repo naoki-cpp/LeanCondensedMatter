@@ -18,7 +18,7 @@ open Combinatorics
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 
 /-- Interaction vertices in the external component. -/
-noncomputable def TwoPointDiagram.externalInteractionPart {S : Finset (Fin N)}
+@[reducible] noncomputable def TwoPointDiagram.externalInteractionPart {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) : Finset (Fin N) :=
   TwoPointDiagram.interactionPart (d.externalComponent 0)
 
