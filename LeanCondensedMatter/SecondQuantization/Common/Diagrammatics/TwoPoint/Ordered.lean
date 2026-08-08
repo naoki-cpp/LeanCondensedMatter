@@ -23,6 +23,21 @@ variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 abbrev OrderedTwoPointLegData (n : ℕ) : Type :=
   Fin 2 ⊕ (Fin n × Fin 4)
 
+/-- Explicit slots are equivalent to the subtype of the universal interaction finset. -/
+def finEquivUnivSubtype (n : ℕ) :
+    Fin n ≃ ↥(Finset.univ : Finset (Fin n)) where
+  toFun v := ⟨v, Finset.mem_univ v⟩
+  invFun v := v.1
+  left_inv _ := rfl
+  right_inv _ := Subtype.ext rfl
+
+/-- The explicit ordered leg type is the unflattened leg type over the universal slot finset. -/
+def orderedTwoPointLegDataEquivUniv (n : ℕ) :
+    OrderedTwoPointLegData n ≃
+      TwoPointLeg (Finset.univ : Finset (Fin n)) :=
+  Equiv.sumCongr (Equiv.refl (Fin 2))
+    ((finEquivUnivSubtype n).prodCongr (Equiv.refl (Fin 4)))
+
 /-- Relabel ordered interaction-slot legs to the vertices selected by `order`. -/
 def twoPointInteractionOrderLegEquiv {S : Finset (Fin N)}
     (order : QuarticVertexOrder S) :
@@ -41,17 +56,16 @@ ordered positions to old diagram positions, matching the convention of `Pairing.
 noncomputable def orderedTwoPointLegToDiagramLeg {S : Finset (Fin N)}
     (order : QuarticVertexOrder S) :
     Equiv.Perm (Fin (2 * (2 * S.card + 1))) :=
-  (twoPointLegEquiv (Finset.univ : Finset (Fin S.card))).trans <|
-    (by
-      simpa [OrderedTwoPointLegData] using
-        (twoPointInteractionOrderLegEquiv order).trans (twoPointLegEquiv S).symm)
+  (finCongr (by simp)).trans <|
+    (twoPointLegEquiv (Finset.univ : Finset (Fin S.card))).trans <|
+      (orderedTwoPointLegDataEquivUniv S.card).symm.trans <|
+        (twoPointInteractionOrderLegEquiv order).trans (twoPointLegEquiv S).symm
 
 /-- Pairing of a two-point diagram transported to an explicit interaction-vertex order. -/
 noncomputable def TwoPointDiagram.pairingInInteractionOrder {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (order : QuarticVertexOrder S) : Pairing (2 * S.card + 1) :=
-  (by
-    simpa using d.pairing).relabel (orderedTwoPointLegToDiagramLeg order)
+  d.pairing.relabel (orderedTwoPointLegToDiagramLeg order)
 
 /-- Ordered data of a two-point diagram: external labels, slot-indexed interaction labels, and the
 pairing in the same slot enumeration. -/
@@ -67,21 +81,13 @@ noncomputable def twoPointDiagramEquivOrderedData {S : Finset (Fin N)}
   invFun x :=
     { externalLabel := x.1
       vertexLabel := fun v => x.2.1 (order.symm v)
-      pairing := by
-        let p : Pairing (2 * S.card + 1) :=
-          x.2.2.relabel (orderedTwoPointLegToDiagramLeg order).symm
-        simpa using p }
+      pairing := x.2.2.relabel (orderedTwoPointLegToDiagramLeg order).symm }
   left_inv d := by
     apply TwoPointDiagram.ext
     · rfl
     · funext v
       simp
-    · change (by
-          let p : Pairing (2 * S.card + 1) :=
-            (d.pairingInInteractionOrder order).relabel
-              (orderedTwoPointLegToDiagramLeg order).symm
-          simpa using p) = d.pairing
-      simp [TwoPointDiagram.pairingInInteractionOrder]
+    · simp [TwoPointDiagram.pairingInInteractionOrder]
   right_inv x := by
     rcases x with ⟨external, labels, pairing⟩
     apply Prod.ext
