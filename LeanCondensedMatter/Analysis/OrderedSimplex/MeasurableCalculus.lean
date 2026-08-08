@@ -126,7 +126,7 @@ theorem integral_eq_sub_of_absolutelyContinuousOnInterval_of_ae_hasDerivAt_of_no
   have hGzero : ∀ᵐ x, x ∈ Set.uIcc a b → HasDerivAt G 0 x := by
     filter_upwards [hderiv, hAeInt] with x hxF hxInt hx
     have hInt := hxInt hx a (by simp)
-    simpa only [G] using (hxF hx).sub hInt
+    simpa [G] using (hxF hx).sub hInt
   obtain ⟨D, hD⟩ := hG.const_of_ae_hasDerivAt_zero hGzero
   have ha := hD a (by simp)
   have hb := hD b (by simp)
