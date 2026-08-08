@@ -32,7 +32,9 @@ theorem ambientToTwoPointSlotTimePermutation_injective {n : ℕ}
     Function.Injective (ambientToTwoPointSlotTimePermutation σ) := by
   intro a b hab
   apply Fin.ext
-  exact congrArg Fin.val (hσ hab)
+  have hcast := hσ hab
+  exact congrArg
+    (fun x : Fin (Finset.univ : Finset (Fin n)).card => x.val) hcast
 
 /-- The order-`n` Dyson-signed fixed-time amplitude inherits the fixed-time interaction-slot
 relabeling covariance. -/
