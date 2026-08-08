@@ -260,7 +260,6 @@ theorem FreeThermalField.freeGibbsSummable_orderedProduct
         apply Finset.prod_congr rfl
         intro i _
         congr 1
-        omega
       _ = ∏ i, ((n i + (fields.length + 1) : ℕ) : ℝ) ^ fields.length := by
         rw [Finset.prod_pow]
   rw [heq] at hcoeff
