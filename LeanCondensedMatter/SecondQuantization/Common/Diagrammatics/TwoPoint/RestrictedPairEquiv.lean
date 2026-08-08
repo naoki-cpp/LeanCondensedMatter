@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentPairProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentPairProduct
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 
 set_option linter.style.header false
