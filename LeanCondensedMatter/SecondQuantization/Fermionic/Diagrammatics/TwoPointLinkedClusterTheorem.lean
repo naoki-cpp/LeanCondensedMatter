@@ -48,19 +48,10 @@ private theorem FixedExternalVacuumDecomposition.toCommon_injective
     Function.Injective
       (FixedExternalVacuumDecomposition.toCommon
         (Mode := Mode) (N := N) (S := S) (i := i) (j := j)) := by
-  intro x y h
-  rcases x with ⟨E, external, vacuum⟩
-  rcases y with ⟨F, external', vacuum'⟩
+  rintro ⟨E, external, vacuum⟩ ⟨F, external', vacuum'⟩ h
   dsimp [FixedExternalVacuumDecomposition.toCommon] at h
-  have hE : E = F := congrArg Sigma.fst h
-  subst F
-  have hpair : (external.1, vacuum) = (external'.1, vacuum') := by
-    exact Sigma.mk.inj_iff.mp h |>.2 |> eq_of_heq
-  apply Sigma.ext rfl
-  apply heq_of_eq
-  apply Prod.ext
-  · exact Subtype.ext (congrArg Prod.fst hpair)
-  · exact congrArg Prod.snd hpair
+  cases h
+  rfl
 
 /-- Reassemble fixed-external binary decomposition data. -/
 noncomputable def reassembleFixedExternalVacuumData
@@ -109,6 +100,17 @@ noncomputable def fixedExternalVacuumDecompositionEquiv
       (Mode := Mode) (N := N) (S := S) (i := i) (j := j))
     ⟨reassembleFixedExternalVacuumData_injective,
       reassembleFixedExternalVacuumData_surjective⟩).symm
+
+/-- Reindex a finite sum over fixed-external two-point diagrams by the unique connected external
+core and arbitrary vacuum remainder. -/
+theorem sum_fixedExternalTwoPointWickDiagramOn_eq_sum_externalVacuum
+    {S : Finset (Fin N)} (i j : Mode)
+    (F : FixedExternalTwoPointWickDiagramOn Mode N S i j → ℂ) :
+    (∑ d : FixedExternalTwoPointWickDiagramOn Mode N S i j, F d) =
+      ∑ x : FixedExternalVacuumDecomposition Mode N S i j,
+        F (reassembleFixedExternalVacuumData x) := by
+  rw [← Equiv.sum_comp (fixedExternalVacuumDecompositionEquiv S i j).symm F]
+  rfl
 
 end Fermionic
 end SecondQuantization
