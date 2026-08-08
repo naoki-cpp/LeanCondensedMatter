@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Exte
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.OrderedAmplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonConnectedDiagramExpansion
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
+import Mathlib.RingTheory.PowerSeries.Inverse
 
 set_option linter.style.header false
 
@@ -17,6 +18,8 @@ component-shuffle factorization.
 namespace SecondQuantization
 namespace Fermionic
 
+open PowerSeries
+
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
 
 /-- Externally connected two-point diagrams on an arbitrary finite interaction set, with the two
@@ -26,6 +29,11 @@ abbrev ConnectedFixedExternalTwoPointWickDiagramOn
   {d : Common.ExternallyConnectedTwoPointDiagram
       (ExternalFieldLabel Mode) (QuarticVertexLabel Mode) N S //
     d.1.externalLabel = twoPointExternalLabels i j}
+
+/-- Fixed-external diagrams on explicit interaction slots whose full graph is externally connected. -/
+abbrev ConnectedFixedExternalTwoPointWickDiagram
+    (Mode : Type*) (n : ℕ) (i j : Mode) :=
+  {d : FixedExternalTwoPointWickDiagram Mode n i j // d.1.IsExternallyConnected}
 
 /-- Binary decomposition data for a fixed-external two-point diagram: a connected external core on
 `E` and an arbitrary quartic vacuum diagram on the complementary interaction vertices. -/
@@ -111,6 +119,98 @@ theorem sum_fixedExternalTwoPointWickDiagramOn_eq_sum_externalVacuum
         F (reassembleFixedExternalVacuumData x) := by
   rw [← Equiv.sum_comp (fixedExternalVacuumDecompositionEquiv S i j).symm F]
   rfl
+
+/-- The unnormalized order-`n` two-point diagram coefficient, as a finite sum of integrated
+fixed-external diagram amplitudes. -/
+noncomputable def twoPointUnnormalizedDiagramCoeff
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ) (n : ℕ) : ℂ :=
+  ∑ d : FixedExternalTwoPointWickDiagram Mode n i j,
+    d.dysonAmplitude ε β g τ τ'
+
+/-- The order-`n` connected external-core contribution.  In the present one-leg/one-leg quartic
+setup this is equivalently the sum over diagrams with no vacuum component. -/
+noncomputable def twoPointConnectedDiagramCoeff
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ) (n : ℕ) : ℂ :=
+  ∑ d : ConnectedFixedExternalTwoPointWickDiagram Mode n i j,
+    d.1.dysonAmplitude ε β g τ τ'
+
+/-- Formal unnormalized two-point numerator series. -/
+noncomputable def twoPointUnnormalizedDiagramSeries
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ) : PowerSeries ℂ :=
+  PowerSeries.mk (twoPointUnnormalizedDiagramCoeff ε β g i j τ τ')
+
+/-- Formal series of diagrams connected to the external pair. -/
+noncomputable def twoPointConnectedDiagramSeries
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ) : PowerSeries ℂ :=
+  PowerSeries.mk (twoPointConnectedDiagramCoeff ε β g i j τ τ')
+
+/-- Vacuum Dyson series normalized by the free partition function. -/
+noncomputable def normalizedVacuumDysonSeries
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) : PowerSeries ℂ :=
+  PowerSeries.normalizeByConstantCoeff
+    (dysonPartitionSeries ε β (quarticInteraction g))
+
+@[simp]
+theorem coeff_twoPointUnnormalizedDiagramSeries
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
+    PowerSeries.coeff n
+        (twoPointUnnormalizedDiagramSeries ε β g i j τ τ') =
+      twoPointUnnormalizedDiagramCoeff ε β g i j τ τ' n := by
+  simp [twoPointUnnormalizedDiagramSeries]
+
+@[simp]
+theorem coeff_twoPointConnectedDiagramSeries
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
+    PowerSeries.coeff n
+        (twoPointConnectedDiagramSeries ε β g i j τ τ') =
+      twoPointConnectedDiagramCoeff ε β g i j τ τ' n := by
+  simp [twoPointConnectedDiagramSeries]
+
+@[simp]
+theorem coeff_normalizedVacuumDysonSeries
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (n : ℕ) :
+    PowerSeries.coeff n (normalizedVacuumDysonSeries ε β g) =
+      normalizedDysonPartitionCoeff ε β (quarticInteraction g) n := by
+  rw [normalizedVacuumDysonSeries, PowerSeries.coeff_normalizeByConstantCoeff,
+    constantCoeff_dysonPartitionSeries, coeff_dysonPartitionSeries]
+  unfold normalizedDysonPartitionCoeff
+  rw [div_eq_inv_mul]
+
+@[simp]
+theorem constantCoeff_normalizedVacuumDysonSeries
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
+    PowerSeries.constantCoeff (normalizedVacuumDysonSeries ε β g) = 1 := by
+  exact constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries
+    ε β (quarticInteraction g)
+
+/-- Formal normalized two-point series, obtained by cancelling the normalized vacuum series. -/
+noncomputable def twoPointNormalizedDiagramSeries
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ) : PowerSeries ℂ :=
+  twoPointUnnormalizedDiagramSeries ε β g i j τ τ' *
+    (normalizedVacuumDysonSeries ε β g)⁻¹
+
+/-- Once the numerator factorization is established, formal vacuum cancellation is immediate because
+the normalized vacuum series has constant coefficient one. -/
+theorem twoPointNormalizedDiagramSeries_eq_connected_of_factorization
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ)
+    (hfactor :
+      twoPointUnnormalizedDiagramSeries ε β g i j τ τ' =
+        twoPointConnectedDiagramSeries ε β g i j τ τ' *
+          normalizedVacuumDysonSeries ε β g) :
+    twoPointNormalizedDiagramSeries ε β g i j τ τ' =
+      twoPointConnectedDiagramSeries ε β g i j τ τ' := by
+  rw [twoPointNormalizedDiagramSeries, hfactor, mul_assoc,
+    PowerSeries.mul_inv_cancel _ (by
+      rw [constantCoeff_normalizedVacuumDysonSeries]
+      exact one_ne_zero), mul_one]
 
 end Fermionic
 end SecondQuantization
