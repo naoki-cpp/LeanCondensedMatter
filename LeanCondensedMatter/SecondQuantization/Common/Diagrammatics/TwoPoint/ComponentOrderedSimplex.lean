@@ -138,30 +138,32 @@ noncomputable def TwoPointDiagram.componentInteractionFamilyShuffleEquiv
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     FamilySlotShuffle d.interactionComponentSize ≃ d.ComponentInteractionShuffle where
   toFun shuffle :=
-    { slotEquiv := shuffle.slotEquiv.trans (finCongr d.sum_interactionComponentSize)
+    { slotEquiv := shuffle.slotEquiv.trans
+        (Fin.castOrderIso d.sum_interactionComponentSize).toEquiv
       strictMono := by
         intro B a b hab
-        change (finCongr d.sum_interactionComponentSize) (shuffle.slotEquiv ⟨B, a⟩) <
-          (finCongr d.sum_interactionComponentSize) (shuffle.slotEquiv ⟨B, b⟩)
-        exact (strictMono_finCongr d.sum_interactionComponentSize) (shuffle.strictMono B hab) }
+        exact (Fin.castOrderIso d.sum_interactionComponentSize).strictMono
+          (shuffle.strictMono B hab) }
   invFun shuffle :=
-    { slotEquiv := shuffle.slotEquiv.trans (finCongr d.sum_interactionComponentSize).symm
+    { slotEquiv := shuffle.slotEquiv.trans
+        (Fin.castOrderIso d.sum_interactionComponentSize).symm.toEquiv
       strictMono := by
         intro B a b hab
-        change (finCongr d.sum_interactionComponentSize).symm (shuffle.slotEquiv ⟨B, a⟩) <
-          (finCongr d.sum_interactionComponentSize).symm (shuffle.slotEquiv ⟨B, b⟩)
-        have hcast : StrictMono (finCongr d.sum_interactionComponentSize).symm := by
-          simpa using strictMono_finCongr d.sum_interactionComponentSize.symm
-        exact hcast (shuffle.strictMono B hab) }
+        exact (Fin.castOrderIso d.sum_interactionComponentSize).symm.strictMono
+          (shuffle.strictMono B hab) }
   left_inv shuffle := by
     apply FamilySlotShuffle.ext
     apply Equiv.ext
     intro x
+    change Fin.cast d.sum_interactionComponentSize.symm
+        (Fin.cast d.sum_interactionComponentSize (shuffle.slotEquiv x)) = shuffle.slotEquiv x
     simp
   right_inv shuffle := by
     apply TwoPointDiagram.ComponentInteractionShuffle.ext
     apply Equiv.ext
     intro x
+    change Fin.cast d.sum_interactionComponentSize
+        (Fin.cast d.sum_interactionComponentSize.symm (shuffle.slotEquiv x)) = shuffle.slotEquiv x
     simp
 
 /-- Transporting a generic component-indexed family shuffle to ambient interaction coordinates only
@@ -176,7 +178,7 @@ theorem TwoPointDiagram.interactionComponentShuffleIntegrand_componentInteractio
     d.interactionComponentShuffleIntegrand
         (d.componentInteractionFamilyShuffleEquiv shuffle) componentIntegrand τ =
       shuffle.integrand componentIntegrand
-        (fun j => τ (finCongr d.sum_interactionComponentSize j)) := by
+        (fun j => τ (Fin.cast d.sum_interactionComponentSize j)) := by
   classical
   unfold TwoPointDiagram.interactionComponentShuffleIntegrand
     TwoPointDiagram.interactionComponentTimeAssignment
@@ -203,7 +205,7 @@ theorem TwoPointDiagram.orderedSimplexIntegral_componentInteractionFamilyShuffle
           (d.componentInteractionFamilyShuffleEquiv shuffle) componentIntegrand) =
       orderedSimplexIntegral S.card β (fun τ =>
         shuffle.integrand componentIntegrand
-          (fun j => τ (finCongr d.sum_interactionComponentSize j))) := by
+          (fun j => τ (Fin.cast d.sum_interactionComponentSize j))) := by
       apply orderedSimplexIntegral_congr
       intro τ
       exact d.interactionComponentShuffleIntegrand_componentInteractionFamilyShuffleEquiv
@@ -212,7 +214,7 @@ theorem TwoPointDiagram.orderedSimplexIntegral_componentInteractionFamilyShuffle
         (∑ B : d.componentPartition.parts, d.interactionComponentSize B) β
         (shuffle.integrand componentIntegrand) := by
       symm
-      simpa using intervalIntegral.orderedSimplexIntegral_cast
+      exact intervalIntegral.orderedSimplexIntegral_cast
         d.sum_interactionComponentSize β (shuffle.integrand componentIntegrand)
 
 /-- Reindex the finite sum over ambient interaction shuffles by generic shuffles indexed directly by
