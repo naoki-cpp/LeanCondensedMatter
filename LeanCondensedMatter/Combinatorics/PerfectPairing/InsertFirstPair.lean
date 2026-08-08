@@ -16,7 +16,7 @@ open FiniteIndex
 
 /-- Insert a new pair `(0, j)` ahead of a smaller pairing. -/
 noncomputable def Pairing.insertFirstPair {n : ℕ} (pairing : Pairing n) (j : Fin (2 * (n + 1)))
-    (hj : (0 : Fin (2 * (n + 1))) ≠ j) : Pairing (n + 1) := by
+    (hj : j ≠ (0 : Fin (2 * (n + 1)))) : Pairing (n + 1) := by
   let oi := deletedPositionsOrderIso n j hj
   let extended : Equiv.Perm (Fin (2 * (n + 1))) := pairing.partner.extendDomain oi.toEquiv
   have hext0 : extended (0 : Fin (2 * (n + 1))) = 0 :=
@@ -75,11 +75,11 @@ noncomputable def Pairing.insertFirstPair {n : ℕ} (pairing : Pairing n) (j : F
     by_cases hx0 : x = 0
     · subst hx0
       rw [hext0, Equiv.swap_apply_left]
-      exact Ne.symm hj
+      exact hj
     · by_cases hxj : x = j
       · subst hxj
         rw [hextj, Equiv.swap_apply_right]
-        exact hj
+        exact Ne.symm hj
       · have hxmem : x ∈ deletedPositions n j := by simp [deletedPositions, hx0, hxj]
         have hex : extended x ∈ deletedPositions n j := by
           have h1 : extended x = (oi (pairing.partner (oi.symm ⟨x, hxmem⟩)) : Fin (2 * (n + 1))) :=
@@ -92,7 +92,7 @@ noncomputable def Pairing.insertFirstPair {n : ℕ} (pairing : Pairing n) (j : F
 
 @[simp]
 theorem Pairing.insertFirstPair_partner_zero {n : ℕ} (pairing : Pairing n)
-    (j : Fin (2 * (n + 1))) (hj : (0 : Fin (2 * (n + 1))) ≠ j) :
+    (j : Fin (2 * (n + 1))) (hj : j ≠ (0 : Fin (2 * (n + 1)))) :
     (pairing.insertFirstPair j hj).partner 0 = j := by
   change (Equiv.swap 0 j *
     (pairing.partner.extendDomain (deletedPositionsOrderIso n j hj).toEquiv)) 0 = j
@@ -102,7 +102,7 @@ theorem Pairing.insertFirstPair_partner_zero {n : ℕ} (pairing : Pairing n)
 
 @[simp]
 theorem Pairing.insertFirstPair_partner_chosen {n : ℕ} (pairing : Pairing n)
-    (j : Fin (2 * (n + 1))) (hj : (0 : Fin (2 * (n + 1))) ≠ j) :
+    (j : Fin (2 * (n + 1))) (hj : j ≠ (0 : Fin (2 * (n + 1)))) :
     (pairing.insertFirstPair j hj).partner j = 0 := by
   change (Equiv.swap 0 j *
     (pairing.partner.extendDomain (deletedPositionsOrderIso n j hj).toEquiv)) j = 0
@@ -112,7 +112,7 @@ theorem Pairing.insertFirstPair_partner_chosen {n : ℕ} (pairing : Pairing n)
 
 @[simp]
 theorem Pairing.insertFirstPair_partner_orderIso {n : ℕ} (pairing : Pairing n)
-    (j : Fin (2 * (n + 1))) (hj : (0 : Fin (2 * (n + 1))) ≠ j) (i : Fin (2 * n)) :
+    (j : Fin (2 * (n + 1))) (hj : j ≠ (0 : Fin (2 * (n + 1)))) (i : Fin (2 * n)) :
     (pairing.insertFirstPair j hj).partner
         (deletedPositionsOrderIso n j hj i : Fin (2 * (n + 1))) =
       (deletedPositionsOrderIso n j hj (pairing.partner i) : Fin (2 * (n + 1))) := by
@@ -137,14 +137,14 @@ theorem Pairing.insertFirstPair_partner_orderIso {n : ℕ} (pairing : Pairing n)
 
 /-- Inserting and then erasing the new first pair recovers the smaller pairing. -/
 theorem Pairing.eraseZeroPair_insertFirstPair {n : ℕ} (pairing : Pairing n)
-    (j : Fin (2 * (n + 1))) (hj : (0 : Fin (2 * (n + 1))) ≠ j) :
+    (j : Fin (2 * (n + 1))) (hj : j ≠ (0 : Fin (2 * (n + 1)))) :
     (pairing.insertFirstPair j hj).eraseZeroPair = pairing := by
   set P := pairing.insertFirstPair j hj with hPdef
   have hPj : P.partner 0 = j := pairing.insertFirstPair_partner_zero j hj
   have hoi_eq : ∀ k : Fin (2 * n),
       (P.eraseZeroOrderIso k : Fin (2 * (n + 1))) =
         (deletedPositionsOrderIso n j hj k : Fin (2 * (n + 1))) :=
-    deletedPositionsOrderIso_congr n hPj (Ne.symm (P.partner_ne 0)) hj
+    deletedPositionsOrderIso_congr n hPj (P.partner_ne 0) hj
   apply Pairing.ext
   apply Equiv.ext
   intro i
@@ -156,32 +156,32 @@ theorem Pairing.eraseZeroPair_insertFirstPair {n : ℕ} (pairing : Pairing n)
 /-- Erasing and reinserting the first pair recovers the original pairing. -/
 theorem Pairing.insertFirstPair_eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)) :
     pairing.eraseZeroPair.insertFirstPair (pairing.partner 0)
-      (Ne.symm (pairing.partner_ne 0)) = pairing := by
+      (pairing.partner_ne 0) = pairing := by
   apply Pairing.ext
   apply Equiv.ext
   intro x
   by_cases hx0 : x = 0
   · subst hx0
     exact pairing.eraseZeroPair.insertFirstPair_partner_zero (pairing.partner 0)
-      (Ne.symm (pairing.partner_ne 0))
+      (pairing.partner_ne 0)
   · by_cases hxj : x = pairing.partner 0
     · subst hxj
       rw [pairing.eraseZeroPair.insertFirstPair_partner_chosen (pairing.partner 0)
-        (Ne.symm (pairing.partner_ne 0))]
+        (pairing.partner_ne 0)]
       exact (pairing.partner_partner 0).symm
     · have hxmem : x ∈ deletedPositions n (pairing.partner 0) := by
         simp [deletedPositions, hx0, hxj]
       set k := pairing.eraseZeroOrderIso.symm ⟨x, hxmem⟩ with hkdef
       have hxeq : (pairing.eraseZeroOrderIso k : Fin (2 * (n + 1))) = x := by simp [hkdef]
       have hkey := pairing.eraseZeroPair.insertFirstPair_partner_orderIso (pairing.partner 0)
-        (Ne.symm (pairing.partner_ne 0)) k
+        (pairing.partner_ne 0) k
       rw [← hxeq]
       exact hkey.trans (Pairing.eraseZeroOrderIso_partner pairing k)
 
 /-- A pairing decomposes into the partner of `0` and the smaller pairing obtained by erasing it. -/
 noncomputable def Pairing.equivSigma (n : ℕ) :
-    Pairing (n + 1) ≃ Σ _ : {j : Fin (2 * (n + 1)) // (0 : Fin (2 * (n + 1))) ≠ j}, Pairing n where
-  toFun pairing := ⟨⟨pairing.partner 0, Ne.symm (pairing.partner_ne 0)⟩, pairing.eraseZeroPair⟩
+    Pairing (n + 1) ≃ Σ _ : {j : Fin (2 * (n + 1)) // j ≠ (0 : Fin (2 * (n + 1)))}, Pairing n where
+  toFun pairing := ⟨⟨pairing.partner 0, pairing.partner_ne 0⟩, pairing.eraseZeroPair⟩
   invFun jQ := jQ.2.insertFirstPair jQ.1.1 jQ.1.2
   left_inv pairing := pairing.insertFirstPair_eraseZeroPair
   right_inv jQ := by
