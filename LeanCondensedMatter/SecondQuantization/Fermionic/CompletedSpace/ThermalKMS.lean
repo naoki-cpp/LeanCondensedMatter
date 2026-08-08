@@ -69,9 +69,23 @@ theorem completedFreeGibbsExpectation_operator_comp
               coe_completedFreeGibbsProbability_removeOccupation_of_mem ε β hi,
               completedCreate_basisState_of_not_mem hremove, map_smul, inner_smul_right,
               inner_completedBasisState, hrestore]
-            rw [← Complex.exp_add]
-            ring_nf
-            rfl
+            have hexp :
+                Complex.exp (-(β : ℂ) * (ε i : ℂ)) *
+                    Complex.exp ((β : ℂ) * (ε i : ℂ)) = 1 := by
+              rw [← Complex.exp_add]
+              ring_nf
+              exact Complex.exp_zero
+            calc
+              _ = 1 * ((completedFreeGibbsProbability ε β n : ℂ) *
+                  (fermionPhase i (removeOccupation i n) *
+                    (A (completedBasisState n)) (removeOccupation i n))) := by ring
+              _ = (Complex.exp (-(β : ℂ) * (ε i : ℂ)) *
+                    Complex.exp ((β : ℂ) * (ε i : ℂ))) *
+                    ((completedFreeGibbsProbability ε β n : ℂ) *
+                      (fermionPhase i (removeOccupation i n) *
+                        (A (completedBasisState n)) (removeOccupation i n))) := by
+                    rw [hexp]
+              _ = _ := by ring
           · have hit : i ∈ toggleOccupation i n :=
               (mem_toggleOccupation i n).mpr hi
             dsimp [f]
@@ -120,9 +134,23 @@ theorem completedFreeGibbsExpectation_operator_comp
               coe_completedFreeGibbsProbability_insertOccupation_of_not_mem ε β hi,
               completedAnnihilate_basisState_of_mem hinsert, map_smul, inner_smul_right,
               inner_completedBasisState, hrestore]
-            rw [← Complex.exp_add]
-            ring_nf
-            rfl
+            have hexp :
+                Complex.exp ((β : ℂ) * (ε i : ℂ)) *
+                    Complex.exp (-(β : ℂ) * (ε i : ℂ)) = 1 := by
+              rw [← Complex.exp_add]
+              ring_nf
+              exact Complex.exp_zero
+            calc
+              _ = 1 * ((completedFreeGibbsProbability ε β n : ℂ) *
+                  (fermionPhase i (insertOccupation i n) *
+                    (A (completedBasisState n)) (insertOccupation i n))) := by ring
+              _ = (Complex.exp ((β : ℂ) * (ε i : ℂ)) *
+                    Complex.exp (-(β : ℂ) * (ε i : ℂ))) *
+                    ((completedFreeGibbsProbability ε β n : ℂ) *
+                      (fermionPhase i (insertOccupation i n) *
+                        (A (completedBasisState n)) (insertOccupation i n))) := by
+                    rw [hexp]
+              _ = _ := by ring
         _ = ∑' n : Occupation Mode, f n := by
           simpa [toggleOccupationEquiv_apply] using
             (Equiv.tsum_eq (toggleOccupationEquiv i) f)
