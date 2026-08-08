@@ -66,7 +66,7 @@ theorem measurableLocallyBounded_of_finite_continuous_selection
 theorem Continuous.measurableLocallyBounded {n : ℕ} {f : (Fin n → ℝ) → ℂ}
     (hf : Continuous f) : MeasurableLocallyBounded f :=
   measurableLocallyBounded_of_finite_continuous_selection
-    f (fun _ : Unit => f) hf.measurable (fun _ => hf) (fun x => ⟨(), rfl⟩)
+    f (fun _ : Unit => f) hf.measurable (fun _ => hf) (fun _ => ⟨(), rfl⟩)
 
 /-- Fixing the outermost finite coordinate preserves measurable local boundedness. -/
 theorem MeasurableLocallyBounded.finCons {n : ℕ}
