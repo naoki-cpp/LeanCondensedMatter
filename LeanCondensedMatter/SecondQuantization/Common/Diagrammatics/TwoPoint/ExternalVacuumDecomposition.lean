@@ -27,14 +27,21 @@ theorem TwoPointDiagram.reassemble_restrictExternal_restrictVacuumRemainder
   · rfl
   · funext v
     by_cases hv : v.1 ∈ d.externalInteractionPart
-    · simp [TwoPointDiagram.reassembleExternalVacuum,
-        TwoPointDiagram.interactionExternalVacuumEquiv, hv,
+    · have hvcomp : (Sum.inr v : TwoPointVertex S) ∈ d.externalComponent 0 :=
+        (TwoPointDiagram.mem_interactionPart_subtype (d.externalComponent 0) v).1 hv
+      simp [TwoPointDiagram.reassembleExternalVacuum,
+        TwoPointDiagram.interactionExternalVacuumEquiv, hvcomp,
         TwoPointDiagram.restrictExternalComponent]
-    · simp [TwoPointDiagram.reassembleExternalVacuum,
-        TwoPointDiagram.interactionExternalVacuumEquiv, hv,
+    · have hvnotcomp : (Sum.inr v : TwoPointVertex S) ∉ d.externalComponent 0 := by
+        intro hcomp
+        exact hv ((TwoPointDiagram.mem_interactionPart_subtype
+          (d.externalComponent 0) v).2 hcomp)
+      simp [TwoPointDiagram.reassembleExternalVacuum,
+        TwoPointDiagram.interactionExternalVacuumEquiv, hvnotcomp,
         TwoPointDiagram.restrictVacuumRemainder]
   · apply Pairing.ext
-    funext leg
+    apply Equiv.ext
+    intro leg
     let split := TwoPointDiagram.externalVacuumLegEquiv d.externalInteractionPart_subset
     cases hsplit : split leg with
     | inl a =>
