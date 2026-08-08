@@ -11,8 +11,10 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbs
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.GibbsLadderIntertwining
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalLadder
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalPeel
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalPeelIndexed
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalKMS
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalFirstPair
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalRecursion
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnboundedExpectation
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbsSummability
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteCompatibility
@@ -57,8 +59,11 @@ ladder `C` and arbitrary bounded `A`, proved by reindexing the absolutely conver
 the one-mode occupation toggle rather than introducing general trace cyclicity. Combining the peel
 identity with this KMS rotation solves the wrapped term for odd tails with coefficient
 `gβ(C) / (1 + gβ(C))`; the same coefficient gives the normalized completed two-point Gibbs value
-from the scalar CAR coefficient. This is the representation-specific thermal input needed before
-instantiating the generic `Common.BlochDeDominicis.ExpectationPairingRecursion` contract.
+from the scalar CAR coefficient. The recursive peel is also exposed in its position-indexed
+`List.eraseIdx` form, and these completed-space facts instantiate the generic
+`Common.BlochDeDominicis.ExpectationPairingRecursion` contract. Consequently the arbitrary even
+completed free-Gibbs ladder expectation inherits the common pairing expansion without duplicating
+the pairing induction or adding finite-mode/countability assumptions to that generic layer.
 
 For the free fermion state, summability of the one-particle Boltzmann factors
 `exp (-β εᵢ)` is a concrete sufficient condition for occupation-level Gibbs summability. Under this
