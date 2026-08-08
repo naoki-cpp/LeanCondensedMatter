@@ -125,9 +125,14 @@ theorem mixedTimeOrderedAtomicLegs_all_mem {n : ℕ}
 theorem mixedTimeOrderedAtomicLegs_length {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     (mixedTimeOrderedAtomicLegs τ τ' σ).length = 2 * (2 * n + 1) := by
-  rw [(mixedTimeOrderedAtomicLegs_perm_canonical τ τ' σ).length_eq]
-  simp [canonicalTwoPointAtomicLegs, twoPointInteractionEventList,
-    twoPointTimedEventAtomicLegs, List.length_flatMap]
+  let l := mixedTimeOrderedAtomicLegs τ τ' σ
+  have hcard : l.length = Fintype.card (OrderedTwoPointLeg n) := by
+    simpa using Fintype.card_congr
+      (List.Nodup.getEquivOfForallMemList l
+        (mixedTimeOrderedAtomicLegs_nodup τ τ' σ)
+        (mixedTimeOrderedAtomicLegs_all_mem τ τ' σ))
+  rw [hcard]
+  simp [OrderedTwoPointLeg]
   omega
 
 /-- The exact bijection from mixed-time atomic positions to standard two-point legs. -/
