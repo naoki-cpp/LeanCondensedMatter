@@ -35,22 +35,9 @@ abbrev TwoPointDiagram.interactionComponentSize {S : Finset (Fin N)}
 
 /-- An order-preserving interleaving of all component-local interaction slots into the ambient
 interaction-time slots. -/
-structure TwoPointDiagram.ComponentInteractionShuffle {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S) where
-  /-- Equivalence between component-local interaction slots and ambient interaction slots. -/
-  slotEquiv :
-    (Σ B : d.componentPartition.parts, Fin (d.interactionComponentSize B)) ≃ Fin S.card
-  strictMono : ∀ B, StrictMono (fun i => slotEquiv ⟨B, i⟩)
-
-@[ext]
-theorem TwoPointDiagram.ComponentInteractionShuffle.ext {S : Finset (Fin N)}
-    {d : TwoPointDiagram ExternalLabel InternalLabel N S}
-    {σ τ : d.ComponentInteractionShuffle}
-    (h : σ.slotEquiv = τ.slotEquiv) : σ = τ := by
-  cases σ
-  cases τ
-  cases h
-  rfl
+abbrev TwoPointDiagram.ComponentInteractionShuffle {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :=
+  FamilySlotShuffleTo d.interactionComponentSize S.card
 
 /-- The component-local interaction-slot family has the ambient number of interaction vertices. -/
 theorem TwoPointDiagram.sum_interactionComponentSize {S : Finset (Fin N)}
@@ -66,14 +53,6 @@ theorem TwoPointDiagram.sum_interactionComponentSize {S : Finset (Fin N)}
     _ = Fintype.card ↥S :=
       Fintype.card_congr d.interactionVertexComponentEquiv.symm
     _ = S.card := Fintype.card_coe S
-
-/-- Two-point component interaction shuffles form a finite type. -/
-instance TwoPointDiagram.ComponentInteractionShuffle.instFintype
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
-    Fintype d.ComponentInteractionShuffle :=
-  Fintype.ofInjective
-    (fun shuffle : d.ComponentInteractionShuffle => shuffle.slotEquiv)
-    (fun _ _ h => TwoPointDiagram.ComponentInteractionShuffle.ext h)
 
 /-- Restrict an ambient interaction-time assignment to the local slots of one full component. -/
 def TwoPointDiagram.interactionComponentTimeAssignment {S : Finset (Fin N)}
@@ -136,35 +115,8 @@ theorem TwoPointDiagram.continuous_interactionComponentShuffleIntegrand
 two-point interaction shuffles. -/
 noncomputable def TwoPointDiagram.componentInteractionFamilyShuffleEquiv
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
-    FamilySlotShuffle d.interactionComponentSize ≃ d.ComponentInteractionShuffle where
-  toFun shuffle :=
-    { slotEquiv := shuffle.slotEquiv.trans
-        (Fin.castOrderIso d.sum_interactionComponentSize).toEquiv
-      strictMono := by
-        intro B a b hab
-        exact (Fin.castOrderIso d.sum_interactionComponentSize).strictMono
-          (shuffle.strictMono B hab) }
-  invFun shuffle :=
-    { slotEquiv := shuffle.slotEquiv.trans
-        (Fin.castOrderIso d.sum_interactionComponentSize).symm.toEquiv
-      strictMono := by
-        intro B a b hab
-        exact (Fin.castOrderIso d.sum_interactionComponentSize).symm.strictMono
-          (shuffle.strictMono B hab) }
-  left_inv shuffle := by
-    apply FamilySlotShuffle.ext
-    apply Equiv.ext
-    intro x
-    change Fin.cast d.sum_interactionComponentSize.symm
-        (Fin.cast d.sum_interactionComponentSize (shuffle.slotEquiv x)) = shuffle.slotEquiv x
-    simp
-  right_inv shuffle := by
-    apply TwoPointDiagram.ComponentInteractionShuffle.ext
-    apply Equiv.ext
-    intro x
-    change Fin.cast d.sum_interactionComponentSize
-        (Fin.cast d.sum_interactionComponentSize.symm (shuffle.slotEquiv x)) = shuffle.slotEquiv x
-    simp
+    FamilySlotShuffle d.interactionComponentSize ≃ d.ComponentInteractionShuffle :=
+  FamilySlotShuffleTo.castTotalEquiv d.sum_interactionComponentSize
 
 /-- Transporting a generic component-indexed family shuffle to ambient interaction coordinates only
 precomposes the generic integrand by the total-interaction-cardinality cast. -/

@@ -154,12 +154,6 @@ theorem QuarticDiagram.componentVertexOrders_eq_of_compatible {S : Finset (Fin N
   simpa [QuarticDiagram.ComponentOrdersCompatible, QuarticDiagram.componentVertexEquiv,
     QuarticDiagram.componentGlobalSlot] using h B
 
-/-- Component shuffles form a finite type. -/
-noncomputable instance QuarticDiagram.ComponentShuffle.instFintype {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) : Fintype d.ComponentShuffle :=
-  Fintype.ofInjective (fun shuffle : d.ComponentShuffle => shuffle.slotEquiv)
-    (fun _ _ h => QuarticDiagram.ComponentShuffle.ext h)
-
 /-- A global vertex order is equivalent to component-local orders together with an
 order-preserving shuffle of their slots. -/
 noncomputable def QuarticDiagram.componentOrderDecompositionEquiv {S : Finset (Fin N)}
@@ -184,7 +178,7 @@ noncomputable def QuarticDiagram.componentOrderDecompositionEquiv {S : Finset (F
         (d.assembleVertexOrder orders shuffle) orders
         (d.componentOrdersCompatible_assembleVertexOrder orders shuffle)).symm
     refine Prod.ext horders ?_
-    apply QuarticDiagram.ComponentShuffle.ext
+    apply Combinatorics.FamilySlotShuffleTo.ext
     change (d.componentVertexEquiv
       (d.componentVertexOrdersOfVertexOrder (d.assembleVertexOrder orders shuffle))).trans
         (d.assembleVertexOrder orders shuffle).symm = shuffle.slotEquiv
