@@ -113,5 +113,69 @@ theorem twoPointTimedEventBefore_interactionVertexEventRelabel_iff_of_time_ne {n
     π τ τ' σ a b hTime]
   exact and_congr_right (fun _ => (interactionVertexEventRelabel π).injective.ne_iff)
 
+/-- If the interaction-time assignment is injective, relabeling preserves stable precedence for
+all events.  Equal-time external/interaction pairs keep the same external-before-interaction rank,
+while two distinct interaction events cannot tie. -/
+theorem twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_injective {n : ℕ}
+    (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (hσ : Function.Injective σ) (a b : TwoPointTimedEvent n) :
+    twoPointTimedEventBeforeOrEqual τ τ' (fun v => σ (π.symm v))
+        (interactionVertexEventRelabel π a) (interactionVertexEventRelabel π b) ↔
+      twoPointTimedEventBeforeOrEqual τ τ' σ a b := by
+  by_cases hTime :
+      twoPointTimedEventTime τ τ' σ a ≠ twoPointTimedEventTime τ τ' σ b
+  · exact twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_time_ne
+      π τ τ' σ a b hTime
+  · have hEq :
+        twoPointTimedEventTime τ τ' σ a = twoPointTimedEventTime τ τ' σ b :=
+      not_ne_iff.mp hTime
+    rcases a with a | a
+    · rcases b with b | b
+      · rfl
+      · simp only [twoPointTimedEventTime, interactionVertexEventRelabel_external,
+          interactionVertexEventRelabel_interaction, twoPointTimedEventBeforeOrEqual,
+          twoPointTimedEventRank]
+        simp only [twoPointTimedEventTime] at hEq
+        rw [hEq]
+        omega
+    · rcases b with b | b
+      · simp only [twoPointTimedEventTime, interactionVertexEventRelabel_external,
+          interactionVertexEventRelabel_interaction, twoPointTimedEventBeforeOrEqual,
+          twoPointTimedEventRank]
+        simp only [twoPointTimedEventTime] at hEq
+        rw [hEq]
+        omega
+      · have hab : a = b := hσ (by simpa [twoPointTimedEventTime] using hEq)
+        subst b
+        simp [twoPointTimedEventBeforeOrEqual, twoPointTimedEventRank]
+
+/-- Under an injective interaction-time assignment, strict event precedence is fully equivariant
+under interaction-slot relabeling. -/
+theorem twoPointTimedEventBefore_interactionVertexEventRelabel_iff_of_injective {n : ℕ}
+    (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (hσ : Function.Injective σ) (a b : TwoPointTimedEvent n) :
+    twoPointTimedEventBefore τ τ' (fun v => σ (π.symm v))
+        (interactionVertexEventRelabel π a) (interactionVertexEventRelabel π b) ↔
+      twoPointTimedEventBefore τ τ' σ a b := by
+  rw [twoPointTimedEventBefore, twoPointTimedEventBefore]
+  rw [twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_injective
+    π τ τ' σ hσ a b]
+  exact and_congr_right (fun _ => (interactionVertexEventRelabel π).injective.ne_iff)
+
+/-- Under an injective interaction-time assignment, the time-ordered event positions are transported
+order-equivariantly by interaction-slot relabeling. -/
+theorem orderedTwoPointTimedEventPosition_interactionVertexEventRelabel_lt_iff_of_injective
+    {n : ℕ} (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (hσ : Function.Injective σ) (a b : TwoPointTimedEvent n) :
+    orderedTwoPointTimedEventPosition τ τ' (fun v => σ (π.symm v))
+        (interactionVertexEventRelabel π a) <
+      orderedTwoPointTimedEventPosition τ τ' (fun v => σ (π.symm v))
+        (interactionVertexEventRelabel π b) ↔
+      orderedTwoPointTimedEventPosition τ τ' σ a <
+        orderedTwoPointTimedEventPosition τ τ' σ b := by
+  rw [orderedTwoPointTimedEventPosition_lt_iff, orderedTwoPointTimedEventPosition_lt_iff]
+  exact twoPointTimedEventBefore_interactionVertexEventRelabel_iff_of_injective
+    π τ τ' σ hσ a b
+
 end Fermionic
 end SecondQuantization
