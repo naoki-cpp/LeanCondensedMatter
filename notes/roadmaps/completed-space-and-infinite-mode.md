@@ -139,7 +139,7 @@ The generic `ExpectationPairingRecursion` from #421 remains representation indep
 fermionic or bosonic instance must supply its own admissibility predicate, KMS laws, and product-domain
 conditions; the recursion itself should not acquire occupation-basis or finiteness assumptions.
 
-## Finite-mode compatibility
+## Finite-mode compatibility and approximation
 
 When `Mode` is finite, `Fermionic.Occupation Mode` is finite and the completed `ℓ²` representation is
 finite dimensional. `CompletedSpace/FiniteCompatibility.lean` identifies it canonically and
@@ -158,8 +158,18 @@ the completed Gibbs summability condition automatic; the completed and finite Bo
 partition functions, and normalized probabilities agree; and the completed free Gibbs density
 operator intertwines with the existing finite Gibbs density operator under the same isometry.
 
-The remaining C5 work is approximation: define explicit finite-mode or finite-energy truncations and
-prove convergence in a stated operator/state topology.
+For arbitrary `Mode`, `CompletedSpace/ModeTruncation.lean` defines the finite-mode coordinate
+projections indexed by `Finset Mode`.  They are contractions, fix every algebraic vector once the
+finite mode set contains its support, and converge strongly to the identity as a directed net.  No
+countability assumption on `Mode` is needed.
+
+`CompletedSpace/GibbsModeTruncation.lean` restricts the free Boltzmann weights to the same finite-mode
+sectors, constructs normalized truncated Gibbs density operators on the full completed space, and
+proves convergence of the truncated partition functions and occupation probabilities under the
+existing absolute Gibbs summability assumption.  `GibbsModeTruncationExpectation.lean` makes the
+state topology explicit: for every bounded operator `A`, the truncated Gibbs expectations converge
+to the full completed Gibbs expectation.  This is weak state convergence against bounded
+observables; no trace-norm convergence is asserted.
 
 ## Staged work
 
@@ -199,8 +209,9 @@ prove convergence in a stated operator/state topology.
 
 - [x] Identify finite-mode completed Fock space with `FiniteHilbertFock`.
 - [x] Show finite Gibbs density/operator APIs commute with the finite compatibility equivalence.
-- [ ] Define finite-mode or finite-energy truncations.
-- [ ] Prove the first strong or norm convergence statements with topology explicit.
+- [x] Define finite-mode truncations as a `Finset Mode` directed net.
+- [x] Prove strong convergence of finite-mode projections and weak convergence of the truncated
+  Gibbs states against every bounded observable, with both topologies explicit.
 
 Thermodynamic limits are not part of C1–C5.  They require a separate issue specifying the directed
 system, observable algebra, state topology, and uniform estimates.
