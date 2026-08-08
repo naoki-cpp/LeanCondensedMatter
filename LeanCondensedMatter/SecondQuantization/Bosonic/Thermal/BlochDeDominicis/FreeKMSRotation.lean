@@ -81,7 +81,8 @@ theorem annihilate_apply_coord (i : Mode) (x : FockSpace Mode) (n : Occupation M
         simp only [createOccupation_apply_same, Nat.cast_add, Nat.cast_one,
           Complex.coe_smul, map_smul, LinearMap.map_smul_of_tower,
           Complex.real_smul, smul_eq_mul]
-        rw [hevalN, hevalC, mul_one]
+        rw [hevalN, hevalC]
+        simp only [mul_one]
         exact mul_comm b (Real.sqrt (n i + 1 : ℝ) : ℂ)
       · have hne : a ≠ createOccupation i n := by
           intro h
@@ -143,7 +144,8 @@ theorem create_apply_coord_of_pos (i : Mode) (x : FockSpace Mode) (n : Occupatio
         simp [evalR, basisState, Common.basisState]
       simp only [removeOccupation_apply_same, Complex.coe_smul, map_smul,
         LinearMap.map_smul_of_tower, Complex.real_smul, smul_eq_mul]
-      rw [hcast, hevalN, hevalR, mul_one]
+      rw [hcast, hevalN, hevalR]
+      simp only [mul_one]
       exact mul_comm b (Real.sqrt (n i : ℝ) : ℂ)
     · have hane : a ≠ removeOccupation i n := by
         intro h
