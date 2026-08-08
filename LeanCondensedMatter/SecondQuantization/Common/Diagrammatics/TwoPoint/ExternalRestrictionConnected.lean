@@ -61,7 +61,15 @@ theorem TwoPointDiagram.twoPointLegEquiv_externalBlockLegEquiv
       d.externalLegDataEquiv
         ⟨twoPointLegEquiv S leg.1,
           (d.legInComponent_iff_unflattened d.externalComponentPart leg.1).1 leg.2⟩ := by
-  simp [TwoPointDiagram.externalBlockLegEquiv]
+  change twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))
+      ((twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))).symm
+        (d.externalLegDataEquiv
+          (((twoPointLegEquiv S).subtypeEquiv fun p =>
+            d.legInComponent_iff_unflattened d.externalComponentPart p) leg))) = _
+  rw [Equiv.apply_symm_apply]
+  apply congrArg d.externalLegDataEquiv
+  apply Subtype.ext
+  rfl
 
 /-- Restricting an unflattened leg and then taking its vertex agrees with restricting its vertex. -/
 theorem TwoPointDiagram.twoPointLegVertex_externalLegDataEquiv
@@ -120,9 +128,15 @@ theorem TwoPointDiagram.restrictExternalComponent_adj
     rw [d.twoPointVertexOfLeg_externalBlockLegEquiv
       (d.restrictedPartner (d.externalComponent 0) legB)]
     apply congrArg d.externalBlockVertexEquiv
+    have hval : twoPointVertexOfLeg
+        ((d.restrictedPartner (d.externalComponent 0) legB :
+          {leg : Fin (2 * (2 * S.card + 1)) //
+            d.legInComponent (d.externalComponent 0) leg}) :
+          Fin (2 * (2 * S.card + 1))) = w.1 := by
+      rw [d.restrictedPartner_val]
+      exact hw
     apply Subtype.ext
-    rw [d.restrictedPartner_val]
-    exact hw
+    exact hval
 
 private theorem TwoPointDiagram.mem_externalComponent_of_reachable_right
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
