@@ -15,7 +15,7 @@ namespace FiniteIndex
 /-- Decompose `deletedPositionsOrderIso` into `succAbove` followed by `succ`. -/
 theorem deletedPositionsOrderIso_eq_succ_succAbove (n : ℕ) (k : Fin (2 * n + 1))
     (j : Fin (2 * (n + 1))) (hj : j = k.succ)
-    (hzero : (0 : Fin (2 * (n + 1))) ≠ j) :
+    (hzero : j ≠ (0 : Fin (2 * (n + 1)))) :
     ∀ i : Fin (2 * n), (deletedPositionsOrderIso n j hzero i : Fin (2 * (n + 1))) =
       ((k.succAbove i).succ : Fin (2 * (n + 1))) := by
   have hmem : ∀ i : Fin (2 * n), ((k.succAbove i).succ : Fin (2 * (n + 1))) ∈

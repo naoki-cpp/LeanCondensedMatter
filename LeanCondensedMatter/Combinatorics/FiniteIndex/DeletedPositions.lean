@@ -19,24 +19,24 @@ def deletedPositions (n : ℕ) (j : Fin (2 * (n + 1))) : Finset (Fin (2 * (n + 1
 
 @[simp]
 theorem card_deletedPositions (n : ℕ) (j : Fin (2 * (n + 1)))
-    (hzero : (0 : Fin (2 * (n + 1))) ≠ j) :
+    (hzero : j ≠ (0 : Fin (2 * (n + 1)))) :
     (deletedPositions n j).card = 2 * n := by
-  simp [deletedPositions, Nat.mul_succ, Ne.symm hzero]
+  simp [deletedPositions, Nat.mul_succ, hzero]
 
 /-- Increasing bijection from `Fin (2 * n)` onto the remaining positions. -/
 noncomputable def deletedPositionsOrderIso (n : ℕ) (j : Fin (2 * (n + 1)))
-    (hzero : (0 : Fin (2 * (n + 1))) ≠ j) :
+    (hzero : j ≠ (0 : Fin (2 * (n + 1)))) :
     Fin (2 * n) ≃o deletedPositions n j :=
   (deletedPositions n j).orderIsoOfFin (card_deletedPositions n j hzero)
 
 theorem deletedPositionsOrderIso_mem (n : ℕ) (j : Fin (2 * (n + 1)))
-    (hzero : (0 : Fin (2 * (n + 1))) ≠ j) (i : Fin (2 * n)) :
+    (hzero : j ≠ (0 : Fin (2 * (n + 1)))) (i : Fin (2 * n)) :
     ((deletedPositionsOrderIso n j hzero i : Fin (2 * (n + 1))) ∈
       deletedPositions n j) :=
   (deletedPositionsOrderIso n j hzero i).property
 
 theorem deletedPositionsOrderIso_strictMono (n : ℕ) (j : Fin (2 * (n + 1)))
-    (hzero : (0 : Fin (2 * (n + 1))) ≠ j) :
+    (hzero : j ≠ (0 : Fin (2 * (n + 1)))) :
     StrictMono (fun i : Fin (2 * n) =>
       (deletedPositionsOrderIso n j hzero i : Fin (2 * (n + 1)))) := by
   intro i k hik
@@ -44,8 +44,8 @@ theorem deletedPositionsOrderIso_strictMono (n : ℕ) (j : Fin (2 * (n + 1)))
 
 /-- The order isomorphism is independent of the proof that `j ≠ 0`. -/
 theorem deletedPositionsOrderIso_congr (n : ℕ) {j j' : Fin (2 * (n + 1))} (h : j = j')
-    (hzero : (0 : Fin (2 * (n + 1))) ≠ j)
-    (hzero' : (0 : Fin (2 * (n + 1))) ≠ j') (i : Fin (2 * n)) :
+    (hzero : j ≠ (0 : Fin (2 * (n + 1))))
+    (hzero' : j' ≠ (0 : Fin (2 * (n + 1)))) (i : Fin (2 * n)) :
     (deletedPositionsOrderIso n j hzero i : Fin (2 * (n + 1))) =
       (deletedPositionsOrderIso n j' hzero' i : Fin (2 * (n + 1))) := by
   subst h

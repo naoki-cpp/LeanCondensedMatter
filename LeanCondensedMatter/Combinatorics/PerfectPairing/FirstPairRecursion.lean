@@ -60,11 +60,11 @@ theorem moment_eq_pairing_sum_of_first_pair_recursion {α R : Type*} [CommSemiri
     have hIH := ih (fun i : Fin (2 * m) => C ((j.succAbove i).succ)) (admissible_erase m C hAdm j)
     rw [hIH, Finset.mul_sum]
     refine Finset.sum_congr rfl fun Q _ => ?_
-    set P := Q.insertFirstPair j.succ (Ne.symm (Fin.succ_ne_zero j)) with hP
+    set P := Q.insertFirstPair j.succ (Fin.succ_ne_zero j) with hP
     have hPe : P.eraseZeroPair = Q :=
-      Q.eraseZeroPair_insertFirstPair j.succ (Ne.symm (Fin.succ_ne_zero j))
+      Q.eraseZeroPair_insertFirstPair j.succ (Fin.succ_ne_zero j)
     have hP0 : P.partner 0 = j.succ :=
-      Q.insertFirstPair_partner_zero j.succ (Ne.symm (Fin.succ_ne_zero j))
+      Q.insertFirstPair_partner_zero j.succ (Fin.succ_ne_zero j)
     have hweight : ζ ^ P.crossingCount = ζ ^ (j : ℕ) * ζ ^ Q.crossingCount := by
       rw [P.crossingCount_eraseZeroPair, pow_add, hPe, mul_comm]
       congr 1
