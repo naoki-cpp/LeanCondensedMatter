@@ -92,12 +92,11 @@ theorem operator_comp_operatorProduct_eq_thermalPeelSum
               D.operator (C₁.operator (operatorProduct t ψ)) :=
         eq_sub_of_add_eq hcar
       have hih := DFunLike.congr_fun ih ψ
-      simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.add_apply, smul_apply] at hih
+      simp only [ContinuousLinearMap.comp_apply, add_apply, smul_apply] at hih
       simp only [operatorProduct_cons, thermalPeelSum, List.length_cons,
-        ContinuousLinearMap.comp_apply, ContinuousLinearMap.add_apply,
-        ContinuousLinearMap.sub_apply, smul_apply]
+        ContinuousLinearMap.comp_apply, add_apply, sub_apply, smul_apply]
       rw [hexchange, hih]
-      simp only [map_add, map_smul, map_sub, smul_add, smul_sub, smul_smul, pow_succ]
+      simp only [map_add, map_smul, pow_succ]
       module
 
 /-- Canonical completed free-Gibbs expectation of an ordered thermal-ladder list. -/
