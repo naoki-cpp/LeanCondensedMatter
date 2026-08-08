@@ -62,11 +62,13 @@ theorem operator_create (i : Mode) :
 theorem operator_annihilate (i : Mode) :
     operator (CompletedThermalLadder.annihilate i) = completedAnnihilate i := rfl
 
+omit [LinearOrder Mode] in
 @[simp]
 theorem gibbsFactor_create (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
     gibbsFactor ε β (CompletedThermalLadder.create i) =
       Complex.exp (-(β : ℂ) * (ε i : ℂ)) := rfl
 
+omit [LinearOrder Mode] in
 @[simp]
 theorem gibbsFactor_annihilate (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
     gibbsFactor ε β (CompletedThermalLadder.annihilate i) =
