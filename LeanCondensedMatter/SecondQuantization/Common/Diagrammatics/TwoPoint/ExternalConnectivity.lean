@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentRestriction
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentRestriction
 import Mathlib.Combinatorics.SimpleGraph.Matching
 
 set_option linter.style.header false
