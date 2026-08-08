@@ -61,6 +61,7 @@ theorem fourier_l2ToTemperedDistribution1D_continuumH2Laplacian1D
     ← Complex.coe_smul (-(2 * Real.pi) ^ 2),
     FourierTransform.fourier_smul, FourierTransform.fourier_fourierInv_eq]
   push_cast
+  rfl
 
 private theorem ae_eq_mul_of_l2ToTemperedDistribution_eq_smulLeft
     (u v : ContinuumL2Wavefunction1D) (g : ℝ → ℂ) (hg : g.HasTemperateGrowth)
