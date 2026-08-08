@@ -5,9 +5,9 @@ set_option linter.style.header false
 /-!
 # Structural laws for external/vacuum reassembly
 
-The reassembled pairing never crosses the external/vacuum split.  The external core therefore maps
+The reassembled pairing never crosses the external/vacuum split. The external core therefore maps
 into the ambient external component, while the complementary quartic diagram remains unreachable
-from the external vertices.  These facts identify the interaction support of the ambient external
+from the external vertices. These facts identify the interaction support of the ambient external
 component exactly with the chosen external subset.
 -/
 
@@ -20,10 +20,8 @@ variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 
 private theorem externalVertexEmbed_injective {S E : Finset (Fin N)} (hE : E ⊆ S) :
     Function.Injective (TwoPointDiagram.externalVertexEmbed hE) := by
-  intro v w h
-  rcases v with e | v <;> rcases w with e' | w <;>
+  rintro (e | v) (e' | w) h <;>
     simp_all [TwoPointDiagram.externalVertexEmbed]
-  exact Subtype.ext (Sum.inr.inj h)
 
 /-- Adjacency inside the connected external core is preserved by reassembly. -/
 theorem TwoPointDiagram.reassembleExternalVacuum_external_adj
@@ -36,8 +34,10 @@ theorem TwoPointDiagram.reassembleExternalVacuum_external_adj
       (TwoPointDiagram.externalVertexEmbed hE v)
       (TwoPointDiagram.externalVertexEmbed hE w) := by
   rcases hvw with ⟨hne, leg, hv, hw⟩
-  refine ⟨externalVertexEmbed_injective hE hne,
+  refine ⟨?_,
     (TwoPointDiagram.externalVacuumLegEquiv hE).symm (Sum.inl leg), ?_, ?_⟩
+  · intro h
+    exact hne (externalVertexEmbed_injective hE h)
   · rw [TwoPointDiagram.vertexOfLeg_externalVacuumLegEquiv_symm_external]
     exact congrArg (TwoPointDiagram.externalVertexEmbed hE) hv
   · rw [TwoPointDiagram.reassembleExternalVacuum_partner_external,
@@ -71,7 +71,7 @@ def TwoPointDiagram.VertexInExternalPart {S E : Finset (Fin N)}
 @[simp]
 theorem TwoPointDiagram.vertexInExternalPart_externalEmbed
     {S E : Finset (Fin N)} (hE : E ⊆ S) (v : TwoPointVertex E) :
-    TwoPointDiagram.VertexInExternalPart
+    TwoPointDiagram.VertexInExternalPart (E := E)
       (TwoPointDiagram.externalVertexEmbed hE v) := by
   rcases v with e | v
   · trivial
@@ -80,7 +80,7 @@ theorem TwoPointDiagram.vertexInExternalPart_externalEmbed
 @[simp]
 theorem TwoPointDiagram.not_vertexInExternalPart_vacuumEmbed
     {S E : Finset (Fin N)} (hE : E ⊆ S) (v : ↥(S \ E)) :
-    ¬ TwoPointDiagram.VertexInExternalPart
+    ¬ TwoPointDiagram.VertexInExternalPart (E := E)
       (TwoPointDiagram.vacuumVertexEmbed hE v) := by
   exact (Finset.mem_sdiff.mp v.2).2
 
@@ -99,7 +99,7 @@ theorem TwoPointDiagram.reassembleExternalVacuum_partner_preserves_externalPart
   | inl a =>
       have hleg : leg = split.symm (Sum.inl a) := by
         rw [← hsplit]
-        exact split.symm_apply_apply leg
+        exact (split.symm_apply_apply leg).symm
       subst leg
       rw [TwoPointDiagram.reassembleExternalVacuum_partner_external,
         TwoPointDiagram.vertexOfLeg_externalVacuumLegEquiv_symm_external,
@@ -108,7 +108,7 @@ theorem TwoPointDiagram.reassembleExternalVacuum_partner_preserves_externalPart
   | inr a =>
       have hleg : leg = split.symm (Sum.inr a) := by
         rw [← hsplit]
-        exact split.symm_apply_apply leg
+        exact (split.symm_apply_apply leg).symm
       subst leg
       rw [TwoPointDiagram.reassembleExternalVacuum_partner_vacuum,
         TwoPointDiagram.vertexOfLeg_externalVacuumLegEquiv_symm_vacuum,
