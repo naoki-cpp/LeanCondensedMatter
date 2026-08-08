@@ -26,30 +26,42 @@ theorem TwoPointDiagram.externalVacuumLegEquiv_apply_externalBlockLeg
       Sum.inl (d.externalBlockLegEquiv leg) := by
   let legU : {u : TwoPointLeg S //
       d.unflattenedLegInComponent d.externalComponentPart u} :=
-    ((twoPointLegEquiv S).subtypeEquiv fun p =>
-      d.legInComponent_iff_unflattened d.externalComponentPart p) leg
+    ⟨twoPointLegEquiv S leg.1,
+      (d.legInComponent_iff_unflattened d.externalComponentPart leg.1).1 leg.2⟩
   have hblock :
       twoPointLegEquiv d.externalInteractionPart (d.externalBlockLegEquiv leg) =
         d.externalLegDataEquiv legU := by
-    simpa [TwoPointDiagram.externalInteractionPart, legU] using
-      d.twoPointLegEquiv_externalBlockLegEquiv leg
+    exact d.twoPointLegEquiv_externalBlockLegEquiv leg
   have hdata :
       TwoPointDiagram.externalVacuumLegDataEquiv d.externalInteractionPart_subset
           (twoPointLegEquiv S leg.1) =
         Sum.inl (d.externalLegDataEquiv legU) := by
     rcases hraw : twoPointLegEquiv S leg.1 with e | ⟨v, l⟩
-    · simp [TwoPointDiagram.externalVacuumLegDataEquiv,
-        TwoPointDiagram.externalLegDataEquiv, legU, hraw]
+    · have hU : legU =
+          ⟨Sum.inl e, d.externalVertex_mem_externalComponentPart e⟩ := by
+        apply Subtype.ext
+        exact hraw
+      rw [hU]
+      rfl
     · have hvcomp : (Sum.inr v : TwoPointVertex S) ∈ d.externalComponent 0 := by
         have hmem := legU.2
-        simpa [legU, hraw, TwoPointDiagram.unflattenedLegInComponent,
-          TwoPointDiagram.externalComponentPart] using hmem
+        unfold TwoPointDiagram.unflattenedLegInComponent at hmem
+        rw [hraw] at hmem
+        exact hmem
       have hv : v.1 ∈ d.externalInteractionPart :=
         (TwoPointDiagram.mem_interactionPart_subtype (d.externalComponent 0) v).2 hvcomp
-      simp [TwoPointDiagram.externalVacuumLegDataEquiv,
-        TwoPointDiagram.interactionExternalVacuumEquiv,
-        TwoPointDiagram.externalInteractionPart,
-        TwoPointDiagram.externalLegDataEquiv, legU, hraw, hv]
+      have hsplit : TwoPointDiagram.interactionExternalVacuumEquiv
+          d.externalInteractionPart_subset v = Sum.inl ⟨v.1, hv⟩ := by
+        simp [TwoPointDiagram.interactionExternalVacuumEquiv, hv]
+      have hU : legU =
+          ⟨Sum.inr (v, l), hvcomp⟩ := by
+        apply Subtype.ext
+        exact hraw
+      rw [hU]
+      simp only [TwoPointDiagram.externalVacuumLegDataEquiv, Equiv.trans_apply,
+        Equiv.sumCongr_apply]
+      rw [hsplit]
+      rfl
   have h := congrArg
     (Equiv.sumCongr (twoPointLegEquiv d.externalInteractionPart).symm
       (quarticLegEquiv (S \ d.externalInteractionPart)).symm) hdata
@@ -64,8 +76,8 @@ theorem TwoPointDiagram.externalVacuumLegEquiv_apply_vacuumRemainderBlockLeg
     TwoPointDiagram.externalVacuumLegEquiv d.externalInteractionPart_subset leg.1 =
       Sum.inr (d.vacuumRemainderBlockLegEquiv leg) := by
   let legU : {u : TwoPointLeg S // d.unflattenedLegInVacuumRemainder u} :=
-    ((twoPointLegEquiv S).subtypeEquiv fun p =>
-      not_congr (d.legInComponent_iff_unflattened d.externalComponentPart p)) leg
+    ⟨twoPointLegEquiv S leg.1,
+      (not_congr (d.legInComponent_iff_unflattened d.externalComponentPart leg.1)).1 leg.2⟩
   have hblock :
       quarticLegEquiv (S \ d.externalInteractionPart)
           (d.vacuumRemainderBlockLegEquiv leg) =
@@ -73,30 +85,42 @@ theorem TwoPointDiagram.externalVacuumLegEquiv_apply_vacuumRemainderBlockLeg
     change quarticLegEquiv (S \ d.externalInteractionPart)
         ((quarticLegEquiv (S \ d.externalInteractionPart)).symm
           (d.vacuumRemainderLegDataEquiv
-            (((twoPointLegEquiv S).subtypeEquiv fun p =>
-              not_congr (d.legInComponent_iff_unflattened d.externalComponentPart p)) leg))) = _
+            ⟨twoPointLegEquiv S leg.1,
+              (not_congr (d.legInComponent_iff_unflattened
+                d.externalComponentPart leg.1)).1 leg.2⟩)) = _
     rw [Equiv.apply_symm_apply]
   have hdata :
       TwoPointDiagram.externalVacuumLegDataEquiv d.externalInteractionPart_subset
           (twoPointLegEquiv S leg.1) =
         Sum.inr (d.vacuumRemainderLegDataEquiv legU) := by
     rcases hraw : twoPointLegEquiv S leg.1 with e | ⟨v, l⟩
-    · exfalso
-      apply legU.2
-      have he := d.externalVertex_mem_externalComponentPart e
-      simpa [legU, hraw, TwoPointDiagram.unflattenedLegInVacuumRemainder,
-        TwoPointDiagram.unflattenedLegInComponent] using he
-    · have hv : v.1 ∉ d.externalInteractionPart := by
+    · have hnot := legU.2
+      unfold TwoPointDiagram.unflattenedLegInVacuumRemainder at hnot
+      unfold TwoPointDiagram.unflattenedLegInComponent at hnot
+      rw [hraw] at hnot
+      exact False.elim (hnot (d.externalVertex_mem_externalComponentPart e))
+    · have hnot := legU.2
+      unfold TwoPointDiagram.unflattenedLegInVacuumRemainder at hnot
+      unfold TwoPointDiagram.unflattenedLegInComponent at hnot
+      rw [hraw] at hnot
+      have hv : v.1 ∉ d.externalInteractionPart := by
         intro hmem
-        apply legU.2
-        have hvcomp : (Sum.inr v : TwoPointVertex S) ∈ d.externalComponent 0 :=
-          (TwoPointDiagram.mem_interactionPart_subtype (d.externalComponent 0) v).1 hmem
-        simpa [legU, hraw, TwoPointDiagram.unflattenedLegInVacuumRemainder,
-          TwoPointDiagram.unflattenedLegInComponent,
-          TwoPointDiagram.externalComponentPart] using hvcomp
-      simp [TwoPointDiagram.externalVacuumLegDataEquiv,
-        TwoPointDiagram.interactionExternalVacuumEquiv,
-        TwoPointDiagram.vacuumRemainderLegDataEquiv, legU, hraw, hv]
+        exact hnot ((TwoPointDiagram.mem_interactionPart_subtype
+          (d.externalComponent 0) v).1 hmem)
+      have hsplit : TwoPointDiagram.interactionExternalVacuumEquiv
+          d.externalInteractionPart_subset v =
+          Sum.inr ⟨v.1, Finset.mem_sdiff.mpr ⟨v.2, hv⟩⟩ := by
+        simp [TwoPointDiagram.interactionExternalVacuumEquiv, hv]
+      let w : ↥(S \ d.externalInteractionPart) :=
+        ⟨v.1, Finset.mem_sdiff.mpr ⟨v.2, hv⟩⟩
+      have hU : legU = ⟨Sum.inr (v, l), hnot⟩ := by
+        apply Subtype.ext
+        exact hraw
+      rw [hU]
+      simp only [TwoPointDiagram.externalVacuumLegDataEquiv, Equiv.trans_apply,
+        Equiv.sumCongr_apply]
+      rw [hsplit]
+      rfl
   have h := congrArg
     (Equiv.sumCongr (twoPointLegEquiv d.externalInteractionPart).symm
       (quarticLegEquiv (S \ d.externalInteractionPart)).symm) hdata
