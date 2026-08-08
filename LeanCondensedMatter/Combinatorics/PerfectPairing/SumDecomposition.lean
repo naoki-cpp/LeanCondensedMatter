@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing
+import Mathlib.Logic.Equiv.Fin.Basic
 
 set_option linter.style.header false
 
@@ -10,14 +11,6 @@ smaller pairing obtained by erasing that first pair.
 -/
 
 namespace Combinatorics
-
-/-- `Fin (m + 1)`'s nonzero elements, as `Fin m`. -/
-private def finSuccSubtypeEquiv (m : ℕ) :
-    {j : Fin (m + 1) // (0 : Fin (m + 1)) ≠ j} ≃ Fin m where
-  toFun x := x.1.pred (Ne.symm x.2)
-  invFun i := ⟨i.succ, Ne.symm (Fin.succ_ne_zero i)⟩
-  left_inv x := Subtype.ext (Fin.succ_pred x.1 (Ne.symm x.2))
-  right_inv i := Fin.pred_succ i
 
 private theorem Pairing.insertFirstPair_congr {n : ℕ} (Q : Pairing n)
     {j j' : Fin (2 * (n + 1))} (h : j = j') (hj : (0 : Fin (2 * (n + 1))) ≠ j)
@@ -33,13 +26,29 @@ theorem Pairing.sum_eq_sum_sum_insertFirstPair {n : ℕ} {M : Type*} [AddCommMon
       ∑ j : Fin (2 * n + 1), ∑ Q : Pairing n,
         F (Q.insertFirstPair j.succ (Ne.symm (Fin.succ_ne_zero j))) := by
   rw [← Equiv.sum_comp (Pairing.equivSigma n).symm F, Fintype.sum_sigma]
-  refine Fintype.sum_equiv (finSuccSubtypeEquiv (2 * n + 1))
+  let eNe :
+      {j : Fin (2 * (n + 1)) // (0 : Fin (2 * (n + 1))) ≠ j} ≃
+        {j : Fin (2 * (n + 1)) // j ≠ 0} :=
+    Equiv.subtypeEquivRight (fun _ => ne_comm)
+  let e :
+      {j : Fin (2 * (n + 1)) // (0 : Fin (2 * (n + 1))) ≠ j} ≃ Fin (2 * n + 1) :=
+    eNe.trans (finSuccAboveEquiv (0 : Fin (2 * n + 2))).symm
+  refine Fintype.sum_equiv e
     (fun x => ∑ Q : Pairing n, F ((Pairing.equivSigma n).symm ⟨x, Q⟩))
     (fun j => ∑ Q : Pairing n, F (Q.insertFirstPair j.succ (Ne.symm (Fin.succ_ne_zero j))))
     fun x => ?_
   apply Finset.sum_congr rfl
   intro Q _
-  have hx : (finSuccSubtypeEquiv (2 * n + 1) x).succ = x.1 := Fin.succ_pred x.1 (Ne.symm x.2)
+  have hxSubtype :=
+    (finSuccAboveEquiv (0 : Fin (2 * n + 2))).apply_symm_apply (eNe x)
+  have hx : (e x).succ = x.1 := by
+    change ((finSuccAboveEquiv (0 : Fin (2 * n + 2))).symm (eNe x)).succ = x.1
+    have hxVal := congrArg Subtype.val hxSubtype
+    rw [finSuccAboveEquiv_apply] at hxVal
+    calc
+      ((finSuccAboveEquiv (0 : Fin (2 * n + 2))).symm (eNe x)).succ = (eNe x).1 := by
+        simpa using hxVal
+      _ = x.1 := rfl
   simp only [Pairing.equivSigma, Equiv.coe_fn_symm_mk]
   exact congrArg F (Q.insertFirstPair_congr hx.symm _ _)
 
