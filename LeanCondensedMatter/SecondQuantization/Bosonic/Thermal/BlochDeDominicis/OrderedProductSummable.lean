@@ -53,9 +53,9 @@ private theorem orderedProductMajorant_nonneg (n : Occupation Mode) (K : ℕ) :
   rw [orderedProductMajorant]
   exact Finset.prod_nonneg fun i _ => by positivity
 
+omit [Fintype Mode] in
 /-- Coordinate formula for the free diagonal evolution, kept in the thermal layer to avoid a
 Thermal-to-Perturbation dependency. -/
-omit [Fintype Mode] in
 private theorem imaginaryTimeEvolveFree_apply_coord_orderedProduct
     (ε : Mode → ℝ) (τ : ℝ) (x : FockSpace Mode) (n : Occupation Mode) :
     imaginaryTimeEvolveFree ε τ x n =
@@ -83,6 +83,8 @@ private theorem imaginaryTimeEvolveFree_apply_coord_orderedProduct
     smul_eq_mul] using hx
 
 omit [Fintype Mode] in
+/-- Left composition by the free diagonal evolution rescales a matrix coefficient by the output
+occupation's exponential weight. -/
 private theorem matrixCoeff_imaginaryTimeEvolveFree_comp_orderedProduct
     (ε : Mode → ℝ) (τ : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
     (m n : Occupation Mode) :
@@ -124,8 +126,9 @@ private theorem FreeThermalField.orderedProduct_basisState_bound_aux
             rw [haction, map_smul, create_basisState_eq, smul_smul]
           · intro j
             simp only [List.length_cons]
-            rcases eq_or_ne j i with rfl | hji
-            · rw [createOccupation_apply_same]
+            by_cases hji : j = i
+            · subst j
+              rw [createOccupation_apply_same]
               have hmi := hm i
               omega
             · rw [createOccupation_apply_ne hji]
@@ -177,8 +180,9 @@ private theorem FreeThermalField.orderedProduct_basisState_bound_aux
               rw [haction, map_smul, annihilate_basisState_of_pos hi, smul_smul]
             · intro j
               simp only [List.length_cons]
-              rcases eq_or_ne j i with rfl | hji
-              · rw [removeOccupation_apply_same]
+              by_cases hji : j = i
+              · subst j
+                rw [removeOccupation_apply_same]
                 have hmi := hm i
                 omega
               · rw [removeOccupation_apply_ne hji]
@@ -248,11 +252,17 @@ theorem FreeThermalField.freeGibbsSummable_orderedProduct
   have heq :
       (orderedProductMajorant n fields.length) ^ fields.length =
         ∏ i, ((n i + (fields.length + 1) : ℕ) : ℝ) ^ fields.length := by
-    rw [orderedProductMajorant, Finset.prod_pow]
-    apply Finset.prod_congr rfl
-    intro i _
-    congr 2
-    omega
+    rw [orderedProductMajorant]
+    calc
+      (∏ i, ((n i + fields.length + 1 : ℕ) : ℝ)) ^ fields.length =
+          (∏ i, ((n i + (fields.length + 1) : ℕ) : ℝ)) ^ fields.length := by
+        congr 1
+        apply Finset.prod_congr rfl
+        intro i _
+        congr 1
+        omega
+      _ = ∏ i, ((n i + (fields.length + 1) : ℕ) : ℝ) ^ fields.length := by
+        rw [Finset.prod_pow]
   rw [heq] at hcoeff
   calc
     boltzmannWeight ε β n *
