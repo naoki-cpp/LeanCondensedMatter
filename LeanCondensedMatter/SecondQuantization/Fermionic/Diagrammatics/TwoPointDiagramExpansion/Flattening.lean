@@ -91,32 +91,6 @@ noncomputable def mixedTimeOrderedAtomicOperators {n : ℕ} (ε : Mode → ℝ) 
   (orderedTwoPointTimedEvents τ τ' σ).flatMap
     (twoPointTimedEventAtomicOperators ε i j τ τ' q σ)
 
-private theorem length_flatMap_twoPointTimedEventAtomicOperators {n : ℕ}
-    (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
-    (events : List (TwoPointTimedEvent n)) :
-    (events.flatMap (twoPointTimedEventAtomicOperators ε i j τ τ' q σ)).length =
-      (events.map twoPointTimedEventAtomicArity).sum := by
-  induction events with
-  | nil => rfl
-  | cons event events ih =>
-      simp [ih]
-
-private theorem sum_map_eq_of_perm {α : Type*} (f : α → ℕ) {l₁ l₂ : List α}
-    (h : List.Perm l₁ l₂) : (l₁.map f).sum = (l₂.map f).sum := by
-  induction h with
-  | nil => rfl
-  | cons x h ih => simp [ih]
-  | swap x y l => simp [Nat.add_left_comm]
-  | trans h₁ h₂ ih₁ ih₂ => exact ih₁.trans ih₂
-
-private theorem sum_ofFn_const_four :
-    ∀ n : ℕ, (List.ofFn (fun _ : Fin n => 4)).sum = 4 * n
-  | 0 => rfl
-  | n + 1 => by
-      rw [List.ofFn_succ, List.sum_cons, sum_ofFn_const_four n]
-      omega
-
 private theorem canonicalTwoPointTimedEventAtomicAritySum (n : ℕ) :
     (([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n).map
       twoPointTimedEventAtomicArity).sum = 2 * (2 * n + 1) := by
@@ -124,7 +98,7 @@ private theorem canonicalTwoPointTimedEventAtomicAritySum (n : ℕ) :
       ((twoPointInteractionEventList n).map twoPointTimedEventAtomicArity).sum = 4 * n := by
     rw [twoPointInteractionEventList, List.map_ofFn]
     change (List.ofFn (fun _ : Fin n => 4)).sum = 4 * n
-    exact sum_ofFn_const_four n
+    simp [Nat.mul_comm]
   rw [List.map_append, List.sum_append, hinteraction]
   simp [twoPointTimedEventAtomicArity]
   omega
@@ -134,14 +108,13 @@ private theorem canonicalTwoPointTimedEventAtomicAritySum (n : ℕ) :
 theorem mixedTimeOrderedAtomicOperators_length {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     (mixedTimeOrderedAtomicOperators ε i j τ τ' q σ).length = 2 * (2 * n + 1) := by
-  rw [mixedTimeOrderedAtomicOperators,
-    length_flatMap_twoPointTimedEventAtomicOperators]
+  rw [mixedTimeOrderedAtomicOperators, List.length_flatMap]
+  simp_rw [twoPointTimedEventAtomicOperators_length]
   calc
     ((orderedTwoPointTimedEvents τ τ' σ).map twoPointTimedEventAtomicArity).sum =
         (([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n).map
           twoPointTimedEventAtomicArity).sum :=
-      sum_map_eq_of_perm twoPointTimedEventAtomicArity
-        (orderedTwoPointTimedEvents_perm τ τ' σ)
+      ((orderedTwoPointTimedEvents_perm τ τ' σ).map twoPointTimedEventAtomicArity).sum_eq
     _ = 2 * (2 * n + 1) := canonicalTwoPointTimedEventAtomicAritySum n
 
 private theorem prodComp_flatMap_twoPointTimedEventAtomicOperators {n : ℕ}
