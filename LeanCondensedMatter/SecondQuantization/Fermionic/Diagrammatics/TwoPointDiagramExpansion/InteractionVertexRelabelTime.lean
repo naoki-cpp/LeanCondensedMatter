@@ -132,21 +132,63 @@ theorem twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_inj
     rcases a with a | a
     · rcases b with b | b
       · rfl
-      · simp only [twoPointTimedEventTime, interactionVertexEventRelabel_external,
-          interactionVertexEventRelabel_interaction, twoPointTimedEventBeforeOrEqual,
-          twoPointTimedEventRank, Equiv.symm_apply_apply]
-        simp only [twoPointTimedEventTime] at hEq
-        rw [hEq]
-        have ha : (a : ℕ) < 2 := a.isLt
-        omega
+      · have hEqNew :
+            twoPointTimedEventTime τ τ' (fun v => σ (π.symm v))
+                (interactionVertexEventRelabel π (Sum.inl a)) =
+              twoPointTimedEventTime τ τ' (fun v => σ (π.symm v))
+                (interactionVertexEventRelabel π (Sum.inr b)) := by
+          rw [twoPointTimedEventTime_interactionVertexEventRelabel,
+            twoPointTimedEventTime_interactionVertexEventRelabel]
+          exact hEq
+        have hRankOld :
+            twoPointTimedEventRank (Sum.inl a : TwoPointTimedEvent n) ≤
+              twoPointTimedEventRank (Sum.inr b) := by
+          change (a : ℕ) ≤ 2 + (b : ℕ)
+          omega
+        have hRankNew :
+            twoPointTimedEventRank (interactionVertexEventRelabel π (Sum.inl a)) ≤
+              twoPointTimedEventRank (interactionVertexEventRelabel π (Sum.inr b)) := by
+          simp only [interactionVertexEventRelabel_external, interactionVertexEventRelabel_interaction]
+          change (a : ℕ) ≤ 2 + ((π b : Fin n) : ℕ)
+          omega
+        rw [twoPointTimedEventBeforeOrEqual, twoPointTimedEventBeforeOrEqual]
+        constructor
+        · intro _
+          exact Or.inr ⟨hEq, hRankOld⟩
+        · intro _
+          exact Or.inr ⟨hEqNew, hRankNew⟩
     · rcases b with b | b
-      · simp only [twoPointTimedEventTime, interactionVertexEventRelabel_external,
-          interactionVertexEventRelabel_interaction, twoPointTimedEventBeforeOrEqual,
-          twoPointTimedEventRank, Equiv.symm_apply_apply]
-        simp only [twoPointTimedEventTime] at hEq
-        rw [hEq]
-        have hb : (b : ℕ) < 2 := b.isLt
-        omega
+      · have hEqNew :
+            twoPointTimedEventTime τ τ' (fun v => σ (π.symm v))
+                (interactionVertexEventRelabel π (Sum.inr a)) =
+              twoPointTimedEventTime τ τ' (fun v => σ (π.symm v))
+                (interactionVertexEventRelabel π (Sum.inl b)) := by
+          rw [twoPointTimedEventTime_interactionVertexEventRelabel,
+            twoPointTimedEventTime_interactionVertexEventRelabel]
+          exact hEq
+        have hRankOld :
+            twoPointTimedEventRank (Sum.inl b : TwoPointTimedEvent n) <
+              twoPointTimedEventRank (Sum.inr a) := by
+          change (b : ℕ) < 2 + (a : ℕ)
+          omega
+        have hRankNew :
+            twoPointTimedEventRank (interactionVertexEventRelabel π (Sum.inl b)) <
+              twoPointTimedEventRank (interactionVertexEventRelabel π (Sum.inr a)) := by
+          simp only [interactionVertexEventRelabel_external, interactionVertexEventRelabel_interaction]
+          change (b : ℕ) < 2 + ((π a : Fin n) : ℕ)
+          omega
+        rw [twoPointTimedEventBeforeOrEqual, twoPointTimedEventBeforeOrEqual]
+        constructor
+        · intro h
+          rcases h with hlt | ⟨_, hle⟩
+          · rw [hEqNew] at hlt
+            exact (lt_irrefl _ hlt).elim
+          · exact (not_le_of_gt hRankNew hle).elim
+        · intro h
+          rcases h with hlt | ⟨_, hle⟩
+          · rw [hEq] at hlt
+            exact (lt_irrefl _ hlt).elim
+          · exact (not_le_of_gt hRankOld hle).elim
       · have hab : a = b := hσ (by simpa [twoPointTimedEventTime] using hEq)
         subst b
         simp [twoPointTimedEventBeforeOrEqual, twoPointTimedEventRank]
