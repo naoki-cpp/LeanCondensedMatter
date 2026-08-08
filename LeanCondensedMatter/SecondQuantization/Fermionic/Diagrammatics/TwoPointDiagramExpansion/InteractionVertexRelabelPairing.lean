@@ -20,7 +20,6 @@ variable {Mode : Type*}
 
 /-- Reading a standard leg after applying the flattened interaction-slot relabeling is the same as
 relabeling the standard leg itself. -/
-@[simp]
 theorem twoPointLegEquiv_interactionVertexPositionRelabel {n : ℕ}
     (π : Equiv.Perm (Fin n))
     (p : Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1))) :
