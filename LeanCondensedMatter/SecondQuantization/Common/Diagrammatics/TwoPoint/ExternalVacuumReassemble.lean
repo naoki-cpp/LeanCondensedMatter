@@ -57,13 +57,22 @@ def TwoPointDiagram.externalVacuumLegDataEquiv
   left_inv x := by
     rcases x with e | ⟨v, l⟩
     · rfl
-    · cases h : TwoPointDiagram.interactionExternalVacuumEquiv hE v with
+    · change
+        (match TwoPointDiagram.interactionExternalVacuumEquiv hE v with
+          | Sum.inl w =>
+              Sum.inr ((TwoPointDiagram.interactionExternalVacuumEquiv hE).symm (Sum.inl w), l)
+          | Sum.inr w =>
+              Sum.inr ((TwoPointDiagram.interactionExternalVacuumEquiv hE).symm (Sum.inr w), l)) =
+          Sum.inr (v, l)
+      cases h : TwoPointDiagram.interactionExternalVacuumEquiv hE v with
       | inl w =>
+          rw [h]
           apply congrArg Sum.inr
           apply Prod.ext
           · exact (Equiv.symm_apply_eq).2 h.symm
           · rfl
       | inr w =>
+          rw [h]
           apply congrArg Sum.inr
           apply Prod.ext
           · exact (Equiv.symm_apply_eq).2 h.symm
@@ -96,13 +105,8 @@ def TwoPointDiagram.vacuumVertexEmbed {S E : Finset (Fin N)} (_hE : E ⊆ S) :
 
 private theorem externalVertexEmbed_injective {S E : Finset (Fin N)} (hE : E ⊆ S) :
     Function.Injective (TwoPointDiagram.externalVertexEmbed hE) := by
-  rintro (e | v) (e' | w) h
-  · exact Sum.inl.inj h
-  · cases h
-  · cases h
-  · apply congrArg Sum.inr
-    apply Subtype.ext
-    exact congrArg (fun x => x.1) (Sum.inr.inj h)
+  rintro (e | v) (e' | w) h <;>
+    simp_all [TwoPointDiagram.externalVertexEmbed]
 
 private theorem sumPerm_involutive {α β : Type*}
     (p : Equiv.Perm α) (q : Equiv.Perm β)
