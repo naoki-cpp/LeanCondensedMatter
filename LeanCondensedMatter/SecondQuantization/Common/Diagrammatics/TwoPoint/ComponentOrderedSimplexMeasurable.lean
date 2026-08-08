@@ -38,6 +38,7 @@ theorem TwoPointDiagram.sum_componentInteractionShuffle_orderedSimplexIntegral_e
     β componentIntegrand]
   exact
     FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype_of_measurableLocallyBounded
+      (ι := d.componentPartition.parts)
       d.interactionComponentSize β componentIntegrand hcomponent
 
 end
