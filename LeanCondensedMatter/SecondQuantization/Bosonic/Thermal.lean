@@ -12,6 +12,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.F
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcretePairKernel
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OperatorPeel
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation
 
 set_option linter.style.header false
 
@@ -28,7 +29,8 @@ Public umbrella for the convergence-aware free bosonic thermal layer:
 - concrete summability and normalized values for both mixed creation/annihilation contractions;
 - same-type zero contractions and the theorem identifying every two-field Gibbs expectation with `freeThermalPairValue`;
 - free-Gibbs domain membership for arbitrary fixed-length ordered products of free thermal fields;
-- a Common-backed finite CCR operator-peel identity, isolating KMS rotation as the remaining first-pair step;
+- a Common-backed finite CCR operator-peel identity;
+- occupation-reindexed `tsumTrace` cyclicity for single ladder operators and the resulting normalized free-Gibbs KMS rotation;
 - an analytic adapter from bosonic domain/KMS hypotheses to the Common pairing recursion;
 - concrete free thermal field labels, pair kernel, and the inherited Wick pairing expansion.
 
