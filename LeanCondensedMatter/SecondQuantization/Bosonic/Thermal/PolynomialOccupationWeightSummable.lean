@@ -64,6 +64,72 @@ theorem summable_occupationMonomial_boltzmannWeight
   rw [heq] at H
   exact H.summable
 
+omit [Fintype Mode] in
+/-- A fixed shift of the occupation number does not spoil polynomially weighted one-mode Gibbs
+summability.  This is the tail form needed after finitely many creation operators have acted. -/
+theorem summable_shiftedPow_oneModeBoltzmannWeight
+    (β energy : ℝ) (hpos : 0 < β * energy) (shift power : ℕ) :
+    Summable (fun k : ℕ =>
+      ((k + shift : ℕ) : ℝ) ^ power * oneModeBoltzmannWeight β energy k) := by
+  let r : ℝ := Real.exp (-β * energy)
+  have hr : ‖r‖ < 1 := by
+    change ‖Real.exp (-β * energy)‖ < 1
+    rw [Real.norm_eq_abs, abs_of_nonneg (Real.exp_nonneg _), Real.exp_lt_one_iff]
+    linarith
+  have hr0 : r ≠ 0 := by
+    dsimp [r]
+    exact Real.exp_ne_zero _
+  have h := summable_pow_mul_geometric_of_norm_lt_one (R := ℝ) power hr
+  have htail : Summable (fun k : ℕ =>
+      ((k + shift : ℕ) : ℝ) ^ power * r ^ (k + shift)) := by
+    change Summable ((fun n : ℕ => (n : ℝ) ^ power * r ^ n) ∘ fun k : ℕ => k + shift)
+    exact h.comp_injective (fun _ _ hk => Nat.add_right_cancel hk)
+  have hscaled := htail.mul_left (r ^ shift)⁻¹
+  have heq :
+      (fun k : ℕ =>
+        ((k + shift : ℕ) : ℝ) ^ power * oneModeBoltzmannWeight β energy k) =
+      fun k : ℕ =>
+        (r ^ shift)⁻¹ * (((k + shift : ℕ) : ℝ) ^ power * r ^ (k + shift)) := by
+    funext k
+    unfold oneModeBoltzmannWeight
+    rw [Real.exp_nat_mul]
+    change ((↑(k + shift) : ℝ) ^ power * r ^ k) =
+      (r ^ shift)⁻¹ * ((↑(k + shift) : ℝ) ^ power * r ^ (k + shift))
+    rw [pow_add]
+    field_simp [hr0]
+  rw [heq]
+  exact hscaled
+
+/-- A uniform shifted power in every mode is summable against the free bosonic Gibbs weight.
+
+This product-form majorant is convenient for arbitrary fixed-length ladder products: after at most
+`shift` ladder steps, every intermediate mode occupation is bounded by `n i + shift`. -/
+theorem summable_shiftedOccupationPowerProduct_boltzmannWeight
+    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i) (shift power : ℕ) :
+    Summable (fun n : Occupation Mode =>
+      (∏ i, ((n i + shift : ℕ) : ℝ) ^ power) * boltzmannWeight ε β n) := by
+  set g : Mode → ℕ → ℝ := fun i k =>
+    ((k + shift : ℕ) : ℝ) ^ power * oneModeBoltzmannWeight β (ε i) k with hgdef
+  have hg : ∀ i, Summable (g i) := by
+    intro i
+    rw [hgdef]
+    exact summable_shiftedPow_oneModeBoltzmannWeight β (ε i) (hpos i) shift power
+  have hnonneg : ∀ i k, 0 ≤ g i k := by
+    intro i k
+    rw [hgdef]
+    exact mul_nonneg (pow_nonneg (Nat.cast_nonneg _) _) (Real.exp_nonneg _)
+  have H := Finsupp.hasSum_prod_nonneg g (fun i => ∑' k, g i k)
+    (fun i => (hg i).hasSum) hnonneg
+  have heq : (fun n : Occupation Mode => ∏ i, g i (n i)) =
+      fun n : Occupation Mode =>
+        (∏ i, ((n i + shift : ℕ) : ℝ) ^ power) * boltzmannWeight ε β n := by
+    funext n
+    rw [boltzmannWeight_eq_prod]
+    simp only [hgdef]
+    exact Finset.prod_mul_distrib
+  rw [heq] at H
+  exact H.summable
+
 end
 end Bosonic
 end SecondQuantization
