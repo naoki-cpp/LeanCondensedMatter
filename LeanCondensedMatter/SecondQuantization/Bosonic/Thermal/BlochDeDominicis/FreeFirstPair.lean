@@ -41,8 +41,9 @@ theorem kmsFactor_sub_one_ne_zero
       intro hzero
       have hexp : Complex.exp ((β : ℂ) * (ε i : ℂ)) = 1 := sub_eq_zero.mp hzero
       have hnorm := congrArg norm hexp
-      have hnorm' : Real.exp (β * ε i) = 1 := by
-        simpa using hnorm
+      rw [Complex.norm_exp, norm_one] at hnorm
+      have hre : (((β : ℂ) * (ε i : ℂ))).re = β * ε i := by simp
+      rw [hre] at hnorm
       have hgt : 1 < Real.exp (β * ε i) := by
         rw [Real.one_lt_exp_iff]
         exact hpos i
@@ -51,13 +52,15 @@ theorem kmsFactor_sub_one_ne_zero
       intro hzero
       have hexp : Complex.exp (-(β : ℂ) * (ε i : ℂ)) = 1 := sub_eq_zero.mp hzero
       have hnorm := congrArg norm hexp
-      have hnorm' : Real.exp (-(β * ε i)) = 1 := by
-        simpa using hnorm
+      rw [Complex.norm_exp, norm_one] at hnorm
+      have hre : ((-(β : ℂ) * (ε i : ℂ))).re = -(β * ε i) := by simp
+      rw [hre] at hnorm
       have hlt : Real.exp (-(β * ε i)) < 1 := by
         rw [Real.exp_lt_one_iff]
         nlinarith [hpos i]
       linarith
 
+omit [Fintype Mode] in
 /-- Appending a free thermal field on the right agrees with postcomposition by its operator. -/
 theorem orderedProduct_append_singleton
     (l : List (FreeThermalField Mode)) (C : FreeThermalField Mode) :
@@ -65,7 +68,7 @@ theorem orderedProduct_append_singleton
   rw [orderedProduct_eq_common_operatorProduct,
     Common.BlochDeDominicis.operatorProduct_append,
     ← orderedProduct_eq_common_operatorProduct]
-  simp [orderedProduct]
+  simp
 
 /-- Bosonic CCR exchange plus KMS rotation solves the wrapped term with factor `q / (q - 1)`. -/
 theorem freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
@@ -92,7 +95,6 @@ theorem freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum
           hop]
       _ = P + R := by
         rw [freeGibbsExpectation_add ε β hPmem hRmem]
-        rfl
   have hkms : E = C.kmsFactor ε β * R := by
     change freeGibbsExpectation ε β (C.operator.comp (orderedProduct l)) =
       C.kmsFactor ε β *
@@ -130,8 +132,8 @@ theorem kmsRatio_mul_exchangeValue_eq_freeThermalPairValue
     ε β hpos C [D]
   have hpeel :
       freeGibbsExpectation ε β (C.operatorPeelSum [D]) = C.exchangeValue D := by
-    rw [freeGibbsExpectation_operatorPeelSum_eq_sum]
-    simp [orderedProduct, freeGibbsExpectation_id ε β hpos]
+    rw [freeGibbsExpectation_operatorPeelSum_eq_sum ε β hpos C [D]]
+    simp [freeGibbsExpectation_id ε β hpos]
   have hpair := freeGibbsExpectation_orderedProduct_pair_eq_freeThermalPairValue
     ε β hpos C D
   calc
