@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentConnected
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentVertexProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Amplitude
 
 set_option linter.style.header false

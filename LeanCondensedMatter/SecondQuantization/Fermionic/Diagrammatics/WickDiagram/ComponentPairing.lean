@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentPairing
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPairing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairValue
 
 set_option linter.style.header false

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentOrder
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrder
 import Mathlib.Data.Finset.Sort
 
 set_option linter.style.header false

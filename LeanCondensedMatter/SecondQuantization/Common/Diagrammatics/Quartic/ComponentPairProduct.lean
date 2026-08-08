@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentPairing
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPairing
 
 set_option linter.style.header false
 

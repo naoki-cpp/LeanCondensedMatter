@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticThermalAmplitude
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentPairProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPairProduct
 
 set_option linter.style.header false
 

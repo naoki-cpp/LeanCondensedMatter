@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentOrderDecomposition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrderDecomposition
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 
 set_option linter.style.header false

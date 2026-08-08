@@ -1,5 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentOrderedSimplex
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentOrder
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrderedSimplex
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrder
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Amplitude
 
 set_option linter.style.header false

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentDecompositionEquiv
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.ComponentVertexProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagram
 
 set_option linter.style.header false

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.FiniteComponentOrderedSimplex
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.FiniteComponentOrderedSimplex
 
 set_option linter.style.header false
 
