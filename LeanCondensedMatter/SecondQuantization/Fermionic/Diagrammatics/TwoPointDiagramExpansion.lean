@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Flattening
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Pairing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Reindexing
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.InteractionVertexRelabel
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedEventBlockOrder
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedPositionLeg
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairing
@@ -38,21 +39,22 @@ set_option linter.style.header false
 # Fermionic two-point diagram expansion
 
 Atomic flattening, the finite-temperature pairing expansion, transport of mixed-time pairings to
-external-leg Wick diagrams, ordering inside mixed event blocks and their standard-leg coordinates,
-restriction of mixed-order positions, partners, and normalized pairs to full components, canonical
-comparison of component positions and pairs across interaction-time assignments, exact endpoint,
-component-internal crossing, and finite Gibbs contraction preservation under component-local time
-equality, chamberwise preservation of component position order, normalized pair orientation, and
-crossing combinatorics, explicit globally continuous fixed-standard-leg Gibbs contractions,
-fixed-index globally continuous chamber representatives, finite-signature piecewise presentations
-that prove global measurability, finite continuous-selection bounds that prove compact-box
-integrability, and a measurable-locally-bounded ordered-simplex shuffle interface for the actual
-Dyson component factors without claiming continuity across order walls, together with factorization
-of mixed-time contraction products, decomposition of mixed crossing counts, reduction of their
-parity to complete component-position inversions and concrete vacuum four-leg event blocks,
-unconditional factorization of mixed pairing weights, pairing values, coupling products, fixed-time
-values, and component-local Dyson signs, canonical component-locality of the pointwise Dyson
-integrand, the ambient permutation relating every component shuffle to the canonical one, the
-factorized ordered-simplex interface, and the perturbative coefficient for the imaginary-time
-two-point function with quartic interaction vertices.
+external-leg Wick diagrams, interaction-vertex relabeling on fixed-external diagrams, ordering
+inside mixed event blocks and their standard-leg coordinates, restriction of mixed-order positions,
+partners, and normalized pairs to full components, canonical comparison of component positions and
+pairs across interaction-time assignments, exact endpoint, component-internal crossing, and finite
+Gibbs contraction preservation under component-local time equality, chamberwise preservation of
+component position order, normalized pair orientation, and crossing combinatorics, explicit globally
+continuous fixed-standard-leg Gibbs contractions, fixed-index globally continuous chamber
+representatives, finite-signature piecewise presentations that prove global measurability, finite
+continuous-selection bounds that prove compact-box integrability, and a measurable-locally-bounded
+ordered-simplex shuffle interface for the actual Dyson component factors without claiming
+continuity across order walls, together with factorization of mixed-time contraction products,
+decomposition of mixed crossing counts, reduction of their parity to complete component-position
+inversions and concrete vacuum four-leg event blocks, unconditional factorization of mixed pairing
+weights, pairing values, coupling products, fixed-time values, and component-local Dyson signs,
+canonical component-locality of the pointwise Dyson integrand, the ambient permutation relating every
+component shuffle to the canonical one, the factorized ordered-simplex interface, and the
+perturbative coefficient for the imaginary-time two-point function with quartic interaction
+vertices.
 -/
