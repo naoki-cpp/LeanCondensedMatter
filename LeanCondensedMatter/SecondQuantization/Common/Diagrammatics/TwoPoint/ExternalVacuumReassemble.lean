@@ -41,47 +41,12 @@ def TwoPointDiagram.interactionExternalVacuumEquiv
 /-- Split full two-point legs into the external-core two-point legs and vacuum quartic legs. -/
 def TwoPointDiagram.externalVacuumLegDataEquiv
     {S E : Finset (Fin N)} (hE : E ⊆ S) :
-    TwoPointLeg S ≃ TwoPointLeg E ⊕ (↥(S \ E) × Fin 4) where
-  toFun
-    | Sum.inl e => Sum.inl (Sum.inl e)
-    | Sum.inr (v, l) =>
-        match TwoPointDiagram.interactionExternalVacuumEquiv hE v with
-        | Sum.inl w => Sum.inl (Sum.inr (w, l))
-        | Sum.inr w => Sum.inr (w, l)
-  invFun
-    | Sum.inl (Sum.inl e) => Sum.inl e
-    | Sum.inl (Sum.inr (v, l)) =>
-        Sum.inr ((TwoPointDiagram.interactionExternalVacuumEquiv hE).symm (Sum.inl v), l)
-    | Sum.inr (v, l) =>
-        Sum.inr ((TwoPointDiagram.interactionExternalVacuumEquiv hE).symm (Sum.inr v), l)
-  left_inv x := by
-    rcases x with e | ⟨v, l⟩
-    · rfl
-    · change
-        (match TwoPointDiagram.interactionExternalVacuumEquiv hE v with
-          | Sum.inl w =>
-              Sum.inr ((TwoPointDiagram.interactionExternalVacuumEquiv hE).symm (Sum.inl w), l)
-          | Sum.inr w =>
-              Sum.inr ((TwoPointDiagram.interactionExternalVacuumEquiv hE).symm (Sum.inr w), l)) =
-          Sum.inr (v, l)
-      cases h : TwoPointDiagram.interactionExternalVacuumEquiv hE v with
-      | inl w =>
-          rw [h]
-          apply congrArg Sum.inr
-          apply Prod.ext
-          · exact (Equiv.symm_apply_eq).2 h.symm
-          · rfl
-      | inr w =>
-          rw [h]
-          apply congrArg Sum.inr
-          apply Prod.ext
-          · exact (Equiv.symm_apply_eq).2 h.symm
-          · rfl
-  right_inv x := by
-    rcases x with (e | ⟨v, l⟩) | ⟨v, l⟩
-    · rfl
-    · simp
-    · simp
+    TwoPointLeg S ≃ TwoPointLeg E ⊕ (↥(S \ E) × Fin 4) :=
+  (Equiv.sumCongr (Equiv.refl (Fin 2))
+      ((TwoPointDiagram.interactionExternalVacuumEquiv hE).prodCongr (Equiv.refl (Fin 4)))).trans <|
+    (Equiv.sumCongr (Equiv.refl (Fin 2))
+      (Equiv.sumProdDistrib (↥E) (↥(S \ E)) (Fin 4))).trans <|
+      (Equiv.sumAssoc (Fin 2) (↥E × Fin 4) (↥(S \ E) × Fin 4)).symm
 
 /-- Flattened ambient legs split into flattened external-core and vacuum legs. -/
 noncomputable def TwoPointDiagram.externalVacuumLegEquiv
