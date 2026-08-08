@@ -46,16 +46,18 @@ theorem orderedSimplexIntegral_succ_mul_succ_of_measurableLocallyBounded
     simpa [v'] using hDv
 
   have huAC : AbsolutelyContinuousOnInterval u 0 β := by
-    have h := huInt.absolutelyContinuousOnInterval_intervalIntegral_of_norm_le
-      (c := (0 : ℝ)) (by simp) hDu0 hDu'
+    have h :=
+      intervalIntegral.IntervalIntegrable.absolutelyContinuousOnInterval_intervalIntegral_of_norm_le
+        huInt (c := (0 : ℝ)) (by simp) hDu0 hDu'
     simpa [u, u', orderedSimplexIntegral_succ] using h
   have hvAC : AbsolutelyContinuousOnInterval v 0 β := by
-    have h := hvInt.absolutelyContinuousOnInterval_intervalIntegral_of_norm_le
-      (c := (0 : ℝ)) (by simp) hDv0 hDv'
+    have h :=
+      intervalIntegral.IntervalIntegrable.absolutelyContinuousOnInterval_intervalIntegral_of_norm_le
+        hvInt (c := (0 : ℝ)) (by simp) hDv0 hDv'
     simpa [v, v', orderedSimplexIntegral_succ] using h
 
-  have huAeInt := _root_.IntervalIntegrable.ae_hasDerivAt_integral huInt
-  have hvAeInt := _root_.IntervalIntegrable.ae_hasDerivAt_integral hvInt
+  have huAeInt := ae_hasDerivAt_intervalIntegral_of_intervalIntegrable huInt
+  have hvAeInt := ae_hasDerivAt_intervalIntegral_of_intervalIntegrable hvInt
   have huDeriv : ∀ᵐ t, t ∈ Set.uIcc (0 : ℝ) β → HasDerivAt u (u' t) t := by
     filter_upwards [huAeInt] with t ht hmem
     have h := ht hmem 0 (by simp)
