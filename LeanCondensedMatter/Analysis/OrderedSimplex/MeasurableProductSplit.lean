@@ -33,7 +33,6 @@ theorem orderedSimplexIntegral_succ_mul_succ_of_measurableLocallyBounded
     orderedSimplexIntegral m t (fun rest => f (Fin.cons t rest))
   let v' : ℝ → ℂ := fun t =>
     orderedSimplexIntegral n t (fun rest => g (Fin.cons t rest))
-
   have huInt : IntervalIntegrable u' volume 0 β := by
     simpa [u'] using hf.intervalIntegrable_orderedSimplexIntegral_boundary β
   have hvInt : IntervalIntegrable v' volume 0 β := by
@@ -44,7 +43,6 @@ theorem orderedSimplexIntegral_succ_mul_succ_of_measurableLocallyBounded
     simpa [u'] using hDu
   have hDv' : ∀ t ∈ Set.uIcc (0 : ℝ) β, ‖v' t‖ ≤ Dv := by
     simpa [v'] using hDv
-
   have huAC : AbsolutelyContinuousOnInterval u 0 β := by
     have h :=
       intervalIntegral.IntervalIntegrable.absolutelyContinuousOnInterval_intervalIntegral_of_norm_le
@@ -55,7 +53,6 @@ theorem orderedSimplexIntegral_succ_mul_succ_of_measurableLocallyBounded
       intervalIntegral.IntervalIntegrable.absolutelyContinuousOnInterval_intervalIntegral_of_norm_le
         hvInt (c := (0 : ℝ)) (by simp) hDv0 hDv'
     simpa [v, v', orderedSimplexIntegral_succ] using h
-
   have huAeInt := ae_hasDerivAt_intervalIntegral_of_intervalIntegrable huInt
   have hvAeInt := ae_hasDerivAt_intervalIntegral_of_intervalIntegrable hvInt
   have huDeriv : ∀ᵐ t, t ∈ Set.uIcc (0 : ℝ) β → HasDerivAt u (u' t) t := by
@@ -66,7 +63,6 @@ theorem orderedSimplexIntegral_succ_mul_succ_of_measurableLocallyBounded
     filter_upwards [hvAeInt] with t ht hmem
     have h := ht hmem 0 (by simp)
     simpa [v, v', orderedSimplexIntegral_succ] using h
-
   let w : ℝ → ℂ := fun t => u t * v t
   let w' : ℝ → ℂ := fun t => u' t * v t + u t * v' t
   have hwAC : AbsolutelyContinuousOnInterval w 0 β := by
@@ -81,7 +77,6 @@ theorem orderedSimplexIntegral_succ_mul_succ_of_measurableLocallyBounded
     have hright : IntervalIntegrable (fun t => u t * v' t) volume 0 β :=
       hvInt.continuousOn_mul huAC.continuousOn
     exact hleft.add hright
-
   obtain ⟨U, hU⟩ := huAC.exists_bound
   obtain ⟨V, hV⟩ := hvAC.exists_bound
   let U₀ := max U 0
@@ -110,7 +105,6 @@ theorem orderedSimplexIntegral_succ_mul_succ_of_measurableLocallyBounded
         · exact huBound t ht
         · exact hDv' t ht
       _ = D := rfl
-
   have hFTC :=
     integral_eq_sub_of_absolutelyContinuousOnInterval_of_ae_hasDerivAt_of_norm_le
       hwAC hwInt hD hwBound hwDeriv
