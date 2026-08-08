@@ -8,6 +8,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.DiagonalA
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbs
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.GibbsLadderIntertwining
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnboundedExpectation
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbsSummability
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteCompatibility
@@ -42,7 +43,10 @@ state is a genuine trace-class `DensityOperator`. Bounded expectations use the c
 density-state API, while integrable unbounded diagonal observables are represented separately by
 absolutely convergent occupation-basis series. In particular this gives explicit expectation
 interfaces for the completed free Hamiltonian and total particle number without coercing either
-unbounded operator into `ContinuousLinearMap`.
+unbounded operator into `ContinuousLinearMap`. The Gibbs density operator also obeys the bounded
+thermal-intertwining relations `ρβ aᵢ† = exp (-β εᵢ) aᵢ† ρβ` and
+`ρβ aᵢ = exp (β εᵢ) aᵢ ρβ`. These identities provide the first completed-space KMS-facing product
+layer without forming a formal exponential of the unbounded Hamiltonian.
 
 For the free fermion state, summability of the one-particle Boltzmann factors
 `exp (-β εᵢ)` is a concrete sufficient condition for occupation-level Gibbs summability. Under this
