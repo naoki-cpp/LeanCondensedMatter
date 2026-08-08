@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.Continuum.SchrodingerHamiltonianSelfAdjointCriterion1D
+import Mathlib.Analysis.Calculus.Deriv.Star
 import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
 import Mathlib.Analysis.RCLike.Lemmas
 import Mathlib.Tactic
@@ -41,12 +42,8 @@ private theorem schwartzConj1D_apply (f : SchwartzMap ℝ ℂ) (x : ℝ) :
 
 private theorem deriv_schwartzConj1D (f : SchwartzMap ℝ ℂ) (x : ℝ) :
     deriv (schwartzConj1D f) x = star (deriv f x) := by
-  have h :=
-    (((RCLike.conjCLE (K := ℂ)).toContinuousLinearMap : ℂ →L[ℝ] ℂ).hasFDerivAt.comp x
-      (SchwartzMap.hasDerivAt f x).hasFDerivAt).hasDerivAt
-  change deriv ((starRingEnd ℂ) ∘ (f : ℝ → ℂ)) x =
-    (starRingEnd ℂ) (deriv (f : ℝ → ℂ) x)
-  exact h.deriv
+  change deriv (fun y : ℝ => star (f y)) x = star (deriv (f : ℝ → ℂ) x)
+  exact (SchwartzMap.hasDerivAt f x).star.deriv
 
 private theorem derivCLM_schwartzConj1D (f : SchwartzMap ℝ ℂ) :
     SchwartzMap.derivCLM ℂ ℂ (schwartzConj1D f) =
@@ -135,6 +132,7 @@ theorem continuumH2LaplacianPMap1D_adjoint_domain_le :
       filter_upwards [(schwartzConj1D (Δ g)).coeFn_toLp 2 (volume : Measure ℝ)] with x hx
       rw [hx]
       simp [RCLike.inner_apply, mul_comm]
+  all_goals rfl
 
 /-- The free distributional Laplacian on `H²(ℝ)` is self-adjoint on physical `L²(ℝ, ℂ)`. -/
 theorem continuumH2LaplacianPMap1D_isSelfAdjoint :
