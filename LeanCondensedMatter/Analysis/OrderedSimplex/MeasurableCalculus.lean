@@ -117,7 +117,7 @@ theorem integral_eq_sub_of_absolutelyContinuousOnInterval_of_ae_hasDerivAt_of_no
   have hprim : AbsolutelyContinuousOnInterval (fun x => ∫ t in a..x, F' t) a b :=
     IntervalIntegrable.absolutelyContinuousOnInterval_intervalIntegral_of_norm_le
       hF' (by simp) hC hbound
-  let G : ℝ → ℂ := fun x => F x - ∫ t in a..x, F' t
+  let G : ℝ → ℂ := F - fun x => ∫ t in a..x, F' t
   have hG : AbsolutelyContinuousOnInterval G a b := hF.sub hprim
   have hAeInt :
       ∀ᵐ x, x ∈ Set.uIcc a b → ∀ c ∈ Set.uIcc a b,
