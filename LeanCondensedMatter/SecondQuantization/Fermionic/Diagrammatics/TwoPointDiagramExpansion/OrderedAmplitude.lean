@@ -40,8 +40,6 @@ noncomputable def fixedExternalTwoPointWickDiagramOnEquivOrderedData
   invFun x :=
     ⟨(Common.twoPointDiagramEquivOrderedData order).symm
       (twoPointExternalLabels i j, x.1, x.2), by
-        change ((Common.twoPointDiagramEquivOrderedData order).symm
-          (twoPointExternalLabels i j, x.1, x.2)).externalLabel = _
         simp [Common.twoPointDiagramEquivOrderedData]⟩
   left_inv d := by
     apply Subtype.ext
