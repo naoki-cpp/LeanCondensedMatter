@@ -134,7 +134,7 @@ theorem twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_inj
       · rfl
       · simp only [twoPointTimedEventTime, interactionVertexEventRelabel_external,
           interactionVertexEventRelabel_interaction, twoPointTimedEventBeforeOrEqual,
-          twoPointTimedEventRank]
+          twoPointTimedEventRank, Equiv.symm_apply_apply]
         simp only [twoPointTimedEventTime] at hEq
         rw [hEq]
         have ha : (a : ℕ) < 2 := a.isLt
@@ -142,7 +142,7 @@ theorem twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_inj
     · rcases b with b | b
       · simp only [twoPointTimedEventTime, interactionVertexEventRelabel_external,
           interactionVertexEventRelabel_interaction, twoPointTimedEventBeforeOrEqual,
-          twoPointTimedEventRank]
+          twoPointTimedEventRank, Equiv.symm_apply_apply]
         simp only [twoPointTimedEventTime] at hEq
         rw [hEq]
         have hb : (b : ℕ) < 2 := b.isLt
