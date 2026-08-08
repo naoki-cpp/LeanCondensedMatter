@@ -65,7 +65,6 @@ theorem completedFreeGibbsExpectation_operator_comp
             have htoggle : toggleOccupation i (toggleOccupation i n) = n :=
               toggleOccupation_involutive i n
             dsimp [f]
-            simp only [ContinuousLinearMap.comp_apply]
             rw [inner_completedBasisState, completedCreate_apply, if_pos hi,
               toggleOccupation_of_mem hi,
               coe_completedFreeGibbsProbability_removeOccupation_of_mem ε β hi,
@@ -77,7 +76,6 @@ theorem completedFreeGibbsExpectation_operator_comp
           · have hit : i ∈ toggleOccupation i n :=
               (mem_toggleOccupation i n).mpr hi
             dsimp [f]
-            simp only [ContinuousLinearMap.comp_apply]
             rw [inner_completedBasisState, completedCreate_apply, if_neg hi,
               completedCreate_basisState_of_mem hit]
             rfl
@@ -110,7 +108,6 @@ theorem completedFreeGibbsExpectation_operator_comp
               intro hit
               exact ((mem_toggleOccupation i n).mp hit) hi
             dsimp [f]
-            simp only [ContinuousLinearMap.comp_apply]
             rw [inner_completedBasisState, completedAnnihilate_apply, if_pos hi,
               completedAnnihilate_basisState_of_not_mem hit]
             rfl
@@ -119,7 +116,6 @@ theorem completedFreeGibbsExpectation_operator_comp
             have htoggle : toggleOccupation i (toggleOccupation i n) = n :=
               toggleOccupation_involutive i n
             dsimp [f]
-            simp only [ContinuousLinearMap.comp_apply]
             rw [inner_completedBasisState, completedAnnihilate_apply, if_neg hi,
               toggleOccupation_of_not_mem hi,
               coe_completedFreeGibbsProbability_insertOccupation_of_not_mem ε β hi,
