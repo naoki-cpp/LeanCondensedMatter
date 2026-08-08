@@ -37,6 +37,8 @@ variable {α R : Type*} [DecidableEq α] [CommRing R]
 private theorem momentFromCumulant_empty (κ : Finset α → R) :
     Finpartition.momentFromCumulant κ ∅ = 1 := by
   classical
+  letI : Unique (Finpartition (∅ : Finset α)) :=
+    inferInstanceAs (Unique (Finpartition (⊥ : Finset α)))
   rw [Finpartition.momentFromCumulant, Fintype.sum_unique]
   have hparts : (default : Finpartition (∅ : Finset α)).parts = ∅ := by simp
   simp [Finpartition.partitionProduct, hparts]
@@ -44,6 +46,8 @@ private theorem momentFromCumulant_empty (κ : Finset α → R) :
 private theorem cumulantFromMoment_empty (m : Finset α → R) :
     Finpartition.cumulantFromMoment m ∅ = 1 := by
   classical
+  letI : Unique (Finpartition (∅ : Finset α)) :=
+    inferInstanceAs (Unique (Finpartition (⊥ : Finset α)))
   rw [Finpartition.cumulantFromMoment, Fintype.sum_unique]
   have hdefault_top : (default : Finpartition (∅ : Finset α)) = ⊤ :=
     Subsingleton.elim _ _
