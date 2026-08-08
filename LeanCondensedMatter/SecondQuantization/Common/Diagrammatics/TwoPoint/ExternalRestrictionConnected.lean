@@ -6,8 +6,8 @@ set_option linter.style.header false
 # Connectedness of the restricted external component
 
 Restriction to the component containing the distinguished external vertices preserves its complete
-pairing graph.  Hence the restricted two-point diagram has no vacuum component (and therefore is
-externally connected in the two-one-legged-external setup).
+pairing graph. Hence the restricted two-point diagram has no vacuum component and is externally
+connected in the two-one-legged-external setup.
 -/
 
 namespace SecondQuantization
@@ -51,21 +51,30 @@ noncomputable def TwoPointDiagram.externalBlockVertexEquiv {S : Finset (Fin N)}
     · apply congrArg Sum.inr
       exact Subtype.ext (by rfl)
 
-/-- The unflattened external-leg equivalence preserves the incident vertex. -/
-@[simp]
+/-- The flattened external-block reindexing has the expected unflattened leg value. -/
+theorem TwoPointDiagram.twoPointLegEquiv_externalBlockLegEquiv
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (leg : {leg : Fin (2 * (2 * S.card + 1)) //
+      d.legInComponent (d.externalComponent 0) leg}) :
+    twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))
+        (d.externalBlockLegEquiv leg) =
+      d.externalLegDataEquiv d.externalComponentPart
+        ⟨twoPointLegEquiv S leg.1,
+          (d.legInComponent_iff_unflattened d.externalComponentPart leg.1).1 leg.2⟩ := by
+  simp [TwoPointDiagram.externalBlockLegEquiv]
+
+/-- Restricting an unflattened leg and then taking its vertex agrees with restricting its vertex. -/
 theorem TwoPointDiagram.twoPointLegVertex_externalLegDataEquiv
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (leg : {leg : TwoPointLeg S //
       d.unflattenedLegInComponent d.externalComponentPart leg}) :
-    twoPointLegVertex (d.externalLegDataEquiv leg) =
+    twoPointLegVertex (d.externalLegDataEquiv d.externalComponentPart leg) =
       d.externalBlockVertexEquiv ⟨twoPointLegVertex leg.1, leg.2⟩ := by
   rcases leg with ⟨e | ⟨v, l⟩, hleg⟩
   · rfl
   · rfl
 
-/-- The external-component leg equivalence carries the incident vertex through the corresponding
-vertex equivalence. -/
-@[simp]
+/-- The external-component leg reindexing and vertex reindexing commute. -/
 theorem TwoPointDiagram.twoPointVertexOfLeg_externalBlockLegEquiv
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (leg : {leg : Fin (2 * (2 * S.card + 1)) //
@@ -74,21 +83,13 @@ theorem TwoPointDiagram.twoPointVertexOfLeg_externalBlockLegEquiv
       d.externalBlockVertexEquiv
         ⟨twoPointVertexOfLeg leg.1,
           (d.legInComponent_iff_vertex_mem d.externalComponentPart.2 leg.1).1 leg.2⟩ := by
-  let legU : {u : TwoPointLeg S //
-      d.unflattenedLegInComponent d.externalComponentPart u} :=
-    ((twoPointLegEquiv S).subtypeEquiv fun p =>
-      d.legInComponent_iff_unflattened d.externalComponentPart p) leg
-  change twoPointLegVertex (twoPointLegEquiv
-      (TwoPointDiagram.interactionPart (d.externalComponent 0))
-      (d.externalBlockLegEquiv leg)) = _
-  have hflat :
-      twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))
-          (d.externalBlockLegEquiv leg) = d.externalLegDataEquiv legU := by
-    rfl
-  rw [hflat, d.twoPointLegVertex_externalLegDataEquiv legU]
-  apply congrArg d.externalBlockVertexEquiv
-  apply Subtype.ext
-  rfl
+  change twoPointLegVertex
+      (twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))
+        (d.externalBlockLegEquiv leg)) = _
+  rw [d.twoPointLegEquiv_externalBlockLegEquiv leg]
+  exact d.twoPointLegVertex_externalLegDataEquiv
+    ⟨twoPointLegEquiv S leg.1,
+      (d.legInComponent_iff_unflattened d.externalComponentPart leg.1).1 leg.2⟩
 
 /-- An ambient edge whose endpoints lie in the external component becomes an edge of the restricted
 external diagram. -/
@@ -113,12 +114,12 @@ theorem TwoPointDiagram.restrictExternalComponent_adj
     apply congrArg d.externalBlockVertexEquiv
     apply Subtype.ext
     exact hv
-  · rw [d.restrictExternalComponent_pairing]
-    rw [d.restrictedExternalPairing_partner_externalBlockLegEquiv legB]
-    rw [d.twoPointVertexOfLeg_externalBlockLegEquiv]
+  · rw [d.restrictedExternalPairing_partner_externalBlockLegEquiv legB]
+    rw [d.twoPointVertexOfLeg_externalBlockLegEquiv
+      (d.restrictedPartner (d.externalComponent 0) legB)]
     apply congrArg d.externalBlockVertexEquiv
     apply Subtype.ext
-    change twoPointVertexOfLeg (d.pairing.partner leg) = w.1
+    rw [d.restrictedPartner_val]
     exact hw
 
 private theorem TwoPointDiagram.mem_externalComponent_of_reachable_right
