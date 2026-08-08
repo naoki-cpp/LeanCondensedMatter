@@ -3,7 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticInt
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ExternalField
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.InteractionPicture
 import Mathlib.Data.List.NodupEquivFin
-import Mathlib.Data.List.Pairwise
+import Mathlib.Data.List.Sort
 
 set_option linter.style.header false
 
@@ -151,99 +151,6 @@ theorem twoPointTimedEventBeforeOrEqual_congr {n : ℕ}
   simp only [twoPointTimedEventBeforeOrEqual]
   rw [ha, hb]
 
-private noncomputable def insertTwoPointTimedEvent {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (a : TwoPointTimedEvent n) : List (TwoPointTimedEvent n) → List (TwoPointTimedEvent n)
-  | [] => [a]
-  | b :: l =>
-      @ite (List (TwoPointTimedEvent n)) (twoPointTimedEventBeforeOrEqual τ τ' σ a b)
-        (Classical.propDecidable _)
-        (a :: b :: l) (b :: insertTwoPointTimedEvent τ τ' σ a l)
-
-private theorem insertTwoPointTimedEvent_length {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (a : TwoPointTimedEvent n) (l : List (TwoPointTimedEvent n)) :
-    (insertTwoPointTimedEvent τ τ' σ a l).length = l.length + 1 := by
-  induction l with
-  | nil => rfl
-  | cons b l ih =>
-      rw [insertTwoPointTimedEvent]
-      split <;> simp [ih]
-
-private theorem insertTwoPointTimedEvent_perm {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (a : TwoPointTimedEvent n) (l : List (TwoPointTimedEvent n)) :
-    List.Perm (insertTwoPointTimedEvent τ τ' σ a l) (a :: l) := by
-  induction l with
-  | nil => simp [insertTwoPointTimedEvent]
-  | cons b l ih =>
-      rw [insertTwoPointTimedEvent]
-      split
-      · exact List.Perm.refl _
-      · exact (List.Perm.cons b ih).trans (List.Perm.swap b a l).symm
-
-private theorem insertTwoPointTimedEvent_pairwise {n : ℕ}
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (a : TwoPointTimedEvent n)
-    (l : List (TwoPointTimedEvent n))
-    (hl : l.Pairwise (twoPointTimedEventBeforeOrEqual τ τ' σ)) :
-    (insertTwoPointTimedEvent τ τ' σ a l).Pairwise
-      (twoPointTimedEventBeforeOrEqual τ τ' σ) := by
-  induction l with
-  | nil => simp [insertTwoPointTimedEvent]
-  | cons b l ih =>
-      cases hl with
-      | cons hbl hl =>
-          rw [insertTwoPointTimedEvent]
-          split
-          next hab =>
-            refine List.Pairwise.cons ?_ (List.Pairwise.cons hbl hl)
-            intro x hx
-            rcases List.mem_cons.mp hx with rfl | hx
-            · exact hab
-            · exact twoPointTimedEventBeforeOrEqual_trans τ τ' σ hab (hbl x hx)
-          next hab =>
-            have hba : twoPointTimedEventBeforeOrEqual τ τ' σ b a :=
-              (twoPointTimedEventBeforeOrEqual_total τ τ' σ a b).resolve_left hab
-            refine List.Pairwise.cons ?_ (ih hl)
-            intro x hx
-            have hx' : x ∈ a :: l :=
-              (insertTwoPointTimedEvent_perm τ τ' σ a l).mem_iff.mp hx
-            rcases List.mem_cons.mp hx' with rfl | hx'
-            · exact hba
-            · exact hbl x hx'
-
-/-- Insertion-sort all mixed events by decreasing imaginary time and stable rank. -/
-private noncomputable def sortTwoPointTimedEvents {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    List (TwoPointTimedEvent n) → List (TwoPointTimedEvent n)
-  | [] => []
-  | a :: l => insertTwoPointTimedEvent τ τ' σ a
-      (sortTwoPointTimedEvents τ τ' σ l)
-
-private theorem sortTwoPointTimedEvents_length {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (l : List (TwoPointTimedEvent n)) :
-    (sortTwoPointTimedEvents τ τ' σ l).length = l.length := by
-  induction l with
-  | nil => rfl
-  | cons a l ih =>
-      rw [sortTwoPointTimedEvents, insertTwoPointTimedEvent_length, ih]
-      simp
-
-private theorem sortTwoPointTimedEvents_perm {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (l : List (TwoPointTimedEvent n)) :
-    List.Perm (sortTwoPointTimedEvents τ τ' σ l) l := by
-  induction l with
-  | nil => exact List.Perm.refl []
-  | cons a l ih =>
-      exact (insertTwoPointTimedEvent_perm τ τ' σ a
-        (sortTwoPointTimedEvents τ τ' σ l)).trans (List.Perm.cons a ih)
-
-private theorem sortTwoPointTimedEvents_pairwise {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (l : List (TwoPointTimedEvent n)) :
-    (sortTwoPointTimedEvents τ τ' σ l).Pairwise
-      (twoPointTimedEventBeforeOrEqual τ τ' σ) := by
-  induction l with
-  | nil => simp [sortTwoPointTimedEvents]
-  | cons a l ih =>
-      exact insertTwoPointTimedEvent_pairwise τ τ' σ a
-        (sortTwoPointTimedEvents τ τ' σ l) ih
-
 /-- The interaction events in their canonical supplied slot order. -/
 def twoPointInteractionEventList (n : ℕ) : List (TwoPointTimedEvent n) :=
   List.ofFn fun v : Fin n => Sum.inr v
@@ -269,14 +176,16 @@ private theorem canonicalTwoPointTimedEvents_all_mem (n : ℕ) :
 
 /-- Order the two external events and every interaction event together by decreasing time. -/
 noncomputable def orderedTwoPointTimedEvents {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    List (TwoPointTimedEvent n) :=
-  sortTwoPointTimedEvents τ τ' σ
+    List (TwoPointTimedEvent n) := by
+  classical
+  exact List.insertionSort (twoPointTimedEventBeforeOrEqual τ τ' σ)
     ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n)
 
 @[simp]
 theorem orderedTwoPointTimedEvents_length {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
     (orderedTwoPointTimedEvents τ τ' σ).length = n + 2 := by
-  rw [orderedTwoPointTimedEvents, sortTwoPointTimedEvents_length]
+  classical
+  rw [orderedTwoPointTimedEvents, List.length_insertionSort]
   simp [twoPointInteractionEventList]
 
 /-- Time ordering permutes, but neither duplicates nor removes, the two external events and the
@@ -284,14 +193,20 @@ interaction events. -/
 theorem orderedTwoPointTimedEvents_perm {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
     List.Perm (orderedTwoPointTimedEvents τ τ' σ)
       ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n) := by
-  exact sortTwoPointTimedEvents_perm τ τ' σ _
+  classical
+  exact List.perm_insertionSort _ _
 
 /-- The fully ordered mixed-event list is sorted by the stable time comparison. -/
 theorem orderedTwoPointTimedEvents_pairwise {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     (orderedTwoPointTimedEvents τ τ' σ).Pairwise
       (twoPointTimedEventBeforeOrEqual τ τ' σ) := by
-  exact sortTwoPointTimedEvents_pairwise τ τ' σ _
+  classical
+  letI : Std.Total (twoPointTimedEventBeforeOrEqual τ τ' σ) :=
+    ⟨twoPointTimedEventBeforeOrEqual_total τ τ' σ⟩
+  letI : IsTrans (TwoPointTimedEvent n) (twoPointTimedEventBeforeOrEqual τ τ' σ) :=
+    ⟨fun _ _ _ => twoPointTimedEventBeforeOrEqual_trans τ τ' σ⟩
+  exact List.pairwise_insertionSort _ _
 
 /-- The fully ordered mixed-event list has no duplicate events. -/
 theorem orderedTwoPointTimedEvents_nodup {n : ℕ}
@@ -447,20 +362,18 @@ private theorem orderedTwoPointTimedEvents_zero_of_gt (σ : Fin 0 → ℝ)
   have hnot : ¬ τ < τ' := not_lt_of_ge h.le
   have hne : τ' ≠ τ := ne_of_lt h
   have hnotle : ¬ τ ≤ τ' := not_le_of_gt h
-  simp [orderedTwoPointTimedEvents, sortTwoPointTimedEvents,
-    twoPointInteractionEventList, insertTwoPointTimedEvent,
-    twoPointTimedEventBeforeOrEqual, twoPointTimedEventTime, twoPointTimedEventRank,
-    hnot, hne, hnotle]
+  simp [orderedTwoPointTimedEvents, twoPointInteractionEventList, List.insertionSort,
+    List.orderedInsert, twoPointTimedEventBeforeOrEqual, twoPointTimedEventTime,
+    twoPointTimedEventRank, hnot, hne, hnotle]
 
 set_option linter.unusedSimpArgs false in
 private theorem orderedTwoPointTimedEvents_zero_of_lt (σ : Fin 0 → ℝ)
     {τ τ' : ℝ} (h : τ < τ') :
     orderedTwoPointTimedEvents τ τ' σ =
       [Sum.inl 1, Sum.inl 0] := by
-  simp [orderedTwoPointTimedEvents, sortTwoPointTimedEvents,
-    twoPointInteractionEventList, insertTwoPointTimedEvent,
-    twoPointTimedEventBeforeOrEqual, twoPointTimedEventTime, twoPointTimedEventRank,
-    h, h.le, h.ne]
+  simp [orderedTwoPointTimedEvents, twoPointInteractionEventList, List.insertionSort,
+    List.orderedInsert, twoPointTimedEventBeforeOrEqual, twoPointTimedEventTime,
+    twoPointTimedEventRank, h, h.le, h.ne]
 
 /-- At interaction order zero and `τ' < τ`, mixed ordering reduces to the ordinary two-point
 ordered product with the annihilation field on the left. -/
