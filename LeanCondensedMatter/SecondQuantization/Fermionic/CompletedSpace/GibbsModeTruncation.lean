@@ -26,25 +26,25 @@ noncomputable section
 
 variable {Mode : Type*}
 
+/-- Classical decidable equality used consistently by finite-mode Gibbs truncations. -/
+local instance completedGibbsModeTruncationDecidableEq : DecidableEq Mode := Classical.decEq Mode
+
 /-- Free Boltzmann weight restricted to occupations using only modes from `S`. -/
 noncomputable def completedFreeModeTruncatedWeight (ε : Mode → ℝ) (β : ℝ)
-    (S : Finset Mode) (n : Occupation Mode) : ℝ := by
-  classical
-  exact if n ⊆ S then completedFreeBoltzmannRealWeight ε β n else 0
+    (S : Finset Mode) (n : Occupation Mode) : ℝ :=
+  if n ⊆ S then completedFreeBoltzmannRealWeight ε β n else 0
 
 @[simp]
 theorem completedFreeModeTruncatedWeight_apply (ε : Mode → ℝ) (β : ℝ)
     (S : Finset Mode) (n : Occupation Mode) :
     completedFreeModeTruncatedWeight ε β S n =
-      if n ⊆ S then completedFreeBoltzmannRealWeight ε β n else 0 := by
-  classical
-  simp [completedFreeModeTruncatedWeight]
+      if n ⊆ S then completedFreeBoltzmannRealWeight ε β n else 0 :=
+  rfl
 
 /-- Truncated Boltzmann weights remain nonnegative. -/
 theorem completedFreeModeTruncatedWeight_nonneg (ε : Mode → ℝ) (β : ℝ)
     (S : Finset Mode) (n : Occupation Mode) :
     0 ≤ completedFreeModeTruncatedWeight ε β S n := by
-  classical
   by_cases h : n ⊆ S
   · simp [completedFreeModeTruncatedWeight, h,
       completedFreeBoltzmannRealWeight_nonneg]
@@ -54,13 +54,15 @@ theorem completedFreeModeTruncatedWeight_nonneg (ε : Mode → ℝ) (β : ℝ)
 theorem completedFreeModeTruncatedWeight_norm_summable (ε : Mode → ℝ) (β : ℝ)
     (hsum : CompletedFreeGibbsSummable ε β) (S : Finset Mode) :
     Summable fun n : Occupation Mode => ‖completedFreeModeTruncatedWeight ε β S n‖ := by
-  apply Summable.of_nonneg_of_le (fun n => norm_nonneg _)
-  · intro n
-    classical
-    by_cases h : n ⊆ S
-    · simp [completedFreeModeTruncatedWeight, h]
-    · simp [completedFreeModeTruncatedWeight, h]
-  · exact hsum
+  exact Summable.of_nonneg_of_le
+    (f := fun n : Occupation Mode => ‖completedFreeBoltzmannRealWeight ε β n‖)
+    (g := fun n : Occupation Mode => ‖completedFreeModeTruncatedWeight ε β S n‖)
+    (fun n => norm_nonneg _)
+    (fun n => by
+      by_cases h : n ⊆ S
+      · simp [completedFreeModeTruncatedWeight, h]
+      · simp [completedFreeModeTruncatedWeight, h])
+    hsum
 
 /-- Ordinary summability of each truncated Boltzmann family. -/
 theorem completedFreeModeTruncatedWeight_summable (ε : Mode → ℝ) (β : ℝ)
@@ -82,9 +84,10 @@ theorem completedFreeModeTruncatedPartitionFunction_pos (ε : Mode → ℝ) (β 
   exact (completedFreeModeTruncatedWeight_summable ε β hsum S).tsum_pos
     (completedFreeModeTruncatedWeight_nonneg ε β S) vacuum
     (by
-      classical
-      simp [completedFreeModeTruncatedWeight,
-        completedFreeBoltzmannRealWeight_pos])
+      have hvac : (vacuum : Occupation Mode) ⊆ S := by
+        simpa [vacuum] using (Finset.empty_subset S)
+      simpa [completedFreeModeTruncatedWeight, hvac] using
+        completedFreeBoltzmannRealWeight_pos ε β (vacuum : Occupation Mode))
 
 /-- For each fixed occupation configuration, the finite-mode truncated Boltzmann weight is
 eventually exactly the full Boltzmann weight. -/
@@ -94,7 +97,8 @@ theorem tendsto_completedFreeModeTruncatedWeight (ε : Mode → ℝ) (β : ℝ)
       (𝓝 (completedFreeBoltzmannRealWeight ε β n)) := by
   apply tendsto_const_nhds.congr'
   filter_upwards [eventually_ge_atTop n] with S hS
-  simp [completedFreeModeTruncatedWeight, hS]
+  have hsub : n ⊆ S := hS
+  simp [completedFreeModeTruncatedWeight, hsub]
 
 /-- Finite-mode partition functions converge to the full completed partition function. -/
 theorem tendsto_completedFreeModeTruncatedPartitionFunction
@@ -107,7 +111,6 @@ theorem tendsto_completedFreeModeTruncatedPartitionFunction
           ‖completedFreeBoltzmannRealWeight ε β n‖ := by
     filter_upwards [] with S
     intro n
-    classical
     by_cases h : n ⊆ S
     · simp [completedFreeModeTruncatedWeight, h]
     · simp [completedFreeModeTruncatedWeight, h]
