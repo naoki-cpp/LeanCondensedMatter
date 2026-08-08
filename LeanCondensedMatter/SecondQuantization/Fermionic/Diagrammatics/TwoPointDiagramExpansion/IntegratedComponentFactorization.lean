@@ -48,9 +48,14 @@ theorem FixedExternalTwoPointWickDiagram.externalSign_mul_orderedSimplexIntegral
     intro a b hab
     apply (finCongr hdim).injective
     exact hσ hab
-  simpa [σambient, ambientToTwoPointSlotTimePermutation, hdim] using
+  have hslot : ambientToTwoPointSlotTimePermutation σambient = σ := by
+    funext i
+    simp [ambientToTwoPointSlotTimePermutation, σambient, hdim]
+  have hcov :=
     d.externalSign_mul_componentShuffleIntegrand_eq_relabelForComponentShuffle_dysonFixedTimeAmplitude_of_injective
       ε β g τ τ' shuffle σambient hσambient
+  rw [hslot] at hcov
+  exact hcov
 
 /-- Summing the integrated relabeled amplitudes over all component shuffles gives the product of
 component-local ordered-simplex integrals, with the common external ordering sign. -/
