@@ -97,7 +97,6 @@ theorem summable_shiftedPow_oneModeBoltzmannWeight
       (r ^ shift)⁻¹ * ((↑(k + shift) : ℝ) ^ power * r ^ (k + shift))
     rw [pow_add]
     field_simp [hr0]
-    ring
   rw [heq]
   exact hscaled
 
