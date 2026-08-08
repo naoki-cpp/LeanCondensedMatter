@@ -56,6 +56,7 @@ theorem FixedExternalTwoPointWickDiagram.ambientToTwoPointSlotTimePermutation_co
   funext v
   simp [ambientToTwoPointSlotTimePermutation,
     FixedExternalTwoPointWickDiagram.componentShuffleSlotPermutation]
+  rfl
 
 /-- The diagram relabeling corresponding to a component shuffle.  Because
 `relabelInteractionVertices` maps new slots to the old slots whose data they inherit, the inverse of
