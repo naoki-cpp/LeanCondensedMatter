@@ -125,8 +125,11 @@ private theorem momentFromCumulant_powerSeriesCumulantCoeff
   intro s ih
   by_cases hs : s = ∅
   · subst s
-    simp [Finpartition.momentFromCumulant, Finpartition.partitionProduct,
-      powerSeriesMomentCoeff, hZ]
+    letI : Unique (Finpartition (∅ : Finset α)) :=
+      inferInstanceAs (Unique (Finpartition (⊥ : Finset α)))
+    rw [Finpartition.momentFromCumulant, Fintype.sum_unique]
+    have hparts : (default : Finpartition (∅ : Finset α)).parts = ∅ := by simp
+    simp [Finpartition.partitionProduct, powerSeriesMomentCoeff, hZ, hparts]
   · obtain ⟨a, ha⟩ := Finset.nonempty_iff_ne_empty.mpr hs
     rw [Finpartition.momentFromCumulant_eq_sum_blockContaining _ ha]
     have hsmall : ∀ B : Finpartition.BlockContaining s a,
