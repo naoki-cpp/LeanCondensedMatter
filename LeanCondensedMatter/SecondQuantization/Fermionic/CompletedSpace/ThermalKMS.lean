@@ -22,14 +22,6 @@ variable {Mode : Type*} [LinearOrder Mode]
 
 namespace CompletedThermalLadder
 
-omit [LinearOrder Mode] in
-/-- A completed occupation basis vector extracts the corresponding coordinate by inner product. -/
-@[simp]
-theorem inner_completedBasisState (n : Occupation Mode) (ψ : CompletedFockSpace Mode) :
-    inner ℂ (completedBasisState n) ψ = ψ n := by
-  classical
-  simpa [completedBasisState] using (lp.inner_single_left (𝕜 := ℂ) n (1 : ℂ) ψ)
-
 /-- Completed free-Gibbs KMS rotation for one thermal ladder and an arbitrary bounded operator:
 `⟨C A⟩β = gβ(C) ⟨A C⟩β`.  The scalar `gβ(C)` is the same factor appearing in
 `ρβ C = gβ(C) C ρβ`. -/
@@ -64,11 +56,11 @@ theorem completedFreeGibbsExpectation_operator_comp
             have hrestore : insertOccupation i (removeOccupation i n) = n := by
               simpa [insertOccupation, removeOccupation] using Finset.insert_erase hi
             dsimp [f]
-            rw [inner_completedBasisState, completedCreate_apply, if_pos hi,
+            rw [inner_completedBasisState_left, completedCreate_apply, if_pos hi,
               toggleOccupation_of_mem hi,
               coe_completedFreeGibbsProbability_removeOccupation_of_mem ε β hi,
               completedCreate_basisState_of_not_mem hremove, map_smul, inner_smul_right,
-              inner_completedBasisState, hrestore]
+              inner_completedBasisState_left, hrestore]
             have hexp :
                 Complex.exp (-(β : ℂ) * (ε i : ℂ)) *
                     Complex.exp ((β : ℂ) * (ε i : ℂ)) = 1 := by
@@ -89,7 +81,7 @@ theorem completedFreeGibbsExpectation_operator_comp
           · have hit : i ∈ toggleOccupation i n :=
               (mem_toggleOccupation i n).mpr hi
             dsimp [f]
-            rw [inner_completedBasisState, completedCreate_apply, if_neg hi,
+            rw [inner_completedBasisState_left, completedCreate_apply, if_neg hi,
               completedCreate_basisState_of_mem hit, map_zero, inner_zero_right]
             ring
         _ = ∑' n : Occupation Mode, f n := by
@@ -121,7 +113,7 @@ theorem completedFreeGibbsExpectation_operator_comp
               intro hit
               exact ((mem_toggleOccupation i n).mp hit) hi
             dsimp [f]
-            rw [inner_completedBasisState, completedAnnihilate_apply, if_pos hi,
+            rw [inner_completedBasisState_left, completedAnnihilate_apply, if_pos hi,
               completedAnnihilate_basisState_of_not_mem hit, map_zero, inner_zero_right]
             ring
           · have hinsert : i ∈ insertOccupation i n := by
@@ -129,11 +121,11 @@ theorem completedFreeGibbsExpectation_operator_comp
             have hrestore : removeOccupation i (insertOccupation i n) = n := by
               simp [removeOccupation, insertOccupation, hi]
             dsimp [f]
-            rw [inner_completedBasisState, completedAnnihilate_apply, if_neg hi,
+            rw [inner_completedBasisState_left, completedAnnihilate_apply, if_neg hi,
               toggleOccupation_of_not_mem hi,
               coe_completedFreeGibbsProbability_insertOccupation_of_not_mem ε β hi,
               completedAnnihilate_basisState_of_mem hinsert, map_smul, inner_smul_right,
-              inner_completedBasisState, hrestore]
+              inner_completedBasisState_left, hrestore]
             have hexp :
                 Complex.exp ((β : ℂ) * (ε i : ℂ)) *
                     Complex.exp (-(β : ℂ) * (ε i : ℂ)) = 1 := by
