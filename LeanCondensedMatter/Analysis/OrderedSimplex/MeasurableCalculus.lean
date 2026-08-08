@@ -128,12 +128,12 @@ theorem integral_eq_sub_of_absolutelyContinuousOnInterval_of_ae_hasDerivAt_of_no
     have hInt := hxInt hx a (by simp)
     simpa [G] using (hxF hx).sub hInt
   obtain ⟨D, hD⟩ := hG.const_of_ae_hasDerivAt_zero hGzero
-  have ha := hD a (by simp)
-  have hb := hD b (by simp)
-  simp [G] at ha hb
-  rw [← ha] at hb
+  have hzero : (∫ x in a..a, F' x) = 0 := by simp
+  have hGab : F b - (∫ x in a..b, F' x) = F a := by
+    have h := (hD b (by simp)).trans (hD a (by simp)).symm
+    simpa only [G, Pi.sub_apply, hzero, sub_zero] using h
   calc
     (∫ x in a..b, F' x) = F b - (F b - ∫ x in a..b, F' x) := by abel
-    _ = F b - F a := by rw [hb]
+    _ = F b - F a := by rw [hGab]
 
 end intervalIntegral
