@@ -45,8 +45,11 @@ noncomputable def fixedExternalTwoPointWickDiagramOnEquivOrderedData
         simp [Common.twoPointDiagramEquivOrderedData]⟩
   left_inv d := by
     apply Subtype.ext
-    rw [← d.2]
-    exact (Common.twoPointDiagramEquivOrderedData order).left_inv d.1
+    apply (Common.twoPointDiagramEquivOrderedData order).injective
+    rw [Equiv.apply_symm_apply]
+    apply Prod.ext
+    · exact d.2.symm
+    · rfl
   right_inv x := by
     rcases x with ⟨labels, pairing⟩
     have h := (Common.twoPointDiagramEquivOrderedData order).right_inv
