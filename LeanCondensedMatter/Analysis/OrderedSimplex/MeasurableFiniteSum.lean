@@ -12,6 +12,20 @@ integrability required by `intervalIntegral.integral_finsetSum` at every exposed
 
 namespace intervalIntegral
 
+open MeasureTheory
+
+/-- Constant scalar multiplication preserves measurable local boundedness. -/
+theorem MeasurableLocallyBounded.const_mul {n : ℕ}
+    {f : (Fin n → ℝ) → ℂ} (hf : MeasurableLocallyBounded f) (c : ℂ) :
+    MeasurableLocallyBounded (fun x => c * f x) := by
+  refine ⟨measurable_const.mul hf.1, ?_⟩
+  intro R hR
+  obtain ⟨C, hC0, hC⟩ := hf.2 R hR
+  refine ⟨‖c‖ * C, mul_nonneg (norm_nonneg c) hC0, ?_⟩
+  intro x hx
+  rw [norm_mul]
+  exact mul_le_mul_of_nonneg_left (hC x hx) (norm_nonneg c)
+
 /-- A finite sum commutes with `orderedSimplexIntegral` when every summand is measurable and locally
 bounded on finite-dimensional cubes. -/
 theorem orderedSimplexIntegral_finsetSum_of_measurableLocallyBounded
