@@ -55,11 +55,16 @@ private theorem orderedSimplexIntegral_congr_avoiding_finset :
       apply h (Fin.cons t rest)
       · apply finCons_injective_of_injective_avoids t rest hrest
         intro i
-        exact (Finset.not_mem_insert.mp (hforbidden i)).1
+        have hi := hforbidden i
+        simp only [Finset.mem_insert, not_or] at hi
+        exact hi.1
       · intro i
         induction i using Fin.cases with
         | zero => simpa using ht
-        | succ i => exact (Finset.not_mem_insert.mp (hforbidden i)).2
+        | succ i =>
+            have hi := hforbidden i
+            simp only [Finset.mem_insert, not_or] at hi
+            exact hi.2
 
 /-- Two ordered-simplex integrands have the same integral when they agree on injective time
 assignments. The complement consists only of recursively encountered coordinate-collision
