@@ -58,7 +58,7 @@ theorem TwoPointDiagram.twoPointLegEquiv_externalBlockLegEquiv
       d.legInComponent (d.externalComponent 0) leg}) :
     twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))
         (d.externalBlockLegEquiv leg) =
-      d.externalLegDataEquiv d.externalComponentPart
+      d.externalLegDataEquiv
         ⟨twoPointLegEquiv S leg.1,
           (d.legInComponent_iff_unflattened d.externalComponentPart leg.1).1 leg.2⟩ := by
   simp [TwoPointDiagram.externalBlockLegEquiv]
@@ -68,7 +68,7 @@ theorem TwoPointDiagram.twoPointLegVertex_externalLegDataEquiv
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (leg : {leg : TwoPointLeg S //
       d.unflattenedLegInComponent d.externalComponentPart leg}) :
-    twoPointLegVertex (d.externalLegDataEquiv d.externalComponentPart leg) =
+    twoPointLegVertex (d.externalLegDataEquiv leg) =
       d.externalBlockVertexEquiv ⟨twoPointLegVertex leg.1, leg.2⟩ := by
   rcases leg with ⟨e | ⟨v, l⟩, hleg⟩
   · rfl
@@ -114,7 +114,9 @@ theorem TwoPointDiagram.restrictExternalComponent_adj
     apply congrArg d.externalBlockVertexEquiv
     apply Subtype.ext
     exact hv
-  · rw [d.restrictedExternalPairing_partner_externalBlockLegEquiv legB]
+  · change twoPointVertexOfLeg
+      (d.restrictedExternalPairing.partner (d.externalBlockLegEquiv legB)) = _
+    rw [d.restrictedExternalPairing_partner_externalBlockLegEquiv legB]
     rw [d.twoPointVertexOfLeg_externalBlockLegEquiv
       (d.restrictedPartner (d.externalComponent 0) legB)]
     apply congrArg d.externalBlockVertexEquiv
