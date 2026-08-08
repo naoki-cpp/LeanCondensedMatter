@@ -36,25 +36,13 @@ def interactionVertexLegRelabel {n : ℕ} (π : Equiv.Perm (Fin n)) :
     | Sum.inl e => Sum.inl e
     | Sum.inr p => Sum.inr (⟨π.symm p.1.1, Finset.mem_univ _⟩, p.2)
   left_inv x := by
-    cases x with
-    | inl e => rfl
-    | inr p =>
-        rcases p with ⟨v, l⟩
-        apply Sum.inr.inj
-        apply Prod.ext
-        · apply Subtype.ext
-          simp
-        · rfl
+    rcases x with e | ⟨v, l⟩
+    · rfl
+    · simp
   right_inv x := by
-    cases x with
-    | inl e => rfl
-    | inr p =>
-        rcases p with ⟨v, l⟩
-        apply Sum.inr.inj
-        apply Prod.ext
-        · apply Subtype.ext
-          simp
-        · rfl
+    rcases x with e | ⟨v, l⟩
+    · rfl
+    · simp
 
 @[simp]
 theorem interactionVertexLegRelabel_external {n : ℕ} (π : Equiv.Perm (Fin n)) (e : Fin 2) :
