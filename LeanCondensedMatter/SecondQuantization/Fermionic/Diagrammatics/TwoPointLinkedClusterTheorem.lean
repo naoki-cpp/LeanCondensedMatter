@@ -10,9 +10,9 @@ set_option linter.style.header false
 /-!
 # Normalized two-point linked-cluster theorem
 
-This is the final owner for the finite-mode imaginary-time two-point LCT.  The structural input is
+This is the final owner for the finite-mode imaginary-time two-point LCT. The structural input is
 one connected component carrying the two distinguished external legs plus an arbitrary quartic
-vacuum remainder.  The analytic input is the a.e. interaction-relabel covariance and integrated
+vacuum remainder. The analytic input is the a.e. interaction-relabel covariance and integrated
 component-shuffle factorization.
 -/
 
@@ -21,28 +21,21 @@ namespace Fermionic
 
 open PowerSeries
 
-variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
-
-/-- Externally connected two-point diagrams on an arbitrary finite interaction set, with the two
-external labels fixed to `T c_i c_j†`. -/
-abbrev ConnectedFixedExternalTwoPointWickDiagramOn
-    (Mode : Type*) (N : ℕ) (S : Finset (Fin N)) (i j : Mode) :=
-  {d : Common.ExternallyConnectedTwoPointDiagram
-      (ExternalFieldLabel Mode) (QuarticVertexLabel Mode) N S //
-    d.1.externalLabel = twoPointExternalLabels i j}
+variable {Mode : Type*} {N : ℕ}
 
 /-- Fixed-external diagrams on explicit interaction slots whose full graph is externally connected. -/
 abbrev ConnectedFixedExternalTwoPointWickDiagram
     (Mode : Type*) (n : ℕ) (i j : Mode) :=
   {d : FixedExternalTwoPointWickDiagram Mode n i j // d.1.IsExternallyConnected}
 
-/-- Binary decomposition data for a fixed-external two-point diagram: a connected external core on
-`E` and an arbitrary quartic vacuum diagram on the complementary interaction vertices. -/
+/-- Binary external/vacuum decomposition data whose external core carries the prescribed external
+field labels. The underlying Common decomposition already guarantees that the external core is
+connected, so no second dependent Sigma layer is needed here. -/
 abbrev FixedExternalVacuumDecomposition
     (Mode : Type*) (N : ℕ) (S : Finset (Fin N)) (i j : Mode) :=
-  Σ E : {E : Finset (Fin N) // E ⊆ S},
-    ConnectedFixedExternalTwoPointWickDiagramOn Mode N E.1 i j ×
-      QuarticWickDiagram Mode N (S \ E.1)
+  {x : Common.TwoPointDiagram.ExternalVacuumDecomposition
+      (ExternalFieldLabel Mode) (QuarticVertexLabel Mode) N S //
+    x.2.1.1.externalLabel = twoPointExternalLabels i j}
 
 /-- Forget only the proof that the external labels are fixed. -/
 noncomputable def FixedExternalVacuumDecomposition.toCommon
@@ -50,25 +43,22 @@ noncomputable def FixedExternalVacuumDecomposition.toCommon
     (x : FixedExternalVacuumDecomposition Mode N S i j) :
     Common.TwoPointDiagram.ExternalVacuumDecomposition
       (ExternalFieldLabel Mode) (QuarticVertexLabel Mode) N S :=
-  ⟨x.1, x.2.1.1, x.2.2⟩
+  x.1
 
 private theorem FixedExternalVacuumDecomposition.toCommon_injective
     {S : Finset (Fin N)} {i j : Mode} :
     Function.Injective
       (FixedExternalVacuumDecomposition.toCommon
-        (Mode := Mode) (N := N) (S := S) (i := i) (j := j)) := by
-  rintro ⟨E, external, vacuum⟩ ⟨F, external', vacuum'⟩ h
-  dsimp [FixedExternalVacuumDecomposition.toCommon] at h
-  cases h
-  rfl
+        (Mode := Mode) (N := N) (S := S) (i := i) (j := j)) :=
+  Subtype.val_injective
 
 /-- Reassemble fixed-external binary decomposition data. -/
 noncomputable def reassembleFixedExternalVacuumData
     {S : Finset (Fin N)} {i j : Mode}
     (x : FixedExternalVacuumDecomposition Mode N S i j) :
     FixedExternalTwoPointWickDiagramOn Mode N S i j :=
-  ⟨Common.TwoPointDiagram.reassembleExternalVacuum x.1.2 x.2.1.1 x.2.2, by
-    simpa using x.2.1.2⟩
+  ⟨Common.TwoPointDiagram.reassembleExternalVacuum x.1.1.2 x.1.2.1 x.1.2.2, by
+    simpa [Common.TwoPointDiagram.reassembleExternalVacuum] using x.2⟩
 
 private theorem reassembleFixedExternalVacuumData_injective
     {S : Finset (Fin N)} {i j : Mode} :
@@ -77,8 +67,8 @@ private theorem reassembleFixedExternalVacuumData_injective
         (Mode := Mode) (N := N) (S := S) (i := i) (j := j)) := by
   intro x y h
   apply FixedExternalVacuumDecomposition.toCommon_injective
-  apply Common.TwoPointDiagram.reassembleExternalVacuumData_injective
-  exact congrArg Subtype.val h
+  exact Common.TwoPointDiagram.reassembleExternalVacuumData_injective
+    (congrArg Subtype.val h)
 
 private theorem reassembleFixedExternalVacuumData_surjective
     {S : Finset (Fin N)} {i j : Mode} :
@@ -86,14 +76,11 @@ private theorem reassembleFixedExternalVacuumData_surjective
       (reassembleFixedExternalVacuumData
         (Mode := Mode) (N := N) (S := S) (i := i) (j := j)) := by
   intro d
-  let external : ConnectedFixedExternalTwoPointWickDiagramOn Mode N
-      d.1.externalInteractionPart i j :=
-    ⟨⟨d.1.restrictExternalComponent,
-      d.1.restrictExternalComponent_isExternallyConnected⟩, by
-        simpa using d.2⟩
-  let x : FixedExternalVacuumDecomposition Mode N S i j :=
-    ⟨⟨d.1.externalInteractionPart, d.1.externalInteractionPart_subset⟩,
-      external, d.1.restrictVacuumRemainder⟩
+  let common := d.1.decomposeExternalVacuum
+  have hlabel : common.2.1.1.externalLabel = twoPointExternalLabels i j := by
+    funext e
+    simpa [common, Common.TwoPointDiagram.decomposeExternalVacuum] using congrFun d.2 e
+  let x : FixedExternalVacuumDecomposition Mode N S i j := ⟨common, hlabel⟩
   refine ⟨x, ?_⟩
   apply Subtype.ext
   exact d.1.reassemble_restrictExternal_restrictVacuumRemainder
@@ -109,6 +96,10 @@ noncomputable def fixedExternalVacuumDecompositionEquiv
       (Mode := Mode) (N := N) (S := S) (i := i) (j := j))
     ⟨reassembleFixedExternalVacuumData_injective,
       reassembleFixedExternalVacuumData_surjective⟩).symm
+
+section FiniteMode
+
+variable [LinearOrder Mode] [Fintype Mode]
 
 /-- Reindex a finite sum over fixed-external two-point diagrams by the unique connected external
 core and arbitrary vacuum remainder. -/
@@ -129,12 +120,14 @@ noncomputable def twoPointUnnormalizedDiagramCoeff
   ∑ d : FixedExternalTwoPointWickDiagram Mode n i j,
     d.dysonAmplitude ε β g τ τ'
 
-/-- The order-`n` connected external-core contribution.  In the present one-leg/one-leg quartic
+/-- The order-`n` connected external-core contribution. In the present one-leg/one-leg quartic
 setup this is equivalently the sum over diagrams with no vacuum component. -/
 noncomputable def twoPointConnectedDiagramCoeff
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (i j : Mode) (τ τ' : ℝ) (n : ℕ) : ℂ :=
-  ∑ d : ConnectedFixedExternalTwoPointWickDiagram Mode n i j,
+    (i j : Mode) (τ τ' : ℝ) (n : ℕ) : ℂ := by
+  classical
+  letI : Fintype (ConnectedFixedExternalTwoPointWickDiagram Mode n i j) := Fintype.ofFinite _
+  exact ∑ d : ConnectedFixedExternalTwoPointWickDiagram Mode n i j,
     d.1.dysonAmplitude ε β g τ τ'
 
 /-- The diagrammatic numerator coefficient is the existing integrated two-point coefficient. -/
@@ -221,6 +214,8 @@ theorem twoPointNormalizedDiagramSeries_eq_connected_of_factorization
     PowerSeries.mul_inv_cancel _ (by
       rw [constantCoeff_normalizedVacuumDysonSeries]
       exact one_ne_zero), mul_one]
+
+end FiniteMode
 
 end Fermionic
 end SecondQuantization
