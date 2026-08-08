@@ -163,7 +163,6 @@ private theorem mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt {n :
       (twoPointTimedEventAtomicLegs (orderedTwoPointLegEvent x)).idxOf x <
         (twoPointTimedEventAtomicLegs (orderedTwoPointLegEvent x)).idxOf y := by
   classical
-  letI : BEq (OrderedTwoPointLeg n) := instBEqOfDecidableEq
   let event := orderedTwoPointLegEvent x
   have hx : x ∈ twoPointTimedEventAtomicLegs event := by
     simpa [event] using orderedTwoPointLeg_mem_eventAtomicLegs x
@@ -185,7 +184,6 @@ private theorem twoPointTimedEventAtomicLegs_idxOf_interactionVertexLegRelabel {
       (interactionVertexLegRelabel π leg) =
     (twoPointTimedEventAtomicLegs (orderedTwoPointLegEvent leg)).idxOf leg := by
   classical
-  letI : BEq (OrderedTwoPointLeg n) := instBEqOfDecidableEq
   rcases leg with e | ⟨⟨v, hv⟩, l⟩
   · simp [interactionVertexLegRelabel, orderedTwoPointLegEvent]
   · fin_cases l <;>
@@ -219,6 +217,7 @@ theorem interactionVertexMixedPositionRelabel_lt_iff_of_injective {n : ℕ}
     have hq : mixedTimeOrderedAtomicLegPosition τ τ' σ y = q := by
       simp [y, mixedTimeOrderedAtomicLegPosition]
     rw [← hp, ← hq]
+    simp only [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
     rw [mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt
       τ τ' (fun v => σ (π.symm v))
       (interactionVertexLegRelabel π x) (interactionVertexLegRelabel π y) hRelabeledEvent]
@@ -244,8 +243,8 @@ theorem interactionVertexMixedPositionRelabel_apply_eq_of_injective {n : ℕ}
     (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : Function.Injective σ) (p : Fin (2 * (2 * n + 1))) :
     interactionVertexMixedPositionRelabel π τ τ' σ p = p := by
-  exact (interactionVertexMixedPositionRelabel_strictMono_of_injective
-    π τ τ' σ hσ).apply_eq
+  exact StrictMono.apply_eq
+    (interactionVertexMixedPositionRelabel_strictMono_of_injective π τ τ' σ hσ)
 
 /-- On injective interaction-time assignments the induced mixed-position permutation is exactly the
 identity permutation. -/
@@ -253,7 +252,8 @@ theorem interactionVertexMixedPositionRelabel_eq_refl_of_injective {n : ℕ}
     (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : Function.Injective σ) :
     interactionVertexMixedPositionRelabel π τ τ' σ = Equiv.refl _ := by
-  ext p
+  apply Equiv.ext
+  intro p
   exact interactionVertexMixedPositionRelabel_apply_eq_of_injective π τ τ' σ hσ p
 
 end Fermionic
