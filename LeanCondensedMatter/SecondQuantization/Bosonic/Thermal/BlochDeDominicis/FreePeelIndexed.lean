@@ -55,13 +55,11 @@ theorem operatorPeelSum_eq_operatorPeelTerms_sum
             apply LinearMap.ext
             intro x
             simp only [LinearMap.add_apply, LinearMap.comp_apply, map_add]
-      change
-        C₁.exchangeValue D •
-              Common.BlochDeDominicis.operatorProduct FreeThermalField.operator t +
-            D.operator.comp (C₁.operatorPeelSum t) =
-          C₁.exchangeValue D • orderedProduct t +
-            ((C₁.operatorPeelTerms t).map (fun A => D.operator.comp A)).sum
-      rw [← orderedProduct_eq_common_operatorProduct, hmap, ih]
+      rw [operatorPeelTerms, List.sum_cons, hmap, ← ih]
+      unfold FreeThermalField.operatorPeelSum
+      rw [Common.BlochDeDominicis.operatorPeelSum]
+      simp only [one_smul]
+      rw [← orderedProduct_eq_common_operatorProduct]
 
 /-- Closed position-indexed form of the bosonic CCR peel terms. -/
 theorem operatorPeelTerms_eq_ofFn
@@ -105,12 +103,13 @@ theorem operatorPeelSum_mem_freeGibbsDomain
 
 /-- Finite additivity of the normalized free-Gibbs expectation on explicitly summable terms. -/
 private theorem freeGibbsExpectation_finset_sum
-    {ι : Type*} [DecidableEq ι]
+    {ι : Type*}
     (ε : Mode → ℝ) (β : ℝ) (s : Finset ι)
     (f : ι → (FockSpace Mode →ₗ[ℂ] FockSpace Mode))
     (hf : ∀ i ∈ s, f i ∈ freeGibbsDomain ε β) :
     freeGibbsExpectation ε β (∑ i ∈ s, f i) =
       ∑ i ∈ s, freeGibbsExpectation ε β (f i) := by
+  classical
   revert hf
   induction s using Finset.induction_on with
   | empty =>
