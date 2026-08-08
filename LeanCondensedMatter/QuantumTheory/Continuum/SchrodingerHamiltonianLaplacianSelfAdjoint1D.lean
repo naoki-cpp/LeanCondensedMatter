@@ -31,17 +31,18 @@ private theorem l2ToTemperedDistribution1D_injective_selfAdjoint :
 
 /-- Complex conjugation preserves the Schwartz class. -/
 private noncomputable def schwartzConj1D (f : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℂ :=
-  f.postcompCLM (RCLike.conjCLE (K := ℂ))
+  f.postcompCLM
+    ((RCLike.conjCLE (K := ℂ)).toContinuousLinearMap : ℂ →L[ℝ] ℂ)
 
 @[simp]
 private theorem schwartzConj1D_apply (f : SchwartzMap ℝ ℂ) (x : ℝ) :
-    schwartzConj1D f x = conj (f x) :=
+    schwartzConj1D f x = star (f x) :=
   rfl
 
 private theorem deriv_schwartzConj1D (f : SchwartzMap ℝ ℂ) (x : ℝ) :
-    deriv (schwartzConj1D f) x = conj (deriv f x) := by
+    deriv (schwartzConj1D f) x = star (deriv f x) := by
   have h :=
-    ((RCLike.conjCLE (K := ℂ)).hasFDerivAt.comp x
+    (((RCLike.conjCLE (K := ℂ)).toContinuousLinearMap : ℂ →L[ℝ] ℂ).hasFDerivAt.comp x
       (SchwartzMap.hasDerivAt f x).hasFDerivAt).hasDerivAt
   simpa [schwartzConj1D] using h.deriv
 
@@ -99,9 +100,9 @@ theorem continuumH2LaplacianPMap1D_adjoint_domain_le :
           inner ℂ (continuumH2Laplacian1D fH2) u := by
       calc
         inner ℂ (f.toLp 2 (volume : Measure ℝ)) w =
-            conj (inner ℂ w (f.toLp 2 (volume : Measure ℝ))) := by
+            star (inner ℂ w (f.toLp 2 (volume : Measure ℝ))) := by
               rw [← inner_conj_symm]
-        _ = conj (inner ℂ u (continuumH2Laplacian1D fH2)) := by
+        _ = star (inner ℂ u (continuumH2Laplacian1D fH2)) := by
               rw [show inner ℂ w (f.toLp 2 (volume : Measure ℝ)) =
                 inner ℂ u (continuumH2Laplacian1D fH2) by
                   simpa [w, uAdj, fH2, continuumH2LaplacianPMap1D] using hadj]
@@ -110,7 +111,7 @@ theorem continuumH2LaplacianPMap1D_adjoint_domain_le :
     simpa [fH2] using hswap
   have hcore := hinner (schwartzConj1D g)
   rw [continuumH2Laplacian1D_schwartz_toLp] at hcore
-  simp only [l2ToTemperedDistribution1D, ContinuousLinearMap.coe_coe,
+  simp only [l2ToTemperedDistribution1D,
     MeasureTheory.Lp.toTemperedDistributionCLM_apply,
     MeasureTheory.Lp.toTemperedDistribution_apply,
     TemperedDistribution.laplacian_apply_apply]
@@ -122,7 +123,7 @@ theorem continuumH2LaplacianPMap1D_adjoint_domain_le :
       apply integral_congr_ae
       filter_upwards [(schwartzConj1D g).coeFn_toLp 2 (volume : Measure ℝ)] with x hx
       rw [hx]
-      simp [RCLike.inner_apply]
+      simp [RCLike.inner_apply, mul_comm]
     _ = inner ℂ ((Δ (schwartzConj1D g)).toLp 2 (volume : Measure ℝ)) u := hcore
     _ = inner ℂ ((schwartzConj1D (Δ g)).toLp 2 (volume : Measure ℝ)) u := by
       rw [laplacian_schwartzConj1D]
@@ -131,7 +132,7 @@ theorem continuumH2LaplacianPMap1D_adjoint_domain_le :
       apply integral_congr_ae
       filter_upwards [(schwartzConj1D (Δ g)).coeFn_toLp 2 (volume : Measure ℝ)] with x hx
       rw [hx]
-      simp [RCLike.inner_apply]
+      simp [RCLike.inner_apply, mul_comm]
 
 /-- The free distributional Laplacian on `H²(ℝ)` is self-adjoint on physical `L²(ℝ, ℂ)`. -/
 theorem continuumH2LaplacianPMap1D_isSelfAdjoint :
