@@ -40,54 +40,6 @@ theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_mixedComponent
     exact d.exists_mixedComponentDysonLocalChamberRepresentative_eq
       ε β g τ τ' shuffle B localTime
 
-/-- The complete Dyson-signed fixed-diagram integrand is globally measurable and locally bounded,
-even though it can change chamber formula when an interaction time crosses an external time. -/
-theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) :
-    intervalIntegral.MeasurableLocallyBounded
-      (fun σ : Fin n → ℝ => d.dysonFixedTimeAmplitude ε β g τ τ' σ) := by
-  let branch : TwoPointOrderSignature n → (Fin n → ℝ) → ℂ := fun s σ =>
-    twoPointExternalOrderSign τ τ' *
-      ∏ B : d.1.componentPartition.parts,
-        d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ'
-          (twoPointOrderSignatureBase τ τ' s) B σ
-  apply intervalIntegral.measurableLocallyBounded_of_finite_continuous_selection
-    (g := branch)
-  · have hMeas : Measurable (fun σ : Fin n → ℝ =>
-        twoPointExternalOrderSign τ τ' *
-          ∏ B : d.1.componentPartition.parts,
-            d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B) := by
-      exact measurable_const.mul
-        (Finset.measurable_prod _ fun B _ =>
-          d.measurable_mixedComponentDysonFixedTimeValue ε β g τ τ' B)
-    have hEq : (fun σ : Fin n → ℝ => d.dysonFixedTimeAmplitude ε β g τ τ' σ) =
-        fun σ => twoPointExternalOrderSign τ τ' *
-          ∏ B : d.1.componentPartition.parts,
-            d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B := by
-      funext σ
-      exact d.dysonFixedTimeAmplitude_eq_externalSign_mul_prod_components
-        ε β g τ τ' σ
-    rw [hEq]
-    exact hMeas
-  · intro s
-    unfold branch
-    exact continuous_const.mul
-      (continuous_finsetProd _ fun B _ =>
-        d.continuous_mixedComponentDysonFixedTimeChamberRepresentative
-          ε β g τ τ' (twoPointOrderSignatureBase τ τ' s) B)
-  · intro σ
-    let s := twoPointOrderSignature τ τ' σ
-    refine ⟨s, ?_⟩
-    rw [d.dysonFixedTimeAmplitude_eq_externalSign_mul_prod_components]
-    apply congrArg (fun z : ℂ => twoPointExternalOrderSign τ τ' * z)
-    apply Fintype.prod_congr
-    intro B
-    exact (d.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber
-      ε β g τ τ' (twoPointOrderSignatureBase τ τ' s) σ B
-      (by simpa [s] using sameTwoPointOrderChamber_signatureBase τ τ' σ)).symm
-
 /-- The localized signed component integrands satisfy the finite-family ordered-simplex shuffle
 product identity with no externally supplied continuity assumption. -/
 theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_orderedSimplexIntegral_mixedComponentDysonLocalIntegrand_eq_prod
