@@ -24,7 +24,7 @@ theorem pairingSum_eq_sum_sum_insertFirstPair {n : ℕ} (β : ℝ) (H : Hamilton
     (C : Fin (2 * (n + 1)) → OperatorTime 𝓢 N) :
     pairingSum β H (n + 1) C =
       ∑ j : Fin (2 * n + 1), ∑ Q : Pairing n,
-        pairingTerm β H (Q.insertFirstPair j.succ (Ne.symm (Fin.succ_ne_zero j))) C := by
+        pairingTerm β H (Q.insertFirstPair j.succ (Fin.succ_ne_zero j)) C := by
   rw [pairingSum, Pairing.sum_eq_sum_sum_insertFirstPair]
 
 end BlochDeDominicis
