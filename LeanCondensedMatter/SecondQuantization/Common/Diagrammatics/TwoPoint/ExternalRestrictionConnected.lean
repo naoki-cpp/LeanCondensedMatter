@@ -27,8 +27,8 @@ noncomputable def TwoPointDiagram.externalBlockVertexEquiv {S : Finset (Fin N)}
     rcases v with ⟨v, hv⟩
     cases v with
     | inl e => exact Sum.inl e
-    | inr w => exact Sum.inr
-        ⟨w.1, (TwoPointDiagram.mem_interactionPart_subtype
+    | inr w =>
+        exact Sum.inr ⟨w.1, (TwoPointDiagram.mem_interactionPart_subtype
           (d.externalComponent 0) w).2 hv⟩
   invFun v := by
     cases v with
@@ -41,8 +41,10 @@ noncomputable def TwoPointDiagram.externalBlockVertexEquiv {S : Finset (Fin N)}
             (d.externalComponent 0) vS).1 w.2⟩
   left_inv v := by
     rcases v with ⟨(e | w), hv⟩
-    · apply Subtype.ext; rfl
-    · apply Subtype.ext; rfl
+    · apply Subtype.ext
+      rfl
+    · apply Subtype.ext
+      rfl
   right_inv v := by
     rcases v with e | w
     · rfl
@@ -59,38 +61,42 @@ theorem TwoPointDiagram.restrictExternalComponent_adj
       (d.externalBlockVertexEquiv v) (d.externalBlockVertexEquiv w) := by
   rcases hvw with ⟨hne, leg, hv, hw⟩
   have hleg : d.legInComponent (d.externalComponent 0) leg :=
-    (d.legInComponent_iff_vertex_mem d.externalComponentPart leg).2 (by simpa [hv] using v.2)
+    (d.legInComponent_iff_vertex_mem d.externalComponentPart.2 leg).2
+      (by simpa [hv] using v.2)
   let legB : {leg : Fin (2 * (2 * S.card + 1)) //
       d.legInComponent (d.externalComponent 0) leg} := ⟨leg, hleg⟩
   refine ⟨?_, d.externalBlockLegEquiv legB, ?_, ?_⟩
   · intro h
     apply hne
-    have := congrArg (d.externalBlockVertexEquiv).symm h
-    simpa using congrArg Subtype.val this
+    have h' := congrArg (d.externalBlockVertexEquiv).symm h
+    simpa using congrArg Subtype.val h'
   · apply (d.externalBlockVertexEquiv).injective
     apply Subtype.ext
     change twoPointVertexOfLeg leg = v.1
     exact hv
   · apply (d.externalBlockVertexEquiv).injective
     apply Subtype.ext
-    change twoPointVertexOfLeg (d.pairing.partner leg) = w.1
     rw [← d.restrictedPartner_val (d.externalComponent 0) legB]
-    have hpair := d.restrictedExternalPairing_partner_externalBlockLegEquiv legB
-    rw [← hpair]
+    rw [← d.restrictedExternalPairing_partner_externalBlockLegEquiv legB]
     change twoPointVertexOfLeg (d.pairing.partner leg) = w.1
     exact hw
+
+private theorem TwoPointDiagram.mem_externalComponent_of_reachable_right
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    {v w : TwoPointVertex S} (hw : w ∈ d.externalComponent 0)
+    (hvw : d.vertexGraph.Reachable v w) : v ∈ d.externalComponent 0 := by
+  have hwBlock : d.componentBlock w = d.externalComponent 0 :=
+    (d.componentBlock_eq_iff_mem d.externalComponentPart.2 w).2 hw
+  have hvBlock : d.componentBlock v = d.componentBlock w :=
+    d.componentBlock_eq_of_reachable hvw
+  exact (d.componentBlock_eq_iff_mem d.externalComponentPart.2 v).1
+    (hvBlock.trans hwBlock)
 
 private theorem TwoPointDiagram.mem_externalComponent_of_adj_right
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     {v w : TwoPointVertex S} (hw : w ∈ d.externalComponent 0)
-    (hvw : d.vertexGraph.Adj v w) : v ∈ d.externalComponent 0 := by
-  have hwBlock : d.componentBlock w = d.externalComponent 0 :=
-    (d.componentBlock_eq_iff_mem d.externalComponentPart.2 w).2 hw
-  have hvwReach : d.vertexGraph.Reachable v w := hvw.reachable
-  have hvBlock : d.componentBlock v = d.componentBlock w :=
-    d.componentBlock_eq_of_reachable hvwReach
-  exact (d.componentBlock_eq_iff_mem d.externalComponentPart.2 v).1
-    (hvBlock.trans hwBlock)
+    (hvw : d.vertexGraph.Adj v w) : v ∈ d.externalComponent 0 :=
+  d.mem_externalComponent_of_reachable_right hw hvw.reachable
 
 /-- Ambient reachability between vertices of the external component is preserved by restriction. -/
 theorem TwoPointDiagram.restrictExternalComponent_reachable
@@ -99,16 +105,27 @@ theorem TwoPointDiagram.restrictExternalComponent_reachable
     (hvw : d.vertexGraph.Reachable v.1 w.1) :
     d.restrictExternalComponent.vertexGraph.Reachable
       (d.externalBlockVertexEquiv v) (d.externalBlockVertexEquiv w) := by
-  rw [SimpleGraph.reachable_iff_reflTransGen] at hvw ⊢
-  induction hvw generalizing w with
-  | refl => exact Relation.ReflTransGen.refl
-  | @tail x y z hxy hyz ih =>
-      have hyMem : y ∈ d.externalComponent 0 :=
-        d.mem_externalComponent_of_adj_right w.2 hyz
-      let yB : {v : TwoPointVertex S // v ∈ d.externalComponent 0} := ⟨y, hyMem⟩
-      have hprefix := ih yB
-      have hedge := d.restrictExternalComponent_adj yB w hyz
-      exact Relation.ReflTransGen.tail hprefix hedge
+  rw [SimpleGraph.reachable_iff_reflTransGen] at hvw
+  have aux : ∀ {z : TwoPointVertex S},
+      Relation.ReflTransGen d.vertexGraph.Adj v.1 z →
+      ∀ hz : z ∈ d.externalComponent 0,
+        d.restrictExternalComponent.vertexGraph.Reachable
+          (d.externalBlockVertexEquiv v)
+          (d.externalBlockVertexEquiv ⟨z, hz⟩) := by
+    intro z h
+    induction h with
+    | refl =>
+        intro hz
+        exact SimpleGraph.Reachable.rfl
+    | @tail b c hprefix hbc ih =>
+        intro hc
+        have hb : b ∈ d.externalComponent 0 :=
+          d.mem_externalComponent_of_adj_right hc hbc
+        have hprefix' := ih hb
+        have hedge := d.restrictExternalComponent_adj
+          ⟨b, hb⟩ ⟨c, hc⟩ hbc
+        exact hprefix'.trans hedge.reachable
+  exact aux hvw w.2
 
 /-- The restriction to the ambient external component has no vacuum component. -/
 theorem TwoPointDiagram.restrictExternalComponent_hasNoVacuumComponent
@@ -127,7 +144,7 @@ theorem TwoPointDiagram.restrictExternalComponent_hasNoVacuumComponent
     ((d.mem_componentBlock (Sum.inl (0 : Fin 2)) (Sum.inr vS)).1 hvMem).symm
   have hlocal := d.restrictExternalComponent_reachable ext0 vint hambient
   refine ⟨0, ?_⟩
-  simpa [ext0, vint, TwoPointDiagram.externalBlockVertexEquiv] using hlocal
+  simpa [ext0, vint, vS, TwoPointDiagram.externalBlockVertexEquiv] using hlocal
 
 /-- The restricted external component is externally connected. -/
 theorem TwoPointDiagram.restrictExternalComponent_isExternallyConnected
