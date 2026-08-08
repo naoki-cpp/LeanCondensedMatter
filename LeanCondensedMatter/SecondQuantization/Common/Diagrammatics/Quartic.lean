@@ -23,6 +23,6 @@ set_option linter.style.header false
 
 Statistics-independent quartic leg indexing, labelled diagram syntax, vertex ordering, connectivity,
 connected-component restriction, reassembly and its inverse laws, component-decomposition equivalence,
-component-local orders and pairing compatibility, ordered-simplex factorization, and componentwise
-scalar products.
+component-local orders and pairing compatibility, direct finite-family ordered-simplex factorization,
+and componentwise scalar products.
 -/
