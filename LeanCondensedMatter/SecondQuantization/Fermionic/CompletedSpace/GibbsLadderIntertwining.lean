@@ -96,6 +96,7 @@ theorem coe_completedFreeGibbsProbability_removeOccupation_of_mem
   push_cast
   rfl
 
+omit [LinearOrder Mode] in
 /-- Two bounded operators on completed Fock space are equal when they agree on every occupation
 basis vector.  The proof passes through the dense algebraic finite-support core. -/
 private theorem continuousLinearMap_ext_completedBasis
