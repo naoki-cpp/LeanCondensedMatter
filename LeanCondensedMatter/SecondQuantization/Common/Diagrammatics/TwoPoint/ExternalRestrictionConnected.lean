@@ -51,6 +51,26 @@ noncomputable def TwoPointDiagram.externalBlockVertexEquiv {S : Finset (Fin N)}
     · apply congrArg Sum.inr
       exact Subtype.ext (by rfl)
 
+/-- The external-component leg equivalence carries the incident vertex through the corresponding
+vertex equivalence. -/
+@[simp]
+theorem TwoPointDiagram.twoPointVertexOfLeg_externalBlockLegEquiv
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (leg : {leg : Fin (2 * (2 * S.card + 1)) //
+      d.legInComponent (d.externalComponent 0) leg}) :
+    twoPointVertexOfLeg (d.externalBlockLegEquiv leg) =
+      d.externalBlockVertexEquiv
+        ⟨twoPointVertexOfLeg leg.1,
+          (d.legInComponent_iff_vertex_mem d.externalComponentPart.2 leg.1).1 leg.2⟩ := by
+  change twoPointLegVertex (twoPointLegEquiv
+      (TwoPointDiagram.interactionPart (d.externalComponent 0))
+      (d.externalBlockLegEquiv leg)) = _
+  rcases hleg : twoPointLegEquiv S leg.1 with e | ⟨v, l⟩
+  · simp [TwoPointDiagram.externalBlockLegEquiv, TwoPointDiagram.externalLegDataEquiv,
+      TwoPointDiagram.externalBlockVertexEquiv, twoPointLegVertex, twoPointVertexOfLeg, hleg]
+  · simp [TwoPointDiagram.externalBlockLegEquiv, TwoPointDiagram.externalLegDataEquiv,
+      TwoPointDiagram.externalBlockVertexEquiv, twoPointLegVertex, twoPointVertexOfLeg, hleg]
+
 /-- An ambient edge whose endpoints lie in the external component becomes an edge of the restricted
 external diagram. -/
 theorem TwoPointDiagram.restrictExternalComponent_adj
@@ -70,14 +90,15 @@ theorem TwoPointDiagram.restrictExternalComponent_adj
     apply hne
     have h' := congrArg (d.externalBlockVertexEquiv).symm h
     simpa using congrArg Subtype.val h'
-  · apply (d.externalBlockVertexEquiv).injective
+  · rw [d.twoPointVertexOfLeg_externalBlockLegEquiv legB]
+    apply congrArg d.externalBlockVertexEquiv
     apply Subtype.ext
-    change twoPointVertexOfLeg leg = v.1
     exact hv
-  · apply (d.externalBlockVertexEquiv).injective
+  · rw [d.restrictExternalComponent_pairing]
+    rw [d.restrictedExternalPairing_partner_externalBlockLegEquiv legB]
+    rw [d.twoPointVertexOfLeg_externalBlockLegEquiv]
+    apply congrArg d.externalBlockVertexEquiv
     apply Subtype.ext
-    rw [← d.restrictedPartner_val (d.externalComponent 0) legB]
-    rw [← d.restrictedExternalPairing_partner_externalBlockLegEquiv legB]
     change twoPointVertexOfLeg (d.pairing.partner leg) = w.1
     exact hw
 
