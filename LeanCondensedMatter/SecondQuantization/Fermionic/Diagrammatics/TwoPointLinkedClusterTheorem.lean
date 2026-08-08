@@ -1,5 +1,7 @@
+import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableFiniteSum
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalVacuumEquiv
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.OrderedAmplitude
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentShuffleIntegrability
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonConnectedDiagramExpansion
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
 import Mathlib.RingTheory.PowerSeries.Inverse
@@ -135,6 +137,43 @@ noncomputable def twoPointConnectedDiagramCoeff
     (i j : Mode) (τ τ' : ℝ) (n : ℕ) : ℂ :=
   ∑ d : ConnectedFixedExternalTwoPointWickDiagram Mode n i j,
     d.1.dysonAmplitude ε β g τ τ'
+
+/-- The finite sum of individual integrated diagram amplitudes is the existing order-`n` two-point
+Dyson coefficient.  The only analytic input is measurable local boundedness of each fixed diagram,
+which permits the finite sum to pass through the ordered-simplex integral. -/
+theorem twoPointUnnormalizedDiagramCoeff_eq_twoPointDiagramCoefficient
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
+    twoPointUnnormalizedDiagramCoeff ε β g i j τ τ' n =
+      twoPointDiagramCoefficient (n := n) ε β g i j τ τ' := by
+  classical
+  unfold twoPointUnnormalizedDiagramCoeff
+  simp_rw [FixedExternalTwoPointWickDiagram.dysonAmplitude_eq_orderedSimplexIntegral_dysonFixedTimeAmplitude]
+  have hsum := intervalIntegral.orderedSimplexIntegral_finsetSum_of_measurableLocallyBounded
+    (Finset.univ : Finset (FixedExternalTwoPointWickDiagram Mode n i j)) n β
+    (fun d σ => d.dysonFixedTimeAmplitude ε β g τ τ' σ)
+    (fun d _ => d.measurableLocallyBounded_dysonFixedTimeAmplitude ε β g τ τ')
+  calc
+    (∑ d : FixedExternalTwoPointWickDiagram Mode n i j,
+        intervalIntegral.orderedSimplexIntegral n β
+          (fun σ => d.dysonFixedTimeAmplitude ε β g τ τ' σ)) =
+      intervalIntegral.orderedSimplexIntegral n β
+        (fun σ => ∑ d : FixedExternalTwoPointWickDiagram Mode n i j,
+          d.dysonFixedTimeAmplitude ε β g τ τ' σ) := by
+        simpa using hsum.symm
+    _ = intervalIntegral.orderedSimplexIntegral n β
+        (fun σ => (-1 : ℂ) ^ n *
+          ∑ d : FixedExternalTwoPointWickDiagram Mode n i j,
+            d.fixedTimeAmplitude ε β g τ τ' σ) := by
+      apply intervalIntegral.orderedSimplexIntegral_congr
+      intro σ
+      simp only [FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude]
+      rw [Finset.mul_sum]
+    _ = (-1 : ℂ) ^ n * intervalIntegral.orderedSimplexIntegral n β
+        (fun σ => ∑ d : FixedExternalTwoPointWickDiagram Mode n i j,
+          d.fixedTimeAmplitude ε β g τ τ' σ) :=
+      intervalIntegral.orderedSimplexIntegral_smul n β ((-1 : ℂ) ^ n) _
+    _ = twoPointDiagramCoefficient (n := n) ε β g i j τ τ' := rfl
 
 /-- Formal unnormalized two-point numerator series. -/
 noncomputable def twoPointUnnormalizedDiagramSeries
