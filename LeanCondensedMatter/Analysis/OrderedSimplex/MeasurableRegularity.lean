@@ -62,6 +62,12 @@ theorem measurableLocallyBounded_of_finite_continuous_selection
   intro x hx
   exact (hC x hx).trans (le_max_left _ _)
 
+/-- Every continuous finite-dimensional ordered-simplex integrand is measurably locally bounded. -/
+theorem Continuous.measurableLocallyBounded {n : ℕ} {f : (Fin n → ℝ) → ℂ}
+    (hf : Continuous f) : MeasurableLocallyBounded f :=
+  measurableLocallyBounded_of_finite_continuous_selection
+    f (fun _ : Unit => f) hf.measurable (fun _ => hf) (fun x => ⟨(), rfl⟩)
+
 /-- Fixing the outermost finite coordinate preserves measurable local boundedness. -/
 theorem MeasurableLocallyBounded.finCons {n : ℕ}
     {f : (Fin (n + 1) → ℝ) → ℂ} (hf : MeasurableLocallyBounded f) (t : ℝ) :
