@@ -75,7 +75,7 @@ theorem annihilate_apply_coord (i : Mode) (x : FockSpace Mode) (n : Occupation M
         simp only [createOccupation_apply_same, Nat.cast_add, Nat.cast_one,
           Complex.coe_smul, map_smul, LinearMap.map_smul_of_tower,
           Complex.real_smul, smul_eq_mul]
-        exact mul_comm _ _
+        exact mul_comm b (Real.sqrt (n i + 1 : ℝ) : ℂ)
       · have hne : a ≠ createOccupation i n := by
           intro h
           apply hrem
@@ -132,7 +132,7 @@ theorem create_apply_coord_of_pos (i : Mode) (x : FockSpace Mode) (n : Occupatio
       simp only [removeOccupation_apply_same, Complex.coe_smul, map_smul,
         LinearMap.map_smul_of_tower, Complex.real_smul, smul_eq_mul]
       rw [hcast]
-      exact mul_comm _ _
+      exact mul_comm b (Real.sqrt (n i : ℝ) : ℂ)
     · have hane : a ≠ removeOccupation i n := by
         intro h
         apply hca
@@ -162,7 +162,7 @@ theorem tsumTrace_annihilate_comp (i : Mode)
     · simp [createOccupation_apply_same]
   have hsupport : Function.support f ⊆ positiveOccupationSet i := by
     intro n hn
-    show n i ≠ 0
+    change n i ≠ 0
     intro hi
     apply hn
     unfold f Common.matrixCoeff
@@ -198,7 +198,7 @@ theorem tsumTrace_create_comp (i : Mode)
     · simp [createOccupation_apply_same]
   have hsupport : Function.support f ⊆ positiveOccupationSet i := by
     intro n hn
-    show n i ≠ 0
+    change n i ≠ 0
     intro hi
     apply hn
     unfold f Common.matrixCoeff
