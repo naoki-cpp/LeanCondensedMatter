@@ -35,6 +35,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentShuffleIntegrability
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentCanonicalLocality
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ComponentShufflePermutation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ComponentShuffleRelabelAmplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DysonCoefficient
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentDysonIntegral
@@ -60,7 +61,8 @@ decomposition of mixed crossing counts, reduction of their parity to complete co
 inversions and concrete vacuum four-leg event blocks, unconditional factorization of mixed pairing
 weights, pairing values, coupling products, fixed-time values, and component-local Dyson signs,
 canonical component-locality of the pointwise Dyson integrand, the ambient permutation relating every
-component shuffle to the canonical one, the factorized ordered-simplex interface, and the
-perturbative coefficient for the imaginary-time two-point function with quartic interaction
-vertices.
+component shuffle to the canonical one, the pointwise identification of each shuffle term with an
+explicitly relabeled diagram amplitude away from interaction-time diagonals, the factorized
+ordered-simplex interface, and the perturbative coefficient for the imaginary-time two-point
+function with quartic interaction vertices.
 -/
