@@ -78,7 +78,6 @@ theorem twoPointTimedEventTime_interactionVertexEventRelabel {n : ℕ}
 
 /-- The same time-covariance statement expressed on the event supporting a standard two-point leg.
 -/
-@[simp]
 theorem twoPointTimedEventTime_orderedTwoPointLegEvent_interactionVertexLegRelabel {n : ℕ}
     (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (leg : OrderedTwoPointLeg n) :
