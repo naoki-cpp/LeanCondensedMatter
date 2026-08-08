@@ -45,16 +45,15 @@ noncomputable def fixedExternalTwoPointWickDiagramOnEquivOrderedData
         simp [Common.twoPointDiagramEquivOrderedData]⟩
   left_inv d := by
     apply Subtype.ext
-    change (Common.twoPointDiagramEquivOrderedData order).symm
-      (d.1.externalLabel, fun k => d.1.vertexLabel (order k),
-        d.1.pairingInInteractionOrder order) = d.1
-    simpa using (Common.twoPointDiagramEquivOrderedData order).left_inv d.1
+    rw [← d.2]
+    exact (Common.twoPointDiagramEquivOrderedData order).left_inv d.1
   right_inv x := by
     rcases x with ⟨labels, pairing⟩
+    have h := (Common.twoPointDiagramEquivOrderedData order).right_inv
+      (twoPointExternalLabels i j, labels, pairing)
     apply Prod.ext
-    · funext k
-      simp [Common.twoPointDiagramEquivOrderedData]
-    · simp [Common.twoPointDiagramEquivOrderedData]
+    · exact congrArg (fun y => y.2.1) h
+    · exact congrArg (fun y => y.2.2) h
 
 /-- Standard slot data are equivalent to the existing explicit-`Fin n` fixed-external diagram type. -/
 noncomputable def orderedFixedExternalTwoPointDataEquivFixedDiagram
