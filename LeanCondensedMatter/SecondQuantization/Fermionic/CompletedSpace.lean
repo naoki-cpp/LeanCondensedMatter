@@ -13,6 +13,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteOpe
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteThermalCompatibility
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.GibbsModeTruncation
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.GibbsModeTruncationExpectation
 
 set_option linter.style.header false
 
@@ -56,7 +57,8 @@ For arbitrary mode types, finite-mode coordinate projections indexed by `Finset 
 contractive net converging strongly to the identity. The same finite-mode net also restricts the
 free Gibbs weights to occupations contained in each finite mode set. Under the existing absolute
 Gibbs summability hypothesis these truncated partition functions converge to the full partition
-function, and every normalized occupation probability converges to its full Gibbs value.
+function, every normalized occupation probability converges to its full Gibbs value, and the
+normalized truncated Gibbs states converge weakly against every bounded operator.
 
 Thermodynamic-limit constructions remain later work.
 -/
