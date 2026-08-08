@@ -57,7 +57,9 @@ private theorem derivative_logOf_mul {Z : PowerSeries ℂ}
           ring
     _ = d⁄dX ℂ Z := by rw [hgeom']; simp
 
-private theorem powerSeriesMomentCoeff_succ_recurrence {Z : PowerSeries ℂ}
+/-- The factorial-normalized moment and formal-log coefficients satisfy the triangular
+moment-cumulant recurrence. -/
+theorem powerSeriesMomentCoeff_succ_recurrence {Z : PowerSeries ℂ}
     (hZ : PowerSeries.constantCoeff Z = 1) (n : ℕ) :
     powerSeriesMomentCoeff Z (n + 1) =
       ∑ k ∈ Finset.range (n + 1),
@@ -123,21 +125,8 @@ private theorem momentFromCumulant_powerSeriesCumulantCoeff
   intro s ih
   by_cases hs : s = ∅
   · subst s
-    have hunique (P : Finpartition (∅ : Finset α)) : P = ⊥ := by
-      apply Finpartition.ext
-      have hparts : P.parts = ∅ := by
-        ext B
-        constructor
-        · intro hB
-          exact (P.ne_bot hB (Finset.subset_empty.mp (P.subset hB))).elim
-        · intro hB
-          simp at hB
-      simpa [hparts]
-    letI : Unique (Finpartition (∅ : Finset α)) :=
-      { default := ⊥, uniq := hunique }
-    have hdefault : (default : Finpartition (∅ : Finset α)) = ⊥ := hunique _
     simp [Finpartition.momentFromCumulant, Finpartition.partitionProduct,
-      powerSeriesMomentCoeff, hZ, hdefault]
+      powerSeriesMomentCoeff, hZ]
   · obtain ⟨a, ha⟩ := Finset.nonempty_iff_ne_empty.mpr hs
     rw [Finpartition.momentFromCumulant_eq_sum_blockContaining _ ha]
     have hsmall : ∀ B : Finpartition.BlockContaining s a,
