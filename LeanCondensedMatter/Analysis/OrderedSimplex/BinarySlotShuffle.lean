@@ -82,8 +82,9 @@ theorem orderedSimplexContribution_consLeft_boundary {m n : ℕ}
     orderedSimplexContribution σ t (fun rest => f (Fin.cons t rest)) g =
       orderedSimplexIntegral (m + n) t (fun rest =>
         (toSlotShuffle (.consLeft σ)).integrand f g
-          (fun i : Fin (m + 1 + n) => (Fin.cons t rest)
-            (Fin.cast (show m + 1 + n = (m + n) + 1 by omega) i))) := by
+          (fun i : Fin (m + 1 + n) =>
+            (Fin.cons t rest : Fin ((m + n) + 1) → ℝ)
+              (Fin.cast (show m + 1 + n = (m + n) + 1 by omega) i))) := by
   rw [orderedSimplexContribution_eq_orderedSimplexIntegral_integrand]
   apply orderedSimplexIntegral_congr
   intro rest
@@ -106,8 +107,9 @@ theorem orderedSimplexContribution_consRight_boundary {m n : ℕ}
     orderedSimplexContribution σ t f (fun rest => g (Fin.cons t rest)) =
       orderedSimplexIntegral (m + n) t (fun rest =>
         (toSlotShuffle (.consRight σ)).integrand f g
-          (fun i : Fin (m + (n + 1)) => (Fin.cons t rest)
-            (Fin.cast (show m + (n + 1) = (m + n) + 1 by omega) i))) := by
+          (fun i : Fin (m + (n + 1)) =>
+            (Fin.cons t rest : Fin ((m + n) + 1) → ℝ)
+              (Fin.cast (show m + (n + 1) = (m + n) + 1 by omega) i))) := by
   rw [orderedSimplexContribution_eq_orderedSimplexIntegral_integrand]
   apply orderedSimplexIntegral_congr
   intro rest
@@ -204,8 +206,10 @@ theorem sum_orderedSimplexContribution_eq_shuffleIntegral_of_measurableLocallyBo
           exact hIntRight σ
         · intro σ _
           exact hIntLeft σ
-      · simpa using (IntervalIntegrable.sum Finset.univ (fun σ _ => hIntLeft σ))
-      · simpa using (IntervalIntegrable.sum Finset.univ (fun σ _ => hIntRight σ))
+      · simpa only [Finset.sum_apply] using
+          (IntervalIntegrable.sum Finset.univ (fun σ _ => hIntLeft σ))
+      · simpa only [Finset.sum_apply] using
+          (IntervalIntegrable.sum Finset.univ (fun σ _ => hIntRight σ))
 
 /-- Explicit binary ordered-simplex shuffle identity under measurable local boundedness. -/
 theorem sum_orderedSimplexContribution_eq_mul_of_measurableLocallyBounded
