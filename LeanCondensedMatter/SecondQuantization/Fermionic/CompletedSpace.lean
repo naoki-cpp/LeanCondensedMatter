@@ -11,6 +11,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbs
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.GibbsLadderIntertwining
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalLadder
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalPeel
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalKMS
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnboundedExpectation
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbsSummability
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteCompatibility
@@ -49,9 +50,10 @@ unbounded operator into `ContinuousLinearMap`. The Gibbs density operator also o
 thermal-intertwining relations `ρβ aᵢ† = exp (-β εᵢ) aᵢ† ρβ` and
 `ρβ aᵢ = exp (β εᵢ) aᵢ ρβ`. Creation and annihilation are additionally packaged as a single
 completed thermal-ladder type carrying its Gibbs factor and scalar CAR coefficient. Repeated CAR
-exchange is exposed as a bounded thermal peel identity, and applying the canonical Gibbs
-expectation isolates the final rotated term that remains to be discharged by completed KMS
-cyclicity before instantiating the generic first-pair recursion.
+exchange is exposed as a bounded thermal peel identity. The canonical occupation-basis Gibbs
+expectation now also satisfies the completed KMS rotation `⟨C A⟩β = gβ(C) ⟨A C⟩β` for a thermal
+ladder `C` and arbitrary bounded `A`, proved by reindexing the absolutely convergent Gibbs series by
+the one-mode occupation toggle rather than introducing general trace cyclicity.
 
 For the free fermion state, summability of the one-particle Boltzmann factors
 `exp (-β εᵢ)` is a concrete sufficient condition for occupation-level Gibbs summability. Under this
