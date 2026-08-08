@@ -33,7 +33,7 @@ def ConnectedQuarticDiagram (Label : Type*) (N : ℕ) (S : Finset (Fin N)) : Typ
 /-- Connected labelled quartic diagrams form a finite type when their labels do. -/
 noncomputable instance ConnectedQuarticDiagram.instFintype [Fintype Label]
     {S : Finset (Fin N)} : Fintype (ConnectedQuarticDiagram Label N S) :=
-  Fintype.ofFinite _
+  Fintype.ofFinite {d : QuarticDiagram Label N S // d.IsConnected}
 
 end Common
 end SecondQuantization
