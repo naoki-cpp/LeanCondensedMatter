@@ -86,9 +86,14 @@ proves dense domain, closedness, adjoint identification by conjugating the diago
 self-adjointness for real weights.  These analytic results remain separate from the operator
 definitions.
 
-Products used in KMS or Dyson expressions must still state their product domains.  A formal
-expression such as `A * exp (-β H)` is not admitted merely because it is meaningful in finite
-dimensions.
+Products used in genuinely unbounded Dyson expressions must still state their product domains.  A
+formal expression such as `A * exp (-β H)` is not admitted merely because it is meaningful in finite
+dimensions.  The completed free-Gibbs pairing recursion does **not** require such an operator product:
+its KMS step uses the already constructed bounded trace-class Gibbs density operator together with
+bounded ladder operators, and proves cyclic rotation directly from the occupation-basis expectation
+series.  Thus no additional unbounded `exp (-β H)` product-domain API is part of the completed KMS
+bridge; further domain lemmas should be added only when a later unbounded Dyson expression actually
+consumes them.
 
 ## Thermal-state route
 
@@ -135,9 +140,12 @@ Z(β) = ∏' i, (1 + qᵢ).
 No separate countability typeclass is required by this API: the summability hypothesis itself is
 the analytic restriction on the mode family.
 
-The generic `ExpectationPairingRecursion` from #421 remains representation independent.  A completed
-fermionic or bosonic instance must supply its own admissibility predicate, KMS laws, and product-domain
-conditions; the recursion itself should not acquire occupation-basis or finiteness assumptions.
+The generic `ExpectationPairingRecursion` from #421 remains representation independent.  The
+completed fermionic implementation packages creation and annihilation as bounded thermal ladders,
+proves the Gibbs/KMS rotation against an arbitrary bounded operator, rewrites the CAR peel as an
+indexed `List.eraseIdx` sum, and supplies the representation-specific admissibility predicate and
+first-pair recurrence.  The common recursion therefore acquires no occupation-basis, countability,
+or finite-mode assumptions.
 
 ## Finite-mode compatibility and approximation
 
@@ -184,8 +192,7 @@ observables; no trace-norm convergence is asserted.
 - [x] Construct completed creation and annihilation maps as signed partial reindexings.
 - [x] Prove norm bounds and basis action.
 - [x] Prove agreement on the algebraic core and completed CAR identities.
-- [ ] Record a completed-space admissibility/KMS instance for generic thermal recursion when its
-  product-domain requirements are available.
+- [x] Record the completed-space admissibility/KMS implementation for the generic thermal recursion.
 
 ### C3 — diagonal unbounded operators
 
@@ -194,7 +201,9 @@ observables; no trace-norm convergence is asserted.
 - [x] Prove algebraic-core agreement.
 - [x] Prove dense-domain, closedness, adjoint, and self-adjointness results separately from the core
   definitions.
-- [ ] Add product-domain/domain-invariance lemmas required by later KMS or unbounded Dyson products.
+- [x] Identify the completed KMS recursion's minimal product-domain boundary: no additional
+  unbounded-product lemma is required because the Gibbs state and ladder words are bounded; reserve
+  new domain-invariance lemmas for later unbounded Dyson expressions that actually consume them.
 
 ### C4 — trace-class free Gibbs state
 
