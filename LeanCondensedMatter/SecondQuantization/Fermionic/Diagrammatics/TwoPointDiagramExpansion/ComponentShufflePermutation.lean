@@ -50,6 +50,7 @@ noncomputable def FixedExternalTwoPointWickDiagram.relabelForComponentShuffle
     (shuffle : d.1.ComponentInteractionShuffle) : FixedExternalTwoPointWickDiagram Mode n i j :=
   d.relabelInteractionVertices (d.componentShuffleSlotPermutation shuffle).symm
 
+omit [LinearOrder Mode] [Fintype Mode] in
 @[simp]
 theorem FixedExternalTwoPointWickDiagram.relabelForComponentShuffle_vertexLabelSequence
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
