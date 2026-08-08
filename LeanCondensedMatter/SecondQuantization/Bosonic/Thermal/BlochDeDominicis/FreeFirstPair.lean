@@ -31,6 +31,7 @@ local instance instDecidableEqFreeFirstPair : DecidableEq Mode := Classical.decE
 
 namespace FreeThermalField
 
+omit [Fintype Mode] in
 /-- Positive one-mode Boltzmann exponents keep the bosonic KMS denominator away from zero. -/
 theorem kmsFactor_sub_one_ne_zero
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
