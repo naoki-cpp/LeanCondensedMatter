@@ -7,8 +7,8 @@ set_option linter.style.header false
 # Bosonic free-thermal operator peel
 
 This file instantiates the Common scalar-exchange peel identity for the concrete free bosonic
-creation/annihilation fields.  The scalar here is the bare CCR contraction, not yet the normalized
-thermal pair value.  Combining this algebraic peel with the free-Gibbs KMS rotation is the remaining
+creation/annihilation fields. The scalar here is the bare CCR contraction, not yet the normalized
+thermal pair value. Combining this algebraic peel with the free-Gibbs KMS rotation is the remaining
 step toward the analytic first-pair recurrence.
 -/
 
@@ -44,49 +44,65 @@ theorem FreeThermalField.operator_comp_operator_eq_exchangeValue
   | annihilate i =>
       cases D with
       | annihilate j =>
+          change (Bosonic.annihilate i).comp (Bosonic.annihilate j) =
+            0 • (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) +
+              (Bosonic.annihilate j).comp (Bosonic.annihilate i)
+          simp only [zero_smul, zero_add]
           have h := comm_annihilate_annihilate i j
           unfold comm at h
-          have hcomp : (annihilate i).comp (annihilate j) =
-              (annihilate j).comp (annihilate i) := sub_eq_zero.mp h
-          simpa [FreeThermalField.operator, FreeThermalField.exchangeValue] using hcomp
+          exact sub_eq_zero.mp h
       | create j =>
           by_cases hij : i = j
           · subst j
+            change (Bosonic.annihilate i).comp (Bosonic.create i) =
+              1 • (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) +
+                (Bosonic.create i).comp (Bosonic.annihilate i)
+            simp only [one_smul]
             have h := comm_annihilate_create i i
             rw [if_pos rfl] at h
             unfold comm at h
-            have hcomp := (sub_eq_iff_eq_add).mp h
-            simpa [FreeThermalField.operator, FreeThermalField.exchangeValue] using hcomp
-          · have h := comm_annihilate_create i j
+            exact (sub_eq_iff_eq_add).mp h
+          · change (Bosonic.annihilate i).comp (Bosonic.create j) =
+              0 • (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) +
+                (Bosonic.create j).comp (Bosonic.annihilate i)
+            simp only [zero_smul, zero_add]
+            have h := comm_annihilate_create i j
             rw [if_neg hij] at h
             unfold comm at h
-            have hcomp : (annihilate i).comp (create j) =
-                (create j).comp (annihilate i) := sub_eq_zero.mp h
-            simpa [FreeThermalField.operator, FreeThermalField.exchangeValue, hij] using hcomp
+            exact sub_eq_zero.mp h
   | create i =>
       cases D with
       | annihilate j =>
           by_cases hij : i = j
           · subst j
+            change (Bosonic.create i).comp (Bosonic.annihilate i) =
+              (-1 : ℂ) • (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) +
+                (Bosonic.annihilate i).comp (Bosonic.create i)
+            simp only [neg_one_smul]
             have h := comm_annihilate_create i i
             rw [if_pos rfl] at h
             unfold comm at h
             have hcomp := (sub_eq_iff_eq_add).mp h
             rw [hcomp]
-            simp [FreeThermalField.operator, FreeThermalField.exchangeValue]
             module
-          · have h := comm_annihilate_create j i
-            rw [if_neg hij.symm] at h
+          · change (Bosonic.create i).comp (Bosonic.annihilate j) =
+              0 • (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) +
+                (Bosonic.annihilate j).comp (Bosonic.create i)
+            simp only [zero_smul, zero_add]
+            have h := comm_annihilate_create j i
+            rw [if_neg (Ne.symm hij)] at h
             unfold comm at h
-            have hcomp : (annihilate j).comp (create i) =
-                (create i).comp (annihilate j) := sub_eq_zero.mp h
-            simpa [FreeThermalField.operator, FreeThermalField.exchangeValue, hij] using hcomp.symm
+            have hcomp : (Bosonic.annihilate j).comp (Bosonic.create i) =
+                (Bosonic.create i).comp (Bosonic.annihilate j) := sub_eq_zero.mp h
+            exact hcomp.symm
       | create j =>
+          change (Bosonic.create i).comp (Bosonic.create j) =
+            0 • (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) +
+              (Bosonic.create j).comp (Bosonic.create i)
+          simp only [zero_smul, zero_add]
           have h := comm_create_create i j
           unfold comm at h
-          have hcomp : (create i).comp (create j) =
-              (create j).comp (create i) := sub_eq_zero.mp h
-          simpa [FreeThermalField.operator, FreeThermalField.exchangeValue] using hcomp
+          exact sub_eq_zero.mp h
 
 /-- The bosonic ordered product is the Common right-associated operator product specialized to the
 free thermal field operator map. -/
@@ -115,7 +131,9 @@ theorem FreeThermalField.operator_comp_orderedProduct_eq_operatorPeelSum
         (FreeThermalField.orderedProduct fields).comp C.operator := by
   have h := Common.BlochDeDominicis.operator_comp_operatorProduct_eq_operatorPeelSum
     FreeThermalField.operator FreeThermalField.exchangeValue (1 : ℂ)
-    FreeThermalField.operator_comp_operator_eq_exchangeValue C fields
+    (fun C D => by
+      simpa using FreeThermalField.operator_comp_operator_eq_exchangeValue C D)
+    C fields
   rw [← FreeThermalField.orderedProduct_eq_common_operatorProduct] at h
   simpa [FreeThermalField.operatorPeelSum] using h
 
