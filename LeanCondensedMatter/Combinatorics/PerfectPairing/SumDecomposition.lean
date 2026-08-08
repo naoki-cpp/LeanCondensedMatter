@@ -45,7 +45,10 @@ theorem Pairing.sum_eq_sum_sum_insertFirstPair {n : ℕ} {M : Type*} [AddCommMon
     change ((finSuccAboveEquiv (0 : Fin (2 * n + 2))).symm (eNe x)).succ = x.1
     have hxVal := congrArg Subtype.val hxSubtype
     rw [finSuccAboveEquiv_apply] at hxVal
-    simpa using hxVal
+    calc
+      ((finSuccAboveEquiv (0 : Fin (2 * n + 2))).symm (eNe x)).succ = (eNe x).1 := by
+        simpa using hxVal
+      _ = x.1 := rfl
   simp only [Pairing.equivSigma, Equiv.coe_fn_symm_mk]
   exact congrArg F (Q.insertFirstPair_congr hx.symm _ _)
 
