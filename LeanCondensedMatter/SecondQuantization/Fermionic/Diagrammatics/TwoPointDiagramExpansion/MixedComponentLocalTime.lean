@@ -239,9 +239,9 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign
   exact d.mixedComponentPairingValue_local_of_timeTransport
     ε β τ τ' shuffle B (hCross B) (hContraction B)
 
-/-- The localized signed component integrands satisfy the finite-family ordered-simplex shuffle
-product identity. This is the analytic exit point once their continuity has been proved. -/
-theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_orderedSimplexIntegral_mixedComponentDysonLocalIntegrand_eq_prod
+/-- Continuous specialization of the localized signed component ordered-simplex shuffle product
+identity, retained for callers that already have global continuity. -/
+theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_orderedSimplexIntegral_mixedComponentDysonLocalIntegrand_eq_prod_of_continuous
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (baseShuffle : d.1.ComponentInteractionShuffle)
