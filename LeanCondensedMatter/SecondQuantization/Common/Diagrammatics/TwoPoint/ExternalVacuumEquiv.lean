@@ -68,23 +68,23 @@ theorem TwoPointDiagram.reassembleExternalVacuumData_injective
     Function.Injective
       (TwoPointDiagram.reassembleExternalVacuumData
         (ExternalLabel := ExternalLabel) (InternalLabel := InternalLabel) (N := N) (S := S)) := by
-  intro x y hxy
-  have hE : x.1.1 = y.1.1 := by
+  rintro ⟨E, xdata⟩ ⟨F, ydata⟩ hxy
+  have hEFval : E.1 = F.1 := by
     calc
-      x.1.1 = (TwoPointDiagram.reassembleExternalVacuumData x).externalInteractionPart := by
+      E.1 = (TwoPointDiagram.reassembleExternalVacuumData ⟨E, xdata⟩).externalInteractionPart := by
         symm
         exact TwoPointDiagram.interactionPart_externalComponent_reassembleExternalVacuum
-          x.1.2 x.2.1 x.2.2
-      _ = (TwoPointDiagram.reassembleExternalVacuumData y).externalInteractionPart :=
+          E.2 xdata.1 xdata.2
+      _ = (TwoPointDiagram.reassembleExternalVacuumData ⟨F, ydata⟩).externalInteractionPart :=
         congrArg TwoPointDiagram.externalInteractionPart hxy
-      _ = y.1.1 :=
+      _ = F.1 :=
         TwoPointDiagram.interactionPart_externalComponent_reassembleExternalVacuum
-          y.1.2 y.2.1 y.2.2
-  have hEsub : x.1 = y.1 := Subtype.ext hE
-  cases hEsub
-  apply Sigma.ext rfl
-  apply heq_of_eq
-  exact TwoPointDiagram.reassembleExternalVacuum_injective_fixed x.1.2 hxy
+          F.2 ydata.1 ydata.2
+  have hEF : E = F := Subtype.ext hEFval
+  subst F
+  have hdata : xdata = ydata :=
+    TwoPointDiagram.reassembleExternalVacuum_injective_fixed E.2 hxy
+  exact Sigma.ext rfl (HEq.of_eq hdata)
 
 /-- Every full two-point diagram is in the image of binary external/vacuum reassembly. -/
 theorem TwoPointDiagram.reassembleExternalVacuumData_surjective
@@ -113,9 +113,6 @@ theorem TwoPointDiagram.externalVacuumDecompositionEquiv_apply
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     TwoPointDiagram.externalVacuumDecompositionEquiv S d = d.decomposeExternalVacuum := by
   apply TwoPointDiagram.reassembleExternalVacuumData_injective
-  change TwoPointDiagram.reassembleExternalVacuumData
-      (TwoPointDiagram.externalVacuumDecompositionEquiv S d) =
-    TwoPointDiagram.reassembleExternalVacuumData d.decomposeExternalVacuum
   calc
     TwoPointDiagram.reassembleExternalVacuumData
         (TwoPointDiagram.externalVacuumDecompositionEquiv S d) = d := by
