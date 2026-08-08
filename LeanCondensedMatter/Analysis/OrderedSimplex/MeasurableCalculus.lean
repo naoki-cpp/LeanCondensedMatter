@@ -16,7 +16,62 @@ calculus from an a.e. derivative without restoring a false global-continuity hyp
 
 namespace intervalIntegral
 
-open Filter MeasureTheory Set
+open Filter Function IsUnifLocDoublingMeasure MeasureTheory Set
+
+/-- Banach-valued Lebesgue differentiation for indefinite interval integrals.  Mathlib v4.31.0 only
+exports the real-valued specialization of this statement; the underlying Vitali differentiation
+result is already Banach-valued. -/
+theorem ae_hasDerivAt_intervalIntegral_of_locallyIntegrable
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    {f : ℝ → E} (hf : LocallyIntegrable f volume) :
+    ∀ᵐ x, ∀ c, HasDerivAt (fun x => ∫ t in c..x, f t) (f x) x := by
+  have hg (x y : ℝ) : IntervalIntegrable f volume x y :=
+    intervalIntegrable_iff.mpr <|
+      (hf.integrableOn_isCompact isCompact_uIcc).mono_set uIoc_subset_uIcc
+  have hLDT := (vitaliFamily volume 1).ae_tendsto_average hf
+  have hSetIntegral {a b : ℝ} : ∫ t in Ioc a b, f t = ∫ t in Icc a b, f t :=
+    integral_Icc_eq_integral_Ioc (x := a) (y := b) (X := ℝ) |>.symm
+  filter_upwards [hLDT] with x hx
+  intro c
+  rw [hasDerivAt_iff_tendsto_slope_left_right]
+  constructor
+  · refine Filter.tendsto_congr' ?_ |>.mpr (hx.comp x.tendsto_Icc_vitaliFamily_left)
+    filter_upwards [self_mem_nhdsWithin] with y hy
+    replace hy : y ≤ x := hy.le
+    suffices -((y - x)⁻¹ • ∫ t in Icc y x, f t) =
+        (x - y)⁻¹ • ∫ t in Icc y x, f t by
+      simpa [slope, average, intervalIntegral.integral_interval_sub_left, hg,
+        intervalIntegral.integral_of_ge, hy, hSetIntegral]
+    rw [← neg_smul, neg_inv, neg_sub]
+  · refine Filter.tendsto_congr' ?_ |>.mpr (hx.comp x.tendsto_Icc_vitaliFamily_right)
+    filter_upwards [self_mem_nhdsWithin] with y hy
+    replace hy : x ≤ y := hy.le
+    simp [slope, average, intervalIntegral.integral_interval_sub_left, hg,
+      intervalIntegral.integral_of_le, hy, hSetIntegral]
+
+/-- Local Banach-valued Lebesgue differentiation theorem for an interval-integrable function. -/
+theorem ae_hasDerivAt_intervalIntegral_of_intervalIntegrable
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    {f : ℝ → E} {a b : ℝ} (hf : IntervalIntegrable f volume a b) :
+    ∀ᵐ x, x ∈ uIcc a b → ∀ c ∈ uIcc a b,
+      HasDerivAt (fun x => ∫ t in c..x, f t) (f x) x := by
+  wlog hab : a ≤ b
+  · exact uIcc_comm b a ▸ this hf.symm (by linarith)
+  rw [uIcc_of_le hab]
+  have h₁ : ∀ᵐ x, x ≠ a := by simp [ae_iff, measure_singleton]
+  have h₂ : ∀ᵐ x, x ≠ b := by simp [ae_iff, measure_singleton]
+  let g (x : ℝ) := if x ∈ Ioc a b then f x else 0
+  have hg : LocallyIntegrable g volume :=
+    integrableOn_congr_fun (by grind [EqOn]) (by simp) |>.mpr hf.left
+      |>.integrable_of_forall_notMem_eq_zero (by grind) |>.locallyIntegrable
+  filter_upwards [ae_hasDerivAt_intervalIntegral_of_locallyIntegrable hg, h₁, h₂]
+    with x hx _ _ _
+  intro c hc
+  refine HasDerivWithinAt.hasDerivAt (s := Ioo a b) ?_ <|
+    Ioo_mem_nhds (by grind) (by grind)
+  rw [show f x = g x by grind]
+  refine (hx c).hasDerivWithinAt.congr (fun y hy ↦ ?_) ?_
+  all_goals apply intervalIntegral.integral_congr_ae' <;> filter_upwards <;> grind
 
 /-- A bounded interval-integrable Banach-valued function has an absolutely continuous indefinite
 interval integral. -/
@@ -67,12 +122,11 @@ theorem integral_eq_sub_of_absolutelyContinuousOnInterval_of_ae_hasDerivAt_of_no
   have hAeInt :
       ∀ᵐ x, x ∈ Set.uIcc a b → ∀ c ∈ Set.uIcc a b,
         HasDerivAt (fun y => ∫ t in c..y, F' t) (F' x) x :=
-    _root_.IntervalIntegrable.ae_hasDerivAt_integral
-      (f := F') (a := a) (b := b) hF'
+    ae_hasDerivAt_intervalIntegral_of_intervalIntegrable hF'
   have hGzero : ∀ᵐ x, x ∈ Set.uIcc a b → HasDerivAt G 0 x := by
     filter_upwards [hderiv, hAeInt] with x hxF hxInt hx
     have hInt := hxInt hx a (by simp)
-    simpa [G] using (hxF hx).sub hInt
+    simpa only [G] using (hxF hx).sub hInt
   obtain ⟨D, hD⟩ := hG.const_of_ae_hasDerivAt_zero hGzero
   have ha := hD a (by simp)
   have hb := hD b (by simp)
