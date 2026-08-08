@@ -51,8 +51,8 @@ theorem TwoPointDiagram.pairingInInteractionOrder_reachable_iff
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (order : QuarticVertexOrder S)
     (v w : TwoPointVertex (Finset.univ : Finset (Fin S.card))) :
-    (d.pairingInInteractionOrder order).vertexGraph (orderedTwoPointVertexOfLeg S.card)
-        |>.Reachable v w ↔
+    ((d.pairingInInteractionOrder order).vertexGraph
+      (orderedTwoPointVertexOfLeg S.card)).Reachable v w ↔
       d.vertexGraph.Reachable
         (twoPointInteractionOrderVertexEquiv order v)
         (twoPointInteractionOrderVertexEquiv order w) := by
