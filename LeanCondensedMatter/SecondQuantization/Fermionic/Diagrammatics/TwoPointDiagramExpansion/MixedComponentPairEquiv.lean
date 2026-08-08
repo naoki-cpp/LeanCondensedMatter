@@ -25,12 +25,6 @@ open Combinatorics
 
 variable {Mode : Type*}
 
-/-- Recovering the pair containing one of its endpoints recovers the original normalized pair. -/
-private theorem pairing_positionToPairEndpoint_fst_pairEndpoint {n : ℕ}
-    (pairing : Pairing n) (pr : pairing.NormalizedPair) (k : Fin 2) :
-    (pairing.positionToPairEndpoint (pairing.pairEndpoint (pr, k))).1 = pr := by
-  exact congrArg Prod.fst (pairing.pairEndpointEquiv.left_inv (pr, k))
-
 /-- The full diagram component containing a normalized pair of the mixed-time pairing. -/
 noncomputable def FixedExternalTwoPointWickDiagram.mixedPairComponent
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -166,83 +160,8 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentPairToRestricte
     (e : d.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
     (localPairing : Pairing m) :
     d.MixedComponentPair τ τ' σ B → localPairing.NormalizedPair :=
-  fun pr =>
-    (localPairing.positionToPairEndpoint
-      (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)))).1
-
-/-- Mixed component pairs and local restricted normalized pairs have the same cardinality. -/
-theorem FixedExternalTwoPointWickDiagram.card_mixedComponentPair_eq_restrictedNormalizedPair
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.1.componentPartition.parts) {m : ℕ}
-    (e : d.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
-    (localPairing : Pairing m) :
-    Fintype.card (d.MixedComponentPair τ τ' σ B) =
-      Fintype.card localPairing.NormalizedPair := by
-  classical
-  letI : Fintype (d.MixedComponentPosition τ τ' σ B) := Fintype.ofFinite _
-  have h : Fintype.card (d.MixedComponentPair τ τ' σ B × Fin 2) =
-      Fintype.card (localPairing.NormalizedPair × Fin 2) :=
-    (Fintype.card_congr (d.mixedComponentPairEndpointEquiv τ τ' σ B)).trans
-      ((Fintype.card_congr e).trans
-        (Fintype.card_congr localPairing.pairEndpointEquiv).symm)
-  simp only [Fintype.card_prod, Fintype.card_fin] at h
-  omega
-
-/-- The mixed component-pair transport is surjective when the local partner is the transported
-restricted mixed partner. -/
-theorem FixedExternalTwoPointWickDiagram.mixedComponentPairToRestricted_surjective
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.1.componentPartition.parts) {m : ℕ}
-    (e : d.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
-    (localPairing : Pairing m)
-    (hpartner : ∀ pos,
-      localPairing.partner (e pos) = e (d.mixedRestrictedPartner τ τ' σ B pos)) :
-    Function.Surjective (d.mixedComponentPairToRestricted τ τ' σ B e localPairing) := by
-  intro localPr
-  let componentPos : d.MixedComponentPosition τ τ' σ B := e.symm localPr.1.1
-  let x := (d.mixedComponentPairEndpointEquiv τ τ' σ B).symm componentPos
-  refine ⟨x.1, ?_⟩
-  have hx : d.mixedComponentPairEndpointEquiv τ τ' σ B x = componentPos :=
-    (d.mixedComponentPairEndpointEquiv τ τ' σ B).apply_symm_apply componentPos
-  rcases x with ⟨pr, k⟩
-  fin_cases k
-  · have hfirst :
-        e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) = localPr.1.1 := by
-      calc
-        e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) = e componentPos :=
-          congrArg e (by simpa using hx)
-        _ = localPr.1.1 := e.apply_symm_apply localPr.1.1
-    unfold FixedExternalTwoPointWickDiagram.mixedComponentPairToRestricted
-    rw [hfirst]
-    exact pairing_positionToPairEndpoint_fst_pairEndpoint localPairing localPr 0
-  · have hsecond :
-        e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) = localPr.1.1 := by
-      calc
-        e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) = e componentPos :=
-          congrArg e (by simpa using hx)
-        _ = localPr.1.1 := e.apply_symm_apply localPr.1.1
-    have hlocalPartner :
-        localPairing.partner
-            (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) =
-          localPr.1.1 := by
-      rw [hpartner,
-        d.mixedRestrictedPartner_componentPairEndpoint_zero τ τ' σ B pr,
-        hsecond]
-    have hpair :=
-      (localPairing.mem_pairs_iff localPr.1.1 localPr.1.2).1 localPr.2
-    have hfirst :
-        e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) = localPr.1.2 := by
-      calc
-        e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) =
-            localPairing.partner
-              (localPairing.partner
-                (e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)))) := by
-          rw [localPairing.partner_partner]
-        _ = localPairing.partner localPr.1.1 := by rw [hlocalPartner]
-        _ = localPr.1.2 := hpair.2
-    unfold FixedExternalTwoPointWickDiagram.mixedComponentPairToRestricted
-    rw [hfirst]
-    exact pairing_positionToPairEndpoint_fst_pairEndpoint localPairing localPr 1
+  localPairing.normalizedPairOfEndpointEquiv
+    (d.mixedComponentPairEndpointEquiv τ τ' σ B) e
 
 /-- Mixed component pairs are equivalent to normalized pairs of a local pairing obtained by
 transporting the mixed restricted partner through the supplied position equivalence. -/
@@ -254,10 +173,11 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentPairRestrictedE
     (hpartner : ∀ pos,
       localPairing.partner (e pos) = e (d.mixedRestrictedPartner τ τ' σ B pos)) :
     d.MixedComponentPair τ τ' σ B ≃ localPairing.NormalizedPair :=
-  Equiv.ofBijective (d.mixedComponentPairToRestricted τ τ' σ B e localPairing)
-    ((Fintype.bijective_iff_surjective_and_card _).2
-      ⟨d.mixedComponentPairToRestricted_surjective τ τ' σ B e localPairing hpartner,
-        d.card_mixedComponentPair_eq_restrictedNormalizedPair τ τ' σ B e localPairing⟩)
+  localPairing.normalizedPairEquivOfEndpointEquiv
+    (d.mixedComponentPairEndpointEquiv τ τ' σ B) e
+    (fun pr => by
+      rw [hpartner,
+        d.mixedRestrictedPartner_componentPairEndpoint_zero τ τ' σ B pr])
 
 /-- Mixed pairs in the external component are equivalent to normalized pairs of the restricted
 external pairing. -/

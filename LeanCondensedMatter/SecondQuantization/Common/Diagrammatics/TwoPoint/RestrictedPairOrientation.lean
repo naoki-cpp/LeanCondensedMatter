@@ -26,9 +26,9 @@ theorem TwoPointDiagram.componentPairToRestricted_contains_first_endpoint
     (B : d.componentPartition.parts) {n : ℕ}
     (e : d.ComponentLeg B ≃ Fin (2 * n)) (localPairing : Pairing n)
     (pr : d.ComponentPair B) :
-    (d.componentPairToRestricted B e localPairing pr).1.1 =
+    (localPairing.normalizedPairOfEndpointEquiv (d.componentPairEndpointEquiv B) e pr).1.1 =
         e (d.componentPairEndpointEquiv B (pr, 0)) ∨
-      (d.componentPairToRestricted B e localPairing pr).1.2 =
+      (localPairing.normalizedPairOfEndpointEquiv (d.componentPairEndpointEquiv B) e pr).1.2 =
         e (d.componentPairEndpointEquiv B (pr, 0)) := by
   let a := e (d.componentPairEndpointEquiv B (pr, 0))
   let x := localPairing.positionToPairEndpoint a
@@ -53,13 +53,13 @@ theorem TwoPointDiagram.componentPairToRestricted_pair_eq_or_swap
       localPairing.partner (e leg) =
         e (d.restrictedPartner (B : Finset (TwoPointVertex S)) leg))
     (pr : d.ComponentPair B) :
-    (d.componentPairToRestricted B e localPairing pr).1 =
+    (localPairing.normalizedPairOfEndpointEquiv (d.componentPairEndpointEquiv B) e pr).1 =
         (e (d.componentPairEndpointEquiv B (pr, 0)),
           e (d.componentPairEndpointEquiv B (pr, 1))) ∨
-      (d.componentPairToRestricted B e localPairing pr).1 =
+      (localPairing.normalizedPairOfEndpointEquiv (d.componentPairEndpointEquiv B) e pr).1 =
         (e (d.componentPairEndpointEquiv B (pr, 1)),
           e (d.componentPairEndpointEquiv B (pr, 0))) := by
-  let localPr := d.componentPairToRestricted B e localPairing pr
+  let localPr := localPairing.normalizedPairOfEndpointEquiv (d.componentPairEndpointEquiv B) e pr
   have hcontains := d.componentPairToRestricted_contains_first_endpoint B e localPairing pr
   have hab :
       localPairing.partner (e (d.componentPairEndpointEquiv B (pr, 0))) =
@@ -110,10 +110,10 @@ theorem TwoPointDiagram.componentPairRestrictedEquiv_pair_eq_or_swap
         (e (d.componentPairEndpointEquiv B (pr, 1)),
           e (d.componentPairEndpointEquiv B (pr, 0))) := by
   change
-    (d.componentPairToRestricted B e localPairing pr).1 =
+    (localPairing.normalizedPairOfEndpointEquiv (d.componentPairEndpointEquiv B) e pr).1 =
         (e (d.componentPairEndpointEquiv B (pr, 0)),
           e (d.componentPairEndpointEquiv B (pr, 1))) ∨
-      (d.componentPairToRestricted B e localPairing pr).1 =
+      (localPairing.normalizedPairOfEndpointEquiv (d.componentPairEndpointEquiv B) e pr).1 =
         (e (d.componentPairEndpointEquiv B (pr, 1)),
           e (d.componentPairEndpointEquiv B (pr, 0)))
   exact d.componentPairToRestricted_pair_eq_or_swap B e localPairing hpartner pr

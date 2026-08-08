@@ -20,12 +20,6 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 
-/-- Recovering the pair containing one of its endpoints recovers the original normalized pair. -/
-private theorem pairing_positionToPairEndpoint_fst_pairEndpoint {n : ℕ}
-    (pairing : Pairing n) (pr : pairing.NormalizedPair) (k : Fin 2) :
-    (pairing.positionToPairEndpoint (pairing.pairEndpoint (pr, k))).1 = pr := by
-  exact congrArg Prod.fst (pairing.pairEndpointEquiv.left_inv (pr, k))
-
 /-- Flattened legs belonging to one full component of a two-point diagram. -/
 abbrev TwoPointDiagram.ComponentLeg {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
@@ -119,92 +113,6 @@ theorem TwoPointDiagram.restrictedPartner_componentPairEndpoint_zero
   rw [d.restrictedPartner_val]
   exact ((d.pairing.mem_pairs_iff pr.1.1.1 pr.1.1.2).1 pr.1.2).2
 
-/-- Transport a component pair through a component-leg equivalence and normalize it in the local
-restricted pairing. -/
-noncomputable def TwoPointDiagram.componentPairToRestricted
-    {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (B : d.componentPartition.parts) {n : ℕ}
-    (e : d.ComponentLeg B ≃ Fin (2 * n)) (localPairing : Pairing n) :
-    d.ComponentPair B → localPairing.NormalizedPair :=
-  fun pr =>
-    (localPairing.positionToPairEndpoint
-      (e (d.componentPairEndpointEquiv B (pr, 0)))).1
-
-/-- The component-pair and local restricted-pair types have the same cardinality whenever their leg
-sets are equivalent. -/
-theorem TwoPointDiagram.card_componentPair_eq_restrictedNormalizedPair
-    {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (B : d.componentPartition.parts) {n : ℕ}
-    (e : d.ComponentLeg B ≃ Fin (2 * n)) (localPairing : Pairing n) :
-    Fintype.card (d.ComponentPair B) = Fintype.card localPairing.NormalizedPair := by
-  classical
-  letI : Fintype (d.ComponentLeg B) := Fintype.ofFinite _
-  have h : Fintype.card (d.ComponentPair B × Fin 2) =
-      Fintype.card (localPairing.NormalizedPair × Fin 2) :=
-    (Fintype.card_congr (d.componentPairEndpointEquiv B)).trans
-      ((Fintype.card_congr e).trans
-        (Fintype.card_congr localPairing.pairEndpointEquiv).symm)
-  simp only [Fintype.card_prod, Fintype.card_fin] at h
-  omega
-
-/-- The component-pair transport is surjective when the local partner is the transported restricted
-partner. -/
-theorem TwoPointDiagram.componentPairToRestricted_surjective
-    {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (B : d.componentPartition.parts) {n : ℕ}
-    (e : d.ComponentLeg B ≃ Fin (2 * n)) (localPairing : Pairing n)
-    (hpartner : ∀ leg,
-      localPairing.partner (e leg) =
-        e (d.restrictedPartner (B : Finset (TwoPointVertex S)) leg)) :
-    Function.Surjective (d.componentPairToRestricted B e localPairing) := by
-  intro localPr
-  let componentLeg : d.ComponentLeg B := e.symm localPr.1.1
-  let x := (d.componentPairEndpointEquiv B).symm componentLeg
-  refine ⟨x.1, ?_⟩
-  have hx : d.componentPairEndpointEquiv B x = componentLeg :=
-    (d.componentPairEndpointEquiv B).apply_symm_apply componentLeg
-  rcases x with ⟨pr, k⟩
-  fin_cases k
-  · have hfirst :
-        e (d.componentPairEndpointEquiv B (pr, 0)) = localPr.1.1 := by
-      calc
-        e (d.componentPairEndpointEquiv B (pr, 0)) = e componentLeg :=
-          congrArg e (by simpa using hx)
-        _ = localPr.1.1 := e.apply_symm_apply localPr.1.1
-    unfold TwoPointDiagram.componentPairToRestricted
-    rw [hfirst]
-    exact pairing_positionToPairEndpoint_fst_pairEndpoint localPairing localPr 0
-  · have hsecond :
-        e (d.componentPairEndpointEquiv B (pr, 1)) = localPr.1.1 := by
-      calc
-        e (d.componentPairEndpointEquiv B (pr, 1)) = e componentLeg :=
-          congrArg e (by simpa using hx)
-        _ = localPr.1.1 := e.apply_symm_apply localPr.1.1
-    have hlocalPartner :
-        localPairing.partner
-            (e (d.componentPairEndpointEquiv B (pr, 0))) = localPr.1.1 := by
-      rw [hpartner,
-        d.restrictedPartner_componentPairEndpoint_zero B pr,
-        hsecond]
-    have hpair :=
-      (localPairing.mem_pairs_iff localPr.1.1 localPr.1.2).1 localPr.2
-    have hfirst :
-        e (d.componentPairEndpointEquiv B (pr, 0)) = localPr.1.2 := by
-      calc
-        e (d.componentPairEndpointEquiv B (pr, 0)) =
-            localPairing.partner
-              (localPairing.partner
-                (e (d.componentPairEndpointEquiv B (pr, 0)))) := by
-          rw [localPairing.partner_partner]
-        _ = localPairing.partner localPr.1.1 := by rw [hlocalPartner]
-        _ = localPr.1.2 := hpair.2
-    unfold TwoPointDiagram.componentPairToRestricted
-    rw [hfirst]
-    exact pairing_positionToPairEndpoint_fst_pairEndpoint localPairing localPr 1
-
 /-- Component pairs are equivalent to the normalized pairs of any restricted pairing obtained by
 transporting the restricted partner through the supplied leg equivalence. -/
 noncomputable def TwoPointDiagram.componentPairRestrictedEquiv
@@ -216,10 +124,9 @@ noncomputable def TwoPointDiagram.componentPairRestrictedEquiv
       localPairing.partner (e leg) =
         e (d.restrictedPartner (B : Finset (TwoPointVertex S)) leg)) :
     d.ComponentPair B ≃ localPairing.NormalizedPair :=
-  Equiv.ofBijective (d.componentPairToRestricted B e localPairing)
-    ((Fintype.bijective_iff_surjective_and_card _).2
-      ⟨d.componentPairToRestricted_surjective B e localPairing hpartner,
-        d.card_componentPair_eq_restrictedNormalizedPair B e localPairing⟩)
+  localPairing.normalizedPairEquivOfEndpointEquiv (d.componentPairEndpointEquiv B) e
+    (fun pr => by
+      rw [hpartner, d.restrictedPartner_componentPairEndpoint_zero B pr])
 
 /-- Ambient pairs in the common external component are equivalent to normalized pairs of the
 restricted external pairing. -/
