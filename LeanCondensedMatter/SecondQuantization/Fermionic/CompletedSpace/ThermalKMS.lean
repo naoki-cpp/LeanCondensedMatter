@@ -60,7 +60,8 @@ theorem completedFreeGibbsExpectation_operator_comp
           intro n
           by_cases hi : i ∈ n
           · have hit : i ∉ toggleOccupation i n := by
-              simp [toggleOccupation, removeOccupation, hi]
+              intro hit
+              exact ((mem_toggleOccupation i n).mp hit) hi
             have htoggle : toggleOccupation i (toggleOccupation i n) = n :=
               toggleOccupation_involutive i n
             dsimp [f]
@@ -73,8 +74,8 @@ theorem completedFreeGibbsExpectation_operator_comp
             rw [← Complex.exp_add]
             ring_nf
             rfl
-          · have hit : i ∈ toggleOccupation i n := by
-              simp [toggleOccupation, insertOccupation, hi]
+          · have hit : i ∈ toggleOccupation i n :=
+              (mem_toggleOccupation i n).mpr hi
             dsimp [f]
             simp only [ContinuousLinearMap.comp_apply]
             rw [inner_completedBasisState, completedCreate_apply, if_neg hi,
@@ -106,14 +107,15 @@ theorem completedFreeGibbsExpectation_operator_comp
           intro n
           by_cases hi : i ∈ n
           · have hit : i ∉ toggleOccupation i n := by
-              simp [toggleOccupation, removeOccupation, hi]
+              intro hit
+              exact ((mem_toggleOccupation i n).mp hit) hi
             dsimp [f]
             simp only [ContinuousLinearMap.comp_apply]
             rw [inner_completedBasisState, completedAnnihilate_apply, if_pos hi,
               completedAnnihilate_basisState_of_not_mem hit]
             rfl
-          · have hit : i ∈ toggleOccupation i n := by
-              simp [toggleOccupation, insertOccupation, hi]
+          · have hit : i ∈ toggleOccupation i n :=
+              (mem_toggleOccupation i n).mpr hi
             have htoggle : toggleOccupation i (toggleOccupation i n) = n :=
               toggleOccupation_involutive i n
             dsimp [f]
