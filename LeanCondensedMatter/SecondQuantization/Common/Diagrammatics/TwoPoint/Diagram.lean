@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph
 import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
+import Mathlib.Data.Fintype.EquivFin
 
 set_option linter.style.header false
 
