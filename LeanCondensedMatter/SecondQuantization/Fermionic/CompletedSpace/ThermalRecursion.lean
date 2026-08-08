@@ -52,7 +52,8 @@ noncomputable def completedFreeGibbsExpectationRecursion
             completedFreeGibbsExpectation ε β hsum [C 0, C j.succ] *
               completedFreeGibbsExpectation ε β hsum
                 (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ)) := by
-        rw [completedFreeGibbsExpectation_thermalPeelSum_eq_sum, Finset.mul_sum]
+        rw [completedFreeGibbsExpectation_thermalPeelSum_eq_sum]
+        rw [Finset.mul_sum]
         refine Finset.sum_congr rfl fun j _ => ?_
         simp only [List.length_ofFn, List.getElem_ofFn]
         rw [List.eraseIdx_ofFn_eq_ofFn_succAbove]
