@@ -35,7 +35,7 @@ theorem FixedExternalTwoPointWickDiagram.externalSign_mul_orderedSimplexIntegral
             (d.mixedComponentDysonLocalIntegrand ε β g τ τ'
               d.1.canonicalComponentInteractionShuffle)) =
       (d.relabelForComponentShuffle shuffle).dysonAmplitude ε β g τ τ' := by
-  simp only [Finset.card_univ, Fintype.card_fin]
+  rw [show (Finset.univ : Finset (Fin n)).card = n by simp]
   rw [← intervalIntegral.orderedSimplexIntegral_smul]
   rw [FixedExternalTwoPointWickDiagram.dysonAmplitude_eq_orderedSimplexIntegral_dysonFixedTimeAmplitude
     (d.relabelForComponentShuffle shuffle) ε β g τ τ']
