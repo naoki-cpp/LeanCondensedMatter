@@ -73,6 +73,9 @@ noncomputable def completedFreeGibbsExpectationRecursion
               rfl
             simp only [hv]
             simp only [hl, List.getElem_ofFn]
+            congr 4
+            apply Fin.ext
+            exact hv.symm
         rw [hreindex]
         refine Finset.sum_congr rfl fun j _ => ?_
         rw [hl, List.eraseIdx_ofFn_eq_ofFn_succAbove]
