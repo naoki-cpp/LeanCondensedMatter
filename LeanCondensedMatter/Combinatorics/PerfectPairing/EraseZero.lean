@@ -62,8 +62,7 @@ theorem Pairing.restrictedPartner_partner_partner {n : ℕ} (pairing : Pairing (
 
 /-- Remove position `0` and its partner, reindexing the remaining positions increasingly. -/
 noncomputable def Pairing.eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)) : Pairing n := by
-  let hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0 :=
-    Ne.symm (pairing.partner_ne 0)
+  let hzero : pairing.partner 0 ≠ (0 : Fin (2 * (n + 1))) := pairing.partner_ne 0
   let e := deletedPositionsOrderIso n (pairing.partner 0) hzero
   let r := pairing.restrictedPartner
   let newPartner : Equiv.Perm (Fin (2 * n)) :=
@@ -88,8 +87,7 @@ noncomputable def Pairing.eraseZeroPair {n : ℕ} (pairing : Pairing (n + 1)) : 
 theorem Pairing.eraseZeroPair_partner_apply {n : ℕ} (pairing : Pairing (n + 1))
     (i : Fin (2 * n)) :
     (pairing.eraseZeroPair).partner i =
-      let hzero : (0 : Fin (2 * (n + 1))) ≠ pairing.partner 0 :=
-        Ne.symm (pairing.partner_ne 0)
+      let hzero : pairing.partner 0 ≠ (0 : Fin (2 * (n + 1))) := pairing.partner_ne 0
       let e := deletedPositionsOrderIso n (pairing.partner 0) hzero
       e.symm (pairing.restrictedPartner (e i)) := by
   simp [Pairing.eraseZeroPair]
@@ -98,7 +96,7 @@ theorem Pairing.eraseZeroPair_partner_apply {n : ℕ} (pairing : Pairing (n + 1)
 noncomputable def Pairing.eraseZeroOrderIso {n : ℕ} (pairing : Pairing (n + 1)) :
     Fin (2 * n) ≃o
       deletedPositions n (pairing.partner 0) :=
-  deletedPositionsOrderIso n (pairing.partner 0) (Ne.symm (pairing.partner_ne 0))
+  deletedPositionsOrderIso n (pairing.partner 0) (pairing.partner_ne 0)
 
 @[simp]
 theorem Pairing.eraseZeroOrderIso_partner {n : ℕ} (pairing : Pairing (n + 1))
