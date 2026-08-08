@@ -28,7 +28,14 @@ theorem twoPointLegEquiv_interactionVertexPositionRelabel {n : ℕ}
         (interactionVertexPositionRelabel π p) =
       interactionVertexLegRelabel π
         (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)) p) := by
-  simp [interactionVertexPositionRelabel]
+  change
+    Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))
+        ((Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm
+          (interactionVertexLegRelabel π
+            (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)) p))) =
+      interactionVertexLegRelabel π
+        (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)) p)
+  exact (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).apply_symm_apply _
 
 /-- For injective interaction times, transporting a mixed position back to the standard diagram
 enumeration commutes exactly with interaction-slot relabeling. -/
@@ -77,7 +84,7 @@ theorem FixedExternalTwoPointWickDiagram.pairingInMixedOrder_relabelInteractionV
           (mixedTimeAmbientPositionEquiv τ τ' σ p)) := by
         rw [FixedExternalTwoPointWickDiagram.relabelInteractionVertices_pairing,
           Pairing.relabel_partner]
-        simp
+        exact (interactionVertexPositionRelabel π).apply_symm_apply _
     _ = d.1.pairing.partner
         (mixedTimeAmbientPositionEquiv τ τ' (fun v => σ (π.symm v)) p) := by
         rw [interactionVertexPositionRelabel_mixedTimeAmbientPositionEquiv_of_injective
