@@ -10,7 +10,7 @@ set_option linter.style.header false
 
 A global order of the interaction vertices of a two-point diagram is exactly a family of local
 orders, one on the interaction part of every full component, together with one order-preserving
-component shuffle.  This is the finite combinatorial bridge used by the external-leg LCT; it does
+component shuffle. This is the finite combinatorial bridge used by the external-leg LCT; it does
 not introduce any diagram quotient or orbit/stabilizer layer.
 -/
 
@@ -211,6 +211,10 @@ theorem TwoPointDiagram.componentInteractionVertexOrderOfVertexOrder_strictMono
     StrictMono (fun i => d.componentInteractionGlobalSlot order B
       (d.componentInteractionVertexOrderOfVertexOrder order B i)) := by
   intro i j hij
+  change d.componentInteractionGlobalSlot order B
+      (d.componentInteractionVertexOrderOfVertexOrder order B i) <
+    d.componentInteractionGlobalSlot order B
+      (d.componentInteractionVertexOrderOfVertexOrder order B j)
   rw [d.componentInteractionGlobalSlot_componentInteractionVertexOrderOfVertexOrder,
     d.componentInteractionGlobalSlot_componentInteractionVertexOrderOfVertexOrder]
   exact ((d.componentInteractionGlobalSlots order B).orderIsoOfFin
