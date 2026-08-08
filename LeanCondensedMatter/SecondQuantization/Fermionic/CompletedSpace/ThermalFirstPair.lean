@@ -33,6 +33,7 @@ def completedFreeGibbsAdmissible (ε : Mode → ℝ) (β : ℝ) (n : ℕ)
     (C : Fin (2 * n) → CompletedThermalLadder Mode) : Prop :=
   ∀ i, (1 : ℂ) + (C i).gibbsFactor ε β ≠ 0
 
+omit [LinearOrder Mode] in
 /-- Completed Gibbs admissibility is stable under deleting the first ladder and one partner. -/
 theorem completedFreeGibbsAdmissible_erase
     (ε : Mode → ℝ) (β : ℝ) (n : ℕ)
