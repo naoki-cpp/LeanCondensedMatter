@@ -12,6 +12,8 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteCom
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteOperatorCompatibility
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteThermalCompatibility
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.GibbsModeTruncation
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.GibbsModeTruncationExpectation
 
 set_option linter.style.header false
 
@@ -52,8 +54,11 @@ completed free Gibbs density operator intertwines with the existing finite Gibbs
 same isometry.
 
 For arbitrary mode types, finite-mode coordinate projections indexed by `Finset Mode` form a
-contractive net converging strongly to the identity. This provides the first explicit C5
-approximation theorem without imposing a countability assumption on the mode set.
+contractive net converging strongly to the identity. The same finite-mode net also restricts the
+free Gibbs weights to occupations contained in each finite mode set. Under the existing absolute
+Gibbs summability hypothesis these truncated partition functions converge to the full partition
+function, every normalized occupation probability converges to its full Gibbs value, and the
+normalized truncated Gibbs states converge weakly against every bounded operator.
 
 Thermodynamic-limit constructions remain later work.
 -/
