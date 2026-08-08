@@ -13,6 +13,9 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.C
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OrderedProductSummable
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.OperatorPeel
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeKMSRotation
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreePeelIndexed
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeFirstPair
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.ConcreteExpectationRecursion
 
 set_option linter.style.header false
 
@@ -29,9 +32,10 @@ Public umbrella for the convergence-aware free bosonic thermal layer:
 - concrete summability and normalized values for both mixed creation/annihilation contractions;
 - same-type zero contractions and the theorem identifying every two-field Gibbs expectation with `freeThermalPairValue`;
 - free-Gibbs domain membership for arbitrary fixed-length ordered products of free thermal fields;
-- a Common-backed finite CCR operator-peel identity;
+- a Common-backed finite CCR operator-peel identity and its position-indexed finite-sum form;
 - occupation-reindexed `tsumTrace` cyclicity for single ladder operators and the resulting normalized free-Gibbs KMS rotation;
-- an analytic adapter from bosonic domain/KMS hypotheses to the Common pairing recursion;
+- the solved bosonic first-pair thermal equation with the bare CCR coefficient identified with `freeThermalPairValue`;
+- the concrete multi-point first-pair recurrence and a no-extra-admissibility `ExpectationPairingRecursion` instance;
 - concrete free thermal field labels, pair kernel, and the inherited Wick pairing expansion.
 
 The functional interface does not claim that arbitrary algebraic-Fock endomorphisms are summable or
