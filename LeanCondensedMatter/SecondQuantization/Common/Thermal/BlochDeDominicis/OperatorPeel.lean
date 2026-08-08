@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 import Mathlib.Tactic.Module
 
 set_option linter.style.header false
@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Generic operator peel identity
 
 The first algebraic step in a Bloch–de Dominicis recursion is independent of the Gibbs state: move
-the leading operator through a finite tail using a scalar exchange relation.  This file packages that
+the leading operator through a finite tail using a scalar exchange relation. This file packages that
 step for linear endomorphisms of an arbitrary complex module.
 
 If
