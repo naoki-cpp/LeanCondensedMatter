@@ -50,7 +50,7 @@ theorem FixedExternalTwoPointWickDiagram.externalSign_mul_orderedSimplexIntegral
     exact hσ hab
   have hslot : ambientToTwoPointSlotTimePermutation σambient = σ := by
     funext i
-    simp [ambientToTwoPointSlotTimePermutation, σambient, hdim]
+    simp [ambientToTwoPointSlotTimePermutation, σambient]
   have hcov :=
     d.externalSign_mul_componentShuffleIntegrand_eq_relabelForComponentShuffle_dysonFixedTimeAmplitude_of_injective
       ε β g τ τ' shuffle σambient hσambient
