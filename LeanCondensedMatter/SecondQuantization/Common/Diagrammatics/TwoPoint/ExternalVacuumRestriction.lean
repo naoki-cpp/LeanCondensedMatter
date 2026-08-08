@@ -6,7 +6,7 @@ set_option linter.style.header false
 # Restricting the full vacuum remainder of a two-point diagram
 
 After removing the unique external component, all remaining interaction vertices and pairing legs
-form one ordinary quartic diagram.  It may be disconnected; that is intentional, since the existing
+form one ordinary quartic diagram. It may be disconnected; that is intentional, since the existing
 quartic linked-cluster theorem owns the connected decomposition of this vacuum remainder.
 -/
 
@@ -78,8 +78,7 @@ noncomputable def TwoPointDiagram.vacuumRemainderBlockLegEquiv {S : Finset (Fin 
       ¬ d.legInComponent (d.externalComponent 0) leg} ≃
       Fin (2 * (2 * (S \ d.externalInteractionPart).card)) :=
   ((twoPointLegEquiv S).subtypeEquiv fun leg => by
-      rw [d.legInComponent_iff_unflattened d.externalComponentPart leg]
-      rfl).trans
+      exact not_congr (d.legInComponent_iff_unflattened d.externalComponentPart leg)).trans
     (d.vacuumRemainderLegDataEquiv.trans
       (quarticLegEquiv (S \ d.externalInteractionPart)).symm)
 
@@ -133,8 +132,8 @@ noncomputable def TwoPointDiagram.restrictedVacuumRemainderPairing {S : Finset (
     Pairing (2 * (S \ d.externalInteractionPart).card) :=
   Pairing.ofPartner
     (d.vacuumRemainderBlockLegEquiv.permCongr d.restrictedVacuumRemainderPartner)
-    ⟨permCongr_involutive _ _ d.restrictedVacuumRemainderPartner_involutive,
-      permCongr_ne_self _ _ d.restrictedVacuumRemainderPartner_ne_self⟩
+    ⟨permCongr_involutive _ _ (restrictedVacuumRemainderPartner_involutive d),
+      permCongr_ne_self _ _ (restrictedVacuumRemainderPartner_ne_self d)⟩
 
 /-- The entire complement of the external component as one ordinary quartic diagram. -/
 noncomputable def TwoPointDiagram.restrictVacuumRemainder {S : Finset (Fin N)}
