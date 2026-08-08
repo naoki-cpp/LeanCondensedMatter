@@ -67,7 +67,7 @@ theorem TwoPointDiagram.twoPointLegEquiv_externalBlockLegEquiv
           (((twoPointLegEquiv S).subtypeEquiv fun p =>
             d.legInComponent_iff_unflattened d.externalComponentPart p) leg))) = _
   rw [Equiv.apply_symm_apply]
-  apply d.externalLegDataEquiv.injective
+  apply congrArg d.externalLegDataEquiv
   apply Subtype.ext
   rfl
 
