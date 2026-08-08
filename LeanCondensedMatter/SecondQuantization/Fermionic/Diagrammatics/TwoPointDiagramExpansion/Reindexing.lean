@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointWickDiagram
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel
 import Mathlib.Data.List.NodupEquivFin
+import Mathlib.Data.Fintype.EquivFin
 
 set_option linter.style.header false
 
@@ -259,9 +260,9 @@ noncomputable def fixedExternalTwoPointWickDiagramEquivOrderedData
 noncomputable instance FixedExternalTwoPointWickDiagram.instFintype
     [Fintype Mode] {n : ℕ} {i j : Mode} :
     Fintype (FixedExternalTwoPointWickDiagram Mode n i j) :=
-  Fintype.ofInjective
-    (fun d : FixedExternalTwoPointWickDiagram Mode n i j => d.1)
-    (fun _ _ h => Subtype.ext h)
+  Fintype.ofFinite
+    {d : TwoPointWickDiagram Mode n (Finset.univ : Finset (Fin n)) //
+      d.externalLabel = twoPointExternalLabels i j}
 
 /-- Reindex a finite sum over fixed-external diagrams as a sum over slot labels and mixed-order
 pairings. -/
