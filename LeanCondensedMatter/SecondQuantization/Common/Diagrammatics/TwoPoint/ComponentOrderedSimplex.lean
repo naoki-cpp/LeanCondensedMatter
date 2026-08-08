@@ -252,13 +252,23 @@ theorem TwoPointDiagram.sum_componentInteractionShuffle_orderedSimplexIntegral_e
       ∏ B : d.componentPartition.parts,
         orderedSimplexIntegral (d.interactionComponentSize B) β
           (componentIntegrand B) := by
-  rw [d.sum_componentInteractionShuffle_orderedSimplexIntegral_eq_familyShuffle
-    β componentIntegrand]
   have hfamily :=
     FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype
       (ι := d.componentPartition.parts)
       d.interactionComponentSize β componentIntegrand hcomponent
-  exact hfamily
+  calc
+    (∑ shuffle : d.ComponentInteractionShuffle,
+      orderedSimplexIntegral S.card β
+        (d.interactionComponentShuffleIntegrand shuffle componentIntegrand)) =
+      ∑ shuffle : FamilySlotShuffle d.interactionComponentSize,
+        orderedSimplexIntegral
+          (∑ B : d.componentPartition.parts, d.interactionComponentSize B) β
+          (shuffle.integrand componentIntegrand) :=
+      d.sum_componentInteractionShuffle_orderedSimplexIntegral_eq_familyShuffle
+        β componentIntegrand
+    _ = ∏ B : d.componentPartition.parts,
+        orderedSimplexIntegral (d.interactionComponentSize B) β
+          (componentIntegrand B) := hfamily
 
 end
 
