@@ -72,9 +72,16 @@ theorem annihilate_apply_coord (i : Mode) (x : FockSpace Mode) (n : Occupation M
               (createOccupation_removeOccupation_of_pos ha).symm
             _ = createOccupation i n := by rw [hrem]
         subst a
+        have hevalN :
+            evalN (basisState (removeOccupation i (createOccupation i n))) = 1 := by
+          rw [removeOccupation_createOccupation]
+          simp [evalN, basisState, Common.basisState]
+        have hevalC : evalC (basisState (createOccupation i n)) = 1 := by
+          simp [evalC, basisState, Common.basisState]
         simp only [createOccupation_apply_same, Nat.cast_add, Nat.cast_one,
           Complex.coe_smul, map_smul, LinearMap.map_smul_of_tower,
           Complex.real_smul, smul_eq_mul]
+        rw [hevalN, hevalC, mul_one]
         exact mul_comm b (Real.sqrt (n i + 1 : ℝ) : ℂ)
       · have hne : a ≠ createOccupation i n := by
           intro h
@@ -129,9 +136,14 @@ theorem create_apply_coord_of_pos (i : Mode) (x : FockSpace Mode) (n : Occupatio
       have hni : 1 ≤ n i := Nat.one_le_iff_ne_zero.mpr hi
       have hcast : ((n i - 1 : ℕ) : ℝ) + 1 = (n i : ℝ) := by
         exact_mod_cast Nat.sub_add_cancel hni
+      have hevalN : evalN (basisState (createOccupation i (removeOccupation i n))) = 1 := by
+        rw [createOccupation_removeOccupation_of_pos hi]
+        simp [evalN, basisState, Common.basisState]
+      have hevalR : evalR (basisState (removeOccupation i n)) = 1 := by
+        simp [evalR, basisState, Common.basisState]
       simp only [removeOccupation_apply_same, Complex.coe_smul, map_smul,
         LinearMap.map_smul_of_tower, Complex.real_smul, smul_eq_mul]
-      rw [hcast]
+      rw [hcast, hevalN, hevalR, mul_one]
       exact mul_comm b (Real.sqrt (n i : ℝ) : ℂ)
     · have hane : a ≠ removeOccupation i n := by
         intro h
