@@ -38,17 +38,29 @@ noncomputable def completedFreeGibbsExpectationRecursion
   expectation_succ := by
     intro n C hC
     rw [List.ofFn_succ]
-    rw [completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
-      ε β hsum n (C 0) (List.ofFn fun i : Fin (2 * n + 1) => C i.succ) (by simp) (hC 0)]
-    rw [completedFreeGibbsExpectation_thermalPeelSum_eq_sum, Finset.mul_sum]
-    refine Finset.sum_congr rfl fun j _ => ?_
-    simp only [List.length_ofFn, List.getElem_ofFn]
-    rw [List.eraseIdx_ofFn_eq_ofFn_succAbove]
-    have hpair := completedFreeGibbsExpectation_pair_eq
-      ε β hsum (C 0) (C j.succ) (hC 0)
-    rw [hpair]
-    simp only [Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
-    ring
+    calc
+      completedFreeGibbsExpectation ε β hsum
+          (C 0 :: List.ofFn fun i : Fin (2 * n + 1) => C i.succ) =
+        ((C 0).gibbsFactor ε β / ((1 : ℂ) + (C 0).gibbsFactor ε β)) *
+          (completedFreeGibbsDensityOperator ε β hsum).expectation
+            (thermalPeelSum (C 0) (List.ofFn fun i : Fin (2 * n + 1) => C i.succ)) :=
+        completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
+          ε β hsum n (C 0) (List.ofFn fun i : Fin (2 * n + 1) => C i.succ)
+            (by simp) (hC 0)
+      _ = ∑ j : Fin (2 * n + 1),
+          (Common.Statistics.fermion.zetaInt : ℂ) ^ (j : ℕ) *
+            completedFreeGibbsExpectation ε β hsum [C 0, C j.succ] *
+              completedFreeGibbsExpectation ε β hsum
+                (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ)) := by
+        rw [completedFreeGibbsExpectation_thermalPeelSum_eq_sum, Finset.mul_sum]
+        refine Finset.sum_congr rfl fun j _ => ?_
+        simp only [List.length_ofFn, List.getElem_ofFn]
+        rw [List.eraseIdx_ofFn_eq_ofFn_succAbove]
+        have hpair := completedFreeGibbsExpectation_pair_eq
+          ε β hsum (C 0) (C j.succ) (hC 0)
+        rw [hpair]
+        simp only [Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
+        ring
 
 /-- Completed free-fermion Bloch--de Dominicis expansion obtained by feeding the completed Gibbs
 recursion data into the common pairing induction. -/
