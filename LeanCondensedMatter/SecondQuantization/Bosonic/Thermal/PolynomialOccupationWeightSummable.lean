@@ -34,7 +34,6 @@ theorem summable_occupationMonomial_boltzmannWeight
     (k : ℝ) ^ power i * oneModeBoltzmannWeight β (ε i) k with hgdef
   have hg : ∀ i, Summable (g i) := by
     intro i
-    rw [hgdef]
     have hr : ‖Real.exp (-β * ε i)‖ < 1 := by
       rw [Real.norm_eq_abs, abs_of_nonneg (Real.exp_nonneg _), Real.exp_lt_one_iff]
       linarith [hpos i]
@@ -45,7 +44,10 @@ theorem summable_occupationMonomial_boltzmannWeight
       funext k
       unfold oneModeBoltzmannWeight
       rw [Real.exp_nat_mul]
-    rwa [heq]
+    change Summable (fun k : ℕ =>
+      (k : ℝ) ^ power i * oneModeBoltzmannWeight β (ε i) k)
+    rw [heq]
+    exact h
   have hnonneg : ∀ i k, 0 ≤ g i k := by
     intro i k
     rw [hgdef]
