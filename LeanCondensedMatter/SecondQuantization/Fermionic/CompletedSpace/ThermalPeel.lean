@@ -85,20 +85,17 @@ theorem operator_comp_operatorProduct_eq_thermalPeelSum
       apply ContinuousLinearMap.ext
       intro ψ
       have hcar := DFunLike.congr_fun (completedAnticomm_operator_operator C₁ D) (operatorProduct t ψ)
-      simp only [completedAnticomm_apply, ContinuousLinearMap.smul_apply,
-        ContinuousLinearMap.id_apply] at hcar
+      simp only [completedAnticomm_apply, smul_apply, ContinuousLinearMap.id_apply] at hcar
       have hexchange :
           C₁.operator (D.operator (operatorProduct t ψ)) =
             C₁.anticommutatorValue D • operatorProduct t ψ -
-              D.operator (C₁.operator (operatorProduct t ψ)) := by
-        module at hcar ⊢
-        exact hcar
+              D.operator (C₁.operator (operatorProduct t ψ)) :=
+        eq_sub_of_add_eq hcar
       have hih := DFunLike.congr_fun ih ψ
-      simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.add_apply,
-        ContinuousLinearMap.smul_apply] at hih
+      simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.add_apply, smul_apply] at hih
       simp only [operatorProduct_cons, thermalPeelSum, List.length_cons,
         ContinuousLinearMap.comp_apply, ContinuousLinearMap.add_apply,
-        ContinuousLinearMap.sub_apply, ContinuousLinearMap.smul_apply]
+        ContinuousLinearMap.sub_apply, smul_apply]
       rw [hexchange, hih]
       simp only [map_add, map_smul, map_sub, smul_add, smul_sub, smul_smul, pow_succ]
       module
@@ -125,9 +122,9 @@ theorem completedFreeGibbsExpectation_cons_eq_peel_add_rotated
   rw [completedFreeGibbsExpectation, operatorProduct_cons,
     operator_comp_operatorProduct_eq_thermalPeelSum C₁ l]
   rw [map_add, map_smul]
-  change _ = _ + ((-1 : ℂ) ^ l.length) *
-    (completedFreeGibbsDensityOperator ε β hsum).expectation (operatorProduct (l ++ [C₁]))
-  rfl
+  simp only [smul_eq_mul]
+  rw [completedFreeGibbsExpectation, operatorProduct_append]
+  simp
 
 end CompletedThermalLadder
 
