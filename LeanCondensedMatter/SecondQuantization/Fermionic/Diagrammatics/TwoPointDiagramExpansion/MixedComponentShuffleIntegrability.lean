@@ -42,7 +42,7 @@ theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_mixedComponent
 
 /-- The localized signed component integrands satisfy the finite-family ordered-simplex shuffle
 product identity with no externally supplied continuity assumption. -/
-theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_orderedSimplexIntegral_mixedComponentDysonLocalIntegrand_eq_prod_of_integrability
+theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_orderedSimplexIntegral_mixedComponentDysonLocalIntegrand_eq_prod
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (baseShuffle : d.1.ComponentInteractionShuffle) :
