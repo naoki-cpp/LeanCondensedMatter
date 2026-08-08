@@ -9,9 +9,9 @@ set_option linter.style.header false
 # Integrated component-shuffle factorization
 
 The pointwise relabel covariance needed for the external-leg LCT holds away from interaction-time
-collisions.  `orderedSimplexIntegral_congr_of_injective` removes exactly those null diagonals, so
+collisions. `orderedSimplexIntegral_congr_of_injective` removes exactly those null diagonals, so
 each shuffled component term integrates to the Dyson amplitude of the corresponding relabeled
-fixed diagram.  Combining this with the measurable finite-family shuffle theorem gives the
+fixed diagram. Combining this with the measurable finite-family shuffle theorem gives the
 integrated component product without any exact equal-time covariance theorem.
 -/
 
@@ -36,8 +36,8 @@ theorem FixedExternalTwoPointWickDiagram.externalSign_mul_orderedSimplexIntegral
               d.1.canonicalComponentInteractionShuffle)) =
       (d.relabelForComponentShuffle shuffle).dysonAmplitude ε β g τ τ' := by
   rw [← intervalIntegral.orderedSimplexIntegral_smul]
-  rw [(d.relabelForComponentShuffle shuffle)
-    .dysonAmplitude_eq_orderedSimplexIntegral_dysonFixedTimeAmplitude]
+  rw [FixedExternalTwoPointWickDiagram.dysonAmplitude_eq_orderedSimplexIntegral_dysonFixedTimeAmplitude
+    (d.relabelForComponentShuffle shuffle) ε β g τ τ']
   let hdim : n = (Finset.univ : Finset (Fin n)).card := by simp
   rw [intervalIntegral.orderedSimplexIntegral_cast hdim]
   apply intervalIntegral.orderedSimplexIntegral_congr_of_injective
