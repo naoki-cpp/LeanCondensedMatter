@@ -28,6 +28,7 @@ variable {Mode : Type*} [LinearOrder Mode]
 /-- Membership in a diagonal weighted `ℓ²` domain is stable under adding a constant to the weight.
 The proof packages the shifted weighted coordinates as the sum of the original diagonal image and
 a scalar multiple of the original `ℓ²` vector. -/
+omit [LinearOrder Mode] in
 theorem mem_completedDiagonalDomain_add_const
     (w : Occupation Mode → ℂ) (c : ℂ) {ψ : CompletedFockSpace Mode}
     (hψ : ψ ∈ completedDiagonalDomain w) :
@@ -52,7 +53,7 @@ theorem freeHamiltonianWeight_toggle_of_mem (ε : Mode → ℝ)
       freeHamiltonianWeight ε (toggleOccupation i n) + (ε i : ℂ) := by
   rw [toggleOccupation_of_mem h]
   simp only [freeHamiltonianWeight, removeOccupation]
-  exact (Finset.sum_erase_add _ h).symm
+  exact (Finset.sum_erase_add n (fun j => (ε j : ℂ)) h).symm
 
 /-- Adding an unoccupied mode raises the free occupation energy by exactly that one-particle
 energy. -/
@@ -86,8 +87,9 @@ theorem completedCreate_mem_completedFreeHamiltonianDomain
     by_cases h : i ∈ n
     · rw [completedCreate_apply, if_pos h, completedToggle_apply,
         completedDiagonalOperator_apply, freeHamiltonianWeight_toggle_of_mem ε h]
-      simp [norm_mul, norm_fermionPhase, mul_assoc]
-    · simp [completedCreate_apply, h]
+      simpa [x, norm_fermionPhase]
+    · simp only [completedCreate_apply, if_neg h, mul_zero, norm_zero]
+      exact norm_nonneg _
 
 /-- Bounded fermionic annihilation preserves the maximal domain of the completed free Hamiltonian. -/
 theorem completedAnnihilate_mem_completedFreeHamiltonianDomain
@@ -110,12 +112,13 @@ theorem completedAnnihilate_mem_completedFreeHamiltonianDomain
         (fun n => freeHamiltonianWeight ε n + (-(ε i : ℂ))) x))
   exact hout.mono' fun n => by
     by_cases h : i ∈ n
-    · simp [completedAnnihilate_apply, h]
+    · simp only [completedAnnihilate_apply, if_pos h, mul_zero, norm_zero]
+      exact norm_nonneg _
     · rw [completedAnnihilate_apply, if_neg h, completedToggle_apply,
         completedDiagonalOperator_apply]
       have hE := freeHamiltonianWeight_toggle_of_not_mem ε h
       rw [hE]
-      simp [norm_mul, norm_fermionPhase, mul_assoc]
+      simpa [x, norm_fermionPhase]
 
 /-- Creation restricted to the free-Hamiltonian domain.  This is the domain-preserving map needed
 to form `H a†` without pretending that `H` is bounded. -/
@@ -126,10 +129,10 @@ noncomputable def completedCreateOnFreeHamiltonianDomain (ε : Mode → ℝ) (i 
       completedCreate_mem_completedFreeHamiltonianDomain ε i ψ.2⟩
   map_add' ψ φ := by
     apply Subtype.ext
-    exact map_add (completedCreate i) ψ φ
+    simp
   map_smul' c ψ := by
     apply Subtype.ext
-    exact map_smul (completedCreate i) c ψ
+    simp
 
 /-- Annihilation restricted to the free-Hamiltonian domain. -/
 noncomputable def completedAnnihilateOnFreeHamiltonianDomain (ε : Mode → ℝ) (i : Mode) :
@@ -139,10 +142,10 @@ noncomputable def completedAnnihilateOnFreeHamiltonianDomain (ε : Mode → ℝ)
       completedAnnihilate_mem_completedFreeHamiltonianDomain ε i ψ.2⟩
   map_add' ψ φ := by
     apply Subtype.ext
-    exact map_add (completedAnnihilate i) ψ φ
+    simp
   map_smul' c ψ := by
     apply Subtype.ext
-    exact map_smul (completedAnnihilate i) c ψ
+    simp
 
 /-- The product `H a†` as an honest linear map on `Dom(H)`. -/
 noncomputable def completedFreeHamiltonianAfterCreate (ε : Mode → ℝ) (i : Mode) :
