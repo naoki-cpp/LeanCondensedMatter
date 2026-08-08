@@ -50,7 +50,7 @@ theorem thermalPeelSum_eq_thermalPeelTerms_sum
             rw [List.map_cons, List.sum_cons, List.sum_cons, ihT]
             apply ContinuousLinearMap.ext
             intro ψ
-            simp only [add_apply, smul_apply, ContinuousLinearMap.comp_apply, map_add, map_smul]
+            simp only [add_apply, smul_apply, ContinuousLinearMap.comp_apply, map_add]
             module
       rw [thermalPeelSum, thermalPeelTerms, List.sum_cons, hmap, ← ih]
       apply ContinuousLinearMap.ext
