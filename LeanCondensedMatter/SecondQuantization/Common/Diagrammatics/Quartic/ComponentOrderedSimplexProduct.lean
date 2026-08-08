@@ -1,14 +1,15 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.FiniteComponentOrderedSimplex
+import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleFintype
+import LeanCondensedMatter.Analysis.OrderedSimplex.FinCast
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrderedSimplex
 
 set_option linter.style.header false
 
 /-!
 # Ordered-simplex product identity over diagram components
 
-The finite-family shuffle identity transports through the canonical enumeration of the connected
-component blocks. The sum of all shuffled ambient ordered-simplex integrals is therefore the product
-of the component-local ordered-simplex integrals.
+The generic finite-family shuffle identity applies directly to the finite type of connected
+component blocks.  No enumeration by `Fin k` is needed: the only transport is the canonical equality
+between the sum of component cardinalities and the ambient vertex cardinality.
 -/
 
 namespace SecondQuantization
@@ -18,6 +19,111 @@ open intervalIntegral
 open Combinatorics
 
 variable {Label : Type*} {N : ℕ}
+
+/-- The sum of the component vertex counts is the ambient vertex count. -/
+theorem QuarticDiagram.sum_componentCard {S : Finset (Fin N)}
+    (d : QuarticDiagram Label N S) :
+    (∑ B : d.componentPartition.parts, (B : Finset (Fin N)).card) = S.card := by
+  rw [Finset.sum_coe_sort]
+  exact d.componentPartition.sum_card_parts
+
+/-- Generic finite-family shuffles indexed directly by component blocks are equivalent to the
+diagram's ambient component shuffles. -/
+noncomputable def QuarticDiagram.componentFamilyShuffleEquiv {S : Finset (Fin N)}
+    (d : QuarticDiagram Label N S) :
+    FamilySlotShuffle (fun B : d.componentPartition.parts => (B : Finset (Fin N)).card) ≃
+      d.ComponentShuffle where
+  toFun shuffle :=
+    { slotEquiv := shuffle.slotEquiv.trans (Fin.castOrderIso d.sum_componentCard).toEquiv
+      strictMono := by
+        intro B a b hab
+        exact (Fin.castOrderIso d.sum_componentCard).strictMono
+          (shuffle.strictMono B hab) }
+  invFun shuffle :=
+    { slotEquiv := shuffle.slotEquiv.trans (Fin.castOrderIso d.sum_componentCard).symm.toEquiv
+      strictMono := by
+        intro B a b hab
+        exact (Fin.castOrderIso d.sum_componentCard).symm.strictMono
+          (shuffle.strictMono B hab) }
+  left_inv shuffle := by
+    apply FamilySlotShuffle.ext
+    apply Equiv.ext
+    intro x
+    change Fin.cast d.sum_componentCard.symm
+        (Fin.cast d.sum_componentCard (shuffle.slotEquiv x)) = shuffle.slotEquiv x
+    simp
+  right_inv shuffle := by
+    apply QuarticDiagram.ComponentShuffle.ext
+    apply Equiv.ext
+    intro x
+    change Fin.cast d.sum_componentCard
+        (Fin.cast d.sum_componentCard.symm (shuffle.slotEquiv x)) = shuffle.slotEquiv x
+    simp
+
+/-- Transporting a generic component-indexed family shuffle to ambient diagram coordinates only
+precomposes the generic shuffled integrand by the total-cardinality cast. -/
+theorem QuarticDiagram.componentShuffleIntegrand_componentFamilyShuffleEquiv
+    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
+    (shuffle : FamilySlotShuffle
+      (fun B : d.componentPartition.parts => (B : Finset (Fin N)).card))
+    (componentIntegrand :
+      ∀ B : d.componentPartition.parts, (Fin (B : Finset (Fin N)).card → ℝ) → ℂ)
+    (τ : Fin S.card → ℝ) :
+    d.componentShuffleIntegrand (d.componentFamilyShuffleEquiv shuffle) componentIntegrand τ =
+      shuffle.integrand componentIntegrand
+        (fun j => τ (Fin.cast d.sum_componentCard j)) := by
+  classical
+  unfold QuarticDiagram.componentShuffleIntegrand FamilySlotShuffle.integrand
+    QuarticDiagram.componentTimeAssignment FamilySlotShuffle.timeAssignment
+  rfl
+
+/-- One generic component-indexed family-shuffle term equals its ambient diagram-shuffle term. -/
+theorem QuarticDiagram.orderedSimplexIntegral_componentFamilyShuffleEquiv
+    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
+    (shuffle : FamilySlotShuffle
+      (fun B : d.componentPartition.parts => (B : Finset (Fin N)).card))
+    (β : ℝ)
+    (componentIntegrand :
+      ∀ B : d.componentPartition.parts, (Fin (B : Finset (Fin N)).card → ℝ) → ℂ) :
+    orderedSimplexIntegral S.card β
+        (d.componentShuffleIntegrand (d.componentFamilyShuffleEquiv shuffle) componentIntegrand) =
+      orderedSimplexIntegral
+        (∑ B : d.componentPartition.parts, (B : Finset (Fin N)).card) β
+        (shuffle.integrand componentIntegrand) := by
+  calc
+    orderedSimplexIntegral S.card β
+        (d.componentShuffleIntegrand (d.componentFamilyShuffleEquiv shuffle) componentIntegrand) =
+      orderedSimplexIntegral S.card β (fun τ =>
+        shuffle.integrand componentIntegrand
+          (fun j => τ (Fin.cast d.sum_componentCard j))) := by
+      apply orderedSimplexIntegral_congr
+      intro τ
+      exact d.componentShuffleIntegrand_componentFamilyShuffleEquiv shuffle componentIntegrand τ
+    _ = orderedSimplexIntegral
+        (∑ B : d.componentPartition.parts, (B : Finset (Fin N)).card) β
+        (shuffle.integrand componentIntegrand) := by
+      symm
+      exact intervalIntegral.orderedSimplexIntegral_cast d.sum_componentCard β
+        (shuffle.integrand componentIntegrand)
+
+/-- Reindex the finite sum over ambient diagram component shuffles by generic shuffles indexed
+straight by component blocks. -/
+theorem QuarticDiagram.sum_componentShuffle_orderedSimplexIntegral_eq_familyShuffle
+    {S : Finset (Fin N)} (d : QuarticDiagram Label N S) (β : ℝ)
+    (componentIntegrand :
+      ∀ B : d.componentPartition.parts, (Fin (B : Finset (Fin N)).card → ℝ) → ℂ) :
+    (∑ shuffle : d.ComponentShuffle,
+      orderedSimplexIntegral S.card β
+        (d.componentShuffleIntegrand shuffle componentIntegrand)) =
+      ∑ shuffle : FamilySlotShuffle
+        (fun B : d.componentPartition.parts => (B : Finset (Fin N)).card),
+        orderedSimplexIntegral
+          (∑ B : d.componentPartition.parts, (B : Finset (Fin N)).card) β
+          (shuffle.integrand componentIntegrand) := by
+  rw [← Equiv.sum_comp d.componentFamilyShuffleEquiv]
+  apply Finset.sum_congr rfl
+  intro shuffle _
+  exact d.orderedSimplexIntegral_componentFamilyShuffleEquiv shuffle β componentIntegrand
 
 /-- General component-shuffle ordered-simplex product identity. -/
 theorem QuarticDiagram.sum_componentShuffle_orderedSimplexIntegral_eq_prod
@@ -30,27 +136,22 @@ theorem QuarticDiagram.sum_componentShuffle_orderedSimplexIntegral_eq_prod
         (d.componentShuffleIntegrand shuffle componentIntegrand)) =
       ∏ B : d.componentPartition.parts,
         orderedSimplexIntegral (B : Finset (Fin N)).card β (componentIntegrand B) := by
-  classical
-  let p := QuarticDiagram.FiniteComponentPresentation.canonical d
+  have hfamily :=
+    FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype
+      (ι := d.componentPartition.parts)
+      (fun B => (B : Finset (Fin N)).card) β componentIntegrand hcomponent
   calc
     (∑ shuffle : d.ComponentShuffle,
-        orderedSimplexIntegral S.card β
-          (d.componentShuffleIntegrand shuffle componentIntegrand)) =
-      ∑ shuffle : FamilySlotShuffle p.size,
-        orderedSimplexIntegral (∑ i, p.size i) β
-          (shuffle.integrand (fun i => componentIntegrand (p.partsEquiv i))) :=
-      p.sum_componentShuffle_orderedSimplexIntegral β componentIntegrand
-    _ = ∏ i,
-        orderedSimplexIntegral (p.size i) β
-          (componentIntegrand (p.partsEquiv i)) :=
-      FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod
-        _ p.size β (fun i => componentIntegrand (p.partsEquiv i))
-        (fun i => hcomponent (p.partsEquiv i))
+      orderedSimplexIntegral S.card β
+        (d.componentShuffleIntegrand shuffle componentIntegrand)) =
+      ∑ shuffle : FamilySlotShuffle
+        (fun B : d.componentPartition.parts => (B : Finset (Fin N)).card),
+        orderedSimplexIntegral
+          (∑ B : d.componentPartition.parts, (B : Finset (Fin N)).card) β
+          (shuffle.integrand componentIntegrand) :=
+      d.sum_componentShuffle_orderedSimplexIntegral_eq_familyShuffle β componentIntegrand
     _ = ∏ B : d.componentPartition.parts,
-        orderedSimplexIntegral (B : Finset (Fin N)).card β (componentIntegrand B) := by
-      refine Fintype.prod_equiv p.partsEquiv _ _ ?_
-      intro i
-      rfl
+        orderedSimplexIntegral (B : Finset (Fin N)).card β (componentIntegrand B) := hfamily
 
 end Common
 end SecondQuantization

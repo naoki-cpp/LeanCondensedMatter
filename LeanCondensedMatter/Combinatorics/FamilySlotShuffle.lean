@@ -34,10 +34,11 @@ theorem FamilySlotShuffle.ext {size : ι → ℕ} {σ τ : FamilySlotShuffle siz
   cases h
   rfl
 
-/-- Finite-family shuffles form a finite type when the finite index type has decidable equality. -/
-noncomputable instance FamilySlotShuffle.instFintype [DecidableEq ι] (size : ι → ℕ) :
-    Fintype (FamilySlotShuffle size) :=
-  Fintype.ofInjective (fun shuffle : FamilySlotShuffle size => shuffle.slotEquiv)
+/-- Finite-family shuffles form a finite type. -/
+noncomputable instance FamilySlotShuffle.instFintype (size : ι → ℕ) :
+    Fintype (FamilySlotShuffle size) := by
+  classical
+  exact Fintype.ofInjective (fun shuffle : FamilySlotShuffle size => shuffle.slotEquiv)
     (fun _ _ h => FamilySlotShuffle.ext h)
 
 /-- The unique shuffle of an empty family of slot blocks. -/
