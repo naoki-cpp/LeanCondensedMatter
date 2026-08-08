@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.MixedOrderChamber
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentCrossingTimeLocality
+import LeanCondensedMatter.Combinatorics.ListFlatMapOrder
 
 set_option linter.style.header false
 
@@ -23,42 +24,6 @@ open Combinatorics
 
 variable {Mode : Type*}
 
-/-- Inside one block of a duplicate-free flattened list, global order is exactly local block order.
-This local copy is used to expose chamber invariance without changing the lower-level event-block
-module's private implementation lemmas. -/
-private theorem idxOf_flatMap_block_lt_iff_chamber
-    {α β : Type*} [DecidableEq β] (f : α → List β)
-    (events : List α) (event : α) (x y : β)
-    (hNodup : (events.flatMap f).Nodup)
-    (hEvent : event ∈ events) (hx : x ∈ f event) (hy : y ∈ f event) :
-    (events.flatMap f).idxOf x < (events.flatMap f).idxOf y ↔
-      (f event).idxOf x < (f event).idxOf y := by
-  induction events generalizing event x y with
-  | nil => simp at hEvent
-  | cons a events ih =>
-      have hNodupTail : (events.flatMap f).Nodup := hNodup.of_append_right
-      have hDisjoint : List.Disjoint (f a) (events.flatMap f) := hNodup.disjoint
-      rw [List.mem_cons] at hEvent
-      rcases hEvent with rfl | hEvent
-      · rw [List.flatMap_cons, List.idxOf_append_of_mem hx,
-          List.idxOf_append_of_mem hy]
-      · have hxTail : x ∈ events.flatMap f := by
-          rw [List.mem_flatMap]
-          exact ⟨event, hEvent, hx⟩
-        have hyTail : y ∈ events.flatMap f := by
-          rw [List.mem_flatMap]
-          exact ⟨event, hEvent, hy⟩
-        have hxNotHead : x ∉ f a := by
-          intro hxa
-          exact (List.disjoint_left.1 hDisjoint) hxa hxTail
-        have hyNotHead : y ∉ f a := by
-          intro hya
-          exact (List.disjoint_left.1 hDisjoint) hya hyTail
-        rw [List.flatMap_cons, List.idxOf_append_of_notMem hxNotHead,
-          List.idxOf_append_of_notMem hyNotHead]
-        simpa only [Nat.add_lt_add_iff_left] using
-          ih (event := event) (x := x) (y := y) hNodupTail hEvent hx hy
-
 /-- The complete mixed atomic-leg order is constant inside one mixed-event order chamber.  Distinct
 event blocks use chamber invariance of event positions; legs in one event block use the fixed local
 leg order. -/
@@ -77,11 +42,11 @@ theorem mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber {n : ℕ}
       simpa [event] using orderedTwoPointLeg_mem_eventAtomicLegs x
     have hy : y ∈ twoPointTimedEventAtomicLegs event := by
       simpa [event, hxy] using orderedTwoPointLeg_mem_eventAtomicLegs y
-    have hσ := idxOf_flatMap_block_lt_iff_chamber twoPointTimedEventAtomicLegs
+    have hσ := List.idxOf_flatMap_block_lt_iff twoPointTimedEventAtomicLegs
       (orderedTwoPointTimedEvents τ τ' σ) event x y
       (mixedTimeOrderedAtomicLegs_nodup τ τ' σ)
       (orderedTwoPointTimedEvents_all_mem τ τ' σ event) hx hy
-    have hυ := idxOf_flatMap_block_lt_iff_chamber twoPointTimedEventAtomicLegs
+    have hυ := List.idxOf_flatMap_block_lt_iff twoPointTimedEventAtomicLegs
       (orderedTwoPointTimedEvents τ τ' υ) event x y
       (mixedTimeOrderedAtomicLegs_nodup τ τ' υ)
       (orderedTwoPointTimedEvents_all_mem τ τ' υ event) hx hy
