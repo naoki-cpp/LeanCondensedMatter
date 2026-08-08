@@ -41,11 +41,14 @@ theorem vertexGraph_relabel_adj_iff
     let newLeg := e.symm leg
     refine ⟨fun h => hvw (congrArg vertexEquiv h), newLeg, ?_, ?_⟩
     · apply vertexEquiv.injective
-      simpa [newLeg, hvertex] using hv
+      have hnew := hvertex newLeg
+      simp only [newLeg, Equiv.apply_symm_apply] at hnew
+      exact hnew.symm.trans hv
     · apply vertexEquiv.injective
+      rw [Pairing.relabel_partner]
       have hpartner := hvertex (e.symm (P.partner leg))
       simp only [Equiv.apply_symm_apply] at hpartner
-      simpa [newLeg, Pairing.relabel_partner, hpartner] using hw
+      exact hpartner.symm.trans hw
 
 /-- Reachability is preserved by a compatible pairing relabel. -/
 theorem vertexGraph_relabel_reachable_iff
