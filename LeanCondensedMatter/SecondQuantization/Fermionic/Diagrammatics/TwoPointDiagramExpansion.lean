@@ -27,6 +27,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentIntegrability
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentShuffleIntegrability
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentCanonicalLocality
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ComponentShufflePermutation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DysonCoefficient
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentDysonIntegral
@@ -51,6 +52,7 @@ of mixed-time contraction products, decomposition of mixed crossing counts, redu
 parity to complete component-position inversions and concrete vacuum four-leg event blocks,
 unconditional factorization of mixed pairing weights, pairing values, coupling products, fixed-time
 values, and component-local Dyson signs, canonical component-locality of the pointwise Dyson
-integrand, the factorized ordered-simplex interface, and the perturbative coefficient for the
-imaginary-time two-point function with quartic interaction vertices.
+integrand, the ambient permutation relating every component shuffle to the canonical one, the
+factorized ordered-simplex interface, and the perturbative coefficient for the imaginary-time
+two-point function with quartic interaction vertices.
 -/
