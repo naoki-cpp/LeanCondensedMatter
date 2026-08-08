@@ -68,7 +68,10 @@ theorem TwoPointDiagram.ComponentInteractionShuffle.interactionComponentTimeAssi
       d.interactionComponentTimeAssignment d.canonicalComponentInteractionShuffle
         (fun i => τ (shuffle.ambientPermutation i)) B := by
   funext i
-  simp [TwoPointDiagram.interactionComponentTimeAssignment]
+  change τ (shuffle.slotEquiv ⟨B, i⟩) =
+    τ (shuffle.ambientPermutation
+      (d.canonicalComponentInteractionShuffle.slotEquiv ⟨B, i⟩))
+  rw [shuffle.ambientPermutation_canonical_slotEquiv]
 
 /-- An arbitrary component-shuffle product is the canonical component-shuffle product evaluated on
 the correspondingly permuted ambient interaction-time assignment. -/
