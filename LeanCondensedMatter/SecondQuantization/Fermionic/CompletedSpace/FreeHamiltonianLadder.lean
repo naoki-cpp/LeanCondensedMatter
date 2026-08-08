@@ -40,6 +40,10 @@ theorem completedFreeHamiltonian_create_commutator_apply
       (ε i : ℂ) • completedCreateFromFreeHamiltonianDomain ε i ψ := by
   apply lp.ext
   funext n
+  change
+    completedFreeHamiltonianAfterCreate ε i ψ n -
+        completedCreateAfterFreeHamiltonian ε i ψ n =
+      (ε i : ℂ) * completedCreateFromFreeHamiltonianDomain ε i ψ n
   have hHa :
       completedFreeHamiltonianAfterCreate ε i ψ n =
         freeHamiltonianWeight ε n *
@@ -49,16 +53,15 @@ theorem completedFreeHamiltonian_create_commutator_apply
       completedCreateAfterFreeHamiltonian ε i ψ n =
         completedCreate i ((completedFreeHamiltonian ε).toFun ψ) n := by
     rfl
+  have hrestrict :
+      completedCreateFromFreeHamiltonianDomain ε i ψ n =
+        completedCreate i (ψ : CompletedFockSpace Mode) n := by
+    rfl
   have hH (m : Occupation Mode) :
       (completedFreeHamiltonian ε).toFun ψ m =
         freeHamiltonianWeight ε m * (ψ : CompletedFockSpace Mode) m := by
     rfl
-  rw [hHa, haH]
-  change
-    freeHamiltonianWeight ε n * completedCreate i (ψ : CompletedFockSpace Mode) n -
-        completedCreate i ((completedFreeHamiltonian ε).toFun ψ) n =
-      (ε i : ℂ) * completedCreate i (ψ : CompletedFockSpace Mode) n
-  rw [completedCreate_apply, completedCreate_apply]
+  rw [hHa, haH, hrestrict, completedCreate_apply, completedCreate_apply]
   by_cases h : i ∈ n
   · simp only [if_pos h]
     rw [hH, freeHamiltonianWeight_toggle_of_mem ε h]
@@ -69,7 +72,8 @@ theorem completedFreeHamiltonian_create_commutator_apply
 theorem completedFreeHamiltonian_create_commutator (ε : Mode → ℝ) (i : Mode) :
     completedFreeHamiltonianAfterCreate ε i - completedCreateAfterFreeHamiltonian ε i =
       (ε i : ℂ) • completedCreateFromFreeHamiltonianDomain ε i := by
-  ext ψ
+  apply LinearMap.ext
+  intro ψ
   exact completedFreeHamiltonian_create_commutator_apply ε i ψ
 
 /-- Pointwise free-Hamiltonian commutator relation for fermionic annihilation on `Dom(H)`. -/
@@ -80,6 +84,10 @@ theorem completedFreeHamiltonian_annihilate_commutator_apply
       (-(ε i : ℂ)) • completedAnnihilateFromFreeHamiltonianDomain ε i ψ := by
   apply lp.ext
   funext n
+  change
+    completedFreeHamiltonianAfterAnnihilate ε i ψ n -
+        completedAnnihilateAfterFreeHamiltonian ε i ψ n =
+      (-(ε i : ℂ)) * completedAnnihilateFromFreeHamiltonianDomain ε i ψ n
   have hHa :
       completedFreeHamiltonianAfterAnnihilate ε i ψ n =
         freeHamiltonianWeight ε n *
@@ -89,16 +97,15 @@ theorem completedFreeHamiltonian_annihilate_commutator_apply
       completedAnnihilateAfterFreeHamiltonian ε i ψ n =
         completedAnnihilate i ((completedFreeHamiltonian ε).toFun ψ) n := by
     rfl
+  have hrestrict :
+      completedAnnihilateFromFreeHamiltonianDomain ε i ψ n =
+        completedAnnihilate i (ψ : CompletedFockSpace Mode) n := by
+    rfl
   have hH (m : Occupation Mode) :
       (completedFreeHamiltonian ε).toFun ψ m =
         freeHamiltonianWeight ε m * (ψ : CompletedFockSpace Mode) m := by
     rfl
-  rw [hHa, haH]
-  change
-    freeHamiltonianWeight ε n * completedAnnihilate i (ψ : CompletedFockSpace Mode) n -
-        completedAnnihilate i ((completedFreeHamiltonian ε).toFun ψ) n =
-      (-(ε i : ℂ)) * completedAnnihilate i (ψ : CompletedFockSpace Mode) n
-  rw [completedAnnihilate_apply, completedAnnihilate_apply]
+  rw [hHa, haH, hrestrict, completedAnnihilate_apply, completedAnnihilate_apply]
   by_cases h : i ∈ n
   · simp [h]
   · simp only [if_neg h]
@@ -110,7 +117,8 @@ theorem completedFreeHamiltonian_annihilate_commutator_apply
 theorem completedFreeHamiltonian_annihilate_commutator (ε : Mode → ℝ) (i : Mode) :
     completedFreeHamiltonianAfterAnnihilate ε i - completedAnnihilateAfterFreeHamiltonian ε i =
       (-(ε i : ℂ)) • completedAnnihilateFromFreeHamiltonianDomain ε i := by
-  ext ψ
+  apply LinearMap.ext
+  intro ψ
   exact completedFreeHamiltonian_annihilate_commutator_apply ε i ψ
 
 end
