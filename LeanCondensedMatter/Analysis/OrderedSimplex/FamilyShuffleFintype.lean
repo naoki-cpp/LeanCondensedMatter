@@ -47,18 +47,22 @@ noncomputable def FamilySlotShuffle.reindexEquiv (e : ι ≃ κ) (size : κ → 
       invFun := fun shuffle =>
         { slotEquiv := localEquiv.symm.trans (shuffle.slotEquiv.trans (finCongr hsum))
           strictMono := by
-            intro j a b hab
-            have hab' :
-                (localEquiv.symm ⟨j, a⟩).2 < (localEquiv.symm ⟨j, b⟩).2 := by
-              change (localEquiv.symm ⟨j, a⟩).2.val <
-                (localEquiv.symm ⟨j, b⟩).2.val
-              simpa [localEquiv] using hab
-            have hmono := shuffle.strictMono (e.symm j) hab'
-            have hmono' :
-                shuffle.slotEquiv (localEquiv.symm ⟨j, a⟩) <
-                  shuffle.slotEquiv (localEquiv.symm ⟨j, b⟩) := by
-              simpa [localEquiv] using hmono
-            exact (intervalIntegral.strictMono_finCongr hsum) hmono' }
+            intro j
+            obtain ⟨i, rfl⟩ := e.surjective j
+            intro a b hab
+            have ha : localEquiv.symm ⟨e i, a⟩ = ⟨i, a⟩ := by
+              apply localEquiv.injective
+              simp [localEquiv]
+            have hb : localEquiv.symm ⟨e i, b⟩ = ⟨i, b⟩ := by
+              apply localEquiv.injective
+              simp [localEquiv]
+            change (finCongr hsum)
+                (shuffle.slotEquiv (localEquiv.symm ⟨e i, a⟩)) <
+              (finCongr hsum)
+                (shuffle.slotEquiv (localEquiv.symm ⟨e i, b⟩))
+            rw [ha, hb]
+            exact (intervalIntegral.strictMono_finCongr hsum)
+              (shuffle.strictMono i hab) }
       left_inv := by
         intro shuffle
         apply FamilySlotShuffle.ext
@@ -104,7 +108,7 @@ theorem FamilySlotShuffle.orderedSimplexIntegral_reindexEquiv
     intro i
     apply congrArg (localIntegrand (e i))
     funext a
-    simp [FamilySlotShuffle.reindexEquiv, hsum]
+    simp [FamilySlotShuffle.reindexEquiv]
   simp_rw [hterm]
   exact Equiv.prod_comp e
     (fun j => localIntegrand j (fun a => τ (shuffle.slotEquiv ⟨j, a⟩)))
