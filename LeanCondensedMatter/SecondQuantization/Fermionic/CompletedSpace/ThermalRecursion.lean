@@ -52,11 +52,18 @@ noncomputable def completedFreeGibbsExpectationRecursion
             completedFreeGibbsExpectation ε β hsum [C 0, C j.succ] *
               completedFreeGibbsExpectation ε β hsum
                 (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ)) := by
-        rw [completedFreeGibbsExpectation_thermalPeelSum_eq_sum]
-        simp only [List.getElem_ofFn]
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro j _
+        have hpeel :
+            (completedFreeGibbsDensityOperator ε β hsum).expectation
+                (thermalPeelSum (C 0) (List.ofFn fun i : Fin (2 * n + 1) => C i.succ)) =
+              ∑ j : Fin (2 * n + 1),
+                ((-1 : ℂ) ^ (j : ℕ)) * (C 0).anticommutatorValue (C j.succ) *
+                  completedFreeGibbsExpectation ε β hsum
+                    ((List.ofFn fun i : Fin (2 * n + 1) => C i.succ).eraseIdx j) := by
+          simpa only [List.length_ofFn, List.getElem_ofFn] using
+            (completedFreeGibbsExpectation_thermalPeelSum_eq_sum ε β hsum (C 0)
+              (List.ofFn fun i : Fin (2 * n + 1) => C i.succ))
+        rw [hpeel, Finset.mul_sum]
+        refine Finset.sum_congr rfl fun j _ => ?_
         rw [List.eraseIdx_ofFn_eq_ofFn_succAbove]
         have hpair := completedFreeGibbsExpectation_pair_eq
           ε β hsum (C 0) (C j.succ) (hC 0)
