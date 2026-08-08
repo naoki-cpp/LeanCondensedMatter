@@ -1,1 +1,23 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Diagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentPartition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentRestriction
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalConnectivity
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalRestriction
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentDecomposition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentVertexProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentOrderedSimplex
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.CanonicalComponentShuffle
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentPairProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.RestrictedPairEquiv
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.RestrictedPairOrientation
+
+set_option linter.style.header false
+
+/-!
+# Statistics-independent two-point diagrammatics
+
+Two-point diagrams with two distinguished external legs, full connected-component partitions,
+vacuum/external component restriction and decomposition, componentwise vertex and pair products,
+interaction-time ordered-simplex shuffles and their canonical representative, and restricted-pair
+transport/orientation results.
+-/

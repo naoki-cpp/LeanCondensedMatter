@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointRestrictedPairOrientation
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.RestrictedPairOrientation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticInteraction
 
 set_option linter.style.header false

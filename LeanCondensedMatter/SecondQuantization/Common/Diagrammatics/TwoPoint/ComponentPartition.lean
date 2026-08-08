@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Diagram
 import Mathlib.Order.Partition.Finpartition
 
 set_option linter.style.header false

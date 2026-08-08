@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPointComponentPartition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentPartition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Diagram
 
 set_option linter.style.header false
