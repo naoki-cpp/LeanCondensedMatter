@@ -192,10 +192,10 @@ private theorem twoPointTimedEventAtomicLegs_idxOf_interactionVertexLegRelabel {
   classical
   letI : BEq (OrderedTwoPointLeg n) := instBEqOfDecidableEq
   rcases leg with e | ⟨⟨v, hv⟩, l⟩
-  · simp [interactionVertexLegRelabel, orderedTwoPointLegEvent, List.idxOf_cons_eq]
+  · simp [interactionVertexLegRelabel, orderedTwoPointLegEvent]
   · fin_cases l <;>
       simp [interactionVertexLegRelabel, orderedTwoPointLegEvent,
-        twoPointTimedEventAtomicLegs, List.idxOf_cons_eq]
+        twoPointTimedEventAtomicLegs]
 
 /-- With injective interaction times, the mixed atomic position relabeling preserves the full strict
 order, including pairs of legs inside the same quartic interaction block. -/
@@ -238,8 +238,10 @@ theorem interactionVertexMixedPositionRelabel_lt_iff_of_injective {n : ℕ}
       (interactionVertexLegRelabel π x) (interactionVertexLegRelabel π y) hRelabeledEvent]
     rw [mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt
       τ τ' σ x y hEventEq]
-    rw [twoPointTimedEventAtomicLegs_idxOf_interactionVertexLegRelabel π x,
-      twoPointTimedEventAtomicLegs_idxOf_interactionVertexLegRelabel π y]
+    rw [twoPointTimedEventAtomicLegs_idxOf_interactionVertexLegRelabel π x]
+    rw [hRelabeledEvent]
+    rw [twoPointTimedEventAtomicLegs_idxOf_interactionVertexLegRelabel π y]
+    rw [← hEventEq]
 
 /-- The mixed atomic position relabeling is strictly monotone away from interaction-time diagonals. -/
 theorem interactionVertexMixedPositionRelabel_strictMono_of_injective {n : ℕ}
