@@ -29,6 +29,16 @@ variable {Mode : Type*} [Fintype Mode]
 /-- File-local classical decidable equality for the concrete pair kernel. -/
 local instance instDecidableEqConcreteExpectationRecursion : DecidableEq Mode := Classical.decEq Mode
 
+/-- On an explicitly summable observable, the totalized functional is the concrete free-Gibbs
+expectation. -/
+private theorem freeGibbsFunctional_value_eq_freeGibbsExpectation
+    (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
+    {A : FockSpace Mode →ₗ[ℂ] FockSpace Mode}
+    (hA : A ∈ freeGibbsDomain ε β) :
+    (freeGibbsFunctional ε β hpos).value A = freeGibbsExpectation ε β A := by
+  rw [(freeGibbsFunctional ε β hpos).value_of_mem hA]
+  rfl
+
 namespace FreeThermalField
 
 /-- Concrete normalized free-Gibbs first-pair recurrence for an arbitrary even field family. -/
@@ -57,7 +67,8 @@ theorem freeGibbsExpectation_firstPair_recursion
           freeGibbsExpectation ε β
             (orderedProduct
               (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ))) := by
-      rw [freeGibbsExpectation_operatorPeelSum_eq_sum, Finset.mul_sum]
+      rw [freeGibbsExpectation_operatorPeelSum_eq_sum ε β hpos (C 0) l,
+        Finset.mul_sum]
       let hcast : Fin l.length ≃ Fin (2 * n + 1) :=
         ⟨Fin.cast hlen, Fin.cast hlen.symm, fun i => rfl, fun i => rfl⟩
       have hreindex :
@@ -101,7 +112,7 @@ noncomputable def concreteFreeGibbsPairingRecursion
       intro n C _
       have hfull := FreeThermalField.orderedProduct_mem_freeGibbsDomain
         ε β hpos (List.ofFn C)
-      rw [(freeGibbsFunctional ε β hpos).value_of_mem hfull]
+      rw [freeGibbsFunctional_value_eq_freeGibbsExpectation ε β hpos hfull]
       have hrec := FreeThermalField.freeGibbsExpectation_firstPair_recursion
         ε β hpos n C
       calc
@@ -121,7 +132,7 @@ noncomputable def concreteFreeGibbsPairingRecursion
           have htail := FreeThermalField.orderedProduct_mem_freeGibbsDomain
             ε β hpos
               (List.ofFn fun i : Fin (2 * n) => C ((j.succAbove i).succ))
-          rw [(freeGibbsFunctional ε β hpos).value_of_mem htail])
+          rw [freeGibbsFunctional_value_eq_freeGibbsExpectation ε β hpos htail])
 
 /-- Fully concrete free-boson Bloch--de Dominicis/Wick pairing expansion.  The only analytic
 hypothesis is positivity of every one-mode Boltzmann exponent. -/
@@ -132,11 +143,17 @@ theorem freeGibbsExpectation_eq_sum_pairing_concrete
       ∑ pairing : Pairing n,
         pairing.weight .boson *
           ∏ pr ∈ pairing.pairs, freeThermalPairValue ε β (C pr.1) (C pr.2) := by
-  let data := concreteFreeGibbsPairingRecursion ε β hpos
-  have h := data.expectation_eq_sum_pairing n C trivial
+  have h := (concreteFreeGibbsPairingRecursion ε β hpos).expectation_eq_sum_pairing
+    n C trivial
+  change
+    (freeGibbsFunctional ε β hpos).value
+        (FreeThermalField.orderedProduct (List.ofFn C)) =
+      ∑ pairing : Pairing n,
+        pairing.weight .boson *
+          ∏ pr ∈ pairing.pairs, freeThermalPairValue ε β (C pr.1) (C pr.2) at h
   have hmem := FreeThermalField.orderedProduct_mem_freeGibbsDomain
     ε β hpos (List.ofFn C)
-  rw [(freeGibbsFunctional ε β hpos).value_of_mem hmem] at h
+  rw [freeGibbsFunctional_value_eq_freeGibbsExpectation ε β hpos hmem] at h
   exact h
 
 end
