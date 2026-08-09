@@ -80,32 +80,37 @@ theorem freeGibbsNormalOrderedMoment_succ
       (orderedProduct (.create (createMode 0) :: tail)) = _
   rw [freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum ε β hpos,
     freeGibbsExpectation_operatorPeelSum_eq_sum ε β hpos, Finset.mul_sum]
-  change (∑ k : Fin tail.length,
-      ((FreeThermalField.create (createMode 0)).kmsFactor ε β /
-        ((FreeThermalField.create (createMode 0)).kmsFactor ε β - 1)) *
-        ((FreeThermalField.create (createMode 0)).exchangeValue (tail.get k) *
-          freeGibbsExpectation ε β (orderedProduct (tail.eraseIdx k)))) = _
+  let ratio : ℂ :=
+    (FreeThermalField.create (createMode 0)).kmsFactor ε β /
+      ((FreeThermalField.create (createMode 0)).kmsFactor ε β - 1)
+  let summand : Fin tail.length → ℂ := fun k =>
+    ratio *
+      ((FreeThermalField.create (createMode 0)).exchangeValue (tail.get k) *
+        freeGibbsExpectation ε β (orderedProduct (tail.eraseIdx k)))
+  change (∑ k : Fin tail.length, summand k) = _
   have hlen : tail.length = n + (n + 1) := by
     simp [tail, creators, annihilators]
-  rw [hlen, Fin.sum_univ_add]
+  let e : Fin tail.length ≃ Fin (n + (n + 1)) :=
+    ⟨Fin.cast hlen, Fin.cast hlen.symm, fun _ => rfl, fun _ => rfl⟩
+  have hreindex :
+      (∑ k : Fin tail.length, summand k) =
+        ∑ k : Fin (n + (n + 1)), summand (e.symm k) :=
+    Fintype.sum_equiv e _ _ fun _ => rfl
+  rw [hreindex, Fin.sum_univ_add]
   have hcreate :
-      (∑ i : Fin n,
-        ((FreeThermalField.create (createMode 0)).kmsFactor ε β /
-          ((FreeThermalField.create (createMode 0)).kmsFactor ε β - 1)) *
-          ((FreeThermalField.create (createMode 0)).exchangeValue
-              (tail.get (Fin.castAdd (n + 1) i)) *
-            freeGibbsExpectation ε β
-              (orderedProduct (tail.eraseIdx (Fin.castAdd (n + 1) i))))) = 0 := by
+      (∑ i : Fin n, summand (e.symm (Fin.castAdd (n + 1) i))) = 0 := by
     apply Finset.sum_eq_zero
     intro i _
-    simp [tail, creators, annihilators, FreeThermalField.exchangeValue]
+    simp [summand, ratio, e, tail, creators, annihilators,
+      FreeThermalField.exchangeValue]
   rw [hcreate, zero_add]
   apply Finset.sum_congr rfl
   intro j _
   have hpair := kmsRatio_mul_exchangeValue_eq_freeThermalPairValue
     ε β hpos (.create (createMode 0)) (.annihilate (annihilateMode j))
+  change summand (e.symm (Fin.natAdd n j)) = _
   rw [← hpair]
-  simp [tail, creators, annihilators, normalOrderedFields,
+  simp [summand, ratio, e, tail, creators, annihilators, normalOrderedFields,
     List.eraseIdx_ofFn_eq_ofFn_succAbove]
 
 /-- Concrete free-boson Bloch--de Dominicis evaluation in the number-conserving sector: the
