@@ -10,6 +10,8 @@ set_option linter.style.header false
 This module closes the last finite combinatorial bridge in the external-leg linked-cluster theorem.
 The full order-`n` diagram sum is partitioned by the number of interaction vertices in the unique
 external component. Each fiber is the binary external/vacuum slot decomposition proved earlier.
+The resulting coefficient convolution factors the full numerator series into its connected
+external-core series and the normalized vacuum series, which can then be cancelled formally.
 -/
 
 namespace SecondQuantization
@@ -106,6 +108,76 @@ theorem twoPointUnnormalizedDiagramCoeff_eq_connected_mul_vacuum
       exact Finset.sum_coe_sort (Finset.antidiagonal n) (fun p =>
         twoPointConnectedDiagramCoeff ε β g i j τ τ' p.1 *
           normalizedDysonPartitionCoeff ε β (quarticInteraction g) p.2)
+
+/-- The full unnormalized two-point numerator series factors into the connected external-core series
+and the normalized vacuum Dyson series. -/
+theorem twoPointUnnormalizedDiagramSeries_eq_connected_mul_vacuum
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ) :
+    twoPointUnnormalizedDiagramSeries ε β g i j τ τ' =
+      twoPointConnectedDiagramSeries ε β g i j τ τ' *
+        normalizedVacuumDysonSeries ε β g := by
+  exact twoPointUnnormalizedDiagramSeries_eq_mul_of_coeff_convolution
+    ε β g i j τ τ' (fun n =>
+      twoPointUnnormalizedDiagramCoeff_eq_connected_mul_vacuum
+        ε β g i j τ τ' n)
+
+/-- Formal vacuum cancellation leaves exactly the series of diagrams connected to the external
+pair. The normalized vacuum series is invertible because its constant coefficient is one. -/
+theorem twoPointNormalizedDiagramSeries_eq_connected
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ) :
+    twoPointNormalizedDiagramSeries ε β g i j τ τ' =
+      twoPointConnectedDiagramSeries ε β g i j τ τ' := by
+  exact twoPointNormalizedDiagramSeries_eq_connected_of_factorization
+    ε β g i j τ τ'
+    (twoPointUnnormalizedDiagramSeries_eq_connected_mul_vacuum ε β g i j τ τ')
+
+/-- Canonical finite-mode imaginary-time external-leg linked-cluster theorem for the repository's
+quartic Dyson expansion, ordering/equal-time convention, fermionic sign convention, coupling
+weights, and free-partition normalization: the normalized order-`n` coefficient is the sum of
+fixed-external diagrams connected to the external pair. In this one-leg/one-leg quartic setup the
+two external vertices necessarily lie in the same connected component, and
+`IsExternallyConnected` is equivalent to `HasNoVacuumComponent`. -/
+theorem coeff_twoPointNormalizedDiagramSeries_eq_connected
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
+    PowerSeries.coeff n (twoPointNormalizedDiagramSeries ε β g i j τ τ') =
+      twoPointConnectedDiagramCoeff ε β g i j τ τ' n := by
+  rw [twoPointNormalizedDiagramSeries_eq_connected]
+  exact coeff_twoPointConnectedDiagramSeries ε β g i j τ τ' n
+
+/-- The connected subtype used by the public coefficient theorem is canonically the subtype of
+fixed-external diagrams with no vacuum component. -/
+noncomputable def connectedFixedExternalTwoPointWickDiagramEquivHasNoVacuumComponent
+    (n : ℕ) (i j : Mode) :
+    ConnectedFixedExternalTwoPointWickDiagram Mode n i j ≃
+      {d : FixedExternalTwoPointWickDiagram Mode n i j // d.1.HasNoVacuumComponent} :=
+  Equiv.subtypeEquivRight (fun d => d.1.isExternallyConnected_iff_hasNoVacuumComponent)
+
+/-- Public no-vacuum-component form of the finite-mode external-leg linked-cluster theorem. -/
+theorem coeff_twoPointNormalizedDiagramSeries_eq_sum_hasNoVacuumComponent
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
+    PowerSeries.coeff n (twoPointNormalizedDiagramSeries ε β g i j τ τ') =
+      ∑ d : {d : FixedExternalTwoPointWickDiagram Mode n i j //
+          d.1.HasNoVacuumComponent},
+        d.1.dysonAmplitude ε β g τ τ' := by
+  classical
+  rw [coeff_twoPointNormalizedDiagramSeries_eq_connected]
+  unfold twoPointConnectedDiagramCoeff
+  letI : Fintype
+      {d : FixedExternalTwoPointWickDiagram Mode n i j // d.1.HasNoVacuumComponent} :=
+    Fintype.ofFinite _
+  refine Fintype.sum_equiv
+    (connectedFixedExternalTwoPointWickDiagramEquivHasNoVacuumComponent n i j)
+    (fun d : ConnectedFixedExternalTwoPointWickDiagram Mode n i j =>
+      d.1.dysonAmplitude ε β g τ τ')
+    (fun d : {d : FixedExternalTwoPointWickDiagram Mode n i j //
+        d.1.HasNoVacuumComponent} =>
+      d.1.dysonAmplitude ε β g τ τ') ?_
+  intro d
+  rw [Equiv.subtypeEquivRight_apply]
 
 end Fermionic
 end SecondQuantization
