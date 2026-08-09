@@ -152,19 +152,16 @@ or finite-mode assumptions.
 When `Mode` is finite, `Fermionic.Occupation Mode` is finite and the completed `ℓ²` representation is
 finite dimensional. `CompletedSpace/FiniteCompatibility.lean` identifies it canonically and
 isometrically with `Common.FiniteHilbertFock (Occupation Mode)` using Mathlib's finite-index
-`lpPiLpₗᵢ`.  The equivalence preserves every occupation coordinate, sends completed basis vectors to
-the existing finite Hilbert basis, and makes the algebraic-to-completed and algebraic-to-finite
-Hilbert maps commute.
+`lpPiLpₗᵢ`.  The equivalence sends completed basis vectors to the existing finite Hilbert basis and
+makes the algebraic-to-completed and algebraic-to-finite Hilbert maps commute.  The former separate
+bounded-operator compatibility layer is intentionally not retained: completed number, creation, and
+annihilation operators are already related to the algebraic core where those facts are needed.
 
-`CompletedSpace/FiniteOperatorCompatibility.lean` lifts algebraic-core agreement through this
-isometry: any bounded completed operator that agrees with an algebraic Fock endomorphism transports
-to the existing `Common.finiteHilbertOperator`.  In particular the completed number, creation, and
-annihilation operators coincide with their finite-Hilbert realizations.
-
-`CompletedSpace/FiniteThermalCompatibility.lean` identifies the thermal data.  Finite mode sets make
-the completed Gibbs summability condition automatic; the completed and finite Boltzmann weights,
-partition functions, and normalized probabilities agree; and the completed free Gibbs density
+`CompletedSpace/FiniteThermalCompatibility.lean` retains the state-level bridge.  Finite mode sets
+make the completed Gibbs summability condition automatic, and the completed free Gibbs density
 operator intertwines with the existing finite Gibbs density operator under the same isometry.
+Definitionally identical Boltzmann-weight expressions are no longer exposed through separate
+compatibility theorem names.
 
 For arbitrary `Mode`, `CompletedSpace/ModeTruncation.lean` defines the finite-mode coordinate
 projections indexed by `Finset Mode`.  They are contractions, fix every algebraic vector once the
@@ -217,7 +214,7 @@ observables; no trace-norm convergence is asserted.
 ### C5 — compatibility and approximation
 
 - [x] Identify finite-mode completed Fock space with `FiniteHilbertFock`.
-- [x] Show finite Gibbs density/operator APIs commute with the finite compatibility equivalence.
+- [x] Show the finite Gibbs density API commutes with the finite compatibility equivalence.
 - [x] Define finite-mode truncations as a `Finset Mode` directed net.
 - [x] Prove strong convergence of finite-mode projections and weak convergence of the truncated
   Gibbs states against every bounded observable, with both topologies explicit.
