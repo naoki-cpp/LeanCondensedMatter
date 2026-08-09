@@ -187,6 +187,7 @@ noncomputable def reassembleExternalVacuumSlotData {k m : ℕ} (i j : Mode)
     FixedExternalTwoPointWickDiagram Mode (k + m) i j :=
   reassembleExternalVacuumSlotShuffle i j x.1 x.2.1 x.2.2
 
+omit [Fintype Mode] in
 /-- Binary slot reassembly is injective: the full diagram recovers its external slot set, hence the
 shuffle, and fixed-subset reassembly then recovers both local diagrams. -/
 theorem reassembleExternalVacuumSlotData_injective {k m : ℕ} (i j : Mode) :
@@ -206,8 +207,14 @@ theorem reassembleExternalVacuumSlotData_injective {k m : ℕ} (i j : Mode) :
   let vacuumOn₁ := vacuumOnSlotShuffle vacuum₁ shuffle₁
   let vacuumOn₂ := vacuumOnSlotShuffle vacuum₂ shuffle₁
   have hpairs :
-      (⟨externalOn₁.1.1, externalOn₁.2⟩, vacuumOn₁) =
-        (⟨externalOn₂.1.1, externalOn₂.2⟩, vacuumOn₂) := by
+      ((⟨externalOn₁.1.1, externalOn₁.2⟩ :
+          Common.ExternallyConnectedTwoPointDiagram
+            (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+            (k + m) shuffle₁.leftSlots), vacuumOn₁) =
+        ((⟨externalOn₂.1.1, externalOn₂.2⟩ :
+          Common.ExternallyConnectedTwoPointDiagram
+            (ExternalFieldLabel Mode) (QuarticVertexLabel Mode)
+            (k + m) shuffle₁.leftSlots), vacuumOn₂) := by
     apply Common.TwoPointDiagram.reassembleExternalVacuum_injective_fixed
       (Finset.subset_univ shuffle₁.leftSlots)
     exact congrArg Subtype.val hfull
@@ -220,8 +227,8 @@ theorem reassembleExternalVacuumSlotData_injective {k m : ℕ} (i j : Mode) :
     (connectedExternalOnSlotShuffleEquiv i j shuffle₁).injective hextOn
   have hvac : vacuum₁ = vacuum₂ :=
     (vacuumOnSlotShuffleEquiv shuffle₁).injective hvacOn
-  subst external₂
-  subst vacuum₂
+  rcases hext with rfl
+  rcases hvac with rfl
   rfl
 
 /-- Fixed-external diagrams of total order `k+m` whose external component contains exactly `k`
@@ -236,10 +243,12 @@ noncomputable def reassembleExternalVacuumSlotDataOfExternalOrder {k m : ℕ} (i
     (x : ExternalVacuumSlotData Mode k m i j) :
     FixedExternalTwoPointWickDiagramOfExternalOrder Mode k m i j :=
   ⟨reassembleExternalVacuumSlotData i j x, by
-    rw [reassembleExternalVacuumSlotData,
-      reassembleExternalVacuumSlotShuffle_externalInteractionPart]
+    change (Common.TwoPointDiagram.interactionPart
+      ((reassembleExternalVacuumSlotShuffle i j x.1 x.2.1 x.2.2).1.externalComponent 0)).card = k
+    rw [reassembleExternalVacuumSlotShuffle_externalInteractionPart]
     exact x.2.2.card_leftSlots⟩
 
+omit [Fintype Mode] in
 /-- Every fixed-external diagram of external order `k` is obtained from a unique connected explicit
 external core, explicit vacuum remainder, and binary slot shuffle. -/
 theorem reassembleExternalVacuumSlotDataOfExternalOrder_surjective {k m : ℕ} (i j : Mode) :
@@ -284,8 +293,9 @@ theorem reassembleExternalVacuumSlotDataOfExternalOrder_surjective {k m : ℕ} (
         (connectedExternalOnSlotShuffle i j external shuffle).2⟩
       (vacuumOnSlotShuffle vacuum shuffle) = d.1.1
   rw [hext, hvac]
-  rw [hslots]
-  exact d.1.1.reassemble_restrictExternal_restrictVacuumRemainder
+  cases hslots
+  simpa [externalOn, externalOnE, vacuumOn, vacuumOnE, E] using
+    d.1.1.reassemble_restrictExternal_restrictVacuumRemainder
 
 /-- Binary slot data are equivalent to full fixed-external diagrams with a prescribed external
 component order. -/
@@ -295,7 +305,7 @@ noncomputable def externalVacuumSlotDataEquivOfExternalOrder {k m : ℕ} (i j : 
   Equiv.ofBijective
     (reassembleExternalVacuumSlotDataOfExternalOrder
       (Mode := Mode) (k := k) (m := m) i j)
-    ⟨fun x y h => reassembleExternalVacuumSlotData_injective i j
+    ⟨fun _ _ h => reassembleExternalVacuumSlotData_injective i j
         (congrArg Subtype.val h),
       reassembleExternalVacuumSlotDataOfExternalOrder_surjective i j⟩
 
