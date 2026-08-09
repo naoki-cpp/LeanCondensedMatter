@@ -66,6 +66,40 @@ theorem sum_connected_fixedExternalTwoPointWickDiagramAmplitude_eq_factorial_mul
   rw [Finset.sum_const, Finset.card_univ, Common.card_quarticVertexOrder]
   simp
 
+/-- The finite sum over full diagrams with external-component order `k` is reindexed once by a
+connected explicit external core, an explicit vacuum remainder, and the binary shuffle placing their
+interaction slots in the ambient order. -/
+theorem sum_fixedExternalTwoPointWickDiagramOfExternalOrder_eq_sum_slotData
+    {k m : ℕ} (i j : Mode)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (τ τ' : ℝ) :
+    (∑ d : FixedExternalTwoPointWickDiagramOfExternalOrder Mode k m i j,
+        d.1.dysonAmplitude ε β g τ τ') =
+      ∑ external : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode k i j,
+        ∑ vacuum : QuarticWickDiagram Mode m (Finset.univ : Finset (Fin m)),
+          ∑ shuffle : Combinatorics.BinaryShuffle.SlotShuffle k m,
+            (reassembleExternalVacuumSlotShuffle i j external vacuum shuffle).dysonAmplitude
+              ε β g τ τ' := by
+  classical
+  calc
+    (∑ d : FixedExternalTwoPointWickDiagramOfExternalOrder Mode k m i j,
+        d.1.dysonAmplitude ε β g τ τ') =
+      ∑ x : ExternalVacuumSlotData Mode k m i j,
+        (externalVacuumSlotDataEquivOfExternalOrder i j x).1.dysonAmplitude
+          ε β g τ τ' :=
+      (Equiv.sum_comp (externalVacuumSlotDataEquivOfExternalOrder i j)
+        (fun d => d.1.dysonAmplitude ε β g τ τ')).symm
+    _ = ∑ external : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode k i j,
+        ∑ vacuum : QuarticWickDiagram Mode m (Finset.univ : Finset (Fin m)),
+          ∑ shuffle : Combinatorics.BinaryShuffle.SlotShuffle k m,
+            (reassembleExternalVacuumSlotShuffle i j external vacuum shuffle).dysonAmplitude
+              ε β g τ τ' := by
+      rw [Fintype.sum_prod_type]
+      apply Finset.sum_congr rfl
+      intro external _
+      rw [Fintype.sum_prod_type]
+      rfl
+
 /-- For any chosen order on a finite vacuum vertex set, the Dyson-signed sum of fixed-order Wick
 contributions is already the normalized partition coefficient. The factorial in
 `dysonVertexMoment` comes only from summing over all vertex orders. -/
