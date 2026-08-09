@@ -95,6 +95,29 @@ theorem TwoPointDiagram.interactionPart_inInteractionOrderComponentPartEquiv_sym
     simp [vAmbient, vExplicit, twoPointInteractionOrderVertexEquiv,
       finEquivUnivSubtype]
 
+/-- Transporting the canonical component shuffle of an ordered presentation back to the ambient
+diagram recovers the component shuffle read off from that global interaction order. -/
+theorem TwoPointDiagram.inInteractionOrderComponentShuffleEquiv_canonical
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (order : QuarticVertexOrder S) :
+    d.inInteractionOrderComponentShuffleEquiv order
+        (d.inInteractionOrder order).canonicalComponentInteractionShuffle =
+      d.interactionShuffleOfVertexOrder order
+        (d.componentInteractionVertexOrdersOfVertexOrder order)
+        (d.componentInteractionOrdersCompatible_ofVertexOrder order) := by
+  apply Combinatorics.FamilySlotShuffleTo.ext
+  apply Equiv.ext
+  rintro ⟨B, i⟩
+  simp [TwoPointDiagram.inInteractionOrderComponentShuffleEquiv,
+    TwoPointDiagram.componentInteractionFamilyShuffleEquiv,
+    Combinatorics.FamilySlotShuffle.reindexEquiv,
+    Combinatorics.FamilySlotShuffleTo.castTotalEquiv,
+    TwoPointDiagram.interactionShuffleOfVertexOrder,
+    TwoPointDiagram.componentInteractionVertexEquiv,
+    TwoPointDiagram.componentInteractionVertexOrdersOfVertexOrder,
+    TwoPointDiagram.componentInteractionVertexOrderOfVertexOrder,
+    TwoPointDiagram.canonicalComponentInteractionShuffle]
+
 end
 
 end Common
