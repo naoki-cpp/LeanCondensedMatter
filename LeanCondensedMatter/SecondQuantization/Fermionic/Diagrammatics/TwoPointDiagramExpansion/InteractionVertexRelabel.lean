@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Reindexing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel
+import LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraphRelabel
 
 set_option linter.style.header false
 
@@ -65,6 +66,46 @@ def interactionVertexPositionRelabel {n : ℕ} (π : Equiv.Perm (Fin n)) :
     ((interactionVertexLegRelabel π).trans
       (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm)
 
+/-- Relabel full two-point vertices by the same interaction-slot permutation, fixing the external
+vertices. -/
+def interactionVertexVertexRelabel {n : ℕ} (π : Equiv.Perm (Fin n)) :
+    Common.TwoPointVertex (Finset.univ : Finset (Fin n)) ≃
+      Common.TwoPointVertex (Finset.univ : Finset (Fin n)) :=
+  Equiv.sumCongr (Equiv.refl (Fin 2))
+    { toFun := fun v => ⟨π v.1, Finset.mem_univ _⟩
+      invFun := fun v => ⟨π.symm v.1, Finset.mem_univ _⟩
+      left_inv := by intro v; apply Subtype.ext; simp
+      right_inv := by intro v; apply Subtype.ext; simp }
+
+@[simp]
+theorem interactionVertexVertexRelabel_external {n : ℕ} (π : Equiv.Perm (Fin n))
+    (e : Fin 2) :
+    interactionVertexVertexRelabel π
+        (Sum.inl e : Common.TwoPointVertex (Finset.univ : Finset (Fin n))) = Sum.inl e :=
+  rfl
+
+@[simp]
+theorem interactionVertexVertexRelabel_interaction {n : ℕ} (π : Equiv.Perm (Fin n))
+    (v : ↥(Finset.univ : Finset (Fin n))) :
+    interactionVertexVertexRelabel π (Sum.inr v) =
+      (Sum.inr ⟨π v.1, Finset.mem_univ _⟩ :
+        Common.TwoPointVertex (Finset.univ : Finset (Fin n))) :=
+  rfl
+
+/-- The leg relabeling commutes with the leg-to-vertex incidence map. -/
+theorem twoPointVertexOfLeg_interactionVertexPositionRelabel {n : ℕ}
+    (π : Equiv.Perm (Fin n))
+    (leg : Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1))) :
+    Common.twoPointVertexOfLeg (interactionVertexPositionRelabel π leg) =
+      interactionVertexVertexRelabel π (Common.twoPointVertexOfLeg leg) := by
+  change Common.twoPointLegVertex
+      (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))
+        (interactionVertexPositionRelabel π leg)) = _
+  simp only [interactionVertexPositionRelabel, Equiv.trans_apply, Equiv.apply_symm_apply]
+  rcases hleg : Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)) leg with e | ⟨v, l⟩
+  · simp [hleg, Common.twoPointLegVertex]
+  · simp [hleg, Common.twoPointLegVertex]
+
 /-- Relabel the interaction vertices of a fixed-external two-point Wick diagram. -/
 def FixedExternalTwoPointWickDiagram.relabelInteractionVertices
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -96,6 +137,48 @@ theorem FixedExternalTwoPointWickDiagram.relabelInteractionVertices_pairing
     (d.relabelInteractionVertices π).1.pairing =
       d.1.pairing.relabel (interactionVertexPositionRelabel π) :=
   rfl
+
+/-- Reachability in the full vertex graph is transported by interaction relabeling. -/
+theorem FixedExternalTwoPointWickDiagram.relabelInteractionVertices_reachable_iff
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (π : Equiv.Perm (Fin n))
+    (v w : Common.TwoPointVertex (Finset.univ : Finset (Fin n))) :
+    (d.relabelInteractionVertices π).1.vertexGraph.Reachable v w ↔
+      d.1.vertexGraph.Reachable
+        (interactionVertexVertexRelabel π v)
+        (interactionVertexVertexRelabel π w) := by
+  exact d.1.pairing.vertexGraph_relabel_reachable_iff
+    (interactionVertexPositionRelabel π) (interactionVertexVertexRelabel π)
+    Common.twoPointVertexOfLeg Common.twoPointVertexOfLeg
+    (twoPointVertexOfLeg_interactionVertexPositionRelabel π) v w
+
+/-- External connectedness is invariant under interaction-slot relabeling. -/
+theorem FixedExternalTwoPointWickDiagram.relabelInteractionVertices_isExternallyConnected_iff
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (π : Equiv.Perm (Fin n)) :
+    (d.relabelInteractionVertices π).1.IsExternallyConnected ↔ d.1.IsExternallyConnected := by
+  constructor
+  · rintro ⟨hNoVac, hExt⟩
+    constructor
+    · intro v
+      obtain ⟨e, he⟩ := hNoVac ⟨π.symm v.1, Finset.mem_univ _⟩
+      refine ⟨e, ?_⟩
+      have h := ((d.relabelInteractionVertices_reachable_iff π
+        (Sum.inr ⟨π.symm v.1, Finset.mem_univ _⟩) (Sum.inl e)).1 he)
+      simpa [interactionVertexVertexRelabel] using h
+    · have h := ((d.relabelInteractionVertices_reachable_iff π
+        (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))).1 hExt)
+      simpa using h
+  · rintro ⟨hNoVac, hExt⟩
+    constructor
+    · intro v
+      obtain ⟨e, he⟩ := hNoVac ⟨π v.1, Finset.mem_univ _⟩
+      refine ⟨e, ?_⟩
+      apply (d.relabelInteractionVertices_reachable_iff π (Sum.inr v) (Sum.inl e)).2
+      simpa [interactionVertexVertexRelabel] using he
+    · apply (d.relabelInteractionVertices_reachable_iff π
+        (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))).2
+      simpa using hExt
 
 /-- Relabeling standard two-point legs by the inverse slot permutation is the inverse leg
 relabeling. -/
