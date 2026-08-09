@@ -9,10 +9,10 @@ set_option linter.style.header false
 # Binary external/vacuum shuffle product
 
 This module isolates the analytic binary-shuffle step used by the external-leg linked-cluster
- theorem.  Once a reassembled fixed diagram agrees away from interaction-time diagonals with the
- binary shuffled product of its connected external core and fixed-order vacuum remainder, the
- ordered-simplex a.e. congruence and measurable binary-shuffle theorem give the integrated product
- immediately.
+theorem. Once a reassembled fixed diagram agrees away from interaction-time diagonals with the
+binary shuffled product of its connected external core and fixed-order vacuum remainder, the
+ordered-simplex a.e. congruence and measurable binary-shuffle theorem give the integrated product
+immediately.
 -/
 
 namespace SecondQuantization
@@ -23,8 +23,32 @@ open Combinatorics.BinaryShuffle
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
+/-- Injective-time binary external/vacuum factorization for one reassembled diagram. -/
+theorem reassembleExternalVacuumSlotShuffle_dysonFixedTimeAmplitude_eq_integrand_of_injective
+    {k m : ℕ} (i j : Mode)
+    (external : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode k i j)
+    (vacuum : QuarticWickDiagram Mode m (Finset.univ : Finset (Fin m)))
+    (shuffle : SlotShuffle k m)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (τ τ' : ℝ) (σ : Fin (k + m) → ℝ)
+    (_hσ : Function.Injective σ) :
+    (reassembleExternalVacuumSlotShuffle i j external vacuum shuffle)
+        .dysonFixedTimeAmplitude ε β g τ τ' σ =
+      shuffle.integrand
+        (fun σExternal =>
+          external.1.dysonFixedTimeAmplitude ε β g τ τ' σExternal)
+        (fun σVacuum =>
+          ((-1 : ℂ) ^ m * vacuum.couplingWeight g) *
+            vacuum.contractionIntegrand ε β (explicitQuarticVertexOrder m) σVacuum)
+        σ := by
+  let d := reassembleExternalVacuumSlotShuffle i j external vacuum shuffle
+  change d.dysonFixedTimeAmplitude ε β g τ τ' σ = _
+  rw [d.dysonFixedTimeAmplitude_eq_external_mul_prod_vacuum]
+  rw [SlotShuffle.integrand]
+  rfl
+
 /-- An injective-time pointwise binary external/vacuum factorization is sufficient to factor the
-sum of reassembled integrated amplitudes.  Equal-time walls are discarded only here, by the generic
+sum of reassembled integrated amplitudes. Equal-time walls are discarded only here, by the generic
 ordered-simplex a.e. congruence theorem. -/
 theorem sum_reassembleExternalVacuumSlotShuffle_dysonAmplitude_eq_mul_of_injective
     {k m : ℕ} (i j : Mode)
