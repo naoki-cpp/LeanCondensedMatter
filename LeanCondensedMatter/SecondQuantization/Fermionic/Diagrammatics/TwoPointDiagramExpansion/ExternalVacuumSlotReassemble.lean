@@ -91,13 +91,15 @@ noncomputable def slotShuffleRightComplementVertexOrder {k m : ℕ}
 noncomputable def quarticWickDiagramOrderEquiv {N : ℕ} {S : Finset (Fin N)}
     (order : Common.QuarticVertexOrder S) :
     QuarticWickDiagram Mode N S ≃
-      QuarticWickDiagram Mode S.card (Finset.univ : Finset (Fin S.card)) :=
-  (Common.quarticDiagramEquivOrderedData order).trans
-    (Common.quarticDiagramEquivOrderedData
-      (Label := QuarticVertexLabel Mode)
-      (N := S.card)
-      (S := (Finset.univ : Finset (Fin S.card)))
-      ((finCongr (by simp)).trans (Common.finEquivUnivSubtype S.card))).symm
+      QuarticWickDiagram Mode S.card (Finset.univ : Finset (Fin S.card)) := by
+  let U : Finset (Fin S.card) := Finset.univ
+  let hcard : U.card = S.card := by simp [U]
+  let explicitOrder : Common.QuarticVertexOrder U :=
+    (finCongr hcard).trans (Common.finEquivUnivSubtype S.card)
+  exact (Common.quarticDiagramEquivOrderedData order).trans
+    ((Equiv.cast
+      (congrArg (Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode)) hcard).symm).trans
+      (Common.quarticDiagramEquivOrderedData explicitOrder).symm)
 
 /-- Transport an explicit connected external diagram to the left-slot subset of a shuffle. -/
 noncomputable def connectedExternalOnSlotShuffle {k m : ℕ} (i j : Mode)
