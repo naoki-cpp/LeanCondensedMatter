@@ -151,8 +151,8 @@ theorem sum_explicitVacuumFixedOrderAmplitude_eq_normalizedDysonPartitionCoeff
     (∑ d : QuarticWickDiagram Mode n (Finset.univ : Finset (Fin n)),
       explicitVacuumFixedOrderAmplitude ε β g d) =
       normalizedDysonPartitionCoeff ε β (quarticInteraction g) n := by
-  simp only [explicitVacuumFixedOrderAmplitude]
-  rw [← Finset.mul_sum, ← Finset.mul_sum]
+  simp only [explicitVacuumFixedOrderAmplitude, ← mul_assoc]
+  rw [← Finset.mul_sum]
   simpa using
     sum_vacuumFixedOrder_eq_normalizedDysonPartitionCoeff
       (Mode := Mode) (N := n) ε β g (explicitQuarticVertexOrder n)
@@ -178,11 +178,26 @@ theorem sum_fixedExternalTwoPointWickDiagramOfExternalOrder_eq_connected_mul_vac
       normalizedDysonPartitionCoeff ε β (quarticInteraction g) m := by
   rw [sum_fixedExternalTwoPointWickDiagramOfExternalOrder_eq_sum_slotData]
   simp_rw [hshuffle]
-  rw [← Finset.sum_mul]
-  apply congrArg (fun z : ℂ =>
+  calc
     (∑ external : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode k i j,
-      external.1.dysonAmplitude ε β g τ τ') * z)
-  exact sum_explicitVacuumFixedOrderAmplitude_eq_normalizedDysonPartitionCoeff ε β g m
+        ∑ vacuum : QuarticWickDiagram Mode m (Finset.univ : Finset (Fin m)),
+          external.1.dysonAmplitude ε β g τ τ' *
+            explicitVacuumFixedOrderAmplitude ε β g vacuum) =
+      ∑ external : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode k i j,
+        external.1.dysonAmplitude ε β g τ τ' *
+          (∑ vacuum : QuarticWickDiagram Mode m (Finset.univ : Finset (Fin m)),
+            explicitVacuumFixedOrderAmplitude ε β g vacuum) := by
+      apply Finset.sum_congr rfl
+      intro external _
+      rw [Finset.mul_sum]
+    _ = ∑ external : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode k i j,
+        external.1.dysonAmplitude ε β g τ τ' *
+          normalizedDysonPartitionCoeff ε β (quarticInteraction g) m := by
+      rw [sum_explicitVacuumFixedOrderAmplitude_eq_normalizedDysonPartitionCoeff]
+    _ = (∑ external : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode k i j,
+        external.1.dysonAmplitude ε β g τ τ') *
+          normalizedDysonPartitionCoeff ε β (quarticInteraction g) m := by
+      rw [Finset.sum_mul]
 
 /-- The total order-independent vacuum Wick amplitude on a labelled finite set is the factorial
 normalization of the corresponding normalized Dyson partition coefficient. -/
