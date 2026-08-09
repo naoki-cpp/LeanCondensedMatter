@@ -41,9 +41,15 @@ theorem twoPointVertexOfLeg_orderedTwoPointLegToDiagramLeg
     twoPointVertexOfLeg (orderedTwoPointLegToDiagramLeg order leg) =
       twoPointInteractionOrderVertexEquiv order
         (orderedTwoPointVertexOfLeg S.card leg) := by
-  simp [orderedTwoPointLegToDiagramLeg, orderedTwoPointVertexOfLeg,
-    twoPointInteractionOrderVertexEquiv, twoPointVertexOfLeg,
-    orderedTwoPointLegDataEquivUniv, twoPointInteractionOrderLegEquiv]
+  let x : OrderedTwoPointLegData S.card :=
+    (orderedTwoPointLegDataEquivUniv S.card).symm
+      ((twoPointLegEquiv (Finset.univ : Finset (Fin S.card)))
+        (Fin.cast (by simp) leg))
+  change
+    twoPointLegVertex (twoPointInteractionOrderLegEquiv order x) =
+      twoPointInteractionOrderVertexEquiv order
+        (twoPointLegVertex (orderedTwoPointLegDataEquivUniv S.card x))
+  rcases x with e | ⟨v, l⟩ <;> rfl
 
 /-- The vertex graph of a pairing transported to one interaction order is isomorphic to the
 original diagram vertex graph. -/
@@ -82,6 +88,8 @@ theorem TwoPointDiagram.inInteractionOrder_vertexGraph_reachable_iff
       d.vertexGraph.Reachable
         (twoPointInteractionOrderVertexEquiv order v)
         (twoPointInteractionOrderVertexEquiv order w) := by
+  have hcard : (Finset.univ : Finset (Fin S.card)).card = S.card := by simp
+  rw [hcard]
   simpa [TwoPointDiagram.inInteractionOrder, TwoPointDiagram.vertexGraph,
     orderedTwoPointVertexOfLeg] using
     d.pairingInInteractionOrder_reachable_iff order v w
@@ -107,7 +115,8 @@ theorem TwoPointDiagram.inInteractionOrder_isExternallyConnected_iff
     refine ⟨e, ?_⟩
     apply (d.inInteractionOrder_vertexGraph_reachable_iff order
       (Sum.inl e) (Sum.inr v)).2
-    simpa [twoPointInteractionOrderVertexEquiv] using he
+    have hv : (finEquivUnivSubtype S.card).symm v = v.1 := rfl
+    simpa [twoPointInteractionOrderVertexEquiv, hv] using he
 
 end Common
 end SecondQuantization
