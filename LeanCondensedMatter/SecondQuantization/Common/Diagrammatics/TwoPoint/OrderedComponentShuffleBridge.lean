@@ -4,11 +4,11 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Orde
 set_option linter.style.header false
 
 /-!
-# Canonical component shuffle under interaction ordering
+# Component slots under interaction ordering
 
-The canonical component shuffle of an explicitly ordered two-point diagram, transported back to the
-ambient diagram, is characterized through the ambient slots occupied by each component.  This avoids
-exposing dependent local-index casts in downstream finite-order reindexing.
+This module records the stable set-level bridge between an ambient component and its explicitly
+ordered copy.  Downstream finite-order reindexing can use this without exposing dependent local-slot
+casts.
 -/
 
 namespace SecondQuantization
@@ -93,25 +93,6 @@ theorem TwoPointDiagram.interactionPart_inInteractionOrderComponentPartEquiv_sym
     refine ⟨Sum.inr vAmbient, hvB, ?_⟩
     simp [vAmbient, vExplicit, twoPointInteractionOrderVertexEquiv,
       finEquivUnivSubtype]
-
-/-- Evaluation of component-shuffle transport on the local slot corresponding to an ordered
-component.  The only remaining change on the ambient slot is the canonical `univ.card = card` cast. -/
-@[simp]
-theorem TwoPointDiagram.inInteractionOrderComponentShuffleEquiv_slotEquiv_apply
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (order : QuarticVertexOrder S)
-    (shuffle : (d.inInteractionOrder order).ComponentInteractionShuffle)
-    (B : (d.inInteractionOrder order).componentPartition.parts)
-    (i : Fin ((d.inInteractionOrder order).interactionComponentSize B)) :
-    (d.inInteractionOrderComponentShuffleEquiv order shuffle).slotEquiv
-        ⟨d.inInteractionOrderComponentPartEquiv order B,
-          Fin.cast (d.interactionComponentSize_inInteractionOrder_eq order B) i⟩ =
-      Fin.cast (by simp) (shuffle.slotEquiv ⟨B, i⟩) := by
-  simp [TwoPointDiagram.inInteractionOrderComponentShuffleEquiv,
-    familySlotShuffleCastSizeEquiv,
-    TwoPointDiagram.componentInteractionFamilyShuffleEquiv,
-    Combinatorics.FamilySlotShuffle.reindexEquiv,
-    Combinatorics.FamilySlotShuffleTo.castTotalEquiv]
 
 end
 
