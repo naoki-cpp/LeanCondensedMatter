@@ -19,6 +19,25 @@ variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 
 noncomputable section
 
+/-- The explicit interaction slots belonging to the ordered copy of an ambient component are exactly
+the global slots occupied by that component under the chosen interaction order. -/
+theorem TwoPointDiagram.interactionPart_inInteractionOrderComponentPartEquiv_symm
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (order : QuarticVertexOrder S) (B : d.componentPartition.parts) :
+    TwoPointDiagram.interactionPart
+        (((d.inInteractionOrderComponentPartEquiv order).symm B :
+          (d.inInteractionOrder order).componentPartition.parts) :
+          Finset (TwoPointVertex (Finset.univ : Finset (Fin S.card)))) =
+      d.componentInteractionGlobalSlots order B := by
+  classical
+  ext v
+  simp [TwoPointDiagram.interactionPart,
+    TwoPointDiagram.inInteractionOrderComponentPartEquiv,
+    TwoPointDiagram.componentInteractionGlobalSlots,
+    TwoPointDiagram.componentInteractionGlobalSlot,
+    TwoPointDiagram.twoPointInteractionOrderVertexEquiv,
+    TwoPointDiagram.interactionVertexComponentEquiv]
+
 /-- Transporting the canonical component shuffle of an ordered presentation back to the ambient
 diagram recovers the component shuffle read off from that global interaction order. -/
 theorem TwoPointDiagram.inInteractionOrderComponentShuffleEquiv_canonical
@@ -40,7 +59,8 @@ theorem TwoPointDiagram.inInteractionOrderComponentShuffleEquiv_canonical
     TwoPointDiagram.componentInteractionVertexEquiv,
     TwoPointDiagram.componentInteractionVertexOrdersOfVertexOrder,
     TwoPointDiagram.componentInteractionVertexOrderOfVertexOrder,
-    TwoPointDiagram.canonicalComponentInteractionShuffle]
+    TwoPointDiagram.canonicalComponentInteractionShuffle,
+    TwoPointDiagram.interactionPart_inInteractionOrderComponentPartEquiv_symm]
 
 end
 
