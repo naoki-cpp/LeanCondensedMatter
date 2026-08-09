@@ -175,6 +175,32 @@ theorem reassembleExternalVacuumSlotShuffle_externalInteractionPart {k m : ℕ} 
   exact Common.TwoPointDiagram.interactionPart_externalComponent_reassembleExternalVacuum
     (Finset.subset_univ shuffle.leftSlots) ⟨externalOn.1.1, externalOn.2⟩ vacuumOn
 
+/-- Reassembly over the full ambient slot set commutes with transporting both factors across an
+equality of external subsets. -/
+omit [LinearOrder Mode] [Fintype Mode] in
+theorem reassembleExternalVacuum_univ_cast
+    {N : ℕ} {E F : Finset (Fin N)} {i j : Mode} (h : E = F)
+    (external : ExternallyConnectedFixedExternalTwoPointWickDiagramOn Mode N E i j)
+    (vacuum : QuarticWickDiagram Mode N ((Finset.univ : Finset (Fin N)) \ E)) :
+    Common.TwoPointDiagram.reassembleExternalVacuum (Finset.subset_univ E)
+        ⟨external.1.1, external.2⟩ vacuum =
+      Common.TwoPointDiagram.reassembleExternalVacuum (Finset.subset_univ F)
+        ⟨(Equiv.cast
+          (congrArg
+            (fun T => ExternallyConnectedFixedExternalTwoPointWickDiagramOn Mode N T i j) h)
+          external).1.1,
+          (Equiv.cast
+            (congrArg
+              (fun T => ExternallyConnectedFixedExternalTwoPointWickDiagramOn Mode N T i j) h)
+            external).2⟩
+        (Equiv.cast
+          (congrArg
+            (fun T => QuarticWickDiagram Mode N
+              ((Finset.univ : Finset (Fin N)) \ T)) h)
+          vacuum) := by
+  subst F
+  rfl
+
 /-- Explicit external core, explicit vacuum remainder, and the binary shuffle placing them into the
 ambient interaction slots. -/
 abbrev ExternalVacuumSlotData (Mode : Type*) (k m : ℕ) (i j : Mode) :=
@@ -187,7 +213,7 @@ noncomputable def reassembleExternalVacuumSlotData {k m : ℕ} (i j : Mode)
     FixedExternalTwoPointWickDiagram Mode (k + m) i j :=
   reassembleExternalVacuumSlotShuffle i j x.1 x.2.1 x.2.2
 
-omit [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- Binary slot reassembly is injective: the full diagram recovers its external slot set, hence the
 shuffle, and fixed-subset reassembly then recovers both local diagrams. -/
 theorem reassembleExternalVacuumSlotData_injective {k m : ℕ} (i j : Mode) :
@@ -268,16 +294,20 @@ theorem reassembleExternalVacuumSlotDataOfExternalOrder_surjective {k m : ℕ} (
       d.1.1.restrictExternalComponent_isExternallyConnected⟩
   let externalOn :
       ExternallyConnectedFixedExternalTwoPointWickDiagramOn
-        Mode (k + m) shuffle.leftSlots i j := by
-    rw [hslots]
-    exact externalOnE
+        Mode (k + m) shuffle.leftSlots i j :=
+    Equiv.cast
+      (congrArg
+        (fun T => ExternallyConnectedFixedExternalTwoPointWickDiagramOn Mode (k + m) T i j)
+        hslots.symm) externalOnE
   let vacuumOnE : QuarticWickDiagram Mode (k + m)
       ((Finset.univ : Finset (Fin (k + m))) \ E) :=
     d.1.1.restrictVacuumRemainder
   let vacuumOn : QuarticWickDiagram Mode (k + m)
-      ((Finset.univ : Finset (Fin (k + m))) \ shuffle.leftSlots) := by
-    rw [hslots]
-    exact vacuumOnE
+      ((Finset.univ : Finset (Fin (k + m))) \ shuffle.leftSlots) :=
+    Equiv.cast
+      (congrArg
+        (fun T => QuarticWickDiagram Mode (k + m)
+          ((Finset.univ : Finset (Fin (k + m))) \ T)) hslots.symm) vacuumOnE
   let external := (connectedExternalOnSlotShuffleEquiv i j shuffle).symm externalOn
   let vacuum := (vacuumOnSlotShuffleEquiv shuffle).symm vacuumOn
   refine ⟨(external, vacuum, shuffle), ?_⟩
@@ -293,9 +323,13 @@ theorem reassembleExternalVacuumSlotDataOfExternalOrder_surjective {k m : ℕ} (
         (connectedExternalOnSlotShuffle i j external shuffle).2⟩
       (vacuumOnSlotShuffle vacuum shuffle) = d.1.1
   rw [hext, hvac]
-  cases hslots
-  simpa [externalOn, externalOnE, vacuumOn, vacuumOnE, E] using
-    d.1.1.reassemble_restrictExternal_restrictVacuumRemainder
+  calc
+    Common.TwoPointDiagram.reassembleExternalVacuum
+        (Finset.subset_univ shuffle.leftSlots) ⟨externalOn.1.1, externalOn.2⟩ vacuumOn =
+      Common.TwoPointDiagram.reassembleExternalVacuum
+        (Finset.subset_univ E) ⟨externalOnE.1.1, externalOnE.2⟩ vacuumOnE := by
+      exact (reassembleExternalVacuum_univ_cast hslots.symm externalOnE vacuumOnE).symm
+    _ = d.1.1 := d.1.1.reassemble_restrictExternal_restrictVacuumRemainder
 
 /-- Binary slot data are equivalent to full fixed-external diagrams with a prescribed external
 component order. -/
