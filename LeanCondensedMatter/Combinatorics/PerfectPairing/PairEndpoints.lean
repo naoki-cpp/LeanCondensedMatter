@@ -74,6 +74,22 @@ theorem Pairing.pairEndpointEquiv_apply {n : ℕ} (pairing : Pairing n)
     pairing.pairEndpointEquiv x = pairing.pairEndpoint x :=
   rfl
 
+/-- Counting the `2 * n` ambient positions two at a time: a perfect pairing of `Fin (2 * n)` has
+exactly `n` normalized pairs. -/
+theorem Pairing.card_normalizedPair {n : ℕ} (pairing : Pairing n) :
+    Fintype.card pairing.NormalizedPair = n := by
+  have h : Fintype.card (pairing.NormalizedPair × Fin 2) = Fintype.card (Fin (2 * n)) :=
+    Fintype.card_congr pairing.pairEndpointEquiv
+  simp only [Fintype.card_prod, Fintype.card_fin] at h
+  omega
+
+/-- Finset form of `Pairing.card_normalizedPair`. -/
+theorem Pairing.card_pairs {n : ℕ} (pairing : Pairing n) :
+    pairing.pairs.card = n := by
+  have h : Fintype.card pairing.NormalizedPair = pairing.pairs.card :=
+    Fintype.card_coe pairing.pairs
+  rw [← h, pairing.card_normalizedPair]
+
 /-- Recovering the normalized pair from either of its selected endpoints returns that pair. -/
 @[simp]
 theorem Pairing.positionToPairEndpoint_fst_pairEndpoint {n : ℕ}
