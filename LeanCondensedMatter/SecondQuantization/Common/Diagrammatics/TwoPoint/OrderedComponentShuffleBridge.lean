@@ -113,23 +113,44 @@ theorem TwoPointDiagram.inInteractionOrderComponentShuffleEquiv_canonical
   have hmem : ∀ r : Fin (d.interactionComponentSize B),
       transported.slotEquiv ⟨B, r⟩ ∈ d.componentInteractionGlobalSlots order B := by
     intro r
+    let B0 := (d.inInteractionOrderComponentPartEquiv order).symm B
+    let hsize := d.interactionComponentSize_inInteractionOrder_eq order B0
+    let r0 : Fin ((d.inInteractionOrder order).interactionComponentSize B0) :=
+      Fin.cast hsize.symm r
+    have hslot := d.inInteractionOrderComponentShuffleEquiv_slotEquiv_apply order
+      (d.inInteractionOrder order).canonicalComponentInteractionShuffle B0 r0
+    have hslot' : transported.slotEquiv ⟨B, r⟩ =
+        Fin.cast (by simp)
+          ((d.inInteractionOrder order).canonicalComponentInteractionShuffle.slotEquiv
+            ⟨B0, r0⟩) := by
+      simpa [transported, B0, hsize, r0] using hslot
+    rw [hslot']
     rw [← d.interactionPart_inInteractionOrderComponentPartEquiv_symm order B]
-    simp [transported, TwoPointDiagram.inInteractionOrderComponentShuffleEquiv,
-      familySlotShuffleCastSizeEquiv,
-      TwoPointDiagram.componentInteractionFamilyShuffleEquiv,
-      Combinatorics.FamilySlotShuffle.reindexEquiv,
-      Combinatorics.FamilySlotShuffleTo.castTotalEquiv,
-      TwoPointDiagram.canonicalComponentInteractionShuffle,
-      TwoPointDiagram.interactionPart]
+    let v0 := (TwoPointDiagram.interactionPart
+      (B0 : Finset (TwoPointVertex (Finset.univ : Finset (Fin S.card))))).orderIsoOfFin rfl r0
+    have hv0 : (v0 : Fin S.card) ∈ TwoPointDiagram.interactionPart
+        (B0 : Finset (TwoPointVertex (Finset.univ : Finset (Fin S.card)))) := v0.2
+    have heq : Fin.cast (by simp)
+        ((d.inInteractionOrder order).canonicalComponentInteractionShuffle.slotEquiv
+          ⟨B0, r0⟩) = v0.1 := by
+      rw [(d.inInteractionOrder order).canonicalComponentInteractionShuffle_slotEquiv_apply]
+      calc
+        Fin.cast (by simp)
+            (((Finset.univ : Finset (Fin S.card)).orderIsoOfFin rfl).symm
+              ((d.inInteractionOrder order).interactionVertexComponentEquiv.symm ⟨B0, v0⟩)) =
+          ((d.inInteractionOrder order).interactionVertexComponentEquiv.symm ⟨B0, v0⟩).1 :=
+            finCast_univOrderIsoOfFin_symm _
+        _ = v0.1 := (d.inInteractionOrder order).interactionVertexComponentEquiv_symm_val ⟨B0, v0⟩
+    simpa [heq] using hv0
   have huniq := Finset.orderEmbOfFin_unique
     (s := d.componentInteractionGlobalSlots order B)
     (h := d.card_componentInteractionGlobalSlots order B)
     (f := fun r => transported.slotEquiv ⟨B, r⟩)
     hmem (transported.strictMono B)
   change transported.slotEquiv ⟨B, i⟩ =
-    order.symm (d.interactionVertexComponentEquiv.symm
-      ⟨B, d.componentInteractionVertexOrderOfVertexOrder order B i⟩)
-  rw [← d.componentInteractionGlobalSlot_componentInteractionVertexOrderOfVertexOrder order B i]
+    d.componentInteractionGlobalSlot order B
+      (d.componentInteractionVertexOrderOfVertexOrder order B i)
+  rw [d.componentInteractionGlobalSlot_componentInteractionVertexOrderOfVertexOrder order B i]
   simpa only [Finset.coe_orderIsoOfFin_apply] using congrFun huniq i
 
 end
