@@ -9,11 +9,11 @@ set_option linter.unusedFintypeInType false
 # Concrete free-boson Gibbs permanent evaluation
 
 For the number-conserving free thermal state, creator--creator and annihilator--annihilator
-contractions vanish.  Normal-ordered moments therefore satisfy the permanent first-row recurrence.
+contractions vanish. Normal-ordered moments therefore satisfy the permanent first-row recurrence.
 This file derives that recurrence directly from CCR peel plus KMS rotation and identifies the result
 with Mathlib's `Matrix.permanent` through the common matrix backend.
 
-The explicit perfect-pairing expansion is intentionally not a second public endpoint here.  General
+The explicit perfect-pairing expansion is intentionally not a second public endpoint here. General
 Gaussian pairing evaluation will later be represented by a Hafnian, while `Pairing` remains the
 combinatorial data structure used by diagrammatics.
 -/
@@ -38,6 +38,7 @@ def normalOrderedFields {n : ℕ} (createMode annihilateMode : Fin n → Mode) :
   List.ofFn (fun i => .create (createMode i)) ++
     List.ofFn (fun i => .annihilate (annihilateMode i))
 
+omit [Fintype Mode] in
 @[simp]
 theorem normalOrderedFields_zero
     (createMode annihilateMode : Fin 0 → Mode) :
@@ -56,7 +57,7 @@ theorem freeGibbsNormalOrderedMoment_zero
     (createMode annihilateMode : Fin 0 → Mode) :
     freeGibbsNormalOrderedMoment ε β createMode annihilateMode = 1 := by
   simp [freeGibbsNormalOrderedMoment, normalOrderedFields,
-    orderedProduct, freeGibbsExpectation_id ε β hpos]
+    freeGibbsExpectation_id ε β hpos]
 
 /-- The concrete normal-ordered bosonic Gibbs moment obeys the permanent first-row recurrence. -/
 theorem freeGibbsNormalOrderedMoment_succ
@@ -74,51 +75,37 @@ theorem freeGibbsNormalOrderedMoment_succ
     List.ofFn (fun i : Fin n => .create (createMode i.succ))
   let annihilators : List (FreeThermalField Mode) :=
     List.ofFn (fun j : Fin (n + 1) => .annihilate (annihilateMode j))
+  let tail := creators ++ annihilators
   change freeGibbsExpectation ε β
-      (orderedProduct (.create (createMode 0) :: (creators ++ annihilators))) = _
+      (orderedProduct (.create (createMode 0) :: tail)) = _
   rw [freeGibbsExpectation_cons_eq_kmsRatio_mul_operatorPeelSum ε β hpos,
     freeGibbsExpectation_operatorPeelSum_eq_sum ε β hpos, Finset.mul_sum]
-  have hlen : (creators ++ annihilators).length = n + (n + 1) := by
-    simp [creators, annihilators]
-  let e : Fin ((creators ++ annihilators).length) ≃ Fin (n + (n + 1)) :=
-    Fin.castIso hlen
-  rw [Fintype.sum_equiv e
-    (fun k : Fin ((creators ++ annihilators).length) =>
+  change (∑ k : Fin tail.length,
       ((FreeThermalField.create (createMode 0)).kmsFactor ε β /
         ((FreeThermalField.create (createMode 0)).kmsFactor ε β - 1)) *
-        ((FreeThermalField.create (createMode 0)).exchangeValue
-            ((creators ++ annihilators)[(k : ℕ)]'k.isLt) *
-          freeGibbsExpectation ε β (orderedProduct ((creators ++ annihilators).eraseIdx k)))
-    (fun k : Fin (n + (n + 1)) =>
-      ((FreeThermalField.create (createMode 0)).kmsFactor ε β /
-        ((FreeThermalField.create (createMode 0)).kmsFactor ε β - 1)) *
-        ((FreeThermalField.create (createMode 0)).exchangeValue
-            ((creators ++ annihilators)[(e.symm k : ℕ)]'(e.symm k).isLt) *
-          freeGibbsExpectation ε β
-            (orderedProduct ((creators ++ annihilators).eraseIdx (e.symm k))))
-    (fun k => rfl)]
-  rw [Fin.sum_univ_add]
+        ((FreeThermalField.create (createMode 0)).exchangeValue (tail.get k) *
+          freeGibbsExpectation ε β (orderedProduct (tail.eraseIdx k)))) = _
+  have hlen : tail.length = n + (n + 1) := by
+    simp [tail, creators, annihilators]
+  rw [hlen, Fin.sum_univ_add]
   have hcreate :
       (∑ i : Fin n,
         ((FreeThermalField.create (createMode 0)).kmsFactor ε β /
           ((FreeThermalField.create (createMode 0)).kmsFactor ε β - 1)) *
           ((FreeThermalField.create (createMode 0)).exchangeValue
-              ((creators ++ annihilators)[(e.symm (Fin.castAdd (n + 1) i) : ℕ)]'
-                (e.symm (Fin.castAdd (n + 1) i)).isLt) *
+              (tail.get (Fin.castAdd (n + 1) i)) *
             freeGibbsExpectation ε β
-              (orderedProduct
-                ((creators ++ annihilators).eraseIdx
-                  (e.symm (Fin.castAdd (n + 1) i)))))) = 0 := by
+              (orderedProduct (tail.eraseIdx (Fin.castAdd (n + 1) i))))) = 0 := by
     apply Finset.sum_eq_zero
     intro i _
-    simp [e, creators, annihilators, FreeThermalField.exchangeValue]
+    simp [tail, creators, annihilators, FreeThermalField.exchangeValue]
   rw [hcreate, zero_add]
   apply Finset.sum_congr rfl
   intro j _
   have hpair := kmsRatio_mul_exchangeValue_eq_freeThermalPairValue
     ε β hpos (.create (createMode 0)) (.annihilate (annihilateMode j))
   rw [← hpair]
-  simp [e, creators, annihilators, normalOrderedFields,
+  simp [tail, creators, annihilators, normalOrderedFields,
     List.eraseIdx_ofFn_eq_ofFn_succAbove]
 
 /-- Concrete free-boson Bloch--de Dominicis evaluation in the number-conserving sector: the
