@@ -1,4 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairCrossingParity
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 
@@ -33,6 +32,20 @@ private theorem indicator_or_eq_add_indicator_of_not_and
     (if p ∨ q then 1 else 0 : ℕ) =
       (if p then 1 else 0) + (if q then 1 else 0) := by
   by_cases hp : p <;> by_cases hq : q <;> simp_all
+
+private theorem QuarticWickDiagram.crosses_componentPairEquiv_iff
+    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
+    (B : d.componentPartition.parts) (p q : d.LocalOrderedPair orders B) :
+    Combinatorics.Crosses
+        (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
+        (d.componentPairEquiv orders shuffle ⟨B, q⟩).1 ↔
+      Combinatorics.Crosses p.1 q.1 := by
+  rw [d.componentPairEquiv_apply, d.componentPairEquiv_apply]
+  exact Combinatorics.crosses_map_iff
+    (d.componentOrderedLegOrderEmbedding shuffle B)
+    (d.componentOrderedLegOrderEmbedding shuffle B).strictMono
+    p.1.1 p.1.2 q.1.1 q.1.2
 
 /-- Oriented crossing count from pairs in component `B` to pairs in component `C`. -/
 noncomputable def QuarticWickDiagram.componentOrientedCrossingCount
