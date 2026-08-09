@@ -116,7 +116,8 @@ theorem TwoPointDiagram.inInteractionOrderComponentShuffleEquiv_canonical
     TwoPointDiagram.componentInteractionVertexEquiv,
     TwoPointDiagram.componentInteractionVertexOrdersOfVertexOrder,
     TwoPointDiagram.componentInteractionVertexOrderOfVertexOrder,
-    TwoPointDiagram.canonicalComponentInteractionShuffle]
+    TwoPointDiagram.canonicalComponentInteractionShuffle,
+    TwoPointDiagram.interactionPart_inInteractionOrderComponentPartEquiv_symm]
 
 end
 
