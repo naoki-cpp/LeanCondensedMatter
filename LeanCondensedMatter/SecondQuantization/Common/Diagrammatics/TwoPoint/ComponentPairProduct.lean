@@ -128,18 +128,6 @@ theorem TwoPointDiagram.prod_componentPairs
       rw [Fintype.prod_sigma]
       rfl
 
-/-- A pair-local sum splits into the canonical external component and all vacuum components. -/
-theorem TwoPointDiagram.sum_componentPairs_eq_external_add_sum_vacuum
-    {A : Type*} [AddCommMonoid A]
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (F : d.pairing.NormalizedPair → A) :
-    (∑ pr : d.pairing.NormalizedPair, F pr) =
-      (∑ pr : d.ComponentPair d.externalComponentPart, F pr.1) +
-        d.vacuumComponentParts.sum (fun B =>
-          ∑ pr : d.ComponentPair B, F pr.1) := by
-  rw [d.sum_componentPairs F,
-    d.sum_componentParts_eq_external_add_sum_vacuum]
-
 /-- A pair-local commutative product splits into the canonical external component and all vacuum
 components. -/
 theorem TwoPointDiagram.prod_componentPairs_eq_external_mul_prod_vacuum
@@ -152,26 +140,6 @@ theorem TwoPointDiagram.prod_componentPairs_eq_external_mul_prod_vacuum
           ∏ pr : d.ComponentPair B, F pr.1) := by
   rw [d.prod_componentPairs F,
     d.prod_componentParts_eq_external_mul_prod_vacuum]
-
-/-- Nested-Finset form of pair-product factorization, matching the pair products used by Wick
-amplitudes. -/
-theorem TwoPointDiagram.prod_pairValues_eq_external_mul_prod_vacuum
-    {M : Type*} [CommMonoid M]
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (F : Fin (2 * (2 * S.card + 1)) × Fin (2 * (2 * S.card + 1)) → M) :
-    (∏ pr ∈ d.pairing.pairs, F pr) =
-      (∏ pr : d.ComponentPair d.externalComponentPart, F pr.1.1) *
-        d.vacuumComponentParts.prod (fun B =>
-          ∏ pr : d.ComponentPair B, F pr.1.1) := by
-  classical
-  calc
-    (∏ pr ∈ d.pairing.pairs, F pr) =
-        ∏ pr : d.pairing.NormalizedPair, F pr.1 :=
-      Finset.prod_subtype d.pairing.pairs (fun _ => Iff.rfl) F
-    _ = (∏ pr : d.ComponentPair d.externalComponentPart, F pr.1.1) *
-        d.vacuumComponentParts.prod (fun B =>
-          ∏ pr : d.ComponentPair B, F pr.1.1) :=
-      d.prod_componentPairs_eq_external_mul_prod_vacuum (fun pr => F pr.1)
 
 end Common
 end SecondQuantization
