@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Interaction relabeling between two vertex orders
 
 Two explicit presentations of the same finite-set fixed-external diagram differ only by the
-interaction-slot permutation carrying the second vertex order to the first.  This lets the LCT use
+interaction-slot permutation carrying the second vertex order to the first. This lets the LCT use
 the already proved injective-time/integrated relabel covariance when the global vertex-order sum is
 reindexed by component-local orders and a component shuffle.
 -/
@@ -20,24 +20,92 @@ open Combinatorics
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
 
 omit [LinearOrder Mode] [Fintype Mode] in
-/-- The flattened interaction-slot relabeling taking the second ordered presentation to the first,
-followed by the first ordered-to-ambient leg map, is the second ordered-to-ambient leg map. -/
-theorem interactionVertexPositionRelabel_orderChange
+/-- Cast the flattened explicit `4n+2` position type to the `Finset.univ.card` presentation used by
+the stored fixed-external pairing. -/
+def explicitTwoPointPositionCast (n : ℕ) :
+    Fin (2 * (2 * n + 1)) ≃
+      Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1)) :=
+  finCongr (by simp)
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- The exact-`Fin n` version of the flattened interaction-slot permutation. -/
+def interactionVertexPositionRelabelFin {n : ℕ} (π : Equiv.Perm (Fin n)) :
+    Equiv.Perm (Fin (2 * (2 * n + 1))) :=
+  (explicitTwoPointPositionCast n).trans <|
+    (interactionVertexPositionRelabel π).trans (explicitTwoPointPositionCast n).symm
+
+omit [LinearOrder Mode] [Fintype Mode] in
+@[simp]
+theorem explicitTwoPointPositionCast_interactionVertexPositionRelabelFin
+    {n : ℕ} (π : Equiv.Perm (Fin n)) (p : Fin (2 * (2 * n + 1))) :
+    explicitTwoPointPositionCast n (interactionVertexPositionRelabelFin π p) =
+      interactionVertexPositionRelabel π (explicitTwoPointPositionCast n p) := by
+  simp [interactionVertexPositionRelabelFin]
+
+omit [LinearOrder Mode] [Fintype Mode] in
+private theorem pairingCast_partner {m n : ℕ} (h : m = n)
+    (pairing : Pairing m) (p : Fin (2 * n)) :
+    (finCongr (congrArg (fun k : ℕ => 2 * k) h.symm))
+        ((Equiv.cast (congrArg Pairing h) pairing).partner p) =
+      pairing.partner
+        ((finCongr (congrArg (fun k : ℕ => 2 * k) h.symm)) p) := by
+  subst n
+  rfl
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- Casting the stored fixed-external pairing to exact `Fin n` slots commutes with interaction-slot
+relabeling after conjugating the flattened position permutation by the same cardinality cast. -/
+theorem orderedTwoPointPairingCastEquiv_relabelInteractionVertices
+    {n : ℕ} (pairing : Pairing (2 * (Finset.univ : Finset (Fin n)).card + 1))
+    (π : Equiv.Perm (Fin n)) :
+    orderedTwoPointPairingCastEquiv n
+        (pairing.relabel (interactionVertexPositionRelabel π)) =
+      (orderedTwoPointPairingCastEquiv n pairing).relabel
+        (interactionVertexPositionRelabelFin π) := by
+  apply Pairing.ext
+  apply Equiv.ext
+  intro p
+  let h : 2 * (Finset.univ : Finset (Fin n)).card + 1 = 2 * n + 1 := by simp
+  let c : Fin (2 * (2 * n + 1)) ≃
+      Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1)) :=
+    explicitTwoPointPositionCast n
+  apply c.injective
+  have hcast : orderedTwoPointPairingCastEquiv n =
+      Equiv.cast (congrArg Pairing h) := by
+    unfold orderedTwoPointPairingCastEquiv
+    congr
+  have hc : c = finCongr (congrArg (fun k : ℕ => 2 * k) h.symm) := by
+    apply Equiv.ext
+    intro x
+    rfl
+  rw [hcast, hc]
+  rw [pairingCast_partner h]
+  rw [Pairing.relabel_partner]
+  rw [Pairing.relabel_partner]
+  rw [pairingCast_partner h]
+  simp [c, interactionVertexPositionRelabelFin, explicitTwoPointPositionCast]
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- The exact-slot interaction relabel taking the second ordered presentation to the first, followed
+by the first ordered-to-ambient leg map, is the second ordered-to-ambient leg map. -/
+theorem interactionVertexPositionRelabelFin_orderChange
     {S : Finset (Fin N)} (order₁ order₂ : Common.QuarticVertexOrder S) :
-    (interactionVertexPositionRelabel (order₂.trans order₁.symm)).trans
+    (interactionVertexPositionRelabelFin (order₂.trans order₁.symm)).trans
         (Common.orderedTwoPointLegToDiagramLeg order₁) =
       Common.orderedTwoPointLegToDiagramLeg order₂ := by
   apply Equiv.ext
   intro p
-  unfold interactionVertexPositionRelabel Common.orderedTwoPointLegToDiagramLeg
+  unfold interactionVertexPositionRelabelFin explicitTwoPointPositionCast
+    interactionVertexPositionRelabel Common.orderedTwoPointLegToDiagramLeg
   simp only [Equiv.trans_apply]
   generalize
-      Common.twoPointLegEquiv (Finset.univ : Finset (Fin S.card)))
+      Common.twoPointLegEquiv (Finset.univ : Finset (Fin S.card))
         ((finCongr (by simp)) p) = leg
   rcases leg with e | ⟨v, l⟩
   · rfl
   · simp [interactionVertexLegRelabel, Common.twoPointInteractionOrderLegEquiv]
 
+omit [Fintype Mode] in
 /-- Reindexing the same arbitrary-set fixed-external diagram by two interaction orders gives explicit
 diagrams related by the corresponding interaction-slot permutation. -/
 theorem fixedExternalTwoPointWickDiagramOrderEquiv_relabel_orderChange
@@ -49,22 +117,22 @@ theorem fixedExternalTwoPointWickDiagramOrderEquiv_relabel_orderChange
       fixedExternalTwoPointWickDiagramOrderEquiv i j order₂ d := by
   apply Subtype.ext
   apply Common.TwoPointDiagram.ext
-  · simp [FixedExternalTwoPointWickDiagram.relabelInteractionVertices,
-      fixedExternalTwoPointWickDiagramOrderEquiv_val]
+  · rfl
   · funext v
     change d.1.vertexLabel (order₁ ((order₂.trans order₁.symm) v.1)) =
       d.1.vertexLabel (order₂ v.1)
     simp
-  · rw [fixedExternalTwoPointWickDiagramOrderEquiv_val,
-      fixedExternalTwoPointWickDiagramOrderEquiv_val]
-    unfold FixedExternalTwoPointWickDiagram.relabelInteractionVertices
-    unfold Common.TwoPointDiagram.inInteractionOrder
-    change (Equiv.cast _ (d.1.pairingInInteractionOrder order₁)).relabel
-        (interactionVertexPositionRelabel (order₂.trans order₁.symm)) =
-      Equiv.cast _ (d.1.pairingInInteractionOrder order₂)
+  · apply (orderedTwoPointPairingCastEquiv S.card).injective
+    change orderedTwoPointPairingCastEquiv S.card
+        (((orderedTwoPointPairingCastEquiv S.card).symm
+          (d.1.pairingInInteractionOrder order₁)).relabel
+            (interactionVertexPositionRelabel (order₂.trans order₁.symm))) =
+      d.1.pairingInInteractionOrder order₂
+    rw [orderedTwoPointPairingCastEquiv_relabelInteractionVertices]
+    rw [(orderedTwoPointPairingCastEquiv S.card).apply_symm_apply]
     unfold Common.TwoPointDiagram.pairingInInteractionOrder
     rw [Pairing.relabel_trans]
-    rw [interactionVertexPositionRelabel_orderChange]
+    rw [interactionVertexPositionRelabelFin_orderChange]
 
 end Fermionic
 end SecondQuantization
