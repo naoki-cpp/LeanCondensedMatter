@@ -357,7 +357,7 @@ theorem QuarticWickDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_component
           exact Combinatorics.fintype_sum_sum_modEq_diag_of_pair_add_modEq_zero
             2 (fun B C => d.componentOrientedCrossingCount orders shuffle B C)
             (fun B C hBC => by
-              show (d.componentOrientedCrossingCount orders shuffle B C +
+              change (d.componentOrientedCrossingCount orders shuffle B C +
                 d.componentOrientedCrossingCount orders shuffle C B) % 2 = 0 % 2
               simpa using d.componentOrientedCrossingCount_add_swap_mod_two_eq_zero
                 orders shuffle B C hBC)
