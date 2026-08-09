@@ -64,8 +64,7 @@ def TwoPointDiagram.externalVertexEmbed {S E : Finset (Fin N)} (hE : E ⊆ S) :
   | Sum.inr v => Sum.inr ⟨v.1, hE v.2⟩
 
 /-- Embed a vacuum interaction vertex into the ambient two-point vertex type. -/
-@[nolint unusedArguments]
-def TwoPointDiagram.vacuumVertexEmbed {S E : Finset (Fin N)} (hE : E ⊆ S) :
+def TwoPointDiagram.vacuumVertexEmbed {S E : Finset (Fin N)} (_hE : E ⊆ S) :
     ↥(S \ E) → TwoPointVertex S :=
   fun v => Sum.inr ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩
 
