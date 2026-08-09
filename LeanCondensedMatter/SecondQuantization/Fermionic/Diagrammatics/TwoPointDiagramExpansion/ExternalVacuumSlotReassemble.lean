@@ -93,7 +93,11 @@ noncomputable def quarticWickDiagramOrderEquiv {N : ℕ} {S : Finset (Fin N)}
     QuarticWickDiagram Mode N S ≃
       QuarticWickDiagram Mode S.card (Finset.univ : Finset (Fin S.card)) :=
   (Common.quarticDiagramEquivOrderedData order).trans
-    (Common.quarticDiagramEquivOrderedData (Common.finEquivUnivSubtype S.card)).symm
+    (Common.quarticDiagramEquivOrderedData
+      (Label := QuarticVertexLabel Mode)
+      (N := S.card)
+      (S := (Finset.univ : Finset (Fin S.card)))
+      (Common.finEquivUnivSubtype S.card)).symm
 
 /-- Transport an explicit connected external diagram to the left-slot subset of a shuffle. -/
 noncomputable def connectedExternalOnSlotShuffle {k m : ℕ} (i j : Mode)
@@ -145,6 +149,7 @@ noncomputable def reassembleExternalVacuumSlotShuffle {k m : ℕ} (i j : Mode)
       (Finset.subset_univ shuffle.leftSlots) ⟨externalOn.1.1, externalOn.2⟩ vacuumOn, ?_⟩
   simpa [Common.TwoPointDiagram.reassembleExternalVacuum] using externalOn.1.2
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The reassembled diagram has exactly the shuffle's left slots in its external component. -/
 theorem reassembleExternalVacuumSlotShuffle_externalInteractionPart {k m : ℕ} (i j : Mode)
     (external : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode k i j)
