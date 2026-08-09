@@ -22,7 +22,7 @@ set_option linter.style.header false
 Quartic interaction vertices, the two-point external-leg foundation and atomic mixed-time-order
 flattening, local-leg semantics, ordered Wick diagrams and amplitudes, component orders,
 order-preserving shuffle decompositions, shuffled ordered-simplex integrands, component-local leg,
-pairing, pair-product, crossing compatibility and parity, cross-component block inversion counts,
+pairing and pair-product compatibility, component factorization of crossing parity,
 pairing-weight and contraction-integrand factorization, and full quartic Wick-amplitude
 factorization over connected components; the Dyson diagram expansion, the connected-diagram formula
 for Dyson vertex cumulants, the general algebraic Dyson Linked Cluster Theorem, and its explicit
