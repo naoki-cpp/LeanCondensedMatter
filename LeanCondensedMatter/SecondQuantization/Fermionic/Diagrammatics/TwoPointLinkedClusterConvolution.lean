@@ -146,8 +146,10 @@ theorem twoPointNormalizedDiagramSeries_eq_connected
 
 /-- **Normalized two-point linked-cluster theorem.** At every perturbative order, the normalized
 finite-mode imaginary-time two-point coefficient equals the sum of fixed-external Wick diagrams
-whose complete graph is externally connected. Equivalently in this two-external-leg quartic setup,
-these are exactly the diagrams with no vacuum component. -/
+whose complete graph is externally connected. The statement uses the repository's fixed ordering
+and equal-time convention, fermionic sign convention, quartic coupling weights, and normalization by
+the free partition function. In this two-external-leg quartic setup, external connectedness is
+equivalent to having no vacuum component. -/
 theorem normalizedTwoPointDiagramCoeff_eq_sum_externallyConnected
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
@@ -155,6 +157,41 @@ theorem normalizedTwoPointDiagramCoeff_eq_sum_externallyConnected
       twoPointConnectedDiagramCoeff ε β g i j τ τ' n := by
   rw [twoPointNormalizedDiagramSeries_eq_connected]
   exact coeff_twoPointConnectedDiagramSeries ε β g i j τ τ' n
+
+/-- Connected fixed-external diagrams are canonically the fixed-external diagrams with no vacuum
+component in the present one-leg/one-leg quartic setup. -/
+noncomputable def connectedFixedExternalTwoPointWickDiagramEquivHasNoVacuumComponent
+    (n : ℕ) (i j : Mode) :
+    ConnectedFixedExternalTwoPointWickDiagram Mode n i j ≃
+      {d : FixedExternalTwoPointWickDiagram Mode n i j // d.1.HasNoVacuumComponent} :=
+  Equiv.subtypeEquivRight (fun d => d.1.isExternallyConnected_iff_hasNoVacuumComponent)
+
+/-- **Canonical no-vacuum-component form of the normalized two-point linked-cluster theorem.**
+At order `n`, the normalized coefficient is exactly the finite sum of fixed-external diagrams with
+no vacuum component. -/
+theorem normalizedTwoPointDiagramCoeff_eq_sum_hasNoVacuumComponent
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
+    PowerSeries.coeff n (twoPointNormalizedDiagramSeries ε β g i j τ τ') =
+      ∑ d : {d : FixedExternalTwoPointWickDiagram Mode n i j //
+          d.1.HasNoVacuumComponent},
+        d.1.dysonAmplitude ε β g τ τ' := by
+  classical
+  rw [normalizedTwoPointDiagramCoeff_eq_sum_externallyConnected]
+  change (∑ d : ConnectedFixedExternalTwoPointWickDiagram Mode n i j,
+      d.1.dysonAmplitude ε β g τ τ') = _
+  letI : Fintype
+      {d : FixedExternalTwoPointWickDiagram Mode n i j // d.1.HasNoVacuumComponent} :=
+    Fintype.ofFinite _
+  refine Fintype.sum_equiv
+    (connectedFixedExternalTwoPointWickDiagramEquivHasNoVacuumComponent n i j)
+    (fun d : ConnectedFixedExternalTwoPointWickDiagram Mode n i j =>
+      d.1.dysonAmplitude ε β g τ τ')
+    (fun d : {d : FixedExternalTwoPointWickDiagram Mode n i j //
+        d.1.HasNoVacuumComponent} =>
+      d.1.dysonAmplitude ε β g τ τ') ?_
+  intro d
+  rw [Equiv.subtypeEquivRight_apply]
 
 end Fermionic
 end SecondQuantization
