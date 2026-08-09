@@ -110,19 +110,28 @@ theorem freeGibbsNormalOrderedMoment_succ
     ε β hpos (.create (createMode 0)) (.annihilate (annihilateMode j))
   have hidx : creators.length ≤ (e.symm (Fin.natAdd n j) : ℕ) := by
     simp [e, creators]
+  have hannGet :
+      annihilators.get ⟨j, by simp [annihilators]⟩ = .annihilate (annihilateMode j) := by
+    simp [annihilators]
   have hget :
       tail.get (e.symm (Fin.natAdd n j)) = .annihilate (annihilateMode j) := by
     change (creators ++ annihilators).get (e.symm (Fin.natAdd n j)) = _
-    rw [List.get_eq_getElem]
-    rw [List.getElem_append_right hidx]
-    simp [e, creators, annihilators]
+    rw [List.get_eq_getElem, List.getElem_append_right hidx]
+    simpa [e, creators] using hannGet
+  have hannErase :
+      annihilators.eraseIdx (j : ℕ) =
+        List.ofFn (fun i : Fin n => .annihilate (annihilateMode (j.succAbove i))) := by
+    simpa [annihilators] using
+      (List.eraseIdx_ofFn_eq_ofFn_succAbove
+        (fun k : Fin (n + 1) => (.annihilate (annihilateMode k) : FreeThermalField Mode)) j)
   have herase :
       tail.eraseIdx (e.symm (Fin.natAdd n j)) =
         creators ++
           List.ofFn (fun i : Fin n => .annihilate (annihilateMode (j.succAbove i))) := by
     change (creators ++ annihilators).eraseIdx (e.symm (Fin.natAdd n j)) = _
     rw [List.eraseIdx_append_of_length_le hidx annihilators]
-    simp [e, creators, annihilators, List.eraseIdx_ofFn_eq_ofFn_succAbove]
+    congr 1
+    simpa [e, creators] using hannErase
   change summand (e.symm (Fin.natAdd n j)) = _
   simp only [summand, hget, herase]
   rw [← hpair]
