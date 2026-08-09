@@ -105,13 +105,6 @@ noncomputable def QuarticDiagram.componentOrderedLegOrderEmbedding {S : Finset (
   OrderEmbedding.ofStrictMono (d.componentOrderedLeg shuffle B)
     (d.componentOrderedLeg_strictMono shuffle B)
 
-/-- The component-local ordered-leg map is injective. -/
-theorem QuarticDiagram.componentOrderedLeg_injective {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) (shuffle : d.ComponentShuffle)
-    (B : d.componentPartition.parts) :
-    Function.Injective (d.componentOrderedLeg shuffle B) :=
-  (d.componentOrderedLegOrderEmbedding shuffle B).injective
-
 /-- The assembled global order sends a component slot to the same underlying labelled vertex as its
 component-local order. -/
 theorem QuarticDiagram.assembleVertexOrder_componentSlot_val

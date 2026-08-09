@@ -203,31 +203,6 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedVacuumComponentPairEquiv
     (d.1.restrictedVacuumPairing B hVac)
     (d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' σ B hVac)
 
-/-- Reindex a product over external-component mixed pairs as a product over the restricted external
-pairing. -/
-theorem FixedExternalTwoPointWickDiagram.prod_mixedExternalComponentPairs_comp_equiv
-    {M : Type*} [CommMonoid M]
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (F : d.1.restrictedExternalPairing.NormalizedPair → M) :
-    (∏ pr : d.MixedComponentPair τ τ' σ d.1.externalComponentPart,
-      F (d.mixedExternalComponentPairEquiv τ τ' σ pr)) =
-      ∏ pr : d.1.restrictedExternalPairing.NormalizedPair, F pr :=
-  Equiv.prod_comp (d.mixedExternalComponentPairEquiv τ τ' σ) F
-
-/-- Reindex a product over one vacuum component's mixed pairs as a product over its restricted
-vacuum pairing. -/
-theorem FixedExternalTwoPointWickDiagram.prod_mixedVacuumComponentPairs_comp_equiv
-    {M : Type*} [CommMonoid M]
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.1.componentPartition.parts)
-    (hVac : d.1.ComponentIsVacuum B)
-    (F : (d.1.restrictedVacuumPairing B hVac).NormalizedPair → M) :
-    (∏ pr : d.MixedComponentPair τ τ' σ B,
-      F (d.mixedVacuumComponentPairEquiv τ τ' σ B hVac pr)) =
-      ∏ pr : (d.1.restrictedVacuumPairing B hVac).NormalizedPair, F pr :=
-  Equiv.prod_comp (d.mixedVacuumComponentPairEquiv τ τ' σ B hVac) F
-
 /-- The restricted normalized pair containing the transported first endpoint contains it as either
 its first or second entry. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentPairToRestricted_contains_first_endpoint

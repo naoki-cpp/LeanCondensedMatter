@@ -10,8 +10,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Comp
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.CanonicalComponentShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentShufflePermutation
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentPairProduct
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.RestrictedPairEquiv
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.RestrictedPairOrientation
 
 set_option linter.style.header false
 
@@ -20,6 +18,6 @@ set_option linter.style.header false
 
 Two-point diagrams with two distinguished external legs, full connected-component partitions,
 vacuum/external component restriction and decomposition, componentwise vertex and pair products,
-interaction-time ordered-simplex shuffles and their canonical representative, ambient shuffle
-permutations, and restricted-pair transport/orientation results.
+interaction-time ordered-simplex shuffles and their canonical representative, and ambient shuffle
+permutations.
 -/
