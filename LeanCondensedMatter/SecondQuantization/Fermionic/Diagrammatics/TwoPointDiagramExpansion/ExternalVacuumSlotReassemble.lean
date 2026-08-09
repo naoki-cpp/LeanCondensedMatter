@@ -29,11 +29,6 @@ abbrev ExternallyConnectedFixedExternalTwoPointWickDiagramOn
     (Mode : Type*) (N : ℕ) (S : Finset (Fin N)) (i j : Mode) :=
   {d : FixedExternalTwoPointWickDiagramOn Mode N S i j // d.1.IsExternallyConnected}
 
-noncomputable instance externallyConnectedFixedExternalTwoPointWickDiagramFintype
-    (Mode : Type*) [Fintype Mode] (n : ℕ) (i j : Mode) :
-    Fintype (ExternallyConnectedFixedExternalTwoPointWickDiagram Mode n i j) :=
-  Fintype.ofFinite _
-
 noncomputable instance externallyConnectedFixedExternalTwoPointWickDiagramOnFintype
     (Mode : Type*) [Fintype Mode] (N : ℕ) (S : Finset (Fin N)) (i j : Mode) :
     Fintype (ExternallyConnectedFixedExternalTwoPointWickDiagramOn Mode N S i j) :=
