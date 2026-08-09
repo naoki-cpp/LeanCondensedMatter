@@ -99,6 +99,23 @@ def TwoPointDiagram.inInteractionOrderComponentShuffleEquiv
       (FamilySlotShuffle.reindexEquiv ePart d.interactionComponentSize).symm |>.trans
         d.componentInteractionFamilyShuffleEquiv
 
+/-- Evaluation of component-shuffle transport on a component/local slot from the ordered diagram. -/
+@[simp]
+theorem TwoPointDiagram.inInteractionOrderComponentShuffleEquiv_slotEquiv_apply
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (order : QuarticVertexOrder S)
+    (shuffle : (d.inInteractionOrder order).ComponentInteractionShuffle)
+    (B : (d.inInteractionOrder order).componentPartition.parts)
+    (i : Fin ((d.inInteractionOrder order).interactionComponentSize B)) :
+    (d.inInteractionOrderComponentShuffleEquiv order shuffle).slotEquiv
+        ⟨d.inInteractionOrderComponentPartEquiv order B,
+          Fin.cast (d.interactionComponentSize_inInteractionOrder_eq order B) i⟩ =
+      Fin.cast (by simp) (shuffle.slotEquiv ⟨B, i⟩) := by
+  simp [TwoPointDiagram.inInteractionOrderComponentShuffleEquiv,
+    familySlotShuffleCastSizeEquiv,
+    TwoPointDiagram.componentInteractionFamilyShuffleEquiv,
+    FamilySlotShuffle.reindexEquiv, FamilySlotShuffleTo.castTotalEquiv]
+
 end
 
 end Common
