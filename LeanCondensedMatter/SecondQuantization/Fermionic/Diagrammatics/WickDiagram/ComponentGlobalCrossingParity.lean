@@ -1,4 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairCrossingParity
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 
@@ -10,8 +9,8 @@ set_option linter.style.header false
 The global crossing count is reindexed as a double sum over connected components. Diagonal terms are
 the component-local crossing counts. For distinct components, the two orientations combine into the
 geometric crossing count proved even in `ComponentPairCrossingParity.lean`. Hence the global crossing
-count agrees modulo two with the sum of its component-local crossing counts, the complementary
-external crossing set is even, and the fermionic pairing weight factors over connected components.
+count agrees modulo two with the sum of its component-local crossing counts, which directly gives
+pairing-weight factorization.
 -/
 
 namespace SecondQuantization
@@ -20,70 +19,6 @@ namespace Fermionic
 open Combinatorics
 
 variable {Mode : Type*} {N : ℕ}
-
-/-- The assembled crossings whose two normalized pairs do not both come from one component. -/
-noncomputable def QuarticWickDiagram.externalCrossingPairs {S : Finset (Fin N)}
-    (d : QuarticWickDiagram Mode N S) (orders : d.ComponentVertexOrders)
-    (shuffle : d.ComponentShuffle) :
-    Finset (d.GlobalCrossingPair orders shuffle) := by
-  classical
-  exact Finset.univ \ d.internalCrossingPairs orders shuffle
-
-/-- External and internal crossings partition all assembled global crossings. -/
-theorem QuarticWickDiagram.card_externalCrossingPairs_add_card_internalCrossingPairs
-    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) :
-    (d.externalCrossingPairs orders shuffle).card +
-        (d.internalCrossingPairs orders shuffle).card =
-      (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).crossingCount := by
-  classical
-  rw [Combinatorics.Pairing.crossingCount_eq_card_crossingPair]
-  simpa [QuarticWickDiagram.externalCrossingPairs] using
-    Finset.card_sdiff_add_card_eq_card
-      (Finset.subset_univ (d.internalCrossingPairs orders shuffle))
-
-/-- The global crossing count is the sum of all component-local crossing counts plus the external
-crossing contribution. -/
-theorem QuarticWickDiagram.crossingCount_eq_sum_add_card_externalCrossingPairs
-    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) :
-    (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).crossingCount =
-      (∑ B : d.componentPartition.parts,
-        ((d.restrictComponent B.2).pairingInOrder (orders B)).crossingCount) +
-      (d.externalCrossingPairs orders shuffle).card := by
-  have h := d.card_externalCrossingPairs_add_card_internalCrossingPairs orders shuffle
-  rw [d.card_internalCrossingPairs_eq_sum_crossingCount orders shuffle] at h
-  omega
-
-/-- If the external crossing contribution is even, the global crossing count has the same parity as
- the sum of all component-local crossing counts. -/
-theorem QuarticWickDiagram.crossingCount_mod_two_eq_sum_of_externalCrossingPairs_mod_two_eq_zero
-    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (hExternal : (d.externalCrossingPairs orders shuffle).card % 2 = 0) :
-    (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).crossingCount % 2 =
-      (∑ B : d.componentPartition.parts,
-        ((d.restrictComponent B.2).pairingInOrder (orders B)).crossingCount) % 2 := by
-  rw [d.crossingCount_eq_sum_add_card_externalCrossingPairs orders shuffle,
-    Nat.add_mod, hExternal]
-  omega
-
-/-- Component-wise pairing-weight factorization follows once the external crossings are proved even. -/
-theorem QuarticWickDiagram.pairingInOrder_weight_eq_prod_components_of_externalCrossingPairs_mod_two_eq_zero
-    (s : Common.Statistics) {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (hExternal : (d.externalCrossingPairs orders shuffle).card % 2 = 0) :
-    (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).weight s =
-      ∏ B : d.componentPartition.parts,
-        ((d.restrictComponent B.2).pairingInOrder (orders B)).weight s := by
-  exact Common.BlochDeDominicis.Pairing.weight_eq_prod_of_crossingCount_mod_two_eq
-    s
-    (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
-    (fun B : d.componentPartition.parts =>
-      (d.restrictComponent B.2).pairingInOrder (orders B))
-    (d.crossingCount_mod_two_eq_sum_of_externalCrossingPairs_mod_two_eq_zero
-      orders shuffle hExternal)
-
 
 private theorem crosses_asymm {n : ℕ}
     (p q : Fin (2 * n) × Fin (2 * n))
@@ -97,6 +32,20 @@ private theorem indicator_or_eq_add_indicator_of_not_and
     (if p ∨ q then 1 else 0 : ℕ) =
       (if p then 1 else 0) + (if q then 1 else 0) := by
   by_cases hp : p <;> by_cases hq : q <;> simp_all
+
+private theorem QuarticWickDiagram.crosses_componentPairEquiv_iff
+    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
+    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
+    (B : d.componentPartition.parts) (p q : d.LocalOrderedPair orders B) :
+    Combinatorics.Crosses
+        (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
+        (d.componentPairEquiv orders shuffle ⟨B, q⟩).1 ↔
+      Combinatorics.Crosses p.1 q.1 := by
+  rw [d.componentPairEquiv_apply, d.componentPairEquiv_apply]
+  exact Combinatorics.crosses_map_iff
+    (d.componentOrderedLegOrderEmbedding shuffle B)
+    (d.componentOrderedLegOrderEmbedding shuffle B).strictMono
+    p.1.1 p.1.2 q.1.1 q.1.2
 
 /-- Oriented crossing count from pairs in component `B` to pairs in component `C`. -/
 noncomputable def QuarticWickDiagram.componentOrientedCrossingCount
@@ -229,18 +178,6 @@ theorem QuarticWickDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_component
           intro B _
           exact d.componentOrientedCrossingCount_self orders shuffle B
 
-/-- The complementary cross-component crossing set has even cardinality. -/
-theorem QuarticWickDiagram.externalCrossingPairs_mod_two_eq_zero
-    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) :
-    (d.externalCrossingPairs orders shuffle).card % 2 = 0 := by
-  have hparity := d.pairingInOrder_crossingCount_mod_two_eq_sum_components orders shuffle
-  rw [d.crossingCount_eq_sum_add_card_externalCrossingPairs orders shuffle,
-    Nat.add_mod] at hparity
-  have hlt : (d.externalCrossingPairs orders shuffle).card % 2 < 2 :=
-    Nat.mod_lt _ (by omega)
-  omega
-
 /-- Pairing weight factors over connected components for every component shuffle. -/
 theorem QuarticWickDiagram.pairingInOrder_weight_eq_prod_components
     (s : Common.Statistics) {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
@@ -248,8 +185,12 @@ theorem QuarticWickDiagram.pairingInOrder_weight_eq_prod_components
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).weight s =
       ∏ B : d.componentPartition.parts,
         ((d.restrictComponent B.2).pairingInOrder (orders B)).weight s := by
-  exact d.pairingInOrder_weight_eq_prod_components_of_externalCrossingPairs_mod_two_eq_zero
-    s orders shuffle (d.externalCrossingPairs_mod_two_eq_zero orders shuffle)
+  exact Common.BlochDeDominicis.Pairing.weight_eq_prod_of_crossingCount_mod_two_eq
+    s
+    (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
+    (fun B : d.componentPartition.parts =>
+      (d.restrictComponent B.2).pairingInOrder (orders B))
+    (d.pairingInOrder_crossingCount_mod_two_eq_sum_components orders shuffle)
 
 end Fermionic
 end SecondQuantization
