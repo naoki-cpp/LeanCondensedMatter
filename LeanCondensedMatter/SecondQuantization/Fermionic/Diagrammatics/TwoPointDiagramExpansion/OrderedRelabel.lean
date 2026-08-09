@@ -162,7 +162,7 @@ theorem interactionVertexPositionRelabelFin_orderChange
       Common.twoPointLegEquiv (Finset.univ : Finset (Fin S.card))
         (explicitTwoPointPositionCast S.card p) = leg
   rcases leg with e | ⟨v, l⟩ <;>
-    simp [π, interactionVertexLegRelabel, Common.twoPointInteractionOrderLegEquiv,
+    simp [interactionVertexLegRelabel, Common.twoPointInteractionOrderLegEquiv,
       Common.orderedTwoPointLegDataEquivUniv, Common.finEquivUnivSubtype]
 
 omit [LinearOrder Mode] [Fintype Mode] in
