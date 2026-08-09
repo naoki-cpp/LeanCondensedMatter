@@ -18,7 +18,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalRe
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnboundedExpectation
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbsSummability
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteCompatibility
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteOperatorCompatibility
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteThermalCompatibility
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.GibbsModeTruncation
@@ -72,13 +71,9 @@ condition the partition function satisfies the infinite product formula
 
 When the mode type is finite, the completed `ℓ²` representation is canonically linearly isometric to
 the existing `Common.FiniteHilbertFock` occupation realization, with occupation coordinates, basis
-vectors, and the algebraic-core embedding identified explicitly. Any bounded completed operator
-that agrees with an algebraic Fock endomorphism on the canonical core transports to the existing
-`Common.finiteHilbertOperator`; this identifies the completed number, creation, and annihilation
-operators with their finite-Hilbert realizations. In finite mode dimension Gibbs summability is
-automatic, the completed and finite partition functions and normalized weights coincide, and the
-completed free Gibbs density operator intertwines with the existing finite Gibbs state under the
-same isometry.
+vectors, and the algebraic-core embedding identified explicitly. In finite mode dimension Gibbs
+summability is automatic, and the completed free Gibbs density operator intertwines with the
+existing finite Gibbs state under the same isometry.
 
 For arbitrary mode types, finite-mode coordinate projections indexed by `Finset Mode` form a
 contractive net converging strongly to the identity. The same finite-mode net also restricts the
