@@ -47,12 +47,17 @@ noncomputable def familySlotShuffleCastSizeEquiv
         { slotEquiv := localEquiv.symm.trans (shuffle.slotEquiv.trans (finCongr hsum.symm))
           strictMono := by
             intro i a b hab
+            have ha : localEquiv.symm ⟨i, a⟩ = ⟨i, Fin.cast (h i) a⟩ := by
+              apply localEquiv.injective
+              simp [localEquiv]
+            have hb : localEquiv.symm ⟨i, b⟩ = ⟨i, Fin.cast (h i) b⟩ := by
+              apply localEquiv.injective
+              simp [localEquiv]
             change Fin.cast hsum.symm (shuffle.slotEquiv (localEquiv.symm ⟨i, a⟩)) <
               Fin.cast hsum.symm (shuffle.slotEquiv (localEquiv.symm ⟨i, b⟩))
-            simpa [localEquiv] using
-              (Fin.castOrderIso hsum.symm).strictMono
-                (shuffle.strictMono i
-                  ((Fin.castOrderIso (h i)).strictMono hab)) }
+            rw [ha, hb]
+            exact (Fin.castOrderIso hsum.symm).strictMono
+              (shuffle.strictMono i ((Fin.castOrderIso (h i)).strictMono hab)) }
       left_inv := by
         intro shuffle
         apply FamilySlotShuffle.ext
