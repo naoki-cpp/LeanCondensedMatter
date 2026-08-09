@@ -117,8 +117,6 @@ theorem freeGibbsNormalOrderedMoment_succ
       (fun k : Fin (n + 1) => (.annihilate (annihilateMode k) : FreeThermalField Mode))).get _ = _
     rw [List.get_ofFn]
     congr 2
-    apply Fin.ext
-    rfl
   have hget :
       tail.get (e.symm (Fin.natAdd n j)) = .annihilate (annihilateMode j) := by
     change (creators ++ annihilators).get (e.symm (Fin.natAdd n j)) = _
