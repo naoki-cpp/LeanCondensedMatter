@@ -6,9 +6,9 @@ set_option linter.style.header false
 /-!
 # Component slots under interaction ordering
 
-This module records the stable set-level bridge between an ambient component and its explicitly
-ordered copy.  Downstream finite-order reindexing can use this without exposing dependent local-slot
-casts.
+This module records the stable bridge between an ambient component and its explicitly ordered copy.
+Downstream finite-order reindexing can therefore move canonical component shuffles across an
+interaction ordering without exposing the pairing representation.
 -/
 
 namespace SecondQuantization
@@ -93,6 +93,31 @@ theorem TwoPointDiagram.interactionPart_inInteractionOrderComponentPartEquiv_sym
     refine ⟨Sum.inr vAmbient, hvB, ?_⟩
     simp [vAmbient, vExplicit, twoPointInteractionOrderVertexEquiv,
       finEquivUnivSubtype]
+
+/-- The canonical component shuffle of an explicitly ordered copy, transported back to the ambient
+diagram, is the shuffle induced by that global interaction order. -/
+theorem TwoPointDiagram.inInteractionOrderComponentShuffleEquiv_canonical
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (order : QuarticVertexOrder S) :
+    d.inInteractionOrderComponentShuffleEquiv order
+        (d.inInteractionOrder order).canonicalComponentInteractionShuffle =
+      d.interactionShuffleOfVertexOrder order
+        (d.componentInteractionVertexOrdersOfVertexOrder order)
+        (d.componentInteractionOrdersCompatible_ofVertexOrder order) := by
+  apply Combinatorics.FamilySlotShuffleTo.ext
+  apply Equiv.ext
+  rintro ⟨B, i⟩
+  simp [TwoPointDiagram.inInteractionOrderComponentShuffleEquiv,
+    familySlotShuffleCastSizeEquiv,
+    TwoPointDiagram.componentInteractionFamilyShuffleEquiv,
+    Combinatorics.FamilySlotShuffle.reindexEquiv,
+    Combinatorics.FamilySlotShuffleTo.castTotalEquiv,
+    TwoPointDiagram.interactionShuffleOfVertexOrder,
+    TwoPointDiagram.componentInteractionVertexEquiv,
+    TwoPointDiagram.componentInteractionVertexOrdersOfVertexOrder,
+    TwoPointDiagram.componentInteractionVertexOrderOfVertexOrder,
+    TwoPointDiagram.canonicalComponentInteractionShuffle,
+    TwoPointDiagram.interactionPart_inInteractionOrderComponentPartEquiv_symm]
 
 end
 
