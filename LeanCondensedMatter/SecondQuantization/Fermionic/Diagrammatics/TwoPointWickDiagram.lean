@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentPairProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentVertexProduct
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticInteraction
 

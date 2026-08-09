@@ -86,18 +86,6 @@ theorem TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum
   rw [d.univ_componentParts_eq_insert_external_vacuum,
     Finset.prod_insert d.externalComponentPart_not_mem_vacuumComponentParts]
 
-/-- A commutative sum over all component parts splits into the external part and all vacuum parts. -/
-theorem TwoPointDiagram.sum_componentParts_eq_external_add_sum_vacuum
-    {A : Type*} [AddCommMonoid A]
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (f : d.componentPartition.parts → A) :
-    (∑ B : d.componentPartition.parts, f B) =
-      f d.externalComponentPart + d.vacuumComponentParts.sum f := by
-  classical
-  change (Finset.univ : Finset d.componentPartition.parts).sum f = _
-  rw [d.univ_componentParts_eq_insert_external_vacuum,
-    Finset.sum_insert d.externalComponentPart_not_mem_vacuumComponentParts]
-
 /-- Every interaction vertex lies either in the common external component or in a vacuum component. -/
 theorem TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
