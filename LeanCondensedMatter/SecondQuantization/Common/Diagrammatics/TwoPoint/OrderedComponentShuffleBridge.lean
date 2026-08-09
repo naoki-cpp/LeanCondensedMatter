@@ -108,6 +108,7 @@ theorem TwoPointDiagram.inInteractionOrderComponentShuffleEquiv_slotEquiv_apply
           Fin.cast (d.interactionComponentSize_inInteractionOrder_eq order B) i⟩ =
       Fin.cast (by simp) (shuffle.slotEquiv ⟨B, i⟩) := by
   simp [TwoPointDiagram.inInteractionOrderComponentShuffleEquiv,
+    familySlotShuffleCastSizeEquiv,
     TwoPointDiagram.componentInteractionFamilyShuffleEquiv,
     Combinatorics.FamilySlotShuffle.reindexEquiv,
     Combinatorics.FamilySlotShuffleTo.castTotalEquiv]
