@@ -6,7 +6,7 @@ set_option linter.style.header false
 # Two-point components under interaction-vertex ordering
 
 Interaction-vertex ordering is a graph isomorphism, so it transports the connected-component
-partition canonically.  This is the structural bridge used when the external-leg LCT reindexes a
+partition canonically. This is the structural bridge used when the external-leg LCT reindexes a
 global interaction order by component-local orders and one component shuffle.
 -/
 
@@ -110,6 +110,87 @@ def TwoPointDiagram.inInteractionOrderComponentPartEquiv
   right_inv B := by
     apply Subtype.ext
     simp [Finset.image_image, Function.comp_def]
+
+/-- Interaction vertices of a component of the explicit ordered diagram are canonically the
+interaction vertices of the corresponding ambient component. -/
+def TwoPointDiagram.inInteractionOrderComponentInteractionEquiv
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (order : QuarticVertexOrder S)
+    (B : (d.inInteractionOrder order).componentPartition.parts) :
+    ↥(TwoPointDiagram.interactionPart
+      (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin S.card))))) ≃
+    ↥(TwoPointDiagram.interactionPart
+      ((d.inInteractionOrderComponentPartEquiv order B : d.componentPartition.parts) :
+        Finset (TwoPointVertex S))) where
+  toFun v := by
+    let vExplicit : ↥(Finset.univ : Finset (Fin S.card)) := ⟨v.1, Finset.mem_univ _⟩
+    let vAmbient : ↥S := order v.1
+    refine ⟨vAmbient.1, ?_⟩
+    apply (TwoPointDiagram.mem_interactionPart_subtype
+      ((d.inInteractionOrderComponentPartEquiv order B : d.componentPartition.parts) :
+        Finset (TwoPointVertex S)) vAmbient).2
+    change (Sum.inr vAmbient : TwoPointVertex S) ∈
+      B.1.image (twoPointInteractionOrderVertexEquiv order)
+    apply Finset.mem_image.mpr
+    refine ⟨Sum.inr vExplicit, ?_, ?_⟩
+    · exact (TwoPointDiagram.mem_interactionPart_subtype
+        (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin S.card)))) vExplicit).1 v.2
+    · rfl
+  invFun v := by
+    let vAmbient : ↥S :=
+      ⟨v.1, TwoPointDiagram.interactionPart_subset
+        ((d.inInteractionOrderComponentPartEquiv order B : d.componentPartition.parts) :
+          Finset (TwoPointVertex S)) v.2⟩
+    let vExplicit : ↥(Finset.univ : Finset (Fin S.card)) :=
+      ⟨(order.symm vAmbient), Finset.mem_univ _⟩
+    refine ⟨vExplicit.1, ?_⟩
+    apply (TwoPointDiagram.mem_interactionPart_subtype
+      (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin S.card)))) vExplicit).2
+    have hvAmbient : (Sum.inr vAmbient : TwoPointVertex S) ∈
+        ((d.inInteractionOrderComponentPartEquiv order B : d.componentPartition.parts) :
+          Finset (TwoPointVertex S)) :=
+      (TwoPointDiagram.mem_interactionPart_subtype
+        ((d.inInteractionOrderComponentPartEquiv order B : d.componentPartition.parts) :
+          Finset (TwoPointVertex S)) vAmbient).1 v.2
+    change (Sum.inr vExplicit : TwoPointVertex (Finset.univ : Finset (Fin S.card))) ∈ B.1
+    change (Sum.inr vAmbient : TwoPointVertex S) ∈
+      B.1.image (twoPointInteractionOrderVertexEquiv order) at hvAmbient
+    obtain ⟨x, hx, hxeq⟩ := Finset.mem_image.mp hvAmbient
+    have hx' : x = Sum.inr vExplicit := by
+      apply (twoPointInteractionOrderVertexEquiv order).injective
+      rw [hxeq]
+      rfl
+    simpa [hx'] using hx
+  left_inv v := by
+    apply Subtype.ext
+    simp [TwoPointDiagram.inInteractionOrderComponentInteractionEquiv]
+  right_inv v := by
+    apply Subtype.ext
+    simp [TwoPointDiagram.inInteractionOrderComponentInteractionEquiv]
+
+@[simp]
+theorem TwoPointDiagram.inInteractionOrderComponentInteractionEquiv_val
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (order : QuarticVertexOrder S)
+    (B : (d.inInteractionOrder order).componentPartition.parts)
+    (v : ↥(TwoPointDiagram.interactionPart
+      (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin S.card)))))) :
+    (d.inInteractionOrderComponentInteractionEquiv order B v : Fin N) =
+      (order v.1 : Fin N) :=
+  rfl
+
+/-- Corresponding components before and after interaction ordering contain the same number of
+interaction vertices. -/
+theorem TwoPointDiagram.interactionComponentSize_inInteractionOrder_eq
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (order : QuarticVertexOrder S)
+    (B : (d.inInteractionOrder order).componentPartition.parts) :
+    (TwoPointDiagram.interactionPart
+      (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin S.card))))).card =
+      (TwoPointDiagram.interactionPart
+        ((d.inInteractionOrderComponentPartEquiv order B : d.componentPartition.parts) :
+          Finset (TwoPointVertex S))).card := by
+  exact Fintype.card_congr (d.inInteractionOrderComponentInteractionEquiv order B)
 
 end
 
