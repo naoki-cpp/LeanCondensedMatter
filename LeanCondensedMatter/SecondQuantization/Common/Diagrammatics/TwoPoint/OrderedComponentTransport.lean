@@ -213,12 +213,12 @@ def TwoPointDiagram.inInteractionOrderComponentVertexOrderEquiv
         intro localOrder
         apply Equiv.ext
         intro x
-        simp [hcard, e]
+        simp [e]
       right_inv := by
         intro localOrder
         apply Equiv.ext
         intro x
-        simp [hcard, e] }
+        simp [e] }
 
 /-- Families of local interaction-vertex orders are canonically equivalent before and after choosing
 an ambient interaction order. -/
@@ -226,20 +226,13 @@ def TwoPointDiagram.inInteractionOrderComponentVertexOrdersEquiv
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (order : QuarticVertexOrder S) :
     (d.inInteractionOrder order).ComponentInteractionVertexOrders ≃
-      d.ComponentInteractionVertexOrders where
-  toFun explicitOrders := fun C =>
-    d.inInteractionOrderComponentVertexOrderEquiv order
-      ((d.inInteractionOrderComponentPartEquiv order).symm C)
-      (explicitOrders ((d.inInteractionOrderComponentPartEquiv order).symm C))
-  invFun ambientOrders := fun B =>
-    (d.inInteractionOrderComponentVertexOrderEquiv order B).symm
-      (ambientOrders (d.inInteractionOrderComponentPartEquiv order B))
-  left_inv explicitOrders := by
-    funext B
-    simp
-  right_inv ambientOrders := by
-    funext C
-    simp
+      d.ComponentInteractionVertexOrders :=
+  (Equiv.piCongrRight fun B =>
+    d.inInteractionOrderComponentVertexOrderEquiv order B).trans
+    (Equiv.piCongrLeft (d.inInteractionOrderComponentPartEquiv order)
+      (fun C : d.componentPartition.parts =>
+        QuarticVertexOrder (TwoPointDiagram.interactionPart
+          (C : Finset (TwoPointVertex S)))))
 
 end
 
