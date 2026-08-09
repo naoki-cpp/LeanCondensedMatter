@@ -35,8 +35,12 @@ Public umbrella for the convergence-aware free bosonic thermal layer:
 - a Common-backed finite CCR operator-peel identity and its position-indexed finite-sum form;
 - occupation-reindexed `tsumTrace` cyclicity for single ladder operators and the resulting normalized free-Gibbs KMS rotation;
 - the solved bosonic first-pair thermal equation with the bare CCR coefficient identified with `freeThermalPairValue`;
-- the concrete multi-point first-pair recurrence and a no-extra-admissibility `ExpectationPairingRecursion` instance;
-- concrete free thermal field labels, pair kernel, and the inherited Wick pairing expansion.
+- the concrete number-conserving normal-ordered multipoint expectation as the Mathlib `Matrix.permanent` of the creator–annihilator contraction matrix.
+
+The explicit perfect-pairing sum is not the concrete number-conserving evaluation backend: same-type
+contractions vanish, so only bipartite creator–annihilator matchings survive and these are indexed by
+permutations. General Gaussian bosonic expectations with anomalous contractions are reserved for the
+later Hafnian backend, while `Pairing` remains in use for actual diagrammatic structure.
 
 The functional interface does not claim that arbitrary algebraic-Fock endomorphisms are summable or
 bounded. Interacting Dyson/Wick expansions still require explicit product-closure and
