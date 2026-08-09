@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteOperatorCompatibility
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteCompatibility
 
 set_option linter.style.header false
 
