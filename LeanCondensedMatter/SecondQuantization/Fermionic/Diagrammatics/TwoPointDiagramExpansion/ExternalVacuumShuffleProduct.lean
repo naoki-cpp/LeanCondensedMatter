@@ -23,6 +23,41 @@ open Combinatorics.BinaryShuffle
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
+/-- The fixed-order quartic vacuum contraction integrand on the explicit `Fin m` slot presentation. -/
+noncomputable def explicitVacuumContractionIntegrand
+    (ε : Mode → ℝ) (β : ℝ) {m : ℕ}
+    (vacuum : QuarticWickDiagram Mode m (Finset.univ : Finset (Fin m))) :
+    (Fin m → ℝ) → ℂ :=
+  fun σ => vacuum.contractionIntegrand ε β (explicitQuarticVertexOrder m)
+    (fun r => σ (Fin.cast (by simp) r))
+
+/-- The explicit-slot vacuum integrand integrates to the existing fixed-order quartic simplex
+contribution. -/
+theorem orderedSimplexIntegral_explicitVacuumContractionIntegrand
+    (ε : Mode → ℝ) (β : ℝ) {m : ℕ}
+    (vacuum : QuarticWickDiagram Mode m (Finset.univ : Finset (Fin m))) :
+    intervalIntegral.orderedSimplexIntegral m β
+        (explicitVacuumContractionIntegrand ε β vacuum) =
+      vacuum.orderedSimplexContribution ε β (explicitQuarticVertexOrder m) := by
+  unfold explicitVacuumContractionIntegrand QuarticWickDiagram.orderedSimplexContribution
+  let hcard : (Finset.univ : Finset (Fin m)).card = m := by simp
+  exact (intervalIntegral.orderedSimplexIntegral_cast hcard β
+    (vacuum.contractionIntegrand ε β (explicitQuarticVertexOrder m))).symm
+
+/-- The explicit-slot vacuum contraction integrand is measurably locally bounded. -/
+theorem measurableLocallyBounded_explicitVacuumContractionIntegrand
+    (ε : Mode → ℝ) (β : ℝ) {m : ℕ}
+    (vacuum : QuarticWickDiagram Mode m (Finset.univ : Finset (Fin m))) :
+    intervalIntegral.MeasurableLocallyBounded
+      (explicitVacuumContractionIntegrand ε β vacuum) := by
+  have hcast : Continuous (fun σ : Fin m → ℝ =>
+      fun r : Fin (Finset.univ : Finset (Fin m)).card => σ (Fin.cast (by simp) r)) := by
+    exact continuous_pi fun r => continuous_apply (Fin.cast (by simp) r)
+  have hcont : Continuous (explicitVacuumContractionIntegrand ε β vacuum) :=
+    (continuous_contractionIntegrand ε β vacuum
+      (explicitQuarticVertexOrder m)).comp hcast
+  exact intervalIntegral.Continuous.measurableLocallyBounded hcont
+
 /-- Injective-time binary external/vacuum factorization for one reassembled diagram. -/
 theorem reassembleExternalVacuumSlotShuffle_dysonFixedTimeAmplitude_eq_integrand_of_injective
     {k m : ℕ} (i j : Mode)
@@ -32,14 +67,14 @@ theorem reassembleExternalVacuumSlotShuffle_dysonFixedTimeAmplitude_eq_integrand
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (σ : Fin (k + m) → ℝ)
     (_hσ : Function.Injective σ) :
-    (reassembleExternalVacuumSlotShuffle i j external vacuum shuffle)
-        .dysonFixedTimeAmplitude ε β g τ τ' σ =
+    (reassembleExternalVacuumSlotShuffle i j external vacuum shuffle).dysonFixedTimeAmplitude
+        ε β g τ τ' σ =
       shuffle.integrand
         (fun σExternal =>
           external.1.dysonFixedTimeAmplitude ε β g τ τ' σExternal)
         (fun σVacuum =>
           ((-1 : ℂ) ^ m * vacuum.couplingWeight g) *
-            vacuum.contractionIntegrand ε β (explicitQuarticVertexOrder m) σVacuum)
+            explicitVacuumContractionIntegrand ε β vacuum σVacuum)
         σ := by
   let d := reassembleExternalVacuumSlotShuffle i j external vacuum shuffle
   change d.dysonFixedTimeAmplitude ε β g τ τ' σ = _
@@ -58,14 +93,14 @@ theorem sum_reassembleExternalVacuumSlotShuffle_dysonAmplitude_eq_mul_of_injecti
     (τ τ' : ℝ)
     (hpoint : ∀ (shuffle : SlotShuffle k m) (σ : Fin (k + m) → ℝ),
       Function.Injective σ →
-        (reassembleExternalVacuumSlotShuffle i j external vacuum shuffle)
-            .dysonFixedTimeAmplitude ε β g τ τ' σ =
+        (reassembleExternalVacuumSlotShuffle i j external vacuum shuffle).dysonFixedTimeAmplitude
+            ε β g τ τ' σ =
           shuffle.integrand
             (fun σExternal =>
               external.1.dysonFixedTimeAmplitude ε β g τ τ' σExternal)
             (fun σVacuum =>
               ((-1 : ℂ) ^ m * vacuum.couplingWeight g) *
-                vacuum.contractionIntegrand ε β (explicitQuarticVertexOrder m) σVacuum)
+                explicitVacuumContractionIntegrand ε β vacuum σVacuum)
             σ) :
     (∑ shuffle : SlotShuffle k m,
       (reassembleExternalVacuumSlotShuffle i j external vacuum shuffle).dysonAmplitude
@@ -76,13 +111,12 @@ theorem sum_reassembleExternalVacuumSlotShuffle_dysonAmplitude_eq_mul_of_injecti
     external.1.dysonFixedTimeAmplitude ε β g τ τ' σExternal
   let h : (Fin m → ℝ) → ℂ := fun σVacuum =>
     ((-1 : ℂ) ^ m * vacuum.couplingWeight g) *
-      vacuum.contractionIntegrand ε β (explicitQuarticVertexOrder m) σVacuum
+      explicitVacuumContractionIntegrand ε β vacuum σVacuum
   have hf : intervalIntegral.MeasurableLocallyBounded f := by
     exact external.1.measurableLocallyBounded_dysonFixedTimeAmplitude ε β g τ τ'
   have hgBase : intervalIntegral.MeasurableLocallyBounded
-      (vacuum.contractionIntegrand ε β (explicitQuarticVertexOrder m)) :=
-    (continuous_contractionIntegrand ε β vacuum
-      (explicitQuarticVertexOrder m)).measurableLocallyBounded
+      (explicitVacuumContractionIntegrand ε β vacuum) :=
+    measurableLocallyBounded_explicitVacuumContractionIntegrand ε β vacuum
   have hg : intervalIntegral.MeasurableLocallyBounded h := by
     exact hgBase.const_mul ((-1 : ℂ) ^ m * vacuum.couplingWeight g)
   calc
@@ -91,12 +125,12 @@ theorem sum_reassembleExternalVacuumSlotShuffle_dysonAmplitude_eq_mul_of_injecti
         ε β g τ τ') =
       ∑ shuffle : SlotShuffle k m,
         intervalIntegral.orderedSimplexIntegral (k + m) β (fun σ =>
-          (reassembleExternalVacuumSlotShuffle i j external vacuum shuffle)
-            .dysonFixedTimeAmplitude ε β g τ τ' σ) := by
+          (reassembleExternalVacuumSlotShuffle i j external vacuum shuffle).dysonFixedTimeAmplitude
+            ε β g τ τ' σ) := by
       apply Finset.sum_congr rfl
       intro shuffle _
       exact (reassembleExternalVacuumSlotShuffle i j external vacuum shuffle)
-        .dysonAmplitude_eq_orderedSimplexIntegral_dysonFixedTimeAmplitude ε β g τ τ'
+        |>.dysonAmplitude_eq_orderedSimplexIntegral_dysonFixedTimeAmplitude ε β g τ τ'
     _ = ∑ shuffle : SlotShuffle k m,
         intervalIntegral.orderedSimplexIntegral (k + m) β (shuffle.integrand f h) := by
       apply Finset.sum_congr rfl
@@ -112,8 +146,9 @@ theorem sum_reassembleExternalVacuumSlotShuffle_dysonAmplitude_eq_mul_of_injecti
         explicitVacuumFixedOrderAmplitude ε β g vacuum := by
       dsimp [f, h]
       rw [external.1.dysonAmplitude_eq_orderedSimplexIntegral_dysonFixedTimeAmplitude]
-      unfold explicitVacuumFixedOrderAmplitude QuarticWickDiagram.orderedSimplexContribution
       rw [intervalIntegral.orderedSimplexIntegral_smul]
+      rw [orderedSimplexIntegral_explicitVacuumContractionIntegrand]
+      rfl
 
 /-- The binary external/vacuum shuffle sum factors with no caller-supplied transport hypothesis. -/
 theorem sum_reassembleExternalVacuumSlotShuffle_dysonAmplitude_eq_mul
