@@ -20,6 +20,11 @@ abbrev ExternallyConnectedFixedExternalTwoPointWickDiagram
     (Mode : Type*) (n : ℕ) (i j : Mode) :=
   {d : FixedExternalTwoPointWickDiagram Mode n i j // d.1.IsExternallyConnected}
 
+noncomputable instance externallyConnectedFixedExternalTwoPointWickDiagramFintype
+    (Mode : Type*) [Fintype Mode] (n : ℕ) (i j : Mode) :
+    Fintype (ExternallyConnectedFixedExternalTwoPointWickDiagram Mode n i j) :=
+  Fintype.ofFinite _
+
 /-- Interaction-slot relabeling restricts to externally connected fixed diagrams. -/
 noncomputable def externallyConnectedFixedExternalTwoPointWickDiagramRelabelEquiv
     {n : ℕ} (i j : Mode) (π : Equiv.Perm (Fin n)) :
@@ -42,11 +47,8 @@ theorem sum_relabelInteractionVertices_externallyConnected
     (F : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode n i j → ℂ) :
     ∑ d : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode n i j,
         F ((externallyConnectedFixedExternalTwoPointWickDiagramRelabelEquiv i j π) d) =
-      ∑ d : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode n i j, F d := by
-  classical
-  letI : Fintype (ExternallyConnectedFixedExternalTwoPointWickDiagram Mode n i j) :=
-    Fintype.ofFinite _
-  exact Equiv.sum_comp
+      ∑ d : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode n i j, F d :=
+  Equiv.sum_comp
     (externallyConnectedFixedExternalTwoPointWickDiagramRelabelEquiv i j π) F
 
 end Fermionic
