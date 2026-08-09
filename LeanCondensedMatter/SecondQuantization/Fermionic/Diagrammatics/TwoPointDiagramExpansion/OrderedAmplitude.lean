@@ -90,6 +90,7 @@ noncomputable def fixedExternalTwoPointWickDiagramOrderEquiv
   (fixedExternalTwoPointWickDiagramOnEquivOrderedData i j order).trans
     (orderedFixedExternalTwoPointDataEquivFixedDiagram S.card i j)
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The fermionic ordered-diagram equivalence has exactly the Common `inInteractionOrder` diagram as
 its underlying two-point graph and labels. -/
 theorem fixedExternalTwoPointWickDiagramOrderEquiv_val
@@ -98,7 +99,7 @@ theorem fixedExternalTwoPointWickDiagramOrderEquiv_val
     (fixedExternalTwoPointWickDiagramOrderEquiv i j order d).1 =
       d.1.inInteractionOrder order := by
   apply Common.TwoPointDiagram.ext
-  · rfl
+  · exact d.2.symm
   · funext v
     rfl
   · rfl
