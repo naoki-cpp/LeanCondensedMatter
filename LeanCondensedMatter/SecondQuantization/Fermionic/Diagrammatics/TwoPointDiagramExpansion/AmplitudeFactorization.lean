@@ -19,6 +19,18 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
 
+/-- The canonical increasing vertex order on explicit interaction slots. -/
+noncomputable def explicitQuarticVertexOrder (n : ℕ) :
+    Common.QuarticVertexOrder (Finset.univ : Finset (Fin n)) :=
+  (finCongr (by simp)).trans (Common.finEquivUnivSubtype n)
+
+/-- Fixed-order vacuum term on explicit slots, including its Dyson sign and coupling weight. -/
+noncomputable def explicitVacuumFixedOrderAmplitude
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    {n : ℕ} (d : QuarticWickDiagram Mode n (Finset.univ : Finset (Fin n))) : ℂ :=
+  (-1 : ℂ) ^ n * d.couplingWeight g *
+    d.orderedSimplexContribution ε β (explicitQuarticVertexOrder n)
+
 /-- For an externally connected fixed diagram the vacuum-component product is empty, so its
 Dyson-signed fixed-time amplitude is exactly its external component factor. -/
 theorem ExternallyConnectedFixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_external
@@ -132,6 +144,45 @@ theorem sum_vacuumFixedOrder_eq_normalizedDysonPartitionCoeff
                 (fun τ => flatVertexLegPairingEvaluation ε β q τ pairing)) := by ring
     _ = (S.card.factorial : ℂ) *
         normalizedDysonPartitionCoeff ε β (quarticInteraction g) S.card := hmoment.symm
+
+/-- The explicit fixed-order vacuum terms sum to the normalized vacuum Dyson coefficient. -/
+theorem sum_explicitVacuumFixedOrderAmplitude_eq_normalizedDysonPartitionCoeff
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (n : ℕ) :
+    (∑ d : QuarticWickDiagram Mode n (Finset.univ : Finset (Fin n)),
+      explicitVacuumFixedOrderAmplitude ε β g d) =
+      normalizedDysonPartitionCoeff ε β (quarticInteraction g) n := by
+  simp only [explicitVacuumFixedOrderAmplitude]
+  rw [← Finset.mul_sum, ← Finset.mul_sum]
+  simpa using
+    sum_vacuumFixedOrder_eq_normalizedDysonPartitionCoeff
+      (Mode := Mode) (N := n) ε β g (explicitQuarticVertexOrder n)
+
+/-- Once the binary shuffle sum for each fixed external/vacuum pair is identified with the product
+of their local integrated amplitudes, the whole external-order fiber factors immediately. -/
+theorem sum_fixedExternalTwoPointWickDiagramOfExternalOrder_eq_connected_mul_vacuum_of_shuffle
+    {k m : ℕ} (i j : Mode)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (τ τ' : ℝ)
+    (hshuffle : ∀
+      (external : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode k i j)
+      (vacuum : QuarticWickDiagram Mode m (Finset.univ : Finset (Fin m))),
+      (∑ shuffle : Combinatorics.BinaryShuffle.SlotShuffle k m,
+        (reassembleExternalVacuumSlotShuffle i j external vacuum shuffle).dysonAmplitude
+          ε β g τ τ') =
+        external.1.dysonAmplitude ε β g τ τ' *
+          explicitVacuumFixedOrderAmplitude ε β g vacuum) :
+    (∑ d : FixedExternalTwoPointWickDiagramOfExternalOrder Mode k m i j,
+        d.1.dysonAmplitude ε β g τ τ') =
+      (∑ external : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode k i j,
+        external.1.dysonAmplitude ε β g τ τ') *
+      normalizedDysonPartitionCoeff ε β (quarticInteraction g) m := by
+  rw [sum_fixedExternalTwoPointWickDiagramOfExternalOrder_eq_sum_slotData]
+  simp_rw [hshuffle]
+  rw [← Finset.sum_mul]
+  apply congrArg (fun z : ℂ =>
+    (∑ external : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode k i j,
+      external.1.dysonAmplitude ε β g τ τ') * z)
+  exact sum_explicitVacuumFixedOrderAmplitude_eq_normalizedDysonPartitionCoeff ε β g m
 
 /-- The total order-independent vacuum Wick amplitude on a labelled finite set is the factorial
 normalization of the corresponding normalized Dyson partition coefficient. -/
