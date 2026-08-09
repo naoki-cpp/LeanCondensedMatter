@@ -64,7 +64,8 @@ def TwoPointDiagram.externalVertexEmbed {S E : Finset (Fin N)} (hE : E ⊆ S) :
   | Sum.inr v => Sum.inr ⟨v.1, hE v.2⟩
 
 /-- Embed a vacuum interaction vertex into the ambient two-point vertex type. -/
-def TwoPointDiagram.vacuumVertexEmbed {S E : Finset (Fin N)} :
+@[nolint unusedArguments]
+def TwoPointDiagram.vacuumVertexEmbed {S E : Finset (Fin N)} (hE : E ⊆ S) :
     ↥(S \ E) → TwoPointVertex S :=
   fun v => Sum.inr ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩
 
@@ -198,7 +199,7 @@ theorem TwoPointDiagram.vertexOfLeg_externalVacuumLegEquiv_symm_vacuum
     (leg : Fin (2 * (2 * (S \ E).card))) :
     twoPointVertexOfLeg
         ((TwoPointDiagram.externalVacuumLegEquiv hE).symm (Sum.inr leg)) =
-      TwoPointDiagram.vacuumVertexEmbed (vertexOfLeg leg) := by
+      TwoPointDiagram.vacuumVertexEmbed hE (vertexOfLeg leg) := by
   change twoPointLegVertex
       (twoPointLegEquiv S ((TwoPointDiagram.externalVacuumLegEquiv hE).symm (Sum.inr leg))) = _
   rw [TwoPointDiagram.twoPointLegEquiv_externalVacuumLegEquiv_symm_vacuum]
