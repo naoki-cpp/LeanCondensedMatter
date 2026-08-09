@@ -1,7 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentOrderDecomposition
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.OrderedConnectivity
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ExternalVacuumSlotReassemble
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.IntegratedComponentFactorization
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.OrderedAmplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.AmplitudeFactorization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonVertexMoment
@@ -13,69 +11,13 @@ set_option linter.style.header false
 
 This file owns the finite-sum assembly step of the external-leg linked-cluster theorem. The analytic
 input is the a.e. component-shuffle integral factorization from `IntegratedComponentFactorization`;
-the remaining work is performed on the total finite diagram sum rather than by diagram orbits.
+the structural input is the binary slot-shuffle reassembly from `ExternalVacuumSlotReassemble`.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
-
-/-- Explicit fixed-external diagrams whose complete graph is externally connected. -/
-abbrev ExternallyConnectedFixedExternalTwoPointWickDiagram
-    (Mode : Type*) (n : ℕ) (i j : Mode) :=
-  {d : FixedExternalTwoPointWickDiagram Mode n i j // d.1.IsExternallyConnected}
-
-/-- Arbitrary-set fixed-external diagrams whose complete graph is externally connected. -/
-abbrev ExternallyConnectedFixedExternalTwoPointWickDiagramOn
-    (Mode : Type*) (N : ℕ) (S : Finset (Fin N)) (i j : Mode) :=
-  {d : FixedExternalTwoPointWickDiagramOn Mode N S i j // d.1.IsExternallyConnected}
-
-noncomputable instance externallyConnectedFixedExternalTwoPointWickDiagramFintype
-    (Mode : Type*) [Fintype Mode] (n : ℕ) (i j : Mode) :
-    Fintype (ExternallyConnectedFixedExternalTwoPointWickDiagram Mode n i j) :=
-  Fintype.ofFinite _
-
-noncomputable instance externallyConnectedFixedExternalTwoPointWickDiagramOnFintype
-    (Mode : Type*) [Fintype Mode] (N : ℕ) (S : Finset (Fin N)) (i j : Mode) :
-    Fintype (ExternallyConnectedFixedExternalTwoPointWickDiagramOn Mode N S i j) :=
-  Fintype.ofFinite _
-
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- The explicit diagram produced by the fixed-order equivalence is exactly the Common ordered
-reindexing of the underlying arbitrary-set diagram. -/
-theorem fixedExternalTwoPointWickDiagramOrderEquiv_val_eq_inInteractionOrder
-    {S : Finset (Fin N)} (i j : Mode) (order : Common.QuarticVertexOrder S)
-    (d : FixedExternalTwoPointWickDiagramOn Mode N S i j) :
-    (fixedExternalTwoPointWickDiagramOrderEquiv i j order d).1 =
-      d.1.inInteractionOrder order := by
-  apply Common.TwoPointDiagram.ext
-  · exact d.2.symm
-  · funext v
-    rfl
-  · apply Combinatorics.Pairing.ext
-    apply Equiv.ext
-    intro leg
-    apply Fin.ext
-    rfl
-
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- External connectedness is preserved by the fixed-order diagram equivalence. -/
-theorem fixedExternalTwoPointWickDiagramOrderEquiv_isExternallyConnected_iff
-    {S : Finset (Fin N)} (i j : Mode) (order : Common.QuarticVertexOrder S)
-    (d : FixedExternalTwoPointWickDiagramOn Mode N S i j) :
-    (fixedExternalTwoPointWickDiagramOrderEquiv i j order d).1.IsExternallyConnected ↔
-      d.1.IsExternallyConnected := by
-  rw [fixedExternalTwoPointWickDiagramOrderEquiv_val_eq_inInteractionOrder]
-  exact d.1.inInteractionOrder_isExternallyConnected_iff order
-
-/-- Restrict the fixed-order diagram equivalence to externally connected diagrams. -/
-noncomputable def externallyConnectedFixedExternalTwoPointWickDiagramOrderEquiv
-    {S : Finset (Fin N)} (i j : Mode) (order : Common.QuarticVertexOrder S) :
-    ExternallyConnectedFixedExternalTwoPointWickDiagramOn Mode N S i j ≃
-      ExternallyConnectedFixedExternalTwoPointWickDiagram Mode S.card i j :=
-  (fixedExternalTwoPointWickDiagramOrderEquiv i j order).subtypeEquiv fun d =>
-    (fixedExternalTwoPointWickDiagramOrderEquiv_isExternallyConnected_iff i j order d).symm
 
 /-- At one fixed interaction order, the sum over connected arbitrary-set external cores is exactly
 the explicit connected-diagram coefficient sum. -/
