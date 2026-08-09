@@ -175,9 +175,9 @@ theorem reassembleExternalVacuumSlotShuffle_externalInteractionPart {k m : ℕ} 
   exact Common.TwoPointDiagram.interactionPart_externalComponent_reassembleExternalVacuum
     (Finset.subset_univ shuffle.leftSlots) ⟨externalOn.1.1, externalOn.2⟩ vacuumOn
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- Reassembly over the full ambient slot set commutes with transporting both factors across an
 equality of external subsets. -/
-omit [LinearOrder Mode] [Fintype Mode] in
 theorem reassembleExternalVacuum_univ_cast
     {N : ℕ} {E F : Finset (Fin N)} {i j : Mode} (h : E = F)
     (external : ExternallyConnectedFixedExternalTwoPointWickDiagramOn Mode N E i j)
@@ -274,7 +274,7 @@ noncomputable def reassembleExternalVacuumSlotDataOfExternalOrder {k m : ℕ} (i
     rw [reassembleExternalVacuumSlotShuffle_externalInteractionPart]
     exact x.2.2.card_leftSlots⟩
 
-omit [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- Every fixed-external diagram of external order `k` is obtained from a unique connected explicit
 external core, explicit vacuum remainder, and binary slot shuffle. -/
 theorem reassembleExternalVacuumSlotDataOfExternalOrder_surjective {k m : ℕ} (i j : Mode) :
