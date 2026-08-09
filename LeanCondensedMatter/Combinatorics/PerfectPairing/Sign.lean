@@ -44,18 +44,18 @@ theorem pairSlotIndexEquiv_lt_iff (n : ℕ) (p q : Fin (2 * n)) :
     · refine Or.inr ⟨heq, ?_⟩
       have hk : (pairSlotIndexEquiv n p).1.val = (pairSlotIndexEquiv n q).1.val :=
         congrArg Fin.val heq
-      show (pairSlotIndexEquiv n p).2.val < (pairSlotIndexEquiv n q).2.val
+      change (pairSlotIndexEquiv n p).2.val < (pairSlotIndexEquiv n q).2.val
       omega
     · have hgt' : (pairSlotIndexEquiv n q).1.val < (pairSlotIndexEquiv n p).1.val := hgt
       omega
   · rintro (hlt | ⟨heq, hslot⟩)
     · have hlt' : (pairSlotIndexEquiv n p).1.val < (pairSlotIndexEquiv n q).1.val := hlt
-      show p.val < q.val
+      change p.val < q.val
       omega
     · have hk : (pairSlotIndexEquiv n p).1.val = (pairSlotIndexEquiv n q).1.val :=
         congrArg Fin.val heq
       have hs : (pairSlotIndexEquiv n p).2.val < (pairSlotIndexEquiv n q).2.val := hslot
-      show p.val < q.val
+      change p.val < q.val
       omega
 
 /-- An enumeration of the normalized pairs of `pairing`. -/
