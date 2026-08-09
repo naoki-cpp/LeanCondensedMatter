@@ -86,6 +86,29 @@ theorem sum_connected_orderedDysonAmplitude_eq_sum_connected_dysonAmplitude
     (externallyConnectedFixedExternalTwoPointWickDiagramOrderEquiv i j order)
     (fun d => d.1.dysonAmplitude ε β g τ τ')
 
+/-- Summing the order-independent amplitudes of connected external cores gives `|S|!` copies of
+the explicit-slot connected coefficient sum. -/
+theorem sum_connected_fixedExternalTwoPointWickDiagramAmplitude_eq_factorial_mul_sum_dysonAmplitude
+    {S : Finset (Fin N)} (i j : Mode)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (τ τ' : ℝ) :
+    (∑ d : ExternallyConnectedFixedExternalTwoPointWickDiagramOn Mode N S i j,
+        fixedExternalTwoPointWickDiagramAmplitude d.1 ε β g τ τ') =
+      (S.card.factorial : ℂ) *
+        ∑ d : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode S.card i j,
+          d.1.dysonAmplitude ε β g τ τ' := by
+  classical
+  letI : Fintype (ExternallyConnectedFixedExternalTwoPointWickDiagramOn Mode N S i j) :=
+    Fintype.ofFinite _
+  letI : Fintype (ExternallyConnectedFixedExternalTwoPointWickDiagram Mode S.card i j) :=
+    Fintype.ofFinite _
+  simp only [fixedExternalTwoPointWickDiagramAmplitude]
+  rw [Finset.sum_comm]
+  simp_rw [sum_connected_orderedDysonAmplitude_eq_sum_connected_dysonAmplitude
+    i j _ ε β g τ τ']
+  rw [Finset.sum_const, Finset.card_univ, Common.card_quarticVertexOrder]
+  simp
+
 /-- For any chosen order on a finite vacuum vertex set, the Dyson-signed sum of fixed-order Wick
 contributions is already the normalized partition coefficient. The factorial in
 `dysonVertexMoment` comes only from summing over all vertex orders. -/
@@ -118,6 +141,16 @@ theorem sum_vacuumFixedOrder_eq_normalizedDysonPartitionCoeff
                 (fun τ => flatVertexLegPairingEvaluation ε β q τ pairing)) := by ring
     _ = (S.card.factorial : ℂ) *
         normalizedDysonPartitionCoeff ε β (quarticInteraction g) S.card := hmoment.symm
+
+/-- The total order-independent vacuum Wick amplitude on a labelled finite set is the factorial
+normalization of the corresponding normalized Dyson partition coefficient. -/
+theorem sum_quarticWickDiagramAmplitude_eq_factorial_mul_normalizedDysonPartitionCoeff
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    {S : Finset (Fin N)} :
+    (∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d) =
+      (S.card.factorial : ℂ) *
+        normalizedDysonPartitionCoeff ε β (quarticInteraction g) S.card := by
+  rw [sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment, dysonVertexMoment]
 
 end Fermionic
 end SecondQuantization
