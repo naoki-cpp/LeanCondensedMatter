@@ -60,10 +60,15 @@ the one-mode occupation toggle rather than introducing general trace cyclicity. 
 identity with this KMS rotation solves the wrapped term for odd tails with coefficient
 `gβ(C) / (1 + gβ(C))`; the same coefficient gives the normalized completed two-point Gibbs value
 from the scalar CAR coefficient. The recursive peel is also exposed in its position-indexed
-`List.eraseIdx` form, and these completed-space facts instantiate the generic
-`Common.BlochDeDominicis.ExpectationPairingRecursion` contract. Consequently the arbitrary even
-completed free-Gibbs ladder expectation inherits the common pairing expansion without duplicating
-the pairing induction or adding finite-mode/countability assumptions to that generic layer.
+`List.eraseIdx` form.
+
+For the number-conserving normal-ordered free-fermion sector, same-type contractions vanish. The
+concrete multipoint Gibbs expectation is therefore evaluated directly by a Mathlib determinant of
+the creator–annihilator two-point matrix, multiplied by the fixed creator-first normal-order sign.
+This determinant/Laplace representation is the concrete completed-space Bloch–de Dominicis endpoint;
+it avoids perfect-pairing enumeration in the bipartite sector. General Gaussian fermionic
+expectations with anomalous contractions are reserved for the later Pfaffian backend, while the
+project `Pairing` type remains in use for genuine diagrammatic structure.
 
 For the free fermion state, summability of the one-particle Boltzmann factors
 `exp (-β εᵢ)` is a concrete sufficient condition for occupation-level Gibbs summability. Under this
