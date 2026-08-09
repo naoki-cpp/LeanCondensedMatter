@@ -9,7 +9,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Comp
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentOrderedSimplexMeasurable
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.CanonicalComponentShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentShufflePermutation
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentPairProduct
 
 set_option linter.style.header false
 
@@ -17,7 +16,7 @@ set_option linter.style.header false
 # Statistics-independent two-point diagrammatics
 
 Two-point diagrams with two distinguished external legs, full connected-component partitions,
-vacuum/external component restriction and decomposition, componentwise vertex and pair products,
+vacuum/external component restriction and decomposition, componentwise vertex products,
 interaction-time ordered-simplex shuffles and their canonical representative, and ambient shuffle
 permutations.
 -/
