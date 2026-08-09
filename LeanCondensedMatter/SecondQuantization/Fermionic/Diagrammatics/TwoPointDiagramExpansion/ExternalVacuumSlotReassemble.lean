@@ -175,5 +175,54 @@ theorem reassembleExternalVacuumSlotShuffle_externalInteractionPart {k m : ℕ} 
   exact Common.TwoPointDiagram.interactionPart_externalComponent_reassembleExternalVacuum
     (Finset.subset_univ shuffle.leftSlots) ⟨externalOn.1.1, externalOn.2⟩ vacuumOn
 
+/-- Explicit external core, explicit vacuum remainder, and the binary shuffle placing them into the
+ambient interaction slots. -/
+abbrev ExternalVacuumSlotData (Mode : Type*) (k m : ℕ) (i j : Mode) :=
+  ExternallyConnectedFixedExternalTwoPointWickDiagram Mode k i j ×
+    QuarticWickDiagram Mode m (Finset.univ : Finset (Fin m)) × SlotShuffle k m
+
+/-- Reassemble binary slot data into one fixed-external diagram. -/
+noncomputable def reassembleExternalVacuumSlotData {k m : ℕ} (i j : Mode)
+    (x : ExternalVacuumSlotData Mode k m i j) :
+    FixedExternalTwoPointWickDiagram Mode (k + m) i j :=
+  reassembleExternalVacuumSlotShuffle i j x.1 x.2.1 x.2.2
+
+/-- Binary slot reassembly is injective: the full diagram recovers its external slot set, hence the
+shuffle, and fixed-subset reassembly then recovers both local diagrams. -/
+theorem reassembleExternalVacuumSlotData_injective {k m : ℕ} (i j : Mode) :
+    Function.Injective (reassembleExternalVacuumSlotData (Mode := Mode) (k := k) (m := m) i j) := by
+  rintro ⟨external₁, vacuum₁, shuffle₁⟩ ⟨external₂, vacuum₂, shuffle₂⟩ hfull
+  have hslots : shuffle₁.leftSlots = shuffle₂.leftSlots := by
+    rw [← reassembleExternalVacuumSlotShuffle_externalInteractionPart
+      i j external₁ vacuum₁ shuffle₁,
+      ← reassembleExternalVacuumSlotShuffle_externalInteractionPart
+        i j external₂ vacuum₂ shuffle₂]
+    exact congrArg (fun d : FixedExternalTwoPointWickDiagram Mode (k + m) i j =>
+      d.1.externalInteractionPart) hfull
+  have hshuffle : shuffle₁ = shuffle₂ := SlotShuffle.eq_of_leftSlots_eq hslots
+  subst shuffle₂
+  let externalOn₁ := connectedExternalOnSlotShuffle i j external₁ shuffle₁
+  let externalOn₂ := connectedExternalOnSlotShuffle i j external₂ shuffle₁
+  let vacuumOn₁ := vacuumOnSlotShuffle vacuum₁ shuffle₁
+  let vacuumOn₂ := vacuumOnSlotShuffle vacuum₂ shuffle₁
+  have hpairs :
+      (⟨externalOn₁.1.1, externalOn₁.2⟩, vacuumOn₁) =
+        (⟨externalOn₂.1.1, externalOn₂.2⟩, vacuumOn₂) := by
+    apply Common.TwoPointDiagram.reassembleExternalVacuum_injective_fixed
+      (Finset.subset_univ shuffle₁.leftSlots)
+    exact congrArg Subtype.val hfull
+  have hextOn : externalOn₁ = externalOn₂ := by
+    apply Subtype.ext
+    apply Subtype.ext
+    exact congrArg (fun p => p.1.1) hpairs
+  have hvacOn : vacuumOn₁ = vacuumOn₂ := congrArg Prod.snd hpairs
+  have hext : external₁ = external₂ :=
+    (connectedExternalOnSlotShuffleEquiv i j shuffle₁).injective hextOn
+  have hvac : vacuum₁ = vacuum₂ :=
+    (vacuumOnSlotShuffleEquiv shuffle₁).injective hvacOn
+  subst external₂
+  subst vacuum₂
+  rfl
+
 end Fermionic
 end SecondQuantization
