@@ -43,13 +43,13 @@ noncomputable def quarticAnnihilatorLeg (n : ℕ) (i : Fin (2 * n)) : Fin (2 * (
 private theorem quarticCreatorLocalLeg_injective : Function.Injective quarticCreatorLocalLeg := by
   intro i j h
   apply Fin.ext
-  exact congrArg Fin.val h
+  simpa [quarticCreatorLocalLeg] using congrArg (fun x : Fin 4 => x.val) h
 
 private theorem quarticAnnihilatorLocalLeg_injective :
     Function.Injective quarticAnnihilatorLocalLeg := by
   intro i j h
   apply Fin.ext
-  have hval := congrArg Fin.val h
+  have hval := congrArg (fun x : Fin 4 => x.val) h
   simp only [quarticAnnihilatorLocalLeg] at hval
   omega
 
@@ -60,8 +60,9 @@ theorem quarticCreatorLeg_injective (n : ℕ) : Function.Injective (quarticCreat
   have hcoords := congrArg (Common.orderedQuarticLegEquiv n) h
   simp only [quarticCreatorLeg, Equiv.apply_symm_apply] at hcoords
   apply Prod.ext
-  · exact congrArg Prod.fst hcoords
-  · exact quarticCreatorLocalLeg_injective (congrArg Prod.snd hcoords)
+  · exact congrArg (fun x : Fin n × Fin 4 => x.1) hcoords
+  · apply quarticCreatorLocalLeg_injective
+    exact congrArg (fun x : Fin n × Fin 4 => x.2) hcoords
 
 /-- Distinct annihilation indices give distinct flattened quartic legs. -/
 theorem quarticAnnihilatorLeg_injective (n : ℕ) : Function.Injective (quarticAnnihilatorLeg n) := by
@@ -70,8 +71,9 @@ theorem quarticAnnihilatorLeg_injective (n : ℕ) : Function.Injective (quarticA
   have hcoords := congrArg (Common.orderedQuarticLegEquiv n) h
   simp only [quarticAnnihilatorLeg, Equiv.apply_symm_apply] at hcoords
   apply Prod.ext
-  · exact congrArg Prod.fst hcoords
-  · exact quarticAnnihilatorLocalLeg_injective (congrArg Prod.snd hcoords)
+  · exact congrArg (fun x : Fin n × Fin 4 => x.1) hcoords
+  · apply quarticAnnihilatorLocalLeg_injective
+    exact congrArg (fun x : Fin n × Fin 4 => x.2) hcoords
 
 /-- A quartic Wick pairing is number-conserving when every creation leg is paired with an
 annihilation leg and conversely. -/
