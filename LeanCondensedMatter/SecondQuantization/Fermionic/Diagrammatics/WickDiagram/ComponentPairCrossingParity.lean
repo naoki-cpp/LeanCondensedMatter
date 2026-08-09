@@ -41,7 +41,7 @@ theorem QuarticWickDiagram.componentOrderedLeg_lt_componentOrderedLeg_iff_slot_l
     intro hslot
     have hsigma := shuffle.slotEquiv.injective hslot
     exact hBC (congrArg Sigma.fst hsigma)
-  unfold QuarticWickDiagram.componentOrderedLeg
+  unfold Common.QuarticDiagram.componentOrderedLeg
   exact orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne S.card
     (shuffle.slotEquiv
       ⟨B, (Common.orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩)
