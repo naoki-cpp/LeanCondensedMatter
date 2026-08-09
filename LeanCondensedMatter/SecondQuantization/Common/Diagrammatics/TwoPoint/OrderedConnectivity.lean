@@ -43,11 +43,20 @@ theorem twoPointVertexOfLeg_orderedTwoPointLegToDiagramLeg
         (orderedTwoPointVertexOfLeg S.card leg) := by
   unfold orderedTwoPointVertexOfLeg twoPointVertexOfLeg
   simp only [orderedTwoPointLegToDiagramLeg, Equiv.trans_apply, Equiv.apply_symm_apply]
+  have hcast :
+      (finCongr (by simp) leg :
+        Fin (2 * (2 * (Finset.univ : Finset (Fin S.card)).card + 1))) =
+      Fin.cast (by simp) leg := by
+    apply Fin.ext
+    rfl
+  rw [hcast]
   generalize hleg :
       twoPointLegEquiv (Finset.univ : Finset (Fin S.card)) (Fin.cast (by simp) leg) = x
-  rcases x with e | ⟨v, l⟩ <;>
-    simp [orderedTwoPointLegDataEquivUniv, twoPointInteractionOrderLegEquiv,
-      twoPointInteractionOrderVertexEquiv] at hleg ⊢
+  rcases x with e | ⟨v, l⟩
+  · rw [hleg]
+    rfl
+  · rw [hleg]
+    rfl
 
 /-- The vertex graph of a pairing transported to one interaction order is isomorphic to the
 original diagram vertex graph. -/
@@ -115,7 +124,10 @@ theorem TwoPointDiagram.inInteractionOrder_vertexGraph_reachable_iff
           ((finCongr (congrArg (fun k : ℕ => 2 * k) h.symm)) p) =
         twoPointVertexOfLeg p := by
     intro p
-    simp [h, orderedTwoPointVertexOfLeg]
+    unfold orderedTwoPointVertexOfLeg
+    apply congrArg twoPointVertexOfLeg
+    apply Fin.ext
+    rfl
   rw [TwoPointDiagram.inInteractionOrder, TwoPointDiagram.vertexGraph]
   exact (pairingCast_vertexGraph_reachable_iff h
     (d.pairingInInteractionOrder order)
