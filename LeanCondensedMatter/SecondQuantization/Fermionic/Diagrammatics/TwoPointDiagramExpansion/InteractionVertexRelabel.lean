@@ -103,8 +103,10 @@ theorem twoPointVertexOfLeg_interactionVertexPositionRelabel {n : ℕ}
         (interactionVertexLegRelabel π
           (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)) leg))) = _
   rcases hleg : Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)) leg with e | ⟨v, l⟩
-  · simp [Common.twoPointVertexOfLeg, hleg]
-  · simp [Common.twoPointVertexOfLeg, hleg]
+  · rw [hleg]
+    simp [Common.twoPointVertexOfLeg]
+  · rw [hleg]
+    simp [Common.twoPointVertexOfLeg]
 
 /-- Relabel the interaction vertices of a fixed-external two-point Wick diagram. -/
 def FixedExternalTwoPointWickDiagram.relabelInteractionVertices
@@ -166,8 +168,10 @@ theorem FixedExternalTwoPointWickDiagram.relabelInteractionVertices_isExternally
       have h := ((d.relabelInteractionVertices_reachable_iff π
         (Sum.inl e) (Sum.inr ⟨π.symm v.1, Finset.mem_univ _⟩)).1 he)
       simpa [interactionVertexVertexRelabel] using h
-    · change d.1.vertexGraph.Reachable
-        (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)) at hExt ⊢
+    · change (d.relabelInteractionVertices π).1.vertexGraph.Reachable
+        (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)) at hExt
+      change d.1.vertexGraph.Reachable
+        (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))
       have h := ((d.relabelInteractionVertices_reachable_iff π
         (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))).1 hExt)
       simpa using h
