@@ -5,7 +5,7 @@ set_option linter.style.header false
 /-!
 # Connected fixed-diagram sums under interaction relabeling
 
-The full interaction-slot relabel equivalence restricts to the externally connected subtype.  This
+The full interaction-slot relabel equivalence restricts to the externally connected subtype. This
 is the finite-sum form used by the external-leg linked-cluster theorem; no orbit or stabilizer is
 introduced.
 -/
@@ -42,8 +42,11 @@ theorem sum_relabelInteractionVertices_externallyConnected
     (F : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode n i j → ℂ) :
     ∑ d : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode n i j,
         F ((externallyConnectedFixedExternalTwoPointWickDiagramRelabelEquiv i j π) d) =
-      ∑ d : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode n i j, F d :=
-  Equiv.sum_comp
+      ∑ d : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode n i j, F d := by
+  classical
+  letI : Fintype (ExternallyConnectedFixedExternalTwoPointWickDiagram Mode n i j) :=
+    Fintype.ofFinite _
+  exact Equiv.sum_comp
     (externallyConnectedFixedExternalTwoPointWickDiagramRelabelEquiv i j π) F
 
 end Fermionic
