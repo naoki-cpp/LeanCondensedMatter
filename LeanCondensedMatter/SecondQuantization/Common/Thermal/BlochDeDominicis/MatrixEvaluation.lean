@@ -78,8 +78,6 @@ theorem det_bipartitePairMatrix_succ_row_zero {Left Right R : Type*} [CommRing R
   apply Finset.sum_congr rfl
   intro j _
   congr 1
-  ext i k
-  rfl
 
 /-- Determinant recursion in the scalar wrapper used by the thermal layer. -/
 theorem determinantBipartitePairValue_succ {Left Right R : Type*} [CommRing R]
@@ -130,16 +128,19 @@ theorem Matrix.permanent_succ_row_zero {R : Type*} [CommSemiring R]
       have hzero : e 0 = (Equiv.Perm.decomposeFin e).1 := by
         simpa using Equiv.Perm.decomposeFin_symm_apply_zero
           (Equiv.Perm.decomposeFin e).1 (Equiv.Perm.decomposeFin e).2
-      rw [hzero])
+      rw [hzero, Equiv.symm_apply_apply])
   rw [hreindex, Fintype.sum_prod_type]
   apply Finset.sum_congr rfl
   intro j _
-  simp only [Prod.fst, Matrix.transpose_apply]
+  simp only [Matrix.transpose_apply]
   rw [← Finset.mul_sum]
-  rw [permanent_decomposeFin_inner A.transpose j]
-  congr 1
-  simpa [Matrix.submatrix, Matrix.transpose] using
-    Matrix.permanent_transpose (A.submatrix Fin.succ j.succAbove)
+  have hinner := permanent_decomposeFin_inner A.transpose j
+  simp only [Matrix.transpose_apply] at hinner
+  rw [hinner]
+  have hminor :
+      A.transpose.submatrix j.succAbove Fin.succ =
+        (A.submatrix Fin.succ j.succAbove).transpose := rfl
+  rw [hminor, Matrix.permanent_transpose]
 
 /-- Permanent recursion specialized to a bipartite contraction matrix. -/
 theorem permanentBipartitePairValue_succ {Left Right R : Type*} [CommSemiring R]
@@ -156,8 +157,6 @@ theorem permanentBipartitePairValue_succ {Left Right R : Type*} [CommSemiring R]
   apply Finset.sum_congr rfl
   intro j _
   congr 1
-  ext i k
-  rfl
 
 /-- Any normalized bipartite moment satisfying the determinant first-row recurrence is exactly the
 Mathlib determinant of its contraction matrix. -/
