@@ -159,14 +159,14 @@ def TwoPointDiagram.inInteractionOrderComponentInteractionEquiv
     have hx' : x = Sum.inr vExplicit := by
       apply (twoPointInteractionOrderVertexEquiv order).injective
       rw [hxeq]
-      rfl
+      simp [vAmbient, vExplicit, twoPointInteractionOrderVertexEquiv, finEquivUnivSubtype]
     simpa [hx'] using hx
   left_inv v := by
     apply Subtype.ext
-    simp [TwoPointDiagram.inInteractionOrderComponentInteractionEquiv]
+    simp
   right_inv v := by
     apply Subtype.ext
-    simp [TwoPointDiagram.inInteractionOrderComponentInteractionEquiv]
+    simp
 
 @[simp]
 theorem TwoPointDiagram.inInteractionOrderComponentInteractionEquiv_val
@@ -190,7 +190,7 @@ theorem TwoPointDiagram.interactionComponentSize_inInteractionOrder_eq
       (TwoPointDiagram.interactionPart
         ((d.inInteractionOrderComponentPartEquiv order B : d.componentPartition.parts) :
           Finset (TwoPointVertex S))).card := by
-  exact Fintype.card_congr (d.inInteractionOrderComponentInteractionEquiv order B)
+  simpa using Fintype.card_congr (d.inInteractionOrderComponentInteractionEquiv order B)
 
 end
 
