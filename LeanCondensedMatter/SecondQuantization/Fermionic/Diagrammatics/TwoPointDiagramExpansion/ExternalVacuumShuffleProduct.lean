@@ -80,7 +80,9 @@ theorem reassembleExternalVacuumSlotShuffle_dysonFixedTimeAmplitude_eq_integrand
   change d.dysonFixedTimeAmplitude ε β g τ τ' σ = _
   rw [d.dysonFixedTimeAmplitude_eq_external_mul_prod_vacuum]
   rw [SlotShuffle.integrand]
-  rfl
+  apply congrArg₂ (· * ·)
+  · rfl
+  · rfl
 
 /-- An injective-time pointwise binary external/vacuum factorization is sufficient to factor the
 sum of reassembled integrated amplitudes. Equal-time walls are discarded only here, by the generic
