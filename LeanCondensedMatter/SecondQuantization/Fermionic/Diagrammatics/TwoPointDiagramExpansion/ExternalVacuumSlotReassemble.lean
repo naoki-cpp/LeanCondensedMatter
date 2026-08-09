@@ -1,7 +1,8 @@
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalVacuumReassembleLaws
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordered
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.AmplitudeFactorization
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.OrderedConnectivity
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.InteractionVertexRelabelConnected
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.OrderedAmplitude
 
 set_option linter.style.header false
 
@@ -9,7 +10,7 @@ set_option linter.style.header false
 # Reassembling external and vacuum diagrams along a binary slot shuffle
 
 For fixed local external and vacuum interaction slots, a binary slot shuffle selects the ambient
-interaction vertices occupied by the connected external core.  The local diagrams are transported to
+interaction vertices occupied by the connected external core. The local diagrams are transported to
 those two complementary subsets and reassembled by the existing Common external/vacuum constructor.
 This is the structural presentation used by the one finite diagram-sum reindex in the external-leg
 linked-cluster theorem.
@@ -22,6 +23,57 @@ open Combinatorics
 open Combinatorics.BinaryShuffle
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+
+/-- Arbitrary-set fixed-external diagrams whose complete graph is externally connected. -/
+abbrev ExternallyConnectedFixedExternalTwoPointWickDiagramOn
+    (Mode : Type*) (N : ℕ) (S : Finset (Fin N)) (i j : Mode) :=
+  {d : FixedExternalTwoPointWickDiagramOn Mode N S i j // d.1.IsExternallyConnected}
+
+noncomputable instance externallyConnectedFixedExternalTwoPointWickDiagramFintype
+    (Mode : Type*) [Fintype Mode] (n : ℕ) (i j : Mode) :
+    Fintype (ExternallyConnectedFixedExternalTwoPointWickDiagram Mode n i j) :=
+  Fintype.ofFinite _
+
+noncomputable instance externallyConnectedFixedExternalTwoPointWickDiagramOnFintype
+    (Mode : Type*) [Fintype Mode] (N : ℕ) (S : Finset (Fin N)) (i j : Mode) :
+    Fintype (ExternallyConnectedFixedExternalTwoPointWickDiagramOn Mode N S i j) :=
+  Fintype.ofFinite _
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- The explicit diagram produced by the fixed-order equivalence is exactly the Common ordered
+reindexing of the underlying arbitrary-set diagram. -/
+theorem fixedExternalTwoPointWickDiagramOrderEquiv_val_eq_inInteractionOrder
+    {N : ℕ} {S : Finset (Fin N)} (i j : Mode) (order : Common.QuarticVertexOrder S)
+    (d : FixedExternalTwoPointWickDiagramOn Mode N S i j) :
+    (fixedExternalTwoPointWickDiagramOrderEquiv i j order d).1 =
+      d.1.inInteractionOrder order := by
+  apply Common.TwoPointDiagram.ext
+  · exact d.2.symm
+  · funext v
+    rfl
+  · apply Combinatorics.Pairing.ext
+    apply Equiv.ext
+    intro leg
+    apply Fin.ext
+    rfl
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- External connectedness is preserved by the fixed-order diagram equivalence. -/
+theorem fixedExternalTwoPointWickDiagramOrderEquiv_isExternallyConnected_iff
+    {N : ℕ} {S : Finset (Fin N)} (i j : Mode) (order : Common.QuarticVertexOrder S)
+    (d : FixedExternalTwoPointWickDiagramOn Mode N S i j) :
+    (fixedExternalTwoPointWickDiagramOrderEquiv i j order d).1.IsExternallyConnected ↔
+      d.1.IsExternallyConnected := by
+  rw [fixedExternalTwoPointWickDiagramOrderEquiv_val_eq_inInteractionOrder]
+  exact d.1.inInteractionOrder_isExternallyConnected_iff order
+
+/-- Restrict the fixed-order diagram equivalence to externally connected diagrams. -/
+noncomputable def externallyConnectedFixedExternalTwoPointWickDiagramOrderEquiv
+    {N : ℕ} {S : Finset (Fin N)} (i j : Mode) (order : Common.QuarticVertexOrder S) :
+    ExternallyConnectedFixedExternalTwoPointWickDiagramOn Mode N S i j ≃
+      ExternallyConnectedFixedExternalTwoPointWickDiagram Mode S.card i j :=
+  (fixedExternalTwoPointWickDiagramOrderEquiv i j order).subtypeEquiv fun d =>
+    (fixedExternalTwoPointWickDiagramOrderEquiv_isExternallyConnected_iff i j order d).symm
 
 /-- Increasing order on the ambient slots occupied by the left side of a binary shuffle. -/
 noncomputable def SlotShuffle.leftVertexOrder {k m : ℕ} (shuffle : SlotShuffle k m) :
