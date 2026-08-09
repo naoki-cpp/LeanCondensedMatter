@@ -8,9 +8,6 @@ set_option linter.style.header false
 A number-conserving quartic Wick pairing matches the `2 * n` creation legs bijectively with the
 `2 * n` annihilation legs. This file extracts that bipartite matching as a permutation without
 changing the stored `Pairing` representation yet.
-
-The construction is intentionally minimal: it is the bridge needed to test whether the existing
-fermionic crossing-parity sign machinery can be replaced by `Equiv.Perm.sign` with net code deletion.
 -/
 
 namespace SecondQuantization
@@ -76,63 +73,39 @@ theorem quarticAnnihilatorLeg_injective (n : ℕ) : Function.Injective (quarticA
     exact congrArg (fun x : Fin n × Fin 4 => x.2) hcoords
 
 /-- A quartic Wick pairing is number-conserving when every creation leg is paired with an
-annihilation leg and conversely. -/
+annihilation leg. The converse follows automatically because both finite leg families have the same
+cardinality and the pairing partner map is injective. -/
 def QuarticWickDiagram.HasNumberConservingPairing {Mode : Type*} {N : ℕ}
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) : Prop :=
-  (∀ i : Fin (2 * S.card), ∃ j : Fin (2 * S.card),
-      d.pairing.partner (quarticCreatorLeg S.card i) = quarticAnnihilatorLeg S.card j) ∧
-    (∀ j : Fin (2 * S.card), ∃ i : Fin (2 * S.card),
-      d.pairing.partner (quarticAnnihilatorLeg S.card j) = quarticCreatorLeg S.card i)
+  ∀ i : Fin (2 * S.card), ∃ j : Fin (2 * S.card),
+    d.pairing.partner (quarticCreatorLeg S.card i) = quarticAnnihilatorLeg S.card j
 
 private noncomputable def QuarticWickDiagram.matchingTo {Mode : Type*} {N : ℕ}
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (h : d.HasNumberConservingPairing)
     (i : Fin (2 * S.card)) : Fin (2 * S.card) :=
-  Classical.choose (h.1 i)
+  Classical.choose (h i)
 
 private theorem QuarticWickDiagram.matchingTo_spec {Mode : Type*} {N : ℕ}
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (h : d.HasNumberConservingPairing)
     (i : Fin (2 * S.card)) :
     d.pairing.partner (quarticCreatorLeg S.card i) =
       quarticAnnihilatorLeg S.card (d.matchingTo h i) :=
-  Classical.choose_spec (h.1 i)
+  Classical.choose_spec (h i)
 
-private noncomputable def QuarticWickDiagram.matchingFrom {Mode : Type*} {N : ℕ}
-    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (h : d.HasNumberConservingPairing)
-    (j : Fin (2 * S.card)) : Fin (2 * S.card) :=
-  Classical.choose (h.2 j)
-
-private theorem QuarticWickDiagram.matchingFrom_spec {Mode : Type*} {N : ℕ}
-    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (h : d.HasNumberConservingPairing)
-    (j : Fin (2 * S.card)) :
-    d.pairing.partner (quarticAnnihilatorLeg S.card j) =
-      quarticCreatorLeg S.card (d.matchingFrom h j) :=
-  Classical.choose_spec (h.2 j)
+private theorem QuarticWickDiagram.matchingTo_injective {Mode : Type*} {N : ℕ}
+    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (h : d.HasNumberConservingPairing) :
+    Function.Injective (d.matchingTo h) := by
+  intro i j hij
+  apply quarticCreatorLeg_injective S.card
+  apply d.pairing.partner.injective
+  rw [d.matchingTo_spec h i, d.matchingTo_spec h j, hij]
 
 /-- The creator-to-annihilator matching permutation determined by a number-conserving quartic
 pairing. -/
 noncomputable def QuarticWickDiagram.matching {Mode : Type*} {N : ℕ}
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (h : d.HasNumberConservingPairing) :
-    Equiv.Perm (Fin (2 * S.card)) where
-  toFun := d.matchingTo h
-  invFun := d.matchingFrom h
-  left_inv i := by
-    apply quarticCreatorLeg_injective S.card
-    calc
-      quarticCreatorLeg S.card (d.matchingFrom h (d.matchingTo h i)) =
-          d.pairing.partner (quarticAnnihilatorLeg S.card (d.matchingTo h i)) :=
-        (d.matchingFrom_spec h (d.matchingTo h i)).symm
-      _ = d.pairing.partner (d.pairing.partner (quarticCreatorLeg S.card i)) := by
-        rw [← d.matchingTo_spec h i]
-      _ = quarticCreatorLeg S.card i := d.pairing.partner_partner _
-  right_inv j := by
-    apply quarticAnnihilatorLeg_injective S.card
-    calc
-      quarticAnnihilatorLeg S.card (d.matchingTo h (d.matchingFrom h j)) =
-          d.pairing.partner (quarticCreatorLeg S.card (d.matchingFrom h j)) :=
-        (d.matchingTo_spec h (d.matchingFrom h j)).symm
-      _ = d.pairing.partner (d.pairing.partner (quarticAnnihilatorLeg S.card j)) := by
-        rw [← d.matchingFrom_spec h j]
-      _ = quarticAnnihilatorLeg S.card j := d.pairing.partner_partner _
+    Equiv.Perm (Fin (2 * S.card)) :=
+  Equiv.ofBijective (d.matchingTo h) (d.matchingTo_injective h).bijective_of_finite
 
 /-- Applying the extracted matching gives exactly the annihilation leg paired to a creator. -/
 @[simp]
