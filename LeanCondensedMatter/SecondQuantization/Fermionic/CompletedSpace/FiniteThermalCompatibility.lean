@@ -14,8 +14,6 @@ probabilities, and diagonal Gibbs density operators describe the same state unde
 namespace SecondQuantization
 namespace Fermionic
 
-open QuantumTheory
-
 noncomputable section
 
 variable {Mode : Type*}
@@ -56,21 +54,6 @@ theorem completedFiniteHilbertEquiv_intertwines_freeGibbsDensity
   rw [completedFiniteHilbertEquiv_basisState,
     Common.finiteGibbsDensityOperator_apply_basis,
     completedFreeGibbsProbability_eq_finite]
-
-/-- Canonical finite-mode specialization of the completed free Gibbs density operator. -/
-noncomputable def completedFiniteFreeGibbsDensityOperator
-    (ε : Mode → ℝ) (β : ℝ) : DensityOperator (CompletedFockSpace Mode) :=
-  completedFreeGibbsDensityOperator ε β (completedFreeGibbsSummable_finite ε β)
-
-/-- The canonical finite-mode completed Gibbs state intertwines with the existing finite state. -/
-theorem completedFiniteHilbertEquiv_intertwines_canonicalFreeGibbsDensity
-    (ε : Mode → ℝ) (β : ℝ) :
-    (completedFiniteHilbertContinuousEquiv (Mode := Mode)).toContinuousLinearMap.comp
-        (completedFiniteFreeGibbsDensityOperator ε β).op =
-      (Common.finiteGibbsDensityOperator (fermionEnergy ε) β).op.comp
-        (completedFiniteHilbertContinuousEquiv (Mode := Mode)).toContinuousLinearMap := by
-  exact completedFiniteHilbertEquiv_intertwines_freeGibbsDensity ε β
-    (completedFreeGibbsSummable_finite ε β)
 
 end
 end Fermionic
