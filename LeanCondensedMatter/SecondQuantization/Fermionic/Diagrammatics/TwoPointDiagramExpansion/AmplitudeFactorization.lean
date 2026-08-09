@@ -31,7 +31,17 @@ abbrev ExternallyConnectedFixedExternalTwoPointWickDiagramOn
     (Mode : Type*) (N : ℕ) (S : Finset (Fin N)) (i j : Mode) :=
   {d : FixedExternalTwoPointWickDiagramOn Mode N S i j // d.1.IsExternallyConnected}
 
-omit [Fintype Mode] in
+noncomputable instance externallyConnectedFixedExternalTwoPointWickDiagramFintype
+    (Mode : Type*) [Fintype Mode] (n : ℕ) (i j : Mode) :
+    Fintype (ExternallyConnectedFixedExternalTwoPointWickDiagram Mode n i j) :=
+  Fintype.ofFinite _
+
+noncomputable instance externallyConnectedFixedExternalTwoPointWickDiagramOnFintype
+    (Mode : Type*) [Fintype Mode] (N : ℕ) (S : Finset (Fin N)) (i j : Mode) :
+    Fintype (ExternallyConnectedFixedExternalTwoPointWickDiagramOn Mode N S i j) :=
+  Fintype.ofFinite _
+
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The explicit diagram produced by the fixed-order equivalence is exactly the Common ordered
 reindexing of the underlying arbitrary-set diagram. -/
 theorem fixedExternalTwoPointWickDiagramOrderEquiv_val_eq_inInteractionOrder
@@ -49,7 +59,7 @@ theorem fixedExternalTwoPointWickDiagramOrderEquiv_val_eq_inInteractionOrder
     apply Fin.ext
     rfl
 
-omit [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- External connectedness is preserved by the fixed-order diagram equivalence. -/
 theorem fixedExternalTwoPointWickDiagramOrderEquiv_isExternallyConnected_iff
     {S : Finset (Fin N)} (i j : Mode) (order : Common.QuarticVertexOrder S)
@@ -77,11 +87,6 @@ theorem sum_connected_orderedDysonAmplitude_eq_sum_connected_dysonAmplitude
         d.1.orderedDysonAmplitude order ε β g τ τ') =
       ∑ d : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode S.card i j,
         d.1.dysonAmplitude ε β g τ τ' := by
-  classical
-  letI : Fintype (ExternallyConnectedFixedExternalTwoPointWickDiagramOn Mode N S i j) :=
-    Fintype.ofFinite _
-  letI : Fintype (ExternallyConnectedFixedExternalTwoPointWickDiagram Mode S.card i j) :=
-    Fintype.ofFinite _
   exact Equiv.sum_comp
     (externallyConnectedFixedExternalTwoPointWickDiagramOrderEquiv i j order)
     (fun d => d.1.dysonAmplitude ε β g τ τ')
@@ -97,11 +102,6 @@ theorem sum_connected_fixedExternalTwoPointWickDiagramAmplitude_eq_factorial_mul
       (S.card.factorial : ℂ) *
         ∑ d : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode S.card i j,
           d.1.dysonAmplitude ε β g τ τ' := by
-  classical
-  letI : Fintype (ExternallyConnectedFixedExternalTwoPointWickDiagramOn Mode N S i j) :=
-    Fintype.ofFinite _
-  letI : Fintype (ExternallyConnectedFixedExternalTwoPointWickDiagram Mode S.card i j) :=
-    Fintype.ofFinite _
   simp only [fixedExternalTwoPointWickDiagramAmplitude]
   rw [Finset.sum_comm]
   simp_rw [sum_connected_orderedDysonAmplitude_eq_sum_connected_dysonAmplitude
