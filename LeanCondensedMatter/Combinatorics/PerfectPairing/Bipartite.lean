@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 import Mathlib.Logic.Equiv.Fin.Basic
 
 set_option linter.style.header false
