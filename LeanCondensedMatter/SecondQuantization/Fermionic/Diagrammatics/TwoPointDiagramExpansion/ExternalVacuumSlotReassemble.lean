@@ -224,5 +224,80 @@ theorem reassembleExternalVacuumSlotData_injective {k m : ℕ} (i j : Mode) :
   subst vacuum₂
   rfl
 
+/-- Fixed-external diagrams of total order `k+m` whose external component contains exactly `k`
+interaction vertices. -/
+abbrev FixedExternalTwoPointWickDiagramOfExternalOrder
+    (Mode : Type*) (k m : ℕ) (i j : Mode) :=
+  {d : FixedExternalTwoPointWickDiagram Mode (k + m) i j //
+    d.1.externalInteractionPart.card = k}
+
+/-- Reassemble slot data and remember the external-component order. -/
+noncomputable def reassembleExternalVacuumSlotDataOfExternalOrder {k m : ℕ} (i j : Mode)
+    (x : ExternalVacuumSlotData Mode k m i j) :
+    FixedExternalTwoPointWickDiagramOfExternalOrder Mode k m i j :=
+  ⟨reassembleExternalVacuumSlotData i j x, by
+    rw [reassembleExternalVacuumSlotData,
+      reassembleExternalVacuumSlotShuffle_externalInteractionPart]
+    exact x.2.2.card_leftSlots⟩
+
+/-- Every fixed-external diagram of external order `k` is obtained from a unique connected explicit
+external core, explicit vacuum remainder, and binary slot shuffle. -/
+theorem reassembleExternalVacuumSlotDataOfExternalOrder_surjective {k m : ℕ} (i j : Mode) :
+    Function.Surjective
+      (reassembleExternalVacuumSlotDataOfExternalOrder
+        (Mode := Mode) (k := k) (m := m) i j) := by
+  intro d
+  let E : Finset (Fin (k + m)) := d.1.1.externalInteractionPart
+  let shuffle : SlotShuffle k m :=
+    (SlotShuffle.leftSlotSetEquiv k m).symm ⟨E, d.2⟩
+  have hslots : shuffle.leftSlots = E := by
+    have h := (SlotShuffle.leftSlotSetEquiv k m).apply_symm_apply ⟨E, d.2⟩
+    exact congrArg Subtype.val h
+  let externalOnE :
+      ExternallyConnectedFixedExternalTwoPointWickDiagramOn Mode (k + m) E i j :=
+    ⟨⟨d.1.1.restrictExternalComponent, d.1.2⟩,
+      d.1.1.restrictExternalComponent_isExternallyConnected⟩
+  let externalOn :
+      ExternallyConnectedFixedExternalTwoPointWickDiagramOn
+        Mode (k + m) shuffle.leftSlots i j := by
+    rw [hslots]
+    exact externalOnE
+  let vacuumOnE : QuarticWickDiagram Mode (k + m)
+      ((Finset.univ : Finset (Fin (k + m))) \ E) :=
+    d.1.1.restrictVacuumRemainder
+  let vacuumOn : QuarticWickDiagram Mode (k + m)
+      ((Finset.univ : Finset (Fin (k + m))) \ shuffle.leftSlots) := by
+    rw [hslots]
+    exact vacuumOnE
+  let external := (connectedExternalOnSlotShuffleEquiv i j shuffle).symm externalOn
+  let vacuum := (vacuumOnSlotShuffleEquiv shuffle).symm vacuumOn
+  refine ⟨(external, vacuum, shuffle), ?_⟩
+  apply Subtype.ext
+  apply Subtype.ext
+  have hext : connectedExternalOnSlotShuffle i j external shuffle = externalOn :=
+    (connectedExternalOnSlotShuffleEquiv i j shuffle).apply_symm_apply externalOn
+  have hvac : vacuumOnSlotShuffle vacuum shuffle = vacuumOn :=
+    (vacuumOnSlotShuffleEquiv shuffle).apply_symm_apply vacuumOn
+  change Common.TwoPointDiagram.reassembleExternalVacuum
+      (Finset.subset_univ shuffle.leftSlots)
+      ⟨(connectedExternalOnSlotShuffle i j external shuffle).1.1,
+        (connectedExternalOnSlotShuffle i j external shuffle).2⟩
+      (vacuumOnSlotShuffle vacuum shuffle) = d.1.1
+  rw [hext, hvac]
+  rw [hslots]
+  exact d.1.1.reassemble_restrictExternal_restrictVacuumRemainder
+
+/-- Binary slot data are equivalent to full fixed-external diagrams with a prescribed external
+component order. -/
+noncomputable def externalVacuumSlotDataEquivOfExternalOrder {k m : ℕ} (i j : Mode) :
+    ExternalVacuumSlotData Mode k m i j ≃
+      FixedExternalTwoPointWickDiagramOfExternalOrder Mode k m i j :=
+  Equiv.ofBijective
+    (reassembleExternalVacuumSlotDataOfExternalOrder
+      (Mode := Mode) (k := k) (m := m) i j)
+    ⟨fun x y h => reassembleExternalVacuumSlotData_injective i j
+        (congrArg Subtype.val h),
+      reassembleExternalVacuumSlotDataOfExternalOrder_surjective i j⟩
+
 end Fermionic
 end SecondQuantization
