@@ -160,6 +160,32 @@ theorem SlotShuffle.mem_rightSlots_iff_not_mem_leftSlots {m n : ℕ}
           rw [hpre] at h
           exact h⟩
 
+/-- Increasing left local slots are equivalent to the left-slot subtype. -/
+noncomputable def SlotShuffle.leftSlotEquiv {m n : ℕ} (σ : SlotShuffle m n) :
+    Fin m ≃ ↥σ.leftSlots :=
+  (Equiv.ofInjective (fun i : Fin m => σ.slotEquiv (Sum.inl i))
+      σ.strictMonoLeft.injective).trans
+    (Equiv.setCongr (by
+      ext x
+      simp [SlotShuffle.leftSlots]))
+
+@[simp]
+theorem SlotShuffle.leftSlotEquiv_val {m n : ℕ} (σ : SlotShuffle m n) (i : Fin m) :
+    (σ.leftSlotEquiv i).1 = σ.slotEquiv (Sum.inl i) := rfl
+
+/-- Increasing right local slots are equivalent to the complement of the left-slot subtype. -/
+noncomputable def SlotShuffle.rightComplementEquiv {m n : ℕ} (σ : SlotShuffle m n) :
+    Fin n ≃ ↥((Finset.univ : Finset (Fin (m + n))) \ σ.leftSlots) :=
+  (Equiv.ofInjective (fun j : Fin n => σ.slotEquiv (Sum.inr j))
+      σ.strictMonoRight.injective).trans
+    (Equiv.setCongr (by
+      ext x
+      simp [σ.mem_rightSlots_iff_not_mem_leftSlots]))
+
+@[simp]
+theorem SlotShuffle.rightComplementEquiv_val {m n : ℕ} (σ : SlotShuffle m n) (j : Fin n) :
+    (σ.rightComplementEquiv j).1 = σ.slotEquiv (Sum.inr j) := rfl
+
 /-- A slot shuffle is uniquely determined by the ambient positions of its left slots. -/
 theorem SlotShuffle.eq_of_leftSlots_eq {m n : ℕ} {σ τ : SlotShuffle m n}
     (hslots : σ.leftSlots = τ.leftSlots) : σ = τ := by
