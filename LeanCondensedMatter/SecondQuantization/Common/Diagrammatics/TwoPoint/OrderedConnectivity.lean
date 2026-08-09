@@ -41,13 +41,13 @@ theorem twoPointVertexOfLeg_orderedTwoPointLegToDiagramLeg
     twoPointVertexOfLeg (orderedTwoPointLegToDiagramLeg order leg) =
       twoPointInteractionOrderVertexEquiv order
         (orderedTwoPointVertexOfLeg S.card leg) := by
-  let x : OrderedTwoPointLegData S.card :=
-    (orderedTwoPointLegDataEquivUniv S.card).symm
-      (twoPointLegEquiv (Finset.univ : Finset (Fin S.card)) (Fin.cast (by simp) leg))
-  change twoPointLegVertex (twoPointInteractionOrderLegEquiv order x) =
-    twoPointInteractionOrderVertexEquiv order
-      (twoPointLegVertex (orderedTwoPointLegDataEquivUniv S.card x))
-  rcases x with e | ⟨v, l⟩ <;> rfl
+  unfold orderedTwoPointVertexOfLeg twoPointVertexOfLeg
+  simp only [orderedTwoPointLegToDiagramLeg, Equiv.trans_apply, Equiv.apply_symm_apply]
+  generalize hleg :
+      twoPointLegEquiv (Finset.univ : Finset (Fin S.card)) (Fin.cast (by simp) leg) = x
+  rcases x with e | ⟨v, l⟩ <;>
+    simp [orderedTwoPointLegDataEquivUniv, twoPointInteractionOrderLegEquiv,
+      twoPointInteractionOrderVertexEquiv] at hleg ⊢
 
 /-- The vertex graph of a pairing transported to one interaction order is isomorphic to the
 original diagram vertex graph. -/
@@ -66,6 +66,28 @@ theorem TwoPointDiagram.pairingInInteractionOrder_reachable_iff
     twoPointVertexOfLeg (orderedTwoPointVertexOfLeg S.card)
     (twoPointVertexOfLeg_orderedTwoPointLegToDiagramLeg order) v w
 
+private theorem orderedTwoPointPairingCardEq (n : ℕ) :
+    2 * n + 1 = 2 * (Finset.univ : Finset (Fin n)).card + 1 := by
+  simp
+
+private theorem pairingCast_vertexGraph_reachable_iff
+    {m n : ℕ} (h : m = n) (pairing : Pairing m) {Vertex : Type*}
+    (vertexOfLegM : Fin (2 * m) → Vertex)
+    (vertexOfLegN : Fin (2 * n) → Vertex)
+    (hvertex : ∀ p : Fin (2 * n),
+      vertexOfLegM
+          ((finCongr (congrArg (fun k : ℕ => 2 * k) h.symm)) p) =
+        vertexOfLegN p)
+    (v w : Vertex) :
+    ((Equiv.cast (congrArg Pairing h) pairing).vertexGraph vertexOfLegN).Reachable v w ↔
+      (pairing.vertexGraph vertexOfLegM).Reachable v w := by
+  subst n
+  have hfun : vertexOfLegM = vertexOfLegN := by
+    funext p
+    simpa using hvertex p
+  subst vertexOfLegN
+  simp
+
 /-- The actual two-point diagram on explicit `Fin S.card` slots obtained from one interaction order. -/
 noncomputable def TwoPointDiagram.inInteractionOrder
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
@@ -74,8 +96,9 @@ noncomputable def TwoPointDiagram.inInteractionOrder
       (Finset.univ : Finset (Fin S.card)) where
   externalLabel := d.externalLabel
   vertexLabel := fun v => d.vertexLabel (order v.1)
-  pairing := by
-    simpa using d.pairingInInteractionOrder order
+  pairing := Equiv.cast
+    (congrArg Pairing (orderedTwoPointPairingCardEq S.card))
+    (d.pairingInInteractionOrder order)
 
 /-- Standard explicit vertex incidence agrees with the cardinality-normalized ordered incidence. -/
 theorem TwoPointDiagram.inInteractionOrder_vertexGraph_reachable_iff
@@ -86,11 +109,18 @@ theorem TwoPointDiagram.inInteractionOrder_vertexGraph_reachable_iff
       d.vertexGraph.Reachable
         (twoPointInteractionOrderVertexEquiv order v)
         (twoPointInteractionOrderVertexEquiv order w) := by
-  have hcard : (Finset.univ : Finset (Fin S.card)).card = S.card := by simp
-  cases hcard
-  simpa [TwoPointDiagram.inInteractionOrder, TwoPointDiagram.vertexGraph,
-    orderedTwoPointVertexOfLeg] using
-    d.pairingInInteractionOrder_reachable_iff order v w
+  let h := orderedTwoPointPairingCardEq S.card
+  have hvertex : ∀ p : Fin (2 * (2 * (Finset.univ : Finset (Fin S.card)).card + 1)),
+      orderedTwoPointVertexOfLeg S.card
+          ((finCongr (congrArg (fun k : ℕ => 2 * k) h.symm)) p) =
+        twoPointVertexOfLeg p := by
+    intro p
+    simp [h, orderedTwoPointVertexOfLeg]
+  rw [TwoPointDiagram.inInteractionOrder, TwoPointDiagram.vertexGraph]
+  exact (pairingCast_vertexGraph_reachable_iff h
+    (d.pairingInInteractionOrder order)
+    (orderedTwoPointVertexOfLeg S.card) twoPointVertexOfLeg hvertex v w).trans
+      (d.pairingInInteractionOrder_reachable_iff order v w)
 
 /-- External connectedness is invariant under interaction-vertex ordering. -/
 theorem TwoPointDiagram.inInteractionOrder_isExternallyConnected_iff
