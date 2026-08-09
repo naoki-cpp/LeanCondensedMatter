@@ -58,6 +58,7 @@ theorem measurableLocallyBounded_explicitVacuumContractionIntegrand
       (explicitQuarticVertexOrder m)).comp hcast
   exact intervalIntegral.Continuous.measurableLocallyBounded hcont
 
+set_option maxHeartbeats 1000000 in
 /-- Injective-time binary external/vacuum factorization for one reassembled diagram. -/
 theorem reassembleExternalVacuumSlotShuffle_dysonFixedTimeAmplitude_eq_integrand_of_injective
     {k m : ℕ} (i j : Mode)
@@ -84,8 +85,8 @@ theorem reassembleExternalVacuumSlotShuffle_dysonFixedTimeAmplitude_eq_integrand
   · rw [d.mixedExternalDysonFixedTimeValue_eq_restricted]
     rw [external.dysonFixedTimeAmplitude_eq_external]
     rw [external.1.mixedExternalDysonFixedTimeValue_eq_restricted]
-    rfl
-  · rfl
+    simp?
+  · simp?
 
 /-- An injective-time pointwise binary external/vacuum factorization is sufficient to factor the
 sum of reassembled integrated amplitudes. Equal-time walls are discarded only here, by the generic
