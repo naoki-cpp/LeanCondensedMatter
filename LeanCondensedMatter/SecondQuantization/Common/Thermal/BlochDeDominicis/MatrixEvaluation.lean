@@ -61,7 +61,7 @@ theorem determinantBipartitePairValue_zero {Left Right R : Type*} [CommRing R]
 theorem permanentBipartitePairValue_zero {Left Right R : Type*} [CommSemiring R]
     (pairValue : Left → Right → R) (left : Fin 0 → Left) (right : Fin 0 → Right) :
     permanentBipartitePairValue pairValue left right = 1 := by
-  simp [permanentBipartitePairValue]
+  simp [permanentBipartitePairValue, Matrix.permanent]
 
 /-- Mathlib's row-zero Laplace expansion specialized to a contraction matrix. This is the
 fermionic first-pair recursion with the remaining left field and the chosen right field removed. -/
@@ -74,8 +74,12 @@ theorem det_bipartitePairMatrix_succ_row_zero {Left Right R : Type*} [CommRing R
           (bipartitePairMatrix pairValue
             (fun i : Fin n => left i.succ)
             (fun i : Fin n => right (j.succAbove i))).det := by
-  simpa [bipartitePairMatrix] using
-    Matrix.det_succ_row_zero (bipartitePairMatrix pairValue left right)
+  rw [Matrix.det_succ_row_zero]
+  apply Finset.sum_congr rfl
+  intro j _
+  congr 1
+  ext i k
+  rfl
 
 /-- Determinant recursion in the scalar wrapper used by the thermal layer. -/
 theorem determinantBipartitePairValue_succ {Left Right R : Type*} [CommRing R]
@@ -102,12 +106,8 @@ private theorem permanent_decomposeFin_inner {R : Type*} [CommSemiring R]
     simp
   · rw [Matrix.permanent]
     let c : Equiv.Perm (Fin n) := k.cycleRange
-    have hreindex := (Equiv.mulLeft c).sum_comp
-      (fun e : Equiv.Perm (Fin n) =>
-        ∏ i : Fin n, A (k.succ.succAbove (e i)) i.succ)
-    rw [← hreindex]
-    apply Finset.sum_congr rfl
-    intro e _
+    refine Fintype.sum_equiv (Equiv.mulLeft c) _ _ ?_
+    intro e
     apply Finset.prod_congr rfl
     intro i _
     simp [c, Equiv.Perm.decomposeFin_symm_apply_succ, Fin.succAbove_cycleRange]
@@ -119,8 +119,7 @@ theorem Matrix.permanent_succ_row_zero {R : Type*} [CommSemiring R]
     A.permanent =
       ∑ j : Fin (n + 1),
         A 0 j * (A.submatrix Fin.succ j.succAbove).permanent := by
-  rw [← Matrix.permanent_transpose A]
-  rw [Matrix.permanent]
+  rw [← Matrix.permanent_transpose A, Matrix.permanent]
   have hreindex := Fintype.sum_equiv Equiv.Perm.decomposeFin
     (fun e : Equiv.Perm (Fin (n + 1)) => ∏ i : Fin (n + 1), A.transpose (e i) i)
     (fun pe : Fin (n + 1) × Equiv.Perm (Fin n) =>
@@ -128,15 +127,19 @@ theorem Matrix.permanent_succ_row_zero {R : Type*} [CommSemiring R]
         ∏ i : Fin n, A.transpose ((Equiv.Perm.decomposeFin.symm pe) i.succ) i.succ)
     (fun e => by
       rw [Fin.prod_univ_succ]
-      simp)
-  rw [hreindex]
-  rw [Fintype.sum_prod_type]
+      have hzero : e 0 = (Equiv.Perm.decomposeFin e).1 := by
+        simpa using Equiv.Perm.decomposeFin_symm_apply_zero
+          (Equiv.Perm.decomposeFin e).1 (Equiv.Perm.decomposeFin e).2
+      rw [hzero])
+  rw [hreindex, Fintype.sum_prod_type]
   apply Finset.sum_congr rfl
   intro j _
+  simp only [Prod.fst, Matrix.transpose_apply]
   rw [← Finset.mul_sum]
-  simp only [Matrix.transpose_apply]
   rw [permanent_decomposeFin_inner A.transpose j]
-  simpa using Matrix.permanent_transpose (A.submatrix Fin.succ j.succAbove)
+  congr 1
+  simpa [Matrix.submatrix, Matrix.transpose] using
+    Matrix.permanent_transpose (A.submatrix Fin.succ j.succAbove)
 
 /-- Permanent recursion specialized to a bipartite contraction matrix. -/
 theorem permanentBipartitePairValue_succ {Left Right R : Type*} [CommSemiring R]
@@ -148,8 +151,13 @@ theorem permanentBipartitePairValue_succ {Left Right R : Type*} [CommSemiring R]
           permanentBipartitePairValue pairValue
             (fun i : Fin n => left i.succ)
             (fun i : Fin n => right (j.succAbove i)) := by
-  simpa [permanentBipartitePairValue, bipartitePairMatrix] using
-    Matrix.permanent_succ_row_zero (bipartitePairMatrix pairValue left right)
+  unfold permanentBipartitePairValue
+  rw [Matrix.permanent_succ_row_zero]
+  apply Finset.sum_congr rfl
+  intro j _
+  congr 1
+  ext i k
+  rfl
 
 /-- Any normalized bipartite moment satisfying the determinant first-row recurrence is exactly the
 Mathlib determinant of its contraction matrix. -/
