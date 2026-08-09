@@ -199,6 +199,23 @@ noncomputable def twoPointNormalizedDiagramSeries
   twoPointUnnormalizedDiagramSeries ε β g i j τ τ' *
     (normalizedVacuumDysonSeries ε β g)⁻¹
 
+/-- A coefficientwise external×vacuum convolution is exactly the numerator-series product
+factorization. -/
+theorem twoPointUnnormalizedDiagramSeries_eq_mul_of_coeff_convolution
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ)
+    (hconv : ∀ n : ℕ,
+      twoPointUnnormalizedDiagramCoeff ε β g i j τ τ' n =
+        ∑ p ∈ Finset.antidiagonal n,
+          twoPointConnectedDiagramCoeff ε β g i j τ τ' p.1 *
+            normalizedDysonPartitionCoeff ε β (quarticInteraction g) p.2) :
+    twoPointUnnormalizedDiagramSeries ε β g i j τ τ' =
+      twoPointConnectedDiagramSeries ε β g i j τ τ' *
+        normalizedVacuumDysonSeries ε β g := by
+  ext n
+  rw [PowerSeries.coeff_mul]
+  simpa using hconv n
+
 /-- Once the numerator factorization is established, formal vacuum cancellation is immediate because
 the normalized vacuum series has constant coefficient one. -/
 theorem twoPointNormalizedDiagramSeries_eq_connected_of_factorization
@@ -214,6 +231,24 @@ theorem twoPointNormalizedDiagramSeries_eq_connected_of_factorization
     PowerSeries.mul_inv_cancel _ (by
       rw [constantCoeff_normalizedVacuumDysonSeries]
       exact one_ne_zero), mul_one]
+
+/-- Coefficientwise convolution therefore implies the normalized external-leg coefficient is the
+sum of externally connected diagrams. -/
+theorem coeff_twoPointNormalizedDiagramSeries_eq_connected_of_coeff_convolution
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (i j : Mode) (τ τ' : ℝ) (n : ℕ)
+    (hconv : ∀ r : ℕ,
+      twoPointUnnormalizedDiagramCoeff ε β g i j τ τ' r =
+        ∑ p ∈ Finset.antidiagonal r,
+          twoPointConnectedDiagramCoeff ε β g i j τ τ' p.1 *
+            normalizedDysonPartitionCoeff ε β (quarticInteraction g) p.2) :
+    PowerSeries.coeff n (twoPointNormalizedDiagramSeries ε β g i j τ τ') =
+      twoPointConnectedDiagramCoeff ε β g i j τ τ' n := by
+  rw [twoPointNormalizedDiagramSeries_eq_connected_of_factorization
+    ε β g i j τ τ'
+    (twoPointUnnormalizedDiagramSeries_eq_mul_of_coeff_convolution
+      ε β g i j τ τ' hconv)]
+  exact coeff_twoPointConnectedDiagramSeries ε β g i j τ τ' n
 
 end FiniteMode
 
