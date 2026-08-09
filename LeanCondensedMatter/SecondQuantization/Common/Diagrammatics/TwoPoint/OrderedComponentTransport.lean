@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentOrderDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.OrderedConnectivity
 
 set_option linter.style.header false
@@ -191,6 +192,54 @@ theorem TwoPointDiagram.interactionComponentSize_inInteractionOrder_eq
         ((d.inInteractionOrderComponentPartEquiv order B : d.componentPartition.parts) :
           Finset (TwoPointVertex S))).card := by
   simpa using Fintype.card_congr (d.inInteractionOrderComponentInteractionEquiv order B)
+
+/-- Component-local vertex orders are transported through the same component interaction-vertex
+equivalence. -/
+def TwoPointDiagram.inInteractionOrderComponentVertexOrderEquiv
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (order : QuarticVertexOrder S)
+    (B : (d.inInteractionOrder order).componentPartition.parts) :
+    QuarticVertexOrder (TwoPointDiagram.interactionPart
+      (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin S.card))))) ≃
+    QuarticVertexOrder (TwoPointDiagram.interactionPart
+      ((d.inInteractionOrderComponentPartEquiv order B : d.componentPartition.parts) :
+        Finset (TwoPointVertex S))) := by
+  let hcard := d.interactionComponentSize_inInteractionOrder_eq order B
+  let e := d.inInteractionOrderComponentInteractionEquiv order B
+  exact
+    { toFun := fun localOrder => (finCongr hcard.symm).trans (localOrder.trans e)
+      invFun := fun localOrder => (finCongr hcard).trans (localOrder.trans e.symm)
+      left_inv := by
+        intro localOrder
+        apply Equiv.ext
+        intro x
+        simp [hcard, e]
+      right_inv := by
+        intro localOrder
+        apply Equiv.ext
+        intro x
+        simp [hcard, e] }
+
+/-- Families of local interaction-vertex orders are canonically equivalent before and after choosing
+an ambient interaction order. -/
+def TwoPointDiagram.inInteractionOrderComponentVertexOrdersEquiv
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (order : QuarticVertexOrder S) :
+    (d.inInteractionOrder order).ComponentInteractionVertexOrders ≃
+      d.ComponentInteractionVertexOrders where
+  toFun explicitOrders := fun C =>
+    d.inInteractionOrderComponentVertexOrderEquiv order
+      ((d.inInteractionOrderComponentPartEquiv order).symm C)
+      (explicitOrders ((d.inInteractionOrderComponentPartEquiv order).symm C))
+  invFun ambientOrders := fun B =>
+    (d.inInteractionOrderComponentVertexOrderEquiv order B).symm
+      (ambientOrders (d.inInteractionOrderComponentPartEquiv order B))
+  left_inv explicitOrders := by
+    funext B
+    simp
+  right_inv ambientOrders := by
+    funext C
+    simp
 
 end
 
