@@ -17,7 +17,9 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 
-private theorem TwoPointDiagram.reassembleExternalVacuum_injective_fixed
+/-- With the external interaction subset fixed, binary external/vacuum reassembly is injective in
+the connected external core and vacuum remainder. -/
+theorem TwoPointDiagram.reassembleExternalVacuum_injective_fixed
     {S E : Finset (Fin N)} (hE : E ⊆ S) :
     Function.Injective (fun p :
       ExternallyConnectedTwoPointDiagram ExternalLabel InternalLabel N E ×
