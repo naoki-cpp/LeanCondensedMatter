@@ -180,9 +180,10 @@ noncomputable def SlotShuffle.rightComplementEquiv {m n : ℕ} (σ : SlotShuffle
       σ.strictMonoRight.injective).trans
     (Equiv.setCongr (by
       ext x
-      change (∃ j : Fin n, σ.slotEquiv (Sum.inr j) = x) ↔ x ∉ σ.leftSlots
-      rw [← σ.mem_rightSlots_iff x]
-      exact σ.mem_rightSlots_iff_not_mem_leftSlots x))
+      simpa only [Set.mem_range, Finset.mem_coe, Finset.mem_sdiff,
+        Finset.mem_univ, true_and] using
+        ((σ.mem_rightSlots_iff x).symm.trans
+          (σ.mem_rightSlots_iff_not_mem_leftSlots x))))
 
 @[simp]
 theorem SlotShuffle.rightComplementEquiv_val {m n : ℕ} (σ : SlotShuffle m n) (j : Fin n) :
