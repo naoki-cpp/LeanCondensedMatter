@@ -151,11 +151,26 @@ theorem sum_explicitVacuumFixedOrderAmplitude_eq_normalizedDysonPartitionCoeff
     (∑ d : QuarticWickDiagram Mode n (Finset.univ : Finset (Fin n)),
       explicitVacuumFixedOrderAmplitude ε β g d) =
       normalizedDysonPartitionCoeff ε β (quarticInteraction g) n := by
-  simp only [explicitVacuumFixedOrderAmplitude, ← mul_assoc]
-  rw [← Finset.mul_sum]
-  simpa using
-    sum_vacuumFixedOrder_eq_normalizedDysonPartitionCoeff
-      (Mode := Mode) (N := n) ε β g (explicitQuarticVertexOrder n)
+  calc
+    (∑ d : QuarticWickDiagram Mode n (Finset.univ : Finset (Fin n)),
+        explicitVacuumFixedOrderAmplitude ε β g d) =
+      ∑ d : QuarticWickDiagram Mode n (Finset.univ : Finset (Fin n)),
+        (-1 : ℂ) ^ n *
+          (d.couplingWeight g *
+            d.orderedSimplexContribution ε β (explicitQuarticVertexOrder n)) := by
+      apply Finset.sum_congr rfl
+      intro d _
+      simp only [explicitVacuumFixedOrderAmplitude]
+      ring
+    _ = (-1 : ℂ) ^ n *
+        (∑ d : QuarticWickDiagram Mode n (Finset.univ : Finset (Fin n)),
+          d.couplingWeight g *
+            d.orderedSimplexContribution ε β (explicitQuarticVertexOrder n)) := by
+      rw [Finset.mul_sum]
+    _ = normalizedDysonPartitionCoeff ε β (quarticInteraction g) n := by
+      simpa using
+        sum_vacuumFixedOrder_eq_normalizedDysonPartitionCoeff
+          (Mode := Mode) (N := n) ε β g (explicitQuarticVertexOrder n)
 
 /-- Once the binary shuffle sum for each fixed external/vacuum pair is identified with the product
 of their local integrated amplitudes, the whole external-order fiber factors immediately. -/
