@@ -115,5 +115,40 @@ theorem sum_reassembleExternalVacuumSlotShuffle_dysonAmplitude_eq_mul_of_injecti
       unfold explicitVacuumFixedOrderAmplitude QuarticWickDiagram.orderedSimplexContribution
       rw [intervalIntegral.orderedSimplexIntegral_smul]
 
+/-- The binary external/vacuum shuffle sum factors with no caller-supplied transport hypothesis. -/
+theorem sum_reassembleExternalVacuumSlotShuffle_dysonAmplitude_eq_mul
+    {k m : ℕ} (i j : Mode)
+    (external : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode k i j)
+    (vacuum : QuarticWickDiagram Mode m (Finset.univ : Finset (Fin m)))
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (τ τ' : ℝ) :
+    (∑ shuffle : SlotShuffle k m,
+      (reassembleExternalVacuumSlotShuffle i j external vacuum shuffle).dysonAmplitude
+        ε β g τ τ') =
+      external.1.dysonAmplitude ε β g τ τ' *
+        explicitVacuumFixedOrderAmplitude ε β g vacuum := by
+  apply sum_reassembleExternalVacuumSlotShuffle_dysonAmplitude_eq_mul_of_injective
+    i j external vacuum ε β g τ τ'
+  intro shuffle σ hσ
+  exact reassembleExternalVacuumSlotShuffle_dysonFixedTimeAmplitude_eq_integrand_of_injective
+    i j external vacuum shuffle ε β g τ τ' σ hσ
+
+/-- The fixed external-order fiber factors into its connected external contribution and the
+normalized vacuum coefficient, with the binary-shuffle identity discharged internally. -/
+theorem sum_fixedExternalTwoPointWickDiagramOfExternalOrder_eq_connected_mul_vacuum
+    {k m : ℕ} (i j : Mode)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (τ τ' : ℝ) :
+    (∑ d : FixedExternalTwoPointWickDiagramOfExternalOrder Mode k m i j,
+        d.1.dysonAmplitude ε β g τ τ') =
+      (∑ external : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode k i j,
+        external.1.dysonAmplitude ε β g τ τ') *
+      normalizedDysonPartitionCoeff ε β (quarticInteraction g) m := by
+  apply sum_fixedExternalTwoPointWickDiagramOfExternalOrder_eq_connected_mul_vacuum_of_shuffle
+    i j ε β g τ τ'
+  intro external vacuum
+  exact sum_reassembleExternalVacuumSlotShuffle_dysonAmplitude_eq_mul
+    i j external vacuum ε β g τ τ'
+
 end Fermionic
 end SecondQuantization
