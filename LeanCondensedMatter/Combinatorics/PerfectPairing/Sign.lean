@@ -217,7 +217,8 @@ private theorem blockFactor_self (pairing : Pairing n) (k : Fin n) :
     · exact absurd h (lt_irrefl k)
     · exact hst h
   have hlt01 : (pairSlotIndexEquiv n).symm (k, 0) < (pairSlotIndexEquiv n).symm (k, 1) :=
-    (pairSlotIndexEquiv_symm_lt_iff n (k, 0) (k, 1)).2 (Or.inr ⟨rfl, by decide⟩)
+    (pairSlotIndexEquiv_symm_lt_iff n (k, 0) (k, 1)).2
+      (Or.inr ⟨rfl, (by decide : (0 : Fin 2) < 1)⟩)
   rw [blockFactor]
   simp only [Fin.prod_univ_two, slotFactor]
   rw [if_neg (hnotlt 0 0 (by decide)), if_pos hlt01,
