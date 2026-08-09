@@ -108,10 +108,26 @@ theorem freeGibbsNormalOrderedMoment_succ
   intro j _
   have hpair := kmsRatio_mul_exchangeValue_eq_freeThermalPairValue
     ε β hpos (.create (createMode 0)) (.annihilate (annihilateMode j))
+  have hidx : creators.length ≤ (e.symm (Fin.natAdd n j) : ℕ) := by
+    simp [e, creators]
+  have hget :
+      tail.get (e.symm (Fin.natAdd n j)) = .annihilate (annihilateMode j) := by
+    change (creators ++ annihilators).get (e.symm (Fin.natAdd n j)) = _
+    rw [List.get_eq_getElem]
+    rw [List.getElem_append_right hidx]
+    simp [e, creators, annihilators]
+  have herase :
+      tail.eraseIdx (e.symm (Fin.natAdd n j)) =
+        creators ++
+          List.ofFn (fun i : Fin n => .annihilate (annihilateMode (j.succAbove i))) := by
+    change (creators ++ annihilators).eraseIdx (e.symm (Fin.natAdd n j)) = _
+    rw [List.eraseIdx_append_of_length_le hidx annihilators]
+    simp [e, creators, annihilators, List.eraseIdx_ofFn_eq_ofFn_succAbove]
   change summand (e.symm (Fin.natAdd n j)) = _
+  simp only [summand, hget, herase]
   rw [← hpair]
-  simp [summand, ratio, e, tail, creators, annihilators, normalOrderedFields,
-    List.eraseIdx_ofFn_eq_ofFn_succAbove]
+  simp [ratio]
+  ring
 
 /-- Concrete free-boson Bloch--de Dominicis evaluation in the number-conserving sector: the
 normal-ordered Gibbs moment is the permanent of the thermal creator--annihilator contraction
