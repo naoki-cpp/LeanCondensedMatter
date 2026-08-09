@@ -229,10 +229,11 @@ def TwoPointDiagram.inInteractionOrderComponentVertexOrdersEquiv
       d.ComponentInteractionVertexOrders :=
   (Equiv.piCongrRight fun B =>
     d.inInteractionOrderComponentVertexOrderEquiv order B).trans
-    (Equiv.piCongrLeft (d.inInteractionOrderComponentPartEquiv order)
+    (Equiv.piCongrLeft
       (fun C : d.componentPartition.parts =>
         QuarticVertexOrder (TwoPointDiagram.interactionPart
-          (C : Finset (TwoPointVertex S)))))
+          (C : Finset (TwoPointVertex S))))
+      (d.inInteractionOrderComponentPartEquiv order))
 
 end
 
