@@ -126,5 +126,15 @@ theorem TwoPointDiagram.externalVacuumDecompositionEquiv_apply
     _ = TwoPointDiagram.reassembleExternalVacuumData d.decomposeExternalVacuum :=
       d.reassemble_restrictExternal_restrictVacuumRemainder.symm
 
+/-- Decomposing a reassembled binary external/vacuum diagram recovers the source data exactly. -/
+theorem TwoPointDiagram.decomposeExternalVacuum_reassembleExternalVacuumData
+    {S : Finset (Fin N)}
+    (x : TwoPointDiagram.ExternalVacuumDecomposition ExternalLabel InternalLabel N S) :
+    (TwoPointDiagram.reassembleExternalVacuumData x).decomposeExternalVacuum = x := by
+  rw [← TwoPointDiagram.externalVacuumDecompositionEquiv_apply]
+  change TwoPointDiagram.externalVacuumDecompositionEquiv S
+      ((TwoPointDiagram.externalVacuumDecompositionEquiv S).symm x) = x
+  exact (TwoPointDiagram.externalVacuumDecompositionEquiv S).apply_symm_apply x
+
 end Common
 end SecondQuantization
