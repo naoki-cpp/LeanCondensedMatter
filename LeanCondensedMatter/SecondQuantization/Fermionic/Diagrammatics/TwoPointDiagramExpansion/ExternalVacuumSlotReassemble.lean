@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalVacuumReassembleLaws
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.OrderedConnectivity
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.InteractionVertexRelabelConnected
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.OrderedAmplitude
 
@@ -80,10 +81,10 @@ noncomputable def SlotShuffle.rightComplementVertexOrder {k m : ℕ}
     (shuffle : SlotShuffle k m) :
     Common.QuarticVertexOrder
       ((Finset.univ : Finset (Fin (k + m))) \ shuffle.leftSlots) := by
+  have h := Fintype.card_congr shuffle.rightComplementEquiv
   have hcard :
       ((Finset.univ : Finset (Fin (k + m))) \ shuffle.leftSlots).card = m := by
-    have h := Fintype.card_congr shuffle.rightComplementEquiv
-    simpa using h.symm
+    simpa only [Fintype.card_coe, Fintype.card_fin] using h.symm
   exact (finCongr hcard).trans shuffle.rightComplementEquiv
 
 /-- Reindex a quartic Wick diagram on an arbitrary finite vertex set to explicit `Fin |S|` slots. -/
@@ -116,6 +117,10 @@ noncomputable def vacuumOnSlotShuffle {k m : ℕ}
     QuarticWickDiagram Mode (k + m)
       ((Finset.univ : Finset (Fin (k + m))) \ shuffle.leftSlots) :=
   let order := shuffle.rightComplementVertexOrder
+  let h := Fintype.card_congr shuffle.rightComplementEquiv
+  let hcard :
+      ((Finset.univ : Finset (Fin (k + m))) \ shuffle.leftSlots).card = m := by
+    simpa only [Fintype.card_coe, Fintype.card_fin] using h.symm
   let vacuumCast :
       QuarticWickDiagram Mode
         ((Finset.univ : Finset (Fin (k + m))) \ shuffle.leftSlots).card
@@ -124,9 +129,7 @@ noncomputable def vacuumOnSlotShuffle {k m : ℕ}
     Equiv.cast
       (congrArg
         (fun n => QuarticWickDiagram Mode n (Finset.univ : Finset (Fin n)))
-        (by
-          have h := Fintype.card_congr shuffle.rightComplementEquiv
-          simpa using h)) vacuum
+        hcard.symm) vacuum
   (quarticWickDiagramOrderEquiv (Mode := Mode) order).symm vacuumCast
 
 /-- Reassemble one connected external diagram and one vacuum diagram according to a binary slot
