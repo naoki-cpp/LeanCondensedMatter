@@ -22,7 +22,7 @@ noncomputable section
 
 /-- Explicit transport of family shuffles along pointwise equal block sizes.  Unlike a raw
 `Equiv.cast`, this keeps the local and ambient `Fin.cast`s visible to simplification. -/
-private noncomputable def familySlotShuffleCastSizeEquiv
+noncomputable def familySlotShuffleCastSizeEquiv
     {ι : Type*} [Fintype ι] {size₁ size₂ : ι → ℕ}
     (h : ∀ i, size₁ i = size₂ i) :
     FamilySlotShuffle size₁ ≃ FamilySlotShuffle size₂ := by
