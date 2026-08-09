@@ -47,18 +47,6 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentGeometricCrossi
   ∑ x : d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C,
     if Crosses x.1.1.1 x.2.1.1 ∨ Crosses x.2.1.1 x.1.1.1 then 1 else 0
 
-private theorem crosses_asymm {n : ℕ}
-    (p q : Fin (2 * n) × Fin (2 * n)) (hpq : Crosses p q) :
-    ¬ Crosses q p := by
-  intro hqp
-  exact lt_asymm hpq.1 hqp.1
-
-private theorem indicator_or_eq_add_indicator_of_not_and
-    (p q : Prop) [Decidable p] [Decidable q] (h : ¬ (p ∧ q)) :
-    (if p ∨ q then 1 else 0 : ℕ) =
-      (if p then 1 else 0) + (if q then 1 else 0) := by
-  by_cases hp : p <;> by_cases hq : q <;> simp_all
-
 /-- The geometric crossing count between two components is the sum of its two orientations. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentGeometricCrossingCount_eq_oriented_add
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -68,35 +56,25 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentGeometricCrossingCount_eq
       d.mixedComponentOrientedCrossingCount τ τ' σ B C +
         d.mixedComponentOrientedCrossingCount τ τ' σ C B := by
   classical
-  let crossBC := fun x :
-      d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C =>
-    Crosses x.1.1.1 x.2.1.1
-  let crossCB := fun x :
-      d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C =>
-    Crosses x.2.1.1 x.1.1.1
-  have hswap :
-      (∑ x : d.MixedComponentPair τ τ' σ C × d.MixedComponentPair τ τ' σ B,
-        if Crosses x.1.1.1 x.2.1.1 then 1 else 0) =
-        ∑ x : d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C,
-          if crossCB x then 1 else 0 := by
-    rw [← Equiv.sum_comp (Equiv.prodComm
-      (d.MixedComponentPair τ τ' σ B) (d.MixedComponentPair τ τ' σ C))]
+  have hswap : d.mixedComponentOrientedCrossingCount τ τ' σ C B =
+      ∑ x : d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C,
+        if Crosses x.2.1.1 x.1.1.1 then 1 else 0 := by
+    rw [FixedExternalTwoPointWickDiagram.mixedComponentOrientedCrossingCount,
+      ← Equiv.sum_comp (Equiv.prodComm
+        (d.MixedComponentPair τ τ' σ B) (d.MixedComponentPair τ τ' σ C))]
     rfl
-  rw [FixedExternalTwoPointWickDiagram.mixedComponentGeometricCrossingCount,
+  rw [FixedExternalTwoPointWickDiagram.mixedComponentGeometricCrossingCount, hswap,
     FixedExternalTwoPointWickDiagram.mixedComponentOrientedCrossingCount,
-    FixedExternalTwoPointWickDiagram.mixedComponentOrientedCrossingCount, hswap]
-  change (∑ x, if crossBC x ∨ crossCB x then 1 else 0) =
-    (∑ x, if crossBC x then 1 else 0) + ∑ x, if crossCB x then 1 else 0
-  rw [← Finset.sum_add_distrib]
-  apply Finset.sum_congr rfl
-  intro x _
-  exact indicator_or_eq_add_indicator_of_not_and (crossBC x) (crossCB x) (by
-    rintro ⟨hbc, hcb⟩
-    exact crosses_asymm _ _ hbc hcb)
+    ← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun x _ => ?_
+  by_cases hbc : Crosses x.1.1.1 x.2.1.1
+  · have hcb : ¬ Crosses x.2.1.1 x.1.1.1 := fun h => lt_asymm hbc.1 h.1
+    simp [hbc, hcb]
+  · simp [hbc]
 
 /-- The mixed pairing crossing count is the double sum of oriented crossing counts over full
 components. -/
-theorem FixedExternalTwoPointWickDiagram.pairingInMixedOrder_crossingCount_eq_sum_components
+private theorem FixedExternalTwoPointWickDiagram.pairingInMixedOrder_crossingCount_eq_sum_components
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     (d.pairingInMixedOrder τ τ' σ).crossingCount =
@@ -127,7 +105,8 @@ theorem FixedExternalTwoPointWickDiagram.pairingInMixedOrder_crossingCount_eq_su
 
 /-- If every distinct-component geometric crossing count is even, the global mixed crossing count
 has the same parity as the sum of the component-internal crossing counts. -/
-theorem FixedExternalTwoPointWickDiagram.pairingInMixedOrder_crossingCount_mod_two_eq_sum_components
+private theorem
+    FixedExternalTwoPointWickDiagram.pairingInMixedOrder_crossingCount_mod_two_eq_sum_components
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hEven : ∀ B C : d.1.componentPartition.parts, B ≠ C →
@@ -193,19 +172,6 @@ theorem FixedExternalTwoPointWickDiagram.prod_mixedComponentWeight_eq_external_m
           (d.mixedComponentWeight s τ τ' σ) :=
   d.1.prod_componentParts_eq_external_mul_prod_vacuum
     (d.mixedComponentWeight s τ τ' σ)
-
-/-- Conditional external/vacuum factorization of the global mixed pairing weight. -/
-theorem FixedExternalTwoPointWickDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (s : Common.Statistics) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hEven : ∀ B C : d.1.componentPartition.parts, B ≠ C →
-      d.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 = 0) :
-    (d.pairingInMixedOrder τ τ' σ).weight s =
-      d.mixedComponentWeight s τ τ' σ d.1.externalComponentPart *
-        d.1.vacuumComponentParts.prod
-          (d.mixedComponentWeight s τ τ' σ) := by
-  rw [d.pairingInMixedOrder_weight_eq_prod_components s τ τ' σ hEven,
-    d.prod_mixedComponentWeight_eq_external_mul_prod_vacuum s τ τ' σ]
 
 end Fermionic
 end SecondQuantization
