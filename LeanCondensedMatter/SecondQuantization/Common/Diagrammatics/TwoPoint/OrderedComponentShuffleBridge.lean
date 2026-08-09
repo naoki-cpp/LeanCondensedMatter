@@ -94,23 +94,20 @@ theorem TwoPointDiagram.interactionPart_inInteractionOrderComponentPartEquiv_sym
     simp [vAmbient, vExplicit, twoPointInteractionOrderVertexEquiv,
       finEquivUnivSubtype]
 
-/-- Every slot occupied by the transported canonical shuffle belongs to the ambient component's
-set of global interaction slots. -/
-theorem TwoPointDiagram.inInteractionOrderComponentShuffleEquiv_canonical_mem_globalSlots
+/-- Evaluation of component-shuffle transport on the local slot corresponding to an ordered
+component.  The only remaining change on the ambient slot is the canonical `univ.card = card` cast. -/
+@[simp]
+theorem TwoPointDiagram.inInteractionOrderComponentShuffleEquiv_slotEquiv_apply
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (order : QuarticVertexOrder S) (B : d.componentPartition.parts)
-    (i : Fin (d.interactionComponentSize B)) :
-    (d.inInteractionOrderComponentShuffleEquiv order
-        (d.inInteractionOrder order).canonicalComponentInteractionShuffle).slotEquiv ⟨B, i⟩ ∈
-      d.componentInteractionGlobalSlots order B := by
-  classical
-  simp [TwoPointDiagram.inInteractionOrderComponentShuffleEquiv,
-    TwoPointDiagram.componentInteractionFamilyShuffleEquiv,
-    Combinatorics.FamilySlotShuffle.reindexEquiv,
-    Combinatorics.FamilySlotShuffleTo.castTotalEquiv,
-    TwoPointDiagram.canonicalComponentInteractionShuffle,
-    TwoPointDiagram.interactionPart_inInteractionOrderComponentPartEquiv_symm,
-    TwoPointDiagram.componentInteractionGlobalSlots]
+    (order : QuarticVertexOrder S)
+    (shuffle : (d.inInteractionOrder order).ComponentInteractionShuffle)
+    (B : (d.inInteractionOrder order).componentPartition.parts)
+    (i : Fin ((d.inInteractionOrder order).interactionComponentSize B)) :
+    (d.inInteractionOrderComponentShuffleEquiv order shuffle).slotEquiv
+        ⟨d.inInteractionOrderComponentPartEquiv order B,
+          Fin.cast (d.interactionComponentSize_inInteractionOrder_eq order B) i⟩ =
+      Fin.cast (by simp) (shuffle.slotEquiv ⟨B, i⟩) := by
+  rfl
 
 end
 
