@@ -1,7 +1,8 @@
 # Thermal expectation and Bloch–de Dominicis architecture
 
 This document is the source of truth for normalized thermal expectations, finite coordinate
-formulas, and the generic Bloch–de Dominicis pairing recursion.
+formulas, number-conserving matrix evaluation, and the remaining generic pairing recursion used at
+genuinely non-bipartite or diagrammatic boundaries.
 
 ## Canonical normalized expectation
 
@@ -53,9 +54,38 @@ They are not alternative state models.
 called a Gibbs expectation only after specialization to positive Boltzmann weights and proof of the
 density-state comparison.
 
+## Number-conserving matrix backend
+
+For a number-conserving free Gaussian state, creator–creator and annihilator–annihilator contractions
+vanish. After separating the two operator families, the surviving matchings are bipartite and are
+indexed by permutations rather than arbitrary perfect pairings.
+
+`Common/Thermal/BlochDeDominicis/MatrixEvaluation.lean` is the canonical backend for this sector. It
+provides
+
+```lean
+bipartitePairMatrix
+
+determinantBipartitePairValue
+permanentBipartitePairValue
+```
+
+and the first-row recurrences needed to identify a thermal moment recurrence with Mathlib's
+`Matrix.det` or `Matrix.permanent`.
+
+The intended rule is:
+
+- free fermionic number-conserving moments use a determinant, together with any fixed sign imposed by
+  the chosen external operator-order convention;
+- free bosonic number-conserving moments use a permanent;
+- explicit `Pairing` enumeration is not a second thermal evaluation backend for this sector.
+
+This reduces the combinatorial state carried by the thermal layer from all perfect pairings to the
+matrix invariant that already represents the surviving permutation sum.
+
 ## Generic pairing recursion
 
-`Common/Thermal/BlochDeDominicis/ExpectationRecursion.lean` owns
+`Common/Thermal/BlochDeDominicis/ExpectationRecursion.lean` still owns
 
 ```lean
 ExpectationPairingRecursion Operator s
@@ -70,17 +100,20 @@ The contract contains only:
 - admissibility after deleting a pair;
 - the KMS/exchange first-pair recurrence.
 
-`ExpectationPairingRecursion.expectation_eq_sum_pairing` derives the complete pairing expansion. The
-module has no configuration type, no occupation basis, no trace implementation, no density-state
-construction, and no finite-dimensional assumption.
+`ExpectationPairingRecursion.expectation_eq_sum_pairing` derives the complete weighted perfect-pairing
+expansion. This is now a deliberately more general interface than the number-conserving matrix
+backend. It remains appropriate when explicit pairings themselves are needed by diagrammatics, and
+for future Gaussian sectors with anomalous contractions before their Pfaffian/Hafnian backend is
+introduced.
 
-The `admissible` predicate is the extension point for analytic obligations such as summability,
-integrability, domain closure, and KMS hypotheses.
+The module has no configuration type, no occupation basis, no trace implementation, no density-state
+construction, and no finite-dimensional assumption. Its `admissible` predicate remains the extension
+point for summability, integrability, domain closure, and KMS hypotheses.
 
 ## Finite Gibbs instance
 
-`Common/Thermal/BlochDeDominicis/GibbsExpectation/Recursion.lean` constructs the finite Gibbs
-instance. It combines:
+`Common/Thermal/BlochDeDominicis/GibbsExpectation/Recursion.lean` constructs the finite Gibbs generic
+recursion instance. It combines:
 
 - the canonical finite Gibbs density-state expectation;
 - finite diagonal imaginary-time evolution;
@@ -88,8 +121,8 @@ instance. It combines:
 - KMS rotation and exchange identities;
 - normalized two-point and pair-deletion formulas.
 
-`Common/Thermal/BlochDeDominicis/Induction.lean` exposes the finite theorem by applying the generic
-recursion theorem to this instance.
+`Common/Thermal/BlochDeDominicis/Induction.lean` exposes the finite generic pairing theorem where the
+fully general pairing representation is genuinely required.
 
 ## Bosonic boundary
 
@@ -99,8 +132,8 @@ For finite `Mode`, the bosonic occupation type
 Bosonic.Occupation Mode := Mode →₀ ℕ
 ```
 
-is still infinite. A bosonic thermal instance cannot use finite-configuration sums without proving
-summability.
+is still infinite. A bosonic thermal implementation cannot use finite-configuration sums without
+proving summability.
 
 A completed bosonic implementation must state:
 
@@ -110,7 +143,7 @@ A completed bosonic implementation must state:
 - KMS and positivity hypotheses;
 - boundedness, closability, or self-adjointness facts appropriate to the representation.
 
-## Bosonic convergence-aware functional slice
+## Bosonic convergence-aware functional and permanent endpoint
 
 `Bosonic/Thermal/ConvergenceAwareGibbs.lean` defines
 
@@ -119,38 +152,67 @@ ConvergenceAwareGibbsFunctional Observable
 ```
 
 as a linear expectation on an explicit `Submodule` of analytically admissible observables, together
-with a distinguished unit and normalization.  For algebraic bosonic Fock space, the concrete domain
+with a distinguished unit and normalization. For algebraic bosonic Fock space, the concrete domain
 is
 
 ```lean
 freeGibbsDomain ε β
 ```
 
-whose membership condition is summability of the diagonal coefficients of `e^{-βH₀} A`.  Under
+whose membership condition is summability of the diagonal coefficients of `e^{-βH₀} A`. Under
 `∀ i, 0 < β * ε i`, `freeGibbsFunctional ε β` supplies the canonical normalized free functional.
 This is an algebraic, matrix-coefficient realization; it does not promote ladder operators to
 bounded operators or claim a completed trace-class state.
 
-`Bosonic/Thermal/BlochDeDominicis/ExpectationRecursion.lean` defines
+`Bosonic/Thermal/BlochDeDominicis/FreeExpectationRecursion.lean` now owns only the concrete thermal
+field labels, ordered product, and pair kernel. The old boson-specific pairing-recursion adapter and
+thermal pairing-sum endpoint are intentionally removed.
 
-```lean
-ConvergenceAwarePairingRecursion Observable Operator s
-```
+`Bosonic/Thermal/BlochDeDominicis/ConcreteExpectationRecursion.lean` derives the creator-first,
+number-conserving first-row recurrence directly from CCR peel plus KMS rotation and proves that the
+normal-ordered moment is the permanent of the creator–annihilator contraction matrix.
 
-which records ordered-product domain membership, pair-deletion stability, and the KMS/exchange
-first-pair recurrence.  Its adapter `toExpectationPairingRecursion` reuses the Common pairing theorem.
-The remaining bosonic work is to discharge these hypotheses for useful ladder-operator families and
-the products generated by the first Dyson orders.
+When an explicit `Pairing` is needed for graph connectivity or factorization,
+`Bosonic/Diagrammatics/QuarticWickExpansion.lean` constructs the generic Common pairing contract at
+the diagrammatic boundary instead of reintroducing a pairing-valued thermal API.
+
+## Completed fermionic determinant endpoint
+
+`Fermionic/CompletedSpace/ThermalRecursion.lean` is the completed-space number-conserving endpoint. It
+derives the normal-ordered CAR/KMS recurrence and evaluates it with the common determinant backend.
+The current creator-first ordering convention contributes a fixed normal-order sign multiplying the
+determinant; this sign is an ordering convention, not a return to perfect-pairing enumeration.
+
+Pairing-specific completed-thermal admissibility and pairing-sum endpoints are not part of this
+number-conserving API.
 
 ## Dependency direction
 
+The preferred number-conserving path is
+
 ```text
-ExpectationRecursion
-        ↑
-concrete expectation/KMS instance
-        ↑
-public Bloch–de Dominicis theorem
+thermal KMS / operator peel
+        ↓
+bipartite normal-ordered recurrence
+        ↓
+MatrixEvaluation
+        ↓
+Matrix.det / Matrix.permanent
 ```
+
+The general/diagrammatic path is separate:
+
+```text
+first-pair recurrence
+        ↓
+ExpectationPairingRecursion
+        ↓
+Pairing data used by diagrammatics
+```
+
+Do not route a number-conserving thermal evaluation through explicit perfect-pairing enumeration only
+to collapse it back to a determinant or permanent. Conversely, do not erase `Pairing` from modules
+whose statements require graph connectivity, crossings, components, or relabeling.
 
 The generic recursion must remain independent of finite Gibbs implementations and coordinate
 formulas. `scripts/check_bloch_de_dominicis_expectation_boundary.py` enforces this boundary. The
@@ -159,9 +221,12 @@ dependency directions.
 
 ## Open work
 
-- Prove the bosonic KMS/exchange first-pair recurrence on explicit summable operator families.
+- Introduce Pfaffian/Hafnian backends for genuinely general Gaussian fermionic/bosonic expectations
+  with anomalous contractions.
+- Decide whether arbitrary balanced non-normal-ordered free-field families need a direct sorting
+  bridge to the determinant/permanent endpoints, rather than going through a pairing theorem.
 - Establish product closure for the first nontrivial Dyson/Wick orders.
 - Replace finite-output-basis operator integration by a justified bosonic integration boundary.
-- Completed Fock-space representations and unbounded operator domains.
+- Completed bosonic Fock-space representations and unbounded operator domains.
 - Correlation-function expansions with external legs.
 - Infinite-mode and thermodynamic-limit statements with explicit analytic hypotheses.
