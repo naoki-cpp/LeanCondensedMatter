@@ -89,19 +89,18 @@ theorem freeGibbsQuarticExpectation_eq_sum_pairing
           (fun a b => freeThermalPairValue ε β
             (quarticFreeThermalFieldFamily q a) (quarticFreeThermalFieldFamily q b)) := by
   let data : Common.BlochDeDominicis.ExpectationPairingRecursion
-      (FreeThermalField Mode) .boson where
-    expectation := fun fields =>
-      (freeGibbsFunctional ε β hpos).value (FreeThermalField.orderedProduct fields)
-    pairValue := freeThermalPairValue ε β
-    admissible := admissible
-    expectation_nil := by
-      change (freeGibbsFunctional ε β hpos).value
-        (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) = 1
-      exact (freeGibbsFunctional ε β hpos).value_unit
-    admissible_erase := herase
-    expectation_succ := by
-      intro r C hC
-      simpa using hrec r C hC
+      (FreeThermalField Mode) .boson :=
+    { expectation := fun fields =>
+        (freeGibbsFunctional ε β hpos).value (FreeThermalField.orderedProduct fields)
+      pairValue := freeThermalPairValue ε β
+      admissible := admissible
+      expectation_nil := by
+        change (freeGibbsFunctional ε β hpos).value
+          (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) = 1
+        exact (freeGibbsFunctional ε β hpos).value_unit
+      admissible_erase := herase
+      expectation_succ := fun r C hC => by
+        simpa using hrec r C hC }
   have _hmem := hmem (2 * n) (quarticFreeThermalFieldFamily q) hq
   have hwick := data.expectation_eq_sum_pairing
     (2 * n) (quarticFreeThermalFieldFamily q) hq
