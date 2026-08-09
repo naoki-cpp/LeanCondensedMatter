@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbsSummability
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsDensityOperator
 import Mathlib.Analysis.Normed.Lp.LpEquiv
 
@@ -35,12 +36,10 @@ noncomputable def completedFiniteHilbertEquiv :
     CompletedFockSpace Mode ≃ₗᵢ[ℂ] Common.FiniteHilbertFock (Occupation Mode) :=
   lpPiLpₗᵢ (fun _ : Occupation Mode => ℂ) ℂ
 
-/-- The finite compatibility equivalence preserves every occupation coordinate. -/
-@[simp]
-theorem completedFiniteHilbertEquiv_apply
-    (ψ : CompletedFockSpace Mode) (n : Occupation Mode) :
-    completedFiniteHilbertEquiv (Mode := Mode) ψ n = ψ n := by
-  rfl
+/-- Continuous-linear form of the canonical finite-mode Hilbert-space equivalence. -/
+noncomputable def completedFiniteHilbertContinuousEquiv :
+    CompletedFockSpace Mode ≃L[ℂ] Common.FiniteHilbertFock (Occupation Mode) :=
+  (completedFiniteHilbertEquiv (Mode := Mode)).toContinuousLinearEquiv
 
 /-- The finite compatibility equivalence intertwines the algebraic-to-completed inclusion with the
 existing algebraic-to-finite-Hilbert equivalence. -/
@@ -64,13 +63,37 @@ theorem completedFiniteHilbertEquiv_basisState (n : Occupation Mode) :
     Common.finiteHilbertBasisState n
   exact Common.finiteHilbertFockEquiv_basisState n
 
-/-- Linear-map form of the finite compatibility square on the full algebraic Fock core. -/
-theorem completedFiniteHilbertEquiv_comp_algebraicToCompleted :
-    (completedFiniteHilbertEquiv (Mode := Mode)).toLinearMap.comp algebraicToCompleted =
-      (Common.finiteHilbertFockEquiv (Config := Occupation Mode)).toLinearMap := by
-  apply LinearMap.ext
+omit [Fintype Mode] in
+/-- Continuous maps from completed Fock space into the finite Hilbert realization are determined by
+their values on the dense algebraic core. -/
+theorem continuousLinearMap_ext_algebraicCore_to_finite
+    {A B : CompletedFockSpace Mode →L[ℂ] Common.FiniteHilbertFock (Occupation Mode)}
+    (h : ∀ x : FockSpace Mode, A (algebraicToCompleted x) = B (algebraicToCompleted x)) :
+    A = B := by
+  apply DFunLike.ext'
+  exact (map_continuous A).ext_on algebraicToCompleted_denseRange (map_continuous B) <| by
+    rintro _ ⟨x, rfl⟩
+    exact h x
+
+omit [Fintype Mode] in
+/-- It suffices to compare two continuous maps on the completed occupation basis. -/
+theorem continuousLinearMap_ext_completedBasis_to_finite
+    {A B : CompletedFockSpace Mode →L[ℂ] Common.FiniteHilbertFock (Occupation Mode)}
+    (h : ∀ n : Occupation Mode, A (completedBasisState n) = B (completedBasisState n)) :
+    A = B := by
+  apply continuousLinearMap_ext_algebraicCore_to_finite
   intro x
-  exact completedFiniteHilbertEquiv_algebraicToCompleted x
+  have hmaps : A.toLinearMap.comp algebraicToCompleted =
+      B.toLinearMap.comp algebraicToCompleted := by
+    apply Finsupp.lhom_ext
+    intro n c
+    have hc : (Finsupp.single n c : FockSpace Mode) = c • basisState n :=
+      (Finsupp.smul_single_one n c).symm
+    rw [hc]
+    simp only [LinearMap.comp_apply, map_smul, algebraicToCompleted_basisState]
+    exact congrArg (fun y : Common.FiniteHilbertFock (Occupation Mode) => c • y) (h n)
+  exact congrArg (fun f : FockSpace Mode →ₗ[ℂ]
+    Common.FiniteHilbertFock (Occupation Mode) => f x) hmaps
 
 end
 end Fermionic
