@@ -101,4 +101,56 @@ theorem Pairing.pairPerm_apply (pairing : Pairing n) (p : Fin (2 * n)) :
     pairing.pairPerm p = pairing.pairSlotEquiv (pairSlotIndexEquiv n p) :=
   rfl
 
+/-- On the position with block index `k` and slot `s`, the pair-listing permutation returns the
+corresponding endpoint of the `k`-th pair. -/
+@[simp]
+theorem Pairing.pairPerm_pairSlotIndexEquiv_symm (pairing : Pairing n) (x : Fin n × Fin 2) :
+    pairing.pairPerm ((pairSlotIndexEquiv n).symm x) = pairing.pairSlotEquiv x := by
+  rw [Pairing.pairPerm_apply, Equiv.apply_symm_apply]
+
+private theorem prod_Ioi_eq_prod_ite {M : Type*} [CommMonoid M] {m : ℕ}
+    (i : Fin m) (g : Fin m → M) :
+    (∏ j ∈ Finset.Ioi i, g j) = ∏ j : Fin m, if i < j then g j else 1 := by
+  rw [← Finset.prod_filter]
+  congr 1
+  ext j
+  simp
+
+/-- The sign of a permutation of `Fin (2 * n)`, expanded over ordered pairs of positions indexed by
+their two-element block and their slot inside it. -/
+theorem sign_eq_prod_prod_blockSlots (σ : Equiv.Perm (Fin (2 * n))) :
+    Equiv.Perm.sign σ =
+      ∏ x : Fin n × Fin 2, ∏ y : Fin n × Fin 2,
+        (if (pairSlotIndexEquiv n).symm x < (pairSlotIndexEquiv n).symm y then
+            (if σ ((pairSlotIndexEquiv n).symm x) < σ ((pairSlotIndexEquiv n).symm y)
+              then (1 : ℤˣ) else -1)
+          else 1) := by
+  classical
+  calc
+    Equiv.Perm.sign σ =
+        ∏ i : Fin (2 * n), ∏ j ∈ Finset.Ioi i, (if σ i < σ j then (1 : ℤˣ) else -1) :=
+      Equiv.Perm.sign_eq_prod_prod_Ioi σ
+    _ = ∏ i : Fin (2 * n), ∏ j : Fin (2 * n),
+          (if i < j then (if σ i < σ j then (1 : ℤˣ) else -1) else 1) :=
+      Finset.prod_congr rfl fun i _ => prod_Ioi_eq_prod_ite i _
+    _ = ∏ x : Fin n × Fin 2, ∏ j : Fin (2 * n),
+          (if (pairSlotIndexEquiv n).symm x < j then
+              (if σ ((pairSlotIndexEquiv n).symm x) < σ j then (1 : ℤˣ) else -1)
+            else 1) :=
+      (Equiv.prod_comp (pairSlotIndexEquiv n).symm _).symm
+    _ = ∏ x : Fin n × Fin 2, ∏ y : Fin n × Fin 2,
+          (if (pairSlotIndexEquiv n).symm x < (pairSlotIndexEquiv n).symm y then
+              (if σ ((pairSlotIndexEquiv n).symm x) < σ ((pairSlotIndexEquiv n).symm y)
+                then (1 : ℤˣ) else -1)
+            else 1) :=
+      Finset.prod_congr rfl fun x _ =>
+        (Equiv.prod_comp (pairSlotIndexEquiv n).symm _).symm
+
+/-- Positions compare through their block index first and their slot second. -/
+theorem pairSlotIndexEquiv_symm_lt_iff (n : ℕ) (x y : Fin n × Fin 2) :
+    (pairSlotIndexEquiv n).symm x < (pairSlotIndexEquiv n).symm y ↔
+      x.1 < y.1 ∨ (x.1 = y.1 ∧ x.2 < y.2) := by
+  rw [pairSlotIndexEquiv_lt_iff n]
+  simp
+
 end Combinatorics
