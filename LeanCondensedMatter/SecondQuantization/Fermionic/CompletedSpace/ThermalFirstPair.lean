@@ -1,4 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalKMS
 
 set_option linter.style.header false
@@ -8,11 +7,11 @@ set_option linter.style.header false
 
 This file combines the completed CAR peel identity with the completed free-Gibbs KMS rotation.
 For an odd tail, the rotated term can be solved away with the one-mode Gibbs denominator
-`1 + gβ(C)`.  The resulting scalar is exactly the normalized two-point Gibbs expectation.
+`1 + gβ(C)`. The resulting scalar is exactly the normalized two-point Gibbs expectation.
 
-The finite pairing induction remains in
-`Common.Thermal.BlochDeDominicis.ExpectationPairingRecursion`; this file only supplies the
-completed-representation thermal reduction data needed by that contract.
+This is a representation-specific local thermal reduction. Number-conserving multipoint moments are
+assembled by the determinant backend in `ThermalRecursion`, rather than by importing the generic
+perfect-pairing induction here.
 -/
 
 namespace SecondQuantization
@@ -26,7 +25,7 @@ variable {Mode : Type*} [LinearOrder Mode]
 
 namespace CompletedThermalLadder
 
-/-- Completed free-Gibbs admissibility for an even ladder family.  At this stage the only local
+/-- Completed free-Gibbs admissibility for an even ladder family. At this stage the only local
 condition needed to solve the fermionic KMS peel equation is the nonvanishing denominator
 `1 + gβ(Cᵢ)`. -/
 def completedFreeGibbsAdmissible (ε : Mode → ℝ) (β : ℝ) (n : ℕ)
@@ -66,11 +65,7 @@ theorem completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
     simpa [E, R] using
       completedFreeGibbsExpectation_cons_eq_gibbsFactor_mul_rotate ε β hsum C l
   have hsign : ((-1 : ℂ) ^ l.length) = -1 := by
-    rw [hlen]
-    have hmod : (2 * n + 1) % 2 = 1 % 2 := by omega
-    have h := Common.BlochDeDominicis.zetaInt_pow_eq_of_mod_two_eq
-      Common.Statistics.fermion hmod
-    simpa using h
+    simp [hlen, pow_add, pow_mul]
   have hgr : C.gibbsFactor ε β * R = P - R := by
     calc
       C.gibbsFactor ε β * R = E := hkms.symm
