@@ -133,17 +133,23 @@ theorem completedFreeGibbsNormalOrderedMoment_succ
   have hidx : creators.length ≤ (e.symm (Fin.natAdd n j) : ℕ) := by
     simp [e, creators]
   have hannGet :
-      annihilators.get ⟨j, by simp [annihilators]⟩ = .annihilate (annihilateMode j) := by
-    simp [annihilators]
+      annihilators.get ⟨(j : ℕ), by simp [annihilators]; omega⟩ =
+        .annihilate (annihilateMode j) := by
+    change (List.ofFn
+      (fun k : Fin (n + 1) => (.annihilate (annihilateMode k) : CompletedThermalLadder Mode))).get _ = _
+    rw [List.get_ofFn]
+    congr 2
+    apply Fin.ext
+    rfl
   have hget :
       tail.get (e.symm (Fin.natAdd n j)) = .annihilate (annihilateMode j) := by
     change (creators ++ annihilators).get (e.symm (Fin.natAdd n j)) = _
     rw [List.get_eq_getElem, List.getElem_append_right hidx]
-    simpa [e, creators] using hannGet
+    simpa [List.get_eq_getElem, e, creators] using hannGet
   have hannErase :
       annihilators.eraseIdx (j : ℕ) =
         List.ofFn (fun i : Fin n => .annihilate (annihilateMode (j.succAbove i))) := by
-    simpa [annihilators] using
+    simpa only [annihilators] using
       (List.eraseIdx_ofFn_eq_ofFn_succAbove
         (fun k : Fin (n + 1) => (.annihilate (annihilateMode k) : CompletedThermalLadder Mode)) j)
   have herase :
