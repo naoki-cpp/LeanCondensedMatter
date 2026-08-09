@@ -32,6 +32,7 @@ theorem bipartiteHalfEquiv_inl_val (m : ℕ) (i : Fin m) :
 theorem bipartiteHalfEquiv_inr_val (m : ℕ) (i : Fin m) :
     (bipartiteHalfEquiv m (Sum.inr i)).val = m + i.val := by
   simp [bipartiteHalfEquiv]
+  omega
 
 /-- Every position of the first half precedes every position of the second half. -/
 theorem bipartiteHalfEquiv_inl_lt_inr (m : ℕ) (i j : Fin m) :
@@ -87,13 +88,15 @@ theorem isPairing_bipartitePartner (σ : Equiv.Perm (Fin m)) :
     obtain ⟨y, rfl⟩ := (bipartiteHalfEquiv m).surjective x
     cases y with
     | inl i =>
-        rw [bipartitePartner_inl]
         intro h
-        exact Sum.noConfusion ((bipartiteHalfEquiv m).injective h)
+        rw [bipartitePartner_inl] at h
+        have h' := (bipartiteHalfEquiv m).injective h
+        simp at h'
     | inr j =>
-        rw [bipartitePartner_inr]
         intro h
-        exact Sum.noConfusion ((bipartiteHalfEquiv m).injective h)
+        rw [bipartitePartner_inr] at h
+        have h' := (bipartiteHalfEquiv m).injective h
+        simp at h'
 
 /-- The perfect pairing of `Fin (2 * m)` matching the first half to the second half through `σ`. -/
 def bipartitePairing (σ : Equiv.Perm (Fin m)) : Pairing m :=
