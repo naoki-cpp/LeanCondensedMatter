@@ -145,18 +145,22 @@ theorem interactionVertexPositionRelabelFin_orderChange
   apply Equiv.ext
   intro p
   let π : Equiv.Perm (Fin S.card) := order₂.trans order₁.symm
-  let c := explicitTwoPointPositionCast S.card
+  unfold Common.orderedTwoPointLegToDiagramLeg
+  simp only [Equiv.trans_apply]
   apply (Common.twoPointLegEquiv S).injective
-  change Common.twoPointInteractionOrderLegEquiv order₁
-      ((Common.orderedTwoPointLegDataEquivUniv S.card).symm
-        (Common.twoPointLegEquiv (Finset.univ : Finset (Fin S.card))
-          (c (interactionVertexPositionRelabelFin π p)))) =
-    Common.twoPointInteractionOrderLegEquiv order₂
-      ((Common.orderedTwoPointLegDataEquivUniv S.card).symm
-        (Common.twoPointLegEquiv (Finset.univ : Finset (Fin S.card)) (c p)))
+  simp only [Equiv.apply_symm_apply]
+  have hc :
+      (finCongr (by simp) :
+        Fin (2 * (2 * S.card + 1)) ≃
+          Fin (2 * (2 * (Finset.univ : Finset (Fin S.card)).card + 1))) =
+        explicitTwoPointPositionCast S.card := by
+    rfl
+  rw [hc]
   rw [explicitTwoPointPositionCast_interactionVertexPositionRelabelFin]
   rw [twoPointLegEquiv_interactionVertexPositionRelabel]
-  generalize Common.twoPointLegEquiv (Finset.univ : Finset (Fin S.card)) (c p) = leg
+  generalize
+      Common.twoPointLegEquiv (Finset.univ : Finset (Fin S.card))
+        (explicitTwoPointPositionCast S.card p) = leg
   rcases leg with e | ⟨v, l⟩ <;>
     simp [π, interactionVertexLegRelabel, Common.twoPointInteractionOrderLegEquiv,
       Common.orderedTwoPointLegDataEquivUniv, Common.finEquivUnivSubtype]
