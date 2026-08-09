@@ -50,12 +50,9 @@ theorem twoPointVertexOfLeg_orderedTwoPointLegToDiagramLeg
     apply Fin.ext
     rfl
   rw [hcast]
-  generalize hleg :
+  generalize
       twoPointLegEquiv (Finset.univ : Finset (Fin S.card)) (Fin.cast (by simp) leg) = x
-  rcases x with e | ⟨v, l⟩
-  · rw [hleg]
-    rfl
-  · rw [hleg]
+  rcases x with e | ⟨v, l⟩ <;>
     rfl
 
 /-- The vertex graph of a pairing transported to one interaction order is isomorphic to the
