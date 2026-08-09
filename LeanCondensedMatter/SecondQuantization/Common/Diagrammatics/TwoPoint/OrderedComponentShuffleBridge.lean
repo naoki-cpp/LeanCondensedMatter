@@ -59,23 +59,28 @@ theorem TwoPointDiagram.interactionPart_inInteractionOrderComponentPartEquiv_sym
         (B : Finset (TwoPointVertex S)) vAmbient).2 hvB
     let w : ↥(TwoPointDiagram.interactionPart
         (B : Finset (TwoPointVertex S))) := ⟨vAmbient.1, hvInt⟩
+    have hwAmbient : d.interactionVertexComponentEquiv.symm ⟨B, w⟩ = vAmbient := by
+      apply Subtype.ext
+      simpa [w, vAmbient] using
+        d.interactionVertexComponentEquiv_symm_val (⟨B, w⟩)
     apply Finset.mem_image.mpr
     refine ⟨w, Finset.mem_univ w, ?_⟩
-    apply Fin.ext
-    simp [TwoPointDiagram.componentInteractionGlobalSlot, w, vAmbient]
+    simp [TwoPointDiagram.componentInteractionGlobalSlot, hwAmbient, vAmbient]
   · intro hv
     change v ∈ Finset.univ.image (d.componentInteractionGlobalSlot order B) at hv
     obtain ⟨w, _, hw⟩ := Finset.mem_image.mp hv
     let wAmbient : ↥S :=
       ⟨w.1, TwoPointDiagram.interactionPart_subset
         (B : Finset (TwoPointVertex S)) w.2⟩
+    have hcomponent : d.interactionVertexComponentEquiv.symm ⟨B, w⟩ = wAmbient := by
+      apply Subtype.ext
+      simpa [wAmbient] using
+        d.interactionVertexComponentEquiv_symm_val (⟨B, w⟩)
     have hwB : (Sum.inr wAmbient : TwoPointVertex S) ∈ B.1 :=
       (TwoPointDiagram.mem_interactionPart_subtype
         (B : Finset (TwoPointVertex S)) wAmbient).1 w.2
     have hwSlot : order.symm wAmbient = v := by
-      apply Fin.ext
-      simpa [TwoPointDiagram.componentInteractionGlobalSlot, wAmbient] using
-        congrArg Fin.val hw
+      simpa [TwoPointDiagram.componentInteractionGlobalSlot, hcomponent] using hw
     have hwAmbient : wAmbient = vAmbient := by
       apply order.symm.injective
       simpa [vAmbient] using hwSlot
