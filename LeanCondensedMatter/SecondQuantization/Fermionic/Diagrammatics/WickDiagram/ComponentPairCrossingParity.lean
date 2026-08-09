@@ -127,67 +127,6 @@ theorem QuarticWickDiagram.sum_componentOrderedLeg_inversions_eq_sum_vertex_inve
           intro j _
           exact d.sum_componentOrderedLeg_inversions_at_vertices shuffle B C hBC i j
 
-theorem Combinatorics.Pairing.pairEndpoint_eq_pairEndpointAt {n : ℕ}
-    (pairing : Combinatorics.Pairing n) (p : pairing.NormalizedPair) (k : Fin 2) :
-    pairing.pairEndpoint (p, k) = Combinatorics.pairEndpointAt p.1 k :=
-  rfl
-
-/-- Pairs transported from distinct components are distinct normalized global pairs. -/
-theorem QuarticWickDiagram.componentPairEquiv_ne
-    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B C : d.componentPartition.parts) (hBC : B ≠ C)
-    (p : d.LocalOrderedPair orders B) (q : d.LocalOrderedPair orders C) :
-    d.componentPairEquiv orders shuffle ⟨B, p⟩ ≠
-      d.componentPairEquiv orders shuffle ⟨C, q⟩ := by
-  intro h
-  exact hBC (congrArg Sigma.fst ((d.componentPairEquiv orders shuffle).injective h))
-
-/-- Pairs transported from distinct components have disjoint global endpoints. -/
-theorem QuarticWickDiagram.componentPairEquiv_endpoints_ne
-    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B C : d.componentPartition.parts) (hBC : B ≠ C)
-    (p : d.LocalOrderedPair orders B) (q : d.LocalOrderedPair orders C) :
-    (d.componentPairEquiv orders shuffle ⟨B, p⟩).1.1 ≠
-        (d.componentPairEquiv orders shuffle ⟨C, q⟩).1.1 ∧
-      (d.componentPairEquiv orders shuffle ⟨B, p⟩).1.1 ≠
-        (d.componentPairEquiv orders shuffle ⟨C, q⟩).1.2 ∧
-      (d.componentPairEquiv orders shuffle ⟨B, p⟩).1.2 ≠
-        (d.componentPairEquiv orders shuffle ⟨C, q⟩).1.1 ∧
-      (d.componentPairEquiv orders shuffle ⟨B, p⟩).1.2 ≠
-        (d.componentPairEquiv orders shuffle ⟨C, q⟩).1.2 := by
-  exact (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).normalizedPair_endpoints_ne_of_ne
-    (d.componentPairEquiv orders shuffle ⟨B, p⟩)
-    (d.componentPairEquiv orders shuffle ⟨C, q⟩)
-    (d.componentPairEquiv_ne orders shuffle B C hBC p q)
-
-/-- A pair from component `B` and a pair from a distinct component `C` cross geometrically exactly
-when their four cross-pair endpoint comparisons have odd parity. -/
-theorem QuarticWickDiagram.componentPairEndpointInversionCount_mod_two_eq_one_iff_crosses
-    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B C : d.componentPartition.parts) (hBC : B ≠ C)
-    (p : d.LocalOrderedPair orders B) (q : d.LocalOrderedPair orders C) :
-    Combinatorics.pairEndpointInversionCount
-        (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
-        (d.componentPairEquiv orders shuffle ⟨C, q⟩).1 % 2 = 1 ↔
-      Combinatorics.Crosses
-          (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
-          (d.componentPairEquiv orders shuffle ⟨C, q⟩).1 ∨
-        Combinatorics.Crosses
-          (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
-          (d.componentPairEquiv orders shuffle ⟨B, p⟩).1 := by
-  have hEnds := d.componentPairEquiv_endpoints_ne orders shuffle B C hBC p q
-  exact Combinatorics.pairEndpointInversionCount_mod_two_eq_one_iff_crosses
-    (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
-    (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
-    ((d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs_normalized
-      (d.componentPairEquiv orders shuffle ⟨B, p⟩).2)
-    ((d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs_normalized
-      (d.componentPairEquiv orders shuffle ⟨C, q⟩).2)
-    hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2
-
 /-- Indicator-valued version of component-pair crossing parity. -/
 theorem QuarticWickDiagram.componentPairEndpointInversionCount_mod_two_eq_crossesIndicator
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
@@ -204,7 +143,15 @@ theorem QuarticWickDiagram.componentPairEndpointInversionCount_mod_two_eq_crosse
           (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
           (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
       then 1 else 0 := by
-  have hEnds := d.componentPairEquiv_endpoints_ne orders shuffle B C hBC p q
+  have hPairNe :
+      d.componentPairEquiv orders shuffle ⟨B, p⟩ ≠
+        d.componentPairEquiv orders shuffle ⟨C, q⟩ := by
+    intro h
+    exact hBC (congrArg Sigma.fst ((d.componentPairEquiv orders shuffle).injective h))
+  have hEnds :=
+    (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).normalizedPair_endpoints_ne_of_ne
+      (d.componentPairEquiv orders shuffle ⟨B, p⟩)
+      (d.componentPairEquiv orders shuffle ⟨C, q⟩) hPairNe
   exact Combinatorics.pairEndpointInversionCount_mod_two_eq_crossesIndicator
     (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
     (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
