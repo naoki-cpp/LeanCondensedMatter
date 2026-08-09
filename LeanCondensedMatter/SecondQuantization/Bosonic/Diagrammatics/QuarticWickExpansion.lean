@@ -2,19 +2,22 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticLocalLeg
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.FreeExpectationRecursion
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Leg
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
 
 set_option linter.style.header false
 
 /-!
 # Free-boson Wick expansion for quartic vertex legs
 
-This module connects the convergence-aware free-boson Wick recursion to the quartic diagrammatic
-leg convention.  A finite list of quartic vertices is flattened to `4 n = 2 (2 n)` local thermal
-fields using the Common quartic-leg equivalence, and the inherited Wick theorem evaluates its
-normalized Gibbs expectation as a sum over `Pairing (2 * n)`.
+This module is the diagrammatic boundary where explicit perfect pairings are still required. A finite
+list of quartic vertices is flattened to `4 n = 2 (2 n)` local thermal fields using the Common
+quartic-leg equivalence, and the generic Common first-pair induction turns the thermal recurrence
+into `Pairing (2 * n)` data for diagrammatics.
 
-The analytic hypotheses remain explicit through the admissibility predicate and first-pair
-recurrence.  No finite occupation basis or completed-space boundedness assumption is introduced.
+The concrete number-conserving thermal evaluation backend is instead the permanent in
+`ConcreteExpectationRecursion`. Keeping this bridge here prevents explicit pairing enumeration from
+leaking back into the thermal API while preserving the combinatorial objects needed for diagram
+connectivity and factorization.
 -/
 
 namespace SecondQuantization
@@ -57,10 +60,11 @@ noncomputable def quarticFreeThermalOrderedProduct {n : ℕ}
 
 variable [Fintype Mode] [DecidableEq Mode]
 
-/-- Finite-order quartic specialization of the convergence-aware free-boson Wick expansion.
+/-- Finite-order quartic specialization of the free-boson Wick expansion.
 
 The `n` quartic vertices contribute `4 n` local fields, hence the perfect pairings are indexed by
-`Pairing (2 * n)`.  The right-hand side uses the shared statistics-independent pairing evaluator. -/
+`Pairing (2 * n)`. This theorem deliberately constructs the generic Common pairing recursion only at
+the diagrammatic boundary; the thermal layer itself exposes the permanent representation. -/
 theorem freeGibbsQuarticExpectation_eq_sum_pairing
     (ε : Mode → ℝ) (β : ℝ) (hpos : ∀ i, 0 < β * ε i)
     (admissible : (r : ℕ) → (Fin (2 * r) → FreeThermalField Mode) → Prop)
@@ -84,9 +88,24 @@ theorem freeGibbsQuarticExpectation_eq_sum_pairing
         pairing.evaluation (pairing.weight .boson)
           (fun a b => freeThermalPairValue ε β
             (quarticFreeThermalFieldFamily q a) (quarticFreeThermalFieldFamily q b)) := by
-  have hwick := freeGibbsExpectation_eq_sum_pairing ε β hpos admissible hmem herase hrec
+  let data : Common.BlochDeDominicis.ExpectationPairingRecursion
+      (FreeThermalField Mode) .boson where
+    expectation := fun fields =>
+      (freeGibbsFunctional ε β hpos).value (FreeThermalField.orderedProduct fields)
+    pairValue := freeThermalPairValue ε β
+    admissible := admissible
+    expectation_nil := by
+      change (freeGibbsFunctional ε β hpos).value
+        (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) = 1
+      exact (freeGibbsFunctional ε β hpos).value_unit
+    admissible_erase := herase
+    expectation_succ := by
+      intro r C hC
+      simpa using hrec r C hC
+  have _hmem := hmem (2 * n) (quarticFreeThermalFieldFamily q) hq
+  have hwick := data.expectation_eq_sum_pairing
     (2 * n) (quarticFreeThermalFieldFamily q) hq
-  simpa [quarticFreeThermalOrderedProduct, Combinatorics.Pairing.evaluation] using hwick
+  simpa [data, quarticFreeThermalOrderedProduct, Combinatorics.Pairing.evaluation] using hwick
 
 end
 end Bosonic
