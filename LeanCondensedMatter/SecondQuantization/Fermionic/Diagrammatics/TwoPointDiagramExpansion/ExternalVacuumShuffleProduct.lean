@@ -81,7 +81,10 @@ theorem reassembleExternalVacuumSlotShuffle_dysonFixedTimeAmplitude_eq_integrand
   rw [d.dysonFixedTimeAmplitude_eq_external_mul_prod_vacuum]
   rw [SlotShuffle.integrand]
   apply congrArg₂ (· * ·)
-  · rfl
+  · rw [d.mixedExternalDysonFixedTimeValue_eq_restricted]
+    rw [external.dysonFixedTimeAmplitude_eq_external]
+    rw [external.1.mixedExternalDysonFixedTimeValue_eq_restricted]
+    rfl
   · rfl
 
 /-- An injective-time pointwise binary external/vacuum factorization is sufficient to factor the
