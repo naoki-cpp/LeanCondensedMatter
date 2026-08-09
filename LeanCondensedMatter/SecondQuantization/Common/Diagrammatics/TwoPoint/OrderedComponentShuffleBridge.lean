@@ -104,20 +104,33 @@ theorem TwoPointDiagram.inInteractionOrderComponentShuffleEquiv_canonical
       d.interactionShuffleOfVertexOrder order
         (d.componentInteractionVertexOrdersOfVertexOrder order)
         (d.componentInteractionOrdersCompatible_ofVertexOrder order) := by
+  classical
+  let transported := d.inInteractionOrderComponentShuffleEquiv order
+    (d.inInteractionOrder order).canonicalComponentInteractionShuffle
   apply Combinatorics.FamilySlotShuffleTo.ext
   apply Equiv.ext
   rintro ⟨B, i⟩
-  simp [TwoPointDiagram.inInteractionOrderComponentShuffleEquiv,
-    familySlotShuffleCastSizeEquiv,
-    TwoPointDiagram.componentInteractionFamilyShuffleEquiv,
-    Combinatorics.FamilySlotShuffle.reindexEquiv,
-    Combinatorics.FamilySlotShuffleTo.castTotalEquiv,
-    TwoPointDiagram.interactionShuffleOfVertexOrder,
-    TwoPointDiagram.componentInteractionVertexEquiv,
-    TwoPointDiagram.componentInteractionVertexOrdersOfVertexOrder,
-    TwoPointDiagram.componentInteractionVertexOrderOfVertexOrder,
-    TwoPointDiagram.canonicalComponentInteractionShuffle,
-    TwoPointDiagram.interactionPart_inInteractionOrderComponentPartEquiv_symm]
+  have hmem : ∀ r : Fin (d.interactionComponentSize B),
+      transported.slotEquiv ⟨B, r⟩ ∈ d.componentInteractionGlobalSlots order B := by
+    intro r
+    rw [← d.interactionPart_inInteractionOrderComponentPartEquiv_symm order B]
+    simp [transported, TwoPointDiagram.inInteractionOrderComponentShuffleEquiv,
+      familySlotShuffleCastSizeEquiv,
+      TwoPointDiagram.componentInteractionFamilyShuffleEquiv,
+      Combinatorics.FamilySlotShuffle.reindexEquiv,
+      Combinatorics.FamilySlotShuffleTo.castTotalEquiv,
+      TwoPointDiagram.canonicalComponentInteractionShuffle,
+      TwoPointDiagram.interactionPart]
+  have huniq := Finset.orderEmbOfFin_unique
+    (s := d.componentInteractionGlobalSlots order B)
+    (h := d.card_componentInteractionGlobalSlots order B)
+    (f := fun r => transported.slotEquiv ⟨B, r⟩)
+    hmem (transported.strictMono B)
+  change transported.slotEquiv ⟨B, i⟩ =
+    order.symm (d.interactionVertexComponentEquiv.symm
+      ⟨B, d.componentInteractionVertexOrderOfVertexOrder order B i⟩)
+  rw [← d.componentInteractionGlobalSlot_componentInteractionVertexOrderOfVertexOrder order B i]
+  simpa only [Finset.coe_orderIsoOfFin_apply] using congrFun huniq i
 
 end
 
