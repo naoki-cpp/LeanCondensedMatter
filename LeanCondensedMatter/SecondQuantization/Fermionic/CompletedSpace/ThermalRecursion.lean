@@ -101,34 +101,38 @@ theorem completedFreeGibbsNormalOrderedMoment_succ
   rw [completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
     ε β hsum n (.create (createMode 0)) tail hodd (hcreate 0),
     completedFreeGibbsExpectation_thermalPeelSum_eq_sum, Finset.mul_sum]
-  change (∑ k : Fin tail.length,
-      ((.create (createMode 0) : CompletedThermalLadder Mode).gibbsFactor ε β /
-        ((1 : ℂ) + (.create (createMode 0) : CompletedThermalLadder Mode).gibbsFactor ε β)) *
-        (((-1 : ℂ) ^ (k : ℕ)) *
-          (.create (createMode 0) : CompletedThermalLadder Mode).anticommutatorValue (tail.get k) *
-          completedFreeGibbsExpectation ε β hsum (tail.eraseIdx k))) = _
+  let ratio : ℂ :=
+    (.create (createMode 0) : CompletedThermalLadder Mode).gibbsFactor ε β /
+      ((1 : ℂ) + (.create (createMode 0) : CompletedThermalLadder Mode).gibbsFactor ε β)
+  let summand : Fin tail.length → ℂ := fun k =>
+    ratio *
+      (((-1 : ℂ) ^ (k : ℕ)) *
+        (.create (createMode 0) : CompletedThermalLadder Mode).anticommutatorValue (tail.get k) *
+        completedFreeGibbsExpectation ε β hsum (tail.eraseIdx k))
+  change (∑ k : Fin tail.length, summand k) = _
   have hlen : tail.length = n + (n + 1) := by
     simp [tail, creators, annihilators]
-  rw [hlen, Fin.sum_univ_add]
+  let e : Fin tail.length ≃ Fin (n + (n + 1)) :=
+    ⟨Fin.cast hlen, Fin.cast hlen.symm, fun _ => rfl, fun _ => rfl⟩
+  have hreindex :
+      (∑ k : Fin tail.length, summand k) =
+        ∑ k : Fin (n + (n + 1)), summand (e.symm k) :=
+    Fintype.sum_equiv e _ _ fun _ => rfl
+  rw [hreindex, Fin.sum_univ_add]
   have hcreator :
-      (∑ i : Fin n,
-        ((.create (createMode 0) : CompletedThermalLadder Mode).gibbsFactor ε β /
-          ((1 : ℂ) + (.create (createMode 0) : CompletedThermalLadder Mode).gibbsFactor ε β)) *
-          (((-1 : ℂ) ^ ((Fin.castAdd (n + 1) i : Fin (n + (n + 1))) : ℕ)) *
-            (.create (createMode 0) : CompletedThermalLadder Mode).anticommutatorValue
-              (tail.get (Fin.castAdd (n + 1) i)) *
-            completedFreeGibbsExpectation ε β hsum
-              (tail.eraseIdx (Fin.castAdd (n + 1) i))))) = 0 := by
+      (∑ i : Fin n, summand (e.symm (Fin.castAdd (n + 1) i))) = 0 := by
     apply Finset.sum_eq_zero
     intro i _
-    simp [tail, creators, annihilators, CompletedThermalLadder.anticommutatorValue]
+    simp [summand, ratio, e, tail, creators, annihilators,
+      CompletedThermalLadder.anticommutatorValue]
   rw [hcreator, zero_add, Finset.mul_sum]
   apply Finset.sum_congr rfl
   intro j _
   have hpair := completedFreeGibbsExpectation_pair_eq
     ε β hsum (.create (createMode 0)) (.annihilate (annihilateMode j)) (hcreate 0)
+  change summand (e.symm (Fin.natAdd n j)) = _
   rw [hpair]
-  simp [tail, creators, annihilators, normalOrderedLadders,
+  simp [summand, ratio, e, tail, creators, annihilators, normalOrderedLadders,
     List.eraseIdx_ofFn_eq_ofFn_succAbove, pow_add]
   ring
 
@@ -155,6 +159,7 @@ theorem completedFreeGibbsNormalOrderedMoment_eq_determinant
         ε β hsum n createMode annihilateMode hcreate,
         Common.BlochDeDominicis.determinantBipartitePairValue_succ,
         fermionNormalOrderSign_succ]
+      rw [Finset.mul_sum]
       rw [Finset.mul_sum]
       apply Finset.sum_congr rfl
       intro j _
