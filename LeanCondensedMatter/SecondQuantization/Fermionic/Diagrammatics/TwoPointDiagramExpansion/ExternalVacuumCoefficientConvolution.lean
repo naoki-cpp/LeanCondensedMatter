@@ -22,7 +22,7 @@ noncomputable def fixedExternalInteractionOrderFin {n : ℕ} {i j : Mode}
     (d : FixedExternalTwoPointWickDiagram Mode n i j) : Fin (n + 1) := by
   refine ⟨d.1.externalInteractionPart.card, ?_⟩
   have hcard : d.1.externalInteractionPart.card ≤ n := by
-    have h := Finset.card_le_card d.1.externalInteractionPart_subset
+    have h := Finset.card_le_card (Finset.subset_univ d.1.externalInteractionPart)
     simpa using h
   exact Nat.lt_succ_of_le hcard
 
