@@ -7,9 +7,8 @@ set_option linter.style.header false
 # Canonical component shuffle under interaction ordering
 
 The canonical component shuffle of an explicitly ordered two-point diagram, transported back to the
-ambient diagram, is exactly the shuffle induced by that global interaction order and its induced
-component-local orders. This is the Common-layer bridge used by the external-leg linked-cluster
-finite order reindexing.
+ambient diagram, is characterized through the ambient slots occupied by each component.  This avoids
+exposing dependent local-index casts in downstream finite-order reindexing.
 -/
 
 namespace SecondQuantization
@@ -95,29 +94,23 @@ theorem TwoPointDiagram.interactionPart_inInteractionOrderComponentPartEquiv_sym
     simp [vAmbient, vExplicit, twoPointInteractionOrderVertexEquiv,
       finEquivUnivSubtype]
 
-/-- Transporting the canonical component shuffle of an ordered presentation back to the ambient
-diagram recovers the component shuffle read off from that global interaction order. -/
-theorem TwoPointDiagram.inInteractionOrderComponentShuffleEquiv_canonical
+/-- Every slot occupied by the transported canonical shuffle belongs to the ambient component's
+set of global interaction slots. -/
+theorem TwoPointDiagram.inInteractionOrderComponentShuffleEquiv_canonical_mem_globalSlots
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (order : QuarticVertexOrder S) :
-    d.inInteractionOrderComponentShuffleEquiv order
-        (d.inInteractionOrder order).canonicalComponentInteractionShuffle =
-      d.interactionShuffleOfVertexOrder order
-        (d.componentInteractionVertexOrdersOfVertexOrder order)
-        (d.componentInteractionOrdersCompatible_ofVertexOrder order) := by
-  apply Combinatorics.FamilySlotShuffleTo.ext
-  apply Equiv.ext
-  rintro ⟨B, i⟩
+    (order : QuarticVertexOrder S) (B : d.componentPartition.parts)
+    (i : Fin (d.interactionComponentSize B)) :
+    (d.inInteractionOrderComponentShuffleEquiv order
+        (d.inInteractionOrder order).canonicalComponentInteractionShuffle).slotEquiv ⟨B, i⟩ ∈
+      d.componentInteractionGlobalSlots order B := by
+  classical
   simp [TwoPointDiagram.inInteractionOrderComponentShuffleEquiv,
     TwoPointDiagram.componentInteractionFamilyShuffleEquiv,
     Combinatorics.FamilySlotShuffle.reindexEquiv,
     Combinatorics.FamilySlotShuffleTo.castTotalEquiv,
-    TwoPointDiagram.interactionShuffleOfVertexOrder,
-    TwoPointDiagram.componentInteractionVertexEquiv,
-    TwoPointDiagram.componentInteractionVertexOrdersOfVertexOrder,
-    TwoPointDiagram.componentInteractionVertexOrderOfVertexOrder,
     TwoPointDiagram.canonicalComponentInteractionShuffle,
-    TwoPointDiagram.interactionPart_inInteractionOrderComponentPartEquiv_symm]
+    TwoPointDiagram.interactionPart_inInteractionOrderComponentPartEquiv_symm,
+    TwoPointDiagram.componentInteractionGlobalSlots]
 
 end
 
