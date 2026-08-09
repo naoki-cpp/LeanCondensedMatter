@@ -20,6 +20,62 @@ variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 
 noncomputable section
 
+/-- Explicit transport of family shuffles along pointwise equal block sizes.  Unlike a raw
+`Equiv.cast`, this keeps the local and ambient `Fin.cast`s visible to simplification. -/
+private noncomputable def familySlotShuffleCastSizeEquiv
+    {ι : Type*} [Fintype ι] {size₁ size₂ : ι → ℕ}
+    (h : ∀ i, size₁ i = size₂ i) :
+    FamilySlotShuffle size₁ ≃ FamilySlotShuffle size₂ := by
+  let hsum : (∑ i, size₁ i) = ∑ i, size₂ i := by
+    apply Fintype.sum_congr
+    intro i
+    exact h i
+  let localEquiv : (Σ i, Fin (size₂ i)) ≃ (Σ i, Fin (size₁ i)) :=
+    Equiv.sigmaCongrRight fun i => finCongr (h i).symm
+  exact
+    { toFun := fun shuffle =>
+        { slotEquiv := localEquiv.trans (shuffle.slotEquiv.trans (finCongr hsum))
+          strictMono := by
+            intro i a b hab
+            change Fin.cast hsum (shuffle.slotEquiv (localEquiv ⟨i, a⟩)) <
+              Fin.cast hsum (shuffle.slotEquiv (localEquiv ⟨i, b⟩))
+            simpa [localEquiv] using
+              (Fin.castOrderIso hsum).strictMono
+                (shuffle.strictMono i
+                  ((Fin.castOrderIso (h i).symm).strictMono hab)) }
+      invFun := fun shuffle =>
+        { slotEquiv := localEquiv.symm.trans (shuffle.slotEquiv.trans (finCongr hsum.symm))
+          strictMono := by
+            intro i a b hab
+            change Fin.cast hsum.symm (shuffle.slotEquiv (localEquiv.symm ⟨i, a⟩)) <
+              Fin.cast hsum.symm (shuffle.slotEquiv (localEquiv.symm ⟨i, b⟩))
+            simpa [localEquiv] using
+              (Fin.castOrderIso hsum.symm).strictMono
+                (shuffle.strictMono i
+                  ((Fin.castOrderIso (h i)).strictMono hab)) }
+      left_inv := by
+        intro shuffle
+        apply FamilySlotShuffle.ext
+        apply Equiv.ext
+        intro x
+        change Fin.cast hsum.symm
+            (Fin.cast hsum
+              (shuffle.slotEquiv (localEquiv (localEquiv.symm x)))) =
+          shuffle.slotEquiv x
+        rw [localEquiv.apply_symm_apply]
+        simp
+      right_inv := by
+        intro shuffle
+        apply FamilySlotShuffle.ext
+        apply Equiv.ext
+        intro x
+        change Fin.cast hsum
+            (Fin.cast hsum.symm
+              (shuffle.slotEquiv (localEquiv.symm (localEquiv x)))) =
+          shuffle.slotEquiv x
+        rw [localEquiv.symm_apply_apply]
+        simp }
+
 /-- Component interaction shuffles of an explicit ordered diagram are canonically the component
 interaction shuffles of the original ambient diagram. -/
 def TwoPointDiagram.inInteractionOrderComponentShuffleEquiv
@@ -29,13 +85,10 @@ def TwoPointDiagram.inInteractionOrderComponentShuffleEquiv
       d.ComponentInteractionShuffle := by
   let dOrdered := d.inInteractionOrder order
   let ePart := d.inInteractionOrderComponentPartEquiv order
-  have hsize : dOrdered.interactionComponentSize =
-      fun B => d.interactionComponentSize (ePart B) := by
-    funext B
-    exact d.interactionComponentSize_inInteractionOrder_eq order B
   let hfamily : FamilySlotShuffle dOrdered.interactionComponentSize ≃
       FamilySlotShuffle (fun B => d.interactionComponentSize (ePart B)) :=
-    Equiv.cast (congrArg FamilySlotShuffle hsize)
+    familySlotShuffleCastSizeEquiv fun B =>
+      d.interactionComponentSize_inInteractionOrder_eq order B
   exact dOrdered.componentInteractionFamilyShuffleEquiv.symm |>.trans <|
     hfamily.trans <|
       (FamilySlotShuffle.reindexEquiv ePart d.interactionComponentSize).symm |>.trans
