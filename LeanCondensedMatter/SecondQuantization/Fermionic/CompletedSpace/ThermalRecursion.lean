@@ -130,10 +130,25 @@ theorem completedFreeGibbsNormalOrderedMoment_succ
   intro j _
   have hpair := completedFreeGibbsExpectation_pair_eq
     ε β hsum (.create (createMode 0)) (.annihilate (annihilateMode j)) (hcreate 0)
+  have hidx : creators.length ≤ (e.symm (Fin.natAdd n j) : ℕ) := by
+    simp [e, creators]
+  have hget :
+      tail.get (e.symm (Fin.natAdd n j)) = .annihilate (annihilateMode j) := by
+    change (creators ++ annihilators).get (e.symm (Fin.natAdd n j)) = _
+    rw [List.get_eq_getElem]
+    rw [List.getElem_append_right hidx]
+    simp [e, creators, annihilators]
+  have herase :
+      tail.eraseIdx (e.symm (Fin.natAdd n j)) =
+        creators ++
+          List.ofFn (fun i : Fin n => .annihilate (annihilateMode (j.succAbove i))) := by
+    change (creators ++ annihilators).eraseIdx (e.symm (Fin.natAdd n j)) = _
+    rw [List.eraseIdx_append_of_length_le hidx annihilators]
+    simp [e, creators, annihilators, List.eraseIdx_ofFn_eq_ofFn_succAbove]
   change summand (e.symm (Fin.natAdd n j)) = _
+  simp only [summand, hget, herase]
   rw [hpair]
-  simp [summand, ratio, e, tail, creators, annihilators, normalOrderedLadders,
-    List.eraseIdx_ofFn_eq_ofFn_succAbove, pow_add]
+  simp [ratio, e, pow_add]
   ring
 
 /-- Completed free-fermion Bloch--de Dominicis evaluation in the number-conserving normal-ordered
