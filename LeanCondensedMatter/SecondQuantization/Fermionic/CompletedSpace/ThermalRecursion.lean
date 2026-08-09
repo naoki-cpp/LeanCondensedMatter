@@ -7,12 +7,12 @@ set_option linter.style.header false
 /-!
 # Completed fermionic Gibbs determinant evaluation
 
-In the number-conserving free fermion state, same-type contractions vanish.  A normal-ordered moment
-therefore reduces to a determinant of creator--annihilator two-point functions.  The only extra
+In the number-conserving free fermion state, same-type contractions vanish. A normal-ordered moment
+therefore reduces to a determinant of creator--annihilator two-point functions. The only extra
 factor is the fixed sign required to move the annihilator block through the creator block.
 
 This file derives the specialized recurrence directly from the completed CAR peel and KMS rotation
-and uses Mathlib's determinant Laplace expansion through the common matrix backend.  It deliberately
+and uses Mathlib's determinant Laplace expansion through the common matrix backend. It deliberately
 does not expose a parallel perfect-pairing evaluation endpoint.
 -/
 
@@ -33,6 +33,7 @@ def normalOrderedLadders {n : ℕ} (createMode annihilateMode : Fin n → Mode) 
   List.ofFn (fun i => .create (createMode i)) ++
     List.ofFn (fun i => .annihilate (annihilateMode i))
 
+omit [LinearOrder Mode] in
 @[simp]
 theorem normalOrderedLadders_zero
     (createMode annihilateMode : Fin 0 → Mode) :
@@ -91,63 +92,48 @@ theorem completedFreeGibbsNormalOrderedMoment_succ
     List.ofFn (fun i : Fin n => .create (createMode i.succ))
   let annihilators : List (CompletedThermalLadder Mode) :=
     List.ofFn (fun j : Fin (n + 1) => .annihilate (annihilateMode j))
+  let tail := creators ++ annihilators
   change completedFreeGibbsExpectation ε β hsum
-      (.create (createMode 0) :: (creators ++ annihilators)) = _
-  have hlen : (creators ++ annihilators).length = 2 * n + 1 := by
-    simp [creators, annihilators]
+      (.create (createMode 0) :: tail) = _
+  have hodd : tail.length = 2 * n + 1 := by
+    simp [tail, creators, annihilators]
     omega
   rw [completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
-    ε β hsum n (.create (createMode 0)) (creators ++ annihilators) hlen (hcreate 0),
+    ε β hsum n (.create (createMode 0)) tail hodd (hcreate 0),
     completedFreeGibbsExpectation_thermalPeelSum_eq_sum, Finset.mul_sum]
-  have hlen' : (creators ++ annihilators).length = n + (n + 1) := by
-    simp [creators, annihilators]
-  let e : Fin ((creators ++ annihilators).length) ≃ Fin (n + (n + 1)) :=
-    Fin.castIso hlen'
-  rw [Fintype.sum_equiv e
-    (fun k : Fin ((creators ++ annihilators).length) =>
+  change (∑ k : Fin tail.length,
       ((.create (createMode 0) : CompletedThermalLadder Mode).gibbsFactor ε β /
         ((1 : ℂ) + (.create (createMode 0) : CompletedThermalLadder Mode).gibbsFactor ε β)) *
         (((-1 : ℂ) ^ (k : ℕ)) *
-          (.create (createMode 0) : CompletedThermalLadder Mode).anticommutatorValue
-            ((creators ++ annihilators)[(k : ℕ)]'k.isLt) *
-          completedFreeGibbsExpectation ε β hsum ((creators ++ annihilators).eraseIdx k)))
-    (fun k : Fin (n + (n + 1)) =>
-      ((.create (createMode 0) : CompletedThermalLadder Mode).gibbsFactor ε β /
-        ((1 : ℂ) + (.create (createMode 0) : CompletedThermalLadder Mode).gibbsFactor ε β)) *
-        (((-1 : ℂ) ^ (e.symm k : ℕ)) *
-          (.create (createMode 0) : CompletedThermalLadder Mode).anticommutatorValue
-            ((creators ++ annihilators)[(e.symm k : ℕ)]'(e.symm k).isLt) *
-          completedFreeGibbsExpectation ε β hsum
-            ((creators ++ annihilators).eraseIdx (e.symm k))))
-    (fun k => rfl)]
-  rw [Fin.sum_univ_add]
+          (.create (createMode 0) : CompletedThermalLadder Mode).anticommutatorValue (tail.get k) *
+          completedFreeGibbsExpectation ε β hsum (tail.eraseIdx k))) = _
+  have hlen : tail.length = n + (n + 1) := by
+    simp [tail, creators, annihilators]
+  rw [hlen, Fin.sum_univ_add]
   have hcreator :
       (∑ i : Fin n,
         ((.create (createMode 0) : CompletedThermalLadder Mode).gibbsFactor ε β /
           ((1 : ℂ) + (.create (createMode 0) : CompletedThermalLadder Mode).gibbsFactor ε β)) *
-          (((-1 : ℂ) ^ (e.symm (Fin.castAdd (n + 1) i) : ℕ)) *
+          (((-1 : ℂ) ^ ((Fin.castAdd (n + 1) i : Fin (n + (n + 1))) : ℕ)) *
             (.create (createMode 0) : CompletedThermalLadder Mode).anticommutatorValue
-              ((creators ++ annihilators)
-                [(e.symm (Fin.castAdd (n + 1) i) : ℕ)]'
-                (e.symm (Fin.castAdd (n + 1) i)).isLt) *
+              (tail.get (Fin.castAdd (n + 1) i)) *
             completedFreeGibbsExpectation ε β hsum
-              ((creators ++ annihilators).eraseIdx
-                (e.symm (Fin.castAdd (n + 1) i)))))) = 0 := by
+              (tail.eraseIdx (Fin.castAdd (n + 1) i))))) = 0 := by
     apply Finset.sum_eq_zero
     intro i _
-    simp [e, creators, annihilators, CompletedThermalLadder.anticommutatorValue]
+    simp [tail, creators, annihilators, CompletedThermalLadder.anticommutatorValue]
   rw [hcreator, zero_add, Finset.mul_sum]
   apply Finset.sum_congr rfl
   intro j _
   have hpair := completedFreeGibbsExpectation_pair_eq
     ε β hsum (.create (createMode 0)) (.annihilate (annihilateMode j)) (hcreate 0)
   rw [hpair]
-  simp [e, creators, annihilators, normalOrderedLadders,
+  simp [tail, creators, annihilators, normalOrderedLadders,
     List.eraseIdx_ofFn_eq_ofFn_succAbove, pow_add]
   ring
 
 /-- Completed free-fermion Bloch--de Dominicis evaluation in the number-conserving normal-ordered
-sector.  The Gibbs moment is the determinant of the creator--annihilator two-point matrix times the
+sector. The Gibbs moment is the determinant of the creator--annihilator two-point matrix times the
 fixed normal-order sign. -/
 theorem completedFreeGibbsNormalOrderedMoment_eq_determinant
     (ε : Mode → ℝ) (β : ℝ) (hsum : CompletedFreeGibbsSummable ε β)
@@ -158,17 +144,24 @@ theorem completedFreeGibbsNormalOrderedMoment_eq_determinant
         Common.BlochDeDominicis.determinantBipartitePairValue
           (fun i j => completedFreeGibbsExpectation ε β hsum [.create i, .annihilate j])
           createMode annihilateMode := by
+  revert createMode annihilateMode
   induction n with
   | zero =>
+      intro createMode annihilateMode _
       simp
   | succ n ih =>
-      rw [completedFreeGibbsNormalOrderedMoment_succ ε β hsum n createMode annihilateMode hcreate]
+      intro createMode annihilateMode hcreate
+      rw [completedFreeGibbsNormalOrderedMoment_succ
+        ε β hsum n createMode annihilateMode hcreate,
+        Common.BlochDeDominicis.determinantBipartitePairValue_succ,
+        fermionNormalOrderSign_succ]
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro j _
       have htail : completedFreeGibbsNormalOrderAdmissible ε β
           (fun i : Fin n => createMode i.succ) := fun i => hcreate i.succ
-      simp_rw [ih (fun i : Fin n => createMode i.succ)
-        (fun i : Fin n => annihilateMode (·.succAbove i)) htail]
-      rw [Common.BlochDeDominicis.determinantBipartitePairValue_succ]
-      simp only [fermionNormalOrderSign_succ]
+      rw [ih (fun i : Fin n => createMode i.succ)
+        (fun i : Fin n => annihilateMode (j.succAbove i)) htail]
       ring
 
 end CompletedThermalLadder
