@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordered
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.OrderedComponentTransport
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DysonCoefficient
 
 set_option linter.style.header false
@@ -89,6 +89,19 @@ noncomputable def fixedExternalTwoPointWickDiagramOrderEquiv
       FixedExternalTwoPointWickDiagram Mode S.card i j :=
   (fixedExternalTwoPointWickDiagramOnEquivOrderedData i j order).trans
     (orderedFixedExternalTwoPointDataEquivFixedDiagram S.card i j)
+
+/-- The fermionic ordered-diagram equivalence has exactly the Common `inInteractionOrder` diagram as
+its underlying two-point graph and labels. -/
+theorem fixedExternalTwoPointWickDiagramOrderEquiv_val
+    {S : Finset (Fin N)} (i j : Mode) (order : Common.QuarticVertexOrder S)
+    (d : FixedExternalTwoPointWickDiagramOn Mode N S i j) :
+    (fixedExternalTwoPointWickDiagramOrderEquiv i j order d).1 =
+      d.1.inInteractionOrder order := by
+  apply Common.TwoPointDiagram.ext
+  · rfl
+  · funext v
+    rfl
+  · rfl
 
 /-- Dyson amplitude of an arbitrary finite-set diagram for one chosen interaction order. -/
 noncomputable def FixedExternalTwoPointWickDiagramOn.orderedDysonAmplitude
