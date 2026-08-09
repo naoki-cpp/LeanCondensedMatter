@@ -98,13 +98,13 @@ theorem twoPointVertexOfLeg_interactionVertexPositionRelabel {n : ℕ}
     (leg : Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1))) :
     Common.twoPointVertexOfLeg (interactionVertexPositionRelabel π leg) =
       interactionVertexVertexRelabel π (Common.twoPointVertexOfLeg leg) := by
-  change Common.twoPointLegVertex
-      (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))
-        (interactionVertexPositionRelabel π leg)) = _
-  simp only [interactionVertexPositionRelabel, Equiv.trans_apply, Equiv.apply_symm_apply]
+  change Common.twoPointVertexOfLeg
+      ((Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm
+        (interactionVertexLegRelabel π
+          (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)) leg))) = _
   rcases hleg : Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)) leg with e | ⟨v, l⟩
-  · simp [hleg, Common.twoPointLegVertex]
-  · simp [hleg, Common.twoPointLegVertex]
+  · simp [Common.twoPointVertexOfLeg, hleg]
+  · simp [Common.twoPointVertexOfLeg, hleg]
 
 /-- Relabel the interaction vertices of a fixed-external two-point Wick diagram. -/
 def FixedExternalTwoPointWickDiagram.relabelInteractionVertices
@@ -164,9 +164,11 @@ theorem FixedExternalTwoPointWickDiagram.relabelInteractionVertices_isExternally
       obtain ⟨e, he⟩ := hNoVac ⟨π.symm v.1, Finset.mem_univ _⟩
       refine ⟨e, ?_⟩
       have h := ((d.relabelInteractionVertices_reachable_iff π
-        (Sum.inr ⟨π.symm v.1, Finset.mem_univ _⟩) (Sum.inl e)).1 he)
+        (Sum.inl e) (Sum.inr ⟨π.symm v.1, Finset.mem_univ _⟩)).1 he)
       simpa [interactionVertexVertexRelabel] using h
-    · have h := ((d.relabelInteractionVertices_reachable_iff π
+    · change d.1.vertexGraph.Reachable
+        (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)) at hExt ⊢
+      have h := ((d.relabelInteractionVertices_reachable_iff π
         (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))).1 hExt)
       simpa using h
   · rintro ⟨hNoVac, hExt⟩
@@ -174,9 +176,13 @@ theorem FixedExternalTwoPointWickDiagram.relabelInteractionVertices_isExternally
     · intro v
       obtain ⟨e, he⟩ := hNoVac ⟨π v.1, Finset.mem_univ _⟩
       refine ⟨e, ?_⟩
-      apply (d.relabelInteractionVertices_reachable_iff π (Sum.inr v) (Sum.inl e)).2
+      apply (d.relabelInteractionVertices_reachable_iff π (Sum.inl e) (Sum.inr v)).2
       simpa [interactionVertexVertexRelabel] using he
-    · apply (d.relabelInteractionVertices_reachable_iff π
+    · change (d.relabelInteractionVertices π).1.vertexGraph.Reachable
+        (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))
+      change d.1.vertexGraph.Reachable
+        (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2)) at hExt
+      apply (d.relabelInteractionVertices_reachable_iff π
         (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))).2
       simpa using hExt
 
