@@ -285,4 +285,89 @@ theorem Pairing.sign_pairPerm_eq_pow_inversionSum (pairing : Pairing n) :
             (pairing.pairIndexEquiv l).1) :=
       Finset.prod_pow_eq_pow_sum _ _ _
 
+private theorem sum_univ_eq_sum_Ioi_add_sum_Iio {m : ℕ} (k : Fin m) (f : Fin m → ℕ)
+    (hk : f k = 0) :
+    ∑ l : Fin m, f l = ∑ l ∈ Finset.Ioi k, f l + ∑ l ∈ Finset.Iio k, f l := by
+  classical
+  have hsplit :
+      (∑ l ∈ Finset.univ.filter (fun l => l < k), f l) +
+          ∑ l ∈ Finset.univ.filter (fun l => ¬ l < k), f l =
+        ∑ l : Fin m, f l :=
+    Finset.sum_filter_add_sum_filter_not Finset.univ (fun l => l < k) f
+  have hIio : Finset.univ.filter (fun l => l < k) = Finset.Iio k := by
+    ext l
+    simp
+  have hIci : Finset.univ.filter (fun l => ¬ l < k) = Finset.Ici k := by
+    ext l
+    simp [not_lt]
+  have hIci_sum : ∑ l ∈ Finset.Ici k, f l = ∑ l ∈ Finset.Ioi k, f l := by
+    rw [← Finset.Ioi_insert, Finset.sum_insert (by simp), hk, zero_add]
+  rw [hIio, hIci, hIci_sum] at hsplit
+  omega
+
+/-- Indicator of a crossing between the `k`-th and `l`-th enumerated pairs. -/
+private noncomputable def crossIndicator (pairing : Pairing n) (k l : Fin n) : ℕ :=
+  if Crosses (pairing.pairIndexEquiv k).1 (pairing.pairIndexEquiv l).1 then 1 else 0
+
+private theorem crossingCount_eq_sum_sum_crossIndicator (pairing : Pairing n) :
+    pairing.crossingCount = ∑ k : Fin n, ∑ l : Fin n, crossIndicator pairing k l := by
+  rw [pairing.crossingCount_eq_sum_sum_crosses, ← Equiv.sum_comp pairing.pairIndexEquiv]
+  exact Finset.sum_congr rfl fun k _ => (Equiv.sum_comp pairing.pairIndexEquiv _).symm
+
+private theorem crossingCount_eq_sum_Ioi_crossIndicator (pairing : Pairing n) :
+    pairing.crossingCount =
+      ∑ k : Fin n, ∑ l ∈ Finset.Ioi k,
+        (crossIndicator pairing k l + crossIndicator pairing l k) := by
+  classical
+  have hdiag : ∀ k : Fin n, crossIndicator pairing k k = 0 :=
+    fun k => if_neg (not_crosses_self _)
+  have hswap :
+      (∑ k : Fin n, ∑ l ∈ Finset.Iio k, crossIndicator pairing k l) =
+        ∑ k : Fin n, ∑ l ∈ Finset.Ioi k, crossIndicator pairing l k :=
+    Finset.sum_comm' (fun x y => by simp)
+  rw [crossingCount_eq_sum_sum_crossIndicator]
+  calc
+    (∑ k : Fin n, ∑ l : Fin n, crossIndicator pairing k l) =
+        ∑ k : Fin n, (∑ l ∈ Finset.Ioi k, crossIndicator pairing k l +
+          ∑ l ∈ Finset.Iio k, crossIndicator pairing k l) :=
+      Finset.sum_congr rfl fun k _ =>
+        sum_univ_eq_sum_Ioi_add_sum_Iio k (crossIndicator pairing k) (hdiag k)
+    _ = (∑ k : Fin n, ∑ l ∈ Finset.Ioi k, crossIndicator pairing k l) +
+          ∑ k : Fin n, ∑ l ∈ Finset.Iio k, crossIndicator pairing k l :=
+      Finset.sum_add_distrib
+    _ = (∑ k : Fin n, ∑ l ∈ Finset.Ioi k, crossIndicator pairing k l) +
+          ∑ k : Fin n, ∑ l ∈ Finset.Ioi k, crossIndicator pairing l k := by
+      rw [hswap]
+    _ = ∑ k : Fin n, ∑ l ∈ Finset.Ioi k,
+          (crossIndicator pairing k l + crossIndicator pairing l k) := by
+      rw [← Finset.sum_add_distrib]
+      exact Finset.sum_congr rfl fun k _ => Finset.sum_add_distrib.symm
+
+/-- **Crossing parity is a permutation sign.** The sign of the permutation listing the normalized
+pairs of a perfect pairing is `-1` raised to its crossing count. -/
+theorem Pairing.sign_pairPerm (pairing : Pairing n) :
+    Equiv.Perm.sign pairing.pairPerm = (-1) ^ pairing.crossingCount := by
+  classical
+  rw [pairing.sign_pairPerm_eq_pow_inversionSum]
+  refine neg_one_pow_eq_of_mod_two_eq ?_
+  rw [crossingCount_eq_sum_Ioi_crossIndicator]
+  refine finset_sum_mod_two_congr _ _ _ fun k _ => ?_
+  refine finset_sum_mod_two_congr _ _ _ fun l hl => ?_
+  have hkl : k < l := Finset.mem_Ioi.1 hl
+  have hne : pairing.pairIndexEquiv k ≠ pairing.pairIndexEquiv l := fun h =>
+    (ne_of_lt hkl) (pairing.pairIndexEquiv.injective h)
+  have hEnds := pairing.normalizedPair_endpoints_ne_of_ne _ _ hne
+  have hmod := pairEndpointInversionCount_mod_two_eq_crossesIndicator
+    (pairing.pairIndexEquiv k).1 (pairing.pairIndexEquiv l).1
+    (pairing.pairs_normalized (pairing.pairIndexEquiv k).2)
+    (pairing.pairs_normalized (pairing.pairIndexEquiv l).2)
+    hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2
+  rw [hmod, crossIndicator, crossIndicator]
+  by_cases hA : Crosses (pairing.pairIndexEquiv k).1 (pairing.pairIndexEquiv l).1
+  · have hB : ¬ Crosses (pairing.pairIndexEquiv l).1 (pairing.pairIndexEquiv k).1 :=
+      fun h => lt_asymm hA.1 h.1
+    simp [hA, hB]
+  · by_cases hB : Crosses (pairing.pairIndexEquiv l).1 (pairing.pairIndexEquiv k).1 <;>
+      simp [hA, hB]
+
 end Combinatorics
