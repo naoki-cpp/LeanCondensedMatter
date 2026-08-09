@@ -102,11 +102,9 @@ theorem twoPointVertexOfLeg_interactionVertexPositionRelabel {n : ℕ}
       ((Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm
         (interactionVertexLegRelabel π
           (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)) leg))) = _
-  rcases hleg : Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)) leg with e | ⟨v, l⟩
-  · rw [hleg]
-    simp [Common.twoPointVertexOfLeg]
-  · rw [hleg]
-    simp [Common.twoPointVertexOfLeg]
+  unfold Common.twoPointVertexOfLeg
+  rw [Equiv.apply_symm_apply]
+  rcases Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)) leg with e | ⟨v, l⟩ <;> rfl
 
 /-- Relabel the interaction vertices of a fixed-external two-point Wick diagram. -/
 def FixedExternalTwoPointWickDiagram.relabelInteractionVertices
