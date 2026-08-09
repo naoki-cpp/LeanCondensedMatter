@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalVacuumReassembleLaws
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalVacuumEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.OrderedConnectivity
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.InteractionVertexRelabelConnected
@@ -76,16 +77,18 @@ noncomputable def slotShuffleLeftVertexOrder {k m : ℕ} (shuffle : SlotShuffle 
     Common.QuarticVertexOrder shuffle.leftSlots :=
   (finCongr shuffle.card_leftSlots).trans shuffle.leftSlotEquiv
 
+/-- The right complement of a `k`-by-`m` slot shuffle has exactly `m` vertices. -/
+theorem slotShuffleRightComplement_card {k m : ℕ} (shuffle : SlotShuffle k m) :
+    ((Finset.univ : Finset (Fin (k + m))) \ shuffle.leftSlots).card = m := by
+  have h := Fintype.card_congr shuffle.rightComplementEquiv
+  simpa only [Fintype.card_coe, Fintype.card_fin] using h.symm
+
 /-- Increasing order on the ambient complement occupied by the right side of a binary shuffle. -/
 noncomputable def slotShuffleRightComplementVertexOrder {k m : ℕ}
     (shuffle : SlotShuffle k m) :
     Common.QuarticVertexOrder
-      ((Finset.univ : Finset (Fin (k + m))) \ shuffle.leftSlots) := by
-  have h := Fintype.card_congr shuffle.rightComplementEquiv
-  have hcard :
-      ((Finset.univ : Finset (Fin (k + m))) \ shuffle.leftSlots).card = m := by
-    simpa only [Fintype.card_coe, Fintype.card_fin] using h.symm
-  exact (finCongr hcard).trans shuffle.rightComplementEquiv
+      ((Finset.univ : Finset (Fin (k + m))) \ shuffle.leftSlots) :=
+  (finCongr (slotShuffleRightComplement_card shuffle)).trans shuffle.rightComplementEquiv
 
 /-- Reindex a quartic Wick diagram on an arbitrary finite vertex set to explicit `Fin |S|` slots. -/
 noncomputable def quarticWickDiagramOrderEquiv {N : ℕ} {S : Finset (Fin N)}
@@ -101,20 +104,37 @@ noncomputable def quarticWickDiagramOrderEquiv {N : ℕ} {S : Finset (Fin N)}
       (congrArg (Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode)) hcard).symm).trans
       (Common.quarticDiagramEquivOrderedData explicitOrder).symm)
 
+/-- Transport explicit connected external diagrams to the left-slot subset of a shuffle. -/
+noncomputable def connectedExternalOnSlotShuffleEquiv {k m : ℕ} (i j : Mode)
+    (shuffle : SlotShuffle k m) :
+    ExternallyConnectedFixedExternalTwoPointWickDiagram Mode k i j ≃
+      ExternallyConnectedFixedExternalTwoPointWickDiagramOn
+        Mode (k + m) shuffle.leftSlots i j :=
+  (Equiv.cast
+    (congrArg (fun n => ExternallyConnectedFixedExternalTwoPointWickDiagram Mode n i j)
+      shuffle.card_leftSlots.symm)).trans
+    (externallyConnectedFixedExternalTwoPointWickDiagramOrderEquiv
+      i j (slotShuffleLeftVertexOrder shuffle)).symm
+
 /-- Transport an explicit connected external diagram to the left-slot subset of a shuffle. -/
 noncomputable def connectedExternalOnSlotShuffle {k m : ℕ} (i j : Mode)
     (external : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode k i j)
     (shuffle : SlotShuffle k m) :
     ExternallyConnectedFixedExternalTwoPointWickDiagramOn
       Mode (k + m) shuffle.leftSlots i j :=
-  let externalCast :
-      ExternallyConnectedFixedExternalTwoPointWickDiagram
-        Mode shuffle.leftSlots.card i j :=
-    Equiv.cast
-      (congrArg (fun n => ExternallyConnectedFixedExternalTwoPointWickDiagram Mode n i j)
-        shuffle.card_leftSlots.symm) external
-  (externallyConnectedFixedExternalTwoPointWickDiagramOrderEquiv
-    i j (slotShuffleLeftVertexOrder shuffle)).symm externalCast
+  connectedExternalOnSlotShuffleEquiv i j shuffle external
+
+/-- Transport explicit vacuum Wick diagrams to the right-slot complement of a shuffle. -/
+noncomputable def vacuumOnSlotShuffleEquiv {k m : ℕ} (shuffle : SlotShuffle k m) :
+    QuarticWickDiagram Mode m (Finset.univ : Finset (Fin m)) ≃
+      QuarticWickDiagram Mode (k + m)
+        ((Finset.univ : Finset (Fin (k + m))) \ shuffle.leftSlots) :=
+  (Equiv.cast
+    (congrArg
+      (fun n => QuarticWickDiagram Mode n (Finset.univ : Finset (Fin n)))
+      (slotShuffleRightComplement_card shuffle).symm)).trans
+    (quarticWickDiagramOrderEquiv
+      (Mode := Mode) (slotShuffleRightComplementVertexOrder shuffle)).symm
 
 /-- Transport an explicit vacuum Wick diagram to the right-slot complement of a shuffle. -/
 noncomputable def vacuumOnSlotShuffle {k m : ℕ}
@@ -122,21 +142,7 @@ noncomputable def vacuumOnSlotShuffle {k m : ℕ}
     (shuffle : SlotShuffle k m) :
     QuarticWickDiagram Mode (k + m)
       ((Finset.univ : Finset (Fin (k + m))) \ shuffle.leftSlots) :=
-  let order := slotShuffleRightComplementVertexOrder shuffle
-  let h := Fintype.card_congr shuffle.rightComplementEquiv
-  let hcard :
-      ((Finset.univ : Finset (Fin (k + m))) \ shuffle.leftSlots).card = m := by
-    simpa only [Fintype.card_coe, Fintype.card_fin] using h.symm
-  let vacuumCast :
-      QuarticWickDiagram Mode
-        ((Finset.univ : Finset (Fin (k + m))) \ shuffle.leftSlots).card
-        (Finset.univ : Finset
-          (Fin ((Finset.univ : Finset (Fin (k + m))) \ shuffle.leftSlots).card)) :=
-    Equiv.cast
-      (congrArg
-        (fun n => QuarticWickDiagram Mode n (Finset.univ : Finset (Fin n)))
-        hcard.symm) vacuum
-  (quarticWickDiagramOrderEquiv (Mode := Mode) order).symm vacuumCast
+  vacuumOnSlotShuffleEquiv shuffle vacuum
 
 /-- Reassemble one connected external diagram and one vacuum diagram according to a binary slot
 shuffle. -/
