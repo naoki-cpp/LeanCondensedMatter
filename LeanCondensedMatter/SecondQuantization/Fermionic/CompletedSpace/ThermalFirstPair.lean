@@ -25,25 +25,6 @@ variable {Mode : Type*} [LinearOrder Mode]
 
 namespace CompletedThermalLadder
 
-/-- Completed free-Gibbs admissibility for an even ladder family. At this stage the only local
-condition needed to solve the fermionic KMS peel equation is the nonvanishing denominator
-`1 + gβ(Cᵢ)`. -/
-def completedFreeGibbsAdmissible (ε : Mode → ℝ) (β : ℝ) (n : ℕ)
-    (C : Fin (2 * n) → CompletedThermalLadder Mode) : Prop :=
-  ∀ i, (1 : ℂ) + (C i).gibbsFactor ε β ≠ 0
-
-omit [LinearOrder Mode] in
-/-- Completed Gibbs admissibility is stable under deleting the first ladder and one partner. -/
-theorem completedFreeGibbsAdmissible_erase
-    (ε : Mode → ℝ) (β : ℝ) (n : ℕ)
-    (C : Fin (2 * (n + 1)) → CompletedThermalLadder Mode)
-    (hC : completedFreeGibbsAdmissible ε β (n + 1) C)
-    (j : Fin (2 * n + 1)) :
-    completedFreeGibbsAdmissible ε β n
-      (fun i : Fin (2 * n) => C ((j.succAbove i).succ)) := by
-  intro i
-  exact hC _
-
 /-- For an odd tail, completed CAR exchange followed by KMS rotation solves the wrapped term.
 The coefficient `g / (1 + g)` is the Fermi thermal factor attached to the leading ladder. -/
 theorem completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
