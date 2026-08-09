@@ -19,6 +19,21 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
 
+/-- For an externally connected fixed diagram the vacuum-component product is empty, so its
+Dyson-signed fixed-time amplitude is exactly its external component factor. -/
+theorem ExternallyConnectedFixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_external
+    {n : ℕ} {i j : Mode}
+    (d : ExternallyConnectedFixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    d.1.dysonFixedTimeAmplitude ε β g τ τ' σ =
+      d.1.mixedExternalDysonFixedTimeValue ε β g τ τ' σ := by
+  rw [d.1.dysonFixedTimeAmplitude_eq_external_mul_prod_vacuum]
+  have hvac : d.1.1.vacuumComponentParts = ∅ :=
+    (d.1.1.isExternallyConnected_iff_vacuumComponentParts_eq_empty).1 d.2
+  rw [hvac]
+  simp
+
 /-- At one fixed interaction order, the sum over connected arbitrary-set external cores is exactly
 the explicit connected-diagram coefficient sum. -/
 theorem sum_connected_orderedDysonAmplitude_eq_sum_connected_dysonAmplitude
