@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 import Mathlib.Logic.Equiv.Fin.Basic
 
 set_option linter.style.header false
@@ -128,5 +128,57 @@ theorem mem_bipartitePairing_pairs_iff (σ : Equiv.Perm (Fin m))
         exact absurd hlt (asymm (bipartiteHalfEquiv_inl_lt_inr m (σ.symm j) j))
   · rintro ⟨i, rfl, rfl⟩
     exact ⟨bipartiteHalfEquiv_inl_lt_inr m i (σ i), by simp⟩
+
+/-- The normalized pair of `bipartitePairing σ` indexed by `i`. -/
+def bipartitePair (σ : Equiv.Perm (Fin m)) (i : Fin m) : Fin (2 * m) × Fin (2 * m) :=
+  (bipartiteHalfEquiv m (Sum.inl i), bipartiteHalfEquiv m (Sum.inr (σ i)))
+
+theorem bipartitePair_mem_pairs (σ : Equiv.Perm (Fin m)) (i : Fin m) :
+    bipartitePair σ i ∈ (bipartitePairing σ).pairs :=
+  (mem_bipartitePairing_pairs_iff σ (Sum.inl i) (Sum.inr (σ i))).2 ⟨i, rfl, rfl⟩
+
+/-- Two bipartite pairs cross exactly when the permutation does *not* invert their indices. -/
+theorem crosses_bipartitePair_iff (σ : Equiv.Perm (Fin m)) (i j : Fin m) :
+    Crosses (bipartitePair σ i) (bipartitePair σ j) ↔ i < j ∧ σ i < σ j := by
+  constructor
+  · rintro ⟨h1, -, h3⟩
+    exact ⟨(bipartiteHalfEquiv_inl_lt_inl_iff m i j).1 h1,
+      (bipartiteHalfEquiv_inr_lt_inr_iff m (σ i) (σ j)).1 h3⟩
+  · rintro ⟨hij, hperm⟩
+    exact ⟨(bipartiteHalfEquiv_inl_lt_inl_iff m i j).2 hij,
+      bipartiteHalfEquiv_inl_lt_inr m j (σ i),
+      (bipartiteHalfEquiv_inr_lt_inr_iff m (σ i) (σ j)).2 hperm⟩
+
+/-- The normalized pairs of a bipartite pairing are indexed by `Fin m`. -/
+noncomputable def bipartitePairEquiv (σ : Equiv.Perm (Fin m)) :
+    Fin m ≃ (bipartitePairing σ).NormalizedPair := by
+  refine Equiv.ofBijective
+    (fun i => ⟨bipartitePair σ i, bipartitePair_mem_pairs σ i⟩) ⟨?_, ?_⟩
+  · intro i j h
+    have hpair : bipartitePair σ i = bipartitePair σ j := congrArg Subtype.val h
+    have hfirst : bipartiteHalfEquiv m (Sum.inl i) = bipartiteHalfEquiv m (Sum.inl j) :=
+      congrArg Prod.fst hpair
+    exact Sum.inl.inj ((bipartiteHalfEquiv m).injective hfirst)
+  · rintro ⟨⟨a, b⟩, hab⟩
+    obtain ⟨x, rfl⟩ := (bipartiteHalfEquiv m).surjective a
+    obtain ⟨y, rfl⟩ := (bipartiteHalfEquiv m).surjective b
+    obtain ⟨i, rfl, rfl⟩ := (mem_bipartitePairing_pairs_iff σ x y).1 hab
+    exact ⟨i, rfl⟩
+
+@[simp]
+theorem bipartitePairEquiv_apply (σ : Equiv.Perm (Fin m)) (i : Fin m) :
+    (bipartitePairEquiv σ i).1 = bipartitePair σ i :=
+  rfl
+
+/-- Crossings of a bipartite pairing count the ordered index pairs that `σ` preserves. -/
+theorem crossingCount_bipartitePairing (σ : Equiv.Perm (Fin m)) :
+    (bipartitePairing σ).crossingCount =
+      ∑ i : Fin m, ∑ j : Fin m, if i < j ∧ σ i < σ j then 1 else 0 := by
+  classical
+  rw [Pairing.crossingCount_eq_sum_sum_crosses, ← Equiv.sum_comp (bipartitePairEquiv σ)]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [← Equiv.sum_comp (bipartitePairEquiv σ)]
+  exact Finset.sum_congr rfl fun j _ => by
+    simp only [bipartitePairEquiv_apply, crosses_bipartitePair_iff]
 
 end Combinatorics
