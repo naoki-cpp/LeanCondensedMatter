@@ -514,8 +514,8 @@ private theorem sideListingPerm_eq (e : SideSplitting m) (σ : Equiv.Perm (Fin m
     sideListingPerm e σ = (sumCongrListingPerm m σ).trans (baseListingPerm e) := by
   apply Equiv.ext
   intro x
-  simp only [sideListingPerm, sumCongrListingPerm, baseListingPerm, Equiv.trans_apply,
-    Equiv.symm_apply_apply]
+  simp only [sideListingPerm, sumCongrListingPerm, baseListingPerm, sideListingEquiv,
+    Equiv.trans_apply, Equiv.symm_apply_apply]
 
 private theorem sign_sumCongrListingPerm (m : ℕ) (σ : Equiv.Perm (Fin m)) :
     Equiv.Perm.sign (sumCongrListingPerm m σ) = Equiv.Perm.sign σ := by
@@ -540,12 +540,12 @@ theorem neg_one_pow_crossingCount_eq_of_sidePairing (e : SideSplitting m)
       Equiv.Perm.sign (baseListingPerm e) * (-1) ^ sideReversedCount e σ * Equiv.Perm.sign σ := by
   have hsign := (sidePairing e σ).sign_eq_of_presentsPairs (sideListingPerm e σ)
     (sidePairing_presentsPairs e σ)
-  rw [sideListingPerm_eq, Equiv.Perm.sign_trans, sign_sumCongrListingPerm] at hsign
   have hreversed : (∑ k : Fin m, if (blockPair (sideListingPerm e σ) k).2 <
       (blockPair (sideListingPerm e σ) k).1 then 1 else 0) = sideReversedCount e σ := by
     refine Finset.sum_congr rfl fun k _ => ?_
     rw [blockPair_sideListingPerm]
   rw [hreversed] at hsign
+  rw [sideListingPerm_eq, Equiv.Perm.sign_trans, sign_sumCongrListingPerm] at hsign
   calc (-1 : ℤˣ) ^ (sidePairing e σ).crossingCount
       = (-1 : ℤˣ) ^ (sidePairing e σ).crossingCount *
           ((-1 : ℤˣ) ^ sideReversedCount e σ * (-1 : ℤˣ) ^ sideReversedCount e σ) := by
