@@ -141,12 +141,52 @@ theorem TwoPointDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
   unfold TwoPointDiagram.legInComponent
   rw [d.componentBlock_vertexOfLeg_partner]
 
+/-- The partner permutation restricted to any set of legs closed under it.
+
+The predicate is abstract because two different closed leg sets are needed: the legs of a single
+component, and the legs of *all* vacuum components at once. Those are different predicates, hence
+different subtypes, so they cannot be obtained from one another — only from a common
+generalization. -/
+noncomputable def TwoPointDiagram.restrictedPartnerOn {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (p : Fin (2 * (2 * S.card + 1)) → Prop)
+    (hp : ∀ leg, p leg ↔ p (d.pairing.partner leg)) :
+    Equiv.Perm {leg : Fin (2 * (2 * S.card + 1)) // p leg} :=
+  d.pairing.partner.subtypePerm fun leg => (hp leg).symm
+
+/-- The restricted partner has the same underlying flattened leg as the ambient partner. -/
+theorem TwoPointDiagram.restrictedPartnerOn_val {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (p : Fin (2 * (2 * S.card + 1)) → Prop)
+    (hp : ∀ leg, p leg ↔ p (d.pairing.partner leg))
+    (leg : {leg : Fin (2 * (2 * S.card + 1)) // p leg}) :
+    (d.restrictedPartnerOn p hp leg : Fin (2 * (2 * S.card + 1))) = d.pairing.partner leg :=
+  congrArg Subtype.val (Equiv.Perm.subtypePerm_apply _ _ leg)
+
+/-- The restricted partner remains an involution. -/
+theorem TwoPointDiagram.restrictedPartnerOn_involutive {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (p : Fin (2 * (2 * S.card + 1)) → Prop)
+    (hp : ∀ leg, p leg ↔ p (d.pairing.partner leg)) :
+    Function.Involutive (d.restrictedPartnerOn p hp) := fun leg => by
+  apply Subtype.ext
+  rw [d.restrictedPartnerOn_val, d.restrictedPartnerOn_val, d.pairing.partner_involutive]
+
+/-- The restricted partner has no fixed points. -/
+theorem TwoPointDiagram.restrictedPartnerOn_ne_self {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (p : Fin (2 * (2 * S.card + 1)) → Prop)
+    (hp : ∀ leg, p leg ↔ p (d.pairing.partner leg))
+    (leg : {leg : Fin (2 * (2 * S.card + 1)) // p leg}) :
+    d.restrictedPartnerOn p hp leg ≠ leg := fun h =>
+  d.pairing.partner_ne_self leg (by rw [← d.restrictedPartnerOn_val p hp, h])
+
 /-- The partner permutation restricted to the legs of one full component. -/
 noncomputable def TwoPointDiagram.restrictedPartner {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : Finset (TwoPointVertex S)) :
     Equiv.Perm {leg : Fin (2 * (2 * S.card + 1)) // d.legInComponent B leg} :=
-  d.pairing.partner.subtypePerm fun leg => (d.legInComponent_partner_iff B leg).symm
+  d.restrictedPartnerOn (d.legInComponent B) (d.legInComponent_partner_iff B)
 
 /-- The restricted partner has the same underlying flattened leg as the ambient partner. -/
 theorem TwoPointDiagram.restrictedPartner_val {S : Finset (Fin N)}
@@ -154,23 +194,22 @@ theorem TwoPointDiagram.restrictedPartner_val {S : Finset (Fin N)}
     (B : Finset (TwoPointVertex S))
     (leg : {leg : Fin (2 * (2 * S.card + 1)) // d.legInComponent B leg}) :
     (d.restrictedPartner B leg : Fin (2 * (2 * S.card + 1))) = d.pairing.partner leg :=
-  congrArg Subtype.val (Equiv.Perm.subtypePerm_apply _ _ leg)
+  d.restrictedPartnerOn_val _ _ leg
 
 /-- The restricted partner remains an involution. -/
 theorem TwoPointDiagram.restrictedPartner_involutive {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : Finset (TwoPointVertex S)) :
-    Function.Involutive (d.restrictedPartner B) := fun leg => by
-  apply Subtype.ext
-  rw [d.restrictedPartner_val, d.restrictedPartner_val, d.pairing.partner_involutive]
+    Function.Involutive (d.restrictedPartner B) :=
+  d.restrictedPartnerOn_involutive _ _
 
 /-- The restricted partner has no fixed points. -/
 theorem TwoPointDiagram.restrictedPartner_ne_self {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : Finset (TwoPointVertex S))
     (leg : {leg : Fin (2 * (2 * S.card + 1)) // d.legInComponent B leg}) :
-    d.restrictedPartner B leg ≠ leg := fun h =>
-  d.pairing.partner_ne_self leg (by rw [← d.restrictedPartner_val B, h])
+    d.restrictedPartner B leg ≠ leg :=
+  d.restrictedPartnerOn_ne_self _ _ leg
 
 /-- For a vacuum part, unflattened component legs are exactly the four local legs of the extracted
 interaction vertices. -/
