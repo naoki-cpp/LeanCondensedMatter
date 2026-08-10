@@ -437,12 +437,12 @@ noncomputable def sidePairEquiv (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) 
         subst hpartner
         exact Subtype.ext (sidePair_of_lt hlt)
     | inr j =>
-        refine ⟨σ.symm j, ?_⟩
         rw [sidePairing_partner, sidePartner_inr] at hpartner
         subst hpartner
-        refine Subtype.ext ?_
         have hgt : e (Sum.inr (σ (σ.symm j))) < e (Sum.inl (σ.symm j)) := by
           rwa [Equiv.apply_symm_apply]
+        refine ⟨σ.symm j, Subtype.ext ?_⟩
+        change sidePair e σ (σ.symm j) = (e (Sum.inr j), e (Sum.inl (σ.symm j)))
         rw [sidePair_of_gt hgt, Equiv.apply_symm_apply]
 
 /-- A product over the pairs of a bipartite pairing is a product over the matching permutation,
