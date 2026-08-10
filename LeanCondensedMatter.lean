@@ -11,6 +11,7 @@ import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
 import LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointResolvent
 import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedResolvent
+import LeanCondensedMatter.Analysis.Operator.Unbounded.CayleyTransform
 import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
 import LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
