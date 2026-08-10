@@ -5,6 +5,7 @@ import LeanCondensedMatter.Analysis.Dyson.FirstVariation
 import LeanCondensedMatter.Analysis.Dyson.Volterra
 import LeanCondensedMatter.Analysis.Dyson.Uniqueness
 import LeanCondensedMatter.Analysis.Dyson.Constant
+import LeanCondensedMatter.Analysis.NonInjectiveNull
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
