@@ -31,8 +31,9 @@ theorem mem_eqCoordSubmodule_iff (i j : ι) (x : ι → ℝ) :
 
 /-- Two distinct coordinates do not agree everywhere, so their agreement set is a proper
 subspace. -/
-theorem eqCoordSubmodule_ne_top [DecidableEq ι] {i j : ι} (hij : i ≠ j) :
+theorem eqCoordSubmodule_ne_top {i j : ι} (hij : i ≠ j) :
     eqCoordSubmodule i j ≠ (⊤ : Submodule ℝ (ι → ℝ)) := by
+  classical
   intro htop
   have hmem : (Pi.single i (1 : ℝ)) ∈ eqCoordSubmodule i j := by rw [htop]; trivial
   rw [mem_eqCoordSubmodule_iff] at hmem
