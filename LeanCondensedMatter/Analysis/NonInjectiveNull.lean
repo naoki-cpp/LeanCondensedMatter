@@ -18,11 +18,12 @@ namespace Analysis
 
 open MeasureTheory
 
-variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+variable {ι : Type*}
 
 /-- The set where two fixed coordinates agree: the kernel of the difference of two projections. -/
 def eqCoordSubmodule (i j : ι) : Submodule ℝ (ι → ℝ) :=
-  LinearMap.ker (LinearMap.proj i - LinearMap.proj j : (ι → ℝ) →ₗ[ℝ] ℝ)
+  LinearMap.ker
+    ((LinearMap.proj i : (ι → ℝ) →ₗ[ℝ] ℝ) - (LinearMap.proj j : (ι → ℝ) →ₗ[ℝ] ℝ))
 
 theorem mem_eqCoordSubmodule_iff (i j : ι) (x : ι → ℝ) :
     x ∈ eqCoordSubmodule i j ↔ x i = x j := by
@@ -30,7 +31,7 @@ theorem mem_eqCoordSubmodule_iff (i j : ι) (x : ι → ℝ) :
 
 /-- Two distinct coordinates do not agree everywhere, so their agreement set is a proper
 subspace. -/
-theorem eqCoordSubmodule_ne_top {i j : ι} (hij : i ≠ j) :
+theorem eqCoordSubmodule_ne_top [DecidableEq ι] {i j : ι} (hij : i ≠ j) :
     eqCoordSubmodule i j ≠ (⊤ : Submodule ℝ (ι → ℝ)) := by
   intro htop
   have hmem : (Pi.single i (1 : ℝ)) ∈ eqCoordSubmodule i j := by rw [htop]; trivial
@@ -40,8 +41,9 @@ theorem eqCoordSubmodule_ne_top {i j : ι} (hij : i ≠ j) :
 
 /-- **Coordinate coincidence is negligible.** The set where two distinct coordinates agree is
 null. -/
-theorem volume_eqCoord_eq_zero {i j : ι} (hij : i ≠ j) :
+theorem volume_eqCoord_eq_zero [Fintype ι] {i j : ι} (hij : i ≠ j) :
     volume {x : ι → ℝ | x i = x j} = 0 := by
+  classical
   have hset : {x : ι → ℝ | x i = x j} = (eqCoordSubmodule i j : Set (ι → ℝ)) := by
     ext x
     exact (mem_eqCoordSubmodule_iff i j x).symm
@@ -50,7 +52,7 @@ theorem volume_eqCoord_eq_zero {i j : ι} (hij : i ≠ j) :
 
 /-- **Non-injective families are negligible.** A finite family of real coordinates is injective
 outside a null set, so an almost-everywhere statement may always assume injectivity. -/
-theorem volume_setOf_not_injective_eq_zero :
+theorem volume_setOf_not_injective_eq_zero [Fintype ι] :
     volume {x : ι → ℝ | ¬ Function.Injective x} = 0 := by
   classical
   have hsub : {x : ι → ℝ | ¬ Function.Injective x} ⊆
@@ -60,12 +62,11 @@ theorem volume_setOf_not_injective_eq_zero :
     obtain ⟨i, j, hij, hne⟩ := hx
     exact Set.mem_iUnion.2 ⟨⟨(i, j), hne⟩, hij⟩
   refine measure_mono_null hsub ?_
-  refine measure_iUnion_null fun p => ?_
-  exact volume_eqCoord_eq_zero p.2
+  exact measure_iUnion_null fun p => volume_eqCoord_eq_zero p.2
 
 /-- Almost every finite family of real coordinates is injective. -/
-theorem ae_injective : ∀ᵐ x : ι → ℝ ∂volume, Function.Injective x := by
-  rw [Filter.eventually_iff, mem_ae_iff]
-  simpa using volume_setOf_not_injective_eq_zero (ι := ι)
+theorem ae_injective [Fintype ι] : ∀ᵐ x : ι → ℝ ∂volume, Function.Injective x := by
+  rw [Filter.eventually_iff, mem_ae_iff, Set.compl_setOf]
+  exact volume_setOf_not_injective_eq_zero
 
 end Analysis
