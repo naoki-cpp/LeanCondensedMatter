@@ -23,21 +23,19 @@ noncomputable section
 open Complex
 open scoped InnerProductSpace
 
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 variable {A : H →ₗ.[ℂ] H}
 
 /-- The domain-level linear map `x ↦ A x - z x` associated with a partial operator. -/
 def shiftDomainMap (A : H →ₗ.[ℂ] H) (z : ℂ) : A.domain →ₗ[ℂ] H :=
   A.toFun - z • A.domain.subtype
 
-omit [CompleteSpace H] in
 @[simp]
 theorem shiftDomainMap_apply (A : H →ₗ.[ℂ] H) (z : ℂ) (x : A.domain) :
     shiftDomainMap A z x = A x - z • (x : H) := by
   rfl
 
 /-- For a symmetric partial operator, the quadratic form `⟪x, A x⟫` is real on the domain. -/
-omit [CompleteSpace H] in
 theorem IsFormalAdjoint.im_inner_self_apply_eq_zero
     (hA : A.IsFormalAdjoint A) (x : A.domain) :
     (inner ℂ (x : H) (A x)).im = 0 := by
@@ -53,7 +51,6 @@ theorem IsFormalAdjoint.im_inner_self_apply_eq_zero
 This estimate is the elementary resolvent inequality
 `|im z| ‖x‖ ≤ ‖A x - z x‖`. It does not require closedness or self-adjoint maximality; symmetry
 alone is enough. -/
-omit [CompleteSpace H] in
 theorem IsFormalAdjoint.abs_im_mul_norm_le_norm_sub_smul
     (hA : A.IsFormalAdjoint A) (z : ℂ) (x : A.domain) :
     |z.im| * ‖(x : H)‖ ≤ ‖A x - z • (x : H)‖ := by
@@ -69,7 +66,7 @@ theorem IsFormalAdjoint.abs_im_mul_norm_le_norm_sub_smul
           (z * ((‖(x : H)‖ ^ 2 : ℝ) : ℂ)).im =
         -z.im * ‖(x : H)‖ ^ 2
     rw [hA.im_inner_self_apply_eq_zero x]
-    norm_num [Complex.mul_im]
+    simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, mul_zero, add_zero, zero_sub]
   have habs :
       |(inner ℂ (x : H) (A x - z • (x : H))).im| =
         |z.im| * ‖(x : H)‖ ^ 2 := by
@@ -88,6 +85,8 @@ theorem IsFormalAdjoint.abs_im_mul_norm_le_norm_sub_smul
   · simp [hx]
   · have hxpos : 0 < ‖(x : H)‖ := lt_of_le_of_ne (norm_nonneg _) (Ne.symm hx)
     nlinarith [hcs]
+
+variable [CompleteSpace H]
 
 /-- Self-adjoint specialization of the nonreal-shift lower bound. -/
 theorem isSelfAdjoint_abs_im_mul_norm_le_norm_sub_smul
