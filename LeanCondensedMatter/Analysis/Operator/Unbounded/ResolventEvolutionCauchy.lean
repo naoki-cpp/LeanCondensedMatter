@@ -98,6 +98,24 @@ theorem resolventApproximationEvolution_domain_cauchy
     have hsscaled :
         ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * (2 * |t|) < ε :=
       (lt_div_iff₀ hden).mp hsconv
+    have hrhalf :
+        ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * |t| < ε / 2 := by
+      have h := hrscaled
+      have hre :
+          ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * (2 * |t|) =
+            2 * (‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * |t|) := by
+        ring
+      rw [hre] at h
+      linarith
+    have hshalf :
+        ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * |t| < ε / 2 := by
+      have h := hsscaled
+      have hre :
+          ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * (2 * |t|) =
+            2 * (‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * |t|) := by
+        ring
+      rw [hre] at h
+      linarith
     have hdiff :
         ‖(boundedSelfAdjointApproximation A hA r hr -
             boundedSelfAdjointApproximation A hA s hs) (x : H)‖ ≤
@@ -116,7 +134,14 @@ theorem resolventApproximationEvolution_domain_cauchy
     have hsum :
         (‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ +
           ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖) * |t| < ε := by
-      nlinarith
+      calc
+        (‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ +
+            ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖) * |t| =
+            ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * |t| +
+              ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * |t| := by
+                ring
+        _ < ε / 2 + ε / 2 := add_lt_add hrhalf hshalf
+        _ = ε := by ring
     have hmul :
         ‖(boundedSelfAdjointApproximation A hA r hr -
             boundedSelfAdjointApproximation A hA s hs) (x : H)‖ * |t| < ε := by
