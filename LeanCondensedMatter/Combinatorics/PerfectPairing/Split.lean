@@ -127,6 +127,61 @@ theorem Pairing.partner_splitRight (i : Fin (2 * b)) :
 
 end Right
 
+section SigmaSplit
+
+variable {ι : Type*} {α : ι → ℕ}
+
+/-- A presentation of the ambient positions of a pairing of `Fin (2 * n)` as a *family* of parts,
+the `B`-th carrying `α B` pairs.
+
+Connected components come in arbitrary numbers, so this rather than the two-part
+`PositionSplitting` is the shape a component factorization consumes. -/
+abbrev SigmaPositionSplitting (α : ι → ℕ) (n : ℕ) := (Σ B : ι, Fin (2 * α B)) ≃ Fin (2 * n)
+
+/-- A pairing is *split* by a family presentation when every part is closed under `partner`, so
+that no pair joins two different parts. -/
+def Pairing.IsSigmaSplit (e : SigmaPositionSplitting α n) (P : Pairing n) : Prop :=
+  ∀ (B : ι) (i : Fin (2 * α B)), ∃ j : Fin (2 * α B), P.partner (e ⟨B, i⟩) = e ⟨B, j⟩
+
+variable (e : SigmaPositionSplitting α n) {P : Pairing n} (h : P.IsSigmaSplit e) (B : ι)
+
+/-- The partner of a position of part `B`, read back in that part. -/
+private noncomputable def sigmaSplitMap (i : Fin (2 * α B)) : Fin (2 * α B) :=
+  Classical.choose (h B i)
+
+private theorem sigmaSplitMap_spec (i : Fin (2 * α B)) :
+    P.partner (e ⟨B, i⟩) = e ⟨B, sigmaSplitMap e h B i⟩ :=
+  Classical.choose_spec (h B i)
+
+private theorem sigmaSplitMap_involutive : Function.Involutive (sigmaSplitMap e h B) := by
+  intro i
+  have h1 := sigmaSplitMap_spec e h B i
+  have h2 := sigmaSplitMap_spec e h B (sigmaSplitMap e h B i)
+  have hEq : e ⟨B, i⟩ = e ⟨B, sigmaSplitMap e h B (sigmaSplitMap e h B i)⟩ := by
+    rw [← h2, ← h1, P.partner_partner]
+  have hi : i = sigmaSplitMap e h B (sigmaSplitMap e h B i) := by
+    simpa using e.injective hEq
+  exact hi.symm
+
+private theorem sigmaSplitMap_ne_self (i : Fin (2 * α B)) : sigmaSplitMap e h B i ≠ i := by
+  intro hi
+  have hspec := sigmaSplitMap_spec e h B i
+  rw [hi] at hspec
+  exact absurd hspec (P.partner_ne _)
+
+/-- The pairing induced on the part `B`. -/
+noncomputable def Pairing.splitPart : Pairing (α B) :=
+  Pairing.ofPartner (Function.Involutive.toPerm _ (sigmaSplitMap_involutive e h B))
+    ⟨sigmaSplitMap_involutive e h B, sigmaSplitMap_ne_self e h B⟩
+
+/-- The induced pairing on a part is read off the ambient partner map. -/
+@[simp]
+theorem Pairing.partner_splitPart (i : Fin (2 * α B)) :
+    P.partner (e ⟨B, i⟩) = e ⟨B, (P.splitPart e h B).partner i⟩ :=
+  sigmaSplitMap_spec e h B i
+
+end SigmaSplit
+
 section Sign
 
 /-- Regroup the block-slot presentation of `Fin (2 * n)` along a split of its `n` pairs into `a`
