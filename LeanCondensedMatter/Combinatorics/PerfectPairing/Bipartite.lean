@@ -667,6 +667,41 @@ theorem neg_one_pow_sideReversedCount_mul_prod_sidePair (e : SideSplitting m)
   · exact absurd h (sideSplitting_inl_ne_inr e i (σ i))
   · rw [sidePair_of_gt h, orientedKernel, if_neg (asymm h), if_pos h, pow_one, neg_one_mul]
 
+private theorem neg_one_pow_crossingCount_sidePairing_cast (e : SideSplitting m)
+    (σ : Equiv.Perm (Fin m)) :
+    (-1 : R) ^ (sidePairing e σ).crossingCount =
+      ((Equiv.Perm.sign (baseListingPerm e) : ℤ) : R) * (-1 : R) ^ sideReversedCount e σ *
+        ((Equiv.Perm.sign σ : ℤ) : R) := by
+  have hz := congrArg (fun u : ℤˣ => ((u : ℤ) : R))
+    (neg_one_pow_crossingCount_eq_of_sidePairing e σ)
+  simpa using hz
+
+/-- **The fermionic pairing sum is a determinant.** For a pair value that vanishes on two left
+positions, the crossing-weighted sum over *all* perfect pairings of the ambient positions is the
+determinant of the oriented contraction kernel, up to a factor fixed by the splitting alone.
+
+This is the determinant form of Wick's theorem, reduced to combinatorics: the selection rule
+restricts the sum to matchings, the crossing weight becomes the matching sign, and the orientation
+of each pair is carried by the kernel. -/
+theorem sum_pairings_eq_det (e : SideSplitting m) (pv : Fin (2 * m) → Fin (2 * m) → R)
+    (hpv : ∀ i i' : Fin m, pv (e (Sum.inl i)) (e (Sum.inl i')) = 0) :
+    (∑ P : Pairing m, (-1 : R) ^ P.crossingCount * ∏ pr ∈ P.pairs, pv pr.1 pr.2) =
+      ((Equiv.Perm.sign (baseListingPerm e) : ℤ) : R) *
+        (Matrix.of (orientedKernel e pv)).det := by
+  classical
+  have hcollapse :
+      (∑ P : Pairing m, (-1 : R) ^ P.crossingCount * ∏ pr ∈ P.pairs, pv pr.1 pr.2) =
+        ∑ σ : Equiv.Perm (Fin m),
+          (-1 : R) ^ (sidePairing e σ).crossingCount *
+            ∏ i : Fin m, pv (sidePair e σ i).1 (sidePair e σ i).2 :=
+    sum_pairings_eq_sum_perm_of_inl_vanishing e _ pv hpv
+  rw [hcollapse, det_eq_sum_sign_mul_prod, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun σ _ => ?_
+  rw [neg_one_pow_crossingCount_sidePairing_cast e σ]
+  simp only [Matrix.of_apply]
+  rw [← neg_one_pow_sideReversedCount_mul_prod_sidePair e pv σ]
+  ring
+
 end OrientedKernel
 
 end Combinatorics
