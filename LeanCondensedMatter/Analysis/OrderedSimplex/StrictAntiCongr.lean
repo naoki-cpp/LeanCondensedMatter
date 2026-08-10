@@ -17,7 +17,7 @@ This is what lets the two-point linked-cluster development use relabel covarianc
 at injective interaction-time assignments — and a strictly decreasing assignment is injective.
 -/
 
-namespace Analysis
+namespace intervalIntegral
 
 open MeasureTheory
 
@@ -50,7 +50,7 @@ theorem orderedSimplexIntegral_congr_of_strictAnti :
       have hne : ∀ᵐ τ₀ : ℝ, τ₀ ≠ β := by
         rw [MeasureTheory.ae_iff]
         simp
-      refine intervalIntegral.integral_congr_ae ?_
+      refine integral_congr_ae ?_
       filter_upwards [hne] with τ₀ hτ₀ hmem
       have hmem' : 0 < τ₀ ∧ τ₀ ≤ β := by
         rw [Set.uIoc_of_le hβ] at hmem
@@ -71,4 +71,4 @@ theorem orderedSimplexIntegral_congr_of_injective (n : ℕ) (β : ℝ) (hβ : 0 
   orderedSimplexIntegral_congr_of_strictAnti n β hβ f g
     fun τ hanti _ => h τ hanti.injective
 
-end Analysis
+end intervalIntegral
