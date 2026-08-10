@@ -480,19 +480,22 @@ theorem Pairing.presentsPairs_of_partner_blockPair (pairing : Pairing n)
     by_cases hlt : (blockPair τ k).1 < (blockPair τ k).2
     · exact Or.inl (by simp [hf, hlt])
     · exact Or.inr (by simp [hf, hlt])
+  have hblockPos_inj : ∀ x y : Fin n × Fin 2, blockPos τ x = blockPos τ y → x = y := by
+    intro x y hxy
+    by_contra hxy'
+    exact blockPos_ne τ hxy' hxy
   have hinj : Function.Injective f := by
     intro k l hkl
     have hpair : (f k).1 = (f l).1 := congrArg Subtype.val hkl
-    have hcoord : blockPos τ (k, 0) = blockPos τ (l, 0) ∨ blockPos τ (k, 0) = blockPos τ (l, 1) := by
+    have hcoord : ∃ s : Fin 2, blockPos τ (k, 0) = blockPos τ (l, s) := by
       rcases hfirst k with hk | hk <;> rcases hfirst l with hl | hl <;>
         rw [hk, hl] at hpair
-      · exact Or.inl (congrArg Prod.fst hpair)
-      · exact Or.inr (congrArg Prod.fst hpair)
-      · exact Or.inl (congrArg Prod.snd hpair)
-      · exact Or.inr (congrArg Prod.snd hpair)
-    rcases hcoord with hc | hc <;>
-      exact congrArg Prod.fst
-        ((pairSlotIndexEquiv n).symm.injective (τ.injective hc))
+      · exact ⟨0, congrArg Prod.fst hpair⟩
+      · exact ⟨1, congrArg Prod.fst hpair⟩
+      · exact ⟨1, congrArg Prod.snd hpair⟩
+      · exact ⟨0, congrArg Prod.snd hpair⟩
+    obtain ⟨s, hs⟩ := hcoord
+    exact congrArg Prod.fst (hblockPos_inj _ _ hs)
   have hbij : Function.Bijective f :=
     (Fintype.bijective_iff_injective_and_card f).2
       ⟨hinj, by simp [pairing.card_normalizedPair]⟩
@@ -530,7 +533,7 @@ theorem sign_trans_sumCongr_trans {α β γ : Type*} [DecidableEq α] [Fintype �
       Equiv.Perm.sign (u.trans ((Equiv.sumCongr σ ρ).trans u.symm)) =
         Equiv.Perm.sign (Equiv.sumCongr σ ρ) :=
     (Equiv.Perm.sign_eq_sign_of_equiv (Equiv.sumCongr σ ρ)
-      (u.trans ((Equiv.sumCongr σ ρ).trans u.symm)) u.symm (fun _ => rfl)).symm
+      (u.trans ((Equiv.sumCongr σ ρ).trans u.symm)) u.symm (fun _ => by simp)).symm
   rw [hsplit, Equiv.Perm.sign_trans, htransported, Equiv.Perm.sign_sumCongr, mul_comm]
 
 end Combinatorics
