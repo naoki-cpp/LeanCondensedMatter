@@ -1,13 +1,15 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Bipartite
 
 set_option linter.style.header false
 
 /-!
 # Number-conserving quartic matching
 
-A number-conserving quartic Wick pairing matches the `2 * n` creation legs bijectively with the
-`2 * n` annihilation legs. This file extracts that bipartite matching as a permutation without
-changing the stored `Pairing` representation yet.
+The creation and annihilation legs of a quartic diagram split its flattened legs into two labelled
+sides of equal size. A number-conserving Wick pairing is exactly a pairing that matches the two
+sides, so `Combinatorics.sidePairingEquiv` identifies such pairings with permutations of the
+creation legs, without changing the stored `Pairing` representation.
 -/
 
 namespace SecondQuantization
@@ -72,40 +74,56 @@ theorem quarticAnnihilatorLeg_injective (n : ℕ) : Function.Injective (quarticA
   · apply quarticAnnihilatorLocalLeg_injective
     exact congrArg (fun x : Fin n × Fin 4 => x.2) hcoords
 
+/-- A creation leg is never an annihilation leg: their local slots lie on opposite sides of the
+four-leg vertex convention. -/
+theorem quarticCreatorLeg_ne_quarticAnnihilatorLeg (n : ℕ) (i j : Fin (2 * n)) :
+    quarticCreatorLeg n i ≠ quarticAnnihilatorLeg n j := by
+  intro h
+  have hcoord := congrArg (Common.orderedQuarticLegEquiv n) h
+  simp only [quarticCreatorLeg, quarticAnnihilatorLeg, Equiv.apply_symm_apply] at hcoord
+  have hslot := congrArg (fun x : Fin n × Fin 4 => x.2.val) hcoord
+  simp only [quarticCreatorLocalLeg, quarticAnnihilatorLocalLeg] at hslot
+  have hlt := (quarticCreatorIndexEquiv n i).2.isLt
+  omega
+
+/-- **Creation and annihilation legs split the flattened quartic legs.** Every leg is either a
+creation leg or an annihilation leg, and never both, so the two families label the two sides of the
+ambient positions. -/
+noncomputable def quarticLegSideSplitting (n : ℕ) : Combinatorics.SideSplitting (2 * n) :=
+  Equiv.ofBijective (Sum.elim (quarticCreatorLeg n) (quarticAnnihilatorLeg n)) <| by
+    rw [Fintype.bijective_iff_injective_and_card]
+    refine ⟨?_, ?_⟩
+    · rintro (i | i) (j | j) hij
+      · exact congrArg Sum.inl (quarticCreatorLeg_injective n hij)
+      · exact absurd hij (quarticCreatorLeg_ne_quarticAnnihilatorLeg n i j)
+      · exact absurd hij.symm (quarticCreatorLeg_ne_quarticAnnihilatorLeg n j i)
+      · exact congrArg Sum.inr (quarticAnnihilatorLeg_injective n hij)
+    · simp only [Fintype.card_sum, Fintype.card_fin]
+      omega
+
+@[simp]
+theorem quarticLegSideSplitting_inl (n : ℕ) (i : Fin (2 * n)) :
+    quarticLegSideSplitting n (Sum.inl i) = quarticCreatorLeg n i :=
+  rfl
+
+@[simp]
+theorem quarticLegSideSplitting_inr (n : ℕ) (j : Fin (2 * n)) :
+    quarticLegSideSplitting n (Sum.inr j) = quarticAnnihilatorLeg n j :=
+  rfl
+
 /-- A quartic Wick pairing is number-conserving when every creation leg is paired with an
-annihilation leg. The converse follows automatically because both finite leg families have the same
-cardinality and the pairing partner map is injective. -/
+annihilation leg. -/
 def QuarticWickDiagram.HasNumberConservingPairing {Mode : Type*} {N : ℕ}
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) : Prop :=
-  ∀ i : Fin (2 * S.card), ∃ j : Fin (2 * S.card),
-    d.pairing.partner (quarticCreatorLeg S.card i) = quarticAnnihilatorLeg S.card j
-
-private noncomputable def QuarticWickDiagram.matchingTo {Mode : Type*} {N : ℕ}
-    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (h : d.HasNumberConservingPairing)
-    (i : Fin (2 * S.card)) : Fin (2 * S.card) :=
-  Classical.choose (h i)
-
-private theorem QuarticWickDiagram.matchingTo_spec {Mode : Type*} {N : ℕ}
-    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (h : d.HasNumberConservingPairing)
-    (i : Fin (2 * S.card)) :
-    d.pairing.partner (quarticCreatorLeg S.card i) =
-      quarticAnnihilatorLeg S.card (d.matchingTo h i) :=
-  Classical.choose_spec (h i)
-
-private theorem QuarticWickDiagram.matchingTo_injective {Mode : Type*} {N : ℕ}
-    {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (h : d.HasNumberConservingPairing) :
-    Function.Injective (d.matchingTo h) := by
-  intro i j hij
-  apply quarticCreatorLeg_injective S.card
-  apply d.pairing.partner.injective
-  rw [d.matchingTo_spec h i, d.matchingTo_spec h j, hij]
+  d.pairing.IsBipartite (quarticLegSideSplitting S.card)
 
 /-- The creator-to-annihilator matching permutation determined by a number-conserving quartic
-pairing. -/
+pairing. Through `Combinatorics.sidePairingEquiv` this correspondence is a bijection: the
+number-conserving pairings of the quartic legs are exactly the permutations of the creation legs. -/
 noncomputable def QuarticWickDiagram.matching {Mode : Type*} {N : ℕ}
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (h : d.HasNumberConservingPairing) :
     Equiv.Perm (Fin (2 * S.card)) :=
-  Equiv.ofBijective (d.matchingTo h) (d.matchingTo_injective h).bijective_of_finite
+  d.pairing.sideMatching (quarticLegSideSplitting S.card) h
 
 /-- Applying the extracted matching gives exactly the annihilation leg paired to a creator. -/
 @[simp]
@@ -114,7 +132,7 @@ theorem QuarticWickDiagram.partner_creatorLeg_eq_annihilatorLeg_matching {Mode :
     (i : Fin (2 * S.card)) :
     d.pairing.partner (quarticCreatorLeg S.card i) =
       quarticAnnihilatorLeg S.card (d.matching h i) :=
-  d.matchingTo_spec h i
+  d.pairing.partner_sideMatching (quarticLegSideSplitting S.card) h i
 
 end Fermionic
 end SecondQuantization
