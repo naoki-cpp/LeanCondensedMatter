@@ -162,7 +162,7 @@ theorem boundedSelfAdjointApproximation_apply_domain
     nonrealResolvent_apply_operator A hA (imaginaryParameter r)
       (imaginaryParameter_im_ne_zero hr) x]
   simp only [regularizerCoefficient, approximationCoefficient, imaginaryParameter]
-  match_scalars <;> simp <;> ring_nf <;> simp [pow_two]
+  match_scalars <;> simp <;> ring_nf <;> simp [pow_two] <;> ring
 
 end
 
