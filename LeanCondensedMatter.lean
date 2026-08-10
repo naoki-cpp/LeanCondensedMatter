@@ -6,6 +6,7 @@ import LeanCondensedMatter.Analysis.Dyson.Volterra
 import LeanCondensedMatter.Analysis.Dyson.Uniqueness
 import LeanCondensedMatter.Analysis.Dyson.Constant
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle
+import LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
