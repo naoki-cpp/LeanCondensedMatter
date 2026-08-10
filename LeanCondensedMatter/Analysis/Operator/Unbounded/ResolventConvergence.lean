@@ -130,7 +130,8 @@ theorem norm_resolventRegularizer_sub_le
               (imaginaryParameter_im_ne_zero hr) (A x))) := by
     module
   rw [hdiff, norm_neg, norm_smul]
-  norm_num
+  have hhalf : ‖(((1 / 2 : ℝ) : ℂ))‖ = (1 / 2 : ℝ) := by norm_num
+  rw [hhalf]
   calc
     (1 / 2 : ℝ) *
         ‖nonrealResolvent A hA (star ((r : ℂ) * I))
@@ -177,7 +178,8 @@ theorem resolventRegularizer_strong_convergence
   let J := resolventRegularizer A hA r hr
   have hdecomp :
       J y - y = J (y - (x : H)) + (J (x : H) - (x : H)) + ((x : H) - y) := by
-    rw [map_sub]
+    have hmap : J (y - (x : H)) = J y - J (x : H) := J.map_sub _ _
+    rw [hmap]
     module
   rw [hdecomp]
   have hfirst : ‖J (y - (x : H))‖ < ε / 4 := by
