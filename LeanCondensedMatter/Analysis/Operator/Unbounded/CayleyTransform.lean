@@ -102,17 +102,17 @@ theorem cayleyTransform_shift_apply
     cayleyTransform A hA z hz (A u - z • (u : H)) =
       A u - star z • (u : H) := by
   rw [cayleyTransform_apply, nonrealResolvent_shift_apply A hA z hz u]
-  abel_nf
+  module
 
 /-- Conjugating the spectral parameter gives the adjoint Cayley transform. -/
 theorem cayleyTransform_adjoint
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (z : ℂ) (hz : z.im ≠ 0) :
     ContinuousLinearMap.adjoint (cayleyTransform A hA z hz) =
       cayleyTransform A hA (star z) (star_im_ne_zero hz) := by
-  rw [cayleyTransform]
-  simp only [map_add, map_one, map_smulₛₗ, nonrealResolvent_adjoint]
-  congr 1
-  rw [star_sub, star_star]
+  change star (cayleyTransform A hA z hz) =
+    cayleyTransform A hA (star z) (star_im_ne_zero hz)
+  simp only [cayleyTransform, star_add, star_one, star_smul,
+    ContinuousLinearMap.star_eq_adjoint, nonrealResolvent_adjoint, star_sub, star_star]
 
 /-- The Cayley transforms at `z` and `star z` are mutual inverses in this order. -/
 theorem cayleyTransform_conj_comp
