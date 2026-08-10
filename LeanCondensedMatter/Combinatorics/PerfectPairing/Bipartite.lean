@@ -526,6 +526,76 @@ private theorem sign_sumCongrListingPerm (m : ℕ) (σ : Equiv.Perm (Fin m)) :
   rw [← h, Equiv.Perm.sign_sumCongr]
   simp
 
+/-- A pairing that fails to be bipartite matches two left positions with each other. Its failure is
+witnessed on the left side alone: a left position whose partner is not on the right must have its
+partner on the left. -/
+theorem exists_mem_pairs_inl_inl_of_not_isBipartite (e : SideSplitting m) {P : Pairing m}
+    (h : ¬ P.IsBipartite e) :
+    ∃ i i' : Fin m, (e (Sum.inl i), e (Sum.inl i')) ∈ P.pairs := by
+  have h' : ∃ i : Fin m, ∀ j : Fin m, P.partner (e (Sum.inl i)) ≠ e (Sum.inr j) := by
+    by_contra hc
+    push_neg at hc
+    exact h hc
+  obtain ⟨i, hi⟩ := h'
+  obtain ⟨y, hy⟩ := e.surjective (P.partner (e (Sum.inl i)))
+  cases y with
+  | inr j => exact absurd hy.symm (hi j)
+  | inl i' =>
+      have hpartner : P.partner (e (Sum.inl i)) = e (Sum.inl i') := hy.symm
+      rcases lt_trichotomy (e (Sum.inl i)) (e (Sum.inl i')) with hlt | heq | hgt
+      · exact ⟨i, i', (P.mem_pairs_iff _ _).2 ⟨hlt, hpartner⟩⟩
+      · exact absurd (hpartner.trans heq.symm) (P.partner_ne _)
+      · refine ⟨i', i, (P.mem_pairs_iff _ _).2 ⟨hgt, ?_⟩⟩
+        rw [← hpartner, P.partner_partner]
+
+/-- A pair value that vanishes on two left positions kills every non-bipartite pairing. -/
+theorem prod_pairs_eq_zero_of_not_isBipartite {R : Type*} [CommMonoidWithZero R]
+    (e : SideSplitting m) {P : Pairing m} (h : ¬ P.IsBipartite e)
+    (pv : Fin (2 * m) → Fin (2 * m) → R)
+    (hpv : ∀ i i' : Fin m, pv (e (Sum.inl i)) (e (Sum.inl i')) = 0) :
+    (∏ pr ∈ P.pairs, pv pr.1 pr.2) = 0 := by
+  obtain ⟨i, i', hmem⟩ := exists_mem_pairs_inl_inl_of_not_isBipartite e h
+  exact Finset.prod_eq_zero hmem (hpv i i')
+
+/-- **Only bipartite pairings contribute.** When the pair value vanishes on two left positions, a
+weighted sum over *all* perfect pairings collapses to a sum over the matching permutations, each
+pair evaluated in whichever order the splitting puts it.
+
+This is the selection rule that turns a general Bloch–de Dominicis pairing sum into a permutation
+sum: physically, a contraction of two creation operators vanishes, so a Wick pairing that matched
+two creation legs would contribute nothing. -/
+theorem sum_pairings_eq_sum_perm_of_inl_vanishing {R : Type*} [CommRing R] (e : SideSplitting m)
+    (w : Pairing m → R) (pv : Fin (2 * m) → Fin (2 * m) → R)
+    (hpv : ∀ i i' : Fin m, pv (e (Sum.inl i)) (e (Sum.inl i')) = 0) :
+    (∑ P : Pairing m, w P * ∏ pr ∈ P.pairs, pv pr.1 pr.2) =
+      ∑ σ : Equiv.Perm (Fin m),
+        w (sidePairing e σ) * ∏ i : Fin m, pv (sidePair e σ i).1 (sidePair e σ i).2 := by
+  classical
+  have hzero : ∀ P ∈ (Finset.univ : Finset (Pairing m)),
+      P ∉ Finset.univ.filter (fun P : Pairing m => P.IsBipartite e) →
+        w P * ∏ pr ∈ P.pairs, pv pr.1 pr.2 = 0 := by
+    intro P _ hP
+    have hnb : ¬ P.IsBipartite e := by simpa using hP
+    rw [prod_pairs_eq_zero_of_not_isBipartite e hnb pv hpv, mul_zero]
+  have himage : (Finset.univ.filter fun P : Pairing m => P.IsBipartite e) =
+      Finset.univ.image (fun σ : Equiv.Perm (Fin m) => sidePairing e σ) := by
+    ext P
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image]
+    constructor
+    · intro hP
+      exact ⟨P.sideMatching e hP, Finset.mem_univ _, sidePairing_sideMatching e hP⟩
+    · rintro ⟨σ, -, rfl⟩
+      exact isBipartite_sidePairing e σ
+  have hinj : Set.InjOn (fun σ : Equiv.Perm (Fin m) => sidePairing e σ)
+      (Finset.univ : Finset (Equiv.Perm (Fin m))) := by
+    intro x _ y _ hxy
+    refine Equiv.ext fun i => ?_
+    have hp := congrArg (fun P : Pairing m => P.partner (e (Sum.inl i))) hxy
+    simp only [sidePairing_partner, sidePartner_inl] at hp
+    exact Sum.inr.inj (e.injective hp)
+  rw [← Finset.sum_subset (Finset.filter_subset _ _) hzero, himage, Finset.sum_image hinj]
+  exact Finset.sum_congr rfl fun σ _ => by rw [prod_sidePairing_pairs]
+
 /-- The number of matched pairs whose splitting puts the right endpoint before the left one. -/
 private noncomputable def sideReversedCount (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) : ℕ :=
   ∑ k : Fin m, if e (Sum.inr (σ k)) < e (Sum.inl k) then 1 else 0
