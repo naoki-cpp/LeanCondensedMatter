@@ -164,7 +164,8 @@ theorem boundedSelfAdjointApproximation_apply_domain
   simp only [regularizerCoefficient, approximationCoefficient, imaginaryParameter]
   have hI : (I : ℂ) ^ 2 = -1 := by
     rw [pow_two, Complex.I_mul_I]
-  match_scalars <;> rw [hI] <;> ring
+  match_scalars <;> ring_nf
+  all_goals rw [hI] <;> ring
 
 end
 
