@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairProduct
-import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
+import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 
 set_option linter.style.header false
@@ -29,8 +29,8 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentOrientedCrossin
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (B C : d.1.componentPartition.parts) : ℕ :=
-  ∑ x : d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C,
-    if Crosses x.1.1.1 x.2.1.1 then 1 else 0
+  (d.pairingInMixedOrder τ τ' σ).componentCrossingCount
+    (d.mixedComponentPairSigmaEquiv τ τ' σ) B C
 
 /-- Crossing count internal to one mixed-time component. -/
 noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentCrossingCount
@@ -60,48 +60,19 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentGeometricCrossingCount_eq
       ∑ x : d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C,
         if Crosses x.2.1.1 x.1.1.1 then 1 else 0 := by
     rw [FixedExternalTwoPointWickDiagram.mixedComponentOrientedCrossingCount,
+      Combinatorics.Pairing.componentCrossingCount,
       ← Equiv.sum_comp (Equiv.prodComm
         (d.MixedComponentPair τ τ' σ B) (d.MixedComponentPair τ τ' σ C))]
     rfl
   rw [FixedExternalTwoPointWickDiagram.mixedComponentGeometricCrossingCount, hswap,
     FixedExternalTwoPointWickDiagram.mixedComponentOrientedCrossingCount,
+    Combinatorics.Pairing.componentCrossingCount,
     ← Finset.sum_add_distrib]
   refine Finset.sum_congr rfl fun x _ => ?_
   by_cases hbc : Crosses x.1.1.1 x.2.1.1
   · have hcb : ¬ Crosses x.2.1.1 x.1.1.1 := fun h => lt_asymm hbc.1 h.1
     simp [hbc, hcb]
   · simp [hbc]
-
-/-- The mixed pairing crossing count is the double sum of oriented crossing counts over full
-components. -/
-private theorem FixedExternalTwoPointWickDiagram.pairingInMixedOrder_crossingCount_eq_sum_components
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    (d.pairingInMixedOrder τ τ' σ).crossingCount =
-      ∑ B : d.1.componentPartition.parts,
-        ∑ C : d.1.componentPartition.parts,
-          d.mixedComponentOrientedCrossingCount τ τ' σ B C := by
-  classical
-  let globalPairing := d.pairingInMixedOrder τ τ' σ
-  let pairEquiv := d.mixedComponentPairSigmaEquiv τ τ' σ
-  let componentPairProductEquiv :
-      (Σ BC : d.1.componentPartition.parts × d.1.componentPartition.parts,
-        d.MixedComponentPair τ τ' σ BC.1 × d.MixedComponentPair τ τ' σ BC.2) ≃
-        globalPairing.NormalizedPair × globalPairing.NormalizedPair :=
-    let sigmaProductEquiv :
-        (Σ BC : d.1.componentPartition.parts × d.1.componentPartition.parts,
-          d.MixedComponentPair τ τ' σ BC.1 × d.MixedComponentPair τ τ' σ BC.2) ≃
-          (Σ B : d.1.componentPartition.parts, d.MixedComponentPair τ τ' σ B) ×
-            (Σ C : d.1.componentPartition.parts, d.MixedComponentPair τ τ' σ C) := {
-      toFun x := (⟨x.1.1, x.2.1⟩, ⟨x.1.2, x.2.2⟩)
-      invFun x := ⟨(x.1.1, x.2.1), (x.1.2, x.2.2)⟩
-      left_inv := by rintro ⟨⟨B, C⟩, p, q⟩; rfl
-      right_inv := by rintro ⟨⟨B, p⟩, ⟨C, q⟩⟩; rfl }
-    sigmaProductEquiv.trans (Equiv.prodCongr pairEquiv pairEquiv)
-  rw [globalPairing.crossingCount_eq_sum_crosses,
-    ← Equiv.sum_comp componentPairProductEquiv,
-    Fintype.sum_sigma, Fintype.sum_prod_type]
-  rfl
 
 /-- If every distinct-component geometric crossing count is even, the global mixed crossing count
 has the same parity as the sum of the component-internal crossing counts. -/
@@ -113,14 +84,12 @@ private theorem
       d.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 = 0) :
     (d.pairingInMixedOrder τ τ' σ).crossingCount % 2 =
       (∑ B : d.1.componentPartition.parts,
-        d.mixedComponentCrossingCount τ τ' σ B) % 2 := by
-  rw [d.pairingInMixedOrder_crossingCount_eq_sum_components τ τ' σ]
-  exact Combinatorics.fintype_sum_sum_modEq_diag_of_pair_add_modEq_zero
-    2 (fun B C => d.mixedComponentOrientedCrossingCount τ τ' σ B C)
+        d.mixedComponentCrossingCount τ τ' σ B) % 2 :=
+  Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount
+    (d.pairingInMixedOrder τ τ' σ) (d.mixedComponentPairSigmaEquiv τ τ' σ)
     (fun B C hBC => by
       rw [← d.mixedComponentGeometricCrossingCount_eq_oriented_add τ τ' σ B C]
-      change d.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 = 0 % 2
-      simpa using hEven B C hBC)
+      exact hEven B C hBC)
 
 /-- Exchange-statistics weight associated with crossings internal to one mixed-time component. -/
 noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentWeight
