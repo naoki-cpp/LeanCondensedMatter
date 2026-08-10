@@ -169,7 +169,7 @@ theorem isSelfAdjoint_shiftDomainMap_range_isClosed
     have hlt :
         |z.im| * dist (x m : H) (x n : H) < |z.im| * ε :=
       lt_of_le_of_lt hbound' (hN m hm n hn)
-    exact (mul_lt_mul_left himpos).mp hlt
+    nlinarith [hlt]
   obtain ⟨xlim, hxlim⟩ := cauchySeq_tendsto_of_complete hxCauchy
   have hAeq : ∀ n, A (x n) = u n + z • (x n : H) := by
     intro n
