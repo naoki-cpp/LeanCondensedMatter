@@ -449,6 +449,55 @@ theorem Pairing.pairPerm_presentsPairs (pairing : Pairing n) :
     pairing.PresentsPairs pairing.pairPerm :=
   ⟨pairing.pairIndexEquiv, fun k => Or.inl (blockPair_pairPerm pairing k)⟩
 
+/-- **Criterion for presenting a pairing.** A permutation presents a pairing as soon as each of its
+two-element blocks carries a pair of partners. No enumeration has to be supplied: the blocks are
+disjoint and there are as many of them as there are pairs, so they exhaust the pairs. -/
+theorem Pairing.presentsPairs_of_partner_blockPair (pairing : Pairing n)
+    (τ : Equiv.Perm (Fin (2 * n)))
+    (h : ∀ k : Fin n, pairing.partner (blockPair τ k).1 = (blockPair τ k).2) :
+    pairing.PresentsPairs τ := by
+  classical
+  have hne : ∀ k : Fin n, (blockPair τ k).1 ≠ (blockPair τ k).2 := by
+    intro k heq
+    have := h k
+    rw [← heq] at this
+    exact absurd this (pairing.partner_ne _)
+  have hmem : ∀ k : Fin n,
+      (if (blockPair τ k).1 < (blockPair τ k).2 then blockPair τ k else (blockPair τ k).swap) ∈
+        pairing.pairs := by
+    intro k
+    rcases lt_trichotomy (blockPair τ k).1 (blockPair τ k).2 with hlt | heq | hgt
+    · rw [if_pos hlt]
+      exact (pairing.mem_pairs_iff _ _).2 ⟨hlt, h k⟩
+    · exact absurd heq (hne k)
+    · rw [if_neg (asymm hgt)]
+      refine (pairing.mem_pairs_iff _ _).2 ⟨hgt, ?_⟩
+      rw [← h k, pairing.partner_partner]
+  set f : Fin n → pairing.NormalizedPair := fun k => ⟨_, hmem k⟩ with hf
+  have hfirst : ∀ k : Fin n,
+      (f k).1 = blockPair τ k ∨ (f k).1 = (blockPair τ k).swap := by
+    intro k
+    by_cases hlt : (blockPair τ k).1 < (blockPair τ k).2
+    · exact Or.inl (by simp [hf, hlt])
+    · exact Or.inr (by simp [hf, hlt])
+  have hinj : Function.Injective f := by
+    intro k l hkl
+    have hpair : (f k).1 = (f l).1 := congrArg Subtype.val hkl
+    have hcoord : blockPos τ (k, 0) = blockPos τ (l, 0) ∨ blockPos τ (k, 0) = blockPos τ (l, 1) := by
+      rcases hfirst k with hk | hk <;> rcases hfirst l with hl | hl <;>
+        rw [hk, hl] at hpair
+      · exact Or.inl (congrArg Prod.fst hpair)
+      · exact Or.inr (congrArg Prod.fst hpair)
+      · exact Or.inl (congrArg Prod.snd hpair)
+      · exact Or.inr (congrArg Prod.snd hpair)
+    rcases hcoord with hc | hc <;>
+      exact congrArg Prod.fst
+        ((pairSlotIndexEquiv n).symm.injective (τ.injective hc))
+  have hbij : Function.Bijective f :=
+    (Fintype.bijective_iff_injective_and_card f).2
+      ⟨hinj, by simp [pairing.card_normalizedPair]⟩
+  exact ⟨Equiv.ofBijective f hbij, fun k => (hfirst k).imp Eq.symm Eq.symm⟩
+
 /-- **Crossing parity is a permutation sign.** The sign of the permutation listing the normalized
 pairs of a perfect pairing is `-1` raised to its crossing count. -/
 theorem Pairing.sign_pairPerm (pairing : Pairing n) :
@@ -460,5 +509,28 @@ theorem Pairing.sign_pairPerm (pairing : Pairing n) :
       exact asymm (pairing.pairs_normalized (pairing.pairIndexEquiv k).2))
   rw [pairing.sign_eq_of_presentsPairs pairing.pairPerm pairing.pairPerm_presentsPairs, hzero,
     pow_zero, one_mul]
+
+/-- **Transporting a sum permutation through a two-part presentation.** A permutation acting
+independently on the two parts contributes the product of its two signs; everything that depends on
+how the parts are interleaved is collected in the presentation-only permutation `u.trans v`.
+
+This is the algebraic half of a component factorization: the interleaving sign is separated from the
+component signs, and is then shown to be trivial by a block argument. -/
+theorem sign_trans_sumCongr_trans {α β γ : Type*} [DecidableEq α] [Fintype α]
+    [DecidableEq β] [Fintype β] [DecidableEq γ] [Fintype γ]
+    (u : α ≃ β ⊕ γ) (v : β ⊕ γ ≃ α) (σ : Equiv.Perm β) (ρ : Equiv.Perm γ) :
+    Equiv.Perm.sign (u.trans ((Equiv.sumCongr σ ρ).trans v)) =
+      Equiv.Perm.sign (u.trans v) * (Equiv.Perm.sign σ * Equiv.Perm.sign ρ) := by
+  have hsplit : u.trans ((Equiv.sumCongr σ ρ).trans v) =
+      (u.trans ((Equiv.sumCongr σ ρ).trans u.symm)).trans (u.trans v) := by
+    apply Equiv.ext
+    intro x
+    simp only [Equiv.trans_apply, Equiv.apply_symm_apply]
+  have htransported :
+      Equiv.Perm.sign (u.trans ((Equiv.sumCongr σ ρ).trans u.symm)) =
+        Equiv.Perm.sign (Equiv.sumCongr σ ρ) :=
+    (Equiv.Perm.sign_eq_sign_of_equiv (Equiv.sumCongr σ ρ)
+      (u.trans ((Equiv.sumCongr σ ρ).trans u.symm)) u.symm (fun _ => rfl)).symm
+  rw [hsplit, Equiv.Perm.sign_trans, htransported, Equiv.Perm.sign_sumCongr, mul_comm]
 
 end Combinatorics
