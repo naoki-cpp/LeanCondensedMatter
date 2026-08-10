@@ -258,11 +258,11 @@ theorem isSelfAdjoint_shiftDomainMap_surjective
     Function.Surjective (shiftDomainMap A z) := by
   have hclosed := isSelfAdjoint_shiftDomainMap_range_isClosed hA hz
   have hdense := isSelfAdjoint_shiftDomainMap_range_dense hA hz
-  have hclosure : closure (Set.range (shiftDomainMap A z)) = Set.univ :=
+  have hclosure : _root_.closure (Set.range (shiftDomainMap A z)) = Set.univ :=
     dense_iff_closure_eq.mp hdense
   have hrange : Set.range (shiftDomainMap A z) = Set.univ := by
     calc
-      Set.range (shiftDomainMap A z) = closure (Set.range (shiftDomainMap A z)) :=
+      Set.range (shiftDomainMap A z) = _root_.closure (Set.range (shiftDomainMap A z)) :=
         hclosed.closure_eq.symm
       _ = Set.univ := hclosure
   exact Set.range_eq_univ.mp hrange
