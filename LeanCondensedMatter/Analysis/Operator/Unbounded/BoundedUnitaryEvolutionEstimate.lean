@@ -33,6 +33,7 @@ theorem boundedUnitaryEvolution_apply_norm
     have happly := congrArg (fun T : H →L[ℂ] H => T x) hunit
     simpa [ContinuousLinearMap.star_eq_adjoint] using happly
   have hsq0 := ContinuousLinearMap.apply_norm_sq_eq_inner_adjoint_left U x
+  change ‖U x‖ ^ 2 = Complex.re (inner ℂ (ContinuousLinearMap.adjoint U (U x)) x) at hsq0
   rw [huux] at hsq0
   have hsq : ‖U x‖ ^ 2 = ‖x‖ ^ 2 := by
     simpa only [inner_self_eq_norm_sq, Complex.ofReal_re] using hsq0
