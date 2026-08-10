@@ -139,7 +139,7 @@ provides a limit `x`, and the closed graph of the self-adjoint operator recovers
 with the limiting value of `A x`. -/
 theorem isSelfAdjoint_shiftDomainMap_range_isClosed
     (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) :
-    IsClosed (Set.range (shiftDomainMap A z)) := by
+    _root_.IsClosed (Set.range (shiftDomainMap A z)) := by
   rw [← isSeqClosed_iff_isClosed]
   intro u y hu huy
   choose x hx using hu
