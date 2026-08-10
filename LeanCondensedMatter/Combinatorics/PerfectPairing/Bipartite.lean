@@ -478,7 +478,10 @@ private noncomputable def sideListingPerm (e : SideSplitting m) (σ : Equiv.Perm
 private theorem blockPair_sideListingPerm (e : SideSplitting m) (σ : Equiv.Perm (Fin m))
     (k : Fin m) :
     blockPair (sideListingPerm e σ) k = (e (Sum.inl k), e (Sum.inr (σ k))) := by
-  simp [blockPair, blockPos, sideListingPerm, sideListingEquiv, blockSideEquiv]
+  show (sideListingPerm e σ ((pairSlotIndexEquiv m).symm (k, 0)),
+      sideListingPerm e σ ((pairSlotIndexEquiv m).symm (k, 1))) =
+      (e (Sum.inl k), e (Sum.inr (σ k)))
+  simp [sideListingPerm, sideListingEquiv, blockSideEquiv]
 
 /-- The listing permutation presents the pairing it lists, in whichever orientation the splitting
 puts each pair. -/
@@ -494,6 +497,7 @@ theorem sidePairing_presentsPairs (e : SideSplitting m) (σ : Equiv.Perm (Fin m)
   · refine Or.inr ?_
     show (e (Sum.inl k), e (Sum.inr (σ k))) = (sidePair e σ k).swap
     rw [sidePair_of_gt h]
+    rfl
 
 /-- The listing permutation for the identity matching: depends only on the splitting. -/
 private noncomputable def baseListingPerm (e : SideSplitting m) : Equiv.Perm (Fin (2 * m)) :=
@@ -510,13 +514,15 @@ private theorem sideListingPerm_eq (e : SideSplitting m) (σ : Equiv.Perm (Fin m
     sideListingPerm e σ = (sumCongrListingPerm m σ).trans (baseListingPerm e) := by
   apply Equiv.ext
   intro x
-  simp [sideListingPerm, sumCongrListingPerm, baseListingPerm]
+  simp only [sideListingPerm, sumCongrListingPerm, baseListingPerm, Equiv.trans_apply,
+    Equiv.symm_apply_apply]
 
 private theorem sign_sumCongrListingPerm (m : ℕ) (σ : Equiv.Perm (Fin m)) :
     Equiv.Perm.sign (sumCongrListingPerm m σ) = Equiv.Perm.sign σ := by
   have h := Equiv.Perm.sign_eq_sign_of_equiv (Equiv.sumCongr (Equiv.refl (Fin m)) σ)
     (sumCongrListingPerm m σ) (sideListingEquiv m).symm
-    (fun x => by simp [sumCongrListingPerm])
+    (fun x => by
+      simp only [sumCongrListingPerm, Equiv.trans_apply, Equiv.apply_symm_apply])
   rw [← h, Equiv.Perm.sign_sumCongr]
   simp
 
