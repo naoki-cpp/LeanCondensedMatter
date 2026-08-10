@@ -83,6 +83,7 @@ theorem resolventApproximationEvolution_domain_cauchy
     intro r s _ _ hr hs
     simpa [ht, resolventApproximationEvolution_zero] using hε
   · have habs : 0 < |t| := abs_pos.mpr ht
+    have hden : 0 < 2 * |t| := by positivity
     have hδ : 0 < ε / (2 * |t|) := by positivity
     obtain ⟨R, hR, hconv⟩ :=
       boundedSelfAdjointApproximation_strong_convergence A hA x
@@ -91,9 +92,17 @@ theorem resolventApproximationEvolution_domain_cauchy
     intro r s hRr hRs hr hs
     have hrconv := hconv r hRr hr
     have hsconv := hconv s hRs hs
+    have hrscaled :
+        ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * (2 * |t|) < ε :=
+      (lt_div_iff₀ hden).mp hrconv
+    have hsscaled :
+        ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * (2 * |t|) < ε :=
+      (lt_div_iff₀ hden).mp hsconv
     have hdiff :
         ‖(boundedSelfAdjointApproximation A hA r hr -
-            boundedSelfAdjointApproximation A hA s hs) (x : H)‖ < ε / |t| := by
+            boundedSelfAdjointApproximation A hA s hs) (x : H)‖ ≤
+          ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ +
+            ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ := by
       calc
         ‖(boundedSelfAdjointApproximation A hA r hr -
             boundedSelfAdjointApproximation A hA s hs) (x : H)‖ =
@@ -104,14 +113,14 @@ theorem resolventApproximationEvolution_domain_cauchy
         _ ≤ ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ +
               ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ :=
             norm_sub_le _ _
-        _ < ε / (2 * |t|) + ε / (2 * |t|) := add_lt_add hrconv hsconv
-        _ = ε / |t| := by
-          have habsne : |t| ≠ 0 := ne_of_gt habs
-          field_simp [habsne]
+    have hsum :
+        (‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ +
+          ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖) * |t| < ε := by
+      nlinarith
     have hmul :
         ‖(boundedSelfAdjointApproximation A hA r hr -
-            boundedSelfAdjointApproximation A hA s hs) (x : H)‖ * |t| < ε :=
-      (lt_div_iff₀ habs).mp hdiff
+            boundedSelfAdjointApproximation A hA s hs) (x : H)‖ * |t| < ε := by
+      exact lt_of_le_of_lt (mul_le_mul_of_nonneg_right hdiff (abs_nonneg t)) hsum
     exact lt_of_le_of_lt
       (norm_resolventApproximationEvolution_sub_le A hA r s hr hs t (x : H)) hmul
 
