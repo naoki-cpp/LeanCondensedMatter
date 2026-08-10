@@ -1,5 +1,7 @@
 import Mathlib.Analysis.InnerProductSpace.LinearPMap
 import Mathlib.Analysis.Complex.Norm
+import Mathlib.Analysis.Normed.Group.Completeness
+import Mathlib.Topology.Sequences
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -10,18 +12,19 @@ set_option linter.style.header false
 This module starts the operator-theoretic infrastructure needed for Stone's theorem.
 
 For a symmetric partially defined operator `A` on a complex Hilbert space and a nonreal scalar
-`z`, the shifted map `A - z` is bounded below on the domain by `|im z|`. In particular, a
-self-adjoint operator has no nonzero vector in the kernel of a nonreal shift. This is the first
-step toward proving that the nonreal resolvent exists and is bounded, which in turn feeds the
-Cayley-transform / Stone-theorem construction tracked by LeanCondensedMatter issue #840.
+`z`, the shifted map `A - z` is bounded below on the domain by `|im z|`. For a self-adjoint
+operator the same estimate gives injectivity, and closedness of the graph then implies that the
+range of every nonreal shift is closed. These are the first steps toward proving that the nonreal
+resolvent exists and is bounded, which in turn feeds the Cayley-transform / Stone-theorem
+construction tracked by LeanCondensedMatter issue #840.
 -/
 
 namespace LinearPMap
 
 noncomputable section
 
-open Complex
-open scoped InnerProductSpace
+open Complex Filter Set
+open scoped InnerProductSpace Topology
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 variable {A : H →ₗ.[ℂ] H}
@@ -128,6 +131,71 @@ theorem isSelfAdjoint_shiftDomainMap_injective
   have hxy0 : x - y = 0 :=
     (isSelfAdjoint_sub_smul_eq_zero_iff hA hz (x - y)).mp hsub
   exact sub_eq_zero.mp hxy0
+
+/-- The range of a nonreal shift of a self-adjoint operator is closed.
+
+If `(A - z) xₙ` converges, the nonreal-shift lower bound makes `xₙ` a Cauchy sequence. Completeness
+provides a limit `x`, and the closed graph of the self-adjoint operator recovers `x ∈ D(A)` together
+with the limiting value of `A x`. -/
+theorem isSelfAdjoint_shiftDomainMap_range_isClosed
+    (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) :
+    IsClosed (Set.range (shiftDomainMap A z)) := by
+  rw [← isSeqClosed_iff_isClosed]
+  intro u y hu huy
+  choose x hx using hu
+  have huCauchy : CauchySeq u := huy.cauchySeq
+  have himpos : 0 < |z.im| := abs_pos.mpr hz
+  have hxCauchy : CauchySeq (fun n => (x n : H)) := by
+    rw [Metric.cauchySeq_iff]
+    intro ε hε
+    obtain ⟨N, hN⟩ :=
+      (Metric.cauchySeq_iff.mp huCauchy) (|z.im| * ε) (mul_pos himpos hε)
+    refine ⟨N, ?_⟩
+    intro m hm n hn
+    have hbound :=
+      isSelfAdjoint_abs_im_mul_norm_le_norm_sub_smul hA z (x m - x n)
+    have hshift : shiftDomainMap A z (x m - x n) = u m - u n := by
+      rw [(shiftDomainMap A z).map_sub, hx m, hx n]
+    have hbound' :
+        |z.im| * dist (x m : H) (x n : H) ≤ dist (u m) (u n) := by
+      calc
+        |z.im| * dist (x m : H) (x n : H) =
+            |z.im| * ‖(((x m - x n : A.domain) : H))‖ := by
+              simp only [dist_eq_norm, Submodule.coe_sub]
+        _ ≤ ‖shiftDomainMap A z (x m - x n)‖ := by
+          simpa only [shiftDomainMap_apply] using hbound
+        _ = dist (u m) (u n) := by
+          rw [hshift, dist_eq_norm]
+    have hlt :
+        |z.im| * dist (x m : H) (x n : H) < |z.im| * ε :=
+      lt_of_le_of_lt hbound' (hN m hm n hn)
+    exact (mul_lt_mul_left himpos).mp hlt
+  obtain ⟨xlim, hxlim⟩ := cauchySeq_tendsto_of_complete hxCauchy
+  have hAeq : ∀ n, A (x n) = u n + z • (x n : H) := by
+    intro n
+    have hn := hx n
+    rw [shiftDomainMap_apply] at hn
+    rw [← hn]
+    abel
+  have hAseq : Tendsto (fun n => A (x n)) atTop (𝓝 (y + z • xlim)) := by
+    have hsum := huy.add (hxlim.const_smul z)
+    have hfun : (fun n => A (x n)) = fun n => u n + z • (x n : H) := by
+      funext n
+      exact hAeq n
+    rw [hfun]
+    exact hsum
+  have hpair :
+      Tendsto (fun n => ((x n : H), A (x n))) atTop (𝓝 (xlim, y + z • xlim)) :=
+    hxlim.prodMk_nhds hAseq
+  have hgraph : (xlim, y + z • xlim) ∈ A.graph := by
+    apply hA.isClosed.mem_of_tendsto hpair
+    exact Eventually.of_forall fun n => (A.mem_graph_iff').2 ⟨x n, rfl⟩
+  obtain ⟨xdom, hxdom⟩ := (A.mem_graph_iff').1 hgraph
+  have hxdom_val : (xdom : H) = xlim := congrArg Prod.fst hxdom
+  have hA_val : A xdom = y + z • xlim := congrArg Prod.snd hxdom
+  refine ⟨xdom, ?_⟩
+  rw [shiftDomainMap_apply, hA_val, hxdom_val]
+  abel
 
 end
 
