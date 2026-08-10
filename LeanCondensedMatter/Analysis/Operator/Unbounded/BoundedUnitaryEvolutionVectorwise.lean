@@ -31,7 +31,7 @@ theorem boundedUnitaryEvolution_apply_hasDerivAt (B : H →L[ℂ] H) (t : ℝ) (
       ((boundedUnitaryEvolution B t * ((-I : ℂ) • B)) x) t := by
   have h := (((ContinuousLinearMap.apply ℂ H) x).restrictScalars ℝ).hasFDerivAt.comp t
     (boundedUnitaryEvolution_hasDerivAt B t).hasFDerivAt
-  simpa using h.hasDerivAt
+  simpa [Function.comp_def] using h.hasDerivAt
 
 /-- Each resolvent-approximating unitary group is strongly continuous on every vector. -/
 theorem resolventApproximationEvolution_apply_continuous
