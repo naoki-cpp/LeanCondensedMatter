@@ -239,8 +239,7 @@ theorem freeGibbsGreenFunction_of_ne (ε : Mode → ℝ) (β : ℝ) {i j : Mode}
       Common.normalizedWeightedDiagonal_neg,
       normalizedWeightedDiagonal_create_comp_annihilate_of_ne _ hij]
 
-/-- Annihilating twice lowers the particle number by two, so no occupation state returns to
-itself. -/
+-- Annihilating twice lowers the particle number by two, so no occupation state returns to itself.
 omit [Fintype Mode] in
 private theorem matrixCoeff_annihilate_comp_annihilate (i j : Mode) (n : Occupation Mode) :
     Common.matrixCoeff ((annihilate i).comp (annihilate j)) n n = 0 := by
@@ -260,7 +259,7 @@ private theorem matrixCoeff_annihilate_comp_annihilate (i j : Mode) (n : Occupat
   · rw [LinearMap.comp_apply, annihilate_basisState_of_not_mem hj, map_zero]
     simp
 
-/-- Creating twice raises the particle number by two, so no occupation state returns to itself. -/
+-- Creating twice raises the particle number by two, so no occupation state returns to itself.
 omit [Fintype Mode] in
 private theorem matrixCoeff_create_comp_create (i j : Mode) (n : Occupation Mode) :
     Common.matrixCoeff ((create i).comp (create j)) n n = 0 := by
