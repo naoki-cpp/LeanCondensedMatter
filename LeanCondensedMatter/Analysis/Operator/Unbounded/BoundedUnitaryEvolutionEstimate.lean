@@ -34,9 +34,10 @@ theorem boundedUnitaryEvolution_apply_norm
     simpa [ContinuousLinearMap.star_eq_adjoint] using happly
   have hinner : inner ℂ (U x) (U x) = inner ℂ x x := by
     rw [← ContinuousLinearMap.adjoint_inner_left U x (U x), huux]
+  have hre : (↑(‖U x‖ ^ 2) : ℂ).re = (↑(‖x‖ ^ 2) : ℂ).re := by
+    simpa only [inner_self_eq_norm_sq] using congrArg Complex.re hinner
   have hsq : ‖U x‖ ^ 2 = ‖x‖ ^ 2 := by
-    have hre := congrArg Complex.re hinner
-    simpa [inner_self_eq_norm_sq] using hre
+    simpa only [Complex.ofReal_re] using hre
   nlinarith [norm_nonneg (U x), norm_nonneg x]
 
 /-- The vectorwise derivative of a bounded self-adjoint evolution has constant norm `‖B x‖`. -/
