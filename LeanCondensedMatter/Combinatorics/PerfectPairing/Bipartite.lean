@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Sign
 import Mathlib.Logic.Equiv.Fin.Basic
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 import Mathlib.LinearAlgebra.Matrix.Permanent
@@ -455,5 +455,107 @@ theorem prod_sidePairing_pairs {R : Type*} [CommMonoid R] (e : SideSplitting m)
   rw [Finset.prod_subtype (sidePairing e σ).pairs (fun _ => Iff.rfl)
     (fun pr => f pr.1 pr.2)]
   exact (Equiv.prod_comp (sidePairEquiv e σ) (fun pr => f pr.1.1 pr.1.2)).symm
+
+/-- The two-element block of `Fin m × Fin 2` seen as the left or right side of `m`. -/
+private def blockSideEquiv (m : ℕ) : Fin m × Fin 2 ≃ Fin m ⊕ Fin m where
+  toFun p := if p.2 = 0 then Sum.inl p.1 else Sum.inr p.1
+  invFun x := x.elim (fun i => (i, 0)) (fun i => (i, 1))
+  left_inv p := by
+    obtain ⟨i, s⟩ := p
+    fin_cases s <;> simp
+  right_inv x := by cases x <;> simp
+
+/-- The fixed identification of the block-slot listing of `Fin (2 * m)` with its two sides. -/
+private noncomputable def sideListingEquiv (m : ℕ) : Fin (2 * m) ≃ Fin m ⊕ Fin m :=
+  (pairSlotIndexEquiv m).trans (blockSideEquiv m)
+
+/-- The permutation of ambient positions that lists the pairs of `sidePairing e σ` one after
+another, each left endpoint before its `σ`-matched right endpoint. -/
+private noncomputable def sideListingPerm (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
+    Equiv.Perm (Fin (2 * m)) :=
+  (sideListingEquiv m).trans ((Equiv.sumCongr (Equiv.refl (Fin m)) σ).trans e)
+
+private theorem blockPair_sideListingPerm (e : SideSplitting m) (σ : Equiv.Perm (Fin m))
+    (k : Fin m) :
+    blockPair (sideListingPerm e σ) k = (e (Sum.inl k), e (Sum.inr (σ k))) := by
+  change (sideListingPerm e σ ((pairSlotIndexEquiv m).symm (k, 0)),
+      sideListingPerm e σ ((pairSlotIndexEquiv m).symm (k, 1))) =
+      (e (Sum.inl k), e (Sum.inr (σ k)))
+  simp [sideListingPerm, sideListingEquiv, blockSideEquiv]
+
+/-- The listing permutation presents the pairing it lists, in whichever orientation the splitting
+puts each pair. -/
+theorem sidePairing_presentsPairs (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
+    (sidePairing e σ).PresentsPairs (sideListingPerm e σ) := by
+  refine ⟨sidePairEquiv e σ, fun k => ?_⟩
+  rw [blockPair_sideListingPerm]
+  rcases lt_trichotomy (e (Sum.inl k)) (e (Sum.inr (σ k))) with h | h | h
+  · refine Or.inl ?_
+    change (e (Sum.inl k), e (Sum.inr (σ k))) = sidePair e σ k
+    rw [sidePair_of_lt h]
+  · exact absurd h (sideSplitting_inl_ne_inr e k (σ k))
+  · refine Or.inr ?_
+    change (e (Sum.inl k), e (Sum.inr (σ k))) = (sidePair e σ k).swap
+    rw [sidePair_of_gt h]
+    rfl
+
+/-- The listing permutation for the identity matching: depends only on the splitting. -/
+private noncomputable def baseListingPerm (e : SideSplitting m) : Equiv.Perm (Fin (2 * m)) :=
+  (sideListingEquiv m).trans e
+
+/-- The matching permutation `σ`, transported to ambient positions through the fixed listing
+identification. -/
+private noncomputable def sumCongrListingPerm (m : ℕ) (σ : Equiv.Perm (Fin m)) :
+    Equiv.Perm (Fin (2 * m)) :=
+  (sideListingEquiv m).trans
+    ((Equiv.sumCongr (Equiv.refl (Fin m)) σ).trans (sideListingEquiv m).symm)
+
+private theorem sideListingPerm_eq (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
+    sideListingPerm e σ = (sumCongrListingPerm m σ).trans (baseListingPerm e) := by
+  apply Equiv.ext
+  intro x
+  simp only [sideListingPerm, sumCongrListingPerm, baseListingPerm, sideListingEquiv,
+    Equiv.trans_apply, Equiv.apply_symm_apply]
+
+private theorem sign_sumCongrListingPerm (m : ℕ) (σ : Equiv.Perm (Fin m)) :
+    Equiv.Perm.sign (sumCongrListingPerm m σ) = Equiv.Perm.sign σ := by
+  have h := Equiv.Perm.sign_eq_sign_of_equiv (Equiv.sumCongr (Equiv.refl (Fin m)) σ)
+    (sumCongrListingPerm m σ) (sideListingEquiv m).symm
+    (fun x => by
+      simp only [sumCongrListingPerm, Equiv.trans_apply, Equiv.apply_symm_apply])
+  rw [← h, Equiv.Perm.sign_sumCongr]
+  simp
+
+/-- The number of matched pairs whose splitting puts the right endpoint before the left one. -/
+private noncomputable def sideReversedCount (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) : ℕ :=
+  ∑ k : Fin m, if e (Sum.inr (σ k)) < e (Sum.inl k) then 1 else 0
+
+/-- **Sign of a bipartite pairing under any side splitting.** The crossing-count weight of a
+pairing matching the two sides of an arbitrary splitting is the matching permutation's sign, up to
+the reversed-pair count and a factor depending only on the splitting. Specializing to the canonical
+splitting recovers `neg_one_pow_crossingCount_eq_mul_sign` with a zero reversed count. -/
+theorem neg_one_pow_crossingCount_eq_of_sidePairing (e : SideSplitting m)
+    (σ : Equiv.Perm (Fin m)) :
+    (-1 : ℤˣ) ^ (sidePairing e σ).crossingCount =
+      Equiv.Perm.sign (baseListingPerm e) * (-1) ^ sideReversedCount e σ * Equiv.Perm.sign σ := by
+  have hsign := (sidePairing e σ).sign_eq_of_presentsPairs (sideListingPerm e σ)
+    (sidePairing_presentsPairs e σ)
+  have hreversed : (∑ k : Fin m, if (blockPair (sideListingPerm e σ) k).2 <
+      (blockPair (sideListingPerm e σ) k).1 then 1 else 0) = sideReversedCount e σ := by
+    refine Finset.sum_congr rfl fun k _ => ?_
+    rw [blockPair_sideListingPerm]
+  rw [hreversed] at hsign
+  rw [sideListingPerm_eq, Equiv.Perm.sign_trans, sign_sumCongrListingPerm] at hsign
+  have hsq : ((-1 : ℤˣ) ^ sideReversedCount e σ) * ((-1 : ℤˣ) ^ sideReversedCount e σ) = 1 :=
+    Int.units_mul_self _
+  calc (-1 : ℤˣ) ^ (sidePairing e σ).crossingCount
+      = (-1 : ℤˣ) ^ sideReversedCount e σ *
+          ((-1 : ℤˣ) ^ sideReversedCount e σ * (-1 : ℤˣ) ^ (sidePairing e σ).crossingCount) := by
+        rw [← mul_assoc, hsq, one_mul]
+    _ = (-1 : ℤˣ) ^ sideReversedCount e σ *
+          (Equiv.Perm.sign (baseListingPerm e) * Equiv.Perm.sign σ) := by rw [← hsign]
+    _ = Equiv.Perm.sign (baseListingPerm e) * (-1) ^ sideReversedCount e σ *
+          Equiv.Perm.sign σ := by
+        rw [← mul_assoc, mul_comm ((-1 : ℤˣ) ^ sideReversedCount e σ), mul_assoc]
 
 end Combinatorics
