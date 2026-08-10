@@ -26,6 +26,15 @@ open scoped InnerProductSpace
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 variable {A : H →ₗ.[ℂ] H}
 
+/-- The domain-level linear map `x ↦ A x - z x` associated with a partial operator. -/
+def shiftDomainMap (A : H →ₗ.[ℂ] H) (z : ℂ) : A.domain →ₗ[ℂ] H :=
+  A.toFun - z • A.domain.subtype
+
+@[simp]
+theorem shiftDomainMap_apply (A : H →ₗ.[ℂ] H) (z : ℂ) (x : A.domain) :
+    shiftDomainMap A z x = A x - z • (x : H) := by
+  rfl
+
 /-- For a symmetric partial operator, the quadratic form `⟪x, A x⟫` is real on the domain. -/
 theorem IsFormalAdjoint.im_inner_self_apply_eq_zero
     (hA : A.IsFormalAdjoint A) (x : A.domain) :
@@ -68,7 +77,7 @@ theorem IsFormalAdjoint.abs_im_mul_norm_le_norm_sub_smul
   · simp [hx]
   · have hxpos : 0 < ‖(x : H)‖ := lt_of_le_of_ne (norm_nonneg _) (Ne.symm hx)
     apply (mul_le_mul_left hxpos).mp
-    simpa [pow_two, mul_assoc] using hcs
+    simpa [pow_two, mul_assoc, mul_left_comm, mul_comm] using hcs
 
 /-- Self-adjoint specialization of the nonreal-shift lower bound. -/
 theorem IsSelfAdjoint.abs_im_mul_norm_le_norm_sub_smul
@@ -92,6 +101,18 @@ theorem IsSelfAdjoint.sub_smul_eq_zero_iff
     exact Subtype.ext (norm_eq_zero.mp hnorm)
   · rintro rfl
     simp
+
+/-- The domain-level nonreal shift of a self-adjoint operator is injective. -/
+theorem IsSelfAdjoint.shiftDomainMap_injective
+    (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) :
+    Function.Injective (shiftDomainMap A z) := by
+  intro x y hxy
+  have hzero : shiftDomainMap A z (x - y) = 0 := by
+    rw [map_sub, hxy, sub_self]
+  have hsub : A (x - y) - z • ((x - y : A.domain) : H) = 0 := by
+    simpa only [shiftDomainMap_apply] using hzero
+  have hxy0 : x - y = 0 := (hA.sub_smul_eq_zero_iff hz (x - y)).mp hsub
+  exact sub_eq_zero.mp hxy0
 
 end
 
