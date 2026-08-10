@@ -46,7 +46,7 @@ theorem Pairing.isSplit_inr (e : PositionSplitting a b n) {P : Pairing n} (h : P
   | inl k =>
       obtain ⟨j, hj⟩ := h k
       have hback : P.partner (e (Sum.inl k)) = e (Sum.inr i) := by
-        rw [← hy, P.partner_partner]
+        rw [hy, P.partner_partner]
       exact absurd (hback.symm.trans hj) (Ne.symm (positionSplitting_inl_ne_inr e j i))
 
 section Left
