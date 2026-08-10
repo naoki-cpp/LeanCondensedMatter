@@ -59,50 +59,81 @@ theorem bipartiteHalfEquiv_inr_lt_inr_iff (m : ℕ) (i j : Fin m) :
   change _ ↔ i.val < j.val
   omega
 
-/-- The involution sending each position of the first half to the position of the second half
+/-- A *side splitting* of the ambient positions is an identification of `Fin (2 * m)` with two
+labelled sides of size `m`. The two halves are the canonical example; a number-conserving diagram
+uses its creation and annihilation legs instead. -/
+abbrev SideSplitting (m : ℕ) := Fin m ⊕ Fin m ≃ Fin (2 * m)
+
+/-- The involution sending each position on the left side to the position on the right side
 selected by `σ`. -/
-def bipartitePartner (σ : Equiv.Perm (Fin m)) : Equiv.Perm (Fin (2 * m)) :=
-  ((bipartiteHalfEquiv m).symm.trans
-      ((Equiv.sumComm (Fin m) (Fin m)).trans (Equiv.sumCongr σ.symm σ))).trans
-    (bipartiteHalfEquiv m)
+def sidePartner (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) : Equiv.Perm (Fin (2 * m)) :=
+  ((e.symm.trans ((Equiv.sumComm (Fin m) (Fin m)).trans (Equiv.sumCongr σ.symm σ))).trans e)
 
 @[simp]
-theorem bipartitePartner_inl (σ : Equiv.Perm (Fin m)) (i : Fin m) :
-    bipartitePartner σ (bipartiteHalfEquiv m (Sum.inl i)) =
-      bipartiteHalfEquiv m (Sum.inr (σ i)) := by
-  simp [bipartitePartner]
+theorem sidePartner_inl (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) (i : Fin m) :
+    sidePartner e σ (e (Sum.inl i)) = e (Sum.inr (σ i)) := by
+  simp [sidePartner]
 
 @[simp]
-theorem bipartitePartner_inr (σ : Equiv.Perm (Fin m)) (j : Fin m) :
-    bipartitePartner σ (bipartiteHalfEquiv m (Sum.inr j)) =
-      bipartiteHalfEquiv m (Sum.inl (σ.symm j)) := by
-  simp [bipartitePartner]
+theorem sidePartner_inr (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) (j : Fin m) :
+    sidePartner e σ (e (Sum.inr j)) = e (Sum.inl (σ.symm j)) := by
+  simp [sidePartner]
 
-theorem isPairing_bipartitePartner (σ : Equiv.Perm (Fin m)) :
-    IsPairing (bipartitePartner σ) := by
+theorem isPairing_sidePartner (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
+    IsPairing (sidePartner e σ) := by
   constructor
   · intro x
-    obtain ⟨y, rfl⟩ := (bipartiteHalfEquiv m).surjective x
+    obtain ⟨y, rfl⟩ := e.surjective x
     cases y with
     | inl i => simp
     | inr j => simp
   · intro x
-    obtain ⟨y, rfl⟩ := (bipartiteHalfEquiv m).surjective x
+    obtain ⟨y, rfl⟩ := e.surjective x
     cases y with
     | inl i =>
         intro h
-        rw [bipartitePartner_inl] at h
-        have h' := (bipartiteHalfEquiv m).injective h
+        rw [sidePartner_inl] at h
+        have h' := e.injective h
         simp at h'
     | inr j =>
         intro h
-        rw [bipartitePartner_inr] at h
-        have h' := (bipartiteHalfEquiv m).injective h
+        rw [sidePartner_inr] at h
+        have h' := e.injective h
         simp at h'
+
+/-- The perfect pairing matching the two sides of `e` through `σ`. -/
+def sidePairing (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) : Pairing m :=
+  Pairing.ofPartner (sidePartner e σ) (isPairing_sidePartner e σ)
+
+@[simp]
+theorem sidePairing_partner (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
+    (sidePairing e σ).partner = sidePartner e σ :=
+  rfl
+
+/-- The involution sending each position of the first half to the position of the second half
+selected by `σ`. -/
+def bipartitePartner (σ : Equiv.Perm (Fin m)) : Equiv.Perm (Fin (2 * m)) :=
+  sidePartner (bipartiteHalfEquiv m) σ
+
+@[simp]
+theorem bipartitePartner_inl (σ : Equiv.Perm (Fin m)) (i : Fin m) :
+    bipartitePartner σ (bipartiteHalfEquiv m (Sum.inl i)) =
+      bipartiteHalfEquiv m (Sum.inr (σ i)) :=
+  sidePartner_inl _ σ i
+
+@[simp]
+theorem bipartitePartner_inr (σ : Equiv.Perm (Fin m)) (j : Fin m) :
+    bipartitePartner σ (bipartiteHalfEquiv m (Sum.inr j)) =
+      bipartiteHalfEquiv m (Sum.inl (σ.symm j)) :=
+  sidePartner_inr _ σ j
+
+theorem isPairing_bipartitePartner (σ : Equiv.Perm (Fin m)) :
+    IsPairing (bipartitePartner σ) :=
+  isPairing_sidePartner _ σ
 
 /-- The perfect pairing of `Fin (2 * m)` matching the first half to the second half through `σ`. -/
 def bipartitePairing (σ : Equiv.Perm (Fin m)) : Pairing m :=
-  Pairing.ofPartner (bipartitePartner σ) (isPairing_bipartitePartner σ)
+  sidePairing (bipartiteHalfEquiv m) σ
 
 @[simp]
 theorem bipartitePairing_partner (σ : Equiv.Perm (Fin m)) :
@@ -285,5 +316,69 @@ theorem sum_prod_eq_permanent (K : Matrix (Fin m) (Fin m) R) :
   exact Finset.sum_congr rfl fun σ _ => by simp
 
 end Matrix
+
+/-- A pairing is *bipartite* for a side splitting when every left position is matched to a right
+one. The converse is automatic: both sides are finite of the same size and the partner map is
+injective. -/
+def Pairing.IsBipartite (e : SideSplitting m) (P : Pairing m) : Prop :=
+  ∀ i : Fin m, ∃ j : Fin m, P.partner (e (Sum.inl i)) = e (Sum.inr j)
+
+theorem isBipartite_sidePairing (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
+    (sidePairing e σ).IsBipartite e :=
+  fun i => ⟨σ i, by simp⟩
+
+private noncomputable def matchingTo (e : SideSplitting m) {P : Pairing m}
+    (h : P.IsBipartite e) (i : Fin m) : Fin m :=
+  Classical.choose (h i)
+
+private theorem matchingTo_spec (e : SideSplitting m) {P : Pairing m} (h : P.IsBipartite e)
+    (i : Fin m) : P.partner (e (Sum.inl i)) = e (Sum.inr (matchingTo e h i)) :=
+  Classical.choose_spec (h i)
+
+private theorem matchingTo_injective (e : SideSplitting m) {P : Pairing m}
+    (h : P.IsBipartite e) : Function.Injective (matchingTo e h) := by
+  intro i j hij
+  have hspec := matchingTo_spec e h i
+  rw [hij, ← matchingTo_spec e h j] at hspec
+  exact Sum.inl.inj (e.injective (P.partner.injective hspec))
+
+/-- The permutation matching the two sides of a bipartite pairing. -/
+noncomputable def Pairing.sideMatching (e : SideSplitting m) {P : Pairing m}
+    (h : P.IsBipartite e) : Equiv.Perm (Fin m) :=
+  Equiv.ofBijective (matchingTo e h) (matchingTo_injective e h).bijective_of_finite
+
+@[simp]
+theorem Pairing.partner_sideMatching (e : SideSplitting m) {P : Pairing m}
+    (h : P.IsBipartite e) (i : Fin m) :
+    P.partner (e (Sum.inl i)) = e (Sum.inr (P.sideMatching e h i)) :=
+  matchingTo_spec e h i
+
+theorem sidePairing_sideMatching (e : SideSplitting m) {P : Pairing m} (h : P.IsBipartite e) :
+    sidePairing e (P.sideMatching e h) = P := by
+  refine Pairing.ext (Equiv.ext fun x => ?_)
+  obtain ⟨y, rfl⟩ := e.surjective x
+  cases y with
+  | inl i => rw [sidePairing_partner, sidePartner_inl, ← Pairing.partner_sideMatching e h i]
+  | inr j =>
+      rw [sidePairing_partner, sidePartner_inr]
+      have hi := Pairing.partner_sideMatching e h ((P.sideMatching e h).symm j)
+      rw [Equiv.apply_symm_apply] at hi
+      rw [← hi, P.partner_partner]
+
+theorem sideMatching_sidePairing (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
+    (sidePairing e σ).sideMatching e (isBipartite_sidePairing e σ) = σ := by
+  refine Equiv.ext fun i => ?_
+  have h := Pairing.partner_sideMatching e (isBipartite_sidePairing e σ) i
+  rw [sidePairing_partner, sidePartner_inl] at h
+  exact (Sum.inr.inj (e.injective h)).symm
+
+/-- **Bipartite pairings are exactly permutations.** For a side splitting of the ambient positions,
+the pairings matching the two sides correspond to the permutations of one side. -/
+noncomputable def sidePairingEquiv (e : SideSplitting m) :
+    Equiv.Perm (Fin m) ≃ {P : Pairing m // P.IsBipartite e} where
+  toFun σ := ⟨sidePairing e σ, isBipartite_sidePairing e σ⟩
+  invFun P := P.1.sideMatching e P.2
+  left_inv σ := sideMatching_sidePairing e σ
+  right_inv P := Subtype.ext (sidePairing_sideMatching e P.2)
 
 end Combinatorics
