@@ -1,5 +1,7 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 import Mathlib.Logic.Equiv.Fin.Basic
+import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+import Mathlib.LinearAlgebra.Matrix.Permanent
 
 set_option linter.style.header false
 
@@ -222,5 +224,66 @@ theorem neg_one_pow_crossingCount_mul_sign (σ : Equiv.Perm (Fin m)) :
   rw [← Finset.sum_add_distrib, Finset.card_eq_sum_ones]
   refine Finset.sum_congr rfl fun j _ => ?_
   by_cases h : σ i < σ j <;> simp [h]
+
+/-- Solved form of `neg_one_pow_crossingCount_mul_sign`: the bipartite pairing weight is the
+permutation sign scaled by a factor independent of `σ`. -/
+theorem neg_one_pow_crossingCount_eq_mul_sign (σ : Equiv.Perm (Fin m)) :
+    (-1 : ℤˣ) ^ (bipartitePairing σ).crossingCount =
+      (-1) ^ (∑ i : Fin m, (Finset.Ioi i).card) * Equiv.Perm.sign σ := by
+  have h := neg_one_pow_crossingCount_mul_sign σ
+  calc (-1 : ℤˣ) ^ (bipartitePairing σ).crossingCount
+      = (-1 : ℤˣ) ^ (bipartitePairing σ).crossingCount *
+          (Equiv.Perm.sign σ * Equiv.Perm.sign σ) := by
+        rw [Int.units_mul_self, mul_one]
+    _ = ((-1 : ℤˣ) ^ (bipartitePairing σ).crossingCount * Equiv.Perm.sign σ) *
+          Equiv.Perm.sign σ := (mul_assoc _ _ _).symm
+    _ = (-1) ^ (∑ i : Fin m, (Finset.Ioi i).card) * Equiv.Perm.sign σ := by rw [h]
+
+section Matrix
+
+variable {R : Type*} [CommRing R]
+
+private theorem neg_one_pow_crossingCount_cast (σ : Equiv.Perm (Fin m)) :
+    (-1 : R) ^ (bipartitePairing σ).crossingCount =
+      (-1 : R) ^ (∑ i : Fin m, (Finset.Ioi i).card) *
+        ((Equiv.Perm.sign σ : ℤ) : R) := by
+  have hz := congrArg (fun u : ℤˣ => ((u : ℤ) : R))
+    (neg_one_pow_crossingCount_eq_mul_sign σ)
+  simpa using hz
+
+private theorem det_eq_sum_sign_mul_prod (K : Matrix (Fin m) (Fin m) R) :
+    K.det = ∑ σ : Equiv.Perm (Fin m),
+      ((Equiv.Perm.sign σ : ℤ) : R) * ∏ i, K i (σ i) := by
+  rw [← Matrix.det_transpose K, Matrix.det_apply']
+  exact Finset.sum_congr rfl fun σ _ => by simp
+
+/-- **Fermionic bipartite pairing sum as a determinant.** Weighting each bipartite pairing by the
+fermionic exchange sign and multiplying the matrix entries of its pairs gives the determinant, up to
+the factor that does not depend on the pairing. -/
+theorem sum_neg_one_pow_crossingCount_mul_prod (K : Matrix (Fin m) (Fin m) R) :
+    (∑ σ : Equiv.Perm (Fin m),
+        (-1 : R) ^ (bipartitePairing σ).crossingCount * ∏ i, K i (σ i)) =
+      (-1 : R) ^ (∑ i : Fin m, (Finset.Ioi i).card) * K.det := by
+  calc (∑ σ : Equiv.Perm (Fin m),
+          (-1 : R) ^ (bipartitePairing σ).crossingCount * ∏ i, K i (σ i))
+      = ∑ σ : Equiv.Perm (Fin m),
+          (-1 : R) ^ (∑ i : Fin m, (Finset.Ioi i).card) *
+            (((Equiv.Perm.sign σ : ℤ) : R) * ∏ i, K i (σ i)) := by
+        refine Finset.sum_congr rfl fun σ _ => ?_
+        rw [neg_one_pow_crossingCount_cast σ, mul_assoc]
+    _ = (-1 : R) ^ (∑ i : Fin m, (Finset.Ioi i).card) *
+          ∑ σ : Equiv.Perm (Fin m), ((Equiv.Perm.sign σ : ℤ) : R) * ∏ i, K i (σ i) :=
+        (Finset.mul_sum _ _ _).symm
+    _ = (-1 : R) ^ (∑ i : Fin m, (Finset.Ioi i).card) * K.det := by
+        rw [← det_eq_sum_sign_mul_prod]
+
+/-- **Bosonic bipartite pairing sum as a permanent.** Without an exchange sign the same sum is the
+permanent. -/
+theorem sum_prod_eq_permanent (K : Matrix (Fin m) (Fin m) R) :
+    (∑ σ : Equiv.Perm (Fin m), ∏ i, K i (σ i)) = K.permanent := by
+  rw [← Matrix.permanent_transpose K, Matrix.permanent]
+  exact Finset.sum_congr rfl fun σ _ => by simp
+
+end Matrix
 
 end Combinatorics
