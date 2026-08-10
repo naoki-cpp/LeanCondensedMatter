@@ -181,4 +181,46 @@ theorem crossingCount_bipartitePairing (σ : Equiv.Perm (Fin m)) :
   exact Finset.sum_congr rfl fun j _ => by
     simp only [bipartitePairEquiv_apply, crosses_bipartitePair_iff]
 
+private theorem ite_one_neg_one_eq_pow (P : Prop) [Decidable P] :
+    (if P then (1 : ℤˣ) else -1) = (-1) ^ (if P then 0 else 1) := by
+  by_cases h : P <;> simp [h]
+
+private theorem sum_ite_and_eq_sum_Ioi {m : ℕ} (i : Fin m) (P : Fin m → Prop)
+    [DecidablePred P] :
+    (∑ j : Fin m, if i < j ∧ P j then (1 : ℕ) else 0) =
+      ∑ j ∈ Finset.Ioi i, if P j then 1 else 0 := by
+  classical
+  have hpointwise : ∀ j : Fin m,
+      (if i < j ∧ P j then (1 : ℕ) else 0) = if i < j then (if P j then 1 else 0) else 0 := by
+    intro j
+    by_cases h1 : i < j <;> by_cases h2 : P j <;> simp [h1, h2]
+  rw [Finset.sum_congr rfl fun j _ => hpointwise j, ← Finset.sum_filter]
+  congr 1
+  ext j
+  simp
+
+/-- Crossings of a bipartite pairing and inversions of the permutation are complementary, so the
+pairing weight is the permutation sign up to a factor that does not depend on `σ`. -/
+theorem neg_one_pow_crossingCount_mul_sign (σ : Equiv.Perm (Fin m)) :
+    (-1 : ℤˣ) ^ (bipartitePairing σ).crossingCount * Equiv.Perm.sign σ =
+      (-1) ^ ∑ i : Fin m, (Finset.Ioi i).card := by
+  classical
+  have hsign : Equiv.Perm.sign σ =
+      (-1 : ℤˣ) ^ ∑ i : Fin m, ∑ j ∈ Finset.Ioi i, (if σ i < σ j then 0 else 1) := by
+    rw [Equiv.Perm.sign_eq_prod_prod_Ioi, ← Finset.prod_pow_eq_pow_sum]
+    refine Finset.prod_congr rfl fun i _ => ?_
+    rw [← Finset.prod_pow_eq_pow_sum]
+    exact Finset.prod_congr rfl fun j _ => ite_one_neg_one_eq_pow _
+  have hcross : (bipartitePairing σ).crossingCount =
+      ∑ i : Fin m, ∑ j ∈ Finset.Ioi i, (if σ i < σ j then 1 else 0) := by
+    rw [crossingCount_bipartitePairing]
+    exact Finset.sum_congr rfl fun i _ => sum_ite_and_eq_sum_Ioi i _
+  rw [hcross, hsign, ← pow_add]
+  congr 1
+  rw [← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun i _ => ?_
+  rw [← Finset.sum_add_distrib, Finset.card_eq_sum_ones]
+  refine Finset.sum_congr rfl fun j _ => ?_
+  by_cases h : σ i < σ j <;> simp [h]
+
 end Combinatorics
