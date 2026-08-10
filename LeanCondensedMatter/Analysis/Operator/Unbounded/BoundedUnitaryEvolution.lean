@@ -1,5 +1,7 @@
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence
 import Mathlib.Analysis.Normed.Algebra.Exponential
+import Mathlib.Analysis.SpecialFunctions.Exponential
+import Mathlib.Analysis.Complex.RealDeriv
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -108,6 +110,16 @@ theorem boundedUnitaryEvolution_continuous (B : H →L[ℂ] H) :
   unfold boundedUnitaryEvolution unitaryTimeCoefficient
   exact hexp.comp (by fun_prop)
 
+/-- The operator-norm derivative of the bounded unitary evolution. -/
+theorem boundedUnitaryEvolution_hasDerivAt (B : H →L[ℂ] H) (t : ℝ) :
+    HasDerivAt (fun τ : ℝ => boundedUnitaryEvolution B τ)
+      (boundedUnitaryEvolution B t * ((-I : ℂ) • B)) t := by
+  have hc :=
+    hasDerivAt_exp_smul_const ((-I : ℂ) • B) (t : ℂ)
+  have hr := (hc.hasFDerivAt.restrictScalars ℝ).comp t Complex.ofRealCLM.hasFDerivAt
+  have hd := hr.hasDerivAt
+  simpa [Function.comp_def, boundedUnitaryEvolution, unitaryTimeCoefficient, smul_smul] using hd
+
 /-- The unitary group obtained by exponentiating the bounded resolvent approximation `Aᵣ`. -/
 noncomputable def resolventApproximationEvolution
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t : ℝ) : H →L[ℂ] H :=
@@ -156,6 +168,15 @@ theorem resolventApproximationEvolution_continuous
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) :
     Continuous (resolventApproximationEvolution A hA r hr) := by
   exact boundedUnitaryEvolution_continuous _
+
+/-- The bounded approximating evolution satisfies its bounded-generator differential equation in
+operator norm. -/
+theorem resolventApproximationEvolution_hasDerivAt
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t : ℝ) :
+    HasDerivAt (fun τ : ℝ => resolventApproximationEvolution A hA r hr τ)
+      (resolventApproximationEvolution A hA r hr t *
+        ((-I : ℂ) • boundedSelfAdjointApproximation A hA r hr)) t := by
+  exact boundedUnitaryEvolution_hasDerivAt _ t
 
 end
 
