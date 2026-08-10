@@ -13,6 +13,7 @@ import LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointResolvent
 import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedResolvent
 import LeanCondensedMatter.Analysis.Operator.Unbounded.CayleyTransform
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence
 import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
 import LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
