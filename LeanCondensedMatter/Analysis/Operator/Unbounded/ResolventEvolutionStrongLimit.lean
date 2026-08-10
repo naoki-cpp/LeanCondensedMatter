@@ -22,7 +22,7 @@ namespace LinearPMap
 noncomputable section
 
 open Complex Filter
-open scoped InnerProductSpace
+open scoped InnerProductSpace Topology
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
@@ -104,7 +104,13 @@ theorem resolventApproximationEvolution_cauchy
                   (resolventApproximationEvolution A hA s hs t y) +
                 dist (resolventApproximationEvolution A hA s hs t y)
                   (resolventApproximationEvolution A hA s hs t x)) := by
-          exact add_le_add_left (dist_triangle _ _ _) _
+          exact add_le_add_left
+            (dist_triangle
+              (resolventApproximationEvolution A hA r hr t y)
+              (resolventApproximationEvolution A hA s hs t y)
+              (resolventApproximationEvolution A hA s hs t x))
+            (dist (resolventApproximationEvolution A hA r hr t x)
+              (resolventApproximationEvolution A hA r hr t y))
     exact lt_of_le_of_lt htri (by linarith)
   simpa [dist_eq_norm] using hdist
 
