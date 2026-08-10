@@ -93,7 +93,6 @@ theorem resolventRegularizer_isSelfAdjoint
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) :
     IsSelfAdjoint (resolventRegularizer A hA r hr) := by
   rw [isSelfAdjoint_iff]
-  change star (resolventRegularizer A hA r hr) = resolventRegularizer A hA r hr
   simp only [resolventRegularizer, star_smul, star_sub,
     ContinuousLinearMap.star_eq_adjoint, nonrealResolvent_adjoint,
     star_regularizerCoefficient, star_star]
@@ -123,8 +122,6 @@ theorem boundedSelfAdjointApproximation_isSelfAdjoint
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) :
     IsSelfAdjoint (boundedSelfAdjointApproximation A hA r hr) := by
   rw [isSelfAdjoint_iff]
-  change star (boundedSelfAdjointApproximation A hA r hr) =
-    boundedSelfAdjointApproximation A hA r hr
   simp only [boundedSelfAdjointApproximation, star_smul, star_add,
     ContinuousLinearMap.star_eq_adjoint, nonrealResolvent_adjoint,
     star_approximationCoefficient, star_star]
@@ -137,8 +134,11 @@ theorem nonrealResolvent_apply_operator
     nonrealResolvent A hA z hz (A x) =
       (x : H) + z • nonrealResolvent A hA z hz (x : H) := by
   have h := nonrealResolvent_shift_apply A hA z hz x
-  rw [map_sub, map_smul] at h
-  exact sub_eq_iff_eq_add.mp h
+  have h' :
+      nonrealResolvent A hA z hz (A x) -
+        z • nonrealResolvent A hA z hz (x : H) = (x : H) := by
+    simpa only [map_sub, map_smul] using h
+  exact sub_eq_iff_eq_add.mp h'
 
 /-- On the original domain, the bounded generator approximation is the regularized generator:
 `Aᵣ x = Jᵣ (A x)`. -/
@@ -152,9 +152,8 @@ theorem boundedSelfAdjointApproximation_apply_domain
       (star_imaginaryParameter_im_ne_zero hr) x,
     nonrealResolvent_apply_operator A hA (imaginaryParameter r)
       (imaginaryParameter_im_ne_zero hr) x]
-  simp only [star_imaginaryParameter, regularizerCoefficient, approximationCoefficient,
-    imaginaryParameter]
-  module
+  simp only [regularizerCoefficient, approximationCoefficient, imaginaryParameter]
+  match_scalars <;> simp [pow_two] <;> ring
 
 end
 
