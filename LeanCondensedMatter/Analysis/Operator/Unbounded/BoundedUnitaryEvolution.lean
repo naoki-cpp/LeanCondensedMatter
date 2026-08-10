@@ -52,6 +52,7 @@ theorem boundedUnitaryEvolution_zero (B : H →L[ℂ] H) :
     boundedUnitaryEvolution B 0 = 1 := by
   simp [boundedUnitaryEvolution]
 
+omit [CompleteSpace H] in
 private theorem exp_argument_mem_ball (B : H →L[ℂ] H) (t : ℝ) :
     unitaryTimeCoefficient t • B ∈
       Metric.eball 0 (NormedSpace.expSeries ℂ (H →L[ℂ] H)).radius := by
