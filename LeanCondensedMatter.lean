@@ -15,6 +15,7 @@ import LeanCondensedMatter.Analysis.Operator.Unbounded.CayleyTransform
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventCommutation
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximationCommutation
 import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution
 import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionVectorwise
 import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
