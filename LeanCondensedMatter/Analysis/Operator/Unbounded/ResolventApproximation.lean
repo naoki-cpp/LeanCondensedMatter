@@ -134,11 +134,19 @@ theorem nonrealResolvent_apply_operator
     nonrealResolvent A hA z hz (A x) =
       (x : H) + z • nonrealResolvent A hA z hz (x : H) := by
   have h := nonrealResolvent_shift_apply A hA z hz x
-  have h' :
-      nonrealResolvent A hA z hz (A x) -
-        z • nonrealResolvent A hA z hz (x : H) = (x : H) := by
-    simpa only [map_sub, map_smul] using h
-  exact sub_eq_iff_eq_add.mp h'
+  calc
+    nonrealResolvent A hA z hz (A x) =
+        nonrealResolvent A hA z hz ((A x - z • (x : H)) + z • (x : H)) := by
+      congr 1
+      module
+    _ = nonrealResolvent A hA z hz (A x - z • (x : H)) +
+        nonrealResolvent A hA z hz (z • (x : H)) := by
+      rw [map_add]
+    _ = nonrealResolvent A hA z hz (A x - z • (x : H)) +
+        z • nonrealResolvent A hA z hz (x : H) := by
+      rw [map_smul]
+    _ = (x : H) + z • nonrealResolvent A hA z hz (x : H) := by
+      rw [h]
 
 /-- On the original domain, the bounded generator approximation is the regularized generator:
 `Aᵣ x = Jᵣ (A x)`. -/
@@ -153,7 +161,7 @@ theorem boundedSelfAdjointApproximation_apply_domain
     nonrealResolvent_apply_operator A hA (imaginaryParameter r)
       (imaginaryParameter_im_ne_zero hr) x]
   simp only [regularizerCoefficient, approximationCoefficient, imaginaryParameter]
-  match_scalars <;> simp [pow_two] <;> ring
+  match_scalars <;> simp [pow_two, Complex.I_mul_I] <;> ring
 
 end
 
