@@ -167,39 +167,47 @@ private theorem ite_lt_eq_neg_one_pow {m : ℕ} (a b : Fin m) (hab : a ≠ b) :
   · exact absurd h hab
   · rw [if_neg (asymm h), if_pos h, pow_one]
 
+/-- The ambient position carried by the slot `x` of a permutation. -/
+private def blockPos (τ : Equiv.Perm (Fin (2 * n))) (x : Fin n × Fin 2) : Fin (2 * n) :=
+  τ ((pairSlotIndexEquiv n).symm x)
+
+/-- The two ambient positions carried by the `k`-th two-element block, in slot order. -/
+def blockPair (τ : Equiv.Perm (Fin (2 * n))) (k : Fin n) : Fin (2 * n) × Fin (2 * n) :=
+  (blockPos τ (k, 0), blockPos τ (k, 1))
+
+private theorem blockPos_ne (τ : Equiv.Perm (Fin (2 * n))) {x y : Fin n × Fin 2} (h : x ≠ y) :
+    blockPos τ x ≠ blockPos τ y := fun heq =>
+  h ((pairSlotIndexEquiv n).symm.injective (τ.injective heq))
+
 /-- The sign contribution of the ordered pair of positions with block indices and slots `x` and
 `y`. -/
-private noncomputable def slotFactor (pairing : Pairing n) (x y : Fin n × Fin 2) : ℤˣ :=
+private noncomputable def slotFactor (τ : Equiv.Perm (Fin (2 * n))) (x y : Fin n × Fin 2) : ℤˣ :=
   if (pairSlotIndexEquiv n).symm x < (pairSlotIndexEquiv n).symm y then
-      (if pairing.pairSlotEquiv x < pairing.pairSlotEquiv y then (1 : ℤˣ) else -1)
+      (if blockPos τ x < blockPos τ y then (1 : ℤˣ) else -1)
     else 1
 
 /-- The sign contribution of an ordered pair of two-element blocks. -/
-private noncomputable def blockFactor (pairing : Pairing n) (k l : Fin n) : ℤˣ :=
-  ∏ s : Fin 2, ∏ t : Fin 2, slotFactor pairing (k, s) (l, t)
+private noncomputable def blockFactor (τ : Equiv.Perm (Fin (2 * n))) (k l : Fin n) : ℤˣ :=
+  ∏ s : Fin 2, ∏ t : Fin 2, slotFactor τ (k, s) (l, t)
 
-private theorem sign_pairPerm_eq_prod_blockFactor (pairing : Pairing n) :
-    Equiv.Perm.sign pairing.pairPerm =
-      ∏ k : Fin n, ∏ l : Fin n, blockFactor pairing k l := by
+private theorem sign_eq_prod_blockFactor (τ : Equiv.Perm (Fin (2 * n))) :
+    Equiv.Perm.sign τ = ∏ k : Fin n, ∏ l : Fin n, blockFactor τ k l := by
   classical
-  have hslot : Equiv.Perm.sign pairing.pairPerm =
-      ∏ x : Fin n × Fin 2, ∏ y : Fin n × Fin 2, slotFactor pairing x y := by
-    rw [sign_eq_prod_prod_blockSlots]
-    refine Finset.prod_congr rfl fun x _ => Finset.prod_congr rfl fun y _ => ?_
-    rw [slotFactor, Pairing.pairPerm_pairSlotIndexEquiv_symm,
-      Pairing.pairPerm_pairSlotIndexEquiv_symm]
+  have hslot : Equiv.Perm.sign τ =
+      ∏ x : Fin n × Fin 2, ∏ y : Fin n × Fin 2, slotFactor τ x y :=
+    sign_eq_prod_prod_blockSlots τ
   rw [hslot, Fintype.prod_prod_type]
   refine Finset.prod_congr rfl fun k _ => ?_
   calc
-    (∏ s : Fin 2, ∏ y : Fin n × Fin 2, slotFactor pairing (k, s) y) =
-        ∏ s : Fin 2, ∏ l : Fin n, ∏ t : Fin 2, slotFactor pairing (k, s) (l, t) :=
+    (∏ s : Fin 2, ∏ y : Fin n × Fin 2, slotFactor τ (k, s) y) =
+        ∏ s : Fin 2, ∏ l : Fin n, ∏ t : Fin 2, slotFactor τ (k, s) (l, t) :=
       Finset.prod_congr rfl fun s _ => Fintype.prod_prod_type _
-    _ = ∏ l : Fin n, ∏ s : Fin 2, ∏ t : Fin 2, slotFactor pairing (k, s) (l, t) :=
+    _ = ∏ l : Fin n, ∏ s : Fin 2, ∏ t : Fin 2, slotFactor τ (k, s) (l, t) :=
       Finset.prod_comm
-    _ = ∏ l : Fin n, blockFactor pairing k l := rfl
+    _ = ∏ l : Fin n, blockFactor τ k l := rfl
 
-private theorem blockFactor_of_gt (pairing : Pairing n) {k l : Fin n} (h : l < k) :
-    blockFactor pairing k l = 1 := by
+private theorem blockFactor_of_gt (τ : Equiv.Perm (Fin (2 * n))) {k l : Fin n} (h : l < k) :
+    blockFactor τ k l = 1 := by
   refine Finset.prod_eq_one fun s _ => Finset.prod_eq_one fun t _ => ?_
   rw [slotFactor]
   apply if_neg
@@ -208,8 +216,9 @@ private theorem blockFactor_of_gt (pairing : Pairing n) {k l : Fin n} (h : l < k
   · exact absurd hlt (asymm h)
   · exact absurd heq (Ne.symm (ne_of_lt h))
 
-private theorem blockFactor_self (pairing : Pairing n) (k : Fin n) :
-    blockFactor pairing k k = 1 := by
+private theorem blockFactor_self (τ : Equiv.Perm (Fin (2 * n))) (k : Fin n) :
+    blockFactor τ k k =
+      (-1) ^ (if (blockPair τ k).2 < (blockPair τ k).1 then 1 else 0) := by
   have hnotlt : ∀ s t : Fin 2, ¬ (s < t) →
       ¬ ((pairSlotIndexEquiv n).symm (k, s) < (pairSlotIndexEquiv n).symm (k, t)) := by
     intro s t hst hlt
@@ -219,37 +228,88 @@ private theorem blockFactor_self (pairing : Pairing n) (k : Fin n) :
   have hlt01 : (pairSlotIndexEquiv n).symm (k, 0) < (pairSlotIndexEquiv n).symm (k, 1) :=
     (pairSlotIndexEquiv_symm_lt_iff n (k, 0) (k, 1)).2
       (Or.inr ⟨rfl, (by decide : (0 : Fin 2) < 1)⟩)
+  have hne : blockPos τ (k, 0) ≠ blockPos τ (k, 1) := by
+    refine blockPos_ne τ ?_
+    intro hxy
+    have hslot : (0 : Fin 2) = 1 := congrArg Prod.snd hxy
+    exact absurd hslot (by decide)
   rw [blockFactor]
   simp only [Fin.prod_univ_two, slotFactor]
   rw [if_neg (hnotlt 0 0 (by decide)), if_pos hlt01,
     if_neg (hnotlt 1 0 (by decide)), if_neg (hnotlt 1 1 (by decide)),
-    if_pos (pairing.pairSlotEquiv_zero_lt_one k)]
-  simp
+    ite_lt_eq_neg_one_pow _ _ hne]
+  simp [blockPair]
 
-private theorem Pairing.pairSlotEquiv_ne (pairing : Pairing n) {k l : Fin n} (h : k ≠ l)
-    (s t : Fin 2) :
-    pairing.pairSlotEquiv (k, s) ≠ pairing.pairSlotEquiv (l, t) := by
-  intro heq
-  exact h (congrArg Prod.fst (pairing.pairSlotEquiv.injective heq))
-
-private theorem blockFactor_of_lt (pairing : Pairing n) {k l : Fin n} (h : k < l) :
-    blockFactor pairing k l =
-      (-1) ^ pairEndpointInversionCount (pairing.pairIndexEquiv k).1
-        (pairing.pairIndexEquiv l).1 := by
+private theorem blockFactor_of_lt (τ : Equiv.Perm (Fin (2 * n))) {k l : Fin n} (h : k < l) :
+    blockFactor τ k l =
+      (-1) ^ pairEndpointInversionCount (blockPair τ k) (blockPair τ l) := by
   have hpos : ∀ s t : Fin 2,
       (pairSlotIndexEquiv n).symm (k, s) < (pairSlotIndexEquiv n).symm (l, t) :=
     fun s t => (pairSlotIndexEquiv_symm_lt_iff n (k, s) (l, t)).2 (Or.inl h)
+  have hne : ∀ s t : Fin 2, blockPos τ (k, s) ≠ blockPos τ (l, t) := by
+    intro s t
+    refine blockPos_ne τ ?_
+    intro hxy
+    exact absurd (congrArg Prod.fst hxy) (ne_of_lt h)
   rw [blockFactor]
   simp only [Fin.prod_univ_two, slotFactor]
   rw [if_pos (hpos 0 0), if_pos (hpos 0 1), if_pos (hpos 1 0), if_pos (hpos 1 1),
-    ite_lt_eq_neg_one_pow _ _ (pairing.pairSlotEquiv_ne (ne_of_lt h) 0 0),
-    ite_lt_eq_neg_one_pow _ _ (pairing.pairSlotEquiv_ne (ne_of_lt h) 0 1),
-    ite_lt_eq_neg_one_pow _ _ (pairing.pairSlotEquiv_ne (ne_of_lt h) 1 0),
-    ite_lt_eq_neg_one_pow _ _ (pairing.pairSlotEquiv_ne (ne_of_lt h) 1 1),
+    ite_lt_eq_neg_one_pow _ _ (hne 0 0),
+    ite_lt_eq_neg_one_pow _ _ (hne 0 1),
+    ite_lt_eq_neg_one_pow _ _ (hne 1 0),
+    ite_lt_eq_neg_one_pow _ _ (hne 1 1),
     ← pow_add, ← pow_add, ← pow_add]
   congr 1
-  simp only [pairEndpointInversionCount, Pairing.pairSlotEquiv_zero, Pairing.pairSlotEquiv_one]
-  ring
+  simp only [pairEndpointInversionCount, blockPair]
+  ac_rfl
+
+/-- **Block form of a permutation sign.** Grouping the ambient positions into two-element blocks,
+the sign of any permutation is `-1` raised to the number of blocks it reverses plus the endpoint
+inversions between distinct blocks. -/
+theorem sign_eq_pow_blockInversions (τ : Equiv.Perm (Fin (2 * n))) :
+    Equiv.Perm.sign τ =
+      (-1) ^ (∑ k : Fin n, if (blockPair τ k).2 < (blockPair τ k).1 then 1 else 0) *
+        (-1) ^ (∑ k : Fin n, ∑ l ∈ Finset.Ioi k,
+          pairEndpointInversionCount (blockPair τ k) (blockPair τ l)) := by
+  classical
+  rw [sign_eq_prod_blockFactor]
+  have hsplit : ∀ k : Fin n,
+      (∏ l : Fin n, blockFactor τ k l) =
+        blockFactor τ k k * ∏ l ∈ Finset.Ioi k, blockFactor τ k l := by
+    intro k
+    have hIci : (∏ l ∈ Finset.Ici k, blockFactor τ k l) = ∏ l : Fin n, blockFactor τ k l := by
+      refine Finset.prod_subset (Finset.subset_univ _) ?_
+      intro l _ hl
+      refine blockFactor_of_gt τ ?_
+      simpa [Finset.mem_Ici, not_le] using hl
+    rw [← hIci, ← Finset.Ioi_insert, Finset.prod_insert (by simp)]
+  calc
+    (∏ k : Fin n, ∏ l : Fin n, blockFactor τ k l) =
+        ∏ k : Fin n, (blockFactor τ k k * ∏ l ∈ Finset.Ioi k, blockFactor τ k l) :=
+      Finset.prod_congr rfl fun k _ => hsplit k
+    _ = (∏ k : Fin n, blockFactor τ k k) *
+          ∏ k : Fin n, ∏ l ∈ Finset.Ioi k, blockFactor τ k l :=
+      Finset.prod_mul_distrib
+    _ = (∏ k : Fin n, (-1 : ℤˣ) ^
+            (if (blockPair τ k).2 < (blockPair τ k).1 then 1 else 0)) *
+          ∏ k : Fin n, ∏ l ∈ Finset.Ioi k,
+            (-1 : ℤˣ) ^ pairEndpointInversionCount (blockPair τ k) (blockPair τ l) := by
+      refine congrArg₂ (· * ·) ?_ ?_
+      · exact Finset.prod_congr rfl fun k _ => blockFactor_self τ k
+      · exact Finset.prod_congr rfl fun k _ => Finset.prod_congr rfl fun l hl =>
+          blockFactor_of_lt τ (Finset.mem_Ioi.1 hl)
+    _ = (-1 : ℤˣ) ^ (∑ k : Fin n, if (blockPair τ k).2 < (blockPair τ k).1 then 1 else 0) *
+          (-1 : ℤˣ) ^ (∑ k : Fin n, ∑ l ∈ Finset.Ioi k,
+            pairEndpointInversionCount (blockPair τ k) (blockPair τ l)) := by
+      refine congrArg₂ (· * ·) (Finset.prod_pow_eq_pow_sum _ _ _) ?_
+      rw [← Finset.prod_pow_eq_pow_sum]
+      exact Finset.prod_congr rfl fun k _ => Finset.prod_pow_eq_pow_sum _ _ _
+
+private theorem blockPair_pairPerm (pairing : Pairing n) (k : Fin n) :
+    blockPair pairing.pairPerm k = (pairing.pairIndexEquiv k).1 := by
+  rw [blockPair, blockPos, blockPos, Pairing.pairPerm_pairSlotIndexEquiv_symm,
+    Pairing.pairPerm_pairSlotIndexEquiv_symm, pairing.pairSlotEquiv_zero,
+    pairing.pairSlotEquiv_one]
 
 /-- The sign of the pair-listing permutation is `-1` raised to the total number of endpoint
 inversions between distinct normalized pairs. -/
@@ -259,31 +319,12 @@ theorem Pairing.sign_pairPerm_eq_pow_inversionSum (pairing : Pairing n) :
         pairEndpointInversionCount (pairing.pairIndexEquiv k).1
           (pairing.pairIndexEquiv l).1) := by
   classical
-  rw [sign_pairPerm_eq_prod_blockFactor]
-  calc
-    (∏ k : Fin n, ∏ l : Fin n, blockFactor pairing k l) =
-        ∏ k : Fin n, ∏ l ∈ Finset.Ioi k, blockFactor pairing k l := by
-      refine Finset.prod_congr rfl fun k _ => ?_
-      refine (Finset.prod_subset (Finset.subset_univ _) ?_).symm
-      intro l _ hl
-      rcases lt_trichotomy k l with hkl | hkl | hkl
-      · exact absurd (Finset.mem_Ioi.2 hkl) hl
-      · subst hkl
-        exact blockFactor_self pairing k
-      · exact blockFactor_of_gt pairing hkl
-    _ = ∏ k : Fin n, ∏ l ∈ Finset.Ioi k,
-          (-1 : ℤˣ) ^ pairEndpointInversionCount (pairing.pairIndexEquiv k).1
-            (pairing.pairIndexEquiv l).1 :=
-      Finset.prod_congr rfl fun k _ => Finset.prod_congr rfl fun l hl =>
-        blockFactor_of_lt pairing (Finset.mem_Ioi.1 hl)
-    _ = ∏ k : Fin n, (-1 : ℤˣ) ^ (∑ l ∈ Finset.Ioi k,
-          pairEndpointInversionCount (pairing.pairIndexEquiv k).1
-            (pairing.pairIndexEquiv l).1) :=
-      Finset.prod_congr rfl fun k _ => Finset.prod_pow_eq_pow_sum _ _ _
-    _ = (-1 : ℤˣ) ^ (∑ k : Fin n, ∑ l ∈ Finset.Ioi k,
-          pairEndpointInversionCount (pairing.pairIndexEquiv k).1
-            (pairing.pairIndexEquiv l).1) :=
-      Finset.prod_pow_eq_pow_sum _ _ _
+  have hzero : ∀ k : Fin n,
+      (if ((pairing.pairIndexEquiv k).1).2 < ((pairing.pairIndexEquiv k).1).1
+        then 1 else 0) = (0 : ℕ) := fun k =>
+    if_neg (asymm (pairing.pairs_normalized (pairing.pairIndexEquiv k).2))
+  rw [sign_eq_pow_blockInversions]
+  simp only [blockPair_pairPerm, hzero, Finset.sum_const_zero, pow_zero, one_mul]
 
 private theorem sum_univ_eq_sum_Ioi_add_sum_Iio {m : ℕ} (k : Fin m) (f : Fin m → ℕ)
     (hk : f k = 0) :
