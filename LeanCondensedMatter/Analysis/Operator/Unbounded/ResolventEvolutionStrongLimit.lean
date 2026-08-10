@@ -104,13 +104,11 @@ theorem resolventApproximationEvolution_cauchy
                   (resolventApproximationEvolution A hA s hs t y) +
                 dist (resolventApproximationEvolution A hA s hs t y)
                   (resolventApproximationEvolution A hA s hs t x)) := by
-          exact add_le_add_left
+          exact add_le_add (le_refl _)
             (dist_triangle
               (resolventApproximationEvolution A hA r hr t y)
               (resolventApproximationEvolution A hA s hs t y)
               (resolventApproximationEvolution A hA s hs t x))
-            (dist (resolventApproximationEvolution A hA r hr t x)
-              (resolventApproximationEvolution A hA r hr t y))
     exact lt_of_le_of_lt htri (by linarith)
   simpa [dist_eq_norm] using hdist
 
