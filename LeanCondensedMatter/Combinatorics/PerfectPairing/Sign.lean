@@ -231,7 +231,8 @@ private theorem blockFactor_self (τ : Equiv.Perm (Fin (2 * n))) (k : Fin n) :
   have hne : blockPos τ (k, 0) ≠ blockPos τ (k, 1) := by
     refine blockPos_ne τ ?_
     intro hxy
-    exact absurd (congrArg Prod.snd hxy) (by decide)
+    have hslot : (0 : Fin 2) = 1 := congrArg Prod.snd hxy
+    exact absurd hslot (by decide)
   rw [blockFactor]
   simp only [Fin.prod_univ_two, slotFactor]
   rw [if_neg (hnotlt 0 0 (by decide)), if_pos hlt01,
@@ -260,7 +261,7 @@ private theorem blockFactor_of_lt (τ : Equiv.Perm (Fin (2 * n))) {k l : Fin n} 
     ← pow_add, ← pow_add, ← pow_add]
   congr 1
   simp only [pairEndpointInversionCount, blockPair]
-  ring
+  ac_rfl
 
 /-- **Block form of a permutation sign.** Grouping the ambient positions into two-element blocks,
 the sign of any permutation is `-1` raised to the number of blocks it reverses plus the endpoint
@@ -319,13 +320,11 @@ theorem Pairing.sign_pairPerm_eq_pow_inversionSum (pairing : Pairing n) :
           (pairing.pairIndexEquiv l).1) := by
   classical
   have hzero : ∀ k : Fin n,
-      (if (blockPair pairing.pairPerm k).2 < (blockPair pairing.pairPerm k).1
-        then 1 else 0) = (0 : ℕ) := by
-    intro k
-    rw [blockPair_pairPerm]
-    exact if_neg (asymm (pairing.pairs_normalized (pairing.pairIndexEquiv k).2))
+      (if ((pairing.pairIndexEquiv k).1).2 < ((pairing.pairIndexEquiv k).1).1
+        then 1 else 0) = (0 : ℕ) := fun k =>
+    if_neg (asymm (pairing.pairs_normalized (pairing.pairIndexEquiv k).2))
   rw [sign_eq_pow_blockInversions]
-  simp only [hzero, Finset.sum_const_zero, pow_zero, one_mul, blockPair_pairPerm]
+  simp only [blockPair_pairPerm, hzero, Finset.sum_const_zero, pow_zero, one_mul]
 
 private theorem sum_univ_eq_sum_Ioi_add_sum_Iio {m : ℕ} (k : Fin m) (f : Fin m → ℕ)
     (hk : f k = 0) :
