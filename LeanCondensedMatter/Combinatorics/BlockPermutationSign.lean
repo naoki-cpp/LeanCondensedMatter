@@ -23,7 +23,7 @@ namespace Combinatorics
 
 open Equiv
 
-variable {α β : Type*} [DecidableEq α] [Fintype α] [DecidableEq β] [Fintype β]
+variable {α β : Type*}
 
 /-- Permuting the blocks of `α × β` indexed by `α`, keeping each block internally ordered. -/
 def blockPerm (π : Equiv.Perm α) : Equiv.Perm (α × β) :=
@@ -34,13 +34,15 @@ theorem blockPerm_apply (π : Equiv.Perm α) (x : α × β) :
     blockPerm (β := β) π x = (π x.1, x.2) :=
   rfl
 
+variable [DecidableEq α] [Fintype α] [DecidableEq β] [Fintype β]
+
 /-- **The sign of a block permutation.** Permuting blocks of size `Fintype.card β` multiplies the
 sign of the block permutation by itself once per element of a block. -/
 theorem sign_blockPerm (π : Equiv.Perm α) :
     Equiv.Perm.sign (blockPerm (β := β) π) = Equiv.Perm.sign π ^ Fintype.card β := by
   have h : Equiv.Perm.sign (blockPerm (β := β) π) =
-      Equiv.Perm.sign (Equiv.Perm.prodCongrRight (fun _ : β => π)) :=
-    Equiv.Perm.sign_eq_sign_of_equiv _ _ (Equiv.prodComm α β) (fun x => by simp [blockPerm])
+      Equiv.Perm.sign (Equiv.prodCongrRight (fun _ : β => π)) :=
+    Equiv.Perm.sign_eq_sign_of_equiv _ _ (Equiv.prodComm α β) (fun _ => rfl)
   rw [h, Equiv.Perm.sign_prodCongrRight, Finset.prod_const, Finset.card_univ]
 
 /-- **Permuting even-sized blocks is even.** When each block carries an even number of positions,
