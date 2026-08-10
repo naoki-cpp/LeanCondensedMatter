@@ -15,10 +15,10 @@ This module starts the operator-theoretic infrastructure needed for Stone's theo
 For a symmetric partially defined operator `A` on a complex Hilbert space and a nonreal scalar
 `z`, the shifted map `A - z` is bounded below on the domain by `|im z|`. For a self-adjoint
 operator the same estimate gives injectivity, and closedness of the graph then implies that the
-range of every nonreal shift is closed. Self-adjoint maximality also forces the orthogonal
-complement of that range to vanish. These are the first steps toward proving that the nonreal
-resolvent exists and is bounded, which in turn feeds the Cayley-transform / Stone-theorem
-construction tracked by LeanCondensedMatter issue #840.
+range of every nonreal shift is closed. Self-adjoint maximality forces the orthogonal complement
+of that range to vanish, so the range is dense and hence, being closed, all of the Hilbert space.
+Thus every nonreal shift is bijective. This is the analytic input for constructing the bounded
+resolvent and, later, the Cayley-transform / Stone-theorem layer tracked by issue #840.
 -/
 
 namespace LinearPMap
@@ -241,6 +241,38 @@ theorem isSelfAdjoint_shiftDomainMap_range_orthogonal_eq_bot
     (isSelfAdjoint_sub_smul_eq_zero_iff hA hzstar wdom).mp hshift
   change w = 0
   simpa [wdom] using congrArg Subtype.val hwzero
+
+/-- The range of a nonreal shift of a self-adjoint operator is dense. -/
+theorem isSelfAdjoint_shiftDomainMap_range_dense
+    (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) :
+    Dense (Set.range (shiftDomainMap A z)) := by
+  change Dense ((LinearMap.range (shiftDomainMap A z) : Submodule ℂ H) : Set H)
+  rw [dense_iff_closure_eq, ← Submodule.topologicalClosure_coe]
+  rw [(Submodule.topologicalClosure_eq_top_iff).2
+    (isSelfAdjoint_shiftDomainMap_range_orthogonal_eq_bot hA hz)]
+  rfl
+
+/-- Every nonreal shift of a self-adjoint operator is surjective. -/
+theorem isSelfAdjoint_shiftDomainMap_surjective
+    (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) :
+    Function.Surjective (shiftDomainMap A z) := by
+  have hclosed := isSelfAdjoint_shiftDomainMap_range_isClosed hA hz
+  have hdense := isSelfAdjoint_shiftDomainMap_range_dense hA hz
+  have hclosure : closure (Set.range (shiftDomainMap A z)) = Set.univ :=
+    dense_iff_closure_eq.mp hdense
+  have hrange : Set.range (shiftDomainMap A z) = Set.univ := by
+    calc
+      Set.range (shiftDomainMap A z) = closure (Set.range (shiftDomainMap A z)) :=
+        hclosed.closure_eq.symm
+      _ = Set.univ := hclosure
+  exact Set.range_eq_univ.mp hrange
+
+/-- Every nonreal shift of a self-adjoint operator is bijective on its operator domain. -/
+theorem isSelfAdjoint_shiftDomainMap_bijective
+    (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) :
+    Function.Bijective (shiftDomainMap A z) :=
+  ⟨isSelfAdjoint_shiftDomainMap_injective hA hz,
+    isSelfAdjoint_shiftDomainMap_surjective hA hz⟩
 
 end
 
