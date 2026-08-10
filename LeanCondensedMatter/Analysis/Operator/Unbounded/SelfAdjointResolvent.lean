@@ -210,35 +210,35 @@ theorem isSelfAdjoint_shiftDomainMap_range_orthogonal_eq_bot
     exact ((LinearMap.range (shiftDomainMap A z)).mem_orthogonal' w).1 hw
       (shiftDomainMap A z x) ⟨x, rfl⟩
   have hrel : ∀ x : A.domain,
-      inner ℂ (conj z • w) (x : H) = inner ℂ w (A x) := by
+      inner ℂ (star z • w) (x : H) = inner ℂ w (A x) := by
     intro x
     have hz0 := hzero x
     rw [shiftDomainMap_apply, inner_sub_right, inner_smul_right] at hz0
     have hzrel : inner ℂ w (A x) = z * inner ℂ w (x : H) := sub_eq_zero.mp hz0
     calc
-      inner ℂ (conj z • w) (x : H) = z * inner ℂ w (x : H) := by
+      inner ℂ (star z • w) (x : H) = z * inner ℂ w (x : H) := by
         rw [inner_smul_left]
         simp
       _ = inner ℂ w (A x) := hzrel.symm
   have hwadj : w ∈ A.adjoint.domain :=
-    LinearPMap.mem_adjoint_domain_of_exists w ⟨conj z • w, hrel⟩
+    LinearPMap.mem_adjoint_domain_of_exists w ⟨star z • w, hrel⟩
   have hadj : A.adjoint = A := LinearPMap.isSelfAdjoint_def.mp hA
   have hwdom : w ∈ A.domain := by
     simpa only [hadj] using hwadj
   let wdom : A.domain := ⟨w, hwdom⟩
   have hformal : A.IsFormalAdjoint A := by
     simpa only [hadj] using LinearPMap.adjoint_isFormalAdjoint hA.dense_domain
-  have hAw : A wdom = conj z • w := by
+  have hAw : A wdom = star z • w := by
     apply hA.dense_domain.eq_of_inner_left ℂ
     intro v hv
     let vdom : A.domain := ⟨v, hv⟩
     exact (hformal wdom vdom).trans (hrel vdom).symm
-  have hshift : A wdom - conj z • (wdom : H) = 0 := by
+  have hshift : A wdom - star z • (wdom : H) = 0 := by
     simpa [wdom] using sub_eq_zero.mpr hAw
-  have hzconj : (conj z).im ≠ 0 := by
+  have hzstar : (star z).im ≠ 0 := by
     simpa using neg_ne_zero.mpr hz
   have hwzero : wdom = 0 :=
-    (isSelfAdjoint_sub_smul_eq_zero_iff hA hzconj wdom).mp hshift
+    (isSelfAdjoint_sub_smul_eq_zero_iff hA hzstar wdom).mp hshift
   change w = 0
   simpa [wdom] using congrArg Subtype.val hwzero
 
