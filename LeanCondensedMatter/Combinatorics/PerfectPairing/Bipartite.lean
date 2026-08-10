@@ -499,8 +499,10 @@ theorem sidePairing_presentsPairs (e : SideSplitting m) (σ : Equiv.Perm (Fin m)
     rw [sidePair_of_gt h]
     rfl
 
-/-- The listing permutation for the identity matching: depends only on the splitting. -/
-private noncomputable def baseListingPerm (e : SideSplitting m) : Equiv.Perm (Fin (2 * m)) :=
+/-- The listing permutation for the identity matching: depends only on the splitting. Its sign is
+the matching-independent factor relating a bipartite pairing's crossing weight to the sign of its
+matching permutation. -/
+noncomputable def baseListingPerm (e : SideSplitting m) : Equiv.Perm (Fin (2 * m)) :=
   (sideListingEquiv m).trans e
 
 /-- The matching permutation `σ`, transported to ambient positions through the fixed listing
@@ -597,8 +599,11 @@ theorem sum_pairings_eq_sum_perm_of_inl_vanishing {R : Type*} [CommRing R] (e : 
   rw [← Finset.sum_subset (Finset.filter_subset _ _) hzero, himage, Finset.sum_image hinj]
   exact Finset.sum_congr rfl fun σ _ => by rw [prod_sidePairing_pairs]
 
-/-- The number of matched pairs whose splitting puts the right endpoint before the left one. -/
-private noncomputable def sideReversedCount (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) : ℕ :=
+/-- The number of matched pairs whose splitting puts the right endpoint before the left one.
+
+Physically this counts the contractions that occur in the order `⟨a† a⟩` rather than `⟨a a†⟩`, which
+is why it belongs in the contraction kernel rather than in the combinatorial weight. -/
+noncomputable def sideReversedCount (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) : ℕ :=
   ∑ k : Fin m, if e (Sum.inr (σ k)) < e (Sum.inl k) then 1 else 0
 
 /-- **Sign of a bipartite pairing under any side splitting.** The crossing-count weight of a
@@ -628,5 +633,40 @@ theorem neg_one_pow_crossingCount_eq_of_sidePairing (e : SideSplitting m)
     _ = Equiv.Perm.sign (baseListingPerm e) * (-1) ^ sideReversedCount e σ *
           Equiv.Perm.sign σ := by
         rw [← mul_assoc, mul_comm ((-1 : ℤˣ) ^ sideReversedCount e σ), mul_assoc]
+
+section OrientedKernel
+
+variable {R : Type*} [CommRing R]
+
+/-- The **oriented contraction kernel** of a side splitting: the pair value read from the left index
+to the right index, negated when the splitting puts the right position first.
+
+Physically this is the time-ordered propagator. The pair value is only defined on positions, so a
+pair whose right endpoint comes first is read in the opposite order; the sign is the fermionic cost
+of reordering it, and carrying it here is exactly what makes the kernel a matrix in the matching
+indices rather than in the ambient positions. -/
+noncomputable def orientedKernel (e : SideSplitting m) (pv : Fin (2 * m) → Fin (2 * m) → R)
+    (i j : Fin m) : R :=
+  if e (Sum.inl i) < e (Sum.inr j) then pv (e (Sum.inl i)) (e (Sum.inr j))
+  else -pv (e (Sum.inr j)) (e (Sum.inl i))
+
+/-- **The orientation sign belongs to the kernel.** Absorbing the reversed-pair count into the pair
+values turns a product over the matched pairs, each read in position order, into a product of
+oriented kernel entries indexed by the matching. -/
+theorem neg_one_pow_sideReversedCount_mul_prod_sidePair (e : SideSplitting m)
+    (pv : Fin (2 * m) → Fin (2 * m) → R) (σ : Equiv.Perm (Fin m)) :
+    (-1 : R) ^ sideReversedCount e σ *
+        ∏ i : Fin m, pv (sidePair e σ i).1 (sidePair e σ i).2 =
+      ∏ i : Fin m, orientedKernel e pv i (σ i) := by
+  classical
+  simp only [sideReversedCount]
+  rw [← Finset.prod_pow_eq_pow_sum, ← Finset.prod_mul_distrib]
+  refine Finset.prod_congr rfl fun i _ => ?_
+  rcases lt_trichotomy (e (Sum.inl i)) (e (Sum.inr (σ i))) with h | h | h
+  · rw [sidePair_of_lt h, orientedKernel, if_pos h, if_neg (asymm h), pow_zero, one_mul]
+  · exact absurd h (sideSplitting_inl_ne_inr e i (σ i))
+  · rw [sidePair_of_gt h, orientedKernel, if_neg (asymm h), if_pos h, pow_one, neg_one_mul]
+
+end OrientedKernel
 
 end Combinatorics
