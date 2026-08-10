@@ -141,10 +141,11 @@ theorem nonrealResolvent_apply_operator
       module
     _ = nonrealResolvent A hA z hz (A x - z • (x : H)) +
         nonrealResolvent A hA z hz (z • (x : H)) := by
-      rw [map_add]
+      exact (nonrealResolvent A hA z hz).map_add _ _
     _ = nonrealResolvent A hA z hz (A x - z • (x : H)) +
         z • nonrealResolvent A hA z hz (x : H) := by
-      rw [map_smul]
+      congr 1
+      exact (nonrealResolvent A hA z hz).map_smul z (x : H)
     _ = (x : H) + z • nonrealResolvent A hA z hz (x : H) := by
       rw [h]
 
@@ -161,7 +162,9 @@ theorem boundedSelfAdjointApproximation_apply_domain
     nonrealResolvent_apply_operator A hA (imaginaryParameter r)
       (imaginaryParameter_im_ne_zero hr) x]
   simp only [regularizerCoefficient, approximationCoefficient, imaginaryParameter]
-  match_scalars <;> simp [pow_two, Complex.I_mul_I] <;> ring
+  have hI : (I : ℂ) ^ 2 = -1 := by
+    rw [pow_two, Complex.I_mul_I]
+  match_scalars <;> rw [hI] <;> ring
 
 end
 
