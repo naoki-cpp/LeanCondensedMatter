@@ -141,14 +141,14 @@ noncomputable def splitBlockEquiv (hab : a + b = n) :
 @[simp]
 theorem splitBlockEquiv_apply_left (hab : a + b = n) (j : Fin a) (s : Fin 2) :
     splitBlockEquiv hab
-        ((pairSlotIndexEquiv n).symm ((finSumFinEquiv.trans (finCongr hab)) (Sum.inl j), s)) =
+        ((pairSlotIndexEquiv n).symm (finCongr hab (finSumFinEquiv (Sum.inl j)), s)) =
       Sum.inl ((pairSlotIndexEquiv a).symm (j, s)) := by
   simp [splitBlockEquiv]
 
 @[simp]
 theorem splitBlockEquiv_apply_right (hab : a + b = n) (j : Fin b) (s : Fin 2) :
     splitBlockEquiv hab
-        ((pairSlotIndexEquiv n).symm ((finSumFinEquiv.trans (finCongr hab)) (Sum.inr j), s)) =
+        ((pairSlotIndexEquiv n).symm (finCongr hab (finSumFinEquiv (Sum.inr j)), s)) =
       Sum.inr ((pairSlotIndexEquiv b).symm (j, s)) := by
   simp [splitBlockEquiv]
 
