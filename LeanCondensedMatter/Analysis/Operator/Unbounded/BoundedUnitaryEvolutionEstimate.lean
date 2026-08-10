@@ -35,8 +35,8 @@ theorem boundedUnitaryEvolution_apply_norm
   have hsq0 := ContinuousLinearMap.apply_norm_sq_eq_inner_adjoint_left U x
   change ‖U x‖ ^ 2 = Complex.re (inner ℂ (ContinuousLinearMap.adjoint U (U x)) x) at hsq0
   rw [huux] at hsq0
-  have hsq : ‖U x‖ ^ 2 = ‖x‖ ^ 2 := by
-    simpa only [inner_self_eq_norm_sq, Complex.ofReal_re] using hsq0
+  have hsq : ‖U x‖ ^ 2 = ‖x‖ ^ 2 :=
+    hsq0.trans (norm_sq_eq_re_inner (𝕜 := ℂ) x).symm
   nlinarith [norm_nonneg (U x), norm_nonneg x]
 
 /-- The vectorwise derivative of a bounded self-adjoint evolution has constant norm `‖B x‖`. -/
