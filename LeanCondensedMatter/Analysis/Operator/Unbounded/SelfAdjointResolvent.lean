@@ -16,9 +16,9 @@ For a symmetric partially defined operator `A` on a complex Hilbert space and a 
 `z`, the shifted map `A - z` is bounded below on the domain by `|im z|`. For a self-adjoint
 operator the same estimate gives injectivity, and closedness of the graph then implies that the
 range of every nonreal shift is closed. Self-adjoint maximality also forces the orthogonal
-complement of that range to vanish, so the range is dense. These are the first steps toward proving
-that the nonreal resolvent exists and is bounded, which in turn feeds the Cayley-transform /
-Stone-theorem construction tracked by LeanCondensedMatter issue #840.
+complement of that range to vanish. These are the first steps toward proving that the nonreal
+resolvent exists and is bounded, which in turn feeds the Cayley-transform / Stone-theorem
+construction tracked by LeanCondensedMatter issue #840.
 -/
 
 namespace LinearPMap
@@ -210,53 +210,37 @@ theorem isSelfAdjoint_shiftDomainMap_range_orthogonal_eq_bot
     exact ((LinearMap.range (shiftDomainMap A z)).mem_orthogonal' w).1 hw
       (shiftDomainMap A z x) ⟨x, rfl⟩
   have hrel : ∀ x : A.domain,
-      inner ℂ (Complex.conj z • w) (x : H) = inner ℂ w (A x) := by
+      inner ℂ (conj z • w) (x : H) = inner ℂ w (A x) := by
     intro x
     have hz0 := hzero x
     rw [shiftDomainMap_apply, inner_sub_right, inner_smul_right] at hz0
     have hzrel : inner ℂ w (A x) = z * inner ℂ w (x : H) := sub_eq_zero.mp hz0
     calc
-      inner ℂ (Complex.conj z • w) (x : H) =
-          Complex.conj (Complex.conj z) * inner ℂ w (x : H) := by
-            rw [inner_smul_left]
-      _ = z * inner ℂ w (x : H) := by simp
+      inner ℂ (conj z • w) (x : H) = z * inner ℂ w (x : H) := by
+        rw [inner_smul_left]
+        simp
       _ = inner ℂ w (A x) := hzrel.symm
   have hwadj : w ∈ A.adjoint.domain :=
-    LinearPMap.mem_adjoint_domain_of_exists w ⟨Complex.conj z • w, hrel⟩
+    LinearPMap.mem_adjoint_domain_of_exists w ⟨conj z • w, hrel⟩
   have hadj : A.adjoint = A := LinearPMap.isSelfAdjoint_def.mp hA
   have hwdom : w ∈ A.domain := by
     simpa only [hadj] using hwadj
   let wdom : A.domain := ⟨w, hwdom⟩
   have hformal : A.IsFormalAdjoint A := by
     simpa only [hadj] using LinearPMap.adjoint_isFormalAdjoint hA.dense_domain
-  have hAw : A wdom = Complex.conj z • w := by
+  have hAw : A wdom = conj z • w := by
     apply hA.dense_domain.eq_of_inner_left ℂ
     intro v hv
     let vdom : A.domain := ⟨v, hv⟩
     exact (hformal wdom vdom).trans (hrel vdom).symm
-  have hshift : A wdom - Complex.conj z • (wdom : H) = 0 := by
+  have hshift : A wdom - conj z • (wdom : H) = 0 := by
     simpa [wdom] using sub_eq_zero.mpr hAw
-  have hzconj : (Complex.conj z).im ≠ 0 := by
+  have hzconj : (conj z).im ≠ 0 := by
     simpa using neg_ne_zero.mpr hz
   have hwzero : wdom = 0 :=
     (isSelfAdjoint_sub_smul_eq_zero_iff hA hzconj wdom).mp hshift
+  change w = 0
   simpa [wdom] using congrArg Subtype.val hwzero
-
-/-- The range of a nonreal shift of a self-adjoint operator is dense. -/
-theorem isSelfAdjoint_shiftDomainMap_range_dense
-    (hA : IsSelfAdjoint A) {z : ℂ} (hz : z.im ≠ 0) :
-    Dense (Set.range (shiftDomainMap A z)) := by
-  let K : Submodule ℂ H := LinearMap.range (shiftDomainMap A z)
-  have hKorth : Kᗮ = ⊥ := by
-    simpa [K] using isSelfAdjoint_shiftDomainMap_range_orthogonal_eq_bot hA hz
-  have hKclosure : K.topologicalClosure = ⊤ :=
-    (Submodule.topologicalClosure_eq_top_iff).2 hKorth
-  rw [dense_iff_closure_eq]
-  have hrange : Set.range (shiftDomainMap A z) = (K : Set H) := by
-    ext y
-    simp [K, LinearMap.mem_range]
-  rw [hrange, ← Submodule.topologicalClosure_coe, hKclosure]
-  rfl
 
 end
 
