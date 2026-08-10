@@ -22,6 +22,7 @@ import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionAl
 import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionVectorwise
 import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionEstimate
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit
 import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
 import LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
