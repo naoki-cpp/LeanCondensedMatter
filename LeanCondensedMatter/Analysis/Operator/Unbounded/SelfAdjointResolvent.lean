@@ -68,6 +68,7 @@ theorem IsFormalAdjoint.abs_im_mul_norm_le_norm_sub_smul
     rw [hA.im_inner_self_apply_eq_zero x]
     simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
       mul_zero, zero_add, zero_sub]
+    ring
   have habs :
       |(inner ℂ (x : H) (A x - z • (x : H))).im| =
         |z.im| * ‖(x : H)‖ ^ 2 := by
