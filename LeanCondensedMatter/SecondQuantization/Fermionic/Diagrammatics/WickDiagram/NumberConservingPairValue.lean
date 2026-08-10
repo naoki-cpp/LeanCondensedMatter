@@ -21,7 +21,7 @@ namespace Fermionic
 
 open Combinatorics
 
-variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
+variable {Mode : Type*} [LinearOrder Mode] {N : ℕ}
 
 /-- A creator slot of a quartic vertex carries a creation operator. -/
 theorem exists_quarticLocalLegOperator_quarticCreatorLocalLeg
@@ -45,6 +45,8 @@ theorem exists_orderedQuarticLegOperator_quarticCreatorLeg (ε : Mode → ℝ) {
   simp only [orderedQuarticLegOperator, quarticLegOperatorForSequence, quarticCreatorLeg,
     Equiv.apply_symm_apply]
   rw [hmo, imaginaryTimeEvolve_create]
+
+variable [Fintype Mode]
 
 /-- **Anomalous quartic contractions vanish.** Two creation legs contract to zero in the free Gibbs
 state, by the particle-number selection rule: two creation operators change the particle number by
