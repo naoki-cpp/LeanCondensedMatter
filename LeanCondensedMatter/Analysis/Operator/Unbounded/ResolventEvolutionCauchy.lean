@@ -127,7 +127,12 @@ theorem resolventApproximationEvolution_domain_cauchy
             ‖(boundedSelfAdjointApproximation A hA r hr (x : H) - A x) -
               (boundedSelfAdjointApproximation A hA s hs (x : H) - A x)‖ := by
                 congr 1
-                module
+                change
+                  boundedSelfAdjointApproximation A hA r hr (x : H) -
+                      boundedSelfAdjointApproximation A hA s hs (x : H) =
+                    (boundedSelfAdjointApproximation A hA r hr (x : H) - A x) -
+                      (boundedSelfAdjointApproximation A hA s hs (x : H) - A x)
+                abel
         _ ≤ ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ +
               ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ :=
             norm_sub_le _ _
@@ -139,7 +144,7 @@ theorem resolventApproximationEvolution_domain_cauchy
             ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖) * |t| =
             ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * |t| +
               ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * |t| := by
-                ring
+                rw [add_mul]
         _ < ε := by linarith
     have hmul :
         ‖(boundedSelfAdjointApproximation A hA r hr -
