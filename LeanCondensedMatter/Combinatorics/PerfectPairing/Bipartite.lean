@@ -534,8 +534,9 @@ theorem exists_mem_pairs_inl_inl_of_not_isBipartite (e : SideSplitting m) {P : P
     ∃ i i' : Fin m, (e (Sum.inl i), e (Sum.inl i')) ∈ P.pairs := by
   have h' : ∃ i : Fin m, ∀ j : Fin m, P.partner (e (Sum.inl i)) ≠ e (Sum.inr j) := by
     by_contra hc
-    push_neg at hc
-    exact h hc
+    refine h fun i => ?_
+    by_contra hi
+    exact hc ⟨i, fun j hj => hi ⟨j, hj⟩⟩
   obtain ⟨i, hi⟩ := h'
   obtain ⟨y, hy⟩ := e.surjective (P.partner (e (Sum.inl i)))
   cases y with
@@ -583,8 +584,8 @@ theorem sum_pairings_eq_sum_perm_of_inl_vanishing {R : Type*} [CommRing R] (e : 
     simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image]
     constructor
     · intro hP
-      exact ⟨P.sideMatching e hP, Finset.mem_univ _, sidePairing_sideMatching e hP⟩
-    · rintro ⟨σ, -, rfl⟩
+      exact ⟨P.sideMatching e hP, sidePairing_sideMatching e hP⟩
+    · rintro ⟨σ, rfl⟩
       exact isBipartite_sidePairing e σ
   have hinj : Set.InjOn (fun σ : Equiv.Perm (Fin m) => sidePairing e σ)
       (Finset.univ : Finset (Equiv.Perm (Fin m))) := by
