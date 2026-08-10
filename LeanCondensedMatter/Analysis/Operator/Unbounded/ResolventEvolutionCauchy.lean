@@ -140,8 +140,7 @@ theorem resolventApproximationEvolution_domain_cauchy
             ‖boundedSelfAdjointApproximation A hA r hr (x : H) - A x‖ * |t| +
               ‖boundedSelfAdjointApproximation A hA s hs (x : H) - A x‖ * |t| := by
                 ring
-        _ < ε / 2 + ε / 2 := add_lt_add hrhalf hshalf
-        _ = ε := by ring
+        _ < ε := by linarith
     have hmul :
         ‖(boundedSelfAdjointApproximation A hA r hr -
             boundedSelfAdjointApproximation A hA s hs) (x : H)‖ * |t| < ε := by
