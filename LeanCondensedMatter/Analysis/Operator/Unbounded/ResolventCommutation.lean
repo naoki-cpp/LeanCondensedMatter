@@ -35,7 +35,6 @@ theorem nonrealResolvent_sub_nonrealResolvent_apply
     nonrealResolvent A hA z hz y - nonrealResolvent A hA w hw y =
         nonrealResolvent A hA z hz (A x - w • (x : H)) - (x : H) := by
       rw [hy]
-      rfl
     _ = (nonrealResolvent A hA z hz (A x) -
           w • nonrealResolvent A hA z hz (x : H)) - (x : H) := by
       rw [(nonrealResolvent A hA z hz).map_sub,
