@@ -76,7 +76,6 @@ theorem nonrealShiftInverseDomain_apply
   rfl
 
 /-- Applying the shifted operator to its domain-valued bounded inverse gives the identity. -/
-@[simp]
 theorem shiftDomainMap_nonrealShiftInverseDomain
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (z : ℂ) (hz : z.im ≠ 0) (y : H) :
     shiftDomainMap A z (nonrealShiftInverseDomain A hA z hz y) = y := by
