@@ -81,7 +81,7 @@ theorem resolventApproximationEvolution_domain_cauchy
   by_cases ht : t = 0
   · refine ⟨1, by norm_num, ?_⟩
     intro r s _ _ hr hs
-    simp [ht, resolventApproximationEvolution_zero]
+    simpa [ht, resolventApproximationEvolution_zero] using hε
   · have habs : 0 < |t| := abs_pos.mpr ht
     have hδ : 0 < ε / (2 * |t|) := by positivity
     obtain ⟨R, hR, hconv⟩ :=
@@ -106,8 +106,8 @@ theorem resolventApproximationEvolution_domain_cauchy
             norm_sub_le _ _
         _ < ε / (2 * |t|) + ε / (2 * |t|) := add_lt_add hrconv hsconv
         _ = ε / |t| := by
-          field_simp [ne_of_gt habs]
-          ring
+          have habsne : |t| ≠ 0 := ne_of_gt habs
+          field_simp [habsne]
     have hmul :
         ‖(boundedSelfAdjointApproximation A hA r hr -
             boundedSelfAdjointApproximation A hA s hs) (x : H)‖ * |t| < ε :=
