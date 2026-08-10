@@ -478,7 +478,7 @@ private noncomputable def sideListingPerm (e : SideSplitting m) (σ : Equiv.Perm
 private theorem blockPair_sideListingPerm (e : SideSplitting m) (σ : Equiv.Perm (Fin m))
     (k : Fin m) :
     blockPair (sideListingPerm e σ) k = (e (Sum.inl k), e (Sum.inr (σ k))) := by
-  show (sideListingPerm e σ ((pairSlotIndexEquiv m).symm (k, 0)),
+  change (sideListingPerm e σ ((pairSlotIndexEquiv m).symm (k, 0)),
       sideListingPerm e σ ((pairSlotIndexEquiv m).symm (k, 1))) =
       (e (Sum.inl k), e (Sum.inr (σ k)))
   simp [sideListingPerm, sideListingEquiv, blockSideEquiv]
@@ -491,11 +491,11 @@ theorem sidePairing_presentsPairs (e : SideSplitting m) (σ : Equiv.Perm (Fin m)
   rw [blockPair_sideListingPerm]
   rcases lt_trichotomy (e (Sum.inl k)) (e (Sum.inr (σ k))) with h | h | h
   · refine Or.inl ?_
-    show (e (Sum.inl k), e (Sum.inr (σ k))) = sidePair e σ k
+    change (e (Sum.inl k), e (Sum.inr (σ k))) = sidePair e σ k
     rw [sidePair_of_lt h]
   · exact absurd h (sideSplitting_inl_ne_inr e k (σ k))
   · refine Or.inr ?_
-    show (e (Sum.inl k), e (Sum.inr (σ k))) = (sidePair e σ k).swap
+    change (e (Sum.inl k), e (Sum.inr (σ k))) = (sidePair e σ k).swap
     rw [sidePair_of_gt h]
     rfl
 
