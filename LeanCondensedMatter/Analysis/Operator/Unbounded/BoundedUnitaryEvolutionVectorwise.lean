@@ -22,14 +22,14 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 /-- Operator-norm continuity of the bounded evolution implies strong continuity on every vector. -/
 theorem boundedUnitaryEvolution_apply_continuous (B : H →L[ℂ] H) (x : H) :
     Continuous (fun t : ℝ => boundedUnitaryEvolution B t x) := by
-  exact (ContinuousLinearMap.apply ℂ H H x).continuous.comp
+  exact ((ContinuousLinearMap.apply ℂ H) x).continuous.comp
     (boundedUnitaryEvolution_continuous B)
 
 /-- The bounded-generator differential equation after evaluating the propagator on a vector. -/
 theorem boundedUnitaryEvolution_apply_hasDerivAt (B : H →L[ℂ] H) (t : ℝ) (x : H) :
     HasDerivAt (fun τ : ℝ => boundedUnitaryEvolution B τ x)
       ((boundedUnitaryEvolution B t * ((-I : ℂ) • B)) x) t := by
-  have h := ((ContinuousLinearMap.apply ℂ H H x).restrictScalars ℝ).hasFDerivAt.comp t
+  have h := (((ContinuousLinearMap.apply ℂ H) x).restrictScalars ℝ).hasFDerivAt.comp t
     (boundedUnitaryEvolution_hasDerivAt B t).hasFDerivAt
   simpa using h.hasDerivAt
 
