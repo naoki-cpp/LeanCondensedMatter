@@ -381,4 +381,79 @@ noncomputable def sidePairingEquiv (e : SideSplitting m) :
   left_inv σ := sideMatching_sidePairing e σ
   right_inv P := Subtype.ext (sidePairing_sideMatching e P.2)
 
+theorem sideSplitting_inl_ne_inr (e : SideSplitting m) (i j : Fin m) :
+    e (Sum.inl i) ≠ e (Sum.inr j) := fun h => by simpa using e.injective h
+
+/-- The normalized pair of `sidePairing e σ` indexed by `i`, written in position order. Which side
+comes first depends on the splitting, so both orientations occur. -/
+noncomputable def sidePair (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) (i : Fin m) :
+    Fin (2 * m) × Fin (2 * m) :=
+  if e (Sum.inl i) < e (Sum.inr (σ i)) then (e (Sum.inl i), e (Sum.inr (σ i)))
+  else (e (Sum.inr (σ i)), e (Sum.inl i))
+
+theorem sidePair_of_lt {e : SideSplitting m} {σ : Equiv.Perm (Fin m)} {i : Fin m}
+    (h : e (Sum.inl i) < e (Sum.inr (σ i))) :
+    sidePair e σ i = (e (Sum.inl i), e (Sum.inr (σ i))) :=
+  if_pos h
+
+theorem sidePair_of_gt {e : SideSplitting m} {σ : Equiv.Perm (Fin m)} {i : Fin m}
+    (h : e (Sum.inr (σ i)) < e (Sum.inl i)) :
+    sidePair e σ i = (e (Sum.inr (σ i)), e (Sum.inl i)) :=
+  if_neg (asymm h)
+
+theorem sidePair_mem_pairs (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) (i : Fin m) :
+    sidePair e σ i ∈ (sidePairing e σ).pairs := by
+  rcases lt_trichotomy (e (Sum.inl i)) (e (Sum.inr (σ i))) with h | h | h
+  · rw [sidePair, if_pos h]
+    exact (Pairing.mem_pairs_iff _ _ _).2 ⟨h, by simp⟩
+  · exact absurd h (sideSplitting_inl_ne_inr e i (σ i))
+  · rw [sidePair, if_neg (asymm h)]
+    refine (Pairing.mem_pairs_iff _ _ _).2 ⟨h, ?_⟩
+    rw [sidePairing_partner, sidePartner_inr, Equiv.symm_apply_apply]
+
+/-- The normalized pairs of a bipartite pairing are indexed by the side it matches from. -/
+noncomputable def sidePairEquiv (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
+    Fin m ≃ (sidePairing e σ).NormalizedPair := by
+  refine Equiv.ofBijective (fun i => ⟨sidePair e σ i, sidePair_mem_pairs e σ i⟩) ⟨?_, ?_⟩
+  · intro i j hij
+    have hpair : sidePair e σ i = sidePair e σ j := congrArg Subtype.val hij
+    have hmem : e (Sum.inl i) = (sidePair e σ j).1 ∨ e (Sum.inl i) = (sidePair e σ j).2 := by
+      rw [← hpair, sidePair]
+      split_ifs
+      · exact Or.inl rfl
+      · exact Or.inr rfl
+    rcases hmem with h | h <;> rw [sidePair] at h <;> split_ifs at h
+    · exact Sum.inl.inj (e.injective h)
+    · exact absurd h (sideSplitting_inl_ne_inr e i (σ j))
+    · exact absurd h (sideSplitting_inl_ne_inr e i (σ j))
+    · exact Sum.inl.inj (e.injective h)
+  · rintro ⟨⟨a, b⟩, hab⟩
+    obtain ⟨hlt, hpartner⟩ := (Pairing.mem_pairs_iff _ _ _).1 hab
+    obtain ⟨y, rfl⟩ := e.surjective a
+    cases y with
+    | inl i =>
+        refine ⟨i, ?_⟩
+        rw [sidePairing_partner, sidePartner_inl] at hpartner
+        subst hpartner
+        exact Subtype.ext (sidePair_of_lt hlt)
+    | inr j =>
+        rw [sidePairing_partner, sidePartner_inr] at hpartner
+        subst hpartner
+        have hgt : e (Sum.inr (σ (σ.symm j))) < e (Sum.inl (σ.symm j)) := by
+          rwa [Equiv.apply_symm_apply]
+        refine ⟨σ.symm j, Subtype.ext ?_⟩
+        change sidePair e σ (σ.symm j) = (e (Sum.inr j), e (Sum.inl (σ.symm j)))
+        rw [sidePair_of_gt hgt, Equiv.apply_symm_apply]
+
+/-- A product over the pairs of a bipartite pairing is a product over the matching permutation,
+each pair evaluated in whichever order the splitting puts it. -/
+theorem prod_sidePairing_pairs {R : Type*} [CommMonoid R] (e : SideSplitting m)
+    (σ : Equiv.Perm (Fin m)) (f : Fin (2 * m) → Fin (2 * m) → R) :
+    (∏ pr ∈ (sidePairing e σ).pairs, f pr.1 pr.2) =
+      ∏ i : Fin m, f (sidePair e σ i).1 (sidePair e σ i).2 := by
+  classical
+  rw [Finset.prod_subtype (sidePairing e σ).pairs (fun _ => Iff.rfl)
+    (fun pr => f pr.1 pr.2)]
+  exact (Equiv.prod_comp (sidePairEquiv e σ) (fun pr => f pr.1.1 pr.1.2)).symm
+
 end Combinatorics
