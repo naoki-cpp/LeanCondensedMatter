@@ -88,6 +88,8 @@ private theorem
   Combinatorics.Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount
     (d.pairingInMixedOrder τ τ' σ) (d.mixedComponentPairSigmaEquiv τ τ' σ)
     (fun B C hBC => by
+      change (d.mixedComponentOrientedCrossingCount τ τ' σ B C +
+        d.mixedComponentOrientedCrossingCount τ τ' σ C B) % 2 = 0
       rw [← d.mixedComponentGeometricCrossingCount_eq_oriented_add τ τ' σ B C]
       exact hEven B C hBC)
 
