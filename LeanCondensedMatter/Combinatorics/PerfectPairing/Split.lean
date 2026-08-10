@@ -138,17 +138,19 @@ noncomputable def splitBlockEquiv (hab : a + b = n) :
       (Equiv.sumProdDistrib (Fin a) (Fin b) (Fin 2))).trans
         (Equiv.sumCongr (pairSlotIndexEquiv a).symm (pairSlotIndexEquiv b).symm))
 
-theorem splitBlockEquiv_apply_left (hab : a + b = n) {k : Fin n} (j : Fin a) (s : Fin 2)
-    (hk : (finSumFinEquiv.trans (finCongr hab)).symm k = Sum.inl j) :
-    splitBlockEquiv hab ((pairSlotIndexEquiv n).symm (k, s)) =
+@[simp]
+theorem splitBlockEquiv_apply_left (hab : a + b = n) (j : Fin a) (s : Fin 2) :
+    splitBlockEquiv hab
+        ((pairSlotIndexEquiv n).symm ((finSumFinEquiv.trans (finCongr hab)) (Sum.inl j), s)) =
       Sum.inl ((pairSlotIndexEquiv a).symm (j, s)) := by
-  simp [splitBlockEquiv, hk]
+  simp [splitBlockEquiv]
 
-theorem splitBlockEquiv_apply_right (hab : a + b = n) {k : Fin n} (j : Fin b) (s : Fin 2)
-    (hk : (finSumFinEquiv.trans (finCongr hab)).symm k = Sum.inr j) :
-    splitBlockEquiv hab ((pairSlotIndexEquiv n).symm (k, s)) =
+@[simp]
+theorem splitBlockEquiv_apply_right (hab : a + b = n) (j : Fin b) (s : Fin 2) :
+    splitBlockEquiv hab
+        ((pairSlotIndexEquiv n).symm ((finSumFinEquiv.trans (finCongr hab)) (Sum.inr j), s)) =
       Sum.inr ((pairSlotIndexEquiv b).symm (j, s)) := by
-  simp [splitBlockEquiv, hk]
+  simp [splitBlockEquiv]
 
 variable (e : PositionSplitting a b n) (hab : a + b = n) {P : Pairing n} (h : P.IsSplit e)
 
@@ -160,16 +162,17 @@ noncomputable def splitListingPerm : Equiv.Perm (Fin (2 * n)) :=
 /-- The listing permutation presents the pairing: each of its blocks carries a pair of partners. -/
 theorem presentsPairs_splitListingPerm : P.PresentsPairs (splitListingPerm e hab h) := by
   refine P.presentsPairs_of_partner_blockPair _ fun k => ?_
+  obtain ⟨y, rfl⟩ := (finSumFinEquiv.trans (finCongr hab)).surjective k
   rw [blockPair_apply]
-  rcases hk : (finSumFinEquiv.trans (finCongr hab)).symm k with j | j
-  · simp only [splitListingPerm, Equiv.trans_apply,
-      splitBlockEquiv_apply_left hab j 0 hk, splitBlockEquiv_apply_left hab j 1 hk,
-      Equiv.sumCongr_apply, Sum.map_inl, Pairing.pairPerm_pairSlotIndexEquiv_symm]
-    rw [Pairing.partner_splitLeft e h, (P.splitLeft e h).partner_pairSlotEquiv_zero]
-  · simp only [splitListingPerm, Equiv.trans_apply,
-      splitBlockEquiv_apply_right hab j 0 hk, splitBlockEquiv_apply_right hab j 1 hk,
-      Equiv.sumCongr_apply, Sum.map_inr, Pairing.pairPerm_pairSlotIndexEquiv_symm]
-    rw [Pairing.partner_splitRight e h, (P.splitRight e h).partner_pairSlotEquiv_zero]
+  cases y with
+  | inl j =>
+      simp only [splitListingPerm, Equiv.trans_apply, splitBlockEquiv_apply_left,
+        Equiv.sumCongr_apply, Sum.map_inl, Pairing.pairPerm_pairSlotIndexEquiv_symm]
+      rw [Pairing.partner_splitLeft e h, (P.splitLeft e h).partner_pairSlotEquiv_zero]
+  | inr j =>
+      simp only [splitListingPerm, Equiv.trans_apply, splitBlockEquiv_apply_right,
+        Equiv.sumCongr_apply, Sum.map_inr, Pairing.pairPerm_pairSlotIndexEquiv_symm]
+      rw [Pairing.partner_splitRight e h, (P.splitRight e h).partner_pairSlotEquiv_zero]
 
 /-- No block of the listing permutation is reversed, when each part is embedded in increasing
 order. -/
@@ -177,16 +180,17 @@ theorem splitListingPerm_no_reversed_block
     (hL : StrictMono fun i : Fin (2 * a) => e (Sum.inl i))
     (hR : StrictMono fun i : Fin (2 * b) => e (Sum.inr i)) (k : Fin n) :
     ¬ (blockPair (splitListingPerm e hab h) k).2 < (blockPair (splitListingPerm e hab h) k).1 := by
+  obtain ⟨y, rfl⟩ := (finSumFinEquiv.trans (finCongr hab)).surjective k
   rw [blockPair_apply]
-  rcases hk : (finSumFinEquiv.trans (finCongr hab)).symm k with j | j
-  · simp only [splitListingPerm, Equiv.trans_apply,
-      splitBlockEquiv_apply_left hab j 0 hk, splitBlockEquiv_apply_left hab j 1 hk,
-      Equiv.sumCongr_apply, Sum.map_inl, Pairing.pairPerm_pairSlotIndexEquiv_symm]
-    exact asymm (hL ((P.splitLeft e h).pairSlotEquiv_zero_lt_one j))
-  · simp only [splitListingPerm, Equiv.trans_apply,
-      splitBlockEquiv_apply_right hab j 0 hk, splitBlockEquiv_apply_right hab j 1 hk,
-      Equiv.sumCongr_apply, Sum.map_inr, Pairing.pairPerm_pairSlotIndexEquiv_symm]
-    exact asymm (hR ((P.splitRight e h).pairSlotEquiv_zero_lt_one j))
+  cases y with
+  | inl j =>
+      simp only [splitListingPerm, Equiv.trans_apply, splitBlockEquiv_apply_left,
+        Equiv.sumCongr_apply, Sum.map_inl, Pairing.pairPerm_pairSlotIndexEquiv_symm]
+      exact asymm (hL ((P.splitLeft e h).pairSlotEquiv_zero_lt_one j))
+  | inr j =>
+      simp only [splitListingPerm, Equiv.trans_apply, splitBlockEquiv_apply_right,
+        Equiv.sumCongr_apply, Sum.map_inr, Pairing.pairPerm_pairSlotIndexEquiv_symm]
+      exact asymm (hR ((P.splitRight e h).pairSlotEquiv_zero_lt_one j))
 
 /-- **Crossing parity factors along a split.** The crossing weight of a pairing none of whose pairs
 joins the two parts is the product of the two parts' crossing weights, up to the sign of the
