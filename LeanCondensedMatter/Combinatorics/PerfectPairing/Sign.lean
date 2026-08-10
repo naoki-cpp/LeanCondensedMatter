@@ -499,7 +499,13 @@ theorem Pairing.presentsPairs_of_partner_blockPair (pairing : Pairing n)
   have hbij : Function.Bijective f :=
     (Fintype.bijective_iff_injective_and_card f).2
       ⟨hinj, by simp [pairing.card_normalizedPair]⟩
-  exact ⟨Equiv.ofBijective f hbij, fun k => (hfirst k).imp Eq.symm Eq.symm⟩
+  refine ⟨Equiv.ofBijective f hbij, fun k => ?_⟩
+  have hEk : ((Equiv.ofBijective f hbij) k : Fin (2 * n) × Fin (2 * n)) =
+      ((f k : pairing.NormalizedPair) : Fin (2 * n) × Fin (2 * n)) := rfl
+  rw [hEk]
+  rcases hfirst k with hk | hk
+  · exact Or.inl hk.symm
+  · exact Or.inr (by rw [hk, Prod.swap_swap])
 
 /-- **Crossing parity is a permutation sign.** The sign of the permutation listing the normalized
 pairs of a perfect pairing is `-1` raised to its crossing count. -/
