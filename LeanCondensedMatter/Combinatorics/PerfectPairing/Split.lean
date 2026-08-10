@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Sign
 
 set_option linter.style.header false
 
@@ -126,5 +126,87 @@ theorem Pairing.partner_splitRight (i : Fin (2 * b)) :
   splitRightMap_spec e h i
 
 end Right
+
+section Sign
+
+/-- Regroup the block-slot presentation of `Fin (2 * n)` along a split of its `n` pairs into `a`
+pairs and `b` pairs. Each two-element block lands whole in one part. -/
+noncomputable def splitBlockEquiv (hab : a + b = n) :
+    Fin (2 * n) ≃ Fin (2 * a) ⊕ Fin (2 * b) :=
+  (pairSlotIndexEquiv n).trans
+    (((Equiv.prodCongr (finSumFinEquiv.trans (finCongr hab)).symm (Equiv.refl (Fin 2))).trans
+      (Equiv.sumProdDistrib (Fin a) (Fin b) (Fin 2))).trans
+        (Equiv.sumCongr (pairSlotIndexEquiv a).symm (pairSlotIndexEquiv b).symm))
+
+theorem splitBlockEquiv_apply_left (hab : a + b = n) {k : Fin n} (j : Fin a) (s : Fin 2)
+    (hk : (finSumFinEquiv.trans (finCongr hab)).symm k = Sum.inl j) :
+    splitBlockEquiv hab ((pairSlotIndexEquiv n).symm (k, s)) =
+      Sum.inl ((pairSlotIndexEquiv a).symm (j, s)) := by
+  simp [splitBlockEquiv, hk]
+
+theorem splitBlockEquiv_apply_right (hab : a + b = n) {k : Fin n} (j : Fin b) (s : Fin 2)
+    (hk : (finSumFinEquiv.trans (finCongr hab)).symm k = Sum.inr j) :
+    splitBlockEquiv hab ((pairSlotIndexEquiv n).symm (k, s)) =
+      Sum.inr ((pairSlotIndexEquiv b).symm (j, s)) := by
+  simp [splitBlockEquiv, hk]
+
+variable (e : PositionSplitting a b n) (hab : a + b = n) {P : Pairing n} (h : P.IsSplit e)
+
+/-- The permutation listing the pairs of a split pairing, the left part's pairs first. -/
+noncomputable def splitListingPerm : Equiv.Perm (Fin (2 * n)) :=
+  (splitBlockEquiv hab).trans
+    ((Equiv.sumCongr (P.splitLeft e h).pairPerm (P.splitRight e h).pairPerm).trans e)
+
+/-- The listing permutation presents the pairing: each of its blocks carries a pair of partners. -/
+theorem presentsPairs_splitListingPerm : P.PresentsPairs (splitListingPerm e hab h) := by
+  refine P.presentsPairs_of_partner_blockPair _ fun k => ?_
+  rw [blockPair_apply]
+  rcases hk : (finSumFinEquiv.trans (finCongr hab)).symm k with j | j
+  · simp only [splitListingPerm, Equiv.trans_apply,
+      splitBlockEquiv_apply_left hab j 0 hk, splitBlockEquiv_apply_left hab j 1 hk,
+      Equiv.sumCongr_apply, Sum.map_inl, Pairing.pairPerm_pairSlotIndexEquiv_symm]
+    rw [Pairing.partner_splitLeft e h, (P.splitLeft e h).partner_pairSlotEquiv_zero]
+  · simp only [splitListingPerm, Equiv.trans_apply,
+      splitBlockEquiv_apply_right hab j 0 hk, splitBlockEquiv_apply_right hab j 1 hk,
+      Equiv.sumCongr_apply, Sum.map_inr, Pairing.pairPerm_pairSlotIndexEquiv_symm]
+    rw [Pairing.partner_splitRight e h, (P.splitRight e h).partner_pairSlotEquiv_zero]
+
+/-- No block of the listing permutation is reversed, when each part is embedded in increasing
+order. -/
+theorem splitListingPerm_no_reversed_block
+    (hL : StrictMono fun i : Fin (2 * a) => e (Sum.inl i))
+    (hR : StrictMono fun i : Fin (2 * b) => e (Sum.inr i)) (k : Fin n) :
+    ¬ (blockPair (splitListingPerm e hab h) k).2 < (blockPair (splitListingPerm e hab h) k).1 := by
+  rw [blockPair_apply]
+  rcases hk : (finSumFinEquiv.trans (finCongr hab)).symm k with j | j
+  · simp only [splitListingPerm, Equiv.trans_apply,
+      splitBlockEquiv_apply_left hab j 0 hk, splitBlockEquiv_apply_left hab j 1 hk,
+      Equiv.sumCongr_apply, Sum.map_inl, Pairing.pairPerm_pairSlotIndexEquiv_symm]
+    exact asymm (hL ((P.splitLeft e h).pairSlotEquiv_zero_lt_one j))
+  · simp only [splitListingPerm, Equiv.trans_apply,
+      splitBlockEquiv_apply_right hab j 0 hk, splitBlockEquiv_apply_right hab j 1 hk,
+      Equiv.sumCongr_apply, Sum.map_inr, Pairing.pairPerm_pairSlotIndexEquiv_symm]
+    exact asymm (hR ((P.splitRight e h).pairSlotEquiv_zero_lt_one j))
+
+/-- **Crossing parity factors along a split.** The crossing weight of a pairing none of whose pairs
+joins the two parts is the product of the two parts' crossing weights, up to the sign of the
+permutation that interleaves the parts — which depends only on the splitting, not on the pairing. -/
+theorem neg_one_pow_crossingCount_eq_of_isSplit
+    (hL : StrictMono fun i : Fin (2 * a) => e (Sum.inl i))
+    (hR : StrictMono fun i : Fin (2 * b) => e (Sum.inr i)) :
+    (-1 : ℤˣ) ^ P.crossingCount =
+      Equiv.Perm.sign ((splitBlockEquiv hab).trans e) *
+        ((-1) ^ (P.splitLeft e h).crossingCount * (-1) ^ (P.splitRight e h).crossingCount) := by
+  classical
+  have hsign := P.sign_eq_of_presentsPairs (splitListingPerm e hab h)
+    (presentsPairs_splitListingPerm e hab h)
+  have hzero : (∑ k : Fin n, if (blockPair (splitListingPerm e hab h) k).2 <
+      (blockPair (splitListingPerm e hab h) k).1 then 1 else 0) = 0 :=
+    Finset.sum_eq_zero fun k _ => if_neg (splitListingPerm_no_reversed_block e hab h hL hR k)
+  rw [hzero, pow_zero, one_mul] at hsign
+  rw [← hsign, splitListingPerm, sign_trans_sumCongr_trans, Pairing.sign_pairPerm,
+    Pairing.sign_pairPerm]
+
+end Sign
 
 end Combinatorics

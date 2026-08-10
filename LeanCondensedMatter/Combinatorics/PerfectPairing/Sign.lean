@@ -175,6 +175,13 @@ private def blockPos (τ : Equiv.Perm (Fin (2 * n))) (x : Fin n × Fin 2) : Fin 
 def blockPair (τ : Equiv.Perm (Fin (2 * n))) (k : Fin n) : Fin (2 * n) × Fin (2 * n) :=
   (blockPos τ (k, 0), blockPos τ (k, 1))
 
+/-- The two positions of a block, written through the block-slot presentation. `blockPos` is an
+implementation detail, so this is how a caller outside this module computes a `blockPair`. -/
+theorem blockPair_apply (τ : Equiv.Perm (Fin (2 * n))) (k : Fin n) :
+    blockPair τ k =
+      (τ ((pairSlotIndexEquiv n).symm (k, 0)), τ ((pairSlotIndexEquiv n).symm (k, 1))) :=
+  rfl
+
 private theorem blockPos_ne (τ : Equiv.Perm (Fin (2 * n))) {x y : Fin n × Fin 2} (h : x ≠ y) :
     blockPos τ x ≠ blockPos τ y := fun heq =>
   h ((pairSlotIndexEquiv n).symm.injective (τ.injective heq))
