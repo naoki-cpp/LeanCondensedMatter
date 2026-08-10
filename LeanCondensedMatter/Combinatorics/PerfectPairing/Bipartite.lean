@@ -515,7 +515,7 @@ private theorem sideListingPerm_eq (e : SideSplitting m) (σ : Equiv.Perm (Fin m
   apply Equiv.ext
   intro x
   simp only [sideListingPerm, sumCongrListingPerm, baseListingPerm, sideListingEquiv,
-    Equiv.trans_apply, Equiv.symm_apply_apply]
+    Equiv.trans_apply, Equiv.apply_symm_apply]
 
 private theorem sign_sumCongrListingPerm (m : ℕ) (σ : Equiv.Perm (Fin m)) :
     Equiv.Perm.sign (sumCongrListingPerm m σ) = Equiv.Perm.sign σ := by
@@ -546,13 +546,12 @@ theorem neg_one_pow_crossingCount_eq_of_sidePairing (e : SideSplitting m)
     rw [blockPair_sideListingPerm]
   rw [hreversed] at hsign
   rw [sideListingPerm_eq, Equiv.Perm.sign_trans, sign_sumCongrListingPerm] at hsign
+  have hsq : ((-1 : ℤˣ) ^ sideReversedCount e σ) * ((-1 : ℤˣ) ^ sideReversedCount e σ) = 1 :=
+    Int.units_mul_self _
   calc (-1 : ℤˣ) ^ (sidePairing e σ).crossingCount
-      = (-1 : ℤˣ) ^ (sidePairing e σ).crossingCount *
-          ((-1 : ℤˣ) ^ sideReversedCount e σ * (-1 : ℤˣ) ^ sideReversedCount e σ) := by
-        rw [Int.units_mul_self, mul_one]
-    _ = (-1 : ℤˣ) ^ sideReversedCount e σ *
+      = (-1 : ℤˣ) ^ sideReversedCount e σ *
           ((-1 : ℤˣ) ^ sideReversedCount e σ * (-1 : ℤˣ) ^ (sidePairing e σ).crossingCount) := by
-        rw [← mul_assoc, ← mul_assoc, mul_comm ((-1 : ℤˣ) ^ (sidePairing e σ).crossingCount)]
+        rw [← mul_assoc, hsq, one_mul]
     _ = (-1 : ℤˣ) ^ sideReversedCount e σ *
           (Equiv.Perm.sign (baseListingPerm e) * Equiv.Perm.sign σ) := by rw [← hsign]
     _ = Equiv.Perm.sign (baseListingPerm e) * (-1) ^ sideReversedCount e σ *
