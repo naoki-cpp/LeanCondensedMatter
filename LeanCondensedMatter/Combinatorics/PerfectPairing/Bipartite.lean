@@ -391,6 +391,16 @@ noncomputable def sidePair (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) (i : 
   if e (Sum.inl i) < e (Sum.inr (σ i)) then (e (Sum.inl i), e (Sum.inr (σ i)))
   else (e (Sum.inr (σ i)), e (Sum.inl i))
 
+theorem sidePair_of_lt {e : SideSplitting m} {σ : Equiv.Perm (Fin m)} {i : Fin m}
+    (h : e (Sum.inl i) < e (Sum.inr (σ i))) :
+    sidePair e σ i = (e (Sum.inl i), e (Sum.inr (σ i))) :=
+  if_pos h
+
+theorem sidePair_of_gt {e : SideSplitting m} {σ : Equiv.Perm (Fin m)} {i : Fin m}
+    (h : e (Sum.inr (σ i)) < e (Sum.inl i)) :
+    sidePair e σ i = (e (Sum.inr (σ i)), e (Sum.inl i)) :=
+  if_neg (asymm h)
+
 theorem sidePair_mem_pairs (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) (i : Fin m) :
     sidePair e σ i ∈ (sidePairing e σ).pairs := by
   rcases lt_trichotomy (e (Sum.inl i)) (e (Sum.inr (σ i))) with h | h | h
@@ -425,13 +435,15 @@ noncomputable def sidePairEquiv (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) 
         refine ⟨i, ?_⟩
         rw [sidePairing_partner, sidePartner_inl] at hpartner
         subst hpartner
-        exact Subtype.ext (by rw [sidePair, if_pos hlt])
+        exact Subtype.ext (sidePair_of_lt hlt)
     | inr j =>
         refine ⟨σ.symm j, ?_⟩
         rw [sidePairing_partner, sidePartner_inr] at hpartner
         subst hpartner
         refine Subtype.ext ?_
-        rw [sidePair, Equiv.apply_symm_apply, if_neg (asymm hlt)]
+        have hgt : e (Sum.inr (σ (σ.symm j))) < e (Sum.inl (σ.symm j)) := by
+          rwa [Equiv.apply_symm_apply]
+        rw [sidePair_of_gt hgt, Equiv.apply_symm_apply]
 
 /-- A product over the pairs of a bipartite pairing is a product over the matching permutation,
 each pair evaluated in whichever order the splitting puts it. -/
