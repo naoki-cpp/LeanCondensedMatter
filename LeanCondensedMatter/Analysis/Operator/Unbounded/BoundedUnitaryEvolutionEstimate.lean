@@ -29,12 +29,14 @@ theorem boundedUnitaryEvolution_apply_norm
   let U : H →L[ℂ] H := boundedUnitaryEvolution B t
   have hunit : star U * U = 1 := by
     simpa [U] using boundedUnitaryEvolution_star_mul B hB t
-  have hcomp : ContinuousLinearMap.adjoint U ∘L U = 1 := by
-    simpa [ContinuousLinearMap.star_eq_adjoint] using hunit
-  have hsq := ContinuousLinearMap.apply_norm_sq_eq_inner_adjoint_left U x
-  rw [hcomp] at hsq
-  have hsq' : ‖U x‖ ^ 2 = ‖x‖ ^ 2 := by
-    simpa using hsq
+  have huux : ContinuousLinearMap.adjoint U (U x) = x := by
+    have happly := congrArg (fun T : H →L[ℂ] H => T x) hunit
+    simpa [ContinuousLinearMap.star_eq_adjoint] using happly
+  have hinner : inner ℂ (U x) (U x) = inner ℂ x x := by
+    rw [← ContinuousLinearMap.adjoint_inner_left U x (U x), huux]
+  have hsq : ‖U x‖ ^ 2 = ‖x‖ ^ 2 := by
+    have hre := congrArg Complex.re hinner
+    simpa [inner_self_eq_norm_sq] using hre
   nlinarith [norm_nonneg (U x), norm_nonneg x]
 
 /-- The vectorwise derivative of a bounded self-adjoint evolution has constant norm `‖B x‖`. -/
@@ -43,6 +45,8 @@ theorem norm_boundedUnitaryEvolution_apply_deriv
     ‖((boundedUnitaryEvolution B t * ((-I : ℂ) • B)) x)‖ = ‖B x‖ := by
   change ‖boundedUnitaryEvolution B t (((-I : ℂ) • B) x)‖ = ‖B x‖
   rw [boundedUnitaryEvolution_apply_norm B hB t]
+  change ‖(-I : ℂ) • B x‖ = ‖B x‖
+  rw [norm_smul]
   simp
 
 /-- The displacement under bounded self-adjoint evolution is controlled by the generator on the
