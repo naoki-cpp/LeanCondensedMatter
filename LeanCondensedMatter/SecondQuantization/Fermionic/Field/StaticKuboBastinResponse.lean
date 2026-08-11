@@ -48,7 +48,7 @@ noncomputable def finiteDimensionalStaticKuboBastinVectorPotentialResponse
 /-- Named finite-dimensional static Kubo–Bastin conductivity target. The switching rate remains
 positive and finite; only the driving frequency is specialized to zero. -/
 noncomputable def finiteDimensionalStaticKuboBastinDirectionalConductivity
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
@@ -59,7 +59,7 @@ noncomputable def finiteDimensionalStaticKuboBastinDirectionalConductivity
 /-- The static conductivity is the retained vector-potential coefficient multiplied by the exact
 zero-frequency finite-volume electric-field normalization. -/
 theorem finiteDimensionalStaticKuboBastinDirectionalConductivity_eq_vectorPotential
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
@@ -91,7 +91,7 @@ theorem finiteDimensionalStaticKuboBastinVectorPotentialResponse_eq_finite_sum
 
 /-- Exact finite spectral form of the named static conductivity target. -/
 theorem finiteDimensionalStaticKuboBastinDirectionalConductivity_eq_finite_sum
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
@@ -111,7 +111,7 @@ theorem finiteDimensionalStaticKuboBastinDirectionalConductivity_eq_finite_sum
 /-- The static named target remains connected to the causal Kubo response at every positive
 switching rate. -/
 theorem infiniteTimeAdiabaticDirectionalConductivity_zero_frequency_eq_staticKuboBastin
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
@@ -127,7 +127,7 @@ theorem infiniteTimeAdiabaticDirectionalConductivity_zero_frequency_eq_staticKub
 /-- At zero frequency, the electric-field normalization keeps the finite switching rate and volume
 explicit. -/
 theorem finiteVolumeConductivityNormalization_zero_frequency
-    (convention : FiniteVolumeConductivityConvention) (eta : ℝ) :
+    (convention : QuantumTheory.Transport.PositiveVolume) (eta : ℝ) :
     finiteVolumeConductivityNormalization convention 0 eta =
       (((convention.volume : ℂ) * (-(eta : ℂ))))⁻¹ := by
   simp [finiteVolumeConductivityNormalization]
