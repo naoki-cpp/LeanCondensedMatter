@@ -73,7 +73,6 @@ noncomputable def continuumSchrodingerEvolution1D
     have hcomp := hU.scomp t hscale
     have hcoeff : (hbar⁻¹ : ℝ) • (Complex.I : ℂ) = Complex.I * (hbar : ℂ)⁻¹ := by
       change ((hbar⁻¹ : ℝ) : ℂ) * Complex.I = _
-      rw [RCLike.ofReal_inv]
       ring
     simpa [Function.comp_def, H, smul_smul, div_eq_mul_inv, hcoeff] using hcomp
 
