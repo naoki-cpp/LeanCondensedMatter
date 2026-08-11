@@ -65,14 +65,15 @@ noncomputable def continuumSchrodingerEvolution1D
         (show H.domain from ψ)
     simpa [H] using hmem
   · intro t ψ
-    have hbar_ne : hbar ≠ 0 := ne_of_gt hbar_pos
     have hU :=
       LinearPMap.resolventEvolutionStrongLimitOperator_apply_hasDerivAt H hH
         (show H.domain from ψ) (t / hbar)
     have hscale : HasDerivAt (fun τ : ℝ => τ / hbar) (1 / hbar) t := by
       simpa [div_eq_mul_inv] using (hasDerivAt_id t).mul_const hbar⁻¹
     have hcomp := hU.scomp t hscale
-    convert hcomp using 1 <;> simp [Function.comp_def, H, hbar_ne, div_eq_mul_inv] <;> module
+    convert hcomp using 1 <;>
+      (try simp [Function.comp_def, H, div_eq_mul_inv]) <;>
+      module
 
 end
 end Continuum
