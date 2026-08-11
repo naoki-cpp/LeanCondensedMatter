@@ -27,7 +27,8 @@ After substituting `κ = ℏ² / (2m)`, the current is the standard
 later mass parametrization.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -194,4 +195,5 @@ theorem charge_continuity_balance_of_probability
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics
