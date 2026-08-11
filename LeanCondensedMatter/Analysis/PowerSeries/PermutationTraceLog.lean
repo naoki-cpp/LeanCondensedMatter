@@ -65,6 +65,7 @@ private theorem coeff_log_complex_of_pos (m : ℕ) (hm : 0 < m) :
   change (((-1 : ℚ) ^ (m + 1) / (m : ℚ) : ℚ) : ℂ) =
     (-1 : ℂ) ^ (m + 1) / (m : ℂ)
   push_cast
+  rfl
 
 private theorem neg_pow_mul_neg_one_pow_succ (ζ : ℂ) (m : ℕ) :
     (-ζ) ^ m * (-1 : ℂ) ^ (m + 1) = -ζ ^ m := by
@@ -120,7 +121,10 @@ theorem permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog
     permutationConnectedCycleSeries ζ K =
       (-ζ⁻¹) • formalTraceLogOneSubSeries ζ K := by
   ext m
-  simp [coeff_permutationConnectedCycleSeries_eq_neg_inv_mul_traceLog ζ K m hζ]
+  rw [PowerSeries.coeff_smul]
+  change PowerSeries.coeff m (permutationConnectedCycleSeries ζ K) =
+    (-ζ⁻¹) * PowerSeries.coeff m (formalTraceLogOneSubSeries ζ K)
+  exact coeff_permutationConnectedCycleSeries_eq_neg_inv_mul_traceLog ζ K m hζ
 
 /-- Fermionic endpoint: at `ζ = -1`, the connected series is the formal trace of `log(1 + tK)`. -/
 theorem permutationConnectedCycleSeries_neg_one_eq_traceLog
