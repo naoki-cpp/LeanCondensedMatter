@@ -15,7 +15,8 @@ Schrödinger equation, the resulting derivative is zero.
 No closed-operator, self-adjointness, or unitary-evolution construction is used.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -134,4 +135,5 @@ theorem deriv_totalProbability1D_of_schrodinger_schwartz_eq_zero
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics
