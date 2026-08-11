@@ -4,7 +4,6 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Bipartite
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Sign
 import Mathlib.Data.Matrix.Basic
-import Mathlib.Tactic.Omega
 
 set_option linter.style.header false
 
