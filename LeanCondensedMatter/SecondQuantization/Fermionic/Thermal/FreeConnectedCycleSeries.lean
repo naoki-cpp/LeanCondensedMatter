@@ -44,15 +44,14 @@ private theorem freeBoltzmannModeKernel_pow [DecidableEq Mode]
         _ = Matrix.diagonal (fun i => Complex.exp (-(β : ℂ) * (ε i : ℂ)) ^ m) *
             Matrix.diagonal (fun i => Complex.exp (-(β : ℂ) * (ε i : ℂ))) := by
           rw [ih, freeBoltzmannModeKernel]
+          rfl
         _ = Matrix.diagonal (fun i =>
             Complex.exp (-(β : ℂ) * (ε i : ℂ)) ^ m *
               Complex.exp (-(β : ℂ) * (ε i : ℂ))) :=
           Matrix.diagonal_mul_diagonal _ _
         _ = Matrix.diagonal (fun i =>
             Complex.exp (-(β : ℂ) * (ε i : ℂ)) ^ (m + 1)) := by
-          congr 1
-          funext i
-          rw [pow_succ]
+          simp only [pow_succ]
 
 private theorem trace_freeBoltzmannModeKernel_pow [DecidableEq Mode]
     (ε : Mode → ℝ) (β : ℝ) (m : ℕ) :
