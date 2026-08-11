@@ -131,8 +131,9 @@ theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_zero_domain
         ((-I : ℂ) • Ar (x : H)) 0 := by
     have hraw :=
       resolventApproximationEvolution_apply_hasDerivAt A hA r hr 0 (x : H)
-    convert hraw using 1 <;>
-      simp [Ar, resolventApproximationEvolution_zero] <;> module
+    convert hraw using 1
+    simp [Ar, resolventApproximationEvolution_zero]
+    module
   have hsmall0 :=
     (Metric.tendsto_nhds.mp (hasDerivAt_iff_tendsto.mp hUr)) (ε / 2) (by positivity)
   have hsmall :
