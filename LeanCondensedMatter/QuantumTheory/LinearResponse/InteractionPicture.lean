@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Dyson.Volterra
 import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
 
 set_option linter.style.header false
@@ -90,8 +91,11 @@ theorem interactionPropagator_eq_one_add_integral_of_bound
       1 + ((lam : ℂ) * (Complex.I / (system.hbar : ℂ))) •
         ∫ s in (0 : ℝ)..t,
           interactionPerturbation system B f s * interactionPropagator system B f lam s := by
-  have h := BoundedDyson.evolution_eq_one_sub_integral_of_bound
-    hVcont hM hV ht (physicalDysonCoupling system lam)
+  have hOne : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
+    change ‖ContinuousLinearMap.id ℂ H‖ ≤ 1
+    exact ContinuousLinearMap.norm_id_le
+  have h := Dyson.evolution_eq_one_sub_integral_of_bound
+    hVcont hOne hM hV ht (physicalDysonCoupling system lam)
   simpa [interactionPropagator, physicalDysonCoupling, sub_eq_add_neg] using h
 
 end
