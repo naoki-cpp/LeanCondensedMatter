@@ -23,6 +23,8 @@ its component is one of the vacuum parts.
 namespace SecondQuantization
 namespace Common
 
+open Combinatorics
+
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 
 /-- A flattened leg is a **vacuum leg** when its incident vertex lies outside the external
@@ -190,6 +192,7 @@ theorem TwoPointDiagram.legIsVacuum_iff_unflattened {S : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card + 1))) :
     d.LegIsVacuum leg ↔ twoPointLegVertex (twoPointLegEquiv S leg) ∈ d.vacuumVertexSet := by
   rw [d.legIsVacuum_iff_vertex_mem_vacuumVertexSet]
+  rfl
 
 /-- Reindex the vacuum legs as the flattened legs of an ordinary quartic diagram. -/
 noncomputable def TwoPointDiagram.vacuumPartBlockLegEquiv {S : Finset (Fin N)}
