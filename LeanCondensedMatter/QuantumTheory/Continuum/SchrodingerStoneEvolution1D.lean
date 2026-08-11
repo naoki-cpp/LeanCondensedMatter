@@ -1,5 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.Continuum.SchrodingerEvolution1D
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGeneratorEquation
+import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -56,9 +57,8 @@ noncomputable def continuumSchrodingerEvolution1D
     rw [add_div]
     exact LinearPMap.resolventEvolutionStrongLimitOperator_add H hH (t / hbar) (s / hbar)
   · intro t
-    rw [LinearPMap.resolventEvolutionStrongLimitOperator_star]
-    congr 1
-    simp
+    simpa only [neg_div] using
+      LinearPMap.resolventEvolutionStrongLimitOperator_star H hH (t / hbar)
   · intro t ψ
     have hmem :=
       LinearPMap.resolventEvolutionStrongLimitOperator_mem_domain H hH (t / hbar)
@@ -71,8 +71,8 @@ noncomputable def continuumSchrodingerEvolution1D
         (show H.domain from ψ) (t / hbar)
     have hscale : HasDerivAt (fun τ : ℝ => τ / hbar) (1 / hbar) t := by
       simpa [div_eq_mul_inv] using (hasDerivAt_id t).mul_const hbar⁻¹
-    have hcomp := hU.comp t hscale
-    convert hcomp using 1 <;> simp [H, hbar_ne, div_eq_mul_inv] <;> module
+    have hcomp := hU.scomp t hscale
+    convert hcomp using 1 <;> simp [Function.comp_def, H, hbar_ne, div_eq_mul_inv] <;> module
 
 end
 end Continuum
