@@ -41,11 +41,13 @@ structure MultiplicativeWeight {α : Type*} [DecidableEq α]
 
 namespace MultiplicativeWeight
 
-variable {α R : Type*} [DecidableEq α] [CommRing R]
-variable {D : ConnectedDecomposition α} (W : MultiplicativeWeight D R)
-
 attribute [local instance] ConnectedDecomposition.fintypeObject
   ConnectedDecomposition.fintypeConnectedObject
+
+section Semiring
+
+variable {α R : Type*} [DecidableEq α] [CommSemiring R]
+variable {D : ConnectedDecomposition α} (W : MultiplicativeWeight D R)
 
 /-- Total weight of all objects on a finite vertex set. -/
 noncomputable def objectMoment (S : Finset α) : R :=
@@ -76,6 +78,13 @@ theorem objectMoment_eq_momentFromCumulant (S : Finset α) :
   rw [Fintype.piFinset_univ] at hdist
   exact hdist.symm
 
+end Semiring
+
+section Ring
+
+variable {α R : Type*} [DecidableEq α] [CommRing R]
+variable {D : ConnectedDecomposition α} (W : MultiplicativeWeight D R)
+
 /-- The cumulant of the total object weight is the connected-object contribution. -/
 theorem cumulantFromMoment_objectMoment {S : Finset α} (hS : S ≠ ∅) :
     Finpartition.cumulantFromMoment W.objectMoment S = W.connectedContribution S := by
@@ -84,6 +93,8 @@ theorem cumulantFromMoment_objectMoment {S : Finset α} (hS : S ≠ ∅) :
   have hfun : Finpartition.momentFromCumulant W.connectedContribution = W.objectMoment :=
     funext fun T => (W.objectMoment_eq_momentFromCumulant T).symm
   rwa [hfun] at h
+
+end Ring
 
 end MultiplicativeWeight
 end Combinatorics
