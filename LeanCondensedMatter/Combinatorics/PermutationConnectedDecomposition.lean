@@ -69,7 +69,7 @@ private theorem apply_mem_orbitBlock {S : Finset α} (σ : SupportedPerm S)
 
 private noncomputable def restrictOrbitBlock {S : Finset α} (σ : SupportedPerm S)
     (B : (orbitFinpartitionOn S σ.1).parts) : Equiv.Perm B.1 :=
-  Equiv.Perm.subtypePermOfFintype σ.1 (fun x hx => apply_mem_orbitBlock σ B hx)
+  Equiv.Perm.subtypePermOfFintype σ.1 (fun _ hx => apply_mem_orbitBlock σ B hx)
 
 @[simp]
 private theorem restrictOrbitBlock_apply {S : Finset α} (σ : SupportedPerm S)
@@ -162,7 +162,7 @@ private theorem sameCycle_sigmaCongrRight_iff_fst_eq {ι : Type*} {β : ι → T
       simpa using map_zpow (Equiv.Perm.sigmaCongrRightHom β) (fun i => (c i).1) z
     rw [← hpow]
     change (⟨i, ((c i).1 ^ z) x⟩ : Σ i, β i) = ⟨i, y⟩
-    exact Sigma.ext rfl (HEq.of_eq hz)
+    exact Sigma.ext rfl hz.heq
 
 omit [Fintype α] in
 private theorem assembleSubtype_sameCycle_iff {S : Finset α} (π : Finpartition S)
@@ -249,18 +249,26 @@ private theorem assemble_decompose {S : Finset α} (σ : SupportedPerm S) :
 private theorem decompose_assemble {S : Finset α} (π : Finpartition S)
     (c : ∀ B : π.parts, SingleOrbitPerm B.1) :
     decomposePermutation S (assemblePermutation π c) = ⟨π, c⟩ := by
-  have hπ := orbitFinpartitionOn_assemble π c
+  let P := orbitFinpartitionOn S (assemblePermutation π c).1
+  have hπ : P = π := orbitFinpartitionOn_assemble π c
   unfold decomposePermutation
-  apply Sigma.eq hπ
-  funext B
+  apply Sigma.ext hπ
+  have hparts : (P.parts : Type _) = (π.parts : Type _) :=
+    congrArg (fun q : Finpartition S => (q.parts : Type _)) hπ
+  apply Function.hfunext hparts
+  intro B B' hBB
+  have hBval : B.1 = B'.1 := eq_of_heq (congr_arg_heq Subtype.val hBB)
+  cases hBval
+  rw [heq_iff_eq]
   apply Subtype.ext
   apply Equiv.ext
   intro x
   apply Subtype.ext
-  change (assemblePermutation π c).1 x = (c B).1 x
-  rw [assemblePermutation_apply_mem π c ((π.subset B.2) x.2)]
-  have hpart : ⟨π.part (x : α), π.part_mem.2 ((π.subset B.2) x.2)⟩ = B :=
-    Subtype.ext (π.part_eq_of_mem B.2 x.2)
+  change (assemblePermutation π c).1 x = (c B').1 x
+  have hxS : (x : α) ∈ S := π.subset B'.2 x.2
+  rw [assemblePermutation_apply_mem π c hxS]
+  have hpart : ⟨π.part (x : α), π.part_mem.2 hxS⟩ = B' :=
+    Subtype.ext (π.part_eq_of_mem B'.2 x.2)
   cases hpart
   rfl
 
