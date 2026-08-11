@@ -166,7 +166,7 @@ variable [Fintype ι]
 /-- The explicit analytic object required to split the chosen finite-dimensional Kubo–Bastin
 conductivity from `KuboBastinTrace`. -/
 abbrev FiniteKuboBastinStredaRepresentation
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (spectralData : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
@@ -179,7 +179,7 @@ abbrev FiniteKuboBastinStredaRepresentation
 surface and sea terms whenever its energy representation satisfies the visible analytic and
 boundary hypotheses. -/
 theorem finiteDimensionalKuboBastinDirectionalConductivity_eq_streda
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (spectralData : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
