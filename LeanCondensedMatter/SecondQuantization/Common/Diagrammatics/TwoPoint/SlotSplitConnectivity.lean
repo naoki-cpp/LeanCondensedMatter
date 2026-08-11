@@ -48,8 +48,8 @@ theorem slotSplitVertex_injective (h : T ⊆ S) :
   · simpa [slotSplitVertex] using hEq
   · simp [slotSplitVertex] at hEq
   · simp [slotSplitVertex] at hEq
-  · simp only [slotSplitVertex, Sum.inr.injEq] at hEq
-    exact congrArg Sum.inr (Subtype.ext (congrArg Subtype.val hEq))
+  · simp only [slotSplitVertex, Sum.inr.injEq, Subtype.mk.injEq] at hEq
+    exact congrArg Sum.inr (Subtype.ext hEq)
 
 /-- A vertex of the external piece is never an interaction vertex outside the slot set. -/
 theorem slotSplitVertex_ne_inr_of_not_mem (h : T ⊆ S) (x : TwoPointVertex T) {w : ↥S}
@@ -57,11 +57,9 @@ theorem slotSplitVertex_ne_inr_of_not_mem (h : T ⊆ S) (x : TwoPointVertex T) {
   cases x with
   | inl e => simp [slotSplitVertex]
   | inr v =>
-      simp only [slotSplitVertex, ne_eq, Sum.inr.injEq]
+      simp only [slotSplitVertex, ne_eq, Sum.inr.injEq, Subtype.ext_iff]
       intro hEq
-      exact hw (by
-        have : (v : Fin N) = (w : Fin N) := congrArg Subtype.val hEq
-        exact this ▸ v.2)
+      exact hw (hEq ▸ v.2)
 
 /-- Left legs carry the ambient vertices of the corresponding external-piece vertices. -/
 theorem twoPointVertexOfLeg_slotLegSplitting_inl (h : T ⊆ S)
@@ -199,9 +197,8 @@ theorem interactionPart_externalComponent_ofSlotSplit
     cases y with
     | inl e => simp [slotSplitVertex] at hy
     | inr w =>
-        have hEq : (⟨v, hv⟩ : ↥S) = ⟨w.1, h w.2⟩ := by
+        have hvw : v = (w : Fin N) := by
           simpa [slotSplitVertex] using hy
-        have hvw : v = (w : Fin N) := congrArg Subtype.val hEq
         rw [hvw]
         exact w.2
   · intro hvT
