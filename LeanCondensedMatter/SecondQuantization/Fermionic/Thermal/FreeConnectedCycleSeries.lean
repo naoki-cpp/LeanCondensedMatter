@@ -30,22 +30,22 @@ noncomputable def freeBoltzmannModeKernel (ε : Mode → ℝ) (β : ℝ) : Matri
   classical
   exact Matrix.diagonal fun i => Complex.exp (-(β : ℂ) * (ε i : ℂ))
 
-private theorem freeBoltzmannModeKernel_pow (ε : Mode → ℝ) (β : ℝ) (m : ℕ) :
+private theorem freeBoltzmannModeKernel_pow [DecidableEq Mode]
+    (ε : Mode → ℝ) (β : ℝ) (m : ℕ) :
     freeBoltzmannModeKernel ε β ^ m =
       Matrix.diagonal (fun i => Complex.exp (-(β : ℂ) * (ε i : ℂ)) ^ m) := by
-  classical
   induction m with
-  | zero => simp [freeBoltzmannModeKernel]
+  | zero => simp
   | succ m ih =>
       rw [pow_succ, ih, freeBoltzmannModeKernel, Matrix.diagonal_mul_diagonal]
       congr 1
       funext i
       rw [pow_succ]
 
-private theorem trace_freeBoltzmannModeKernel_pow (ε : Mode → ℝ) (β : ℝ) (m : ℕ) :
+private theorem trace_freeBoltzmannModeKernel_pow [DecidableEq Mode]
+    (ε : Mode → ℝ) (β : ℝ) (m : ℕ) :
     Matrix.trace (freeBoltzmannModeKernel ε β ^ m) =
       ∑ i : Mode, Complex.exp (-(β : ℂ) * (ε i : ℂ)) ^ m := by
-  classical
   rw [freeBoltzmannModeKernel_pow, Matrix.trace_diagonal]
 
 /-- The finite free-fermion partition function is the determinant of `1 + K`, where `K` is the
