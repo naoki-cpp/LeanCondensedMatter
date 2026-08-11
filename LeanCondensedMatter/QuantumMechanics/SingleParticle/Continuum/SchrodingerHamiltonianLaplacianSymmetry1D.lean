@@ -17,7 +17,8 @@ using uniqueness of locally integrable functions that define the same distributi
 turns the reality of the Fourier symbol into symmetry of the `H²` Laplacian.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -169,4 +170,5 @@ theorem continuumH2LaplacianPMap1D_isFormalAdjoint :
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics
