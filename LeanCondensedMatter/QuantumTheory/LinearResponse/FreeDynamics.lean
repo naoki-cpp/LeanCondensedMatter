@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Analysis.Dyson.Constant
 import LeanCondensedMatter.QuantumTheory.Postulates
+import Mathlib.Analysis.SpecialFunctions.Exponential
 
 set_option linter.style.header false
 
@@ -16,11 +16,8 @@ and the corresponding Heisenberg evolution is
 
 `A_I(t) = U₀(-t) A U₀(t)`.
 
-The base API is dimension-independent. It also introduces the minimal normalized continuous
-expectation-functional interface needed for the algebraic first-variation theorem. Positivity is
-not required at this layer; physical state and density-operator instances may add it separately.
-Unbounded Hamiltonians remain outside scope because their exponentials and products require
-operator-domain arguments.
+The API is dimension-independent. Unbounded Hamiltonians remain outside scope because their
+exponentials and products require operator-domain arguments.
 -/
 
 namespace QuantumTheory
@@ -157,55 +154,6 @@ theorem isSelfAdjoint_heisenbergEvolution
     IsSelfAdjoint (heisenbergEvolution system A t) := by
   rw [isSelfAdjoint_iff]
   simp [heisenbergEvolution, star_freePropagator, hA.star_eq, mul_assoc]
-
-/-- A normalized continuous linear expectation functional on bounded operators.
-
-Positivity is intentionally not part of this minimal interface: it is unnecessary for the
-algebraic first derivative underlying the Kubo formula. -/
-structure NormalizedExpectation (H : Type*) [NormedAddCommGroup H]
-    [InnerProductSpace ℂ H] [CompleteSpace H] where
-  /-- The underlying continuous linear functional on bounded operators. -/
-  toContinuousLinearMap : (H →L[ℂ] H) →L[ℂ] ℂ
-  map_one : toContinuousLinearMap 1 = 1
-
-instance : CoeFun (NormalizedExpectation H) fun _ => (H →L[ℂ] H) → ℂ :=
-  ⟨fun expectation => expectation.toContinuousLinearMap⟩
-
-@[simp]
-theorem NormalizedExpectation.apply_one (expectation : NormalizedExpectation H) :
-    expectation (1 : H →L[ℂ] H) = 1 :=
-  expectation.map_one
-
-variable {K : Type*} [NormedAddCommGroup K] [InnerProductSpace ℂ K] [CompleteSpace K]
-
-/-- Pull a normalized expectation back along a continuous linear operator map that preserves the
-identity. No positivity or multiplicativity assumption is needed for this minimal linear-response
-interface. -/
-noncomputable def NormalizedExpectation.pullback
-    (expectation : NormalizedExpectation K)
-    (Φ : (H →L[ℂ] H) →L[ℂ] (K →L[ℂ] K))
-    (hΦ : Φ 1 = 1) : NormalizedExpectation H where
-  toContinuousLinearMap := expectation.toContinuousLinearMap.comp Φ
-  map_one := by
-    simp [hΦ]
-
-@[simp]
-theorem NormalizedExpectation.pullback_apply
-    (expectation : NormalizedExpectation K)
-    (Φ : (H →L[ℂ] H) →L[ℂ] (K →L[ℂ] K))
-    (hΦ : Φ 1 = 1) (A : H →L[ℂ] H) :
-    expectation.pullback Φ hΦ A = expectation (Φ A) :=
-  rfl
-
-/-- Stationarity means invariance under the free Heisenberg evolution. -/
-def IsStationary (expectation : NormalizedExpectation H) : Prop :=
-  ∀ t A, expectation (heisenbergEvolution system A t) = expectation A
-
-/-- Every normalized expectation is invariant at the initial time. -/
-theorem expectation_heisenbergEvolution_zero (expectation : NormalizedExpectation H)
-    (A : H →L[ℂ] H) :
-    expectation (heisenbergEvolution system A 0) = expectation A := by
-  simp
 
 end
 end LinearResponse
