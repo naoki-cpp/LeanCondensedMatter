@@ -25,6 +25,7 @@ import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionOperator
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity
 import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
 import LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
