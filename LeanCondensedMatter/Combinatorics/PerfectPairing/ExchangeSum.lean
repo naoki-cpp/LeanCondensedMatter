@@ -76,8 +76,8 @@ private theorem cycleType_card_le_sum {α : Type*} [Fintype α] [DecidableEq α]
           intro b hb
           exact hs b (by simp [hb])
         simpa [Nat.add_comm] using Nat.add_le_add ha (ih hs')
-  exact h σ.cycleType fun a ha =>
-    Nat.le_of_lt (Equiv.Perm.one_lt_of_mem_cycleType σ ha)
+  exact h σ.cycleType fun _ ha =>
+    Nat.le_of_lt (Equiv.Perm.one_lt_of_mem_cycleType ha)
 
 private theorem cycleDefect_mod_two {α : Type*} [Fintype α] [DecidableEq α]
     (σ : Equiv.Perm α) :
