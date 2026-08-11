@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.PermutationAssignmentCycleTrace
 import Mathlib.Data.Complex.Basic
+import Mathlib.Tactic.FieldSimp
 
 set_option linter.style.header false
 
@@ -46,7 +47,7 @@ private theorem factorial_pred_div_factorial_complex (m : ℕ) (hm : 0 < m) :
         exact_mod_cast Nat.succ_ne_zero n
       have hfac : ((Nat.factorial n : ℕ) : ℂ) ≠ 0 := by
         exact_mod_cast Nat.factorial_ne_zero n
-      field_simp
+      field_simp [hn, hfac]
 
 /-- EGF normalization changes the `(m - 1)!` multiplicity of full cycles into the universal
 `1 / m` cyclic factor. -/
@@ -57,10 +58,9 @@ theorem assignmentSingleCycleEGFCoeff_eq_pow_mul_trace_div
   rw [assignmentSingleCycleEGFCoeff, if_neg (Nat.ne_of_gt hm)]
   rw [sum_singleCycleContribution_assignments_eq_pow_mul_assignmentSingleCycleKernelSum]
   rw [assignmentSingleCycleKernelSum_eq_factorial_mul_trace K m hm]
-  rw [div_eq_mul_inv, mul_assoc]
   calc
-    ζ ^ (m - 1) * ((Nat.factorial (m - 1) : ℂ) * Matrix.trace (K ^ m)) *
-          (Nat.factorial m : ℂ)⁻¹ =
+    ζ ^ (m - 1) * ((Nat.factorial (m - 1) : ℂ) * Matrix.trace (K ^ m)) /
+          (Nat.factorial m : ℂ) =
         ζ ^ (m - 1) * Matrix.trace (K ^ m) *
           ((Nat.factorial (m - 1) : ℂ) / (Nat.factorial m : ℂ)) := by
       ring
