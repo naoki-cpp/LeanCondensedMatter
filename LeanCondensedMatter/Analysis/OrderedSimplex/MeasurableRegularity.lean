@@ -86,11 +86,7 @@ theorem MeasurableLocallyBounded.mul {n : ℕ} {f g : (Fin n → ℝ) → ℂ}
   intro x hx
   calc
     ‖f x * g x‖ = ‖f x‖ * ‖g x‖ := norm_mul _ _
-    _ ≤ C * D := by
-      gcongr
-      · exact (norm_nonneg _).trans (hC x hx)
-      · exact hC x hx
-      · exact hD x hx
+    _ ≤ C * D := mul_le_mul (hC x hx) (hD x hx) (norm_nonneg _) hC0
 
 /-- A finite product of measurably locally bounded integrands is measurably locally bounded. -/
 theorem MeasurableLocallyBounded.finsetProd {ι : Type*} {n : ℕ} (s : Finset ι)

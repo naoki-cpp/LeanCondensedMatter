@@ -105,7 +105,9 @@ theorem twoPointDiagramCoefficient_eq_sum_dysonAmplitude {n : ℕ}
       fun σ => d.fixedTimeAmplitude ε β g τ τ' σ)
     fun d _ => d.measurableLocallyBounded_fixedTimeAmplitude ε β g τ τ',
     Finset.mul_sum]
-  rfl
+  refine Finset.sum_congr rfl fun d _ => ?_
+  simp [FixedExternalTwoPointWickDiagram.dysonAmplitude,
+    FixedExternalTwoPointWickDiagram.orderedSimplexContribution]
 
 end Fermionic
 end SecondQuantization
