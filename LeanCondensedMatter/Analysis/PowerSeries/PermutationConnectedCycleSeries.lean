@@ -64,9 +64,10 @@ theorem permutationConnectedCycleSeries_eq_mk_trace
 /-- The `ζ = 0` boundary is handled coefficientwise without dividing by `ζ`: only the linear
 coefficient survives. -/
 theorem coeff_permutationConnectedCycleSeries_zero_exchange
-    [DecidableEq ι] (K : Matrix ι ι ℂ) (m : ℕ) :
+    (K : Matrix ι ι ℂ) (m : ℕ) :
     PowerSeries.coeff m (permutationConnectedCycleSeries 0 K) =
       if m = 1 then Matrix.trace K else 0 := by
+  classical
   cases m with
   | zero => simp
   | succ n =>
