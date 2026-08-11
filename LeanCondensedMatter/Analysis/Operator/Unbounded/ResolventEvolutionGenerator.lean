@@ -129,11 +129,10 @@ theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_zero_domain
       HasDerivAt
         (fun t : ℝ => resolventApproximationEvolution A hA r hr t (x : H))
         ((-I : ℂ) • Ar (x : H)) 0 := by
-    change HasDerivAt
-      (fun t : ℝ => resolventApproximationEvolution A hA r hr t (x : H))
-      ((-I : ℂ) • boundedSelfAdjointApproximation A hA r hr (x : H)) 0
-    simpa [resolventApproximationEvolution_zero] using
+    have hraw :=
       resolventApproximationEvolution_apply_hasDerivAt A hA r hr 0 (x : H)
+    convert hraw using 1 <;>
+      simp [Ar, resolventApproximationEvolution_zero] <;> module
   have hsmall0 :=
     (Metric.tendsto_nhds.mp (hasDerivAt_iff_tendsto.mp hUr)) (ε / 2) (by positivity)
   have hsmall :
@@ -290,11 +289,7 @@ theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_domain
       HasDerivAt
         (fun s : ℝ => U t (U (s + (-t)) (x : H)))
         ((-I : ℂ) • U t (A x)) t := by
-    change HasDerivAt
-      (fun s : ℝ => U t (U (s + (-t)) (x : H)))
-      (U t ((-I : ℂ) • A x)) t at hmap
-    rw [(U t).map_smul] at hmap
-    exact hmap
+    simpa [Function.comp_def] using hmap
   have hfun :
       (fun s : ℝ => U t (U (s + (-t)) (x : H))) =
         (fun s : ℝ => U s (x : H)) := by
