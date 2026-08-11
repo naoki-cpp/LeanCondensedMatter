@@ -62,5 +62,70 @@ theorem FixedExternalTwoPointWickDiagram.even_card_externalMixedPositions
   (d.pairingInMixedOrder τ τ' σ).even_card_of_partner_mem
     (d.partner_mem_externalMixedPositions τ τ' σ)
 
+/-- The number of pairs the external component carries. -/
+noncomputable def FixedExternalTwoPointWickDiagram.externalPairCount
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) : ℕ :=
+  (d.externalMixedPositions τ τ' σ).card / 2
+
+theorem FixedExternalTwoPointWickDiagram.card_externalMixedPositions
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    (d.externalMixedPositions τ τ' σ).card = 2 * d.externalPairCount τ τ' σ :=
+  (Nat.mul_div_cancel' (d.even_card_externalMixedPositions τ τ' σ).two_dvd).symm
+
+theorem FixedExternalTwoPointWickDiagram.externalPairCount_le
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) : d.externalPairCount τ τ' σ ≤ 2 * n + 1 := by
+  have hle : (d.externalMixedPositions τ τ' σ).card ≤ 2 * (2 * n + 1) := by
+    simpa using Finset.card_le_univ (d.externalMixedPositions τ τ' σ)
+  rw [d.card_externalMixedPositions] at hle
+  omega
+
+theorem FixedExternalTwoPointWickDiagram.card_compl_externalMixedPositions
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    (d.externalMixedPositions τ τ' σ)ᶜ.card =
+      2 * (2 * n + 1 - d.externalPairCount τ τ' σ) := by
+  have hcompl : (d.externalMixedPositions τ τ' σ)ᶜ.card =
+      2 * (2 * n + 1) - (d.externalMixedPositions τ τ' σ).card := by
+    simpa using Finset.card_compl (d.externalMixedPositions τ τ' σ)
+  rw [hcompl, d.card_externalMixedPositions]
+  have := d.externalPairCount_le τ τ' σ
+  omega
+
+/-- **The splitting of the mixed-time positions into external and vacuum.**
+
+Both parts are enumerated by increasing time, so the crossing-sign factorization applies with
+nothing to route around. -/
+noncomputable def FixedExternalTwoPointWickDiagram.externalPositionSplitting
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    Combinatorics.PositionSplitting (d.externalPairCount τ τ' σ)
+      (2 * n + 1 - d.externalPairCount τ τ' σ) (2 * n + 1) :=
+  Combinatorics.monotonePositionSplitting (d.externalMixedPositions τ τ' σ)
+    (d.card_externalMixedPositions τ τ' σ) (d.card_compl_externalMixedPositions τ τ' σ)
+
+/-- **The mixed-order pairing is split by it.** No contraction joins the external component to a
+vacuum component. -/
+theorem FixedExternalTwoPointWickDiagram.isSplit_externalPositionSplitting
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    (d.pairingInMixedOrder τ τ' σ).IsSplit (d.externalPositionSplitting τ τ' σ) := by
+  intro k
+  have hmem : (d.externalPositionSplitting τ τ' σ) (Sum.inl k) ∈
+      d.externalMixedPositions τ τ' σ := by
+    rw [FixedExternalTwoPointWickDiagram.externalPositionSplitting,
+      Combinatorics.monotonePositionSplitting_inl]
+    exact ((d.externalMixedPositions τ τ' σ).orderIsoOfFin
+      (d.card_externalMixedPositions τ τ' σ) k).2
+  have hpartner := d.partner_mem_externalMixedPositions τ τ' σ _ hmem
+  obtain ⟨l, hl⟩ := ((d.externalMixedPositions τ τ' σ).orderIsoOfFin
+    (d.card_externalMixedPositions τ τ' σ)).surjective ⟨_, hpartner⟩
+  refine ⟨l, ?_⟩
+  rw [FixedExternalTwoPointWickDiagram.externalPositionSplitting,
+    Combinatorics.monotonePositionSplitting_inl]
+  exact congrArg Subtype.val hl.symm
+
 end Fermionic
 end SecondQuantization
