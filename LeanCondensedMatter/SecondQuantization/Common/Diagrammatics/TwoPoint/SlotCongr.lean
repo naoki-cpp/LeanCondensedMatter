@@ -41,6 +41,17 @@ noncomputable def twoPointLegCongr (e : ↥T ≃ ↥U) :
     ((Equiv.sumCongr (Equiv.refl (Fin 2)) (e.prodCongr (Equiv.refl (Fin 4)))).trans
       (twoPointLegEquiv U).symm)
 
+/-- The inverse relabeling of legs is the relabeling along the inverse. -/
+theorem twoPointLegCongr_symm (e : ↥T ≃ ↥U) :
+    twoPointLegCongr e.symm = (twoPointLegCongr e).symm := by
+  refine Equiv.ext fun leg => ?_
+  obtain ⟨x, rfl⟩ := (twoPointLegEquiv U).symm.surjective leg
+  cases x with
+  | inl a => simp [twoPointLegCongr]
+  | inr p =>
+      obtain ⟨v, l⟩ := p
+      simp [twoPointLegCongr]
+
 /-- The relabeled leg carries the relabeled vertex. -/
 theorem twoPointVertexOfLeg_twoPointLegCongr (e : ↥T ≃ ↥U)
     (leg : Fin (2 * (2 * T.card + 1))) :
@@ -126,7 +137,11 @@ theorem TwoPointDiagram.slotCongr_reachable_iff (e : ↥T ≃ ↥U)
       d.vertexGraph.Reachable v w := by
   constructor
   · intro hreach
-    simpa using hreach.map (d.slotCongrHomSymm (M := M) e)
+    have hmap := hreach.map (d.slotCongrHomSymm (M := M) e)
+    have hcoe : ∀ x : TwoPointVertex U,
+        (d.slotCongrHomSymm (M := M) e) x = (twoPointVertexCongr e).symm x := fun _ => rfl
+    rw [hcoe, hcoe] at hmap
+    simpa using hmap
   · intro hreach
     exact hreach.map (d.slotCongrHom (M := M) e)
 
@@ -166,14 +181,16 @@ noncomputable def TwoPointDiagram.slotCongrEquiv (e : ↥T ≃ ↥U) :
     · refine Pairing.ext (Equiv.ext fun i => ?_)
       change (twoPointLegCongr e.symm).permCongr
         ((twoPointLegCongr e).permCongr d.pairing.partner) i = _
-      simp [Equiv.permCongr_apply, twoPointLegCongr]
+      rw [twoPointLegCongr_symm]
+      simp [Equiv.permCongr_apply]
   right_inv d := by
     refine TwoPointDiagram.ext rfl (funext fun v => ?_) ?_
     · simp [TwoPointDiagram.slotCongr]
     · refine Pairing.ext (Equiv.ext fun i => ?_)
       change (twoPointLegCongr e).permCongr
         ((twoPointLegCongr e.symm).permCongr d.pairing.partner) i = _
-      simp [Equiv.permCongr_apply, twoPointLegCongr]
+      rw [twoPointLegCongr_symm]
+      simp [Equiv.permCongr_apply]
 
 end Common
 end SecondQuantization
