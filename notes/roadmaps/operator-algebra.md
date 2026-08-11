@@ -143,10 +143,12 @@ operators.
 
 Status: `proved`.
 
-`Analysis/Dyson/` owns the generic Banach-algebra Dyson coefficients, factorial bounds, summability,
-Volterra equation, uniqueness, and constant-generator exponential identification.
-`QuantumTheory/BoundedDyson.lean` is the bounded-operator specialization. Finite
-SecondQuantization modules reuse these theorems rather than defining separate analytic series.
+`Analysis/Dyson/` is the canonical owner of the generic Banach-algebra Dyson coefficients, factorial
+bounds, summability, Volterra equation, uniqueness, and constant-generator exponential
+identification. Bounded-operator quantum consumers instantiate these generic theorems directly,
+discharging operator-specific hypotheses such as `‖1‖ ≤ 1` at the use site rather than through a
+parallel forwarding namespace. Finite SecondQuantization modules likewise reuse the generic
+analysis API rather than defining separate analytic series.
 
 ## Unbounded and completed-space boundary
 
