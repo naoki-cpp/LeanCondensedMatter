@@ -22,7 +22,8 @@ maximal operator there. Thus the remaining regularity problem is cleanly separat
 domain inclusion `continuumMaximalLaplacianDomain1D ≤ continuumH2Domain1D`.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -217,4 +218,5 @@ theorem continuumMaximalLaplacian1D_isClosable : continuumMaximalLaplacian1D.IsC
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics
