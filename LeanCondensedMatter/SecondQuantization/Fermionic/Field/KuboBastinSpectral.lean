@@ -216,7 +216,7 @@ theorem finiteKuboGreenwoodDirectionalCurrentTerm_eq_bastinSpectral
 /-- Finite regularized Kubo–Bastin conductivity in spectral resolvent form, with the Peierls contact
 term retained explicitly. -/
 noncomputable def finiteKuboBastinSpectralDirectionalConductivity
-    [Fintype ι] (convention : FiniteVolumeConductivityConvention) : ℂ :=
+    [Fintype ι] (convention : QuantumTheory.Transport.PositiveVolume) : ℂ :=
   ((∑ mn : ι × ι,
       finiteKuboBastinSpectralDirectionalCurrentTerm
         system data geometry direction K q omega eta mn) +
@@ -229,7 +229,7 @@ noncomputable def finiteKuboBastinSpectralDirectionalConductivity
 conductivity derived from the causal response chain. -/
 theorem finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral
     [Fintype ι]
-    (convention : FiniteVolumeConductivityConvention) (heta : 0 < eta) :
+    (convention : QuantumTheory.Transport.PositiveVolume) (heta : 0 < eta) :
     finiteKuboGreenwoodDirectionalConductivity
         convention system data geometry direction K q omega eta =
       finiteKuboBastinSpectralDirectionalConductivity
