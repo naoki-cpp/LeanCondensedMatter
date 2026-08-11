@@ -25,7 +25,7 @@ namespace Fermionic
 
 open Combinatorics
 
-variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+variable {Mode : Type*}
 
 open Classical in
 /-- The mixed-time-ordered positions lying in the external component. -/
