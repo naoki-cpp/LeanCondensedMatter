@@ -35,6 +35,7 @@ private def assignmentRelabel {m : ℕ} (e : Equiv.Perm (Fin m)) :
     funext a
     simp [Function.comp_def]
 
+omit [Fintype ι] in
 private theorem cycleKernelWeight_conj [CommSemiring R] {m : ℕ}
     (K : ι → ι → R) (e σ : Equiv.Perm (Fin m)) (x : Fin m → ι) :
     (∏ a : Fin m, K (x a) (x ((e * σ * e⁻¹) a))) =
@@ -47,7 +48,7 @@ private theorem cycleKernelWeight_conj [CommSemiring R] {m : ℕ}
     _ = ∏ a : Fin m, K ((x ∘ e) a) ((x ∘ e) (σ a)) := by
       apply Finset.prod_congr rfl
       intro a _
-      simp [Function.comp_def, Equiv.Perm.mul_apply]
+      simp [Equiv.Perm.mul_apply]
 
 private theorem cycleAssignmentKernelSum_conj [CommSemiring R] {m : ℕ}
     (K : ι → ι → R) (e σ : Equiv.Perm (Fin m)) :
