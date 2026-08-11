@@ -90,5 +90,64 @@ theorem TwoPointDiagram.legIsVacuum_iff_exists_vacuumComponentPart {S : Finset (
     rw [← hleg]
     exact (d.componentBlock_eq_iff_mem d.externalComponentPart.2 _).2 hmem
 
+open Classical in
+/-- The vertices lying outside the external component — every vacuum component at once.
+
+`interactionPart` accepts an arbitrary vertex set, so this indexes the quartic diagram that the
+vacuum legs will carry. -/
+noncomputable def TwoPointDiagram.vacuumVertexSet {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) : Finset (TwoPointVertex S) :=
+  Finset.univ \ (d.externalComponentPart : Finset (TwoPointVertex S))
+
+theorem TwoPointDiagram.mem_vacuumVertexSet_iff {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) (v : TwoPointVertex S) :
+    v ∈ d.vacuumVertexSet ↔ v ∉ (d.externalComponentPart : Finset (TwoPointVertex S)) := by
+  classical
+  simp [TwoPointDiagram.vacuumVertexSet]
+
+/-- A leg is a vacuum leg exactly when its incident vertex is a vacuum vertex. -/
+theorem TwoPointDiagram.legIsVacuum_iff_vertex_mem_vacuumVertexSet {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (leg : Fin (2 * (2 * S.card + 1))) :
+    d.LegIsVacuum leg ↔ twoPointVertexOfLeg leg ∈ d.vacuumVertexSet :=
+  (d.mem_vacuumVertexSet_iff _).symm
+
+/-- Neither external vertex is a vacuum vertex. -/
+theorem TwoPointDiagram.externalVertex_not_mem_vacuumVertexSet {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) (e : Fin 2) :
+    (Sum.inl e : TwoPointVertex S) ∉ d.vacuumVertexSet := by
+  rw [d.mem_vacuumVertexSet_iff, not_not]
+  exact d.externalVertex_mem_externalComponentPart e
+
+/-- The partner permutation restricted to the vacuum legs.
+
+Well defined by `legIsVacuum_partner_iff`: a contraction never joins a vacuum leg to a leg of the
+external component. -/
+noncomputable def TwoPointDiagram.vacuumPartner {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
+    Equiv.Perm {leg : Fin (2 * (2 * S.card + 1)) // d.LegIsVacuum leg} :=
+  d.pairing.partner.subtypePerm fun leg => d.legIsVacuum_partner_iff leg
+
+/-- The restricted partner has the same underlying flattened leg as the ambient partner. -/
+theorem TwoPointDiagram.vacuumPartner_val {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (leg : {leg : Fin (2 * (2 * S.card + 1)) // d.LegIsVacuum leg}) :
+    (d.vacuumPartner leg : Fin (2 * (2 * S.card + 1))) = d.pairing.partner leg :=
+  congrArg Subtype.val (Equiv.Perm.subtypePerm_apply _ _ leg)
+
+/-- The vacuum partner remains an involution. -/
+theorem TwoPointDiagram.vacuumPartner_involutive {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
+    Function.Involutive d.vacuumPartner := fun leg => by
+  apply Subtype.ext
+  rw [d.vacuumPartner_val, d.vacuumPartner_val, d.pairing.partner_involutive]
+
+/-- The vacuum partner has no fixed points. -/
+theorem TwoPointDiagram.vacuumPartner_ne_self {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (leg : {leg : Fin (2 * (2 * S.card + 1)) // d.LegIsVacuum leg}) :
+    d.vacuumPartner leg ≠ leg := fun h =>
+  d.pairing.partner_ne_self leg (by rw [← d.vacuumPartner_val, h])
+
 end Common
 end SecondQuantization
