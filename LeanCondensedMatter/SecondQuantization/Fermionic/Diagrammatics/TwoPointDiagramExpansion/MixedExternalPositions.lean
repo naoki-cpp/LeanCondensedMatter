@@ -200,5 +200,50 @@ theorem FixedExternalTwoPointWickDiagram.neg_one_pow_crossingCount_complex
   rw [cast_units_neg_one_pow, cast_units_neg_one_pow, cast_units_neg_one_pow] at h
   exact h
 
+/-- The external component's own pairing value, its kernel read on the ambient positions. -/
+noncomputable def FixedExternalTwoPointWickDiagram.externalPairingValue
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ) : ℂ :=
+  (d.externalPairingPiece τ τ' σ).evaluation
+    ((d.externalPairingPiece τ τ' σ).weight Common.Statistics.fermion)
+    (fun x y => mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
+      (d.externalPositionSplitting τ τ' σ (Sum.inl x))
+      (d.externalPositionSplitting τ τ' σ (Sum.inl y)))
+
+/-- The vacuum components' pairing value, its kernel read on the ambient positions. -/
+noncomputable def FixedExternalTwoPointWickDiagram.vacuumPairingValue
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ) : ℂ :=
+  (d.vacuumPairingPiece τ τ' σ).evaluation
+    ((d.vacuumPairingPiece τ τ' σ).weight Common.Statistics.fermion)
+    (fun x y => mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
+      (d.externalPositionSplitting τ τ' σ (Sum.inr x))
+      (d.externalPositionSplitting τ τ' σ (Sum.inr y)))
+
+/-- **The mixed-order pairing value factorizes into external and vacuum.**
+
+Both halves of `Pairing.evaluation` split along the same splitting: the crossing weight by the
+crossing-sign factorization, and the product over pairs because every pair lies wholly in one part.
+The only thing left over is the sign of the permutation interleaving the two parts, which does not
+depend on the pairing. -/
+theorem FixedExternalTwoPointWickDiagram.orderedTwoPointPairingValue_pairingInMixedOrder
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    orderedTwoPointPairingValue ε β i j τ τ' σ d.vertexLabelSequence
+        (d.pairingInMixedOrder τ τ' σ) =
+      d.externalVacuumInterleaveSign τ τ' σ *
+        (d.externalPairingValue ε β τ τ' σ * d.vacuumPairingValue ε β τ τ' σ) := by
+  simp only [orderedTwoPointPairingValue,
+    FixedExternalTwoPointWickDiagram.externalPairingValue,
+    FixedExternalTwoPointWickDiagram.vacuumPairingValue,
+    Pairing.evaluation, Pairing.weight_fermion]
+  rw [d.neg_one_pow_crossingCount_complex τ τ' σ,
+    prod_pairs_of_isSplit (d.externalPositionSplitting τ τ' σ)
+      (d.isSplit_externalPositionSplitting τ τ' σ)
+      (strictMono_monotonePositionSplitting_inl _ _ _)
+      (strictMono_monotonePositionSplitting_inr _ _ _)
+      (mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence)]
+  ring
+
 end Fermionic
 end SecondQuantization
