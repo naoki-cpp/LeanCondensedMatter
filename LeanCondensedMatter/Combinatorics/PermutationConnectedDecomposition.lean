@@ -33,20 +33,32 @@ private abbrev SupportedPerm (S : Finset α) :=
 private abbrev SingleOrbitPerm (S : Finset α) :=
   {σ : Equiv.Perm α // σ.support ⊆ S ∧ σ.IsCycleOn (S : Set α)}
 
-/-- The `SameCycle` partition restricted to a finite support set. -/
+/-- The canonical orbit partition, restricted from the owner `orbitFinpartition`. -/
 private noncomputable def orbitFinpartitionOn (S : Finset α) (σ : Equiv.Perm α) : Finpartition S := by
   classical
-  exact Finpartition.ofSetSetoid (Equiv.Perm.SameCycle.setoid σ) S
+  exact (orbitFinpartition σ).restrict (by simp)
 
-omit [Fintype α] in
 private theorem mem_part_orbitFinpartitionOn_iff (S : Finset α) (σ : Equiv.Perm α)
     (a b : α) :
     b ∈ (orbitFinpartitionOn S σ).part a ↔
       a ∈ S ∧ b ∈ S ∧ σ.SameCycle a b := by
   classical
-  change b ∈ (Finpartition.ofSetSetoid (Equiv.Perm.SameCycle.setoid σ) S).part a ↔
-    a ∈ S ∧ b ∈ S ∧ (Equiv.Perm.SameCycle.setoid σ) a b
-  exact Finpartition.mem_part_ofSetSetoid_iff_rel S
+  let P := orbitFinpartition σ
+  let Q := P.restrict (by simp : S ⊆ (univ : Finset α))
+  change b ∈ Q.part a ↔ a ∈ S ∧ b ∈ S ∧ σ.SameCycle a b
+  by_cases ha : a ∈ S
+  · have hpa : P.part a ∈ P.parts := P.part_mem.2 (by simp)
+    have haa : a ∈ P.part a := P.mem_part (by simp)
+    have hne : P.part a ∩ S ≠ ∅ :=
+      Finset.nonempty_iff_ne_empty.mp ⟨a, by simp [haa, ha]⟩
+    have hpartMem : P.part a ∩ S ∈ Q.parts := by
+      simp [Q, Finpartition.restrict, hpa, hne]
+    have hq : Q.part a = P.part a ∩ S :=
+      Q.part_eq_of_mem hpartMem (by simp [haa, ha])
+    rw [hq, Finset.mem_inter, mem_part_orbitFinpartition_iff]
+    simp [ha, and_assoc, and_left_comm, and_comm]
+  · have hq : Q.part a = ∅ := Q.part_eq_empty.2 ha
+    simp [hq, ha]
 
 private theorem SupportedPerm.apply_mem {S : Finset α} (σ : SupportedPerm S)
     {x : α} (hx : x ∈ S) : σ.1 x ∈ S := by
