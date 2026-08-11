@@ -127,5 +127,37 @@ theorem FixedExternalTwoPointWickDiagram.isSplit_externalPositionSplitting
     Combinatorics.monotonePositionSplitting_inl]
   exact congrArg Subtype.val hl.symm
 
+theorem FixedExternalTwoPointWickDiagram.externalPairCount_add
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    d.externalPairCount τ τ' σ + (2 * n + 1 - d.externalPairCount τ τ' σ) = 2 * n + 1 := by
+  have := d.externalPairCount_le τ τ' σ
+  omega
+
+/-- **The crossing weight splits into external and vacuum.**
+
+The between-part crossings are entirely carried by the sign of the permutation interleaving the two
+parts; within-part crossings stay with their part. Both embeddings are monotone because the parts
+are enumerated by increasing time, which is exactly what
+`neg_one_pow_crossingCount_eq_of_isSplit` assumes. -/
+theorem FixedExternalTwoPointWickDiagram.neg_one_pow_crossingCount_pairingInMixedOrder
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    (-1 : ℤˣ) ^ (d.pairingInMixedOrder τ τ' σ).crossingCount =
+      Equiv.Perm.sign
+          ((splitBlockEquiv (d.externalPairCount_add τ τ' σ)).trans
+            (d.externalPositionSplitting τ τ' σ)) *
+        ((-1) ^ ((d.pairingInMixedOrder τ τ' σ).splitLeft
+              (d.externalPositionSplitting τ τ' σ)
+              (d.isSplit_externalPositionSplitting τ τ' σ)).crossingCount *
+          (-1) ^ ((d.pairingInMixedOrder τ τ' σ).splitRight
+              (d.externalPositionSplitting τ τ' σ)
+              (d.isSplit_externalPositionSplitting τ τ' σ)).crossingCount) :=
+  neg_one_pow_crossingCount_eq_of_isSplit
+    (d.externalPositionSplitting τ τ' σ) (d.externalPairCount_add τ τ' σ)
+    (d.isSplit_externalPositionSplitting τ τ' σ)
+    (strictMono_monotonePositionSplitting_inl _ _ _)
+    (strictMono_monotonePositionSplitting_inr _ _ _)
+
 end Fermionic
 end SecondQuantization
