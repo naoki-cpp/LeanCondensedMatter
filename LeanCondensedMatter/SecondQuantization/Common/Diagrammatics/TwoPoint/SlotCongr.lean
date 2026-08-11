@@ -74,7 +74,7 @@ noncomputable def TwoPointDiagram.slotCongr (e : ↥T ≃ ↥U)
     Pairing.ofPartner ((twoPointLegCongr e).permCongr d.pairing.partner)
       ⟨by
         intro i
-        simp [Equiv.permCongr_apply, d.pairing.partner_involutive],
+        simp [Equiv.permCongr_apply],
        by
         intro i hi
         apply d.pairing.partner_ne_self ((twoPointLegCongr e).symm i)
