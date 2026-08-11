@@ -36,7 +36,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.FiniteDisorderCond
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Validation.FiniteToys
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Validation.TwoLevelExplicit
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Validation.TwoSiteDimer
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.TransportConductivityBridge
 
 set_option linter.style.header false
 
@@ -71,8 +70,9 @@ stationary layer rewrites the finite-time response exactly as a positive-lag tra
 the contact expectation time independent. The infinite-time layer proves the observation-time
 limit at every positive switching rate. The spectral layer identifies that limit with the finite
 pure-point Lehmann double sum plus the explicit geometric contact expectation. The final
-normalization layer supplies a positive finite volume and the electric-field factor `-η + iω`,
-turning the total-current vector-potential response into an intensive regularized conductivity.
+normalization layer consumes the canonical positive physical volume from `QuantumTheory.Transport`
+and the electric-field factor `-η + iω`, turning the total-current vector-potential response into an
+intensive regularized conductivity without introducing a model-specific volume representation.
 The Kubo–Greenwood layer gives this derived finite spectral expression a public name, keeps
 its diagonal, degenerate, contact, and regulator conventions explicit, and exposes it as the input
 to the later Kubo–Bastin resolvent rewrite. The finite Bastin spectral layer converts the switching
@@ -110,7 +110,7 @@ two-level model, independent currents, zero-current and sign-reversal checks, an
 two-site dimer hopping model. Its explicit-value extension evaluates the identity-current toy at
 `E = γ = 1`, providing a nonzero sign and trace-multiplicity check. The two-site dimer extension
 constructs a bounded self-adjoint hopping Hamiltonian and bond current on the finite Fock space and
-instantiates the pointwise Bastin–Středa identity. The transport bridge reuses the general
-finite-volume system convention without importing the fermionic model into the dimension-independent
-transport layer.
+instantiates the pointwise Bastin–Středa identity. Finite-volume normalization now shares the same
+canonical positive-volume datum as the dimension-independent transport layer, so no field-copying
+bridge module remains.
 -/
