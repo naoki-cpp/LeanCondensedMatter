@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.Moment
+import Mathlib.Data.Fintype.BigOperators
 
 set_option linter.style.header false
 
