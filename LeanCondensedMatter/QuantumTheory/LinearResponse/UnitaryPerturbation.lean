@@ -66,16 +66,17 @@ theorem star_mul_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
   let U : ℝ → (H →L[ℂ] H) := fun s =>
     timeDependentInteractionPropagator system V lam s
   let q : ℝ → (H →L[ℂ] H) := fun s => star (U s) * U s - 1
+  have hOne : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
+    change ‖ContinuousLinearMap.id ℂ H‖ ≤ 1
+    exact ContinuousLinearMap.norm_id_le
   have hUcont : ContinuousOn U (Icc (0 : ℝ) β) := by
     simpa [U, VI, c, timeDependentInteractionPropagator] using
-      (Dyson.continuousOn_evolution_of_bound hVcont BoundedDyson.norm_one_le
-        hM hVbound c)
+      (Dyson.continuousOn_evolution_of_bound hVcont hOne hM hVbound c)
   have hUEq : ∀ s ∈ Icc (0 : ℝ) β,
       U s = 1 - c • ∫ u in (0 : ℝ)..s, VI u * U u := by
     intro s hs
     simpa [U, VI, c, timeDependentInteractionPropagator] using
-      (Dyson.evolution_eq_one_sub_integral_of_bound hVcont BoundedDyson.norm_one_le
-        hM hVbound hs c)
+      (Dyson.evolution_eq_one_sub_integral_of_bound hVcont hOne hM hVbound hs c)
   have hUderiv : ∀ s ∈ Ico (0 : ℝ) β,
       HasDerivWithinAt U (-(c • (VI s * U s))) (Ici s) s := by
     intro s hs
@@ -130,16 +131,17 @@ theorem mul_star_timeDependentInteractionPropagator_eq_one_of_isSelfAdjoint
   let q : ℝ → (H →L[ℂ] H) := fun s => U s * star (U s) - 1
   let q' : ℝ → (H →L[ℂ] H) := fun s =>
     c • (q s * VI s - VI s * q s)
+  have hOne : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
+    change ‖ContinuousLinearMap.id ℂ H‖ ≤ 1
+    exact ContinuousLinearMap.norm_id_le
   have hUcont : ContinuousOn U (Icc (0 : ℝ) β) := by
     simpa [U, VI, c, timeDependentInteractionPropagator] using
-      (Dyson.continuousOn_evolution_of_bound hVcont BoundedDyson.norm_one_le
-        hM hVbound c)
+      (Dyson.continuousOn_evolution_of_bound hVcont hOne hM hVbound c)
   have hUEq : ∀ s ∈ Icc (0 : ℝ) β,
       U s = 1 - c • ∫ u in (0 : ℝ)..s, VI u * U u := by
     intro s hs
     simpa [U, VI, c, timeDependentInteractionPropagator] using
-      (Dyson.evolution_eq_one_sub_integral_of_bound hVcont BoundedDyson.norm_one_le
-        hM hVbound hs c)
+      (Dyson.evolution_eq_one_sub_integral_of_bound hVcont hOne hM hVbound hs c)
   have hUderiv : ∀ s ∈ Ico (0 : ℝ) β,
       HasDerivWithinAt U (-(c • (VI s * U s))) (Ici s) s := by
     intro s hs

@@ -47,8 +47,11 @@ theorem norm_interactionPropagator_sub_firstOrder_le_of_bound
         (1 + ((lam : ℂ) * (Complex.I / (system.hbar : ℂ))) •
           ∫ s in (0 : ℝ)..t, interactionPerturbation system B f s)‖ ≤
       ∑' n : ℕ, Dyson.majorant ((|lam| / system.hbar) * M) t (n + 2) := by
+  have hOne : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
+    change ‖ContinuousLinearMap.id ℂ H‖ ≤ 1
+    exact ContinuousLinearMap.norm_id_le
   have h := Dyson.norm_evolution_sub_one_add_term_one_le_of_bound
-    (interactionPerturbation system B f) BoundedDyson.norm_one_le hM hV
+    (interactionPerturbation system B f) hOne hM hV
     (physicalDysonCoupling system lam) ht
   simpa only [interactionPropagator, interactionDysonTerm_one,
     norm_physicalDysonCoupling] using h
@@ -66,8 +69,11 @@ theorem norm_interactionPropagator_sub_firstOrder_le_sq_mul_of_bound
           ∫ s in (0 : ℝ)..t, interactionPerturbation system B f s)‖ ≤
       (|lam| / system.hbar) ^ 2 *
         ∑' n : ℕ, Dyson.majorant M t (n + 2) := by
+  have hOne : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
+    change ‖ContinuousLinearMap.id ℂ H‖ ≤ 1
+    exact ContinuousLinearMap.norm_id_le
   have h := Dyson.norm_evolution_sub_one_add_term_one_le_sq_mul_of_bound
-    (interactionPerturbation system B f) BoundedDyson.norm_one_le hM hV
+    (interactionPerturbation system B f) hOne hM hV
     (physicalDysonCoupling system lam) (by simpa [norm_physicalDysonCoupling] using hlam) ht
   simpa only [interactionPropagator, interactionDysonTerm_one,
     norm_physicalDysonCoupling] using h
@@ -85,9 +91,12 @@ theorem hasDerivAt_interactionPropagator_zero_of_bound
       ((Complex.I / (system.hbar : ℂ)) •
         ∫ s in (0 : ℝ)..t, interactionPerturbation system B f s)
       0 := by
+  have hOne : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
+    change ‖ContinuousLinearMap.id ℂ H‖ ≤ 1
+    exact ContinuousLinearMap.norm_id_le
   simpa [interactionPropagator, physicalDysonCoupling] using
     Dyson.hasDerivAt_evolution_linear_coupling_zero_of_bound
-      (interactionPerturbation system B f) BoundedDyson.norm_one_le hM hV ht
+      (interactionPerturbation system B f) hOne hM hV ht
       (-(Complex.I / (system.hbar : ℂ)))
 
 end

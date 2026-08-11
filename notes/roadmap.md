@@ -46,7 +46,7 @@ specializations, not parallel APIs.
 | Countable diagonal infinite-dimensional Fredholm determinant | C | `proved` | [Fredholm determinant roadmap](roadmaps/fredholm-determinant.md) · #659 |
 | General non-self-adjoint trace-class ideal | C | `idea` | [operator algebra](roadmaps/operator-algebra.md#remaining-operator-analysis) |
 | General Fredholm determinant | C | `idea` | [Fredholm determinant roadmap](roadmaps/fredholm-determinant.md#dependency-graph-for-a-general-fredholm-determinant) |
-| Generic bounded Dyson–Volterra theory | C/D | `proved` | `Analysis/Dyson/` · `QuantumTheory/BoundedDyson.lean` |
+| Generic bounded Dyson–Volterra theory | C/D | `proved` | `Analysis/Dyson/` |
 | Generic algebraic second-quantization evolution and local-operator layer | D | `proved` | [second-quantization status](roadmaps/second-quantization-status.md) |
 | Finite-mode fermionic thermal, Dyson, and linked-cluster line | D | `proved` | [second quantization](roadmaps/second-quantization.md) |
 | Finite-temperature Bloch–de Dominicis pairing recursion and finite Gibbs instance | A/D | `proved` | [thermal expectation architecture](roadmaps/thermal-expectation-architecture.md) |

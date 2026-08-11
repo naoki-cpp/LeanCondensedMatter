@@ -94,8 +94,11 @@ theorem norm_timeDependentInteractionPropagator_sub_firstOrder_le_of_bound
         (1 + ((lam : ℂ) * (-(Complex.I / (system.hbar : ℂ)))) •
           ∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s)‖ ≤
       ∑' n : ℕ, Dyson.majorant ((|lam| / system.hbar) * M) t (n + 2) := by
+  have hOne : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
+    change ‖ContinuousLinearMap.id ℂ H‖ ≤ 1
+    exact ContinuousLinearMap.norm_id_le
   have h := Dyson.norm_evolution_sub_one_add_term_one_le_of_bound
-    (timeDependentInteractionPerturbation system V) BoundedDyson.norm_one_le hM hV
+    (timeDependentInteractionPerturbation system V) hOne hM hV
     (timeDependentPhysicalDysonCoupling system lam) ht
   simpa only [timeDependentInteractionPropagator, timeDependentDysonTerm_one,
     norm_timeDependentPhysicalDysonCoupling] using h
@@ -113,8 +116,11 @@ theorem norm_timeDependentInteractionPropagator_sub_firstOrder_le_sq_mul_of_boun
           ∫ s in (0 : ℝ)..t, timeDependentInteractionPerturbation system V s)‖ ≤
       (|lam| / system.hbar) ^ 2 *
         ∑' n : ℕ, Dyson.majorant M t (n + 2) := by
+  have hOne : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
+    change ‖ContinuousLinearMap.id ℂ H‖ ≤ 1
+    exact ContinuousLinearMap.norm_id_le
   have h := Dyson.norm_evolution_sub_one_add_term_one_le_sq_mul_of_bound
-    (timeDependentInteractionPerturbation system V) BoundedDyson.norm_one_le hM hV
+    (timeDependentInteractionPerturbation system V) hOne hM hV
     (timeDependentPhysicalDysonCoupling system lam)
     (by simpa [norm_timeDependentPhysicalDysonCoupling] using hlam) ht
   simpa only [timeDependentInteractionPropagator, timeDependentDysonTerm_one,
@@ -130,10 +136,13 @@ theorem hasDerivAt_timeDependentInteractionPropagator_zero_of_bound
       (fun lam : ℝ => timeDependentInteractionPropagator system V lam t)
       (timeDependentPropagatorFirstVariation system V t)
       0 := by
+  have hOne : ‖(1 : H →L[ℂ] H)‖ ≤ 1 := by
+    change ‖ContinuousLinearMap.id ℂ H‖ ≤ 1
+    exact ContinuousLinearMap.norm_id_le
   simpa [timeDependentInteractionPropagator, timeDependentPhysicalDysonCoupling,
     timeDependentPropagatorFirstVariation] using
     Dyson.hasDerivAt_evolution_linear_coupling_zero_of_bound
-      (timeDependentInteractionPerturbation system V) BoundedDyson.norm_one_le hM hV ht
+      (timeDependentInteractionPerturbation system V) hOne hM hV ht
       (Complex.I / (system.hbar : ℂ))
 
 end
