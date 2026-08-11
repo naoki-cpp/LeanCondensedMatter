@@ -21,7 +21,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
-      - name: Check QuantumTheory architecture
+      - name: Check architecture
         run: |
           python3 scripts/check_quantum_theory_architecture.py
           python3 scripts/check_quantum_physical_scalar_boundary.py
@@ -31,6 +31,7 @@ jobs:
           python3 scripts/check_quantum_conservation_laws.py
           python3 scripts/check_quantum_pure_point_density.py
           python3 scripts/check_quantum_normalized_expectation.py
+          python3 scripts/check_combinatorics_dependency_layers.py
       - uses: leanprover/lean-action@v1
         with:
           # Keep the whole library warning-free, including modules unchanged by the PR.

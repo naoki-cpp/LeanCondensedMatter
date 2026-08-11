@@ -1,4 +1,6 @@
-import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
+import LeanCondensedMatter.Combinatorics.Cumulant.Moment
+import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Data.Fintype.BigOperators
 
 set_option linter.style.header false
 
@@ -8,6 +10,9 @@ set_option linter.style.header false
 A combinatorial object family may decompose uniquely into a partition of its vertex set and one
 connected object on every block. Weight data are layered separately, so the same decomposition can
 be reused with different coefficient rings and physical amplitudes.
+
+This module stops at the moment transform and therefore only requires a commutative semiring.
+Möbius-inversion consequences live in `ConnectedDecompositionInversion.lean`.
 -/
 
 namespace Combinatorics
@@ -44,8 +49,6 @@ namespace MultiplicativeWeight
 attribute [local instance] ConnectedDecomposition.fintypeObject
   ConnectedDecomposition.fintypeConnectedObject
 
-section Semiring
-
 variable {α R : Type*} [DecidableEq α] [CommSemiring R]
 variable {D : ConnectedDecomposition α} (W : MultiplicativeWeight D R)
 
@@ -56,13 +59,6 @@ noncomputable def objectMoment (S : Finset α) : R :=
 /-- Total weight of all connected objects on a finite vertex set. -/
 noncomputable def connectedContribution (S : Finset α) : R :=
   ∑ d : D.ConnectedObject S, W.connectedWeight d
-
-end Semiring
-
-section Ring
-
-variable {α R : Type*} [DecidableEq α] [CommRing R]
-variable {D : ConnectedDecomposition α} (W : MultiplicativeWeight D R)
 
 /-- Object weights form the moment transform of connected-object weights. -/
 theorem objectMoment_eq_momentFromCumulant (S : Finset α) :
@@ -84,17 +80,6 @@ theorem objectMoment_eq_momentFromCumulant (S : Finset α) :
     (fun B c => W.connectedWeight c)
   rw [Fintype.piFinset_univ] at hdist
   exact hdist.symm
-
-/-- The cumulant of the total object weight is the connected-object contribution. -/
-theorem cumulantFromMoment_objectMoment {S : Finset α} (hS : S ≠ ∅) :
-    Finpartition.cumulantFromMoment W.objectMoment S = W.connectedContribution S := by
-  have h := Finpartition.cumulantFromMoment_momentFromCumulant W.connectedContribution
-    (S := S) hS
-  have hfun : Finpartition.momentFromCumulant W.connectedContribution = W.objectMoment :=
-    funext fun T => (W.objectMoment_eq_momentFromCumulant T).symm
-  rwa [hfun] at h
-
-end Ring
 
 end MultiplicativeWeight
 end Combinatorics

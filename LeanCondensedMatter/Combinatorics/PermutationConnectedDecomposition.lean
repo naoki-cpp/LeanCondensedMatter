@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
 import LeanCondensedMatter.Combinatorics.FinpartitionProduct
 import LeanCondensedMatter.Combinatorics.PermutationOrbitPartition
-import Mathlib.GroupTheory.Perm.Cycle.Factors
 
 set_option linter.style.header false
 
@@ -18,9 +17,9 @@ object on a block is supported in that block and is a single cycle on that block
 transporting the permutation type itself when partitions are compared, and matches the ambient
 kernel indices used by the multiplicative-weight layer.
 
-Support wrappers, block restrictions, assembly, and round-trip lemmas remain implementation
-details. Public declarations are reserved for the structural decomposition and the semantic
-moment/cumulant endpoints.
+Support wrappers, block restrictions, assembly, the structural decomposition object, and round-trip
+lemmas remain implementation details. Public declarations are reserved for the semantic permutation
+sum, connected-cycle contribution, and their moment characterization.
 -/
 
 namespace Combinatorics
@@ -403,13 +402,8 @@ private theorem decompose_assemble {S : Finset α} (π : Finpartition S)
       rw [extendBlockPerm_apply_not_mem B.1 _ hxB,
         SingleOrbitPerm.apply_eq_self_of_not_mem (c B') hx]
 
-/-- The canonical connected decomposition of finite permutations by their orbit blocks.
-
-Objects and connected objects are ambient permutations. An object on `S` is supported in `S`; a
-connected object on a block is supported in that block and has one `SameCycle` orbit on the block.
-The identity is therefore the connected object on a singleton block. -/
-noncomputable def permutationConnectedDecomposition (α : Type*) [DecidableEq α] [Fintype α] :
-    ConnectedDecomposition α where
+private noncomputable def permutationConnectedDecomposition
+    (α : Type*) [DecidableEq α] [Fintype α] : ConnectedDecomposition α where
   Object := SupportedPerm
   ConnectedObject := SingleOrbitPerm
   fintypeObject := fun _ => Fintype.ofFinite _
@@ -533,19 +527,11 @@ noncomputable def singleCycleContribution {R : Type*} [CommSemiring R]
   (permutationMultiplicativeWeight (α := α) ζ K).connectedContribution S
 
 /-- The arbitrary-`ζ` permutation sum is the moment transform of the single-cycle contribution. -/
-theorem permutationSum_eq_momentFromCumulant {R : Type*} [CommRing R]
+theorem permutationSum_eq_momentFromCumulant {R : Type*} [CommSemiring R]
     (ζ : R) (K : α → α → R) (S : Finset α) :
     permutationSum ζ K S =
       Finpartition.momentFromCumulant (singleCycleContribution ζ K) S :=
   (permutationMultiplicativeWeight (α := α) ζ K).objectMoment_eq_momentFromCumulant S
-
-/-- Möbius inversion of the permutation-sum family recovers the single-cycle contribution. -/
-theorem cumulantFromMoment_permutationSum_eq_singleCycleContribution
-    {R : Type*} [CommRing R] (ζ : R) (K : α → α → R)
-    {S : Finset α} (hS : S ≠ ∅) :
-    Finpartition.cumulantFromMoment (permutationSum ζ K) S =
-      singleCycleContribution ζ K S :=
-  (permutationMultiplicativeWeight (α := α) ζ K).cumulantFromMoment_objectMoment hS
 
 private noncomputable def permEquivObjectUniv :
     Equiv.Perm α ≃ (permutationConnectedDecomposition α).Object (univ : Finset α) := by
