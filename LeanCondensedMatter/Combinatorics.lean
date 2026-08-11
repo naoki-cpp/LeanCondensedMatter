@@ -20,6 +20,7 @@ import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
 import LeanCondensedMatter.Combinatorics.PerfectPairing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ExchangeSum
 import LeanCondensedMatter.Combinatorics.PermutationOrbitPartition
+import LeanCondensedMatter.Combinatorics.PermutationConnectedDecomposition
 import LeanCondensedMatter.Combinatorics.SubsetSplit
 
 set_option linter.style.header false
