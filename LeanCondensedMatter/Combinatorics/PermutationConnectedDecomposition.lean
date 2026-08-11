@@ -64,7 +64,7 @@ private theorem mem_part_orbitFinpartitionOn_iff (S : Finset α) (σ : Equiv.Per
     · rintro ⟨hsame, hbS⟩
       exact ⟨ha, hbS, hsame⟩
     · rintro ⟨_, hbS, hsame⟩
-      exact ⟨hsame, hbS⟩
+      exact ⟨hsame, hbS, hsame⟩
   · have hq : Q.part a = ∅ := Q.part_eq_empty.2 ha
     simp [hq, ha]
 
@@ -487,9 +487,10 @@ private theorem pow_cycleDefect_eq_prod_orbitBlocks {R : Type*} [CommMonoid R]
     ζ ^ cycleDefect σ.1 =
       ∏ B : (orbitFinpartitionOn S σ.1).parts, ζ ^ ((B : Finset α).card - 1) := by
   classical
-  rw [supported_cycleDefect_eq_sum_orbitFinpartitionOn σ,
-    Finset.prod_coe_sort (orbitFinpartitionOn S σ.1).parts,
-    ← Finset.prod_pow_eq_pow_sum]
+  rw [supported_cycleDefect_eq_sum_orbitFinpartitionOn σ]
+  rw [Finset.prod_subtype (orbitFinpartitionOn S σ.1).parts (fun _ => Iff.rfl)
+    (fun B : Finset α => ζ ^ (B.card - 1))]
+  rw [← Finset.prod_pow_eq_pow_sum]
 
 private theorem kernelProduct_eq_prod_orbitBlocks {R : Type*} [CommMonoid R]
     (K : α → α → R) {S : Finset α} (σ : SupportedPerm S) :
@@ -555,15 +556,22 @@ theorem permutationSum_univ_eq_sum_perm {R : Type*} [CommSemiring R]
     permutationSum ζ K univ =
       ∑ σ : Equiv.Perm α, ζ ^ cycleDefect σ * ∏ i : α, K i (σ i) := by
   classical
-  rw [permutationSum, MultiplicativeWeight.objectMoment,
-    ← Equiv.sum_comp (permEquivSupportedUniv (α := α))
-      (fun σ : SupportedPerm (univ : Finset α) =>
-        (permutationMultiplicativeWeight (α := α) ζ K).objectWeight σ)]
-  apply Finset.sum_congr rfl
-  intro σ _
-  change ζ ^ cycleDefect σ * (∏ i : (univ : Finset α), K i (σ i)) =
-    ζ ^ cycleDefect σ * ∏ i : α, K i (σ i)
-  rw [Finset.prod_coe_sort]
-  simp
+  rw [permutationSum, MultiplicativeWeight.objectMoment]
+  calc
+    (∑ d : SupportedPerm (univ : Finset α),
+        (permutationMultiplicativeWeight (α := α) ζ K).objectWeight d) =
+      ∑ σ : Equiv.Perm α,
+        (permutationMultiplicativeWeight (α := α) ζ K).objectWeight
+          ((permEquivSupportedUniv (α := α)) σ) := by
+      exact (Equiv.sum_comp (permEquivSupportedUniv (α := α))
+        (fun d : SupportedPerm (univ : Finset α) =>
+          (permutationMultiplicativeWeight (α := α) ζ K).objectWeight d)).symm
+    _ = ∑ σ : Equiv.Perm α, ζ ^ cycleDefect σ * ∏ i : α, K i (σ i) := by
+      apply Finset.sum_congr rfl
+      intro σ _
+      change ζ ^ cycleDefect σ * (∏ i : (univ : Finset α), K i (σ i)) =
+        ζ ^ cycleDefect σ * ∏ i : α, K i (σ i)
+      rw [Finset.prod_coe_sort]
+      simp
 
 end Combinatorics
