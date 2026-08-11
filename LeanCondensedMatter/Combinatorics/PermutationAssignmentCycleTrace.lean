@@ -115,7 +115,7 @@ private theorem pathKernelSum_eq_pow [CommSemiring R] [DecidableEq ι]
       rw [pathKernelSum_succ]
       simp_rw [ih]
       change (K * K ^ (n + 1)) a b = (K ^ ((n + 1) + 1)) a b
-      rw [pow_succ']
+      exact congrArg (fun M : Matrix ι ι R => M a b) (pow_succ' K (n + 1)).symm
 
 omit [Fintype ι] in
 private theorem cycleKernelWeight_finRotate [CommSemiring R] {n : ℕ}
@@ -137,14 +137,18 @@ private theorem cycleAssignmentKernelSum_finRotate_eq_trace [CommSemiring R] [De
   calc
     (∑ x : Fin (n + 1) → ι, pathKernelWeight K (x 0) (Fin.tail x) (x 0)) =
         ∑ p : ι × (Fin n → ι),
-          pathKernelWeight K ((Fin.cons p.1 p.2) 0)
-            (Fin.tail (Fin.cons p.1 p.2)) ((Fin.cons p.1 p.2) 0) := by
+          pathKernelWeight K
+            (((Fin.consEquiv (fun _ : Fin (n + 1) => ι)) p) 0)
+            (Fin.tail ((Fin.consEquiv (fun _ : Fin (n + 1) => ι)) p))
+            (((Fin.consEquiv (fun _ : Fin (n + 1) => ι)) p) 0) := by
       exact (Equiv.sum_comp (Fin.consEquiv (fun _ : Fin (n + 1) => ι))
         (fun x => pathKernelWeight K (x 0) (Fin.tail x) (x 0))).symm
     _ = ∑ p : ι × (Fin n → ι), pathKernelWeight K p.1 p.2 p.1 := by
       apply Finset.sum_congr rfl
       intro p _
-      simp only [Fin.cons_zero, Fin.tail_cons]
+      change pathKernelWeight K p.1 (Fin.tail (Fin.cons p.1 p.2)) p.1 =
+        pathKernelWeight K p.1 p.2 p.1
+      rw [Fin.tail_cons]
     _ = ∑ a : ι, pathKernelSum K n a a := by
       rw [Fintype.sum_prod_type]
       rfl
