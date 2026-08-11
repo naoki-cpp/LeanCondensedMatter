@@ -16,7 +16,8 @@ Schrödinger Hamiltonian. The remaining analytic task is now isolated cleanly as
 regularity: prove that every vector in the adjoint domain actually belongs to `H²(ℝ)`.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -74,4 +75,5 @@ theorem continuumRealPotentialSchrodingerHamiltonian1D_isSelfAdjoint_iff_adjoint
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics
