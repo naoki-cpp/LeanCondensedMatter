@@ -13,7 +13,7 @@ API does not yet provide the converse regularity statement identifying `H²` wit
 `L²` functions whose distributional Laplacian has an `L²` representative.
 
 This file therefore isolates the closed-operator statement at the maximal distributional level.
-The domain consists exactly of `L²` wavefunctions whose distributional laplacian is represented by
+The domain consists exactly of `L²` wavefunctions whose distributional Laplacian is represented by
 another `L²` function. The resulting partial linear map is closed because its graph is the equality
 locus of two continuous maps into tempered distributions.
 
