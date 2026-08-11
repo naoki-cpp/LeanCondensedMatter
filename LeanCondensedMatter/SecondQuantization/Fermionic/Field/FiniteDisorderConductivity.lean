@@ -43,7 +43,7 @@ noncomputable def finiteDisorderConfigurationStaticConductivity
     (hbar : ℝ) (hbar_pos : 0 < hbar)
     (spectralData : (ω : Ω) → PurePointLehmannData
       (ensemble.configurationSystem hbar hbar_pos ω) ι)
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta : ℝ) (ω : Ω) : ℂ :=
   finiteDimensionalStaticKuboBastinDirectionalConductivity
@@ -57,7 +57,7 @@ noncomputable def finiteDisorderAveragedStaticConductivity
     (hbar : ℝ) (hbar_pos : 0 < hbar)
     (spectralData : (ω : Ω) → PurePointLehmannData
       (ensemble.configurationSystem hbar hbar_pos ω) ι)
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta : ℝ) : ℂ :=
   ensemble.average (fun ω =>
@@ -72,7 +72,7 @@ theorem finiteDisorderAveragedStaticConductivity_eq_sum
     (hbar : ℝ) (hbar_pos : 0 < hbar)
     (spectralData : (ω : Ω) → PurePointLehmannData
       (ensemble.configurationSystem hbar hbar_pos ω) ι)
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta : ℝ) :
     finiteDisorderAveragedStaticConductivity
@@ -92,7 +92,7 @@ theorem finiteDisorderConfigurationStaticConductivity_eq_tracedBastin
     (hbar : ℝ) (hbar_pos : 0 < hbar)
     (spectralData : (ω : Ω) → PurePointLehmannData
       (ensemble.configurationSystem hbar hbar_pos ω) ι)
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site)
     (q eta lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ)
@@ -127,7 +127,7 @@ theorem finiteDisorderAveragedStaticConductivity_eq_tracedBastinAverage
     (hbar : ℝ) (hbar_pos : 0 < hbar)
     (spectralData : (ω : Ω) → PurePointLehmannData
       (ensemble.configurationSystem hbar hbar_pos ω) ι)
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site)
     (q eta lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ)
@@ -178,7 +178,7 @@ theorem finiteDisorderAveragedStaticConductivity_eq_spectralEnergyIntegralAverag
     (hbar : ℝ) (hbar_pos : 0 < hbar)
     (spectralData : (ω : Ω) → PurePointLehmannData
       (ensemble.configurationSystem hbar hbar_pos ω) ι)
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site)
     (q eta lowerEnergy upperEnergy : ℝ) (occupation : ℝ → ℂ)
