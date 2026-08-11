@@ -191,6 +191,8 @@ theorem FixedExternalTwoPointWickDiagram.neg_one_pow_crossingCount_complex
           (-1 : ℂ) ^ (d.vacuumPairingPiece τ τ' σ).crossingCount) := by
   have h := congrArg (fun u : ℤˣ => ((u : ℤ) : ℂ))
     (d.neg_one_pow_crossingCount_pairingInMixedOrder τ τ' σ)
+  simp only [Units.val_mul, Units.val_pow_eq_pow_val, Units.val_neg_one, Int.cast_mul,
+    Int.cast_pow, Int.cast_neg, Int.cast_one] at h
   simpa [FixedExternalTwoPointWickDiagram.externalVacuumInterleaveSign,
     FixedExternalTwoPointWickDiagram.externalPairingPiece,
     FixedExternalTwoPointWickDiagram.vacuumPairingPiece] using h
