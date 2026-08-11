@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Amplitude
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.VacuumLeg
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairing
 import LeanCondensedMatter.Combinatorics.InvolutionCard
