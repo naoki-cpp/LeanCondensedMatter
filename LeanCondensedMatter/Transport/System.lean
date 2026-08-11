@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.Postulates
+import LeanCondensedMatter.Transport.FiniteVolume
 
 set_option linter.style.header false
 
@@ -27,9 +28,9 @@ zᴬ(E, η) = E - i η,
 with `η > 0`. Corresponding resolvents can therefore be defined as
 `(zᴿ(E, η) I - H)⁻¹` and `(zᴬ(E, η) I - H)⁻¹` once the required inverse API is available.
 
-Physical finite-volume normalization is represented separately by `FiniteVolumeSystem`.
-An infinite-dimensional Hilbert space may still describe a finite-volume system; this is
-distinct from an infinite-volume or thermodynamic-limit construction.
+Physical finite-volume normalization is represented separately by `PositiveVolume` and reused by
+`FiniteVolumeSystem`. An infinite-dimensional Hilbert space may still describe a finite-volume
+system; this is distinct from an infinite-volume or thermodynamic-limit construction.
 
 This module fixes data only. It does not prove linear response, define a source coupling,
 or adopt a Kubo–Bastin trace formula as a foundational conductivity law.
@@ -103,12 +104,9 @@ structure BoundedSystem (H : Type*) [NormedAddCommGroup H] [InnerProductSpace �
   fermiProjector_commutes_hamiltonian :
     fermiProjector ∘L hamiltonian.1 = hamiltonian.1 ∘L fermiProjector
 
-/-- A bounded transport system equipped with a positive finite sample volume. -/
+/-- A bounded transport system equipped with canonical positive finite-volume data. -/
 structure FiniteVolumeSystem (H : Type*) [NormedAddCommGroup H] [InnerProductSpace ℂ H]
-    [CompleteSpace H] extends BoundedSystem H where
-  /-- Finite sample volume used to normalize extensive response quantities. -/
-  volume : ℝ
-  volume_pos : 0 < volume
+    [CompleteSpace H] extends BoundedSystem H, PositiveVolume
 
 namespace BoundedSystem
 
