@@ -127,6 +127,68 @@ theorem Pairing.partner_splitRight (i : Fin (2 * b)) :
 
 end Right
 
+section Assemble
+
+private theorem sumCongr_involutive {α β : Type*} (p : Equiv.Perm α) (q : Equiv.Perm β)
+    (hp : Function.Involutive p) (hq : Function.Involutive q) :
+    Function.Involutive (Equiv.sumCongr p q) := by
+  rintro (x | x)
+  · exact congrArg Sum.inl (hp x)
+  · exact congrArg Sum.inr (hq x)
+
+private theorem sumCongr_ne_self {α β : Type*} (p : Equiv.Perm α) (q : Equiv.Perm β)
+    (hp : ∀ x, p x ≠ x) (hq : ∀ x, q x ≠ x) (x : α ⊕ β) :
+    Equiv.sumCongr p q x ≠ x := by
+  rcases x with x | x
+  · exact fun h => hp x (Sum.inl.inj h)
+  · exact fun h => hq x (Sum.inr.inj h)
+
+private theorem permCongr_involutive {α β : Type*} (e : α ≃ β)
+    (p : Equiv.Perm α) (hp : Function.Involutive p) :
+    Function.Involutive (e.permCongr p) := by
+  intro x
+  simp [Equiv.permCongr_apply, hp (e.symm x)]
+
+private theorem permCongr_ne_self {α β : Type*} (e : α ≃ β)
+    (p : Equiv.Perm α) (hp : ∀ x, p x ≠ x) (x : β) :
+    e.permCongr p x ≠ x := by
+  intro h
+  rw [Equiv.permCongr_apply, Equiv.apply_eq_iff_eq_symm_apply] at h
+  exact hp _ h
+
+/-- **Assemble a pairing from a pairing on each part.** Inverse construction to `splitLeft` and
+`splitRight`: no pair joins the two parts, so the two partner maps can simply be run side by side. -/
+noncomputable def Pairing.ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
+    Pairing n :=
+  Pairing.ofPartner (e.permCongr (Equiv.sumCongr P.partner Q.partner))
+    ⟨permCongr_involutive _ _
+        (sumCongr_involutive _ _ P.partner_involutive Q.partner_involutive),
+      permCongr_ne_self _ _
+        (sumCongr_ne_self _ _ P.partner_ne_self Q.partner_ne_self)⟩
+
+@[simp]
+theorem Pairing.ofSplit_partner_inl (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
+    (i : Fin (2 * a)) :
+    (Pairing.ofSplit e P Q).partner (e (Sum.inl i)) = e (Sum.inl (P.partner i)) := by
+  change e (Equiv.sumCongr P.partner Q.partner (e.symm (e (Sum.inl i)))) = _
+  rw [e.symm_apply_apply]
+  rfl
+
+@[simp]
+theorem Pairing.ofSplit_partner_inr (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
+    (i : Fin (2 * b)) :
+    (Pairing.ofSplit e P Q).partner (e (Sum.inr i)) = e (Sum.inr (Q.partner i)) := by
+  change e (Equiv.sumCongr P.partner Q.partner (e.symm (e (Sum.inr i)))) = _
+  rw [e.symm_apply_apply]
+  rfl
+
+/-- An assembled pairing is split by the splitting it was assembled along. -/
+theorem Pairing.isSplit_ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
+    (Pairing.ofSplit e P Q).IsSplit e := fun i =>
+  ⟨P.partner i, Pairing.ofSplit_partner_inl e P Q i⟩
+
+end Assemble
+
 section Sign
 
 /-- Regroup the block-slot presentation of `Fin (2 * n)` along a split of its `n` pairs into `a`
