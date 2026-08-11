@@ -53,7 +53,7 @@ theorem singleCycleContribution_of_card_eq
       ζ ^ (m - 1) * singleCycleKernelSum K S := by
   rw [singleCycleContribution_eq_pow_card_mul_singleCycleKernelSum, hcard]
 
-noncomputable local instance fullCycleFintype :
+noncomputable local instance :
     Fintype {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)} :=
   Fintype.ofFinite _
 
