@@ -20,7 +20,8 @@ then forces `u ∈ H²`, which is exactly the reverse domain inclusion required 
 proved self-adjointness criterion.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -102,4 +103,5 @@ theorem continuumRealPotentialSchrodingerHamiltonian1D_isSelfAdjoint
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics
