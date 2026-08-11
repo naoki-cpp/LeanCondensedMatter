@@ -129,7 +129,10 @@ theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_zero_domain
       HasDerivAt
         (fun t : ℝ => resolventApproximationEvolution A hA r hr t (x : H))
         ((-I : ℂ) • Ar (x : H)) 0 := by
-    simpa [Ar] using
+    change HasDerivAt
+      (fun t : ℝ => resolventApproximationEvolution A hA r hr t (x : H))
+      ((-I : ℂ) • boundedSelfAdjointApproximation A hA r hr (x : H)) 0
+    simpa [resolventApproximationEvolution_zero] using
       resolventApproximationEvolution_apply_hasDerivAt A hA r hr 0 (x : H)
   have hsmall0 :=
     (Metric.tendsto_nhds.mp (hasDerivAt_iff_tendsto.mp hUr)) (ε / 2) (by positivity)
@@ -150,7 +153,7 @@ theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_zero_domain
   filter_upwards [hsmall] with t ht
   by_cases ht0 : t = 0
   · subst t
-    simp
+    simpa using hε
   · have habs_ne : |t| ≠ 0 := abs_ne_zero.mpr ht0
     have hinv_nonneg : 0 ≤ ‖t‖⁻¹ := inv_nonneg.mpr (norm_nonneg t)
     have happrox :=
@@ -204,8 +207,21 @@ theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_zero_domain
               t • ((-I : ℂ) • Ar (x : H))‖ +
             ‖t • (((-I : ℂ) • Ar (x : H)) - ((-I : ℂ) • A x))‖ := by
       rw [hdecomp]
-      exact (norm_add_le _ _).trans
-        (add_le_add_right (norm_add_le _ _) _)
+      calc
+        ‖(resolventEvolutionStrongLimitOperator A hA t (x : H) -
+              resolventApproximationEvolution A hA r hr t (x : H)) +
+            (resolventApproximationEvolution A hA r hr t (x : H) - (x : H) -
+              t • ((-I : ℂ) • Ar (x : H))) +
+            t • (((-I : ℂ) • Ar (x : H)) - ((-I : ℂ) • A x))‖ ≤
+            ‖(resolventEvolutionStrongLimitOperator A hA t (x : H) -
+                resolventApproximationEvolution A hA r hr t (x : H)) +
+              (resolventApproximationEvolution A hA r hr t (x : H) - (x : H) -
+                t • ((-I : ℂ) • Ar (x : H)))‖ +
+              ‖t • (((-I : ℂ) • Ar (x : H)) - ((-I : ℂ) • A x))‖ :=
+          norm_add_le _ _
+        _ ≤ _ := by
+          gcongr
+          exact norm_add_le _ _
     have hscaled :
         ‖t‖⁻¹ *
             ‖resolventEvolutionStrongLimitOperator A hA t (x : H) - (x : H) -
@@ -235,7 +251,11 @@ theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_zero_domain
           ‖resolventEvolutionStrongLimitOperator A hA t (x : H) - (x : H) -
             t • ((-I : ℂ) • A x)‖ :=
       mul_nonneg hinv_nonneg (norm_nonneg _)
-    rw [resolventApproximationEvolution_zero] at ht
+    have hmiddle :
+        ‖t‖⁻¹ *
+            ‖resolventApproximationEvolution A hA r hr t (x : H) - (x : H) -
+              t • ((-I : ℂ) • Ar (x : H))‖ < ε / 2 := by
+      simpa using ht
     have htarget :
         ‖t‖⁻¹ *
           ‖resolventEvolutionStrongLimitOperator A hA t (x : H) - (x : H) -
@@ -245,7 +265,7 @@ theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_zero_domain
               ‖t • (((-I : ℂ) • Ar (x : H)) - ((-I : ℂ) • A x))‖ < ε / 4 := by
         rw [hthird]
         exact hgen
-      exact lt_of_le_of_lt hscaled (by linarith [hfirst, hgen, ht, hthird'])
+      exact lt_of_le_of_lt hscaled (by linarith [hfirst, hgen, hmiddle, hthird'])
     simpa [resolventEvolutionStrongLimitOperator_zero, Real.dist_eq,
       abs_of_nonneg htargetNonneg] using htarget
 
@@ -258,11 +278,23 @@ theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_domain
       ((-I : ℂ) • resolventEvolutionStrongLimitOperator A hA t (A x)) t := by
   let U : ℝ → H →L[ℂ] H := resolventEvolutionStrongLimitOperator A hA
   have hzero := resolventEvolutionStrongLimitOperator_apply_hasDerivAt_zero_domain A hA x
+  have hzero' :
+      HasDerivAt (fun s : ℝ => U s (x : H)) ((-I : ℂ) • A x) (t + (-t)) := by
+    simpa [U] using hzero
   have hshift :
-      HasDerivAt (fun s : ℝ => U (s + (-t)) (x : H)) ((-I : ℂ) • A x) t := by
-    simpa using hzero.comp_add_const t (-t)
+      HasDerivAt (fun s : ℝ => U (s + (-t)) (x : H)) ((-I : ℂ) • A x) t :=
+    hzero'.comp_add_const t (-t)
   have hmap :=
     (((U t).restrictScalars ℝ).hasFDerivAt.comp t hshift.hasFDerivAt).hasDerivAt
+  have hmap' :
+      HasDerivAt
+        (fun s : ℝ => U t (U (s + (-t)) (x : H)))
+        ((-I : ℂ) • U t (A x)) t := by
+    change HasDerivAt
+      (fun s : ℝ => U t (U (s + (-t)) (x : H)))
+      (U t ((-I : ℂ) • A x)) t at hmap
+    rw [(U t).map_smul] at hmap
+    exact hmap
   have hfun :
       (fun s : ℝ => U t (U (s + (-t)) (x : H))) =
         (fun s : ℝ => U s (x : H)) := by
@@ -273,7 +305,7 @@ theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_domain
     rw [htime] at happ
     simpa [U] using happ.symm
   rw [← hfun]
-  simpa [U] using hmap
+  simpa [U] using hmap'
 
 /-- Generator form of the Stone differential equation on the invariant domain. -/
 theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_generator
