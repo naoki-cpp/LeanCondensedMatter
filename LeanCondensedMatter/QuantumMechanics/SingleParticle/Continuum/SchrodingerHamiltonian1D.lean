@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.Continuum.L2SmearedProbabilityDensity1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2SmearedProbabilityDensity1D
 import Mathlib.Analysis.Distribution.Sobolev
 import Mathlib.LinearAlgebra.LinearPMap
 import Mathlib.Tactic
