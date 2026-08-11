@@ -8,14 +8,13 @@ set_option linter.style.header false
 # Formal trace-log interpretation of connected permutation cycles
 
 This file completes the formal-log layer of W3 without constructing a power series over the
-noncommutative matrix algebra. Mathlib's scalar `PowerSeries.log` remains the sole logarithm.
-Its `m`-th coefficient is rescaled by `(-ζ)^m`, then paired with the matrix power trace
-`tr(K^m)`.
+noncommutative matrix algebra. Mathlib's scalar `PowerSeries.log` and `PowerSeries.rescale` remain
+the sole logarithm and scalar-substitution implementations. The rescaled scalar logarithm is then
+paired coefficientwise with the matrix power trace `tr(K^m)`.
 
-The resulting scalar series is the coefficientwise meaning of
-`tr log(1 - ζ t K)`. For `ζ ≠ 0`, the connected-cycle series is `-(1/ζ)` times this trace-log
-series. The already-established `ζ = 0` boundary remains coefficientwise and requires no division
-by `ζ`.
+The resulting scalar series is the coefficientwise meaning of `tr log(1 - ζ t K)`. For `ζ ≠ 0`,
+the connected-cycle series is `-(1/ζ)` times this trace-log series. The already-established
+`ζ = 0` boundary remains coefficientwise and requires no division by `ζ`.
 -/
 
 namespace Combinatorics
@@ -37,23 +36,13 @@ theorem coeff_tracePowerTransform
       PowerSeries.coeff m f * Matrix.trace (K ^ m) :=
   PowerSeries.coeff_mk m _
 
-/-- The scalar logarithm `log(1 + X)` with its degree-`m` coefficient rescaled by `(-ζ)^m`.
+/-- The formal scalar series representing `tr log(1 - ζ t K)` through matrix power traces.
 
-Coefficientwise this is `log(1 - ζ X)`. Keeping the rescaling explicit avoids introducing a second
-project-local logarithm implementation. -/
-noncomputable def exchangeRescaledLogSeries (ζ : ℂ) : PowerSeries ℂ :=
-  PowerSeries.mk fun m => (-ζ) ^ m * PowerSeries.coeff m (PowerSeries.log ℂ)
-
-@[simp]
-theorem coeff_exchangeRescaledLogSeries (ζ : ℂ) (m : ℕ) :
-    PowerSeries.coeff m (exchangeRescaledLogSeries ζ) =
-      (-ζ) ^ m * PowerSeries.coeff m (PowerSeries.log ℂ) :=
-  PowerSeries.coeff_mk m _
-
-/-- The formal scalar series representing `tr log(1 - ζ t K)` through matrix power traces. -/
+`PowerSeries.rescale (-ζ)` is Mathlib's substitution `f(X) ↦ f(-ζ X)`, so this definition uses
+Mathlib's `log(1 + X)` directly rather than reimplementing logarithm coefficients. -/
 noncomputable def formalTraceLogOneSubSeries
     (ζ : ℂ) (K : Matrix ι ι ℂ) : PowerSeries ℂ :=
-  tracePowerTransform K (exchangeRescaledLogSeries ζ)
+  tracePowerTransform K (PowerSeries.rescale (-ζ) (PowerSeries.log ℂ))
 
 @[simp]
 theorem coeff_formalTraceLogOneSubSeries
@@ -91,7 +80,7 @@ private theorem neg_pow_mul_neg_one_pow_succ (ζ : ℂ) (m : ℕ) :
 /-- Positive coefficients of the formal trace-log series are
 `-ζ^m tr(K^m) / m`. -/
 theorem coeff_formalTraceLogOneSubSeries_of_pos
-    [DecidableEq ι] (ζ : ℂ) (K : Matrix ι ι ℂ) (m : ℕ) (hm : 0 < m) :
+    (ζ : ℂ) (K : Matrix ι ι ℂ) (m : ℕ) (hm : 0 < m) :
     PowerSeries.coeff m (formalTraceLogOneSubSeries ζ K) =
       -(ζ ^ m * Matrix.trace (K ^ m) / (m : ℂ)) := by
   rw [coeff_formalTraceLogOneSubSeries, coeff_log_complex_of_pos m hm]
