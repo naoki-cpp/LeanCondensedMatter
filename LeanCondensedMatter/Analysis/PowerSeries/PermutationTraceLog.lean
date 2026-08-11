@@ -94,6 +94,41 @@ theorem coeff_formalTraceLogOneSubSeries_of_pos
       rw [neg_pow_mul_neg_one_pow_succ]
     _ = -(ζ ^ m * Matrix.trace (K ^ m) / (m : ℂ)) := by ring
 
+private theorem diagonal_pow (w : ι → ℂ) (m : ℕ) :
+    Matrix.diagonal w ^ m = Matrix.diagonal (fun i => w i ^ m) := by
+  induction m with
+  | zero => simp
+  | succ m ih =>
+      calc
+        Matrix.diagonal w ^ (m + 1) =
+            Matrix.diagonal w ^ m * Matrix.diagonal w := by
+          rw [pow_succ]
+        _ = Matrix.diagonal (fun i => w i ^ m) * Matrix.diagonal w := by
+          rw [ih]
+        _ = Matrix.diagonal (fun i => w i ^ m * w i) :=
+          Matrix.diagonal_mul_diagonal _ _
+        _ = Matrix.diagonal (fun i => w i ^ (m + 1)) := by
+          simp only [pow_succ]
+
+private theorem trace_diagonal_pow (w : ι → ℂ) (m : ℕ) :
+    Matrix.trace (Matrix.diagonal w ^ m) = ∑ i : ι, w i ^ m := by
+  rw [diagonal_pow, Matrix.trace_diagonal]
+
+/-- For a diagonal kernel, the formal trace-log decomposes into one scalar formal logarithm per
+mode, for arbitrary exchange weight `ζ`. -/
+theorem formalTraceLogOneSubSeries_diagonal_eq_sum_rescale_log
+    (ζ : ℂ) (w : ι → ℂ) :
+    formalTraceLogOneSubSeries ζ (Matrix.diagonal w) =
+      ∑ i : ι, PowerSeries.rescale (-ζ * w i) (PowerSeries.log ℂ) := by
+  ext m
+  rw [coeff_formalTraceLogOneSubSeries, trace_diagonal_pow]
+  simp only [map_sum, PowerSeries.coeff_rescale]
+  rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro i _
+  rw [mul_pow]
+  ring
+
 /-- Coefficientwise formal trace-log identity for nonzero exchange weight:
 
 `C_{ζ,K}(t) = -(1/ζ) tr log(1 - ζ t K)`.
@@ -125,6 +160,15 @@ theorem permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog
   change PowerSeries.coeff m (permutationConnectedCycleSeries ζ K) =
     (-ζ⁻¹) * PowerSeries.coeff m (formalTraceLogOneSubSeries ζ K)
   exact coeff_permutationConnectedCycleSeries_eq_neg_inv_mul_traceLog ζ K m hζ
+
+/-- For a diagonal kernel and nonzero exchange weight, the connected-cycle series is the scaled sum
+of the modewise formal logarithms `log(1 - ζ wᵢ t)`. -/
+theorem permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log
+    (ζ : ℂ) (w : ι → ℂ) (hζ : ζ ≠ 0) :
+    permutationConnectedCycleSeries ζ (Matrix.diagonal w) =
+      (-ζ⁻¹) • ∑ i : ι, PowerSeries.rescale (-ζ * w i) (PowerSeries.log ℂ) := by
+  rw [permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog ζ (Matrix.diagonal w) hζ]
+  rw [formalTraceLogOneSubSeries_diagonal_eq_sum_rescale_log]
 
 /-- Fermionic endpoint: at `ζ = -1`, the connected series is the formal trace of `log(1 + tK)`. -/
 theorem permutationConnectedCycleSeries_neg_one_eq_traceLog
