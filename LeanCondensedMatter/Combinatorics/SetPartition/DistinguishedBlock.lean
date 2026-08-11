@@ -1,5 +1,6 @@
-import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
+import LeanCondensedMatter.Combinatorics.Cumulant.Moment
 import Mathlib.Algebra.BigOperators.Group.Finset.Powerset
+import Mathlib.Data.Fintype.BigOperators
 
 set_option linter.style.header false
 
@@ -139,8 +140,12 @@ def distinguishedBlockEquiv (s : Finset α) (a : α) (ha : a ∈ s) :
     rw [hpart]
     exact heq_of_eq (avoid_extend_eq B.2.1 B.2.2 Q)
 
+section Semiring
+
+variable {R : Type*} [CommSemiring R]
+
 private theorem partitionProduct_distinguishedBlockEquiv_symm
-    (κ : Finset α → ℂ) {s : Finset α} {a : α} (ha : a ∈ s)
+    (κ : Finset α → R) {s : Finset α} {a : α} (ha : a ∈ s)
     (x : Σ B : BlockContaining s a, Finpartition (s \ B.1)) :
     partitionProduct κ ((distinguishedBlockEquiv s a ha).symm x) =
       κ x.1.1 * partitionProduct κ x.2 := by
@@ -154,7 +159,7 @@ private theorem partitionProduct_distinguishedBlockEquiv_symm
   exact (Finset.mem_sdiff.mp haDiff).2 B.2.2
 
 /-- The moment sum splits by the block containing a distinguished element. -/
-theorem momentFromCumulant_eq_sum_blockContaining (κ : Finset α → ℂ)
+theorem momentFromCumulant_eq_sum_blockContaining (κ : Finset α → R)
     {s : Finset α} {a : α} (ha : a ∈ s) :
     momentFromCumulant κ s =
       ∑ B : BlockContaining s a,
@@ -171,10 +176,10 @@ theorem momentFromCumulant_eq_sum_blockContaining (κ : Finset α → ℂ)
 set_option linter.unusedDecidableInType false in
 /-- Reindex a cardinality-dependent sum over distinguished blocks by their size. -/
 theorem sum_blockContaining_card (s : Finset α) (a : α) (ha : a ∈ s)
-    (f : ℕ → ℂ) :
+    (f : ℕ → R) :
     (∑ B : BlockContaining s a, f B.1.card) =
       ∑ k ∈ Finset.range s.card,
-        (Nat.choose (s.card - 1) k : ℂ) * f (k + 1) := by
+        (Nat.choose (s.card - 1) k : R) * f (k + 1) := by
   classical
   rw [← Equiv.sum_comp (blockContainingEquivPowerset s a ha).symm]
   change (∑ T : {T : Finset α // T ∈ (s.erase a).powerset},
@@ -196,10 +201,12 @@ theorem sum_blockContaining_card (s : Finset α) (a : α) (ha : a ∈ s)
         exact (Finset.mem_erase.mp hsub).1 rfl
       have hTk : T.card = k := (Finset.mem_powersetCard.mp hT).2
       rw [Finset.card_insert_of_notMem hTa, hTk]
-    _ = (Nat.choose (s.card - 1) k : ℂ) * f (k + 1) := by
+    _ = (Nat.choose (s.card - 1) k : R) * f (k + 1) := by
       rw [Finset.sum_const, Finset.card_powersetCard]
       have herase : (s.erase a).card = s.card - 1 := Finset.card_erase_of_mem ha
       rw [herase]
       simp [nsmul_eq_mul]
+
+end Semiring
 
 end Finpartition
