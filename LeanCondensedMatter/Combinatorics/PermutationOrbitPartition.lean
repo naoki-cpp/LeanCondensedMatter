@@ -23,8 +23,9 @@ omits fixed-point 1-cycles, which contribute zero to this sum, so the native def
 with the same excess summed over the canonical orbit partition, including singleton fixed-point
 orbits with zero contribution.
 
-The decidability of `SameCycle` is taken as an instance argument, following Mathlib's own
-`Equiv.Perm.cycleOf`. Any two choices agree, since `DecidableRel` is a subsingleton.
+The decidability of `SameCycle` is taken as an instance argument by the structural partition API.
+The cycle-factor comparison uses Mathlib's canonical decidability instance supplied by the finite
+index type.
 -/
 
 namespace Combinatorics
@@ -81,7 +82,7 @@ theorem mem_part_orbitFinpartition_iff (σ : Perm α) [DecidableRel σ.SameCycle
     b ∈ (orbitFinpartition σ).part a ↔ σ.SameCycle a b :=
   Finpartition.mem_part_ofSetoid_iff_rel
 
-private theorem support_cycleOf_eq_orbitPart (σ : Perm α) [DecidableRel σ.SameCycle]
+private theorem support_cycleOf_eq_orbitPart (σ : Perm α)
     (x : α) (hx : x ∈ σ.support) :
     (σ.cycleOf x).support = (orbitFinpartition σ).part x := by
   ext y
@@ -93,17 +94,16 @@ private theorem support_cycleOf_eq_orbitPart (σ : Perm α) [DecidableRel σ.Sam
     exact (Equiv.Perm.mem_support_cycleOf_iff' (Equiv.Perm.mem_support.mp hx)).2
       ((mem_part_orbitFinpartition_iff σ x y).1 hy)
 
-private noncomputable def orbitRepresentative (σ : Perm α) [DecidableRel σ.SameCycle]
+private noncomputable def orbitRepresentative (σ : Perm α)
     (B : (orbitFinpartition σ).parts) : α :=
   Classical.choose ((orbitFinpartition σ).nonempty_of_mem_parts B.2)
 
-private theorem orbitRepresentative_mem (σ : Perm α) [DecidableRel σ.SameCycle]
+private theorem orbitRepresentative_mem (σ : Perm α)
     (B : (orbitFinpartition σ).parts) : orbitRepresentative σ B ∈ B.1 :=
   Classical.choose_spec ((orbitFinpartition σ).nonempty_of_mem_parts B.2)
 
 private theorem orbitRepresentative_mem_support_of_one_lt_card
-    (σ : Perm α) [DecidableRel σ.SameCycle]
-    (B : (orbitFinpartition σ).parts) (hB : 1 < B.1.card) :
+    (σ : Perm α) (B : (orbitFinpartition σ).parts) (hB : 1 < B.1.card) :
     orbitRepresentative σ B ∈ σ.support := by
   by_contra hnot
   have hfix : σ (orbitRepresentative σ B) = orbitRepresentative σ B := by
@@ -116,11 +116,11 @@ private theorem orbitRepresentative_mem_support_of_one_lt_card
     exact hyB
   exact hyne (hsame.eq_of_left hfix).symm
 
-private noncomputable def orbitBlockCycle (σ : Perm α) [DecidableRel σ.SameCycle]
+private noncomputable def orbitBlockCycle (σ : Perm α)
     (B : (orbitFinpartition σ).parts) : Perm α :=
   σ.cycleOf (orbitRepresentative σ B)
 
-private theorem orbitBlockCycle_support_eq (σ : Perm α) [DecidableRel σ.SameCycle]
+private theorem orbitBlockCycle_support_eq (σ : Perm α)
     (B : (orbitFinpartition σ).parts) (hB : 1 < B.1.card) :
     (orbitBlockCycle σ B).support = B.1 := by
   calc
@@ -131,15 +131,14 @@ private theorem orbitBlockCycle_support_eq (σ : Perm α) [DecidableRel σ.SameC
     _ = B.1 := (orbitFinpartition σ).part_eq_of_mem B.2 (orbitRepresentative_mem σ B)
 
 private theorem orbitBlockCycle_mem_cycleFactorsFinset
-    (σ : Perm α) [DecidableRel σ.SameCycle]
-    (B : (orbitFinpartition σ).parts) (hB : 1 < B.1.card) :
+    (σ : Perm α) (B : (orbitFinpartition σ).parts) (hB : 1 < B.1.card) :
     orbitBlockCycle σ B ∈ σ.cycleFactorsFinset := by
   exact Equiv.Perm.cycleOf_mem_cycleFactorsFinset_iff.2
     (orbitRepresentative_mem_support_of_one_lt_card σ B hB)
 
 /-- The cycle defect is the sum of `|B| - 1` over the canonical orbit blocks. Singleton fixed-point
 orbits contribute zero. -/
-theorem cycleDefect_eq_sum_orbitFinpartition (σ : Perm α) [DecidableRel σ.SameCycle] :
+theorem cycleDefect_eq_sum_orbitFinpartition (σ : Perm α) :
     cycleDefect σ = ∑ B ∈ (orbitFinpartition σ).parts, (B.card - 1) := by
   classical
   have hfilter :
@@ -162,11 +161,7 @@ theorem cycleDefect_eq_sum_orbitFinpartition (σ : Perm α) [DecidableRel σ.Sam
     · intro B hB
       exact orbitBlockCycle_mem_cycleFactorsFinset σ
         ⟨B, (Finset.mem_filter.mp hB).1⟩ (Finset.mem_filter.mp hB).2
-    · intro B hB
-      have hsupp := orbitBlockCycle_support_eq σ
-        ⟨B, (Finset.mem_filter.mp hB).1⟩ (Finset.mem_filter.mp hB).2
-      simpa using congrArg (fun s : Finset α => s.card - 1) hsupp.symm
-    · intro B₁ B₂ hB₁ hB₂ heq
+    · intro B₁ hB₁ B₂ hB₂ heq
       have hs := congrArg Equiv.Perm.support heq
       rw [orbitBlockCycle_support_eq σ ⟨B₁, (Finset.mem_filter.mp hB₁).1⟩
           (Finset.mem_filter.mp hB₁).2,
@@ -185,6 +180,7 @@ theorem cycleDefect_eq_sum_orbitFinpartition (σ : Perm α) [DecidableRel σ.Sam
           c.support = (σ.cycleOf x).support := congrArg Equiv.Perm.support hc_eq
           _ = (orbitFinpartition σ).part x := support_cycleOf_eq_orbitPart σ x hxSupp
       have hBcard : 1 < ((orbitFinpartition σ).part x).card := by
+        have hc2 : 2 ≤ c.support.card := hcCycle.two_le_card_support
         rw [← hsupport]
         omega
       have hBfilter :
@@ -196,7 +192,11 @@ theorem cycleDefect_eq_sum_orbitFinpartition (σ : Perm α) [DecidableRel σ.Sam
           orbitRepresentative σ ⟨(orbitFinpartition σ).part x, hBmem⟩ ∈ c.support := by
         rw [hsupport]
         exact orbitRepresentative_mem σ ⟨(orbitFinpartition σ).part x, hBmem⟩
-      simpa [orbitBlockCycle] using Equiv.Perm.cycle_is_cycleOf hrep hc
+      simpa [orbitBlockCycle] using (Equiv.Perm.cycle_is_cycleOf hrep hc).symm
+    · intro B hB
+      have hsupp := orbitBlockCycle_support_eq σ
+        ⟨B, (Finset.mem_filter.mp hB).1⟩ (Finset.mem_filter.mp hB).2
+      simpa using congrArg (fun s : Finset α => s.card - 1) hsupp.symm
   calc
     cycleDefect σ = ∑ c ∈ σ.cycleFactorsFinset, (c.support.card - 1) :=
       cycleDefect_eq_sum_cycleFactorsFinset σ
