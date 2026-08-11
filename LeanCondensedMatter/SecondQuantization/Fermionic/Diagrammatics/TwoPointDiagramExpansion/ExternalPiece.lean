@@ -29,6 +29,7 @@ open Combinatorics
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The external component owns as many slots as the ordered-simplex integral for that component
 integrates over. -/
 theorem FixedExternalTwoPointWickDiagram.externalSlots_card
@@ -43,6 +44,7 @@ noncomputable def FixedExternalTwoPointWickDiagram.externalSlotEquiv
   (d.externalSlots.orderIsoOfFin rfl).toEquiv.symm.trans
     (Equiv.subtypeUnivEquiv (fun x : Fin d.externalSlots.card => Finset.mem_univ x)).symm
 
+omit [LinearOrder Mode] [Fintype Mode] in
 @[simp]
 theorem FixedExternalTwoPointWickDiagram.externalSlotEquiv_symm_coe
     (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -61,12 +63,14 @@ noncomputable def FixedExternalTwoPointWickDiagram.externalPiece
     rw [Common.TwoPointDiagram.slotCongr_externalLabel]
     exact d.2⟩
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The piece carries the ambient external labels. -/
 @[simp]
 theorem FixedExternalTwoPointWickDiagram.externalPiece_externalLabel
     (d : FixedExternalTwoPointWickDiagram Mode n i j) :
     d.externalPiece.1.externalLabel = d.1.externalLabel := rfl
 
+omit [Fintype Mode] in
 /-- **The piece's slot labels are the ambient labels read off in increasing slot order.** -/
 @[simp]
 theorem FixedExternalTwoPointWickDiagram.externalPiece_vertexLabelSequence
