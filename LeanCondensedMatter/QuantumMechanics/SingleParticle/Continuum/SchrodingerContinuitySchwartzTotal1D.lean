@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.Continuum.SchrodingerContinuitySchwartz1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuitySchwartz1D
 import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
 import Mathlib.Tactic
 
