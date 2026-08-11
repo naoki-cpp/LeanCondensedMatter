@@ -564,6 +564,8 @@ theorem permutationSum_univ_eq_sum_perm {R : Type*} [CommSemiring R]
     permutationSum ζ K univ =
       ∑ σ : Equiv.Perm α, ζ ^ cycleDefect σ * ∏ i : α, K i (σ i) := by
   classical
+  letI : Fintype ((permutationConnectedDecomposition α).Object (univ : Finset α)) :=
+    (permutationConnectedDecomposition α).fintypeObject univ
   rw [permutationSum, MultiplicativeWeight.objectMoment]
   calc
     (∑ d : (permutationConnectedDecomposition α).Object (univ : Finset α),
