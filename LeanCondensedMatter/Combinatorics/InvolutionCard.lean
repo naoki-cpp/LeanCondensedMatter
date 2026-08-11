@@ -45,17 +45,14 @@ carries half as many pairs — the hypothesis a two-part splitting of the positi
 theorem Pairing.even_card_of_partner_mem {n : ℕ} (P : Pairing n) {A : Finset (Fin (2 * n))}
     (hA : ∀ x ∈ A, P.partner x ∈ A) : Even A.card := by
   classical
-  have hiff : ∀ x : Fin (2 * n), x ∈ A ↔ P.partner x ∈ A := by
+  have hinv : Function.Involutive (fun x : ↥A => (⟨P.partner x, hA x x.2⟩ : ↥A)) := by
     intro x
-    refine ⟨hA x, fun h => ?_⟩
-    have := hA _ h
-    rwa [P.partner_partner] at this
+    exact Subtype.ext (P.partner_partner (x : Fin (2 * n)))
+  have hne : ∀ x : ↥A, (Function.Involutive.toPerm _ hinv) x ≠ x := by
+    intro x hx
+    exact P.partner_ne (x : Fin (2 * n)) (congrArg Subtype.val hx)
   have hcard := even_card_of_fixedPointFreeInvolution
-    (P.partner.subtypePerm fun x => hiff x)
-    (fun x => Subtype.ext (by
-      change P.partner (P.partner (x : Fin (2 * n))) = x
-      exact P.partner_partner x))
-    (fun x hx => P.partner_ne (x : Fin (2 * n)) (congrArg Subtype.val hx))
+    (Function.Involutive.toPerm _ hinv) hinv hne
   rwa [Fintype.card_coe] at hcard
 
 end Combinatorics
