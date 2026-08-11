@@ -1,3 +1,4 @@
+import Mathlib.Algebra.Ring.Defs
 import Mathlib.Order.Partition.Finpartition
 
 set_option linter.style.header false
