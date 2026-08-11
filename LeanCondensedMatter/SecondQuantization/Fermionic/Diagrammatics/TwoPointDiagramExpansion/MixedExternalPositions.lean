@@ -258,6 +258,7 @@ noncomputable def FixedExternalTwoPointWickDiagram.externalSlots
   Common.TwoPointDiagram.interactionPart
     (d.1.externalComponentPart : Finset (Common.TwoPointVertex (Finset.univ : Finset (Fin n))))
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The coupling product splits over the external and vacuum slots. -/
 theorem FixedExternalTwoPointWickDiagram.orderedTwoPointVertexWeight_split
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
