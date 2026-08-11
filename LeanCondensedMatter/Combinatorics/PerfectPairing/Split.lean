@@ -430,6 +430,52 @@ theorem prod_pairs_ofSplit [CommMonoid R] (e : PositionSplitting a b n)
 
 end Product
 
+section Monotone
+
+/-- **The splitting a subset of positions induces, enumerated monotonically.**
+
+Both parts are listed by increasing ambient position, so each embedding is strictly monotone. That
+is what a *value* attached to a pair needs when it depends on the order of its endpoints — the
+oriented kernels of `section Product` make a product identity true without it, but they do not make
+the parts carry the same quantity the ambient does. -/
+noncomputable def monotonePositionSplitting {m a b : ℕ} (A : Finset (Fin (2 * m)))
+    (ha : A.card = 2 * a) (hb : Aᶜ.card = 2 * b) : PositionSplitting a b m :=
+  ((Equiv.sumCongr (A.orderIsoOfFin ha).toEquiv
+      ((Aᶜ).orderIsoOfFin hb).toEquiv).trans
+    (Equiv.sumCongr (Equiv.refl (↥A))
+      (Equiv.subtypeEquivRight fun _ => Finset.mem_compl))).trans
+    (Equiv.sumCompl (· ∈ A))
+
+@[simp]
+theorem monotonePositionSplitting_inl {m a b : ℕ} (A : Finset (Fin (2 * m)))
+    (ha : A.card = 2 * a) (hb : Aᶜ.card = 2 * b) (i : Fin (2 * a)) :
+    monotonePositionSplitting A ha hb (Sum.inl i) = (A.orderIsoOfFin ha i : Fin (2 * m)) := by
+  simp [monotonePositionSplitting]
+
+@[simp]
+theorem monotonePositionSplitting_inr {m a b : ℕ} (A : Finset (Fin (2 * m)))
+    (ha : A.card = 2 * a) (hb : Aᶜ.card = 2 * b) (j : Fin (2 * b)) :
+    monotonePositionSplitting A ha hb (Sum.inr j) = ((Aᶜ).orderIsoOfFin hb j : Fin (2 * m)) := by
+  simp [monotonePositionSplitting]
+
+/-- The left part is listed in increasing ambient order. -/
+theorem strictMono_monotonePositionSplitting_inl {m a b : ℕ} (A : Finset (Fin (2 * m)))
+    (ha : A.card = 2 * a) (hb : Aᶜ.card = 2 * b) :
+    StrictMono fun i => monotonePositionSplitting A ha hb (Sum.inl i) := by
+  intro x y hxy
+  simp only [monotonePositionSplitting_inl]
+  exact (A.orderIsoOfFin ha).strictMono hxy
+
+/-- The right part is listed in increasing ambient order. -/
+theorem strictMono_monotonePositionSplitting_inr {m a b : ℕ} (A : Finset (Fin (2 * m)))
+    (ha : A.card = 2 * a) (hb : Aᶜ.card = 2 * b) :
+    StrictMono fun j => monotonePositionSplitting A ha hb (Sum.inr j) := by
+  intro x y hxy
+  simp only [monotonePositionSplitting_inr]
+  exact ((Aᶜ).orderIsoOfFin hb).strictMono hxy
+
+end Monotone
+
 section Sign
 
 /-- Regroup the block-slot presentation of `Fin (2 * n)` along a split of its `n` pairs into `a`
