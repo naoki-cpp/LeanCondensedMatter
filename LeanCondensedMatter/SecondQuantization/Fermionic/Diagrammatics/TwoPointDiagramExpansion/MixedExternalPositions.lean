@@ -159,5 +159,41 @@ theorem FixedExternalTwoPointWickDiagram.neg_one_pow_crossingCount_pairingInMixe
     (strictMono_monotonePositionSplitting_inl _ _ _)
     (strictMono_monotonePositionSplitting_inr _ _ _)
 
+/-- The external component's own pairing, in mixed-time order. -/
+noncomputable def FixedExternalTwoPointWickDiagram.externalPairingPiece
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) : Pairing (d.externalPairCount τ τ' σ) :=
+  (d.pairingInMixedOrder τ τ' σ).splitLeft (d.externalPositionSplitting τ τ' σ)
+    (d.isSplit_externalPositionSplitting τ τ' σ)
+
+/-- The vacuum components' pairing, in mixed-time order. -/
+noncomputable def FixedExternalTwoPointWickDiagram.vacuumPairingPiece
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) : Pairing (2 * n + 1 - d.externalPairCount τ τ' σ) :=
+  (d.pairingInMixedOrder τ τ' σ).splitRight (d.externalPositionSplitting τ τ' σ)
+    (d.isSplit_externalPositionSplitting τ τ' σ)
+
+/-- The sign of the permutation interleaving the external and vacuum positions. It depends on the
+splitting alone, not on the pairing. -/
+noncomputable def FixedExternalTwoPointWickDiagram.externalVacuumInterleaveSign
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) : ℂ :=
+  ((Equiv.Perm.sign ((splitBlockEquiv (d.externalPairCount_add τ τ' σ)).trans
+    (d.externalPositionSplitting τ τ' σ)) : ℤ) : ℂ)
+
+/-- The complex form of the crossing-weight split. -/
+theorem FixedExternalTwoPointWickDiagram.neg_one_pow_crossingCount_complex
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    (-1 : ℂ) ^ (d.pairingInMixedOrder τ τ' σ).crossingCount =
+      d.externalVacuumInterleaveSign τ τ' σ *
+        ((-1 : ℂ) ^ (d.externalPairingPiece τ τ' σ).crossingCount *
+          (-1 : ℂ) ^ (d.vacuumPairingPiece τ τ' σ).crossingCount) := by
+  have h := congrArg (fun u : ℤˣ => ((u : ℤ) : ℂ))
+    (d.neg_one_pow_crossingCount_pairingInMixedOrder τ τ' σ)
+  simpa [FixedExternalTwoPointWickDiagram.externalVacuumInterleaveSign,
+    FixedExternalTwoPointWickDiagram.externalPairingPiece,
+    FixedExternalTwoPointWickDiagram.vacuumPairingPiece] using h
+
 end Fermionic
 end SecondQuantization
