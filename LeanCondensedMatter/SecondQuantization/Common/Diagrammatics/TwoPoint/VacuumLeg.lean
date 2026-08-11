@@ -257,8 +257,10 @@ theorem TwoPointDiagram.disjoint_interactionPart_external_vacuum {S : Finset (Fi
       (TwoPointDiagram.interactionPart d.vacuumVertexSet) := by
   rw [Finset.disjoint_left]
   intro v hext hvac
-  obtain ⟨-, hmem⟩ := (TwoPointDiagram.mem_interactionPart _ v).1 hext
-  obtain ⟨-, hmem'⟩ := (TwoPointDiagram.mem_interactionPart _ v).1 hvac
+  obtain ⟨hv, hmem⟩ := (TwoPointDiagram.mem_interactionPart _ v).1 hext
+  obtain ⟨hv', hmem'⟩ := (TwoPointDiagram.mem_interactionPart _ v).1 hvac
+  have hvEq : (⟨v, hv'⟩ : ↥S) = ⟨v, hv⟩ := Subtype.ext rfl
+  rw [hvEq] at hmem'
   exact ((d.mem_vacuumVertexSet_iff _).1 hmem') hmem
 
 /-- Every interaction vertex is either external or vacuum. -/
