@@ -9,7 +9,7 @@ set_option linter.style.header false
 A permutation of a finite type partitions it into orbits. Mathlib already supplies both halves of
 this: `Equiv.Perm.SameCycle.setoid` is the orbit equivalence, and `Finpartition.ofSetoid` turns an
 equivalence on a fintype into a partition of `univ`. This module names the composite and records the
-membership characterization and the invariance of each block.
+canonical membership characterization.
 
 The cycle defect
 
@@ -77,7 +77,7 @@ private theorem cycleDefect_eq_sum_cycleFactorsFinset (σ : Perm α) :
   rw [cycleDefect, Equiv.Perm.sum_cycleType, hcard, ← hsum, ← hpred σ.cycleFactorsFinset]
   exact subset_rfl
 
-/-- Two points lie in the same block exactly when the permutation moves one to the other. -/
+/-- Two points lie in the same block exactly when they are in the same permutation orbit. -/
 theorem mem_part_orbitFinpartition_iff (σ : Perm α) [DecidableRel σ.SameCycle] (a b : α) :
     b ∈ (orbitFinpartition σ).part a ↔ σ.SameCycle a b :=
   Finpartition.mem_part_ofSetoid_iff_rel
@@ -203,32 +203,5 @@ theorem cycleDefect_eq_sum_orbitFinpartition (σ : Perm α) :
     _ = ∑ B ∈ (orbitFinpartition σ).parts.filter (fun B => 1 < B.card), (B.card - 1) :=
       hbij.symm
     _ = ∑ B ∈ (orbitFinpartition σ).parts, (B.card - 1) := hfilter
-
-/-- A point lies in its own block. -/
-theorem mem_part_orbitFinpartition_self (σ : Perm α) [DecidableRel σ.SameCycle] (a : α) :
-    a ∈ (orbitFinpartition σ).part a :=
-  (mem_part_orbitFinpartition_iff σ a a).2 (SameCycle.refl σ a)
-
-/-- **Each block is invariant.** A permutation maps every orbit block into itself. -/
-theorem apply_mem_part_orbitFinpartition (σ : Perm α) [DecidableRel σ.SameCycle] (a b : α)
-    (hb : b ∈ (orbitFinpartition σ).part a) : σ b ∈ (orbitFinpartition σ).part a := by
-  rw [mem_part_orbitFinpartition_iff] at hb ⊢
-  exact hb.trans ⟨1, by simp⟩
-
-/-- **Each block is invariant under the inverse.** -/
-theorem symm_apply_mem_part_orbitFinpartition (σ : Perm α) [DecidableRel σ.SameCycle] (a b : α)
-    (hb : b ∈ (orbitFinpartition σ).part a) : σ.symm b ∈ (orbitFinpartition σ).part a := by
-  rw [mem_part_orbitFinpartition_iff] at hb ⊢
-  exact hb.trans ⟨-1, by simp⟩
-
-/-- The blocks of the identity permutation are singletons. -/
-theorem mem_part_orbitFinpartition_one_iff [DecidableRel (1 : Perm α).SameCycle] (a b : α) :
-    b ∈ (orbitFinpartition (1 : Perm α)).part a ↔ b = a := by
-  rw [mem_part_orbitFinpartition_iff]
-  constructor
-  · intro h
-    exact (sameCycle_one.1 h).symm
-  · rintro rfl
-    exact SameCycle.refl _ _
 
 end Combinatorics
