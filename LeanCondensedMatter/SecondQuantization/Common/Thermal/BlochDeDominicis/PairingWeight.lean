@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.Statistics
+import LeanCondensedMatter.Combinatorics.ExchangeSign
 import LeanCondensedMatter.Combinatorics.PerfectPairing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Examples.Four
 import Mathlib.Data.Complex.Basic
@@ -55,10 +56,8 @@ theorem Pairing.weight_fermion_eq_ite {n : ℕ} (pairing : Pairing n) :
 parity. -/
 theorem zetaInt_pow_eq_of_mod_two_eq (s : Statistics) {a b : ℕ} (h : a % 2 = b % 2) :
     (s.zetaInt : ℂ) ^ a = (s.zetaInt : ℂ) ^ b := by
-  cases s
-  · simp
-  · simp only [Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one]
-    rw [neg_one_pow_eq_pow_mod_two, h, ← neg_one_pow_eq_pow_mod_two]
+  apply Combinatorics.pow_eq_of_mod_two_eq ?_ h
+  cases s <;> norm_num
 
 /-- Pairing weights multiply whenever the global crossing count has the same parity as the sum of
 two local crossing counts. This isolates sign factorization from the combinatorial parity proof. -/
