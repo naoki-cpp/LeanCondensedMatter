@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerEvolution1D
-import LeanCondensedMatter.QuantumTheory.Continuum.SchrodingerProbabilityConservation1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerProbabilityConservation1D
 import Mathlib.Tactic
 
 set_option linter.style.header false

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.Continuum.SchrodingerHamiltonianSelfAdjoint1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerHamiltonianSelfAdjoint1D
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Tactic
 

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.Continuum.SchrodingerContinuitySchwartzTotal1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuitySchwartzTotal1D
 import Mathlib.Analysis.Calculus.ParametricIntegral
 import Mathlib.Tactic
 
