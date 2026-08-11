@@ -211,7 +211,7 @@ theorem resolventEvolutionStrongLimitOperator_adjoint
 theorem resolventEvolutionStrongLimitOperator_star
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (t : ℝ) :
     star (resolventEvolutionStrongLimitOperator A hA t) =
-      resolventEvolutionStrongLimitLimitOperator A hA (-t) := by
+      resolventEvolutionStrongLimitOperator A hA (-t) := by
   rw [ContinuousLinearMap.star_eq_adjoint]
   exact resolventEvolutionStrongLimitOperator_adjoint A hA t
 
