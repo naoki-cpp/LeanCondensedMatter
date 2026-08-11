@@ -190,6 +190,43 @@ theorem Pairing.isSplit_ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q
     (Pairing.ofSplit e P Q).IsSplit e := fun i =>
   ⟨P.partner i, Pairing.ofSplit_partner_inl e P Q i⟩
 
+/-- Orient a pair by the ambient linear order, so that it is listed the way `Pairing.pairs` lists
+it. -/
+def orientPair {α : Type*} [LinearOrder α] (u v : α) : α × α :=
+  if u < v then (u, v) else (v, u)
+
+/-- Two distinct partners form a pair, whichever way round they are given. -/
+theorem mem_pairs_orientPair {m : ℕ} (P : Pairing m) {u v : Fin (2 * m)}
+    (hne : u ≠ v) (hpartner : P.partner u = v) :
+    orientPair u v ∈ P.pairs := by
+  unfold orientPair
+  rcases lt_or_gt_of_ne hne with hlt | hgt
+  · rw [if_pos hlt]
+    exact (P.mem_pairs_iff u v).2 ⟨hlt, hpartner⟩
+  · rw [if_neg (asymm hgt)]
+    refine (P.mem_pairs_iff v u).2 ⟨hgt, ?_⟩
+    rw [← hpartner, P.partner_partner]
+
+/-- **A left part's pair transports to a pair of the assembled pairing.** -/
+theorem mem_pairs_ofSplit_inl (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
+    {pr : Fin (2 * a) × Fin (2 * a)} (hpr : pr ∈ P.pairs) :
+    orientPair (e (Sum.inl pr.1)) (e (Sum.inl pr.2)) ∈ (Pairing.ofSplit e P Q).pairs := by
+  obtain ⟨u, v⟩ := pr
+  obtain ⟨hlt, hpartner⟩ := (P.mem_pairs_iff u v).1 hpr
+  refine mem_pairs_orientPair _ (fun hEq => ?_) ?_
+  · exact absurd (Sum.inl.inj (e.injective hEq)) (ne_of_lt hlt)
+  · rw [Pairing.ofSplit_partner_inl, hpartner]
+
+/-- **A right part's pair transports to a pair of the assembled pairing.** -/
+theorem mem_pairs_ofSplit_inr (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
+    {pr : Fin (2 * b) × Fin (2 * b)} (hpr : pr ∈ Q.pairs) :
+    orientPair (e (Sum.inr pr.1)) (e (Sum.inr pr.2)) ∈ (Pairing.ofSplit e P Q).pairs := by
+  obtain ⟨u, v⟩ := pr
+  obtain ⟨hlt, hpartner⟩ := (Q.mem_pairs_iff u v).1 hpr
+  refine mem_pairs_orientPair _ (fun hEq => ?_) ?_
+  · exact absurd (Sum.inr.inj (e.injective hEq)) (ne_of_lt hlt)
+  · rw [Pairing.ofSplit_partner_inr, hpartner]
+
 end Assemble
 
 section Inverse
