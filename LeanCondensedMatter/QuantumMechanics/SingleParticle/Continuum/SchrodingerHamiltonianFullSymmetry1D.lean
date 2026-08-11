@@ -15,7 +15,8 @@ is symmetric on its explicit `H²(ℝ)` domain for every real kinetic coefficien
 essentially bounded real potential `V`.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -88,4 +89,5 @@ theorem continuumRealPotentialSchrodingerHamiltonian1D_isFormalAdjoint
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics
