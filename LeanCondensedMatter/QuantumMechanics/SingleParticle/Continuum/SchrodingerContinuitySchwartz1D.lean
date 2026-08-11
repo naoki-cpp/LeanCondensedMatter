@@ -17,7 +17,8 @@ Time differentiability and the pointwise Schrödinger equation remain explicit. 
 continuity argument independent of any self-adjoint unbounded-Hamiltonian construction on `L²`.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -156,4 +157,5 @@ theorem schrodinger_weak_continuity_interval_of_schwartz
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics
