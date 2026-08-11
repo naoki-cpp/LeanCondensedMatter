@@ -181,6 +181,14 @@ noncomputable def FixedExternalTwoPointWickDiagram.externalVacuumInterleaveSign
   ((Equiv.Perm.sign ((splitBlockEquiv (d.externalPairCount_add τ τ' σ)).trans
     (d.externalPositionSplitting τ τ' σ)) : ℤ) : ℂ)
 
+private theorem cast_units_neg_one_pow (c : ℕ) :
+    (((((-1 : ℤˣ) ^ c : ℤˣ) : ℤ)) : ℂ) = (-1 : ℂ) ^ c := by
+  induction c with
+  | zero => simp
+  | succ k ih =>
+      rw [pow_succ, pow_succ, ← ih]
+      simp [Units.val_mul, Units.val_neg, Units.val_one]
+
 /-- The complex form of the crossing-weight split. -/
 theorem FixedExternalTwoPointWickDiagram.neg_one_pow_crossingCount_complex
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -191,11 +199,9 @@ theorem FixedExternalTwoPointWickDiagram.neg_one_pow_crossingCount_complex
           (-1 : ℂ) ^ (d.vacuumPairingPiece τ τ' σ).crossingCount) := by
   have h := congrArg (fun u : ℤˣ => ((u : ℤ) : ℂ))
     (d.neg_one_pow_crossingCount_pairingInMixedOrder τ τ' σ)
-  simp only [Units.val_mul, Units.val_pow_eq_pow_val, Units.val_neg, Units.val_one,
-    Int.cast_mul, Int.cast_pow, Int.cast_neg, Int.cast_one] at h
-  simpa [FixedExternalTwoPointWickDiagram.externalVacuumInterleaveSign,
-    FixedExternalTwoPointWickDiagram.externalPairingPiece,
-    FixedExternalTwoPointWickDiagram.vacuumPairingPiece] using h
+  simp only [Units.val_mul, Int.cast_mul] at h
+  rw [cast_units_neg_one_pow, cast_units_neg_one_pow, cast_units_neg_one_pow] at h
+  exact h
 
 end Fermionic
 end SecondQuantization
