@@ -96,5 +96,24 @@ theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_dysonAm
         (d.mixedComponentDysonLocalIntegrand ε β g τ τ'
           d.1.canonicalComponentInteractionShuffle B)]
 
+omit [LinearOrder Mode] in
+open Classical in
+/-- **The diagram sum organized by which slots are external.**
+
+Every fixed-external diagram determines the interaction vertices of its external component, so the
+sum over all diagrams is the sum over that choice of the sum over the diagrams realizing it. This is
+the organization the linked-cluster factorization needs: for a fixed pair of pieces, varying which
+slots are external is exactly the shuffle freedom that turns one global ordered-simplex integral into
+a product of two local ones. -/
+theorem FixedExternalTwoPointWickDiagram.sum_eq_sum_fiberwise_externalInteractionPart
+    {n : ℕ} {i j : Mode} {M : Type*} [AddCommMonoid M]
+    (F : FixedExternalTwoPointWickDiagram Mode n i j → M) :
+    (∑ d : FixedExternalTwoPointWickDiagram Mode n i j, F d) =
+      ∑ T ∈ (Finset.univ : Finset (Fin n)).powerset,
+        ∑ d ∈ Finset.univ.filter fun d : FixedExternalTwoPointWickDiagram Mode n i j =>
+            Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0) = T, F d :=
+  (Finset.sum_fiberwise_of_maps_to
+    (fun _ _ => Finset.mem_powerset.2 (Finset.subset_univ _)) F).symm
+
 end Fermionic
 end SecondQuantization
