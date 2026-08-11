@@ -8,11 +8,11 @@ set_option linter.style.header false
 # Connected decomposition of finite permutations
 
 A permutation supported on a finite set decomposes uniquely into its orbit partition and one
-single-orbit permutation on every block.  This file is deliberately independent of exchange
+single-orbit permutation on every block. This file is deliberately independent of exchange
 weights: the decomposition is the structural input used later for arbitrary-`ζ` multiplicative
 weights.
 
-Only `permutationConnectedDecomposition` is public.  Support wrappers, block restrictions,
+Only `permutationConnectedDecomposition` is public. Support wrappers, block restrictions,
 assembly, and round-trip lemmas are implementation details.
 -/
 
@@ -28,15 +28,20 @@ private abbrev SupportedPerm (S : Finset α) :=
 private abbrev SingleOrbitPerm (S : Finset α) :=
   {σ : Equiv.Perm S // σ.IsCycleOn Set.univ}
 
-/-- The orbit partition restricted to a finite support set. -/
-private def orbitFinpartitionOn (S : Finset α) (σ : Equiv.Perm α) : Finpartition S :=
-  Finpartition.ofSetSetoid (Equiv.Perm.SameCycle.setoid σ) S
+/-- The `SameCycle` partition restricted to a finite support set. -/
+private noncomputable def orbitFinpartitionOn (S : Finset α) (σ : Equiv.Perm α) : Finpartition S := by
+  classical
+  exact Finpartition.ofSetSetoid (Equiv.Perm.SameCycle.setoid σ) S
 
+omit [Fintype α] in
 private theorem mem_part_orbitFinpartitionOn_iff (S : Finset α) (σ : Equiv.Perm α)
     (a b : α) :
     b ∈ (orbitFinpartitionOn S σ).part a ↔
-      a ∈ S ∧ b ∈ S ∧ σ.SameCycle a b :=
-  Finpartition.mem_part_ofSetSetoid_iff_rel S
+      a ∈ S ∧ b ∈ S ∧ σ.SameCycle a b := by
+  classical
+  simpa [orbitFinpartitionOn] using
+    (Finpartition.mem_part_ofSetSetoid_iff_rel (s := Equiv.Perm.SameCycle.setoid σ) S
+      (a := a) (b := b))
 
 private theorem SupportedPerm.apply_mem {S : Finset α} (σ : SupportedPerm S)
     {x : α} (hx : x ∈ S) : σ.1 x ∈ S := by
@@ -52,14 +57,14 @@ private theorem SupportedPerm.apply_eq_self_of_not_mem {S : Finset α} (σ : Sup
   exact hx (σ.2 (Equiv.Perm.mem_support.mpr h))
 
 private theorem apply_mem_orbitBlock {S : Finset α} (σ : SupportedPerm S)
-    (B : (orbitFinpartitionOn S σ.1).parts) {x : α} (hx : x ∈ B.1) :
-    σ.1 x ∈ B.1 := by
+    (B : (orbitFinpartitionOn S σ.1).parts) {_x : α} (hx : _x ∈ B.1) :
+    σ.1 _x ∈ B.1 := by
   let π := orbitFinpartitionOn S σ.1
-  have hxS : x ∈ S := π.subset B.2 hx
-  have hσxS : σ.1 x ∈ S := σ.apply_mem hxS
-  have hpart : π.part x = B.1 := π.part_eq_of_mem B.2 hx
+  have hxS : _x ∈ S := π.subset B.2 hx
+  have hσxS : σ.1 _x ∈ S := σ.apply_mem hxS
+  have hpart : π.part _x = B.1 := π.part_eq_of_mem B.2 hx
   rw [← hpart]
-  exact (mem_part_orbitFinpartitionOn_iff S σ.1 x (σ.1 x)).2
+  exact (mem_part_orbitFinpartitionOn_iff S σ.1 _x (σ.1 _x)).2
     ⟨hxS, hσxS, ⟨1, by simp⟩⟩
 
 private noncomputable def restrictOrbitBlock {S : Finset α} (σ : SupportedPerm S)
@@ -78,7 +83,6 @@ private theorem restrictOrbitBlock_isCycleOn {S : Finset α} (σ : SupportedPerm
   constructor
   · exact (restrictOrbitBlock σ B).bijOn (fun _ => by simp)
   · intro x _ y _
-    have hxS : (x : α) ∈ S := (orbitFinpartitionOn S σ.1).subset B.2 x.2
     have hpart : (orbitFinpartitionOn S σ.1).part (x : α) = B.1 :=
       (orbitFinpartitionOn S σ.1).part_eq_of_mem B.2 x.2
     have hyPart : (y : α) ∈ (orbitFinpartitionOn S σ.1).part (x : α) := by
@@ -107,24 +111,32 @@ private noncomputable def assemblePermutation {S : Finset α} (π : Finpartition
     Equiv.Perm.extendDomain_apply_not_subtype _ _ hxS
   exact (Equiv.Perm.mem_support.mp hx) hfix
 
+omit [DecidableEq α] [Fintype α] in
 private theorem sameCycle_permCongr_iff {β : Type*} (e : α ≃ β) (σ : Equiv.Perm α)
     (x y : α) :
     (e.permCongr σ).SameCycle (e x) (e y) ↔ σ.SameCycle x y := by
   constructor
   · rintro ⟨z, hz⟩
     refine ⟨z, ?_⟩
+    have hpow : e.permCongr (σ ^ z) = (e.permCongr σ) ^ z := by
+      simpa using map_zpow e.permCongrHom σ z
     have hz' := hz
-    rw [← map_zpow e.permCongrHom σ z] at hz'
+    rw [← hpow] at hz'
     exact e.injective (by simpa [Equiv.permCongr_apply] using hz')
   · rintro ⟨z, hz⟩
     refine ⟨z, ?_⟩
-    rw [← map_zpow e.permCongrHom σ z]
+    have hpow : e.permCongr (σ ^ z) = (e.permCongr σ) ^ z := by
+      simpa using map_zpow e.permCongrHom σ z
+    rw [← hpow]
     simpa [Equiv.permCongr_apply, hz]
 
 private theorem sigmaCongrRight_zpow_fst {ι : Type*} {β : ι → Type*}
     (c : ∀ i, Equiv.Perm (β i)) (z : ℤ) (x : Σ i, β i) :
     (((Equiv.Perm.sigmaCongrRight c) ^ z) x).1 = x.1 := by
-  rw [← map_zpow (Equiv.Perm.sigmaCongrRightHom β) c z]
+  have hpow :
+      Equiv.Perm.sigmaCongrRight (c ^ z) = (Equiv.Perm.sigmaCongrRight c) ^ z := by
+    simpa using map_zpow (Equiv.Perm.sigmaCongrRightHom β) c z
+  rw [← hpow]
   rfl
 
 private theorem sameCycle_sigmaCongrRight_iff_fst_eq {ι : Type*} {β : ι → Type*}
@@ -137,15 +149,22 @@ private theorem sameCycle_sigmaCongrRight_iff_fst_eq {ι : Type*} {β : ι → T
       x.1 = (((Equiv.Perm.sigmaCongrRight (fun i => (c i).1)) ^ z) x).1 :=
         (sigmaCongrRight_zpow_fst (fun i => (c i).1) z x).symm
       _ = y.1 := congrArg Sigma.fst hz
-  · intro hxy
-    subst hxy
-    have hsame : (c x.1).1.SameCycle x.2 y.2 := (c x.1).2.2 (by simp) (by simp)
+  · rcases x with ⟨i, x⟩
+    rcases y with ⟨j, y⟩
+    intro hij
+    cases hij
+    have hsame : (c i).1.SameCycle x y := (c i).2.2 (by simp) (by simp)
     rcases hsame with ⟨z, hz⟩
     refine ⟨z, ?_⟩
-    rw [← map_zpow (Equiv.Perm.sigmaCongrRightHom β) (fun i => (c i).1) z]
+    have hpow :
+        Equiv.Perm.sigmaCongrRight ((fun i => (c i).1) ^ z) =
+          (Equiv.Perm.sigmaCongrRight fun i => (c i).1) ^ z := by
+      simpa using map_zpow (Equiv.Perm.sigmaCongrRightHom β) (fun i => (c i).1) z
+    rw [← hpow]
     apply Sigma.ext rfl
     simpa using hz
 
+omit [Fintype α] in
 private theorem assembleSubtype_sameCycle_iff {S : Finset α} (π : Finpartition S)
     (c : ∀ B : π.parts, SingleOrbitPerm B.1) (x y : S) :
     (assembleSubtypePermutation π c).SameCycle x y ↔
@@ -212,8 +231,8 @@ private theorem assemblePermutation_apply_mem {S : Finset α} (π : Finpartition
     (assemblePermutation π c).1 x =
       ((c ⟨π.part x, π.part_mem.2 hx⟩).1
         ⟨x, π.mem_part hx⟩ : α) := by
-  simp [assemblePermutation, assembleSubtypePermutation, Finpartition.equivSigmaParts,
-    Equiv.Perm.sigmaCongrRight, hx]
+  rw [Equiv.Perm.extendDomain_apply_subtype _ _ hx]
+  rfl
 
 private theorem assemble_decompose {S : Finset α} (σ : SupportedPerm S) :
     assemblePermutation (decomposePermutation S σ).1 (decomposePermutation S σ).2 = σ := by
@@ -231,7 +250,7 @@ private theorem decompose_assemble {S : Finset α} (π : Finpartition S)
     decomposePermutation S (assemblePermutation π c) = ⟨π, c⟩ := by
   have hπ := orbitFinpartitionOn_assemble π c
   unfold decomposePermutation
-  rw [hπ]
+  cases hπ
   congr
   funext B
   apply Subtype.ext
@@ -254,8 +273,8 @@ noncomputable def permutationConnectedDecomposition (α : Type*) [DecidableEq α
     ConnectedDecomposition α where
   Object := SupportedPerm
   ConnectedObject := SingleOrbitPerm
-  fintypeObject := fun _ => inferInstance
-  fintypeConnectedObject := fun _ => inferInstance
+  fintypeObject := fun _ => Fintype.ofFinite _
+  fintypeConnectedObject := fun _ => Fintype.ofFinite _
   decompose := fun S =>
     { toFun := decomposePermutation S
       invFun := fun x => assemblePermutation x.1 x.2
