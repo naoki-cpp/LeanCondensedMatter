@@ -62,5 +62,53 @@ theorem slotLegSplitting_right_interaction {S T : Finset (Fin N)} (h : T ⊆ S)
         (Sum.inr (⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩, l)) := by
   simp [slotLegSplitting, Combinatorics.subsetSumSdiffEquiv]
 
+variable {ExternalLabel InternalLabel : Type*}
+
+/-- **Reconstruct a two-point diagram from an external piece and a vacuum piece.**
+
+The external labels come from the external piece, each vertex label is read off whichever side its
+vertex belongs to, and the pairing is assembled by `Pairing.ofSplit` along `slotLegSplitting`.
+
+Nothing here inspects connectivity: the vacuum piece may be disconnected, and the external piece is
+not required to be externally connected. Those conditions belong to the statement that this is
+inverse to the decomposition, not to the construction. -/
+noncomputable def TwoPointDiagram.ofSlotSplit {S T : Finset (Fin N)} (h : T ⊆ S)
+    (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
+    (vac : QuarticDiagram InternalLabel N (S \ T)) :
+    TwoPointDiagram ExternalLabel InternalLabel N S where
+  externalLabel := ext.externalLabel
+  vertexLabel v :=
+    if hv : (v : Fin N) ∈ T then ext.vertexLabel ⟨v, hv⟩
+    else vac.vertexLabel ⟨v, Finset.mem_sdiff.mpr ⟨v.2, hv⟩⟩
+  pairing := Pairing.ofSplit (slotLegSplitting h) ext.pairing vac.pairing
+
+@[simp]
+theorem TwoPointDiagram.ofSlotSplit_externalLabel {S T : Finset (Fin N)} (h : T ⊆ S)
+    (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
+    (vac : QuarticDiagram InternalLabel N (S \ T)) (e : Fin 2) :
+    (TwoPointDiagram.ofSlotSplit h ext vac).externalLabel e = ext.externalLabel e :=
+  rfl
+
+@[simp]
+theorem TwoPointDiagram.ofSlotSplit_pairing {S T : Finset (Fin N)} (h : T ⊆ S)
+    (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
+    (vac : QuarticDiagram InternalLabel N (S \ T)) :
+    (TwoPointDiagram.ofSlotSplit h ext vac).pairing =
+      Pairing.ofSplit (slotLegSplitting h) ext.pairing vac.pairing :=
+  rfl
+
+theorem TwoPointDiagram.ofSlotSplit_vertexLabel_of_mem {S T : Finset (Fin N)} (h : T ⊆ S)
+    (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
+    (vac : QuarticDiagram InternalLabel N (S \ T)) (v : ↥S) (hv : (v : Fin N) ∈ T) :
+    (TwoPointDiagram.ofSlotSplit h ext vac).vertexLabel v = ext.vertexLabel ⟨v, hv⟩ :=
+  dif_pos hv
+
+theorem TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem {S T : Finset (Fin N)} (h : T ⊆ S)
+    (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
+    (vac : QuarticDiagram InternalLabel N (S \ T)) (v : ↥S) (hv : (v : Fin N) ∉ T) :
+    (TwoPointDiagram.ofSlotSplit h ext vac).vertexLabel v =
+      vac.vertexLabel ⟨v, Finset.mem_sdiff.mpr ⟨v.2, hv⟩⟩ :=
+  dif_neg hv
+
 end Common
 end SecondQuantization
