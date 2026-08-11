@@ -1,17 +1,16 @@
+import LeanCondensedMatter.Combinatorics.Cumulant.Moment
 import LeanCondensedMatter.Combinatorics.SetPartition.Mobius
-import Mathlib.Data.Complex.Basic
 
 set_option linter.style.header false
 
 /-!
 # Moment–cumulant inversion on the partition lattice
 
-The moment and cumulant transforms are defined for finite-set functions with values in an arbitrary
-commutative ring. Their low-level pointwise inversion requires a nonempty finite set; a normalized
-bundled API removes that side condition in `Combinatorics/Cumulant/Normalized.lean`.
-
-`Mathlib.Data.Complex.Basic` is imported because the independence and linked-cluster
-specializations use `ℂ`; the definitions and proofs below remain coefficient-generic.
+The finite-set moment transform is defined over commutative semirings in
+`Combinatorics/Cumulant/Moment.lean`. This module adds the Möbius-inverse cumulant transform and the
+pointwise inversion theorems, which require a commutative ring. Their low-level pointwise inversion
+requires a nonempty finite set; a normalized bundled API removes that side condition in
+`Combinatorics/Cumulant/Normalized.lean`.
 -/
 
 open IncidenceAlgebra
@@ -19,14 +18,6 @@ open IncidenceAlgebra
 variable {α R : Type*} [DecidableEq α] [CommRing R]
 
 namespace Finpartition
-
-/-- Product of `f` over the blocks of a partition. -/
-noncomputable def partitionProduct (f : Finset α → R) {S : Finset α} (π : Finpartition S) : R :=
-  ∏ B ∈ π.parts, f B
-
-/-- Moment transform of a finite-set cumulant function. -/
-noncomputable def momentFromCumulant (κ : Finset α → R) (S : Finset α) : R :=
-  ∑ π : Finpartition S, partitionProduct κ π
 
 /-- Cumulant transform obtained by Möbius inversion on the partition lattice. -/
 noncomputable def cumulantFromMoment (m : Finset α → R) (S : Finset α) : R :=
