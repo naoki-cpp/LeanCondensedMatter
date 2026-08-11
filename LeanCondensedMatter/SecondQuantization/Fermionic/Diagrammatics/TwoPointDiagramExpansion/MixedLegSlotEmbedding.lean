@@ -46,12 +46,14 @@ theorem orderedTwoPointLegMap_injective (hf : Function.Injective f) :
   | inl a =>
       cases y with
       | inl b => simpa using hxy
-      | inr q => simp at hxy
+      | inr q =>
+          obtain ⟨w, l'⟩ := q
+          simp at hxy
   | inr p =>
+      obtain ⟨v, l⟩ := p
       cases y with
       | inl b => simp at hxy
       | inr q =>
-          obtain ⟨v, l⟩ := p
           obtain ⟨w, l'⟩ := q
           simp only [orderedTwoPointLegMap_inr, Sum.inr.injEq, Prod.mk.injEq,
             Subtype.mk.injEq] at hxy
@@ -77,7 +79,7 @@ theorem twoPointTimedEventAtomicLegs_map (f : Fin m → Fin n) (event : TwoPoint
       (twoPointTimedEventAtomicLegs event).map (orderedTwoPointLegMap f) := by
   cases event with
   | inl e => simp
-  | inr v => simp [List.map_ofFn, Function.comp_def]
+  | inr v => simp
 
 /-- **The ambient mixed leg order restricts to the mixed leg order of the reindexed slots.** For a
 strictly monotone reindexing of the interaction slots, two legs of the piece compare in the ambient
