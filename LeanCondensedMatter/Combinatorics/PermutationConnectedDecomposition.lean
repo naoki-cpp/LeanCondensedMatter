@@ -162,7 +162,9 @@ private theorem sameCycle_sigmaCongrRight_iff_fst_eq {ι : Type*} {β : ι → T
       simpa using map_zpow (Equiv.Perm.sigmaCongrRightHom β) (fun i => (c i).1) z
     rw [← hpow]
     change (⟨i, ((c i).1 ^ z) x⟩ : Σ i, β i) = ⟨i, y⟩
-    exact Sigma.ext rfl hz.heq
+    apply Sigma.ext rfl
+    cases hz
+    rfl
 
 omit [Fintype α] in
 private theorem assembleSubtype_sameCycle_iff {S : Finset α} (π : Finpartition S)
@@ -257,8 +259,7 @@ private theorem decompose_assemble {S : Finset α} (π : Finpartition S)
     congrArg (fun q : Finpartition S => (q.parts : Type _)) hπ
   apply Function.hfunext hparts
   intro B B' hBB
-  have hBval : B.1 = B'.1 := eq_of_heq (congr_arg_heq Subtype.val hBB)
-  cases hBval
+  cases hBB
   rw [heq_iff_eq]
   apply Subtype.ext
   apply Equiv.ext
