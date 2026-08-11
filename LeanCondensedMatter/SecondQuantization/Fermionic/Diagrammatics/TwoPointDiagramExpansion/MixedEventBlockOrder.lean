@@ -108,14 +108,16 @@ theorem mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt {n : ℕ}
       exact (lt_asymm hLeg hReverse).elim
   · exact mixedTimeOrderedAtomicLegPosition_lt_of_eventPosition_lt τ τ' σ x y
 
-/-- The relative flattened positions of two standard legs depend only on the times of their two
-supporting events and on their fixed local leg coordinates. -/
-theorem mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventTime_eq {n : ℕ}
+/-- The flattened atomic-leg order of two legs is determined by the relative order of their two
+supporting events: legs sharing one event are ordered by that event's fixed local leg list, and legs
+on distinct events follow the event order supplied by `hEvent`. -/
+theorem mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff {n : ℕ}
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (x y : OrderedTwoPointLeg n)
-    (hxTime : twoPointTimedEventTime τ τ' σ (orderedTwoPointLegEvent x) =
-      twoPointTimedEventTime τ τ' υ (orderedTwoPointLegEvent x))
-    (hyTime : twoPointTimedEventTime τ τ' σ (orderedTwoPointLegEvent y) =
-      twoPointTimedEventTime τ τ' υ (orderedTwoPointLegEvent y)) :
+    (hEvent :
+      (orderedTwoPointTimedEventPosition τ τ' σ (orderedTwoPointLegEvent x) <
+          orderedTwoPointTimedEventPosition τ τ' σ (orderedTwoPointLegEvent y)) ↔
+        (orderedTwoPointTimedEventPosition τ τ' υ (orderedTwoPointLegEvent x) <
+          orderedTwoPointTimedEventPosition τ τ' υ (orderedTwoPointLegEvent y))) :
     (mixedTimeOrderedAtomicLegPosition τ τ' σ x <
         mixedTimeOrderedAtomicLegPosition τ τ' σ y) ↔
       (mixedTimeOrderedAtomicLegPosition τ τ' υ x <
@@ -150,8 +152,23 @@ theorem mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventTime_eq {n : ℕ}
               mixedTimeOrderedAtomicLegs, List.Nodup.getEquivOfForallMemList] using hυ
   · rw [mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt τ τ' σ x y hxy,
       mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt τ τ' υ x y hxy]
-    exact orderedTwoPointTimedEventPosition_lt_iff_of_eventTime_eq
-      τ τ' σ υ (orderedTwoPointLegEvent x) (orderedTwoPointLegEvent y) hxTime hyTime
+    exact hEvent
+
+/-- The relative flattened positions of two standard legs depend only on the times of their two
+supporting events and on their fixed local leg coordinates. -/
+theorem mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventTime_eq {n : ℕ}
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (x y : OrderedTwoPointLeg n)
+    (hxTime : twoPointTimedEventTime τ τ' σ (orderedTwoPointLegEvent x) =
+      twoPointTimedEventTime τ τ' υ (orderedTwoPointLegEvent x))
+    (hyTime : twoPointTimedEventTime τ τ' σ (orderedTwoPointLegEvent y) =
+      twoPointTimedEventTime τ τ' υ (orderedTwoPointLegEvent y)) :
+    (mixedTimeOrderedAtomicLegPosition τ τ' σ x <
+        mixedTimeOrderedAtomicLegPosition τ τ' σ y) ↔
+      (mixedTimeOrderedAtomicLegPosition τ τ' υ x <
+        mixedTimeOrderedAtomicLegPosition τ τ' υ y) :=
+  mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff τ τ' σ υ x y
+    (orderedTwoPointTimedEventPosition_lt_iff_of_eventTime_eq
+      τ τ' σ υ (orderedTwoPointLegEvent x) (orderedTwoPointLegEvent y) hxTime hyTime)
 
 end Fermionic
 end SecondQuantization
