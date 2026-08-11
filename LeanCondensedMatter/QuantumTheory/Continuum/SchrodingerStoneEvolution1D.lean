@@ -80,10 +80,11 @@ noncomputable def continuumSchrodingerEvolution1D
     have hrescale (v : ContinuumL2Wavefunction1D) :
         (hbar⁻¹ : ℝ) • ((-Complex.I : ℂ) • v) =
           (-(Complex.I / (hbar : ℂ))) • v := by
-      rw [smul_assoc, hcoeff]
-    simpa only [one_div] at hcomp
-    rw [hrescale] at hcomp
-    simpa [Function.comp_def, H] using hcomp
+      rw [← smul_assoc, hcoeff]
+    have hcomp' := hcomp
+    simp only [one_div] at hcomp'
+    rw [hrescale] at hcomp'
+    simpa [Function.comp_def, H] using hcomp'
 
 end
 end Continuum
