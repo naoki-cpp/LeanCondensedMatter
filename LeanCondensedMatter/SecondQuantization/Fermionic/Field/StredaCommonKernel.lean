@@ -146,7 +146,7 @@ theorem integral_finiteKuboBastinCommonEnergyKernel
 
 /-- The common-energy-kernel conductivity with contact and finite-volume normalization. -/
 noncomputable def finiteKuboBastinCommonEnergyDirectionalConductivity
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (interpolation : PurePointOccupationInterpolation system data)
@@ -160,7 +160,7 @@ noncomputable def finiteKuboBastinCommonEnergyDirectionalConductivity
     finiteVolumeConductivityNormalization convention omega eta
 
 theorem finiteKuboBastinOccupationResolvedDirectionalConductivity_eq_commonEnergy
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (interpolation : PurePointOccupationInterpolation system data)
@@ -175,7 +175,7 @@ theorem finiteKuboBastinOccupationResolvedDirectionalConductivity_eq_commonEnerg
   rw [integral_finiteKuboBastinCommonEnergyKernel]
 
 theorem finiteDimensionalKuboBastinDirectionalConductivity_eq_commonEnergy
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (interpolation : PurePointOccupationInterpolation system data)
