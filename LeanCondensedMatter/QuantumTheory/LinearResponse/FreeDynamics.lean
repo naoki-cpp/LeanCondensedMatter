@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.BoundedDyson
+import LeanCondensedMatter.Analysis.Dyson.Constant
 import LeanCondensedMatter.QuantumTheory.Postulates
 
 set_option linter.style.header false
