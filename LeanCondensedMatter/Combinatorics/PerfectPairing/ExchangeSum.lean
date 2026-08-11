@@ -433,7 +433,7 @@ theorem pairingSum_eq_permutationSum_of_inl_vanishing {R : Type*} [CommSemiring 
     (hpv : ∀ i i' : Fin m, pv (e (Sum.inl i)) (e (Sum.inl i')) = 0) :
     pairingSum ζ pv =
       sideSplittingWeight ζ e *
-        permutationSum ζ Finset.univ (exchangeMatrix ζ e pv) := by
+        permutationSum ζ (exchangeMatrix ζ e pv) Finset.univ := by
   classical
   rw [pairingSum]
   simp only [Pairing.evaluation]
