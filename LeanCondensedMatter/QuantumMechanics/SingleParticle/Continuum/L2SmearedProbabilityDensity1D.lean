@@ -18,7 +18,8 @@ This is still a bounded-observable statement. No Laplacian, Schrödinger Hamilto
 or unbounded-operator assertion is introduced here.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -76,4 +77,5 @@ theorem inner_realTestMultiplicationOperator1D_eq_wholeSpaceSmearedProbabilityDe
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics
