@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedLegSlotEmbedding
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedExternalPositions
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotCongr
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentOrderedSimplex
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentVertexProduct
@@ -13,7 +14,8 @@ vertices indexed by the ambient slots that component happens to own. The linked-
 factorization needs the same data as a diagram in its own right, on as many slots as the component
 owns, since that is the shape a perturbative coefficient is summed over.
 
-This module performs that reindexing. The slots are enumerated **in increasing order**, by
+This module performs that reindexing on the slot set `externalSlots` already isolated by
+`MixedExternalPositions`. The slots are enumerated **in increasing order**, by
 `Finset.orderIsoOfFin`, which is what makes the piece's mixed event and leg orders agree with the
 ambient ones; see `MixedEventSlotEmbedding` and `MixedLegSlotEmbedding` for that comparison. The
 piece keeps the ambient external labels, so it is again a fixed-external diagram for the same two
@@ -25,12 +27,7 @@ namespace Fermionic
 
 open Combinatorics
 
-variable {Mode : Type*} {n : ℕ} {i j : Mode}
-
-/-- The ambient interaction slots owned by the external component. -/
-noncomputable def FixedExternalTwoPointWickDiagram.externalSlots
-    (d : FixedExternalTwoPointWickDiagram Mode n i j) : Finset (Fin n) :=
-  Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0)
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
 
 /-- The external component owns as many slots as the ordered-simplex integral for that component
 integrates over. -/
