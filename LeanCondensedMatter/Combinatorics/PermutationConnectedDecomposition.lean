@@ -580,7 +580,11 @@ theorem permutationSum_univ_eq_sum_perm {R : Type*} [CommSemiring R]
       intro σ _
       change ζ ^ cycleDefect σ * (∏ i : (univ : Finset α), K i (σ i)) =
         ζ ^ cycleDefect σ * ∏ i : α, K i (σ i)
-      rw [Finset.prod_coe_sort]
-      simp
+      congr 1
+      calc
+        (∏ i : (univ : Finset α), K i (σ i)) =
+            ∏ i ∈ (univ : Finset α), K i (σ i) := by
+          exact Finset.prod_coe_sort (fun i : α => K i (σ i)) (univ : Finset α)
+        _ = ∏ i : α, K i (σ i) := by simp
 
 end Combinatorics
