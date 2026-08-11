@@ -39,9 +39,9 @@ private theorem mem_part_orbitFinpartitionOn_iff (S : Finset α) (σ : Equiv.Per
     b ∈ (orbitFinpartitionOn S σ).part a ↔
       a ∈ S ∧ b ∈ S ∧ σ.SameCycle a b := by
   classical
-  simpa [orbitFinpartitionOn] using
-    (Finpartition.mem_part_ofSetSetoid_iff_rel (s := Equiv.Perm.SameCycle.setoid σ) S
-      (a := a) (b := b))
+  change b ∈ (Finpartition.ofSetSetoid (Equiv.Perm.SameCycle.setoid σ) S).part a ↔
+    a ∈ S ∧ b ∈ S ∧ (Equiv.Perm.SameCycle.setoid σ) a b
+  exact Finpartition.mem_part_ofSetSetoid_iff_rel S
 
 private theorem SupportedPerm.apply_mem {S : Finset α} (σ : SupportedPerm S)
     {x : α} (hx : x ∈ S) : σ.1 x ∈ S := by
@@ -73,8 +73,8 @@ private noncomputable def restrictOrbitBlock {S : Finset α} (σ : SupportedPerm
 
 @[simp]
 private theorem restrictOrbitBlock_apply {S : Finset α} (σ : SupportedPerm S)
-    (B : (orbitFinpartitionOn S σ.1).parts) (x : B.1) :
-    ((restrictOrbitBlock σ B x : B.1) : α) = σ.1 x :=
+    (B : (orbitFinpartitionOn S σ.1).parts) (_x : B.1) :
+    ((restrictOrbitBlock σ B _x : B.1) : α) = σ.1 _x :=
   rfl
 
 private theorem restrictOrbitBlock_isCycleOn {S : Finset α} (σ : SupportedPerm S)
@@ -161,8 +161,8 @@ private theorem sameCycle_sigmaCongrRight_iff_fst_eq {ι : Type*} {β : ι → T
           (Equiv.Perm.sigmaCongrRight fun i => (c i).1) ^ z := by
       simpa using map_zpow (Equiv.Perm.sigmaCongrRightHom β) (fun i => (c i).1) z
     rw [← hpow]
-    apply Sigma.ext rfl
-    simpa using hz
+    change (⟨i, ((c i).1 ^ z) x⟩ : Σ i, β i) = ⟨i, y⟩
+    exact Sigma.ext rfl (HEq.of_eq hz)
 
 omit [Fintype α] in
 private theorem assembleSubtype_sameCycle_iff {S : Finset α} (π : Finpartition S)
@@ -231,6 +231,7 @@ private theorem assemblePermutation_apply_mem {S : Finset α} (π : Finpartition
     (assemblePermutation π c).1 x =
       ((c ⟨π.part x, π.part_mem.2 hx⟩).1
         ⟨x, π.mem_part hx⟩ : α) := by
+  change (assembleSubtypePermutation π c).extendDomain (Equiv.refl S) x = _
   rw [Equiv.Perm.extendDomain_apply_subtype _ _ hx]
   rfl
 
@@ -250,8 +251,7 @@ private theorem decompose_assemble {S : Finset α} (π : Finpartition S)
     decomposePermutation S (assemblePermutation π c) = ⟨π, c⟩ := by
   have hπ := orbitFinpartitionOn_assemble π c
   unfold decomposePermutation
-  cases hπ
-  congr
+  apply Sigma.eq hπ
   funext B
   apply Subtype.ext
   apply Equiv.ext
