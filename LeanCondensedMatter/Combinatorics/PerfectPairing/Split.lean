@@ -416,7 +416,7 @@ theorem prod_pairs_ofSplit [CommMonoid R] (e : PositionSplitting a b n)
       (fun pr => splitLeftKernel e pv pr.1 pr.2),
     Finset.prod_subtype Q.pairs (fun _ => Iff.rfl)
       (fun pr => splitRightKernel e pv pr.1 pr.2)]
-  congr 1
+  apply congrArg₂ (· * ·)
   · refine Fintype.prod_congr _ _ fun pr => ?_
     change pv (orientPair (e (Sum.inl pr.1.1)) (e (Sum.inl pr.1.2))).1
         (orientPair (e (Sum.inl pr.1.1)) (e (Sum.inl pr.1.2))).2 = _
