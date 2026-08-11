@@ -103,10 +103,10 @@ theorem FixedExternalTwoPointWickDiagram.externalLegDataEquiv_symm_twoPointLegDa
   | inl e => rfl
   | inr p =>
       obtain ⟨w, l⟩ := p
-      rw [Common.twoPointLegDataCongr_inr,
-        Common.TwoPointDiagram.externalLegDataEquiv_symm_inr, orderedTwoPointLegMap_inr]
-      exact congrArg (fun v => Sum.inr (v, l))
-        (Subtype.ext (d.externalSlotEquiv_symm_coe w))
+      apply congrArg Sum.inr
+      apply Prod.ext
+      · exact Subtype.ext (d.externalSlotEquiv_symm_coe w)
+      · rfl
 
 end Fermionic
 end SecondQuantization
