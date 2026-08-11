@@ -428,6 +428,31 @@ theorem prod_pairs_ofSplit [CommMonoid R] (e : PositionSplitting a b n)
     unfold orientPair splitRightKernel
     split_ifs <;> rfl
 
+/-- **A product over the pairs of a split pairing, when the parts are listed in ambient order.**
+
+The monotone case of `prod_pairs_ofSplit`: each pair is already oriented the way the ambient order
+lists it, so no orientation correction survives and the factors are the ambient kernel read directly
+on each part. -/
+theorem prod_pairs_of_isSplit [CommMonoid R] (e : PositionSplitting a b n)
+    {P : Pairing n} (h : P.IsSplit e)
+    (hL : StrictMono fun i : Fin (2 * a) => e (Sum.inl i))
+    (hR : StrictMono fun i : Fin (2 * b) => e (Sum.inr i))
+    (pv : Fin (2 * n) → Fin (2 * n) → R) :
+    (∏ pr ∈ P.pairs, pv pr.1 pr.2) =
+      (∏ pr ∈ (P.splitLeft e h).pairs, pv (e (Sum.inl pr.1)) (e (Sum.inl pr.2))) *
+        (∏ pr ∈ (P.splitRight e h).pairs, pv (e (Sum.inr pr.1)) (e (Sum.inr pr.2))) := by
+  classical
+  conv_lhs => rw [← Pairing.ofSplit_splitLeft_splitRight e h]
+  rw [prod_pairs_ofSplit e (P.splitLeft e h) (P.splitRight e h) pv]
+  refine congrArg₂ (· * ·) (Finset.prod_congr rfl fun pr hpr => ?_)
+    (Finset.prod_congr rfl fun pr hpr => ?_)
+  · obtain ⟨hlt, -⟩ := ((P.splitLeft e h).mem_pairs_iff pr.1 pr.2).1 (by simpa using hpr)
+    unfold splitLeftKernel
+    rw [if_pos (hL hlt)]
+  · obtain ⟨hlt, -⟩ := ((P.splitRight e h).mem_pairs_iff pr.1 pr.2).1 (by simpa using hpr)
+    unfold splitRightKernel
+    rw [if_pos (hR hlt)]
+
 end Product
 
 section Monotone
