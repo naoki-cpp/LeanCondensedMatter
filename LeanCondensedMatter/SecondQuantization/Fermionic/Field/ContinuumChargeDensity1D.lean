@@ -1,4 +1,3 @@
-import LeanCondensedMatter.QuantumTheory.Continuum.SchrodingerContinuityCompactSupport1D
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ChargeDensity
 import Mathlib.Tactic
 

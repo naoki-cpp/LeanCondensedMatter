@@ -1,5 +1,5 @@
-import LeanCondensedMatter.QuantumTheory.Continuum.L2Multiplication1D
-import LeanCondensedMatter.QuantumTheory.Continuum.SchrodingerContinuityCompactSupport1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2Multiplication1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuityCompactSupport1D
 import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
 import Mathlib.Tactic
 

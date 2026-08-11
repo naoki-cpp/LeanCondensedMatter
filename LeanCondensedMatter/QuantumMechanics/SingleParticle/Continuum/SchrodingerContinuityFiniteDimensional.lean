@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.Continuum.SchrodingerContinuity
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuity
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -96,7 +96,7 @@ theorem finiteDimensional_probability_continuity_balance_of_schrodinger
   exact probability_continuity_balance_of_schrodinger
     ℏ κ potential ψ ψt (∑ i, secondDerivatives i) hℏ hschrodinger
 
-/-- Finite-dimensional pointwise continuity equation assembled from coordinate-line derivatives.
+/-- Pointwise finite-dimensional continuity equation assembled from coordinate-line derivatives.
 
 For each coordinate `i`, `ψSpace i` is the restriction of the wavefunction to the coordinate line
 through the selected spatial point, and `ψx i` is its first spatial derivative along that line.

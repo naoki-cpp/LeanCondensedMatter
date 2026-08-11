@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.Continuum.SchrodingerContinuity
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuity
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
 import Mathlib.Tactic
 
