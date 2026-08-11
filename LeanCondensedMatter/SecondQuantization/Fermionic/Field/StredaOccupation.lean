@@ -149,7 +149,7 @@ variable [Fintype ι]
 oriented occupation-derivative integral. The contact term and finite-volume normalization remain
 unchanged. -/
 noncomputable def finiteKuboBastinOccupationResolvedDirectionalConductivity
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (interpolation : PurePointOccupationInterpolation system data)
@@ -166,7 +166,7 @@ noncomputable def finiteKuboBastinOccupationResolvedDirectionalConductivity
 /-- The finite spectral Bastin conductivity equals its occupation-resolved transition-integral
 form. -/
 theorem finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (interpolation : PurePointOccupationInterpolation system data)
@@ -188,7 +188,7 @@ theorem finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved
 /-- The named ordinary-trace finite Kubo–Bastin response equals the occupation-resolved finite
 transition-integral form. -/
 theorem finiteDimensionalKuboBastinDirectionalConductivity_eq_occupationResolved
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (interpolation : PurePointOccupationInterpolation system data)
@@ -213,7 +213,7 @@ theorem finiteDimensionalKuboBastinDirectionalConductivity_eq_occupationResolved
 /-- The occupation-resolved response remains connected to the upstream causal Kubo derivation at
 fixed positive switching rate. -/
 theorem infiniteTimeAdiabaticDirectionalConductivity_eq_occupationResolved
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (interpolation : PurePointOccupationInterpolation system data)
