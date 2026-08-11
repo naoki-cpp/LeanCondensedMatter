@@ -247,6 +247,8 @@ theorem FixedExternalTwoPointWickDiagram.orderedTwoPointPairingValue_pairingInMi
       (strictMono_monotonePositionSplitting_inl _ _ _)
       (strictMono_monotonePositionSplitting_inr _ _ _)
       (mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence)]
+  simp only [FixedExternalTwoPointWickDiagram.externalPairingPiece,
+    FixedExternalTwoPointWickDiagram.vacuumPairingPiece]
   ring
 
 end PairingValue
