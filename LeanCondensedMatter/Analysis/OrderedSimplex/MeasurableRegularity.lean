@@ -68,6 +68,43 @@ theorem Continuous.measurableLocallyBounded {n : ℕ} {f : (Fin n → ℝ) → �
   measurableLocallyBounded_of_finite_continuous_selection
     f (fun _ : Unit => f) hf.measurable (fun _ => hf) (fun _ => ⟨(), rfl⟩)
 
+/-- Constants are measurably locally bounded. -/
+theorem measurableLocallyBounded_const {n : ℕ} (c : ℂ) :
+    MeasurableLocallyBounded (fun _ : Fin n → ℝ => c) :=
+  ⟨measurable_const, fun _ _ => ⟨‖c‖, norm_nonneg c, fun _ _ => le_rfl⟩⟩
+
+/-- Measurable local boundedness is preserved by pointwise multiplication: the product of two
+uniform cube bounds bounds the product. -/
+theorem MeasurableLocallyBounded.mul {n : ℕ} {f g : (Fin n → ℝ) → ℂ}
+    (hf : MeasurableLocallyBounded f) (hg : MeasurableLocallyBounded g) :
+    MeasurableLocallyBounded (fun x => f x * g x) := by
+  refine ⟨hf.1.mul hg.1, ?_⟩
+  intro R hR
+  obtain ⟨C, hC0, hC⟩ := hf.2 R hR
+  obtain ⟨D, hD0, hD⟩ := hg.2 R hR
+  refine ⟨C * D, mul_nonneg hC0 hD0, ?_⟩
+  intro x hx
+  calc
+    ‖f x * g x‖ = ‖f x‖ * ‖g x‖ := norm_mul _ _
+    _ ≤ C * D := by
+      gcongr
+      · exact (norm_nonneg _).trans (hC x hx)
+      · exact hC x hx
+      · exact hD x hx
+
+/-- A finite product of measurably locally bounded integrands is measurably locally bounded. -/
+theorem MeasurableLocallyBounded.finsetProd {ι : Type*} {n : ℕ} (s : Finset ι)
+    (f : ι → (Fin n → ℝ) → ℂ) (hf : ∀ i ∈ s, MeasurableLocallyBounded (f i)) :
+    MeasurableLocallyBounded (fun x => ∏ i ∈ s, f i x) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simpa using measurableLocallyBounded_const (n := n) 1
+  | @insert a s ha ih =>
+      have hprod : MeasurableLocallyBounded (fun x => ∏ i ∈ s, f i x) :=
+        ih fun i hi => hf i (Finset.mem_insert_of_mem hi)
+      have hcons := (hf a (Finset.mem_insert_self a s)).mul hprod
+      simpa [Finset.prod_insert ha] using hcons
+
 /-- Fixing the outermost finite coordinate preserves measurable local boundedness. -/
 theorem MeasurableLocallyBounded.finCons {n : ℕ}
     {f : (Fin (n + 1) → ℝ) → ℂ} (hf : MeasurableLocallyBounded f) (t : ℝ) :

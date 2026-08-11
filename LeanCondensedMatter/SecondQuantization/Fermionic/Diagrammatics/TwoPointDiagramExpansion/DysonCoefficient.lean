@@ -10,10 +10,11 @@ This module integrates the fixed-time external-leg Wick expansion over the order
 attaches the `(-1)^n` Dyson sign. The operator presentation uses the canonical free Gibbs density
 state directly; no parallel finite-Gibbs coefficient API is maintained.
 
-The unconditional public theorem integrates the pointwise finite sum over diagrams.  It deliberately
-does not yet commute that finite diagram sum with the ordered-simplex integral: mixed time ordering
-changes when an interaction time crosses an external time, so continuity or piecewise-integrability
-of each individual diagram amplitude is a separate analytic obligation.
+The unconditional public theorem integrates the pointwise finite sum over diagrams.  Commuting that
+finite diagram sum with the ordered-simplex integral is a separate analytic obligation, because
+mixed time ordering changes when an interaction time crosses an external time and no individual
+diagram amplitude is continuous.  It is discharged under measurable local boundedness in
+`DiagramSumIntegral.lean` by `twoPointDiagramCoefficient_eq_sum_dysonAmplitude`.
 -/
 
 namespace SecondQuantization
