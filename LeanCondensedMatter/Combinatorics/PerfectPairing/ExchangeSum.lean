@@ -46,13 +46,20 @@ private theorem exchangeUnitWeight_mul {R : Type*} [CommSemiring R] (ζ : R) (h�
     exchangeUnitWeight ζ (u * v) = exchangeUnitWeight ζ u * exchangeUnitWeight ζ v := by
   rcases Int.units_eq_one_or u with rfl | rfl <;>
     rcases Int.units_eq_one_or v with rfl | rfl <;>
-    simp [exchangeUnitWeight, hζ, Int.units_mul_self]
+    simp [exchangeUnitWeight, hζ]
 
 private noncomputable def exchangeUnitWeightHom {R : Type*} [CommSemiring R]
     (ζ : R) (hζ : ζ * ζ = 1) : ℤˣ →* R where
   toFun := exchangeUnitWeight ζ
   map_one' := by simp [exchangeUnitWeight]
   map_mul' := exchangeUnitWeight_mul ζ hζ
+
+private theorem exchangeUnitWeight_neg_one_pow {R : Type*} [CommSemiring R]
+    (ζ : R) (hζ : ζ * ζ = 1) (k : ℕ) :
+    exchangeUnitWeight ζ ((-1 : ℤˣ) ^ k) = ζ ^ k := by
+  change exchangeUnitWeightHom ζ hζ ((-1 : ℤˣ) ^ k) = ζ ^ k
+  rw [map_pow]
+  simp [exchangeUnitWeightHom, exchangeUnitWeight]
 
 private noncomputable def permutationWeight {α R : Type*} [Fintype α] [DecidableEq α]
     [CommSemiring R] (ζ : R) (σ : Equiv.Perm α) : R :=
@@ -315,9 +322,10 @@ private theorem pairingWeight_sidePairing {R : Type*} [CommSemiring R]
     (ζ : R) (hζ : ζ * ζ = 1) (e : SideSplitting m) (σ : Equiv.Perm (Fin m)) :
     ζ ^ (sidePairing e σ).crossingCount =
       sideSplittingWeight ζ e * ζ ^ sideReversedCount e σ * permutationWeight ζ σ := by
-  have h := congrArg (exchangeUnitWeightHom ζ hζ)
+  have h := congrArg (exchangeUnitWeight ζ)
     (neg_one_pow_crossingCount_eq_of_sidePairing e σ)
-  simpa [sideSplittingWeight, permutationWeight, exchangeUnitWeightHom, exchangeUnitWeight] using h
+  simp only [exchangeUnitWeight_mul ζ hζ, exchangeUnitWeight_neg_one_pow ζ hζ] at h
+  simpa [sideSplittingWeight, permutationWeight] using h
 
 /-! ## Private selection rule and orientation absorption -/
 
