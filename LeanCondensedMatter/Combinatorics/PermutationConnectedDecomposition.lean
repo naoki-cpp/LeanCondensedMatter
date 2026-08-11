@@ -104,12 +104,14 @@ private theorem restrictOrbitBlockSubtype_isCycleOn {S : Finset α} (σ : Suppor
 private noncomputable def extendBlockPerm (B : Finset α) (τ : Equiv.Perm B) : Equiv.Perm α :=
   τ.extendDomain (Equiv.refl B)
 
+omit [Fintype α] in
 @[simp]
 private theorem extendBlockPerm_apply_mem (B : Finset α) (τ : Equiv.Perm B)
     {x : α} (hx : x ∈ B) :
     extendBlockPerm B τ x = (τ ⟨x, hx⟩ : B) := by
   exact Equiv.Perm.extendDomain_apply_subtype τ (Equiv.refl B) hx
 
+omit [Fintype α] in
 private theorem extendBlockPerm_apply_not_mem (B : Finset α) (τ : Equiv.Perm B)
     {x : α} (hx : x ∉ B) : extendBlockPerm B τ x = x := by
   exact Equiv.Perm.extendDomain_apply_not_subtype τ (Equiv.refl B) hx
@@ -120,6 +122,7 @@ private theorem extendBlockPerm_support_subset (B : Finset α) (τ : Equiv.Perm 
   by_contra hxB
   exact (Equiv.Perm.mem_support.mp hx) (extendBlockPerm_apply_not_mem B τ hxB)
 
+omit [Fintype α] in
 private theorem extendBlockPerm_isCycleOn (B : Finset α) (τ : Equiv.Perm B)
     (hτ : τ.IsCycleOn Set.univ) :
     (extendBlockPerm B τ).IsCycleOn (B : Set α) := by
@@ -252,7 +255,6 @@ private theorem sameCycle_sigmaCongrRight_iff_fst_eq {ι : Type*} {β : ι → T
     change (⟨i, ((c i).1 ^ z) x⟩ : Σ i, β i) = ⟨i, y⟩
     simpa [hz]
 
-omit [Fintype α] in
 private theorem assembleSubtype_sameCycle_iff {S : Finset α} (π : Finpartition S)
     (c : ∀ B : π.parts, SingleOrbitPerm B.1) (x y : S) :
     (assembleSubtypePermutation π c).SameCycle x y ↔
@@ -333,7 +335,7 @@ private theorem assemble_decompose {S : Finset α} (σ : SupportedPerm S) :
   by_cases hx : x ∈ S
   · rw [assemblePermutation_apply_mem _ _ hx]
     change extendBlockPerm _ _ x = σ.1 x
-    rw [extendBlockPerm_apply_mem]
+    rw [extendBlockPerm_apply_mem _ _ ((decomposePermutation S σ).1.mem_part hx)]
     rfl
   · rw [SupportedPerm.apply_eq_self_of_not_mem σ hx]
     simp [assemblePermutation, Equiv.Perm.extendDomain_apply_not_subtype, hx]
