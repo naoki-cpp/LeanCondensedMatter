@@ -24,15 +24,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboGreenwood
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinSpectral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinTrace
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StaticKuboBastinResponse
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaResolventSpectral
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaTraceSpectral
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaIntegration
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaOccupation
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaCommonKernel
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaTraceRepresentation
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaSpectralEnergyIntegral
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StaticStredaWardBridge
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.FiniteDisorderConductivity
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Validation.FiniteToys
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Validation.TwoLevelExplicit
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Validation.TwoSiteDimer
@@ -82,27 +73,13 @@ ordinary-trace layer packages those finite resolvent coefficients into an energy
 carrier, proves its spectral expansion, and identifies the resulting named finite-dimensional
 Kubo–Bastin conductivity with the upstream causal Kubo response. The static-target layer names the
 exact zero-frequency specialization while retaining finite switching, the Peierls contact term,
-and the finite-volume electric-field normalization. The Středa resolvent spectral layer extends
-the eigenbasis action to arbitrary real integration energy for both retarded and advanced
-resolvents and their squares. The Středa trace spectral layer expands the canonical ordinary-trace
-Bastin integrand into its finite retarded/advanced pure-point double sum. The Středa integration
-layer records the additional finite-energy representation, derivative, integrability, and boundary
-hypotheses required for integration by parts, names the regularized surface and sea contributions,
-and proves their sum without assigning a magnetic-derivative interpretation. The occupation layer
-then makes the first concrete spectral-to-energy bridge: a differentiable occupation is required to
-reproduce the discrete pure-point probabilities, and every transition difference is rewritten as
-an oriented integral of its energy derivative. The common-kernel layer localizes each transition
-to its oriented spectral interval, combines the finite family into one globally integrable
-piecewise energy kernel, and proves that its full-line integral is the current-current Bastin sum.
-It deliberately stops before treating that discontinuous kernel as a differentiable Středa
-primitive. The traced-representation layer inserts the smooth finite-dimensional ordinary-trace
-surface primitive and residual sea kernel into the abstract integration data, proves that its
-energy integral is the canonical occupation-weighted Bastin trace integral, and leaves equality
-with any chosen response as an explicit hypothesis. The spectral-energy layer lifts the finite
-pure-point trace expansion through the occupation-weighted interval integral at every positive
-broadening. The static Ward bridge exposes the remaining model-specific Peierls f-sum identity at
-the current-current level, keeps contact and `V(-η)` explicit, and constructs the concrete Středa
-representation under that visible assumption. The finite-disorder layer applies the exact static
+and the finite-volume electric-field normalization. The generic transport layer now owns the
+Středa resolvent spectral action, ordinary-trace spectral expansion, finite-energy representation,
+integration-by-parts data, occupation interpolation, and spectral-energy integral. The fermionic
+transport adapter layer localizes each transition to its oriented spectral interval, combines the
+finite family into one globally integrable piecewise energy kernel, and exposes the remaining
+model-specific Peierls Ward bridge. It deliberately stops before treating that discontinuous
+kernel as a differentiable Středa primitive. The finite-disorder adapter applies the exact static
 conductivity configuration-wise to `Hω = H₀ + Vω`, forms the normalized finite ensemble average,
 and lifts the visible Ward/Středa equalities through that average without introducing a
 weak-disorder approximation. The finite-toy validation layer supplies a concrete degenerate

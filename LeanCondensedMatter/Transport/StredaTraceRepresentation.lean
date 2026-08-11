@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaIntegration
+import LeanCondensedMatter.Transport.StredaIntegration
 import LeanCondensedMatter.Transport.StredaTraceKernel
 
 set_option linter.style.header false
@@ -20,9 +20,8 @@ No zero-broadening, DC, disorder, trace-per-unit-volume, magnetic-density deriva
 thermodynamic-limit statement is made.
 -/
 
-namespace SecondQuantization
-namespace Fermionic
-namespace Field
+namespace QuantumTheory
+namespace Transport
 
 open MeasureTheory QuantumTheory.Transport
 
@@ -190,6 +189,5 @@ theorem TracedStredaAnalyticData.response_eq_surface_add_sea
     response response_eq_tracedBastin).response_eq_surface_add_sea
 
 end
-end Field
-end Fermionic
-end SecondQuantization
+end Transport
+end QuantumTheory

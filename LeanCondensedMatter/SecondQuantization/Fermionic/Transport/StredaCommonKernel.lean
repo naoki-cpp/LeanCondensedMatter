@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaOccupation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StredaOccupation
 
 set_option linter.style.header false
 
@@ -10,9 +10,10 @@ piecewise kernel. This kernel is generally discontinuous at spectral energies, s
 smooth Středa primitive required for the surface/sea integration-by-parts theorem.
 -/
 
-namespace SecondQuantization.Fermionic.Field
+namespace SecondQuantization.Fermionic.Transport
 
-open MeasureTheory QuantumTheory.LinearResponse Set
+open MeasureTheory QuantumTheory.LinearResponse QuantumTheory.Transport Set
+open SecondQuantization.Fermionic.Field
 
 noncomputable section
 
@@ -195,4 +196,4 @@ theorem finiteDimensionalKuboBastinDirectionalConductivity_eq_commonEnergy
 
 end
 
-end SecondQuantization.Fermionic.Field
+end SecondQuantization.Fermionic.Transport

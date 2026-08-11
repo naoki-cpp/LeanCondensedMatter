@@ -1,4 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinTrace
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
 
 set_option linter.style.header false
@@ -33,11 +32,10 @@ magnetization. It also makes no zero-temperature distributional, zero-broadening
 trace-per-unit-volume, or thermodynamic-limit claim.
 -/
 
-namespace SecondQuantization
-namespace Fermionic
-namespace Field
+namespace QuantumTheory
+namespace Transport
 
-open MeasureTheory QuantumTheory.LinearResponse
+open MeasureTheory
 
 noncomputable section
 
@@ -158,43 +156,6 @@ theorem RegularizedStredaRepresentation.response_eq_surface_add_sea
       regularizedBastinEnergyIntegral_eq_surface_add_sea
         representation.toRegularizedStredaIntegralData
 
-variable {Site E ι : Type*}
-variable [LinearOrder Site] [Fintype Site]
-variable [AddCommGroup E] [Module ℝ E]
-variable [Fintype ι]
-
-/-- The explicit analytic object required to split the chosen finite-dimensional Kubo–Bastin
-conductivity from `KuboBastinTrace`. -/
-abbrev FiniteKuboBastinStredaRepresentation
-    (convention : QuantumTheory.Transport.PositiveVolume)
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (spectralData : PurePointLehmannData system ι)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :=
-  RegularizedStredaRepresentation
-    (finiteDimensionalKuboBastinDirectionalConductivity
-      convention system spectralData geometry direction K q omega eta)
-
-/-- The chosen finite-dimensional regularized Kubo–Bastin conductivity equals its named Středa
-surface and sea terms whenever its energy representation satisfies the visible analytic and
-boundary hypotheses. -/
-theorem finiteDimensionalKuboBastinDirectionalConductivity_eq_streda
-    (convention : QuantumTheory.Transport.PositiveVolume)
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (spectralData : PurePointLehmannData system ι)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ)
-    (representation : FiniteKuboBastinStredaRepresentation
-      convention system spectralData geometry direction K q omega eta) :
-    finiteDimensionalKuboBastinDirectionalConductivity
-        convention system spectralData geometry direction K q omega eta =
-      regularizedStredaFermiSurface
-          representation.toRegularizedStredaIntegralData +
-        regularizedStredaFermiSea
-          representation.toRegularizedStredaIntegralData :=
-  representation.response_eq_surface_add_sea
-
 end
-end Field
-end Fermionic
-end SecondQuantization
+end Transport
+end QuantumTheory

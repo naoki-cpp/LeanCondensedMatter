@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinSpectral
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann
+import LeanCondensedMatter.Transport.Resolvent
 
 set_option linter.style.header false
 
@@ -17,11 +18,10 @@ No trace, occupation integral, contact cancellation, zero-broadening limit, or c
 is made here.
 -/
 
-namespace SecondQuantization
-namespace Fermionic
-namespace Field
+namespace QuantumTheory
+namespace Transport
 
-open QuantumTheory.LinearResponse QuantumTheory.Transport
+open QuantumTheory.LinearResponse
 
 noncomputable section
 
@@ -175,6 +175,5 @@ theorem inner_purePointBasis_advancedResolvent_at_energy
   simp [inner_self_eq_norm_sq_to_K, data.basis.orthonormal.norm_eq_one]
 
 end
-end Field
-end Fermionic
-end SecondQuantization
+end Transport
+end QuantumTheory

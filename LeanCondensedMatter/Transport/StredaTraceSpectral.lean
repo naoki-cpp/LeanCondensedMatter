@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaResolventSpectral
+import LeanCondensedMatter.Transport.StredaResolventSpectral
 import LeanCondensedMatter.Transport.StredaTraceKernel
 
 set_option linter.style.header false
@@ -16,12 +16,11 @@ electric-field normalization, zero-broadening limit, or equality with the static
 response is claimed here.
 -/
 
-namespace SecondQuantization
-namespace Fermionic
-namespace Field
+namespace QuantumTheory
+namespace Transport
 
 open scoped BigOperators
-open QuantumTheory.LinearResponse QuantumTheory.Transport
+open QuantumTheory.LinearResponse
 
 noncomputable section
 
@@ -202,6 +201,5 @@ theorem regularizedBastinTraceIntegrand_eq_spectral_sum
   ring
 
 end
-end Field
-end Fermionic
-end SecondQuantization
+end Transport
+end QuantumTheory
