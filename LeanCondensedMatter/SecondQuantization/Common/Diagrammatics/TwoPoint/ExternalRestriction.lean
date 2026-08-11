@@ -148,15 +148,6 @@ theorem TwoPointDiagram.restrictExternalComponent_externalLabel {S : Finset (Fin
   rfl
 
 @[simp]
-theorem TwoPointDiagram.restrictExternalComponent_vertexLabel {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (v : ↥(TwoPointDiagram.interactionPart (d.externalComponent 0))) :
-    d.restrictExternalComponent.vertexLabel v =
-      d.vertexLabel ⟨v.1, TwoPointDiagram.interactionPart_subset
-        (d.externalComponent 0) v.2⟩ :=
-  rfl
-
-@[simp]
 theorem TwoPointDiagram.restrictExternalComponent_pairing {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     d.restrictExternalComponent.pairing = d.restrictedExternalPairing :=
