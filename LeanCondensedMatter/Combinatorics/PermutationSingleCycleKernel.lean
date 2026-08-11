@@ -53,6 +53,10 @@ theorem singleCycleContribution_of_card_eq
       ζ ^ (m - 1) * singleCycleKernelSum K S := by
   rw [singleCycleContribution_eq_pow_card_mul_singleCycleKernelSum, hcard]
 
+noncomputable local instance fullCycleFintype :
+    Fintype {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)} :=
+  Fintype.ofFinite _
+
 /-- On the full finite index type, the pure connected kernel is the direct sum over permutations
 that are a single cycle on the whole type. This exposes only the semantic predicate `IsCycleOn`;
 the private connected-object representation of W2 remains hidden. -/
