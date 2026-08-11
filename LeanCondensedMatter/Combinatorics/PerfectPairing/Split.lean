@@ -16,6 +16,9 @@ Only the left part needs to be assumed closed under `partner`. Closure of the ri
 automatic, because `partner` is an involution: a right position paired to a left one would make that
 left position paired to a right one.
 
+Restricting and assembling are mutually inverse, so the pairings split by a given splitting are
+exactly the pairs of pairings of the parts (`Pairing.splitEquiv`).
+
 Compare `Combinatorics.SideSplitting`, where the pairs all *do* cross between the two parts. The two
 are the extreme cases of the same presentation of the positions.
 -/
@@ -188,6 +191,54 @@ theorem Pairing.isSplit_ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q
   ⟨P.partner i, Pairing.ofSplit_partner_inl e P Q i⟩
 
 end Assemble
+
+section Inverse
+
+/-- Assembling and then restricting to the left part returns the left pairing. -/
+@[simp]
+theorem Pairing.splitLeft_ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
+    (Pairing.ofSplit e P Q).splitLeft e (Pairing.isSplit_ofSplit e P Q) = P := by
+  refine Pairing.ext (Equiv.ext fun i => ?_)
+  have h := Pairing.partner_splitLeft e (Pairing.isSplit_ofSplit e P Q) i
+  rw [Pairing.ofSplit_partner_inl] at h
+  exact (Sum.inl.inj (e.injective h)).symm
+
+/-- Assembling and then restricting to the right part returns the right pairing. -/
+@[simp]
+theorem Pairing.splitRight_ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
+    (Pairing.ofSplit e P Q).splitRight e (Pairing.isSplit_ofSplit e P Q) = Q := by
+  refine Pairing.ext (Equiv.ext fun i => ?_)
+  have h := Pairing.partner_splitRight e (Pairing.isSplit_ofSplit e P Q) i
+  rw [Pairing.ofSplit_partner_inr] at h
+  exact (Sum.inr.inj (e.injective h)).symm
+
+/-- **A split pairing is assembled from its two restrictions.** Nothing is lost by taking a split
+pairing apart: every position lies in one of the parts, and its partner lies in the same part. -/
+theorem Pairing.ofSplit_splitLeft_splitRight (e : PositionSplitting a b n) {P : Pairing n}
+    (h : P.IsSplit e) :
+    Pairing.ofSplit e (P.splitLeft e h) (P.splitRight e h) = P := by
+  refine Pairing.ext (Equiv.ext fun i => ?_)
+  obtain ⟨x, rfl⟩ := e.surjective i
+  cases x with
+  | inl j => rw [Pairing.ofSplit_partner_inl, Pairing.partner_splitLeft e h]
+  | inr j => rw [Pairing.ofSplit_partner_inr, Pairing.partner_splitRight e h]
+
+/-- **The pairings split by a position splitting are exactly the pairs of part pairings.**
+
+This is the combinatorial content of a binary diagram decomposition: choosing a pairing that
+respects the splitting is the same as choosing one on each part independently. A reindexing of a sum
+over diagrams as a sum over pairs of pieces goes through this equivalence. -/
+noncomputable def Pairing.splitEquiv (e : PositionSplitting a b n) :
+    {P : Pairing n // P.IsSplit e} ≃ Pairing a × Pairing b where
+  toFun P := (P.1.splitLeft e P.2, P.1.splitRight e P.2)
+  invFun PQ := ⟨Pairing.ofSplit e PQ.1 PQ.2, Pairing.isSplit_ofSplit e PQ.1 PQ.2⟩
+  left_inv P := Subtype.ext (Pairing.ofSplit_splitLeft_splitRight e P.2)
+  right_inv PQ := by
+    obtain ⟨P, Q⟩ := PQ
+    simp only [Prod.mk.injEq]
+    exact ⟨Pairing.splitLeft_ofSplit e P Q, Pairing.splitRight_ofSplit e P Q⟩
+
+end Inverse
 
 section Sign
 
