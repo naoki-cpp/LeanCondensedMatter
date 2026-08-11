@@ -63,7 +63,7 @@ private theorem mem_part_orbitFinpartitionOn_iff (S : Finset α) (σ : Equiv.Per
     · rintro ⟨hsame, hbS⟩
       exact ⟨ha, hbS, hsame⟩
     · rintro ⟨_, hbS, hsame⟩
-      exact ⟨hsame, hbS⟩
+      exact ⟨hsame, hbS, hsame⟩
   · have hq : Q.part a = ∅ := Q.part_eq_empty.2 ha
     simp [hq, ha]
 
@@ -526,6 +526,7 @@ noncomputable def singleCycleContribution {R : Type*} [CommSemiring R]
     (ζ : R) (K : α → α → R) (S : Finset α) : R :=
   (permutationMultiplicativeWeight (α := α) ζ K).connectedContribution S
 
+/-- Finiteness of full-cycle permutations used by the semantic connected endpoint. -/
 noncomputable local instance fullCycleFintype :
     Fintype {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)} :=
   Fintype.ofFinite _
