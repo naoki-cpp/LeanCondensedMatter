@@ -171,6 +171,40 @@ theorem FixedExternalTwoPointWickDiagram.componentPosition_eventTime_eq
       simpa [orderedTwoPointLegEvent, twoPointTimedEventTime] using
         hTime leg.1.1 hvPart
 
+/-- Component position transport preserves strict mixed order as soon as the flattened atomic-leg
+order of the two supporting legs is preserved.  This is the coordinate bookkeeping shared by every
+sufficient condition for order preservation. -/
+theorem FixedExternalTwoPointWickDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_legPosition_lt_iff
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.1.componentPartition.parts)
+    (p q : d.MixedComponentPosition τ τ' σ B)
+    (hOrder :
+      (mixedTimeOrderedAtomicLegPosition τ τ' σ (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1) <
+          mixedTimeOrderedAtomicLegPosition τ τ' σ (mixedTimeOrderedAtomicLegEquiv τ τ' σ q.1)) ↔
+        (mixedTimeOrderedAtomicLegPosition τ τ' υ (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1) <
+          mixedTimeOrderedAtomicLegPosition τ τ' υ (mixedTimeOrderedAtomicLegEquiv τ τ' σ q.1))) :
+    p.1 < q.1 ↔
+      (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 <
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1 := by
+  have hpSource :
+      mixedTimeOrderedAtomicLegPosition τ τ' σ (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1) = p.1 :=
+    mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
+  have hqSource :
+      mixedTimeOrderedAtomicLegPosition τ τ' σ (mixedTimeOrderedAtomicLegEquiv τ τ' σ q.1) = q.1 :=
+    mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
+  have hpTarget :
+      mixedTimeOrderedAtomicLegPosition τ τ' υ (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1) =
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 := by
+    rw [← d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p]
+    exact mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
+  have hqTarget :
+      mixedTimeOrderedAtomicLegPosition τ τ' υ (mixedTimeOrderedAtomicLegEquiv τ τ' σ q.1) =
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1 := by
+    rw [← d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B q]
+    exact mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
+  rw [hpSource, hqSource, hpTarget, hqTarget] at hOrder
+  exact hOrder
+
 /-- Component position transport preserves strict mixed order whenever the two assignments agree on
 the interaction vertices of that component. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentPositionTimeEquiv_lt_iff
@@ -180,35 +214,11 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPositionTimeEquiv_lt_iff
     (p q : d.MixedComponentPosition τ τ' σ B) :
     p.1 < q.1 ↔
       (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 <
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1 := by
-  let x := mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1
-  let y := mixedTimeOrderedAtomicLegEquiv τ τ' σ q.1
-  have hxTime := d.componentPosition_eventTime_eq τ τ' σ υ B hTime p
-  have hyTime := d.componentPosition_eventTime_eq τ τ' σ υ B hTime q
-  have hOrder := mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventTime_eq
-    τ τ' σ υ x y hxTime hyTime
-  have hpSource : mixedTimeOrderedAtomicLegPosition τ τ' σ x = p.1 := by
-    dsimp [x]
-    exact mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
-  have hqSource : mixedTimeOrderedAtomicLegPosition τ τ' σ y = q.1 := by
-    dsimp [y]
-    exact mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
-  have hpTarget :
-      mixedTimeOrderedAtomicLegPosition τ τ' υ x =
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 := by
-    change mixedTimeOrderedAtomicLegPosition τ τ' υ
-      (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1) = _
-    rw [← d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p]
-    exact mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
-  have hqTarget :
-      mixedTimeOrderedAtomicLegPosition τ τ' υ y =
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1 := by
-    change mixedTimeOrderedAtomicLegPosition τ τ' υ
-      (mixedTimeOrderedAtomicLegEquiv τ τ' σ q.1) = _
-    rw [← d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B q]
-    exact mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv _ _ _ _
-  rw [hpSource, hqSource, hpTarget, hqTarget] at hOrder
-  exact hOrder
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1 :=
+  d.mixedComponentPositionTimeEquiv_lt_iff_of_legPosition_lt_iff τ τ' σ υ B p q
+    (mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventTime_eq τ τ' σ υ _ _
+      (d.componentPosition_eventTime_eq τ τ' σ υ B hTime p)
+      (d.componentPosition_eventTime_eq τ τ' σ υ B hTime q))
 
 /-- External-component restricted position coordinates are unchanged by time transport. -/
 @[simp]
