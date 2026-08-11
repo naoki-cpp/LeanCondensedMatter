@@ -71,7 +71,11 @@ noncomputable def continuumSchrodingerEvolution1D
     have hscale : HasDerivAt (fun τ : ℝ => τ / hbar) (1 / hbar) t := by
       simpa [div_eq_mul_inv] using (hasDerivAt_id t).mul_const hbar⁻¹
     have hcomp := hU.scomp t hscale
-    simpa [Function.comp_def, H, smul_smul, div_eq_mul_inv] using hcomp
+    have hcoeff : (hbar⁻¹ : ℝ) • (Complex.I : ℂ) = Complex.I * (hbar : ℂ)⁻¹ := by
+      change ((hbar⁻¹ : ℝ) : ℂ) * Complex.I = _
+      rw [RCLike.ofReal_inv]
+      ring
+    simpa [Function.comp_def, H, smul_smul, div_eq_mul_inv, hcoeff] using hcomp
 
 end
 end Continuum
