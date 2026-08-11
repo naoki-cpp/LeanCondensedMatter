@@ -315,5 +315,32 @@ noncomputable def TwoPointDiagram.legPositionSplitting {S : Finset (Fin N)}
       (Equiv.refl {leg : Fin (2 * (2 * S.card + 1)) // d.LegIsVacuum leg}))).trans
     ((Equiv.sumComm _ _).trans (Equiv.sumCompl fun leg => d.LegIsVacuum leg))
 
+/-- **The vacuum interaction vertices are the relative complement of the external ones.**
+
+Needed before any round-trip law can even be stated: reconstruction takes its vacuum piece over
+`S \ T`, while `restrictVacuumPart` produces one over `interactionPart vacuumVertexSet`. Without
+this the two are different `Finset`s and the diagrams have different types. -/
+theorem TwoPointDiagram.interactionPart_vacuumVertexSet_eq_sdiff {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
+    TwoPointDiagram.interactionPart d.vacuumVertexSet =
+      S \ TwoPointDiagram.interactionPart
+        (d.externalComponentPart : Finset (TwoPointVertex S)) := by
+  apply Finset.ext
+  intro v
+  rw [Finset.mem_sdiff]
+  constructor
+  · intro hv
+    refine ⟨TwoPointDiagram.interactionPart_subset _ hv, fun hext => ?_⟩
+    exact Finset.disjoint_left.mp d.disjoint_interactionPart_external_vacuum hext hv
+  · rintro ⟨hvS, hext⟩
+    have hmem : v ∈ TwoPointDiagram.interactionPart
+        (d.externalComponentPart : Finset (TwoPointVertex S))
+          ∪ TwoPointDiagram.interactionPart d.vacuumVertexSet := by
+      rw [d.interactionPart_external_union_vacuum]
+      exact hvS
+    rcases Finset.mem_union.mp hmem with hcase | hcase
+    · exact absurd hcase hext
+    · exact hcase
+
 end Common
 end SecondQuantization
