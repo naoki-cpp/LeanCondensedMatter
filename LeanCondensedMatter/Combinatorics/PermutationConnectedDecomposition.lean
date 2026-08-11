@@ -488,9 +488,15 @@ private theorem pow_cycleDefect_eq_prod_orbitBlocks {R : Type*} [CommMonoid R]
       ∏ B : (orbitFinpartitionOn S σ.1).parts, ζ ^ ((B : Finset α).card - 1) := by
   classical
   rw [supported_cycleDefect_eq_sum_orbitFinpartitionOn σ]
-  rw [Finset.prod_subtype (orbitFinpartitionOn S σ.1).parts (fun _ => Iff.rfl)
-    (fun B : Finset α => ζ ^ (B.card - 1))]
-  rw [← Finset.prod_pow_eq_pow_sum]
+  calc
+    ζ ^ (∑ B ∈ (orbitFinpartitionOn S σ.1).parts, (B.card - 1)) =
+        ∏ B ∈ (orbitFinpartitionOn S σ.1).parts, ζ ^ (B.card - 1) := by
+      rw [← Finset.prod_pow_eq_pow_sum]
+    _ = ∏ B : (orbitFinpartitionOn S σ.1).parts,
+        ζ ^ ((B : Finset α).card - 1) := by
+      symm
+      exact Finset.prod_subtype (orbitFinpartitionOn S σ.1).parts (fun _ => Iff.rfl)
+        (fun B : Finset α => ζ ^ (B.card - 1))
 
 private theorem kernelProduct_eq_prod_orbitBlocks {R : Type*} [CommMonoid R]
     (K : α → α → R) {S : Finset α} (σ : SupportedPerm S) :
@@ -557,20 +563,20 @@ theorem permutationSum_univ_eq_sum_perm {R : Type*} [CommSemiring R]
       ∑ σ : Equiv.Perm α, ζ ^ cycleDefect σ * ∏ i : α, K i (σ i) := by
   classical
   rw [permutationSum, MultiplicativeWeight.objectMoment]
+  change (∑ d : SupportedPerm (univ : Finset α),
+      ζ ^ cycleDefect d.1 * ∏ i : (univ : Finset α), K i (d.1 i)) = _
   calc
     (∑ d : SupportedPerm (univ : Finset α),
-        (permutationMultiplicativeWeight (α := α) ζ K).objectWeight d) =
+        ζ ^ cycleDefect d.1 * ∏ i : (univ : Finset α), K i (d.1 i)) =
       ∑ σ : Equiv.Perm α,
-        (permutationMultiplicativeWeight (α := α) ζ K).objectWeight
-          ((permEquivSupportedUniv (α := α)) σ) := by
+        ζ ^ cycleDefect σ * ∏ i : (univ : Finset α), K i (σ i) := by
       exact (Equiv.sum_comp (permEquivSupportedUniv (α := α))
         (fun d : SupportedPerm (univ : Finset α) =>
-          (permutationMultiplicativeWeight (α := α) ζ K).objectWeight d)).symm
+          ζ ^ cycleDefect d.1 * ∏ i : (univ : Finset α), K i (d.1 i))).symm
     _ = ∑ σ : Equiv.Perm α, ζ ^ cycleDefect σ * ∏ i : α, K i (σ i) := by
       apply Finset.sum_congr rfl
       intro σ _
-      change ζ ^ cycleDefect σ * (∏ i : (univ : Finset α), K i (σ i)) =
-        ζ ^ cycleDefect σ * ∏ i : α, K i (σ i)
+      congr 1
       rw [Finset.prod_coe_sort]
       simp
 
