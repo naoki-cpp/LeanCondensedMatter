@@ -17,7 +17,8 @@ The domination, measurability, and interval-integrability assumptions are kept v
 Hamiltonian, Sobolev-domain, or unbounded-operator assertion is introduced here.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -135,4 +136,5 @@ theorem hasDerivAt_intervalSmearedProbabilityDensity1D_of_schrodinger
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics
