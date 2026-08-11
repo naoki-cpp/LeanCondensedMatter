@@ -86,7 +86,6 @@ theorem TwoPointDiagram.exists_externalSlotLegSplitting_inl {S : Finset (Fin N)}
         (TwoPointDiagram.mem_interactionPart_subtype (d.externalComponent 0) v).2 hleg
       refine ⟨(twoPointLegEquiv _).symm (Sum.inr (⟨v.1, hv⟩, l)), ?_⟩
       rw [d.externalSlotLegSplitting_interaction]
-      rfl
 
 /-- **The pairing of a two-point diagram is split by its external component's slot splitting.**
 
