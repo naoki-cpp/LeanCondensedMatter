@@ -17,7 +17,8 @@ time. That final step only needs a separate differentiation-under-the-integral h
 not require any unbounded-operator or self-adjointness theory.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -174,4 +175,5 @@ theorem integral_probabilityDensityTimeDerivativeValue_of_schrodinger_schwartz_e
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics
