@@ -1,4 +1,6 @@
+import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
 import LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock
+import Mathlib.Data.Complex.Basic
 import Mathlib.RingTheory.PowerSeries.Log
 
 set_option linter.style.header false
