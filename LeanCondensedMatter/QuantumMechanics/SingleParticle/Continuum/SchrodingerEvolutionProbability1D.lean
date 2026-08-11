@@ -19,7 +19,8 @@ No pointwise time derivative is inferred from strong `L²` differentiability. Th
 the local continuity equation therefore remains a separate regularity layer.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -105,4 +106,5 @@ theorem ContinuumSchrodingerEvolution1D.totalProbability1D_schwartz_eq_initial
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics
