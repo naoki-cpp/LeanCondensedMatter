@@ -149,5 +149,102 @@ theorem TwoPointDiagram.vacuumPartner_ne_self {S : Finset (Fin N)}
     d.vacuumPartner leg ≠ leg := fun h =>
   d.pairing.partner_ne_self leg (by rw [← d.vacuumPartner_val, h])
 
+/-- Unflattened vacuum legs are exactly the four local legs of the vacuum interaction vertices.
+
+Same shape as `vacuumLegDataEquiv`, but for the union of all vacuum components rather than one of
+them: the external case is impossible because no external vertex is a vacuum vertex. -/
+noncomputable def TwoPointDiagram.vacuumPartLegDataEquiv {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
+    {leg : TwoPointLeg S // twoPointLegVertex leg ∈ d.vacuumVertexSet} ≃
+      ↥(TwoPointDiagram.interactionPart d.vacuumVertexSet) × Fin 4 where
+  toFun leg := by
+    rcases leg with ⟨leg, hleg⟩
+    cases leg with
+    | inl e => exact False.elim (d.externalVertex_not_mem_vacuumVertexSet e hleg)
+    | inr p =>
+        exact (⟨p.1.1,
+          (TwoPointDiagram.mem_interactionPart_subtype d.vacuumVertexSet p.1).2 hleg⟩, p.2)
+  invFun p :=
+    let v : ↥S :=
+      ⟨p.1.1, TwoPointDiagram.interactionPart_subset d.vacuumVertexSet p.1.2⟩
+    ⟨Sum.inr (v, p.2), by
+      change (Sum.inr v : TwoPointVertex S) ∈ d.vacuumVertexSet
+      exact (TwoPointDiagram.mem_interactionPart_subtype d.vacuumVertexSet v).1 p.1.2⟩
+  left_inv leg := by
+    rcases leg with ⟨leg, hleg⟩
+    cases leg with
+    | inl e => exact False.elim (d.externalVertex_not_mem_vacuumVertexSet e hleg)
+    | inr p =>
+        rcases p with ⟨v, l⟩
+        apply Subtype.ext
+        rfl
+  right_inv p := by
+    rcases p with ⟨v, l⟩
+    apply Prod.ext
+    · exact Subtype.ext (by rfl)
+    · rfl
+
+/-- Flattening preserves the vacuum-leg predicate. -/
+theorem TwoPointDiagram.legIsVacuum_iff_unflattened {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (leg : Fin (2 * (2 * S.card + 1))) :
+    d.LegIsVacuum leg ↔ twoPointLegVertex (twoPointLegEquiv S leg) ∈ d.vacuumVertexSet := by
+  rw [d.legIsVacuum_iff_vertex_mem_vacuumVertexSet]
+
+/-- Reindex the vacuum legs as the flattened legs of an ordinary quartic diagram. -/
+noncomputable def TwoPointDiagram.vacuumPartBlockLegEquiv {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
+    {leg : Fin (2 * (2 * S.card + 1)) // d.LegIsVacuum leg} ≃
+      Fin (2 * (2 * (TwoPointDiagram.interactionPart d.vacuumVertexSet).card)) :=
+  ((twoPointLegEquiv S).subtypeEquiv fun leg => d.legIsVacuum_iff_unflattened leg).trans
+    (d.vacuumPartLegDataEquiv.trans
+      (quarticLegEquiv (TwoPointDiagram.interactionPart d.vacuumVertexSet)).symm)
+
+private theorem vacuumPermCongr_involutive {α β : Type*} (e : α ≃ β)
+    (p : Equiv.Perm α) (hp : Function.Involutive p) :
+    Function.Involutive (e.permCongr p) := by
+  intro x
+  simp [Equiv.permCongr_apply, hp (e.symm x)]
+
+private theorem vacuumPermCongr_ne_self {α β : Type*} (e : α ≃ β)
+    (p : Equiv.Perm α) (hp : ∀ x, p x ≠ x) (x : β) :
+    e.permCongr p x ≠ x := by
+  intro h
+  rw [Equiv.permCongr_apply, Equiv.apply_eq_iff_eq_symm_apply] at h
+  exact hp _ h
+
+/-- The perfect pairing carried by the vacuum legs. -/
+noncomputable def TwoPointDiagram.vacuumPartPairing {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
+    Pairing (2 * (TwoPointDiagram.interactionPart d.vacuumVertexSet).card) :=
+  Pairing.ofPartner
+    (d.vacuumPartBlockLegEquiv.permCongr d.vacuumPartner)
+    ⟨vacuumPermCongr_involutive _ _ d.vacuumPartner_involutive,
+      vacuumPermCongr_ne_self _ _ d.vacuumPartner_ne_self⟩
+
+/-- The vacuum pairing agrees with the ambient partner under the vacuum leg reindexing. -/
+theorem TwoPointDiagram.vacuumPartPairing_partner_vacuumPartBlockLegEquiv {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (leg : {leg : Fin (2 * (2 * S.card + 1)) // d.LegIsVacuum leg}) :
+    d.vacuumPartPairing.partner (d.vacuumPartBlockLegEquiv leg) =
+      d.vacuumPartBlockLegEquiv (d.vacuumPartner leg) := by
+  simp [TwoPointDiagram.vacuumPartPairing, Pairing.ofPartner, Equiv.permCongr_apply]
+
+/-- **The vacuum part of a two-point diagram as a single quartic diagram.** Unlike
+`restrictVacuumComponent` this collects every vacuum component at once, so the result is in general
+disconnected — which is exactly what the binary external/vacuum factorization consumes. -/
+noncomputable def TwoPointDiagram.restrictVacuumPart {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
+    QuarticDiagram InternalLabel N (TwoPointDiagram.interactionPart d.vacuumVertexSet) where
+  vertexLabel v :=
+    d.vertexLabel ⟨v.1, TwoPointDiagram.interactionPart_subset d.vacuumVertexSet v.2⟩
+  pairing := d.vacuumPartPairing
+
+@[simp]
+theorem TwoPointDiagram.restrictVacuumPart_pairing {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
+    d.restrictVacuumPart.pairing = d.vacuumPartPairing :=
+  rfl
+
 end Common
 end SecondQuantization
