@@ -23,7 +23,7 @@ formal variable `t` at `1` is asserted.
 namespace SecondQuantization
 namespace Fermionic
 
-variable {Mode : Type*} [Fintype Mode]
+variable {Mode : Type*}
 
 /-- The diagonal one-particle Boltzmann kernel for a finite free-fermion mode set. -/
 noncomputable def freeBoltzmannModeKernel (ε : Mode → ℝ) (β : ℝ) : Matrix Mode Mode ℂ := by
@@ -40,7 +40,7 @@ private theorem freeBoltzmannModeKernel_eq_diagonal [DecidableEq Mode]
     simp [freeBoltzmannModeKernel]
   · simp [freeBoltzmannModeKernel, hij]
 
-private theorem freeBoltzmannModeKernel_pow [DecidableEq Mode]
+private theorem freeBoltzmannModeKernel_pow [Fintype Mode] [DecidableEq Mode]
     (ε : Mode → ℝ) (β : ℝ) (m : ℕ) :
     freeBoltzmannModeKernel ε β ^ m =
       Matrix.diagonal (fun i => Complex.exp (-(β : ℂ) * (ε i : ℂ)) ^ m) := by
@@ -64,7 +64,7 @@ private theorem freeBoltzmannModeKernel_pow [DecidableEq Mode]
             Complex.exp (-(β : ℂ) * (ε i : ℂ)) ^ (m + 1)) := by
           simp only [pow_succ]
 
-private theorem trace_freeBoltzmannModeKernel_pow [DecidableEq Mode]
+private theorem trace_freeBoltzmannModeKernel_pow [Fintype Mode] [DecidableEq Mode]
     (ε : Mode → ℝ) (β : ℝ) (m : ℕ) :
     Matrix.trace (freeBoltzmannModeKernel ε β ^ m) =
       ∑ i : Mode, Complex.exp (-(β : ℂ) * (ε i : ℂ)) ^ m := by
@@ -74,7 +74,7 @@ private theorem trace_freeBoltzmannModeKernel_pow [DecidableEq Mode]
 diagonal one-particle Boltzmann kernel. Determinant appears only at this physical consumer boundary;
 it is not a second exchange-statistics backend. -/
 theorem freePartitionFunction_eq_det_one_add_freeBoltzmannModeKernel
-    [LinearOrder Mode] (ε : Mode → ℝ) (β : ℝ) :
+    [LinearOrder Mode] [Fintype Mode] (ε : Mode → ℝ) (β : ℝ) :
     freePartitionFunction ε β =
       Matrix.det (1 + freeBoltzmannModeKernel ε β) := by
   classical
@@ -94,7 +94,7 @@ single-mode logarithms `log(1 + t exp(-β εᵢ))`.
 
 This is a formal-power-series identity; it does not evaluate the series at `t = 1`. -/
 theorem permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log
-    (ε : Mode → ℝ) (β : ℝ) :
+    [Fintype Mode] (ε : Mode → ℝ) (β : ℝ) :
     Combinatorics.permutationConnectedCycleSeries (-1) (freeBoltzmannModeKernel ε β) =
       ∑ i : Mode,
         PowerSeries.rescale (Complex.exp (-(β : ℂ) * (ε i : ℂ))) (PowerSeries.log ℂ) := by
