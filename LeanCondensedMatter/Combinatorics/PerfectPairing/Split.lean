@@ -227,6 +227,84 @@ theorem mem_pairs_ofSplit_inr (e : PositionSplitting a b n) (P : Pairing a) (Q :
   · exact absurd (Sum.inr.inj (e.injective hEq)) (ne_of_lt hlt)
   · rw [Pairing.ofSplit_partner_inr, hpartner]
 
+theorem orientPair_cases {α : Type*} [LinearOrder α] (u v : α) :
+    orientPair u v = (u, v) ∨ orientPair u v = (v, u) := by
+  unfold orientPair
+  split_ifs
+  · exact Or.inl rfl
+  · exact Or.inr rfl
+
+/-- A splitting forces the two part sizes to add up. -/
+theorem PositionSplitting.card_add (e : PositionSplitting a b n) : a + b = n := by
+  have h := Fintype.card_congr e
+  simp only [Fintype.card_sum, Fintype.card_fin] at h
+  omega
+
+/-- The map carrying each part's pairs to the assembled pairing's pairs. -/
+noncomputable def splitPairsMap (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
+    ↥P.pairs ⊕ ↥Q.pairs → ↥(Pairing.ofSplit e P Q).pairs :=
+  Sum.elim
+    (fun pr => ⟨orientPair (e (Sum.inl pr.1.1)) (e (Sum.inl pr.1.2)),
+      mem_pairs_ofSplit_inl e P Q pr.2⟩)
+    (fun pr => ⟨orientPair (e (Sum.inr pr.1.1)) (e (Sum.inr pr.1.2)),
+      mem_pairs_ofSplit_inr e P Q pr.2⟩)
+
+private theorem splitPairsMap_injective (e : PositionSplitting a b n) (P : Pairing a)
+    (Q : Pairing b) : Function.Injective (splitPairsMap e P Q) := by
+  have key : ∀ {m : ℕ} {R : Pairing m} {pr pr' : Fin (2 * m) × Fin (2 * m)},
+      pr ∈ R.pairs → pr' ∈ R.pairs →
+      (pr.1 = pr'.1 ∧ pr.2 = pr'.2) ∨ (pr.1 = pr'.2 ∧ pr.2 = pr'.1) → pr = pr' := by
+    intro m R pr pr' hpr hpr' hcase
+    obtain ⟨hlt, -⟩ := (R.mem_pairs_iff pr.1 pr.2).1 (by simpa using hpr)
+    obtain ⟨hlt', -⟩ := (R.mem_pairs_iff pr'.1 pr'.2).1 (by simpa using hpr')
+    rcases hcase with ⟨h1, h2⟩ | ⟨h1, h2⟩
+    · exact Prod.ext h1 h2
+    · exact absurd (h1 ▸ h2 ▸ hlt) (asymm hlt')
+  rintro (⟨pr, hpr⟩ | ⟨pr, hpr⟩) (⟨pr', hpr'⟩ | ⟨pr', hpr'⟩) heq <;>
+    simp only [splitPairsMap, Sum.elim_inl, Sum.elim_inr, Subtype.mk.injEq] at heq
+  · refine congrArg Sum.inl (Subtype.ext (key hpr hpr' ?_))
+    rcases orientPair_cases (e (Sum.inl pr.1)) (e (Sum.inl pr.2)) with h | h <;>
+      rcases orientPair_cases (e (Sum.inl pr'.1)) (e (Sum.inl pr'.2)) with h' | h' <;>
+      rw [h, h'] at heq
+    · exact Or.inl ⟨Sum.inl.inj (e.injective (congrArg Prod.fst heq)),
+        Sum.inl.inj (e.injective (congrArg Prod.snd heq))⟩
+    · exact Or.inr ⟨Sum.inl.inj (e.injective (congrArg Prod.fst heq)),
+        Sum.inl.inj (e.injective (congrArg Prod.snd heq))⟩
+    · exact Or.inr ⟨Sum.inl.inj (e.injective (congrArg Prod.snd heq)),
+        Sum.inl.inj (e.injective (congrArg Prod.fst heq))⟩
+    · exact Or.inl ⟨Sum.inl.inj (e.injective (congrArg Prod.snd heq)),
+        Sum.inl.inj (e.injective (congrArg Prod.fst heq))⟩
+  · exact absurd (congrArg Prod.fst heq) (by
+      rcases orientPair_cases (e (Sum.inl pr.1)) (e (Sum.inl pr.2)) with h | h <;>
+        rcases orientPair_cases (e (Sum.inr pr'.1)) (e (Sum.inr pr'.2)) with h' | h' <;>
+        rw [h, h'] <;> exact positionSplitting_inl_ne_inr e _ _)
+  · exact absurd (congrArg Prod.fst heq) (by
+      rcases orientPair_cases (e (Sum.inr pr.1)) (e (Sum.inr pr.2)) with h | h <;>
+        rcases orientPair_cases (e (Sum.inl pr'.1)) (e (Sum.inl pr'.2)) with h' | h' <;>
+        rw [h, h'] <;> exact Ne.symm (positionSplitting_inl_ne_inr e _ _))
+  · refine congrArg Sum.inr (Subtype.ext (key hpr hpr' ?_))
+    rcases orientPair_cases (e (Sum.inr pr.1)) (e (Sum.inr pr.2)) with h | h <;>
+      rcases orientPair_cases (e (Sum.inr pr'.1)) (e (Sum.inr pr'.2)) with h' | h' <;>
+      rw [h, h'] at heq
+    · exact Or.inl ⟨Sum.inr.inj (e.injective (congrArg Prod.fst heq)),
+        Sum.inr.inj (e.injective (congrArg Prod.snd heq))⟩
+    · exact Or.inr ⟨Sum.inr.inj (e.injective (congrArg Prod.fst heq)),
+        Sum.inr.inj (e.injective (congrArg Prod.snd heq))⟩
+    · exact Or.inr ⟨Sum.inr.inj (e.injective (congrArg Prod.snd heq)),
+        Sum.inr.inj (e.injective (congrArg Prod.fst heq))⟩
+    · exact Or.inl ⟨Sum.inr.inj (e.injective (congrArg Prod.snd heq)),
+        Sum.inr.inj (e.injective (congrArg Prod.fst heq))⟩
+
+/-- **The pairs of an assembled pairing are the pairs of the two parts.** -/
+noncomputable def splitPairsEquiv (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
+    ↥P.pairs ⊕ ↥Q.pairs ≃ ↥(Pairing.ofSplit e P Q).pairs :=
+  Equiv.ofBijective (splitPairsMap e P Q)
+    ((Fintype.bijective_iff_injective_and_card _).2
+      ⟨splitPairsMap_injective e P Q, by
+        rw [Fintype.card_sum, Fintype.card_coe, Fintype.card_coe, Fintype.card_coe,
+          P.card_pairs, Q.card_pairs, (Pairing.ofSplit e P Q).card_pairs]
+        exact e.card_add⟩)
+
 end Assemble
 
 section Inverse
