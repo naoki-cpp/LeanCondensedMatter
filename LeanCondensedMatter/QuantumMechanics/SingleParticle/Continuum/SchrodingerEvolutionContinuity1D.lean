@@ -18,7 +18,8 @@ This lets the operator-theoretic and pointwise developments meet without derivin
 representative regularity from Hilbert-space differentiability.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -136,4 +137,5 @@ theorem ContinuumSchwartzEvolutionRepresentative1D.totalProbability_eq_initial
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics
