@@ -1,5 +1,6 @@
 import Mathlib.Algebra.Ring.Defs
 import Mathlib.Data.Nat.Basic
+import Mathlib.Tactic.Conv
 
 set_option linter.style.header false
 
