@@ -1,5 +1,6 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.HermitianPerturbation
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity
 import Mathlib.Analysis.Calculus.FDeriv.Comp
 import Mathlib.Analysis.Calculus.FDeriv.Linear
 import Mathlib.Analysis.Normed.Operator.Mul
