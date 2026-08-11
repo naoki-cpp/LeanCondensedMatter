@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.PermutationAssignmentCycleTrace
+import LeanCondensedMatter.Permutation.AssignmentCycleTrace
 import Mathlib.Data.Complex.Basic
 import Mathlib.Tactic.FieldSimp
 

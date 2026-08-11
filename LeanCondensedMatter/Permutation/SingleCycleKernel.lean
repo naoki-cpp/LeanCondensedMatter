@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.PermutationConnectedDecomposition
+import LeanCondensedMatter.Permutation.ConnectedDecomposition
 
 set_option linter.style.header false
 

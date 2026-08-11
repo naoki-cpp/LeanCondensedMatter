@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.PermutationAssignmentCycleKernel
+import LeanCondensedMatter.Permutation.AssignmentCycleKernel
 import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.GroupTheory.Perm.Centralizer
 import Mathlib.GroupTheory.Perm.Fin

@@ -20,13 +20,6 @@ import LeanCondensedMatter.Combinatorics.Cumulant.Independence
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion
 import LeanCondensedMatter.Combinatorics.PerfectPairing
-import LeanCondensedMatter.Combinatorics.PerfectPairing.ExchangeSum
-import LeanCondensedMatter.Combinatorics.PermutationOrbitPartition
-import LeanCondensedMatter.Combinatorics.PermutationConnectedDecomposition
-import LeanCondensedMatter.Combinatorics.PermutationSingleCycleKernel
-import LeanCondensedMatter.Combinatorics.PermutationAssignmentCycleKernel
-import LeanCondensedMatter.Combinatorics.PermutationAssignmentCycleTrace
-import LeanCondensedMatter.Combinatorics.PermutationCumulant
 import LeanCondensedMatter.Combinatorics.SubsetSplit
 import LeanCondensedMatter.Combinatorics.InvolutionCard
 
@@ -36,6 +29,8 @@ set_option linter.style.header false
 # Combinatorics
 
 Public entry point for the project's pure finite combinatorics. The implementation is organized
-around finite-index operations, shuffles, set partitions and cumulants, perfect pairings, and the
-exchange-weighted pairing/permutation-sum backend.
+around finite-index operations, shuffles, set partitions and cumulants, and perfect pairings.
+
+The exchange-weighted permutation theory is owned by the separate top-level
+`LeanCondensedMatter.Permutation` module.
 -/

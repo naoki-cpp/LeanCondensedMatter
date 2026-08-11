@@ -1,7 +1,5 @@
 import LeanCondensedMatter.Analysis.PowerSeries.Normalization
-import LeanCondensedMatter.Analysis.PowerSeries.PermutationCycleEGF
-import LeanCondensedMatter.Analysis.PowerSeries.PermutationConnectedCycleSeries
-import LeanCondensedMatter.Analysis.PowerSeries.PermutationTraceLog
+import LeanCondensedMatter.Permutation
 import LeanCondensedMatter.Analysis.Dyson.Basic
 import LeanCondensedMatter.Analysis.Dyson.Bounds
 import LeanCondensedMatter.Analysis.Dyson.FirstVariation

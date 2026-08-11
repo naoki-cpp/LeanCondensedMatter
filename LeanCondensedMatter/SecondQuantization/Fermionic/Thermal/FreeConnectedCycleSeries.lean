@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.PowerSeries.PermutationTraceLog
+import LeanCondensedMatter.Permutation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 
@@ -13,7 +13,7 @@ For a finite mode set, the one-particle Boltzmann weights form a diagonal matrix
 `Kᵢⱼ = δᵢⱼ exp(-β εᵢ)`.
 
 The arbitrary-`ζ` diagonal connected-cycle/log decomposition is owned by
-`Analysis.PowerSeries.PermutationTraceLog`. Here it is specialized to fermionic `ζ = -1`, while
+`Permutation.TraceLog`. Here it is specialized to fermionic `ζ = -1`, while
 the ordinary finite determinant `det(1 + K)` is identified with the already-established free
 fermion partition function.
 

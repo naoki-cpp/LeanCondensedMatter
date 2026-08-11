@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.PowerSeries.PermutationCycleEGF
+import LeanCondensedMatter.Permutation.CycleEGF
 import Mathlib.RingTheory.PowerSeries.Basic
 
 set_option linter.style.header false

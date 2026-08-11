@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.ExchangeSign
-import LeanCondensedMatter.Combinatorics.PermutationConnectedDecomposition
+import LeanCondensedMatter.Permutation.ConnectedDecomposition
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Bipartite
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Sign
@@ -12,7 +12,7 @@ set_option linter.style.header false
 
 This module owns the crossing-weighted perfect-pairing sum and the parity-sensitive bridge into the
 generic permutation backend. The permutation sum itself is owned by
-`PermutationConnectedDecomposition`, where arbitrary-`ζ` cycle weights factor over orbit blocks and
+`Permutation.ConnectedDecomposition`, where arbitrary-`ζ` cycle weights factor over orbit blocks and
 feed the generic cumulant machinery.
 
 Only the pairing-to-permutation bridge is parity-sensitive and assumes `ζ * ζ = 1`. Determinant and

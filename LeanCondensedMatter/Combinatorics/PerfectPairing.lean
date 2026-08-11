@@ -24,7 +24,7 @@ relabeling, crossing statistics, and the erase/insert infrastructure used by the
 development. The four-position enumeration and the exchange-weighted sum backend are separate
 modules and must be imported explicitly when needed.
 
-This entry point stays purely at the pairing-structure level. The separate `PerfectPairing.ExchangeSum`
+This entry point stays purely at the pairing-structure level. The separate `Permutation.PairingBridge`
 module owns only the crossing-weighted pairing sum and its parity-sensitive bridge to the generic
 `ζ`-weighted permutation backend.
 -/

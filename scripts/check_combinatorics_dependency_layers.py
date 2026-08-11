@@ -11,14 +11,14 @@ IMPORT_RE = re.compile(r"^\s*import\s+([^\s]+)\s*$")
 LOW_LEVEL_ROOTS = (
     "LeanCondensedMatter.Combinatorics.Cumulant.Moment",
     "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition",
-    "LeanCondensedMatter.Combinatorics.PermutationConnectedDecomposition",
-    "LeanCondensedMatter.Combinatorics.PerfectPairing.ExchangeSum",
+    "LeanCondensedMatter.Permutation.ConnectedDecomposition",
+    "LeanCondensedMatter.Permutation.PairingBridge",
 )
 
 FORBIDDEN_PROJECT_PREFIXES = (
     "LeanCondensedMatter.Combinatorics.Cumulant.Inversion",
     "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
-    "LeanCondensedMatter.Combinatorics.PermutationCumulant",
+    "LeanCondensedMatter.Permutation.Cumulant",
     "LeanCondensedMatter.Combinatorics.SetPartition.Mobius",
 )
 
