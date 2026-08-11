@@ -1,4 +1,4 @@
-import Mathlib.Data.Finset.Sdiff
+import Mathlib.Data.Finset.SDiff
 import Mathlib.Logic.Equiv.Basic
 
 set_option linter.style.header false
