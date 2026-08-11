@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
+import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation
 
 set_option linter.style.header false
 
