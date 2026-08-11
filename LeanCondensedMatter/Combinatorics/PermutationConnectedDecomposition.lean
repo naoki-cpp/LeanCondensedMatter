@@ -257,17 +257,9 @@ private theorem decompose_assemble {S : Finset α} (π : Finpartition S)
     congrArg (fun q : Finpartition S => (q.parts : Type _)) hπ
   apply Function.hfunext hparts
   intro B B' hBB
-  have hBval : B.1 = B'.1 := by
-    exact dcongr_heq
-      (f₁ := fun B : P.parts => (B : Finset α))
-      (f₂ := fun B : π.parts => (B : Finset α))
-      hBB
-      (fun _ _ _ => rfl)
-      (by
-        intro hdom _
-        cases hdom
-        rfl)
-  cases hBval
+  have hBval : (B : Finset α) = (B' : Finset α) :=
+    (Subtype.heq_iff_coe_eq (fun s : Finset α => by rw [hπ])).1 hBB
+  rw [hBval]
   rw [heq_iff_eq]
   apply Subtype.ext
   apply Equiv.ext
