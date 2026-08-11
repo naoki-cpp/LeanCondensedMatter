@@ -63,7 +63,7 @@ private theorem mem_part_orbitFinpartitionOn_iff (S : Finset α) (σ : Equiv.Per
     · rintro ⟨hsame, hbS⟩
       exact ⟨ha, hbS, hsame⟩
     · rintro ⟨_, hbS, hsame⟩
-      exact ⟨ha, hbS, hsame⟩
+      exact ⟨hsame, hbS⟩
   · have hq : Q.part a = ∅ := Q.part_eq_empty.2 ha
     simp [hq, ha]
 
