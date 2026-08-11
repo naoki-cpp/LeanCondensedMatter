@@ -26,7 +26,8 @@ No closedness, symmetry, self-adjointness, generated unitary evolution, or ident
 pointwise twice-differentiable representative is claimed here. Those are later analytic layers.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -187,4 +188,5 @@ theorem continuumRealPotentialSchrodingerHamiltonian1D_domain
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics

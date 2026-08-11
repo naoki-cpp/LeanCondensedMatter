@@ -16,7 +16,8 @@ Interchanging the time derivative with the spatial integral is intentionally lef
 analytic step, so no hidden dominated-convergence hypothesis is introduced.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -165,4 +166,5 @@ theorem schrodinger_weak_continuity_interval_zero_boundary
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics

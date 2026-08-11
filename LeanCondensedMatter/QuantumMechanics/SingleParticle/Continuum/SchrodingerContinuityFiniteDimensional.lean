@@ -15,7 +15,8 @@ It does not identify the Laplacian with a bounded operator on `L²`, and it does
 operator-domain assumptions.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -153,4 +154,5 @@ theorem chargeCurrentValue_apply {d : ℕ} (q ℏ κ : ℝ) (ψ : ℂ)
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics

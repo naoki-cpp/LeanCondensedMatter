@@ -16,7 +16,8 @@ The construction is deliberately limited to bounded multipliers. The kinetic Sch
 and other genuinely unbounded operators require an explicit domain and are not introduced here.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -85,4 +86,5 @@ theorem inner_l2MultiplicationOperator1D_eq_integral
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics

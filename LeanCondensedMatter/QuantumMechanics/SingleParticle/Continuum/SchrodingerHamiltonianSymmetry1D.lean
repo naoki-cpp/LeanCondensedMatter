@@ -11,7 +11,8 @@ This file starts the self-adjointness layer by isolating the bounded real-potent
 Multiplication by a real essentially bounded function is symmetric on physical `L²(ℝ, ℂ)`.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -56,4 +57,5 @@ theorem l2RealMultiplicationOperator1D_isFormalAdjoint
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics

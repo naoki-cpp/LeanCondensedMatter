@@ -24,7 +24,8 @@ This makes the analytic boundary explicit while allowing later continuum results
 the properties they actually use.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -172,4 +173,5 @@ theorem ContinuumSchrodingerEvolution1D.hasDerivAt_evolveH2_coe
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics

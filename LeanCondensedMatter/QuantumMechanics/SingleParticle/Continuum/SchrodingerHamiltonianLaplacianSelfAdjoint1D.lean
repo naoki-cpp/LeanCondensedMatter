@@ -15,7 +15,8 @@ complex-conjugated Schwartz functions. This identifies the adjoint value as the 
 Laplacian of the original vector. Maximal-domain regularity then forces the vector back into `H²`.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -142,4 +143,5 @@ theorem continuumH2LaplacianPMap1D_isSelfAdjoint :
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics

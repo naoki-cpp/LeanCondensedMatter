@@ -16,7 +16,8 @@ The time-differentiation hypotheses remain the explicit dominated-convergence as
 preceding smeared layer. No `L²` Hamiltonian or unbounded-operator claim is introduced here.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -243,4 +244,5 @@ theorem hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_schrodinger
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics
