@@ -251,6 +251,45 @@ theorem FixedExternalTwoPointWickDiagram.orderedTwoPointPairingValue_pairingInMi
     FixedExternalTwoPointWickDiagram.vacuumPairingPiece]
   ring
 
+/-- The interaction slots belonging to the external component. -/
+noncomputable def FixedExternalTwoPointWickDiagram.externalSlots
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j) : Finset (Fin n) :=
+  Common.TwoPointDiagram.interactionPart
+    (d.1.externalComponentPart : Finset (Common.TwoPointVertex (Finset.univ : Finset (Fin n))))
+
+/-- The coupling product splits over the external and vacuum slots. -/
+theorem FixedExternalTwoPointWickDiagram.orderedTwoPointVertexWeight_split
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (g : QuarticVertexLabel Mode → ℂ) :
+    orderedTwoPointVertexWeight g d.vertexLabelSequence =
+      (∏ v ∈ d.externalSlots, g (d.vertexLabelSequence v)) *
+        (∏ v ∈ d.externalSlotsᶜ, g (d.vertexLabelSequence v)) := by
+  classical
+  exact (Finset.prod_mul_prod_compl d.externalSlots
+    (fun v => g (d.vertexLabelSequence v))).symm
+
+/-- **The fixed-time amplitude factorizes into external and vacuum.**
+
+The coupling product splits over the slots, the pairing value splits over the positions, and the
+external ordering sign belongs to the external side. What is shared is the interleaving sign, which
+depends on neither piece. -/
+theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_split
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    d.fixedTimeAmplitude ε β g τ τ' σ =
+      d.externalVacuumInterleaveSign τ τ' σ *
+        ((twoPointExternalOrderSign τ τ' *
+            (∏ v ∈ d.externalSlots, g (d.vertexLabelSequence v)) *
+            d.externalPairingValue ε β τ τ' σ) *
+          ((∏ v ∈ d.externalSlotsᶜ, g (d.vertexLabelSequence v)) *
+            d.vacuumPairingValue ε β τ τ' σ)) := by
+  change twoPointExternalOrderSign τ τ' * orderedTwoPointVertexWeight g d.vertexLabelSequence *
+      orderedTwoPointPairingValue ε β i j τ τ' σ d.vertexLabelSequence
+        (d.pairingInMixedOrder τ τ' σ) = _
+  rw [d.orderedTwoPointVertexWeight_split g,
+    d.orderedTwoPointPairingValue_pairingInMixedOrder ε β τ τ' σ]
+  ring
+
 end PairingValue
 
 end Fermionic
