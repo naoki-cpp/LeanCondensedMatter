@@ -92,7 +92,7 @@ The current-current sum, Peierls contact expectation, positive finite volume, an
 conversion factor are all explicit in the definition. -/
 noncomputable def finiteKuboGreenwoodDirectionalConductivity
     [Fintype ι]
-    (convention : FiniteVolumeConductivityConvention)
+    (volume : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
@@ -103,44 +103,44 @@ noncomputable def finiteKuboGreenwoodDirectionalConductivity
       purePointNormalizedExpectation system data
         (boundedDirectionalContact geometry direction
           (system.hbar : ℂ) (q : ℂ) K)) *
-    finiteVolumeConductivityNormalization convention ω η
+    finiteVolumeConductivityNormalization volume ω η
 
 /-- The named finite Kubo–Greenwood expression is exactly the conductivity derived from the
 upstream Kubo response chain, at fixed positive switching rate. -/
 theorem infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood
     [Fintype ι]
-    (convention : FiniteVolumeConductivityConvention)
+    (volume : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) (hη : 0 < η) :
-    infiniteTimeAdiabaticDirectionalConductivity convention
+    infiniteTimeAdiabaticDirectionalConductivity volume
         system (purePointNormalizedExpectation system data)
           geometry direction K q ω η =
       finiteKuboGreenwoodDirectionalConductivity
-        convention system data geometry direction K q ω η := by
+        volume system data geometry direction K q ω η := by
   rw [infiniteTimeAdiabaticDirectionalConductivity_purePoint_eq_finite_sum
-    convention system data geometry direction K q ω η hη]
+    volume system data geometry direction K q ω η hη]
   rfl
 
 /-- The contact term remains a separate explicit contribution after conductivity normalization. -/
 theorem finiteKuboGreenwoodDirectionalConductivity_eq_current_sum_add_contact
     [Fintype ι]
-    (convention : FiniteVolumeConductivityConvention)
+    (volume : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) :
     finiteKuboGreenwoodDirectionalConductivity
-        convention system data geometry direction K q ω η =
+        volume system data geometry direction K q ω η =
       (∑ mn : ι × ι,
           finiteKuboGreenwoodDirectionalCurrentTerm
             system data geometry direction K q ω η mn) *
-          finiteVolumeConductivityNormalization convention ω η +
+          finiteVolumeConductivityNormalization volume ω η +
         purePointNormalizedExpectation system data
             (boundedDirectionalContact geometry direction
               (system.hbar : ℂ) (q : ℂ) K) *
-          finiteVolumeConductivityNormalization convention ω η := by
+          finiteVolumeConductivityNormalization volume ω η := by
   unfold finiteKuboGreenwoodDirectionalConductivity
   ring
 
