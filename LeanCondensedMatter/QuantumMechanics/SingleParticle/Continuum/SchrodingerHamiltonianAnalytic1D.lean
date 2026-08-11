@@ -17,7 +17,8 @@ function belongs to every Bessel-potential Sobolev space. Combining these facts 
 Closedness, formal symmetry, adjoints, and self-adjointness remain later layers.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -60,4 +61,5 @@ theorem continuumRealPotentialSchrodingerHamiltonian1D_denseDomain
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics
