@@ -1,31 +1,34 @@
 import LeanCondensedMatter.Combinatorics.ExchangeSign
+import LeanCondensedMatter.Combinatorics.PermutationOrbitPartition
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Bipartite
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Sign
-import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
-import Mathlib.LinearAlgebra.Matrix.Permanent
+import Mathlib.Data.Matrix.Basic
+import Mathlib.Tactic.Omega
 
 set_option linter.style.header false
 
 /-!
 # Exchange-weighted pairing and permutation sums
 
-This module is the single statistics-dependent combinatorial backend for bosonic and fermionic
-pairing sums. The implementation is parameterized by an exchange scalar `ζ`; parity-sensitive
-results assume `ζ * ζ = 1`.
+This module owns the project-local exchange backend. Pairing weights are powers of an exchange
+scalar `ζ` by crossing count. Permutation weights are powers of the same scalar by the cycle defect
+`Σ_C (|C| - 1)` and therefore make sense for arbitrary `ζ`.
+
+Only the pairing-to-permutation bridge is parity-sensitive and assumes `ζ * ζ = 1`. Determinant and
+permanent are deliberately not owned here; consumers that need those standard matrix invariants may
+specialize the generic permutation sum locally.
 
 The public surface is intentionally small:
 
 * `pairingSum ζ` — the crossing-weighted sum over perfect pairings;
-* `permutationSum ζ` — the corresponding exchange-weighted permutation sum;
+* `permutationSum ζ` — the cycle-weighted permutation sum;
 * `exchangeMatrix ζ` — the side-oriented pair-value matrix;
 * `sideSplittingWeight ζ` — the global factor fixed by the chosen side splitting;
-* `pairingSum_eq_permutationSum_of_inl_vanishing` — the one pairing-to-matrix reduction;
-* the two boundary identifications of `permutationSum` with `Matrix.det` and `Matrix.permanent`.
+* `pairingSum_eq_permutationSum_of_inl_vanishing` — the one pairing-to-permutation reduction.
 
 All pairing construction, listing, sign transport, selection-rule, and orientation-count machinery
-is private implementation detail. In particular this module does not define project-local Pfaffian
-or Hafnian aliases.
+is private implementation detail.
 -/
 
 namespace Combinatorics
@@ -37,7 +40,8 @@ noncomputable def pairingSum {R : Type*} [CommSemiring R] (ζ : R)
     (pv : Fin (2 * n) → Fin (2 * n) → R) : R :=
   ∑ P : Pairing n, P.evaluation (ζ ^ P.crossingCount) pv
 
-/-- Interpret an integer unit `±1` as the corresponding exchange weight `1` or `ζ`. -/
+/-- Interpret an integer unit `±1` as the corresponding parity exchange weight `1` or `ζ`.
+This is private because sign transport is only an implementation device for the pairing bridge. -/
 private noncomputable def exchangeUnitWeight {R : Type*} [CommSemiring R] (ζ : R) (u : ℤˣ) : R :=
   if u = 1 then 1 else ζ
 
@@ -61,30 +65,44 @@ private theorem exchangeUnitWeight_neg_one_pow {R : Type*} [CommSemiring R]
   rw [map_pow]
   simp [exchangeUnitWeightHom, exchangeUnitWeight]
 
+private theorem cycleType_card_le_sum {α : Type*} [Fintype α] [DecidableEq α]
+    (σ : Equiv.Perm α) : σ.cycleType.card ≤ σ.cycleType.sum := by
+  have h : ∀ s : Multiset ℕ, (∀ a ∈ s, 1 ≤ a) → s.card ≤ s.sum := by
+    intro s hs
+    induction s using Multiset.induction_on with
+    | empty => simp
+    | @cons a s ih =>
+        have ha : 1 ≤ a := hs a (by simp)
+        have hs' : ∀ b ∈ s, 1 ≤ b := by
+          intro b hb
+          exact hs b (by simp [hb])
+        simpa [Nat.add_comm] using Nat.add_le_add ha (ih hs')
+  exact h σ.cycleType fun a ha =>
+    Nat.le_of_lt (Equiv.Perm.one_lt_of_mem_cycleType σ ha)
+
+private theorem cycleDefect_mod_two {α : Type*} [Fintype α] [DecidableEq α]
+    (σ : Equiv.Perm α) :
+    (σ.cycleType.sum + σ.cycleType.card) % 2 = cycleDefect σ % 2 := by
+  have hle := cycleType_card_le_sum σ
+  rw [cycleDefect]
+  omega
+
+private theorem exchangeUnitWeight_sign_eq_cycleWeight {α R : Type*}
+    [Fintype α] [DecidableEq α] [CommSemiring R]
+    (ζ : R) (hζ : ζ * ζ = 1) (σ : Equiv.Perm α) :
+    exchangeUnitWeight ζ (Equiv.Perm.sign σ) = ζ ^ cycleDefect σ := by
+  rw [Equiv.Perm.sign_of_cycleType, exchangeUnitWeight_neg_one_pow ζ hζ]
+  exact pow_eq_of_mod_two_eq hζ (cycleDefect_mod_two σ)
+
 private noncomputable def permutationWeight {α R : Type*} [Fintype α] [DecidableEq α]
     [CommSemiring R] (ζ : R) (σ : Equiv.Perm α) : R :=
-  exchangeUnitWeight ζ (Equiv.Perm.sign σ)
+  ζ ^ cycleDefect σ
 
-/-- The exchange-weighted sum over permutations. At `ζ = -1` this is the determinant expansion;
-at `ζ = 1` it is the permanent expansion. -/
+/-- The cycle-weighted sum over permutations. A cycle of length `k` contributes exchange exponent
+`k - 1`; unlike the pairing bridge, this definition is meaningful for arbitrary `ζ`. -/
 noncomputable def permutationSum {R : Type*} [CommSemiring R] (ζ : R)
     (K : Matrix (Fin n) (Fin n) R) : R :=
   ∑ σ : Equiv.Perm (Fin n), permutationWeight ζ σ * ∏ i, K i (σ i)
-
-/-- The `ζ = -1` permutation sum is Mathlib's determinant. -/
-theorem permutationSum_neg_one_eq_det {R : Type*} [CommRing R]
-    (K : Matrix (Fin n) (Fin n) R) : permutationSum (-1) K = K.det := by
-  rw [permutationSum, ← Matrix.det_transpose K, Matrix.det_apply']
-  refine Finset.sum_congr rfl fun σ _ => ?_
-  rcases Int.units_eq_one_or (Equiv.Perm.sign σ) with h | h
-  · simp [permutationWeight, exchangeUnitWeight, h]
-  · simp [permutationWeight, exchangeUnitWeight, h]
-
-/-- The `ζ = 1` permutation sum is Mathlib's permanent. -/
-theorem permutationSum_one_eq_permanent {R : Type*} [CommSemiring R]
-    (K : Matrix (Fin n) (Fin n) R) : permutationSum 1 K = K.permanent := by
-  rw [permutationSum, ← Matrix.permanent_transpose K, Matrix.permanent]
-  exact Finset.sum_congr rfl fun σ _ => by simp [permutationWeight, exchangeUnitWeight]
 
 /-! ## Private pairing ↔ permutation implementation -/
 
@@ -325,6 +343,7 @@ private theorem pairingWeight_sidePairing {R : Type*} [CommSemiring R]
   have h := congrArg (exchangeUnitWeight ζ)
     (neg_one_pow_crossingCount_eq_of_sidePairing e σ)
   simp only [exchangeUnitWeight_mul ζ hζ, exchangeUnitWeight_neg_one_pow ζ hζ] at h
+  rw [exchangeUnitWeight_sign_eq_cycleWeight ζ hζ σ] at h
   simpa [sideSplittingWeight, permutationWeight] using h
 
 /-! ## Private selection rule and orientation absorption -/
@@ -415,9 +434,10 @@ private theorem pow_sideReversedCount_mul_prod_sidePair {R : Type*} [CommSemirin
   · exact absurd h (sideSplitting_inl_ne_inr e i (σ i))
   · rw [sidePair_of_gt h, exchangeMatrix, if_pos h, if_neg (asymm h), pow_one]
 
-/-- **Generic exchange-statistics matrix reduction.** If the pair value vanishes on two left-side
-positions, the exchange-weighted sum over all perfect pairings reduces to one exchange-weighted
-permutation sum of the side-oriented matrix, up to the factor fixed by the side splitting. -/
+/-- **Generic exchange-statistics reduction.** If the pair value vanishes on two left-side
+positions, the crossing-weighted pairing sum reduces to the cycle-weighted permutation sum of the
+side-oriented matrix, up to the factor fixed by the side splitting. The involutive hypothesis is
+needed only to identify crossing parity with permutation cycle parity. -/
 theorem pairingSum_eq_permutationSum_of_inl_vanishing {R : Type*} [CommSemiring R]
     (ζ : R) (hζ : ζ * ζ = 1) (e : SideSplitting m)
     (pv : Fin (2 * m) → Fin (2 * m) → R)
