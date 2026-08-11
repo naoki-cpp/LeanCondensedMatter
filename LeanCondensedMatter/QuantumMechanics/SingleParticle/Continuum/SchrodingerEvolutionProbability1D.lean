@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.Continuum.SchrodingerEvolution1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerEvolution1D
 import LeanCondensedMatter.QuantumTheory.Continuum.SchrodingerProbabilityConservation1D
 import Mathlib.Tactic
 
