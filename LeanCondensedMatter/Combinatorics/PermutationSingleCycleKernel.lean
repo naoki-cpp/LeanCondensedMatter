@@ -15,18 +15,17 @@ series, and formal logarithms belong to later layers built on this boundary.
 
 namespace Combinatorics
 
-open Equiv Equiv.Perm Finset
+open Finset
 
 variable {α : Type*} [DecidableEq α] [Fintype α]
 
-/-- The pure kernel sum over permutations supported on `S` with one orbit on `S`.
+/-- The pure kernel sum over single-orbit permutations on `S`.
 
-This removes the exchange parameter `ζ` from the connected combinatorics so the same object can
-later be identified with a cyclic trace expression. -/
+It is defined as the connected contribution at exchange weight `1`, so W3 reuses the W2 backend
+without exposing its private connected-permutation representation. -/
 noncomputable def singleCycleKernelSum {R : Type*} [CommSemiring R]
     (K : α → α → R) (S : Finset α) : R :=
-  ∑ σ : {σ : Equiv.Perm α // σ.support ⊆ S ∧ σ.IsCycleOn (S : Set α)},
-    ∏ i : S, K i (σ.1 i)
+  singleCycleContribution (1 : R) K S
 
 /-- A connected permutation on `S` carries the common exchange factor `ζ ^ (|S| - 1)`.
 
@@ -37,12 +36,14 @@ theorem singleCycleContribution_eq_pow_card_mul_singleCycleKernelSum
     singleCycleContribution ζ K S =
       ζ ^ (S.card - 1) * singleCycleKernelSum K S := by
   classical
-  rw [singleCycleContribution, MultiplicativeWeight.connectedContribution]
-  change
-    (∑ σ : {σ : Equiv.Perm α // σ.support ⊆ S ∧ σ.IsCycleOn (S : Set α)},
-      ζ ^ (S.card - 1) * ∏ i : S, K i (σ.1 i)) =
-      ζ ^ (S.card - 1) * singleCycleKernelSum K S
-  rw [singleCycleKernelSum, Finset.mul_sum]
+  rw [singleCycleKernelSum, singleCycleContribution, singleCycleContribution,
+    MultiplicativeWeight.connectedContribution, MultiplicativeWeight.connectedContribution,
+    Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro d _
+  change ζ ^ (S.card - 1) * _ =
+    ζ ^ (S.card - 1) * (1 ^ (S.card - 1) * _)
+  simp
 
 /-- Fixed-cardinality form of the connected single-cycle kernel theorem. -/
 theorem singleCycleContribution_of_card_eq
