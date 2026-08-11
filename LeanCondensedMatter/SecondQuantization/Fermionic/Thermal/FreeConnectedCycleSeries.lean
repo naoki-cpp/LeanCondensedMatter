@@ -30,21 +30,32 @@ noncomputable def freeBoltzmannModeKernel (ε : Mode → ℝ) (β : ℝ) : Matri
   classical
   exact Matrix.diagonal fun i => Complex.exp (-(β : ℂ) * (ε i : ℂ))
 
+private theorem freeBoltzmannModeKernel_eq_diagonal [DecidableEq Mode]
+    (ε : Mode → ℝ) (β : ℝ) :
+    freeBoltzmannModeKernel ε β =
+      Matrix.diagonal (fun i => Complex.exp (-(β : ℂ) * (ε i : ℂ))) := by
+  ext i j
+  by_cases hij : i = j
+  · subst j
+    simp [freeBoltzmannModeKernel]
+  · simp [freeBoltzmannModeKernel, hij]
+
 private theorem freeBoltzmannModeKernel_pow [DecidableEq Mode]
     (ε : Mode → ℝ) (β : ℝ) (m : ℕ) :
     freeBoltzmannModeKernel ε β ^ m =
       Matrix.diagonal (fun i => Complex.exp (-(β : ℂ) * (ε i : ℂ)) ^ m) := by
+  rw [freeBoltzmannModeKernel_eq_diagonal]
   induction m with
   | zero => simp
   | succ m ih =>
       calc
-        freeBoltzmannModeKernel ε β ^ (m + 1) =
-            freeBoltzmannModeKernel ε β ^ m * freeBoltzmannModeKernel ε β := by
+        Matrix.diagonal (fun i => Complex.exp (-(β : ℂ) * (ε i : ℂ))) ^ (m + 1) =
+            Matrix.diagonal (fun i => Complex.exp (-(β : ℂ) * (ε i : ℂ))) ^ m *
+              Matrix.diagonal (fun i => Complex.exp (-(β : ℂ) * (ε i : ℂ))) := by
           rw [pow_succ]
         _ = Matrix.diagonal (fun i => Complex.exp (-(β : ℂ) * (ε i : ℂ)) ^ m) *
             Matrix.diagonal (fun i => Complex.exp (-(β : ℂ) * (ε i : ℂ))) := by
-          rw [ih, freeBoltzmannModeKernel]
-          rfl
+          rw [ih]
         _ = Matrix.diagonal (fun i =>
             Complex.exp (-(β : ℂ) * (ε i : ℂ)) ^ m *
               Complex.exp (-(β : ℂ) * (ε i : ℂ))) :=
