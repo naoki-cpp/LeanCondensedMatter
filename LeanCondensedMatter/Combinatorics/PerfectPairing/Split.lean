@@ -240,6 +240,47 @@ noncomputable def Pairing.splitEquiv (e : PositionSplitting a b n) :
 
 end Inverse
 
+section Product
+
+variable {R : Type*} [CommMonoid R]
+
+/-- A left-part kernel read in the ambient orientation.
+
+The ambient order need not agree with the left part's own order, so a pair that the left pairing
+lists as `(x, y)` may appear ambiently as `(e (inl y), e (inl x))`. Absorbing the choice into the
+kernel — rather than constraining the splitting to be monotone — is the same device
+`Combinatorics.orientedKernel` uses for the bipartite determinant. -/
+def splitLeftKernel (e : PositionSplitting a b n) (pv : Fin (2 * n) → Fin (2 * n) → R)
+    (x y : Fin (2 * a)) : R :=
+  if e (Sum.inl x) < e (Sum.inl y) then pv (e (Sum.inl x)) (e (Sum.inl y))
+  else pv (e (Sum.inl y)) (e (Sum.inl x))
+
+/-- A right-part kernel read in the ambient orientation. -/
+def splitRightKernel (e : PositionSplitting a b n) (pv : Fin (2 * n) → Fin (2 * n) → R)
+    (x y : Fin (2 * b)) : R :=
+  if e (Sum.inr x) < e (Sum.inr y) then pv (e (Sum.inr x)) (e (Sum.inr y))
+  else pv (e (Sum.inr y)) (e (Sum.inr x))
+
+theorem splitLeftKernel_comm (e : PositionSplitting a b n)
+    (pv : Fin (2 * n) → Fin (2 * n) → R) (x y : Fin (2 * a)) :
+    splitLeftKernel e pv x y = splitLeftKernel e pv y x := by
+  unfold splitLeftKernel
+  rcases lt_trichotomy (e (Sum.inl x)) (e (Sum.inl y)) with hlt | heq | hgt
+  · rw [if_pos hlt, if_neg (asymm hlt)]
+  · exact absurd (Sum.inl.inj (e.injective heq)) (fun h => by simp [h])
+  · rw [if_neg (asymm hgt), if_pos hgt]
+
+theorem splitRightKernel_comm (e : PositionSplitting a b n)
+    (pv : Fin (2 * n) → Fin (2 * n) → R) (x y : Fin (2 * b)) :
+    splitRightKernel e pv x y = splitRightKernel e pv y x := by
+  unfold splitRightKernel
+  rcases lt_trichotomy (e (Sum.inr x)) (e (Sum.inr y)) with hlt | heq | hgt
+  · rw [if_pos hlt, if_neg (asymm hlt)]
+  · exact absurd (Sum.inr.inj (e.injective heq)) (fun h => by simp [h])
+  · rw [if_neg (asymm hgt), if_pos hgt]
+
+end Product
+
 section Sign
 
 /-- Regroup the block-slot presentation of `Fin (2 * n)` along a split of its `n` pairs into `a`
