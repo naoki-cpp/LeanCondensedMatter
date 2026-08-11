@@ -195,7 +195,7 @@ theorem resolventEvolutionStrongLimitOperator_apply_domain
   calc
     A rx = U y + z • R (U y) := hAeq
     _ = (U (A x) - z • U (x : H)) + z • U (x : H) := by
-      rw [hUy, ← hUrepr]
+      rw [← hUrepr, hUy]
     _ = U (A x) := by module
 
 end
