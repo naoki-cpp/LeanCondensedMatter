@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.Moment
 import Mathlib.Algebra.BigOperators.Group.Finset.Powerset
+import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Data.Fintype.BigOperators
 
 set_option linter.style.header false
