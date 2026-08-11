@@ -443,7 +443,7 @@ noncomputable def monotonePositionSplitting {m a b : ℕ} (A : Finset (Fin (2 * 
   ((Equiv.sumCongr (A.orderIsoOfFin ha).toEquiv
       ((Aᶜ).orderIsoOfFin hb).toEquiv).trans
     (Equiv.sumCongr (Equiv.refl (↥A))
-      (Equiv.subtypeEquivRight fun x => Finset.mem_compl))).trans
+      (Equiv.subtypeEquivRight fun _ => Finset.mem_compl))).trans
     (Equiv.sumCompl (· ∈ A))
 
 @[simp]
