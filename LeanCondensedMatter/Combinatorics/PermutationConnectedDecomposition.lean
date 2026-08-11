@@ -566,7 +566,7 @@ theorem singleCycleContribution_one_univ_eq_sum_isCycleOn
         ∏ i : α, K i (σ.1 i) := by
       apply Finset.sum_congr rfl
       intro σ _
-      simp [fullCycleEquivSingleOrbitPermUniv, Finset.prod_coe_sort]
+      simp [fullCycleEquivSingleOrbitPermUniv]
 
 /-- The arbitrary-`ζ` permutation sum is the moment transform of the single-cycle contribution. -/
 theorem permutationSum_eq_momentFromCumulant {R : Type*} [CommSemiring R]
