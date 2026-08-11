@@ -249,5 +249,49 @@ theorem TwoPointDiagram.restrictVacuumPart_pairing {S : Finset (Fin N)}
     d.restrictVacuumPart.pairing = d.vacuumPartPairing :=
   rfl
 
+/-- The external and vacuum interaction vertices are disjoint. -/
+theorem TwoPointDiagram.disjoint_interactionPart_external_vacuum {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
+    Disjoint
+      (TwoPointDiagram.interactionPart (d.externalComponentPart : Finset (TwoPointVertex S)))
+      (TwoPointDiagram.interactionPart d.vacuumVertexSet) := by
+  rw [Finset.disjoint_left]
+  intro v hext hvac
+  obtain ⟨-, hmem⟩ := (TwoPointDiagram.mem_interactionPart _ v).1 hext
+  obtain ⟨-, hmem'⟩ := (TwoPointDiagram.mem_interactionPart _ v).1 hvac
+  exact ((d.mem_vacuumVertexSet_iff _).1 hmem') hmem
+
+/-- Every interaction vertex is either external or vacuum. -/
+theorem TwoPointDiagram.interactionPart_external_union_vacuum {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
+    TwoPointDiagram.interactionPart (d.externalComponentPart : Finset (TwoPointVertex S))
+        ∪ TwoPointDiagram.interactionPart d.vacuumVertexSet = S := by
+  apply Finset.ext
+  intro v
+  rw [Finset.mem_union]
+  constructor
+  · rintro (h | h)
+    · exact TwoPointDiagram.interactionPart_subset _ h
+    · exact TwoPointDiagram.interactionPart_subset _ h
+  · intro hv
+    by_cases hext : (Sum.inr ⟨v, hv⟩ : TwoPointVertex S) ∈
+        (d.externalComponentPart : Finset (TwoPointVertex S))
+    · exact Or.inl ((TwoPointDiagram.mem_interactionPart _ v).2 ⟨hv, hext⟩)
+    · refine Or.inr ((TwoPointDiagram.mem_interactionPart _ v).2 ⟨hv, ?_⟩)
+      exact (d.mem_vacuumVertexSet_iff _).2 hext
+
+/-- **The interaction vertices split in two.** The external and vacuum interaction counts add up to
+the ambient interaction count.
+
+This is the arithmetic the binary ordered-simplex shuffle needs: its left-slot sets live in
+`Fin (m + n)`, so the two component sizes must be presented as summing to `S.card`. -/
+theorem TwoPointDiagram.card_interactionPart_external_add_vacuum {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
+    (TwoPointDiagram.interactionPart
+        (d.externalComponentPart : Finset (TwoPointVertex S))).card
+      + (TwoPointDiagram.interactionPart d.vacuumVertexSet).card = S.card := by
+  rw [← Finset.card_union_of_disjoint d.disjoint_interactionPart_external_vacuum,
+    d.interactionPart_external_union_vacuum]
+
 end Common
 end SecondQuantization
