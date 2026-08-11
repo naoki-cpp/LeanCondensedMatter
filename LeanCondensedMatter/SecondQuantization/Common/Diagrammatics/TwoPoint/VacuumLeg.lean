@@ -295,5 +295,25 @@ theorem TwoPointDiagram.card_interactionPart_external_add_vacuum {S : Finset (Fi
   rw [← Finset.card_union_of_disjoint d.disjoint_interactionPart_external_vacuum,
     d.interactionPart_external_union_vacuum]
 
+open Classical in
+/-- **The ambient legs split into external-component legs and vacuum legs.**
+
+Presented as a `Combinatorics.PositionSplitting`, so that `Pairing.ofSplit` can assemble an ambient
+pairing from a pairing on the external piece and one on the vacuum piece. The left part carries
+`2 * extCard + 1` pairs — the external component's interaction vertices plus the two external legs —
+and the right part carries `2 * vacCard`. -/
+noncomputable def TwoPointDiagram.legPositionSplitting {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
+    Combinatorics.PositionSplitting
+      (2 * (TwoPointDiagram.interactionPart (d.externalComponent 0)).card + 1)
+      (2 * (TwoPointDiagram.interactionPart d.vacuumVertexSet).card)
+      (2 * S.card + 1) :=
+  ((Equiv.sumCongr d.externalBlockLegEquiv.symm d.vacuumPartBlockLegEquiv.symm).trans
+    (Equiv.sumCongr
+      (Equiv.subtypeEquivRight fun leg =>
+        ((not_congr (d.legIsVacuum_iff_not_legInComponent leg)).trans not_not).symm)
+      (Equiv.refl {leg : Fin (2 * (2 * S.card + 1)) // d.LegIsVacuum leg}))).trans
+    ((Equiv.sumComm _ _).trans (Equiv.sumCompl fun leg => d.LegIsVacuum leg))
+
 end Common
 end SecondQuantization
