@@ -19,7 +19,7 @@ the connected-cycle series is `-(1/ζ)` times this trace-log series. The already
 
 namespace Combinatorics
 
-variable {ι : Type*} [Fintype ι]
+variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 /-- Apply scalar power-series coefficients to the power traces of a finite matrix.
 
@@ -62,6 +62,8 @@ private theorem coeff_log_complex_of_pos (m : ℕ) (hm : 0 < m) :
     PowerSeries.coeff m (PowerSeries.log ℂ) =
       (-1 : ℂ) ^ (m + 1) / (m : ℂ) := by
   rw [PowerSeries.coeff_log, if_neg (Nat.ne_of_gt hm)]
+  change (((-1 : ℚ) ^ (m + 1) / (m : ℚ) : ℚ) : ℂ) =
+    (-1 : ℂ) ^ (m + 1) / (m : ℂ)
   push_cast
 
 private theorem neg_pow_mul_neg_one_pow_succ (ζ : ℂ) (m : ℕ) :
@@ -70,7 +72,6 @@ private theorem neg_pow_mul_neg_one_pow_succ (ζ : ℂ) (m : ℕ) :
   | zero => simp
   | succ m ih =>
       rw [pow_succ (-ζ), pow_succ (-1 : ℂ) (m + 1)]
-      rw [show m + 1 + 1 = (m + 1) + 1 by omega]
       calc
         (-ζ) ^ m * -ζ * ((-1 : ℂ) ^ (m + 1) * -1) =
             ((-ζ) ^ m * (-1 : ℂ) ^ (m + 1)) * ((-ζ) * -1) := by ring
@@ -99,7 +100,7 @@ theorem coeff_formalTraceLogOneSubSeries_of_pos
 The statement is coefficientwise so the matrix algebra itself never becomes a power-series
 coefficient ring. -/
 theorem coeff_permutationConnectedCycleSeries_eq_neg_inv_mul_traceLog
-    [DecidableEq ι] (ζ : ℂ) (K : Matrix ι ι ℂ) (m : ℕ) (hζ : ζ ≠ 0) :
+    (ζ : ℂ) (K : Matrix ι ι ℂ) (m : ℕ) (hζ : ζ ≠ 0) :
     PowerSeries.coeff m (permutationConnectedCycleSeries ζ K) =
       (-ζ⁻¹) * PowerSeries.coeff m (formalTraceLogOneSubSeries ζ K) := by
   by_cases hm : m = 0
@@ -115,7 +116,7 @@ theorem coeff_permutationConnectedCycleSeries_eq_neg_inv_mul_traceLog
 
 /-- Formal series form of the trace-log identity for `ζ ≠ 0`. -/
 theorem permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog
-    [DecidableEq ι] (ζ : ℂ) (K : Matrix ι ι ℂ) (hζ : ζ ≠ 0) :
+    (ζ : ℂ) (K : Matrix ι ι ℂ) (hζ : ζ ≠ 0) :
     permutationConnectedCycleSeries ζ K =
       (-ζ⁻¹) • formalTraceLogOneSubSeries ζ K := by
   ext m
@@ -123,7 +124,7 @@ theorem permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog
 
 /-- Fermionic endpoint: at `ζ = -1`, the connected series is the formal trace of `log(1 + tK)`. -/
 theorem permutationConnectedCycleSeries_neg_one_eq_traceLog
-    [DecidableEq ι] (K : Matrix ι ι ℂ) :
+    (K : Matrix ι ι ℂ) :
     permutationConnectedCycleSeries (-1) K = formalTraceLogOneSubSeries (-1) K := by
   rw [permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog (-1) K (by norm_num)]
   norm_num
@@ -131,7 +132,7 @@ theorem permutationConnectedCycleSeries_neg_one_eq_traceLog
 /-- Bosonic endpoint: at `ζ = 1`, the connected series is minus the formal trace of
 `log(1 - tK)`. -/
 theorem permutationConnectedCycleSeries_one_eq_neg_traceLog
-    [DecidableEq ι] (K : Matrix ι ι ℂ) :
+    (K : Matrix ι ι ℂ) :
     permutationConnectedCycleSeries 1 K = -formalTraceLogOneSubSeries 1 K := by
   rw [permutationConnectedCycleSeries_eq_neg_inv_smul_traceLog 1 K (by norm_num)]
   norm_num
