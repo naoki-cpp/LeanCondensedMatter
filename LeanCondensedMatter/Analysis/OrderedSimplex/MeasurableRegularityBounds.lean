@@ -157,4 +157,32 @@ theorem MeasurableLocallyBounded.intervalIntegrable_orderedSimplexIntegral_bound
         (by simpa [H] using hNorm))
   exact hIntOn.intervalIntegrable
 
+/-- **A finite sum commutes with `orderedSimplexIntegral` under measurable local boundedness.**
+
+The continuity hypothesis of `orderedSimplexIntegral_finsetSum` is unavailable for integrands that
+are only chamberwise continuous, which is the situation every mixed-order expansion produces.  Only
+interval integrability of each recursively exposed boundary is actually needed, and that is exactly
+what `MeasurableLocallyBounded` supplies. -/
+theorem orderedSimplexIntegral_finsetSum_of_measurableLocallyBounded {ι : Type*}
+    (s : Finset ι) (n : ℕ) (β : ℝ) (f : ι → (Fin n → ℝ) → ℂ)
+    (hf : ∀ i ∈ s, MeasurableLocallyBounded (f i)) :
+    orderedSimplexIntegral n β (fun τ => ∑ i ∈ s, f i τ) =
+      ∑ i ∈ s, orderedSimplexIntegral n β (f i) := by
+  induction n generalizing β with
+  | zero => simp
+  | succ n ih =>
+    have hcons : ∀ (t : ℝ), ∀ i ∈ s,
+        MeasurableLocallyBounded (fun rest : Fin n → ℝ => f i (Fin.cons t rest)) :=
+      fun t i hi => (hf i hi).finCons t
+    have heq : ∀ t : ℝ,
+        orderedSimplexIntegral n t (fun rest => ∑ i ∈ s, f i (Fin.cons t rest)) =
+          ∑ i ∈ s, orderedSimplexIntegral n t (fun rest => f i (Fin.cons t rest)) := fun t =>
+      ih t (fun i rest => f i (Fin.cons t rest)) (hcons t)
+    rw [orderedSimplexIntegral_succ]
+    simp_rw [heq]
+    rw [intervalIntegral.integral_finsetSum]
+    · exact Finset.sum_congr rfl fun i _ => (orderedSimplexIntegral_succ n β (f i)).symm
+    · intro i hi
+      exact (hf i hi).intervalIntegrable_orderedSimplexIntegral_boundary β
+
 end intervalIntegral
