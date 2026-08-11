@@ -52,11 +52,17 @@ private theorem mem_part_orbitFinpartitionOn_iff (S : Finset α) (σ : Equiv.Per
     have hne : P.part a ∩ S ≠ ∅ :=
       Finset.nonempty_iff_ne_empty.mp ⟨a, by simp [haa, ha]⟩
     have hpartMem : P.part a ∩ S ∈ Q.parts := by
-      simp [Q, Finpartition.restrict, hpa, hne]
+      change P.part a ∩ S ∈ (P.parts.image (· ∩ S)).erase ∅
+      exact Finset.mem_erase.mpr
+        ⟨hne, Finset.mem_image.mpr ⟨P.part a, hpa, rfl⟩⟩
     have hq : Q.part a = P.part a ∩ S :=
       Q.part_eq_of_mem hpartMem (by simp [haa, ha])
     rw [hq, Finset.mem_inter, mem_part_orbitFinpartition_iff]
-    simp [ha, and_assoc, and_left_comm, and_comm]
+    constructor
+    · rintro ⟨hsame, hbS⟩
+      exact ⟨ha, hbS, hsame⟩
+    · rintro ⟨_, hbS, hsame⟩
+      exact ⟨hsame, hbS⟩
   · have hq : Q.part a = ∅ := Q.part_eq_empty.2 ha
     simp [hq, ha]
 
