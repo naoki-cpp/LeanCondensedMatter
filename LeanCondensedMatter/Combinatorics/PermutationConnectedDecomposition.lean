@@ -584,7 +584,7 @@ theorem permutationSum_univ_eq_sum_perm {R : Type*} [CommSemiring R]
       calc
         (∏ i : (univ : Finset α), K i (σ i)) =
             ∏ i ∈ (univ : Finset α), K i (σ i) := by
-          exact Finset.prod_coe_sort (fun i : α => K i (σ i)) (univ : Finset α)
+          exact Finset.prod_coe_sort (univ : Finset α) (fun i : α => K i (σ i))
         _ = ∏ i : α, K i (σ i) := by simp
 
 end Combinatorics
