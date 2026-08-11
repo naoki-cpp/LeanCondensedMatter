@@ -38,11 +38,19 @@ theorem resolventEvolutionStrongLimit_add
   have hsum :=
     (tendsto_resolventApproximationEvolutionAtScale_apply A hA t x).add
       (tendsto_resolventApproximationEvolutionAtScale_apply A hA t y)
+  have hfun :
+      (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r t (x + y)) =
+        (fun r : ℝ =>
+          resolventApproximationEvolutionAtScale A hA r t x +
+            resolventApproximationEvolutionAtScale A hA r t y) := by
+    funext r
+    exact (resolventApproximationEvolutionAtScale A hA r t).map_add x y
   have hsum' :
       Tendsto (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r t (x + y)) atTop
         (𝓝 (resolventEvolutionStrongLimit A hA t x +
           resolventEvolutionStrongLimit A hA t y)) := by
-    simpa only [map_add] using hsum
+    rw [hfun]
+    exact hsum
   exact tendsto_nhds_unique hxy hsum'
 
 /-- Complex scalar multiplication passes from the bounded approximants to their strong limit. -/
@@ -51,12 +59,19 @@ theorem resolventEvolutionStrongLimit_smul
     resolventEvolutionStrongLimit A hA t (c • x) =
       c • resolventEvolutionStrongLimit A hA t x := by
   have hcx := tendsto_resolventApproximationEvolutionAtScale_apply A hA t (c • x)
-  have hsmul := tendsto_const_nhds.smul
+  have hc : Tendsto (fun _ : ℝ => c) atTop (𝓝 c) := tendsto_const_nhds
+  have hsmul := hc.smul
     (tendsto_resolventApproximationEvolutionAtScale_apply A hA t x)
+  have hfun :
+      (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r t (c • x)) =
+        (fun r : ℝ => c • resolventApproximationEvolutionAtScale A hA r t x) := by
+    funext r
+    exact (resolventApproximationEvolutionAtScale A hA r t).map_smul c x
   have hsmul' :
       Tendsto (fun r : ℝ => resolventApproximationEvolutionAtScale A hA r t (c • x)) atTop
         (𝓝 (c • resolventEvolutionStrongLimit A hA t x)) := by
-    simpa only [map_smul] using hsmul
+    rw [hfun]
+    exact hsmul
   exact tendsto_nhds_unique hcx hsmul'
 
 /-- The vectorwise strong limit is a complex linear map. -/
