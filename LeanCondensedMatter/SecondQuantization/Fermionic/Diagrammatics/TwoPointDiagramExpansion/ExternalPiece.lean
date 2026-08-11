@@ -1,0 +1,88 @@
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedLegSlotEmbedding
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedExternalPositions
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotCongr
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentOrderedSimplex
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentVertexProduct
+
+set_option linter.style.header false
+
+/-!
+# The external component as a standalone two-point diagram
+
+Restricting a fixed-external two-point diagram to its external component leaves the interaction
+vertices indexed by the ambient slots that component happens to own. The linked-cluster
+factorization needs the same data as a diagram in its own right, on as many slots as the component
+owns, since that is the shape a perturbative coefficient is summed over.
+
+This module performs that reindexing on the slot set `externalSlots` already isolated by
+`MixedExternalPositions`. The slots are enumerated **in increasing order**, by
+`Finset.orderIsoOfFin`, which is what makes the piece's mixed event and leg orders agree with the
+ambient ones; see `MixedEventSlotEmbedding` and `MixedLegSlotEmbedding` for that comparison. The
+piece keeps the ambient external labels, so it is again a fixed-external diagram for the same two
+modes.
+-/
+
+namespace SecondQuantization
+namespace Fermionic
+
+open Combinatorics
+
+variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- The external component owns as many slots as the ordered-simplex integral for that component
+integrates over. -/
+theorem FixedExternalTwoPointWickDiagram.externalSlots_card
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) :
+    d.externalSlots.card = d.1.interactionComponentSize d.1.externalComponentPart := rfl
+
+/-- The increasing enumeration of the slots owned by the external component, as a relabeling onto
+the standard slot set of that size. -/
+noncomputable def FixedExternalTwoPointWickDiagram.externalSlotEquiv
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) :
+    ↥d.externalSlots ≃ ↥(Finset.univ : Finset (Fin d.externalSlots.card)) :=
+  (d.externalSlots.orderIsoOfFin rfl).toEquiv.symm.trans
+    (Equiv.subtypeUnivEquiv (fun x : Fin d.externalSlots.card => Finset.mem_univ x)).symm
+
+omit [LinearOrder Mode] [Fintype Mode] in
+@[simp]
+theorem FixedExternalTwoPointWickDiagram.externalSlotEquiv_symm_coe
+    (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (v : ↥(Finset.univ : Finset (Fin d.externalSlots.card))) :
+    ((d.externalSlotEquiv.symm v : ↥d.externalSlots) : Fin n) =
+      d.externalSlots.orderEmbOfFin rfl (v : Fin d.externalSlots.card) := by
+  simp [FixedExternalTwoPointWickDiagram.externalSlotEquiv,
+    Finset.coe_orderIsoOfFin_apply]
+
+/-- **The external component as a standalone fixed-external two-point diagram**, on its own
+interaction slots enumerated in increasing order. -/
+noncomputable def FixedExternalTwoPointWickDiagram.externalPiece
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) :
+    FixedExternalTwoPointWickDiagram Mode d.externalSlots.card i j :=
+  ⟨d.1.restrictExternalComponent.slotCongr d.externalSlotEquiv, by
+    rw [Common.TwoPointDiagram.slotCongr_externalLabel]
+    exact d.2⟩
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- The piece carries the ambient external labels. -/
+@[simp]
+theorem FixedExternalTwoPointWickDiagram.externalPiece_externalLabel
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) :
+    d.externalPiece.1.externalLabel = d.1.externalLabel := rfl
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- **The piece's slot labels are the ambient labels read off in increasing slot order.** -/
+@[simp]
+theorem FixedExternalTwoPointWickDiagram.externalPiece_vertexLabelSequence
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) (v : Fin d.externalSlots.card) :
+    d.externalPiece.vertexLabelSequence v =
+      d.1.vertexLabel ⟨d.externalSlots.orderEmbOfFin rfl v, Finset.mem_univ _⟩ := by
+  unfold FixedExternalTwoPointWickDiagram.vertexLabelSequence
+    FixedExternalTwoPointWickDiagram.externalPiece
+  rw [Common.TwoPointDiagram.slotCongr_vertexLabel,
+    Common.TwoPointDiagram.restrictExternalComponent_vertexLabel]
+  exact congrArg d.1.vertexLabel
+    (Subtype.ext (d.externalSlotEquiv_symm_coe ⟨v, Finset.mem_univ v⟩))
+
+end Fermionic
+end SecondQuantization

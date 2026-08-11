@@ -86,6 +86,11 @@ theorem TwoPointDiagram.slotCongr_externalLabel (e : ↥T ≃ ↥U)
     (d : TwoPointDiagram ExternalLabel InternalLabel N T) :
     (d.slotCongr (M := M) e).externalLabel = d.externalLabel := rfl
 
+@[simp]
+theorem TwoPointDiagram.slotCongr_vertexLabel (e : ↥T ≃ ↥U)
+    (d : TwoPointDiagram ExternalLabel InternalLabel N T) (v : ↥U) :
+    (d.slotCongr (M := M) e).vertexLabel v = d.vertexLabel (e.symm v) := rfl
+
 /-- The transported pairing pairs the transported legs. -/
 theorem TwoPointDiagram.slotCongr_partner (e : ↥T ≃ ↥U)
     (d : TwoPointDiagram ExternalLabel InternalLabel N T)
