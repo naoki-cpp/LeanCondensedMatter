@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.PowerSeries.PermutationConnectedCycleSeries
+import LeanCondensedMatter.Permutation.ConnectedCycleSeries
 import Mathlib.RingTheory.PowerSeries.Log
 import Mathlib.Tactic.FieldSimp
 

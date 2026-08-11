@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.PermutationSingleCycleKernel
+import LeanCondensedMatter.Permutation.SingleCycleKernel
 import Mathlib.Data.Fintype.BigOperators
 
 set_option linter.style.header false

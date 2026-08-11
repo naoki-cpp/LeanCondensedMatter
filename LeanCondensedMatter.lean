@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.PowerSeries.Normalization
-import LeanCondensedMatter.Analysis.PowerSeries.PermutationCycleSeries
+import LeanCondensedMatter.Permutation
 import LeanCondensedMatter.Analysis.Dyson.Basic
 import LeanCondensedMatter.Analysis.Dyson.Bounds
 import LeanCondensedMatter.Analysis.Dyson.FirstVariation
