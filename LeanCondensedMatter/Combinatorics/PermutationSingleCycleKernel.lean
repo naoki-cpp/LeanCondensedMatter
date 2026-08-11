@@ -19,8 +19,6 @@ open Finset
 
 variable {α : Type*} [DecidableEq α] [Fintype α]
 
-attribute [nolint docBlame] fullCycleFintype
-
 /-- The pure kernel sum over single-orbit permutations on `S`.
 
 It is defined as the connected contribution at exchange weight `1`, so W3 reuses the W2 backend
