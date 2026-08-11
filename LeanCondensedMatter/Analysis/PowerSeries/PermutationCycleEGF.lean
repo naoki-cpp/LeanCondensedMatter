@@ -67,6 +67,6 @@ theorem assignmentSingleCycleEGFCoeff_eq_pow_mul_trace_div
     _ = ζ ^ (m - 1) * Matrix.trace (K ^ m) * (1 / (m : ℂ)) := by
       rw [factorial_pred_div_factorial_complex m hm]
     _ = ζ ^ (m - 1) * Matrix.trace (K ^ m) / (m : ℂ) := by
-      rw [div_eq_mul_inv, one_div]
+      simp [div_eq_mul_inv]
 
 end Combinatorics
