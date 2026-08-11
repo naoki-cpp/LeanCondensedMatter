@@ -24,8 +24,7 @@ open Combinatorics
 
 variable {Mode : Type*} [LinearOrder Mode] {N : ℕ}
 
-/-- A creator slot of a quartic vertex carries a creation operator. -/
-theorem exists_quarticLocalLegOperator_quarticCreatorLocalLeg
+private theorem exists_quarticLocalLegOperator_quarticCreatorLocalLeg
     (q : Common.QuarticVertexLabel Mode) (s : Fin 2) :
     ∃ mo : Mode, quarticLocalLegOperator q (quarticCreatorLocalLeg s) = create mo := by
   fin_cases s
@@ -33,18 +32,15 @@ theorem exists_quarticLocalLegOperator_quarticCreatorLocalLeg
   · exact ⟨q.create₂, rfl⟩
 
 /-- The time-evolved operator at a flattened creation leg is a scalar multiple of a creation
-operator: the local leg is a creation operator and the free evolution only rescales it. -/
-theorem exists_orderedQuarticLegOperator_quarticCreatorLeg (ε : Mode → ℝ) {S : Finset (Fin N)}
-    (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S)
-    (τ : Fin S.card → ℝ) (i : Fin (2 * S.card)) :
+operator. This is the shared normal form used by both ordered Wick-diagram and flat Dyson kernels. -/
+theorem exists_quarticLegOperatorForSequence_quarticCreatorLeg (ε : Mode → ℝ) {n : ℕ}
+    (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (i : Fin (2 * n)) :
     ∃ (c : ℂ) (mo : Mode),
-      orderedQuarticLegOperator ε d order τ (quarticCreatorLeg S.card i) = c • create mo := by
+      quarticLegOperatorForSequence ε q τ (quarticCreatorLeg n i) = c • create mo := by
   obtain ⟨mo, hmo⟩ := exists_quarticLocalLegOperator_quarticCreatorLocalLeg
-    (d.vertexLabel (order (quarticCreatorIndexEquiv S.card i).1))
-    (quarticCreatorIndexEquiv S.card i).2
-  refine ⟨Complex.exp (((τ (quarticCreatorIndexEquiv S.card i).1 : ℝ) : ℂ) * (ε mo : ℂ)), mo, ?_⟩
-  simp only [orderedQuarticLegOperator, quarticLegOperatorForSequence, quarticCreatorLeg,
-    Equiv.apply_symm_apply]
+    (q (quarticCreatorIndexEquiv n i).1) (quarticCreatorIndexEquiv n i).2
+  refine ⟨Complex.exp (((τ (quarticCreatorIndexEquiv n i).1 : ℝ) : ℂ) * (ε mo : ℂ)), mo, ?_⟩
+  simp only [quarticLegOperatorForSequence, quarticCreatorLeg, Equiv.apply_symm_apply]
   rw [hmo, imaginaryTimeEvolve_create]
 
 variable [Fintype Mode]
@@ -60,10 +56,12 @@ theorem orderedQuarticPairValue_quarticCreatorLeg_quarticCreatorLeg (ε : Mode �
     (τ : Fin S.card → ℝ) (i i' : Fin (2 * S.card)) :
     orderedQuarticPairValue ε β d order τ
       (quarticCreatorLeg S.card i) (quarticCreatorLeg S.card i') = 0 := by
-  obtain ⟨c, mo, hc⟩ := exists_orderedQuarticLegOperator_quarticCreatorLeg ε d order τ i
-  obtain ⟨c', mo', hc'⟩ := exists_orderedQuarticLegOperator_quarticCreatorLeg ε d order τ i'
-  rw [orderedQuarticPairValue, hc, hc', LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
-    Common.finiteHilbertOperator_smul, map_smul, smul_eq_mul,
+  obtain ⟨c, mo, hc⟩ := exists_quarticLegOperatorForSequence_quarticCreatorLeg ε
+    (fun k => d.vertexLabel (order k)) τ i
+  obtain ⟨c', mo', hc'⟩ := exists_quarticLegOperatorForSequence_quarticCreatorLeg ε
+    (fun k => d.vertexLabel (order k)) τ i'
+  rw [orderedQuarticPairValue, orderedQuarticLegOperator, hc, hc', LinearMap.smul_comp,
+    LinearMap.comp_smul, smul_smul, Common.finiteHilbertOperator_smul, map_smul, smul_eq_mul,
     freeGibbsDensityOperator_expectation_create_comp_create, mul_zero]
 
 /-- The vanishing rule in the side-splitting shape consumed by the generic exchange-sum endpoint. -/
