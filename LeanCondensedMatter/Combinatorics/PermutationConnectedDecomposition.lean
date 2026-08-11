@@ -259,8 +259,7 @@ private theorem decompose_assemble {S : Finset α} (π : Finpartition S)
   intro B B' hBB
   have hBval : (B : Finset α) = (B' : Finset α) :=
     (Subtype.heq_iff_coe_eq (fun s : Finset α => by rw [hπ])).1 hBB
-  rw [hBval]
-  rw [heq_iff_eq]
+  simp only [hBval, heq_iff_eq]
   apply Subtype.ext
   apply Equiv.ext
   intro x
