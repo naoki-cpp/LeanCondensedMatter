@@ -411,18 +411,18 @@ theorem prod_pairs_ofSplit [CommMonoid R] (e : PositionSplitting a b n)
   rw [Finset.prod_subtype (Pairing.ofSplit e P Q).pairs (fun _ => Iff.rfl)
       (fun pr => pv pr.1 pr.2),
     ← Equiv.prod_comp (splitPairsEquiv e P Q) (fun pr => pv pr.1.1 pr.1.2),
-    Fintype.prod_sum_type,
-    Finset.prod_subtype P.pairs (fun _ => Iff.rfl)
-      (fun pr => splitLeftKernel e pv pr.1 pr.2),
-    Finset.prod_subtype Q.pairs (fun _ => Iff.rfl)
-      (fun pr => splitRightKernel e pv pr.1 pr.2)]
-  apply congrArg₂ (· * ·)
-  · refine Fintype.prod_congr _ _ fun pr => ?_
+    Fintype.prod_sum_type]
+  refine congrArg₂ (· * ·) ?_ ?_
+  · rw [Finset.prod_subtype P.pairs (fun _ => Iff.rfl)
+      (fun pr => splitLeftKernel e pv pr.1 pr.2)]
+    refine Fintype.prod_congr _ _ fun pr => ?_
     change pv (orientPair (e (Sum.inl pr.1.1)) (e (Sum.inl pr.1.2))).1
         (orientPair (e (Sum.inl pr.1.1)) (e (Sum.inl pr.1.2))).2 = _
     unfold orientPair splitLeftKernel
     split_ifs <;> rfl
-  · refine Fintype.prod_congr _ _ fun pr => ?_
+  · rw [Finset.prod_subtype Q.pairs (fun _ => Iff.rfl)
+      (fun pr => splitRightKernel e pv pr.1 pr.2)]
+    refine Fintype.prod_congr _ _ fun pr => ?_
     change pv (orientPair (e (Sum.inr pr.1.1)) (e (Sum.inr pr.1.2))).1
         (orientPair (e (Sum.inr pr.1.1)) (e (Sum.inr pr.1.2))).2 = _
     unfold orientPair splitRightKernel
