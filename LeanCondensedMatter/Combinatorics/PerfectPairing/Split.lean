@@ -242,7 +242,7 @@ end Inverse
 
 section Product
 
-variable {R : Type*} [CommMonoid R]
+variable {R : Type*}
 
 /-- A left-part kernel read in the ambient orientation.
 
