@@ -23,7 +23,8 @@ adjoint, domain, and generator theorems immediately provide the corresponding Sc
 properties; the derivative acquires the physical factor `1 / ℏ` by the chain rule.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -88,4 +89,5 @@ noncomputable def continuumSchrodingerEvolution1D
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics
