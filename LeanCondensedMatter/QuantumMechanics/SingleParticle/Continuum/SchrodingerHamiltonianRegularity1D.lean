@@ -15,7 +15,8 @@ representative already belongs to `H²`. This closes the regularity gap between 
 domain and the maximal distributional Laplacian domain.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -75,4 +76,5 @@ theorem continuumH2Domain1D_eq_continuumMaximalLaplacianDomain1D :
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics
