@@ -482,22 +482,14 @@ private theorem supported_cycleDefect_eq_sum_orbitFinpartitionOn {S : Finset α}
     _ = ∑ B ∈ (orbitFinpartitionOn S σ.1).parts, (B.card - 1) := by
       rfl
 
-private theorem pow_sum_eq_prod_pow {β R : Type*} [CommMonoid R]
-    (a : R) (s : Finset β) (e : β → ℕ) :
-    a ^ (∑ x ∈ s, e x) = ∏ x ∈ s, a ^ e x := by
-  classical
-  induction s using Finset.induction_on with
-  | empty => simp
-  | @insert x s hx ih => simp [hx, ih, pow_add]
-
 private theorem pow_cycleDefect_eq_prod_orbitBlocks {R : Type*} [CommMonoid R]
     (ζ : R) {S : Finset α} (σ : SupportedPerm S) :
     ζ ^ cycleDefect σ.1 =
       ∏ B : (orbitFinpartitionOn S σ.1).parts, ζ ^ ((B : Finset α).card - 1) := by
   classical
   rw [supported_cycleDefect_eq_sum_orbitFinpartitionOn σ,
-    Finset.prod_coe_sort (orbitFinpartitionOn S σ.1).parts]
-  exact pow_sum_eq_prod_pow ζ (orbitFinpartitionOn S σ.1).parts (fun B => B.card - 1)
+    Finset.prod_coe_sort (orbitFinpartitionOn S σ.1).parts,
+    ← Finset.prod_pow_eq_pow_sum]
 
 private theorem kernelProduct_eq_prod_orbitBlocks {R : Type*} [CommMonoid R]
     (K : α → α → R) {S : Finset α} (σ : SupportedPerm S) :
@@ -526,7 +518,7 @@ private noncomputable def permutationMultiplicativeWeight {R : Type*} [CommSemir
 permutation-sum backend; the weight is instantiated through the generic connected-decomposition
 machinery rather than maintained as a separate direct sum. -/
 noncomputable def permutationSum {R : Type*} [CommSemiring R]
-    (ζ : R) (S : Finset α) (K : α → α → R) : R :=
+    (ζ : R) (K : α → α → R) (S : Finset α) : R :=
   (permutationMultiplicativeWeight (α := α) ζ K).objectMoment S
 
 /-- Total weight of the single-orbit permutations on a finite support set. -/
@@ -535,9 +527,9 @@ noncomputable def singleCycleContribution {R : Type*} [CommSemiring R]
   (permutationMultiplicativeWeight (α := α) ζ K).connectedContribution S
 
 /-- The arbitrary-`ζ` permutation sum is the moment transform of the single-cycle contribution. -/
-theorem permutationSum_eq_momentFromCumulant {R : Type*} [CommSemiring R]
+theorem permutationSum_eq_momentFromCumulant {R : Type*} [CommRing R]
     (ζ : R) (K : α → α → R) (S : Finset α) :
-    permutationSum ζ S K =
+    permutationSum ζ K S =
       Finpartition.momentFromCumulant (singleCycleContribution ζ K) S :=
   (permutationMultiplicativeWeight (α := α) ζ K).objectMoment_eq_momentFromCumulant S
 
@@ -545,7 +537,7 @@ theorem permutationSum_eq_momentFromCumulant {R : Type*} [CommSemiring R]
 theorem cumulantFromMoment_permutationSum_eq_singleCycleContribution
     {R : Type*} [CommRing R] (ζ : R) (K : α → α → R)
     {S : Finset α} (hS : S ≠ ∅) :
-    Finpartition.cumulantFromMoment (fun T => permutationSum ζ T K) S =
+    Finpartition.cumulantFromMoment (permutationSum ζ K) S =
       singleCycleContribution ζ K S :=
   (permutationMultiplicativeWeight (α := α) ζ K).cumulantFromMoment_objectMoment hS
 
@@ -560,7 +552,7 @@ all permutations with weight `ζ ^ cycleDefect`. This is the bridge consumed by 
 reduction; it is not a second backend. -/
 theorem permutationSum_univ_eq_sum_perm {R : Type*} [CommSemiring R]
     (ζ : R) (K : α → α → R) :
-    permutationSum ζ univ K =
+    permutationSum ζ K univ =
       ∑ σ : Equiv.Perm α, ζ ^ cycleDefect σ * ∏ i : α, K i (σ i) := by
   classical
   rw [permutationSum, MultiplicativeWeight.objectMoment,
