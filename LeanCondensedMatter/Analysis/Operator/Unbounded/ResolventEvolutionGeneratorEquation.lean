@@ -49,12 +49,17 @@ theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt_intertwined
             (resolventEvolutionStrongLimitOperator A hA (0 + h) (x : H) -
               resolventEvolutionStrongLimitOperator A hA 0 (x : H)))) := by
     funext h
-    have hgroup :=
-      resolventEvolutionStrongLimit_add_time_apply A hA s h (x : H)
+    have hgroup := congrArg (fun T : H →L[ℂ] H => T (x : H))
+      (resolventEvolutionStrongLimitOperator_add A hA s h)
     rw [hgroup, resolventEvolutionStrongLimitOperator_zero]
     simp only [zero_add, ContinuousLinearMap.map_sub, LinearMap.map_smul_of_tower]
   rw [hfun]
-  simpa using hmapped
+  have hmapgen :
+      resolventEvolutionStrongLimitOperator A hA s ((-I : ℂ) • A x) =
+        (-I : ℂ) • resolventEvolutionStrongLimitOperator A hA s (A x) := by
+    exact (resolventEvolutionStrongLimitOperator A hA s).map_smul _ _
+  rw [hmapgen] at hmapped
+  exact hmapped
 
 /-- Strong Stone derivative on the preserved generator domain. -/
 theorem resolventEvolutionStrongLimitOperator_apply_hasDerivAt
