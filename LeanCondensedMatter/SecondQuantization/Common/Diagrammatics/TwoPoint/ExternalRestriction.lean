@@ -80,6 +80,20 @@ noncomputable def TwoPointDiagram.externalLegDataEquiv {S : Finset (Fin N)}
         · exact Subtype.ext (by rfl)
         · rfl
 
+@[simp]
+theorem TwoPointDiagram.externalLegDataEquiv_symm_inl {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) (e : Fin 2) :
+    (d.externalLegDataEquiv.symm (Sum.inl e) : TwoPointLeg S) = Sum.inl e := rfl
+
+/-- Unrestricting an interaction leg keeps its slot and its local leg coordinate. -/
+@[simp]
+theorem TwoPointDiagram.externalLegDataEquiv_symm_inr {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (v : ↥(TwoPointDiagram.interactionPart (d.externalComponent 0))) (l : Fin 4) :
+    (d.externalLegDataEquiv.symm (Sum.inr (v, l)) : TwoPointLeg S) =
+      Sum.inr (⟨v.1, TwoPointDiagram.interactionPart_subset
+        (d.externalComponent 0) v.2⟩, l) := rfl
+
 /-- Reindex the flattened legs of the common external component as the flattened legs of a smaller
 two-point diagram. -/
 noncomputable def TwoPointDiagram.externalBlockLegEquiv {S : Finset (Fin N)}

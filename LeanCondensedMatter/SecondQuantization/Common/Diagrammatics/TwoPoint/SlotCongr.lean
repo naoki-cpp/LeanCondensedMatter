@@ -34,12 +34,30 @@ theorem twoPointVertexCongr_inl (e : ↥T ≃ ↥U) (a : Fin 2) :
 theorem twoPointVertexCongr_inr (e : ↥T ≃ ↥U) (v : ↥T) :
     twoPointVertexCongr e (Sum.inr v) = Sum.inr (e v) := rfl
 
+/-- Relabeling the interaction vertices relabels the unflattened legs. -/
+def twoPointLegDataCongr (e : ↥T ≃ ↥U) : TwoPointLeg T ≃ TwoPointLeg U :=
+  Equiv.sumCongr (Equiv.refl (Fin 2)) (e.prodCongr (Equiv.refl (Fin 4)))
+
+@[simp]
+theorem twoPointLegDataCongr_inl (e : ↥T ≃ ↥U) (a : Fin 2) :
+    twoPointLegDataCongr e (Sum.inl a) = Sum.inl a := rfl
+
+@[simp]
+theorem twoPointLegDataCongr_inr (e : ↥T ≃ ↥U) (v : ↥T) (l : Fin 4) :
+    twoPointLegDataCongr e (Sum.inr (v, l)) = Sum.inr (e v, l) := rfl
+
 /-- Relabeling the interaction vertices relabels the flattened legs. -/
 noncomputable def twoPointLegCongr (e : ↥T ≃ ↥U) :
     Fin (2 * (2 * T.card + 1)) ≃ Fin (2 * (2 * U.card + 1)) :=
   (twoPointLegEquiv T).trans
     ((Equiv.sumCongr (Equiv.refl (Fin 2)) (e.prodCongr (Equiv.refl (Fin 4)))).trans
       (twoPointLegEquiv U).symm)
+
+/-- The flattened relabeling is the unflattened one read through the two leg enumerations. -/
+theorem twoPointLegCongr_eq_trans (e : ↥T ≃ ↥U) :
+    twoPointLegCongr e =
+      (twoPointLegEquiv T).trans ((twoPointLegDataCongr e).trans (twoPointLegEquiv U).symm) :=
+  rfl
 
 /-- The inverse relabeling of legs is the relabeling along the inverse. -/
 theorem twoPointLegCongr_symm (e : ↥T ≃ ↥U) :
