@@ -1,4 +1,4 @@
-import Mathlib.Analysis.InnerProductSpace.Basic
+import Mathlib.Analysis.InnerProductSpace.Adjoint
 
 set_option linter.style.header false
 
