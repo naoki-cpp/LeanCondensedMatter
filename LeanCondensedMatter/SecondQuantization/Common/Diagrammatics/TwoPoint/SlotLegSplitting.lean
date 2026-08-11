@@ -198,6 +198,24 @@ noncomputable def TwoPointDiagram.slotSplitEquiv (h : T ⊆ S) :
     exact ⟨TwoPointDiagram.slotSplitExternal_ofSlotSplit h ext vac _,
       TwoPointDiagram.slotSplitVacuum_ofSlotSplit h ext vac _⟩
 
+open Classical in
+/-- **Summing over split diagrams is summing over the two pieces independently.**
+
+The reindexing the binary external/vacuum factorization runs on: it turns one sum over diagrams into
+a double sum whose inner factors are supported on disjoint slot blocks, which is the shape the
+binary ordered-simplex shuffle identity consumes. -/
+theorem TwoPointDiagram.sum_slotSplit [Fintype ExternalLabel] [Fintype InternalLabel]
+    (h : T ⊆ S) {M : Type*} [AddCommMonoid M]
+    (F : TwoPointDiagram ExternalLabel InternalLabel N S → M) :
+    (∑ d : {d : TwoPointDiagram ExternalLabel InternalLabel N S //
+        d.pairing.IsSplit (slotLegSplitting h)}, F d.1) =
+      ∑ ext : TwoPointDiagram ExternalLabel InternalLabel N T,
+        ∑ vac : QuarticDiagram InternalLabel N (S \ T),
+          F (TwoPointDiagram.ofSlotSplit h ext vac) := by
+  rw [← Equiv.sum_comp (TwoPointDiagram.slotSplitEquiv h).symm (fun d => F d.1),
+    Fintype.sum_prod_type]
+  rfl
+
 end Decompose
 
 end Common
