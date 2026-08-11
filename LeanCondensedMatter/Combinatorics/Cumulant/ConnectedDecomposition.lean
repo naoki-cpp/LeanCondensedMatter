@@ -57,6 +57,13 @@ noncomputable def objectMoment (S : Finset α) : R :=
 noncomputable def connectedContribution (S : Finset α) : R :=
   ∑ d : D.ConnectedObject S, W.connectedWeight d
 
+end Semiring
+
+section Ring
+
+variable {α R : Type*} [DecidableEq α] [CommRing R]
+variable {D : ConnectedDecomposition α} (W : MultiplicativeWeight D R)
+
 /-- Object weights form the moment transform of connected-object weights. -/
 theorem objectMoment_eq_momentFromCumulant (S : Finset α) :
     W.objectMoment S = Finpartition.momentFromCumulant W.connectedContribution S := by
@@ -77,13 +84,6 @@ theorem objectMoment_eq_momentFromCumulant (S : Finset α) :
     (fun B c => W.connectedWeight c)
   rw [Fintype.piFinset_univ] at hdist
   exact hdist.symm
-
-end Semiring
-
-section Ring
-
-variable {α R : Type*} [DecidableEq α] [CommRing R]
-variable {D : ConnectedDecomposition α} (W : MultiplicativeWeight D R)
 
 /-- The cumulant of the total object weight is the connected-object contribution. -/
 theorem cumulantFromMoment_objectMoment {S : Finset α} (hS : S ≠ ∅) :
