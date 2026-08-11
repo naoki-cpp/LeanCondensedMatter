@@ -153,5 +153,20 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude 
       ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d :=
   (sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment ε β g S).symm
 
+/-- **The total vacuum amplitude depends only on how many vertices there are.** Two vertex sets of
+equal size, in possibly different ambient index types, carry the same total Wick-diagram amplitude.
+
+This is what lets a component of a larger diagram be scored by the perturbation coefficient at its
+own order without transporting the diagram itself: `dysonVertexMoment` is
+`S.card ! * normalizedDysonPartitionCoeff ε β V S.card`, which mentions `S` only through its
+cardinality. -/
+theorem sum_quarticWickDiagramAmplitude_eq_of_card_eq (ε : Mode → ℝ) (β : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) {N M : ℕ} (S : Finset (Fin N)) (T : Finset (Fin M))
+    (h : S.card = T.card) :
+    ∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d =
+      ∑ d : QuarticWickDiagram Mode M T, quarticWickDiagramAmplitude ε β g d := by
+  rw [sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment,
+    sum_quarticWickDiagramAmplitude_eq_dysonVertexMoment, dysonVertexMoment, dysonVertexMoment, h]
+
 end Fermionic
 end SecondQuantization
