@@ -19,6 +19,9 @@ therefore only take a diagram apart. Reconstructing a diagram from an external p
 piece needs the splitting to exist first, and this is it.
 
 The two are related by instantiating `T` at the external component's interaction vertices.
+
+Reconstruction and decomposition along such a splitting are mutually inverse, so the diagrams whose
+pairing does not cross the divide are exactly the pairs of pieces (`TwoPointDiagram.slotSplitEquiv`).
 -/
 
 namespace SecondQuantization
@@ -110,6 +113,92 @@ theorem TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem {S T : Finset (Fin N)
     (TwoPointDiagram.ofSlotSplit h ext vac).vertexLabel v =
       vac.vertexLabel ⟨v, Finset.mem_sdiff.mpr ⟨v.2, hv⟩⟩ :=
   dif_neg hv
+
+section Decompose
+
+variable {S T : Finset (Fin N)}
+
+/-- The external piece of a diagram whose pairing is split by the slot leg splitting: the vertices
+of `T`, the two external legs, and the pairing they carry. -/
+noncomputable def TwoPointDiagram.slotSplitExternal (h : T ⊆ S)
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (hd : d.pairing.IsSplit (slotLegSplitting h)) :
+    TwoPointDiagram ExternalLabel InternalLabel N T where
+  externalLabel := d.externalLabel
+  vertexLabel v := d.vertexLabel ⟨v.1, h v.2⟩
+  pairing := d.pairing.splitLeft (slotLegSplitting h) hd
+
+/-- The vacuum piece of a diagram whose pairing is split by the slot leg splitting: the vertices of
+`S \ T` and the pairing they carry, as an ordinary quartic diagram. -/
+noncomputable def TwoPointDiagram.slotSplitVacuum (h : T ⊆ S)
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (hd : d.pairing.IsSplit (slotLegSplitting h)) :
+    QuarticDiagram InternalLabel N (S \ T) where
+  vertexLabel v := d.vertexLabel ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩
+  pairing := d.pairing.splitRight (slotLegSplitting h) hd
+
+/-- **Taking a diagram apart and putting it back returns the diagram.** -/
+theorem TwoPointDiagram.ofSlotSplit_slotSplit (h : T ⊆ S)
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (hd : d.pairing.IsSplit (slotLegSplitting h)) :
+    TwoPointDiagram.ofSlotSplit h (d.slotSplitExternal h hd) (d.slotSplitVacuum h hd) = d := by
+  refine TwoPointDiagram.ext rfl (funext fun v => ?_) ?_
+  · by_cases hv : (v : Fin N) ∈ T
+    · exact TwoPointDiagram.ofSlotSplit_vertexLabel_of_mem h _ _ v hv
+    · exact TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem h _ _ v hv
+  · exact Pairing.ofSplit_splitLeft_splitRight (slotLegSplitting h) hd
+
+/-- A reconstructed diagram is split by the splitting it was reconstructed along. -/
+theorem TwoPointDiagram.isSplit_ofSlotSplit (h : T ⊆ S)
+    (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
+    (vac : QuarticDiagram InternalLabel N (S \ T)) :
+    (TwoPointDiagram.ofSlotSplit h ext vac).pairing.IsSplit (slotLegSplitting h) :=
+  Pairing.isSplit_ofSplit _ _ _
+
+/-- Reconstructing and then reading off the external piece returns the external piece. -/
+theorem TwoPointDiagram.slotSplitExternal_ofSlotSplit (h : T ⊆ S)
+    (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
+    (vac : QuarticDiagram InternalLabel N (S \ T))
+    (hd : (TwoPointDiagram.ofSlotSplit h ext vac).pairing.IsSplit (slotLegSplitting h)) :
+    (TwoPointDiagram.ofSlotSplit h ext vac).slotSplitExternal h hd = ext := by
+  refine TwoPointDiagram.ext rfl (funext fun v => ?_) ?_
+  · exact TwoPointDiagram.ofSlotSplit_vertexLabel_of_mem h ext vac ⟨v.1, h v.2⟩ v.2
+  · exact Pairing.splitLeft_ofSplit (slotLegSplitting h) ext.pairing vac.pairing
+
+/-- Reconstructing and then reading off the vacuum piece returns the vacuum piece. -/
+theorem TwoPointDiagram.slotSplitVacuum_ofSlotSplit (h : T ⊆ S)
+    (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
+    (vac : QuarticDiagram InternalLabel N (S \ T))
+    (hd : (TwoPointDiagram.ofSlotSplit h ext vac).pairing.IsSplit (slotLegSplitting h)) :
+    (TwoPointDiagram.ofSlotSplit h ext vac).slotSplitVacuum h hd = vac := by
+  refine QuarticDiagram.ext (funext fun v => ?_) ?_
+  · exact TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem h ext vac
+      ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩ (Finset.mem_sdiff.mp v.2).2
+  · exact Pairing.splitRight_ofSplit (slotLegSplitting h) ext.pairing vac.pairing
+
+/-- **The diagrams split by a slot leg splitting are exactly the pairs of pieces.**
+
+The reindexing engine of the binary external/vacuum decomposition: summing over two-point diagrams
+on `S` whose pairing does not cross the divide is summing over an external diagram on `T` and a
+vacuum diagram on `S \ T` independently.
+
+Nothing here mentions connectivity. Connectivity enters only in identifying which `T` a given
+diagram is split by, namely its external component's interaction vertices. -/
+noncomputable def TwoPointDiagram.slotSplitEquiv (h : T ⊆ S) :
+    {d : TwoPointDiagram ExternalLabel InternalLabel N S //
+        d.pairing.IsSplit (slotLegSplitting h)} ≃
+      TwoPointDiagram ExternalLabel InternalLabel N T × QuarticDiagram InternalLabel N (S \ T) where
+  toFun d := (d.1.slotSplitExternal h d.2, d.1.slotSplitVacuum h d.2)
+  invFun p :=
+    ⟨TwoPointDiagram.ofSlotSplit h p.1 p.2, TwoPointDiagram.isSplit_ofSlotSplit h p.1 p.2⟩
+  left_inv d := Subtype.ext (TwoPointDiagram.ofSlotSplit_slotSplit h d.1 d.2)
+  right_inv p := by
+    obtain ⟨ext, vac⟩ := p
+    simp only [Prod.mk.injEq]
+    exact ⟨TwoPointDiagram.slotSplitExternal_ofSlotSplit h ext vac _,
+      TwoPointDiagram.slotSplitVacuum_ofSlotSplit h ext vac _⟩
+
+end Decompose
 
 end Common
 end SecondQuantization
