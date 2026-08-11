@@ -84,7 +84,7 @@ theorem linearMap_trace_finiteKuboBastinDirectionalTraceCarrier
 The current-current term is an ordinary finite-dimensional trace; the Peierls contact expectation
 and the finite-volume electric-field normalization remain separate and explicit. -/
 noncomputable def finiteDimensionalKuboBastinDirectionalConductivity
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
@@ -100,7 +100,7 @@ noncomputable def finiteDimensionalKuboBastinDirectionalConductivity
 /-- The ordinary trace definition has exactly the finite spectral/Lehmann representation proved in
 `KuboBastinSpectral`. -/
 theorem finiteDimensionalKuboBastinDirectionalConductivity_eq_spectral
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
@@ -116,7 +116,7 @@ theorem finiteDimensionalKuboBastinDirectionalConductivity_eq_spectral
 /-- Main B2 identification: the ordinary finite-dimensional Kubo–Bastin trace response is exactly
 the conductivity derived from the causal Kubo response chain, at fixed positive switching rate. -/
 theorem infiniteTimeAdiabaticDirectionalConductivity_eq_finiteDimensionalKuboBastin
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)

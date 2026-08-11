@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.FiniteVolume
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.SpectralFrequencyResponse
 
 set_option linter.style.header false
@@ -18,10 +19,11 @@ the corresponding complex electric-field amplitude is
 E(t) = -∂ₜ A(t) = (-η + iω) A(t).
 ```
 
-This module makes the remaining normalization explicit. A positive finite volume is supplied as
-data; dividing the total-current response by that volume gives current density, and dividing by
-`-η + iω` converts vector-potential response to electric-field response. The resulting object is
-called conductivity only with this convention visible.
+This module makes the remaining normalization explicit. Canonical positive finite-volume data are
+supplied by `QuantumTheory.Transport.PositiveVolume`; dividing the total-current response by that
+volume gives current density, and dividing by `-η + iω` converts vector-potential response to
+electric-field response. The resulting object is called conductivity only with this convention
+visible.
 
 The first slice is finite volume, uses the full finite fermionic Fock space, and couples a single
 uniform directional Peierls source to the finite hopping model. Boundary conditions and geometry
@@ -37,12 +39,6 @@ namespace Field
 open QuantumTheory.LinearResponse
 
 noncomputable section
-
-/-- Positive finite volume used to convert the total directional current into current density. -/
-structure FiniteVolumeConductivityConvention where
-  /-- Physical volume of the finite sample represented by the bounded hopping model. -/
-  volume : ℝ
-  volume_pos : 0 < volume
 
 /-- For `A(t) ∝ exp (ηt) exp (-iωt)`, the electric-field amplitude is
 `(-η + iω) A(t)`. -/
@@ -82,24 +78,24 @@ theorem adiabaticElectricFieldFactor_ne_zero_of_pos
 /-- Combined conversion from total-current/vector-potential response to
 current-density/electric-field response. -/
 noncomputable def finiteVolumeConductivityNormalization
-    (convention : FiniteVolumeConductivityConvention) (ω η : ℝ) : ℂ :=
-  (((convention.volume : ℂ) * adiabaticElectricFieldFactor ω η))⁻¹
+    (volume : QuantumTheory.Transport.PositiveVolume) (ω η : ℝ) : ℂ :=
+  (((volume.volume : ℂ) * adiabaticElectricFieldFactor ω η))⁻¹
 
 /-- The finite-volume normalization denominator is nonzero at every positive switching rate. -/
 theorem finiteVolumeConductivityDenominator_ne_zero
-    (convention : FiniteVolumeConductivityConvention)
+    (volume : QuantumTheory.Transport.PositiveVolume)
     (ω η : ℝ) (hη : 0 < η) :
-    (convention.volume : ℂ) * adiabaticElectricFieldFactor ω η ≠ 0 := by
+    (volume.volume : ℂ) * adiabaticElectricFieldFactor ω η ≠ 0 := by
   apply mul_ne_zero
-  · exact_mod_cast ne_of_gt convention.volume_pos
+  · exact_mod_cast ne_of_gt volume.volume_pos
   · exact adiabaticElectricFieldFactor_ne_zero_of_pos ω η hη
 
 /-- Convert a total-current response coefficient with respect to vector potential into an
 intensive electric-field conductivity. -/
 noncomputable def finiteVolumeConductivityFromVectorPotential
-    (convention : FiniteVolumeConductivityConvention)
+    (volume : QuantumTheory.Transport.PositiveVolume)
     (ω η : ℝ) (response : ℂ) : ℂ :=
-  response * finiteVolumeConductivityNormalization convention ω η
+  response * finiteVolumeConductivityNormalization volume ω η
 
 variable {Site E : Type*}
 variable [LinearOrder Site] [Fintype Site]
@@ -107,39 +103,39 @@ variable [AddCommGroup E] [Module ℝ E]
 
 /-- Finite-observation-time, finite-volume regularized conductivity. -/
 noncomputable def finiteTimeAdiabaticDirectionalConductivity
-    (convention : FiniteVolumeConductivityConvention)
+    (volume : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (expectation : NormalizedExpectation (FiniteLatticeHilbertFock Site))
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η T : ℝ) : ℂ :=
-  finiteVolumeConductivityFromVectorPotential convention ω η
+  finiteVolumeConductivityFromVectorPotential volume ω η
     (finiteTimeAdiabaticDirectionalCoefficient
       system expectation geometry direction K q ω η T)
 
 /-- Infinite-observation-time, finite-volume regularized conductivity at fixed `ω` and `η`. -/
 noncomputable def infiniteTimeAdiabaticDirectionalConductivity
-    (convention : FiniteVolumeConductivityConvention)
+    (volume : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (expectation : NormalizedExpectation (FiniteLatticeHilbertFock Site))
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) : ℂ :=
-  finiteVolumeConductivityFromVectorPotential convention ω η
+  finiteVolumeConductivityFromVectorPotential volume ω η
     (infiniteTimeAdiabaticDirectionalCoefficient
       system expectation geometry direction K q ω η)
 
 /-- Stationarity and `η > 0` give the observation-time limit for the explicitly normalized
 finite-volume conductivity. -/
 theorem hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_pos
-    (convention : FiniteVolumeConductivityConvention)
+    (volume : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (expectation : NormalizedExpectation (FiniteLatticeHilbertFock Site))
     (hstationary : IsStationary system expectation)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) (hη : 0 < η) :
     HasInfiniteObservationTimeLimit
-      (finiteTimeAdiabaticDirectionalConductivity convention
+      (finiteTimeAdiabaticDirectionalConductivity volume
         system expectation geometry direction K q ω η)
-      (infiniteTimeAdiabaticDirectionalConductivity convention
+      (infiniteTimeAdiabaticDirectionalConductivity volume
         system expectation geometry direction K q ω η) := by
   have hlimit := hasInfiniteObservationTimeLimit_directional_of_stationary_pos
     system expectation hstationary geometry direction K q ω η hη
@@ -148,18 +144,18 @@ theorem hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_po
     (fun T : ℝ =>
       finiteTimeAdiabaticDirectionalCoefficient
           system expectation geometry direction K q ω η T *
-        finiteVolumeConductivityNormalization convention ω η)
+        finiteVolumeConductivityNormalization volume ω η)
     Filter.atTop
     (nhds
       (infiniteTimeAdiabaticDirectionalCoefficient
           system expectation geometry direction K q ω η *
-        finiteVolumeConductivityNormalization convention ω η))
+        finiteVolumeConductivityNormalization volume ω η))
   exact hlimit.mul
     (tendsto_const_nhds :
       Filter.Tendsto
-        (fun _ : ℝ => finiteVolumeConductivityNormalization convention ω η)
+        (fun _ : ℝ => finiteVolumeConductivityNormalization volume ω η)
         Filter.atTop
-        (nhds (finiteVolumeConductivityNormalization convention ω η)))
+        (nhds (finiteVolumeConductivityNormalization volume ω η)))
 
 variable {ι : Type*}
 
@@ -167,12 +163,12 @@ variable {ι : Type*}
 multiplied by the explicit volume and electric-field normalization. -/
 theorem infiniteTimeAdiabaticDirectionalConductivity_purePoint_eq_finite_sum
     [Fintype ι]
-    (convention : FiniteVolumeConductivityConvention)
+    (volume : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) (hη : 0 < η) :
-    infiniteTimeAdiabaticDirectionalConductivity convention
+    infiniteTimeAdiabaticDirectionalConductivity volume
         system (purePointNormalizedExpectation system data)
           geometry direction K q ω η =
       ((∑ mn : ι × ι,
@@ -186,7 +182,7 @@ theorem infiniteTimeAdiabaticDirectionalConductivity_purePoint_eq_finite_sum
         purePointNormalizedExpectation system data
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K)) *
-        finiteVolumeConductivityNormalization convention ω η := by
+        finiteVolumeConductivityNormalization volume ω η := by
   rw [infiniteTimeAdiabaticDirectionalConductivity]
   rw [finiteVolumeConductivityFromVectorPotential]
   rw [infiniteTimeAdiabaticDirectionalCoefficient_purePoint_eq_finite_sum
@@ -196,13 +192,13 @@ theorem infiniteTimeAdiabaticDirectionalConductivity_purePoint_eq_finite_sum
 contact term. -/
 theorem hasInfiniteObservationTimeLimit_directionalConductivity_purePoint_finite_sum
     [Fintype ι]
-    (convention : FiniteVolumeConductivityConvention)
+    (volume : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) (hη : 0 < η) :
     HasInfiniteObservationTimeLimit
-      (finiteTimeAdiabaticDirectionalConductivity convention
+      (finiteTimeAdiabaticDirectionalConductivity volume
         system (purePointNormalizedExpectation system data)
           geometry direction K q ω η)
       (((∑ mn : ι × ι,
@@ -216,13 +212,13 @@ theorem hasInfiniteObservationTimeLimit_directionalConductivity_purePoint_finite
         purePointNormalizedExpectation system data
           (boundedDirectionalContact geometry direction
             (system.hbar : ℂ) (q : ℂ) K)) *
-        finiteVolumeConductivityNormalization convention ω η) := by
+        finiteVolumeConductivityNormalization volume ω η) := by
   have hlimit := hasInfiniteObservationTimeLimit_directionalConductivity_of_stationary_pos
-    convention system (purePointNormalizedExpectation system data)
+    volume system (purePointNormalizedExpectation system data)
       (isStationary_purePointNormalizedExpectation system data)
       geometry direction K q ω η hη
   rw [infiniteTimeAdiabaticDirectionalConductivity_purePoint_eq_finite_sum
-    convention system data geometry direction K q ω η hη] at hlimit
+    volume system data geometry direction K q ω η hη] at hlimit
   exact hlimit
 
 end

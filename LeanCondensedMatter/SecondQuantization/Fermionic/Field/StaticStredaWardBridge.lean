@@ -74,7 +74,7 @@ The current-current trace equals `V (-η)` times the traced Bastin integral at e
 `ℏη`, minus the contact expectation. Proving this field from a concrete Peierls model is the
 remaining model-specific sum-rule problem; using the bridge below requires the field explicitly. -/
 structure FiniteStaticPeierlsWardIdentity
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
@@ -99,7 +99,7 @@ structure FiniteStaticPeierlsWardIdentity
 /-- The Ward identity converts the complete vector-potential response, including contact, into the
 explicit volume/electric-field factor times the traced Bastin integral. -/
 theorem FiniteStaticPeierlsWardIdentity.vectorPotentialResponse_eq_scaledTracedBastin
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
@@ -126,7 +126,7 @@ theorem FiniteStaticPeierlsWardIdentity.vectorPotentialResponse_eq_scaledTracedB
 zero-frequency normalization and identifies the named static conductivity with the canonical
 traced Bastin energy integral. -/
 theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_tracedBastin
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
@@ -168,7 +168,7 @@ theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_tracedBastin
 
 /-- The same bridge written directly in the finite pure-point spectral energy-integral form. -/
 theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_spectralEnergyIntegral
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
@@ -212,7 +212,7 @@ theorem FiniteStaticPeierlsWardIdentity.staticConductivity_eq_spectralEnergyInte
 /-- The analytic traced-kernel data and the visible Ward identity construct the concrete Středa
 representation of the named static finite-dimensional conductivity. -/
 noncomputable def TracedStredaAnalyticData.toStaticKuboBastinStredaRepresentation
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (spectralData : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
@@ -241,7 +241,7 @@ noncomputable def TracedStredaAnalyticData.toStaticKuboBastinStredaRepresentatio
 
 /-- The resulting named static conductivity has the regularized Středa surface-plus-sea split. -/
 theorem TracedStredaAnalyticData.staticKuboBastinConductivity_eq_surface_add_sea
-    (convention : FiniteVolumeConductivityConvention)
+    (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (spectralData : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
