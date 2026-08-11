@@ -267,7 +267,9 @@ theorem splitLeftKernel_comm (e : PositionSplitting a b n)
   unfold splitLeftKernel
   rcases lt_trichotomy (e (Sum.inl x)) (e (Sum.inl y)) with hlt | heq | hgt
   · rw [if_pos hlt, if_neg (asymm hlt)]
-  · exact absurd (Sum.inl.inj (e.injective heq)) (fun h => by simp [h])
+  · have hxy : x = y := Sum.inl.inj (e.injective heq)
+    subst hxy
+    rfl
   · rw [if_neg (asymm hgt), if_pos hgt]
 
 theorem splitRightKernel_comm (e : PositionSplitting a b n)
@@ -276,7 +278,9 @@ theorem splitRightKernel_comm (e : PositionSplitting a b n)
   unfold splitRightKernel
   rcases lt_trichotomy (e (Sum.inr x)) (e (Sum.inr y)) with hlt | heq | hgt
   · rw [if_pos hlt, if_neg (asymm hlt)]
-  · exact absurd (Sum.inr.inj (e.injective heq)) (fun h => by simp [h])
+  · have hxy : x = y := Sum.inr.inj (e.injective heq)
+    subst hxy
+    rfl
   · rw [if_neg (asymm hgt), if_pos hgt]
 
 end Product
