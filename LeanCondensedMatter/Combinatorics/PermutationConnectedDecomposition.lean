@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
+import LeanCondensedMatter.Combinatorics.FinpartitionProduct
 import LeanCondensedMatter.Combinatorics.PermutationOrbitPartition
 import Mathlib.GroupTheory.Perm.Cycle.Factors
 
@@ -8,17 +9,18 @@ set_option linter.style.header false
 # Connected decomposition of finite permutations
 
 A permutation supported on a finite set decomposes uniquely into its orbit partition and one
-single-orbit permutation on every block. This file is deliberately independent of exchange
-weights: the decomposition is the structural input used later for arbitrary-`ζ` multiplicative
-weights.
+single-orbit permutation on every block. The structural decomposition is independent of exchange
+weights. The final section instantiates the generic `MultiplicativeWeight` with the arbitrary-`ζ`
+cycle weight and a two-index kernel.
 
 Both full and connected objects are kept as permutations of the ambient index type. A connected
 object on a block is supported in that block and is a single cycle on that block. This avoids
 transporting the permutation type itself when partitions are compared, and matches the ambient
-kernel indices used by the later multiplicative-weight layer.
+kernel indices used by the multiplicative-weight layer.
 
-Only `permutationConnectedDecomposition` is public. Support wrappers, block restrictions,
-assembly, and round-trip lemmas are implementation details.
+Support wrappers, block restrictions, assembly, and round-trip lemmas remain implementation
+details. Public declarations are reserved for the structural decomposition and the semantic
+moment/cumulant endpoints.
 -/
 
 namespace Combinatorics
@@ -174,6 +176,14 @@ private noncomputable def restrictOrbitBlockConnected {S : Finset α} (σ : Supp
     extendBlockPerm_support_subset B.1 (restrictOrbitBlockSubtype σ B),
     extendBlockPerm_isCycleOn B.1 (restrictOrbitBlockSubtype σ B)
       (restrictOrbitBlockSubtype_isCycleOn σ B)⟩
+
+@[simp]
+private theorem restrictOrbitBlockConnected_apply {S : Finset α} (σ : SupportedPerm S)
+    (B : (orbitFinpartitionOn S σ.1).parts) (x : B.1) :
+    (restrictOrbitBlockConnected σ B).1 x = σ.1 x := by
+  change extendBlockPerm B.1 (restrictOrbitBlockSubtype σ B) x = σ.1 x
+  rw [extendBlockPerm_apply_mem B.1 _ x.2]
+  rfl
 
 private noncomputable def decomposePermutation (S : Finset α) (σ : SupportedPerm S) :
     Σ π : Finpartition S, ∀ B : π.parts, SingleOrbitPerm B.1 :=
@@ -409,5 +419,159 @@ noncomputable def permutationConnectedDecomposition (α : Type*) [DecidableEq α
       invFun := fun x => assemblePermutation x.1 x.2
       left_inv := assemble_decompose
       right_inv := fun x => decompose_assemble x.1 x.2 }
+
+/-! ## Arbitrary-ζ multiplicative permutation weight -/
+
+private theorem orbitPart_subset_of_supported {S : Finset α} (σ : SupportedPerm S)
+    {x : α} (hx : x ∈ S) : (orbitFinpartition σ.1).part x ⊆ S := by
+  intro y hy
+  have hsame : σ.1.SameCycle x y :=
+    (mem_part_orbitFinpartition_iff σ.1 x y).1 hy
+  by_cases hfix : σ.1 x = x
+  · have hxy : x = y := hsame.eq_of_left hfix
+    exact hxy ▸ hx
+  · have hxSupp : x ∈ σ.1.support := Equiv.Perm.mem_support.mpr hfix
+    have hySupp : y ∈ σ.1.support := (hsame.mem_support_iff).1 hxSupp
+    exact σ.2 hySupp
+
+private theorem orbitBlock_inter_card_sub_one_eq {S : Finset α} (σ : SupportedPerm S)
+    (B : (orbitFinpartition σ.1).parts) :
+    (B.1 ∩ S).card - 1 = B.1.card - 1 := by
+  obtain ⟨x, hxB⟩ := (orbitFinpartition σ.1).nonempty_of_mem_parts B.2
+  by_cases hxS : x ∈ S
+  · have hpart : (orbitFinpartition σ.1).part x = B.1 :=
+      (orbitFinpartition σ.1).part_eq_of_mem B.2 hxB
+    have hsub : B.1 ⊆ S := by
+      rw [← hpart]
+      exact orbitPart_subset_of_supported σ hxS
+    rw [Finset.inter_eq_left.mpr hsub]
+  · have hfix : σ.1 x = x := σ.apply_eq_self_of_not_mem hxS
+    have hpart : (orbitFinpartition σ.1).part x = B.1 :=
+      (orbitFinpartition σ.1).part_eq_of_mem B.2 hxB
+    have hsingle : B.1 = {x} := by
+      ext y
+      constructor
+      · intro hy
+        have hsame : σ.1.SameCycle x y := by
+          apply (mem_part_orbitFinpartition_iff σ.1 x y).1
+          rw [hpart]
+          exact hy
+        exact Finset.mem_singleton.mpr (hsame.eq_of_left hfix).symm
+      · intro hy
+        have hyx : y = x := Finset.mem_singleton.mp hy
+        simpa [hyx] using hxB
+    simp [hsingle, hxS]
+
+private theorem supported_cycleDefect_eq_sum_orbitFinpartitionOn {S : Finset α}
+    (σ : SupportedPerm S) :
+    cycleDefect σ.1 =
+      ∑ B ∈ (orbitFinpartitionOn S σ.1).parts, (B.card - 1) := by
+  classical
+  let P := orbitFinpartition σ.1
+  have hsub : S ⊆ (univ : Finset α) := by simp
+  calc
+    cycleDefect σ.1 = ∑ B ∈ P.parts, (B.card - 1) := by
+      simpa [P] using cycleDefect_eq_sum_orbitFinpartition σ.1
+    _ = ∑ B ∈ P.parts, ((B ∩ S).card - 1) := by
+      apply Finset.sum_congr rfl
+      intro B hB
+      exact (orbitBlock_inter_card_sub_one_eq σ ⟨B, hB⟩).symm
+    _ = ∑ B ∈ (P.restrict hsub).parts, (B.card - 1) := by
+      symm
+      exact P.sum_restrict hsub (fun B => B.card - 1) (by simp)
+    _ = ∑ B ∈ (orbitFinpartitionOn S σ.1).parts, (B.card - 1) := by
+      rfl
+
+private theorem pow_sum_eq_prod_pow {β R : Type*} [CommMonoid R]
+    (a : R) (s : Finset β) (e : β → ℕ) :
+    a ^ (∑ x ∈ s, e x) = ∏ x ∈ s, a ^ e x := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp
+  | @insert x s hx ih => simp [hx, ih, pow_add]
+
+private theorem pow_cycleDefect_eq_prod_orbitBlocks {R : Type*} [CommMonoid R]
+    (ζ : R) {S : Finset α} (σ : SupportedPerm S) :
+    ζ ^ cycleDefect σ.1 =
+      ∏ B : (orbitFinpartitionOn S σ.1).parts, ζ ^ ((B : Finset α).card - 1) := by
+  classical
+  rw [supported_cycleDefect_eq_sum_orbitFinpartitionOn σ,
+    Finset.prod_coe_sort (orbitFinpartitionOn S σ.1).parts]
+  exact pow_sum_eq_prod_pow ζ (orbitFinpartitionOn S σ.1).parts (fun B => B.card - 1)
+
+private theorem kernelProduct_eq_prod_orbitBlocks {R : Type*} [CommMonoid R]
+    (K : α → α → R) {S : Finset α} (σ : SupportedPerm S) :
+    (∏ i : S, K i (σ.1 i)) =
+      ∏ B : (orbitFinpartitionOn S σ.1).parts,
+        ∏ i : (B : Finset α), K i ((restrictOrbitBlockConnected σ B).1 i) := by
+  classical
+  simpa [Finpartition.equivSigmaParts] using
+    (Finpartition.prod_eq_prod_parts (orbitFinpartitionOn S σ.1)
+      (fun i : S => K i (σ.1 i)))
+
+private noncomputable def permutationMultiplicativeWeight {R : Type*} [CommSemiring R]
+    (ζ : R) (K : α → α → R) :
+    MultiplicativeWeight (permutationConnectedDecomposition α) R where
+  objectWeight {S} σ := ζ ^ cycleDefect σ.1 * ∏ i : S, K i (σ.1 i)
+  connectedWeight {S} σ := ζ ^ (S.card - 1) * ∏ i : S, K i (σ.1 i)
+  weight_decompose {S} σ := by
+    change ζ ^ cycleDefect σ.1 * (∏ i : S, K i (σ.1 i)) =
+      ∏ B : (orbitFinpartitionOn S σ.1).parts,
+        (ζ ^ ((B : Finset α).card - 1) *
+          ∏ i : (B : Finset α), K i ((restrictOrbitBlockConnected σ B).1 i))
+    rw [Finset.prod_mul_distrib, pow_cycleDefect_eq_prod_orbitBlocks ζ σ,
+      kernelProduct_eq_prod_orbitBlocks K σ]
+
+/-- The arbitrary-`ζ` permutation sum on a finite support set. This is the sole project-local
+permutation-sum backend; the weight is instantiated through the generic connected-decomposition
+machinery rather than maintained as a separate direct sum. -/
+noncomputable def permutationSum {R : Type*} [CommSemiring R]
+    (ζ : R) (S : Finset α) (K : α → α → R) : R :=
+  (permutationMultiplicativeWeight (α := α) ζ K).objectMoment S
+
+/-- Total weight of the single-orbit permutations on a finite support set. -/
+noncomputable def singleCycleContribution {R : Type*} [CommSemiring R]
+    (ζ : R) (K : α → α → R) (S : Finset α) : R :=
+  (permutationMultiplicativeWeight (α := α) ζ K).connectedContribution S
+
+/-- The arbitrary-`ζ` permutation sum is the moment transform of the single-cycle contribution. -/
+theorem permutationSum_eq_momentFromCumulant {R : Type*} [CommSemiring R]
+    (ζ : R) (K : α → α → R) (S : Finset α) :
+    permutationSum ζ S K =
+      Finpartition.momentFromCumulant (singleCycleContribution ζ K) S :=
+  (permutationMultiplicativeWeight (α := α) ζ K).objectMoment_eq_momentFromCumulant S
+
+/-- Möbius inversion of the permutation-sum family recovers the single-cycle contribution. -/
+theorem cumulantFromMoment_permutationSum_eq_singleCycleContribution
+    {R : Type*} [CommRing R] (ζ : R) (K : α → α → R)
+    {S : Finset α} (hS : S ≠ ∅) :
+    Finpartition.cumulantFromMoment (fun T => permutationSum ζ T K) S =
+      singleCycleContribution ζ K S :=
+  (permutationMultiplicativeWeight (α := α) ζ K).cumulantFromMoment_objectMoment hS
+
+private def permEquivSupportedUniv : Equiv.Perm α ≃ SupportedPerm (univ : Finset α) where
+  toFun σ := ⟨σ, by simp⟩
+  invFun σ := σ.1
+  left_inv _ := rfl
+  right_inv σ := Subtype.ext rfl
+
+/-- On the full finite index type, the connected-decomposition backend is the usual direct sum over
+all permutations with weight `ζ ^ cycleDefect`. This is the bridge consumed by the perfect-pairing
+reduction; it is not a second backend. -/
+theorem permutationSum_univ_eq_sum_perm {R : Type*} [CommSemiring R]
+    (ζ : R) (K : α → α → R) :
+    permutationSum ζ univ K =
+      ∑ σ : Equiv.Perm α, ζ ^ cycleDefect σ * ∏ i : α, K i (σ i) := by
+  classical
+  rw [permutationSum, MultiplicativeWeight.objectMoment,
+    ← Equiv.sum_comp (permEquivSupportedUniv (α := α))
+      (fun σ : SupportedPerm (univ : Finset α) =>
+        (permutationMultiplicativeWeight (α := α) ζ K).objectWeight σ)]
+  apply Finset.sum_congr rfl
+  intro σ _
+  change ζ ^ cycleDefect σ * (∏ i : (univ : Finset α), K i (σ i)) =
+    ζ ^ cycleDefect σ * ∏ i : α, K i (σ i)
+  rw [Finset.prod_coe_sort]
+  simp
 
 end Combinatorics
