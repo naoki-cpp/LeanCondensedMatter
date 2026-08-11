@@ -11,9 +11,10 @@ A creation leg of a quartic vertex carries a creation operator, up to the scalar
 free imaginary-time evolution. Two creation operators have vanishing free Gibbs expectation, so the
 contraction of two creation legs is zero.
 
-This is the physical selection rule behind number conservation: it is the hypothesis of
-`Combinatorics.sum_pairings_eq_det`, and it is what makes a quartic Wick pairing a matching of
-creation legs to annihilation legs, hence a permutation.
+This is the physical selection rule behind number conservation. It supplies the left-left
+vanishing hypothesis of `Combinatorics.pairingSum_eq_permutationSum_of_inl_vanishing`, which turns
+the exchange-weighted pairing sum into a permutation sum without exposing a fermion-specific
+determinant theorem in the combinatorics API.
 -/
 
 namespace SecondQuantization
@@ -52,7 +53,7 @@ variable [Fintype Mode]
 state, by the particle-number selection rule: two creation operators change the particle number by
 two while the state is diagonal in the occupation basis.
 
-This is exactly the hypothesis `Combinatorics.sum_pairings_eq_det` needs for the side splitting
+This is exactly the left-left vanishing input expected by the generic exchange-sum reduction for
 `quarticLegSideSplitting`. -/
 theorem orderedQuarticPairValue_quarticCreatorLeg_quarticCreatorLeg (ε : Mode → ℝ) (β : ℝ)
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S)
@@ -65,8 +66,7 @@ theorem orderedQuarticPairValue_quarticCreatorLeg_quarticCreatorLeg (ε : Mode �
     Common.finiteHilbertOperator_smul, map_smul, smul_eq_mul,
     freeGibbsDensityOperator_expectation_create_comp_create, mul_zero]
 
-/-- The vanishing rule, in the form taken by the left-side hypothesis of
-`Combinatorics.sum_pairings_eq_det` for the quartic leg splitting. -/
+/-- The vanishing rule in the side-splitting shape consumed by the generic exchange-sum endpoint. -/
 theorem orderedQuarticPairValue_quarticLegSideSplitting_inl_inl (ε : Mode → ℝ) (β : ℝ)
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S)
     (τ : Fin S.card → ℝ) (i i' : Fin (2 * S.card)) :

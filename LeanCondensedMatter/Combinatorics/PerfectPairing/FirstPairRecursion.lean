@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.ExchangeSign
 import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZeroSuccAbove
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairsDecomposition
 import LeanCondensedMatter.Combinatorics.PerfectPairing.SumDecomposition
@@ -15,13 +16,6 @@ predicate stable under deletion.
 -/
 
 namespace Combinatorics
-
-/-- A power of an involutive scalar (`ζ * ζ = 1`) only depends on the exponent's parity. -/
-theorem pow_eq_of_mod_two_eq {R : Type*} [CommSemiring R] {ζ : R} (hζ : ζ * ζ = 1) {a b : ℕ}
-    (h : a % 2 = b % 2) : ζ ^ a = ζ ^ b := by
-  conv_lhs => rw [← Nat.div_add_mod a 2]
-  conv_rhs => rw [← Nat.div_add_mod b 2, ← h]
-  rw [pow_add, pow_add, pow_mul, pow_mul, sq, hζ, one_pow, one_pow]
 
 /-- The abstract first-pair recursion. -/
 theorem moment_eq_pairing_sum_of_first_pair_recursion {α R : Type*} [CommSemiring R] (ζ : R)

@@ -18,6 +18,7 @@ import LeanCondensedMatter.Combinatorics.Cumulant.Normalized
 import LeanCondensedMatter.Combinatorics.Cumulant.Independence
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
 import LeanCondensedMatter.Combinatorics.PerfectPairing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.ExchangeSum
 import LeanCondensedMatter.Combinatorics.PermutationOrbitPartition
 import LeanCondensedMatter.Combinatorics.SubsetSplit
 
@@ -27,5 +28,6 @@ set_option linter.style.header false
 # Combinatorics
 
 Public entry point for the project's pure finite combinatorics. The implementation is organized
-around finite-index operations, shuffles, set partitions and cumulants, and perfect pairings.
+around finite-index operations, shuffles, set partitions and cumulants, perfect pairings, and the
+exchange-weighted pairing/permutation-sum backend.
 -/

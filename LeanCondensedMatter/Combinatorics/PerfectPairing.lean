@@ -18,12 +18,12 @@ set_option linter.style.header false
 /-!
 # Perfect pairings of ordered finite positions
 
-Importing this module provides the core pairing type, normalized endpoints, the presentation of a
-pairing as a permutation listing its pairs, the bipartite pairings attached to a permutation,
-scalar pairing evaluation, pairing-induced vertex graphs, relabeling, crossing statistics, and the
-first-pair erase/insert recursion used by the Bloch--de Dominicis development. The four-position enumeration is
-an example module and must be imported explicitly from `PerfectPairing/Examples/Four.lean`.
+Importing this module provides the core pairing type, normalized endpoints, pairing presentations,
+the minimal bipartite matching API, scalar pairing evaluation, pairing-induced vertex graphs,
+relabeling, crossing statistics, and the erase/insert infrastructure used by the Bloch--de Dominicis
+development. The four-position enumeration and the exchange-weighted sum backend are separate
+modules and must be imported explicitly when needed.
 
-The implementation is purely combinatorial: statistics-dependent exchange weights and thermal
-operator identities remain in `SecondQuantization`.
+This entry point stays purely at the pairing-structure level. In particular it does not import the
+matrix determinant/permanent machinery used by `PerfectPairing.ExchangeSum`.
 -/

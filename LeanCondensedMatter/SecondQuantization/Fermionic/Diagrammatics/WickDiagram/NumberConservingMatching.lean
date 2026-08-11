@@ -8,8 +8,9 @@ set_option linter.style.header false
 
 The creation and annihilation legs of a quartic diagram split its flattened legs into two labelled
 sides of equal size. A number-conserving Wick pairing is exactly a pairing that matches the two
-sides, so `Combinatorics.sidePairingEquiv` identifies such pairings with permutations of the
-creation legs, without changing the stored `Pairing` representation.
+sides. `Pairing.sideMatching` extracts the resulting creator-to-annihilator permutation directly,
+without changing the stored `Pairing` representation or exposing the pairing↔permutation proof
+machinery as public API.
 -/
 
 namespace SecondQuantization
@@ -118,8 +119,8 @@ def QuarticWickDiagram.HasNumberConservingPairing {Mode : Type*} {N : ℕ}
   d.pairing.IsBipartite (quarticLegSideSplitting S.card)
 
 /-- The creator-to-annihilator matching permutation determined by a number-conserving quartic
-pairing. Through `Combinatorics.sidePairingEquiv` this correspondence is a bijection: the
-number-conserving pairings of the quartic legs are exactly the permutations of the creation legs. -/
+pairing. `Pairing.sideMatching` is the intentionally small matching API: the construction and
+bijection proof remain internal to the combinatorics backend. -/
 noncomputable def QuarticWickDiagram.matching {Mode : Type*} {N : ℕ}
     {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) (h : d.HasNumberConservingPairing) :
     Equiv.Perm (Fin (2 * S.card)) :=
