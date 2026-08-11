@@ -53,4 +53,20 @@ theorem singleCycleContribution_of_card_eq
       ζ ^ (m - 1) * singleCycleKernelSum K S := by
   rw [singleCycleContribution_eq_pow_card_mul_singleCycleKernelSum, hcard]
 
+/-- Finiteness of full-cycle permutations for the semantic W3 endpoint. -/
+noncomputable local instance singleCycleKernelFullCycleFintype :
+    Fintype {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)} :=
+  Fintype.ofFinite _
+
+/-- On the full finite index type, the pure connected kernel is the direct sum over permutations
+that are a single cycle on the whole type. This exposes only the semantic predicate `IsCycleOn`;
+the private connected-object representation of W2 remains hidden. -/
+theorem singleCycleKernelSum_univ_eq_sum_isCycleOn
+    {R : Type*} [CommSemiring R] (K : α → α → R) :
+    singleCycleKernelSum K univ =
+      ∑ σ : {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)},
+        ∏ i : α, K i (σ.1 i) := by
+  simpa [singleCycleKernelSum] using
+    (singleCycleContribution_one_univ_eq_sum_isCycleOn (α := α) K)
+
 end Combinatorics

@@ -526,6 +526,49 @@ noncomputable def singleCycleContribution {R : Type*} [CommSemiring R]
     (ζ : R) (K : α → α → R) (S : Finset α) : R :=
   (permutationMultiplicativeWeight (α := α) ζ K).connectedContribution S
 
+/-- Finiteness of full-cycle permutations used by the semantic connected endpoint. -/
+noncomputable local instance fullCycleFintype :
+    Fintype {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)} :=
+  Fintype.ofFinite _
+
+private noncomputable def fullCycleEquivSingleOrbitPermUniv :
+    {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)} ≃
+      SingleOrbitPerm (univ : Finset α) :=
+  { toFun := fun σ => ⟨σ.1, by simpa using σ.2⟩
+    invFun := fun σ => ⟨σ.1, by simpa using σ.2.2⟩
+    left_inv := fun σ => Subtype.ext rfl
+    right_inv := fun σ => Subtype.ext rfl }
+
+/-- On the full finite index type, the connected contribution at exchange weight `1` is the direct
+sum over permutations that are a single cycle on the whole type. -/
+theorem singleCycleContribution_one_univ_eq_sum_isCycleOn
+    {R : Type*} [CommSemiring R] (K : α → α → R) :
+    singleCycleContribution (1 : R) K univ =
+      ∑ σ : {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)},
+        ∏ i : α, K i (σ.1 i) := by
+  classical
+  letI : Fintype (SingleOrbitPerm (univ : Finset α)) := Fintype.ofFinite _
+  rw [singleCycleContribution, MultiplicativeWeight.connectedContribution]
+  change
+    (∑ d : SingleOrbitPerm (univ : Finset α),
+      1 ^ ((univ : Finset α).card - 1) *
+        ∏ i : (univ : Finset α), K i (d.1 i)) = _
+  calc
+    (∑ d : SingleOrbitPerm (univ : Finset α),
+      1 ^ ((univ : Finset α).card - 1) *
+        ∏ i : (univ : Finset α), K i (d.1 i)) =
+      ∑ σ : {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)},
+        1 ^ ((univ : Finset α).card - 1) *
+          ∏ i : (univ : Finset α), K i ((fullCycleEquivSingleOrbitPermUniv σ).1 i) := by
+      exact (Equiv.sum_comp (fullCycleEquivSingleOrbitPermUniv (α := α)) (fun d =>
+        1 ^ ((univ : Finset α).card - 1) *
+          ∏ i : (univ : Finset α), K i (d.1 i))).symm
+    _ = ∑ σ : {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)},
+        ∏ i : α, K i (σ.1 i) := by
+      apply Finset.sum_congr rfl
+      intro σ _
+      simp [fullCycleEquivSingleOrbitPermUniv]
+
 /-- The arbitrary-`ζ` permutation sum is the moment transform of the single-cycle contribution. -/
 theorem permutationSum_eq_momentFromCumulant {R : Type*} [CommSemiring R]
     (ζ : R) (K : α → α → R) (S : Finset α) :
