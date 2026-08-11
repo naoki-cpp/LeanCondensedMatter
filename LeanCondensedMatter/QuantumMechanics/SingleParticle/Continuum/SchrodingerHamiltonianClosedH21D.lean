@@ -24,7 +24,8 @@ Laplacian; maximal-domain regularity then recovers `x ∈ H²`. Since both sides
 are continuous functions of `(x,y) ∈ L² × L²`, the graph is closed.
 -/
 
-namespace QuantumTheory
+namespace QuantumMechanics
+namespace SingleParticle
 namespace Continuum
 
 noncomputable section
@@ -157,4 +158,5 @@ theorem continuumRealPotentialSchrodingerHamiltonian1D_isClosed
 
 end
 end Continuum
-end QuantumTheory
+end SingleParticle
+end QuantumMechanics
