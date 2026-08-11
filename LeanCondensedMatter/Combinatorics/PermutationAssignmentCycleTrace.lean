@@ -146,9 +146,7 @@ private theorem cycleAssignmentKernelSum_finRotate_eq_trace [CommSemiring R] [De
     _ = ∑ p : ι × (Fin n → ι), pathKernelWeight K p.1 p.2 p.1 := by
       apply Finset.sum_congr rfl
       intro p _
-      change pathKernelWeight K p.1 (Fin.tail (Fin.cons p.1 p.2)) p.1 =
-        pathKernelWeight K p.1 p.2 p.1
-      rw [Fin.tail_cons]
+      simp only [Fin.consEquiv, Fin.cons_zero, Fin.tail_cons]
     _ = ∑ a : ι, pathKernelSum K n a a := by
       rw [Fintype.sum_prod_type]
       rfl
