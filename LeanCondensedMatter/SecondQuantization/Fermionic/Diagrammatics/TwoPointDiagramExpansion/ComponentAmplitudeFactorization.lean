@@ -96,6 +96,7 @@ theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_dysonAm
         (d.mixedComponentDysonLocalIntegrand ε β g τ τ'
           d.1.canonicalComponentInteractionShuffle B)]
 
+omit [LinearOrder Mode] in
 open Classical in
 /-- **The diagram sum organized by which slots are external.**
 
@@ -112,7 +113,7 @@ theorem FixedExternalTwoPointWickDiagram.sum_eq_sum_fiberwise_externalInteractio
         ∑ d ∈ Finset.univ.filter fun d : FixedExternalTwoPointWickDiagram Mode n i j =>
             Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0) = T, F d :=
   (Finset.sum_fiberwise_of_maps_to
-    (fun d _ => Finset.mem_powerset.2 (Finset.subset_univ _)) F).symm
+    (fun _ _ => Finset.mem_powerset.2 (Finset.subset_univ _)) F).symm
 
 end Fermionic
 end SecondQuantization
