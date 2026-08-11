@@ -200,6 +200,10 @@ theorem FixedExternalTwoPointWickDiagram.neg_one_pow_crossingCount_complex
   rw [cast_units_neg_one_pow, cast_units_neg_one_pow, cast_units_neg_one_pow] at h
   exact h
 
+section PairingValue
+
+variable [LinearOrder Mode] [Fintype Mode]
+
 /-- The external component's own pairing value, its kernel read on the ambient positions. -/
 noncomputable def FixedExternalTwoPointWickDiagram.externalPairingValue
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -236,7 +240,7 @@ theorem FixedExternalTwoPointWickDiagram.orderedTwoPointPairingValue_pairingInMi
   simp only [orderedTwoPointPairingValue,
     FixedExternalTwoPointWickDiagram.externalPairingValue,
     FixedExternalTwoPointWickDiagram.vacuumPairingValue,
-    Pairing.evaluation, Pairing.weight_fermion]
+    Pairing.evaluation, Common.BlochDeDominicis.Pairing.weight_fermion]
   rw [d.neg_one_pow_crossingCount_complex τ τ' σ,
     prod_pairs_of_isSplit (d.externalPositionSplitting τ τ' σ)
       (d.isSplit_externalPositionSplitting τ τ' σ)
@@ -244,6 +248,8 @@ theorem FixedExternalTwoPointWickDiagram.orderedTwoPointPairingValue_pairingInMi
       (strictMono_monotonePositionSplitting_inr _ _ _)
       (mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence)]
   ring
+
+end PairingValue
 
 end Fermionic
 end SecondQuantization
