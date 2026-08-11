@@ -70,7 +70,7 @@ theorem FixedExternalTwoPointWickDiagram.externalPiece_externalLabel
     (d : FixedExternalTwoPointWickDiagram Mode n i j) :
     d.externalPiece.1.externalLabel = d.1.externalLabel := rfl
 
-omit [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- **The piece's slot labels are the ambient labels read off in increasing slot order.** -/
 @[simp]
 theorem FixedExternalTwoPointWickDiagram.externalPiece_vertexLabelSequence
