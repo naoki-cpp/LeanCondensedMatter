@@ -5,26 +5,17 @@ from pathlib import Path
 from architecture_audit_common import finish_audit, repository_root, strip_lean_comments
 
 ROOT = repository_root(__file__)
-FREE_DYNAMICS = (
-    ROOT
-    / "LeanCondensedMatter"
-    / "QuantumTheory"
-    / "LinearResponse"
-    / "FreeDynamics.lean"
-)
-UNITARY_PERTURBATION = (
-    ROOT
-    / "LeanCondensedMatter"
-    / "QuantumTheory"
-    / "LinearResponse"
-    / "UnitaryPerturbation.lean"
-)
+LINEAR_RESPONSE = ROOT / "LeanCondensedMatter" / "QuantumTheory" / "LinearResponse"
+EXPECTATION = LINEAR_RESPONSE / "Expectation.lean"
+FREE_DYNAMICS = LINEAR_RESPONSE / "FreeDynamics.lean"
+STATIONARITY = LINEAR_RESPONSE / "Stationarity.lean"
+UNITARY_PERTURBATION = LINEAR_RESPONSE / "UnitaryPerturbation.lean"
 
 
 def main() -> int:
     errors: list[str] = []
 
-    for path in (FREE_DYNAMICS, UNITARY_PERTURBATION):
+    for path in (EXPECTATION, FREE_DYNAMICS, STATIONARITY, UNITARY_PERTURBATION):
         if not path.exists():
             errors.append(f"missing normalized-expectation boundary file: {path.relative_to(ROOT)}")
 
@@ -35,20 +26,65 @@ def main() -> int:
             success_message="QuantumTheory normalized-expectation audit passed.",
         )
 
+    expectation_code = strip_lean_comments(EXPECTATION.read_text(encoding="utf-8"))
     free_code = strip_lean_comments(FREE_DYNAMICS.read_text(encoding="utf-8"))
+    stationarity_code = strip_lean_comments(STATIONARITY.read_text(encoding="utf-8"))
     unitary_code = strip_lean_comments(UNITARY_PERTURBATION.read_text(encoding="utf-8"))
-    free_normalized = " ".join(free_code.split())
+
+    expectation_normalized = " ".join(expectation_code.split())
+    stationarity_normalized = " ".join(stationarity_code.split())
     unitary_normalized = " ".join(unitary_code.split())
 
-    required_free_fragments = (
+    required_expectation_fragments = (
+        "structure NormalizedExpectation",
         "noncomputable def NormalizedExpectation.pullback",
         "expectation.toContinuousLinearMap.comp Φ",
         "theorem NormalizedExpectation.pullback_apply",
     )
-    for fragment in required_free_fragments:
-        if fragment not in free_normalized:
+    for fragment in required_expectation_fragments:
+        if fragment not in expectation_normalized:
             errors.append(
                 f"missing canonical normalized-expectation fragment `{fragment}` in "
+                f"{EXPECTATION.relative_to(ROOT)}"
+            )
+
+    forbidden_expectation_fragments = (
+        "LeanCondensedMatter.Analysis.Dyson",
+        "LinearResponse.FreeDynamics",
+        "freePropagator",
+        "heisenbergEvolution",
+        "BoundedFreeSystem",
+    )
+    for fragment in forbidden_expectation_fragments:
+        if fragment in expectation_code:
+            errors.append(
+                f"expectation core must remain independent of dynamics via `{fragment}` in "
+                f"{EXPECTATION.relative_to(ROOT)}"
+            )
+
+    required_stationarity_fragments = (
+        "import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation",
+        "import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics",
+        "def IsStationary",
+        "theorem expectation_heisenbergEvolution_zero",
+    )
+    for fragment in required_stationarity_fragments:
+        if fragment not in stationarity_normalized:
+            errors.append(
+                f"missing canonical stationarity fragment `{fragment}` in "
+                f"{STATIONARITY.relative_to(ROOT)}"
+            )
+
+    forbidden_free_fragments = (
+        "structure NormalizedExpectation",
+        "def NormalizedExpectation.pullback",
+        "def IsStationary",
+        "theorem expectation_heisenbergEvolution_zero",
+    )
+    for fragment in forbidden_free_fragments:
+        if fragment in free_code:
+            errors.append(
+                f"free dynamics must not own expectation/stationarity API via `{fragment}` in "
                 f"{FREE_DYNAMICS.relative_to(ROOT)}"
             )
 
