@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.PowerSeries.PermutationTraceLog
+import LeanCondensedMatter.Analysis.PowerSeries.PermutationCycleSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 
