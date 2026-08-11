@@ -146,7 +146,10 @@ private theorem cycleAssignmentKernelSum_finRotate_eq_trace [CommSemiring R] [De
     _ = ∑ p : ι × (Fin n → ι), pathKernelWeight K p.1 p.2 p.1 := by
       apply Finset.sum_congr rfl
       intro p _
-      simp only [Fin.consEquiv, Fin.cons_zero, Fin.tail_cons]
+      have hp :
+          (Fin.consEquiv (fun _ : Fin (n + 1) => ι)) p =
+            (Fin.cons p.1 p.2 : Fin (n + 1) → ι) := rfl
+      rw [hp, Fin.cons_zero, Fin.tail_cons]
     _ = ∑ a : ι, pathKernelSum K n a a := by
       rw [Fintype.sum_prod_type]
       rfl
@@ -159,32 +162,34 @@ noncomputable local instance assignmentTraceFullCycleFintype {m : ℕ} :
     Fintype {σ : Equiv.Perm (Fin m) // σ.IsCycleOn (Set.univ : Set (Fin m))} :=
   Fintype.ofFinite _
 
+private theorem finAddTwo_univ_nontrivial (n : ℕ) :
+    (Set.univ : Set (Fin (n + 2))).Nontrivial := by
+  let a : Fin (n + 2) := ⟨0, by omega⟩
+  let b : Fin (n + 2) := ⟨1, by omega⟩
+  refine ⟨a, by simp, b, by simp, ?_⟩
+  intro hab
+  have hval := congrArg Fin.val hab
+  simp [a, b] at hval
+
 private theorem fullCycle_isCycle_add_two {n : ℕ} (σ : Equiv.Perm (Fin (n + 2)))
     (hσ : σ.IsCycleOn (Set.univ : Set (Fin (n + 2)))) : σ.IsCycle := by
   rw [Equiv.Perm.isCycle_iff_exists_isCycleOn]
-  refine ⟨Set.univ, ?_, hσ, ?_⟩
-  · refine ⟨0, by simp, 1, by simp, ?_⟩
-    omega
-  · simp
+  exact ⟨Set.univ, finAddTwo_univ_nontrivial n, hσ, by simp⟩
 
 private theorem fullCycle_support_eq_univ_add_two {n : ℕ} (σ : Equiv.Perm (Fin (n + 2)))
     (hσ : σ.IsCycleOn (Set.univ : Set (Fin (n + 2)))) :
     σ.support = (Finset.univ : Finset (Fin (n + 2))) := by
   ext a
   simp only [Finset.mem_univ, iff_true]
-  exact Equiv.Perm.mem_support.mpr (hσ.apply_ne (by
-    refine ⟨0, by simp, 1, by simp, ?_⟩
-    omega) (by simp))
+  exact Equiv.Perm.mem_support.mpr
+    (hσ.apply_ne (finAddTwo_univ_nontrivial n) (by simp))
 
 private theorem fullCycle_isConj_finRotate_add_two {n : ℕ}
     (σ : {σ : Equiv.Perm (Fin (n + 2)) // σ.IsCycleOn (Set.univ : Set (Fin (n + 2)))}) :
     IsConj σ.1 (finRotate (n + 2)) := by
   have hσcycle := fullCycle_isCycle_add_two σ.1 σ.2
-  have hrot : (finRotate (n + 2)).IsCycle :=
-    Equiv.Perm.isCycle_finRotate_of_le (by omega)
-  apply hσcycle.isConj hrot
-  rw [fullCycle_support_eq_univ_add_two σ.1 σ.2,
-    Equiv.Perm.support_finRotate_of_le (by omega)]
+  apply hσcycle.isConj isCycle_finRotate
+  rw [fullCycle_support_eq_univ_add_two σ.1 σ.2, support_finRotate]
 
 private theorem cycleAssignmentKernelSum_fullCycle_add_two [CommSemiring R] [DecidableEq ι]
     (K : Matrix ι ι R) {n : ℕ}
@@ -216,9 +221,8 @@ private theorem isCycleOn_univ_iff_cycleType_add_two {n : ℕ}
         ({#σ.support} : Multiset ℕ) = σ.cycleType := hcycle.cycleType.symm
         _ = {n + 2} := htype
     have hcard : #σ.support = n + 2 := by simpa using hsingleton
-    have hsupp : σ.support = (Finset.univ : Finset (Fin (n + 2))) := by
-      apply (Finset.card_eq_iff_eq_univ).1
-      simpa using hcard
+    have hsupp : σ.support = (Finset.univ : Finset (Fin (n + 2))) :=
+      (Finset.card_eq_iff_eq_univ σ.support).1 (by simpa using hcard)
     have hset : {x : Fin (n + 2) | σ x ≠ x} = Set.univ := by
       ext x
       simp [← Equiv.Perm.mem_support, hsupp]
@@ -229,15 +233,19 @@ private noncomputable def fullCycleEquivCycleTypeAddTwo (n : ℕ) :
     {σ : Equiv.Perm (Fin (n + 2)) // σ.IsCycleOn (Set.univ : Set (Fin (n + 2)))} ≃
       ↥({σ : Equiv.Perm (Fin (n + 2)) | σ.cycleType = {n + 2}} :
         Finset (Equiv.Perm (Fin (n + 2)))) where
-  toFun σ := ⟨σ.1, by simpa using (isCycleOn_univ_iff_cycleType_add_two σ.1).1 σ.2⟩
-  invFun σ := ⟨σ.1, (isCycleOn_univ_iff_cycleType_add_two σ.1).2 (by simpa using σ.2)⟩
+  toFun σ := ⟨σ.1, by
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    exact (isCycleOn_univ_iff_cycleType_add_two σ.1).1 σ.2⟩
+  invFun σ := ⟨σ.1, (isCycleOn_univ_iff_cycleType_add_two σ.1).2 (by
+    have h := σ.2
+    simpa only [Finset.mem_filter, Finset.mem_univ, true_and] using h)⟩
   left_inv σ := Subtype.ext rfl
   right_inv σ := Subtype.ext rfl
 
 private theorem fullCycle_card_add_two (n : ℕ) :
     Fintype.card
       {σ : Equiv.Perm (Fin (n + 2)) // σ.IsCycleOn (Set.univ : Set (Fin (n + 2)))} =
-      (n + 1)! := by
+      Nat.factorial (n + 1) := by
   classical
   calc
     Fintype.card
@@ -248,7 +256,7 @@ private theorem fullCycle_card_add_two (n : ℕ) :
       Fintype.card_congr (fullCycleEquivCycleTypeAddTwo n)
     _ = #({σ : Equiv.Perm (Fin (n + 2)) | σ.cycleType = {n + 2}} :
         Finset (Equiv.Perm (Fin (n + 2)))) := by simp
-    _ = (n + 1)! := by
+    _ = Nat.factorial (n + 1) := by
       simpa using
         (Equiv.Perm.card_of_cycleType_singleton (α := Fin (n + 2)) (n := n + 2)
           (by omega) (by simp))
@@ -257,7 +265,11 @@ private theorem cycleAssignmentKernelSum_fullCycle_one [CommSemiring R] [Decidab
     (K : Matrix ι ι R)
     (σ : {σ : Equiv.Perm (Fin 1) // σ.IsCycleOn (Set.univ : Set (Fin 1))}) :
     cycleAssignmentKernelSum K σ.1 = Matrix.trace (K ^ 1) := by
-  have hσ : σ.1 = finRotate 1 := Subsingleton.elim _ _
+  have hσ : σ.1 = finRotate 1 := by
+    apply Equiv.ext
+    intro x
+    apply Fin.ext
+    omega
   rw [hσ]
   simpa using cycleAssignmentKernelSum_finRotate_eq_trace K 0
 
@@ -269,7 +281,12 @@ private theorem fullCycle_card_one :
     ⟨1, by simp⟩
   letI : Unique {σ : Equiv.Perm (Fin 1) // σ.IsCycleOn (Set.univ : Set (Fin 1))} :=
     { default := defaultCycle
-      uniq := fun σ => Subtype.ext (Subsingleton.elim _ _) }
+      uniq := fun σ => by
+        apply Subtype.ext
+        apply Equiv.ext
+        intro x
+        apply Fin.ext
+        omega }
   exact Fintype.card_unique
 
 private theorem assignmentSingleCycleKernelSum_eq_sum_cycleAssignmentKernelSum [CommSemiring R]
@@ -280,7 +297,7 @@ private theorem assignmentSingleCycleKernelSum_eq_sum_cycleAssignmentKernelSum [
   classical
   rw [assignmentSingleCycleKernelSum]
   simp_rw [singleCycleKernelSum_univ_eq_sum_isCycleOn]
-  rw [Fintype.sum_comm]
+  rw [Finset.sum_comm]
   rfl
 
 /-- Assignment summation restores repeated physical indices and turns the full-cycle kernel into
@@ -289,7 +306,7 @@ combinatorial term and `trace (K ^ 0)` have different meanings. -/
 theorem assignmentSingleCycleKernelSum_eq_factorial_mul_trace [CommSemiring R] [DecidableEq ι]
     (K : Matrix ι ι R) (m : ℕ) (hm : 0 < m) :
     assignmentSingleCycleKernelSum K m =
-      ((m - 1)! : R) * Matrix.trace (K ^ m) := by
+      (Nat.factorial (m - 1) : R) * Matrix.trace (K ^ m) := by
   cases m with
   | zero => omega
   | succ m =>
