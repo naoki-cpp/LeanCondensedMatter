@@ -255,7 +255,10 @@ private theorem fullCycle_card_add_two (n : ℕ) :
           Finset (Equiv.Perm (Fin (n + 2)))) :=
       Fintype.card_congr (fullCycleEquivCycleTypeAddTwo n)
     _ = #({σ : Equiv.Perm (Fin (n + 2)) | σ.cycleType = {n + 2}} :
-        Finset (Equiv.Perm (Fin (n + 2)))) := by simp
+        Finset (Equiv.Perm (Fin (n + 2)))) := by
+      apply Fintype.card_of_subtype
+      intro σ
+      simp
     _ = Nat.factorial (n + 1) := by
       simpa using
         (Equiv.Perm.card_of_cycleType_singleton (α := Fin (n + 2)) (n := n + 2)
@@ -278,7 +281,11 @@ private theorem fullCycle_card_one :
   classical
   let defaultCycle :
       {σ : Equiv.Perm (Fin 1) // σ.IsCycleOn (Set.univ : Set (Fin 1))} :=
-    ⟨1, by simp⟩
+    ⟨1, by
+      rw [Equiv.Perm.isCycleOn_one]
+      intro x _ y _
+      apply Fin.ext
+      omega⟩
   letI : Unique {σ : Equiv.Perm (Fin 1) // σ.IsCycleOn (Set.univ : Set (Fin 1))} :=
     { default := defaultCycle
       uniq := fun σ => by
