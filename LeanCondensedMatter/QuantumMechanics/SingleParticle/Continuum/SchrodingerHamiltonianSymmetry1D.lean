@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.Continuum.SchrodingerHamiltonianClosedH21D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerHamiltonianClosedH21D
 import Mathlib.Analysis.InnerProductSpace.LinearPMap
 import Mathlib.Tactic
 
