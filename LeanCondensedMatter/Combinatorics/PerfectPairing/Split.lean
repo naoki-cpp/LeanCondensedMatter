@@ -398,6 +398,36 @@ theorem splitRightKernel_comm (e : PositionSplitting a b n)
     rfl
   · rw [if_neg (asymm hgt), if_pos hgt]
 
+/-- **A product over the pairs of an assembled pairing splits into the two parts.**
+
+Each factor is read in the ambient orientation, which is what `splitLeftKernel` and
+`splitRightKernel` supply. -/
+theorem prod_pairs_ofSplit [CommMonoid R] (e : PositionSplitting a b n)
+    (P : Pairing a) (Q : Pairing b) (pv : Fin (2 * n) → Fin (2 * n) → R) :
+    (∏ pr ∈ (Pairing.ofSplit e P Q).pairs, pv pr.1 pr.2) =
+      (∏ pr ∈ P.pairs, splitLeftKernel e pv pr.1 pr.2) *
+        (∏ pr ∈ Q.pairs, splitRightKernel e pv pr.1 pr.2) := by
+  classical
+  rw [Finset.prod_subtype (Pairing.ofSplit e P Q).pairs (fun _ => Iff.rfl)
+      (fun pr => pv pr.1 pr.2),
+    ← Equiv.prod_comp (splitPairsEquiv e P Q) (fun pr => pv pr.1.1 pr.1.2),
+    Fintype.prod_sum_type,
+    Finset.prod_subtype P.pairs (fun _ => Iff.rfl)
+      (fun pr => splitLeftKernel e pv pr.1 pr.2),
+    Finset.prod_subtype Q.pairs (fun _ => Iff.rfl)
+      (fun pr => splitRightKernel e pv pr.1 pr.2)]
+  congr 1
+  · refine Fintype.prod_congr _ _ fun pr => ?_
+    change pv (orientPair (e (Sum.inl pr.1.1)) (e (Sum.inl pr.1.2))).1
+        (orientPair (e (Sum.inl pr.1.1)) (e (Sum.inl pr.1.2))).2 = _
+    unfold orientPair splitLeftKernel
+    split_ifs <;> rfl
+  · refine Fintype.prod_congr _ _ fun pr => ?_
+    change pv (orientPair (e (Sum.inr pr.1.1)) (e (Sum.inr pr.1.2))).1
+        (orientPair (e (Sum.inr pr.1.1)) (e (Sum.inr pr.1.2))).2 = _
+    unfold orientPair splitRightKernel
+    split_ifs <;> rfl
+
 end Product
 
 section Sign
