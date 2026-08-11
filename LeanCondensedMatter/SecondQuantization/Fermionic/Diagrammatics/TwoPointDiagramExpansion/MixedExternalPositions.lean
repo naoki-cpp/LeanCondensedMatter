@@ -183,11 +183,9 @@ noncomputable def FixedExternalTwoPointWickDiagram.externalVacuumInterleaveSign
 
 private theorem cast_units_neg_one_pow (c : ℕ) :
     (((((-1 : ℤˣ) ^ c : ℤˣ) : ℤ)) : ℂ) = (-1 : ℂ) ^ c := by
-  induction c with
-  | zero => simp
-  | succ k ih =>
-      rw [pow_succ, pow_succ, ← ih]
-      simp [Units.val_mul, Units.val_neg, Units.val_one]
+  rw [Units.val_pow_eq_pow_val, Units.val_neg, Units.val_one]
+  push_cast
+  ring
 
 /-- The complex form of the crossing-weight split. -/
 theorem FixedExternalTwoPointWickDiagram.neg_one_pow_crossingCount_complex
