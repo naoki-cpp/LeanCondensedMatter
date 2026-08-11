@@ -37,10 +37,22 @@ private theorem freeBoltzmannModeKernel_pow [DecidableEq Mode]
   induction m with
   | zero => simp
   | succ m ih =>
-      rw [pow_succ, ih, freeBoltzmannModeKernel, Matrix.diagonal_mul_diagonal]
-      congr 1
-      funext i
-      rw [pow_succ]
+      calc
+        freeBoltzmannModeKernel ε β ^ (m + 1) =
+            freeBoltzmannModeKernel ε β ^ m * freeBoltzmannModeKernel ε β := by
+          rw [pow_succ]
+        _ = Matrix.diagonal (fun i => Complex.exp (-(β : ℂ) * (ε i : ℂ)) ^ m) *
+            Matrix.diagonal (fun i => Complex.exp (-(β : ℂ) * (ε i : ℂ))) := by
+          rw [ih, freeBoltzmannModeKernel]
+        _ = Matrix.diagonal (fun i =>
+            Complex.exp (-(β : ℂ) * (ε i : ℂ)) ^ m *
+              Complex.exp (-(β : ℂ) * (ε i : ℂ))) :=
+          Matrix.diagonal_mul_diagonal _ _
+        _ = Matrix.diagonal (fun i =>
+            Complex.exp (-(β : ℂ) * (ε i : ℂ)) ^ (m + 1)) := by
+          congr 1
+          funext i
+          rw [pow_succ]
 
 private theorem trace_freeBoltzmannModeKernel_pow [DecidableEq Mode]
     (ε : Mode → ℝ) (β : ℝ) (m : ℕ) :
