@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.Continuum.SchrodingerHamiltonian1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerHamiltonian1D
 import Mathlib.Analysis.Distribution.SchwartzSpace.Basic
 
 set_option linter.style.header false
