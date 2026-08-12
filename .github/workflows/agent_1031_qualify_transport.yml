@@ -1,0 +1,51 @@
+name: Agent 1031 Qualify Transport
+
+on:
+  push:
+    branches:
+      - agent/1031-fermionic-lattice
+
+permissions:
+  contents: write
+
+jobs:
+  qualify:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Open lattice namespace in transport consumers
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          root = Path('LeanCondensedMatter/SecondQuantization/Fermionic/Transport')
+          markers = (
+              'FiniteLatticeHilbertFock', 'LatticeGeometry', 'LocallyFiniteHopping',
+              'boundedDirectional', 'boundedBondCurrent', 'boundedBondContact',
+              'latticeOccupationEquiv', 'boundedLatticeOperator',
+          )
+          changed = []
+          for p in root.rglob('*.lean'):
+              text = p.read_text(encoding='utf-8')
+              if not any(marker in text for marker in markers):
+                  continue
+              if 'namespace Transport\n' not in text or 'open SecondQuantization.Fermionic.Lattice' in text:
+                  continue
+              text = text.replace(
+                  'namespace Transport\n',
+                  'namespace Transport\n\nopen SecondQuantization.Fermionic.Lattice\n',
+                  1,
+              )
+              p.write_text(text, encoding='utf-8')
+              changed.append(str(p))
+          print('qualified', len(changed), 'transport files')
+          for path in changed:
+              print(path)
+          Path('.github/workflows/agent_1031_qualify_transport.yml').unlink()
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "refactor(fermionic-transport): qualify lattice-owned model API"
+          git push
