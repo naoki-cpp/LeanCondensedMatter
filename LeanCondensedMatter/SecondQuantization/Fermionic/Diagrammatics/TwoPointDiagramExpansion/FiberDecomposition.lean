@@ -68,5 +68,24 @@ noncomputable def fixedExternalFiberEquiv (T : Finset (Fin n)) :
     · exact Common.TwoPointDiagram.slotSplitVacuum_ofSlotSplit (Finset.subset_univ T)
         ext vac _
 
+open Classical in
+/-- **The diagram sum as a sum over the slot split.** Every fixed-external diagram is a connected
+piece on the slots its external component owns and a vacuum diagram on the rest, so the sum over all
+diagrams is the sum over that slot set of the sum over both pieces. -/
+theorem sum_eq_sum_powerset_fixedExternalFiber {M : Type*} [AddCommMonoid M]
+    (F : FixedExternalTwoPointWickDiagram Mode n i j → M) :
+    (∑ d : FixedExternalTwoPointWickDiagram Mode n i j, F d) =
+      ∑ T ∈ (Finset.univ : Finset (Fin n)).powerset,
+        ∑ p : {ext : FixedExternalTwoPointWickDiagramOn Mode n T i j //
+              ext.1.IsExternallyConnected} ×
+            QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T),
+          F ((fixedExternalFiberEquiv T).symm p).1 := by
+  rw [FixedExternalTwoPointWickDiagram.sum_eq_sum_fiberwise_externalInteractionPart F]
+  refine Finset.sum_congr rfl fun T _ => ?_
+  rw [Finset.sum_subtype
+    (p := fun d : FixedExternalTwoPointWickDiagram Mode n i j => d.externalSlots = T)
+    _ (fun x => by simp) F]
+  exact (Equiv.sum_comp (fixedExternalFiberEquiv T).symm (fun d => F d.1)).symm
+
 end Fermionic
 end SecondQuantization
