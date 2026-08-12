@@ -15,6 +15,7 @@ from architecture_audit_common import (
 ROOT = repository_root(__file__)
 FERMIONIC = ROOT / "LeanCondensedMatter" / "SecondQuantization" / "Fermionic"
 ALGEBRAIC = FERMIONIC / "Algebra" / "AlgebraicFock"
+FIELD = FERMIONIC / "Field"
 
 REQUIRED_FILES = (
     FERMIONIC / "Algebra" / "AlgebraicFock.lean",
@@ -31,7 +32,7 @@ REQUIRED_FILES = (
 )
 
 REMOVED_FIELD_FILES = tuple(
-    FERMIONIC / "Field" / name
+    FIELD / name
     for name in (
         "FiniteParticleFock.lean",
         "Creation.lean",
@@ -56,6 +57,29 @@ OLD_FIELD_MODULE = re.compile(
     r"OccupationFieldEquivalence|SecondQuantization|SecondQuantizationLinearity|"
     r"SecondQuantizationCommutator)(?:\s|$)"
 )
+
+# These moved names have no competing Fermionic root API. Downstream files should therefore name
+# the new owner explicitly rather than relying on the former Field namespace. Ambiguous names such
+# as `create`, `annihilate`, and `vacuum` are intentionally excluded because the occupation-basis
+# API owns declarations with those names as well.
+UNAMBIGUOUS_MOVED_REFERENCES = (
+    "dGamma",
+    "dGammaLinear",
+    "dGamma_linearCommutator",
+    "linearCommutator",
+    "occupationEquiv",
+    "occupationConjugate",
+    "occupationEquiv_create",
+    "occupationEquiv_occupationConjugate_apply",
+    "occupationAnnihilateFromField",
+    "occupationAnnihilateFromField_eq_annihilate",
+    "annihilateDual",
+    "dualRankOne",
+)
+UNQUALIFIED_MOVED = {
+    name: re.compile(rf"(?<![A-Za-z0-9_.]){re.escape(name)}(?![A-Za-z0-9_])")
+    for name in UNAMBIGUOUS_MOVED_REFERENCES
+}
 
 
 def relative(path: Path) -> str:
@@ -98,11 +122,24 @@ def check_old_imports(errors: list[str]) -> None:
                 )
 
 
+def check_downstream_qualification(errors: list[str]) -> None:
+    for path in lean_files(FIELD):
+        code = strip_lean_comments(path.read_text(encoding="utf-8"))
+        for line_no, line in enumerate(code.splitlines(), start=1):
+            for name, pattern in UNQUALIFIED_MOVED.items():
+                if pattern.search(line):
+                    errors.append(
+                        f"unqualified moved algebraic Fock reference `{name}`: "
+                        f"{relative(path)}:{line_no}: {line.strip()}"
+                    )
+
+
 def main() -> int:
     errors: list[str] = []
     check_layout(errors)
     check_algebra_boundary(errors)
     check_old_imports(errors)
+    check_downstream_qualification(errors)
     return finish_audit(
         errors,
         failure_heading="Fermionic algebraic-Fock boundary audit failed:",
