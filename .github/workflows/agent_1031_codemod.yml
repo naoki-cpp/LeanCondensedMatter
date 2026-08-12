@@ -1,0 +1,172 @@
+name: Agent 1031 Lattice Migration
+
+on:
+  push:
+    branches:
+      - agent/1031-fermionic-lattice
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Move lattice ownership out of Field
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          root = Path('LeanCondensedMatter/SecondQuantization/Fermionic')
+          field = root / 'Field'
+          lattice = root / 'Lattice'
+          lattice.mkdir(parents=True, exist_ok=True)
+
+          import_map = {
+              'LeanCondensedMatter.SecondQuantization.Fermionic.Field.DiscreteLattice':
+                  'LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice',
+              'LeanCondensedMatter.SecondQuantization.Fermionic.Field.Peierls':
+                  'LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Peierls',
+              'LeanCondensedMatter.SecondQuantization.Fermionic.Field.BoundedKuboBridge':
+                  'LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded',
+              'LeanCondensedMatter.SecondQuantization.Fermionic.Field.BoundedMatrixUnitAdjoint':
+                  'LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint',
+              'LeanCondensedMatter.SecondQuantization.Fermionic.Field.PeierlsContact':
+                  'LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.PeierlsContact',
+              'LeanCondensedMatter.SecondQuantization.Fermionic.Field.HermitianBondCurrent':
+                  'LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.HermitianBondCurrent',
+              'LeanCondensedMatter.SecondQuantization.Fermionic.Field.RankOneSecondQuantization':
+                  'LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization',
+              'LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeometricCurrent':
+                  'LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricCurrent',
+              'LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeometricPeierls':
+                  'LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricPeierls',
+          }
+
+          def rewrite_imports(text: str) -> str:
+              for old, new in import_map.items():
+                  text = text.replace(old, new)
+              return text
+
+          def to_lattice_namespace(text: str) -> str:
+              text = rewrite_imports(text)
+              text = text.replace('namespace Field\n', 'namespace Lattice\n')
+              text = text.replace('end Field\n', 'end Lattice\n')
+              return text
+
+          # Whole-file moves.
+          whole_moves = [
+              'DiscreteLattice.lean',
+              'Peierls.lean',
+              'BoundedMatrixUnitAdjoint.lean',
+              'HermitianBondCurrent.lean',
+              'RankOneSecondQuantization.lean',
+              'GeometricPeierls.lean',
+          ]
+          for name in whole_moves:
+              src = field / name
+              dst = lattice / name
+              dst.write_text(to_lattice_namespace(src.read_text()), encoding='utf-8')
+              src.unlink()
+
+          # Split BoundedKuboBridge: finite-lattice realization belongs to Lattice; only the
+          # retarded-response wrapper stays in Field.
+          src = field / 'BoundedKuboBridge.lean'
+          text = src.read_text()
+          marker = '/-- The bounded current-current retarded kernel supplied to the general Kubo API.'
+          i = text.index(marker)
+          j = text.index('end FiniteLattice', i)
+          prefix = text[:i]
+          prefix = prefix.replace('import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility\n', '')
+          prefix = to_lattice_namespace(prefix)
+          bounded = prefix + 'end FiniteLattice\n\nend\nend Lattice\nend Fermionic\nend SecondQuantization\n'
+          (lattice / 'Bounded.lean').write_text(bounded, encoding='utf-8')
+          response_body = text[i:j]
+          response = '''import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded\nimport LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility\n\nset_option linter.style.header false\n\n/-!\n# Finite-lattice bond-current response adapter\n\nThis module is intentionally downstream of `Fermionic.Lattice`. It contains only the generic\nlinear-response wrapper for bounded lattice currents; the finite-lattice model realization itself\nis owned by `Fermionic.Lattice.Bounded`.\n-/\n\nnamespace SecondQuantization\nnamespace Fermionic\nnamespace Field\n\nopen Lattice\n\nnoncomputable section\n\nvariable {Site : Type*} [LinearOrder Site] [Fintype Site]\n\n''' + response_body + '''\nend\nend Field\nend Fermionic\nend SecondQuantization\n'''
+          (field / 'BoundedCurrentResponse.lean').write_text(response, encoding='utf-8')
+          src.unlink()
+
+          # Split PeierlsContact before the linear-response theorem.
+          src = field / 'PeierlsContact.lean'
+          text = src.read_text()
+          marker = '/-- Peierls current response with the contact term retained.'
+          i = text.index(marker)
+          j = text.index('end Bounded', i)
+          prefix = text[:i]
+          prefix = prefix.replace('import LeanCondensedMatter.QuantumTheory.LinearResponse.ObservableVariation\n', '')
+          prefix = to_lattice_namespace(prefix)
+          lattice_text = prefix + 'end Bounded\n\nend\nend Lattice\nend Fermionic\nend SecondQuantization\n'
+          (lattice / 'PeierlsContact.lean').write_text(lattice_text, encoding='utf-8')
+          response_body = text[i:j]
+          response = '''import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.PeierlsContact\nimport LeanCondensedMatter.QuantumTheory.LinearResponse.ObservableVariation\n\nset_option linter.style.header false\n\n/-!\n# Peierls bond-current response adapter\n\nThe source-dependent bond current and contact operator are lattice-owned. This module only\nspecializes the generic observable-variation response theorem to those operators.\n-/\n\nnamespace SecondQuantization\nnamespace Fermionic\nnamespace Field\n\nopen Lattice\n\nnoncomputable section\n\nvariable {Site : Type*} [LinearOrder Site] [Fintype Site]\n\n''' + response_body + '''\nend\nend Field\nend Fermionic\nend SecondQuantization\n'''
+          (field / 'PeierlsContactResponse.lean').write_text(response, encoding='utf-8')
+          src.unlink()
+
+          # Split GeometricCurrent before the linear-response theorem.
+          src = field / 'GeometricCurrent.lean'
+          text = src.read_text()
+          marker = '/-- Retarded response of a geometric current component'
+          i = text.index(marker)
+          j = text.rindex('\nend\nend Field')
+          prefix = to_lattice_namespace(text[:i])
+          lattice_text = prefix + 'end\nend Lattice\nend Fermionic\nend SecondQuantization\n'
+          (lattice / 'GeometricCurrent.lean').write_text(lattice_text, encoding='utf-8')
+          response_body = text[i:j]
+          response = '''import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricCurrent\nimport LeanCondensedMatter.QuantumTheory.LinearResponse.ObservableVariation\n\nset_option linter.style.header false\n\n/-!\n# Geometric-current response adapter\n\nGeometric current/contact construction is owned by `Fermionic.Lattice`; this file contains only\nthe generic retarded-response specialization.\n-/\n\nnamespace SecondQuantization\nnamespace Fermionic\nnamespace Field\n\nopen Lattice\n\nnoncomputable section\n\nvariable {Site E : Type*}\nvariable [LinearOrder Site] [Fintype Site]\nvariable [AddCommGroup E] [Module ℝ E]\n\n''' + response_body + '''\nend\nend Field\nend Fermionic\nend SecondQuantization\n'''
+          (field / 'GeometricCurrentResponse.lean').write_text(response, encoding='utf-8')
+          src.unlink()
+
+          # Rewrite old module imports repository-wide. The split response modules are deliberately
+          # not compatibility surfaces; downstream code should import lattice owners directly unless
+          # it truly needs one of the response theorems.
+          lean_root = Path('LeanCondensedMatter')
+          for path in lean_root.rglob('*.lean'):
+              text = path.read_text(encoding='utf-8')
+              new = rewrite_imports(text)
+              if new != text:
+                  path.write_text(new, encoding='utf-8')
+
+          # Canonical lattice umbrella.
+          (root / 'Lattice.lean').write_text('''import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice\nimport LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Peierls\nimport LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded\nimport LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint\nimport LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.PeierlsContact\nimport LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.HermitianBondCurrent\nimport LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization\nimport LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricCurrent\nimport LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricPeierls\n\nset_option linter.style.header false\n\n/-!\n# Fermionic lattice models\n\nCanonical lattice/model layer downstream of `Fermionic.Algebra` and upstream of response/transport.\nIt owns discrete lattice states, locally finite hopping, charge and bond currents, Peierls families,\nfinite-lattice bounded realizations, Hermiticity/current equivalences, and geometric aggregation.\nGeneric Kubo, frequency-response, conductivity, Středa, disorder, and validation mathematics do not\nbelong to this layer.\n-/\n''', encoding='utf-8')
+
+          # Public umbrellas.
+          sq = Path('LeanCondensedMatter/SecondQuantization.lean')
+          text = sq.read_text(encoding='utf-8')
+          needle = 'import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace\n'
+          if 'import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice\n' not in text:
+              text = text.replace(needle, needle + 'import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice\n')
+          text = text.replace('fermionic algebra, completed-space analysis, fields, finite\n  transport adapters',
+                              'fermionic algebra, completed-space analysis, lattice models, fields, finite\n  transport adapters')
+          sq.write_text(text, encoding='utf-8')
+
+          fumbrella = root / 'Field.lean'
+          text = fumbrella.read_text(encoding='utf-8')
+          for old in [
+              'import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice\n',
+              'import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Peierls\n',
+              'import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded\n',
+              'import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.PeierlsContact\n',
+              'import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricCurrent\n',
+              'import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricPeierls\n',
+          ]:
+              text = text.replace(old, '')
+          insert = ('import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ContinuumChargeDensity1D\n')
+          extra = ('import LeanCondensedMatter.SecondQuantization.Fermionic.Field.BoundedCurrentResponse\n'
+                   'import LeanCondensedMatter.SecondQuantization.Fermionic.Field.PeierlsContactResponse\n'
+                   'import LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeometricCurrentResponse\n')
+          text = text.replace(insert, insert + extra)
+          fumbrella.write_text(text, encoding='utf-8')
+
+          # No temporary workflow in the resulting change.
+          Path('.github/workflows/agent_1031_codemod.yml').unlink()
+          PY
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "refactor(fermionic-lattice): move lattice models out of Field"
+          git push
