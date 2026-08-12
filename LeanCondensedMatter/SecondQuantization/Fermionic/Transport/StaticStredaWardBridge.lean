@@ -265,7 +265,7 @@ theorem TracedStredaAnalyticData.staticKuboBastinConductivity_eq_surface_add_sea
         regularizedStredaFermiSea analyticData.toRegularizedStredaIntegralData :=
   (SecondQuantization.Fermionic.Transport.TracedStredaAnalyticData.toStaticKuboBastinStredaRepresentation
     convention system spectralData geometry direction K q eta
-      lowerEnergy upperEnergy occupation occupationDerivative ward heta).response_eq_surface_add_sea
+      lowerEnergy upperEnergy occupation occupationDerivative analyticData ward heta).response_eq_surface_add_sea
 
 end
 end Transport
