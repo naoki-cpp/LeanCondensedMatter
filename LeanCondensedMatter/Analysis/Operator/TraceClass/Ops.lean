@@ -73,7 +73,9 @@ theorem hasSum_eigen_expansion_diagonalExpectationValue
         (inner ℂ x (T x)) := by
     simpa using hs
   rw [← coe_diagonalExpectationValue_right T hTself x] at hs'
-  exact_mod_cast hs'
+  rw [HasSum] at hs' ⊢
+  exact Filter.tendsto_ofReal_iff.mp (by
+    simpa only [Complex.ofReal_sum] using hs')
 
 /-- `spectralTrace` can be computed against any Hilbert basis using lossless diagonal expectation
 values. -/
