@@ -119,7 +119,7 @@ noncomputable def FixedExternalTwoPointWickDiagram.externalPieceLegEquiv
   d.1.externalBlockLegEquiv.trans (Common.twoPointLegCongr d.externalSlotEquiv)
 
 omit [LinearOrder Mode] [Fintype Mode] in
-@[simp]
+/-- The piece's leg reindexing is the component reindexing followed by the slot relabeling. -/
 theorem FixedExternalTwoPointWickDiagram.externalPieceLegEquiv_apply
     (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (leg : {leg : Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1)) //
