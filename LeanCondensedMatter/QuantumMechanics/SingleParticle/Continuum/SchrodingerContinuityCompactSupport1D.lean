@@ -49,8 +49,7 @@ theorem intervalSmearedProbabilityDensity1D_eq_wholeSpace
     intervalSmearedProbabilityDensity1D a b test ψ =
       wholeSpaceSmearedProbabilityDensity1D test ψ := by
   unfold intervalSmearedProbabilityDensity1D wholeSpaceSmearedProbabilityDensity1D
-  exact intervalIntegral.integral_eq_integral_of_support_subset
-    (ConservationLaw.integral_mul_eq_integral_of_tsupport_subset_Ioo htestSupport)
+  exact ConservationLaw.integral_mul_eq_integral_of_tsupport_subset_Ioo htestSupport
 
 /-- If the test support is strictly inside `a..b`, the interval density-rate pairing is the
 corresponding whole-space pairing. -/
@@ -60,8 +59,7 @@ theorem intervalSmearedDensityRate1D_eq_wholeSpace
     intervalSmearedDensityRate1D a b test densityTimeDerivative =
       wholeSpaceSmearedDensityRate1D test densityTimeDerivative := by
   unfold intervalSmearedDensityRate1D wholeSpaceSmearedDensityRate1D
-  exact intervalIntegral.integral_eq_integral_of_support_subset
-    (ConservationLaw.integral_mul_eq_integral_of_tsupport_subset_Ioo htestSupport)
+  exact ConservationLaw.integral_mul_eq_integral_of_tsupport_subset_Ioo htestSupport
 
 /-- The interval pairing with `deriv test` agrees with the whole-space pairing whenever the
 support of `test` lies strictly inside the interval. -/
@@ -71,8 +69,7 @@ theorem intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace
     intervalSmearedCurrentPairing1D a b (deriv test) current =
       wholeSpaceSmearedCurrentPairing1D (deriv test) current := by
   unfold intervalSmearedCurrentPairing1D wholeSpaceSmearedCurrentPairing1D
-  exact intervalIntegral.integral_eq_integral_of_support_subset
-    (ConservationLaw.integral_deriv_mul_eq_integral_of_tsupport_subset_Ioo htestSupport)
+  exact ConservationLaw.integral_deriv_mul_eq_integral_of_tsupport_subset_Ioo htestSupport
 
 /-- A pointwise continuity equation gives the standard whole-space weak identity against a
 differentiable test function supported strictly inside a finite interval.
