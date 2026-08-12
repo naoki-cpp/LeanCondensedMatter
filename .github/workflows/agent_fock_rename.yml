@@ -1,0 +1,96 @@
+name: Agent fermionic Fock rename
+
+on:
+  push:
+    branches:
+      - agent/rename-fermionic-fock-representations
+
+permissions:
+  contents: write
+
+jobs:
+  codemod:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/rename-fermionic-fock-representations
+
+      - name: Migrate Fock representation identifiers
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path('LeanCondensedMatter')
+          fermionic = root / 'SecondQuantization' / 'Fermionic'
+
+          def replace_code(text: str, *, local_fock: bool) -> str:
+              out = []
+              block_depth = 0
+              for line in text.splitlines(keepends=True):
+                  stripped = line.lstrip()
+                  if block_depth == 0 and stripped.startswith('import '):
+                      out.append(line)
+                      continue
+
+                  # Preserve comments. The architecture docs are updated separately so file/module
+                  # paths are not accidentally rewritten by this mechanical identifier migration.
+                  i = 0
+                  pieces = []
+                  while i < len(line):
+                      if block_depth > 0:
+                          end = line.find('-/', i)
+                          if end < 0:
+                              pieces.append(line[i:])
+                              i = len(line)
+                              break
+                          pieces.append(line[i:end + 2])
+                          i = end + 2
+                          block_depth -= 1
+                          continue
+
+                      block = line.find('/-', i)
+                      single = line.find('--', i)
+                      starts = [p for p in (block, single) if p >= 0]
+                      stop = min(starts) if starts else len(line)
+                      code = line[i:stop]
+                      code = re.sub(r'\bFiniteParticleFock\b', 'AlgebraicFock', code)
+                      if local_fock:
+                          code = re.sub(r'\bFockSpace\b', 'OccupationFock', code)
+                      else:
+                          code = code.replace('SecondQuantization.Fermionic.FockSpace',
+                                              'SecondQuantization.Fermionic.OccupationFock')
+                          code = code.replace('Fermionic.FockSpace', 'Fermionic.OccupationFock')
+                      pieces.append(code)
+                      i = stop
+                      if stop == len(line):
+                          break
+                      if single == stop:
+                          pieces.append(line[stop:])
+                          i = len(line)
+                          break
+                      pieces.append('/-')
+                      i = stop + 2
+                      block_depth += 1
+                  out.append(''.join(pieces))
+              return ''.join(out)
+
+          for path in root.rglob('*.lean'):
+              old = path.read_text(encoding='utf-8')
+              new = replace_code(old, local_fock=path.is_relative_to(fermionic))
+              if new != old:
+                  path.write_text(new, encoding='utf-8')
+
+          Path('.github/workflows/agent_fock_rename.yml').unlink()
+          PY
+
+      - name: Commit codemod
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git diff --cached --quiet && exit 0
+          git commit -m "refactor(fermionic): migrate Fock representation names"
+          git push origin HEAD:agent/rename-fermionic-fock-representations
