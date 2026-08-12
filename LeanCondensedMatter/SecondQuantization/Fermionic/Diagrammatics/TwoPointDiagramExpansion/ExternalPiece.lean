@@ -168,12 +168,8 @@ theorem FixedExternalTwoPointWickDiagram.twoPointLegEquiv_externalPieceLegEquiv_
             ((Common.twoPointLegEquiv
               (Finset.univ : Finset (Fin d.externalSlots.card))).symm leg)) =
         Common.twoPointLegDataCongr d.externalSlotEquiv.symm leg := by
-    rw [← Common.twoPointLegCongr_symm]
-    cases leg with
-    | inl a => simp [Common.twoPointLegCongr]
-    | inr p =>
-        obtain ⟨v, l⟩ := p
-        simp [Common.twoPointLegCongr]
+    rw [← Common.twoPointLegCongr_symm, Common.twoPointLegCongr_eq_trans,
+      Equiv.trans_apply, Equiv.trans_apply, Equiv.apply_symm_apply, Equiv.apply_symm_apply]
   have hunfold :
       ((d.externalPieceLegEquiv.symm
           ((Common.twoPointLegEquiv
