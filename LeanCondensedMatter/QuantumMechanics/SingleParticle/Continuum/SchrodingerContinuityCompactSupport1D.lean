@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuitySmeared1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Smeared1D
 import LeanCondensedMatter.Analysis.Calculus.WeakConservation1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Integral1D
 import Mathlib.Analysis.Calculus.Deriv.Support
