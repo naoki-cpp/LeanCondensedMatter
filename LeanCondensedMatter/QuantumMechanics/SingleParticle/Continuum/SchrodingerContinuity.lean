@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.ProbabilityCurrent1D
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Tactic
@@ -9,9 +10,9 @@ set_option linter.style.header false
 
 This module derives the local probability-current balance from the scalar-potential
 nonrelativistic Schrödinger equation without treating the Laplacian as a bounded operator on `L²`.
-The first slice is deliberately pointwise and one-dimensional. It separates the calculus identities
-from the algebraic cancellation in the equation of motion, so a later weak formulation can reuse the
-same kernel with explicit Sobolev and integration-by-parts hypotheses.
+The dynamics-independent probability density, current pairing, current, and charge quantities live
+in `ProbabilityCurrent1D`; this module owns their derivative identities and the Schrödinger-specific
+cancellation.
 
 Write the kinetic coefficient as `κ = ℏ² / (2m)`. At one spacetime point the Schrödinger equation is
 
@@ -32,46 +33,6 @@ namespace SingleParticle
 namespace Continuum
 
 noncomputable section
-
-/-- Real-coordinate access used only inside the explicit coordinate implementation. -/
-private def realPart (z : ℂ) : ℝ :=
-  z.re
-
-/-- Imaginary-coordinate access used only inside the explicit coordinate implementation. -/
-private def imaginaryPart (z : ℂ) : ℝ :=
-  z.im
-
-/-- Pointwise probability density `‖ψ‖²`. -/
-def probabilityDensityValue (ψ : ℂ) : ℝ :=
-  Complex.normSq ψ
-
-/-- The probability density agrees with the squared complex norm. -/
-theorem probabilityDensityValue_eq_norm_sq (ψ : ℂ) :
-    probabilityDensityValue ψ = ‖ψ‖ ^ 2 := by
-  simpa [probabilityDensityValue] using Complex.normSq_eq_norm_sq ψ
-
-/-- The canonical real pairing underlying the one-dimensional probability current. -/
-def probabilityCurrentPairingValue (ψ χ : ℂ) : ℝ :=
-  (star ψ * χ).im
-
-/-- Coordinate expansion of the canonical current pairing. -/
-theorem probabilityCurrentPairingValue_eq_coordinates (ψ χ : ℂ) :
-    probabilityCurrentPairingValue ψ χ = ψ.re * χ.im - ψ.im * χ.re := by
-  simp [probabilityCurrentPairingValue, Complex.mul_im]
-  ring
-
-/-- Pointwise one-dimensional probability current for kinetic coefficient `κ`.
-
-This is `(2κ / ℏ) Im (star ψ * ψₓ)`, expanded into real coordinates. -/
-def probabilityCurrentValue1D (ℏ κ : ℝ) (ψ ψx : ℂ) : ℝ :=
-  (2 * κ / ℏ) * probabilityCurrentPairingValue ψ ψx
-
-/-- Coordinate expansion of the one-dimensional probability current. -/
-theorem probabilityCurrentValue1D_eq_coordinates
-    (ℏ κ : ℝ) (ψ ψx : ℂ) :
-    probabilityCurrentValue1D ℏ κ ψ ψx =
-      (2 * κ / ℏ) * (ψ.re * ψx.im - ψ.im * ψx.re) := by
-  rw [probabilityCurrentValue1D, probabilityCurrentPairingValue_eq_coordinates]
 
 /-- The value obtained by differentiating probability density in time. -/
 def probabilityDensityTimeDerivativeValue (ψ ψt : ℂ) : ℝ :=
@@ -100,49 +61,45 @@ The coordinate hypotheses are explicit in this first pointwise layer. A later co
 may bundle them behind a stable complex-to-real differentiability bridge. -/
 theorem hasDerivAt_probabilityDensityValue
     {ψ : ℝ → ℂ} {ψt : ℂ} {t : ℝ}
-    (hre : HasDerivAt (fun s => realPart (ψ s)) (realPart ψt) t)
-    (him : HasDerivAt (fun s => imaginaryPart (ψ s)) (imaginaryPart ψt) t) :
+    (hre : HasDerivAt (fun s => (ψ s).re) ψt.re t)
+    (him : HasDerivAt (fun s => (ψ s).im) ψt.im t) :
     HasDerivAt (fun s => probabilityDensityValue (ψ s))
       (probabilityDensityTimeDerivativeValue (ψ t) ψt) t := by
   have hraw := HasDerivAt.add (HasDerivAt.mul hre hre) (HasDerivAt.mul him him)
   have hderiv :
-      (realPart ψt * realPart (ψ t) + realPart (ψ t) * realPart ψt) +
-          (imaginaryPart ψt * imaginaryPart (ψ t) +
-            imaginaryPart (ψ t) * imaginaryPart ψt) =
+      (ψt.re * (ψ t).re + (ψ t).re * ψt.re) +
+          (ψt.im * (ψ t).im + (ψ t).im * ψt.im) =
         probabilityDensityTimeDerivativeValue (ψ t) ψt := by
-    simp [probabilityDensityTimeDerivativeValue, realPart, imaginaryPart]
+    simp [probabilityDensityTimeDerivativeValue]
     ring
   rw [hderiv] at hraw
   rw [hasDerivAt_iff_tendsto]
   rw [hasDerivAt_iff_tendsto] at hraw
-  simpa [probabilityDensityValue, Complex.normSq_apply, realPart, imaginaryPart,
-    pow_two, Pi.mul_apply, Pi.add_apply] using hraw
+  simpa [probabilityDensityValue, Complex.normSq_apply, pow_two, Pi.mul_apply, Pi.add_apply]
+    using hraw
 
 /-- Differentiating the standard one-dimensional current cancels the two mixed first-derivative
 terms, leaving only the second spatial derivative. -/
 theorem hasDerivAt_probabilityCurrentValue1D
     (ℏ κ : ℝ) {ψ ψx : ℝ → ℂ} {ψxx : ℂ} {x : ℝ}
-    (hψre : HasDerivAt (fun y => realPart (ψ y)) (realPart (ψx x)) x)
-    (hψim : HasDerivAt (fun y => imaginaryPart (ψ y)) (imaginaryPart (ψx x)) x)
-    (hψxre : HasDerivAt (fun y => realPart (ψx y)) (realPart ψxx) x)
-    (hψxim : HasDerivAt (fun y => imaginaryPart (ψx y)) (imaginaryPart ψxx) x) :
+    (hψre : HasDerivAt (fun y => (ψ y).re) (ψx x).re x)
+    (hψim : HasDerivAt (fun y => (ψ y).im) (ψx x).im x)
+    (hψxre : HasDerivAt (fun y => (ψx y).re) ψxx.re x)
+    (hψxim : HasDerivAt (fun y => (ψx y).im) ψxx.im x) :
     HasDerivAt (fun y => probabilityCurrentValue1D ℏ κ (ψ y) (ψx y))
       (probabilityCurrentDivergenceValue1D ℏ κ (ψ x) ψxx) x := by
   have hraw := HasDerivAt.sub
     (HasDerivAt.mul hψre hψxim) (HasDerivAt.mul hψim hψxre)
   have hderiv :
-      (realPart (ψx x) * imaginaryPart (ψx x) +
-            realPart (ψ x) * imaginaryPart ψxx) -
-          (imaginaryPart (ψx x) * realPart (ψx x) +
-            imaginaryPart (ψ x) * realPart ψxx) =
-        realPart (ψ x) * imaginaryPart ψxx -
-          imaginaryPart (ψ x) * realPart ψxx := by
+      ((ψx x).re * (ψx x).im + (ψ x).re * ψxx.im) -
+          ((ψx x).im * (ψx x).re + (ψ x).im * ψxx.re) =
+        (ψ x).re * ψxx.im - (ψ x).im * ψxx.re := by
     ring
   rw [hderiv] at hraw
   have hscaled := hraw.const_mul (2 * κ / ℏ)
   rw [hasDerivAt_iff_tendsto]
   rw [hasDerivAt_iff_tendsto] at hscaled
-  simpa [realPart, imaginaryPart, probabilityCurrentValue1D_eq_coordinates,
+  simpa [probabilityCurrentValue1D_eq_coordinates,
     probabilityCurrentDivergenceValue1D_eq_coordinates, Pi.mul_apply, Pi.sub_apply] using hscaled
 
 /-- Real and imaginary component equations extracted from the pointwise Schrödinger equation. -/
@@ -194,12 +151,12 @@ theorem oneDimensional_schrodinger_continuity
     (ℏ κ potential : ℝ) (hℏ : ℏ ≠ 0)
     {ψTime ψSpace ψx : ℝ → ℂ} {ψt ψxx : ℂ} {t x : ℝ}
     (hsame : ψTime t = ψSpace x)
-    (htimeRe : HasDerivAt (fun s => realPart (ψTime s)) (realPart ψt) t)
-    (htimeIm : HasDerivAt (fun s => imaginaryPart (ψTime s)) (imaginaryPart ψt) t)
-    (hspaceRe : HasDerivAt (fun y => realPart (ψSpace y)) (realPart (ψx x)) x)
-    (hspaceIm : HasDerivAt (fun y => imaginaryPart (ψSpace y)) (imaginaryPart (ψx x)) x)
-    (hspaceDerivativeRe : HasDerivAt (fun y => realPart (ψx y)) (realPart ψxx) x)
-    (hspaceDerivativeIm : HasDerivAt (fun y => imaginaryPart (ψx y)) (imaginaryPart ψxx) x)
+    (htimeRe : HasDerivAt (fun s => (ψTime s).re) ψt.re t)
+    (htimeIm : HasDerivAt (fun s => (ψTime s).im) ψt.im t)
+    (hspaceRe : HasDerivAt (fun y => (ψSpace y).re) (ψx x).re x)
+    (hspaceIm : HasDerivAt (fun y => (ψSpace y).im) (ψx x).im x)
+    (hspaceDerivativeRe : HasDerivAt (fun y => (ψx y).re) ψxx.re x)
+    (hspaceDerivativeIm : HasDerivAt (fun y => (ψx y).im) ψxx.im x)
     (hschrodinger :
       Complex.I * (ℏ : ℂ) * ψt =
         -(κ : ℂ) * ψxx + (potential : ℂ) * ψSpace x) :
@@ -211,14 +168,6 @@ theorem oneDimensional_schrodinger_continuity
   rw [hsame]
   exact probability_continuity_balance_of_schrodinger
     ℏ κ potential (ψSpace x) ψt ψxx hℏ hschrodinger
-
-/-- Charge density obtained by multiplying probability density by the particle charge. -/
-def chargeDensityValue (q : ℝ) (ψ : ℂ) : ℝ :=
-  q * probabilityDensityValue ψ
-
-/-- Charge current obtained by multiplying probability current by the particle charge. -/
-def chargeCurrentValue1D (q ℏ κ : ℝ) (ψ ψx : ℂ) : ℝ :=
-  q * probabilityCurrentValue1D ℏ κ ψ ψx
 
 /-- Probability-current balance immediately implies charge-current balance. -/
 theorem charge_continuity_balance_of_probability
