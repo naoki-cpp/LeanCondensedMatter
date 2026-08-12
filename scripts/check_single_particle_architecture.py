@@ -19,8 +19,8 @@ CONTINUUM = SINGLE_PARTICLE / "Continuum"
 SECOND_QUANTIZATION = LEAN_ROOT / "SecondQuantization"
 LEGACY_CONTINUUM_PATH = QUANTUM_THEORY / "Continuum"
 
-SINGLE_PARTICLE_IMPORT = re.compile(
-    r"^\s*import\s+LeanCondensedMatter\.QuantumMechanics\.SingleParticle(?:\.|\s|$)"
+QUANTUM_MECHANICS_IMPORT = re.compile(
+    r"^\s*import\s+LeanCondensedMatter\.QuantumMechanics(?:\.|\s|$)"
 )
 SECOND_QUANTIZATION_IMPORT = re.compile(
     r"^\s*import\s+LeanCondensedMatter\.SecondQuantization(?:\.|\s|$)"
@@ -49,18 +49,18 @@ def check_dependency_direction(errors: list[str]) -> None:
     for path in lean_files(QUANTUM_THEORY):
         code = strip_lean_comments(path.read_text(encoding="utf-8"))
         for line_no, line in enumerate(code.splitlines(), start=1):
-            if SINGLE_PARTICLE_IMPORT.match(line):
+            if QUANTUM_MECHANICS_IMPORT.match(line):
                 errors.append(
-                    "generic QuantumTheory imports concrete single-particle mechanics: "
+                    "generic QuantumTheory imports downstream QuantumMechanics: "
                     f"{relative(path)}:{line_no}: {line.strip()}"
                 )
 
     for path in lean_files(SECOND_QUANTIZATION):
         code = strip_lean_comments(path.read_text(encoding="utf-8"))
         for line_no, line in enumerate(code.splitlines(), start=1):
-            if SINGLE_PARTICLE_IMPORT.match(line):
+            if QUANTUM_MECHANICS_IMPORT.match(line):
                 errors.append(
-                    "SecondQuantization imports concrete single-particle mechanics: "
+                    "SecondQuantization imports concrete QuantumMechanics: "
                     f"{relative(path)}:{line_no}: {line.strip()}"
                 )
 
