@@ -31,7 +31,7 @@ theorem QuarticDiagram.vertexGraph_adj_iff
   Iff.rfl
 
 /-- The ambient interaction vertex carrying a vertex of the vacuum piece. -/
-def slotSplitVacuumVertex (h : T ⊆ S) : ↥(S \ T) → TwoPointVertex S :=
+def slotSplitVacuumVertex (_h : T ⊆ S) : ↥(S \ T) → TwoPointVertex S :=
   fun v => Sum.inr ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩
 
 /-- The vacuum-piece vertex embedding is injective. -/
@@ -43,7 +43,7 @@ theorem slotSplitVacuumVertex_injective (h : T ⊆ S) :
         ⟨w.1, (Finset.mem_sdiff.mp w.2).1⟩ := by
     exact Sum.inr.inj hvw
   apply Subtype.ext
-  exact congrArg Subtype.val hs
+  exact congrArg (fun z : ↥S => (z : Fin N)) hs
 
 /-- An external-piece vertex and a vacuum-piece vertex have disjoint images. -/
 theorem slotSplitVertex_ne_slotSplitVacuumVertex (h : T ⊆ S)
@@ -68,7 +68,9 @@ theorem twoPointVertexOfLeg_slotLegSplitting_inr_exact (h : T ⊆ S)
   obtain ⟨p, rfl⟩ := (quarticLegEquiv (S \ T)).symm.surjective j
   obtain ⟨v, l⟩ := p
   rw [slotLegSplitting_right_interaction]
-  simp [slotSplitVacuumVertex, vertexOfLeg]
+  simpa [twoPointInteractionLeg, slotSplitVacuumVertex] using
+    (twoPointVertexOfLeg_interactionLeg
+      (v := ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩) l)
 
 variable (h : T ⊆ S)
   (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
