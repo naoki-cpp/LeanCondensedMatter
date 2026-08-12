@@ -9,6 +9,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ExternalPiece
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ExternalPieceField
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ExternalPiecePairing
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DysonSeries
 
 set_option linter.style.header false
 
@@ -19,7 +20,8 @@ Finite-mode imaginary-time two-point Wick diagrams with quartic interaction vert
 ordering and flattening, fixed-external amplitudes, external/vacuum component restriction and
 factorization, measurable and integrable component-local factors, ordered-simplex component
 shuffles, interaction-slot relabeling, the restriction of the mixed leg order along a monotone
-family of interaction slots, the external component as a standalone diagram on its own slots, and
-the exchange of the finite diagram sum with the ordered-simplex integral. The umbrella exports authoritative owner modules rather than the
+family of interaction slots, the external component as a standalone diagram on its own slots, the exchange
+of the finite diagram sum with the ordered-simplex integral, and the perturbative two-point series
+assembled from the order-`n` coefficients. The umbrella exports authoritative owner modules rather than the
 proof-stage transport chain used internally.
 -/
