@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerEvolution1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerHamiltonianSelfAdjoint1D
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGeneratorEquation
 import Mathlib.Analysis.Calculus.Deriv.Comp
 import Mathlib.Tactic
@@ -8,7 +9,7 @@ set_option linter.style.header false
 /-!
 # Stone construction of the one-dimensional Schrödinger evolution
 
-This file closes the abstract evolution boundary in `SchrodingerEvolution1D.lean` for the bounded
+This file implements the stable interface in `SchrodingerEvolution1D.lean` for the bounded
 real-potential Hamiltonian.  For the physical Hamiltonian
 
 `H = -κ Δ + V`,
