@@ -71,6 +71,8 @@ def check_namespaces(errors: list[str]) -> None:
         code = strip_lean_comments(path.read_text(encoding="utf-8"))
         if "namespace Field" in code:
             errors.append(f"transport declaration remains in Field namespace: {rel(path)}")
+        if "open SecondQuantization.Fermionic.Field" in code:
+            errors.append(f"transport module still opens the obsolete Field owner: {rel(path)}")
     for path in lean_files(VALIDATION):
         code = strip_lean_comments(path.read_text(encoding="utf-8"))
         if "namespace Field" in code:
