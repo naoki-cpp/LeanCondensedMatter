@@ -1,0 +1,40 @@
+name: Agent fermionic Fock doc fix
+
+on:
+  push:
+    branches:
+      - agent/rename-fermionic-fock-representations
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/rename-fermionic-fock-representations
+
+      - name: Update stale qualified Fock name
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('LeanCondensedMatter/SecondQuantization/Common/Algebra/AlgebraicFock.lean')
+          text = p.read_text(encoding='utf-8')
+          old = '`Fermionic.FockSpace Mode`'
+          new = '`Fermionic.OccupationFock Mode`'
+          if old not in text:
+              raise SystemExit('expected stale name not found')
+          p.write_text(text.replace(old, new), encoding='utf-8')
+          Path('.github/workflows/agent_fock_doc_fix.yml').unlink()
+          PY
+
+      - name: Commit documentation fix
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add -A
+          git commit -m "docs(fermionic): use OccupationFock in shared algebra docs"
+          git push origin HEAD:agent/rename-fermionic-fock-representations
