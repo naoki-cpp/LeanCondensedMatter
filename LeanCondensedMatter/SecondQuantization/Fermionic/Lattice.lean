@@ -19,7 +19,7 @@ finite-lattice bounded realizations, Hermiticity/current equivalences, and geome
 Generic Kubo, frequency-response, conductivity, Středa, disorder, and validation mathematics do not
 belong to this layer. Response specializations consume these model operators from downstream
 `Fermionic.Field` or `Fermionic.Transport` modules. This umbrella is the public canonical import for
-fermionic lattice/model constructions; downstream consumers qualify lattice-owned declarations
-through the `Lattice` namespace rather than relying on the former `Field` ownership. The old
-`Fermionic.Field` lattice module paths are intentionally not retained as forwarding modules.
+fermionic lattice/model constructions; downstream consumers explicitly open or qualify the
+`Lattice` namespace rather than relying on the former `Field` ownership. The old `Fermionic.Field`
+lattice module paths are intentionally not retained as forwarding modules.
 -/
