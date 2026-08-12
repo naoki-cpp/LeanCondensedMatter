@@ -169,7 +169,8 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedVacuumPairSigmaEquiv
     have hB : B' = B := by
       apply Subtype.ext
       exact pr.2
-    apply Sigma.ext hB
+    cases hB
+    apply Sigma.ext rfl
     apply heq_of_eq
     apply Subtype.ext
     rfl
