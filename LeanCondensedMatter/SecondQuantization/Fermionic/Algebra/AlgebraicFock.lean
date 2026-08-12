@@ -15,5 +15,7 @@ set_option linter.style.header false
 
 The exterior-algebra Fock representation, smeared creation and annihilation operators, CAR,
 mode specializations, occupation-representation equivalences, and algebraic second quantization.
+The canonical declaration owner is `SecondQuantization.Fermionic.AlgebraicFock`; the old
+`SecondQuantization.Fermionic.Field` namespace is not retained for these declarations.
 This layer does not depend on lattice, transport, finite-volume, or validation modules.
 -/
