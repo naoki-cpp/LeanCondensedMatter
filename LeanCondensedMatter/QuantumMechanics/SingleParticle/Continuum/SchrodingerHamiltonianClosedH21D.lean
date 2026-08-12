@@ -154,7 +154,7 @@ theorem continuumRealPotentialSchrodingerHamiltonian1D_isClosed
     (hκ : κ ≠ 0) :
     (continuumRealPotentialSchrodingerHamiltonian1D κ potential hpotential).IsClosed := by
   exact continuumSchrodingerHamiltonian1D_isClosed
-    κ (realTestMultiplier1D potential hpotential) hκ
+    κ (realLInfMultiplier1D potential hpotential) hκ
 
 end
 end Continuum

@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2Multiplication1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerHamiltonianLaplacianSelfAdjoint1D
 import Mathlib.Tactic
 
@@ -40,7 +41,7 @@ theorem continuumRealPotentialSchrodingerHamiltonian1D_adjoint_domain_le
   intro u hu
   apply continuumH2LaplacianPMap1D_adjoint_domain_le
   let H := continuumRealPotentialSchrodingerHamiltonian1D κ potential hpotential
-  let M := l2MultiplicationOperator1D (realTestMultiplier1D potential hpotential)
+  let M := l2MultiplicationOperator1D (realLInfMultiplier1D potential hpotential)
   let uAdj : H.adjoint.domain := ⟨u, hu⟩
   let wH : ContinuumL2Wavefunction1D := H.adjoint uAdj
   apply LinearPMap.mem_adjoint_domain_of_exists
