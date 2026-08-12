@@ -41,7 +41,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight_externalComp
       unfold orderedTwoPointVertexWeight FixedExternalTwoPointWickDiagram.vertexLabelSequence
       let e : Fin d.1.externalInteractionPart.card ≃
           ↥(Finset.univ : Finset (Fin d.1.externalInteractionPart.card)) :=
-        Equiv.subtypeUnivEquiv (fun x => Finset.mem_univ x)
+        (Equiv.subtypeUnivEquiv (fun x => Finset.mem_univ x)).symm
       simpa [e] using
         (Equiv.prod_comp e
           (fun v : ↥(Finset.univ : Finset (Fin d.1.externalInteractionPart.card)) =>
