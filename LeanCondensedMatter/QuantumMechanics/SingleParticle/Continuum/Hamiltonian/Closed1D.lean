@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerHamiltonianRegularity1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Regularity1D
 import Mathlib.Topology.Algebra.Module.LinearPMap
 import Mathlib.Tactic
 

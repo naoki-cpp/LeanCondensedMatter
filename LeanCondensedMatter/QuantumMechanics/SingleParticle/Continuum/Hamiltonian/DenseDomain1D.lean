@@ -1,13 +1,13 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerHamiltonian1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Basic1D
 import Mathlib.Analysis.Distribution.SchwartzSpace.Basic
 
 set_option linter.style.header false
 
 /-!
-# Analytic foundations for the one-dimensional continuum Schrödinger Hamiltonian
+# Dense domain for the one-dimensional continuum Schrödinger Hamiltonian
 
 This file begins the analytic layer for the domain-carrying Schrödinger operator from
-`SchrodingerHamiltonian1D.lean`.
+`Hamiltonian/Basic1D.lean`.
 
 The first step is density of the `H²(ℝ)` domain in physical `L²(ℝ, ℂ)`. Schwartz functions give a
 canonical dense core: Mathlib proves that their `L²` images are dense, while every Schwartz
