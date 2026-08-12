@@ -56,22 +56,23 @@ theorem DensityOperator.expectation_op (ρ : DensityOperator H) :
     ρ.expectation ρ.op = (purity ρ : ℂ) := by
   have hexpect := (ρ.summable_expectation_term ρ.op).hasSum
   rw [← ρ.expectation_apply ρ.op] at hexpect
-  have hpoint :
-      (fun a : EigenvectorIndex ρ.op =>
-        (a.1.1 : ℂ) * inner ℂ (eigenvectorFamily ρ.spectralTraceClass.compact a)
-          ((ρ.op : H →ₗ[ℂ] H) (eigenvectorFamily ρ.spectralTraceClass.compact a))) =
-      (fun a => ((a.1.1 ^ 2 : ℝ) : ℂ)) := by
-    funext a
-    rw [apply_eigenvectorFamily ρ.spectralTraceClass.compact,
-      inner_smul_right, inner_self_eq_norm_sq_to_K,
+  have hexpect' :
+      HasSum (fun a : EigenvectorIndex ρ.op => ((a.1.1 ^ 2 : ℝ) : ℂ))
+        (ρ.expectation ρ.op) := by
+    refine hexpect.congr ?_
+    intro a
+    have ha :
+        ρ.op (eigenvectorFamily ρ.spectralTraceClass.compact a) =
+          (a.1.1 : ℂ) • eigenvectorFamily ρ.spectralTraceClass.compact a := by
+      simpa using apply_eigenvectorFamily ρ.spectralTraceClass.compact a
+    rw [ha, inner_smul_right, inner_self_eq_norm_sq_to_K,
       eigenvectorFamily_norm_eq_one ρ a]
     norm_num
     ring
-  rw [hpoint] at hexpect
   have hpurity : HasSum (fun a : EigenvectorIndex ρ.op => ((a.1.1 ^ 2 : ℝ) : ℂ))
       (purity ρ : ℂ) := by
     simpa [purity] using Complex.ofRealCLM.hasSum ρ.summable_eigenvalue_sq.hasSum
-  exact hexpect.unique hpurity
+  exact hexpect'.unique hpurity
 
 /-- A rank-one density operator has purity one. -/
 theorem purity_pure (ψ : State H) : purity (pure ψ) = 1 := by
