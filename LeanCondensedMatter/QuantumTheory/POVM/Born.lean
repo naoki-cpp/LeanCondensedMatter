@@ -81,20 +81,20 @@ private theorem hasSum_probabilityKernel_outcome (P : POVM H M)
   let e := eigenvectorFamily ρ.spectralTraceClass.compact a
   have hinner : HasSum (fun m => (inner ℂ e (P.E m e) : ℂ)) (inner ℂ e e) :=
     P.hasSum_inner_apply e
-  have hre : HasSum (fun m => (inner ℂ e (P.E m e) : ℂ).re) 1 := by
-    have h := Complex.reCLM.hasSum hinner
-    simpa [inner_self_eq_norm_sq_to_K, e, eigenvectorFamily_norm_eq_one ρ a] using h
-  have hfun :
-      (fun m => (inner ℂ e (P.E m e) : ℂ).re) =
-      (fun m => diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint e) := by
-    funext m
-    have h := congrArg Complex.re
-      (coe_diagonalExpectationValue_right (P.E m) (P.pos m).isSelfAdjoint e)
-    change diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint e =
-      (inner ℂ e (P.E m e) : ℂ).re at h
-    exact h.symm
-  rw [hfun] at hre
-  simpa [probabilityKernel, e] using hre.mul_left a.1.1
+  have hcomplex : HasSum
+      (fun m => ((diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint e : ℝ) : ℂ))
+      (1 : ℂ) := by
+    have hfun :
+        (fun m => (inner ℂ e (P.E m e) : ℂ)) =
+          (fun m => ((diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint e : ℝ) : ℂ)) := by
+      funext m
+      exact (coe_diagonalExpectationValue_right (P.E m) (P.pos m).isSelfAdjoint e).symm
+    rw [hfun] at hinner
+    simpa [inner_self_eq_norm_sq_to_K, e, eigenvectorFamily_norm_eq_one ρ a] using hinner
+  have hreal :
+      HasSum (fun m => diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint e) 1 := by
+    exact_mod_cast hcomplex
+  simpa [probabilityKernel, e] using hreal.mul_left a.1.1
 
 private theorem hasSum_probabilityKernel_eigenvector (P : POVM H M)
     (ρ : DensityOperator H) (m : M) :
