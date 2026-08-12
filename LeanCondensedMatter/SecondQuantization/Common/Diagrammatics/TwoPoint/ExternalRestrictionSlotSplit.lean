@@ -29,14 +29,17 @@ theorem TwoPointDiagram.externalBlockLegEquiv_externalSlotLegSplitting_inl
           d.legInComponent_externalSlotLegSplitting_inl i⟩ = i := by
   obtain ⟨x, rfl⟩ :=
     (twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))).symm.surjective i
+  apply d.externalBlockLegEquiv.symm.injective
+  simp only [Equiv.symm_apply_apply]
+  apply Subtype.ext
   cases x with
   | inl e =>
       simp [TwoPointDiagram.externalBlockLegEquiv, TwoPointDiagram.externalSlotLegSplitting,
-        TwoPointDiagram.externalLegDataEquiv]
+        TwoPointDiagram.externalLegDataEquiv_symm_inl]
   | inr p =>
       obtain ⟨v, l⟩ := p
       simp [TwoPointDiagram.externalBlockLegEquiv, TwoPointDiagram.externalSlotLegSplitting,
-        TwoPointDiagram.externalLegDataEquiv]
+        TwoPointDiagram.externalLegDataEquiv_symm_inr]
 
 /-- Restricting the ambient pairing to the external component gives exactly the left pairing of the
 canonical external/vacuum slot split. -/
