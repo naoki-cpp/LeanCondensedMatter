@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerHamiltonianClosedH21D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Closed1D
 import Mathlib.Analysis.Distribution.AEEqOfIntegralContDiff
 import Mathlib.Analysis.Fourier.LpSpace
 import Mathlib.Tactic

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerHamiltonianClosed1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D
 import Mathlib.Tactic
 
 set_option linter.style.header false

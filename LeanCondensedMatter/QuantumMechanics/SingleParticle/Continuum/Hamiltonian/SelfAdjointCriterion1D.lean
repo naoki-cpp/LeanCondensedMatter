@@ -1,7 +1,7 @@
 import LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerHamiltonianAnalytic1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerHamiltonianClosedH21D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerHamiltonianFullSymmetry1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.DenseDomain1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Closed1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Symmetry1D
 import Mathlib.Tactic
 
 set_option linter.style.header false
