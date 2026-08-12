@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Calculus.WeakConservation1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.ProbabilityIntegral1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuity
 import Mathlib.Tactic
 
@@ -20,11 +21,6 @@ noncomputable section
 
 open MeasureTheory Set
 open scoped Interval
-
-/-- Probability density smeared against a real spatial test function on an interval. -/
-def intervalSmearedProbabilityDensity1D
-    (a b : ℝ) (test : ℝ → ℝ) (ψ : ℝ → ℂ) : ℝ :=
-  ∫ x in a..b, test x * probabilityDensityValue (ψ x)
 
 /-- Spatially smeared value of the pointwise density time derivative. -/
 def intervalSmearedDensityRate1D

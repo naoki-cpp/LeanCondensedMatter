@@ -1,5 +1,6 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuitySmeared1D
 import LeanCondensedMatter.Analysis.Calculus.WeakConservation1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.ProbabilityIntegral1D
 import Mathlib.Analysis.Calculus.Deriv.Support
 import Mathlib.Tactic
 
@@ -25,11 +26,6 @@ noncomputable section
 
 open MeasureTheory Set
 open scoped Interval
-
-/-- Probability density smeared over all of one-dimensional space. -/
-def wholeSpaceSmearedProbabilityDensity1D
-    (test : ℝ → ℝ) (ψ : ℝ → ℂ) : ℝ :=
-  ∫ x, test x * probabilityDensityValue (ψ x)
 
 /-- Whole-space pairing of a test function with a pointwise density time derivative. -/
 def wholeSpaceSmearedDensityRate1D
