@@ -91,7 +91,7 @@ private theorem normalizedWeightedDiagonal_create_comp_annihilate_of_ne
 
 omit [LinearOrder Mode] in
 private theorem normalizedWeightedDiagonal_freeBoltzmannWeight_eq_expectation
-    (ε : Mode → ℝ) (β : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (ε : Mode → ℝ) (β : ℝ) (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     Common.normalizedWeightedDiagonal (freeBoltzmannWeight ε β) A =
       (freeGibbsDensityOperator ε β).expectation (Common.finiteHilbertOperator A) := by
   have hw : freeBoltzmannWeight ε β = Common.boltzmannWeight (fermionEnergy ε) β :=

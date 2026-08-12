@@ -314,7 +314,7 @@ theorem orderedTwoPointTimedEventPosition_lt_iff_of_eventTime_eq {n : ℕ}
 /-- The operator represented by a mixed external/interaction event. -/
 noncomputable def twoPointTimedEventOperator {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    TwoPointTimedEvent n → FockSpace Mode →ₗ[ℂ] FockSpace Mode
+    TwoPointTimedEvent n → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode
   | .inl e => externalFieldOperator ε (twoPointExternalTimes τ τ' e)
       (twoPointExternalLabels i j e)
   | .inr v => interactionPicture ε (quarticVertexOperator (q v)) (σ v)
@@ -349,7 +349,7 @@ noncomputable def twoPointExternalOrderSign (τ τ' : ℝ) : ℂ :=
 vertices. -/
 noncomputable def mixedTimeOrderedVertexComp {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   twoPointExternalOrderSign τ τ' •
     Common.prodComp ((orderedTwoPointTimedEvents τ τ' σ).map
       (twoPointTimedEventOperator ε i j τ τ' q σ))

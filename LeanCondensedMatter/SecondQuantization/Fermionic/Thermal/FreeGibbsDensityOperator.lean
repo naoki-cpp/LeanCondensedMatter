@@ -38,7 +38,7 @@ omit [LinearOrder Mode] in
 /-- Evaluating the free Gibbs density state on a transported algebraic Fock operator is the
 canonical finite Gibbs expectation at `fermionEnergy ε`. -/
 theorem freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation
-    (ε : Mode → ℝ) (β : ℝ) (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (ε : Mode → ℝ) (β : ℝ) (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     (freeGibbsDensityOperator ε β).expectation (Common.finiteHilbertOperator A) =
       Common.finiteGibbsExpectation (fermionEnergy ε) β A := by
   rw [freeGibbsDensityOperator, Common.finiteGibbsExpectation,

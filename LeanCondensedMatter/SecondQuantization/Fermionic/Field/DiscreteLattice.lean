@@ -232,14 +232,14 @@ end LocallyFiniteHopping
 /-- The many-particle hopping Hamiltonian obtained by second-quantizing the one-particle hopping
 operator. -/
 noncomputable def hoppingHamiltonian (K : LocallyFiniteHopping Site) :
-    FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site) :=
+    AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site) :=
   dGamma (LatticeState Site) K.operator
 
 /-- Many-particle charge localized at one lattice site. -/
 noncomputable def siteChargeDensity (q : ℂ) (x : Site) :
-    FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site) :=
+    AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site) :=
   q • dGamma (LatticeState Site) (siteProjector x)
 
 /-- The oriented many-particle bond current. The convention is
@@ -247,8 +247,8 @@ noncomputable def siteChargeDensity (q : ℂ) (x : Site) :
 `J_(x→y) = (i q / ℏ) dΓ(h_xy |x⟩⟨y| - h_yx |y⟩⟨x|)`.
 -/
 noncomputable def bondCurrent (ℏ q : ℂ) (K : LocallyFiniteHopping Site) (x y : Site) :
-    FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site) :=
+    AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site) :=
   ((Complex.I * q) / ℏ) • dGamma (LatticeState Site) (K.bondOperator x y)
 
 /-- Bond current is antisymmetric under orientation reversal. -/

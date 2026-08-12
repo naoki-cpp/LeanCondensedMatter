@@ -44,21 +44,21 @@ noncomputable def latticeBasis : Module.Basis Site ℂ (LatticeState Site) :=
 /-- The canonical equivalence from occupation-subset Fock space to the exterior-algebra Fock space
 for an ordered site type. -/
 noncomputable def latticeOccupationEquiv :
-    FockSpace Site ≃ₗ[ℂ] FiniteParticleFock (LatticeState Site) :=
+    OccupationFock Site ≃ₗ[ℂ] AlgebraicFock (LatticeState Site) :=
   occupationEquiv (latticeBasis (Site := Site))
 
 /-- Conjugate an exterior-Fock endomorphism into the occupation-subset representation. -/
 noncomputable def occupationOperator
-    (A : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site)) :
-    FockSpace Site →ₗ[ℂ] FockSpace Site :=
+    (A : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
+    OccupationFock Site →ₗ[ℂ] OccupationFock Site :=
   (latticeOccupationEquiv (Site := Site)).symm.toLinearMap.comp
     (A.comp (latticeOccupationEquiv (Site := Site)).toLinearMap)
 
 @[simp]
 theorem occupationOperator_add
-    (A B : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site)) :
+    (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
     occupationOperator (A + B) = occupationOperator A + occupationOperator B := by
   apply LinearMap.ext
   intro Ψ
@@ -66,8 +66,8 @@ theorem occupationOperator_add
 
 @[simp]
 theorem occupationOperator_smul (c : ℂ)
-    (A : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site)) :
+    (A : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
     occupationOperator (c • A) = c • occupationOperator A := by
   apply LinearMap.ext
   intro Ψ
@@ -76,17 +76,17 @@ theorem occupationOperator_smul (c : ℂ)
 @[simp]
 theorem occupationOperator_id :
     occupationOperator
-        (LinearMap.id : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-          FiniteParticleFock (LatticeState Site)) =
-      (LinearMap.id : FockSpace Site →ₗ[ℂ] FockSpace Site) := by
+        (LinearMap.id : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+          AlgebraicFock (LatticeState Site)) =
+      (LinearMap.id : OccupationFock Site →ₗ[ℂ] OccupationFock Site) := by
   apply LinearMap.ext
   intro Ψ
   simp [occupationOperator]
 
 @[simp]
 theorem occupationOperator_comp
-    (A B : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site)) :
+    (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
     occupationOperator (A.comp B) =
       (occupationOperator A).comp (occupationOperator B) := by
   apply LinearMap.ext
@@ -95,18 +95,18 @@ theorem occupationOperator_comp
 
 /-- Occupation-representation transport bundled as a complex-linear map. -/
 noncomputable def occupationOperatorLinearMap :
-    (FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-        FiniteParticleFock (LatticeState Site)) →ₗ[ℂ]
-      (FockSpace Site →ₗ[ℂ] FockSpace Site) where
+    (AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+        AlgebraicFock (LatticeState Site)) →ₗ[ℂ]
+      (OccupationFock Site →ₗ[ℂ] OccupationFock Site) where
   toFun := occupationOperator
   map_add' := occupationOperator_add
   map_smul' := occupationOperator_smul
 
 /-- Occupation-representation transport bundled as a complex algebra homomorphism. -/
 noncomputable def occupationOperatorAlgHom :
-    (FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-        FiniteParticleFock (LatticeState Site)) →ₐ[ℂ]
-      (FockSpace Site →ₗ[ℂ] FockSpace Site) :=
+    (AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+        AlgebraicFock (LatticeState Site)) →ₐ[ℂ]
+      (OccupationFock Site →ₗ[ℂ] OccupationFock Site) :=
   AlgHom.ofLinearMap
     (occupationOperatorLinearMap (Site := Site))
     occupationOperator_id
@@ -114,8 +114,8 @@ noncomputable def occupationOperatorAlgHom :
 
 @[simp]
 theorem occupationOperatorAlgHom_apply
-    (A : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site)) :
+    (A : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
     occupationOperatorAlgHom A = occupationOperator A :=
   rfl
 
@@ -126,8 +126,8 @@ variable [Fintype Site]
 /-- The linear bridge from basis-independent algebraic Fock endomorphisms to bounded operators on
 the finite-lattice Hilbert Fock space. -/
 noncomputable def boundedLatticeOperatorLinearMap :
-    (FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-        FiniteParticleFock (LatticeState Site)) →ₗ[ℂ]
+    (AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+        AlgebraicFock (LatticeState Site)) →ₗ[ℂ]
       (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
   (Common.finiteHilbertOperatorLinearMap (Config := Occupation Site)).comp
     (occupationOperatorLinearMap (Site := Site))
@@ -135,60 +135,60 @@ noncomputable def boundedLatticeOperatorLinearMap :
 /-- The complete multiplicative bridge from basis-independent algebraic Fock endomorphisms to
 bounded operators on the finite-lattice Hilbert Fock space. -/
 noncomputable def boundedLatticeOperatorAlgHom :
-    (FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-        FiniteParticleFock (LatticeState Site)) →ₐ[ℂ]
+    (AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+        AlgebraicFock (LatticeState Site)) →ₐ[ℂ]
       (FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site) :=
   (Common.finiteHilbertOperatorAlgHom (Config := Occupation Site)).comp
     (occupationOperatorAlgHom (Site := Site))
 
 /-- The bounded finite-lattice realization of an exterior-Fock algebraic endomorphism. -/
 noncomputable def boundedLatticeOperator
-    (A : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site)) :
+    (A : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
   boundedLatticeOperatorLinearMap A
 
 @[simp]
 theorem boundedLatticeOperatorAlgHom_apply
-    (A : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site)) :
+    (A : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
     boundedLatticeOperatorAlgHom A = boundedLatticeOperator A :=
   rfl
 
 @[simp]
 theorem boundedLatticeOperator_add
-    (A B : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site)) :
+    (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
     boundedLatticeOperator (A + B) =
       boundedLatticeOperator A + boundedLatticeOperator B :=
   map_add (boundedLatticeOperatorLinearMap (Site := Site)) A B
 
 @[simp]
 theorem boundedLatticeOperator_sub
-    (A B : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site)) :
+    (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
     boundedLatticeOperator (A - B) =
       boundedLatticeOperator A - boundedLatticeOperator B :=
   map_sub (boundedLatticeOperatorLinearMap (Site := Site)) A B
 
 @[simp]
 theorem boundedLatticeOperator_smul (c : ℂ)
-    (A : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site)) :
+    (A : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
     boundedLatticeOperator (c • A) = c • boundedLatticeOperator A :=
   map_smul (boundedLatticeOperatorLinearMap (Site := Site)) c A
 
 @[simp]
 theorem boundedLatticeOperator_zero :
     boundedLatticeOperator
-        (0 : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-          FiniteParticleFock (LatticeState Site)) = 0 :=
+        (0 : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+          AlgebraicFock (LatticeState Site)) = 0 :=
   map_zero (boundedLatticeOperatorLinearMap (Site := Site))
 
 @[simp]
 theorem boundedLatticeOperator_sum {ι : Type*} (s : Finset ι)
-    (F : ι → FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site)) :
+    (F : ι → AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
     boundedLatticeOperator (∑ i ∈ s, F i) =
       ∑ i ∈ s, boundedLatticeOperator (F i) := by
   change boundedLatticeOperatorLinearMap (∑ i ∈ s, F i) = _
@@ -197,8 +197,8 @@ theorem boundedLatticeOperator_sum {ι : Type*} (s : Finset ι)
 
 @[simp]
 theorem boundedLatticeOperator_comp
-    (A B : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site)) :
+    (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
     boundedLatticeOperator (A.comp B) =
       (boundedLatticeOperator A).comp (boundedLatticeOperator B) := by
   change boundedLatticeOperatorAlgHom (A.comp B) =
@@ -207,8 +207,8 @@ theorem boundedLatticeOperator_comp
 
 /-- Bounded transport preserves the ordinary algebraic commutator. -/
 theorem boundedLatticeOperator_linearCommutator
-    (A B : FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site)) :
+    (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site)) :
     boundedLatticeOperator (linearCommutator A B) =
       (boundedLatticeOperator A).comp (boundedLatticeOperator B) -
         (boundedLatticeOperator B).comp (boundedLatticeOperator A) := by

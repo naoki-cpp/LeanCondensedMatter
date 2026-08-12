@@ -22,7 +22,7 @@ variable {Mode : Type*} [LinearOrder Mode]
 
 /-- The canonical fermionic two-point operator `Tτ cᵢ(τ) cⱼ†(τ')`. -/
 noncomputable def twoPointTimeOrderedProduct (ε : Mode → ℝ)
-    (i j : Mode) (τ τ' : ℝ) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    (i j : Mode) (τ τ' : ℝ) : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.timeOrderedProduct Common.Statistics.fermion
     (imaginaryTimeEvolve ε τ (annihilate i))
     (imaginaryTimeEvolve ε τ' (create j)) τ τ'

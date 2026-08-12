@@ -43,7 +43,7 @@ theorem traceFock_imaginaryTimeEvolveFree_comp_annihilate_comp_create
   have hcomm : (annihilate i).comp (create j) -
       (Common.Statistics.zetaInt Common.Statistics.fermion : ℂ) • ((create j).comp (annihilate i)) =
         (if i = j then (1 : ℂ) else 0) •
-          (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
+          (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
     rw [Common.Statistics.zetaInt_fermion]
     have h := anticomm_annihilate_create i j
     rw [anticomm] at h

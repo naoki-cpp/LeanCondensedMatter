@@ -82,8 +82,8 @@ theorem continuumMultiplication1D_apply
 operators on raw one-dimensional wavefunctions. -/
 noncomputable def continuumChargeDensity1D (q : ℂ) :
     (ℝ → ℂ) →ₗ[ℂ]
-      (FiniteParticleFock ContinuumWavefunction1D →ₗ[ℂ]
-        FiniteParticleFock ContinuumWavefunction1D) :=
+      (AlgebraicFock ContinuumWavefunction1D →ₗ[ℂ]
+        AlgebraicFock ContinuumWavefunction1D) :=
   chargeDensity ContinuumWavefunction1D q continuumMultiplication1D
 
 @[simp]

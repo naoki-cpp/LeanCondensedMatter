@@ -23,7 +23,7 @@ omit [LinearOrder Mode] [Fintype Mode] in
 `Common.heisenbergEvolve_comp` at `energy := fermionEnergy ε`. Needed to unfold
 `quarticVertexOperator`'s evolution atom-by-atom. -/
 theorem imaginaryTimeEvolve_comp (ε : Mode → ℝ) (τ : ℝ)
-    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (A B : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     imaginaryTimeEvolve ε τ (A.comp B) =
       (imaginaryTimeEvolve ε τ A).comp (imaginaryTimeEvolve ε τ B) :=
   Common.heisenbergEvolve_comp (fermionEnergy ε) τ A B
@@ -262,7 +262,7 @@ theorem zetaCommutator_quarticLegOperatorForSequence {n : ℕ} (ε : Mode → �
     Common.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
         (quarticLegOperatorForSequence ε q τ p) (quarticLegOperatorForSequence ε q τ p') =
       flatVertexLegCommutatorCoeff ε q τ p p' •
-        (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
+        (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
   rw [quarticLegOperatorForSequence_eq_smul, quarticLegOperatorForSequence_eq_smul,
     Common.zetaCommutator_smul_smul, zetaCommutator_quarticLocalLegOperator, smul_smul,
     flatVertexLegCommutatorCoeff]

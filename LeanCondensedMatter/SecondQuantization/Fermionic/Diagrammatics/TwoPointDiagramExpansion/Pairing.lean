@@ -44,7 +44,7 @@ def externalFieldLabelIsCreate : ExternalFieldLabel Mode → Bool
 
 /-- The bare creation or annihilation operator represented by an external field label. -/
 noncomputable def bareExternalFieldOperator :
-    ExternalFieldLabel Mode → FockSpace Mode →ₗ[ℂ] FockSpace Mode
+    ExternalFieldLabel Mode → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode
   | .annihilation i => annihilate i
   | .creation i => create i
 
@@ -55,7 +55,7 @@ def externalFieldLabelEnergyShift (ε : Mode → ℝ) : ExternalFieldLabel Mode 
 
 /-- A time-labelled field as an evolved linear operator. -/
 noncomputable def timedFieldOperator (ε : Mode → ℝ)
-    (field : TimedField Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    (field : TimedField Mode) : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   externalFieldOperator ε field.time field.label
 
 /-- Every evolved external field is its bare ladder operator times the expected exponential. -/
@@ -87,7 +87,7 @@ theorem zetaCommutator_bareExternalFieldOperator
         (bareExternalFieldOperator A) (bareExternalFieldOperator B) =
       (if externalFieldLabelIsCreate A = externalFieldLabelIsCreate B then (0 : ℂ)
        else if externalFieldLabelMode A = externalFieldLabelMode B then 1 else 0) •
-        (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
+        (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
   have hbridge :
       Common.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
           (bareExternalFieldOperator A) (bareExternalFieldOperator B) =
@@ -120,7 +120,7 @@ theorem zetaCommutator_timedFieldOperator (ε : Mode → ℝ)
     Common.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
         (timedFieldOperator ε A) (timedFieldOperator ε B) =
       timedFieldCommutatorCoeff ε A B •
-        (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
+        (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
   rw [timedFieldOperator_eq_smul, timedFieldOperator_eq_smul,
     Common.zetaCommutator_smul_smul, zetaCommutator_bareExternalFieldOperator, smul_smul,
     timedFieldCommutatorCoeff]
@@ -275,7 +275,7 @@ noncomputable def mixedTimeOrderedAtomicFieldFamily {n : ℕ} (ε : Mode → ℝ
 /-- The corresponding `Fin (4n + 2)`-indexed atomic operator family. -/
 noncomputable def mixedTimeOrderedAtomicOperatorFamily {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    Fin (2 * (2 * n + 1)) → FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    Fin (2 * (2 * n + 1)) → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   fun p => timedFieldOperator ε (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ p)
 
 /-- The eigenvalue-shift family used by the general pairing theorem. -/
@@ -340,7 +340,7 @@ theorem zetaCommutator_mixedTimeOrderedAtomicOperatorFamily {n : ℕ}
         (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ a)
         (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ b) =
       mixedTimeOrderedAtomicCommutatorCoeff ε i j τ τ' q σ a b •
-        (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :=
+        (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :=
   zetaCommutator_timedFieldOperator ε
     (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ a)
     (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ b)
@@ -380,7 +380,7 @@ private theorem traceFock_diagonalEvolution_fermionEnergy_ne_zero
 
 omit [LinearOrder Mode] in
 private theorem finiteGibbsExpectation_smul_apply (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
-    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     Common.finiteGibbsExpectation (fermionEnergy ε) β (c • A) =
       c * Common.finiteGibbsExpectation (fermionEnergy ε) β A := by
   change (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) (c • A) =

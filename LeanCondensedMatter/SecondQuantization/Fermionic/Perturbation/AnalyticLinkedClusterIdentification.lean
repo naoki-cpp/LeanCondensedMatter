@@ -28,7 +28,7 @@ omit [LinearOrder Mode] in
 formal logarithm of the normalized Dyson partition series. -/
 theorem iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_powerSeriesCumulantCoeff
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ) :
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) :
     iteratedDeriv n (analyticNormalizedLogPartitionFunction ε β V) 0 =
       Combinatorics.powerSeriesCumulantCoeff
         (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) n := by
@@ -83,7 +83,7 @@ omit [LinearOrder Mode] in
 /-- Taylor-coefficient form of the analytic/formal logarithm bridge. -/
 theorem iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_formalCoeff
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ) :
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) :
     iteratedDeriv n (analyticNormalizedLogPartitionFunction ε β V) 0 =
       (n.factorial : ℂ) *
         PowerSeries.coeff n (dysonFormalLogPartitionFunction ε β V) := by

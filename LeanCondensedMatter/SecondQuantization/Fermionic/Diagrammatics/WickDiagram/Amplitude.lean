@@ -28,7 +28,7 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
 /-- The time-evolved operator at a flattened leg position for a fixed vertex order. -/
 noncomputable def orderedQuarticLegOperator (ε : Mode → ℝ) {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (order : Common.QuarticVertexOrder S) (τ : Fin S.card → ℝ) :
-    Fin (2 * (2 * S.card)) → FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    Fin (2 * (2 * S.card)) → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   quarticLegOperatorForSequence ε (fun i => d.vertexLabel (order i)) τ
 
 /-! ## Pair contraction values -/
@@ -57,7 +57,7 @@ theorem orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation
 
 omit [LinearOrder Mode] in
 private theorem finiteGibbsExpectation_smul_apply (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
-    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     Common.finiteGibbsExpectation (fermionEnergy ε) β (c • A) =
       c * Common.finiteGibbsExpectation (fermionEnergy ε) β A := by
   simpa only [Common.finiteGibbsExpectation, Common.finiteGibbsExpectationLinearMap,

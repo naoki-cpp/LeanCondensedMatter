@@ -45,7 +45,7 @@ noncomputable def completedFiniteHilbertContinuousEquiv :
 existing algebraic-to-finite-Hilbert equivalence. -/
 @[simp]
 theorem completedFiniteHilbertEquiv_algebraicToCompleted
-    (x : FockSpace Mode) :
+    (x : OccupationFock Mode) :
     completedFiniteHilbertEquiv (Mode := Mode) (algebraicToCompleted x) =
       Common.finiteHilbertFockEquiv x := by
   ext n
@@ -68,7 +68,7 @@ omit [Fintype Mode] in
 their values on the dense algebraic core. -/
 theorem continuousLinearMap_ext_algebraicCore_to_finite
     {A B : CompletedFockSpace Mode →L[ℂ] Common.FiniteHilbertFock (Occupation Mode)}
-    (h : ∀ x : FockSpace Mode, A (algebraicToCompleted x) = B (algebraicToCompleted x)) :
+    (h : ∀ x : OccupationFock Mode, A (algebraicToCompleted x) = B (algebraicToCompleted x)) :
     A = B := by
   apply DFunLike.ext'
   exact (map_continuous A).ext_on algebraicToCompleted_denseRange (map_continuous B) <| by
@@ -87,12 +87,12 @@ theorem continuousLinearMap_ext_completedBasis_to_finite
       B.toLinearMap.comp algebraicToCompleted := by
     apply Finsupp.lhom_ext
     intro n c
-    have hc : (Finsupp.single n c : FockSpace Mode) = c • basisState n :=
+    have hc : (Finsupp.single n c : OccupationFock Mode) = c • basisState n :=
       (Finsupp.smul_single_one n c).symm
     rw [hc]
     simp only [LinearMap.comp_apply, map_smul, algebraicToCompleted_basisState]
     exact congrArg (fun y : Common.FiniteHilbertFock (Occupation Mode) => c • y) (h n)
-  exact congrArg (fun f : FockSpace Mode →ₗ[ℂ]
+  exact congrArg (fun f : OccupationFock Mode →ₗ[ℂ]
     Common.FiniteHilbertFock (Occupation Mode) => f x) hmaps
 
 end

@@ -44,7 +44,7 @@ noncomputable def completedBasisState (n : Occupation Mode) : CompletedFockSpace
 
 /-- The coordinate-preserving inclusion of algebraic fermionic Fock space into its `ℓ²` completion. -/
 noncomputable def algebraicToCompleted :
-    FockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode where
+    OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode where
   toFun x :=
     ⟨fun n => x n, (memℓp_zero x.hasFiniteSupport).of_exponent_ge zero_le⟩
   map_add' x y := by
@@ -57,7 +57,7 @@ noncomputable def algebraicToCompleted :
     rfl
 
 @[simp]
-theorem algebraicToCompleted_apply (x : FockSpace Mode) (n : Occupation Mode) :
+theorem algebraicToCompleted_apply (x : OccupationFock Mode) (n : Occupation Mode) :
     algebraicToCompleted x n = x n :=
   rfl
 
@@ -78,7 +78,7 @@ theorem algebraicToCompleted_basisState (n : Occupation Mode) :
 /-- The algebraic-to-completed inclusion loses no finite-support vector. -/
 theorem algebraicToCompleted_injective :
     Function.Injective
-      (algebraicToCompleted : FockSpace Mode → CompletedFockSpace Mode) := by
+      (algebraicToCompleted : OccupationFock Mode → CompletedFockSpace Mode) := by
   intro x y hxy
   apply Finsupp.ext
   intro n
@@ -87,7 +87,7 @@ theorem algebraicToCompleted_injective :
 /-- Finite-support fermionic Fock vectors are dense in the completed `ℓ²` space. -/
 theorem algebraicToCompleted_denseRange :
     DenseRange
-      (algebraicToCompleted : FockSpace Mode → CompletedFockSpace Mode) := by
+      (algebraicToCompleted : OccupationFock Mode → CompletedFockSpace Mode) := by
   classical
   intro ψ
   refine mem_closure_of_tendsto (lp.hasSum_single (p := (2 : ℝ≥0∞)) (by norm_num) ψ) ?_
@@ -163,7 +163,7 @@ theorem completedNumberOperator_comp_algebraicToCompleted (i : Mode) :
       algebraicToCompleted.comp (numberOperator i) := by
   apply Finsupp.lhom_ext
   intro n c
-  have hc : (Finsupp.single n c : FockSpace Mode) = c • basisState n :=
+  have hc : (Finsupp.single n c : OccupationFock Mode) = c • basisState n :=
     (Finsupp.smul_single_one n c).symm
   rw [hc]
   simp only [LinearMap.comp_apply, map_smul]

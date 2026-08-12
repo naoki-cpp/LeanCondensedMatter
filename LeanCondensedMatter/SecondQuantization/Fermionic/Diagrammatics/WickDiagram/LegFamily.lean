@@ -20,7 +20,7 @@ and time assignment `τ`**: look up which slot/local-leg the position correspond
 time. -/
 noncomputable def quarticLegOperatorForSequence (ε : Mode → ℝ) {n : ℕ}
     (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ) (p : Fin (2 * (2 * n))) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   let slotLeg := Common.orderedQuarticLegEquiv n p
   imaginaryTimeEvolve ε (τ slotLeg.1) (quarticLocalLegOperator (q slotLeg.1) slotLeg.2)
 

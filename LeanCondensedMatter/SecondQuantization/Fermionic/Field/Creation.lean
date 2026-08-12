@@ -24,11 +24,11 @@ variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
 /-- The smeared fermionic creation operator `a†(f)`, acting by left exterior multiplication. -/
 noncomputable def create (f : 𝓗₁) :
-    FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁ :=
+    AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁ :=
   LinearMap.mulLeft ℂ (oneParticle 𝓗₁ f)
 
 @[simp]
-theorem create_apply (f : 𝓗₁) (Ψ : FiniteParticleFock 𝓗₁) :
+theorem create_apply (f : 𝓗₁) (Ψ : AlgebraicFock 𝓗₁) :
     create 𝓗₁ f Ψ = oneParticle 𝓗₁ f * Ψ :=
   rfl
 

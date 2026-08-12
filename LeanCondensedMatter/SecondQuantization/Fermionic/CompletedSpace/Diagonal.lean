@@ -95,7 +95,7 @@ theorem completedDiagonalOperator_toFun_apply (w : Occupation Mode → ℂ)
 
 /-- Every finite-support algebraic Fock vector belongs to every weighted diagonal domain. -/
 theorem algebraicToCompleted_mem_completedDiagonalDomain (w : Occupation Mode → ℂ)
-    (x : FockSpace Mode) :
+    (x : OccupationFock Mode) :
     algebraicToCompleted x ∈ completedDiagonalDomain w := by
   rw [mem_completedDiagonalDomain_iff]
   apply (memℓp_zero ?_).of_exponent_ge zero_le
@@ -108,7 +108,7 @@ theorem algebraicToCompleted_mem_completedDiagonalDomain (w : Occupation Mode �
 
 /-- The algebraic core, regarded as a linear map into the weighted diagonal domain. -/
 noncomputable def algebraicToCompletedDiagonalDomain (w : Occupation Mode → ℂ) :
-    FockSpace Mode →ₗ[ℂ] completedDiagonalDomain w where
+    OccupationFock Mode →ₗ[ℂ] completedDiagonalDomain w where
   toFun x := ⟨algebraicToCompleted x, algebraicToCompleted_mem_completedDiagonalDomain w x⟩
   map_add' x y := by
     apply Subtype.ext
@@ -119,14 +119,14 @@ noncomputable def algebraicToCompletedDiagonalDomain (w : Occupation Mode → �
 
 @[simp]
 theorem algebraicToCompletedDiagonalDomain_coe (w : Occupation Mode → ℂ)
-    (x : FockSpace Mode) :
+    (x : OccupationFock Mode) :
     ((algebraicToCompletedDiagonalDomain w x : completedDiagonalDomain w) :
       CompletedFockSpace Mode) = algebraicToCompleted x :=
   rfl
 
 @[simp]
 theorem algebraicToCompletedDiagonalDomain_apply (w : Occupation Mode → ℂ)
-    (x : FockSpace Mode) (n : Occupation Mode) :
+    (x : OccupationFock Mode) (n : Occupation Mode) :
     (((algebraicToCompletedDiagonalDomain w x : completedDiagonalDomain w) :
       CompletedFockSpace Mode) n) = x n :=
   rfl
@@ -167,7 +167,7 @@ theorem completedDiagonalOperator_comp_algebraicCore (w : Occupation Mode → �
       algebraicToCompleted.comp (Common.diagonalOperator w) := by
   apply Finsupp.lhom_ext
   intro n c
-  have hc : (Finsupp.single n c : FockSpace Mode) = c • basisState n :=
+  have hc : (Finsupp.single n c : OccupationFock Mode) = c • basisState n :=
     (Finsupp.smul_single_one n c).symm
   rw [hc]
   simp only [LinearMap.comp_apply, map_smul]
@@ -239,7 +239,7 @@ theorem completedTotalNumberOperator_comp_algebraicCore :
     completedTotalNumberOperator.toFun.comp
         (algebraicToCompletedDiagonalDomain
           (fun n : Occupation Mode => (particleNumber n : ℂ))) =
-      algebraicToCompleted.comp (totalNumberOperator : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
+      algebraicToCompleted.comp (totalNumberOperator : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
   change
     (completedDiagonalOperator (fun n : Occupation Mode => (particleNumber n : ℂ))).toFun.comp
         (algebraicToCompletedDiagonalDomain

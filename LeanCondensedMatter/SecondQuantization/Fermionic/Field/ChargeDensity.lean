@@ -37,7 +37,7 @@ The result is linear in the smearing observable. -/
 noncomputable def chargeDensity (q : ℂ)
     (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁)) :
     Test →ₗ[ℂ]
-      (FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁) :=
+      (AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) :=
   q • (dGammaLinear 𝓗₁).comp M
 
 @[simp]
@@ -54,7 +54,7 @@ theorem chargeDensity_vacuum (q : ℂ)
 
 /-- The ordinary commutator is linear in its right argument. -/
 theorem linearCommutator_smul_right (q : ℂ)
-    (A B : FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁) :
+    (A B : AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) :
     linearCommutator A (q • B) = q • linearCommutator A B := by
   apply LinearMap.ext
   intro Ψ

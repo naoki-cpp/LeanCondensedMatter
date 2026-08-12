@@ -29,16 +29,16 @@ variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
 Every element is a finite algebraic combination of finite wedge products. This is not the completed
 Hilbert direct sum and carries no claim that general second-quantized Hamiltonians are bounded. -/
-abbrev FiniteParticleFock := ExteriorAlgebra ℂ 𝓗₁
+abbrev AlgebraicFock := ExteriorAlgebra ℂ 𝓗₁
 
 /-- The homogeneous `n`-particle sector inside `FiniteParticleFock 𝓗₁`. -/
 abbrev ParticleSector (n : ℕ) := ⋀[ℂ]^n 𝓗₁
 
 /-- The Fock vacuum, represented by the multiplicative unit of the exterior algebra. -/
-def vacuum : FiniteParticleFock 𝓗₁ := 1
+def vacuum : AlgebraicFock 𝓗₁ := 1
 
 /-- The canonical basis-independent embedding of one-particle states into Fock space. -/
-abbrev oneParticle : 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁ :=
+abbrev oneParticle : 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁ :=
   ExteriorAlgebra.ι ℂ
 
 /-- The one-particle embedding is injective, without any finite-dimensionality assumption. -/
