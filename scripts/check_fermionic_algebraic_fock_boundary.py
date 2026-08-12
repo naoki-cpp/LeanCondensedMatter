@@ -65,8 +65,10 @@ OLD_FIELD_MODULE = re.compile(
 UNAMBIGUOUS_MOVED_REFERENCES = (
     "dGamma",
     "dGammaLinear",
+    "dGammaLinear_apply",
     "dGamma_linearCommutator",
     "linearCommutator",
+    "oneParticle",
     "occupationEquiv",
     "occupationConjugate",
     "occupationEquiv_create",
