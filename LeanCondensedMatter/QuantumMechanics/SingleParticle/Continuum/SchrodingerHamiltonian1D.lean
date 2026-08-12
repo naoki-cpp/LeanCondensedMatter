@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2SmearedProbabilityDensity1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2Multiplication1D
 import Mathlib.Analysis.Distribution.Sobolev
 import Mathlib.LinearAlgebra.LinearPMap
 import Mathlib.Tactic
@@ -19,8 +19,8 @@ operators from the preceding continuum layer gives a partial linear map represen
 
 `H ψ = -κ Δ ψ + V ψ`
 
-for an essentially bounded potential `V`. The real-potential specialization reuses the `L∞`
-embedding introduced for smeared probability-density observables.
+for an essentially bounded potential `V`. The real-potential specialization reuses the generic
+real `L∞` embedding owned by the bounded multiplication layer.
 
 No closedness, symmetry, self-adjointness, generated unitary evolution, or identification with a
 pointwise twice-differentiable representative is claimed here. Those are later analytic layers.
