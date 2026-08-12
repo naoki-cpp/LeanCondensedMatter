@@ -59,23 +59,30 @@ series. The inverse law below uses the natural zero-constant-coefficient boundar
 noncomputable def formalExp (C : PowerSeries ℂ) : PowerSeries ℂ :=
   (PowerSeries.exp ℂ).subst C
 
-/-- The formal exponential of a zero-constant-coefficient series has constant coefficient one. -/
-theorem constantCoeff_formalExp {C : PowerSeries ℂ}
+private theorem formalExp_eq_one_add_tail {C : PowerSeries ℂ}
     (hC : PowerSeries.constantCoeff C = 0) :
-    PowerSeries.constantCoeff (formalExp C) = 1 := by
+    formalExp C = 1 + (PowerSeries.exp ℂ - 1).subst C := by
   have hsubst : PowerSeries.HasSubst C :=
     PowerSeries.HasSubst.of_constantCoeff_zero' hC
   have hone : (1 : PowerSeries ℂ).subst C = 1 := by
     rw [show (1 : PowerSeries ℂ) = PowerSeries.C 1 by rfl, PowerSeries.subst_C]
     rfl
+  have hsplit :
+      (PowerSeries.exp ℂ : PowerSeries ℂ) = 1 + (PowerSeries.exp ℂ - 1) := by
+    ring
+  have h := congrArg (fun f : PowerSeries ℂ => f.subst C) hsplit
+  rw [PowerSeries.subst_add hsubst, hone] at h
+  exact h
+
+/-- The formal exponential of a zero-constant-coefficient series has constant coefficient one. -/
+theorem constantCoeff_formalExp {C : PowerSeries ℂ}
+    (hC : PowerSeries.constantCoeff C = 0) :
+    PowerSeries.constantCoeff (formalExp C) = 1 := by
+  rw [formalExp_eq_one_add_tail hC, map_add, map_one]
   have htail :
       PowerSeries.constantCoeff ((PowerSeries.exp ℂ - 1).subst C) = 0 :=
     PowerSeries.constantCoeff_subst_eq_zero hC (PowerSeries.exp ℂ - 1) (by simp)
-  have hexp :
-      formalExp C = 1 + (PowerSeries.exp ℂ - 1).subst C := by
-    rw [formalExp, show PowerSeries.exp ℂ = 1 + (PowerSeries.exp ℂ - 1) by ring]
-    rw [PowerSeries.subst_add hsubst, hone]
-  rw [hexp, map_add, map_one, htail, add_zero]
+  rw [htail, add_zero]
 
 /-- `logOf` is a left inverse of the formal exponential on zero-constant-coefficient series. -/
 theorem logOf_formalExp {C : PowerSeries ℂ}
@@ -83,20 +90,17 @@ theorem logOf_formalExp {C : PowerSeries ℂ}
     PowerSeries.logOf (formalExp C) = C := by
   have hsubst : PowerSeries.HasSubst C :=
     PowerSeries.HasSubst.of_constantCoeff_zero' hC
-  have hone : (1 : PowerSeries ℂ).subst C = 1 := by
-    rw [show (1 : PowerSeries ℂ) = PowerSeries.C 1 by rfl, PowerSeries.subst_C]
-    rfl
   rw [PowerSeries.logOf_eq]
   have htail :
       formalExp C - 1 = (PowerSeries.exp ℂ - 1).subst C := by
-    rw [formalExp, PowerSeries.subst_sub hsubst, hone]
+    rw [formalExp_eq_one_add_tail hC]
+    ring
   rw [htail]
   calc
     (PowerSeries.log ℂ).subst ((PowerSeries.exp ℂ - 1).subst C) =
         ((PowerSeries.log ℂ).subst (PowerSeries.exp ℂ - 1)).subst C := by
-      symm
-      exact PowerSeries.subst_comp_subst_apply PowerSeries.HasSubst.exp_sub_one hsubst
-        (PowerSeries.log ℂ)
+      exact (PowerSeries.subst_comp_subst_apply
+        PowerSeries.HasSubst.exp_sub_one hsubst (PowerSeries.log ℂ)).symm
     _ = PowerSeries.X.subst C := by rw [log_subst_exp_sub_one]
     _ = C := PowerSeries.subst_X hsubst
 
