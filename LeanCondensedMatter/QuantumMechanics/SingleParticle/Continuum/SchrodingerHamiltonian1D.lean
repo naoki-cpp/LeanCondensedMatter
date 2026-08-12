@@ -41,7 +41,8 @@ noncomputable def l2ToTemperedDistribution1D :
     ContinuumL2Wavefunction1D →L[ℂ] 𝓢'(ℝ, ℂ) :=
   MeasureTheory.Lp.toTemperedDistributionCLM ℂ (volume : Measure ℝ) 2
 
-private theorem l2ToTemperedDistribution1D_injective :
+/-- The canonical `L²(ℝ, ℂ) → 𝓢'(ℝ, ℂ)` embedding is injective. -/
+theorem l2ToTemperedDistribution1D_injective :
     Function.Injective l2ToTemperedDistribution1D := by
   change Function.Injective
     (MeasureTheory.Lp.toTemperedDistributionCLM ℂ (volume : Measure ℝ) 2)
