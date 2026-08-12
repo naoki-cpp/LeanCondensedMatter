@@ -1,5 +1,4 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuity
-import Mathlib.MeasureTheory.Integral.Bochner
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 
 set_option linter.style.header false
