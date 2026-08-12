@@ -65,6 +65,26 @@ theorem diagonalExpectationValue_nonneg
   rw [← coe_diagonalExpectationValue_right T hT.isSelfAdjoint x] at hcomplex
   exact_mod_cast hcomplex
 
+/-- The diagonal expectation of a positive operator, with nonnegativity carried in the codomain. -/
+noncomputable def diagonalExpectationNNReal
+    (T : H →L[ℂ] H) (hT : T.IsPositive) (x : H) : NNReal :=
+  ⟨diagonalExpectationValue T hT.isSelfAdjoint x,
+    diagonalExpectationValue_nonneg T hT x⟩
+
+@[simp]
+theorem coe_diagonalExpectationNNReal
+    (T : H →L[ℂ] H) (hT : T.IsPositive) (x : H) :
+    (diagonalExpectationNNReal T hT x : ℝ) =
+      diagonalExpectationValue T hT.isSelfAdjoint x :=
+  rfl
+
+/-- Coercing a positive diagonal expectation back to `ℂ` recovers the original matrix element. -/
+@[simp]
+theorem coe_coe_diagonalExpectationNNReal
+    (T : H →L[ℂ] H) (hT : T.IsPositive) (x : H) :
+    ((diagonalExpectationNNReal T hT x : ℝ) : ℂ) = inner ℂ x (T x) := by
+  rw [coe_diagonalExpectationNNReal, coe_diagonalExpectationValue_right]
+
 /-- Lossless diagonal expectation is additive in the operator. -/
 @[simp]
 theorem diagonalExpectationValue_add
