@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ChargeDensity
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationCommutator
 import Mathlib.LinearAlgebra.Finsupp.LSum
 
 set_option linter.style.header false
@@ -39,6 +39,15 @@ private theorem linearMap_finsetSum_apply
       simp [ha, ih]
 
 variable {Site : Type*}
+
+private theorem linearCommutator_smul_right
+    {V : Type*} [AddCommGroup V] [Module ℂ V]
+    (q : ℂ) (A B : V →ₗ[ℂ] V) :
+    AlgebraicFock.linearCommutator A (q • B) =
+      q • AlgebraicFock.linearCommutator A B := by
+  apply LinearMap.ext
+  intro Ψ
+  simp [AlgebraicFock.linearCommutator, smul_sub]
 
 /-- The canonical one-particle ket localized at a lattice site. -/
 noncomputable def latticeKet (x : Site) : LatticeState Site :=
