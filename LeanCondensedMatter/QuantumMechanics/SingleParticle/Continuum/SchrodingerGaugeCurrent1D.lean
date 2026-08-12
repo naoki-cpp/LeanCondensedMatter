@@ -70,7 +70,10 @@ theorem kineticMomentumValue1D_eq_neg_I_hbar_mul_covariantDerivative
     gaugeConnectionCoefficientValue1D
   push_cast
   field_simp [hℏ]
-  simp [pow_two]
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    simpa [pow_two] using Complex.I_mul_I
+  rw [hI]
+  ring
 
 /-- The real bilinear pairing `Im (conj ψ * χ)` in coordinate form. -/
 def probabilityCurrentPairingValue (ψ χ : ℂ) : ℝ :=
