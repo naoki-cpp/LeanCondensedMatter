@@ -31,6 +31,6 @@ theorem hasSum_norm_sq_inner {ι : Type*} (d : HilbertBasis ι ℂ H) (x : H) :
   rw [← hterm, inner_self_eq_norm_sq_to_K] at hs
   rw [HasSum] at hs ⊢
   exact Filter.tendsto_ofReal_iff.mp (by
-    simpa only [Complex.ofReal_sum] using hs)
+    simpa using hs)
 
 end HilbertBasis
