@@ -3,7 +3,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentShuffleIntegrability
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentDysonIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DiagramSumIntegral
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedExternalPositions
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ComponentAmplitudeFactorization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedLegSlotEmbedding
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ExternalPiece
@@ -22,8 +21,8 @@ Finite-mode imaginary-time two-point Wick diagrams with quartic interaction vert
 ordering and flattening, fixed-external amplitudes, external/vacuum component restriction and
 factorization, measurable and integrable component-local factors, ordered-simplex component
 shuffles, interaction-slot relabeling, the restriction of the mixed leg order along a monotone
-family of interaction slots, the external component as a standalone diagram on its own slots, the exchange
-of the finite diagram sum with the ordered-simplex integral, and the perturbative two-point series
-assembled from the order-`n` coefficients. The umbrella exports authoritative owner modules rather than the
-proof-stage transport chain used internally.
+family of interaction slots, the external component as a standalone diagram on its own slots, the
+exchange of the finite diagram sum with the ordered-simplex integral, and the perturbative two-point
+series assembled from the order-`n` coefficients. The umbrella exports authoritative owner modules
+rather than the proof-stage transport chain used internally.
 -/

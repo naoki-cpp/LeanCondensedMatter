@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentRestriction
-import Mathlib.Combinatorics.SimpleGraph.Matching
+import LeanCondensedMatter.Combinatorics.InvolutionCard
 
 set_option linter.style.header false
 
@@ -20,36 +20,6 @@ namespace SecondQuantization
 namespace Common
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
-
-private theorem even_card_of_fixedPointFreeInvolution {α : Type*} [Fintype α]
-    (p : Equiv.Perm α) (hp : Function.Involutive p) (hne : ∀ x, p x ≠ x) :
-    Even (Fintype.card α) := by
-  let adj : α → α → Prop := fun x y => p x = y
-  have hadjSymm : Std.Symm adj := ⟨by
-    intro x y h
-    change p y = x
-    calc
-      p y = p (p x) := congrArg p h.symm
-      _ = x := hp x⟩
-  have hadjIrrefl : Std.Irrefl adj := ⟨by
-    intro x h
-    exact hne x h⟩
-  let G : SimpleGraph α := ⟨adj, hadjSymm, hadjIrrefl⟩
-  let M : G.Subgraph :=
-    { verts := Set.univ
-      Adj := adj
-      adj_sub := fun h => h
-      edge_vert := fun _ => Set.mem_univ _
-      symm := hadjSymm }
-  have hM : M.IsPerfectMatching := by
-    rw [SimpleGraph.Subgraph.isPerfectMatching_iff]
-    intro x
-    refine ⟨p x, ?_, ?_⟩
-    · rfl
-    · intro y hy
-      change p x = y at hy
-      exact hy.symm
-  exact hM.even_card
 
 /-- The component-partition part containing external vertex `0`. -/
 noncomputable def TwoPointDiagram.externalComponentPart {S : Finset (Fin N)}
@@ -172,7 +142,7 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
   have hEven :
       Even (Fintype.card {leg : Fin (2 * (2 * S.card + 1)) //
         d.legInComponent (d.externalComponent 0) leg}) :=
-    even_card_of_fixedPointFreeInvolution
+    Combinatorics.even_card_of_fixedPointFreeInvolution
       (d.restrictedPartner (d.externalComponent 0))
       (d.restrictedPartner_involutive (d.externalComponent 0))
       (d.restrictedPartner_ne_self (d.externalComponent 0))

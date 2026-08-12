@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ConnectedSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentDecomposition
 
 set_option linter.style.header false
 
@@ -25,31 +26,21 @@ abbrev FixedExternalTwoPointWickDiagramOn (Mode : Type*) (n : ℕ) (T : Finset (
     (i j : Mode) : Type _ :=
   {d : TwoPointWickDiagram Mode n T // d.externalLabel = twoPointExternalLabels i j}
 
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- The slot set owned by the external component, in the form the splitting lemmas expect. -/
-theorem FixedExternalTwoPointWickDiagram.interactionPart_eq_of_externalSlots_eq
-    {d : FixedExternalTwoPointWickDiagram Mode n i j} {T : Finset (Fin n)}
-    (h : d.externalSlots = T) :
-    Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0) = T := h
-
 /-- **The fiber decomposition with the external labels fixed.** The diagrams whose external
 component owns exactly `T` are the pairs of an externally connected fixed-external diagram on `T`
 and an arbitrary quartic diagram on the complementary slots. -/
 noncomputable def fixedExternalFiberEquiv (T : Finset (Fin n)) :
-    {d : FixedExternalTwoPointWickDiagram Mode n i j // d.externalSlots = T} ≃
+    {d : FixedExternalTwoPointWickDiagram Mode n i j // d.1.externalInteractionPart = T} ≃
       {ext : FixedExternalTwoPointWickDiagramOn Mode n T i j //
           ext.1.IsExternallyConnected} ×
         QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T) where
   toFun d :=
     (⟨⟨d.1.1.slotSplitExternal (Finset.subset_univ T)
-          (Common.isSplit_slotLegSplitting_of_interactionPart_eq (Finset.subset_univ T)
-            (FixedExternalTwoPointWickDiagram.interactionPart_eq_of_externalSlots_eq d.2)),
+          (Common.isSplit_slotLegSplitting_of_interactionPart_eq (Finset.subset_univ T) d.2),
         d.1.2⟩,
-      Common.isExternallyConnected_slotSplitExternal (Finset.subset_univ T)
-        (FixedExternalTwoPointWickDiagram.interactionPart_eq_of_externalSlots_eq d.2) _⟩,
+      Common.isExternallyConnected_slotSplitExternal (Finset.subset_univ T) d.2 _⟩,
      d.1.1.slotSplitVacuum (Finset.subset_univ T)
-       (Common.isSplit_slotLegSplitting_of_interactionPart_eq (Finset.subset_univ T)
-         (FixedExternalTwoPointWickDiagram.interactionPart_eq_of_externalSlots_eq d.2)))
+       (Common.isSplit_slotLegSplitting_of_interactionPart_eq (Finset.subset_univ T) d.2))
   invFun p :=
     ⟨⟨Common.TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) p.1.1.1 p.2, p.1.1.2⟩,
       Common.interactionPart_externalComponent_ofSlotSplit (Finset.subset_univ T)
@@ -57,8 +48,7 @@ noncomputable def fixedExternalFiberEquiv (T : Finset (Fin n)) :
   left_inv d :=
     Subtype.ext (Subtype.ext
       (Common.TwoPointDiagram.ofSlotSplit_slotSplit (Finset.subset_univ T) d.1.1
-        (Common.isSplit_slotLegSplitting_of_interactionPart_eq (Finset.subset_univ T)
-          (FixedExternalTwoPointWickDiagram.interactionPart_eq_of_externalSlots_eq d.2))))
+        (Common.isSplit_slotLegSplitting_of_interactionPart_eq (Finset.subset_univ T) d.2)))
   right_inv p := by
     obtain ⟨⟨⟨ext, hlabel⟩, hconn⟩, vac⟩ := p
     simp only [Prod.mk.injEq]
@@ -83,10 +73,9 @@ theorem sum_eq_sum_powerset_fixedExternalFiber {M : Type*} [AddCommMonoid M]
   rw [FixedExternalTwoPointWickDiagram.sum_eq_sum_fiberwise_externalInteractionPart F]
   refine Finset.sum_congr rfl fun T _ => ?_
   rw [Finset.sum_subtype
-    (p := fun d : FixedExternalTwoPointWickDiagram Mode n i j => d.externalSlots = T)
+    (p := fun d : FixedExternalTwoPointWickDiagram Mode n i j => d.1.externalInteractionPart = T)
     _ (fun x => by
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-      exact Iff.rfl) F]
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]) F]
   exact (Equiv.sum_comp (fixedExternalFiberEquiv T).symm (fun d => F d.1)).symm
 
 end Fermionic
