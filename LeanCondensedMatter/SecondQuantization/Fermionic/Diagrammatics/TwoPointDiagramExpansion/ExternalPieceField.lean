@@ -26,9 +26,9 @@ omit [LinearOrder Mode] [Fintype Mode] in
 /-- **A leg of the piece describes the same field as the ambient leg it is sent to.** -/
 theorem FixedExternalTwoPointWickDiagram.orderedTwoPointLegField_orderedTwoPointLegMap
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (leg : OrderedTwoPointLeg d.externalSlots.card) :
+    (leg : OrderedTwoPointLeg d.1.externalInteractionPart.card) :
     orderedTwoPointLegField i j τ τ' d.vertexLabelSequence σ
-        (orderedTwoPointLegMap (d.externalSlots.orderEmbOfFin rfl) leg) =
+        (orderedTwoPointLegMap (d.1.externalInteractionPart.orderEmbOfFin rfl) leg) =
       orderedTwoPointLegField i j τ τ' d.externalPiece.vertexLabelSequence
         (d.externalPieceTimes σ) leg := by
   cases leg with
@@ -45,7 +45,7 @@ omit [Fintype Mode] in
 own mixed field family. -/
 theorem FixedExternalTwoPointWickDiagram.mixedTimeOrderedAtomicFieldFamily_externalPieceMixedPosition
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (ε : Mode → ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (p : Fin (2 * (2 * d.externalSlots.card + 1))) :
+    (p : Fin (2 * (2 * d.1.externalInteractionPart.card + 1))) :
     mixedTimeOrderedAtomicFieldFamily ε i j τ τ' d.vertexLabelSequence σ
         (d.externalPieceMixedPosition τ τ' σ p) =
       mixedTimeOrderedAtomicFieldFamily ε i j τ τ' d.externalPiece.vertexLabelSequence
@@ -60,7 +60,7 @@ omit [Fintype Mode] in
 theorem
     FixedExternalTwoPointWickDiagram.mixedTimeOrderedAtomicOperatorFamily_externalPieceMixedPosition
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (ε : Mode → ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (p : Fin (2 * (2 * d.externalSlots.card + 1))) :
+    (p : Fin (2 * (2 * d.1.externalInteractionPart.card + 1))) :
     mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ
         (d.externalPieceMixedPosition τ τ' σ p) =
       mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.externalPiece.vertexLabelSequence
@@ -76,7 +76,7 @@ contraction of two ambient positions coming from the piece is the piece's own co
 positions, evaluated at the times it inherits. -/
 theorem FixedExternalTwoPointWickDiagram.mixedTimeOrderedAtomicPairValue_externalPieceMixedPosition
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ)
-    (σ : Fin n → ℝ) (a b : Fin (2 * (2 * d.externalSlots.card + 1))) :
+    (σ : Fin n → ℝ) (a b : Fin (2 * (2 * d.1.externalInteractionPart.card + 1))) :
     mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
         (d.externalPieceMixedPosition τ τ' σ a) (d.externalPieceMixedPosition τ τ' σ b) =
       mixedTimeOrderedAtomicPairValue ε β i j τ τ' (d.externalPieceTimes σ)
