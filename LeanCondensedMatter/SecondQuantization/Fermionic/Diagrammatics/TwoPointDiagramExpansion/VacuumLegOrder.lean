@@ -21,7 +21,7 @@ namespace Fermionic
 
 /-- View a leg in the fixed ordered quartic enumeration as the corresponding interaction leg of a
 two-point enumeration with the same interaction slots. -/
-def orderedQuarticLegToTwoPointLeg {n : ℕ}
+noncomputable def orderedQuarticLegToTwoPointLeg {n : ℕ}
     (p : Fin (2 * (2 * n))) : OrderedTwoPointLeg n :=
   let q := Common.orderedQuarticLegEquiv n p
   Sum.inr (⟨q.1, Finset.mem_univ q.1⟩, q.2)
@@ -32,6 +32,13 @@ theorem orderedQuarticLegToTwoPointLeg_orderedQuarticLegEquiv_symm
     orderedQuarticLegToTwoPointLeg ((Common.orderedQuarticLegEquiv n).symm (v, l)) =
       Sum.inr (⟨v, Finset.mem_univ v⟩, l) := by
   simp [orderedQuarticLegToTwoPointLeg]
+
+private theorem twoPointTimedEventAtomicLegs_interaction_idxOf
+    {n : ℕ} (v : Fin n) (l : Fin 4) :
+    @List.idxOf (OrderedTwoPointLeg n) instBEqOfDecidableEq
+        (Sum.inr (⟨v, Finset.mem_univ v⟩, l))
+        (twoPointTimedEventAtomicLegs (Sum.inr v)) = l.val := by
+  fin_cases l <;> simp [twoPointTimedEventAtomicLegs]
 
 /-- Mixed two-point position occupied by a fixed-order quartic interaction leg. -/
 noncomputable def mixedTimeOrderedQuarticLegPosition {n : ℕ}
@@ -78,9 +85,8 @@ theorem mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti {n : ℕ}
             (twoPointTimedEventAtomicLegs event) <
           @List.idxOf (OrderedTwoPointLeg n) instBEqOfDecidableEq y
             (twoPointTimedEventAtomicLegs event) := by
-      subst pb
-      fin_cases pa.2 <;> fin_cases pb.2 <;>
-        simp_all [x, y, event, orderedTwoPointLegEvent, twoPointTimedEventAtomicLegs]
+      simpa [event, x, y, orderedTwoPointLegEvent, hslot,
+        twoPointTimedEventAtomicLegs_interaction_idxOf] using hlocal
     simpa [mixedTimeOrderedAtomicLegPosition, mixedTimeOrderedAtomicLegEquiv,
       mixedTimeOrderedAtomicLegs, List.Nodup.getEquivOfForallMemList] using hblock.mpr hidx
   · have hslotLt : pa.1 < pb.1 := by
@@ -100,7 +106,7 @@ theorem mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti {n : ℕ}
 
 /-- Embed a fixed-order quartic leg through a monotone map from local interaction slots to ambient
 two-point interaction slots. -/
-def orderedQuarticLegMapToTwoPointLeg {m n : ℕ} (f : Fin m → Fin n)
+noncomputable def orderedQuarticLegMapToTwoPointLeg {m n : ℕ} (f : Fin m → Fin n)
     (p : Fin (2 * (2 * m))) : OrderedTwoPointLeg n :=
   orderedTwoPointLegMap f (orderedQuarticLegToTwoPointLeg p)
 
