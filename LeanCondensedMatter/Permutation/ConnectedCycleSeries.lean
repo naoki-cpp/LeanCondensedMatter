@@ -1,19 +1,68 @@
-import LeanCondensedMatter.Permutation.CycleEGF
+import LeanCondensedMatter.Permutation.AssignmentCycleTrace
+import Mathlib.Data.Complex.Basic
 import Mathlib.RingTheory.PowerSeries.Basic
+import Mathlib.Tactic.FieldSimp
 
 set_option linter.style.header false
 
 /-!
 # Formal connected-cycle series
 
-This file packages the W3 connected coefficients into a scalar formal power series. The matrix
-kernel remains inside the coefficients through `trace (K ^ m)`; the power-series coefficient ring
-is `ℂ`, so no commutativity assumption is imposed on the matrix algebra itself.
+This file packages the assignment-summed connected coefficients directly into a scalar formal power
+series. EGF normalization is an implementation detail of this module: the public API starts at the
+connected-cycle series and its trace coefficients.
+
+The matrix kernel remains inside the coefficients through `trace (K ^ m)`; the power-series
+coefficient ring is `ℂ`, so no commutativity assumption is imposed on the matrix algebra itself.
 -/
 
 namespace Combinatorics
 
 variable {ι : Type*} [Fintype ι]
+
+private noncomputable def connectedCycleCoeff
+    (ζ : ℂ) (K : Matrix ι ι ℂ) (m : ℕ) : ℂ :=
+  if m = 0 then 0
+  else
+    (∑ x : Fin m → ι,
+      singleCycleContribution ζ (fun a b : Fin m => K (x a) (x b)) Finset.univ) /
+        (Nat.factorial m : ℂ)
+
+@[simp]
+private theorem connectedCycleCoeff_zero
+    (ζ : ℂ) (K : Matrix ι ι ℂ) :
+    connectedCycleCoeff ζ K 0 = 0 := by
+  simp [connectedCycleCoeff]
+
+private theorem factorial_pred_div_factorial_complex (m : ℕ) (hm : 0 < m) :
+    (Nat.factorial (m - 1) : ℂ) / (Nat.factorial m : ℂ) = 1 / (m : ℂ) := by
+  cases m with
+  | zero => omega
+  | succ n =>
+      simp only [Nat.succ_sub_one, Nat.factorial_succ]
+      push_cast
+      have hn : ((n + 1 : ℕ) : ℂ) ≠ 0 := by
+        exact_mod_cast Nat.succ_ne_zero n
+      have hfac : ((Nat.factorial n : ℕ) : ℂ) ≠ 0 := by
+        exact_mod_cast Nat.factorial_ne_zero n
+      field_simp [hn, hfac]
+
+private theorem connectedCycleCoeff_eq_pow_mul_trace_div
+    [DecidableEq ι] (ζ : ℂ) (K : Matrix ι ι ℂ) (m : ℕ) (hm : 0 < m) :
+    connectedCycleCoeff ζ K m =
+      ζ ^ (m - 1) * Matrix.trace (K ^ m) / (m : ℂ) := by
+  rw [connectedCycleCoeff, if_neg (Nat.ne_of_gt hm)]
+  rw [sum_singleCycleContribution_assignments_eq_factorial_mul_trace ζ K m hm]
+  calc
+    ζ ^ (m - 1) * ((Nat.factorial (m - 1) : ℂ) * Matrix.trace (K ^ m)) /
+          (Nat.factorial m : ℂ) =
+        ζ ^ (m - 1) * Matrix.trace (K ^ m) *
+          ((Nat.factorial (m - 1) : ℂ) / (Nat.factorial m : ℂ)) := by
+      ring
+    _ = ζ ^ (m - 1) * Matrix.trace (K ^ m) * (1 / (m : ℂ)) := by
+      rw [factorial_pred_div_factorial_complex m hm]
+    _ = ζ ^ (m - 1) * Matrix.trace (K ^ m) / (m : ℂ) := by
+      simp [div_eq_mul_inv]
 
 /-- The formal connected-cycle series associated with exchange weight `ζ` and finite kernel `K`.
 
@@ -21,13 +70,13 @@ Its constant coefficient is zero. At positive order `m`, its coefficient is the 
 assignment-summed one-cycle contribution. -/
 noncomputable def permutationConnectedCycleSeries
     (ζ : ℂ) (K : Matrix ι ι ℂ) : PowerSeries ℂ :=
-  PowerSeries.mk (assignmentSingleCycleEGFCoeff ζ K)
+  PowerSeries.mk (connectedCycleCoeff ζ K)
 
 @[simp]
-theorem coeff_permutationConnectedCycleSeries
+private theorem coeff_permutationConnectedCycleSeries
     (ζ : ℂ) (K : Matrix ι ι ℂ) (m : ℕ) :
     PowerSeries.coeff m (permutationConnectedCycleSeries ζ K) =
-      assignmentSingleCycleEGFCoeff ζ K m :=
+      connectedCycleCoeff ζ K m :=
   PowerSeries.coeff_mk m _
 
 @[simp]
@@ -35,7 +84,7 @@ theorem constantCoeff_permutationConnectedCycleSeries
     (ζ : ℂ) (K : Matrix ι ι ℂ) :
     PowerSeries.constantCoeff (permutationConnectedCycleSeries ζ K) = 0 := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff, coeff_permutationConnectedCycleSeries]
-  exact assignmentSingleCycleEGFCoeff_zero ζ K
+  exact connectedCycleCoeff_zero ζ K
 
 /-- Positive coefficients of the formal connected-cycle series are the universal cyclic trace
 coefficients `ζ^(m-1) tr(K^m) / m`. -/
@@ -44,7 +93,7 @@ theorem coeff_permutationConnectedCycleSeries_of_pos
     PowerSeries.coeff m (permutationConnectedCycleSeries ζ K) =
       ζ ^ (m - 1) * Matrix.trace (K ^ m) / (m : ℂ) := by
   rw [coeff_permutationConnectedCycleSeries]
-  exact assignmentSingleCycleEGFCoeff_eq_pow_mul_trace_div ζ K m hm
+  exact connectedCycleCoeff_eq_pow_mul_trace_div ζ K m hm
 
 /-- Coefficientwise closed form for the connected-cycle series, including the zero-order term. -/
 theorem permutationConnectedCycleSeries_eq_mk_trace
@@ -58,7 +107,7 @@ theorem permutationConnectedCycleSeries_eq_mk_trace
   by_cases hm : m = 0
   · subst m
     simp
-  · rw [assignmentSingleCycleEGFCoeff_eq_pow_mul_trace_div ζ K m (Nat.pos_of_ne_zero hm)]
+  · rw [connectedCycleCoeff_eq_pow_mul_trace_div ζ K m (Nat.pos_of_ne_zero hm)]
     simp [hm]
 
 /-- The `ζ = 0` boundary is handled coefficientwise without dividing by `ζ`: only the linear
