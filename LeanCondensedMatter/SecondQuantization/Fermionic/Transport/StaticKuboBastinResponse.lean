@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinTrace
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinTrace
 
 set_option linter.style.header false
 
@@ -20,7 +20,7 @@ trace per unit volume, or thermodynamic-limit statement is made here.
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace Transport
 
 open Lattice
 
@@ -135,6 +135,6 @@ theorem finiteVolumeConductivityNormalization_zero_frequency
   simp [finiteVolumeConductivityNormalization]
 
 end
-end Field
+end Transport
 end Fermionic
 end SecondQuantization

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.InfiniteTimeFrequencyResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.InfiniteTimeFrequencyResponse
 import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain
 
 set_option linter.style.header false
@@ -18,7 +18,7 @@ probabilities are also equal, they retain the regularized denominator `η - iω`
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace Transport
 
 open Lattice
 
@@ -214,6 +214,6 @@ theorem hasInfiniteObservationTimeLimit_directional_purePoint_finite_sum
   exact hlimit
 
 end
-end Field
+end Transport
 end Fermionic
 end SecondQuantization

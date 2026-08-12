@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinTrace
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinTrace
 import LeanCondensedMatter.Transport.OccupationInterpolation
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 

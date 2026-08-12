@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Validation.FiniteToys
+import LeanCondensedMatter.SecondQuantization.Fermionic.Validation.FiniteToys
 
 set_option linter.style.header false
 
@@ -85,6 +85,5 @@ theorem twoLevel_scalarCurrent_streda_sum_one_one :
 
 end
 end Validation
-end Field
 end Fermionic
 end SecondQuantization
