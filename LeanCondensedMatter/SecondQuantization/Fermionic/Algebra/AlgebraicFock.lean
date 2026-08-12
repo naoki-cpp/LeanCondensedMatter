@@ -18,6 +18,7 @@ The exterior-algebra Fock representation, smeared creation and annihilation oper
 mode specializations, occupation-representation equivalences, algebraic second quantization, and
 the rank-one factorization `dΓ(|f⟩⟨d|) = a†(f) a(d)`.
 The canonical declaration owner is `SecondQuantization.Fermionic.AlgebraicFock`; the old
-`SecondQuantization.Fermionic.Field` namespace is not retained for these declarations.
+`SecondQuantization.Fermionic.Field` namespace is not retained for these declarations. Downstream
+lattice and response modules refer back to this owner explicitly instead of duplicating the API.
 This layer does not depend on lattice, transport, finite-volume, or validation modules.
 -/
