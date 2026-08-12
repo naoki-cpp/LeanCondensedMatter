@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuity
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.ProbabilityCurrent1D
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 
 set_option linter.style.header false
@@ -7,8 +7,9 @@ set_option linter.style.header false
 # Integrated probability quantities in one dimension
 
 This module owns the probability-density integrals used by both the continuity-equation and
-operator-theoretic developments.  The definitions do not depend on Schrödinger dynamics, dominated
-differentiation, or any particular conservation theorem.
+operator-theoretic developments. The definitions depend only on the pointwise probability
+foundation, not on Schrödinger dynamics, dominated differentiation, or any particular conservation
+theorem.
 -/
 
 namespace QuantumMechanics
