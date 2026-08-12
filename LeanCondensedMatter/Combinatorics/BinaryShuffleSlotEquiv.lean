@@ -250,6 +250,23 @@ theorem card_slotShuffle (m n : ℕ) :
   rw [card_leftSlotSet] at hupper
   omega
 
+/-- Ambient slot shuffles are equivalent to their ambient left-slot sets. -/
+noncomputable def slotShuffleLeftSlotSetEquiv (m n : ℕ) :
+    SlotShuffle m n ≃ LeftSlotSet m n :=
+  Equiv.ofBijective SlotShuffle.toLeftSlotSet
+    ((Fintype.bijective_iff_injective_and_card _).2
+      ⟨SlotShuffle.toLeftSlotSet_injective, by rw [card_slotShuffle, card_leftSlotSet]⟩)
+
+@[simp]
+theorem slotShuffleLeftSlotSetEquiv_apply {m n : ℕ} (σ : SlotShuffle m n) :
+    slotShuffleLeftSlotSetEquiv m n σ = σ.toLeftSlotSet := rfl
+
+/-- Reindex a finite sum over left-slot sets by ambient slot shuffles. -/
+theorem sum_leftSlotSet [AddCommMonoid M] (m n : ℕ) (F : LeftSlotSet m n → M) :
+    ∑ s : LeftSlotSet m n, F s =
+      ∑ σ : SlotShuffle m n, F σ.toLeftSlotSet := by
+  simpa using (Equiv.sum_comp (slotShuffleLeftSlotSetEquiv m n) F).symm
+
 /-- Recursive binary shuffles are equivalent to order-preserving ambient slot shuffles. -/
 noncomputable def slotShuffleEquiv (m n : ℕ) :
     BinaryShuffle m n ≃ SlotShuffle m n :=
