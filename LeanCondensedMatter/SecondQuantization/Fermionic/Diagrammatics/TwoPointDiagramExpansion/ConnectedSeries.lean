@@ -37,6 +37,56 @@ def FixedExternalTwoPointWickDiagram.IsConnected
     (d : FixedExternalTwoPointWickDiagram Mode n i j) : Prop :=
   d.externalSlots = (Finset.univ : Finset (Fin n))
 
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- **Owning every slot is the same as having no vacuum component.** A slot the external component
+does not own belongs to a component containing no external vertex; conversely, a component that
+contains an external vertex is the external one, so if none is vacuum every slot is external. -/
+theorem FixedExternalTwoPointWickDiagram.isConnected_iff_hasNoVacuumComponent
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) :
+    d.IsConnected ↔ d.1.HasNoVacuumComponent := by
+  rw [Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal]
+  constructor
+  · intro hconn B
+    obtain ⟨v, hv⟩ := d.1.exists_componentBlock_eq_of_mem B.2
+    cases v with
+    | inl e => exact ⟨e, hv ▸ d.1.self_mem_componentBlock (Sum.inl e)⟩
+    | inr w =>
+        have hmem : (w : Fin n) ∈ d.externalSlots := by
+          rw [hconn]
+          exact Finset.mem_univ _
+        rw [FixedExternalTwoPointWickDiagram.externalSlots_eq_interactionPart,
+          Common.TwoPointDiagram.mem_interactionPart] at hmem
+        obtain ⟨hw, hw'⟩ := hmem
+        have hvertex : (Sum.inr w :
+            Common.TwoPointVertex (Finset.univ : Finset (Fin n))) ∈
+            d.1.externalComponent 0 := by simpa using hw'
+        have hB : (B : Finset (Common.TwoPointVertex (Finset.univ : Finset (Fin n)))) =
+            d.1.externalComponent 0 := by
+          rw [← hv]
+          exact (d.1.componentBlock_eq_iff_mem
+            (d.1.externalComponent_mem_componentPartition 0) (Sum.inr w)).2 hvertex
+        refine ⟨0, ?_⟩
+        rw [hB]
+        exact d.1.self_mem_componentBlock (Sum.inl 0)
+  · intro hall
+    apply Finset.eq_univ_of_forall
+    intro w
+    rw [FixedExternalTwoPointWickDiagram.externalSlots_eq_interactionPart,
+      Common.TwoPointDiagram.mem_interactionPart]
+    refine ⟨Finset.mem_univ w, ?_⟩
+    obtain ⟨e, he⟩ := hall ⟨d.1.componentBlock (Sum.inr ⟨w, Finset.mem_univ w⟩),
+      d.1.componentBlock_mem_componentPartition _⟩
+    have hblock : d.1.externalComponent e =
+        d.1.componentBlock (Sum.inr ⟨w, Finset.mem_univ w⟩) :=
+      (d.1.componentBlock_eq_iff_mem
+        (d.1.componentBlock_mem_componentPartition _) (Sum.inl e)).2 he
+    have hzero : d.1.externalComponent e = d.1.externalComponent 0 := by
+      fin_cases e
+      · rfl
+      · exact d.1.externalComponent_zero_eq_one.symm
+    rw [← hzero, hblock]
+    exact d.1.self_mem_componentBlock _
+
 open Classical in
 /-- The order-`n` coefficient of the connected two-point series: the integrated Dyson amplitudes of
 the connected diagrams only. -/
