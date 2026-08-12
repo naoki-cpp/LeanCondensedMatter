@@ -19,6 +19,11 @@ namespace Common
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 
+/-- The interaction slots carried by the canonical external component. -/
+noncomputable def TwoPointDiagram.externalInteractionPart
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) : Finset (Fin N) :=
+  TwoPointDiagram.interactionPart (d.externalComponent 0)
+
 /-- A component part meets the external sector exactly when it is the canonical common external
 component part. -/
 theorem TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponentPart
@@ -90,7 +95,7 @@ theorem TwoPointDiagram.prod_componentParts_eq_external_mul_prod_vacuum
 theorem TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteractionPart
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (v : ↥S) :
-    (v : Fin N) ∈ TwoPointDiagram.interactionPart (d.externalComponent 0) ∨
+    (v : Fin N) ∈ d.externalInteractionPart ∨
       ∃ B : d.componentPartition.parts,
         B ∈ d.vacuumComponentParts ∧
           (v : Fin N) ∈ TwoPointDiagram.interactionPart
