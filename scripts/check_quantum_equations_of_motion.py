@@ -14,7 +14,7 @@ from architecture_audit_common import (
 ROOT = repository_root(__file__)
 QUANTUM = ROOT / "LeanCondensedMatter" / "QuantumTheory"
 EQUATIONS = QUANTUM / "LinearResponse" / "EquationsOfMotion.lean"
-ROOT_UMBRELLA = ROOT / "LeanCondensedMatter.lean"
+ROOT_UMBRELLA = ROOT / "LeanCondensedMatter" / "QuantumTheory.lean"
 EQUATIONS_IMPORT = (
     "import LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion"
 )
@@ -65,7 +65,7 @@ def main() -> int:
 
     if EQUATIONS_IMPORT not in root_code:
         errors.append(
-            "root import surface must expose bounded equations of motion: "
+            "QuantumTheory public umbrella must expose bounded equations of motion: "
             f"{relative(ROOT_UMBRELLA)}"
         )
 

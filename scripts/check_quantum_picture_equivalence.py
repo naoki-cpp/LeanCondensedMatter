@@ -17,7 +17,7 @@ QUANTUM = LEAN_ROOT / "QuantumTheory"
 PICTURE = QUANTUM / "LinearResponse" / "PictureEquivalence.lean"
 UNITARY_TRACE = LEAN_ROOT / "Analysis" / "Operator" / "TraceClass" / "Unitary.lean"
 DENSITY_DIAGONAL = QUANTUM / "DensityOperator" / "Diagonal.lean"
-ROOT_UMBRELLA = ROOT / "LeanCondensedMatter.lean"
+ROOT_UMBRELLA = ROOT / "LeanCondensedMatter" / "QuantumTheory.lean"
 PICTURE_IMPORT = (
     "import LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence"
 )
@@ -95,7 +95,7 @@ def main() -> int:
 
     if PICTURE_IMPORT not in root_code:
         errors.append(
-            "root import surface must expose Schrödinger-Heisenberg picture equivalence: "
+            "QuantumTheory public umbrella must expose Schrödinger-Heisenberg picture equivalence: "
             f"{relative(ROOT_UMBRELLA)}"
         )
 

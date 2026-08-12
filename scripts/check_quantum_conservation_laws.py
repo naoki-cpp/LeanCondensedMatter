@@ -20,7 +20,7 @@ DENSITY_EXPECTATION = LINEAR_RESPONSE / "DensityExpectation.lean"
 KUBO_FORMULA = LINEAR_RESPONSE / "KuboFormula.lean"
 SOURCE_COUPLING = LINEAR_RESPONSE / "SourceCoupling.lean"
 DENSITY_BASIC = QUANTUM / "DensityOperator" / "Basic.lean"
-ROOT_UMBRELLA = ROOT / "LeanCondensedMatter.lean"
+ROOT_UMBRELLA = ROOT / "LeanCondensedMatter" / "QuantumTheory.lean"
 CONSERVATION_IMPORT = (
     "import LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws"
 )
@@ -150,7 +150,7 @@ def main() -> int:
 
     if CONSERVATION_IMPORT not in root_code:
         errors.append(
-            "root import surface must expose bounded conservation laws: "
+            "QuantumTheory public umbrella must expose bounded conservation laws: "
             f"{relative(ROOT_UMBRELLA)}"
         )
 
