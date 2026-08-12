@@ -96,11 +96,14 @@ theorem logOf_formalExp {C : PowerSeries ℂ}
     rw [formalExp_eq_one_add_tail hC]
     ring
   rw [htail]
+  have hcomp :
+      ((PowerSeries.log ℂ).subst (PowerSeries.exp ℂ - 1)).subst C =
+        (PowerSeries.log ℂ).subst ((PowerSeries.exp ℂ - 1).subst C) :=
+    PowerSeries.subst_comp_subst_apply (R := ℂ) (S := ℂ) (T := ℂ)
+      PowerSeries.HasSubst.exp_sub_one hsubst (PowerSeries.log ℂ)
   calc
     (PowerSeries.log ℂ).subst ((PowerSeries.exp ℂ - 1).subst C) =
-        ((PowerSeries.log ℂ).subst (PowerSeries.exp ℂ - 1)).subst C := by
-      exact (PowerSeries.subst_comp_subst_apply
-        PowerSeries.HasSubst.exp_sub_one hsubst (PowerSeries.log ℂ)).symm
+        ((PowerSeries.log ℂ).subst (PowerSeries.exp ℂ - 1)).subst C := hcomp.symm
     _ = PowerSeries.X.subst C := by rw [log_subst_exp_sub_one]
     _ = C := PowerSeries.subst_X hsubst
 
