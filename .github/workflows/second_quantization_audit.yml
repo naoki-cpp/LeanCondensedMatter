@@ -24,6 +24,9 @@ jobs:
       - name: Check SecondQuantization architecture
         run: python3 scripts/check_second_quantization_architecture.py
 
+      - name: Check single-particle dependency boundary
+        run: python3 scripts/check_single_particle_architecture.py
+
       - name: Check dimension-independent mode boundary
         run: python3 scripts/check_second_quantization_mode_boundary.py
 
