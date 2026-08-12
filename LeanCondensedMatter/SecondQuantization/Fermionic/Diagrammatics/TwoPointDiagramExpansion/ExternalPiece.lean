@@ -20,6 +20,9 @@ This module performs that reindexing on the slot set `externalSlots` already iso
 ambient ones; see `MixedEventSlotEmbedding` and `MixedLegSlotEmbedding` for that comparison. The
 piece keeps the ambient external labels, so it is again a fixed-external diagram for the same two
 modes.
+
+The last result identifies the piece's legs with the ambient component's legs, and the identification
+with the very leg reindexing those order comparisons are stated for.
 -/
 
 namespace SecondQuantization
@@ -83,6 +86,27 @@ theorem FixedExternalTwoPointWickDiagram.externalPiece_vertexLabelSequence
     Common.TwoPointDiagram.restrictExternalComponent_vertexLabel]
   exact congrArg d.1.vertexLabel
     (Subtype.ext (d.externalSlotEquiv_symm_coe ⟨v, Finset.mem_univ v⟩))
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- **The piece's legs are the ambient component's legs.** Reading a leg of the piece back through
+the slot relabeling and the external-component leg reindexing recovers the ambient leg, and the
+correspondence is exactly the monotone leg reindexing whose mixed order the ambient one restricts
+to. -/
+theorem FixedExternalTwoPointWickDiagram.externalLegDataEquiv_symm_twoPointLegDataCongr
+    (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (leg : OrderedTwoPointLeg d.externalSlots.card) :
+    (d.1.externalLegDataEquiv.symm
+        (Common.twoPointLegDataCongr d.externalSlotEquiv.symm leg) :
+      OrderedTwoPointLeg n) =
+      orderedTwoPointLegMap (d.externalSlots.orderEmbOfFin rfl) leg := by
+  cases leg with
+  | inl e => rfl
+  | inr p =>
+      obtain ⟨w, l⟩ := p
+      apply congrArg Sum.inr
+      apply Prod.ext
+      · exact Subtype.ext (d.externalSlotEquiv_symm_coe w)
+      · rfl
 
 end Fermionic
 end SecondQuantization
