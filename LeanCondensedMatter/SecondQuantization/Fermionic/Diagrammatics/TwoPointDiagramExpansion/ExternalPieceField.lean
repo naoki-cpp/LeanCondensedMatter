@@ -35,11 +35,11 @@ theorem FixedExternalTwoPointWickDiagram.orderedTwoPointLegField_orderedTwoPoint
   | inl e => rfl
   | inr p =>
       obtain ⟨v, l⟩ := p
-      unfold orderedTwoPointLegField orderedTwoPointLegTime orderedTwoPointLegFieldLabel
+      simp only [orderedTwoPointLegMap_inr, orderedTwoPointLegField,
+        orderedTwoPointLegTime, orderedTwoPointLegFieldLabel]
       rw [d.externalPiece_vertexLabelSequence]
       rfl
 
-omit [LinearOrder Mode] in
 /-- The mixed field family of the ambient diagram, read at a position of the piece, is the piece's
 own mixed field family. -/
 theorem FixedExternalTwoPointWickDiagram.mixedTimeOrderedAtomicFieldFamily_externalPieceMixedPosition
@@ -54,7 +54,6 @@ theorem FixedExternalTwoPointWickDiagram.mixedTimeOrderedAtomicFieldFamily_exter
     d.mixedTimeOrderedAtomicLegEquiv_externalPieceMixedPosition,
     d.orderedTwoPointLegField_orderedTwoPointLegMap]
 
-omit [LinearOrder Mode] in
 /-- Operator form: the piece's mixed operator family is the ambient one along the embedding. -/
 theorem
     FixedExternalTwoPointWickDiagram.mixedTimeOrderedAtomicOperatorFamily_externalPieceMixedPosition
