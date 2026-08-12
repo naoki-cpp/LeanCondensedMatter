@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2Multiplication1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Multiplication1D
 import Mathlib.Analysis.Distribution.Sobolev
 import Mathlib.LinearAlgebra.LinearPMap
 import Mathlib.Tactic
