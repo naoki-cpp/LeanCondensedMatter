@@ -12,7 +12,7 @@ differentiability of a chosen representative. This module keeps that distinction
 
 A `ContinuumSchwartzEvolutionRepresentative1D` consists of a Schwartz-valued representative family
 whose `L²` image is the abstract unitary trajectory, together with the additional pointwise time
-derivative and Schrödinger-equation data needed by the local continuity API from #705.
+derivative and Schrödinger-equation data needed by the local continuity API.
 
 This lets the operator-theoretic and pointwise developments meet without deriving unjustified
 representative regularity from Hilbert-space differentiability.
@@ -61,16 +61,6 @@ structure ContinuumSchwartzEvolutionRepresentative1D
 variable {evolution : ContinuumSchrodingerEvolution1D κ potential hpotential}
 variable (representative : ContinuumSchwartzEvolutionRepresentative1D evolution)
 
-/-- The representative probability density has the expected pointwise time derivative. -/
-theorem ContinuumSchwartzEvolutionRepresentative1D.hasDerivAt_probabilityDensity
-    (t x : ℝ) :
-    HasDerivAt
-      (fun τ : ℝ => probabilityDensityValue (representative.wavefunction τ x))
-      (probabilityDensityTimeDerivativeValue
-        (representative.wavefunction t x) (representative.timeDerivative t x)) t :=
-  hasDerivAt_probabilityDensityValue
-    (representative.hasDerivAt_re t x) (representative.hasDerivAt_im t x)
-
 /-- The operator-generated Schwartz representative satisfies the pointwise continuity equation. -/
 theorem ContinuumSchwartzEvolutionRepresentative1D.pointwise_continuity
     (t x : ℝ) :
@@ -90,7 +80,7 @@ theorem ContinuumSchwartzEvolutionRepresentative1D.pointwise_continuity
   · exact representative.schrodinger t x
 
 /-- Interval-weak continuity for an operator-generated Schwartz representative. The test-function
-and current-divergence integrability hypotheses are exactly those of the existing #705 theorem. -/
+and current-divergence integrability hypotheses are exactly those of the existing scalar theorem. -/
 theorem ContinuumSchwartzEvolutionRepresentative1D.weak_continuity_interval
     (t a b : ℝ)
     {test testDerivative : ℝ → ℝ}
