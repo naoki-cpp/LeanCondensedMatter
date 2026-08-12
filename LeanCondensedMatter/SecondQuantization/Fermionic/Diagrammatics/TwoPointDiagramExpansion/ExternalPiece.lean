@@ -249,6 +249,52 @@ theorem FixedExternalTwoPointWickDiagram.externalPieceMixedPosition_injective
   (d.externalPieceMixedPosition_strictMono τ τ' σ).injective
 
 omit [LinearOrder Mode] [Fintype Mode] in
+/-- The piece's mixed positions land in the external component. -/
+theorem FixedExternalTwoPointWickDiagram.mixedPositionComponent_externalPieceMixedPosition
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (p : Fin (2 * (2 * d.externalSlots.card + 1))) :
+    d.mixedPositionComponent τ τ' σ (d.externalPieceMixedPosition τ τ' σ p) =
+      d.1.externalComponentPart := by
+  have hleg :
+      mixedTimeOrderedAtomicLegEquiv τ τ' σ (d.externalPieceMixedPosition τ τ' σ p) =
+        orderedTwoPointLegMap (d.externalSlots.orderEmbOfFin rfl)
+          (mixedTimeOrderedAtomicLegEquiv τ τ' (d.externalPieceTimes σ) p) := by
+    rw [FixedExternalTwoPointWickDiagram.externalPieceMixedPosition,
+      mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
+  rw [d.mixedPositionComponent_eq_iff_legInComponent,
+    d.1.legInComponent_iff_unflattened, twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
+    hleg, ← d.externalLegDataEquiv_symm_twoPointLegDataCongr]
+  exact (d.1.externalLegDataEquiv.symm
+    (Common.twoPointLegDataCongr d.externalSlotEquiv.symm
+      (mixedTimeOrderedAtomicLegEquiv τ τ' (d.externalPieceTimes σ) p))).2
+
+/-- **The piece's mixed positions are exactly the external component's mixed positions.** They embed
+injectively, and there are as many of them as the component owns. -/
+noncomputable def FixedExternalTwoPointWickDiagram.externalPieceMixedPositionEquiv
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    Fin (2 * (2 * d.externalSlots.card + 1)) ≃
+      d.MixedComponentPosition τ τ' σ d.1.externalComponentPart :=
+  Equiv.ofBijective
+    (fun p => ⟨d.externalPieceMixedPosition τ τ' σ p,
+      d.mixedPositionComponent_externalPieceMixedPosition τ τ' σ p⟩)
+    (by
+      have hcard :
+          Fintype.card (Fin (2 * (2 * d.externalSlots.card + 1))) =
+            Fintype.card (d.MixedComponentPosition τ τ' σ d.1.externalComponentPart) := by
+        rw [Fintype.card_congr (d.mixedExternalPositionEquiv τ τ' σ), Fintype.card_fin,
+          Fintype.card_fin]
+      refine (Fintype.bijective_iff_injective_and_card _).2 ⟨fun p q h => ?_, hcard⟩
+      exact d.externalPieceMixedPosition_injective τ τ' σ (congrArg Subtype.val h))
+
+omit [LinearOrder Mode] [Fintype Mode] in
+@[simp]
+theorem FixedExternalTwoPointWickDiagram.externalPieceMixedPositionEquiv_apply
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (p : Fin (2 * (2 * d.externalSlots.card + 1))) :
+    (d.externalPieceMixedPositionEquiv τ τ' σ p : Fin (2 * (2 * n + 1))) =
+      d.externalPieceMixedPosition τ τ' σ p := rfl
+
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- **The piece's mixed pairing is the ambient one restricted.** The embedding of the piece's mixed
 positions into the ambient ones intertwines the two mixed-order partners, the piece being evaluated
 at the times it inherits. -/
