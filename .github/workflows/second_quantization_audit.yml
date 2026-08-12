@@ -30,6 +30,9 @@ jobs:
       - name: Check fermionic lattice boundary
         run: python3 scripts/check_fermionic_lattice_boundary.py
 
+      - name: Check fermionic transport and validation boundary
+        run: python3 scripts/check_fermionic_transport_validation_boundary.py
+
       - name: Check single-particle dependency boundary
         run: python3 scripts/check_single_particle_architecture.py
 
