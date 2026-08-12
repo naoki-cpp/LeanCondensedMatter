@@ -148,5 +148,42 @@ theorem FixedExternalTwoPointWickDiagram.externalPiece_partner_externalPieceLegE
   rw [hcongr, Common.TwoPointDiagram.restrictExternalComponent_pairing,
     Common.TwoPointDiagram.restrictedExternalPairing_partner_externalBlockLegEquiv]
 
+/-- The times the piece inherits: the ambient times at the slots the external component owns, read
+in increasing slot order. -/
+noncomputable def FixedExternalTwoPointWickDiagram.externalPieceTimes
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) (σ : Fin n → ℝ) :
+    Fin d.externalSlots.card → ℝ :=
+  σ ∘ d.externalSlots.orderEmbOfFin rfl
+
+/-- The ambient mixed position of the leg the piece stores at a given mixed position of its own. -/
+noncomputable def FixedExternalTwoPointWickDiagram.externalPieceMixedPosition
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (p : Fin (2 * (2 * d.externalSlots.card + 1))) : Fin (2 * (2 * n + 1)) :=
+  mixedTimeOrderedAtomicLegPosition τ τ' σ
+    (orderedTwoPointLegMap (d.externalSlots.orderEmbOfFin rfl)
+      (mixedTimeOrderedAtomicLegEquiv τ τ' (d.externalPieceTimes σ) p))
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- **The piece reads its own mixed order off the ambient one.** The piece's mixed positions sit
+inside the ambient mixed positions order-preservingly, with no hypothesis on the times: the slots are
+enumerated in increasing order, so the equal-time tie-breaks agree. -/
+theorem FixedExternalTwoPointWickDiagram.externalPieceMixedPosition_strictMono
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    StrictMono (d.externalPieceMixedPosition τ τ' σ) := by
+  intro p q hpq
+  rw [FixedExternalTwoPointWickDiagram.externalPieceMixedPosition,
+    FixedExternalTwoPointWickDiagram.externalPieceMixedPosition,
+    mixedTimeOrderedAtomicLegPosition_map_lt_iff
+      (d.externalSlots.orderEmbOfFin rfl).strictMono]
+  simpa [FixedExternalTwoPointWickDiagram.externalPieceTimes,
+    mixedTimeOrderedAtomicLegPosition] using hpq
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- Distinct mixed positions of the piece are distinct ambient mixed positions. -/
+theorem FixedExternalTwoPointWickDiagram.externalPieceMixedPosition_injective
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ) :
+    Function.Injective (d.externalPieceMixedPosition τ τ' σ) :=
+  (d.externalPieceMixedPosition_strictMono τ τ' σ).injective
+
 end Fermionic
 end SecondQuantization
