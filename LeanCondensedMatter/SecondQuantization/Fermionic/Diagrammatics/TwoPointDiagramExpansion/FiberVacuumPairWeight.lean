@@ -248,16 +248,21 @@ theorem fixedExternalOfSlotSplit_mixedComponentCrossingCount_vacuum_eq
         (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac C).1 =
       ((vac.restrictComponent C.2).pairingInOrder
         (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T) C)).crossingCount := by
-  let d := fixedExternalOfSlotSplit T ext vac
-  let B := Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac C
   let e := fixedExternalOfSlotSplitVacuumComponentPairEquiv T ext vac C τ τ' σ hσ
   rw [FixedExternalTwoPointWickDiagram.mixedComponentCrossingCount,
     FixedExternalTwoPointWickDiagram.mixedComponentOrientedCrossingCount,
-    Pairing.componentCrossingCount,
-    Pairing.crossingCount_eq_sum_sum_crosses,
-    ← Equiv.sum_comp (Equiv.prodCongr e e)]
-  apply Finset.sum_congr rfl
-  intro x _
+    Pairing.componentCrossingCount, Fintype.sum_prod_type,
+    Pairing.crossingCount_eq_sum_sum_crosses]
+  simp only [FixedExternalTwoPointWickDiagram.mixedComponentPairSigmaEquiv_apply]
+  symm
+  refine Fintype.sum_equiv e
+    (fun p => ∑ q, if Crosses p.1 q.1 then 1 else 0)
+    (fun p' => ∑ q', if Crosses p'.1.1 q'.1.1 then 1 else 0) ?_
+  intro p
+  refine Fintype.sum_equiv e
+    (fun q => if Crosses p.1 q.1 then 1 else 0)
+    (fun q' => if Crosses (e p).1.1 q'.1.1 then 1 else 0) ?_
+  intro q
   simp only [fixedExternalOfSlotSplitVacuumComponentPairEquiv_crosses_iff]
 
 /-- The product of all ambient vacuum-component fermionic weights is the weight of the standalone
@@ -273,29 +278,41 @@ theorem fixedExternalOfSlotSplit_prod_vacuumMixedComponentWeight_eq
     d.1.vacuumComponentParts.prod
         (d.mixedComponentWeight Common.Statistics.fermion τ τ' σ) =
       (vac.pairingInOrder (fixedExternalVacuumOrder T)).weight Common.Statistics.fermion := by
-  let d := fixedExternalOfSlotSplit T ext vac
+  change (Common.TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext.1 vac).vacuumComponentParts.prod
+      ((fixedExternalOfSlotSplit T ext vac).mixedComponentWeight
+        Common.Statistics.fermion τ τ' σ) = _
   let e := Common.slotSplitVacuumComponentEquiv
     (Finset.subset_univ T) ext.1 vac hext
   let orders := vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T)
   let shuffle := vac.fixedOrderComponentShuffle (fixedExternalVacuumOrder T)
   calc
-    d.1.vacuumComponentParts.prod
-        (d.mixedComponentWeight Common.Statistics.fermion τ τ' σ) =
-      ∏ B : ↥d.1.vacuumComponentParts,
-        d.mixedComponentWeight Common.Statistics.fermion τ τ' σ B.1 := by
-      exact Finset.prod_subtype d.1.vacuumComponentParts (fun _ => Iff.rfl) _
+    (Common.TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext.1 vac).vacuumComponentParts.prod
+        ((fixedExternalOfSlotSplit T ext vac).mixedComponentWeight
+          Common.Statistics.fermion τ τ' σ) =
+      ∏ B : ↥(Common.TwoPointDiagram.ofSlotSplit
+          (Finset.subset_univ T) ext.1 vac).vacuumComponentParts,
+        (fixedExternalOfSlotSplit T ext vac).mixedComponentWeight
+          Common.Statistics.fermion τ τ' σ B.1 := by
+      exact Finset.prod_subtype
+        (Common.TwoPointDiagram.ofSlotSplit
+          (Finset.subset_univ T) ext.1 vac).vacuumComponentParts
+        (fun _ => Iff.rfl) _
     _ = ∏ C : vac.componentPartition.parts,
-        d.mixedComponentWeight Common.Statistics.fermion τ τ' σ (e C).1 :=
-      (Equiv.prod_comp e (fun B : ↥d.1.vacuumComponentParts =>
-        d.mixedComponentWeight Common.Statistics.fermion τ τ' σ B.1)).symm
+        (fixedExternalOfSlotSplit T ext vac).mixedComponentWeight
+          Common.Statistics.fermion τ τ' σ (e C).1 :=
+      (Equiv.prod_comp e (fun B =>
+        (fixedExternalOfSlotSplit T ext vac).mixedComponentWeight
+          Common.Statistics.fermion τ τ' σ B.1)).symm
     _ = ∏ C : vac.componentPartition.parts,
         ((vac.restrictComponent C.2).pairingInOrder (orders C)).weight
           Common.Statistics.fermion := by
       apply Fintype.prod_congr
       intro C
+      rw [Common.slotSplitVacuumComponentEquiv_apply]
       rw [FixedExternalTwoPointWickDiagram.mixedComponentWeight,
         Common.BlochDeDominicis.Pairing.weight_fermion,
         fixedExternalOfSlotSplit_mixedComponentCrossingCount_vacuum_eq]
+      simp
     _ = (vac.pairingInOrder (vac.assembleVertexOrder orders shuffle)).weight
         Common.Statistics.fermion :=
       (vac.pairingInOrder_weight_eq_prod_components
