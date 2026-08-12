@@ -67,8 +67,6 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent
         rw [TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem]
         · unfold QuarticDiagram.restrictComponent
           congr 2
-          apply Subtype.ext
-          rfl
         · have hvComp : (v : Fin N) ∈ S \ T :=
             vac.componentPart_subset C.2 (e v).2
           exact (Finset.mem_sdiff.mp hvComp).2
