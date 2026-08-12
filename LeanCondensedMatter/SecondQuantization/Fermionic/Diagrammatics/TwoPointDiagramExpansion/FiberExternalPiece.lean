@@ -18,6 +18,7 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
 
+omit [Fintype Mode] in
 /-- For a diagram in the external-slot fiber over `T`, its canonical standalone external piece is
 exactly the increasing-order standardization of the left slot-split piece. -/
 theorem FixedExternalTwoPointWickDiagram.externalPiece_heq_standardized_slotSplitExternal
@@ -31,7 +32,7 @@ theorem FixedExternalTwoPointWickDiagram.externalPiece_heq_standardized_slotSpli
           d.1.2⟩) := by
   obtain ⟨d, hd⟩ := d
   subst T
-  apply HEq.of_eq
+  apply heq_of_eq
   apply Subtype.ext
   unfold FixedExternalTwoPointWickDiagram.externalPiece
     fixedExternalTwoPointWickDiagramOnEquiv fixedExternalSlotEquiv
@@ -39,6 +40,7 @@ theorem FixedExternalTwoPointWickDiagram.externalPiece_heq_standardized_slotSpli
   rw [Common.TwoPointDiagram.restrictExternalComponent_eq_externalVacuumSplit_fst]
   rfl
 
+omit [Fintype Mode] in
 /-- After reindexing a fiber by `fixedExternalFiberEquiv`, the ambient standalone external piece is
 the standardized connected external diagram and therefore does not depend on the vacuum diagram. -/
 theorem fixedExternalFiberEquiv_symm_externalPiece_heq
@@ -49,7 +51,9 @@ theorem fixedExternalFiberEquiv_symm_externalPiece_heq
     HEq ((fixedExternalFiberEquiv T).symm p).1.externalPiece
       ((connectedFixedExternalTwoPointWickDiagramOnEquiv T p.1).1) := by
   let d := (fixedExternalFiberEquiv T).symm p
-  have hpiece := d.1.externalPiece_heq_standardized_slotSplitExternal T d
+  have hpiece :=
+    FixedExternalTwoPointWickDiagram.externalPiece_heq_standardized_slotSplitExternal
+      (Mode := Mode) (i := i) (j := j) T d
   have hright := (fixedExternalFiberEquiv T).apply_symm_apply p
   have hext :
       ⟨d.1.1.slotSplitExternal (Finset.subset_univ T)
