@@ -248,5 +248,22 @@ theorem FixedExternalTwoPointWickDiagram.externalPieceMixedPosition_injective
     Function.Injective (d.externalPieceMixedPosition τ τ' σ) :=
   (d.externalPieceMixedPosition_strictMono τ τ' σ).injective
 
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- **The piece's mixed pairing is the ambient one restricted.** The embedding of the piece's mixed
+positions into the ambient ones intertwines the two mixed-order partners, the piece being evaluated
+at the times it inherits. -/
+theorem FixedExternalTwoPointWickDiagram.externalPieceMixedPosition_partner
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (p : Fin (2 * (2 * d.externalSlots.card + 1))) :
+    (d.pairingInMixedOrder τ τ' σ).partner (d.externalPieceMixedPosition τ τ' σ p) =
+      d.externalPieceMixedPosition τ τ' σ
+        ((d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).partner p) := by
+  rw [FixedExternalTwoPointWickDiagram.externalPieceMixedPosition,
+    FixedExternalTwoPointWickDiagram.externalPieceMixedPosition,
+    d.pairingInMixedOrder_partner_legPosition,
+    d.atomicLegPartner_orderedTwoPointLegMap,
+    d.externalPiece.pairingInMixedOrder_partner_eq_atomicLegPartner,
+    mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
+
 end Fermionic
 end SecondQuantization
