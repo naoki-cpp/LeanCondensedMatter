@@ -40,7 +40,7 @@ theorem fixedExternalOfSlotSplit_vertexLabelSequence_vacuumSlot
   apply Subtype.ext
   rfl
 
-omit [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- At an inherited quartic vacuum leg, the mixed standard-leg field descriptor is exactly the
 standalone quartic field at the inherited local time. -/
 theorem fixedExternalOfSlotSplit_orderedTwoPointLegField_vacuumOrderedLeg
@@ -138,6 +138,56 @@ theorem fixedExternalOfSlotSplit_mixedPairContractionValue_vacuumNormalizedPair
       ε T ext vac τ τ' σ pr.1.1,
     fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg
       ε T ext vac τ τ' σ pr.1.2]
+
+/-- The complete contraction product over all ambient vacuum-component pairs is the contraction
+product of the standalone fixed-order quartic vacuum pairing. -/
+theorem fixedExternalOfSlotSplit_prod_vacuumPairContractionValue_eq
+    (ε : Mode → ℝ) (β : ℝ)
+    (T : Finset (Fin n))
+    (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
+    (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
+    (hext : ext.1.IsExternallyConnected)
+    (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
+    let d := fixedExternalOfSlotSplit T ext vac
+    d.1.vacuumComponentParts.prod (fun B =>
+        ∏ pr : d.MixedComponentPair τ τ' σ B,
+          d.mixedPairContractionValue ε β τ τ' σ pr.1) =
+      ∏ pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair,
+        orderedQuarticPairValue ε β vac (fixedExternalVacuumOrder T)
+          (σ ∘ fixedExternalVacuumSlot T) pr.1.1 pr.1.2 := by
+  let d := fixedExternalOfSlotSplit T ext vac
+  let F : d.MixedVacuumPair τ τ' σ → ℂ := fun pr =>
+    d.mixedPairContractionValue ε β τ τ' σ pr.1
+  let e := fixedExternalOfSlotSplitVacuumMixedPairEquiv
+    T ext vac hext τ τ' σ hσ
+  calc
+    d.1.vacuumComponentParts.prod (fun B =>
+        ∏ pr : d.MixedComponentPair τ τ' σ B,
+          d.mixedPairContractionValue ε β τ τ' σ pr.1) =
+      ∏ B : ↥d.1.vacuumComponentParts,
+        ∏ pr : d.MixedComponentPair τ τ' σ B.1,
+          d.mixedPairContractionValue ε β τ τ' σ pr.1 := by
+      exact Finset.prod_subtype d.1.vacuumComponentParts (fun _ => Iff.rfl) _
+    _ = ∏ x : Σ B : ↥d.1.vacuumComponentParts,
+        d.MixedComponentPair τ τ' σ B.1,
+        F (d.mixedVacuumPairSigmaEquiv τ τ' σ x) := by
+      rw [Fintype.prod_sigma]
+      rfl
+    _ = ∏ pr : d.MixedVacuumPair τ τ' σ, F pr :=
+      Equiv.prod_comp (d.mixedVacuumPairSigmaEquiv τ τ' σ) F
+    _ = ∏ pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair,
+        F (e pr) :=
+      (Equiv.prod_comp e F).symm
+    _ = ∏ pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair,
+        orderedQuarticPairValue ε β vac (fixedExternalVacuumOrder T)
+          (σ ∘ fixedExternalVacuumSlot T) pr.1.1 pr.1.2 := by
+      apply Fintype.prod_congr
+      intro pr
+      change d.mixedPairContractionValue ε β τ τ' σ (e pr).1 = _
+      rw [fixedExternalOfSlotSplitVacuumMixedPairEquiv_apply]
+      exact fixedExternalOfSlotSplit_mixedPairContractionValue_vacuumNormalizedPair
+        ε β T ext vac τ τ' σ hσ pr
 
 end Fermionic
 end SecondQuantization
