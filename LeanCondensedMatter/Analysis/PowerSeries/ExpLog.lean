@@ -1,5 +1,6 @@
 import Mathlib.Data.Complex.Basic
 import Mathlib.RingTheory.PowerSeries.Log
+import Mathlib.Tactic.IrreducibleDef
 
 set_option linter.style.header false
 
@@ -12,7 +13,8 @@ hypotheses, its substitution inverse is the formal series `exp(X) - 1` without r
 project-local proof of the scalar exp/log inverse identities.
 
 This module packages that inverse into the normalized formal exponential used by linked-cluster
-consumers.
+consumers. The public wrapper is irreducible so Lean does not unfold the large substitution-inverse
+construction during unification.
 -/
 
 namespace PowerSeries
@@ -33,17 +35,19 @@ private theorem log_subst_expSubOne :
     (PowerSeries.log ℂ) (by simp) coeff_one_log_isUnit
 
 /-- Formal exponential of a zero-based series. It is `1` plus substitution into the canonical
-formal inverse of `log(1 + X)`. -/
-noncomputable def formalExp (C : PowerSeries ℂ) : PowerSeries ℂ :=
+formal inverse of `log(1 + X)`. The definition is irreducible to keep the substitution-inverse
+implementation out of unification. -/
+noncomputable irreducible_def formalExp (C : PowerSeries ℂ) : PowerSeries ℂ :=
   1 + expSubOne.subst C
 
 /-- The formal exponential of a zero-constant-coefficient series has constant coefficient one. -/
 theorem constantCoeff_formalExp {C : PowerSeries ℂ}
     (hC : PowerSeries.constantCoeff C = 0) :
     PowerSeries.constantCoeff (formalExp C) = 1 := by
+  rw [formalExp]
   have htail : PowerSeries.constantCoeff (expSubOne.subst C) = 0 :=
     PowerSeries.constantCoeff_subst_eq_zero hC expSubOne constantCoeff_expSubOne
-  simp [formalExp, htail]
+  simp [htail]
 
 set_option maxHeartbeats 800000 in
 /-- `logOf` is a left inverse of the formal exponential on zero-constant-coefficient series. -/
@@ -54,9 +58,9 @@ theorem logOf_formalExp {C : PowerSeries ℂ}
     PowerSeries.HasSubst.of_constantCoeff_zero' hC
   have hEsub : PowerSeries.HasSubst expSubOne :=
     PowerSeries.HasSubst.of_constantCoeff_zero' constantCoeff_expSubOne
-  rw [PowerSeries.logOf_eq]
-  have htail : formalExp C - 1 = expSubOne.subst C := by
-    simp [formalExp]
+  rw [formalExp, PowerSeries.logOf_eq]
+  have htail : (1 + expSubOne.subst C : PowerSeries ℂ) - 1 = expSubOne.subst C := by
+    ring
   rw [htail]
   have hcomp :
       ((PowerSeries.log ℂ).subst expSubOne).subst C =
