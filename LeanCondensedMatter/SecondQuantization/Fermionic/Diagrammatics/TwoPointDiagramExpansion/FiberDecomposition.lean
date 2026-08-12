@@ -75,8 +75,7 @@ theorem sum_eq_sum_powerset_fixedExternalFiber {M : Type*} [AddCommMonoid M]
   rw [Finset.sum_subtype
     (p := fun d : FixedExternalTwoPointWickDiagram Mode n i j => d.1.externalInteractionPart = T)
     _ (fun x => by
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-      exact Iff.rfl) F]
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]) F]
   exact (Equiv.sum_comp (fixedExternalFiberEquiv T).symm (fun d => F d.1)).symm
 
 end Fermionic
