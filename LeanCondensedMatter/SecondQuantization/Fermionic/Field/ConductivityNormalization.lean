@@ -36,6 +36,8 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Field
 
+open Lattice
+
 open QuantumTheory.LinearResponse
 
 noncomputable section

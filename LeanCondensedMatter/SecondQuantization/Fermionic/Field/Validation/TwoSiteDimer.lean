@@ -19,6 +19,8 @@ also recorded. No disorder average, numerical approximation, or limiting procedu
 namespace SecondQuantization
 namespace Fermionic
 namespace Field
+
+open Lattice
 namespace Validation
 
 open QuantumTheory LinearResponse Transport

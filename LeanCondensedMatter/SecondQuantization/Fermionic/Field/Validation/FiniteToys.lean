@@ -22,6 +22,8 @@ No numerical approximation, disorder average, or limiting statement occurs here.
 namespace SecondQuantization
 namespace Fermionic
 namespace Field
+
+open Lattice
 namespace Validation
 
 open QuantumTheory.LinearResponse QuantumTheory.Transport

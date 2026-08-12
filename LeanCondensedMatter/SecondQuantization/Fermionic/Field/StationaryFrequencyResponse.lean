@@ -23,6 +23,8 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Field
 
+open Lattice
+
 noncomputable section
 
 variable {Site E : Type*}

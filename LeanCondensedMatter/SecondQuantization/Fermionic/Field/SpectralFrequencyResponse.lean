@@ -20,6 +20,8 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Field
 
+open Lattice
+
 open Set MeasureTheory QuantumTheory.LinearResponse
 
 noncomputable section
