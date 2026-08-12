@@ -40,31 +40,31 @@ theorem continuumRealPotentialSchrodingerHamiltonian1D_symmetric
   change
     inner ℂ
         (-(κ : ℂ) • continuumH2Laplacian1D ψ +
-          l2MultiplicationOperator1D (realTestMultiplier1D potential hpotential)
+          l2MultiplicationOperator1D (realLInfMultiplier1D potential hpotential)
             (ψ : ContinuumL2Wavefunction1D))
         (φ : ContinuumL2Wavefunction1D) =
       inner ℂ
         (ψ : ContinuumL2Wavefunction1D)
         (-(κ : ℂ) • continuumH2Laplacian1D φ +
-          l2MultiplicationOperator1D (realTestMultiplier1D potential hpotential)
+          l2MultiplicationOperator1D (realLInfMultiplier1D potential hpotential)
             (φ : ContinuumL2Wavefunction1D))
   calc
     inner ℂ
         (-(κ : ℂ) • continuumH2Laplacian1D ψ +
-          l2MultiplicationOperator1D (realTestMultiplier1D potential hpotential)
+          l2MultiplicationOperator1D (realLInfMultiplier1D potential hpotential)
             (ψ : ContinuumL2Wavefunction1D))
         (φ : ContinuumL2Wavefunction1D) =
       inner ℂ (-(κ : ℂ) • continuumH2Laplacian1D ψ)
           (φ : ContinuumL2Wavefunction1D) +
         inner ℂ
-          (l2MultiplicationOperator1D (realTestMultiplier1D potential hpotential)
+          (l2MultiplicationOperator1D (realLInfMultiplier1D potential hpotential)
             (ψ : ContinuumL2Wavefunction1D))
           (φ : ContinuumL2Wavefunction1D) := by
         rw [inner_add_left]
     _ = inner ℂ (ψ : ContinuumL2Wavefunction1D)
           (-(κ : ℂ) • continuumH2Laplacian1D φ) +
         inner ℂ (ψ : ContinuumL2Wavefunction1D)
-          (l2MultiplicationOperator1D (realTestMultiplier1D potential hpotential)
+          (l2MultiplicationOperator1D (realLInfMultiplier1D potential hpotential)
             (φ : ContinuumL2Wavefunction1D)) := by
       congr 1
       · rw [inner_smul_left, inner_smul_right, continuumH2Laplacian1D_symmetric]
@@ -74,7 +74,7 @@ theorem continuumRealPotentialSchrodingerHamiltonian1D_symmetric
     _ = inner ℂ
         (ψ : ContinuumL2Wavefunction1D)
         (-(κ : ℂ) • continuumH2Laplacian1D φ +
-          l2MultiplicationOperator1D (realTestMultiplier1D potential hpotential)
+          l2MultiplicationOperator1D (realLInfMultiplier1D potential hpotential)
             (φ : ContinuumL2Wavefunction1D)) := by
       rw [inner_add_right]
 
