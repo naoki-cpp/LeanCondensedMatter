@@ -24,13 +24,6 @@ noncomputable section
 open MeasureTheory
 open scoped ENNReal MeasureTheory InnerProductSpace SchwartzMap Laplacian LineDeriv
 
-private theorem l2ToTemperedDistribution1D_injective_selfAdjoint :
-    Function.Injective l2ToTemperedDistribution1D := by
-  change Function.Injective
-    (MeasureTheory.Lp.toTemperedDistributionCLM ℂ (volume : Measure ℝ) 2)
-  apply LinearMap.ker_eq_bot.mp
-  exact MeasureTheory.Lp.ker_toTemperedDistributionCLM_eq_bot
-
 /-- Complex conjugation preserves the Schwartz class. -/
 private noncomputable def schwartzConj1D (f : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℂ :=
   f.postcompCLM
@@ -71,7 +64,7 @@ theorem continuumH2Laplacian1D_schwartz_toLp (f : SchwartzMap ℝ ℂ) :
     continuumH2Laplacian1D
         ⟨f.toLp 2 (volume : Measure ℝ), schwartz_toLp_mem_continuumH2Domain1D f⟩ =
       (Δ f).toLp 2 (volume : Measure ℝ) := by
-  apply l2ToTemperedDistribution1D_injective_selfAdjoint
+  apply l2ToTemperedDistribution1D_injective
   rw [l2ToTemperedDistribution1D_continuumH2Laplacian1D]
   simp [l2ToTemperedDistribution1D]
 
