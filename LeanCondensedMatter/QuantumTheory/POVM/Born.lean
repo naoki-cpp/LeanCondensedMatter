@@ -83,7 +83,7 @@ private theorem hasSum_probabilityKernel_outcome (P : POVM H M)
     P.hasSum_inner_apply e
   have hcomplex : HasSum
       (fun m => ((diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint e : ℝ) : ℂ))
-      (1 : ℂ) := by
+      ((1 : ℝ) : ℂ) := by
     have hfun :
         (fun m => (inner ℂ e (P.E m e) : ℂ)) =
           (fun m => ((diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint e : ℝ) : ℂ)) := by
@@ -93,7 +93,9 @@ private theorem hasSum_probabilityKernel_outcome (P : POVM H M)
     simpa [inner_self_eq_norm_sq_to_K, e, eigenvectorFamily_norm_eq_one ρ a] using hinner
   have hreal :
       HasSum (fun m => diagonalExpectationValue (P.E m) (P.pos m).isSelfAdjoint e) 1 := by
-    exact_mod_cast hcomplex
+    rw [HasSum] at hcomplex ⊢
+    exact Filter.tendsto_ofReal_iff.mp (by
+      simpa only [Complex.ofReal_sum] using hcomplex)
   simpa [probabilityKernel, e] using hreal.mul_left a.1.1
 
 private theorem hasSum_probabilityKernel_eigenvector (P : POVM H M)
@@ -110,7 +112,9 @@ private theorem hasSum_probabilityKernel_eigenvector (P : POVM H M)
     funext a
     rw [probabilityKernel, Complex.ofReal_mul, coe_diagonalExpectationValue_right]
   rw [hpoint] at hcomplex
-  exact_mod_cast hcomplex
+  rw [HasSum] at hcomplex ⊢
+  exact Filter.tendsto_ofReal_iff.mp (by
+    simpa only [Complex.ofReal_sum] using hcomplex)
 
 /-- The canonical nonnegative Born probabilities have sum one. -/
 theorem hasSum_probNNReal (P : POVM H M) (ρ : DensityOperator H) :
