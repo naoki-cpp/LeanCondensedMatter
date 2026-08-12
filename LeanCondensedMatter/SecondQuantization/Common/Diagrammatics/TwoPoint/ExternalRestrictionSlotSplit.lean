@@ -27,47 +27,20 @@ theorem TwoPointDiagram.externalBlockLegEquiv_externalSlotLegSplitting_inl
     d.externalBlockLegEquiv
         ⟨d.externalSlotLegSplitting (Sum.inl i),
           d.legInComponent_externalSlotLegSplitting_inl i⟩ = i := by
-  let hleft : d.legInComponent (d.externalComponent 0)
-      (d.externalSlotLegSplitting (Sum.inl i)) := by
-    simpa [TwoPointDiagram.externalComponentPart] using
-      d.legInComponent_externalSlotLegSplitting_inl i
-  let leg : {leg : Fin (2 * (2 * S.card + 1)) //
-      d.legInComponent (d.externalComponent 0) leg} :=
-    ⟨d.externalSlotLegSplitting (Sum.inl i), hleft⟩
-  change d.externalBlockLegEquiv leg = i
-  obtain ⟨x, hx⟩ :=
-    (twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))).surjective
-      ((twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))) i)
-  have hi :
-      (twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))).symm x = i := by
-    rw [← hx, Equiv.symm_apply_apply]
-  subst i
+  obtain ⟨x, rfl⟩ :=
+    (twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))).symm.surjective i
   cases x with
   | inl e =>
-      have hval : (leg : Fin (2 * (2 * S.card + 1))) =
-          (twoPointLegEquiv S).symm (Sum.inl e) :=
-        d.externalSlotLegSplitting_external e
-      let leg' : {leg : Fin (2 * (2 * S.card + 1)) //
-          d.legInComponent (d.externalComponent 0) leg} :=
-        ⟨(twoPointLegEquiv S).symm (Sum.inl e), hval ▸ leg.2⟩
-      have hleg : leg = leg' := Subtype.ext hval
-      rw [hleg]
-      rfl
+      simp [TwoPointDiagram.externalBlockLegEquiv,
+        TwoPointDiagram.externalSlotLegSplitting, slotLegSplitting,
+        TwoPointDiagram.externalLegDataEquiv, TwoPointDiagram.externalComponentPart,
+        Combinatorics.subsetSumSdiffEquiv]
   | inr p =>
       obtain ⟨v, l⟩ := p
-      have hval : (leg : Fin (2 * (2 * S.card + 1))) =
-          (twoPointLegEquiv S).symm
-            (Sum.inr (⟨v.1, TwoPointDiagram.interactionPart_subset
-              (d.externalComponent 0) v.2⟩, l)) :=
-        d.externalSlotLegSplitting_interaction v l
-      let leg' : {leg : Fin (2 * (2 * S.card + 1)) //
-          d.legInComponent (d.externalComponent 0) leg} :=
-        ⟨(twoPointLegEquiv S).symm
-            (Sum.inr (⟨v.1, TwoPointDiagram.interactionPart_subset
-              (d.externalComponent 0) v.2⟩, l)), hval ▸ leg.2⟩
-      have hleg : leg = leg' := Subtype.ext hval
-      rw [hleg]
-      rfl
+      simp [TwoPointDiagram.externalBlockLegEquiv,
+        TwoPointDiagram.externalSlotLegSplitting, slotLegSplitting,
+        TwoPointDiagram.externalLegDataEquiv, TwoPointDiagram.externalComponentPart,
+        Combinatorics.subsetSumSdiffEquiv]
 
 /-- Restricting the ambient pairing to the external component gives exactly the left pairing of the
 canonical external/vacuum slot split. -/
