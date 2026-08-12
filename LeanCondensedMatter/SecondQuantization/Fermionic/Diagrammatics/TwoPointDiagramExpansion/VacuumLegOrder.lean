@@ -34,9 +34,9 @@ theorem orderedQuarticLegToTwoPointLeg_orderedQuarticLegEquiv_symm
   simp [orderedQuarticLegToTwoPointLeg]
 
 private theorem twoPointTimedEventAtomicLegs_interaction_idxOf
-    {n : ℕ} (v : Fin n) (l : Fin 4) :
+    {n : ℕ} (v : Fin n) (hv : v ∈ (Finset.univ : Finset (Fin n))) (l : Fin 4) :
     @List.idxOf (OrderedTwoPointLeg n) instBEqOfDecidableEq
-        (Sum.inr (⟨v, Finset.mem_univ v⟩, l))
+        (Sum.inr (⟨v, hv⟩, l))
         (twoPointTimedEventAtomicLegs (Sum.inr v)) = l.val := by
   fin_cases l <;> simp [twoPointTimedEventAtomicLegs]
 
