@@ -47,26 +47,26 @@ theorem occupationConjugate_comp
   calc
     AlgebraicFock.occupationEquiv b (AlgebraicFock.occupationConjugate b (A.comp B) Ψ) =
         (A.comp B) (AlgebraicFock.occupationEquiv b Ψ) :=
-      occupationEquiv_occupationConjugate_apply b (A.comp B) Ψ
+      AlgebraicFock.occupationEquiv_occupationConjugate_apply b (A.comp B) Ψ
     _ = A (B (AlgebraicFock.occupationEquiv b Ψ)) := rfl
     _ = A (AlgebraicFock.occupationEquiv b (AlgebraicFock.occupationConjugate b B Ψ)) := by
-      rw [occupationEquiv_occupationConjugate_apply]
+      rw [AlgebraicFock.occupationEquiv_occupationConjugate_apply]
     _ = AlgebraicFock.occupationEquiv b
         (AlgebraicFock.occupationConjugate b A (AlgebraicFock.occupationConjugate b B Ψ)) :=
-      (occupationEquiv_occupationConjugate_apply b A
+      (AlgebraicFock.occupationEquiv_occupationConjugate_apply b A
         (AlgebraicFock.occupationConjugate b B Ψ)).symm
 
 /-- Exterior creation by a basis vector conjugates to occupation creation in the corresponding
 mode. -/
 theorem occupationConjugate_create
     (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) :
-    AlgebraicFock.occupationConjugate b (create 𝓗₁ (b i)) =
+    AlgebraicFock.occupationConjugate b (AlgebraicFock.create 𝓗₁ (b i)) =
       SecondQuantization.Fermionic.create i := by
   apply LinearMap.ext
   intro Ψ
   apply (AlgebraicFock.occupationEquiv b).injective
-  rw [occupationEquiv_occupationConjugate_apply]
-  have h := LinearMap.congr_fun (occupationEquiv_create b i) Ψ
+  rw [AlgebraicFock.occupationEquiv_occupationConjugate_apply]
+  have h := LinearMap.congr_fun (AlgebraicFock.occupationEquiv_create b i) Ψ
   simpa [LinearMap.comp_apply] using h.symm
 
 variable {Site : Type*}
@@ -100,8 +100,8 @@ theorem occupationOperator_dGamma_matrixUnit (x y : Site) :
   rw [occupationConjugate_create]
   change
     (SecondQuantization.Fermionic.create x).comp
-        (occupationAnnihilateFromField (latticeBasis (Site := Site)) y) = _
-  rw [occupationAnnihilateFromField_eq_annihilate]
+        (AlgebraicFock.occupationAnnihilateFromField (latticeBasis (Site := Site)) y) = _
+  rw [AlgebraicFock.occupationAnnihilateFromField_eq_annihilate]
 
 section Finite
 
