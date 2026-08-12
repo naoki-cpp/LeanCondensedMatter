@@ -1,5 +1,6 @@
-import LeanCondensedMatter.Permutation.AssignmentCycleKernel
+import LeanCondensedMatter.Permutation.SingleCycleKernel
 import Mathlib.Algebra.BigOperators.Fin
+import Mathlib.Data.Fintype.BigOperators
 import Mathlib.GroupTheory.Perm.Centralizer
 import Mathlib.GroupTheory.Perm.Fin
 import Mathlib.LinearAlgebra.Matrix.Trace
@@ -9,9 +10,10 @@ set_option linter.style.header false
 /-!
 # Assignment-summed cycle kernels and matrix traces
 
-This file supplies the matrix-aware part of W3. Abstract cycle labels are separated from physical
-matrix indices: an assignment `x : Fin m → ι` may repeat physical indices. The first step is to
-show that the assignment-summed kernel depends only on the conjugacy class of the label cycle.
+This file owns the finite bridge from fixed-label single-cycle combinatorics to matrix traces.
+Abstract cycle labels are `Fin m`, while `x : Fin m → ι` assigns physical indices to those labels;
+repetitions are deliberately allowed. Assignment/counting intermediates remain file-private, and the
+public boundary is the direct assignment-summed connected-contribution / trace theorem.
 -/
 
 namespace Combinatorics
@@ -19,6 +21,20 @@ namespace Combinatorics
 open Finset
 
 variable {ι R : Type*} [Fintype ι]
+
+private noncomputable def assignmentSingleCycleKernelSum [CommSemiring R]
+    (K : ι → ι → R) (m : ℕ) : R :=
+  ∑ x : Fin m → ι,
+    singleCycleKernelSum (fun a b : Fin m => K (x a) (x b)) Finset.univ
+
+private theorem sum_singleCycleContribution_assignments_eq_pow_mul_assignmentSingleCycleKernelSum
+    [CommSemiring R] (ζ : R) (K : ι → ι → R) (m : ℕ) :
+    (∑ x : Fin m → ι,
+      singleCycleContribution ζ (fun a b : Fin m => K (x a) (x b)) Finset.univ) =
+      ζ ^ (m - 1) * assignmentSingleCycleKernelSum K m := by
+  classical
+  simp_rw [singleCycleContribution_eq_pow_card_mul_singleCycleKernelSum]
+  simp [assignmentSingleCycleKernelSum, Finset.mul_sum]
 
 private noncomputable def cycleAssignmentKernelSum [CommSemiring R]
     (K : ι → ι → R) {m : ℕ} (σ : Equiv.Perm (Fin m)) : R :=
@@ -157,7 +173,6 @@ private theorem cycleAssignmentKernelSum_finRotate_eq_trace [CommSemiring R] [De
       simp_rw [pathKernelSum_eq_pow]
       rfl
 
-/-- Finite enumeration of full label cycles used in the W3 trace reduction. -/
 noncomputable local instance assignmentTraceFullCycleFintype {m : ℕ} :
     Fintype {σ : Equiv.Perm (Fin m) // σ.IsCycleOn (Set.univ : Set (Fin m))} :=
   Fintype.ofFinite _
@@ -307,10 +322,7 @@ private theorem assignmentSingleCycleKernelSum_eq_sum_cycleAssignmentKernelSum [
   rw [Finset.sum_comm]
   rfl
 
-/-- Assignment summation restores repeated physical indices and turns the full-cycle kernel into
-`(m - 1)!` copies of the matrix trace. The empty label set is excluded because its connected
-combinatorial term and `trace (K ^ 0)` have different meanings. -/
-theorem assignmentSingleCycleKernelSum_eq_factorial_mul_trace [CommSemiring R] [DecidableEq ι]
+private theorem assignmentSingleCycleKernelSum_eq_factorial_mul_trace [CommSemiring R] [DecidableEq ι]
     (K : Matrix ι ι R) (m : ℕ) (hm : 0 < m) :
     assignmentSingleCycleKernelSum K m =
       (Nat.factorial (m - 1) : R) * Matrix.trace (K ^ m) := by
@@ -326,5 +338,17 @@ theorem assignmentSingleCycleKernelSum_eq_factorial_mul_trace [CommSemiring R] [
           rw [assignmentSingleCycleKernelSum_eq_sum_cycleAssignmentKernelSum]
           simp_rw [cycleAssignmentKernelSum_fullCycle_add_two]
           simp [fullCycle_card_add_two]
+
+/-- Summing the connected single-cycle contribution over all physical-index assignments gives
+`ζ^(m-1) (m-1)! tr(K^m)` for positive label count `m`. This is the public trace bridge; the raw
+assignment-kernel and cycle-enumeration objects remain implementation details. -/
+theorem sum_singleCycleContribution_assignments_eq_factorial_mul_trace
+    [CommSemiring R] [DecidableEq ι]
+    (ζ : R) (K : Matrix ι ι R) (m : ℕ) (hm : 0 < m) :
+    (∑ x : Fin m → ι,
+      singleCycleContribution ζ (fun a b : Fin m => K (x a) (x b)) Finset.univ) =
+      ζ ^ (m - 1) * ((Nat.factorial (m - 1) : R) * Matrix.trace (K ^ m)) := by
+  rw [sum_singleCycleContribution_assignments_eq_pow_mul_assignmentSingleCycleKernelSum]
+  rw [assignmentSingleCycleKernelSum_eq_factorial_mul_trace K m hm]
 
 end Combinatorics
