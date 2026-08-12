@@ -53,11 +53,28 @@ theorem kineticMomentumSquaredValue1D_eq_expanded
         ((q ^ 2 * vectorPotential ^ 2 : ℝ) : ℂ) * ψ := by
   apply Complex.ext
   · simp [kineticMomentumSquaredValue1D, kineticMomentumDerivativeValue1D,
-      kineticMomentumValue1D]
-    ring
+      kineticMomentumValue1D, pow_two] <;> ring
   · simp [kineticMomentumSquaredValue1D, kineticMomentumDerivativeValue1D,
-      kineticMomentumValue1D]
-    ring
+      kineticMomentumValue1D, pow_two] <;> ring
+
+/-- The free kinetic coefficient `ℏ² / (2m)` occurring after minimal-coupling expansion. -/
+def electromagneticKineticCoefficient1D (ℏ mass : ℝ) : ℝ :=
+  ℏ ^ 2 / (2 * mass)
+
+/-- Coefficient of the `i A ψₓ` term in the expanded minimal-coupling Hamiltonian. -/
+def electromagneticVectorPotentialCoefficient1D
+    (q ℏ mass vectorPotential : ℝ) : ℝ :=
+  q * ℏ * vectorPotential / mass
+
+/-- Coefficient of the `i Aₓ ψ` term in the expanded minimal-coupling Hamiltonian. -/
+def electromagneticVectorPotentialDerivativeCoefficient1D
+    (q ℏ mass vectorPotentialDerivative : ℝ) : ℝ :=
+  q * ℏ * vectorPotentialDerivative / (2 * mass)
+
+/-- Real multiplication coefficient collecting the `A²` and scalar-potential terms. -/
+def electromagneticScalarCoefficient1D
+    (q mass vectorPotential scalarPotential : ℝ) : ℝ :=
+  q ^ 2 * vectorPotential ^ 2 / (2 * mass) + q * scalarPotential
 
 /-- The pointwise right-hand side of the minimally coupled Schrödinger equation
 `(1 / (2m)) π_A² ψ + q φ ψ`. -/
@@ -74,19 +91,21 @@ theorem minimallyCoupledSchrodingerRhsValue1D_eq_expanded
     (ψ ψx ψxx : ℂ) (hmass : mass ≠ 0) :
     minimallyCoupledSchrodingerRhsValue1D
         q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential ψ ψx ψxx =
-      -((ℏ ^ 2 / (2 * mass) : ℝ) : ℂ) * ψxx +
-        Complex.I * ((q * ℏ * vectorPotential / mass : ℝ) : ℂ) * ψx +
-        Complex.I * ((q * ℏ * vectorPotentialDerivative / (2 * mass) : ℝ) : ℂ) * ψ +
-        ((q ^ 2 * vectorPotential ^ 2 / (2 * mass) + q * scalarPotential : ℝ) : ℂ) * ψ := by
-  unfold minimallyCoupledSchrodingerRhsValue1D
+      -((electromagneticKineticCoefficient1D ℏ mass : ℝ) : ℂ) * ψxx +
+        Complex.I *
+          ((electromagneticVectorPotentialCoefficient1D q ℏ mass vectorPotential : ℝ) : ℂ) * ψx +
+        Complex.I *
+          ((electromagneticVectorPotentialDerivativeCoefficient1D
+            q ℏ mass vectorPotentialDerivative : ℝ) : ℂ) * ψ +
+        ((electromagneticScalarCoefficient1D q mass vectorPotential scalarPotential : ℝ) : ℂ) * ψ := by
+  have hmassC : (mass : ℂ) ≠ 0 := by
+    exact_mod_cast hmass
+  unfold minimallyCoupledSchrodingerRhsValue1D electromagneticKineticCoefficient1D
+    electromagneticVectorPotentialCoefficient1D
+    electromagneticVectorPotentialDerivativeCoefficient1D electromagneticScalarCoefficient1D
   rw [kineticMomentumSquaredValue1D_eq_expanded]
-  apply Complex.ext
-  · simp
-    field_simp [hmass]
-    ring
-  · simp
-    field_simp [hmass]
-    ring
+  push_cast
+  field_simp [hmassC] <;> ring
 
 private theorem probabilityDensityValue_eq_coordinates (ψ : ℂ) :
     probabilityDensityValue ψ = ψ.re ^ 2 + ψ.im ^ 2 :=
@@ -139,11 +158,19 @@ theorem hasDerivAt_electromagneticProbabilityCurrentValue1D
         q ℏ mass (vectorPotential x) vectorPotentialDerivative (ψ x) (ψx x) ψxx) x := by
   have hpairRaw := HasDerivAt.sub
     (HasDerivAt.mul hψre hψxim) (HasDerivAt.mul hψim hψxre)
+  have hderiv :
+      ((ψx x).re * (ψx x).im + (ψ x).re * ψxx.im) -
+          ((ψx x).im * (ψx x).re + (ψ x).im * ψxx.re) =
+        (ψ x).re * ψxx.im - (ψ x).im * ψxx.re := by
+    ring
+  rw [hderiv] at hpairRaw
   have hpair :
       HasDerivAt
         (fun y => (ψ y).re * (ψx y).im - (ψ y).im * (ψx y).re)
         ((ψ x).re * ψxx.im - (ψ x).im * ψxx.re) x := by
-    convert hpairRaw using 1 <;> ring
+    rw [hasDerivAt_iff_tendsto]
+    rw [hasDerivAt_iff_tendsto] at hpairRaw
+    simpa [Pi.mul_apply, Pi.sub_apply] using hpairRaw
   have hparamagnetic := hpair.const_mul (ℏ / mass)
   have hdensity := hasDerivAt_probabilityDensityValue hψre hψim
   have hdiamagnetic := (HasDerivAt.mul hA hdensity).const_mul (q / mass)
@@ -159,8 +186,10 @@ theorem hasDerivAt_electromagneticProbabilityCurrentValue1D
       q ℏ mass (vectorPotential y) (ψ y) (ψx y) hℏ hmass]
     ring
   rw [hfun]
-  convert hraw using 1 <;>
-    simp [electromagneticProbabilityCurrentDivergenceValue1D] <;> ring
+  rw [hasDerivAt_iff_tendsto]
+  rw [hasDerivAt_iff_tendsto] at hraw
+  simpa [electromagneticProbabilityCurrentDivergenceValue1D,
+    Pi.mul_apply, Pi.sub_apply, Pi.add_apply] using hraw
 
 /-- Real and imaginary component equations of the minimally coupled Schrödinger equation, written
 without denominators after multiplication by `2m`. -/
@@ -185,6 +214,9 @@ theorem electromagnetic_schrodinger_component_equations
   have hre := congrArg Complex.re hschrodinger
   have him := congrArg Complex.im hschrodinger
   simp at hre him
+  unfold electromagneticKineticCoefficient1D electromagneticVectorPotentialCoefficient1D
+    electromagneticVectorPotentialDerivativeCoefficient1D electromagneticScalarCoefficient1D
+    at hre him
   field_simp [hmass] at hre him
   constructor
   · linear_combination -hre
