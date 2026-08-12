@@ -2,6 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.FixedOrderSum
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentDecomposition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotCongr
 
 set_option linter.style.header false
 
@@ -26,6 +27,50 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
 abbrev FixedExternalTwoPointWickDiagramOn (Mode : Type*) (n : ℕ) (T : Finset (Fin n))
     (i j : Mode) : Type _ :=
   {d : TwoPointWickDiagram Mode n T // d.externalLabel = twoPointExternalLabels i j}
+
+/-- The increasing enumeration of a chosen ambient slot set, viewed as a relabeling onto the
+standard full slot set of the same cardinality. -/
+noncomputable def fixedExternalSlotEquiv (T : Finset (Fin n)) :
+    ↥T ≃ ↥(Finset.univ : Finset (Fin T.card)) :=
+  (T.orderIsoOfFin rfl).toEquiv.symm.trans
+    (Equiv.subtypeUnivEquiv (fun x : Fin T.card => Finset.mem_univ x)).symm
+
+/-- A fixed-external two-point diagram on an arbitrary chosen slot set is canonically the same data
+as an order-`|T|` fixed-external diagram, using the increasing enumeration of `T`. -/
+noncomputable def fixedExternalTwoPointWickDiagramOnEquiv (T : Finset (Fin n)) :
+    FixedExternalTwoPointWickDiagramOn Mode n T i j ≃
+      FixedExternalTwoPointWickDiagram Mode T.card i j where
+  toFun d :=
+    ⟨d.1.slotCongr (fixedExternalSlotEquiv T), by
+      rw [Common.TwoPointDiagram.slotCongr_externalLabel]
+      exact d.2⟩
+  invFun d :=
+    ⟨d.1.slotCongr (fixedExternalSlotEquiv T).symm, by
+      rw [Common.TwoPointDiagram.slotCongr_externalLabel]
+      exact d.2⟩
+  left_inv d :=
+    Subtype.ext ((Common.TwoPointDiagram.slotCongrEquiv
+      (fixedExternalSlotEquiv T)).left_inv d.1)
+  right_inv d :=
+    Subtype.ext ((Common.TwoPointDiagram.slotCongrEquiv
+      (fixedExternalSlotEquiv T)).right_inv d.1)
+
+/-- The canonical slot standardization restricts to externally connected fixed-external diagrams. -/
+noncomputable def connectedFixedExternalTwoPointWickDiagramOnEquiv (T : Finset (Fin n)) :
+    {ext : FixedExternalTwoPointWickDiagramOn Mode n T i j //
+        ext.1.IsExternallyConnected} ≃
+      {d : FixedExternalTwoPointWickDiagram Mode T.card i j //
+        d.1.IsExternallyConnected} where
+  toFun ext :=
+    ⟨fixedExternalTwoPointWickDiagramOnEquiv T ext.1,
+      (Common.TwoPointDiagram.slotCongr_isExternallyConnected_iff
+        (fixedExternalSlotEquiv T) ext.1.1).2 ext.2⟩
+  invFun d :=
+    ⟨(fixedExternalTwoPointWickDiagramOnEquiv T).symm d.1,
+      (Common.TwoPointDiagram.slotCongr_isExternallyConnected_iff
+        (fixedExternalSlotEquiv T).symm d.1.1).2 d.2⟩
+  left_inv ext := Subtype.ext ((fixedExternalTwoPointWickDiagramOnEquiv T).left_inv ext.1)
+  right_inv d := Subtype.ext ((fixedExternalTwoPointWickDiagramOnEquiv T).right_inv d.1)
 
 /-- **The fiber decomposition with the external labels fixed.** The diagrams whose external
 component owns exactly `T` are the pairs of an externally connected fixed-external diagram on `T`
