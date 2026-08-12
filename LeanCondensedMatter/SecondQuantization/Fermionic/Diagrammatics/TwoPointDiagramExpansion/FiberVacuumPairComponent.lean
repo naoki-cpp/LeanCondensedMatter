@@ -47,8 +47,7 @@ theorem fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding_pairComponent
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T))
     (pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair) :
-    let d := fixedExternalOfSlotSplit T ext vac
-    d.mixedPairComponent τ τ' σ
+    (fixedExternalOfSlotSplit T ext vac).mixedPairComponent τ τ' σ
         (fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ pr) =
       (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac
         (vac.fixedOrderPairComponent (fixedExternalVacuumOrder T) pr)).1 := by
@@ -58,6 +57,8 @@ theorem fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding_pairComponent
   let v : ↥((Finset.univ : Finset (Fin n)) \ T) := Common.vertexOfLeg q
   let C : vac.componentPartition.parts :=
     vac.fixedOrderPairComponent (fixedExternalVacuumOrder T) pr
+  change d.mixedPairComponent τ τ' σ
+      (fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ pr) = _
   rw [fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding_component
     T ext vac τ τ' σ hσ pr]
   let B : d.1.componentPartition.parts :=
