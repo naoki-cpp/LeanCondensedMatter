@@ -27,6 +27,7 @@ noncomputable def fixedExternalOfSlotSplit (T : Finset (Fin n))
     FixedExternalTwoPointWickDiagram Mode n i j :=
   ⟨Common.TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext.1 vac, ext.2⟩
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- For an externally connected left piece, the product of the ambient vacuum-component Dyson signs
 and coupling weights is exactly the Dyson sign and coupling weight of the standalone quartic vacuum
 piece. -/
