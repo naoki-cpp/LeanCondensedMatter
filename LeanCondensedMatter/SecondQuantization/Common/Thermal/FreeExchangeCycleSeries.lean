@@ -11,6 +11,10 @@ backend is already formulated for arbitrary `ζ`. This file specializes that gen
 the shared free Boltzmann kernel once. Fermionic `ζ = -1` and bosonic `ζ = +1` consumers are thin
 corollaries rather than duplicate diagonal trace-log proofs.
 
+The arbitrary-`ζ` common layer deliberately stops at the connected-cycle/trace-log series. Explicit
+grand products are statistics-specific endpoint objects, proved from shared formal-log algebra rather
+than from a branchy or computationally expensive generic grand-series definition.
+
 Everything here is formal. No evaluation of the power-series variable at `t = 1` is used.
 -/
 
