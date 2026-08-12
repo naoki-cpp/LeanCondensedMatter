@@ -113,25 +113,42 @@ theorem electromagnetic_schrodinger_component_equations
         -(ℏ ^ 2 * ψxx.im) + 2 * q * ℏ * vectorPotential * ψx.re +
           q * ℏ * vectorPotentialDerivative * ψ.re +
           (q ^ 2 * vectorPotential ^ 2 + 2 * mass * q * scalarPotential) * ψ.im := by
-  rw [minimallyCoupledSchrodingerRhsValue1D_eq_expanded
-    q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential ψ ψx ψxx hmass]
-    at hschrodinger
+  let kineticCoefficient : ℝ := ℏ ^ 2 / (2 * mass)
+  let vectorPotentialCoefficient : ℝ := q * ℏ * vectorPotential / mass
+  let vectorPotentialDerivativeCoefficient : ℝ :=
+    q * ℏ * vectorPotentialDerivative / (2 * mass)
+  let scalarCoefficient : ℝ :=
+    q ^ 2 * vectorPotential ^ 2 / (2 * mass) + q * scalarPotential
+  have hexpanded :
+      minimallyCoupledSchrodingerRhsValue1D
+          q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential ψ ψx ψxx =
+        -((kineticCoefficient : ℝ) : ℂ) * ψxx +
+          Complex.I * ((vectorPotentialCoefficient : ℝ) : ℂ) * ψx +
+          Complex.I * ((vectorPotentialDerivativeCoefficient : ℝ) : ℂ) * ψ +
+          ((scalarCoefficient : ℝ) : ℂ) * ψ := by
+    simpa [kineticCoefficient, vectorPotentialCoefficient,
+      vectorPotentialDerivativeCoefficient, scalarCoefficient] using
+      (minimallyCoupledSchrodingerRhsValue1D_eq_expanded
+        q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential ψ ψx ψxx hmass)
+  rw [hexpanded] at hschrodinger
   have hreRaw := congrArg Complex.re hschrodinger
   have himRaw := congrArg Complex.im hschrodinger
   have hre :
       -(ℏ * ψt.im) =
-        -(ℏ ^ 2 / (2 * mass)) * ψxx.re -
-          (q * ℏ * vectorPotential / mass) * ψx.im -
-          (q * ℏ * vectorPotentialDerivative / (2 * mass)) * ψ.im +
-          (q ^ 2 * vectorPotential ^ 2 / (2 * mass) + q * scalarPotential) * ψ.re := by
+        -kineticCoefficient * ψxx.re -
+          vectorPotentialCoefficient * ψx.im -
+          vectorPotentialDerivativeCoefficient * ψ.im +
+          scalarCoefficient * ψ.re := by
     simpa [sub_eq_add_neg] using hreRaw
   have him :
       ℏ * ψt.re =
-        -(ℏ ^ 2 / (2 * mass)) * ψxx.im +
-          (q * ℏ * vectorPotential / mass) * ψx.re +
-          (q * ℏ * vectorPotentialDerivative / (2 * mass)) * ψ.re +
-          (q ^ 2 * vectorPotential ^ 2 / (2 * mass) + q * scalarPotential) * ψ.im := by
+        -kineticCoefficient * ψxx.im +
+          vectorPotentialCoefficient * ψx.re +
+          vectorPotentialDerivativeCoefficient * ψ.re +
+          scalarCoefficient * ψ.im := by
     simpa using himRaw
+  dsimp [kineticCoefficient, vectorPotentialCoefficient,
+    vectorPotentialDerivativeCoefficient, scalarCoefficient] at hre him
   field_simp [hmass] at hre him
   constructor
   · linear_combination -hre
@@ -248,7 +265,7 @@ theorem oneDimensional_electromagnetic_charge_continuity
     simpa [chargeDensityValue] using hdensity.const_mul q
   have hchargeCurrent :
       HasDerivAt
-        (fun y => electromagneticChargeCurrentValue1D
+        (fun y => electromagneticChargeCurrentValueValue1D
           q ℏ mass (vectorPotential y) (ψSpace y) (ψx y))
         (q * electromagneticProbabilityCurrentDivergenceValue1D
           q ℏ mass (vectorPotential x) vectorPotentialDerivative
