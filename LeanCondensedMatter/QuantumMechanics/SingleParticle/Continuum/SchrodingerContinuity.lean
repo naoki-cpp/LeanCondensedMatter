@@ -41,14 +41,14 @@ private def realPart (z : ℂ) : ℝ :=
 private def imaginaryPart (z : ℂ) : ℝ :=
   z.im
 
-/-- Pointwise probability density `|ψ|²`, written in real coordinates. -/
+/-- Pointwise probability density `‖ψ‖²`. -/
 def probabilityDensityValue (ψ : ℂ) : ℝ :=
   Complex.normSq ψ
 
-/-- Coordinate expansion of the canonical probability-density representation. -/
-theorem probabilityDensityValue_eq_coordinates (ψ : ℂ) :
-    probabilityDensityValue ψ = ψ.re ^ 2 + ψ.im ^ 2 := by
-  simp [probabilityDensityValue, Complex.normSq_apply, pow_two]
+/-- The probability density agrees with the squared complex norm. -/
+theorem probabilityDensityValue_eq_norm_sq (ψ : ℂ) :
+    probabilityDensityValue ψ = ‖ψ‖ ^ 2 := by
+  simpa [probabilityDensityValue] using Complex.normSq_eq_norm_sq ψ
 
 /-- The canonical real pairing underlying the one-dimensional probability current. -/
 def probabilityCurrentPairingValue (ψ χ : ℂ) : ℝ :=
@@ -58,6 +58,7 @@ def probabilityCurrentPairingValue (ψ χ : ℂ) : ℝ :=
 theorem probabilityCurrentPairingValue_eq_coordinates (ψ χ : ℂ) :
     probabilityCurrentPairingValue ψ χ = ψ.re * χ.im - ψ.im * χ.re := by
   simp [probabilityCurrentPairingValue, Complex.mul_im]
+  ring
 
 /-- Pointwise one-dimensional probability current for kinetic coefficient `κ`.
 
@@ -114,7 +115,8 @@ theorem hasDerivAt_probabilityDensityValue
   rw [hderiv] at hraw
   rw [hasDerivAt_iff_tendsto]
   rw [hasDerivAt_iff_tendsto] at hraw
-  simpa [probabilityDensityValue, pow_two, Pi.mul_apply, Pi.add_apply] using hraw
+  simpa [probabilityDensityValue, Complex.normSq_apply, realPart, imaginaryPart,
+    pow_two, Pi.mul_apply, Pi.add_apply] using hraw
 
 /-- Differentiating the standard one-dimensional current cancels the two mixed first-derivative
 terms, leaving only the second spatial derivative. -/

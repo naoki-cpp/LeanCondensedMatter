@@ -253,7 +253,7 @@ theorem electromagnetic_probability_continuity_balance_of_components
           q ℏ mass vectorPotential vectorPotentialDerivative ψ ψx ψxx) = 0 := by
     rw [electromagneticProbabilityCurrentDivergenceValue1D_eq_expanded,
       probabilityDensityTimeDerivativeValue_eq_coordinates,
-      probabilityDensityValue_eq_coordinates]
+      probabilityDensityValue, Complex.normSq_apply]
     field_simp [hmass]
     linear_combination ψ.re * himag + ψ.im * hreal
   exact (mul_eq_zero.mp hscaled).resolve_left hℏ

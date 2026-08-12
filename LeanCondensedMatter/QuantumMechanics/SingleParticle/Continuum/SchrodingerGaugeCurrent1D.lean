@@ -92,7 +92,7 @@ theorem electromagneticProbabilityCurrentValue1D_eq_expanded
   unfold electromagneticProbabilityCurrentValue1D
   rw [probabilityCurrentPairingValue_eq_coordinates,
     gaugeCovariantDerivativeValue1D_re, gaugeCovariantDerivativeValue1D_im,
-    probabilityDensityValue_eq_coordinates]
+    probabilityDensityValue, Complex.normSq_apply]
   unfold gaugeConnectionCoefficientValue1D
   field_simp [hℏ, hmass]
   ring
