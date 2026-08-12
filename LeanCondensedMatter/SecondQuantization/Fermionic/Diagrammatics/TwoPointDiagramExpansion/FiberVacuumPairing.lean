@@ -32,6 +32,14 @@ noncomputable def fixedExternalVacuumSlot (T : Finset (Fin n)) :
   fun k => (fixedExternalVacuumOrder T k).1
 
 omit [LinearOrder Mode] [Fintype Mode] in
+/-- The inherited vacuum-slot map is strictly increasing in ambient interaction-slot order. -/
+theorem fixedExternalVacuumSlot_strictMono (T : Finset (Fin n)) :
+    StrictMono (fixedExternalVacuumSlot T) := by
+  intro a b hab
+  simpa [fixedExternalVacuumSlot, fixedExternalVacuumOrder] using
+    (((Finset.univ : Finset (Fin n)) \ T).orderIsoOfFin rfl).strictMono hab
+
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- A fixed-order quartic vacuum leg, viewed as an ambient standard two-point leg, is exactly the
 right-leg embedding of the canonical slot split. -/
 theorem fixedExternalVacuumOrderedLeg_eq_slotSplitRight
@@ -115,6 +123,52 @@ theorem fixedExternalOfSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
   rw [d.pairingInMixedOrder_partner_legPosition,
     fixedExternalOfSlotSplit_atomicLegPartner_vacuumOrderedLeg T ext vac p]
   rfl
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- On a strictly ordered inherited vacuum-time assignment, a local fixed-order quartic pair is
+normalized if and only if its two endpoints form the corresponding normalized pair in the ambient
+mixed two-point pairing. -/
+theorem fixedExternalOfSlotSplit_mem_mixedPairs_vacuumOrderedLeg_iff
+    (T : Finset (Fin n))
+    (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
+    (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
+    (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T))
+    (a b : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))) :
+    let d := fixedExternalOfSlotSplit T ext vac
+    (mixedTimeOrderedQuarticLegMapPosition (fixedExternalVacuumSlot T) τ τ' σ a,
+        mixedTimeOrderedQuarticLegMapPosition (fixedExternalVacuumSlot T) τ τ' σ b) ∈
+      (d.pairingInMixedOrder τ τ' σ).pairs ↔
+    (a, b) ∈ (vac.pairingInOrder (fixedExternalVacuumOrder T)).pairs := by
+  let d := fixedExternalOfSlotSplit T ext vac
+  let E := mixedTimeOrderedQuarticLegMapPosition
+    (fixedExternalVacuumSlot T) τ τ' σ
+  have hE : StrictMono E :=
+    mixedTimeOrderedQuarticLegMapPosition_strictMono_of_strictAnti
+      (fixedExternalVacuumSlot T) (fixedExternalVacuumSlot_strictMono T)
+      τ τ' σ hσ
+  let e :
+      Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card)) ↪o
+        Fin (2 * (2 * n + 1)) :=
+    OrderEmbedding.ofStrictMono E hE
+  change (E a, E b) ∈ (d.pairingInMixedOrder τ τ' σ).pairs ↔
+    (a, b) ∈ (vac.pairingInOrder (fixedExternalVacuumOrder T)).pairs
+  rw [Pairing.mem_pairs_iff, Pairing.mem_pairs_iff]
+  constructor
+  · rintro ⟨hab, hpartner⟩
+    refine ⟨e.lt_iff_lt.mp hab, ?_⟩
+    apply e.injective
+    change E ((vac.pairingInOrder (fixedExternalVacuumOrder T)).partner a) = E b
+    calc
+      E ((vac.pairingInOrder (fixedExternalVacuumOrder T)).partner a) =
+          (d.pairingInMixedOrder τ τ' σ).partner (E a) :=
+        (fixedExternalOfSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
+          T ext vac τ τ' σ a).symm
+      _ = E b := hpartner
+  · rintro ⟨hab, hpartner⟩
+    refine ⟨e.lt_iff_lt.mpr hab, ?_⟩
+    rw [fixedExternalOfSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
+      T ext vac τ τ' σ a, hpartner]
 
 end Fermionic
 end SecondQuantization
