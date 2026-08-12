@@ -60,6 +60,6 @@ Public entry point for the analysis infrastructure exported by LeanCondensedMatt
 project's operator theory, Dyson and ordered-simplex analysis, functional calculus, trace-class and
 Hilbert–Schmidt tools, and the analysis-level inequalities used by downstream physics layers.
 
-Implementation modules should continue to import the narrow analysis leaves they actually use;
-this umbrella is for public track-level access.
+`LeanCondensedMatter.lean` delegates the analysis export surface to this module. Implementation
+modules should continue to import the narrow analysis leaves they actually use.
 -/
