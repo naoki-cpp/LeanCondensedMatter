@@ -19,6 +19,7 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
 
+omit [Fintype Mode] in
 /-- The external component's coupling product is the ordinary slot-indexed coupling weight of the
 standalone external piece. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight_externalComponentPart_eq_externalPiece
@@ -28,17 +29,23 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight_externalComp
       orderedTwoPointVertexWeight g d.externalPiece.vertexLabelSequence := by
   classical
   rw [d.mixedComponentVertexWeight_external_eq_restricted]
-  have hslot := Common.TwoPointDiagram.prod_vertexLabel_slotCongr
-    d.externalSlotEquiv d.1.restrictExternalComponent g
-  rw [← hslot]
-  unfold orderedTwoPointVertexWeight FixedExternalTwoPointWickDiagram.vertexLabelSequence
-  let e : Fin d.1.externalInteractionPart.card ≃
-      ↥(Finset.univ : Finset (Fin d.1.externalInteractionPart.card)) :=
-    Equiv.subtypeUnivEquiv (fun x => Finset.mem_univ x)
-  simpa [e] using
-    (Equiv.prod_comp e
-      (fun v : ↥(Finset.univ : Finset (Fin d.1.externalInteractionPart.card)) =>
-        g (d.externalPiece.1.vertexLabel v)))
+  calc
+    (∏ v : ↥d.1.externalInteractionPart,
+        g (d.1.restrictExternalComponent.vertexLabel v)) =
+        ∏ v : ↥(Finset.univ : Finset (Fin d.1.externalInteractionPart.card)),
+          g (d.externalPiece.1.vertexLabel v) := by
+      simpa [FixedExternalTwoPointWickDiagram.externalPiece] using
+        (Common.TwoPointDiagram.prod_vertexLabel_slotCongr
+          d.externalSlotEquiv d.1.restrictExternalComponent g).symm
+    _ = orderedTwoPointVertexWeight g d.externalPiece.vertexLabelSequence := by
+      unfold orderedTwoPointVertexWeight FixedExternalTwoPointWickDiagram.vertexLabelSequence
+      let e : Fin d.1.externalInteractionPart.card ≃
+          ↥(Finset.univ : Finset (Fin d.1.externalInteractionPart.card)) :=
+        Equiv.subtypeUnivEquiv (fun x => Finset.mem_univ x)
+      simpa [e] using
+        (Equiv.prod_comp e
+          (fun v : ↥(Finset.univ : Finset (Fin d.1.externalInteractionPart.card)) =>
+            g (d.externalPiece.1.vertexLabel v))).symm
 
 /-- The complete external fixed-time factor is the fixed-time amplitude of the standalone external
 piece at the interaction times inherited from the ambient diagram. -/
@@ -52,7 +59,18 @@ theorem FixedExternalTwoPointWickDiagram.mixedExternalFixedTimeValue_eq_external
   unfold FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
   rw [d.mixedComponentVertexWeight_externalComponentPart_eq_externalPiece g,
     d.mixedComponentPairingValue_externalComponentPart ε β τ τ' σ]
-  rfl
+  change
+    twoPointExternalOrderSign τ τ' *
+        (orderedTwoPointVertexWeight g d.externalPiece.vertexLabelSequence *
+          orderedTwoPointPairingValue ε β i j τ τ' (d.externalPieceTimes σ)
+            d.externalPiece.vertexLabelSequence
+            (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ))) =
+      twoPointExternalOrderSign τ τ' *
+        orderedTwoPointVertexWeight g d.externalPiece.vertexLabelSequence *
+          orderedTwoPointPairingValue ε β i j τ τ' (d.externalPieceTimes σ)
+            d.externalPiece.vertexLabelSequence
+            (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ))
+  ring
 
 /-- The Dyson-signed external factor is the standalone external piece's Dyson-signed fixed-time
 amplitude at its inherited interaction times. -/
