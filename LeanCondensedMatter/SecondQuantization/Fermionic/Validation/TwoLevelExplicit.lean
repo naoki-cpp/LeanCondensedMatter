@@ -17,7 +17,6 @@ No numerical approximation, disorder average, or limiting procedure is used.
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
 namespace Validation
 
 open scoped BigOperators
