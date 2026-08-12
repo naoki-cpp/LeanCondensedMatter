@@ -1,5 +1,8 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DysonCoefficient
+import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonPartitionSeries
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticInteraction
 import Mathlib.RingTheory.PowerSeries.Basic
+import Mathlib.RingTheory.PowerSeries.Inverse
 
 set_option linter.style.header false
 
@@ -11,9 +14,10 @@ series in the coupling, one for each presentation: the diagram sum and the mixed
 density-state expectation. They are the same series, because the two coefficients agree at every
 order.
 
-This is the series the linked-cluster theorem divides by the partition series; collecting the
-coefficients here keeps that division a statement about power series rather than about a family of
-integrals.
+The series is then divided by the partition series of the same interaction, normalized to constant
+coefficient one. That division is what the linked-cluster theorem asks for: the coefficients are
+already free Gibbs expectations, so only the interacting vacuum contributions remain to be
+cancelled.
 -/
 
 namespace SecondQuantization
@@ -59,6 +63,51 @@ theorem constantCoeff_twoPointDysonSeries (ε : Mode → ℝ) (β : ℝ)
     PowerSeries.constantCoeff (twoPointDysonSeries ε β g i j τ τ') =
       twoPointDysonCoefficient (n := 0) ε β g i j τ τ' := by
   rw [← PowerSeries.coeff_zero_eq_constantCoeff, coeff_twoPointDysonSeries]
+
+/-- **The vacuum-normalized two-point series**: the two-point series divided by the partition series
+of the same interaction, normalized to constant coefficient one.
+
+The division is by the *normalized* partition series because the two-point coefficients are already
+free Gibbs **expectations** — the free partition function has been divided out of each of them, so
+only the interacting vacuum contributions remain to be cancelled. -/
+noncomputable def vacuumNormalizedTwoPointDysonSeries (ε : Mode → ℝ) (β : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) : PowerSeries ℂ :=
+  twoPointDysonSeries ε β g i j τ τ' *
+    (PowerSeries.normalizeByConstantCoeff
+      (dysonPartitionSeries ε β (quarticInteraction g)))⁻¹
+
+omit [LinearOrder Mode] in
+/-- The normalized partition series is invertible: its constant coefficient is one. -/
+theorem constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries_ne_zero
+    (ε : Mode → ℝ) (β : ℝ)
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
+    PowerSeries.constantCoeff
+        (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) ≠ 0 := by
+  rw [constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries]
+  exact one_ne_zero
+
+/-- **The defining property of the vacuum normalization**: multiplying back by the normalized
+partition series recovers the two-point series. -/
+theorem vacuumNormalizedTwoPointDysonSeries_mul_normalizeByConstantCoeff
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
+    vacuumNormalizedTwoPointDysonSeries ε β g i j τ τ' *
+        PowerSeries.normalizeByConstantCoeff
+          (dysonPartitionSeries ε β (quarticInteraction g)) =
+      twoPointDysonSeries ε β g i j τ τ' := by
+  rw [vacuumNormalizedTwoPointDysonSeries, mul_assoc,
+    PowerSeries.inv_mul_cancel _
+      (constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries_ne_zero ε β
+        (quarticInteraction g)),
+    mul_one]
+
+/-- Normalizing by the vacuum leaves the order-zero coefficient unchanged. -/
+theorem constantCoeff_vacuumNormalizedTwoPointDysonSeries
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
+    PowerSeries.constantCoeff (vacuumNormalizedTwoPointDysonSeries ε β g i j τ τ') =
+      twoPointDysonCoefficient (n := 0) ε β g i j τ τ' := by
+  rw [vacuumNormalizedTwoPointDysonSeries, map_mul, PowerSeries.constantCoeff_inv,
+    constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries, inv_one, mul_one,
+    constantCoeff_twoPointDysonSeries]
 
 end Fermionic
 end SecondQuantization
