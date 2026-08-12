@@ -1,0 +1,65 @@
+import LeanCondensedMatter.Analysis.PowerSeries.Normalization
+import LeanCondensedMatter.Analysis.Dyson.Basic
+import LeanCondensedMatter.Analysis.Dyson.Bounds
+import LeanCondensedMatter.Analysis.Dyson.FirstVariation
+import LeanCondensedMatter.Analysis.Dyson.Volterra
+import LeanCondensedMatter.Analysis.Dyson.Uniqueness
+import LeanCondensedMatter.Analysis.Dyson.Constant
+import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle
+import LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr
+import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
+import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
+import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
+import LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointResolvent
+import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedResolvent
+import LeanCondensedMatter.Analysis.Operator.Unbounded.CayleyTransform
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximation
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventConvergence
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventCommutation
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximationCommutation
+import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolution
+import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionAlgebra
+import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionVectorwise
+import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionEstimate
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionCauchy
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongLimit
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionOperator
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionUnitaryGroup
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionDomain
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerator
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGeneratorEquation
+import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
+import LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct
+import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
+import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct
+import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Trace
+import LeanCondensedMatter.Analysis.Operator.Fredholm.Diagonal
+import LeanCondensedMatter.Analysis.Operator.Fredholm.FiniteDimensional
+import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
+import LeanCondensedMatter.Analysis.OrderedSimplex.Calculus
+import LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral
+import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
+import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality
+import LeanCondensedMatter.Analysis.Operator.DiagonalExpectationFinite
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Basic
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Bundled
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Diagonal
+import LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalPositive
+import LeanCondensedMatter.Analysis.Operator.TraceClass.DiagonalSpectralTrace
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Ops
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Equality
+import LeanCondensedMatter.Analysis.Operator.TraceClass.Scalar
+
+set_option linter.style.header false
+
+/-!
+# Analysis
+
+Public entry point for the analysis infrastructure exported by LeanCondensedMatter. It collects the
+project's operator theory, Dyson and ordered-simplex analysis, functional calculus, trace-class and
+Hilbert–Schmidt tools, and the analysis-level inequalities used by downstream physics layers.
+
+Implementation modules should continue to import the narrow analysis leaves they actually use;
+this umbrella is for public track-level access.
+-/
