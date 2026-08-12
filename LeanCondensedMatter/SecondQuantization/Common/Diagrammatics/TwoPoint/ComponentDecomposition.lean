@@ -115,6 +115,51 @@ theorem TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteract
     exact (TwoPointDiagram.mem_interactionPart_subtype
       (B : Finset (TwoPointVertex S)) v).2 hvB
 
+/-- A two-point diagram is externally connected exactly when the canonical external component owns
+all interaction slots. -/
+theorem TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
+    d.IsExternallyConnected ↔ d.externalInteractionPart = S := by
+  rw [d.isExternallyConnected_iff_hasNoVacuumComponent,
+    d.hasNoVacuumComponent_iff_forall_component_meetsExternal]
+  constructor
+  · intro hall
+    apply Finset.Subset.antisymm
+    · exact TwoPointDiagram.interactionPart_subset (d.externalComponent 0)
+    · intro w hw
+      rw [TwoPointDiagram.externalInteractionPart, TwoPointDiagram.mem_interactionPart]
+      refine ⟨hw, ?_⟩
+      obtain ⟨e, he⟩ := hall
+        ⟨d.componentBlock (Sum.inr ⟨w, hw⟩), d.componentBlock_mem_componentPartition _⟩
+      have hblock : d.externalComponent e = d.componentBlock (Sum.inr ⟨w, hw⟩) :=
+        (d.componentBlock_eq_iff_mem
+          (d.componentBlock_mem_componentPartition _) (Sum.inl e)).2 he
+      have hzero : d.externalComponent e = d.externalComponent 0 := by
+        fin_cases e
+        · rfl
+        · exact d.externalComponent_zero_eq_one.symm
+      rw [← hzero, hblock]
+      exact d.self_mem_componentBlock _
+  · intro hconn B
+    obtain ⟨v, hv⟩ := d.exists_componentBlock_eq_of_mem B.2
+    cases v with
+    | inl e => exact ⟨e, hv ▸ d.self_mem_componentBlock (Sum.inl e)⟩
+    | inr w =>
+        have hmem : (w : Fin N) ∈ d.externalInteractionPart := by
+          rw [hconn]
+          exact w.2
+        rw [TwoPointDiagram.externalInteractionPart, TwoPointDiagram.mem_interactionPart] at hmem
+        obtain ⟨hw, hw'⟩ := hmem
+        have hvertex : (Sum.inr w : TwoPointVertex S) ∈ d.externalComponent 0 := by
+          simpa using hw'
+        have hB : (B : Finset (TwoPointVertex S)) = d.externalComponent 0 := by
+          rw [← hv]
+          exact (d.componentBlock_eq_iff_mem
+            (d.externalComponent_mem_componentPartition 0) (Sum.inr w)).2 hvertex
+        refine ⟨0, ?_⟩
+        rw [hB]
+        exact d.self_mem_componentBlock (Sum.inl 0)
+
 /-- A fixed interaction vertex cannot belong to two distinct component interaction parts. -/
 theorem TwoPointDiagram.interactionPart_component_unique
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
