@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuity
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.ProbabilityCurrent1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerMinimalCoupling1D
 import Mathlib.Tactic
 
@@ -54,8 +54,8 @@ theorem electromagneticProbabilityCurrentValue1D_eq_expanded
   field_simp [hℏ, hmass]
   ring
 
-/-- With zero vector potential, the electromagnetic current reduces exactly to the scalar-potential
-current from the existing continuity API, with `κ = ℏ² / (2m)`. -/
+/-- With zero vector potential, the electromagnetic current reduces exactly to the pointwise
+probability current with `κ = ℏ² / (2m)`. -/
 theorem electromagneticProbabilityCurrentValue1D_zero_vectorPotential
     (q ℏ mass : ℝ) (ψ ψx : ℂ) (hℏ : ℏ ≠ 0) (hmass : mass ≠ 0) :
     electromagneticProbabilityCurrentValue1D q ℏ mass 0 ψ ψx =
@@ -82,25 +82,6 @@ theorem electromagneticChargeCurrentValue1D_eq_charge_mul_probabilityCurrent
     electromagneticChargeCurrentValue1D q ℏ mass vectorPotential ψ ψx =
       q * electromagneticProbabilityCurrentValue1D q ℏ mass vectorPotential ψ ψx :=
   rfl
-
-/-- Multiplying both entries of `Im (conj ψ * χ)` by the same unit-modulus phase leaves the pairing
-unchanged. The phase condition is written pointwise in real coordinates so this lemma does not
-commit the API to a particular gauge-function representation. -/
-theorem probabilityCurrentPairingValue_phase_mul
-    (phase ψ χ : ℂ) (hphase : phase.re ^ 2 + phase.im ^ 2 = 1) :
-    probabilityCurrentPairingValue (phase * ψ) (phase * χ) =
-      probabilityCurrentPairingValue ψ χ := by
-  rw [probabilityCurrentPairingValue_eq_coordinates,
-    probabilityCurrentPairingValue_eq_coordinates]
-  simp only [Complex.mul_re, Complex.mul_im]
-  calc
-    (phase.re * ψ.re - phase.im * ψ.im) *
-          (phase.re * χ.im + phase.im * χ.re) -
-        (phase.re * ψ.im + phase.im * ψ.re) *
-          (phase.re * χ.re - phase.im * χ.im) =
-      (phase.re ^ 2 + phase.im ^ 2) *
-        (ψ.re * χ.im - ψ.im * χ.re) := by ring
-    _ = ψ.re * χ.im - ψ.im * χ.re := by rw [hphase, one_mul]
 
 /-- The electromagnetic probability current is invariant under the local gauge transformation of
 the minimal-coupling layer. -/
