@@ -161,9 +161,14 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_externalComp
         d.mixedPairContractionValue ε β τ τ' σ x.1 := by
     intro x
     have hpos := d.externalPieceMixedPosition_externalPieceComponentPairEquiv τ τ' σ x
+    have hfirst : d.externalPieceMixedPosition τ τ' σ
+        (d.externalPieceComponentPairEquiv τ τ' σ x).1.1 = x.1.1.1 :=
+      congrArg Prod.fst hpos
+    have hsecond : d.externalPieceMixedPosition τ τ' σ
+        (d.externalPieceComponentPairEquiv τ τ' σ x).1.2 = x.1.1.2 :=
+      congrArg Prod.snd hpos
     rw [← d.mixedTimeOrderedAtomicPairValue_externalPieceMixedPosition ε β τ τ' σ,
-      FixedExternalTwoPointWickDiagram.mixedPairContractionValue,
-      congrArg Prod.fst hpos, congrArg Prod.snd hpos]
+      FixedExternalTwoPointWickDiagram.mixedPairContractionValue, hfirst, hsecond]
   have hprod :
       (∏ pr ∈ (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).pairs,
           mixedTimeOrderedAtomicPairValue ε β i j τ τ' (d.externalPieceTimes σ)
