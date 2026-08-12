@@ -14,7 +14,6 @@ namespace SecondQuantization.Fermionic.Transport
 
 open SecondQuantization.Fermionic.Lattice
 open MeasureTheory QuantumTheory.LinearResponse QuantumTheory.Transport Set
-open SecondQuantization.Fermionic.Field
 
 noncomputable section
 
