@@ -248,7 +248,12 @@ theorem fixedExternalOfSlotSplit_mixedComponentCrossingCount_vacuum_eq
         (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac C).1 =
       ((vac.restrictComponent C.2).pairingInOrder
         (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T) C)).crossingCount := by
-  let e := fixedExternalOfSlotSplitVacuumComponentPairEquiv T ext vac C τ τ' σ hσ
+  let B := (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac C).1
+  let LocalPair := vac.LocalOrderedPair
+    (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T)) C
+  let AmbientPair := (fixedExternalOfSlotSplit T ext vac).MixedComponentPair τ τ' σ B
+  let e : LocalPair ≃ AmbientPair :=
+    fixedExternalOfSlotSplitVacuumComponentPairEquiv T ext vac C τ τ' σ hσ
   rw [FixedExternalTwoPointWickDiagram.mixedComponentCrossingCount,
     FixedExternalTwoPointWickDiagram.mixedComponentOrientedCrossingCount,
     Pairing.componentCrossingCount, Fintype.sum_prod_type,
@@ -256,12 +261,12 @@ theorem fixedExternalOfSlotSplit_mixedComponentCrossingCount_vacuum_eq
   simp only [FixedExternalTwoPointWickDiagram.mixedComponentPairSigmaEquiv_apply]
   symm
   refine Fintype.sum_equiv e
-    (fun p => ∑ q, if Crosses p.1 q.1 then 1 else 0)
-    (fun p' => ∑ q', if Crosses p'.1.1 q'.1.1 then 1 else 0) ?_
+    (fun p : LocalPair => ∑ q : LocalPair, if Crosses p.1 q.1 then 1 else 0)
+    (fun p' : AmbientPair => ∑ q' : AmbientPair, if Crosses p'.1.1 q'.1.1 then 1 else 0) ?_
   intro p
   refine Fintype.sum_equiv e
-    (fun q => if Crosses p.1 q.1 then 1 else 0)
-    (fun q' => if Crosses (e p).1.1 q'.1.1 then 1 else 0) ?_
+    (fun q : LocalPair => if Crosses p.1 q.1 then 1 else 0)
+    (fun q' : AmbientPair => if Crosses (e p).1.1 q'.1.1 then 1 else 0) ?_
   intro q
   simp only [fixedExternalOfSlotSplitVacuumComponentPairEquiv_crosses_iff]
 
@@ -309,10 +314,11 @@ theorem fixedExternalOfSlotSplit_prod_vacuumMixedComponentWeight_eq
       apply Fintype.prod_congr
       intro C
       rw [Common.slotSplitVacuumComponentEquiv_apply]
-      rw [FixedExternalTwoPointWickDiagram.mixedComponentWeight,
-        Common.BlochDeDominicis.Pairing.weight_fermion,
-        fixedExternalOfSlotSplit_mixedComponentCrossingCount_vacuum_eq]
-      simp
+      have hcross := fixedExternalOfSlotSplit_mixedComponentCrossingCount_vacuum_eq
+        T ext vac C τ τ' σ hσ
+      simpa only [FixedExternalTwoPointWickDiagram.mixedComponentWeight,
+        Common.BlochDeDominicis.Pairing.weight_fermion, orders] using
+        congrArg (fun k : ℕ => (-1 : ℂ) ^ k) hcross
     _ = (vac.pairingInOrder (vac.assembleVertexOrder orders shuffle)).weight
         Common.Statistics.fermion :=
       (vac.pairingInOrder_weight_eq_prod_components
