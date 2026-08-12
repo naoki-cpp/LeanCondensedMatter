@@ -283,6 +283,7 @@ noncomputable def FixedExternalTwoPointWickDiagram.externalPieceMixedPositionEqu
             Fintype.card (d.MixedComponentPosition τ τ' σ d.1.externalComponentPart) := by
         rw [Fintype.card_congr (d.mixedExternalPositionEquiv τ τ' σ), Fintype.card_fin,
           Fintype.card_fin]
+        rfl
       refine (Fintype.bijective_iff_injective_and_card _).2 ⟨fun p q h => ?_, hcard⟩
       exact d.externalPieceMixedPosition_injective τ τ' σ (congrArg Subtype.val h))
 
