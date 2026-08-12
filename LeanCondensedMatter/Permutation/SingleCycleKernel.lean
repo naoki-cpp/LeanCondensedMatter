@@ -66,7 +66,43 @@ theorem singleCycleKernelSum_univ_eq_sum_isCycleOn
     singleCycleKernelSum K univ =
       ∑ σ : {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)},
         ∏ i : α, K i (σ.1 i) := by
-  simpa [singleCycleKernelSum] using
-    (singleCycleContribution_one_univ_eq_sum_isCycleOn (α := α) K)
+  classical
+  let e :
+      {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)} ≃
+        {σ : Equiv.Perm α //
+          σ.support ⊆ (univ : Finset α) ∧
+            σ.IsCycleOn ((univ : Finset α) : Set α)} :=
+    { toFun := fun σ => ⟨σ.1, by
+        constructor
+        · simp
+        · simpa using σ.2⟩
+      invFun := fun σ => ⟨σ.1, by simpa using σ.2.2⟩
+      left_inv := fun σ => Subtype.ext rfl
+      right_inv := fun σ => Subtype.ext rfl }
+  rw [singleCycleKernelSum, singleCycleContribution,
+    MultiplicativeWeight.connectedContribution]
+  change
+    (∑ d : {σ : Equiv.Perm α //
+        σ.support ⊆ (univ : Finset α) ∧
+          σ.IsCycleOn ((univ : Finset α) : Set α)},
+      1 ^ ((univ : Finset α).card - 1) *
+        ∏ i : (univ : Finset α), K i (d.1 i)) = _
+  calc
+    (∑ d : {σ : Equiv.Perm α //
+        σ.support ⊆ (univ : Finset α) ∧
+          σ.IsCycleOn ((univ : Finset α) : Set α)},
+      1 ^ ((univ : Finset α).card - 1) *
+        ∏ i : (univ : Finset α), K i (d.1 i)) =
+      ∑ σ : {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)},
+        1 ^ ((univ : Finset α).card - 1) *
+          ∏ i : (univ : Finset α), K i ((e σ).1 i) := by
+      exact (Equiv.sum_comp e (fun d =>
+        1 ^ ((univ : Finset α).card - 1) *
+          ∏ i : (univ : Finset α), K i (d.1 i))).symm
+    _ = ∑ σ : {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)},
+        ∏ i : α, K i (σ.1 i) := by
+      apply Finset.sum_congr rfl
+      intro σ _
+      simp [e]
 
 end Combinatorics
