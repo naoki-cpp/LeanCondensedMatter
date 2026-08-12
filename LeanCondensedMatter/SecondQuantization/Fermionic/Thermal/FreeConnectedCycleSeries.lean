@@ -1,30 +1,25 @@
-import LeanCondensedMatter.Permutation
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FreeBoltzmannModeKernel
+import LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FreeExchangeCycleSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 
 set_option linter.style.header false
 
 /-!
-# Free-fermion connected-cycle series
+# Free-fermion connected-cycle and grand-partition series
 
-This file gives the generic exchange/cumulant backend a concrete free-fermion thermal consumer.
-For a finite mode set, the statistics-independent one-particle Boltzmann weights form the shared
-diagonal matrix kernel
+The free-fermion formal exchange statements are the `ζ = -1` specialization of the shared
+statistics-independent free thermal exchange-cycle theorem. The formal grand-partition series is the
+finite product `∏ᵢ (1 + qᵢ t)`, and its logarithm is obtained from the shared `logOf` product algebra.
 
-`Kᵢⱼ = δᵢⱼ exp(-β εᵢ)`.
-
-The arbitrary-`ζ` diagonal connected-cycle/log decomposition is owned by
-`Permutation.TraceLog`. Here it is specialized to fermionic `ζ = -1`, while
-the ordinary finite determinant `det(1 + K)` is identified with the already-established free
-fermion partition function.
-
-Everything here is finite or formal. In particular, no convergence statement or evaluation of the
-formal variable `t` at `1` is asserted.
+The ordinary finite determinant `det(1 + K)` remains a fermion-specific physical consumer boundary.
+No formal power series is evaluated at `t = 1` here.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
+
+open scoped BigOperators
 
 variable {Mode : Type*}
 
@@ -49,21 +44,62 @@ theorem freePartitionFunction_eq_det_one_add_freeBoltzmannModeKernel
   rw [hdiag, Matrix.det_diagonal]
 
 /-- For the free diagonal kernel, the fermionic connected-cycle series is the sum of the formal
-single-mode logarithms `log(1 + t exp(-β εᵢ))`.
-
-This is the `ζ = -1` specialization of the generic diagonal-kernel theorem; it does not evaluate
-the formal series at `t = 1`. -/
+single-mode logarithms `log(1 + t exp(-β εᵢ))`. -/
 theorem permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log
     [Fintype Mode] (ε : Mode → ℝ) (β : ℝ) :
     Combinatorics.permutationConnectedCycleSeries (-1)
         (Common.freeBoltzmannModeKernel ε β) =
       ∑ i : Mode,
         PowerSeries.rescale (Complex.exp (-(β : ℂ) * (ε i : ℂ))) (PowerSeries.log ℂ) := by
-  classical
-  rw [Common.freeBoltzmannModeKernel_eq_diagonal]
   simpa using
-    (Combinatorics.permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log
-      (-1 : ℂ) (fun i : Mode => Complex.exp (-(β : ℂ) * (ε i : ℂ))) (by norm_num))
+    (Common.permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log
+      (-1 : ℂ) (by norm_num) ε β)
+
+/-- Formal finite-mode free-fermion grand-partition series
+`𝒵_F(t) = ∏ᵢ (1 + exp(-β εᵢ) t)`. -/
+noncomputable def freeGrandPartitionSeries [Fintype Mode]
+    (ε : Mode → ℝ) (β : ℝ) : PowerSeries ℂ :=
+  ∏ i : Mode,
+    (1 + Complex.exp (-(β : ℂ) * (ε i : ℂ)) • PowerSeries.X)
+
+@[simp]
+theorem constantCoeff_freeGrandPartitionSeries [Fintype Mode]
+    (ε : Mode → ℝ) (β : ℝ) :
+    PowerSeries.constantCoeff (freeGrandPartitionSeries ε β) = 1 := by
+  classical
+  simp [freeGrandPartitionSeries]
+
+/-- The formal logarithm of the free-fermion grand product is the sum of the modewise
+`log(1 + t exp(-β εᵢ))` series. -/
+theorem logOf_freeGrandPartitionSeries_eq_sum_log [Fintype Mode]
+    (ε : Mode → ℝ) (β : ℝ) :
+    PowerSeries.logOf (freeGrandPartitionSeries ε β) =
+      ∑ i : Mode,
+        PowerSeries.rescale (Complex.exp (-(β : ℂ) * (ε i : ℂ))) (PowerSeries.log ℂ) := by
+  classical
+  unfold freeGrandPartitionSeries
+  calc
+    PowerSeries.logOf
+        (∏ i : Mode, 1 + Complex.exp (-(β : ℂ) * (ε i : ℂ)) • PowerSeries.X) =
+        ∑ i : Mode,
+          PowerSeries.logOf
+            (1 + Complex.exp (-(β : ℂ) * (ε i : ℂ)) • PowerSeries.X) := by
+      exact PowerSeries.logOf_fintype_prod _ (fun i => by simp)
+    _ = ∑ i : Mode,
+        PowerSeries.rescale (Complex.exp (-(β : ℂ) * (ε i : ℂ))) (PowerSeries.log ℂ) := by
+      apply Fintype.sum_congr
+      intro i
+      exact PowerSeries.logOf_one_add_smul_X _
+
+/-- Free-fermion formal linked-cluster identity: the logarithm of the finite grand product equals the
+`ζ = -1` connected-cycle series. -/
+theorem logOf_freeGrandPartitionSeries_eq_permutationConnectedCycleSeries
+    [Fintype Mode] (ε : Mode → ℝ) (β : ℝ) :
+    PowerSeries.logOf (freeGrandPartitionSeries ε β) =
+      Combinatorics.permutationConnectedCycleSeries (-1)
+        (Common.freeBoltzmannModeKernel ε β) := by
+  rw [logOf_freeGrandPartitionSeries_eq_sum_log,
+    permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log]
 
 end Fermionic
 end SecondQuantization
