@@ -9,10 +9,9 @@ set_option linter.style.header false
 # `L²` expectations and smeared probability density in one dimension
 
 This module connects the bounded `L²` multiplication-operator layer to the whole-space smeared
-probability density used by the continuum continuity equation. A real test function is embedded in
-`ℂ` and supplied with an explicit `L∞` hypothesis, producing a bounded multiplication operator on
-`L²(ℝ, ℂ)`. Its expectation is then exactly the complexification of
-`∫ test(x) |ψ(x)|² dx`.
+probability density used by the continuum continuity equation. A real essentially bounded function
+is represented by the generic real-multiplier construction from `L2Multiplication1D`; this module
+only owns the probability-observable bridge.
 
 This is still a bounded-observable statement. No Laplacian, Schrödinger Hamiltonian, Sobolev domain,
 or unbounded-operator assertion is introduced here.
@@ -26,22 +25,6 @@ noncomputable section
 
 open MeasureTheory
 open scoped ENNReal MeasureTheory InnerProductSpace
-
-/-- A real test function, embedded into `ℂ`, as an essentially bounded multiplier. -/
-noncomputable def realTestMultiplier1D
-    (test : ℝ → ℝ)
-    (htest : MemLp (fun x => (test x : ℂ)) ∞ (volume : Measure ℝ)) :
-    ContinuumLInfMultiplier1D :=
-  htest.toLp (fun x => (test x : ℂ))
-
-/-- The `L∞` representative chosen for a real test function agrees almost everywhere with its
-pointwise complex embedding. -/
-theorem realTestMultiplier1D_coeFn
-    (test : ℝ → ℝ)
-    (htest : MemLp (fun x => (test x : ℂ)) ∞ (volume : Measure ℝ)) :
-    (realTestMultiplier1D test htest : ℝ → ℂ) =ᵐ[volume]
-      fun x => (test x : ℂ) := by
-  exact htest.coeFn_toLp
 
 private theorem inner_real_mul_self_eq_probabilityDensityValue (r : ℝ) (z : ℂ) :
     inner ℂ z ((r : ℂ) * z) = (r * probabilityDensityValue z : ℂ) := by
