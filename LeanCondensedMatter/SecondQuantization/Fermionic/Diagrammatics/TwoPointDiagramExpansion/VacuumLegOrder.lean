@@ -85,8 +85,20 @@ theorem mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti {n : ℕ}
             (twoPointTimedEventAtomicLegs event) <
           @List.idxOf (OrderedTwoPointLeg n) instBEqOfDecidableEq y
             (twoPointTimedEventAtomicLegs event) := by
-      simpa [event, x, y, orderedTwoPointLegEvent, hslot,
-        twoPointTimedEventAtomicLegs_interaction_idxOf] using hlocal
+      have hleft :
+          @List.idxOf (OrderedTwoPointLeg n) instBEqOfDecidableEq x
+              (twoPointTimedEventAtomicLegs event) = pa.2.val := by
+        simpa [event, x, orderedTwoPointLegEvent, hslot] using
+          (twoPointTimedEventAtomicLegs_interaction_idxOf
+            pb.1 (Finset.mem_univ pb.1) pa.2)
+      have hright :
+          @List.idxOf (OrderedTwoPointLeg n) instBEqOfDecidableEq y
+              (twoPointTimedEventAtomicLegs event) = pb.2.val := by
+        simpa [event, x, y, orderedTwoPointLegEvent, hslot] using
+          (twoPointTimedEventAtomicLegs_interaction_idxOf
+            pb.1 (Finset.mem_univ pb.1) pb.2)
+      rw [hleft, hright]
+      exact hlocal
     simpa [mixedTimeOrderedAtomicLegPosition, mixedTimeOrderedAtomicLegEquiv,
       mixedTimeOrderedAtomicLegs, List.Nodup.getEquivOfForallMemList] using hblock.mpr hidx
   · have hslotLt : pa.1 < pb.1 := by
