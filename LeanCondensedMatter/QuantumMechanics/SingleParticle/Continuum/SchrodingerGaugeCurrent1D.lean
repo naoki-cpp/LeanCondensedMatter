@@ -70,7 +70,7 @@ theorem kineticMomentumValue1D_eq_neg_I_hbar_mul_covariantDerivative
     gaugeConnectionCoefficientValue1D
   push_cast
   field_simp [hℏ]
-  ring
+  simp [pow_two]
 
 /-- The real bilinear pairing `Im (conj ψ * χ)` in coordinate form. -/
 def probabilityCurrentPairingValue (ψ χ : ℂ) : ℝ :=
@@ -120,7 +120,6 @@ theorem electromagneticProbabilityCurrentValue1D_zero_vectorPotential
   have hcoeff :
       ℏ / mass = 2 * (ℏ ^ 2 / (2 * mass)) / ℏ := by
     field_simp [hℏ, hmass]
-    ring
   rw [hcoeff]
 
 /-- Electromagnetic charge current obtained by multiplying the gauge-covariant probability current
