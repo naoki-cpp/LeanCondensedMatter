@@ -269,7 +269,12 @@ theorem fixedExternalOfSlotSplit_mixedComponentCrossingCount_vacuum_eq
     (fun q : LocalPair => if Crosses p.1 q.1 then 1 else 0)
     (fun q' : AmbientPair => if Crosses (e p).1.1 q'.1.1 then 1 else 0) ?_
   intro q
-  simp only [fixedExternalOfSlotSplitVacuumComponentPairEquiv_crosses_iff]
+  have hcross : Crosses (e p).1.1 (e q).1.1 ↔ Crosses p.1 q.1 :=
+    fixedExternalOfSlotSplitVacuumComponentPairEquiv_crosses_iff
+      T ext vac C τ τ' σ hσ p q
+  by_cases h : Crosses p.1 q.1
+  · rw [if_pos h, if_pos (hcross.mpr h)]
+  · rw [if_neg h, if_neg (fun h' => h (hcross.mp h'))]
 
 /-- The product of all ambient vacuum-component fermionic weights is the weight of the standalone
 fixed-order quartic vacuum pairing. -/
