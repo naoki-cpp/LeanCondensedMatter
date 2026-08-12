@@ -89,7 +89,7 @@ noncomputable def continuumChargeDensity1D (q : ℂ) :
 @[simp]
 theorem continuumChargeDensity1D_apply (q : ℂ) (f : ℝ → ℂ) :
     continuumChargeDensity1D q f =
-      q • dGamma ContinuumWavefunction1D (continuumMultiplication1D f) :=
+      q • AlgebraicFock.dGamma ContinuumWavefunction1D (continuumMultiplication1D f) :=
   rfl
 
 /-- On the one-particle sector, the continuum charge-density operator is exactly pointwise
@@ -97,10 +97,10 @@ charge-weighted multiplication. -/
 theorem continuumChargeDensity1D_oneParticle
     (q : ℂ) (f ψ : ContinuumWavefunction1D) :
     continuumChargeDensity1D q f
-        (oneParticle ContinuumWavefunction1D ψ) =
-      oneParticle ContinuumWavefunction1D (fun x => q * f x * ψ x) := by
+        (AlgebraicFock.oneParticle ContinuumWavefunction1D ψ) =
+      AlgebraicFock.oneParticle ContinuumWavefunction1D (fun x => q * f x * ψ x) := by
   rw [continuumChargeDensity1D_apply]
-  simp only [LinearMap.smul_apply, dGamma_oneParticle]
+  simp only [LinearMap.smul_apply, AlgebraicFock.dGamma_oneParticle]
   rw [← map_smul]
   congr 1
   funext x
@@ -122,8 +122,8 @@ smearing convention. -/
 theorem continuumChargeDensity1D_oneParticle_real
     (q : ℝ) (test : ℝ → ℝ) (ψ : ContinuumWavefunction1D) :
     continuumChargeDensity1D (q : ℂ) (complexTestOfReal1D test)
-        (oneParticle ContinuumWavefunction1D ψ) =
-      oneParticle ContinuumWavefunction1D
+        (AlgebraicFock.oneParticle ContinuumWavefunction1D ψ) =
+      AlgebraicFock.oneParticle ContinuumWavefunction1D
         (fun x => ((q * test x : ℝ) : ℂ) * ψ x) := by
   simpa [complexTestOfReal1D] using
     (continuumChargeDensity1D_oneParticle (q : ℂ) (complexTestOfReal1D test) ψ)

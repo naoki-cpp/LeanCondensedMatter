@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.BoundedKuboBridge
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.RankOneSecondQuantization
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.OccupationFieldEquivalence
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FiniteHilbertCreationAnnihilation
 
 set_option linter.style.header false
@@ -11,7 +11,7 @@ set_option linter.style.header false
 The basis-independent identity
 
 ```text
-dGamma (|x><y|) = a†(x) a(y)
+AlgebraicFock.dGamma (|x><y|) = a†(x) a(y)
 ```
 
 is transported through the canonical occupation equivalence and then to the finite-dimensional
@@ -19,7 +19,7 @@ Hilbert Fock space. Since bounded occupation creation and annihilation are mutua
 resulting matrix-unit operator has the expected adjoint:
 
 ```text
-(dGamma (|x><y|))† = dGamma (|y><x|).
+(AlgebraicFock.dGamma (|x><y|))† = AlgebraicFock.dGamma (|y><x|).
 ```
 
 This module supplies the structural input for deriving self-adjoint hopping Hamiltonians and bond
@@ -39,34 +39,34 @@ variable {𝓗₁ : Type*} [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 theorem occupationConjugate_comp
     (b : Module.Basis Mode ℂ 𝓗₁)
     (A B : AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) :
-    occupationConjugate b (A.comp B) =
-      (occupationConjugate b A).comp (occupationConjugate b B) := by
+    AlgebraicFock.occupationConjugate b (A.comp B) =
+      (AlgebraicFock.occupationConjugate b A).comp (AlgebraicFock.occupationConjugate b B) := by
   apply LinearMap.ext
   intro Ψ
-  apply (occupationEquiv b).injective
+  apply (AlgebraicFock.occupationEquiv b).injective
   calc
-    occupationEquiv b (occupationConjugate b (A.comp B) Ψ) =
-        (A.comp B) (occupationEquiv b Ψ) :=
-      occupationEquiv_occupationConjugate_apply b (A.comp B) Ψ
-    _ = A (B (occupationEquiv b Ψ)) := rfl
-    _ = A (occupationEquiv b (occupationConjugate b B Ψ)) := by
-      rw [occupationEquiv_occupationConjugate_apply]
-    _ = occupationEquiv b
-        (occupationConjugate b A (occupationConjugate b B Ψ)) :=
-      (occupationEquiv_occupationConjugate_apply b A
-        (occupationConjugate b B Ψ)).symm
+    AlgebraicFock.occupationEquiv b (AlgebraicFock.occupationConjugate b (A.comp B) Ψ) =
+        (A.comp B) (AlgebraicFock.occupationEquiv b Ψ) :=
+      AlgebraicFock.occupationEquiv_occupationConjugate_apply b (A.comp B) Ψ
+    _ = A (B (AlgebraicFock.occupationEquiv b Ψ)) := rfl
+    _ = A (AlgebraicFock.occupationEquiv b (AlgebraicFock.occupationConjugate b B Ψ)) := by
+      rw [AlgebraicFock.occupationEquiv_occupationConjugate_apply]
+    _ = AlgebraicFock.occupationEquiv b
+        (AlgebraicFock.occupationConjugate b A (AlgebraicFock.occupationConjugate b B Ψ)) :=
+      (AlgebraicFock.occupationEquiv_occupationConjugate_apply b A
+        (AlgebraicFock.occupationConjugate b B Ψ)).symm
 
 /-- Exterior creation by a basis vector conjugates to occupation creation in the corresponding
 mode. -/
 theorem occupationConjugate_create
     (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) :
-    occupationConjugate b (create 𝓗₁ (b i)) =
+    AlgebraicFock.occupationConjugate b (AlgebraicFock.create 𝓗₁ (b i)) =
       SecondQuantization.Fermionic.create i := by
   apply LinearMap.ext
   intro Ψ
-  apply (occupationEquiv b).injective
-  rw [occupationEquiv_occupationConjugate_apply]
-  have h := LinearMap.congr_fun (occupationEquiv_create b i) Ψ
+  apply (AlgebraicFock.occupationEquiv b).injective
+  rw [AlgebraicFock.occupationEquiv_occupationConjugate_apply]
+  have h := LinearMap.congr_fun (AlgebraicFock.occupationEquiv_create b i) Ψ
   simpa [LinearMap.comp_apply] using h.symm
 
 variable {Site : Type*}
@@ -89,19 +89,19 @@ variable [LinearOrder Site]
 creation-annihilation bilinear. -/
 theorem occupationOperator_dGamma_matrixUnit (x y : Site) :
     occupationOperator
-        (dGamma (LatticeState Site) (matrixUnit x y)) =
+        (AlgebraicFock.dGamma (LatticeState Site) (matrixUnit x y)) =
       (SecondQuantization.Fermionic.create x).comp
         (SecondQuantization.Fermionic.annihilate y) := by
-  change occupationConjugate (latticeBasis (Site := Site))
-      (dGamma (LatticeState Site) (matrixUnit x y)) = _
+  change AlgebraicFock.occupationConjugate (latticeBasis (Site := Site))
+      (AlgebraicFock.dGamma (LatticeState Site) (matrixUnit x y)) = _
   rw [dGamma_matrixUnit, occupationConjugate_comp]
   rw [← latticeBasis_apply_eq_latticeKet (Site := Site) x,
     ← latticeBasis_coord_eq_latticeCoordinateDual (Site := Site) y]
   rw [occupationConjugate_create]
   change
     (SecondQuantization.Fermionic.create x).comp
-        (occupationAnnihilateFromField (latticeBasis (Site := Site)) y) = _
-  rw [occupationAnnihilateFromField_eq_annihilate]
+        (AlgebraicFock.occupationAnnihilateFromField (latticeBasis (Site := Site)) y) = _
+  rw [AlgebraicFock.occupationAnnihilateFromField_eq_annihilate]
 
 section Finite
 
@@ -110,14 +110,14 @@ variable [Fintype Site]
 /-- Bounded finite-Hilbert realization of a second-quantized one-particle matrix unit. -/
 noncomputable def boundedDgammaMatrixUnit (x y : Site) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
-  boundedLatticeOperator (dGamma (LatticeState Site) (matrixUnit x y))
+  boundedLatticeOperator (AlgebraicFock.dGamma (LatticeState Site) (matrixUnit x y))
 
 /-- The bounded matrix-unit realization is the finite-Hilbert creation-annihilation bilinear. -/
 theorem boundedDgammaMatrixUnit_eq_create_comp_annihilate (x y : Site) :
     boundedDgammaMatrixUnit x y =
       (finiteHilbertCreate x).comp (finiteHilbertAnnihilate y) := by
   change Common.finiteHilbertOperator
-      (occupationOperator (dGamma (LatticeState Site) (matrixUnit x y))) = _
+      (occupationOperator (AlgebraicFock.dGamma (LatticeState Site) (matrixUnit x y))) = _
   rw [occupationOperator_dGamma_matrixUnit, Common.finiteHilbertOperator_comp]
   rfl
 

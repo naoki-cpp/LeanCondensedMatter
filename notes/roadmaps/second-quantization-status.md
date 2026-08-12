@@ -111,7 +111,7 @@ Fermionic.particleNumber
 
 `OccupationFock Mode` is the free vector space on finite occupation subsets of a chosen mode type.
 `AlgebraicFock 𝓗₁` is the basis-independent exterior algebra of the one-particle space. A chosen
-one-particle basis gives the explicit `Field.occupationEquiv` between them. Neither name denotes the
+one-particle basis gives the explicit `AlgebraicFock.occupationEquiv` between them. Neither name denotes the
 completed `ℓ²` representation.
 
 The finite-mode fermionic API includes:

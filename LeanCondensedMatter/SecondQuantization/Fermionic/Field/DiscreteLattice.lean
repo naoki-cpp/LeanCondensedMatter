@@ -221,9 +221,9 @@ theorem siteProjector_comp_operator (K : LocallyFiniteHopping Site) (x : Site) :
 
 /-- The local one-particle commutator is the negative finite sum of oriented bond operators. -/
 theorem linearCommutator_siteProjector (K : LocallyFiniteHopping Site) (x : Site) :
-    linearCommutator K.operator (siteProjector x) =
+    AlgebraicFock.linearCommutator K.operator (siteProjector x) =
       -∑ y ∈ K.incident x, K.bondOperator x y := by
-  simp only [linearCommutator, K.operator_comp_siteProjector,
+  simp only [AlgebraicFock.linearCommutator, K.operator_comp_siteProjector,
     K.siteProjector_comp_operator, bondOperator, Finset.sum_sub_distrib]
   abel
 
@@ -234,13 +234,13 @@ operator. -/
 noncomputable def hoppingHamiltonian (K : LocallyFiniteHopping Site) :
     AlgebraicFock (LatticeState Site) →ₗ[ℂ]
       AlgebraicFock (LatticeState Site) :=
-  dGamma (LatticeState Site) K.operator
+  AlgebraicFock.dGamma (LatticeState Site) K.operator
 
 /-- Many-particle charge localized at one lattice site. -/
 noncomputable def siteChargeDensity (q : ℂ) (x : Site) :
     AlgebraicFock (LatticeState Site) →ₗ[ℂ]
       AlgebraicFock (LatticeState Site) :=
-  q • dGamma (LatticeState Site) (siteProjector x)
+  q • AlgebraicFock.dGamma (LatticeState Site) (siteProjector x)
 
 /-- The oriented many-particle bond current. The convention is
 
@@ -249,7 +249,7 @@ noncomputable def siteChargeDensity (q : ℂ) (x : Site) :
 noncomputable def bondCurrent (ℏ q : ℂ) (K : LocallyFiniteHopping Site) (x y : Site) :
     AlgebraicFock (LatticeState Site) →ₗ[ℂ]
       AlgebraicFock (LatticeState Site) :=
-  ((Complex.I * q) / ℏ) • dGamma (LatticeState Site) (K.bondOperator x y)
+  ((Complex.I * q) / ℏ) • AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y)
 
 /-- Bond current is antisymmetric under orientation reversal. -/
 theorem bondCurrent_swap (ℏ q : ℂ) (K : LocallyFiniteHopping Site) (x y : Site) :
@@ -257,12 +257,12 @@ theorem bondCurrent_swap (ℏ q : ℂ) (K : LocallyFiniteHopping Site) (x y : Si
   unfold bondCurrent
   rw [K.bondOperator_swap]
   have hneg :
-      dGamma (LatticeState Site) (-K.bondOperator x y) =
-        -dGamma (LatticeState Site) (K.bondOperator x y) := by
+      AlgebraicFock.dGamma (LatticeState Site) (-K.bondOperator x y) =
+        -AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y) := by
     change
-      dGammaLinear (LatticeState Site) (-K.bondOperator x y) =
-        -dGammaLinear (LatticeState Site) (K.bondOperator x y)
-    exact map_neg (dGammaLinear (LatticeState Site)) (K.bondOperator x y)
+      AlgebraicFock.dGammaLinear (LatticeState Site) (-K.bondOperator x y) =
+        -AlgebraicFock.dGammaLinear (LatticeState Site) (K.bondOperator x y)
+    exact map_neg (AlgebraicFock.dGammaLinear (LatticeState Site)) (K.bondOperator x y)
   rw [hneg]
   exact smul_neg _ _
 
@@ -270,20 +270,20 @@ theorem bondCurrent_swap (ℏ q : ℂ) (K : LocallyFiniteHopping Site) (x y : Si
 theorem heisenberg_siteChargeDensity (ℏ q : ℂ)
     (K : LocallyFiniteHopping Site) (x : Site) :
     (Complex.I / ℏ) •
-        linearCommutator (hoppingHamiltonian K) (siteChargeDensity q x) =
+        AlgebraicFock.linearCommutator (hoppingHamiltonian K) (siteChargeDensity q x) =
       -∑ y ∈ K.incident x, bondCurrent ℏ q K x y := by
   unfold hoppingHamiltonian siteChargeDensity
   rw [linearCommutator_smul_right]
-  rw [dGamma_linearCommutator]
+  rw [AlgebraicFock.dGamma_linearCommutator]
   rw [K.linearCommutator_siteProjector]
   have hdGamma :
-      dGamma (LatticeState Site) (-∑ y ∈ K.incident x, K.bondOperator x y) =
+      AlgebraicFock.dGamma (LatticeState Site) (-∑ y ∈ K.incident x, K.bondOperator x y) =
         -∑ y ∈ K.incident x,
-          dGamma (LatticeState Site) (K.bondOperator x y) := by
+          AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y) := by
     change
-      dGammaLinear (LatticeState Site) (-∑ y ∈ K.incident x, K.bondOperator x y) =
+      AlgebraicFock.dGammaLinear (LatticeState Site) (-∑ y ∈ K.incident x, K.bondOperator x y) =
         -∑ y ∈ K.incident x,
-          dGammaLinear (LatticeState Site) (K.bondOperator x y)
+          AlgebraicFock.dGammaLinear (LatticeState Site) (K.bondOperator x y)
     rw [map_neg, map_sum]
   rw [hdGamma]
   unfold bondCurrent
@@ -298,7 +298,7 @@ theorem heisenberg_siteChargeDensity (ℏ q : ℂ)
 theorem discrete_continuity (ℏ q : ℂ)
     (K : LocallyFiniteHopping Site) (x : Site) :
     (Complex.I / ℏ) •
-          linearCommutator (hoppingHamiltonian K) (siteChargeDensity q x) +
+          AlgebraicFock.linearCommutator (hoppingHamiltonian K) (siteChargeDensity q x) +
         ∑ y ∈ K.incident x, bondCurrent ℏ q K x y = 0 := by
   rw [heisenberg_siteChargeDensity]
   abel

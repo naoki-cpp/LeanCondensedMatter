@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.SecondQuantizationLinearity
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity
 
 set_option linter.style.header false
 
@@ -19,7 +19,7 @@ operator is then identified algebraically as `dGamma id`.
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace AlgebraicFock
 
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
@@ -122,6 +122,6 @@ theorem numberOperator_commutes_dGamma (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
     simp [linearCommutator]
   rw [h, dGamma_zero]
 
-end Field
+end AlgebraicFock
 end Fermionic
 end SecondQuantization

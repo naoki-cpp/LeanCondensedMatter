@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.SecondQuantization
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantization
 
 set_option linter.style.header false
 
@@ -17,7 +17,7 @@ complex-linear. The proofs use basis-independent induction on the exterior algeb
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace AlgebraicFock
 
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
@@ -94,6 +94,6 @@ theorem dGammaLinear_apply (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
     dGammaLinear 𝓗₁ T = dGamma 𝓗₁ T :=
   rfl
 
-end Field
+end AlgebraicFock
 end Fermionic
 end SecondQuantization

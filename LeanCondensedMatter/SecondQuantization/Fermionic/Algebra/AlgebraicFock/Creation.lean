@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.FiniteParticleFock
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Basic
 
 set_option linter.style.header false
 
@@ -18,7 +18,7 @@ exterior-algebra relations give the creation-creation canonical anticommutation 
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace AlgebraicFock
 
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
@@ -58,6 +58,6 @@ theorem create_comp_self (f : 𝓗₁) :
     simpa [two_smul] using h
   exact (smul_eq_zero.mp htwo).resolve_left (by norm_num)
 
-end Field
+end AlgebraicFock
 end Fermionic
 end SecondQuantization

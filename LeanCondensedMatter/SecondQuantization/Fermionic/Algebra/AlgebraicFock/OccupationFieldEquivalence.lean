@@ -1,5 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.OccupationEquivalence
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Annihilation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationEquivalence
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Annihilation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.CanonicalAnticommutationRelations
 import Mathlib.LinearAlgebra.ExteriorAlgebra.Basis
 
@@ -16,7 +16,7 @@ matching coordinate functional.
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace AlgebraicFock
 
 noncomputable section
 
@@ -286,6 +286,6 @@ theorem occupationAnnihilateFromField_eq_annihilate
     · simp [hij]
 
 end
-end Field
+end AlgebraicFock
 end Fermionic
 end SecondQuantization

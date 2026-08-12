@@ -30,7 +30,7 @@ from a chosen mode basis, rather than the basis-independent exterior-algebra con
 A linearly ordered basis `b : Module.Basis Mode ℂ 𝓗₁` induces the explicit linear equivalence
 
 ```text
-Field.occupationEquiv b :
+AlgebraicFock.occupationEquiv b :
   Fermionic.OccupationFock Mode ≃ₗ[ℂ] Fermionic.AlgebraicFock 𝓗₁.
 ```
 

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FockSpace
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.FiniteParticleFock
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Basic
 import Mathlib.LinearAlgebra.ExteriorAlgebra.Basis
 
 set_option linter.style.header false
@@ -18,7 +18,7 @@ representation through this equivalence.
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace AlgebraicFock
 
 variable {Mode 𝓗₁ : Type*} [LinearOrder Mode]
 variable [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
@@ -81,6 +81,6 @@ theorem occupationEquiv_occupationConjugate_apply
       A (occupationEquiv b Ψ)
   exact (occupationEquiv b).apply_symm_apply _
 
-end Field
+end AlgebraicFock
 end Fermionic
 end SecondQuantization
