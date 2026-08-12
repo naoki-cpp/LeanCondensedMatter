@@ -35,23 +35,44 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent
       ∏ v : ↥(C : Finset (Fin N)),
         w ((vac.restrictComponent C.2).vertexLabel v) := by
   classical
-  rcases C with ⟨C, hC⟩
-  have hpart := interactionPart_slotSplitVacuumComponentPart h ext vac
-    (⟨C, hC⟩ : vac.componentPartition.parts)
-  change TwoPointDiagram.interactionPart
-      (((slotSplitVacuumComponentPart h ext vac ⟨C, hC⟩).1.1 :
-        Finset (TwoPointVertex S))) = C at hpart
-  cases hpart
-  apply Fintype.prod_congr
-  intro v
-  rw [TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem]
-  · unfold QuarticDiagram.restrictComponent
-    congr 2
-    apply Subtype.ext
-    rfl
-  · have hvComp : (v : Fin N) ∈ S \ T :=
-      vac.componentPart_subset hC v.2
-    exact (Finset.mem_sdiff.mp hvComp).2
+  let A : Finset (Fin N) := TwoPointDiagram.interactionPart
+    (((slotSplitVacuumComponentPart h ext vac C).1.1 : Finset (TwoPointVertex S)))
+  have hpart : A = (C : Finset (Fin N)) := by
+    exact interactionPart_slotSplitVacuumComponentPart h ext vac C
+  let e : ↥A ≃ ↥(C : Finset (Fin N)) where
+    toFun v := ⟨v.1, by
+      rw [← hpart]
+      exact v.2⟩
+    invFun v := ⟨v.1, by
+      rw [hpart]
+      exact v.2⟩
+    left_inv v := Subtype.ext rfl
+    right_inv v := Subtype.ext rfl
+  change (∏ v : ↥A,
+      w ((TwoPointDiagram.ofSlotSplit h ext vac).vertexLabel
+        ⟨v.1, TwoPointDiagram.interactionPart_subset
+          ((slotSplitVacuumComponentPart h ext vac C).1.1 :
+            Finset (TwoPointVertex S)) v.2⟩)) = _
+  calc
+    (∏ v : ↥A,
+        w ((TwoPointDiagram.ofSlotSplit h ext vac).vertexLabel
+          ⟨v.1, TwoPointDiagram.interactionPart_subset
+            ((slotSplitVacuumComponentPart h ext vac C).1.1 :
+              Finset (TwoPointVertex S)) v.2⟩)) =
+      ∏ v : ↥A, w ((vac.restrictComponent C.2).vertexLabel (e v)) := by
+        apply Fintype.prod_congr
+        intro v
+        rw [TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem]
+        · unfold QuarticDiagram.restrictComponent
+          congr 2
+          apply Subtype.ext
+          rfl
+        · have hvComp : (v : Fin N) ∈ S \ T :=
+            vac.componentPart_subset C.2 (e v).2
+          exact (Finset.mem_sdiff.mp hvComp).2
+    _ = ∏ v : ↥(C : Finset (Fin N)),
+        w ((vac.restrictComponent C.2).vertexLabel v) :=
+      Equiv.prod_comp e (fun v => w ((vac.restrictComponent C.2).vertexLabel v))
 
 /-- The product of arbitrary vertex-local weights over all ambient vacuum components is exactly the
 product over all vertices of the standalone quartic vacuum piece. -/
@@ -69,18 +90,23 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct
             (B : Finset (TwoPointVertex S)) v.2⟩)) =
       ∏ v : ↥(S \ T), w (vac.vertexLabel v) := by
   classical
-  rw [vac.prod_vertexLabel_eq_prod_restrictComponent w]
-  rw [← Finset.prod_subtype
-    (TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts
-    (fun _ => Iff.rfl)]
   calc
-    (∏ B : ↥(TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts,
+    (TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts.prod (fun B =>
+        ∏ v : ↥(TwoPointDiagram.interactionPart
+          (B : Finset (TwoPointVertex S))),
+          w ((TwoPointDiagram.ofSlotSplit h ext vac).vertexLabel
+            ⟨v.1, TwoPointDiagram.interactionPart_subset
+              (B : Finset (TwoPointVertex S)) v.2⟩)) =
+      ∏ B : ↥(TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts,
         ∏ v : ↥(TwoPointDiagram.interactionPart
           (B.1 : Finset (TwoPointVertex S))),
           w ((TwoPointDiagram.ofSlotSplit h ext vac).vertexLabel
             ⟨v.1, TwoPointDiagram.interactionPart_subset
-              (B.1 : Finset (TwoPointVertex S)) v.2⟩)) =
-      ∏ C : vac.componentPartition.parts,
+              (B.1 : Finset (TwoPointVertex S)) v.2⟩) := by
+        exact Finset.prod_subtype
+          (TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts
+          (fun _ => Iff.rfl) _
+    _ = ∏ C : vac.componentPartition.parts,
         ∏ v : ↥(TwoPointDiagram.interactionPart
           (((slotSplitVacuumComponentEquiv h ext vac hext C).1.1 :
             Finset (TwoPointVertex S)))),
@@ -103,6 +129,8 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct
       rw [slotSplitVacuumComponentEquiv_apply]
       exact TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent
         h ext vac w C
+    _ = ∏ v : ↥(S \ T), w (vac.vertexLabel v) :=
+      (vac.prod_vertexLabel_eq_prod_restrictComponent w).symm
 
 /-- The product of the Dyson signs carried by the ambient vacuum components is the Dyson sign of the
 whole quartic vacuum piece. -/
@@ -116,15 +144,17 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponentSigns_eq
         (B : Finset (TwoPointVertex S))).card) =
       (-1 : ℂ) ^ (S \ T).card := by
   classical
-  rw [vac.dysonSign_eq_prod_componentSigns]
-  rw [← Finset.prod_subtype
-    (TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts
-    (fun _ => Iff.rfl)]
   calc
-    (∏ B : ↥(TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts,
+    (TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts.prod (fun B =>
         (-1 : ℂ) ^ (TwoPointDiagram.interactionPart
-          (B.1 : Finset (TwoPointVertex S))).card) =
-      ∏ C : vac.componentPartition.parts,
+          (B : Finset (TwoPointVertex S))).card) =
+      ∏ B : ↥(TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts,
+        (-1 : ℂ) ^ (TwoPointDiagram.interactionPart
+          (B.1 : Finset (TwoPointVertex S))).card := by
+        exact Finset.prod_subtype
+          (TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts
+          (fun _ => Iff.rfl) _
+    _ = ∏ C : vac.componentPartition.parts,
         (-1 : ℂ) ^ (TwoPointDiagram.interactionPart
           (((slotSplitVacuumComponentEquiv h ext vac hext C).1.1 :
             Finset (TwoPointVertex S)))).card := by
@@ -137,6 +167,8 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponentSigns_eq
       intro C
       rw [slotSplitVacuumComponentEquiv_apply,
         interactionPart_slotSplitVacuumComponentPart]
+    _ = (-1 : ℂ) ^ (S \ T).card :=
+      (vac.dysonSign_eq_prod_componentSigns).symm
 
 end Common
 end SecondQuantization
