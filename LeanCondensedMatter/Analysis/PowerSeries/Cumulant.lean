@@ -1,7 +1,6 @@
+import LeanCondensedMatter.Analysis.PowerSeries.LogAlgebra
 import LeanCondensedMatter.Combinatorics.Cumulant.Inversion
 import LeanCondensedMatter.Combinatorics.SetPartition.DistinguishedBlock
-import Mathlib.Data.Complex.Basic
-import Mathlib.RingTheory.PowerSeries.Log
 
 set_option linter.style.header false
 
@@ -9,8 +8,8 @@ set_option linter.style.header false
 # Formal-log coefficients and finite-set cumulants
 
 This file identifies the factorial-normalized coefficients of the formal logarithm of a normalized
-power series with finite-set cumulants.  The set-partition recursion used by the proof lives in the
-pure combinatorics layer.
+power series with finite-set cumulants. The set-partition recursion used by the proof lives in the
+pure combinatorics layer, while generic formal-log algebra lives in `Analysis.PowerSeries`.
 -/
 
 open scoped BigOperators
@@ -27,38 +26,6 @@ noncomputable def powerSeriesMomentCoeff (Z : PowerSeries ℂ) (n : ℕ) : ℂ :
 noncomputable def powerSeriesCumulantCoeff (Z : PowerSeries ℂ) (n : ℕ) : ℂ :=
   (n.factorial : ℂ) * PowerSeries.coeff n (PowerSeries.logOf Z)
 
-private theorem derivative_log_mul_one_add_X :
-    d⁄dX ℂ (PowerSeries.log ℂ) * (1 + PowerSeries.X) = 1 := by
-  rw [PowerSeries.deriv_log, mul_add, mul_one]
-  ext n
-  cases n with
-  | zero => simp
-  | succ n => simp [PowerSeries.coeff_mk, pow_succ]
-
-private theorem derivative_logOf_mul {Z : PowerSeries ℂ}
-    (hZ : PowerSeries.constantCoeff Z = 1) :
-    d⁄dX ℂ (PowerSeries.logOf Z) * Z = d⁄dX ℂ Z := by
-  have hsub : PowerSeries.HasSubst (Z - 1) :=
-    PowerSeries.HasSubst.of_constantCoeff_zero' (by simp [hZ])
-  have hgeom := congrArg (fun f : PowerSeries ℂ => f.subst (Z - 1))
-    derivative_log_mul_one_add_X
-  have hone : (1 : PowerSeries ℂ).subst (Z - 1) = 1 := by
-    rw [show (1 : PowerSeries ℂ) = PowerSeries.C 1 by rfl, PowerSeries.subst_C]
-    rfl
-  have hgeom' :
-      (d⁄dX ℂ (PowerSeries.log ℂ)).subst (Z - 1) * Z = 1 := by
-    rw [PowerSeries.subst_mul hsub, PowerSeries.subst_add hsub,
-      PowerSeries.subst_X hsub, hone] at hgeom
-    simpa using hgeom
-  rw [PowerSeries.logOf_eq, PowerSeries.derivative_subst ℂ hsub]
-  have hderiv : d⁄dX ℂ (Z - 1) = d⁄dX ℂ Z := by simp
-  rw [hderiv]
-  calc
-    ((d⁄dX ℂ (PowerSeries.log ℂ)).subst (Z - 1) * d⁄dX ℂ Z) * Z =
-        ((d⁄dX ℂ (PowerSeries.log ℂ)).subst (Z - 1) * Z) * d⁄dX ℂ Z := by
-          ring
-    _ = d⁄dX ℂ Z := by rw [hgeom']; simp
-
 /-- The factorial-normalized moment and formal-log coefficients satisfy the triangular
 moment-cumulant recurrence. -/
 theorem powerSeriesMomentCoeff_succ_recurrence {Z : PowerSeries ℂ}
@@ -67,7 +34,7 @@ theorem powerSeriesMomentCoeff_succ_recurrence {Z : PowerSeries ℂ}
       ∑ k ∈ Finset.range (n + 1),
         (Nat.choose n k : ℂ) * powerSeriesCumulantCoeff Z (k + 1) *
           powerSeriesMomentCoeff Z (n - k) := by
-  have hcoeff := congrArg (PowerSeries.coeff n) (derivative_logOf_mul hZ)
+  have hcoeff := congrArg (PowerSeries.coeff n) (PowerSeries.derivative_logOf_mul hZ)
   rw [PowerSeries.coeff_mul] at hcoeff
   simp_rw [PowerSeries.coeff_derivative] at hcoeff
   calc
