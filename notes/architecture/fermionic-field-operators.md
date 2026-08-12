@@ -63,7 +63,8 @@ Fermionic.Field / Fermionic.Transport
 
 The lattice owner does not import generic Kubo, frequency-response, conductivity, Středa, disorder,
 or validation layers. Mixed files are split so model constructions remain under `Lattice` while
-response theorems stay downstream.
+response theorems stay downstream. Downstream consumers explicitly qualify or open the `Lattice`
+namespace rather than relying on the former `Field` ownership.
 
 ## Bounded response boundary
 
