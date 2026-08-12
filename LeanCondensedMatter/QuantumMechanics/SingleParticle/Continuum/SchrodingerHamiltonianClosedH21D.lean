@@ -33,13 +33,6 @@ noncomputable section
 open MeasureTheory
 open scoped ENNReal MeasureTheory SchwartzMap Laplacian LineDeriv
 
-private theorem l2ToTemperedDistribution1D_injective_closedH2 :
-    Function.Injective l2ToTemperedDistribution1D := by
-  change Function.Injective
-    (MeasureTheory.Lp.toTemperedDistributionCLM ℂ (volume : Measure ℝ) 2)
-  apply LinearMap.ker_eq_bot.mp
-  exact MeasureTheory.Lp.ker_toTemperedDistributionCLM_eq_bot
-
 /-- The `H²` distributional Laplacian packaged as a partial linear map on physical `L²`. -/
 noncomputable def continuumH2LaplacianPMap1D :
     ContinuumL2Wavefunction1D →ₗ.[ℂ] ContinuumL2Wavefunction1D where
@@ -110,7 +103,7 @@ theorem mem_continuumSchrodingerHamiltonian1D_graph_iff
     rw [LinearPMap.mem_graph_iff]
     let ψ : continuumH2Domain1D := ⟨z.1, hH2⟩
     refine ⟨ψ, rfl, ?_⟩
-    apply l2ToTemperedDistribution1D_injective_closedH2
+    apply l2ToTemperedDistribution1D_injective
     change l2ToTemperedDistribution1D
         (continuumSchrodingerHamiltonian1D κ potential ψ) =
       l2ToTemperedDistribution1D z.2
