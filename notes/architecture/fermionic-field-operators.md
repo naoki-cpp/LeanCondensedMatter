@@ -51,25 +51,51 @@ fermionic core. It owns discrete one-particle lattice states, locally finite hop
 bond currents, Peierls families, finite-lattice bounded realizations, Hermiticity/current identities,
 rank-one lattice specializations, and geometric current aggregation.
 
-The dependency direction is deliberately one-way:
+The lattice owner does not import generic Kubo, frequency-response, conductivity, Středa, disorder,
+or validation layers. Mixed files are split so model constructions remain under `Lattice` while
+response theorems stay downstream. Downstream consumers explicitly qualify or open the `Lattice`
+namespace rather than relying on the former `Field` ownership.
+
+## Narrow field-interface owner
+
+`SecondQuantization.Fermionic.Field` is intentionally small. It retains only the basis-independent
+charge-density interface and its continuum one-dimensional specialization. It is not an umbrella for
+lattice models, transport response, conductivity, or validation.
+
+## Transport owner
+
+`SecondQuantization.Fermionic.Transport` is the canonical downstream owner for fermionic response and
+transport specializations. It consumes bounded lattice currents and generic `QuantumTheory` response
+infrastructure and owns the finite-frequency response chain, conductivity normalization,
+Kubo–Greenwood/Bastin adapters, fermionic Středa/Ward bridges, and finite-disorder specialization.
+Generic occupation, resolvent, trace, and Středa integration mathematics remains upstream under
+`QuantumTheory.Transport` and is not duplicated here.
+
+## Validation owner
+
+`SecondQuantization.Fermionic.Validation` contains finite toy models and explicit value/symmetry
+checks. It is a terminal consumer of the public algebra, lattice, and transport layers; foundational
+or reusable construction layers must not import it.
+
+The stable responsibility direction is
 
 ```text
 Fermionic.Algebra
       ↓
 Fermionic.Lattice
       ↓
-Fermionic.Field / Fermionic.Transport
+Fermionic.Transport
+      ↓
+Fermionic.Validation
 ```
 
-The lattice owner does not import generic Kubo, frequency-response, conductivity, Středa, disorder,
-or validation layers. Mixed files are split so model constructions remain under `Lattice` while
-response theorems stay downstream. Downstream consumers explicitly qualify or open the `Lattice`
-namespace rather than relying on the former `Field` ownership.
+`Fermionic.Field` is a narrow side interface for basis-independent density constructions rather than
+a stage in the transport dependency chain.
 
 ## Bounded response boundary
 
 The exterior Fock construction supports algebraic second quantization and current identities without
 completion. Bounded finite-lattice operators are introduced in `Fermionic.Lattice.Bounded` after
 restricting to a finite site type and transporting the occupation representation to the
-finite-dimensional Hilbert Fock realization. Generic Kubo and observable-response specializations
-consume those bounded lattice operators downstream rather than owning the model bridge themselves.
+finite-dimensional Hilbert Fock realization. Fermionic transport specializations consume those
+bounded lattice operators while generic Kubo and transport mathematics remains in `QuantumTheory`.
