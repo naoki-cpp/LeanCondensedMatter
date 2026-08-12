@@ -43,15 +43,26 @@ theorem fixedExternalVacuumOrderedLeg_eq_slotSplitRight
         (Sum.inr
           (Common.orderedLegToDiagramLeg
             ((Finset.univ : Finset (Fin n)) \ T) (fixedExternalVacuumOrder T) p)) := by
-  let S := (Finset.univ : Finset (Fin n)) \ T
-  let q := Common.orderedQuarticLegEquiv S.card p
-  have hp : (Common.orderedQuarticLegEquiv S.card).symm q = p :=
-    (Common.orderedQuarticLegEquiv S.card).symm_apply_apply p
+  let q := Common.orderedQuarticLegEquiv
+    ((Finset.univ : Finset (Fin n)) \ T).card p
+  have hp :
+      (Common.orderedQuarticLegEquiv
+        ((Finset.univ : Finset (Fin n)) \ T).card).symm q = p :=
+    (Common.orderedQuarticLegEquiv
+      ((Finset.univ : Finset (Fin n)) \ T).card).symm_apply_apply p
   rw [← hp]
   rcases q with ⟨v, l⟩
-  simp [orderedQuarticLegMapToTwoPointLeg, fixedExternalVacuumSlot,
-    fixedExternalVacuumOrder, Common.orderedLegToDiagramLeg,
-    Common.slotLegSplitting_right_interaction]
+  have hordered :
+      Common.orderedLegToDiagramLeg
+          ((Finset.univ : Finset (Fin n)) \ T) (fixedExternalVacuumOrder T)
+          ((Common.orderedQuarticLegEquiv
+            ((Finset.univ : Finset (Fin n)) \ T).card).symm (v, l)) =
+        (Common.quarticLegEquiv ((Finset.univ : Finset (Fin n)) \ T)).symm
+          (fixedExternalVacuumOrder T v, l) := by
+    simp [Common.orderedLegToDiagramLeg]
+  rw [hordered, Common.slotLegSplitting_right_interaction]
+  simp [orderedQuarticLegMapToTwoPointLeg, orderedQuarticLegToTwoPointLeg,
+    fixedExternalVacuumSlot]
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- The ambient standard-leg partner on the vacuum side is the fixed-order quartic partner embedded
@@ -76,12 +87,12 @@ theorem fixedExternalOfSlotSplit_atomicLegPartner_vacuumOrderedLeg
         (Sum.inr (Common.orderedLegToDiagramLeg
           ((Finset.univ : Finset (Fin n)) \ T) (fixedExternalVacuumOrder T) p))) = _
   rw [Common.TwoPointDiagram.ofSlotSplit_pairing, Pairing.ofSplit_partner_inr]
-  apply (Common.slotLegSplitting (Finset.subset_univ T)).injective
-  apply Sum.inr.inj
-  rw [Common.QuarticDiagram.pairingInOrder, Pairing.relabel_partner]
-  exact (Common.orderedLegToDiagramLeg
-    ((Finset.univ : Finset (Fin n)) \ T) (fixedExternalVacuumOrder T)).apply_symm_apply _
+  apply congrArg (fun q =>
+    Common.slotLegSplitting (Finset.subset_univ T) (Sum.inr q))
+  rw [Common.QuarticDiagram.pairingInOrder, Pairing.relabel_partner,
+    Equiv.apply_symm_apply]
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The mixed-order partner on the reassembled diagram is the mixed position of the corresponding
 fixed-order quartic vacuum partner. -/
 theorem fixedExternalOfSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
