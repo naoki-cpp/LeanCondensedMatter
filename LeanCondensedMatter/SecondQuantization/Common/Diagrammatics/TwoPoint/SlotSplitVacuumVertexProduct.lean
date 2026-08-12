@@ -41,7 +41,7 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent
   change TwoPointDiagram.interactionPart
       (((slotSplitVacuumComponentPart h ext vac ⟨C, hC⟩).1.1 :
         Finset (TwoPointVertex S))) = C at hpart
-  subst C
+  cases hpart
   apply Fintype.prod_congr
   intro v
   rw [TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem]
@@ -69,7 +69,7 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct
             (B : Finset (TwoPointVertex S)) v.2⟩)) =
       ∏ v : ↥(S \ T), w (vac.vertexLabel v) := by
   classical
-  rw [← vac.prod_vertexLabel_eq_prod_restrictComponent w]
+  rw [vac.prod_vertexLabel_eq_prod_restrictComponent w]
   rw [← Finset.prod_subtype
     (TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts
     (fun _ => Iff.rfl)]
@@ -116,7 +116,7 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponentSigns_eq
         (B : Finset (TwoPointVertex S))).card) =
       (-1 : ℂ) ^ (S \ T).card := by
   classical
-  rw [← vac.dysonSign_eq_prod_componentSigns]
+  rw [vac.dysonSign_eq_prod_componentSigns]
   rw [← Finset.prod_subtype
     (TwoPointDiagram.ofSlotSplit h ext vac).vacuumComponentParts
     (fun _ => Iff.rfl)]
