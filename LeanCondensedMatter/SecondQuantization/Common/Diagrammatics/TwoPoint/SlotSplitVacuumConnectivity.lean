@@ -31,12 +31,12 @@ theorem QuarticDiagram.vertexGraph_adj_iff
   Iff.rfl
 
 /-- The ambient interaction vertex carrying a vertex of the vacuum piece. -/
-def slotSplitVacuumVertex (_h : T ⊆ S) : ↥(S \ T) → TwoPointVertex S :=
+def slotSplitVacuumVertex : ↥(S \ T) → TwoPointVertex S :=
   fun v => Sum.inr ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩
 
 /-- The vacuum-piece vertex embedding is injective. -/
-theorem slotSplitVacuumVertex_injective (h : T ⊆ S) :
-    Function.Injective (slotSplitVacuumVertex h) := by
+theorem slotSplitVacuumVertex_injective :
+    Function.Injective (slotSplitVacuumVertex (S := S) (T := T)) := by
   intro v w hvw
   have hs :
       (⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩ : ↥S) =
@@ -48,7 +48,7 @@ theorem slotSplitVacuumVertex_injective (h : T ⊆ S) :
 /-- An external-piece vertex and a vacuum-piece vertex have disjoint images. -/
 theorem slotSplitVertex_ne_slotSplitVacuumVertex (h : T ⊆ S)
     (x : TwoPointVertex T) (v : ↥(S \ T)) :
-    slotSplitVertex h x ≠ slotSplitVacuumVertex h v := by
+    slotSplitVertex h x ≠ slotSplitVacuumVertex v := by
   cases x with
   | inl e => simp [slotSplitVertex, slotSplitVacuumVertex]
   | inr w =>
@@ -64,7 +64,7 @@ vacuum-piece vertex. -/
 theorem twoPointVertexOfLeg_slotLegSplitting_inr_exact (h : T ⊆ S)
     (j : Fin (2 * (2 * (S \ T).card))) :
     twoPointVertexOfLeg (slotLegSplitting h (Sum.inr j)) =
-      slotSplitVacuumVertex h (vertexOfLeg j) := by
+      slotSplitVacuumVertex (vertexOfLeg j) := by
   obtain ⟨p, rfl⟩ := (quarticLegEquiv (S \ T)).symm.surjective j
   obtain ⟨v, l⟩ := p
   rw [slotLegSplitting_right_interaction]
@@ -83,7 +83,7 @@ variable (h : T ⊆ S)
 /-- Reassembly preserves and reflects adjacency between vertices of the vacuum piece. -/
 theorem adj_ofSlotSplit_slotSplitVacuumVertex_iff (x y : ↥(S \ T)) :
     (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Adj
-        (slotSplitVacuumVertex h x) (slotSplitVacuumVertex h y) ↔
+        (slotSplitVacuumVertex x) (slotSplitVacuumVertex y) ↔
       vac.vertexGraph.Adj x y := by
   rw [TwoPointDiagram.vertexGraph_adj_iff, QuarticDiagram.vertexGraph_adj_iff]
   constructor
@@ -97,11 +97,11 @@ theorem adj_ofSlotSplit_slotSplitVacuumVertex_iff (x y : ↥(S \ T)) :
         rw [twoPointVertexOfLeg_slotLegSplitting_inr_exact] at hleg
         rw [TwoPointDiagram.ofSlotSplit_pairing, Pairing.ofSplit_partner_inr,
           twoPointVertexOfLeg_slotLegSplitting_inr_exact] at hpartner
-        refine ⟨fun hxy => hne (congrArg (slotSplitVacuumVertex h) hxy), j, ?_, ?_⟩
-        · exact slotSplitVacuumVertex_injective h hleg
-        · exact slotSplitVacuumVertex_injective h hpartner
+        refine ⟨fun hxy => hne (congrArg slotSplitVacuumVertex hxy), j, ?_, ?_⟩
+        · exact slotSplitVacuumVertex_injective hleg
+        · exact slotSplitVacuumVertex_injective hpartner
   · rintro ⟨hne, leg, hleg, hpartner⟩
-    refine ⟨fun hxy => hne (slotSplitVacuumVertex_injective h hxy),
+    refine ⟨fun hxy => hne (slotSplitVacuumVertex_injective hxy),
       slotLegSplitting h (Sum.inr leg), ?_, ?_⟩
     · rw [twoPointVertexOfLeg_slotLegSplitting_inr_exact, hleg]
     · rw [TwoPointDiagram.ofSlotSplit_pairing, Pairing.ofSplit_partner_inr,
@@ -110,7 +110,7 @@ theorem adj_ofSlotSplit_slotSplitVacuumVertex_iff (x y : ↥(S \ T)) :
 /-- The vacuum piece maps into a reassembled two-point diagram as a graph homomorphism. -/
 noncomputable def ofSlotSplitVacuumHom :
     vac.vertexGraph →g (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph where
-  toFun := slotSplitVacuumVertex h
+  toFun := slotSplitVacuumVertex
   map_rel' := fun {_ _} hab =>
     (adj_ofSlotSplit_slotSplitVacuumVertex_iff h ext vac _ _).2 hab
 
@@ -118,18 +118,18 @@ noncomputable def ofSlotSplitVacuumHom :
 theorem reachable_ofSlotSplitVacuum_of_reachable {x y : ↥(S \ T)}
     (hreach : vac.vertexGraph.Reachable x y) :
     (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
-      (slotSplitVacuumVertex h x) (slotSplitVacuumVertex h y) := by
+      (slotSplitVacuumVertex x) (slotSplitVacuumVertex y) := by
   exact hreach.map (ofSlotSplitVacuumHom h ext vac)
 
 /-- Every walk of a reassembled diagram starting in the vacuum piece stays in the vacuum piece. -/
 theorem exists_eq_slotSplitVacuumVertex_of_adj
     {x : ↥(S \ T)} {u : TwoPointVertex S}
     (hadj : (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Adj
-      (slotSplitVacuumVertex h x) u) :
-    ∃ y : ↥(S \ T), u = slotSplitVacuumVertex h y := by
+      (slotSplitVacuumVertex x) u) :
+    ∃ y : ↥(S \ T), u = slotSplitVacuumVertex y := by
   obtain ⟨hne, leg, hleg, hpartner⟩ :=
     ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph_adj_iff
-      (slotSplitVacuumVertex h x) u).1 hadj
+      (slotSplitVacuumVertex x) u).1 hadj
   obtain ⟨z, rfl⟩ := (slotLegSplitting h).surjective leg
   cases z with
   | inl i =>
@@ -145,8 +145,8 @@ theorem exists_eq_slotSplitVacuumVertex_of_adj
 theorem exists_reachable_of_walk_ofSlotSplitVacuum :
     ∀ {u v : TwoPointVertex S},
       (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Walk u v →
-        ∀ x : ↥(S \ T), u = slotSplitVacuumVertex h x →
-          ∃ y : ↥(S \ T), v = slotSplitVacuumVertex h y ∧ vac.vertexGraph.Reachable x y := by
+        ∀ x : ↥(S \ T), u = slotSplitVacuumVertex x →
+          ∃ y : ↥(S \ T), v = slotSplitVacuumVertex y ∧ vac.vertexGraph.Reachable x y := by
   intro u v p
   induction p with
   | nil => exact fun x hx => ⟨x, hx, SimpleGraph.Reachable.refl _⟩
@@ -163,13 +163,13 @@ theorem exists_reachable_of_walk_ofSlotSplitVacuum :
 inside the quartic vacuum piece. -/
 theorem reachable_ofSlotSplitVacuum_iff (x y : ↥(S \ T)) :
     (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
-        (slotSplitVacuumVertex h x) (slotSplitVacuumVertex h y) ↔
+        (slotSplitVacuumVertex x) (slotSplitVacuumVertex y) ↔
       vac.vertexGraph.Reachable x y := by
   constructor
   · rintro ⟨p⟩
     obtain ⟨y', hy', hreach⟩ :=
       exists_reachable_of_walk_ofSlotSplitVacuum h ext vac p x rfl
-    have : y = y' := slotSplitVacuumVertex_injective h hy'
+    have : y = y' := slotSplitVacuumVertex_injective hy'
     exact this ▸ hreach
   · exact reachable_ofSlotSplitVacuum_of_reachable h ext vac
 
@@ -178,7 +178,7 @@ exactly that vertex's connected component in the quartic vacuum piece. -/
 theorem interactionPart_componentBlock_slotSplitVacuumVertex (v : ↥(S \ T)) :
     TwoPointDiagram.interactionPart
         ((TwoPointDiagram.ofSlotSplit h ext vac).componentBlock
-          (slotSplitVacuumVertex h v)) =
+          (slotSplitVacuumVertex v)) =
       vac.componentBlock v := by
   ext x
   constructor
@@ -186,12 +186,12 @@ theorem interactionPart_componentBlock_slotSplitVacuumVertex (v : ↥(S \ T)) :
     obtain ⟨hxS, hxBlock⟩ := (TwoPointDiagram.mem_interactionPart _ x).1 hx
     have hreach :
         (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
-          (Sum.inr ⟨x, hxS⟩ : TwoPointVertex S) (slotSplitVacuumVertex h v) :=
+          (Sum.inr ⟨x, hxS⟩ : TwoPointVertex S) (slotSplitVacuumVertex v) :=
       ((TwoPointDiagram.ofSlotSplit h ext vac).mem_componentBlock
-        (slotSplitVacuumVertex h v) (Sum.inr ⟨x, hxS⟩)).1 hxBlock
+        (slotSplitVacuumVertex v) (Sum.inr ⟨x, hxS⟩)).1 hxBlock
     have hreach' :
         (TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.Reachable
-          (slotSplitVacuumVertex h v) (Sum.inr ⟨x, hxS⟩ : TwoPointVertex S) :=
+          (slotSplitVacuumVertex v) (Sum.inr ⟨x, hxS⟩ : TwoPointVertex S) :=
       ((TwoPointDiagram.ofSlotSplit h ext vac).vertexGraph.reachable_comm).1 hreach
     obtain ⟨p⟩ := hreach'
     obtain ⟨y, hy, hvy⟩ :=
@@ -213,7 +213,7 @@ theorem interactionPart_componentBlock_slotSplitVacuumVertex (v : ↥(S \ T)) :
     apply (TwoPointDiagram.mem_interactionPart _ x).2
     refine ⟨(Finset.mem_sdiff.mp hxST).1, ?_⟩
     apply ((TwoPointDiagram.ofSlotSplit h ext vac).mem_componentBlock
-      (slotSplitVacuumVertex h v)
+      (slotSplitVacuumVertex v)
       (Sum.inr ⟨x, (Finset.mem_sdiff.mp hxST).1⟩)).2
     simpa [xv, slotSplitVacuumVertex] using hamb
 
