@@ -1,0 +1,35 @@
+name: Agent 1032 Remove Field Open
+
+on:
+  push:
+    branches:
+      - agent/1032-fermionic-transport-validation
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/1032-fermionic-transport-validation
+      - name: Remove stale Field namespace opens from Transport
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          root = Path('LeanCondensedMatter/SecondQuantization/Fermionic/Transport')
+          needle = 'open SecondQuantization.Fermionic.Field\n'
+          for p in root.glob('*.lean'):
+              s = p.read_text()
+              if needle in s:
+                  p.write_text(s.replace(needle, ''))
+          PY
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git rm -f .github/workflows/agent_1032_remove_field_open.yml
+          git commit -m 'fix(fermionic-transport): remove remaining stale Field opens'
+          git push origin HEAD:agent/1032-fermionic-transport-validation
