@@ -50,8 +50,8 @@ theorem fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding_pairComponent
     let d := fixedExternalOfSlotSplit T ext vac
     d.mixedPairComponent τ τ' σ
         (fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ pr) =
-      Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac
-        (vac.fixedOrderPairComponent (fixedExternalVacuumOrder T) pr) := by
+      (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac
+        (vac.fixedOrderPairComponent (fixedExternalVacuumOrder T) pr)).1 := by
   let d := fixedExternalOfSlotSplit T ext vac
   let q := Common.orderedLegToDiagramLeg
     ((Finset.univ : Finset (Fin n)) \ T) (fixedExternalVacuumOrder T) pr.1.1
