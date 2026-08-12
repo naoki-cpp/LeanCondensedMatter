@@ -131,6 +131,7 @@ theorem integral_probabilityCurrentDivergenceValue1D_of_schwartz_eq_zero
         apply integral_congr_ae
         filter_upwards with x
         rw [probabilityCurrentDivergenceValue1D_eq_coordinates]
+        simp [smul_eq_mul]
     _ = (2 * κ / ℏ) •
         (∫ x, (ψ x).re * (schwartzSpatialSecondDerivative1D ψ x).im -
           (ψ x).im * (schwartzSpatialSecondDerivative1D ψ x).re) := by
