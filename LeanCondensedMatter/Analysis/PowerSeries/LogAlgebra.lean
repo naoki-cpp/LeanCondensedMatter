@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Algebra of the formal logarithm
 
 This file records the multiplicative laws of `PowerSeries.logOf` needed by linked-cluster and
-thermal grand-partition consumers.  The statements are purely formal and require only normalized
+thermal grand-partition consumers. The statements are purely formal and require only normalized
 constant coefficient `1`; no analytic convergence or evaluation is involved.
 -/
 
@@ -54,7 +54,9 @@ theorem logOf_mul {F G : PowerSeries ℂ}
     PowerSeries.logOf (F * G) = PowerSeries.logOf F + PowerSeries.logOf G := by
   have hFG : PowerSeries.constantCoeff (F * G) = 1 := by simp [hF, hG]
   apply PowerSeries.derivative.ext
-  · have hleft := derivative_logOf_mul hFG
+  · change d⁄dX ℂ (PowerSeries.logOf (F * G)) =
+      d⁄dX ℂ (PowerSeries.logOf F) + d⁄dX ℂ (PowerSeries.logOf G)
+    have hleft := derivative_logOf_mul hFG
     have hFlog := derivative_logOf_mul hF
     have hGlog := derivative_logOf_mul hG
     have hright :
@@ -77,6 +79,15 @@ theorem logOf_mul {F G : PowerSeries ℂ}
       PowerSeries.constantCoeff_logOf hF, PowerSeries.constantCoeff_logOf hG]
     simp
 
+/-- The formal logarithm of one is zero. -/
+@[simp]
+theorem logOf_one : PowerSeries.logOf (1 : PowerSeries ℂ) = 0 := by
+  apply PowerSeries.derivative.ext
+  · have h := derivative_logOf_mul (Z := (1 : PowerSeries ℂ)) (by simp)
+    simpa using h
+  · rw [PowerSeries.constantCoeff_logOf (by simp)]
+    simp
+
 /-- The formal logarithm of the inverse of a normalized complex power series is the negative
 formal logarithm. -/
 theorem logOf_inv {F : PowerSeries ℂ}
@@ -85,10 +96,7 @@ theorem logOf_inv {F : PowerSeries ℂ}
   have hFinv : PowerSeries.constantCoeff F⁻¹ = 1 := by simp [hF]
   have hmul := logOf_mul hF hFinv
   have hF0 : PowerSeries.constantCoeff F ≠ 0 := by simp [hF]
-  rw [PowerSeries.mul_inv_cancel F hF0] at hmul
-  have hlogOne : PowerSeries.logOf (1 : PowerSeries ℂ) = 0 := by
-    simp [PowerSeries.logOf_eq]
-  rw [hlogOne] at hmul
-  exact eq_neg_of_add_eq_zero_left hmul.symm
+  rw [PowerSeries.mul_inv_cancel F hF0, logOf_one] at hmul
+  exact eq_neg_of_add_eq_zero_left (by simpa [add_comm] using hmul.symm)
 
 end PowerSeries
