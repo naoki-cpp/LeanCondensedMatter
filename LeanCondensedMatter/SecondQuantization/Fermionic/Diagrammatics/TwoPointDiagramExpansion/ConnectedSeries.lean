@@ -58,6 +58,7 @@ theorem coeff_connectedTwoPointDysonSeries (ε : Mode → ℝ) (β : ℝ)
       connectedTwoPointDysonCoefficient ε β g i j τ τ' n :=
   PowerSeries.coeff_mk n _
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- At order zero there are no interaction slots, so every diagram is connected. -/
 theorem isConnected_of_zero (d : FixedExternalTwoPointWickDiagram Mode 0 i j) :
     d.IsConnected := by
