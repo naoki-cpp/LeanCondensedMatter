@@ -29,7 +29,7 @@ theorem sum_quarticWickDiagram_fixedOrderDysonContribution_eq_normalizedDysonPar
         (-1 : ℂ) ^ S.card * d.couplingWeight g * d.orderedSimplexContribution ε β order) =
       normalizedDysonPartitionCoeff ε β (quarticInteraction g) S.card := by
   classical
-  simp_rw [← mul_assoc]
+  simp_rw [mul_assoc]
   rw [← Finset.mul_sum]
   rw [sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation]
   have hfac : ((S.card.factorial : ℕ) : ℂ) ≠ 0 := by
