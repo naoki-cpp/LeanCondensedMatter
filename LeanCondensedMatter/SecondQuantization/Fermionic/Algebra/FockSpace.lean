@@ -17,6 +17,7 @@ Built directly on `Common.AlgebraicFock`:
 re-proving them. The name deliberately records that this representation depends on the chosen mode
 basis. The basis-independent algebraic fermionic Fock construction is the exterior-algebra
 `Fermionic.AlgebraicFock` and is related to this representation by a chosen-basis equivalence.
+`Fermionic.CompletedFockSpace` is the separate completed `ℓ²` occupation representation.
 
 This layer is algebraic only: no inner product, no Hilbert-space completion, no bounded/unbounded
 operator theory. Those analytic questions are out of scope until the algebraic Linked Cluster
