@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuityWeak1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Weak1D
 import Mathlib.Analysis.Calculus.ParametricIntervalIntegral
 import Mathlib.Tactic
 

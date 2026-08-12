@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuityWeak1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Weak1D
 import Mathlib.Analysis.Complex.RealDeriv
 import Mathlib.Analysis.Distribution.SchwartzSpace.Deriv
 import Mathlib.Tactic
