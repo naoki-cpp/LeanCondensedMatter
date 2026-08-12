@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricCurrent
+import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
 
 set_option linter.style.header false
 
@@ -36,6 +37,8 @@ identified with a DC conductivity.
 namespace SecondQuantization
 namespace Fermionic
 namespace Field
+
+open Lattice
 
 noncomputable section
 
