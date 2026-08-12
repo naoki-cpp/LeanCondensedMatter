@@ -97,8 +97,8 @@ charge-weighted multiplication. -/
 theorem continuumChargeDensity1D_oneParticle
     (q : ℂ) (f ψ : ContinuumWavefunction1D) :
     continuumChargeDensity1D q f
-        (oneParticle ContinuumWavefunction1D ψ) =
-      oneParticle ContinuumWavefunction1D (fun x => q * f x * ψ x) := by
+        (AlgebraicFock.oneParticle ContinuumWavefunction1D ψ) =
+      AlgebraicFock.oneParticle ContinuumWavefunction1D (fun x => q * f x * ψ x) := by
   rw [continuumChargeDensity1D_apply]
   simp only [LinearMap.smul_apply, AlgebraicFock.dGamma_oneParticle]
   rw [← map_smul]
@@ -122,8 +122,8 @@ smearing convention. -/
 theorem continuumChargeDensity1D_oneParticle_real
     (q : ℝ) (test : ℝ → ℝ) (ψ : ContinuumWavefunction1D) :
     continuumChargeDensity1D (q : ℂ) (complexTestOfReal1D test)
-        (oneParticle ContinuumWavefunction1D ψ) =
-      oneParticle ContinuumWavefunction1D
+        (AlgebraicFock.oneParticle ContinuumWavefunction1D ψ) =
+      AlgebraicFock.oneParticle ContinuumWavefunction1D
         (fun x => ((q * test x : ℝ) : ℂ) * ψ x) := by
   simpa [complexTestOfReal1D] using
     (continuumChargeDensity1D_oneParticle (q : ℂ) (complexTestOfReal1D test) ψ)
