@@ -40,12 +40,12 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent
   have hpart : A = (C : Finset (Fin N)) := by
     exact interactionPart_slotSplitVacuumComponentPart h ext vac C
   let e : ↥A ≃ ↥(C : Finset (Fin N)) where
-    toFun v := ⟨v.1, by
+    toFun v := (⟨v.1, by
       rw [← hpart]
-      exact v.2⟩
-    invFun v := ⟨v.1, by
+      exact v.2⟩ : ↥(C : Finset (Fin N)))
+    invFun v := (⟨v.1, by
       rw [hpart]
-      exact v.2⟩
+      exact v.2⟩ : ↥A)
     left_inv v := Subtype.ext rfl
     right_inv v := Subtype.ext rfl
   change (∏ v : ↥A,
