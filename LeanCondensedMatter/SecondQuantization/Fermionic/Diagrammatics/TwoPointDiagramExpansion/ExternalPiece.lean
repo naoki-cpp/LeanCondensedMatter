@@ -249,18 +249,25 @@ theorem FixedExternalTwoPointWickDiagram.externalPieceMixedPosition_injective
   (d.externalPieceMixedPosition_strictMono τ τ' σ).injective
 
 omit [LinearOrder Mode] [Fintype Mode] in
+/-- **The piece stores at each of its mixed positions the leg the ambient diagram stores at the
+corresponding ambient position**, up to the slot reindexing. -/
+theorem FixedExternalTwoPointWickDiagram.mixedTimeOrderedAtomicLegEquiv_externalPieceMixedPosition
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (p : Fin (2 * (2 * d.externalSlots.card + 1))) :
+    mixedTimeOrderedAtomicLegEquiv τ τ' σ (d.externalPieceMixedPosition τ τ' σ p) =
+      orderedTwoPointLegMap (d.externalSlots.orderEmbOfFin rfl)
+        (mixedTimeOrderedAtomicLegEquiv τ τ' (d.externalPieceTimes σ) p) := by
+  rw [FixedExternalTwoPointWickDiagram.externalPieceMixedPosition,
+    mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
+
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The piece's mixed positions land in the external component. -/
 theorem FixedExternalTwoPointWickDiagram.mixedPositionComponent_externalPieceMixedPosition
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (p : Fin (2 * (2 * d.externalSlots.card + 1))) :
     d.mixedPositionComponent τ τ' σ (d.externalPieceMixedPosition τ τ' σ p) =
       d.1.externalComponentPart := by
-  have hleg :
-      mixedTimeOrderedAtomicLegEquiv τ τ' σ (d.externalPieceMixedPosition τ τ' σ p) =
-        orderedTwoPointLegMap (d.externalSlots.orderEmbOfFin rfl)
-          (mixedTimeOrderedAtomicLegEquiv τ τ' (d.externalPieceTimes σ) p) := by
-    rw [FixedExternalTwoPointWickDiagram.externalPieceMixedPosition,
-      mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
+  have hleg := d.mixedTimeOrderedAtomicLegEquiv_externalPieceMixedPosition τ τ' σ p
   rw [d.mixedPositionComponent_eq_iff_legInComponent,
     d.1.legInComponent_iff_unflattened, twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
     hleg, ← d.externalLegDataEquiv_symm_twoPointLegDataCongr]
