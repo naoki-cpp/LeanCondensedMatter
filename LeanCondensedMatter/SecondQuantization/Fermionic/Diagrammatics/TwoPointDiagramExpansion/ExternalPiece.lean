@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedLegSlotEmbedding
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedPositionLeg
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedExternalPositions
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotCongr
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentOrderedSimplex
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentVertexProduct
@@ -15,8 +15,8 @@ vertices indexed by the ambient slots that component happens to own. The linked-
 factorization needs the same data as a diagram in its own right, on as many slots as the component
 owns, since that is the shape a perturbative coefficient is summed over.
 
-This module performs that reindexing on the slot set `externalSlots` already isolated by
-`MixedExternalPositions`. The slots are enumerated **in increasing order**, by
+This module performs that reindexing on the Common-owned slot set
+`TwoPointDiagram.externalInteractionPart`. The slots are enumerated **in increasing order**, by
 `Finset.orderIsoOfFin`, which is what makes the piece's mixed event and leg orders agree with the
 ambient ones; see `MixedEventSlotEmbedding` and `MixedLegSlotEmbedding` for that comparison. The
 piece keeps the ambient external labels, so it is again a fixed-external diagram for the same two
@@ -38,25 +38,28 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- The external component owns as many slots as the ordered-simplex integral for that component
 integrates over. -/
-theorem FixedExternalTwoPointWickDiagram.externalSlots_card
+theorem FixedExternalTwoPointWickDiagram.externalInteractionPart_card
     (d : FixedExternalTwoPointWickDiagram Mode n i j) :
-    d.externalSlots.card = d.1.interactionComponentSize d.1.externalComponentPart := rfl
+    d.1.externalInteractionPart.card = d.1.interactionComponentSize d.1.externalComponentPart := rfl
 
 /-- The increasing enumeration of the slots owned by the external component, as a relabeling onto
 the standard slot set of that size. -/
 noncomputable def FixedExternalTwoPointWickDiagram.externalSlotEquiv
     (d : FixedExternalTwoPointWickDiagram Mode n i j) :
-    ↥d.externalSlots ≃ ↥(Finset.univ : Finset (Fin d.externalSlots.card)) :=
-  (d.externalSlots.orderIsoOfFin rfl).toEquiv.symm.trans
-    (Equiv.subtypeUnivEquiv (fun x : Fin d.externalSlots.card => Finset.mem_univ x)).symm
+    ↥d.1.externalInteractionPart ≃
+      ↥(Finset.univ : Finset (Fin d.1.externalInteractionPart.card)) :=
+  (d.1.externalInteractionPart.orderIsoOfFin rfl).toEquiv.symm.trans
+    (Equiv.subtypeUnivEquiv
+      (fun x : Fin d.1.externalInteractionPart.card => Finset.mem_univ x)).symm
 
 omit [LinearOrder Mode] [Fintype Mode] in
 @[simp]
 theorem FixedExternalTwoPointWickDiagram.externalSlotEquiv_symm_coe
     (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (v : ↥(Finset.univ : Finset (Fin d.externalSlots.card))) :
-    ((d.externalSlotEquiv.symm v : ↥d.externalSlots) : Fin n) =
-      d.externalSlots.orderEmbOfFin rfl (v : Fin d.externalSlots.card) := by
+    (v : ↥(Finset.univ : Finset (Fin d.1.externalInteractionPart.card))) :
+    ((d.externalSlotEquiv.symm v : ↥d.1.externalInteractionPart) : Fin n) =
+      d.1.externalInteractionPart.orderEmbOfFin rfl
+        (v : Fin d.1.externalInteractionPart.card) := by
   simp [FixedExternalTwoPointWickDiagram.externalSlotEquiv,
     Finset.coe_orderIsoOfFin_apply]
 
@@ -64,7 +67,7 @@ theorem FixedExternalTwoPointWickDiagram.externalSlotEquiv_symm_coe
 interaction slots enumerated in increasing order. -/
 noncomputable def FixedExternalTwoPointWickDiagram.externalPiece
     (d : FixedExternalTwoPointWickDiagram Mode n i j) :
-    FixedExternalTwoPointWickDiagram Mode d.externalSlots.card i j :=
+    FixedExternalTwoPointWickDiagram Mode d.1.externalInteractionPart.card i j :=
   ⟨d.1.restrictExternalComponent.slotCongr d.externalSlotEquiv, by
     rw [Common.TwoPointDiagram.slotCongr_externalLabel]
     exact d.2⟩
@@ -80,9 +83,11 @@ omit [LinearOrder Mode] [Fintype Mode] in
 /-- **The piece's slot labels are the ambient labels read off in increasing slot order.** -/
 @[simp]
 theorem FixedExternalTwoPointWickDiagram.externalPiece_vertexLabelSequence
-    (d : FixedExternalTwoPointWickDiagram Mode n i j) (v : Fin d.externalSlots.card) :
+    (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (v : Fin d.1.externalInteractionPart.card) :
     d.externalPiece.vertexLabelSequence v =
-      d.1.vertexLabel ⟨d.externalSlots.orderEmbOfFin rfl v, Finset.mem_univ _⟩ := by
+      d.1.vertexLabel
+        ⟨d.1.externalInteractionPart.orderEmbOfFin rfl v, Finset.mem_univ _⟩ := by
   unfold FixedExternalTwoPointWickDiagram.vertexLabelSequence
     FixedExternalTwoPointWickDiagram.externalPiece
   rw [Common.TwoPointDiagram.slotCongr_vertexLabel,
@@ -97,11 +102,11 @@ correspondence is exactly the monotone leg reindexing whose mixed order the ambi
 to. -/
 theorem FixedExternalTwoPointWickDiagram.externalLegDataEquiv_symm_twoPointLegDataCongr
     (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (leg : OrderedTwoPointLeg d.externalSlots.card) :
+    (leg : OrderedTwoPointLeg d.1.externalInteractionPart.card) :
     (d.1.externalLegDataEquiv.symm
         (Common.twoPointLegDataCongr d.externalSlotEquiv.symm leg) :
       OrderedTwoPointLeg n) =
-      orderedTwoPointLegMap (d.externalSlots.orderEmbOfFin rfl) leg := by
+      orderedTwoPointLegMap (d.1.externalInteractionPart.orderEmbOfFin rfl) leg := by
   cases leg with
   | inl e => rfl
   | inr p =>
@@ -117,7 +122,8 @@ noncomputable def FixedExternalTwoPointWickDiagram.externalPieceLegEquiv
     (d : FixedExternalTwoPointWickDiagram Mode n i j) :
     {leg : Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1)) //
         d.1.legInComponent (d.1.externalComponent 0) leg} ≃
-      Fin (2 * (2 * (Finset.univ : Finset (Fin d.externalSlots.card)).card + 1)) :=
+      Fin (2 * (2 *
+        (Finset.univ : Finset (Fin d.1.externalInteractionPart.card)).card + 1)) :=
   d.1.externalBlockLegEquiv.trans (Common.twoPointLegCongr d.externalSlotEquiv)
 
 omit [LinearOrder Mode] [Fintype Mode] in
@@ -156,31 +162,31 @@ identity of the piece back through the piece's leg reindexing and unflattening i
 diagram gives the leg `orderedTwoPointLegMap` produces. -/
 theorem FixedExternalTwoPointWickDiagram.twoPointLegEquiv_externalPieceLegEquiv_symm
     (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (leg : OrderedTwoPointLeg d.externalSlots.card) :
+    (leg : OrderedTwoPointLeg d.1.externalInteractionPart.card) :
     Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))
         ((d.externalPieceLegEquiv.symm
           ((Common.twoPointLegEquiv
-            (Finset.univ : Finset (Fin d.externalSlots.card))).symm leg)).1) =
-      orderedTwoPointLegMap (d.externalSlots.orderEmbOfFin rfl) leg := by
+            (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm leg)).1) =
+      orderedTwoPointLegMap (d.1.externalInteractionPart.orderEmbOfFin rfl) leg := by
   have hcongr :
-      Common.twoPointLegEquiv d.externalSlots
+      Common.twoPointLegEquiv d.1.externalInteractionPart
           ((Common.twoPointLegCongr d.externalSlotEquiv).symm
             ((Common.twoPointLegEquiv
-              (Finset.univ : Finset (Fin d.externalSlots.card))).symm leg)) =
+              (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm leg)) =
         Common.twoPointLegDataCongr d.externalSlotEquiv.symm leg := by
     rw [← Common.twoPointLegCongr_symm, Common.twoPointLegCongr_eq_trans,
       Equiv.trans_apply, Equiv.trans_apply, Equiv.apply_symm_apply, Equiv.apply_symm_apply]
   have hunfold :
       ((d.externalPieceLegEquiv.symm
           ((Common.twoPointLegEquiv
-            (Finset.univ : Finset (Fin d.externalSlots.card))).symm leg)).1 :
+            (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm leg)).1 :
         Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1))) =
       (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm
         ((d.1.externalLegDataEquiv.symm
-          (Common.twoPointLegEquiv d.externalSlots
+          (Common.twoPointLegEquiv d.1.externalInteractionPart
             ((Common.twoPointLegCongr d.externalSlotEquiv).symm
               ((Common.twoPointLegEquiv
-                (Finset.univ : Finset (Fin d.externalSlots.card))).symm leg)))).1) := rfl
+                (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm leg)))).1) := rfl
   rw [hunfold, hcongr, Equiv.apply_symm_apply,
     d.externalLegDataEquiv_symm_twoPointLegDataCongr]
 
@@ -190,19 +196,20 @@ intertwines the piece's leg-level pairing with the ambient one, with no referenc
 enumeration and hence to any times. -/
 theorem FixedExternalTwoPointWickDiagram.atomicLegPartner_orderedTwoPointLegMap
     (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (leg : OrderedTwoPointLeg d.externalSlots.card) :
-    d.atomicLegPartner (orderedTwoPointLegMap (d.externalSlots.orderEmbOfFin rfl) leg) =
-      orderedTwoPointLegMap (d.externalSlots.orderEmbOfFin rfl)
+    (leg : OrderedTwoPointLeg d.1.externalInteractionPart.card) :
+    d.atomicLegPartner
+        (orderedTwoPointLegMap (d.1.externalInteractionPart.orderEmbOfFin rfl) leg) =
+      orderedTwoPointLegMap (d.1.externalInteractionPart.orderEmbOfFin rfl)
         (d.externalPiece.atomicLegPartner leg) := by
   have hsub :
       d.externalPieceLegEquiv.symm
           ((Common.twoPointLegEquiv
-            (Finset.univ : Finset (Fin d.externalSlots.card))).symm
+            (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm
             (d.externalPiece.atomicLegPartner leg)) =
         d.1.restrictedPartner (d.1.externalComponent 0)
           (d.externalPieceLegEquiv.symm
             ((Common.twoPointLegEquiv
-              (Finset.univ : Finset (Fin d.externalSlots.card))).symm leg)) := by
+              (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm leg)) := by
     simp only [FixedExternalTwoPointWickDiagram.atomicLegPartner, Equiv.symm_apply_apply]
     rw [Equiv.symm_apply_eq, ← d.externalPiece_partner_externalPieceLegEquiv,
       Equiv.apply_symm_apply]
@@ -215,15 +222,15 @@ theorem FixedExternalTwoPointWickDiagram.atomicLegPartner_orderedTwoPointLegMap
 in increasing slot order. -/
 noncomputable def FixedExternalTwoPointWickDiagram.externalPieceTimes
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (σ : Fin n → ℝ) :
-    Fin d.externalSlots.card → ℝ :=
-  σ ∘ d.externalSlots.orderEmbOfFin rfl
+    Fin d.1.externalInteractionPart.card → ℝ :=
+  σ ∘ d.1.externalInteractionPart.orderEmbOfFin rfl
 
 /-- The ambient mixed position of the leg the piece stores at a given mixed position of its own. -/
 noncomputable def FixedExternalTwoPointWickDiagram.externalPieceMixedPosition
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (p : Fin (2 * (2 * d.externalSlots.card + 1))) : Fin (2 * (2 * n + 1)) :=
+    (p : Fin (2 * (2 * d.1.externalInteractionPart.card + 1))) : Fin (2 * (2 * n + 1)) :=
   mixedTimeOrderedAtomicLegPosition τ τ' σ
-    (orderedTwoPointLegMap (d.externalSlots.orderEmbOfFin rfl)
+    (orderedTwoPointLegMap (d.1.externalInteractionPart.orderEmbOfFin rfl)
       (mixedTimeOrderedAtomicLegEquiv τ τ' (d.externalPieceTimes σ) p))
 
 omit [LinearOrder Mode] [Fintype Mode] in
@@ -237,7 +244,7 @@ theorem FixedExternalTwoPointWickDiagram.externalPieceMixedPosition_strictMono
   rw [FixedExternalTwoPointWickDiagram.externalPieceMixedPosition,
     FixedExternalTwoPointWickDiagram.externalPieceMixedPosition,
     mixedTimeOrderedAtomicLegPosition_map_lt_iff
-      (d.externalSlots.orderEmbOfFin rfl).strictMono]
+      (d.1.externalInteractionPart.orderEmbOfFin rfl).strictMono]
   simpa [FixedExternalTwoPointWickDiagram.externalPieceTimes,
     mixedTimeOrderedAtomicLegPosition] using hpq
 
@@ -253,9 +260,9 @@ omit [LinearOrder Mode] [Fintype Mode] in
 corresponding ambient position**, up to the slot reindexing. -/
 theorem FixedExternalTwoPointWickDiagram.mixedTimeOrderedAtomicLegEquiv_externalPieceMixedPosition
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (p : Fin (2 * (2 * d.externalSlots.card + 1))) :
+    (p : Fin (2 * (2 * d.1.externalInteractionPart.card + 1))) :
     mixedTimeOrderedAtomicLegEquiv τ τ' σ (d.externalPieceMixedPosition τ τ' σ p) =
-      orderedTwoPointLegMap (d.externalSlots.orderEmbOfFin rfl)
+      orderedTwoPointLegMap (d.1.externalInteractionPart.orderEmbOfFin rfl)
         (mixedTimeOrderedAtomicLegEquiv τ τ' (d.externalPieceTimes σ) p) := by
   rw [FixedExternalTwoPointWickDiagram.externalPieceMixedPosition,
     mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
@@ -264,7 +271,7 @@ omit [LinearOrder Mode] [Fintype Mode] in
 /-- The piece's mixed positions land in the external component. -/
 theorem FixedExternalTwoPointWickDiagram.mixedPositionComponent_externalPieceMixedPosition
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (p : Fin (2 * (2 * d.externalSlots.card + 1))) :
+    (p : Fin (2 * (2 * d.1.externalInteractionPart.card + 1))) :
     d.mixedPositionComponent τ τ' σ (d.externalPieceMixedPosition τ τ' σ p) =
       d.1.externalComponentPart := by
   have hleg := d.mixedTimeOrderedAtomicLegEquiv_externalPieceMixedPosition τ τ' σ p
@@ -279,14 +286,14 @@ theorem FixedExternalTwoPointWickDiagram.mixedPositionComponent_externalPieceMix
 injectively, and there are as many of them as the component owns. -/
 noncomputable def FixedExternalTwoPointWickDiagram.externalPieceMixedPositionEquiv
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    Fin (2 * (2 * d.externalSlots.card + 1)) ≃
+    Fin (2 * (2 * d.1.externalInteractionPart.card + 1)) ≃
       d.MixedComponentPosition τ τ' σ d.1.externalComponentPart :=
   Equiv.ofBijective
     (fun p => ⟨d.externalPieceMixedPosition τ τ' σ p,
       d.mixedPositionComponent_externalPieceMixedPosition τ τ' σ p⟩)
     (by
       have hcard :
-          Fintype.card (Fin (2 * (2 * d.externalSlots.card + 1))) =
+          Fintype.card (Fin (2 * (2 * d.1.externalInteractionPart.card + 1))) =
             Fintype.card (d.MixedComponentPosition τ τ' σ d.1.externalComponentPart) := by
         rw [Fintype.card_congr (d.mixedExternalPositionEquiv τ τ' σ), Fintype.card_fin,
           Fintype.card_fin]
@@ -298,7 +305,7 @@ omit [LinearOrder Mode] [Fintype Mode] in
 @[simp]
 theorem FixedExternalTwoPointWickDiagram.externalPieceMixedPositionEquiv_apply
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (p : Fin (2 * (2 * d.externalSlots.card + 1))) :
+    (p : Fin (2 * (2 * d.1.externalInteractionPart.card + 1))) :
     (d.externalPieceMixedPositionEquiv τ τ' σ p : Fin (2 * (2 * n + 1))) =
       d.externalPieceMixedPosition τ τ' σ p := rfl
 
@@ -308,7 +315,7 @@ positions into the ambient ones intertwines the two mixed-order partners, the pi
 at the times it inherits. -/
 theorem FixedExternalTwoPointWickDiagram.externalPieceMixedPosition_partner
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (p : Fin (2 * (2 * d.externalSlots.card + 1))) :
+    (p : Fin (2 * (2 * d.1.externalInteractionPart.card + 1))) :
     (d.pairingInMixedOrder τ τ' σ).partner (d.externalPieceMixedPosition τ τ' σ p) =
       d.externalPieceMixedPosition τ τ' σ
         ((d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).partner p) := by
