@@ -34,11 +34,18 @@ theorem FixedExternalTwoPointWickDiagram.externalPiece_heq_standardized_slotSpli
   subst T
   apply heq_of_eq
   apply Subtype.ext
-  unfold FixedExternalTwoPointWickDiagram.externalPiece
-    fixedExternalTwoPointWickDiagramOnEquiv fixedExternalSlotEquiv
-    FixedExternalTwoPointWickDiagram.externalSlotEquiv
-  rw [Common.TwoPointDiagram.restrictExternalComponent_eq_externalVacuumSplit_fst]
-  rfl
+  have hrestrict :
+      d.1.restrictExternalComponent =
+        d.1.slotSplitExternal (Finset.subset_univ d.1.externalInteractionPart)
+          (Common.isSplit_slotLegSplitting_of_interactionPart_eq
+            (Finset.subset_univ d.1.externalInteractionPart) rfl) := by
+    rw [Common.TwoPointDiagram.restrictExternalComponent_eq_externalVacuumSplit_fst]
+    rfl
+  have hcongr := congrArg
+    (fun x => Common.TwoPointDiagram.slotCongr d.externalSlotEquiv x) hrestrict
+  simpa [FixedExternalTwoPointWickDiagram.externalPiece,
+    fixedExternalTwoPointWickDiagramOnEquiv, fixedExternalSlotEquiv,
+    FixedExternalTwoPointWickDiagram.externalSlotEquiv] using hcongr
 
 omit [Fintype Mode] in
 /-- After reindexing a fiber by `fixedExternalFiberEquiv`, the ambient standalone external piece is
