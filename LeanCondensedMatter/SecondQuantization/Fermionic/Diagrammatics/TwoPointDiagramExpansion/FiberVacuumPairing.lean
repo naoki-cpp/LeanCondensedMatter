@@ -167,7 +167,6 @@ theorem fixedExternalOfSlotSplit_mem_mixedPairs_vacuumOrderedLeg_iff
       _ = E b := hpartner
   · rintro ⟨hab, hpartner⟩
     refine ⟨e.lt_iff_lt.mpr hab, ?_⟩
-    change (d.pairingInMixedOrder τ τ' σ).partner (E a) = E b
     rw [fixedExternalOfSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
       T ext vac τ τ' σ a, hpartner]
 
