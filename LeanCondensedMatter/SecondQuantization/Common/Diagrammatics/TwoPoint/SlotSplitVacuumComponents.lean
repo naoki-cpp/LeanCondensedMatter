@@ -110,7 +110,10 @@ theorem not_mem_left_of_mem_vacuumComponentPart
     rw [← hblock]
     exact ((TwoPointDiagram.ofSlotSplit h ext vac).mem_componentBlock
       (Sum.inr w) (Sum.inl e)).2 hamb
-  exact B.2 ⟨e, heB⟩
+  have hVac :
+      (TwoPointDiagram.ofSlotSplit h ext vac).ComponentIsVacuum B.1 :=
+    ((TwoPointDiagram.ofSlotSplit h ext vac).mem_vacuumComponentParts B.1).1 B.2
+  exact hVac ⟨e, heB⟩
 
 /-- With an externally connected left piece, every ambient vacuum component comes from a quartic
 right-side component. -/
@@ -122,7 +125,10 @@ theorem slotSplitVacuumComponentPart_surjective
     (TwoPointDiagram.ofSlotSplit h ext vac).componentPartition.nonempty_of_mem_parts B.1.2
   cases x with
   | inl e =>
-      exact False.elim (B.2 ⟨e, hxB⟩)
+      have hVac :
+          (TwoPointDiagram.ofSlotSplit h ext vac).ComponentIsVacuum B.1 :=
+        ((TwoPointDiagram.ofSlotSplit h ext vac).mem_vacuumComponentParts B.1).1 B.2
+      exact False.elim (hVac ⟨e, hxB⟩)
   | inr w =>
       have hwNot : (w : Fin N) ∉ T :=
         not_mem_left_of_mem_vacuumComponentPart h ext vac hext B w hxB
