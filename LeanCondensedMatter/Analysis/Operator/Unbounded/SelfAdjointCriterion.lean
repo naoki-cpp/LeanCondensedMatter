@@ -23,9 +23,7 @@ open scoped InnerProductSpace
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 variable {A : H →ₗ.[ℂ] H}
 
-/-- A densely defined symmetric partial operator is self-adjoint once the adjoint domain is
-contained in the original domain. -/
-theorem isSelfAdjoint_of_isFormalAdjoint_of_adjoint_domain_le
+private theorem isSelfAdjoint_of_isFormalAdjoint_of_adjoint_domain_le
     (hdense : Dense ((A.domain : Submodule ℂ H) : Set H))
     (hsymm : A.IsFormalAdjoint A)
     (hdom : A.adjoint.domain ≤ A.domain) :
