@@ -107,15 +107,6 @@ theorem minimallyCoupledSchrodingerRhsValue1D_eq_expanded
   push_cast
   field_simp [hmassC]; ring
 
-private theorem probabilityDensityValue_eq_coordinates (ψ : ℂ) :
-    probabilityDensityValue ψ = ψ.re ^ 2 + ψ.im ^ 2 :=
-  rfl
-
-private theorem probabilityDensityTimeDerivativeValue_eq_coordinates (ψ ψd : ℂ) :
-    probabilityDensityTimeDerivativeValue ψ ψd =
-      2 * (ψ.re * ψd.re + ψ.im * ψd.im) :=
-  rfl
-
 /-- The value obtained by differentiating the electromagnetic probability current in space.  The
 second term is the product-rule derivative of `A |ψ|²`. -/
 def electromagneticProbabilityCurrentDivergenceValue1D
@@ -262,7 +253,7 @@ theorem electromagnetic_probability_continuity_balance_of_components
           q ℏ mass vectorPotential vectorPotentialDerivative ψ ψx ψxx) = 0 := by
     rw [electromagneticProbabilityCurrentDivergenceValue1D_eq_expanded,
       probabilityDensityTimeDerivativeValue_eq_coordinates,
-      probabilityDensityValue_eq_coordinates]
+      probabilityDensityValue, Complex.normSq_apply]
     field_simp [hmass]
     linear_combination ψ.re * himag + ψ.im * hreal
   exact (mul_eq_zero.mp hscaled).resolve_left hℏ

@@ -43,14 +43,9 @@ theorem realTestMultiplier1D_coeFn
       fun x => (test x : ℂ) := by
   exact htest.coeFn_toLp
 
-private theorem probabilityDensityValue_eq_normSq (z : ℂ) :
-    probabilityDensityValue z = Complex.normSq z := by
-  change z.re ^ 2 + z.im ^ 2 = z.re * z.re + z.im * z.im
-  ring
-
 private theorem inner_real_mul_self_eq_probabilityDensityValue (r : ℝ) (z : ℂ) :
     inner ℂ z ((r : ℂ) * z) = (r * probabilityDensityValue z : ℂ) := by
-  rw [probabilityDensityValue_eq_normSq]
+  rw [probabilityDensityValue]
   rw [Complex.normSq_eq_conj_mul_self]
   simp [mul_assoc, mul_left_comm, mul_comm]
 

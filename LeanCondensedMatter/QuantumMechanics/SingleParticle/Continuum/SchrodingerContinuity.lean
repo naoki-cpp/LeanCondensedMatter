@@ -41,25 +41,58 @@ private def realPart (z : ℂ) : ℝ :=
 private def imaginaryPart (z : ℂ) : ℝ :=
   z.im
 
-/-- Pointwise probability density `|ψ|²`, written in real coordinates. -/
+/-- Pointwise probability density `‖ψ‖²`. -/
 def probabilityDensityValue (ψ : ℂ) : ℝ :=
-  realPart ψ ^ 2 + imaginaryPart ψ ^ 2
+  Complex.normSq ψ
+
+/-- The probability density agrees with the squared complex norm. -/
+theorem probabilityDensityValue_eq_norm_sq (ψ : ℂ) :
+    probabilityDensityValue ψ = ‖ψ‖ ^ 2 := by
+  simpa [probabilityDensityValue] using Complex.normSq_eq_norm_sq ψ
+
+/-- The canonical real pairing underlying the one-dimensional probability current. -/
+def probabilityCurrentPairingValue (ψ χ : ℂ) : ℝ :=
+  (star ψ * χ).im
+
+/-- Coordinate expansion of the canonical current pairing. -/
+theorem probabilityCurrentPairingValue_eq_coordinates (ψ χ : ℂ) :
+    probabilityCurrentPairingValue ψ χ = ψ.re * χ.im - ψ.im * χ.re := by
+  simp [probabilityCurrentPairingValue, Complex.mul_im]
+  ring
 
 /-- Pointwise one-dimensional probability current for kinetic coefficient `κ`.
 
 This is `(2κ / ℏ) Im (star ψ * ψₓ)`, expanded into real coordinates. -/
 def probabilityCurrentValue1D (ℏ κ : ℝ) (ψ ψx : ℂ) : ℝ :=
-  (2 * κ / ℏ) *
-    (realPart ψ * imaginaryPart ψx - imaginaryPart ψ * realPart ψx)
+  (2 * κ / ℏ) * probabilityCurrentPairingValue ψ ψx
+
+/-- Coordinate expansion of the one-dimensional probability current. -/
+theorem probabilityCurrentValue1D_eq_coordinates
+    (ℏ κ : ℝ) (ψ ψx : ℂ) :
+    probabilityCurrentValue1D ℏ κ ψ ψx =
+      (2 * κ / ℏ) * (ψ.re * ψx.im - ψ.im * ψx.re) := by
+  rw [probabilityCurrentValue1D, probabilityCurrentPairingValue_eq_coordinates]
 
 /-- The value obtained by differentiating probability density in time. -/
 def probabilityDensityTimeDerivativeValue (ψ ψt : ℂ) : ℝ :=
-  2 * (realPart ψ * realPart ψt + imaginaryPart ψ * imaginaryPart ψt)
+  2 * (ψ.re * ψt.re + ψ.im * ψt.im)
+
+/-- Coordinate expansion of the probability-density time derivative. -/
+theorem probabilityDensityTimeDerivativeValue_eq_coordinates (ψ ψt : ℂ) :
+    probabilityDensityTimeDerivativeValue ψ ψt =
+      2 * (ψ.re * ψt.re + ψ.im * ψt.im) := by
+  rfl
 
 /-- The value obtained by differentiating the one-dimensional probability current in space. -/
 def probabilityCurrentDivergenceValue1D (ℏ κ : ℝ) (ψ ψxx : ℂ) : ℝ :=
-  (2 * κ / ℏ) *
-    (realPart ψ * imaginaryPart ψxx - imaginaryPart ψ * realPart ψxx)
+  (2 * κ / ℏ) * probabilityCurrentPairingValue ψ ψxx
+
+/-- Coordinate expansion of the one-dimensional probability-current divergence. -/
+theorem probabilityCurrentDivergenceValue1D_eq_coordinates
+    (ℏ κ : ℝ) (ψ ψxx : ℂ) :
+    probabilityCurrentDivergenceValue1D ℏ κ ψ ψxx =
+      (2 * κ / ℏ) * (ψ.re * ψxx.im - ψ.im * ψxx.re) := by
+  rw [probabilityCurrentDivergenceValue1D, probabilityCurrentPairingValue_eq_coordinates]
 
 /-- Coordinatewise differentiability gives the expected real probability-density derivative.
 
@@ -77,12 +110,13 @@ theorem hasDerivAt_probabilityDensityValue
           (imaginaryPart ψt * imaginaryPart (ψ t) +
             imaginaryPart (ψ t) * imaginaryPart ψt) =
         probabilityDensityTimeDerivativeValue (ψ t) ψt := by
-    simp [probabilityDensityTimeDerivativeValue]
+    simp [probabilityDensityTimeDerivativeValue, realPart, imaginaryPart]
     ring
   rw [hderiv] at hraw
   rw [hasDerivAt_iff_tendsto]
   rw [hasDerivAt_iff_tendsto] at hraw
-  simpa [probabilityDensityValue, pow_two, Pi.mul_apply, Pi.add_apply] using hraw
+  simpa [probabilityDensityValue, Complex.normSq_apply, realPart, imaginaryPart,
+    pow_two, Pi.mul_apply, Pi.add_apply] using hraw
 
 /-- Differentiating the standard one-dimensional current cancels the two mixed first-derivative
 terms, leaving only the second spatial derivative. -/
@@ -108,8 +142,8 @@ theorem hasDerivAt_probabilityCurrentValue1D
   have hscaled := hraw.const_mul (2 * κ / ℏ)
   rw [hasDerivAt_iff_tendsto]
   rw [hasDerivAt_iff_tendsto] at hscaled
-  simpa [probabilityCurrentValue1D, probabilityCurrentDivergenceValue1D,
-    Pi.mul_apply, Pi.sub_apply] using hscaled
+  simpa [realPart, imaginaryPart, probabilityCurrentValue1D_eq_coordinates,
+    probabilityCurrentDivergenceValue1D_eq_coordinates, Pi.mul_apply, Pi.sub_apply] using hscaled
 
 /-- Real and imaginary component equations extracted from the pointwise Schrödinger equation. -/
 theorem schrodinger_component_equations
@@ -133,7 +167,7 @@ theorem probability_continuity_balance_of_components
     probabilityDensityTimeDerivativeValue ψ ψt +
       probabilityCurrentDivergenceValue1D ℏ κ ψ ψxx = 0 := by
   unfold probabilityDensityTimeDerivativeValue probabilityCurrentDivergenceValue1D
-  simp only [realPart, imaginaryPart]
+  rw [probabilityCurrentPairingValue_eq_coordinates]
   field_simp [hℏ]
   linear_combination 2 * ψ.re * himag + 2 * ψ.im * hreal
 
