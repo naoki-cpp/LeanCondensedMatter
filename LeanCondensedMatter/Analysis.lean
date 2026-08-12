@@ -10,6 +10,7 @@ import LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
 import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffle
 import LeanCondensedMatter.Analysis.FunctionalCalculus.CFC
+import LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointCriterion
 import LeanCondensedMatter.Analysis.Operator.Unbounded.SelfAdjointResolvent
 import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedResolvent
 import LeanCondensedMatter.Analysis.Operator.Unbounded.CayleyTransform
