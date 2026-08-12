@@ -24,7 +24,7 @@ With this convention, the continuity-derived current satisfies
 J_(x→y) = -∂_A H_(x,y)(A) |_(A=0)
 ```
 
-first on the one-particle algebraic space and then after applying `dGamma` to finite-particle Fock
+first on the one-particle algebraic space and then after applying `AlgebraicFock.dGamma` to finite-particle Fock
 space. A real physical gauge variable can be recovered by restricting this complexified family to
 the real axis; the complex parameter keeps the algebraic derivative statement independent of an
 additional real-linear operator layer.
@@ -174,7 +174,7 @@ noncomputable def peierlsBondHamiltonianFock (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) (A : ℂ) :
     AlgebraicFock (LatticeState Site) →ₗ[ℂ]
       AlgebraicFock (LatticeState Site) :=
-  dGamma (LatticeState Site) (K.peierlsBondHamiltonian ℏ q x y A)
+  AlgebraicFock.dGamma (LatticeState Site) (K.peierlsBondHamiltonian ℏ q x y A)
 
 /-- The continuity-derived many-particle bond current is minus the algebraic link derivative of the
 Peierls-coupled Fock-space Hamiltonian contribution. -/
@@ -184,12 +184,12 @@ theorem hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero
       (-bondCurrent ℏ q K x y) 0 := by
   have h :=
     (K.hasAlgebraicDerivAt_peierlsBondHamiltonian_zero ℏ q x y).map
-      (dGammaLinear (LatticeState Site))
+      (AlgebraicFock.dGammaLinear (LatticeState Site))
   convert h using 1
   · rfl
   · change
       -bondCurrent ℏ q K x y =
-        dGammaLinear (LatticeState Site) (-K.oneParticleBondCurrent ℏ q x y)
+        AlgebraicFock.dGammaLinear (LatticeState Site) (-K.oneParticleBondCurrent ℏ q x y)
     symm
     rw [map_neg]
     unfold LocallyFiniteHopping.oneParticleBondCurrent bondCurrent peierlsCoupling

@@ -89,7 +89,7 @@ noncomputable def continuumChargeDensity1D (q : ℂ) :
 @[simp]
 theorem continuumChargeDensity1D_apply (q : ℂ) (f : ℝ → ℂ) :
     continuumChargeDensity1D q f =
-      q • dGamma ContinuumWavefunction1D (continuumMultiplication1D f) :=
+      q • AlgebraicFock.dGamma ContinuumWavefunction1D (continuumMultiplication1D f) :=
   rfl
 
 /-- On the one-particle sector, the continuum charge-density operator is exactly pointwise
@@ -100,7 +100,7 @@ theorem continuumChargeDensity1D_oneParticle
         (oneParticle ContinuumWavefunction1D ψ) =
       oneParticle ContinuumWavefunction1D (fun x => q * f x * ψ x) := by
   rw [continuumChargeDensity1D_apply]
-  simp only [LinearMap.smul_apply, dGamma_oneParticle]
+  simp only [LinearMap.smul_apply, AlgebraicFock.dGamma_oneParticle]
   rw [← map_smul]
   congr 1
   funext x

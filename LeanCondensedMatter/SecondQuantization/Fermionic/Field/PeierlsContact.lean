@@ -19,7 +19,7 @@ J(A) = -∂ₐ H(A) = J₀ + A J₁ + O(A²),
 ```
 
 where `J₁ = -∂ₐ² H(0)`. This module constructs `J(A)` and its algebraic derivative `J₁`, transports
-both through `dGamma` and the finite-lattice bounded realization, and specializes the general
+both through `AlgebraicFock.dGamma` and the finite-lattice bounded realization, and specializes the general
 observable-variation Kubo theorem. The final response contains both the retarded current-current
 kernel and the explicit contact term.
 
@@ -91,7 +91,7 @@ noncomputable def peierlsBondCurrentFock (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) (A : ℂ) :
     AlgebraicFock (LatticeState Site) →ₗ[ℂ]
       AlgebraicFock (LatticeState Site) :=
-  dGamma (LatticeState Site) (K.peierlsBondCurrentOperator ℏ q x y A)
+  AlgebraicFock.dGamma (LatticeState Site) (K.peierlsBondCurrentOperator ℏ q x y A)
 
 /-- Many-particle contact operator obtained by second-quantizing the one-particle current
 variation. -/
@@ -99,7 +99,7 @@ noncomputable def bondContact (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) :
     AlgebraicFock (LatticeState Site) →ₗ[ℂ]
       AlgebraicFock (LatticeState Site) :=
-  dGamma (LatticeState Site) (K.oneParticleBondContact ℏ q x y)
+  AlgebraicFock.dGamma (LatticeState Site) (K.oneParticleBondContact ℏ q x y)
 
 /-- The Peierls current family agrees with the existing bond current at zero source. -/
 @[simp]
@@ -109,9 +109,9 @@ theorem peierlsBondCurrentFock_zero (K : LocallyFiniteHopping Site)
   unfold peierlsBondCurrentFock
   rw [K.peierlsBondCurrentOperator_zero]
   unfold LocallyFiniteHopping.oneParticleBondCurrent bondCurrent peierlsCoupling
-  change dGammaLinear (LatticeState Site)
+  change AlgebraicFock.dGammaLinear (LatticeState Site)
       (((Complex.I * q) / ℏ) • K.bondOperator x y) =
-    ((Complex.I * q) / ℏ) • dGamma (LatticeState Site) (K.bondOperator x y)
+    ((Complex.I * q) / ℏ) • AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y)
   rw [map_smul, dGammaLinear_apply]
 
 /-- The Fock-space Peierls current has algebraic derivative equal to the contact operator. -/
@@ -121,7 +121,7 @@ theorem hasAlgebraicDerivAt_peierlsBondCurrentFock_zero
       (bondContact K ℏ q x y) 0 := by
   unfold peierlsBondCurrentFock bondContact
   exact (K.hasAlgebraicDerivAt_peierlsBondCurrentOperator_zero ℏ q x y).map
-    (dGammaLinear (LatticeState Site))
+    (AlgebraicFock.dGammaLinear (LatticeState Site))
 
 end Algebraic
 

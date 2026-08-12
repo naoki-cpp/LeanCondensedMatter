@@ -45,7 +45,7 @@ noncomputable def latticeBasis : Module.Basis Site ℂ (LatticeState Site) :=
 for an ordered site type. -/
 noncomputable def latticeOccupationEquiv :
     OccupationFock Site ≃ₗ[ℂ] AlgebraicFock (LatticeState Site) :=
-  occupationEquiv (latticeBasis (Site := Site))
+  AlgebraicFock.occupationEquiv (latticeBasis (Site := Site))
 
 /-- Conjugate an exterior-Fock endomorphism into the occupation-subset representation. -/
 noncomputable def occupationOperator
@@ -209,10 +209,10 @@ theorem boundedLatticeOperator_comp
 theorem boundedLatticeOperator_linearCommutator
     (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
       AlgebraicFock (LatticeState Site)) :
-    boundedLatticeOperator (linearCommutator A B) =
+    boundedLatticeOperator (AlgebraicFock.linearCommutator A B) =
       (boundedLatticeOperator A).comp (boundedLatticeOperator B) -
         (boundedLatticeOperator B).comp (boundedLatticeOperator A) := by
-  unfold linearCommutator
+  unfold AlgebraicFock.linearCommutator
   rw [boundedLatticeOperator_sub, boundedLatticeOperator_comp,
     boundedLatticeOperator_comp]
 
