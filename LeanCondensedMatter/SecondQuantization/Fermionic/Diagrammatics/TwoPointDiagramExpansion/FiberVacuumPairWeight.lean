@@ -248,7 +248,8 @@ theorem fixedExternalOfSlotSplit_mixedComponentCrossingCount_vacuum_eq
         (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac C).1 =
       ((vac.restrictComponent C.2).pairingInOrder
         (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T) C)).crossingCount := by
-  let B := (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac C).1
+  let B : (fixedExternalOfSlotSplit T ext vac).1.componentPartition.parts :=
+    (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac C).1
   let LocalPair := vac.LocalOrderedPair
     (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T)) C
   let AmbientPair := (fixedExternalOfSlotSplit T ext vac).MixedComponentPair τ τ' σ B
@@ -316,8 +317,7 @@ theorem fixedExternalOfSlotSplit_prod_vacuumMixedComponentWeight_eq
       rw [Common.slotSplitVacuumComponentEquiv_apply]
       have hcross := fixedExternalOfSlotSplit_mixedComponentCrossingCount_vacuum_eq
         T ext vac C τ τ' σ hσ
-      simpa only [FixedExternalTwoPointWickDiagram.mixedComponentWeight,
-        Common.BlochDeDominicis.Pairing.weight_fermion, orders] using
+      simpa [FixedExternalTwoPointWickDiagram.mixedComponentWeight, orders] using
         congrArg (fun k : ℕ => (-1 : ℂ) ^ k) hcross
     _ = (vac.pairingInOrder (vac.assembleVertexOrder orders shuffle)).weight
         Common.Statistics.fermion :=
