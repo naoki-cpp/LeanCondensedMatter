@@ -101,7 +101,9 @@ omit [LinearOrder Mode] [Fintype Mode] in
 theorem FixedExternalTwoPointWickDiagram.interactionComponentSize_externalComponentPart_of_isConnected
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (hconn : d.IsConnected) :
     d.1.interactionComponentSize d.1.externalComponentPart = n := by
-  rw [← d.externalSlots_card, hconn, Finset.card_univ, Fintype.card_fin]
+  have hsize : d.1.interactionComponentSize d.1.externalComponentPart =
+      d.externalSlots.card := rfl
+  rw [hsize, hconn, Finset.card_univ, Fintype.card_fin]
 
 /-- **On a connected diagram the shuffle-orbit sum is a single ordered-simplex integral.** There is
 no vacuum factor left: the external component owns everything. -/
