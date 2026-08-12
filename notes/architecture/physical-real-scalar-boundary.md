@@ -28,22 +28,35 @@ then transports the scalar without loss. Existing examples include:
 ```lean
 Complex.selfAdjointEquiv
 ContinuousLinearMap.diagonalExpectationValue
+ContinuousLinearMap.diagonalExpectationNNReal
 QuantumTheory.observableExpValue
 DensityOperator.observableExpectation
 ```
 
+For a proved-real scalar `z`, package `z` as `selfAdjoint ℂ`, use `Complex.selfAdjointEquiv` to obtain
+the corresponding `ℝ`, and use `Complex.coe_selfAdjointEquiv` when the original complex scalar is
+needed again. Equality of real scalars should usually be proved by coercing them to `ℂ` and applying
+`Complex.ofReal_injective` rather than by projecting both sides with `.re`.
+
 Nonnegativity should likewise be represented in the codomain when available, as in
-`probNNReal : NNReal`. A compatibility `ℝ` API may be a direct coercion from the stronger type.
+`diagonalExpectationNNReal` and `probNNReal : NNReal`. A compatibility `ℝ` API may be a direct
+coercion from the stronger type.
 
-### 3. Proof-only extraction of a real equality
+### 3. Proof-level transport and genuine components
 
-Proofs may apply `Complex.re`, `.re`, or `Complex.reCLM` to an equality whose complex meaning has
-already been established. For example, extracting real components can transport a proved complex
-series identity into an `ℝ` theorem. This is a proof technique; it does not define the physical
-quantity.
+`Complex.re` and `.re` remain appropriate when the real component itself is the mathematical
+quantity, or when a proof genuinely reasons about real and imaginary components. What should be
+avoided is using a projection merely to transport an equality or convergent series that is already
+known to consist of real scalars.
 
-The audit therefore examines public definition bodies and deliberately ignores theorem and lemma
-bodies.
+In particular, a `HasSum` over complex coercions of real terms should be transported back to `ℝ`
+losslessly, for example with `exact_mod_cast`, rather than by applying `Complex.reCLM`. Conversely,
+a real `HasSum` may be embedded into `ℂ` through `Complex.ofRealCLM` when a complex equality is the
+natural target.
+
+The audit therefore continues to allow theorem-local `.re` where it represents a genuine component,
+but rejects `Complex.reCLM` throughout `QuantumTheory` because that pattern is almost always a
+lossy transport of an already-real series identity.
 
 ## Automated audit
 
@@ -56,9 +69,13 @@ public `def`, `abbrev`, or `opaque` declaration when all of the following hold:
 - the declaration is neither `private` nor `local`;
 - no declaration-specific allowlist entry exists.
 
+In addition, any use of `Complex.reCLM` inside `QuantumTheory` is rejected, including theorem and
+lemma bodies. Use a proved-real scalar plus coercion / injectivity instead.
+
 Both ordinary `:=` definitions and equation-style definitions are recognized, including declarations
-with attributes such as `@[simp]`. Complex-valued functions, theorem bodies, and private or local
-implementation helpers are outside this public API guard.
+with attributes such as `@[simp]`. Complex-valued functions and private or local implementation
+helpers remain outside the public-definition guard; the separate `reCLM` rule still applies to all
+QuantumTheory Lean files.
 
 ## Allowlist policy
 
