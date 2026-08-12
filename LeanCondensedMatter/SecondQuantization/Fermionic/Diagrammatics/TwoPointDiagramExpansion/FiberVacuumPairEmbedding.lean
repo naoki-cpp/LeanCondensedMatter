@@ -21,7 +21,7 @@ variable {Mode : Type*} {n : ℕ} {i j : Mode}
 
 /-- Embed a normalized pair of the fixed-order quartic vacuum pairing into the ambient mixed
 pairing. -/
-noncomputable def fixedExternalOfSlotSplit_vacuumNormalizedPairEmbedding
+noncomputable def fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding
     (T : Finset (Fin n))
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
@@ -49,14 +49,14 @@ noncomputable def fixedExternalOfSlotSplit_vacuumNormalizedPairEmbedding
       exact congrArg (fun z => z.1.2) hpq
 
 @[simp]
-theorem fixedExternalOfSlotSplit_vacuumNormalizedPairEmbedding_apply
+theorem fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding_apply
     (T : Finset (Fin n))
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T))
     (pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair) :
-    (fixedExternalOfSlotSplit_vacuumNormalizedPairEmbedding
+    (fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding
       T ext vac τ τ' σ hσ pr).1 =
       (mixedTimeOrderedQuarticLegMapPosition
           (fixedExternalVacuumSlot T) τ τ' σ pr.1.1,
@@ -65,7 +65,7 @@ theorem fixedExternalOfSlotSplit_vacuumNormalizedPairEmbedding_apply
   rfl
 
 /-- The vacuum normalized-pair embedding preserves and reflects crossings. -/
-theorem fixedExternalOfSlotSplit_vacuumNormalizedPairEmbedding_crosses_iff
+theorem fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding_crosses_iff
     (T : Finset (Fin n))
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
@@ -73,9 +73,9 @@ theorem fixedExternalOfSlotSplit_vacuumNormalizedPairEmbedding_crosses_iff
     (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T))
     (p q : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair) :
     Crosses
-        (fixedExternalOfSlotSplit_vacuumNormalizedPairEmbedding
+        (fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding
           T ext vac τ τ' σ hσ p).1
-        (fixedExternalOfSlotSplit_vacuumNormalizedPairEmbedding
+        (fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding
           T ext vac τ τ' σ hσ q).1 ↔
       Crosses p.1 q.1 := by
   let E := mixedTimeOrderedQuarticLegMapPosition
@@ -84,7 +84,7 @@ theorem fixedExternalOfSlotSplit_vacuumNormalizedPairEmbedding_crosses_iff
     mixedTimeOrderedQuarticLegMapPosition_strictMono_of_strictAnti
       (fixedExternalVacuumSlot T) (fixedExternalVacuumSlot_strictMono T)
       τ τ' σ hσ
-  simpa [fixedExternalOfSlotSplit_vacuumNormalizedPairEmbedding, E] using
+  simpa [fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding, E] using
     (crosses_map_iff E hE p.1.1 p.1.2 q.1.1 q.1.2)
 
 end Fermionic
