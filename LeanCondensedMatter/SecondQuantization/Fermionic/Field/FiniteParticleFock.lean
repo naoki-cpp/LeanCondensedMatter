@@ -4,10 +4,9 @@ import Mathlib.LinearAlgebra.ExteriorAlgebra.Basic
 set_option linter.style.header false
 
 /-!
-# Basis-independent finite-particle fermionic Fock space
+# Basis-independent algebraic fermionic Fock space
 
-For a complex one-particle space `𝓗₁`, the algebraic finite-particle fermionic Fock space is the
-exterior algebra
+For a complex one-particle space `𝓗₁`, the algebraic fermionic Fock space is the exterior algebra
 
 ```text
 Λ(𝓗₁) = ⨁ₙ^alg Λⁿ(𝓗₁).
@@ -21,7 +20,6 @@ linearly ordered one-particle basis.
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
 
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
@@ -31,7 +29,9 @@ Every element is a finite algebraic combination of finite wedge products. This i
 Hilbert direct sum and carries no claim that general second-quantized Hamiltonians are bounded. -/
 abbrev AlgebraicFock := ExteriorAlgebra ℂ 𝓗₁
 
-/-- The homogeneous `n`-particle sector inside `FiniteParticleFock 𝓗₁`. -/
+namespace Field
+
+/-- The homogeneous `n`-particle sector inside `AlgebraicFock 𝓗₁`. -/
 abbrev ParticleSector (n : ℕ) := ⋀[ℂ]^n 𝓗₁
 
 /-- The Fock vacuum, represented by the multiplicative unit of the exterior algebra. -/
