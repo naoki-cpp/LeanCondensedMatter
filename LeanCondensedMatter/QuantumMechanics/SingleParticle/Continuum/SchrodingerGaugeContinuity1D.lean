@@ -265,7 +265,7 @@ theorem oneDimensional_electromagnetic_charge_continuity
     simpa [chargeDensityValue] using hdensity.const_mul q
   have hchargeCurrent :
       HasDerivAt
-        (fun y => electromagneticChargeCurrentValueValue1D
+        (fun y => electromagneticChargeCurrentValue1D
           q ℏ mass (vectorPotential y) (ψSpace y) (ψx y))
         (q * electromagneticProbabilityCurrentDivergenceValue1D
           q ℏ mass (vectorPotential x) vectorPotentialDerivative
