@@ -68,6 +68,10 @@ theorem twoPointVertexOfLeg_slotLegSplitting_inr_exact (h : T ⊆ S)
   obtain ⟨p, rfl⟩ := (quarticLegEquiv (S \ T)).symm.surjective j
   obtain ⟨v, l⟩ := p
   rw [slotLegSplitting_right_interaction]
+  have hvtx :
+      vertexOfLeg ((quarticLegEquiv (S \ T)).symm (v, l)) = v := by
+    simp [vertexOfLeg]
+  rw [hvtx]
   simpa [twoPointInteractionLeg, slotSplitVacuumVertex] using
     (twoPointVertexOfLeg_interactionLeg
       (v := ⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩) l)
