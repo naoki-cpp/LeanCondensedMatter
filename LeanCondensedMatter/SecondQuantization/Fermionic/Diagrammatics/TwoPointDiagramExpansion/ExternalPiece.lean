@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedLegSlotEmbedding
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedPositionLeg
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedExternalPositions
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotCongr
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentOrderedSimplex
@@ -23,7 +24,8 @@ modes.
 
 The last results identify the piece's legs with the ambient component's legs — the identification
 being the very leg reindexing those order comparisons are stated for — and show that the piece pairs
-exactly the legs the ambient diagram pairs.
+exactly the legs the ambient diagram pairs, both as flattened positions and as the leg identities
+`atomicLegPartner` pairs, the latter carrying no reference to the times.
 -/
 
 namespace SecondQuantization
@@ -147,6 +149,67 @@ theorem FixedExternalTwoPointWickDiagram.externalPiece_partner_externalPieceLegE
   simp only [FixedExternalTwoPointWickDiagram.externalPieceLegEquiv_apply]
   rw [hcongr, Common.TwoPointDiagram.restrictExternalComponent_pairing,
     Common.TwoPointDiagram.restrictedExternalPairing_partner_externalBlockLegEquiv]
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- **A leg of the piece names the ambient leg the slot reindexing sends it to.** Reading a leg
+identity of the piece back through the piece's leg reindexing and unflattening it in the ambient
+diagram gives the leg `orderedTwoPointLegMap` produces. -/
+theorem FixedExternalTwoPointWickDiagram.twoPointLegEquiv_externalPieceLegEquiv_symm
+    (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (leg : OrderedTwoPointLeg d.externalSlots.card) :
+    Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))
+        ((d.externalPieceLegEquiv.symm
+          ((Common.twoPointLegEquiv
+            (Finset.univ : Finset (Fin d.externalSlots.card))).symm leg)).1) =
+      orderedTwoPointLegMap (d.externalSlots.orderEmbOfFin rfl) leg := by
+  have hcongr :
+      Common.twoPointLegEquiv d.externalSlots
+          ((Common.twoPointLegCongr d.externalSlotEquiv).symm
+            ((Common.twoPointLegEquiv
+              (Finset.univ : Finset (Fin d.externalSlots.card))).symm leg)) =
+        Common.twoPointLegDataCongr d.externalSlotEquiv.symm leg := by
+    rw [← Common.twoPointLegCongr_symm, Common.twoPointLegCongr_eq_trans]
+    simp
+  have hunfold :
+      ((d.externalPieceLegEquiv.symm
+          ((Common.twoPointLegEquiv
+            (Finset.univ : Finset (Fin d.externalSlots.card))).symm leg)).1 :
+        Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1))) =
+      (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm
+        ((d.1.externalLegDataEquiv.symm
+          (Common.twoPointLegEquiv d.externalSlots
+            ((Common.twoPointLegCongr d.externalSlotEquiv).symm
+              ((Common.twoPointLegEquiv
+                (Finset.univ : Finset (Fin d.externalSlots.card))).symm leg)))).1) := rfl
+  rw [hunfold, hcongr, Equiv.apply_symm_apply,
+    d.externalLegDataEquiv_symm_twoPointLegDataCongr]
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- **The piece pairs leg identities exactly as the ambient diagram does.** The slot reindexing
+intertwines the piece's leg-level pairing with the ambient one, with no reference to any
+enumeration and hence to any times. -/
+theorem FixedExternalTwoPointWickDiagram.atomicLegPartner_orderedTwoPointLegMap
+    (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (leg : OrderedTwoPointLeg d.externalSlots.card) :
+    d.atomicLegPartner (orderedTwoPointLegMap (d.externalSlots.orderEmbOfFin rfl) leg) =
+      orderedTwoPointLegMap (d.externalSlots.orderEmbOfFin rfl)
+        (d.externalPiece.atomicLegPartner leg) := by
+  have hsub :
+      d.externalPieceLegEquiv.symm
+          ((Common.twoPointLegEquiv
+            (Finset.univ : Finset (Fin d.externalSlots.card))).symm
+            (d.externalPiece.atomicLegPartner leg)) =
+        d.1.restrictedPartner (d.1.externalComponent 0)
+          (d.externalPieceLegEquiv.symm
+            ((Common.twoPointLegEquiv
+              (Finset.univ : Finset (Fin d.externalSlots.card))).symm leg)) := by
+    simp only [FixedExternalTwoPointWickDiagram.atomicLegPartner, Equiv.symm_apply_apply]
+    rw [Equiv.symm_apply_eq, ← d.externalPiece_partner_externalPieceLegEquiv,
+      Equiv.apply_symm_apply]
+  rw [← d.twoPointLegEquiv_externalPieceLegEquiv_symm leg,
+    ← d.twoPointLegEquiv_externalPieceLegEquiv_symm (d.externalPiece.atomicLegPartner leg),
+    hsub, FixedExternalTwoPointWickDiagram.atomicLegPartner, Equiv.symm_apply_apply,
+    Common.TwoPointDiagram.restrictedPartner_val]
 
 /-- The times the piece inherits: the ambient times at the slots the external component owns, read
 in increasing slot order. -/
