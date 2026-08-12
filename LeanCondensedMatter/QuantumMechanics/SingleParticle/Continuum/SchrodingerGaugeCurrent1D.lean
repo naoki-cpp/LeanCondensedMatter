@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuity
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerMinimalCoupling1D
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -6,23 +7,23 @@ set_option linter.style.header false
 /-!
 # Gauge-covariant one-dimensional Schrödinger current
 
-This module fixes the local minimal-coupling conventions used by the electromagnetic extension of
-the continuum Schrödinger continuity equation.  For charge `q`, reduced Planck constant `ℏ`, and
-real vector potential value `A`, the covariant derivative is
+This module owns electromagnetic probability and charge current after the pointwise minimal-coupling
+kinematics have been fixed by `SchrodingerMinimalCoupling1D`.
+
+For the convention
 
 `D_A ψ = ∂ₓψ - i (q A / ℏ) ψ`,
 
-so that the kinetic momentum is
+the probability current is
 
-`-iℏ D_A ψ = (-iℏ ∂ₓ - q A) ψ`.
+`j = (ℏ / m) Im (conj ψ * D_A ψ)`
 
-The corresponding probability current is written directly through the covariant derivative.  Its
-expanded form is
+with expanded form
 
 `j = (ℏ / m) Im (conj ψ * ∂ₓψ) - (q / m) A |ψ|²`.
 
-Everything here is pointwise.  No magnetic Schrödinger operator on `L²`, domain statement, or
-self-adjointness claim is made.
+This module also proves local gauge invariance of probability and charge current. It does not define
+the minimally coupled Schrödinger equation or prove a continuity equation.
 -/
 
 namespace QuantumMechanics
@@ -30,50 +31,6 @@ namespace SingleParticle
 namespace Continuum
 
 noncomputable section
-
-/-- The real minimal-coupling coefficient `q A / ℏ` at one spatial point. -/
-def gaugeConnectionCoefficientValue1D (q ℏ vectorPotential : ℝ) : ℝ :=
-  q * vectorPotential / ℏ
-
-/-- Pointwise gauge-covariant derivative for the convention
-`(-iℏ ∂ₓ - q A) = -iℏ D_A`. -/
-def gaugeCovariantDerivativeValue1D
-    (q ℏ vectorPotential : ℝ) (ψ ψx : ℂ) : ℂ :=
-  ψx - Complex.I * (gaugeConnectionCoefficientValue1D q ℏ vectorPotential : ℂ) * ψ
-
-@[simp]
-theorem gaugeCovariantDerivativeValue1D_re
-    (q ℏ vectorPotential : ℝ) (ψ ψx : ℂ) :
-    (gaugeCovariantDerivativeValue1D q ℏ vectorPotential ψ ψx).re =
-      ψx.re + gaugeConnectionCoefficientValue1D q ℏ vectorPotential * ψ.im := by
-  simp [gaugeCovariantDerivativeValue1D]
-
-@[simp]
-theorem gaugeCovariantDerivativeValue1D_im
-    (q ℏ vectorPotential : ℝ) (ψ ψx : ℂ) :
-    (gaugeCovariantDerivativeValue1D q ℏ vectorPotential ψ ψx).im =
-      ψx.im - gaugeConnectionCoefficientValue1D q ℏ vectorPotential * ψ.re := by
-  simp [gaugeCovariantDerivativeValue1D]
-
-/-- Pointwise kinetic momentum `(-iℏ ∂ₓ - q A) ψ`. -/
-def kineticMomentumValue1D
-    (q ℏ vectorPotential : ℝ) (ψ ψx : ℂ) : ℂ :=
-  -(Complex.I * (ℏ : ℂ)) * ψx - ((q * vectorPotential : ℝ) : ℂ) * ψ
-
-/-- The explicit minimal-coupling momentum is exactly `-iℏ D_A`. -/
-theorem kineticMomentumValue1D_eq_neg_I_hbar_mul_covariantDerivative
-    (q ℏ vectorPotential : ℝ) (ψ ψx : ℂ) (hℏ : ℏ ≠ 0) :
-    kineticMomentumValue1D q ℏ vectorPotential ψ ψx =
-      -(Complex.I * (ℏ : ℂ)) *
-        gaugeCovariantDerivativeValue1D q ℏ vectorPotential ψ ψx := by
-  apply Complex.ext
-  · simp [kineticMomentumValue1D, gaugeCovariantDerivativeValue1D,
-      gaugeConnectionCoefficientValue1D]
-    field_simp [hℏ]
-  · simp [kineticMomentumValue1D, gaugeCovariantDerivativeValue1D,
-      gaugeConnectionCoefficientValue1D]
-    field_simp [hℏ]
-    ring
 
 /-- Electromagnetic probability current in one dimension, expressed through the covariant
 derivative. -/
@@ -127,7 +84,7 @@ theorem electromagneticChargeCurrentValue1D_eq_charge_mul_probabilityCurrent
   rfl
 
 /-- Multiplying both entries of `Im (conj ψ * χ)` by the same unit-modulus phase leaves the pairing
-unchanged.  The phase condition is written pointwise in real coordinates so this lemma does not
+unchanged. The phase condition is written pointwise in real coordinates so this lemma does not
 commit the API to a particular gauge-function representation. -/
 theorem probabilityCurrentPairingValue_phase_mul
     (phase ψ χ : ℂ) (hphase : phase.re ^ 2 + phase.im ^ 2 = 1) :
@@ -145,45 +102,8 @@ theorem probabilityCurrentPairingValue_phase_mul
         (ψ.re * χ.im - ψ.im * χ.re) := by ring
     _ = ψ.re * χ.im - ψ.im * χ.re := by rw [hphase, one_mul]
 
-/-- Local gauge covariance of the covariant derivative.
-
-If the wavefunction is multiplied by a phase and its derivative acquires the corresponding
-`+ i(q/ℏ)(∂ₓχ) ψ` term while `A` shifts by `∂ₓχ`, then `D_A ψ` transforms by the same phase. -/
-theorem gaugeCovariantDerivativeValue1D_gauge_transform
-    (q ℏ vectorPotential gaugeDerivative : ℝ) (phase ψ ψx : ℂ) (hℏ : ℏ ≠ 0) :
-    gaugeCovariantDerivativeValue1D q ℏ (vectorPotential + gaugeDerivative)
-        (phase * ψ)
-        (phase *
-          (ψx + Complex.I *
-            (gaugeConnectionCoefficientValue1D q ℏ gaugeDerivative : ℂ) * ψ)) =
-      phase * gaugeCovariantDerivativeValue1D q ℏ vectorPotential ψ ψx := by
-  unfold gaugeCovariantDerivativeValue1D gaugeConnectionCoefficientValue1D
-  push_cast
-  field_simp [hℏ]
-  ring
-
-/-- The minimally coupled kinetic momentum transforms covariantly under the same local gauge data. -/
-theorem kineticMomentumValue1D_gauge_transform
-    (q ℏ vectorPotential gaugeDerivative : ℝ) (phase ψ ψx : ℂ) (hℏ : ℏ ≠ 0) :
-    kineticMomentumValue1D q ℏ (vectorPotential + gaugeDerivative)
-        (phase * ψ)
-        (phase *
-          (ψx + Complex.I *
-            (gaugeConnectionCoefficientValue1D q ℏ gaugeDerivative : ℂ) * ψ)) =
-      phase * kineticMomentumValue1D q ℏ vectorPotential ψ ψx := by
-  rw [kineticMomentumValue1D_eq_neg_I_hbar_mul_covariantDerivative
-      q ℏ (vectorPotential + gaugeDerivative) (phase * ψ)
-      (phase *
-        (ψx + Complex.I *
-          (gaugeConnectionCoefficientValue1D q ℏ gaugeDerivative : ℂ) * ψ)) hℏ]
-  rw [gaugeCovariantDerivativeValue1D_gauge_transform
-      q ℏ vectorPotential gaugeDerivative phase ψ ψx hℏ]
-  rw [kineticMomentumValue1D_eq_neg_I_hbar_mul_covariantDerivative
-      q ℏ vectorPotential ψ ψx hℏ]
-  ring
-
-/-- The electromagnetic probability current is invariant under the local gauge transformation data
-used above. -/
+/-- The electromagnetic probability current is invariant under the local gauge transformation of
+the minimal-coupling layer. -/
 theorem electromagneticProbabilityCurrentValue1D_gauge_invariant
     (q ℏ mass vectorPotential gaugeDerivative : ℝ) (phase ψ ψx : ℂ)
     (hℏ : ℏ ≠ 0) (hphase : phase.re ^ 2 + phase.im ^ 2 = 1) :
