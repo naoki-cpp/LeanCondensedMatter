@@ -66,15 +66,25 @@ theorem kineticMomentumValue1D_eq_neg_I_hbar_mul_covariantDerivative
     kineticMomentumValue1D q ℏ vectorPotential ψ ψx =
       -(Complex.I * (ℏ : ℂ)) *
         gaugeCovariantDerivativeValue1D q ℏ vectorPotential ψ ψx := by
-  apply Complex.ext <;>
-    simp [kineticMomentumValue1D, gaugeCovariantDerivativeValue1D,
-      gaugeConnectionCoefficientValue1D] <;>
-    field_simp [hℏ] <;>
-    ring
+  unfold kineticMomentumValue1D gaugeCovariantDerivativeValue1D
+    gaugeConnectionCoefficientValue1D
+  push_cast
+  field_simp [hℏ]
+  ring
 
 /-- The real bilinear pairing `Im (conj ψ * χ)` in coordinate form. -/
 def probabilityCurrentPairingValue (ψ χ : ℂ) : ℝ :=
   ψ.re * χ.im - ψ.im * χ.re
+
+private theorem probabilityDensityValue_eq_coordinates (ψ : ℂ) :
+    probabilityDensityValue ψ = ψ.re ^ 2 + ψ.im ^ 2 :=
+  rfl
+
+private theorem probabilityCurrentValue1D_eq_coordinates
+    (ℏ κ : ℝ) (ψ ψx : ℂ) :
+    probabilityCurrentValue1D ℏ κ ψ ψx =
+      (2 * κ / ℏ) * (ψ.re * ψx.im - ψ.im * ψx.re) :=
+  rfl
 
 /-- Electromagnetic probability current in one dimension, expressed through the covariant
 derivative. -/
@@ -91,9 +101,11 @@ theorem electromagneticProbabilityCurrentValue1D_eq_expanded
       (ℏ / mass) * (ψ.re * ψx.im - ψ.im * ψx.re) -
         (q / mass) * vectorPotential * probabilityDensityValue ψ := by
   unfold electromagneticProbabilityCurrentValue1D probabilityCurrentPairingValue
-  rw [gaugeCovariantDerivativeValue1D_re, gaugeCovariantDerivativeValue1D_im]
-  unfold gaugeConnectionCoefficientValue1D probabilityDensityValue
-  field_simp [hℏ, hmass] <;> ring
+  rw [gaugeCovariantDerivativeValue1D_re, gaugeCovariantDerivativeValue1D_im,
+    probabilityDensityValue_eq_coordinates]
+  unfold gaugeConnectionCoefficientValue1D
+  field_simp [hℏ, hmass]
+  ring
 
 /-- With zero vector potential, the electromagnetic current reduces exactly to the scalar-potential
 current from the existing continuity API, with `κ = ℏ² / (2m)`. -/
@@ -103,9 +115,13 @@ theorem electromagneticProbabilityCurrentValue1D_zero_vectorPotential
       probabilityCurrentValue1D ℏ (ℏ ^ 2 / (2 * mass)) ψ ψx := by
   rw [electromagneticProbabilityCurrentValue1D_eq_expanded
     q ℏ mass 0 ψ ψx hℏ hmass]
-  simp [probabilityCurrentValue1D] <;>
-    field_simp [hℏ, hmass] <;>
+  rw [probabilityCurrentValue1D_eq_coordinates]
+  simp only [mul_zero, zero_mul, sub_zero]
+  have hcoeff :
+      ℏ / mass = 2 * (ℏ ^ 2 / (2 * mass)) / ℏ := by
+    field_simp [hℏ, hmass]
     ring
+  rw [hcoeff]
 
 /-- Electromagnetic charge current obtained by multiplying the gauge-covariant probability current
 by the particle charge. -/
@@ -151,10 +167,10 @@ theorem gaugeCovariantDerivativeValue1D_gauge_transform
           (ψx + Complex.I *
             (gaugeConnectionCoefficientValue1D q ℏ gaugeDerivative : ℂ) * ψ)) =
       phase * gaugeCovariantDerivativeValue1D q ℏ vectorPotential ψ ψx := by
-  apply Complex.ext <;>
-    simp [gaugeCovariantDerivativeValue1D, gaugeConnectionCoefficientValue1D] <;>
-    field_simp [hℏ] <;>
-    ring
+  unfold gaugeCovariantDerivativeValue1D gaugeConnectionCoefficientValue1D
+  push_cast
+  field_simp [hℏ]
+  ring
 
 /-- The minimally coupled kinetic momentum transforms covariantly under the same local gauge data. -/
 theorem kineticMomentumValue1D_gauge_transform
