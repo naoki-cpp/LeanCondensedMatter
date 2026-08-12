@@ -25,12 +25,12 @@ variable {ι : Type*} [Fintype ι] [DecidableEq ι]
 
 This is coefficientwise rather than an algebra homomorphism: it deliberately does not pretend that
 `Matrix ι ι ℂ` is a commutative coefficient ring. -/
-noncomputable def tracePowerTransform
+private noncomputable def tracePowerTransform
     (K : Matrix ι ι ℂ) (f : PowerSeries ℂ) : PowerSeries ℂ :=
   PowerSeries.mk fun m => PowerSeries.coeff m f * Matrix.trace (K ^ m)
 
 @[simp]
-theorem coeff_tracePowerTransform
+private theorem coeff_tracePowerTransform
     (K : Matrix ι ι ℂ) (f : PowerSeries ℂ) (m : ℕ) :
     PowerSeries.coeff m (tracePowerTransform K f) =
       PowerSeries.coeff m f * Matrix.trace (K ^ m) :=
