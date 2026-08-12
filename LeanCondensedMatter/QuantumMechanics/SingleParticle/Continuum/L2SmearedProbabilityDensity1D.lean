@@ -43,13 +43,13 @@ theorem inner_realTestMultiplicationOperator1D_eq_wholeSpaceSmearedProbabilityDe
     (test : ℝ → ℝ)
     (htest : MemLp (fun x => (test x : ℂ)) ∞ (volume : Measure ℝ))
     (ψ : ContinuumL2Wavefunction1D) :
-    inner ℂ ψ (l2MultiplicationOperator1D (realTestMultiplier1D test htest) ψ) =
+    inner ℂ ψ (l2MultiplicationOperator1D (realLInfMultiplier1D test htest) ψ) =
       (wholeSpaceSmearedProbabilityDensity1D test (fun x => ψ x) : ℂ) := by
   rw [inner_l2MultiplicationOperator1D_eq_integral]
   unfold wholeSpaceSmearedProbabilityDensity1D
   rw [← integral_complex_ofReal]
   apply integral_congr_ae
-  filter_upwards [realTestMultiplier1D_coeFn test htest] with x hx
+  filter_upwards [realLInfMultiplier1D_coeFn test htest] with x hx
   rw [hx]
   simpa using inner_real_mul_self_eq_probabilityDensityValue (test x) (ψ x)
 
