@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerGaugeCurrent1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuity
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerMinimalCoupling1D
 import Mathlib.Tactic
 
