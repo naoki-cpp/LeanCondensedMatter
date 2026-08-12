@@ -88,14 +88,14 @@ theorem sum_fixedExternalFiberVacuum_fixedOrderDysonContribution
     (∑ vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T),
         (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g *
           vac.orderedSimplexContribution ε β
-            (((Finset.univ : Finset (Fin n)) \ T).orderIsoOfFin rfl)) =
+            (((Finset.univ : Finset (Fin n)) \ T).orderIsoOfFin rfl).toEquiv) =
       normalizedDysonPartitionCoeff ε β (quarticInteraction g) (n - T.card) := by
   have hcard : ((Finset.univ : Finset (Fin n)) \ T).card = n - T.card := by
     rw [Finset.card_sdiff]
     simp
   simpa only [hcard] using
     (sum_quarticWickDiagram_fixedOrderDysonContribution_eq_normalizedDysonPartitionCoeff
-      ε β g (((Finset.univ : Finset (Fin n)) \ T).orderIsoOfFin rfl))
+      ε β g (((Finset.univ : Finset (Fin n)) \ T).orderIsoOfFin rfl).toEquiv)
 
 end Fermionic
 end SecondQuantization
