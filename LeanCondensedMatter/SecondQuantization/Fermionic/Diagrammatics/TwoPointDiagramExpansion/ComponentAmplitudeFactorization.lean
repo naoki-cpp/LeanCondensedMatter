@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.InteractionVertexRelabelIntegralCovariance
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentShuffleIntegrability
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentDysonIntegral
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentDecomposition
 
 set_option linter.style.header false
 
@@ -111,7 +112,7 @@ theorem FixedExternalTwoPointWickDiagram.sum_eq_sum_fiberwise_externalInteractio
     (∑ d : FixedExternalTwoPointWickDiagram Mode n i j, F d) =
       ∑ T ∈ (Finset.univ : Finset (Fin n)).powerset,
         ∑ d ∈ Finset.univ.filter fun d : FixedExternalTwoPointWickDiagram Mode n i j =>
-            Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0) = T, F d :=
+            d.1.externalInteractionPart = T, F d :=
   (Finset.sum_fiberwise_of_maps_to
     (fun _ _ => Finset.mem_powerset.2 (Finset.subset_univ _)) F).symm
 
