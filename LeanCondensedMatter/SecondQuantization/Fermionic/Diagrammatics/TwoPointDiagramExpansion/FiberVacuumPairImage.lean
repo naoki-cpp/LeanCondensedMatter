@@ -161,8 +161,17 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedVacuumPairSigmaEquiv
   invFun pr :=
     ⟨⟨d.mixedPairComponent τ τ' σ pr.1, pr.2⟩, ⟨pr.1, rfl⟩⟩
   left_inv := by
-    rintro ⟨B, ⟨pr, hpr⟩⟩
-    cases hpr
+    rintro ⟨B, pr⟩
+    let B' : ↥d.1.vacuumComponentParts :=
+      ⟨d.mixedPairComponent τ τ' σ pr.1, by
+        rw [pr.2]
+        exact B.2⟩
+    have hB : B' = B := by
+      apply Subtype.ext
+      exact pr.2
+    apply Sigma.ext hB
+    apply heq_of_eq
+    apply Subtype.ext
     rfl
   right_inv _ := rfl
 
