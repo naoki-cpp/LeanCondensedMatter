@@ -19,7 +19,7 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
 
-omit [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The external component's coupling product is the ordinary slot-indexed coupling weight of the
 standalone external piece. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight_externalComponentPart_eq_externalPiece
