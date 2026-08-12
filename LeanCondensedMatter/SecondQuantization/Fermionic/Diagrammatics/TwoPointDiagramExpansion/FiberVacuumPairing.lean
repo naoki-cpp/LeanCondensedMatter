@@ -151,6 +151,8 @@ theorem fixedExternalOfSlotSplit_mem_mixedPairs_vacuumOrderedLeg_iff
       Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card)) ↪o
         Fin (2 * (2 * n + 1)) :=
     OrderEmbedding.ofStrictMono E hE
+  change (E a, E b) ∈ (d.pairingInMixedOrder τ τ' σ).pairs ↔
+    (a, b) ∈ (vac.pairingInOrder (fixedExternalVacuumOrder T)).pairs
   rw [Pairing.mem_pairs_iff, Pairing.mem_pairs_iff]
   constructor
   · rintro ⟨hab, hpartner⟩
