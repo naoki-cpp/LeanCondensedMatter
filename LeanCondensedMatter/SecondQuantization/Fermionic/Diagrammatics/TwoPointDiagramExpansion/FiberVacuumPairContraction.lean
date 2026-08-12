@@ -20,6 +20,7 @@ open Combinatorics
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
 
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The reassembled fixed-external diagram has the standalone vacuum vertex label at every inherited
 vacuum slot. -/
 theorem fixedExternalOfSlotSplit_vertexLabelSequence_vacuumSlot
@@ -39,6 +40,7 @@ theorem fixedExternalOfSlotSplit_vertexLabelSequence_vacuumSlot
   apply Subtype.ext
   rfl
 
+omit [Fintype Mode] in
 /-- At an inherited quartic vacuum leg, the mixed standard-leg field descriptor is exactly the
 standalone quartic field at the inherited local time. -/
 theorem fixedExternalOfSlotSplit_orderedTwoPointLegField_vacuumOrderedLeg
@@ -69,7 +71,9 @@ theorem fixedExternalOfSlotSplit_orderedTwoPointLegField_vacuumOrderedLeg
     orderedTwoPointLegMap_inr, orderedTwoPointLegField,
     orderedTwoPointLegTime, orderedTwoPointLegFieldLabel, Function.comp_apply]
   rw [fixedExternalOfSlotSplit_vertexLabelSequence_vacuumSlot T ext vac v]
+  simp
 
+omit [Fintype Mode] in
 /-- The mixed atomic operator at an inherited vacuum leg is the standalone fixed-order quartic leg
 operator. -/
 theorem fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg
@@ -122,7 +126,6 @@ theorem fixedExternalOfSlotSplit_mixedPairContractionValue_vacuumNormalizedPair
   let d := fixedExternalOfSlotSplit T ext vac
   unfold FixedExternalTwoPointWickDiagram.mixedPairContractionValue
     mixedTimeOrderedAtomicPairValue orderedQuarticPairValue
-  rw [fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding_apply]
   change (freeGibbsDensityOperator ε β).expectation
       (Common.finiteHilbertOperator
         ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ
