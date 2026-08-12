@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StaticKuboBastinResponse
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaSpectralEnergyIntegral
+import LeanCondensedMatter.Transport.StredaSpectralEnergyIntegral
 
 set_option linter.style.header false
 
@@ -29,9 +29,10 @@ zero-broadening, disorder, trace-per-volume, or thermodynamic limit is taken.
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace Transport
 
-open QuantumTheory.LinearResponse
+open QuantumTheory.LinearResponse QuantumTheory.Transport
+open SecondQuantization.Fermionic.Field
 
 noncomputable section
 
@@ -262,11 +263,11 @@ theorem TracedStredaAnalyticData.staticKuboBastinConductivity_eq_surface_add_sea
         convention system spectralData geometry direction K q eta =
       regularizedStredaFermiSurface analyticData.toRegularizedStredaIntegralData +
         regularizedStredaFermiSea analyticData.toRegularizedStredaIntegralData :=
-  (analyticData.toStaticKuboBastinStredaRepresentation
+  (SecondQuantization.Fermionic.Transport.TracedStredaAnalyticData.toStaticKuboBastinStredaRepresentation
     convention system spectralData geometry direction K q eta
-      lowerEnergy upperEnergy occupation occupationDerivative ward heta).response_eq_surface_add_sea
+      lowerEnergy upperEnergy occupation occupationDerivative analyticData ward heta).response_eq_surface_add_sea
 
 end
-end Field
+end Transport
 end Fermionic
 end SecondQuantization

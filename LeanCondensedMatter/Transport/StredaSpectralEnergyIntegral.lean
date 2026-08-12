@@ -1,5 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaTraceSpectral
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StredaTraceRepresentation
+import LeanCondensedMatter.Transport.StredaTraceSpectral
+import LeanCondensedMatter.Transport.StredaTraceRepresentation
 
 set_option linter.style.header false
 
@@ -16,11 +16,10 @@ conductivity, cancel the Peierls contact term, apply the electric-field normaliz
 zero-broadening or thermodynamic limit.
 -/
 
-namespace SecondQuantization
-namespace Fermionic
-namespace Field
+namespace QuantumTheory
+namespace Transport
 
-open QuantumTheory.LinearResponse QuantumTheory.Transport
+open QuantumTheory.LinearResponse
 
 noncomputable section
 
@@ -69,6 +68,5 @@ theorem regularizedTracedBastinEnergyIntegral_eq_spectral
       system data current₁ current₂ energy broadening hbroadening]]
 
 end
-end Field
-end Fermionic
-end SecondQuantization
+end Transport
+end QuantumTheory

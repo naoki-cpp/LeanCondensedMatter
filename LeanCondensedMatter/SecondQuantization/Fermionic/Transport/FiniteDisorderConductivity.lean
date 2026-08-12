@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StaticStredaWardBridge
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StaticStredaWardBridge
 import LeanCondensedMatter.Transport.FiniteDisorder
 
 set_option linter.style.header false
@@ -22,10 +22,11 @@ trace-per-volume construction, or thermodynamic limit is introduced here.
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace Transport
 
 open scoped BigOperators
 open QuantumTheory.LinearResponse QuantumTheory.Transport
+open SecondQuantization.Fermionic.Field
 
 noncomputable section
 
@@ -224,6 +225,6 @@ theorem finiteDisorderAveragedStaticConductivity_eq_spectralEnergyIntegralAverag
           lowerEnergy upperEnergy occupation heta)
 
 end
-end Field
+end Transport
 end Fermionic
 end SecondQuantization
