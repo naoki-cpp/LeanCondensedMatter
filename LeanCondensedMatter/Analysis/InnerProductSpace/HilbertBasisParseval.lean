@@ -21,16 +21,12 @@ squared-magnitude Fourier coefficients of `x` against a Hilbert basis `d` sum un
 `‖x‖ ^ 2`. -/
 theorem hasSum_norm_sq_inner {ι : Type*} (d : HilbertBasis ι ℂ H) (x : H) :
     HasSum (fun i => ‖(inner ℂ x (d i) : ℂ)‖ ^ 2) (‖x‖ ^ 2) := by
-  have hterm : (fun i => ‖(inner ℂ x (d i) : ℂ)‖ ^ 2) =
-      (fun i => (inner ℂ x (d i) * inner ℂ (d i) x : ℂ).re) := by
-    funext i
-    rw [show (inner ℂ (d i) x : ℂ) = starRingEnd ℂ (inner ℂ x (d i)) from
-      (inner_conj_symm (d i) x).symm, Complex.mul_conj, Complex.normSq_eq_norm_sq,
-      Complex.ofReal_re]
-  rw [hterm]
-  have hs : HasSum (fun i => (inner ℂ x (d i) * inner ℂ (d i) x : ℂ).re)
-      ((inner ℂ x x : ℂ).re) := (d.hasSum_inner_mul_inner x x).mapL Complex.reCLM
-  rw [inner_self_eq_norm_sq_to_K] at hs
+  have hs : HasSum
+      (fun i => ((‖(inner ℂ x (d i) : ℂ)‖ ^ 2 : ℝ) : ℂ))
+      ((‖x‖ ^ 2 : ℝ) : ℂ) := by
+    convert d.hasSum_inner_mul_inner x x using 1 <;>
+      simp [← inner_conj_symm, Complex.mul_conj, Complex.normSq_eq_norm_sq,
+        inner_self_eq_norm_sq_to_K]
   exact_mod_cast hs
 
 end HilbertBasis
