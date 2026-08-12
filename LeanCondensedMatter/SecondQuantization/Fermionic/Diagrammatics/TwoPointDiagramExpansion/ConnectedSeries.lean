@@ -1,22 +1,24 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DysonSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedExternalPositions
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ComponentAmplitudeFactorization
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitConnectivity
 
 set_option linter.style.header false
 
 /-!
 # The connected perturbative two-point series
 
-A fixed-external two-point diagram is connected exactly when its external component owns every
-interaction slot: any slot it does not own belongs to a vacuum component, and conversely a vacuum
-component owns at least the slots of its own vertices.
+Summing only the externally connected diagrams at each order gives the connected two-point series.
+The linked-cluster theorem says that this series is the vacuum-normalized one — the vacuum factors
+that `ComponentAmplitudeFactorization` splits off are exactly what the division by the partition
+series removes.
 
-Summing only the connected diagrams at each order gives the connected two-point series. The
-linked-cluster theorem says that this series is the vacuum-normalized one — the vacuum factors that
-`ComponentAmplitudeFactorization` splits off are exactly what the division by the partition series
-removes.
+Connectedness is the ambient `TwoPointDiagram.IsExternallyConnected`. What this module adds is the
+**slot characterization**: a diagram is externally connected exactly when its external component owns
+every interaction slot. That is the form `externalFiberEquiv` indexes the fiber decomposition by, so
+it is what identifies the connected diagrams with the `T = univ` fiber.
 
-This module owns the connected object itself; the theorem identifying it is separate.
+This module owns the connected series itself; the theorem identifying it is separate.
 -/
 
 namespace SecondQuantization
@@ -32,21 +34,36 @@ theorem FixedExternalTwoPointWickDiagram.externalSlots_eq_interactionPart
     d.externalSlots =
       Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0) := rfl
 
-/-- **A fixed-external diagram is connected** when its external component owns every interaction
-slot, leaving no vacuum component to factor off. -/
-def FixedExternalTwoPointWickDiagram.IsConnected
-    (d : FixedExternalTwoPointWickDiagram Mode n i j) : Prop :=
-  d.externalSlots = (Finset.univ : Finset (Fin n))
-
 omit [LinearOrder Mode] [Fintype Mode] in
-/-- **Owning every slot is the same as having no vacuum component.** A slot the external component
-does not own belongs to a component containing no external vertex; conversely, a component that
-contains an external vertex is the external one, so if none is vacuum every slot is external. -/
-theorem FixedExternalTwoPointWickDiagram.isConnected_iff_hasNoVacuumComponent
+/-- **Externally connected means owning every slot.** A slot the external component does not own
+belongs to a component containing no external vertex; conversely, a component that contains an
+external vertex is the external one, so if none is vacuum every slot is external.
+
+This is the `T = univ` case of the index of `TwoPointDiagram.externalFiberEquiv`. -/
+theorem FixedExternalTwoPointWickDiagram.isExternallyConnected_iff_externalSlots_eq_univ
     (d : FixedExternalTwoPointWickDiagram Mode n i j) :
-    d.IsConnected ↔ d.1.HasNoVacuumComponent := by
-  rw [Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal]
+    d.1.IsExternallyConnected ↔ d.externalSlots = (Finset.univ : Finset (Fin n)) := by
+  rw [Common.TwoPointDiagram.isExternallyConnected_iff_hasNoVacuumComponent,
+    Common.TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal]
   constructor
+  · intro hall
+    apply Finset.eq_univ_of_forall
+    intro w
+    rw [FixedExternalTwoPointWickDiagram.externalSlots_eq_interactionPart,
+      Common.TwoPointDiagram.mem_interactionPart]
+    refine ⟨Finset.mem_univ w, ?_⟩
+    obtain ⟨e, he⟩ := hall ⟨d.1.componentBlock (Sum.inr ⟨w, Finset.mem_univ w⟩),
+      d.1.componentBlock_mem_componentPartition _⟩
+    have hblock : d.1.externalComponent e =
+        d.1.componentBlock (Sum.inr ⟨w, Finset.mem_univ w⟩) :=
+      (d.1.componentBlock_eq_iff_mem
+        (d.1.componentBlock_mem_componentPartition _) (Sum.inl e)).2 he
+    have hzero : d.1.externalComponent e = d.1.externalComponent 0 := by
+      fin_cases e
+      · rfl
+      · exact d.1.externalComponent_zero_eq_one.symm
+    rw [← hzero, hblock]
+    exact d.1.self_mem_componentBlock _
   · intro hconn B
     obtain ⟨v, hv⟩ := d.1.exists_componentBlock_eq_of_mem B.2
     cases v with
@@ -69,48 +86,24 @@ theorem FixedExternalTwoPointWickDiagram.isConnected_iff_hasNoVacuumComponent
         refine ⟨0, ?_⟩
         rw [hB]
         exact d.1.self_mem_componentBlock (Sum.inl 0)
-  · intro hall
-    apply Finset.eq_univ_of_forall
-    intro w
-    rw [FixedExternalTwoPointWickDiagram.externalSlots_eq_interactionPart,
-      Common.TwoPointDiagram.mem_interactionPart]
-    refine ⟨Finset.mem_univ w, ?_⟩
-    obtain ⟨e, he⟩ := hall ⟨d.1.componentBlock (Sum.inr ⟨w, Finset.mem_univ w⟩),
-      d.1.componentBlock_mem_componentPartition _⟩
-    have hblock : d.1.externalComponent e =
-        d.1.componentBlock (Sum.inr ⟨w, Finset.mem_univ w⟩) :=
-      (d.1.componentBlock_eq_iff_mem
-        (d.1.componentBlock_mem_componentPartition _) (Sum.inl e)).2 he
-    have hzero : d.1.externalComponent e = d.1.externalComponent 0 := by
-      fin_cases e
-      · rfl
-      · exact d.1.externalComponent_zero_eq_one.symm
-    rw [← hzero, hblock]
-    exact d.1.self_mem_componentBlock _
-
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- A connected diagram has no vacuum component part to take a product over. -/
-theorem FixedExternalTwoPointWickDiagram.vacuumComponentParts_eq_empty_of_isConnected
-    (d : FixedExternalTwoPointWickDiagram Mode n i j) (hconn : d.IsConnected) :
-    d.1.vacuumComponentParts = ∅ :=
-  (Common.TwoPointDiagram.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty d.1).1
-    (d.isConnected_iff_hasNoVacuumComponent.1 hconn)
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- A connected diagram's external component owns all `n` interaction slots. -/
-theorem FixedExternalTwoPointWickDiagram.interactionComponentSize_externalComponentPart_of_isConnected
-    (d : FixedExternalTwoPointWickDiagram Mode n i j) (hconn : d.IsConnected) :
+theorem FixedExternalTwoPointWickDiagram.interactionComponentSize_externalComponentPart_of_connected
+    (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (hconn : d.1.IsExternallyConnected) :
     d.1.interactionComponentSize d.1.externalComponentPart = n := by
   have hsize : d.1.interactionComponentSize d.1.externalComponentPart =
       d.externalSlots.card := rfl
-  rw [hsize, hconn, Finset.card_univ, Fintype.card_fin]
+  rw [hsize, d.isExternallyConnected_iff_externalSlots_eq_univ.1 hconn, Finset.card_univ,
+    Fintype.card_fin]
 
 /-- **On a connected diagram the shuffle-orbit sum is a single ordered-simplex integral.** There is
 no vacuum factor left: the external component owns everything. -/
-theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_dysonAmplitude_of_isConnected
+theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_dysonAmplitude_of_connected
     (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β) (g : QuarticVertexLabel Mode → ℂ) (τ τ' : ℝ)
-    (hconn : d.IsConnected) :
+    (hconn : d.1.IsExternallyConnected) :
     (∑ shuffle : d.1.ComponentInteractionShuffle,
         (d.relabelForComponentShuffle shuffle).dysonAmplitude ε β g τ τ') =
       twoPointExternalOrderSign τ τ' *
@@ -119,16 +112,17 @@ theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_dysonAm
           (d.mixedComponentDysonLocalIntegrand ε β g τ τ'
             d.1.canonicalComponentInteractionShuffle d.1.externalComponentPart) := by
   rw [d.sum_componentInteractionShuffle_dysonAmplitude_relabelForComponentShuffle_eq_external_mul_prod_vacuum
-      ε β hβ g τ τ', d.vacuumComponentParts_eq_empty_of_isConnected hconn,
+      ε β hβ g τ τ',
+    (Common.TwoPointDiagram.isExternallyConnected_iff_vacuumComponentParts_eq_empty d.1).1 hconn,
     Finset.prod_empty, mul_one]
 
 open Classical in
 /-- The order-`n` coefficient of the connected two-point series: the integrated Dyson amplitudes of
-the connected diagrams only. -/
+the externally connected diagrams only. -/
 noncomputable def connectedTwoPointDysonCoefficient (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) (n : ℕ) : ℂ :=
   ∑ d ∈ (Finset.univ : Finset (FixedExternalTwoPointWickDiagram Mode n i j)).filter
-      FixedExternalTwoPointWickDiagram.IsConnected,
+      fun d => d.1.IsExternallyConnected,
     d.dysonAmplitude ε β g τ τ'
 
 /-- **The connected perturbative two-point series.** -/
@@ -145,8 +139,9 @@ theorem coeff_connectedTwoPointDysonSeries (ε : Mode → ℝ) (β : ℝ)
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- At order zero there are no interaction slots, so every diagram is connected. -/
-theorem isConnected_of_zero (d : FixedExternalTwoPointWickDiagram Mode 0 i j) :
-    d.IsConnected := by
+theorem isExternallyConnected_of_zero (d : FixedExternalTwoPointWickDiagram Mode 0 i j) :
+    d.1.IsExternallyConnected := by
+  rw [d.isExternallyConnected_iff_externalSlots_eq_univ]
   apply Finset.eq_univ_of_forall
   intro x
   exact x.elim0
@@ -159,7 +154,7 @@ theorem connectedTwoPointDysonCoefficient_zero (ε : Mode → ℝ) (β : ℝ)
     connectedTwoPointDysonCoefficient ε β g i j τ τ' 0 =
       ∑ d : FixedExternalTwoPointWickDiagram Mode 0 i j, d.dysonAmplitude ε β g τ τ' := by
   rw [connectedTwoPointDysonCoefficient,
-    Finset.filter_true_of_mem fun d _ => isConnected_of_zero d]
+    Finset.filter_true_of_mem fun d _ => isExternallyConnected_of_zero d]
 
 end Fermionic
 end SecondQuantization
