@@ -53,9 +53,9 @@ theorem kineticMomentumSquaredValue1D_eq_expanded
         ((q ^ 2 * vectorPotential ^ 2 : ℝ) : ℂ) * ψ := by
   apply Complex.ext
   · simp [kineticMomentumSquaredValue1D, kineticMomentumDerivativeValue1D,
-      kineticMomentumValue1D, pow_two] <;> ring
+      kineticMomentumValue1D, pow_two]; ring
   · simp [kineticMomentumSquaredValue1D, kineticMomentumDerivativeValue1D,
-      kineticMomentumValue1D, pow_two] <;> ring
+      kineticMomentumValue1D, pow_two]; ring
 
 /-- The free kinetic coefficient `ℏ² / (2m)` occurring after minimal-coupling expansion. -/
 def electromagneticKineticCoefficient1D (ℏ mass : ℝ) : ℝ :=
@@ -105,7 +105,7 @@ theorem minimallyCoupledSchrodingerRhsValue1D_eq_expanded
     electromagneticVectorPotentialDerivativeCoefficient1D electromagneticScalarCoefficient1D
   rw [kineticMomentumSquaredValue1D_eq_expanded]
   push_cast
-  field_simp [hmassC] <;> ring
+  field_simp [hmassC]; ring
 
 private theorem probabilityDensityValue_eq_coordinates (ψ : ℂ) :
     probabilityDensityValue ψ = ψ.re ^ 2 + ψ.im ^ 2 :=
@@ -211,9 +211,26 @@ theorem electromagnetic_schrodinger_component_equations
   rw [minimallyCoupledSchrodingerRhsValue1D_eq_expanded
     q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential ψ ψx ψxx hmass]
     at hschrodinger
-  have hre := congrArg Complex.re hschrodinger
-  have him := congrArg Complex.im hschrodinger
-  simp at hre him
+  have hreRaw := congrArg Complex.re hschrodinger
+  have himRaw := congrArg Complex.im hschrodinger
+  have hre :
+      -(ℏ * ψt.im) =
+        -electromagneticKineticCoefficient1D ℏ mass * ψxx.re -
+          electromagneticVectorPotentialCoefficient1D q ℏ mass vectorPotential * ψx.im -
+          electromagneticVectorPotentialDerivativeCoefficient1D
+            q ℏ mass vectorPotentialDerivative * ψ.im +
+          electromagneticScalarCoefficient1D
+            q mass vectorPotential scalarPotential * ψ.re := by
+    simpa using hreRaw
+  have him :
+      ℏ * ψt.re =
+        -electromagneticKineticCoefficient1D ℏ mass * ψxx.im +
+          electromagneticVectorPotentialCoefficient1D q ℏ mass vectorPotential * ψx.re +
+          electromagneticVectorPotentialDerivativeCoefficient1D
+            q ℏ mass vectorPotentialDerivative * ψ.re +
+          electromagneticScalarCoefficient1D
+            q mass vectorPotential scalarPotential * ψ.im := by
+    simpa using himRaw
   unfold electromagneticKineticCoefficient1D electromagneticVectorPotentialCoefficient1D
     electromagneticVectorPotentialDerivativeCoefficient1D electromagneticScalarCoefficient1D
     at hre him
