@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboBastinTrace
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinTrace
 import LeanCondensedMatter.Transport.OccupationInterpolation
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 
@@ -37,7 +37,6 @@ namespace Transport
 open SecondQuantization.Fermionic.Lattice
 
 open MeasureTheory QuantumTheory.LinearResponse QuantumTheory.Transport
-open SecondQuantization.Fermionic.Field
 
 noncomputable section
 

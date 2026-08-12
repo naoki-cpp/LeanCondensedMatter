@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ConductivityNormalization
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConductivityNormalization
 
 set_option linter.style.header false
 
@@ -32,7 +32,7 @@ limit occurs here.
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace Transport
 
 open Lattice
 
@@ -147,6 +147,6 @@ theorem finiteKuboGreenwoodDirectionalConductivity_eq_current_sum_add_contact
   ring
 
 end
-end Field
+end Transport
 end Fermionic
 end SecondQuantization

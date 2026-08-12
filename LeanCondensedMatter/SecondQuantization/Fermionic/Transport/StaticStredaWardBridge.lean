@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.StaticKuboBastinResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StaticKuboBastinResponse
 import LeanCondensedMatter.Transport.StredaSpectralEnergyIntegral
 
 set_option linter.style.header false
@@ -34,7 +34,6 @@ namespace Transport
 open SecondQuantization.Fermionic.Lattice
 
 open QuantumTheory.LinearResponse QuantumTheory.Transport
-open SecondQuantization.Fermionic.Field
 
 noncomputable section
 

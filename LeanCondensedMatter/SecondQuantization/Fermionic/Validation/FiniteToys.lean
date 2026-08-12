@@ -21,10 +21,9 @@ No numerical approximation, disorder average, or limiting statement occurs here.
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
-
-open Lattice
 namespace Validation
+
+open Lattice Transport
 
 open QuantumTheory.LinearResponse QuantumTheory.Transport
 
@@ -207,6 +206,5 @@ theorem twoSiteDimerHopping_hermitian_pair (t : ℂ) :
 
 end
 end Validation
-end Field
 end Fermionic
 end SecondQuantization

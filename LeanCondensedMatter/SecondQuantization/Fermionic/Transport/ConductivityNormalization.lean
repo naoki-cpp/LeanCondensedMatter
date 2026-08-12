@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.FiniteVolume
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.SpectralFrequencyResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpectralFrequencyResponse
 
 set_option linter.style.header false
 
@@ -34,7 +34,7 @@ and `ω → 0` remain separate and untaken.
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace Transport
 
 open Lattice
 
@@ -224,6 +224,6 @@ theorem hasInfiniteObservationTimeLimit_directionalConductivity_purePoint_finite
   exact hlimit
 
 end
-end Field
+end Transport
 end Fermionic
 end SecondQuantization

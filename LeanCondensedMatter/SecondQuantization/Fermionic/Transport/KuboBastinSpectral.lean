@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.KuboGreenwood
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboGreenwood
 import LeanCondensedMatter.Transport.Resolvent
 
 set_option linter.style.header false
@@ -32,7 +32,7 @@ zero-broadening, zero-frequency, thermodynamic, disorder, or trace-class stateme
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace Transport
 
 open Lattice
 
@@ -246,6 +246,6 @@ theorem finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral
     system data geometry direction K q omega eta heta mn
 
 end
-end Field
+end Transport
 end Fermionic
 end SecondQuantization

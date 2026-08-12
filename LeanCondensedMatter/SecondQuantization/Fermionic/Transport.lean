@@ -1,3 +1,17 @@
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedCurrentResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConductivityNormalization
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FrequencyResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.GeometricCurrentResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.HarmonicSourceResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.HermitianBondCurrentResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.InfiniteTimeFrequencyResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinSpectral
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinTrace
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboGreenwood
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.PeierlsContactResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.SpectralFrequencyResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StaticKuboBastinResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StationaryFrequencyResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StredaOccupation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StredaCommonKernel
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StaticStredaWardBridge
@@ -8,8 +22,11 @@ set_option linter.style.header false
 /-!
 # Fermionic transport adapters
 
-This umbrella contains the finite-lattice fermionic adapters for the generic Středa and transport
-theory. The reusable occupation, resolvent, trace, and integration layers live under
-`QuantumTheory.Transport`; these modules add only finite Fock-space currents, contacts, Peierls
-normalization, and disorder specializations.
+Canonical downstream owner for fermionic Kubo/frequency response, conductivity normalization,
+Kubo–Greenwood/Bastin/Středa, Ward, and finite-disorder adapters. Generic reusable response,
+occupation, resolvent, trace, and Středa integration theory remains under `QuantumTheory`.
+
+This layer consumes `Fermionic.Lattice` model operators and does not own finite toy checks; those are
+terminal consumers under `Fermionic.Validation`. Old transport declarations are not forwarded from
+`Fermionic.Field`.
 -/
