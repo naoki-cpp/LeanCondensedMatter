@@ -56,8 +56,7 @@ theorem logOf_mul {F G : PowerSeries ℂ}
     PowerSeries.logOf (F * G) = PowerSeries.logOf F + PowerSeries.logOf G := by
   have hFG : PowerSeries.constantCoeff (F * G) = 1 := by simp [hF, hG]
   apply PowerSeries.derivative.ext
-  · change d⁄dX ℂ (PowerSeries.logOf (F * G)) =
-      d⁄dX ℂ (PowerSeries.logOf F) + d⁄dX ℂ (PowerSeries.logOf G)
+  · rw [map_add]
     have hleft := derivative_logOf_mul hFG
     have hFlog := derivative_logOf_mul hF
     have hGlog := derivative_logOf_mul hG
