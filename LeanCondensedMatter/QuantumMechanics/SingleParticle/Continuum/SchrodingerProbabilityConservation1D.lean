@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuitySchwartzTotal1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.ProbabilityIntegral1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Integral1D
 import Mathlib.Analysis.Calculus.ParametricIntegral
 import Mathlib.Tactic
 

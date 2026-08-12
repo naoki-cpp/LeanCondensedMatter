@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Multiplication1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.ProbabilityIntegral1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Integral1D
 import Mathlib.Analysis.Distribution.SchwartzSpace.Basic
 import Mathlib.MeasureTheory.Integral.Bochner.ContinuousLinearMap
 import Mathlib.Tactic
