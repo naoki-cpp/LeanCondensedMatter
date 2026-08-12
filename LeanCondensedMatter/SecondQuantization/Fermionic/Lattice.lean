@@ -18,5 +18,6 @@ It owns discrete lattice states, locally finite hopping, charge and bond current
 finite-lattice bounded realizations, Hermiticity/current equivalences, and geometric aggregation.
 Generic Kubo, frequency-response, conductivity, Středa, disorder, and validation mathematics do not
 belong to this layer. Response specializations consume these model operators from downstream
-`Fermionic.Field` or `Fermionic.Transport` modules.
+`Fermionic.Field` or `Fermionic.Transport` modules. This umbrella is the public canonical import for
+fermionic lattice/model constructions.
 -/
