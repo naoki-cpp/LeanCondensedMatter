@@ -22,6 +22,7 @@ noncomputable section
 
 variable {Mode : Type*}
 
+/-- File-local classical decidable equality used only by diagonal matrix and determinant plumbing. -/
 local instance instDecidableEqFreePartitionDeterminant : DecidableEq Mode := Classical.decEq Mode
 
 /-- The convergent finite-mode free-boson partition sum is the inverse determinant of `1 - K`, where
