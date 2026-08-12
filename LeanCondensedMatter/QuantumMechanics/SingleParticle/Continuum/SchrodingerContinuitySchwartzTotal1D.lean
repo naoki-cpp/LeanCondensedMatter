@@ -26,25 +26,25 @@ noncomputable section
 open MeasureTheory
 
 /-- Real part of a complex Schwartz wavefunction, still a Schwartz function. -/
-def schwartzRealPart1D (ψ : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℝ :=
+private def schwartzRealPart1D (ψ : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℝ :=
   ψ.postcompCLM Complex.reCLM
 
 /-- Imaginary part of a complex Schwartz wavefunction, still a Schwartz function. -/
-def schwartzImaginaryPart1D (ψ : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℝ :=
+private def schwartzImaginaryPart1D (ψ : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℝ :=
   ψ.postcompCLM Complex.imCLM
 
 @[simp]
-theorem schwartzRealPart1D_apply (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
+private theorem schwartzRealPart1D_apply (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     schwartzRealPart1D ψ x = (ψ x).re :=
   rfl
 
 @[simp]
-theorem schwartzImaginaryPart1D_apply (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
+private theorem schwartzImaginaryPart1D_apply (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     schwartzImaginaryPart1D ψ x = (ψ x).im :=
   rfl
 
 @[simp]
-theorem deriv_schwartzRealPart1D (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
+private theorem deriv_schwartzRealPart1D (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     deriv (schwartzRealPart1D ψ) x = (schwartzSpatialDerivative1D ψ x).re := by
   have h : HasDerivAt (schwartzRealPart1D ψ)
       (schwartzSpatialDerivative1D ψ x).re x := by
@@ -54,7 +54,7 @@ theorem deriv_schwartzRealPart1D (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
   exact h.deriv
 
 @[simp]
-theorem deriv_schwartzImaginaryPart1D (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
+private theorem deriv_schwartzImaginaryPart1D (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
     deriv (schwartzImaginaryPart1D ψ) x = (schwartzSpatialDerivative1D ψ x).im := by
   have h : HasDerivAt (schwartzImaginaryPart1D ψ)
       (schwartzSpatialDerivative1D ψ x).im x := by
