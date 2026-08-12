@@ -5,6 +5,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 LEAN_ROOT = ROOT / "LeanCondensedMatter"
+COMBINATORICS_ROOT = LEAN_ROOT / "Combinatorics"
+COMBINATORICS_UMBRELLA = LEAN_ROOT / "Combinatorics.lean"
 
 IMPORT_RE = re.compile(r"^\s*import\s+([^\s]+)\s*$")
 
@@ -27,6 +29,8 @@ FORBIDDEN_EXTERNAL_PREFIXES = (
     "Mathlib.LinearAlgebra.Matrix.Determinant",
     "Mathlib.LinearAlgebra.Matrix.Permanent",
 )
+
+PERMUTATION_PREFIX = "LeanCondensedMatter.Permutation"
 
 
 def module_path(module: str) -> Path | None:
@@ -76,10 +80,30 @@ def check_root(root: str) -> list[str]:
     return findings
 
 
+def is_permutation_import(module: str) -> bool:
+    return module == PERMUTATION_PREFIX or module.startswith(PERMUTATION_PREFIX + ".")
+
+
+def check_combinatorics_direct_imports() -> list[str]:
+    findings: list[str] = []
+    paths = [COMBINATORICS_UMBRELLA, *sorted(COMBINATORICS_ROOT.rglob("*.lean"))]
+
+    for path in paths:
+        for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
+            match = IMPORT_RE.match(line)
+            if match and is_permutation_import(match.group(1)):
+                relative = path.relative_to(ROOT)
+                findings.append(f"{relative}:{line_number} -> {match.group(1)}")
+
+    return findings
+
+
 def main() -> None:
     findings: list[str] = []
     for root in LOW_LEVEL_ROOTS:
         findings.extend(check_root(root))
+
+    findings.extend(check_combinatorics_direct_imports())
 
     if findings:
         print("Combinatorics dependency-layer audit failed:")
