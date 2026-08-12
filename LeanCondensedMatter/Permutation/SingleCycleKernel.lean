@@ -59,14 +59,14 @@ noncomputable local instance singleCycleKernelFullCycleFintype :
   Fintype.ofFinite _
 
 /-- On the full finite index type, the pure connected kernel is the direct sum over permutations
-that are a single cycle on the whole type. This exposes only the semantic predicate `IsCycleOn`;
-the private connected-object representation of W2 remains hidden. -/
+that are a single cycle on the whole type. This is the exchange-weight-one specialization of the
+generic connected-contribution endpoint owned by W2. -/
 theorem singleCycleKernelSum_univ_eq_sum_isCycleOn
     {R : Type*} [CommSemiring R] (K : α → α → R) :
     singleCycleKernelSum K univ =
       ∑ σ : {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)},
         ∏ i : α, K i (σ.1 i) := by
   simpa [singleCycleKernelSum] using
-    (singleCycleContribution_one_univ_eq_sum_isCycleOn (α := α) K)
+    (singleCycleContribution_univ_eq_sum_isCycleOn (α := α) (1 : R) K)
 
 end Combinatorics
