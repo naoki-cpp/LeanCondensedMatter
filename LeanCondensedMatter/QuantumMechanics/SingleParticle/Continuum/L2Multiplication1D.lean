@@ -1,3 +1,4 @@
+import Mathlib.Analysis.InnerProductSpace.LinearPMap
 import Mathlib.MeasureTheory.Function.Holder
 import Mathlib.MeasureTheory.Function.L2Space
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
@@ -8,9 +9,13 @@ set_option linter.style.header false
 /-!
 # Bounded multiplication operators on one-dimensional `L²`
 
-This module starts the analytic `L²` boundary of the continuum continuity program. A multiplier
-`f ∈ L∞(ℝ, ℂ)` acts on a wavefunction `ψ ∈ L²(ℝ, ℂ)` by pointwise multiplication. Hölder's
-inequality gives a bounded operator on `L²` with norm bounded by `‖f‖`.
+This module owns the bounded multiplication-operator layer for one-dimensional continuum quantum
+mechanics. A multiplier `f ∈ L∞(ℝ, ℂ)` acts on a wavefunction `ψ ∈ L²(ℝ, ℂ)` by pointwise
+multiplication. Hölder's inequality gives a bounded operator on `L²` with norm bounded by `‖f‖`.
+
+Real essentially bounded functions are embedded here as complex `L∞` multipliers as well. Their
+multiplication operators are symmetric on physical `L²`. These facts are independent of whether the
+real function is later used as a test observable or as a scalar potential.
 
 The construction is deliberately limited to bounded multipliers. The kinetic Schrödinger operator
 and other genuinely unbounded operators require an explicit domain and are not introduced here.
@@ -83,6 +88,57 @@ theorem inner_l2MultiplicationOperator1D_eq_integral
   apply integral_congr_ae
   filter_upwards [l2MultiplicationOperator1D_coeFn f ψ] with x hx
   rw [hx]
+
+/-- A real essentially bounded function, embedded into `ℂ`, as an `L∞` multiplier. -/
+noncomputable def realTestMultiplier1D
+    (f : ℝ → ℝ)
+    (hf : MemLp (fun x => (f x : ℂ)) ∞ (volume : Measure ℝ)) :
+    ContinuumLInfMultiplier1D :=
+  hf.toLp (fun x => (f x : ℂ))
+
+/-- The `L∞` representative chosen for a real bounded function agrees almost everywhere with its
+pointwise complex embedding. -/
+theorem realTestMultiplier1D_coeFn
+    (f : ℝ → ℝ)
+    (hf : MemLp (fun x => (f x : ℂ)) ∞ (volume : Measure ℝ)) :
+    (realTestMultiplier1D f hf : ℝ → ℂ) =ᵐ[volume]
+      fun x => (f x : ℂ) := by
+  exact hf.coeFn_toLp
+
+private theorem inner_real_mul_left_eq_inner_real_mul_right
+    (r : ℝ) (z w : ℂ) :
+    inner ℂ ((r : ℂ) * z) w = inner ℂ z ((r : ℂ) * w) := by
+  simp [RCLike.inner_apply, mul_assoc, mul_comm]
+
+/-- Multiplication by a bounded real function is symmetric on `L²(ℝ, ℂ)`. -/
+theorem l2RealMultiplicationOperator1D_symmetric
+    (f : ℝ → ℝ)
+    (hf : MemLp (fun x => (f x : ℂ)) ∞ (volume : Measure ℝ))
+    (ψ φ : ContinuumL2Wavefunction1D) :
+    inner ℂ
+        (l2MultiplicationOperator1D (realTestMultiplier1D f hf) ψ) φ =
+      inner ℂ ψ
+        (l2MultiplicationOperator1D (realTestMultiplier1D f hf) φ) := by
+  rw [MeasureTheory.L2.inner_def, MeasureTheory.L2.inner_def]
+  apply integral_congr_ae
+  filter_upwards
+      [l2MultiplicationOperator1D_coeFn (realTestMultiplier1D f hf) ψ,
+       l2MultiplicationOperator1D_coeFn (realTestMultiplier1D f hf) φ,
+       realTestMultiplier1D_coeFn f hf] with x hψ hφ hf'
+  rw [hψ, hφ, hf']
+  exact inner_real_mul_left_eq_inner_real_mul_right (f x) (ψ x) (φ x)
+
+/-- A bounded real multiplication operator, viewed as a partial operator with full domain, is a
+formal adjoint of itself. -/
+theorem l2RealMultiplicationOperator1D_isFormalAdjoint
+    (f : ℝ → ℝ)
+    (hf : MemLp (fun x => (f x : ℂ)) ∞ (volume : Measure ℝ)) :
+    let M := l2MultiplicationOperator1D (realTestMultiplier1D f hf)
+    (M.toPMap ⊤).IsFormalAdjoint (M.toPMap ⊤) := by
+  dsimp
+  intro ψ φ
+  simpa using l2RealMultiplicationOperator1D_symmetric f hf
+    (ψ : ContinuumL2Wavefunction1D) (φ : ContinuumL2Wavefunction1D)
 
 end
 end Continuum
