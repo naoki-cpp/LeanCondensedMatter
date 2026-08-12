@@ -75,20 +75,6 @@ theorem kineticMomentumValue1D_eq_neg_I_hbar_mul_covariantDerivative
     field_simp [hℏ]
     ring
 
-/-- The real bilinear pairing `Im (conj ψ * χ)` in coordinate form. -/
-def probabilityCurrentPairingValue (ψ χ : ℂ) : ℝ :=
-  ψ.re * χ.im - ψ.im * χ.re
-
-private theorem probabilityDensityValue_eq_coordinates (ψ : ℂ) :
-    probabilityDensityValue ψ = ψ.re ^ 2 + ψ.im ^ 2 :=
-  rfl
-
-private theorem probabilityCurrentValue1D_eq_coordinates
-    (ℏ κ : ℝ) (ψ ψx : ℂ) :
-    probabilityCurrentValue1D ℏ κ ψ ψx =
-      (2 * κ / ℏ) * (ψ.re * ψx.im - ψ.im * ψx.re) :=
-  rfl
-
 /-- Electromagnetic probability current in one dimension, expressed through the covariant
 derivative. -/
 def electromagneticProbabilityCurrentValue1D
@@ -103,8 +89,9 @@ theorem electromagneticProbabilityCurrentValue1D_eq_expanded
     electromagneticProbabilityCurrentValue1D q ℏ mass vectorPotential ψ ψx =
       (ℏ / mass) * (ψ.re * ψx.im - ψ.im * ψx.re) -
         (q / mass) * vectorPotential * probabilityDensityValue ψ := by
-  unfold electromagneticProbabilityCurrentValue1D probabilityCurrentPairingValue
-  rw [gaugeCovariantDerivativeValue1D_re, gaugeCovariantDerivativeValue1D_im,
+  unfold electromagneticProbabilityCurrentValue1D
+  rw [probabilityCurrentPairingValue_eq_coordinates,
+    gaugeCovariantDerivativeValue1D_re, gaugeCovariantDerivativeValue1D_im,
     probabilityDensityValue_eq_coordinates]
   unfold gaugeConnectionCoefficientValue1D
   field_simp [hℏ, hmass]
@@ -146,7 +133,8 @@ theorem probabilityCurrentPairingValue_phase_mul
     (phase ψ χ : ℂ) (hphase : phase.re ^ 2 + phase.im ^ 2 = 1) :
     probabilityCurrentPairingValue (phase * ψ) (phase * χ) =
       probabilityCurrentPairingValue ψ χ := by
-  unfold probabilityCurrentPairingValue
+  rw [probabilityCurrentPairingValue_eq_coordinates,
+    probabilityCurrentPairingValue_eq_coordinates]
   simp only [Complex.mul_re, Complex.mul_im]
   calc
     (phase.re * ψ.re - phase.im * ψ.im) *
