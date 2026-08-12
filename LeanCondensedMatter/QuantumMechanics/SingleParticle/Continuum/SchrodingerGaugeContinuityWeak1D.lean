@@ -1,6 +1,7 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerGaugeContinuity1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuityCompactSupport1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuitySchwartz1D
+import LeanCondensedMatter.Analysis.Calculus.WeakConservation1D
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -182,20 +183,29 @@ theorem electromagnetic_schrodinger_weak_continuity_wholeSpace
         (ψ x) (ψx x) (ψxx x)) volume a b) :
     wholeSpaceSmearedDensityRate1D test
         (fun x => probabilityDensityTimeDerivativeValue (ψ x) (ψt x)) =
-      wholeSpaceSmearedCurrentPairing1D (deriv test)
+    wholeSpaceSmearedCurrentPairing1D (deriv test)
         (fun x => electromagneticProbabilityCurrentValue1D
           q ℏ mass (vectorPotential x) (ψ x) (ψx x)) := by
-  apply weak_continuity_wholeSpace_of_pointwise a b htestSupport htestDifferentiable
-  · intro x
-    exact electromagnetic_probability_continuity_balance_of_schrodinger
-      q ℏ mass (vectorPotential x) (vectorPotentialDerivative x) (scalarPotential x)
-      (ψ x) (ψt x) (ψx x) (ψxx x) hℏ hmass (hschrodinger x)
-  · intro x hx
-    exact hasDerivAt_electromagneticProbabilityCurrentValue1D
-      q ℏ mass hℏ hmass (hA x hx) (hψre x hx) (hψim x hx)
-      (hψxre x hx) (hψxim x hx)
-  · exact htestDerivIntegrable
-  · exact hcurrentIntegrable
+  have hweak := ConservationLaw.weak_continuity_wholeSpace_of_pointwise
+    (a := a) (b := b) (test := test)
+    (current := fun x => electromagneticProbabilityCurrentValue1D
+      q ℏ mass (vectorPotential x) (ψ x) (ψx x))
+    (currentDerivative := fun x => electromagneticProbabilityCurrentDivergenceValue1D
+      q ℏ mass (vectorPotential x) (vectorPotentialDerivative x)
+      (ψ x) (ψx x) (ψxx x))
+    (densityTimeDerivative := fun x =>
+      probabilityDensityTimeDerivativeValue (ψ x) (ψt x))
+    htestSupport htestDifferentiable
+    (by intro x
+        exact electromagnetic_probability_continuity_balance_of_schrodinger
+          q ℏ mass (vectorPotential x) (vectorPotentialDerivative x) (scalarPotential x)
+          (ψ x) (ψt x) (ψx x) (ψxx x) hℏ hmass (hschrodinger x))
+    (by intro x hx
+        exact hasDerivAt_electromagneticProbabilityCurrentValue1D
+          q ℏ mass hℏ hmass (hA x hx) (hψre x hx) (hψim x hx)
+          (hψxre x hx) (hψxim x hx))
+    htestDerivIntegrable hcurrentIntegrable
+  simpa [wholeSpaceSmearedDensityRate1D, wholeSpaceSmearedCurrentPairing1D] using hweak
 
 /-- Under the existing dominated time-differentiation hypotheses, the electromagnetic equation gives
 `d/dt ∫ test ρ = ∫ test' j` for a compactly supported spatial test function. -/
@@ -268,7 +278,6 @@ theorem hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_electromagnetic_schr
       weightedBoundaryCurrent1D a b test
           (fun x => electromagneticProbabilityCurrentValue1D
             q ℏ mass (vectorPotential x) (ψ t x) (ψx x)) = 0 := by
-    have hweak := weak_continuity_wholeSpace_of_pointwise
     rcases Classical.em (test a = 0) with ha | ha
     · have hb : test b = 0 := by
         by_contra hb
