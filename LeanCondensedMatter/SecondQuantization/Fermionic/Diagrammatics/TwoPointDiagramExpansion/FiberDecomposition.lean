@@ -90,7 +90,10 @@ theorem sum_fixedExternalFiberVacuum_fixedOrderDysonContribution
           vac.orderedSimplexContribution ε β
             (((Finset.univ : Finset (Fin n)) \ T).orderIsoOfFin rfl)) =
       normalizedDysonPartitionCoeff ε β (quarticInteraction g) (n - T.card) := by
-  simpa [Finset.card_sdiff (Finset.subset_univ T)] using
+  have hcard : ((Finset.univ : Finset (Fin n)) \ T).card = n - T.card := by
+    rw [Finset.card_sdiff]
+    simp
+  simpa only [hcard] using
     (sum_quarticWickDiagram_fixedOrderDysonContribution_eq_normalizedDysonPartitionCoeff
       ε β g (((Finset.univ : Finset (Fin n)) \ T).orderIsoOfFin rfl))
 
