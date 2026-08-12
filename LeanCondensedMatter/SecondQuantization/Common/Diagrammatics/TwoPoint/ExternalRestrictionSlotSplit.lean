@@ -27,25 +27,46 @@ theorem TwoPointDiagram.externalBlockLegEquiv_externalSlotLegSplitting_inl
     d.externalBlockLegEquiv
         ⟨d.externalSlotLegSplitting (Sum.inl i),
           d.legInComponent_externalSlotLegSplitting_inl i⟩ = i := by
-  obtain ⟨x, rfl⟩ :=
-    (twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))).symm.surjective i
+  let hleft : d.legInComponent (d.externalComponent 0)
+      (d.externalSlotLegSplitting (Sum.inl i)) := by
+    simpa [TwoPointDiagram.externalComponentPart] using
+      d.legInComponent_externalSlotLegSplitting_inl i
+  let leg : {leg : Fin (2 * (2 * S.card + 1)) //
+      d.legInComponent (d.externalComponent 0) leg} :=
+    ⟨d.externalSlotLegSplitting (Sum.inl i), hleft⟩
+  change d.externalBlockLegEquiv leg = i
+  obtain ⟨x, hx⟩ :=
+    (twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))).surjective
+      ((twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))) i)
+  have hi :
+      (twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))).symm x = i := by
+    rw [← hx, Equiv.symm_apply_apply]
+  subst i
   cases x with
   | inl e =>
-      rw [d.externalSlotLegSplitting_external]
-      change
-        (twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))).symm
-            (Sum.inl e) =
-          (twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))).symm
-            (Sum.inl e)
+      have hval : (leg : Fin (2 * (2 * S.card + 1))) =
+          (twoPointLegEquiv S).symm (Sum.inl e) :=
+        d.externalSlotLegSplitting_external e
+      let leg' : {leg : Fin (2 * (2 * S.card + 1)) //
+          d.legInComponent (d.externalComponent 0) leg} :=
+        ⟨(twoPointLegEquiv S).symm (Sum.inl e), hval ▸ leg.2⟩
+      have hleg : leg = leg' := Subtype.ext hval
+      rw [hleg]
       rfl
   | inr p =>
       obtain ⟨v, l⟩ := p
-      rw [d.externalSlotLegSplitting_interaction]
-      change
-        (twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))).symm
-            (Sum.inr (v, l)) =
-          (twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))).symm
-            (Sum.inr (v, l))
+      have hval : (leg : Fin (2 * (2 * S.card + 1))) =
+          (twoPointLegEquiv S).symm
+            (Sum.inr (⟨v.1, TwoPointDiagram.interactionPart_subset
+              (d.externalComponent 0) v.2⟩, l)) :=
+        d.externalSlotLegSplitting_interaction v l
+      let leg' : {leg : Fin (2 * (2 * S.card + 1)) //
+          d.legInComponent (d.externalComponent 0) leg} :=
+        ⟨(twoPointLegEquiv S).symm
+            (Sum.inr (⟨v.1, TwoPointDiagram.interactionPart_subset
+              (d.externalComponent 0) v.2⟩, l)), hval ▸ leg.2⟩
+      have hleg : leg = leg' := Subtype.ext hval
+      rw [hleg]
       rfl
 
 /-- Restricting the ambient pairing to the external component gives exactly the left pairing of the
@@ -60,7 +81,8 @@ theorem TwoPointDiagram.restrictedExternalPairing_eq_splitLeft_externalSlotLegSp
   let leg : {leg : Fin (2 * (2 * S.card + 1)) //
       d.legInComponent (d.externalComponent 0) leg} :=
     ⟨d.externalSlotLegSplitting (Sum.inl i),
-      d.legInComponent_externalSlotLegSplitting_inl i⟩
+      by simpa [TwoPointDiagram.externalComponentPart] using
+        d.legInComponent_externalSlotLegSplitting_inl i⟩
   have hres := d.restrictedExternalPairing_partner_externalBlockLegEquiv leg
   have hamb := Pairing.partner_splitLeft d.externalSlotLegSplitting
     d.isSplit_externalSlotLegSplitting i
@@ -69,7 +91,8 @@ theorem TwoPointDiagram.restrictedExternalPairing_eq_splitLeft_externalSlotLegSp
   have hpartner :
       d.restrictedPartner (d.externalComponent 0) leg =
         ⟨d.externalSlotLegSplitting (Sum.inl j),
-          d.legInComponent_externalSlotLegSplitting_inl j⟩ := by
+          by simpa [TwoPointDiagram.externalComponentPart] using
+            d.legInComponent_externalSlotLegSplitting_inl j⟩ := by
     apply Subtype.ext
     exact hamb
   rw [d.externalBlockLegEquiv_externalSlotLegSplitting_inl i,
