@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FreeBoltzmannModeKernel
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.DiagonalTrace
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteWeightedTrace
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
@@ -13,7 +14,7 @@ set_option linter.style.header false
 
 This umbrella exposes five distinct layers:
 
-- generic diagonal and summability-aware trace infrastructure;
+- shared one-particle free Boltzmann kernels and generic diagonal trace infrastructure;
 - finite unnormalized weighted occupation-basis sums;
 - the temporary normalized occupation-basis formula used by explicit finite-sum proofs;
 - canonical finite Gibbs density operators and opt-in expectation/occupation-basis bridges;
