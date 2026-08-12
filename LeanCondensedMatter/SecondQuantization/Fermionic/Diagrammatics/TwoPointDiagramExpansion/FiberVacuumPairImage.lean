@@ -169,11 +169,13 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedVacuumPairSigmaEquiv
     have hB : B' = B := by
       apply Subtype.ext
       exact pr.2
-    cases hB
-    apply Sigma.ext rfl
-    apply heq_of_eq
-    apply Subtype.ext
-    rfl
+    apply Sigma.ext hB
+    refine (Subtype.heq_iff_coe_eq ?_).2 ?_
+    · intro x
+      change d.mixedPairComponent τ τ' σ x = B'.1 ↔
+        d.mixedPairComponent τ τ' σ x = B.1
+      rw [hB]
+    · rfl
   right_inv _ := rfl
 
 /-- One ambient vacuum-component mixed pair fiber has twice as many elements as interaction vertices
