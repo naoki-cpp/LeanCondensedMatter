@@ -183,8 +183,7 @@ theorem spectralTrace_comp_comm {T' : H →L[ℂ] H} (_hT : IsCompactOperator T)
     have hzdiag : IsSelfAdjoint (inner ℂ (d i) (T (T' (d i)))) := by
       change IsSelfAdjoint (inner ℂ (d i) ((T * T') (d i)))
       rw only [← coe_diagonalExpectationValue_right (T * T') hTT'self (d i)]
-      exact (RCLike.is_real_TFAE
-        ((diagonalExpectationValue (T * T') hTT'self (d i) : ℝ) : ℂ)).out 2 5 ⟨_, rfl⟩
+      exact Complex.conj_ofReal _
     have hz : IsSelfAdjoint (inner ℂ (T (d i)) (T' (d i))) := by
       rw [← h1']
       exact hzdiag
