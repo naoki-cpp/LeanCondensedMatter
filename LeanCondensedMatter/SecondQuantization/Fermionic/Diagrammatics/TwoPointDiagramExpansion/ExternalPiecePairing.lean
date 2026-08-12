@@ -1,6 +1,8 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ExternalPiece
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairEquiv
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentCrossing
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairingValue
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ExternalPieceField
 
 set_option linter.style.header false
 
@@ -139,6 +141,72 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentCrossingCount_externalCom
     exact crosses_map_iff (d.externalPieceMixedPosition τ τ' σ)
       (d.externalPieceMixedPosition_strictMono τ τ' σ) _ _ _ _
   exact if_congr hiff rfl rfl
+
+/-- **The external component's mixed value is the value of the standalone piece.** Its weight is the
+piece's weight because the crossing counts agree, and its contraction product is the piece's because
+each pair of the component is a pair of the piece, contracted at the times the piece inherits. -/
+theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_externalComponentPart
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ)
+    (σ : Fin n → ℝ) :
+    d.mixedComponentPairingValue ε β τ τ' σ d.1.externalComponentPart =
+      orderedTwoPointPairingValue ε β i j τ τ' (d.externalPieceTimes σ)
+        d.externalPiece.vertexLabelSequence
+        (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)) := by
+  classical
+  have hpair : ∀ x : d.MixedComponentPair τ τ' σ d.1.externalComponentPart,
+      mixedTimeOrderedAtomicPairValue ε β i j τ τ' (d.externalPieceTimes σ)
+          d.externalPiece.vertexLabelSequence
+          (d.externalPieceComponentPairEquiv τ τ' σ x).1.1
+          (d.externalPieceComponentPairEquiv τ τ' σ x).1.2 =
+        d.mixedPairContractionValue ε β τ τ' σ x.1 := by
+    intro x
+    have hpos := d.externalPieceMixedPosition_externalPieceComponentPairEquiv τ τ' σ x
+    have hfirst : d.externalPieceMixedPosition τ τ' σ
+        (d.externalPieceComponentPairEquiv τ τ' σ x).1.1 = x.1.1.1 :=
+      congrArg Prod.fst hpos
+    have hsecond : d.externalPieceMixedPosition τ τ' σ
+        (d.externalPieceComponentPairEquiv τ τ' σ x).1.2 = x.1.1.2 :=
+      congrArg Prod.snd hpos
+    rw [← d.mixedTimeOrderedAtomicPairValue_externalPieceMixedPosition ε β τ τ' σ,
+      FixedExternalTwoPointWickDiagram.mixedPairContractionValue, hfirst, hsecond]
+  have hprod :
+      (∏ pr ∈ (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).pairs,
+          mixedTimeOrderedAtomicPairValue ε β i j τ τ' (d.externalPieceTimes σ)
+            d.externalPiece.vertexLabelSequence pr.1 pr.2) =
+        ∏ pr : d.MixedComponentPair τ τ' σ d.1.externalComponentPart,
+          d.mixedPairContractionValue ε β τ τ' σ pr.1 := by
+    calc
+      (∏ pr ∈ (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).pairs,
+          mixedTimeOrderedAtomicPairValue ε β i j τ τ' (d.externalPieceTimes σ)
+            d.externalPiece.vertexLabelSequence pr.1 pr.2) =
+          ∏ pr : (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).NormalizedPair,
+            mixedTimeOrderedAtomicPairValue ε β i j τ τ' (d.externalPieceTimes σ)
+              d.externalPiece.vertexLabelSequence pr.1.1 pr.1.2 :=
+        Finset.prod_subtype
+          (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).pairs
+          (fun _ => Iff.rfl)
+          (fun pr => mixedTimeOrderedAtomicPairValue ε β i j τ τ' (d.externalPieceTimes σ)
+            d.externalPiece.vertexLabelSequence pr.1 pr.2)
+      _ = ∏ x : d.MixedComponentPair τ τ' σ d.1.externalComponentPart,
+            mixedTimeOrderedAtomicPairValue ε β i j τ τ' (d.externalPieceTimes σ)
+              d.externalPiece.vertexLabelSequence
+              (d.externalPieceComponentPairEquiv τ τ' σ x).1.1
+              (d.externalPieceComponentPairEquiv τ τ' σ x).1.2 :=
+        (Equiv.prod_comp (d.externalPieceComponentPairEquiv τ τ' σ)
+          (fun pr => mixedTimeOrderedAtomicPairValue ε β i j τ τ' (d.externalPieceTimes σ)
+            d.externalPiece.vertexLabelSequence pr.1.1 pr.1.2)).symm
+      _ = ∏ pr : d.MixedComponentPair τ τ' σ d.1.externalComponentPart,
+            d.mixedPairContractionValue ε β τ τ' σ pr.1 :=
+        Finset.prod_congr rfl fun x _ => hpair x
+  have hweight :
+      d.mixedComponentWeight Common.Statistics.fermion τ τ' σ d.1.externalComponentPart =
+        (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).weight
+          Common.Statistics.fermion := by
+    rw [FixedExternalTwoPointWickDiagram.mixedComponentWeight,
+      d.mixedComponentCrossingCount_externalComponentPart]
+    rfl
+  rw [FixedExternalTwoPointWickDiagram.mixedComponentPairingValue, hweight, ← hprod]
+  rfl
 
 end Fermionic
 end SecondQuantization
