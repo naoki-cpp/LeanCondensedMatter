@@ -38,10 +38,12 @@ def slotSplitVacuumVertex (h : T ⊆ S) : ↥(S \ T) → TwoPointVertex S :=
 theorem slotSplitVacuumVertex_injective (h : T ⊆ S) :
     Function.Injective (slotSplitVacuumVertex h) := by
   intro v w hvw
+  have hs :
+      (⟨v.1, (Finset.mem_sdiff.mp v.2).1⟩ : ↥S) =
+        ⟨w.1, (Finset.mem_sdiff.mp w.2).1⟩ := by
+    exact Sum.inr.inj hvw
   apply Subtype.ext
-  simpa [slotSplitVacuumVertex] using congrArg (fun x => match x with
-    | Sum.inl _ => (0 : Fin N)
-    | Sum.inr y => (y : Fin N)) hvw
+  exact congrArg Subtype.val hs
 
 /-- An external-piece vertex and a vacuum-piece vertex have disjoint images. -/
 theorem slotSplitVertex_ne_slotSplitVacuumVertex (h : T ⊆ S)
