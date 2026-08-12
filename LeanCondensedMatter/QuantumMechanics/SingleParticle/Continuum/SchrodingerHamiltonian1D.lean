@@ -176,7 +176,7 @@ noncomputable def continuumRealPotentialSchrodingerHamiltonian1D
     (κ : ℝ) (potential : ℝ → ℝ)
     (hpotential : MemLp (fun x => (potential x : ℂ)) ∞ (volume : Measure ℝ)) :
     ContinuumL2Wavefunction1D →ₗ.[ℂ] ContinuumL2Wavefunction1D :=
-  continuumSchrodingerHamiltonian1D κ (realTestMultiplier1D potential hpotential)
+  continuumSchrodingerHamiltonian1D κ (realLInfMultiplier1D potential hpotential)
 
 @[simp]
 theorem continuumRealPotentialSchrodingerHamiltonian1D_domain
