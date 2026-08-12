@@ -21,28 +21,29 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H]
 theorem isPositive_of_tendsto {α : Type*} {l : Filter α} [NeBot l]
     {F : α → H →L[ℂ] H} {T : H →L[ℂ] H}
     (hF : Tendsto F l (𝓝 T)) (hpos : ∀ᶠ i in l, (F i).IsPositive) : T.IsPositive := by
-  rw [ContinuousLinearMap.isPositive_iff_complex]
-  intro x
-  have happly : Tendsto (fun i => F i x) l (𝓝 (T x)) :=
-    ((ContinuousLinearMap.apply ℂ H x).continuous.tendsto T).comp hF
-  have hinner : Tendsto (fun i => inner ℂ (F i x) x) l (𝓝 (inner ℂ (T x) x)) :=
-    happly.inner tendsto_const_nhds
-  have hre : Tendsto (fun i => (inner ℂ (F i x) x : ℂ).re) l
-      (𝓝 (inner ℂ (T x) x : ℂ).re) :=
-    (Complex.reCLM.continuous.tendsto _).comp hinner
-  have hreal : ∀ᶠ i in l,
-      ((inner ℂ (F i x) x : ℂ).re : ℂ) = inner ℂ (F i x) x :=
-    hpos.mono fun i hi => (ContinuousLinearMap.isPositive_iff_complex (F i)).mp hi x |>.1
+  rw [ContinuousLinearMap.isPositive_iff]
   constructor
-  · have hleft : Tendsto (fun i => ((inner ℂ (F i x) x : ℂ).re : ℂ)) l
-        (𝓝 ((inner ℂ (T x) x : ℂ).re : ℂ)) :=
-      (Complex.ofRealCLM.continuous.tendsto _).comp hre
-    have hright : Tendsto (fun i => ((inner ℂ (F i x) x : ℂ).re : ℂ)) l
-        (𝓝 (inner ℂ (T x) x)) :=
-      (tendsto_congr' hreal).mpr hinner
-    exact tendsto_nhds_unique hleft hright
-  · exact isClosed_Ici.mem_of_tendsto hre
-      (hpos.mono fun i hi => hi.re_inner_nonneg_left x)
+  · intro x y
+    have happly_x : Tendsto (fun i => F i x) l (𝓝 (T x)) :=
+      ((ContinuousLinearMap.apply ℂ H x).continuous.tendsto T).comp hF
+    have happly_y : Tendsto (fun i => F i y) l (𝓝 (T y)) :=
+      ((ContinuousLinearMap.apply ℂ H y).continuous.tendsto T).comp hF
+    have hleft : Tendsto (fun i => inner ℂ (F i x) y) l (𝓝 (inner ℂ (T x) y)) :=
+      happly_x.inner tendsto_const_nhds
+    have hright : Tendsto (fun i => inner ℂ x (F i y)) l (𝓝 (inner ℂ x (T y))) :=
+      tendsto_const_nhds.inner happly_y
+    have heq : ∀ᶠ i in l, inner ℂ (F i x) y = inner ℂ x (F i y) :=
+      hpos.mono fun i hi => hi.isSymmetric x y
+    have hright' : Tendsto (fun i => inner ℂ (F i x) y) l (𝓝 (inner ℂ x (T y))) :=
+      (tendsto_congr' heq).mpr hright
+    exact tendsto_nhds_unique hleft hright'
+  · intro x
+    have happly : Tendsto (fun i => F i x) l (𝓝 (T x)) :=
+      ((ContinuousLinearMap.apply ℂ H x).continuous.tendsto T).comp hF
+    have hinner : Tendsto (fun i => inner ℂ (F i x) x) l (𝓝 (inner ℂ (T x) x)) :=
+      happly.inner tendsto_const_nhds
+    exact isClosed_Ici.mem_of_tendsto hinner
+      (hpos.mono fun i hi => hi.inner_nonneg_left x)
 
 end ContinuousLinearMap
 
