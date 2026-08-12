@@ -103,7 +103,7 @@ theorem hasDerivAt_probabilityCurrentValue1D
     probabilityCurrentDivergenceValue1D_eq_coordinates, Pi.mul_apply, Pi.sub_apply] using hscaled
 
 /-- Real and imaginary component equations extracted from the pointwise Schrödinger equation. -/
-theorem schrodinger_component_equations
+private theorem schrodinger_component_equations
     (ℏ κ potential : ℝ) (ψ ψt ψxx : ℂ)
     (hschrodinger :
       Complex.I * (ℏ : ℂ) * ψt = -(κ : ℂ) * ψxx + (potential : ℂ) * ψ) :
@@ -117,7 +117,7 @@ theorem schrodinger_component_equations
   · linear_combination him
 
 /-- The local probability balance from the two real component equations. -/
-theorem probability_continuity_balance_of_components
+private theorem probability_continuity_balance_of_components
     (ℏ κ potential : ℝ) (ψ ψt ψxx : ℂ) (hℏ : ℏ ≠ 0)
     (hreal : ℏ * ψt.im = κ * ψxx.re - potential * ψ.re)
     (himag : ℏ * ψt.re = -κ * ψxx.im + potential * ψ.im) :
