@@ -89,7 +89,8 @@ def electromagneticProbabilityCurrentValue1D
 
 /-- The covariant current expands to the standard paramagnetic plus vector-potential terms. -/
 theorem electromagneticProbabilityCurrentValue1D_eq_expanded
-    (q ℏ mass vectorPotential : ℝ) (ψ ψx : ℂ) (hℏ : ℏ ≠ 0) :
+    (q ℏ mass vectorPotential : ℝ) (ψ ψx : ℂ)
+    (hℏ : ℏ ≠ 0) (hmass : mass ≠ 0) :
     electromagneticProbabilityCurrentValue1D q ℏ mass vectorPotential ψ ψx =
       (ℏ / mass) * (ψ.re * ψx.im - ψ.im * ψx.re) -
         (q / mass) * vectorPotential * probabilityDensityValue ψ := by
@@ -97,7 +98,7 @@ theorem electromagneticProbabilityCurrentValue1D_eq_expanded
       (ℏ / mass) * gaugeConnectionCoefficientValue1D q ℏ vectorPotential =
         (q / mass) * vectorPotential := by
     unfold gaugeConnectionCoefficientValue1D
-    field_simp [hℏ]
+    field_simp [hℏ, hmass]
     ring
   unfold electromagneticProbabilityCurrentValue1D probabilityCurrentPairingValue
   rw [gaugeCovariantDerivativeValue1D_re, gaugeCovariantDerivativeValue1D_im]
@@ -111,7 +112,8 @@ theorem electromagneticProbabilityCurrentValue1D_zero_vectorPotential
     (q ℏ mass : ℝ) (ψ ψx : ℂ) (hℏ : ℏ ≠ 0) (hmass : mass ≠ 0) :
     electromagneticProbabilityCurrentValue1D q ℏ mass 0 ψ ψx =
       probabilityCurrentValue1D ℏ (ℏ ^ 2 / (2 * mass)) ψ ψx := by
-  rw [electromagneticProbabilityCurrentValue1D_eq_expanded q ℏ mass 0 ψ ψx hℏ]
+  rw [electromagneticProbabilityCurrentValue1D_eq_expanded
+    q ℏ mass 0 ψ ψx hℏ hmass]
   simp
   change
     (ℏ / mass) * (ψ.re * ψx.im - ψ.im * ψx.re) =
