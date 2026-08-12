@@ -18,14 +18,19 @@ formula and does not evaluate any formal power series at `t = 1`.
 namespace SecondQuantization
 namespace Bosonic
 
+noncomputable section
+
+variable {Mode : Type*}
+
+local instance instDecidableEqFreePartitionDeterminant : DecidableEq Mode := Classical.decEq Mode
+
 /-- The convergent finite-mode free-boson partition sum is the inverse determinant of `1 - K`, where
 `K` is the shared diagonal one-particle Boltzmann kernel. -/
 theorem tsum_boltzmannWeight_eq_inv_det_one_sub_freeBoltzmannModeKernel
-    {Mode : Type*} [Fintype Mode] (ε : Mode → ℝ) (β : ℝ)
+    [Fintype Mode] (ε : Mode → ℝ) (β : ℝ)
     (hpos : ∀ i, 0 < β * ε i) :
     ((∑' n, boltzmannWeight ε β n : ℝ) : ℂ) =
       (Matrix.det (1 - Common.freeBoltzmannModeKernel ε β))⁻¹ := by
-  classical
   rw [tsum_boltzmannWeight ε β hpos]
   have hdiag :
       (1 - Common.freeBoltzmannModeKernel ε β : Matrix Mode Mode ℂ) =
@@ -48,5 +53,6 @@ theorem tsum_boltzmannWeight_eq_inv_det_one_sub_freeBoltzmannModeKernel
   push_cast
   ring
 
+end
 end Bosonic
 end SecondQuantization
