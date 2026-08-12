@@ -136,22 +136,6 @@ theorem weak_continuity_interval_of_pointwise
   simpa [intervalSmearedDensityRate1D, intervalSmearedCurrentPairing1D,
     weightedBoundaryCurrent1D] using hweak
 
-/-- Probability-density specialization of the generic boundary-free interval balance. -/
-theorem weak_continuity_interval_of_pointwise_zero_boundary
-    (a b : ℝ)
-    {test testDerivative current currentDerivative densityTimeDerivative : ℝ → ℝ}
-    (hcontinuity : ∀ x, densityTimeDerivative x + currentDerivative x = 0)
-    (htest : ∀ x ∈ [[a, b]], HasDerivAt test (testDerivative x) x)
-    (hcurrent : ∀ x ∈ [[a, b]], HasDerivAt current (currentDerivative x) x)
-    (htestIntegrable : IntervalIntegrable testDerivative volume a b)
-    (hcurrentIntegrable : IntervalIntegrable currentDerivative volume a b)
-    (ha : test a = 0) (hb : test b = 0) :
-    intervalSmearedDensityRate1D a b test densityTimeDerivative =
-      intervalSmearedCurrentPairing1D a b testDerivative current := by
-  rw [weak_continuity_interval_of_pointwise a b hcontinuity htest hcurrent
-    htestIntegrable hcurrentIntegrable]
-  simp [weightedBoundaryCurrent1D, ha, hb]
-
 end
 end Continuum
 end SingleParticle
