@@ -79,7 +79,6 @@ theorem coe_diagonalExpectationNNReal
   rfl
 
 /-- Coercing a positive diagonal expectation back to `ℂ` recovers the original matrix element. -/
-@[simp]
 theorem coe_coe_diagonalExpectationNNReal
     (T : H →L[ℂ] H) (hT : T.IsPositive) (x : H) :
     ((diagonalExpectationNNReal T hT x : ℝ) : ℂ) = inner ℂ x (T x) := by
