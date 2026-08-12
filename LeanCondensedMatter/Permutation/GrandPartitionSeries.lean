@@ -10,7 +10,9 @@ The connected-cycle series already packages the arbitrary-`ζ` connected exchang
 This file takes its formal exponential once, before any fermion/boson specialization, so the formal
 linked-cluster identity is shared by both statistics.
 
-No analytic evaluation of the formal variable is involved.
+`ζ` remains an arbitrary cycle-weight parameter at this layer. Fermionic `ζ = -1` and bosonic
+`ζ = +1` interpretations belong to downstream thermal consumers. No analytic convergence or
+evaluation of the formal variable at `t = 1` is involved here.
 -/
 
 namespace Combinatorics
