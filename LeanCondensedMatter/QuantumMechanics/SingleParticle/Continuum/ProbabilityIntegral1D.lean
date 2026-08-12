@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.ProbabilityCurrent1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Basic1D
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 
 set_option linter.style.header false

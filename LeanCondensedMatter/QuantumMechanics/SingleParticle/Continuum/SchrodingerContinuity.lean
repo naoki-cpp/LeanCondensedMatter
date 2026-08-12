@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.ProbabilityCurrent1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Basic1D
 import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Tactic
@@ -11,7 +11,7 @@ set_option linter.style.header false
 This module derives the local probability-current balance from the scalar-potential
 nonrelativistic Schrödinger equation without treating the Laplacian as a bounded operator on `L²`.
 The dynamics-independent probability density, current pairing, current, and charge quantities live
-in `ProbabilityCurrent1D`; this module owns their derivative identities and the Schrödinger-specific
+in `Probability/Basic1D`; this module owns their derivative identities and the Schrödinger-specific
 cancellation.
 
 Write the kinetic coefficient as `κ = ℏ² / (2m)`. At one spacetime point the Schrödinger equation is
