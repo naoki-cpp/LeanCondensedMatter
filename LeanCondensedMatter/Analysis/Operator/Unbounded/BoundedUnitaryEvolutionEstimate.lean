@@ -32,15 +32,16 @@ theorem boundedUnitaryEvolution_apply_norm
   have huux : ContinuousLinearMap.adjoint U (U x) = x := by
     have happly := congrArg (fun T : H →L[ℂ] H => T x) hunit
     simpa [ContinuousLinearMap.star_eq_adjoint] using happly
-  have hsq_complex : ((‖U x‖ ^ 2 : ℝ) : ℂ) = ((‖x‖ ^ 2 : ℝ) : ℂ) := by
+  have hsq_complex : (‖U x‖ : ℂ) ^ 2 = (‖x‖ : ℂ) ^ 2 := by
     calc
-      ((‖U x‖ ^ 2 : ℝ) : ℂ) = inner ℂ (U x) (U x) :=
+      (‖U x‖ : ℂ) ^ 2 = inner ℂ (U x) (U x) :=
         (inner_self_eq_norm_sq_to_K (𝕜 := ℂ) (U x)).symm
       _ = inner ℂ (ContinuousLinearMap.adjoint U (U x)) x :=
         (ContinuousLinearMap.adjoint_inner_left U x (U x)).symm
       _ = inner ℂ x x := by rw [huux]
-      _ = ((‖x‖ ^ 2 : ℝ) : ℂ) := inner_self_eq_norm_sq_to_K (𝕜 := ℂ) x
-  have hsq : ‖U x‖ ^ 2 = ‖x‖ ^ 2 := Complex.ofReal_injective hsq_complex
+      _ = (‖x‖ : ℂ) ^ 2 := inner_self_eq_norm_sq_to_K (𝕜 := ℂ) x
+  have hsq : ‖U x‖ ^ 2 = ‖x‖ ^ 2 := by
+    exact_mod_cast hsq_complex
   nlinarith [norm_nonneg (U x), norm_nonneg x]
 
 /-- The vectorwise derivative of a bounded self-adjoint evolution has constant norm `‖B x‖`. -/
