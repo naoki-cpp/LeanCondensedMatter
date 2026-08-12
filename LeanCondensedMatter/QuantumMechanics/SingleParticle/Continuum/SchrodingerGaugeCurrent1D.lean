@@ -70,11 +70,9 @@ theorem kineticMomentumValue1D_eq_neg_I_hbar_mul_covariantDerivative
   · simp [kineticMomentumValue1D, gaugeCovariantDerivativeValue1D,
       gaugeConnectionCoefficientValue1D]
     field_simp [hℏ]
-    ring
   · simp [kineticMomentumValue1D, gaugeCovariantDerivativeValue1D,
       gaugeConnectionCoefficientValue1D]
     field_simp [hℏ]
-    ring
 
 /-- The real bilinear pairing `Im (conj ψ * χ)` in coordinate form. -/
 def probabilityCurrentPairingValue (ψ χ : ℂ) : ℝ :=
