@@ -31,13 +31,6 @@ noncomputable section
 open MeasureTheory
 open scoped ENNReal MeasureTheory SchwartzMap Laplacian LineDeriv
 
-private theorem l2ToTemperedDistribution1D_injective_closed :
-    Function.Injective l2ToTemperedDistribution1D := by
-  change Function.Injective
-    (MeasureTheory.Lp.toTemperedDistributionCLM ℂ (volume : Measure ℝ) 2)
-  apply LinearMap.ker_eq_bot.mp
-  exact MeasureTheory.Lp.ker_toTemperedDistributionCLM_eq_bot
-
 /-- The maximal distributional Laplacian domain in `L²(ℝ, ℂ)`: a wavefunction belongs to the
  domain exactly when its distributional Laplacian has an `L²` representative. -/
 noncomputable def continuumMaximalLaplacianDomain1D :
@@ -107,7 +100,7 @@ noncomputable def continuumMaximalLaplacianOnDomain1D :
     continuumMaximalLaplacianDomain1D →ₗ[ℂ] ContinuumL2Wavefunction1D where
   toFun := continuumMaximalLaplacianValue1D
   map_add' ψ φ := by
-    apply l2ToTemperedDistribution1D_injective_closed
+    apply l2ToTemperedDistribution1D_injective
     rw [map_add]
     rw [l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D,
       l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D,
@@ -118,7 +111,7 @@ noncomputable def continuumMaximalLaplacianOnDomain1D :
         (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D))
         (l2ToTemperedDistribution1D (φ : ContinuumL2Wavefunction1D))
   map_smul' c ψ := by
-    apply l2ToTemperedDistribution1D_injective_closed
+    apply l2ToTemperedDistribution1D_injective
     rw [map_smul]
     rw [l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D,
       l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D]
@@ -151,7 +144,7 @@ theorem continuumMaximalLaplacian1D_agrees_on_H2 (ψ : continuumH2Domain1D) :
         ⟨(ψ : ContinuumL2Wavefunction1D),
           continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D ψ.property⟩ =
       continuumH2Laplacian1D ψ := by
-  apply l2ToTemperedDistribution1D_injective_closed
+  apply l2ToTemperedDistribution1D_injective
   rw [l2ToTemperedDistribution1D_continuumMaximalLaplacian1D,
     l2ToTemperedDistribution1D_continuumH2Laplacian1D]
 
@@ -175,7 +168,7 @@ theorem mem_continuumMaximalLaplacian1D_graph_iff
     have hdomain : z.1 ∈ continuumMaximalLaplacianDomain1D := ⟨z.2, hz⟩
     rw [LinearPMap.mem_graph_iff]
     refine ⟨⟨z.1, hdomain⟩, rfl, ?_⟩
-    apply l2ToTemperedDistribution1D_injective_closed
+    apply l2ToTemperedDistribution1D_injective
     rw [l2ToTemperedDistribution1D_continuumMaximalLaplacian1D]
     exact hz.symm
 
