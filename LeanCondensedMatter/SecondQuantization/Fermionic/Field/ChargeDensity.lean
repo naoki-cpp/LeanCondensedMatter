@@ -38,43 +38,47 @@ noncomputable def chargeDensity (q : ℂ)
     (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁)) :
     Test →ₗ[ℂ]
       (AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) :=
-  q • (dGammaLinear 𝓗₁).comp M
+  q • (AlgebraicFock.dGammaLinear 𝓗₁).comp M
 
 @[simp]
 theorem chargeDensity_apply (q : ℂ)
     (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁)) (f : Test) :
-    chargeDensity 𝓗₁ q M f = q • dGamma 𝓗₁ (M f) :=
+    chargeDensity 𝓗₁ q M f = q • AlgebraicFock.dGamma 𝓗₁ (M f) :=
   rfl
 
 /-- Every smeared charge density kills the vacuum. -/
 theorem chargeDensity_vacuum (q : ℂ)
     (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁)) (f : Test) :
-    chargeDensity 𝓗₁ q M f (vacuum 𝓗₁) = 0 := by
+    chargeDensity 𝓗₁ q M f (AlgebraicFock.vacuum 𝓗₁) = 0 := by
   simp [chargeDensity]
 
 /-- The ordinary commutator is linear in its right argument. -/
 theorem linearCommutator_smul_right (q : ℂ)
     (A B : AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) :
-    linearCommutator A (q • B) = q • linearCommutator A B := by
+    AlgebraicFock.linearCommutator A (q • B) =
+      q • AlgebraicFock.linearCommutator A B := by
   apply LinearMap.ext
   intro Ψ
-  simp [linearCommutator, smul_sub]
+  simp [AlgebraicFock.linearCommutator, smul_sub]
 
 /-- The commutator of a second-quantized Hamiltonian with smeared charge density is the second
 quantization of the one-particle commutator. -/
 theorem dGamma_commutator_chargeDensity (q : ℂ)
     (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁))
     (h : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : Test) :
-    linearCommutator (dGamma 𝓗₁ h) (chargeDensity 𝓗₁ q M f) =
-      q • dGamma 𝓗₁ (linearCommutator h (M f)) := by
+    AlgebraicFock.linearCommutator (AlgebraicFock.dGamma 𝓗₁ h) (chargeDensity 𝓗₁ q M f) =
+      q • AlgebraicFock.dGamma 𝓗₁ (AlgebraicFock.linearCommutator h (M f)) := by
   calc
-    linearCommutator (dGamma 𝓗₁ h) (chargeDensity 𝓗₁ q M f) =
-        linearCommutator (dGamma 𝓗₁ h) (q • dGamma 𝓗₁ (M f)) := by
+    AlgebraicFock.linearCommutator (AlgebraicFock.dGamma 𝓗₁ h) (chargeDensity 𝓗₁ q M f) =
+        AlgebraicFock.linearCommutator
+          (AlgebraicFock.dGamma 𝓗₁ h) (q • AlgebraicFock.dGamma 𝓗₁ (M f)) := by
       rw [chargeDensity_apply]
-    _ = q • linearCommutator (dGamma 𝓗₁ h) (dGamma 𝓗₁ (M f)) :=
-      linearCommutator_smul_right 𝓗₁ q (dGamma 𝓗₁ h) (dGamma 𝓗₁ (M f))
-    _ = q • dGamma 𝓗₁ (linearCommutator h (M f)) := by
-      rw [dGamma_linearCommutator]
+    _ = q • AlgebraicFock.linearCommutator
+          (AlgebraicFock.dGamma 𝓗₁ h) (AlgebraicFock.dGamma 𝓗₁ (M f)) :=
+      linearCommutator_smul_right 𝓗₁ q
+        (AlgebraicFock.dGamma 𝓗₁ h) (AlgebraicFock.dGamma 𝓗₁ (M f))
+    _ = q • AlgebraicFock.dGamma 𝓗₁ (AlgebraicFock.linearCommutator h (M f)) := by
+      rw [AlgebraicFock.dGamma_linearCommutator]
 
 /-- Algebraic Heisenberg-form identity for smeared charge density:
 
@@ -88,9 +92,9 @@ theorem heisenberg_commutator_chargeDensity (ℏ q : ℂ)
     (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁))
     (h : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : Test) :
     (Complex.I / ℏ) •
-        linearCommutator (dGamma 𝓗₁ h) (chargeDensity 𝓗₁ q M f) =
+        AlgebraicFock.linearCommutator (AlgebraicFock.dGamma 𝓗₁ h) (chargeDensity 𝓗₁ q M f) =
       ((Complex.I * q) / ℏ) •
-        dGamma 𝓗₁ (linearCommutator h (M f)) := by
+        AlgebraicFock.dGamma 𝓗₁ (AlgebraicFock.linearCommutator h (M f)) := by
   rw [dGamma_commutator_chargeDensity]
   rw [smul_smul]
   congr 1
