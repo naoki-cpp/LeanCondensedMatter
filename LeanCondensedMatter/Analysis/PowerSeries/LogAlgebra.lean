@@ -11,6 +11,8 @@ thermal grand-partition consumers. The statements are purely formal and require 
 constant coefficient `1`; no analytic convergence or evaluation is involved.
 -/
 
+open scoped BigOperators
+
 namespace PowerSeries
 
 /-- The derivative of `log(1 + X)` multiplied by `1 + X` is one. -/
@@ -98,5 +100,35 @@ theorem logOf_inv {F : PowerSeries ℂ}
   have hF0 : PowerSeries.constantCoeff F ≠ 0 := by simp [hF]
   rw [PowerSeries.mul_inv_cancel F hF0, logOf_one] at hmul
   exact eq_neg_of_add_eq_zero_left (by simpa [add_comm] using hmul.symm)
+
+/-- The formal logarithm of a normalized linear factor is the corresponding rescaled scalar
+`log(1 + X)` series. -/
+theorem logOf_one_add_smul_X (q : ℂ) :
+    PowerSeries.logOf (1 + q • PowerSeries.X) =
+      PowerSeries.rescale q (PowerSeries.log ℂ) := by
+  rw [PowerSeries.logOf_eq]
+  have htail : (1 + q • PowerSeries.X : PowerSeries ℂ) - 1 = q • PowerSeries.X := by
+    ring
+  rw [htail, PowerSeries.rescale_eq_subst]
+
+/-- `logOf` turns a finite product of normalized complex power series into the corresponding finite
+sum. -/
+theorem logOf_finset_prod {ι : Type*} (s : Finset ι) (F : ι → PowerSeries ℂ)
+    (hF : ∀ i, PowerSeries.constantCoeff (F i) = 1) :
+    PowerSeries.logOf (∏ i ∈ s, F i) = ∑ i ∈ s, PowerSeries.logOf (F i) := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp
+  | @insert a s ha ih =>
+      rw [Finset.prod_insert ha, Finset.sum_insert ha]
+      rw [PowerSeries.logOf_mul (hF a) (by simp [hF])]
+      rw [ih]
+
+/-- Fintype form of `logOf_finset_prod`. -/
+theorem logOf_fintype_prod {ι : Type*} [Fintype ι] (F : ι → PowerSeries ℂ)
+    (hF : ∀ i, PowerSeries.constantCoeff (F i) = 1) :
+    PowerSeries.logOf (∏ i, F i) = ∑ i, PowerSeries.logOf (F i) := by
+  classical
+  simpa using PowerSeries.logOf_finset_prod (Finset.univ : Finset ι) F hF
 
 end PowerSeries
