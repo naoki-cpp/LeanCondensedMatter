@@ -2,6 +2,7 @@ import Mathlib.Analysis.InnerProductSpace.Spectrum
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Analysis.InnerProductSpace.Positive
+import Mathlib.LinearAlgebra.Complex.Module
 
 -- No project files currently carry a Mathlib-style copyright/author header; a
 -- project-wide policy for this is a separate open item (see notes/conventions.md).
@@ -232,13 +233,16 @@ theorem kernel_sup_span_eigenvectorFamily_dense (hT : IsCompactOperator T)
       rcases eq_or_ne (Module.End.eigenspace (T : H →ₗ[ℂ] H) μ) ⊥ with hbot | hne
       · rw [hbot]; exact bot_le
       · have hreal : (starRingEnd ℂ) μ = μ := hT'.conj_eigenvalue_eq_self hne
-        have hre : (μ.re : ℂ) = μ := Complex.conj_eq_iff_re.mp hreal
-        rcases eq_or_ne μ.re 0 with hz | hz
+        let μself : selfAdjoint ℂ := ⟨μ, hreal⟩
+        let r : ℝ := Complex.selfAdjointEquiv μself
+        have hre : (r : ℂ) = μ := by
+          simpa [r, μself] using Complex.coe_selfAdjointEquiv μself
+        rcases eq_or_ne r 0 with hz | hz
         · rw [← hre, hz, Complex.ofReal_zero]; exact le_sup_left
         · refine le_trans ?_ le_sup_right
           rw [← hre, hE'_def, span_eigenvectorFamily hT]
           exact le_iSup (fun ν : { ν : ℝ // ν ≠ 0 } =>
-            Module.End.eigenspace (T : H →ₗ[ℂ] H) (ν.1 : ℂ)) ⟨μ.re, hz⟩
+            Module.End.eigenspace (T : H →ₗ[ℂ] H) (ν.1 : ℂ)) ⟨r, hz⟩
     · refine sup_le (le_iSup (fun μ : ℂ => Module.End.eigenspace (T : H →ₗ[ℂ] H) μ) 0) ?_
       rw [hE'_def, span_eigenvectorFamily hT]
       exact iSup_le fun ν => le_iSup

@@ -15,8 +15,9 @@ from architecture_audit_common import (
 ROOT = repository_root(__file__)
 QUANTUM = ROOT / "LeanCondensedMatter" / "QuantumTheory"
 
-# Q4 guards public physical scalar definitions. Proof declarations are intentionally outside the
-# scanner, so proof-local `Complex.re`, `.re`, and `Complex.reCLM` remain ordinary proof tools.
+# Q4 guards public physical scalar definitions. In addition, `Complex.reCLM` is rejected throughout
+# QuantumTheory: mapping an already-real complex identity through real-part projection is a lossy
+# transport pattern and should instead use a proved-real scalar plus coercion / `exact_mod_cast`.
 PUBLIC_DEFINITION_START = re.compile(
     r"^(?P<indent>[ \t]*)"
     r"(?:@\[[^\n]*\]\s*)*"
@@ -33,6 +34,7 @@ REAL_SCALAR_RESULT = re.compile(
 DIRECT_REAL_PROJECTION = re.compile(
     r"(?:\.\s*re\b|\bComplex\.re\b|\bComplex\.reCLM\b)"
 )
+LOSSY_HAS_SUM_TRANSPORT = re.compile(r"\bComplex\.reCLM\b")
 
 
 @dataclass(frozen=True)
@@ -181,7 +183,9 @@ def main() -> int:
             )
 
     for path in lean_files(QUANTUM):
-        for definition in public_definitions(path):
+        code = strip_lean_comments(path.read_text(encoding="utf-8"))
+
+        for definition in split_public_definitions(code, path):
             if not direct_real_projection(definition):
                 continue
 
@@ -193,6 +197,14 @@ def main() -> int:
             errors.append(
                 "public real-valued definition projects a complex expression directly with `.re`: "
                 f"{relative(path)}:{definition.line}: {definition.name}"
+            )
+
+        for match in LOSSY_HAS_SUM_TRANSPORT.finditer(code):
+            line = code.count("\n", 0, match.start()) + 1
+            errors.append(
+                "QuantumTheory proof uses `Complex.reCLM` as a lossy real-scalar transport; "
+                "prove reality and transport by coercion instead: "
+                f"{relative(path)}:{line}"
             )
 
     stale_entries = set(DIRECT_REAL_PROJECTION_ALLOWLIST) - seen_allowlist_entries

@@ -73,7 +73,9 @@ theorem hasSum_eigen_expansion_diagonalExpectationValue
         (inner ℂ x (T x)) := by
     simpa using hs
   rw [← coe_diagonalExpectationValue_right T hTself x] at hs'
-  exact_mod_cast hs'
+  rw [HasSum] at hs' ⊢
+  exact Filter.tendsto_ofReal_iff.mp (by
+    simpa only [Complex.ofReal_sum] using hs')
 
 /-- `spectralTrace` can be computed against any Hilbert basis using lossless diagonal expectation
 values. -/
@@ -179,9 +181,9 @@ theorem spectralTrace_comp_comm {T' : H →L[ℂ] H} (_hT : IsCompactOperator T)
         inner ℂ (T' (d i)) (T (d i)) :=
       (hT'sym (d i) (T (d i))).symm
     have hzdiag : IsSelfAdjoint (inner ℂ (d i) (T (T' (d i)))) := by
-      apply (Complex.im_eq_zero_iff_isSelfAdjoint _).mp
-      change (inner ℂ (d i) ((T * T') (d i)) : ℂ).im = 0
-      exact hTT'sym.im_inner_self_apply (d i)
+      change IsSelfAdjoint (inner ℂ (d i) ((T * T') (d i)))
+      rw [← coe_diagonalExpectationValue_right (T * T') hTT'self (d i)]
+      exact Complex.conj_ofReal _
     have hz : IsSelfAdjoint (inner ℂ (T (d i)) (T' (d i))) := by
       rw [← h1']
       exact hzdiag
