@@ -23,7 +23,7 @@ set_option linter.style.header false
 
 Public entry point for generic transport infrastructure: finite-volume normalization, response and
 resolvent formulations, Středa integration/trace theory, occupation interpolation, and finite
- disorder models.
+disorder models.
 
 Model-specific fermionic transport adapters remain downstream in `SecondQuantization.Fermionic`.
 Implementation modules should import the narrow transport leaves they use rather than this umbrella.
