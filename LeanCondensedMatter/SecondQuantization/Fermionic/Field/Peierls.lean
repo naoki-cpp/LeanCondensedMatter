@@ -172,8 +172,8 @@ end LocallyFiniteHopping
 /-- The Peierls-coupled link contribution after algebraic second quantization. -/
 noncomputable def peierlsBondHamiltonianFock (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) (A : ℂ) :
-    FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site) :=
+    AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site) :=
   dGamma (LatticeState Site) (K.peierlsBondHamiltonian ℏ q x y A)
 
 /-- The continuity-derived many-particle bond current is minus the algebraic link derivative of the

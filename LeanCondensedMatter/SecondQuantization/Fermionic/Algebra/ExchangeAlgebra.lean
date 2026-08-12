@@ -25,7 +25,7 @@ omit [LinearOrder Mode] in
 the `ζ = -1` case of the `ζ`-commutator (`Common.zetaCommutator`), for arbitrary operators `A`, `B`
 (not just at a single mode). -/
 theorem exchangeCommutator_fermion_eq_anticomm
-    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (A B : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     Common.exchangeCommutator Common.Statistics.fermion A B = anticomm A B := by
   rw [Common.exchangeCommutator, Common.Statistics.zetaInt_fermion, Int.cast_neg, Int.cast_one,
     Common.zetaCommutator, neg_one_smul, sub_neg_eq_add]

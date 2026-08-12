@@ -2,10 +2,10 @@
 
 ## Algebraic Fock space
 
-The basis-independent finite-particle Fock space is
+The basis-independent algebraic fermionic Fock space is
 
 ```text
-SecondQuantization.Fermionic.Field.FiniteParticleFock 𝓗₁
+SecondQuantization.Fermionic.AlgebraicFock 𝓗₁
   = ExteriorAlgebra ℂ 𝓗₁.
 ```
 
@@ -23,18 +23,26 @@ exterior multiplication and contraction identities.
 
 ## Occupation representation
 
-`SecondQuantization.Fermionic.FockSpace Mode` is the free complex vector space on finite occupation
-subsets of an ordered mode type. A linearly ordered basis `b : Module.Basis Mode ℂ 𝓗₁` induces the
-linear equivalence
+`SecondQuantization.Fermionic.OccupationFock Mode` is the free complex vector space on finite
+occupation subsets of an ordered mode type. Its name records that this is the representation built
+from a chosen mode basis, rather than the basis-independent exterior-algebra construction.
+
+A linearly ordered basis `b : Module.Basis Mode ℂ 𝓗₁` induces the explicit linear equivalence
 
 ```text
-occupationEquiv b :
-  Fermionic.FockSpace Mode ≃ₗ[ℂ] Field.FiniteParticleFock 𝓗₁.
+Field.occupationEquiv b :
+  Fermionic.OccupationFock Mode ≃ₗ[ℂ] Fermionic.AlgebraicFock 𝓗₁.
 ```
 
 `OccupationFieldEquivalence.lean` proves that this equivalence intertwines occupation creation with
 exterior multiplication and occupation annihilation with contraction by the matching coordinate
 functional.
+
+## Completed representation
+
+`SecondQuantization.Fermionic.CompletedFockSpace Mode` is a third, distinct representation: the
+completed `ℓ²` occupation space. Neither `OccupationFock` nor `AlgebraicFock` denotes that analytic
+completion.
 
 ## Bounded response boundary
 

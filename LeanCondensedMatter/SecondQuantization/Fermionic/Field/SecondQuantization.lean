@@ -28,7 +28,7 @@ variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 /-- The bilinear recursion step used to extend a one-particle operator to the exterior algebra. -/
 noncomputable def secondQuantizationStep (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
     𝓗₁ →ₗ[ℂ]
-      (FiniteParticleFock 𝓗₁ × FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁) where
+      (AlgebraicFock 𝓗₁ × AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) where
   toFun f :=
     { toFun := fun xdx =>
         oneParticle 𝓗₁ (T f) * xdx.1 + oneParticle 𝓗₁ f * xdx.2
@@ -68,14 +68,14 @@ noncomputable def secondQuantizationStep (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
 
 @[simp]
 theorem secondQuantizationStep_apply (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : 𝓗₁)
-    (x dx : FiniteParticleFock 𝓗₁) :
+    (x dx : AlgebraicFock 𝓗₁) :
     secondQuantizationStep 𝓗₁ T f (x, dx) =
       oneParticle 𝓗₁ (T f) * x + oneParticle 𝓗₁ f * dx :=
   rfl
 
 /-- The recursion step respects the exterior relation `f ∧ f = 0`. -/
 theorem secondQuantizationStep_square (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : 𝓗₁)
-    (x dx : FiniteParticleFock 𝓗₁) :
+    (x dx : AlgebraicFock 𝓗₁) :
     secondQuantizationStep 𝓗₁ T f
         (oneParticle 𝓗₁ f * x, secondQuantizationStep 𝓗₁ T f (x, dx)) = 0 := by
   simp only [secondQuantizationStep_apply, mul_add, ← mul_assoc]
@@ -85,7 +85,7 @@ theorem secondQuantizationStep_square (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : �
 /-- The exact compatibility condition required by `CliffordAlgebra.foldr'` at the zero quadratic
 form. -/
 theorem secondQuantizationStep_fold_condition (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : 𝓗₁)
-    (x dx : FiniteParticleFock 𝓗₁) :
+    (x dx : AlgebraicFock 𝓗₁) :
     secondQuantizationStep 𝓗₁ T f
         (CliffordAlgebra.ι (0 : QuadraticForm ℂ 𝓗₁) f * x,
           secondQuantizationStep 𝓗₁ T f (x, dx)) =
@@ -96,10 +96,10 @@ theorem secondQuantizationStep_fold_condition (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) 
 
 It acts on each finite wedge by applying `T` in every slot and summing the results. -/
 noncomputable def dGamma (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
-    FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁ :=
+    AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁ :=
   CliffordAlgebra.foldr' (0 : QuadraticForm ℂ 𝓗₁)
     (secondQuantizationStep 𝓗₁ T) (secondQuantizationStep_fold_condition 𝓗₁ T)
-    (0 : FiniteParticleFock 𝓗₁)
+    (0 : AlgebraicFock 𝓗₁)
 
 /-- Second quantization kills the vacuum. -/
 @[simp]
@@ -109,7 +109,7 @@ theorem dGamma_vacuum (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
     (CliffordAlgebra.foldr'_algebraMap
       (Q := (0 : QuadraticForm ℂ 𝓗₁))
       (secondQuantizationStep 𝓗₁ T) (secondQuantizationStep_fold_condition 𝓗₁ T)
-      (0 : FiniteParticleFock 𝓗₁) (1 : ℂ))
+      (0 : AlgebraicFock 𝓗₁) (1 : ℂ))
 
 /-- On a one-particle state, `dΓ(T)` agrees with `T`. -/
 @[simp]
@@ -119,18 +119,18 @@ theorem dGamma_oneParticle (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : 𝓗₁) :
     (CliffordAlgebra.foldr'_ι
       (Q := (0 : QuadraticForm ℂ 𝓗₁))
       (secondQuantizationStep 𝓗₁ T) (secondQuantizationStep_fold_condition 𝓗₁ T)
-      (0 : FiniteParticleFock 𝓗₁) f)
+      (0 : AlgebraicFock 𝓗₁) f)
 
 /-- The defining Leibniz rule of `dΓ(T)` on a left one-particle wedge. -/
 theorem dGamma_oneParticle_mul (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : 𝓗₁)
-    (Ψ : FiniteParticleFock 𝓗₁) :
+    (Ψ : AlgebraicFock 𝓗₁) :
     dGamma 𝓗₁ T (oneParticle 𝓗₁ f * Ψ) =
       oneParticle 𝓗₁ (T f) * Ψ + oneParticle 𝓗₁ f * dGamma 𝓗₁ T Ψ := by
   simpa [dGamma, oneParticle, secondQuantizationStep] using
     (CliffordAlgebra.foldr'_ι_mul
       (Q := (0 : QuadraticForm ℂ 𝓗₁))
       (secondQuantizationStep 𝓗₁ T) (secondQuantizationStep_fold_condition 𝓗₁ T)
-      (0 : FiniteParticleFock 𝓗₁) f Ψ)
+      (0 : AlgebraicFock 𝓗₁) f Ψ)
 
 end Field
 end Fermionic

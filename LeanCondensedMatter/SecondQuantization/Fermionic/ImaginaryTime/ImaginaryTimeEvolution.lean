@@ -41,7 +41,7 @@ theorem fermionEnergy_eq_sum_complex (ε : Mode → ℝ) (n : Occupation Mode) :
 /-- **The imaginary-time evolution operator `e^{τH₀}` for the free Hamiltonian**: the algebraic,
 basis-diagonal realization from `Common.diagonalEvolution`, specialized to `fermionEnergy`. -/
 noncomputable def imaginaryTimeEvolveFree (ε : Mode → ℝ) (τ : ℝ) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.diagonalEvolution (fermionEnergy ε) τ
 
 omit [LinearOrder Mode] in
@@ -88,15 +88,15 @@ evolution**: notation `A(τ) := e^{τH₀} A e^{-τH₀}` for the two basis-diag
 It is well-defined for *any* algebraic linear map `A`, but this file does not construct analytic
 operators or a completed Hilbert-space conjugation. -/
 noncomputable def imaginaryTimeEvolve (ε : Mode → ℝ) (τ : ℝ)
-    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
+    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.heisenbergEvolve (fermionEnergy ε) τ A
 
 omit [LinearOrder Mode] in
 /-- **At `τ = 0`, imaginary-time evolution is trivial**: `A(0) = A`. -/
 @[simp]
 theorem imaginaryTimeEvolve_zero (ε : Mode → ℝ)
-    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     imaginaryTimeEvolve ε 0 A = A :=
   Common.heisenbergEvolve_zero (fermionEnergy ε) A
 
@@ -104,7 +104,7 @@ omit [LinearOrder Mode] in
 /-- Unfolds `imaginaryTimeEvolve` back down to `imaginaryTimeEvolveFree`, matching the shape most
 proofs below need — `A(τ) := e^{τH₀} A e^{-τH₀}`, applied to a vector. -/
 theorem imaginaryTimeEvolve_apply (ε : Mode → ℝ) (τ : ℝ)
-    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (x : FockSpace Mode) :
+    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (x : OccupationFock Mode) :
     imaginaryTimeEvolve ε τ A x =
       imaginaryTimeEvolveFree ε τ (A (imaginaryTimeEvolveFree ε (-τ) x)) :=
   rfl

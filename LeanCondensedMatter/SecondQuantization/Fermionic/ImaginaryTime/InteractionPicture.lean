@@ -20,8 +20,8 @@ variable {Mode : Type*} [DecidableEq Mode]
 
 /-- The interaction-picture operator `V_I(τ) = e^{τH₀} V e^{-τH₀}`. -/
 noncomputable def interactionPicture (ε : Mode → ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (τ : ℝ) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (τ : ℝ) :
+    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.interactionPicture (fermionEnergy ε) V τ
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]

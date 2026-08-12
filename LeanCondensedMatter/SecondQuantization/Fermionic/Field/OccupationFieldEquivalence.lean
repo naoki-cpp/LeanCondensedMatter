@@ -195,7 +195,7 @@ theorem occupationEquiv_create
   exact congrArg (fun Ψ => c • Ψ) (occupationEquiv_create_basisState b i n)
 
 private theorem eq_annihilate_of_vacuum_of_mixedCAR
-    (B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (i : Mode)
+    (B : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (i : Mode)
     (hVac : B (basisState (∅ : Occupation Mode)) = 0)
     (hCAR : ∀ (j : Mode) (n : Occupation Mode),
       B (SecondQuantization.Fermionic.create j (basisState n)) +
@@ -236,7 +236,7 @@ private theorem eq_annihilate_of_vacuum_of_mixedCAR
 /-- Coordinate contraction transported to the occupation representation. -/
 noncomputable def occupationAnnihilateFromField
     (b : Module.Basis Mode ℂ 𝓗₁) (i : Mode) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   occupationConjugate b (annihilateDual 𝓗₁ (b.coord i))
 
 /-- Transported coordinate contraction is the occupation annihilation operator in the matching

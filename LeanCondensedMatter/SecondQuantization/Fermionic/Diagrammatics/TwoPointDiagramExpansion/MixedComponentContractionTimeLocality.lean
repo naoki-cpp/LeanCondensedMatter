@@ -23,7 +23,7 @@ assignment. -/
 private noncomputable def orderedTwoPointLegOperator {n : ℕ}
     (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    OrderedTwoPointLeg n → FockSpace Mode →ₗ[ℂ] FockSpace Mode
+    OrderedTwoPointLeg n → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode
   | .inl e =>
       externalFieldOperator ε (twoPointExternalTimes τ τ' e) (twoPointExternalLabels i j e)
   | .inr leg =>

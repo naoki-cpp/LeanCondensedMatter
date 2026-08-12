@@ -144,7 +144,7 @@ theorem completedCreate_comp_algebraicToCompleted (i : Mode) :
       algebraicToCompleted.comp (create i) := by
   apply Finsupp.lhom_ext
   intro n c
-  have hc : (Finsupp.single n c : FockSpace Mode) = c • basisState n :=
+  have hc : (Finsupp.single n c : OccupationFock Mode) = c • basisState n :=
     (Finsupp.smul_single_one n c).symm
   rw [hc]
   simp only [LinearMap.comp_apply, map_smul, algebraicToCompleted_basisState]
@@ -159,7 +159,7 @@ theorem completedAnnihilate_comp_algebraicToCompleted (i : Mode) :
       algebraicToCompleted.comp (annihilate i) := by
   apply Finsupp.lhom_ext
   intro n c
-  have hc : (Finsupp.single n c : FockSpace Mode) = c • basisState n :=
+  have hc : (Finsupp.single n c : OccupationFock Mode) = c • basisState n :=
     (Finsupp.smul_single_one n c).symm
   rw [hc]
   simp only [LinearMap.comp_apply, map_smul, algebraicToCompleted_basisState]

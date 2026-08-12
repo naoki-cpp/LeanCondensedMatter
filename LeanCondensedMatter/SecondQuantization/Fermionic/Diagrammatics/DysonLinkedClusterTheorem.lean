@@ -22,7 +22,7 @@ omit [LinearOrder Mode] in
 partition coefficients. -/
 theorem coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff
     (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ) :
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) :
     PowerSeries.coeff n
         (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) =
       normalizedDysonPartitionCoeff ε β V n := by
@@ -35,7 +35,7 @@ omit [LinearOrder Mode] in
 series is its finite-set Dyson vertex cumulant. -/
 theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant
     (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
     (n : ℕ) (hn : n ≠ 0) :
     (n.factorial : ℂ) *
         PowerSeries.coeff n (dysonFormalLogPartitionFunction ε β V) =

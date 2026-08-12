@@ -9,7 +9,7 @@ set_option linter.style.header false
 # The algebraic Fock space, generic over the occupation-state type
 
 Shared infrastructure for Track D's fermionic and bosonic lines
-(`notes/roadmaps/second-quantization.md`): both `Fermionic.FockSpace Mode` (basis
+(`notes/roadmaps/second-quantization.md`): both `Fermionic.OccupationFock Mode` (basis
 `Fermionic.Occupation Mode := Finset Mode`) and `Bosonic.FockSpace Mode` (basis
 `Bosonic.Occupation Mode := Mode →₀ ℕ`) are the free `ℂ`-vector space on their respective occupation-state
 type — finite `ℂ`-linear combinations of basis states, no completion, no inner product. That shape

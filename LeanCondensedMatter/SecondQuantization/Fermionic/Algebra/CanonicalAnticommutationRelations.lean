@@ -26,13 +26,13 @@ variable {Mode : Type*} [LinearOrder Mode]
 
 omit [LinearOrder Mode] in
 /-- **The anticommutator** of two linear endomorphisms, `{A, B} := AB + BA`. -/
-noncomputable def anticomm (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+noncomputable def anticomm (A B : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
+    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   A.comp B + B.comp A
 
 omit [LinearOrder Mode] in
-theorem anticomm_apply (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
-    (x : FockSpace Mode) : anticomm A B x = A (B x) + B (A x) :=
+theorem anticomm_apply (A B : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
+    (x : OccupationFock Mode) : anticomm A B x = A (B x) + B (A x) :=
   rfl
 
 omit [LinearOrder Mode] in
@@ -40,7 +40,7 @@ omit [LinearOrder Mode] in
 the arithmetic core shared by all three CAR proofs below (creation-creation, annihilation-
 annihilation, and the off-diagonal case of annihilation-creation). -/
 theorem cancel_cast_smul_smul {a b c d : ℤ} (h : a * b + c * d = 0)
-    (v : FockSpace Mode) :
+    (v : OccupationFock Mode) :
     (a : ℂ) • (b : ℂ) • v + (c : ℂ) • (d : ℂ) • v = 0 := by
   rw [smul_smul, smul_smul, ← Int.cast_mul, ← Int.cast_mul, ← add_smul, ← Int.cast_add, h,
     Int.cast_zero, zero_smul]
@@ -269,7 +269,7 @@ theorem anticomm_annihilate_create (i j : Mode) :
 omit [LinearOrder Mode] in
 /-- **The anticommutator is symmetric**, `{A, B} = {B, A}` — immediate from `anticomm`'s own
 definition `A ∘ B + B ∘ A` via `add_comm`. -/
-theorem anticomm_comm (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+theorem anticomm_comm (A B : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     anticomm A B = anticomm B A := by
   rw [anticomm, anticomm, add_comm]
 

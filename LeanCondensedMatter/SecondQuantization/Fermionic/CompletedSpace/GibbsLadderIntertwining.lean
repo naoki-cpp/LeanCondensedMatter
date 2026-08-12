@@ -112,12 +112,12 @@ private theorem continuousLinearMap_ext_completedBasis
           B.toLinearMap.comp algebraicToCompleted := by
       apply Finsupp.lhom_ext
       intro n c
-      have hc : (Finsupp.single n c : FockSpace Mode) = c • basisState n :=
+      have hc : (Finsupp.single n c : OccupationFock Mode) = c • basisState n :=
         (Finsupp.smul_single_one n c).symm
       rw [hc]
       simp only [LinearMap.comp_apply, map_smul, algebraicToCompleted_basisState]
       rw [h n]
-    exact congrArg (fun f : FockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode => f x) hcore
+    exact congrArg (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode => f x) hcore
 
 /-- Completed free-Gibbs creation intertwining:
 `ρβ aᵢ† = exp (-β εᵢ) aᵢ† ρβ` as an identity of bounded operators. -/

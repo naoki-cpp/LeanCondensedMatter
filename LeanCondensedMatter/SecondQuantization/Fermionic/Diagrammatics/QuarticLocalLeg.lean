@@ -21,7 +21,7 @@ variable {Mode : Type*} [LinearOrder Mode]
 
 /-- The fermionic operator represented by a local leg of a quartic vertex. -/
 noncomputable def quarticLocalLegOperator (q : QuarticVertexLabel Mode) :
-    Fin 4 → FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    Fin 4 → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.quarticLocalLegOperator create annihilate q
 
 /-- The free-energy shift of a quartic local-leg operator. -/
@@ -55,7 +55,7 @@ def quarticLocalLegIsCreate : Fin 4 → Bool :=
 theorem anticomm_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' : Fin 4) :
     anticomm (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
       if quarticLocalLegIsCreate l = quarticLocalLegIsCreate l' then
-        (0 : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
+        (0 : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
       else if quarticLocalLegMode q l = quarticLocalLegMode q' l' then LinearMap.id else 0 := by
   fin_cases l <;> fin_cases l' <;>
     simp [quarticLocalLegOperator, quarticLocalLegIsCreate, quarticLocalLegMode,
@@ -69,7 +69,7 @@ theorem zetaCommutator_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) 
         (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
       (if quarticLocalLegIsCreate l = quarticLocalLegIsCreate l' then (0 : ℂ)
        else if quarticLocalLegMode q l = quarticLocalLegMode q' l' then 1 else 0) •
-        (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
+        (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
   have hbridge : Common.zetaCommutator ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ)
       (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
       anticomm (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') :=

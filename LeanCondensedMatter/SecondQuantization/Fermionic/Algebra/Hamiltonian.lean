@@ -29,7 +29,7 @@ variable {Mode : Type*} [LinearOrder Mode]
 omit [LinearOrder Mode] in
 /-- **The total number operator**, `N := Σᵢ Nᵢ` — the `Common.diagonalOperator` with eigenvalue
 `n.card` (the total particle number) at each occupation state `n`. -/
-noncomputable def totalNumberOperator : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+noncomputable def totalNumberOperator : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.diagonalOperator fun n : Occupation Mode => (particleNumber n : ℂ)
 
 omit [LinearOrder Mode] in
@@ -42,7 +42,7 @@ omit [LinearOrder Mode] in
 `H₀ := Σᵢ ε(i) Nᵢ` — the `Common.diagonalOperator` with eigenvalue `Σᵢ∈n ε(i)` at each occupation
 state `n`. -/
 noncomputable def freeHamiltonian (ε : Mode → ℝ) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.diagonalOperator fun n : Occupation Mode => (∑ i ∈ n, (ε i : ℂ))
 
 omit [LinearOrder Mode] in
@@ -70,7 +70,7 @@ special case, not a general quartic interaction. A general fermionic interaction
 `Σᵢⱼₖₗ V(i,j,k,l) cᵢ† cⱼ† cₖ cₗ` (not basis-diagonal, needed for a non-trivial Wick/Dyson
 expansion) is a separate future target; see `notes/roadmaps/second-quantization.md`. -/
 noncomputable def interactionHamiltonian (V : Mode → Mode → ℝ) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.diagonalOperator fun n : Occupation Mode => (∑ i ∈ n, ∑ j ∈ n, (V i j : ℂ))
 
 omit [LinearOrder Mode] in

@@ -107,13 +107,13 @@ theorem completedModeTruncation_basisState (S : Finset Mode) (n : Occupation Mod
     · simp [completedModeTruncation_apply, hmS]
 
 /-- The finite set of ambient modes occurring in the support of an algebraic Fock vector. -/
-noncomputable def algebraicModeSupport (x : FockSpace Mode) : Finset Mode := by
+noncomputable def algebraicModeSupport (x : OccupationFock Mode) : Finset Mode := by
   classical
   exact x.support.biUnion id
 
 /-- Every occupation configuration carrying a nonzero algebraic coefficient is contained in the
 finite ambient-mode support. -/
-theorem occupation_subset_algebraicModeSupport (x : FockSpace Mode) (n : Occupation Mode)
+theorem occupation_subset_algebraicModeSupport (x : OccupationFock Mode) (n : Occupation Mode)
     (hn : x n ≠ 0) :
     n ⊆ algebraicModeSupport x := by
   classical
@@ -125,7 +125,7 @@ theorem occupation_subset_algebraicModeSupport (x : FockSpace Mode) (n : Occupat
 /-- Once `S` contains every mode appearing in an algebraic vector, finite-mode truncation fixes its
 completed image exactly. -/
 theorem completedModeTruncation_algebraicToCompleted_of_subset
-    (S : Finset Mode) (x : FockSpace Mode)
+    (S : Finset Mode) (x : OccupationFock Mode)
     (hS : algebraicModeSupport x ⊆ S) :
     completedModeTruncation S (algebraicToCompleted x) = algebraicToCompleted x := by
   classical

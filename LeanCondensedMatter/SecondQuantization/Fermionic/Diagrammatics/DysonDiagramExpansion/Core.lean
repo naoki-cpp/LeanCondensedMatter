@@ -40,7 +40,7 @@ operator-valued integrand used by the density-state Dyson expansion's
 `orderedSimplexIntegral`'s own convention. -/
 noncomputable def nestedVertexOperatorComp (ε : Mode → ℝ) :
     (n : ℕ) → (Fin n → QuarticVertexLabel Mode) → (Fin n → ℝ) →
-      FockSpace Mode →ₗ[ℂ] FockSpace Mode
+      OccupationFock Mode →ₗ[ℂ] OccupationFock Mode
   | 0, _, _ => LinearMap.id
   | _ + 1, q, τ =>
       (interactionPicture ε (quarticVertexOperator (q 0)) (τ 0)).comp
@@ -66,7 +66,7 @@ omit [LinearOrder Mode] in
 `Common.comp_operatorIntervalIntegral`/`Common.normalizedWeightedDiagonal_operatorIntervalIntegral`
 need. -/
 theorem continuous_matrixCoeff_interactionPicture_comp_dysonCoeff (ε : Mode → ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ)
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ)
     (k n' : Occupation Mode) :
     Continuous (fun σ : ℝ => Common.matrixCoeff
       ((interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)) k n') := by
@@ -108,7 +108,7 @@ an `L`-prefixed `nestedVertexOperatorComp`. The diagonal expectation formula red
 a finite sum of continuous matrix coefficients. -/
 private theorem finiteGibbsExpectation_continuous_comp_nestedVertexOperatorComp
     (ε : Mode → ℝ) (β : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode)
-    (L : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (L : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     Continuous (fun τ : Fin n → ℝ =>
       Common.finiteGibbsExpectation (fermionEnergy ε) β
         (L.comp (nestedVertexOperatorComp ε n q τ))) := by
@@ -121,7 +121,7 @@ private theorem finiteGibbsExpectation_continuous_comp_nestedVertexOperatorComp
 `L`-prefixed nested vertex product. The finite diagonal calculation above remains private proof machinery. -/
 theorem continuous_freeGibbsDensityOperator_expectation_comp_nestedVertexOperatorComp
     (ε : Mode → ℝ) (β : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode)
-    (L : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (L : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     Continuous (fun τ : Fin n → ℝ =>
       (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperator
@@ -145,7 +145,7 @@ theorem nestedVertexOperatorComp_cons (ε : Mode → ℝ) (n : ℕ) (q0 : Quarti
 
 omit [LinearOrder Mode] in
 private theorem finiteGibbsExpectation_neg_apply (ε : Mode → ℝ) (β : ℝ)
-    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     Common.finiteGibbsExpectation (fermionEnergy ε) β (-A) =
       -Common.finiteGibbsExpectation (fermionEnergy ε) β A := by
   change (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) (-A) =
@@ -154,7 +154,7 @@ private theorem finiteGibbsExpectation_neg_apply (ε : Mode → ℝ) (β : ℝ)
 
 omit [LinearOrder Mode] in
 private theorem finiteGibbsExpectation_smul_apply (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
-    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     Common.finiteGibbsExpectation (fermionEnergy ε) β (c • A) =
       c * Common.finiteGibbsExpectation (fermionEnergy ε) β A := by
   change (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) (c • A) =
@@ -163,7 +163,7 @@ private theorem finiteGibbsExpectation_smul_apply (ε : Mode → ℝ) (β : ℝ)
 
 omit [LinearOrder Mode] in
 private theorem finiteGibbsExpectation_fintype_sum {ι : Type*} [Fintype ι]
-    (ε : Mode → ℝ) (β : ℝ) (F : ι → FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (ε : Mode → ℝ) (β : ℝ) (F : ι → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     Common.finiteGibbsExpectation (fermionEnergy ε) β (∑ i, F i) =
       ∑ i, Common.finiteGibbsExpectation (fermionEnergy ε) β (F i) := by
   change (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) (∑ i, F i) = _
@@ -179,7 +179,7 @@ recursion's own integration variable `σ`) is exactly an instance of the same st
 than requiring a separate lemma for non-`β` bounds. -/
 private theorem finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) :
-    ∀ (n : ℕ) (t : ℝ) (L : FockSpace Mode →ₗ[ℂ] FockSpace Mode),
+    ∀ (n : ℕ) (t : ℝ) (L : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode),
       Common.finiteGibbsExpectation (fermionEnergy ε) β (L.comp (Common.dysonCoeff (fermionEnergy ε) (quarticInteraction g) n t)) =
         (-1 : ℂ) ^ n * ∑ q : Fin n → QuarticVertexLabel Mode,
           (∏ i, g (q i)) * intervalIntegral.orderedSimplexIntegral n t
@@ -319,7 +319,7 @@ private theorem finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction (ε : 
 expectation. The finite Gibbs induction above is private proof machinery. -/
 theorem freeGibbsDensityOperator_expectation_comp_dysonCoeff_quarticInteraction
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
-    ∀ (n : ℕ) (t : ℝ) (L : FockSpace Mode →ₗ[ℂ] FockSpace Mode),
+    ∀ (n : ℕ) (t : ℝ) (L : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode),
       (freeGibbsDensityOperator ε β).expectation
           (Common.finiteHilbertOperator
             (L.comp (Common.dysonCoeff (fermionEnergy ε) (quarticInteraction g) n t))) =

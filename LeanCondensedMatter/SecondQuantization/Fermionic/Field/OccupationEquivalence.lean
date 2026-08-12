@@ -29,7 +29,7 @@ finite-particle Fock space.
 The map sends the occupation basis state indexed by `n : Finset Mode` to the corresponding exterior
 basis vector `b.ExteriorAlgebra n`. -/
 noncomputable def occupationEquiv (b : Module.Basis Mode ℂ 𝓗₁) :
-    FockSpace Mode ≃ₗ[ℂ] FiniteParticleFock 𝓗₁ :=
+    OccupationFock Mode ≃ₗ[ℂ] AlgebraicFock 𝓗₁ :=
   (b.ExteriorAlgebra).repr.symm
 
 /-- Occupation basis vectors become the exterior-algebra basis vectors induced by `b`. -/
@@ -49,14 +49,14 @@ theorem occupationEquiv_symm_exteriorBasis
 /-- Taking exterior-basis coordinates after transporting an occupation state recovers that state. -/
 @[simp]
 theorem exteriorBasis_repr_occupationEquiv
-    (b : Module.Basis Mode ℂ 𝓗₁) (Ψ : FockSpace Mode) :
+    (b : Module.Basis Mode ℂ 𝓗₁) (Ψ : OccupationFock Mode) :
     (b.ExteriorAlgebra).repr (occupationEquiv b Ψ) = Ψ := by
   exact (b.ExteriorAlgebra).repr.apply_symm_apply Ψ
 
 /-- The inverse transport is exactly the coordinate map in the induced exterior basis. -/
 @[simp]
 theorem occupationEquiv_symm_apply
-    (b : Module.Basis Mode ℂ 𝓗₁) (Ψ : FiniteParticleFock 𝓗₁) :
+    (b : Module.Basis Mode ℂ 𝓗₁) (Ψ : AlgebraicFock 𝓗₁) :
     (occupationEquiv b).symm Ψ = (b.ExteriorAlgebra).repr Ψ :=
   rfl
 
@@ -64,16 +64,16 @@ theorem occupationEquiv_symm_apply
 one-particle basis. -/
 noncomputable def occupationConjugate
     (b : Module.Basis Mode ℂ 𝓗₁)
-    (A : FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    (A : AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) :
+    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   (occupationEquiv b).symm.toLinearMap.comp
     (A.comp (occupationEquiv b).toLinearMap)
 
 @[simp]
 theorem occupationEquiv_occupationConjugate_apply
     (b : Module.Basis Mode ℂ 𝓗₁)
-    (A : FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁)
-    (Ψ : FockSpace Mode) :
+    (A : AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁)
+    (Ψ : OccupationFock Mode) :
     occupationEquiv b (occupationConjugate b A Ψ) = A (occupationEquiv b Ψ) := by
   change
     occupationEquiv b

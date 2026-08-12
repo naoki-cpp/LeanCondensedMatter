@@ -24,12 +24,12 @@ variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 /-- Second quantization vanishes on every scalar (zero-particle) state. -/
 @[simp]
 theorem dGamma_algebraMap (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) (c : ℂ) :
-    dGamma 𝓗₁ T (algebraMap ℂ (FiniteParticleFock 𝓗₁) c) = 0 := by
+    dGamma 𝓗₁ T (algebraMap ℂ (AlgebraicFock 𝓗₁) c) = 0 := by
   simpa [dGamma] using
     (CliffordAlgebra.foldr'_algebraMap
       (Q := (0 : QuadraticForm ℂ 𝓗₁))
       (secondQuantizationStep 𝓗₁ T) (secondQuantizationStep_fold_condition 𝓗₁ T)
-      (0 : FiniteParticleFock 𝓗₁) c)
+      (0 : AlgebraicFock 𝓗₁) c)
 
 /-- The zero one-particle operator second-quantizes to the zero Fock-space operator. -/
 @[simp]
@@ -84,7 +84,7 @@ theorem dGamma_smul (c : ℂ) (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
 spaces. -/
 noncomputable def dGammaLinear :
     (𝓗₁ →ₗ[ℂ] 𝓗₁) →ₗ[ℂ]
-      (FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁) where
+      (AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) where
   toFun := dGamma 𝓗₁
   map_add' := dGamma_add 𝓗₁
   map_smul' := dGamma_smul 𝓗₁

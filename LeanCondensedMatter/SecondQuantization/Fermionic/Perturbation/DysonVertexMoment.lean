@@ -19,7 +19,7 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- The normalized fermionic Dyson partition coefficient. -/
 noncomputable def normalizedDysonPartitionCoeff (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ) : ℂ :=
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) : ℂ :=
   dysonPartitionCoeff ε β V n / freePartitionFunction ε β
 
 omit [LinearOrder Mode] in
@@ -27,7 +27,7 @@ omit [LinearOrder Mode] in
 bare Dyson coefficient. This bridge is owned at the perturbative moment layer so diagrammatic
 callers do not need to unfold occupation-basis Gibbs formulas. -/
 theorem normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation
-    (ε : Mode → ℝ) (β : ℝ) (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ) :
+    (ε : Mode → ℝ) (β : ℝ) (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) :
     normalizedDysonPartitionCoeff ε β V n =
       (freeGibbsDensityOperator ε β).expectation
         (Common.finiteHilbertOperator (Common.dysonCoeff (fermionEnergy ε) V n β)) := by
@@ -48,14 +48,14 @@ theorem normalizedDysonPartitionCoeff_eq_freeGibbsDensityOperator_expectation
 omit [LinearOrder Mode] in
 @[simp]
 theorem normalizedDysonPartitionCoeff_zero (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     normalizedDysonPartitionCoeff ε β V 0 = 1 := by
   rw [normalizedDysonPartitionCoeff, dysonPartitionCoeff_zero,
     div_self (freePartitionFunction_ne_zero ε β)]
 
 /-- The factorial-normalized Dyson vertex moment on a finite vertex set. -/
 noncomputable def dysonVertexMoment {α : Type*} (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (S : Finset α) : ℂ :=
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (S : Finset α) : ℂ :=
   (S.card.factorial : ℂ) * normalizedDysonPartitionCoeff ε β V S.card
 
 omit [LinearOrder Mode] in
@@ -63,7 +63,7 @@ omit [LinearOrder Mode] in
 expectation of the bare Dyson coefficient at the corresponding order. -/
 theorem dysonVertexMoment_eq_freeGibbsDensityOperator_expectation
     {α : Type*} (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (S : Finset α) :
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (S : Finset α) :
     dysonVertexMoment ε β V S =
       (S.card.factorial : ℂ) *
         (freeGibbsDensityOperator ε β).expectation
@@ -75,14 +75,14 @@ theorem dysonVertexMoment_eq_freeGibbsDensityOperator_expectation
 omit [LinearOrder Mode] in
 @[simp]
 theorem dysonVertexMoment_empty {α : Type*} (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     dysonVertexMoment ε β V (∅ : Finset α) = 1 := by
   classical
   simp [dysonVertexMoment]
 
 /-- The finite-set cumulant of the Dyson vertex moment. -/
 noncomputable def dysonVertexCumulant {α : Type*} [DecidableEq α] (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (S : Finset α) : ℂ :=
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (S : Finset α) : ℂ :=
   Finpartition.cumulantFromMoment (dysonVertexMoment ε β V) S
 
 end Fermionic

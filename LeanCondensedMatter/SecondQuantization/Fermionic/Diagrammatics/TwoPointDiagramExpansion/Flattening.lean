@@ -23,7 +23,7 @@ variable {Mode : Type*} [LinearOrder Mode]
 /-- The atomic operator list contributed by one time-ordered external or quartic interaction event. -/
 noncomputable def twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    TwoPointTimedEvent n → List (FockSpace Mode →ₗ[ℂ] FockSpace Mode)
+    TwoPointTimedEvent n → List (OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
   | .inl e =>
       [externalFieldOperator ε (twoPointExternalTimes τ τ' e) (twoPointExternalLabels i j e)]
   | .inr v =>
@@ -59,7 +59,7 @@ theorem twoPointTimedEventAtomicOperators_length {n : ℕ} (ε : Mode → ℝ) (
   cases event <;> simp [twoPointTimedEventAtomicArity]
 
 omit [LinearOrder Mode] in
-private theorem prodComp_singleton (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+private theorem prodComp_singleton (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     Common.prodComp [A] = A := by
   rw [Common.prodComp_cons, Common.prodComp_nil, LinearMap.comp_id]
 
@@ -87,7 +87,7 @@ theorem prodComp_twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → ℝ)
 /-- The complete atomic operator list in mixed imaginary-time order. -/
 noncomputable def mixedTimeOrderedAtomicOperators {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
-    List (FockSpace Mode →ₗ[ℂ] FockSpace Mode) :=
+    List (OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :=
   (orderedTwoPointTimedEvents τ τ' σ).flatMap
     (twoPointTimedEventAtomicOperators ε i j τ τ' q σ)
 

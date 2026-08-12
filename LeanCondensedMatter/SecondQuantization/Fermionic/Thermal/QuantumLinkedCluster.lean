@@ -105,7 +105,7 @@ otherwise, the simultaneous-occupation observable `∏ᵢ∈S nᵢ`. Diagonal by
 (`occupationProjector_comm`), without needing a `CommMonoid` structure on `FockSpace Mode
 →ₗ[ℂ] FockSpace Mode` under composition. -/
 noncomputable def occupationProjector (S : Finset Mode) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.diagonalOperator fun n : Occupation Mode => if S ⊆ n then 1 else 0
 
 omit [LinearOrder Mode] [Fintype Mode] in

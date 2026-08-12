@@ -99,14 +99,20 @@ boundary is checked by `scripts/check_second_quantization_mode_boundary.py`.
 
 ## Fermionic line
 
-The canonical algebraic names are:
+The canonical algebraic names distinguish the two uncompleted representations explicitly:
 
 ```lean
 Fermionic.Occupation
-Fermionic.FockSpace
+Fermionic.OccupationFock
+Fermionic.AlgebraicFock
 Fermionic.vacuum
 Fermionic.particleNumber
 ```
+
+`OccupationFock Mode` is the free vector space on finite occupation subsets of a chosen mode type.
+`AlgebraicFock 𝓗₁` is the basis-independent exterior algebra of the one-particle space. A chosen
+one-particle basis gives the explicit `Field.occupationEquiv` between them. Neither name denotes the
+completed `ℓ²` representation.
 
 The finite-mode fermionic API includes:
 

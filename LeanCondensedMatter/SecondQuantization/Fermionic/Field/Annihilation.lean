@@ -30,7 +30,7 @@ variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
 /-- Algebraic annihilation by a linear functional, implemented as left contraction. -/
 noncomputable def annihilateDual (d : Module.Dual ℂ 𝓗₁) :
-    FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁ :=
+    AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁ :=
   CliffordAlgebra.contractLeft d
 
 /-- Algebraic annihilation is linear in the dual vector. -/
@@ -58,13 +58,13 @@ theorem annihilateDual_vacuum (d : Module.Dual ℂ 𝓗₁) :
 @[simp]
 theorem annihilateDual_oneParticle (d : Module.Dual ℂ 𝓗₁) (f : 𝓗₁) :
     annihilateDual 𝓗₁ d (oneParticle 𝓗₁ f) =
-      algebraMap ℂ (FiniteParticleFock 𝓗₁) (d f) := by
+      algebraMap ℂ (AlgebraicFock 𝓗₁) (d f) := by
   simpa [annihilateDual, oneParticle] using
     (CliffordAlgebra.contractLeft_ι (0 : QuadraticForm ℂ 𝓗₁) d f)
 
 /-- Contraction through one created particle: the algebraic mixed-CAR identity. -/
 theorem annihilateDual_create_apply (d : Module.Dual ℂ 𝓗₁) (g : 𝓗₁)
-    (Ψ : FiniteParticleFock 𝓗₁) :
+    (Ψ : AlgebraicFock 𝓗₁) :
     annihilateDual 𝓗₁ d (create 𝓗₁ g Ψ) =
       d g • Ψ - create 𝓗₁ g (annihilateDual 𝓗₁ d Ψ) := by
   simpa only [annihilateDual, create_apply, oneParticle] using
@@ -95,7 +95,7 @@ theorem annihilateDual_comp_self (d : Module.Dual ℂ 𝓗₁) :
 theorem annihilateDual_comp_create_add_swap (d : Module.Dual ℂ 𝓗₁) (g : 𝓗₁) :
     (annihilateDual 𝓗₁ d).comp (create 𝓗₁ g) +
       (create 𝓗₁ g).comp (annihilateDual 𝓗₁ d) =
-        d g • (LinearMap.id : FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁) := by
+        d g • (LinearMap.id : AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) := by
   apply LinearMap.ext
   intro Ψ
   simp only [LinearMap.add_apply, LinearMap.comp_apply, LinearMap.smul_apply,
@@ -136,7 +136,7 @@ theorem innerDual_smul (c : ℂ) (f : 𝓗₁) :
 
 /-- The smeared annihilation operator `a(f)`, defined by contraction with `g ↦ inner ℂ f g`. -/
 noncomputable def annihilate (f : 𝓗₁) :
-    FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁ :=
+    AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁ :=
   annihilateDual 𝓗₁ (innerDual 𝓗₁ f)
 
 /-- Smeared annihilation is additive in the smearing vector. -/
@@ -163,7 +163,7 @@ theorem annihilate_vacuum (f : 𝓗₁) :
 @[simp]
 theorem annihilate_oneParticle (f g : 𝓗₁) :
     annihilate 𝓗₁ f (oneParticle 𝓗₁ g) =
-      algebraMap ℂ (FiniteParticleFock 𝓗₁) (inner ℂ f g) := by
+      algebraMap ℂ (AlgebraicFock 𝓗₁) (inner ℂ f g) := by
   simpa [annihilate] using annihilateDual_oneParticle 𝓗₁ (innerDual 𝓗₁ f) g
 
 /-- The annihilation-annihilation smeared CAR. -/
@@ -184,7 +184,7 @@ theorem annihilate_comp_create_add_swap (f g : 𝓗₁) :
     (annihilate 𝓗₁ f).comp (create 𝓗₁ g) +
       (create 𝓗₁ g).comp (annihilate 𝓗₁ f) =
         inner ℂ f g •
-          (LinearMap.id : FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁) := by
+          (LinearMap.id : AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) := by
   simpa [annihilate] using
     annihilateDual_comp_create_add_swap 𝓗₁ (innerDual 𝓗₁ f) g
 

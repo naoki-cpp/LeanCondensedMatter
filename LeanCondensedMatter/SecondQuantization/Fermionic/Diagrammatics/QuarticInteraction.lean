@@ -29,17 +29,17 @@ abbrev QuarticVertexLabel (Mode : Type*) := Common.QuarticVertexLabel Mode
 
 /-- **The quartic vertex operator**, in the fixed creation-creation-annihilation-annihilation order. -/
 noncomputable def quarticVertexOperator (q : QuarticVertexLabel Mode) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.quarticVertexOperator create annihilate q
 
 /-- A fermionic quartic interaction supported on a finite set of vertex labels. -/
 noncomputable def quarticInteractionOn (support : Finset (QuarticVertexLabel Mode))
-    (g : QuarticVertexLabel Mode → ℂ) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    (g : QuarticVertexLabel Mode → ℂ) : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.quarticInteractionOn support create annihilate g
 
 /-- **The all-label quartic interaction** on a finite mode type. -/
 noncomputable def quarticInteraction [Fintype Mode] (g : QuarticVertexLabel Mode → ℂ) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.quarticInteraction create annihilate g
 
 /-- **A single quartic vertex's interaction-picture expansion** with the total free-energy shift. -/

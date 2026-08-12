@@ -38,7 +38,7 @@ variable {𝓗₁ : Type*} [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 /-- Conjugation by the occupation/exterior equivalence preserves composition. -/
 theorem occupationConjugate_comp
     (b : Module.Basis Mode ℂ 𝓗₁)
-    (A B : FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁) :
+    (A B : AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) :
     occupationConjugate b (A.comp B) =
       (occupationConjugate b A).comp (occupationConjugate b B) := by
   apply LinearMap.ext

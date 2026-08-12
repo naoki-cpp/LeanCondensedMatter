@@ -26,14 +26,14 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- The interacting partition function normalized by its free value. -/
 noncomputable def normalizedAnalyticDysonPartitionFunction (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (lam : ℂ) : ℂ :=
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (lam : ℂ) : ℂ :=
   ((freePartitionFunction ε β)⁻¹ • analyticDysonPartitionFunction ε β V) lam
 
 omit [LinearOrder Mode] in
 @[simp]
 theorem normalizedAnalyticDysonPartitionFunction_zero
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     normalizedAnalyticDysonPartitionFunction ε β V 0 = 1 := by
   change (freePartitionFunction ε β)⁻¹ *
     analyticDysonPartitionFunction ε β V 0 = 1
@@ -44,7 +44,7 @@ omit [LinearOrder Mode] in
 /-- The normalized partition function is analytic at zero coupling. -/
 theorem analyticAt_normalizedAnalyticDysonPartitionFunction_zero
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     AnalyticAt ℂ (normalizedAnalyticDysonPartitionFunction ε β V) 0 := by
   change AnalyticAt ℂ
     ((freePartitionFunction ε β)⁻¹ • analyticDysonPartitionFunction ε β V) 0
@@ -52,7 +52,7 @@ theorem analyticAt_normalizedAnalyticDysonPartitionFunction_zero
 
 /-- The Taylor series of the normalized partition function, obtained by scaling the Dyson series. -/
 noncomputable def normalizedDysonPartitionFPowerSeries (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     FormalMultilinearSeries ℂ ℂ ℂ :=
   (freePartitionFunction ε β)⁻¹ • dysonPartitionFPowerSeries ε β V
 
@@ -60,7 +60,7 @@ omit [LinearOrder Mode] in
 /-- The normalized analytic partition function has the scaled Dyson series as its Taylor series. -/
 theorem hasFPowerSeriesAt_normalizedAnalyticDysonPartitionFunction
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     HasFPowerSeriesAt (normalizedAnalyticDysonPartitionFunction ε β V)
       (normalizedDysonPartitionFPowerSeries ε β V) 0 := by
   change HasFPowerSeriesAt
@@ -72,7 +72,7 @@ omit [LinearOrder Mode] in
 /-- The analytic normalized-series coefficient agrees with the existing formal normalization. -/
 theorem coeff_normalizedDysonPartitionFPowerSeries_eq_formal
     (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ) :
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) :
     (normalizedDysonPartitionFPowerSeries ε β V).coeff n =
       PowerSeries.coeff n
         (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) := by
@@ -89,14 +89,14 @@ theorem coeff_normalizedDysonPartitionFPowerSeries_eq_formal
 The principal complex logarithm is analytic at the base value `1`, so this is the branch selected
 near zero coupling. -/
 noncomputable def analyticNormalizedLogPartitionFunction (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (lam : ℂ) : ℂ :=
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (lam : ℂ) : ℂ :=
   Complex.log (normalizedAnalyticDysonPartitionFunction ε β V lam)
 
 omit [LinearOrder Mode] in
 @[simp]
 theorem analyticNormalizedLogPartitionFunction_zero
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     analyticNormalizedLogPartitionFunction ε β V 0 = 0 := by
   rw [analyticNormalizedLogPartitionFunction,
     normalizedAnalyticDysonPartitionFunction_zero ε hβ V]
@@ -106,7 +106,7 @@ omit [LinearOrder Mode] in
 /-- The selected logarithm branch is analytic at zero coupling. -/
 theorem analyticAt_analyticNormalizedLogPartitionFunction_zero
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     AnalyticAt ℂ (analyticNormalizedLogPartitionFunction ε β V) 0 := by
   change AnalyticAt ℂ
     (fun z => Complex.log (normalizedAnalyticDysonPartitionFunction ε β V z)) 0
@@ -120,7 +120,7 @@ noncomputable def complexLogFPowerSeriesAtOne : FormalMultilinearSeries ℂ ℂ 
 /-- The Taylor series obtained by composing the logarithm series with the normalized partition
 series. -/
 noncomputable def analyticNormalizedLogFPowerSeries (ε : Mode → ℝ) (β : ℝ)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     FormalMultilinearSeries ℂ ℂ ℂ :=
   complexLogFPowerSeriesAtOne.comp (normalizedDysonPartitionFPowerSeries ε β V)
 
@@ -128,7 +128,7 @@ omit [LinearOrder Mode] in
 /-- The local analytic logarithm is represented by the composed Taylor series. -/
 theorem hasFPowerSeriesAt_analyticNormalizedLogPartitionFunction
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     HasFPowerSeriesAt (analyticNormalizedLogPartitionFunction ε β V)
       (analyticNormalizedLogFPowerSeries ε β V) 0 := by
   have hlog : HasFPowerSeriesAt Complex.log complexLogFPowerSeriesAtOne
@@ -147,7 +147,7 @@ omit [LinearOrder Mode] in
 composed Taylor series. -/
 theorem iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_coeff
     (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β)
-    (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (n : ℕ) :
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) :
     iteratedDeriv n (analyticNormalizedLogPartitionFunction ε β V) 0 =
       (n.factorial : ℂ) * (analyticNormalizedLogFPowerSeries ε β V).coeff n := by
   have hcanonical :=

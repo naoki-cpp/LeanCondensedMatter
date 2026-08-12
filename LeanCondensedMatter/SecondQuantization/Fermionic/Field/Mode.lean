@@ -27,16 +27,16 @@ variable [NormedAddCommGroup 𝓗₁] [InnerProductSpace ℂ 𝓗₁]
 
 /-- Creation in mode `i`, obtained by smearing with the corresponding one-particle vector. -/
 noncomputable def modeCreate (e : Mode → 𝓗₁) (i : Mode) :
-    FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁ :=
+    AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁ :=
   create 𝓗₁ (e i)
 
 /-- Annihilation in mode `i`, obtained by smearing with the corresponding one-particle vector. -/
 noncomputable def modeAnnihilate (e : Mode → 𝓗₁) (i : Mode) :
-    FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁ :=
+    AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁ :=
   annihilate 𝓗₁ (e i)
 
 @[simp]
-theorem modeCreate_apply (e : Mode → 𝓗₁) (i : Mode) (Ψ : FiniteParticleFock 𝓗₁) :
+theorem modeCreate_apply (e : Mode → 𝓗₁) (i : Mode) (Ψ : AlgebraicFock 𝓗₁) :
     modeCreate e i Ψ = oneParticle 𝓗₁ (e i) * Ψ :=
   rfl
 
@@ -64,7 +64,7 @@ theorem modeAnnihilate_comp_modeCreate_add_swap [DecidableEq Mode]
     (modeAnnihilate e i).comp (modeCreate e j) +
       (modeCreate e j).comp (modeAnnihilate e i) =
         (if i = j then (1 : ℂ) else 0) •
-          (LinearMap.id : FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁) := by
+          (LinearMap.id : AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) := by
   rw [modeAnnihilate, modeCreate, annihilate_comp_create_add_swap]
   rw [(orthonormal_iff_ite.mp he) i j]
 
@@ -74,7 +74,7 @@ theorem modeAnnihilate_comp_modeCreate_add_self
     {e : Mode → 𝓗₁} (he : Orthonormal ℂ e) (i : Mode) :
     (modeAnnihilate e i).comp (modeCreate e i) +
       (modeCreate e i).comp (modeAnnihilate e i) =
-        (LinearMap.id : FiniteParticleFock 𝓗₁ →ₗ[ℂ] FiniteParticleFock 𝓗₁) := by
+        (LinearMap.id : AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) := by
   classical
   simpa using modeAnnihilate_comp_modeCreate_add_swap he i i
 

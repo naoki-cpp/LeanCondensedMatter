@@ -26,10 +26,10 @@ variable {Mode : Type*} [LinearOrder Mode]
 
 /-- **The single-mode number operator** `Nᵢ := aᵢ† aᵢ`. -/
 noncomputable def numberOperator (i : Mode) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   (create i).comp (annihilate i)
 
-theorem numberOperator_apply (i : Mode) (x : FockSpace Mode) :
+theorem numberOperator_apply (i : Mode) (x : OccupationFock Mode) :
     numberOperator i x = create i (annihilate i x) :=
   rfl
 
@@ -55,7 +55,7 @@ instance of `Common.exchangeCommutator_annihilate_create_self`, via the fermioni
 fields are literally `Fermionic.annihilate`/`create`. -/
 theorem exchangeCommutator_annihilate_create_self (i : Mode) :
     Common.exchangeCommutator Common.Statistics.fermion (annihilate i) (create i) =
-      (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :=
+      (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :=
   Common.exchangeCommutator_annihilate_create_self (Config := Occupation Mode) i
 
 /-- **`c_i c_i† = id - N_i`**, an instance of `Common.annihilate_comp_create_self`. -/
@@ -90,7 +90,7 @@ theorem annihilate_comp_create_comp_self (i : Mode) :
 together with `Nᵢ = cᵢ† cᵢ` by definition. -/
 theorem annihilate_comp_create_add_create_comp_annihilate (i : Mode) :
     (annihilate i).comp (create i) + (create i).comp (annihilate i) =
-      (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
+      (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) := by
   rw [annihilate_comp_create_self, show (create i).comp (annihilate i) = numberOperator i from rfl]
   abel
 

@@ -24,7 +24,7 @@ variable {Mode : Type*} [LinearOrder Mode]
 
 /-- The imaginary-time evolved operator represented by an external field label. -/
 noncomputable def externalFieldOperator (ε : Mode → ℝ) (τ : ℝ) :
-    ExternalFieldLabel Mode → FockSpace Mode →ₗ[ℂ] FockSpace Mode
+    ExternalFieldLabel Mode → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode
   | .annihilation i => imaginaryTimeEvolve ε τ (annihilate i)
   | .creation i => imaginaryTimeEvolve ε τ (create i)
 
@@ -53,7 +53,7 @@ theorem externalFieldOperator_creation_eq_smul (ε : Mode → ℝ) (τ : ℝ) (i
 /-- Fermionic time ordering of two labelled external fields. -/
 noncomputable def timeOrderedExternalFields (ε : Mode → ℝ)
     (A B : ExternalFieldLabel Mode) (τA τB : ℝ) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
+    OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.timeOrderedProduct Common.Statistics.fermion
     (externalFieldOperator ε τA A) (externalFieldOperator ε τB B) τA τB
 

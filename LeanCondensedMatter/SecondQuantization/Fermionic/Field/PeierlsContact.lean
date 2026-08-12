@@ -89,16 +89,16 @@ end LocallyFiniteHopping
 /-- Peierls-dependent current after algebraic second quantization. -/
 noncomputable def peierlsBondCurrentFock (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) (A : ℂ) :
-    FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site) :=
+    AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site) :=
   dGamma (LatticeState Site) (K.peierlsBondCurrentOperator ℏ q x y A)
 
 /-- Many-particle contact operator obtained by second-quantizing the one-particle current
 variation. -/
 noncomputable def bondContact (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) :
-    FiniteParticleFock (LatticeState Site) →ₗ[ℂ]
-      FiniteParticleFock (LatticeState Site) :=
+    AlgebraicFock (LatticeState Site) →ₗ[ℂ]
+      AlgebraicFock (LatticeState Site) :=
   dGamma (LatticeState Site) (K.oneParticleBondContact ℏ q x y)
 
 /-- The Peierls current family agrees with the existing bond current at zero source. -/

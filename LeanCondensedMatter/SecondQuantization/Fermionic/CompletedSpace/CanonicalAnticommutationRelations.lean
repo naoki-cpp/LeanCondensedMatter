@@ -39,27 +39,27 @@ omit [LinearOrder Mode] in
 finite-support algebraic core. -/
 private theorem continuousLinearMap_ext_algebraicCore
     {A B : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode}
-    (h : ∀ x : FockSpace Mode, A (algebraicToCompleted x) = B (algebraicToCompleted x)) :
+    (h : ∀ x : OccupationFock Mode, A (algebraicToCompleted x) = B (algebraicToCompleted x)) :
     A = B := by
   apply DFunLike.ext'
   exact (map_continuous A).ext_on algebraicToCompleted_denseRange (map_continuous B) <| by
     rintro _ ⟨x, rfl⟩
     exact h x
 
-private theorem completedCreate_algebraicToCompleted (i : Mode) (x : FockSpace Mode) :
+private theorem completedCreate_algebraicToCompleted (i : Mode) (x : OccupationFock Mode) :
     completedCreate i (algebraicToCompleted x) = algebraicToCompleted (create i x) := by
   change (completedCreate i).toLinearMap (algebraicToCompleted x) =
     algebraicToCompleted (create i x)
   simpa only [LinearMap.comp_apply] using
-    congrArg (fun f : FockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode => f x)
+    congrArg (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode => f x)
       (completedCreate_comp_algebraicToCompleted i)
 
-private theorem completedAnnihilate_algebraicToCompleted (i : Mode) (x : FockSpace Mode) :
+private theorem completedAnnihilate_algebraicToCompleted (i : Mode) (x : OccupationFock Mode) :
     completedAnnihilate i (algebraicToCompleted x) = algebraicToCompleted (annihilate i x) := by
   change (completedAnnihilate i).toLinearMap (algebraicToCompleted x) =
     algebraicToCompleted (annihilate i x)
   simpa only [LinearMap.comp_apply] using
-    congrArg (fun f : FockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode => f x)
+    congrArg (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode => f x)
       (completedAnnihilate_comp_algebraicToCompleted i)
 
 /-- Completed creation operators anticommute. -/
@@ -73,7 +73,7 @@ theorem completedAnticomm_create_create (i j : Mode) :
     completedCreate_algebraicToCompleted i x,
     completedCreate_algebraicToCompleted j (create i x), ← map_add]
   have hcar : create i (create j x) + create j (create i x) = 0 := by
-    have h := congrArg (fun f : FockSpace Mode →ₗ[ℂ] FockSpace Mode => f x)
+    have h := congrArg (fun f : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode => f x)
       (anticomm_create_create i j)
     simpa [anticomm_apply] using h
   rw [hcar, map_zero]
@@ -90,7 +90,7 @@ theorem completedAnticomm_annihilate_annihilate (i j : Mode) :
     completedAnnihilate_algebraicToCompleted i x,
     completedAnnihilate_algebraicToCompleted j (annihilate i x), ← map_add]
   have hcar : annihilate i (annihilate j x) + annihilate j (annihilate i x) = 0 := by
-    have h := congrArg (fun f : FockSpace Mode →ₗ[ℂ] FockSpace Mode => f x)
+    have h := congrArg (fun f : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode => f x)
       (anticomm_annihilate_annihilate i j)
     simpa [anticomm_apply] using h
   rw [hcar, map_zero]
@@ -109,7 +109,7 @@ theorem completedAnticomm_annihilate_create (i j : Mode) :
     completedCreate_algebraicToCompleted j (annihilate i x), ← map_add]
   have hcar :
       annihilate i (create j x) + create j (annihilate i x) = if i = j then x else 0 := by
-    have h := congrArg (fun f : FockSpace Mode →ₗ[ℂ] FockSpace Mode => f x)
+    have h := congrArg (fun f : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode => f x)
       (anticomm_annihilate_create i j)
     by_cases hij : i = j
     · simpa [anticomm_apply, hij] using h

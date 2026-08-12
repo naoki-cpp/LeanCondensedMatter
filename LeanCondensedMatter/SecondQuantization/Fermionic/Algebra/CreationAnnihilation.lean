@@ -40,22 +40,22 @@ theorem fermionSign_vacuum (i : Mode) :
 
 /-- **Creation, on a basis state.** `0` if `i` is already occupied (Pauli exclusion); otherwise
 the signed basis state with `i` newly occupied. -/
-noncomputable def createBasis (i : Mode) (n : Occupation Mode) : FockSpace Mode :=
+noncomputable def createBasis (i : Mode) (n : Occupation Mode) : OccupationFock Mode :=
   if i ∈ n then 0 else (fermionSign i n : ℂ) • basisState (insertOccupation i n)
 
 /-- **Annihilation, on a basis state.** `0` if `i` is unoccupied; otherwise the signed basis
 state with `i` newly vacated. -/
 noncomputable def annihilateBasis (i : Mode) (n : Occupation Mode) :
-    FockSpace Mode :=
+    OccupationFock Mode :=
   if i ∈ n then (fermionSign i n : ℂ) • basisState (removeOccupation i n) else 0
 
 /-- **The creation operator** at mode `i`, extended linearly from `createBasis`. -/
-noncomputable def create (i : Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
-  Finsupp.lift (FockSpace Mode) ℂ (Occupation Mode) (createBasis i)
+noncomputable def create (i : Mode) : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
+  Finsupp.lift (OccupationFock Mode) ℂ (Occupation Mode) (createBasis i)
 
 /-- **The annihilation operator** at mode `i`, extended linearly from `annihilateBasis`. -/
-noncomputable def annihilate (i : Mode) : FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
-  Finsupp.lift (FockSpace Mode) ℂ (Occupation Mode) (annihilateBasis i)
+noncomputable def annihilate (i : Mode) : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
+  Finsupp.lift (OccupationFock Mode) ℂ (Occupation Mode) (annihilateBasis i)
 
 theorem create_basisState (i : Mode) (n : Occupation Mode) :
     create i (basisState n) = createBasis i n := by
@@ -96,14 +96,14 @@ theorem annihilate_basisState_of_mem {i : Mode} {n : Occupation Mode} (h : i ∈
 /-- **The vacuum cannot be annihilated at any mode.** -/
 @[simp]
 theorem annihilate_fockVacuum (i : Mode) :
-    annihilate i (fockVacuum : FockSpace Mode) = 0 :=
+    annihilate i (fockVacuum : OccupationFock Mode) = 0 :=
   annihilate_basisState_of_not_mem (Finset.notMem_empty i)
 
 /-- **Creating a particle in the vacuum** produces the single-particle basis state at mode `i`,
 with sign `1` (no modes precede an empty occupation). -/
 @[simp]
 theorem create_fockVacuum (i : Mode) :
-    create i (fockVacuum : FockSpace Mode) =
+    create i (fockVacuum : OccupationFock Mode) =
       basisState ({i} : Occupation Mode) := by
   have hnotmem : i ∉ (vacuum : Occupation Mode) := Finset.notMem_empty i
   rw [fockVacuum, create_basisState_of_not_mem hnotmem, fermionSign_vacuum, Int.cast_one,

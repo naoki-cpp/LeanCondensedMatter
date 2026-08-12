@@ -99,7 +99,7 @@ theorem freeGibbsDensityOperator_expectation_nestedVertexOperatorComp_eq_sum_pai
 
 omit [LinearOrder Mode] in
 private theorem finiteGibbsExpectation_smul_apply (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
-    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
+    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     Common.finiteGibbsExpectation (fermionEnergy ε) β (c • A) =
       c * Common.finiteGibbsExpectation (fermionEnergy ε) β A := by
   change (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) (c • A) =
