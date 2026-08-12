@@ -59,50 +59,14 @@ noncomputable local instance singleCycleKernelFullCycleFintype :
   Fintype.ofFinite _
 
 /-- On the full finite index type, the pure connected kernel is the direct sum over permutations
-that are a single cycle on the whole type. This exposes only the semantic predicate `IsCycleOn`;
-the private connected-object representation of W2 remains hidden. -/
+that are a single cycle on the whole type. This is the exchange-weight-one specialization of the
+generic connected-contribution endpoint owned by W2. -/
 theorem singleCycleKernelSum_univ_eq_sum_isCycleOn
     {R : Type*} [CommSemiring R] (K : α → α → R) :
     singleCycleKernelSum K univ =
       ∑ σ : {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)},
         ∏ i : α, K i (σ.1 i) := by
-  classical
-  let e :
-      {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)} ≃
-        {σ : Equiv.Perm α //
-          σ.support ⊆ (univ : Finset α) ∧
-            σ.IsCycleOn ((univ : Finset α) : Set α)} :=
-    { toFun := fun σ => ⟨σ.1, by
-        constructor
-        · simp
-        · simpa using σ.2⟩
-      invFun := fun σ => ⟨σ.1, by simpa using σ.2.2⟩
-      left_inv := fun σ => Subtype.ext rfl
-      right_inv := fun σ => Subtype.ext rfl }
-  rw [singleCycleKernelSum, singleCycleContribution,
-    MultiplicativeWeight.connectedContribution]
-  change
-    (∑ d : {σ : Equiv.Perm α //
-        σ.support ⊆ (univ : Finset α) ∧
-          σ.IsCycleOn ((univ : Finset α) : Set α)},
-      1 ^ ((univ : Finset α).card - 1) *
-        ∏ i : (univ : Finset α), K i (d.1 i)) = _
-  calc
-    (∑ d : {σ : Equiv.Perm α //
-        σ.support ⊆ (univ : Finset α) ∧
-          σ.IsCycleOn ((univ : Finset α) : Set α)},
-      1 ^ ((univ : Finset α).card - 1) *
-        ∏ i : (univ : Finset α), K i (d.1 i)) =
-      ∑ σ : {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)},
-        1 ^ ((univ : Finset α).card - 1) *
-          ∏ i : (univ : Finset α), K i ((e σ).1 i) := by
-      exact (Equiv.sum_comp e (fun d =>
-        1 ^ ((univ : Finset α).card - 1) *
-          ∏ i : (univ : Finset α), K i (d.1 i))).symm
-    _ = ∑ σ : {σ : Equiv.Perm α // σ.IsCycleOn (Set.univ : Set α)},
-        ∏ i : α, K i (σ.1 i) := by
-      apply Finset.sum_congr rfl
-      intro σ _
-      simp [e]
+  simpa [singleCycleKernelSum] using
+    (singleCycleContribution_univ_eq_sum_isCycleOn (α := α) (1 : R) K)
 
 end Combinatorics
