@@ -27,6 +27,9 @@ jobs:
       - name: Check fermionic algebraic Fock boundary
         run: python3 scripts/check_fermionic_algebraic_fock_boundary.py
 
+      - name: Check fermionic lattice boundary
+        run: python3 scripts/check_fermionic_lattice_boundary.py
+
       - name: Check single-particle dependency boundary
         run: python3 scripts/check_single_particle_architecture.py
 
