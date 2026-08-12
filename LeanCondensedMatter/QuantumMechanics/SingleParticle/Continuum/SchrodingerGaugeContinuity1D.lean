@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerGaugeCurrent1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerMinimalCoupling1D
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -6,18 +7,12 @@ set_option linter.style.header false
 /-!
 # Gauge-covariant Schrödinger continuity equation in one dimension
 
-This module extends the pointwise scalar-potential continuity equation to electromagnetic minimal
-coupling.  The vector potential and its spatial derivative are explicit theorem inputs.  No magnetic
-operator on `L²` or self-adjointness statement is introduced here.
+This module derives the pointwise electromagnetic probability and charge continuity equations from
+the minimal-coupling algebra in `SchrodingerMinimalCoupling1D` and the current in
+`SchrodingerGaugeCurrent1D`.
 
-For the convention
-
-`π_A = -iℏ ∂ₓ - q A`,
-
-we first expand `π_A² ψ`, including the derivative of `A`, and then derive the local probability and
-charge continuity equations from
-
-`iℏ ψₜ = (1 / (2m)) π_A² ψ + q φ ψ`.
+The vector potential and its spatial derivative are explicit theorem inputs. No magnetic operator on
+`L²` or self-adjointness statement is introduced here.
 -/
 
 namespace QuantumMechanics
@@ -26,88 +21,7 @@ namespace Continuum
 
 noncomputable section
 
-/-- The value obtained by differentiating `(-iℏ ∂ₓ - q A) ψ` once in space, with `Aₓ`, `ψₓ`, and
-`ψₓₓ` supplied explicitly. -/
-def kineticMomentumDerivativeValue1D
-    (q ℏ vectorPotential vectorPotentialDerivative : ℝ) (ψ ψx ψxx : ℂ) : ℂ :=
-  -(Complex.I * (ℏ : ℂ)) * ψxx -
-    ((q * vectorPotentialDerivative : ℝ) : ℂ) * ψ -
-    ((q * vectorPotential : ℝ) : ℂ) * ψx
-
-/-- Pointwise value of `(-iℏ ∂ₓ - q A)² ψ`, with the derivative of the first momentum value supplied
-by `kineticMomentumDerivativeValue1D`. -/
-def kineticMomentumSquaredValue1D
-    (q ℏ vectorPotential vectorPotentialDerivative : ℝ) (ψ ψx ψxx : ℂ) : ℂ :=
-  kineticMomentumValue1D q ℏ vectorPotential
-    (kineticMomentumValue1D q ℏ vectorPotential ψ ψx)
-    (kineticMomentumDerivativeValue1D q ℏ vectorPotential vectorPotentialDerivative ψ ψx ψxx)
-
-/-- Expanding the minimally coupled kinetic momentum square gives the Laplacian term, the two
-vector-potential derivative terms, and the `q² A²` term. -/
-theorem kineticMomentumSquaredValue1D_eq_expanded
-    (q ℏ vectorPotential vectorPotentialDerivative : ℝ) (ψ ψx ψxx : ℂ) :
-    kineticMomentumSquaredValue1D q ℏ vectorPotential vectorPotentialDerivative ψ ψx ψxx =
-      -((ℏ ^ 2 : ℝ) : ℂ) * ψxx +
-        Complex.I * ((q * ℏ * vectorPotentialDerivative : ℝ) : ℂ) * ψ +
-        2 * Complex.I * ((q * ℏ * vectorPotential : ℝ) : ℂ) * ψx +
-        ((q ^ 2 * vectorPotential ^ 2 : ℝ) : ℂ) * ψ := by
-  apply Complex.ext
-  · simp [kineticMomentumSquaredValue1D, kineticMomentumDerivativeValue1D,
-      kineticMomentumValue1D, pow_two]; ring
-  · simp [kineticMomentumSquaredValue1D, kineticMomentumDerivativeValue1D,
-      kineticMomentumValue1D, pow_two]; ring
-
-/-- The free kinetic coefficient `ℏ² / (2m)` occurring after minimal-coupling expansion. -/
-def electromagneticKineticCoefficient1D (ℏ mass : ℝ) : ℝ :=
-  ℏ ^ 2 / (2 * mass)
-
-/-- Coefficient of the `i A ψₓ` term in the expanded minimal-coupling Hamiltonian. -/
-def electromagneticVectorPotentialCoefficient1D
-    (q ℏ mass vectorPotential : ℝ) : ℝ :=
-  q * ℏ * vectorPotential / mass
-
-/-- Coefficient of the `i Aₓ ψ` term in the expanded minimal-coupling Hamiltonian. -/
-def electromagneticVectorPotentialDerivativeCoefficient1D
-    (q ℏ mass vectorPotentialDerivative : ℝ) : ℝ :=
-  q * ℏ * vectorPotentialDerivative / (2 * mass)
-
-/-- Real multiplication coefficient collecting the `A²` and scalar-potential terms. -/
-def electromagneticScalarCoefficient1D
-    (q mass vectorPotential scalarPotential : ℝ) : ℝ :=
-  q ^ 2 * vectorPotential ^ 2 / (2 * mass) + q * scalarPotential
-
-/-- The pointwise right-hand side of the minimally coupled Schrödinger equation
-`(1 / (2m)) π_A² ψ + q φ ψ`. -/
-def minimallyCoupledSchrodingerRhsValue1D
-    (q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential : ℝ)
-    (ψ ψx ψxx : ℂ) : ℂ :=
-  (((1 / (2 * mass) : ℝ) : ℂ) *
-      kineticMomentumSquaredValue1D q ℏ vectorPotential vectorPotentialDerivative ψ ψx ψxx) +
-    ((q * scalarPotential : ℝ) : ℂ) * ψ
-
-/-- Explicit expansion of the minimally coupled Schrödinger right-hand side. -/
-theorem minimallyCoupledSchrodingerRhsValue1D_eq_expanded
-    (q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential : ℝ)
-    (ψ ψx ψxx : ℂ) (hmass : mass ≠ 0) :
-    minimallyCoupledSchrodingerRhsValue1D
-        q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential ψ ψx ψxx =
-      -((electromagneticKineticCoefficient1D ℏ mass : ℝ) : ℂ) * ψxx +
-        Complex.I *
-          ((electromagneticVectorPotentialCoefficient1D q ℏ mass vectorPotential : ℝ) : ℂ) * ψx +
-        Complex.I *
-          ((electromagneticVectorPotentialDerivativeCoefficient1D
-            q ℏ mass vectorPotentialDerivative : ℝ) : ℂ) * ψ +
-        ((electromagneticScalarCoefficient1D q mass vectorPotential scalarPotential : ℝ) : ℂ) * ψ := by
-  have hmassC : (mass : ℂ) ≠ 0 := by
-    exact_mod_cast hmass
-  unfold minimallyCoupledSchrodingerRhsValue1D electromagneticKineticCoefficient1D
-    electromagneticVectorPotentialCoefficient1D
-    electromagneticVectorPotentialDerivativeCoefficient1D electromagneticScalarCoefficient1D
-  rw [kineticMomentumSquaredValue1D_eq_expanded]
-  push_cast
-  field_simp [hmassC]; ring
-
-/-- The value obtained by differentiating the electromagnetic probability current in space.  The
+/-- The value obtained by differentiating the electromagnetic probability current in space. The
 second term is the product-rule derivative of `A |ψ|²`. -/
 def electromagneticProbabilityCurrentDivergenceValue1D
     (q ℏ mass vectorPotential vectorPotentialDerivative : ℝ)
@@ -199,32 +113,42 @@ theorem electromagnetic_schrodinger_component_equations
         -(ℏ ^ 2 * ψxx.im) + 2 * q * ℏ * vectorPotential * ψx.re +
           q * ℏ * vectorPotentialDerivative * ψ.re +
           (q ^ 2 * vectorPotential ^ 2 + 2 * mass * q * scalarPotential) * ψ.im := by
-  rw [minimallyCoupledSchrodingerRhsValue1D_eq_expanded
-    q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential ψ ψx ψxx hmass]
-    at hschrodinger
+  let kineticCoefficient : ℝ := ℏ ^ 2 / (2 * mass)
+  let vectorPotentialCoefficient : ℝ := q * ℏ * vectorPotential / mass
+  let vectorPotentialDerivativeCoefficient : ℝ :=
+    q * ℏ * vectorPotentialDerivative / (2 * mass)
+  let scalarCoefficient : ℝ :=
+    q ^ 2 * vectorPotential ^ 2 / (2 * mass) + q * scalarPotential
+  have hexpanded :
+      minimallyCoupledSchrodingerRhsValue1D
+          q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential ψ ψx ψxx =
+        -((kineticCoefficient : ℝ) : ℂ) * ψxx +
+          Complex.I * ((vectorPotentialCoefficient : ℝ) : ℂ) * ψx +
+          Complex.I * ((vectorPotentialDerivativeCoefficient : ℝ) : ℂ) * ψ +
+          ((scalarCoefficient : ℝ) : ℂ) * ψ := by
+    simpa [kineticCoefficient, vectorPotentialCoefficient,
+      vectorPotentialDerivativeCoefficient, scalarCoefficient] using
+      (minimallyCoupledSchrodingerRhsValue1D_eq_expanded
+        q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential ψ ψx ψxx hmass)
+  rw [hexpanded] at hschrodinger
   have hreRaw := congrArg Complex.re hschrodinger
   have himRaw := congrArg Complex.im hschrodinger
   have hre :
       -(ℏ * ψt.im) =
-        -electromagneticKineticCoefficient1D ℏ mass * ψxx.re -
-          electromagneticVectorPotentialCoefficient1D q ℏ mass vectorPotential * ψx.im -
-          electromagneticVectorPotentialDerivativeCoefficient1D
-            q ℏ mass vectorPotentialDerivative * ψ.im +
-          electromagneticScalarCoefficient1D
-            q mass vectorPotential scalarPotential * ψ.re := by
+        -kineticCoefficient * ψxx.re -
+          vectorPotentialCoefficient * ψx.im -
+          vectorPotentialDerivativeCoefficient * ψ.im +
+          scalarCoefficient * ψ.re := by
     simpa [sub_eq_add_neg] using hreRaw
   have him :
       ℏ * ψt.re =
-        -electromagneticKineticCoefficient1D ℏ mass * ψxx.im +
-          electromagneticVectorPotentialCoefficient1D q ℏ mass vectorPotential * ψx.re +
-          electromagneticVectorPotentialDerivativeCoefficient1D
-            q ℏ mass vectorPotentialDerivative * ψ.re +
-          electromagneticScalarCoefficient1D
-            q mass vectorPotential scalarPotential * ψ.im := by
+        -kineticCoefficient * ψxx.im +
+          vectorPotentialCoefficient * ψx.re +
+          vectorPotentialDerivativeCoefficient * ψ.re +
+          scalarCoefficient * ψ.im := by
     simpa using himRaw
-  unfold electromagneticKineticCoefficient1D electromagneticVectorPotentialCoefficient1D
-    electromagneticVectorPotentialDerivativeCoefficient1D electromagneticScalarCoefficient1D
-    at hre him
+  dsimp [kineticCoefficient, vectorPotentialCoefficient,
+    vectorPotentialDerivativeCoefficient, scalarCoefficient] at hre him
   field_simp [hmass] at hre him
   constructor
   · linear_combination -hre
@@ -278,7 +202,7 @@ theorem electromagnetic_probability_continuity_balance_of_schrodinger
     q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential
     ψ ψt ψx ψxx hℏ hmass hreal himag
 
-/-- One-dimensional pointwise electromagnetic Schrödinger continuity equation.  All time, space,
+/-- One-dimensional pointwise electromagnetic Schrödinger continuity equation. All time, space,
 and vector-potential derivatives used in the proof are explicit hypotheses. -/
 theorem oneDimensional_electromagnetic_schrodinger_continuity
     (q ℏ mass scalarPotential : ℝ) (hℏ : ℏ ≠ 0) (hmass : mass ≠ 0)
