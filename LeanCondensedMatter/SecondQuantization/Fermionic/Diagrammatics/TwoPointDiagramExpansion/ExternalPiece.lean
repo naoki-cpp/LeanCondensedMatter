@@ -21,8 +21,9 @@ ambient ones; see `MixedEventSlotEmbedding` and `MixedLegSlotEmbedding` for that
 piece keeps the ambient external labels, so it is again a fixed-external diagram for the same two
 modes.
 
-The last result identifies the piece's legs with the ambient component's legs, and the identification
-with the very leg reindexing those order comparisons are stated for.
+The last results identify the piece's legs with the ambient component's legs — the identification
+being the very leg reindexing those order comparisons are stated for — and show that the piece pairs
+exactly the legs the ambient diagram pairs.
 -/
 
 namespace SecondQuantization
@@ -107,6 +108,45 @@ theorem FixedExternalTwoPointWickDiagram.externalLegDataEquiv_symm_twoPointLegDa
       apply Prod.ext
       · exact Subtype.ext (d.externalSlotEquiv_symm_coe w)
       · rfl
+
+/-- The flattened legs of the piece are the flattened ambient legs lying in the external
+component. -/
+noncomputable def FixedExternalTwoPointWickDiagram.externalPieceLegEquiv
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) :
+    {leg : Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1)) //
+        d.1.legInComponent (d.1.externalComponent 0) leg} ≃
+      Fin (2 * (2 * (Finset.univ : Finset (Fin d.externalSlots.card)).card + 1)) :=
+  d.1.externalBlockLegEquiv.trans (Common.twoPointLegCongr d.externalSlotEquiv)
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- The piece's leg reindexing is the component reindexing followed by the slot relabeling. -/
+theorem FixedExternalTwoPointWickDiagram.externalPieceLegEquiv_apply
+    (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (leg : {leg : Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1)) //
+      d.1.legInComponent (d.1.externalComponent 0) leg}) :
+    d.externalPieceLegEquiv leg =
+      Common.twoPointLegCongr d.externalSlotEquiv (d.1.externalBlockLegEquiv leg) := rfl
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- **The piece pairs the legs the ambient diagram pairs.** Transporting an ambient leg of the
+external component to the piece and taking the piece's partner is the same as taking the ambient
+partner first: the piece's pairing is the ambient one restricted. -/
+theorem FixedExternalTwoPointWickDiagram.externalPiece_partner_externalPieceLegEquiv
+    (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (leg : {leg : Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1)) //
+      d.1.legInComponent (d.1.externalComponent 0) leg}) :
+    d.externalPiece.1.pairing.partner (d.externalPieceLegEquiv leg) =
+      d.externalPieceLegEquiv (d.1.restrictedPartner (d.1.externalComponent 0) leg) := by
+  have hcongr :
+      d.externalPiece.1.pairing.partner
+          (Common.twoPointLegCongr d.externalSlotEquiv (d.1.externalBlockLegEquiv leg)) =
+        Common.twoPointLegCongr d.externalSlotEquiv
+          (d.1.restrictExternalComponent.pairing.partner (d.1.externalBlockLegEquiv leg)) :=
+    Common.TwoPointDiagram.slotCongr_partner d.externalSlotEquiv
+      d.1.restrictExternalComponent (d.1.externalBlockLegEquiv leg)
+  simp only [FixedExternalTwoPointWickDiagram.externalPieceLegEquiv_apply]
+  rw [hcongr, Common.TwoPointDiagram.restrictExternalComponent_pairing,
+    Common.TwoPointDiagram.restrictedExternalPairing_partner_externalBlockLegEquiv]
 
 end Fermionic
 end SecondQuantization
