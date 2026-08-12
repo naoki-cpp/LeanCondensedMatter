@@ -32,7 +32,7 @@ def wholeSpaceSmearedDensityRate1D
     (test densityTimeDerivative : ℝ → ℝ) : ℝ :=
   ∫ x, test x * densityTimeDerivative x
 
-/-- Whole-space pairing of the derivative of a test function with a probability current. -/
+/-- Pairing of the derivative of a test function with a probability current. -/
 def wholeSpaceSmearedCurrentPairing1D
     (testDerivative current : ℝ → ℝ) : ℝ :=
   ∫ x, testDerivative x * current x
@@ -66,30 +66,6 @@ theorem intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace
       wholeSpaceSmearedCurrentPairing1D (deriv test) current := by
   unfold intervalSmearedCurrentPairing1D wholeSpaceSmearedCurrentPairing1D
   exact ConservationLaw.integral_deriv_mul_eq_integral_of_tsupport_subset_Ioo htestSupport
-
-/-- A pointwise continuity equation gives the standard whole-space weak identity against a
-differentiable test function supported strictly inside a finite interval.
-
-The finite support window is only an analytic device for applying the previously established interval
-integration-by-parts theorem. The conclusion itself contains only integrals over all of `ℝ`. -/
-theorem weak_continuity_wholeSpace_of_pointwise
-    (a b : ℝ)
-    {test current currentDerivative densityTimeDerivative : ℝ → ℝ}
-    (htestSupport : tsupport test ⊆ Ioo a b)
-    (htestDifferentiable : Differentiable ℝ test)
-    (hcontinuity : ∀ x, densityTimeDerivative x + currentDerivative x = 0)
-    (hcurrent : ∀ x ∈ [[a, b]], HasDerivAt current (currentDerivative x) x)
-    (htestDerivIntegrable : IntervalIntegrable (deriv test) volume a b)
-    (hcurrentIntegrable : IntervalIntegrable currentDerivative volume a b) :
-    wholeSpaceSmearedDensityRate1D test densityTimeDerivative =
-      wholeSpaceSmearedCurrentPairing1D (deriv test) current := by
-  have hweak := ConservationLaw.weak_continuity_wholeSpace_of_pointwise
-    (a := a) (b := b) (test := test) (current := current)
-    (currentDerivative := currentDerivative)
-    (densityTimeDerivative := densityTimeDerivative)
-    htestSupport htestDifferentiable hcontinuity hcurrent
-    htestDerivIntegrable hcurrentIntegrable
-  simpa [wholeSpaceSmearedDensityRate1D, wholeSpaceSmearedCurrentPairing1D] using hweak
 
 /-- The scalar-potential Schrödinger equation gives the whole-space weak continuity identity against
 a differentiable compactly supported test function. -/
