@@ -173,6 +173,7 @@ private theorem cycleAssignmentKernelSum_finRotate_eq_trace [CommSemiring R] [De
       simp_rw [pathKernelSum_eq_pow]
       rfl
 
+/-- Finite enumeration of full label cycles used in the trace reduction. -/
 noncomputable local instance assignmentTraceFullCycleFintype {m : ℕ} :
     Fintype {σ : Equiv.Perm (Fin m) // σ.IsCycleOn (Set.univ : Set (Fin m))} :=
   Fintype.ofFinite _
