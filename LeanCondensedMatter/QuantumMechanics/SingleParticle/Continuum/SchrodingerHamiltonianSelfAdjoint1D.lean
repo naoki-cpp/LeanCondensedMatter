@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2Multiplication1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Multiplication1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerHamiltonianLaplacianSelfAdjoint1D
 import Mathlib.Tactic
 

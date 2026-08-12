@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerEvolution1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2SmearedProbabilityDensity1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Probability1D
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -12,8 +12,8 @@ conservation of total Born probability.  The dynamics-independent bridges
 
 `totalProbability1D = ‖ψ‖²`
 
-for `L²` wavefunctions and their Schwartz specialization are owned below dynamics in
-`L2SmearedProbabilityDensity1D`.
+for `L²` wavefunctions and their Schwartz specialization are owned below dynamics in the
+`L²` probability bridge layer.
 
 No pointwise time derivative is inferred from strong `L²` differentiability. The finer connection
 to the local continuity equation remains a separate representative-regularity layer.
