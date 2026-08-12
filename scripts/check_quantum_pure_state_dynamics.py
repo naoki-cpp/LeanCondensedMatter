@@ -13,7 +13,7 @@ from architecture_audit_common import (
 
 ROOT = repository_root(__file__)
 QUANTUM = ROOT / "LeanCondensedMatter" / "QuantumTheory"
-ROOT_UMBRELLA = ROOT / "LeanCondensedMatter.lean"
+QUANTUM_UMBRELLA = ROOT / "LeanCondensedMatter" / "QuantumTheory.lean"
 PURE_DYNAMICS = QUANTUM / "LinearResponse" / "PureStateDynamics.lean"
 PURE_DYNAMICS_IMPORT = (
     "import LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics"
@@ -40,7 +40,7 @@ def main() -> int:
 
     code = strip_lean_comments(PURE_DYNAMICS.read_text(encoding="utf-8"))
     normalized = " ".join(code.split())
-    root_code = ROOT_UMBRELLA.read_text(encoding="utf-8")
+    umbrella_code = QUANTUM_UMBRELLA.read_text(encoding="utf-8")
 
     required_declarations = (
         "theorem norm_freePropagator_apply",
@@ -59,10 +59,10 @@ def main() -> int:
                 f"{relative(PURE_DYNAMICS)}"
             )
 
-    if PURE_DYNAMICS_IMPORT not in root_code:
+    if PURE_DYNAMICS_IMPORT not in umbrella_code:
         errors.append(
-            "root import surface must expose bounded pure-state dynamics: "
-            f"{relative(ROOT_UMBRELLA)}"
+            "QuantumTheory public umbrella must expose bounded pure-state dynamics: "
+            f"{relative(QUANTUM_UMBRELLA)}"
         )
 
     evolve_declarations: list[Path] = []
