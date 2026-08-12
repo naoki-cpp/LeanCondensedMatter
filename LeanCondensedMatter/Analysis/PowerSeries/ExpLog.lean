@@ -84,6 +84,7 @@ theorem constantCoeff_formalExp {C : PowerSeries ℂ}
     PowerSeries.constantCoeff_subst_eq_zero hC (PowerSeries.exp ℂ - 1) (by simp)
   rw [htail, add_zero]
 
+set_option maxHeartbeats 800000 in
 /-- `logOf` is a left inverse of the formal exponential on zero-constant-coefficient series. -/
 theorem logOf_formalExp {C : PowerSeries ℂ}
     (hC : PowerSeries.constantCoeff C = 0) :
