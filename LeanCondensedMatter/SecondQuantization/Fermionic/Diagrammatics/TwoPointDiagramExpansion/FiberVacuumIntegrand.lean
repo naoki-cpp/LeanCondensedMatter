@@ -104,7 +104,6 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
           (vac.pairingInOrder (fixedExternalVacuumOrder T)).pairs (fun _ => Iff.rfl) _
       unfold QuarticWickDiagram.contractionIntegrand Pairing.evaluation
       rw [hpairProd]
-      ring
 
 end Fermionic
 end SecondQuantization
