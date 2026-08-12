@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerContinuitySchwartzTotal1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.ProbabilityIntegral1D
 import Mathlib.Analysis.Calculus.ParametricIntegral
 import Mathlib.Tactic
 
@@ -22,10 +23,6 @@ namespace Continuum
 noncomputable section
 
 open MeasureTheory Set
-
-/-- Total probability of a one-dimensional wavefunction. -/
-def totalProbability1D (ψ : ℝ → ℂ) : ℝ :=
-  ∫ x, probabilityDensityValue (ψ x)
 
 /-- Differentiate the total probability under the whole-space integral.
 
