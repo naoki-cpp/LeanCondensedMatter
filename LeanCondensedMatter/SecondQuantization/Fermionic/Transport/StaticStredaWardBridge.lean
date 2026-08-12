@@ -31,6 +31,8 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Transport
 
+open SecondQuantization.Fermionic.Lattice
+
 open QuantumTheory.LinearResponse QuantumTheory.Transport
 open SecondQuantization.Fermionic.Field
 

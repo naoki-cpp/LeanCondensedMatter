@@ -25,6 +25,8 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Field
 
+open Lattice
+
 noncomputable section
 
 /-- The field-layer lag factor agrees with the general linear-response adiabatic phase. -/

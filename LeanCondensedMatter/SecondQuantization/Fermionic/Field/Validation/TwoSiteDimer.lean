@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Validation.TwoLevelExplicit
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.HermitianBondCurrent
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.HermitianBondCurrent
 
 set_option linter.style.header false
 
@@ -19,6 +19,8 @@ also recorded. No disorder average, numerical approximation, or limiting procedu
 namespace SecondQuantization
 namespace Fermionic
 namespace Field
+
+open Lattice
 namespace Validation
 
 open QuantumTheory LinearResponse Transport

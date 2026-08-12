@@ -44,9 +44,32 @@ functional.
 completed `ℓ²` occupation space. Neither `OccupationFock` nor `AlgebraicFock` denotes that analytic
 completion.
 
+## Lattice model owner
+
+`SecondQuantization.Fermionic.Lattice` is the canonical layer for model data built on the algebraic
+fermionic core. It owns discrete one-particle lattice states, locally finite hopping, site charge and
+bond currents, Peierls families, finite-lattice bounded realizations, Hermiticity/current identities,
+rank-one lattice specializations, and geometric current aggregation.
+
+The dependency direction is deliberately one-way:
+
+```text
+Fermionic.Algebra
+      ↓
+Fermionic.Lattice
+      ↓
+Fermionic.Field / Fermionic.Transport
+```
+
+The lattice owner does not import generic Kubo, frequency-response, conductivity, Středa, disorder,
+or validation layers. Mixed files are split so model constructions remain under `Lattice` while
+response theorems stay downstream. Downstream consumers explicitly qualify or open the `Lattice`
+namespace rather than relying on the former `Field` ownership.
+
 ## Bounded response boundary
 
 The exterior Fock construction supports algebraic second quantization and current identities without
-completion. Bounded operators used by the Kubo layer are introduced only after restricting to a
-finite site type and transporting the occupation representation to the finite-dimensional Hilbert
-Fock realization.
+completion. Bounded finite-lattice operators are introduced in `Fermionic.Lattice.Bounded` after
+restricting to a finite site type and transporting the occupation representation to the
+finite-dimensional Hilbert Fock realization. Generic Kubo and observable-response specializations
+consume those bounded lattice operators downstream rather than owning the model bridge themselves.

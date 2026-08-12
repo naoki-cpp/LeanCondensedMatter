@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.FrequencyResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeometricCurrentResponse
 
 set_option linter.style.header false
 
@@ -23,6 +24,8 @@ retarded-response theorem; no complex-valued Hamiltonian perturbation is introdu
 namespace SecondQuantization
 namespace Fermionic
 namespace Field
+
+open Lattice
 
 noncomputable section
 

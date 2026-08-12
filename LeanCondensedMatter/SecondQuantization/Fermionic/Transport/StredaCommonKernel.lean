@@ -12,6 +12,7 @@ smooth Středa primitive required for the surface/sea integration-by-parts theor
 
 namespace SecondQuantization.Fermionic.Transport
 
+open SecondQuantization.Fermionic.Lattice
 open MeasureTheory QuantumTheory.LinearResponse QuantumTheory.Transport Set
 open SecondQuantization.Fermionic.Field
 
