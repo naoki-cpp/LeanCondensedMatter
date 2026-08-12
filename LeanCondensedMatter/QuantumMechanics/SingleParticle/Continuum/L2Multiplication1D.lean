@@ -90,7 +90,7 @@ theorem inner_l2MultiplicationOperator1D_eq_integral
   rw [hx]
 
 /-- A real essentially bounded function, embedded into `ℂ`, as an `L∞` multiplier. -/
-noncomputable def realTestMultiplier1D
+noncomputable def realLInfMultiplier1D
     (f : ℝ → ℝ)
     (hf : MemLp (fun x => (f x : ℂ)) ∞ (volume : Measure ℝ)) :
     ContinuumLInfMultiplier1D :=
@@ -98,10 +98,10 @@ noncomputable def realTestMultiplier1D
 
 /-- The `L∞` representative chosen for a real bounded function agrees almost everywhere with its
 pointwise complex embedding. -/
-theorem realTestMultiplier1D_coeFn
+theorem realLInfMultiplier1D_coeFn
     (f : ℝ → ℝ)
     (hf : MemLp (fun x => (f x : ℂ)) ∞ (volume : Measure ℝ)) :
-    (realTestMultiplier1D f hf : ℝ → ℂ) =ᵐ[volume]
+    (realLInfMultiplier1D f hf : ℝ → ℂ) =ᵐ[volume]
       fun x => (f x : ℂ) := by
   exact hf.coeFn_toLp
 
@@ -116,15 +116,15 @@ theorem l2RealMultiplicationOperator1D_symmetric
     (hf : MemLp (fun x => (f x : ℂ)) ∞ (volume : Measure ℝ))
     (ψ φ : ContinuumL2Wavefunction1D) :
     inner ℂ
-        (l2MultiplicationOperator1D (realTestMultiplier1D f hf) ψ) φ =
+        (l2MultiplicationOperator1D (realLInfMultiplier1D f hf) ψ) φ =
       inner ℂ ψ
-        (l2MultiplicationOperator1D (realTestMultiplier1D f hf) φ) := by
+        (l2MultiplicationOperator1D (realLInfMultiplier1D f hf) φ) := by
   rw [MeasureTheory.L2.inner_def, MeasureTheory.L2.inner_def]
   apply integral_congr_ae
   filter_upwards
-      [l2MultiplicationOperator1D_coeFn (realTestMultiplier1D f hf) ψ,
-       l2MultiplicationOperator1D_coeFn (realTestMultiplier1D f hf) φ,
-       realTestMultiplier1D_coeFn f hf] with x hψ hφ hf'
+      [l2MultiplicationOperator1D_coeFn (realLInfMultiplier1D f hf) ψ,
+       l2MultiplicationOperator1D_coeFn (realLInfMultiplier1D f hf) φ,
+       realLInfMultiplier1D_coeFn f hf] with x hψ hφ hf'
   rw [hψ, hφ, hf']
   exact inner_real_mul_left_eq_inner_real_mul_right (f x) (ψ x) (φ x)
 
@@ -133,7 +133,7 @@ formal adjoint of itself. -/
 theorem l2RealMultiplicationOperator1D_isFormalAdjoint
     (f : ℝ → ℝ)
     (hf : MemLp (fun x => (f x : ℂ)) ∞ (volume : Measure ℝ)) :
-    let M := l2MultiplicationOperator1D (realTestMultiplier1D f hf)
+    let M := l2MultiplicationOperator1D (realLInfMultiplier1D f hf)
     (M.toPMap ⊤).IsFormalAdjoint (M.toPMap ⊤) := by
   dsimp
   intro ψ φ
