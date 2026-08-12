@@ -1,0 +1,32 @@
+name: Agent 1030 Sync Main
+
+on:
+  push:
+    branches:
+      - agent/1030-fermionic-algebraic-fock
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Merge latest main
+        shell: bash
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git fetch origin main
+          git merge --no-edit origin/main
+      - name: Remove temporary workflow and push
+        shell: bash
+        run: |
+          rm .github/workflows/agent_1030_sync_main.yml
+          git add -A
+          git commit -m "chore: remove temporary #1030 sync workflow"
+          git push
