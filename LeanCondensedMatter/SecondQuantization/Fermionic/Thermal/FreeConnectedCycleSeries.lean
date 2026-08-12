@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Permutation
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FreeBoltzmannModeKernel
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
 
@@ -8,7 +9,8 @@ set_option linter.style.header false
 # Free-fermion connected-cycle series
 
 This file gives the generic exchange/cumulant backend a concrete free-fermion thermal consumer.
-For a finite mode set, the one-particle Boltzmann weights form a diagonal matrix kernel
+For a finite mode set, the statistics-independent one-particle Boltzmann weights form the shared
+diagonal matrix kernel
 
 `Kᵢⱼ = δᵢⱼ exp(-β εᵢ)`.
 
@@ -26,38 +28,24 @@ namespace Fermionic
 
 variable {Mode : Type*}
 
-/-- The diagonal one-particle Boltzmann kernel for a finite free-fermion mode set. -/
-noncomputable def freeBoltzmannModeKernel (ε : Mode → ℝ) (β : ℝ) : Matrix Mode Mode ℂ := by
-  classical
-  exact Matrix.diagonal fun i => Complex.exp (-(β : ℂ) * (ε i : ℂ))
-
-private theorem freeBoltzmannModeKernel_eq_diagonal [DecidableEq Mode]
-    (ε : Mode → ℝ) (β : ℝ) :
-    freeBoltzmannModeKernel ε β =
-      Matrix.diagonal (fun i => Complex.exp (-(β : ℂ) * (ε i : ℂ))) := by
-  ext i j
-  by_cases hij : i = j
-  · subst j
-    simp [freeBoltzmannModeKernel]
-  · simp [freeBoltzmannModeKernel, hij]
-
 /-- The finite free-fermion partition function is the determinant of `1 + K`, where `K` is the
-diagonal one-particle Boltzmann kernel. Determinant appears only at this physical consumer boundary;
-it is not a second exchange-statistics backend. -/
+shared diagonal one-particle Boltzmann kernel. Determinant appears only at this physical consumer
+boundary; it is not a second exchange-statistics backend. -/
 theorem freePartitionFunction_eq_det_one_add_freeBoltzmannModeKernel
     [LinearOrder Mode] [Fintype Mode] (ε : Mode → ℝ) (β : ℝ) :
     freePartitionFunction ε β =
-      Matrix.det (1 + freeBoltzmannModeKernel ε β) := by
+      Matrix.det (1 + Common.freeBoltzmannModeKernel ε β) := by
   classical
   rw [freePartitionFunction_eq_prod]
   have hdiag :
-      (1 + freeBoltzmannModeKernel ε β : Matrix Mode Mode ℂ) =
+      (1 + Common.freeBoltzmannModeKernel ε β : Matrix Mode Mode ℂ) =
         Matrix.diagonal (fun i => 1 + Complex.exp (-(β : ℂ) * (ε i : ℂ))) := by
+    rw [Common.freeBoltzmannModeKernel_eq_diagonal]
     ext i j
     by_cases hij : i = j
     · subst j
-      simp [freeBoltzmannModeKernel]
-    · simp [freeBoltzmannModeKernel, hij]
+      simp
+    · simp [hij]
   rw [hdiag, Matrix.det_diagonal]
 
 /-- For the free diagonal kernel, the fermionic connected-cycle series is the sum of the formal
@@ -67,11 +55,12 @@ This is the `ζ = -1` specialization of the generic diagonal-kernel theorem; it 
 the formal series at `t = 1`. -/
 theorem permutationConnectedCycleSeries_freeBoltzmannModeKernel_eq_sum_log
     [Fintype Mode] (ε : Mode → ℝ) (β : ℝ) :
-    Combinatorics.permutationConnectedCycleSeries (-1) (freeBoltzmannModeKernel ε β) =
+    Combinatorics.permutationConnectedCycleSeries (-1)
+        (Common.freeBoltzmannModeKernel ε β) =
       ∑ i : Mode,
         PowerSeries.rescale (Complex.exp (-(β : ℂ) * (ε i : ℂ))) (PowerSeries.log ℂ) := by
   classical
-  rw [freeBoltzmannModeKernel_eq_diagonal]
+  rw [Common.freeBoltzmannModeKernel_eq_diagonal]
   simpa using
     (Combinatorics.permutationConnectedCycleSeries_diagonal_eq_neg_inv_smul_sum_log
       (-1 : ℂ) (fun i : Mode => Complex.exp (-(β : ℂ) * (ε i : ℂ))) (by norm_num))
