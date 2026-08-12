@@ -66,14 +66,15 @@ theorem kineticMomentumValue1D_eq_neg_I_hbar_mul_covariantDerivative
     kineticMomentumValue1D q ℏ vectorPotential ψ ψx =
       -(Complex.I * (ℏ : ℂ)) *
         gaugeCovariantDerivativeValue1D q ℏ vectorPotential ψ ψx := by
-  unfold kineticMomentumValue1D gaugeCovariantDerivativeValue1D
-    gaugeConnectionCoefficientValue1D
-  push_cast
-  field_simp [hℏ]
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    simpa [pow_two] using Complex.I_mul_I
-  rw [hI]
-  ring
+  apply Complex.ext
+  · simp [kineticMomentumValue1D, gaugeCovariantDerivativeValue1D,
+      gaugeConnectionCoefficientValue1D]
+    field_simp [hℏ]
+    ring
+  · simp [kineticMomentumValue1D, gaugeCovariantDerivativeValue1D,
+      gaugeConnectionCoefficientValue1D]
+    field_simp [hℏ]
+    ring
 
 /-- The real bilinear pairing `Im (conj ψ * χ)` in coordinate form. -/
 def probabilityCurrentPairingValue (ψ χ : ℂ) : ℝ :=
