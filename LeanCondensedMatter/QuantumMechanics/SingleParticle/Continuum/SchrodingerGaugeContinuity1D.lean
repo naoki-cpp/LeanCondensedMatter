@@ -221,7 +221,7 @@ theorem electromagnetic_schrodinger_component_equations
             q ℏ mass vectorPotentialDerivative * ψ.im +
           electromagneticScalarCoefficient1D
             q mass vectorPotential scalarPotential * ψ.re := by
-    simpa using hreRaw
+    simpa [sub_eq_add_neg] using hreRaw
   have him :
       ℏ * ψt.re =
         -electromagneticKineticCoefficient1D ℏ mass * ψxx.im +
