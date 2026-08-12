@@ -16,6 +16,10 @@ already gives `A ≤ A†`. Therefore self-adjointness reduces to the reverse do
 This file packages that reduction for the continuum `H²` Laplacian and the bounded real-potential
 Schrödinger Hamiltonian. The remaining analytic task is now isolated cleanly as adjoint-domain
 regularity: prove that every vector in the adjoint domain actually belongs to `H²(ℝ)`.
+
+The imports intentionally name the three independent prerequisites directly: dense-domain facts,
+the explicit `H²` partial operator, and symmetry. The criterion should not rely on whichever of
+those happens to be available through a historical transitive import chain.
 -/
 
 namespace QuantumMechanics
