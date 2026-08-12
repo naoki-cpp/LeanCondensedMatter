@@ -1,0 +1,126 @@
+name: Agent 1032 Transport Migration
+
+on:
+  push:
+    branches:
+      - agent/1032-fermionic-transport-validation
+
+permissions:
+  contents: write
+
+jobs:
+  migrate:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: agent/1032-fermionic-transport-validation
+          fetch-depth: 0
+      - name: Move transport and validation owners
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          root = Path('LeanCondensedMatter/SecondQuantization/Fermionic')
+          field = root / 'Field'
+          transport = root / 'Transport'
+          transport_names = [
+              'BoundedCurrentResponse',
+              'ConductivityNormalization',
+              'FrequencyResponse',
+              'GeometricCurrentResponse',
+              'HarmonicSourceResponse',
+              'HermitianBondCurrentResponse',
+              'InfiniteTimeFrequencyResponse',
+              'KuboBastinSpectral',
+              'KuboBastinTrace',
+              'KuboGreenwood',
+              'PeierlsContactResponse',
+              'SpectralFrequencyResponse',
+              'StaticKuboBastinResponse',
+              'StationaryFrequencyResponse',
+          ]
+
+          for name in transport_names:
+              old = field / f'{name}.lean'
+              new = transport / f'{name}.lean'
+              if old.exists():
+                  old.rename(new)
+
+          old_validation = field / 'Validation'
+          new_validation = root / 'Validation'
+          if old_validation.exists():
+              old_validation.rename(new_validation)
+
+          # Update canonical module paths repository-wide.
+          text_suffixes = {'.lean', '.md', '.py', '.yml', '.yaml'}
+          for p in Path('.').rglob('*'):
+              if not p.is_file() or p.suffix not in text_suffixes:
+                  continue
+              try:
+                  s = p.read_text()
+              except UnicodeDecodeError:
+                  continue
+              old_s = s
+              for name in transport_names:
+                  s = s.replace(
+                      f'LeanCondensedMatter.SecondQuantization.Fermionic.Field.{name}',
+                      f'LeanCondensedMatter.SecondQuantization.Fermionic.Transport.{name}')
+              s = s.replace(
+                  'LeanCondensedMatter.SecondQuantization.Fermionic.Field.Validation.',
+                  'LeanCondensedMatter.SecondQuantization.Fermionic.Validation.')
+              if s != old_s:
+                  p.write_text(s)
+
+          # Move declaration ownership from Field to Transport.
+          for name in transport_names:
+              p = transport / f'{name}.lean'
+              s = p.read_text()
+              s = s.replace('\nnamespace Field\n', '\nnamespace Transport\n')
+              s = s.replace('\nend Field\n', '\nend Transport\n')
+              p.write_text(s)
+
+          # Validation is a sibling owner, downstream of Transport.
+          for p in new_validation.glob('*.lean'):
+              s = p.read_text()
+              s = s.replace(
+                  'namespace Fermionic\nnamespace Field\n\nopen Lattice\nnamespace Validation',
+                  'namespace Fermionic\nnamespace Validation\n\nopen Lattice Transport')
+              s = s.replace(
+                  'end Validation\nend Field\nend Fermionic',
+                  'end Validation\nend Fermionic')
+              p.write_text(s)
+
+          # Keep Field as the narrow basis-independent density owner.
+          (root / 'Field.lean').write_text('''import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock\nimport LeanCondensedMatter.SecondQuantization.Fermionic.Field.ChargeDensity\nimport LeanCondensedMatter.SecondQuantization.Fermionic.Field.ContinuumChargeDensity1D\n\nset_option linter.style.header false\n\n/-!\n# Fermionic field interfaces\n\nThis narrow layer owns basis-independent fermionic field interfaces that are neither lattice-model\ndata nor transport response. The algebraic Fock core lives under `Fermionic.Algebra`, lattice and\nPeierls constructions under `Fermionic.Lattice`, response/conductivity specializations under\n`Fermionic.Transport`, and finite toy models under `Fermionic.Validation`.\n-/\n''')
+
+          transport_imports = transport_names + [
+              'StredaOccupation',
+              'StredaCommonKernel',
+              'StaticStredaWardBridge',
+              'FiniteDisorderConductivity',
+          ]
+          (root / 'Transport.lean').write_text(
+              ''.join(f'import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.{n}\n' for n in transport_imports)
+              + '''\nset_option linter.style.header false\n\n/-!\n# Fermionic transport adapters\n\nCanonical downstream owner for fermionic Kubo/frequency response, conductivity normalization,\nKubo–Greenwood/Bastin/Středa, Ward, and finite-disorder adapters. Generic reusable response,\noccupation, resolvent, trace, and Středa integration theory remains under `QuantumTheory`.\n-/\n''')
+
+          validation_imports = ['FiniteToys', 'TwoLevelExplicit', 'TwoSiteDimer']
+          (root / 'Validation.lean').write_text(
+              ''.join(f'import LeanCondensedMatter.SecondQuantization.Fermionic.Validation.{n}\n' for n in validation_imports)
+              + '''\nset_option linter.style.header false\n\n/-!\n# Fermionic validation models\n\nFinite toy models and explicit checks for the fermionic transport stack. This layer is downstream\nof public algebra, lattice, and transport construction layers and is not part of their ownership.\n-/\n''')
+
+          secondq = Path('LeanCondensedMatter/SecondQuantization.lean')
+          s = secondq.read_text()
+          marker = 'import LeanCondensedMatter.SecondQuantization.Fermionic.Transport\n'
+          if 'import LeanCondensedMatter.SecondQuantization.Fermionic.Validation\n' not in s:
+              s = s.replace(marker, marker + 'import LeanCondensedMatter.SecondQuantization.Fermionic.Validation\n')
+          secondq.write_text(s)
+          PY
+
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A
+          git rm -f .github/workflows/agent_1032_migrate.yml
+          git commit -m 'refactor(fermionic-transport): split transport and validation from Field'
+          git push origin HEAD:agent/1032-fermionic-transport-validation
