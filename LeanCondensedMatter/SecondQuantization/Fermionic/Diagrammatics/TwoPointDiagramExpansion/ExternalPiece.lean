@@ -175,7 +175,8 @@ theorem FixedExternalTwoPointWickDiagram.externalPieceMixedPosition_strictMono
     FixedExternalTwoPointWickDiagram.externalPieceMixedPosition,
     mixedTimeOrderedAtomicLegPosition_map_lt_iff
       (d.externalSlots.orderEmbOfFin rfl).strictMono]
-  simpa [FixedExternalTwoPointWickDiagram.externalPieceTimes] using hpq
+  simpa [FixedExternalTwoPointWickDiagram.externalPieceTimes,
+    mixedTimeOrderedAtomicLegPosition] using hpq
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- Distinct mixed positions of the piece are distinct ambient mixed positions. -/
