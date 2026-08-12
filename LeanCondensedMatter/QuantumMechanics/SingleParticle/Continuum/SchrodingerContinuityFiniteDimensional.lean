@@ -46,19 +46,15 @@ theorem probabilityCurrentDivergenceValue1D_add
     probabilityCurrentDivergenceValue1D ℏ κ ψ (a + b) =
       probabilityCurrentDivergenceValue1D ℏ κ ψ a +
         probabilityCurrentDivergenceValue1D ℏ κ ψ b := by
-  change
-    (2 * κ / ℏ) * (ψ.re * (a + b).im - ψ.im * (a + b).re) =
-      (2 * κ / ℏ) * (ψ.re * a.im - ψ.im * a.re) +
-        (2 * κ / ℏ) * (ψ.re * b.im - ψ.im * b.re)
-  simp
+  simp only [probabilityCurrentDivergenceValue1D_eq_coordinates, Complex.add_re,
+    Complex.add_im]
   ring
 
 /-- The one-dimensional current-divergence value vanishes at zero second derivative. -/
 theorem probabilityCurrentDivergenceValue1D_zero
     (ℏ κ : ℝ) (ψ : ℂ) :
     probabilityCurrentDivergenceValue1D ℏ κ ψ 0 = 0 := by
-  change (2 * κ / ℏ) * (ψ.re * (0 : ℂ).im - ψ.im * (0 : ℂ).re) = 0
-  simp
+  simp [probabilityCurrentDivergenceValue1D_eq_coordinates]
 
 /-- Finite coordinate sums commute with the pointwise current-divergence value. -/
 theorem probabilityCurrentDivergenceValue1D_sum

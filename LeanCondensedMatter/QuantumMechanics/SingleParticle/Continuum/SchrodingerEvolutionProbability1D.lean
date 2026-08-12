@@ -28,14 +28,9 @@ noncomputable section
 open MeasureTheory
 open scoped ENNReal MeasureTheory InnerProductSpace SchwartzMap
 
-private theorem probabilityDensityValue_eq_normSq (z : ℂ) :
-    probabilityDensityValue z = Complex.normSq z := by
-  change z.re ^ 2 + z.im ^ 2 = z.re * z.re + z.im * z.im
-  ring
-
 private theorem inner_self_complex_eq_probabilityDensityValue (z : ℂ) :
     inner ℂ z z = (probabilityDensityValue z : ℂ) := by
-  rw [probabilityDensityValue_eq_normSq]
+  rw [probabilityDensityValue]
   rw [inner_self_eq_norm_sq_to_K, pow_two]
   change Complex.ofReal ‖z‖ * Complex.ofReal ‖z‖ =
     Complex.ofReal (Complex.normSq z)
