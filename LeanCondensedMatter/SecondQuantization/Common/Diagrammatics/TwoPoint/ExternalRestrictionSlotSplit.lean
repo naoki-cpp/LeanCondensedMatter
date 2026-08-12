@@ -23,11 +23,12 @@ variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 external slot splitting. -/
 theorem TwoPointDiagram.externalBlockLegEquiv_externalSlotLegSplitting_inl
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (i : Fin (2 * (2 * d.externalInteractionPart.card + 1))) :
+    (i : Fin (2 * (2 * (TwoPointDiagram.interactionPart (d.externalComponent 0)).card + 1))) :
     d.externalBlockLegEquiv
         ⟨d.externalSlotLegSplitting (Sum.inl i),
           d.legInComponent_externalSlotLegSplitting_inl i⟩ = i := by
-  obtain ⟨x, rfl⟩ := (twoPointLegEquiv d.externalInteractionPart).symm.surjective i
+  obtain ⟨x, rfl⟩ :=
+    (twoPointLegEquiv (TwoPointDiagram.interactionPart (d.externalComponent 0))).symm.surjective i
   cases x with
   | inl e =>
       simp [TwoPointDiagram.externalBlockLegEquiv, TwoPointDiagram.externalSlotLegSplitting,
@@ -63,7 +64,7 @@ theorem TwoPointDiagram.restrictedExternalPairing_eq_splitLeft_externalSlotLegSp
     exact hamb
   rw [d.externalBlockLegEquiv_externalSlotLegSplitting_inl i,
     hpartner, d.externalBlockLegEquiv_externalSlotLegSplitting_inl j] at hres
-  exact hres
+  simpa [j] using hres
 
 /-- The restriction-based external component is the left half of the canonical external/vacuum
 split. -/
