@@ -1,3 +1,5 @@
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerHamiltonianAnalytic1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerHamiltonianClosedH21D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerHamiltonianFullSymmetry1D
 import Mathlib.Analysis.InnerProductSpace.LinearPMap
 import Mathlib.Tactic
