@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.BoundedKuboBridge
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.RankOneSecondQuantization
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.OccupationFieldEquivalence
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FiniteHilbertCreationAnnihilation
 
 set_option linter.style.header false

@@ -29,7 +29,7 @@ Every element is a finite algebraic combination of finite wedge products. This i
 Hilbert direct sum and carries no claim that general second-quantized Hamiltonians are bounded. -/
 abbrev AlgebraicFock := ExteriorAlgebra ℂ 𝓗₁
 
-namespace Field
+namespace AlgebraicFock
 
 /-- The homogeneous `n`-particle sector inside `AlgebraicFock 𝓗₁`. -/
 abbrev ParticleSector (n : ℕ) := ⋀[ℂ]^n 𝓗₁
@@ -51,6 +51,6 @@ theorem oneParticle_injective : Function.Injective (oneParticle 𝓗₁) := by
 theorem vacuum_ne_zero : vacuum 𝓗₁ ≠ 0 := by
   exact one_ne_zero
 
-end Field
+end AlgebraicFock
 end Fermionic
 end SecondQuantization

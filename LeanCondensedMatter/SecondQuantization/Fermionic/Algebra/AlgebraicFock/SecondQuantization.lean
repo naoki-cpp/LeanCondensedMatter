@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Creation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Creation
 import Mathlib.LinearAlgebra.CliffordAlgebra.Fold
 
 set_option linter.style.header false
@@ -21,7 +21,7 @@ a basis and requires no finite-dimensionality, inner product, completion, or bou
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace AlgebraicFock
 
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
@@ -132,6 +132,6 @@ theorem dGamma_oneParticle_mul (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : 𝓗₁)
       (secondQuantizationStep 𝓗₁ T) (secondQuantizationStep_fold_condition 𝓗₁ T)
       (0 : AlgebraicFock 𝓗₁) f Ψ)
 
-end Field
+end AlgebraicFock
 end Fermionic
 end SecondQuantization

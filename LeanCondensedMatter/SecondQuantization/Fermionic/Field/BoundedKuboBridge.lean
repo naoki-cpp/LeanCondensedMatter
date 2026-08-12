@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Peierls
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.OccupationEquivalence
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationEquivalence
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteHilbertOperatorAlgebra
 import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
 

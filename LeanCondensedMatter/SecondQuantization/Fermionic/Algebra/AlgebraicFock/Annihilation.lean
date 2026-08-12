@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Creation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Creation
 import Mathlib.Analysis.InnerProductSpace.LinearMap
 import Mathlib.LinearAlgebra.CliffordAlgebra.Contraction
 
@@ -22,7 +22,7 @@ gives the mixed canonical anticommutation relation directly.
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace AlgebraicFock
 
 section Dual
 
@@ -190,6 +190,6 @@ theorem annihilate_comp_create_add_swap (f g : 𝓗₁) :
 
 end InnerProduct
 
-end Field
+end AlgebraicFock
 end Fermionic
 end SecondQuantization

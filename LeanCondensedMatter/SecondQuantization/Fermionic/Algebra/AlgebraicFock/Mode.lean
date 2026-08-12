@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Annihilation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Annihilation
 import Mathlib.Analysis.InnerProductSpace.Orthonormal
 
 set_option linter.style.header false
@@ -20,7 +20,7 @@ relations.
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace AlgebraicFock
 
 variable {Mode 𝓗₁ : Type*}
 variable [NormedAddCommGroup 𝓗₁] [InnerProductSpace ℂ 𝓗₁]
@@ -86,6 +86,6 @@ theorem modeAnnihilate_comp_modeCreate_add_of_ne
   classical
   simpa [hij] using modeAnnihilate_comp_modeCreate_add_swap he i j
 
-end Field
+end AlgebraicFock
 end Fermionic
 end SecondQuantization

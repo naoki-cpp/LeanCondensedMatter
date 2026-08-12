@@ -1,5 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Annihilation
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.SecondQuantizationLinearity
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.Annihilation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.DiscreteLattice
 
 set_option linter.style.header false
