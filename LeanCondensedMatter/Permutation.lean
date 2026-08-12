@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Permutation.PairingBridge
 import LeanCondensedMatter.Permutation.Cumulant
 import LeanCondensedMatter.Permutation.TraceLog
+import LeanCondensedMatter.Permutation.GrandPartitionSeries
 
 set_option linter.style.header false
 
@@ -18,6 +19,8 @@ singleCycleContribution ζ K S
   → ζ^(m - 1) * tr(K^m) / m
   → permutationConnectedCycleSeries ζ K
   → formal trace-log identity
+  → permutationGrandPartitionSeries ζ K
+  → logOf grand series = connected-cycle series
 ```
 
 The implementation uses the generic finite-partition, cumulant, perfect-pairing, matrix, and power
