@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreePartitionDeterminant
+import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeConnectedCycleSeries
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.FreeTwoPointCoefficient
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.ParticleNumberWeightSummable
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.QuadraticParticleNumberWeightSummable
@@ -27,6 +28,7 @@ Public umbrella for the convergence-aware free bosonic thermal layer:
 
 - one- and multi-mode Boltzmann weights and the convergent partition sum;
 - the finite-mode inverse-determinant interpretation of that partition sum;
+- the `ζ = +1` connected-cycle series and formal grand product `∏ᵢ (1 - qᵢ t)⁻¹`;
 - particle-number-weighted summability, including arbitrary finite occupation monomials, shifted polynomial majorants, quadratic occupation, and total-particle-number moments;
 - free two-point basis coefficients;
 - the uncutoff bosonic two-point specialization of the Common Bloch–de Dominicis framework;
