@@ -16,8 +16,8 @@ construction of its time evolution.  It records exactly the data used downstream
 * differentiability on that domain with generator `-(i/ℏ) H`.
 
 The interface deliberately depends only on the domain-carrying Hamiltonian definition, not on a
-particular self-adjointness proof or Stone construction.  `SchrodingerStoneEvolution1D` supplies the
-current implementation from the self-adjoint Hamiltonian.
+particular self-adjointness proof or Stone construction.  `Evolution/Stone1D` supplies the current
+implementation from the self-adjoint Hamiltonian.
 -/
 
 namespace QuantumMechanics
