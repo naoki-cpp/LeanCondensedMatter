@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.DiscreteLattice
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 
 set_option linter.style.header false
@@ -32,7 +32,7 @@ additional real-linear operator layer.
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace Lattice
 
 open scoped BigOperators
 
@@ -196,6 +196,6 @@ theorem hasAlgebraicDerivAt_peierlsBondHamiltonianFock_zero
     rw [map_smul]
     rfl
 
-end Field
+end Lattice
 end Fermionic
 end SecondQuantization

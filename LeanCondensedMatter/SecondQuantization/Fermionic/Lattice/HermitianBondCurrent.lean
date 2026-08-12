@@ -1,5 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.BoundedMatrixUnitAdjoint
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.PeierlsContact
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.BoundedMatrixUnitAdjoint
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.PeierlsContact
 
 set_option linter.style.header false
 
@@ -28,7 +28,7 @@ self-adjointness hypothesis from the caller.
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace Lattice
 
 noncomputable section
 
@@ -164,6 +164,6 @@ theorem hasDerivAt_boundedPeierlsAffineCurrentExpectation_zero_of_bound_retarded
       hM hV ht hInt
 
 end
-end Field
+end Lattice
 end Fermionic
 end SecondQuantization

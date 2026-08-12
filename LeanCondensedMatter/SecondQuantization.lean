@@ -11,6 +11,7 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.Perturbation
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime
@@ -29,7 +30,7 @@ The implementation is owned by three explicit namespaces and directory trees:
 
 - `SecondQuantization.Common` for statistics-independent algebra, interactions, imaginary-time,
   thermal, perturbative, and diagrammatic constructions;
-- `SecondQuantization.Fermionic` for fermionic algebra, completed-space analysis, fields, finite
+- `SecondQuantization.Fermionic` for fermionic algebra, completed-space analysis, lattice models, fields, finite
   transport adapters, thermal theory, perturbation theory, and diagrammatics;
 - `SecondQuantization.Bosonic` for the convergence-aware bosonic algebra, thermal, perturbative, and
   diagrammatic line.

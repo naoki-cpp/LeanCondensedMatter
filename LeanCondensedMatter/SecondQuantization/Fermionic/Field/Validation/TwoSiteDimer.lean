@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Validation.TwoLevelExplicit
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.HermitianBondCurrent
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.HermitianBondCurrent
 
 set_option linter.style.header false
 

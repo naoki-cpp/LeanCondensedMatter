@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeometricCurrent
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricCurrent
 
 set_option linter.style.header false
 

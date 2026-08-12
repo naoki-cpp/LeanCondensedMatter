@@ -1,5 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.BoundedKuboBridge
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.RankOneSecondQuantization
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.RankOneSecondQuantization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationFieldEquivalence
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FiniteHilbertCreationAnnihilation
 
@@ -28,7 +28,7 @@ currents from coefficient-level Hermiticity.
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace Lattice
 
 noncomputable section
 
@@ -135,6 +135,6 @@ theorem star_boundedDgammaMatrixUnit (x y : Site) :
 end Finite
 
 end
-end Field
+end Lattice
 end Fermionic
 end SecondQuantization

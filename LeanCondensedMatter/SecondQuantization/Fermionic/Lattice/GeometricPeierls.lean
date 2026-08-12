@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeometricCurrent
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricCurrent
 
 set_option linter.style.header false
 
@@ -26,7 +26,7 @@ real and embedded into `ℂ`.
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace Lattice
 
 open scoped BigOperators
 
@@ -224,6 +224,6 @@ theorem hasAlgebraicDerivAt_boundedDirectionalPeierlsCurrent_zero
   exact hscaled
 
 end
-end Field
+end Lattice
 end Fermionic
 end SecondQuantization

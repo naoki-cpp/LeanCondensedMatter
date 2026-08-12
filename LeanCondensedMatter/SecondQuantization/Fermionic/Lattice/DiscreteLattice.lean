@@ -21,7 +21,7 @@ open scoped BigOperators
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace Lattice
 
 /-- Algebraic one-particle states on an arbitrary discrete lattice. Every vector has finite support,
 but the site type itself need not be finite. -/
@@ -303,6 +303,6 @@ theorem discrete_continuity (ℏ q : ℂ)
   rw [heisenberg_siteChargeDensity]
   abel
 
-end Field
+end Lattice
 end Fermionic
 end SecondQuantization

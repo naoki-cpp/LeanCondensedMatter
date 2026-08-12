@@ -1,7 +1,6 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.Peierls
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Peierls
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.OccupationEquivalence
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteHilbertOperatorAlgebra
-import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
 
 set_option linter.style.header false
 
@@ -24,7 +23,7 @@ variation/contact terms remain the responsibility of issue #444.
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace Lattice
 
 open scoped BigOperators
 
@@ -275,25 +274,9 @@ theorem bounded_discrete_continuity (ℏ q : ℂ)
     boundedLatticeOperator_linearCommutator, boundedHoppingHamiltonian,
     boundedSiteChargeDensity, boundedBondCurrent] using h
 
-/-- The bounded current-current retarded kernel supplied to the general Kubo API.
-
-This is the causal commutator contribution for two derived bond currents. It is deliberately not
-named conductivity: a vector-potential response must also account for explicit source dependence of
-the measured current, as developed downstream in issue #444. -/
-noncomputable def boundedBondCurrentRetardedSusceptibility
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock Site))
-    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
-      (FiniteLatticeHilbertFock Site))
-    (ℏ q : ℂ) (K : LocallyFiniteHopping Site)
-    (x y u v : Site) (t s : ℝ) : ℂ :=
-  QuantumTheory.LinearResponse.retardedSusceptibility system expectation
-    (boundedBondCurrent ℏ q K x y)
-    (boundedBondCurrent ℏ q K u v) t s
-
 end FiniteLattice
 
 end
-end Field
+end Lattice
 end Fermionic
 end SecondQuantization

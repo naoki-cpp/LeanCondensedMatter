@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.RankOne
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.DiscreteLattice
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.DiscreteLattice
 
 set_option linter.style.header false
 
@@ -13,7 +13,7 @@ The generic `dualRankOne` and `dGamma_dualRankOne` declarations are owned upstre
 
 namespace SecondQuantization
 namespace Fermionic
-namespace Field
+namespace Lattice
 
 noncomputable section
 
@@ -48,6 +48,6 @@ theorem dGamma_matrixUnit (x y : Site) :
     (LatticeState Site) (latticeKet x) (latticeCoordinateDual y)
 
 end
-end Field
+end Lattice
 end Fermionic
 end SecondQuantization
