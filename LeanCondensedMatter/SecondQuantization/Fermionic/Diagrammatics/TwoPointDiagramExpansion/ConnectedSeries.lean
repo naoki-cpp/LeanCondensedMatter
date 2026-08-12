@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DysonSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedExternalPositions
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ComponentAmplitudeFactorization
 
 set_option linter.style.header false
 
@@ -86,6 +87,38 @@ theorem FixedExternalTwoPointWickDiagram.isConnected_iff_hasNoVacuumComponent
       · exact d.1.externalComponent_zero_eq_one.symm
     rw [← hzero, hblock]
     exact d.1.self_mem_componentBlock _
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- A connected diagram has no vacuum component part to take a product over. -/
+theorem FixedExternalTwoPointWickDiagram.vacuumComponentParts_eq_empty_of_isConnected
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) (hconn : d.IsConnected) :
+    d.1.vacuumComponentParts = ∅ :=
+  (Common.TwoPointDiagram.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty d.1).1
+    (d.isConnected_iff_hasNoVacuumComponent.1 hconn)
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- A connected diagram's external component owns all `n` interaction slots. -/
+theorem FixedExternalTwoPointWickDiagram.interactionComponentSize_externalComponentPart_of_isConnected
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) (hconn : d.IsConnected) :
+    d.1.interactionComponentSize d.1.externalComponentPart = n := by
+  rw [← d.externalSlots_card, hconn, Finset.card_univ, Fintype.card_fin]
+
+/-- **On a connected diagram the shuffle-orbit sum is a single ordered-simplex integral.** There is
+no vacuum factor left: the external component owns everything. -/
+theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_dysonAmplitude_of_isConnected
+    (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β) (g : QuarticVertexLabel Mode → ℂ) (τ τ' : ℝ)
+    (hconn : d.IsConnected) :
+    (∑ shuffle : d.1.ComponentInteractionShuffle,
+        (d.relabelForComponentShuffle shuffle).dysonAmplitude ε β g τ τ') =
+      twoPointExternalOrderSign τ τ' *
+        intervalIntegral.orderedSimplexIntegral
+          (d.1.interactionComponentSize d.1.externalComponentPart) β
+          (d.mixedComponentDysonLocalIntegrand ε β g τ τ'
+            d.1.canonicalComponentInteractionShuffle d.1.externalComponentPart) := by
+  rw [d.sum_componentInteractionShuffle_dysonAmplitude_relabelForComponentShuffle_eq_external_mul_prod_vacuum
+      ε β hβ g τ τ', d.vacuumComponentParts_eq_empty_of_isConnected hconn,
+    Finset.prod_empty, mul_one]
 
 open Classical in
 /-- The order-`n` coefficient of the connected two-point series: the integrated Dyson amplitudes of
