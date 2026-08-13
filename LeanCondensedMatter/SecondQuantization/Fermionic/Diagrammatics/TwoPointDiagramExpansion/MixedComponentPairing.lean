@@ -1,20 +1,22 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Reindexing
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalRestriction
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentRestriction
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalSlotSplit
 
 set_option linter.style.header false
 
 /-!
-# Restricting the mixed-time two-point pairing by full components
+# Mixed-time two-point pairing by full components
 
 The diagram stores its pairing in the standard external-plus-interaction leg enumeration, while the
 Bloch--de Dominicis amplitude evaluates the pairing after transport to the mixed-time atomic order.
 This module assigns every mixed-time atomic position to its full diagram component, proves that the
 mixed-order partner preserves that assignment, and identifies each component-position fiber with
-the existing standard component-leg restriction.
+the corresponding standard component-leg fiber.
 
-The resulting external and vacuum position equivalences intertwine the mixed restricted partner
-with `restrictedExternalPairing` and `restrictedVacuumPairing`. This is the bridge needed to factor
-mixed-time pair contractions and crossing signs over the external core and vacuum components.
+For the external component, positions are reindexed by the canonical left side of
+`externalSlotLegSplitting`, whose local pairing is `externalVacuumSplit.1.pairing`. Vacuum components
+continue to use the generic component-restriction pairing. Thus the external route no longer needs a
+separate restricted two-point diagram representation.
 -/
 
 namespace SecondQuantization
@@ -183,8 +185,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPositionEquiv_partner
   apply congrArg d.1.pairing.partner
   rfl
 
-/-- Mixed positions in the external component, reindexed as the legs of the restricted external
-two-point diagram. -/
+/-- Mixed positions in the external component, reindexed by the canonical left external split. -/
 noncomputable def FixedExternalTwoPointWickDiagram.mixedExternalPositionEquiv
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
@@ -192,7 +193,7 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedExternalPositionEquiv
       Fin (2 * (2 * (Common.TwoPointDiagram.interactionPart
         (d.1.externalComponent 0)).card + 1)) :=
   (d.mixedComponentPositionEquiv τ τ' σ d.1.externalComponentPart).trans
-    d.1.externalBlockLegEquiv
+    d.1.externalComponentLegEquiv.symm
 
 /-- Mixed positions in a vacuum component, reindexed as the legs of its restricted quartic
 diagram. -/
@@ -207,34 +208,23 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedVacuumPositionEquiv
   (d.mixedComponentPositionEquiv τ τ' σ B).trans
     (d.1.vacuumBlockLegEquiv B hVac)
 
-/-- The external restricted pairing partner is the transport of the mixed restricted partner. -/
-theorem FixedExternalTwoPointWickDiagram.restrictedExternalPairing_partner_mixedExternalPositionEquiv
+/-- The canonical external split pairing partner is the transport of the mixed restricted partner. -/
+theorem FixedExternalTwoPointWickDiagram.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (p : d.MixedComponentPosition τ τ' σ d.1.externalComponentPart) :
-    d.1.restrictedExternalPairing.partner
+    d.1.externalVacuumSplit.1.pairing.partner
         (d.mixedExternalPositionEquiv τ τ' σ p) =
       d.mixedExternalPositionEquiv τ τ' σ
         (d.mixedRestrictedPartner τ τ' σ d.1.externalComponentPart p) := by
-  change d.1.restrictedExternalPairing.partner
-      (d.1.externalBlockLegEquiv
+  change d.1.externalVacuumSplit.1.pairing.partner
+      (d.1.externalComponentLegEquiv.symm
         (d.mixedComponentPositionEquiv τ τ' σ d.1.externalComponentPart p)) =
-    d.1.externalBlockLegEquiv
+    d.1.externalComponentLegEquiv.symm
       (d.mixedComponentPositionEquiv τ τ' σ d.1.externalComponentPart
         (d.mixedRestrictedPartner τ τ' σ d.1.externalComponentPart p))
-  rw [d.1.restrictedExternalPairing_partner_externalBlockLegEquiv]
-  apply congrArg d.1.externalBlockLegEquiv
-  calc
-    d.1.restrictedPartner (d.1.externalComponent 0)
-        (d.mixedComponentPositionEquiv τ τ' σ d.1.externalComponentPart p) =
-      d.1.restrictedPartner
-          (d.1.externalComponentPart : Finset (Common.TwoPointVertex
-            (Finset.univ : Finset (Fin n))))
-          (d.mixedComponentPositionEquiv τ τ' σ d.1.externalComponentPart p) := by
-        rfl
-    _ = d.mixedComponentPositionEquiv τ τ' σ d.1.externalComponentPart
-          (d.mixedRestrictedPartner τ τ' σ d.1.externalComponentPart p) :=
-      (d.mixedComponentPositionEquiv_partner τ τ' σ d.1.externalComponentPart p).symm
+  rw [← d.1.externalComponentLegEquiv_symm_restrictedPartner,
+    d.mixedComponentPositionEquiv_partner]
 
 /-- A vacuum restricted pairing partner is the transport of the corresponding mixed restricted
 partner. -/
