@@ -9,16 +9,16 @@ set_option linter.style.header false
 /-!
 # The external component's mixed pairs as pairs of the standalone piece
 
-The mixed pairs of the external component were already identified with the normalized pairs of
-`restrictedExternalPairing`, the pairing the ambient diagram carries on that component's legs. What
-the linked-cluster factorization needs instead is the pairing of the **piece as a diagram in its own
+The mixed pairs of the external component are identified structurally through the canonical external
+slot split, whose left pairing is `externalVacuumSplit.1.pairing`. The linked-cluster factorization
+then relates those ambient component pairs to the pairing of the **piece as a diagram in its own
 right**, in the mixed order the piece computes from the times it inherits — that is the pairing a
 perturbative coefficient is summed over.
 
 `ExternalPiece` supplies both halves of the identification: the piece's mixed positions are exactly
 the component's mixed positions, and the embedding intertwines the two mixed-order partners. Feeding
-them to the generic restriction machinery of `MixedComponentPairEquiv` gives the pair equivalence,
-and with it the description of each transported pair as the endpoint pair or its swap.
+them to the generic component-pair transport machinery of `MixedComponentPairEquiv` gives the pair
+equivalence, and with it the description of each transported pair as the endpoint pair or its swap.
 
 The swap never occurs: the embedding of positions is strictly monotone, so a transported pair keeps
 its normalized order. That makes `Crosses` — a purely order-theoretic relation — transport along the
@@ -33,7 +33,7 @@ open Combinatorics
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
 
 omit [LinearOrder Mode] [Fintype Mode] in
-/-- The piece's mixed pairing, read on the component's mixed positions, is the ambient restricted
+/-- The piece's mixed pairing, read on the component's mixed positions, is the ambient component-local
 partner. -/
 theorem FixedExternalTwoPointWickDiagram.externalPiece_partner_externalPieceMixedPositionEquiv_symm
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ)
