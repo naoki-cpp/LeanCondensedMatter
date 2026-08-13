@@ -11,7 +11,9 @@ one power of `-1` for the canonical external component and one for every vacuum 
 
 This module combines those local signs with the component-local fixed-time values.  The resulting
 pointwise signed integrand is the exact input required by the subsequent ordered-simplex shuffle
-factorization; no integration or continuity claim is made here.
+factorization; no integration or continuity claim is made here. The external signed value is related
+to the standalone external piece downstream in `ExternalPieceAmplitude`; restricted formulas here
+are retained only for vacuum components.
 -/
 
 namespace SecondQuantization
@@ -113,22 +115,6 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_external_mul
   unfold FixedExternalTwoPointWickDiagram.mixedExternalDysonFixedTimeValue
   unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue
   rw [Finset.prod_mul_distrib]
-  ring
-
-/-- Restricted-diagram expression for the signed external fixed-time value. -/
-theorem FixedExternalTwoPointWickDiagram.mixedExternalDysonFixedTimeValue_eq_restricted
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    d.mixedExternalDysonFixedTimeValue ε β g τ τ' σ =
-      d.mixedComponentDysonSign d.1.externalComponentPart *
-        twoPointExternalOrderSign τ τ' *
-          (∏ v : ↥(Common.TwoPointDiagram.interactionPart
-            (d.1.externalComponent 0)),
-            g (d.1.restrictExternalComponent.vertexLabel v)) *
-          d.mixedExternalRestrictedPairingValue ε β τ τ' σ := by
-  unfold FixedExternalTwoPointWickDiagram.mixedExternalDysonFixedTimeValue
-  rw [d.mixedExternalFixedTimeValue_eq_restricted]
   ring
 
 /-- Restricted-diagram expression for one signed vacuum-component fixed-time value. -/
