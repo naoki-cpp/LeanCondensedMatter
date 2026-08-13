@@ -18,7 +18,7 @@ noncomputable section
 
 open QuantumTheory
 
-variable {Config : Type*} [Fintype Config] [Nonempty Config]
+variable {Config : Type*}
 
 @[simp]
 theorem finiteBoltzmannWeight_eq_purePointBoltzmannWeight
@@ -31,6 +31,8 @@ theorem finitePartitionFunction_eq_purePointPartitionFunction
     (energy : Config → ℝ) (β : ℝ) :
     finitePartitionFunction energy β = purePointPartitionFunction energy β :=
   rfl
+
+variable [Fintype Config] [Nonempty Config]
 
 /-- The canonical finite-configuration Gibbs density operator is definitionally the finite
 specialization of the generic pure-point Gibbs density operator on the same Hilbert basis. -/
