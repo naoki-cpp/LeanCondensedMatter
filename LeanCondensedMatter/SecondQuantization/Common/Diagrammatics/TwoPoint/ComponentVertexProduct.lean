@@ -71,16 +71,6 @@ theorem TwoPointDiagram.interactionVertexComponentEquiv_symm_val
     ((d.interactionVertexComponentEquiv.symm x : ↥S) : Fin N) = (x.2 : Fin N) :=
   rfl
 
-/-- The external-component restriction preserves every interaction vertex label. -/
-@[simp]
-theorem TwoPointDiagram.restrictExternalComponent_vertexLabel
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (v : ↥(TwoPointDiagram.interactionPart (d.externalComponent 0))) :
-    d.restrictExternalComponent.vertexLabel v =
-      d.vertexLabel ⟨v.1, TwoPointDiagram.interactionPart_subset
-        (d.externalComponent 0) v.2⟩ :=
-  rfl
-
 /-- A vacuum-component restriction preserves every interaction vertex label. -/
 @[simp]
 theorem TwoPointDiagram.restrictVacuumComponent_vertexLabel
@@ -128,7 +118,8 @@ theorem TwoPointDiagram.prod_vertexLabel_eq_external_mul_prod_vacuum
     (w : InternalLabel → M) :
     (∏ v : ↥S, w (d.vertexLabel v)) =
       (∏ v : ↥(TwoPointDiagram.interactionPart (d.externalComponent 0)),
-        w (d.restrictExternalComponent.vertexLabel v)) *
+        w (d.vertexLabel ⟨v.1, TwoPointDiagram.interactionPart_subset
+          (d.externalComponent 0) v.2⟩)) *
       d.vacuumComponentParts.prod fun B =>
         ∏ v : ↥(TwoPointDiagram.interactionPart
           (B : Finset (TwoPointVertex S))),
