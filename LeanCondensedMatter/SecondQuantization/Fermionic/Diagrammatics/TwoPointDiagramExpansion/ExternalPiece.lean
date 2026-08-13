@@ -102,7 +102,8 @@ This low-level equivalence is kept private: public transport statements below ar
 in terms of ambient and standalone-piece legs. -/
 private noncomputable def FixedExternalTwoPointWickDiagram.externalComponentLegEquiv
     (d : FixedExternalTwoPointWickDiagram Mode n i j) :
-    Fin (2 * (2 * d.1.externalInteractionPart.card + 1)) ≃
+    Fin (2 * (2 * (Common.TwoPointDiagram.interactionPart
+      (d.1.externalComponent 0)).card + 1)) ≃
       {leg : Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1)) //
         d.1.legInComponent (d.1.externalComponent 0) leg} :=
   Equiv.ofBijective
@@ -139,14 +140,16 @@ private theorem FixedExternalTwoPointWickDiagram.externalComponentLegEquiv_symm_
     d.externalComponentLegEquiv.symm
         (d.1.restrictedPartner (d.1.externalComponent 0) leg) =
       d.1.externalVacuumSplit.1.pairing.partner (d.externalComponentLegEquiv.symm leg) := by
-  unfold Common.TwoPointDiagram.externalInteractionPart at *
-  apply d.externalComponentLegEquiv.injective
-  rw [Equiv.apply_symm_apply]
+  rw [Equiv.symm_apply_eq]
   apply Subtype.ext
   rw [Common.TwoPointDiagram.restrictedPartner_val]
-  rw [← d.1.externalVacuumSplit_fst_partner (d.externalComponentLegEquiv.symm leg)]
-  exact (congrArg d.1.pairing.partner
-    (congrArg Subtype.val (d.externalComponentLegEquiv.apply_symm_apply leg))).symm
+  change d.1.pairing.partner leg.1 =
+    d.1.externalSlotLegSplitting
+      (Sum.inl (d.1.externalVacuumSplit.1.pairing.partner
+        (d.externalComponentLegEquiv.symm leg)))
+  rw [← d.1.externalVacuumSplit_fst_partner]
+  exact congrArg d.1.pairing.partner
+    (congrArg Subtype.val (d.externalComponentLegEquiv.apply_symm_apply leg)).symm
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- **The piece pairs the legs the ambient diagram pairs.** This is proved directly from the
@@ -179,45 +182,36 @@ private theorem FixedExternalTwoPointWickDiagram.twoPointLegEquiv_externalPieceL
           ((Common.twoPointLegEquiv
             (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm leg)).1) =
       orderedTwoPointLegMap (d.1.externalInteractionPart.orderEmbOfFin rfl) leg := by
-  unfold Common.TwoPointDiagram.externalInteractionPart at *
-  have hcongr (x : OrderedTwoPointLeg
-      (Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0)).card) :
-      Common.twoPointLegEquiv
-          (Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0))
+  have hcongr (x : OrderedTwoPointLeg d.1.externalInteractionPart.card) :
+      Common.twoPointLegEquiv d.1.externalInteractionPart
           ((Common.twoPointLegCongr d.externalSlotEquiv).symm
             ((Common.twoPointLegEquiv
-              (Finset.univ : Finset (Fin
-                (Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0)).card))).symm x)) =
+              (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm x)) =
         Common.twoPointLegDataCongr d.externalSlotEquiv.symm x := by
     rw [← Common.twoPointLegCongr_symm, Common.twoPointLegCongr_eq_trans,
       Equiv.trans_apply, Equiv.trans_apply, Equiv.apply_symm_apply, Equiv.apply_symm_apply]
   have hunfold :
       ((d.externalPieceLegEquiv.symm
           ((Common.twoPointLegEquiv
-            (Finset.univ : Finset (Fin
-              (Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0)).card))).symm leg)).1 :
+            (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm leg)).1 :
         Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1))) =
       d.1.externalSlotLegSplitting
         (Sum.inl ((Common.twoPointLegCongr d.externalSlotEquiv).symm
           ((Common.twoPointLegEquiv
-            (Finset.univ : Finset (Fin
-              (Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0)).card))).symm leg))) := rfl
+            (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm leg))) := rfl
   rw [hunfold]
   cases leg with
   | inl e =>
       have hk :
           (Common.twoPointLegCongr d.externalSlotEquiv).symm
               ((Common.twoPointLegEquiv
-                (Finset.univ : Finset (Fin
-                  (Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0)).card))).symm
-                (Sum.inl e)) =
+                (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm (Sum.inl e)) =
             (Common.twoPointLegEquiv
               (Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0))).symm
               (Sum.inl e) := by
         apply (Common.twoPointLegEquiv
           (Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0))).injective
-        rw [hcongr]
-        simp
+        simpa [Common.TwoPointDiagram.externalInteractionPart] using hcongr (Sum.inl e)
       rw [hk, d.1.externalSlotLegSplitting_external, Equiv.apply_symm_apply]
       rfl
   | inr p =>
@@ -225,16 +219,14 @@ private theorem FixedExternalTwoPointWickDiagram.twoPointLegEquiv_externalPieceL
       have hk :
           (Common.twoPointLegCongr d.externalSlotEquiv).symm
               ((Common.twoPointLegEquiv
-                (Finset.univ : Finset (Fin
-                  (Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0)).card))).symm
+                (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm
                   (Sum.inr (v, l))) =
             (Common.twoPointLegEquiv
               (Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0))).symm
               (Sum.inr (d.externalSlotEquiv.symm v, l)) := by
         apply (Common.twoPointLegEquiv
           (Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0))).injective
-        rw [hcongr]
-        simp
+        simpa [Common.TwoPointDiagram.externalInteractionPart] using hcongr (Sum.inr (v, l))
       rw [hk, d.1.externalSlotLegSplitting_interaction, Equiv.apply_symm_apply]
       apply congrArg Sum.inr
       apply Prod.ext
