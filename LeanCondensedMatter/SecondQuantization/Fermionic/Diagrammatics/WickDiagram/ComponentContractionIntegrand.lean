@@ -1,14 +1,14 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentConnected
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairProduct
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentGlobalCrossingParity
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentEvaluation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairValue
 
 set_option linter.style.header false
 
 /-!
 # Component factorization of the fermionic contraction integrand
 
-The product of ordered pair values and the Statistics-generic pairing weight both factor over
-connected components for every assembled component shuffle. Combining those two results gives the
+Common owns the Statistics-generic pairing-evaluation factorization. This module supplies only the
+fermionic Gibbs pair kernel and its locality under the Common component leg embedding, yielding the
 fixed-order contraction-integrand factorization required by milestone M1 of the fermionic
 linked-cluster theorem.
 -/
@@ -31,11 +31,14 @@ theorem QuarticWickDiagram.contractionIntegrand_assembleVertexOrder_eq_prod_comp
           (d.restrictComponentConnected B.2).1 (orders B)
           (d.componentTimeAssignment shuffle τ B) := by
   classical
-  simp only [QuarticWickDiagram.contractionIntegrand, Combinatorics.Pairing.evaluation]
-  rw [d.pairingInOrder_weight_eq_prod_components Common.Statistics.fermion orders shuffle,
-    d.prod_orderedQuarticPairValue_pairs_eq_prod_components ε β orders shuffle τ,
-    ← Finset.prod_mul_distrib]
-  simp only [Common.QuarticDiagram.restrictComponentConnected]
+  simpa only [QuarticWickDiagram.contractionIntegrand,
+    Common.QuarticDiagram.restrictComponentConnected] using
+    d.pairingInOrder_evaluation_eq_prod_components Common.Statistics.fermion orders shuffle
+      (orderedQuarticPairValue ε β d (d.assembleVertexOrder orders shuffle) τ)
+      (fun B => orderedQuarticPairValue ε β (d.restrictComponent B.2) (orders B)
+        (d.componentTimeAssignment shuffle τ B))
+      (fun B a b => orderedQuarticPairValue_componentOrderedLeg
+        ε β d orders shuffle τ B a b)
 
 end Fermionic
 end SecondQuantization
