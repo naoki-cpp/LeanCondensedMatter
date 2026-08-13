@@ -211,7 +211,9 @@ private theorem FixedExternalTwoPointWickDiagram.twoPointLegEquiv_externalPieceL
               (Sum.inl e) := by
         apply (Common.twoPointLegEquiv
           (Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0))).injective
-        simpa [Common.TwoPointDiagram.externalInteractionPart] using hcongr (Sum.inl e)
+        have h := hcongr (Sum.inl e)
+        rw [Common.twoPointLegDataCongr_inl] at h
+        simpa [Common.TwoPointDiagram.externalInteractionPart] using h
       rw [hk, d.1.externalSlotLegSplitting_external, Equiv.apply_symm_apply]
       rfl
   | inr p =>
@@ -226,7 +228,9 @@ private theorem FixedExternalTwoPointWickDiagram.twoPointLegEquiv_externalPieceL
               (Sum.inr (d.externalSlotEquiv.symm v, l)) := by
         apply (Common.twoPointLegEquiv
           (Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0))).injective
-        simpa [Common.TwoPointDiagram.externalInteractionPart] using hcongr (Sum.inr (v, l))
+        have h := hcongr (Sum.inr (v, l))
+        rw [Common.twoPointLegDataCongr_inr] at h
+        simpa [Common.TwoPointDiagram.externalInteractionPart] using h
       rw [hk, d.1.externalSlotLegSplitting_interaction, Equiv.apply_symm_apply]
       apply congrArg Sum.inr
       apply Prod.ext
