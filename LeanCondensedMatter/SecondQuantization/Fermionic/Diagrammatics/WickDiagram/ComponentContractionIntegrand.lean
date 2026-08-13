@@ -1,16 +1,16 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentConnected
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairProduct
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentGlobalCrossingParity
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentGlobalCrossingParity
 
 set_option linter.style.header false
 
 /-!
 # Component factorization of the fermionic contraction integrand
 
-The product of ordered pair values and the fermionic pairing weight both factor over connected
-components for every assembled component shuffle. Combining those two results gives the fixed-order
-contraction-integrand factorization required by milestone M1 of the fermionic linked-cluster
-theorem.
+The product of ordered pair values and the Statistics-generic pairing weight both factor over
+connected components for every assembled component shuffle. Combining those two results gives the
+fixed-order contraction-integrand factorization required by milestone M1 of the fermionic
+linked-cluster theorem.
 -/
 
 namespace SecondQuantization
