@@ -4,18 +4,17 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 set_option linter.style.header false
 
 /-!
-# Mixed-time component pairs and restricted pairings
+# Mixed-time component pairs and local pairings
 
-The two-point Wick amplitude uses `pairingInMixedOrder`, whereas the component decomposition and the
-restricted external and vacuum diagrams are stored in the standard diagram-leg enumeration.  The
-previous layer identified the position fibers and their partner permutations.  This module lifts
-that identification from positions to normalized pairs.
+The two-point Wick amplitude uses `pairingInMixedOrder`, whereas component decomposition is stored in
+the standard diagram-leg enumeration. The previous layer identified the position fibers and their
+partner permutations. This module lifts that identification from positions to normalized pairs.
 
-For each full component it defines the normalized mixed-time pairs assigned to that component,
-identifies their two endpoints with the mixed component-position fiber, and proves that these pairs
-are equivalent to normalized pairs of the corresponding restricted external or vacuum pairing.  As
-in the standard restriction layer, normalization may reverse endpoint order, so the transported
-pair is characterized as the direct endpoint pair or its swap.
+For each full component it defines the normalized mixed-time pairs assigned to that component and
+identifies their endpoints with a time-independent local pairing. The external component uses the
+canonical pairing of `externalVacuumSplit.1`; vacuum components use the generic restricted vacuum
+pairing. Normalization may reverse endpoint order, so transported pairs are characterized as the
+direct endpoint pair or its swap.
 -/
 
 namespace SecondQuantization
@@ -153,7 +152,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedRestrictedPartner_componentPairEnd
     pr.1.2).2
 
 /-- Transport a mixed component pair through a component-position equivalence and normalize it in a
-local restricted pairing. -/
+local pairing. -/
 noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentPairToRestricted
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.1.componentPartition.parts) {m : ℕ}
@@ -179,16 +178,16 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentPairRestrictedE
       rw [hpartner,
         d.mixedRestrictedPartner_componentPairEndpoint_zero τ τ' σ B pr])
 
-/-- Mixed pairs in the external component are equivalent to normalized pairs of the restricted
-external pairing. -/
+/-- Mixed pairs in the external component are equivalent to normalized pairs of the canonical
+external split pairing. -/
 noncomputable def FixedExternalTwoPointWickDiagram.mixedExternalComponentPairEquiv
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     d.MixedComponentPair τ τ' σ d.1.externalComponentPart ≃
-      d.1.restrictedExternalPairing.NormalizedPair :=
+      d.1.externalVacuumSplit.1.pairing.NormalizedPair :=
   d.mixedComponentPairRestrictedEquiv τ τ' σ d.1.externalComponentPart
-    (d.mixedExternalPositionEquiv τ τ' σ) d.1.restrictedExternalPairing
-    (d.restrictedExternalPairing_partner_mixedExternalPositionEquiv τ τ' σ)
+    (d.mixedExternalPositionEquiv τ τ' σ) d.1.externalVacuumSplit.1.pairing
+    (d.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv τ τ' σ)
 
 /-- Mixed pairs in a vacuum component are equivalent to normalized pairs of the corresponding
 restricted vacuum pairing. -/
@@ -203,8 +202,8 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedVacuumComponentPairEquiv
     (d.1.restrictedVacuumPairing B hVac)
     (d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' σ B hVac)
 
-/-- The restricted normalized pair containing the transported first endpoint contains it as either
-its first or second entry. -/
+/-- The local normalized pair containing the transported first endpoint contains it as either its
+first or second entry. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentPairToRestricted_contains_first_endpoint
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.1.componentPartition.parts) {m : ℕ}
@@ -226,8 +225,8 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairToRestricted_contains
   · right
     simpa using hx
 
-/-- Transporting one mixed component pair to a restricted pairing preserves its endpoints up to
-swapping their normalized order. -/
+/-- Transporting one mixed component pair to a local pairing preserves its endpoints up to swapping
+their normalized order. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentPairToRestricted_pair_eq_or_swap
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.1.componentPartition.parts) {m : ℕ}
@@ -276,7 +275,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairToRestricted_pair_eq_
         _ = e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) := hab
     · exact hsecond
 
-/-- The generic mixed restricted-pair equivalence maps each pair to its transported endpoint pair or
+/-- The generic mixed local-pairing equivalence maps each pair to its transported endpoint pair or
 its swap. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentPairRestrictedEquiv_pair_eq_or_swap
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -302,7 +301,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairRestrictedEquiv_pair_
   exact d.mixedComponentPairToRestricted_pair_eq_or_swap τ τ' σ B e localPairing
     hpartner pr
 
-/-- External mixed-pair restriction preserves transported endpoints up to swap. -/
+/-- Canonical external split pair transport preserves transported endpoints up to swap. -/
 theorem FixedExternalTwoPointWickDiagram.mixedExternalComponentPairEquiv_pair_eq_or_swap
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
@@ -318,8 +317,8 @@ theorem FixedExternalTwoPointWickDiagram.mixedExternalComponentPairEquiv_pair_eq
           d.mixedExternalPositionEquiv τ τ' σ
             (d.mixedComponentPairEndpointEquiv τ τ' σ d.1.externalComponentPart (pr, 0))) :=
   d.mixedComponentPairRestrictedEquiv_pair_eq_or_swap τ τ' σ d.1.externalComponentPart
-    (d.mixedExternalPositionEquiv τ τ' σ) d.1.restrictedExternalPairing
-    (d.restrictedExternalPairing_partner_mixedExternalPositionEquiv τ τ' σ) pr
+    (d.mixedExternalPositionEquiv τ τ' σ) d.1.externalVacuumSplit.1.pairing
+    (d.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv τ τ' σ) pr
 
 /-- Vacuum mixed-pair restriction preserves transported endpoints up to swap. -/
 theorem FixedExternalTwoPointWickDiagram.mixedVacuumComponentPairEquiv_pair_eq_or_swap
