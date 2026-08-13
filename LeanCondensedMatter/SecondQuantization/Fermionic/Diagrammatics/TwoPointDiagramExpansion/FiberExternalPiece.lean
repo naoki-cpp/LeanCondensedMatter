@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberDecomposition
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ExternalPieceAmplitude
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalRestrictionSlotSplit
 
 set_option linter.style.header false
 
@@ -34,15 +33,14 @@ theorem FixedExternalTwoPointWickDiagram.externalPiece_heq_standardized_slotSpli
   subst T
   apply heq_of_eq
   apply Subtype.ext
-  have hrestrict :
-      d.1.restrictExternalComponent =
+  have hsplit :
+      d.1.externalVacuumSplit.1 =
         d.1.slotSplitExternal (Finset.subset_univ d.1.externalInteractionPart)
           (Common.isSplit_slotLegSplitting_of_interactionPart_eq
             (Finset.subset_univ d.1.externalInteractionPart) rfl) := by
-    rw [Common.TwoPointDiagram.restrictExternalComponent_eq_externalVacuumSplit_fst]
     rfl
   have hcongr := congrArg
-    (fun x => Common.TwoPointDiagram.slotCongr d.externalSlotEquiv x) hrestrict
+    (fun x => Common.TwoPointDiagram.slotCongr d.externalSlotEquiv x) hsplit
   simpa [FixedExternalTwoPointWickDiagram.externalPiece,
     fixedExternalTwoPointWickDiagramOnEquiv, fixedExternalSlotEquiv,
     FixedExternalTwoPointWickDiagram.externalSlotEquiv] using hcongr
