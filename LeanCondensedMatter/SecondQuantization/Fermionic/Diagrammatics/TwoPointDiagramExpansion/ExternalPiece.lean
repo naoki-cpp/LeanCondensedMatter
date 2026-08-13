@@ -177,8 +177,8 @@ private theorem FixedExternalTwoPointWickDiagram.externalSlotLegSplitting_extern
     d.1.externalSlotLegSplitting
         (Sum.inl ((Common.twoPointLegEquiv d.1.externalInteractionPart).symm (Sum.inl e))) =
       (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm (Sum.inl e) := by
-  simpa only [Common.TwoPointDiagram.externalInteractionPart] using
-    d.1.externalSlotLegSplitting_external e
+  convert d.1.externalSlotLegSplitting_external e using 1 <;>
+    simp only [Common.TwoPointDiagram.externalInteractionPart]
 
 omit [LinearOrder Mode] [Fintype Mode] in
 private theorem FixedExternalTwoPointWickDiagram.externalSlotLegSplitting_interaction_externalPart
@@ -189,8 +189,8 @@ private theorem FixedExternalTwoPointWickDiagram.externalSlotLegSplitting_intera
           (Sum.inr (v, l)))) =
       (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm
         (Sum.inr (⟨v.1, Finset.mem_univ _⟩, l)) := by
-  simpa only [Common.TwoPointDiagram.externalInteractionPart] using
-    d.1.externalSlotLegSplitting_interaction v l
+  convert d.1.externalSlotLegSplitting_interaction v l using 1 <;>
+    simp only [Common.TwoPointDiagram.externalInteractionPart]
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- Reading a standalone-piece leg through the canonical split gives exactly the ambient leg named
