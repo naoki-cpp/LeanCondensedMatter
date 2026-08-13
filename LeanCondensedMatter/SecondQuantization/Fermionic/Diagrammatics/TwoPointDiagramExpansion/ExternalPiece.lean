@@ -4,7 +4,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Comp
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotCongr
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentOrderedSimplex
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentVertexProduct
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalRestrictionSlotSplit
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalSlotSplit
 
 set_option linter.style.header false
 
@@ -97,74 +97,109 @@ theorem FixedExternalTwoPointWickDiagram.externalPiece_vertexLabelSequence
   exact congrArg d.1.vertexLabel
     (Subtype.ext (d.externalSlotEquiv_symm_coe ⟨v, Finset.mem_univ v⟩))
 
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- **The piece's legs are the ambient component's legs.** Reading a leg of the piece back through
-the slot relabeling and the external-component leg reindexing recovers the ambient leg, and the
-correspondence is exactly the monotone leg reindexing whose mixed order the ambient one restricts
-to. -/
-theorem FixedExternalTwoPointWickDiagram.externalLegDataEquiv_symm_twoPointLegDataCongr
-    (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (leg : OrderedTwoPointLeg d.1.externalInteractionPart.card) :
-    (d.1.externalLegDataEquiv.symm
-        (Common.twoPointLegDataCongr d.externalSlotEquiv.symm leg) :
-      OrderedTwoPointLeg n) =
-      orderedTwoPointLegMap (d.1.externalInteractionPart.orderEmbOfFin rfl) leg := by
-  cases leg with
-  | inl e => rfl
-  | inr p =>
-      obtain ⟨w, l⟩ := p
-      apply congrArg Sum.inr
-      apply Prod.ext
-      · exact Subtype.ext (d.externalSlotEquiv_symm_coe w)
-      · rfl
+/-- The left side of the canonical slot splitting is exactly the ambient external-component legs.
+This low-level equivalence is kept private: public transport statements below are phrased directly
+in terms of ambient and standalone-piece legs. -/
+private noncomputable def FixedExternalTwoPointWickDiagram.externalComponentLegEquiv
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) :
+    Fin (2 * (2 * (Common.TwoPointDiagram.interactionPart
+      (d.1.externalComponent 0)).card + 1)) ≃
+      {leg : Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1)) //
+        d.1.legInComponent (d.1.externalComponent 0) leg} :=
+  Equiv.ofBijective
+    (fun k =>
+      ⟨d.1.externalSlotLegSplitting (Sum.inl k), by
+        simpa [Common.TwoPointDiagram.externalComponentPart] using
+          d.1.legInComponent_externalSlotLegSplitting_inl k⟩)
+    ⟨by
+      intro a b h
+      have h' : Sum.inl a = Sum.inl b :=
+        d.1.externalSlotLegSplitting.injective (congrArg Subtype.val h)
+      exact Sum.inl.inj h',
+     by
+      intro leg
+      obtain ⟨k, hk⟩ := d.1.exists_externalSlotLegSplitting_inl leg.1 (by
+        simpa [Common.TwoPointDiagram.externalComponentPart] using leg.2)
+      exact ⟨k, Subtype.ext hk⟩⟩
 
-/-- The flattened legs of the piece are the flattened ambient legs lying in the external
-component. -/
-noncomputable def FixedExternalTwoPointWickDiagram.externalPieceLegEquiv
+/-- The flattened legs of the standalone piece are the canonical left slot-split legs, followed by
+the increasing slot relabeling. This is an implementation detail of the semantic transport results. -/
+private noncomputable def FixedExternalTwoPointWickDiagram.externalPieceLegEquiv
     (d : FixedExternalTwoPointWickDiagram Mode n i j) :
     {leg : Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1)) //
         d.1.legInComponent (d.1.externalComponent 0) leg} ≃
       Fin (2 * (2 *
         (Finset.univ : Finset (Fin d.1.externalInteractionPart.card)).card + 1)) :=
-  d.1.externalBlockLegEquiv.trans (Common.twoPointLegCongr d.externalSlotEquiv)
+  d.externalComponentLegEquiv.symm.trans (Common.twoPointLegCongr d.externalSlotEquiv)
 
 omit [LinearOrder Mode] [Fintype Mode] in
-/-- The piece's leg reindexing is the component reindexing followed by the slot relabeling. -/
-theorem FixedExternalTwoPointWickDiagram.externalPieceLegEquiv_apply
+private theorem FixedExternalTwoPointWickDiagram.externalComponentLegEquiv_symm_restrictedPartner
     (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (leg : {leg : Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1)) //
       d.1.legInComponent (d.1.externalComponent 0) leg}) :
-    d.externalPieceLegEquiv leg =
-      Common.twoPointLegCongr d.externalSlotEquiv (d.1.externalBlockLegEquiv leg) := rfl
+    d.externalComponentLegEquiv.symm
+        (d.1.restrictedPartner (d.1.externalComponent 0) leg) =
+      d.1.externalVacuumSplit.1.pairing.partner (d.externalComponentLegEquiv.symm leg) := by
+  rw [Equiv.symm_apply_eq]
+  apply Subtype.ext
+  rw [Common.TwoPointDiagram.restrictedPartner_val]
+  change d.1.pairing.partner leg.1 =
+    d.1.externalSlotLegSplitting
+      (Sum.inl (d.1.externalVacuumSplit.1.pairing.partner
+        (d.externalComponentLegEquiv.symm leg)))
+  rw [← d.1.externalVacuumSplit_fst_partner]
+  exact congrArg d.1.pairing.partner
+    (congrArg Subtype.val (d.externalComponentLegEquiv.apply_symm_apply leg)).symm
 
 omit [LinearOrder Mode] [Fintype Mode] in
-/-- **The piece pairs the legs the ambient diagram pairs.** Transporting an ambient leg of the
-external component to the piece and taking the piece's partner is the same as taking the ambient
-partner first. The data now comes from the canonical slot split; this proof temporarily uses the
-restriction/split bridge to preserve the existing leg-coordinate API. -/
-theorem FixedExternalTwoPointWickDiagram.externalPiece_partner_externalPieceLegEquiv
+/-- **The piece pairs the legs the ambient diagram pairs.** This is proved directly from the
+canonical left slot split and `slotCongr`, without constructing a restricted external pairing. -/
+private theorem FixedExternalTwoPointWickDiagram.externalPiece_partner_externalPieceLegEquiv
     (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (leg : {leg : Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1)) //
       d.1.legInComponent (d.1.externalComponent 0) leg}) :
     d.externalPiece.1.pairing.partner (d.externalPieceLegEquiv leg) =
       d.externalPieceLegEquiv (d.1.restrictedPartner (d.1.externalComponent 0) leg) := by
-  have hcongr :
-      d.externalPiece.1.pairing.partner
-          (Common.twoPointLegCongr d.externalSlotEquiv (d.1.externalBlockLegEquiv leg)) =
-        Common.twoPointLegCongr d.externalSlotEquiv
-          (d.1.externalVacuumSplit.1.pairing.partner (d.1.externalBlockLegEquiv leg)) :=
-    Common.TwoPointDiagram.slotCongr_partner d.externalSlotEquiv
-      d.1.externalVacuumSplit.1 (d.1.externalBlockLegEquiv leg)
-  simp only [FixedExternalTwoPointWickDiagram.externalPieceLegEquiv_apply]
-  rw [hcongr, ← d.1.restrictExternalComponent_eq_externalVacuumSplit_fst,
-    Common.TwoPointDiagram.restrictExternalComponent_pairing,
-    Common.TwoPointDiagram.restrictedExternalPairing_partner_externalBlockLegEquiv]
+  change
+    (d.1.externalVacuumSplit.1.slotCongr d.externalSlotEquiv).pairing.partner
+        (Common.twoPointLegCongr d.externalSlotEquiv
+          (d.externalComponentLegEquiv.symm leg)) =
+      Common.twoPointLegCongr d.externalSlotEquiv
+        (d.externalComponentLegEquiv.symm
+          (d.1.restrictedPartner (d.1.externalComponent 0) leg))
+  rw [Common.TwoPointDiagram.slotCongr_partner,
+    d.externalComponentLegEquiv_symm_restrictedPartner]
+  rfl
 
 omit [LinearOrder Mode] [Fintype Mode] in
-/-- **A leg of the piece names the ambient leg the slot reindexing sends it to.** Reading a leg
-identity of the piece back through the piece's leg reindexing and unflattening it in the ambient
-diagram gives the leg `orderedTwoPointLegMap` produces. -/
-theorem FixedExternalTwoPointWickDiagram.twoPointLegEquiv_externalPieceLegEquiv_symm
+private theorem FixedExternalTwoPointWickDiagram.externalSlotLegSplitting_external_externalPart
+    (d : FixedExternalTwoPointWickDiagram Mode n i j) (e : Fin 2) :
+    d.1.externalSlotLegSplitting
+        (Sum.inl ((Common.twoPointLegEquiv d.1.externalInteractionPart).symm (Sum.inl e))) =
+      (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm (Sum.inl e) := by
+  convert d.1.externalSlotLegSplitting_external e using 1
+  · simp only [Common.TwoPointDiagram.externalInteractionPart]
+    apply Fin.ext
+    rfl
+
+omit [LinearOrder Mode] [Fintype Mode] in
+private theorem FixedExternalTwoPointWickDiagram.externalSlotLegSplitting_interaction_externalPart
+    (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (v : ↥d.1.externalInteractionPart) (l : Fin 4) :
+    d.1.externalSlotLegSplitting
+        (Sum.inl ((Common.twoPointLegEquiv d.1.externalInteractionPart).symm
+          (Sum.inr (v, l)))) =
+      (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm
+        (Sum.inr (⟨v.1, Finset.mem_univ _⟩, l)) := by
+  convert d.1.externalSlotLegSplitting_interaction v l using 1
+  · simp only [Common.TwoPointDiagram.externalInteractionPart]
+    apply Fin.ext
+    rfl
+
+omit [LinearOrder Mode] [Fintype Mode] in
+/-- Reading a standalone-piece leg through the canonical split gives exactly the ambient leg named
+by the increasing interaction-slot embedding. -/
+private theorem FixedExternalTwoPointWickDiagram.twoPointLegEquiv_externalPieceLegEquiv_symm
     (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (leg : OrderedTwoPointLeg d.1.externalInteractionPart.card) :
     Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))
@@ -172,12 +207,12 @@ theorem FixedExternalTwoPointWickDiagram.twoPointLegEquiv_externalPieceLegEquiv_
           ((Common.twoPointLegEquiv
             (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm leg)).1) =
       orderedTwoPointLegMap (d.1.externalInteractionPart.orderEmbOfFin rfl) leg := by
-  have hcongr :
+  have hcongr (x : OrderedTwoPointLeg d.1.externalInteractionPart.card) :
       Common.twoPointLegEquiv d.1.externalInteractionPart
           ((Common.twoPointLegCongr d.externalSlotEquiv).symm
             ((Common.twoPointLegEquiv
-              (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm leg)) =
-        Common.twoPointLegDataCongr d.externalSlotEquiv.symm leg := by
+              (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm x)) =
+        Common.twoPointLegDataCongr d.externalSlotEquiv.symm x := by
     rw [← Common.twoPointLegCongr_symm, Common.twoPointLegCongr_eq_trans,
       Equiv.trans_apply, Equiv.trans_apply, Equiv.apply_symm_apply, Equiv.apply_symm_apply]
   have hunfold :
@@ -185,14 +220,40 @@ theorem FixedExternalTwoPointWickDiagram.twoPointLegEquiv_externalPieceLegEquiv_
           ((Common.twoPointLegEquiv
             (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm leg)).1 :
         Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1))) =
-      (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm
-        ((d.1.externalLegDataEquiv.symm
-          (Common.twoPointLegEquiv d.1.externalInteractionPart
-            ((Common.twoPointLegCongr d.externalSlotEquiv).symm
+      d.1.externalSlotLegSplitting
+        (Sum.inl ((Common.twoPointLegCongr d.externalSlotEquiv).symm
+          ((Common.twoPointLegEquiv
+            (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm leg))) := rfl
+  rw [hunfold]
+  cases leg with
+  | inl e =>
+      have hk :
+          (Common.twoPointLegCongr d.externalSlotEquiv).symm
               ((Common.twoPointLegEquiv
-                (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm leg)))).1) := rfl
-  rw [hunfold, hcongr, Equiv.apply_symm_apply,
-    d.externalLegDataEquiv_symm_twoPointLegDataCongr]
+                (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm (Sum.inl e)) =
+            (Common.twoPointLegEquiv d.1.externalInteractionPart).symm (Sum.inl e) := by
+        have h := hcongr (Sum.inl e)
+        rw [Common.twoPointLegDataCongr_inl, Equiv.apply_eq_iff_eq_symm_apply] at h
+        exact h
+      rw [hk, d.externalSlotLegSplitting_external_externalPart, Equiv.apply_symm_apply]
+      rfl
+  | inr p =>
+      obtain ⟨v, l⟩ := p
+      have hk :
+          (Common.twoPointLegCongr d.externalSlotEquiv).symm
+              ((Common.twoPointLegEquiv
+                (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm
+                  (Sum.inr (v, l))) =
+            (Common.twoPointLegEquiv d.1.externalInteractionPart).symm
+              (Sum.inr (d.externalSlotEquiv.symm v, l)) := by
+        have h := hcongr (Sum.inr (v, l))
+        rw [Common.twoPointLegDataCongr_inr, Equiv.apply_eq_iff_eq_symm_apply] at h
+        exact h
+      rw [hk, d.externalSlotLegSplitting_interaction_externalPart, Equiv.apply_symm_apply]
+      apply congrArg Sum.inr
+      apply Prod.ext
+      · exact Subtype.ext (d.externalSlotEquiv_symm_coe v)
+      · rfl
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- **The piece pairs leg identities exactly as the ambient diagram does.** The slot reindexing
@@ -278,13 +339,21 @@ theorem FixedExternalTwoPointWickDiagram.mixedPositionComponent_externalPieceMix
     (p : Fin (2 * (2 * d.1.externalInteractionPart.card + 1))) :
     d.mixedPositionComponent τ τ' σ (d.externalPieceMixedPosition τ τ' σ p) =
       d.1.externalComponentPart := by
+  let pieceLeg := mixedTimeOrderedAtomicLegEquiv τ τ' (d.externalPieceTimes σ) p
+  let ambientLeg := d.externalPieceLegEquiv.symm
+    ((Common.twoPointLegEquiv
+      (Finset.univ : Finset (Fin d.1.externalInteractionPart.card))).symm pieceLeg)
   have hleg := d.mixedTimeOrderedAtomicLegEquiv_externalPieceMixedPosition τ τ' σ p
+  have hcanonical := d.twoPointLegEquiv_externalPieceLegEquiv_symm pieceLeg
+  have hamb :
+      d.1.unflattenedLegInComponent d.1.externalComponentPart
+        (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)) ambientLeg.1) :=
+    (d.1.legInComponent_iff_unflattened d.1.externalComponentPart ambientLeg.1).1 (by
+      simpa [ambientLeg, Common.TwoPointDiagram.externalComponentPart] using ambientLeg.2)
   rw [d.mixedPositionComponent_eq_iff_legInComponent,
     d.1.legInComponent_iff_unflattened, twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
-    hleg, ← d.externalLegDataEquiv_symm_twoPointLegDataCongr]
-  exact (d.1.externalLegDataEquiv.symm
-    (Common.twoPointLegDataCongr d.externalSlotEquiv.symm
-      (mixedTimeOrderedAtomicLegEquiv τ τ' (d.externalPieceTimes σ) p))).2
+    hleg, ← hcanonical]
+  exact hamb
 
 /-- **The piece's mixed positions are exactly the external component's mixed positions.** They embed
 injectively, and there are as many of them as the component owns. -/

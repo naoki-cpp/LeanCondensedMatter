@@ -28,13 +28,14 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight_externalComp
     d.mixedComponentVertexWeight g d.1.externalComponentPart =
       orderedTwoPointVertexWeight g d.externalPiece.vertexLabelSequence := by
   classical
-  rw [d.mixedComponentVertexWeight_external_eq_restricted]
   calc
-    (∏ v : ↥d.1.externalInteractionPart,
-        g (d.1.restrictExternalComponent.vertexLabel v)) =
+    d.mixedComponentVertexWeight g d.1.externalComponentPart =
         ∏ v : ↥d.1.externalInteractionPart,
           g (d.1.externalVacuumSplit.1.vertexLabel v) := by
-      rw [d.1.restrictExternalComponent_eq_externalVacuumSplit_fst]
+      unfold FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight
+      apply Finset.prod_congr rfl
+      intro v _
+      rw [Common.TwoPointDiagram.externalVacuumSplit_fst_vertexLabel]
     _ = ∏ v : ↥(Finset.univ : Finset (Fin d.1.externalInteractionPart.card)),
           g (d.externalPiece.1.vertexLabel v) := by
       simpa [FixedExternalTwoPointWickDiagram.externalPiece] using
