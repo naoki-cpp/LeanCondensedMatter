@@ -5,6 +5,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFun
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsOccupationBasisBridge
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.PurePointCompatibility
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis
 
 set_option linter.style.header false
