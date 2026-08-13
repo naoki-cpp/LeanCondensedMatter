@@ -6,7 +6,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagra
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.NumberConservingPairValue
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairValue
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairProduct
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentGlobalCrossingParity
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentContractionIntegrand
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.AmplitudePrefactorFactorization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.AmplitudeFactorization
@@ -23,9 +22,9 @@ set_option linter.style.header false
 Quartic interaction vertices, the two-point external-leg foundation and atomic mixed-time-order
 flattening, local-leg semantics, ordered Wick diagrams and amplitudes, component orders,
 order-preserving shuffle decompositions, shuffled ordered-simplex integrands, component-local leg,
-pairing and pair-product compatibility, component factorization of crossing parity,
-pairing-weight and contraction-integrand factorization, and full quartic Wick-amplitude
-factorization over connected components; the Dyson diagram expansion, the connected-diagram formula
-for Dyson vertex cumulants, the general algebraic Dyson Linked Cluster Theorem, and its explicit
-orders-one-through-three regression corollaries.
+pairing and pair-product compatibility, fermionic contraction-integrand specialization, and full
+quartic Wick-amplitude factorization over connected components; the Dyson diagram expansion, the
+connected-diagram formula for Dyson vertex cumulants, the general algebraic Dyson Linked Cluster
+Theorem, and its explicit orders-one-through-three regression corollaries. Statistics-generic
+quartic crossing-parity and pairing-weight factorization is owned by `SecondQuantization.Common`.
 -/

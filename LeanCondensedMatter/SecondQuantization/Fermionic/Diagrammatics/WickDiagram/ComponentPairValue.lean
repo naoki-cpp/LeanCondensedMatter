@@ -7,40 +7,15 @@ set_option linter.style.header false
 /-!
 # Component-local fermionic pair values
 
-Statistics-independent component leg embeddings and pairing compatibility live in
-`SecondQuantization.Common`.  This file contains the fermionic operator and pair-value compatibility
-specialized to those common embeddings, plus the flattened-leg ordering lemma still used by the
-legacy crossing-parity stack.
+Statistics-independent component leg embeddings, pairing compatibility, and flattened-leg ordering
+live in `SecondQuantization.Common`. This file contains only the fermionic operator and pair-value
+compatibility specialized to those common embeddings.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
 
 variable {Mode : Type*} {N : ℕ}
-
-/-- Flattened quartic legs in distinct vertex-slot blocks are ordered exactly by their slots.
-This remains here only for the legacy crossing-parity stack and can disappear with that stack. -/
-theorem orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne
-    (n : ℕ) (i j : Fin n) (a b : Fin 4) (hij : i ≠ j) :
-    (Common.orderedQuarticLegEquiv n).symm (i, a) <
-        (Common.orderedQuarticLegEquiv n).symm (j, b) ↔ i < j := by
-  have hp := Common.orderedQuarticLegEquiv_reconstruct_val n
-    ((Common.orderedQuarticLegEquiv n).symm (i, a))
-  have hq := Common.orderedQuarticLegEquiv_reconstruct_val n
-    ((Common.orderedQuarticLegEquiv n).symm (j, b))
-  have hp' : ((Common.orderedQuarticLegEquiv n).symm (i, a)).val = a.val + 4 * i.val := by
-    simpa using hp
-  have hq' : ((Common.orderedQuarticLegEquiv n).symm (j, b)).val = b.val + 4 * j.val := by
-    simpa using hq
-  change ((Common.orderedQuarticLegEquiv n).symm (i, a)).val <
-      ((Common.orderedQuarticLegEquiv n).symm (j, b)).val ↔ i.val < j.val
-  rw [hp', hq']
-  have ha : a.val < 4 := a.isLt
-  have hb : b.val < 4 := b.isLt
-  have hij' : i.val ≠ j.val := by
-    intro h
-    exact hij (Fin.ext h)
-  omega
 
 section Fermionic
 
