@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Amplitude
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.NumberConservingMatching
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.NumberConservingMatching
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsGreenFunction
 
 set_option linter.style.header false
@@ -21,6 +21,7 @@ namespace SecondQuantization
 namespace Fermionic
 
 open Combinatorics
+open Common
 
 variable {Mode : Type*} [LinearOrder Mode] {N : ℕ}
 
