@@ -44,7 +44,6 @@ theorem finiteGibbsDensityOperator_eq_finitePurePointGibbsDensityOperator
   rfl
 
 /-- The finite Gibbs density operator therefore acts with the generic pure-point probabilities. -/
-@[simp]
 theorem finiteGibbsDensityOperator_apply_basis_eq_purePointProbability
     (energy : Config → ℝ) (β : ℝ) (n : Config) :
     (finiteGibbsDensityOperator energy β).op (finiteHilbertBasisState n) =
