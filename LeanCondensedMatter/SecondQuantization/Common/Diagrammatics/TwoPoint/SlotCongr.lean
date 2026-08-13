@@ -32,7 +32,7 @@ noncomputable def standardSlotEquiv (T : Finset (Fin N)) :
 @[simp]
 theorem standardSlotEquiv_symm_coe (T : Finset (Fin N))
     (v : ↥(Finset.univ : Finset (Fin T.card))) :
-    ((standardSlotEquiv T).symm v : ↥T : Fin N) =
+    (((standardSlotEquiv T).symm v : ↥T) : Fin N) =
       T.orderEmbOfFin rfl (v : Fin T.card) := by
   simp [standardSlotEquiv, Finset.coe_orderIsoOfFin_apply]
 
