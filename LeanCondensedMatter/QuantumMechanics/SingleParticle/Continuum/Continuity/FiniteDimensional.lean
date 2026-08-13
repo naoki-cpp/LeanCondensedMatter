@@ -41,7 +41,7 @@ def probabilityCurrentDivergenceValue {d : ℕ} (ℏ κ : ℝ) (ψ : ℂ)
   ∑ i, probabilityCurrentDivergenceValue1D ℏ κ ψ (secondDerivatives i)
 
 /-- The one-dimensional current-divergence value is additive in the second derivative. -/
-theorem probabilityCurrentDivergenceValue1D_add
+private theorem probabilityCurrentDivergenceValue1D_add
     (ℏ κ : ℝ) (ψ a b : ℂ) :
     probabilityCurrentDivergenceValue1D ℏ κ ψ (a + b) =
       probabilityCurrentDivergenceValue1D ℏ κ ψ a +
@@ -51,13 +51,13 @@ theorem probabilityCurrentDivergenceValue1D_add
   ring
 
 /-- The one-dimensional current-divergence value vanishes at zero second derivative. -/
-theorem probabilityCurrentDivergenceValue1D_zero
+private theorem probabilityCurrentDivergenceValue1D_zero
     (ℏ κ : ℝ) (ψ : ℂ) :
     probabilityCurrentDivergenceValue1D ℏ κ ψ 0 = 0 := by
   simp [probabilityCurrentDivergenceValue1D_eq_coordinates]
 
 /-- Finite coordinate sums commute with the pointwise current-divergence value. -/
-theorem probabilityCurrentDivergenceValue1D_sum
+private theorem probabilityCurrentDivergenceValue1D_sum
     {ι : Type*} (s : Finset ι) (ℏ κ : ℝ) (ψ : ℂ) (f : ι → ℂ) :
     probabilityCurrentDivergenceValue1D ℏ κ ψ (∑ i ∈ s, f i) =
       ∑ i ∈ s, probabilityCurrentDivergenceValue1D ℏ κ ψ (f i) := by
