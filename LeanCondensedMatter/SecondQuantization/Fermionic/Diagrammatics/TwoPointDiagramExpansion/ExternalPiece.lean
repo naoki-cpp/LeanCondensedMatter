@@ -4,6 +4,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Comp
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotCongr
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentOrderedSimplex
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentVertexProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalRestriction
 
 set_option linter.style.header false
 
@@ -90,8 +91,8 @@ theorem FixedExternalTwoPointWickDiagram.externalPiece_vertexLabelSequence
         ⟨d.1.externalInteractionPart.orderEmbOfFin rfl v, Finset.mem_univ _⟩ := by
   unfold FixedExternalTwoPointWickDiagram.vertexLabelSequence
     FixedExternalTwoPointWickDiagram.externalPiece
-  rw [Common.TwoPointDiagram.slotCongr_vertexLabel,
-    Common.TwoPointDiagram.restrictExternalComponent_vertexLabel]
+  rw [Common.TwoPointDiagram.slotCongr_vertexLabel]
+  unfold Common.TwoPointDiagram.restrictExternalComponent
   exact congrArg d.1.vertexLabel
     (Subtype.ext (d.externalSlotEquiv_symm_coe ⟨v, Finset.mem_univ v⟩))
 

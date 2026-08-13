@@ -156,6 +156,19 @@ theorem TwoPointDiagram.externalComponent_zero_eq_one {S : Finset (Fin N)}
     d.externalComponent 0 = d.externalComponent 1 :=
   (d.externalVerticesConnected_iff_externalComponent_eq).1 d.externalVerticesConnected
 
+/-- Every external vertex lies in the common external component. -/
+theorem TwoPointDiagram.externalVertex_mem_externalComponentPart {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) (e : Fin 2) :
+    (Sum.inl e : TwoPointVertex S) ∈
+      (d.externalComponentPart : Finset (TwoPointVertex S)) := by
+  fin_cases e
+  · simpa [TwoPointDiagram.externalComponentPart, TwoPointDiagram.externalComponent] using
+      d.self_mem_componentBlock (Sum.inl (0 : Fin 2) : TwoPointVertex S)
+  · rw [show (d.externalComponentPart : Finset (TwoPointVertex S)) =
+      d.externalComponent 0 by rfl, d.externalComponent_zero_eq_one]
+    simpa [TwoPointDiagram.externalComponent] using
+      d.self_mem_componentBlock (Sum.inl (1 : Fin 2) : TwoPointVertex S)
+
 /-- For two one-legged external insertions and quartic interaction vertices, external connectedness
 is exactly the absence of vacuum components. -/
 theorem TwoPointDiagram.isExternallyConnected_iff_hasNoVacuumComponent

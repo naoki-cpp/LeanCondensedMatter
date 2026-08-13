@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotLegSplitting
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalRestriction
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalConnectivity
 
 set_option linter.style.header false
 
@@ -113,6 +113,34 @@ noncomputable def TwoPointDiagram.externalVacuumSplit {S : Finset (Fin N)}
       QuarticDiagram InternalLabel N (S \ TwoPointDiagram.interactionPart (d.externalComponent 0)) :=
   TwoPointDiagram.slotSplitEquiv (TwoPointDiagram.interactionPart_subset (d.externalComponent 0))
     ⟨d, d.isSplit_externalSlotLegSplitting⟩
+
+/-- The canonical external split piece preserves the ambient external labels. -/
+@[simp]
+theorem TwoPointDiagram.externalVacuumSplit_fst_externalLabel {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
+    d.externalVacuumSplit.1.externalLabel = d.externalLabel :=
+  rfl
+
+/-- The canonical external split piece reads each interaction label from the corresponding ambient
+slot. -/
+@[simp]
+theorem TwoPointDiagram.externalVacuumSplit_fst_vertexLabel {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (v : ↥(TwoPointDiagram.interactionPart (d.externalComponent 0))) :
+    d.externalVacuumSplit.1.vertexLabel v =
+      d.vertexLabel ⟨v.1, TwoPointDiagram.interactionPart_subset
+        (d.externalComponent 0) v.2⟩ :=
+  rfl
+
+/-- The canonical external split pairing is read directly from the ambient partner map along the
+left slot embedding. -/
+theorem TwoPointDiagram.externalVacuumSplit_fst_partner {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (i : Fin (2 * (2 * (TwoPointDiagram.interactionPart (d.externalComponent 0)).card + 1))) :
+    d.pairing.partner (d.externalSlotLegSplitting (Sum.inl i)) =
+      d.externalSlotLegSplitting (Sum.inl (d.externalVacuumSplit.1.pairing.partner i)) := by
+  exact Pairing.partner_splitLeft d.externalSlotLegSplitting
+    d.isSplit_externalSlotLegSplitting i
 
 /-- **Reassembling the two pieces returns the diagram.** -/
 theorem TwoPointDiagram.ofSlotSplit_externalVacuumSplit {S : Finset (Fin N)}

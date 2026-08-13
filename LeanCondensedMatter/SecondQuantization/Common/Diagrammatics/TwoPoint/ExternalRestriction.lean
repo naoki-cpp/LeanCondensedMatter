@@ -21,19 +21,6 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 
-/-- Every external vertex lies in the common external component. -/
-theorem TwoPointDiagram.externalVertex_mem_externalComponentPart {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S) (e : Fin 2) :
-    (Sum.inl e : TwoPointVertex S) ∈
-      (d.externalComponentPart : Finset (TwoPointVertex S)) := by
-  fin_cases e
-  · simpa [TwoPointDiagram.externalComponentPart, TwoPointDiagram.externalComponent] using
-      d.self_mem_componentBlock (Sum.inl (0 : Fin 2) : TwoPointVertex S)
-  · rw [show (d.externalComponentPart : Finset (TwoPointVertex S)) =
-      d.externalComponent 0 by rfl, d.externalComponent_zero_eq_one]
-    simpa [TwoPointDiagram.externalComponent] using
-      d.self_mem_componentBlock (Sum.inl (1 : Fin 2) : TwoPointVertex S)
-
 /-- The unflattened legs in the common external component are exactly two external legs and the four
 local legs of each interaction vertex in that component. -/
 noncomputable def TwoPointDiagram.externalLegDataEquiv {S : Finset (Fin N)}
