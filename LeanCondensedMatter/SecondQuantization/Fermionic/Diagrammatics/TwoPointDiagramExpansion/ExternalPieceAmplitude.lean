@@ -36,7 +36,6 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight_externalComp
       apply Finset.prod_congr rfl
       intro v _
       rw [Common.TwoPointDiagram.externalVacuumSplit_fst_vertexLabel]
-      rfl
     _ = ∏ v : ↥(Finset.univ : Finset (Fin d.1.externalInteractionPart.card)),
           g (d.externalPiece.1.vertexLabel v) := by
       simpa [FixedExternalTwoPointWickDiagram.externalPiece] using
