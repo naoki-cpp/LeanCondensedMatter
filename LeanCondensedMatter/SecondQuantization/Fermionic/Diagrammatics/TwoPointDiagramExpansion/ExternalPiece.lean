@@ -190,6 +190,8 @@ private theorem FixedExternalTwoPointWickDiagram.twoPointLegEquiv_externalPieceL
         Common.twoPointLegDataCongr d.externalSlotEquiv.symm x := by
     rw [← Common.twoPointLegCongr_symm, Common.twoPointLegCongr_eq_trans,
       Equiv.trans_apply, Equiv.trans_apply, Equiv.apply_symm_apply, Equiv.apply_symm_apply]
+  have hpart : d.1.externalInteractionPart =
+      Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0) := rfl
   have hunfold :
       ((d.externalPieceLegEquiv.symm
           ((Common.twoPointLegEquiv
@@ -211,7 +213,8 @@ private theorem FixedExternalTwoPointWickDiagram.twoPointLegEquiv_externalPieceL
               (Sum.inl e) := by
         have h := hcongr (Sum.inl e)
         rw [Common.twoPointLegDataCongr_inl, Equiv.apply_eq_iff_eq_symm_apply] at h
-        simpa [Common.TwoPointDiagram.externalInteractionPart] using h
+        rw [hpart] at h
+        exact h
       rw [hk, d.1.externalSlotLegSplitting_external, Equiv.apply_symm_apply]
       rfl
   | inr p =>
@@ -226,7 +229,8 @@ private theorem FixedExternalTwoPointWickDiagram.twoPointLegEquiv_externalPieceL
               (Sum.inr (d.externalSlotEquiv.symm v, l)) := by
         have h := hcongr (Sum.inr (v, l))
         rw [Common.twoPointLegDataCongr_inr, Equiv.apply_eq_iff_eq_symm_apply] at h
-        simpa [Common.TwoPointDiagram.externalInteractionPart] using h
+        rw [hpart] at h
+        exact h
       rw [hk, d.1.externalSlotLegSplitting_interaction, Equiv.apply_symm_apply]
       apply congrArg Sum.inr
       apply Prod.ext
