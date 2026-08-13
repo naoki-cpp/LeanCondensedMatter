@@ -127,7 +127,7 @@ theorem purePointGibbsDensityOperator_expectation_eq_tsum [Nonempty ι]
 
 /-- Finiteness condition for the mean energy when the pure-point energy data are not represented by
 a bounded `Observable`.  State existence alone does not imply this stronger weighted summability. -/
-def PurePointGibbsEnergyIntegrable [Nonempty ι] (E : ι → ℝ) (β : ℝ) : Prop :=
+def PurePointGibbsEnergyIntegrable (E : ι → ℝ) (β : ℝ) : Prop :=
   Summable fun i => ‖purePointGibbsProbability E β i * E i‖
 
 /-- When the same energy data do come from a bounded observable, the generic bounded expectation
@@ -164,7 +164,7 @@ theorem purePointGibbsSummable_of_finite [Finite ι] (E : ι → ℝ) (β : ℝ)
   exact Summable.of_finite
 
 /-- The weighted-energy finiteness condition is automatic on a finite spectral index. -/
-theorem purePointGibbsEnergyIntegrable_of_finite [Finite ι] [Nonempty ι]
+theorem purePointGibbsEnergyIntegrable_of_finite [Finite ι]
     (E : ι → ℝ) (β : ℝ) :
     PurePointGibbsEnergyIntegrable E β := by
   exact Summable.of_finite
