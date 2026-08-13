@@ -8,8 +8,8 @@ set_option linter.style.header false
 
 A fiber element already records that its canonical external interaction set is the chosen ambient
 slot set `T`.  Under that equality, the ambient `externalPiece` is exactly the increasing-order
-standardization of the left slot-split piece.  This is the structural statement that makes the
-external factor independent of the quartic vacuum half after reindexing by `fixedExternalFiberEquiv`.
+standardization of the left slot-split piece.  Both views now use the same Common-owned
+`standardSlotEquiv`, so no parallel standardization or transport bridge is involved.
 -/
 
 namespace SecondQuantization
@@ -40,10 +40,10 @@ theorem FixedExternalTwoPointWickDiagram.externalPiece_heq_standardized_slotSpli
             (Finset.subset_univ d.1.externalInteractionPart) rfl) := by
     rfl
   have hcongr := congrArg
-    (fun x => Common.TwoPointDiagram.slotCongr d.externalSlotEquiv x) hsplit
+    (fun x => Common.TwoPointDiagram.slotCongr
+      (Common.standardSlotEquiv d.1.externalInteractionPart) x) hsplit
   simpa [FixedExternalTwoPointWickDiagram.externalPiece,
-    fixedExternalTwoPointWickDiagramOnEquiv, fixedExternalSlotEquiv,
-    FixedExternalTwoPointWickDiagram.externalSlotEquiv] using hcongr
+    fixedExternalTwoPointWickDiagramOnEquiv] using hcongr
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- After reindexing a fiber by `fixedExternalFiberEquiv`, the ambient standalone external piece is
