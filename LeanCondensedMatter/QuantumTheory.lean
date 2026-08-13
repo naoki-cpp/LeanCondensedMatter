@@ -33,6 +33,7 @@ import LeanCondensedMatter.QuantumTheory.Entropy.Basic
 import LeanCondensedMatter.QuantumTheory.Entropy.Diagonal
 import LeanCondensedMatter.QuantumTheory.FiniteDimensional.Entropy
 import LeanCondensedMatter.QuantumTheory.Gibbs.State
+import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 import LeanCondensedMatter.QuantumTheory.Gibbs.EnergyExpectation
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
 import LeanCondensedMatter.QuantumTheory.Gibbs.Entropy
