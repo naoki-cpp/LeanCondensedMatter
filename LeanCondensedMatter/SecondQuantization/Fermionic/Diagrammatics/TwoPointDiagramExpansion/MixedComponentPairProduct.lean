@@ -11,9 +11,10 @@ The canonical two-point pairing value evaluates contractions on normalized pairs
 their endpoints, factors arbitrary commutative pair products into the external component and vacuum
 components, and specializes the result to the canonical free Gibbs density-state contraction product.
 
-The external and vacuum restricted-pair equivalences are used only by pullback: local restricted pair
-values are defined from the corresponding original mixed-time pair.  This avoids assuming that a
-component-position equivalence preserves the normalized endpoint order.
+Vacuum restricted-pair equivalences are used only by pullback: local restricted pair values are
+defined from the corresponding original mixed-time pair. This avoids assuming that a component-
+position equivalence preserves the normalized endpoint order. The external component is related to
+the standalone external piece downstream in `ExternalPiecePairing`.
 -/
 
 namespace SecondQuantization
@@ -152,38 +153,6 @@ theorem FixedExternalTwoPointWickDiagram.orderedTwoPointPairingValue_eq_weight_m
   unfold orderedTwoPointPairingValue Combinatorics.Pairing.evaluation
   rw [d.prod_mixedPairValues_eq_external_mul_prod_vacuum τ τ' σ]
   rfl
-
-/-- A restricted external-pair value is defined by pulling back to its unique original mixed-time
-pair, preserving the physically used endpoint order. -/
-noncomputable def FixedExternalTwoPointWickDiagram.mixedExternalRestrictedPairContractionValue
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (pr : d.1.restrictedExternalPairing.NormalizedPair) : ℂ :=
-  d.mixedPairContractionValue ε β τ τ' σ
-    ((d.mixedExternalComponentPairEquiv τ τ' σ).symm pr).1
-
-/-- The external-component contraction product reindexes to the restricted external pairing without
-assuming that normalized endpoint order is preserved. -/
-theorem FixedExternalTwoPointWickDiagram.prod_mixedExternalPairContractionValue_eq_restricted
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    (∏ pr : d.MixedComponentPair τ τ' σ d.1.externalComponentPart,
-      d.mixedPairContractionValue ε β τ τ' σ pr.1) =
-      ∏ pr : d.1.restrictedExternalPairing.NormalizedPair,
-        d.mixedExternalRestrictedPairContractionValue ε β τ τ' σ pr := by
-  calc
-    (∏ pr : d.MixedComponentPair τ τ' σ d.1.externalComponentPart,
-        d.mixedPairContractionValue ε β τ τ' σ pr.1) =
-      ∏ pr : d.MixedComponentPair τ τ' σ d.1.externalComponentPart,
-        d.mixedExternalRestrictedPairContractionValue ε β τ τ' σ
-          (d.mixedExternalComponentPairEquiv τ τ' σ pr) := by
-        apply Fintype.prod_congr
-        intro pr
-        simp [FixedExternalTwoPointWickDiagram.mixedExternalRestrictedPairContractionValue]
-    _ = ∏ pr : d.1.restrictedExternalPairing.NormalizedPair,
-        d.mixedExternalRestrictedPairContractionValue ε β τ τ' σ pr :=
-      Equiv.prod_comp (d.mixedExternalComponentPairEquiv τ τ' σ)
-        (d.mixedExternalRestrictedPairContractionValue ε β τ τ' σ)
 
 /-- A restricted vacuum-pair value is defined by pulling back to its unique original mixed-time
 pair. -/
