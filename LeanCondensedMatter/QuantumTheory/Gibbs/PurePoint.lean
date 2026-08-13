@@ -149,7 +149,7 @@ entropy finiteness separate from existence of the pure-point Gibbs density state
 theorem entropyOpSpectralTraceClass_trace_purePointGibbsDensityOperator [Nonempty ι]
     (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)
     (hsum : PurePointGibbsSummable E β)
-    (hentropy : HasSummableRealEigenvalues
+    (hentropy : ContinuousLinearMap.HasSummableRealEigenvalues
       (entropyOp (purePointGibbsDensityOperator b E β hsum))) :
     (entropyOpSpectralTraceClass (purePointGibbsDensityOperator b E β hsum) hentropy).trace =
       ∑' i, Real.negMulLog (purePointGibbsProbability E β i) := by
