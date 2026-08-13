@@ -9,11 +9,11 @@ set_option linter.style.header false
 The mixed two-point pairing value consists of a fermionic crossing weight and a product of canonical
 free Gibbs density-state contractions.  The preceding layers factor those two pieces over the full
 external-plus-interaction components.  This module assembles them into one component-local pairing
-value and identifies the external and vacuum factors with products over the corresponding restricted
-pairings.
+value. The external factor is identified with the standalone external piece downstream in
+`ExternalPiecePairing`; restricted-pairing formulas here are retained only for vacuum components.
 
-The contraction values on restricted pairings remain defined by pullback from the actual mixed-time
-pairing.  Thus no endpoint-orientation invariance is assumed at this assembly boundary.
+The contraction values on restricted vacuum pairings remain defined by pullback from the actual
+mixed-time pairing. Thus no endpoint-orientation invariance is assumed at this assembly boundary.
 -/
 
 namespace SecondQuantization
@@ -61,24 +61,6 @@ theorem FixedExternalTwoPointWickDiagram.orderedTwoPointPairingValue_eq_external
           (d.mixedComponentPairingValue ε β τ τ' σ) := by
   rw [d.orderedTwoPointPairingValue_eq_prod_components_unconditional ε β τ τ' σ,
     d.1.prod_componentParts_eq_external_mul_prod_vacuum]
-
-/-- The external component pairing value written on the restricted external pairing. -/
-noncomputable def FixedExternalTwoPointWickDiagram.mixedExternalRestrictedPairingValue
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ) : ℂ :=
-  d.mixedComponentWeight Common.Statistics.fermion τ τ' σ d.1.externalComponentPart *
-    ∏ pr : d.1.restrictedExternalPairing.NormalizedPair,
-      d.mixedExternalRestrictedPairContractionValue ε β τ τ' σ pr
-
-/-- The mixed external-component value is exactly its restricted-pairing value. -/
-theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_external_eq_restricted
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    d.mixedComponentPairingValue ε β τ τ' σ d.1.externalComponentPart =
-      d.mixedExternalRestrictedPairingValue ε β τ τ' σ := by
-  unfold FixedExternalTwoPointWickDiagram.mixedComponentPairingValue
-  unfold FixedExternalTwoPointWickDiagram.mixedExternalRestrictedPairingValue
-  rw [d.prod_mixedExternalPairContractionValue_eq_restricted]
 
 /-- One vacuum-component pairing value written on its restricted vacuum pairing. -/
 noncomputable def FixedExternalTwoPointWickDiagram.mixedVacuumRestrictedPairingValue

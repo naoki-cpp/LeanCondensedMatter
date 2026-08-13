@@ -14,8 +14,8 @@ two-point component API factors arbitrary interaction-vertex products.
 This module combines those results.  It defines one coupling-and-pairing value for each full
 component, packages the external ordering sign with the canonical external component, and proves that
 the global fixed-time amplitude is the external value times the product of all vacuum-component
-values.  Restricted external and vacuum formulas are stated without adding any new endpoint-order
-assumption.
+values. The external value is related to the standalone external piece downstream in
+`ExternalPieceAmplitude`; restricted formulas here are retained only for vacuum components.
 
 The Dyson sign and ordered-simplex integration are intentionally left to the next layer.
 -/
@@ -84,16 +84,6 @@ theorem FixedExternalTwoPointWickDiagram.orderedTwoPointVertexWeight_eq_external
   rw [d.orderedTwoPointVertexWeight_eq_prod_components g,
     d.1.prod_componentParts_eq_external_mul_prod_vacuum]
 
-/-- The external component vertex weight is the coupling product of the restricted external
-diagram. -/
-theorem FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight_external_eq_restricted
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (g : QuarticVertexLabel Mode → ℂ) :
-    d.mixedComponentVertexWeight g d.1.externalComponentPart =
-      ∏ v : ↥(Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0)),
-        g (d.1.restrictExternalComponent.vertexLabel v) := by
-  rfl
-
 /-- A vacuum component vertex weight is the coupling product of its restricted vacuum diagram. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight_vacuum_eq_restricted
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -159,22 +149,6 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_external_mul_prod
   rw [d.fixedTimeAmplitude_eq_externalSign_mul_prod_components ε β g τ τ' σ,
     d.1.prod_componentParts_eq_external_mul_prod_vacuum]
   unfold FixedExternalTwoPointWickDiagram.mixedExternalFixedTimeValue
-  ring
-
-/-- Restricted-diagram expression for the complete external fixed-time value. -/
-theorem FixedExternalTwoPointWickDiagram.mixedExternalFixedTimeValue_eq_restricted
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    d.mixedExternalFixedTimeValue ε β g τ τ' σ =
-      twoPointExternalOrderSign τ τ' *
-        (∏ v : ↥(Common.TwoPointDiagram.interactionPart (d.1.externalComponent 0)),
-          g (d.1.restrictExternalComponent.vertexLabel v)) *
-        d.mixedExternalRestrictedPairingValue ε β τ τ' σ := by
-  unfold FixedExternalTwoPointWickDiagram.mixedExternalFixedTimeValue
-  unfold FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
-  rw [d.mixedComponentVertexWeight_external_eq_restricted g,
-    d.mixedComponentPairingValue_external_eq_restricted ε β τ τ' σ]
   ring
 
 /-- Restricted-diagram expression for one vacuum-component fixed-time value. -/
