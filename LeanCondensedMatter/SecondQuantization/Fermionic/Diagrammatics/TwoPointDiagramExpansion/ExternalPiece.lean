@@ -179,8 +179,6 @@ private theorem FixedExternalTwoPointWickDiagram.externalSlotLegSplitting_extern
       (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm (Sum.inl e) := by
   convert d.1.externalSlotLegSplitting_external e using 1 <;>
     simp only [Common.TwoPointDiagram.externalInteractionPart] <;>
-    apply d.1.externalSlotLegSplitting.injective <;>
-    congr 1 <;>
     apply Fin.ext <;>
     rfl
 
@@ -195,8 +193,6 @@ private theorem FixedExternalTwoPointWickDiagram.externalSlotLegSplitting_intera
         (Sum.inr (⟨v.1, Finset.mem_univ _⟩, l)) := by
   convert d.1.externalSlotLegSplitting_interaction v l using 1 <;>
     simp only [Common.TwoPointDiagram.externalInteractionPart] <;>
-    apply d.1.externalSlotLegSplitting.injective <;>
-    congr 1 <;>
     apply Fin.ext <;>
     rfl
 
