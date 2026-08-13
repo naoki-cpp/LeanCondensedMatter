@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotLegSplitting
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalRestriction
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalConnectivity
 
 set_option linter.style.header false
 
