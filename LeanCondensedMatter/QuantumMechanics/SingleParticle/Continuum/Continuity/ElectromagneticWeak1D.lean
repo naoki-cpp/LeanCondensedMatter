@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.SchrodingerGaugeContinuity1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Electromagnetic1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.CompactSupport1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Schwartz1D
 import LeanCondensedMatter.Analysis.Calculus.WeakConservation1D
