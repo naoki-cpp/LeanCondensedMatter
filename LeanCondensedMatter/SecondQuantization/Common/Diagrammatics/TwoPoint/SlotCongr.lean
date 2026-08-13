@@ -22,6 +22,20 @@ open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*} {N M : ℕ} {T : Finset (Fin N)} {U : Finset (Fin M)}
 
+/-- The increasing enumeration of a finite slot set, viewed as a relabeling onto the standard full
+slot set of the same cardinality. -/
+noncomputable def standardSlotEquiv (T : Finset (Fin N)) :
+    ↥T ≃ ↥(Finset.univ : Finset (Fin T.card)) :=
+  (T.orderIsoOfFin rfl).toEquiv.symm.trans
+    (Equiv.subtypeUnivEquiv (fun x : Fin T.card => Finset.mem_univ x)).symm
+
+@[simp]
+theorem standardSlotEquiv_symm_coe (T : Finset (Fin N))
+    (v : ↥(Finset.univ : Finset (Fin T.card))) :
+    (((standardSlotEquiv T).symm v : ↥T) : Fin N) =
+      T.orderEmbOfFin rfl (v : Fin T.card) := by
+  simp [standardSlotEquiv, Finset.coe_orderIsoOfFin_apply]
+
 /-- Relabeling the interaction vertices relabels the two-point vertices. -/
 def twoPointVertexCongr (e : ↥T ≃ ↥U) : TwoPointVertex T ≃ TwoPointVertex U :=
   Equiv.sumCongr (Equiv.refl (Fin 2)) e

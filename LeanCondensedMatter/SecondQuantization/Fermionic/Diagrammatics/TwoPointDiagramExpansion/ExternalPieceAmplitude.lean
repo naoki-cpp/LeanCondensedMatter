@@ -40,7 +40,8 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight_externalComp
           g (d.externalPiece.1.vertexLabel v) := by
       simpa [FixedExternalTwoPointWickDiagram.externalPiece] using
         (Common.TwoPointDiagram.prod_vertexLabel_slotCongr
-          d.externalSlotEquiv d.1.externalVacuumSplit.1 g).symm
+          (Common.standardSlotEquiv d.1.externalInteractionPart)
+          d.1.externalVacuumSplit.1 g).symm
     _ = orderedTwoPointVertexWeight g d.externalPiece.vertexLabelSequence := by
       unfold orderedTwoPointVertexWeight FixedExternalTwoPointWickDiagram.vertexLabelSequence
       let e : Fin d.1.externalInteractionPart.card ≃
