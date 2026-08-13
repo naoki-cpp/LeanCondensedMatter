@@ -4,17 +4,17 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Comp
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotCongr
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentOrderedSimplex
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentVertexProduct
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalRestriction
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalRestrictionSlotSplit
 
 set_option linter.style.header false
 
 /-!
 # The external component as a standalone two-point diagram
 
-Restricting a fixed-external two-point diagram to its external component leaves the interaction
-vertices indexed by the ambient slots that component happens to own. The linked-cluster
-factorization needs the same data as a diagram in its own right, on as many slots as the component
-owns, since that is the shape a perturbative coefficient is summed over.
+The canonical external/vacuum slot split leaves the interaction vertices of the external piece
+indexed by the ambient slots that component owns. The linked-cluster factorization needs the same
+data as a diagram in its own right, on as many slots as the component owns, since that is the shape
+a perturbative coefficient is summed over.
 
 This module performs that reindexing on the Common-owned slot set
 `TwoPointDiagram.externalInteractionPart`. The slots are enumerated **in increasing order**, by
@@ -64,13 +64,14 @@ theorem FixedExternalTwoPointWickDiagram.externalSlotEquiv_symm_coe
   simp [FixedExternalTwoPointWickDiagram.externalSlotEquiv,
     Finset.coe_orderIsoOfFin_apply]
 
-/-- **The external component as a standalone fixed-external two-point diagram**, on its own
-interaction slots enumerated in increasing order. -/
+/-- **The external component as a standalone fixed-external two-point diagram**, obtained from the
+left half of the canonical external/vacuum slot split and then relabeled onto consecutive slots. -/
 noncomputable def FixedExternalTwoPointWickDiagram.externalPiece
     (d : FixedExternalTwoPointWickDiagram Mode n i j) :
     FixedExternalTwoPointWickDiagram Mode d.1.externalInteractionPart.card i j :=
-  ⟨d.1.restrictExternalComponent.slotCongr d.externalSlotEquiv, by
-    rw [Common.TwoPointDiagram.slotCongr_externalLabel]
+  ⟨d.1.externalVacuumSplit.1.slotCongr d.externalSlotEquiv, by
+    rw [Common.TwoPointDiagram.slotCongr_externalLabel,
+      Common.TwoPointDiagram.externalVacuumSplit_fst_externalLabel]
     exact d.2⟩
 
 omit [LinearOrder Mode] [Fintype Mode] in
@@ -91,8 +92,8 @@ theorem FixedExternalTwoPointWickDiagram.externalPiece_vertexLabelSequence
         ⟨d.1.externalInteractionPart.orderEmbOfFin rfl v, Finset.mem_univ _⟩ := by
   unfold FixedExternalTwoPointWickDiagram.vertexLabelSequence
     FixedExternalTwoPointWickDiagram.externalPiece
-  rw [Common.TwoPointDiagram.slotCongr_vertexLabel]
-  unfold Common.TwoPointDiagram.restrictExternalComponent
+  rw [Common.TwoPointDiagram.slotCongr_vertexLabel,
+    Common.TwoPointDiagram.externalVacuumSplit_fst_vertexLabel]
   exact congrArg d.1.vertexLabel
     (Subtype.ext (d.externalSlotEquiv_symm_coe ⟨v, Finset.mem_univ v⟩))
 
@@ -139,7 +140,8 @@ theorem FixedExternalTwoPointWickDiagram.externalPieceLegEquiv_apply
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- **The piece pairs the legs the ambient diagram pairs.** Transporting an ambient leg of the
 external component to the piece and taking the piece's partner is the same as taking the ambient
-partner first: the piece's pairing is the ambient one restricted. -/
+partner first. The data now comes from the canonical slot split; this proof temporarily uses the
+restriction/split bridge to preserve the existing leg-coordinate API. -/
 theorem FixedExternalTwoPointWickDiagram.externalPiece_partner_externalPieceLegEquiv
     (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (leg : {leg : Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1)) //
@@ -150,11 +152,12 @@ theorem FixedExternalTwoPointWickDiagram.externalPiece_partner_externalPieceLegE
       d.externalPiece.1.pairing.partner
           (Common.twoPointLegCongr d.externalSlotEquiv (d.1.externalBlockLegEquiv leg)) =
         Common.twoPointLegCongr d.externalSlotEquiv
-          (d.1.restrictExternalComponent.pairing.partner (d.1.externalBlockLegEquiv leg)) :=
+          (d.1.externalVacuumSplit.1.pairing.partner (d.1.externalBlockLegEquiv leg)) :=
     Common.TwoPointDiagram.slotCongr_partner d.externalSlotEquiv
-      d.1.restrictExternalComponent (d.1.externalBlockLegEquiv leg)
+      d.1.externalVacuumSplit.1 (d.1.externalBlockLegEquiv leg)
   simp only [FixedExternalTwoPointWickDiagram.externalPieceLegEquiv_apply]
-  rw [hcongr, Common.TwoPointDiagram.restrictExternalComponent_pairing,
+  rw [hcongr, ← d.1.restrictExternalComponent_eq_externalVacuumSplit_fst,
+    Common.TwoPointDiagram.restrictExternalComponent_pairing,
     Common.TwoPointDiagram.restrictedExternalPairing_partner_externalBlockLegEquiv]
 
 omit [LinearOrder Mode] [Fintype Mode] in
