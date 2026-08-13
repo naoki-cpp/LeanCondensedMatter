@@ -9,8 +9,8 @@ set_option linter.style.header false
 # Gauge-covariant Schrödinger continuity equation in one dimension
 
 This module derives the pointwise electromagnetic probability and charge continuity equations from
-the minimal-coupling algebra in `SchrodingerMinimalCoupling1D` and the current in
-`SchrodingerGaugeCurrent1D`.
+the minimal-coupling algebra in `Electromagnetic/MinimalCoupling1D` and the current in
+`Electromagnetic/Current1D`.
 
 The vector potential and its spatial derivative are explicit theorem inputs. No magnetic operator on
 `L²` or self-adjointness statement is introduced here.
@@ -99,7 +99,7 @@ theorem hasDerivAt_electromagneticProbabilityCurrentValue1D
 
 /-- Real and imaginary component equations of the minimally coupled Schrödinger equation, written
 without denominators after multiplication by `2m`. -/
-theorem electromagnetic_schrodinger_component_equations
+private theorem electromagnetic_schrodinger_component_equations
     (q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential : ℝ)
     (ψ ψt ψx ψxx : ℂ) (hmass : mass ≠ 0)
     (hschrodinger :
@@ -156,7 +156,7 @@ theorem electromagnetic_schrodinger_component_equations
   · linear_combination him
 
 /-- The local probability balance from the electromagnetic component equations. -/
-theorem electromagnetic_probability_continuity_balance_of_components
+private theorem electromagnetic_probability_continuity_balance_of_components
     (q ℏ mass vectorPotential vectorPotentialDerivative scalarPotential : ℝ)
     (ψ ψt ψx ψxx : ℂ) (hℏ : ℏ ≠ 0) (hmass : mass ≠ 0)
     (hreal :
