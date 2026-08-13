@@ -50,8 +50,9 @@ theorem TwoPointDiagram.externalSlotLegSplitting_interaction {S : Finset (Fin N)
         (Sum.inr (⟨v.1, TwoPointDiagram.interactionPart_subset (d.externalComponent 0) v.2⟩, l)) :=
   slotLegSplitting_left_interaction _ v l
 
-/-- **The left part consists of external-component legs.** -/
-theorem TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl {S : Finset (Fin N)}
+/-- The left part consists of external-component legs. -/
+private theorem TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl
+    {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (i : Fin (2 * (2 * (TwoPointDiagram.interactionPart (d.externalComponent 0)).card + 1))) :
     d.legInComponent (d.externalComponentPart : Finset (TwoPointVertex S))
@@ -69,8 +70,8 @@ theorem TwoPointDiagram.legInComponent_externalSlotLegSplitting_inl {S : Finset 
       exact (TwoPointDiagram.mem_interactionPart_subtype (d.externalComponent 0)
         ⟨v.1, TwoPointDiagram.interactionPart_subset (d.externalComponent 0) v.2⟩).1 v.2
 
-/-- **Every external-component leg comes from the left part.** -/
-theorem TwoPointDiagram.exists_externalSlotLegSplitting_inl {S : Finset (Fin N)}
+/-- Every external-component leg comes from the left part. -/
+private theorem TwoPointDiagram.exists_externalSlotLegSplitting_inl {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (leg : Fin (2 * (2 * S.card + 1)))
     (hleg : d.legInComponent (d.externalComponentPart : Finset (TwoPointVertex S)) leg) :
@@ -171,7 +172,7 @@ theorem TwoPointDiagram.externalVacuumSplit_fst_partner {S : Finset (Fin N)}
 
 /-- The canonical external leg equivalence intertwines the split pairing with the ambient restricted
 partner on the external component. -/
-theorem TwoPointDiagram.externalComponentLegEquiv_partner {S : Finset (Fin N)}
+private theorem TwoPointDiagram.externalComponentLegEquiv_partner {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (i : Fin (2 * (2 * (TwoPointDiagram.interactionPart (d.externalComponent 0)).card + 1))) :
     d.externalComponentLegEquiv (d.externalVacuumSplit.1.pairing.partner i) =
