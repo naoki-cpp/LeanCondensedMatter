@@ -7,14 +7,13 @@ set_option linter.style.header false
 /-!
 # Crossing decomposition for mixed-time two-point pairings
 
-The fermionic sign in a two-point Wick amplitude is computed from the crossing count of
-`pairingInMixedOrder`.  This module reindexes that crossing count by full diagram components.
+The exchange-statistics weight in a two-point Wick amplitude is computed from the crossing count of
+`pairingInMixedOrder`. This module reindexes that crossing count by full diagram components.
 Diagonal component pairs give component-internal crossings, while off-diagonal component pairs give
 the geometric crossings between two distinct components.
 
-The final parity and weight factorization are stated assuming the off-diagonal geometric crossing
-counts are even.  Proving that assumption from the one-leg external blocks and four-leg interaction
-blocks is the next layer.
+The crossing geometry remains local to the mixed-time two-point representation. Once its parity is
+known, the finite-family exchange-weight algebra is delegated to the Common Statistics backend.
 -/
 
 namespace SecondQuantization
@@ -110,27 +109,14 @@ theorem FixedExternalTwoPointWickDiagram.pairingInMixedOrder_weight_eq_prod_comp
     (d.pairingInMixedOrder τ τ' σ).weight s =
       ∏ B : d.1.componentPartition.parts,
         d.mixedComponentWeight s τ τ' σ B := by
-  classical
   have hparity :=
     d.pairingInMixedOrder_crossingCount_mod_two_eq_sum_components τ τ' σ hEven
-  have hpow (t : Finset d.1.componentPartition.parts) :
-      (s.zetaInt : ℂ) ^
-          (t.sum fun B => d.mixedComponentCrossingCount τ τ' σ B) =
-        t.prod fun B => d.mixedComponentWeight s τ τ' σ B := by
-    induction t using Finset.induction_on with
-    | empty => simp
-    | @insert B t hB ih =>
-        simp [hB, pow_add, FixedExternalTwoPointWickDiagram.mixedComponentWeight, ih]
-  calc
-    (d.pairingInMixedOrder τ τ' σ).weight s =
-        (s.zetaInt : ℂ) ^ (d.pairingInMixedOrder τ τ' σ).crossingCount := rfl
-    _ = (s.zetaInt : ℂ) ^
-        (∑ B : d.1.componentPartition.parts,
-          d.mixedComponentCrossingCount τ τ' σ B) :=
-      Common.BlochDeDominicis.zetaInt_pow_eq_of_mod_two_eq s hparity
-    _ = ∏ B : d.1.componentPartition.parts,
-        d.mixedComponentWeight s τ τ' σ B := by
-      simpa using hpow Finset.univ
+  simpa only [Combinatorics.Pairing.weight,
+    FixedExternalTwoPointWickDiagram.mixedComponentWeight] using
+    Common.BlochDeDominicis.zetaInt_pow_eq_prod_of_sum_mod_two_eq s
+      (d.pairingInMixedOrder τ τ' σ).crossingCount
+      (fun B : d.1.componentPartition.parts => d.mixedComponentCrossingCount τ τ' σ B)
+      hparity
 
 /-- Component weights split into the canonical external component and the vacuum components. -/
 theorem FixedExternalTwoPointWickDiagram.prod_mixedComponentWeight_eq_external_mul_prod_vacuum
