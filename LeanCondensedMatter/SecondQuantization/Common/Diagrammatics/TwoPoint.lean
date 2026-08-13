@@ -2,11 +2,9 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Diag
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentPartition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentRestriction
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalConnectivity
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalRestriction
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotLegSplitting
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalSlotSplit
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalRestrictionSlotSplit
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitConnectivity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumConnectivity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumComponents
@@ -25,8 +23,8 @@ set_option linter.style.header false
 # Statistics-independent two-point diagrammatics
 
 Two-point diagrams with two distinguished external legs, full connected-component partitions,
-vacuum/external component restriction and decomposition, the fiber decomposition of the diagram
-sum by which interaction vertices are external, componentwise vertex products,
-interaction-time ordered-simplex shuffles and their canonical representative, and ambient shuffle
-permutations.
+generic vacuum component restriction and canonical external/vacuum decomposition, the fiber
+decomposition of the diagram sum by which interaction vertices are external, componentwise vertex
+products, interaction-time ordered-simplex shuffles and their canonical representative, and ambient
+shuffle permutations.
 -/
