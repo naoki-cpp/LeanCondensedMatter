@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalRestriction
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalConnectivity
 
 set_option linter.style.header false
 
@@ -101,7 +101,8 @@ theorem TwoPointDiagram.mem_externalInteractionPart_or_exists_mem_vacuumInteract
           (v : Fin N) ∈ TwoPointDiagram.interactionPart
             (B : Finset (TwoPointVertex S)) := by
   let B : d.componentPartition.parts :=
-    ⟨d.componentBlock (Sum.inr v), d.componentBlock_mem_componentPartition (Sum.inr v)⟩
+    ⟨d.componentBlock (Sum.inr v),
+      d.componentBlock_mem_componentPartition (Sum.inr v)⟩
   have hvB : (Sum.inr v : TwoPointVertex S) ∈ (B : Finset (TwoPointVertex S)) := by
     exact d.self_mem_componentBlock (Sum.inr v)
   rcases d.componentPart_eq_externalComponentPart_or_mem_vacuumComponentParts B with hB | hB
