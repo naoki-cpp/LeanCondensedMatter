@@ -32,14 +32,10 @@ theorem orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne
     (n : ℕ) (i j : Fin n) (a b : Fin 4) (hij : i ≠ j) :
     (orderedQuarticLegEquiv n).symm (i, a) <
         (orderedQuarticLegEquiv n).symm (j, b) ↔ i < j := by
-  have hp := congrArg (fun q => q.val)
-    ((orderedQuarticLegEquiv n).apply_symm_apply (i, a))
-  have hq := congrArg (fun q => q.val)
-    ((orderedQuarticLegEquiv n).apply_symm_apply (j, b))
   have hp' : ((orderedQuarticLegEquiv n).symm (i, a)).val = a.val + 4 * i.val := by
-    simpa [orderedQuarticLegEquiv, finProdFinEquiv] using hp
+    simp [orderedQuarticLegEquiv, finProdFinEquiv]
   have hq' : ((orderedQuarticLegEquiv n).symm (j, b)).val = b.val + 4 * j.val := by
-    simpa [orderedQuarticLegEquiv, finProdFinEquiv] using hq
+    simp [orderedQuarticLegEquiv, finProdFinEquiv]
   change ((orderedQuarticLegEquiv n).symm (i, a)).val <
       ((orderedQuarticLegEquiv n).symm (j, b)).val ↔ i.val < j.val
   rw [hp', hq']
