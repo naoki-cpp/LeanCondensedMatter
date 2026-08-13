@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticThermalAmplitude
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPairProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentEvaluation
 
 set_option linter.style.header false
 
@@ -7,10 +7,10 @@ set_option linter.style.header false
 # Connected-component factorization of bosonic thermal quartic amplitudes
 
 The free thermal field attached to a component-local ordered leg agrees with the field attached to
-its image in an assembled global order.  The statistics-independent Common pair-product reindexing
-can therefore factor the bosonic thermal contraction product over connected components.  Combining
-that result with the already-factorized Dyson sign and quartic coupling gives coefficientwise
-factorization of the full ordered thermal amplitude.
+its image in an assembled global order. Common's Statistics-generic pairing-evaluation theorem then
+factors the bosonic thermal pairing value over connected components. Combining that result with the
+already-factorized Dyson sign and quartic coupling gives coefficientwise factorization of the full
+ordered thermal amplitude.
 -/
 
 namespace SecondQuantization
@@ -66,16 +66,15 @@ theorem QuarticDiagram.orderedThermalPairingValue_eq_prod_components
       ∏ B : d.componentPartition.parts,
         QuarticDiagram.orderedThermalPairingValue ε β (d.restrictComponent B.2) (orders B) := by
   classical
-  simp only [QuarticDiagram.orderedThermalPairingValue,
-    Common.BlochDeDominicis.Pairing.weight_boson, Combinatorics.Pairing.evaluation_one]
-  exact d.prod_pairKernel_pairs_eq_prod_components orders shuffle
-    (fun a b => freeThermalPairValue ε β
-      (d.orderedFreeThermalFieldFamily (d.assembleVertexOrder orders shuffle) a)
-      (d.orderedFreeThermalFieldFamily (d.assembleVertexOrder orders shuffle) b))
-    (fun B a b => freeThermalPairValue ε β
-      (QuarticDiagram.orderedFreeThermalFieldFamily (d.restrictComponent B.2) (orders B) a)
-      (QuarticDiagram.orderedFreeThermalFieldFamily (d.restrictComponent B.2) (orders B) b))
-    (fun B a b => d.freeThermalPairValue_componentOrderedLeg ε β orders shuffle B a b)
+  simpa only [QuarticDiagram.orderedThermalPairingValue] using
+    d.pairingInOrder_evaluation_eq_prod_components Statistics.boson orders shuffle
+      (fun a b => freeThermalPairValue ε β
+        (d.orderedFreeThermalFieldFamily (d.assembleVertexOrder orders shuffle) a)
+        (d.orderedFreeThermalFieldFamily (d.assembleVertexOrder orders shuffle) b))
+      (fun B a b => freeThermalPairValue ε β
+        (QuarticDiagram.orderedFreeThermalFieldFamily (d.restrictComponent B.2) (orders B) a)
+        (QuarticDiagram.orderedFreeThermalFieldFamily (d.restrictComponent B.2) (orders B) b))
+      (fun B a b => d.freeThermalPairValue_componentOrderedLeg ε β orders shuffle B a b)
 
 /-- The coefficientwise bosonic ordered thermal amplitude factors over connected components. -/
 theorem QuarticDiagram.orderedThermalAmplitude_eq_prod_components
