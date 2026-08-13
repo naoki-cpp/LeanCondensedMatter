@@ -1,31 +1,10 @@
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Scalar1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Probability.Integral1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Electromagnetic.MinimalCoupling1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Electromagnetic.Current1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Electromagnetic1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.ElectromagneticWeak1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.FiniteDimensional
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Weak1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Smeared1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.CompactSupport1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.Schwartz1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzIntegral1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.TotalProbability1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Multiplication1D
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.ElectromagneticWeak1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.L2.Probability1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Basic1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.DenseDomain1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.MaximalLaplacian1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Regularity1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Closed1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSymmetry1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.Symmetry1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.SelfAdjointCriterion1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.LaplacianSelfAdjoint1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Hamiltonian.SelfAdjoint1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Evolution.Interface1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Evolution.Stone1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Evolution.Probability1D
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Evolution.RepresentativeContinuity1D
 
 set_option linter.style.header false
@@ -35,6 +14,10 @@ set_option linter.style.header false
 
 Public entry point for concrete first-quantized quantum mechanics. The current public realization is
 the one-particle continuum Schrödinger stack under `QuantumMechanics.SingleParticle.Continuum`.
+
+This umbrella imports the stable semantic endpoints of the probability, continuity, `L²`, Hamiltonian,
+and evolution layers. Their lower implementation stages remain available transitively and directly
+importable as leaf modules, but are not enumerated here merely because of development history.
 
 Generic state and response theory remains upstream in `QuantumTheory`. Implementation modules should
 continue to import the narrow concrete modules they use rather than this public umbrella.
