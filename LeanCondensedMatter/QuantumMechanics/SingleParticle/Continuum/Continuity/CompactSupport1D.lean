@@ -47,16 +47,6 @@ theorem intervalSmearedProbabilityDensity1D_eq_wholeSpace
   unfold intervalSmearedProbabilityDensity1D wholeSpaceSmearedProbabilityDensity1D
   exact ConservationLaw.integral_mul_eq_integral_of_tsupport_subset_Ioo htestSupport
 
-/-- If the test support is strictly inside `a..b`, the interval density-rate pairing is the
-corresponding whole-space pairing. -/
-theorem intervalSmearedDensityRate1D_eq_wholeSpace
-    (a b : ℝ) {test densityTimeDerivative : ℝ → ℝ}
-    (htestSupport : tsupport test ⊆ Ioo a b) :
-    intervalSmearedDensityRate1D a b test densityTimeDerivative =
-      wholeSpaceSmearedDensityRate1D test densityTimeDerivative := by
-  unfold intervalSmearedDensityRate1D wholeSpaceSmearedDensityRate1D
-  exact ConservationLaw.integral_mul_eq_integral_of_tsupport_subset_Ioo htestSupport
-
 /-- The interval pairing with `deriv test` agrees with the whole-space pairing whenever the
 support of `test` lies strictly inside the interval. -/
 theorem intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace

@@ -127,11 +127,6 @@ noncomputable def continuumH2Laplacian1D :
       (LineDeriv.laplacianCLM ℂ ℝ 𝓢'(ℝ, ℂ)).map_smul c
         (l2ToTemperedDistribution1D (ψ : ContinuumL2Wavefunction1D))
 
-@[simp]
-theorem continuumH2Laplacian1D_apply (ψ : continuumH2Domain1D) :
-    continuumH2Laplacian1D ψ = continuumH2LaplacianValue1D ψ :=
-  rfl
-
 /-- The `L²` value produced by `continuumH2Laplacian1D` represents exactly the distributional
 Laplacian of the original `L²` wavefunction. -/
 theorem l2ToTemperedDistribution1D_continuumH2Laplacian1D
