@@ -24,6 +24,7 @@ namespace Fermionic
 
 open Combinatorics
 open MeasureTheory
+open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
