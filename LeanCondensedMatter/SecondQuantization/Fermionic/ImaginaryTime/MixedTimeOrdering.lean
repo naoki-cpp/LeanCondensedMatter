@@ -23,6 +23,8 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode]
 
+/-- Fermionic operator represented by one Common mixed event: an external field for a distinguished
+event and an interaction-picture quartic vertex for an interaction event. -/
 noncomputable def twoPointTimedEventOperator {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     TwoPointTimedEvent n → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode
@@ -50,10 +52,14 @@ theorem twoPointTimedEventOperator_interaction {n : ℕ} (ε : Mode → ℝ) (i 
     twoPointTimedEventOperator ε i j τ τ' q σ (Sum.inr v) =
       interactionPicture ε (quarticVertexOperator (q v)) (σ v) := rfl
 
+/-- Exchange prefactor from reversing the two odd fermionic external fields in the Common stable
+mixed-event order. -/
 noncomputable def twoPointExternalOrderSign (τ τ' : ℝ) : ℂ :=
   @ite ℂ (τ < τ') (Classical.propDecidable _)
     (Common.Statistics.fermion.zetaInt : ℂ) 1
 
+/-- Fermionic mixed time-ordered operator product: compose operators in the Common mixed-event order
+and multiply by the external-field exchange sign. -/
 noncomputable def mixedTimeOrderedVertexComp {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
     OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
