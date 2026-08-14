@@ -35,7 +35,12 @@ theorem FixedExternalTwoPointWickDiagram.externalPiece_partner_externalPieceMixe
   rw [Equiv.apply_symm_apply]
   apply Subtype.ext
   rw [Common.TwoPointDiagram.externalPieceMixedPositionEquiv_apply,
-    d.1.mixedRestrictedPartner_val, ← d.1.externalPieceMixedPosition_partner,
+    d.1.mixedRestrictedPartner_val]
+  change d.1.externalPieceMixedPosition τ τ' σ
+      ((d.1.externalPiece.pairingInMixedOrder τ τ' (d.1.externalPieceTimes σ)).partner
+        ((d.1.externalPieceMixedPositionEquiv τ τ' σ).symm pos)) =
+    (d.1.pairingInMixedOrder τ τ' σ).partner (pos : Fin (2 * (2 * n + 1)))
+  rw [← d.1.externalPieceMixedPosition_partner,
     ← Common.TwoPointDiagram.externalPieceMixedPositionEquiv_apply,
     Equiv.apply_symm_apply]
 
