@@ -1,10 +1,10 @@
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.InteractionVertexRelabelCovariance
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.InteractionVertexRelabelIntegralCovariance
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentShuffleIntegrability
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentDysonIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DiagramSumIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ComponentAmplitudeFactorization
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedLegSlotEmbedding
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.VacuumLegOrder
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ExternalPiece
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ExternalPieceField
@@ -33,11 +33,10 @@ set_option linter.style.header false
 /-!
 # Fermionic two-point diagram expansion
 
-Finite-mode imaginary-time two-point Wick diagrams with quartic interaction vertices: mixed-time
-ordering and flattening, fixed-external amplitudes, external/vacuum component restriction and
-factorization, measurable and integrable component-local factors, ordered-simplex component
-shuffles, interaction-slot relabeling, the restriction of the mixed leg order along a monotone
-family of interaction slots, the external component as a standalone diagram on its own slots, the
+Finite-mode imaginary-time two-point Wick diagrams with quartic interaction vertices: Common-owned
+mixed event/leg ordering, fermionic flattening and fixed-external amplitudes, external/vacuum
+component restriction and factorization, measurable and integrable component-local factors,
+ordered-simplex component shuffles, interaction-slot relabeling, external-component restriction,
 exchange of the finite diagram sum with the ordered-simplex integral, and the perturbative two-point
 series assembled from the order-`n` coefficients. The umbrella exports authoritative owner modules
 rather than the proof-stage transport chain used internally.
