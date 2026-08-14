@@ -22,8 +22,9 @@ open Combinatorics
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {i j : Mode}
 
 private theorem cast_eq_of_heq {α β : Sort u} (hαβ : α = β) {a : α} {b : β}
-    (hab : HEq a b) : cast hαβ a = b :=
-  eq_of_heq ((eqRec_heq hαβ a).trans hab)
+    (hab : HEq a b) : cast hαβ a = b := by
+  cases hαβ
+  exact eq_of_heq hab
 
 private theorem heq_finFun_of_cast {a b : ℕ} (h : a = b)
     (f : Fin a → ℝ) (g : Fin b → ℝ)
@@ -37,7 +38,7 @@ private theorem orderEmbOfFin_rfl_cast {n m : ℕ} (S : Finset (Fin n))
   cases h
   rfl
 
-omit [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 private theorem connectedFixedExternal_cast_val_heq {a b : ℕ} (h : a = b)
     (d : {d : FixedExternalTwoPointWickDiagram Mode a i j // d.1.IsExternallyConnected}) :
     HEq d.1
@@ -46,7 +47,7 @@ private theorem connectedFixedExternal_cast_val_heq {a b : ℕ} (h : a = b)
   cases h
   rfl
 
-omit [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 private theorem orderedQuarticData_cast_heq {a b : ℕ} (h : a = b)
     (x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) a) :
     HEq x
@@ -106,7 +107,7 @@ theorem fixedExternalShuffleFiber_externalPiece_heq
       (connectedFixedExternalTwoPointWickDiagramOnEquiv shuffle.leftSlots p.1)
   exact hbase.trans (hcastVal.trans (heq_of_eq (congrArg Subtype.val hext)))
 
-omit [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The inherited external-piece time coordinates of a shuffle fiber are its left shuffle
 coordinates. -/
 theorem fixedExternalShuffleFiber_externalPieceTimes_heq
@@ -214,13 +215,16 @@ theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
   have hprod :=
     fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_orderedVacuumIntegrand
       ε β g shuffle.leftSlots p.1.1 p.1.2 p.2 τ τ' σ hvacAnti
+  have hd : d.1 = fixedExternalOfSlotSplit shuffle.leftSlots p.1.1 p.2 := by
+    rfl
   have hprod' : d.1.dysonFixedTimeAmplitude ε β g τ τ' σ =
       d.1.externalPiece.dysonFixedTimeAmplitude ε β g τ τ' (d.1.externalPieceTimes σ) *
         orderedVacuumDysonIntegrand ε β g
           (Common.quarticDiagramEquivOrderedData
             (fixedExternalVacuumOrder shuffle.leftSlots) p.2)
           (σ ∘ fixedExternalVacuumSlot shuffle.leftSlots) := by
-    simpa [d, p] using hprod
+    rw [hd]
+    exact hprod
   have hpiece := fixedExternalShuffleFiber_externalPiece_heq shuffle ext x
   have hleftTimes := fixedExternalShuffleFiber_externalPieceTimes_heq shuffle ext x σ
   have hsize : d.1.1.externalInteractionPart.card = m :=
