@@ -21,6 +21,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Comp
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentOrderedSimplexMeasurable
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.CanonicalComponentShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentShufflePermutation
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.CanonicalComponentTimeTransport
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.InteractionVertexRelabel
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentPosition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentTimeTransport
@@ -47,9 +48,9 @@ generic vacuum component restriction and canonical external/vacuum decomposition
 decomposition of the diagram sum by which interaction vertices are external, componentwise vertex
 products, slot-split vacuum pairing transport, vacuum-pair image/component equivalences and
 componentwise pair/crossing transport, binary slot-shuffle coordinates, interaction-time
-ordered-simplex shuffles and their canonical representative, ambient shuffle permutations,
-interaction-slot relabeling and mixed-order covariance, mixed-time component-position transport,
-generic mixed-order pairings, standalone external-piece transport and pair equivalence, component
-pair fibers, commutative pair products, crossing decomposition, pair transport, and fixed-order
-chamber locality.
+ordered-simplex shuffles and their canonical representative, ambient shuffle permutations and
+canonical explicit-slot time-coordinate transport, interaction-slot relabeling and mixed-order
+covariance, mixed-time component-position transport, generic mixed-order pairings, standalone
+external-piece transport and pair equivalence, component pair fibers, commutative pair products,
+crossing decomposition, pair transport, and fixed-order chamber locality.
 -/
