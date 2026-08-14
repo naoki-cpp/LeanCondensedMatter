@@ -1,17 +1,15 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Reindexing
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabel
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Relabel
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.InteractionVertexRelabel
 
 set_option linter.style.header false
 
 /-!
 # Interaction-vertex relabeling for fixed-external two-point diagrams
 
-`SecondQuantization.Common` owns the statistics-independent interaction-slot relabeling of standard
-two-point legs and flattened positions. This module lifts that relabeling to the fermionic
-fixed-external Wick-diagram type, transports quartic labels and pairings, and proves invariance of
-the quartic coupling product.
+`SecondQuantization.Common` owns the statistics-independent relabeling of a complete two-point
+diagram. This module only lifts that operation through the fixed fermionic external-label subtype
+and records invariance of the quartic coupling product.
 
 The convention is that `π` maps a new interaction slot to the old interaction slot whose data it
 inherits. Thus the relabeled vertex sequence satisfies `q_new v = q_old (π v)`.
@@ -27,22 +25,20 @@ variable {Mode : Type*}
 
 noncomputable section
 
-/-- Relabel the interaction vertices of a fixed-external two-point Wick diagram. -/
+/-- Lift Common interaction-vertex relabeling to a two-point Wick diagram with fixed external
+annihilation/creation labels. -/
 def FixedExternalTwoPointWickDiagram.relabelInteractionVertices
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (π : Equiv.Perm (Fin n)) : FixedExternalTwoPointWickDiagram Mode n i j :=
-  ⟨{
-    externalLabel := d.1.externalLabel
-    vertexLabel := fun v => d.1.vertexLabel ⟨π v.1, Finset.mem_univ _⟩
-    pairing := d.1.pairing.relabel (interactionVertexPositionRelabel π)
-  }, d.2⟩
+  ⟨d.1.relabelInteractionVertices π, by
+    simpa using d.2⟩
 
 @[simp]
 theorem FixedExternalTwoPointWickDiagram.relabelInteractionVertices_externalLabel
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (π : Equiv.Perm (Fin n)) :
     (d.relabelInteractionVertices π).1.externalLabel = d.1.externalLabel :=
-  rfl
+  Common.TwoPointDiagram.relabelInteractionVertices_externalLabel d.1 π
 
 @[simp]
 theorem FixedExternalTwoPointWickDiagram.relabelInteractionVertices_vertexLabelSequence
@@ -57,7 +53,7 @@ theorem FixedExternalTwoPointWickDiagram.relabelInteractionVertices_pairing
     (π : Equiv.Perm (Fin n)) :
     (d.relabelInteractionVertices π).1.pairing =
       d.1.pairing.relabel (interactionVertexPositionRelabel π) :=
-  rfl
+  Common.TwoPointDiagram.relabelInteractionVertices_pairing d.1 π
 
 /-- Relabeling by `π` and then by `π⁻¹` recovers the original fixed-external diagram. -/
 @[simp]
@@ -66,17 +62,7 @@ theorem FixedExternalTwoPointWickDiagram.relabelInteractionVertices_symm
     (π : Equiv.Perm (Fin n)) :
     (d.relabelInteractionVertices π).relabelInteractionVertices π.symm = d := by
   apply Subtype.ext
-  apply Common.TwoPointDiagram.ext
-  · rfl
-  · funext v
-    change d.1.vertexLabel ⟨π (π.symm v.1), Finset.mem_univ _⟩ = d.1.vertexLabel v
-    congr 1
-    apply Subtype.ext
-    simp
-  · change (d.1.pairing.relabel (interactionVertexPositionRelabel π)).relabel
-      (interactionVertexPositionRelabel π.symm) = d.1.pairing
-    rw [interactionVertexPositionRelabel_symm]
-    exact Pairing.relabel_symm_relabel d.1.pairing (interactionVertexPositionRelabel π)
+  exact d.1.relabelInteractionVertices_symm π
 
 /-- Relabeling by `π⁻¹` and then by `π` also recovers the original fixed-external diagram. -/
 @[simp]
@@ -105,15 +91,6 @@ theorem sum_relabelInteractionVertices
       ∑ d : FixedExternalTwoPointWickDiagram Mode n i j, F d :=
   Equiv.sum_comp (fixedExternalTwoPointWickDiagramRelabelEquiv i j π) F
 
-/-- The product of quartic vertex weights is invariant under a permutation of interaction slots. -/
-theorem orderedTwoPointVertexWeight_comp_perm
-    {n : ℕ} (g : QuarticVertexLabel Mode → ℂ)
-    (q : Fin n → QuarticVertexLabel Mode) (π : Equiv.Perm (Fin n)) :
-    orderedTwoPointVertexWeight g (fun v => q (π v)) =
-      orderedTwoPointVertexWeight g q := by
-  unfold orderedTwoPointVertexWeight
-  exact Equiv.prod_comp π (fun v => g (q v))
-
 /-- Relabeling interaction vertices does not change the product of quartic coupling weights. -/
 theorem FixedExternalTwoPointWickDiagram.relabelInteractionVertices_vertexWeight
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -125,7 +102,8 @@ theorem FixedExternalTwoPointWickDiagram.relabelInteractionVertices_vertexWeight
       fun v => d.vertexLabelSequence (π v) by
     funext v
     exact d.relabelInteractionVertices_vertexLabelSequence π v]
-  exact orderedTwoPointVertexWeight_comp_perm g d.vertexLabelSequence π
+  unfold orderedTwoPointVertexWeight
+  exact Equiv.prod_comp π (fun v => g (d.vertexLabelSequence v))
 
 end
 
