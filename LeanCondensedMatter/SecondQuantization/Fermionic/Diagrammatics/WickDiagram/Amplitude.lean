@@ -3,6 +3,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Order
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.LegFamily
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsDensityOperator
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 
@@ -55,15 +56,6 @@ theorem orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation
             (orderedQuarticLegOperator ε d order τ b))) :=
   rfl
 
-omit [LinearOrder Mode] in
-private theorem finiteGibbsExpectation_smul_apply (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
-    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    Common.finiteGibbsExpectation (fermionEnergy ε) β (c • A) =
-      c * Common.finiteGibbsExpectation (fermionEnergy ε) β A := by
-  simpa only [Common.finiteGibbsExpectation, Common.finiteGibbsExpectationLinearMap,
-    smul_eq_mul] using
-    (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β).map_smul c A
-
 /-! ## Coupling weight -/
 
 /-- The product of the coupling over all diagram vertices. -/
@@ -114,7 +106,7 @@ theorem orderedQuarticPairValue_eq (ε : Mode → ℝ) (β : ℝ) {S : Finset (F
   simp only [orderedQuarticPairValue, orderedQuarticLegOperator, quarticLegOperatorForSequence,
     freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation,
     imaginaryTimeEvolve_quarticLocalLegOperator, LinearMap.smul_comp, LinearMap.comp_smul,
-    smul_smul, finiteGibbsExpectation_smul_apply]
+    smul_smul, Common.finiteGibbsExpectation_smul]
   ring
 
 /-- A pair value is continuous in the time assignment. -/
