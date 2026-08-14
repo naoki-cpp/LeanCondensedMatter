@@ -21,6 +21,14 @@ variable {Label : Type*} {N : ℕ}
 /-- A bijection between ordered slots and a finite vertex set. -/
 abbrev QuarticVertexOrder (S : Finset (Fin N)) := Fin S.card ≃ ↥S
 
+/-- A diagram's commutative vertex weight reindexed along a chosen vertex order. -/
+theorem QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order {M : Type*} [CommMonoid M]
+    {S : Finset (Fin N)} (d : QuarticDiagram Label N S) (w : Label → M)
+    (order : QuarticVertexOrder S) :
+    d.vertexWeight w = ∏ i : Fin S.card, w (d.vertexLabel (order i)) := by
+  rw [QuarticDiagram.vertexWeight]
+  exact (Equiv.prod_comp order (fun v => w (d.vertexLabel v))).symm
+
 /-- The flattened-leg relabeling induced by a vertex order. -/
 noncomputable def orderedLegToDiagramLeg (S : Finset (Fin N)) (order : QuarticVertexOrder S) :
     Equiv.Perm (Fin (2 * (2 * S.card))) :=
