@@ -10,6 +10,8 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Slot
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumComponents
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumVertexProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairing
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairImage
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairComponent
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotShuffleCoordinates
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotCongr
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVertexProduct
@@ -41,9 +43,10 @@ set_option linter.style.header false
 Two-point diagrams with two distinguished external legs, full connected-component partitions,
 generic vacuum component restriction and canonical external/vacuum decomposition, the fiber
 decomposition of the diagram sum by which interaction vertices are external, componentwise vertex
-products, slot-split vacuum pairing transport, binary slot-shuffle coordinates, interaction-time
-ordered-simplex shuffles and their canonical representative, ambient shuffle permutations,
-interaction-slot relabeling and mixed-order covariance, mixed-time component-position transport,
-generic mixed-order pairings, standalone external-piece transport, component pair fibers,
-commutative pair products, crossing decomposition, pair transport, and fixed-order chamber locality.
+products, slot-split vacuum pairing transport and vacuum-pair image/component equivalences, binary
+slot-shuffle coordinates, interaction-time ordered-simplex shuffles and their canonical representative,
+ambient shuffle permutations, interaction-slot relabeling and mixed-order covariance, mixed-time
+component-position transport, generic mixed-order pairings, standalone external-piece transport,
+component pair fibers, commutative pair products, crossing decomposition, pair transport, and
+fixed-order chamber locality.
 -/
