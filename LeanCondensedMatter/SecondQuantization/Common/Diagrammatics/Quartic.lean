@@ -13,6 +13,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Conne
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPairProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.FixedOrderComponentPair
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentGlobalCrossingParity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentEvaluation
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrderDecomposition
@@ -28,8 +29,9 @@ set_option linter.style.header false
 
 Statistics-independent quartic leg indexing, labelled diagram syntax, vertex ordering, connectivity,
 connected-component restriction, reassembly and its inverse laws, component-decomposition equivalence,
-generic connected-decomposition adapter, component-local orders and pairing compatibility, direct
-finite-family ordered-simplex factorization, componentwise scalar products, mixed two-point leg
-embeddings, Statistics-generic crossing-parity/pairing-weight factorization, and the corresponding
-scalar `Pairing.evaluation` factorization endpoint.
+generic connected-decomposition adapter, component-local orders and pairing compatibility,
+fixed-global-order component-pair embeddings, direct finite-family ordered-simplex factorization,
+componentwise scalar products, mixed two-point leg embeddings, Statistics-generic
+crossing-parity/pairing-weight factorization, and the corresponding scalar `Pairing.evaluation`
+factorization endpoint.
 -/
