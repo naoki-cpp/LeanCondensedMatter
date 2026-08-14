@@ -20,6 +20,15 @@ open QuantumTheory
 
 variable {Config : Type*} [Fintype Config] [Nonempty Config]
 
+/-- Scalar multiplication passes through the canonical finite Gibbs expectation. -/
+@[simp]
+theorem finiteGibbsExpectation_smul (energy : Config → ℝ) (β : ℝ) (c : ℂ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    finiteGibbsExpectation energy β (c • A) = c * finiteGibbsExpectation energy β A := by
+  change (finiteGibbsExpectationLinearMap energy β) (c • A) =
+    c * (finiteGibbsExpectationLinearMap energy β) A
+  rw [map_smul, smul_eq_mul]
+
 /-- The density-state Gibbs expectation is the normalized Boltzmann-weighted diagonal sum. -/
 theorem finiteGibbsExpectation_eq_sum (energy : Config → ℝ) (β : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
