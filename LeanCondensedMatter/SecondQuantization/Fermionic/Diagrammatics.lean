@@ -4,7 +4,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.NumberConservingPairValue
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairValue
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentContractionIntegrand
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.AmplitudePrefactorFactorization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.AmplitudeFactorization
@@ -21,10 +20,10 @@ set_option linter.style.header false
 Quartic interaction vertices, the two-point external-leg foundation and atomic mixed-time-order
 flattening, local-leg semantics, ordered Wick diagrams and amplitudes, component orders,
 order-preserving shuffle decompositions, shuffled ordered-simplex integrands, component-local leg,
-pairing and pair-product compatibility, fermionic contraction-integrand specialization, and full
-quartic Wick-amplitude factorization over connected components; the Dyson diagram expansion, the
-connected-diagram formula for Dyson vertex cumulants, the general algebraic Dyson Linked Cluster
-Theorem, and its explicit orders-one-through-three regression corollaries. Statistics-independent
-quartic matching structure and Statistics-generic crossing-parity/pairing-weight factorization are
-owned by `SecondQuantization.Common`.
+pairing and fermionic contraction-integrand specialization, and full quartic Wick-amplitude
+factorization over connected components; the Dyson diagram expansion, the connected-diagram formula
+for Dyson vertex cumulants, the general algebraic Dyson Linked Cluster Theorem, and its explicit
+orders-one-through-three regression corollaries. Statistics-independent quartic matching structure
+and Statistics-generic crossing-parity/pairing-weight factorization are owned by
+`SecondQuantization.Common`.
 -/
