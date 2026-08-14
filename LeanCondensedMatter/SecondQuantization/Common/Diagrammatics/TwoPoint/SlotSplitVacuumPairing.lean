@@ -90,10 +90,6 @@ theorem TwoPointDiagram.ofSlotSplit_atomicLegPartner_vacuumOrderedLeg
   rw [slotSplitVacuumOrderedLeg_eq_slotSplitRight T p,
     slotSplitVacuumOrderedLeg_eq_slotSplitRight T
       ((vac.pairingInOrder (slotSplitVacuumOrder T)).partner p)]
-  change (TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).pairing.partner
-      (slotLegSplitting (Finset.subset_univ T)
-        (Sum.inr (orderedLegToDiagramLeg
-          ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T) p))) = _
   rw [TwoPointDiagram.ofSlotSplit_pairing, Pairing.ofSplit_partner_inr]
   apply congrArg (fun q => slotLegSplitting (Finset.subset_univ T) (Sum.inr q))
   rw [QuarticDiagram.pairingInOrder, Pairing.relabel_partner, Equiv.apply_symm_apply]
