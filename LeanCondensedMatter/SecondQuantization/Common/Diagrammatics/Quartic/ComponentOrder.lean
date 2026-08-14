@@ -38,7 +38,7 @@ noncomputable def QuarticDiagram.componentVertexEquiv {S : Finset (Fin N)}
 noncomputable def QuarticDiagram.assembleVertexOrder {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (orders : d.ComponentVertexOrders)
     (shuffle : d.ComponentShuffle) : QuarticVertexOrder S :=
-  d.componentPartition.assembleOrder orders shuffle
+  shuffle.slotEquiv.symm.trans (d.componentVertexEquiv orders)
 
 /-- A family of component-local orders is compatible with a global order when each component appears
 in the global slots in precisely that local order. -/
