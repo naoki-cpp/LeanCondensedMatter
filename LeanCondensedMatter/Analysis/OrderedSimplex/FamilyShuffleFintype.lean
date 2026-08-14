@@ -142,6 +142,58 @@ theorem FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype_o
     _ = ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i) :=
       Equiv.prod_comp e (fun i => orderedSimplexIntegral (size i) β (localIntegrand i))
 
+/-- Transporting a canonical family shuffle to a propositionally equal ambient total preserves its
+ordered-simplex term. -/
+theorem FamilySlotShuffleTo.orderedSimplexIntegral_ambientIntegrand_castTotalEquiv
+    (size : ι → ℕ) (total : ℕ) (hTotal : (∑ i, size i) = total)
+    (shuffle : FamilySlotShuffle size) (β : ℝ)
+    (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ) :
+    orderedSimplexIntegral total β
+        ((FamilySlotShuffleTo.castTotalEquiv hTotal shuffle).ambientIntegrand localIntegrand) =
+      orderedSimplexIntegral (∑ i, size i) β (shuffle.integrand localIntegrand) := by
+  calc
+    orderedSimplexIntegral total β
+        ((FamilySlotShuffleTo.castTotalEquiv hTotal shuffle).ambientIntegrand localIntegrand) =
+      orderedSimplexIntegral total β (fun τ =>
+        shuffle.integrand localIntegrand (fun j => τ (Fin.cast hTotal j))) := by
+          apply orderedSimplexIntegral_congr
+          intro τ
+          unfold FamilySlotShuffleTo.ambientIntegrand FamilySlotShuffle.integrand
+            FamilySlotShuffle.timeAssignment FamilySlotShuffleTo.castTotalEquiv
+          rfl
+    _ = orderedSimplexIntegral (∑ i, size i) β (shuffle.integrand localIntegrand) := by
+      symm
+      exact intervalIntegral.orderedSimplexIntegral_cast hTotal β
+        (shuffle.integrand localIntegrand)
+
+/-- Finite-family ordered-simplex shuffle product identity directly over an ambient total that is
+propositionally equal to the sum of local block sizes. -/
+theorem FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_fintype_of_measurableLocallyBounded
+    (size : ι → ℕ) (total : ℕ) (hTotal : (∑ i, size i) = total) (β : ℝ)
+    (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
+    (hlocal : ∀ i, MeasurableLocallyBounded (localIntegrand i)) :
+    (∑ shuffle : FamilySlotShuffleTo size total,
+      orderedSimplexIntegral total β (shuffle.ambientIntegrand localIntegrand)) =
+      ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i) := by
+  calc
+    (∑ shuffle : FamilySlotShuffleTo size total,
+        orderedSimplexIntegral total β (shuffle.ambientIntegrand localIntegrand)) =
+      ∑ shuffle : FamilySlotShuffle size,
+        orderedSimplexIntegral total β
+          ((FamilySlotShuffleTo.castTotalEquiv hTotal shuffle).ambientIntegrand localIntegrand) :=
+      (Equiv.sum_comp (FamilySlotShuffleTo.castTotalEquiv hTotal)
+        (fun shuffle => orderedSimplexIntegral total β
+          (shuffle.ambientIntegrand localIntegrand))).symm
+    _ = ∑ shuffle : FamilySlotShuffle size,
+        orderedSimplexIntegral (∑ i, size i) β (shuffle.integrand localIntegrand) := by
+      apply Fintype.sum_congr
+      intro shuffle
+      exact FamilySlotShuffleTo.orderedSimplexIntegral_ambientIntegrand_castTotalEquiv
+        size total hTotal shuffle β localIntegrand
+    _ = ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i) :=
+      FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype_of_measurableLocallyBounded
+        size β localIntegrand hlocal
+
 /-- Finite-family ordered-simplex shuffle product identity for continuous local integrands over an
 arbitrary finite block-index type. -/
 theorem FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype
@@ -153,6 +205,18 @@ theorem FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype
       ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i) :=
   FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype_of_measurableLocallyBounded
     size β localIntegrand (fun i => (hlocal i).measurableLocallyBounded)
+
+/-- Finite-family ordered-simplex shuffle product identity for continuous local integrands directly
+over an ambient total propositionally equal to the sum of local block sizes. -/
+theorem FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_fintype
+    (size : ι → ℕ) (total : ℕ) (hTotal : (∑ i, size i) = total) (β : ℝ)
+    (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
+    (hlocal : ∀ i, Continuous (localIntegrand i)) :
+    (∑ shuffle : FamilySlotShuffleTo size total,
+      orderedSimplexIntegral total β (shuffle.ambientIntegrand localIntegrand)) =
+      ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i) :=
+  FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_fintype_of_measurableLocallyBounded
+    size total hTotal β localIntegrand (fun i => (hlocal i).measurableLocallyBounded)
 
 end
 

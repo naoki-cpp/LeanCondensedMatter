@@ -10,9 +10,9 @@ The full components of a two-point diagram partition its interaction vertices, a
 external component also contains the two distinguished external vertices. This module therefore
 uses the interaction part of every full component as its local ordered-simplex slot block.
 
-The generic finite-family shuffle identity applies directly to the finite type of full components.
-No auxiliary enumeration by `Fin k` is needed; only the equality between the total interaction-slot
-count and the ambient interaction order must be transported.
+The generic finite-family ambient-shuffle identity applies directly to the finite type of full
+components; only the equality between the total interaction-slot count and the ambient interaction
+order is domain-specific.
 -/
 
 namespace SecondQuantization
@@ -110,84 +110,6 @@ theorem TwoPointDiagram.continuous_interactionComponentShuffleIntegrand
     (hcomponent B).comp
       (d.continuous_interactionComponentTimeAssignment shuffle B)
 
-/-- Generic family shuffles indexed directly by the full component type are equivalent to ambient
-two-point interaction shuffles. -/
-noncomputable def TwoPointDiagram.componentInteractionFamilyShuffleEquiv
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
-    FamilySlotShuffle d.interactionComponentSize ≃ d.ComponentInteractionShuffle :=
-  FamilySlotShuffleTo.castTotalEquiv d.sum_interactionComponentSize
-
-/-- Transporting a generic component-indexed family shuffle to ambient interaction coordinates only
-precomposes the generic integrand by the total-interaction-cardinality cast. -/
-theorem TwoPointDiagram.interactionComponentShuffleIntegrand_componentInteractionFamilyShuffleEquiv
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (shuffle : FamilySlotShuffle d.interactionComponentSize)
-    (componentIntegrand :
-      ∀ B : d.componentPartition.parts,
-        (Fin (d.interactionComponentSize B) → ℝ) → ℂ)
-    (τ : Fin S.card → ℝ) :
-    d.interactionComponentShuffleIntegrand
-        (d.componentInteractionFamilyShuffleEquiv shuffle) componentIntegrand τ =
-      shuffle.integrand componentIntegrand
-        (fun j => τ (Fin.cast d.sum_interactionComponentSize j)) := by
-  classical
-  unfold TwoPointDiagram.interactionComponentShuffleIntegrand
-    TwoPointDiagram.interactionComponentTimeAssignment
-    FamilySlotShuffle.integrand FamilySlotShuffle.timeAssignment
-  rfl
-
-/-- One generic component-indexed family-shuffle term equals its ambient two-point interaction-shuffle
-term. -/
-theorem TwoPointDiagram.orderedSimplexIntegral_componentInteractionFamilyShuffleEquiv
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (shuffle : FamilySlotShuffle d.interactionComponentSize) (β : ℝ)
-    (componentIntegrand :
-      ∀ B : d.componentPartition.parts,
-        (Fin (d.interactionComponentSize B) → ℝ) → ℂ) :
-    orderedSimplexIntegral S.card β
-        (d.interactionComponentShuffleIntegrand
-          (d.componentInteractionFamilyShuffleEquiv shuffle) componentIntegrand) =
-      orderedSimplexIntegral
-        (∑ B : d.componentPartition.parts, d.interactionComponentSize B) β
-        (shuffle.integrand componentIntegrand) := by
-  calc
-    orderedSimplexIntegral S.card β
-        (d.interactionComponentShuffleIntegrand
-          (d.componentInteractionFamilyShuffleEquiv shuffle) componentIntegrand) =
-      orderedSimplexIntegral S.card β (fun τ =>
-        shuffle.integrand componentIntegrand
-          (fun j => τ (Fin.cast d.sum_interactionComponentSize j))) := by
-      apply orderedSimplexIntegral_congr
-      intro τ
-      exact d.interactionComponentShuffleIntegrand_componentInteractionFamilyShuffleEquiv
-        shuffle componentIntegrand τ
-    _ = orderedSimplexIntegral
-        (∑ B : d.componentPartition.parts, d.interactionComponentSize B) β
-        (shuffle.integrand componentIntegrand) := by
-      symm
-      exact intervalIntegral.orderedSimplexIntegral_cast
-        d.sum_interactionComponentSize β (shuffle.integrand componentIntegrand)
-
-/-- Reindex the finite sum over ambient interaction shuffles by generic shuffles indexed directly by
-full component blocks. -/
-theorem TwoPointDiagram.sum_componentInteractionShuffle_orderedSimplexIntegral_eq_familyShuffle
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) (β : ℝ)
-    (componentIntegrand :
-      ∀ B : d.componentPartition.parts,
-        (Fin (d.interactionComponentSize B) → ℝ) → ℂ) :
-    (∑ shuffle : d.ComponentInteractionShuffle,
-      orderedSimplexIntegral S.card β
-        (d.interactionComponentShuffleIntegrand shuffle componentIntegrand)) =
-      ∑ shuffle : FamilySlotShuffle d.interactionComponentSize,
-        orderedSimplexIntegral
-          (∑ B : d.componentPartition.parts, d.interactionComponentSize B) β
-          (shuffle.integrand componentIntegrand) := by
-  rw [← Equiv.sum_comp d.componentInteractionFamilyShuffleEquiv]
-  apply Finset.sum_congr rfl
-  intro shuffle _
-  exact d.orderedSimplexIntegral_componentInteractionFamilyShuffleEquiv
-    shuffle β componentIntegrand
-
 /-- Finite-family ordered-simplex shuffle product identity for the interaction parts of all full
 two-point components. -/
 theorem TwoPointDiagram.sum_componentInteractionShuffle_orderedSimplexIntegral_eq_prod
@@ -203,23 +125,17 @@ theorem TwoPointDiagram.sum_componentInteractionShuffle_orderedSimplexIntegral_e
       ∏ B : d.componentPartition.parts,
         orderedSimplexIntegral (d.interactionComponentSize B) β
           (componentIntegrand B) := by
-  have hfamily :=
-    FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype
-      (ι := d.componentPartition.parts)
-      d.interactionComponentSize β componentIntegrand hcomponent
-  calc
-    (∑ shuffle : d.ComponentInteractionShuffle,
+  change
+    (∑ shuffle : FamilySlotShuffleTo d.interactionComponentSize S.card,
       orderedSimplexIntegral S.card β
-        (d.interactionComponentShuffleIntegrand shuffle componentIntegrand)) =
-      ∑ shuffle : FamilySlotShuffle d.interactionComponentSize,
-        orderedSimplexIntegral
-          (∑ B : d.componentPartition.parts, d.interactionComponentSize B) β
-          (shuffle.integrand componentIntegrand) :=
-      d.sum_componentInteractionShuffle_orderedSimplexIntegral_eq_familyShuffle
-        β componentIntegrand
-    _ = ∏ B : d.componentPartition.parts,
+        (shuffle.ambientIntegrand componentIntegrand)) =
+      ∏ B : d.componentPartition.parts,
         orderedSimplexIntegral (d.interactionComponentSize B) β
-          (componentIntegrand B) := hfamily
+          (componentIntegrand B)
+  exact
+    FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_fintype
+      (ι := d.componentPartition.parts) d.interactionComponentSize S.card
+      d.sum_interactionComponentSize β componentIntegrand hcomponent
 
 end
 

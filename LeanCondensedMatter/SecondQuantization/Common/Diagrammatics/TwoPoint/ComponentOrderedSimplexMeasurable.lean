@@ -5,9 +5,8 @@ set_option linter.style.header false
 /-!
 # Measurable bounded ordered-simplex shuffles over two-point components
 
-The generic arbitrary-finite-index family shuffle theorem applies directly to the finite type of
-full two-point component blocks, so no auxiliary finite presentation or component enumeration is
-required.
+The generic arbitrary-finite-index ambient family-shuffle theorem applies directly to the finite
+type of full two-point component blocks.
 -/
 
 namespace SecondQuantization
@@ -35,12 +34,17 @@ theorem TwoPointDiagram.sum_componentInteractionShuffle_orderedSimplexIntegral_e
       ∏ B : d.componentPartition.parts,
         orderedSimplexIntegral (d.interactionComponentSize B) β
           (componentIntegrand B) := by
-  rw [d.sum_componentInteractionShuffle_orderedSimplexIntegral_eq_familyShuffle
-    β componentIntegrand]
+  change
+    (∑ shuffle : FamilySlotShuffleTo d.interactionComponentSize S.card,
+      orderedSimplexIntegral S.card β
+        (shuffle.ambientIntegrand componentIntegrand)) =
+      ∏ B : d.componentPartition.parts,
+        orderedSimplexIntegral (d.interactionComponentSize B) β
+          (componentIntegrand B)
   exact
-    FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype_of_measurableLocallyBounded
-      (ι := d.componentPartition.parts)
-      d.interactionComponentSize β componentIntegrand hcomponent
+    FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_fintype_of_measurableLocallyBounded
+      (ι := d.componentPartition.parts) d.interactionComponentSize S.card
+      d.sum_interactionComponentSize β componentIntegrand hcomponent
 
 end
 
