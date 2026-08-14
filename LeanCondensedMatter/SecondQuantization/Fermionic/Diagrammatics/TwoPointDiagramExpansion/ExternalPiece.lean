@@ -279,7 +279,7 @@ omit [LinearOrder Mode] [Fintype Mode] in
 theorem FixedExternalTwoPointWickDiagram.mixedPositionComponent_externalPieceMixedPosition
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (p : Fin (2 * (2 * d.1.externalInteractionPart.card + 1))) :
-    d.mixedPositionComponent τ τ' σ (d.externalPieceMixedPosition τ τ' σ p) =
+    d.1.mixedPositionComponent τ τ' σ (d.externalPieceMixedPosition τ τ' σ p) =
       d.1.externalComponentPart := by
   let pieceLeg := mixedTimeOrderedAtomicLegEquiv τ τ' (d.externalPieceTimes σ) p
   let ambientLeg := d.externalPieceLegEquiv.symm
@@ -291,7 +291,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedPositionComponent_externalPieceMix
       d.1.unflattenedLegInComponent d.1.externalComponentPart
         (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)) ambientLeg.1) :=
     (d.1.legInComponent_iff_unflattened d.1.externalComponentPart ambientLeg.1).1 ambientLeg.2
-  rw [d.mixedPositionComponent_eq_iff_legInComponent,
+  rw [d.1.mixedPositionComponent_eq_iff_legInComponent,
     d.1.legInComponent_iff_unflattened, twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
     hleg, ← hcanonical]
   exact hamb
@@ -301,15 +301,15 @@ injectively, and there are as many of them as the component owns. -/
 noncomputable def FixedExternalTwoPointWickDiagram.externalPieceMixedPositionEquiv
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ) :
     Fin (2 * (2 * d.1.externalInteractionPart.card + 1)) ≃
-      d.MixedComponentPosition τ τ' σ d.1.externalComponentPart :=
+      d.1.MixedComponentPosition τ τ' σ d.1.externalComponentPart :=
   Equiv.ofBijective
     (fun p => ⟨d.externalPieceMixedPosition τ τ' σ p,
       d.mixedPositionComponent_externalPieceMixedPosition τ τ' σ p⟩)
     (by
       have hcard :
           Fintype.card (Fin (2 * (2 * d.1.externalInteractionPart.card + 1))) =
-            Fintype.card (d.MixedComponentPosition τ τ' σ d.1.externalComponentPart) := by
-        rw [Fintype.card_congr (d.mixedExternalPositionEquiv τ τ' σ), Fintype.card_fin,
+            Fintype.card (d.1.MixedComponentPosition τ τ' σ d.1.externalComponentPart) := by
+        rw [Fintype.card_congr (d.1.mixedExternalPositionEquiv τ τ' σ), Fintype.card_fin,
           Fintype.card_fin]
         rfl
       refine (Fintype.bijective_iff_injective_and_card _).2 ⟨fun p q h => ?_, hcard⟩
