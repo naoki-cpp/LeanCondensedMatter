@@ -22,7 +22,7 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- Every canonical localized Dyson-signed component factor satisfies the reusable measurable local
 boundedness interface required by the generalized ordered-simplex shuffle theorem. -/
-theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_mixedComponentDysonLocalIntegrand
+theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonLocalIntegrand_measurableLocallyBounded
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (shuffle : d.1.ComponentInteractionShuffle)
@@ -43,7 +43,7 @@ theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_mixedComponent
 
 /-- The localized signed component integrands satisfy the finite-family ordered-simplex shuffle
 product identity with no externally supplied continuity assumption. -/
-theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_orderedSimplexIntegral_mixedComponentDysonLocalIntegrand_eq_prod
+theorem FixedExternalTwoPointWickDiagram.sum_mixedComponentDysonLocalIntegral_eq_prod
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (baseShuffle : d.1.ComponentInteractionShuffle) :
@@ -56,9 +56,9 @@ theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_ordered
         intervalIntegral.orderedSimplexIntegral
           (d.1.interactionComponentSize B) β
           (d.mixedComponentDysonLocalIntegrand ε β g τ τ' baseShuffle B) := by
-  exact d.1.sum_componentInteractionShuffle_orderedSimplexIntegral_eq_prod_of_measurableLocallyBounded
+  exact d.1.sum_componentShuffleIntegral_eq_prod_of_measurableLocallyBounded
     β (d.mixedComponentDysonLocalIntegrand ε β g τ τ' baseShuffle)
-    (fun B => d.measurableLocallyBounded_mixedComponentDysonLocalIntegrand
+    (fun B => d.mixedComponentDysonLocalIntegrand_measurableLocallyBounded
       ε β g τ τ' baseShuffle B)
 
 end Fermionic
