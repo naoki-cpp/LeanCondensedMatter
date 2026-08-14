@@ -153,15 +153,6 @@ private theorem finiteGibbsExpectation_neg_apply (ε : Mode → ℝ) (β : ℝ)
   exact map_neg _ A
 
 omit [LinearOrder Mode] in
-private theorem finiteGibbsExpectation_smul_apply (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
-    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    Common.finiteGibbsExpectation (fermionEnergy ε) β (c • A) =
-      c * Common.finiteGibbsExpectation (fermionEnergy ε) β A := by
-  change (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) (c • A) =
-    c * (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) A
-  rw [map_smul, smul_eq_mul]
-
-omit [LinearOrder Mode] in
 private theorem finiteGibbsExpectation_fintype_sum {ι : Type*} [Fintype ι]
     (ε : Mode → ℝ) (β : ℝ) (F : ι → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     Common.finiteGibbsExpectation (fermionEnergy ε) β (∑ i, F i) =
@@ -250,7 +241,7 @@ private theorem finiteGibbsExpectation_comp_dysonCoeff_quarticInteraction (ε : 
                 (L.comp (nestedVertexOperatorComp ε (n + 1) (Fin.cons q0 q')
                   (Fin.cons σ τ')))) := by
         intro q0
-        rw [finiteGibbsExpectation_smul_apply,
+        rw [Common.finiteGibbsExpectation_smul,
           ih σ (L.comp (interactionPicture ε (quarticVertexOperator q0) σ)), mul_left_comm,
           Finset.mul_sum]
         congr 1
