@@ -38,10 +38,6 @@ theorem TwoPointDiagram.externalPiece_partner_externalPieceMixedPositionEquiv_sy
   apply Subtype.ext
   rw [TwoPointDiagram.externalPieceMixedPositionEquiv_apply,
     d.mixedRestrictedPartner_val]
-  change d.externalPieceMixedPosition τ τ' σ
-      ((d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).partner
-        ((d.externalPieceMixedPositionEquiv τ τ' σ).symm pos)) =
-    (d.pairingInMixedOrder τ τ' σ).partner (pos : Fin (2 * (2 * n + 1)))
   rw [← d.externalPieceMixedPosition_partner,
     ← TwoPointDiagram.externalPieceMixedPositionEquiv_apply,
     Equiv.apply_symm_apply]
