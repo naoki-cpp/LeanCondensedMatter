@@ -134,7 +134,7 @@ theorem continuous_contractionIntegrand (ε : Mode → ℝ) (β : ℝ) {S : Fins
 /-- The quartic Wick-diagram amplitude, including the Dyson sign and all vertex orders. -/
 noncomputable def quarticWickDiagramAmplitude (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) : ℂ :=
-  (-1 : ℂ) ^ S.card * d.vertexWeight g *
+  (-1 : ℂ) ^ S.card * d.couplingWeight g *
     ∑ order : Common.QuarticVertexOrder S, d.orderedSimplexContribution ε β order
 
 /-! ## Basic lemmas -/
@@ -160,8 +160,8 @@ theorem quarticWickDiagramAmplitude_empty (ε : Mode → ℝ) (β : ℝ) (g : Qu
     simp only [QuarticWickDiagram.orderedSimplexContribution]
     simp [QuarticWickDiagram.contractionIntegrand, Combinatorics.Pairing.evaluation,
       Combinatorics.Pairing.pairs, Combinatorics.Pairing.crossingCount]
-  simp only [quarticWickDiagramAmplitude, Common.QuarticDiagram.vertexWeight, hcard, pow_zero,
-    one_mul]
+  simp only [quarticWickDiagramAmplitude, QuarticWickDiagram.couplingWeight,
+    Common.QuarticDiagram.vertexWeight, hcard, pow_zero, one_mul]
   have hcoupling : ∏ v : (↥(∅ : Finset (Fin N))), g (d.vertexLabel v) = 1 := by
     have : IsEmpty (↥(∅ : Finset (Fin N))) := Finset.isEmpty_coe_sort.2 rfl
     exact Finset.prod_of_isEmpty _
