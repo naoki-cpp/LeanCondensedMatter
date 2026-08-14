@@ -29,14 +29,14 @@ theorem fixedExternalOfSlotSplit_vertexLabelSequence_vacuumSlot
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (v : Fin ((Finset.univ : Finset (Fin n)) \ T).card) :
-    (fixedExternalOfSlotSplit T ext vac).vertexLabelSequence (fixedExternalVacuumSlot T v) =
-      vac.vertexLabel (fixedExternalVacuumOrder T v) := by
-  let w := fixedExternalVacuumOrder T v
+    (fixedExternalOfSlotSplit T ext vac).vertexLabelSequence (slotSplitVacuumSlot T v) =
+      vac.vertexLabel (slotSplitVacuumOrder T v) := by
+  let w := slotSplitVacuumOrder T v
   have hwNot : (w.1 : Fin n) ∉ T := (Finset.mem_sdiff.mp w.2).2
   change (Common.TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext.1 vac).vertexLabel
-      ⟨fixedExternalVacuumSlot T v, Finset.mem_univ _⟩ = vac.vertexLabel w
+      ⟨slotSplitVacuumSlot T v, Finset.mem_univ _⟩ = vac.vertexLabel w
   rw [Common.TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem
-    (Finset.subset_univ T) ext.1 vac _ (by simpa [fixedExternalVacuumSlot, w] using hwNot)]
+    (Finset.subset_univ T) ext.1 vac _ (by simpa [slotSplitVacuumSlot, w] using hwNot)]
   apply congrArg vac.vertexLabel
   apply Subtype.ext
   rfl
@@ -54,10 +54,10 @@ theorem fixedExternalOfSlotSplit_orderedTwoPointLegField_vacuumOrderedLeg
       ((Finset.univ : Finset (Fin n)) \ T).card p
     orderedTwoPointLegField i j τ τ'
         (fixedExternalOfSlotSplit T ext vac).vertexLabelSequence σ
-        (orderedQuarticLegMapToTwoPointLeg (fixedExternalVacuumSlot T) p) =
-      ⟨(σ ∘ fixedExternalVacuumSlot T) q.1,
+        (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p) =
+      ⟨(σ ∘ slotSplitVacuumSlot T) q.1,
         quarticLocalLegExternalFieldLabel
-          (vac.vertexLabel (fixedExternalVacuumOrder T q.1)) q.2⟩ := by
+          (vac.vertexLabel (slotSplitVacuumOrder T q.1)) q.2⟩ := by
   let q := Common.orderedQuarticLegEquiv
     ((Finset.univ : Finset (Fin n)) \ T).card p
   have hp :
@@ -87,24 +87,24 @@ theorem fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg
     mixedTimeOrderedAtomicOperatorFamily ε i j τ τ'
         (fixedExternalOfSlotSplit T ext vac).vertexLabelSequence σ
         (mixedTimeOrderedQuarticLegMapPosition
-          (fixedExternalVacuumSlot T) τ τ' σ p) =
-      orderedQuarticLegOperator ε vac (fixedExternalVacuumOrder T)
-        (σ ∘ fixedExternalVacuumSlot T) p := by
+          (slotSplitVacuumSlot T) τ τ' σ p) =
+      orderedQuarticLegOperator ε vac (slotSplitVacuumOrder T)
+        (σ ∘ slotSplitVacuumSlot T) p := by
   rw [mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegField]
   change timedFieldOperator ε
       (orderedTwoPointLegField i j τ τ'
         (fixedExternalOfSlotSplit T ext vac).vertexLabelSequence σ
         (mixedTimeOrderedAtomicLegEquiv τ τ' σ
           (mixedTimeOrderedAtomicLegPosition τ τ' σ
-            (orderedQuarticLegMapToTwoPointLeg (fixedExternalVacuumSlot T) p)))) = _
+            (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p)))) = _
   rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition,
     fixedExternalOfSlotSplit_orderedTwoPointLegField_vacuumOrderedLeg T ext vac τ τ' σ p]
   let q := Common.orderedQuarticLegEquiv
     ((Finset.univ : Finset (Fin n)) \ T).card p
   change timedFieldOperator ε
-      ⟨(σ ∘ fixedExternalVacuumSlot T) q.1,
+      ⟨(σ ∘ slotSplitVacuumSlot T) q.1,
         quarticLocalLegExternalFieldLabel
-          (vac.vertexLabel (fixedExternalVacuumOrder T q.1)) q.2⟩ = _
+          (vac.vertexLabel (slotSplitVacuumOrder T q.1)) q.2⟩ = _
   rw [timedFieldOperator_quarticLocalLeg]
   rfl
 
@@ -116,14 +116,14 @@ theorem fixedExternalOfSlotSplit_mixedPairContractionValue_vacuumNormalizedPair
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T))
-    (pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair) :
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
+    (pr : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair) :
     let d := fixedExternalOfSlotSplit T ext vac
     d.mixedPairContractionValue ε β τ τ' σ
-        (fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding
-          T ext vac τ τ' σ hσ pr) =
-      orderedQuarticPairValue ε β vac (fixedExternalVacuumOrder T)
-        (σ ∘ fixedExternalVacuumSlot T) pr.1.1 pr.1.2 := by
+        (Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
+          T ext.1 vac τ τ' σ hσ pr) =
+      orderedQuarticPairValue ε β vac (slotSplitVacuumOrder T)
+        (σ ∘ slotSplitVacuumSlot T) pr.1.1 pr.1.2 := by
   let d := fixedExternalOfSlotSplit T ext vac
   unfold FixedExternalTwoPointWickDiagram.mixedPairContractionValue
     mixedTimeOrderedAtomicPairValue orderedQuarticPairValue
@@ -131,10 +131,10 @@ theorem fixedExternalOfSlotSplit_mixedPairContractionValue_vacuumNormalizedPair
       (Common.finiteHilbertOperator
         ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ
             (mixedTimeOrderedQuarticLegMapPosition
-              (fixedExternalVacuumSlot T) τ τ' σ pr.1.1)).comp
+              (slotSplitVacuumSlot T) τ τ' σ pr.1.1)).comp
           (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ
             (mixedTimeOrderedQuarticLegMapPosition
-              (fixedExternalVacuumSlot T) τ τ' σ pr.1.2)))) = _
+              (slotSplitVacuumSlot T) τ τ' σ pr.1.2)))) = _
   rw [fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg
       ε T ext vac τ τ' σ pr.1.1,
     fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg
@@ -149,14 +149,14 @@ theorem fixedExternalOfSlotSplit_prod_vacuumPairContractionValue_eq
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (hext : ext.1.IsExternallyConnected)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
     let d := fixedExternalOfSlotSplit T ext vac
     d.1.vacuumComponentParts.prod (fun B =>
         ∏ pr : d.1.MixedComponentPair τ τ' σ B,
           d.mixedPairContractionValue ε β τ τ' σ pr.1) =
-      ∏ pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair,
-        orderedQuarticPairValue ε β vac (fixedExternalVacuumOrder T)
-          (σ ∘ fixedExternalVacuumSlot T) pr.1.1 pr.1.2 := by
+      ∏ pr : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair,
+        orderedQuarticPairValue ε β vac (slotSplitVacuumOrder T)
+          (σ ∘ slotSplitVacuumSlot T) pr.1.1 pr.1.2 := by
   let d := fixedExternalOfSlotSplit T ext vac
   let F : d.MixedVacuumPair τ τ' σ → ℂ := fun pr =>
     d.mixedPairContractionValue ε β τ τ' σ pr.1
@@ -177,12 +177,12 @@ theorem fixedExternalOfSlotSplit_prod_vacuumPairContractionValue_eq
       rfl
     _ = ∏ pr : d.MixedVacuumPair τ τ' σ, F pr :=
       Equiv.prod_comp (d.mixedVacuumPairSigmaEquiv τ τ' σ) F
-    _ = ∏ pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair,
+    _ = ∏ pr : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair,
         F (e pr) :=
       (Equiv.prod_comp e F).symm
-    _ = ∏ pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair,
-        orderedQuarticPairValue ε β vac (fixedExternalVacuumOrder T)
-          (σ ∘ fixedExternalVacuumSlot T) pr.1.1 pr.1.2 := by
+    _ = ∏ pr : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair,
+        orderedQuarticPairValue ε β vac (slotSplitVacuumOrder T)
+          (σ ∘ slotSplitVacuumSlot T) pr.1.1 pr.1.2 := by
       apply Fintype.prod_congr
       intro pr
       change d.mixedPairContractionValue ε β τ τ' σ (e pr).1 = _
