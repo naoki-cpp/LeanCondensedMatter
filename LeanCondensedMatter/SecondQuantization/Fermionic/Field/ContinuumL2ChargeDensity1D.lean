@@ -10,14 +10,14 @@ set_option linter.style.header false
 This module connects the algebraic smeared fermionic charge-density interface to the canonical
 bounded multiplication operators on `L²(ℝ, ℂ)` supplied by the analysis layer.
 
-The smearing space is `L∞(ℝ, ℂ)`.  Its canonical multiplication family is complex-linear and may
+The smearing space is `L∞(ℝ, ℂ)`. Its canonical multiplication family is complex-linear and may
 therefore be fed directly into `chargeDensity`, giving
 
 ```text
 ρ_q(f) = q dΓ(M_f).
 ```
 
-On the one-particle sector this acts exactly as the bounded analytic operator `q M_f`.  In
+On the one-particle sector this acts exactly as the bounded analytic operator `q M_f`. In
 particular, for a bounded real test function this is the same operator whose `L²` expectation is
 identified with `∫ f(x) q |ψ(x)|² dx` in the one-particle continuum layer, without introducing a
 direct dependency between `SecondQuantization` and `QuantumMechanics.SingleParticle`.
@@ -28,6 +28,9 @@ namespace Fermionic
 namespace Field
 
 noncomputable section
+
+open MeasureTheory
+open scoped ENNReal
 
 /-- The canonical one-dimensional continuum `L²` one-particle space used by the analytic
 multiplication-operator layer. -/
@@ -83,8 +86,7 @@ theorem continuumL2ChargeDensity1D_oneParticle
 charge-scaled real multiplication operator used by the analytic `L²` density expectation theorem. -/
 theorem continuumL2ChargeDensity1D_oneParticle_real
     (q : ℝ) (test : ℝ → ℝ)
-    (htest : MeasureTheory.MemLp (fun x => (test x : ℂ)) ∞
-      (MeasureTheory.volume : MeasureTheory.Measure ℝ))
+    (htest : MemLp (fun x => (test x : ℂ)) ∞ (volume : Measure ℝ))
     (ψ : ContinuumL2Wavefunction1D) :
     continuumL2ChargeDensity1D (q : ℂ)
         (L2MultiplicationRealLine.realMultiplier test htest)
