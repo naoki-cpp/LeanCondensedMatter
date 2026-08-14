@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentCrossing
-import LeanCondensedMatter.Combinatorics.ListInterleaving
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Basic
+import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 
 set_option linter.style.header false
 
