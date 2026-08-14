@@ -28,7 +28,7 @@ theorem QuarticDiagram.sum_vertexOrder_eq_sum_componentOrders_shuffle [AddCommMo
     (F : d.ComponentVertexOrders × d.ComponentShuffle → M) :
     ∑ order : QuarticVertexOrder S, F (d.componentOrderDecompositionEquiv order) =
       ∑ x : d.ComponentVertexOrders × d.ComponentShuffle, F x :=
-  d.componentPartition.sum_order_eq_sum_partOrders_shuffle F
+  Equiv.sum_comp d.componentOrderDecompositionEquiv F
 
 end Common
 end SecondQuantization
