@@ -19,15 +19,6 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-! ## Reindexing into a sum over `QuarticWickDiagram`s -/
 
-omit [Fintype Mode] [LinearOrder Mode] in
-/-- A diagram's coupling weight, reindexed along a vertex order. -/
-theorem couplingWeight_eq_prod_vertexLabel_order {N : ℕ} {S : Finset (Fin N)}
-    (d : QuarticWickDiagram Mode N S) (g : QuarticVertexLabel Mode → ℂ)
-    (order : Common.QuarticVertexOrder S) :
-    d.couplingWeight g = ∏ i : Fin S.card, g (d.vertexLabel (order i)) := by
-  rw [QuarticWickDiagram.couplingWeight]
-  exact (Equiv.prod_comp order (fun v => g (d.vertexLabel v))).symm
-
 /-- A diagram's fixed-order ordered-simplex contribution is the integral of its canonical pairing
 evaluation after transport to the chosen vertex order. -/
 theorem orderedSimplexContribution_eq_pairingEvaluation {N : ℕ} {S : Finset (Fin N)}
@@ -56,7 +47,8 @@ theorem couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation
         intervalIntegral.orderedSimplexIntegral S.card β
           (fun τ => flatVertexLegPairingEvaluation ε β
             (fun i => d.vertexLabel (order i)) τ (d.pairingInOrder order)) := by
-  rw [couplingWeight_eq_prod_vertexLabel_order,
+  rw [QuarticWickDiagram.couplingWeight,
+    Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order d g order,
     orderedSimplexContribution_eq_pairingEvaluation]
 
 /-- Summing fixed-order diagram contributions gives the vertex-label/pairing double sum in canonical

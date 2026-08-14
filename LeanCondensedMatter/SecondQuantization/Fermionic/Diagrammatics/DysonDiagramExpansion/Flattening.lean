@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Leg
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Core
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.LegFamily
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticLocalLeg
@@ -13,6 +14,7 @@ namespace SecondQuantization
 namespace Fermionic
 
 open Combinatorics
+open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
@@ -44,39 +46,11 @@ theorem interactionPicture_quarticVertexOperator_eq_prodComp (ε : Mode → ℝ)
     imaginaryTimeEvolve_comp]
   simp [Common.prodComp, quarticLocalLegOperator, List.ofFn_succ]
 
-/-- **`Common.orderedQuarticLegEquiv`'s value at the flattened position `i * 4 + j`** (up to the numeric
-cast identifying `Fin (2 * (2 * n))` with `Fin (n * 4)`) **is exactly `(i, j)`** — the fact tying
-`Common.orderedQuarticLegEquiv`'s underlying `finProdFinEquiv` to `List.ofFn_mul`'s own `i * n + j` block
-indexing. Proved via `Equiv.symm_apply_eq`, reducing to the numeric identity `i * 4 + j = j + 4 *
-i` `finProdFinEquiv`'s defining formula gives — avoiding any need for a named `finProdFinEquiv`
-"symm" simp lemma. -/
-theorem orderedQuarticLegEquiv_cast_mul_add {n : ℕ} (i : Fin n) (j : Fin 4)
-    (h : 2 * (2 * n) = n * 4) :
-    Common.orderedQuarticLegEquiv n (Fin.cast h.symm ⟨(i : ℕ) * 4 + (j : ℕ), by omega⟩) = (i, j) := by
-  simp only [Common.orderedQuarticLegEquiv, Equiv.trans_apply, finCongr_apply, Fin.cast_cast,
-    Fin.cast_eq_self]
-  rw [Equiv.symm_apply_eq]
-  apply Fin.ext
-  simp only [finProdFinEquiv, Equiv.coe_fn_mk]
-  ring
-
-omit [Fintype Mode] in
-/-- **The vertex a flattened position `p` belongs to** — named projection standing in for the
-repeated `(Common.orderedQuarticLegEquiv n p).1`. -/
-noncomputable def flatVertexIndex (n : ℕ) (p : Fin (2 * (2 * n))) : Fin n :=
-  (Common.orderedQuarticLegEquiv n p).1
-
-omit [Fintype Mode] in
-/-- **Which of its vertex's four legs a flattened position `p` is** — named projection standing in
-for the repeated `(Common.orderedQuarticLegEquiv n p).2`. -/
-noncomputable def flatLocalLeg (n : ℕ) (p : Fin (2 * (2 * n))) : Fin 4 :=
-  (Common.orderedQuarticLegEquiv n p).2
-
 omit [Fintype Mode] in
 /-- **A flattened leg's evolution eigenvalue shift** — `quarticLocalLegEnergyShift` at the vertex
-label and local leg a flattened position `p` corresponds to. Named so the general theorem's own
-`q : Fin (2 * (2 * n)) → ℝ` eigenvalue-shift family can be stated as `flatVertexLegEnergyShift ε q`
-directly, without re-expanding `Common.orderedQuarticLegEquiv n p`'s two projections at every call site. -/
+label and local leg selected by the Common quartic flattening coordinates. Named so the general
+theorem's own `q : Fin (2 * (2 * n)) → ℝ` eigenvalue-shift family can be stated as
+`flatVertexLegEnergyShift ε q` directly. -/
 noncomputable def flatVertexLegEnergyShift {n : ℕ} (ε : Mode → ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (p : Fin (2 * (2 * n))) : ℝ :=
   quarticLocalLegEnergyShift ε (q (flatVertexIndex n p)) (flatLocalLeg n p)
@@ -101,7 +75,7 @@ theorem quarticLegOperatorForSequence_cast_mul_add {n : ℕ} (ε : Mode → ℝ)
     (h : 2 * (2 * n) = n * 4) :
     quarticLegOperatorForSequence ε q τ (Fin.cast h.symm ⟨(i : ℕ) * 4 + (j : ℕ), by omega⟩) =
       imaginaryTimeEvolve ε (τ i) (quarticLocalLegOperator (q i) j) := by
-  rw [quarticLegOperatorForSequence, orderedQuarticLegEquiv_cast_mul_add i j h]
+  rw [quarticLegOperatorForSequence, Common.orderedQuarticLegEquiv_cast_mul_add i j h]
 
 omit [Fintype Mode] in
 /-- **A single evolved atomic leg operator is an eigenoperator of `heisenbergEvolve (fermionEnergy
@@ -142,21 +116,6 @@ theorem heisenbergEvolve_quarticLegOperatorForSequence {n : ℕ} (ε : Mode → 
   heisenbergEvolve_imaginaryTimeEvolve_quarticLocalLegOperator ε β
     (q (flatVertexIndex n p)) (flatLocalLeg n p) (τ (flatVertexIndex n p))
 
-/-- **Every flattened position is of the `i * 4 + j` form** — the converse of
-`orderedQuarticLegEquiv_cast_mul_add`: applying `(Common.orderedQuarticLegEquiv n).symm` to both sides of
-`orderedQuarticLegEquiv_cast_mul_add` and using `Equiv.symm_apply_apply` on the resulting
-`(Common.orderedQuarticLegEquiv n).symm (Common.orderedQuarticLegEquiv n p) = p`. Lets the flattening theorem
-match an *arbitrary* flattened position `p`, not just the specific ones the block-splitting lemma
-above constructs. -/
-theorem eq_cast_mul_add_orderedQuarticLegEquiv {n : ℕ} (p : Fin (2 * (2 * n)))
-    (h : 2 * (2 * n) = n * 4) :
-    p = Fin.cast h.symm ⟨(Common.orderedQuarticLegEquiv n p).1 * 4 + (Common.orderedQuarticLegEquiv n p).2, by
-      have := (Common.orderedQuarticLegEquiv n p).2.isLt; omega⟩ := by
-  have heq := orderedQuarticLegEquiv_cast_mul_add (Common.orderedQuarticLegEquiv n p).1
-    (Common.orderedQuarticLegEquiv n p).2 h
-  rw [Prod.mk.eta] at heq
-  exact ((Common.orderedQuarticLegEquiv n).injective heq).symm
-
 omit [Fintype Mode] in
 /-- **`nestedVertexOperatorComp`, flattened into a `Common.prodComp` of its `4n` atomic legs** —
 by induction on `n`: the base case is trivial (`Fin (2 * (2 * 0))` is empty); the successor case
@@ -166,11 +125,12 @@ reduces, via `nestedVertexOperatorComp_succ`,
 q τ) = List.ofFn (4 atoms for vertex 0) ++ List.ofFn (quarticLegOperatorForSequence ε (tail q)
 (tail τ))`, proved via `List.ofFn_fin_append`/`Fin.addCases` splitting the domain additively into
 `4 + 2 * (2 * n)`: the `left` branch matches `quarticLegOperatorForSequence_cast_mul_add` at
-vertex `0` directly; the `right` branch uses `eq_cast_mul_add_orderedQuarticLegEquiv` to express an
-*arbitrary* position `k` of the smaller `n`-fold piece in `i' * 4 + j'` form, then matches both
-sides via `quarticLegOperatorForSequence_cast_mul_add` (at `n` for the RHS, at `n + 1` and vertex
-`i'.succ` for the
-LHS) — the two positions agree because `4 + (i' * 4 + j') = i'.succ * 4 + j'` as naturals. -/
+vertex `0` directly; the `right` branch uses the Common
+`eq_cast_mul_add_orderedQuarticLegEquiv` to express an *arbitrary* position `k` of the smaller
+`n`-fold piece in `i' * 4 + j'` form, then matches both sides via
+`quarticLegOperatorForSequence_cast_mul_add` (at `n` for the RHS, at `n + 1` and vertex `i'.succ`
+for the LHS) — the two positions agree because `4 + (i' * 4 + j') = i'.succ * 4 + j'` as
+naturals. -/
 theorem prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp (ε : Mode → ℝ) :
     ∀ (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) (τ : Fin n → ℝ),
       Common.prodComp (List.ofFn (quarticLegOperatorForSequence ε q τ)) =
@@ -191,16 +151,20 @@ theorem prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp 
       (congrArg List.ofFn (funext (Fin.addCases (fun j => ?_) fun k => ?_)))
     · have e1 : Fin.cast h2.symm (Fin.castAdd (2 * (2 * n)) j) =
           Fin.cast hcard.symm ⟨((0 : Fin (n + 1)) : ℕ) * 4 + (j : ℕ), by omega⟩ := by
-        apply Fin.ext; simp
+        apply Fin.ext
+        simp
       change quarticLegOperatorForSequence ε q τ (Fin.cast h2.symm (Fin.castAdd _ j)) =
         Fin.append (fun j : Fin 4 => imaginaryTimeEvolve ε (τ 0) (quarticLocalLegOperator (q 0) j))
           (quarticLegOperatorForSequence ε (fun i => q i.succ) (fun i => τ i.succ))
           (Fin.castAdd _ j)
       rw [Fin.append_left, e1, quarticLegOperatorForSequence_cast_mul_add ε q τ 0 j hcard]
-    · have hk := eq_cast_mul_add_orderedQuarticLegEquiv k hcard'
+    · have hk := Common.eq_cast_mul_add_orderedQuarticLegEquiv k hcard'
       have e2 : Fin.cast h2.symm (Fin.natAdd 4 k) = Fin.cast hcard.symm
-          ⟨((Common.orderedQuarticLegEquiv n k).1.succ : ℕ) * 4 + ((Common.orderedQuarticLegEquiv n k).2 : ℕ),
-            by have := (Common.orderedQuarticLegEquiv n k).2.isLt; omega⟩ := by
+          ⟨((Common.orderedQuarticLegEquiv n k).1.succ : ℕ) * 4 +
+              ((Common.orderedQuarticLegEquiv n k).2 : ℕ),
+            by
+              have := (Common.orderedQuarticLegEquiv n k).2.isLt
+              omega⟩ := by
         apply Fin.ext
         simp only [Fin.val_cast, Fin.val_natAdd, Fin.val_succ]
         have hkval : (k : ℕ) =
@@ -213,7 +177,8 @@ theorem prodComp_ofFn_quarticLegOperatorForSequence_eq_nestedVertexOperatorComp 
           (quarticLegOperatorForSequence ε (fun i => q i.succ) (fun i => τ i.succ))
           (Fin.natAdd 4 k)
       rw [Fin.append_right, e2,
-        quarticLegOperatorForSequence_cast_mul_add ε q τ (Common.orderedQuarticLegEquiv n k).1.succ
+        quarticLegOperatorForSequence_cast_mul_add ε q τ
+          (Common.orderedQuarticLegEquiv n k).1.succ
           (Common.orderedQuarticLegEquiv n k).2 hcard]
       have hrest := quarticLegOperatorForSequence_cast_mul_add ε
         (fun i => q i.succ) (fun i => τ i.succ)
@@ -276,9 +241,10 @@ vanish. Unlike the eigenoperator/commutator hypotheses, this one needs no inform
 `quarticLegOperatorForSequence` family at all — it holds for *every* real `x`, `β`. -/
 theorem one_sub_zetaInt_fermion_mul_exp_ne_zero (x β : ℝ) :
     (1 : ℂ) - ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ) * Complex.exp ((x * β : ℝ) : ℂ) ≠ 0 := by
-  have hpos : (0 : ℝ) < 1 + Real.exp (x * β) := by positivity
-  have heq : (1 : ℂ) - ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ) * Complex.exp ((x * β : ℝ) : ℂ) =
-      ((1 + Real.exp (x * β) : ℝ) : ℂ) := by
+  have hpos : (0 : ℝ) < 1 + Real.exp (x * β) := by
+    positivity
+  have heq : (1 : ℂ) - ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ) *
+      Complex.exp ((x * β : ℝ) : ℂ) = ((1 + Real.exp (x * β) : ℝ) : ℂ) := by
     rw [Common.Statistics.zetaInt_fermion]
     push_cast [Complex.ofReal_exp]
     ring
@@ -298,7 +264,6 @@ theorem one_sub_zetaInt_fermion_mul_exp_flatVertexLegEnergyShift_ne_zero {n : �
     (1 : ℂ) - ((Common.Statistics.fermion.zetaInt : ℤ) : ℂ) *
         Complex.exp ((flatVertexLegEnergyShift ε q p * β : ℝ) : ℂ) ≠ 0 :=
   one_sub_zetaInt_fermion_mul_exp_ne_zero (flatVertexLegEnergyShift ε q p) β
-
 
 end Fermionic
 end SecondQuantization
