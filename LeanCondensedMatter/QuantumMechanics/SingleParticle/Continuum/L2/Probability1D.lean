@@ -131,8 +131,8 @@ theorem inner_l2ChargeDensityOperator1D_eq_wholeSpaceSmearedChargeDensity1D
   rw [l2ChargeDensityOperator1D_apply, inner_smul_right]
   rw [inner_realTestMultiplicationOperator1D_eq_wholeSpaceSmearedProbabilityDensity1D]
   rw [wholeSpaceSmearedChargeDensity1D_eq_charge_mul_probability]
-  exact Complex.ofReal_mul q
-    (wholeSpaceSmearedProbabilityDensity1D test (fun x => ψ x))
+  exact (Complex.ofReal_mul q
+    (wholeSpaceSmearedProbabilityDensity1D test (fun x => ψ x))).symm
 
 end
 end Continuum
