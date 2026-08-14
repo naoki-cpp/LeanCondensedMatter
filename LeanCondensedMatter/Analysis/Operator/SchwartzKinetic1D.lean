@@ -143,7 +143,11 @@ theorem schrodinger_localization_commutator_eq_kinetic
   simp only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.comp_apply, map_add]
   have hcomm := congrArg (fun T : Space →ₗ[ℂ] Space => T ψ)
     (multiplicationOperator_comp_comm potential f)
-  rw [hcomm]
+  have hcomm' :
+      multiplicationOperator potential (multiplicationOperator f ψ) =
+        multiplicationOperator f (multiplicationOperator potential ψ) := by
+    simpa only [LinearMap.comp_apply] using hcomm
+  rw [hcomm']
   abel
 
 /-- Schrödinger localization has the standard first-order Heisenberg current form
@@ -163,6 +167,7 @@ theorem heisenberg_localization_eq_symmetrized_velocity
     LinearMap.add_apply, kineticOperator, velocityOperator]
   rw [secondDerivative_multiplication_apply]
   rw [derivative_multiplication_apply]
+  simp only [map_smul]
   module
 
 end
