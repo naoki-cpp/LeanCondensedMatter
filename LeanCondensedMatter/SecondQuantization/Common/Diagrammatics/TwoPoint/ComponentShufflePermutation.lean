@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.CanonicalComponentShuffle
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.InteractionVertexRelabel
 
 set_option linter.style.header false
 
@@ -6,13 +7,15 @@ set_option linter.style.header false
 # Ambient permutations underlying two-point component shuffles
 
 Every interaction-component shuffle has the same dependent family of component-local slots as the
-canonical shuffle.  Their difference is therefore an ambient permutation of interaction slots.
+canonical shuffle. Their difference is therefore an ambient permutation of interaction slots.
 This module packages that permutation and records how arbitrary shuffled local-time restrictions
 and shuffled products are obtained from the canonical ones by precomposing the ambient time
 assignment with it.
 
-This is the combinatorial coordinate bridge needed before identifying non-canonical shuffle terms
-with interaction-vertex relabelings of fixed fermionic diagrams.
+For standard two-point diagrams on `Fin n`, it also transports the ambient permutation from
+`Fin univ.card` to the explicit interaction-slot type `Fin n` and packages the corresponding
+interaction-vertex relabeling. All of this is combinatorial and independent of particle statistics,
+operator realization, or physical amplitudes.
 -/
 
 namespace SecondQuantization
@@ -89,6 +92,75 @@ theorem TwoPointDiagram.ComponentInteractionShuffle.interactionComponentShuffleI
   apply Fintype.prod_congr
   intro B
   rw [shuffle.interactionComponentTimeAssignment_eq_canonical τ B]
+
+/-- Convert an ambient time assignment indexed by `univ.card` to the explicit interaction-slot type
+`Fin n`. -/
+def ambientToTwoPointSlotTimePermutation {n : ℕ}
+    (σ : Fin (Finset.univ : Finset (Fin n)).card → ℝ) : Fin n → ℝ :=
+  fun i => σ (Fin.cast (by simp) i)
+
+/-- Injectivity is preserved when the ambient `Fin univ.card` time assignment is viewed on the
+explicit standard slot type `Fin n`. -/
+theorem ambientToTwoPointSlotTimePermutation_injective {n : ℕ}
+    {σ : Fin (Finset.univ : Finset (Fin n)).card → ℝ}
+    (hσ : Function.Injective σ) :
+    Function.Injective (ambientToTwoPointSlotTimePermutation σ) := by
+  intro a b hab
+  apply Fin.ext
+  have hcast := hσ hab
+  exact congrArg (fun x : Fin (Finset.univ : Finset (Fin n)).card => x.val) hcast
+
+/-- The component-shuffle ambient permutation transported from `Fin univ.card` to the explicit
+interaction-slot type `Fin n` of a standard two-point diagram. -/
+noncomputable def TwoPointDiagram.componentShuffleSlotPermutation
+    {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (shuffle : d.ComponentInteractionShuffle) : Equiv.Perm (Fin n) :=
+  (finCongr (by simp)).trans
+    (shuffle.ambientPermutation.trans (finCongr (by simp)).symm)
+
+/-- Transporting the ambient shuffle action to explicit interaction slots gives exactly
+precomposition by `componentShuffleSlotPermutation`. -/
+theorem TwoPointDiagram.ambientToTwoPointSlotTimePermutation_comp_ambientPermutation
+    {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (shuffle : d.ComponentInteractionShuffle)
+    (σ : Fin (Finset.univ : Finset (Fin n)).card → ℝ) :
+    ambientToTwoPointSlotTimePermutation
+        (fun k => σ (shuffle.ambientPermutation k)) =
+      fun v => ambientToTwoPointSlotTimePermutation σ
+        (d.componentShuffleSlotPermutation shuffle v) := by
+  funext v
+  simp [ambientToTwoPointSlotTimePermutation,
+    TwoPointDiagram.componentShuffleSlotPermutation]
+  rfl
+
+/-- Relabel a standard two-point diagram by the inverse explicit-slot permutation associated with a
+component shuffle. The inverse matches the convention that `relabelInteractionVertices` maps a new
+slot to the old slot whose data it inherits. -/
+noncomputable def TwoPointDiagram.relabelForComponentShuffle
+    {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (shuffle : d.ComponentInteractionShuffle) :
+    TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)) :=
+  d.relabelInteractionVertices (d.componentShuffleSlotPermutation shuffle).symm
+
+@[simp]
+theorem TwoPointDiagram.relabelForComponentShuffle_externalLabel
+    {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (shuffle : d.ComponentInteractionShuffle) :
+    (d.relabelForComponentShuffle shuffle).externalLabel = d.externalLabel :=
+  d.relabelInteractionVertices_externalLabel _
+
+@[simp]
+theorem TwoPointDiagram.relabelForComponentShuffle_vertexLabel
+    {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (shuffle : d.ComponentInteractionShuffle) (v : Fin n) :
+    (d.relabelForComponentShuffle shuffle).vertexLabel ⟨v, Finset.mem_univ _⟩ =
+      d.vertexLabel ⟨(d.componentShuffleSlotPermutation shuffle).symm v, Finset.mem_univ _⟩ :=
+  rfl
 
 end
 
