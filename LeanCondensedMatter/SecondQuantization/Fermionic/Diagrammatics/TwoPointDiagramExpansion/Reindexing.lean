@@ -36,6 +36,13 @@ def FixedExternalTwoPointWickDiagram.vertexLabelSequence {n : ℕ} {i j : Mode}
     Fin n → QuarticVertexLabel Mode :=
   fun v => d.1.vertexLabel ⟨v, Finset.mem_univ v⟩
 
+/-- Temporary migration alias. Downstream users are being switched to `d.1.pairingInMixedOrder`;
+this declaration is removed before the Common-consolidation PR leaves draft. -/
+noncomputable abbrev FixedExternalTwoPointWickDiagram.pairingInMixedOrder
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (τ τ' : ℝ) (σ : Fin n → ℝ) : Pairing (2 * n + 1) :=
+  d.1.pairingInMixedOrder τ τ' σ
+
 /-- Fixed-external two-point diagrams are equivalent to slot-indexed vertex labels and a pairing
 in the Common-owned mixed-time atomic enumeration. -/
 noncomputable def fixedExternalTwoPointWickDiagramEquivOrderedData
