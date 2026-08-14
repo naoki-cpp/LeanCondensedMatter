@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.MixedOrderChamber
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentCrossingTimeLocality
 import LeanCondensedMatter.Combinatorics.ListFlatMapOrder
 
@@ -7,26 +7,20 @@ set_option linter.style.header false
 /-!
 # Mixed component combinatorics on fixed order chambers
 
-Inside one `SameTwoPointOrderChamber`, the relative order of distinct mixed events is fixed.  The
-relative order of atomic legs belonging to one event is fixed by that event's local leg list.  Thus
+Inside one `SameTwoPointOrderChamber`, the relative order of distinct mixed events is fixed. The
+relative order of atomic legs belonging to one event is fixed by that event's local leg list. Thus
 the complete mixed atomic-leg order is constant on a chamber even though the actual interaction
 times may vary.
-
-This module lifts that statement through the existing component position and normalized-pair time
-transports.  In particular, pair normalization cannot swap endpoints inside one chamber, and the
-component-internal fermionic crossing relation is preserved without requiring `ComponentTimeEq`.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
 
 open Combinatorics
+open Common
 
 variable {Mode : Type*}
 
-/-- The complete mixed atomic-leg order is constant inside one mixed-event order chamber.  Distinct
-event blocks use chamber invariance of event positions; legs in one event block use the fixed local
-leg order. -/
 theorem mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber {n : ℕ}
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (x y : OrderedTwoPointLeg n)
     (hChamber : SameTwoPointOrderChamber τ τ' σ υ) :
@@ -38,8 +32,6 @@ theorem mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber {n : ℕ}
     (orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber
       hChamber (orderedTwoPointLegEvent x) (orderedTwoPointLegEvent y))
 
-/-- Canonical transport of positions belonging to one full component preserves strict mixed order
-throughout one order chamber. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.1.componentPartition.parts)
@@ -51,8 +43,6 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPositionTimeEquiv_lt_iff_
   d.mixedComponentPositionTimeEquiv_lt_iff_of_legPosition_lt_iff τ τ' σ υ B p q
     (mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber τ τ' σ υ _ _ hChamber)
 
-/-- Inside one order chamber, canonical pair-time transport preserves the normalized endpoint order
-exactly; the swap alternative cannot occur even though the component interaction times may change. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_sameOrderChamber
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.1.componentPartition.parts)
@@ -68,8 +58,6 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv_endpoints_e
   d.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder τ τ' σ υ B
     (d.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber τ τ' σ υ B hChamber) pr
 
-/-- Canonical component pair transport preserves and reflects every component-internal crossing
-inside one mixed-event order chamber. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentCrossingPreserving_of_sameOrderChamber
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.1.componentPartition.parts)
@@ -78,7 +66,6 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentCrossingPreserving_of_sam
   d.mixedComponentCrossingPreserving_of_positionOrder τ τ' σ υ B
     (d.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber τ τ' σ υ B hChamber)
 
-/-- The number of component-internal crossings is constant on one mixed-event order chamber. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentCrossingCount_eq_of_sameOrderChamber
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.1.componentPartition.parts)
@@ -89,7 +76,6 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentCrossingCount_eq_of_sameO
     (d.mixedComponentCrossingPreserving_of_sameOrderChamber
       τ τ' σ υ B hChamber)
 
-/-- The exchange-statistics weight of one component is constant on one mixed-event order chamber. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentWeight_eq_of_sameOrderChamber
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (s : Common.Statistics) (τ τ' : ℝ) (σ υ : Fin n → ℝ)
