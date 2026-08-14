@@ -1,7 +1,8 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrderedSimplexProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentContractionIntegrand
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.AmplitudePrefactorFactorization
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Amplitude
 
 set_option linter.style.header false
 
@@ -12,9 +13,9 @@ The global vertex-order sum is reindexed by component-local orders and component
 fixed family of local orders, the M1 contraction-integrand factorization identifies the global
 integrand with the component-shuffle integrand, so the M0 ordered-simplex product theorem applies.
 The remaining finite sum over families of component orders distributes into the product of the local
-order sums. Combining this with the existing coupling/Dyson prefactor factorization gives the full
-M2 quartic Wick-amplitude factorization. No new diagram combinatorics or amplitude convention is
-introduced at this assembly boundary.
+order sums. Combining this with the Common scalar-prefactor factorization gives the full M2 quartic
+Wick-amplitude factorization. No new diagram combinatorics or amplitude convention is introduced at
+this assembly boundary.
 -/
 
 namespace SecondQuantization
@@ -94,7 +95,7 @@ theorem quarticWickDiagramAmplitude_eq_prod_restrictComponentConnected
         quarticWickDiagramAmplitude ε β g (d.restrictComponentConnected B.2).1 := by
   classical
   simp only [quarticWickDiagramAmplitude]
-  rw [d.amplitudePrefactor_eq_prod_restrictComponentConnected,
+  rw [Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_restrictComponentConnected d g,
     d.sum_orderedSimplexContribution_eq_prod_components]
   rw [← Finset.prod_mul_distrib]
 
