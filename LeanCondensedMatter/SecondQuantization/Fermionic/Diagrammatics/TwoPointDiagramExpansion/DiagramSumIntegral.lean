@@ -21,6 +21,8 @@ factors, so it has it too. The measurable finite-sum exchange then applies.
 namespace SecondQuantization
 namespace Fermionic
 
+open Common
+
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- Every signed component fixed-time factor is measurably locally bounded: it is globally

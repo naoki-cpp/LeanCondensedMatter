@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.MixedOrderSignature
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentChamberRegularity
 
 set_option linter.style.header false
@@ -7,24 +7,21 @@ set_option linter.style.header false
 # Measurability of mixed two-point component factors
 
 The raw mixed component factor is only chamberwise continuous because its dependent normalized-pair
-indexing changes across order walls.  The set of mixed-order chambers is nevertheless finite: it is
-indexed by `TwoPointOrderSignature`, the finite set of true strict comparisons between mixed events.
-
-For every signature we choose one realizing base assignment when it exists and use the globally
-continuous chamber representative based there.  A finite sum selects the unique representative whose
-signature matches the current assignment.  This produces a globally measurable function that agrees
-pointwise with the actual Dyson-signed component factor, including on the deterministic equal-time
-walls.
+indexing changes across order walls. The Common-owned `TwoPointOrderSignature` gives a finite
+measurable partition by mixed-event order; this module uses it to assemble a globally measurable
+fermionic component factor.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
 
 open Combinatorics
+open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- Finite piecewise-continuous presentation of one actual Dyson-signed mixed component factor. -/
+/-- Finite piecewise-continuous presentation of the actual Dyson-signed component factor, selecting
+the chamber representative indexed by the current Common mixed-order signature. -/
 noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonSignatureRepresentative
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
@@ -34,11 +31,8 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonSignatureR
       if twoPointOrderSignature τ τ' σ = s then
         d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ'
           (twoPointOrderSignatureBase τ τ' s) B σ
-      else
-        0
+      else 0
 
-/-- The finite signature representative agrees pointwise with the actual Dyson-signed component
-factor. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonSignatureRepresentative_eq
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
@@ -68,10 +62,8 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonSignatureRepresentat
   exact d.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber
     ε β g τ τ'
     (twoPointOrderSignatureBase τ τ' s₀) σ B
-    (by
-      simpa [s₀] using sameTwoPointOrderChamber_signatureBase τ τ' σ)
+    (by simpa [s₀] using sameTwoPointOrderChamber_signatureBase τ τ' σ)
 
-/-- The finite signature representative is globally measurable. -/
 theorem FixedExternalTwoPointWickDiagram.measurable_mixedComponentDysonSignatureRepresentative
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
@@ -88,8 +80,6 @@ theorem FixedExternalTwoPointWickDiagram.measurable_mixedComponentDysonSignature
   simpa only [twoPointOrderSignatureFiber, Set.mem_setOf_eq] using
     (Measurable.ite hFiber hRep measurable_const)
 
-/-- The actual Dyson-signed mixed component factor is globally measurable, although in general only
-chamberwise continuous. -/
 theorem FixedExternalTwoPointWickDiagram.measurable_mixedComponentDysonFixedTimeValue
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)

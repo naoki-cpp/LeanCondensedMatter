@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.MixedOrderWallMeasure
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderWallMeasure
 import Mathlib.MeasureTheory.Constructions.BorelSpace.Order
 
 set_option linter.style.header false
@@ -7,22 +7,18 @@ set_option linter.style.header false
 # Finite signatures for mixed two-point order chambers
 
 A mixed-order chamber is completely determined by the truth values of the finitely many strict
-comparisons between external and interaction events.  We package those true comparisons as a finite
-set.  Equality of signatures is exactly `SameTwoPointOrderChamber`.
-
-The fibers of the signature map are Borel measurable: each fiber is a finite/countable intersection
-of strict-comparison sets or their complements.  This finite measurable partition is the interface
-used to assemble globally measurable component factors from the continuous chamber representatives.
+comparisons between external and interaction events. The fibers of the signature map are Borel
+measurable. This finite measurable partition depends only on the mixed event order, not statistics.
 -/
 
 namespace SecondQuantization
-namespace Fermionic
+namespace Common
 
-/-- Finite truth table of all strict mixed-event comparisons. -/
+/-- Finite truth table of the strict pairwise comparisons between mixed two-point events. -/
 abbrev TwoPointOrderSignature (n : ℕ) :=
   Finset (TwoPointTimedEvent n × TwoPointTimedEvent n)
 
-/-- The strict mixed-event comparisons that hold for one interaction-time assignment. -/
+/-- The finite set of strict mixed-event comparisons true at one interaction-time assignment. -/
 noncomputable def twoPointOrderSignature {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
     TwoPointOrderSignature n :=
   Finset.univ.filter fun p =>
@@ -36,7 +32,6 @@ theorem mem_twoPointOrderSignature_iff {n : ℕ} (τ τ' : ℝ) (σ : Fin n → 
   classical
   simp [twoPointOrderSignature]
 
-/-- Equality of finite order signatures is exactly equality of mixed-order chambers. -/
 theorem sameTwoPointOrderChamber_iff_orderSignature_eq {n : ℕ}
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) :
     SameTwoPointOrderChamber τ τ' σ υ ↔
@@ -60,12 +55,12 @@ theorem sameTwoPointOrderChamber_iff_orderSignature_eq {n : ℕ}
       rw [← h] at hm
       exact (mem_twoPointOrderSignature_iff τ τ' σ a b).1 hm
 
-/-- The strict-comparison locus of two fixed mixed events. -/
+/-- Locus of interaction-time assignments for which one fixed mixed event is strictly earlier than
+another in physical time. -/
 def twoPointEventStrictComparisonSet {n : ℕ} (τ τ' : ℝ)
     (a b : TwoPointTimedEvent n) : Set (Fin n → ℝ) :=
   {σ | twoPointTimedEventTime τ τ' σ a < twoPointTimedEventTime τ τ' σ b}
 
-/-- The time of one fixed mixed event is continuous in the ambient interaction-time assignment. -/
 theorem continuous_twoPointTimedEventTime {n : ℕ} (τ τ' : ℝ)
     (a : TwoPointTimedEvent n) :
     Continuous (fun σ : Fin n → ℝ => twoPointTimedEventTime τ τ' σ a) := by
@@ -77,7 +72,6 @@ theorem continuous_twoPointTimedEventTime {n : ℕ} (τ τ' : ℝ)
       change Continuous (fun σ : Fin n → ℝ => σ v)
       exact continuous_apply v
 
-/-- Every strict mixed-event comparison locus is Borel measurable. -/
 theorem measurableSet_twoPointEventStrictComparisonSet {n : ℕ} (τ τ' : ℝ)
     (a b : TwoPointTimedEvent n) :
     MeasurableSet (twoPointEventStrictComparisonSet τ τ' a b) := by
@@ -85,7 +79,7 @@ theorem measurableSet_twoPointEventStrictComparisonSet {n : ℕ} (τ τ' : ℝ)
     (continuous_twoPointTimedEventTime τ τ' a).measurable
     (continuous_twoPointTimedEventTime τ τ' b).measurable
 
-/-- Fiber of one finite mixed-order signature. -/
+/-- Fiber of the finite mixed-order signature map over a prescribed signature. -/
 def twoPointOrderSignatureFiber {n : ℕ} (τ τ' : ℝ)
     (s : TwoPointOrderSignature n) : Set (Fin n → ℝ) :=
   {σ | twoPointOrderSignature τ τ' σ = s}
@@ -138,7 +132,6 @@ private theorem twoPointOrderSignatureFiber_eq_iInter {n : ℕ} (τ τ' : ℝ)
         simpa only [mem_twoPointOrderSignature_iff] using hnlt
       exact iff_of_false hnot hps
 
-/-- Every finite mixed-order signature fiber is Borel measurable. -/
 theorem measurableSet_twoPointOrderSignatureFiber {n : ℕ} (τ τ' : ℝ)
     (s : TwoPointOrderSignature n) :
     MeasurableSet (twoPointOrderSignatureFiber τ τ' s) := by
@@ -151,8 +144,8 @@ theorem measurableSet_twoPointOrderSignatureFiber {n : ℕ} (τ τ' : ℝ)
   · simpa [hps] using
       (measurableSet_twoPointEventStrictComparisonSet τ τ' p.1 p.2).compl
 
-/-- A chosen ambient assignment realizing a signature, falling back to the zero assignment for an
-unrealized signature. -/
+/-- Chosen interaction-time assignment realizing a signature when it is realizable, with the zero
+assignment as a fallback for unrealized signatures. -/
 noncomputable def twoPointOrderSignatureBase {n : ℕ} (τ τ' : ℝ)
     (s : TwoPointOrderSignature n) : Fin n → ℝ := by
   classical
@@ -161,7 +154,6 @@ noncomputable def twoPointOrderSignatureBase {n : ℕ} (τ τ' : ℝ)
   else
     0
 
-/-- The chosen base realizes every realized signature. -/
 theorem twoPointOrderSignature_twoPointOrderSignatureBase_eq {n : ℕ} (τ τ' : ℝ)
     (s : TwoPointOrderSignature n)
     (h : ∃ σ : Fin n → ℝ, twoPointOrderSignature τ τ' σ = s) :
@@ -170,7 +162,6 @@ theorem twoPointOrderSignature_twoPointOrderSignatureBase_eq {n : ℕ} (τ τ' :
   simp only [twoPointOrderSignatureBase, dif_pos h]
   exact Classical.choose_spec h
 
-/-- Every assignment lies in the same order chamber as the chosen base of its own signature. -/
 theorem sameTwoPointOrderChamber_signatureBase {n : ℕ} (τ τ' : ℝ)
     (σ : Fin n → ℝ) :
     SameTwoPointOrderChamber τ τ'
@@ -179,5 +170,5 @@ theorem sameTwoPointOrderChamber_signatureBase {n : ℕ} (τ τ' : ℝ)
   exact twoPointOrderSignature_twoPointOrderSignatureBase_eq τ τ'
     (twoPointOrderSignature τ τ' σ) ⟨σ, rfl⟩
 
-end Fermionic
+end Common
 end SecondQuantization

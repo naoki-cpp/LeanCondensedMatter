@@ -20,6 +20,8 @@ crossings and finite Gibbs pair contractions.
 namespace SecondQuantization
 namespace Fermionic
 
+open Common
+
 variable {Mode : Type*}
 
 /-- Two interaction-time assignments agree on the actual interaction vertices of one full diagram

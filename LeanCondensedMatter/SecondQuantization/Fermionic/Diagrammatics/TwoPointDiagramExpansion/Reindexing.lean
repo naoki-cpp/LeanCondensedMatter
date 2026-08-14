@@ -23,6 +23,7 @@ namespace SecondQuantization
 namespace Fermionic
 
 open Combinatorics
+open Common
 
 /-- The standard two-point leg type for `n` interaction slots. -/
 abbrev OrderedTwoPointLeg (n : ℕ) : Type :=
