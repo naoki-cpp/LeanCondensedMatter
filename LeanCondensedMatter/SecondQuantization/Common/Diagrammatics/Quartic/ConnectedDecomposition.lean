@@ -14,6 +14,7 @@ connectivity structure. This adapter exposes `componentDecompositionEquiv` to th
 namespace SecondQuantization
 namespace Common
 
+/-- The statistics-independent connected-decomposition adapter for labelled quartic diagrams. -/
 noncomputable def quarticDiagramConnectedDecomposition
     (Label : Type*) [Fintype Label] (N : ℕ) :
     Combinatorics.ConnectedDecomposition (Fin N) where
