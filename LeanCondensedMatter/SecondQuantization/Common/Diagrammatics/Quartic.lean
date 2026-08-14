@@ -19,6 +19,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Compo
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrderedSimplex
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrderedSimplexProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentVertexProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.TwoPointLegEmbedding
 
 set_option linter.style.header false
 
@@ -28,7 +29,7 @@ set_option linter.style.header false
 Statistics-independent quartic leg indexing, labelled diagram syntax, vertex ordering, connectivity,
 connected-component restriction, reassembly and its inverse laws, component-decomposition equivalence,
 generic connected-decomposition adapter, component-local orders and pairing compatibility, direct
-finite-family ordered-simplex factorization, componentwise scalar products, Statistics-generic
-crossing-parity/pairing-weight factorization, and the corresponding scalar `Pairing.evaluation`
-factorization endpoint.
+finite-family ordered-simplex factorization, componentwise scalar products, mixed two-point leg
+embeddings, Statistics-generic crossing-parity/pairing-weight factorization, and the corresponding
+scalar `Pairing.evaluation` factorization endpoint.
 -/
