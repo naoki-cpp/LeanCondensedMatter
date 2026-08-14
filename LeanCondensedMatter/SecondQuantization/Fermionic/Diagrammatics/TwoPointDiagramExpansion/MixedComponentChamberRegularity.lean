@@ -9,8 +9,9 @@ set_option linter.style.header false
 # Chamberwise regularity of mixed component factors
 
 Common owns the chamberwise transport of mixed component positions, normalized pair endpoints,
-crossings, and statistics weights.  This module fixes a base chamber and adds only the continuous
-free-Gibbs contraction representative and the fermionic component fixed-time/Dyson values.
+endpoint legs, crossings, and statistics weights. This module fixes a base chamber and adds only the
+continuous free-Gibbs contraction representative and the fermionic component fixed-time/Dyson
+values.
 -/
 
 namespace SecondQuantization
@@ -20,45 +21,6 @@ open Combinatorics
 open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
-
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- Inside one order chamber, canonical transport of a normalized component pair preserves the two
-underlying standard atomic legs in their normalized order. -/
-theorem FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.1.componentPartition.parts)
-    (hChamber : SameTwoPointOrderChamber τ τ' σ υ)
-    (pr : d.1.MixedComponentPair τ τ' σ B) :
-    let q := d.1.mixedComponentPairTimeEquiv τ τ' σ υ B pr
-    mixedTimeOrderedAtomicLegEquiv τ τ' υ q.1.1.1 =
-        mixedTimeOrderedAtomicLegEquiv τ τ' σ pr.1.1.1 ∧
-      mixedTimeOrderedAtomicLegEquiv τ τ' υ q.1.1.2 =
-        mixedTimeOrderedAtomicLegEquiv τ τ' σ pr.1.1.2 := by
-  classical
-  let q := d.1.mixedComponentPairTimeEquiv τ τ' σ υ B pr
-  let p0 := d.1.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)
-  let p1 := d.1.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)
-  have hEnds :
-      d.1.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
-          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p0 ∧
-        d.1.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
-          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p1 := by
-    simpa [q, p0, p1] using
-      d.1.mixedComponentPairTimeEquiv_endpoints_eq_of_sameOrderChamber
-        τ τ' σ υ B hChamber pr
-  have h0Pos :
-      q.1.1.1 = (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 := by
-    simpa [q] using congrArg Subtype.val hEnds.1
-  have h1Pos :
-      q.1.1.2 = (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 := by
-    simpa [q] using congrArg Subtype.val hEnds.2
-  constructor
-  · rw [h0Pos]
-    simpa [p0] using
-      d.1.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p0
-  · rw [h1Pos]
-    simpa [p1] using
-      d.1.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p1
 
 /-- Globally continuous fixed-index representative of one mixed component pairing value based at
 `σ₀`. -/
@@ -115,7 +77,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingChamberRepresentat
       apply Fintype.prod_congr
       intro pr
       have hLegs :=
-        d.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber
+        d.1.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber
           τ τ' σ₀ σ B hChamber pr
       rw [d.mixedPairContractionValue_eq_orderedTwoPointLegPairContraction]
       rw [hLegs.1, hLegs.2]
