@@ -54,7 +54,8 @@ theorem sum_slotShuffle_externalDyson_mul_quarticIntegrand_eq_mul
             vac.contractionIntegrand ε β order σ) :=
     (intervalIntegral.measurableLocallyBounded_const
       ((-1 : ℂ) ^ S.card * vac.couplingWeight g)).mul
-      (continuous_contractionIntegrand ε β vac order).measurableLocallyBounded
+      (intervalIntegral.Continuous.measurableLocallyBounded
+        (continuous_contractionIntegrand ε β vac order))
   simpa [FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude,
     FixedExternalTwoPointWickDiagram.dysonAmplitude,
     FixedExternalTwoPointWickDiagram.orderedSimplexContribution,
