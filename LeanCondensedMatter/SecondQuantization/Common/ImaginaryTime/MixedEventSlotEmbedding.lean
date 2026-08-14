@@ -16,6 +16,8 @@ namespace Common
 
 variable {m n : ℕ} {f : Fin m → Fin n}
 
+/-- Transport a mixed event along a reindexing of the interaction slots, fixing the two external
+events. -/
 def twoPointTimedEventMap (f : Fin m → Fin n) : TwoPointTimedEvent m → TwoPointTimedEvent n
   | .inl e => .inl e
   | .inr v => .inr (f v)
