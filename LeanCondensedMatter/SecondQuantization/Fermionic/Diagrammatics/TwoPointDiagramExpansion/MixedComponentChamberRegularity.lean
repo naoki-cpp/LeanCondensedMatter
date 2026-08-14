@@ -48,25 +48,25 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv_endpointLeg
   let p1 := d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)
   have hEnds :
       d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0 ∧
+          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p0 ∧
         d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1 := by
+          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p1 := by
     simpa [q, p0, p1] using
       d.mixedComponentPairTimeEquiv_endpoints_eq_of_sameOrderChamber
         τ τ' σ υ B hChamber pr
   have h0Pos :
-      q.1.1.1 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 := by
+      q.1.1.1 = (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 := by
     simpa [q] using congrArg Subtype.val hEnds.1
   have h1Pos :
-      q.1.1.2 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 := by
+      q.1.1.2 = (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 := by
     simpa [q] using congrArg Subtype.val hEnds.2
   constructor
   · rw [h0Pos]
     simpa [p0] using
-      d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p0
+      d.1.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p0
   · rw [h1Pos]
     simpa [p1] using
-      d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p1
+      d.1.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p1
 
 /-- Globally continuous fixed-index representative of one mixed component pairing value based at
 `σ₀`.  It freezes the chamber's crossing weight and evaluates every base pair through its two fixed

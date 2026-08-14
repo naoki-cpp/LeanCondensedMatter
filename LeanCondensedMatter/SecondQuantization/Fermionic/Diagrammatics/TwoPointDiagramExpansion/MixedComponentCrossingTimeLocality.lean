@@ -25,10 +25,10 @@ inequalities defining `Crosses` are transported one by one. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentCrossingPreserving_of_positionOrder
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.1.componentPartition.parts)
-    (hOrder : ∀ p q : d.MixedComponentPosition τ τ' σ B,
+    (hOrder : ∀ p q : d.1.MixedComponentPosition τ τ' σ B,
       p.1 < q.1 ↔
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 <
-          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1) :
+        (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 <
+          (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1) :
     d.MixedComponentCrossingPreserving τ τ' σ υ B := by
   classical
   intro p q
@@ -40,29 +40,29 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentCrossingPreserving_of_pos
   let q1 := d.mixedComponentPairEndpointEquiv τ τ' σ B (q, 1)
   have hpEnds :
       d.mixedComponentPairEndpointEquiv τ τ' υ B (tp, 0) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0 ∧
+          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p0 ∧
         d.mixedComponentPairEndpointEquiv τ τ' υ B (tp, 1) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1 := by
+          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p1 := by
     simpa [tp, p0, p1] using
       d.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder τ τ' σ υ B hOrder p
   have hqEnds :
       d.mixedComponentPairEndpointEquiv τ τ' υ B (tq, 0) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B q0 ∧
+          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B q0 ∧
         d.mixedComponentPairEndpointEquiv τ τ' υ B (tq, 1) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B q1 := by
+          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B q1 := by
     simpa [tq, q0, q1] using
       d.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder τ τ' σ υ B hOrder q
   have hp0Val :
-      tp.1.1.1 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 := by
+      tp.1.1.1 = (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 := by
     simpa [tp] using congrArg Subtype.val hpEnds.1
   have hp1Val :
-      tp.1.1.2 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 := by
+      tp.1.1.2 = (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 := by
     simpa [tp] using congrArg Subtype.val hpEnds.2
   have hq0Val :
-      tq.1.1.1 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q0).1 := by
+      tq.1.1.1 = (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B q0).1 := by
     simpa [tq] using congrArg Subtype.val hqEnds.1
   have hq1Val :
-      tq.1.1.2 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q1).1 := by
+      tq.1.1.2 = (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B q1).1 := by
     simpa [tq] using congrArg Subtype.val hqEnds.2
   have h00 := hOrder p0 q0
   have h01 := hOrder q0 p1
@@ -82,18 +82,18 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentCrossingPreserving_of_pos
       exact ht11
   · rintro ⟨hpq, hqp, hpq'⟩
     have ht00 :
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 <
-          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q0).1 := by
+        (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 <
+          (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B q0).1 := by
       rw [← hp0Val, ← hq0Val]
       exact hpq
     have ht01 :
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q0).1 <
-          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 := by
+        (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B q0).1 <
+          (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 := by
       rw [← hq0Val, ← hp1Val]
       exact hqp
     have ht11 :
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 <
-          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q1).1 := by
+        (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 <
+          (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B q1).1 := by
       rw [← hp1Val, ← hq1Val]
       exact hpq'
     refine ⟨?_, ?_, ?_⟩
@@ -106,10 +106,10 @@ preserves and reflects every crossing between pairs of that component. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentCrossingPreserving_of_componentTimeEq
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.1.componentPartition.parts)
-    (hTime : d.ComponentTimeEq B σ υ) :
+    (hTime : d.1.ComponentTimeEq B σ υ) :
     d.MixedComponentCrossingPreserving τ τ' σ υ B :=
   d.mixedComponentCrossingPreserving_of_positionOrder τ τ' σ υ B
-    (d.mixedComponentPositionTimeEquiv_lt_iff τ τ' σ υ B hTime)
+    (d.1.mixedComponentPositionTimeEquiv_lt_iff τ τ' σ υ B hTime)
 
 end Fermionic
 end SecondQuantization

@@ -30,7 +30,7 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedPairComponent
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair) :
     d.1.componentPartition.parts :=
-  d.mixedPositionComponent τ τ' σ pr.1.1
+  d.1.mixedPositionComponent τ τ' σ pr.1.1
 
 /-- Normalized mixed-time pairs assigned to one full diagram component. -/
 abbrev FixedExternalTwoPointWickDiagram.MixedComponentPair
@@ -44,8 +44,8 @@ theorem FixedExternalTwoPointWickDiagram.mixedPairComponent_second_eq_first
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair) :
-    d.mixedPositionComponent τ τ' σ pr.1.2 =
-      d.mixedPositionComponent τ τ' σ pr.1.1 := by
+    d.1.mixedPositionComponent τ τ' σ pr.1.2 =
+      d.1.mixedPositionComponent τ τ' σ pr.1.1 := by
   have hpr := ((d.pairingInMixedOrder τ τ' σ).mem_pairs_iff pr.1.1 pr.1.2).1 pr.2
   rw [← hpr.2, d.mixedPositionComponent_partner]
 
@@ -54,7 +54,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPair_first_mem
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.1.componentPartition.parts)
     (pr : d.MixedComponentPair τ τ' σ B) :
-    d.mixedPositionComponent τ τ' σ pr.1.1.1 = B := by
+    d.1.mixedPositionComponent τ τ' σ pr.1.1.1 = B := by
   simpa [FixedExternalTwoPointWickDiagram.mixedPairComponent] using pr.2
 
 /-- The second endpoint of a mixed component pair belongs to that component. -/
@@ -62,7 +62,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPair_second_mem
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.1.componentPartition.parts)
     (pr : d.MixedComponentPair τ τ' σ B) :
-    d.mixedPositionComponent τ τ' σ pr.1.1.2 = B :=
+    d.1.mixedPositionComponent τ τ' σ pr.1.1.2 = B :=
   (d.mixedPairComponent_second_eq_first τ τ' σ pr.1).trans
     (d.mixedComponentPair_first_mem τ τ' σ B pr)
 
@@ -70,7 +70,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPair_second_mem
 private theorem FixedExternalTwoPointWickDiagram.mixedPairComponent_positionToPairEndpoint_eq
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.1.componentPartition.parts)
-    (pos : d.MixedComponentPosition τ τ' σ B) :
+    (pos : d.1.MixedComponentPosition τ τ' σ B) :
     d.mixedPairComponent τ τ' σ
         ((d.pairingInMixedOrder τ τ' σ).positionToPairEndpoint pos.1).1 = B := by
   generalize hxdef :
@@ -82,12 +82,12 @@ private theorem FixedExternalTwoPointWickDiagram.mixedPairComponent_positionToPa
       ((d.pairingInMixedOrder τ τ' σ).positionToPairEndpoint pos.1) = pos.1 at h
     rw [hxdef] at h
     exact h
-  change d.mixedPositionComponent τ τ' σ pr.1.1 = B
+  change d.1.mixedPositionComponent τ τ' σ pr.1.1 = B
   fin_cases k
   · have hfirst : pr.1.1 = pos.1 := by simpa using hx
     simpa [hfirst] using pos.2
   · have hsecond : pr.1.2 = pos.1 := by simpa using hx
-    have hsecondComponent : d.mixedPositionComponent τ τ' σ pr.1.2 = B := by
+    have hsecondComponent : d.1.mixedPositionComponent τ τ' σ pr.1.2 = B := by
       simpa [hsecond] using pos.2
     exact (d.mixedPairComponent_second_eq_first τ τ' σ pr).symm.trans
       hsecondComponent
@@ -98,7 +98,7 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentPairEndpointEqu
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.1.componentPartition.parts) :
     d.MixedComponentPair τ τ' σ B × Fin 2 ≃
-      d.MixedComponentPosition τ τ' σ B where
+      d.1.MixedComponentPosition τ τ' σ B where
   toFun x := by
     rcases x with ⟨pr, k⟩
     refine ⟨(d.pairingInMixedOrder τ τ' σ).pairEndpoint (pr.1, k), ?_⟩
@@ -156,7 +156,7 @@ local pairing. -/
 noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentPairToRestricted
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.1.componentPartition.parts) {m : ℕ}
-    (e : d.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
+    (e : d.1.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
     (localPairing : Pairing m) :
     d.MixedComponentPair τ τ' σ B → localPairing.NormalizedPair :=
   localPairing.normalizedPairOfEndpointEquiv
@@ -167,7 +167,7 @@ transporting the mixed restricted partner through the supplied position equivale
 noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentPairRestrictedEquiv
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.1.componentPartition.parts) {m : ℕ}
-    (e : d.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
+    (e : d.1.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
     (localPairing : Pairing m)
     (hpartner : ∀ pos,
       localPairing.partner (e pos) = e (d.mixedRestrictedPartner τ τ' σ B pos)) :
@@ -186,7 +186,7 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedExternalComponentPairEqu
     d.MixedComponentPair τ τ' σ d.1.externalComponentPart ≃
       d.1.externalVacuumSplit.1.pairing.NormalizedPair :=
   d.mixedComponentPairRestrictedEquiv τ τ' σ d.1.externalComponentPart
-    (d.mixedExternalPositionEquiv τ τ' σ) d.1.externalVacuumSplit.1.pairing
+    (d.1.mixedExternalPositionEquiv τ τ' σ) d.1.externalVacuumSplit.1.pairing
     (d.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv τ τ' σ)
 
 /-- Mixed pairs in a vacuum component are equivalent to normalized pairs of the corresponding
@@ -198,7 +198,7 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedVacuumComponentPairEquiv
     d.MixedComponentPair τ τ' σ B ≃
       (d.1.restrictedVacuumPairing B hVac).NormalizedPair :=
   d.mixedComponentPairRestrictedEquiv τ τ' σ B
-    (d.mixedVacuumPositionEquiv τ τ' σ B hVac)
+    (d.1.mixedVacuumPositionEquiv τ τ' σ B hVac)
     (d.1.restrictedVacuumPairing B hVac)
     (d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' σ B hVac)
 
@@ -207,7 +207,7 @@ first or second entry. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentPairToRestricted_contains_first_endpoint
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.1.componentPartition.parts) {m : ℕ}
-    (e : d.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
+    (e : d.1.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
     (localPairing : Pairing m) (pr : d.MixedComponentPair τ τ' σ B) :
     (d.mixedComponentPairToRestricted τ τ' σ B e localPairing pr).1.1 =
         e (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) ∨
@@ -230,7 +230,7 @@ their normalized order. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentPairToRestricted_pair_eq_or_swap
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.1.componentPartition.parts) {m : ℕ}
-    (e : d.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
+    (e : d.1.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
     (localPairing : Pairing m)
     (hpartner : ∀ pos,
       localPairing.partner (e pos) = e (d.mixedRestrictedPartner τ τ' σ B pos))
@@ -280,7 +280,7 @@ its swap. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentPairRestrictedEquiv_pair_eq_or_swap
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.1.componentPartition.parts) {m : ℕ}
-    (e : d.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
+    (e : d.1.MixedComponentPosition τ τ' σ B ≃ Fin (2 * m))
     (localPairing : Pairing m)
     (hpartner : ∀ pos,
       localPairing.partner (e pos) = e (d.mixedRestrictedPartner τ τ' σ B pos))
@@ -307,17 +307,17 @@ theorem FixedExternalTwoPointWickDiagram.mixedExternalComponentPairEquiv_pair_eq
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (pr : d.MixedComponentPair τ τ' σ d.1.externalComponentPart) :
     (d.mixedExternalComponentPairEquiv τ τ' σ pr).1 =
-        (d.mixedExternalPositionEquiv τ τ' σ
+        (d.1.mixedExternalPositionEquiv τ τ' σ
             (d.mixedComponentPairEndpointEquiv τ τ' σ d.1.externalComponentPart (pr, 0)),
-          d.mixedExternalPositionEquiv τ τ' σ
+          d.1.mixedExternalPositionEquiv τ τ' σ
             (d.mixedComponentPairEndpointEquiv τ τ' σ d.1.externalComponentPart (pr, 1))) ∨
       (d.mixedExternalComponentPairEquiv τ τ' σ pr).1 =
-        (d.mixedExternalPositionEquiv τ τ' σ
+        (d.1.mixedExternalPositionEquiv τ τ' σ
             (d.mixedComponentPairEndpointEquiv τ τ' σ d.1.externalComponentPart (pr, 1)),
-          d.mixedExternalPositionEquiv τ τ' σ
+          d.1.mixedExternalPositionEquiv τ τ' σ
             (d.mixedComponentPairEndpointEquiv τ τ' σ d.1.externalComponentPart (pr, 0))) :=
   d.mixedComponentPairRestrictedEquiv_pair_eq_or_swap τ τ' σ d.1.externalComponentPart
-    (d.mixedExternalPositionEquiv τ τ' σ) d.1.externalVacuumSplit.1.pairing
+    (d.1.mixedExternalPositionEquiv τ τ' σ) d.1.externalVacuumSplit.1.pairing
     (d.externalVacuumSplit_fst_partner_mixedExternalPositionEquiv τ τ' σ) pr
 
 /-- Vacuum mixed-pair restriction preserves transported endpoints up to swap. -/
@@ -326,17 +326,17 @@ theorem FixedExternalTwoPointWickDiagram.mixedVacuumComponentPairEquiv_pair_eq_o
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.1.componentPartition.parts)
     (hVac : d.1.ComponentIsVacuum B) (pr : d.MixedComponentPair τ τ' σ B) :
     (d.mixedVacuumComponentPairEquiv τ τ' σ B hVac pr).1 =
-        (d.mixedVacuumPositionEquiv τ τ' σ B hVac
+        (d.1.mixedVacuumPositionEquiv τ τ' σ B hVac
             (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)),
-          d.mixedVacuumPositionEquiv τ τ' σ B hVac
+          d.1.mixedVacuumPositionEquiv τ τ' σ B hVac
             (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1))) ∨
       (d.mixedVacuumComponentPairEquiv τ τ' σ B hVac pr).1 =
-        (d.mixedVacuumPositionEquiv τ τ' σ B hVac
+        (d.1.mixedVacuumPositionEquiv τ τ' σ B hVac
             (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)),
-          d.mixedVacuumPositionEquiv τ τ' σ B hVac
+          d.1.mixedVacuumPositionEquiv τ τ' σ B hVac
             (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) :=
   d.mixedComponentPairRestrictedEquiv_pair_eq_or_swap τ τ' σ B
-    (d.mixedVacuumPositionEquiv τ τ' σ B hVac)
+    (d.1.mixedVacuumPositionEquiv τ τ' σ B hVac)
     (d.1.restrictedVacuumPairing B hVac)
     (d.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv τ τ' σ B hVac) pr
 

@@ -71,8 +71,8 @@ private noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentPositio
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (B C : d.1.componentPartition.parts) : ℕ :=
-  ∑ p : d.MixedComponentPosition τ τ' σ B,
-    ∑ q : d.MixedComponentPosition τ τ' σ C,
+  ∑ p : d.1.MixedComponentPosition τ τ' σ B,
+    ∑ q : d.1.MixedComponentPosition τ τ' σ C,
       if q.1 < p.1 then 1 else 0
 
 /-- Selecting an endpoint of a mixed component pair through the endpoint equivalence recovers that
@@ -119,8 +119,8 @@ private theorem
   let endpointPairEquiv :
       ((d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C) ×
           (Fin 2 × Fin 2)) ≃
-        (d.MixedComponentPosition τ τ' σ B ×
-          d.MixedComponentPosition τ τ' σ C) :=
+        (d.1.MixedComponentPosition τ τ' σ B ×
+          d.1.MixedComponentPosition τ τ' σ C) :=
     (Equiv.prodProdProdComm _ _ _ _).trans
       (Equiv.prodCongr
         (d.mixedComponentPairEndpointEquiv τ τ' σ B)
@@ -143,8 +143,8 @@ private theorem
             apply Finset.sum_congr rfl
             intro q _
             exact d.mixedComponentPairEndpointInversionCount_eq_sum τ τ' σ B C p q
-      _ = ∑ x : d.MixedComponentPosition τ τ' σ B ×
-            d.MixedComponentPosition τ τ' σ C,
+      _ = ∑ x : d.1.MixedComponentPosition τ τ' σ B ×
+            d.1.MixedComponentPosition τ τ' σ C,
           if x.2.1 < x.1.1 then 1 else 0 := by
             refine Fintype.sum_equiv endpointPairEquiv
               (fun x =>
@@ -174,11 +174,11 @@ private noncomputable def FixedExternalTwoPointWickDiagram.mixedVacuumPositionDa
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (C : d.1.componentPartition.parts) (hVac : d.1.ComponentIsVacuum C) :
-    d.MixedComponentPosition τ τ' σ C ≃
+    d.1.MixedComponentPosition τ τ' σ C ≃
       ↥(Common.TwoPointDiagram.interactionPart
         (C : Finset (Common.TwoPointVertex
           (Finset.univ : Finset (Fin n))))) × Fin 4 :=
-  (d.mixedVacuumPositionEquiv τ τ' σ C hVac).trans
+  (d.1.mixedVacuumPositionEquiv τ τ' σ C hVac).trans
     (Common.quarticLegEquiv
       (Common.TwoPointDiagram.interactionPart
         (C : Finset (Common.TwoPointVertex
@@ -192,7 +192,7 @@ private noncomputable def FixedExternalTwoPointWickDiagram.mixedVacuumInteractio
     (v : ↥(Common.TwoPointDiagram.interactionPart
       (C : Finset (Common.TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) (l : Fin 4) :
-    d.MixedComponentPosition τ τ' σ C :=
+    d.1.MixedComponentPosition τ τ' σ C :=
   (d.mixedVacuumPositionDataEquiv τ τ' σ C hVac).symm (v, l)
 
 /-- Reindex the position-inversion count against a vacuum component as a sum over complete
@@ -203,7 +203,7 @@ private theorem
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (B C : d.1.componentPartition.parts) (hVac : d.1.ComponentIsVacuum C) :
     d.mixedComponentPositionInversionCount τ τ' σ B C =
-      ∑ p : d.MixedComponentPosition τ τ' σ B,
+      ∑ p : d.1.MixedComponentPosition τ τ' σ B,
         ∑ v : ↥(Common.TwoPointDiagram.interactionPart
           (C : Finset (Common.TwoPointVertex
             (Finset.univ : Finset (Fin n))))),
@@ -215,7 +215,7 @@ private theorem
   apply Finset.sum_congr rfl
   intro p _
   calc
-    (∑ q : d.MixedComponentPosition τ τ' σ C,
+    (∑ q : d.1.MixedComponentPosition τ τ' σ C,
         if q.1 < p.1 then 1 else 0) =
       ∑ x : ↥(Common.TwoPointDiagram.interactionPart
           (C : Finset (Common.TwoPointVertex
@@ -241,7 +241,7 @@ private theorem
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (B C : d.1.componentPartition.parts) (hVac : d.1.ComponentIsVacuum C)
-    (hUniform : ∀ p : d.MixedComponentPosition τ τ' σ B,
+    (hUniform : ∀ p : d.1.MixedComponentPosition τ τ' σ B,
       ∀ v : ↥(Common.TwoPointDiagram.interactionPart
         (C : Finset (Common.TwoPointVertex
           (Finset.univ : Finset (Fin n))))), ∀ l : Fin 4,
@@ -301,10 +301,10 @@ private theorem FixedExternalTwoPointWickDiagram.mixedPositionComponent_interact
     (v : ↥(Common.TwoPointDiagram.interactionPart
       (C : Finset (Common.TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) (l : Fin 4) :
-    d.mixedPositionComponent τ τ' σ
+    d.1.mixedPositionComponent τ τ' σ
         (mixedTimeOrderedAtomicLegPosition τ τ' σ
           (mixedTimeOrderedInteractionLeg v.1 l)) = C := by
-  rw [d.mixedPositionComponent_eq_iff_legInComponent,
+  rw [d.1.mixedPositionComponent_eq_iff_legInComponent,
     d.1.legInComponent_iff_unflattened,
     twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
     mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
@@ -325,7 +325,7 @@ private noncomputable def FixedExternalTwoPointWickDiagram.directMixedVacuumInte
     (v : ↥(Common.TwoPointDiagram.interactionPart
       (C : Finset (Common.TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) (l : Fin 4) :
-    d.MixedComponentPosition τ τ' σ C :=
+    d.1.MixedComponentPosition τ τ' σ C :=
   ⟨mixedTimeOrderedAtomicLegPosition τ τ' σ
       (mixedTimeOrderedInteractionLeg v.1 l),
     d.mixedPositionComponent_interactionLegPosition τ τ' σ C v l⟩
@@ -342,8 +342,8 @@ private theorem FixedExternalTwoPointWickDiagram.mixedVacuumPositionDataEquiv_di
     d.mixedVacuumPositionDataEquiv τ τ' σ C hVac
         (d.directMixedVacuumInteractionPosition τ τ' σ C v l) = (v, l) := by
   simp only [FixedExternalTwoPointWickDiagram.mixedVacuumPositionDataEquiv,
-    FixedExternalTwoPointWickDiagram.mixedVacuumPositionEquiv,
-    FixedExternalTwoPointWickDiagram.mixedComponentPositionEquiv,
+    Common.TwoPointDiagram.mixedVacuumPositionEquiv,
+    Common.TwoPointDiagram.mixedComponentPositionEquiv,
     Common.TwoPointDiagram.vacuumBlockLegEquiv, Equiv.trans_apply,
     Equiv.apply_symm_apply]
   let leg :
@@ -351,7 +351,7 @@ private theorem FixedExternalTwoPointWickDiagram.mixedVacuumPositionDataEquiv_di
     ((Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).subtypeEquiv
       (fun q => d.1.legInComponent_iff_unflattened C q))
       (((mixedTimeAmbientPositionEquiv τ τ' σ).subtypeEquiv
-        (fun q => d.mixedPositionComponent_eq_iff_legInComponent τ τ' σ C q))
+        (fun q => d.1.mixedPositionComponent_eq_iff_legInComponent τ τ' σ C q))
         (d.directMixedVacuumInteractionPosition τ τ' σ C v l))
   have hlegVal : leg.1 = mixedTimeOrderedInteractionLeg v.1 l := by
     change Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))
@@ -417,7 +417,7 @@ private theorem
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (B C : d.1.componentPartition.parts) (hBC : B ≠ C)
-    (p : d.MixedComponentPosition τ τ' σ B)
+    (p : d.1.MixedComponentPosition τ τ' σ B)
     (v : ↥(Common.TwoPointDiagram.interactionPart
       (C : Finset (Common.TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) :
@@ -431,13 +431,13 @@ private theorem
   have hcontr (l : Fin 4)
       (hleg : mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1 =
         mixedTimeOrderedInteractionLeg v.1 l) : False := by
-    have hcomp : d.mixedPositionComponent τ τ' σ p.1 = C := by
+    have hcomp : d.1.mixedPositionComponent τ τ' σ p.1 = C := by
       calc
-        d.mixedPositionComponent τ τ' σ p.1 =
-            d.mixedPositionComponent τ τ' σ
+        d.1.mixedPositionComponent τ τ' σ p.1 =
+            d.1.mixedPositionComponent τ τ' σ
               (mixedTimeOrderedAtomicLegPosition τ τ' σ
                 (mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1)) := by rw [hpos]
-        _ = d.mixedPositionComponent τ τ' σ
+        _ = d.1.mixedPositionComponent τ τ' σ
               (mixedTimeOrderedAtomicLegPosition τ τ' σ
                 (mixedTimeOrderedInteractionLeg v.1 l)) := by rw [hleg]
         _ = C := d.mixedPositionComponent_interactionLegPosition τ τ' σ C v l
@@ -455,7 +455,7 @@ private theorem FixedExternalTwoPointWickDiagram.mixedVacuumInteractionPosition_
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (B C : d.1.componentPartition.parts) (hBC : B ≠ C)
     (hVac : d.1.ComponentIsVacuum C)
-    (p : d.MixedComponentPosition τ τ' σ B)
+    (p : d.1.MixedComponentPosition τ τ' σ B)
     (v : ↥(Common.TwoPointDiagram.interactionPart
       (C : Finset (Common.TwoPointVertex
         (Finset.univ : Finset (Fin n)))))) (l : Fin 4) :

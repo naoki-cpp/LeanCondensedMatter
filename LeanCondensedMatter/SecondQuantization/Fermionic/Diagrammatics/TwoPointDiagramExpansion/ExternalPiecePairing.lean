@@ -37,7 +37,7 @@ omit [LinearOrder Mode] [Fintype Mode] in
 partner. -/
 theorem FixedExternalTwoPointWickDiagram.externalPiece_partner_externalPieceMixedPositionEquiv_symm
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (pos : d.MixedComponentPosition τ τ' σ d.1.externalComponentPart) :
+    (pos : d.1.MixedComponentPosition τ τ' σ d.1.externalComponentPart) :
     (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ)).partner
         ((d.externalPieceMixedPositionEquiv τ τ' σ).symm pos) =
       (d.externalPieceMixedPositionEquiv τ τ' σ).symm
@@ -91,7 +91,7 @@ theorem FixedExternalTwoPointWickDiagram.externalPieceMixedPosition_externalPiec
         d.externalPieceMixedPosition τ τ' σ
           (d.externalPieceComponentPairEquiv τ τ' σ pr).1.2) =
       pr.1.1 := by
-  have hf : ∀ x : d.MixedComponentPosition τ τ' σ d.1.externalComponentPart,
+  have hf : ∀ x : d.1.MixedComponentPosition τ τ' σ d.1.externalComponentPart,
       d.externalPieceMixedPosition τ τ' σ
           ((d.externalPieceMixedPositionEquiv τ τ' σ).symm x) =
         (x : Fin (2 * (2 * n + 1))) := by

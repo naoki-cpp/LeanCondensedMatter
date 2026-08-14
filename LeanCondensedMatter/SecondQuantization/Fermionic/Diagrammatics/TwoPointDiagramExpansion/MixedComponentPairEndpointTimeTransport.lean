@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairTimeTransport
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPositionTimeTransport
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentTimeTransport
 
 set_option linter.style.header false
 
@@ -21,6 +21,7 @@ namespace SecondQuantization
 namespace Fermionic
 
 open Combinatorics
+open Common
 
 variable {Mode : Type*}
 
@@ -58,16 +59,16 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv_endpoints_e
     (pr : d.MixedComponentPair τ τ' σ B) :
     let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
     (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B
             (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) ∧
         d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B
             (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1))) ∨
       (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B
             (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) ∧
         d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B
             (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) := by
   classical
   dsimp only
@@ -88,30 +89,30 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv_endpoints_e
     · left
       have hcoords := hq.symm.trans (hlocalVal.trans hp)
       constructor
-      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
+      · apply (d.1.mixedExternalPositionEquiv τ τ' υ).injective
         simpa using congrArg Prod.fst hcoords
-      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
+      · apply (d.1.mixedExternalPositionEquiv τ τ' υ).injective
         simpa using congrArg Prod.snd hcoords
     · right
       have hcoords := hq.symm.trans (hlocalVal.trans hp)
       constructor
-      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
+      · apply (d.1.mixedExternalPositionEquiv τ τ' υ).injective
         simpa using congrArg Prod.snd hcoords
-      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
+      · apply (d.1.mixedExternalPositionEquiv τ τ' υ).injective
         simpa using congrArg Prod.fst hcoords
     · right
       have hcoords := hq.symm.trans (hlocalVal.trans hp)
       constructor
-      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
+      · apply (d.1.mixedExternalPositionEquiv τ τ' υ).injective
         simpa using congrArg Prod.fst hcoords
-      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
+      · apply (d.1.mixedExternalPositionEquiv τ τ' υ).injective
         simpa using congrArg Prod.snd hcoords
     · left
       have hcoords := hq.symm.trans (hlocalVal.trans hp)
       constructor
-      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
+      · apply (d.1.mixedExternalPositionEquiv τ τ' υ).injective
         simpa using congrArg Prod.snd hcoords
-      · apply (d.mixedExternalPositionEquiv τ τ' υ).injective
+      · apply (d.1.mixedExternalPositionEquiv τ τ' υ).injective
         simpa using congrArg Prod.fst hcoords
   · have hVac : d.1.ComponentIsVacuum B :=
       (d.1.componentIsVacuum_iff_ne_externalComponentPart B).2 hB
@@ -130,30 +131,30 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv_endpoints_e
     · left
       have hcoords := hq.symm.trans (hlocalVal.trans hp)
       constructor
-      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
+      · apply (d.1.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
         simpa using congrArg Prod.fst hcoords
-      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
+      · apply (d.1.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
         simpa using congrArg Prod.snd hcoords
     · right
       have hcoords := hq.symm.trans (hlocalVal.trans hp)
       constructor
-      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
+      · apply (d.1.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
         simpa using congrArg Prod.snd hcoords
-      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
+      · apply (d.1.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
         simpa using congrArg Prod.fst hcoords
     · right
       have hcoords := hq.symm.trans (hlocalVal.trans hp)
       constructor
-      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
+      · apply (d.1.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
         simpa using congrArg Prod.fst hcoords
-      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
+      · apply (d.1.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
         simpa using congrArg Prod.snd hcoords
     · left
       have hcoords := hq.symm.trans (hlocalVal.trans hp)
       constructor
-      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
+      · apply (d.1.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
         simpa using congrArg Prod.snd hcoords
-      · apply (d.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
+      · apply (d.1.mixedVacuumPositionEquiv τ τ' υ B hVac).injective
         simpa using congrArg Prod.fst hcoords
 
 /-- Whenever component position transport preserves strict mixed order, canonical pair-time
@@ -162,17 +163,17 @@ two endpoints of a normalized pair. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.1.componentPartition.parts)
-    (hOrder : ∀ p q : d.MixedComponentPosition τ τ' σ B,
+    (hOrder : ∀ p q : d.1.MixedComponentPosition τ τ' σ B,
       p.1 < q.1 ↔
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 <
-          (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1)
+        (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 <
+          (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1)
     (pr : d.MixedComponentPair τ τ' σ B) :
     let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
     d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
-        d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+        d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B
           (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) ∧
       d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
-        d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+        d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B
           (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) := by
   classical
   let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
@@ -180,16 +181,16 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv_endpoints_e
     d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) = _
   have hCases :
       (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B
             (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) ∧
         d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B
             (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1))) ∨
       (d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B
             (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) ∧
         d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B
             (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0))) := by
     simpa [q] using
       d.mixedComponentPairTimeEquiv_endpoints_eq_or_swap τ τ' σ υ B pr
@@ -216,17 +217,17 @@ normalized endpoint order exactly; the swap alternative is impossible. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv_endpoints_eq
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.1.componentPartition.parts)
-    (hTime : d.ComponentTimeEq B σ υ)
+    (hTime : d.1.ComponentTimeEq B σ υ)
     (pr : d.MixedComponentPair τ τ' σ B) :
     let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
     d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
-        d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+        d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B
           (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)) ∧
       d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
-        d.mixedComponentPositionTimeEquiv τ τ' σ υ B
+        d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B
           (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) :=
   d.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder τ τ' σ υ B
-    (d.mixedComponentPositionTimeEquiv_lt_iff τ τ' σ υ B hTime) pr
+    (d.1.mixedComponentPositionTimeEquiv_lt_iff τ τ' σ υ B hTime) pr
 
 end Fermionic
 end SecondQuantization
