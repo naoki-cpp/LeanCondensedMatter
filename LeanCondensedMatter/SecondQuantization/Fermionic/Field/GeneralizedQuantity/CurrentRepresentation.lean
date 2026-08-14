@@ -1,126 +1,31 @@
+import LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeneralizedQuantity
 
 set_option linter.style.header false
 
 /-!
-# Weak current representations of generalized transport functionals
+# Generalized one-body transport functionals
 
-This module continues issue #1159 by separating two notions that should not be conflated:
-
-1. the canonical transport functional `Φ(f)` coming from the localized balance law;
-2. an optional factorization of that functional through a differential-like map `d`.
-
-Abstractly, if
-
-```text
-d : Test →ₗ[ℂ] OneForm
-Φ : Test →ₗ[ℂ] Obs
-J : OneForm →ₗ[ℂ] Obs
-```
-
-then `FactorsThroughDifferential d Φ J` means
-
-```text
-Φ(f) = J(d f)
-```
-
-for every test object `f`.
-
-The name is intentionally semantic: this module does not assume that `OneForm` is literally a
-space of differential forms, nor does it assert that `J` is a zeroth-order pairing with a local
-vector-current density. In a continuum realization, the latter stronger statement corresponds to
-the familiar physics weak form `Φ(f) = ∫ j · ∇f`; it requires additional analytic/locality data and
-belongs to a downstream specialization.
+The representation-independent weak-current abstractions live in
+`Analysis.Calculus.CurrentRepresentation` under `ConservationLaw`.  This module contains only the
+second-quantized one-particle specialization: the canonical transport commutator is packaged as a
+complex-linear functional of localization tests, and charge-like quantities inherit any supplied
+differential factorization of the bare localization commutator.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
 namespace Field
 
-variable {Test OneForm Obs : Type*}
+variable {Test OneForm : Type*}
 variable [AddCommGroup Test] [Module ℂ Test]
 variable [AddCommGroup OneForm] [Module ℂ OneForm]
-variable [AddCommGroup Obs] [Module ℂ Obs]
-
-/-- A transport functional `Φ` factors through a differential-like map `d` via the 1-form flux
-functional `J` when `Φ(f) = J(d f)` for every test object.
-
-This is weaker than existence of a local vector-current density: `J` may itself use derivatives or
-other nonlocal information contained in its `OneForm` argument. -/
-def FactorsThroughDifferential
-    (d : Test →ₗ[ℂ] OneForm) (Φ : Test →ₗ[ℂ] Obs) (J : OneForm →ₗ[ℂ] Obs) : Prop :=
-  ∀ f, Φ f = J (d f)
-
-namespace FactorsThroughDifferential
-
-/-- Factorization through `d` is equivalent to equality with the composite `J ∘ d`. -/
-theorem iff_eq_comp
-    {d : Test →ₗ[ℂ] OneForm} {Φ : Test →ₗ[ℂ] Obs} {J : OneForm →ₗ[ℂ] Obs} :
-    FactorsThroughDifferential d Φ J ↔ Φ = J.comp d := by
-  constructor
-  · intro h
-    apply LinearMap.ext
-    intro f
-    exact h f
-  · intro h f
-    rw [h]
-    rfl
-
-/-- A factorized transport functional vanishes on test objects annihilated by `d`. -/
-theorem eq_zero_of_map_eq_zero
-    {d : Test →ₗ[ℂ] OneForm} {Φ : Test →ₗ[ℂ] Obs} {J : OneForm →ₗ[ℂ] Obs}
-    (h : FactorsThroughDifferential d Φ J) {f : Test} (hf : d f = 0) :
-    Φ f = 0 := by
-  rw [h f, hf, map_zero]
-
-/-- Scalar multiplication preserves a differential factorization. -/
-theorem smul
-    {d : Test →ₗ[ℂ] OneForm} {Φ : Test →ₗ[ℂ] Obs} {J : OneForm →ₗ[ℂ] Obs}
-    (h : FactorsThroughDifferential d Φ J) (c : ℂ) :
-    FactorsThroughDifferential d (c • Φ) (c • J) := by
-  intro f
-  simp [h f]
-
-/-- Postcomposition by a linear observable map preserves a differential factorization. -/
-theorem postcomp
-    {Obs' : Type*} [AddCommGroup Obs'] [Module ℂ Obs']
-    {d : Test →ₗ[ℂ] OneForm} {Φ : Test →ₗ[ℂ] Obs} {J : OneForm →ₗ[ℂ] Obs}
-    (h : FactorsThroughDifferential d Φ J) (L : Obs →ₗ[ℂ] Obs') :
-    FactorsThroughDifferential d (L.comp Φ) (L.comp J) := by
-  intro f
-  simp only [LinearMap.comp_apply]
-  rw [h f]
-
-end FactorsThroughDifferential
-
-/-- Data of one chosen flux functional representing `Φ` through `d`.
-
-No locality or uniqueness claim is bundled into this structure. Different representatives can be
-physically equivalent after quotienting by boundary/improvement terms in concrete models. -/
-structure DifferentialCurrentRepresentation
-    (d : Test →ₗ[ℂ] OneForm) (Φ : Test →ₗ[ℂ] Obs) where
-  /-- The chosen flux functional on differential-like test data. -/
-  current : OneForm →ₗ[ℂ] Obs
-  /-- Proof that the canonical transport functional is represented by `current ∘ d`. -/
-  factors : FactorsThroughDifferential d Φ current
-
-namespace DifferentialCurrentRepresentation
-
-/-- Evaluate the represented transport functional on a test object. -/
-theorem apply
-    {d : Test →ₗ[ℂ] OneForm} {Φ : Test →ₗ[ℂ] Obs}
-    (R : DifferentialCurrentRepresentation d Φ) (f : Test) :
-    Φ f = R.current (d f) :=
-  R.factors f
-
-end DifferentialCurrentRepresentation
-
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
 /-- The canonical transport term packaged as a linear functional of the localization test object.
 
-This is the linear-map form of `transportCommutator`; packaging it this way lets downstream models
-state precisely that the canonical transport functional factors through a gradient/differential. -/
+This is the linear-map form of `transportCommutator`; downstream models can state precisely that
+it factors through a gradient or other differential-like map. -/
 noncomputable def transportFunctional
     (h : 𝓗₁ →ₗ[ℂ] 𝓗₁)
     (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁))
@@ -195,10 +100,12 @@ theorem factorsThroughDifferential_transport_smul_id
     (d : Test →ₗ[ℂ] OneForm)
     (J : OneForm →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁))
     (q : ℂ)
-    (hJ : FactorsThroughDifferential d (localizationCommutatorFunctional 𝓗₁ h M) J) :
-    FactorsThroughDifferential d (transportFunctional 𝓗₁ h M (q • LinearMap.id)) (q • J) := by
+    (hJ : ConservationLaw.FactorsThroughDifferential d
+      (localizationCommutatorFunctional 𝓗₁ h M) J) :
+    ConservationLaw.FactorsThroughDifferential d
+      (transportFunctional 𝓗₁ h M (q • LinearMap.id)) (q • J) := by
   rw [transportFunctional_smul_id]
-  exact hJ.smul q
+  exact ConservationLaw.FactorsThroughDifferential.smul hJ q
 
 end Field
 end Fermionic
