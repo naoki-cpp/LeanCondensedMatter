@@ -1,22 +1,16 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentCrossing
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedPositionLeg
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentCrossing
+import LeanCondensedMatter.Combinatorics.ListInterleaving
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Basic
 
 set_option linter.style.header false
 
 /-!
 # Even mixed-time crossings between distinct components
 
-`MixedComponentCrossing.lean` factors the mixed-order pairing weight over full diagram components
-under the hypothesis that off-diagonal geometric crossing counts are even. This module discharges
-that hypothesis.
-
-Two mixed pairs from distinct components have disjoint endpoints, so their crossing parity is the
-parity of the four endpoint comparisons; reindexing all pair endpoints turns the off-diagonal
-crossing parity into the number of mixed positions of one component lying before positions of the
-other. A vacuum component consists of quartic interaction vertices only, each contributing four
-consecutive atomic legs to the mixed-time flattened list, and a position of a distinct component
-lies outside that event block. Every vacuum block therefore contributes zero or four inversions,
-which makes the count even and removes the parity hypothesis.
+Common owns mixed component positions, normalized pair fibers, crossing counts, and statistics
+weights. This fermionic downstream theorem discharges the remaining off-diagonal even-crossing
+hypothesis for the quartic two-point geometry: every vacuum interaction vertex contributes four
+consecutive atomic legs, hence zero or four inversions against a distinct component.
 -/
 
 namespace SecondQuantization
@@ -27,46 +21,40 @@ open Common
 
 variable {Mode : Type*}
 
-/-- Mixed normalized pairs assigned to distinct full components are distinct, hence their endpoints
-are disjoint. -/
 private theorem FixedExternalTwoPointWickDiagram.mixedComponentPair_endpoints_ne
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (B C : d.1.componentPartition.parts) (hBC : B ≠ C)
-    (p : d.MixedComponentPair τ τ' σ B)
-    (q : d.MixedComponentPair τ τ' σ C) :
+    (p : d.1.MixedComponentPair τ τ' σ B)
+    (q : d.1.MixedComponentPair τ τ' σ C) :
     p.1.1.1 ≠ q.1.1.1 ∧
       p.1.1.1 ≠ q.1.1.2 ∧
       p.1.1.2 ≠ q.1.1.1 ∧
       p.1.1.2 ≠ q.1.1.2 := by
-  refine (d.pairingInMixedOrder τ τ' σ).normalizedPair_endpoints_ne_of_ne p.1 q.1 ?_
+  refine (d.1.pairingInMixedOrder τ τ' σ).normalizedPair_endpoints_ne_of_ne p.1 q.1 ?_
   intro hpq
   apply hBC
   calc
-    B = d.mixedPairComponent τ τ' σ p.1 := p.2.symm
-    _ = d.mixedPairComponent τ τ' σ q.1 := congrArg _ hpq
+    B = d.1.mixedPairComponent τ τ' σ p.1 := p.2.symm
+    _ = d.1.mixedPairComponent τ τ' σ q.1 := congrArg _ hpq
     _ = C := q.2
 
-/-- The four-endpoint inversion count of two mixed pairs from distinct components has the same
-parity as their unoriented geometric crossing indicator. -/
 private theorem
     FixedExternalTwoPointWickDiagram.mixedComponentPairEndpointInversionCount_mod_two_eq_indicator
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (B C : d.1.componentPartition.parts) (hBC : B ≠ C)
-    (p : d.MixedComponentPair τ τ' σ B)
-    (q : d.MixedComponentPair τ τ' σ C) :
+    (p : d.1.MixedComponentPair τ τ' σ B)
+    (q : d.1.MixedComponentPair τ τ' σ C) :
     pairEndpointInversionCount p.1.1 q.1.1 % 2 =
       if Crosses p.1.1 q.1.1 ∨ Crosses q.1.1 p.1.1 then 1 else 0 := by
   have hEnds := d.mixedComponentPair_endpoints_ne τ τ' σ B C hBC p q
   exact pairEndpointInversionCount_mod_two_eq_crossesIndicator
     p.1.1 q.1.1
-    ((d.pairingInMixedOrder τ τ' σ).pairs_normalized p.1.2)
-    ((d.pairingInMixedOrder τ τ' σ).pairs_normalized q.1.2)
+    ((d.1.pairingInMixedOrder τ τ' σ).pairs_normalized p.1.2)
+    ((d.1.pairingInMixedOrder τ τ' σ).pairs_normalized q.1.2)
     hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2
 
-/-- Number of positions of component `C` occurring before positions of component `B` in the actual
-mixed atomic order. -/
 private noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentPositionInversionCount
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
@@ -75,29 +63,25 @@ private noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentPositio
     ∑ q : d.1.MixedComponentPosition τ τ' σ C,
       if q.1 < p.1 then 1 else 0
 
-/-- Selecting an endpoint of a mixed component pair through the endpoint equivalence recovers that
-endpoint in the ambient mixed order. -/
 private theorem FixedExternalTwoPointWickDiagram.mixedComponentPairEndpointEquiv_val
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (B : d.1.componentPartition.parts)
-    (p : d.MixedComponentPair τ τ' σ B) (k : Fin 2) :
-    (d.mixedComponentPairEndpointEquiv τ τ' σ B (p, k)).1 =
+    (p : d.1.MixedComponentPair τ τ' σ B) (k : Fin 2) :
+    (d.1.mixedComponentPairEndpointEquiv τ τ' σ B (p, k)).1 =
       pairEndpointAt p.1.1 k := by
   rfl
 
-/-- The inversion count of one pair pair is the sum of the corresponding mixed-position
-comparisons. -/
 private theorem FixedExternalTwoPointWickDiagram.mixedComponentPairEndpointInversionCount_eq_sum
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (B C : d.1.componentPartition.parts)
-    (p : d.MixedComponentPair τ τ' σ B)
-    (q : d.MixedComponentPair τ τ' σ C) :
+    (p : d.1.MixedComponentPair τ τ' σ B)
+    (q : d.1.MixedComponentPair τ τ' σ C) :
     pairEndpointInversionCount p.1.1 q.1.1 =
       ∑ a : Fin 2, ∑ b : Fin 2,
-        if (d.mixedComponentPairEndpointEquiv τ τ' σ C (q, b)).1 <
-          (d.mixedComponentPairEndpointEquiv τ τ' σ B (p, a)).1
+        if (d.1.mixedComponentPairEndpointEquiv τ τ' σ C (q, b)).1 <
+          (d.1.mixedComponentPairEndpointEquiv τ τ' σ B (p, a)).1
         then 1 else 0 := by
   rw [pairEndpointInversionCount_eq_sum]
   apply Finset.sum_congr rfl
@@ -106,36 +90,34 @@ private theorem FixedExternalTwoPointWickDiagram.mixedComponentPairEndpointInver
   intro b _
   rw [d.mixedComponentPairEndpointEquiv_val, d.mixedComponentPairEndpointEquiv_val]
 
-/-- For distinct components, the geometric crossing parity is exactly the parity of the complete
-mixed-position inversion count. -/
 private theorem
     FixedExternalTwoPointWickDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_positionInversionCount
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (B C : d.1.componentPartition.parts) (hBC : B ≠ C) :
-    d.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 =
+    d.1.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 =
       d.mixedComponentPositionInversionCount τ τ' σ B C % 2 := by
   classical
   let endpointPairEquiv :
-      ((d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C) ×
+      ((d.1.MixedComponentPair τ τ' σ B × d.1.MixedComponentPair τ τ' σ C) ×
           (Fin 2 × Fin 2)) ≃
         (d.1.MixedComponentPosition τ τ' σ B ×
           d.1.MixedComponentPosition τ τ' σ C) :=
     (Equiv.prodProdProdComm _ _ _ _).trans
       (Equiv.prodCongr
-        (d.mixedComponentPairEndpointEquiv τ τ' σ B)
-        (d.mixedComponentPairEndpointEquiv τ τ' σ C))
+        (d.1.mixedComponentPairEndpointEquiv τ τ' σ B)
+        (d.1.mixedComponentPairEndpointEquiv τ τ' σ C))
   have hpositions :
-      (∑ x : d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C,
+      (∑ x : d.1.MixedComponentPair τ τ' σ B × d.1.MixedComponentPair τ τ' σ C,
         pairEndpointInversionCount x.1.1.1 x.2.1.1) =
         d.mixedComponentPositionInversionCount τ τ' σ B C := by
     calc
-      (∑ x : d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C,
+      (∑ x : d.1.MixedComponentPair τ τ' σ B × d.1.MixedComponentPair τ τ' σ C,
           pairEndpointInversionCount x.1.1.1 x.2.1.1) =
-        ∑ x : (d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C) ×
+        ∑ x : (d.1.MixedComponentPair τ τ' σ B × d.1.MixedComponentPair τ τ' σ C) ×
             (Fin 2 × Fin 2),
-          if (d.mixedComponentPairEndpointEquiv τ τ' σ C (x.1.2, x.2.2)).1 <
-            (d.mixedComponentPairEndpointEquiv τ τ' σ B (x.1.1, x.2.1)).1
+          if (d.1.mixedComponentPairEndpointEquiv τ τ' σ C (x.1.2, x.2.2)).1 <
+            (d.1.mixedComponentPairEndpointEquiv τ τ' σ B (x.1.1, x.2.1)).1
           then 1 else 0 := by
             simp only [Fintype.sum_prod_type]
             apply Finset.sum_congr rfl
@@ -148,8 +130,8 @@ private theorem
           if x.2.1 < x.1.1 then 1 else 0 := by
             refine Fintype.sum_equiv endpointPairEquiv
               (fun x =>
-                if (d.mixedComponentPairEndpointEquiv τ τ' σ C (x.1.2, x.2.2)).1 <
-                  (d.mixedComponentPairEndpointEquiv τ τ' σ B (x.1.1, x.2.1)).1
+                if (d.1.mixedComponentPairEndpointEquiv τ τ' σ C (x.1.2, x.2.2)).1 <
+                  (d.1.mixedComponentPairEndpointEquiv τ τ' σ B (x.1.1, x.2.1)).1
                 then 1 else 0)
               (fun x => if x.2.1 < x.1.1 then 1 else 0) ?_
             intro x
@@ -158,8 +140,8 @@ private theorem
             rw [FixedExternalTwoPointWickDiagram.mixedComponentPositionInversionCount,
               Fintype.sum_prod_type]
   calc
-    d.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 =
-        (∑ x : d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C,
+    d.1.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 =
+        (∑ x : d.1.MixedComponentPair τ τ' σ B × d.1.MixedComponentPair τ τ' σ C,
           pairEndpointInversionCount x.1.1.1 x.2.1.1) % 2 := by
           symm
           exact fintype_sum_mod_two_congr _ _ fun x => by
@@ -168,8 +150,6 @@ private theorem
             split_ifs at h ⊢ <;> simpa using h
     _ = d.mixedComponentPositionInversionCount τ τ' σ B C % 2 := by rw [hpositions]
 
-/-- Mixed positions of a vacuum component are exactly its interaction vertices together with their
-four local legs. -/
 private noncomputable def FixedExternalTwoPointWickDiagram.mixedVacuumPositionDataEquiv
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
@@ -184,7 +164,6 @@ private noncomputable def FixedExternalTwoPointWickDiagram.mixedVacuumPositionDa
         (C : Finset (Common.TwoPointVertex
           (Finset.univ : Finset (Fin n))))))
 
-/-- The mixed atomic position of one local leg of a vacuum-component interaction vertex. -/
 private noncomputable def FixedExternalTwoPointWickDiagram.mixedVacuumInteractionPosition
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
@@ -195,8 +174,6 @@ private noncomputable def FixedExternalTwoPointWickDiagram.mixedVacuumInteractio
     d.1.MixedComponentPosition τ τ' σ C :=
   (d.mixedVacuumPositionDataEquiv τ τ' σ C hVac).symm (v, l)
 
-/-- Reindex the position-inversion count against a vacuum component as a sum over complete
-interaction-vertex four-leg blocks. -/
 private theorem
     FixedExternalTwoPointWickDiagram.mixedComponentPositionInversionCount_eq_sum_vacuumBlocks
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -233,9 +210,6 @@ private theorem
       rw [Fintype.sum_prod_type]
       rfl
 
-/-- Block-uniform ordering implies evenness: all four local legs of one interaction event contribute
-identically against a fixed position in another component, so every block contributes zero or four
-inversions. -/
 private theorem
     FixedExternalTwoPointWickDiagram.mixedComponentPositionInversionCount_mod_two_eq_zero_of_vacuumBlockUniform
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -272,12 +246,10 @@ private theorem
   rw [hsum, Fin.sum_univ_four]
   split_ifs <;> omega
 
-/-- Standard two-point leg identity of one local leg of an interaction slot. -/
 private def mixedTimeOrderedInteractionLeg {n : ℕ} (v : Fin n) (l : Fin 4) :
     OrderedTwoPointLeg n :=
   Sum.inr (⟨v, Finset.mem_univ v⟩, l)
 
-/-- One local interaction leg belongs to its four-leg event block. -/
 private theorem mixedTimeOrderedInteractionLeg_mem_eventBlock {n : ℕ}
     (v : Fin n) (l : Fin 4) :
     mixedTimeOrderedInteractionLeg v l ∈
@@ -285,15 +257,12 @@ private theorem mixedTimeOrderedInteractionLeg_mem_eventBlock {n : ℕ}
   fin_cases l <;>
     simp [mixedTimeOrderedInteractionLeg, twoPointTimedEventAtomicLegs]
 
-/-- Every interaction event occurs in the actual mixed-time event order. -/
 private theorem interactionEvent_mem_orderedTwoPointTimedEvents {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) (v : Fin n) :
     (Sum.inr v : TwoPointTimedEvent n) ∈ orderedTwoPointTimedEvents τ τ' σ := by
   exact (orderedTwoPointTimedEvents_perm τ τ' σ).symm.subset (by
     simp [twoPointInteractionEventList])
 
-/-- The mixed position selected by a local interaction leg belongs to the component containing that
-interaction vertex. -/
 private theorem FixedExternalTwoPointWickDiagram.mixedPositionComponent_interactionLegPosition
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
@@ -317,7 +286,6 @@ private theorem FixedExternalTwoPointWickDiagram.mixedPositionComponent_interact
       (Finset.univ : Finset (Fin n))))
     ⟨v.1, Finset.mem_univ v.1⟩).1 v.2
 
-/-- The mixed component position represented directly by one vacuum interaction leg. -/
 private noncomputable def FixedExternalTwoPointWickDiagram.directMixedVacuumInteractionPosition
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
@@ -330,8 +298,6 @@ private noncomputable def FixedExternalTwoPointWickDiagram.directMixedVacuumInte
       (mixedTimeOrderedInteractionLeg v.1 l),
     d.mixedPositionComponent_interactionLegPosition τ τ' σ C v l⟩
 
-/-- The vacuum-position data equivalence sends the concrete mixed interaction position to its vertex
-and local-leg coordinates. -/
 private theorem FixedExternalTwoPointWickDiagram.mixedVacuumPositionDataEquiv_direct
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
@@ -380,8 +346,6 @@ private theorem FixedExternalTwoPointWickDiagram.mixedVacuumPositionDataEquiv_di
     rfl
   · rfl
 
-/-- The abstract inverse of the vacuum-position equivalence is the concrete mixed atomic position of
-the corresponding interaction leg. -/
 private theorem FixedExternalTwoPointWickDiagram.mixedVacuumInteractionPosition_eq_direct
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
@@ -410,8 +374,6 @@ private theorem FixedExternalTwoPointWickDiagram.mixedVacuumInteractionPosition_
   rw [d.mixedVacuumInteractionPosition_eq_direct]
   rfl
 
-/-- The atomic leg identity of a mixed position in one component cannot lie in an interaction-event
-block belonging to a distinct component. -/
 private theorem
     FixedExternalTwoPointWickDiagram.mixedComponentPosition_leg_not_mem_interactionEventBlock
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -448,8 +410,6 @@ private theorem
   apply hcontr l
   simpa only [mixedTimeOrderedInteractionLeg] using hleg.symm
 
-/-- All four local legs of one vacuum interaction event have the same comparison with a position in
-a distinct component. -/
 private theorem FixedExternalTwoPointWickDiagram.mixedVacuumInteractionPosition_lt_uniform
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
@@ -474,38 +434,35 @@ private theorem FixedExternalTwoPointWickDiagram.mixedVacuumInteractionPosition_
       τ τ' σ B C hBC p v)
   simpa [z, d.mixedVacuumInteractionPosition_val] using h
 
-/-- Geometric crossings with a distinct vacuum component are even. -/
 private theorem
     FixedExternalTwoPointWickDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (B C : d.1.componentPartition.parts) (hBC : B ≠ C)
     (hVac : d.1.ComponentIsVacuum C) :
-    d.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 = 0 := by
+    d.1.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 = 0 := by
   rw [d.mixedComponentGeometricCrossingCount_mod_two_eq_positionInversionCount
     τ τ' σ B C hBC]
   exact d.mixedComponentPositionInversionCount_mod_two_eq_zero_of_vacuumBlockUniform
     τ τ' σ B C hVac
     (d.mixedVacuumInteractionPosition_lt_uniform τ τ' σ B C hBC hVac)
 
-/-- The mixed geometric crossing count is symmetric in its two component arguments. -/
 private theorem FixedExternalTwoPointWickDiagram.mixedComponentGeometricCrossingCount_comm
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (B C : d.1.componentPartition.parts) :
-    d.mixedComponentGeometricCrossingCount τ τ' σ B C =
-      d.mixedComponentGeometricCrossingCount τ τ' σ C B := by
-  rw [d.mixedComponentGeometricCrossingCount_eq_oriented_add τ τ' σ B C,
-    d.mixedComponentGeometricCrossingCount_eq_oriented_add τ τ' σ C B]
+    d.1.mixedComponentGeometricCrossingCount τ τ' σ B C =
+      d.1.mixedComponentGeometricCrossingCount τ τ' σ C B := by
+  rw [d.1.mixedComponentGeometricCrossingCount_eq_oriented_add τ τ' σ B C,
+    d.1.mixedComponentGeometricCrossingCount_eq_oriented_add τ τ' σ C B]
   omega
 
-/-- Geometric crossings between any two distinct full components are even. -/
 private theorem
     FixedExternalTwoPointWickDiagram.mixedComponentGeometricCrossingCount_mod_two_eq_zero
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (B C : d.1.componentPartition.parts) (hBC : B ≠ C) :
-    d.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 = 0 := by
+    d.1.mixedComponentGeometricCrossingCount τ τ' σ B C % 2 = 0 := by
   by_cases hC : C = d.1.externalComponentPart
   · have hB : B ≠ d.1.externalComponentPart := by
       intro h
@@ -521,28 +478,25 @@ private theorem
     exact d.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum
       τ τ' σ B C hBC hCVac
 
-/-- The global mixed-order exchange-statistics weight factors over all full components without an
-additional parity hypothesis. -/
 theorem FixedExternalTwoPointWickDiagram.pairingInMixedOrder_weight_eq_prod_components_unconditional
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (s : Common.Statistics) (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    (d.pairingInMixedOrder τ τ' σ).weight s =
+    (d.1.pairingInMixedOrder τ τ' σ).weight s =
       ∏ B : d.1.componentPartition.parts,
-        d.mixedComponentWeight s τ τ' σ B :=
-  d.pairingInMixedOrder_weight_eq_prod_components s τ τ' σ
+        d.1.mixedComponentWeight s τ τ' σ B :=
+  d.1.pairingInMixedOrder_weight_eq_prod_components s τ τ' σ
     (d.mixedComponentGeometricCrossingCount_mod_two_eq_zero τ τ' σ)
 
-/-- Unconditional external/vacuum factorization of the global mixed-order pairing weight. -/
 theorem
     FixedExternalTwoPointWickDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum_unconditional
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (s : Common.Statistics) (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    (d.pairingInMixedOrder τ τ' σ).weight s =
-      d.mixedComponentWeight s τ τ' σ d.1.externalComponentPart *
+    (d.1.pairingInMixedOrder τ τ' σ).weight s =
+      d.1.mixedComponentWeight s τ τ' σ d.1.externalComponentPart *
         d.1.vacuumComponentParts.prod
-          (d.mixedComponentWeight s τ τ' σ) := by
+          (d.1.mixedComponentWeight s τ τ' σ) := by
   rw [d.pairingInMixedOrder_weight_eq_prod_components_unconditional s τ τ' σ,
-    d.prod_mixedComponentWeight_eq_external_mul_prod_vacuum s τ τ' σ]
+    d.1.prod_mixedComponentWeight_eq_external_mul_prod_vacuum s τ τ' σ]
 
 end Fermionic
 end SecondQuantization
