@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotShuffleCoordinates
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberExternalPiece
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberShuffleOrderedData
 
@@ -9,8 +10,8 @@ set_option linter.style.header false
 
 For a fixed `SlotShuffle m k`, the canonical fiber over its left-slot set is reindexed by a connected
 order-`m` external diagram and order-`k` vacuum ordered data.  The previous files identify the
-pointwise reassembled amplitude with the product of these local factors.  The coordinate lemmas from
-`FiberShuffleCoordinates` then show that this product is exactly `SlotShuffle.integrand` on strictly
+pointwise reassembled amplitude with the product of these local factors.  The Common slot-shuffle
+coordinate lemmas then show that this product is exactly `SlotShuffle.integrand` on strictly
 decreasing ambient times, which is sufficient under `orderedSimplexIntegral`.
 -/
 
@@ -179,7 +180,7 @@ theorem fixedExternalShuffleFiber_vacuumTimes_heq
   classical
   apply heq_finFun_of_cast (slotShuffle_card_sdiff_leftSlots shuffle)
   intro q
-  exact congrArg σ (fixedExternalVacuumSlot_leftSlots_eq_slotShuffleRight shuffle q)
+  exact congrArg σ (slotSplitVacuumSlot_leftSlots_eq_slotShuffleRight shuffle q)
 
 /-- **One fixed shuffle fiber is exactly the corresponding binary shuffled product integral.** -/
 theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
