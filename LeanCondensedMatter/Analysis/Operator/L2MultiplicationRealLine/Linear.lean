@@ -28,7 +28,7 @@ noncomputable def multiplicationLinear :
     apply LinearMap.ext
     intro ψ
     change (f + g) • ψ = f • ψ + g • ψ
-    exact Lp.add_smul f g ψ
+    exact Lp.smul_add f g ψ
   map_smul' := by
     intro c f
     apply LinearMap.ext
