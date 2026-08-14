@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairImage
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.FixedOrderComponentPair
 
 set_option linter.style.header false
 
@@ -16,25 +17,6 @@ namespace Common
 open Combinatorics
 
 variable {ExternalLabel InternalLabel : Type*}
-
-/-- The connected component of a quartic diagram containing the first endpoint of a normalized pair
-in a chosen fixed vertex order. -/
-noncomputable def QuarticDiagram.fixedOrderPairComponent
-    {N : ℕ} {S : Finset (Fin N)} (d : QuarticDiagram InternalLabel N S)
-    (order : QuarticVertexOrder S)
-    (pr : (d.pairingInOrder order).NormalizedPair) : d.componentPartition.parts :=
-  let q := orderedLegToDiagramLeg S order pr.1.1
-  ⟨d.componentBlock (vertexOfLeg q),
-    d.componentBlock_mem_componentPartition (vertexOfLeg q)⟩
-
-@[simp]
-theorem QuarticDiagram.fixedOrderPairComponent_val
-    {N : ℕ} {S : Finset (Fin N)} (d : QuarticDiagram InternalLabel N S)
-    (order : QuarticVertexOrder S)
-    (pr : (d.pairingInOrder order).NormalizedPair) :
-    (d.fixedOrderPairComponent order pr : Finset (Fin N)) =
-      d.componentBlock (vertexOfLeg (orderedLegToDiagramLeg S order pr.1.1)) :=
-  rfl
 
 /-- The component of an embedded vacuum pair is exactly the ambient component corresponding to its
 standalone quartic component. -/
