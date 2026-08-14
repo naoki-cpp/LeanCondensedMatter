@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberProductIntegrand
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairing
 
 set_option linter.style.header false
 
@@ -21,6 +21,7 @@ namespace SecondQuantization
 namespace Fermionic
 
 open Combinatorics
+open Common
 
 /-- The canonical increasing enumeration of a shuffle's left-slot set is its left slot map. -/
 theorem slotShuffleLeftSlots_orderEmbOfFin {m k : ℕ}
@@ -67,9 +68,9 @@ theorem slotShuffleSdiffLeftSlots_orderEmbOfFin {m k : ℕ}
 
 /-- The inherited vacuum-slot map of the canonical fiber is the right slot map of the shuffle,
 after the unique cardinality cast from the complement to `Fin k`. -/
-theorem fixedExternalVacuumSlot_leftSlots_eq_slotShuffleRight
+theorem slotSplitVacuumSlot_leftSlots_eq_slotShuffleRight
     {m k : ℕ} (shuffle : BinaryShuffle.SlotShuffle m k) (j : Fin k) :
-    fixedExternalVacuumSlot shuffle.leftSlots
+    slotSplitVacuumSlot shuffle.leftSlots
         (Fin.cast (slotShuffle_card_sdiff_leftSlots shuffle).symm j) =
       shuffle.slotEquiv (Sum.inr j) := by
   change
