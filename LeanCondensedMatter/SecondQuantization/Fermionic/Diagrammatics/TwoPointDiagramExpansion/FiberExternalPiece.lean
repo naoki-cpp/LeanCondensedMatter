@@ -43,7 +43,7 @@ theorem FixedExternalTwoPointWickDiagram.externalPiece_heq_standardized_slotSpli
     (fun x => Common.TwoPointDiagram.slotCongr
       (Common.standardSlotEquiv d.1.externalInteractionPart) x) hsplit
   simpa [FixedExternalTwoPointWickDiagram.externalPiece,
-    fixedExternalTwoPointWickDiagramOnEquiv] using hcongr
+    Common.TwoPointDiagram.externalPiece, fixedExternalTwoPointWickDiagramOnEquiv] using hcongr
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- After reindexing a fiber by `fixedExternalFiberEquiv`, the ambient standalone external piece is
