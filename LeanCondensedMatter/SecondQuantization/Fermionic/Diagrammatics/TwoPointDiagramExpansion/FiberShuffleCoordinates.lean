@@ -68,7 +68,7 @@ theorem slotShuffleSdiffLeftSlots_orderEmbOfFin {m k : ℕ}
 
 /-- The inherited vacuum-slot map of the canonical fiber is the right slot map of the shuffle,
 after the unique cardinality cast from the complement to `Fin k`. -/
-theorem slotSplitVacuumSlot_leftSlots_eq_slotShuffleRight
+theorem fixedExternalVacuumSlot_leftSlots_eq_slotShuffleRight
     {m k : ℕ} (shuffle : BinaryShuffle.SlotShuffle m k) (j : Fin k) :
     slotSplitVacuumSlot shuffle.leftSlots
         (Fin.cast (slotShuffle_card_sdiff_leftSlots shuffle).symm j) =
