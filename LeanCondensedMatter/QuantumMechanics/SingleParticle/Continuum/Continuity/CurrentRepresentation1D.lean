@@ -8,7 +8,7 @@ set_option linter.style.header false
 # Local current representations for one-dimensional Schwartz wavefunctions
 
 This module connects the representation-independent weak-current API to a concrete one-dimensional
-continuum realization.  Real Schwartz test functions are differentiated by the canonical Schwartz
+continuum realization. Real Schwartz test functions are differentiated by the canonical Schwartz
 derivative, and a real Schwartz current density `j` is paired with a test 1-form `α` by
 
 `∫ x, α x * j x`.
@@ -17,9 +17,9 @@ Because differentiation, multiplication, and integration are all bundled linear 
 space, this gives an actual `ConservationLaw.LocalCurrentDensityRepresentation` rather than a
 pointwise formula carrying separate integrability hypotheses.
 
-The second part bundles the usual Schrödinger probability current of a complex Schwartz
-wavefunction as a real Schwartz current density and proves the whole-space weak continuity identity
-for arbitrary real Schwartz test functions.
+The second part bundles the usual Schrödinger probability current and its charge multiple as real
+Schwartz current densities, then proves the whole-space weak probability-continuity identity for
+arbitrary real Schwartz test functions.
 -/
 
 namespace QuantumMechanics
@@ -79,6 +79,20 @@ theorem schwartzProbabilityCurrent1D_apply
   change (2 * κ / ℏ) *
       schwartzProbabilityCurrentPairing1D ψ (schwartzSpatialDerivative1D ψ) x = _
   rw [schwartzProbabilityCurrentPairing1D_apply]
+  rfl
+
+/-- Charge current obtained by scaling the bundled Schwartz probability current by `q`. -/
+noncomputable def schwartzChargeCurrent1D
+    (q ℏ κ : ℝ) (ψ : SchwartzMap ℝ ℂ) : SchwartzMap ℝ ℝ :=
+  q • schwartzProbabilityCurrent1D ℏ κ ψ
+
+@[simp]
+theorem schwartzChargeCurrent1D_apply
+    (q ℏ κ : ℝ) (ψ : SchwartzMap ℝ ℂ) (x : ℝ) :
+    schwartzChargeCurrent1D q ℏ κ ψ x =
+      chargeCurrentValue1D q ℏ κ (ψ x) (schwartzSpatialDerivative1D ψ x) := by
+  change q * schwartzProbabilityCurrent1D ℏ κ ψ x = _
+  rw [schwartzProbabilityCurrent1D_apply]
   rfl
 
 /-- The canonical derivative on real one-dimensional Schwartz test functions, regarded as a linear
@@ -152,6 +166,16 @@ noncomputable def schwartzProbabilityCurrentRepresentation1D
       schwartzLocalCurrentPairing1D :=
   schwartzLocalCurrentDensityRepresentation1D (schwartzProbabilityCurrent1D ℏ κ ψ)
 
+/-- The usual Schrödinger charge current is a local current-density representation obtained by
+scaling the probability current by the particle charge. -/
+noncomputable def schwartzChargeCurrentRepresentation1D
+    (q ℏ κ : ℝ) (ψ : SchwartzMap ℝ ℂ) :
+    ConservationLaw.LocalCurrentDensityRepresentation
+      schwartzDifferential1D
+      (schwartzWeakTransportFunctional1D (schwartzChargeCurrent1D q ℏ κ ψ))
+      schwartzLocalCurrentPairing1D :=
+  schwartzLocalCurrentDensityRepresentation1D (schwartzChargeCurrent1D q ℏ κ ψ)
+
 /-- Spatial differentiation of the bundled Schwartz probability current gives the standard
 probability-current divergence. -/
 theorem deriv_schwartzProbabilityCurrent1D
@@ -177,7 +201,7 @@ theorem deriv_schwartzProbabilityCurrent1D
 /-- Whole-space weak Schrödinger continuity for an arbitrary real Schwartz test function.
 
 The right-hand side is exactly the transport functional represented by the bundled local
-probability-current density.  No separate spatial integrability or boundary assumptions are needed
+probability-current density. No separate spatial integrability or boundary assumptions are needed
 because both the test and current are Schwartz functions. -/
 theorem schrodinger_weak_continuity_wholeSpace_of_schwartz
     (ℏ κ : ℝ) (hℏ : ℏ ≠ 0)
