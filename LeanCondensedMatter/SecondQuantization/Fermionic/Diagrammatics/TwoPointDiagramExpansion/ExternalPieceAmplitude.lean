@@ -59,7 +59,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedExternalFixedTimeValue_eq_external
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     d.mixedExternalFixedTimeValue ε β g τ τ' σ =
-      d.externalPiece.fixedTimeAmplitude ε β g τ τ' (d.externalPieceTimes σ) := by
+      d.externalPiece.fixedTimeAmplitude ε β g τ τ' (d.1.externalPieceTimes σ) := by
   unfold FixedExternalTwoPointWickDiagram.mixedExternalFixedTimeValue
   unfold FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
   rw [d.mixedComponentVertexWeight_externalComponentPart_eq_externalPiece g,
@@ -67,14 +67,14 @@ theorem FixedExternalTwoPointWickDiagram.mixedExternalFixedTimeValue_eq_external
   change
     twoPointExternalOrderSign τ τ' *
         (orderedTwoPointVertexWeight g d.externalPiece.vertexLabelSequence *
-          orderedTwoPointPairingValue ε β i j τ τ' (d.externalPieceTimes σ)
+          orderedTwoPointPairingValue ε β i j τ τ' (d.1.externalPieceTimes σ)
             d.externalPiece.vertexLabelSequence
-            (d.externalPiece.1.pairingInMixedOrder τ τ' (d.externalPieceTimes σ))) =
+            (d.externalPiece.1.pairingInMixedOrder τ τ' (d.1.externalPieceTimes σ))) =
       twoPointExternalOrderSign τ τ' *
         orderedTwoPointVertexWeight g d.externalPiece.vertexLabelSequence *
-          orderedTwoPointPairingValue ε β i j τ τ' (d.externalPieceTimes σ)
+          orderedTwoPointPairingValue ε β i j τ τ' (d.1.externalPieceTimes σ)
             d.externalPiece.vertexLabelSequence
-            (d.externalPiece.1.pairingInMixedOrder τ τ' (d.externalPieceTimes σ))
+            (d.externalPiece.1.pairingInMixedOrder τ τ' (d.1.externalPieceTimes σ))
   ring
 
 /-- The Dyson-signed external factor is the standalone external piece's Dyson-signed fixed-time
@@ -84,7 +84,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedExternalDysonFixedTimeValue_eq_ext
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     d.mixedExternalDysonFixedTimeValue ε β g τ τ' σ =
-      d.externalPiece.dysonFixedTimeAmplitude ε β g τ τ' (d.externalPieceTimes σ) := by
+      d.externalPiece.dysonFixedTimeAmplitude ε β g τ τ' (d.1.externalPieceTimes σ) := by
   unfold FixedExternalTwoPointWickDiagram.mixedExternalDysonFixedTimeValue
   rw [d.mixedExternalFixedTimeValue_eq_externalPiece ε β g τ τ' σ]
   unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonSign
