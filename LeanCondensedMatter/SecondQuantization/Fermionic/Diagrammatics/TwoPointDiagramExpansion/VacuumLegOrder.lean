@@ -19,6 +19,8 @@ slots.
 namespace SecondQuantization
 namespace Fermionic
 
+open Common
+
 /-- View a leg in the fixed ordered quartic enumeration as the corresponding interaction leg of a
 two-point enumeration with the same interaction slots. -/
 noncomputable def orderedQuarticLegToTwoPointLeg {n : ℕ}
