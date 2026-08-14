@@ -96,6 +96,15 @@ theorem eq_localize (e : (Σ i, slot i) ≃ κ) (i : ι)
 
 end DependentSlotEquiv
 
+/-- Product of local integrands after embedding their coordinates into an arbitrary ambient total.
+This is the `FamilySlotShuffleTo` form used when the ambient cardinality is only propositionally
+equal to the sum of local block sizes. -/
+noncomputable def FamilySlotShuffleTo.ambientIntegrand {ι : Type*} [Fintype ι]
+    {size : ι → ℕ} {total : ℕ} (shuffle : FamilySlotShuffleTo size total)
+    (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
+    (τ : Fin total → ℝ) : ℂ :=
+  ∏ i, localIntegrand i (fun j => τ (shuffle.slotEquiv ⟨i, j⟩))
+
 variable {ι : Type*} [Fintype ι]
 
 /-- Restrict an ambient time assignment to one local block. -/
