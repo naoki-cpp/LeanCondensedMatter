@@ -46,7 +46,7 @@ private theorem FixedExternalTwoPointWickDiagram.componentTimeEq_of_canonicalAss
         d.1.canonicalComponentInteractionShuffle.slotEquiv σ B =
       DependentSlotEquiv.assignment
         d.1.canonicalComponentInteractionShuffle.slotEquiv υ B) :
-    d.ComponentTimeEq B
+    d.1.ComponentTimeEq B
       (ambientToTwoPointSlotTimeCanonical σ)
       (ambientToTwoPointSlotTimeCanonical υ) := by
   have hRestricted :
