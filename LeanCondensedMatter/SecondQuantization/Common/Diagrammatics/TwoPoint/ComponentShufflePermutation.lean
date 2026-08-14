@@ -12,10 +12,10 @@ This module packages that permutation and records how arbitrary shuffled local-t
 and shuffled products are obtained from the canonical ones by precomposing the ambient time
 assignment with it.
 
-For standard two-point diagrams on `Fin n`, it also transports the ambient permutation from
-`Fin univ.card` to the explicit interaction-slot type `Fin n` and packages the corresponding
-interaction-vertex relabeling. All of this is combinatorial and independent of particle statistics,
-operator realization, or physical amplitudes.
+For standard two-point diagrams on `Fin n`, it also transports the ambient permutation and time
+coordinates between `Fin univ.card` and the explicit interaction-slot type `Fin n`, and packages the
+corresponding interaction-vertex relabeling. All of this is combinatorial and independent of particle
+statistics, operator realization, or physical amplitudes.
 -/
 
 namespace SecondQuantization
@@ -98,6 +98,26 @@ theorem TwoPointDiagram.ComponentInteractionShuffle.interactionComponentShuffleI
 def ambientToTwoPointSlotTimePermutation {n : ℕ}
     (σ : Fin (Finset.univ : Finset (Fin n)).card → ℝ) : Fin n → ℝ :=
   fun i => σ (Fin.cast (by simp) i)
+
+/-- Convert an explicit `Fin n` time assignment back to the canonically equal ambient
+`Fin univ.card` slot type. -/
+def twoPointSlotToAmbientTimePermutation {n : ℕ}
+    (σ : Fin n → ℝ) : Fin (Finset.univ : Finset (Fin n)).card → ℝ :=
+  fun i => σ (Fin.cast (by simp) i)
+
+@[simp]
+theorem ambientToTwoPointSlotTimePermutation_twoPointSlotToAmbientTimePermutation
+    {n : ℕ} (σ : Fin n → ℝ) :
+    ambientToTwoPointSlotTimePermutation (twoPointSlotToAmbientTimePermutation σ) = σ := by
+  funext i
+  simp [ambientToTwoPointSlotTimePermutation, twoPointSlotToAmbientTimePermutation]
+
+@[simp]
+theorem twoPointSlotToAmbientTimePermutation_ambientToTwoPointSlotTimePermutation
+    {n : ℕ} (σ : Fin (Finset.univ : Finset (Fin n)).card → ℝ) :
+    twoPointSlotToAmbientTimePermutation (ambientToTwoPointSlotTimePermutation σ) = σ := by
+  funext i
+  simp [ambientToTwoPointSlotTimePermutation, twoPointSlotToAmbientTimePermutation]
 
 /-- Injectivity is preserved when the ambient `Fin univ.card` time assignment is viewed on the
 explicit standard slot type `Fin n`. -/
