@@ -116,15 +116,15 @@ interaction-time assignments agree on that component. -/
 theorem FixedExternalTwoPointWickDiagram.mixedTimeOrderedAtomicOperatorFamily_positionTimeEquiv
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts) (hTime : d.ComponentTimeEq B σ υ)
-    (p : d.MixedComponentPosition τ τ' σ B) :
+    (B : d.1.componentPartition.parts) (hTime : d.1.ComponentTimeEq B σ υ)
+    (p : d.1.MixedComponentPosition τ τ' σ B) :
     mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence υ
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 =
+        (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 =
       mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ p.1 := by
   rw [mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegOperator,
     mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegOperator,
-    d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p]
-  have hEventTime := d.componentPosition_eventTime_eq τ τ' σ υ B hTime p
+    d.1.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p]
+  have hEventTime := d.1.componentPosition_eventTime_eq τ τ' σ υ B hTime p
   generalize hleg : mixedTimeOrderedAtomicLegEquiv τ τ' σ p.1 = leg at hEventTime ⊢
   cases leg with
   | inl e =>
@@ -145,7 +145,7 @@ attached to one normalized pair under canonical pair-time transport. -/
 theorem FixedExternalTwoPointWickDiagram.mixedPairContractionValue_eq_of_componentTimeEq
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts) (hTime : d.ComponentTimeEq B σ υ)
+    (B : d.1.componentPartition.parts) (hTime : d.1.ComponentTimeEq B σ υ)
     (p : d.MixedComponentPair τ τ' σ B) :
     d.mixedPairContractionValue ε β τ τ' σ p.1 =
       d.mixedPairContractionValue ε β τ τ' υ
@@ -155,9 +155,9 @@ theorem FixedExternalTwoPointWickDiagram.mixedPairContractionValue_eq_of_compone
   let p1 := d.mixedComponentPairEndpointEquiv τ τ' σ B (p, 1)
   have hEnds :
       d.mixedComponentPairEndpointEquiv τ τ' υ B (tp, 0) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0 ∧
+          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p0 ∧
         d.mixedComponentPairEndpointEquiv τ τ' υ B (tp, 1) =
-          d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1 := by
+          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p1 := by
     simpa [tp, p0, p1] using
       d.mixedComponentPairTimeEquiv_endpoints_eq τ τ' σ υ B hTime p
   have hOp0 :=
@@ -185,7 +185,7 @@ transport. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentContractionPreserving_of_componentTimeEq
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts) (hTime : d.ComponentTimeEq B σ υ) :
+    (B : d.1.componentPartition.parts) (hTime : d.1.ComponentTimeEq B σ υ) :
     d.MixedComponentContractionPreserving ε β τ τ' σ υ B := by
   intro p
   exact d.mixedPairContractionValue_eq_of_componentTimeEq
@@ -196,7 +196,7 @@ component. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_eq_of_componentTimeEq
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts) (hTime : d.ComponentTimeEq B σ υ) :
+    (B : d.1.componentPartition.parts) (hTime : d.1.ComponentTimeEq B σ υ) :
     d.mixedComponentPairingValue ε β τ τ' σ B =
       d.mixedComponentPairingValue ε β τ τ' υ B :=
   d.mixedComponentPairingValue_eq_of_timeTransport ε β τ τ' σ υ B
