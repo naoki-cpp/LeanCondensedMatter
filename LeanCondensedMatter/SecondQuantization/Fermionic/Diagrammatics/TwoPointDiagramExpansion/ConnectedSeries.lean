@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DysonSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ComponentAmplitudeFactorization
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentDecomposition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ConnectedOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitConnectivity
 
 set_option linter.style.header false
@@ -14,30 +14,16 @@ that `ComponentAmplitudeFactorization` splits off are exactly what the division 
 series removes.
 
 Connectedness is the ambient `TwoPointDiagram.IsExternallyConnected`. The Common two-point layer
-owns the slot characterization
-`TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq`: a diagram is externally
-connected exactly when its external component owns every interaction slot. That is the form
-`externalFiberEquiv` indexes the fiber decomposition by, so it identifies the connected diagrams
-with the `T = univ` fiber.
+owns its slot characterization and order consequences, so this Fermionic module only specializes
+those structural facts to the physical connected-series coefficients and amplitudes.
 
-This module owns the connected series itself; the generic connectivity theorem does not belong here.
+This module owns the connected series itself; generic connectivity structure is Common-owned.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
-
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- A connected diagram's external component owns all `n` interaction slots. -/
-theorem FixedExternalTwoPointWickDiagram.interactionComponentSize_externalComponentPart_of_connected
-    (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (hconn : d.1.IsExternallyConnected) :
-    d.1.interactionComponentSize d.1.externalComponentPart = n := by
-  have hsize : d.1.interactionComponentSize d.1.externalComponentPart =
-      d.1.externalInteractionPart.card := rfl
-  rw [hsize, (Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq d.1).1 hconn,
-    Finset.card_univ, Fintype.card_fin]
 
 /-- **On a connected diagram the shuffle-orbit sum is a single ordered-simplex integral.** There is
 no vacuum factor left: the external component owns everything. -/
@@ -78,15 +64,6 @@ theorem coeff_connectedTwoPointDysonSeries (ε : Mode → ℝ) (β : ℝ)
       connectedTwoPointDysonCoefficient ε β g i j τ τ' n :=
   PowerSeries.coeff_mk n _
 
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- At order zero there are no interaction slots, so every diagram is connected. -/
-theorem isExternallyConnected_of_zero (d : FixedExternalTwoPointWickDiagram Mode 0 i j) :
-    d.1.IsExternallyConnected := by
-  rw [Common.TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq]
-  apply Finset.eq_univ_of_forall
-  intro x
-  exact x.elim0
-
 open Classical in
 /-- Hence the order-zero connected coefficient is the whole order-zero diagram sum: the free
 two-point function has no vacuum part to remove. -/
@@ -95,7 +72,7 @@ theorem connectedTwoPointDysonCoefficient_zero (ε : Mode → ℝ) (β : ℝ)
     connectedTwoPointDysonCoefficient ε β g i j τ τ' 0 =
       ∑ d : FixedExternalTwoPointWickDiagram Mode 0 i j, d.dysonAmplitude ε β g τ τ' := by
   rw [connectedTwoPointDysonCoefficient,
-    Finset.filter_true_of_mem fun d _ => isExternallyConnected_of_zero d]
+    Finset.filter_true_of_mem fun d _ => d.1.isExternallyConnected_of_order_zero]
 
 end Fermionic
 end SecondQuantization
