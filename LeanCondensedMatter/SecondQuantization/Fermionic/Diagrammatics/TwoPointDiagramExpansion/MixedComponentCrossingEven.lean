@@ -1,3 +1,4 @@
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Reindexing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentCrossing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.CrossingParity
 
@@ -486,8 +487,7 @@ theorem FixedExternalTwoPointWickDiagram.pairingInMixedOrder_weight_eq_prod_comp
   d.1.pairingInMixedOrder_weight_eq_prod_components s τ τ' σ
     (d.mixedComponentGeometricCrossingCount_mod_two_eq_zero τ τ' σ)
 
-theorem
-    FixedExternalTwoPointWickDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum_unconditional
+theorem FixedExternalTwoPointWickDiagram.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum_unconditional
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (s : Common.Statistics) (τ τ' : ℝ) (σ : Fin n → ℝ) :
     (d.1.pairingInMixedOrder τ τ' σ).weight s =
