@@ -28,6 +28,17 @@ noncomputable def FixedExternalTwoPointWickDiagram.relabelForComponentShuffle
   ⟨d.1.relabelForComponentShuffle shuffle, by simpa using d.2⟩
 
 omit [LinearOrder Mode] [Fintype Mode] in
+/-- The fixed-external lift is exactly the existing interaction-relabel lift at the Common-owned
+component-shuffle slot permutation. -/
+theorem FixedExternalTwoPointWickDiagram.relabelForComponentShuffle_eq_relabelInteractionVertices
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (shuffle : d.1.ComponentInteractionShuffle) :
+    d.relabelForComponentShuffle shuffle =
+      d.relabelInteractionVertices (d.1.componentShuffleSlotPermutation shuffle).symm := by
+  apply Subtype.ext
+  rfl
+
+omit [LinearOrder Mode] [Fintype Mode] in
 @[simp]
 theorem FixedExternalTwoPointWickDiagram.relabelForComponentShuffle_vertexLabelSequence
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
