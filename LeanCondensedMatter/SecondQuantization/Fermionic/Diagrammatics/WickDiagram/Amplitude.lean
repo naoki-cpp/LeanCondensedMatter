@@ -56,6 +56,13 @@ theorem orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation
             (orderedQuarticLegOperator ε d order τ b))) :=
   rfl
 
+/-! ## Coupling weight compatibility -/
+
+/-- Fermionic compatibility name for the statistics-independent Common quartic vertex weight. -/
+noncomputable def QuarticWickDiagram.couplingWeight {S : Finset (Fin N)}
+    (d : QuarticWickDiagram Mode N S) (g : QuarticVertexLabel Mode → ℂ) : ℂ :=
+  d.vertexWeight g
+
 /-! ## Fixed-order Wick integrand and ordered-simplex contribution -/
 
 /-- The fixed-order Wick contraction integrand. -/
