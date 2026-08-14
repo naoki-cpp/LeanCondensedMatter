@@ -4,24 +4,21 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Slot
 set_option linter.style.header false
 
 /-!
-# Coordinates of a fixed external-slot fiber under a binary slot shuffle
+# Slot-shuffle coordinates for two-point diagram fibers
 
-The coefficientwise Cauchy-product proof groups external-slot fibers by the number of slots in the
-external component.  A `SlotShuffle m k` then records which of the `m + k` ambient interaction slots
-belong to that component.  The analytic shuffle theorem uses the shuffle's left/right slot maps,
-while the canonical fiber uses increasing `Finset` enumerations of the external set and its
-complement.
+A `SlotShuffle m k` records which of the `m + k` ambient interaction slots belong to the left and
+right factors of a binary shuffle.  Canonical slot-split constructions use increasing `Finset`
+enumerations of a chosen slot set and its complement.
 
-This module identifies those coordinate maps.  The statements are deliberately tied to the
-canonical fiber route: no second diagram decomposition or mixed-position factorization is
-introduced.
+This module identifies those canonical enumerations with the left/right slot maps of the shuffle.
+The statements are purely combinatorial and independent of particle statistics, field operators,
+or amplitudes.
 -/
 
 namespace SecondQuantization
-namespace Fermionic
+namespace Common
 
 open Combinatorics
-open Common
 
 /-- The canonical increasing enumeration of a shuffle's left-slot set is its left slot map. -/
 theorem slotShuffleLeftSlots_orderEmbOfFin {m k : ℕ}
@@ -66,9 +63,9 @@ theorem slotShuffleSdiffLeftSlots_orderEmbOfFin {m k : ℕ}
     shuffle.strictMonoRight
   exact congrFun h.symm j
 
-/-- The inherited vacuum-slot map of the canonical fiber is the right slot map of the shuffle,
+/-- The inherited vacuum-slot map of a canonical slot split is the right slot map of the shuffle,
 after the unique cardinality cast from the complement to `Fin k`. -/
-theorem fixedExternalVacuumSlot_leftSlots_eq_slotShuffleRight
+theorem slotSplitVacuumSlot_leftSlots_eq_slotShuffleRight
     {m k : ℕ} (shuffle : BinaryShuffle.SlotShuffle m k) (j : Fin k) :
     slotSplitVacuumSlot shuffle.leftSlots
         (Fin.cast (slotShuffle_card_sdiff_leftSlots shuffle).symm j) =
@@ -81,5 +78,5 @@ theorem fixedExternalVacuumSlot_leftSlots_eq_slotShuffleRight
   apply Fin.ext
   rfl
 
-end Fermionic
+end Common
 end SecondQuantization
