@@ -94,9 +94,8 @@ theorem continuumL2ChargeDensity1D_oneParticle_real
       AlgebraicFock.oneParticle ContinuumL2Wavefunction1D
         (((q : ℂ) • L2MultiplicationRealLine.multiplicationOperator
           (L2MultiplicationRealLine.realMultiplier test htest)) ψ) := by
-  simpa using
-    continuumL2ChargeDensity1D_oneParticle (q : ℂ)
-      (L2MultiplicationRealLine.realMultiplier test htest) ψ
+  rw [continuumL2ChargeDensity1D_oneParticle]
+  rfl
 
 end
 end Field
