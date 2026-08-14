@@ -63,6 +63,7 @@ def check_layout(errors: list[str]) -> None:
     expected_field = {
         "ChargeDensity.lean",
         "ContinuumChargeDensity1D.lean",
+        "ContinuumL2ChargeDensity1D.lean",
         "GeneralizedQuantity.lean",
     }
     unexpected = sorted(field_lean - expected_field)

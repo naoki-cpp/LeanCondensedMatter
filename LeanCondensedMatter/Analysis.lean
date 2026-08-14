@@ -32,6 +32,7 @@ import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerat
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGeneratorEquation
 import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
 import LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine
+import LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine.Linear
 import LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct
