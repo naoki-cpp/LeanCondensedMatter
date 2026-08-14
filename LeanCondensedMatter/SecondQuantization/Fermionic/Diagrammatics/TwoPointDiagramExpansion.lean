@@ -1,6 +1,8 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.TwoPointLegEmbedding
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairing
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairImage
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairComponent
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.InteractionVertexRelabelCovariance
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.InteractionVertexRelabelIntegralCovariance
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentShuffleIntegrability
@@ -16,9 +18,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberDecomposition
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberExternalPiece
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumPrefactor
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumPairImage
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumPairContraction
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumPairComponent
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumPairWeight
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumIntegrand
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberProductIntegrand
@@ -32,10 +32,10 @@ set_option linter.style.header false
 # Fermionic two-point diagram expansion
 
 Finite-mode imaginary-time two-point Wick diagrams with quartic interaction vertices: Common-owned
-mixed event/leg ordering, quartic-to-two-point leg embeddings, slot-split vacuum pairing transport,
-and binary slot-shuffle coordinates; fermionic flattening and fixed-external amplitudes;
-external/vacuum component restriction and factorization; measurable and integrable component-local
-factors; ordered-simplex component shuffles; interaction-slot relabeling; external-component
-restriction; exchange of the finite diagram sum with the ordered-simplex integral; and the
-perturbative two-point series assembled from the order-`n` coefficients.
+mixed event/leg ordering, quartic-to-two-point leg embeddings, slot-split vacuum pairing and
+vacuum-pair image/component transport, and binary slot-shuffle coordinates; fermionic flattening and
+fixed-external amplitudes; external/vacuum component restriction and factorization; measurable and
+integrable component-local factors; ordered-simplex component shuffles; interaction-slot relabeling;
+external-component restriction; exchange of the finite diagram sum with the ordered-simplex
+integral; and the perturbative two-point series assembled from the order-`n` coefficients.
 -/
