@@ -221,19 +221,6 @@ noncomputable def TwoPointDiagram.vacuumBlockLegEquiv {S : Finset (Fin N)}
       (quarticLegEquiv (TwoPointDiagram.interactionPart
         (B : Finset (TwoPointVertex S)))).symm)
 
-private theorem permCongr_involutive {α β : Type*} (e : α ≃ β)
-    (p : Equiv.Perm α) (hp : Function.Involutive p) :
-    Function.Involutive (e.permCongr p) := by
-  intro x
-  simp [Equiv.permCongr_apply, hp (e.symm x)]
-
-private theorem permCongr_ne_self {α β : Type*} (e : α ≃ β)
-    (p : Equiv.Perm α) (hp : ∀ x, p x ≠ x) (x : β) :
-    e.permCongr p x ≠ x := by
-  intro h
-  rw [Equiv.permCongr_apply, Equiv.apply_eq_iff_eq_symm_apply] at h
-  exact hp _ h
-
 /-- The perfect pairing induced on a vacuum component. -/
 noncomputable def TwoPointDiagram.restrictedVacuumPairing {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
@@ -242,8 +229,9 @@ noncomputable def TwoPointDiagram.restrictedVacuumPairing {S : Finset (Fin N)}
       (B : Finset (TwoPointVertex S))).card) :=
   Pairing.ofPartner
     ((d.vacuumBlockLegEquiv B hVac).permCongr (d.restrictedPartner B))
-    ⟨permCongr_involutive _ _ (d.restrictedPartner_involutive B),
-      permCongr_ne_self _ _ (d.restrictedPartner_ne_self B)⟩
+    (IsPairing.permCongr
+      ⟨d.restrictedPartner_involutive B, d.restrictedPartner_ne_self B⟩
+      (d.vacuumBlockLegEquiv B hVac))
 
 /-- The restricted vacuum pairing agrees with the ambient partner under the vacuum leg
 reindexing. -/
