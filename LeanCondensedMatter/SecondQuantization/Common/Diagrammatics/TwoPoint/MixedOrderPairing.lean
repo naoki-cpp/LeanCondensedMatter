@@ -29,6 +29,34 @@ noncomputable def mixedTimeAmbientPositionEquiv {n : ℕ}
       Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1)) :=
   (standardToMixedAtomicPositionEquiv τ τ' σ).symm.trans (finCongr (by simp))
 
+/-- Unflattening the standard ambient position underlying a mixed position recovers the atomic leg
+identity stored at that mixed position. -/
+theorem twoPointLegEquiv_mixedTimeAmbientPositionEquiv {n : ℕ}
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + 1))) :
+    twoPointLegEquiv (Finset.univ : Finset (Fin n))
+        (mixedTimeAmbientPositionEquiv τ τ' σ p) =
+      mixedTimeOrderedAtomicLegEquiv τ τ' σ p := by
+  unfold mixedTimeAmbientPositionEquiv standardToMixedAtomicPositionEquiv
+  rw [← (twoPointLegEquiv (Finset.univ : Finset (Fin n))).apply_symm_apply
+    (mixedTimeOrderedAtomicLegEquiv τ τ' σ p)]
+  apply congrArg (twoPointLegEquiv (Finset.univ : Finset (Fin n)))
+  apply Fin.ext
+  rfl
+
+@[simp]
+theorem mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv {n : ℕ}
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + 1))) :
+    mixedTimeOrderedAtomicLegPosition τ τ' σ
+        (mixedTimeOrderedAtomicLegEquiv τ τ' σ p) = p := by
+  exact (mixedTimeOrderedAtomicLegEquiv τ τ' σ).symm_apply_apply p
+
+@[simp]
+theorem mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition {n : ℕ}
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (leg : OrderedTwoPointLeg n) :
+    mixedTimeOrderedAtomicLegEquiv τ τ' σ
+        (mixedTimeOrderedAtomicLegPosition τ τ' σ leg) = leg := by
+  exact (mixedTimeOrderedAtomicLegEquiv τ τ' σ).apply_symm_apply leg
+
 /-- A generic two-point diagram pairing transported into mixed-time atomic order. -/
 noncomputable def TwoPointDiagram.pairingInMixedOrder
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
@@ -48,7 +76,6 @@ private theorem pairingCast_partner {m n : ℕ} (h : m = n)
   subst n
   rfl
 
-/-- The slot-count cast of a pairing intertwines partners with the corresponding cast of positions. -/
 private theorem orderedTwoPointPairingCastEquiv_partner {n : ℕ}
     (pairing : Pairing (2 * (Finset.univ : Finset (Fin n)).card + 1))
     (p : Fin (2 * (2 * n + 1))) :
@@ -89,6 +116,44 @@ theorem TwoPointDiagram.mixedTimeAmbientPositionEquiv_partner
   rw [(standardToMixedAtomicPositionEquiv τ τ' σ).symm_apply_apply]
   exact orderedTwoPointPairingCastEquiv_partner d.pairing
     ((standardToMixedAtomicPositionEquiv τ τ' σ).symm p)
+
+/-- The diagram pairing as a map on atomic leg identities; this map is independent of the mixed-time
+enumeration. -/
+noncomputable def TwoPointDiagram.atomicLegPartner
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (leg : OrderedTwoPointLeg n) : OrderedTwoPointLeg n :=
+  twoPointLegEquiv (Finset.univ : Finset (Fin n))
+    (d.pairing.partner
+      ((twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm leg))
+
+/-- The mixed-order partner is the time-independent leg partner conjugated by the mixed enumeration. -/
+theorem TwoPointDiagram.pairingInMixedOrder_partner_eq_atomicLegPartner
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + 1))) :
+    (d.pairingInMixedOrder τ τ' σ).partner p =
+      mixedTimeOrderedAtomicLegPosition τ τ' σ
+        (d.atomicLegPartner (mixedTimeOrderedAtomicLegEquiv τ τ' σ p)) := by
+  apply (mixedTimeOrderedAtomicLegEquiv τ τ' σ).injective
+  rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition,
+    ← twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
+    ← twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
+    d.mixedTimeAmbientPositionEquiv_partner]
+  rw [TwoPointDiagram.atomicLegPartner,
+    (twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm_apply_apply]
+
+/-- The mixed-order partner of the position selected by a leg identity is the position selected by
+the partner leg. -/
+theorem TwoPointDiagram.pairingInMixedOrder_partner_legPosition
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (leg : OrderedTwoPointLeg n) :
+    (d.pairingInMixedOrder τ τ' σ).partner
+        (mixedTimeOrderedAtomicLegPosition τ τ' σ leg) =
+      mixedTimeOrderedAtomicLegPosition τ τ' σ (d.atomicLegPartner leg) := by
+  rw [d.pairingInMixedOrder_partner_eq_atomicLegPartner,
+    mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
 
 end Common
 end SecondQuantization
