@@ -35,7 +35,7 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 /-- **Shuffle-orbit amplitude sum.** The integrated Dyson amplitudes of the component-shuffle
 relabelings of a diagram sum to the external ordering sign times the product of the component-local
 integrated factors. -/
-theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_dysonAmplitude_relabelForComponentShuffle_eq_prod
+theorem FixedExternalTwoPointWickDiagram.sum_componentShuffleDysonAmplitude_eq_prod
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β) (g : QuarticVertexLabel Mode → ℂ) (τ τ' : ℝ) :
     (∑ shuffle : d.1.ComponentInteractionShuffle,
@@ -68,7 +68,7 @@ theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_dysonAm
       ← d.orderedSimplexIntegral_externalSign_mul_componentShuffleIntegrand ε β hβ g τ τ' shuffle,
       intervalIntegral.orderedSimplexIntegral_smul]
   rw [Finset.sum_congr rfl fun shuffle _ => hterm shuffle, ← Finset.mul_sum,
-    d.sum_componentInteractionShuffle_orderedSimplexIntegral_mixedComponentDysonLocalIntegrand_eq_prod
+    d.sum_mixedComponentDysonLocalIntegral_eq_prod
       ε β g τ τ' d.1.canonicalComponentInteractionShuffle]
 
 /-- **Shuffle-orbit amplitude sum, split into external and vacuum.** The product over all components
@@ -77,7 +77,7 @@ regroups into the external component and the vacuum ones.
 This is the form the linked-cluster factorization consumes: one distinguished factor carrying the
 external legs, and a product of vacuum factors. No sign is left over between them — cross-component
 crossings are even. -/
-theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_dysonAmplitude_relabelForComponentShuffle_eq_external_mul_prod_vacuum
+theorem FixedExternalTwoPointWickDiagram.sum_componentShuffleDysonAmplitude_eq_external_mul_prod_vacuum
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β) (g : QuarticVertexLabel Mode → ℂ) (τ τ' : ℝ) :
     (∑ shuffle : d.1.ComponentInteractionShuffle,
@@ -91,8 +91,7 @@ theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_dysonAm
             intervalIntegral.orderedSimplexIntegral (d.1.interactionComponentSize B) β
               (d.mixedComponentDysonLocalIntegrand ε β g τ τ'
                 d.1.canonicalComponentInteractionShuffle B)) := by
-  rw [d.sum_componentInteractionShuffle_dysonAmplitude_relabelForComponentShuffle_eq_prod
-      ε β hβ g τ τ',
+  rw [d.sum_componentShuffleDysonAmplitude_eq_prod ε β hβ g τ τ',
     d.1.prod_componentParts_eq_external_mul_prod_vacuum fun B =>
       intervalIntegral.orderedSimplexIntegral (d.1.interactionComponentSize B) β
         (d.mixedComponentDysonLocalIntegrand ε β g τ τ'

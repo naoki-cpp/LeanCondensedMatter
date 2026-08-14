@@ -215,25 +215,5 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign
   exact d.mixedComponentPairingValue_local_of_timeTransport
     ε β τ τ' shuffle B (hCross B) (hContraction B)
 
-/-- Continuous specialization of the localized signed component ordered-simplex shuffle product
-identity, retained for callers that already have global continuity. -/
-theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_orderedSimplexIntegral_mixedComponentDysonLocalIntegrand_eq_prod_of_continuous
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (baseShuffle : d.1.ComponentInteractionShuffle)
-    (hContinuous : ∀ B : d.1.componentPartition.parts,
-      Continuous (d.mixedComponentDysonLocalIntegrand ε β g τ τ' baseShuffle B)) :
-    (∑ shuffle : d.1.ComponentInteractionShuffle,
-      intervalIntegral.orderedSimplexIntegral
-        (Finset.univ : Finset (Fin n)).card β
-        (d.1.interactionComponentShuffleIntegrand shuffle
-          (d.mixedComponentDysonLocalIntegrand ε β g τ τ' baseShuffle))) =
-      ∏ B : d.1.componentPartition.parts,
-        intervalIntegral.orderedSimplexIntegral
-          (d.1.interactionComponentSize B) β
-          (d.mixedComponentDysonLocalIntegrand ε β g τ τ' baseShuffle B) := by
-  exact d.1.sum_componentInteractionShuffle_orderedSimplexIntegral_eq_prod β
-    (d.mixedComponentDysonLocalIntegrand ε β g τ τ' baseShuffle) hContinuous
-
 end Fermionic
 end SecondQuantization

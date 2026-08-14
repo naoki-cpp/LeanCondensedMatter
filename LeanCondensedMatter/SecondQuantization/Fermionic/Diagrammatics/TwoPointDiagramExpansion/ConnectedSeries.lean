@@ -27,7 +27,7 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
 
 /-- **On a connected diagram the shuffle-orbit sum is a single ordered-simplex integral.** There is
 no vacuum factor left: the external component owns everything. -/
-theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_dysonAmplitude_of_connected
+theorem FixedExternalTwoPointWickDiagram.sum_componentShuffleDysonAmplitude_of_connected
     (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β) (g : QuarticVertexLabel Mode → ℂ) (τ τ' : ℝ)
     (hconn : d.1.IsExternallyConnected) :
@@ -38,8 +38,7 @@ theorem FixedExternalTwoPointWickDiagram.sum_componentInteractionShuffle_dysonAm
           (d.1.interactionComponentSize d.1.externalComponentPart) β
           (d.mixedComponentDysonLocalIntegrand ε β g τ τ'
             d.1.canonicalComponentInteractionShuffle d.1.externalComponentPart) := by
-  rw [d.sum_componentInteractionShuffle_dysonAmplitude_relabelForComponentShuffle_eq_external_mul_prod_vacuum
-      ε β hβ g τ τ',
+  rw [d.sum_componentShuffleDysonAmplitude_eq_external_mul_prod_vacuum ε β hβ g τ τ',
     (Common.TwoPointDiagram.isExternallyConnected_iff_vacuumComponentParts_eq_empty d.1).1 hconn,
     Finset.prod_empty, mul_one]
 
