@@ -56,12 +56,12 @@ theorem orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation
             (orderedQuarticLegOperator ε d order τ b))) :=
   rfl
 
-/-! ## Coupling weight -/
+/-! ## Coupling weight compatibility -/
 
-/-- The product of the coupling over all diagram vertices. -/
+/-- Fermionic compatibility name for the statistics-independent Common quartic vertex weight. -/
 noncomputable def QuarticWickDiagram.couplingWeight {S : Finset (Fin N)}
     (d : QuarticWickDiagram Mode N S) (g : QuarticVertexLabel Mode → ℂ) : ℂ :=
-  ∏ v : ↥S, g (d.vertexLabel v)
+  d.vertexWeight g
 
 /-! ## Fixed-order Wick integrand and ordered-simplex contribution -/
 
@@ -160,8 +160,8 @@ theorem quarticWickDiagramAmplitude_empty (ε : Mode → ℝ) (β : ℝ) (g : Qu
     simp only [QuarticWickDiagram.orderedSimplexContribution]
     simp [QuarticWickDiagram.contractionIntegrand, Combinatorics.Pairing.evaluation,
       Combinatorics.Pairing.pairs, Combinatorics.Pairing.crossingCount]
-  simp only [quarticWickDiagramAmplitude, QuarticWickDiagram.couplingWeight, hcard, pow_zero,
-    one_mul]
+  simp only [quarticWickDiagramAmplitude, QuarticWickDiagram.couplingWeight,
+    Common.QuarticDiagram.vertexWeight, hcard, pow_zero, one_mul]
   have hcoupling : ∏ v : (↥(∅ : Finset (Fin N))), g (d.vertexLabel v) = 1 := by
     have : IsEmpty (↥(∅ : Finset (Fin N))) := Finset.isEmpty_coe_sort.2 rfl
     exact Finset.prod_of_isEmpty _

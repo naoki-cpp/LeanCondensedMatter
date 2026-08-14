@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticThermalAmplitude
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentEvaluation
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentVertexProduct
 
 set_option linter.style.header false
 
@@ -9,8 +10,8 @@ set_option linter.style.header false
 The free thermal field attached to a component-local ordered leg agrees with the field attached to
 its image in an assembled global order. Common's Statistics-generic pairing-evaluation theorem then
 factors the bosonic thermal pairing value over connected components. Combining that result with the
-already-factorized Dyson sign and quartic coupling gives coefficientwise factorization of the full
-ordered thermal amplitude.
+Common scalar prefactor factorization gives coefficientwise factorization of the full ordered thermal
+amplitude.
 -/
 
 namespace SecondQuantization
@@ -86,15 +87,10 @@ theorem QuarticDiagram.orderedThermalAmplitude_eq_prod_components
         QuarticDiagram.orderedThermalAmplitude ε β g (d.restrictComponent B.2) (orders B) := by
   classical
   unfold QuarticDiagram.orderedThermalAmplitude
-  rw [d.dysonSign_eq_prod_componentSigns]
-  have hcoupling :
-      d.couplingWeight g =
-        ∏ B : d.componentPartition.parts,
-          QuarticDiagram.couplingWeight (d.restrictComponent B.2) g := by
-    simpa only [Common.QuarticDiagram.restrictComponentConnected] using
-      d.couplingWeight_eq_prod_restrictComponentConnected g
-  rw [hcoupling, d.orderedThermalPairingValue_eq_prod_components ε β orders shuffle]
-  rw [← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
+  rw [Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_restrictComponentConnected d g]
+  simp only [Common.QuarticDiagram.restrictComponentConnected]
+  rw [d.orderedThermalPairingValue_eq_prod_components ε β orders shuffle]
+  rw [← Finset.prod_mul_distrib]
 
 end
 end Bosonic

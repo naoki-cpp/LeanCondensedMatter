@@ -4,7 +4,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairValue
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentContractionIntegrand
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.AmplitudePrefactorFactorization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.AmplitudeFactorization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonConnectedDiagramExpansion
@@ -22,7 +21,7 @@ order-preserving shuffle decompositions, shuffled ordered-simplex integrands, co
 pairing and fermionic contraction-integrand specialization, and full quartic Wick-amplitude
 factorization over connected components; the Dyson diagram expansion, the connected-diagram formula
 for Dyson vertex cumulants, the general algebraic Dyson Linked Cluster Theorem, and its explicit
-orders-one-through-three regression corollaries. Statistics-independent quartic matching structure
-and Statistics-generic crossing-parity/pairing-weight factorization are owned by
-`SecondQuantization.Common`.
+orders-one-through-three regression corollaries. Statistics-independent quartic matching structure,
+scalar vertex-weight factorization, and Statistics-generic crossing-parity/pairing-weight
+factorization are owned by `SecondQuantization.Common`.
 -/

@@ -24,6 +24,11 @@ structure QuarticDiagram (Label : Type*) (N : ℕ) (S : Finset (Fin N)) where
   /-- Perfect pairing of all quartic legs. -/
   pairing : Pairing (2 * S.card)
 
+/-- Product of a commutative vertex-local weight over all vertices of a quartic diagram. -/
+noncomputable def QuarticDiagram.vertexWeight {M : Type*} [CommMonoid M]
+    {S : Finset (Fin N)} (d : QuarticDiagram Label N S) (w : Label → M) : M :=
+  ∏ v : ↥S, w (d.vertexLabel v)
+
 @[ext]
 theorem QuarticDiagram.ext {S : Finset (Fin N)}
     {d₁ d₂ : QuarticDiagram Label N S} (hv : d₁.vertexLabel = d₂.vertexLabel)

@@ -55,7 +55,7 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonSign_mul_vertexWeight
       vac.couplingWeight g := by
     simpa [d, fixedExternalOfSlotSplit,
       FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight,
-      QuarticWickDiagram.couplingWeight] using
+      QuarticWickDiagram.couplingWeight, Common.QuarticDiagram.vertexWeight] using
       (Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct
         (Finset.subset_univ T) ext.1 vac hext g)
   rw [hsign, hvertex]

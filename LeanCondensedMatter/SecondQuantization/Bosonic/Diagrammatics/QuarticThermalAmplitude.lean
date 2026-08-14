@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticWickExpansion
-import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagramWeight
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagram
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Ordered
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 
@@ -48,7 +48,7 @@ noncomputable def QuarticDiagram.orderedThermalAmplitude [DecidableEq Mode]
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {S : Finset (Fin N)} (d : QuarticDiagram Mode N S)
     (order : Common.QuarticVertexOrder S) : ℂ :=
-  (-1 : ℂ) ^ S.card * d.couplingWeight g * d.orderedThermalPairingValue ε β order
+  (-1 : ℂ) ^ S.card * d.vertexWeight g * d.orderedThermalPairingValue ε β order
 
 /-- The full Wick pairing sum for the ordered vertex labels underlying a quartic diagram. -/
 noncomputable def QuarticDiagram.orderedThermalWickSum [DecidableEq Mode]
