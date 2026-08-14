@@ -60,7 +60,11 @@ def check_layout(errors: list[str]) -> None:
         errors.append("obsolete Fermionic.Field.Validation tree still exists")
 
     field_lean = {p.name for p in FIELD.glob("*.lean")}
-    expected_field = {"ChargeDensity.lean", "ContinuumChargeDensity1D.lean"}
+    expected_field = {
+        "ChargeDensity.lean",
+        "ContinuumChargeDensity1D.lean",
+        "GeneralizedQuantity.lean",
+    }
     unexpected = sorted(field_lean - expected_field)
     if unexpected:
         errors.append("Fermionic.Field still owns unrelated leaf modules: " + ", ".join(unexpected))
