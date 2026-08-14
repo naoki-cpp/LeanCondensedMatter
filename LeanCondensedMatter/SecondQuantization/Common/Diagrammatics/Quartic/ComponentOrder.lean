@@ -40,23 +40,6 @@ noncomputable def QuarticDiagram.assembleVertexOrder {S : Finset (Fin N)}
     (shuffle : d.ComponentShuffle) : QuarticVertexOrder S :=
   d.componentPartition.assembleOrder orders shuffle
 
-@[simp]
-theorem QuarticDiagram.assembleVertexOrder_apply {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) (orders : d.ComponentVertexOrders)
-    (shuffle : d.ComponentShuffle) (i : Fin S.card) :
-    d.assembleVertexOrder orders shuffle i =
-      d.componentVertexEquiv orders (shuffle.slotEquiv.symm i) :=
-  rfl
-
-@[simp]
-theorem QuarticDiagram.assembleVertexOrder_symm_componentVertexEquiv
-    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (x : Σ B : d.componentPartition.parts, Fin (B : Finset (Fin N)).card) :
-    (d.assembleVertexOrder orders shuffle).symm (d.componentVertexEquiv orders x) =
-      shuffle.slotEquiv x := by
-  exact d.componentPartition.assembleOrder_symm_partEquiv orders shuffle x
-
 /-- A family of component-local orders is compatible with a global order when each component appears
 in the global slots in precisely that local order. -/
 noncomputable def QuarticDiagram.ComponentOrdersCompatible {S : Finset (Fin N)}
@@ -70,22 +53,6 @@ noncomputable def QuarticDiagram.shuffleOfVertexOrder {S : Finset (Fin N)}
     (orders : d.ComponentVertexOrders) (h : d.ComponentOrdersCompatible order orders) :
     d.ComponentShuffle :=
   d.componentPartition.shuffleOfOrder order orders h
-
-/-- The local orders used to assemble a global order are compatible with that assembled order. -/
-theorem QuarticDiagram.componentOrdersCompatible_assembleVertexOrder
-    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) :
-    d.ComponentOrdersCompatible (d.assembleVertexOrder orders shuffle) orders :=
-  d.componentPartition.partOrdersCompatible_assembleOrder orders shuffle
-
-/-- Recovering the shuffle from an assembled global order returns the original shuffle. -/
-@[simp]
-theorem QuarticDiagram.shuffleOfVertexOrder_assembleVertexOrder
-    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle) :
-    d.shuffleOfVertexOrder (d.assembleVertexOrder orders shuffle) orders
-      (d.componentOrdersCompatible_assembleVertexOrder orders shuffle) = shuffle :=
-  d.componentPartition.shuffleOfOrder_assembleOrder orders shuffle
 
 /-- Reassembling a global order from its compatible component-local orders and extracted shuffle is
 identity. -/
