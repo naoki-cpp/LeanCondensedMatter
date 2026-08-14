@@ -6,13 +6,13 @@ set_option linter.style.header false
 # Regularity of mixed two-point density-state pair contractions
 
 A fermionic atomic field at imaginary time is an explicit exponential scalar multiplying a bare
-creation or annihilation operator.  Therefore the canonical free Gibbs density-state contraction of
+creation or annihilation operator. Therefore the canonical free Gibbs density-state contraction of
 two fixed field labels has all of its time dependence in two complex exponentials.
 
 This module packages that scalar normal form, lifts it to fixed standard two-point legs, and proves
-continuity in the ambient interaction-time assignment.  It also identifies the contraction used by a
-mixed normalized pair with the corresponding standard-leg contraction.  Finite Gibbs coordinate
-formulas appear only inside the closed-form proof.  No chamber or pair-transport argument is used
+continuity in the ambient interaction-time assignment. It also identifies the contraction used by a
+mixed normalized pair with the corresponding standard-leg contraction. Finite Gibbs coordinate
+formulas appear only inside the closed-form proof. No chamber or pair-transport argument is used
 here.
 -/
 
@@ -20,6 +20,7 @@ namespace SecondQuantization
 namespace Fermionic
 
 open Combinatorics
+open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
