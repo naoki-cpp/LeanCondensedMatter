@@ -22,6 +22,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Inte
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentPosition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentTimeTransport
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedOrderPairing
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.InteractionVertexRelabelMixedOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalPiece
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentPairEquiv
@@ -42,7 +43,7 @@ generic vacuum component restriction and canonical external/vacuum decomposition
 decomposition of the diagram sum by which interaction vertices are external, componentwise vertex
 products, slot-split vacuum pairing transport, binary slot-shuffle coordinates, interaction-time
 ordered-simplex shuffles and their canonical representative, ambient shuffle permutations,
-interaction-slot relabeling, mixed-time component-position transport, generic mixed-order pairings,
-standalone external-piece transport, component pair fibers, commutative pair products, crossing
-decomposition, pair transport, and fixed-order chamber locality.
+interaction-slot relabeling and mixed-order covariance, mixed-time component-position transport,
+generic mixed-order pairings, standalone external-piece transport, component pair fibers,
+commutative pair products, crossing decomposition, pair transport, and fixed-order chamber locality.
 -/
