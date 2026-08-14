@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairProduct
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 
 set_option linter.style.header false
 
@@ -31,16 +32,6 @@ noncomputable def timedFieldPairContraction
     (Common.finiteHilbertOperator
       ((timedFieldOperator ε A).comp (timedFieldOperator ε B)))
 
-omit [LinearOrder Mode] in
-private theorem finiteGibbsExpectation_smul_apply_regularity
-    (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
-    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    Common.finiteGibbsExpectation (fermionEnergy ε) β (c • A) =
-      c * Common.finiteGibbsExpectation (fermionEnergy ε) β A := by
-  change (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) (c • A) =
-    c * (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) A
-  rw [map_smul, smul_eq_mul]
-
 /-- Closed form of a density-state pair contraction after extracting the two imaginary-time
 exponential factors. -/
 theorem timedFieldPairContraction_eq
@@ -56,7 +47,7 @@ theorem timedFieldPairContraction_eq
     freeGibbsDensityOperator_expectation_eq_finiteGibbsExpectation]
   rw [timedFieldOperator_eq_smul, timedFieldOperator_eq_smul,
     LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
-    finiteGibbsExpectation_smul_apply_regularity]
+    Common.finiteGibbsExpectation_smul]
 
 /-- For two fixed field labels, their density-state contraction is jointly continuous in both
 imaginary times. -/
