@@ -174,7 +174,6 @@ theorem sourceCommutator_eq_zero_of_commutes (h : 𝓗₁ →ₗ[ℂ] 𝓗₁)
   simp [sourceCommutator, hm]
 
 /-- Charge-like quantities `q I` have no source/torque term. -/
-@[simp]
 theorem sourceCommutator_smul_id (h : 𝓗₁ →ₗ[ℂ] 𝓗₁)
     (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁)) (q : ℂ) (f : Test) :
     sourceCommutator 𝓗₁ h M (q • LinearMap.id) f = 0 := by
