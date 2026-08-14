@@ -49,7 +49,7 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
         g T ext hext vac)
   have hweight :
       d.1.vacuumComponentParts.prod
-          (d.mixedComponentWeight Common.Statistics.fermion τ τ' σ) =
+          (d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ) =
         (vac.pairingInOrder (fixedExternalVacuumOrder T)).weight
           Common.Statistics.fermion := by
     simpa [d] using
@@ -57,7 +57,7 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
         T ext vac hext τ τ' σ hσ)
   have hcontraction :
       d.1.vacuumComponentParts.prod (fun B =>
-          ∏ pr : d.MixedComponentPair τ τ' σ B,
+          ∏ pr : d.1.MixedComponentPair τ τ' σ B,
             d.mixedPairContractionValue ε β τ τ' σ pr.1) =
         ∏ pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair,
           orderedQuarticPairValue ε β vac (fixedExternalVacuumOrder T)
@@ -73,9 +73,9 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
       d.1.vacuumComponentParts.prod (fun B =>
           d.mixedComponentDysonSign B * d.mixedComponentVertexWeight g B) *
         (d.1.vacuumComponentParts.prod
-            (d.mixedComponentWeight Common.Statistics.fermion τ τ' σ) *
+            (d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ) *
           d.1.vacuumComponentParts.prod (fun B =>
-            ∏ pr : d.MixedComponentPair τ τ' σ B,
+            ∏ pr : d.1.MixedComponentPair τ τ' σ B,
               d.mixedPairContractionValue ε β τ τ' σ pr.1)) := by
       simp only [FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue,
         FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue,

@@ -81,12 +81,12 @@ theorem fixedExternalOfSlotSplit_atomicLegPartner_vacuumOrderedLeg
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (p : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))) :
     let d := fixedExternalOfSlotSplit T ext vac
-    d.atomicLegPartner (orderedQuarticLegMapToTwoPointLeg (fixedExternalVacuumSlot T) p) =
+    d.1.atomicLegPartner (orderedQuarticLegMapToTwoPointLeg (fixedExternalVacuumSlot T) p) =
       orderedQuarticLegMapToTwoPointLeg (fixedExternalVacuumSlot T)
         ((vac.pairingInOrder (fixedExternalVacuumOrder T)).partner p) := by
   let d := fixedExternalOfSlotSplit T ext vac
   apply (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm.injective
-  rw [FixedExternalTwoPointWickDiagram.atomicLegPartner, Equiv.symm_apply_apply]
+  rw [Common.TwoPointDiagram.atomicLegPartner, Equiv.symm_apply_apply]
   rw [fixedExternalVacuumOrderedLeg_eq_slotSplitRight T p,
     fixedExternalVacuumOrderedLeg_eq_slotSplitRight T
       ((vac.pairingInOrder (fixedExternalVacuumOrder T)).partner p)]
@@ -110,17 +110,17 @@ theorem fixedExternalOfSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (p : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))) :
     let d := fixedExternalOfSlotSplit T ext vac
-    (d.pairingInMixedOrder τ τ' σ).partner
+    (d.1.pairingInMixedOrder τ τ' σ).partner
         (mixedTimeOrderedQuarticLegMapPosition
           (fixedExternalVacuumSlot T) τ τ' σ p) =
       mixedTimeOrderedQuarticLegMapPosition
         (fixedExternalVacuumSlot T) τ τ' σ
         ((vac.pairingInOrder (fixedExternalVacuumOrder T)).partner p) := by
   let d := fixedExternalOfSlotSplit T ext vac
-  change (d.pairingInMixedOrder τ τ' σ).partner
+  change (d.1.pairingInMixedOrder τ τ' σ).partner
       (mixedTimeOrderedAtomicLegPosition τ τ' σ
         (orderedQuarticLegMapToTwoPointLeg (fixedExternalVacuumSlot T) p)) = _
-  rw [d.pairingInMixedOrder_partner_legPosition,
+  rw [d.1.pairingInMixedOrder_partner_legPosition,
     fixedExternalOfSlotSplit_atomicLegPartner_vacuumOrderedLeg T ext vac p]
   rfl
 
@@ -138,7 +138,7 @@ theorem fixedExternalOfSlotSplit_mem_mixedPairs_vacuumOrderedLeg_iff
     let d := fixedExternalOfSlotSplit T ext vac
     (mixedTimeOrderedQuarticLegMapPosition (fixedExternalVacuumSlot T) τ τ' σ a,
         mixedTimeOrderedQuarticLegMapPosition (fixedExternalVacuumSlot T) τ τ' σ b) ∈
-      (d.pairingInMixedOrder τ τ' σ).pairs ↔
+      (d.1.pairingInMixedOrder τ τ' σ).pairs ↔
     (a, b) ∈ (vac.pairingInOrder (fixedExternalVacuumOrder T)).pairs := by
   let d := fixedExternalOfSlotSplit T ext vac
   let E := mixedTimeOrderedQuarticLegMapPosition
@@ -151,7 +151,7 @@ theorem fixedExternalOfSlotSplit_mem_mixedPairs_vacuumOrderedLeg_iff
       Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card)) ↪o
         Fin (2 * (2 * n + 1)) :=
     OrderEmbedding.ofStrictMono E hE
-  change (E a, E b) ∈ (d.pairingInMixedOrder τ τ' σ).pairs ↔
+  change (E a, E b) ∈ (d.1.pairingInMixedOrder τ τ' σ).pairs ↔
     (a, b) ∈ (vac.pairingInOrder (fixedExternalVacuumOrder T)).pairs
   rw [Pairing.mem_pairs_iff, Pairing.mem_pairs_iff]
   constructor
@@ -161,7 +161,7 @@ theorem fixedExternalOfSlotSplit_mem_mixedPairs_vacuumOrderedLeg_iff
     change E ((vac.pairingInOrder (fixedExternalVacuumOrder T)).partner a) = E b
     calc
       E ((vac.pairingInOrder (fixedExternalVacuumOrder T)).partner a) =
-          (d.pairingInMixedOrder τ τ' σ).partner (E a) :=
+          (d.1.pairingInMixedOrder τ τ' σ).partner (E a) :=
         (fixedExternalOfSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
           T ext vac τ τ' σ a).symm
       _ = E b := hpartner

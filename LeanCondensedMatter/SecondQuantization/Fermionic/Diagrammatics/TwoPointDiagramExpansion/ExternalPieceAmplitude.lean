@@ -69,12 +69,12 @@ theorem FixedExternalTwoPointWickDiagram.mixedExternalFixedTimeValue_eq_external
         (orderedTwoPointVertexWeight g d.externalPiece.vertexLabelSequence *
           orderedTwoPointPairingValue ε β i j τ τ' (d.externalPieceTimes σ)
             d.externalPiece.vertexLabelSequence
-            (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ))) =
+            (d.externalPiece.1.pairingInMixedOrder τ τ' (d.externalPieceTimes σ))) =
       twoPointExternalOrderSign τ τ' *
         orderedTwoPointVertexWeight g d.externalPiece.vertexLabelSequence *
           orderedTwoPointPairingValue ε β i j τ τ' (d.externalPieceTimes σ)
             d.externalPiece.vertexLabelSequence
-            (d.externalPiece.pairingInMixedOrder τ τ' (d.externalPieceTimes σ))
+            (d.externalPiece.1.pairingInMixedOrder τ τ' (d.externalPieceTimes σ))
   ring
 
 /-- The Dyson-signed external factor is the standalone external piece's Dyson-signed fixed-time

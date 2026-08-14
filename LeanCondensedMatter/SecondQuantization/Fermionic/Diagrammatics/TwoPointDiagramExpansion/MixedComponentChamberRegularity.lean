@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentChamberCombinatorics
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentChamberCombinatorics
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairTimeTransport
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedPairContractionRegularity
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentDysonValue
 
@@ -7,18 +8,9 @@ set_option linter.style.header false
 /-!
 # Chamberwise regularity of mixed component factors
 
-The actual mixed component pair type changes when the global mixed event order crosses a wall.  A
-continuity theorem should therefore not use that dependent type as a varying index set.
-
-Fix a base interaction-time assignment `σ₀`.  The component pairs at `σ₀` form one finite fixed
-indexing type.  Each source pair determines two standard two-point legs, and the finite Gibbs
-contraction of those fixed legs is globally continuous in a varying ambient assignment.  Freezing the
-component crossing weight at `σ₀` therefore gives a globally continuous representative.  Inside the
-same mixed-order chamber, canonical pair transport preserves normalized endpoint orientation, so the
-representative agrees exactly with the actual mixed component value.
-
-This is the precise chamberwise regularity statement needed before addressing measurability and
-integrability across the order walls.
+Common owns the chamberwise transport of mixed component positions, normalized pair endpoints,
+crossings, and statistics weights.  This module fixes a base chamber and adds only the continuous
+free-Gibbs contraction representative and the fermionic component fixed-time/Dyson values.
 -/
 
 namespace SecondQuantization
@@ -36,23 +28,23 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv_endpointLeg
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.1.componentPartition.parts)
     (hChamber : SameTwoPointOrderChamber τ τ' σ υ)
-    (pr : d.MixedComponentPair τ τ' σ B) :
-    let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
+    (pr : d.1.MixedComponentPair τ τ' σ B) :
+    let q := d.1.mixedComponentPairTimeEquiv τ τ' σ υ B pr
     mixedTimeOrderedAtomicLegEquiv τ τ' υ q.1.1.1 =
         mixedTimeOrderedAtomicLegEquiv τ τ' σ pr.1.1.1 ∧
       mixedTimeOrderedAtomicLegEquiv τ τ' υ q.1.1.2 =
         mixedTimeOrderedAtomicLegEquiv τ τ' σ pr.1.1.2 := by
   classical
-  let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
-  let p0 := d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)
-  let p1 := d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)
+  let q := d.1.mixedComponentPairTimeEquiv τ τ' σ υ B pr
+  let p0 := d.1.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)
+  let p1 := d.1.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)
   have hEnds :
-      d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
+      d.1.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
           d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p0 ∧
-        d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
+        d.1.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
           d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p1 := by
     simpa [q, p0, p1] using
-      d.mixedComponentPairTimeEquiv_endpoints_eq_of_sameOrderChamber
+      d.1.mixedComponentPairTimeEquiv_endpoints_eq_of_sameOrderChamber
         τ τ' σ υ B hChamber pr
   have h0Pos :
       q.1.1.1 = (d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 := by
@@ -69,15 +61,14 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairTimeEquiv_endpointLeg
       d.1.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p1
 
 /-- Globally continuous fixed-index representative of one mixed component pairing value based at
-`σ₀`.  It freezes the chamber's crossing weight and evaluates every base pair through its two fixed
-standard atomic legs. -/
+`σ₀`. -/
 noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentPairingChamberRepresentative
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ₀ : Fin n → ℝ)
     (B : d.1.componentPartition.parts) : (Fin n → ℝ) → ℂ :=
   fun σ =>
-    d.mixedComponentWeight Common.Statistics.fermion τ τ' σ₀ B *
-      ∏ pr : d.MixedComponentPair τ τ' σ₀ B,
+    d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ₀ B *
+      ∏ pr : d.1.MixedComponentPair τ τ' σ₀ B,
         orderedTwoPointLegPairContraction ε β i j τ τ' d.vertexLabelSequence σ
           (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.1)
           (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.2)
@@ -108,18 +99,18 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingChamberRepresentat
   classical
   unfold FixedExternalTwoPointWickDiagram.mixedComponentPairingChamberRepresentative
   rw [d.mixedComponentPairingValue_eq_weight_mul_contractionProduct,
-    d.mixedComponentWeight_eq_of_sameOrderChamber
+    d.1.mixedComponentWeight_eq_of_sameOrderChamber
       Common.Statistics.fermion τ τ' σ₀ σ B hChamber]
   unfold FixedExternalTwoPointWickDiagram.mixedComponentContractionProduct
   apply congrArg (fun z : ℂ =>
-    d.mixedComponentWeight Common.Statistics.fermion τ τ' σ B * z)
-  let e := d.mixedComponentPairTimeEquiv τ τ' σ₀ σ B
+    d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ B * z)
+  let e := d.1.mixedComponentPairTimeEquiv τ τ' σ₀ σ B
   calc
-    (∏ pr : d.MixedComponentPair τ τ' σ₀ B,
+    (∏ pr : d.1.MixedComponentPair τ τ' σ₀ B,
         orderedTwoPointLegPairContraction ε β i j τ τ' d.vertexLabelSequence σ
           (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.1)
           (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.2)) =
-      ∏ pr : d.MixedComponentPair τ τ' σ₀ B,
+      ∏ pr : d.1.MixedComponentPair τ τ' σ₀ B,
         d.mixedPairContractionValue ε β τ τ' σ (e pr).1 := by
       apply Fintype.prod_congr
       intro pr
@@ -128,10 +119,10 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingChamberRepresentat
           τ τ' σ₀ σ B hChamber pr
       rw [d.mixedPairContractionValue_eq_orderedTwoPointLegPairContraction]
       rw [hLegs.1, hLegs.2]
-    _ = ∏ q : d.MixedComponentPair τ τ' σ B,
+    _ = ∏ q : d.1.MixedComponentPair τ τ' σ B,
         d.mixedPairContractionValue ε β τ τ' σ q.1 := by
       exact Equiv.prod_comp e
-        (fun q : d.MixedComponentPair τ τ' σ B =>
+        (fun q : d.1.MixedComponentPair τ τ' σ B =>
           d.mixedPairContractionValue ε β τ τ' σ q.1)
 
 /-- Continuous chamber representative of one coupling-weighted component fixed-time value. -/

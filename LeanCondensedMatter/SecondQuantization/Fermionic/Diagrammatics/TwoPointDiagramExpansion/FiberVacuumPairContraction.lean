@@ -152,7 +152,7 @@ theorem fixedExternalOfSlotSplit_prod_vacuumPairContractionValue_eq
     (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
     let d := fixedExternalOfSlotSplit T ext vac
     d.1.vacuumComponentParts.prod (fun B =>
-        ∏ pr : d.MixedComponentPair τ τ' σ B,
+        ∏ pr : d.1.MixedComponentPair τ τ' σ B,
           d.mixedPairContractionValue ε β τ τ' σ pr.1) =
       ∏ pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair,
         orderedQuarticPairValue ε β vac (fixedExternalVacuumOrder T)
@@ -164,14 +164,14 @@ theorem fixedExternalOfSlotSplit_prod_vacuumPairContractionValue_eq
     T ext vac hext τ τ' σ hσ
   calc
     d.1.vacuumComponentParts.prod (fun B =>
-        ∏ pr : d.MixedComponentPair τ τ' σ B,
+        ∏ pr : d.1.MixedComponentPair τ τ' σ B,
           d.mixedPairContractionValue ε β τ τ' σ pr.1) =
       ∏ B : ↥d.1.vacuumComponentParts,
-        ∏ pr : d.MixedComponentPair τ τ' σ B.1,
+        ∏ pr : d.1.MixedComponentPair τ τ' σ B.1,
           d.mixedPairContractionValue ε β τ τ' σ pr.1 := by
       exact Finset.prod_subtype d.1.vacuumComponentParts (fun _ => Iff.rfl) _
     _ = ∏ x : Σ B : ↥d.1.vacuumComponentParts,
-        d.MixedComponentPair τ τ' σ B.1,
+        d.1.MixedComponentPair τ τ' σ B.1,
         F (d.mixedVacuumPairSigmaEquiv τ τ' σ x) := by
       rw [Fintype.prod_sigma]
       rfl

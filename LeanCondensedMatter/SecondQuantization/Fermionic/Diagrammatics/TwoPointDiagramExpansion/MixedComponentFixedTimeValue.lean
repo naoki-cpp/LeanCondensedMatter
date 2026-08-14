@@ -130,7 +130,7 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
   change twoPointExternalOrderSign τ τ' *
       orderedTwoPointVertexWeight g d.vertexLabelSequence *
         orderedTwoPointPairingValue ε β i j τ τ' σ d.vertexLabelSequence
-          (d.pairingInMixedOrder τ τ' σ) = _
+          (d.1.pairingInMixedOrder τ τ' σ) = _
   rw [d.orderedTwoPointVertexWeight_eq_prod_components g,
     d.orderedTwoPointPairingValue_eq_prod_components_unconditional ε β τ τ' σ]
   unfold FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
