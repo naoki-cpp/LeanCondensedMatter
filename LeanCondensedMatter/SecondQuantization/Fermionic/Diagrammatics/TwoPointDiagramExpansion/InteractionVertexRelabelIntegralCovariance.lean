@@ -38,7 +38,7 @@ theorem FixedExternalTwoPointWickDiagram.orderedSimplexIntegral_externalSign_mul
               d.1.canonicalComponentInteractionShuffle) σ) =
       intervalIntegral.orderedSimplexIntegral (Finset.univ : Finset (Fin n)).card β
         (fun σ => (d.relabelForComponentShuffle shuffle).dysonFixedTimeAmplitude ε β g τ τ'
-          (ambientToTwoPointSlotTimePermutation σ)) :=
+          (Common.ambientToTwoPointSlotTimePermutation σ)) :=
   intervalIntegral.orderedSimplexIntegral_congr_of_injective _ β hβ _ _ fun σ hσ =>
     d.externalSign_mul_componentShuffleIntegrand_eq_relabelForComponentShuffle_dysonFixedTimeAmplitude_of_injective
       ε β g τ τ' shuffle σ hσ
