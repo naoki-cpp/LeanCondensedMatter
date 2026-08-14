@@ -24,7 +24,6 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 omit [LinearOrder Mode] in
 /-- The coefficients of the normalized Dyson partition series are exactly the normalized Dyson
 partition coefficients used by the fiber Cauchy theorem. -/
-@[simp]
 theorem coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff
     (ε : Mode → ℝ) (β : ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) :
