@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ComponentShufflePermutation
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedOrderPairing
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelMixedPosition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.InteractionVertexRelabelMixedOrder
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedPairContractionRegularity
 
 set_option linter.style.header false
@@ -8,9 +7,9 @@ set_option linter.style.header false
 /-!
 # Off-diagonal interaction-vertex covariance
 
-Interaction-slot relabeling is proved only at injective interaction-time assignments. Common owns
-the mixed-order pairing and standard-position transport; this module adds fermionic field,
-contraction, fixed-time amplitude, and Dyson-amplitude covariance.
+Common owns interaction-slot relabeling of standard two-point diagrams, mixed-order positions,
+pairings, and explicit component-shuffle slot permutations. This module starts at the fermionic field
+realization and proves covariance of contractions, fixed-time amplitudes, and Dyson amplitudes.
 -/
 
 namespace SecondQuantization
@@ -20,80 +19,6 @@ open Combinatorics
 open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
-
-omit [LinearOrder Mode] [Fintype Mode] in
-theorem twoPointLegEquiv_interactionVertexPositionRelabel {n : ℕ}
-    (π : Equiv.Perm (Fin n))
-    (p : Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1))) :
-    Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))
-        (interactionVertexPositionRelabel π p) =
-      interactionVertexLegRelabel π
-        (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)) p) := by
-  change
-    Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))
-        ((Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm
-          (interactionVertexLegRelabel π
-            (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)) p))) =
-      interactionVertexLegRelabel π
-        (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)) p)
-  exact (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).apply_symm_apply _
-
-omit [LinearOrder Mode] [Fintype Mode] in
-theorem interactionVertexPositionRelabel_mixedTimeAmbientPositionEquiv_of_injective {n : ℕ}
-    (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : Function.Injective σ) (p : Fin (2 * (2 * n + 1))) :
-    interactionVertexPositionRelabel π (mixedTimeAmbientPositionEquiv τ τ' σ p) =
-      mixedTimeAmbientPositionEquiv τ τ' (fun v => σ (π.symm v)) p := by
-  apply (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).injective
-  rw [twoPointLegEquiv_interactionVertexPositionRelabel,
-    twoPointLegEquiv_mixedTimeAmbientPositionEquiv,
-    twoPointLegEquiv_mixedTimeAmbientPositionEquiv]
-  have h := mixedTimeOrderedAtomicLegEquiv_interactionVertexMixedPositionRelabel
-    π τ τ' σ p
-  rw [interactionVertexMixedPositionRelabel_apply_eq_of_injective π τ τ' σ hσ p] at h
-  exact h.symm
-
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- Under injective interaction times, interaction-vertex relabeling commutes with the Common mixed
-pairing. -/
-theorem FixedExternalTwoPointWickDiagram.pairingInMixedOrder_relabelInteractionVertices_of_injective
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : Function.Injective σ) :
-    (d.relabelInteractionVertices π).1.pairingInMixedOrder τ τ' σ =
-      d.1.pairingInMixedOrder τ τ' (fun v => σ (π.symm v)) := by
-  apply Pairing.ext
-  apply Equiv.ext
-  intro p
-  apply (mixedTimeAmbientPositionEquiv τ τ' (fun v => σ (π.symm v))).injective
-  calc
-    mixedTimeAmbientPositionEquiv τ τ' (fun v => σ (π.symm v))
-        (((d.relabelInteractionVertices π).1.pairingInMixedOrder τ τ' σ).partner p) =
-      interactionVertexPositionRelabel π
-        (mixedTimeAmbientPositionEquiv τ τ' σ
-          (((d.relabelInteractionVertices π).1.pairingInMixedOrder τ τ' σ).partner p)) := by
-        symm
-        exact interactionVertexPositionRelabel_mixedTimeAmbientPositionEquiv_of_injective
-          π τ τ' σ hσ _
-    _ = interactionVertexPositionRelabel π
-        ((d.relabelInteractionVertices π).1.pairing.partner
-          (mixedTimeAmbientPositionEquiv τ τ' σ p)) := by
-        rw [(d.relabelInteractionVertices π).1.mixedTimeAmbientPositionEquiv_partner]
-    _ = d.1.pairing.partner
-        (interactionVertexPositionRelabel π
-          (mixedTimeAmbientPositionEquiv τ τ' σ p)) := by
-        rw [FixedExternalTwoPointWickDiagram.relabelInteractionVertices_pairing,
-          Pairing.relabel_partner]
-        exact (interactionVertexPositionRelabel π).apply_symm_apply _
-    _ = d.1.pairing.partner
-        (mixedTimeAmbientPositionEquiv τ τ' (fun v => σ (π.symm v)) p) := by
-        rw [interactionVertexPositionRelabel_mixedTimeAmbientPositionEquiv_of_injective
-          π τ τ' σ hσ p]
-    _ = mixedTimeAmbientPositionEquiv τ τ' (fun v => σ (π.symm v))
-        ((d.1.pairingInMixedOrder τ τ' (fun v => σ (π.symm v))).partner p) := by
-        symm
-        exact d.1.mixedTimeAmbientPositionEquiv_partner
-          τ τ' (fun v => σ (π.symm v)) p
 
 omit [LinearOrder Mode] [Fintype Mode] in
 theorem orderedTwoPointLegField_relabelInteractionVertices {n : ℕ}
@@ -187,7 +112,7 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_relabelInteractionVe
         d.vertexLabelSequence
         (d.1.pairingInMixedOrder τ τ' (fun v => σ (π.symm v)))
   rw [d.relabelInteractionVertices_vertexWeight g π]
-  rw [d.pairingInMixedOrder_relabelInteractionVertices_of_injective π τ τ' σ hσ]
+  rw [d.1.pairingInMixedOrder_relabelInteractionVertices_of_injective π τ τ' σ hσ]
   have hq : (d.relabelInteractionVertices π).vertexLabelSequence =
       fun v => d.vertexLabelSequence (π v) := by
     funext v
@@ -209,16 +134,6 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_relabelInteract
   unfold FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude
   rw [d.fixedTimeAmplitude_relabelInteractionVertices_of_injective π ε β g τ τ' σ hσ]
 
-omit [LinearOrder Mode] [Fintype Mode] in
-theorem ambientToTwoPointSlotTimePermutation_injective {n : ℕ}
-    {σ : Fin (Finset.univ : Finset (Fin n)).card → ℝ}
-    (hσ : Function.Injective σ) :
-    Function.Injective (ambientToTwoPointSlotTimePermutation σ) := by
-  intro a b hab
-  apply Fin.ext
-  have hcast := hσ hab
-  exact congrArg (fun x : Fin (Finset.univ : Finset (Fin n)).card => x.val) hcast
-
 /-- Away from interaction-time diagonals, one component-shuffle term is exactly the Dyson fixed-time
 amplitude of the explicitly relabeled diagram at the original ambient times. -/
 theorem FixedExternalTwoPointWickDiagram.externalSign_mul_componentShuffleIntegrand_eq_relabelForComponentShuffle_dysonFixedTimeAmplitude_of_injective
@@ -238,9 +153,10 @@ theorem FixedExternalTwoPointWickDiagram.externalSign_mul_componentShuffleIntegr
   symm
   have hslot : Function.Injective (ambientToTwoPointSlotTimePermutation σ) :=
     ambientToTwoPointSlotTimePermutation_injective hσ
-  simpa [FixedExternalTwoPointWickDiagram.relabelForComponentShuffle] using
+  simpa [FixedExternalTwoPointWickDiagram.relabelForComponentShuffle,
+    Common.TwoPointDiagram.relabelForComponentShuffle] using
     (d.dysonFixedTimeAmplitude_relabelInteractionVertices_of_injective
-      (d.componentShuffleSlotPermutation shuffle).symm ε β g τ τ'
+      (d.1.componentShuffleSlotPermutation shuffle).symm ε β g τ τ'
       (ambientToTwoPointSlotTimePermutation σ) hslot)
 
 end Fermionic
