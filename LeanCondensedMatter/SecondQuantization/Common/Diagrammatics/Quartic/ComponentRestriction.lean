@@ -151,17 +151,6 @@ theorem QuarticDiagram.localLegOfLeg_blockLegEquiv {S : Finset (Fin N)}
       localLegOfLeg (leg : Fin (2 * (2 * S.card))) :=
   localLegOfLeg_legOfVertexLocal _ _
 
-private theorem permCongr_partner_involutive {α β : Type*} (e : α ≃ β)
-    (p : Equiv.Perm α) (hp : Function.Involutive p) : Function.Involutive (e.permCongr p) := by
-  intro x
-  simp [Equiv.permCongr_apply, hp (e.symm x)]
-
-private theorem permCongr_partner_ne_self {α β : Type*} (e : α ≃ β) (p : Equiv.Perm α)
-    (hp : ∀ x, p x ≠ x) (x : β) : e.permCongr p x ≠ x := by
-  intro h
-  rw [Equiv.permCongr_apply, Equiv.apply_eq_iff_eq_symm_apply] at h
-  exact hp _ h
-
 /-- The pairing induced on the legs of component part `B`. -/
 noncomputable def QuarticDiagram.restrictedPairing {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
@@ -169,8 +158,9 @@ noncomputable def QuarticDiagram.restrictedPairing {S : Finset (Fin N)}
     Combinatorics.Pairing (2 * B.card) :=
   Combinatorics.Pairing.ofPartner
     ((d.blockLegEquiv hB).permCongr (d.restrictedPartner B))
-    ⟨permCongr_partner_involutive _ _ (d.restrictedPartner_involutive B),
-      permCongr_partner_ne_self _ _ (d.restrictedPartner_ne_self B)⟩
+    (IsPairing.permCongr
+      ⟨d.restrictedPartner_involutive B, d.restrictedPartner_ne_self B⟩
+      (d.blockLegEquiv hB))
 
 /-- The restricted pairing agrees with the original partner under `blockLegEquiv`. -/
 theorem QuarticDiagram.restrictedPairing_partner_blockLegEquiv {S : Finset (Fin N)}
