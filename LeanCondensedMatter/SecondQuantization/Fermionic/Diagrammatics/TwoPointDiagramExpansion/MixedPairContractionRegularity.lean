@@ -219,7 +219,7 @@ contraction of the two fixed standard legs represented by its endpoints. -/
 theorem FixedExternalTwoPointWickDiagram.mixedPairContractionValue_eq_orderedTwoPointLegPairContraction
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair) :
+    (pr : (d.1.pairingInMixedOrder τ τ' σ).NormalizedPair) :
     d.mixedPairContractionValue ε β τ τ' σ pr =
       orderedTwoPointLegPairContraction ε β i j τ τ' d.vertexLabelSequence σ
         (mixedTimeOrderedAtomicLegEquiv τ τ' σ pr.1.1)
