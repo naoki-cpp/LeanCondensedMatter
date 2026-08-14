@@ -100,8 +100,9 @@ theorem fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_or
   rw [fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_quarticIntegrand
     ε β g T ext hext vac τ τ' σ hσ]
   unfold orderedVacuumDysonIntegrand
-  rw [couplingWeight_eq_prod_vertexLabel_order,
+  rw [couplingWeight_eq_prod_vertexLabel_order vac g (fixedExternalVacuumOrder T),
     vac.contractionIntegrand_eq_pairingEvaluation ε β (fixedExternalVacuumOrder T)]
+  rfl
 
 /-- Summing the fixed-order Dyson contribution over ordered vacuum data gives the normalized vacuum
 Dyson coefficient.  This is the fixed-order vacuum theorem with the irrelevant ambient vertex set
@@ -114,6 +115,10 @@ theorem sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff
           (fun σ => flatVertexLegPairingEvaluation ε β x.1 σ x.2)) =
       normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
   classical
+  have hkey :=
+    dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation
+      ε β g (Finset.univ : Finset (Fin k))
+  rw [Finset.card_univ, Fintype.card_fin] at hkey
   calc
     (∑ x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k,
       (-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)) *
@@ -134,9 +139,7 @@ theorem sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff
       have hfac : ((k.factorial : ℕ) : ℂ) ≠ 0 := by
         exact_mod_cast Nat.factorial_ne_zero k
       apply mul_left_cancel₀ hfac
-      simpa [dysonVertexMoment, mul_assoc] using
-        (dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation
-          ε β g (Finset.univ : Finset (Fin k))).symm
+      simpa [dysonVertexMoment, mul_assoc] using hkey.symm
 
 /-- The binary shuffle product theorem in ordered-data coordinates for the vacuum factor.
 
@@ -168,15 +171,31 @@ theorem sum_slotShuffle_externalDyson_mul_orderedVacuumIntegrand_eq_mul
       ((-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)))).mul
       (intervalIntegral.Continuous.measurableLocallyBounded
         (continuous_flatVertexLegPairingEvaluation ε β x.1 x.2))
-  simpa [orderedVacuumDysonIntegrand,
-    FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude,
-    FixedExternalTwoPointWickDiagram.dysonAmplitude,
-    FixedExternalTwoPointWickDiagram.orderedSimplexContribution,
-    intervalIntegral.orderedSimplexIntegral_smul] using
-    (BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded
+  have hextIntegral :
+      intervalIntegral.orderedSimplexIntegral m β
+        (fun σ => ext.dysonFixedTimeAmplitude ε β g τ τ' σ) =
+        ext.dysonAmplitude ε β g τ τ' := by
+    simp [FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude,
+      FixedExternalTwoPointWickDiagram.dysonAmplitude,
+      FixedExternalTwoPointWickDiagram.orderedSimplexContribution,
+      intervalIntegral.orderedSimplexIntegral_smul]
+  have hvacIntegral :
+      intervalIntegral.orderedSimplexIntegral k β
+        (orderedVacuumDysonIntegrand ε β g x) =
+        (-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)) *
+          intervalIntegral.orderedSimplexIntegral k β
+            (fun σ => flatVertexLegPairingEvaluation ε β x.1 σ x.2) := by
+    unfold orderedVacuumDysonIntegrand
+    exact intervalIntegral.orderedSimplexIntegral_smul k β
+      ((-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)))
+      (fun σ => flatVertexLegPairingEvaluation ε β x.1 σ x.2)
+  have h :=
+    BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded
       m k β
       (fun σ => ext.dysonFixedTimeAmplitude ε β g τ τ' σ)
-      (orderedVacuumDysonIntegrand ε β g x) hext hvac)
+      (orderedVacuumDysonIntegrand ε β g x) hext hvac
+  rw [hextIntegral, hvacIntegral] at h
+  exact h
 
 end Fermionic
 end SecondQuantization
