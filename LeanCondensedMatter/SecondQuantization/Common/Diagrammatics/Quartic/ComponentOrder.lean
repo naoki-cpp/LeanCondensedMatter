@@ -32,7 +32,7 @@ chosen local order on every component. -/
 noncomputable def QuarticDiagram.componentVertexEquiv {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (orders : d.ComponentVertexOrders) :
     (Σ B : d.componentPartition.parts, Fin (B : Finset (Fin N)).card) ≃ ↥S :=
-  d.componentPartition.partEquiv orders
+  (Equiv.sigmaCongrRight fun B => orders B).trans d.componentPartition.equivSigmaParts.symm
 
 /-- Assemble a global vertex order from component-local orders and an order-preserving shuffle. -/
 noncomputable def QuarticDiagram.assembleVertexOrder {S : Finset (Fin N)}
