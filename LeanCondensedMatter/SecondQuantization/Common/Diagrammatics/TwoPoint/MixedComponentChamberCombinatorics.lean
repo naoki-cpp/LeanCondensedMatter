@@ -1,46 +1,20 @@
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderChamber
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentCrossingTimeLocality
-import LeanCondensedMatter.Combinatorics.ListFlatMapOrder
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentTimeTransport
 
 set_option linter.style.header false
 
 /-!
-# Mixed component combinatorics on fixed order chambers
+# Mixed component pairing combinatorics on fixed order chambers
 
-Inside one `SameTwoPointOrderChamber`, relative mixed-event order is fixed, and local atomic-leg order
-inside each event is fixed. Consequently mixed component position order, pair endpoint transport,
-crossings, crossing counts, and statistics weights are chamber-local structural data.
+#1206 owns the statistics-independent fact that mixed component position order is preserved inside a
+`SameTwoPointOrderChamber`. This module starts one layer above that owner: normalized pair endpoint
+transport, component-internal crossings, crossing counts, and exchange-statistics weights.
 -/
 
 namespace SecondQuantization
 namespace Common
 
 open Combinatorics
-
-/-- Complete mixed atomic-leg order is constant inside a common two-point order chamber. -/
-theorem mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber {n : ℕ}
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (x y : OrderedTwoPointLeg n)
-    (hChamber : SameTwoPointOrderChamber τ τ' σ υ) :
-    (mixedTimeOrderedAtomicLegPosition τ τ' σ x <
-        mixedTimeOrderedAtomicLegPosition τ τ' σ y) ↔
-      (mixedTimeOrderedAtomicLegPosition τ τ' υ x <
-        mixedTimeOrderedAtomicLegPosition τ τ' υ y) :=
-  mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventPosition_lt_iff τ τ' σ υ x y
-    (orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber
-      hChamber (orderedTwoPointLegEvent x) (orderedTwoPointLegEvent y))
-
-/-- Component position-time transport preserves strict order inside one chamber. -/
-theorem TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
-    (hChamber : SameTwoPointOrderChamber τ τ' σ υ)
-    (p q : d.MixedComponentPosition τ τ' σ B) :
-    p.1 < q.1 ↔
-      (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p).1 <
-        (d.mixedComponentPositionTimeEquiv τ τ' σ υ B q).1 :=
-  d.mixedComponentPositionTimeEquiv_lt_iff_of_legPosition_lt_iff τ τ' σ υ B p q
-    (mixedTimeOrderedAtomicLegPosition_lt_iff_of_sameOrderChamber τ τ' σ υ _ _ hChamber)
 
 /-- Pair-time transport preserves normalized endpoint order inside one chamber. -/
 theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_sameOrderChamber
