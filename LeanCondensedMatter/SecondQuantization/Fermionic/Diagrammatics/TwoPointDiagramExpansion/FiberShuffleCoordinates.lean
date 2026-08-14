@@ -72,8 +72,13 @@ theorem fixedExternalVacuumSlot_leftSlots_eq_slotShuffleRight
     fixedExternalVacuumSlot shuffle.leftSlots
         (Fin.cast (slotShuffle_card_sdiff_leftSlots shuffle).symm j) =
       shuffle.slotEquiv (Sum.inr j) := by
-  simpa [fixedExternalVacuumSlot, fixedExternalVacuumOrder] using
-    (slotShuffleSdiffLeftSlots_orderEmbOfFin shuffle j)
+  change
+    ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots).orderEmbOfFin rfl
+        (Fin.cast (slotShuffle_card_sdiff_leftSlots shuffle).symm j) =
+      shuffle.slotEquiv (Sum.inr j)
+  convert (slotShuffleSdiffLeftSlots_orderEmbOfFin shuffle j) using 1
+  apply Fin.ext
+  rfl
 
 end Fermionic
 end SecondQuantization
