@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ChargeDensity
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeneralizedQuantity
+import LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeneralizedQuantity.CurrentRepresentation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ContinuumChargeDensity1D
 
 set_option linter.style.header false
