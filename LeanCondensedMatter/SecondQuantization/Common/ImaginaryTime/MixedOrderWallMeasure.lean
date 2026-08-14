@@ -19,6 +19,7 @@ namespace Common
 
 open MeasureTheory
 
+/-- Hyperplane where one interaction-time coordinate equals a fixed external time. -/
 def twoPointExternalTimeWall {n : ℕ} (v : Fin n) (t : ℝ) : Set (Fin n → ℝ) :=
   {σ | σ v = t}
 
@@ -28,6 +29,7 @@ theorem volume_twoPointExternalTimeWall_eq_zero {n : ℕ} (v : Fin n) (t : ℝ) 
   exact MeasureTheory.Measure.pi_hyperplane
     (fun _ : Fin n => (volume : Measure ℝ)) v t
 
+/-- Linear subspace where two interaction-time coordinates coincide. -/
 def twoPointInteractionCoincidenceSubmodule {n : ℕ} (v w : Fin n) :
     Submodule ℝ (Fin n → ℝ) :=
   ((LinearMap.proj v : (Fin n → ℝ) →ₗ[ℝ] ℝ) -
@@ -40,6 +42,7 @@ theorem mem_twoPointInteractionCoincidenceSubmodule_iff {n : ℕ}
   change σ v - σ w = 0 ↔ σ v = σ w
   exact sub_eq_zero
 
+/-- Coincidence wall where two interaction-time coordinates are equal. -/
 def twoPointInteractionCoincidenceWall {n : ℕ} (v w : Fin n) : Set (Fin n → ℝ) :=
   {σ | σ v = σ w}
 
@@ -68,6 +71,7 @@ theorem volume_twoPointInteractionCoincidenceWall_eq_zero {n : ℕ}
     (twoPointInteractionCoincidenceSubmodule v w)
     (twoPointInteractionCoincidenceSubmodule_ne_top hvw)
 
+/-- Union of the walls where any interaction time equals one fixed external time. -/
 def twoPointExternalTimeWalls {n : ℕ} (t : ℝ) : Set (Fin n → ℝ) :=
   ⋃ v : Fin n, twoPointExternalTimeWall v t
 
@@ -76,6 +80,7 @@ theorem volume_twoPointExternalTimeWalls_eq_zero {n : ℕ} (t : ℝ) :
   unfold twoPointExternalTimeWalls
   exact measure_iUnion_null fun v => volume_twoPointExternalTimeWall_eq_zero v t
 
+/-- Union of all coincidence walls for distinct interaction-time coordinates. -/
 def twoPointInteractionCoincidenceWalls {n : ℕ} : Set (Fin n → ℝ) :=
   ⋃ v : Fin n, ⋃ w : Fin n,
     if v = w then ∅ else twoPointInteractionCoincidenceWall v w
@@ -91,6 +96,7 @@ theorem volume_twoPointInteractionCoincidenceWalls_eq_zero {n : ℕ} :
   · simp [hvw]
   · simp [hvw, volume_twoPointInteractionCoincidenceWall_eq_zero hvw]
 
+/-- Complete wall set where the stable mixed-event order can change for fixed external times. -/
 def twoPointMixedOrderWallSet {n : ℕ} (τ τ' : ℝ) : Set (Fin n → ℝ) :=
   twoPointExternalTimeWalls (n := n) τ ∪
     twoPointExternalTimeWalls (n := n) τ' ∪
