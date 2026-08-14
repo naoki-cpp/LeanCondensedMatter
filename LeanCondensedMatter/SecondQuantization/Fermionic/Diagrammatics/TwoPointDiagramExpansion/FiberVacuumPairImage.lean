@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumPairEmbedding
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumPrefactor
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentPairEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumComponents
 
@@ -7,9 +8,9 @@ set_option linter.style.header false
 /-!
 # Image of the fixed-order vacuum pair embedding
 
-The normalized-pair embedding of `FiberVacuumPairEmbedding` lands on the quartic right side of the
-canonical slot split.  This module identifies the full ambient component of every embedded pair as a
-vacuum component and then proves that every ambient vacuum-component pair occurs this way.
+The Common-owned normalized-pair embedding lands on the quartic right side of the canonical slot
+split. This module identifies the full ambient component of every embedded pair as a vacuum
+component and then proves that every ambient vacuum-component pair occurs this way.
 
 Surjectivity is obtained by finite cardinality rather than by reconstructing endpoints individually:
 ambient vacuum pairs are the dependent sum of the Common-owned mixed pair fibers of the vacuum
@@ -40,55 +41,56 @@ theorem fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding_component
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T))
-    (pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair) :
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
+    (pr : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair) :
     let d := fixedExternalOfSlotSplit T ext vac
     let q := Common.orderedLegToDiagramLeg
-      ((Finset.univ : Finset (Fin n)) \ T) (fixedExternalVacuumOrder T) pr.1.1
+      ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T) pr.1.1
     d.1.mixedPairComponent τ τ' σ
-        (fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ pr) =
+        (Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
+          T ext.1 vac τ τ' σ hσ pr) =
       ⟨d.1.componentBlock (Common.slotSplitVacuumVertex (Common.vertexOfLeg q)),
         d.1.componentBlock_mem_componentPartition
           (Common.slotSplitVacuumVertex (Common.vertexOfLeg q))⟩ := by
   let d := fixedExternalOfSlotSplit T ext vac
   let p := pr.1.1
   let q := Common.orderedLegToDiagramLeg
-    ((Finset.univ : Finset (Fin n)) \ T) (fixedExternalVacuumOrder T) p
+    ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T) p
   have hleg :
       mixedTimeAmbientPositionEquiv τ τ' σ
           (mixedTimeOrderedQuarticLegMapPosition
-            (fixedExternalVacuumSlot T) τ τ' σ p) =
+            (slotSplitVacuumSlot T) τ τ' σ p) =
         Common.slotLegSplitting (Finset.subset_univ T) (Sum.inr q) := by
     apply (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).injective
     rw [twoPointLegEquiv_mixedTimeAmbientPositionEquiv]
     change mixedTimeOrderedAtomicLegEquiv τ τ' σ
         (mixedTimeOrderedAtomicLegPosition τ τ' σ
-          (orderedQuarticLegMapToTwoPointLeg (fixedExternalVacuumSlot T) p)) = _
+          (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p)) = _
     rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
     calc
-      orderedQuarticLegMapToTwoPointLeg (fixedExternalVacuumSlot T) p =
+      orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p =
           (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)))
             ((Common.twoPointLegEquiv (Finset.univ : Finset (Fin n))).symm
-              (orderedQuarticLegMapToTwoPointLeg (fixedExternalVacuumSlot T) p)) := by
+              (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p)) := by
         rw [Equiv.apply_symm_apply]
       _ = (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)))
           (Common.slotLegSplitting (Finset.subset_univ T) (Sum.inr q)) := by
         exact congrArg (Common.twoPointLegEquiv (Finset.univ : Finset (Fin n)))
-          (by simpa [q] using fixedExternalVacuumOrderedLeg_eq_slotSplitRight T p)
+          (by simpa [q] using slotSplitVacuumOrderedLeg_eq_slotSplitRight T p)
   have hvertex :
       Common.twoPointVertexOfLeg
           (mixedTimeAmbientPositionEquiv τ τ' σ
             (mixedTimeOrderedQuarticLegMapPosition
-              (fixedExternalVacuumSlot T) τ τ' σ p)) =
+              (slotSplitVacuumSlot T) τ τ' σ p)) =
         Common.slotSplitVacuumVertex (Common.vertexOfLeg q) := by
     rw [hleg, Common.twoPointVertexOfLeg_slotLegSplitting_inr_exact]
   apply Subtype.ext
   change d.1.componentBlock
       (Common.twoPointVertexOfLeg
         (mixedTimeAmbientPositionEquiv τ τ' σ
-          (fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding
-            T ext vac τ τ' σ hσ pr).1.1)) = _
-  rw [fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding_apply]
+          (Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
+            T ext.1 vac τ τ' σ hσ pr).1.1)) = _
+  rw [Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_apply]
   exact congrArg d.1.componentBlock hvertex
 
 /-- Every normalized pair coming from the standalone quartic vacuum piece belongs to an ambient
@@ -98,17 +100,19 @@ theorem fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding_mem_vacuumComponen
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T))
-    (pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair) :
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
+    (pr : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair) :
     let d := fixedExternalOfSlotSplit T ext vac
     d.1.mixedPairComponent τ τ' σ
-        (fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ pr) ∈
+        (Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
+          T ext.1 vac τ τ' σ hσ pr) ∈
       d.1.vacuumComponentParts := by
   let d := fixedExternalOfSlotSplit T ext vac
   let q := Common.orderedLegToDiagramLeg
-    ((Finset.univ : Finset (Fin n)) \ T) (fixedExternalVacuumOrder T) pr.1.1
+    ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T) pr.1.1
   change d.1.mixedPairComponent τ τ' σ
-      (fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ pr) ∈
+      (Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
+        T ext.1 vac τ τ' σ hσ pr) ∈
     d.1.vacuumComponentParts
   rw [fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding_component
     T ext vac τ τ' σ hσ pr]
@@ -122,17 +126,18 @@ noncomputable def fixedExternalOfSlotSplitVacuumMixedPairEmbedding
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
-    (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair ↪
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
+    (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair ↪
       (fixedExternalOfSlotSplit T ext vac).MixedVacuumPair τ τ' σ where
   toFun pr :=
-    ⟨fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ pr,
+    ⟨Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
+        T ext.1 vac τ τ' σ hσ pr,
       fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding_mem_vacuumComponentParts
         T ext vac τ τ' σ hσ pr⟩
   inj' := by
     intro p q hpq
-    apply (fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding
-      T ext vac τ τ' σ hσ).injective
+    apply (Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
+      T ext.1 vac τ τ' σ hσ).injective
     exact congrArg Subtype.val hpq
 
 @[simp]
@@ -141,11 +146,12 @@ theorem fixedExternalOfSlotSplitVacuumMixedPairEmbedding_apply
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T))
-    (pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair) :
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
+    (pr : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair) :
     (fixedExternalOfSlotSplitVacuumMixedPairEmbedding
       T ext vac τ τ' σ hσ pr).1 =
-      fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ pr :=
+      Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
+        T ext.1 vac τ τ' σ hσ pr :=
   rfl
 
 /-- Ambient mixed vacuum pairs are the dependent disjoint union of the mixed pair fibers of the
@@ -252,14 +258,14 @@ theorem fixedExternalOfSlotSplitVacuumMixedPairEmbedding_surjective
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (hext : ext.1.IsExternallyConnected)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
     Function.Surjective
       (fixedExternalOfSlotSplitVacuumMixedPairEmbedding T ext vac τ τ' σ hσ) := by
   let emb := fixedExternalOfSlotSplitVacuumMixedPairEmbedding T ext vac τ τ' σ hσ
   have hsource :
-      Fintype.card (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair =
+      Fintype.card (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair =
         2 * ((Finset.univ : Finset (Fin n)) \ T).card := by
-    simpa using (vac.pairingInOrder (fixedExternalVacuumOrder T)).card_normalizedPair
+    simpa using (vac.pairingInOrder (slotSplitVacuumOrder T)).card_normalizedPair
   have htarget :
       Fintype.card ((fixedExternalOfSlotSplit T ext vac).MixedVacuumPair τ τ' σ) =
         2 * ((Finset.univ : Finset (Fin n)) \ T).card :=
@@ -277,8 +283,8 @@ noncomputable def fixedExternalOfSlotSplitVacuumMixedPairEquiv
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (hext : ext.1.IsExternallyConnected)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
-    (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair ≃
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
+    (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair ≃
       (fixedExternalOfSlotSplit T ext vac).MixedVacuumPair τ τ' σ :=
   Equiv.ofBijective (fixedExternalOfSlotSplitVacuumMixedPairEmbedding T ext vac τ τ' σ hσ)
     ⟨(fixedExternalOfSlotSplitVacuumMixedPairEmbedding T ext vac τ τ' σ hσ).injective,
@@ -292,10 +298,11 @@ theorem fixedExternalOfSlotSplitVacuumMixedPairEquiv_apply
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (hext : ext.1.IsExternallyConnected)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T))
-    (pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair) :
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
+    (pr : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair) :
     (fixedExternalOfSlotSplitVacuumMixedPairEquiv T ext vac hext τ τ' σ hσ pr).1 =
-      fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ pr :=
+      Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
+        T ext.1 vac τ τ' σ hσ pr :=
   rfl
 
 end Fermionic

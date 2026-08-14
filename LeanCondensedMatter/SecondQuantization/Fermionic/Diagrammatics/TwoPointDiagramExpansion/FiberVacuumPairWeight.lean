@@ -24,6 +24,7 @@ namespace SecondQuantization
 namespace Fermionic
 
 open Combinatorics
+open Common
 
 variable {Mode : Type*} {n : ℕ} {i j : Mode}
 
@@ -131,23 +132,23 @@ noncomputable def fixedExternalOfSlotSplitVacuumComponentPairEmbedding
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (C : vac.componentPartition.parts)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
-    vac.LocalOrderedPair (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T)) C ↪
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
+    vac.LocalOrderedPair (vac.componentVertexOrdersOfVertexOrder (slotSplitVacuumOrder T)) C ↪
       (fixedExternalOfSlotSplit T ext vac).1.MixedComponentPair τ τ' σ
         (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac C).1 where
   toFun pr := by
-    let globalPr := vac.fixedOrderComponentPairEmbedding (fixedExternalVacuumOrder T) C pr
-    let ambientPr := fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding
-      T ext vac τ τ' σ hσ globalPr
+    let globalPr := vac.fixedOrderComponentPairEmbedding (slotSplitVacuumOrder T) C pr
+    let ambientPr := Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
+      T ext.1 vac τ τ' σ hσ globalPr
     refine ⟨ambientPr, ?_⟩
     rw [fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding_pairComponent
       T ext vac τ τ' σ hσ globalPr,
       vac.fixedOrderPairComponent_fixedOrderComponentPairEmbedding]
   inj' := by
     intro p q hpq
-    apply (vac.fixedOrderComponentPairEmbedding (fixedExternalVacuumOrder T) C).injective
-    apply (fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding
-      T ext vac τ τ' σ hσ).injective
+    apply (vac.fixedOrderComponentPairEmbedding (slotSplitVacuumOrder T) C).injective
+    apply (Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
+      T ext.1 vac τ τ' σ hσ).injective
     exact congrArg Subtype.val hpq
 
 /-- Source and target of the componentwise vacuum-pair embedding have equal finite cardinality. -/
@@ -159,7 +160,7 @@ theorem fixedExternalOfSlotSplitVacuumComponentPairEmbedding_card_eq
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     Fintype.card
         (vac.LocalOrderedPair
-          (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T)) C) =
+          (vac.componentVertexOrdersOfVertexOrder (slotSplitVacuumOrder T)) C) =
       Fintype.card
         ((fixedExternalOfSlotSplit T ext vac).1.MixedComponentPair τ τ' σ
           (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac C).1) := by
@@ -168,11 +169,11 @@ theorem fixedExternalOfSlotSplitVacuumComponentPairEmbedding_card_eq
   calc
     Fintype.card
         (vac.LocalOrderedPair
-          (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T)) C) =
+          (vac.componentVertexOrdersOfVertexOrder (slotSplitVacuumOrder T)) C) =
         2 * (C : Finset (Fin n)).card := by
       simpa using
         ((vac.restrictComponent C.2).pairingInOrder
-          (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T) C)).card_normalizedPair
+          (vac.componentVertexOrdersOfVertexOrder (slotSplitVacuumOrder T) C)).card_normalizedPair
     _ = 2 * (Common.TwoPointDiagram.interactionPart
         (B.1 : Finset (Common.TwoPointVertex (Finset.univ : Finset (Fin n))))).card := by
       rw [Common.interactionPart_slotSplitVacuumComponentPart]
@@ -188,8 +189,8 @@ noncomputable def fixedExternalOfSlotSplitVacuumComponentPairEquiv
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (C : vac.componentPartition.parts)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
-    vac.LocalOrderedPair (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T)) C ≃
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
+    vac.LocalOrderedPair (vac.componentVertexOrdersOfVertexOrder (slotSplitVacuumOrder T)) C ≃
       (fixedExternalOfSlotSplit T ext vac).1.MixedComponentPair τ τ' σ
         (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac C).1 :=
   let emb := fixedExternalOfSlotSplitVacuumComponentPairEmbedding T ext vac C τ τ' σ hσ
@@ -206,13 +207,14 @@ theorem fixedExternalOfSlotSplitVacuumComponentPairEquiv_apply
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (C : vac.componentPartition.parts)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T))
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
     (pr : vac.LocalOrderedPair
-      (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T)) C) :
+      (vac.componentVertexOrdersOfVertexOrder (slotSplitVacuumOrder T)) C) :
     (fixedExternalOfSlotSplitVacuumComponentPairEquiv
       T ext vac C τ τ' σ hσ pr).1 =
-      fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ
-        (vac.fixedOrderComponentPairEmbedding (fixedExternalVacuumOrder T) C pr) :=
+      Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
+        T ext.1 vac τ τ' σ hσ
+        (vac.fixedOrderComponentPairEmbedding (slotSplitVacuumOrder T) C pr) :=
   rfl
 
 /-- The componentwise pair equivalence preserves and reflects crossing geometry. -/
@@ -222,9 +224,9 @@ theorem fixedExternalOfSlotSplitVacuumComponentPairEquiv_crosses_iff
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (C : vac.componentPartition.parts)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T))
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
     (p q : vac.LocalOrderedPair
-      (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T)) C) :
+      (vac.componentVertexOrdersOfVertexOrder (slotSplitVacuumOrder T)) C) :
     Crosses
         (fixedExternalOfSlotSplitVacuumComponentPairEquiv
           T ext vac C τ τ' σ hσ p).1.1
@@ -233,7 +235,7 @@ theorem fixedExternalOfSlotSplitVacuumComponentPairEquiv_crosses_iff
       Crosses p.1 q.1 := by
   rw [fixedExternalOfSlotSplitVacuumComponentPairEquiv_apply,
     fixedExternalOfSlotSplitVacuumComponentPairEquiv_apply,
-    fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding_crosses_iff,
+    Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff,
     vac.fixedOrderComponentPairEmbedding_crosses_iff]
 
 /-- Internal crossing counts agree componentwise between the standalone fixed-order quartic vacuum
@@ -244,15 +246,15 @@ theorem fixedExternalOfSlotSplit_mixedComponentCrossingCount_vacuum_eq
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (C : vac.componentPartition.parts)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
     (fixedExternalOfSlotSplit T ext vac).1.mixedComponentCrossingCount τ τ' σ
         (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac C).1 =
       ((vac.restrictComponent C.2).pairingInOrder
-        (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T) C)).crossingCount := by
+        (vac.componentVertexOrdersOfVertexOrder (slotSplitVacuumOrder T) C)).crossingCount := by
   let B : (fixedExternalOfSlotSplit T ext vac).1.componentPartition.parts :=
     (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac C).1
   let LocalPair := vac.LocalOrderedPair
-    (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T)) C
+    (vac.componentVertexOrdersOfVertexOrder (slotSplitVacuumOrder T)) C
   let AmbientPair := (fixedExternalOfSlotSplit T ext vac).1.MixedComponentPair τ τ' σ B
   let e : LocalPair ≃ AmbientPair :=
     fixedExternalOfSlotSplitVacuumComponentPairEquiv T ext vac C τ τ' σ hσ
@@ -285,18 +287,18 @@ theorem fixedExternalOfSlotSplit_prod_vacuumMixedComponentWeight_eq
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (hext : ext.1.IsExternallyConnected)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
     let d := fixedExternalOfSlotSplit T ext vac
     d.1.vacuumComponentParts.prod
         (d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ) =
-      (vac.pairingInOrder (fixedExternalVacuumOrder T)).weight Common.Statistics.fermion := by
+      (vac.pairingInOrder (slotSplitVacuumOrder T)).weight Common.Statistics.fermion := by
   change (Common.TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext.1 vac).vacuumComponentParts.prod
       ((fixedExternalOfSlotSplit T ext vac).1.mixedComponentWeight
         Common.Statistics.fermion τ τ' σ) = _
   let e := Common.slotSplitVacuumComponentEquiv
     (Finset.subset_univ T) ext.1 vac hext
-  let orders := vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T)
-  let shuffle := vac.fixedOrderComponentShuffle (fixedExternalVacuumOrder T)
+  let orders := vac.componentVertexOrdersOfVertexOrder (slotSplitVacuumOrder T)
+  let shuffle := vac.fixedOrderComponentShuffle (slotSplitVacuumOrder T)
   calc
     (Common.TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext.1 vac).vacuumComponentParts.prod
         ((fixedExternalOfSlotSplit T ext vac).1.mixedComponentWeight
@@ -329,7 +331,7 @@ theorem fixedExternalOfSlotSplit_prod_vacuumMixedComponentWeight_eq
         Common.Statistics.fermion :=
       (vac.pairingInOrder_weight_eq_prod_components
         Common.Statistics.fermion orders shuffle).symm
-    _ = (vac.pairingInOrder (fixedExternalVacuumOrder T)).weight
+    _ = (vac.pairingInOrder (slotSplitVacuumOrder T)).weight
         Common.Statistics.fermion := by
       rw [vac.assembleVertexOrder_fixedOrderComponentShuffle]
 

@@ -18,6 +18,7 @@ namespace SecondQuantization
 namespace Fermionic
 
 open Combinatorics
+open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
 
@@ -31,13 +32,13 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
     (hext : ext.1.IsExternallyConnected)
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
     let d := fixedExternalOfSlotSplit T ext vac
     d.1.vacuumComponentParts.prod
         (d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ) =
       (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g *
-        vac.contractionIntegrand ε β (fixedExternalVacuumOrder T)
-          (σ ∘ fixedExternalVacuumSlot T) := by
+        vac.contractionIntegrand ε β (slotSplitVacuumOrder T)
+          (σ ∘ slotSplitVacuumSlot T) := by
   classical
   let d := fixedExternalOfSlotSplit T ext vac
   have hpre :
@@ -50,7 +51,7 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
   have hweight :
       d.1.vacuumComponentParts.prod
           (d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ) =
-        (vac.pairingInOrder (fixedExternalVacuumOrder T)).weight
+        (vac.pairingInOrder (slotSplitVacuumOrder T)).weight
           Common.Statistics.fermion := by
     simpa [d] using
       (fixedExternalOfSlotSplit_prod_vacuumMixedComponentWeight_eq
@@ -59,9 +60,9 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
       d.1.vacuumComponentParts.prod (fun B =>
           ∏ pr : d.1.MixedComponentPair τ τ' σ B,
             d.mixedPairContractionValue ε β τ τ' σ pr.1) =
-        ∏ pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair,
-          orderedQuarticPairValue ε β vac (fixedExternalVacuumOrder T)
-            (σ ∘ fixedExternalVacuumSlot T) pr.1.1 pr.1.2 := by
+        ∏ pr : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair,
+          orderedQuarticPairValue ε β vac (slotSplitVacuumOrder T)
+            (σ ∘ slotSplitVacuumSlot T) pr.1.1 pr.1.2 := by
     simpa [d] using
       (fixedExternalOfSlotSplit_prod_vacuumPairContractionValue_eq
         ε β T ext vac hext τ τ' σ hσ)
@@ -85,23 +86,23 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
       intro B _
       ring
     _ = ((-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g) *
-        ((vac.pairingInOrder (fixedExternalVacuumOrder T)).weight Common.Statistics.fermion *
-          ∏ pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair,
-            orderedQuarticPairValue ε β vac (fixedExternalVacuumOrder T)
-              (σ ∘ fixedExternalVacuumSlot T) pr.1.1 pr.1.2) := by
+        ((vac.pairingInOrder (slotSplitVacuumOrder T)).weight Common.Statistics.fermion *
+          ∏ pr : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair,
+            orderedQuarticPairValue ε β vac (slotSplitVacuumOrder T)
+              (σ ∘ slotSplitVacuumSlot T) pr.1.1 pr.1.2) := by
       rw [hpre, hweight, hcontraction]
     _ = (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g *
-        vac.contractionIntegrand ε β (fixedExternalVacuumOrder T)
-          (σ ∘ fixedExternalVacuumSlot T) := by
+        vac.contractionIntegrand ε β (slotSplitVacuumOrder T)
+          (σ ∘ slotSplitVacuumSlot T) := by
       have hpairProd :
-          (∏ pr ∈ (vac.pairingInOrder (fixedExternalVacuumOrder T)).pairs,
-              orderedQuarticPairValue ε β vac (fixedExternalVacuumOrder T)
-                (σ ∘ fixedExternalVacuumSlot T) pr.1 pr.2) =
-            ∏ pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair,
-              orderedQuarticPairValue ε β vac (fixedExternalVacuumOrder T)
-                (σ ∘ fixedExternalVacuumSlot T) pr.1.1 pr.1.2 := by
+          (∏ pr ∈ (vac.pairingInOrder (slotSplitVacuumOrder T)).pairs,
+              orderedQuarticPairValue ε β vac (slotSplitVacuumOrder T)
+                (σ ∘ slotSplitVacuumSlot T) pr.1 pr.2) =
+            ∏ pr : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair,
+              orderedQuarticPairValue ε β vac (slotSplitVacuumOrder T)
+                (σ ∘ slotSplitVacuumSlot T) pr.1.1 pr.1.2 := by
         exact Finset.prod_subtype
-          (vac.pairingInOrder (fixedExternalVacuumOrder T)).pairs (fun _ => Iff.rfl) _
+          (vac.pairingInOrder (slotSplitVacuumOrder T)).pairs (fun _ => Iff.rfl) _
       unfold QuarticWickDiagram.contractionIntegrand Pairing.evaluation
       rw [hpairProd]
 

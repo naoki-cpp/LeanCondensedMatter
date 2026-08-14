@@ -21,6 +21,7 @@ namespace SecondQuantization
 namespace Fermionic
 
 open Combinatorics
+open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {i j : Mode}
 
@@ -64,7 +65,7 @@ noncomputable def fixedExternalShuffleVacuumOrderedDataEquiv {m k : ℕ}
     QuarticWickDiagram Mode (m + k)
         ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots) ≃
       Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k :=
-  (Common.quarticDiagramEquivOrderedData (fixedExternalVacuumOrder shuffle.leftSlots)).trans
+  (Common.quarticDiagramEquivOrderedData (slotSplitVacuumOrder shuffle.leftSlots)).trans
     (Equiv.cast (by rw [slotShuffle_card_sdiff_leftSlots shuffle]))
 
 /-- A fixed-cardinality fiber has shuffle-independent local data: one connected order-`m` external
@@ -89,19 +90,19 @@ theorem fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_or
     (hext : ext.1.IsExternallyConnected)
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
     let d := fixedExternalOfSlotSplit T ext vac
     d.dysonFixedTimeAmplitude ε β g τ τ' σ =
       d.externalPiece.dysonFixedTimeAmplitude ε β g τ τ' (d.externalPieceTimes σ) *
         orderedVacuumDysonIntegrand ε β g
-          (Common.quarticDiagramEquivOrderedData (fixedExternalVacuumOrder T) vac)
-          (σ ∘ fixedExternalVacuumSlot T) := by
+          (Common.quarticDiagramEquivOrderedData (slotSplitVacuumOrder T) vac)
+          (σ ∘ slotSplitVacuumSlot T) := by
   dsimp only
   rw [fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_quarticIntegrand
     ε β g T ext hext vac τ τ' σ hσ]
   unfold orderedVacuumDysonIntegrand
-  rw [couplingWeight_eq_prod_vertexLabel_order vac g (fixedExternalVacuumOrder T),
-    vac.contractionIntegrand_eq_pairingEvaluation ε β (fixedExternalVacuumOrder T)]
+  rw [couplingWeight_eq_prod_vertexLabel_order vac g (slotSplitVacuumOrder T),
+    vac.contractionIntegrand_eq_pairingEvaluation ε β (slotSplitVacuumOrder T)]
   rfl
 
 /-- Summing the fixed-order Dyson contribution over ordered vacuum data gives the normalized vacuum
