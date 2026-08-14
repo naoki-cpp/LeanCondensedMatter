@@ -24,6 +24,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixe
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedOrderPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.InteractionVertexRelabelMixedOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalPiece
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalPiecePairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentPairEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentPairProduct
@@ -44,6 +45,7 @@ decomposition of the diagram sum by which interaction vertices are external, com
 products, slot-split vacuum pairing transport, binary slot-shuffle coordinates, interaction-time
 ordered-simplex shuffles and their canonical representative, ambient shuffle permutations,
 interaction-slot relabeling and mixed-order covariance, mixed-time component-position transport,
-generic mixed-order pairings, standalone external-piece transport, component pair fibers,
-commutative pair products, crossing decomposition, pair transport, and fixed-order chamber locality.
+generic mixed-order pairings, standalone external-piece transport and pair equivalence, component
+pair fibers, commutative pair products, crossing decomposition, pair transport, and fixed-order
+chamber locality.
 -/
