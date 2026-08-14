@@ -8,7 +8,8 @@ set_option linter.style.header false
 
 #1206 owns the statistics-independent fact that mixed component position order is preserved inside a
 `SameTwoPointOrderChamber`. This module starts one layer above that owner: normalized pair endpoint
-transport, component-internal crossings, crossing counts, and exchange-statistics weights.
+transport, endpoint-leg transport, component-internal crossings, crossing counts, and
+exchange-statistics weights.
 -/
 
 namespace SecondQuantization
@@ -32,6 +33,45 @@ theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_of_sameOrderCha
           (d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)) :=
   d.mixedComponentPairTimeEquiv_endpoints_eq_of_positionOrder τ τ' σ υ B
     (d.mixedComponentPositionTimeEquiv_lt_iff_of_sameOrderChamber τ τ' σ υ B hChamber) pr
+
+/-- Inside one order chamber, canonical transport of a normalized component pair preserves the two
+underlying standard atomic legs in their normalized order. -/
+theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber
+    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
+    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
+    (hChamber : SameTwoPointOrderChamber τ τ' σ υ)
+    (pr : d.MixedComponentPair τ τ' σ B) :
+    let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
+    mixedTimeOrderedAtomicLegEquiv τ τ' υ q.1.1.1 =
+        mixedTimeOrderedAtomicLegEquiv τ τ' σ pr.1.1.1 ∧
+      mixedTimeOrderedAtomicLegEquiv τ τ' υ q.1.1.2 =
+        mixedTimeOrderedAtomicLegEquiv τ τ' σ pr.1.1.2 := by
+  classical
+  let q := d.mixedComponentPairTimeEquiv τ τ' σ υ B pr
+  let p0 := d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 0)
+  let p1 := d.mixedComponentPairEndpointEquiv τ τ' σ B (pr, 1)
+  have hEnds :
+      d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 0) =
+          d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0 ∧
+        d.mixedComponentPairEndpointEquiv τ τ' υ B (q, 1) =
+          d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1 := by
+    simpa [q, p0, p1] using
+      d.mixedComponentPairTimeEquiv_endpoints_eq_of_sameOrderChamber
+        τ τ' σ υ B hChamber pr
+  have h0Pos :
+      q.1.1.1 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p0).1 := by
+    simpa [q] using congrArg Subtype.val hEnds.1
+  have h1Pos :
+      q.1.1.2 = (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p1).1 := by
+    simpa [q] using congrArg Subtype.val hEnds.2
+  constructor
+  · rw [h0Pos]
+    simpa [p0] using
+      d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p0
+  · rw [h1Pos]
+    simpa [p1] using
+      d.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv τ τ' σ υ B p1
 
 /-- Component-internal crossings are preserved inside one chamber. -/
 theorem TwoPointDiagram.mixedComponentCrossingPreserving_of_sameOrderChamber
