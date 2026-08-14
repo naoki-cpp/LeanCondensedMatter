@@ -16,6 +16,8 @@ namespace L2MultiplicationRealLine
 
 noncomputable section
 
+open MeasureTheory
+
 /-- Multiplication on `L²(ℝ, ℂ)` depends complex-linearly on the `L∞` multiplier, after forgetting
 continuity of each individual operator. -/
 noncomputable def multiplicationLinear :
