@@ -112,7 +112,14 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_relabelInteractionVe
         d.vertexLabelSequence
         (d.1.pairingInMixedOrder τ τ' (fun v => σ (π.symm v)))
   rw [d.relabelInteractionVertices_vertexWeight g π]
-  rw [d.1.pairingInMixedOrder_relabelInteractionVertices_of_injective π τ τ' σ hσ]
+  have hpairing :
+      (d.relabelInteractionVertices π).1.pairingInMixedOrder τ τ' σ =
+        d.1.pairingInMixedOrder τ τ' (fun v => σ (π.symm v)) := by
+    change (d.1.relabelInteractionVertices π).pairingInMixedOrder τ τ' σ =
+      d.1.pairingInMixedOrder τ τ' (fun v => σ (π.symm v))
+    exact d.1.pairingInMixedOrder_relabelInteractionVertices_of_injective
+      π τ τ' σ hσ
+  rw [hpairing]
   have hq : (d.relabelInteractionVertices π).vertexLabelSequence =
       fun v => d.vertexLabelSequence (π v) := by
     funext v
@@ -153,11 +160,10 @@ theorem FixedExternalTwoPointWickDiagram.externalSign_mul_componentShuffleIntegr
   symm
   have hslot : Function.Injective (ambientToTwoPointSlotTimePermutation σ) :=
     ambientToTwoPointSlotTimePermutation_injective hσ
-  simpa [FixedExternalTwoPointWickDiagram.relabelForComponentShuffle,
-    Common.TwoPointDiagram.relabelForComponentShuffle] using
-    (d.dysonFixedTimeAmplitude_relabelInteractionVertices_of_injective
-      (d.1.componentShuffleSlotPermutation shuffle).symm ε β g τ τ'
-      (ambientToTwoPointSlotTimePermutation σ) hslot)
+  rw [d.relabelForComponentShuffle_eq_relabelInteractionVertices shuffle]
+  exact d.dysonFixedTimeAmplitude_relabelInteractionVertices_of_injective
+    (d.1.componentShuffleSlotPermutation shuffle).symm ε β g τ τ'
+    (ambientToTwoPointSlotTimePermutation σ) hslot
 
 end Fermionic
 end SecondQuantization
