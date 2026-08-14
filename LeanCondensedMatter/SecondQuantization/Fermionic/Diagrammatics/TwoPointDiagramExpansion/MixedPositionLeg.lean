@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedEventBlockOrder
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairing
 
 set_option linter.style.header false
@@ -7,18 +7,20 @@ set_option linter.style.header false
 # Standard leg identities underlying mixed atomic positions
 
 The mixed-time atomic enumeration and the standard two-point diagram enumeration are related by the
-permutation constructed in `Reindexing.lean`.  This module records the pointwise coordinate identity
-needed by the event-block crossing argument.
+Common-owned mixed-leg order. This module records the pointwise coordinate identity needed by the
+event-block crossing argument.
 
-It also reads the pairing off at the level of leg identities.  The mixed-order partner permutation
+It also reads the pairing off at the level of leg identities. The mixed-order partner permutation
 depends on the times only through the enumeration, so conjugating it back to leg identities leaves a
-map on `OrderedTwoPointLeg n` in which no time appears.  That is the form in which the pairing can be
+map on `OrderedTwoPointLeg n` in which no time appears. That is the form in which the pairing can be
 compared with the pairing of a sub-diagram, which lives on a different slot count and therefore
 carries different times.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
+
+open Common
 
 variable {Mode : Type*}
 
