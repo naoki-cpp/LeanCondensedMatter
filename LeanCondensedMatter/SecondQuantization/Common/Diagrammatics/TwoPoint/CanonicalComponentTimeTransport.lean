@@ -14,6 +14,8 @@ only coordinate conversion is the Common `Fin univ.card ↔ Fin n` cast.
 namespace SecondQuantization
 namespace Common
 
+open Combinatorics
+
 variable {ExternalLabel InternalLabel : Type*}
 
 /-- Equality on the local coordinates of the canonical component shuffle is exactly sufficient for
