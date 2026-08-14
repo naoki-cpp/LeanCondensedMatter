@@ -20,6 +20,8 @@ their two supporting events and on their fixed event-local leg coordinates.
 namespace SecondQuantization
 namespace Fermionic
 
+open Common
+
 /-- The mixed event supporting one standard two-point leg. -/
 def orderedTwoPointLegEvent {n : ℕ} : OrderedTwoPointLeg n → TwoPointTimedEvent n
   | .inl e => .inl e
