@@ -1,6 +1,5 @@
-import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentDecompositionEquiv
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ConnectedDecomposition
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.AmplitudeFactorization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion
 
@@ -11,7 +10,7 @@ set_option linter.style.header false
 
 The combinatorial connected-component decomposition is separated from the complex-valued Wick
 amplitude. Their combination identifies the finite-set Dyson cumulant with the connected-diagram
-amplitude sum.
+amplitude sum. The decomposition adapter itself is statistics-independent and owned by `Common`.
 -/
 
 namespace SecondQuantization
@@ -19,20 +18,11 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
 
-/-- Connected-component decomposition of quartic Wick diagrams. -/
-noncomputable def quarticWickDiagramConnectedDecomposition :
-    Combinatorics.ConnectedDecomposition (Fin N) where
-  Object S := QuarticWickDiagram Mode N S
-  ConnectedObject S := ConnectedQuarticWickDiagram Mode N S
-  fintypeObject _ := inferInstance
-  fintypeConnectedObject _ := inferInstance
-  decompose _ := Common.QuarticDiagram.componentDecompositionEquiv
-
-/-- Multiplicative quartic Wick amplitude on the connected decomposition. -/
+/-- Multiplicative quartic Wick amplitude on the shared connected decomposition. -/
 noncomputable def quarticWickDiagramMultiplicativeWeight (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) :
     Combinatorics.MultiplicativeWeight
-      (quarticWickDiagramConnectedDecomposition (Mode := Mode) (N := N)) ℂ where
+      (Common.quarticDiagramConnectedDecomposition (QuarticVertexLabel Mode) N) ℂ where
   objectWeight d := quarticWickDiagramAmplitude ε β g d
   connectedWeight d := quarticWickDiagramAmplitude ε β g d.1
   weight_decompose d := by
