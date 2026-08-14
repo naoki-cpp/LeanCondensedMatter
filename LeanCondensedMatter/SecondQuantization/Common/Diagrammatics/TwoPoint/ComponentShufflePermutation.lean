@@ -119,6 +119,12 @@ theorem twoPointSlotToAmbientTimePermutation_ambientToTwoPointSlotTimePermutatio
   funext i
   simp [ambientToTwoPointSlotTimePermutation, twoPointSlotToAmbientTimePermutation]
 
+/-- The canonical ambient-to-explicit time-coordinate conversion is continuous. -/
+theorem continuous_ambientToTwoPointSlotTimePermutation {n : ℕ} :
+    Continuous (fun σ : Fin (Finset.univ : Finset (Fin n)).card → ℝ =>
+      ambientToTwoPointSlotTimePermutation σ) := by
+  exact continuous_pi fun i => continuous_apply (Fin.cast (by simp) i)
+
 /-- Injectivity is preserved when the ambient `Fin univ.card` time assignment is viewed on the
 explicit standard slot type `Fin n`. -/
 theorem ambientToTwoPointSlotTimePermutation_injective {n : ℕ}
