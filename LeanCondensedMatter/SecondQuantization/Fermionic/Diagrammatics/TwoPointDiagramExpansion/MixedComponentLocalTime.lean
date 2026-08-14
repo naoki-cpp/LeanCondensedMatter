@@ -194,7 +194,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_local_of_tim
     (hCross : ∀ σ υ : Fin (Finset.univ : Finset (Fin n)).card → ℝ,
       DependentSlotEquiv.assignment shuffle.slotEquiv σ B =
           DependentSlotEquiv.assignment shuffle.slotEquiv υ B →
-        d.MixedComponentCrossingPreserving τ τ'
+        d.1.MixedComponentCrossingPreserving τ τ'
           (ambientToTwoPointSlotTime σ) (ambientToTwoPointSlotTime υ) B)
     (hContraction : ∀ σ υ : Fin (Finset.univ : Finset (Fin n)).card → ℝ,
       DependentSlotEquiv.assignment shuffle.slotEquiv σ B =
@@ -219,7 +219,7 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign
         (σ υ : Fin (Finset.univ : Finset (Fin n)).card → ℝ),
       DependentSlotEquiv.assignment shuffle.slotEquiv σ B =
           DependentSlotEquiv.assignment shuffle.slotEquiv υ B →
-        d.MixedComponentCrossingPreserving τ τ'
+        d.1.MixedComponentCrossingPreserving τ τ'
           (ambientToTwoPointSlotTime σ) (ambientToTwoPointSlotTime υ) B)
     (hContraction : ∀ (B : d.1.componentPartition.parts)
         (σ υ : Fin (Finset.univ : Finset (Fin n)).card → ℝ),
