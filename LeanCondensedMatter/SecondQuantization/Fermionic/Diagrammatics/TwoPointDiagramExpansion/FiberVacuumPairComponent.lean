@@ -15,6 +15,7 @@ namespace SecondQuantization
 namespace Fermionic
 
 open Combinatorics
+open Common
 
 variable {Mode : Type*} {n : ℕ} {i j : Mode}
 
@@ -45,20 +46,22 @@ theorem fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding_pairComponent
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T))
-    (pr : (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair) :
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
+    (pr : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair) :
     (fixedExternalOfSlotSplit T ext vac).1.mixedPairComponent τ τ' σ
-        (fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ pr) =
+        (Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
+          T ext.1 vac τ τ' σ hσ pr) =
       (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac
-        (vac.fixedOrderPairComponent (fixedExternalVacuumOrder T) pr)).1 := by
+        (vac.fixedOrderPairComponent (slotSplitVacuumOrder T) pr)).1 := by
   let d := fixedExternalOfSlotSplit T ext vac
   let q := Common.orderedLegToDiagramLeg
-    ((Finset.univ : Finset (Fin n)) \ T) (fixedExternalVacuumOrder T) pr.1.1
+    ((Finset.univ : Finset (Fin n)) \ T) (slotSplitVacuumOrder T) pr.1.1
   let v : ↥((Finset.univ : Finset (Fin n)) \ T) := Common.vertexOfLeg q
   let C : vac.componentPartition.parts :=
-    vac.fixedOrderPairComponent (fixedExternalVacuumOrder T) pr
+    vac.fixedOrderPairComponent (slotSplitVacuumOrder T) pr
   change d.1.mixedPairComponent τ τ' σ
-      (fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding T ext vac τ τ' σ hσ pr) = _
+      (Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
+        T ext.1 vac τ τ' σ hσ pr) = _
   rw [fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding_component
     T ext vac τ τ' σ hσ pr]
   let B : d.1.componentPartition.parts :=
