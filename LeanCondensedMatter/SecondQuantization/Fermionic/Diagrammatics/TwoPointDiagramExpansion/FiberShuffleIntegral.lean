@@ -18,6 +18,7 @@ namespace SecondQuantization
 namespace Fermionic
 
 open Combinatorics
+open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {i j : Mode}
 
@@ -148,24 +149,24 @@ theorem fixedExternalShuffleFiber_vacuumOrderedData_heq
     (x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k) :
     let p := (fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x)
     HEq (Common.quarticDiagramEquivOrderedData
-        (fixedExternalVacuumOrder shuffle.leftSlots) p.2) x := by
+        (slotSplitVacuumOrder shuffle.leftSlots) p.2) x := by
   classical
   dsimp only
   let p := (fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x)
   change HEq (Common.quarticDiagramEquivOrderedData
-    (fixedExternalVacuumOrder shuffle.leftSlots) p.2) x
+    (slotSplitVacuumOrder shuffle.leftSlots) p.2) x
   have hp : fixedExternalShuffleFiberDataEquiv shuffle p = (ext, x) :=
     (fixedExternalShuffleFiberDataEquiv shuffle).apply_symm_apply (ext, x)
   have hvac : fixedExternalShuffleVacuumOrderedDataEquiv shuffle p.2 = x :=
     congrArg Prod.snd hp
   have hcast : HEq
       (Common.quarticDiagramEquivOrderedData
-        (fixedExternalVacuumOrder shuffle.leftSlots) p.2)
+        (slotSplitVacuumOrder shuffle.leftSlots) p.2)
       (fixedExternalShuffleVacuumOrderedDataEquiv shuffle p.2) := by
     unfold fixedExternalShuffleVacuumOrderedDataEquiv
     exact orderedQuarticData_cast_heq (slotShuffle_card_sdiff_leftSlots shuffle)
       (Common.quarticDiagramEquivOrderedData
-        (fixedExternalVacuumOrder shuffle.leftSlots) p.2)
+        (slotSplitVacuumOrder shuffle.leftSlots) p.2)
   exact hcast.trans (heq_of_eq hvac)
 
 omit [Fintype Mode] in
@@ -173,7 +174,7 @@ omit [Fintype Mode] in
 theorem fixedExternalShuffleFiber_vacuumTimes_heq
     {m k : ℕ} (shuffle : BinaryShuffle.SlotShuffle m k)
     (σ : Fin (m + k) → ℝ) :
-    HEq (σ ∘ fixedExternalVacuumSlot shuffle.leftSlots)
+    HEq (σ ∘ slotSplitVacuumSlot shuffle.leftSlots)
       (fun q : Fin k => σ (shuffle.slotEquiv (Sum.inr q))) := by
   classical
   apply heq_finFun_of_cast (slotShuffle_card_sdiff_leftSlots shuffle)
@@ -209,9 +210,9 @@ theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
   rw [hamp]
   apply intervalIntegral.orderedSimplexIntegral_congr_of_strictAnti (m + k) β hβ
   intro σ hσ _
-  have hvacAnti : StrictAnti (σ ∘ fixedExternalVacuumSlot shuffle.leftSlots) := by
+  have hvacAnti : StrictAnti (σ ∘ slotSplitVacuumSlot shuffle.leftSlots) := by
     intro a b hab
-    exact hσ (fixedExternalVacuumSlot_strictMono shuffle.leftSlots hab)
+    exact hσ (slotSplitVacuumSlot_strictMono shuffle.leftSlots hab)
   have hprod :=
     fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_orderedVacuumIntegrand
       ε β g shuffle.leftSlots p.1.1 p.1.2 p.2 τ τ' σ hvacAnti
@@ -221,8 +222,8 @@ theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
       d.1.externalPiece.dysonFixedTimeAmplitude ε β g τ τ' (d.1.externalPieceTimes σ) *
         orderedVacuumDysonIntegrand ε β g
           (Common.quarticDiagramEquivOrderedData
-            (fixedExternalVacuumOrder shuffle.leftSlots) p.2)
-          (σ ∘ fixedExternalVacuumSlot shuffle.leftSlots) := by
+            (slotSplitVacuumOrder shuffle.leftSlots) p.2)
+          (σ ∘ slotSplitVacuumSlot shuffle.leftSlots) := by
     rw [hd]
     exact hprod
   have hpiece := fixedExternalShuffleFiber_externalPiece_heq shuffle ext x
@@ -262,23 +263,23 @@ theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
   have hvacDataEq :
       cast hvacDataType
           (Common.quarticDiagramEquivOrderedData
-            (fixedExternalVacuumOrder shuffle.leftSlots) p.2) = x :=
+            (slotSplitVacuumOrder shuffle.leftSlots) p.2) = x :=
     cast_eq_of_heq hvacDataType hvacData
   have hrightTimesEq :
-      cast hvacTimeType (σ ∘ fixedExternalVacuumSlot shuffle.leftSlots) =
+      cast hvacTimeType (σ ∘ slotSplitVacuumSlot shuffle.leftSlots) =
         (fun q : Fin k => σ (shuffle.slotEquiv (Sum.inr q))) :=
     cast_eq_of_heq hvacTimeType hrightTimes
   have hvacValue :
       orderedVacuumDysonIntegrand ε β g
           (Common.quarticDiagramEquivOrderedData
-            (fixedExternalVacuumOrder shuffle.leftSlots) p.2)
-          (σ ∘ fixedExternalVacuumSlot shuffle.leftSlots) =
+            (slotSplitVacuumOrder shuffle.leftSlots) p.2)
+          (σ ∘ slotSplitVacuumSlot shuffle.leftSlots) =
         orderedVacuumDysonIntegrand ε β g x
           (fun q => σ (shuffle.slotEquiv (Sum.inr q))) := by
     have htransport := orderedVacuumDysonIntegrand_cast ε β g hrightSize
       (Common.quarticDiagramEquivOrderedData
-        (fixedExternalVacuumOrder shuffle.leftSlots) p.2)
-      (σ ∘ fixedExternalVacuumSlot shuffle.leftSlots)
+        (slotSplitVacuumOrder shuffle.leftSlots) p.2)
+      (σ ∘ slotSplitVacuumSlot shuffle.leftSlots)
     simpa only [hvacDataEq, hrightTimesEq] using htransport
   rw [hprod', hextValue, hvacValue]
   rfl
