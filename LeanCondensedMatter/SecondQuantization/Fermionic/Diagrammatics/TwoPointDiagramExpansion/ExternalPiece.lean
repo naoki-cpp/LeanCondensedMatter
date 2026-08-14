@@ -214,11 +214,13 @@ theorem FixedExternalTwoPointWickDiagram.atomicLegPartner_orderedTwoPointLegMap
     hsub, Common.TwoPointDiagram.atomicLegPartner, Equiv.symm_apply_apply,
     Common.TwoPointDiagram.restrictedPartner_val]
 
+/-- Restrict ambient interaction times to the canonically ordered slots of the external piece. -/
 noncomputable def FixedExternalTwoPointWickDiagram.externalPieceTimes
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (σ : Fin n → ℝ) :
     Fin d.1.externalInteractionPart.card → ℝ :=
   σ ∘ d.1.externalInteractionPart.orderEmbOfFin rfl
 
+/-- Embed a mixed-order position of the standalone external piece into the ambient mixed order. -/
 noncomputable def FixedExternalTwoPointWickDiagram.externalPieceMixedPosition
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (p : Fin (2 * (2 * d.1.externalInteractionPart.card + 1))) : Fin (2 * (2 * n + 1)) :=
@@ -275,6 +277,8 @@ theorem FixedExternalTwoPointWickDiagram.mixedPositionComponent_externalPieceMix
     hleg, ← hcanonical]
   exact hamb
 
+/-- The canonical equivalence between external-piece mixed positions and the ambient external
+component's mixed-position fiber. -/
 noncomputable def FixedExternalTwoPointWickDiagram.externalPieceMixedPositionEquiv
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ) :
     Fin (2 * (2 * d.1.externalInteractionPart.card + 1)) ≃
