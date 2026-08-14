@@ -9,6 +9,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Slot
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumConnectivity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumComponents
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumVertexProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotCongr
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVertexProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentVertexProduct
@@ -37,8 +38,8 @@ set_option linter.style.header false
 Two-point diagrams with two distinguished external legs, full connected-component partitions,
 generic vacuum component restriction and canonical external/vacuum decomposition, the fiber
 decomposition of the diagram sum by which interaction vertices are external, componentwise vertex
-products, interaction-time ordered-simplex shuffles and their canonical representative, ambient
-shuffle permutations, interaction-slot relabeling, mixed-time component-position transport, generic
-mixed-order pairings, component pair fibers, commutative pair products, crossing decomposition, pair
-transport, and fixed-order chamber locality.
+products, slot-split vacuum pairing transport, interaction-time ordered-simplex shuffles and their
+canonical representative, ambient shuffle permutations, interaction-slot relabeling, mixed-time
+component-position transport, generic mixed-order pairings, component pair fibers, commutative pair
+products, crossing decomposition, pair transport, and fixed-order chamber locality.
 -/
