@@ -77,7 +77,12 @@ theorem twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizeByConst
           (dysonPartitionSeries ε β (quarticInteraction g)) := by
   ext n
   rw [coeff_twoPointDysonSeries, PowerSeries.coeff_mul]
-  rw [sum_antidiagonal_eq_sum_range_succ]
+  rw [sum_antidiagonal_eq_sum_range_succ
+    (f := fun a b =>
+      PowerSeries.coeff a (connectedTwoPointDysonSeries ε β g i j τ τ') *
+        PowerSeries.coeff b
+          (PowerSeries.normalizeByConstantCoeff
+            (dysonPartitionSeries ε β (quarticInteraction g))))]
   simp only [coeff_connectedTwoPointDysonSeries,
     coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
   exact twoPointDysonCoefficient_eq_sum_connected_mul_normalizedDysonPartitionCoeff
