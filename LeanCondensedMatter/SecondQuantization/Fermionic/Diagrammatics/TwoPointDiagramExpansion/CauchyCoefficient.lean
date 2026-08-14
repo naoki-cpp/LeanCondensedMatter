@@ -19,6 +19,7 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
+open Classical in
 /-- A fixed-cardinality slice of the ambient powerset is the corresponding external/vacuum Cauchy
 factor.  The equality `m + k = n` is used only to identify the ambient slot type with `Fin (m + k)`. -/
 theorem sum_powersetCard_fixedExternalFiber_dysonAmplitude_eq_connected_mul_normalizedVacuum
@@ -33,7 +34,6 @@ theorem sum_powersetCard_fixedExternalFiber_dysonAmplitude_eq_connected_mul_norm
         ((fixedExternalFiberEquiv T).symm p).1.dysonAmplitude ε β g τ τ') =
       connectedTwoPointDysonCoefficient ε β g i j τ τ' m *
         normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
-  classical
   subst n
   rw [Finset.sum_subtype
     (p := fun T : Finset (Fin (m + k)) => T.card = m)
@@ -62,7 +62,7 @@ theorem twoPointDiagramCoefficient_eq_sum_connected_mul_normalizedDysonPartition
           normalizedDysonPartitionCoeff ε β (quarticInteraction g) (n - m) := by
   classical
   rw [twoPointDiagramCoefficient_eq_sum_dysonAmplitude]
-  rw [FixedExternalTwoPointWickDiagram.sum_eq_sum_powerset_fixedExternalFiber
+  rw [sum_eq_sum_powerset_fixedExternalFiber
     (Mode := Mode) (i := i) (j := j)
     (F := fun d => d.dysonAmplitude ε β g τ τ')]
   rw [Finset.sum_powerset]
