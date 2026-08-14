@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedEventBlockOrder
-import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.MixedEventSlotEmbedding
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding
 
 set_option linter.style.header false
 
@@ -20,6 +20,8 @@ slot index is.
 
 namespace SecondQuantization
 namespace Fermionic
+
+open Common
 
 variable {m n : ℕ} {f : Fin m → Fin n}
 
