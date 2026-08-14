@@ -35,6 +35,7 @@ theorem sum_connectedFixedExternalTwoPointWickDiagram_dysonAmplitude_eq_connecte
       simp only [Finset.mem_filter, Finset.mem_univ, true_and])
     (fun d => d.dysonAmplitude ε β g τ τ')]
 
+open Classical in
 /-- **All fibers with external order `m` and vacuum order `k` sum to one Cauchy-product term.** -/
 theorem sum_leftSlotSet_fixedExternalFiber_dysonAmplitude_eq_connected_mul_normalizedVacuum
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
@@ -48,7 +49,6 @@ theorem sum_leftSlotSet_fixedExternalFiber_dysonAmplitude_eq_connected_mul_norma
         ((fixedExternalFiberEquiv T.1).symm p).1.dysonAmplitude ε β g τ τ') =
       connectedTwoPointDysonCoefficient ε β g i j τ τ' m *
         normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
-  classical
   rw [BinaryShuffle.sum_leftSlotSet]
   change
     (∑ shuffle : BinaryShuffle.SlotShuffle m k,
