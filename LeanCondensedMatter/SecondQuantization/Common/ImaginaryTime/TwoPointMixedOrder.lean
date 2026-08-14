@@ -19,8 +19,11 @@ supply any exchange prefactor separately.
 namespace SecondQuantization
 namespace Common
 
+/-- The event type for a two-point insertion with `n` interaction vertices: two distinguished
+external events followed by the interaction slots. -/
 abbrev TwoPointTimedEvent (n : ℕ) : Type := Fin 2 ⊕ Fin n
 
+/-- The two fixed external times in their canonical external-event order. -/
 def twoPointExternalTimes (τ τ' : ℝ) : Fin 2 → ℝ :=
   fun e => if e = 0 then τ else τ'
 
@@ -32,21 +35,28 @@ theorem twoPointExternalTimes_zero (τ τ' : ℝ) : twoPointExternalTimes τ τ'
 theorem twoPointExternalTimes_one (τ τ' : ℝ) : twoPointExternalTimes τ τ' 1 = τ' := by
   simp [twoPointExternalTimes]
 
+/-- The imaginary time attached to an external or interaction event. -/
 def twoPointTimedEventTime {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
     TwoPointTimedEvent n → ℝ
   | .inl e => twoPointExternalTimes τ τ' e
   | .inr v => σ v
 
+/-- Stable equal-time rank: external events have ranks `0,1` and interaction slot `v` has rank
+`2 + v`. -/
 def twoPointTimedEventRank {n : ℕ} : TwoPointTimedEvent n → ℕ
   | .inl e => e
   | .inr v => 2 + v
 
+/-- Stable non-strict event precedence: later imaginary time comes first, with the stable rank
+breaking equal-time ties. -/
 def twoPointTimedEventBeforeOrEqual {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
     (a b : TwoPointTimedEvent n) : Prop :=
   twoPointTimedEventTime τ τ' σ b < twoPointTimedEventTime τ τ' σ a ∨
     (twoPointTimedEventTime τ τ' σ a = twoPointTimedEventTime τ τ' σ b ∧
       twoPointTimedEventRank a ≤ twoPointTimedEventRank b)
 
+/-- Strict stable event precedence, obtained by excluding equality from
+`twoPointTimedEventBeforeOrEqual`. -/
 def twoPointTimedEventBefore {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
     (a b : TwoPointTimedEvent n) : Prop :=
   twoPointTimedEventBeforeOrEqual τ τ' σ a b ∧ a ≠ b
@@ -119,6 +129,7 @@ private theorem twoPointTimedEventBeforeOrEqual_antisymm {n : ℕ}
       exact (lt_irrefl _ hba).elim
     · exact twoPointTimedEventRank_injective (habRank.antisymm hbaRank)
 
+/-- Stable comparison of two fixed events is unchanged when their two event times are unchanged. -/
 theorem twoPointTimedEventBeforeOrEqual_congr {n : ℕ}
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (a b : TwoPointTimedEvent n)
     (ha : twoPointTimedEventTime τ τ' σ a = twoPointTimedEventTime τ τ' υ a)
@@ -128,6 +139,7 @@ theorem twoPointTimedEventBeforeOrEqual_congr {n : ℕ}
   simp only [twoPointTimedEventBeforeOrEqual]
   rw [ha, hb]
 
+/-- Interaction events in their canonical supplied slot order. -/
 def twoPointInteractionEventList (n : ℕ) : List (TwoPointTimedEvent n) :=
   List.ofFn fun v : Fin n => Sum.inr v
 
@@ -150,6 +162,7 @@ private theorem canonicalTwoPointTimedEvents_all_mem (n : ℕ) :
   | inl e => fin_cases e <;> simp [twoPointInteractionEventList]
   | inr v => simp [twoPointInteractionEventList]
 
+/-- All external and interaction events sorted by decreasing time with the stable equal-time rank. -/
 noncomputable def orderedTwoPointTimedEvents {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
     List (TwoPointTimedEvent n) := by
   classical
@@ -163,12 +176,14 @@ theorem orderedTwoPointTimedEvents_length {n : ℕ} (τ τ' : ℝ) (σ : Fin n �
   rw [orderedTwoPointTimedEvents, List.length_insertionSort]
   simp [twoPointInteractionEventList]
 
+/-- Time ordering permutes, but neither duplicates nor removes, the canonical mixed events. -/
 theorem orderedTwoPointTimedEvents_perm {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
     List.Perm (orderedTwoPointTimedEvents τ τ' σ)
       ([Sum.inl 0, Sum.inl 1] ++ twoPointInteractionEventList n) := by
   classical
   exact List.perm_insertionSort _ _
 
+/-- The fully ordered mixed-event list is pairwise sorted by stable time precedence. -/
 theorem orderedTwoPointTimedEvents_pairwise {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     (orderedTwoPointTimedEvents τ τ' σ).Pairwise
@@ -180,12 +195,14 @@ theorem orderedTwoPointTimedEvents_pairwise {n : ℕ}
     ⟨fun _ _ _ => twoPointTimedEventBeforeOrEqual_trans τ τ' σ⟩
   exact List.pairwise_insertionSort _ _
 
+/-- The fully ordered mixed-event list contains no duplicate events. -/
 theorem orderedTwoPointTimedEvents_nodup {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     (orderedTwoPointTimedEvents τ τ' σ).Nodup :=
   (orderedTwoPointTimedEvents_perm τ τ' σ).nodup_iff.mpr
     (canonicalTwoPointTimedEvents_nodup n)
 
+/-- Every external or interaction event occurs in the fully ordered event list. -/
 theorem orderedTwoPointTimedEvents_all_mem {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     ∀ event : TwoPointTimedEvent n,
@@ -194,6 +211,7 @@ theorem orderedTwoPointTimedEvents_all_mem {n : ℕ}
   exact (orderedTwoPointTimedEvents_perm τ τ' σ).symm.subset
     (canonicalTwoPointTimedEvents_all_mem n event)
 
+/-- Exact enumeration of all mixed events by their time-ordered positions. -/
 noncomputable def orderedTwoPointTimedEventEquiv {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) :
     Fin (n + 2) ≃ TwoPointTimedEvent n :=
@@ -203,6 +221,7 @@ noncomputable def orderedTwoPointTimedEventEquiv {n : ℕ}
       (orderedTwoPointTimedEvents_nodup τ τ' σ)
       (orderedTwoPointTimedEvents_all_mem τ τ' σ))
 
+/-- Position occupied by one event in the fully ordered mixed-event list. -/
 noncomputable def orderedTwoPointTimedEventPosition {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) (event : TwoPointTimedEvent n) : Fin (n + 2) :=
   (orderedTwoPointTimedEventEquiv τ τ' σ).symm event
@@ -244,6 +263,7 @@ private theorem twoPointTimedEventBeforeOrEqual_of_position_lt {n : ℕ}
   rw [ha, hb] at hrel
   exact hrel
 
+/-- Event-position comparison is exactly strict stable time precedence. -/
 theorem orderedTwoPointTimedEventPosition_lt_iff {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) (a b : TwoPointTimedEvent n) :
     orderedTwoPointTimedEventPosition τ τ' σ a <
@@ -264,6 +284,7 @@ theorem orderedTwoPointTimedEventPosition_lt_iff {n : ℕ}
     · have hba := twoPointTimedEventBeforeOrEqual_of_position_lt τ τ' σ h
       exact (hne (twoPointTimedEventBeforeOrEqual_antisymm τ τ' σ hab hba)).elim
 
+/-- Relative ordered positions of two events depend only on the times of those two events. -/
 theorem orderedTwoPointTimedEventPosition_lt_iff_of_eventTime_eq {n : ℕ}
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (a b : TwoPointTimedEvent n)
     (ha : twoPointTimedEventTime τ τ' σ a = twoPointTimedEventTime τ τ' υ a)
