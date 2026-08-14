@@ -1,7 +1,6 @@
-import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticThermalComponentFactorization
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentDecompositionEquiv
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ConnectedDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrderDecomposition
 
 set_option linter.style.header false
@@ -17,7 +16,8 @@ decomposition.
 
 This gives a direct input to the generic cumulant/connected-decomposition theorem. Everything in
 this file is finite and coefficientwise: no ordered-simplex integration, infinite Dyson-series
-convergence, or completed-Fock-space assertion is made.
+convergence, or completed-Fock-space assertion is made. The decomposition adapter itself is
+statistics-independent and owned by `Common`.
 -/
 
 namespace SecondQuantization
@@ -150,20 +150,11 @@ theorem QuarticDiagram.thermalAmplitude_eq_prod_restrictComponentConnected
 
 variable [Fintype Mode]
 
-/-- Connected-component decomposition of bosonic quartic diagrams. -/
-noncomputable def quarticThermalDiagramConnectedDecomposition :
-    Combinatorics.ConnectedDecomposition (Fin N) where
-  Object S := QuarticDiagram Mode N S
-  ConnectedObject S := ConnectedQuarticDiagram Mode N S
-  fintypeObject _ := inferInstance
-  fintypeConnectedObject _ := inferInstance
-  decompose _ := Common.QuarticDiagram.componentDecompositionEquiv
-
 /-- The order-averaged coefficientwise thermal amplitude as a multiplicative diagram weight. -/
 noncomputable def quarticThermalDiagramMultiplicativeWeight
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) :
     Combinatorics.MultiplicativeWeight
-      (quarticThermalDiagramConnectedDecomposition (Mode := Mode) (N := N)) ℂ where
+      (Common.quarticDiagramConnectedDecomposition (QuarticVertexLabel Mode) N) ℂ where
   objectWeight d := QuarticDiagram.thermalAmplitude ε β g d
   connectedWeight d := QuarticDiagram.thermalAmplitude ε β g d.1
   weight_decompose d := by
