@@ -101,7 +101,8 @@ theorem fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_or
   rw [fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_quarticIntegrand
     ε β g T ext hext vac τ τ' σ hσ]
   unfold orderedVacuumDysonIntegrand
-  rw [couplingWeight_eq_prod_vertexLabel_order vac g (slotSplitVacuumOrder T),
+  rw [QuarticWickDiagram.couplingWeight,
+    Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order vac g (slotSplitVacuumOrder T),
     vac.contractionIntegrand_eq_pairingEvaluation ε β (slotSplitVacuumOrder T)]
   rfl
 
