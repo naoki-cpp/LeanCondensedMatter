@@ -14,9 +14,11 @@ measurable. This finite measurable partition depends only on the mixed event ord
 namespace SecondQuantization
 namespace Common
 
+/-- Finite truth table of the strict pairwise comparisons between mixed two-point events. -/
 abbrev TwoPointOrderSignature (n : ℕ) :=
   Finset (TwoPointTimedEvent n × TwoPointTimedEvent n)
 
+/-- The finite set of strict mixed-event comparisons true at one interaction-time assignment. -/
 noncomputable def twoPointOrderSignature {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
     TwoPointOrderSignature n :=
   Finset.univ.filter fun p =>
@@ -53,6 +55,8 @@ theorem sameTwoPointOrderChamber_iff_orderSignature_eq {n : ℕ}
       rw [← h] at hm
       exact (mem_twoPointOrderSignature_iff τ τ' σ a b).1 hm
 
+/-- Locus of interaction-time assignments for which one fixed mixed event is strictly earlier than
+another in physical time. -/
 def twoPointEventStrictComparisonSet {n : ℕ} (τ τ' : ℝ)
     (a b : TwoPointTimedEvent n) : Set (Fin n → ℝ) :=
   {σ | twoPointTimedEventTime τ τ' σ a < twoPointTimedEventTime τ τ' σ b}
@@ -75,6 +79,7 @@ theorem measurableSet_twoPointEventStrictComparisonSet {n : ℕ} (τ τ' : ℝ)
     (continuous_twoPointTimedEventTime τ τ' a).measurable
     (continuous_twoPointTimedEventTime τ τ' b).measurable
 
+/-- Fiber of the finite mixed-order signature map over a prescribed signature. -/
 def twoPointOrderSignatureFiber {n : ℕ} (τ τ' : ℝ)
     (s : TwoPointOrderSignature n) : Set (Fin n → ℝ) :=
   {σ | twoPointOrderSignature τ τ' σ = s}
@@ -139,6 +144,8 @@ theorem measurableSet_twoPointOrderSignatureFiber {n : ℕ} (τ τ' : ℝ)
   · simpa [hps] using
       (measurableSet_twoPointEventStrictComparisonSet τ τ' p.1 p.2).compl
 
+/-- Chosen interaction-time assignment realizing a signature when it is realizable, with the zero
+assignment as a fallback for unrealized signatures. -/
 noncomputable def twoPointOrderSignatureBase {n : ℕ} (τ τ' : ℝ)
     (s : TwoPointOrderSignature n) : Fin n → ℝ := by
   classical
