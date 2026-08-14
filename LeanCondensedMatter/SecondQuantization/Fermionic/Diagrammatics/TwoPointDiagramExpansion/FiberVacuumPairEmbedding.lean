@@ -29,7 +29,7 @@ noncomputable def fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
     (vac.pairingInOrder (fixedExternalVacuumOrder T)).NormalizedPair ↪
-      ((fixedExternalOfSlotSplit T ext vac).pairingInMixedOrder τ τ' σ).NormalizedPair where
+      ((fixedExternalOfSlotSplit T ext vac).1.pairingInMixedOrder τ τ' σ).NormalizedPair where
   toFun pr :=
     ⟨(mixedTimeOrderedQuarticLegMapPosition (fixedExternalVacuumSlot T) τ τ' σ pr.1.1,
       mixedTimeOrderedQuarticLegMapPosition (fixedExternalVacuumSlot T) τ τ' σ pr.1.2),
