@@ -47,6 +47,99 @@ noncomputable def orderedVacuumDysonIntegrand
   (-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)) *
     flatVertexLegPairingEvaluation ε β x.1 σ x.2
 
+/-- Standardize the connected external half of a shuffle fiber onto `Fin m`. -/
+noncomputable def connectedFixedExternalShuffleLeftEquiv {m k : ℕ}
+    (shuffle : BinaryShuffle.SlotShuffle m k) :
+    {ext : FixedExternalTwoPointWickDiagramOn Mode (m + k) shuffle.leftSlots i j //
+        ext.1.IsExternallyConnected} ≃
+      {ext : FixedExternalTwoPointWickDiagram Mode m i j // ext.1.IsExternallyConnected} := by
+  simpa only [shuffle.card_leftSlots] using
+    (connectedFixedExternalTwoPointWickDiagramOnEquiv
+      (Mode := Mode) (i := i) (j := j) shuffle.leftSlots)
+
+/-- Read the vacuum half of a shuffle fiber in its inherited increasing order.  The resulting
+ordered data has order `k`, independently of which ambient slots the shuffle assigns to it. -/
+noncomputable def fixedExternalShuffleVacuumOrderedDataEquiv {m k : ℕ}
+    (shuffle : BinaryShuffle.SlotShuffle m k) :
+    QuarticWickDiagram Mode (m + k)
+        ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots) ≃
+      Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k := by
+  simpa only [slotShuffle_card_sdiff_leftSlots shuffle] using
+    (Common.quarticDiagramEquivOrderedData (fixedExternalVacuumOrder shuffle.leftSlots))
+
+/-- A fixed-cardinality fiber has shuffle-independent local data: one connected order-`m` external
+diagram and one order-`k` vacuum label/pairing datum. -/
+noncomputable def fixedExternalShuffleFiberDataEquiv {m k : ℕ}
+    (shuffle : BinaryShuffle.SlotShuffle m k) :
+    ({ext : FixedExternalTwoPointWickDiagramOn Mode (m + k) shuffle.leftSlots i j //
+        ext.1.IsExternallyConnected} ×
+      QuarticWickDiagram Mode (m + k)
+        ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots)) ≃
+      ({ext : FixedExternalTwoPointWickDiagram Mode m i j // ext.1.IsExternallyConnected} ×
+        Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k) :=
+  Equiv.prodCongr (connectedFixedExternalShuffleLeftEquiv shuffle)
+    (fixedExternalShuffleVacuumOrderedDataEquiv shuffle)
+
+/-- The canonical fixed-fiber pointwise product can be written with the vacuum factor entirely in
+ordered-data coordinates. -/
+theorem fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_orderedVacuumIntegrand
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    {n : ℕ} (T : Finset (Fin n))
+    (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
+    (hext : ext.1.IsExternallyConnected)
+    (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
+    (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
+    let d := fixedExternalOfSlotSplit T ext vac
+    d.dysonFixedTimeAmplitude ε β g τ τ' σ =
+      d.externalPiece.dysonFixedTimeAmplitude ε β g τ τ' (d.externalPieceTimes σ) *
+        orderedVacuumDysonIntegrand ε β g
+          (Common.quarticDiagramEquivOrderedData (fixedExternalVacuumOrder T) vac)
+          (σ ∘ fixedExternalVacuumSlot T) := by
+  rw [fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_quarticIntegrand
+    ε β g T ext hext vac τ τ' σ hσ]
+  unfold orderedVacuumDysonIntegrand
+  rw [couplingWeight_eq_prod_vertexLabel_order,
+    vac.contractionIntegrand_eq_pairingEvaluation ε β (fixedExternalVacuumOrder T)]
+
+/-- Summing the fixed-order Dyson contribution over ordered vacuum data gives the normalized vacuum
+Dyson coefficient.  This is #1110 after removing the irrelevant ambient vertex set. -/
+theorem sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (k : ℕ) :
+    (∑ x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k,
+      (-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)) *
+        intervalIntegral.orderedSimplexIntegral k β
+          (fun σ => flatVertexLegPairingEvaluation ε β x.1 σ x.2)) =
+      normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
+  classical
+  let S : Finset (Fin k) := Finset.univ
+  let order : Common.QuarticVertexOrder S := (S.orderIsoOfFin rfl).toEquiv
+  let F : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) S.card → ℂ :=
+    fun x => (-1 : ℂ) ^ S.card * (∏ q : Fin S.card, g (x.1 q)) *
+      intervalIntegral.orderedSimplexIntegral S.card β
+        (fun σ => flatVertexLegPairingEvaluation ε β x.1 σ x.2)
+  calc
+    (∑ x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k,
+      (-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)) *
+        intervalIntegral.orderedSimplexIntegral k β
+          (fun σ => flatVertexLegPairingEvaluation ε β x.1 σ x.2)) =
+        ∑ d : QuarticWickDiagram Mode k S,
+          F (Common.quarticDiagramEquivOrderedData order d) := by
+            simpa [S, F] using
+              (Common.sum_quarticDiagram_eq_sum_orderedData order F).symm
+    _ = ∑ d : QuarticWickDiagram Mode k S,
+        (-1 : ℂ) ^ S.card * d.couplingWeight g *
+          d.orderedSimplexContribution ε β order := by
+      apply Finset.sum_congr rfl
+      intro d _
+      rw [couplingWeight_eq_prod_vertexLabel_order,
+        orderedSimplexContribution_eq_pairingEvaluation]
+      rfl
+    _ = normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
+      simpa [S] using
+        (sum_quarticWickDiagram_fixedOrderDysonContribution_eq_normalizedDysonPartitionCoeff
+          ε β g order)
+
 /-- The binary shuffle product theorem in ordered-data coordinates for the vacuum factor.
 
 Unlike a quartic diagram on an ambient complement, `x` is independent of the ambient locations of
