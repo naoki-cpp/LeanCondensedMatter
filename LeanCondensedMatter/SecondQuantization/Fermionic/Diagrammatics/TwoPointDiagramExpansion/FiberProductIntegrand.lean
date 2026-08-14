@@ -18,6 +18,8 @@ by the coefficientwise Cauchy-product step of the linked-cluster theorem.
 namespace SecondQuantization
 namespace Fermionic
 
+open Common
+
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
 
 /-- For an externally connected left piece and strictly decreasing inherited vacuum times, the
@@ -30,13 +32,13 @@ theorem fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_qu
     (hext : ext.1.IsExternallyConnected)
     (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
     let d := fixedExternalOfSlotSplit T ext vac
     d.dysonFixedTimeAmplitude ε β g τ τ' σ =
       d.externalPiece.dysonFixedTimeAmplitude ε β g τ τ' (d.externalPieceTimes σ) *
         ((-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g *
-          vac.contractionIntegrand ε β (fixedExternalVacuumOrder T)
-            (σ ∘ fixedExternalVacuumSlot T)) := by
+          vac.contractionIntegrand ε β (slotSplitVacuumOrder T)
+            (σ ∘ slotSplitVacuumSlot T)) := by
   classical
   let d := fixedExternalOfSlotSplit T ext vac
   change d.dysonFixedTimeAmplitude ε β g τ τ' σ = _
@@ -46,8 +48,8 @@ theorem fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_qu
       d.1.vacuumComponentParts.prod
           (d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ) =
         (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g *
-          vac.contractionIntegrand ε β (fixedExternalVacuumOrder T)
-            (σ ∘ fixedExternalVacuumSlot T) := by
+          vac.contractionIntegrand ε β (slotSplitVacuumOrder T)
+            (σ ∘ slotSplitVacuumSlot T) := by
     simpa [d] using
       (fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand
         ε β g T ext hext vac τ τ' σ hσ)
