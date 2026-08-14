@@ -39,7 +39,7 @@ theorem fixedExternalOfSlotSplit_prod_vacuumMixedComponentWeight_eq
       (base.mixedComponentWeight Common.Statistics.fermion τ τ' σ) = _
   let e := Common.slotSplitVacuumComponentEquiv
     (Finset.subset_univ T) ext.1 vac hext
-  let orders := vac.componentVertexOrdersOfVertexOrder (slotSplitVacuumOrder T)
+  let orders := vac.componentPartition.partOrdersOfOrder (slotSplitVacuumOrder T)
   let shuffle := vac.fixedOrderComponentShuffle (slotSplitVacuumOrder T)
   calc
     base.vacuumComponentParts.prod
