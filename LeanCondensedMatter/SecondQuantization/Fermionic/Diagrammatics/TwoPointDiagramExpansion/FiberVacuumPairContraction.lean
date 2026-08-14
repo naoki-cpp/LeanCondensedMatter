@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumPairImage
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairImage
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumPrefactor
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedPairContractionRegularity
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Amplitude
 
@@ -7,10 +8,10 @@ set_option linter.style.header false
 /-!
 # Pair contractions on the vacuum half of a fixed external-slot fiber
 
-The exact normalized-pair equivalence of `FiberVacuumPairImage` identifies which ambient mixed pair
-corresponds to every fixed-order quartic vacuum pair.  This module transports the scalar contraction
-on each such pair.  The proof is operator-local: the ambient standard leg carries the same quartic
-vertex label, local leg, and inherited imaginary time as the standalone quartic leg.
+The Common vacuum-pair equivalence identifies which ambient mixed pair corresponds to every
+fixed-order quartic vacuum pair. This module keeps only the fermionic scalar-contraction transport.
+The proof is operator-local: the ambient standard leg carries the same quartic vertex label, local
+leg, and inherited imaginary time as the standalone quartic leg.
 -/
 
 namespace SecondQuantization
@@ -158,10 +159,10 @@ theorem fixedExternalOfSlotSplit_prod_vacuumPairContractionValue_eq
         orderedQuarticPairValue ε β vac (slotSplitVacuumOrder T)
           (σ ∘ slotSplitVacuumSlot T) pr.1.1 pr.1.2 := by
   let d := fixedExternalOfSlotSplit T ext vac
-  let F : d.MixedVacuumPair τ τ' σ → ℂ := fun pr =>
+  let F : d.1.MixedVacuumPair τ τ' σ → ℂ := fun pr =>
     d.mixedPairContractionValue ε β τ τ' σ pr.1
-  let e := fixedExternalOfSlotSplitVacuumMixedPairEquiv
-    T ext vac hext τ τ' σ hσ
+  let e := Common.TwoPointDiagram.slotSplitVacuumMixedPairEquiv
+    T ext.1 vac hext τ τ' σ hσ
   calc
     d.1.vacuumComponentParts.prod (fun B =>
         ∏ pr : d.1.MixedComponentPair τ τ' σ B,
@@ -172,11 +173,11 @@ theorem fixedExternalOfSlotSplit_prod_vacuumPairContractionValue_eq
       exact Finset.prod_subtype d.1.vacuumComponentParts (fun _ => Iff.rfl) _
     _ = ∏ x : Σ B : ↥d.1.vacuumComponentParts,
         d.1.MixedComponentPair τ τ' σ B.1,
-        F (d.mixedVacuumPairSigmaEquiv τ τ' σ x) := by
+        F (d.1.mixedVacuumPairSigmaEquiv τ τ' σ x) := by
       rw [Fintype.prod_sigma]
       rfl
-    _ = ∏ pr : d.MixedVacuumPair τ τ' σ, F pr :=
-      Equiv.prod_comp (d.mixedVacuumPairSigmaEquiv τ τ' σ) F
+    _ = ∏ pr : d.1.MixedVacuumPair τ τ' σ, F pr :=
+      Equiv.prod_comp (d.1.mixedVacuumPairSigmaEquiv τ τ' σ) F
     _ = ∏ pr : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair,
         F (e pr) :=
       (Equiv.prod_comp e F).symm
@@ -186,7 +187,7 @@ theorem fixedExternalOfSlotSplit_prod_vacuumPairContractionValue_eq
       apply Fintype.prod_congr
       intro pr
       change d.mixedPairContractionValue ε β τ τ' σ (e pr).1 = _
-      rw [fixedExternalOfSlotSplitVacuumMixedPairEquiv_apply]
+      rw [Common.TwoPointDiagram.slotSplitVacuumMixedPairEquiv_apply]
       exact fixedExternalOfSlotSplit_mixedPairContractionValue_vacuumNormalizedPair
         ε β T ext vac τ τ' σ hσ pr
 
