@@ -21,6 +21,20 @@ open Combinatorics
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {i j : Mode}
 
+private theorem heq_equivCast {α β : Type*} (h : α = β) (x : α) :
+    HEq x ((Equiv.cast h) x) := by
+  subst β
+  rfl
+
+private theorem heq_finFun_of_cast {a b : ℕ} (h : a = b)
+    (f : Fin a → ℝ) (g : Fin b → ℝ)
+    (hfg : ∀ j : Fin b, f (Fin.cast h.symm j) = g j) : HEq f g := by
+  subst b
+  apply heq_of_eq
+  funext j
+  simpa using hfg j
+
+omit [Fintype Mode] in
 /-- After standardizing a shuffle fiber, the ambient standalone external piece is heterogeneously
 equal to the chosen order-`m` connected diagram. -/
 theorem fixedExternalShuffleFiber_externalPiece_heq
@@ -31,18 +45,29 @@ theorem fixedExternalShuffleFiber_externalPiece_heq
     let d := (fixedExternalFiberEquiv shuffle.leftSlots).symm p
     HEq d.1.externalPiece ext.1 := by
   classical
+  dsimp only
   let p := (fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x)
   let d := (fixedExternalFiberEquiv shuffle.leftSlots).symm p
+  change HEq d.1.externalPiece ext.1
+  have hbase := fixedExternalFiberEquiv_symm_externalPiece_heq shuffle.leftSlots p
   have hp : fixedExternalShuffleFiberDataEquiv shuffle p = (ext, x) :=
     (fixedExternalShuffleFiberDataEquiv shuffle).apply_symm_apply (ext, x)
   have hext : connectedFixedExternalShuffleLeftEquiv shuffle p.1 = ext :=
     congrArg Prod.fst hp
-  have hstd : HEq
-      ((connectedFixedExternalTwoPointWickDiagramOnEquiv shuffle.leftSlots p.1).1) ext.1 := by
-    have hval := congrArg Subtype.val hext
-    simpa [connectedFixedExternalShuffleLeftEquiv] using hval
-  exact (fixedExternalFiberEquiv_symm_externalPiece_heq shuffle.leftSlots p).trans hstd
+  have hcast : HEq
+      (connectedFixedExternalTwoPointWickDiagramOnEquiv shuffle.leftSlots p.1)
+      (connectedFixedExternalShuffleLeftEquiv shuffle p.1) := by
+    unfold connectedFixedExternalShuffleLeftEquiv
+    exact heq_equivCast (by rw [shuffle.card_leftSlots])
+      (connectedFixedExternalTwoPointWickDiagramOnEquiv shuffle.leftSlots p.1)
+  have hcastVal : HEq
+      ((connectedFixedExternalTwoPointWickDiagramOnEquiv shuffle.leftSlots p.1).1)
+      ((connectedFixedExternalShuffleLeftEquiv shuffle p.1).1) := by
+    cases hcast
+    rfl
+  exact hbase.trans (hcastVal.trans (heq_of_eq (congrArg Subtype.val hext)))
 
+omit [Fintype Mode] in
 /-- The inherited external-piece time coordinates of a shuffle fiber are its left shuffle
 coordinates. -/
 theorem fixedExternalShuffleFiber_externalPieceTimes_heq
@@ -55,15 +80,19 @@ theorem fixedExternalShuffleFiber_externalPieceTimes_heq
     HEq (d.1.externalPieceTimes σ)
       (fun q : Fin m => σ (shuffle.slotEquiv (Sum.inl q))) := by
   classical
+  dsimp only
   let p := (fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x)
   let d := (fixedExternalFiberEquiv shuffle.leftSlots).symm p
+  change HEq (d.1.externalPieceTimes σ)
+    (fun q : Fin m => σ (shuffle.slotEquiv (Sum.inl q)))
   have hd : d.1.1.externalInteractionPart = shuffle.leftSlots := d.2
   unfold FixedExternalTwoPointWickDiagram.externalPieceTimes
   rw [hd]
-  simpa only [shuffle.card_leftSlots, Function.comp_apply] using
-    (funext fun q : Fin m =>
-      congrArg σ (slotShuffleLeftSlots_orderEmbOfFin shuffle q))
+  apply heq_finFun_of_cast shuffle.card_leftSlots
+  intro q
+  exact congrArg σ (slotShuffleLeftSlots_orderEmbOfFin shuffle q)
 
+omit [Fintype Mode] in
 /-- The vacuum ordered datum recovered from the inverse standardized fiber is the chosen datum. -/
 theorem fixedExternalShuffleFiber_vacuumOrderedData_heq
     {m k : ℕ} (shuffle : BinaryShuffle.SlotShuffle m k)
@@ -73,13 +102,25 @@ theorem fixedExternalShuffleFiber_vacuumOrderedData_heq
     HEq (Common.quarticDiagramEquivOrderedData
         (fixedExternalVacuumOrder shuffle.leftSlots) p.2) x := by
   classical
+  dsimp only
   let p := (fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x)
+  change HEq (Common.quarticDiagramEquivOrderedData
+    (fixedExternalVacuumOrder shuffle.leftSlots) p.2) x
   have hp : fixedExternalShuffleFiberDataEquiv shuffle p = (ext, x) :=
     (fixedExternalShuffleFiberDataEquiv shuffle).apply_symm_apply (ext, x)
-  have hvac := congrArg Prod.snd hp
-  simpa [fixedExternalShuffleFiberDataEquiv,
-    fixedExternalShuffleVacuumOrderedDataEquiv] using hvac
+  have hvac : fixedExternalShuffleVacuumOrderedDataEquiv shuffle p.2 = x :=
+    congrArg Prod.snd hp
+  have hcast : HEq
+      (Common.quarticDiagramEquivOrderedData
+        (fixedExternalVacuumOrder shuffle.leftSlots) p.2)
+      (fixedExternalShuffleVacuumOrderedDataEquiv shuffle p.2) := by
+    unfold fixedExternalShuffleVacuumOrderedDataEquiv
+    exact heq_equivCast (by rw [slotShuffle_card_sdiff_leftSlots shuffle])
+      (Common.quarticDiagramEquivOrderedData
+        (fixedExternalVacuumOrder shuffle.leftSlots) p.2)
+  exact hcast.trans (heq_of_eq hvac)
 
+omit [Fintype Mode] in
 /-- The inherited vacuum times of a shuffle fiber are its right shuffle coordinates. -/
 theorem fixedExternalShuffleFiber_vacuumTimes_heq
     {m k : ℕ} (shuffle : BinaryShuffle.SlotShuffle m k)
@@ -87,9 +128,9 @@ theorem fixedExternalShuffleFiber_vacuumTimes_heq
     HEq (σ ∘ fixedExternalVacuumSlot shuffle.leftSlots)
       (fun q : Fin k => σ (shuffle.slotEquiv (Sum.inr q))) := by
   classical
-  simpa only [slotShuffle_card_sdiff_leftSlots shuffle, Function.comp_apply] using
-    (funext fun q : Fin k =>
-      congrArg σ (fixedExternalVacuumSlot_leftSlots_eq_slotShuffleRight shuffle q))
+  apply heq_finFun_of_cast (slotShuffle_card_sdiff_leftSlots shuffle)
+  intro q
+  exact congrArg σ (fixedExternalVacuumSlot_leftSlots_eq_slotShuffleRight shuffle q)
 
 /-- **One fixed shuffle fiber is exactly the corresponding binary shuffled product integral.** -/
 theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
@@ -106,8 +147,10 @@ theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
           (fun σ => ext.1.dysonFixedTimeAmplitude ε β g τ τ' σ)
           (orderedVacuumDysonIntegrand ε β g x)) := by
   classical
+  dsimp only
   let p := (fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x)
   let d := (fixedExternalFiberEquiv shuffle.leftSlots).symm p
+  change d.1.dysonAmplitude ε β g τ τ' = _
   have hamp : d.1.dysonAmplitude ε β g τ τ' =
       intervalIntegral.orderedSimplexIntegral (m + k) β
         (fun σ => d.1.dysonFixedTimeAmplitude ε β g τ τ' σ) := by
