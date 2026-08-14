@@ -79,7 +79,7 @@ private theorem orderedVacuumDysonIntegrand_cast
   cases h
   rfl
 
-omit [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- After standardizing a shuffle fiber, the ambient standalone external piece is heterogeneously
 equal to the chosen order-`m` connected diagram. -/
 theorem fixedExternalShuffleFiber_externalPiece_heq
@@ -140,7 +140,7 @@ theorem fixedExternalShuffleFiber_externalPieceTimes_heq
   rw [orderEmbOfFin_rfl_cast d.1.1.externalInteractionPart hsize q]
   exact congrArg σ (congrFun horder.symm q)
 
-omit [Fintype Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- The vacuum ordered datum recovered from the inverse standardized fiber is the chosen datum. -/
 theorem fixedExternalShuffleFiber_vacuumOrderedData_heq
     {m k : ℕ} (shuffle : BinaryShuffle.SlotShuffle m k)
