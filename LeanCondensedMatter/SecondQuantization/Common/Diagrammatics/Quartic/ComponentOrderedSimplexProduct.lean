@@ -37,12 +37,18 @@ theorem QuarticDiagram.sum_componentShuffle_orderedSimplexIntegral_eq_prod
         (d.componentShuffleIntegrand shuffle componentIntegrand)) =
       ∏ B : d.componentPartition.parts,
         orderedSimplexIntegral (B : Finset (Fin N)).card β (componentIntegrand B) := by
-  simpa [QuarticDiagram.componentShuffleIntegrand,
-    QuarticDiagram.componentTimeAssignment, FamilySlotShuffleTo.ambientIntegrand] using
-    (FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_fintype
+  change
+    (∑ shuffle : FamilySlotShuffleTo
+        (fun B : d.componentPartition.parts => (B : Finset (Fin N)).card) S.card,
+      orderedSimplexIntegral S.card β
+        (shuffle.ambientIntegrand componentIntegrand)) =
+      ∏ B : d.componentPartition.parts,
+        orderedSimplexIntegral (B : Finset (Fin N)).card β (componentIntegrand B)
+  exact
+    FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_fintype
       (ι := d.componentPartition.parts)
       (fun B => (B : Finset (Fin N)).card) S.card d.sum_componentCard β
-      componentIntegrand hcomponent)
+      componentIntegrand hcomponent
 
 end Common
 end SecondQuantization
