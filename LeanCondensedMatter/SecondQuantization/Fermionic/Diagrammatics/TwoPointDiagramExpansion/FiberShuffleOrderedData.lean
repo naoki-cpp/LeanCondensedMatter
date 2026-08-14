@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberShuffleProduct
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberShuffleCoordinates
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotShuffleCoordinates
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing
 
 set_option linter.style.header false
