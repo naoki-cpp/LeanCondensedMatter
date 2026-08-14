@@ -18,6 +18,8 @@ required by the existing Bloch--de Dominicis pairing theorem.
 namespace SecondQuantization
 namespace Fermionic
 
+open Common
+
 variable {Mode : Type*} [LinearOrder Mode]
 
 /-- The atomic operator list contributed by one time-ordered external or quartic interaction event. -/
