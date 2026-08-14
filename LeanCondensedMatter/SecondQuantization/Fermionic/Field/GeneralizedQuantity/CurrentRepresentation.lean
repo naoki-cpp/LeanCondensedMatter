@@ -99,7 +99,9 @@ No locality or uniqueness claim is bundled into this structure. Different repres
 physically equivalent after quotienting by boundary/improvement terms in concrete models. -/
 structure DifferentialCurrentRepresentation
     (d : Test →ₗ[ℂ] OneForm) (Φ : Test →ₗ[ℂ] Obs) where
+  /-- The chosen flux functional on differential-like test data. -/
   current : OneForm →ₗ[ℂ] Obs
+  /-- Proof that the canonical transport functional is represented by `current ∘ d`. -/
   factors : FactorsThroughDifferential d Φ current
 
 namespace DifferentialCurrentRepresentation
