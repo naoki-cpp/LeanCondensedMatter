@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumPairComponent
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentCrossing
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPairProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentGlobalCrossingParity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrderDecomposition
@@ -133,7 +133,7 @@ noncomputable def fixedExternalOfSlotSplitVacuumComponentPairEmbedding
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
     vac.LocalOrderedPair (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T)) C ↪
-      (fixedExternalOfSlotSplit T ext vac).MixedComponentPair τ τ' σ
+      (fixedExternalOfSlotSplit T ext vac).1.MixedComponentPair τ τ' σ
         (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac C).1 where
   toFun pr := by
     let globalPr := vac.fixedOrderComponentPairEmbedding (fixedExternalVacuumOrder T) C pr
@@ -161,7 +161,7 @@ theorem fixedExternalOfSlotSplitVacuumComponentPairEmbedding_card_eq
         (vac.LocalOrderedPair
           (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T)) C) =
       Fintype.card
-        ((fixedExternalOfSlotSplit T ext vac).MixedComponentPair τ τ' σ
+        ((fixedExternalOfSlotSplit T ext vac).1.MixedComponentPair τ τ' σ
           (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac C).1) := by
   let d := fixedExternalOfSlotSplit T ext vac
   let B := Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac C
@@ -176,7 +176,7 @@ theorem fixedExternalOfSlotSplitVacuumComponentPairEmbedding_card_eq
     _ = 2 * (Common.TwoPointDiagram.interactionPart
         (B.1 : Finset (Common.TwoPointVertex (Finset.univ : Finset (Fin n))))).card := by
       rw [Common.interactionPart_slotSplitVacuumComponentPart]
-    _ = Fintype.card (d.MixedComponentPair τ τ' σ B.1) := by
+    _ = Fintype.card (d.1.MixedComponentPair τ τ' σ B.1) := by
       symm
       exact d.card_mixedVacuumComponentPair τ τ' σ B
 
@@ -190,7 +190,7 @@ noncomputable def fixedExternalOfSlotSplitVacuumComponentPairEquiv
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
     vac.LocalOrderedPair (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T)) C ≃
-      (fixedExternalOfSlotSplit T ext vac).MixedComponentPair τ τ' σ
+      (fixedExternalOfSlotSplit T ext vac).1.MixedComponentPair τ τ' σ
         (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac C).1 :=
   let emb := fixedExternalOfSlotSplitVacuumComponentPairEmbedding T ext vac C τ τ' σ hσ
   Equiv.ofBijective emb
@@ -245,7 +245,7 @@ theorem fixedExternalOfSlotSplit_mixedComponentCrossingCount_vacuum_eq
     (C : vac.componentPartition.parts)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
-    (fixedExternalOfSlotSplit T ext vac).mixedComponentCrossingCount τ τ' σ
+    (fixedExternalOfSlotSplit T ext vac).1.mixedComponentCrossingCount τ τ' σ
         (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac C).1 =
       ((vac.restrictComponent C.2).pairingInOrder
         (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T) C)).crossingCount := by
@@ -253,14 +253,14 @@ theorem fixedExternalOfSlotSplit_mixedComponentCrossingCount_vacuum_eq
     (Common.slotSplitVacuumComponentPart (Finset.subset_univ T) ext.1 vac C).1
   let LocalPair := vac.LocalOrderedPair
     (vac.componentVertexOrdersOfVertexOrder (fixedExternalVacuumOrder T)) C
-  let AmbientPair := (fixedExternalOfSlotSplit T ext vac).MixedComponentPair τ τ' σ B
+  let AmbientPair := (fixedExternalOfSlotSplit T ext vac).1.MixedComponentPair τ τ' σ B
   let e : LocalPair ≃ AmbientPair :=
     fixedExternalOfSlotSplitVacuumComponentPairEquiv T ext vac C τ τ' σ hσ
-  rw [FixedExternalTwoPointWickDiagram.mixedComponentCrossingCount,
-    FixedExternalTwoPointWickDiagram.mixedComponentOrientedCrossingCount,
+  rw [Common.TwoPointDiagram.mixedComponentCrossingCount,
+    Common.TwoPointDiagram.mixedComponentOrientedCrossingCount,
     Pairing.componentCrossingCount, Fintype.sum_prod_type,
     Pairing.crossingCount_eq_sum_sum_crosses]
-  simp only [FixedExternalTwoPointWickDiagram.mixedComponentPairSigmaEquiv_apply]
+  simp only [Common.TwoPointDiagram.mixedComponentPairSigmaEquiv_apply]
   symm
   refine Fintype.sum_equiv e
     (fun p : LocalPair => ∑ q : LocalPair, if Crosses p.1 q.1 then 1 else 0)
@@ -288,10 +288,10 @@ theorem fixedExternalOfSlotSplit_prod_vacuumMixedComponentWeight_eq
     (hσ : StrictAnti (σ ∘ fixedExternalVacuumSlot T)) :
     let d := fixedExternalOfSlotSplit T ext vac
     d.1.vacuumComponentParts.prod
-        (d.mixedComponentWeight Common.Statistics.fermion τ τ' σ) =
+        (d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ) =
       (vac.pairingInOrder (fixedExternalVacuumOrder T)).weight Common.Statistics.fermion := by
   change (Common.TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext.1 vac).vacuumComponentParts.prod
-      ((fixedExternalOfSlotSplit T ext vac).mixedComponentWeight
+      ((fixedExternalOfSlotSplit T ext vac).1.mixedComponentWeight
         Common.Statistics.fermion τ τ' σ) = _
   let e := Common.slotSplitVacuumComponentEquiv
     (Finset.subset_univ T) ext.1 vac hext
@@ -299,21 +299,21 @@ theorem fixedExternalOfSlotSplit_prod_vacuumMixedComponentWeight_eq
   let shuffle := vac.fixedOrderComponentShuffle (fixedExternalVacuumOrder T)
   calc
     (Common.TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext.1 vac).vacuumComponentParts.prod
-        ((fixedExternalOfSlotSplit T ext vac).mixedComponentWeight
+        ((fixedExternalOfSlotSplit T ext vac).1.mixedComponentWeight
           Common.Statistics.fermion τ τ' σ) =
       ∏ B : ↥(Common.TwoPointDiagram.ofSlotSplit
           (Finset.subset_univ T) ext.1 vac).vacuumComponentParts,
-        (fixedExternalOfSlotSplit T ext vac).mixedComponentWeight
+        (fixedExternalOfSlotSplit T ext vac).1.mixedComponentWeight
           Common.Statistics.fermion τ τ' σ B.1 := by
       exact Finset.prod_subtype
         (Common.TwoPointDiagram.ofSlotSplit
           (Finset.subset_univ T) ext.1 vac).vacuumComponentParts
         (fun _ => Iff.rfl) _
     _ = ∏ C : vac.componentPartition.parts,
-        (fixedExternalOfSlotSplit T ext vac).mixedComponentWeight
+        (fixedExternalOfSlotSplit T ext vac).1.mixedComponentWeight
           Common.Statistics.fermion τ τ' σ (e C).1 :=
       (Equiv.prod_comp e (fun B =>
-        (fixedExternalOfSlotSplit T ext vac).mixedComponentWeight
+        (fixedExternalOfSlotSplit T ext vac).1.mixedComponentWeight
           Common.Statistics.fermion τ τ' σ B.1)).symm
     _ = ∏ C : vac.componentPartition.parts,
         ((vac.restrictComponent C.2).pairingInOrder (orders C)).weight
@@ -323,7 +323,7 @@ theorem fixedExternalOfSlotSplit_prod_vacuumMixedComponentWeight_eq
       rw [Common.slotSplitVacuumComponentEquiv_apply]
       have hcross := fixedExternalOfSlotSplit_mixedComponentCrossingCount_vacuum_eq
         T ext vac C τ τ' σ hσ
-      simpa [FixedExternalTwoPointWickDiagram.mixedComponentWeight, orders] using
+      simpa [Common.TwoPointDiagram.mixedComponentWeight, orders] using
         congrArg (fun k : ℕ => (-1 : ℂ) ^ k) hcross
     _ = (vac.pairingInOrder (vac.assembleVertexOrder orders shuffle)).weight
         Common.Statistics.fermion :=
