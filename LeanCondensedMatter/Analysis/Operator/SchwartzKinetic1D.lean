@@ -7,7 +7,7 @@ set_option linter.style.header false
 # One-dimensional Schwartz kinetic and localization operators
 
 This module contains the analysis-only operator identity underlying the conventional current for a
-one-dimensional Schrödinger Hamiltonian.  On complex Schwartz space, let `D` be differentiation,
+one-dimensional Schrödinger Hamiltonian. On complex Schwartz space, let `D` be differentiation,
 `M_f` multiplication by a Schwartz test function, and
 
 ```text
@@ -22,9 +22,9 @@ localizer satisfies
 (i/ℏ) [H, M_f] = 1/2 {M_(D f), v}.
 ```
 
-Everything here is a bounded algebraic endomorphism of Schwartz space in its natural Fréchet
-setting; no `L²` unbounded-operator domain statement is made.  The module is independent of quantum
-mechanics and second quantization so both layers may reuse the same identity.
+Everything here is a linear endomorphism of Schwartz space in its natural Fréchet setting; no `L²`
+unbounded-operator domain statement is made. The module is independent of quantum mechanics and
+second quantization so both layers may reuse the same identity.
 -/
 
 namespace SchwartzKinetic1D
@@ -68,13 +68,15 @@ noncomputable def multiplicationLinear : Space →ₗ[ℂ] (Space →ₗ[ℂ] Sp
     apply LinearMap.ext
     intro ψ
     ext x
-    simp
+    change (f x + g x) * ψ x = f x * ψ x + g x * ψ x
+    ring
   map_smul' := by
     intro c f
     apply LinearMap.ext
     intro ψ
     ext x
-    simp
+    change c * f x * ψ x = c * (f x * ψ x)
+    ring
 
 @[simp]
 theorem multiplicationLinear_apply (f : Space) :
@@ -125,7 +127,8 @@ theorem multiplicationOperator_comp_comm (f g : Space) :
   apply LinearMap.ext
   intro ψ
   ext x
-  simp [mul_assoc, mul_left_comm, mul_comm]
+  change f x * (g x * ψ x) = g x * (f x * ψ x)
+  ring
 
 /-- The local multiplication potential contributes no localization commutator. -/
 theorem schrodinger_localization_commutator_eq_kinetic
@@ -137,10 +140,11 @@ theorem schrodinger_localization_commutator_eq_kinetic
   rw [schrodingerOperator]
   apply LinearMap.ext
   intro ψ
-  simp only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.comp_apply]
+  simp only [LinearMap.sub_apply, LinearMap.add_apply, LinearMap.comp_apply, map_add]
   have hcomm := congrArg (fun T : Space →ₗ[ℂ] Space => T ψ)
     (multiplicationOperator_comp_comm potential f)
-  module
+  rw [hcomm]
+  abel
 
 /-- Schrödinger localization has the standard first-order Heisenberg current form
 `(i/ℏ)[H,M_f] = 1/2 {M_(D f),v}` on complex Schwartz space. -/
@@ -157,7 +161,6 @@ theorem heisenberg_localization_eq_symmetrized_velocity
   intro ψ
   simp only [LinearMap.smul_apply, LinearMap.sub_apply, LinearMap.comp_apply,
     LinearMap.add_apply, kineticOperator, velocityOperator]
-  simp only [LinearMap.smul_apply, LinearMap.comp_apply]
   rw [secondDerivative_multiplication_apply]
   rw [derivative_multiplication_apply]
   module
