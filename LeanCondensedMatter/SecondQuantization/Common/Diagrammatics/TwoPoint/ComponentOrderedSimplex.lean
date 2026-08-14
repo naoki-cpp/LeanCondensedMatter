@@ -112,7 +112,7 @@ theorem TwoPointDiagram.continuous_interactionComponentShuffleIntegrand
 
 /-- Finite-family ordered-simplex shuffle product identity for the interaction parts of all full
 two-point components. -/
-theorem TwoPointDiagram.sum_componentInteractionShuffle_orderedSimplexIntegral_eq_prod
+theorem TwoPointDiagram.sum_componentShuffleIntegral_eq_prod
     {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) (β : ℝ)
     (componentIntegrand :
