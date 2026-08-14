@@ -19,6 +19,8 @@ fixed-time amplitude covariance obstruction to equal-time block ordering and its
 namespace SecondQuantization
 namespace Fermionic
 
+open Common
+
 variable {Mode : Type*}
 
 /-- Relabel mixed two-point events by an interaction-slot permutation, fixing the external events.
