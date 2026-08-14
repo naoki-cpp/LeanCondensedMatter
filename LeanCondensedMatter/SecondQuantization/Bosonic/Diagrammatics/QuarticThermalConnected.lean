@@ -161,7 +161,7 @@ noncomputable def quarticThermalDiagramMultiplicativeWeight
     change QuarticDiagram.thermalAmplitude ε β g d =
       ∏ B : d.componentPartition.parts,
         QuarticDiagram.thermalAmplitude ε β g (d.restrictComponentConnected B.2).1
-    exact d.thermalAmplitude_eq_prod_restrictComponentConnected ε β g
+    exact QuarticDiagram.thermalAmplitude_eq_prod_restrictComponentConnected ε β g d
 
 /-- Total coefficientwise bosonic thermal diagram weight on a finite vertex set. -/
 noncomputable def quarticThermalMoment
