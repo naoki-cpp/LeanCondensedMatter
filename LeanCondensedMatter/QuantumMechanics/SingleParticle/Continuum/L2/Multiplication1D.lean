@@ -27,7 +27,7 @@ abbrev ContinuumL2Wavefunction1D := L2MultiplicationRealLine.ComplexL2
 abbrev ContinuumLInfMultiplier1D := L2MultiplicationRealLine.ComplexLInf
 
 /-- Multiplication by an `L∞` function as a bounded operator on continuum `L²`. -/
-noncomputable def l2MultiplicationOperator1D
+noncomputable abbrev l2MultiplicationOperator1D
     (f : ContinuumLInfMultiplier1D) :
     ContinuumL2Wavefunction1D →L[ℂ] ContinuumL2Wavefunction1D :=
   L2MultiplicationRealLine.multiplicationOperator f
@@ -61,7 +61,7 @@ theorem inner_l2MultiplicationOperator1D_eq_integral
   exact L2MultiplicationRealLine.inner_multiplicationOperator_eq_integral f ψ
 
 /-- A real essentially bounded function, embedded into `ℂ`, as an `L∞` multiplier. -/
-noncomputable def realLInfMultiplier1D
+noncomputable abbrev realLInfMultiplier1D
     (f : ℝ → ℝ)
     (hf : MemLp (fun x => (f x : ℂ)) ∞ (volume : Measure ℝ)) :
     ContinuumLInfMultiplier1D :=
