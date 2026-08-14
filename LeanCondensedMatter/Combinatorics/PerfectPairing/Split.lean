@@ -146,28 +146,14 @@ private theorem sumCongr_ne_self {α β : Type*} (p : Equiv.Perm α) (q : Equiv.
   · exact fun h => hp x (Sum.inl.inj h)
   · exact fun h => hq x (Sum.inr.inj h)
 
-private theorem permCongr_involutive {α β : Type*} (e : α ≃ β)
-    (p : Equiv.Perm α) (hp : Function.Involutive p) :
-    Function.Involutive (e.permCongr p) := by
-  intro x
-  simp [Equiv.permCongr_apply, hp (e.symm x)]
-
-private theorem permCongr_ne_self {α β : Type*} (e : α ≃ β)
-    (p : Equiv.Perm α) (hp : ∀ x, p x ≠ x) (x : β) :
-    e.permCongr p x ≠ x := by
-  intro h
-  rw [Equiv.permCongr_apply, Equiv.apply_eq_iff_eq_symm_apply] at h
-  exact hp _ h
-
 /-- **Assemble a pairing from a pairing on each part.** Inverse construction to `splitLeft` and
 `splitRight`: no pair joins the two parts, so the two partner maps can simply be run side by side. -/
 noncomputable def Pairing.ofSplit (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b) :
     Pairing n :=
   Pairing.ofPartner (e.permCongr (Equiv.sumCongr P.partner Q.partner))
-    ⟨permCongr_involutive _ _
-        (sumCongr_involutive _ _ P.partner_involutive Q.partner_involutive),
-      permCongr_ne_self _ _
-        (sumCongr_ne_self _ _ P.partner_ne_self Q.partner_ne_self)⟩
+    (IsPairing.permCongr
+      ⟨sumCongr_involutive _ _ P.partner_involutive Q.partner_involutive,
+        sumCongr_ne_self _ _ P.partner_ne_self Q.partner_ne_self⟩ e)
 
 @[simp]
 theorem Pairing.ofSplit_partner_inl (e : PositionSplitting a b n) (P : Pairing a) (Q : Pairing b)
@@ -214,6 +200,7 @@ theorem Pairing.splitRight_ofSplit (e : PositionSplitting a b n) (P : Pairing a)
 
 /-- **A split pairing is assembled from its two restrictions.** Nothing is lost by taking a split
 pairing apart: every position lies in one of the parts, and its partner lies in the same part. -/
+@[simp]
 theorem Pairing.ofSplit_splitLeft_splitRight (e : PositionSplitting a b n) {P : Pairing n}
     (h : P.IsSplit e) :
     Pairing.ofSplit e (P.splitLeft e h) (P.splitRight e h) = P := by
