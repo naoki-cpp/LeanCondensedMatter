@@ -39,6 +39,7 @@ import LeanCondensedMatter.Analysis.Operator.Fredholm.Diagonal
 import LeanCondensedMatter.Analysis.Operator.Fredholm.FiniteDimensional
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.Analysis.OrderedSimplex.Calculus
+import LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation
 import LeanCondensedMatter.Analysis.Calculus.WeakConservation1D
 import LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
