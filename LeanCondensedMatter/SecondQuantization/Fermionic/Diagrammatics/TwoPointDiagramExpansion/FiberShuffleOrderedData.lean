@@ -93,7 +93,7 @@ theorem fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_or
     (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
     let d := fixedExternalOfSlotSplit T ext vac
     d.dysonFixedTimeAmplitude ε β g τ τ' σ =
-      d.externalPiece.dysonFixedTimeAmplitude ε β g τ τ' (d.externalPieceTimes σ) *
+      d.externalPiece.dysonFixedTimeAmplitude ε β g τ τ' (d.1.externalPieceTimes σ) *
         orderedVacuumDysonIntegrand ε β g
           (Common.quarticDiagramEquivOrderedData (slotSplitVacuumOrder T) vac)
           (σ ∘ slotSplitVacuumSlot T) := by
