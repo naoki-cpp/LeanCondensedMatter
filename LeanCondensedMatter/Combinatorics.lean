@@ -7,6 +7,7 @@ import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlots
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition
+import LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle
 import LeanCondensedMatter.Combinatorics.IncidenceAlgebra.Mobius
 import LeanCondensedMatter.Combinatorics.SetPartition.Refinement
 import LeanCondensedMatter.Combinatorics.SetPartition.Coarsening
@@ -29,7 +30,8 @@ set_option linter.style.header false
 # Combinatorics
 
 Public entry point for the project's pure finite combinatorics. The implementation is organized
-around finite-index operations, shuffles, set partitions and cumulants, and perfect pairings.
+around finite-index operations, shuffles, finite partitions, set partitions and cumulants, and
+perfect pairings.
 
 The exchange-weighted permutation theory is owned by the separate top-level
 `LeanCondensedMatter.Permutation` module.
