@@ -94,7 +94,7 @@ theorem quarticWickDiagramAmplitude_eq_prod_restrictComponentConnected
       ∏ B : d.componentPartition.parts,
         quarticWickDiagramAmplitude ε β g (d.restrictComponentConnected B.2).1 := by
   classical
-  simp only [quarticWickDiagramAmplitude]
+  simp only [quarticWickDiagramAmplitude, QuarticWickDiagram.couplingWeight]
   rw [Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_restrictComponentConnected d g,
     d.sum_orderedSimplexContribution_eq_prod_components]
   rw [← Finset.prod_mul_distrib]
