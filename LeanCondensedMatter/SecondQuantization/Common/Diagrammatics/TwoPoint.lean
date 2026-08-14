@@ -16,6 +16,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Comp
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentOrderedSimplexMeasurable
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.CanonicalComponentShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentShufflePermutation
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.InteractionVertexRelabel
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentPosition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentTimeTransport
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedOrderPairing
@@ -37,7 +38,7 @@ Two-point diagrams with two distinguished external legs, full connected-componen
 generic vacuum component restriction and canonical external/vacuum decomposition, the fiber
 decomposition of the diagram sum by which interaction vertices are external, componentwise vertex
 products, interaction-time ordered-simplex shuffles and their canonical representative, ambient
-shuffle permutations, mixed-time component-position transport, generic mixed-order pairings,
-component pair fibers, commutative pair products, crossing decomposition, pair transport, and
-fixed-order chamber locality.
+shuffle permutations, interaction-slot relabeling, mixed-time component-position transport, generic
+mixed-order pairings, component pair fibers, commutative pair products, crossing decomposition, pair
+transport, and fixed-order chamber locality.
 -/
