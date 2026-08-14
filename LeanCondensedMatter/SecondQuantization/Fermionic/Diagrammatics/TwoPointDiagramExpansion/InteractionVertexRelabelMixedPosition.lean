@@ -22,6 +22,8 @@ change is therefore confined to equal-time event blocks.
 namespace SecondQuantization
 namespace Fermionic
 
+open Common
+
 /-- The permutation from mixed atomic positions of the relabeled diagram at time assignment `σ` to
 mixed atomic positions of the old diagram at the corresponding assignment
 `fun v => σ (π.symm v)`.
