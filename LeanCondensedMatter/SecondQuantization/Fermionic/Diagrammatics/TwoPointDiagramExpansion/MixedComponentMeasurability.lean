@@ -20,6 +20,8 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
+/-- Finite piecewise-continuous presentation of the actual Dyson-signed component factor, selecting
+the chamber representative indexed by the current Common mixed-order signature. -/
 noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonSignatureRepresentative
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
