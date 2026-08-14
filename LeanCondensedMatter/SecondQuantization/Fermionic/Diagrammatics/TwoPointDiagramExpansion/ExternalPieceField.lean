@@ -31,7 +31,7 @@ theorem FixedExternalTwoPointWickDiagram.orderedTwoPointLegField_orderedTwoPoint
     orderedTwoPointLegField i j τ τ' d.vertexLabelSequence σ
         (orderedTwoPointLegMap (d.1.externalInteractionPart.orderEmbOfFin rfl) leg) =
       orderedTwoPointLegField i j τ τ' d.externalPiece.vertexLabelSequence
-        (d.externalPieceTimes σ) leg := by
+        (d.1.externalPieceTimes σ) leg := by
   cases leg with
   | inl e => rfl
   | inr p =>
@@ -48,12 +48,12 @@ theorem FixedExternalTwoPointWickDiagram.mixedTimeOrderedAtomicFieldFamily_exter
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (ε : Mode → ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (p : Fin (2 * (2 * d.1.externalInteractionPart.card + 1))) :
     mixedTimeOrderedAtomicFieldFamily ε i j τ τ' d.vertexLabelSequence σ
-        (d.externalPieceMixedPosition τ τ' σ p) =
+        (d.1.externalPieceMixedPosition τ τ' σ p) =
       mixedTimeOrderedAtomicFieldFamily ε i j τ τ' d.externalPiece.vertexLabelSequence
-        (d.externalPieceTimes σ) p := by
+        (d.1.externalPieceTimes σ) p := by
   rw [mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField,
     mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField,
-    d.mixedTimeOrderedAtomicLegEquiv_externalPieceMixedPosition,
+    d.1.mixedTimeOrderedAtomicLegEquiv_externalPieceMixedPosition,
     d.orderedTwoPointLegField_orderedTwoPointLegMap]
 
 omit [Fintype Mode] in
@@ -63,12 +63,12 @@ theorem
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (ε : Mode → ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (p : Fin (2 * (2 * d.1.externalInteractionPart.card + 1))) :
     mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ
-        (d.externalPieceMixedPosition τ τ' σ p) =
+        (d.1.externalPieceMixedPosition τ τ' σ p) =
       mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.externalPiece.vertexLabelSequence
-        (d.externalPieceTimes σ) p := by
+        (d.1.externalPieceTimes σ) p := by
   change timedFieldOperator ε
       (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' d.vertexLabelSequence σ
-        (d.externalPieceMixedPosition τ τ' σ p)) = _
+        (d.1.externalPieceMixedPosition τ τ' σ p)) = _
   rw [d.mixedTimeOrderedAtomicFieldFamily_externalPieceMixedPosition]
   rfl
 
@@ -79,8 +79,8 @@ theorem FixedExternalTwoPointWickDiagram.mixedTimeOrderedAtomicPairValue_externa
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ)
     (σ : Fin n → ℝ) (a b : Fin (2 * (2 * d.1.externalInteractionPart.card + 1))) :
     mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
-        (d.externalPieceMixedPosition τ τ' σ a) (d.externalPieceMixedPosition τ τ' σ b) =
-      mixedTimeOrderedAtomicPairValue ε β i j τ τ' (d.externalPieceTimes σ)
+        (d.1.externalPieceMixedPosition τ τ' σ a) (d.1.externalPieceMixedPosition τ τ' σ b) =
+      mixedTimeOrderedAtomicPairValue ε β i j τ τ' (d.1.externalPieceTimes σ)
         d.externalPiece.vertexLabelSequence a b := by
   rw [mixedTimeOrderedAtomicPairValue, mixedTimeOrderedAtomicPairValue,
     d.mixedTimeOrderedAtomicOperatorFamily_externalPieceMixedPosition,

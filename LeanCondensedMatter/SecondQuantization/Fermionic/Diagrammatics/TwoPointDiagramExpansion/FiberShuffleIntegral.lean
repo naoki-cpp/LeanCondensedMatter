@@ -119,13 +119,13 @@ theorem fixedExternalShuffleFiber_externalPieceTimes_heq
     (σ : Fin (m + k) → ℝ) :
     let p := (fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x)
     let d := (fixedExternalFiberEquiv shuffle.leftSlots).symm p
-    HEq (d.1.externalPieceTimes σ)
+    HEq (d.1.1.externalPieceTimes σ)
       (fun q : Fin m => σ (shuffle.slotEquiv (Sum.inl q))) := by
   classical
   dsimp only
   let p := (fixedExternalShuffleFiberDataEquiv shuffle).symm (ext, x)
   let d := (fixedExternalFiberEquiv shuffle.leftSlots).symm p
-  change HEq (d.1.externalPieceTimes σ)
+  change HEq (d.1.1.externalPieceTimes σ)
     (fun q : Fin m => σ (shuffle.slotEquiv (Sum.inl q)))
   have hsize : d.1.1.externalInteractionPart.card = m :=
     (congrArg Finset.card d.2).trans shuffle.card_leftSlots
@@ -220,7 +220,7 @@ theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
   have hd : d.1 = fixedExternalOfSlotSplit shuffle.leftSlots p.1.1 p.2 := by
     rfl
   have hprod' : d.1.dysonFixedTimeAmplitude ε β g τ τ' σ =
-      d.1.externalPiece.dysonFixedTimeAmplitude ε β g τ τ' (d.1.externalPieceTimes σ) *
+      d.1.externalPiece.dysonFixedTimeAmplitude ε β g τ τ' (d.1.1.externalPieceTimes σ) *
         orderedVacuumDysonIntegrand ε β g
           (Common.quarticDiagramEquivOrderedData
             (slotSplitVacuumOrder shuffle.leftSlots) p.2)
@@ -239,15 +239,15 @@ theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
     rw [hsize]
   have hpieceEq : cast hpieceType d.1.externalPiece = ext.1 :=
     cast_eq_of_heq hpieceType hpiece
-  have hleftTimesEq : cast htimeType (d.1.externalPieceTimes σ) =
+  have hleftTimesEq : cast htimeType (d.1.1.externalPieceTimes σ) =
       (fun q : Fin m => σ (shuffle.slotEquiv (Sum.inl q))) :=
     cast_eq_of_heq htimeType hleftTimes
   have hextValue :
-      d.1.externalPiece.dysonFixedTimeAmplitude ε β g τ τ' (d.1.externalPieceTimes σ) =
+      d.1.externalPiece.dysonFixedTimeAmplitude ε β g τ τ' (d.1.1.externalPieceTimes σ) =
         ext.1.dysonFixedTimeAmplitude ε β g τ τ'
           (fun q => σ (shuffle.slotEquiv (Sum.inl q))) := by
     have htransport := d.1.externalPiece.dysonFixedTimeAmplitude_cast
-      hsize ε β g τ τ' (d.1.externalPieceTimes σ)
+      hsize ε β g τ τ' (d.1.1.externalPieceTimes σ)
     simpa only [hpieceEq, hleftTimesEq] using htransport
   have hvacData := fixedExternalShuffleFiber_vacuumOrderedData_heq shuffle ext x
   have hrightTimes := fixedExternalShuffleFiber_vacuumTimes_heq shuffle σ
