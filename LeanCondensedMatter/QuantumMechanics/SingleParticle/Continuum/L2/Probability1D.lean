@@ -7,13 +7,15 @@ import Mathlib.Tactic
 set_option linter.style.header false
 
 /-!
-# `L²` probability bridges in one dimension
+# `L²` probability and charge-density bridges in one dimension
 
-This module connects integrated pointwise probability quantities to their canonical `L²`
-realization.  It owns two dynamics-independent bridges:
+This module connects integrated pointwise probability and charge quantities to their canonical `L²`
+realization. It owns the dynamics-independent bridges:
 
 * total probability is the squared `L²` norm;
-* expectation of a bounded real multiplication operator is the corresponding smeared probability.
+* expectation of a bounded real multiplication operator is the corresponding smeared probability;
+* expectation of the charge-scaled multiplication operator is the corresponding smeared charge
+  density.
 
 The Schwartz-to-`L²` specialization also lives here, below any conservation or evolution theorem.
 No Laplacian, Schrödinger Hamiltonian, Sobolev domain, or dynamics is introduced here.
@@ -98,6 +100,39 @@ theorem inner_realTestMultiplicationOperator1D_eq_wholeSpaceSmearedProbabilityDe
   filter_upwards [realLInfMultiplier1D_coeFn test htest] with x hx
   rw [hx]
   simpa using inner_real_mul_self_eq_probabilityDensityValue (test x) (ψ x)
+
+/-- The bounded one-particle charge-density observable `q M_test` on continuum `L²`. -/
+noncomputable def l2ChargeDensityOperator1D
+    (q : ℝ) (test : ℝ → ℝ)
+    (htest : MemLp (fun x => (test x : ℂ)) ∞ (volume : Measure ℝ)) :
+    ContinuumL2Wavefunction1D →L[ℂ] ContinuumL2Wavefunction1D :=
+  (q : ℂ) • l2MultiplicationOperator1D (realLInfMultiplier1D test htest)
+
+@[simp]
+theorem l2ChargeDensityOperator1D_apply
+    (q : ℝ) (test : ℝ → ℝ)
+    (htest : MemLp (fun x => (test x : ℂ)) ∞ (volume : Measure ℝ))
+    (ψ : ContinuumL2Wavefunction1D) :
+    l2ChargeDensityOperator1D q test htest ψ =
+      (q : ℂ) • l2MultiplicationOperator1D (realLInfMultiplier1D test htest) ψ :=
+  rfl
+
+/-- The `L²` expectation of the bounded charge-density observable is exactly the complexification of
+`∫ test(x) q |ψ(x)|² dx`.
+
+This is the analytic one-particle charge-density identity required by #1093. The only operator-domain
+hypothesis is the explicit `L∞` boundedness of the real test function. -/
+theorem inner_l2ChargeDensityOperator1D_eq_wholeSpaceSmearedChargeDensity1D
+    (q : ℝ) (test : ℝ → ℝ)
+    (htest : MemLp (fun x => (test x : ℂ)) ∞ (volume : Measure ℝ))
+    (ψ : ContinuumL2Wavefunction1D) :
+    inner ℂ ψ (l2ChargeDensityOperator1D q test htest ψ) =
+      (wholeSpaceSmearedChargeDensity1D q test (fun x => ψ x) : ℂ) := by
+  rw [l2ChargeDensityOperator1D_apply, inner_smul_right]
+  rw [inner_realTestMultiplicationOperator1D_eq_wholeSpaceSmearedProbabilityDensity1D]
+  rw [wholeSpaceSmearedChargeDensity1D_eq_charge_mul_probability]
+  exact Complex.ofReal_mul q
+    (wholeSpaceSmearedProbabilityDensity1D test (fun x => ψ x))
 
 end
 end Continuum
