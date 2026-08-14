@@ -21,7 +21,7 @@ noncomputable section
 
 /-- Finite-family ordered-simplex shuffle product identity for two-point interaction components under
 measurable local boundedness. -/
-theorem TwoPointDiagram.sum_componentInteractionShuffle_orderedSimplexIntegral_eq_prod_of_measurableLocallyBounded
+theorem TwoPointDiagram.sum_componentShuffleIntegral_eq_prod_of_measurableLocallyBounded
     {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) (β : ℝ)
     (componentIntegrand :
