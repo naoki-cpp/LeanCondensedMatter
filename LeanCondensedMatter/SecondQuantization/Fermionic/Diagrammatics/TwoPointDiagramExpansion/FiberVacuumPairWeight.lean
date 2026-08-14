@@ -34,31 +34,23 @@ theorem fixedExternalOfSlotSplit_prod_vacuumMixedComponentWeight_eq
     d.1.vacuumComponentParts.prod
         (d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ) =
       (vac.pairingInOrder (slotSplitVacuumOrder T)).weight Common.Statistics.fermion := by
-  change (Common.TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext.1 vac).vacuumComponentParts.prod
-      ((fixedExternalOfSlotSplit T ext vac).1.mixedComponentWeight
-        Common.Statistics.fermion τ τ' σ) = _
+  let base := Common.TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext.1 vac
+  change base.vacuumComponentParts.prod
+      (base.mixedComponentWeight Common.Statistics.fermion τ τ' σ) = _
   let e := Common.slotSplitVacuumComponentEquiv
     (Finset.subset_univ T) ext.1 vac hext
   let orders := vac.componentVertexOrdersOfVertexOrder (slotSplitVacuumOrder T)
   let shuffle := vac.fixedOrderComponentShuffle (slotSplitVacuumOrder T)
   calc
-    (Common.TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext.1 vac).vacuumComponentParts.prod
-        ((fixedExternalOfSlotSplit T ext vac).1.mixedComponentWeight
-          Common.Statistics.fermion τ τ' σ) =
-      ∏ B : ↥(Common.TwoPointDiagram.ofSlotSplit
-          (Finset.subset_univ T) ext.1 vac).vacuumComponentParts,
-        (fixedExternalOfSlotSplit T ext vac).1.mixedComponentWeight
-          Common.Statistics.fermion τ τ' σ B.1 := by
-      exact Finset.prod_subtype
-        (Common.TwoPointDiagram.ofSlotSplit
-          (Finset.subset_univ T) ext.1 vac).vacuumComponentParts
-        (fun _ => Iff.rfl) _
+    base.vacuumComponentParts.prod
+        (base.mixedComponentWeight Common.Statistics.fermion τ τ' σ) =
+      ∏ B : ↥base.vacuumComponentParts,
+        base.mixedComponentWeight Common.Statistics.fermion τ τ' σ B.1 := by
+      exact Finset.prod_subtype base.vacuumComponentParts (fun _ => Iff.rfl) _
     _ = ∏ C : vac.componentPartition.parts,
-        (fixedExternalOfSlotSplit T ext vac).1.mixedComponentWeight
-          Common.Statistics.fermion τ τ' σ (e C).1 :=
+        base.mixedComponentWeight Common.Statistics.fermion τ τ' σ (e C).1 :=
       (Equiv.prod_comp e (fun B =>
-        (fixedExternalOfSlotSplit T ext vac).1.mixedComponentWeight
-          Common.Statistics.fermion τ τ' σ B.1)).symm
+        base.mixedComponentWeight Common.Statistics.fermion τ τ' σ B.1)).symm
     _ = ∏ C : vac.componentPartition.parts,
         ((vac.restrictComponent C.2).pairingInOrder (orders C)).weight
           Common.Statistics.fermion := by
@@ -67,7 +59,7 @@ theorem fixedExternalOfSlotSplit_prod_vacuumMixedComponentWeight_eq
       rw [Common.slotSplitVacuumComponentEquiv_apply]
       have hcross := Common.TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq
         T ext.1 vac C τ τ' σ hσ
-      simpa [Common.TwoPointDiagram.mixedComponentWeight, orders] using
+      simpa [base, Common.TwoPointDiagram.mixedComponentWeight, orders] using
         congrArg (fun k : ℕ => (-1 : ℂ) ^ k) hcross
     _ = (vac.pairingInOrder (vac.assembleVertexOrder orders shuffle)).weight
         Common.Statistics.fermion :=
