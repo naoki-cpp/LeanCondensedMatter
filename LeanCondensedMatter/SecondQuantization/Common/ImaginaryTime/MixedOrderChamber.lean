@@ -1,21 +1,17 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.MixedTimeOrdering
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder
 
 set_option linter.style.header false
 
 /-!
 # Order chambers for mixed two-point imaginary times
 
-The stable mixed-event order is locally constant away from pairwise event-time coincidences.  This
-module packages the exact combinatorial chamber relation needed before proving analytic regularity
-of the two-point diagram integrands.
-
-Two interaction-time assignments lie in the same chamber precisely when they preserve every strict
-comparison between mixed events.  The only comparison walls are interaction-interaction
-coincidences and interaction crossings with either fixed external time.
+The stable mixed-event order is locally constant away from pairwise event-time coincidences. This
+module packages the exact combinatorial chamber relation. It depends only on the statistics-independent
+mixed event order.
 -/
 
 namespace SecondQuantization
-namespace Fermionic
+namespace Common
 
 /-- Two interaction-time assignments lie in the same mixed-event order chamber when every strict
 time comparison between external or interaction events has the same truth value. -/
@@ -71,7 +67,6 @@ private theorem twoPointTimedEventTime_eq_iff_of_sameOrderChamber
       rw [hab] at huv
       exact (lt_irrefl _ huv)
 
-/-- Inside one strict-comparison chamber, the stable equal-time comparison is unchanged as well. -/
 theorem twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber
     {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ}
     (h : SameTwoPointOrderChamber τ τ' σ υ)
@@ -81,7 +76,6 @@ theorem twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber
   unfold twoPointTimedEventBeforeOrEqual
   rw [h b a, twoPointTimedEventTime_eq_iff_of_sameOrderChamber h a b]
 
-/-- Strict stable event precedence is constant on a mixed-event order chamber. -/
 theorem twoPointTimedEventBefore_iff_of_sameOrderChamber
     {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ}
     (h : SameTwoPointOrderChamber τ τ' σ υ)
@@ -91,8 +85,6 @@ theorem twoPointTimedEventBefore_iff_of_sameOrderChamber
   unfold twoPointTimedEventBefore
   rw [twoPointTimedEventBeforeOrEqual_iff_of_sameOrderChamber h a b]
 
-/-- Every pairwise comparison of positions in the fully sorted mixed-event list is constant inside
-one order chamber. -/
 theorem orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber
     {n : ℕ} {τ τ' : ℝ} {σ υ : Fin n → ℝ}
     (h : SameTwoPointOrderChamber τ τ' σ υ)
@@ -105,9 +97,6 @@ theorem orderedTwoPointTimedEventPosition_lt_iff_of_sameOrderChamber
     orderedTwoPointTimedEventPosition_lt_iff]
   exact twoPointTimedEventBefore_iff_of_sameOrderChamber h a b
 
-/-- The chamber relation is completely determined by interaction-interaction comparisons and by
-crossings of an interaction time with either fixed external time.  Thus its walls are exactly among
-`σ v = σ w`, `σ v = τ`, and `σ v = τ'`. -/
 theorem sameTwoPointOrderChamber_iff_interaction_comparisons
     {n : ℕ} (τ τ' : ℝ) (σ υ : Fin n → ℝ) :
     SameTwoPointOrderChamber τ τ' σ υ ↔
@@ -154,5 +143,5 @@ theorem sameTwoPointOrderChamber_iff_interaction_comparisons
         | inr b =>
             simpa [twoPointTimedEventTime] using hii a b
 
-end Fermionic
+end Common
 end SecondQuantization
