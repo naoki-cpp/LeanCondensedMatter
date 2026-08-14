@@ -379,15 +379,6 @@ private theorem traceFock_diagonalEvolution_fermionEnergy_ne_zero
   rw [hw]
   exact freePartitionFunction_ne_zero ε β
 
-omit [LinearOrder Mode] in
-private theorem finiteGibbsExpectation_smul_apply (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
-    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    Common.finiteGibbsExpectation (fermionEnergy ε) β (c • A) =
-      c * Common.finiteGibbsExpectation (fermionEnergy ε) β A := by
-  change (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) (c • A) =
-    c * (Common.finiteGibbsExpectationLinearMap (fermionEnergy ε) β) A
-  rw [map_smul, smul_eq_mul]
-
 private theorem finiteGibbsExpectation_prodComp_mixedTimeOrderedAtomicOperators_eq_sum_pairing
     {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) :
@@ -426,7 +417,7 @@ private theorem finiteGibbsExpectation_mixedTimeOrderedVertexComp_eq_sum_pairing
                 ((mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ pr.1).comp
                   (mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q σ pr.2)) := by
   rw [mixedTimeOrderedVertexComp_eq_prodComp_atomicOperators,
-    finiteGibbsExpectation_smul_apply,
+    Common.finiteGibbsExpectation_smul,
     finiteGibbsExpectation_prodComp_mixedTimeOrderedAtomicOperators_eq_sum_pairing]
 
 /-- The mixed event-level density-state expectation is the external-order sign times the sum of
