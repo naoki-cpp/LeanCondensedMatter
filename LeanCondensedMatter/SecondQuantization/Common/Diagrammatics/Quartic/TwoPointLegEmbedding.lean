@@ -1,37 +1,33 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedLegSlotEmbedding
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPairing
 
 set_option linter.style.header false
 
 /-!
-# Quartic vacuum legs inside the mixed two-point order
+# Quartic legs inside the mixed two-point order
 
-A quartic vacuum piece contributes only interaction legs.  This module embeds its fixed ordered
-quartic leg enumeration into the mixed two-point atomic order and records the exact monotonicity
-needed by the external/vacuum linked-cluster factorization.
+A quartic component contributes only interaction legs. This module embeds its fixed ordered quartic
+leg enumeration into the mixed two-point atomic order and records the exact monotonicity used by
+component factorizations.
 
-If the local interaction times are strictly decreasing in the fixed vertex order, the fixed quartic
-leg order agrees with the relative mixed order of those interaction legs.  The statement is then
-transported along any strictly monotone embedding of local interaction slots into ambient two-point
-slots.
+The construction is purely combinatorial and independent of particle statistics, contraction
+kernels, or operator realizations.
 -/
 
 namespace SecondQuantization
-namespace Fermionic
-
-open Common
+namespace Common
 
 /-- View a leg in the fixed ordered quartic enumeration as the corresponding interaction leg of a
 two-point enumeration with the same interaction slots. -/
 noncomputable def orderedQuarticLegToTwoPointLeg {n : ℕ}
     (p : Fin (2 * (2 * n))) : OrderedTwoPointLeg n :=
-  let q := Common.orderedQuarticLegEquiv n p
+  let q := orderedQuarticLegEquiv n p
   Sum.inr (⟨q.1, Finset.mem_univ q.1⟩, q.2)
 
 @[simp]
 theorem orderedQuarticLegToTwoPointLeg_orderedQuarticLegEquiv_symm
     {n : ℕ} (v : Fin n) (l : Fin 4) :
-    orderedQuarticLegToTwoPointLeg ((Common.orderedQuarticLegEquiv n).symm (v, l)) =
+    orderedQuarticLegToTwoPointLeg ((orderedQuarticLegEquiv n).symm (v, l)) =
       Sum.inr (⟨v, Finset.mem_univ v⟩, l) := by
   simp [orderedQuarticLegToTwoPointLeg]
 
@@ -54,10 +50,10 @@ theorem mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) (hσ : StrictAnti σ) :
     StrictMono (mixedTimeOrderedQuarticLegPosition τ τ' σ) := by
   intro a b hab
-  let pa := Common.orderedQuarticLegEquiv n a
-  let pb := Common.orderedQuarticLegEquiv n b
-  have ha := Common.orderedQuarticLegEquiv_reconstruct_val n a
-  have hb := Common.orderedQuarticLegEquiv_reconstruct_val n b
+  let pa := orderedQuarticLegEquiv n a
+  let pb := orderedQuarticLegEquiv n b
+  have ha := orderedQuarticLegEquiv_reconstruct_val n a
+  have hb := orderedQuarticLegEquiv_reconstruct_val n b
   change a.val = pa.2.val + 4 * pa.1.val at ha
   change b.val = pb.2.val + 4 * pb.1.val at hb
   change a.val < b.val at hab
@@ -124,8 +120,7 @@ noncomputable def orderedQuarticLegMapToTwoPointLeg {m n : ℕ} (f : Fin m → F
     (p : Fin (2 * (2 * m))) : OrderedTwoPointLeg n :=
   orderedTwoPointLegMap f (orderedQuarticLegToTwoPointLeg p)
 
-/-- Ambient mixed position of a fixed-order quartic leg after embedding its local interaction slots.
--/
+/-- Ambient mixed position of a fixed-order quartic leg after embedding its local interaction slots. -/
 noncomputable def mixedTimeOrderedQuarticLegMapPosition {m n : ℕ}
     (f : Fin m → Fin n) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (p : Fin (2 * (2 * m))) : Fin (2 * (2 * n + 1)) :=
@@ -146,5 +141,5 @@ theorem mixedTimeOrderedQuarticLegMapPosition_strictMono_of_strictAnti
   exact mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti
     τ τ' (σ ∘ f) hσ hab
 
-end Fermionic
+end Common
 end SecondQuantization

@@ -1,35 +1,25 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.InteractionVertexRelabelTime
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabelTime
 import Mathlib.Order.Preorder.Finite
 import Mathlib.Order.WellFounded
 
 set_option linter.style.header false
 
 /-!
-# Mixed atomic positions under interaction-vertex relabeling
+# Mixed atomic positions under interaction-slot relabeling
 
-For a relabeled fixed diagram, a new interaction slot `v` inherits the old slot `π v`.  At a fixed
-new time assignment `σ`, the corresponding old time assignment is therefore
+For a relabeled two-point structure, a new interaction slot `v` inherits the old slot `π v`. At a
+fixed new time assignment `σ`, the corresponding old time assignment is
 `fun v => σ (π.symm v)`.
 
-This file records the induced permutation from the new mixed-time atomic positions to the old
-mixed-time atomic positions.  It is defined by converting a new mixed position to its standard leg,
-relabeling that standard leg by `π`, and then locating the resulting old leg in the old mixed order.
-The physical event time is preserved exactly.  Consequently, whenever two supporting event times
-are distinct, the induced position permutation preserves their relative order.  Any possible order
-change is therefore confined to equal-time event blocks.
+The induced mixed-position permutation is purely combinatorial and independent of operator
+realization or particle statistics.
 -/
 
 namespace SecondQuantization
-namespace Fermionic
+namespace Common
 
-open Common
-
-/-- The permutation from mixed atomic positions of the relabeled diagram at time assignment `σ` to
-mixed atomic positions of the old diagram at the corresponding assignment
-`fun v => σ (π.symm v)`.
-
-The permutation maps a new mixed position to the old mixed position occupied by the standard leg
-whose interaction slot is inherited under `π`. -/
+/-- The permutation from mixed atomic positions at time assignment `σ` to mixed atomic positions at
+the corresponding assignment `fun v => σ (π.symm v)`. -/
 noncomputable def interactionVertexMixedPositionRelabel {n : ℕ}
     (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ) :
     Equiv.Perm (Fin (2 * (2 * n + 1))) :=
@@ -87,9 +77,8 @@ theorem twoPointTimedEventTime_interactionVertexMixedPositionRelabel {n : ℕ}
   exact twoPointTimedEventTime_interactionVertexEventRelabel π τ τ' σ
     (orderedTwoPointLegEvent (mixedTimeOrderedAtomicLegEquiv τ τ' σ p))
 
-/-- For two positions supported on events at distinct physical times, interaction-vertex relabeling
-preserves their mixed-order comparison.  Hence every possible order change is confined to equal-time
-event blocks. -/
+/-- For two positions supported on events at distinct physical times, interaction-slot relabeling
+preserves their mixed-order comparison. -/
 theorem interactionVertexMixedPositionRelabel_lt_iff_of_eventTime_ne {n : ℕ}
     (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (p q : Fin (2 * (2 * n + 1)))
@@ -127,8 +116,7 @@ theorem interactionVertexMixedPositionRelabel_lt_iff_of_eventTime_ne {n : ℕ}
   · simpa [x, y] using hTime
 
 /-- With injective interaction times, transported mixed positions preserve order whenever their
-supporting events are distinct.  Equal external/interaction times are allowed: their stable rank is
-unchanged by interaction-slot relabeling. -/
+supporting events are distinct. -/
 theorem interactionVertexMixedPositionRelabel_lt_iff_of_injective_of_event_ne {n : ℕ}
     (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : Function.Injective σ) (p q : Fin (2 * (2 * n + 1)))
@@ -156,8 +144,6 @@ theorem interactionVertexMixedPositionRelabel_lt_iff_of_injective_of_event_ne {n
   rw [← mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt τ τ' σ x y hEvent]
   simp [x, y, mixedTimeOrderedAtomicLegPosition]
 
-/-- Inside one mixed event block, flattened atomic order is exactly the order of the two legs in the
-event-local atomic list. -/
 private theorem mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) (x y : OrderedTwoPointLeg n)
     (hEvent : orderedTwoPointLegEvent x = orderedTwoPointLegEvent y) :
@@ -181,8 +167,6 @@ private theorem mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt {n :
   simpa [event, mixedTimeOrderedAtomicLegPosition, mixedTimeOrderedAtomicLegEquiv,
     mixedTimeOrderedAtomicLegs, List.Nodup.getEquivOfForallMemList] using h
 
-/-- Relabeling an interaction slot preserves the local coordinate of every atomic leg, hence its
-index inside the corresponding event-local atomic list. -/
 private theorem twoPointTimedEventAtomicLegs_idxOf_interactionVertexLegRelabel {n : ℕ}
     (π : Equiv.Perm (Fin n)) (leg : OrderedTwoPointLeg n) :
     @List.idxOf (OrderedTwoPointLeg n) instBEqOfDecidableEq
@@ -254,8 +238,7 @@ theorem interactionVertexMixedPositionRelabel_strictMono_of_injective {n : ℕ}
   exact (interactionVertexMixedPositionRelabel_lt_iff_of_injective
     π τ τ' σ hσ p q).2 hpq
 
-/-- A strictly monotone self-permutation of the finite mixed-position order is the identity.  Hence,
-for injective interaction times, relabeling vertices does not move any mixed atomic position. -/
+/-- A strictly monotone self-permutation of the finite mixed-position order is the identity. -/
 @[simp]
 theorem interactionVertexMixedPositionRelabel_apply_eq_of_injective {n : ℕ}
     (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
@@ -274,5 +257,5 @@ theorem interactionVertexMixedPositionRelabel_eq_refl_of_injective {n : ℕ}
   intro p
   exact interactionVertexMixedPositionRelabel_apply_eq_of_injective π τ τ' σ hσ p
 
-end Fermionic
+end Common
 end SecondQuantization

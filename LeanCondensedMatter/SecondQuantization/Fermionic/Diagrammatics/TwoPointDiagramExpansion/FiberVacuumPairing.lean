@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumPrefactor
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.VacuumLegOrder
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.TwoPointLegEmbedding
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Ordered
 
 set_option linter.style.header false
@@ -8,16 +8,16 @@ set_option linter.style.header false
 # Pairing transport for the quartic vacuum half of a fixed external-slot fiber
 
 The quartic vacuum half of `fixedExternalOfSlotSplit` carries the right pairing of the canonical
-slot split.  Its inherited increasing vertex order therefore embeds its fixed ordered legs into the
-ambient two-point standard legs, and the embedding intertwines the quartic fixed-order partner with
-the ambient two-point partner.  Conjugating by the mixed-time enumeration gives the partner identity
-needed to transport normalized pairs, crossings, and contractions in the linked-cluster proof.
+slot split. Its inherited increasing vertex order therefore embeds its fixed ordered legs into the
+ambient two-point standard legs through the Common-owned quartic/two-point leg embedding, and the
+embedding intertwines the quartic fixed-order partner with the ambient two-point partner.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
 
 open Combinatorics
+open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
 

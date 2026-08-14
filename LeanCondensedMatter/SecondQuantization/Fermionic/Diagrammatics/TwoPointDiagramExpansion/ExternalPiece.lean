@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedLegSlotEmbedding
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedPositionLeg
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotCongr
@@ -19,9 +19,8 @@ a perturbative coefficient is summed over.
 This module performs that reindexing on the Common-owned slot set
 `TwoPointDiagram.externalInteractionPart`. The slots use Common's canonical increasing
 `standardSlotEquiv`, which is what makes the piece's mixed event and leg orders agree with the
-ambient ones; see `MixedEventSlotEmbedding` and `MixedLegSlotEmbedding` for that comparison. The
-piece keeps the ambient external labels, so it is again a fixed-external diagram for the same two
-modes.
+ambient ones through the Common mixed event/leg slot-embedding theorems. The piece keeps the ambient
+external labels, so it is again a fixed-external diagram for the same two modes.
 
 The last results identify the piece's legs with the ambient component's legs — using the canonical
 Common `externalComponentLegEquiv` followed by that same slot standardization — and show that the
@@ -33,6 +32,7 @@ namespace SecondQuantization
 namespace Fermionic
 
 open Combinatorics
+open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
 

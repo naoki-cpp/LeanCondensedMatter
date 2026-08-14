@@ -1,27 +1,20 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.InteractionVertexRelabel
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedEventBlockOrder
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointInteractionRelabel
 
 set_option linter.style.header false
 
 /-!
-# Mixed-time event transport under interaction-vertex relabeling
+# Mixed-time event transport under interaction-slot relabeling
 
 An interaction-slot permutation fixes the two external events and transports each interaction event
-to the old slot whose diagram data it inherits.  If the old time assignment is precomposed by the
-inverse slot permutation, corresponding events have exactly the same imaginary time.
+to the old slot whose data it inherits. If the old time assignment is precomposed by the inverse
+slot permutation, corresponding events have exactly the same imaginary time.
 
-The stable equal-time rank is intentionally not claimed to be preserved: interaction events use
-their slot index as the tie-break rank.  Away from equal-time event pairs, however, mixed-event
-precedence is equivariant under interaction-slot relabeling.  This isolates the remaining
-fixed-time amplitude covariance obstruction to equal-time block ordering and its fermionic parity.
+This is statistics-independent order structure; operator exchange signs belong to the specialized
+realization layers.
 -/
 
 namespace SecondQuantization
-namespace Fermionic
-
-open Common
-
-variable {Mode : Type*}
+namespace Common
 
 /-- Relabel mixed two-point events by an interaction-slot permutation, fixing the external events.
 The permutation maps a new interaction event to the old event whose data it inherits. -/
@@ -78,8 +71,7 @@ theorem twoPointTimedEventTime_interactionVertexEventRelabel {n : ℕ}
   · rfl
   · simp [interactionVertexEventRelabel, twoPointTimedEventTime]
 
-/-- The same time-covariance statement expressed on the event supporting a standard two-point leg.
--/
+/-- The same time-covariance statement expressed on the event supporting a standard two-point leg. -/
 theorem twoPointTimedEventTime_orderedTwoPointLegEvent_interactionVertexLegRelabel {n : ℕ}
     (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (leg : OrderedTwoPointLeg n) :
@@ -116,7 +108,7 @@ theorem twoPointTimedEventBefore_interactionVertexEventRelabel_iff_of_time_ne {n
   exact and_congr_right (fun _ => (interactionVertexEventRelabel π).injective.ne_iff)
 
 /-- If the interaction-time assignment is injective, relabeling preserves stable precedence for
-all events.  Equal-time external/interaction pairs keep the same external-before-interaction rank,
+all events. Equal-time external/interaction pairs keep the same external-before-interaction rank,
 while two distinct interaction events cannot tie. -/
 theorem twoPointTimedEventBeforeOrEqual_interactionVertexEventRelabel_iff_of_injective {n : ℕ}
     (π : Equiv.Perm (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
@@ -223,5 +215,5 @@ theorem orderedTwoPointTimedEventPosition_interactionVertexEventRelabel_lt_iff_o
   exact twoPointTimedEventBefore_interactionVertexEventRelabel_iff_of_injective
     π τ τ' σ hσ a b
 
-end Fermionic
+end Common
 end SecondQuantization

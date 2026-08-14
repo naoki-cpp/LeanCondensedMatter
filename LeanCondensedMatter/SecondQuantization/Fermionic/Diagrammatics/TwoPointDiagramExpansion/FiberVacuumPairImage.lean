@@ -22,6 +22,7 @@ namespace SecondQuantization
 namespace Fermionic
 
 open Combinatorics
+open Common
 
 variable {Mode : Type*} {n : ℕ} {i j : Mode}
 
