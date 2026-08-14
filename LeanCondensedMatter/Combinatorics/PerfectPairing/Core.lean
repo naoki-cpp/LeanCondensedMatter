@@ -20,9 +20,19 @@ access to the unique partner of every position.
 
 namespace Combinatorics
 
-/-- A permutation represents a perfect pairing when it is involutive and has no fixed point. -/
-def IsPairing {n : ℕ} (partner : Equiv.Perm (Fin (2 * n))) : Prop :=
+/-- A permutation represents pairing data when it is involutive and has no fixed point. -/
+def IsPairing {α : Type*} (partner : Equiv.Perm α) : Prop :=
   Function.Involutive partner ∧ ∀ i, partner i ≠ i
+
+/-- Reindexing a fixed-point-free involution along an equivalence preserves the pairing property. -/
+theorem IsPairing.permCongr {α β : Type*} {partner : Equiv.Perm α}
+    (h : IsPairing partner) (e : α ≃ β) : IsPairing (e.permCongr partner) := by
+  constructor
+  · intro x
+    simp [Equiv.permCongr_apply, h.1 (e.symm x)]
+  · intro x hx
+    rw [Equiv.permCongr_apply, Equiv.apply_eq_iff_eq_symm_apply] at hx
+    exact h.2 _ hx
 
 instance decidableIsPairing {n : ℕ} (partner : Equiv.Perm (Fin (2 * n))) :
     Decidable (IsPairing partner) :=

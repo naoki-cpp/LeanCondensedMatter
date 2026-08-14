@@ -62,17 +62,6 @@ private theorem sigmaCongrRight_ne_self {ι : Type*} {β : ι → Type*}
   simp only [Equiv.sigmaCongrRight_apply, ne_eq, Sigma.mk.injEq, heq_eq_eq, true_and]
   exact hF i x
 
-private theorem permCongr_involutive {α β : Type*} (e : α ≃ β) (p : Equiv.Perm α)
-    (hp : Function.Involutive p) : Function.Involutive (e.permCongr p) := by
-  intro x
-  simp [Equiv.permCongr_apply, hp (e.symm x)]
-
-private theorem permCongr_ne_self {α β : Type*} (e : α ≃ β) (p : Equiv.Perm α)
-    (hp : ∀ x, p x ≠ x) (x : β) : e.permCongr p x ≠ x := by
-  intro h
-  rw [Equiv.permCongr_apply, Equiv.apply_eq_iff_eq_symm_apply] at h
-  exact hp _ h
-
 /-- The pairing on the ambient legs obtained by gluing the pairings of all partition parts. -/
 noncomputable def QuarticDiagram.reassemblePairing {S : Finset (Fin N)} (π : Finpartition S)
     (F : ∀ B : π.parts, ConnectedQuarticDiagram Label N (B : Finset (Fin N))) :
@@ -80,10 +69,10 @@ noncomputable def QuarticDiagram.reassemblePairing {S : Finset (Fin N)} (π : Fi
   Combinatorics.Pairing.ofPartner
     ((QuarticDiagram.bigLegEquiv π).symm.permCongr
       (Equiv.sigmaCongrRight fun B => (F B).1.pairing.partner))
-    ⟨permCongr_involutive _ _
-        (sigmaCongrRight_involutive _ fun B => (F B).1.pairing.partner_involutive),
-      permCongr_ne_self _ _
-        (sigmaCongrRight_ne_self _ fun B => (F B).1.pairing.partner_ne_self)⟩
+    (IsPairing.permCongr
+      ⟨sigmaCongrRight_involutive _ fun B => (F B).1.pairing.partner_involutive,
+        sigmaCongrRight_ne_self _ fun B => (F B).1.pairing.partner_ne_self⟩
+      (QuarticDiagram.bigLegEquiv π).symm)
 
 /-- Reassemble an ambient labelled quartic diagram from connected diagrams on partition parts. -/
 noncomputable def QuarticDiagram.reassemble {S : Finset (Fin N)} (π : Finpartition S)
