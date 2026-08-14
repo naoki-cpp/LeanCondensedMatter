@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumPairComponent
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairComponent
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumPrefactor
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentCrossing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPairProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentGlobalCrossingParity
@@ -11,10 +12,10 @@ set_option linter.style.header false
 
 For one connected component of the standalone quartic vacuum piece, its canonical fixed-order local
 pairs embed into the full fixed-order vacuum pairing and then into the ambient mixed two-point
-pairing.  The component index is preserved by `FiberVacuumPairComponent`; equal finite cardinalities
-upgrade this map to a componentwise equivalence.  Crossing covariance then identifies the internal
-crossing count of each ambient vacuum component with the crossing count of the corresponding
-restricted quartic component.
+pairing. The component index is preserved by the Common slot-split vacuum pair-component transport;
+equal finite cardinalities upgrade this map to a componentwise equivalence. Crossing covariance then
+identifies the internal crossing count of each ambient vacuum component with the crossing count of
+the corresponding restricted quartic component.
 
 Reindexing the component product and using the existing quartic component parity theorem gives the
 complete fermionic exchange weight of the standalone fixed-order vacuum pairing.
@@ -141,8 +142,8 @@ noncomputable def fixedExternalOfSlotSplitVacuumComponentPairEmbedding
     let ambientPr := Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
       T ext.1 vac τ τ' σ hσ globalPr
     refine ⟨ambientPr, ?_⟩
-    rw [fixedExternalOfSlotSplitVacuumNormalizedPairEmbedding_pairComponent
-      T ext vac τ τ' σ hσ globalPr,
+    rw [Common.TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_pairComponent
+      T ext.1 vac τ τ' σ hσ globalPr,
       vac.fixedOrderPairComponent_fixedOrderComponentPairEmbedding]
   inj' := by
     intro p q hpq
@@ -179,7 +180,7 @@ theorem fixedExternalOfSlotSplitVacuumComponentPairEmbedding_card_eq
       rw [Common.interactionPart_slotSplitVacuumComponentPart]
     _ = Fintype.card (d.1.MixedComponentPair τ τ' σ B.1) := by
       symm
-      exact d.card_mixedVacuumComponentPair τ τ' σ B
+      exact d.1.card_mixedVacuumComponentPair τ τ' σ B
 
 /-- One restricted quartic vacuum component's normalized pairs are equivalent to the corresponding
 ambient mixed component-pair fiber. -/
