@@ -32,9 +32,8 @@ theorem QuarticDiagram.componentBlock_eq_iff_mem {S : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) (v : ↥S) :
     d.componentBlock v = B ↔ (v : Fin N) ∈ B :=
   ⟨fun h => h ▸ d.self_mem_componentBlock v, fun hv => by
-    obtain ⟨w, rfl⟩ := d.exists_componentBlock_eq_of_mem hB
-    obtain ⟨hx, hreach⟩ := (d.mem_componentBlock w).1 hv
-    exact d.componentBlock_eq_of_reachable hreach⟩
+    change d.componentPartition.part (v : Fin N) = B
+    exact d.componentPartition.part_eq_of_mem hB hv⟩
 
 /-- Every component part is contained in the ambient vertex set. -/
 theorem QuarticDiagram.componentPart_subset {S : Finset (Fin N)}
