@@ -63,7 +63,7 @@ ordered data has order `k`, independently of which ambient slots the shuffle ass
 noncomputable def fixedExternalShuffleVacuumOrderedDataEquiv {m k : ℕ}
     (shuffle : BinaryShuffle.SlotShuffle m k) :
     QuarticWickDiagram Mode (m + k)
-        ((Finset.univ : Finset (Fin (m + k))) \\ shuffle.leftSlots) ≃
+        ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots) ≃
       Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k :=
   (Common.quarticDiagramEquivOrderedData (slotSplitVacuumOrder shuffle.leftSlots)).trans
     (Equiv.cast (by rw [slotShuffle_card_sdiff_leftSlots shuffle]))
@@ -75,7 +75,7 @@ noncomputable def fixedExternalShuffleFiberDataEquiv {m k : ℕ}
     ({ext : FixedExternalTwoPointWickDiagramOn Mode (m + k) shuffle.leftSlots i j //
         ext.1.IsExternallyConnected} ×
       QuarticWickDiagram Mode (m + k)
-        ((Finset.univ : Finset (Fin (m + k))) \\ shuffle.leftSlots)) ≃
+        ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots)) ≃
       ({ext : FixedExternalTwoPointWickDiagram Mode m i j // ext.1.IsExternallyConnected} ×
         Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k) :=
   Equiv.prodCongr (connectedFixedExternalShuffleLeftEquiv shuffle)
@@ -88,7 +88,7 @@ theorem slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum
     {n : ℕ} (T : Finset (Fin n))
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
     (hext : ext.1.IsExternallyConnected)
-    (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \\ T))
+    (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
     let d := fixedExternalOfSlotSplit T ext vac
