@@ -129,7 +129,8 @@ theorem twoSiteDimerGroundState_lehmannResponse_zero_one :
     finiteLehmannTableTransitionWeight_diag,
     twoSiteDimerGroundStateTransitionWeight_zero_one,
     twoSiteDimerGroundStateTransitionWeight_one_zero, sub_self]
-  apply Complex.ext <;> norm_num [Complex.normSq]
+  apply Complex.ext <;>
+    norm_num [lehmannTerm, lehmannDenominator, Complex.normSq]
 
 /-- The benchmark contact expectation equals the occupied bonding-state energy. -/
 theorem twoSiteDimerGroundState_contact_eq_groundEnergy :
