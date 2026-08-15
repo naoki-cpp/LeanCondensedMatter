@@ -65,28 +65,6 @@ private theorem sum_antidiagonal_eq_sum_range_succ
   rw [hanti, Finset.sum_map]
   rfl
 
-/-- **Formal Cauchy product for the two-point Dyson series.** The complete two-point series equals
-the connected two-point series times the normalized vacuum partition series. -/
-theorem twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizeByConstantCoeff
-    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
-    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
-    twoPointDysonSeries ε β g i j τ τ' =
-      connectedTwoPointDysonSeries ε β g i j τ τ' *
-        PowerSeries.normalizeByConstantCoeff
-          (dysonPartitionSeries ε β (quarticInteraction g)) := by
-  ext n
-  rw [coeff_twoPointDysonSeries, PowerSeries.coeff_mul]
-  rw [sum_antidiagonal_eq_sum_range_succ
-    (f := fun a b =>
-      PowerSeries.coeff a (connectedTwoPointDysonSeries ε β g i j τ τ') *
-        PowerSeries.coeff b
-          (PowerSeries.normalizeByConstantCoeff
-            (dysonPartitionSeries ε β (quarticInteraction g))))]
-  simp only [coeff_connectedTwoPointDysonSeries,
-    coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
-  exact twoPointDysonCoefficient_eq_sum_connected_mul_normalizedDysonPartitionCoeff
-    ε β hβ g i j τ τ' n
-
 /-- **Finite-mode fermionic two-point linked-cluster theorem.** For the imaginary-time Dyson series
 built from free Gibbs expectations and a quartic interaction, with the repository's canonical
 time-order/equal-time convention, vacuum normalization leaves exactly the sum of externally
@@ -104,8 +82,19 @@ theorem vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
     simpa [Z, constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries] using hcoeff
   apply mul_right_cancel₀ hZ
   rw [vacuumNormalizedTwoPointDysonSeries_mul_normalizeByConstantCoeff]
-  exact twoPointDysonSeries_eq_connectedTwoPointDysonSeries_mul_normalizeByConstantCoeff
-    ε β hβ g i j τ τ'
+  dsimp [Z]
+  ext n
+  rw [coeff_twoPointDysonSeries, PowerSeries.coeff_mul]
+  rw [sum_antidiagonal_eq_sum_range_succ
+    (f := fun a b =>
+      PowerSeries.coeff a (connectedTwoPointDysonSeries ε β g i j τ τ') *
+        PowerSeries.coeff b
+          (PowerSeries.normalizeByConstantCoeff
+            (dysonPartitionSeries ε β (quarticInteraction g))))]
+  simp only [coeff_connectedTwoPointDysonSeries,
+    coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
+  exact twoPointDysonCoefficient_eq_sum_connected_mul_normalizedDysonPartitionCoeff
+    ε β hβ g i j τ τ' n
 
 end Fermionic
 end SecondQuantization
