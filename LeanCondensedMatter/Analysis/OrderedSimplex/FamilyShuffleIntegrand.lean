@@ -96,16 +96,46 @@ theorem eq_localize (e : (Σ i, slot i) ≃ κ) (i : ι)
 
 end DependentSlotEquiv
 
+variable {ι : Type*} [Fintype ι]
+
+/-- Restrict an ambient assignment to one local block for a shuffle into an arbitrary ambient total. -/
+def FamilySlotShuffleTo.timeAssignment {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total) (τ : Fin total → ℝ) (i : ι) :
+    Fin (size i) → ℝ :=
+  fun j => τ (shuffle.slotEquiv ⟨i, j⟩)
+
+@[simp]
+theorem FamilySlotShuffleTo.timeAssignment_apply {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total) (τ : Fin total → ℝ)
+    (i : ι) (j : Fin (size i)) :
+    shuffle.timeAssignment τ i j = τ (shuffle.slotEquiv ⟨i, j⟩) :=
+  rfl
+
+/-- Coordinate restriction to one local block is continuous for an arbitrary ambient total. -/
+theorem FamilySlotShuffleTo.continuous_timeAssignment {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total) (i : ι) :
+    Continuous (fun τ : Fin total → ℝ => shuffle.timeAssignment τ i) := by
+  exact continuous_pi fun j => continuous_apply (shuffle.slotEquiv ⟨i, j⟩)
+
 /-- Product of local integrands after embedding their coordinates into an arbitrary ambient total.
 This is the `FamilySlotShuffleTo` form used when the ambient cardinality is only propositionally
 equal to the sum of local block sizes. -/
-noncomputable def FamilySlotShuffleTo.ambientIntegrand {ι : Type*} [Fintype ι]
-    {size : ι → ℕ} {total : ℕ} (shuffle : FamilySlotShuffleTo size total)
+noncomputable def FamilySlotShuffleTo.ambientIntegrand {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total)
     (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
     (τ : Fin total → ℝ) : ℂ :=
-  ∏ i, localIntegrand i (fun j => τ (shuffle.slotEquiv ⟨i, j⟩))
+  ∏ i, localIntegrand i (shuffle.timeAssignment τ i)
 
-variable {ι : Type*} [Fintype ι]
+/-- A finite product of continuous local integrands remains continuous after shuffling into an
+arbitrary ambient total. -/
+theorem FamilySlotShuffleTo.continuous_ambientIntegrand {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total)
+    (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
+    (hlocal : ∀ i, Continuous (localIntegrand i)) :
+    Continuous (shuffle.ambientIntegrand localIntegrand) := by
+  unfold FamilySlotShuffleTo.ambientIntegrand
+  exact continuous_finsetProd _ fun i _ =>
+    (hlocal i).comp (shuffle.continuous_timeAssignment i)
 
 /-- Restrict an ambient time assignment to one local block. -/
 def FamilySlotShuffle.timeAssignment {size : ι → ℕ} (shuffle : FamilySlotShuffle size)
