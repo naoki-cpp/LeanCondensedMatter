@@ -141,29 +141,5 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_relabelInteract
   unfold FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude
   rw [d.fixedTimeAmplitude_relabelInteractionVertices_of_injective π ε β g τ τ' σ hσ]
 
-/-- Away from interaction-time diagonals, one component-shuffle term is exactly the Dyson fixed-time
-amplitude of the explicitly relabeled diagram at the original ambient times. -/
-theorem FixedExternalTwoPointWickDiagram.externalSign_mul_componentShuffleIntegrand_eq_relabelForComponentShuffle_dysonFixedTimeAmplitude_of_injective
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (shuffle : d.1.ComponentInteractionShuffle)
-    (σ : Fin (Finset.univ : Finset (Fin n)).card → ℝ)
-    (hσ : Function.Injective σ) :
-    twoPointExternalOrderSign τ τ' *
-        d.1.interactionComponentShuffleIntegrand shuffle
-          (d.mixedComponentDysonLocalIntegrand ε β g τ τ'
-            d.1.canonicalComponentInteractionShuffle) σ =
-      (d.relabelForComponentShuffle shuffle).dysonFixedTimeAmplitude ε β g τ τ'
-        (ambientToTwoPointSlotTimePermutation σ) := by
-  rw [d.externalSign_mul_componentShuffleIntegrand_eq_dysonFixedTimeAmplitude_slotPermuted
-    ε β g τ τ' shuffle σ]
-  symm
-  have hslot : Function.Injective (ambientToTwoPointSlotTimePermutation σ) :=
-    ambientToTwoPointSlotTimePermutation_injective hσ
-  rw [d.relabelForComponentShuffle_eq_relabelInteractionVertices shuffle]
-  exact d.dysonFixedTimeAmplitude_relabelInteractionVertices_of_injective
-    (d.1.componentShuffleSlotPermutation shuffle).symm ε β g τ τ'
-    (ambientToTwoPointSlotTimePermutation σ) hslot
-
 end Fermionic
 end SecondQuantization
