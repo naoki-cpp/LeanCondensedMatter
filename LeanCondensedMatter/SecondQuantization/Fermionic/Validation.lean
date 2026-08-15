@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Validation.FiniteToys
 import LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoLevelExplicit
 import LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimer
+import LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimerLehmann
 
 set_option linter.style.header false
 
