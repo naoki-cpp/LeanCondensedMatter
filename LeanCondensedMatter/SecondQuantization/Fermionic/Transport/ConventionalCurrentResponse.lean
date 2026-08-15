@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeneralizedQuantity.ConventionalCurrent
+import LeanCondensedMatter.QuantumTheory.ConservationLaw.ConventionalCurrent
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedCurrentResponse
 
 set_option linter.style.header false
@@ -14,8 +14,8 @@ jᵐ = 1/2 {v,m}.
 ```
 
 The generic `BoundedCurrentResponse` module intentionally does not depend on this representation.
-Use this module only after the generalized balance-law layer has justified the conventional current
-for the internal/local quantity under study.
+Use this module only after the upstream one-body balance-law layer has justified the conventional
+current for the internal/local quantity under study.
 -/
 
 namespace SecondQuantization
@@ -33,7 +33,7 @@ noncomputable def boundedConventionalCurrent
     (velocity m : LatticeState Site →ₗ[ℂ] LatticeState Site) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
   boundedOneBodyCurrent
-    (Field.conventionalCurrent (LatticeState Site) velocity m)
+    (QuantumTheory.ConservationLaw.conventionalCurrent (LatticeState Site) velocity m)
 
 @[simp]
 theorem boundedConventionalCurrent_smul_id
@@ -41,7 +41,7 @@ theorem boundedConventionalCurrent_smul_id
     boundedConventionalCurrent velocity (q • LinearMap.id) =
       q • boundedOneBodyCurrent velocity := by
   rw [boundedConventionalCurrent,
-    Field.conventionalCurrent_smul_id,
+    QuantumTheory.ConservationLaw.conventionalCurrent_smul_id,
     boundedOneBodyCurrent_smul]
 
 /-- Kubo response of the conventional current `1/2 {v,m}` when that current representation has
