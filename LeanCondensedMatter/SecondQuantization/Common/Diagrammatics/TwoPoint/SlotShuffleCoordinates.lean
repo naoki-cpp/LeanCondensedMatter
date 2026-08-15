@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotComplement
+import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairing
 
 set_option linter.style.header false
@@ -7,8 +7,8 @@ set_option linter.style.header false
 # Slot-shuffle coordinates for two-point diagram fibers
 
 Generic complement-cardinality and increasing-enumeration facts for binary slot shuffles are owned
-by `Combinatorics/BinaryShuffleSlotComplement`. This module keeps only the diagram-specific bridge
-to the inherited vacuum-slot map of a canonical two-point slot split.
+by `Combinatorics/BinaryShuffleSlotEquiv`. This module keeps only the diagram-specific bridge to the
+inherited vacuum-slot map of a canonical two-point slot split.
 -/
 
 namespace SecondQuantization
