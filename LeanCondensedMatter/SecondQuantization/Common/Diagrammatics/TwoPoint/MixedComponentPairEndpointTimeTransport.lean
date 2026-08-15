@@ -18,7 +18,7 @@ namespace Common
 open Combinatorics
 
 @[simp]
-theorem TwoPointDiagram.mixedExternalComponentPairEquiv_pairTimeEquiv
+private theorem TwoPointDiagram.mixedExternalComponentPairEquiv_pairTimeEquiv
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ υ : Fin n → ℝ)
@@ -29,7 +29,7 @@ theorem TwoPointDiagram.mixedExternalComponentPairEquiv_pairTimeEquiv
   simp [TwoPointDiagram.mixedComponentPairTimeEquiv]
 
 @[simp]
-theorem TwoPointDiagram.mixedVacuumComponentPairEquiv_pairTimeEquiv
+private theorem TwoPointDiagram.mixedVacuumComponentPairEquiv_pairTimeEquiv
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
@@ -44,7 +44,7 @@ theorem TwoPointDiagram.mixedVacuumComponentPairEquiv_pairTimeEquiv
 
 /-- Pair-time transport sends endpoints to the position-time transports of the original endpoints,
 either in the same normalized order or swapped. -/
-theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
+private theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpoints_eq_or_swap
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
