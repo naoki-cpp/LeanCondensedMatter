@@ -2,6 +2,7 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
 import LeanCondensedMatter.Combinatorics.PerfectPairing.PairEndpoints
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Sign
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentCrossing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentProduct
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Bipartite
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
