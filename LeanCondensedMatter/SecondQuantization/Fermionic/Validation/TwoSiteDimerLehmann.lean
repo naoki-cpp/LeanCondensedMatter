@@ -123,8 +123,7 @@ theorem twoSiteDimerGroundState_lehmannResponse_zero_one :
   classical
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
-  simp [Fin.sum_univ_two, lehmannTerm, lehmannDenominator,
-    twoSiteDimerGroundStateLehmannTable, twoSiteDimerEnergyBasisCurrent]
+  simp [Fin.sum_univ_two, lehmannTerm, lehmannDenominator]
   apply Complex.ext <;> norm_num [Complex.normSq]
 
 /-- The benchmark contact expectation equals the occupied bonding-state energy. -/
