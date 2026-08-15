@@ -52,8 +52,11 @@ noncomputable def boundedOneBodyCurrent
 theorem boundedOneBodyCurrent_smul (c : ℂ)
     (current : LatticeState Site →ₗ[ℂ] LatticeState Site) :
     boundedOneBodyCurrent (c • current) = c • boundedOneBodyCurrent current := by
-  rw [boundedOneBodyCurrent, AlgebraicFock.dGamma_smul,
-    Lattice.boundedLatticeOperator_smul]
+  change Lattice.boundedLatticeOperator
+      (AlgebraicFock.dGamma (LatticeState Site) (c • current)) =
+    c • Lattice.boundedLatticeOperator
+      (AlgebraicFock.dGamma (LatticeState Site) current)
+  rw [AlgebraicFock.dGamma_smul, Lattice.boundedLatticeOperator_smul]
 
 /-- Bounded realization of the conventional generalized current `jᵐ = 1/2 {v,m}`.
 
@@ -138,9 +141,13 @@ theorem boundedOneBodyCurrent_scaledBondOperator
     (ℏ q : ℂ) (K : LocallyFiniteHopping Site) (x y : Site) :
     boundedOneBodyCurrent (((Complex.I * q) / ℏ) • K.bondOperator x y) =
       boundedBondCurrent ℏ q K x y := by
-  rw [boundedOneBodyCurrent, AlgebraicFock.dGamma_smul,
-    Lattice.boundedLatticeOperator_smul]
-  rfl
+  change Lattice.boundedLatticeOperator
+      (AlgebraicFock.dGamma (LatticeState Site)
+        (((Complex.I * q) / ℏ) • K.bondOperator x y)) =
+    Lattice.boundedLatticeOperator
+      (((Complex.I * q) / ℏ) •
+        AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y))
+  rw [AlgebraicFock.dGamma_smul]
 
 /-- The historical bounded bond-current/current-current retarded kernel supplied to the general Kubo
 API.  It is now definitionally a specialization of the generic measured-current/source adapter.
