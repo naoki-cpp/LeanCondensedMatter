@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberShuffleProduct
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotShuffleCoordinates
+import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotComplement
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing
 
 set_option linter.style.header false
@@ -66,7 +66,7 @@ noncomputable def fixedExternalShuffleVacuumOrderedDataEquiv {m k : ℕ}
         ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots) ≃
       Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k :=
   (Common.quarticDiagramEquivOrderedData (slotSplitVacuumOrder shuffle.leftSlots)).trans
-    (Equiv.cast (by rw [slotShuffle_card_sdiff_leftSlots shuffle]))
+    (Equiv.cast (by rw [shuffle.card_sdiff_leftSlots]))
 
 /-- A fixed-cardinality fiber has shuffle-independent local data: one connected order-`m` external
 diagram and one order-`k` vacuum label/pairing datum. -/
