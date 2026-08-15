@@ -64,10 +64,10 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_canonicalCom
           (d.mixedComponentDysonLocalIntegrand ε β g τ τ'
             d.1.canonicalComponentInteractionShuffle)
           (twoPointSlotToAmbientTimePermutation σ) := by
-  apply d.dysonFixedTimeAmplitude_eq_externalSign_mul_componentShuffleIntegrand_of_pairingValue_local
+  apply d.dysonFixedTimeAmplitude_eq_externalSign_mul_componentShuffleIntegrand
     ε β g τ τ' d.1.canonicalComponentInteractionShuffle
   intro B
-  exact d.mixedComponentPairingValue_local_canonical ε β τ τ' B
+  exact d.mixedComponentDysonFixedTimeValue_local_canonical ε β g τ τ' B
 
 end Fermionic
 end SecondQuantization
