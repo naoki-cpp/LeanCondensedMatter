@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.LinearCommutator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity
 
 set_option linter.style.header false
@@ -13,8 +14,9 @@ endomorphisms:
 [dGamma S, dGamma T] = dGamma [S, T].
 ```
 
-The proof is basis-independent and uses induction on the exterior algebra generators. The number
-operator is then identified algebraically as `dGamma id`.
+The ordinary linear-map commutator itself is owned upstream by
+`Analysis.Operator.LinearCommutator`; this module retains the historical `AlgebraicFock` name as a
+compatibility abbreviation and proves the second-quantization functoriality theorem.
 -/
 
 namespace SecondQuantization
@@ -23,10 +25,10 @@ namespace AlgebraicFock
 
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
-/-- Ordinary commutator of two linear endomorphisms. -/
-noncomputable def linearCommutator {V : Type*} [AddCommGroup V] [Module ℂ V]
+/-- Compatibility abbreviation for the representation-independent linear commutator. -/
+noncomputable abbrev linearCommutator {V : Type*} [AddCommGroup V] [Module ℂ V]
     (S T : V →ₗ[ℂ] V) : V →ₗ[ℂ] V :=
-  S.comp T - T.comp S
+  ConservationLaw.linearCommutator S T
 
 @[simp]
 theorem linearCommutator_apply {V : Type*} [AddCommGroup V] [Module ℂ V]
@@ -119,7 +121,7 @@ theorem numberOperator_commutes_dGamma (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
   have h : linearCommutator (LinearMap.id : 𝓗₁ →ₗ[ℂ] 𝓗₁) T = 0 := by
     apply LinearMap.ext
     intro f
-    simp [linearCommutator]
+    simp [linearCommutator, ConservationLaw.linearCommutator]
   rw [h, dGamma_zero]
 
 end AlgebraicFock
