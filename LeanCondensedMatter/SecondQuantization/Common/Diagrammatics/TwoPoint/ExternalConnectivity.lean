@@ -139,13 +139,16 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
     d.ExternalVerticesConnected := by
   classical
   by_contra hExt
+  have hpairing :
+      Combinatorics.IsPairing (d.restrictedPartner (d.externalComponent 0)) := by
+    simpa only [TwoPointDiagram.restrictedPartner] using
+      d.pairing.isPairing_partnerSubtypePerm (d.legInComponent (d.externalComponent 0))
+        (fun leg => d.legInComponent_partner_iff (d.externalComponent 0) leg)
   have hEven :
       Even (Fintype.card {leg : Fin (2 * (2 * S.card + 1)) //
         d.legInComponent (d.externalComponent 0) leg}) :=
     Combinatorics.even_card_of_fixedPointFreeInvolution
-      (d.restrictedPartner (d.externalComponent 0))
-      (d.restrictedPartner_involutive (d.externalComponent 0))
-      (d.restrictedPartner_ne_self (d.externalComponent 0))
+      (d.restrictedPartner (d.externalComponent 0)) hpairing.1 hpairing.2
   rw [d.card_disconnectedExternalBlockLegs hExt] at hEven
   obtain ⟨k, hk⟩ := hEven
   omega
