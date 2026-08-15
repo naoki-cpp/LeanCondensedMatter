@@ -16,7 +16,8 @@ legs.
 - [PROJECT.md](PROJECT.md) — project purpose, documentation layout, and contribution rules.
 - [notes/roadmap.md](notes/roadmap.md) — repository-wide targets and current status.
 - [notes/completed.md](notes/completed.md) — major proved endpoints.
-- [notes/roadmaps/second-quantization-status.md](notes/roadmaps/second-quantization-status.md) — current SecondQuantization API and architecture.
+- [notes/architecture/second-quantization.md](notes/architecture/second-quantization.md) — enforced SecondQuantization ownership, dependency, and public-API boundaries.
+- [notes/roadmaps/second-quantization-status.md](notes/roadmaps/second-quantization-status.md) — current SecondQuantization capabilities and research boundary.
 - [notes/roadmaps/linked-cluster-theorem.md](notes/roadmaps/linked-cluster-theorem.md) — vacuum and two-point linked-cluster endpoints.
 - [notes/model-and-assumptions.md](notes/model-and-assumptions.md) — physics-to-Lean dictionary and modeling assumptions.
 
