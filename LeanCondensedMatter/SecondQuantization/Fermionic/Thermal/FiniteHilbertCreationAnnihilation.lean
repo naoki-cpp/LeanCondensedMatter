@@ -103,8 +103,8 @@ theorem finiteHilbertCreate_basisState_of_not_mem {i : Mode} {n : Occupation Mod
   rw [← Common.finiteHilbertFockEquiv_basisState]
   change Common.finiteHilbertOperator (create i)
       (Common.finiteHilbertFockEquiv (basisState n)) = _
-  rw [Common.finiteHilbertOperator_equiv_apply, create_basisState_of_not_mem h,
-    map_smul, Common.finiteHilbertFockEquiv_basisState]
+  rw [Common.finiteHilbertOperator_equiv_apply, create_basisState_of_not_mem h, map_smul]
+  simp only [basisState, Common.finiteHilbertFockEquiv_basisState]
 
 /-- Bounded annihilation vanishes on an unoccupied mode of a finite-Hilbert basis state. -/
 @[simp]
@@ -125,8 +125,8 @@ theorem finiteHilbertAnnihilate_basisState_of_mem {i : Mode} {n : Occupation Mod
   rw [← Common.finiteHilbertFockEquiv_basisState]
   change Common.finiteHilbertOperator (annihilate i)
       (Common.finiteHilbertFockEquiv (basisState n)) = _
-  rw [Common.finiteHilbertOperator_equiv_apply, annihilate_basisState_of_mem h,
-    map_smul, Common.finiteHilbertFockEquiv_basisState]
+  rw [Common.finiteHilbertOperator_equiv_apply, annihilate_basisState_of_mem h, map_smul]
+  simp only [basisState, Common.finiteHilbertFockEquiv_basisState]
 
 /-- Bounded creation and annihilation are mutual Hilbert-space adjoints. -/
 @[simp]
