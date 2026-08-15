@@ -24,21 +24,26 @@ Hamiltonians, convergence assumptions, physical specializations, and final physi
 A declaration should not remain in a statistics-specific layer merely because that is where its proof
 was first developed.
 
+Particle-statistics-independent one-body current semantics are not second-quantization declarations.
+They live upstream under `Analysis` and `QuantumTheory.ConservationLaw`; second-quantized layers only
+supply `dGamma`, bounded-realization, lattice, and response adapters where those are genuinely needed.
+
 ## Dependency direction
 
 The stable dependency direction is
 
 ```text
-Analysis, Combinatorics
+Analysis, Combinatorics, QuantumTheory
           ↓
 SecondQuantization.Common
           ↓
 SecondQuantization.Fermionic, SecondQuantization.Bosonic
 ```
 
-`Analysis/` and `Combinatorics/` must not import `SecondQuantization`. `Common` must not import
-fermionic or bosonic modules. Statistics-specific layers may consume Common and upstream reusable
-mathematics.
+`Analysis/` and `Combinatorics/` must not import `SecondQuantization`. Particle-statistics-independent
+`QuantumTheory` modules must likewise remain upstream of statistics-specific implementations.
+`Common` must not import fermionic or bosonic modules. Statistics-specific layers may consume Common
+and upstream reusable mathematics/quantum theory.
 
 The architecture audit also checks path-owned namespaces and rejects removed compatibility imports
 and legacy ownership paths.
@@ -58,6 +63,9 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport
 ```
+
+One-body generalized current work that does not use second quantization should instead import the
+appropriate `Analysis` or `QuantumTheory.ConservationLaw` leaf.
 
 Leaf implementation files are not a compatibility surface. When a one-use routing module is removed,
 downstream code should migrate to the surviving semantic owner rather than preserving the old import.
@@ -115,10 +123,31 @@ SecondQuantization.Fermionic.
 in `TwoPointDiagramExpansion/CauchySeries.lean`. This means the next correlation-function target is
 higher-point/source-insertion structure, not re-proving the two-point linked-cluster identity.
 
-## Fermionic algebra, lattice, transport, and validation
+## Fermionic algebra, field, lattice, transport, and validation
 
 The basis-independent algebraic field architecture is documented separately in
-[`fermionic-field-operators.md`](fermionic-field-operators.md). Its downstream responsibility flow is
+[`fermionic-field-operators.md`](fermionic-field-operators.md). The one-body/current boundary is
+
+```text
+Analysis.Operator.LinearCommutator
+        ↓
+Analysis.Calculus.OneBodyBalance
+        ↓
+Analysis.Calculus.CurrentRepresentation
+        ↓
+QuantumTheory.ConservationLaw
+        ↓
+┌───────────────────────────────┐
+│ Fermionic.Field               │  dGamma generalized-quantity bridge
+│ Fermionic.Lattice             │  lattice current constructions
+└───────────────────────────────┘
+        ↓
+Fermionic.Transport             bounded/Kubo specializations
+        ↓
+Fermionic.Validation
+```
+
+Within second quantization, the main downstream responsibility flow remains
 
 ```text
 Fermionic.Algebra
@@ -130,10 +159,15 @@ Fermionic.Transport
 Fermionic.Validation
 ```
 
-`Fermionic.Field` remains a narrow side interface for basis-independent density constructions rather
-than a transport umbrella. Generic response, resolvent, conductivity, and Středa mathematics belongs
-upstream under `QuantumTheory` or other reusable owners; Fermionic.Transport contains the
-statistics/model-specific adapters and physical current specializations.
+`Fermionic.Field` remains a narrow side interface for basis-independent density constructions and the
+fermionic `dGamma` bridge. It is not a one-body transport umbrella. Generic response, resolvent,
+conductivity, and Středa mathematics belongs upstream under `QuantumTheory` or other reusable owners;
+`Fermionic.Transport` contains statistics/model-specific bounded adapters and physical current
+response specializations.
+
+The generic bounded-current response module must not depend on the conventional current
+`1/2 {v,m}`. Conventional-current response is a downstream specialization, so non-conventional
+orbital/nonlocal currents can enter through the same arbitrary-current boundary.
 
 ## Bosonic boundary
 
@@ -159,7 +193,7 @@ survives, keep that path private/local rather than turning it into public API.
 
 - path-owned `Common`, `Fermionic`, and `Bosonic` declaration namespaces;
 - no statistics-specific imports from `Common`;
-- no `SecondQuantization` imports from `Analysis` or `Combinatorics`;
+- no `SecondQuantization` imports from `Analysis` or reusable `QuantumTheory` owners;
 - absence of removed compatibility modules/imports;
 - absence of legacy fermionic identifiers and ownership paths.
 

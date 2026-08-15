@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.Operator.LinearCommutator
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock.SecondQuantizationLinearity
 
 set_option linter.style.header false
@@ -13,8 +14,9 @@ endomorphisms:
 [dGamma S, dGamma T] = dGamma [S, T].
 ```
 
-The proof is basis-independent and uses induction on the exterior algebra generators. The number
-operator is then identified algebraically as `dGamma id`.
+The ordinary linear-map commutator itself is owned upstream by
+`Analysis.Operator.LinearCommutator`; this module retains the historical `AlgebraicFock` name as a
+compatibility abbreviation and proves the second-quantization functoriality theorem.
 -/
 
 namespace SecondQuantization
@@ -23,10 +25,19 @@ namespace AlgebraicFock
 
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
-/-- Ordinary commutator of two linear endomorphisms. -/
-noncomputable def linearCommutator {V : Type*} [AddCommGroup V] [Module ℂ V]
+/-- Compatibility abbreviation for the representation-independent linear commutator.
+
+Its body remains expanded so legacy proofs using `simp only [AlgebraicFock.linearCommutator]` keep
+working, while `linearCommutator_eq_conservationLaw` identifies the canonical upstream owner. -/
+noncomputable abbrev linearCommutator {V : Type*} [AddCommGroup V] [Module ℂ V]
     (S T : V →ₗ[ℂ] V) : V →ₗ[ℂ] V :=
   S.comp T - T.comp S
+
+/-- The historical fermionic name agrees definitionally with the canonical upstream commutator. -/
+theorem linearCommutator_eq_conservationLaw {V : Type*} [AddCommGroup V] [Module ℂ V]
+    (S T : V →ₗ[ℂ] V) :
+    linearCommutator S T = ConservationLaw.linearCommutator S T :=
+  rfl
 
 @[simp]
 theorem linearCommutator_apply {V : Type*} [AddCommGroup V] [Module ℂ V]
