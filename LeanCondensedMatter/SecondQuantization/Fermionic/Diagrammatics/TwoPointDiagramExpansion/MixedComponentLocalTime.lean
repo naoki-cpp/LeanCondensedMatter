@@ -133,28 +133,6 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign
         (twoPointSlotToAmbientTimePermutation σ) := by
       rfl
 
-/-- Pairing-value locality is the only fermionic hypothesis needed to expose the pointwise Dyson
-amplitude as a component-shuffle integrand. -/
-theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign_mul_componentShuffleIntegrand_of_pairingValue_local
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (shuffle : d.1.ComponentInteractionShuffle)
-    (hPairing : ∀ B : d.1.componentPartition.parts,
-      DependentSlotEquiv.Local shuffle.slotEquiv B
-        (fun σ => d.mixedComponentPairingValue ε β τ τ'
-          (ambientToTwoPointSlotTimePermutation σ) B))
-    (σ : Fin n → ℝ) :
-    d.dysonFixedTimeAmplitude ε β g τ τ' σ =
-      twoPointExternalOrderSign τ τ' *
-        d.1.interactionComponentShuffleIntegrand shuffle
-          (d.mixedComponentDysonLocalIntegrand ε β g τ τ' shuffle)
-          (twoPointSlotToAmbientTimePermutation σ) := by
-  apply d.dysonFixedTimeAmplitude_eq_externalSign_mul_componentShuffleIntegrand
-    ε β g τ τ' shuffle
-  intro B
-  exact d.mixedComponentDysonFixedTimeValue_local_of_pairingValue_local
-    ε β g τ τ' shuffle B (hPairing B)
-
 /-- Crossing and contraction preservation under equal component-local coordinates imply locality of
 that component's complete mixed pairing value. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_local_of_timeTransport
@@ -182,38 +160,6 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_local_of_tim
     (ambientToTwoPointSlotTimePermutation σ)
     (ambientToTwoPointSlotTimePermutation υ) B
     (hCross σ υ hσυ) (hContraction σ υ hσυ)
-
-/-- Crossing and contraction preservation for every component expose the signed pointwise Dyson
-amplitude as the corresponding component-shuffle integrand. -/
-theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign_mul_componentShuffleIntegrand_of_timeTransport
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (shuffle : d.1.ComponentInteractionShuffle)
-    (hCross : ∀ (B : d.1.componentPartition.parts)
-        (σ υ : Fin (Finset.univ : Finset (Fin n)).card → ℝ),
-      DependentSlotEquiv.assignment shuffle.slotEquiv σ B =
-          DependentSlotEquiv.assignment shuffle.slotEquiv υ B →
-        d.1.MixedComponentCrossingPreserving τ τ'
-          (ambientToTwoPointSlotTimePermutation σ)
-          (ambientToTwoPointSlotTimePermutation υ) B)
-    (hContraction : ∀ (B : d.1.componentPartition.parts)
-        (σ υ : Fin (Finset.univ : Finset (Fin n)).card → ℝ),
-      DependentSlotEquiv.assignment shuffle.slotEquiv σ B =
-          DependentSlotEquiv.assignment shuffle.slotEquiv υ B →
-        d.MixedComponentContractionPreserving ε β τ τ'
-          (ambientToTwoPointSlotTimePermutation σ)
-          (ambientToTwoPointSlotTimePermutation υ) B)
-    (σ : Fin n → ℝ) :
-    d.dysonFixedTimeAmplitude ε β g τ τ' σ =
-      twoPointExternalOrderSign τ τ' *
-        d.1.interactionComponentShuffleIntegrand shuffle
-          (d.mixedComponentDysonLocalIntegrand ε β g τ τ' shuffle)
-          (twoPointSlotToAmbientTimePermutation σ) := by
-  apply d.dysonFixedTimeAmplitude_eq_externalSign_mul_componentShuffleIntegrand_of_pairingValue_local
-    ε β g τ τ' shuffle
-  intro B
-  exact d.mixedComponentPairingValue_local_of_timeTransport
-    ε β τ τ' shuffle B (hCross B) (hContraction B)
 
 end Fermionic
 end SecondQuantization
