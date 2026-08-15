@@ -64,7 +64,7 @@ theorem twoSiteDimerFrequencyDenominator_eq_transitionProduct
         lehmannDenominator 1 omega eta 2 := by
   apply Complex.ext <;>
     simp [twoSiteDimerFrequencyDenominator, twoSiteDimerComplexRate,
-      lehmannDenominator] <;> ring
+      lehmannDenominator, pow_two] <;> ring
 
 /-- At positive switching rate the closed unit-dimer response denominator is nonsingular. -/
 theorem twoSiteDimerFrequencyDenominator_ne_zero
@@ -84,19 +84,24 @@ theorem twoSiteDimerGroundState_lehmannResponse_frequency
   classical
   have hminus := twoSiteDimerLehmannDenominator_ne_zero omega eta (-2) heta
   have hplus := twoSiteDimerLehmannDenominator_ne_zero omega eta 2 heta
+  have hdiff :
+      lehmannDenominator 1 omega eta 2 -
+          lehmannDenominator 1 omega eta (-2) = -4 * Complex.I := by
+    unfold lehmannDenominator
+    ring
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
   simp only [Fin.sum_univ_two, Fin.isValue,
-    twoSiteDimerGroundStateLehmannTable_energy_zero,
+    twoSiteDimerGroundStateLehmannTable_energy_zero, sub_neg_eq_add,
     twoSiteDimerGroundStateLehmannTable_energy_one,
     twoSiteDimerGroundStateTransitionWeight_zero_one,
     twoSiteDimerGroundStateTransitionWeight_one_zero,
-    finiteLehmannTableTransitionWeight_diag]
-  simp [lehmannTerm]
+    finiteLehmannTableTransitionWeight_diag, sub_self]
+  simp only [lehmannTerm, zero_mul, zero_add, add_zero]
   rw [twoSiteDimerFrequencyDenominator_eq_transitionProduct]
   field_simp [hminus, hplus]
-  apply Complex.ext <;>
-    simp [lehmannDenominator] <;> ring
+  rw [← mul_sub, hdiff]
+  norm_num
 
 /-- For unit volume, the electric-field normalization is `-1 / (η - iω)`. -/
 theorem twoSiteDimerUnitVolume_normalization_frequency
@@ -104,9 +109,15 @@ theorem twoSiteDimerUnitVolume_normalization_frequency
     finiteVolumeConductivityNormalization twoSiteDimerUnitVolume omega eta =
       -(twoSiteDimerComplexRate omega eta)⁻¹ := by
   unfold finiteVolumeConductivityNormalization adiabaticElectricFieldFactor
-    twoSiteDimerUnitVolume twoSiteDimerComplexRate
+    twoSiteDimerUnitVolume
+  simp only [one_mul]
+  have hfactor :
+      (-(eta : ℂ) + Complex.I * (omega : ℂ)) =
+        -twoSiteDimerComplexRate omega eta := by
+    unfold twoSiteDimerComplexRate
+    ring
+  rw [hfactor]
   simp
-  ring
 
 /-- Positive switching rate keeps `z = η - iω` nonzero. -/
 theorem twoSiteDimerComplexRate_ne_zero
@@ -138,6 +149,7 @@ theorem twoSiteDimerGroundState_conductivity_frequency
   rw [twoSiteDimerGroundState_lehmannResponse_frequency omega eta heta,
     twoSiteDimerUnitVolume_normalization_frequency]
   field_simp [hz, hden]
+  unfold twoSiteDimerFrequencyDenominator
   ring
 
 /-- The original exact benchmark `σ(0,1)=1/5` is a specialization of the symbolic frequency
