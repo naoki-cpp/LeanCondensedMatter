@@ -13,7 +13,7 @@ relevant notion of reachability.
 
 namespace Setoid
 
-variable {α : Type*}
+variable {α : Type*} [DecidableEq α]
 
 open Classical in
 /-- The finite partition of `s` induced by the equivalence classes of `r`. -/
