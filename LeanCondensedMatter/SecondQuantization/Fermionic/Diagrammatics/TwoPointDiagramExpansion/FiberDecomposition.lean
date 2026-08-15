@@ -67,6 +67,14 @@ noncomputable def connectedFixedExternalTwoPointWickDiagramOnEquiv (T : Finset (
   left_inv ext := Subtype.ext ((fixedExternalTwoPointWickDiagramOnEquiv T).left_inv ext.1)
   right_inv d := Subtype.ext ((fixedExternalTwoPointWickDiagramOnEquiv T).right_inv d.1)
 
+/-- Reassemble a fixed-external two-point diagram from a chosen external piece and quartic vacuum
+piece. -/
+noncomputable def fixedExternalOfSlotSplit (T : Finset (Fin n))
+    (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
+    (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T)) :
+    FixedExternalTwoPointWickDiagram Mode n i j :=
+  ⟨Common.TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext.1 vac, ext.2⟩
+
 /-- **The fiber decomposition with the external labels fixed.** The diagrams whose external
 component owns exactly `T` are the pairs of an externally connected fixed-external diagram on `T`
 and an arbitrary quartic diagram on the complementary slots. -/
