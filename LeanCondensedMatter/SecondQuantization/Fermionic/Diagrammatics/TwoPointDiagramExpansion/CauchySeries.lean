@@ -21,19 +21,6 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-omit [LinearOrder Mode] in
-/-- The coefficients of the normalized Dyson partition series are exactly the normalized Dyson
-partition coefficients used by the fiber Cauchy theorem. -/
-theorem coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff
-    (ε : Mode → ℝ) (β : ℝ)
-    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) :
-    PowerSeries.coeff n
-        (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) =
-      normalizedDysonPartitionCoeff ε β V n := by
-  simp [PowerSeries.coeff_normalizeByConstantCoeff,
-    constantCoeff_dysonPartitionSeries, coeff_dysonPartitionSeries,
-    normalizedDysonPartitionCoeff, div_eq_mul_inv, mul_comm]
-
 private theorem sum_antidiagonal_eq_sum_range_succ
     {R : Type*} [AddCommMonoid R] (f : ℕ → ℕ → R) (n : ℕ) :
     (∑ p ∈ Finset.antidiagonal n, f p.1 p.2) =

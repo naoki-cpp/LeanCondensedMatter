@@ -23,6 +23,19 @@ noncomputable def normalizedDysonPartitionCoeff (ε : Mode → ℝ) (β : ℝ)
   dysonPartitionCoeff ε β V n / freePartitionFunction ε β
 
 omit [LinearOrder Mode] in
+/-- Coefficients of the normalized Dyson partition series are the normalized fermionic Dyson
+partition coefficients. -/
+theorem coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff
+    (ε : Mode → ℝ) (β : ℝ)
+    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) :
+    PowerSeries.coeff n
+        (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) =
+      normalizedDysonPartitionCoeff ε β V n := by
+  rw [normalizedDysonPartitionCoeff, PowerSeries.coeff_normalizeByConstantCoeff,
+    constantCoeff_dysonPartitionSeries, coeff_dysonPartitionSeries, div_eq_mul_inv]
+  exact mul_comm _ _
+
+omit [LinearOrder Mode] in
 /-- The normalized Dyson coefficient is the canonical free Gibbs density-state expectation of the
 bare Dyson coefficient. This bridge is owned at the perturbative moment layer so diagrammatic
 callers do not need to unfold occupation-basis Gibbs formulas. -/

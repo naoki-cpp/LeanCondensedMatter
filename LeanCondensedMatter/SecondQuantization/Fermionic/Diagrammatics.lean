@@ -21,7 +21,7 @@ order-preserving shuffle decompositions, shuffled ordered-simplex integrands, co
 pairing and fermionic contraction-integrand specialization, and full quartic Wick-amplitude
 factorization over connected components; the Dyson diagram expansion, the connected-diagram formula
 for Dyson vertex cumulants, the general algebraic Dyson Linked Cluster Theorem, and its explicit
-orders-one-through-three regression corollaries. Statistics-independent quartic matching structure,
-scalar vertex-weight factorization, and Statistics-generic crossing-parity/pairing-weight
+orders-one-through-three regression corollaries. Statistics-independent quartic diagram structure,
+scalar vertex-weight factorization, and Statistics-generic crossing-parity/pairing-evaluation
 factorization are owned by `SecondQuantization.Common`.
 -/

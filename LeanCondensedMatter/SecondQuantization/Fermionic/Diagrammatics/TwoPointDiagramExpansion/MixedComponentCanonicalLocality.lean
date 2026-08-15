@@ -23,7 +23,7 @@ open Common
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- The mixed component pairing value is local along the canonical interaction-component shuffle. -/
-theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_local_canonical
+private theorem mixedComponentPairingValue_local_canonical
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ)
     (B : d.1.componentPartition.parts) :
@@ -55,7 +55,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_local_canoni
   exact hVertices ⟨v, hv⟩
 
 /-- The signed mixed component factor is local along the canonical interaction-component shuffle. -/
-theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue_local_canonical
+private theorem mixedComponentDysonFixedTimeValue_local_canonical
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (B : d.1.componentPartition.parts) :
@@ -65,7 +65,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue_local
         (ambientToTwoPointSlotTimePermutation σ) B) := by
   exact d.mixedComponentDysonFixedTimeValue_local_of_pairingValue_local
     ε β g τ τ' d.1.canonicalComponentInteractionShuffle B
-    (d.mixedComponentPairingValue_local_canonical ε β τ τ' B)
+    (mixedComponentPairingValue_local_canonical d ε β τ τ' B)
 
 /-- The pointwise Dyson-signed two-point amplitude is the canonical component-shuffle integrand,
 with no caller-supplied crossing or contraction preservation hypotheses. -/
@@ -83,7 +83,7 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_canonicalCom
   apply d.dysonFixedTimeAmplitude_eq_externalSign_mul_componentShuffleIntegrand
     ε β g τ τ' d.1.canonicalComponentInteractionShuffle
   intro B
-  exact d.mixedComponentDysonFixedTimeValue_local_canonical ε β g τ τ' B
+  exact mixedComponentDysonFixedTimeValue_local_canonical d ε β g τ τ' B
 
 end Fermionic
 end SecondQuantization

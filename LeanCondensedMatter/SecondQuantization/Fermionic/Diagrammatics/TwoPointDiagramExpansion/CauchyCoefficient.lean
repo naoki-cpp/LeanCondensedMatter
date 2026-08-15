@@ -53,7 +53,7 @@ private theorem powersetFiberSlice_eq_cauchyFactor
 At order `n`, the complete two-point Dyson coefficient is the Cauchy convolution of the connected
 two-point coefficients with the normalized vacuum partition coefficients.  This is the point where
 the canonical component/fiber route tracked by #1001 is consumed by #894. -/
-theorem twoPointDiagramCoefficient_eq_sum_connected_mul_normalizedDysonPartitionCoeff
+private theorem twoPointDiagramCoefficient_eq_sum_connected_mul_normalizedDysonPartitionCoeff
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
     twoPointDiagramCoefficient (n := n) ε β g i j τ τ' =

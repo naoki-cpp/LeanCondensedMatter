@@ -22,7 +22,7 @@ open Common
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 omit [LinearOrder Mode] [Fintype Mode] in
-theorem orderedTwoPointLegField_relabelInteractionVertices {n : ℕ}
+private theorem orderedTwoPointLegField_relabelInteractionVertices {n : ℕ}
     (π : Equiv.Perm (Fin n)) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
     (leg : OrderedTwoPointLeg n) :
@@ -35,7 +35,7 @@ theorem orderedTwoPointLegField_relabelInteractionVertices {n : ℕ}
       orderedTwoPointLegFieldLabel, interactionVertexLegRelabel]
 
 omit [Fintype Mode] in
-theorem mixedTimeOrderedAtomicFieldFamily_relabelInteractionVertices_of_injective {n : ℕ}
+private theorem mixedTimeOrderedAtomicFieldFamily_relabelInteractionVertices_of_injective {n : ℕ}
     (π : Equiv.Perm (Fin n)) (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
     (hσ : Function.Injective σ) (p : Fin (2 * (2 * n + 1))) :
@@ -50,7 +50,7 @@ theorem mixedTimeOrderedAtomicFieldFamily_relabelInteractionVertices_of_injectiv
   exact orderedTwoPointLegField_relabelInteractionVertices π i j τ τ' q σ _
 
 omit [Fintype Mode] in
-theorem mixedTimeOrderedAtomicOperatorFamily_relabelInteractionVertices_of_injective {n : ℕ}
+private theorem mixedTimeOrderedAtomicOperatorFamily_relabelInteractionVertices_of_injective {n : ℕ}
     (π : Equiv.Perm (Fin n)) (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
     (hσ : Function.Injective σ) (p : Fin (2 * (2 * n + 1))) :
@@ -65,7 +65,7 @@ theorem mixedTimeOrderedAtomicOperatorFamily_relabelInteractionVertices_of_injec
 
 /-- Each density-state contraction is invariant under interaction-slot relabeling at injective
 interaction times. -/
-theorem mixedTimeOrderedAtomicPairValue_relabelInteractionVertices_of_injective {n : ℕ}
+private theorem mixedTimeOrderedAtomicPairValue_relabelInteractionVertices_of_injective {n : ℕ}
     (π : Equiv.Perm (Fin n)) (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
     (hσ : Function.Injective σ) (a b : Fin (2 * (2 * n + 1))) :
@@ -79,7 +79,7 @@ theorem mixedTimeOrderedAtomicPairValue_relabelInteractionVertices_of_injective 
 
 /-- A complete mixed-order pairing value is invariant under interaction-slot relabeling at injective
 interaction times. -/
-theorem orderedTwoPointPairingValue_relabelInteractionVertices_of_injective {n : ℕ}
+private theorem orderedTwoPointPairingValue_relabelInteractionVertices_of_injective {n : ℕ}
     (π : Equiv.Perm (Fin n)) (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
     (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
     (hσ : Function.Injective σ) (pairing : Pairing (2 * n + 1)) :
@@ -96,7 +96,7 @@ theorem orderedTwoPointPairingValue_relabelInteractionVertices_of_injective {n :
 
 /-- The fixed-time amplitude is covariant under interaction-slot relabeling away from interaction-time
 diagonals. -/
-theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_relabelInteractionVertices_of_injective
+private theorem fixedTimeAmplitude_relabelInteractionVertices_of_injective
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (π : Equiv.Perm (Fin n)) (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) (τ τ' : ℝ) (σ : Fin n → ℝ)
@@ -140,7 +140,7 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_relabelInteract
     (d.relabelInteractionVertices π).dysonFixedTimeAmplitude ε β g τ τ' σ =
       d.dysonFixedTimeAmplitude ε β g τ τ' (fun v => σ (π.symm v)) := by
   unfold FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude
-  rw [d.fixedTimeAmplitude_relabelInteractionVertices_of_injective π ε β g τ τ' σ hσ]
+  rw [fixedTimeAmplitude_relabelInteractionVertices_of_injective d π ε β g τ τ' σ hσ]
 
 end Fermionic
 end SecondQuantization
