@@ -52,7 +52,6 @@ theorem schwartzRealInnerProductDensity1D_apply
     schwartzRealInnerProductDensity1D ψ χ x = (star (ψ x) * χ x).re := by
   change (ψ x).re * (χ x).re + (ψ x).im * (χ x).im = (star (ψ x) * χ x).re
   simp [Complex.mul_re]
-  ring
 
 /-- Local real expectation density of the concrete Schwartz velocity operator. -/
 noncomputable def schwartzVelocityExpectationCurrent1D
@@ -72,7 +71,6 @@ private theorem velocityScalar_eq
       ((-(2 * κ / ℏ) : ℝ) : ℂ) * Complex.I := by
   simp [SchwartzKinetic1D.heisenbergScale, div_eq_mul_inv]
   field_simp [hℏ]
-  ring
 
 /-- The pointwise Schrödinger probability current is the real local expectation of the velocity
 operator. -/
@@ -94,8 +92,7 @@ theorem schwartzProbabilityCurrent1D_eq_velocityExpectation
       schwartzVelocityExpectationCurrent1D ℏ κ ψ := by
   ext x
   rw [schwartzProbabilityCurrent1D_apply, schwartzVelocityExpectationCurrent1D_apply]
-  simp only [SchwartzKinetic1D.velocityOperator, LinearMap.smul_apply,
-    SchwartzKinetic1D.derivative_apply]
+  simp only [SchwartzKinetic1D.velocityOperator, LinearMap.smul_apply]
   exact probabilityCurrentValue1D_eq_velocityExpectation ℏ κ hℏ
     (ψ x) (schwartzSpatialDerivative1D ψ x)
 
