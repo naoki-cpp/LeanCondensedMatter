@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPairProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrderDecomposition
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
 
 set_option linter.style.header false
 
@@ -63,29 +63,17 @@ noncomputable def QuarticDiagram.fixedOrderComponentPairEmbedding
     {N : ℕ} {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (order : QuarticVertexOrder S) (C : d.componentPartition.parts) :
     d.LocalOrderedPair (d.componentPartition.partOrdersOfOrder order) C ↪
-      (d.pairingInOrder order).NormalizedPair where
-  toFun pr := by
-    let shuffle := d.fixedOrderComponentShuffle order
-    have hmem :
-        (d.componentOrderedLeg shuffle C pr.1.1,
-          d.componentOrderedLeg shuffle C pr.1.2) ∈
-          (d.pairingInOrder
-            (d.assembleVertexOrder (d.componentPartition.partOrdersOfOrder order) shuffle)).pairs :=
-      (d.mem_pairingInOrder_pairs_componentOrderedLeg_iff
-        (d.componentPartition.partOrdersOfOrder order) shuffle C pr.1.1 pr.1.2).2 pr.2
-    rw [d.assembleVertexOrder_fixedOrderComponentShuffle order] at hmem
-    exact ⟨(d.componentOrderedLeg shuffle C pr.1.1,
-      d.componentOrderedLeg shuffle C pr.1.2), hmem⟩
-  inj' := by
-    intro p q hpq
-    let shuffle := d.fixedOrderComponentShuffle order
-    have hinj := (d.componentOrderedLeg_strictMono shuffle C).injective
-    apply Subtype.ext
-    apply Prod.ext
-    · apply hinj
-      exact congrArg (fun z => z.1.1) hpq
-    · apply hinj
-      exact congrArg (fun z => z.1.2) hpq
+      (d.pairingInOrder order).NormalizedPair :=
+  ((d.restrictComponent C.2).pairingInOrder
+      (d.componentPartition.partOrdersOfOrder order C)).normalizedPairEmbedding
+    (d.pairingInOrder order)
+    (d.componentOrderedLegOrderEmbedding (d.fixedOrderComponentShuffle order) C)
+    (by
+      intro p
+      simpa only [d.assembleVertexOrder_fixedOrderComponentShuffle order] using
+        d.pairingInOrder_partner_componentOrderedLeg
+          (d.componentPartition.partOrdersOfOrder order)
+          (d.fixedOrderComponentShuffle order) C p)
 
 @[simp]
 theorem QuarticDiagram.fixedOrderComponentPairEmbedding_apply
