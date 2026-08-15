@@ -19,15 +19,38 @@ namespace SecondQuantization
 namespace Fermionic
 
 open Combinatorics
+open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+
+private theorem componentShuffleIntegrand_eq_relabelAmplitude_of_injective
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (τ τ' : ℝ) (shuffle : d.1.ComponentInteractionShuffle)
+    (σ : Fin (Finset.univ : Finset (Fin n)).card → ℝ)
+    (hσ : Function.Injective σ) :
+    twoPointExternalOrderSign τ τ' *
+        d.1.interactionComponentShuffleIntegrand shuffle
+          (d.mixedComponentDysonLocalIntegrand ε β g τ τ'
+            d.1.canonicalComponentInteractionShuffle) σ =
+      (d.relabelForComponentShuffle shuffle).dysonFixedTimeAmplitude ε β g τ τ'
+        (ambientToTwoPointSlotTimePermutation σ) := by
+  rw [d.externalSign_mul_componentShuffleIntegrand_eq_dysonFixedTimeAmplitude_slotPermuted
+    ε β g τ τ' shuffle σ]
+  symm
+  have hslot : Function.Injective (ambientToTwoPointSlotTimePermutation σ) :=
+    ambientToTwoPointSlotTimePermutation_injective hσ
+  rw [d.relabelForComponentShuffle_eq_relabelInteractionVertices shuffle]
+  exact d.dysonFixedTimeAmplitude_relabelInteractionVertices_of_injective
+    (d.1.componentShuffleSlotPermutation shuffle).symm ε β g τ τ'
+    (ambientToTwoPointSlotTimePermutation σ) hslot
 
 /-- **Integrated component-shuffle covariance.** One component-shuffle term integrates to the
 ordered-simplex integral of the Dyson fixed-time amplitude of the explicitly relabeled diagram.
 
 The pointwise identity behind this is only available away from the interaction-time diagonals; the
 ordered simplex never meets them. -/
-theorem FixedExternalTwoPointWickDiagram.orderedSimplexIntegral_externalSign_mul_componentShuffleIntegrand
+theorem FixedExternalTwoPointWickDiagram.componentShuffleIntegral_eq_relabelAmplitudeIntegral
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) (shuffle : d.1.ComponentInteractionShuffle) :
@@ -38,10 +61,10 @@ theorem FixedExternalTwoPointWickDiagram.orderedSimplexIntegral_externalSign_mul
               d.1.canonicalComponentInteractionShuffle) σ) =
       intervalIntegral.orderedSimplexIntegral (Finset.univ : Finset (Fin n)).card β
         (fun σ => (d.relabelForComponentShuffle shuffle).dysonFixedTimeAmplitude ε β g τ τ'
-          (Common.ambientToTwoPointSlotTimePermutation σ)) :=
+          (ambientToTwoPointSlotTimePermutation σ)) :=
   intervalIntegral.orderedSimplexIntegral_congr_of_injective _ β hβ _ _ fun σ hσ =>
-    d.externalSign_mul_componentShuffleIntegrand_eq_relabelForComponentShuffle_dysonFixedTimeAmplitude_of_injective
-      ε β g τ τ' shuffle σ hσ
+    componentShuffleIntegrand_eq_relabelAmplitude_of_injective
+      d ε β g τ τ' shuffle σ hσ
 
 end Fermionic
 end SecondQuantization
