@@ -111,13 +111,5 @@ theorem QuarticDiagram.exists_componentBlock_eq_of_mem {S : Finset (Fin N)}
   obtain ⟨x, hxS, hx⟩ := d.componentSetoid.exists_blockOn_eq_of_mem S hB
   exact ⟨⟨x, hxS⟩, by simpa [QuarticDiagram.componentBlock] using hx⟩
 
-/-- A vertex belongs to a component part exactly when its component block is that part. -/
-theorem QuarticDiagram.componentBlock_eq_iff_mem {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
-    (hB : B ∈ d.componentPartition.parts) (v : ↥S) :
-    d.componentBlock v = B ↔ (v : Fin N) ∈ B := by
-  change d.componentSetoid.blockOn S (v : Fin N) = B ↔ (v : Fin N) ∈ B
-  exact d.componentSetoid.blockOn_eq_iff_mem S hB (v : Fin N)
-
 end Common
 end SecondQuantization
