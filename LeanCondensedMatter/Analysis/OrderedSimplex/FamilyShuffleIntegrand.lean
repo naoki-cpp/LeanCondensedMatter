@@ -96,16 +96,31 @@ theorem eq_localize (e : (Σ i, slot i) ≃ κ) (i : ι)
 
 end DependentSlotEquiv
 
+variable {ι : Type*}
+
+/-- Restrict an ambient assignment to one local block for a shuffle into an arbitrary ambient total. -/
+def FamilySlotShuffleTo.timeAssignment {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total) (τ : Fin total → ℝ) (i : ι) :
+    Fin (size i) → ℝ :=
+  fun j => τ (shuffle.slotEquiv ⟨i, j⟩)
+
+@[simp]
+theorem FamilySlotShuffleTo.timeAssignment_apply {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total) (τ : Fin total → ℝ)
+    (i : ι) (j : Fin (size i)) :
+    shuffle.timeAssignment τ i j = τ (shuffle.slotEquiv ⟨i, j⟩) :=
+  rfl
+
+variable [Fintype ι]
+
 /-- Product of local integrands after embedding their coordinates into an arbitrary ambient total.
 This is the `FamilySlotShuffleTo` form used when the ambient cardinality is only propositionally
 equal to the sum of local block sizes. -/
-noncomputable def FamilySlotShuffleTo.ambientIntegrand {ι : Type*} [Fintype ι]
-    {size : ι → ℕ} {total : ℕ} (shuffle : FamilySlotShuffleTo size total)
+noncomputable def FamilySlotShuffleTo.ambientIntegrand {size : ι → ℕ} {total : ℕ}
+    (shuffle : FamilySlotShuffleTo size total)
     (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ)
     (τ : Fin total → ℝ) : ℂ :=
-  ∏ i, localIntegrand i (fun j => τ (shuffle.slotEquiv ⟨i, j⟩))
-
-variable {ι : Type*} [Fintype ι]
+  ∏ i, localIntegrand i (shuffle.timeAssignment τ i)
 
 /-- Restrict an ambient time assignment to one local block. -/
 def FamilySlotShuffle.timeAssignment {size : ι → ℕ} (shuffle : FamilySlotShuffle size)

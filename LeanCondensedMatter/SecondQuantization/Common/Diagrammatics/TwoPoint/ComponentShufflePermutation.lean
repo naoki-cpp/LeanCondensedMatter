@@ -61,7 +61,12 @@ theorem TwoPointDiagram.ComponentInteractionShuffle.interactionComponentShuffleI
   unfold TwoPointDiagram.interactionComponentShuffleIntegrand
   apply Fintype.prod_congr
   intro B
-  rw [shuffle.interactionComponentTimeAssignment_eq_canonical τ B]
+  apply congrArg (componentIntegrand B)
+  funext i
+  change τ (shuffle.slotEquiv ⟨B, i⟩) =
+    τ (d.canonicalComponentInteractionShuffle.relativeAmbientPermutation shuffle
+      (d.canonicalComponentInteractionShuffle.slotEquiv ⟨B, i⟩))
+  rw [Combinatorics.FamilySlotShuffleTo.relativeAmbientPermutation_slotEquiv]
 
 /-- Convert an ambient time assignment indexed by `univ.card` to the explicit interaction-slot type
 `Fin n`. -/
