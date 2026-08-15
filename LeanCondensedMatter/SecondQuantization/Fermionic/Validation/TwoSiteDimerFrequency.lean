@@ -98,25 +98,25 @@ theorem twoSiteDimerGroundState_lehmannResponse_frequency
   rw [hgapMinus, hgapPlus]
   rw [twoSiteDimerFrequencyDenominator_eq_transitionProduct]
   field_simp [hminus, hplus]
-  apply Complex.ext <;> simp [lehmannDenominator] <;> ring
+  apply Complex.ext
+  · simp [lehmannDenominator]
+    ring
+  · simp [lehmannDenominator]
+    ring
 
 /-- For unit volume, the electric-field normalization is `-1 / (η - iω)`. -/
 theorem twoSiteDimerUnitVolume_normalization_frequency
     (omega eta : ℝ) :
     finiteVolumeConductivityNormalization twoSiteDimerUnitVolume omega eta =
       -(twoSiteDimerComplexRate omega eta)⁻¹ := by
-  unfold finiteVolumeConductivityNormalization adiabaticElectricFieldFactor
-    twoSiteDimerUnitVolume
-  change
-    (-(eta : ℂ) + Complex.I * (omega : ℂ))⁻¹ =
-      -(twoSiteDimerComplexRate omega eta)⁻¹
   have hfactor :
-      (-(eta : ℂ) + Complex.I * (omega : ℂ)) =
+      adiabaticElectricFieldFactor omega eta =
         -twoSiteDimerComplexRate omega eta := by
-    unfold twoSiteDimerComplexRate
+    unfold adiabaticElectricFieldFactor twoSiteDimerComplexRate
     ring
+  unfold finiteVolumeConductivityNormalization
   rw [hfactor]
-  simp
+  simp [twoSiteDimerUnitVolume]
 
 /-- Positive switching rate keeps `z = η - iω` nonzero. -/
 theorem twoSiteDimerComplexRate_ne_zero
