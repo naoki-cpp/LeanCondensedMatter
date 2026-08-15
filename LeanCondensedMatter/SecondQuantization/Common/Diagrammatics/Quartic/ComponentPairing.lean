@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentRestriction
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
 
 set_option linter.style.header false
 
@@ -273,23 +274,21 @@ theorem QuarticDiagram.mem_pairingInOrder_pairs_componentOrderedLeg_iff
     (d.componentOrderedLeg shuffle B a, d.componentOrderedLeg shuffle B b) ∈
         (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs ↔
       (a, b) ∈ ((d.restrictComponent B.2).pairingInOrder (orders B)).pairs := by
-  rw [Combinatorics.Pairing.mem_pairs_iff,
-    Combinatorics.Pairing.mem_pairs_iff]
   let e := d.componentOrderedLegOrderEmbedding shuffle B
-  constructor
-  · rintro ⟨hab, hpartner⟩
-    refine ⟨e.lt_iff_lt.mp hab, ?_⟩
-    apply e.injective
-    calc
-      d.componentOrderedLeg shuffle B
-          (((d.restrictComponent B.2).pairingInOrder (orders B)).partner a) =
-        (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).partner
-          (d.componentOrderedLeg shuffle B a) :=
-        (d.pairingInOrder_partner_componentOrderedLeg orders shuffle B a).symm
-      _ = d.componentOrderedLeg shuffle B b := hpartner
-  · rintro ⟨hab, hpartner⟩
-    refine ⟨e.lt_iff_lt.mpr hab, ?_⟩
-    rw [d.pairingInOrder_partner_componentOrderedLeg orders shuffle B, hpartner]
+  change (e a, e b) ∈
+      (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs ↔
+    (a, b) ∈ ((d.restrictComponent B.2).pairingInOrder (orders B)).pairs
+  exact
+    ((d.restrictComponent B.2).pairingInOrder (orders B)).mem_pairs_map_iff
+      (d.pairingInOrder (d.assembleVertexOrder orders shuffle)) e
+      (by
+        intro p
+        change (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).partner
+            (d.componentOrderedLeg shuffle B p) =
+          d.componentOrderedLeg shuffle B
+            (((d.restrictComponent B.2).pairingInOrder (orders B)).partner p)
+        exact d.pairingInOrder_partner_componentOrderedLeg orders shuffle B p)
+      a b
 
 end Common
 end SecondQuantization

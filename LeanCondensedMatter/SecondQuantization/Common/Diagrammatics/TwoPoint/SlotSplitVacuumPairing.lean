@@ -2,7 +2,7 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Slot
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedOrderPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.TwoPointLegEmbedding
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Ordered
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
 
 set_option linter.style.header false
 
@@ -40,6 +40,27 @@ theorem slotSplitVacuumSlot_strictMono (T : Finset (Fin n)) :
   intro a b hab
   simpa [slotSplitVacuumSlot, slotSplitVacuumOrder] using
     (((Finset.univ : Finset (Fin n)) \ T).orderIsoOfFin rfl).strictMono hab
+
+/-- The order embedding of fixed-order vacuum legs into ambient mixed-order leg positions. -/
+noncomputable def slotSplitVacuumMixedOrderEmbedding
+    (T : Finset (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
+    Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card)) ↪o
+      Fin (2 * (2 * n + 1)) :=
+  OrderEmbedding.ofStrictMono
+    (mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ)
+    (mixedTimeOrderedQuarticLegMapPosition_strictMono_of_strictAnti
+      (slotSplitVacuumSlot T) (slotSplitVacuumSlot_strictMono T)
+      τ τ' σ hσ)
+
+@[simp]
+theorem slotSplitVacuumMixedOrderEmbedding_apply
+    (T : Finset (Fin n)) (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
+    (p : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))) :
+    slotSplitVacuumMixedOrderEmbedding T τ τ' σ hσ p =
+      mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ p :=
+  rfl
 
 /-- A fixed-order quartic vacuum leg, viewed as an ambient standard two-point leg, is exactly the
 right-leg embedding of the canonical slot split. -/
@@ -133,34 +154,22 @@ theorem TwoPointDiagram.ofSlotSplit_mem_mixedPairs_vacuumOrderedLeg_iff
       (d.pairingInMixedOrder τ τ' σ).pairs ↔
     (a, b) ∈ (vac.pairingInOrder (slotSplitVacuumOrder T)).pairs := by
   let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
-  let E := mixedTimeOrderedQuarticLegMapPosition
-    (slotSplitVacuumSlot T) τ τ' σ
-  have hE : StrictMono E :=
-    mixedTimeOrderedQuarticLegMapPosition_strictMono_of_strictAnti
-      (slotSplitVacuumSlot T) (slotSplitVacuumSlot_strictMono T)
-      τ τ' σ hσ
-  let e :
-      Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card)) ↪o
-        Fin (2 * (2 * n + 1)) :=
-    OrderEmbedding.ofStrictMono E hE
-  change (E a, E b) ∈ (d.pairingInMixedOrder τ τ' σ).pairs ↔
+  let e := slotSplitVacuumMixedOrderEmbedding T τ τ' σ hσ
+  change (e a, e b) ∈ (d.pairingInMixedOrder τ τ' σ).pairs ↔
     (a, b) ∈ (vac.pairingInOrder (slotSplitVacuumOrder T)).pairs
-  rw [Pairing.mem_pairs_iff, Pairing.mem_pairs_iff]
-  constructor
-  · rintro ⟨hab, hpartner⟩
-    refine ⟨e.lt_iff_lt.mp hab, ?_⟩
-    apply e.injective
-    change E ((vac.pairingInOrder (slotSplitVacuumOrder T)).partner a) = E b
-    calc
-      E ((vac.pairingInOrder (slotSplitVacuumOrder T)).partner a) =
-          (d.pairingInMixedOrder τ τ' σ).partner (E a) :=
-        (TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
-          T ext vac τ τ' σ a).symm
-      _ = E b := hpartner
-  · rintro ⟨hab, hpartner⟩
-    refine ⟨e.lt_iff_lt.mpr hab, ?_⟩
-    rw [TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
-      T ext vac τ τ' σ a, hpartner]
+  exact
+    (vac.pairingInOrder (slotSplitVacuumOrder T)).mem_pairs_map_iff
+      (d.pairingInMixedOrder τ τ' σ) e
+      (fun p => by
+        change (d.pairingInMixedOrder τ τ' σ).partner
+            (mixedTimeOrderedQuarticLegMapPosition
+              (slotSplitVacuumSlot T) τ τ' σ p) =
+          mixedTimeOrderedQuarticLegMapPosition
+            (slotSplitVacuumSlot T) τ τ' σ
+            ((vac.pairingInOrder (slotSplitVacuumOrder T)).partner p)
+        exact TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
+          T ext vac τ τ' σ p)
+      a b
 
 /-- Embed a normalized pair of the fixed-order quartic vacuum pairing into the ambient mixed
 pairing of `ofSlotSplit`. -/
@@ -172,25 +181,21 @@ noncomputable def TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
     (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
     (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair ↪
       ((TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac).pairingInMixedOrder
-        τ τ' σ).NormalizedPair where
-  toFun pr :=
-    ⟨(mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ pr.1.1,
-      mixedTimeOrderedQuarticLegMapPosition (slotSplitVacuumSlot T) τ τ' σ pr.1.2),
-      (TwoPointDiagram.ofSlotSplit_mem_mixedPairs_vacuumOrderedLeg_iff
-        T ext vac τ τ' σ hσ pr.1.1 pr.1.2).2 pr.2⟩
-  inj' := by
-    intro p q hpq
-    have hE : StrictMono (mixedTimeOrderedQuarticLegMapPosition
-        (slotSplitVacuumSlot T) τ τ' σ) :=
-      mixedTimeOrderedQuarticLegMapPosition_strictMono_of_strictAnti
-        (slotSplitVacuumSlot T) (slotSplitVacuumSlot_strictMono T)
-        τ τ' σ hσ
-    apply Subtype.ext
-    apply Prod.ext
-    · apply hE.injective
-      exact congrArg (fun z => z.1.1) hpq
-    · apply hE.injective
-      exact congrArg (fun z => z.1.2) hpq
+        τ τ' σ).NormalizedPair := by
+  let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+  exact
+    (vac.pairingInOrder (slotSplitVacuumOrder T)).normalizedPairEmbedding
+      (d.pairingInMixedOrder τ τ' σ)
+      (slotSplitVacuumMixedOrderEmbedding T τ τ' σ hσ)
+      (fun p => by
+        change (d.pairingInMixedOrder τ τ' σ).partner
+            (mixedTimeOrderedQuarticLegMapPosition
+              (slotSplitVacuumSlot T) τ τ' σ p) =
+          mixedTimeOrderedQuarticLegMapPosition
+            (slotSplitVacuumSlot T) τ τ' σ
+            ((vac.pairingInOrder (slotSplitVacuumOrder T)).partner p)
+        exact TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
+          T ext vac τ τ' σ p)
 
 @[simp]
 theorem TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_apply
@@ -205,7 +210,7 @@ theorem TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_apply
       (mixedTimeOrderedQuarticLegMapPosition
           (slotSplitVacuumSlot T) τ τ' σ pr.1.1,
         mixedTimeOrderedQuarticLegMapPosition
-          (slotSplitVacuumSlot T) τ τ' σ pr.1.2) :=
+          (slotSplitVacuumSlot T) τ τ' σ pr.1.2) := by
   rfl
 
 /-- The vacuum normalized-pair embedding preserves and reflects crossings. -/
@@ -222,14 +227,21 @@ theorem TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding_crosses_iff
         (TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding
           T ext vac τ τ' σ hσ q).1 ↔
       Crosses p.1 q.1 := by
-  let E := mixedTimeOrderedQuarticLegMapPosition
-    (slotSplitVacuumSlot T) τ τ' σ
-  have hE : StrictMono E :=
-    mixedTimeOrderedQuarticLegMapPosition_strictMono_of_strictAnti
-      (slotSplitVacuumSlot T) (slotSplitVacuumSlot_strictMono T)
-      τ τ' σ hσ
-  simpa [TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding, E] using
-    (crosses_map_iff E hE p.1.1 p.1.2 q.1.1 q.1.2)
+  let d := TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext vac
+  simpa only [TwoPointDiagram.slotSplitVacuumNormalizedPairEmbedding] using
+    (vac.pairingInOrder (slotSplitVacuumOrder T)).normalizedPairEmbedding_crosses_iff
+      (d.pairingInMixedOrder τ τ' σ)
+      (slotSplitVacuumMixedOrderEmbedding T τ τ' σ hσ)
+      (fun r => by
+        change (d.pairingInMixedOrder τ τ' σ).partner
+            (mixedTimeOrderedQuarticLegMapPosition
+              (slotSplitVacuumSlot T) τ τ' σ r) =
+          mixedTimeOrderedQuarticLegMapPosition
+            (slotSplitVacuumSlot T) τ τ' σ
+            ((vac.pairingInOrder (slotSplitVacuumOrder T)).partner r)
+        exact TwoPointDiagram.ofSlotSplit_pairingInMixedOrder_partner_vacuumOrderedLeg
+          T ext vac τ τ' σ r)
+      p q
 
 end Common
 end SecondQuantization
