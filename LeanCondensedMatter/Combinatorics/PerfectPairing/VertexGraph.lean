@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
-import Mathlib.Combinatorics.SimpleGraph.Basic
+import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 
 set_option linter.style.header false
 
@@ -28,5 +28,16 @@ noncomputable def Pairing.vertexGraph {n : ℕ} {Vertex : Type*} (pairing : Pair
   loopless := ⟨by
     rintro v ⟨hvv, -⟩
     exact hvv rfl⟩
+
+/-- The two incident vertices of a paired leg lie in the same connected component of the pairing
+vertex graph. -/
+theorem Pairing.vertexGraph_reachable_partner {n : ℕ} {Vertex : Type*}
+    (pairing : Pairing n) (vertexOfLeg : Fin (2 * n) → Vertex) (leg : Fin (2 * n)) :
+    (pairing.vertexGraph vertexOfLeg).Reachable
+      (vertexOfLeg (pairing.partner leg)) (vertexOfLeg leg) := by
+  by_cases h : vertexOfLeg (pairing.partner leg) = vertexOfLeg leg
+  · rw [h]
+  · exact SimpleGraph.Adj.reachable
+      ⟨h, pairing.partner leg, rfl, by rw [pairing.partner_involutive]⟩
 
 end Combinatorics

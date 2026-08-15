@@ -128,11 +128,8 @@ theorem TwoPointDiagram.componentBlock_vertexOfLeg_partner {S : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card + 1))) :
     d.componentBlock (twoPointVertexOfLeg (d.pairing.partner leg)) =
       d.componentBlock (twoPointVertexOfLeg leg) := by
-  by_cases h : twoPointVertexOfLeg (d.pairing.partner leg) = twoPointVertexOfLeg leg
-  · rw [h]
-  · exact d.componentBlock_eq_of_reachable
-      (SimpleGraph.Adj.reachable
-        ⟨h, d.pairing.partner leg, rfl, by rw [d.pairing.partner_involutive]⟩)
+  exact d.componentBlock_eq_of_reachable
+    (d.pairing.vertexGraph_reachable_partner twoPointVertexOfLeg leg)
 
 /-- Component-leg membership is invariant under the pairing partner permutation. -/
 theorem TwoPointDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
