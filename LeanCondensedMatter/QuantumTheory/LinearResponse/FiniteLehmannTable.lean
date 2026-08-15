@@ -33,9 +33,13 @@ noncomputable section
 
 `matrixA m n` and `matrixB m n` represent `⟨m|A|n⟩` and `⟨m|B|n⟩`, respectively. -/
 structure FiniteLehmannTable (ι : Type*) where
+  /-- Energy eigenvalue `Eₙ` associated with each finite spectral index. -/
   energy : ι → ℝ
+  /-- Diagonal state probability `pₙ` associated with each finite spectral index. -/
   probability : ι → ℝ
+  /-- Matrix element table `Aₘₙ = ⟨m|A|n⟩` for the measured observable. -/
   matrixA : ι → ι → ℂ
+  /-- Matrix element table `Bₘₙ = ⟨m|B|n⟩` for the source-coupling observable. -/
   matrixB : ι → ι → ℂ
 
 /-- The physical transition weight `(i/ℏ)(pₘ-pₙ)AₘₙBₙₘ` read only from a scalar table. -/
