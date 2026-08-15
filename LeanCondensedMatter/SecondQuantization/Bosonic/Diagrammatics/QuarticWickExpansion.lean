@@ -28,18 +28,17 @@ variable {Mode : Type*}
 
 /-- Interpret one bosonic quartic local leg as the corresponding free thermal field label. -/
 def quarticFreeThermalField (q : QuarticVertexLabel Mode) (l : Fin 4) : FreeThermalField Mode :=
-  if quarticLocalLegIsCreate l then
-    .create (quarticLocalLegMode q l)
+  if Common.quarticLocalLegIsCreate l then
+    .create (Common.quarticLocalLegMode q l)
   else
-    .annihilate (quarticLocalLegMode q l)
+    .annihilate (Common.quarticLocalLegMode q l)
 
 /-- The thermal-field realization agrees with the existing quartic local-leg operator. -/
 theorem FreeThermalField.operator_quarticFreeThermalField
     (q : QuarticVertexLabel Mode) (l : Fin 4) :
     FreeThermalField.operator (quarticFreeThermalField q l) = quarticLocalLegOperator q l := by
   fin_cases l <;>
-    simp [quarticFreeThermalField, quarticLocalLegIsCreate, quarticLocalLegMode,
-      quarticLocalLegOperator, FreeThermalField.operator,
+    simp [quarticFreeThermalField, quarticLocalLegOperator, FreeThermalField.operator,
       Common.quarticLocalLegIsCreate, Common.quarticLocalLegMode,
       Common.quarticLocalLegOperator]
 
