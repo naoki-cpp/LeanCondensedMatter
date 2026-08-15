@@ -35,7 +35,7 @@ theorem TwoPointDiagram.mixedComponentPairSigmaEquiv_apply
 
 /-- Reindex a commutative product over normalized mixed pairs as an iterated product over full
 components and their mixed-pair fibers. -/
-theorem TwoPointDiagram.prod_mixedComponentPairs
+private theorem TwoPointDiagram.prod_mixedComponentPairs
     {M : Type*} [CommMonoid M]
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
