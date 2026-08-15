@@ -71,10 +71,13 @@ theorem TwoPointDiagram.componentBlock_eq_of_reachable {S : Finset (Fin N)}
 theorem TwoPointDiagram.componentBlock_eq_iff_reachable {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) (v w : TwoPointVertex S) :
     d.componentBlock v = d.componentBlock w ↔ d.vertexGraph.Reachable v w := by
-  simpa [TwoPointDiagram.componentBlock] using
-    d.vertexGraph.reachableSetoid.blockOn_eq_iff_rel
-      (Finset.univ : Finset (TwoPointVertex S))
-      (Finset.mem_univ v) (Finset.mem_univ w)
+  have h := d.vertexGraph.reachableSetoid.blockOn_eq_iff_rel
+    (Finset.univ : Finset (TwoPointVertex S))
+    (Finset.mem_univ v) (Finset.mem_univ w)
+  change d.vertexGraph.reachableSetoid.blockOn Finset.univ v =
+      d.vertexGraph.reachableSetoid.blockOn Finset.univ w ↔
+    d.vertexGraph.Reachable v w at h
+  simpa [TwoPointDiagram.componentBlock] using h
 
 /-- Non-reachable vertices determine disjoint component blocks. -/
 theorem TwoPointDiagram.componentBlock_disjoint_of_not_reachable {S : Finset (Fin N)}
