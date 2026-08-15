@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Connected
-import Mathlib.Order.Partition.Finpartition
+import LeanCondensedMatter.Combinatorics.FinpartitionSetoid
 
 set_option linter.style.header false
 
@@ -11,7 +11,7 @@ not on the vertex-label type or particle statistics.
 
 The graph itself lives on the subtype `↥S`, while the historical diagram-facing partition has parts
 in the ambient type `Fin N`. We therefore classify ambient vertices by Mathlib connected components
-inside `S` and use the kernel setoid of that classification with `Finpartition.ofSetSetoid`.
+inside `S` and use the kernel setoid of that classification with the generic setoid-finpartition API.
 -/
 
 namespace SecondQuantization
@@ -41,75 +41,83 @@ private theorem QuarticDiagram.componentSetoid_rel_iff_reachable {S : Finset (Fi
   simp only [QuarticDiagram.componentClass, dif_pos v.2, dif_pos w.2, Sum.inr.injEq]
   exact SimpleGraph.ConnectedComponent.eq
 
-open Classical in
 /-- The partition of `S` into connected components of the diagram's vertex graph. -/
 noncomputable def QuarticDiagram.componentPartition {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) : Finpartition S :=
-  Finpartition.ofSetSetoid d.componentSetoid S
+  d.componentSetoid.finpartitionOn S
 
 /-- The component containing `v`, viewed as a finite subset of the ambient vertex type. -/
 noncomputable def QuarticDiagram.componentBlock {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (v : ↥S) : Finset (Fin N) :=
-  d.componentPartition.part (v : Fin N)
+  d.componentSetoid.blockOn S (v : Fin N)
 
 theorem QuarticDiagram.mem_componentBlock {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (v : ↥S) {x : Fin N} :
     x ∈ d.componentBlock v ↔ ∃ hx : x ∈ S, d.vertexGraph.Reachable ⟨x, hx⟩ v := by
-  rw [QuarticDiagram.componentBlock, QuarticDiagram.componentPartition,
-    Finpartition.mem_part_ofSetSetoid_iff_rel]
+  rw [QuarticDiagram.componentBlock, Setoid.mem_blockOn_iff]
   constructor
   · rintro ⟨_, hx, hrel⟩
     refine ⟨hx, ?_⟩
     exact ((d.componentSetoid_rel_iff_reachable v ⟨x, hx⟩).1 hrel).symm
   · rintro ⟨hx, hreach⟩
-    exact ⟨v.2, hx, (d.componentSetoid_rel_iff_reachable v ⟨x, hx⟩).2 hreach.symm⟩
+    exact ⟨v.2, hx,
+      (d.componentSetoid_rel_iff_reachable v ⟨x, hx⟩).2 hreach.symm⟩
 
 @[simp]
 theorem QuarticDiagram.self_mem_componentBlock {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) (v : ↥S) : (v : Fin N) ∈ d.componentBlock v :=
-  (d.mem_componentBlock v).2 ⟨v.2, SimpleGraph.Reachable.refl _⟩
+    (d : QuarticDiagram Label N S) (v : ↥S) : (v : Fin N) ∈ d.componentBlock v := by
+  simpa [QuarticDiagram.componentBlock] using
+    d.componentSetoid.self_mem_blockOn S v.2
 
 /-- Every component block occurs as a part of the component partition. -/
 theorem QuarticDiagram.componentBlock_mem_componentPartition {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (v : ↥S) :
     d.componentBlock v ∈ d.componentPartition.parts := by
-  change d.componentPartition.part (v : Fin N) ∈ d.componentPartition.parts
-  exact d.componentPartition.part_mem.2 v.2
+  simpa [QuarticDiagram.componentBlock, QuarticDiagram.componentPartition] using
+    d.componentSetoid.blockOn_mem_parts S v.2
 
 /-- Reachable vertices determine the same component block. -/
 theorem QuarticDiagram.componentBlock_eq_of_reachable {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {v w : ↥S} (h : d.vertexGraph.Reachable v w) :
     d.componentBlock v = d.componentBlock w := by
-  change d.componentPartition.part (v : Fin N) = d.componentPartition.part (w : Fin N)
-  exact (d.componentPartition.mem_part_iff_part_eq_part v.2 w.2).1
-    ((d.mem_componentBlock w).2 ⟨v.2, h⟩)
+  have hrel : d.componentSetoid (v : Fin N) (w : Fin N) :=
+    (d.componentSetoid_rel_iff_reachable v w).2 h
+  simpa [QuarticDiagram.componentBlock] using
+    (d.componentSetoid.blockOn_eq_iff_rel S v.2 w.2).2 hrel
+
+/-- Two component blocks are equal exactly when their base vertices are reachable. -/
+theorem QuarticDiagram.componentBlock_eq_iff_reachable {S : Finset (Fin N)}
+    (d : QuarticDiagram Label N S) (v w : ↥S) :
+    d.componentBlock v = d.componentBlock w ↔ d.vertexGraph.Reachable v w := by
+  rw [QuarticDiagram.componentBlock]
+  exact (d.componentSetoid.blockOn_eq_iff_rel S v.2 w.2).trans
+    (d.componentSetoid_rel_iff_reachable v w)
 
 /-- Non-reachable vertices determine disjoint component blocks. -/
 theorem QuarticDiagram.componentBlock_disjoint_of_not_reachable {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {v w : ↥S} (h : ¬ d.vertexGraph.Reachable v w) :
     Disjoint (d.componentBlock v) (d.componentBlock w) := by
-  apply d.componentPartition.disjoint
-  · exact d.componentBlock_mem_componentPartition v
-  · exact d.componentBlock_mem_componentPartition w
-  · intro hEq
-    apply h
-    have hmem : (v : Fin N) ∈ d.componentBlock w := by
-      change (v : Fin N) ∈ d.componentPartition.part (w : Fin N)
-      rw [← hEq]
-      exact d.componentPartition.mem_part v.2
-    obtain ⟨hv, hreach⟩ := (d.mem_componentBlock w).1 hmem
-    have hvEq : (⟨(v : Fin N), hv⟩ : ↥S) = v := Subtype.ext (by rfl)
-    rwa [hvEq] at hreach
+  have hrel : ¬ d.componentSetoid (v : Fin N) (w : Fin N) := by
+    intro hrel
+    exact h ((d.componentSetoid_rel_iff_reachable v w).1 hrel)
+  simpa [QuarticDiagram.componentBlock] using
+    d.componentSetoid.blockOn_disjoint_of_not_rel S v.2 w.2 hrel
 
 /-- Every component-partition part is a component block. -/
 theorem QuarticDiagram.exists_componentBlock_eq_of_mem {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) : ∃ v : ↥S, d.componentBlock v = B := by
-  obtain ⟨x, hx⟩ := d.componentPartition.nonempty_of_mem_parts hB
-  have hxS : x ∈ S := d.componentPartition.le hB hx
-  refine ⟨⟨x, hxS⟩, ?_⟩
-  change d.componentPartition.part x = B
-  exact d.componentPartition.part_eq_of_mem hB hx
+  change B ∈ (d.componentSetoid.finpartitionOn S).parts at hB
+  obtain ⟨x, hxS, hx⟩ := d.componentSetoid.exists_blockOn_eq_of_mem S hB
+  exact ⟨⟨x, hxS⟩, by simpa [QuarticDiagram.componentBlock] using hx⟩
+
+/-- A vertex belongs to a component part exactly when its component block is that part. -/
+theorem QuarticDiagram.componentBlock_eq_iff_mem {S : Finset (Fin N)}
+    (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
+    (hB : B ∈ d.componentPartition.parts) (v : ↥S) :
+    d.componentBlock v = B ↔ (v : Fin N) ∈ B := by
+  change d.componentSetoid.blockOn S (v : Fin N) = B ↔ (v : Fin N) ∈ B
+  exact d.componentSetoid.blockOn_eq_iff_mem S hB (v : Fin N)
 
 end Common
 end SecondQuantization
