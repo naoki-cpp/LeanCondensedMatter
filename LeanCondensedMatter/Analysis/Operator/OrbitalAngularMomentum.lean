@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Analysis.Operator.LinearCommutator
-import Mathlib.Tactic.Module
 
 set_option linter.style.header false
 
@@ -43,7 +42,6 @@ theorem linearCommutator_comp_right
   apply LinearMap.ext
   intro v
   simp [linearCommutator]
-  module
 
 /-- A commutator is additive over subtraction in its second argument. -/
 theorem linearCommutator_sub_right
@@ -53,7 +51,6 @@ theorem linearCommutator_sub_right
   apply LinearMap.ext
   intro v
   simp [linearCommutator]
-  module
 
 /-- Algebraic `z` component of orbital angular momentum, `L_z = X Pᵧ - Y Pₓ`.
 
