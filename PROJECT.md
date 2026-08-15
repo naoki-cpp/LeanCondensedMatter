@@ -22,7 +22,11 @@ notes/
   model-and-assumptions.md  — physical models and physics-to-Lean dictionary
   caveats.md                — known pitfalls and boundaries
   references.md             — annotated external references
-  architecture/             — architecture notes for stable subsystem boundaries
+  architecture/             — stable subsystem boundaries and ownership rules
+    second-quantization.md
+    fermionic-field-operators.md
+    quantum-density-theory.md
+    physical-real-scalar-boundary.md
   examples/                 — worked examples tied to proved APIs
   glossary/                 — domain terminology and notation
   migrations/               — API migration notes when public interfaces change
