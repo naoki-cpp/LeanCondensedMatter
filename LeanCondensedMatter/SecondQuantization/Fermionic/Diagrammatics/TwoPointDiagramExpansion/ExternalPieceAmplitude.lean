@@ -39,17 +39,12 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight_externalComp
     _ = ∏ v : ↥(Finset.univ : Finset (Fin d.1.externalInteractionPart.card)),
           g (d.externalPiece.1.vertexLabel v) := by
       let e := Common.standardSlotEquiv d.1.externalInteractionPart
-      have htransport :
-          (∏ v : ↥(Finset.univ : Finset (Fin d.1.externalInteractionPart.card)),
-              g ((d.1.externalVacuumSplit.1.slotCongr e).vertexLabel v)) =
-            ∏ v : ↥d.1.externalInteractionPart,
-              g (d.1.externalVacuumSplit.1.vertexLabel v) := by
-        rw [← Equiv.prod_comp e
-          (fun v => g ((d.1.externalVacuumSplit.1.slotCongr e).vertexLabel v))]
-        exact Finset.prod_congr rfl fun v _ => by
-          simp [Common.TwoPointDiagram.slotCongr]
-      simpa [FixedExternalTwoPointWickDiagram.externalPiece,
-        Common.TwoPointDiagram.externalPiece] using htransport.symm
+      rw [← Equiv.prod_comp e
+        (fun v => g (d.externalPiece.1.vertexLabel v))]
+      apply Finset.prod_congr rfl
+      intro v _
+      simp [FixedExternalTwoPointWickDiagram.externalPiece,
+        Common.TwoPointDiagram.externalPiece, e]
     _ = orderedTwoPointVertexWeight g d.externalPiece.vertexLabelSequence := by
       unfold orderedTwoPointVertexWeight FixedExternalTwoPointWickDiagram.vertexLabelSequence
       let e : Fin d.1.externalInteractionPart.card ≃
