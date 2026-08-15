@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoSiteDimerLehmann
+import LeanCondensedMatter.QuantumTheory.Postulates
 
 set_option linter.style.header false
 
@@ -27,10 +28,10 @@ C = H,                C |−⟩ = -|−⟩.
 ```
 
 A common nonzero normalization of `|−⟩` and `|+⟩` preserves these transition/eigenvalue
-coefficients. In particular, the contact expectation in a normalized lower eigenstate is `-1`.
-These identities supply the operator origin of the `(-1,+1)` energies, `±i` current entries, and
-`-1` contact used by the exact finite conductivity table. No diagonalization oracle or
-floating-point calculation is used.
+coefficients. The module also proves directly that any normalized state on which the contact acts
+with the table coefficient has expectation equal to that coefficient. These identities supply the
+operator origin of the `(-1,+1)` energies, `±i` current entries, and `-1` contact used by the exact
+finite conductivity table. No diagonalization oracle or floating-point calculation is used.
 -/
 
 namespace SecondQuantization
@@ -150,6 +151,16 @@ theorem twoSiteDimerContact_one_apply_bonding :
   rw [twoSiteDimerContact_one_eq_hamiltonian]
   exact twoSiteDimerHamiltonian_one_apply_bonding
 
+/-- The unit Peierls contact is self-adjoint because it is exactly the unit dimer Hamiltonian. -/
+theorem twoSiteDimerContact_one_selfAdjoint :
+    IsSelfAdjoint (twoSiteDimerContact 1) := by
+  rw [twoSiteDimerContact_one_eq_hamiltonian]
+  exact twoSiteDimerHamiltonian_selfAdjoint 1
+
+/-- The unit dimer Peierls contact as a quantum observable. -/
+noncomputable def twoSiteDimerContactObservable : QuantumTheory.Observable TwoSiteHilbertFock :=
+  ⟨twoSiteDimerContact 1, twoSiteDimerContact_one_selfAdjoint⟩
+
 /-- The lower scalar-table energy is exactly the eigenvalue derived from the bounded Hamiltonian. -/
 theorem twoSiteDimerTable_groundEnergy_from_operator :
     twoSiteDimerHamiltonian 1 twoSiteDimerBondingState =
@@ -183,14 +194,26 @@ theorem twoSiteDimerTable_current_one_zero_from_operator :
   exact twoSiteDimerCurrent_one_apply_bonding
 
 /-- The scalar conductivity table's contact value is the coefficient with which the model-derived
-Peierls contact acts on the occupied lower state. For a normalized lower eigenvector this is exactly
-the contact expectation value. -/
+Peierls contact acts on the occupied lower state. -/
 theorem twoSiteDimerTable_contact_from_operator :
     twoSiteDimerContact 1 twoSiteDimerBondingState =
       twoSiteDimerGroundStateConductivityTable.contact • twoSiteDimerBondingState := by
   change twoSiteDimerContact 1 twoSiteDimerBondingState =
     (-1 : ℂ) • twoSiteDimerBondingState
   exact twoSiteDimerContact_one_apply_bonding
+
+/-- For any normalized representative of the occupied lower eigenspace, the scalar coefficient
+stored in the conductivity table is exactly the quantum expectation of the model-derived contact. -/
+theorem twoSiteDimerTable_contact_eq_expValue_of_eigenstate
+    (ψ : QuantumTheory.State TwoSiteHilbertFock)
+    (hψ : twoSiteDimerContact 1 ψ.1 =
+      twoSiteDimerGroundStateConductivityTable.contact • ψ.1) :
+    QuantumTheory.expValue twoSiteDimerContactObservable ψ =
+      twoSiteDimerGroundStateConductivityTable.contact := by
+  change inner ℂ ψ.1 (twoSiteDimerContact 1 ψ.1) =
+    twoSiteDimerGroundStateConductivityTable.contact
+  rw [hψ, inner_smul_right, inner_self_eq_norm_sq_to_K, ψ.2]
+  simp
 
 end
 end Validation
