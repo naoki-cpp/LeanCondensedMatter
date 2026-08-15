@@ -165,7 +165,7 @@ theorem fixedExternalShuffleFiber_vacuumOrderedData_heq
         (slotSplitVacuumOrder shuffle.leftSlots) p.2)
       (fixedExternalShuffleVacuumOrderedDataEquiv shuffle p.2) := by
     unfold fixedExternalShuffleVacuumOrderedDataEquiv
-    exact orderedQuarticData_cast_heq (slotShuffle_card_sdiff_leftSlots shuffle)
+    exact orderedQuarticData_cast_heq shuffle.card_sdiff_leftSlots
       (Common.quarticDiagramEquivOrderedData
         (slotSplitVacuumOrder shuffle.leftSlots) p.2)
   exact hcast.trans (heq_of_eq hvac)
@@ -178,7 +178,7 @@ theorem fixedExternalShuffleFiber_vacuumTimes_heq
     HEq (σ ∘ slotSplitVacuumSlot shuffle.leftSlots)
       (fun q : Fin k => σ (shuffle.slotEquiv (Sum.inr q))) := by
   classical
-  apply heq_finFun_of_cast (slotShuffle_card_sdiff_leftSlots shuffle)
+  apply heq_finFun_of_cast shuffle.card_sdiff_leftSlots
   intro q
   exact congrArg σ (slotSplitVacuumSlot_leftSlots_eq_slotShuffleRight shuffle q)
 
@@ -251,7 +251,7 @@ theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
     simpa only [hpieceEq, hleftTimesEq] using htransport
   have hvacData := fixedExternalShuffleFiber_vacuumOrderedData_heq shuffle ext x
   have hrightTimes := fixedExternalShuffleFiber_vacuumTimes_heq shuffle σ
-  have hrightSize := slotShuffle_card_sdiff_leftSlots shuffle
+  have hrightSize := shuffle.card_sdiff_leftSlots
   have hvacDataType :
       Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode)
           ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots).card =
