@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.Postulates
+import LeanCondensedMatter.QuantumTheory.ConservationLaw
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation
 import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity
@@ -52,7 +53,8 @@ set_option linter.style.header false
 # Quantum theory
 
 Public entry point for particle-number-independent quantum theory: postulates, density operators,
-entropy and Gibbs-state theory, together with the generic linear-response stack.
+entropy and Gibbs-state theory, one-body conservation/current semantics, together with the generic
+linear-response stack.
 
 Concrete first-quantized realizations belong to `QuantumMechanics`, while second-quantized model
 specializations belong to `SecondQuantization`. Implementation modules should import narrow leaves
