@@ -25,10 +25,19 @@ namespace AlgebraicFock
 
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
-/-- Compatibility abbreviation for the representation-independent linear commutator. -/
+/-- Compatibility abbreviation for the representation-independent linear commutator.
+
+Its body remains expanded so legacy proofs using `simp only [AlgebraicFock.linearCommutator]` keep
+working, while `linearCommutator_eq_conservationLaw` identifies the canonical upstream owner. -/
 noncomputable abbrev linearCommutator {V : Type*} [AddCommGroup V] [Module ℂ V]
     (S T : V →ₗ[ℂ] V) : V →ₗ[ℂ] V :=
-  ConservationLaw.linearCommutator S T
+  S.comp T - T.comp S
+
+/-- The historical fermionic name agrees definitionally with the canonical upstream commutator. -/
+theorem linearCommutator_eq_conservationLaw {V : Type*} [AddCommGroup V] [Module ℂ V]
+    (S T : V →ₗ[ℂ] V) :
+    linearCommutator S T = ConservationLaw.linearCommutator S T :=
+  rfl
 
 @[simp]
 theorem linearCommutator_apply {V : Type*} [AddCommGroup V] [Module ℂ V]
@@ -121,7 +130,7 @@ theorem numberOperator_commutes_dGamma (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
   have h : linearCommutator (LinearMap.id : 𝓗₁ →ₗ[ℂ] 𝓗₁) T = 0 := by
     apply LinearMap.ext
     intro f
-    simp [linearCommutator, ConservationLaw.linearCommutator]
+    simp [linearCommutator]
   rw [h, dGamma_zero]
 
 end AlgebraicFock
