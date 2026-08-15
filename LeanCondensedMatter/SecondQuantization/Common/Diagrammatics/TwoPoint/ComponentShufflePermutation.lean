@@ -33,7 +33,7 @@ def TwoPointDiagram.ComponentInteractionShuffle.ambientPermutation
 
 /-- Restricting times along an arbitrary component shuffle is the same as first permuting the
 ambient interaction-time coordinates and then using the canonical component restriction. -/
-theorem TwoPointDiagram.ComponentInteractionShuffle.interactionComponentTimeAssignment_eq_canonical
+private theorem TwoPointDiagram.ComponentInteractionShuffle.interactionComponentTimeAssignment_eq_canonical
     {S : Finset (Fin N)} {d : TwoPointDiagram ExternalLabel InternalLabel N S}
     (shuffle : d.ComponentInteractionShuffle)
     (τ : Fin S.card → ℝ) (B : d.componentPartition.parts) :
