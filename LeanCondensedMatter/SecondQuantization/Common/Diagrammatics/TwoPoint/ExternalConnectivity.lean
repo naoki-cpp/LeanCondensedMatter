@@ -25,7 +25,7 @@ variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 noncomputable def TwoPointDiagram.externalComponentPart {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     d.componentPartition.parts :=
-  ⟨d.externalComponent 0, d.externalComponent_mem_componentPartition 0⟩
+  ⟨d.externalComponent 0, d.componentBlock_mem_componentPartition (Sum.inl 0)⟩
 
 /-- If the two external vertices were disconnected, external vertex `1` would not lie in the
 component of external vertex `0`. -/
