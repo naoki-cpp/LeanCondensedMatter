@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentPartition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Diagram
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
 
 set_option linter.style.header false
 
@@ -7,12 +8,13 @@ set_option linter.style.header false
 # Restricting components of two-point diagrams
 
 This module extracts the interaction vertices belonging to a full external-plus-interaction
-component and restricts the ambient pairing to its legs.  For a vacuum component, those legs are
+component and restricts the ambient pairing to its legs. For a vacuum component, those legs are
 reindexed as the four local legs of an ordinary quartic diagram, producing the diagram needed for
 vacuum-bubble factorization.
 
-Restriction to the component containing the external legs and amplitude factorization are developed
-separately.
+Partner-invariant pairing restriction is owned by `Combinatorics.PerfectPairing.Restriction`; this
+module supplies the two-point component predicate and the vacuum-specific leg reindexing. Restriction
+to the component containing the external legs and amplitude factorization are developed separately.
 -/
 
 namespace SecondQuantization
@@ -146,31 +148,18 @@ noncomputable def TwoPointDiagram.restrictedPartner {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : Finset (TwoPointVertex S)) :
     Equiv.Perm {leg : Fin (2 * (2 * S.card + 1)) // d.legInComponent B leg} :=
-  d.pairing.partner.subtypePerm fun leg => (d.legInComponent_partner_iff B leg).symm
+  d.pairing.partnerSubtypePerm (d.legInComponent B) fun leg =>
+    d.legInComponent_partner_iff B leg
 
 /-- The restricted partner has the same underlying flattened leg as the ambient partner. -/
 theorem TwoPointDiagram.restrictedPartner_val {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : Finset (TwoPointVertex S))
     (leg : {leg : Fin (2 * (2 * S.card + 1)) // d.legInComponent B leg}) :
-    (d.restrictedPartner B leg : Fin (2 * (2 * S.card + 1))) = d.pairing.partner leg :=
-  congrArg Subtype.val (Equiv.Perm.subtypePerm_apply _ _ leg)
-
-/-- The restricted partner remains an involution. -/
-theorem TwoPointDiagram.restrictedPartner_involutive {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (B : Finset (TwoPointVertex S)) :
-    Function.Involutive (d.restrictedPartner B) := fun leg => by
-  apply Subtype.ext
-  rw [d.restrictedPartner_val, d.restrictedPartner_val, d.pairing.partner_involutive]
-
-/-- The restricted partner has no fixed points. -/
-theorem TwoPointDiagram.restrictedPartner_ne_self {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (B : Finset (TwoPointVertex S))
-    (leg : {leg : Fin (2 * (2 * S.card + 1)) // d.legInComponent B leg}) :
-    d.restrictedPartner B leg ≠ leg := fun h =>
-  d.pairing.partner_ne_self leg (by rw [← d.restrictedPartner_val B, h])
+    (d.restrictedPartner B leg : Fin (2 * (2 * S.card + 1))) = d.pairing.partner leg := by
+  simpa only [TwoPointDiagram.restrictedPartner] using
+    d.pairing.partnerSubtypePerm_val (d.legInComponent B)
+      (fun i => d.legInComponent_partner_iff B i) leg
 
 /-- For a vacuum part, unflattened component legs are exactly the four local legs of the extracted
 interaction vertices. -/
@@ -227,11 +216,8 @@ noncomputable def TwoPointDiagram.restrictedVacuumPairing {S : Finset (Fin N)}
     (B : d.componentPartition.parts) (hVac : d.ComponentIsVacuum B) :
     Pairing (2 * (TwoPointDiagram.interactionPart
       (B : Finset (TwoPointVertex S))).card) :=
-  Pairing.ofPartner
-    ((d.vacuumBlockLegEquiv B hVac).permCongr (d.restrictedPartner B))
-    (IsPairing.permCongr
-      ⟨d.restrictedPartner_involutive B, d.restrictedPartner_ne_self B⟩
-      (d.vacuumBlockLegEquiv B hVac))
+  d.pairing.restrictAlongEquiv (d.legInComponent B)
+    (fun leg => d.legInComponent_partner_iff B leg) (d.vacuumBlockLegEquiv B hVac)
 
 /-- The restricted vacuum pairing agrees with the ambient partner under the vacuum leg
 reindexing. -/
@@ -242,8 +228,9 @@ theorem TwoPointDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv
     (leg : {leg : Fin (2 * (2 * S.card + 1)) // d.legInComponent B leg}) :
     (d.restrictedVacuumPairing B hVac).partner (d.vacuumBlockLegEquiv B hVac leg) =
       d.vacuumBlockLegEquiv B hVac (d.restrictedPartner B leg) := by
-  simp [TwoPointDiagram.restrictedVacuumPairing, Pairing.ofPartner,
-    Equiv.permCongr_apply]
+  simpa only [TwoPointDiagram.restrictedVacuumPairing, TwoPointDiagram.restrictedPartner] using
+    d.pairing.restrictAlongEquiv_partner (d.legInComponent B)
+      (fun i => d.legInComponent_partner_iff B i) (d.vacuumBlockLegEquiv B hVac) leg
 
 /-- Restrict a vacuum component of a two-point diagram to an ordinary quartic diagram. -/
 noncomputable def TwoPointDiagram.restrictVacuumComponent {S : Finset (Fin N)}
