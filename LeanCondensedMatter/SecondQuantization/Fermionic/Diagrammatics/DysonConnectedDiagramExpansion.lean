@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ConnectedDecomposition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.AmplitudeFactorization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion
 
