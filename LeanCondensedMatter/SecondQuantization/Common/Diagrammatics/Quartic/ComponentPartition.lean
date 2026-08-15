@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Connected-component partitions of labelled quartic diagrams
 
 Connected-component blocks and their finite partition depend only on the diagram's pairing graph,
-not on the vertex-label type or particle statistics.
+not on the vertex-label type and particle statistics.
 
 The graph itself lives on the subtype `↥S`, while the historical diagram-facing partition has parts
 in the ambient type `Fin N`. We therefore classify ambient vertices by Mathlib connected components
@@ -100,14 +100,6 @@ theorem QuarticDiagram.componentBlock_disjoint_of_not_reachable {S : Finset (Fin
     obtain ⟨hv, hreach⟩ := (d.mem_componentBlock w).1 hmem
     have hvEq : (⟨(v : Fin N), hv⟩ : ↥S) = v := Subtype.ext (by rfl)
     rwa [hvEq] at hreach
-
-/-- Every component-partition part is a component block. -/
-theorem QuarticDiagram.exists_componentBlock_eq_of_mem {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
-    (hB : B ∈ d.componentPartition.parts) : ∃ v : ↥S, d.componentBlock v = B := by
-  obtain ⟨x, hxS, hx⟩ := d.componentPartition.part_surjOn hB
-  refine ⟨⟨x, hxS⟩, ?_⟩
-  simpa only [QuarticDiagram.componentBlock] using hx
 
 end Common
 end SecondQuantization
