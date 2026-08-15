@@ -19,12 +19,15 @@ variable {ExternalLabel InternalLabel : Type*} {N : ℕ} {S T : Finset (Fin N)}
 
 private noncomputable def QuarticDiagram.componentRepresentative
     (d : QuarticDiagram InternalLabel N S) (C : d.componentPartition.parts) : ↥S :=
-  Classical.choose (d.exists_componentBlock_eq_of_mem C.2)
+  ⟨Classical.choose (d.componentPartition.part_surjOn C.2),
+    (Classical.choose_spec (d.componentPartition.part_surjOn C.2)).1⟩
 
 private theorem QuarticDiagram.componentBlock_componentRepresentative
     (d : QuarticDiagram InternalLabel N S) (C : d.componentPartition.parts) :
-    d.componentBlock (d.componentRepresentative C) = (C : Finset (Fin N)) :=
-  Classical.choose_spec (d.exists_componentBlock_eq_of_mem C.2)
+    d.componentBlock (d.componentRepresentative C) = (C : Finset (Fin N)) := by
+  change d.componentPartition.part
+      (Classical.choose (d.componentPartition.part_surjOn C.2)) = (C : Finset (Fin N))
+  exact (Classical.choose_spec (d.componentPartition.part_surjOn C.2)).2
 
 variable (h : T ⊆ S)
   (ext : TwoPointDiagram ExternalLabel InternalLabel N T)
