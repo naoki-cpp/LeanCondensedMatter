@@ -102,7 +102,6 @@ theorem twoSiteDimerGroundState_lehmannResponse_frequency
   · simp [lehmannDenominator]
     ring
   · simp [lehmannDenominator]
-    ring
 
 /-- For unit volume, the electric-field normalization is `-1 / (η - iω)`. -/
 theorem twoSiteDimerUnitVolume_normalization_frequency
