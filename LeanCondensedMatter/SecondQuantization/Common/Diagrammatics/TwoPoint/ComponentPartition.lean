@@ -76,16 +76,6 @@ theorem TwoPointDiagram.componentBlock_eq_iff_reachable {S : Finset (Fin N)}
     exact d.self_mem_componentBlock v
   · exact d.componentBlock_eq_of_reachable
 
-/-- Non-reachable vertices determine disjoint component blocks. -/
-theorem TwoPointDiagram.componentBlock_disjoint_of_not_reachable {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S) {v w : TwoPointVertex S}
-    (h : ¬ d.vertexGraph.Reachable v w) :
-    Disjoint (d.componentBlock v) (d.componentBlock w) :=
-  d.componentPartition.disjoint
-    (d.componentBlock_mem_componentPartition v)
-    (d.componentBlock_mem_componentPartition w)
-    (fun hEq => h ((d.componentBlock_eq_iff_reachable v w).1 hEq))
-
 /-- A vertex belongs to a component part exactly when its component block is that part. -/
 theorem TwoPointDiagram.componentBlock_eq_iff_mem {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
