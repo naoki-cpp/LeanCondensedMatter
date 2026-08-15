@@ -38,6 +38,37 @@ theorem FamilySlotShuffleTo.ext {size : ι → ℕ} {total : ℕ}
   cases h
   rfl
 
+/-- The ambient permutation carrying the slot positions of `base` to those of `target`. -/
+def FamilySlotShuffleTo.relativeAmbientPermutation {size : ι → ℕ} {total : ℕ}
+    (base target : FamilySlotShuffleTo size total) : Equiv.Perm (Fin total) :=
+  base.slotEquiv.symm.trans target.slotEquiv
+
+/-- The relative ambient permutation sends every slot in `base` to the corresponding slot in
+`target`. -/
+@[simp]
+theorem FamilySlotShuffleTo.relativeAmbientPermutation_slotEquiv
+    {size : ι → ℕ} {total : ℕ} (base target : FamilySlotShuffleTo size total)
+    (x : Σ i : ι, Fin (size i)) :
+    base.relativeAmbientPermutation target (base.slotEquiv x) = target.slotEquiv x := by
+  simp [FamilySlotShuffleTo.relativeAmbientPermutation]
+
+/-- A family shuffle has the identity ambient permutation relative to itself. -/
+@[simp]
+theorem FamilySlotShuffleTo.relativeAmbientPermutation_self
+    {size : ι → ℕ} {total : ℕ} (shuffle : FamilySlotShuffleTo size total) :
+    shuffle.relativeAmbientPermutation shuffle = Equiv.refl (Fin total) := by
+  ext x
+  simp [FamilySlotShuffleTo.relativeAmbientPermutation]
+
+/-- Relative ambient permutations compose through an intermediate family shuffle. -/
+theorem FamilySlotShuffleTo.relativeAmbientPermutation_trans
+    {size : ι → ℕ} {total : ℕ} (base middle target : FamilySlotShuffleTo size total) :
+    (base.relativeAmbientPermutation middle).trans
+        (middle.relativeAmbientPermutation target) =
+      base.relativeAmbientPermutation target := by
+  ext x
+  simp [FamilySlotShuffleTo.relativeAmbientPermutation]
+
 /-- Ambient family shuffles form a finite type when the block index type is finite. -/
 noncomputable instance FamilySlotShuffleTo.instFintype [Fintype ι]
     (size : ι → ℕ) (total : ℕ) : Fintype (FamilySlotShuffleTo size total) := by
