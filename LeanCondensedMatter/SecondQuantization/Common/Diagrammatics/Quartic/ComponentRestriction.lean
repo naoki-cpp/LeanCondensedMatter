@@ -42,21 +42,14 @@ theorem QuarticDiagram.componentPart_subset {S : Finset (Fin N)}
   have h := Finset.le_sup (f := id) hB
   rwa [d.componentPartition.sup_parts] at h
 
-/-- A leg and its partner have the same connected-component block. -/
-theorem QuarticDiagram.componentBlock_vertexOfLeg_partner {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) (leg : Fin (2 * (2 * S.card))) :
-    d.componentBlock (vertexOfLeg (d.pairing.partner leg)) =
-      d.componentBlock (vertexOfLeg leg) := by
-  exact d.componentBlock_eq_of_reachable
-    (d.pairing.vertexGraph_reachable_partner vertexOfLeg leg)
-
 /-- A leg's partner stays inside the same component part. -/
 theorem QuarticDiagram.legInBlock_partner_iff {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card))) :
     d.legInBlock B leg ↔ d.legInBlock B (d.pairing.partner leg) := by
   unfold QuarticDiagram.legInBlock
-  rw [d.componentBlock_vertexOfLeg_partner]
+  rw [d.componentBlock_eq_of_reachable
+    (d.pairing.vertexGraph_reachable_partner vertexOfLeg leg)]
 
 /-- The partner permutation restricted to legs belonging to component part `B`. -/
 noncomputable def QuarticDiagram.restrictedPartner {S : Finset (Fin N)}
