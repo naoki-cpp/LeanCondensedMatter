@@ -44,6 +44,36 @@ functional.
 completed `ℓ²` occupation space. Neither `OccupationFock` nor `AlgebraicFock` denotes that analytic
 completion.
 
+## Generic one-body conservation/current owner
+
+Generalized one-body transport is not owned by the fermionic field layer.
+
+The reusable dependency chain is
+
+```text
+Analysis.Operator.LinearCommutator
+        ↓
+Analysis.Calculus.OneBodyBalance
+        ↓
+Analysis.Calculus.CurrentRepresentation
+        ↓
+QuantumTheory.ConservationLaw
+  CurrentRepresentation
+  HeisenbergTransport
+  ConventionalCurrent
+  concrete Schwartz realizations
+```
+
+`Analysis` owns the representation-independent linear-map commutator, symmetric localization,
+transport/source balance decomposition, and weak current-representation interfaces.
+`QuantumTheory.ConservationLaw` owns the particle-statistics-independent quantum specialization:
+Heisenberg scaling, the conventional current `1/2 {v,m}`, and concrete first-quantized current
+realizations.
+
+The historical `AlgebraicFock.linearCommutator` name is only a compatibility abbreviation for the
+upstream generic commutator. Second quantization owns the theorem that `dGamma` preserves the
+commutator, not the commutator operation itself.
+
 ## Lattice model owner
 
 `SecondQuantization.Fermionic.Lattice` is the canonical layer for model data built on the algebraic
@@ -54,13 +84,27 @@ rank-one lattice specializations, and geometric current aggregation.
 The lattice owner does not import generic Kubo, frequency-response, conductivity, Středa, disorder,
 or validation layers. Mixed files are split so model constructions remain under `Lattice` while
 response theorems stay downstream. Downstream consumers explicitly qualify or open the `Lattice`
-namespace rather than relying on the former `Field` ownership.
+namespace rather than relying on former `Field` ownership.
 
 ## Narrow field-interface owner
 
-`SecondQuantization.Fermionic.Field` is intentionally small. It retains only the basis-independent
-charge-density interface and its continuum one-dimensional specialization. It is not an umbrella for
-lattice models, transport response, conductivity, or validation.
+`SecondQuantization.Fermionic.Field` is intentionally small. It retains basis-independent density
+interfaces, continuum density specializations, and the fermionic `dGamma` bridge for generalized
+localized quantities. It does **not** own one-body current representations, conventional-current
+semantics, concrete Schwartz current models, lattice models, transport response, conductivity, or
+validation.
+
+The generalized many-body bridge is therefore
+
+```text
+QuantumTheory / Analysis one-body balance
+        ↓
+Fermionic.Field.GeneralizedQuantity
+  dGamma(localized quantity)
+  dGamma transport/source identities
+```
+
+rather than a current hierarchy rooted under `Field`.
 
 ## Transport owner
 
@@ -69,7 +113,21 @@ transport specializations. It consumes bounded lattice currents and generic `Qua
 infrastructure and owns the finite-frequency response chain, conductivity normalization,
 Kubo–Greenwood/Bastin adapters, fermionic Středa/Ward bridges, and finite-disorder specialization.
 Generic occupation, resolvent, trace, and Středa integration mathematics remains upstream under
-`QuantumTheory.Transport` and is not duplicated here.
+`QuantumTheory` and is not duplicated here.
+
+The generalized-current response boundary is split deliberately:
+
+```text
+BoundedCurrentResponse
+  arbitrary one-body j → dGamma(j) → bounded observable → χᴿ_{J,B}
+        ↓
+ConventionalCurrentResponse
+  j = 1/2 {v,m} specialization
+        ↓
+SpinCurrentResponse and later concrete current responses
+```
+
+Thus the generic bounded response adapter does not depend on the conventional-current formula.
 
 ## Validation owner
 
@@ -77,7 +135,7 @@ Generic occupation, resolvent, trace, and Středa integration mathematics remain
 checks. It is a terminal consumer of the public algebra, lattice, and transport layers; foundational
 or reusable construction layers must not import it.
 
-The stable responsibility direction is
+The stable responsibility direction for fermionic second-quantized code is
 
 ```text
 Fermionic.Algebra
@@ -89,8 +147,8 @@ Fermionic.Transport
 Fermionic.Validation
 ```
 
-`Fermionic.Field` is a narrow side interface for basis-independent density constructions rather than
-a stage in the transport dependency chain.
+`Fermionic.Field` is a narrow side interface. Particle-statistics-independent one-body current
+semantics enter from `Analysis` / `QuantumTheory.ConservationLaw`, not through `Field`.
 
 ## Bounded response boundary
 
