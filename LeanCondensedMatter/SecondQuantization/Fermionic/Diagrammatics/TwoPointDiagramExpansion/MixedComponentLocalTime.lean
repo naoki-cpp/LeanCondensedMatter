@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentShufflePermutation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentMeasurability
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairTimeTransport
 
 set_option linter.style.header false
 
@@ -11,8 +10,7 @@ The generic dependent-slot API localizes every signed component factor to its in
 fiber. Common owns the canonical conversion between finite-set ambient coordinates and explicit
 `Fin n` slot coordinates. The complete locality statement is reduced to the mixed component pairing
 value: the Dyson sign and quartic coupling product are independent of the interaction-time
-assignment. Preservation of component crossings and Gibbs contractions under pair transport supplies
-that pairing locality.
+assignment.
 -/
 
 namespace SecondQuantization
@@ -132,34 +130,6 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign
         (d.mixedComponentDysonLocalIntegrand ε β g τ τ' shuffle)
         (twoPointSlotToAmbientTimePermutation σ) := by
       rfl
-
-/-- Crossing and contraction preservation under equal component-local coordinates imply locality of
-that component's complete mixed pairing value. -/
-theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_local_of_timeTransport
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ)
-    (shuffle : d.1.ComponentInteractionShuffle)
-    (B : d.1.componentPartition.parts)
-    (hCross : ∀ σ υ : Fin (Finset.univ : Finset (Fin n)).card → ℝ,
-      DependentSlotEquiv.assignment shuffle.slotEquiv σ B =
-          DependentSlotEquiv.assignment shuffle.slotEquiv υ B →
-        d.1.MixedComponentCrossingPreserving τ τ'
-          (ambientToTwoPointSlotTimePermutation σ)
-          (ambientToTwoPointSlotTimePermutation υ) B)
-    (hContraction : ∀ σ υ : Fin (Finset.univ : Finset (Fin n)).card → ℝ,
-      DependentSlotEquiv.assignment shuffle.slotEquiv σ B =
-          DependentSlotEquiv.assignment shuffle.slotEquiv υ B →
-        d.MixedComponentContractionPreserving ε β τ τ'
-          (ambientToTwoPointSlotTimePermutation σ)
-          (ambientToTwoPointSlotTimePermutation υ) B) :
-    DependentSlotEquiv.Local shuffle.slotEquiv B
-      (fun σ => d.mixedComponentPairingValue ε β τ τ'
-        (ambientToTwoPointSlotTimePermutation σ) B) := by
-  intro σ υ hσυ
-  exact d.mixedComponentPairingValue_eq_of_timeTransport ε β τ τ'
-    (ambientToTwoPointSlotTimePermutation σ)
-    (ambientToTwoPointSlotTimePermutation υ) B
-    (hCross σ υ hσυ) (hContraction σ υ hσυ)
 
 end Fermionic
 end SecondQuantization
