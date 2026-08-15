@@ -142,7 +142,7 @@ theorem TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq
       rw [← hzero, hblock]
       exact d.self_mem_componentBlock _
   · intro hconn B
-    obtain ⟨v, hv⟩ := d.exists_componentBlock_eq_of_mem B.2
+    obtain ⟨v, -, hv⟩ := d.componentPartition.part_surjOn B.2
     cases v with
     | inl e => exact ⟨e, hv ▸ d.self_mem_componentBlock (Sum.inl e)⟩
     | inr w =>
