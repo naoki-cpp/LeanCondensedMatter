@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotShuffleCoordinates
+import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberExternalPiece
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberShuffleOrderedData
 
@@ -10,9 +11,9 @@ set_option linter.style.header false
 
 For a fixed `SlotShuffle m k`, the canonical fiber over its left-slot set is reindexed by a connected
 order-`m` external diagram and order-`k` vacuum ordered data.  The previous files identify the
-pointwise reassembled amplitude with the product of these local factors.  The Common slot-shuffle
-coordinate lemmas then show that this product is exactly `SlotShuffle.integrand` on strictly
-decreasing ambient times, which is sufficient under `orderedSimplexIntegral`.
+pointwise reassembled amplitude with the product of these local factors.  Generic binary-shuffle
+coordinates then show that this product is exactly `SlotShuffle.integrand` on strictly decreasing
+ambient times, which is sufficient under `orderedSimplexIntegral`.
 -/
 
 namespace SecondQuantization
@@ -84,7 +85,7 @@ private theorem orderedVacuumDysonIntegrand_cast
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- After standardizing a shuffle fiber, the ambient standalone external piece is heterogeneously
 equal to the chosen order-`m` connected diagram. -/
-theorem fixedExternalShuffleFiber_externalPiece_heq
+private theorem fixedExternalShuffleFiber_externalPiece_heq
     {m k : ℕ} (shuffle : BinaryShuffle.SlotShuffle m k)
     (ext : {d : FixedExternalTwoPointWickDiagram Mode m i j // d.1.IsExternallyConnected})
     (x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k) :
@@ -112,7 +113,7 @@ theorem fixedExternalShuffleFiber_externalPiece_heq
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- The inherited external-piece time coordinates of a shuffle fiber are its left shuffle
 coordinates. -/
-theorem fixedExternalShuffleFiber_externalPieceTimes_heq
+private theorem fixedExternalShuffleFiber_externalPieceTimes_heq
     {m k : ℕ} (shuffle : BinaryShuffle.SlotShuffle m k)
     (ext : {d : FixedExternalTwoPointWickDiagram Mode m i j // d.1.IsExternallyConnected})
     (x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k)
@@ -144,7 +145,7 @@ theorem fixedExternalShuffleFiber_externalPieceTimes_heq
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- The vacuum ordered datum recovered from the inverse standardized fiber is the chosen datum. -/
-theorem fixedExternalShuffleFiber_vacuumOrderedData_heq
+private theorem fixedExternalShuffleFiber_vacuumOrderedData_heq
     {m k : ℕ} (shuffle : BinaryShuffle.SlotShuffle m k)
     (ext : {d : FixedExternalTwoPointWickDiagram Mode m i j // d.1.IsExternallyConnected})
     (x : Common.OrderedQuarticDiagramData (QuarticVertexLabel Mode) k) :
@@ -172,7 +173,7 @@ theorem fixedExternalShuffleFiber_vacuumOrderedData_heq
 
 omit [Fintype Mode] in
 /-- The inherited vacuum times of a shuffle fiber are its right shuffle coordinates. -/
-theorem fixedExternalShuffleFiber_vacuumTimes_heq
+private theorem fixedExternalShuffleFiber_vacuumTimes_heq
     {m k : ℕ} (shuffle : BinaryShuffle.SlotShuffle m k)
     (σ : Fin (m + k) → ℝ) :
     HEq (σ ∘ slotSplitVacuumSlot shuffle.leftSlots)
@@ -180,7 +181,17 @@ theorem fixedExternalShuffleFiber_vacuumTimes_heq
   classical
   apply heq_finFun_of_cast shuffle.card_sdiff_leftSlots
   intro q
-  exact congrArg σ (slotSplitVacuumSlot_leftSlots_eq_slotShuffleRight shuffle q)
+  change σ (slotSplitVacuumSlot shuffle.leftSlots
+      (Fin.cast shuffle.card_sdiff_leftSlots.symm q)) =
+    σ (shuffle.slotEquiv (Sum.inr q))
+  apply congrArg σ
+  change
+    ((Finset.univ : Finset (Fin (m + k))) \ shuffle.leftSlots).orderEmbOfFin rfl
+        (Fin.cast shuffle.card_sdiff_leftSlots.symm q) =
+      shuffle.slotEquiv (Sum.inr q)
+  convert (shuffle.sdiffLeftSlots_orderEmbOfFin q) using 1
+  apply Fin.ext
+  rfl
 
 /-- **One fixed shuffle fiber is exactly the corresponding binary shuffled product integral.** -/
 theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
