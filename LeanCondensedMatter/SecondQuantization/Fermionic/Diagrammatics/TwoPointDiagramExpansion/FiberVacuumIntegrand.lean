@@ -1,17 +1,16 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumPrefactor
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumPairContraction
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumPairWeight
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumComponentPair
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentGlobalCrossingParity
 
 set_option linter.style.header false
 
 /-!
 # Fixed-order contraction integrand on the vacuum half of a fixed external-slot fiber
 
-The vacuum half of a reassembled two-point diagram has now been identified at each scalar layer:
-`FiberVacuumPrefactor` gives the Dyson sign and coupling product, `FiberVacuumPairWeight` gives the
-fermionic crossing weight, and `FiberVacuumPairContraction` gives the complete product of free Gibbs
-pair contractions.  This module assembles those three bridges into the standalone fixed-order
-quartic contraction integrand used by the normalized vacuum Dyson coefficient.
+The vacuum half of a reassembled two-point diagram is identified directly with the standalone
+fixed-order quartic vacuum integrand. The proof combines the Dyson/coupling prefactor, component
+crossing weights, and free-Gibbs pair contractions without exposing intermediate routing APIs.
 -/
 
 namespace SecondQuantization
@@ -53,9 +52,40 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
           (d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ) =
         (vac.pairingInOrder (slotSplitVacuumOrder T)).weight
           Common.Statistics.fermion := by
-    simpa [d] using
-      (fixedExternalOfSlotSplit_prod_vacuumMixedComponentWeight_eq
-        T ext vac hext τ τ' σ hσ)
+    let base := Common.TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext.1 vac
+    change base.vacuumComponentParts.prod
+        (base.mixedComponentWeight Common.Statistics.fermion τ τ' σ) = _
+    let e := Common.slotSplitVacuumComponentEquiv
+      (Finset.subset_univ T) ext.1 vac hext
+    let orders := vac.componentPartition.partOrdersOfOrder (slotSplitVacuumOrder T)
+    let shuffle := vac.fixedOrderComponentShuffle (slotSplitVacuumOrder T)
+    calc
+      base.vacuumComponentParts.prod
+          (base.mixedComponentWeight Common.Statistics.fermion τ τ' σ) =
+        ∏ B : ↥base.vacuumComponentParts,
+          base.mixedComponentWeight Common.Statistics.fermion τ τ' σ B.1 := by
+        exact Finset.prod_subtype base.vacuumComponentParts (fun _ => Iff.rfl) _
+      _ = ∏ C : vac.componentPartition.parts,
+          base.mixedComponentWeight Common.Statistics.fermion τ τ' σ (e C).1 :=
+        (Equiv.prod_comp e (fun B =>
+          base.mixedComponentWeight Common.Statistics.fermion τ τ' σ B.1)).symm
+      _ = ∏ C : vac.componentPartition.parts,
+          ((vac.restrictComponent C.2).pairingInOrder (orders C)).weight
+            Common.Statistics.fermion := by
+        apply Fintype.prod_congr
+        intro C
+        rw [Common.slotSplitVacuumComponentEquiv_apply]
+        have hcross := Common.TwoPointDiagram.ofSlotSplit_mixedComponentCrossingCount_vacuum_eq
+          T ext.1 vac C τ τ' σ hσ
+        simpa [base, Common.TwoPointDiagram.mixedComponentWeight, orders] using
+          congrArg (fun k : ℕ => (-1 : ℂ) ^ k) hcross
+      _ = (vac.pairingInOrder (vac.assembleVertexOrder orders shuffle)).weight
+          Common.Statistics.fermion :=
+        (vac.pairingInOrder_weight_eq_prod_components
+          Common.Statistics.fermion orders shuffle).symm
+      _ = (vac.pairingInOrder (slotSplitVacuumOrder T)).weight
+          Common.Statistics.fermion := by
+        rw [vac.assembleVertexOrder_fixedOrderComponentShuffle]
   have hcontraction :
       d.1.vacuumComponentParts.prod (fun B =>
           ∏ pr : d.1.MixedComponentPair τ τ' σ B,

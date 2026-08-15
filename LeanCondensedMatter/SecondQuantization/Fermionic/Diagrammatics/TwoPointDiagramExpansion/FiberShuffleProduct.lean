@@ -1,32 +1,60 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DiagramSumIntegral
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberProductIntegrand
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ExternalPieceAmplitude
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumIntegrand
 
 set_option linter.style.header false
 
 /-!
 # Binary ordered-simplex product for the fixed-fiber factors
 
-`FiberProductIntegrand` identifies the signed pointwise amplitude in one external-slot fiber with an
-external two-point factor times a fixed-order quartic vacuum factor.  The coefficientwise
-linked-cluster theorem next sums the ambient interleavings of those two local time families.
-
-This module records the scalar endpoint of that analytic step.  It applies the existing measurable
-binary ordered-simplex shuffle theorem directly: the external signed amplitude already has the
-required measurable local boundedness, while the quartic contraction integrand is continuous.
-No new shuffle decomposition is introduced here.
+The fixed-fiber pointwise product identity is kept here together with the scalar binary-shuffle
+endpoint that consumes it. The external signed amplitude has the required measurable local
+boundedness, while the quartic contraction integrand is continuous.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
 
+open Common
+
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {i j : Mode}
 
-/-- Summing all ambient binary interleavings of a signed connected two-point integrand and a signed
-fixed-order quartic vacuum integrand gives the product of their ordered-simplex amplitudes.
+/-- For an externally connected left piece and strictly decreasing inherited vacuum times, the
+signed fixed-time amplitude of the reassembled diagram is the product of the standalone external
+piece amplitude and the standalone fixed-order quartic vacuum integrand. -/
+theorem fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_quarticIntegrand
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    {n : ℕ} (T : Finset (Fin n))
+    (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
+    (hext : ext.1.IsExternallyConnected)
+    (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
+    (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
+    let d := fixedExternalOfSlotSplit T ext vac
+    d.dysonFixedTimeAmplitude ε β g τ τ' σ =
+      d.externalPiece.dysonFixedTimeAmplitude ε β g τ τ' (d.1.externalPieceTimes σ) *
+        ((-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g *
+          vac.contractionIntegrand ε β (slotSplitVacuumOrder T)
+            (σ ∘ slotSplitVacuumSlot T)) := by
+  classical
+  let d := fixedExternalOfSlotSplit T ext vac
+  change d.dysonFixedTimeAmplitude ε β g τ τ' σ = _
+  rw [d.dysonFixedTimeAmplitude_eq_external_mul_prod_vacuum ε β g τ τ' σ,
+    d.mixedExternalDysonFixedTimeValue_eq_externalPiece ε β g τ τ' σ]
+  have hvac :
+      d.1.vacuumComponentParts.prod
+          (d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ) =
+        (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g *
+          vac.contractionIntegrand ε β (slotSplitVacuumOrder T)
+            (σ ∘ slotSplitVacuumSlot T) := by
+    simpa [d] using
+      (fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand
+        ε β g T ext hext vac τ τ' σ hσ)
+  rw [hvac]
 
-This is the analytic product theorem consumed after the external-slot subsets are reindexed by
-`SlotShuffle.leftSlots` in the coefficientwise linked-cluster convolution. -/
+/-- Summing all ambient binary interleavings of a signed connected two-point integrand and a signed
+fixed-order quartic vacuum integrand gives the product of their ordered-simplex amplitudes. -/
 theorem sum_slotShuffle_externalDyson_mul_quarticIntegrand_eq_mul
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) {m N : ℕ} {S : Finset (Fin N)}
