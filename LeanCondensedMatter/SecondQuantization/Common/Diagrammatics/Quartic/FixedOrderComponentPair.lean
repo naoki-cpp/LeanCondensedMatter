@@ -70,6 +70,11 @@ noncomputable def QuarticDiagram.fixedOrderComponentPairEmbedding
     (d.componentOrderedLegOrderEmbedding (d.fixedOrderComponentShuffle order) C)
     (by
       intro p
+      change (d.pairingInOrder order).partner
+          (d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C p) =
+        d.componentOrderedLeg (d.fixedOrderComponentShuffle order) C
+          (((d.restrictComponent C.2).pairingInOrder
+            (d.componentPartition.partOrdersOfOrder order C)).partner p)
       simpa only [d.assembleVertexOrder_fixedOrderComponentShuffle order] using
         d.pairingInOrder_partner_componentOrderedLeg
           (d.componentPartition.partOrdersOfOrder order)
