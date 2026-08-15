@@ -228,20 +228,7 @@ theorem QuarticDiagram.componentPairEquiv_apply {S : Finset (Fin N)}
         d.componentOrderedLeg shuffle B pr.1.2) :=
   rfl
 
-/-- Reindex a product over assembled global normalized pairs as an iterated product over components
-and component-local normalized pairs. -/
-theorem QuarticDiagram.prod_componentPairs {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) (orders : d.ComponentVertexOrders)
-    (shuffle : d.ComponentShuffle) {M : Type*} [CommMonoid M]
-    (F : d.GlobalOrderedPair orders shuffle → M) :
-    (∏ pr, F pr) =
-      ∏ B : d.componentPartition.parts,
-        ∏ pr : d.LocalOrderedPair orders B,
-          F (d.componentPairEquiv orders shuffle ⟨B, pr⟩) := by
-  exact (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).prod_componentDecomposition
-    (d.componentPairEquiv orders shuffle) F
-
-/-- Nested-Finset form of `prod_componentPairs` for an arbitrary pair kernel. -/
+/-- Factor a global pair kernel over the component-local normalized pairs. -/
 theorem QuarticDiagram.prod_pairKernel_pairs_eq_prod_components
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
@@ -268,7 +255,9 @@ theorem QuarticDiagram.prod_pairKernel_pairs_eq_prod_components
           pairValue
             (d.componentPairEquiv orders shuffle ⟨B, pr⟩).1.1
             (d.componentPairEquiv orders shuffle ⟨B, pr⟩).1.2 :=
-      d.prod_componentPairs orders shuffle _
+      (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).prod_componentDecomposition
+        (d.componentPairEquiv orders shuffle)
+        (fun pr => pairValue pr.1.1 pr.1.2)
     _ = ∏ B : d.componentPartition.parts,
         ∏ pr : d.LocalOrderedPair orders B,
           localPairValue B pr.1.1 pr.1.2 := by
