@@ -84,8 +84,7 @@ theorem flatVertexLegPairingEvaluation_eq {n : ℕ}
         ∏ pr ∈ pairing.pairs, flatVertexLegPairValue ε β q τ pr.1 pr.2 :=
   rfl
 
-/-- The nested quartic vertex expectation is the sum of canonical pairing evaluations. -/
-theorem freeGibbsDensityOperator_expectation_nestedVertexOperatorComp_eq_sum_pairingEvaluation
+private theorem nestedVertexExpectation_eq_pairingSum
     (ε : Mode → ℝ) (β : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode)
     (τ : Fin n → ℝ) :
     (freeGibbsDensityOperator ε β).expectation
@@ -145,9 +144,7 @@ theorem continuous_flatVertexLegPairingEvaluation {n : ℕ}
 
 /-! ## Integrating the pairing sum over the ordered simplex -/
 
-/-- Ordered-simplex integration commutes with the finite canonical pairing sum. -/
-theorem
-    orderedSimplexIntegral_freeGibbsDensityOperator_expectation_nestedVertexOperatorComp_eq_sum_pairingEvaluation
+private theorem orderedSimplexIntegral_nestedVertexExpectation_eq_pairingSum
     (ε : Mode → ℝ) (β t : ℝ) (n : ℕ) (q : Fin n → QuarticVertexLabel Mode) :
     intervalIntegral.orderedSimplexIntegral n t
         (fun τ => (freeGibbsDensityOperator ε β).expectation
@@ -156,9 +153,7 @@ theorem
         intervalIntegral.orderedSimplexIntegral n t
           (fun τ => flatVertexLegPairingEvaluation ε β q τ pairing) := by
   rw [intervalIntegral.orderedSimplexIntegral_congr
-      (fun τ =>
-        freeGibbsDensityOperator_expectation_nestedVertexOperatorComp_eq_sum_pairingEvaluation
-          ε β n q τ),
+      (fun τ => nestedVertexExpectation_eq_pairingSum ε β n q τ),
     intervalIntegral.orderedSimplexIntegral_finsetSum _ n t _
       (fun pairing _ => continuous_flatVertexLegPairingEvaluation ε β q pairing)]
 
@@ -187,9 +182,7 @@ theorem dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluatio
           intervalIntegral.orderedSimplexIntegral S.card β
             (fun τ => flatVertexLegPairingEvaluation ε β q τ pairing) :=
     Finset.sum_congr rfl fun q _ => by
-      rw [
-        orderedSimplexIntegral_freeGibbsDensityOperator_expectation_nestedVertexOperatorComp_eq_sum_pairingEvaluation
-      ]
+      rw [orderedSimplexIntegral_nestedVertexExpectation_eq_pairingSum]
   rw [dysonVertexMoment_eq_freeGibbsDensityOperator_expectation, hkey, mul_assoc, hsum]
 
 end Fermionic
