@@ -98,7 +98,7 @@ theorem slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum
           (Common.quarticDiagramEquivOrderedData (slotSplitVacuumOrder T) vac)
           (σ ∘ slotSplitVacuumSlot T) := by
   dsimp only
-  rw [fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_quarticIntegrand
+  rw [slotSplitDysonFixedTimeAmplitude_eq_external_mul_quarticIntegrand
     ε β g T ext hext vac τ τ' σ hσ]
   unfold orderedVacuumDysonIntegrand
   rw [QuarticWickDiagram.couplingWeight,
