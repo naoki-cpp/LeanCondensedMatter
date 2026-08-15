@@ -17,51 +17,50 @@ namespace Common
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 
+/-- The full diagram component containing one interaction vertex. -/
+private noncomputable def TwoPointDiagram.interactionVertexComponent
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (v : ↥S) : d.componentPartition.parts :=
+  ⟨d.componentBlock (Sum.inr v),
+    d.componentBlock_mem_componentPartition (Sum.inr v)⟩
+
+/-- One fiber of `interactionVertexComponent` is exactly the interaction part of that full
+component. -/
+private noncomputable def TwoPointDiagram.interactionVertexFiberEquiv
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (B : d.componentPartition.parts) :
+    {v : ↥S // d.interactionVertexComponent v = B} ≃
+      ↥(TwoPointDiagram.interactionPart (B : Finset (TwoPointVertex S))) where
+  toFun v := by
+    refine ⟨v.1.1, ?_⟩
+    apply (TwoPointDiagram.mem_interactionPart_subtype
+      (B : Finset (TwoPointVertex S)) v.1).2
+    apply (d.componentBlock_eq_iff_mem B.2 (Sum.inr v.1)).1
+    exact congrArg Subtype.val v.2
+  invFun v := by
+    let vS : ↥S :=
+      ⟨v.1, TwoPointDiagram.interactionPart_subset
+        (B : Finset (TwoPointVertex S)) v.2⟩
+    refine ⟨vS, ?_⟩
+    apply Subtype.ext
+    apply (d.componentBlock_eq_iff_mem B.2 (Sum.inr vS)).2
+    exact (TwoPointDiagram.mem_interactionPart_subtype
+      (B : Finset (TwoPointVertex S)) vS).1 v.2
+  left_inv v := by
+    apply Subtype.ext
+    rfl
+  right_inv v := by
+    apply Subtype.ext
+    rfl
+
 /-- Interaction vertices are the dependent disjoint union of the interaction parts of all full
 components. -/
 noncomputable def TwoPointDiagram.interactionVertexComponentEquiv
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     ↥S ≃ Σ B : d.componentPartition.parts,
-      ↥(TwoPointDiagram.interactionPart (B : Finset (TwoPointVertex S))) where
-  toFun v :=
-    let B : d.componentPartition.parts :=
-      ⟨d.componentBlock (Sum.inr v),
-        d.componentBlock_mem_componentPartition (Sum.inr v)⟩
-    ⟨B, ⟨v.1, (TwoPointDiagram.mem_interactionPart_subtype
-      (B : Finset (TwoPointVertex S)) v).2
-        (d.self_mem_componentBlock (Sum.inr v))⟩⟩
-  invFun x :=
-    ⟨x.2.1, TwoPointDiagram.interactionPart_subset
-      (x.1 : Finset (TwoPointVertex S)) x.2.2⟩
-  left_inv v := by
-    apply Subtype.ext
-    rfl
-  right_inv x := by
-    rcases x with ⟨B, v⟩
-    let vS : ↥S :=
-      ⟨v.1, TwoPointDiagram.interactionPart_subset
-        (B : Finset (TwoPointVertex S)) v.2⟩
-    have hvB : (Sum.inr vS : TwoPointVertex S) ∈
-        (B : Finset (TwoPointVertex S)) :=
-      (TwoPointDiagram.mem_interactionPart_subtype
-        (B : Finset (TwoPointVertex S)) vS).1 v.2
-    have hblock : d.componentBlock (Sum.inr vS) =
-        (B : Finset (TwoPointVertex S)) :=
-      (d.componentBlock_eq_iff_mem B.2 (Sum.inr vS)).2 hvB
-    have hB :
-        (⟨d.componentBlock (Sum.inr vS),
-          d.componentBlock_mem_componentPartition (Sum.inr vS)⟩ :
-            d.componentPartition.parts) = B :=
-      Subtype.ext hblock
-    apply Sigma.ext hB
-    refine (Subtype.heq_iff_coe_eq ?_).2 ?_
-    · intro x
-      change x ∈ TwoPointDiagram.interactionPart
-          (d.componentBlock (Sum.inr vS)) ↔
-        x ∈ TwoPointDiagram.interactionPart
-          (B : Finset (TwoPointVertex S))
-      rw [hblock]
-    · rfl
+      ↥(TwoPointDiagram.interactionPart (B : Finset (TwoPointVertex S))) :=
+  (Equiv.sigmaFiberEquiv d.interactionVertexComponent).symm.trans
+    (Equiv.sigmaCongrRight fun B => d.interactionVertexFiberEquiv B)
 
 @[simp]
 theorem TwoPointDiagram.interactionVertexComponentEquiv_symm_val
