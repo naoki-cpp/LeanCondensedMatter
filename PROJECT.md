@@ -11,42 +11,56 @@ Formalize results in condensed matter physics as machine-checked theorems in Lea
 
 ## Document tree
 
-```
-PROJECT.md                 — this index: purpose, tree, writing rules (keep slim)
+```text
+PROJECT.md                  — this index: purpose, tree, writing rules (keep slim)
 AGENTS.md / CLAUDE.md       — thin pointers to this file, for harness discovery
+README.md                   — public repository entry point
 notes/
-  roadmap.md               — formalization targets status table (index)
-  roadmaps/
-    quantum-theory-foundations.md — Track A detail
-    combinatorics.md               — Track B detail
-    operator-algebra.md            — Track C detail
-    linked-cluster-theorem.md      — Combined target detail
-  completed.md              — targets that have reached `proved`
-  conventions.md           — Lean/Mathlib style and project conventions
-  model-and-assumptions.md — physical models, assumptions, and how they map to formal definitions
-  caveats.md               — known pitfalls and things to watch out for
-  references.md            — annotated reference list
+  roadmap.md                — repository-wide target/status index
+  completed.md              — major targets that have reached `proved`
+  conventions.md            — Lean/Mathlib and commit conventions
+  model-and-assumptions.md  — physical models and physics-to-Lean dictionary
+  caveats.md                — known pitfalls and boundaries
+  references.md             — annotated external references
+  architecture/             — architecture notes for stable subsystem boundaries
+  examples/                 — worked examples tied to proved APIs
+  glossary/                 — domain terminology and notation
+  migrations/               — API migration notes when public interfaces change
+  roadmaps/                 — detailed research/status documents by topic
+    quantum-theory-foundations.md
+    combinatorics.md
+    operator-algebra.md
+    fredholm-determinant.md
+    second-quantization.md
+    second-quantization-status.md
+    thermal-expectation-architecture.md
+    linked-cluster-theorem.md
+    completed-space-and-infinite-mode.md
+    transport.md
+    impurity-vertex-correction.md
 ```
 
-Details belong in `notes/`; do not add content sections to this file.
+Topic-specific details belong in `notes/`; do not add long content sections to this file.
 
 ## Writing rules — notes (`notes/*.md`)
 
-- Keep notes consistent with the current Lean code.
+- Keep notes consistent with the current Lean code; declarations and CI-enforced architecture checks are the source of truth.
 - Use “proved” only for results that compile without `sorry`.
 - Link relevant Lean files or declarations when useful.
 - Cite external sources only for imported results or physical assumptions.
 - Separate source claims from project interpretation.
+- When a refactor removes a public wrapper or module, update prose that names the old API rather than preserving documentation-only compatibility terminology.
 
 ## Writing rules — Lean code
 
-- **Correctness is the kernel's job, not prose's.** Do not pad code with citation text to justify something the type checker already guarantees; sourcing is only needed where a definition encodes a physical assumption or choice that isn't forced by the math (see below).
-- **Cite physical assumptions where they enter, not everywhere.** When a `def`/`structure`/hypothesis embeds a physical modeling choice (not a pure math fact), a short docstring/comment citing the source is warranted. Routine lemmas need no citation.
+- **Correctness is the kernel's job, not prose's.** Do not pad code with citation text to justify something the type checker already guarantees; sourcing is only needed where a definition encodes a physical assumption or choice that isn't forced by the math.
+- **Cite physical assumptions where they enter, not everywhere.** When a `def`/`structure`/hypothesis embeds a physical modeling choice, a short docstring/comment citing the source is warranted. Routine lemmas need no citation.
 - **Formal vs. informal.** A statement is only "proved" when it compiles with no `sorry`; otherwise record it as a target or conjecture in `notes/roadmap.md`, not as a claim in prose.
 - **Do not use `.re` as a conversion to `ℝ`.** If a complex expression is mathematically real, prove that fact and expose a real-valued API instead. Use `.re` only when the real part itself is intended.
-- **Finish implementations with regression protection.** After the implementation makes its intended invariant clear, add or extend the narrowest practical automated check before calling the work complete. Prefer a Lean theorem or type-level guarantee; use a targeted build, linter, architecture audit, or CI workflow for cross-file constraints. Do not duplicate guarantees already enforced by the kernel or add brittle text checks without a stable architectural invariant.
-- **Names and structures track the physics dictionary.** Keep `def`/`theorem` names aligned with the physical notions they formalize, per the physics-to-Lean dictionary in `notes/model-and-assumptions.md`; update that dictionary when a new correspondence is introduced.
+- **Finish implementations with regression protection.** After the implementation makes its intended invariant clear, add or extend the narrowest practical automated check before calling the work complete. Prefer a Lean theorem or type-level guarantee; use a targeted build, linter, architecture audit, or CI workflow for cross-file constraints.
+- **Names and structures track the physics dictionary.** Keep `def`/`theorem` names aligned with the physical notions they formalize, per `notes/model-and-assumptions.md`.
+- **Keep routing APIs small.** Proof-only transport, reindexing, and one-use wrapper declarations should be private/local or inlined when that reduces code without obscuring a reusable mathematical or physical boundary.
 
 ## Commit conventions
 
-- Commits follow Conventional Commits, in English. See `notes/conventions.md` for format and type/scope guidance.
+Commits follow Conventional Commits, in English. See `notes/conventions.md` for format and type/scope guidance.
