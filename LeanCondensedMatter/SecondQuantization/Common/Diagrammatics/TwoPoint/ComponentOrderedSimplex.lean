@@ -10,9 +10,9 @@ The full components of a two-point diagram partition its interaction vertices, a
 external component also contains the two distinguished external vertices. This module therefore
 uses the interaction part of every full component as its local ordered-simplex slot block.
 
-The generic finite-family ambient-shuffle identity applies directly to the finite type of full
-components; only the equality between the total interaction-slot count and the ambient interaction
-order is domain-specific.
+The generic coordinate restriction, shuffled-product analysis, and finite-family ordered-simplex
+identity are owned by `Analysis/OrderedSimplex`; this module keeps the two-point diagram adapters and
+the interaction-component cardinality bridge.
 -/
 
 namespace SecondQuantization
@@ -59,7 +59,7 @@ def TwoPointDiagram.interactionComponentTimeAssignment {S : Finset (Fin N)}
     (shuffle : d.ComponentInteractionShuffle)
     (τ : Fin S.card → ℝ) (B : d.componentPartition.parts) :
     Fin (d.interactionComponentSize B) → ℝ :=
-  fun i => τ (shuffle.slotEquiv ⟨B, i⟩)
+  shuffle.timeAssignment τ B
 
 @[simp]
 theorem TwoPointDiagram.interactionComponentTimeAssignment_apply {S : Finset (Fin N)}
@@ -71,16 +71,6 @@ theorem TwoPointDiagram.interactionComponentTimeAssignment_apply {S : Finset (Fi
       τ (shuffle.slotEquiv ⟨B, i⟩) :=
   rfl
 
-/-- Restricting ambient interaction times to one component is continuous. -/
-theorem TwoPointDiagram.continuous_interactionComponentTimeAssignment
-    {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (shuffle : d.ComponentInteractionShuffle)
-    (B : d.componentPartition.parts) :
-    Continuous (fun τ : Fin S.card → ℝ =>
-      d.interactionComponentTimeAssignment shuffle τ B) := by
-  exact continuous_pi fun i => continuous_apply (shuffle.slotEquiv ⟨B, i⟩)
-
 /-- Product of component-local interaction-time integrands after embedding their coordinates by a
 shuffle. -/
 def TwoPointDiagram.interactionComponentShuffleIntegrand
@@ -91,24 +81,7 @@ def TwoPointDiagram.interactionComponentShuffleIntegrand
       ∀ B : d.componentPartition.parts,
         (Fin (d.interactionComponentSize B) → ℝ) → ℂ)
     (τ : Fin S.card → ℝ) : ℂ :=
-  ∏ B, componentIntegrand B
-    (d.interactionComponentTimeAssignment shuffle τ B)
-
-/-- A product of continuous component-local interaction-time integrands remains continuous after
-shuffling. -/
-theorem TwoPointDiagram.continuous_interactionComponentShuffleIntegrand
-    {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (shuffle : d.ComponentInteractionShuffle)
-    (componentIntegrand :
-      ∀ B : d.componentPartition.parts,
-        (Fin (d.interactionComponentSize B) → ℝ) → ℂ)
-    (hcomponent : ∀ B, Continuous (componentIntegrand B)) :
-    Continuous (d.interactionComponentShuffleIntegrand shuffle componentIntegrand) := by
-  unfold TwoPointDiagram.interactionComponentShuffleIntegrand
-  exact continuous_finsetProd _ fun B _ =>
-    (hcomponent B).comp
-      (d.continuous_interactionComponentTimeAssignment shuffle B)
+  shuffle.ambientIntegrand componentIntegrand τ
 
 /-- Finite-family ordered-simplex shuffle product identity for the interaction parts of all full
 two-point components. -/
