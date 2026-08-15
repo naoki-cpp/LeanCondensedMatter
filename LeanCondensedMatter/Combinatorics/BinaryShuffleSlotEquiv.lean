@@ -160,6 +160,34 @@ theorem SlotShuffle.mem_rightSlots_iff_not_mem_leftSlots {m n : ℕ}
           rw [hpre] at h
           exact h⟩
 
+/-- The complement of the left slots has the right perturbation order. -/
+@[simp]
+theorem SlotShuffle.card_sdiff_leftSlots {m n : ℕ} (σ : SlotShuffle m n) :
+    ((Finset.univ : Finset (Fin (m + n))) \ σ.leftSlots).card = n := by
+  have hright :
+      (Finset.univ : Finset (Fin (m + n))) \ σ.leftSlots = σ.rightSlots := by
+    ext x
+    simp only [Finset.mem_sdiff, Finset.mem_univ, true_and]
+    exact (σ.mem_rightSlots_iff_not_mem_leftSlots x).symm
+  rw [hright, σ.card_rightSlots]
+
+/-- The increasing enumeration of the complement of the left slots is the right slot map. -/
+theorem SlotShuffle.sdiffLeftSlots_orderEmbOfFin {m n : ℕ}
+    (σ : SlotShuffle m n) (j : Fin n) :
+    ((Finset.univ : Finset (Fin (m + n))) \ σ.leftSlots).orderEmbOfFin
+        σ.card_sdiff_leftSlots j =
+      σ.slotEquiv (Sum.inr j) := by
+  have h := Finset.orderEmbOfFin_unique
+    (s := (Finset.univ : Finset (Fin (m + n))) \ σ.leftSlots)
+    (h := σ.card_sdiff_leftSlots)
+    (f := fun q => σ.slotEquiv (Sum.inr q))
+    (fun q => by
+      simp only [Finset.mem_sdiff, Finset.mem_univ, true_and]
+      exact (σ.mem_rightSlots_iff_not_mem_leftSlots _).1
+        ((σ.mem_rightSlots_iff _).2 ⟨q, rfl⟩))
+    σ.strictMonoRight
+  exact congrFun h.symm j
+
 /-- A slot shuffle is uniquely determined by the ambient positions of its left slots. -/
 theorem SlotShuffle.eq_of_leftSlots_eq {m n : ℕ} {σ τ : SlotShuffle m n}
     (hslots : σ.leftSlots = τ.leftSlots) : σ = τ := by
