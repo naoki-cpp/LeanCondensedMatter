@@ -47,8 +47,13 @@ theorem twoPointDiagramIntegrand_eq_twoPointDysonIntegrand {n : ℕ}
     (i j : Mode) (τ τ' : ℝ) (σ : Fin n → ℝ) :
     twoPointDiagramIntegrand ε β g i j τ τ' σ =
       twoPointDysonIntegrand ε β g i j τ τ' σ := by
-  exact sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_sum_vertexLabel_densityExpectation
-    ε β g i j τ τ' σ
+  unfold twoPointDiagramIntegrand twoPointDysonIntegrand
+  rw [sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_pairingSum]
+  rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro q _
+  rw [freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue]
+  ring
 
 /-- Ordered-simplex contribution of one fixed-external diagram, before the Dyson sign. -/
 noncomputable def FixedExternalTwoPointWickDiagram.orderedSimplexContribution
