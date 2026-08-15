@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Analysis
 import LeanCondensedMatter.Combinatorics
+import LeanCondensedMatter.Crystal
 import LeanCondensedMatter.Permutation
 import LeanCondensedMatter.QuantumTheory
 import LeanCondensedMatter.QuantumMechanics
