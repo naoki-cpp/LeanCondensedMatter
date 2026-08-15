@@ -1,33 +1,39 @@
 # Second Quantization — Current Status
 
-This page describes the current architecture, public API, proved endpoints, and analytic boundaries of
-`LeanCondensedMatter/SecondQuantization/`. Lean declarations and CI-enforced dependency checks are the
-source of truth.
+This page summarizes the current architecture and proved endpoints under
+`LeanCondensedMatter/SecondQuantization/`. Lean declarations and CI-enforced dependency checks are
+the source of truth.
 
 ## Scope and current boundary
 
-The foundational algebra is not intrinsically finite-mode:
+The algebraic foundations are not intrinsically finite-mode: fermionic occupations are finite
+subsets, bosonic occupations are finitely supported functions, and algebraic Fock vectors are finite
+linear combinations. Finiteness enters when a theorem enumerates all modes/configurations or uses a
+finite-dimensional trace, operator integral, or diagram sum.
 
-- `Mode` is an arbitrary type;
-- fermionic occupations are finite subsets;
-- bosonic occupations are finitely supported functions;
-- algebraic Fock vectors are finite linear combinations.
+The fermionic line is currently proved through:
 
-Finiteness is introduced only by results that enumerate all modes or configurations, reconstruct an
-operator from a finite basis, or take finite thermal and diagrammatic sums.
+- algebraic CAR/Fock infrastructure and finite-temperature free Gibbs theory;
+- the finite-temperature Bloch–de Dominicis pairing theorem;
+- Dyson coefficients and finite-dimensional analytic Dyson evolution;
+- quartic Wick/Dyson diagrams and connected component factorization;
+- the formal vacuum Linked Cluster Theorem;
+- the finite-dimensional analytic vacuum Linked Cluster Theorem;
+- the finite-mode two-point linked-cluster theorem with two external legs.
 
-The fermionic line is complete through the coefficientwise and finite-dimensional analytic Linked
-Cluster Theorems. Those analytic results remain finite-mode and finite-dimensional.
+The two-point endpoint is
 
-The repository also contains an initial completed fermionic representation on
-`ℓ²(Fermionic.Occupation Mode, ℂ)`, with an injective dense algebraic core and a bounded single-mode
-number operator. It does not yet provide completed creation and annihilation operators, general
-unbounded Hamiltonian domains, trace-class infinite-dimensional Gibbs states, infinite-mode thermal
-limits, or a thermodynamic limit.
+```lean
+SecondQuantization.Fermionic.
+  vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
+```
 
-A finite bosonic mode type still has an infinite occupation basis. The bosonic line therefore uses
-explicit summability domains and cannot inherit the finite-configuration trace and operator-integral
-interfaces merely by changing statistics.
+from `Fermionic/Diagrammatics/TwoPointDiagramExpansion/CauchySeries.lean`. It states that the
+vacuum-normalized two-point Dyson series is exactly the series of externally connected two-point
+Wick diagrams.
+
+This does not yet provide arbitrary multi-leg/source-insertion connected expansions,
+thermodynamic limits, or completed-space interacting Gibbs theory.
 
 ## Canonical public imports
 
@@ -37,28 +43,18 @@ The full public entry point is:
 import LeanCondensedMatter.SecondQuantization
 ```
 
-Responsibility-specific code may import a leaf umbrella:
+Responsibility-specific code should prefer the narrowest stable umbrella:
 
 | Area | Common import | Fermionic import | Bosonic import |
 |---|---|---|---|
 | Algebra | `LeanCondensedMatter.SecondQuantization.Common.Algebra` | `LeanCondensedMatter.SecondQuantization.Fermionic.Algebra` | `LeanCondensedMatter.SecondQuantization.Bosonic.Algebra` |
 | Imaginary time | `LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime` | `LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime` | `LeanCondensedMatter.SecondQuantization.Bosonic.ImaginaryTime` |
 | Thermal theory | `LeanCondensedMatter.SecondQuantization.Common.Thermal` | `LeanCondensedMatter.SecondQuantization.Fermionic.Thermal` | `LeanCondensedMatter.SecondQuantization.Bosonic.Thermal` |
-| Perturbation | `LeanCondensedMatter.SecondQuantization.Common.Perturbation` | `LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation` | not exposed until the convergence-aware operator-integral boundary exists |
+| Perturbation | `LeanCondensedMatter.SecondQuantization.Common.Perturbation` | `LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation` | not exposed as a full Dyson layer yet |
 | Diagrammatics | `LeanCondensedMatter.SecondQuantization.Common.Diagrammatics` | `LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics` | `LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics` |
-| Completed fermionic space | — | `LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace` | not yet exposed |
+| Completed fermionic space | — | `LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace` | — |
 
 ## Ownership and dependency direction
-
-The declaration-owning namespaces are:
-
-```lean
-SecondQuantization.Common
-SecondQuantization.Fermionic
-SecondQuantization.Bosonic
-```
-
-The dependency direction is:
 
 ```text
 Analysis, Combinatorics
@@ -68,171 +64,83 @@ SecondQuantization.Common
 SecondQuantization.Fermionic, SecondQuantization.Bosonic
 ```
 
-`Analysis/` owns reusable analytic and linear-algebraic infrastructure. `Combinatorics/` owns results
-about partitions, pairings, cumulants, and finite products that do not require a second-quantized
-interpretation. `SecondQuantization.Common` owns statistics-independent constructions that still use
-occupation bases, Fock operators, exchange statistics, thermal functionals, or diagrammatic data.
+`Analysis/` owns reusable analytic and linear-algebraic infrastructure. `Combinatorics/` owns
+statistics-independent finite combinatorics such as partitions, pairings, cumulants, slot shuffles,
+and product identities when they do not require second-quantized semantics.
 
-A declaration under `Fermionic` or `Bosonic` should remain public only when it contributes a
-statistics-specific operator, sign, occupation rule, energy, convergence statement, physical name,
-or analytic hypothesis. Parameter-substitution wrappers around a Common theorem are not separate
-public APIs.
+`SecondQuantization.Common` owns statistics-independent structures that still depend on Fock,
+thermal, or diagrammatic semantics. `Fermionic` and `Bosonic` should expose declarations only when
+they add statistics-specific or physics-facing content.
 
-The architecture and namespace boundaries are checked by
-`scripts/check_second_quantization_architecture.py`. The dimension-independent foundational mode
-boundary is checked by `scripts/check_second_quantization_mode_boundary.py`.
+Recent diagrammatics cleanup deliberately removed one-use routing modules and public wrappers. The
+current policy is:
 
-## Shared statistics-independent layer
+- reusable combinatorics belongs in `Combinatorics`;
+- reusable statistics-independent diagrammatics belongs in `SecondQuantization.Common`;
+- physics-facing fermionic endpoints remain public in `SecondQuantization.Fermionic`;
+- proof-only transports, reindexings, uniqueness facts, and one-use wrappers should be private/local
+  or inlined when that reduces code without hiding a reusable domain concept;
+- file boundaries should correspond to reusable concepts, not merely intermediate proof stages.
 
-| Area | Main modules | Current result |
-|---|---|---|
-| Algebraic Fock infrastructure | `Common/Algebra/` | finite-support occupation interfaces, basis states, matrix coefficients, diagonal maps, grading, exchange signs, and finite-configuration infrastructure where required |
-| Imaginary-time infrastructure | `Common/ImaginaryTime/` | diagonal evolution, interaction-picture matrix coefficients, continuity and integrability, time ordering, and KMS rotation |
-| Thermal functionals | `Analysis/NormalizedEndomorphismFunctional.lean`, `Common/Thermal/` | normalized functionals, finite weighted traces, Gibbs infrastructure, and abstract Bloch–de Dominicis recursion |
-| Finite operator integration | `Common/Perturbation/FiniteOperatorIntegral.lean`, `FiniteAnalyticBridge.lean` | coefficientwise operator integration and its finite-dimensional continuous-operator realization |
-| Dyson coefficients | `Common/Perturbation/DysonExpansion.lean`, `DysonTimeIndependent.lean` | algebraic Dyson recursion and the algebraic/analytic time-independent specialization |
-| Analytic Dyson evolution | `Common/Perturbation/ContinuousDyson.lean`, `AnalyticDyson*.lean` | factorial bounds, norm convergence, the Volterra equation, uniqueness, and the exact exponential identity |
-| Dyson trace series | `Common/Perturbation/DysonTraceSeries.lean`, `AnalyticDysonTrace.lean` | formal trace coefficients, convergent trace series, and Taylor-series packaging |
-| Quartic diagram data | `Common/Diagrammatics/` | labels, ordered data, connectedness, component restriction and reassembly, decomposition equivalences, and component-local orders |
-| Ordered-simplex products | `Analysis/OrderedSimplex/`, `Common/Diagrammatics/ComponentOrderedSimplexProduct.lean` | shuffle sums equal products of component-local ordered-simplex integrals |
-| Cumulants and connected diagrams | `Combinatorics/` | moment–cumulant inversion, multiplicative diagram weights, connected decomposition, and formal-log coefficient identities |
+The architecture is checked by the SecondQuantization audit and repository architecture scripts.
 
-## Fermionic line
+## Fermionic proved endpoints
 
-The canonical algebraic names distinguish the two uncompleted representations explicitly:
+### Vacuum/free-energy sector
 
-```lean
-Fermionic.Occupation
-Fermionic.OccupationFock
-Fermionic.AlgebraicFock
-Fermionic.vacuum
-Fermionic.particleNumber
-```
-
-`OccupationFock Mode` is the free vector space on finite occupation subsets of a chosen mode type.
-`AlgebraicFock 𝓗₁` is the basis-independent exterior algebra of the one-particle space. A chosen
-one-particle basis gives the explicit `AlgebraicFock.occupationEquiv` between them. Neither name denotes the
-completed `ℓ²` representation.
-
-The finite-mode fermionic API includes:
-
-- creation and annihilation operators, CAR, grading, and free/interacting Hamiltonians;
-- free imaginary-time evolution and `Fermionic.interactionPicture`;
-- finite free Gibbs weights, partition functions, contractions, and the finite-temperature
-  Bloch–de Dominicis theorem;
-- the physical Dyson partition coefficients and normalized formal logarithm;
-- the finite-dimensional interacting partition function and its Taylor series;
-- non-diagonal quartic interactions, local-leg semantics, Wick diagrams, component decomposition,
-  shuffle factorization, cumulants, and connected-diagram formulas.
-
-## Formal and analytic Linked Cluster Theorems
-
-The coefficientwise endpoint is:
+The coefficientwise formal endpoint is
 
 ```lean
 factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude
 ```
 
-For `n ≠ 0`, it identifies
+which identifies `n! [λⁿ] log Ẑ_D` with connected quartic Wick-diagram amplitudes.
 
-```text
-n! [λⁿ] log(normalized Dyson partition series)
+The finite-dimensional analytic endpoint is
+
+```lean
+iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAmplitude
 ```
 
-with the sum of amplitudes of connected `n`-vertex quartic Wick diagrams.
+which identifies derivatives at zero coupling of the local normalized logarithm of the genuine
+interacting partition function with connected diagram sums.
 
-The finite-dimensional analytic endpoint is obtained through:
+### Two-point sector
 
-- `hasSum_dysonTraceCoeff_eq_analyticDysonPartitionFunction`;
-- `hasFPowerSeriesAt_analyticDysonPartitionFunction`;
-- `analyticAt_analyticNormalizedLogPartitionFunction_zero`;
-- `iteratedDeriv_analyticNormalizedLogPartitionFunction_eq_factorial_mul_formalCoeff`;
-- `iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAmplitude`.
+The two-point diagram line defines fixed-external two-point diagrams, their connected external
+component, vacuum components, component-local amplitudes, external-slot fibers, and the associated
+Cauchy-product factorization. The final power-series cancellation theorem is
 
-The formal layer remains a reusable coefficient calculus. The analytic partition function and its
-connected logarithmic derivatives are the physical finite-mode endpoint.
+```lean
+vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
+```
 
-## Fermionic capability matrix
+under the finite-mode hypotheses and `0 ≤ β` used by the coefficientwise theorem.
 
-| Capability | Status | Main result or module |
-|---|---:|---|
-| Algebraic Fock and CAR | done | `Fermionic.Algebra` |
-| Free imaginary-time evolution | done | `Fermionic.ImaginaryTime` |
-| Finite free Gibbs theory | done | `Fermionic.Thermal` |
-| General finite-temperature pairing theorem | done | `Common/Thermal/BlochDeDominicis/Induction.lean` with fermionic hypotheses |
-| Discrete and continuous Dyson infrastructure | done | `Common.Perturbation` specialized by `fermionEnergy` |
-| Physical partition coefficients and formal logarithm | done | `Fermionic/Perturbation/DysonPartitionSeries.lean` |
-| Analytic partition function and Taylor series | done | `Fermionic/Perturbation/AnalyticDysonPartitionFunction.lean` |
-| Analytic/formal logarithm identification | done | `AnalyticLinkedClusterRecurrence.lean`, `AnalyticLinkedClusterIdentification.lean` |
-| Full quartic Wick amplitude | done | `Fermionic/Diagrammatics/WickDiagram/Amplitude.lean` |
-| Dyson diagram expansion | done | `Fermionic/Diagrammatics/DysonDiagramExpansion.lean` |
-| Full amplitude factorization | done | `WickDiagram/AmplitudeFactorization.lean` |
-| Connected-diagram cumulant theorem | done | `DysonConnectedDiagramExpansion.lean` |
-| Formal Dyson LCT | done | `DysonLinkedClusterTheorem.lean` |
-| Analytic finite-mode Dyson LCT | done | `Fermionic/Perturbation/AnalyticLinkedClusterTheorem.lean` |
+Intermediate routing layers are intentionally not part of the stable API. Public declarations should
+be the physical/combinatorial endpoints needed by downstream developments.
 
 ## Completed fermionic representation
 
-`Fermionic/CompletedSpace/Basic.lean` provides:
+`Fermionic.CompletedFockSpace Mode := ℓ²(Fermionic.Occupation Mode, ℂ)` is implemented with canonical
+basis vectors, an injective dense algebraic core, and a bounded single-mode number projection.
+Completed creation/annihilation operators, general unbounded Hamiltonian domains, trace-class Gibbs
+states, and infinite-mode thermal limits remain separate work.
 
-- `Fermionic.CompletedFockSpace Mode := ℓ²(Fermionic.Occupation Mode, ℂ)`;
-- canonical occupation basis vectors;
-- the coordinate-preserving inclusion `algebraicToCompleted`;
-- injectivity and dense range of the algebraic inclusion;
-- a bounded single-mode occupation projection;
-- agreement of the completed and algebraic number operators on the algebraic core.
+## Bosonic boundary
 
-This establishes the completed representation without treating all algebraic operators as bounded.
-The remaining operator and thermal boundaries are documented in
-[`completed-space-and-infinite-mode.md`](completed-space-and-infinite-mode.md).
+Even for finite `Mode`, the bosonic occupation basis is infinite. The bosonic line therefore uses
+explicit summability domains and currently proves algebraic/thermal results only where those domains
+are controlled. A general bosonic Dyson/linked-cluster line still requires product-domain closure,
+summability-aware KMS/cyclicity, operator-valued integration, and convergence control.
 
-## Bosonic line and convergence boundary
+## Current next steps
 
-The bosonic line includes:
+The finite-mode fermionic vacuum and two-point connected expansions are now base infrastructure.
+Separate follow-up tracks include:
 
-- occupation states `Mode →₀ ℕ`, algebraic Fock space, normalized ladder operators, CCR, number
-  operators, and grading;
-- free diagonal and interaction-picture evolution;
-- convergent free partition and particle-number series under explicit positivity assumptions;
-- free two-point coefficients and Bloch–de Dominicis base results;
-- `ConvergenceAwareGibbsFunctional`, whose observable domain records Gibbs-numerator summability and
-  is closed under finite linear combinations;
-- quartic interaction labels, local-leg semantics, ordered diagrams, connected components, and
-  componentwise scalar prefactors.
-
-The convergence-aware functional does not assert closure under operator products or integrals.
-Remaining analytic requirements are:
-
-1. product-domain closure for the observables appearing in Wick recursion;
-2. summability-aware KMS and trace-cyclicity statements;
-3. an operator-valued integration interface compatible with the chosen domains;
-4. convergence hypotheses for Dyson coefficients and traces;
-5. a bosonic full-amplitude and connected-diagram specialization built on those interfaces.
-
-No finite-basis assumption on `Bosonic.Occupation Mode` should be introduced to bypass these
-requirements.
-
-## Refactoring priorities
-
-- keep one authoritative owner for every construction;
-- remove statistics-specific declarations that only substitute parameters into Common results;
-- retain physics-facing specializations with independent semantic value;
-- move reusable mathematics upstream only when the target abstraction is genuinely independent of
-  second quantization;
-- keep proof-only transport, uniqueness, and basis calculations private or local;
-- regroup long diagrammatic stacks only when a file boundary exposes proof internals rather than a
-  reusable domain concept;
-- keep CI focused on dependency direction, namespace ownership, canonical imports, and forbidden
-  classes of compatibility layer.
-
-## Separate research tracks
-
-The following are extensions rather than missing steps of the finite-mode fermionic LCT:
-
-- low-order explicit examples;
-- time-ordered correlation functions with external operators;
-- convergence-aware bosonic Dyson and linked-cluster theory;
-- bounded completed creation and annihilation operators and completed CAR;
-- domains and functional calculus for unbounded operators;
-- trace-class Gibbs states, finite-mode compatibility, infinite-mode limits, and thermodynamic
-  limits.
+1. higher time-ordered correlation functions and arbitrary source/multi-leg insertions;
+2. convergence-aware bosonic Dyson and connected-diagram theory;
+3. completed bounded CAR operators and unbounded Hamiltonian domains;
+4. trace-class/infinite-mode Gibbs states and thermodynamic limits;
+5. continued API consolidation where public declarations are only proof-routing artifacts.
