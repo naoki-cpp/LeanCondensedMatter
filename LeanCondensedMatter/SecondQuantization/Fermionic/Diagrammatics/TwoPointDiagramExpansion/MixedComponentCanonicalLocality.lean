@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.CanonicalComponentTimeTransport
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentShufflePermutation
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentTimeTransport
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentContractionTimeLocality
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentLocalTime
 
@@ -8,8 +9,7 @@ set_option linter.style.header false
 # Canonical component locality for the two-point Dyson integrand
 
 The canonical component shuffle assigns each local interaction slot to the rank of the corresponding
-ambient interaction vertex. Common owns the coordinate conversion and the resulting
-`ComponentTimeEq` bridge. The crossing- and contraction-locality theorems then make the fermionic
+ambient interaction vertex. The crossing- and contraction-locality theorems then make the fermionic
 component pairing value local without caller-supplied transport hypotheses and expose the pointwise
 Dyson amplitude as the canonical component-shuffle integrand.
 -/
@@ -32,11 +32,27 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_local_canoni
       (fun σ => d.mixedComponentPairingValue ε β τ τ'
         (ambientToTwoPointSlotTimePermutation σ) B) := by
   intro σ υ hσυ
-  exact d.mixedComponentPairingValue_eq_of_componentTimeEq
+  apply d.mixedComponentPairingValue_eq_of_componentTimeEq
     ε β τ τ'
     (ambientToTwoPointSlotTimePermutation σ)
     (ambientToTwoPointSlotTimePermutation υ) B
-    (d.1.componentTimeEq_of_canonicalAssignment_eq B σ υ hσυ)
+  have hRestricted :
+      d.1.interactionComponentTimeAssignment
+          d.1.canonicalComponentInteractionShuffle σ B =
+        d.1.interactionComponentTimeAssignment
+          d.1.canonicalComponentInteractionShuffle υ B :=
+    hσυ
+  have hVertices :
+      ∀ v : ↥(Common.TwoPointDiagram.interactionPart
+        (B : Finset (Common.TwoPointVertex (Finset.univ : Finset (Fin n))))),
+        ambientToTwoPointSlotTimePermutation σ v.1 =
+          ambientToTwoPointSlotTimePermutation υ v.1 := by
+    apply (d.1.canonicalComponentTimeAssignment_univ_eq_iff
+      (ambientToTwoPointSlotTimePermutation σ)
+      (ambientToTwoPointSlotTimePermutation υ) B).mp
+    simpa [ambientToTwoPointSlotTimePermutation] using hRestricted
+  intro v hv
+  exact hVertices ⟨v, hv⟩
 
 /-- The signed mixed component factor is local along the canonical interaction-component shuffle. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue_local_canonical
