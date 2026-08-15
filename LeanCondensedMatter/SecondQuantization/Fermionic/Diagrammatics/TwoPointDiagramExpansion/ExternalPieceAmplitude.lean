@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ExternalPiecePairing
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentDysonValue
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVertexProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotCongr
 
 set_option linter.style.header false
 
@@ -38,10 +38,18 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight_externalComp
       rw [Common.TwoPointDiagram.externalVacuumSplit_fst_vertexLabel]
     _ = ∏ v : ↥(Finset.univ : Finset (Fin d.1.externalInteractionPart.card)),
           g (d.externalPiece.1.vertexLabel v) := by
-      simpa [FixedExternalTwoPointWickDiagram.externalPiece] using
-        (Common.TwoPointDiagram.prod_vertexLabel_slotCongr
-          (Common.standardSlotEquiv d.1.externalInteractionPart)
-          d.1.externalVacuumSplit.1 g).symm
+      let e := Common.standardSlotEquiv d.1.externalInteractionPart
+      have htransport :
+          (∏ v : ↥(Finset.univ : Finset (Fin d.1.externalInteractionPart.card)),
+              g ((d.1.externalVacuumSplit.1.slotCongr e).vertexLabel v)) =
+            ∏ v : ↥d.1.externalInteractionPart,
+              g (d.1.externalVacuumSplit.1.vertexLabel v) := by
+        rw [← Equiv.prod_comp e
+          (fun v => g ((d.1.externalVacuumSplit.1.slotCongr e).vertexLabel v))]
+        exact Finset.prod_congr rfl fun v _ => by
+          simp [Common.TwoPointDiagram.slotCongr]
+      simpa [FixedExternalTwoPointWickDiagram.externalPiece,
+        Common.TwoPointDiagram.externalPiece] using htransport.symm
     _ = orderedTwoPointVertexWeight g d.externalPiece.vertexLabelSequence := by
       unfold orderedTwoPointVertexWeight FixedExternalTwoPointWickDiagram.vertexLabelSequence
       let e : Fin d.1.externalInteractionPart.card ≃
