@@ -34,6 +34,7 @@ import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
 import LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine
 import LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine.Linear
 import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
+import LeanCondensedMatter.Analysis.Operator.OrbitalAngularMomentum
 import LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct
