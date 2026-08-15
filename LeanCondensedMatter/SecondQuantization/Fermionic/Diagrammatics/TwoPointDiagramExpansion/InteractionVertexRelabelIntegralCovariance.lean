@@ -61,10 +61,10 @@ private theorem componentShuffleIntegrand_eq_relabelAmplitude_of_injective
       symm
       have hslot : Function.Injective (ambientToTwoPointSlotTimePermutation σ) :=
         ambientToTwoPointSlotTimePermutation_injective hσ
-      rw [d.relabelForComponentShuffle_eq_relabelInteractionVertices shuffle]
-      exact d.dysonFixedTimeAmplitude_relabelInteractionVertices_of_injective
-        (d.1.componentShuffleSlotPermutation shuffle).symm ε β g τ τ'
-        (ambientToTwoPointSlotTimePermutation σ) hslot
+      simpa [FixedExternalTwoPointWickDiagram.relabelForComponentShuffle] using
+        d.dysonFixedTimeAmplitude_relabelInteractionVertices_of_injective
+          (d.1.componentShuffleSlotPermutation shuffle).symm ε β g τ τ'
+          (ambientToTwoPointSlotTimePermutation σ) hslot
 
 /-- **Integrated component-shuffle covariance.** One component-shuffle term integrates to the
 ordered-simplex integral of the Dyson fixed-time amplitude of the explicitly relabeled diagram.

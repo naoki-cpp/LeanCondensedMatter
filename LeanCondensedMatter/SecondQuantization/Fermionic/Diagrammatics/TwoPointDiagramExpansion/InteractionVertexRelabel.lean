@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Amplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Reindexing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.InteractionVertexRelabel
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentShufflePermutation
 
 set_option linter.style.header false
 
@@ -8,8 +9,9 @@ set_option linter.style.header false
 # Interaction-vertex relabeling for fixed-external two-point diagrams
 
 `SecondQuantization.Common` owns the statistics-independent relabeling of a complete two-point
-diagram. This module only lifts that operation through the fixed fermionic external-label subtype
-and records invariance of the quartic coupling product.
+diagram. This module lifts that operation through the fixed fermionic external-label subtype, records
+invariance of the quartic coupling product, and specializes the same relabeling to component-shuffle
+slot permutations.
 
 The convention is that `π` maps a new interaction slot to the old interaction slot whose data it
 inherits. Thus the relabeled vertex sequence satisfies `q_new v = q_old (π v)`.
@@ -104,6 +106,13 @@ theorem FixedExternalTwoPointWickDiagram.relabelInteractionVertices_vertexWeight
     exact d.relabelInteractionVertices_vertexLabelSequence π v]
   unfold orderedTwoPointVertexWeight
   exact Equiv.prod_comp π (fun v => g (d.vertexLabelSequence v))
+
+/-- Relabel a fixed-external diagram by the interaction-slot permutation associated with a chosen
+component shuffle. -/
+def FixedExternalTwoPointWickDiagram.relabelForComponentShuffle
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (shuffle : d.1.ComponentInteractionShuffle) : FixedExternalTwoPointWickDiagram Mode n i j :=
+  d.relabelInteractionVertices (d.1.componentShuffleSlotPermutation shuffle).symm
 
 end
 
