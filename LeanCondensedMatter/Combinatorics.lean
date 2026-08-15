@@ -2,7 +2,6 @@ import LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions
 import LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositionsSuccAbove
 import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
 import LeanCondensedMatter.Combinatorics.BinaryShuffle
-import LeanCondensedMatter.Combinatorics.BlockPermutationSign
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlots
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
