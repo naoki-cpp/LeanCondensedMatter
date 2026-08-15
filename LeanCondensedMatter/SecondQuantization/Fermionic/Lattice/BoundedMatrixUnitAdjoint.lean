@@ -133,7 +133,12 @@ theorem boundedDgammaMatrixUnit_apply_singleton (x y : Site) :
       (finiteHilbertAnnihilate y
         (Common.finiteHilbertBasisState ({y} : Occupation Site))) = _
   have hy : fermionSign y ({y} : Occupation Site) = 1 := by
-    simp [fermionSign]
+    unfold fermionSign
+    have hfilter : {z ∈ ({y} : Finset Site) | z < y} = ∅ := by
+      ext z
+      simp
+    rw [hfilter]
+    simp
   rw [finiteHilbertAnnihilate_basisState_of_mem (by simp), hy]
   simp only [Int.cast_one, one_smul]
   rw [finiteHilbertCreate_basisState_of_not_mem (by simp [removeOccupation])]
