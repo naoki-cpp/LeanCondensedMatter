@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPartition
+import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
 
 set_option linter.style.header false
 
@@ -8,7 +9,9 @@ set_option linter.style.header false
 The restriction construction depends only on the pairing-induced vertex graph and quartic leg
 indexing. It is independent of the vertex-label type and particle statistics.
 
-Connectedness of the restricted diagram and reassembly are developed separately.
+Partner-invariant pairing restriction is owned by `Combinatorics.PerfectPairing.Restriction`; this
+module supplies only the quartic component predicate and its leg reindexing. Connectedness of the
+restricted diagram and reassembly are developed separately.
 -/
 
 namespace SecondQuantization
@@ -63,25 +66,15 @@ theorem QuarticDiagram.legInBlock_partner_iff {S : Finset (Fin N)}
 noncomputable def QuarticDiagram.restrictedPartner {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (B : Finset (Fin N)) :
     Equiv.Perm {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg} :=
-  d.pairing.partner.subtypePerm fun leg => (d.legInBlock_partner_iff leg).symm
+  d.pairing.partnerSubtypePerm (d.legInBlock B) fun leg => d.legInBlock_partner_iff leg
 
 theorem QuarticDiagram.restrictedPartner_val {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (B : Finset (Fin N))
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
-    (d.restrictedPartner B leg : Fin (2 * (2 * S.card))) = d.pairing.partner leg :=
-  congrArg Subtype.val (Equiv.Perm.subtypePerm_apply _ _ leg)
-
-theorem QuarticDiagram.restrictedPartner_involutive {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) (B : Finset (Fin N)) :
-    Function.Involutive (d.restrictedPartner B) := fun leg => by
-  apply Subtype.ext
-  rw [d.restrictedPartner_val, d.restrictedPartner_val, d.pairing.partner_involutive]
-
-theorem QuarticDiagram.restrictedPartner_ne_self {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) (B : Finset (Fin N))
-    (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
-    d.restrictedPartner B leg ≠ leg := fun h =>
-  d.pairing.partner_ne_self leg (by rw [← d.restrictedPartner_val B, h])
+    (d.restrictedPartner B leg : Fin (2 * (2 * S.card))) = d.pairing.partner leg := by
+  simpa only [QuarticDiagram.restrictedPartner] using
+    d.pairing.partnerSubtypePerm_val (d.legInBlock B)
+      (fun i => d.legInBlock_partner_iff i) leg
 
 /-- Vertices of `S` lying in `B`, identified with `↥B`. -/
 def QuarticDiagram.subtypeMemBlockEquiv {S : Finset (Fin N)} (B : Finset (Fin N))
@@ -156,11 +149,8 @@ noncomputable def QuarticDiagram.restrictedPairing {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) :
     Combinatorics.Pairing (2 * B.card) :=
-  Combinatorics.Pairing.ofPartner
-    ((d.blockLegEquiv hB).permCongr (d.restrictedPartner B))
-    (IsPairing.permCongr
-      ⟨d.restrictedPartner_involutive B, d.restrictedPartner_ne_self B⟩
-      (d.blockLegEquiv hB))
+  d.pairing.restrictAlongEquiv (d.legInBlock B)
+    (fun leg => d.legInBlock_partner_iff leg) (d.blockLegEquiv hB)
 
 /-- The restricted pairing agrees with the original partner under `blockLegEquiv`. -/
 theorem QuarticDiagram.restrictedPairing_partner_blockLegEquiv {S : Finset (Fin N)}
@@ -169,7 +159,9 @@ theorem QuarticDiagram.restrictedPairing_partner_blockLegEquiv {S : Finset (Fin 
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
     (d.restrictedPairing hB).partner (d.blockLegEquiv hB leg) =
       d.blockLegEquiv hB (d.restrictedPartner B leg) := by
-  simp [restrictedPairing, Combinatorics.Pairing.ofPartner, Equiv.permCongr_apply]
+  simpa only [QuarticDiagram.restrictedPairing, QuarticDiagram.restrictedPartner] using
+    d.pairing.restrictAlongEquiv_partner (d.legInBlock B)
+      (fun i => d.legInBlock_partner_iff i) (d.blockLegEquiv hB) leg
 
 /-- Restrict `d` to the connected-component part `B`. -/
 noncomputable def QuarticDiagram.restrictComponent {S : Finset (Fin N)}
