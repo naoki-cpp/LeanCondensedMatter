@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ConnectedSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.FixedOrderSum
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotCongr
 
@@ -128,12 +128,21 @@ theorem sum_fixedExternalFiberVacuum_fixedOrderDysonContribution
           vac.orderedSimplexContribution ε β
             (((Finset.univ : Finset (Fin n)) \ T).orderIsoOfFin rfl).toEquiv) =
       normalizedDysonPartitionCoeff ε β (quarticInteraction g) (n - T.card) := by
+  classical
   have hcard : ((Finset.univ : Finset (Fin n)) \ T).card = n - T.card := by
     rw [Finset.card_sdiff]
     simp
-  simpa only [hcard] using
-    (sum_quarticWickDiagram_fixedOrderDysonContribution_eq_normalizedDysonPartitionCoeff
-      ε β g (((Finset.univ : Finset (Fin n)) \ T).orderIsoOfFin rfl).toEquiv)
+  rw [← hcard]
+  simp_rw [mul_assoc]
+  rw [← Finset.mul_sum]
+  rw [sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation]
+  have hfac :
+      (((((Finset.univ : Finset (Fin n)) \ T).card).factorial : ℕ) : ℂ) ≠ 0 := by
+    exact_mod_cast Nat.factorial_ne_zero ((Finset.univ : Finset (Fin n)) \ T).card
+  apply mul_left_cancel₀ hfac
+  simpa [dysonVertexMoment, mul_assoc] using
+    (dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation
+      ε β g ((Finset.univ : Finset (Fin n)) \ T)).symm
 
 end Fermionic
 end SecondQuantization
