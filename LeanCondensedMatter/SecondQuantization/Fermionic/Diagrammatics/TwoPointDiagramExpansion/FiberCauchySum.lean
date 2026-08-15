@@ -125,7 +125,7 @@ theorem sum_leftSlotSet_fixedExternalFiber_dysonAmplitude_eq_connected_mul_norma
       intro ext _
       apply Finset.sum_congr rfl
       intro x _
-      exact sum_slotShuffle_externalDyson_mul_orderedVacuumIntegrand_eq_mul
+      exact sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum
         ε β g τ τ' ext.1 x
     _ = (∑ ext : {ext : FixedExternalTwoPointWickDiagram Mode m i j //
               ext.1.IsExternallyConnected},
