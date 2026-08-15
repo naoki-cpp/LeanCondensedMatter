@@ -2,7 +2,6 @@ import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixed
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.TwoPointLegEmbedding
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairImage
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairComponent
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.InteractionVertexRelabelCovariance
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.InteractionVertexRelabelIntegralCovariance
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentShuffleIntegrability
@@ -33,7 +32,7 @@ set_option linter.style.header false
 
 Finite-mode imaginary-time two-point Wick diagrams with quartic interaction vertices: Common-owned
 mixed event/leg ordering, quartic-to-two-point leg embeddings, slot-split vacuum pairing and
-vacuum-pair image/component transport, and binary slot-shuffle coordinates; fermionic flattening and
+vacuum-pair image transport, and binary slot-shuffle coordinates; fermionic flattening and
 fixed-external amplitudes; external/vacuum component restriction and factorization; measurable and
 integrable component-local factors; ordered-simplex component shuffles; interaction-slot relabeling;
 external-component restriction; exchange of the finite diagram sum with the ordered-simplex

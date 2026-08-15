@@ -1,6 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DysonSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ComponentAmplitudeFactorization
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ConnectedOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitConnectivity
 
 set_option linter.style.header false
@@ -14,8 +13,8 @@ that `ComponentAmplitudeFactorization` splits off are exactly what the division 
 series removes.
 
 Connectedness is the ambient `TwoPointDiagram.IsExternallyConnected`. The Common two-point layer
-owns its slot characterization and order consequences, so this Fermionic module only specializes
-those structural facts to the physical connected-series coefficients and amplitudes.
+owns its slot characterization, while this Fermionic module only specializes those structural facts
+to the physical connected-series coefficients and amplitudes.
 
 This module owns the connected series itself; generic connectivity structure is Common-owned.
 -/
@@ -71,7 +70,11 @@ theorem connectedTwoPointDysonCoefficient_zero (ε : Mode → ℝ) (β : ℝ)
     connectedTwoPointDysonCoefficient ε β g i j τ τ' 0 =
       ∑ d : FixedExternalTwoPointWickDiagram Mode 0 i j, d.dysonAmplitude ε β g τ τ' := by
   rw [connectedTwoPointDysonCoefficient,
-    Finset.filter_true_of_mem fun d _ => d.1.isExternallyConnected_of_order_zero]
+    Finset.filter_true_of_mem fun d _ => by
+      rw [d.1.isExternallyConnected_iff_externalInteractionPart_eq]
+      apply Finset.eq_univ_of_forall
+      intro x
+      exact x.elim0]
 
 end Fermionic
 end SecondQuantization
