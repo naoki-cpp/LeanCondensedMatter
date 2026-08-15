@@ -175,15 +175,6 @@ theorem TwoPointDiagram.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty
       (d.mem_vacuumComponentParts B).2 hB
     simpa [h] using hmem
 
-/-- The two external vertices are connected exactly when their component blocks agree. -/
-theorem TwoPointDiagram.externalVerticesConnected_iff_externalComponent_eq {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
-    d.ExternalVerticesConnected ↔ d.externalComponent 0 = d.externalComponent 1 := by
-  change d.vertexGraph.Reachable
-      (Sum.inl (0 : Fin 2) : TwoPointVertex S) (Sum.inl (1 : Fin 2)) ↔ _
-  exact (d.componentBlock_eq_iff_reachable
-    (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))).symm
-
 /-- External connectedness is equivalent to absence of vacuum parts together with equality of the
 two external component blocks. -/
 theorem TwoPointDiagram.isExternallyConnected_iff {S : Finset (Fin N)}
@@ -191,8 +182,13 @@ theorem TwoPointDiagram.isExternallyConnected_iff {S : Finset (Fin N)}
     d.IsExternallyConnected ↔
       d.vacuumComponentParts = ∅ ∧ d.externalComponent 0 = d.externalComponent 1 := by
   rw [TwoPointDiagram.IsExternallyConnected,
-    d.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty,
-    d.externalVerticesConnected_iff_externalComponent_eq]
+    d.hasNoVacuumComponent_iff_vacuumComponentParts_eq_empty]
+  apply and_congr Iff.rfl
+  change d.vertexGraph.Reachable
+      (Sum.inl (0 : Fin 2) : TwoPointVertex S) (Sum.inl (1 : Fin 2)) ↔
+    d.componentBlock (Sum.inl (0 : Fin 2)) = d.componentBlock (Sum.inl (1 : Fin 2))
+  exact (d.componentBlock_eq_iff_reachable
+    (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))).symm
 
 end Common
 end SecondQuantization

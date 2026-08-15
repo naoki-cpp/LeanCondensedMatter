@@ -156,8 +156,10 @@ theorem TwoPointDiagram.externalVerticesConnected {S : Finset (Fin N)}
 /-- The two external component blocks always coincide. -/
 theorem TwoPointDiagram.externalComponent_zero_eq_one {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
-    d.externalComponent 0 = d.externalComponent 1 :=
-  (d.externalVerticesConnected_iff_externalComponent_eq).1 d.externalVerticesConnected
+    d.externalComponent 0 = d.externalComponent 1 := by
+  change d.componentBlock (Sum.inl (0 : Fin 2)) = d.componentBlock (Sum.inl (1 : Fin 2))
+  exact (d.componentBlock_eq_iff_reachable
+    (Sum.inl (0 : Fin 2)) (Sum.inl (1 : Fin 2))).2 d.externalVerticesConnected
 
 /-- Every external vertex lies in the common external component. -/
 theorem TwoPointDiagram.externalVertex_mem_externalComponentPart {S : Finset (Fin N)}
