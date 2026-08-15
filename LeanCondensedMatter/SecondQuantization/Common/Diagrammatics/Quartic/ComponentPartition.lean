@@ -105,11 +105,9 @@ theorem QuarticDiagram.componentBlock_disjoint_of_not_reachable {S : Finset (Fin
 theorem QuarticDiagram.exists_componentBlock_eq_of_mem {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) : ∃ v : ↥S, d.componentBlock v = B := by
-  obtain ⟨x, hx⟩ := d.componentPartition.nonempty_of_mem_parts hB
-  have hxS : x ∈ S := d.componentPartition.le hB hx
+  obtain ⟨x, hxS, hx⟩ := d.componentPartition.part_surjOn hB
   refine ⟨⟨x, hxS⟩, ?_⟩
-  change d.componentPartition.part x = B
-  exact d.componentPartition.part_eq_of_mem hB hx
+  simpa only [QuarticDiagram.componentBlock] using hx
 
 end Common
 end SecondQuantization
