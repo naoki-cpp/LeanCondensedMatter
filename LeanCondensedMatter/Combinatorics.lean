@@ -7,6 +7,7 @@ import LeanCondensedMatter.Combinatorics.BinaryShuffleSlots
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffleDecomposition
 import LeanCondensedMatter.Combinatorics.FinpartitionOrderShuffle
+import LeanCondensedMatter.Combinatorics.FinpartitionSetoid
 import LeanCondensedMatter.Combinatorics.IncidenceAlgebra.Mobius
 import LeanCondensedMatter.Combinatorics.SetPartition.Refinement
 import LeanCondensedMatter.Combinatorics.SetPartition.Coarsening
