@@ -3,7 +3,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Comp
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentRestriction
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalConnectivity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentDecomposition
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ConnectedOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotLegSplitting
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalSlotSplit
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitConnectivity
@@ -12,16 +11,13 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Slot
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumVertexProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairImage
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumPairComponent
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVacuumComponentPair
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotShuffleCoordinates
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotCongr
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitVertexProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentOrderedSimplex
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.CanonicalComponentShuffle
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentShufflePermutation
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.CanonicalComponentTimeTransport
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.InteractionVertexRelabel
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentPosition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentTimeTransport
@@ -44,13 +40,13 @@ set_option linter.style.header false
 # Statistics-independent two-point diagrammatics
 
 Two-point diagrams with two distinguished external legs, full connected-component partitions,
-generic vacuum component restriction and canonical external/vacuum decomposition, connected-order
-consequences, the fiber decomposition of the diagram sum by which interaction vertices are external,
-componentwise vertex products, slot-split vacuum pairing transport, vacuum-pair image/component
-equivalences and componentwise pair/crossing transport, binary slot-shuffle coordinates,
-interaction-time ordered-simplex shuffles and their canonical representative, ambient shuffle
-permutations and canonical explicit-slot time-coordinate transport, interaction-slot relabeling and
-mixed-order covariance, mixed-time component-position transport, generic mixed-order pairings,
-standalone external-piece transport and pair equivalence, component pair fibers, commutative pair
-products, crossing decomposition, pair transport, and fixed-order chamber locality.
+generic vacuum component restriction and canonical external/vacuum decomposition, the fiber
+decomposition of the diagram sum by which interaction vertices are external, componentwise vertex
+products, slot-split vacuum pairing transport, vacuum-pair image/component equivalences and
+componentwise pair/crossing transport, binary slot-shuffle coordinates, interaction-time
+ordered-simplex shuffles and their canonical representative, ambient shuffle permutations,
+interaction-slot relabeling and mixed-order covariance, mixed-time component-position transport,
+generic mixed-order pairings, standalone external-piece transport and pair equivalence, component
+pair fibers, commutative pair products, crossing decomposition, pair transport, and fixed-order
+chamber locality.
 -/
