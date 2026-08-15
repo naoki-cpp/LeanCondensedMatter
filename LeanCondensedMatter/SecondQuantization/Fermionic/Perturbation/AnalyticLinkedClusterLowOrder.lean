@@ -7,8 +7,7 @@ set_option linter.style.header false
 # Low-order analytic fermionic linked-cluster identities
 
 These corollaries identify the first three derivatives of the genuine normalized analytic partition
-function logarithm with the same moment-cumulant polynomials and connected-diagram sums as the formal
-Dyson theorem.
+function logarithm with the same moment-cumulant polynomials as the formal Dyson theorem.
 -/
 
 open scoped BigOperators
@@ -80,36 +79,6 @@ theorem iteratedDeriv_analyticNormalizedLogPartitionFunction_order_three
           normalizedDysonPartitionCoeff ε β (quarticInteraction g) 2 +
         2 * normalizedDysonPartitionCoeff ε β (quarticInteraction g) 1 ^ 3 :=
       factorial_mul_coeff_dysonFormalLogPartitionFunction_order_three ε β g
-
-/-- First-order analytic connected-diagram corollary. -/
-theorem iteratedDeriv_log_normalizedAnalyticPartitionFunction_order_one_eq_sum_connectedAmplitude
-    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β) (g : QuarticVertexLabel Mode → ℂ) :
-    iteratedDeriv 1
-        (analyticNormalizedLogPartitionFunction ε β (quarticInteraction g)) 0 =
-      ∑ d : ConnectedQuarticWickDiagram Mode 1 Finset.univ,
-        quarticWickDiagramAmplitude ε β g d.1 := by
-  exact iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAmplitude
-    ε hβ g 1 (by norm_num)
-
-/-- Second-order analytic connected-diagram corollary. -/
-theorem iteratedDeriv_log_normalizedAnalyticPartitionFunction_order_two_eq_sum_connectedAmplitude
-    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β) (g : QuarticVertexLabel Mode → ℂ) :
-    iteratedDeriv 2
-        (analyticNormalizedLogPartitionFunction ε β (quarticInteraction g)) 0 =
-      ∑ d : ConnectedQuarticWickDiagram Mode 2 Finset.univ,
-        quarticWickDiagramAmplitude ε β g d.1 := by
-  exact iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAmplitude
-    ε hβ g 2 (by norm_num)
-
-/-- Third-order analytic connected-diagram corollary. -/
-theorem iteratedDeriv_log_normalizedAnalyticPartitionFunction_order_three_eq_sum_connectedAmplitude
-    (ε : Mode → ℝ) {β : ℝ} (hβ : 0 ≤ β) (g : QuarticVertexLabel Mode → ℂ) :
-    iteratedDeriv 3
-        (analyticNormalizedLogPartitionFunction ε β (quarticInteraction g)) 0 =
-      ∑ d : ConnectedQuarticWickDiagram Mode 3 Finset.univ,
-        quarticWickDiagramAmplitude ε β g d.1 := by
-  exact iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAmplitude
-    ε hβ g 3 (by norm_num)
 
 end
 end Fermionic
