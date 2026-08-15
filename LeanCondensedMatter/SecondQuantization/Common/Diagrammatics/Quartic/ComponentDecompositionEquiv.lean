@@ -1,13 +1,15 @@
+import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ReassembleLaws
 
 set_option linter.style.header false
 
 /-!
-# Labelled quartic-diagram component-decomposition equivalence
+# Labelled quartic-diagram component decomposition
 
 Packages the component partition and connected component restrictions of a labelled quartic diagram
 as an equivalence with a dependent family of connected diagrams, one on each partition block. The
-inverse is `QuarticDiagram.reassemble`.
+inverse is `QuarticDiagram.reassemble`. The same decomposition is exposed directly through the
+generic cumulant `ConnectedDecomposition` interface used by connected-diagram sums.
 -/
 
 namespace SecondQuantization
@@ -78,6 +80,16 @@ noncomputable def QuarticDiagram.componentDecompositionEquiv {S : Finset (Fin N)
   right_inv := by
     rintro ⟨π, F⟩
     exact QuarticDiagram.componentDecompose_reassemble π F
+
+/-- The statistics-independent connected-decomposition adapter for labelled quartic diagrams. -/
+noncomputable def quarticDiagramConnectedDecomposition
+    (Label : Type*) [Fintype Label] (N : ℕ) :
+    Combinatorics.ConnectedDecomposition (Fin N) where
+  Object S := QuarticDiagram Label N S
+  ConnectedObject S := ConnectedQuarticDiagram Label N S
+  fintypeObject _ := inferInstance
+  fintypeConnectedObject _ := inferInstance
+  decompose _ := QuarticDiagram.componentDecompositionEquiv
 
 end Common
 end SecondQuantization
