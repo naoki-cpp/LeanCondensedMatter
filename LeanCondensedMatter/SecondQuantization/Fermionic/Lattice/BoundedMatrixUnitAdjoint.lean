@@ -121,6 +121,51 @@ theorem boundedDgammaMatrixUnit_eq_create_comp_annihilate (x y : Site) :
   rw [occupationOperator_dGamma_matrixUnit, Common.finiteHilbertOperator_comp]
   rfl
 
+/-- On the one-particle occupation basis, the bounded second-quantized matrix unit sends the
+singleton state at `y` to the singleton state at `x`. -/
+@[simp]
+theorem boundedDgammaMatrixUnit_apply_singleton (x y : Site) :
+    boundedDgammaMatrixUnit x y
+        (Common.finiteHilbertBasisState ({y} : Occupation Site)) =
+      Common.finiteHilbertBasisState ({x} : Occupation Site) := by
+  rw [boundedDgammaMatrixUnit_eq_create_comp_annihilate]
+  change finiteHilbertCreate x
+      (finiteHilbertAnnihilate y
+        (Common.finiteHilbertBasisState ({y} : Occupation Site))) = _
+  have hy : fermionSign y ({y} : Occupation Site) = 1 := by
+    unfold fermionSign
+    have hfilter : {z ∈ ({y} : Finset Site) | z < y} = ∅ := by
+      ext z
+      constructor
+      · intro hz
+        have hzmem : z ∈ ({y} : Finset Site) := (Finset.mem_filter.mp hz).1
+        have hzlt : z < y := (Finset.mem_filter.mp hz).2
+        have hzy : z = y := Finset.mem_singleton.mp hzmem
+        subst z
+        exact (lt_irrefl y hzlt).elim
+      · intro hz
+        exact False.elim ((Finset.notMem_empty z) hz)
+    rw [hfilter]
+    simp only [Finset.card_empty, pow_zero]
+  rw [finiteHilbertAnnihilate_basisState_of_mem (by simp), hy]
+  simp only [Int.cast_one, one_smul]
+  rw [finiteHilbertCreate_basisState_of_not_mem (by simp [removeOccupation])]
+  simp [fermionSign, removeOccupation, insertOccupation]
+
+/-- A bounded second-quantized matrix unit kills a one-particle singleton state whose occupied site
+is not its source site. -/
+@[simp]
+theorem boundedDgammaMatrixUnit_apply_singleton_of_ne (x y z : Site) (h : z ≠ y) :
+    boundedDgammaMatrixUnit x y
+        (Common.finiteHilbertBasisState ({z} : Occupation Site)) = 0 := by
+  rw [boundedDgammaMatrixUnit_eq_create_comp_annihilate]
+  change finiteHilbertCreate x
+      (finiteHilbertAnnihilate y
+        (Common.finiteHilbertBasisState ({z} : Occupation Site))) = 0
+  rw [finiteHilbertAnnihilate_basisState_of_not_mem]
+  · exact map_zero _
+  · simpa [eq_comm] using h
+
 /-- Taking the Hilbert-space adjoint reverses the oriented one-particle matrix unit. -/
 @[simp]
 theorem star_boundedDgammaMatrixUnit (x y : Site) :
