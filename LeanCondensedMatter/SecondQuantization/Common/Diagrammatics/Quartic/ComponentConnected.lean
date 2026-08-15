@@ -137,8 +137,8 @@ theorem QuarticDiagram.restrictComponent_isConnected {S : Finset (Fin N)}
       d.reachable_restrictComponent_of_walk hB p (d.blockVertex_mem hB u)
     rwa [d.subtypeMemBlockEquiv_blockVertex hB u,
       d.subtypeMemBlockEquiv_blockVertex hB w] at hreach2
-  · obtain ⟨v, rfl⟩ := d.exists_componentBlock_eq_of_mem hB
-    exact ⟨v, d.self_mem_componentBlock v⟩
+  · obtain ⟨x, hxS, hx⟩ := d.componentPartition.part_surjOn hB
+    exact ⟨x, by rw [← hx]; exact d.componentPartition.mem_part hxS⟩
 
 /-- `restrictComponent`, packaged as a connected labelled quartic diagram. -/
 noncomputable def QuarticDiagram.restrictComponentConnected {S : Finset (Fin N)}
