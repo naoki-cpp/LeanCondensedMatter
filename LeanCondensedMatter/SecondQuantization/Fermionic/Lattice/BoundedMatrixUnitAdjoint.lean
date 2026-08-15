@@ -136,9 +136,15 @@ theorem boundedDgammaMatrixUnit_apply_singleton (x y : Site) :
     unfold fermionSign
     have hfilter : {z ∈ ({y} : Finset Site) | z < y} = ∅ := by
       ext z
-      simp only [Finset.mem_filter, Finset.mem_singleton, Finset.mem_empty, iff_false]
-      rintro ⟨rfl, hyy⟩
-      exact (lt_irrefl y) hyy
+      constructor
+      · intro hz
+        have hzmem : z ∈ ({y} : Finset Site) := (Finset.mem_filter.mp hz).1
+        have hzlt : z < y := (Finset.mem_filter.mp hz).2
+        have hzy : z = y := Finset.mem_singleton.mp hzmem
+        subst z
+        exact (lt_irrefl y hzlt).elim
+      · intro hz
+        exact False.elim ((Finset.notMem_empty z) hz)
     rw [hfilter]
     simp only [Finset.card_empty, pow_zero]
   rw [finiteHilbertAnnihilate_basisState_of_mem (by simp), hy]
