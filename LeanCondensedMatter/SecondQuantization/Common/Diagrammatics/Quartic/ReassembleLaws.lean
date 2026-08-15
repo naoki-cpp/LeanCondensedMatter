@@ -90,29 +90,29 @@ private theorem QuarticDiagram.reassemble_adj_of_adj_component {S : Finset (Fin 
     (QuarticDiagram.reassemble π F).vertexGraph.Adj
       (QuarticDiagram.reassembleVertex π B u')
       (QuarticDiagram.reassembleVertex π B w') := by
-  obtain ⟨hne', leg', hu', hw'⟩ := h
-  set leg := (QuarticDiagram.bigLegEquiv π).symm ⟨B, leg'⟩ with hlegdef
-  have hbig : QuarticDiagram.bigLegEquiv π leg = ⟨B, leg'⟩ :=
+  obtain ⟨hne', leg, hu', hw'⟩ := h
+  set leg0 := (QuarticDiagram.bigLegEquiv π).symm ⟨B, leg⟩ with hlegdef
+  have hbig : QuarticDiagram.bigLegEquiv π leg0 = ⟨B, leg⟩ :=
     Equiv.apply_symm_apply _ _
-  have hu : vertexOfLeg leg = QuarticDiagram.reassembleVertex π B u' := by
+  have hu : vertexOfLeg leg0 = QuarticDiagram.reassembleVertex π B u' := by
     rw [hlegdef, QuarticDiagram.bigLegEquiv_symm_sigma_mk]
     rw [vertexOfLeg_legOfVertexLocal, hu']
     rfl
   have hpartner :
-      (QuarticDiagram.reassemble π F).pairing.partner leg =
-        (QuarticDiagram.bigLegEquiv π).symm ⟨B, (F B).1.pairing.partner leg'⟩ := by
+      (QuarticDiagram.reassemble π F).pairing.partner leg0 =
+        (QuarticDiagram.bigLegEquiv π).symm ⟨B, (F B).1.pairing.partner leg⟩ := by
     have hlhs : (QuarticDiagram.reassemble π F).pairing.partner =
         (QuarticDiagram.bigLegEquiv π).symm.permCongr
           (Equiv.sigmaCongrRight fun C => (F C).1.pairing.partner) := rfl
     rw [hlhs, Equiv.permCongr_apply, Equiv.symm_symm, hbig]
     rfl
-  have hw : vertexOfLeg ((QuarticDiagram.reassemble π F).pairing.partner leg) =
+  have hw : vertexOfLeg ((QuarticDiagram.reassemble π F).pairing.partner leg0) =
       QuarticDiagram.reassembleVertex π B w' := by
     rw [hpartner, QuarticDiagram.bigLegEquiv_symm_sigma_mk]
     rw [vertexOfLeg_legOfVertexLocal, hw']
     rfl
   exact ⟨fun hEq => hne' (QuarticDiagram.reassembleVertex_injective π B hEq),
-    leg, hu, hw⟩
+    leg0, hu, hw⟩
 
 private theorem QuarticDiagram.reassemble_reachable_of_reachable_component
     {S : Finset (Fin N)} (π : Finpartition S)
@@ -166,16 +166,18 @@ theorem QuarticDiagram.componentPartition_reassemble {S : Finset (Fin N)}
   apply Finpartition.ext
   apply Finset.Subset.antisymm
   · intro B hB
-    obtain ⟨v, rfl⟩ := (QuarticDiagram.reassemble π F).exists_componentBlock_eq_of_mem hB
-    rw [QuarticDiagram.reassemble_componentBlock_eq_part]
-    exact π.part_mem.2 v.2
+    obtain ⟨v, hvS, hv⟩ :=
+      (QuarticDiagram.reassemble π F).componentPartition.part_surjOn hB
+    have hblock :
+        (QuarticDiagram.reassemble π F).componentBlock (⟨v, hvS⟩ : ↥S) = B := by
+      simpa only [QuarticDiagram.componentBlock] using hv
+    rw [← hblock, QuarticDiagram.reassemble_componentBlock_eq_part]
+    exact π.part_mem.2 hvS
   · intro B hB
-    obtain ⟨v, hv⟩ := π.nonempty_of_mem_parts hB
-    have hvS : v ∈ S := π.le hB hv
-    have hpart : π.part v = B := π.part_eq_of_mem hB hv
+    obtain ⟨v, hvS, hv⟩ := π.part_surjOn hB
     have hmem :=
       (QuarticDiagram.reassemble π F).componentBlock_mem_componentPartition (⟨v, hvS⟩ : ↥S)
-    rwa [QuarticDiagram.reassemble_componentBlock_eq_part, hpart] at hmem
+    rwa [QuarticDiagram.reassemble_componentBlock_eq_part, hv] at hmem
 
 private theorem QuarticDiagram.reassembleVertex_eq_subtypeMemBlockEquiv_symm
     {S : Finset (Fin N)} (π : Finpartition S) (B : π.parts)
