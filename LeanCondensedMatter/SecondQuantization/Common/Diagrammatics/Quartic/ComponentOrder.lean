@@ -9,7 +9,8 @@ set_option linter.style.header false
 
 The finite-partition order/shuffle combinatorics is owned by
 `Combinatorics/FinpartitionOrderShuffle.lean`. This module provides the quartic-diagram-facing names
-obtained by applying that generic API to the diagram's connected-component partition.
+obtained by applying that generic API to the diagram's connected-component partition, including the
+canonical decomposition of a global order into component-local orders and a shuffle.
 -/
 
 namespace SecondQuantization
@@ -62,6 +63,21 @@ theorem QuarticDiagram.assembleVertexOrder_shuffleOfVertexOrder
     (orders : d.ComponentVertexOrders) (h : d.ComponentOrdersCompatible order orders) :
     d.assembleVertexOrder orders (d.shuffleOfVertexOrder order orders h) = order :=
   d.componentPartition.assembleOrder_shuffleOfOrder order orders h
+
+/-- A global vertex order is equivalent to component-local orders together with an
+order-preserving shuffle of their slots. -/
+noncomputable def QuarticDiagram.componentOrderDecompositionEquiv {S : Finset (Fin N)}
+    (d : QuarticDiagram Label N S) :
+    QuarticVertexOrder S ≃ d.ComponentVertexOrders × d.ComponentShuffle :=
+  d.componentPartition.orderDecompositionEquiv
+
+/-- Reindex a finite sum over global vertex orders by component-local orders and shuffles. -/
+theorem QuarticDiagram.sum_vertexOrder_eq_sum_componentOrders_shuffle
+    {M : Type*} [AddCommMonoid M] {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
+    (F : d.ComponentVertexOrders × d.ComponentShuffle → M) :
+    ∑ order : QuarticVertexOrder S, F (d.componentOrderDecompositionEquiv order) =
+      ∑ x : d.ComponentVertexOrders × d.ComponentShuffle, F x :=
+  Equiv.sum_comp d.componentOrderDecompositionEquiv F
 
 end Common
 end SecondQuantization
