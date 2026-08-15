@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.LinearCommutator
+import Mathlib.Tactic.Abel
 
 set_option linter.style.header false
 
@@ -51,6 +52,7 @@ theorem linearCommutator_sub_right
   apply LinearMap.ext
   intro v
   simp [linearCommutator]
+  abel
 
 /-- Algebraic `z` component of orbital angular momentum, `L_z = X Pᵧ - Y Pₓ`.
 
