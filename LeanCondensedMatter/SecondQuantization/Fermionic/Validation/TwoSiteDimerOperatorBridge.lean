@@ -71,7 +71,7 @@ theorem twoSiteDimerHamiltonian_one_apply_bonding :
   rw [twoSiteDimerBondingState, map_sub,
     twoSiteDimerHamiltonian_one_apply_site_zero,
     twoSiteDimerHamiltonian_one_apply_site_one]
-  simp [sub_eq_add_neg]
+  simp [sub_eq_add_neg, add_comm]
 
 /-- The symmetric one-particle state has energy `+1`. -/
 theorem twoSiteDimerHamiltonian_one_apply_antibonding :
@@ -118,7 +118,7 @@ theorem twoSiteDimerCurrent_one_apply_antibonding :
     twoSiteDimerCurrent_one_apply_site_zero,
     twoSiteDimerCurrent_one_apply_site_one,
     twoSiteDimerBondingState, smul_sub]
-  simp [neg_smul, add_comm]
+  simp [neg_smul, sub_eq_add_neg, add_comm]
 
 /-- The current takes the lower state to `-i` times the upper state. -/
 theorem twoSiteDimerCurrent_one_apply_bonding :
@@ -128,21 +128,21 @@ theorem twoSiteDimerCurrent_one_apply_bonding :
     twoSiteDimerCurrent_one_apply_site_zero,
     twoSiteDimerCurrent_one_apply_site_one,
     twoSiteDimerAntibondingState, smul_add]
-  simp [neg_smul, sub_eq_add_neg, add_comm, add_left_comm]
+  simp [neg_smul, sub_eq_add_neg, add_comm]
 
 /-- The lower scalar-table energy is exactly the eigenvalue derived from the bounded Hamiltonian. -/
 theorem twoSiteDimerTable_groundEnergy_from_operator :
     twoSiteDimerHamiltonian 1 twoSiteDimerBondingState =
-      twoSiteDimerGroundStateLehmannTable.energy 0 • twoSiteDimerBondingState := by
+      (twoSiteDimerGroundStateLehmannTable.energy 0 : ℂ) • twoSiteDimerBondingState := by
   rw [twoSiteDimerGroundStateLehmannTable_energy_zero]
-  exact twoSiteDimerHamiltonian_one_apply_bonding
+  simpa using twoSiteDimerHamiltonian_one_apply_bonding
 
 /-- The upper scalar-table energy is exactly the eigenvalue derived from the bounded Hamiltonian. -/
 theorem twoSiteDimerTable_excitedEnergy_from_operator :
     twoSiteDimerHamiltonian 1 twoSiteDimerAntibondingState =
-      twoSiteDimerGroundStateLehmannTable.energy 1 • twoSiteDimerAntibondingState := by
+      (twoSiteDimerGroundStateLehmannTable.energy 1 : ℂ) • twoSiteDimerAntibondingState := by
   rw [twoSiteDimerGroundStateLehmannTable_energy_one]
-  exact twoSiteDimerHamiltonian_one_apply_antibonding
+  simpa using twoSiteDimerHamiltonian_one_apply_antibonding
 
 /-- The table entry `J₋₊ = i` is the transition coefficient of the bounded current. -/
 theorem twoSiteDimerTable_current_zero_one_from_operator :
