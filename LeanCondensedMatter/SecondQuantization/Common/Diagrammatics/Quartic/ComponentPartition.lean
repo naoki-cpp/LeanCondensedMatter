@@ -84,22 +84,5 @@ theorem QuarticDiagram.componentBlock_eq_of_reachable {S : Finset (Fin N)}
   exact (d.componentPartition.mem_part_iff_part_eq_part v.2 w.2).1
     ((d.mem_componentBlock w).2 ⟨v.2, h⟩)
 
-/-- Non-reachable vertices determine disjoint component blocks. -/
-theorem QuarticDiagram.componentBlock_disjoint_of_not_reachable {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) {v w : ↥S} (h : ¬ d.vertexGraph.Reachable v w) :
-    Disjoint (d.componentBlock v) (d.componentBlock w) := by
-  apply d.componentPartition.disjoint
-  · exact d.componentBlock_mem_componentPartition v
-  · exact d.componentBlock_mem_componentPartition w
-  · intro hEq
-    apply h
-    have hmem : (v : Fin N) ∈ d.componentBlock w := by
-      change (v : Fin N) ∈ d.componentPartition.part (w : Fin N)
-      rw [← hEq]
-      exact d.componentPartition.mem_part v.2
-    obtain ⟨hv, hreach⟩ := (d.mem_componentBlock w).1 hmem
-    have hvEq : (⟨(v : Fin N), hv⟩ : ↥S) = v := Subtype.ext (by rfl)
-    rwa [hvEq] at hreach
-
 end Common
 end SecondQuantization
