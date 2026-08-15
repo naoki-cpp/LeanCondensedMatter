@@ -112,7 +112,7 @@ theorem TwoPointDiagram.prod_vertexLabel_eq_prod_componentInteractionParts
 
 /-- A product of interaction-vertex-local weights splits into the common external component and all
 vacuum components. -/
-theorem TwoPointDiagram.prod_vertexLabel_eq_external_mul_prod_vacuum
+private theorem TwoPointDiagram.prod_vertexLabel_eq_external_mul_prod_vacuum
     {M : Type*} [CommMonoid M]
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (w : InternalLabel → M) :
@@ -132,7 +132,7 @@ theorem TwoPointDiagram.prod_vertexLabel_eq_external_mul_prod_vacuum
 
 /-- A constant vertex weight factors according to the cardinalities of the external and vacuum
 interaction parts. -/
-theorem TwoPointDiagram.pow_card_eq_external_mul_prod_vacuum
+private theorem TwoPointDiagram.pow_card_eq_external_mul_prod_vacuum
     {M : Type*} [CommMonoid M]
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (a : M) :

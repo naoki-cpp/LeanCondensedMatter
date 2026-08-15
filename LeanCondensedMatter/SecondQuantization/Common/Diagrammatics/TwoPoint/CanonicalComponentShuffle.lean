@@ -26,7 +26,7 @@ noncomputable section
 
 /-- Component-local ordered slots are equivalent to the actual interaction vertices carried by
 those components. -/
-def TwoPointDiagram.componentInteractionSlotVertexEquiv
+private def TwoPointDiagram.componentInteractionSlotVertexEquiv
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     (Σ B : d.componentPartition.parts, Fin (d.interactionComponentSize B)) ≃
       (Σ B : d.componentPartition.parts,
@@ -46,7 +46,7 @@ def TwoPointDiagram.componentInteractionSlotVertexEquiv
     simp
 
 @[simp]
-theorem TwoPointDiagram.componentInteractionSlotVertexEquiv_apply
+private theorem TwoPointDiagram.componentInteractionSlotVertexEquiv_apply
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : d.componentPartition.parts) (i : Fin (d.interactionComponentSize B)) :
     d.componentInteractionSlotVertexEquiv ⟨B, i⟩ =
@@ -55,7 +55,7 @@ theorem TwoPointDiagram.componentInteractionSlotVertexEquiv_apply
   rfl
 
 @[simp]
-theorem TwoPointDiagram.componentInteractionSlotVertexEquiv_symm_apply
+private theorem TwoPointDiagram.componentInteractionSlotVertexEquiv_symm_apply
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : d.componentPartition.parts)
     (v : ↥(TwoPointDiagram.interactionPart
@@ -94,7 +94,7 @@ def TwoPointDiagram.canonicalComponentInteractionShuffle
       (B : Finset (TwoPointVertex S))).orderIsoOfFin rfl |>.strictMono hab
 
 @[simp]
-theorem TwoPointDiagram.canonicalComponentInteractionShuffle_slotEquiv_apply
+private theorem TwoPointDiagram.canonicalComponentInteractionShuffle_slotEquiv_apply
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : d.componentPartition.parts) (i : Fin (d.interactionComponentSize B)) :
     d.canonicalComponentInteractionShuffle.slotEquiv ⟨B, i⟩ =
@@ -105,7 +105,7 @@ theorem TwoPointDiagram.canonicalComponentInteractionShuffle_slotEquiv_apply
   rfl
 
 /-- The local ordered slot occupied by one actual interaction vertex of a component. -/
-def TwoPointDiagram.interactionComponentSlotOfVertex
+private def TwoPointDiagram.interactionComponentSlotOfVertex
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : d.componentPartition.parts)
     (v : ↥(TwoPointDiagram.interactionPart
@@ -115,7 +115,7 @@ def TwoPointDiagram.interactionComponentSlotOfVertex
     (B : Finset (TwoPointVertex S))).orderIsoOfFin rfl).symm v
 
 /-- The canonical shuffle sends the local slot of an interaction vertex to its ambient rank. -/
-theorem TwoPointDiagram.canonicalComponentInteractionShuffle_slotOfVertex
+private theorem TwoPointDiagram.canonicalComponentInteractionShuffle_slotOfVertex
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : d.componentPartition.parts)
     (v : ↥(TwoPointDiagram.interactionPart
@@ -128,7 +128,7 @@ theorem TwoPointDiagram.canonicalComponentInteractionShuffle_slotOfVertex
 
 /-- Equality of canonical component-local time assignments is exactly equality of ambient times on
 all actual interaction vertices of that component. -/
-theorem TwoPointDiagram.canonicalComponentTimeAssignment_eq_iff
+private theorem TwoPointDiagram.canonicalComponentTimeAssignment_eq_iff
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (τ υ : Fin S.card → ℝ) (B : d.componentPartition.parts) :
     d.interactionComponentTimeAssignment
@@ -157,7 +157,7 @@ theorem TwoPointDiagram.canonicalComponentTimeAssignment_eq_iff
 
 /-- For the full finset of `Fin N`, converting the increasing ambient rank back to `Fin N` recovers
 the underlying vertex. -/
-theorem finCast_univOrderIsoOfFin_symm
+private theorem finCast_univOrderIsoOfFin_symm
     (x : ↥(Finset.univ : Finset (Fin N))) :
     Fin.cast (by simp)
         (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm x) = x.1 := by

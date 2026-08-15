@@ -31,21 +31,6 @@ def TwoPointDiagram.ComponentInteractionShuffle.ambientPermutation
     (shuffle : d.ComponentInteractionShuffle) : Equiv.Perm (Fin S.card) :=
   d.canonicalComponentInteractionShuffle.relativeAmbientPermutation shuffle
 
-/-- Restricting times along an arbitrary component shuffle is the same as first permuting the
-ambient interaction-time coordinates and then using the canonical component restriction. -/
-theorem TwoPointDiagram.ComponentInteractionShuffle.interactionComponentTimeAssignment_eq_canonical
-    {S : Finset (Fin N)} {d : TwoPointDiagram ExternalLabel InternalLabel N S}
-    (shuffle : d.ComponentInteractionShuffle)
-    (τ : Fin S.card → ℝ) (B : d.componentPartition.parts) :
-    d.interactionComponentTimeAssignment shuffle τ B =
-      d.interactionComponentTimeAssignment d.canonicalComponentInteractionShuffle
-        (fun i => τ (shuffle.ambientPermutation i)) B := by
-  funext i
-  change τ (shuffle.slotEquiv ⟨B, i⟩) =
-    τ (d.canonicalComponentInteractionShuffle.relativeAmbientPermutation shuffle
-      (d.canonicalComponentInteractionShuffle.slotEquiv ⟨B, i⟩))
-  rw [Combinatorics.FamilySlotShuffleTo.relativeAmbientPermutation_slotEquiv]
-
 /-- An arbitrary component-shuffle product is the canonical component-shuffle product evaluated on
 the correspondingly permuted ambient interaction-time assignment. -/
 theorem TwoPointDiagram.ComponentInteractionShuffle.interactionComponentShuffleIntegrand_eq_canonical
