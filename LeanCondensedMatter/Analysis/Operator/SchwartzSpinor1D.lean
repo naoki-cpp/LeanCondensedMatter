@@ -98,6 +98,7 @@ noncomputable def multiplicationLinear : Spatial →ₗ[ℂ] (Spinor →ₗ[ℂ]
     funext a
     ext x
     simp [multiplicationOperator]
+    ring
   map_smul' := by
     intro c f
     apply LinearMap.ext
@@ -105,6 +106,7 @@ noncomputable def multiplicationLinear : Spatial →ₗ[ℂ] (Spinor →ₗ[ℂ]
     funext a
     ext x
     simp [multiplicationOperator]
+    ring
 
 @[simp]
 theorem multiplicationLinear_apply (f : Spatial) :
