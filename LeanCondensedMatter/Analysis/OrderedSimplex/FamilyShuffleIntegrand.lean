@@ -96,7 +96,7 @@ theorem eq_localize (e : (Σ i, slot i) ≃ κ) (i : ι)
 
 end DependentSlotEquiv
 
-variable {ι : Type*} [Fintype ι]
+variable {ι : Type*}
 
 /-- Restrict an ambient assignment to one local block for a shuffle into an arbitrary ambient total. -/
 def FamilySlotShuffleTo.timeAssignment {size : ι → ℕ} {total : ℕ}
@@ -110,6 +110,8 @@ theorem FamilySlotShuffleTo.timeAssignment_apply {size : ι → ℕ} {total : �
     (i : ι) (j : Fin (size i)) :
     shuffle.timeAssignment τ i j = τ (shuffle.slotEquiv ⟨i, j⟩) :=
   rfl
+
+variable [Fintype ι]
 
 /-- Product of local integrands after embedding their coordinates into an arbitrary ambient total.
 This is the `FamilySlotShuffleTo` form used when the ambient cardinality is only propositionally
