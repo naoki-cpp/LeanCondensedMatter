@@ -84,11 +84,8 @@ theorem twoSiteDimerGroundState_lehmannResponse_frequency
   classical
   have hminus := twoSiteDimerLehmannDenominator_ne_zero omega eta (-2) heta
   have hplus := twoSiteDimerLehmannDenominator_ne_zero omega eta 2 heta
-  have hdiff :
-      lehmannDenominator 1 omega eta 2 -
-          lehmannDenominator 1 omega eta (-2) = -4 * Complex.I := by
-    unfold lehmannDenominator
-    ring
+  have hgapMinus : ((-1 : ℝ) - 1) = -2 := by norm_num
+  have hgapPlus : ((1 : ℝ) + 1) = 2 := by norm_num
   unfold finiteLehmannTableResponse
   rw [Fintype.sum_prod_type]
   simp only [Fin.sum_univ_two, Fin.isValue,
@@ -98,10 +95,10 @@ theorem twoSiteDimerGroundState_lehmannResponse_frequency
     twoSiteDimerGroundStateTransitionWeight_one_zero,
     finiteLehmannTableTransitionWeight_diag, sub_self]
   simp only [lehmannTerm, zero_mul, zero_add, add_zero]
+  rw [hgapMinus, hgapPlus]
   rw [twoSiteDimerFrequencyDenominator_eq_transitionProduct]
   field_simp [hminus, hplus]
-  rw [← mul_sub, hdiff]
-  norm_num
+  apply Complex.ext <;> simp [lehmannDenominator] <;> ring
 
 /-- For unit volume, the electric-field normalization is `-1 / (η - iω)`. -/
 theorem twoSiteDimerUnitVolume_normalization_frequency
@@ -110,7 +107,9 @@ theorem twoSiteDimerUnitVolume_normalization_frequency
       -(twoSiteDimerComplexRate omega eta)⁻¹ := by
   unfold finiteVolumeConductivityNormalization adiabaticElectricFieldFactor
     twoSiteDimerUnitVolume
-  simp only [one_mul]
+  change
+    (-(eta : ℂ) + Complex.I * (omega : ℂ))⁻¹ =
+      -(twoSiteDimerComplexRate omega eta)⁻¹
   have hfactor :
       (-(eta : ℂ) + Complex.I * (omega : ℂ)) =
         -twoSiteDimerComplexRate omega eta := by
