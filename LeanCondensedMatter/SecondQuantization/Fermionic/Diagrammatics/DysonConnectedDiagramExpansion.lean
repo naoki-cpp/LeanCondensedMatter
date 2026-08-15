@@ -19,7 +19,7 @@ namespace Fermionic
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
 
 /-- Multiplicative quartic Wick amplitude on the shared connected decomposition. -/
-noncomputable def quarticWickDiagramMultiplicativeWeight (ε : Mode → ℝ) (β : ℝ)
+private noncomputable def quarticWickDiagramMultiplicativeWeight (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) :
     Combinatorics.MultiplicativeWeight
       (Common.quarticDiagramConnectedDecomposition (QuarticVertexLabel Mode) N) ℂ where
@@ -30,23 +30,6 @@ noncomputable def quarticWickDiagramMultiplicativeWeight (ε : Mode → ℝ) (β
       ∏ B : d.componentPartition.parts,
         quarticWickDiagramAmplitude ε β g (d.restrictComponentConnected B.2).1
     exact quarticWickDiagramAmplitude_eq_prod_restrictComponentConnected ε β g d
-
-/-- The abstract object moment is the Dyson vertex moment of the quartic interaction. -/
-theorem quarticWickDiagramMultiplicativeWeight_objectMoment (ε : Mode → ℝ) (β : ℝ)
-    (g : QuarticVertexLabel Mode → ℂ) (S : Finset (Fin N)) :
-    (quarticWickDiagramMultiplicativeWeight (N := N) ε β g).objectMoment S =
-      dysonVertexMoment ε β (quarticInteraction g) S := by
-  change (∑ d : QuarticWickDiagram Mode N S, quarticWickDiagramAmplitude ε β g d) =
-    dysonVertexMoment ε β (quarticInteraction g) S
-  exact (dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g S).symm
-
-/-- The connected contribution is the explicit connected Wick-diagram amplitude sum. -/
-theorem quarticWickDiagramMultiplicativeWeight_connectedContribution
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (S : Finset (Fin N)) :
-    (quarticWickDiagramMultiplicativeWeight (N := N) ε β g).connectedContribution S =
-      ∑ d : ConnectedQuarticWickDiagram Mode N S,
-        quarticWickDiagramAmplitude ε β g d.1 := by
-  rfl
 
 /-- The Dyson vertex cumulant is the sum of amplitudes of connected quartic Wick diagrams. -/
 theorem dysonVertexCumulant_quarticInteraction_eq_sum_connectedQuarticWickDiagramAmplitude
@@ -62,12 +45,13 @@ theorem dysonVertexCumulant_quarticInteraction_eq_sum_connectedQuarticWickDiagra
       unfold dysonVertexCumulant
       congr 1
       funext T
-      exact (quarticWickDiagramMultiplicativeWeight_objectMoment ε β g T).symm
+      change dysonVertexMoment ε β (quarticInteraction g) T =
+        ∑ d : QuarticWickDiagram Mode N T, quarticWickDiagramAmplitude ε β g d
+      exact dysonVertexMoment_quarticInteraction_eq_sum_quarticWickDiagramAmplitude ε β g T
     _ = W.connectedContribution S := W.cumulantFromMoment_objectMoment hS
     _ = ∑ d : ConnectedQuarticWickDiagram Mode N S,
         quarticWickDiagramAmplitude ε β g d.1 := by
-      simpa only [W] using
-        quarticWickDiagramMultiplicativeWeight_connectedContribution ε β g S
+      rfl
 
 end Fermionic
 end SecondQuantization
