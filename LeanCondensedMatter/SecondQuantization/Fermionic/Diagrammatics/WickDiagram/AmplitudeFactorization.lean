@@ -25,7 +25,7 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {N : ℕ}
 
 /-- The sum of ordered-simplex contributions over all global vertex orders factors as the product of
 the corresponding sums for the connected-component restrictions. -/
-theorem QuarticWickDiagram.sum_orderedSimplexContribution_eq_prod_components
+private theorem sum_orderedSimplexContribution_eq_prod_components
     (ε : Mode → ℝ) (β : ℝ) {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S) :
     (∑ order : Common.QuarticVertexOrder S, d.orderedSimplexContribution ε β order) =
       ∏ B : d.componentPartition.parts,
@@ -96,7 +96,7 @@ theorem quarticWickDiagramAmplitude_eq_prod_restrictComponentConnected
   classical
   simp only [quarticWickDiagramAmplitude, QuarticWickDiagram.couplingWeight]
   rw [Common.QuarticDiagram.dysonSign_mul_vertexWeight_eq_prod_restrictComponentConnected d g,
-    d.sum_orderedSimplexContribution_eq_prod_components]
+    sum_orderedSimplexContribution_eq_prod_components ε β d]
   rw [← Finset.prod_mul_distrib]
 
 end Fermionic

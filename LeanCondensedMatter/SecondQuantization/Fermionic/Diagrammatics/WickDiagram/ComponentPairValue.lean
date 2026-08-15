@@ -23,7 +23,7 @@ variable [LinearOrder Mode]
 
 /-- A global ordered leg at a component-embedded position equals the corresponding ordered leg of
 its restricted component diagram. -/
-theorem orderedQuarticLegOperator_componentOrderedLeg
+private theorem orderedQuarticLegOperator_componentOrderedLeg
     (ε : Mode → ℝ) {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (τ : Fin S.card → ℝ) (B : d.componentPartition.parts)

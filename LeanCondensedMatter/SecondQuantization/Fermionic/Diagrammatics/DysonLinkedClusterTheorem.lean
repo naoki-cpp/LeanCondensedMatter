@@ -18,19 +18,6 @@ namespace Fermionic
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 omit [LinearOrder Mode] in
-/-- Coefficients of the normalized Dyson partition series are the normalized fermionic Dyson
-partition coefficients. -/
-theorem coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff
-    (ε : Mode → ℝ) (β : ℝ)
-    (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ) :
-    PowerSeries.coeff n
-        (PowerSeries.normalizeByConstantCoeff (dysonPartitionSeries ε β V)) =
-      normalizedDysonPartitionCoeff ε β V n := by
-  rw [normalizedDysonPartitionCoeff, PowerSeries.coeff_normalizeByConstantCoeff,
-    constantCoeff_dysonPartitionSeries, coeff_dysonPartitionSeries, div_eq_mul_inv]
-  exact mul_comm _ _
-
-omit [LinearOrder Mode] in
 /-- The factorial-normalized coefficient of the formal logarithm of the normalized Dyson partition
 series is its finite-set Dyson vertex cumulant. -/
 theorem factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_dysonVertexCumulant

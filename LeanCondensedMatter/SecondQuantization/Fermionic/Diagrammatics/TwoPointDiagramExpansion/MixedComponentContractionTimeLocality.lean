@@ -101,7 +101,7 @@ private theorem mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegOperat
 
 /-- Component-position time transport preserves the represented atomic operator whenever the two
 interaction-time assignments agree on that component. -/
-theorem FixedExternalTwoPointWickDiagram.mixedTimeOrderedAtomicOperatorFamily_positionTimeEquiv
+private theorem mixedTimeOrderedAtomicOperatorFamily_positionTimeEquiv
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)
     (B : d.1.componentPartition.parts) (hTime : d.1.ComponentTimeEq B σ υ)
@@ -129,7 +129,7 @@ variable [Fintype Mode]
 
 /-- Component-local equality of interaction times preserves the canonical density-state contraction
 attached to one normalized pair under canonical pair-time transport. -/
-theorem FixedExternalTwoPointWickDiagram.mixedPairContractionValue_eq_of_componentTimeEq
+private theorem mixedPairContractionValue_eq_of_componentTimeEq
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)
     (B : d.1.componentPartition.parts) (hTime : d.1.ComponentTimeEq B σ υ)
@@ -148,9 +148,9 @@ theorem FixedExternalTwoPointWickDiagram.mixedPairContractionValue_eq_of_compone
     simpa [tp, p0, p1] using
       d.1.mixedComponentPairTimeEquiv_endpoints_eq τ τ' σ υ B hTime p
   have hOp0 :=
-    d.mixedTimeOrderedAtomicOperatorFamily_positionTimeEquiv ε τ τ' σ υ B hTime p0
+    mixedTimeOrderedAtomicOperatorFamily_positionTimeEquiv d ε τ τ' σ υ B hTime p0
   have hOp1 :=
-    d.mixedTimeOrderedAtomicOperatorFamily_positionTimeEquiv ε τ τ' σ υ B hTime p1
+    mixedTimeOrderedAtomicOperatorFamily_positionTimeEquiv d ε τ τ' σ υ B hTime p1
   rw [← hEnds.1] at hOp0
   rw [← hEnds.2] at hOp1
   have hEndpoint0 :
@@ -166,13 +166,13 @@ theorem FixedExternalTwoPointWickDiagram.mixedPairContractionValue_eq_of_compone
   rw [hEndpoint0, hEndpoint1]
 
 /-- `ComponentTimeEq` discharges the contraction-preservation hypothesis. -/
-theorem FixedExternalTwoPointWickDiagram.mixedComponentContractionPreserving_of_componentTimeEq
+private theorem mixedComponentContractionPreserving_of_componentTimeEq
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)
     (B : d.1.componentPartition.parts) (hTime : d.1.ComponentTimeEq B σ υ) :
     d.MixedComponentContractionPreserving ε β τ τ' σ υ B := by
   intro p
-  exact d.mixedPairContractionValue_eq_of_componentTimeEq ε β τ τ' σ υ B hTime p
+  exact mixedPairContractionValue_eq_of_componentTimeEq d ε β τ τ' σ υ B hTime p
 
 /-- The complete mixed component pairing value depends only on the interaction times of that
 component. -/
@@ -184,7 +184,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_eq_of_compon
       d.mixedComponentPairingValue ε β τ τ' υ B :=
   d.mixedComponentPairingValue_eq_of_timeTransport ε β τ τ' σ υ B
     (d.1.mixedComponentCrossingPreserving_of_componentTimeEq τ τ' σ υ B hTime)
-    (d.mixedComponentContractionPreserving_of_componentTimeEq ε β τ τ' σ υ B hTime)
+    (mixedComponentContractionPreserving_of_componentTimeEq d ε β τ τ' σ υ B hTime)
 
 end GibbsContractions
 

@@ -36,14 +36,5 @@ theorem FixedExternalTwoPointWickDiagram.relabelForComponentShuffle_eq_relabelIn
   apply Subtype.ext
   rfl
 
-omit [LinearOrder Mode] [Fintype Mode] in
-@[simp]
-theorem FixedExternalTwoPointWickDiagram.relabelForComponentShuffle_vertexLabelSequence
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (shuffle : d.1.ComponentInteractionShuffle) (v : Fin n) :
-    (d.relabelForComponentShuffle shuffle).vertexLabelSequence v =
-      d.vertexLabelSequence ((d.1.componentShuffleSlotPermutation shuffle).symm v) :=
-  rfl
-
 end Fermionic
 end SecondQuantization
