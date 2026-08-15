@@ -22,7 +22,7 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 open Classical in
 /-- A fixed-cardinality slice of the ambient powerset is the corresponding external/vacuum Cauchy
 factor.  The equality `m + k = n` is used only to identify the ambient slot type with `Fin (m + k)`. -/
-theorem sum_powersetCard_fixedExternalFiber_dysonAmplitude_eq_connected_mul_normalizedVacuum
+private theorem powersetFiberSlice_eq_cauchyFactor
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ)
     {n m k : ℕ} (hmk : m + k = n) :
@@ -45,7 +45,7 @@ theorem sum_powersetCard_fixedExternalFiber_dysonAmplitude_eq_connected_mul_norm
             QuarticWickDiagram Mode (m + k)
               ((Finset.univ : Finset (Fin (m + k))) \ T),
         ((fixedExternalFiberEquiv T).symm p).1.dysonAmplitude ε β g τ τ')]
-  exact sum_leftSlotSet_fixedExternalFiber_dysonAmplitude_eq_connected_mul_normalizedVacuum
+  exact fixedExternalFiberSum_eq_cauchyFactor
     ε β hβ g i j τ τ' m k
 
 /-- **Coefficientwise linked-cluster Cauchy identity.**
@@ -72,7 +72,7 @@ theorem twoPointDiagramCoefficient_eq_sum_connected_mul_normalizedDysonPartition
   have hmn : m ≤ n := by
     simpa [Nat.lt_succ_iff] using hm
   exact
-    sum_powersetCard_fixedExternalFiber_dysonAmplitude_eq_connected_mul_normalizedVacuum
+    powersetFiberSlice_eq_cauchyFactor
       ε β hβ g i j τ τ' (Nat.add_sub_of_le hmn)
 
 /-- The same coefficientwise Cauchy identity for the operator-defined Dyson coefficient. -/
