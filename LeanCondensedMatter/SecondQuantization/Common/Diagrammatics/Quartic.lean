@@ -2,7 +2,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Leg
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Diagram
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Ordered
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Connected
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.NumberConservingMatching
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPartition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentRestriction
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentConnected
