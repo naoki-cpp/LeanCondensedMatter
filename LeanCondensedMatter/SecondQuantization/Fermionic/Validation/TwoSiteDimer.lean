@@ -1,15 +1,17 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Validation.TwoLevelExplicit
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.HermitianBondCurrent
+import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.PeierlsContact
 
 set_option linter.style.header false
 
 /-!
 # Two-site dimer transport validation
 
-This module equips the finite two-site hopping toy with explicit bounded Hamiltonian and current
-operators on the full finite-lattice fermionic Fock space. The Hamiltonian is assembled from the two
-second-quantized matrix units with conjugate coefficients. The current is the bounded oriented bond
-current of the same Hermitian hopping model at `ℏ = q = 1`.
+This module equips the finite two-site hopping toy with explicit bounded Hamiltonian, current, and
+contact operators on the full finite-lattice fermionic Fock space. The Hamiltonian is assembled from
+the two second-quantized matrix units with conjugate coefficients. The current is the bounded
+oriented bond current of the same Hermitian hopping model at `ℏ = q = 1`, while the contact is the
+first Peierls-source derivative of that current family.
 
 The resulting operators provide a finite tight-binding validation of the canonical pointwise
 Kubo–Bastin/Středa identity. Current-orientation reversal and simultaneous current-sign reversal are
@@ -67,6 +69,11 @@ noncomputable def twoSiteDimerSystem (t : ℂ) :
 noncomputable def twoSiteDimerCurrent (t : ℂ) :
     TwoSiteHilbertFock →L[ℂ] TwoSiteHilbertFock :=
   boundedBondCurrent (1 : ℂ) (1 : ℂ) (twoSiteDimerHopping t) 0 1
+
+/-- Explicit bounded Peierls contact supplied by the same oriented dimer bond at `ℏ = q = 1`. -/
+noncomputable def twoSiteDimerContact (t : ℂ) :
+    TwoSiteHilbertFock →L[ℂ] TwoSiteHilbertFock :=
+  boundedBondContact (twoSiteDimerHopping t) (1 : ℂ) (1 : ℂ) 0 1
 
 /-- Hermiticity of the hopping model makes the supplied dimer current self-adjoint. -/
 theorem twoSiteDimerCurrent_selfAdjoint (t : ℂ) :
