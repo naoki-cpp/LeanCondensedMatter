@@ -156,7 +156,7 @@ theorem TwoPointDiagram.isExternallyConnected_iff_externalInteractionPart_eq
         have hB : (B : Finset (TwoPointVertex S)) = d.externalComponent 0 := by
           rw [← hv]
           exact (d.componentBlock_eq_iff_mem
-            (d.externalComponent_mem_componentPartition 0) (Sum.inr w)).2 hvertex
+            (d.componentBlock_mem_componentPartition (Sum.inl 0)) (Sum.inr w)).2 hvertex
         refine ⟨0, ?_⟩
         rw [hB]
         exact d.self_mem_componentBlock (Sum.inl 0)

@@ -101,13 +101,5 @@ theorem QuarticDiagram.componentBlock_disjoint_of_not_reachable {S : Finset (Fin
     have hvEq : (⟨(v : Fin N), hv⟩ : ↥S) = v := Subtype.ext (by rfl)
     rwa [hvEq] at hreach
 
-/-- Every component-partition part is a component block. -/
-theorem QuarticDiagram.exists_componentBlock_eq_of_mem {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
-    (hB : B ∈ d.componentPartition.parts) : ∃ v : ↥S, d.componentBlock v = B := by
-  obtain ⟨x, hxS, hx⟩ := d.componentPartition.part_surjOn hB
-  refine ⟨⟨x, hxS⟩, ?_⟩
-  simpa only [QuarticDiagram.componentBlock] using hx
-
 end Common
 end SecondQuantization

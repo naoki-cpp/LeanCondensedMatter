@@ -113,12 +113,6 @@ noncomputable def TwoPointDiagram.externalComponent {S : Finset (Fin N)}
     Finset (TwoPointVertex S) :=
   d.componentBlock (Sum.inl e)
 
-/-- Every external component is a part of the full component partition. -/
-theorem TwoPointDiagram.externalComponent_mem_componentPartition {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S) (e : Fin 2) :
-    d.externalComponent e ∈ d.componentPartition.parts :=
-  d.componentBlock_mem_componentPartition (Sum.inl e)
-
 /-- A component part meets the external sector exactly when it is one of the two external
 components. -/
 theorem TwoPointDiagram.componentMeetsExternal_iff_eq_externalComponent {S : Finset (Fin N)}
