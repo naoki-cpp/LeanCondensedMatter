@@ -68,7 +68,7 @@ private theorem QuarticDiagram.sum_orderedThermalAmplitude_eq_shuffle_mul_compon
   classical
   let F : d.ComponentVertexOrders × d.ComponentShuffle → ℂ := fun x =>
     d.orderedThermalAmplitude ε β g (d.assembleVertexOrder x.1 x.2)
-  have hreindex := d.sum_vertexOrder_eq_sum_componentOrders_shuffle F
+  have hreindex := Equiv.sum_comp d.componentOrderDecompositionEquiv F
   have hleft :
       (∑ order : Common.QuarticVertexOrder S, d.orderedThermalAmplitude ε β g order) =
         ∑ x : d.ComponentVertexOrders × d.ComponentShuffle, F x := by
