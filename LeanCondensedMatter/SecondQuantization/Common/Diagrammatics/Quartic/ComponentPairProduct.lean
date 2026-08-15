@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPairing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentProduct
 
 set_option linter.style.header false
 
@@ -237,19 +238,8 @@ theorem QuarticDiagram.prod_componentPairs {S : Finset (Fin N)}
       ∏ B : d.componentPartition.parts,
         ∏ pr : d.LocalOrderedPair orders B,
           F (d.componentPairEquiv orders shuffle ⟨B, pr⟩) := by
-  classical
-  calc
-    (∏ pr, F pr) =
-        ∏ x : Σ B : d.componentPartition.parts, d.LocalOrderedPair orders B,
-          F (d.componentPairEquiv orders shuffle x) := by
-      refine Fintype.prod_equiv (d.componentPairEquiv orders shuffle).symm F
-        (fun x => F (d.componentPairEquiv orders shuffle x)) ?_
-      intro pr
-      simp
-    _ = ∏ B : d.componentPartition.parts,
-        ∏ pr : d.LocalOrderedPair orders B,
-          F (d.componentPairEquiv orders shuffle ⟨B, pr⟩) :=
-      Fintype.prod_sigma _
+  exact (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).prod_componentDecomposition
+    (d.componentPairEquiv orders shuffle) F
 
 /-- Nested-Finset form of `prod_componentPairs` for an arbitrary pair kernel. -/
 theorem QuarticDiagram.prod_pairKernel_pairs_eq_prod_components
