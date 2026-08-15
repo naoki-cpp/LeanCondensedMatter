@@ -65,7 +65,7 @@ theorem FixedExternalTwoPointWickDiagram.sum_componentShuffleDysonAmplitude_eq_p
     rw [(d.relabelForComponentShuffle
         shuffle).dysonAmplitude_eq_orderedSimplexIntegral_dysonFixedTimeAmplitude ε β g τ τ',
       hcast,
-      ← d.orderedSimplexIntegral_externalSign_mul_componentShuffleIntegrand ε β hβ g τ τ' shuffle,
+      ← d.componentShuffleIntegral_eq_relabelAmplitudeIntegral ε β hβ g τ τ' shuffle,
       intervalIntegral.orderedSimplexIntegral_smul]
   rw [Finset.sum_congr rfl fun shuffle _ => hterm shuffle, ← Finset.mul_sum,
     d.sum_mixedComponentDysonLocalIntegral_eq_prod
