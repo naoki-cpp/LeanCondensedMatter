@@ -215,7 +215,7 @@ theorem fixedExternalShuffleFiber_dysonAmplitude_eq_orderedSimplexIntegral
     intro a b hab
     exact hσ (slotSplitVacuumSlot_strictMono shuffle.leftSlots hab)
   have hprod :=
-    fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_orderedVacuumIntegrand
+    slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum
       ε β g shuffle.leftSlots p.1.1 p.1.2 p.2 τ τ' σ hvacAnti
   have hd : d.1 = fixedExternalOfSlotSplit shuffle.leftSlots p.1.1 p.2 := by
     rfl

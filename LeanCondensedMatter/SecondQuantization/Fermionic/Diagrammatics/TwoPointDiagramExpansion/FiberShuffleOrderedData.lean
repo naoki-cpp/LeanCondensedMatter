@@ -83,7 +83,7 @@ noncomputable def fixedExternalShuffleFiberDataEquiv {m k : ℕ}
 
 /-- The canonical fixed-fiber pointwise product can be written with the vacuum factor entirely in
 ordered-data coordinates. -/
-theorem fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_orderedVacuumIntegrand
+theorem slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     {n : ℕ} (T : Finset (Fin n))
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
@@ -148,7 +148,7 @@ theorem sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff
 Unlike a quartic diagram on an ambient complement, `x` is independent of the ambient locations of
 those complement slots.  This is the form that can be held fixed while summing the external-slot
 shuffles. -/
-theorem sum_slotShuffle_externalDyson_mul_orderedVacuumIntegrand_eq_mul
+theorem sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (τ τ' : ℝ) {m k : ℕ}
     (ext : FixedExternalTwoPointWickDiagram Mode m i j)
