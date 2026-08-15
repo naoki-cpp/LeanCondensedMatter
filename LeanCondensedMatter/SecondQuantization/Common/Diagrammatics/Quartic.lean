@@ -8,16 +8,13 @@ import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Compo
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Reassemble
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ReassembleLaws
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentDecompositionEquiv
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ConnectedDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrder
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPairing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPairProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.FixedOrderComponentPair
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentGlobalCrossingParity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentEvaluation
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrderDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrderedSimplex
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrderedSimplexProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.TwoPointLegEmbedding
 
@@ -27,8 +24,8 @@ set_option linter.style.header false
 # Quartic diagram infrastructure
 
 Statistics-independent quartic leg indexing, labelled diagram syntax, vertex ordering, connectivity,
-connected-component restriction, reassembly and its inverse laws, component-decomposition equivalence,
-generic connected-decomposition adapter, component-local orders and pairing compatibility,
+connected-component restriction, reassembly and its inverse laws, component-decomposition equivalence
+and generic connected-decomposition adapter, component-local orders and pairing compatibility,
 fixed-global-order component-pair embeddings, direct finite-family ordered-simplex factorization,
 componentwise scalar products, mixed two-point leg embeddings, Statistics-generic
 crossing-parity/pairing-weight factorization, and the corresponding scalar `Pairing.evaluation`

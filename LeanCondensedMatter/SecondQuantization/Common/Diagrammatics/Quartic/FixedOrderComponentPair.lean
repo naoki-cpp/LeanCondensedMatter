@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPairProduct
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrderDecomposition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentOrder
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
 
 set_option linter.style.header false
