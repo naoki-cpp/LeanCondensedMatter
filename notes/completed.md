@@ -16,9 +16,14 @@ architectural context and later infinite-dimensional or convergence-aware extens
 | Fermionic Dyson Linked Cluster Theorem, finite-mode formal/algebraic form | Combined | `SecondQuantization.Fermionic.factorial_mul_coeff_dysonFormalLogPartitionFunction_eq_sum_connectedAmplitude` | `LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/DysonLinkedClusterTheorem.lean` |
 | Finite-dimensional fermionic Dyson series equals the interacting partition function | D | `SecondQuantization.Fermionic.hasSum_dysonTraceCoeff_eq_analyticDysonPartitionFunction`, `SecondQuantization.Fermionic.hasFPowerSeriesAt_analyticDysonPartitionFunction` | `LeanCondensedMatter/SecondQuantization/Fermionic/Perturbation/AnalyticDysonPartitionFunction.lean` |
 | Analytic finite-dimensional fermionic Linked Cluster Theorem | Combined | `SecondQuantization.Fermionic.iteratedDeriv_log_normalizedAnalyticPartitionFunction_eq_sum_connectedAmplitude` | `LeanCondensedMatter/SecondQuantization/Fermionic/Perturbation/AnalyticLinkedClusterIdentification.lean` |
+| Finite-mode fermionic two-point linked-cluster theorem | D | `SecondQuantization.Fermionic.vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries` | `LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion/CauchySeries.lean` |
 
-The finite-mode fermionic line is complete through the analytic normalized partition-function
-logarithm: its derivatives at zero coupling equal sums of connected quartic Wick-diagram amplitudes.
-Thermodynamic limits, completed-space unbounded-operator theory, infinite-mode extensions, a general
-non-self-adjoint trace-class ideal, and the convergence-aware bosonic Dyson line remain separate
-targets.
+The finite-mode fermionic line is complete through both the vacuum/free-energy linked-cluster theorem
+and the vacuum-normalized two-point series: the latter equals the formal series formed from externally
+connected two-point diagrams. The vacuum analytic theorem additionally identifies logarithmic
+derivatives of the genuine finite-dimensional interacting partition function with connected quartic
+diagram amplitudes.
+
+Higher multi-leg/source-insertion expansions, thermodynamic limits, completed-space unbounded-operator
+theory, infinite-mode extensions, a general non-self-adjoint trace-class ideal, and the
+convergence-aware bosonic Dyson line remain separate targets.
