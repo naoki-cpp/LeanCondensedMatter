@@ -38,9 +38,12 @@ def relative(path: Path) -> str:
     return path.relative_to(ROOT).as_posix()
 
 
+def code(path: Path) -> str:
+    return strip_lean_comments(path.read_text(encoding="utf-8"))
+
+
 def imports(path: Path) -> tuple[str, ...]:
-    code = strip_lean_comments(path.read_text(encoding="utf-8"))
-    return tuple(IMPORT_RE.findall(code))
+    return tuple(IMPORT_RE.findall(code(path)))
 
 
 def require_exists(errors: list[str], path: Path) -> None:
@@ -113,11 +116,14 @@ def main() -> int:
             "QuantumTheory.ConservationLaw must remain upstream of particle statistics",
         )
 
-    # The Fermionic Field owner is now a dGamma bridge, not a transport owner.
+    # The Fermionic Field owner is now a dGamma bridge, not a transport owner. The
+    # dGamma implementation may arrive transitively through ChargeDensity, so inspect
+    # the bridge semantics rather than requiring a direct AlgebraicFock import.
+    bridge_code = code(FERMIONIC_FIELD_BRIDGE)
     bridge_imports = imports(FERMIONIC_FIELD_BRIDGE)
-    if not any("AlgebraicFock" in imported for imported in bridge_imports):
+    if "AlgebraicFock.dGamma" not in bridge_code:
         errors.append(
-            f"{relative(FERMIONIC_FIELD_BRIDGE)} must retain an AlgebraicFock/dGamma dependency"
+            f"{relative(FERMIONIC_FIELD_BRIDGE)} must remain an explicit dGamma bridge"
         )
     if any("ConventionalCurrent" in imported or "SchwartzCurrent" in imported for imported in bridge_imports):
         errors.append(
