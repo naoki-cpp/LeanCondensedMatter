@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.InteractionVertexRelabelCovariance
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentCanonicalLocality
 import LeanCondensedMatter.Analysis.OrderedSimplex.StrictAntiCongr
 
 set_option linter.style.header false
@@ -35,15 +36,35 @@ private theorem componentShuffleIntegrand_eq_relabelAmplitude_of_injective
             d.1.canonicalComponentInteractionShuffle) σ =
       (d.relabelForComponentShuffle shuffle).dysonFixedTimeAmplitude ε β g τ τ'
         (ambientToTwoPointSlotTimePermutation σ) := by
-  rw [d.externalSign_mul_componentShuffleIntegrand_eq_dysonFixedTimeAmplitude_slotPermuted
-    ε β g τ τ' shuffle σ]
-  symm
-  have hslot : Function.Injective (ambientToTwoPointSlotTimePermutation σ) :=
-    ambientToTwoPointSlotTimePermutation_injective hσ
-  rw [d.relabelForComponentShuffle_eq_relabelInteractionVertices shuffle]
-  exact d.dysonFixedTimeAmplitude_relabelInteractionVertices_of_injective
-    (d.1.componentShuffleSlotPermutation shuffle).symm ε β g τ τ'
-    (ambientToTwoPointSlotTimePermutation σ) hslot
+  calc
+    twoPointExternalOrderSign τ τ' *
+        d.1.interactionComponentShuffleIntegrand shuffle
+          (d.mixedComponentDysonLocalIntegrand ε β g τ τ'
+            d.1.canonicalComponentInteractionShuffle) σ =
+      d.dysonFixedTimeAmplitude ε β g τ τ'
+        (ambientToTwoPointSlotTimePermutation
+          (fun k => σ (shuffle.ambientPermutation k))) := by
+      rw [shuffle.interactionComponentShuffleIntegrand_eq_canonical
+        (d.mixedComponentDysonLocalIntegrand ε β g τ τ'
+          d.1.canonicalComponentInteractionShuffle) σ]
+      symm
+      exact d.dysonFixedTimeAmplitude_eq_canonicalComponentShuffleIntegrand
+        ε β g τ τ'
+        (ambientToTwoPointSlotTimePermutation
+          (fun k => σ (shuffle.ambientPermutation k)))
+    _ = d.dysonFixedTimeAmplitude ε β g τ τ'
+        (fun v => ambientToTwoPointSlotTimePermutation σ
+          (d.1.componentShuffleSlotPermutation shuffle v)) := by
+      rw [d.1.ambientToTwoPointSlotTimePermutation_comp_ambientPermutation shuffle σ]
+    _ = (d.relabelForComponentShuffle shuffle).dysonFixedTimeAmplitude ε β g τ τ'
+        (ambientToTwoPointSlotTimePermutation σ) := by
+      symm
+      have hslot : Function.Injective (ambientToTwoPointSlotTimePermutation σ) :=
+        ambientToTwoPointSlotTimePermutation_injective hσ
+      rw [d.relabelForComponentShuffle_eq_relabelInteractionVertices shuffle]
+      exact d.dysonFixedTimeAmplitude_relabelInteractionVertices_of_injective
+        (d.1.componentShuffleSlotPermutation shuffle).symm ε β g τ τ'
+        (ambientToTwoPointSlotTimePermutation σ) hslot
 
 /-- **Integrated component-shuffle covariance.** One component-shuffle term integrates to the
 ordered-simplex integral of the Dyson fixed-time amplitude of the explicitly relabeled diagram.
