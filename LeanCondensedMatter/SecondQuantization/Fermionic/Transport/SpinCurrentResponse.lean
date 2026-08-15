@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Spinful
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedCurrentResponse
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConventionalCurrentResponse
 
 set_option linter.style.header false
 
