@@ -15,6 +15,8 @@ remain owned by the fermionic layer.
 namespace SecondQuantization
 namespace Fermionic
 
+open Common
+
 variable {Mode : Type*} [LinearOrder Mode]
 
 /-! ## Local-leg operator semantics -/
@@ -43,14 +45,6 @@ theorem imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode → ℝ) (q : Qua
 
 /-! ## The bare anticommutator/zeta-commutator of two local legs -/
 
-/-- The mode on which a quartic local-leg operator acts. -/
-def quarticLocalLegMode (q : QuarticVertexLabel Mode) : Fin 4 → Mode :=
-  Common.quarticLocalLegMode q
-
-/-- Whether a quartic local leg is a creation leg. -/
-def quarticLocalLegIsCreate : Fin 4 → Bool :=
-  Common.quarticLocalLegIsCreate
-
 /-- The bare anticommutator of two local-leg operators. -/
 theorem anticomm_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' : Fin 4) :
     anticomm (quarticLocalLegOperator q l) (quarticLocalLegOperator q' l') =
@@ -58,9 +52,9 @@ theorem anticomm_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' 
         (0 : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
       else if quarticLocalLegMode q l = quarticLocalLegMode q' l' then LinearMap.id else 0 := by
   fin_cases l <;> fin_cases l' <;>
-    simp [quarticLocalLegOperator, quarticLocalLegIsCreate, quarticLocalLegMode,
-      Common.quarticLocalLegOperator, Common.quarticLocalLegIsCreate,
-      Common.quarticLocalLegMode, anticomm_create_create, anticomm_annihilate_annihilate,
+    simp [quarticLocalLegOperator, Common.quarticLocalLegIsCreate,
+      Common.quarticLocalLegMode, Common.quarticLocalLegOperator,
+      anticomm_create_create, anticomm_annihilate_annihilate,
       anticomm_annihilate_create, anticomm_create_annihilate]
 
 /-- The Common `ζ`-commutator form of the fermionic quartic local-leg CAR. -/
