@@ -47,11 +47,8 @@ theorem QuarticDiagram.componentBlock_vertexOfLeg_partner {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (leg : Fin (2 * (2 * S.card))) :
     d.componentBlock (vertexOfLeg (d.pairing.partner leg)) =
       d.componentBlock (vertexOfLeg leg) := by
-  by_cases h : vertexOfLeg (d.pairing.partner leg) = vertexOfLeg leg
-  · rw [h]
-  · exact d.componentBlock_eq_of_reachable
-      (SimpleGraph.Adj.reachable
-        ⟨h, d.pairing.partner leg, rfl, by rw [d.pairing.partner_involutive]⟩)
+  exact d.componentBlock_eq_of_reachable
+    (d.pairing.vertexGraph_reachable_partner vertexOfLeg leg)
 
 /-- A leg's partner stays inside the same component part. -/
 theorem QuarticDiagram.legInBlock_partner_iff {S : Finset (Fin N)}
