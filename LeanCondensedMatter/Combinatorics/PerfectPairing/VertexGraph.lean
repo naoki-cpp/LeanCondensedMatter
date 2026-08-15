@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Core
-import Mathlib.Combinatorics.SimpleGraph.Connectivity.Reachable
+import Mathlib.Combinatorics.SimpleGraph.Connectivity.Connected
 
 set_option linter.style.header false
 
