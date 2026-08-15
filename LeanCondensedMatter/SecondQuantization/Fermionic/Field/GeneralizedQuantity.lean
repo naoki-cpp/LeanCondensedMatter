@@ -68,7 +68,8 @@ theorem dGamma_commutator_manyBodyLocalizedQuantity (h : 𝓗₁ →ₗ[ℂ] �
       AlgebraicFock.dGamma 𝓗₁ (_root_.ConservationLaw.transportCommutator 𝓗₁ h M m f) +
         AlgebraicFock.dGamma 𝓗₁ (_root_.ConservationLaw.sourceCommutator 𝓗₁ h M m f) := by
   rw [manyBodyLocalizedQuantity, AlgebraicFock.dGamma_linearCommutator]
-  rw [_root_.ConservationLaw.linearCommutator_localizedQuantity,
+  rw [AlgebraicFock.linearCommutator_eq_conservationLaw,
+    _root_.ConservationLaw.linearCommutator_localizedQuantity,
     AlgebraicFock.dGamma_add]
 
 /-- The charge specialization of the generalized many-body balance path agrees with the existing
@@ -89,7 +90,8 @@ theorem oneBodyObservable_commutes_of_commutes (h m : 𝓗₁ →ₗ[ℂ] 𝓗�
     (hm : _root_.ConservationLaw.linearCommutator h m = 0) :
     AlgebraicFock.linearCommutator
         (AlgebraicFock.dGamma 𝓗₁ h) (oneBodyObservable 𝓗₁ m) = 0 := by
-  rw [oneBodyObservable, AlgebraicFock.dGamma_linearCommutator, hm,
+  rw [oneBodyObservable, AlgebraicFock.dGamma_linearCommutator,
+    AlgebraicFock.linearCommutator_eq_conservationLaw, hm,
     AlgebraicFock.dGamma_zero]
 
 end Field
