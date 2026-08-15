@@ -86,16 +86,6 @@ theorem TwoPointDiagram.componentBlock_disjoint_of_not_reachable {S : Finset (Fi
     (d.componentBlock_mem_componentPartition w)
     (fun hEq => h ((d.componentBlock_eq_iff_reachable v w).1 hEq))
 
-/-- Every component-partition part is a component block. -/
-theorem TwoPointDiagram.exists_componentBlock_eq_of_mem {S : Finset (Fin N)}
-    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    {B : Finset (TwoPointVertex S)} (hB : B ∈ d.componentPartition.parts) :
-    ∃ v : TwoPointVertex S, d.componentBlock v = B := by
-  obtain ⟨v, hv⟩ := d.componentPartition.nonempty_of_mem_parts hB
-  refine ⟨v, ?_⟩
-  change d.componentPartition.part v = B
-  exact d.componentPartition.part_eq_of_mem hB hv
-
 /-- A vertex belongs to a component part exactly when its component block is that part. -/
 theorem TwoPointDiagram.componentBlock_eq_iff_mem {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
@@ -154,7 +144,7 @@ theorem TwoPointDiagram.hasNoVacuumComponent_iff_forall_component_meetsExternal
       ∀ B : d.componentPartition.parts, d.ComponentMeetsExternal B := by
   constructor
   · intro h B
-    obtain ⟨v, hv⟩ := d.exists_componentBlock_eq_of_mem B.2
+    obtain ⟨v, -, hv⟩ := d.componentPartition.part_surjOn B.2
     cases v with
     | inl e =>
         refine ⟨e, ?_⟩
