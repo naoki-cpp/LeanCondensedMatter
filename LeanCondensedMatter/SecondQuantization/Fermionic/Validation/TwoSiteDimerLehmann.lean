@@ -121,14 +121,18 @@ theorem twoSiteDimerGroundState_lehmannResponse_zero_one :
     finiteLehmannTableResponse 1 0 1 twoSiteDimerGroundStateLehmannTable =
       (4 : ℂ) / 5 := by
   classical
-  simp [finiteLehmannTableResponse, Fin.sum_univ_two, lehmannTerm, lehmannDenominator]
+  unfold finiteLehmannTableResponse
+  rw [Fintype.sum_prod_type]
+  simp [Fin.sum_univ_two, lehmannTerm, lehmannDenominator,
+    twoSiteDimerGroundStateLehmannTable, twoSiteDimerEnergyBasisCurrent]
   apply Complex.ext <;> norm_num [Complex.normSq]
 
 /-- The benchmark contact expectation equals the occupied bonding-state energy. -/
 theorem twoSiteDimerGroundState_contact_eq_groundEnergy :
     twoSiteDimerGroundStateConductivityTable.contact =
       twoSiteDimerGroundStateConductivityTable.lehmann.energy 0 := by
-  rfl
+  norm_num [twoSiteDimerGroundStateConductivityTable,
+    twoSiteDimerGroundStateLehmannTable]
 
 /-- At unit volume, zero frequency, and `η = 1`, the repository's finite-volume electric-field
 normalization is exactly `-1`. -/
@@ -144,10 +148,13 @@ so the fixed-rate conductivity at `ℏ = 1`, `ω = 0`, `η = 1` is exactly `1/5`
 theorem twoSiteDimerGroundState_conductivity_zero_one :
     finiteConductivityTableValue twoSiteDimerUnitVolume 1 0 1
         twoSiteDimerGroundStateConductivityTable = (1 : ℂ) / 5 := by
-  rw [finiteConductivityTableValue]
-  rw [twoSiteDimerGroundState_lehmannResponse_zero_one]
-  rw [twoSiteDimerUnitVolume_normalization_zero_one]
-  norm_num [twoSiteDimerGroundStateConductivityTable]
+  unfold finiteConductivityTableValue
+  change
+    (finiteLehmannTableResponse 1 0 1 twoSiteDimerGroundStateLehmannTable + (-1 : ℂ)) *
+        finiteVolumeConductivityNormalization twoSiteDimerUnitVolume 0 1 = (1 : ℂ) / 5
+  rw [twoSiteDimerGroundState_lehmannResponse_zero_one,
+    twoSiteDimerUnitVolume_normalization_zero_one]
+  norm_num
 
 end
 end Validation
