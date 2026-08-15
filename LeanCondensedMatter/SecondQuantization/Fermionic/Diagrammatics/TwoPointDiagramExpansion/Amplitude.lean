@@ -86,23 +86,5 @@ theorem sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_pairingSum
       intro q _
       ring
 
-/-- Density-state form of the fixed-time external-leg Wick expansion. -/
-theorem sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_sum_vertexLabel_densityExpectation
-    {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (i j : Mode) (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    ∑ d : FixedExternalTwoPointWickDiagram Mode n i j,
-        d.fixedTimeAmplitude ε β g τ τ' σ =
-      ∑ q : Fin n → QuarticVertexLabel Mode,
-        orderedTwoPointVertexWeight g q *
-          (freeGibbsDensityOperator ε β).expectation
-            (Common.finiteHilbertOperator
-              (mixedTimeOrderedVertexComp ε i j τ τ' q σ)) := by
-  rw [sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_pairingSum]
-  rw [Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro q _
-  rw [freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue]
-  ring
-
 end Fermionic
 end SecondQuantization
