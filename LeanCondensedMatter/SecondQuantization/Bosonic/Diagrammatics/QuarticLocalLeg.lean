@@ -44,14 +44,6 @@ theorem imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode → ℝ)
       (fun i => imaginaryTimeEvolve_create ε τ i)
       (fun i => imaginaryTimeEvolve_annihilate ε τ i))
 
-/-- The mode on which a quartic local-leg operator acts. -/
-def quarticLocalLegMode (q : QuarticVertexLabel Mode) : Fin 4 → Mode :=
-  Common.quarticLocalLegMode q
-
-/-- Whether a quartic local leg is a creation leg. -/
-def quarticLocalLegIsCreate : Fin 4 → Bool :=
-  Common.quarticLocalLegIsCreate
-
 /-- The reverse mixed CCR, `[aᵢ†, aⱼ] = -δᵢⱼ`. -/
 theorem comm_create_annihilate (i j : Mode) :
     comm (create i) (annihilate j) =
@@ -68,9 +60,9 @@ theorem comm_create_annihilate (i j : Mode) :
 /-- The scalar multiplying the identity in the commutator of two quartic local legs. Creation then
 annihilation has coefficient `-1`; annihilation then creation has coefficient `1`. -/
 def quarticLocalLegCommutatorCoeff (q q' : QuarticVertexLabel Mode) (l l' : Fin 4) : ℂ :=
-  if quarticLocalLegIsCreate l = quarticLocalLegIsCreate l' then 0
-  else if quarticLocalLegMode q l = quarticLocalLegMode q' l' then
-    if quarticLocalLegIsCreate l = true then -1 else 1
+  if Common.quarticLocalLegIsCreate l = Common.quarticLocalLegIsCreate l' then 0
+  else if Common.quarticLocalLegMode q l = Common.quarticLocalLegMode q' l' then
+    if Common.quarticLocalLegIsCreate l = true then -1 else 1
   else 0
 
 /-- The ordinary commutator of two bosonic quartic local-leg operators is a scalar identity. -/
@@ -79,8 +71,8 @@ theorem comm_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' : Fi
       quarticLocalLegCommutatorCoeff q q' l l' •
         (LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) := by
   fin_cases l <;> fin_cases l' <;>
-    simp [quarticLocalLegOperator, quarticLocalLegCommutatorCoeff, quarticLocalLegIsCreate,
-      quarticLocalLegMode, Common.quarticLocalLegOperator, Common.quarticLocalLegIsCreate,
+    simp [quarticLocalLegOperator, quarticLocalLegCommutatorCoeff,
+      Common.quarticLocalLegOperator, Common.quarticLocalLegIsCreate,
       Common.quarticLocalLegMode, comm_create_create, comm_annihilate_annihilate,
       comm_annihilate_create, comm_create_annihilate]
 
