@@ -71,13 +71,5 @@ noncomputable def QuarticDiagram.componentOrderDecompositionEquiv {S : Finset (F
     QuarticVertexOrder S ≃ d.ComponentVertexOrders × d.ComponentShuffle :=
   d.componentPartition.orderDecompositionEquiv
 
-/-- Reindex a finite sum over global vertex orders by component-local orders and shuffles. -/
-theorem QuarticDiagram.sum_vertexOrder_eq_sum_componentOrders_shuffle
-    {M : Type*} [AddCommMonoid M] {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (F : d.ComponentVertexOrders × d.ComponentShuffle → M) :
-    ∑ order : QuarticVertexOrder S, F (d.componentOrderDecompositionEquiv order) =
-      ∑ x : d.ComponentVertexOrders × d.ComponentShuffle, F x :=
-  Equiv.sum_comp d.componentOrderDecompositionEquiv F
-
 end Common
 end SecondQuantization
