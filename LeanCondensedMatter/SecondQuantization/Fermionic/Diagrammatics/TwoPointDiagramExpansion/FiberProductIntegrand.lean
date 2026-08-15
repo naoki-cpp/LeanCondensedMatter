@@ -25,7 +25,7 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
 /-- For an externally connected left piece and strictly decreasing inherited vacuum times, the
 signed fixed-time amplitude of the reassembled diagram is the product of the standalone external
 piece amplitude and the standalone fixed-order quartic vacuum integrand. -/
-theorem fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_quarticIntegrand
+theorem slotSplitDysonFixedTimeAmplitude_eq_external_mul_quarticIntegrand
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (T : Finset (Fin n))
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
