@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Connected-component partitions of labelled quartic diagrams
 
 Connected-component blocks and their finite partition depend only on the diagram's pairing graph,
-not on the vertex-label type and particle statistics.
+not on the vertex-label type or particle statistics.
 
 The graph itself lives on the subtype `↥S`, while the historical diagram-facing partition has parts
 in the ambient type `Fin N`. We therefore classify ambient vertices by Mathlib connected components
