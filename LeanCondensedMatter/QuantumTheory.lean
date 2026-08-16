@@ -34,7 +34,7 @@ import LeanCondensedMatter.QuantumTheory.DensityOperator
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal
 import LeanCondensedMatter.QuantumTheory.Entropy.Basic
 import LeanCondensedMatter.QuantumTheory.Entropy.Diagonal
-import LeanCondensedMatter.QuantumTheory.FiniteDimensional.Entropy
+import LeanCondensedMatter.QuantumTheory.Entropy.Finite
 import LeanCondensedMatter.QuantumTheory.Gibbs.State
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointExpectation
