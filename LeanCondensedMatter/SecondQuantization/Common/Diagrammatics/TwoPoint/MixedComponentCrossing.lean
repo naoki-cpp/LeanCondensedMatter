@@ -50,7 +50,8 @@ theorem TwoPointDiagram.mixedComponentGeometricCrossingCount_eq_oriented_add
         d.mixedComponentOrientedCrossingCount τ τ' σ C B := by
   simpa only [TwoPointDiagram.mixedComponentGeometricCrossingCount,
     Pairing.componentGeometricCrossingCount,
-    TwoPointDiagram.mixedComponentOrientedCrossingCount] using
+    TwoPointDiagram.mixedComponentOrientedCrossingCount,
+    TwoPointDiagram.mixedComponentPairSigmaEquiv_apply] using
     (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount_eq_oriented_add
       (d.mixedComponentPairSigmaEquiv τ τ' σ) B C
 
