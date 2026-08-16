@@ -30,19 +30,16 @@ QuantumTheory/
 │   ├── ObservableExpectation.lean
 │   ├── Diagonal.lean
 │   ├── DiagonalExpectation.lean
-│   └── DiagonalFormula.lean
+│   ├── DiagonalFormula.lean
+│   └── Finite.lean
 ├── POVM/
 │   ├── Basic.lean
 │   └── Born.lean
 ├── Entropy.lean
 ├── Entropy/
 │   ├── Basic.lean
-│   └── Diagonal.lean
-├── FiniteDimensional/
-│   ├── DensityOperator.lean
-│   ├── Expectation.lean
-│   ├── Purity.lean
-│   └── Entropy.lean
+│   ├── Diagonal.lean
+│   └── Finite.lean
 └── Gibbs/
     ├── State.lean
     ├── EnergyExpectation.lean
@@ -53,6 +50,8 @@ QuantumTheory/
 ```
 
 `QuantumTheory/DensityOperator.lean` and `QuantumTheory/Entropy.lean` are public umbrella modules.
+Finite-dimensional specializations live with the feature they specialize rather than in a parallel
+`FiniteDimensional/` hierarchy.
 
 ## Expectations
 
@@ -223,17 +222,19 @@ Uniqueness of the Gibbs minimizer is not yet formalized.
 
 ## Finite-dimensional specialization
 
-Finite-dimensional code uses the same `DensityOperator` type. The specialization layer provides:
+Finite-dimensional code uses the same `DensityOperator` type. Feature-owned specialization modules
+`DensityOperator/Finite.lean` and `Entropy/Finite.lean` provide:
 
 - `DensityOperator.ofFiniteDimensional`;
 - equivalence with ordinary `LinearMap.trace` normalization;
 - ordinary trace formulas for expectations;
-- finite diagonal expectation formulas derived from the countable `HilbertBasis` theory;
+- finite diagonal expectation formulas derived directly from the countable `HilbertBasis` theory;
 - the exact matrix formula `Tr(ρ²) = (purity ρ : ℂ)`;
 - the exact energy formula `Tr(ρH) = (energyExpValue ρ Hop : ℂ)`;
 - automatic entropy summability and finiteness.
 
-There is no separate finite-dimensional state or measurement model.
+There is no separate finite-dimensional state, measurement model, or top-level finite-dimensional
+module hierarchy.
 
 ## Regression boundary
 
@@ -255,6 +256,8 @@ The QuantumTheory architecture audit enforces:
   `DensityOperator/DiagonalFormula.lean`;
 - absence of `Fintype` and `FiniteDimensional` assumptions from the generic countable diagonal
   modules;
+- finite-dimensional density and entropy specializations remaining feature-owned rather than
+  rebuilding a parallel `FiniteDimensional/` hierarchy;
 - `Gibbs/DiagonalEnergy.lean` retaining the `HilbertBasis`/`tsum` theorem as its foundation, with
   the finite sum delegating to it instead of rebuilding the result through matrix trace.
 
