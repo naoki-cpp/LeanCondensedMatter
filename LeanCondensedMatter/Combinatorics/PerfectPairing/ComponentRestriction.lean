@@ -73,6 +73,18 @@ theorem Pairing.componentPartnerSubtypePerm_val
     pairing.partnerSubtypePerm_val (pairing.legInComponent vertexOfLeg component B)
       (fun i => pairing.legInComponent_partner_iff vertexOfLeg component hcomponent B i) leg
 
+/-- The component-restricted partner permutation is itself a fixed-point-free involution. -/
+theorem Pairing.isPairing_componentPartnerSubtypePerm
+    {n : ℕ} {Vertex Component : Type*} (pairing : Pairing n)
+    (vertexOfLeg : Fin (2 * n) → Vertex) (component : Vertex → Component)
+    (hcomponent : ∀ {v w}, (pairing.vertexGraph vertexOfLeg).Reachable v w →
+      component v = component w)
+    (B : Component) :
+    IsPairing (pairing.componentPartnerSubtypePerm vertexOfLeg component hcomponent B) := by
+  simpa only [Pairing.componentPartnerSubtypePerm] using
+    pairing.isPairing_partnerSubtypePerm (pairing.legInComponent vertexOfLeg component B)
+      (fun i => pairing.legInComponent_partner_iff vertexOfLeg component hcomponent B i)
+
 /-- Restrict a pairing to one component-leg fiber and reindex that fiber by `Fin (2 * m)`. -/
 noncomputable def Pairing.restrictComponentAlongEquiv
     {n m : ℕ} {Vertex Component : Type*} (pairing : Pairing n)
