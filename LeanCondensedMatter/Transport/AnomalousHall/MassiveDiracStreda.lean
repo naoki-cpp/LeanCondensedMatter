@@ -2,6 +2,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracIntrinsicConducti
 import LeanCondensedMatter.Transport.StredaTraceKernel
 import LeanCondensedMatter.Transport.LinearResponse
 import Mathlib.Analysis.CStarAlgebra.Matrix
+import Mathlib.Analysis.Matrix.Hermitian
 
 set_option linter.style.header false
 
@@ -33,7 +34,7 @@ abbrev DiracHilbert := EuclideanSpace ℂ (Fin 2)
 
 /-- A `2 × 2` complex matrix as a bounded operator on the canonical two-level Hilbert space. -/
 noncomputable def matrixOperator (M : Matrix2) : DiracHilbert →L[ℂ] DiracHilbert :=
-  Matrix.toEuclideanCLM M
+  (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)) M
 
 /-- The clean massive-Dirac Hamiltonian as a bounded operator. -/
 noncomputable def hamiltonianOperator (v m px py : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
@@ -77,17 +78,29 @@ theorem currentY_isHermitian (e v : ℝ) :
 bounded operator, as required by the generic free-system API. -/
 theorem hamiltonianOperator_isSelfAdjoint (v m px py : ℝ) :
     IsSelfAdjoint (hamiltonianOperator v m px py) := by
-  exact (hamiltonian_isHermitian v m px py).isSelfAdjoint.map Matrix.toEuclideanCLM
+  change IsSelfAdjoint
+    ((Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
+      (hamiltonian v m px py))
+  exact (hamiltonian_isHermitian v m px py).isSelfAdjoint.map
+    (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
 
 /-- The concrete `x` current operator is self-adjoint. -/
 theorem currentXOperator_isSelfAdjoint (e v : ℝ) :
     IsSelfAdjoint (currentXOperator e v) := by
-  exact (currentX_isHermitian e v).isSelfAdjoint.map Matrix.toEuclideanCLM
+  change IsSelfAdjoint
+    ((Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
+      (currentX e v))
+  exact (currentX_isHermitian e v).isSelfAdjoint.map
+    (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
 
 /-- The concrete `y` current operator is self-adjoint. -/
 theorem currentYOperator_isSelfAdjoint (e v : ℝ) :
     IsSelfAdjoint (currentYOperator e v) := by
-  exact (currentY_isHermitian e v).isSelfAdjoint.map Matrix.toEuclideanCLM
+  change IsSelfAdjoint
+    ((Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
+      (currentY e v))
+  exact (currentY_isHermitian e v).isSelfAdjoint.map
+    (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert))
 
 /-- The clean massive-Dirac model as the bounded free system consumed by the generic response and
 Středa layers.  The currents remain supplied separately because `BoundedFreeSystem` intentionally
