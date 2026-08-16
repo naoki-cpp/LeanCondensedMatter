@@ -70,7 +70,9 @@ theorem TwoPointDiagram.mixedComponentPositionTimeEquiv_refl {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts)
     (p : d.MixedComponentPosition τ τ' σ B) :
     d.mixedComponentPositionTimeEquiv τ τ' σ σ B p = p := by
-  simp [TwoPointDiagram.mixedComponentPositionTimeEquiv]
+  change (d.mixedComponentPositionEquiv τ τ' σ B).symm
+      (d.mixedComponentPositionEquiv τ τ' σ B p) = p
+  exact (d.mixedComponentPositionEquiv τ τ' σ B).symm_apply_apply p
 
 @[simp]
 theorem TwoPointDiagram.mixedComponentPositionTimeEquiv_symm_apply {n : ℕ}
@@ -79,7 +81,11 @@ theorem TwoPointDiagram.mixedComponentPositionTimeEquiv_symm_apply {n : ℕ}
     (p : d.MixedComponentPosition τ τ' σ B) :
     d.mixedComponentPositionTimeEquiv τ τ' υ σ B
         (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p) = p := by
-  simp [TwoPointDiagram.mixedComponentPositionTimeEquiv]
+  change (d.mixedComponentPositionEquiv τ τ' σ B).symm
+      (d.mixedComponentPositionEquiv τ τ' υ B
+        ((d.mixedComponentPositionEquiv τ τ' υ B).symm
+          (d.mixedComponentPositionEquiv τ τ' σ B p))) = p
+  rw [Equiv.apply_symm_apply, Equiv.symm_apply_apply]
 
 /-- Reading the standard component leg after time transport recovers the original standard
 component leg. -/
@@ -91,7 +97,11 @@ theorem TwoPointDiagram.mixedComponentPositionEquiv_timeEquiv {n : ℕ}
     d.mixedComponentPositionEquiv τ τ' υ B
         (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p) =
       d.mixedComponentPositionEquiv τ τ' σ B p := by
-  simp [TwoPointDiagram.mixedComponentPositionTimeEquiv]
+  change d.mixedComponentPositionEquiv τ τ' υ B
+      ((d.mixedComponentPositionEquiv τ τ' υ B).symm
+        (d.mixedComponentPositionEquiv τ τ' σ B p)) =
+    d.mixedComponentPositionEquiv τ τ' σ B p
+  exact (d.mixedComponentPositionEquiv τ τ' υ B).apply_symm_apply _
 
 /-- Time transport preserves the underlying position in the standard flattened diagram-leg
 enumeration. -/
@@ -245,8 +255,13 @@ theorem TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv {n : ℕ}
     d.mixedExternalPositionEquiv τ τ' υ
         (d.mixedComponentPositionTimeEquiv τ τ' σ υ d.externalComponentPart p) =
       d.mixedExternalPositionEquiv τ τ' σ p := by
-  simp [TwoPointDiagram.mixedExternalPositionEquiv,
-    TwoPointDiagram.mixedComponentPositionTimeEquiv]
+  change d.externalComponentLegEquiv.symm
+      (d.mixedComponentPositionEquiv τ τ' υ d.externalComponentPart
+        ((d.mixedComponentPositionEquiv τ τ' υ d.externalComponentPart).symm
+          (d.mixedComponentPositionEquiv τ τ' σ d.externalComponentPart p))) =
+    d.externalComponentLegEquiv.symm
+      (d.mixedComponentPositionEquiv τ τ' σ d.externalComponentPart p)
+  rw [Equiv.apply_symm_apply]
 
 /-- Vacuum-component restricted position coordinates are unchanged by time transport. -/
 @[simp]
@@ -258,8 +273,13 @@ theorem TwoPointDiagram.mixedVacuumPositionEquiv_positionTimeEquiv {n : ℕ}
     d.mixedVacuumPositionEquiv τ τ' υ B hVac
         (d.mixedComponentPositionTimeEquiv τ τ' σ υ B p) =
       d.mixedVacuumPositionEquiv τ τ' σ B hVac p := by
-  simp [TwoPointDiagram.mixedVacuumPositionEquiv,
-    TwoPointDiagram.mixedComponentPositionTimeEquiv]
+  change d.vacuumBlockLegEquiv B hVac
+      (d.mixedComponentPositionEquiv τ τ' υ B
+        ((d.mixedComponentPositionEquiv τ τ' υ B).symm
+          (d.mixedComponentPositionEquiv τ τ' σ B p))) =
+    d.vacuumBlockLegEquiv B hVac
+      (d.mixedComponentPositionEquiv τ τ' σ B p)
+  rw [Equiv.apply_symm_apply]
 
 end Common
 end SecondQuantization
