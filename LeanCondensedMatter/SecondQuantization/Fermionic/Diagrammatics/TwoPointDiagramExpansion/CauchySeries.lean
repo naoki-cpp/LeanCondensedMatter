@@ -90,9 +90,9 @@ theorem vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
       exact one_ne_zero),
     mul_one]
   ext n
-  rw [coeff_twoPointDysonSeries, PowerSeries.coeff_mul]
+  rw [PowerSeries.coeff_mul]
   rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
-  simp only [coeff_connectedTwoPointDysonSeries,
+  simp only [twoPointDysonSeries, connectedTwoPointDysonSeries, PowerSeries.coeff_mk,
     coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
   exact twoPointDysonCoefficient_eq_sum_connected_mul_normalizedDysonPartitionCoeff
     ε β hβ g i j τ τ' n
