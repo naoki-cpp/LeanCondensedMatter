@@ -51,8 +51,9 @@ def radialBerryEnergyPrimitive (band : Band) (m ε : ℝ) : ℝ :=
 theorem hasDerivAt_radialBerryEnergyPrimitive (band : Band) (m ε : ℝ) (hε : ε ≠ 0) :
     HasDerivAt (radialBerryEnergyPrimitive band m)
       (radialBerryEnergyDensity band m ε) ε := by
-  have h := (hasDerivAt_const ε (bandSign band * m / 2)).div (hasDerivAt_id ε) hε
-  simpa [radialBerryEnergyPrimitive, radialBerryEnergyDensity] using h
+  have h := HasDerivAt.const_mul (bandSign band * m / 2)
+    (HasDerivAt.inv (hasDerivAt_id ε) hε)
+  simpa [radialBerryEnergyPrimitive, radialBerryEnergyDensity, div_eq_mul_inv] using h
 
 /-- Berry weight accumulated over a finite positive-energy shell. -/
 def energyShellBerryWeight (band : Band) (m ε₀ ε₁ : ℝ) : ℝ :=
@@ -99,16 +100,14 @@ theorem valenceBerryWeightCutoff_eq (m Λ : ℝ) (hm : 0 < m) (hmΛ : m ≤ Λ) 
     valenceBerryWeightCutoff m Λ = 1 / 2 - m / (2 * Λ) := by
   rw [valenceBerryWeightCutoff, energyShellBerryWeight_eq .lower m m Λ hm hmΛ]
   simp [radialBerryEnergyPrimitive]
-  field_simp [ne_of_gt hm]
-  ring
+  field_simp [ne_of_gt hm] <;> ring
 
 /-- Metallic upper-band contribution: `m/(2εF) - 1/2`. -/
 theorem conductionBerryWeight_eq (m εF : ℝ) (hm : 0 < m) (hmF : m ≤ εF) :
     conductionBerryWeight m εF = m / (2 * εF) - 1 / 2 := by
   rw [conductionBerryWeight, energyShellBerryWeight_eq .upper m m εF hm hmF]
   simp [radialBerryEnergyPrimitive]
-  field_simp [ne_of_gt hm]
-  ring
+  field_simp [ne_of_gt hm] <;> ring
 
 /-- Total occupied-state Berry weight with a finite valence-band ultraviolet cutoff. -/
 def metallicBerryWeightCutoff (m εF Λ : ℝ) : ℝ :=
