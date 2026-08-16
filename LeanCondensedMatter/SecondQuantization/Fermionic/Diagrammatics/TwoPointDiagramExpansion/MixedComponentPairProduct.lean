@@ -29,21 +29,6 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedPairContractionValue
   mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
     pr.1.1 pr.1.2
 
-/-- The mixed-time contraction product factors into the external component and all vacuum
-components through the Common-owned mixed-pair fibers. -/
-theorem FixedExternalTwoPointWickDiagram.prod_mixedPairContractionValue_eq_external_mul_prod_vacuum
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    (∏ pr : (d.1.pairingInMixedOrder τ τ' σ).NormalizedPair,
-      d.mixedPairContractionValue ε β τ τ' σ pr) =
-      (∏ pr : d.1.MixedComponentPair τ τ' σ d.1.externalComponentPart,
-        d.mixedPairContractionValue ε β τ τ' σ pr.1) *
-        d.1.vacuumComponentParts.prod (fun B =>
-          ∏ pr : d.1.MixedComponentPair τ τ' σ B,
-            d.mixedPairContractionValue ε β τ τ' σ pr.1) :=
-  d.1.prod_mixedComponentPairs_eq_external_mul_prod_vacuum τ τ' σ
-    (d.mixedPairContractionValue ε β τ τ' σ)
-
 /-- The canonical pairing value exposes the component-factorized contraction product while retaining
 the global mixed-order fermionic pairing weight. -/
 theorem FixedExternalTwoPointWickDiagram.orderedTwoPointPairingValue_eq_weight_mul_components
