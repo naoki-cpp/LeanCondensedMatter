@@ -60,18 +60,15 @@ theorem QuarticDiagram.componentOrderedLeg_strictMono {S : Finset (Fin N)}
     (orderedQuarticLegEquiv S.card).symm
       (shuffle.slotEquiv ⟨B, pb.1⟩, pb.2)
   by_cases hslot : pa.1 = pb.1
-  · have hlocal : pa.2 < pb.2 := by
-      have hpa : pa = (pb.1, pa.2) := by
-        apply Prod.ext
-        · exact hslot
-        · rfl
-      rw [hpa] at hab'
-      exact (orderedQuarticLegEquiv_symm_lt_symm_iff_snd_lt
-        (B : Finset (Fin N)).card pb.1 pa.2 pb.2).1 hab'
+  · have hlocal : pa.2 < pb.2 :=
+      (orderedQuarticLegEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq
+        (B : Finset (Fin N)).card pa pb hslot).1 hab'
     have hmap : shuffle.slotEquiv ⟨B, pa.1⟩ = shuffle.slotEquiv ⟨B, pb.1⟩ := by
       rw [hslot]
-    rw [hmap]
-    exact (orderedQuarticLegEquiv_symm_lt_symm_iff_snd_lt S.card _ _ _).2 hlocal
+    exact (orderedQuarticLegEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq
+      S.card
+      (shuffle.slotEquiv ⟨B, pa.1⟩, pa.2)
+      (shuffle.slotEquiv ⟨B, pb.1⟩, pb.2) hmap).2 hlocal
   · have hslotLt : pa.1 < pb.1 :=
       (orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne
         (B : Finset (Fin N)).card pa.1 pb.1 pa.2 pb.2 hslot).1 hab'
