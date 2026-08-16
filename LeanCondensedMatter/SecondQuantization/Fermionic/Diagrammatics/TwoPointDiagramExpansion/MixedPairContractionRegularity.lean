@@ -175,7 +175,7 @@ theorem continuous_orderedTwoPointLegPairContraction
     Continuous (fun σ : Fin n → ℝ =>
       orderedTwoPointLegPairContraction ε β i j τ τ' q σ x y) := by
   rcases x with x | x <;> rcases y with y | y <;>
-    simp [orderedTwoPointLegPairContraction, orderedTwoPointLegField,
+    simp only [orderedTwoPointLegPairContraction, orderedTwoPointLegField,
       orderedTwoPointLegTime, orderedTwoPointLegFieldLabel, timedFieldPairContraction_eq] <;>
     fun_prop
 
