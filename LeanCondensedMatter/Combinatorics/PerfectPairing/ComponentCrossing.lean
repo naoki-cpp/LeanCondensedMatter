@@ -16,7 +16,7 @@ parity. That statement is independent of what the components are, so it is state
 
 namespace Combinatorics
 
-variable {n : ℕ} {ι : Type*} [Fintype ι] {F : ι → Type*} [∀ B, Fintype (F B)]
+variable {n : ℕ} {ι : Type*} {F : ι → Type*} [∀ B, Fintype (F B)]
 
 /-- Oriented crossing count from the pairs of component `B` to the pairs of component `C`. -/
 noncomputable def Pairing.componentCrossingCount (pairing : Pairing n)
@@ -31,7 +31,6 @@ noncomputable def Pairing.componentGeometricCrossingCount (pairing : Pairing n)
       Crosses (e ⟨C, x.2⟩).1 (e ⟨B, x.1⟩).1 then 1 else 0
 
 /-- The geometric crossing count between two components is the sum of its two orientations. -/
-omit [Fintype ι] in
 theorem Pairing.componentGeometricCrossingCount_eq_oriented_add (pairing : Pairing n)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) (B C : ι) :
     pairing.componentGeometricCrossingCount e B C =
@@ -53,7 +52,7 @@ theorem Pairing.componentGeometricCrossingCount_eq_oriented_add (pairing : Pairi
   · simp [hbc]
 
 /-- The crossing count is the double sum of the oriented component crossing counts. -/
-theorem Pairing.crossingCount_eq_sum_componentCrossingCount (pairing : Pairing n)
+theorem Pairing.crossingCount_eq_sum_componentCrossingCount [Fintype ι] (pairing : Pairing n)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) :
     pairing.crossingCount = ∑ B : ι, ∑ C : ι, pairing.componentCrossingCount e B C := by
   classical
@@ -70,8 +69,8 @@ theorem Pairing.crossingCount_eq_sum_componentCrossingCount (pairing : Pairing n
 
 /-- When the two orientations between distinct components cancel modulo two, the crossing count has
 the parity of the sum of the component-internal crossing counts. -/
-theorem Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount (pairing : Pairing n)
-    (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair)
+theorem Pairing.crossingCount_mod_two_eq_sum_componentCrossingCount [Fintype ι]
+    (pairing : Pairing n) (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair)
     (hpair : ∀ B C : ι, B ≠ C →
       (pairing.componentCrossingCount e B C + pairing.componentCrossingCount e C B) % 2 = 0) :
     pairing.crossingCount % 2 = (∑ B : ι, pairing.componentCrossingCount e B B) % 2 := by
