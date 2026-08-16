@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedLegOrder
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPairing
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Ordered
 
 set_option linter.style.header false
 
@@ -52,21 +52,18 @@ theorem mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti {n : ℕ}
   intro a b hab
   let pa := orderedQuarticLegEquiv n a
   let pb := orderedQuarticLegEquiv n b
-  have ha := orderedQuarticLegEquiv_reconstruct_val n a
-  have hb := orderedQuarticLegEquiv_reconstruct_val n b
-  change a.val = pa.2.val + 4 * pa.1.val at ha
-  change b.val = pb.2.val + 4 * pb.1.val at hb
-  change a.val < b.val at hab
-  have hpa : pa.2.val < 4 := pa.2.isLt
-  have hpb : pb.2.val < 4 := pb.2.isLt
+  have hab' :
+      (orderedQuarticLegEquiv n).symm pa <
+        (orderedQuarticLegEquiv n).symm pb := by
+    simpa [pa, pb] using hab
   let x : OrderedTwoPointLeg n := Sum.inr (⟨pa.1, Finset.mem_univ pa.1⟩, pa.2)
   let y : OrderedTwoPointLeg n := Sum.inr (⟨pb.1, Finset.mem_univ pb.1⟩, pb.2)
   change mixedTimeOrderedAtomicLegPosition τ τ' σ x <
     mixedTimeOrderedAtomicLegPosition τ τ' σ y
   by_cases hslot : pa.1 = pb.1
-  · have hlocal : pa.2.val < pb.2.val := by
-      have hslotVal : pa.1.val = pb.1.val := congrArg Fin.val hslot
-      omega
+  · have hlocal : pa.2 < pb.2 :=
+      (orderedQuarticLegEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq
+        n pa pb hslot).1 hab'
     have hEvent : orderedTwoPointLegEvent x = orderedTwoPointLegEvent y := by
       simp [x, y, hslot, orderedTwoPointLegEvent]
     let event := orderedTwoPointLegEvent x
@@ -99,11 +96,9 @@ theorem mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti {n : ℕ}
       exact hlocal
     simpa [mixedTimeOrderedAtomicLegPosition, mixedTimeOrderedAtomicLegEquiv,
       mixedTimeOrderedAtomicLegs, List.Nodup.getEquivOfForallMemList] using hblock.mpr hidx
-  · have hslotLt : pa.1 < pb.1 := by
-      have hslotNeVal : pa.1.val ≠ pb.1.val := by
-        intro h
-        exact hslot (Fin.ext h)
-      omega
+  · have hslotLt : pa.1 < pb.1 :=
+      (orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne
+        n pa.1 pb.1 pa.2 pb.2 hslot).1 hab'
     have hEventNe : orderedTwoPointLegEvent x ≠ orderedTwoPointLegEvent y := by
       simp [x, y, orderedTwoPointLegEvent, hslot]
     apply (mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt
