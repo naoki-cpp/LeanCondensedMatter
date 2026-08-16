@@ -101,7 +101,8 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
           (d.1.pairingInMixedOrder τ τ' σ) =
         ∏ B : d.1.componentPartition.parts,
           d.mixedComponentPairingValue ε β τ τ' σ B := by
-    rw [d.orderedTwoPointPairingValue_eq_weight_mul_components,
+    unfold orderedTwoPointPairingValue Combinatorics.Pairing.evaluation
+    rw [d.1.prod_mixedPairValues_eq_external_mul_prod_vacuum τ τ' σ,
       d.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum_unconditional]
     unfold FixedExternalTwoPointWickDiagram.mixedComponentPairingValue
     rw [← d.1.prod_componentParts_eq_external_mul_prod_vacuum
