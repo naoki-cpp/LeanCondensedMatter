@@ -38,16 +38,14 @@ theorem currentX_eq_charge_smul_velocityX (e v : ℝ) :
     currentX e v = (((-e : ℝ) : ℂ)) • velocityX v := by
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [currentX, velocityX, sigmaX] <;>
-    ring
+    simp [currentX, velocityX, sigmaX]
 
 /-- The `y` charge-current matrix is likewise `-e` times the velocity matrix. -/
 theorem currentY_eq_charge_smul_velocityY (e v : ℝ) :
     currentY e v = (((-e : ℝ) : ℂ)) • velocityY v := by
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [currentY, velocityY, sigmaY] <;>
-    ring
+    simp [currentY, velocityY, sigmaY]
 
 /-- Gauge-independent interband current block in the bounded-operator representation. -/
 noncomputable def interbandCurrentTrace
@@ -97,7 +95,8 @@ theorem interbandCurrentTrace_im
     (interbandCurrentTrace band e v m px py).im =
       e ^ 2 * (forceMatrixTraceNumerator band v m px py).im := by
   rw [interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator]
-  simp
+  push_cast
+  simp [Complex.mul_im, pow_two]
 
 /-- Berry-curvature combination formed directly from the physical-current interband trace. -/
 noncomputable def interbandCurrentBerryWeight
@@ -156,7 +155,8 @@ theorem regularizedBastinTraceIntegrand_eq_projectorBastinTraceIntegrand
     retardedAdvancedResolventDifference
   rw [retardedResolvent_eq_projectorResolvent v m px py probeEnergy broadening hE hbroadening]
   rw [advancedResolvent_eq_projectorResolvent v m px py probeEnergy broadening hE hbroadening]
-  ring_nf
+  congr 1
+  noncomm_ring
 
 end
 
