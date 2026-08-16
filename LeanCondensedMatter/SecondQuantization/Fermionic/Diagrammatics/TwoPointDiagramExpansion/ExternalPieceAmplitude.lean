@@ -25,25 +25,6 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {n : ℕ} {i j : Mode}
 
-omit [LinearOrder Mode] [Fintype Mode] in
-private theorem FixedExternalTwoPointWickDiagram.orderedTwoPointLegField_orderedTwoPointLegMap
-    (d : FixedExternalTwoPointWickDiagram Mode n i j) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (leg : OrderedTwoPointLeg d.1.externalInteractionPart.card) :
-    orderedTwoPointLegField i j τ τ' d.vertexLabelSequence σ
-        (orderedTwoPointLegMap (d.1.externalInteractionPart.orderEmbOfFin rfl) leg) =
-      orderedTwoPointLegField i j τ τ' d.externalPiece.vertexLabelSequence
-        (d.1.externalPieceTimes σ) leg := by
-  cases leg with
-  | inl e => rfl
-  | inr p =>
-      obtain ⟨v, l⟩ := p
-      simp only [orderedTwoPointLegMap_inr, orderedTwoPointLegField,
-        orderedTwoPointLegTime, orderedTwoPointLegFieldLabel]
-      unfold FixedExternalTwoPointWickDiagram.vertexLabelSequence
-      unfold FixedExternalTwoPointWickDiagram.externalPiece
-      rw [d.1.externalPiece_vertexLabel]
-      rfl
-
 omit [Fintype Mode] in
 private theorem
     FixedExternalTwoPointWickDiagram.mixedTimeOrderedAtomicFieldFamily_externalPieceMixedPosition
@@ -55,8 +36,18 @@ private theorem
         (d.1.externalPieceTimes σ) p := by
   rw [mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField,
     mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField,
-    d.1.mixedTimeOrderedAtomicLegEquiv_externalPieceMixedPosition,
-    d.orderedTwoPointLegField_orderedTwoPointLegMap]
+    d.1.mixedTimeOrderedAtomicLegEquiv_externalPieceMixedPosition]
+  generalize mixedTimeOrderedAtomicLegEquiv τ τ' (d.1.externalPieceTimes σ) p = leg
+  cases leg with
+  | inl e => rfl
+  | inr q =>
+      obtain ⟨v, l⟩ := q
+      simp only [orderedTwoPointLegMap_inr, orderedTwoPointLegField,
+        orderedTwoPointLegTime, orderedTwoPointLegFieldLabel]
+      unfold FixedExternalTwoPointWickDiagram.vertexLabelSequence
+      unfold FixedExternalTwoPointWickDiagram.externalPiece
+      rw [d.1.externalPiece_vertexLabel]
+      rfl
 
 private theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_externalComponentPart
     (d : FixedExternalTwoPointWickDiagram Mode n i j) (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ)
