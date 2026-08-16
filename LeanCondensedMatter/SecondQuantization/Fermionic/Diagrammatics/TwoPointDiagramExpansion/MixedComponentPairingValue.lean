@@ -28,25 +28,5 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentPairingValue
     ∏ pr : d.1.MixedComponentPair τ τ' σ B,
       d.mixedPairContractionValue ε β τ τ' σ pr.1
 
-/-- The full mixed-order pairing value is the product of the pairing values of all full
-components. -/
-theorem FixedExternalTwoPointWickDiagram.orderedTwoPointPairingValue_eq_prod_components_unconditional
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    orderedTwoPointPairingValue ε β i j τ τ' σ d.vertexLabelSequence
-        (d.1.pairingInMixedOrder τ τ' σ) =
-      ∏ B : d.1.componentPartition.parts,
-        d.mixedComponentPairingValue ε β τ τ' σ B := by
-  rw [d.orderedTwoPointPairingValue_eq_weight_mul_components,
-    d.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum_unconditional]
-  unfold FixedExternalTwoPointWickDiagram.mixedComponentPairingValue
-  rw [← d.1.prod_componentParts_eq_external_mul_prod_vacuum
-    (d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ)]
-  rw [← d.1.prod_componentParts_eq_external_mul_prod_vacuum
-    (fun B =>
-      ∏ pr : d.1.MixedComponentPair τ τ' σ B,
-        d.mixedPairContractionValue ε β τ τ' σ pr.1)]
-  rw [Finset.prod_mul_distrib]
-
 end Fermionic
 end SecondQuantization

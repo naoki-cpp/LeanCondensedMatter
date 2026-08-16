@@ -8,8 +8,8 @@ set_option linter.style.header false
 # Fermionic contraction products over mixed two-point components
 
 Common owns the mixed-pair component fibers and their generic commutative-product factorization.
-This module adds only the canonical free Gibbs contraction values and their fermionic pairing-value
-specializations.
+This module adds only the canonical free Gibbs contraction values used by the component-local
+fermionic amplitudes.
 -/
 
 namespace SecondQuantization
@@ -28,23 +28,6 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedPairContractionValue
     (pr : (d.1.pairingInMixedOrder τ τ' σ).NormalizedPair) : ℂ :=
   mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
     pr.1.1 pr.1.2
-
-/-- The canonical pairing value exposes the component-factorized contraction product while retaining
-the global mixed-order fermionic pairing weight. -/
-theorem FixedExternalTwoPointWickDiagram.orderedTwoPointPairingValue_eq_weight_mul_components
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    orderedTwoPointPairingValue ε β i j τ τ' σ d.vertexLabelSequence
-        (d.1.pairingInMixedOrder τ τ' σ) =
-      (d.1.pairingInMixedOrder τ τ' σ).weight Common.Statistics.fermion *
-        ((∏ pr : d.1.MixedComponentPair τ τ' σ d.1.externalComponentPart,
-          d.mixedPairContractionValue ε β τ τ' σ pr.1) *
-          d.1.vacuumComponentParts.prod (fun B =>
-            ∏ pr : d.1.MixedComponentPair τ τ' σ B,
-              d.mixedPairContractionValue ε β τ τ' σ pr.1)) := by
-  unfold orderedTwoPointPairingValue Combinatorics.Pairing.evaluation
-  rw [d.1.prod_mixedPairValues_eq_external_mul_prod_vacuum τ τ' σ]
-  rfl
 
 end Fermionic
 end SecondQuantization
