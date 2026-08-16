@@ -35,10 +35,13 @@ noncomputable def equivSigmaSubfinsets {β : Type*} [DecidableEq β]
   left_inv x := Subtype.ext rfl
   right_inv x := by
     rcases x with ⟨B, x⟩
-    apply Sigma.ext
-    · apply Subtype.ext
+    have hB :
+        (⟨π.part (f ⟨x.1, hfiber B x.2⟩),
+          (π.part_mem).2 (hf ⟨x.1, hfiber B x.2⟩)⟩ : π.parts) = B := by
+      apply Subtype.ext
       exact π.part_eq_of_mem B.2 ((hmem B ⟨x.1, hfiber B x.2⟩).1 x.2)
-    · rfl
+    cases hB
+    rfl
 
 /-- A product over `s` is the iterated product over the parts of a finite partition of `s`. -/
 theorem prod_eq_prod_parts (π : Finpartition s) (f : ↥s → M) :
