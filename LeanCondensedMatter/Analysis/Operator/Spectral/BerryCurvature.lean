@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Pointwise Berry curvature and force-matrix representation
 
 This module extends the one-direction spectral data in `BerryConnection` to a family of parameter
-directions sharing one Hamiltonian, eigenbasis, and spectrum.  Each direction reduces to the
+directions sharing one Hamiltonian, eigenbasis, and spectrum. Each direction reduces to the
 existing `DirectionalEigenbasisData`, so Hellmann--Feynman and Born--Fock are reused rather than
 reproved.
 
@@ -18,7 +18,7 @@ The pointwise Berry curvature convention is
 ```
 
 For self-adjoint Hamiltonian derivatives and a nondegenerate band `n`, completeness plus the
-Born--Fock formula give the finite-band force-matrix representation.  No global gauge choice,
+Born--Fock formula give the finite-band force-matrix representation. No global gauge choice,
 parameter-space topology, transport response, or disorder is introduced here.
 -/
 
@@ -33,7 +33,7 @@ variable {κ : Type*}
 /-- Pointwise differentiated spectral data for several parameter directions.
 
 All directions share the same self-adjoint Hamiltonian, finite orthonormal eigenbasis, and real
-spectrum.  The derivative of the Hamiltonian is required to be self-adjoint in every direction;
+spectrum. The derivative of the Hamiltonian is required to be self-adjoint in every direction;
 this is the pointwise property needed to convert conjugated derivative matrix elements into the
 standard interband force-matrix ordering. -/
 structure MultidirectionalEigenbasisData (κ ι H : Type*) [Fintype ι]
@@ -115,8 +115,11 @@ noncomputable def berryCurvature (μ ν : κ) (n : ι) : ℝ :=
 theorem berryCurvature_swap (μ ν : κ) (n : ι) :
     data.berryCurvature ν μ n = -data.berryCurvature μ ν n := by
   unfold berryCurvature
-  rw [inner_im_symm]
-  ring
+  have h := congrArg Complex.im
+    (inner_conj_symm (𝕜 := ℂ)
+      (data.eigenvectorDerivative μ n) (data.eigenvectorDerivative ν n))
+  simp at h
+  linarith
 
 /-- Completeness of the finite orthonormal eigenbasis expands the derivative-state curvature into
 band-resolved inner-product terms. -/
@@ -144,7 +147,7 @@ theorem berryCurvature_eq_sum_innerProducts (μ ν : κ) (n : ι) :
           inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative ν n)).im := by
       rw [Finset.mul_sum]
 
-/-- The band-diagonal completeness term has zero imaginary part.  It therefore does not contribute
+/-- The band-diagonal completeness term has zero imaginary part. It therefore does not contribute
 to Berry curvature. -/
 theorem diagonal_innerProduct_im_eq_zero (μ ν : κ) (n : ι) :
     (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis n) *
@@ -152,10 +155,11 @@ theorem diagonal_innerProduct_im_eq_zero (μ ν : κ) (n : ι) :
   have hμ := congrArg Complex.re (data.differentiatedOrthonormality μ n n)
   have hν := congrArg Complex.re (data.differentiatedOrthonormality ν n n)
   simp only [Complex.add_re, Complex.zero_re] at hμ hν
-  have hμsym := inner_re_symm (𝕜 := ℂ)
-    (data.eigenvectorDerivative μ n) (data.eigenbasis n)
-  have hνsym := inner_re_symm (𝕜 := ℂ)
-    (data.eigenvectorDerivative ν n) (data.eigenbasis n)
+  have hμsym := congrArg Complex.re
+    (inner_conj_symm (𝕜 := ℂ) (data.eigenvectorDerivative μ n) (data.eigenbasis n))
+  have hνsym := congrArg Complex.re
+    (inner_conj_symm (𝕜 := ℂ) (data.eigenvectorDerivative ν n) (data.eigenbasis n))
+  simp at hμsym hνsym
   have hμre : (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis n)).re = 0 := by
     linarith
   have hνre : (inner ℂ (data.eigenbasis n) (data.eigenvectorDerivative ν n)).re = 0 := by
@@ -173,7 +177,9 @@ theorem innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div
       inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative μ n) =
         data.hamiltonianDerivativeMatrixElement μ m n /
           (((data.energy n - data.energy m : ℝ) : ℂ)) := by
-    simpa [direction, hamiltonianDerivativeMatrixElement] using hbf
+    simpa [direction,
+      BerryGeometry.DirectionalEigenbasisData.hamiltonianDerivativeMatrixElement,
+      hamiltonianDerivativeMatrixElement] using hbf
   calc
     inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) =
         (starRingEnd ℂ)
@@ -188,21 +194,24 @@ theorem innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div
       simp [data.star_hamiltonianDerivativeMatrixElement]
 
 /-- An off-diagonal completeness term equals the conventional force-matrix Berry-curvature term.
-The complex denominator is the real level spacing embedded in `ℂ`; keeping it inside `im` avoids
-introducing any additional real/complex coercion API at this layer. -/
+The two real level-spacing factors are intentionally kept separate here; a downstream consumer may
+normalize them to a squared denominator if desired. -/
 theorem curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements
     (μ ν : κ) {m n : ι} (hmn : m ≠ n) (henergy : data.energy m ≠ data.energy n) :
     -2 * (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis m) *
       inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative ν n)).im =
-      2 * ((data.hamiltonianDerivativeMatrixElement μ m n *
-        data.hamiltonianDerivativeMatrixElement ν n m) /
-          (((data.energy n - data.energy m : ℝ) : ℂ) ^ 2)).im := by
+      2 * ((data.hamiltonianDerivativeMatrixElement μ m n /
+        (((data.energy n - data.energy m : ℝ) : ℂ))) *
+        (data.hamiltonianDerivativeMatrixElement ν n m /
+          (((data.energy n - data.energy m : ℝ) : ℂ)))).im := by
   have hbfν := (data.direction ν).bornFock_inner hmn henergy
   have hbfν' :
       inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative ν n) =
         data.hamiltonianDerivativeMatrixElement ν m n /
           (((data.energy n - data.energy m : ℝ) : ℂ)) := by
-    simpa [direction, hamiltonianDerivativeMatrixElement] using hbfν
+    simpa [direction,
+      BerryGeometry.DirectionalEigenbasisData.hamiltonianDerivativeMatrixElement,
+      hamiltonianDerivativeMatrixElement] using hbfν
   rw [data.innerDerivative_basis_eq_hamiltonianDerivativeMatrixElement_div μ hmn henergy]
   rw [hbfν']
   let z : ℂ :=
@@ -212,19 +221,25 @@ theorem curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements
       (((data.energy n - data.energy m : ℝ) : ℂ)))
   have hstar :
       (starRingEnd ℂ) z =
-        (data.hamiltonianDerivativeMatrixElement μ m n *
-          data.hamiltonianDerivativeMatrixElement ν n m) /
-            (((data.energy n - data.energy m : ℝ) : ℂ) ^ 2) := by
+        (data.hamiltonianDerivativeMatrixElement μ m n /
+          (((data.energy n - data.energy m : ℝ) : ℂ))) *
+        (data.hamiltonianDerivativeMatrixElement ν n m /
+          (((data.energy n - data.energy m : ℝ) : ℂ))) := by
     dsimp [z]
     simp [data.star_hamiltonianDerivativeMatrixElement]
-    ring
   have him := congrArg Complex.im hstar
   simp at him
   change -2 * z.im =
-    2 * ((data.hamiltonianDerivativeMatrixElement μ m n *
-      data.hamiltonianDerivativeMatrixElement ν n m) /
-        (((data.energy n - data.energy m : ℝ) : ℂ) ^ 2)).im
-  linarith
+    2 * ((data.hamiltonianDerivativeMatrixElement μ m n /
+      (((data.energy n - data.energy m : ℝ) : ℂ))) *
+      (data.hamiltonianDerivativeMatrixElement ν n m /
+        (((data.energy n - data.energy m : ℝ) : ℂ)))).im
+  calc
+    -2 * z.im = 2 * (-z.im) := by ring
+    _ = 2 * ((data.hamiltonianDerivativeMatrixElement μ m n /
+      (((data.energy n - data.energy m : ℝ) : ℂ))) *
+      (data.hamiltonianDerivativeMatrixElement ν n m /
+        (((data.energy n - data.energy m : ℝ) : ℂ)))).im := by rw [him]
 
 /-- Force/Hamiltonian-derivative matrix-element representation of Berry curvature for a
 nondegenerate band.
@@ -235,9 +250,10 @@ theorem berryCurvature_eq_sum_hamiltonianDerivativeMatrixElements [DecidableEq �
     (hnondegenerate : ∀ m, m ≠ n → data.energy m ≠ data.energy n) :
     data.berryCurvature μ ν n =
       ∑ m : ι, if m = n then 0 else
-        2 * ((data.hamiltonianDerivativeMatrixElement μ m n *
-          data.hamiltonianDerivativeMatrixElement ν n m) /
-            (((data.energy n - data.energy m : ℝ) : ℂ) ^ 2)).im := by
+        2 * ((data.hamiltonianDerivativeMatrixElement μ m n /
+          (((data.energy n - data.energy m : ℝ) : ℂ))) *
+          (data.hamiltonianDerivativeMatrixElement ν n m /
+            (((data.energy n - data.energy m : ℝ) : ℂ)))).im := by
   rw [data.berryCurvature_eq_sum_innerProducts]
   apply Finset.sum_congr rfl
   intro m _
