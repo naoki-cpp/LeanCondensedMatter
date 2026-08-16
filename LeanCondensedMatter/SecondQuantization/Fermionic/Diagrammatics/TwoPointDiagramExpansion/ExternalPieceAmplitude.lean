@@ -39,7 +39,9 @@ private theorem FixedExternalTwoPointWickDiagram.orderedTwoPointLegField_ordered
       obtain ⟨v, l⟩ := p
       simp only [orderedTwoPointLegMap_inr, orderedTwoPointLegField,
         orderedTwoPointLegTime, orderedTwoPointLegFieldLabel]
-      rw [d.externalPiece_vertexLabelSequence]
+      unfold FixedExternalTwoPointWickDiagram.vertexLabelSequence
+      unfold FixedExternalTwoPointWickDiagram.externalPiece
+      rw [d.1.externalPiece_vertexLabel]
       rfl
 
 omit [Fintype Mode] in
