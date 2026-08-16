@@ -58,7 +58,9 @@ private theorem mixedComponentPairingValue_local_canonical
         d.1.canonicalComponentInteractionShuffle
         ((twoPointSlotTimeEquiv (n := n)).symm
           ((twoPointSlotTimeEquiv (n := n)) υ)) B
-    simpa using hRestricted
+    rw [(twoPointSlotTimeEquiv (n := n)).symm_apply_apply σ,
+      (twoPointSlotTimeEquiv (n := n)).symm_apply_apply υ]
+    exact hRestricted
   intro v hv
   exact hVertices ⟨v, hv⟩
 
