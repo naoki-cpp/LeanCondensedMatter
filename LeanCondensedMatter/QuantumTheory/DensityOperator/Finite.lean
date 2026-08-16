@@ -1,4 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
+import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Purity
 import Mathlib.Analysis.InnerProductSpace.Trace
 import Mathlib.Analysis.Normed.Operator.Compact.FiniteDimension
@@ -8,7 +9,7 @@ import Mathlib.Analysis.Normed.Operator.Compact.FiniteDimension
 
 Finite dimensionality does not introduce a second density-state type. This module collects the
 bridges from the canonical dimension-independent `DensityOperator` API to ordinary finite matrix
-traces.
+traces and finite-index corollaries.
 -/
 
 noncomputable section
@@ -160,6 +161,16 @@ theorem DensityOperator.linearMap_trace_eq_one (ρ : DensityOperator H) :
   have h := (ρ.expectation_eq_linearMap_trace (ContinuousLinearMap.id ℂ H)).symm.trans
     ρ.expectation_id
   simpa using h
+
+omit [FiniteDimensional ℂ H] in
+/-- A finite diagonal expectation is the finite-index corollary of the countable Hilbert-basis
+formula; no separate finite-dimensional hypothesis is needed once the finite basis is supplied. -/
+theorem DensityOperator.expectation_eq_sum_diagonal {ι : Type*} [Fintype ι]
+    (ρ : DensityOperator H) (A : H →L[ℂ] H) (b : OrthonormalBasis ι ℂ H)
+    (w : ι → ℝ) (hρ : ∀ i, (ρ.op : H →ₗ[ℂ] H) (b i) = (w i : ℂ) • b i) :
+    ρ.expectation A = ∑ i, (w i : ℂ) * inner ℂ (b i) (A (b i)) := by
+  simpa [tsum_fintype] using
+    ρ.expectation_eq_tsum_diagonal A b.toHilbertBasis w (fun i => by simpa using hρ i)
 
 /-- In finite dimensions, the ordinary matrix trace `Tr(ρ²)` is the complex embedding of purity. -/
 theorem DensityOperator.linearMap_trace_sq_eq_purity (ρ : DensityOperator H) :
