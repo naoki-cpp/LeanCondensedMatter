@@ -46,50 +46,49 @@ theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
     (hE : energy v m px py ≠ 0) :
     hamiltonian v m px py * bandProjector band v m px py =
       ((bandEnergy band v m px py : ℝ) : ℂ) • bandProjector band v m px py := by
+  have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
+    exact_mod_cast hE
   cases band <;>
     ext i j <;>
     fin_cases i <;> fin_cases j <;>
-    simp [bandProjector, bandEnergy, Matrix.mul_apply, hamiltonian, sigmaX, sigmaY, sigmaZ,
-      energySq] <;>
-    field_simp [hE] <;>
-    have hs := energy_sq v m px py <;>
-    nlinarith
+    simp [bandProjector, bandEnergy, Matrix.mul_apply, hamiltonian, sigmaX, sigmaY, sigmaZ] <;>
+    field_simp [hEc]
 
 /-- Away from the band degeneracy, each `P_s` is idempotent. -/
 theorem bandProjector_mul_self (band : Band) (v m px py : ℝ)
     (hE : energy v m px py ≠ 0) :
     bandProjector band v m px py * bandProjector band v m px py =
       bandProjector band v m px py := by
+  have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
+    exact_mod_cast hE
   cases band <;>
     ext i j <;>
     fin_cases i <;> fin_cases j <;>
-    simp [bandProjector, Matrix.mul_apply, hamiltonian, sigmaX, sigmaY, sigmaZ, energySq] <;>
-    field_simp [hE] <;>
-    have hs := energy_sq v m px py <;>
-    nlinarith
+    simp [bandProjector, Matrix.mul_apply, hamiltonian, sigmaX, sigmaY, sigmaZ] <;>
+    field_simp [hEc]
 
 /-- Away from the band degeneracy, the lower and upper projectors are orthogonal. -/
 theorem bandProjector_lower_mul_upper (v m px py : ℝ)
     (hE : energy v m px py ≠ 0) :
     bandProjector .lower v m px py * bandProjector .upper v m px py = 0 := by
+  have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
+    exact_mod_cast hE
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [bandProjector, Matrix.mul_apply, hamiltonian, sigmaX, sigmaY, sigmaZ, energySq] <;>
-    field_simp [hE] <;>
-    have hs := energy_sq v m px py <;>
-    nlinarith
+    simp [bandProjector, Matrix.mul_apply, hamiltonian, sigmaX, sigmaY, sigmaZ] <;>
+    field_simp [hEc]
 
 /-- Away from the band degeneracy, the upper and lower projectors are orthogonal in the opposite
 order as well. -/
 theorem bandProjector_upper_mul_lower (v m px py : ℝ)
     (hE : energy v m px py ≠ 0) :
     bandProjector .upper v m px py * bandProjector .lower v m px py = 0 := by
+  have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
+    exact_mod_cast hE
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [bandProjector, Matrix.mul_apply, hamiltonian, sigmaX, sigmaY, sigmaZ, energySq] <;>
-    field_simp [hE] <;>
-    have hs := energy_sq v m px py <;>
-    nlinarith
+    simp [bandProjector, Matrix.mul_apply, hamiltonian, sigmaX, sigmaY, sigmaZ] <;>
+    field_simp [hEc]
 
 end
 
