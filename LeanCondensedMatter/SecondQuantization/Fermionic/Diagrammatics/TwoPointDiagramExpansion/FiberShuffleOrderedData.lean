@@ -174,31 +174,14 @@ theorem sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum
       ((-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)))).mul
       (intervalIntegral.Continuous.measurableLocallyBounded
         (continuous_flatVertexLegPairingEvaluation ε β x.1 x.2))
-  have hextIntegral :
-      intervalIntegral.orderedSimplexIntegral m β
-        (fun σ => ext.dysonFixedTimeAmplitude ε β g τ τ' σ) =
-        ext.dysonAmplitude ε β g τ τ' := by
-    simp [FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude,
-      FixedExternalTwoPointWickDiagram.dysonAmplitude,
-      FixedExternalTwoPointWickDiagram.orderedSimplexContribution,
-      intervalIntegral.orderedSimplexIntegral_smul]
-  have hvacIntegral :
-      intervalIntegral.orderedSimplexIntegral k β
-        (orderedVacuumDysonIntegrand ε β g x) =
-        (-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)) *
-          intervalIntegral.orderedSimplexIntegral k β
-            (fun σ => flatVertexLegPairingEvaluation ε β x.1 σ x.2) := by
-    unfold orderedVacuumDysonIntegrand
-    exact intervalIntegral.orderedSimplexIntegral_smul k β
-      ((-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)))
-      (fun σ => flatVertexLegPairingEvaluation ε β x.1 σ x.2)
-  have h :=
-    BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded
+  simpa [FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude,
+    FixedExternalTwoPointWickDiagram.dysonAmplitude,
+    FixedExternalTwoPointWickDiagram.orderedSimplexContribution,
+    orderedVacuumDysonIntegrand, intervalIntegral.orderedSimplexIntegral_smul] using
+    (BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded
       m k β
       (fun σ => ext.dysonFixedTimeAmplitude ε β g τ τ' σ)
-      (orderedVacuumDysonIntegrand ε β g x) hext hvac
-  rw [hextIntegral, hvacIntegral] at h
-  exact h
+      (orderedVacuumDysonIntegrand ε β g x) hext hvac)
 
 end Fermionic
 end SecondQuantization
