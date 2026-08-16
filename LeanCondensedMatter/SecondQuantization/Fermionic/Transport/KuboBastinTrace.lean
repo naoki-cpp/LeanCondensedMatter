@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinSpectral
-import LeanCondensedMatter.QuantumTheory.FiniteDimensional.Expectation
+import LeanCondensedMatter.QuantumTheory.DensityOperator.Finite
 
 set_option linter.style.header false
 
