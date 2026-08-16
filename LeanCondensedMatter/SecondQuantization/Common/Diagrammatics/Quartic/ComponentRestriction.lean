@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPartition
-import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
+import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentRestriction
 
 set_option linter.style.header false
 
@@ -9,9 +9,10 @@ set_option linter.style.header false
 The restriction construction depends only on the pairing-induced vertex graph and quartic leg
 indexing. It is independent of the vertex-label type and particle statistics.
 
-Partner-invariant pairing restriction is owned by `Combinatorics.PerfectPairing.Restriction`; this
-module supplies only the quartic component predicate and its leg reindexing. Connectedness of the
-restricted diagram and reassembly are developed separately.
+Component-leg partner invariance and pairing restriction are owned by
+`Combinatorics.PerfectPairing.ComponentRestriction`; this module supplies only the quartic component
+classifier and its quartic-leg reindexing. Connectedness of the restricted diagram and reassembly are
+developed separately.
 -/
 
 namespace SecondQuantization
@@ -25,7 +26,7 @@ variable {Label : Type*} {N : ℕ}
 For an actual part of `d.componentPartition`, this is equivalent to vertex membership in `B`. -/
 def QuarticDiagram.legInBlock {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (B : Finset (Fin N)) (leg : Fin (2 * (2 * S.card))) : Prop :=
-  d.componentBlock (vertexOfLeg leg) = B
+  d.pairing.legInComponent vertexOfLeg d.componentBlock B leg
 
 theorem QuarticDiagram.componentBlock_eq_iff_mem {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
@@ -48,22 +49,23 @@ theorem QuarticDiagram.legInBlock_partner_iff {S : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card))) :
     d.legInBlock B leg ↔ d.legInBlock B (d.pairing.partner leg) := by
   unfold QuarticDiagram.legInBlock
-  rw [d.componentBlock_eq_of_reachable
-    (d.pairing.vertexGraph_reachable_partner vertexOfLeg leg)]
+  exact d.pairing.legInComponent_partner_iff vertexOfLeg d.componentBlock
+    d.componentBlock_eq_of_reachable B leg
 
 /-- The partner permutation restricted to legs belonging to component part `B`. -/
 noncomputable def QuarticDiagram.restrictedPartner {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (B : Finset (Fin N)) :
     Equiv.Perm {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg} :=
-  d.pairing.partnerSubtypePerm (d.legInBlock B) fun leg => d.legInBlock_partner_iff leg
+  d.pairing.componentPartnerSubtypePerm vertexOfLeg d.componentBlock
+    d.componentBlock_eq_of_reachable B
 
 theorem QuarticDiagram.restrictedPartner_val {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (B : Finset (Fin N))
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
     (d.restrictedPartner B leg : Fin (2 * (2 * S.card))) = d.pairing.partner leg := by
-  simpa only [QuarticDiagram.restrictedPartner] using
-    d.pairing.partnerSubtypePerm_val (d.legInBlock B)
-      (fun i => d.legInBlock_partner_iff i) leg
+  simpa only [QuarticDiagram.restrictedPartner, QuarticDiagram.legInBlock] using
+    d.pairing.componentPartnerSubtypePerm_val vertexOfLeg d.componentBlock
+      d.componentBlock_eq_of_reachable B leg
 
 /-- Vertices of `S` lying in `B`, identified with `↥B`. -/
 def QuarticDiagram.subtypeMemBlockEquiv {S : Finset (Fin N)} (B : Finset (Fin N))
@@ -101,7 +103,7 @@ noncomputable def QuarticDiagram.blockLegEquiv {S : Finset (Fin N)}
           (vertexOfLeg leg') : {v : ↥S // (v : Fin N) ∈ B}) : ↥S)
         (localLegOfLeg leg'),
       by
-        unfold QuarticDiagram.legInBlock
+        unfold QuarticDiagram.legInBlock Pairing.legInComponent
         rw [vertexOfLeg_legOfVertexLocal]
         apply (d.componentBlock_eq_iff_mem hB _).mpr
         exact (((QuarticDiagram.subtypeMemBlockEquiv B
@@ -138,8 +140,8 @@ noncomputable def QuarticDiagram.restrictedPairing {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (hB : B ∈ d.componentPartition.parts) :
     Combinatorics.Pairing (2 * B.card) :=
-  d.pairing.restrictAlongEquiv (d.legInBlock B)
-    (fun leg => d.legInBlock_partner_iff leg) (d.blockLegEquiv hB)
+  d.pairing.restrictComponentAlongEquiv vertexOfLeg d.componentBlock
+    d.componentBlock_eq_of_reachable B (d.blockLegEquiv hB)
 
 /-- The restricted pairing agrees with the original partner under `blockLegEquiv`. -/
 theorem QuarticDiagram.restrictedPairing_partner_blockLegEquiv {S : Finset (Fin N)}
@@ -148,9 +150,10 @@ theorem QuarticDiagram.restrictedPairing_partner_blockLegEquiv {S : Finset (Fin 
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
     (d.restrictedPairing hB).partner (d.blockLegEquiv hB leg) =
       d.blockLegEquiv hB (d.restrictedPartner B leg) := by
-  simpa only [QuarticDiagram.restrictedPairing, QuarticDiagram.restrictedPartner] using
-    d.pairing.restrictAlongEquiv_partner (d.legInBlock B)
-      (fun i => d.legInBlock_partner_iff i) (d.blockLegEquiv hB) leg
+  simpa only [QuarticDiagram.restrictedPairing, QuarticDiagram.restrictedPartner,
+    QuarticDiagram.legInBlock] using
+    d.pairing.restrictComponentAlongEquiv_partner vertexOfLeg d.componentBlock
+      d.componentBlock_eq_of_reachable B (d.blockLegEquiv hB) leg
 
 /-- Restrict `d` to the connected-component part `B`. -/
 noncomputable def QuarticDiagram.restrictComponent {S : Finset (Fin N)}
