@@ -97,23 +97,22 @@ private theorem QuarticDiagram.componentOrientedCrossingCount_add_swap_mod_two_e
       (d.componentPairEquiv orders shuffle) B C +
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount
       (d.componentPairEquiv orders shuffle) C B) % 2 = 0
-  have hor :=
-    (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).
-      componentGeometricCrossingCount_eq_oriented_add
-        (d.componentPairEquiv orders shuffle) B C
+  have hor := Combinatorics.Pairing.componentGeometricCrossingCount_eq_oriented_add
+    (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
+    (d.componentPairEquiv orders shuffle) B C
   rw [← hor]
   have hcross :=
-    (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).
-      componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
-        (d.componentPairEquiv orders shuffle)
-        (fun B => ((d.restrictComponent B.2).pairingInOrder (orders B)).pairEndpointEquiv)
-        (fun B p => d.componentOrderedLeg shuffle B p)
-        (fun B p k => by
-          fin_cases k <;>
-          simp [Combinatorics.Pairing.pairEndpointEquiv_apply,
-            Combinatorics.Pairing.pairEndpoint, Combinatorics.pairEndpointAt,
-            d.componentPairEquiv_apply])
-        B C hBC
+    Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
+      (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
+      (d.componentPairEquiv orders shuffle)
+      (fun B => ((d.restrictComponent B.2).pairingInOrder (orders B)).pairEndpointEquiv)
+      (fun B p => d.componentOrderedLeg shuffle B p)
+      (fun B p k => by
+        fin_cases k <;>
+        simp [Combinatorics.Pairing.pairEndpointEquiv_apply,
+          Combinatorics.Pairing.pairEndpoint, Combinatorics.pairEndpointAt,
+          d.componentPairEquiv_apply])
+      B C hBC
   rw [hcross]
   exact d.sum_componentOrderedLeg_inversions_mod_two_eq_zero shuffle B C hBC
 
