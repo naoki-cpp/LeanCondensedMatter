@@ -63,11 +63,10 @@ theorem energyShellBerryWeight_eq (band : Band) (m ε₀ ε₁ : ℝ)
       (∫ ε : ℝ in ε₀..ε₁, ε ^ (-2 : ℤ)) =
         (ε₁ ^ ((-2 : ℤ) + 1) - ε₀ ^ ((-2 : ℤ) + 1)) /
           (((-2 : ℤ) : ℝ) + 1) :=
-    intervalIntegral.integral_zpow (Or.inr ⟨by norm_num, hzero⟩)
+    integral_zpow (Or.inr ⟨by norm_num, hzero⟩)
   unfold energyShellBerryWeight radialBerryEnergyDensity
   rw [intervalIntegral.integral_const_mul, hzpow]
-  norm_num
-  ring
+  norm_num <;> ring
 
 /-- Filled lower-band Berry weight from the positive gap edge `m` to a finite UV cutoff `Λ`.
 The benchmark in #1269 takes `m > 0`. -/
@@ -84,9 +83,8 @@ theorem valenceBerryWeightCutoff_eq (m Λ : ℝ) (hm : 0 < m) (hmΛ : m ≤ Λ) 
   rw [valenceBerryWeightCutoff, energyShellBerryWeight_eq .lower m m Λ hm hmΛ]
   have hm0 : m ≠ 0 := ne_of_gt hm
   have hΛ0 : Λ ≠ 0 := ne_of_gt (lt_of_lt_of_le hm hmΛ)
-  simp [hm0, hΛ0]
-  field_simp [hm0, hΛ0]
-  ring
+  simp
+  field_simp [hm0, hΛ0] <;> ring
 
 /-- Metallic upper-band contribution: `m/(2εF) - 1/2`. -/
 theorem conductionBerryWeight_eq (m εF : ℝ) (hm : 0 < m) (hmF : m ≤ εF) :
@@ -94,9 +92,8 @@ theorem conductionBerryWeight_eq (m εF : ℝ) (hm : 0 < m) (hmF : m ≤ εF) :
   rw [conductionBerryWeight, energyShellBerryWeight_eq .upper m m εF hm hmF]
   have hm0 : m ≠ 0 := ne_of_gt hm
   have hF0 : εF ≠ 0 := ne_of_gt (lt_of_lt_of_le hm hmF)
-  simp [hm0, hF0]
-  field_simp [hm0, hF0]
-  ring
+  simp
+  field_simp [hm0, hF0] <;> ring
 
 /-- Total occupied-state Berry weight with a finite valence-band ultraviolet cutoff. -/
 def metallicBerryWeightCutoff (m εF Λ : ℝ) : ℝ :=
