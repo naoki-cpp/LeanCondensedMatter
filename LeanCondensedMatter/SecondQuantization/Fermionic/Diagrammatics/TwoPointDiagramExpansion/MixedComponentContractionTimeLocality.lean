@@ -6,7 +6,7 @@ set_option linter.style.header false
 /-!
 # Component-locality of mixed density-state contractions
 
-Common component-position transport preserves the standard leg and supporting event time. This
+Common component-position time transport preserves the standard leg and supporting event time. This
 module uses that structural fact to show that the fermionic atomic operators and free-Gibbs pair
 contractions are local to the interaction times of their own component.
 -/
@@ -165,15 +165,6 @@ private theorem mixedPairContractionValue_eq_of_componentTimeEq
     mixedTimeOrderedAtomicPairValue
   rw [hEndpoint0, hEndpoint1]
 
-/-- `ComponentTimeEq` discharges the contraction-preservation hypothesis. -/
-private theorem mixedComponentContractionPreserving_of_componentTimeEq
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts) (hTime : d.1.ComponentTimeEq B σ υ) :
-    d.MixedComponentContractionPreserving ε β τ τ' σ υ B := by
-  intro p
-  exact mixedPairContractionValue_eq_of_componentTimeEq d ε β τ τ' σ υ B hTime p
-
 /-- The complete mixed component pairing value depends only on the interaction times of that
 component. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_eq_of_componentTimeEq
@@ -184,7 +175,7 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_eq_of_compon
       d.mixedComponentPairingValue ε β τ τ' υ B :=
   d.mixedComponentPairingValue_eq_of_timeTransport ε β τ τ' σ υ B
     (d.1.mixedComponentCrossingPreserving_of_componentTimeEq τ τ' σ υ B hTime)
-    (mixedComponentContractionPreserving_of_componentTimeEq d ε β τ τ' σ υ B hTime)
+    (fun p => mixedPairContractionValue_eq_of_componentTimeEq d ε β τ τ' σ υ B hTime p)
 
 end GibbsContractions
 
