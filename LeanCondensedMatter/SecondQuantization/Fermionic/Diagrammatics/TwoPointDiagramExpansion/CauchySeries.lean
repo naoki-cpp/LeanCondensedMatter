@@ -21,37 +21,6 @@ namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-private theorem sum_antidiagonal_eq_sum_range_succ
-    {R : Type*} [AddCommMonoid R] (f : ℕ → ℕ → R) (n : ℕ) :
-    (∑ p ∈ Finset.antidiagonal n, f p.1 p.2) =
-      ∑ m ∈ Finset.range (n + 1), f m (n - m) := by
-  let e : ℕ ↪ ℕ × ℕ :=
-    ⟨fun m => (m, n - m), by
-      intro a b h
-      exact congrArg Prod.fst h⟩
-  have hanti : Finset.antidiagonal n = (Finset.range (n + 1)).map e := by
-    ext p
-    constructor
-    · intro hp
-      have hpadd : p.1 + p.2 = n := Finset.mem_antidiagonal.mp hp
-      have hp_le : p.1 ≤ n := by omega
-      apply Finset.mem_map.2
-      refine ⟨p.1, Finset.mem_range.2 (by omega), ?_⟩
-      apply Prod.ext
-      · rfl
-      · dsimp [e]
-        omega
-    · intro hp
-      obtain ⟨m, hm, rfl⟩ := Finset.mem_map.1 hp
-      apply Finset.mem_antidiagonal.2
-      dsimp [e]
-      have hm_le : m ≤ n := by
-        have := Finset.mem_range.1 hm
-        omega
-      omega
-  rw [hanti, Finset.sum_map]
-  rfl
-
 /-- **Finite-mode fermionic two-point linked-cluster theorem.** For the imaginary-time Dyson series
 built from free Gibbs expectations and a quartic interaction, with the repository's canonical
 time-order/equal-time convention, vacuum normalization leaves exactly the sum of externally
@@ -72,12 +41,7 @@ theorem vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
   dsimp [Z]
   ext n
   rw [coeff_twoPointDysonSeries, PowerSeries.coeff_mul]
-  rw [sum_antidiagonal_eq_sum_range_succ
-    (f := fun a b =>
-      PowerSeries.coeff a (connectedTwoPointDysonSeries ε β g i j τ τ') *
-        PowerSeries.coeff b
-          (PowerSeries.normalizeByConstantCoeff
-            (dysonPartitionSeries ε β (quarticInteraction g))))]
+  rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ]
   simp only [coeff_connectedTwoPointDysonSeries,
     coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
   exact twoPointDysonCoefficient_eq_sum_connected_mul_normalizedDysonPartitionCoeff
