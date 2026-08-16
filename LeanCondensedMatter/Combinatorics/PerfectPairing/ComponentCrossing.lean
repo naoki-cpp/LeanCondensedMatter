@@ -31,6 +31,7 @@ noncomputable def Pairing.componentGeometricCrossingCount (pairing : Pairing n)
       Crosses (e ⟨C, x.2⟩).1 (e ⟨B, x.1⟩).1 then 1 else 0
 
 /-- The geometric crossing count between two components is the sum of its two orientations. -/
+omit [Fintype ι] in
 theorem Pairing.componentGeometricCrossingCount_eq_oriented_add (pairing : Pairing n)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) (B C : ι) :
     pairing.componentGeometricCrossingCount e B C =
