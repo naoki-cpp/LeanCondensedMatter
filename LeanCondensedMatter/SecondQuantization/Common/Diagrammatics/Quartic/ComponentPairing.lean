@@ -43,24 +43,6 @@ theorem QuarticDiagram.orderedQuarticLegEquiv_componentOrderedLeg
         (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).2) := by
   simp [QuarticDiagram.componentOrderedLeg]
 
-/-- Recover the flattened ordered-leg value from its vertex slot and local leg. -/
-theorem orderedQuarticLegEquiv_reconstruct_val (n : ℕ) (p : Fin (2 * (2 * n))) :
-    p.val = (orderedQuarticLegEquiv n p).2.val + 4 * (orderedQuarticLegEquiv n p).1.val := by
-  have h := congrArg (fun q => q.val) ((orderedQuarticLegEquiv n).symm_apply_apply p)
-  simpa [orderedQuarticLegEquiv, finProdFinEquiv] using h.symm
-
-/-- Numeric form of the component ordered-leg embedding. -/
-@[simp]
-theorem QuarticDiagram.componentOrderedLeg_val {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) (shuffle : d.ComponentShuffle)
-    (B : d.componentPartition.parts)
-    (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
-    (d.componentOrderedLeg shuffle B p).val =
-      (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).2.val +
-        4 * (shuffle.slotEquiv
-          ⟨B, (orderedQuarticLegEquiv (B : Finset (Fin N)).card p).1⟩).val := by
-  simp [QuarticDiagram.componentOrderedLeg, orderedQuarticLegEquiv, finProdFinEquiv]
-
 /-- The component ordered-leg embedding preserves the flattened-leg order. -/
 theorem QuarticDiagram.componentOrderedLeg_strictMono {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (shuffle : d.ComponentShuffle)
@@ -69,34 +51,29 @@ theorem QuarticDiagram.componentOrderedLeg_strictMono {S : Finset (Fin N)}
   intro a b hab
   let pa := orderedQuarticLegEquiv (B : Finset (Fin N)).card a
   let pb := orderedQuarticLegEquiv (B : Finset (Fin N)).card b
-  have ha := orderedQuarticLegEquiv_reconstruct_val (B : Finset (Fin N)).card a
-  have hb := orderedQuarticLegEquiv_reconstruct_val (B : Finset (Fin N)).card b
-  change a.val = pa.2.val + 4 * pa.1.val at ha
-  change b.val = pb.2.val + 4 * pb.1.val at hb
-  change a.val < b.val at hab
-  have hpa : pa.2.val < 4 := pa.2.isLt
-  have hpb : pb.2.val < 4 := pb.2.isLt
-  change (d.componentOrderedLeg shuffle B a).val <
-    (d.componentOrderedLeg shuffle B b).val
-  simp only [d.componentOrderedLeg_val]
-  change pa.2.val + 4 * (shuffle.slotEquiv ⟨B, pa.1⟩).val <
-    pb.2.val + 4 * (shuffle.slotEquiv ⟨B, pb.1⟩).val
-  by_cases hslot : pa.1 < pb.1
-  · have hg : (shuffle.slotEquiv ⟨B, pa.1⟩).val <
-        (shuffle.slotEquiv ⟨B, pb.1⟩).val := shuffle.strictMono B hslot
-    omega
-  · have hpb_le : pb.1 ≤ pa.1 := le_of_not_gt hslot
-    have hs : pa.1 = pb.1 := by
-      by_contra hne
-      have hrev : pb.1 < pa.1 := lt_of_le_of_ne hpb_le (Ne.symm hne)
-      have hrev_val : pb.1.val < pa.1.val := hrev
-      omega
-    have hs_val : pa.1.val = pb.1.val := congrArg (fun q => q.val) hs
-    have hlocal : pa.2.val < pb.2.val := by omega
-    have hg_eq : shuffle.slotEquiv ⟨B, pa.1⟩ =
-        shuffle.slotEquiv ⟨B, pb.1⟩ := by rw [hs]
-    have hg_val := congrArg (fun q => q.val) hg_eq
-    omega
+  have hab' :
+      (orderedQuarticLegEquiv (B : Finset (Fin N)).card).symm pa <
+        (orderedQuarticLegEquiv (B : Finset (Fin N)).card).symm pb := by
+    simpa [pa, pb] using hab
+  change (orderedQuarticLegEquiv S.card).symm
+      (shuffle.slotEquiv ⟨B, pa.1⟩, pa.2) <
+    (orderedQuarticLegEquiv S.card).symm
+      (shuffle.slotEquiv ⟨B, pb.1⟩, pb.2)
+  by_cases hslot : pa.1 = pb.1
+  · have hlocal : pa.2 < pb.2 := by
+      apply (orderedQuarticLegEquiv_symm_lt_symm_iff_snd_lt
+        (B : Finset (Fin N)).card pa.1 pa.2 pb.2).1
+      simpa [hslot] using hab'
+    have hmap : shuffle.slotEquiv ⟨B, pa.1⟩ = shuffle.slotEquiv ⟨B, pb.1⟩ := by
+      rw [hslot]
+    rw [hmap]
+    exact (orderedQuarticLegEquiv_symm_lt_symm_iff_snd_lt S.card _ _ _).2 hlocal
+  · have hslotLt : pa.1 < pb.1 :=
+      (orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne
+        (B : Finset (Fin N)).card pa.1 pb.1 pa.2 pb.2 hslot).1 hab'
+    have hmapLt := shuffle.strictMono B hslotLt
+    exact (orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne
+      S.card _ _ _ _ (ne_of_lt hmapLt)).2 hmapLt
 
 /-- The canonical order embedding of one component's flattened legs into the assembled order. -/
 noncomputable def QuarticDiagram.componentOrderedLegOrderEmbedding {S : Finset (Fin N)}
