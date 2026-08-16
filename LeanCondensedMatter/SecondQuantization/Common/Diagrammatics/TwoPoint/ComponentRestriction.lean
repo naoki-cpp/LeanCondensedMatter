@@ -91,6 +91,13 @@ def TwoPointDiagram.legInComponent {S : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card + 1))) : Prop :=
   d.componentBlock (twoPointVertexOfLeg leg) = B
 
+/-- Flattened legs belonging to one full component of a two-point diagram. -/
+abbrev TwoPointDiagram.ComponentLeg {S : Finset (Fin N)}
+    (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (B : d.componentPartition.parts) :=
+  {leg : Fin (2 * (2 * S.card + 1)) //
+    d.legInComponent (B : Finset (TwoPointVertex S)) leg}
+
 /-- For an actual component-partition part, a leg belongs to the component exactly when its incident
 vertex belongs to that part. -/
 theorem TwoPointDiagram.legInComponent_iff_vertex_mem {S : Finset (Fin N)}
