@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
-import LeanCondensedMatter.QuantumTheory.DensityOperator.Finite
+import LeanCondensedMatter.QuantumTheory.Entropy.Finite
 
 /-!
 # Gibbs-state entropy
@@ -27,16 +27,6 @@ theorem gibbsState_apply_eigenvector (Hop : Observable H) (β : ℝ)
   exact (smul_assoc ((spectralTrace (gibbsOp Hop β))⁻¹ : ℝ)
     (Real.exp (-β * E) : ℂ) v).symm
 
-/-- In finite dimensions, `Tr(ρH)` is exactly the complex embedding of the real energy value. -/
-theorem linearMap_trace_mul_observable_eq_energyExpValue [FiniteDimensional ℂ H]
-    (ρ : DensityOperator H) (Hop : Observable H) :
-    LinearMap.trace ℂ H ((ρ.op ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) =
-      (energyExpValue ρ Hop : ℂ) := by
-  calc
-    LinearMap.trace ℂ H ((ρ.op ∘L Hop.1 : H →L[ℂ] H) : H →ₗ[ℂ] H) =
-        ρ.expectation Hop.1 := (ρ.expectation_eq_linearMap_trace Hop.1).symm
-    _ = (energyExpValue ρ Hop : ℂ) := ρ.expectation_observable Hop
-
 /-- The entropy operator of the normalized Gibbs state has summable nonzero eigenvalues. -/
 theorem gibbsState_entropyOp_hasSummableRealEigenvalues (Hop : Observable H) (β : ℝ)
     (hcompact : IsCompactOperator (gibbsOp Hop β))
@@ -44,13 +34,6 @@ theorem gibbsState_entropyOp_hasSummableRealEigenvalues (Hop : Observable H) (β
     (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) :
     HasSummableRealEigenvalues (entropyOp (gibbsState Hop β hcompact hsummable hZ)) := by
   letI := finiteDimensional_of_gibbsOp_isCompact Hop β hcompact
-  let ρ := gibbsState Hop β hcompact hsummable hZ
-  have hEntropyCompact : IsCompactOperator (entropyOp ρ) := entropyOp_isCompact ρ
-  have hEntropySelfAdjoint : IsSelfAdjoint (entropyOp ρ) := by
-    rw [entropyOp]
-    exact cfc_predicate _ _
-  letI : Finite (EigenvectorIndex (entropyOp ρ)) :=
-    (orthonormal_eigenvectorFamily hEntropyCompact hEntropySelfAdjoint.isSymmetric).linearIndependent.finite
-  exact Summable.of_finite
+  exact (gibbsState Hop β hcompact hsummable hZ).entropyOp_hasSummableRealEigenvalues
 
 end QuantumTheory

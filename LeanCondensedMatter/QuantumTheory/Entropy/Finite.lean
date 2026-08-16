@@ -33,18 +33,14 @@ theorem DensityOperator.entropyOp_hasSummableRealEigenvalues (ρ : DensityOperat
 /-- The canonical von Neumann entropy is finite in finite dimensions. -/
 theorem DensityOperator.vonNeumannEntropy_ne_top (ρ : DensityOperator H) :
     vonNeumannEntropy ρ ≠ ⊤ := by
-  rw [vonNeumannEntropy_eq_ofReal_entropyOp_trace ρ ρ.entropyOp_hasSummableRealEigenvalues]
-  exact ENNReal.ofReal_ne_top
+  exact (vonNeumannEntropy_ne_top_and_toReal_eq_tsum ρ
+    (hasSum_negMulLog_eigenvalues ρ ρ.entropyOp_hasSummableRealEigenvalues).summable).1
 
 /-- In finite dimensions, the real value of the canonical entropy is the eigenvalue sum. -/
 theorem DensityOperator.vonNeumannEntropy_toReal_eq_tsum (ρ : DensityOperator H) :
     (vonNeumannEntropy ρ).toReal =
       ∑' a : EigenvectorIndex ρ.op, Real.negMulLog a.1.1 := by
-  let hs := ρ.entropyOp_hasSummableRealEigenvalues
-  rw [vonNeumannEntropy_eq_ofReal_entropyOp_trace ρ hs,
-    entropyOp_trace_eq_tsum ρ hs]
-  exact ENNReal.toReal_ofReal
-    (tsum_nonneg fun a =>
-      Real.negMulLog_nonneg (eigenvalue_nonneg ρ a) (density_eigenvalue_le_one ρ a))
+  exact (vonNeumannEntropy_ne_top_and_toReal_eq_tsum ρ
+    (hasSum_negMulLog_eigenvalues ρ ρ.entropyOp_hasSummableRealEigenvalues).summable).2
 
 end QuantumTheory
