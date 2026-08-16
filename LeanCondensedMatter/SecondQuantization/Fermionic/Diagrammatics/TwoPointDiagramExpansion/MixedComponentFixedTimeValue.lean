@@ -74,16 +74,6 @@ theorem FixedExternalTwoPointWickDiagram.orderedTwoPointVertexWeight_eq_prod_com
     _ = ∏ B : d.1.componentPartition.parts,
         d.mixedComponentVertexWeight g B := rfl
 
-/-- External/vacuum decomposition of the quartic coupling product. -/
-theorem FixedExternalTwoPointWickDiagram.orderedTwoPointVertexWeight_eq_external_mul_prod_vacuum
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (g : QuarticVertexLabel Mode → ℂ) :
-    orderedTwoPointVertexWeight g d.vertexLabelSequence =
-      d.mixedComponentVertexWeight g d.1.externalComponentPart *
-        d.1.vacuumComponentParts.prod (d.mixedComponentVertexWeight g) := by
-  rw [d.orderedTwoPointVertexWeight_eq_prod_components g,
-    d.1.prod_componentParts_eq_external_mul_prod_vacuum]
-
 /-- A vacuum component vertex weight is the coupling product of its restricted vacuum diagram. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight_vacuum_eq_restricted
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
