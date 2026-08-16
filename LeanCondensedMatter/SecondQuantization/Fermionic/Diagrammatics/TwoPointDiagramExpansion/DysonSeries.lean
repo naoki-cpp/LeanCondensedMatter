@@ -7,16 +7,14 @@ import Mathlib.RingTheory.PowerSeries.Inverse
 set_option linter.style.header false
 
 /-!
-# The perturbative two-point series
+# Perturbative two-point series
 
 The order-`n` mixed time-ordered density-state coefficients of `DysonCoefficient.lean` are assembled
-into a formal power series in the coupling. The coefficient-level diagram presentation remains the
-bridge to finite diagram sums and factorization, so no parallel diagram-series API is maintained.
+into formal power series in the coupling. This module owns both the full and externally connected
+coefficient/series presentations, together with vacuum normalization of the full series.
 
-The series is divided by the partition series of the same interaction, normalized to constant
-coefficient one. That division is what the linked-cluster theorem asks for: the coefficients are
-already free Gibbs expectations, so only the interacting vacuum contributions remain to be
-cancelled.
+The coefficient-level diagram presentation remains the bridge to finite diagram sums and
+factorization, so no parallel diagram-series API is maintained.
 -/
 
 namespace SecondQuantization
@@ -47,6 +45,27 @@ noncomputable def vacuumNormalizedTwoPointDysonSeries (ε : Mode → ℝ) (β : 
   twoPointDysonSeries ε β g i j τ τ' *
     (PowerSeries.normalizeByConstantCoeff
       (dysonPartitionSeries ε β (quarticInteraction g)))⁻¹
+
+open Classical in
+/-- The order-`n` coefficient of the connected two-point series: the integrated Dyson amplitudes of
+the externally connected diagrams only. -/
+noncomputable def connectedTwoPointDysonCoefficient (ε : Mode → ℝ) (β : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) (n : ℕ) : ℂ :=
+  ∑ d ∈ (Finset.univ : Finset (FixedExternalTwoPointWickDiagram Mode n i j)).filter
+      fun d => d.1.IsExternallyConnected,
+    d.dysonAmplitude ε β g τ τ'
+
+/-- **The connected perturbative two-point series.** -/
+noncomputable def connectedTwoPointDysonSeries (ε : Mode → ℝ) (β : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) : PowerSeries ℂ :=
+  PowerSeries.mk (connectedTwoPointDysonCoefficient ε β g i j τ τ')
+
+@[simp]
+theorem coeff_connectedTwoPointDysonSeries (ε : Mode → ℝ) (β : ℝ)
+    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
+    PowerSeries.coeff n (connectedTwoPointDysonSeries ε β g i j τ τ') =
+      connectedTwoPointDysonCoefficient ε β g i j τ τ' n :=
+  PowerSeries.coeff_mk n _
 
 end Fermionic
 end SecondQuantization
