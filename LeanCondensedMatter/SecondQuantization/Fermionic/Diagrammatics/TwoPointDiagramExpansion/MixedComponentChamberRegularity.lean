@@ -87,39 +87,6 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingChamberRepresentat
         (fun q : d.1.MixedComponentPair τ τ' σ B =>
           d.mixedPairContractionValue ε β τ τ' σ q.1)
 
-/-- Continuous chamber representative of one coupling-weighted component fixed-time value. -/
-noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeChamberRepresentative
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (σ₀ : Fin n → ℝ) (B : d.1.componentPartition.parts) :
-    (Fin n → ℝ) → ℂ :=
-  fun σ => d.mixedComponentVertexWeight g B *
-    d.mixedComponentPairingChamberRepresentative ε β τ τ' σ₀ B σ
-
-/-- The fixed-time chamber representative is globally continuous. -/
-theorem FixedExternalTwoPointWickDiagram.continuous_mixedComponentFixedTimeChamberRepresentative
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (σ₀ : Fin n → ℝ) (B : d.1.componentPartition.parts) :
-    Continuous (d.mixedComponentFixedTimeChamberRepresentative ε β g τ τ' σ₀ B) := by
-  unfold FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeChamberRepresentative
-  exact continuous_const.mul
-    (d.continuous_mixedComponentPairingChamberRepresentative ε β τ τ' σ₀ B)
-
-/-- On the base chamber, the fixed-time representative agrees with the actual component fixed-time
-value. -/
-theorem FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeChamberRepresentative_eq_of_sameOrderChamber
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (σ₀ σ : Fin n → ℝ) (B : d.1.componentPartition.parts)
-    (hChamber : SameTwoPointOrderChamber τ τ' σ₀ σ) :
-    d.mixedComponentFixedTimeChamberRepresentative ε β g τ τ' σ₀ B σ =
-      d.mixedComponentFixedTimeValue ε β g τ τ' σ B := by
-  unfold FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeChamberRepresentative
-    FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
-  rw [d.mixedComponentPairingChamberRepresentative_eq_of_sameOrderChamber
-    ε β τ τ' σ₀ σ B hChamber]
-
 /-- Continuous chamber representative of the Dyson-signed component fixed-time value. -/
 noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -127,7 +94,8 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeC
     (τ τ' : ℝ) (σ₀ : Fin n → ℝ) (B : d.1.componentPartition.parts) :
     (Fin n → ℝ) → ℂ :=
   fun σ => d.mixedComponentDysonSign B *
-    d.mixedComponentFixedTimeChamberRepresentative ε β g τ τ' σ₀ B σ
+    (d.mixedComponentVertexWeight g B *
+      d.mixedComponentPairingChamberRepresentative ε β τ τ' σ₀ B σ)
 
 /-- The Dyson-signed chamber representative is globally continuous. -/
 theorem FixedExternalTwoPointWickDiagram.continuous_mixedComponentDysonFixedTimeChamberRepresentative
@@ -137,7 +105,8 @@ theorem FixedExternalTwoPointWickDiagram.continuous_mixedComponentDysonFixedTime
     Continuous (d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ' σ₀ B) := by
   unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
   exact continuous_const.mul
-    (d.continuous_mixedComponentFixedTimeChamberRepresentative ε β g τ τ' σ₀ B)
+    (continuous_const.mul
+      (d.continuous_mixedComponentPairingChamberRepresentative ε β τ τ' σ₀ B))
 
 /-- On the base chamber, the Dyson-signed representative agrees with the actual component factor. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber
@@ -149,8 +118,9 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepr
       d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B := by
   unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
     FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue
-  rw [d.mixedComponentFixedTimeChamberRepresentative_eq_of_sameOrderChamber
-    ε β g τ τ' σ₀ σ B hChamber]
+    FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
+  rw [d.mixedComponentPairingChamberRepresentative_eq_of_sameOrderChamber
+    ε β τ τ' σ₀ σ B hChamber]
 
 end Fermionic
 end SecondQuantization
