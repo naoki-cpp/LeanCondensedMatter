@@ -1,7 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ConnectedSeries
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ExternalPiece
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentDecomposition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotCongr
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitConnectivity
@@ -179,33 +178,6 @@ theorem sum_eq_sum_powerset_fixedExternalFiber {M : Type*} [AddCommMonoid M]
     _ (fun x => by
       simp only [Finset.mem_filter, Finset.mem_univ, true_and]) F]
   exact (Equiv.sum_comp (fixedExternalFiberEquiv T).symm (fun d => F d.1)).symm
-
-/-- The quartic vacuum half of a fixed external-slot fiber sums to the normalized vacuum Dyson
-coefficient at the complementary perturbation order.  The increasing order on `univ \ T` is the
-fixed vertex order inherited from the ambient interaction slots. -/
-theorem sum_fixedExternalFiberVacuum_fixedOrderDysonContribution
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (T : Finset (Fin n)) :
-    (∑ vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T),
-        (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g *
-          vac.orderedSimplexContribution ε β
-            (((Finset.univ : Finset (Fin n)) \ T).orderIsoOfFin rfl).toEquiv) =
-      normalizedDysonPartitionCoeff ε β (quarticInteraction g) (n - T.card) := by
-  classical
-  have hcard : ((Finset.univ : Finset (Fin n)) \ T).card = n - T.card := by
-    rw [Finset.card_sdiff]
-    simp
-  rw [← hcard]
-  simp_rw [mul_assoc]
-  rw [← Finset.mul_sum]
-  rw [sum_couplingWeight_mul_orderedSimplexContribution_eq_pairingEvaluation]
-  have hfac :
-      (((((Finset.univ : Finset (Fin n)) \ T).card).factorial : ℕ) : ℂ) ≠ 0 := by
-    exact_mod_cast Nat.factorial_ne_zero ((Finset.univ : Finset (Fin n)) \ T).card
-  apply mul_left_cancel₀ hfac
-  simpa [dysonVertexMoment, mul_assoc] using
-    (dysonVertexMoment_quarticInteraction_eq_sum_vertexLabel_pairingEvaluation
-      ε β g ((Finset.univ : Finset (Fin n)) \ T)).symm
 
 end Fermionic
 end SecondQuantization
