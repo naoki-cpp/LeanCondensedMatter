@@ -158,4 +158,6 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue_vacuum_eq_
     d.mixedComponentPairingValue_vacuum_eq_restricted ε β τ τ' σ B hVac]
 
 end Fermionic
+
+end Fermionic
 end SecondQuantization
