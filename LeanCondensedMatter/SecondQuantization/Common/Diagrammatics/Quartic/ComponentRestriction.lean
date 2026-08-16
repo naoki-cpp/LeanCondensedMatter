@@ -27,21 +27,6 @@ def QuarticDiagram.legInBlock {S : Finset (Fin N)} (d : QuarticDiagram Label N S
     (B : Finset (Fin N)) (leg : Fin (2 * (2 * S.card))) : Prop :=
   d.componentBlock (vertexOfLeg leg) = B
 
-theorem QuarticDiagram.componentBlock_eq_iff_mem {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
-    (hB : B ∈ d.componentPartition.parts) (v : ↥S) :
-    d.componentBlock v = B ↔ (v : Fin N) ∈ B :=
-  ⟨fun h => h ▸ d.self_mem_componentBlock v, fun hv => by
-    change d.componentPartition.part (v : Fin N) = B
-    exact d.componentPartition.part_eq_of_mem hB hv⟩
-
-/-- Every component part is contained in the ambient vertex set. -/
-theorem QuarticDiagram.componentPart_subset {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
-    (hB : B ∈ d.componentPartition.parts) : B ⊆ S := by
-  have h := Finset.le_sup (f := id) hB
-  rwa [d.componentPartition.sup_parts] at h
-
 /-- A leg's partner stays inside the same component part. -/
 theorem QuarticDiagram.legInBlock_partner_iff {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}

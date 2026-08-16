@@ -33,7 +33,8 @@ theorem TwoPointDiagram.mixedPositionComponent_partner
     d.componentBlock
       (twoPointVertexOfLeg (mixedTimeAmbientPositionEquiv τ τ' σ p))
   rw [d.mixedTimeAmbientPositionEquiv_partner]
-  exact d.componentBlock_vertexOfLeg_partner _
+  exact d.componentBlock_eq_of_reachable
+    (d.pairing.vertexGraph_reachable_partner twoPointVertexOfLeg _)
 
 /-- The mixed-order partner restricted to one full component-position fiber. -/
 noncomputable def TwoPointDiagram.mixedRestrictedPartner
@@ -116,8 +117,11 @@ theorem TwoPointDiagram.restrictedVacuumPairing_partner_mixedVacuumPositionEquiv
     d.vacuumBlockLegEquiv B hVac
       (d.mixedComponentPositionEquiv τ τ' σ B
         (d.mixedRestrictedPartner τ τ' σ B p))
-  rw [d.restrictedVacuumPairing_partner_vacuumBlockLegEquiv,
-    d.mixedComponentPositionEquiv_partner]
+  rw [d.mixedComponentPositionEquiv_partner]
+  simpa only [TwoPointDiagram.restrictedVacuumPairing, TwoPointDiagram.restrictedPartner] using
+    d.pairing.restrictAlongEquiv_partner (d.legInComponent B)
+      (fun i => d.legInComponent_partner_iff B i) (d.vacuumBlockLegEquiv B hVac)
+      (d.mixedComponentPositionEquiv τ τ' σ B p)
 
 end Common
 end SecondQuantization
