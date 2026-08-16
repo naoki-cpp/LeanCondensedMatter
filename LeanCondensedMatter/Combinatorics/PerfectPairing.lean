@@ -8,6 +8,7 @@ import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 import LeanCondensedMatter.Combinatorics.PerfectPairing.VertexGraph
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Restriction
+import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentRestriction
 import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Crossing
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Embedding
@@ -23,10 +24,10 @@ set_option linter.style.header false
 
 Importing this module provides the core pairing type, normalized endpoints, pairing presentations,
 the minimal bipartite matching API, scalar pairing evaluation, pairing-induced vertex graphs,
-partner-invariant restriction and reindexing, order-preserving pairing embeddings, relabeling,
-crossing statistics, and the erase/insert infrastructure used by the Bloch--de Dominicis
-development. The four-position enumeration and the exchange-weighted sum backend are separate
-modules and must be imported explicitly when needed.
+partner-invariant restriction and reindexing, component-fiber restriction, order-preserving pairing
+embeddings, relabeling, crossing statistics, and the erase/insert infrastructure used by the
+Bloch--de Dominicis development. The four-position enumeration and the exchange-weighted sum backend
+are separate modules and must be imported explicitly when needed.
 
 This entry point stays purely at the pairing-structure level. The separate `Permutation.PairingBridge`
 module owns only the crossing-weighted pairing sum and its parity-sensitive bridge to the generic
