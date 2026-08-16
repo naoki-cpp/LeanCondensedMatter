@@ -59,9 +59,11 @@ theorem sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_pairingSum
     ∑ d : FixedExternalTwoPointWickDiagram Mode n i j,
         d.fixedTimeAmplitude ε β g τ τ' σ =
       ∑ x : OrderedTwoPointWickDiagramData Mode n,
-        orderedTwoPointFixedTimeAmplitude ε β g i j τ τ' σ x :=
-      sum_fixedExternalTwoPointWickDiagram_eq_sum_orderedData i j τ τ' σ
-        (orderedTwoPointFixedTimeAmplitude ε β g i j τ τ' σ)
+        orderedTwoPointFixedTimeAmplitude ε β g i j τ τ' σ x := by
+      simpa [FixedExternalTwoPointWickDiagram.fixedTimeAmplitude] using
+        (Equiv.sum_comp
+          (fixedExternalTwoPointWickDiagramEquivOrderedData i j τ τ' σ)
+          (orderedTwoPointFixedTimeAmplitude ε β g i j τ τ' σ))
     _ = ∑ q : Fin n → QuarticVertexLabel Mode,
         ∑ pairing : Pairing (2 * n + 1),
           orderedTwoPointFixedTimeAmplitude ε β g i j τ τ' σ (q, pairing) :=

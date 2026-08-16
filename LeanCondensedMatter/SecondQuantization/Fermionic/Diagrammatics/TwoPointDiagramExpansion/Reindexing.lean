@@ -93,15 +93,5 @@ noncomputable instance FixedExternalTwoPointWickDiagram.instFintype
     {d : TwoPointWickDiagram Mode n (Finset.univ : Finset (Fin n)) //
       d.externalLabel = twoPointExternalLabels i j}
 
-/-- Reindex a finite sum over fixed-external diagrams as a sum over slot labels and mixed-order
-pairings. -/
-theorem sum_fixedExternalTwoPointWickDiagram_eq_sum_orderedData
-    [Fintype Mode] {n : ℕ} (i j : Mode) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (F : OrderedTwoPointWickDiagramData Mode n → ℂ) :
-    ∑ d : FixedExternalTwoPointWickDiagram Mode n i j,
-        F (fixedExternalTwoPointWickDiagramEquivOrderedData i j τ τ' σ d) =
-      ∑ x : OrderedTwoPointWickDiagramData Mode n, F x :=
-  Equiv.sum_comp (fixedExternalTwoPointWickDiagramEquivOrderedData i j τ τ' σ) F
-
 end Fermionic
 end SecondQuantization
