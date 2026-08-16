@@ -23,6 +23,34 @@ noncomputable def Pairing.componentCrossingCount (pairing : Pairing n)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) (B C : ι) : ℕ :=
   ∑ x : F B × F C, if Crosses (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1 then 1 else 0
 
+/-- Unoriented geometric crossing count between two components. -/
+noncomputable def Pairing.componentGeometricCrossingCount (pairing : Pairing n)
+    (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) (B C : ι) : ℕ :=
+  ∑ x : F B × F C,
+    if Crosses (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1 ∨
+      Crosses (e ⟨C, x.2⟩).1 (e ⟨B, x.1⟩).1 then 1 else 0
+
+/-- The geometric crossing count between two components is the sum of its two orientations. -/
+theorem Pairing.componentGeometricCrossingCount_eq_oriented_add (pairing : Pairing n)
+    (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) (B C : ι) :
+    pairing.componentGeometricCrossingCount e B C =
+      pairing.componentCrossingCount e B C + pairing.componentCrossingCount e C B := by
+  classical
+  have hswap : pairing.componentCrossingCount e C B =
+      ∑ x : F B × F C,
+        if Crosses (e ⟨C, x.2⟩).1 (e ⟨B, x.1⟩).1 then 1 else 0 := by
+    rw [Pairing.componentCrossingCount,
+      ← Equiv.sum_comp (Equiv.prodComm (F B) (F C))]
+    rfl
+  rw [Pairing.componentGeometricCrossingCount, hswap,
+    Pairing.componentCrossingCount, ← Finset.sum_add_distrib]
+  refine Finset.sum_congr rfl fun x _ => ?_
+  by_cases hbc : Crosses (e ⟨B, x.1⟩).1 (e ⟨C, x.2⟩).1
+  · have hcb : ¬ Crosses (e ⟨C, x.2⟩).1 (e ⟨B, x.1⟩).1 :=
+      fun h => lt_asymm hbc.1 h.1
+    simp [hbc, hcb]
+  · simp [hbc]
+
 /-- The crossing count is the double sum of the oriented component crossing counts. -/
 theorem Pairing.crossingCount_eq_sum_componentCrossingCount (pairing : Pairing n)
     (e : (Σ B : ι, F B) ≃ pairing.NormalizedPair) :
