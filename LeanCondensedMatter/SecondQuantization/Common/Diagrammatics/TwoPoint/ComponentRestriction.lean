@@ -147,9 +147,12 @@ theorem TwoPointDiagram.restrictedPartner_val {S : Finset (Fin N)}
     (B : Finset (TwoPointVertex S))
     (leg : {leg : Fin (2 * (2 * S.card + 1)) // d.legInComponent B leg}) :
     (d.restrictedPartner B leg : Fin (2 * (2 * S.card + 1))) = d.pairing.partner leg := by
-  simpa only [TwoPointDiagram.restrictedPartner, TwoPointDiagram.legInComponent] using
-    d.pairing.componentPartnerSubtypePerm_val twoPointVertexOfLeg d.componentBlock
-      d.componentBlock_eq_of_reachable B leg
+  change
+    ((d.pairing.componentPartnerSubtypePerm twoPointVertexOfLeg d.componentBlock
+      d.componentBlock_eq_of_reachable B leg) : Fin (2 * (2 * S.card + 1))) =
+        d.pairing.partner leg
+  exact d.pairing.componentPartnerSubtypePerm_val twoPointVertexOfLeg d.componentBlock
+    d.componentBlock_eq_of_reachable B leg
 
 /-- For a vacuum part, unflattened component legs are exactly the four local legs of the extracted
 interaction vertices. -/
@@ -219,11 +222,17 @@ theorem TwoPointDiagram.restrictedVacuumPairing_partner_vacuumBlockLegEquiv
     (leg : {leg : Fin (2 * (2 * S.card + 1)) // d.legInComponent B leg}) :
     (d.restrictedVacuumPairing B hVac).partner (d.vacuumBlockLegEquiv B hVac leg) =
       d.vacuumBlockLegEquiv B hVac (d.restrictedPartner B leg) := by
-  simpa only [TwoPointDiagram.restrictedVacuumPairing, TwoPointDiagram.restrictedPartner,
-    TwoPointDiagram.legInComponent] using
-    d.pairing.restrictComponentAlongEquiv_partner twoPointVertexOfLeg d.componentBlock
+  change
+    (d.pairing.restrictComponentAlongEquiv twoPointVertexOfLeg d.componentBlock
       d.componentBlock_eq_of_reachable (B : Finset (TwoPointVertex S))
-        (d.vacuumBlockLegEquiv B hVac) leg
+        (d.vacuumBlockLegEquiv B hVac)).partner
+          (d.vacuumBlockLegEquiv B hVac leg) =
+      d.vacuumBlockLegEquiv B hVac
+        (d.pairing.componentPartnerSubtypePerm twoPointVertexOfLeg d.componentBlock
+          d.componentBlock_eq_of_reachable (B : Finset (TwoPointVertex S)) leg)
+  exact d.pairing.restrictComponentAlongEquiv_partner twoPointVertexOfLeg d.componentBlock
+    d.componentBlock_eq_of_reachable (B : Finset (TwoPointVertex S))
+      (d.vacuumBlockLegEquiv B hVac) leg
 
 /-- Restrict a vacuum component of a two-point diagram to an ordinary quartic diagram. -/
 noncomputable def TwoPointDiagram.restrictVacuumComponent {S : Finset (Fin N)}
