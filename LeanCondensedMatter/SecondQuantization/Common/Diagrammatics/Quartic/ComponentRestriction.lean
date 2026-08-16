@@ -63,9 +63,12 @@ theorem QuarticDiagram.restrictedPartner_val {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (B : Finset (Fin N))
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
     (d.restrictedPartner B leg : Fin (2 * (2 * S.card))) = d.pairing.partner leg := by
-  simpa only [QuarticDiagram.restrictedPartner, QuarticDiagram.legInBlock] using
-    d.pairing.componentPartnerSubtypePerm_val vertexOfLeg d.componentBlock
-      d.componentBlock_eq_of_reachable B leg
+  change
+    ((d.pairing.componentPartnerSubtypePerm vertexOfLeg d.componentBlock
+      d.componentBlock_eq_of_reachable B leg) : Fin (2 * (2 * S.card))) =
+        d.pairing.partner leg
+  exact d.pairing.componentPartnerSubtypePerm_val vertexOfLeg d.componentBlock
+    d.componentBlock_eq_of_reachable B leg
 
 /-- Vertices of `S` lying in `B`, identified with `↥B`. -/
 def QuarticDiagram.subtypeMemBlockEquiv {S : Finset (Fin N)} (B : Finset (Fin N))
@@ -150,10 +153,15 @@ theorem QuarticDiagram.restrictedPairing_partner_blockLegEquiv {S : Finset (Fin 
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) :
     (d.restrictedPairing hB).partner (d.blockLegEquiv hB leg) =
       d.blockLegEquiv hB (d.restrictedPartner B leg) := by
-  simpa only [QuarticDiagram.restrictedPairing, QuarticDiagram.restrictedPartner,
-    QuarticDiagram.legInBlock] using
-    d.pairing.restrictComponentAlongEquiv_partner vertexOfLeg d.componentBlock
-      d.componentBlock_eq_of_reachable B (d.blockLegEquiv hB) leg
+  change
+    (d.pairing.restrictComponentAlongEquiv vertexOfLeg d.componentBlock
+      d.componentBlock_eq_of_reachable B (d.blockLegEquiv hB)).partner
+        (d.blockLegEquiv hB leg) =
+      d.blockLegEquiv hB
+        (d.pairing.componentPartnerSubtypePerm vertexOfLeg d.componentBlock
+          d.componentBlock_eq_of_reachable B leg)
+  exact d.pairing.restrictComponentAlongEquiv_partner vertexOfLeg d.componentBlock
+    d.componentBlock_eq_of_reachable B (d.blockLegEquiv hB) leg
 
 /-- Restrict `d` to the connected-component part `B`. -/
 noncomputable def QuarticDiagram.restrictComponent {S : Finset (Fin N)}
