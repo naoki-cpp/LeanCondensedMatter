@@ -30,16 +30,6 @@ noncomputable def twoPointDiagramIntegrand {n : ℕ}
   ∑ d : FixedExternalTwoPointWickDiagram Mode n i j,
     d.fixedTimeAmplitude ε β g τ τ' σ
 
-/-- The coupling-weighted mixed time-ordered density-state expectation at fixed interaction times. -/
-noncomputable def twoPointDysonIntegrand {n : ℕ}
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (i j : Mode) (τ τ' : ℝ) (σ : Fin n → ℝ) : ℂ :=
-  ∑ q : Fin n → QuarticVertexLabel Mode,
-    orderedTwoPointVertexWeight g q *
-      (freeGibbsDensityOperator ε β).expectation
-        (Common.finiteHilbertOperator
-          (mixedTimeOrderedVertexComp ε i j τ τ' q σ))
-
 /-- Ordered-simplex contribution of one fixed-external diagram, before the Dyson sign. -/
 noncomputable def FixedExternalTwoPointWickDiagram.orderedSimplexContribution
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -68,7 +58,12 @@ noncomputable def twoPointDysonCoefficient {n : ℕ}
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
     (i j : Mode) (τ τ' : ℝ) : ℂ :=
   (-1 : ℂ) ^ n * intervalIntegral.orderedSimplexIntegral n β
-    (twoPointDysonIntegrand ε β g i j τ τ')
+    (fun σ =>
+      ∑ q : Fin n → QuarticVertexLabel Mode,
+        orderedTwoPointVertexWeight g q *
+          (freeGibbsDensityOperator ε β).expectation
+            (Common.finiteHilbertOperator
+              (mixedTimeOrderedVertexComp ε i j τ τ' q σ)))
 
 /-- The ordered-simplex external-leg diagram coefficient equals the mixed time-ordered Dyson
 coefficient at every perturbation order. -/
@@ -77,10 +72,11 @@ theorem twoPointDiagramCoefficient_eq_twoPointDysonCoefficient {n : ℕ}
     (i j : Mode) (τ τ' : ℝ) :
     twoPointDiagramCoefficient (n := n) ε β g i j τ τ' =
       twoPointDysonCoefficient (n := n) ε β g i j τ τ' := by
+  unfold twoPointDiagramCoefficient twoPointDysonCoefficient
   apply congrArg (fun z : ℂ => (-1 : ℂ) ^ n * z)
   apply intervalIntegral.orderedSimplexIntegral_congr
   intro σ
-  unfold twoPointDiagramIntegrand twoPointDysonIntegrand
+  unfold twoPointDiagramIntegrand
   rw [sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_pairingSum]
   rw [Finset.mul_sum]
   apply Finset.sum_congr rfl
