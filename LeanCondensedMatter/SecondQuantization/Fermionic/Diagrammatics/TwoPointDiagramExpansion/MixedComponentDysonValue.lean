@@ -107,23 +107,6 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_external_mul
   rw [Finset.prod_mul_distrib]
   ring
 
-/-- Restricted-diagram expression for one signed vacuum-component fixed-time value. -/
-theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue_vacuum_eq_restricted
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts) (hVac : d.1.ComponentIsVacuum B) :
-    d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B =
-      d.mixedComponentDysonSign B *
-        (∏ v : ↥(Common.TwoPointDiagram.interactionPart
-          (B : Finset (Common.TwoPointVertex
-            (Finset.univ : Finset (Fin n))))),
-          g ((d.1.restrictVacuumComponent B hVac).vertexLabel v)) *
-        d.mixedVacuumRestrictedPairingValue ε β τ τ' σ B hVac := by
-  unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue
-  rw [d.mixedComponentFixedTimeValue_vacuum_eq_restricted ε β g τ τ' σ B hVac]
-  ring
-
 end Fermionic
 
 end Fermionic
