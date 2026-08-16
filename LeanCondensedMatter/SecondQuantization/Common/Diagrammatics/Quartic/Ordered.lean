@@ -54,6 +54,20 @@ theorem orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne
     exact hij (Fin.ext h)
   omega
 
+/-- Flattened quartic legs in the same vertex-slot block are ordered by their local leg indices. -/
+theorem orderedQuarticLegEquiv_symm_lt_symm_iff_snd_lt
+    (n : ℕ) (i : Fin n) (a b : Fin 4) :
+    (orderedQuarticLegEquiv n).symm (i, a) <
+        (orderedQuarticLegEquiv n).symm (i, b) ↔ a < b := by
+  have hp' : ((orderedQuarticLegEquiv n).symm (i, a)).val = a.val + 4 * i.val := by
+    simp [orderedQuarticLegEquiv, finProdFinEquiv]
+  have hq' : ((orderedQuarticLegEquiv n).symm (i, b)).val = b.val + 4 * i.val := by
+    simp [orderedQuarticLegEquiv, finProdFinEquiv]
+  change ((orderedQuarticLegEquiv n).symm (i, a)).val <
+      ((orderedQuarticLegEquiv n).symm (i, b)).val ↔ a.val < b.val
+  rw [hp', hq']
+  omega
+
 /-- A diagram's pairing transported to a vertex order's slot enumeration. -/
 noncomputable def QuarticDiagram.pairingInOrder {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) (order : QuarticVertexOrder S) :
