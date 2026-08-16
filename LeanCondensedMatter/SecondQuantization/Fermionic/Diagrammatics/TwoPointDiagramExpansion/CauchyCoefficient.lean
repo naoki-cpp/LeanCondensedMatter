@@ -50,16 +50,17 @@ private theorem powersetFiberSlice_eq_cauchyFactor
 
 /-- **Coefficientwise linked-cluster Cauchy identity.**
 
-At order `n`, the complete two-point Dyson coefficient is the Cauchy convolution of the connected
-two-point coefficients with the normalized vacuum partition coefficients.  This is the point where
-the canonical component/fiber route tracked by #1001 is consumed by #894. -/
-private theorem twoPointDiagramCoefficient_eq_sum_connected_mul_normalizedDysonPartitionCoeff
+At order `n`, the complete operator-defined two-point Dyson coefficient is the Cauchy convolution of
+the connected two-point coefficients with the normalized vacuum partition coefficients.  This is the
+point where the canonical component/fiber route tracked by #1001 is consumed by #894. -/
+theorem twoPointDysonCoefficient_eq_sum_connected_mul_normalizedDysonPartitionCoeff
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
     (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
-    twoPointDiagramCoefficient (n := n) ε β g i j τ τ' =
+    twoPointDysonCoefficient (n := n) ε β g i j τ τ' =
       ∑ m ∈ Finset.range (n + 1),
         connectedTwoPointDysonCoefficient ε β g i j τ τ' m *
           normalizedDysonPartitionCoeff ε β (quarticInteraction g) (n - m) := by
+  rw [← twoPointDiagramCoefficient_eq_twoPointDysonCoefficient]
   classical
   rw [twoPointDiagramCoefficient_eq_sum_dysonAmplitude]
   rw [sum_eq_sum_powerset_fixedExternalFiber
@@ -74,18 +75,6 @@ private theorem twoPointDiagramCoefficient_eq_sum_connected_mul_normalizedDysonP
   exact
     powersetFiberSlice_eq_cauchyFactor
       ε β hβ g i j τ τ' (Nat.add_sub_of_le hmn)
-
-/-- The same coefficientwise Cauchy identity for the operator-defined Dyson coefficient. -/
-theorem twoPointDysonCoefficient_eq_sum_connected_mul_normalizedDysonPartitionCoeff
-    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
-    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
-    twoPointDysonCoefficient (n := n) ε β g i j τ τ' =
-      ∑ m ∈ Finset.range (n + 1),
-        connectedTwoPointDysonCoefficient ε β g i j τ τ' m *
-          normalizedDysonPartitionCoeff ε β (quarticInteraction g) (n - m) := by
-  rw [← twoPointDiagramCoefficient_eq_twoPointDysonCoefficient]
-  exact twoPointDiagramCoefficient_eq_sum_connected_mul_normalizedDysonPartitionCoeff
-    ε β hβ g i j τ τ' n
 
 end Fermionic
 end SecondQuantization
