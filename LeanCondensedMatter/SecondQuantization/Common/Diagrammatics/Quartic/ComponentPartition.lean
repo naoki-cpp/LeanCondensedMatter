@@ -92,5 +92,11 @@ theorem QuarticDiagram.componentBlock_eq_iff_mem {S : Finset (Fin N)}
   change d.componentPartition.part (v : Fin N) = B ↔ (v : Fin N) ∈ B
   exact d.componentPartition.part_eq_iff_mem hB
 
+/-- Every component part is contained in the ambient vertex set. -/
+theorem QuarticDiagram.componentPart_subset {S : Finset (Fin N)}
+    (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
+    (hB : B ∈ d.componentPartition.parts) : B ⊆ S :=
+  d.componentPartition.le hB
+
 end Common
 end SecondQuantization
