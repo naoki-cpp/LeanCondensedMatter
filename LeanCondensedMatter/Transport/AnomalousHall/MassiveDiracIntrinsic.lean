@@ -1,6 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerrySymmetry
-import Mathlib.Analysis.Calculus.Deriv.Inv
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
 set_option linter.style.header false
 
@@ -8,20 +7,19 @@ set_option linter.style.header false
 # Intrinsic Berry weight for the metallic massive Dirac cone
 
 This file begins the occupied-state part of #1269 without hiding the ultraviolet issue of a
-single continuum Dirac cone.  After angular reduction and the change from radial momentum to the
+single continuum Dirac cone. After angular reduction and the change from radial momentum to the
 positive Dirac energy `ε`, the dimensionless Berry-weight density of band sign `s = ±1` is
 
 ```text
 -s m / (2 ε²).
 ```
 
-Its primitive is `s m / (2 ε)`.  We first integrate only over finite positive energy intervals,
-then combine
+We integrate only over finite positive energy intervals, then combine
 
 * the filled lower band from `m` to a finite ultraviolet cutoff `Λ`, and
 * the occupied upper band from `m` to the metallic Fermi energy `εF`,
 
-under the benchmark convention `0 < m ≤ εF ≤ Λ`.  The resulting finite-cutoff weight is
+under the benchmark convention `0 < m ≤ εF ≤ Λ`. The resulting finite-cutoff weight is
 
 ```text
 m / (2 εF) - m / (2 Λ).
@@ -40,52 +38,36 @@ open scoped Interval
 /-- Radially reduced Berry-weight density in positive-energy coordinates.
 
 This is the result of combining `Ω_s(p) = -s m v²/(2E³)` with the radial Jacobian
-`p dp = E dE / v²`; hence the velocity cancels before the energy integration. -/
+`p dp = E dE / v²`; hence the velocity cancels before the energy integration. Integer power
+`ε⁻²` is used so the finite-shell integral is handled directly by Mathlib's `integral_zpow`. -/
 def radialBerryEnergyDensity (band : Band) (m ε : ℝ) : ℝ :=
-  -(bandSign band * m / 2) / ε ^ 2
-
-/-- Primitive of the radially reduced Berry-weight density on `ε ≠ 0`. -/
-def radialBerryEnergyPrimitive (band : Band) (m ε : ℝ) : ℝ :=
-  (bandSign band * m / 2) / ε
-
-/-- The energy-space Berry primitive differentiates to the reduced Berry density away from zero. -/
-theorem hasDerivAt_radialBerryEnergyPrimitive (band : Band) (m ε : ℝ) (hε : ε ≠ 0) :
-    HasDerivAt (radialBerryEnergyPrimitive band m)
-      (radialBerryEnergyDensity band m ε) ε := by
-  have hinv : HasDerivAt (fun y : ℝ => y⁻¹) (-(ε ^ 2)⁻¹) ε := hasDerivAt_inv hε
-  have h := hinv.const_smul (bandSign band * m / 2)
-  simpa [radialBerryEnergyPrimitive, radialBerryEnergyDensity, div_eq_mul_inv] using h
+  -(bandSign band * m / 2) * ε ^ (-2 : ℤ)
 
 /-- Berry weight accumulated over a finite positive-energy shell. -/
 def energyShellBerryWeight (band : Band) (m ε₀ ε₁ : ℝ) : ℝ :=
   ∫ ε in ε₀..ε₁, radialBerryEnergyDensity band m ε
 
-/-- Exact finite-shell Berry-weight integral for `0 < ε₀ ≤ ε₁`. -/
+/-- Exact finite-shell Berry-weight integral for `0 < ε₀ ≤ ε₁`.
+
+The shell avoids the singularity at zero, so the `zpow` integral at exponent `-2` applies
+without introducing a derivative/NormedSpace instance into the model layer. -/
 theorem energyShellBerryWeight_eq (band : Band) (m ε₀ ε₁ : ℝ)
     (hε₀ : 0 < ε₀) (hord : ε₀ ≤ ε₁) :
     energyShellBerryWeight band m ε₀ ε₁ =
-      radialBerryEnergyPrimitive band m ε₁ -
-        radialBerryEnergyPrimitive band m ε₀ := by
-  have hder : ∀ ε ∈ Ioo ε₀ ε₁,
-      HasDerivAt (radialBerryEnergyPrimitive band m)
-        (radialBerryEnergyDensity band m ε) ε := by
-    intro ε hε
-    exact hasDerivAt_radialBerryEnergyPrimitive band m ε (ne_of_gt (lt_trans hε₀ hε.1))
-  have hcont : ContinuousOn (radialBerryEnergyPrimitive band m) (Icc ε₀ ε₁) := by
-    intro ε hε
-    exact (hasDerivAt_radialBerryEnergyPrimitive band m ε
-      (ne_of_gt (lt_of_lt_of_le hε₀ hε.1))).continuousAt.continuousWithinAt
-  have hdensity : ContinuousOn (radialBerryEnergyDensity band m) (Icc ε₀ ε₁) := by
-    intro ε hε
-    have hε0 : ε ≠ 0 := ne_of_gt (lt_of_lt_of_le hε₀ hε.1)
-    unfold radialBerryEnergyDensity
-    exact ContinuousAt.continuousWithinAt
-      (continuousAt_const.div (continuousAt_id.pow 2) (pow_ne_zero 2 hε0))
-  have hint : IntervalIntegrable (radialBerryEnergyDensity band m) volume ε₀ ε₁ := by
-    rw [intervalIntegrable_iff_integrableOn_Icc_of_le hord]
-    exact hdensity.integrableOn_Icc
-  unfold energyShellBerryWeight
-  exact intervalIntegral.integral_eq_sub_of_hasDerivAt_of_le hord hcont hder hint
+      (bandSign band * m / 2) * (ε₁⁻¹ - ε₀⁻¹) := by
+  have hzero : 0 ∉ uIcc ε₀ ε₁ := by
+    rw [uIcc_of_le hord]
+    intro h0
+    exact (not_le_of_gt hε₀) h0.1
+  have hzpow :
+      (∫ ε : ℝ in ε₀..ε₁, ε ^ (-2 : ℤ)) =
+        (ε₁ ^ ((-2 : ℤ) + 1) - ε₀ ^ ((-2 : ℤ) + 1)) /
+          (((-2 : ℤ) : ℝ) + 1) :=
+    intervalIntegral.integral_zpow (Or.inr ⟨by norm_num, hzero⟩)
+  unfold energyShellBerryWeight radialBerryEnergyDensity
+  rw [intervalIntegral.integral_const_mul, hzpow]
+  norm_num
+  ring
 
 /-- Filled lower-band Berry weight from the positive gap edge `m` to a finite UV cutoff `Λ`.
 The benchmark in #1269 takes `m > 0`. -/
@@ -100,18 +82,21 @@ def conductionBerryWeight (m εF : ℝ) : ℝ :=
 theorem valenceBerryWeightCutoff_eq (m Λ : ℝ) (hm : 0 < m) (hmΛ : m ≤ Λ) :
     valenceBerryWeightCutoff m Λ = 1 / 2 - m / (2 * Λ) := by
   rw [valenceBerryWeightCutoff, energyShellBerryWeight_eq .lower m m Λ hm hmΛ]
-  simp [radialBerryEnergyPrimitive]
-  have hΛ : 0 < Λ := lt_of_lt_of_le hm hmΛ
-  field_simp [ne_of_gt hm, ne_of_gt hΛ]
+  have hm0 : m ≠ 0 := ne_of_gt hm
+  have hΛ0 : Λ ≠ 0 := ne_of_gt (lt_of_lt_of_le hm hmΛ)
+  simp [hm0, hΛ0]
+  field_simp [hm0, hΛ0]
   ring
 
 /-- Metallic upper-band contribution: `m/(2εF) - 1/2`. -/
 theorem conductionBerryWeight_eq (m εF : ℝ) (hm : 0 < m) (hmF : m ≤ εF) :
     conductionBerryWeight m εF = m / (2 * εF) - 1 / 2 := by
   rw [conductionBerryWeight, energyShellBerryWeight_eq .upper m m εF hm hmF]
-  simp [radialBerryEnergyPrimitive]
-  have hF : 0 < εF := lt_of_lt_of_le hm hmF
-  field_simp [ne_of_gt hm, ne_of_gt hF]
+  have hm0 : m ≠ 0 := ne_of_gt hm
+  have hF0 : εF ≠ 0 := ne_of_gt (lt_of_lt_of_le hm hmF)
+  simp [hm0, hF0]
+  field_simp [hm0, hF0]
+  ring
 
 /-- Total occupied-state Berry weight with a finite valence-band ultraviolet cutoff. -/
 def metallicBerryWeightCutoff (m εF Λ : ℝ) : ℝ :=
