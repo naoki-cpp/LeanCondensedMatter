@@ -26,21 +26,6 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {i j : Mode}
 
-/-- The fixed-order quartic contraction integrand depends on a diagram only through its ordered
-vertex labels and its pairing transported to that same order. -/
-theorem QuarticWickDiagram.contractionIntegrand_eq_pairingEvaluation
-    {N : ℕ} {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
-    (ε : Mode → ℝ) (β : ℝ) (order : Common.QuarticVertexOrder S)
-    (τ : Fin S.card → ℝ) :
-    d.contractionIntegrand ε β order τ =
-      flatVertexLegPairingEvaluation ε β
-        (fun q => d.vertexLabel (order q)) τ (d.pairingInOrder order) := by
-  simp only [QuarticWickDiagram.contractionIntegrand, flatVertexLegPairingEvaluation,
-    Combinatorics.Pairing.evaluation, flatVertexLegPairValue]
-  refine congrArg (_ * ·) (Finset.prod_congr rfl fun pr _ => ?_)
-  rw [orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation,
-    orderedQuarticLegOperator]
-
 /-- The Dyson-signed vacuum integrand written only in fixed ordered quartic data. -/
 noncomputable def orderedVacuumDysonIntegrand
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) {k : ℕ}
@@ -99,12 +84,27 @@ theorem slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum
           (Common.quarticDiagramEquivOrderedData (slotSplitVacuumOrder T) vac)
           (σ ∘ slotSplitVacuumSlot T) := by
   dsimp only
+  have hcontraction :
+      vac.contractionIntegrand ε β (slotSplitVacuumOrder T)
+          (σ ∘ slotSplitVacuumSlot T) =
+        flatVertexLegPairingEvaluation ε β
+          (fun q => vac.vertexLabel (slotSplitVacuumOrder T q))
+          (σ ∘ slotSplitVacuumSlot T)
+          (vac.pairingInOrder (slotSplitVacuumOrder T)) := by
+    simp only [QuarticWickDiagram.contractionIntegrand, flatVertexLegPairingEvaluation,
+      Combinatorics.Pairing.evaluation, flatVertexLegPairValue]
+    refine congrArg
+      (fun z : ℂ =>
+        (vac.pairingInOrder (slotSplitVacuumOrder T)).weight Common.Statistics.fermion * z)
+      (Finset.prod_congr rfl fun pr _ => ?_)
+    rw [orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation,
+      orderedQuarticLegOperator]
   rw [fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_quarticIntegrand
     ε β g T ext hext vac τ τ' σ hσ]
   unfold orderedVacuumDysonIntegrand
   rw [QuarticWickDiagram.couplingWeight,
     Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order vac g (slotSplitVacuumOrder T),
-    vac.contractionIntegrand_eq_pairingEvaluation ε β (slotSplitVacuumOrder T)]
+    hcontraction]
   rfl
 
 /-- Summing the fixed-order Dyson contribution over ordered vacuum data gives the normalized vacuum
@@ -174,14 +174,6 @@ theorem sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum
       ((-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)))).mul
       (intervalIntegral.Continuous.measurableLocallyBounded
         (continuous_flatVertexLegPairingEvaluation ε β x.1 x.2))
-  have hextIntegral :
-      intervalIntegral.orderedSimplexIntegral m β
-        (fun σ => ext.dysonFixedTimeAmplitude ε β g τ τ' σ) =
-        ext.dysonAmplitude ε β g τ τ' := by
-    simp [FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude,
-      FixedExternalTwoPointWickDiagram.dysonAmplitude,
-      FixedExternalTwoPointWickDiagram.orderedSimplexContribution,
-      intervalIntegral.orderedSimplexIntegral_smul]
   have hvacIntegral :
       intervalIntegral.orderedSimplexIntegral k β
         (orderedVacuumDysonIntegrand ε β g x) =
@@ -197,8 +189,11 @@ theorem sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum
       m k β
       (fun σ => ext.dysonFixedTimeAmplitude ε β g τ τ' σ)
       (orderedVacuumDysonIntegrand ε β g x) hext hvac
-  rw [hextIntegral, hvacIntegral] at h
-  exact h
+  rw [hvacIntegral] at h
+  simpa only [FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude,
+    FixedExternalTwoPointWickDiagram.dysonAmplitude,
+    FixedExternalTwoPointWickDiagram.orderedSimplexContribution,
+    intervalIntegral.orderedSimplexIntegral_smul] using h
 
 end Fermionic
 end SecondQuantization
