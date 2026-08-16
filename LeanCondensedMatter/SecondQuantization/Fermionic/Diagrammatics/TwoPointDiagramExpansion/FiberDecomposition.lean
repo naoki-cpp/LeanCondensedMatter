@@ -169,6 +169,9 @@ theorem sum_eq_sum_powerset_fixedExternalFiber {M : Type*} [AddCommMonoid M]
             QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T),
           F ((fixedExternalFiberEquiv T).symm p).1 := by
   rw [(Finset.sum_fiberwise_of_maps_to
+    (s := (Finset.univ : Finset (FixedExternalTwoPointWickDiagram Mode n i j)))
+    (t := (Finset.univ : Finset (Fin n)).powerset)
+    (g := fun d : FixedExternalTwoPointWickDiagram Mode n i j => d.1.externalInteractionPart)
     (fun _ _ => Finset.mem_powerset.2 (Finset.subset_univ _)) F).symm]
   refine Finset.sum_congr rfl fun T _ => ?_
   rw [Finset.sum_subtype
