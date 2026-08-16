@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerrySymmetry
+import Mathlib.Analysis.Calculus.Deriv.Inv
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 
 set_option linter.style.header false
@@ -51,9 +52,8 @@ def radialBerryEnergyPrimitive (band : Band) (m ε : ℝ) : ℝ :=
 theorem hasDerivAt_radialBerryEnergyPrimitive (band : Band) (m ε : ℝ) (hε : ε ≠ 0) :
     HasDerivAt (radialBerryEnergyPrimitive band m)
       (radialBerryEnergyDensity band m ε) ε := by
-  have h := (HasDerivAt.inv (hasDerivAt_id ε) hε).mul_const (bandSign band * m / 2)
-  simpa [radialBerryEnergyPrimitive, radialBerryEnergyDensity, div_eq_mul_inv,
-    mul_comm, mul_left_comm, mul_assoc] using h
+  have h := (hasDerivAt_const ε (bandSign band * m / 2)).div (hasDerivAt_id ε) hε
+  simpa [radialBerryEnergyPrimitive, radialBerryEnergyDensity] using h
 
 /-- Berry weight accumulated over a finite positive-energy shell. -/
 def energyShellBerryWeight (band : Band) (m ε₀ ε₁ : ℝ) : ℝ :=
@@ -100,14 +100,14 @@ theorem valenceBerryWeightCutoff_eq (m Λ : ℝ) (hm : 0 < m) (hmΛ : m ≤ Λ) 
     valenceBerryWeightCutoff m Λ = 1 / 2 - m / (2 * Λ) := by
   rw [valenceBerryWeightCutoff, energyShellBerryWeight_eq .lower m m Λ hm hmΛ]
   simp [radialBerryEnergyPrimitive]
-  field_simp [ne_of_gt hm]
+  ring
 
 /-- Metallic upper-band contribution: `m/(2εF) - 1/2`. -/
 theorem conductionBerryWeight_eq (m εF : ℝ) (hm : 0 < m) (hmF : m ≤ εF) :
     conductionBerryWeight m εF = m / (2 * εF) - 1 / 2 := by
   rw [conductionBerryWeight, energyShellBerryWeight_eq .upper m m εF hm hmF]
   simp [radialBerryEnergyPrimitive]
-  field_simp [ne_of_gt hm]
+  ring
 
 /-- Total occupied-state Berry weight with a finite valence-band ultraviolet cutoff. -/
 def metallicBerryWeightCutoff (m εF Λ : ℝ) : ℝ :=
