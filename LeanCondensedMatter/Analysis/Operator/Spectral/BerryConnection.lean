@@ -33,7 +33,7 @@ namespace BerryGeometry
 noncomputable section
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
-variable {ι : Type*} [Fintype ι] [DecidableEq ι]
+variable {ι : Type*} [Fintype ι]
 
 /-- Pointwise data for differentiating a finite orthonormal eigenbasis in one parameter direction.
 
@@ -100,6 +100,7 @@ theorem inner_hamiltonian_right (m : ι) (x : H) :
     _ = inner ℂ (((data.energy m : ℝ) : ℂ) • data.eigenbasis m) x := by
       rw [data.hamiltonian_eigenvector]
     _ = ((data.energy m : ℝ) : ℂ) * inner ℂ (data.eigenbasis m) x := by
+      rw [inner_smul_left]
       simp
 
 /-- The Berry-connection matrix is Hermitian in band indices:
@@ -152,7 +153,7 @@ theorem bornFock_inner {m n : ι} (hmn : m ≠ n)
   have hgap : (((data.energy n - data.energy m : ℝ) : ℂ)) ≠ 0 := by
     exact_mod_cast sub_ne_zero.mpr henergy.symm
   apply (eq_div_iff hgap).2
-  unfold hamiltonianDerivativeMatrixElement at h ⊢
+  unfold hamiltonianDerivativeMatrixElement
   push_cast at h ⊢
   linear_combination h
 
