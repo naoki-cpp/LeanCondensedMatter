@@ -90,7 +90,7 @@ def TwoPointDiagram.legInComponent {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (B : Finset (TwoPointVertex S))
     (leg : Fin (2 * (2 * S.card + 1))) : Prop :=
-  d.pairing.legInComponent twoPointVertexOfLeg d.componentBlock B leg
+  d.componentBlock (twoPointVertexOfLeg leg) = B
 
 /-- Flattened legs belonging to one full component of a two-point diagram. -/
 abbrev TwoPointDiagram.ComponentLeg {S : Finset (Fin N)}
@@ -129,7 +129,8 @@ theorem TwoPointDiagram.legInComponent_partner_iff {S : Finset (Fin N)}
     (B : Finset (TwoPointVertex S))
     (leg : Fin (2 * (2 * S.card + 1))) :
     d.legInComponent B leg ↔ d.legInComponent B (d.pairing.partner leg) := by
-  unfold TwoPointDiagram.legInComponent
+  change d.pairing.legInComponent twoPointVertexOfLeg d.componentBlock B leg ↔
+    d.pairing.legInComponent twoPointVertexOfLeg d.componentBlock B (d.pairing.partner leg)
   exact d.pairing.legInComponent_partner_iff twoPointVertexOfLeg d.componentBlock
     d.componentBlock_eq_of_reachable B leg
 
