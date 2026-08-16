@@ -27,14 +27,6 @@ def QuarticDiagram.legInBlock {S : Finset (Fin N)} (d : QuarticDiagram Label N S
     (B : Finset (Fin N)) (leg : Fin (2 * (2 * S.card))) : Prop :=
   d.componentBlock (vertexOfLeg leg) = B
 
-theorem QuarticDiagram.componentBlock_eq_iff_mem {S : Finset (Fin N)}
-    (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
-    (hB : B ∈ d.componentPartition.parts) (v : ↥S) :
-    d.componentBlock v = B ↔ (v : Fin N) ∈ B :=
-  ⟨fun h => h ▸ d.self_mem_componentBlock v, fun hv => by
-    change d.componentPartition.part (v : Fin N) = B
-    exact d.componentPartition.part_eq_of_mem hB hv⟩
-
 /-- Every component part is contained in the ambient vertex set. -/
 theorem QuarticDiagram.componentPart_subset {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
@@ -48,8 +40,8 @@ theorem QuarticDiagram.legInBlock_partner_iff {S : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card))) :
     d.legInBlock B leg ↔ d.legInBlock B (d.pairing.partner leg) := by
   unfold QuarticDiagram.legInBlock
-  rw [d.pairing.component_vertex_partner_eq vertexOfLeg d.componentBlock
-    d.componentBlock_eq_of_reachable leg]
+  rw [d.componentBlock_eq_of_reachable
+    (d.pairing.vertexGraph_reachable_partner vertexOfLeg leg)]
 
 /-- The partner permutation restricted to legs belonging to component part `B`. -/
 noncomputable def QuarticDiagram.restrictedPartner {S : Finset (Fin N)}
