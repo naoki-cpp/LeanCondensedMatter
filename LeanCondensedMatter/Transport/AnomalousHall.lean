@@ -1,6 +1,7 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracSpectral
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerryBridge
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerrySymmetry
 
 set_option linter.style.header false
 
