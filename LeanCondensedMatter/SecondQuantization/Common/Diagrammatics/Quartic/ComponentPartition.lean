@@ -84,5 +84,13 @@ theorem QuarticDiagram.componentBlock_eq_of_reachable {S : Finset (Fin N)}
   exact (d.componentPartition.mem_part_iff_part_eq_part v.2 w.2).1
     ((d.mem_componentBlock w).2 ⟨v.2, h⟩)
 
+/-- A vertex belongs to a component part exactly when its component block is that part. -/
+theorem QuarticDiagram.componentBlock_eq_iff_mem {S : Finset (Fin N)}
+    (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
+    (hB : B ∈ d.componentPartition.parts) (v : ↥S) :
+    d.componentBlock v = B ↔ (v : Fin N) ∈ B := by
+  change d.componentPartition.part (v : Fin N) = B ↔ (v : Fin N) ∈ B
+  exact d.componentPartition.part_eq_iff_mem hB
+
 end Common
 end SecondQuantization
