@@ -115,10 +115,13 @@ noncomputable def berryCurvature (μ ν : κ) (n : ι) : ℝ :=
 theorem berryCurvature_swap (μ ν : κ) (n : ι) :
     data.berryCurvature ν μ n = -data.berryCurvature μ ν n := by
   unfold berryCurvature
-  have h := congrArg Complex.im
-    (inner_conj_symm (𝕜 := ℂ)
-      (data.eigenvectorDerivative μ n) (data.eigenvectorDerivative ν n))
-  simp at h
+  have him :
+      -(inner ℂ (data.eigenvectorDerivative ν n) (data.eigenvectorDerivative μ n)).im =
+        (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenvectorDerivative ν n)).im := by
+    have h := congrArg Complex.im
+      (inner_conj_symm (𝕜 := ℂ)
+        (data.eigenvectorDerivative μ n) (data.eigenvectorDerivative ν n))
+    simpa only [Complex.conj_im] using h
   linarith
 
 /-- Completeness of the finite orthonormal eigenbasis expands the derivative-state curvature into
@@ -155,11 +158,18 @@ theorem diagonal_innerProduct_im_eq_zero (μ ν : κ) (n : ι) :
   have hμ := congrArg Complex.re (data.differentiatedOrthonormality μ n n)
   have hν := congrArg Complex.re (data.differentiatedOrthonormality ν n n)
   simp only [Complex.add_re, Complex.zero_re] at hμ hν
-  have hμsym := congrArg Complex.re
-    (inner_conj_symm (𝕜 := ℂ) (data.eigenvectorDerivative μ n) (data.eigenbasis n))
-  have hνsym := congrArg Complex.re
-    (inner_conj_symm (𝕜 := ℂ) (data.eigenvectorDerivative ν n) (data.eigenbasis n))
-  simp at hμsym hνsym
+  have hμsym :
+      (inner ℂ (data.eigenbasis n) (data.eigenvectorDerivative μ n)).re =
+        (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis n)).re := by
+    have h := congrArg Complex.re
+      (inner_conj_symm (𝕜 := ℂ) (data.eigenvectorDerivative μ n) (data.eigenbasis n))
+    simpa only [Complex.conj_re] using h
+  have hνsym :
+      (inner ℂ (data.eigenbasis n) (data.eigenvectorDerivative ν n)).re =
+        (inner ℂ (data.eigenvectorDerivative ν n) (data.eigenbasis n)).re := by
+    have h := congrArg Complex.re
+      (inner_conj_symm (𝕜 := ℂ) (data.eigenvectorDerivative ν n) (data.eigenbasis n))
+    simpa only [Complex.conj_re] using h
   have hμre : (inner ℂ (data.eigenvectorDerivative μ n) (data.eigenbasis n)).re = 0 := by
     linarith
   have hνre : (inner ℂ (data.eigenbasis n) (data.eigenvectorDerivative ν n)).re = 0 := by
@@ -227,8 +237,14 @@ theorem curvatureInnerTerm_eq_hamiltonianDerivativeMatrixElements
           (((data.energy n - data.energy m : ℝ) : ℂ))) := by
     dsimp [z]
     simp [data.star_hamiltonianDerivativeMatrixElement]
-  have him := congrArg Complex.im hstar
-  simp at him
+  have him :
+      -z.im =
+        ((data.hamiltonianDerivativeMatrixElement μ m n /
+          (((data.energy n - data.energy m : ℝ) : ℂ))) *
+        (data.hamiltonianDerivativeMatrixElement ν n m /
+          (((data.energy n - data.energy m : ℝ) : ℂ)))).im := by
+    have h := congrArg Complex.im hstar
+    simpa only [Complex.conj_im] using h
   change -2 * z.im =
     2 * ((data.hamiltonianDerivativeMatrixElement μ m n /
       (((data.energy n - data.energy m : ℝ) : ℂ))) *
