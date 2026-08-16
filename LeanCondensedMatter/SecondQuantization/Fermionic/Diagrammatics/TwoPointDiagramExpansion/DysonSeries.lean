@@ -27,13 +27,6 @@ noncomputable def twoPointDysonSeries (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) : PowerSeries ℂ :=
   PowerSeries.mk fun n => twoPointDysonCoefficient (n := n) ε β g i j τ τ'
 
-@[simp]
-theorem coeff_twoPointDysonSeries (ε : Mode → ℝ) (β : ℝ)
-    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
-    PowerSeries.coeff n (twoPointDysonSeries ε β g i j τ τ') =
-      twoPointDysonCoefficient (n := n) ε β g i j τ τ' :=
-  PowerSeries.coeff_mk n _
-
 /-- **The vacuum-normalized two-point series**: the two-point series divided by the partition series
 of the same interaction, normalized to constant coefficient one.
 
@@ -59,13 +52,6 @@ noncomputable def connectedTwoPointDysonCoefficient (ε : Mode → ℝ) (β : �
 noncomputable def connectedTwoPointDysonSeries (ε : Mode → ℝ) (β : ℝ)
     (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) : PowerSeries ℂ :=
   PowerSeries.mk (connectedTwoPointDysonCoefficient ε β g i j τ τ')
-
-@[simp]
-theorem coeff_connectedTwoPointDysonSeries (ε : Mode → ℝ) (β : ℝ)
-    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
-    PowerSeries.coeff n (connectedTwoPointDysonSeries ε β g i j τ τ') =
-      connectedTwoPointDysonCoefficient ε β g i j τ τ' n :=
-  PowerSeries.coeff_mk n _
 
 end Fermionic
 end SecondQuantization
