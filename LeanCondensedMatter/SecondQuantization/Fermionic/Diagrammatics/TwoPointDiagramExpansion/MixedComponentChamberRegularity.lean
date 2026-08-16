@@ -10,8 +10,7 @@ set_option linter.style.header false
 
 Common owns the chamberwise transport of mixed component positions, normalized pair endpoints,
 endpoint legs, crossings, and statistics weights. This module fixes a base chamber and adds only the
-continuous free-Gibbs contraction representative and the fermionic component fixed-time/Dyson
-values.
+continuous free-Gibbs contraction representative and the fermionic Dyson-signed component value.
 -/
 
 namespace SecondQuantization
@@ -22,44 +21,49 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
-/-- Globally continuous fixed-index representative of one mixed component pairing value based at
-`σ₀`. -/
-noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentPairingChamberRepresentative
+/-- Continuous chamber representative of the Dyson-signed component fixed-time value. -/
+noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ₀ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts) : (Fin n → ℝ) → ℂ :=
-  fun σ =>
-    d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ₀ B *
-      ∏ pr : d.1.MixedComponentPair τ τ' σ₀ B,
-        orderedTwoPointLegPairContraction ε β i j τ τ' d.vertexLabelSequence σ
-          (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.1)
-          (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.2)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (τ τ' : ℝ) (σ₀ : Fin n → ℝ) (B : d.1.componentPartition.parts) :
+    (Fin n → ℝ) → ℂ :=
+  fun σ => d.mixedComponentDysonSign B *
+    (d.mixedComponentVertexWeight g B *
+      (d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ₀ B *
+        ∏ pr : d.1.MixedComponentPair τ τ' σ₀ B,
+          orderedTwoPointLegPairContraction ε β i j τ τ' d.vertexLabelSequence σ
+            (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.1)
+            (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.2)))
 
-/-- The fixed-index chamber representative is globally continuous on the ambient interaction-time
-space. -/
-theorem FixedExternalTwoPointWickDiagram.continuous_mixedComponentPairingChamberRepresentative
+/-- The Dyson-signed chamber representative is globally continuous. -/
+theorem FixedExternalTwoPointWickDiagram.continuous_mixedComponentDysonFixedTimeChamberRepresentative
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ₀ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts) :
-    Continuous (d.mixedComponentPairingChamberRepresentative ε β τ τ' σ₀ B) := by
-  unfold FixedExternalTwoPointWickDiagram.mixedComponentPairingChamberRepresentative
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (τ τ' : ℝ) (σ₀ : Fin n → ℝ) (B : d.1.componentPartition.parts) :
+    Continuous (d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ' σ₀ B) := by
+  unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
   exact continuous_const.mul
-    (continuous_finsetProd _ fun pr _ =>
-      continuous_orderedTwoPointLegPairContraction ε β i j τ τ' d.vertexLabelSequence
-        (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.1)
-        (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.2))
+    (continuous_const.mul
+      (continuous_const.mul
+        (continuous_finsetProd _ fun pr _ =>
+          continuous_orderedTwoPointLegPairContraction ε β i j τ τ' d.vertexLabelSequence
+            (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.1)
+            (mixedTimeOrderedAtomicLegEquiv τ τ' σ₀ pr.1.1.2))))
 
-/-- On the base mixed-order chamber, the globally continuous fixed-index representative agrees with
-the actual component pairing value. -/
-theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingChamberRepresentative_eq_of_sameOrderChamber
+/-- On the base chamber, the Dyson-signed representative agrees with the actual component factor. -/
+theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ₀ σ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (τ τ' : ℝ) (σ₀ σ : Fin n → ℝ) (B : d.1.componentPartition.parts)
     (hChamber : SameTwoPointOrderChamber τ τ' σ₀ σ) :
-    d.mixedComponentPairingChamberRepresentative ε β τ τ' σ₀ B σ =
-      d.mixedComponentPairingValue ε β τ τ' σ B := by
+    d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ' σ₀ B σ =
+      d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B := by
   classical
-  unfold FixedExternalTwoPointWickDiagram.mixedComponentPairingChamberRepresentative
+  unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
+    FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue
+    FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
+  apply congrArg (fun z : ℂ =>
+    d.mixedComponentDysonSign B * (d.mixedComponentVertexWeight g B * z))
   rw [d.mixedComponentPairingValue_eq_weight_mul_contractionProduct,
     d.1.mixedComponentWeight_eq_of_sameOrderChamber
       Common.Statistics.fermion τ τ' σ₀ σ B hChamber]
@@ -86,41 +90,6 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingChamberRepresentat
       exact Equiv.prod_comp e
         (fun q : d.1.MixedComponentPair τ τ' σ B =>
           d.mixedPairContractionValue ε β τ τ' σ q.1)
-
-/-- Continuous chamber representative of the Dyson-signed component fixed-time value. -/
-noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (σ₀ : Fin n → ℝ) (B : d.1.componentPartition.parts) :
-    (Fin n → ℝ) → ℂ :=
-  fun σ => d.mixedComponentDysonSign B *
-    (d.mixedComponentVertexWeight g B *
-      d.mixedComponentPairingChamberRepresentative ε β τ τ' σ₀ B σ)
-
-/-- The Dyson-signed chamber representative is globally continuous. -/
-theorem FixedExternalTwoPointWickDiagram.continuous_mixedComponentDysonFixedTimeChamberRepresentative
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (σ₀ : Fin n → ℝ) (B : d.1.componentPartition.parts) :
-    Continuous (d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ' σ₀ B) := by
-  unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
-  exact continuous_const.mul
-    (continuous_const.mul
-      (d.continuous_mixedComponentPairingChamberRepresentative ε β τ τ' σ₀ B))
-
-/-- On the base chamber, the Dyson-signed representative agrees with the actual component factor. -/
-theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (σ₀ σ : Fin n → ℝ) (B : d.1.componentPartition.parts)
-    (hChamber : SameTwoPointOrderChamber τ τ' σ₀ σ) :
-    d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ' σ₀ B σ =
-      d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B := by
-  unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
-    FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue
-    FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
-  rw [d.mixedComponentPairingChamberRepresentative_eq_of_sameOrderChamber
-    ε β τ τ' σ₀ σ B hChamber]
 
 end Fermionic
 end SecondQuantization
