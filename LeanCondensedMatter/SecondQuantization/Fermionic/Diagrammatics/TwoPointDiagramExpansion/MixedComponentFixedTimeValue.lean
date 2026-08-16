@@ -7,14 +7,12 @@ set_option linter.style.header false
 # Component-local fixed-time values for two-point diagrams
 
 A fixed-time two-point Wick-diagram amplitude contains three scalar layers: the external-field time-
-ordering sign, the product of quartic couplings, and the mixed-order pairing value.  The preceding
+ordering sign, the product of quartic couplings, and the mixed-order pairing value. The preceding
 modules factor the pairing value over full external-plus-interaction components, while the common
 two-point component API factors arbitrary interaction-vertex products.
 
-This module combines those results.  It defines one coupling-and-pairing value for each full
-component, packages the external ordering sign with the canonical external component, and proves that
-the global fixed-time amplitude is the external value times the product of all vacuum-component
-values. The external value is related to the standalone external piece downstream in
+This module combines those results into component-local fixed-time values and the all-component
+factorization. The external value is related to the standalone external piece downstream in
 `ExternalPieceAmplitude`.
 
 The Dyson sign and ordered-simplex integration are intentionally left to the next layer.
@@ -113,20 +111,6 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
     d.orderedTwoPointPairingValue_eq_prod_components_unconditional ε β τ τ' σ]
   unfold FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
   rw [Finset.prod_mul_distrib]
-  ring
-
-/-- External/vacuum factorization of the complete fixed-time amplitude. -/
-theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_external_mul_prod_vacuum
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    d.fixedTimeAmplitude ε β g τ τ' σ =
-      d.mixedExternalFixedTimeValue ε β g τ τ' σ *
-        d.1.vacuumComponentParts.prod
-          (d.mixedComponentFixedTimeValue ε β g τ τ' σ) := by
-  rw [d.fixedTimeAmplitude_eq_externalSign_mul_prod_components ε β g τ τ' σ,
-    d.1.prod_componentParts_eq_external_mul_prod_vacuum]
-  unfold FixedExternalTwoPointWickDiagram.mixedExternalFixedTimeValue
   ring
 
 end Fermionic

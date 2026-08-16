@@ -5,15 +5,14 @@ set_option linter.style.header false
 /-!
 # Component-local Dyson-signed values for two-point diagrams
 
-The order-`n` Dyson sign depends only on the number of quartic interaction vertices.  The interaction
+The order-`n` Dyson sign depends only on the number of quartic interaction vertices. The interaction
 vertices are partitioned by the full external-plus-interaction components, so this sign factors into
 one power of `-1` for the canonical external component and one for every vacuum component.
 
-This module combines those local signs with the component-local fixed-time values.  The resulting
+This module combines those local signs with the component-local fixed-time values. The resulting
 pointwise signed integrand is the exact input required by the subsequent ordered-simplex shuffle
 factorization; no integration or continuity claim is made here. The external signed value is related
-to the standalone external piece downstream in `ExternalPieceAmplitude`; restricted formulas here
-are retained only for vacuum components.
+to the standalone external piece downstream in `ExternalPieceAmplitude`.
 -/
 
 namespace SecondQuantization
@@ -101,8 +100,10 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_external_mul
     simpa [FixedExternalTwoPointWickDiagram.mixedComponentDysonSign,
       Common.TwoPointDiagram.externalComponentPart] using
       d.1.dysonSign_eq_external_mul_prod_vacuum
-  rw [hsign, d.fixedTimeAmplitude_eq_external_mul_prod_vacuum]
+  rw [hsign, d.fixedTimeAmplitude_eq_externalSign_mul_prod_components,
+    d.1.prod_componentParts_eq_external_mul_prod_vacuum]
   unfold FixedExternalTwoPointWickDiagram.mixedExternalDysonFixedTimeValue
+  unfold FixedExternalTwoPointWickDiagram.mixedExternalFixedTimeValue
   unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue
   rw [Finset.prod_mul_distrib]
   ring
