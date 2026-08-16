@@ -97,8 +97,11 @@ private theorem QuarticDiagram.componentOrientedCrossingCount_add_swap_mod_two_e
       (d.componentPairEquiv orders shuffle) B C +
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount
       (d.componentPairEquiv orders shuffle) C B) % 2 = 0
-  rw [← (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).
-    componentGeometricCrossingCount_eq_oriented_add (d.componentPairEquiv orders shuffle) B C]
+  have hor :=
+    (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).
+      componentGeometricCrossingCount_eq_oriented_add
+        (d.componentPairEquiv orders shuffle) B C
+  rw [← hor]
   have hcross :=
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).
       componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
