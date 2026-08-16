@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomousHall.MassiveDiracBerrySymmetry
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerrySymmetry
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
 set_option linter.style.header false
