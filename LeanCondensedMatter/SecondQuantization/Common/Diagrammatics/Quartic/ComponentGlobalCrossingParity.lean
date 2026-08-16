@@ -76,135 +76,6 @@ private theorem QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zer
   rw [Fin.sum_univ_four]
   split_ifs <;> omega
 
-/-- Selecting an endpoint after transporting a component-local pair is the same as transporting the
-selected local endpoint. -/
-private theorem QuarticDiagram.pairEndpointAt_componentPairEquiv
-    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B : d.componentPartition.parts) (p : d.LocalOrderedPair orders B) (k : Fin 2) :
-    Combinatorics.pairEndpointAt
-        (d.componentPairEquiv orders shuffle ⟨B, p⟩).1 k =
-      d.componentOrderedLeg shuffle B
-        (Combinatorics.pairEndpointAt p.1 k) := by
-  fin_cases k <;>
-  simp [Combinatorics.pairEndpointAt, d.componentPairEquiv_apply]
-
-/-- Endpoint inversion count written using component-local endpoints and their global embeddings. -/
-private theorem QuarticDiagram.componentPairEndpointInversionCount_eq_sum
-    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B C : d.componentPartition.parts)
-    (p : d.LocalOrderedPair orders B) (q : d.LocalOrderedPair orders C) :
-    Combinatorics.pairEndpointInversionCount
-        (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
-        (d.componentPairEquiv orders shuffle ⟨C, q⟩).1 =
-      ∑ i : Fin 2, ∑ j : Fin 2,
-        if d.componentOrderedLeg shuffle C
-            (Combinatorics.pairEndpointAt q.1 j) <
-          d.componentOrderedLeg shuffle B
-            (Combinatorics.pairEndpointAt p.1 i)
-        then 1 else 0 := by
-  rw [Combinatorics.pairEndpointInversionCount_eq_sum]
-  apply Finset.sum_congr rfl
-  intro i _
-  apply Finset.sum_congr rfl
-  intro j _
-  rw [d.pairEndpointAt_componentPairEquiv, d.pairEndpointAt_componentPairEquiv]
-
-/-- Reindex the pair-endpoint inversion sum as a sum over all legs of the two components. -/
-private theorem
-    QuarticDiagram.sum_componentPairEndpointInversionCount_eq_sum_componentOrderedLeg_inversions
-    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B C : d.componentPartition.parts) :
-    (∑ x : d.LocalOrderedPair orders B × d.LocalOrderedPair orders C,
-      Combinatorics.pairEndpointInversionCount
-        (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
-        (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1) =
-      ∑ p : Fin (2 * (2 * (B : Finset (Fin N)).card)),
-        ∑ q : Fin (2 * (2 * (C : Finset (Fin N)).card)),
-          if d.componentOrderedLeg shuffle C q < d.componentOrderedLeg shuffle B p
-          then 1 else 0 := by
-  classical
-  let localPairingB := (d.restrictComponent B.2).pairingInOrder (orders B)
-  let localPairingC := (d.restrictComponent C.2).pairingInOrder (orders C)
-  let endpointPairEquiv :
-      ((d.LocalOrderedPair orders B × d.LocalOrderedPair orders C) × (Fin 2 × Fin 2)) ≃
-        (Fin (2 * (2 * (B : Finset (Fin N)).card)) ×
-          Fin (2 * (2 * (C : Finset (Fin N)).card))) :=
-    (Equiv.prodProdProdComm _ _ _ _).trans
-      (Equiv.prodCongr localPairingB.pairEndpointEquiv localPairingC.pairEndpointEquiv)
-  calc
-    (∑ x : d.LocalOrderedPair orders B × d.LocalOrderedPair orders C,
-        Combinatorics.pairEndpointInversionCount
-          (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
-          (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1) =
-      ∑ x : (d.LocalOrderedPair orders B × d.LocalOrderedPair orders C) × (Fin 2 × Fin 2),
-        if d.componentOrderedLeg shuffle C
-            (Combinatorics.pairEndpointAt x.1.2.1 x.2.2) <
-          d.componentOrderedLeg shuffle B
-            (Combinatorics.pairEndpointAt x.1.1.1 x.2.1)
-        then 1 else 0 := by
-          simp only [Fintype.sum_prod_type]
-          apply Finset.sum_congr rfl
-          intro p _
-          apply Finset.sum_congr rfl
-          intro q _
-          exact d.componentPairEndpointInversionCount_eq_sum orders shuffle B C p q
-    _ = ∑ x : Fin (2 * (2 * (B : Finset (Fin N)).card)) ×
-          Fin (2 * (2 * (C : Finset (Fin N)).card)),
-        if d.componentOrderedLeg shuffle C x.2 < d.componentOrderedLeg shuffle B x.1
-        then 1 else 0 := by
-          refine Fintype.sum_equiv endpointPairEquiv
-            (fun x => if d.componentOrderedLeg shuffle C
-                (Combinatorics.pairEndpointAt x.1.2.1 x.2.2) <
-              d.componentOrderedLeg shuffle B
-                (Combinatorics.pairEndpointAt x.1.1.1 x.2.1)
-              then 1 else 0)
-            (fun x => if d.componentOrderedLeg shuffle C x.2 <
-              d.componentOrderedLeg shuffle B x.1 then 1 else 0) ?_
-          intro x
-          rfl
-    _ = ∑ p : Fin (2 * (2 * (B : Finset (Fin N)).card)),
-        ∑ q : Fin (2 * (2 * (C : Finset (Fin N)).card)),
-          if d.componentOrderedLeg shuffle C q < d.componentOrderedLeg shuffle B p
-          then 1 else 0 := by
-          rw [Fintype.sum_prod_type]
-
-/-- Indicator-valued version of component-pair crossing parity. -/
-private theorem QuarticDiagram.componentPairEndpointInversionCount_mod_two_eq_crossesIndicator
-    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B C : d.componentPartition.parts) (hBC : B ≠ C)
-    (p : d.LocalOrderedPair orders B) (q : d.LocalOrderedPair orders C) :
-    Combinatorics.pairEndpointInversionCount
-        (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
-        (d.componentPairEquiv orders shuffle ⟨C, q⟩).1 % 2 =
-      if Combinatorics.Crosses
-          (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
-          (d.componentPairEquiv orders shuffle ⟨C, q⟩).1 ∨
-        Combinatorics.Crosses
-          (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
-          (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
-      then 1 else 0 := by
-  have hPairNe :
-      d.componentPairEquiv orders shuffle ⟨B, p⟩ ≠
-        d.componentPairEquiv orders shuffle ⟨C, q⟩ := by
-    intro h
-    exact hBC (congrArg Sigma.fst ((d.componentPairEquiv orders shuffle).injective h))
-  have hEnds :=
-    (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).normalizedPair_endpoints_ne_of_ne
-      (d.componentPairEquiv orders shuffle ⟨B, p⟩)
-      (d.componentPairEquiv orders shuffle ⟨C, q⟩) hPairNe
-  exact Combinatorics.pairEndpointInversionCount_mod_two_eq_crossesIndicator
-    (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
-    (d.componentPairEquiv orders shuffle ⟨C, q⟩).1
-    ((d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs_normalized
-      (d.componentPairEquiv orders shuffle ⟨B, p⟩).2)
-    ((d.pairingInOrder (d.assembleVertexOrder orders shuffle)).pairs_normalized
-      (d.componentPairEquiv orders shuffle ⟨C, q⟩).2)
-    hEnds.1 hEnds.2.1 hEnds.2.2.1 hEnds.2.2.2
-
 /-- Oriented crossing count from pairs in component `B` to pairs in component `C`. -/
 private noncomputable def QuarticDiagram.componentOrientedCrossingCount
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
@@ -222,60 +93,27 @@ private theorem QuarticDiagram.componentOrientedCrossingCount_add_swap_mod_two_e
     (d.componentOrientedCrossingCount orders shuffle B C +
       d.componentOrientedCrossingCount orders shuffle C B) % 2 = 0 := by
   classical
-  have hswap : d.componentOrientedCrossingCount orders shuffle C B =
-      ∑ x : d.LocalOrderedPair orders B × d.LocalOrderedPair orders C,
-        if Combinatorics.Crosses
-            (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
-            (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
-        then 1 else 0 := by
-    rw [QuarticDiagram.componentOrientedCrossingCount,
-      Combinatorics.Pairing.componentCrossingCount,
-      ← Equiv.sum_comp (Equiv.prodComm
-        (d.LocalOrderedPair orders B) (d.LocalOrderedPair orders C))]
-    rfl
-  have hor : d.componentOrientedCrossingCount orders shuffle B C +
-      d.componentOrientedCrossingCount orders shuffle C B =
-      ∑ x : d.LocalOrderedPair orders B × d.LocalOrderedPair orders C,
-        if Combinatorics.Crosses
-            (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
-            (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1 ∨
-          Combinatorics.Crosses
-            (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
-            (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
-        then 1 else 0 := by
-    rw [hswap, QuarticDiagram.componentOrientedCrossingCount,
-      Combinatorics.Pairing.componentCrossingCount, ← Finset.sum_add_distrib]
-    refine Finset.sum_congr rfl fun x _ => ?_
-    by_cases hbc : Combinatorics.Crosses
-        (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
-        (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
-    · have hcb : ¬ Combinatorics.Crosses
-          (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
-          (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1 :=
-        fun h => lt_asymm hbc.1 h.1
-      simp [hbc, hcb]
-    · simp [hbc]
-  have hinv :
-      (∑ x : d.LocalOrderedPair orders B × d.LocalOrderedPair orders C,
-        if Combinatorics.Crosses
-            (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
-            (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1 ∨
-          Combinatorics.Crosses
-            (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
-            (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
-        then 1 else 0) % 2 =
-      (∑ x : d.LocalOrderedPair orders B × d.LocalOrderedPair orders C,
-        Combinatorics.pairEndpointInversionCount
-          (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
-          (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1) % 2 := by
-    symm
-    exact Combinatorics.fintype_sum_mod_two_congr _ _ fun x => by
-      have h := d.componentPairEndpointInversionCount_mod_two_eq_crossesIndicator
-        orders shuffle B C hBC x.1 x.2
-      split_ifs at h ⊢ <;> simpa using h
-  rw [hor, hinv,
-    d.sum_componentPairEndpointInversionCount_eq_sum_componentOrderedLeg_inversions
-      orders shuffle B C]
+  change ((d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount
+      (d.componentPairEquiv orders shuffle) B C +
+    (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount
+      (d.componentPairEquiv orders shuffle) C B) % 2 = 0
+  have hor := Combinatorics.Pairing.componentGeometricCrossingCount_eq_oriented_add
+    (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
+    (d.componentPairEquiv orders shuffle) B C
+  rw [← hor]
+  have hcross :=
+    Combinatorics.Pairing.componentGeometricCrossingCount_mod_two_eq_endpointInversionCount
+      (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
+      (d.componentPairEquiv orders shuffle)
+      (fun B => ((d.restrictComponent B.2).pairingInOrder (orders B)).pairEndpointEquiv)
+      (fun B p => d.componentOrderedLeg shuffle B p)
+      (fun B p k => by
+        fin_cases k <;>
+        simp [Combinatorics.Pairing.pairEndpointEquiv_apply,
+          Combinatorics.Pairing.pairEndpoint, Combinatorics.pairEndpointAt,
+          d.componentPairEquiv_apply])
+      B C hBC
+  rw [hcross]
   exact d.sum_componentOrderedLeg_inversions_mod_two_eq_zero shuffle B C hBC
 
 private theorem QuarticDiagram.crosses_componentPairEquiv_iff
