@@ -1,5 +1,4 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
-import LeanCondensedMatter.QuantumTheory.Entropy.Diagonal
 import LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy
 import Mathlib.Analysis.SpecialFunctions.Exp
 
@@ -115,16 +114,6 @@ theorem purePointGibbsDensityOperator_apply_basis [Nonempty ι]
     diagonalDensityOperator_apply_basis b (purePointBoltzmannWeight E β) hsum
       (purePointBoltzmannWeight_nonneg E β) hZ i
 
-/-- Bounded-operator expectations are the absolutely convergent pure-point Gibbs series. -/
-theorem purePointGibbsDensityOperator_expectation_eq_tsum [Nonempty ι]
-    (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)
-    (hsum : PurePointGibbsSummable E β) (A : H →L[ℂ] H) :
-    (purePointGibbsDensityOperator b E β hsum).expectation A =
-      ∑' i, (purePointGibbsProbability E β i : ℂ) * inner ℂ (b i) (A (b i)) := by
-  exact (purePointGibbsDensityOperator b E β hsum).expectation_eq_tsum_diagonal
-    A b (purePointGibbsProbability E β)
-    (purePointGibbsDensityOperator_apply_basis b E β hsum)
-
 /-- Finiteness condition for the mean energy when the pure-point energy data are not represented by
 a bounded `Observable`.  State existence alone does not imply this stronger weighted summability. -/
 def PurePointGibbsEnergyIntegrable (E : ι → ℝ) (β : ℝ) : Prop :=
@@ -144,36 +133,10 @@ theorem energyExpValue_purePointGibbsDensityOperator_eq_tsum [Nonempty ι]
     (purePointGibbsProbability E β) E
     (purePointGibbsDensityOperator_apply_basis b E β hsum) hE
 
-/-- Entropy is available only when the entropy operator has summable real eigenvalues.  This keeps
-entropy finiteness separate from existence of the pure-point Gibbs density state. -/
-theorem entropyOpSpectralTraceClass_trace_purePointGibbsDensityOperator [Nonempty ι]
-    (b : HilbertBasis ι ℂ H) (E : ι → ℝ) (β : ℝ)
-    (hsum : PurePointGibbsSummable E β)
-    (hentropy : ContinuousLinearMap.HasSummableRealEigenvalues
-      (entropyOp (purePointGibbsDensityOperator b E β hsum))) :
-    (entropyOpSpectralTraceClass (purePointGibbsDensityOperator b E β hsum) hentropy).trace =
-      ∑' i, Real.negMulLog (purePointGibbsProbability E β i) := by
-  exact entropyOpSpectralTraceClass_trace_eq_tsum_diagonal
-    (purePointGibbsDensityOperator b E β hsum) b
-    (purePointGibbsProbability E β)
-    (purePointGibbsDensityOperator_apply_basis b E β hsum) hentropy
-
 /-- On a finite spectral index, the Boltzmann summability hypothesis is automatic. -/
 theorem purePointGibbsSummable_of_finite [Finite ι] (E : ι → ℝ) (β : ℝ) :
     PurePointGibbsSummable E β := by
   exact Summable.of_finite
-
-/-- The weighted-energy finiteness condition is automatic on a finite spectral index. -/
-theorem purePointGibbsEnergyIntegrable_of_finite [Finite ι]
-    (E : ι → ℝ) (β : ℝ) :
-    PurePointGibbsEnergyIntegrable E β := by
-  exact Summable.of_finite
-
-/-- In a finite spectral presentation, the countable partition function reduces to the ordinary
-finite sum. -/
-theorem purePointPartitionFunction_eq_sum [Fintype ι] (E : ι → ℝ) (β : ℝ) :
-    purePointPartitionFunction E β = ∑ i, purePointBoltzmannWeight E β i := by
-  simp [purePointPartitionFunction]
 
 /-- Finite pure-point Gibbs states are direct specializations of the same dimension-independent
 constructor; no separate finite-state implementation is needed. -/

@@ -1,18 +1,81 @@
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
-import LeanCondensedMatter.QuantumTheory.Entropy.Finite
+import LeanCondensedMatter.QuantumTheory.Entropy.Diagonal
 
 /-!
 # Gibbs-state entropy
 
-Equality-side lemmas for the normalized Gibbs state. Under the bounded-Hamiltonian API, compactness
-of the Gibbs operator forces finite dimension and hence entropy summability.
+Dimension-independent entropy algebra for Gibbs-diagonal density states, together with the bounded
+Gibbs-state eigenvector formula. Finite dimensionality is only needed by callers that discharge
+entropy summability automatically.
 -/
 
 namespace QuantumTheory
 
 open ContinuousLinearMap
 
-variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+variable {ι H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+
+/-- A density state with Gibbs weights `exp (-β Eᵢ) / Z` in a common energy basis satisfies
+`S = β E + log Z` whenever its entropy operator is spectrally summable. -/
+theorem vonNeumannEntropy_gibbs_diagonal
+    (ρ : DensityOperator H) (Hop : Observable H) (b : HilbertBasis ι ℂ H)
+    (E : ι → ℝ) (β Z : ℝ) (hZ : 0 < Z)
+    (hρ : ∀ i, ρ.op (b i) = ((Real.exp (-β * E i) / Z : ℝ) : ℂ) • b i)
+    (hE : ∀ i, Hop.1 (b i) = (E i : ℂ) • b i)
+    (hentropy : HasSummableRealEigenvalues (entropyOp ρ)) :
+    vonNeumannEntropy ρ ≠ ⊤ ∧
+      (vonNeumannEntropy ρ).toReal = β * energyExpValue ρ Hop + Real.log Z := by
+  let w : ι → ℝ := fun i => Real.exp (-β * E i) / Z
+  have hρw : ∀ i, ρ.op (b i) = (w i : ℂ) • b i := by
+    intro i
+    simpa [w] using hρ i
+  have hw_nonneg : ∀ i, 0 ≤ w i := fun i => div_nonneg (Real.exp_pos _).le hZ.le
+  have hw_le_one : ∀ i, w i ≤ 1 :=
+    ρ.diagonal_weight_le_one b w hρw hw_nonneg
+  have hwSum := ρ.hasSum_diagonal_weights b w hρw
+  have hEnergySum := ρ.hasSum_observableExpectation_diagonal Hop b w hρw
+  have henergyTerm :
+      (fun i => w i * diagonalExpectationValue Hop.1 Hop.2 (b i)) =
+        fun i => w i * E i := by
+    funext i
+    congr 1
+    apply Complex.ofReal_injective
+    rw [coe_diagonalExpectationValue_right, hE i, inner_smul_right,
+      inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
+    simp
+  rw [henergyTerm, ← energyExpValue_eq_observableExpectation] at hEnergySum
+  have hEntropySum :=
+    entropyOpSpectralTraceClass_hasSum_diagonal ρ b w hρw hentropy
+  have hlogw (i : ι) : Real.log (w i) = -β * E i - Real.log Z := by
+    change Real.log (Real.exp (-β * E i) / Z) = -β * E i - Real.log Z
+    rw [Real.log_div (Real.exp_pos _).ne' hZ.ne', Real.log_exp]
+  have hterm (i : ι) :
+      Real.negMulLog (w i) = β * (w i * E i) + Real.log Z * w i := by
+    rw [Real.negMulLog, hlogw i]
+    ring
+  have hEntropyFormula :
+      HasSum (fun i => Real.negMulLog (w i))
+        (β * energyExpValue ρ Hop + Real.log Z) := by
+    have hrhs := (hEnergySum.mul_left β).add (hwSum.mul_left (Real.log Z))
+    have hfun :
+        (fun i => Real.negMulLog (w i)) =
+          fun i => β * (w i * E i) + Real.log Z * w i := by
+      funext i
+      exact hterm i
+    rw [hfun]
+    simpa using hrhs
+  have htrace :
+      (entropyOpSpectralTraceClass ρ hentropy).trace =
+        β * energyExpValue ρ Hop + Real.log Z :=
+    hEntropySum.unique hEntropyFormula
+  have htrace_nonneg : 0 ≤ (entropyOpSpectralTraceClass ρ hentropy).trace := by
+    rw [← hEntropySum.tsum_eq]
+    exact tsum_nonneg fun i => Real.negMulLog_nonneg (hw_nonneg i) (hw_le_one i)
+  have hEntropyBridge := vonNeumannEntropy_eq_ofReal_entropyOp_trace ρ hentropy
+  constructor
+  · rw [hEntropyBridge]
+    exact ENNReal.ofReal_ne_top
+  · rw [hEntropyBridge, ENNReal.toReal_ofReal htrace_nonneg, htrace]
 
 /-- The normalized Gibbs state acts diagonally on every energy eigenvector. -/
 theorem gibbsState_apply_eigenvector (Hop : Observable H) (β : ℝ)
@@ -26,14 +89,5 @@ theorem gibbsState_apply_eigenvector (Hop : Observable H) (β : ℝ)
   rw [smul_apply, gibbsOp_apply_eigenvector Hop β hv]
   exact (smul_assoc ((spectralTrace (gibbsOp Hop β))⁻¹ : ℝ)
     (Real.exp (-β * E) : ℂ) v).symm
-
-/-- The entropy operator of the normalized Gibbs state has summable nonzero eigenvalues. -/
-theorem gibbsState_entropyOp_hasSummableRealEigenvalues (Hop : Observable H) (β : ℝ)
-    (hcompact : IsCompactOperator (gibbsOp Hop β))
-    (hsummable : HasSummableRealEigenvalues (gibbsOp Hop β))
-    (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) :
-    HasSummableRealEigenvalues (entropyOp (gibbsState Hop β hcompact hsummable hZ)) := by
-  letI := finiteDimensional_of_gibbsOp_isCompact Hop β hcompact
-  exact (gibbsState Hop β hcompact hsummable hZ).entropyOp_hasSummableRealEigenvalues
 
 end QuantumTheory
