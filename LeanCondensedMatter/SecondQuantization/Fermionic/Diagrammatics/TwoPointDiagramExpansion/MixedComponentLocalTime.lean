@@ -113,7 +113,11 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign
         F B ((twoPointSlotTimeEquiv (n := n)).symm σ) := by
       apply Fintype.prod_congr
       intro B
-      simp [F]
+      change d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B =
+        d.mixedComponentDysonFixedTimeValue ε β g τ τ'
+          ((twoPointSlotTimeEquiv (n := n))
+            ((twoPointSlotTimeEquiv (n := n)).symm σ)) B
+      rw [(twoPointSlotTimeEquiv (n := n)).apply_symm_apply]
     _ = d.1.interactionComponentShuffleIntegrand shuffle
         (fun B => DependentSlotEquiv.localize shuffle.slotEquiv B (F B))
         ((twoPointSlotTimeEquiv (n := n)).symm σ) := by
