@@ -46,39 +46,5 @@ theorem FixedExternalTwoPointWickDiagram.orderedTwoPointPairingValue_eq_weight_m
   rw [d.1.prod_mixedPairValues_eq_external_mul_prod_vacuum τ τ' σ]
   rfl
 
-/-- A restricted vacuum-pair value is defined by pulling back to its unique original mixed-time
-pair. -/
-noncomputable def FixedExternalTwoPointWickDiagram.mixedVacuumRestrictedPairContractionValue
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts) (hVac : d.1.ComponentIsVacuum B)
-    (pr : (d.1.restrictedVacuumPairing B hVac).NormalizedPair) : ℂ :=
-  d.mixedPairContractionValue ε β τ τ' σ
-    ((d.1.mixedVacuumComponentPairEquiv τ τ' σ B hVac).symm pr).1
-
-/-- One vacuum-component contraction product reindexes to its restricted vacuum pairing without an
-endpoint-orientation assumption. -/
-theorem FixedExternalTwoPointWickDiagram.prod_mixedVacuumPairContractionValue_eq_restricted
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts) (hVac : d.1.ComponentIsVacuum B) :
-    (∏ pr : d.1.MixedComponentPair τ τ' σ B,
-      d.mixedPairContractionValue ε β τ τ' σ pr.1) =
-      ∏ pr : (d.1.restrictedVacuumPairing B hVac).NormalizedPair,
-        d.mixedVacuumRestrictedPairContractionValue ε β τ τ' σ B hVac pr := by
-  calc
-    (∏ pr : d.1.MixedComponentPair τ τ' σ B,
-        d.mixedPairContractionValue ε β τ τ' σ pr.1) =
-      ∏ pr : d.1.MixedComponentPair τ τ' σ B,
-        d.mixedVacuumRestrictedPairContractionValue ε β τ τ' σ B hVac
-          (d.1.mixedVacuumComponentPairEquiv τ τ' σ B hVac pr) := by
-        apply Fintype.prod_congr
-        intro pr
-        simp [FixedExternalTwoPointWickDiagram.mixedVacuumRestrictedPairContractionValue]
-    _ = ∏ pr : (d.1.restrictedVacuumPairing B hVac).NormalizedPair,
-        d.mixedVacuumRestrictedPairContractionValue ε β τ τ' σ B hVac pr :=
-      Equiv.prod_comp (d.1.mixedVacuumComponentPairEquiv τ τ' σ B hVac)
-        (d.mixedVacuumRestrictedPairContractionValue ε β τ τ' σ B hVac)
-
 end Fermionic
 end SecondQuantization
