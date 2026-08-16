@@ -15,7 +15,7 @@ This module combines those results.  It defines one coupling-and-pairing value f
 component, packages the external ordering sign with the canonical external component, and proves that
 the global fixed-time amplitude is the external value times the product of all vacuum-component
 values. The external value is related to the standalone external piece downstream in
-`ExternalPieceAmplitude`; restricted formulas here are retained only for vacuum components.
+`ExternalPieceAmplitude`.
 
 The Dyson sign and ordered-simplex integration are intentionally left to the next layer.
 -/
@@ -74,18 +74,6 @@ theorem FixedExternalTwoPointWickDiagram.orderedTwoPointVertexWeight_eq_prod_com
     _ = ∏ B : d.1.componentPartition.parts,
         d.mixedComponentVertexWeight g B := rfl
 
-/-- A vacuum component vertex weight is the coupling product of its restricted vacuum diagram. -/
-theorem FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight_vacuum_eq_restricted
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (g : QuarticVertexLabel Mode → ℂ)
-    (B : d.1.componentPartition.parts) (hVac : d.1.ComponentIsVacuum B) :
-    d.mixedComponentVertexWeight g B =
-      ∏ v : ↥(Common.TwoPointDiagram.interactionPart
-        (B : Finset (Common.TwoPointVertex
-          (Finset.univ : Finset (Fin n))))),
-        g ((d.1.restrictVacuumComponent B hVac).vertexLabel v) := by
-  rfl
-
 section Fermionic
 
 variable [LinearOrder Mode] [Fintype Mode]
@@ -140,22 +128,6 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_external_mul_prod
     d.1.prod_componentParts_eq_external_mul_prod_vacuum]
   unfold FixedExternalTwoPointWickDiagram.mixedExternalFixedTimeValue
   ring
-
-/-- Restricted-diagram expression for one vacuum-component fixed-time value. -/
-theorem FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue_vacuum_eq_restricted
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts) (hVac : d.1.ComponentIsVacuum B) :
-    d.mixedComponentFixedTimeValue ε β g τ τ' σ B =
-      (∏ v : ↥(Common.TwoPointDiagram.interactionPart
-        (B : Finset (Common.TwoPointVertex
-          (Finset.univ : Finset (Fin n))))),
-        g ((d.1.restrictVacuumComponent B hVac).vertexLabel v)) *
-      d.mixedVacuumRestrictedPairingValue ε β τ τ' σ B hVac := by
-  unfold FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
-  rw [d.mixedComponentVertexWeight_vacuum_eq_restricted g B hVac,
-    d.mixedComponentPairingValue_vacuum_eq_restricted ε β τ τ' σ B hVac]
 
 end Fermionic
 
