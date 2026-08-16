@@ -1,16 +1,14 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.BinarySlotShuffle
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DiagramSumIntegral
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ExternalPieceAmplitude
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberVacuumIntegrand
 
 set_option linter.style.header false
 
 /-!
-# Binary ordered-simplex product for the fixed-fiber factors
+# Pointwise product for fixed external-slot fibers
 
-The fixed-fiber pointwise product identity is kept here together with the scalar binary-shuffle
-endpoint that consumes it. The external signed amplitude has the required measurable local
-boundedness, while the quartic contraction integrand is continuous.
+For an externally connected external piece, the signed fixed-time amplitude of the reassembled
+diagram factors into the standalone external-piece amplitude and the fixed-order quartic vacuum
+integrand when the inherited vacuum times are strictly decreasing.
 -/
 
 namespace SecondQuantization
@@ -52,50 +50,6 @@ theorem fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_qu
       (fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand
         ε β g T ext hext vac τ τ' σ hσ)
   rw [hvac]
-
-/-- Summing all ambient binary interleavings of a signed connected two-point integrand and a signed
-fixed-order quartic vacuum integrand gives the product of their ordered-simplex amplitudes. -/
-theorem sum_slotShuffle_externalDyson_mul_quarticIntegrand_eq_mul
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (τ τ' : ℝ) {m N : ℕ} {S : Finset (Fin N)}
-    (ext : FixedExternalTwoPointWickDiagram Mode m i j)
-    (vac : QuarticWickDiagram Mode N S)
-    (order : Common.QuarticVertexOrder S) :
-    (∑ shuffle : Combinatorics.BinaryShuffle.SlotShuffle m S.card,
-      intervalIntegral.orderedSimplexIntegral (m + S.card) β
-        (shuffle.integrand
-          (fun σ => ext.dysonFixedTimeAmplitude ε β g τ τ' σ)
-          (fun σ =>
-            (-1 : ℂ) ^ S.card * vac.couplingWeight g *
-              vac.contractionIntegrand ε β order σ))) =
-      ext.dysonAmplitude ε β g τ τ' *
-        ((-1 : ℂ) ^ S.card * vac.couplingWeight g *
-          vac.orderedSimplexContribution ε β order) := by
-  have hext :
-      intervalIntegral.MeasurableLocallyBounded
-        (fun σ : Fin m → ℝ => ext.dysonFixedTimeAmplitude ε β g τ τ' σ) :=
-    ext.measurableLocallyBounded_dysonFixedTimeAmplitude ε β g τ τ'
-  have hvac :
-      intervalIntegral.MeasurableLocallyBounded
-        (fun σ : Fin S.card → ℝ =>
-          (-1 : ℂ) ^ S.card * vac.couplingWeight g *
-            vac.contractionIntegrand ε β order σ) :=
-    (intervalIntegral.measurableLocallyBounded_const
-      ((-1 : ℂ) ^ S.card * vac.couplingWeight g)).mul
-      (intervalIntegral.Continuous.measurableLocallyBounded
-        (continuous_contractionIntegrand ε β vac order))
-  simpa [FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude,
-    FixedExternalTwoPointWickDiagram.dysonAmplitude,
-    FixedExternalTwoPointWickDiagram.orderedSimplexContribution,
-    QuarticWickDiagram.orderedSimplexContribution,
-    intervalIntegral.orderedSimplexIntegral_smul] using
-    (Combinatorics.BinaryShuffle.sum_slotShuffle_orderedSimplexIntegral_integrand_eq_mul_of_measurableLocallyBounded
-      m S.card β
-      (fun σ => ext.dysonFixedTimeAmplitude ε β g τ τ' σ)
-      (fun σ =>
-        (-1 : ℂ) ^ S.card * vac.couplingWeight g *
-          vac.contractionIntegrand ε β order σ)
-      hext hvac)
 
 end Fermionic
 end SecondQuantization
