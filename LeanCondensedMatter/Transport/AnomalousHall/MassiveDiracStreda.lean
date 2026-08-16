@@ -16,8 +16,9 @@ representations without introducing an independent response formalism.
 `Matrix.toEuclideanCLM` identifies a complex `2 × 2` matrix with a bounded operator on the canonical
 two-level Euclidean Hilbert space.  The massive-Dirac Hamiltonian is proved Hermitian before being
 bundled as a `BoundedFreeSystem`; the current matrices are transported by the same star-algebra
-equivalence.  The existing pointwise Bastin/Středa trace identity can then be instantiated directly
-for the physical massive-Dirac Hamiltonian and current vertices.
+equivalence.  The ordinary matrix trace is also identified with the finite-dimensional operator
+trace used by the generic transport layer.  The existing pointwise Bastin/Středa trace identity can
+then be instantiated directly for the physical massive-Dirac Hamiltonian and current vertices.
 
 This file does not yet choose an eigenvector gauge, evaluate the resolvent spectral sum, remove the
 finite broadening, or identify the generic transport normalization with the continuum Berry result.
@@ -35,6 +36,18 @@ abbrev DiracHilbert := EuclideanSpace ℂ (Fin 2)
 /-- A `2 × 2` complex matrix as a bounded operator on the canonical two-level Hilbert space. -/
 noncomputable def matrixOperator (M : Matrix2) : DiracHilbert →L[ℂ] DiracHilbert :=
   (Matrix.toEuclideanCLM : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert)) M
+
+/-- The ordinary matrix trace agrees with the finite-dimensional operator trace after transporting
+through the canonical Euclidean-space matrix/operator equivalence. -/
+theorem finiteDimensionalOperatorTrace_matrixOperator (M : Matrix2) :
+    finiteDimensionalOperatorTrace (matrixOperator M) = Matrix.trace M := by
+  rw [finiteDimensionalOperatorTrace_apply]
+  have hcoe :
+      ((matrixOperator M : DiracHilbert →L[ℂ] DiracHilbert) :
+        DiracHilbert →ₗ[ℂ] DiracHilbert) = Matrix.toEuclideanLin M := by
+    simpa [matrixOperator] using Matrix.coe_toEuclideanCLM_eq_toEuclideanLin M
+  rw [hcoe, Matrix.toEuclideanLin_eq_toLin_orthonormal]
+  exact Matrix.trace_toLin_eq M (EuclideanSpace.basisFun (Fin 2) ℂ).toBasis
 
 /-- The clean massive-Dirac Hamiltonian as a bounded operator. -/
 noncomputable def hamiltonianOperator (v m px py : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
