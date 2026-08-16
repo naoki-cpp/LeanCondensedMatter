@@ -54,8 +54,7 @@ theorem hamiltonian_isHermitian (v m px py : ℝ) :
   apply Matrix.IsHermitian.ext
   intro i j
   fin_cases i <;> fin_cases j <;>
-    simp [hamiltonian, sigmaX, sigmaY, sigmaZ] <;>
-    ring
+    simp [hamiltonian, sigmaX, sigmaY, sigmaZ]
 
 /-- The `x` charge-current matrix is Hermitian for real charge magnitude and velocity. -/
 theorem currentX_isHermitian (e v : ℝ) :
@@ -71,8 +70,7 @@ theorem currentY_isHermitian (e v : ℝ) :
   apply Matrix.IsHermitian.ext
   intro i j
   fin_cases i <;> fin_cases j <;>
-    simp [currentY, sigmaY] <;>
-    ring
+    simp [currentY, sigmaY]
 
 /-- Transporting the Hermitian Hamiltonian through `Matrix.toEuclideanCLM` gives a self-adjoint
 bounded operator, as required by the generic free-system API. -/
