@@ -222,17 +222,6 @@ private theorem QuarticDiagram.componentOrientedCrossingCount_add_swap_mod_two_e
     (d.componentOrientedCrossingCount orders shuffle B C +
       d.componentOrientedCrossingCount orders shuffle C B) % 2 = 0 := by
   classical
-  have hswap : d.componentOrientedCrossingCount orders shuffle C B =
-      ∑ x : d.LocalOrderedPair orders B × d.LocalOrderedPair orders C,
-        if Combinatorics.Crosses
-            (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
-            (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
-        then 1 else 0 := by
-    rw [QuarticDiagram.componentOrientedCrossingCount,
-      Combinatorics.Pairing.componentCrossingCount,
-      ← Equiv.sum_comp (Equiv.prodComm
-        (d.LocalOrderedPair orders B) (d.LocalOrderedPair orders C))]
-    rfl
   have hor : d.componentOrientedCrossingCount orders shuffle B C +
       d.componentOrientedCrossingCount orders shuffle C B =
       ∑ x : d.LocalOrderedPair orders B × d.LocalOrderedPair orders C,
@@ -243,18 +232,12 @@ private theorem QuarticDiagram.componentOrientedCrossingCount_add_swap_mod_two_e
             (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
             (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
         then 1 else 0 := by
-    rw [hswap, QuarticDiagram.componentOrientedCrossingCount,
-      Combinatorics.Pairing.componentCrossingCount, ← Finset.sum_add_distrib]
-    refine Finset.sum_congr rfl fun x _ => ?_
-    by_cases hbc : Combinatorics.Crosses
-        (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1
-        (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
-    · have hcb : ¬ Combinatorics.Crosses
-          (d.componentPairEquiv orders shuffle ⟨C, x.2⟩).1
-          (d.componentPairEquiv orders shuffle ⟨B, x.1⟩).1 :=
-        fun h => lt_asymm hbc.1 h.1
-      simp [hbc, hcb]
-    · simp [hbc]
+    symm
+    simpa only [QuarticDiagram.componentOrientedCrossingCount,
+      Combinatorics.Pairing.componentGeometricCrossingCount] using
+      (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).
+        componentGeometricCrossingCount_eq_oriented_add
+          (d.componentPairEquiv orders shuffle) B C
   have hinv :
       (∑ x : d.LocalOrderedPair orders B × d.LocalOrderedPair orders C,
         if Combinatorics.Crosses
