@@ -23,13 +23,6 @@ namespace Fermionic
 
 variable {Mode : Type*}
 
-private def univSubtypeEquiv (α : Type*) [Fintype α] :
-    α ≃ ↥(Finset.univ : Finset α) where
-  toFun x := ⟨x, Finset.mem_univ x⟩
-  invFun x := x.1
-  left_inv _ := rfl
-  right_inv _ := Subtype.ext rfl
-
 /-- Product of quartic couplings on the interaction vertices belonging to one full component. -/
 noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -42,35 +35,6 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight
       ⟨v.1, Common.TwoPointDiagram.interactionPart_subset
         (B : Finset (Common.TwoPointVertex
           (Finset.univ : Finset (Fin n)))) v.2⟩)
-
-/-- The slot-indexed quartic coupling product is the product of the component-local vertex
-weights. -/
-theorem FixedExternalTwoPointWickDiagram.orderedTwoPointVertexWeight_eq_prod_components
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (g : QuarticVertexLabel Mode → ℂ) :
-    orderedTwoPointVertexWeight g d.vertexLabelSequence =
-      ∏ B : d.1.componentPartition.parts,
-        d.mixedComponentVertexWeight g B := by
-  classical
-  calc
-    orderedTwoPointVertexWeight g d.vertexLabelSequence =
-        ∏ v : ↥(Finset.univ : Finset (Fin n)), g (d.1.vertexLabel v) := by
-      simpa [orderedTwoPointVertexWeight,
-        FixedExternalTwoPointWickDiagram.vertexLabelSequence,
-        univSubtypeEquiv] using
-        (Equiv.prod_comp (univSubtypeEquiv (Fin n))
-          (fun v : ↥(Finset.univ : Finset (Fin n)) => g (d.1.vertexLabel v)))
-    _ = ∏ B : d.1.componentPartition.parts,
-        ∏ v : ↥(Common.TwoPointDiagram.interactionPart
-          (B : Finset (Common.TwoPointVertex
-            (Finset.univ : Finset (Fin n))))),
-          g (d.1.vertexLabel
-            ⟨v.1, Common.TwoPointDiagram.interactionPart_subset
-              (B : Finset (Common.TwoPointVertex
-                (Finset.univ : Finset (Fin n)))) v.2⟩) :=
-      d.1.prod_vertexLabel_eq_prod_componentInteractionParts g
-    _ = ∏ B : d.1.componentPartition.parts,
-        d.mixedComponentVertexWeight g B := rfl
 
 section Fermionic
 
@@ -107,6 +71,31 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
       orderedTwoPointVertexWeight g d.vertexLabelSequence *
         orderedTwoPointPairingValue ε β i j τ τ' σ d.vertexLabelSequence
           (d.1.pairingInMixedOrder τ τ' σ) = _
+  have hvertex :
+      orderedTwoPointVertexWeight g d.vertexLabelSequence =
+        ∏ B : d.1.componentPartition.parts,
+          d.mixedComponentVertexWeight g B := by
+    classical
+    calc
+      orderedTwoPointVertexWeight g d.vertexLabelSequence =
+          ∏ v : ↥(Finset.univ : Finset (Fin n)), g (d.1.vertexLabel v) := by
+        let e : Fin n ≃ ↥(Finset.univ : Finset (Fin n)) :=
+          (Equiv.subtypeUnivEquiv (fun x => Finset.mem_univ x)).symm
+        simpa [orderedTwoPointVertexWeight,
+          FixedExternalTwoPointWickDiagram.vertexLabelSequence, e] using
+          (Equiv.prod_comp e
+            (fun v : ↥(Finset.univ : Finset (Fin n)) => g (d.1.vertexLabel v)))
+      _ = ∏ B : d.1.componentPartition.parts,
+          ∏ v : ↥(Common.TwoPointDiagram.interactionPart
+            (B : Finset (Common.TwoPointVertex
+              (Finset.univ : Finset (Fin n))))),
+            g (d.1.vertexLabel
+              ⟨v.1, Common.TwoPointDiagram.interactionPart_subset
+                (B : Finset (Common.TwoPointVertex
+                  (Finset.univ : Finset (Fin n)))) v.2⟩) :=
+        d.1.prod_vertexLabel_eq_prod_componentInteractionParts g
+      _ = ∏ B : d.1.componentPartition.parts,
+          d.mixedComponentVertexWeight g B := rfl
   have hpairing :
       orderedTwoPointPairingValue ε β i j τ τ' σ d.vertexLabelSequence
           (d.1.pairingInMixedOrder τ τ' σ) =
@@ -122,7 +111,7 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
         ∏ pr : d.1.MixedComponentPair τ τ' σ B,
           d.mixedPairContractionValue ε β τ τ' σ pr.1)]
     rw [Finset.prod_mul_distrib]
-  rw [d.orderedTwoPointVertexWeight_eq_prod_components g, hpairing]
+  rw [hvertex, hpairing]
   unfold FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
   rw [Finset.prod_mul_distrib]
   ring
