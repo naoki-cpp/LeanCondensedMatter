@@ -1,5 +1,4 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ConnectedSeries
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ComponentAmplitudeFactorization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.ExternalPiece
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonDiagramExpansion.Reindexing
@@ -169,7 +168,8 @@ theorem sum_eq_sum_powerset_fixedExternalFiber {M : Type*} [AddCommMonoid M]
               ext.1.IsExternallyConnected} ×
             QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T),
           F ((fixedExternalFiberEquiv T).symm p).1 := by
-  rw [FixedExternalTwoPointWickDiagram.sum_eq_sum_fiberwise_externalInteractionPart F]
+  rw [(Finset.sum_fiberwise_of_maps_to
+    (fun _ _ => Finset.mem_powerset.2 (Finset.subset_univ _)) F).symm]
   refine Finset.sum_congr rfl fun T _ => ?_
   rw [Finset.sum_subtype
     (p := fun d : FixedExternalTwoPointWickDiagram Mode n i j => d.1.externalInteractionPart = T)
