@@ -48,19 +48,5 @@ noncomputable def vacuumNormalizedTwoPointDysonSeries (ε : Mode → ℝ) (β : 
     (PowerSeries.normalizeByConstantCoeff
       (dysonPartitionSeries ε β (quarticInteraction g)))⁻¹
 
-/-- **The defining property of the vacuum normalization**: multiplying back by the normalized
-partition series recovers the two-point series. -/
-theorem vacuumNormalizedTwoPointDysonSeries_mul_normalizeByConstantCoeff
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) :
-    vacuumNormalizedTwoPointDysonSeries ε β g i j τ τ' *
-        PowerSeries.normalizeByConstantCoeff
-          (dysonPartitionSeries ε β (quarticInteraction g)) =
-      twoPointDysonSeries ε β g i j τ τ' := by
-  rw [vacuumNormalizedTwoPointDysonSeries, mul_assoc,
-    PowerSeries.inv_mul_cancel _ (by
-      rw [constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries]
-      exact one_ne_zero),
-    mul_one]
-
 end Fermionic
 end SecondQuantization

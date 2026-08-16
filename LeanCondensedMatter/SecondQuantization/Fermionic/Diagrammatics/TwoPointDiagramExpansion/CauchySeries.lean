@@ -37,8 +37,12 @@ theorem vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
     have hcoeff := congrArg PowerSeries.constantCoeff hz
     simpa [Z, constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries] using hcoeff
   apply mul_right_cancel₀ hZ
-  rw [vacuumNormalizedTwoPointDysonSeries_mul_normalizeByConstantCoeff]
-  dsimp [Z]
+  dsimp [Z] at hZ ⊢
+  rw [vacuumNormalizedTwoPointDysonSeries, mul_assoc,
+    PowerSeries.inv_mul_cancel _ (by
+      rw [constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries]
+      exact one_ne_zero),
+    mul_one]
   ext n
   rw [coeff_twoPointDysonSeries, PowerSeries.coeff_mul]
   rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
