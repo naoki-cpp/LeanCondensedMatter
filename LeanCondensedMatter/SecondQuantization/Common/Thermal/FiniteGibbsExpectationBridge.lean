@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsDensityOperator
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
-import LeanCondensedMatter.QuantumTheory.DensityOperator.Finite
+import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
 
 set_option linter.style.header false
 
