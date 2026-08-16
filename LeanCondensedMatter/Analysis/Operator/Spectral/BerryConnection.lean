@@ -154,8 +154,16 @@ theorem bornFock_inner {m n : ι} (hmn : m ≠ n)
     exact_mod_cast sub_ne_zero.mpr henergy.symm
   apply (eq_div_iff hgap).2
   unfold hamiltonianDerivativeMatrixElement
-  push_cast at h ⊢
-  linear_combination h
+  have hF :
+      inner ℂ (data.eigenbasis m) (data.hamiltonianDerivative (data.eigenbasis n)) =
+        ((data.energy n : ℝ) : ℂ) *
+            inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative n) -
+          ((data.energy m : ℝ) : ℂ) *
+            inner ℂ (data.eigenbasis m) (data.eigenvectorDerivative n) :=
+    (eq_sub_iff_add_eq).2 h
+  rw [hF]
+  push_cast
+  ring
 
 /-- Born--Fock formula in Berry-connection form. -/
 theorem bornFock_berryConnection {m n : ι} (hmn : m ≠ n)
