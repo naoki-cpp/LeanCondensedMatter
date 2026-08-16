@@ -96,7 +96,7 @@ theorem TwoPointDiagram.pairingInMixedOrder_weight_eq_prod_components
   simpa only [Combinatorics.Pairing.weight, TwoPointDiagram.mixedComponentWeight] using
     BlochDeDominicis.zetaInt_pow_eq_prod_of_sum_mod_two_eq s
       (d.pairingInMixedOrder τ τ' σ).crossingCount
-      (fun B : d.componentPartition.parts => d.mixedComponentCrossingCount s τ τ' σ B) hparity
+      (fun B : d.componentPartition.parts => d.mixedComponentCrossingCount τ τ' σ B) hparity
 
 /-- Component weights split into the canonical external component and the vacuum components. -/
 theorem TwoPointDiagram.prod_mixedComponentWeight_eq_external_mul_prod_vacuum
