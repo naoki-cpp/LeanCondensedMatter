@@ -26,7 +26,7 @@ variable {Label : Type*} {N : ℕ}
 For an actual part of `d.componentPartition`, this is equivalent to vertex membership in `B`. -/
 def QuarticDiagram.legInBlock {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (B : Finset (Fin N)) (leg : Fin (2 * (2 * S.card))) : Prop :=
-  d.pairing.legInComponent vertexOfLeg d.componentBlock B leg
+  d.componentBlock (vertexOfLeg leg) = B
 
 theorem QuarticDiagram.componentBlock_eq_iff_mem {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
@@ -48,7 +48,8 @@ theorem QuarticDiagram.legInBlock_partner_iff {S : Finset (Fin N)}
     (d : QuarticDiagram Label N S) {B : Finset (Fin N)}
     (leg : Fin (2 * (2 * S.card))) :
     d.legInBlock B leg ↔ d.legInBlock B (d.pairing.partner leg) := by
-  unfold QuarticDiagram.legInBlock
+  change d.pairing.legInComponent vertexOfLeg d.componentBlock B leg ↔
+    d.pairing.legInComponent vertexOfLeg d.componentBlock B (d.pairing.partner leg)
   exact d.pairing.legInComponent_partner_iff vertexOfLeg d.componentBlock
     d.componentBlock_eq_of_reachable B leg
 
@@ -106,7 +107,7 @@ noncomputable def QuarticDiagram.blockLegEquiv {S : Finset (Fin N)}
           (vertexOfLeg leg') : {v : ↥S // (v : Fin N) ∈ B}) : ↥S)
         (localLegOfLeg leg'),
       by
-        unfold QuarticDiagram.legInBlock Pairing.legInComponent
+        unfold QuarticDiagram.legInBlock
         rw [vertexOfLeg_legOfVertexLocal]
         apply (d.componentBlock_eq_iff_mem hB _).mpr
         exact (((QuarticDiagram.subtypeMemBlockEquiv B
