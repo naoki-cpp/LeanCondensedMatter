@@ -44,8 +44,8 @@ theorem currentX_eq_charge_smul_velocityX (e v : ℝ) :
 theorem currentY_eq_charge_smul_velocityY (e v : ℝ) :
     currentY e v = (((-e : ℝ) : ℂ)) • velocityY v := by
   ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [currentY, velocityY, sigmaY]
+  fin_cases i <;> fin_cases j <;> simp [currentY, velocityY, sigmaY]
+  all_goals ring
 
 /-- Gauge-independent interband current block in the bounded-operator representation. -/
 noncomputable def interbandCurrentTrace
