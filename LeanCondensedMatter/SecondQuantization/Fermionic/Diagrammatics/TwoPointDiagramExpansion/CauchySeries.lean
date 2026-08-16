@@ -41,7 +41,7 @@ theorem vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
   dsimp [Z]
   ext n
   rw [coeff_twoPointDysonSeries, PowerSeries.coeff_mul]
-  rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ]
+  rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
   simp only [coeff_connectedTwoPointDysonSeries,
     coeff_normalizeByConstantCoeff_dysonPartitionSeries_eq_normalizedDysonPartitionCoeff]
   exact twoPointDysonCoefficient_eq_sum_connected_mul_normalizedDysonPartitionCoeff
