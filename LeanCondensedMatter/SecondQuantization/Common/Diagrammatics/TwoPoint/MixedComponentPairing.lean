@@ -33,7 +33,8 @@ theorem TwoPointDiagram.mixedPositionComponent_partner
     d.componentBlock
       (twoPointVertexOfLeg (mixedTimeAmbientPositionEquiv τ τ' σ p))
   rw [d.mixedTimeAmbientPositionEquiv_partner]
-  exact d.componentBlock_vertexOfLeg_partner _
+  exact d.pairing.component_vertex_partner_eq twoPointVertexOfLeg d.componentBlock
+    d.componentBlock_eq_of_reachable _
 
 /-- The mixed-order partner restricted to one full component-position fiber. -/
 noncomputable def TwoPointDiagram.mixedRestrictedPartner
