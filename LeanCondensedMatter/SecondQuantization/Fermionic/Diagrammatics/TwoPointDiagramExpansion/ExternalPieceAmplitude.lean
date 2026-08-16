@@ -40,6 +40,7 @@ private theorem FixedExternalTwoPointWickDiagram.orderedTwoPointLegField_ordered
       simp only [orderedTwoPointLegMap_inr, orderedTwoPointLegField,
         orderedTwoPointLegTime, orderedTwoPointLegFieldLabel]
       unfold FixedExternalTwoPointWickDiagram.vertexLabelSequence
+      unfold FixedExternalTwoPointWickDiagram.externalPiece
       rw [d.1.externalPiece_vertexLabel]
       rfl
 
