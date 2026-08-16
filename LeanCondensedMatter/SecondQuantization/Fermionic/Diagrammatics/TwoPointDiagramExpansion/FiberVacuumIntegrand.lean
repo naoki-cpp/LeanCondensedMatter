@@ -57,49 +57,6 @@ private theorem fixedExternalOfSlotSplit_prod_vacuumDysonSign_mul_vertexWeight
         (Finset.subset_univ T) ext.1 vac hext g)
   rw [hsign, hvertex]
 
-omit [LinearOrder Mode] [Fintype Mode] in
-private theorem fixedExternalOfSlotSplit_orderedTwoPointLegField_vacuumOrderedLeg
-    (T : Finset (Fin n))
-    (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
-    (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (p : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))) :
-    let q := Common.orderedQuarticLegEquiv
-      ((Finset.univ : Finset (Fin n)) \ T).card p
-    orderedTwoPointLegField i j τ τ'
-        (fixedExternalOfSlotSplit T ext vac).vertexLabelSequence σ
-        (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p) =
-      ⟨(σ ∘ slotSplitVacuumSlot T) q.1,
-        quarticLocalLegExternalFieldLabel
-          (vac.vertexLabel (slotSplitVacuumOrder T q.1)) q.2⟩ := by
-  let q := Common.orderedQuarticLegEquiv
-    ((Finset.univ : Finset (Fin n)) \ T).card p
-  have hp :
-      (Common.orderedQuarticLegEquiv
-        ((Finset.univ : Finset (Fin n)) \ T).card).symm q = p :=
-    (Common.orderedQuarticLegEquiv
-      ((Finset.univ : Finset (Fin n)) \ T).card).symm_apply_apply p
-  rw [← hp]
-  rcases q with ⟨v, l⟩
-  simp only [orderedQuarticLegMapToTwoPointLeg,
-    orderedQuarticLegToTwoPointLeg_orderedQuarticLegEquiv_symm,
-    orderedTwoPointLegMap_inr, orderedTwoPointLegField,
-    orderedTwoPointLegTime, orderedTwoPointLegFieldLabel, Function.comp_apply]
-  have hlabel :
-      (fixedExternalOfSlotSplit T ext vac).vertexLabelSequence (slotSplitVacuumSlot T v) =
-        vac.vertexLabel (slotSplitVacuumOrder T v) := by
-    let w := slotSplitVacuumOrder T v
-    have hwNot : (w.1 : Fin n) ∉ T := (Finset.mem_sdiff.mp w.2).2
-    change (Common.TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext.1 vac).vertexLabel
-        ⟨slotSplitVacuumSlot T v, Finset.mem_univ _⟩ = vac.vertexLabel w
-    rw [Common.TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem
-      (Finset.subset_univ T) ext.1 vac _ (by simpa [slotSplitVacuumSlot, w] using hwNot)]
-    apply congrArg vac.vertexLabel
-    apply Subtype.ext
-    rfl
-  rw [hlabel]
-  simp
-
 omit [Fintype Mode] in
 private theorem fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg
     (ε : Mode → ℝ)
@@ -121,10 +78,42 @@ private theorem fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg
         (mixedTimeOrderedAtomicLegEquiv τ τ' σ
           (mixedTimeOrderedAtomicLegPosition τ τ' σ
             (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p)))) = _
-  rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition,
-    fixedExternalOfSlotSplit_orderedTwoPointLegField_vacuumOrderedLeg T ext vac τ τ' σ p]
+  rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
   let q := Common.orderedQuarticLegEquiv
     ((Finset.univ : Finset (Fin n)) \ T).card p
+  have hfield :
+      orderedTwoPointLegField i j τ τ'
+          (fixedExternalOfSlotSplit T ext vac).vertexLabelSequence σ
+          (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p) =
+        ⟨(σ ∘ slotSplitVacuumSlot T) q.1,
+          quarticLocalLegExternalFieldLabel
+            (vac.vertexLabel (slotSplitVacuumOrder T q.1)) q.2⟩ := by
+    have hp :
+        (Common.orderedQuarticLegEquiv
+          ((Finset.univ : Finset (Fin n)) \ T).card).symm q = p :=
+      (Common.orderedQuarticLegEquiv
+        ((Finset.univ : Finset (Fin n)) \ T).card).symm_apply_apply p
+    rw [← hp]
+    rcases q with ⟨v, l⟩
+    simp only [orderedQuarticLegMapToTwoPointLeg,
+      orderedQuarticLegToTwoPointLeg_orderedQuarticLegEquiv_symm,
+      orderedTwoPointLegMap_inr, orderedTwoPointLegField,
+      orderedTwoPointLegTime, orderedTwoPointLegFieldLabel, Function.comp_apply]
+    have hlabel :
+        (fixedExternalOfSlotSplit T ext vac).vertexLabelSequence (slotSplitVacuumSlot T v) =
+          vac.vertexLabel (slotSplitVacuumOrder T v) := by
+      let w := slotSplitVacuumOrder T v
+      have hwNot : (w.1 : Fin n) ∉ T := (Finset.mem_sdiff.mp w.2).2
+      change (Common.TwoPointDiagram.ofSlotSplit (Finset.subset_univ T) ext.1 vac).vertexLabel
+          ⟨slotSplitVacuumSlot T v, Finset.mem_univ _⟩ = vac.vertexLabel w
+      rw [Common.TwoPointDiagram.ofSlotSplit_vertexLabel_of_not_mem
+        (Finset.subset_univ T) ext.1 vac _ (by simpa [slotSplitVacuumSlot, w] using hwNot)]
+      apply congrArg vac.vertexLabel
+      apply Subtype.ext
+      rfl
+    rw [hlabel]
+    simp
+  rw [hfield]
   change timedFieldOperator ε
       ⟨(σ ∘ slotSplitVacuumSlot T) q.1,
         quarticLocalLegExternalFieldLabel
