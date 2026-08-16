@@ -97,7 +97,10 @@ component. -/
 noncomputable def TwoPointDiagram.mixedComponentPositionEquiv {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B : d.componentPartition.parts) :
-    d.MixedComponentPosition τ τ' σ B ≃ d.ComponentLeg B :=
+    d.MixedComponentPosition τ τ' σ B ≃
+      {leg : Fin (2 * (2 * (Finset.univ : Finset (Fin n)).card + 1)) //
+        d.legInComponent (B : Finset (TwoPointVertex
+          (Finset.univ : Finset (Fin n)))) leg} :=
   (mixedTimeAmbientPositionEquiv τ τ' σ).subtypeEquiv fun p =>
     d.mixedPositionComponent_eq_iff_legInComponent τ τ' σ B p
 
