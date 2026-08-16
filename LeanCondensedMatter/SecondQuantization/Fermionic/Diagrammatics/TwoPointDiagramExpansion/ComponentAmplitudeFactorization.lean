@@ -18,7 +18,8 @@ Nothing new is proved here. The three inputs are already available:
   integral, by strict-order relabel covariance;
 * the sum over shuffles of the localized integrands is the product over components of their
   ordered-simplex integrals, by the finite-family shuffle theorem;
-* the coordinate count `n` and its `Finset.card` presentation differ only by `Fin.cast`.
+* the coordinate count `n` and its `Finset.card` presentation differ only by the canonical slot
+  equivalence.
 
 In particular no per-diagram stabilizer or orbit cardinality enters: the shuffle type is summed over
 directly, and each of its elements names a diagram through `relabelForComponentShuffle`.
@@ -60,7 +61,7 @@ theorem FixedExternalTwoPointWickDiagram.sum_componentShuffleDysonAmplitude_eq_p
           intervalIntegral.orderedSimplexIntegral (Finset.univ : Finset (Fin n)).card β
             (fun σ =>
               (d.relabelForComponentShuffle shuffle).dysonFixedTimeAmplitude ε β g τ τ'
-                (ambientToTwoPointSlotTimePermutation σ)) :=
+                ((twoPointSlotTimeEquiv (n := n)) σ)) :=
       intervalIntegral.orderedSimplexIntegral_cast hcard β _
     rw [(d.relabelForComponentShuffle
         shuffle).dysonAmplitude_eq_orderedSimplexIntegral_dysonFixedTimeAmplitude ε β g τ τ',

@@ -30,12 +30,12 @@ private theorem mixedComponentPairingValue_local_canonical
     DependentSlotEquiv.Local
       d.1.canonicalComponentInteractionShuffle.slotEquiv B
       (fun σ => d.mixedComponentPairingValue ε β τ τ'
-        (ambientToTwoPointSlotTimePermutation σ) B) := by
+        ((twoPointSlotTimeEquiv (n := n)) σ) B) := by
   intro σ υ hσυ
   apply d.mixedComponentPairingValue_eq_of_componentTimeEq
     ε β τ τ'
-    (ambientToTwoPointSlotTimePermutation σ)
-    (ambientToTwoPointSlotTimePermutation υ) B
+    ((twoPointSlotTimeEquiv (n := n)) σ)
+    ((twoPointSlotTimeEquiv (n := n)) υ) B
   have hRestricted :
       d.1.interactionComponentTimeAssignment
           d.1.canonicalComponentInteractionShuffle σ B =
@@ -45,12 +45,22 @@ private theorem mixedComponentPairingValue_local_canonical
   have hVertices :
       ∀ v : ↥(Common.TwoPointDiagram.interactionPart
         (B : Finset (Common.TwoPointVertex (Finset.univ : Finset (Fin n))))),
-        ambientToTwoPointSlotTimePermutation σ v.1 =
-          ambientToTwoPointSlotTimePermutation υ v.1 := by
+        (twoPointSlotTimeEquiv (n := n)) σ v.1 =
+          (twoPointSlotTimeEquiv (n := n)) υ v.1 := by
     apply (d.1.canonicalComponentTimeAssignment_univ_eq_iff
-      (ambientToTwoPointSlotTimePermutation σ)
-      (ambientToTwoPointSlotTimePermutation υ) B).mp
-    simpa [ambientToTwoPointSlotTimePermutation] using hRestricted
+      ((twoPointSlotTimeEquiv (n := n)) σ)
+      ((twoPointSlotTimeEquiv (n := n)) υ) B).mp
+    change d.1.interactionComponentTimeAssignment
+        d.1.canonicalComponentInteractionShuffle
+        ((twoPointSlotTimeEquiv (n := n)).symm
+          ((twoPointSlotTimeEquiv (n := n)) σ)) B =
+      d.1.interactionComponentTimeAssignment
+        d.1.canonicalComponentInteractionShuffle
+        ((twoPointSlotTimeEquiv (n := n)).symm
+          ((twoPointSlotTimeEquiv (n := n)) υ)) B
+    rw [(twoPointSlotTimeEquiv (n := n)).symm_apply_apply σ,
+      (twoPointSlotTimeEquiv (n := n)).symm_apply_apply υ]
+    exact hRestricted
   intro v hv
   exact hVertices ⟨v, hv⟩
 
@@ -62,7 +72,7 @@ private theorem mixedComponentDysonFixedTimeValue_local_canonical
     DependentSlotEquiv.Local
       d.1.canonicalComponentInteractionShuffle.slotEquiv B
       (fun σ => d.mixedComponentDysonFixedTimeValue ε β g τ τ'
-        (ambientToTwoPointSlotTimePermutation σ) B) := by
+        ((twoPointSlotTimeEquiv (n := n)) σ) B) := by
   exact d.mixedComponentDysonFixedTimeValue_local_of_pairingValue_local
     ε β g τ τ' d.1.canonicalComponentInteractionShuffle B
     (mixedComponentPairingValue_local_canonical d ε β τ τ' B)
@@ -79,7 +89,7 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_canonicalCom
           d.1.canonicalComponentInteractionShuffle
           (d.mixedComponentDysonLocalIntegrand ε β g τ τ'
             d.1.canonicalComponentInteractionShuffle)
-          (twoPointSlotToAmbientTimePermutation σ) := by
+          ((twoPointSlotTimeEquiv (n := n)).symm σ) := by
   apply d.dysonFixedTimeAmplitude_eq_externalSign_mul_componentShuffleIntegrand
     ε β g τ τ' d.1.canonicalComponentInteractionShuffle
   intro B

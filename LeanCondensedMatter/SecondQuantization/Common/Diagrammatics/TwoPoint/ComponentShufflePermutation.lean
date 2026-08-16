@@ -53,48 +53,23 @@ theorem TwoPointDiagram.ComponentInteractionShuffle.interactionComponentShuffleI
       (d.canonicalComponentInteractionShuffle.slotEquiv ⟨B, i⟩))
   rw [Combinatorics.FamilySlotShuffleTo.relativeAmbientPermutation_slotEquiv]
 
-/-- Convert an ambient time assignment indexed by `univ.card` to the explicit interaction-slot type
-`Fin n`. -/
-def ambientToTwoPointSlotTimePermutation {n : ℕ}
-    (σ : Fin (Finset.univ : Finset (Fin n)).card → ℝ) : Fin n → ℝ :=
-  fun i => σ (Fin.cast (by simp) i)
+/-- Canonical identification of explicit two-point interaction slots with the ambient `univ.card`
+slot coordinates. -/
+noncomputable def twoPointSlotEquiv {n : ℕ} :
+    Fin n ≃ Fin (Finset.univ : Finset (Fin n)).card :=
+  finCongr (by simp)
 
-/-- Convert an explicit `Fin n` time assignment back to the canonically equal ambient
-`Fin univ.card` slot type. -/
-def twoPointSlotToAmbientTimePermutation {n : ℕ}
-    (σ : Fin n → ℝ) : Fin (Finset.univ : Finset (Fin n)).card → ℝ :=
-  fun i => σ (Fin.cast (by simp) i)
-
-@[simp]
-theorem ambientToTwoPointSlotTimePermutation_twoPointSlotToAmbientTimePermutation
-    {n : ℕ} (σ : Fin n → ℝ) :
-    ambientToTwoPointSlotTimePermutation (twoPointSlotToAmbientTimePermutation σ) = σ := by
-  funext i
-  simp [ambientToTwoPointSlotTimePermutation, twoPointSlotToAmbientTimePermutation]
-
-@[simp]
-theorem twoPointSlotToAmbientTimePermutation_ambientToTwoPointSlotTimePermutation
-    {n : ℕ} (σ : Fin (Finset.univ : Finset (Fin n)).card → ℝ) :
-    twoPointSlotToAmbientTimePermutation (ambientToTwoPointSlotTimePermutation σ) = σ := by
-  funext i
-  simp [ambientToTwoPointSlotTimePermutation, twoPointSlotToAmbientTimePermutation]
-
-/-- The canonical ambient-to-explicit time-coordinate conversion is continuous. -/
-theorem continuous_ambientToTwoPointSlotTimePermutation {n : ℕ} :
-    Continuous (fun σ : Fin (Finset.univ : Finset (Fin n)).card → ℝ =>
-      ambientToTwoPointSlotTimePermutation σ) := by
-  exact continuous_pi fun i => continuous_apply (Fin.cast (by simp) i)
-
-/-- Injectivity is preserved when the ambient `Fin univ.card` time assignment is viewed on the
-explicit standard slot type `Fin n`. -/
-theorem ambientToTwoPointSlotTimePermutation_injective {n : ℕ}
-    {σ : Fin (Finset.univ : Finset (Fin n)).card → ℝ}
-    (hσ : Function.Injective σ) :
-    Function.Injective (ambientToTwoPointSlotTimePermutation σ) := by
-  intro a b hab
-  apply Fin.ext
-  have hcast := hσ hab
-  exact congrArg (fun x : Fin (Finset.univ : Finset (Fin n)).card => x.val) hcast
+/-- Canonical equivalence between ambient and explicit two-point interaction-time assignments. -/
+noncomputable def twoPointSlotTimeEquiv {n : ℕ} :
+    (Fin (Finset.univ : Finset (Fin n)).card → ℝ) ≃ (Fin n → ℝ) where
+  toFun σ i := σ (Fin.cast (by simp) i)
+  invFun σ i := σ (Fin.cast (by simp) i)
+  left_inv σ := by
+    funext i
+    simp
+  right_inv σ := by
+    funext i
+    simp
 
 /-- The component-shuffle ambient permutation transported from `Fin univ.card` to the explicit
 interaction-slot type `Fin n` of a standard two-point diagram. -/
@@ -102,22 +77,21 @@ noncomputable def TwoPointDiagram.componentShuffleSlotPermutation
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (shuffle : d.ComponentInteractionShuffle) : Equiv.Perm (Fin n) :=
-  (finCongr (by simp)).trans
-    (shuffle.ambientPermutation.trans (finCongr (by simp)).symm)
+  twoPointSlotEquiv.trans
+    (shuffle.ambientPermutation.trans twoPointSlotEquiv.symm)
 
 /-- Transporting the ambient shuffle action to explicit interaction slots gives exactly
 precomposition by `componentShuffleSlotPermutation`. -/
-theorem TwoPointDiagram.ambientToTwoPointSlotTimePermutation_comp_ambientPermutation
+theorem TwoPointDiagram.twoPointSlotTimeEquiv_comp_ambientPermutation
     {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (shuffle : d.ComponentInteractionShuffle)
     (σ : Fin (Finset.univ : Finset (Fin n)).card → ℝ) :
-    ambientToTwoPointSlotTimePermutation
-        (fun k => σ (shuffle.ambientPermutation k)) =
-      fun v => ambientToTwoPointSlotTimePermutation σ
+    twoPointSlotTimeEquiv (fun k => σ (shuffle.ambientPermutation k)) =
+      fun v => twoPointSlotTimeEquiv σ
         (d.componentShuffleSlotPermutation shuffle v) := by
   funext v
-  simp [ambientToTwoPointSlotTimePermutation,
+  simp [twoPointSlotTimeEquiv, twoPointSlotEquiv,
     TwoPointDiagram.componentShuffleSlotPermutation]
   rfl
 
