@@ -81,7 +81,7 @@ def energy (v m px py : ℝ) : ℝ :=
 inductive Band where
   | lower
   | upper
-  deriving DecidableEq, Repr
+  deriving DecidableEq
 
 /-- Sign of the band energy: lower `↦ -1`, upper `↦ +1`. -/
 def bandSign : Band → ℝ
@@ -102,7 +102,6 @@ structure Vec3 where
   x : ℝ
   y : ℝ
   z : ℝ
-  deriving Repr
 
 /-- Scalar triple product `a · (b × c)`. -/
 def scalarTriple (a b c : Vec3) : ℝ :=
@@ -173,9 +172,11 @@ def berryCurvature (band : Band) (v m px py : ℝ) : ℝ :=
 
 @[simp] theorem velocityY_01 (v : ℝ) : velocityY v 0 1 = -Complex.I * (v : ℂ) := by
   simp [velocityY, sigmaY]
+  ring
 
 @[simp] theorem velocityY_10 (v : ℝ) : velocityY v 1 0 = Complex.I * (v : ℂ) := by
   simp [velocityY, sigmaY]
+  ring
 
 @[simp] theorem velocityY_11 (v : ℝ) : velocityY v 1 1 = 0 := by
   simp [velocityY, sigmaY]
@@ -198,10 +199,12 @@ def berryCurvature (band : Band) (v m px py : ℝ) : ℝ :=
 @[simp] theorem currentY_01 (e v : ℝ) :
     currentY e v 0 1 = -Complex.I * ((-e * v : ℝ) : ℂ) := by
   simp [currentY, sigmaY]
+  ring
 
 @[simp] theorem currentY_10 (e v : ℝ) :
     currentY e v 1 0 = Complex.I * ((-e * v : ℝ) : ℂ) := by
   simp [currentY, sigmaY]
+  ring
 
 @[simp] theorem currentY_11 (e v : ℝ) : currentY e v 1 1 = 0 := by
   simp [currentY, sigmaY]
@@ -222,7 +225,8 @@ theorem hamiltonian_mul_self (v m px py : ℝ) :
       ((energySq v m px py : ℝ) : ℂ) • (1 : Matrix2) := by
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [Matrix.mul_apply, hamiltonian, sigmaX, sigmaY, sigmaZ, energySq] <;> ring
+    simp [Matrix.mul_apply, hamiltonian, sigmaX, sigmaY, sigmaZ, energySq,
+      pow_two, Complex.I_mul_I] <;> ring
 
 @[simp] theorem bandSign_lower : bandSign .lower = -1 := rfl
 @[simp] theorem bandSign_upper : bandSign .upper = 1 := rfl
@@ -245,13 +249,19 @@ theorem scalarTriple_dirac (v m px py : ℝ) :
 theorem berryCurvature_upper (v m px py : ℝ) :
     berryCurvature .upper v m px py =
       -(m * v ^ 2) / (2 * energy v m px py ^ 3) := by
-  simp [berryCurvature, twoBandCurvatureFromTriple, scalarTriple_dirac]
+  unfold berryCurvature
+  rw [scalarTriple_dirac]
+  simp only [bandSign_upper, twoBandCurvatureFromTriple]
+  ring
 
 /-- Lower-band Berry curvature `Ω₋ = +m v²/(2E³)`. -/
 theorem berryCurvature_lower (v m px py : ℝ) :
     berryCurvature .lower v m px py =
       (m * v ^ 2) / (2 * energy v m px py ^ 3) := by
-  simp [berryCurvature, twoBandCurvatureFromTriple, scalarTriple_dirac]
+  unfold berryCurvature
+  rw [scalarTriple_dirac]
+  simp only [bandSign_lower, twoBandCurvatureFromTriple]
+  ring
 
 end
 
