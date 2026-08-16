@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreePartitionFunction
-import LeanCondensedMatter.QuantumTheory.FiniteDimensional.Entropy
+import LeanCondensedMatter.QuantumTheory.Entropy.Finite
 import LeanCondensedMatter.QuantumTheory.Entropy.Diagonal
 
 set_option linter.style.header false

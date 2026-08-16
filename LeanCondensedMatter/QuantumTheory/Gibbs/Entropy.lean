@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.Gibbs.FreeEnergy
-import LeanCondensedMatter.QuantumTheory.FiniteDimensional.Expectation
+import LeanCondensedMatter.QuantumTheory.DensityOperator.Finite
 
 /-!
 # Gibbs-state entropy
