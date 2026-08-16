@@ -2,6 +2,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracSpectral
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerryBridge
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerrySymmetry
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracIntrinsic
 
 set_option linter.style.header false
 
