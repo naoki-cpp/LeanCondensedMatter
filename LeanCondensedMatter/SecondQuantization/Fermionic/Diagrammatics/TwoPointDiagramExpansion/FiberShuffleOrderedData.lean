@@ -125,7 +125,7 @@ theorem slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum
           (σ ∘ slotSplitVacuumSlot T)
           (vac.pairingInOrder (slotSplitVacuumOrder T)) := by
     simp only [QuarticWickDiagram.contractionIntegrand, flatVertexLegPairingEvaluation,
-      Combinatorics.Pairing.evaluation, flatVertexLegValue]
+      Combinatorics.Pairing.evaluation, flatVertexLegPairValue]
     refine congrArg
       (fun z : ℂ =>
         (vac.pairingInOrder (slotSplitVacuumOrder T)).weight Common.Statistics.fermion * z)
