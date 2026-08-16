@@ -77,7 +77,7 @@ theorem tendsto_metallicBerryWeightCutoff_atTop (m εF : ℝ)
     simpa using (tendsto_const_nhds.sub hCorrection)
   apply Tendsto.congr' ?_ hClosed
   filter_upwards [eventually_ge_atTop εF] with Λ hFΛ
-  exact metallicBerryWeightCutoff_eq_zpow m εF Λ hm hmF hFΛ
+  exact (metallicBerryWeightCutoff_eq_zpow m εF Λ hm hmF hFΛ).symm
 
 /-- Berry/Kubo Hall prefactor written directly in the physical-momentum convention.
 
