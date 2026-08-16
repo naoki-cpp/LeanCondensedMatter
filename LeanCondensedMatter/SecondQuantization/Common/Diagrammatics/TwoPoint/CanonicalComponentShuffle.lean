@@ -31,39 +31,10 @@ private def TwoPointDiagram.componentInteractionSlotVertexEquiv
     (Σ B : d.componentPartition.parts, Fin (d.interactionComponentSize B)) ≃
       (Σ B : d.componentPartition.parts,
         ↥(TwoPointDiagram.interactionPart
-          (B : Finset (TwoPointVertex S)))) where
-  toFun x :=
-    ⟨x.1, (TwoPointDiagram.interactionPart
-      (x.1 : Finset (TwoPointVertex S))).orderIsoOfFin rfl x.2⟩
-  invFun x :=
-    ⟨x.1, ((TwoPointDiagram.interactionPart
-      (x.1 : Finset (TwoPointVertex S))).orderIsoOfFin rfl).symm x.2⟩
-  left_inv x := by
-    rcases x with ⟨B, i⟩
-    simp
-  right_inv x := by
-    rcases x with ⟨B, v⟩
-    simp
-
-@[simp]
-private theorem TwoPointDiagram.componentInteractionSlotVertexEquiv_apply
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (B : d.componentPartition.parts) (i : Fin (d.interactionComponentSize B)) :
-    d.componentInteractionSlotVertexEquiv ⟨B, i⟩ =
-      ⟨B, (TwoPointDiagram.interactionPart
-        (B : Finset (TwoPointVertex S))).orderIsoOfFin rfl i⟩ :=
-  rfl
-
-@[simp]
-private theorem TwoPointDiagram.componentInteractionSlotVertexEquiv_symm_apply
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (B : d.componentPartition.parts)
-    (v : ↥(TwoPointDiagram.interactionPart
-      (B : Finset (TwoPointVertex S)))) :
-    d.componentInteractionSlotVertexEquiv.symm ⟨B, v⟩ =
-      ⟨B, ((TwoPointDiagram.interactionPart
-        (B : Finset (TwoPointVertex S))).orderIsoOfFin rfl).symm v⟩ :=
-  rfl
+          (B : Finset (TwoPointVertex S)))) :=
+  Equiv.sigmaCongrRight fun B =>
+    ((TwoPointDiagram.interactionPart
+      (B : Finset (TwoPointVertex S))).orderIsoOfFin rfl).toEquiv
 
 /-- The component interaction shuffle induced by the original ambient interaction-vertex order. -/
 def TwoPointDiagram.canonicalComponentInteractionShuffle
@@ -93,39 +64,6 @@ def TwoPointDiagram.canonicalComponentInteractionShuffle
     exact (TwoPointDiagram.interactionPart
       (B : Finset (TwoPointVertex S))).orderIsoOfFin rfl |>.strictMono hab
 
-@[simp]
-private theorem TwoPointDiagram.canonicalComponentInteractionShuffle_slotEquiv_apply
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (B : d.componentPartition.parts) (i : Fin (d.interactionComponentSize B)) :
-    d.canonicalComponentInteractionShuffle.slotEquiv ⟨B, i⟩ =
-      (S.orderIsoOfFin rfl).symm
-        (d.interactionVertexComponentEquiv.symm
-          ⟨B, (TwoPointDiagram.interactionPart
-            (B : Finset (TwoPointVertex S))).orderIsoOfFin rfl i⟩) :=
-  rfl
-
-/-- The local ordered slot occupied by one actual interaction vertex of a component. -/
-private def TwoPointDiagram.interactionComponentSlotOfVertex
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (B : d.componentPartition.parts)
-    (v : ↥(TwoPointDiagram.interactionPart
-      (B : Finset (TwoPointVertex S)))) :
-    Fin (d.interactionComponentSize B) :=
-  ((TwoPointDiagram.interactionPart
-    (B : Finset (TwoPointVertex S))).orderIsoOfFin rfl).symm v
-
-/-- The canonical shuffle sends the local slot of an interaction vertex to its ambient rank. -/
-private theorem TwoPointDiagram.canonicalComponentInteractionShuffle_slotOfVertex
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (B : d.componentPartition.parts)
-    (v : ↥(TwoPointDiagram.interactionPart
-      (B : Finset (TwoPointVertex S)))) :
-    d.canonicalComponentInteractionShuffle.slotEquiv
-        ⟨B, d.interactionComponentSlotOfVertex B v⟩ =
-      (S.orderIsoOfFin rfl).symm
-        (d.interactionVertexComponentEquiv.symm ⟨B, v⟩) := by
-  simp [TwoPointDiagram.interactionComponentSlotOfVertex]
-
 /-- Equality of canonical component-local time assignments is exactly equality of ambient times on
 all actual interaction vertices of that component. -/
 private theorem TwoPointDiagram.canonicalComponentTimeAssignment_eq_iff
@@ -143,13 +81,12 @@ private theorem TwoPointDiagram.canonicalComponentTimeAssignment_eq_iff
           (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) := by
   constructor
   · intro h v
-    have hv := congrFun h (d.interactionComponentSlotOfVertex B v)
-    change τ (d.canonicalComponentInteractionShuffle.slotEquiv
-        ⟨B, d.interactionComponentSlotOfVertex B v⟩) =
-      υ (d.canonicalComponentInteractionShuffle.slotEquiv
-        ⟨B, d.interactionComponentSlotOfVertex B v⟩) at hv
-    rw [d.canonicalComponentInteractionShuffle_slotOfVertex] at hv
-    exact hv
+    have hv := congrFun h
+      (((TwoPointDiagram.interactionPart
+        (B : Finset (TwoPointVertex S))).orderIsoOfFin rfl).symm v)
+    simpa [TwoPointDiagram.interactionComponentTimeAssignment,
+      TwoPointDiagram.canonicalComponentInteractionShuffle,
+      TwoPointDiagram.componentInteractionSlotVertexEquiv] using hv
   · intro h
     funext i
     exact h ((TwoPointDiagram.interactionPart
@@ -188,35 +125,26 @@ theorem TwoPointDiagram.canonicalComponentTimeAssignment_univ_eq_iff
           (Finset.univ : Finset (Fin N))))),
         σ v.1 = υ v.1 := by
   rw [d.canonicalComponentTimeAssignment_eq_iff]
+  have hrank : ∀ v : ↥(TwoPointDiagram.interactionPart
+      (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin N))))),
+      Fin.cast (by simp)
+        (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm
+          (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) = v.1 := by
+    intro v
+    calc
+      Fin.cast (by simp)
+          (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm
+            (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) =
+        (d.interactionVertexComponentEquiv.symm ⟨B, v⟩).1 :=
+          finCast_univOrderIsoOfFin_symm _
+      _ = v.1 := d.interactionVertexComponentEquiv_symm_val ⟨B, v⟩
   constructor
   · intro h v
     have hv := h v
-    have hrank :
-        Fin.cast (by simp)
-          (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm
-            (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) = v.1 := by
-      calc
-        Fin.cast (by simp)
-            (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm
-              (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) =
-          (d.interactionVertexComponentEquiv.symm ⟨B, v⟩).1 :=
-            finCast_univOrderIsoOfFin_symm _
-        _ = v.1 := d.interactionVertexComponentEquiv_symm_val ⟨B, v⟩
-    rw [hrank] at hv
+    rw [hrank v] at hv
     exact hv
   · intro h v
-    have hrank :
-        Fin.cast (by simp)
-          (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm
-            (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) = v.1 := by
-      calc
-        Fin.cast (by simp)
-            (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm
-              (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) =
-          (d.interactionVertexComponentEquiv.symm ⟨B, v⟩).1 :=
-            finCast_univOrderIsoOfFin_symm _
-        _ = v.1 := d.interactionVertexComponentEquiv_symm_val ⟨B, v⟩
-    rw [hrank]
+    rw [hrank v]
     exact h v
 
 end
