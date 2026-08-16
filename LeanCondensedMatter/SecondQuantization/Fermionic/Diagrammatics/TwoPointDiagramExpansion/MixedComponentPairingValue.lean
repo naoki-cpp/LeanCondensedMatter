@@ -48,25 +48,5 @@ theorem FixedExternalTwoPointWickDiagram.orderedTwoPointPairingValue_eq_prod_com
         d.mixedPairContractionValue ε β τ τ' σ pr.1)]
   rw [Finset.prod_mul_distrib]
 
-/-- One vacuum-component pairing value written on its restricted vacuum pairing. -/
-noncomputable def FixedExternalTwoPointWickDiagram.mixedVacuumRestrictedPairingValue
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts) (hVac : d.1.ComponentIsVacuum B) : ℂ :=
-  d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ B *
-    ∏ pr : (d.1.restrictedVacuumPairing B hVac).NormalizedPair,
-      d.mixedVacuumRestrictedPairContractionValue ε β τ τ' σ B hVac pr
-
-/-- A mixed vacuum-component value is exactly its restricted-pairing value. -/
-theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_vacuum_eq_restricted
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts) (hVac : d.1.ComponentIsVacuum B) :
-    d.mixedComponentPairingValue ε β τ τ' σ B =
-      d.mixedVacuumRestrictedPairingValue ε β τ τ' σ B hVac := by
-  unfold FixedExternalTwoPointWickDiagram.mixedComponentPairingValue
-  unfold FixedExternalTwoPointWickDiagram.mixedVacuumRestrictedPairingValue
-  rw [d.prod_mixedVacuumPairContractionValue_eq_restricted]
-
 end Fermionic
 end SecondQuantization
