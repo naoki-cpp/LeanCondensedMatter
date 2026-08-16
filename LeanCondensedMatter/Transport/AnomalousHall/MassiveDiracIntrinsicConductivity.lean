@@ -62,18 +62,18 @@ weight.  The equality to the closed finite-cutoff formula is needed only eventua
 theorem tendsto_metallicBerryWeightCutoff_atTop (m εF : ℝ)
     (hm : 0 < m) (hmF : m ≤ εF) :
     Tendsto (metallicBerryWeightCutoff m εF) atTop
-      (𝓝 (metallicBerryWeightUV m εF)) := by
-  have hInv : Tendsto (fun Λ : ℝ => Λ ^ (-1 : ℤ)) atTop (𝓝 0) :=
+      (nhds (metallicBerryWeightUV m εF)) := by
+  have hInv : Tendsto (fun Λ : ℝ => Λ ^ (-1 : ℤ)) atTop (nhds 0) :=
     tendsto_zpow_atTop_zero (by norm_num)
-  have hConst : Tendsto (fun _ : ℝ => m / 2) atTop (𝓝 (m / 2)) :=
+  have hConst : Tendsto (fun _ : ℝ => m / 2) atTop (nhds (m / 2)) :=
     tendsto_const_nhds
   have hCorrection :
-      Tendsto (fun Λ : ℝ => (m / 2) * Λ ^ (-1 : ℤ)) atTop (𝓝 0) := by
+      Tendsto (fun Λ : ℝ => (m / 2) * Λ ^ (-1 : ℤ)) atTop (nhds 0) := by
     simpa using hConst.mul hInv
   have hClosed :
       Tendsto
         (fun Λ : ℝ => metallicBerryWeightUV m εF - (m / 2) * Λ ^ (-1 : ℤ))
-        atTop (𝓝 (metallicBerryWeightUV m εF)) := by
+        atTop (nhds (metallicBerryWeightUV m εF)) := by
     simpa using (tendsto_const_nhds.sub hCorrection)
   apply Tendsto.congr' ?_ hClosed
   filter_upwards [eventually_ge_atTop εF] with Λ hFΛ
@@ -92,7 +92,6 @@ theorem intrinsicHallPrefactorFromMomentumMeasure_eq (e hbar : ℝ) (hhbar : hba
       -(e ^ 2 / planckFromReduced hbar) := by
   unfold intrinsicHallPrefactorFromMomentumMeasure momentumMeasurePrefactor planckFromReduced
   field_simp [hhbar, Real.pi_ne_zero]
-  ring
 
 /-- Finite-cutoff intrinsic Hall conductivity before removing the single-cone UV regulator. -/
 def intrinsicHallConductivityCutoff (e hbar m εF Λ : ℝ) : ℝ :=
@@ -106,7 +105,7 @@ def intrinsicHallConductivity (e hbar m εF : ℝ) : ℝ :=
 theorem tendsto_intrinsicHallConductivityCutoff_atTop (e hbar m εF : ℝ)
     (hm : 0 < m) (hmF : m ≤ εF) :
     Tendsto (intrinsicHallConductivityCutoff e hbar m εF) atTop
-      (𝓝 (intrinsicHallConductivity e hbar m εF)) := by
+      (nhds (intrinsicHallConductivity e hbar m εF)) := by
   unfold intrinsicHallConductivityCutoff intrinsicHallConductivity
   exact tendsto_const_nhds.mul (tendsto_metallicBerryWeightCutoff_atTop m εF hm hmF)
 
@@ -120,7 +119,6 @@ theorem intrinsicHallConductivity_eq_massiveDirac (e hbar m εF : ℝ)
     (ne_of_gt hhbar)]
   unfold metallicBerryWeightUV
   field_simp [ne_of_gt hhbar, Real.pi_ne_zero, ne_of_gt hεF]
-  ring
 
 end
 
