@@ -29,31 +29,6 @@ noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonSign
     (B : Finset (Common.TwoPointVertex
       (Finset.univ : Finset (Fin n))))).card
 
-/-- The order-`n` Dyson sign factors over all full components. -/
-theorem FixedExternalTwoPointWickDiagram.dysonSign_eq_prod_components
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j) :
-    (-1 : ℂ) ^ n =
-      ∏ B : d.1.componentPartition.parts, d.mixedComponentDysonSign B := by
-  calc
-    (-1 : ℂ) ^ n = (-1 : ℂ) ^ (Finset.univ : Finset (Fin n)).card := by simp
-    _ = d.mixedComponentDysonSign d.1.externalComponentPart *
-        d.1.vacuumComponentParts.prod d.mixedComponentDysonSign := by
-      simpa [FixedExternalTwoPointWickDiagram.mixedComponentDysonSign,
-        Common.TwoPointDiagram.externalComponentPart] using
-        d.1.dysonSign_eq_external_mul_prod_vacuum
-    _ = ∏ B : d.1.componentPartition.parts, d.mixedComponentDysonSign B := by
-      rw [d.1.prod_componentParts_eq_external_mul_prod_vacuum]
-
-/-- External/vacuum form of the componentwise Dyson-sign factorization. -/
-theorem FixedExternalTwoPointWickDiagram.dysonSign_eq_external_mul_prod_vacuum
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j) :
-    (-1 : ℂ) ^ n =
-      d.mixedComponentDysonSign d.1.externalComponentPart *
-        d.1.vacuumComponentParts.prod d.mixedComponentDysonSign := by
-  simpa [FixedExternalTwoPointWickDiagram.mixedComponentDysonSign,
-    Common.TwoPointDiagram.externalComponentPart] using
-    d.1.dysonSign_eq_external_mul_prod_vacuum
-
 section Fermionic
 
 variable [LinearOrder Mode] [Fintype Mode]
@@ -94,8 +69,18 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_externalSign
         ∏ B : d.1.componentPartition.parts,
           d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B := by
   unfold FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude
-  rw [d.dysonSign_eq_prod_components,
-    d.fixedTimeAmplitude_eq_externalSign_mul_prod_components]
+  have hsign :
+      (-1 : ℂ) ^ n = ∏ B : d.1.componentPartition.parts, d.mixedComponentDysonSign B := by
+    calc
+      (-1 : ℂ) ^ n = (-1 : ℂ) ^ (Finset.univ : Finset (Fin n)).card := by simp
+      _ = d.mixedComponentDysonSign d.1.externalComponentPart *
+          d.1.vacuumComponentParts.prod d.mixedComponentDysonSign := by
+        simpa [FixedExternalTwoPointWickDiagram.mixedComponentDysonSign,
+          Common.TwoPointDiagram.externalComponentPart] using
+          d.1.dysonSign_eq_external_mul_prod_vacuum
+      _ = ∏ B : d.1.componentPartition.parts, d.mixedComponentDysonSign B := by
+        rw [d.1.prod_componentParts_eq_external_mul_prod_vacuum]
+  rw [hsign, d.fixedTimeAmplitude_eq_externalSign_mul_prod_components]
   unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue
   rw [Finset.prod_mul_distrib]
   ring
@@ -110,8 +95,13 @@ theorem FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude_eq_external_mul
         d.1.vacuumComponentParts.prod
           (d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ) := by
   unfold FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude
-  rw [d.dysonSign_eq_external_mul_prod_vacuum,
-    d.fixedTimeAmplitude_eq_external_mul_prod_vacuum]
+  have hsign :
+      (-1 : ℂ) ^ n = d.mixedComponentDysonSign d.1.externalComponentPart *
+        d.1.vacuumComponentParts.prod d.mixedComponentDysonSign := by
+    simpa [FixedExternalTwoPointWickDiagram.mixedComponentDysonSign,
+      Common.TwoPointDiagram.externalComponentPart] using
+      d.1.dysonSign_eq_external_mul_prod_vacuum
+  rw [hsign, d.fixedTimeAmplitude_eq_external_mul_prod_vacuum]
   unfold FixedExternalTwoPointWickDiagram.mixedExternalDysonFixedTimeValue
   unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue
   rw [Finset.prod_mul_distrib]
