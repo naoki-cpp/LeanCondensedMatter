@@ -108,20 +108,6 @@ theorem mixedTimeOrderedAtomicOperators_length {n : ℕ} (ε : Mode → ℝ) (i 
       ((orderedTwoPointTimedEvents_perm τ τ' σ).map twoPointTimedEventAtomicArity).sum_eq
     _ = 2 * (2 * n + 1) := canonicalTwoPointTimedEventAtomicAritySum n
 
-private theorem prodComp_flatMap_twoPointTimedEventAtomicOperators {n : ℕ}
-    (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
-    (events : List (TwoPointTimedEvent n)) :
-    Common.prodComp
-        (events.flatMap (twoPointTimedEventAtomicOperators ε i j τ τ' q σ)) =
-      Common.prodComp
-        (events.map (twoPointTimedEventOperator ε i j τ τ' q σ)) := by
-  induction events with
-  | nil => rfl
-  | cons event events ih =>
-      rw [List.flatMap_cons, List.map_cons, Common.prodComp_append, Common.prodComp_cons,
-        prodComp_twoPointTimedEventAtomicOperators, ih]
-
 /-- The event-level mixed time-ordered product is exactly the fermionic external-order sign times
 the composed product of its `4n + 2` atomic creation/annihilation operators. -/
 theorem mixedTimeOrderedVertexComp_eq_prodComp_atomicOperators {n : ℕ}
@@ -130,8 +116,18 @@ theorem mixedTimeOrderedVertexComp_eq_prodComp_atomicOperators {n : ℕ}
     mixedTimeOrderedVertexComp ε i j τ τ' q σ =
       twoPointExternalOrderSign τ τ' •
         Common.prodComp (mixedTimeOrderedAtomicOperators ε i j τ τ' q σ) := by
-  rw [mixedTimeOrderedVertexComp, mixedTimeOrderedAtomicOperators,
-    prodComp_flatMap_twoPointTimedEventAtomicOperators]
+  have hprod : ∀ events : List (TwoPointTimedEvent n),
+      Common.prodComp
+          (events.flatMap (twoPointTimedEventAtomicOperators ε i j τ τ' q σ)) =
+        Common.prodComp
+          (events.map (twoPointTimedEventOperator ε i j τ τ' q σ)) := by
+    intro events
+    induction events with
+    | nil => rfl
+    | cons event events ih =>
+        rw [List.flatMap_cons, List.map_cons, Common.prodComp_append, Common.prodComp_cons,
+          prodComp_twoPointTimedEventAtomicOperators, ih]
+  rw [mixedTimeOrderedVertexComp, mixedTimeOrderedAtomicOperators, hprod]
 
 end Fermionic
 end SecondQuantization
