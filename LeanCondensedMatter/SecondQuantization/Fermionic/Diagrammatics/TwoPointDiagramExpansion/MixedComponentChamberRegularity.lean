@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentCrossingTimeLocality
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairTimeTransport
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentPairTimeTransport
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedPairContractionRegularity
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentDysonValue
 
@@ -62,12 +62,11 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepr
   unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeChamberRepresentative
     FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue
     FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
+    FixedExternalTwoPointWickDiagram.mixedComponentPairingValue
   apply congrArg (fun z : ℂ =>
     d.mixedComponentDysonSign B * (d.mixedComponentVertexWeight g B * z))
-  rw [d.mixedComponentPairingValue_eq_weight_mul_contractionProduct,
-    d.1.mixedComponentWeight_eq_of_sameOrderChamber
-      Common.Statistics.fermion τ τ' σ₀ σ B hChamber]
-  unfold FixedExternalTwoPointWickDiagram.mixedComponentContractionProduct
+  rw [d.1.mixedComponentWeight_eq_of_sameOrderChamber
+    Common.Statistics.fermion τ τ' σ₀ σ B hChamber]
   apply congrArg (fun z : ℂ =>
     d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ B * z)
   let e := d.1.mixedComponentPairTimeEquiv τ τ' σ₀ σ B
