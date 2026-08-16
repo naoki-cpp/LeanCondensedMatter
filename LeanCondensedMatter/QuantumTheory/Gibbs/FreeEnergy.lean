@@ -65,33 +65,11 @@ theorem summable_and_tsum_le_of_nonneg_of_le {ι : Type*} {f g : ι → ℝ}
   have hf : Summable f := Summable.of_nonneg_of_le hf_nonneg hfg hg
   ⟨hf, hf.tsum_mono hg hfg⟩
 
-/-- A density operator's eigenvalues are at most one. -/
-theorem eigenvalue_le_one (ρ : DensityOperator H) (a : EigenvectorIndex ρ.op) : a.1.1 ≤ 1 := by
-  have hsum : Summable (fun b : EigenvectorIndex ρ.op => b.1.1) :=
-    ρ.spectralTraceClass.summable.congr (fun b => abs_of_nonneg (eigenvalue_nonneg ρ b))
-  have hle := hsum.le_tsum a (fun j _ => eigenvalue_nonneg ρ j)
-  have heq := ρ.spectralTrace_op_eq_one
-  change ∑' b : EigenvectorIndex ρ.op, b.1.1 = 1 at heq
-  rwa [heq] at hle
-
 /-- The spectral trace of the unnormalized Gibbs operator is positive when nonzero. -/
 theorem spectralTrace_gibbsOp_pos (Hop : Observable H) (β : ℝ)
     (hZ : spectralTrace (gibbsOp Hop β) ≠ 0) : 0 < spectralTrace (gibbsOp Hop β) :=
   (ContinuousLinearMap.trace_nonneg (gibbsOp_isPositive Hop β).toLinearMap).lt_of_ne
     (Ne.symm hZ)
-
-/-- Entropy is finite with real value the entropy `tsum` when that sum converges. -/
-theorem vonNeumannEntropy_ne_top_and_toReal_eq_tsum (ρ : DensityOperator H)
-    (hsum : Summable (fun a : EigenvectorIndex ρ.op => Real.negMulLog a.1.1)) :
-    vonNeumannEntropy ρ ≠ ⊤ ∧
-      (vonNeumannEntropy ρ).toReal = ∑' a : EigenvectorIndex ρ.op, Real.negMulLog a.1.1 := by
-  have hnonneg : ∀ a : EigenvectorIndex ρ.op, 0 ≤ Real.negMulLog a.1.1 :=
-    fun a => Real.negMulLog_nonneg (eigenvalue_nonneg ρ a) (eigenvalue_le_one ρ a)
-  have hEntropyEq : vonNeumannEntropy ρ =
-      ENNReal.ofReal (∑' a : EigenvectorIndex ρ.op, Real.negMulLog a.1.1) :=
-    (ENNReal.ofReal_tsum_of_nonneg hnonneg hsum).symm
-  refine ⟨by rw [hEntropyEq]; exact ENNReal.ofReal_ne_top, ?_⟩
-  rw [hEntropyEq, ENNReal.toReal_ofReal (tsum_nonneg hnonneg)]
 
 /-- Peierls–Bogoliubov in lossless diagonal-expectation form against a unit vector. -/
 theorem exp_neg_beta_energy_le_gibbs_diagonal (Hop : Observable H) (β : ℝ) (v : H)
@@ -181,7 +159,7 @@ theorem helmholtzFreeEnergy_ge_and_entropy_ne_top (ρ : DensityOperator H) (Hop 
       (fun a => β * (p a * h a) + p a * Real.log Z - p a + q a / Z) :=
     ((hph_summable.mul_left β).add hplogZ_summable).sub hp_summable |>.add hqZ_summable
   have hnegMulLog_nonneg : ∀ a, 0 ≤ Real.negMulLog (p a) :=
-    fun a => Real.negMulLog_nonneg (eigenvalue_nonneg ρ a) (eigenvalue_le_one ρ a)
+    fun a => Real.negMulLog_nonneg (eigenvalue_nonneg ρ a) (density_eigenvalue_le_one ρ a)
   obtain ⟨hnML_summable, hsum_le⟩ :=
     summable_and_tsum_le_of_nonneg_of_le hnegMulLog_nonneg hbound hB_summable
   obtain ⟨hEntropyNeTop, hToReal⟩ :=
