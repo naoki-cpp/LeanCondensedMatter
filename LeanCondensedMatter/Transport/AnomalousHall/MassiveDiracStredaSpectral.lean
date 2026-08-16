@@ -53,7 +53,17 @@ theorem hamiltonianOperator_mul_bandProjectorOperator
   let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
   change φ (hamiltonian v m px py) * φ (bandProjector band v m px py) =
       (((bandEnergy band v m px py : ℝ) : ℂ)) • φ (bandProjector band v m px py)
-  simpa using congrArg φ (hamiltonian_mul_bandProjector band v m px py hE)
+  calc
+    φ (hamiltonian v m px py) * φ (bandProjector band v m px py) =
+        φ (hamiltonian v m px py * bandProjector band v m px py) := by
+      symm
+      exact map_mul φ _ _
+    _ = φ ((((bandEnergy band v m px py : ℝ) : ℂ)) •
+        bandProjector band v m px py) := by
+      rw [hamiltonian_mul_bandProjector band v m px py hE]
+    _ = (((bandEnergy band v m px py : ℝ) : ℂ)) •
+        φ (bandProjector band v m px py) := by
+      exact map_smul φ _ _
 
 /-- Multiplying one spectral projector by the shifted Hamiltonian gives its scalar spectral
 factor. -/
