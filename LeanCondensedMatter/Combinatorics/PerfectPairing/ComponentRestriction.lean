@@ -19,7 +19,7 @@ representation of connected components.
 namespace Combinatorics
 
 /-- A leg belongs to component `B` when the component classifier of its incident vertex is `B`. -/
-def Pairing.legInComponent {n : ℕ} {Vertex Component : Type*} (pairing : Pairing n)
+def Pairing.legInComponent {n : ℕ} {Vertex Component : Type*} (_pairing : Pairing n)
     (vertexOfLeg : Fin (2 * n) → Vertex) (component : Vertex → Component)
     (B : Component) (leg : Fin (2 * n)) : Prop :=
   component (vertexOfLeg leg) = B
