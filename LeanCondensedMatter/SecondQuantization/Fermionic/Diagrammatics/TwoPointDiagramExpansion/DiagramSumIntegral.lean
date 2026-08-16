@@ -1,21 +1,23 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityBounds
+import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedOrderSignature
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DysonCoefficient
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentDysonValue
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentMeasurability
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentChamberRegularity
 
 set_option linter.style.header false
 
 /-!
-# Commuting the diagram sum with the ordered-simplex integral
+# Measurability and ordered-simplex integration of the diagram sum
 
 The public order-`n` coefficient integrates the pointwise sum over diagrams, whereas every
 factorization statement is phrased for the integrated amplitude of a single diagram. Exchanging the
 two requires integrability of each summand, and the summands are only chamberwise continuous: the
 mixed time order changes when an interaction time crosses an external time.
 
-Measurable local boundedness is exactly the regularity that survives those walls. The signed full-
-diagram regularity is shared with the shuffle layer; component and unsigned staging facts remain
-proof-local here.
+The Common-owned `TwoPointOrderSignature` gives a finite measurable partition by mixed-event order,
+which upgrades chamberwise continuity to global measurability. Measurable local boundedness then
+provides exactly the regularity needed to commute the finite diagram sum with the ordered-simplex
+integral.
 -/
 
 namespace SecondQuantization
@@ -24,6 +26,60 @@ namespace Fermionic
 open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+
+/-- A mixed-component Dyson fixed-time value is globally measurable after assembling its finite
+chamberwise-continuous representatives along the mixed-order signature partition. -/
+theorem FixedExternalTwoPointWickDiagram.measurable_mixedComponentDysonFixedTimeValue
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
+    (τ τ' : ℝ) (B : d.1.componentPartition.parts) :
+    Measurable (fun σ : Fin n → ℝ =>
+      d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B) := by
+  classical
+  let rep : (Fin n → ℝ) → ℂ := fun σ =>
+    ∑ s : TwoPointOrderSignature n,
+      if twoPointOrderSignature τ τ' σ = s then
+        d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ'
+          (twoPointOrderSignatureBase τ τ' s) B σ
+      else 0
+  have hRep : Measurable rep := by
+    dsimp [rep]
+    apply Finset.measurable_sum
+    intro s _
+    have hFiber := measurableSet_twoPointOrderSignatureFiber τ τ' s
+    have hContinuous :=
+      (d.continuous_mixedComponentDysonFixedTimeChamberRepresentative
+        ε β g τ τ' (twoPointOrderSignatureBase τ τ' s) B).measurable
+    simpa only [twoPointOrderSignatureFiber, Set.mem_setOf_eq] using
+      (Measurable.ite hFiber hContinuous measurable_const)
+  have hEq : rep = fun σ : Fin n → ℝ =>
+      d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B := by
+    funext σ
+    dsimp [rep]
+    let s₀ := twoPointOrderSignature τ τ' σ
+    have hsum :
+        (∑ s : TwoPointOrderSignature n,
+          if twoPointOrderSignature τ τ' σ = s then
+            d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ'
+              (twoPointOrderSignatureBase τ τ' s) B σ
+          else 0) =
+        d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ'
+          (twoPointOrderSignatureBase τ τ' s₀) B σ := by
+      change (∑ s : TwoPointOrderSignature n,
+          if s₀ = s then
+            d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ'
+              (twoPointOrderSignatureBase τ τ' s) B σ
+          else 0) =
+        d.mixedComponentDysonFixedTimeChamberRepresentative ε β g τ τ'
+          (twoPointOrderSignatureBase τ τ' s₀) B σ
+      simp
+    rw [hsum]
+    exact d.mixedComponentDysonFixedTimeChamberRepresentative_eq_of_sameOrderChamber
+      ε β g τ τ'
+      (twoPointOrderSignatureBase τ τ' s₀) σ B
+      (by simpa [s₀] using sameTwoPointOrderChamber_signatureBase τ τ' σ)
+  rw [← hEq]
+  exact hRep
 
 /-- The signed pointwise amplitude of one diagram is measurably locally bounded. -/
 theorem FixedExternalTwoPointWickDiagram.measurableLocallyBounded_dysonFixedTimeAmplitude
