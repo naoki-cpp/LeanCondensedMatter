@@ -1,11 +1,12 @@
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy
+import LeanCondensedMatter.QuantumTheory.Gibbs.Entropy
+import LeanCondensedMatter.QuantumTheory.Entropy.Finite
 
 /-!
 # Gibbs-state variational equality
 
 The normalized Gibbs state attains the Helmholtz lower bound. Under the bounded-Hamiltonian API,
-compactness of `exp (-βH)` forces finite dimensionality, so the generic pure-point Gibbs entropy
-identity applies to a common energy eigenbasis.
+compactness of `exp (-βH)` forces finite dimensionality, so the dimension-independent Gibbs-diagonal
+entropy identity applies to a common energy eigenbasis.
 -/
 
 namespace QuantumTheory
@@ -26,6 +27,7 @@ theorem vonNeumannEntropy_gibbsState (Hop : Observable H) (β : ℝ)
   classical
   letI := finiteDimensional_of_gibbsOp_isCompact Hop β hcompact
   let ρ := gibbsState Hop β hcompact hsummable hZ
+  let Z : ℝ := spectralTrace (gibbsOp Hop β)
   let E : Fin (Module.finrank ℂ H) → ℝ :=
     Hop.2.isSymmetric.eigenvalues rfl
   let bE : OrthonormalBasis (Fin (Module.finrank ℂ H)) ℂ H :=
@@ -33,28 +35,18 @@ theorem vonNeumannEntropy_gibbsState (Hop : Observable H) (β : ℝ)
   have hEbE (i : Fin (Module.finrank ℂ H)) :
       (Hop.1 : H →ₗ[ℂ] H) (bE i) = (E i : ℂ) • bE i := by
     simpa [E, bE] using Hop.2.isSymmetric.apply_eigenvectorBasis rfl i
-  let hPurePointSummable : PurePointGibbsSummable E β :=
-    purePointGibbsSummable_of_finite E β
-  have hPartition :
-      purePointPartitionFunction E β = spectralTrace (gibbsOp Hop β) :=
-    purePointPartitionFunction_eq_spectralTrace_gibbsOp
-      Hop β hcompact hsummable bE.toHilbertBasis E (fun i => by simpa using hEbE i)
-  have hPartitionPos : 0 < purePointPartitionFunction E β := by
-    rw [hPartition]
-    exact spectralTrace_gibbsOp_pos Hop β hZ
+  have hZpos : 0 < Z := by
+    simpa [Z] using spectralTrace_gibbsOp_pos Hop β hZ
   have hρbE (i : Fin (Module.finrank ℂ H)) :
       (ρ.op : H →ₗ[ℂ] H) (bE i) =
-        (purePointGibbsProbability E β i : ℂ) • bE i := by
-    simpa [ρ, purePointGibbsProbability, purePointBoltzmannWeight, hPartition] using
+        ((Real.exp (-β * E i) / Z : ℝ) : ℂ) • bE i := by
+    simpa [ρ, Z, div_eq_mul_inv, mul_comm] using
       (gibbsState_apply_eigenvector Hop β hcompact hsummable hZ (hEbE i))
-  have hEntropy := vonNeumannEntropy_gibbs_diagonal
-    ρ Hop bE.toHilbertBasis E β hPurePointSummable hPartitionPos
+  change vonNeumannEntropy ρ ≠ ⊤ ∧
+    (vonNeumannEntropy ρ).toReal = β * energyExpValue ρ Hop + Real.log Z
+  exact vonNeumannEntropy_gibbs_diagonal ρ Hop bE.toHilbertBasis E β Z hZpos
     (fun i => by simpa using hρbE i) (fun i => by simpa using hEbE i)
     ρ.entropyOp_hasSummableRealEigenvalues
-  change vonNeumannEntropy ρ ≠ ⊤ ∧
-    (vonNeumannEntropy ρ).toReal =
-      β * energyExpValue ρ Hop + Real.log (spectralTrace (gibbsOp Hop β))
-  simpa [hPartition] using hEntropy
 
 /-- The normalized Gibbs state attains the Helmholtz lower bound exactly. -/
 theorem gibbsState_helmholtzFreeEnergy_eq (Hop : Observable H) (β : ℝ) (hβ : 0 < β)
