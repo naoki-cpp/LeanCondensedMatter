@@ -49,34 +49,6 @@ private theorem mixedTimeOrderedAtomicFieldFamily_relabelInteractionVertices_of_
   rw [hleg]
   exact orderedTwoPointLegField_relabelInteractionVertices π i j τ τ' q σ _
 
-omit [Fintype Mode] in
-private theorem mixedTimeOrderedAtomicOperatorFamily_relabelInteractionVertices_of_injective {n : ℕ}
-    (π : Equiv.Perm (Fin n)) (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
-    (hσ : Function.Injective σ) (p : Fin (2 * (2 * n + 1))) :
-    mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' (fun v => q (π v)) σ p =
-      mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' q (fun v => σ (π.symm v)) p := by
-  change timedFieldOperator ε
-      (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' (fun v => q (π v)) σ p) =
-    timedFieldOperator ε
-      (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q (fun v => σ (π.symm v)) p)
-  rw [mixedTimeOrderedAtomicFieldFamily_relabelInteractionVertices_of_injective
-    π ε i j τ τ' q σ hσ p]
-
-/-- Each density-state contraction is invariant under interaction-slot relabeling at injective
-interaction times. -/
-private theorem mixedTimeOrderedAtomicPairValue_relabelInteractionVertices_of_injective {n : ℕ}
-    (π : Equiv.Perm (Fin n)) (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
-    (hσ : Function.Injective σ) (a b : Fin (2 * (2 * n + 1))) :
-    mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ (fun v => q (π v)) a b =
-      mixedTimeOrderedAtomicPairValue ε β i j τ τ' (fun v => σ (π.symm v)) q a b := by
-  simp only [mixedTimeOrderedAtomicPairValue]
-  rw [mixedTimeOrderedAtomicOperatorFamily_relabelInteractionVertices_of_injective
-      π ε i j τ τ' q σ hσ a,
-    mixedTimeOrderedAtomicOperatorFamily_relabelInteractionVertices_of_injective
-      π ε i j τ τ' q σ hσ b]
-
 /-- A complete mixed-order pairing value is invariant under interaction-slot relabeling at injective
 interaction times. -/
 private theorem orderedTwoPointPairingValue_relabelInteractionVertices_of_injective {n : ℕ}
@@ -90,8 +62,11 @@ private theorem orderedTwoPointPairingValue_relabelInteractionVertices_of_inject
       mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ (fun v => q (π v)) =
         mixedTimeOrderedAtomicPairValue ε β i j τ τ' (fun v => σ (π.symm v)) q := by
     funext a b
-    exact mixedTimeOrderedAtomicPairValue_relabelInteractionVertices_of_injective
-      π ε β i j τ τ' q σ hσ a b
+    simp only [mixedTimeOrderedAtomicPairValue, mixedTimeOrderedAtomicOperatorFamily]
+    rw [mixedTimeOrderedAtomicFieldFamily_relabelInteractionVertices_of_injective
+        π ε i j τ τ' q σ hσ a,
+      mixedTimeOrderedAtomicFieldFamily_relabelInteractionVertices_of_injective
+        π ε i j τ τ' q σ hσ b]
   rw [hPairValue]
 
 /-- The fixed-time amplitude is covariant under interaction-slot relabeling away from interaction-time
