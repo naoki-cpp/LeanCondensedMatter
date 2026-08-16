@@ -112,7 +112,6 @@ private theorem fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg
       apply Subtype.ext
       rfl
     rw [hlabel]
-    simp
   rw [hfield]
   change timedFieldOperator ε
       ⟨(σ ∘ slotSplitVacuumSlot T) q.1,
