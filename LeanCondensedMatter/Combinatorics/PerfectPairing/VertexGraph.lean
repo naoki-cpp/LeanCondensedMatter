@@ -40,15 +40,4 @@ theorem Pairing.vertexGraph_reachable_partner {n : ℕ} {Vertex : Type*}
   · exact SimpleGraph.Adj.reachable
       ⟨h, pairing.partner leg, rfl, by rw [pairing.partner_involutive]⟩
 
-/-- Any classifier constant along pairing-graph reachability gives the same value to a leg's
-incident vertex and to its partner's incident vertex. -/
-theorem Pairing.component_vertex_partner_eq {n : ℕ} {Vertex Component : Type*}
-    (pairing : Pairing n) (vertexOfLeg : Fin (2 * n) → Vertex)
-    (component : Vertex → Component)
-    (hcomponent : ∀ {v w}, (pairing.vertexGraph vertexOfLeg).Reachable v w →
-      component v = component w)
-    (leg : Fin (2 * n)) :
-    component (vertexOfLeg (pairing.partner leg)) = component (vertexOfLeg leg) :=
-  hcomponent (pairing.vertexGraph_reachable_partner vertexOfLeg leg)
-
 end Combinatorics
