@@ -99,19 +99,6 @@ private theorem TwoPointDiagram.prod_vertexLabel_eq_external_mul_prod_vacuum
     d.prod_componentParts_eq_external_mul_prod_vacuum]
   rfl
 
-/-- A constant vertex weight factors according to the cardinalities of the external and vacuum
-interaction parts. -/
-private theorem TwoPointDiagram.pow_card_eq_external_mul_prod_vacuum
-    {M : Type*} [CommMonoid M]
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (a : M) :
-    a ^ S.card =
-      a ^ (TwoPointDiagram.interactionPart (d.externalComponent 0)).card *
-        d.vacuumComponentParts.prod (fun B =>
-          a ^ (TwoPointDiagram.interactionPart
-            (B : Finset (TwoPointVertex S))).card) := by
-  simpa using d.prod_vertexLabel_eq_external_mul_prod_vacuum (fun _ => a)
-
 /-- The Dyson sign factors into the external component sign and all vacuum-component signs. -/
 theorem TwoPointDiagram.dysonSign_eq_external_mul_prod_vacuum
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
@@ -120,8 +107,8 @@ theorem TwoPointDiagram.dysonSign_eq_external_mul_prod_vacuum
         (d.externalComponent 0)).card *
         d.vacuumComponentParts.prod (fun B =>
           (-1 : ℂ) ^ (TwoPointDiagram.interactionPart
-            (B : Finset (TwoPointVertex S))).card) :=
-  d.pow_card_eq_external_mul_prod_vacuum (-1 : ℂ)
+            (B : Finset (TwoPointVertex S))).card) := by
+  simpa using d.prod_vertexLabel_eq_external_mul_prod_vacuum (fun _ => (-1 : ℂ))
 
 end Common
 end SecondQuantization
