@@ -68,7 +68,7 @@ theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
     ring_nf <;>
     simp only [hI] <;>
     ring_nf <;>
-    linear_combination hsq
+    linear_combination -2 * hsq
 
 /-- Away from the band degeneracy, each `P_s` is idempotent. -/
 theorem bandProjector_mul_self (band : Band) (v m px py : ℝ)
@@ -88,7 +88,7 @@ theorem bandProjector_mul_self (band : Band) (v m px py : ℝ)
     ring_nf <;>
     simp only [hI] <;>
     ring_nf <;>
-    linear_combination hsq
+    linear_combination -2 * hsq
 
 /-- Away from the band degeneracy, the lower and upper projectors are orthogonal. -/
 theorem bandProjector_lower_mul_upper (v m px py : ℝ)
@@ -106,7 +106,7 @@ theorem bandProjector_lower_mul_upper (v m px py : ℝ)
     ring_nf <;>
     simp only [hI] <;>
     ring_nf <;>
-    linear_combination hsq
+    linear_combination -2 * hsq
 
 /-- Away from the band degeneracy, the upper and lower projectors are orthogonal in the opposite
 order as well. -/
@@ -125,7 +125,7 @@ theorem bandProjector_upper_mul_lower (v m px py : ℝ)
     ring_nf <;>
     simp only [hI] <;>
     ring_nf <;>
-    linear_combination hsq
+    linear_combination -2 * hsq
 
 end
 
