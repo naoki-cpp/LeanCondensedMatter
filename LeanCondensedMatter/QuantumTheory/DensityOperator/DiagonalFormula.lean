@@ -94,6 +94,14 @@ theorem DensityOperator.expectation_eq_tsum_diagonal (ρ : DensityOperator H)
     ρ.expectation A = ∑' i, (w i : ℂ) * inner ℂ (b i) (A (b i)) :=
   (ρ.hasSum_expectation_diagonal A b w hρ).tsum_eq.symm
 
+/-- With a finite orthonormal basis, the countable diagonal formula reduces to a finite sum. -/
+theorem DensityOperator.expectation_eq_sum_diagonal {κ : Type*} [Fintype κ]
+    (ρ : DensityOperator H) (A : H →L[ℂ] H) (b : OrthonormalBasis κ ℂ H)
+    (w : κ → ℝ) (hρ : ∀ i, (ρ.op : H →ₗ[ℂ] H) (b i) = (w i : ℂ) • b i) :
+    ρ.expectation A = ∑ i, (w i : ℂ) * inner ℂ (b i) (A (b i)) := by
+  simpa [tsum_fintype] using
+    ρ.expectation_eq_tsum_diagonal A b.toHilbertBasis w (fun i => by simpa using hρ i)
+
 /-- For an observable, the same diagonal formula is a lossless real-valued series. -/
 theorem DensityOperator.hasSum_observableExpectation_diagonal (ρ : DensityOperator H)
     (A : Observable H) (b : HilbertBasis ι ℂ H) (w : ι → ℝ)
