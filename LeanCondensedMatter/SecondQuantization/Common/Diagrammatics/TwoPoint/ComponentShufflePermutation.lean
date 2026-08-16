@@ -62,14 +62,14 @@ noncomputable def twoPointSlotEquiv {n : ℕ} :
 /-- Canonical equivalence between ambient and explicit two-point interaction-time assignments. -/
 noncomputable def twoPointSlotTimeEquiv {n : ℕ} :
     (Fin (Finset.univ : Finset (Fin n)).card → ℝ) ≃ (Fin n → ℝ) where
-  toFun σ := σ ∘ twoPointSlotEquiv
-  invFun σ := σ ∘ twoPointSlotEquiv.symm
+  toFun σ i := σ (Fin.cast (by simp) i)
+  invFun σ i := σ (Fin.cast (by simp) i)
   left_inv σ := by
     funext i
-    exact congrArg σ ((twoPointSlotEquiv (n := n)).apply_symm_apply i)
+    simp
   right_inv σ := by
     funext i
-    exact congrArg σ ((twoPointSlotEquiv (n := n)).symm_apply_apply i)
+    simp
 
 /-- The component-shuffle ambient permutation transported from `Fin univ.card` to the explicit
 interaction-slot type `Fin n` of a standard two-point diagram. -/
