@@ -6,6 +6,7 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.Entropy
 
 When a density operator and a bounded Hamiltonian are diagonal in the same Hilbert basis, their
 energy expectation is the absolutely convergent `tsum` of the corresponding weights and energies.
+The finite-dimensional finite-sum formula is a corollary of this dimension-independent theorem.
 -/
 
 noncomputable section
@@ -34,5 +35,21 @@ theorem energyExpValue_eq_tsum_common_eigenbasis (ρ : DensityOperator H) (Hop :
       inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
     simp
   rw [hdiag]
+
+section FiniteOutcomes
+
+variable [Fintype ι]
+
+/-- For a finite orthonormal basis, the countable common-eigenbasis theorem reduces to the ordinary
+finite weighted sum. -/
+theorem energyExpValue_eq_sum_common_eigenbasis (ρ : DensityOperator H) (Hop : Observable H)
+    (b : OrthonormalBasis ι ℂ H) (w E : ι → ℝ)
+    (hρ : ∀ i, (ρ.op : H →ₗ[ℂ] H) (b i) = (w i : ℂ) • b i)
+    (hE : ∀ i, (Hop.1 : H →ₗ[ℂ] H) (b i) = (E i : ℂ) • b i) :
+    energyExpValue ρ Hop = ∑ i, w i * E i := by
+  simpa using energyExpValue_eq_tsum_common_eigenbasis ρ Hop b.toHilbertBasis w E
+    (fun i => by simpa using hρ i) (fun i => by simpa using hE i)
+
+end FiniteOutcomes
 
 end QuantumTheory
