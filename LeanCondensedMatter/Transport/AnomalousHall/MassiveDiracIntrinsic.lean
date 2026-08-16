@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerrySymmetry
+import LeanCondensedMatter.Transport.AnomousHall.MassiveDiracBerrySymmetry
 import Mathlib.Analysis.SpecialFunctions.Integrals.Basic
 
 set_option linter.style.header false
@@ -66,7 +66,8 @@ theorem energyShellBerryWeight_eq (band : Band) (m ε₀ ε₁ : ℝ)
     integral_zpow (Or.inr ⟨by norm_num, hzero⟩)
   unfold energyShellBerryWeight radialBerryEnergyDensity
   rw [intervalIntegral.integral_const_mul, hzpow]
-  norm_num <;> ring
+  norm_num
+  ring
 
 /-- Filled lower-band Berry weight from the positive gap edge `m` to a finite UV cutoff `Λ`.
 The benchmark in #1269 takes `m > 0`. -/
@@ -84,7 +85,8 @@ theorem valenceBerryWeightCutoff_eq (m Λ : ℝ) (hm : 0 < m) (hmΛ : m ≤ Λ) 
   have hm0 : m ≠ 0 := ne_of_gt hm
   have hΛ0 : Λ ≠ 0 := ne_of_gt (lt_of_lt_of_le hm hmΛ)
   simp
-  field_simp [hm0, hΛ0] <;> ring
+  field_simp [hm0, hΛ0]
+  ring
 
 /-- Metallic upper-band contribution: `m/(2εF) - 1/2`. -/
 theorem conductionBerryWeight_eq (m εF : ℝ) (hm : 0 < m) (hmF : m ≤ εF) :
@@ -93,7 +95,7 @@ theorem conductionBerryWeight_eq (m εF : ℝ) (hm : 0 < m) (hmF : m ≤ εF) :
   have hm0 : m ≠ 0 := ne_of_gt hm
   have hF0 : εF ≠ 0 := ne_of_gt (lt_of_lt_of_le hm hmF)
   simp
-  field_simp [hm0, hF0] <;> ring
+  field_simp [hm0, hF0]
 
 /-- Total occupied-state Berry weight with a finite valence-band ultraviolet cutoff. -/
 def metallicBerryWeightCutoff (m εF Λ : ℝ) : ℝ :=
