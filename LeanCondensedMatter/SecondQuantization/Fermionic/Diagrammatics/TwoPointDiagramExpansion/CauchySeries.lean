@@ -39,7 +39,10 @@ theorem vacuumNormalizedTwoPointDysonSeries_eq_connectedTwoPointDysonSeries
   apply mul_right_cancel₀ hZ
   dsimp [Z] at hZ ⊢
   rw [vacuumNormalizedTwoPointDysonSeries, mul_assoc,
-    PowerSeries.inv_mul_cancel _ hZ, mul_one]
+    PowerSeries.inv_mul_cancel _ (by
+      rw [constantCoeff_normalizeByConstantCoeff_dysonPartitionSeries]
+      exact one_ne_zero),
+    mul_one]
   ext n
   rw [coeff_twoPointDysonSeries, PowerSeries.coeff_mul]
   rw [Finset.Nat.sum_antidiagonal_eq_sum_range_succ_mk]
