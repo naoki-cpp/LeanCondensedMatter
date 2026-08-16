@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsDensityOperator
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointExpectation
+import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 
 set_option linter.style.header false
 
