@@ -62,8 +62,12 @@ theorem mixedTimeOrderedQuarticLegPosition_strictMono_of_strictAnti {n : ℕ}
     mixedTimeOrderedAtomicLegPosition τ τ' σ y
   by_cases hslot : pa.1 = pb.1
   · have hlocal : pa.2 < pb.2 := by
-      apply (orderedQuarticLegEquiv_symm_lt_symm_iff_snd_lt n pa.1 pa.2 pb.2).1
-      simpa [hslot] using hab'
+      have hpa : pa = (pb.1, pa.2) := by
+        apply Prod.ext
+        · exact hslot
+        · rfl
+      rw [hpa] at hab'
+      exact (orderedQuarticLegEquiv_symm_lt_symm_iff_snd_lt n pb.1 pa.2 pb.2).1 hab'
     have hEvent : orderedTwoPointLegEvent x = orderedTwoPointLegEvent y := by
       simp [x, y, hslot, orderedTwoPointLegEvent]
     let event := orderedTwoPointLegEvent x
