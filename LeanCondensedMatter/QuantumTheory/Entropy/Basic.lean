@@ -153,6 +153,19 @@ theorem entropyOp_trace_eq_tsum (ρ : DensityOperator H)
 noncomputable def vonNeumannEntropy (ρ : DensityOperator H) : ENNReal :=
   ∑' a : EigenvectorIndex ρ.op, ENNReal.ofReal (Real.negMulLog a.1.1)
 
+/-- Entropy is finite with real value the entropy `tsum` whenever that sum converges. -/
+theorem vonNeumannEntropy_ne_top_and_toReal_eq_tsum (ρ : DensityOperator H)
+    (hsum : Summable (fun a : EigenvectorIndex ρ.op => Real.negMulLog a.1.1)) :
+    vonNeumannEntropy ρ ≠ ⊤ ∧
+      (vonNeumannEntropy ρ).toReal = ∑' a : EigenvectorIndex ρ.op, Real.negMulLog a.1.1 := by
+  have hnonneg : ∀ a : EigenvectorIndex ρ.op, 0 ≤ Real.negMulLog a.1.1 :=
+    fun a => Real.negMulLog_nonneg (eigenvalue_nonneg ρ a) (density_eigenvalue_le_one ρ a)
+  have hEntropyEq : vonNeumannEntropy ρ =
+      ENNReal.ofReal (∑' a : EigenvectorIndex ρ.op, Real.negMulLog a.1.1) :=
+    (ENNReal.ofReal_tsum_of_nonneg hnonneg hsum).symm
+  refine ⟨by rw [hEntropyEq]; exact ENNReal.ofReal_ne_top, ?_⟩
+  rw [hEntropyEq, ENNReal.toReal_ofReal (tsum_nonneg hnonneg)]
+
 /-- Under finite-entropy summability, entropy is the embedding of the entropy-operator trace. -/
 theorem vonNeumannEntropy_eq_ofReal_entropyOp_trace (ρ : DensityOperator H)
     (hsummable : HasSummableRealEigenvalues (entropyOp ρ)) :
