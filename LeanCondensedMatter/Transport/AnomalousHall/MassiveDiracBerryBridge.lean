@@ -69,9 +69,7 @@ theorem forceMatrixTraceNumerator_im (band : Band) (v m px py : ℝ)
     simp [forceMatrixTraceNumerator, oppositeBand, bandProjector, Matrix.trace, Matrix.mul_apply,
       velocityX, velocityY, hamiltonian, sigmaX, sigmaY, sigmaZ] <;>
     field_simp [hEc] <;>
-    ring_nf <;>
-    simp [Complex.I_mul_I] <;>
-    ring
+    ring_nf
 
 /-- The real two-band force-matrix Berry-curvature expression obtained from the generic formula
 `2 Im(Fˣ_mn Fʸ_nm)/(E_n-E_m)²` after using that the energy denominator is real. -/
@@ -88,8 +86,7 @@ theorem forceMatrixBerryCurvature_eq_berryCurvature (band : Band) (v m px py : �
     interbandEnergyGap_eq]
   cases band <;>
     simp [berryCurvature_upper, berryCurvature_lower] <;>
-    field_simp [hE] <;>
-    ring
+    field_simp [hE]
 
 /-- Upper-band force-matrix curvature reproduces `Ω₊ = -m v²/(2E³)`. -/
 theorem forceMatrixBerryCurvature_upper (v m px py : ℝ)
