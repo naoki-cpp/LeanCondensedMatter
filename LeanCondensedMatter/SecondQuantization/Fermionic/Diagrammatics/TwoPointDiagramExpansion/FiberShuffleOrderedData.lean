@@ -84,16 +84,28 @@ theorem slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum
           (Common.quarticDiagramEquivOrderedData (slotSplitVacuumOrder T) vac)
           (σ ∘ slotSplitVacuumSlot T) := by
   dsimp only
+  have hcontraction :
+      vac.contractionIntegrand ε β (slotSplitVacuumOrder T)
+          (σ ∘ slotSplitVacuumSlot T) =
+        flatVertexLegPairingEvaluation ε β
+          (fun q => vac.vertexLabel (slotSplitVacuumOrder T q))
+          (σ ∘ slotSplitVacuumSlot T)
+          (vac.pairingInOrder (slotSplitVacuumOrder T)) := by
+    simp only [QuarticWickDiagram.contractionIntegrand, flatVertexLegPairingEvaluation,
+      Combinatorics.Pairing.evaluation, flatVertexLegPairValue]
+    refine congrArg
+      (fun z : ℂ =>
+        (vac.pairingInOrder (slotSplitVacuumOrder T)).weight Common.Statistics.fermion * z)
+      (Finset.prod_congr rfl fun pr _ => ?_)
+    rw [orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation,
+      orderedQuarticLegOperator]
   rw [fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_quarticIntegrand
     ε β g T ext hext vac τ τ' σ hσ]
   unfold orderedVacuumDysonIntegrand
   rw [QuarticWickDiagram.couplingWeight,
-    Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order vac g (slotSplitVacuumOrder T)]
-  simp only [QuarticWickDiagram.contractionIntegrand, flatVertexLegPairingEvaluation,
-    Combinatorics.Pairing.evaluation, flatVertexLegPairValue]
-  refine congrArg (_ * ·) (Finset.prod_congr rfl fun pr _ => ?_)
-  rw [orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation,
-    orderedQuarticLegOperator]
+    Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order vac g (slotSplitVacuumOrder T),
+    hcontraction]
+  rfl
 
 /-- Summing the fixed-order Dyson contribution over ordered vacuum data gives the normalized vacuum
 Dyson coefficient.  This is the fixed-order vacuum theorem with the irrelevant ambient vertex set
