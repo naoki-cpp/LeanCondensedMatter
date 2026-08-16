@@ -125,35 +125,26 @@ theorem TwoPointDiagram.canonicalComponentTimeAssignment_univ_eq_iff
           (Finset.univ : Finset (Fin N))))),
         σ v.1 = υ v.1 := by
   rw [d.canonicalComponentTimeAssignment_eq_iff]
+  have hrank : ∀ v : ↥(TwoPointDiagram.interactionPart
+      (B : Finset (TwoPointVertex (Finset.univ : Finset (Fin N))))),
+      Fin.cast (by simp)
+        (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm
+          (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) = v.1 := by
+    intro v
+    calc
+      Fin.cast (by simp)
+          (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm
+            (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) =
+        (d.interactionVertexComponentEquiv.symm ⟨B, v⟩).1 :=
+          finCast_univOrderIsoOfFin_symm _
+      _ = v.1 := d.interactionVertexComponentEquiv_symm_val ⟨B, v⟩
   constructor
   · intro h v
     have hv := h v
-    have hrank :
-        Fin.cast (by simp)
-          (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm
-            (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) = v.1 := by
-      calc
-        Fin.cast (by simp)
-            (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm
-              (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) =
-          (d.interactionVertexComponentEquiv.symm ⟨B, v⟩).1 :=
-            finCast_univOrderIsoOfFin_symm _
-        _ = v.1 := d.interactionVertexComponentEquiv_symm_val ⟨B, v⟩
-    rw [hrank] at hv
+    rw [hrank v] at hv
     exact hv
   · intro h v
-    have hrank :
-        Fin.cast (by simp)
-          (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm
-            (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) = v.1 := by
-      calc
-        Fin.cast (by simp)
-            (((Finset.univ : Finset (Fin N)).orderIsoOfFin rfl).symm
-              (d.interactionVertexComponentEquiv.symm ⟨B, v⟩)) =
-          (d.interactionVertexComponentEquiv.symm ⟨B, v⟩).1 :=
-            finCast_univOrderIsoOfFin_symm _
-        _ = v.1 := d.interactionVertexComponentEquiv_symm_val ⟨B, v⟩
-    rw [hrank]
+    rw [hrank v]
     exact h v
 
 end
