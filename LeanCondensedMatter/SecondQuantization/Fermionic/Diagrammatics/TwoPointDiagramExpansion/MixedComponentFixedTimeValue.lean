@@ -112,7 +112,7 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
       (fun B =>
         ∏ pr : d.1.MixedComponentPair τ τ' σ B,
           mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
-            pr.1.1 pr.1.2)]
+            pr.1.1.1 pr.1.1.2)]
     rw [Finset.prod_mul_distrib]
   rw [hvertex, hpairing]
   unfold FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
