@@ -1,11 +1,11 @@
-import LeanCondensedMatter.QuantumTheory.Entropy.Diagonal
-import LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy
+import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointEntropy
 
 /-!
 # Gibbs-state variational equality
 
 The normalized Gibbs state attains the Helmholtz lower bound. Under the bounded-Hamiltonian API,
-compactness of `exp (-βH)` forces finite dimensionality, so one common energy eigenbasis can be used.
+compactness of `exp (-βH)` forces finite dimensionality, so the generic pure-point Gibbs entropy
+identity applies to a common energy eigenbasis.
 -/
 
 namespace QuantumTheory
@@ -26,68 +26,35 @@ theorem vonNeumannEntropy_gibbsState (Hop : Observable H) (β : ℝ)
   classical
   letI := finiteDimensional_of_gibbsOp_isCompact Hop β hcompact
   let ρ := gibbsState Hop β hcompact hsummable hZ
-  let Z : ℝ := spectralTrace (gibbsOp Hop β)
   let E : Fin (Module.finrank ℂ H) → ℝ :=
     Hop.2.isSymmetric.eigenvalues rfl
   let bE : OrthonormalBasis (Fin (Module.finrank ℂ H)) ℂ H :=
     Hop.2.isSymmetric.eigenvectorBasis rfl
-  let w : Fin (Module.finrank ℂ H) → ℝ := fun i => Real.exp (-β * E i) / Z
-  have hZpos : 0 < Z := by
-    simpa [Z] using spectralTrace_gibbsOp_pos Hop β hZ
   have hEbE (i : Fin (Module.finrank ℂ H)) :
       (Hop.1 : H →ₗ[ℂ] H) (bE i) = (E i : ℂ) • bE i := by
     simpa [E, bE] using Hop.2.isSymmetric.apply_eigenvectorBasis rfl i
+  let hPurePointSummable : PurePointGibbsSummable E β :=
+    purePointGibbsSummable_of_finite E β
+  have hPartition :
+      purePointPartitionFunction E β = spectralTrace (gibbsOp Hop β) :=
+    purePointPartitionFunction_eq_spectralTrace_gibbsOp
+      Hop β hcompact hsummable bE.toHilbertBasis E (fun i => by simpa using hEbE i)
+  have hPartitionPos : 0 < purePointPartitionFunction E β := by
+    rw [hPartition]
+    exact spectralTrace_gibbsOp_pos Hop β hZ
   have hρbE (i : Fin (Module.finrank ℂ H)) :
-      (ρ.op : H →ₗ[ℂ] H) (bE i) = (w i : ℂ) • bE i := by
-    simpa [ρ, w, Z, div_eq_mul_inv, mul_comm] using
+      (ρ.op : H →ₗ[ℂ] H) (bE i) =
+        (purePointGibbsProbability E β i : ℂ) • bE i := by
+    simpa [ρ, purePointGibbsProbability, purePointBoltzmannWeight, hPartition] using
       (gibbsState_apply_eigenvector Hop β hcompact hsummable hZ (hEbE i))
-  have hw_pos (i : Fin (Module.finrank ℂ H)) : 0 < w i := by
-    exact div_pos (Real.exp_pos _) hZpos
-  have hw_sum : ∑ i, w i = 1 := by
-    have hsum :=
-      (ρ.hasSum_diagonal_weights bE.toHilbertBasis w
-        (fun i => by simpa using hρbE i)).tsum_eq
-    simpa only [tsum_fintype] using hsum
-  have hw_nonneg (i : Fin (Module.finrank ℂ H)) : 0 ≤ w i := (hw_pos i).le
-  have hw_le_one (i : Fin (Module.finrank ℂ H)) : w i ≤ 1 :=
-    ρ.diagonal_weight_le_one bE.toHilbertBasis w
-      (fun j => by simpa using hρbE j) hw_nonneg i
-  let hsEntropy := gibbsState_entropyOp_hasSummableRealEigenvalues
-    Hop β hcompact hsummable hZ
-  have hEntropyTrace :
-      (entropyOpSpectralTraceClass ρ hsEntropy).trace =
-        ∑ i, Real.negMulLog (w i) := by
-    have htrace := entropyOpSpectralTraceClass_trace_eq_tsum_diagonal
-      ρ bE.toHilbertBasis w (fun i => by simpa using hρbE i) hsEntropy
-    simpa only [tsum_fintype] using htrace
-  have hEnergy : energyExpValue ρ Hop = ∑ i, w i * E i :=
-    energyExpValue_eq_sum_common_eigenbasis ρ Hop bE w E hρbE hEbE
-  have hEntropyTraceNonneg :
-      0 ≤ (entropyOpSpectralTraceClass ρ hsEntropy).trace := by
-    rw [hEntropyTrace]
-    exact Finset.sum_nonneg fun i _ =>
-      Real.negMulLog_nonneg (hw_nonneg i) (hw_le_one i)
-  have hlogw (i : Fin (Module.finrank ℂ H)) :
-      Real.log (w i) = -β * E i - Real.log Z := by
-    change Real.log (Real.exp (-β * E i) / Z) = -β * E i - Real.log Z
-    rw [Real.log_div (Real.exp_pos _).ne' hZpos.ne', Real.log_exp]
-  have hEntropyExpand :
-      ∑ i, Real.negMulLog (w i) =
-        β * ∑ i, w i * E i + Real.log Z * ∑ i, w i := by
-    have hterm : ∀ i, Real.negMulLog (w i) =
-        β * (w i * E i) + Real.log Z * w i := by
-      intro i
-      rw [Real.negMulLog, hlogw i]
-      ring
-    simp_rw [hterm, Finset.sum_add_distrib, ← Finset.mul_sum]
-  have hEntropyBridge := vonNeumannEntropy_eq_ofReal_entropyOp_trace ρ hsEntropy
+  have hEntropy := vonNeumannEntropy_gibbs_diagonal
+    ρ Hop bE.toHilbertBasis E β hPurePointSummable hPartitionPos
+    (fun i => by simpa using hρbE i) (fun i => by simpa using hEbE i)
+    ρ.entropyOp_hasSummableRealEigenvalues
   change vonNeumannEntropy ρ ≠ ⊤ ∧
-    (vonNeumannEntropy ρ).toReal = β * energyExpValue ρ Hop + Real.log Z
-  constructor
-  · rw [hEntropyBridge]
-    exact ENNReal.ofReal_ne_top
-  · rw [hEntropyBridge, ENNReal.toReal_ofReal hEntropyTraceNonneg,
-      hEntropyTrace, hEnergy, hEntropyExpand, hw_sum, mul_one]
+    (vonNeumannEntropy ρ).toReal =
+      β * energyExpValue ρ Hop + Real.log (spectralTrace (gibbsOp Hop β))
+  simpa [hPartition] using hEntropy
 
 /-- The normalized Gibbs state attains the Helmholtz lower bound exactly. -/
 theorem gibbsState_helmholtzFreeEnergy_eq (Hop : Observable H) (β : ℝ) (hβ : 0 < β)
