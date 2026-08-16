@@ -32,6 +32,7 @@ import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGenerat
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionGeneratorEquation
 import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
 import LeanCondensedMatter.Analysis.Operator.Spectral.BerryConnection
+import LeanCondensedMatter.Analysis.Operator.Spectral.BerryCurvature
 import LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine
 import LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine.Linear
 import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
