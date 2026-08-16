@@ -231,19 +231,6 @@ noncomputable def mixedTimeOrderedAtomicFields {n : ℕ} (i j : Mode)
   (orderedTwoPointTimedEvents τ τ' σ).flatMap
     (twoPointTimedEventAtomicFields i j τ τ' q σ)
 
-private theorem map_timedFieldOperator_flatMap_twoPointTimedEventAtomicFields {n : ℕ}
-    (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
-    (events : List (TwoPointTimedEvent n)) :
-    (events.flatMap (twoPointTimedEventAtomicFields i j τ τ' q σ)).map
-        (timedFieldOperator ε) =
-      events.flatMap (twoPointTimedEventAtomicOperators ε i j τ τ' q σ) := by
-  induction events with
-  | nil => rfl
-  | cons event events ih =>
-      rw [List.flatMap_cons, List.map_append, List.flatMap_cons,
-        map_timedFieldOperator_twoPointTimedEventAtomicFields, ih]
-
 /-- Mapping all mixed-time-ordered field descriptors to operators recovers the atomic operator list. -/
 theorem map_timedFieldOperator_mixedTimeOrderedAtomicFields {n : ℕ}
     (ε : Mode → ℝ) (i j : Mode) (τ τ' : ℝ)
@@ -251,8 +238,11 @@ theorem map_timedFieldOperator_mixedTimeOrderedAtomicFields {n : ℕ}
     (mixedTimeOrderedAtomicFields i j τ τ' q σ).map (timedFieldOperator ε) =
       mixedTimeOrderedAtomicOperators ε i j τ τ' q σ := by
   rw [mixedTimeOrderedAtomicFields, mixedTimeOrderedAtomicOperators]
-  exact map_timedFieldOperator_flatMap_twoPointTimedEventAtomicFields
-    ε i j τ τ' q σ (orderedTwoPointTimedEvents τ τ' σ)
+  induction orderedTwoPointTimedEvents τ τ' σ with
+  | nil => rfl
+  | cons event events ih =>
+      rw [List.flatMap_cons, List.map_append, List.flatMap_cons,
+        map_timedFieldOperator_twoPointTimedEventAtomicFields, ih]
 
 /-- The descriptor list has the same `4n + 2` cardinality as the atomic operator list. -/
 theorem mixedTimeOrderedAtomicFields_length {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
