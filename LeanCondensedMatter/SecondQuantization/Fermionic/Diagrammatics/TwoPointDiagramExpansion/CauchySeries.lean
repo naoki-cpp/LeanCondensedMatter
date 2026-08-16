@@ -1,25 +1,71 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.CauchyCoefficient
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DiagramSumIntegral
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.FiberCauchySum
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.DysonSeries
+import Mathlib.Algebra.BigOperators.Group.Finset.Powerset
 
 set_option linter.style.header false
 
 /-!
-# Power-series form of the two-point linked-cluster theorem
+# Cauchy convolution and power-series linked-cluster theorem
 
-The coefficientwise identity from `CauchyCoefficient` is already the Cauchy product of the connected
-two-point coefficients with the normalized Dyson partition coefficients.  This file identifies that
-second factor with `normalizeByConstantCoeff (dysonPartitionSeries ...)`, lifts the coefficientwise
-identity to an equality of formal power series, and cancels the vacuum series from the existing
-vacuum-normalized two-point series.
-
-No diagrammatic decomposition is introduced here: this is only the formal power-series algebra after
-the canonical external-slot fiber proof.
+The canonical external-slot fiber decomposition first identifies each order-`n` two-point Dyson
+coefficient with the Cauchy convolution of externally connected coefficients and normalized vacuum
+coefficients.  The same module then lifts that coefficientwise identity to formal power series and
+cancels the normalized vacuum series.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
+
+/-- **Coefficientwise linked-cluster Cauchy identity.**
+
+At order `n`, the complete operator-defined two-point Dyson coefficient is the Cauchy convolution of
+the connected two-point coefficients with the normalized vacuum partition coefficients. -/
+theorem twoPointDysonCoefficient_eq_sum_connected_mul_normalizedDysonPartitionCoeff
+    (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
+    (g : QuarticVertexLabel Mode → ℂ) (i j : Mode) (τ τ' : ℝ) (n : ℕ) :
+    twoPointDysonCoefficient (n := n) ε β g i j τ τ' =
+      ∑ m ∈ Finset.range (n + 1),
+        connectedTwoPointDysonCoefficient ε β g i j τ τ' m *
+          normalizedDysonPartitionCoeff ε β (quarticInteraction g) (n - m) := by
+  rw [← twoPointDiagramCoefficient_eq_twoPointDysonCoefficient]
+  classical
+  have slice : ∀ {n m k : ℕ}, m + k = n →
+      (∑ T ∈ Finset.powersetCard m (Finset.univ : Finset (Fin n)),
+        ∑ p : {ext : FixedExternalTwoPointWickDiagramOn Mode n T i j //
+                ext.1.IsExternallyConnected} ×
+              QuarticWickDiagram Mode n
+                ((Finset.univ : Finset (Fin n)) \ T),
+          ((fixedExternalFiberEquiv T).symm p).1.dysonAmplitude ε β g τ τ') =
+        connectedTwoPointDysonCoefficient ε β g i j τ τ' m *
+          normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
+    intro n m k hmk
+    subst n
+    rw [Finset.sum_subtype
+      (p := fun T : Finset (Fin (m + k)) => T.card = m)
+      (Finset.powersetCard m (Finset.univ : Finset (Fin (m + k))))
+      (fun T => by simp)
+      (fun T =>
+        ∑ p : {ext : FixedExternalTwoPointWickDiagramOn Mode (m + k) T i j //
+                ext.1.IsExternallyConnected} ×
+              QuarticWickDiagram Mode (m + k)
+                ((Finset.univ : Finset (Fin (m + k))) \ T),
+          ((fixedExternalFiberEquiv T).symm p).1.dysonAmplitude ε β g τ τ')]
+    exact fixedExternalFiberSum_eq_cauchyFactor
+      ε β hβ g i j τ τ' m k
+  rw [twoPointDiagramCoefficient_eq_sum_dysonAmplitude]
+  rw [sum_eq_sum_powerset_fixedExternalFiber
+    (Mode := Mode) (i := i) (j := j)
+    (F := fun d => d.dysonAmplitude ε β g τ τ')]
+  rw [Finset.sum_powerset]
+  simp only [Finset.card_univ, Fintype.card_fin]
+  apply Finset.sum_congr rfl
+  intro m hm
+  have hmn : m ≤ n := by
+    simpa [Nat.lt_succ_iff] using hm
+  exact slice (Nat.add_sub_of_le hmn)
 
 /-- **Finite-mode fermionic two-point linked-cluster theorem.** For the imaginary-time Dyson series
 built from free Gibbs expectations and a quartic interaction, with the repository's canonical
