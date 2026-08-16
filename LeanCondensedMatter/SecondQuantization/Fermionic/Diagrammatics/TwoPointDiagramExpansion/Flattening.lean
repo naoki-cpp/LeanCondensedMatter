@@ -60,17 +60,6 @@ theorem twoPointTimedEventAtomicOperators_length {n : ℕ} (ε : Mode → ℝ) (
       twoPointTimedEventAtomicArity event := by
   cases event <;> simp [twoPointTimedEventAtomicArity]
 
-omit [LinearOrder Mode] in
-private theorem prodComp_singleton (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    Common.prodComp [A] = A := by
-  rw [Common.prodComp_cons, Common.prodComp_nil, LinearMap.comp_id]
-
-private theorem twoPointTimedEventOperator_external {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
-    (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ) (e : Fin 2) :
-    twoPointTimedEventOperator ε i j τ τ' q σ (Sum.inl e) =
-      externalFieldOperator ε (twoPointExternalTimes τ τ' e) (twoPointExternalLabels i j e) :=
-  rfl
-
 /-- Expanding one mixed event into atomic operators preserves its represented operator product. -/
 theorem prodComp_twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → ℝ) (i j : Mode)
     (τ τ' : ℝ) (q : Fin n → QuarticVertexLabel Mode) (σ : Fin n → ℝ)
@@ -79,8 +68,8 @@ theorem prodComp_twoPointTimedEventAtomicOperators {n : ℕ} (ε : Mode → ℝ)
       twoPointTimedEventOperator ε i j τ τ' q σ event := by
   cases event with
   | inl e =>
-      rw [twoPointTimedEventAtomicOperators_external, twoPointTimedEventOperator_external,
-        prodComp_singleton]
+      rw [twoPointTimedEventAtomicOperators_external]
+      simp [twoPointTimedEventOperator, Common.prodComp]
   | inr v =>
       rw [twoPointTimedEventAtomicOperators_interaction,
         twoPointTimedEventOperator_interaction]
