@@ -26,21 +26,6 @@ open Common
 
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {i j : Mode}
 
-/-- The fixed-order quartic contraction integrand depends on a diagram only through its ordered
-vertex labels and its pairing transported to that same order. -/
-theorem QuarticWickDiagram.contractionIntegrand_eq_pairingEvaluation
-    {N : ℕ} {S : Finset (Fin N)} (d : QuarticWickDiagram Mode N S)
-    (ε : Mode → ℝ) (β : ℝ) (order : Common.QuarticVertexOrder S)
-    (τ : Fin S.card → ℝ) :
-    d.contractionIntegrand ε β order τ =
-      flatVertexLegPairingEvaluation ε β
-        (fun q => d.vertexLabel (order q)) τ (d.pairingInOrder order) := by
-  simp only [QuarticWickDiagram.contractionIntegrand, flatVertexLegPairingEvaluation,
-    Combinatorics.Pairing.evaluation, flatVertexLegPairValue]
-  refine congrArg (_ * ·) (Finset.prod_congr rfl fun pr _ => ?_)
-  rw [orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation,
-    orderedQuarticLegOperator]
-
 /-- The Dyson-signed vacuum integrand written only in fixed ordered quartic data. -/
 noncomputable def orderedVacuumDysonIntegrand
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ) {k : ℕ}
@@ -103,9 +88,12 @@ theorem slotSplitDysonFixedTimeAmplitude_eq_external_mul_orderedVacuum
     ε β g T ext hext vac τ τ' σ hσ]
   unfold orderedVacuumDysonIntegrand
   rw [QuarticWickDiagram.couplingWeight,
-    Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order vac g (slotSplitVacuumOrder T),
-    vac.contractionIntegrand_eq_pairingEvaluation ε β (slotSplitVacuumOrder T)]
-  rfl
+    Common.QuarticDiagram.vertexWeight_eq_prod_vertexLabel_order vac g (slotSplitVacuumOrder T)]
+  simp only [QuarticWickDiagram.contractionIntegrand, flatVertexLegPairingEvaluation,
+    Combinatorics.Pairing.evaluation, flatVertexLegPairValue]
+  refine congrArg (_ * ·) (Finset.prod_congr rfl fun pr _ => ?_)
+  rw [orderedQuarticPairValue_eq_freeGibbsDensityOperator_expectation,
+    orderedQuarticLegOperator]
 
 /-- Summing the fixed-order Dyson contribution over ordered vacuum data gives the normalized vacuum
 Dyson coefficient.  This is the fixed-order vacuum theorem with the irrelevant ambient vertex set
