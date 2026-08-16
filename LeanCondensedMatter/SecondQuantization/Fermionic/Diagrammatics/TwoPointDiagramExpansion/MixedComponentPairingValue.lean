@@ -8,9 +8,9 @@ set_option linter.style.header false
 /-!
 # Component-local mixed-time pairing values
 
-Common owns mixed component pair fibers, crossing counts, and statistics weights. This module combines
-the fermionic component weight with canonical free Gibbs contraction products and feeds that physical
-component value into the fixed-time amplitude.
+Common owns mixed component pair fibers, crossing counts, and statistics weights. This module owns
+the canonical fixed-external pair contraction and combines it with the fermionic component weight
+before feeding the resulting component value into the fixed-time amplitude.
 -/
 
 namespace SecondQuantization
