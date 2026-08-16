@@ -49,15 +49,6 @@ theorem timedFieldPairContraction_eq
     LinearMap.smul_comp, LinearMap.comp_smul, smul_smul,
     Common.finiteGibbsExpectation_smul]
 
-/-- For two fixed field labels, their density-state contraction is jointly continuous in both
-imaginary times. -/
-theorem continuous_timedFieldPairContraction_times
-    (ε : Mode → ℝ) (β : ℝ) (A B : ExternalFieldLabel Mode) :
-    Continuous (fun p : ℝ × ℝ =>
-      timedFieldPairContraction ε β ⟨p.1, A⟩ ⟨p.2, B⟩) := by
-  simp only [timedFieldPairContraction_eq]
-  fun_prop
-
 /-- The field label carried by one fixed standard two-point leg. -/
 def orderedTwoPointLegFieldLabel {n : ℕ} (i j : Mode)
     (q : Fin n → QuarticVertexLabel Mode) :
@@ -167,20 +158,6 @@ theorem mixedTimeOrderedAtomicOperatorFamily_eq_orderedTwoPointLegField
   change timedFieldOperator ε (mixedTimeOrderedAtomicFieldFamily ε i j τ τ' q σ p) = _
   rw [mixedTimeOrderedAtomicFieldFamily_eq_orderedTwoPointLegField]
 
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- The time coordinate of a fixed standard leg varies continuously with the ambient interaction
-assignment. -/
-theorem continuous_orderedTwoPointLegTime {n : ℕ} (τ τ' : ℝ)
-    (leg : OrderedTwoPointLeg n) :
-    Continuous (fun σ : Fin n → ℝ => orderedTwoPointLegTime τ τ' σ leg) := by
-  cases leg with
-  | inl e =>
-      change Continuous (fun _ : Fin n → ℝ => twoPointExternalTimes τ τ' e)
-      fun_prop
-  | inr leg =>
-      change Continuous (fun σ : Fin n → ℝ => σ leg.1.1)
-      fun_prop
-
 /-- Density-state contraction associated with two fixed standard two-point legs. -/
 noncomputable def orderedTwoPointLegPairContraction
     {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
@@ -197,22 +174,10 @@ theorem continuous_orderedTwoPointLegPairContraction
     (q : Fin n → QuarticVertexLabel Mode) (x y : OrderedTwoPointLeg n) :
     Continuous (fun σ : Fin n → ℝ =>
       orderedTwoPointLegPairContraction ε β i j τ τ' q σ x y) := by
-  have hTimes : Continuous (fun σ : Fin n → ℝ =>
-      (orderedTwoPointLegTime τ τ' σ x, orderedTwoPointLegTime τ τ' σ y)) :=
-    (continuous_orderedTwoPointLegTime τ τ' x).prodMk
-      (continuous_orderedTwoPointLegTime τ τ' y)
-  have hContraction :=
-    (continuous_timedFieldPairContraction_times ε β
-      (orderedTwoPointLegFieldLabel i j q x)
-      (orderedTwoPointLegFieldLabel i j q y)).comp hTimes
-  change Continuous
-    ((fun p : ℝ × ℝ =>
-      timedFieldPairContraction ε β
-        ⟨p.1, orderedTwoPointLegFieldLabel i j q x⟩
-        ⟨p.2, orderedTwoPointLegFieldLabel i j q y⟩) ∘
-      fun σ : Fin n → ℝ =>
-        (orderedTwoPointLegTime τ τ' σ x, orderedTwoPointLegTime τ τ' σ y))
-  exact hContraction
+  rcases x with x | x <;> rcases y with y | y <;>
+    simp only [orderedTwoPointLegPairContraction, orderedTwoPointLegField,
+      orderedTwoPointLegTime, orderedTwoPointLegFieldLabel, timedFieldPairContraction_eq] <;>
+    fun_prop
 
 /-- The contraction used by a normalized mixed pair is the globally continuous density-state
 contraction of the two fixed standard legs represented by its endpoints. -/
