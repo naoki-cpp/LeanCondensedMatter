@@ -37,8 +37,8 @@ noncomputable def TwoPointDiagram.mixedComponentGeometricCrossingCount
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B C : d.componentPartition.parts) : ℕ :=
-  ∑ x : d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C,
-    if Crosses x.1.1.1 x.2.1.1 ∨ Crosses x.2.1.1 x.1.1.1 then 1 else 0
+  (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount
+    (d.mixedComponentPairSigmaEquiv τ τ' σ) B C
 
 /-- The geometric crossing count between two components is the sum of its two orientations. -/
 theorem TwoPointDiagram.mixedComponentGeometricCrossingCount_eq_oriented_add
@@ -48,23 +48,8 @@ theorem TwoPointDiagram.mixedComponentGeometricCrossingCount_eq_oriented_add
     d.mixedComponentGeometricCrossingCount τ τ' σ B C =
       d.mixedComponentOrientedCrossingCount τ τ' σ B C +
         d.mixedComponentOrientedCrossingCount τ τ' σ C B := by
-  classical
-  have hswap : d.mixedComponentOrientedCrossingCount τ τ' σ C B =
-      ∑ x : d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C,
-        if Crosses x.2.1.1 x.1.1.1 then 1 else 0 := by
-    rw [TwoPointDiagram.mixedComponentOrientedCrossingCount,
-      Combinatorics.Pairing.componentCrossingCount,
-      ← Equiv.sum_comp (Equiv.prodComm
-        (d.MixedComponentPair τ τ' σ B) (d.MixedComponentPair τ τ' σ C))]
-    rfl
-  rw [TwoPointDiagram.mixedComponentGeometricCrossingCount, hswap,
-    TwoPointDiagram.mixedComponentOrientedCrossingCount,
-    Combinatorics.Pairing.componentCrossingCount, ← Finset.sum_add_distrib]
-  refine Finset.sum_congr rfl fun x _ => ?_
-  by_cases hbc : Crosses x.1.1.1 x.2.1.1
-  · have hcb : ¬ Crosses x.2.1.1 x.1.1.1 := fun h => lt_asymm hbc.1 h.1
-    simp [hbc, hcb]
-  · simp [hbc]
+  exact (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount_eq_oriented_add
+    (d.mixedComponentPairSigmaEquiv τ τ' σ) B C
 
 private theorem TwoPointDiagram.pairingInMixedOrder_crossingCount_mod_two_eq_sum_components
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
