@@ -105,12 +105,14 @@ theorem FixedExternalTwoPointWickDiagram.fixedTimeAmplitude_eq_externalSign_mul_
     rw [d.1.prod_mixedPairValues_eq_external_mul_prod_vacuum τ τ' σ,
       d.pairingInMixedOrder_weight_eq_external_mul_prod_vacuum_unconditional]
     unfold FixedExternalTwoPointWickDiagram.mixedComponentPairingValue
+      FixedExternalTwoPointWickDiagram.mixedPairContractionValue
     rw [← d.1.prod_componentParts_eq_external_mul_prod_vacuum
       (d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ)]
     rw [← d.1.prod_componentParts_eq_external_mul_prod_vacuum
       (fun B =>
         ∏ pr : d.1.MixedComponentPair τ τ' σ B,
-          d.mixedPairContractionValue ε β τ τ' σ pr.1)]
+          mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
+            pr.1.1 pr.1.2)]
     rw [Finset.prod_mul_distrib]
   rw [hvertex, hpairing]
   unfold FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
