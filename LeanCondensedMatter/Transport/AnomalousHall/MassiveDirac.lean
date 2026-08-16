@@ -99,8 +99,11 @@ def momentumMeasurePrefactor (hbar : ℝ) : ℝ :=
 
 /-- A small component representation for the two-band `d` vector. -/
 structure Vec3 where
+  /-- First Cartesian component. -/
   x : ℝ
+  /-- Second Cartesian component. -/
   y : ℝ
+  /-- Third Cartesian component. -/
   z : ℝ
 
 /-- Scalar triple product `a · (b × c)`. -/
