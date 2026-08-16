@@ -127,44 +127,6 @@ section GibbsContractions
 
 variable [Fintype Mode]
 
-/-- Component-local equality of interaction times preserves the canonical density-state contraction
-attached to one normalized pair under canonical pair-time transport. -/
-private theorem mixedPairContractionValue_eq_of_componentTimeEq
-    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
-    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ υ : Fin n → ℝ)
-    (B : d.1.componentPartition.parts) (hTime : d.1.ComponentTimeEq B σ υ)
-    (p : d.1.MixedComponentPair τ τ' σ B) :
-    d.mixedPairContractionValue ε β τ τ' σ p.1 =
-      d.mixedPairContractionValue ε β τ τ' υ
-        (d.1.mixedComponentPairTimeEquiv τ τ' σ υ B p).1 := by
-  let tp := d.1.mixedComponentPairTimeEquiv τ τ' σ υ B p
-  let p0 := d.1.mixedComponentPairEndpointEquiv τ τ' σ B (p, 0)
-  let p1 := d.1.mixedComponentPairEndpointEquiv τ τ' σ B (p, 1)
-  have hEnds :
-      d.1.mixedComponentPairEndpointEquiv τ τ' υ B (tp, 0) =
-          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p0 ∧
-        d.1.mixedComponentPairEndpointEquiv τ τ' υ B (tp, 1) =
-          d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p1 := by
-    simpa [tp, p0, p1] using
-      d.1.mixedComponentPairTimeEquiv_endpoints_eq τ τ' σ υ B hTime p
-  have hOp0 :=
-    mixedTimeOrderedAtomicOperatorFamily_positionTimeEquiv d ε τ τ' σ υ B hTime p0
-  have hOp1 :=
-    mixedTimeOrderedAtomicOperatorFamily_positionTimeEquiv d ε τ τ' σ υ B hTime p1
-  rw [← hEnds.1] at hOp0
-  rw [← hEnds.2] at hOp1
-  have hEndpoint0 :
-      mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ p.1.1.1 =
-        mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence υ tp.1.1.1 := by
-    simpa [p0, tp] using hOp0.symm
-  have hEndpoint1 :
-      mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ p.1.1.2 =
-        mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence υ tp.1.1.2 := by
-    simpa [p1, tp] using hOp1.symm
-  unfold FixedExternalTwoPointWickDiagram.mixedPairContractionValue
-    mixedTimeOrderedAtomicPairValue
-  rw [hEndpoint0, hEndpoint1]
-
 /-- The complete mixed component pairing value depends only on the interaction times of that
 component. -/
 theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_eq_of_componentTimeEq
@@ -175,7 +137,34 @@ theorem FixedExternalTwoPointWickDiagram.mixedComponentPairingValue_eq_of_compon
       d.mixedComponentPairingValue ε β τ τ' υ B :=
   d.mixedComponentPairingValue_eq_of_timeTransport ε β τ τ' σ υ B
     (d.1.mixedComponentCrossingPreserving_of_componentTimeEq τ τ' σ υ B hTime)
-    (fun p => mixedPairContractionValue_eq_of_componentTimeEq d ε β τ τ' σ υ B hTime p)
+    (fun p => by
+      let tp := d.1.mixedComponentPairTimeEquiv τ τ' σ υ B p
+      let p0 := d.1.mixedComponentPairEndpointEquiv τ τ' σ B (p, 0)
+      let p1 := d.1.mixedComponentPairEndpointEquiv τ τ' σ B (p, 1)
+      have hEnds :
+          d.1.mixedComponentPairEndpointEquiv τ τ' υ B (tp, 0) =
+              d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p0 ∧
+            d.1.mixedComponentPairEndpointEquiv τ τ' υ B (tp, 1) =
+              d.1.mixedComponentPositionTimeEquiv τ τ' σ υ B p1 := by
+        simpa [tp, p0, p1] using
+          d.1.mixedComponentPairTimeEquiv_endpoints_eq τ τ' σ υ B hTime p
+      have hOp0 :=
+        mixedTimeOrderedAtomicOperatorFamily_positionTimeEquiv d ε τ τ' σ υ B hTime p0
+      have hOp1 :=
+        mixedTimeOrderedAtomicOperatorFamily_positionTimeEquiv d ε τ τ' σ υ B hTime p1
+      rw [← hEnds.1] at hOp0
+      rw [← hEnds.2] at hOp1
+      have hEndpoint0 :
+          mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ p.1.1.1 =
+            mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence υ tp.1.1.1 := by
+        simpa [p0, tp] using hOp0.symm
+      have hEndpoint1 :
+          mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence σ p.1.1.2 =
+            mixedTimeOrderedAtomicOperatorFamily ε i j τ τ' d.vertexLabelSequence υ tp.1.1.2 := by
+        simpa [p1, tp] using hOp1.symm
+      unfold FixedExternalTwoPointWickDiagram.mixedPairContractionValue
+        mixedTimeOrderedAtomicPairValue
+      rw [hEndpoint0, hEndpoint1])
 
 end GibbsContractions
 
