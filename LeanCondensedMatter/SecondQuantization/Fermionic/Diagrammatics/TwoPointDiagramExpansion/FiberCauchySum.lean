@@ -20,22 +20,6 @@ open Combinatorics
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode] {i j : Mode}
 
 open Classical in
-/-- A sum over the subtype of externally connected fixed-external diagrams is the connected
-coefficient. -/
-private theorem connectedFixedExternalSum_eq_connectedCoefficient
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (i j : Mode) (τ τ' : ℝ) (m : ℕ) :
-    (∑ d : {d : FixedExternalTwoPointWickDiagram Mode m i j // d.1.IsExternallyConnected},
-      d.1.dysonAmplitude ε β g τ τ') =
-      connectedTwoPointDysonCoefficient ε β g i j τ τ' m := by
-  unfold connectedTwoPointDysonCoefficient
-  rw [Finset.sum_subtype
-    (p := fun d : FixedExternalTwoPointWickDiagram Mode m i j => d.1.IsExternallyConnected)
-    _ (fun x => by
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and])
-    (fun d => d.dysonAmplitude ε β g τ τ')]
-
-open Classical in
 /-- **All fibers with external order `m` and vacuum order `k` sum to one Cauchy-product term.** -/
 theorem fixedExternalFiberSum_eq_cauchyFactor
     (ε : Mode → ℝ) (β : ℝ) (hβ : 0 ≤ β)
@@ -155,7 +139,12 @@ theorem fixedExternalFiberSum_eq_cauchyFactor
         _ = _ := (Finset.sum_mul _ _ _).symm
     _ = connectedTwoPointDysonCoefficient ε β g i j τ τ' m *
         normalizedDysonPartitionCoeff ε β (quarticInteraction g) k := by
-      rw [connectedFixedExternalSum_eq_connectedCoefficient,
+      unfold connectedTwoPointDysonCoefficient
+      rw [Finset.sum_subtype
+        (p := fun d : FixedExternalTwoPointWickDiagram Mode m i j => d.1.IsExternallyConnected)
+        _ (fun x => by
+          simp only [Finset.mem_filter, Finset.mem_univ, true_and])
+        (fun d => d.dysonAmplitude ε β g τ τ'),
         sum_orderedVacuumDysonContribution_eq_normalizedDysonPartitionCoeff]
 
 end Fermionic
