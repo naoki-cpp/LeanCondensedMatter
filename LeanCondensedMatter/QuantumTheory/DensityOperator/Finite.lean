@@ -168,7 +168,7 @@ theorem DensityOperator.expectation_eq_sum_diagonal {ι : Type*} [Fintype ι]
     (ρ : DensityOperator H) (A : H →L[ℂ] H) (b : OrthonormalBasis ι ℂ H)
     (w : ι → ℝ) (hρ : ∀ i, (ρ.op : H →ₗ[ℂ] H) (b i) = (w i : ℂ) • b i) :
     ρ.expectation A = ∑ i, (w i : ℂ) * inner ℂ (b i) (A (b i)) := by
-  simpa only [tsum_fintype] using
+  simpa [tsum_fintype] using
     ρ.expectation_eq_tsum_diagonal A b.toHilbertBasis w (fun i => by simpa using hρ i)
 
 /-- In finite dimensions, the ordinary matrix trace `Tr(ρ²)` is the complex embedding of purity. -/
