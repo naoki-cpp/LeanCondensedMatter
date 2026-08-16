@@ -40,21 +40,6 @@ noncomputable def twoPointDysonIntegrand {n : ℕ}
         (Common.finiteHilbertOperator
           (mixedTimeOrderedVertexComp ε i j τ τ' q σ))
 
-/-- Pointwise, the external-leg diagram integrand is the coupling-weighted mixed time-ordered
-canonical density-state expectation. -/
-theorem twoPointDiagramIntegrand_eq_twoPointDysonIntegrand {n : ℕ}
-    (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
-    (i j : Mode) (τ τ' : ℝ) (σ : Fin n → ℝ) :
-    twoPointDiagramIntegrand ε β g i j τ τ' σ =
-      twoPointDysonIntegrand ε β g i j τ τ' σ := by
-  unfold twoPointDiagramIntegrand twoPointDysonIntegrand
-  rw [sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_pairingSum]
-  rw [Finset.mul_sum]
-  apply Finset.sum_congr rfl
-  intro q _
-  rw [freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue]
-  ring
-
 /-- Ordered-simplex contribution of one fixed-external diagram, before the Dyson sign. -/
 noncomputable def FixedExternalTwoPointWickDiagram.orderedSimplexContribution
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
@@ -95,7 +80,13 @@ theorem twoPointDiagramCoefficient_eq_twoPointDysonCoefficient {n : ℕ}
   apply congrArg (fun z : ℂ => (-1 : ℂ) ^ n * z)
   apply intervalIntegral.orderedSimplexIntegral_congr
   intro σ
-  exact twoPointDiagramIntegrand_eq_twoPointDysonIntegrand ε β g i j τ τ' σ
+  unfold twoPointDiagramIntegrand twoPointDysonIntegrand
+  rw [sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_pairingSum]
+  rw [Finset.mul_sum]
+  apply Finset.sum_congr rfl
+  intro q _
+  rw [freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue]
+  ring
 
 end Fermionic
 end SecondQuantization
