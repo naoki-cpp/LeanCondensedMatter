@@ -42,6 +42,18 @@ private theorem mixedComponentPairingValue_local_canonical
         d.1.interactionComponentTimeAssignment
           d.1.canonicalComponentInteractionShuffle υ B :=
     hσυ
+  have hσBack :
+      (fun k : Fin (Finset.univ : Finset (Fin n)).card =>
+        (twoPointSlotTimeEquiv (n := n)) σ (Fin.cast (by simp) k)) = σ := by
+    funext k
+    change σ ((twoPointSlotEquiv (n := n)) (Fin.cast (by simp) k)) = σ k
+    congr 1
+  have hυBack :
+      (fun k : Fin (Finset.univ : Finset (Fin n)).card =>
+        (twoPointSlotTimeEquiv (n := n)) υ (Fin.cast (by simp) k)) = υ := by
+    funext k
+    change υ ((twoPointSlotEquiv (n := n)) (Fin.cast (by simp) k)) = υ k
+    congr 1
   have hVertices :
       ∀ v : ↥(Common.TwoPointDiagram.interactionPart
         (B : Finset (Common.TwoPointVertex (Finset.univ : Finset (Fin n))))),
@@ -50,7 +62,7 @@ private theorem mixedComponentPairingValue_local_canonical
     apply (d.1.canonicalComponentTimeAssignment_univ_eq_iff
       ((twoPointSlotTimeEquiv (n := n)) σ)
       ((twoPointSlotTimeEquiv (n := n)) υ) B).mp
-    simpa [twoPointSlotTimeEquiv, twoPointSlotEquiv] using hRestricted
+    simpa only [hσBack, hυBack] using hRestricted
   intro v hv
   exact hVertices ⟨v, hv⟩
 
