@@ -39,11 +39,10 @@ noncomputable def bandProjectorOperator (band : Band) (v m px py : ℝ) :
 theorem bandProjectorOperator_lower_add_upper (v m px py : ℝ) :
     bandProjectorOperator .lower v m px py +
         bandProjectorOperator .upper v m px py = 1 := by
-  change matrixOperator (bandProjector .lower v m px py) +
-      matrixOperator (bandProjector .upper v m px py) = 1
-  rw [← map_add]
-  rw [bandProjector_lower_add_upper]
-  exact map_one _
+  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
+  change φ (bandProjector .lower v m px py) +
+      φ (bandProjector .upper v m px py) = 1
+  simpa using congrArg φ (bandProjector_lower_add_upper v m px py)
 
 /-- The Hamiltonian acts on each operator projector with its band energy. -/
 theorem hamiltonianOperator_mul_bandProjectorOperator
@@ -51,11 +50,10 @@ theorem hamiltonianOperator_mul_bandProjectorOperator
     hamiltonianOperator v m px py * bandProjectorOperator band v m px py =
       (((bandEnergy band v m px py : ℝ) : ℂ)) •
         bandProjectorOperator band v m px py := by
-  change matrixOperator (hamiltonian v m px py) *
-      matrixOperator (bandProjector band v m px py) = _
-  rw [← map_mul]
-  rw [hamiltonian_mul_bandProjector band v m px py hE]
-  exact map_smul _ _ _
+  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
+  change φ (hamiltonian v m px py) * φ (bandProjector band v m px py) =
+      (((bandEnergy band v m px py : ℝ) : ℂ)) • φ (bandProjector band v m px py)
+  simpa using congrArg φ (hamiltonian_mul_bandProjector band v m px py hE)
 
 /-- Multiplying one spectral projector by the shifted Hamiltonian gives its scalar spectral
 factor. -/
@@ -86,7 +84,7 @@ theorem shiftedHamiltonian_mul_projectorResolvent
     (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert) z - hamiltonianOperator v m px py) *
         projectorResolvent z v m px py = 1 := by
   rw [projectorResolvent, mul_add]
-  rw [mul_smul, mul_smul]
+  rw [mul_smul_comm, mul_smul_comm]
   rw [shiftedHamiltonian_mul_bandProjectorOperator z .lower v m px py hE]
   rw [shiftedHamiltonian_mul_bandProjectorOperator z .upper v m px py hE]
   rw [smul_smul, smul_smul]
@@ -95,90 +93,90 @@ theorem shiftedHamiltonian_mul_projectorResolvent
 
 /-- Positive retarded broadening keeps the spectral parameter away from either real band energy. -/
 theorem retardedSpectralParameter_sub_bandEnergy_ne_zero
-    (band : Band) (v m px py energy broadening : ℝ) (hbroadening : 0 < broadening) :
-    retardedSpectralParameter energy broadening -
+    (band : Band) (v m px py probeEnergy broadening : ℝ) (hbroadening : 0 < broadening) :
+    retardedSpectralParameter probeEnergy broadening -
         ((bandEnergy band v m px py : ℝ) : ℂ) ≠ 0 := by
   intro hzero
-  have him := congrArg Complex.im hzero
-  simp [retardedSpectralParameter] at him
+  have him : broadening = 0 := by
+    simpa [retardedSpectralParameter] using congrArg Complex.im hzero
   exact (ne_of_gt hbroadening) him
 
 /-- Positive advanced broadening keeps the spectral parameter away from either real band energy. -/
 theorem advancedSpectralParameter_sub_bandEnergy_ne_zero
-    (band : Band) (v m px py energy broadening : ℝ) (hbroadening : 0 < broadening) :
-    advancedSpectralParameter energy broadening -
+    (band : Band) (v m px py probeEnergy broadening : ℝ) (hbroadening : 0 < broadening) :
+    advancedSpectralParameter probeEnergy broadening -
         ((bandEnergy band v m px py : ℝ) : ℂ) ≠ 0 := by
   intro hzero
-  have him := congrArg Complex.im hzero
-  simp [advancedSpectralParameter] at him
-  exact (ne_of_gt hbroadening) (neg_ne_zero.mp him)
+  have him : broadening = 0 := by
+    simpa [advancedSpectralParameter] using congrArg Complex.im hzero
+  exact (ne_of_gt hbroadening) him
 
 /-- The generic retarded resolvent equals the gauge-free two-projector spectral expansion. -/
 theorem retardedResolvent_eq_projectorResolvent
-    (v m px py energy broadening : ℝ)
+    (v m px py probeEnergy broadening : ℝ)
     (hE : energy v m px py ≠ 0) (hbroadening : 0 < broadening) :
-    retardedResolvent (hamiltonianOperator v m px py) energy broadening =
-      projectorResolvent (retardedSpectralParameter energy broadening) v m px py := by
+    retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
+      projectorResolvent (retardedSpectralParameter probeEnergy broadening) v m px py := by
   let shift : DiracHilbert →L[ℂ] DiracHilbert :=
     algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert)
-        (retardedSpectralParameter energy broadening) - hamiltonianOperator v m px py
-  let candidate := projectorResolvent (retardedSpectralParameter energy broadening) v m px py
+        (retardedSpectralParameter probeEnergy broadening) - hamiltonianOperator v m px py
+  let candidate := projectorResolvent (retardedSpectralParameter probeEnergy broadening) v m px py
   have hleft : shift * candidate = 1 := by
     exact shiftedHamiltonian_mul_projectorResolvent
-      (retardedSpectralParameter energy broadening) v m px py hE
+      (retardedSpectralParameter probeEnergy broadening) v m px py hE
       (retardedSpectralParameter_sub_bandEnergy_ne_zero
-        .lower v m px py energy broadening hbroadening)
+        .lower v m px py probeEnergy broadening hbroadening)
       (retardedSpectralParameter_sub_bandEnergy_ne_zero
-        .upper v m px py energy broadening hbroadening)
+        .upper v m px py probeEnergy broadening hbroadening)
   have hright :
-      retardedResolvent (hamiltonianOperator v m px py) energy broadening * shift = 1 := by
+      retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening * shift = 1 := by
     exact resolvent_mul_retardedShift
       (hamiltonianOperator v m px py)
       (hamiltonianOperator_isSelfAdjoint v m px py)
-      energy broadening hbroadening
+      probeEnergy broadening hbroadening
   calc
-    retardedResolvent (hamiltonianOperator v m px py) energy broadening =
-        retardedResolvent (hamiltonianOperator v m px py) energy broadening * 1 := by simp
-    _ = retardedResolvent (hamiltonianOperator v m px py) energy broadening *
+    retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
+        retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening * 1 := by simp
+    _ = retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening *
         (shift * candidate) := by rw [hleft]
-    _ = (retardedResolvent (hamiltonianOperator v m px py) energy broadening * shift) *
+    _ = (retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening * shift) *
         candidate := by rw [mul_assoc]
     _ = candidate := by rw [hright, one_mul]
-    _ = projectorResolvent (retardedSpectralParameter energy broadening) v m px py := rfl
+    _ = projectorResolvent (retardedSpectralParameter probeEnergy broadening) v m px py := rfl
 
 /-- The generic advanced resolvent equals the same projector expansion at the advanced spectral
 parameter. -/
 theorem advancedResolvent_eq_projectorResolvent
-    (v m px py energy broadening : ℝ)
+    (v m px py probeEnergy broadening : ℝ)
     (hE : energy v m px py ≠ 0) (hbroadening : 0 < broadening) :
-    advancedResolvent (hamiltonianOperator v m px py) energy broadening =
-      projectorResolvent (advancedSpectralParameter energy broadening) v m px py := by
+    advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
+      projectorResolvent (advancedSpectralParameter probeEnergy broadening) v m px py := by
   let shift : DiracHilbert →L[ℂ] DiracHilbert :=
     algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert)
-        (advancedSpectralParameter energy broadening) - hamiltonianOperator v m px py
-  let candidate := projectorResolvent (advancedSpectralParameter energy broadening) v m px py
+        (advancedSpectralParameter probeEnergy broadening) - hamiltonianOperator v m px py
+  let candidate := projectorResolvent (advancedSpectralParameter probeEnergy broadening) v m px py
   have hleft : shift * candidate = 1 := by
     exact shiftedHamiltonian_mul_projectorResolvent
-      (advancedSpectralParameter energy broadening) v m px py hE
+      (advancedSpectralParameter probeEnergy broadening) v m px py hE
       (advancedSpectralParameter_sub_bandEnergy_ne_zero
-        .lower v m px py energy broadening hbroadening)
+        .lower v m px py probeEnergy broadening hbroadening)
       (advancedSpectralParameter_sub_bandEnergy_ne_zero
-        .upper v m px py energy broadening hbroadening)
+        .upper v m px py probeEnergy broadening hbroadening)
   have hright :
-      advancedResolvent (hamiltonianOperator v m px py) energy broadening * shift = 1 := by
+      advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening * shift = 1 := by
     exact resolvent_mul_advancedShift
       (hamiltonianOperator v m px py)
       (hamiltonianOperator_isSelfAdjoint v m px py)
-      energy broadening hbroadening
+      probeEnergy broadening hbroadening
   calc
-    advancedResolvent (hamiltonianOperator v m px py) energy broadening =
-        advancedResolvent (hamiltonianOperator v m px py) energy broadening * 1 := by simp
-    _ = advancedResolvent (hamiltonianOperator v m px py) energy broadening *
+    advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening =
+        advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening * 1 := by simp
+    _ = advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening *
         (shift * candidate) := by rw [hleft]
-    _ = (advancedResolvent (hamiltonianOperator v m px py) energy broadening * shift) *
+    _ = (advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening * shift) *
         candidate := by rw [mul_assoc]
     _ = candidate := by rw [hright, one_mul]
-    _ = projectorResolvent (advancedSpectralParameter energy broadening) v m px py := rfl
+    _ = projectorResolvent (advancedSpectralParameter probeEnergy broadening) v m px py := rfl
 
 end
 
