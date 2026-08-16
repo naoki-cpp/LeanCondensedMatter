@@ -229,8 +229,7 @@ theorem hamiltonian_mul_self (v m px py : ℝ) :
   fin_cases i <;> fin_cases j <;>
     simp [Matrix.mul_apply, hamiltonian, sigmaX, sigmaY, sigmaZ, energySq] <;>
     ring_nf <;>
-    simp [hI] <;>
-    ring
+    simp [hI]
 
 @[simp] theorem bandSign_lower : bandSign .lower = -1 := rfl
 @[simp] theorem bandSign_upper : bandSign .upper = 1 := rfl
@@ -246,8 +245,7 @@ theorem hamiltonian_mul_self (v m px py : ℝ) :
 /-- The massive-Dirac `d`-vector Jacobian contributes `m v²`. -/
 theorem scalarTriple_dirac (v m px py : ℝ) :
     scalarTriple (dVector v m px py) (dMomentumX v) (dMomentumY v) = m * v ^ 2 := by
-  simp [scalarTriple, dVector, dMomentumX, dMomentumY]
-  ring
+  simp [scalarTriple, dVector, dMomentumX, dMomentumY, pow_two]
 
 /-- Upper-band Berry curvature `Ω₊ = -m v²/(2E³)`. -/
 theorem berryCurvature_upper (v m px py : ℝ) :
