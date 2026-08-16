@@ -174,7 +174,7 @@ theorem sum_slotShuffleDysonIntegral_eq_external_mul_orderedVacuum
       ((-1 : ℂ) ^ k * (∏ q : Fin k, g (x.1 q)))).mul
       (intervalIntegral.Continuous.measurableLocallyBounded
         (continuous_flatVertexLegPairingEvaluation ε β x.1 x.2))
-  simpa [FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude,
+  simpa only [FixedExternalTwoPointWickDiagram.dysonFixedTimeAmplitude,
     FixedExternalTwoPointWickDiagram.dysonAmplitude,
     FixedExternalTwoPointWickDiagram.orderedSimplexContribution,
     orderedVacuumDysonIntegrand, intervalIntegral.orderedSimplexIntegral_smul] using
