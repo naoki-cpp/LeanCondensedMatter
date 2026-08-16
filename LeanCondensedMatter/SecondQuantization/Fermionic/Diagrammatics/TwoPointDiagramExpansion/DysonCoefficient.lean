@@ -20,6 +20,8 @@ diagram amplitude is continuous.  It is discharged under measurable local bounde
 namespace SecondQuantization
 namespace Fermionic
 
+open Combinatorics
+
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- The pointwise sum of fixed-time amplitudes over diagrams with the external labels fixed to
@@ -77,8 +79,47 @@ theorem twoPointDiagramCoefficient_eq_twoPointDysonCoefficient {n : ℕ}
   apply intervalIntegral.orderedSimplexIntegral_congr
   intro σ
   unfold twoPointDiagramIntegrand
-  rw [sum_fixedExternalTwoPointWickDiagram_fixedTimeAmplitude_eq_pairingSum]
-  rw [Finset.mul_sum]
+  have hsum :
+      (∑ d : FixedExternalTwoPointWickDiagram Mode n i j,
+          d.fixedTimeAmplitude ε β g τ τ' σ) =
+        twoPointExternalOrderSign τ τ' *
+          ∑ q : Fin n → QuarticVertexLabel Mode,
+            orderedTwoPointVertexWeight g q *
+              ∑ pairing : Pairing (2 * n + 1),
+                orderedTwoPointPairingValue ε β i j τ τ' σ q pairing := by
+    calc
+      (∑ d : FixedExternalTwoPointWickDiagram Mode n i j,
+          d.fixedTimeAmplitude ε β g τ τ' σ) =
+        ∑ x : OrderedTwoPointWickDiagramData Mode n,
+          orderedTwoPointFixedTimeAmplitude ε β g i j τ τ' σ x := by
+        simpa [FixedExternalTwoPointWickDiagram.fixedTimeAmplitude] using
+          (Equiv.sum_comp
+            (fixedExternalTwoPointWickDiagramEquivOrderedData i j τ τ' σ)
+            (orderedTwoPointFixedTimeAmplitude ε β g i j τ τ' σ))
+      _ = ∑ q : Fin n → QuarticVertexLabel Mode,
+          ∑ pairing : Pairing (2 * n + 1),
+            orderedTwoPointFixedTimeAmplitude ε β g i j τ τ' σ (q, pairing) :=
+        Fintype.sum_prod_type _
+      _ = ∑ q : Fin n → QuarticVertexLabel Mode,
+          (twoPointExternalOrderSign τ τ' * orderedTwoPointVertexWeight g q) *
+            ∑ pairing : Pairing (2 * n + 1),
+              orderedTwoPointPairingValue ε β i j τ τ' σ q pairing := by
+        apply Finset.sum_congr rfl
+        intro q _
+        rw [Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro pairing _
+        rfl
+      _ = twoPointExternalOrderSign τ τ' *
+          ∑ q : Fin n → QuarticVertexLabel Mode,
+            orderedTwoPointVertexWeight g q *
+              ∑ pairing : Pairing (2 * n + 1),
+                orderedTwoPointPairingValue ε β i j τ τ' σ q pairing := by
+        rw [Finset.mul_sum]
+        apply Finset.sum_congr rfl
+        intro q _
+        ring
+  rw [hsum, Finset.mul_sum]
   apply Finset.sum_congr rfl
   intro q _
   rw [freeGibbsDensityOperator_expectation_mixedTimeOrderedVertexComp_eq_sum_pairingValue]
