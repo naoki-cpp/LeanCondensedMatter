@@ -21,7 +21,7 @@ variable {α M : Type*} [DecidableEq α] [CommMonoid M] {s : Finset α}
 /-- Decompose a finite source set into subfinsets classified by the parts of `π` after applying
 `f`. The family `fiber B` may live in a different ambient type from the partition itself; it only
 needs to describe exactly the source elements whose images lie in `B`. -/
-noncomputable def equivSigmaSubfinsets {β : Type*} [DecidableEq β]
+noncomputable def equivSigmaSubfinsets {β : Type*}
     (π : Finpartition s) (t : Finset β) (f : ↥t → α)
     (hf : ∀ x, f x ∈ s)
     (fiber : π.parts → Finset β)
