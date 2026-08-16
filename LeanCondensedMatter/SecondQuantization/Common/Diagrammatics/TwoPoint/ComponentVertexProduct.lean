@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.FinpartitionProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentDecomposition
 
 set_option linter.style.header false
@@ -6,7 +7,7 @@ set_option linter.style.header false
 # Vertex products over external and vacuum components of two-point diagrams
 
 The interaction vertices of a two-point diagram are canonically equivalent to the dependent sum of
-the interaction parts of all full external-plus-interaction components.  Reindexing finite products
+the interaction parts of all full external-plus-interaction components. Reindexing finite products
 along this equivalence and then separating the unique external component from the vacuum components
 gives the coupling-weight and Dyson-sign factorization needed before the contraction factors are
 added.
@@ -17,50 +18,19 @@ namespace Common
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
 
-/-- The full diagram component containing one interaction vertex. -/
-private noncomputable def TwoPointDiagram.interactionVertexComponent
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (v : ↥S) : d.componentPartition.parts :=
-  ⟨d.componentBlock (Sum.inr v),
-    d.componentBlock_mem_componentPartition (Sum.inr v)⟩
-
-/-- One fiber of `interactionVertexComponent` is exactly the interaction part of that full
-component. -/
-private noncomputable def TwoPointDiagram.interactionVertexFiberEquiv
-    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
-    (B : d.componentPartition.parts) :
-    {v : ↥S // d.interactionVertexComponent v = B} ≃
-      ↥(TwoPointDiagram.interactionPart (B : Finset (TwoPointVertex S))) where
-  toFun v := by
-    refine ⟨v.1.1, ?_⟩
-    apply (TwoPointDiagram.mem_interactionPart_subtype
-      (B : Finset (TwoPointVertex S)) v.1).2
-    apply (d.componentBlock_eq_iff_mem B.2 (Sum.inr v.1)).1
-    exact congrArg Subtype.val v.2
-  invFun v := by
-    let vS : ↥S :=
-      ⟨v.1, TwoPointDiagram.interactionPart_subset
-        (B : Finset (TwoPointVertex S)) v.2⟩
-    refine ⟨vS, ?_⟩
-    apply Subtype.ext
-    apply (d.componentBlock_eq_iff_mem B.2 (Sum.inr vS)).2
-    exact (TwoPointDiagram.mem_interactionPart_subtype
-      (B : Finset (TwoPointVertex S)) vS).1 v.2
-  left_inv v := by
-    apply Subtype.ext
-    rfl
-  right_inv v := by
-    apply Subtype.ext
-    rfl
-
 /-- Interaction vertices are the dependent disjoint union of the interaction parts of all full
 components. -/
 noncomputable def TwoPointDiagram.interactionVertexComponentEquiv
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
     ↥S ≃ Σ B : d.componentPartition.parts,
       ↥(TwoPointDiagram.interactionPart (B : Finset (TwoPointVertex S))) :=
-  (Equiv.sigmaFiberEquiv d.interactionVertexComponent).symm.trans
-    (Equiv.sigmaCongrRight fun B => d.interactionVertexFiberEquiv B)
+  d.componentPartition.equivSigmaSubfinsets S
+    (fun v => (Sum.inr v : TwoPointVertex S))
+    (fun _ => Finset.mem_univ _)
+    (fun B => TwoPointDiagram.interactionPart (B : Finset (TwoPointVertex S)))
+    (fun B => TwoPointDiagram.interactionPart_subset (B : Finset (TwoPointVertex S)))
+    (fun B v => TwoPointDiagram.mem_interactionPart_subtype
+      (B : Finset (TwoPointVertex S)) v)
 
 @[simp]
 theorem TwoPointDiagram.interactionVertexComponentEquiv_symm_val
