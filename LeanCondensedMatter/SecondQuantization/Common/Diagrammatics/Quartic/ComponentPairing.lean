@@ -61,9 +61,13 @@ theorem QuarticDiagram.componentOrderedLeg_strictMono {S : Finset (Fin N)}
       (shuffle.slotEquiv ⟨B, pb.1⟩, pb.2)
   by_cases hslot : pa.1 = pb.1
   · have hlocal : pa.2 < pb.2 := by
-      apply (orderedQuarticLegEquiv_symm_lt_symm_iff_snd_lt
-        (B : Finset (Fin N)).card pa.1 pa.2 pb.2).1
-      simpa [hslot] using hab'
+      have hpa : pa = (pb.1, pa.2) := by
+        apply Prod.ext
+        · exact hslot
+        · rfl
+      rw [hpa] at hab'
+      exact (orderedQuarticLegEquiv_symm_lt_symm_iff_snd_lt
+        (B : Finset (Fin N)).card pb.1 pa.2 pb.2).1 hab'
     have hmap : shuffle.slotEquiv ⟨B, pa.1⟩ = shuffle.slotEquiv ⟨B, pb.1⟩ := by
       rw [hslot]
     rw [hmap]
