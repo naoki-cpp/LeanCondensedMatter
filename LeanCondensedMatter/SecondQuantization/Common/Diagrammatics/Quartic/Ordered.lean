@@ -55,10 +55,14 @@ theorem orderedQuarticLegEquiv_symm_lt_symm_iff_fst_lt_of_ne
   omega
 
 /-- Flattened quartic legs in the same vertex-slot block are ordered by their local leg indices. -/
-theorem orderedQuarticLegEquiv_symm_lt_symm_iff_snd_lt
-    (n : ℕ) (i : Fin n) (a b : Fin 4) :
-    (orderedQuarticLegEquiv n).symm (i, a) <
-        (orderedQuarticLegEquiv n).symm (i, b) ↔ a < b := by
+theorem orderedQuarticLegEquiv_symm_lt_symm_iff_snd_lt_of_fst_eq
+    (n : ℕ) (p q : Fin n × Fin 4) (h : p.1 = q.1) :
+    (orderedQuarticLegEquiv n).symm p <
+        (orderedQuarticLegEquiv n).symm q ↔ p.2 < q.2 := by
+  rcases p with ⟨i, a⟩
+  rcases q with ⟨j, b⟩
+  change i = j at h
+  subst j
   have hp' : ((orderedQuarticLegEquiv n).symm (i, a)).val = a.val + 4 * i.val := by
     simp [orderedQuarticLegEquiv, finProdFinEquiv]
   have hq' : ((orderedQuarticLegEquiv n).symm (i, b)).val = b.val + 4 * i.val := by
