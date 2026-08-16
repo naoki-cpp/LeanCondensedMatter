@@ -40,16 +40,15 @@ theorem fixedExternalOfSlotSplit_dysonFixedTimeAmplitude_eq_externalPiece_mul_qu
   change d.dysonFixedTimeAmplitude ε β g τ τ' σ = _
   rw [d.dysonFixedTimeAmplitude_eq_external_mul_prod_vacuum ε β g τ τ' σ,
     d.mixedExternalDysonFixedTimeValue_eq_externalPiece ε β g τ τ' σ]
-  have hvac :
-      d.1.vacuumComponentParts.prod
-          (d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ) =
-        (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g *
-          vac.contractionIntegrand ε β (slotSplitVacuumOrder T)
-            (σ ∘ slotSplitVacuumSlot T) := by
+  rw [show
+    d.1.vacuumComponentParts.prod
+        (d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ) =
+      (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g *
+        vac.contractionIntegrand ε β (slotSplitVacuumOrder T)
+          (σ ∘ slotSplitVacuumSlot T) by
     simpa [d] using
       (fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegrand
-        ε β g T ext hext vac τ τ' σ hσ)
-  rw [hvac]
+        ε β g T ext hext vac τ τ' σ hσ)]
 
 end Fermionic
 end SecondQuantization
