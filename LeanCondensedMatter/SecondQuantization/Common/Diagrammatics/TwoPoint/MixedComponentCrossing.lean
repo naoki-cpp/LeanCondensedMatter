@@ -37,8 +37,8 @@ noncomputable def TwoPointDiagram.mixedComponentGeometricCrossingCount
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ : Fin n → ℝ) (B C : d.componentPartition.parts) : ℕ :=
-  (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount
-    (d.mixedComponentPairSigmaEquiv τ τ' σ) B C
+  ∑ x : d.MixedComponentPair τ τ' σ B × d.MixedComponentPair τ τ' σ C,
+    if Crosses x.1.1.1 x.2.1.1 ∨ Crosses x.2.1.1 x.1.1.1 then 1 else 0
 
 /-- The geometric crossing count between two components is the sum of its two orientations. -/
 theorem TwoPointDiagram.mixedComponentGeometricCrossingCount_eq_oriented_add
@@ -48,8 +48,11 @@ theorem TwoPointDiagram.mixedComponentGeometricCrossingCount_eq_oriented_add
     d.mixedComponentGeometricCrossingCount τ τ' σ B C =
       d.mixedComponentOrientedCrossingCount τ τ' σ B C +
         d.mixedComponentOrientedCrossingCount τ τ' σ C B := by
-  exact (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount_eq_oriented_add
-    (d.mixedComponentPairSigmaEquiv τ τ' σ) B C
+  simpa only [TwoPointDiagram.mixedComponentGeometricCrossingCount,
+    Pairing.componentGeometricCrossingCount,
+    TwoPointDiagram.mixedComponentOrientedCrossingCount] using
+    (d.pairingInMixedOrder τ τ' σ).componentGeometricCrossingCount_eq_oriented_add
+      (d.mixedComponentPairSigmaEquiv τ τ' σ) B C
 
 private theorem TwoPointDiagram.pairingInMixedOrder_crossingCount_mod_two_eq_sum_components
     {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
