@@ -146,7 +146,7 @@ theorem helmholtzFreeEnergy_eq_components
       (fun a => β * (p a * h a) + p a * Real.log Z - p a + q a / Z) :=
     ((hph_summable.mul_left β).add hplogZ_summable).sub hp_summable |>.add hqZ_summable
   have hnegMulLog_nonneg : ∀ a, 0 ≤ Real.negMulLog (p a) :=
-    fun a => Real.negMulLog_nonneg (eigenvalue_nonneg ρ a) (eigenvalue_le_one ρ a)
+    fun a => Real.negMulLog_nonneg (eigenvalue_nonneg ρ a) (density_eigenvalue_le_one ρ a)
   obtain ⟨hnML_summable, hsum_le⟩ :=
     summable_and_tsum_le_of_nonneg_of_le hnegMulLog_nonneg hbound hB_summable
   obtain ⟨-, hToReal⟩ :=
