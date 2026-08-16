@@ -223,10 +223,14 @@ theorem energy_sq (v m px py : ℝ) :
 theorem hamiltonian_mul_self (v m px py : ℝ) :
     hamiltonian v m px py * hamiltonian v m px py =
       ((energySq v m px py : ℝ) : ℂ) • (1 : Matrix2) := by
+  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
+    rw [pow_two, Complex.I_mul_I]
   ext i j
   fin_cases i <;> fin_cases j <;>
-    simp [Matrix.mul_apply, hamiltonian, sigmaX, sigmaY, sigmaZ, energySq,
-      pow_two, Complex.I_mul_I] <;> ring
+    simp [Matrix.mul_apply, hamiltonian, sigmaX, sigmaY, sigmaZ, energySq] <;>
+    ring_nf <;>
+    simp [hI] <;>
+    ring
 
 @[simp] theorem bandSign_lower : bandSign .lower = -1 := rfl
 @[simp] theorem bandSign_upper : bandSign .upper = 1 := rfl
@@ -249,19 +253,13 @@ theorem scalarTriple_dirac (v m px py : ℝ) :
 theorem berryCurvature_upper (v m px py : ℝ) :
     berryCurvature .upper v m px py =
       -(m * v ^ 2) / (2 * energy v m px py ^ 3) := by
-  unfold berryCurvature
-  rw [scalarTriple_dirac]
-  simp only [bandSign_upper, twoBandCurvatureFromTriple]
-  ring
+  simp [berryCurvature, twoBandCurvatureFromTriple, scalarTriple_dirac]
 
 /-- Lower-band Berry curvature `Ω₋ = +m v²/(2E³)`. -/
 theorem berryCurvature_lower (v m px py : ℝ) :
     berryCurvature .lower v m px py =
       (m * v ^ 2) / (2 * energy v m px py ^ 3) := by
-  unfold berryCurvature
-  rw [scalarTriple_dirac]
-  simp only [bandSign_lower, twoBandCurvatureFromTriple]
-  ring
+  simp [berryCurvature, twoBandCurvatureFromTriple, scalarTriple_dirac]
 
 end
 
