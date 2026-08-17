@@ -19,11 +19,4 @@ thermodynamic specialization of `DensityOperator.observableExpectation`. -/
 noncomputable def energyExpValue (ρ : DensityOperator H) (Hop : Observable H) : ℝ :=
   ρ.observableExpectation Hop
 
-/-- Energy expectation is definitionally the generic real observable expectation. -/
-@[simp]
-theorem energyExpValue_eq_observableExpectation
-    (ρ : DensityOperator H) (Hop : Observable H) :
-    energyExpValue ρ Hop = ρ.observableExpectation Hop :=
-  rfl
-
 end QuantumTheory
