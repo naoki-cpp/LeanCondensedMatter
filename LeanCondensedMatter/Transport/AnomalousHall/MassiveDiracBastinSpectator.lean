@@ -19,7 +19,7 @@ namespace AnomalousHall.MassiveDirac
 
 noncomputable section
 
-open Filter
+open Filter QuantumTheory.Transport
 
 /-- Away from the Dirac degeneracy, the two band energies are distinct. -/
 theorem bandEnergy_ne_oppositeBandEnergy
