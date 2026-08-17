@@ -37,17 +37,17 @@ private theorem complex_offset_add_I_ne_zero
     (offset broadening : ℝ) (hbroadening : broadening ≠ 0) :
     (offset : ℂ) + (broadening : ℂ) * Complex.I ≠ 0 := by
   intro hzero
-  have him := congrArg Complex.im hzero
-  simp at him
+  have him : broadening = 0 := by
+    simpa using congrArg Complex.im hzero
   exact hbroadening him
 
 private theorem complex_offset_sub_I_ne_zero
     (offset broadening : ℝ) (hbroadening : broadening ≠ 0) :
     (offset : ℂ) - (broadening : ℂ) * Complex.I ≠ 0 := by
   intro hzero
-  have him := congrArg Complex.im hzero
-  simp at him
-  exact hbroadening (neg_eq_zero.mp him)
+  have him : broadening = 0 := by
+    simpa using congrArg Complex.im hzero
+  exact hbroadening him
 
 /-- Elementary retarded-minus-advanced scalar resolvent identity. -/
 theorem inv_add_I_sub_inv_sub_I_eq_lorentzian
@@ -57,10 +57,15 @@ theorem inv_add_I_sub_inv_sub_I_eq_lorentzian
       (-2 * Complex.I) * (lorentzianSpectralKernel offset broadening : ℂ) := by
   have hplus := complex_offset_add_I_ne_zero offset broadening hbroadening
   have hminus := complex_offset_sub_I_ne_zero offset broadening hbroadening
+  have hsumReal : broadening ^ 2 + offset ^ 2 ≠ 0 := by
+    nlinarith [sq_pos_of_ne_zero hbroadening]
+  have hsum : (((broadening ^ 2 + offset ^ 2 : ℝ) : ℂ)) ≠ 0 := by
+    exact_mod_cast hsumReal
   unfold lorentzianSpectralKernel
-  field_simp [hplus, hminus]
-  rw [Complex.I_mul_I]
-  ring
+  push_cast
+  field_simp [hplus, hminus, hsum]
+  ring_nf
+  simp [Complex.I_mul_I]
 
 /-- The scalar spectral difference in the two-band Bastin decomposition is exactly a Lorentzian
 centered at the selected band energy. -/
@@ -116,7 +121,7 @@ theorem tendsto_integral_lorentzianSpectralKernel_symmetric
       (fun broadening : ℝ => Real.arctan (radius / broadening))
       (nhdsWithin 0 (Set.Ioi 0)) (nhds (Real.pi / 2)) := by
     have h := tendsto_nhds_of_tendsto_nhdsWithin harctanWithin
-    simpa [div_eq_mul_inv] using h
+    simpa only [Function.comp_apply, div_eq_mul_inv] using h
   have hmass := (tendsto_const_nhds : Tendsto (fun _ : ℝ => (2 : ℝ))
       (nhdsWithin 0 (Set.Ioi 0)) (nhds 2)).mul harctan
   have hfun :
@@ -125,8 +130,11 @@ theorem tendsto_integral_lorentzianSpectralKernel_symmetric
       (fun broadening : ℝ => 2 * Real.arctan (radius / broadening)) := by
     funext broadening
     exact integral_lorentzianSpectralKernel_symmetric radius broadening
+  have hpi : (2 : ℝ) * (Real.pi / 2) = Real.pi := by
+    ring
   rw [hfun]
-  simpa using hmass
+  rw [hpi] at hmass
+  exact hmass
 
 end
 
