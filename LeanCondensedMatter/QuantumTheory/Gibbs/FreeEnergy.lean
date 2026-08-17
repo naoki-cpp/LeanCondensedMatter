@@ -94,7 +94,7 @@ theorem summable_eigenvalue_mul_energy_and_tsum (ρ : DensityOperator H) (Hop : 
             (eigenvectorFamily ρ.spectralTraceClass.compact a) =
         energyExpValue ρ Hop := by
   set d := eigenvectorFamily ρ.spectralTraceClass.compact with hd_def
-  have hsComplex := (summable_energyExpValue_term ρ Hop).hasSum
+  have hsComplex := (ρ.summable_observableExpectation_term Hop).hasSum
   rw [← ρ.expectation_apply Hop.1, ρ.expectation_observable] at hsComplex
   rw [← hd_def] at hsComplex
   have hpoint :
