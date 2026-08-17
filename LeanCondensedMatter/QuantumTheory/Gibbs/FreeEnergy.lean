@@ -93,20 +93,18 @@ theorem summable_eigenvalue_mul_energy_and_tsum (ρ : DensityOperator H) (Hop : 
           a.1.1 * diagonalExpectationValue Hop.1 Hop.2
             (eigenvectorFamily ρ.spectralTraceClass.compact a) =
         energyExpValue ρ Hop := by
-  set d := eigenvectorFamily ρ.spectralTraceClass.compact with hd_def
-  have hsComplex := (ρ.summable_observableExpectation_term Hop).hasSum
-  rw [← ρ.expectation_apply Hop.1, ρ.expectation_observable] at hsComplex
-  rw [← hd_def] at hsComplex
-  have hpoint :
+  have hsComplex : HasSum
       (fun a : EigenvectorIndex ρ.op =>
-        (a.1.1 : ℂ) * inner ℂ (d a) (Hop.1 (d a))) =
-      (fun a => ((a.1.1 * diagonalExpectationValue Hop.1 Hop.2 (d a) : ℝ) : ℂ)) := by
-    funext a
-    rw [Complex.ofReal_mul, coe_diagonalExpectationValue_right]
-  rw [hpoint] at hsComplex
+        ((a.1.1 * diagonalExpectationValue Hop.1 Hop.2
+          (eigenvectorFamily ρ.spectralTraceClass.compact a) : ℝ) : ℂ))
+      (energyExpValue ρ Hop : ℂ) := by
+    have hs := (ρ.summable_observableExpectation_term Hop).hasSum
+    rw [← ρ.expectation_apply Hop.1, ρ.expectation_observable] at hs
+    simpa only [Complex.ofReal_mul, coe_diagonalExpectationValue_right, energyExpValue] using hs
   have hsReal : HasSum
       (fun a : EigenvectorIndex ρ.op =>
-        a.1.1 * diagonalExpectationValue Hop.1 Hop.2 (d a))
+        a.1.1 * diagonalExpectationValue Hop.1 Hop.2
+          (eigenvectorFamily ρ.spectralTraceClass.compact a))
       (energyExpValue ρ Hop) := by
     exact_mod_cast hsComplex
   exact ⟨hsReal.summable, hsReal.tsum_eq⟩
