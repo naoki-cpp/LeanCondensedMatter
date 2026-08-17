@@ -11,6 +11,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinBands
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinLimit
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinLorentzian
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinOccupation
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinTail
 
 set_option linter.style.header false
 
