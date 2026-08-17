@@ -54,6 +54,8 @@ theorem integral_weight_mul_lorentzian_of_eq_const_on
           value * lorentzianSpectralKernel (energy - center) broadening := by
       apply intervalIntegral.integral_congr
       intro energy henergy
+      change weight energy * lorentzianSpectralKernel (energy - center) broadening =
+        value * lorentzianSpectralKernel (energy - center) broadening
       rw [hweight energy henergy]
     _ = ∫ offset in -radius..radius,
         value * lorentzianSpectralKernel offset broadening := by
