@@ -100,7 +100,7 @@ theorem symmetrizedProduct_nested_eq_of_commutes
     symmetrizedProduct (symmetrizedProduct A v) m =
       symmetrizedProduct A (symmetrizedProduct v m) := by
   rw [symmetrizedProduct_nested A v m, hAm]
-  simp
+  simp [linearCommutator]
 
 /-- The commutator acts as a derivation on the symmetrized product. -/
 theorem linearCommutator_symmetrizedProduct {W : Type*} [AddCommGroup W] [Module ℂ W]
