@@ -61,19 +61,11 @@ theorem inv_add_I_sub_inv_sub_I_eq_lorentzian
     nlinarith [sq_pos_of_ne_zero hbroadening]
   have hsumPow : (broadening : ℂ) ^ 2 + (offset : ℂ) ^ 2 ≠ 0 := by
     exact_mod_cast hsumReal
-  have hI : Complex.I ^ 2 = (-1 : ℂ) := by
-    rw [pow_two, Complex.I_mul_I]
-  have hI3 : Complex.I ^ 3 = -Complex.I := by
-    calc
-      Complex.I ^ 3 = Complex.I ^ 2 * Complex.I := by ring
-      _ = (-1 : ℂ) * Complex.I := by rw [hI]
-      _ = -Complex.I := by ring
   unfold lorentzianSpectralKernel
   push_cast
   field_simp [hplus, hminus, hsumPow]
   ring_nf
-  rw [hI3]
-  ring
+  simp [pow_succ, Complex.I_mul_I]
 
 /-- The scalar spectral difference in the two-band Bastin decomposition is exactly a Lorentzian
 centered at the selected band energy. -/
