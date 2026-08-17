@@ -41,7 +41,7 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero
           bastinYXBandBlockTrace (oppositeBand band) band e v m px py) := by
   unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
   simp [retardedSpectralParameter, advancedSpectralParameter,
-    projectorResolventCoefficient_bandEnergy_oppositeBand]
+    projectorResolventCoefficient_oppositeBand_at_bandEnergy]
 
 /-- Away from the Dirac degeneracy, the target-centered spectator/current factor is jointly
 continuous in energy offset and broadening at the target pole. -/
@@ -74,8 +74,22 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_zero
       (((bandEnergy band v m px py + (0 : ℝ) : ℝ) : ℂ) - (0 : ℂ) * Complex.I) -
           ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ) ≠ 0 := by
     simpa [interbandEnergyGap] using hgapc
-  have hret := hretDen.inv₀ hretDen_ne
-  have hadv := hadvDen.inv₀ hadvDen_ne
+  have hret : ContinuousAt
+      (fun p : ℝ × ℝ =>
+        projectorResolventCoefficient
+          (retardedSpectralParameter (bandEnergy band v m px py + p.1) p.2)
+          (oppositeBand band) v m px py)
+      (0, 0) := by
+    simpa [projectorResolventCoefficient, retardedSpectralParameter] using
+      hretDen.inv₀ hretDen_ne
+  have hadv : ContinuousAt
+      (fun p : ℝ × ℝ =>
+        projectorResolventCoefficient
+          (advancedSpectralParameter (bandEnergy band v m px py + p.1) p.2)
+          (oppositeBand band) v m px py)
+      (0, 0) := by
+    simpa [projectorResolventCoefficient, advancedSpectralParameter] using
+      hadvDen.inv₀ hadvDen_ne
   have hretSq := hret.mul hret
   have hadvSq := hadv.mul hadv
   have hxy := hretSq.mul
@@ -87,8 +101,7 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_zero
       (fun _ : ℝ × ℝ => bastinYXBandBlockTrace (oppositeBand band) band e v m px py)
       (0, 0))
   simpa [targetCenteredInterbandSpectatorCurrentFactor,
-    interbandSpectatorCurrentFactor, projectorResolventCoefficient,
-    retardedSpectralParameter, advancedSpectralParameter, pow_two] using hxy.sub hyx
+    interbandSpectatorCurrentFactor, pow_two] using hxy.sub hyx
 
 /-- Jointly sending both the target-centered energy offset and broadening to zero extracts the same
 inverse-gap-squared antisymmetric current block as the fixed-energy pole limit. -/
