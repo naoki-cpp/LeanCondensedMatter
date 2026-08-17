@@ -4,23 +4,9 @@ import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubovEquality
 /-!
 # Uniqueness in the Gibbs variational principle
 
-This file reverses the inequality chain in the Gibbs–Klein proof.  The first lemmas isolate two
-reusable equality mechanisms: equality of summable pointwise bounds, and equality in the combined
-scalar Gibbs/logarithm estimate.
+This file reverses the inequality chain in the Gibbs–Klein proof. The scalar lemma isolates the
+combined equality case needed to recover the Gibbs weights and saturated Peierls–Bogoliubov bound.
 -/
-
-/-- If two summable real families satisfy a pointwise inequality and have equal total sums, then
-they agree pointwise. -/
-theorem Summable.eq_of_le_of_tsum_eq
-    {ι : Type*} {f g : ι → ℝ} (hf : Summable f) (hg : Summable g)
-    (hfg : ∀ i, f i ≤ g i) (hsum : ∑' i, f i = ∑' i, g i) :
-    ∀ i, f i = g i := by
-  intro i
-  apply le_antisymm (hfg i)
-  by_contra hnot
-  have hlt : f i < g i := lt_of_not_ge hnot
-  have hsumlt := Summable.tsum_lt_tsum hfg hlt hf hg
-  exact (ne_of_lt hsumlt) hsum
 
 /-- Equality in the scalar estimate used by the Gibbs–Klein proof forces both constituent
 inequalities to be equalities: the probability equals the normalized Gibbs diagonal weight, and
@@ -45,11 +31,6 @@ theorem negMulLog_bound_eq_iff {p q Z u : ℝ}
     linarith
   constructor
   · intro hAC
-    have hABeq :
-        Real.negMulLog p = -p * Real.log q + p * Real.log Z - p + q / Z := by
-      apply le_antisymm hAB
-      rw [hAC]
-      exact hBC
     have hBCeq :
         -p * Real.log q + p * Real.log Z - p + q / Z =
           p * u + p * Real.log Z - p + q / Z := by
@@ -198,8 +179,15 @@ theorem helmholtzFreeEnergy_eq_components
         ∑' a, (β * (p a * h a) + p a * Real.log Z - p a + q a / Z) :=
     hnMLTarget.trans hBTarget.symm
   have hterm_eq : ∀ a, Real.negMulLog (p a) =
-      β * (p a * h a) + p a * Real.log Z - p a + q a / Z :=
-    hnML_summable.eq_of_le_of_tsum_eq hB_summable hbound hnML_eq_B
+      β * (p a * h a) + p a * Real.log Z - p a + q a / Z := by
+    intro a
+    apply le_antisymm (hbound a)
+    by_contra hnot
+    have hlt : Real.negMulLog (p a) <
+        β * (p a * h a) + p a * Real.log Z - p a + q a / Z :=
+      lt_of_not_ge hnot
+    have hsumlt := Summable.tsum_lt_tsum hbound hlt hnML_summable hB_summable
+    exact (ne_of_lt hsumlt) hnML_eq_B
   have hp_pos : ∀ a, 0 < p a := fun a => by
     exact lt_of_le_of_ne (eigenvalue_nonneg ρ a) (Ne.symm a.1.2)
   have hscalar : ∀ a, p a = q a / Z ∧ -Real.log (q a) = β * h a := fun a => by
