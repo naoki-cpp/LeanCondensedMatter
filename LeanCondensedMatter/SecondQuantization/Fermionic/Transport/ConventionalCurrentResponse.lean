@@ -1,4 +1,4 @@
-import LeanCondensedMatter.QuantumTheory.ConservationLaw.ConventionalCurrent
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.ConventionalCurrent
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedCurrentResponse
 
 set_option linter.style.header false
@@ -33,7 +33,7 @@ noncomputable def boundedConventionalCurrent
     (velocity m : LatticeState Site →ₗ[ℂ] LatticeState Site) :
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
   boundedOneBodyCurrent
-    (QuantumTheory.ConservationLaw.conventionalCurrent (LatticeState Site) velocity m)
+    (QuantumMechanics.SingleParticle.conventionalCurrent (LatticeState Site) velocity m)
 
 @[simp]
 theorem boundedConventionalCurrent_smul_id
@@ -41,7 +41,7 @@ theorem boundedConventionalCurrent_smul_id
     boundedConventionalCurrent velocity (q • LinearMap.id) =
       q • boundedOneBodyCurrent velocity := by
   rw [boundedConventionalCurrent,
-    QuantumTheory.ConservationLaw.conventionalCurrent_smul_id,
+    QuantumMechanics.SingleParticle.conventionalCurrent_smul_id,
     boundedOneBodyCurrent_smul]
 
 /-- Kubo response of the conventional current `1/2 {v,m}` when that current representation has
