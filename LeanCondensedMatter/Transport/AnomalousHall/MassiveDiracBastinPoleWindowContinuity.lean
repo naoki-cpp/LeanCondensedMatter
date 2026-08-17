@@ -41,8 +41,13 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap
       (((bandEnergy band v m px py + p.1 : ℝ) : ℂ) + (p.2 : ℂ) * Complex.I) -
           ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ) ≠ 0 := by
     intro hzero
+    have hre :
+        bandEnergy band v m px py + p.1 -
+          bandEnergy (oppositeBand band) v m px py = 0 := by
+      simpa using congrArg Complex.re hzero
     apply hshift
-    simpa [interbandEnergyGap] using congrArg Complex.re hzero
+    unfold interbandEnergyGap
+    linarith
   have hadvDen : ContinuousAt
       (fun q : ℝ × ℝ =>
         (((bandEnergy band v m px py + q.1 : ℝ) : ℂ) - (q.2 : ℂ) * Complex.I) -
@@ -53,8 +58,13 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap
       (((bandEnergy band v m px py + p.1 : ℝ) : ℂ) - (p.2 : ℂ) * Complex.I) -
           ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ) ≠ 0 := by
     intro hzero
+    have hre :
+        bandEnergy band v m px py + p.1 -
+          bandEnergy (oppositeBand band) v m px py = 0 := by
+      simpa using congrArg Complex.re hzero
     apply hshift
-    simpa [interbandEnergyGap] using congrArg Complex.re hzero
+    unfold interbandEnergyGap
+    linarith
   have hret : ContinuousAt
       (fun q : ℝ × ℝ =>
         projectorResolventCoefficient
