@@ -1,10 +1,10 @@
 import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.ConventionalCurrent
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent
 
 set_option linter.style.header false
 
 /-!
-# Conventional current for the one-dimensional Schwartz Schrödinger model
+# Operator current representations for the one-dimensional Schwartz Schrödinger model
 
 This module connects the analysis-only Schwartz localization identity to the generalized one-body
 transport API. For
@@ -21,9 +21,9 @@ the analysis layer proves
 (i/ℏ) [H, M_f] = 1/2 {M_(D f), v}.
 ```
 
-Therefore the hypotheses of `conventionalCurrentRepresentation` are concrete on Schwartz space.
-The identity and charge quantities commute with multiplication localizers, yielding operator-level
-probability and charge current representations.
+For probability and charge the transported quantity is a scalar multiple of the identity, so it
+commutes with multiplication localizers. The symmetrized velocity current therefore gives a local
+current-density representation of the abstract transport functional.
 -/
 
 namespace QuantumMechanics
@@ -68,7 +68,7 @@ noncomputable def schwartzOperatorProbabilityCurrentRepresentation1D
         SchwartzKinetic1D.multiplicationLinear LinearMap.id)
       (operatorLocalCurrentPairing SchwartzOneParticle1D
         SchwartzKinetic1D.multiplicationLinear) :=
-  conventionalCurrentRepresentation SchwartzOneParticle1D ℏ
+  symmetrizedVelocityCurrentRepresentation SchwartzOneParticle1D ℏ
     (SchwartzKinetic1D.schrodingerOperator κ potential)
     SchwartzKinetic1D.multiplicationLinear
     LinearMap.id
@@ -85,12 +85,13 @@ theorem schwartzOperatorProbabilityCurrentRepresentation1D_currentDensity
     (ℏ κ : ℝ) (potential : SchwartzOneParticle1D) :
     (schwartzOperatorProbabilityCurrentRepresentation1D ℏ κ potential).currentDensity =
       SchwartzKinetic1D.velocityOperator ℏ κ := by
-  change conventionalCurrent SchwartzOneParticle1D
+  change symmetrizedVelocityCurrent SchwartzOneParticle1D
       (SchwartzKinetic1D.velocityOperator ℏ κ) LinearMap.id = _
-  exact conventionalCurrent_id SchwartzOneParticle1D (SchwartzKinetic1D.velocityOperator ℏ κ)
+  exact symmetrizedVelocityCurrent_id SchwartzOneParticle1D
+    (SchwartzKinetic1D.velocityOperator ℏ κ)
 
-/-- Charge transport (`m = q I`) on the Schwartz Schrödinger model is locally represented by the
-conventional charge current `q v`. -/
+/-- Charge transport (`m = q I`) on the Schwartz Schrödinger model is locally represented by
+`q v`. -/
 noncomputable def schwartzOperatorChargeCurrentRepresentation1D
     (q : ℂ) (ℏ κ : ℝ) (potential : SchwartzOneParticle1D) :
     _root_.ConservationLaw.LocalCurrentDensityRepresentation
@@ -100,7 +101,7 @@ noncomputable def schwartzOperatorChargeCurrentRepresentation1D
         SchwartzKinetic1D.multiplicationLinear (q • LinearMap.id))
       (operatorLocalCurrentPairing SchwartzOneParticle1D
         SchwartzKinetic1D.multiplicationLinear) :=
-  conventionalCurrentRepresentation SchwartzOneParticle1D ℏ
+  symmetrizedVelocityCurrentRepresentation SchwartzOneParticle1D ℏ
     (SchwartzKinetic1D.schrodingerOperator κ potential)
     SchwartzKinetic1D.multiplicationLinear
     (q • LinearMap.id)
@@ -116,9 +117,9 @@ theorem schwartzOperatorChargeCurrentRepresentation1D_currentDensity
     (q : ℂ) (ℏ κ : ℝ) (potential : SchwartzOneParticle1D) :
     (schwartzOperatorChargeCurrentRepresentation1D q ℏ κ potential).currentDensity =
       q • SchwartzKinetic1D.velocityOperator ℏ κ := by
-  change conventionalCurrent SchwartzOneParticle1D
+  change symmetrizedVelocityCurrent SchwartzOneParticle1D
       (SchwartzKinetic1D.velocityOperator ℏ κ) (q • LinearMap.id) = _
-  exact conventionalCurrent_smul_id SchwartzOneParticle1D
+  exact symmetrizedVelocityCurrent_smul_id SchwartzOneParticle1D
     (SchwartzKinetic1D.velocityOperator ℏ κ) q
 
 end
