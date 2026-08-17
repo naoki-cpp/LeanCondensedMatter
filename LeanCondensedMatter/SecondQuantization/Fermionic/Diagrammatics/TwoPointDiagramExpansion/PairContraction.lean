@@ -5,17 +5,14 @@ import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectat
 set_option linter.style.header false
 
 /-!
-# Regularity of mixed two-point density-state pair contractions
+# Mixed two-point density-state pair contractions
 
 A fermionic atomic field at imaginary time is an explicit exponential scalar multiplying a bare
-creation or annihilation operator. Therefore the canonical free Gibbs density-state contraction of
-two fixed field labels has all of its time dependence in two complex exponentials.
+creation or annihilation operator. This module owns the semantic pair-contraction API: the canonical
+free Gibbs contraction, fixed standard-leg descriptors, and transport between mixed-order pairs and
+standard two-point legs.
 
-This module packages that scalar normal form, lifts it to fixed standard two-point legs, and proves
-continuity in the ambient interaction-time assignment. It also identifies the contraction used by a
-mixed normalized pair with the corresponding standard-leg contraction. Finite Gibbs coordinate
-formulas appear only inside the closed-form proof. No chamber or pair-transport argument is used
-here.
+Analytic regularity of these contractions is owned by `Analysis/PairContractionRegularity`.
 -/
 
 namespace SecondQuantization
@@ -168,20 +165,8 @@ noncomputable def orderedTwoPointLegPairContraction
     (orderedTwoPointLegField i j τ τ' q σ x)
     (orderedTwoPointLegField i j τ τ' q σ y)
 
-/-- For every fixed pair of standard two-point legs, the density-state contraction is globally
-continuous in the ambient interaction-time assignment. -/
-theorem continuous_orderedTwoPointLegPairContraction
-    {n : ℕ} (ε : Mode → ℝ) (β : ℝ) (i j : Mode) (τ τ' : ℝ)
-    (q : Fin n → QuarticVertexLabel Mode) (x y : OrderedTwoPointLeg n) :
-    Continuous (fun σ : Fin n → ℝ =>
-      orderedTwoPointLegPairContraction ε β i j τ τ' q σ x y) := by
-  rcases x with x | x <;> rcases y with y | y <;>
-    simp only [orderedTwoPointLegPairContraction, orderedTwoPointLegField,
-      orderedTwoPointLegTime, orderedTwoPointLegFieldLabel, timedFieldPairContraction_eq] <;>
-    fun_prop
-
-/-- The contraction used by a normalized mixed pair is the globally continuous density-state
-contraction of the two fixed standard legs represented by its endpoints. -/
+/-- The contraction used by a normalized mixed pair is the density-state contraction of the two
+fixed standard legs represented by its endpoints. -/
 theorem FixedExternalTwoPointWickDiagram.mixedPairContractionValue_eq_orderedTwoPointLegPairContraction
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)
