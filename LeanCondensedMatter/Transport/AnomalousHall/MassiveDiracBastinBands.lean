@@ -144,8 +144,7 @@ theorem bastinXYBandBlockTrace_eq_currentBandBlockTrace
     _ = finiteDimensionalOperatorTrace
         (bandProjectorOperator target v m px py * currentXOperator e v *
           bandProjectorOperator source v m px py * currentYOperator e v) := by
-      congr 1
-      noncomm_ring
+      simp only [mul_assoc]
 
 /-- Cyclicity identifies the direct `y-x` block with the reversed Berry-bridge block. -/
 theorem bastinYXBandBlockTrace_eq_reversedCurrentBandBlockTrace
@@ -161,8 +160,7 @@ theorem bastinYXBandBlockTrace_eq_reversedCurrentBandBlockTrace
         (currentYOperator e v *
           (bandProjectorOperator source v m px py * currentXOperator e v *
             bandProjectorOperator target v m px py)) := by
-      congr 1
-      noncomm_ring
+      simp only [mul_assoc]
     _ = finiteDimensionalOperatorTrace
         ((bandProjectorOperator source v m px py * currentXOperator e v *
           bandProjectorOperator target v m px py) * currentYOperator e v) := by
@@ -238,9 +236,9 @@ theorem projectorBastinTraceIntegrand_eq_four_band_blocks
     (advancedSpectralParameter probeEnergy broadening) v m px py]
   unfold bastinBandPairContribution spectralDifferenceCoefficient
     bastinXYBandBlockTrace bastinYXBandBlockTrace
+  simp only [add_mul, sub_mul, mul_add, mul_sub, mul_smul_comm, smul_mul_assoc]
   simp only [map_add, map_sub, map_smul]
-  simp only [add_mul, sub_mul, mul_add, mul_smul_comm, smul_mul_assoc, smul_smul]
-  ring
+  ring_nf
 
 /-- Exact finite-broadening separation into diagonal and interband sectors. -/
 theorem projectorBastinTraceIntegrand_eq_diagonal_add_interband
