@@ -36,7 +36,6 @@ theorem integral_zeroTemperatureOccupation_lorentzian_fermi_surface_eq_half_mass
     fermiEnergy fermiEnergy radius broadening (by linarith) (by linarith),
     integral_lorentzianSpectralKernel_symmetric]
   simp
-  ring
 
 /-- An exact Fermi-surface pole contributes half of the full Lorentzian mass in every fixed positive
 symmetric window. -/
@@ -66,7 +65,7 @@ theorem tendsto_zeroTemperatureOccupation_lorentzian_fermi_surface_finite_window
     exact integral_zeroTemperatureOccupation_lorentzian_fermi_surface_eq_half_mass
       fermiEnergy radius broadening hradius.le
   rw [hfun]
-  convert hhalf using 1 <;> ring
+  convert hhalf using 1 <;> ring_nf
 
 /-- The asymptotic zero-temperature Lorentzian weight assigned to an isolated pole on a symmetric
 finite energy window.  Occupied, unoccupied, and exact-Fermi poles carry weights `π`, `0`, and
