@@ -90,7 +90,7 @@ noncomputable def scaleEvolution
     intro f
     simp only [LinearMap.smul_apply]
     rw [B.balance f]
-    exact (smul_add c (B.current (d f)) (B.source f)).symm
+    exact smul_add c (B.current (d f)) (B.source f)
 
 /-- A source-free balance law is a differential current representation of the full localized
 evolution `δ ∘ Q`. -/
