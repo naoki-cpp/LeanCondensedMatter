@@ -215,8 +215,7 @@ theorem transportFunctional_smul_id
       q • localizationCommutatorFunctional V h M := by
   apply LinearMap.ext
   intro f
-  simp [transportFunctional, localizationCommutatorFunctional,
-    transportCommutator]
+  simp [transportFunctional, localizationCommutatorFunctional]
 
 /-- Differential factorization of bare localization transport lifts to any symmetrically localized
 one-body quantity. -/
@@ -247,7 +246,6 @@ noncomputable def symmetricLocalizationBalanceLaw
   source := sourceFunctional V h M m
   balance := by
     intro f
-    rw [hJ f]
-    exact commutatorEvolution_localizedQuantityFunctional V h M m f
+    rw [commutatorEvolution_localizedQuantityFunctional V h M m f, hJ f]
 
 end ConservationLaw
