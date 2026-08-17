@@ -200,6 +200,11 @@ def main() -> int:
     require_import(
         errors,
         CONVENTIONAL_RESPONSE,
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.ConventionalCurrent",
+    )
+    require_import(
+        errors,
+        CONVENTIONAL_RESPONSE,
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedCurrentResponse",
     )
 
