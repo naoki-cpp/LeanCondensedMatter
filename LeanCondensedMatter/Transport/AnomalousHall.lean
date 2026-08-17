@@ -15,6 +15,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinTail
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinFiniteWindow
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinFermiSurface
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinSpectator
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinInterband
 
 set_option linter.style.header false
 
