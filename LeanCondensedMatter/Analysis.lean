@@ -37,6 +37,7 @@ import LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine
 import LeanCondensedMatter.Analysis.Operator.L2MultiplicationRealLine.Linear
 import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
 import LeanCondensedMatter.Analysis.Operator.OrbitalAngularMomentum
+import LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct
 import LeanCondensedMatter.Analysis.InfiniteSum.FinsuppProduct
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.Basic
 import LeanCondensedMatter.Analysis.Operator.HilbertSchmidt.InnerProduct
@@ -46,6 +47,7 @@ import LeanCondensedMatter.Analysis.Operator.Fredholm.FiniteDimensional
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.Analysis.OrderedSimplex.Calculus
 import LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation
+import LeanCondensedMatter.Analysis.Calculus.BalanceLaw
 import LeanCondensedMatter.Analysis.Calculus.WeakConservation1D
 import LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
