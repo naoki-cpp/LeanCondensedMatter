@@ -11,6 +11,25 @@ ANALYSIS_OPERATOR = LEAN / "Analysis" / "Operator" / "LinearCommutator.lean"
 ONE_BODY_BALANCE = LEAN / "Analysis" / "Calculus" / "OneBodyBalance.lean"
 CURRENT_REPRESENTATION = LEAN / "Analysis" / "Calculus" / "CurrentRepresentation.lean"
 QUANTUM_CURRENT = LEAN / "QuantumTheory" / "ConservationLaw"
+SINGLE_PARTICLE_CONVENTIONAL = (
+    LEAN / "QuantumMechanics" / "SingleParticle" / "ConventionalCurrent.lean"
+)
+SINGLE_PARTICLE_SCHWARTZ = (
+    LEAN
+    / "QuantumMechanics"
+    / "SingleParticle"
+    / "Continuum"
+    / "Continuity"
+    / "SchwartzCurrent1D.lean"
+)
+SINGLE_PARTICLE_SPIN = (
+    LEAN
+    / "QuantumMechanics"
+    / "SingleParticle"
+    / "Continuum"
+    / "Continuity"
+    / "SchwartzSpinCurrent1D.lean"
+)
 FERMIONIC_FIELD_BRIDGE = (
     LEAN / "SecondQuantization" / "Fermionic" / "Field" / "GeneralizedQuantity.lean"
 )
@@ -29,6 +48,9 @@ OLD_CURRENT_OWNERS = (
     LEAN / "SecondQuantization" / "Fermionic" / "Field" / "GeneralizedQuantity" / "ConventionalCurrent.lean",
     LEAN / "SecondQuantization" / "Fermionic" / "Field" / "GeneralizedQuantity" / "SchwartzCurrent1D.lean",
     LEAN / "SecondQuantization" / "Fermionic" / "Field" / "GeneralizedQuantity" / "SchwartzSpinCurrent1D.lean",
+    LEAN / "QuantumTheory" / "ConservationLaw" / "ConventionalCurrent.lean",
+    LEAN / "QuantumTheory" / "ConservationLaw" / "SchwartzCurrent1D.lean",
+    LEAN / "QuantumTheory" / "ConservationLaw" / "SchwartzSpinCurrent1D.lean",
 )
 
 IMPORT_RE = re.compile(r"^\s*import\s+([^\s]+)", re.MULTILINE)
@@ -73,6 +95,9 @@ def main() -> int:
         ANALYSIS_OPERATOR,
         ONE_BODY_BALANCE,
         CURRENT_REPRESENTATION,
+        SINGLE_PARTICLE_CONVENTIONAL,
+        SINGLE_PARTICLE_SCHWARTZ,
+        SINGLE_PARTICLE_SPIN,
         FERMIONIC_FIELD_BRIDGE,
         BOUNDED_RESPONSE,
         CONVENTIONAL_RESPONSE,
@@ -84,7 +109,7 @@ def main() -> int:
         require_exists(errors, path)
     for path in OLD_CURRENT_OWNERS:
         if path.exists():
-            errors.append(f"obsolete Field current owner must stay removed: {relative(path)}")
+            errors.append(f"obsolete current owner must stay removed: {relative(path)}")
 
     if errors:
         return finish_audit(
@@ -101,19 +126,52 @@ def main() -> int:
             path,
             (
                 "LeanCondensedMatter.QuantumTheory",
+                "LeanCondensedMatter.QuantumMechanics",
                 "LeanCondensedMatter.SecondQuantization",
             ),
             "analysis-level current semantics must remain representation-independent",
         )
 
-    # Particle-statistics-independent current representations may depend on Analysis,
-    # but never on second quantization.
+    # Abstract quantum transport may depend on Analysis, but it must remain upstream
+    # of both concrete single-particle kinematics and particle statistics.
     for path in sorted(QUANTUM_CURRENT.glob("*.lean")):
         forbid_import_prefixes(
             errors,
             path,
+            (
+                "LeanCondensedMatter.QuantumMechanics",
+                "LeanCondensedMatter.SecondQuantization",
+            ),
+            "QuantumTheory.ConservationLaw must remain free of concrete kinematics and particle statistics",
+        )
+
+    # A distinguished velocity and the conventional formula j^m = 1/2 {v,m} belong
+    # to first-quantized mechanics, downstream of the abstract Heisenberg machinery.
+    require_import(
+        errors,
+        SINGLE_PARTICLE_CONVENTIONAL,
+        "LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergTransport",
+    )
+    require_import(
+        errors,
+        SINGLE_PARTICLE_SCHWARTZ,
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.ConventionalCurrent",
+    )
+    require_import(
+        errors,
+        SINGLE_PARTICLE_SPIN,
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.ConventionalCurrent",
+    )
+    for path in (
+        SINGLE_PARTICLE_CONVENTIONAL,
+        SINGLE_PARTICLE_SCHWARTZ,
+        SINGLE_PARTICLE_SPIN,
+    ):
+        forbid_import_prefixes(
+            errors,
+            path,
             ("LeanCondensedMatter.SecondQuantization",),
-            "QuantumTheory.ConservationLaw must remain upstream of particle statistics",
+            "single-particle current realizations must remain upstream of particle statistics",
         )
 
     # The Fermionic Field owner is now a dGamma bridge, not a transport owner. The
@@ -125,12 +183,17 @@ def main() -> int:
         errors.append(
             f"{relative(FERMIONIC_FIELD_BRIDGE)} must remain an explicit dGamma bridge"
         )
-    if any("ConventionalCurrent" in imported or "SchwartzCurrent" in imported for imported in bridge_imports):
+    if any(
+        "ConventionalCurrent" in imported or "SchwartzCurrent" in imported
+        for imported in bridge_imports
+    ):
         errors.append(
             f"{relative(FERMIONIC_FIELD_BRIDGE)} must not regain concrete current-representation ownership"
         )
 
-    # Generic bounded response must stay independent of conventional current machinery.
+    # Generic bounded response must stay independent of conventional-current machinery.
+    # The conventional adapter uses only the shared algebraic symmetrized product, not
+    # the concrete QuantumMechanics owner.
     for imported in imports(BOUNDED_RESPONSE):
         if "ConventionalCurrent" in imported:
             errors.append(
@@ -139,11 +202,16 @@ def main() -> int:
     require_import(
         errors,
         CONVENTIONAL_RESPONSE,
+        "LeanCondensedMatter.Analysis.Calculus.OneBodyBalance",
+    )
+    require_import(
+        errors,
+        CONVENTIONAL_RESPONSE,
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedCurrentResponse",
     )
 
-    # Canonical public umbrellas must expose the chosen owners, while Field must not
-    # re-export the removed transport leaves.
+    # The QuantumTheory umbrella exposes only model-independent owners. Concrete
+    # velocity/current realizations are deliberately not re-exported through it.
     require_import(
         errors,
         QUANTUM_UMBRELLA,
@@ -154,11 +222,16 @@ def main() -> int:
         QUANTUM_UMBRELLA,
         "LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergTransport",
     )
-    require_import(
-        errors,
-        QUANTUM_UMBRELLA,
-        "LeanCondensedMatter.QuantumTheory.ConservationLaw.ConventionalCurrent",
-    )
+    for retired in (
+        "ConventionalCurrent",
+        "SchwartzCurrent1D",
+        "SchwartzSpinCurrent1D",
+    ):
+        if any(retired in imported for imported in imports(QUANTUM_UMBRELLA)):
+            errors.append(
+                f"{relative(QUANTUM_UMBRELLA)} must not re-export concrete current leaf `{retired}`"
+            )
+
     field_imports = imports(FIELD_UMBRELLA)
     for retired in (
         "CurrentRepresentation",

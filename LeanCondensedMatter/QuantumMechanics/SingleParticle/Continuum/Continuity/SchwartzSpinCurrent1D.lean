@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.SchwartzSpinor1D
-import LeanCondensedMatter.QuantumTheory.ConservationLaw.ConventionalCurrent
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.ConventionalCurrent
 
 set_option linter.style.header false
 
@@ -23,8 +23,11 @@ An arbitrary internal Hamiltonian matrix is retained; its commutator with `S_a` 
 source/torque term.
 -/
 
-namespace QuantumTheory
-namespace ConservationLaw
+namespace QuantumMechanics
+namespace SingleParticle
+namespace Continuum
+
+open QuantumTheory.ConservationLaw
 
 noncomputable section
 
@@ -178,5 +181,6 @@ theorem schwartzSpin_sourceCommutator_eq_zero_of_internal_commutes
   simp [hcomm]
 
 end
-end ConservationLaw
-end QuantumTheory
+end Continuum
+end SingleParticle
+end QuantumMechanics

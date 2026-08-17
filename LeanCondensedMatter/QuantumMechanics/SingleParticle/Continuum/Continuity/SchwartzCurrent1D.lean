@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.SchwartzKinetic1D
-import LeanCondensedMatter.QuantumTheory.ConservationLaw.ConventionalCurrent
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.ConventionalCurrent
 
 set_option linter.style.header false
 
@@ -26,8 +26,11 @@ The identity and charge quantities commute with multiplication localizers, yield
 probability and charge current representations.
 -/
 
-namespace QuantumTheory
-namespace ConservationLaw
+namespace QuantumMechanics
+namespace SingleParticle
+namespace Continuum
+
+open QuantumTheory.ConservationLaw
 
 noncomputable section
 
@@ -119,5 +122,6 @@ theorem schwartzOperatorChargeCurrentRepresentation1D_currentDensity
     (SchwartzKinetic1D.velocityOperator ℏ κ) q
 
 end
-end ConservationLaw
-end QuantumTheory
+end Continuum
+end SingleParticle
+end QuantumMechanics
