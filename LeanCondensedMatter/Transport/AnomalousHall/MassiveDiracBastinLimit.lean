@@ -1,0 +1,187 @@
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinBands
+import Mathlib.Topology.Algebra.GroupWithZero
+import Mathlib.Tactic
+
+set_option linter.style.header false
+
+/-!
+# Pointwise zero-broadening boundary for the massive-Dirac Bastin kernel
+
+The finite-broadening Bastin decomposition is not allowed to be turned into the clean Hall response
+by a pointwise substitution `η = 0`.  Away from the discrete band energies, the retarded and
+advanced scalar resolvent coefficients approach the same real-energy resolvent, so their spectral
+difference vanishes.  Consequently every fixed-energy band block, and hence the complete
+projector-expanded Bastin trace, tends pointwise to zero as the broadening tends to zero.
+
+This is the expected distributional boundary: the nonzero clean Hall response is recovered only
+after the energy kernel is paired with an occupation and integrated before the zero-broadening
+limit.  The present file deliberately proves only the pointwise statement.  It does not interchange
+an energy integral with a limit and it does not introduce a delta-distribution identity.
+-/
+
+namespace AnomalousHall.MassiveDirac
+
+noncomputable section
+
+open Filter QuantumTheory.Transport
+
+private theorem complex_spectral_offset_ne_zero
+    (band : Band) (v m px py probeEnergy : ℝ)
+    (hprobe : probeEnergy ≠ bandEnergy band v m px py) :
+    (((probeEnergy - bandEnergy band v m px py : ℝ) : ℂ)) ≠ 0 := by
+  exact_mod_cast sub_ne_zero.mpr hprobe
+
+/-- At a probe energy away from the selected band, the retarded scalar projector-resolvent
+coefficient tends to the ordinary real-energy resolvent coefficient as `η → 0`. -/
+theorem tendsto_retarded_projectorResolventCoefficient_zero
+    (band : Band) (v m px py probeEnergy : ℝ)
+    (hprobe : probeEnergy ≠ bandEnergy band v m px py) :
+    Tendsto
+      (fun broadening : ℝ =>
+        projectorResolventCoefficient
+          (retardedSpectralParameter probeEnergy broadening) band v m px py)
+      (nhds 0)
+      (nhds (projectorResolventCoefficient (probeEnergy : ℂ) band v m px py)) := by
+  have hden :
+      retardedSpectralParameter probeEnergy 0 -
+          ((bandEnergy band v m px py : ℝ) : ℂ) ≠ 0 := by
+    simpa [retardedSpectralParameter] using
+      complex_spectral_offset_ne_zero band v m px py probeEnergy hprobe
+  have hcontinuous : ContinuousAt
+      (fun broadening : ℝ =>
+        retardedSpectralParameter probeEnergy broadening -
+          ((bandEnergy band v m px py : ℝ) : ℂ)) 0 := by
+    fun_prop
+  have hinv := (hcontinuous.inv₀ hden).tendsto
+  simpa [projectorResolventCoefficient, retardedSpectralParameter] using hinv
+
+/-- Advanced scalar projector-resolvent coefficient has the same zero-broadening limit away from
+the selected band energy. -/
+theorem tendsto_advanced_projectorResolventCoefficient_zero
+    (band : Band) (v m px py probeEnergy : ℝ)
+    (hprobe : probeEnergy ≠ bandEnergy band v m px py) :
+    Tendsto
+      (fun broadening : ℝ =>
+        projectorResolventCoefficient
+          (advancedSpectralParameter probeEnergy broadening) band v m px py)
+      (nhds 0)
+      (nhds (projectorResolventCoefficient (probeEnergy : ℂ) band v m px py)) := by
+  have hden :
+      advancedSpectralParameter probeEnergy 0 -
+          ((bandEnergy band v m px py : ℝ) : ℂ) ≠ 0 := by
+    simpa [advancedSpectralParameter] using
+      complex_spectral_offset_ne_zero band v m px py probeEnergy hprobe
+  have hcontinuous : ContinuousAt
+      (fun broadening : ℝ =>
+        advancedSpectralParameter probeEnergy broadening -
+          ((bandEnergy band v m px py : ℝ) : ℂ)) 0 := by
+    fun_prop
+  have hinv := (hcontinuous.inv₀ hden).tendsto
+  simpa [projectorResolventCoefficient, advancedSpectralParameter] using hinv
+
+/-- Off the selected band energy, the retarded-minus-advanced scalar spectral coefficient tends to
+zero pointwise. -/
+theorem tendsto_spectralDifferenceCoefficient_zero
+    (band : Band) (v m px py probeEnergy : ℝ)
+    (hprobe : probeEnergy ≠ bandEnergy band v m px py) :
+    Tendsto
+      (fun broadening : ℝ =>
+        spectralDifferenceCoefficient band v m px py probeEnergy broadening)
+      (nhds 0) (nhds 0) := by
+  have hret := tendsto_retarded_projectorResolventCoefficient_zero
+    band v m px py probeEnergy hprobe
+  have hadv := tendsto_advanced_projectorResolventCoefficient_zero
+    band v m px py probeEnergy hprobe
+  simpa [spectralDifferenceCoefficient] using hret.sub hadv
+
+/-- A fixed ordered Bastin band-pair contribution tends to zero when the probe energy avoids both
+its source and target band energies. -/
+theorem tendsto_bastinBandPairContribution_zero
+    (source target : Band) (e v m px py probeEnergy : ℝ)
+    (hsource : probeEnergy ≠ bandEnergy source v m px py)
+    (htarget : probeEnergy ≠ bandEnergy target v m px py) :
+    Tendsto
+      (fun broadening : ℝ =>
+        bastinBandPairContribution source target e v m px py probeEnergy broadening)
+      (nhds 0) (nhds 0) := by
+  have hret := tendsto_retarded_projectorResolventCoefficient_zero
+    source v m px py probeEnergy hsource
+  have hadv := tendsto_advanced_projectorResolventCoefficient_zero
+    source v m px py probeEnergy hsource
+  have hdiff := tendsto_spectralDifferenceCoefficient_zero
+    target v m px py probeEnergy htarget
+  have hxy : Tendsto
+      (fun _ : ℝ => bastinXYBandBlockTrace source target e v m px py)
+      (nhds 0) (nhds (bastinXYBandBlockTrace source target e v m px py)) :=
+    tendsto_const_nhds
+  have hyx : Tendsto
+      (fun _ : ℝ => bastinYXBandBlockTrace source target e v m px py)
+      (nhds 0) (nhds (bastinYXBandBlockTrace source target e v m px py)) :=
+    tendsto_const_nhds
+  have hretTerm := (((hret.mul hret).mul hdiff).mul hxy)
+  have hadvTerm := (((hadv.mul hadv).mul hdiff).mul hyx)
+  simpa [bastinBandPairContribution, pow_two] using hretTerm.sub hadvTerm
+
+/-- The diagonal sector tends pointwise to zero away from both band energies. -/
+theorem tendsto_diagonalBastinTraceContribution_zero
+    (e v m px py probeEnergy : ℝ)
+    (hlower : probeEnergy ≠ bandEnergy .lower v m px py)
+    (hupper : probeEnergy ≠ bandEnergy .upper v m px py) :
+    Tendsto
+      (fun broadening : ℝ =>
+        diagonalBastinTraceContribution e v m px py probeEnergy broadening)
+      (nhds 0) (nhds 0) := by
+  have hl := tendsto_bastinBandPairContribution_zero
+    .lower .lower e v m px py probeEnergy hlower hlower
+  have hu := tendsto_bastinBandPairContribution_zero
+    .upper .upper e v m px py probeEnergy hupper hupper
+  simpa [diagonalBastinTraceContribution] using hl.add hu
+
+/-- The interband sector also tends pointwise to zero away from both band energies.  Its nonzero
+clean Hall weight therefore cannot be recovered by taking the pointwise limit before energy
+integration. -/
+theorem tendsto_interbandBastinTraceContribution_zero
+    (e v m px py probeEnergy : ℝ)
+    (hlower : probeEnergy ≠ bandEnergy .lower v m px py)
+    (hupper : probeEnergy ≠ bandEnergy .upper v m px py) :
+    Tendsto
+      (fun broadening : ℝ =>
+        interbandBastinTraceContribution e v m px py probeEnergy broadening)
+      (nhds 0) (nhds 0) := by
+  have hlu := tendsto_bastinBandPairContribution_zero
+    .lower .upper e v m px py probeEnergy hlower hupper
+  have hul := tendsto_bastinBandPairContribution_zero
+    .upper .lower e v m px py probeEnergy hupper hlower
+  simpa [interbandBastinTraceContribution] using hlu.add hul
+
+/-- Away from the Dirac degeneracy and away from both band energies, the full projector-expanded
+Bastin trace tends pointwise to zero as `η → 0`. -/
+theorem tendsto_projectorBastinTraceIntegrand_zero
+    (e v m px py probeEnergy : ℝ)
+    (hE : energy v m px py ≠ 0)
+    (hlower : probeEnergy ≠ bandEnergy .lower v m px py)
+    (hupper : probeEnergy ≠ bandEnergy .upper v m px py) :
+    Tendsto
+      (fun broadening : ℝ =>
+        projectorBastinTraceIntegrand e v m px py probeEnergy broadening)
+      (nhds 0) (nhds 0) := by
+  have hdiag := tendsto_diagonalBastinTraceContribution_zero
+    e v m px py probeEnergy hlower hupper
+  have hinter := tendsto_interbandBastinTraceContribution_zero
+    e v m px py probeEnergy hlower hupper
+  have hsum := hdiag.add hinter
+  have hfun :
+      (fun broadening : ℝ =>
+        projectorBastinTraceIntegrand e v m px py probeEnergy broadening) =
+      (fun broadening : ℝ =>
+        diagonalBastinTraceContribution e v m px py probeEnergy broadening +
+          interbandBastinTraceContribution e v m px py probeEnergy broadening) := by
+    funext broadening
+    exact projectorBastinTraceIntegrand_eq_diagonal_add_interband
+      e v m px py probeEnergy broadening hE
+  rw [hfun]
+  exact hsum
+
+end
+
+end AnomalousHall.MassiveDirac
