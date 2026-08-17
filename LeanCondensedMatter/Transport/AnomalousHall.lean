@@ -7,6 +7,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracIntrinsicConducti
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStreda
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStredaSpectral
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinBerry
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinBands
 
 set_option linter.style.header false
 
