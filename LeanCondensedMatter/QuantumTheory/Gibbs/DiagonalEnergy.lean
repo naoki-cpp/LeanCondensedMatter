@@ -25,8 +25,8 @@ theorem energyExpValue_eq_tsum_common_eigenbasis (ρ : DensityOperator H) (Hop :
     (hρ : ∀ i, ρ.op (b i) = (w i : ℂ) • b i)
     (hE : ∀ i, Hop.1 (b i) = (E i : ℂ) • b i) :
     energyExpValue ρ Hop = ∑' i, w i * E i := by
-  rw [energyExpValue_eq_observableExpectation,
-    ρ.observableExpectation_eq_tsum_diagonal Hop b w hρ]
+  change ρ.observableExpectation Hop = ∑' i, w i * E i
+  rw [ρ.observableExpectation_eq_tsum_diagonal Hop b w hρ]
   apply tsum_congr
   intro i
   have hdiag : diagonalExpectationValue Hop.1 Hop.2 (b i) = E i := by
