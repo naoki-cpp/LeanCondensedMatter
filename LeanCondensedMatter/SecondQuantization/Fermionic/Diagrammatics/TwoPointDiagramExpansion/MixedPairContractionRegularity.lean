@@ -3,8 +3,9 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDi
 set_option linter.style.header false
 
 /-!
-Compatibility import for the former mixed-pair contraction regularity module.
+# Compatibility import for pair-contraction semantics
 
-The contraction semantics now live in `PairContraction.lean`. Downstream imports are migrated
-incrementally as the factorization/analysis ownership split is completed.
+The pair-contraction API is now owned by `PairContraction.lean`.
+This compatibility import remains temporarily for the fiber-vacuum consumer while the ownership
+cleanup is completed in this PR.
 -/
