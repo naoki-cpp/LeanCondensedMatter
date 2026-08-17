@@ -13,6 +13,12 @@ CURRENT_REPRESENTATION = LEAN / "Analysis" / "Calculus" / "CurrentRepresentation
 BALANCE_LAW = LEAN / "Analysis" / "Calculus" / "BalanceLaw.lean"
 SYMMETRIC_LOCALIZATION = LEAN / "Analysis" / "Calculus" / "SymmetricLocalization.lean"
 QUANTUM_CURRENT = LEAN / "QuantumTheory" / "ConservationLaw"
+SINGLE_PARTICLE_LOCALIZED_TRANSPORT = (
+    LEAN / "QuantumMechanics" / "SingleParticle" / "LocalizedTransport.lean"
+)
+SINGLE_PARTICLE_SYMMETRIZED_VELOCITY = (
+    LEAN / "QuantumMechanics" / "SingleParticle" / "SymmetrizedVelocityCurrent.lean"
+)
 SINGLE_PARTICLE_CONVENTIONAL = (
     LEAN / "QuantumMechanics" / "SingleParticle" / "ConventionalCurrent.lean"
 )
@@ -102,6 +108,8 @@ def main() -> int:
         CURRENT_REPRESENTATION,
         BALANCE_LAW,
         SYMMETRIC_LOCALIZATION,
+        SINGLE_PARTICLE_LOCALIZED_TRANSPORT,
+        SINGLE_PARTICLE_SYMMETRIZED_VELOCITY,
         SINGLE_PARTICLE_CONVENTIONAL,
         SINGLE_PARTICLE_SCHWARTZ,
         SINGLE_PARTICLE_SPIN,
@@ -161,6 +169,13 @@ def main() -> int:
         "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
     )
 
+    symmetrized_code = code(SYMMETRIZED_PRODUCT)
+    for token in ("symmetrizedProduct_nested", "linearCommutator"):
+        if token not in symmetrized_code:
+            errors.append(
+                f"{relative(SYMMETRIZED_PRODUCT)} must own generic noncommutative symmetrization algebra `{token}`"
+            )
+
     # QuantumTheory supplies only abstract Heisenberg evolution. It must not regain a selected
     # localization map, transported one-body quantity, or a concrete current realization.
     forbidden_quantum_localization_tokens = (
@@ -188,29 +203,81 @@ def main() -> int:
                     f"found `{token}` in {relative(path)}"
                 )
 
-    # A distinguished velocity and the conventional formula j^m = 1/2 {v,m} belong to
-    # first-quantized mechanics, downstream of both Analysis and abstract Heisenberg evolution.
+    # First-quantized localized transport owns Heisenberg/localizer/flux machinery without choosing
+    # a particular current-density formula.
     require_import(
         errors,
-        SINGLE_PARTICLE_CONVENTIONAL,
+        SINGLE_PARTICLE_LOCALIZED_TRANSPORT,
         "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
     )
     require_import(
         errors,
-        SINGLE_PARTICLE_CONVENTIONAL,
+        SINGLE_PARTICLE_LOCALIZED_TRANSPORT,
         "LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution",
     )
+    localized_transport_code = code(SINGLE_PARTICLE_LOCALIZED_TRANSPORT)
+    if "conventionalCurrent" in localized_transport_code:
+        errors.append(
+            f"{relative(SINGLE_PARTICLE_LOCALIZED_TRANSPORT)} must not make conventional-current terminology fundamental"
+        )
+
+    # A distinguished velocity may select the Hermitian density 1/2 {v,m}, but only as one local
+    # current-density representation of the already-defined transport functional.
+    require_import(
+        errors,
+        SINGLE_PARTICLE_SYMMETRIZED_VELOCITY,
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport",
+    )
+    neutral_code = code(SINGLE_PARTICLE_SYMMETRIZED_VELOCITY)
+    for token in (
+        "symmetrizedVelocityCurrent",
+        "symmetrizedVelocityTransport_decomposition",
+        "symmetrizedVelocityCurrentRepresentation",
+    ):
+        if token not in neutral_code:
+            errors.append(
+                f"{relative(SINGLE_PARTICLE_SYMMETRIZED_VELOCITY)} must expose neutral current representation `{token}`"
+            )
+    if "conventionalCurrent" in neutral_code:
+        errors.append(
+            f"{relative(SINGLE_PARTICLE_SYMMETRIZED_VELOCITY)} must remain neutral about conventional-current terminology"
+        )
+
+    # The historical conventional-current name is a thin compatibility layer only.
+    require_import(
+        errors,
+        SINGLE_PARTICLE_CONVENTIONAL,
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent",
+    )
+    conventional_code = code(SINGLE_PARTICLE_CONVENTIONAL)
+    if "symmetrizedVelocityCurrent" not in conventional_code:
+        errors.append(
+            f"{relative(SINGLE_PARTICLE_CONVENTIONAL)} must delegate to the neutral symmetrized-velocity representation"
+        )
+    for forbidden in (
+        "def heisenbergLocalizationFunctional",
+        "def heisenbergTransportFunctional",
+        "def operatorLocalCurrentPairing",
+        "def velocityLocalizationFlux",
+    ):
+        if forbidden in conventional_code:
+            errors.append(
+                f"{relative(SINGLE_PARTICLE_CONVENTIONAL)} must not own generic transport machinery `{forbidden}`"
+            )
+
     require_import(
         errors,
         SINGLE_PARTICLE_SCHWARTZ,
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.ConventionalCurrent",
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent",
     )
     require_import(
         errors,
         SINGLE_PARTICLE_SPIN,
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.ConventionalCurrent",
+        "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent",
     )
     for path in (
+        SINGLE_PARTICLE_LOCALIZED_TRANSPORT,
+        SINGLE_PARTICLE_SYMMETRIZED_VELOCITY,
         SINGLE_PARTICLE_CONVENTIONAL,
         SINGLE_PARTICLE_SCHWARTZ,
         SINGLE_PARTICLE_SPIN,

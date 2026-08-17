@@ -1,26 +1,27 @@
 import LeanCondensedMatter.Analysis.Operator.SchwartzSpinor1D
-import LeanCondensedMatter.QuantumMechanics.SingleParticle.ConventionalCurrent
+import LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent
 
 set_option linter.style.header false
 
 /-!
-# Conventional spin current on one-dimensional Schwartz spinors
+# Spin-current representation on one-dimensional Schwartz spinors
 
 This module realizes the internal-spin specialization requested by #1159. The one-particle space is
 the two-component Schwartz spinor model from `Analysis.Operator.SchwartzSpinor1D`. Spatial
 localization and velocity act componentwise, while `S_a = ℏ σ_a / 2` acts only on the internal
 `Fin 2` index.
 
-Consequently localization commutes with spin, so the canonical generalized transport has the local
-conventional-current representation
+Consequently localization commutes with spin, so the generalized transport functional has the
+symmetrized velocity-current representation
 
 ```text
 j^(S_a) = 1/2 {v, S_a}.
 ```
 
-In this spinor model `v` also commutes with `S_a`, hence the current simplifies further to `v S_a`.
-An arbitrary internal Hamiltonian matrix is retained; its commutator with `S_a` supplies the local
-source/torque term.
+This operator is often called the conventional spin current in the physics literature, but the
+transport functional is the primary object here. In this spinor model `v` also commutes with
+`S_a`, hence the chosen current density simplifies further to `v S_a`. An arbitrary internal
+Hamiltonian matrix is retained; its commutator with `S_a` supplies the local source/torque term.
 -/
 
 namespace QuantumMechanics
@@ -65,7 +66,7 @@ theorem schwartzSpin_localization_commutator_eq_zero
   exact sub_eq_zero.mpr
     (SchwartzSpinor1D.multiplicationOperator_comp_spinOperator_comm f ℏ axis)
 
-/-- Conventional spin current on the Schwartz spinor model. -/
+/-- The symmetrized velocity-current representation of spin transport on the Schwartz model. -/
 noncomputable def schwartzSpinCurrentRepresentation1D
     (ℏ κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
     (internalH : SchwartzSpinor1D.SpinMatrix) (axis : SchwartzSpinor1D.SpinAxis) :
@@ -77,7 +78,7 @@ noncomputable def schwartzSpinCurrentRepresentation1D
         (SchwartzSpinor1D.spinOperator ℏ axis))
       (operatorLocalCurrentPairing SchwartzSpinorOneParticle1D
         SchwartzSpinor1D.multiplicationLinear) :=
-  conventionalCurrentRepresentation SchwartzSpinorOneParticle1D ℏ
+  symmetrizedVelocityCurrentRepresentation SchwartzSpinorOneParticle1D ℏ
     (SchwartzSpinor1D.hamiltonian κ potential internalH)
     SchwartzSpinor1D.multiplicationLinear
     (SchwartzSpinor1D.spinOperator ℏ axis)
@@ -93,7 +94,7 @@ theorem schwartzSpinCurrentRepresentation1D_currentDensity
     (ℏ κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
     (internalH : SchwartzSpinor1D.SpinMatrix) (axis : SchwartzSpinor1D.SpinAxis) :
     (schwartzSpinCurrentRepresentation1D ℏ κ potential internalH axis).currentDensity =
-      conventionalCurrent SchwartzSpinorOneParticle1D
+      symmetrizedVelocityCurrent SchwartzSpinorOneParticle1D
         (SchwartzSpinor1D.velocityOperator ℏ κ)
         (SchwartzSpinor1D.spinOperator ℏ axis) :=
   rfl
@@ -107,10 +108,10 @@ theorem schwartzSpin_velocity_commutator_eq_zero
   exact sub_eq_zero.mpr
     (SchwartzSpinor1D.velocityOperator_comp_spinOperator_comm ℏ κ axis)
 
-/-- Therefore the conventional spin current simplifies from `1/2 {v,S_a}` to `v S_a`. -/
-theorem conventionalSpinCurrent_eq_velocity_comp_spin
+/-- The symmetrized spin current simplifies from `1/2 {v,S_a}` to `v S_a`. -/
+theorem symmetrizedSpinCurrent_eq_velocity_comp_spin
     (ℏ κ : ℝ) (axis : SchwartzSpinor1D.SpinAxis) :
-    conventionalCurrent SchwartzSpinorOneParticle1D
+    symmetrizedVelocityCurrent SchwartzSpinorOneParticle1D
         (SchwartzSpinor1D.velocityOperator ℏ κ)
         (SchwartzSpinor1D.spinOperator ℏ axis) =
       (SchwartzSpinor1D.velocityOperator ℏ κ).comp
@@ -120,6 +121,16 @@ theorem conventionalSpinCurrent_eq_velocity_comp_spin
     (SchwartzSpinor1D.spinOperator ℏ axis)
     (schwartzSpin_velocity_commutator_eq_zero ℏ κ axis)
 
+/-- Compatibility theorem retaining the conventional-spin-current wording. -/
+theorem conventionalSpinCurrent_eq_velocity_comp_spin
+    (ℏ κ : ℝ) (axis : SchwartzSpinor1D.SpinAxis) :
+    symmetrizedVelocityCurrent SchwartzSpinorOneParticle1D
+        (SchwartzSpinor1D.velocityOperator ℏ κ)
+        (SchwartzSpinor1D.spinOperator ℏ axis) =
+      (SchwartzSpinor1D.velocityOperator ℏ κ).comp
+        (SchwartzSpinor1D.spinOperator ℏ axis) :=
+  symmetrizedSpinCurrent_eq_velocity_comp_spin ℏ κ axis
+
 /-- The current density stored in the local representation is exactly `v S_a`. -/
 theorem schwartzSpinCurrentRepresentation1D_currentDensity_eq_velocity_comp_spin
     (ℏ κ : ℝ) (potential : SchwartzSpinor1D.Spatial)
@@ -128,7 +139,7 @@ theorem schwartzSpinCurrentRepresentation1D_currentDensity_eq_velocity_comp_spin
       (SchwartzSpinor1D.velocityOperator ℏ κ).comp
         (SchwartzSpinor1D.spinOperator ℏ axis) := by
   rw [schwartzSpinCurrentRepresentation1D_currentDensity]
-  exact conventionalSpinCurrent_eq_velocity_comp_spin ℏ κ axis
+  exact symmetrizedSpinCurrent_eq_velocity_comp_spin ℏ κ axis
 
 /-- The spin commutator of the full Hamiltonian is entirely the commutator with the internal
 Hamiltonian matrix. -/

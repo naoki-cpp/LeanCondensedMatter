@@ -77,6 +77,31 @@ theorem symmetrizedProduct_eq_comp_of_commutes {W : Type*} [AddCommGroup W] [Mod
   rw [← hcomm]
   module
 
+/-- Reassociating two symmetrized products produces a double-commutator correction.
+
+This identity is the representation-independent algebra behind the distinction between a generic
+localized transport functional and a current density of the form `1/2 {v,m}`. -/
+theorem symmetrizedProduct_nested {W : Type*} [AddCommGroup W] [Module ℂ W]
+    (A v m : W →ₗ[ℂ] W) :
+    symmetrizedProduct (symmetrizedProduct A v) m =
+      symmetrizedProduct A (symmetrizedProduct v m) +
+        (1 / 4 : ℂ) • linearCommutator v (linearCommutator A m) := by
+  apply LinearMap.ext
+  intro x
+  simp [symmetrizedProduct, linearCommutator]
+  module
+
+/-- If the outer localizer commutes with the transported quantity, nested symmetrization
+reassociates without a correction. -/
+theorem symmetrizedProduct_nested_eq_of_commutes
+    {W : Type*} [AddCommGroup W] [Module ℂ W]
+    (A v m : W →ₗ[ℂ] W)
+    (hAm : linearCommutator A m = 0) :
+    symmetrizedProduct (symmetrizedProduct A v) m =
+      symmetrizedProduct A (symmetrizedProduct v m) := by
+  rw [symmetrizedProduct_nested A v m, hAm]
+  simp [linearCommutator]
+
 /-- The commutator acts as a derivation on the symmetrized product. -/
 theorem linearCommutator_symmetrizedProduct {W : Type*} [AddCommGroup W] [Module ℂ W]
     (h A B : W →ₗ[ℂ] W) :
