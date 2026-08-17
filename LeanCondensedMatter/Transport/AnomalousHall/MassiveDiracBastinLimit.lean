@@ -51,6 +51,10 @@ theorem tendsto_retarded_projectorResolventCoefficient_zero
       (fun broadening : ℝ =>
         retardedSpectralParameter probeEnergy broadening -
           ((bandEnergy band v m px py : ℝ) : ℂ)) 0 := by
+    change ContinuousAt
+      (fun broadening : ℝ =>
+        ((probeEnergy : ℂ) + (broadening : ℂ) * Complex.I) -
+          ((bandEnergy band v m px py : ℝ) : ℂ)) 0
     fun_prop
   have hinv := (hcontinuous.inv₀ hden).tendsto
   simpa [projectorResolventCoefficient, retardedSpectralParameter] using hinv
@@ -75,6 +79,10 @@ theorem tendsto_advanced_projectorResolventCoefficient_zero
       (fun broadening : ℝ =>
         advancedSpectralParameter probeEnergy broadening -
           ((bandEnergy band v m px py : ℝ) : ℂ)) 0 := by
+    change ContinuousAt
+      (fun broadening : ℝ =>
+        ((probeEnergy : ℂ) - (broadening : ℂ) * Complex.I) -
+          ((bandEnergy band v m px py : ℝ) : ℂ)) 0
     fun_prop
   have hinv := (hcontinuous.inv₀ hden).tendsto
   simpa [projectorResolventCoefficient, advancedSpectralParameter] using hinv
@@ -180,7 +188,7 @@ theorem tendsto_projectorBastinTraceIntegrand_zero
     exact projectorBastinTraceIntegrand_eq_diagonal_add_interband
       e v m px py probeEnergy broadening hE
   rw [hfun]
-  exact hsum
+  simpa using hsum
 
 end
 
