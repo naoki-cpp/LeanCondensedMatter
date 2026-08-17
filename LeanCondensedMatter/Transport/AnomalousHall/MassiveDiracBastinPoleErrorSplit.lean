@@ -48,8 +48,8 @@ theorem continuousOn_targetCenteredInterbandSpectatorCurrentError_fixedBroadenin
     change Filter.Tendsto
       (fun x : ℝ =>
         targetCenteredInterbandSpectatorCurrentFactor band e v m px py (x, broadening))
-      (Filter.nhds offset)
-      (Filter.nhds
+      (nhds offset)
+      (nhds
         (targetCenteredInterbandSpectatorCurrentFactor band e v m px py (offset, broadening)))
     exact Filter.Tendsto.comp hfactor hpair
   have hconst : ContinuousAt
