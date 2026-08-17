@@ -191,7 +191,9 @@ def main() -> int:
             f"{relative(FERMIONIC_FIELD_BRIDGE)} must not regain concrete current-representation ownership"
         )
 
-    # Generic bounded response must stay independent of conventional current machinery.
+    # Generic bounded response must stay independent of conventional-current machinery.
+    # The conventional adapter uses only the shared algebraic symmetrized product, not
+    # the concrete QuantumMechanics owner.
     for imported in imports(BOUNDED_RESPONSE):
         if "ConventionalCurrent" in imported:
             errors.append(
@@ -200,7 +202,7 @@ def main() -> int:
     require_import(
         errors,
         CONVENTIONAL_RESPONSE,
-        "LeanCondensedMatter.QuantumMechanics.SingleParticle.ConventionalCurrent",
+        "LeanCondensedMatter.Analysis.Calculus.OneBodyBalance",
     )
     require_import(
         errors,
