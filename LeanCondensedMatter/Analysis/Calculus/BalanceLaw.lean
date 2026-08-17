@@ -105,6 +105,32 @@ noncomputable def scaleEvolution
     rw [B.balance f]
     exact smul_add c (B.current (d f)) (B.source f)
 
+/-- For a source-free balance law, the flux through exact test data is fixed by the evolution of
+the localized quantity. -/
+theorem sourceFreeFlux_eq_evolution
+    {δ : Obs →ₗ[𝕜] Obs}
+    {Q : Test →ₗ[𝕜] Obs}
+    {d : Test →ₗ[𝕜] OneForm}
+    (B : BalanceLaw δ Q d) (hsource : B.source = 0) (f : Test) :
+    B.current (d f) = δ (Q f) := by
+  have h := B.balance f
+  rw [hsource] at h
+  simpa using h.symm
+
+/-- Source-free balance laws for the same evolution, localized quantity, and differential assign
+the same flux to every exact test one-form. The current functional may still differ away from the
+image of `d`. -/
+theorem sourceFreeFlux_unique
+    {δ : Obs →ₗ[𝕜] Obs}
+    {Q : Test →ₗ[𝕜] Obs}
+    {d : Test →ₗ[𝕜] OneForm}
+    (B₁ B₂ : BalanceLaw δ Q d)
+    (hsource₁ : B₁.source = 0) (hsource₂ : B₂.source = 0) (f : Test) :
+    B₁.current (d f) = B₂.current (d f) := by
+  calc
+    B₁.current (d f) = δ (Q f) := B₁.sourceFreeFlux_eq_evolution hsource₁ f
+    _ = B₂.current (d f) := (B₂.sourceFreeFlux_eq_evolution hsource₂ f).symm
+
 /-- A source-free balance law is a differential current representation of the full localized
 evolution `δ ∘ Q`. -/
 def toDifferentialCurrentRepresentation
