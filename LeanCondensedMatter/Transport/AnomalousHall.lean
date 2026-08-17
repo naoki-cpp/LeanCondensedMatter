@@ -18,6 +18,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinSpectator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinInterband
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleFactor
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleWindow
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleContinuity
 
 set_option linter.style.header false
 
