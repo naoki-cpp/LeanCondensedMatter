@@ -43,7 +43,8 @@ theorem vonNeumannEntropy_gibbs_diagonal
     rw [coe_diagonalExpectationValue_right, hE i, inner_smul_right,
       inner_self_eq_norm_sq_to_K, b.orthonormal.1 i]
     simp
-  rw [henergyTerm, ← energyExpValue_eq_observableExpectation] at hEnergySum
+  rw [henergyTerm] at hEnergySum
+  change HasSum (fun i => w i * E i) (energyExpValue ρ Hop) at hEnergySum
   have hEntropySum :=
     entropyOpSpectralTraceClass_hasSum_diagonal ρ b w hρw hentropy
   have hlogw (i : ι) : Real.log (w i) = -β * E i - Real.log Z := by
