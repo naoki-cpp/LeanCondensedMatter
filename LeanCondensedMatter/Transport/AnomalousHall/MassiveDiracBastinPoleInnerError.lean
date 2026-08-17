@@ -42,7 +42,7 @@ theorem norm_lorentzian_mul_targetCenteredInterbandSpectatorCurrentError_le
   have hnorm :
       ‖(lorentzianSpectralKernel offset broadening : ℂ)‖ =
         lorentzianSpectralKernel offset broadening := by
-    simpa [Complex.norm_real, Real.norm_eq_abs] using hkernel.abs_eq
+    rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hkernel]
   rw [norm_mul, hnorm]
   calc
     lorentzianSpectralKernel offset broadening *
