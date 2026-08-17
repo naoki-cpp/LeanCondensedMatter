@@ -1,13 +1,18 @@
-import LeanCondensedMatter.QuantumTheory.ConservationLaw.CurrentRepresentation
-import LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergTransport
+import LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution
 
 set_option linter.style.header false
 
 /-!
-# One-body conservation-law and transport abstractions
+# Abstract quantum balance-law evolution
 
-Public umbrella for particle-statistics-independent one-body transport semantics. The algebraic
-localized balance law and weak-current abstractions live upstream under `Analysis`; this layer adds
-Heisenberg normalization and model-independent transport factorization. Concrete velocity and
-conventional-current specializations are owned by `QuantumMechanics.SingleParticle`.
+Public umbrella for particle-statistics-independent conservation-law dynamics. The abstract balance
+and current-representation interfaces, together with symmetric-localization algebra, live upstream
+under `Analysis`. This layer supplies only the Heisenberg normalization
+
+```text
+δₕ(A) = (i / ℏ) [h,A].
+```
+
+Spatial localization, distinguished velocity operators, and conventional-current realizations are
+owned downstream by concrete models such as `QuantumMechanics.SingleParticle`.
 -/

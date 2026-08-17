@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Calculus.OneBodyBalance
+import LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization
 import LeanCondensedMatter.SecondQuantization.Fermionic.Field.ChargeDensity
 
 set_option linter.style.header false
@@ -6,9 +6,9 @@ set_option linter.style.header false
 /-!
 # Fermionic many-body bridge for generalized localized quantities
 
-The one-body algebra and balance law are owned upstream by
-`Analysis.Calculus.OneBodyBalance` under the root `ConservationLaw` namespace. This module contains
-only the fermionic second-quantization bridge:
+The representation-independent symmetric-localization realization is owned upstream by
+`Analysis.Calculus.SymmetricLocalization` under the root `ConservationLaw` namespace. This module
+contains only the fermionic second-quantization bridge:
 
 ```text
 one-body quantity m

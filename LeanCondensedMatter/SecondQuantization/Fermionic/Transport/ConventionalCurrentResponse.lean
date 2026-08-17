@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Calculus.OneBodyBalance
+import LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedCurrentResponse
 
 set_option linter.style.header false

@@ -12,8 +12,9 @@ particular quantum representation or second-quantization construction.
 [S,T] = S ∘ T - T ∘ S.
 ```
 
-Second-quantization layers may prove functoriality of this operation, but should not own the
-operation itself.
+It also packages commutation with a fixed left operator as a linear endomorphism of the operator
+space. Second-quantization and quantum layers may specialize this algebraic evolution without
+redefining it.
 -/
 
 namespace ConservationLaw
@@ -27,6 +28,30 @@ noncomputable def linearCommutator {V : Type*} [AddCommGroup V] [Module ℂ V]
 theorem linearCommutator_apply {V : Type*} [AddCommGroup V] [Module ℂ V]
     (S T : V →ₗ[ℂ] V) (v : V) :
     linearCommutator S T v = S (T v) - T (S v) :=
+  rfl
+
+/-- Commutation with a fixed left operator, packaged as a linear map on endomorphisms. -/
+noncomputable def commutatorEvolution {V : Type*} [AddCommGroup V] [Module ℂ V]
+    (S : V →ₗ[ℂ] V) :
+    (V →ₗ[ℂ] V) →ₗ[ℂ] (V →ₗ[ℂ] V) where
+  toFun := fun T => linearCommutator S T
+  map_add' := by
+    intro A B
+    apply LinearMap.ext
+    intro v
+    simp [linearCommutator]
+    module
+  map_smul' := by
+    intro c A
+    apply LinearMap.ext
+    intro v
+    simp [linearCommutator]
+    module
+
+@[simp]
+theorem commutatorEvolution_apply {V : Type*} [AddCommGroup V] [Module ℂ V]
+    (S T : V →ₗ[ℂ] V) :
+    commutatorEvolution S T = linearCommutator S T :=
   rfl
 
 /-- A scalar multiple of the identity commutes with every complex-linear endomorphism. -/
