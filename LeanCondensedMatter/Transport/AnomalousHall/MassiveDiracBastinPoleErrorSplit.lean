@@ -41,7 +41,17 @@ theorem continuousOn_targetCenteredInterbandSpectatorCurrentError_fixedBroadenin
       band e v m px py radius (offset, broadening) hradius (abs_le.mpr hoffset)
   have hpair : ContinuousAt (fun x : ℝ => (x, broadening)) offset := by
     fun_prop
-  have hcomp := hfactor.comp hpair
+  have hcomp : ContinuousAt
+      (fun x : ℝ =>
+        targetCenteredInterbandSpectatorCurrentFactor band e v m px py (x, broadening))
+      offset := by
+    change Filter.Tendsto
+      (fun x : ℝ =>
+        targetCenteredInterbandSpectatorCurrentFactor band e v m px py (x, broadening))
+      (Filter.nhds offset)
+      (Filter.nhds
+        (targetCenteredInterbandSpectatorCurrentFactor band e v m px py (offset, broadening)))
+    exact Filter.Tendsto.comp hfactor hpair
   have hconst : ContinuousAt
       (fun _ : ℝ => targetCenteredInterbandSpectatorCurrentFactor band e v m px py (0, 0))
       offset := continuousAt_const
