@@ -5,7 +5,7 @@ set_option linter.style.header false
 /-!
 # Abstract balance laws
 
-This module isolates the representation-independent content of a local balance law.  A smeared or
+This module isolates the representation-independent content of a local balance law. A smeared or
 localized quantity
 
 ```text
@@ -75,6 +75,22 @@ theorem evolution_eq_zero_of_differential_eq_zero_of_source_eq_zero
     (hf : d f = 0) (hsource : B.source f = 0) :
     δ (Q f) = 0 := by
   rw [B.evolution_eq_source_of_differential_eq_zero hf, hsource]
+
+/-- Scaling the evolution scales both transport and source while preserving the same localized
+quantity and differential. -/
+noncomputable def scaleEvolution
+    {δ : Obs →ₗ[𝕜] Obs}
+    {Q : Test →ₗ[𝕜] Obs}
+    {d : Test →ₗ[𝕜] OneForm}
+    (B : BalanceLaw δ Q d) (c : 𝕜) :
+    BalanceLaw (c • δ) Q d where
+  current := c • B.current
+  source := c • B.source
+  balance := by
+    intro f
+    simp only [LinearMap.smul_apply]
+    rw [B.balance f]
+    exact (smul_add c (B.current (d f)) (B.source f)).symm
 
 /-- A source-free balance law is a differential current representation of the full localized
 evolution `δ ∘ Q`. -/
