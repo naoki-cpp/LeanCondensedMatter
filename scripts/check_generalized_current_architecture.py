@@ -8,8 +8,10 @@ from architecture_audit_common import finish_audit, repository_root, strip_lean_
 ROOT = repository_root(__file__)
 LEAN = ROOT / "LeanCondensedMatter"
 ANALYSIS_OPERATOR = LEAN / "Analysis" / "Operator" / "LinearCommutator.lean"
+SYMMETRIZED_PRODUCT = LEAN / "Analysis" / "Operator" / "SymmetrizedProduct.lean"
 ONE_BODY_BALANCE = LEAN / "Analysis" / "Calculus" / "OneBodyBalance.lean"
 CURRENT_REPRESENTATION = LEAN / "Analysis" / "Calculus" / "CurrentRepresentation.lean"
+BALANCE_LAW = LEAN / "Analysis" / "Calculus" / "BalanceLaw.lean"
 QUANTUM_CURRENT = LEAN / "QuantumTheory" / "ConservationLaw"
 SINGLE_PARTICLE_CONVENTIONAL = (
     LEAN / "QuantumMechanics" / "SingleParticle" / "ConventionalCurrent.lean"
@@ -93,8 +95,10 @@ def main() -> int:
 
     required = (
         ANALYSIS_OPERATOR,
+        SYMMETRIZED_PRODUCT,
         ONE_BODY_BALANCE,
         CURRENT_REPRESENTATION,
+        BALANCE_LAW,
         SINGLE_PARTICLE_CONVENTIONAL,
         SINGLE_PARTICLE_SCHWARTZ,
         SINGLE_PARTICLE_SPIN,
@@ -118,9 +122,15 @@ def main() -> int:
             success_message="Generalized-current architecture audit passed.",
         )
 
-    # Generic algebra and one-body balance must remain upstream of all quantum and
-    # second-quantized realizations.
-    for path in (ANALYSIS_OPERATOR, ONE_BODY_BALANCE, CURRENT_REPRESENTATION):
+    # Generic operator algebra, abstract balance/current semantics, and the algebraic
+    # symmetric-localization identity must remain upstream of all quantum realizations.
+    for path in (
+        ANALYSIS_OPERATOR,
+        SYMMETRIZED_PRODUCT,
+        ONE_BODY_BALANCE,
+        CURRENT_REPRESENTATION,
+        BALANCE_LAW,
+    ):
         forbid_import_prefixes(
             errors,
             path,
@@ -131,6 +141,17 @@ def main() -> int:
             ),
             "analysis-level current semantics must remain representation-independent",
         )
+
+    require_import(
+        errors,
+        ONE_BODY_BALANCE,
+        "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
+    )
+    require_import(
+        errors,
+        BALANCE_LAW,
+        "LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation",
+    )
 
     # Abstract quantum transport may depend on Analysis, but it must remain upstream
     # of both concrete single-particle kinematics and particle statistics.
@@ -192,8 +213,8 @@ def main() -> int:
         )
 
     # Generic bounded response must stay independent of conventional-current machinery.
-    # The conventional adapter uses only the shared algebraic symmetrized product, not
-    # the concrete QuantumMechanics owner.
+    # The conventional adapter needs only the pure symmetrized-product algebra; importing
+    # OneBodyBalance would incorrectly couple second quantization to a localization realization.
     for imported in imports(BOUNDED_RESPONSE):
         if "ConventionalCurrent" in imported:
             errors.append(
@@ -202,13 +223,17 @@ def main() -> int:
     require_import(
         errors,
         CONVENTIONAL_RESPONSE,
-        "LeanCondensedMatter.Analysis.Calculus.OneBodyBalance",
+        "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
     )
     require_import(
         errors,
         CONVENTIONAL_RESPONSE,
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedCurrentResponse",
     )
+    if "LeanCondensedMatter.Analysis.Calculus.OneBodyBalance" in imports(CONVENTIONAL_RESPONSE):
+        errors.append(
+            f"{relative(CONVENTIONAL_RESPONSE)} must not import the symmetric-localization balance realization"
+        )
 
     # The QuantumTheory umbrella exposes only model-independent owners. Concrete
     # velocity/current realizations are deliberately not re-exported through it.
