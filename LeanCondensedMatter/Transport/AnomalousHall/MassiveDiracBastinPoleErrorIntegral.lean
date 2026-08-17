@@ -46,6 +46,7 @@ theorem intervalIntegrable_lorentzianSpectralKernel
     IntervalIntegrable (fun offset : ℝ => lorentzianSpectralKernel offset broadening)
       MeasureTheory.volume lower upper := by
   exact (continuous_lorentzianSpectralKernel_fixed_broadening broadening hbroadening).intervalIntegrable
+    (μ := MeasureTheory.volume) lower upper
 
 /-- The compact-rectangle error bound can always be chosen nonnegative. -/
 theorem exists_nonneg_norm_targetCenteredInterbandSpectatorCurrentFactor_sub_pole_le_on_rectangle
