@@ -192,7 +192,7 @@ theorem shiftCurrentSource_total
 /-- If the source itself factors through the differential, it can be absorbed completely into the
 current. The resulting current is `B.current + sourceCurrent` and represents the full localized
 evolution `δ ∘ Q` with no remaining source term. -/
-noncomputable def toDifferentialCurrentRepresentation_of_source_factors
+noncomputable def toDifferentialCurrentRepresentationOfSourceFactors
     {δ : Obs' →ₗ[R] Obs'}
     {Q : Test' →ₗ[R] Obs'}
     {d : Test' →ₗ[R] OneForm'}
@@ -208,14 +208,14 @@ noncomputable def toDifferentialCurrentRepresentation_of_source_factors
     module)
 
 @[simp]
-theorem toDifferentialCurrentRepresentation_of_source_factors_current
+theorem toDifferentialCurrentRepresentationOfSourceFactors_current
     {δ : Obs' →ₗ[R] Obs'}
     {Q : Test' →ₗ[R] Obs'}
     {d : Test' →ₗ[R] OneForm'}
     (B : BalanceLaw δ Q d)
     (sourceCurrent : OneForm' →ₗ[R] Obs')
     (hsource : FactorsThroughDifferential d B.source sourceCurrent) :
-    (B.toDifferentialCurrentRepresentation_of_source_factors sourceCurrent hsource).current =
+    (B.toDifferentialCurrentRepresentationOfSourceFactors sourceCurrent hsource).current =
       B.current + sourceCurrent :=
   rfl
 
