@@ -100,8 +100,9 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_zero
     (continuousAt_const : ContinuousAt
       (fun _ : ℝ × ℝ => bastinYXBandBlockTrace (oppositeBand band) band e v m px py)
       (0, 0))
-  simpa [targetCenteredInterbandSpectatorCurrentFactor,
-    interbandSpectatorCurrentFactor, pow_two] using hxy.sub hyx
+  unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
+  dsimp
+  simpa [pow_two] using hxy.sub hyx
 
 /-- Jointly sending both the target-centered energy offset and broadening to zero extracts the same
 inverse-gap-squared antisymmetric current block as the fixed-energy pole limit. -/
