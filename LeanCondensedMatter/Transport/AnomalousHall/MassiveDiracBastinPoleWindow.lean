@@ -73,7 +73,7 @@ theorem abs_interbandEnergyGap_add_offset_ge_sub_radius
             congr 1
             ring
       _ ≤ |interbandEnergyGap band v m px py + offset| + |-offset| :=
-        abs_add _ _
+        abs_add_le _ _
       _ = |interbandEnergyGap band v m px py + offset| + |offset| := by
         rw [abs_neg]
   linarith
@@ -82,30 +82,27 @@ theorem abs_interbandEnergyGap_add_offset_ge_sub_radius
 source pole. -/
 theorem interbandEnergyGap_add_offset_ne_zero_on_targetWindow
     (band : Band) (v m px py offset radius : ℝ)
-    (hE : energy v m px py ≠ 0)
     (hradius : radius < |interbandEnergyGap band v m px py|)
     (hoffset : |offset| ≤ radius) :
     interbandEnergyGap band v m px py + offset ≠ 0 := by
-  have hgap := interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE
-  have hgapAbs : 0 < |interbandEnergyGap band v m px py| := abs_pos.mpr hgap
   have hlower := abs_interbandEnergyGap_add_offset_ge_sub_radius
     band v m px py offset radius hoffset
   have hshiftAbs : 0 < |interbandEnergyGap band v m px py + offset| := by
-    have : 0 < |interbandEnergyGap band v m px py| - radius := sub_pos.mpr hradius
-    exact lt_of_lt_of_le this hlower
+    have hpositive : 0 < |interbandEnergyGap band v m px py| - radius :=
+      sub_pos.mpr hradius
+    exact lt_of_lt_of_le hpositive hlower
   exact abs_pos.mp hshiftAbs
 
 /-- The retarded complex spectator denominator is nonzero throughout such a target-centered window,
 for every real broadening. -/
 theorem retardedSpectatorDenominator_ne_zero_on_targetWindow
     (band : Band) (v m px py offset radius broadening : ℝ)
-    (hE : energy v m px py ≠ 0)
     (hradius : radius < |interbandEnergyGap band v m px py|)
     (hoffset : |offset| ≤ radius) :
     ((interbandEnergyGap band v m px py + offset : ℝ) : ℂ) +
         (broadening : ℂ) * Complex.I ≠ 0 := by
   have hreal := interbandEnergyGap_add_offset_ne_zero_on_targetWindow
-    band v m px py offset radius hE hradius hoffset
+    band v m px py offset radius hradius hoffset
   intro hzero
   apply hreal
   simpa using congrArg Complex.re hzero
@@ -113,13 +110,12 @@ theorem retardedSpectatorDenominator_ne_zero_on_targetWindow
 /-- The advanced complex spectator denominator is likewise nonzero on the same window. -/
 theorem advancedSpectatorDenominator_ne_zero_on_targetWindow
     (band : Band) (v m px py offset radius broadening : ℝ)
-    (hE : energy v m px py ≠ 0)
     (hradius : radius < |interbandEnergyGap band v m px py|)
     (hoffset : |offset| ≤ radius) :
     ((interbandEnergyGap band v m px py + offset : ℝ) : ℂ) -
         (broadening : ℂ) * Complex.I ≠ 0 := by
   have hreal := interbandEnergyGap_add_offset_ne_zero_on_targetWindow
-    band v m px py offset radius hE hradius hoffset
+    band v m px py offset radius hradius hoffset
   intro hzero
   apply hreal
   simpa using congrArg Complex.re hzero
