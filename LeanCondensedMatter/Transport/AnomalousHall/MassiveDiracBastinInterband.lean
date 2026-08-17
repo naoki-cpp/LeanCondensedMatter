@@ -29,7 +29,13 @@ noncomputable section
     (band : Band) (v m px py : ℝ) :
     interbandEnergyGap (oppositeBand band) v m px py =
       -interbandEnergyGap band v m px py := by
-  cases band <;> simp [interbandEnergyGap, bandEnergy] <;> ring
+  cases band
+  · change energy v m px py - (-energy v m px py) =
+      -((-energy v m px py) - energy v m px py)
+    ring
+  · change (-energy v m px py) - energy v m px py =
+      -(energy v m px py - (-energy v m px py))
+    ring
 
 /-- With the source chosen as the opposite band, the natural Bastin `x-y` trace is the interband
 current trace whose target label is the opposite band. -/
