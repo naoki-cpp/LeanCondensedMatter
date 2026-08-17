@@ -9,9 +9,9 @@ ROOT = repository_root(__file__)
 LEAN = ROOT / "LeanCondensedMatter"
 ANALYSIS_OPERATOR = LEAN / "Analysis" / "Operator" / "LinearCommutator.lean"
 SYMMETRIZED_PRODUCT = LEAN / "Analysis" / "Operator" / "SymmetrizedProduct.lean"
-ONE_BODY_BALANCE = LEAN / "Analysis" / "Calculus" / "OneBodyBalance.lean"
 CURRENT_REPRESENTATION = LEAN / "Analysis" / "Calculus" / "CurrentRepresentation.lean"
 BALANCE_LAW = LEAN / "Analysis" / "Calculus" / "BalanceLaw.lean"
+SYMMETRIC_LOCALIZATION = LEAN / "Analysis" / "Calculus" / "SymmetricLocalization.lean"
 QUANTUM_CURRENT = LEAN / "QuantumTheory" / "ConservationLaw"
 SINGLE_PARTICLE_CONVENTIONAL = (
     LEAN / "QuantumMechanics" / "SingleParticle" / "ConventionalCurrent.lean"
@@ -46,6 +46,9 @@ FIELD_UMBRELLA = LEAN / "SecondQuantization" / "Fermionic" / "Field.lean"
 TRANSPORT_UMBRELLA = LEAN / "SecondQuantization" / "Fermionic" / "Transport.lean"
 
 OLD_CURRENT_OWNERS = (
+    LEAN / "Analysis" / "Calculus" / "OneBodyBalance.lean",
+    LEAN / "QuantumTheory" / "ConservationLaw" / "CurrentRepresentation.lean",
+    LEAN / "QuantumTheory" / "ConservationLaw" / "HeisenbergTransport.lean",
     LEAN / "SecondQuantization" / "Fermionic" / "Field" / "GeneralizedQuantity" / "CurrentRepresentation.lean",
     LEAN / "SecondQuantization" / "Fermionic" / "Field" / "GeneralizedQuantity" / "ConventionalCurrent.lean",
     LEAN / "SecondQuantization" / "Fermionic" / "Field" / "GeneralizedQuantity" / "SchwartzCurrent1D.lean",
@@ -96,9 +99,9 @@ def main() -> int:
     required = (
         ANALYSIS_OPERATOR,
         SYMMETRIZED_PRODUCT,
-        ONE_BODY_BALANCE,
         CURRENT_REPRESENTATION,
         BALANCE_LAW,
+        SYMMETRIC_LOCALIZATION,
         SINGLE_PARTICLE_CONVENTIONAL,
         SINGLE_PARTICLE_SCHWARTZ,
         SINGLE_PARTICLE_SPIN,
@@ -122,14 +125,14 @@ def main() -> int:
             success_message="Generalized-current architecture audit passed.",
         )
 
-    # Generic operator algebra, abstract balance/current semantics, and the algebraic
-    # symmetric-localization identity must remain upstream of all quantum realizations.
+    # Pure algebra, abstract balance/current semantics, and the algebraic symmetric-localization
+    # realization stay upstream of quantum dynamics and particle statistics.
     for path in (
         ANALYSIS_OPERATOR,
         SYMMETRIZED_PRODUCT,
-        ONE_BODY_BALANCE,
         CURRENT_REPRESENTATION,
         BALANCE_LAW,
+        SYMMETRIC_LOCALIZATION,
     ):
         forbid_import_prefixes(
             errors,
@@ -144,17 +147,29 @@ def main() -> int:
 
     require_import(
         errors,
-        ONE_BODY_BALANCE,
-        "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
-    )
-    require_import(
-        errors,
         BALANCE_LAW,
         "LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation",
     )
+    require_import(
+        errors,
+        SYMMETRIC_LOCALIZATION,
+        "LeanCondensedMatter.Analysis.Calculus.BalanceLaw",
+    )
+    require_import(
+        errors,
+        SYMMETRIC_LOCALIZATION,
+        "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
+    )
 
-    # Abstract quantum transport may depend on Analysis, but it must remain upstream
-    # of both concrete single-particle kinematics and particle statistics.
+    # QuantumTheory supplies only abstract Heisenberg evolution. It must not regain a selected
+    # localization map, transported one-body quantity, or a concrete current realization.
+    forbidden_quantum_localization_tokens = (
+        "localizedQuantity",
+        "localizationCommutatorFunctional",
+        "transportFunctional",
+        "sourceFunctional",
+        "symmetrizedProductRightLinear",
+    )
     for path in sorted(QUANTUM_CURRENT.glob("*.lean")):
         forbid_import_prefixes(
             errors,
@@ -165,13 +180,25 @@ def main() -> int:
             ),
             "QuantumTheory.ConservationLaw must remain free of concrete kinematics and particle statistics",
         )
+        quantum_code = code(path)
+        for token in forbidden_quantum_localization_tokens:
+            if token in quantum_code:
+                errors.append(
+                    "QuantumTheory.ConservationLaw must not own symmetric-localization semantics: "
+                    f"found `{token}` in {relative(path)}"
+                )
 
-    # A distinguished velocity and the conventional formula j^m = 1/2 {v,m} belong
-    # to first-quantized mechanics, downstream of the abstract Heisenberg machinery.
+    # A distinguished velocity and the conventional formula j^m = 1/2 {v,m} belong to
+    # first-quantized mechanics, downstream of both Analysis and abstract Heisenberg evolution.
     require_import(
         errors,
         SINGLE_PARTICLE_CONVENTIONAL,
-        "LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergTransport",
+        "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
+    )
+    require_import(
+        errors,
+        SINGLE_PARTICLE_CONVENTIONAL,
+        "LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution",
     )
     require_import(
         errors,
@@ -195,9 +222,13 @@ def main() -> int:
             "single-particle current realizations must remain upstream of particle statistics",
         )
 
-    # The Fermionic Field owner is now a dGamma bridge, not a transport owner. The
-    # dGamma implementation may arrive transitively through ChargeDensity, so inspect
-    # the bridge semantics rather than requiring a direct AlgebraicFock import.
+    # The fermionic field module is a dGamma bridge over the shared Analysis realization, not a
+    # current owner and not a client of concrete first-quantized mechanics.
+    require_import(
+        errors,
+        FERMIONIC_FIELD_BRIDGE,
+        "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
+    )
     bridge_code = code(FERMIONIC_FIELD_BRIDGE)
     bridge_imports = imports(FERMIONIC_FIELD_BRIDGE)
     if "AlgebraicFock.dGamma" not in bridge_code:
@@ -205,16 +236,17 @@ def main() -> int:
             f"{relative(FERMIONIC_FIELD_BRIDGE)} must remain an explicit dGamma bridge"
         )
     if any(
-        "ConventionalCurrent" in imported or "SchwartzCurrent" in imported
+        imported.startswith("LeanCondensedMatter.QuantumMechanics")
+        or "ConventionalCurrent" in imported
+        or "SchwartzCurrent" in imported
         for imported in bridge_imports
     ):
         errors.append(
             f"{relative(FERMIONIC_FIELD_BRIDGE)} must not regain concrete current-representation ownership"
         )
 
-    # Generic bounded response must stay independent of conventional-current machinery.
-    # The conventional adapter needs only the pure symmetrized-product algebra; importing
-    # OneBodyBalance would incorrectly couple second quantization to a localization realization.
+    # Generic bounded response remains independent of conventional-current machinery. The
+    # conventional adapter needs only the pure symmetrized-product algebra.
     for imported in imports(BOUNDED_RESPONSE):
         if "ConventionalCurrent" in imported:
             errors.append(
@@ -230,31 +262,24 @@ def main() -> int:
         CONVENTIONAL_RESPONSE,
         "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedCurrentResponse",
     )
-    if "LeanCondensedMatter.Analysis.Calculus.OneBodyBalance" in imports(CONVENTIONAL_RESPONSE):
-        errors.append(
-            f"{relative(CONVENTIONAL_RESPONSE)} must not import the symmetric-localization balance realization"
-        )
 
-    # The QuantumTheory umbrella exposes only model-independent owners. Concrete
-    # velocity/current realizations are deliberately not re-exported through it.
+    # The QuantumTheory umbrella exposes only the abstract Heisenberg owner.
+    quantum_umbrella_imports = imports(QUANTUM_UMBRELLA)
     require_import(
         errors,
         QUANTUM_UMBRELLA,
-        "LeanCondensedMatter.QuantumTheory.ConservationLaw.CurrentRepresentation",
-    )
-    require_import(
-        errors,
-        QUANTUM_UMBRELLA,
-        "LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergTransport",
+        "LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution",
     )
     for retired in (
+        "CurrentRepresentation",
+        "HeisenbergTransport",
         "ConventionalCurrent",
         "SchwartzCurrent1D",
         "SchwartzSpinCurrent1D",
     ):
-        if any(retired in imported for imported in imports(QUANTUM_UMBRELLA)):
+        if any(retired in imported for imported in quantum_umbrella_imports):
             errors.append(
-                f"{relative(QUANTUM_UMBRELLA)} must not re-export concrete current leaf `{retired}`"
+                f"{relative(QUANTUM_UMBRELLA)} must not re-export retired conservation leaf `{retired}`"
             )
 
     field_imports = imports(FIELD_UMBRELLA)
