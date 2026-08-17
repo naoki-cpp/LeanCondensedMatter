@@ -65,7 +65,8 @@ theorem tendsto_zeroTemperatureOccupation_lorentzian_fermi_surface_finite_window
     exact integral_zeroTemperatureOccupation_lorentzian_fermi_surface_eq_half_mass
       fermiEnergy radius broadening hradius.le
   rw [hfun]
-  convert hhalf using 1 <;> ring_nf
+  have hpi : (1 / 2 : ℝ) * Real.pi = Real.pi / 2 := by ring
+  simpa [hpi] using hhalf
 
 /-- The asymptotic zero-temperature Lorentzian weight assigned to an isolated pole on a symmetric
 finite energy window.  Occupied, unoccupied, and exact-Fermi poles carry weights `π`, `0`, and
