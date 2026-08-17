@@ -24,6 +24,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleWindowB
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleLocalError
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleErrorIntegral
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleInnerError
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleOuterError
 
 set_option linter.style.header false
 
