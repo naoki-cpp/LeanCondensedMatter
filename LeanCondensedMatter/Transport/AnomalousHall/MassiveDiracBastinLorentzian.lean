@@ -61,11 +61,14 @@ theorem inv_add_I_sub_inv_sub_I_eq_lorentzian
     nlinarith [sq_pos_of_ne_zero hbroadening]
   have hsum : (((broadening ^ 2 + offset ^ 2 : ℝ) : ℂ)) ≠ 0 := by
     exact_mod_cast hsumReal
+  have hsumOffset : (((offset ^ 2 + broadening ^ 2 : ℝ) : ℂ)) ≠ 0 := by
+    simpa [add_comm] using hsum
   unfold lorentzianSpectralKernel
   push_cast
   field_simp [hplus, hminus, hsum]
   ring_nf
-  simp [Complex.I_mul_I]
+  field_simp [hsumOffset]
+  ring
 
 /-- The scalar spectral difference in the two-band Bastin decomposition is exactly a Lorentzian
 centered at the selected band energy. -/
@@ -121,7 +124,10 @@ theorem tendsto_integral_lorentzianSpectralKernel_symmetric
       (fun broadening : ℝ => Real.arctan (radius / broadening))
       (nhdsWithin 0 (Set.Ioi 0)) (nhds (Real.pi / 2)) := by
     have h := tendsto_nhds_of_tendsto_nhdsWithin harctanWithin
-    simpa only [Function.comp_apply, div_eq_mul_inv] using h
+    change Tendsto
+      (fun broadening : ℝ => Real.arctan (radius * broadening⁻¹))
+      (nhdsWithin 0 (Set.Ioi 0)) (nhds (Real.pi / 2)) at h
+    simpa only [div_eq_mul_inv] using h
   have hmass := (tendsto_const_nhds : Tendsto (fun _ : ℝ => (2 : ℝ))
       (nhdsWithin 0 (Set.Ioi 0)) (nhds 2)).mul harctan
   have hfun :
