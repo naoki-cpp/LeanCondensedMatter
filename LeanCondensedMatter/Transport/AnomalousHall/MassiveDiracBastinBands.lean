@@ -166,7 +166,8 @@ theorem projectorBastinTraceIntegrand_eq_four_band_blocks
       bastinBandPairContribution .lower .upper e v m px py probeEnergy broadening +
       bastinBandPairContribution .upper .lower e v m px py probeEnergy broadening +
       bastinBandPairContribution .upper .upper e v m px py probeEnergy broadening := by
-  unfold projectorBastinTraceIntegrand projectorBastinOperatorIntegrand
+  unfold projectorBastinTraceIntegrand
+  dsimp only [projectorBastinOperatorIntegrand]
   let rL := projectorResolventCoefficient
     (retardedSpectralParameter probeEnergy broadening) .lower v m px py
   let rU := projectorResolventCoefficient
