@@ -48,7 +48,9 @@ import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.Analysis.OrderedSimplex.Calculus
 import LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation
 import LeanCondensedMatter.Analysis.Calculus.BalanceLaw
+import LeanCondensedMatter.Analysis.Calculus.IntrinsicBalanceLaw
 import LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization
+import LeanCondensedMatter.Analysis.Calculus.IntrinsicSymmetricLocalization
 import LeanCondensedMatter.Analysis.Calculus.WeakConservation1D
 import LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral
 import LeanCondensedMatter.Analysis.Inequalities.PeierlsBogoliubov
