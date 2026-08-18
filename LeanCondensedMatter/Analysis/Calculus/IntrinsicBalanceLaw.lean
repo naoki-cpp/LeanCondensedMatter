@@ -186,9 +186,9 @@ noncomputable def ofRepresented
     IntrinsicBalanceLaw δ Q d where
   transport := B.current.comp d
   transport_depends := by
-    apply DependsOnlyOnDifferential.of_factors
-    intro f
-    rfl
+    intro f g hfg
+    simp only [LinearMap.comp_apply]
+    rw [hfg]
   source := B.source
   balance := by
     intro f
