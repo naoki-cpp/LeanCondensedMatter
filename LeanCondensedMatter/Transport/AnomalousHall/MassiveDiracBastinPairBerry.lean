@@ -46,6 +46,7 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_be
       rw [← mul_sub]
       simp [Complex.mul_im]
       field_simp [hgap]
+      norm_num
     _ = -(e ^ 2 * berryCurvature band v m px py) :=
       bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
         band e v m px py hE
@@ -78,7 +79,8 @@ theorem tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature
             (Real.pi •
               targetCenteredInterbandSpectatorCurrentFactor
                 band e v m px py (0, 0))).re)) := by
-    simpa using Complex.continuous_re.continuousAt.tendsto.comp hpair
+    simpa only [Function.comp_apply] using
+      Complex.continuous_re.continuousAt.tendsto.comp hpair
   have hlimit :
       (((-2 * Complex.I) *
         (Real.pi •
