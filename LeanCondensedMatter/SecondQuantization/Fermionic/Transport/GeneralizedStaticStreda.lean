@@ -106,7 +106,10 @@ theorem finiteDimensionalStaticKuboBastinChannelResponse_eq_surface_add_sea_add_
         regularizedStredaFermiSea representation.toRegularizedStredaIntegralData) +
       purePointNormalizedExpectation system data channel.observableVariation := by
   rw [finiteDimensionalStaticKuboBastinChannelResponse_eq_vertex_add_observableVariation]
-  rw [representation.response_eq_surface_add_sea]
+  exact congrArg
+    (fun response : ℂ =>
+      response + purePointNormalizedExpectation system data channel.observableVariation)
+    representation.response_eq_surface_add_sea
 
 end
 end Transport
