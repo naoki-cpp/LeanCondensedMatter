@@ -99,9 +99,7 @@ theorem nestedVelocityTransportFlux_eq_current_add_correction
     nestedVelocityTransportFlux V velocity m N =
       symmetrizedVelocityCurrentFlux V velocity m N +
         localizationCorrectionFlux V velocity m N := by
-  apply LinearMap.ext
-  intro α
-  change _ = _ + (_ - _)
+  unfold localizationCorrectionFlux
   module
 
 /-- If every localized one-form operator commutes with `m`, the correction vanishes.  This is the
@@ -114,7 +112,9 @@ theorem localizationCorrectionFlux_eq_zero_of_commutes
   apply LinearMap.ext
   intro α
   rw [localizationCorrectionFlux_apply V velocity m N α, hcomm α]
-  simp
+  apply LinearMap.ext
+  intro x
+  simp [_root_.ConservationLaw.linearCommutator]
 
 /-- A velocity representation of localizer evolution lifts to the full nested transport flux for
 an arbitrary transported operator `m`; no locality/commutation assumption on `m` is needed. -/
@@ -154,7 +154,6 @@ theorem factorsThroughDifferential_current_add_correction
   rw [(factorsThroughDifferential_nestedVelocityTransportFlux
     V ℏ h M m velocity d N hvelocity) f]
   rw [nestedVelocityTransportFlux_eq_current_add_correction V velocity m N]
-  rfl
 
 /-- The corrected current functional is a chosen full differential-current representation of the
 intrinsic transport. -/
