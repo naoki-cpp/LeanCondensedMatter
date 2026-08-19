@@ -28,6 +28,13 @@ def DifferentialCurrentEquivalent
     (J₁ J₂ : OneForm →ₗ[𝕜] Obs) : Prop :=
   ∀ f, J₁ (d f) = J₂ (d f)
 
+/-- A current functional is invisible to the transport law when it vanishes on every exact
+differential.  Such a functional is pure extension ambiguity away from `range d`. -/
+def DifferentialCurrentInvisible
+    (d : Test →ₗ[𝕜] OneForm)
+    (K : OneForm →ₗ[𝕜] Obs) : Prop :=
+  ∀ f, K (d f) = 0
+
 namespace DifferentialCurrentEquivalent
 
 /-- Differential-current equivalence is reflexive. -/
@@ -80,6 +87,34 @@ theorem currentEquivalent
   calc
     R₁.current (d f) = Φ f := (R₁.factors f).symm
     _ = R₂.current (d f) := R₂.factors f
+
+section Ring
+
+variable {R Test' OneForm' Obs' : Type*}
+variable [CommRing R]
+variable [AddCommMonoid Test'] [Module R Test']
+variable [AddCommMonoid OneForm'] [Module R OneForm']
+variable [AddCommGroup Obs'] [Module R Obs']
+
+/-- Any two representations of the same intrinsic transport differ by a current functional that is
+invisible on exact differentials.  Equivalently, one representative is the other plus arbitrary
+extension data away from `range d`. -/
+theorem exists_current_eq_add_invisible
+    {d : Test' →ₗ[R] OneForm'} {Φ : Test' →ₗ[R] Obs'}
+    (R₁ R₂ : DifferentialCurrentRepresentation d Φ) :
+    ∃ K : OneForm' →ₗ[R] Obs',
+      DifferentialCurrentInvisible d K ∧ R₁.current = R₂.current + K := by
+  refine ⟨R₁.current - R₂.current, ?_, ?_⟩
+  · intro f
+    change R₁.current (d f) - R₂.current (d f) = 0
+    rw [R₁.currentEquivalent R₂ f]
+    simp
+  · apply LinearMap.ext
+    intro α
+    change R₁.current α = R₂.current α + (R₁.current α - R₂.current α)
+    module
+
+end Ring
 
 end DifferentialCurrentRepresentation
 
