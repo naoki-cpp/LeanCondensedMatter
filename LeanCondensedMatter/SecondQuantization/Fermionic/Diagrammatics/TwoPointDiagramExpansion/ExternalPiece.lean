@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Reindexing
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalPiece
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalPiece
 
 set_option linter.style.header false
 
