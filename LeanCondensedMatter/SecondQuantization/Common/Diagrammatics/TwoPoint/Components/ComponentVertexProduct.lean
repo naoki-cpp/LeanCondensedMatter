@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.FinpartitionProduct
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ComponentDecomposition
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition
 
 set_option linter.style.header false
 
