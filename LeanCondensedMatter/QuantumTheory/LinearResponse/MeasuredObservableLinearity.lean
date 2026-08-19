@@ -97,6 +97,15 @@ theorem retardedSusceptibilityMeasuredLinearMap_apply
       retardedSusceptibility system expectation measured source t s :=
   rfl
 
+/-- A zero measured observable has zero retarded response. -/
+@[simp]
+theorem retardedSusceptibility_zero_left
+    (expectation : NormalizedExpectation H)
+    (source : H →L[ℂ] H) (t s : ℝ) :
+    retardedSusceptibility system expectation (0 : H →L[ℂ] H) source t s = 0 := by
+  simpa using
+    (map_zero (retardedSusceptibilityMeasuredLinearMap system expectation source t s))
+
 end
 end LinearResponse
 end QuantumTheory
