@@ -89,7 +89,7 @@ theorem fixed_causalResponse_eq
     (fixed measured source).causalResponse system expectation f t =
       ∫ s in (0 : ℝ)..t,
         (f s : ℂ) * retardedSusceptibility system expectation measured source t s := by
-  simp [causalResponse, retardedKernel]
+  simp [causalResponse, retardedKernel, fixed]
 
 end ResponseChannel
 
