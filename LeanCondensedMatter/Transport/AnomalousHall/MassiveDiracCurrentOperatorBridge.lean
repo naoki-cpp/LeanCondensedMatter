@@ -30,19 +30,21 @@ noncomputable def velocityYOperator (v : ℝ) : DiracHilbert →L[ℂ] DiracHilb
 @[simp]
 theorem currentXOperator_eq_charge_smul_velocityXOperator (e v : ℝ) :
     currentXOperator e v = (((-e : ℝ) : ℂ)) • velocityXOperator v := by
-  change matrixOperator (currentX e v) =
-    (((-e : ℝ) : ℂ)) • matrixOperator (velocityX v)
+  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
+  change φ (currentX e v) = (((-e : ℝ) : ℂ)) • φ (velocityX v)
   rw [← canonicalChargeCurrentXMatrix_eq_currentX]
-  simp [canonicalChargeCurrentXMatrix, matrixOperator]
+  unfold canonicalChargeCurrentXMatrix
+  exact map_smul φ _ _
 
 /-- The historical bounded `y` current vertex is exactly electron charge times the bounded velocity. -/
 @[simp]
 theorem currentYOperator_eq_charge_smul_velocityYOperator (e v : ℝ) :
     currentYOperator e v = (((-e : ℝ) : ℂ)) • velocityYOperator v := by
-  change matrixOperator (currentY e v) =
-    (((-e : ℝ) : ℂ)) • matrixOperator (velocityY v)
+  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
+  change φ (currentY e v) = (((-e : ℝ) : ℂ)) • φ (velocityY v)
   rw [← canonicalChargeCurrentYMatrix_eq_currentY]
-  simp [canonicalChargeCurrentYMatrix, matrixOperator]
+  unfold canonicalChargeCurrentYMatrix
+  exact map_smul φ _ _
 
 /-- Canonical symmetrized charge-current linear map in the `x` direction.  The generic theorem
 `symmetrizedVelocityCurrent_smul_id` reduces this expression to `(-e) vₓ`. -/
