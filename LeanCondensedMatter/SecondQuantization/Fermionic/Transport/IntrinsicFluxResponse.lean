@@ -140,7 +140,8 @@ theorem boundedCurrentFunctionalRetardedResponse_eq_of_differentialEquivalent
     (t s : ℝ) (f : Test) :
     boundedCurrentFunctionalRetardedResponse system expectation source J₁ t s (d f) =
       boundedCurrentFunctionalRetardedResponse system expectation source J₂ t s (d f) := by
-  rw [hJ f]
+  rw [boundedCurrentFunctionalRetardedResponse_apply,
+    boundedCurrentFunctionalRetardedResponse_apply, hJ f]
 
 /-- A chosen global current component agrees with the intrinsic response once it is explicitly
 identified as an exact differential.  This witness is essential: exact-differential equivalence
