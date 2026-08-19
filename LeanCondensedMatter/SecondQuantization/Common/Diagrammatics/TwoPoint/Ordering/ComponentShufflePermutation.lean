@@ -1,5 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.CanonicalComponentShuffle
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.InteractionVertexRelabel
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.CanonicalComponentShuffle
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.InteractionVertexRelabel
 
 set_option linter.style.header false
 
