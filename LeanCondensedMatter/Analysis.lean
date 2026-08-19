@@ -47,6 +47,7 @@ import LeanCondensedMatter.Analysis.Operator.Fredholm.FiniteDimensional
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import LeanCondensedMatter.Analysis.OrderedSimplex.Calculus
 import LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation
+import LeanCondensedMatter.Analysis.Calculus.CurrentEquivalence
 import LeanCondensedMatter.Analysis.Calculus.BalanceLaw
 import LeanCondensedMatter.Analysis.Calculus.IntrinsicBalanceLaw
 import LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization
