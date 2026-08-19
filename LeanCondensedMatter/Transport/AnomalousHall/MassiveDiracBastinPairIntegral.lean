@@ -44,6 +44,13 @@ theorem targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
   rw [← intervalIntegral.integral_const_mul]
   apply intervalIntegral.integral_congr
   intro offset _
+  change
+    bastinBandPairContribution (oppositeBand band) band e v m px py
+        (bandEnergy band v m px py + offset) broadening =
+      (-2 * Complex.I) *
+        ((lorentzianSpectralKernel offset broadening : ℂ) *
+          targetCenteredInterbandSpectatorCurrentFactor
+            band e v m px py (offset, broadening))
   rw [bastinBandPairContribution_opposite_source_eq_lorentzian
     band e v m px py (bandEnergy band v m px py + offset) broadening hbroadening]
   unfold targetCenteredInterbandSpectatorCurrentFactor
