@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplitConnectivity
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitConnectivity
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPartition
 
 set_option linter.style.header false
