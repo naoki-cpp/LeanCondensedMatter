@@ -114,12 +114,14 @@ noncomputable def heisenbergSymmetricLocalizationBalanceLaw
   source := heisenbergSourceFunctional V ℏ h M m
   balance := by
     intro f
-    rw [hJ f]
     change heisenbergScale ℏ •
         _root_.ConservationLaw.linearCommutator h
           (_root_.ConservationLaw.localizedQuantity V M m f) = _
     rw [_root_.ConservationLaw.linearCommutator_localizedQuantity]
-    simp [heisenbergSourceFunctional, heisenbergTransportFunctional, smul_add]
+    rw [smul_add]
+    change heisenbergTransportFunctional V ℏ h M m f +
+        heisenbergSourceFunctional V ℏ h M m f = _
+    rw [hJ f]
 
 /-- A one-form-like test is paired with a one-body current-density operator by symmetric
 localization. This pairing does not choose which current density represents a given transport
