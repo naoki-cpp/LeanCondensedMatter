@@ -64,8 +64,7 @@ theorem iff_comp_eq
     intro f
     exact h f
   · intro h f
-    have hf := LinearMap.congr_fun h f
-    simpa using hf
+    simpa using congrArg (fun L : Test →ₗ[𝕜] Obs => L f) h
 
 end DifferentialCurrentEquivalent
 
