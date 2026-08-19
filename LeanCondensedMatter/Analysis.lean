@@ -51,6 +51,7 @@ import LeanCondensedMatter.Analysis.Calculus.CurrentEquivalence
 import LeanCondensedMatter.Analysis.Calculus.BalanceLaw
 import LeanCondensedMatter.Analysis.Calculus.IntrinsicBalanceLaw
 import LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization
+import LeanCondensedMatter.Analysis.Calculus.CorrectedCurrentFlux
 import LeanCondensedMatter.Analysis.Calculus.IntrinsicSymmetricLocalization
 import LeanCondensedMatter.Analysis.Calculus.WeakConservation1D
 import LeanCondensedMatter.Analysis.OrderedSimplex.ShuffleIntegral
