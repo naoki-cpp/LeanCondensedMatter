@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinTrace
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinSpectral
+import LeanCondensedMatter.QuantumTheory.DensityOperator.Finite
 import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain
 import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
 
@@ -8,10 +9,8 @@ set_option linter.style.header false
 # Generalized finite-dimensional Kubo–Bastin response
 
 The generic causal Kubo layer packages a measured observable, source vertex, and first-order
-observable variation in `ResponseChannel`.  The older finite Kubo–Bastin transport path specialized
-these inputs immediately to the continuity-derived electric current and Peierls contact operator.
-
-This module keeps the finite pure-point Bastin bridge generic in those response vertices:
+observable variation in `ResponseChannel`. This module keeps the finite pure-point Bastin bridge
+generic in those response vertices:
 
 ```text
 ResponseChannel
@@ -23,7 +22,7 @@ ResponseChannel
     -> ordinary finite-dimensional trace response + ⟨A₁⟩.
 ```
 
-The existing directional charge-conductivity API is recovered as a specialization theorem. No
+Transport-specific current and conductivity conventions are downstream specializations. No
 zero-frequency, zero-broadening, disorder, trace-per-unit-volume, or thermodynamic-limit statement
 is introduced here.
 -/
@@ -253,64 +252,6 @@ theorem adiabaticFrequencyDomainResponseChannel_eq_finiteDimensionalKuboBastin
   simpa [finiteDimensionalKuboBastinChannelResponse] using
     adiabaticFrequencyDomainSusceptibility_add_observableVariation_eq_finiteDimensionalKuboBastin
       system data channel.measured channel.source channel.observableVariation omega eta heta
-
-variable {E : Type*}
-variable [LinearOrder Site]
-variable [AddCommGroup E] [Module ℝ E]
-
-/-- The existing directional charge-conductivity Kubo–Bastin path is the specialization with both
-response vertices equal to the continuity-derived current and the observable variation equal to the
-Peierls contact operator. -/
-theorem finiteDimensionalKuboBastinDirectionalConductivity_eq_vertexResponse
-    (convention : QuantumTheory.Transport.PositiveVolume)
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
-    finiteDimensionalKuboBastinDirectionalConductivity
-        convention system data geometry direction K q omega eta =
-      finiteDimensionalKuboBastinVertexResponse system data
-          (boundedDirectionalCurrent geometry direction
-            (system.hbar : ℂ) (q : ℂ) K)
-          (boundedDirectionalCurrent geometry direction
-            (system.hbar : ℂ) (q : ℂ) K)
-          (boundedDirectionalContact geometry direction
-            (system.hbar : ℂ) (q : ℂ) K)
-          omega eta *
-        finiteVolumeConductivityNormalization convention omega eta := by
-  rfl
-
-/-- Neutral response-channel packaging of the existing directional charge-current/Peierls-contact
-specialization. -/
-noncomputable def directionalChargeResponseChannel
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q : ℝ) :
-    ResponseChannel (FiniteLatticeHilbertFock Site) where
-  measured := boundedDirectionalCurrent geometry direction
-    (system.hbar : ℂ) (q : ℂ) K
-  source := boundedDirectionalCurrent geometry direction
-    (system.hbar : ℂ) (q : ℂ) K
-  observableVariation := boundedDirectionalContact geometry direction
-    (system.hbar : ℂ) (q : ℂ) K
-
-/-- The existing directional finite-dimensional Kubo–Bastin conductivity is recovered from the
-neutral `ResponseChannel` specialization, followed only by the existing finite-volume/electric-field
-normalization. -/
-theorem finiteDimensionalKuboBastinDirectionalConductivity_eq_channelResponse
-    (convention : QuantumTheory.Transport.PositiveVolume)
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
-    finiteDimensionalKuboBastinDirectionalConductivity
-        convention system data geometry direction K q omega eta =
-      finiteDimensionalKuboBastinChannelResponse system data
-          (directionalChargeResponseChannel system geometry direction K q)
-          omega eta *
-        finiteVolumeConductivityNormalization convention omega eta := by
-  rw [finiteDimensionalKuboBastinDirectionalConductivity_eq_vertexResponse]
-  rfl
 
 end
 end Transport
