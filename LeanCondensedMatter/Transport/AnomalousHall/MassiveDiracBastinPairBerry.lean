@@ -35,6 +35,10 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_be
   rw [targetCenteredInterbandSpectatorCurrentFactor_zero]
   have hgap : interbandEnergyGap band v m px py ≠ 0 :=
     interbandEnergyGap_ne_zero_of_energy_ne_zero band v m px py hE
+  have hcoeff :
+      (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2) =
+        ((((interbandEnergyGap band v m px py)⁻¹ ^ 2 : ℝ) : ℂ)) := by
+    rw [← Complex.ofReal_inv, ← Complex.ofReal_pow]
   calc
     (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
           bastinXYBandBlockTrace (oppositeBand band) band e v m px py -
@@ -43,10 +47,9 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_be
         (bastinXYBandBlockTrace (oppositeBand band) band e v m px py -
             bastinYXBandBlockTrace (oppositeBand band) band e v m px py).im /
           interbandEnergyGap band v m px py ^ 2 := by
-      rw [← mul_sub]
+      rw [← mul_sub, hcoeff]
       simp [Complex.mul_im]
       field_simp [hgap]
-      norm_num
     _ = -(e ^ 2 * berryCurvature band v m px py) :=
       bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
         band e v m px py hE
@@ -79,7 +82,7 @@ theorem tendsto_targetCenteredInterbandBastinPairIntegral_re_berryCurvature
             (Real.pi •
               targetCenteredInterbandSpectatorCurrentFactor
                 band e v m px py (0, 0))).re)) := by
-    simpa only [Function.comp_apply] using
+    simpa [Function.comp_def] using
       Complex.continuous_re.continuousAt.tendsto.comp hpair
   have hlimit :
       (((-2 * Complex.I) *
