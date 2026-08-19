@@ -192,12 +192,20 @@ theorem boundedIntrinsicFluxRetardedResponse_eq_conventional_of_commutes
         system expectation source velocity m N t s).comp d := by
   rw [boundedIntrinsicFluxRetardedResponse_eq_conventional_add_correction
     system expectation source d Φ velocity m N hΦ t s]
-  rw [_root_.ConservationLaw.localizationCorrectionCurrentFlux_eq_zero_of_commutes
-    (LatticeState Site) velocity m N hcomm]
-  apply LinearMap.ext
-  intro f
-  simp [boundedLocalizationCorrectionRetardedResponse,
-    boundedCurrentFunctionalRetardedResponse]
+  have hcorr :
+      boundedLocalizationCorrectionRetardedResponse
+        system expectation source velocity m N t s = 0 := by
+    apply LinearMap.ext
+    intro α
+    change
+      (boundedOneBodyRetardedResponseLinearMap system expectation source t s)
+        (_root_.ConservationLaw.localizationCorrectionCurrentFlux
+          (LatticeState Site) velocity m N α) = 0
+    rw [_root_.ConservationLaw.localizationCorrectionCurrentFlux_eq_zero_of_commutes
+      (LatticeState Site) velocity m N hcomm]
+    simp
+  rw [hcorr]
+  simp
 
 /-- Charge-like quantities `m = q I` are a specialization of the commuting case: their correction
 response vanishes identically on exact fluxes. -/
