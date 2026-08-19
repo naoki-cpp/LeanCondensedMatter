@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.ExternalPiece
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentPairEquiv
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.MixedComponentCrossing
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossing
 
 set_option linter.style.header false
 
