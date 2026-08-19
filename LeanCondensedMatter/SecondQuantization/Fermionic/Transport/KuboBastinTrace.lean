@@ -1,16 +1,14 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinSpectral
-import LeanCondensedMatter.QuantumTheory.DensityOperator.Finite
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.GeneralizedKuboBastin
 
 set_option linter.style.header false
 
 /-!
-# Ordinary finite-dimensional trace form of the Kubo–Bastin response
+# Ordinary finite-dimensional trace form of the directional Kubo–Bastin response
 
-This module packages the finite resolvent spectral expression proved in
-`KuboBastinSpectral` as an ordinary complex linear trace. The finite trace carrier multiplies the
-canonical normalized pure-point density operator by the complete retarded-resolvent spectral sum.
-Because that density operator has ordinary trace one in finite dimension, expanding the carrier
-trace recovers exactly the same finite spectral double sum.
+This module specializes the neutral finite Kubo–Bastin response from `GeneralizedKuboBastin` to the
+continuity-derived directional electric current and Peierls contact operator. The directional trace
+carrier is defined from the generic measured/source trace carrier rather than duplicating its
+implementation.
 
 This is the finite equivalent permitted at the B2 boundary of issue #367. It is basis-resolved
 through the scalar coefficient because the resolvent energy `Eₘ + ℏω` depends on the outer
@@ -47,24 +45,39 @@ variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
 variable [Fintype ι]
 
+/-- Neutral response-channel packaging of the directional charge-current/Peierls-contact
+specialization. -/
+noncomputable def directionalChargeResponseChannel
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (q : ℝ) :
+    ResponseChannel (FiniteLatticeHilbertFock Site) where
+  measured := boundedDirectionalCurrent geometry direction
+    (system.hbar : ℂ) (q : ℂ) K
+  source := boundedDirectionalCurrent geometry direction
+    (system.hbar : ℂ) (q : ℂ) K
+  observableVariation := boundedDirectionalContact geometry direction
+    (system.hbar : ℂ) (q : ℂ) K
+
 /-- Finite-dimensional trace carrier for the regularized Kubo–Bastin current-current response.
 
-All current, Hamiltonian, pure-point probability, frequency, and resolvent dependence is contained
-in the finite spectral coefficient. Multiplication by the canonical density operator turns that
-coefficient into an endomorphism whose ordinary trace is unchanged. -/
+This is the generic measured/source trace carrier specialized to the continuity-derived
+directional current at both response vertices. -/
 noncomputable def finiteKuboBastinDirectionalTraceCarrier
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
     FiniteLatticeHilbertFock Site →ₗ[ℂ] FiniteLatticeHilbertFock Site :=
-  (∑ mn : ι × ι,
-      finiteKuboBastinSpectralDirectionalCurrentTerm
-        system data geometry direction K q omega eta mn) •
-    ((purePointDensityOperator system data).op :
-      FiniteLatticeHilbertFock Site →ₗ[ℂ] FiniteLatticeHilbertFock Site)
+  finiteKuboBastinVertexTraceCarrier system data
+    (boundedDirectionalCurrent geometry direction
+      (system.hbar : ℂ) (q : ℂ) K)
+    (boundedDirectionalCurrent geometry direction
+      (system.hbar : ℂ) (q : ℂ) K)
+    omega eta
 
-/-- Expanding the ordinary trace carrier gives the finite retarded-resolvent spectral sum. -/
+/-- Expanding the specialized ordinary trace carrier gives the directional finite
+retarded-resolvent spectral sum. -/
 theorem linearMap_trace_finiteKuboBastinDirectionalTraceCarrier
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -77,14 +90,14 @@ theorem linearMap_trace_finiteKuboBastinDirectionalTraceCarrier
         finiteKuboBastinSpectralDirectionalCurrentTerm
           system data geometry direction K q omega eta mn := by
   unfold finiteKuboBastinDirectionalTraceCarrier
-  rw [map_smul]
-  rw [DensityOperator.linearMap_trace_eq_one]
-  simp
+  rw [linearMap_trace_finiteKuboBastinVertexTraceCarrier]
+  rfl
 
 /-- Named ordinary finite-dimensional Kubo–Bastin conductivity.
 
-The current-current term is an ordinary finite-dimensional trace; the Peierls contact expectation
-and the finite-volume electric-field normalization remain separate and explicit. -/
+The current-current trace is the generic trace response specialized to the directional current; the
+Peierls contact expectation and the finite-volume electric-field normalization remain separate and
+explicit. -/
 noncomputable def finiteDimensionalKuboBastinDirectionalConductivity
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
@@ -98,6 +111,44 @@ noncomputable def finiteDimensionalKuboBastinDirectionalConductivity
       (boundedDirectionalContact geometry direction
         (system.hbar : ℂ) (q : ℂ) K)) *
     finiteVolumeConductivityNormalization convention omega eta
+
+/-- The directional charge conductivity is the generic vertex response specialized to the
+continuity-derived current/current pair and Peierls contact operator, followed only by the existing
+finite-volume/electric-field normalization. -/
+theorem finiteDimensionalKuboBastinDirectionalConductivity_eq_vertexResponse
+    (convention : QuantumTheory.Transport.PositiveVolume)
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (data : PurePointLehmannData system ι)
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
+    finiteDimensionalKuboBastinDirectionalConductivity
+        convention system data geometry direction K q omega eta =
+      finiteDimensionalKuboBastinVertexResponse system data
+          (boundedDirectionalCurrent geometry direction
+            (system.hbar : ℂ) (q : ℂ) K)
+          (boundedDirectionalCurrent geometry direction
+            (system.hbar : ℂ) (q : ℂ) K)
+          (boundedDirectionalContact geometry direction
+            (system.hbar : ℂ) (q : ℂ) K)
+          omega eta *
+        finiteVolumeConductivityNormalization convention omega eta := by
+  rfl
+
+/-- The directional charge conductivity is equivalently the neutral `ResponseChannel`
+specialization, followed only by the existing finite-volume/electric-field normalization. -/
+theorem finiteDimensionalKuboBastinDirectionalConductivity_eq_channelResponse
+    (convention : QuantumTheory.Transport.PositiveVolume)
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (data : PurePointLehmannData system ι)
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
+    finiteDimensionalKuboBastinDirectionalConductivity
+        convention system data geometry direction K q omega eta =
+      finiteDimensionalKuboBastinChannelResponse system data
+          (directionalChargeResponseChannel system geometry direction K q)
+          omega eta *
+        finiteVolumeConductivityNormalization convention omega eta := by
+  rfl
 
 /-- The ordinary trace definition has exactly the finite spectral/Lehmann representation proved in
 `KuboBastinSpectral`. -/
