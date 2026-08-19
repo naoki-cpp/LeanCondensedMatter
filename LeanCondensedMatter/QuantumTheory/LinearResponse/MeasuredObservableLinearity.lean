@@ -34,7 +34,7 @@ theorem heisenbergEvolution_smul
     (c : ℂ) (A : H →L[ℂ] H) (t : ℝ) :
     heisenbergEvolution system (c • A) t =
       c • heisenbergEvolution system A t := by
-  simp [heisenbergEvolution, mul_smul_comm, smul_mul_assoc]
+  simp [heisenbergEvolution]
 
 @[simp]
 theorem commutatorSusceptibility_add_left
@@ -52,7 +52,7 @@ theorem commutatorSusceptibility_smul_left
     (c : ℂ) (A B : H →L[ℂ] H) (t s : ℝ) :
     commutatorSusceptibility system expectation (c • A) B t s =
       c • commutatorSusceptibility system expectation A B t s := by
-  simp [commutatorSusceptibility, smul_mul_assoc, mul_smul_comm, smul_eq_mul]
+  simp [commutatorSusceptibility, smul_eq_mul]
   ring
 
 @[simp]
