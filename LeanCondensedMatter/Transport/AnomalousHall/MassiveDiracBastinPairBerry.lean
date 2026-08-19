@@ -48,9 +48,10 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_be
             bastinYXBandBlockTrace (oppositeBand band) band e v m px py).im /
           interbandEnergyGap band v m px py ^ 2 := by
       rw [← mul_sub, hcoeff]
-      simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul, sub_zero,
+      simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul,
         Complex.sub_im]
       field_simp [hgap]
+      ring
     _ = -(e ^ 2 * berryCurvature band v m px py) :=
       bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
         band e v m px py hE
