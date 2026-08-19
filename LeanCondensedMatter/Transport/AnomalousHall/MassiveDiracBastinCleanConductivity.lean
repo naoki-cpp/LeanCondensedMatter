@@ -92,6 +92,7 @@ theorem occupiedCleanInterbandBastinPairCutoff_eq
     occupiedCleanInterbandBastinPairCutoff e m εF Λ =
       (-2 * Real.pi * e ^ 2) * metallicBerryWeightCutoff m εF Λ := by
   unfold occupiedCleanInterbandBastinPairCutoff metallicBerryWeightCutoff
+    valenceBerryWeightCutoff conductionBerryWeight
   rw [cleanInterbandBastinPairEnergyShellIntegral_eq,
     cleanInterbandBastinPairEnergyShellIntegral_eq]
   ring
@@ -121,7 +122,6 @@ theorem bastinCleanHallConductivityCutoff_eq_intrinsicHallConductivityCutoff
   unfold bastinTraceHallPrefactor intrinsicHallConductivityCutoff
     intrinsicHallPrefactorFromMomentumMeasure
   field_simp [Real.pi_ne_zero]
-  ring
 
 /-- Removing the finite radial UV cutoff from the integrated clean Bastin-pair profile reproduces
 the existing clean metallic intrinsic Hall conductivity.  This uses the already-proved cutoff
