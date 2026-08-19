@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinTrace
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.GeneralizedStaticStreda
 
 set_option linter.style.header false
 
@@ -47,6 +48,20 @@ noncomputable def finiteDimensionalStaticKuboBastinVectorPotentialResponse
       (boundedDirectionalContact geometry direction
         (system.hbar : ℂ) (q : ℂ) K)
 
+/-- The existing static directional-charge vector-potential response is exactly the generalized
+static `ResponseChannel` response specialized to the continuity-derived charge current and Peierls
+contact operator. -/
+theorem finiteDimensionalStaticKuboBastinVectorPotentialResponse_eq_channelResponse
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (data : PurePointLehmannData system ι)
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (q eta : ℝ) :
+    finiteDimensionalStaticKuboBastinVectorPotentialResponse
+        system data geometry direction K q eta =
+      finiteDimensionalStaticKuboBastinChannelResponse system data
+        (directionalChargeResponseChannel system geometry direction K q) eta := by
+  rfl
+
 /-- Named finite-dimensional static Kubo–Bastin conductivity target. The switching rate remains
 positive and finite; only the driving frequency is specialized to zero. -/
 noncomputable def finiteDimensionalStaticKuboBastinDirectionalConductivity
@@ -57,6 +72,21 @@ noncomputable def finiteDimensionalStaticKuboBastinDirectionalConductivity
     (K : LocallyFiniteHopping Site) (q eta : ℝ) : ℂ :=
   finiteDimensionalKuboBastinDirectionalConductivity
     convention system data geometry direction K q 0 eta
+
+/-- The existing normalized static directional conductivity is the generalized static charge
+channel response followed by the unchanged finite-volume/electric-field normalization. -/
+theorem finiteDimensionalStaticKuboBastinDirectionalConductivity_eq_channelResponse
+    (convention : QuantumTheory.Transport.PositiveVolume)
+    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (data : PurePointLehmannData system ι)
+    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
+    (K : LocallyFiniteHopping Site) (q eta : ℝ) :
+    finiteDimensionalStaticKuboBastinDirectionalConductivity
+        convention system data geometry direction K q eta =
+      finiteDimensionalStaticKuboBastinChannelResponse system data
+          (directionalChargeResponseChannel system geometry direction K q) eta *
+        finiteVolumeConductivityNormalization convention 0 eta := by
+  rfl
 
 /-- The static conductivity is the retained vector-potential coefficient multiplied by the exact
 zero-frequency finite-volume electric-field normalization. -/
