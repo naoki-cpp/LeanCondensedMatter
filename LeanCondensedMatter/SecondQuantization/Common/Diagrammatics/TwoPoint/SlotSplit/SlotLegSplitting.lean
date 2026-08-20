@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.Diagram
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Leg
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Diagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Split
 import LeanCondensedMatter.Combinatorics.SubsetSplit
 
