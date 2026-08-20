@@ -61,7 +61,7 @@ theorem norm_zeroTemperatureOccupation_mul_lorentzian_mul_spectatorError_le
             band e v m px py offset broadening‖ ≤
       1 * ‖(lorentzianSpectralKernel offset broadening : ℂ) *
           targetCenteredInterbandSpectatorCurrentError
-            band e v m px py offset broadening)‖ := by
+            band e v m px py offset broadening‖ := by
         exact mul_le_mul_of_nonneg_right
           (norm_zeroTemperatureOccupation_complex_le_one
             fermiEnergy (bandEnergy band v m px py + offset)) (norm_nonneg _)
