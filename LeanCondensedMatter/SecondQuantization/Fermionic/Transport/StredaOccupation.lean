@@ -44,9 +44,8 @@ open MeasureTheory QuantumTheory.LinearResponse QuantumTheory.Transport
 
 noncomputable section
 
-variable {Site E : Type*}
-variable [LinearOrder Site] [Fintype Site]
-variable [AddCommGroup E] [Module ℝ E]
+variable {Site : Type*}
+variable [Fintype Site]
 
 /-- Matrix elements and retarded-resolvent factor of one finite generalized Bastin transition,
 with the occupation difference removed. -/
@@ -159,6 +158,10 @@ theorem finiteKuboBastinSpectralChannelResponse_eq_occupationResolved
       system data interpolation channel.measured channel.source
         channel.observableVariation omega eta
 
+variable {E : Type*}
+variable [LinearOrder Site]
+variable [AddCommGroup E] [Module ℝ E]
+
 /-- The current matrix elements and retarded resolvent factor of one finite directional Bastin
 transition, with the occupation difference removed. -/
 noncomputable def finiteKuboBastinDirectionalTransitionFactor
@@ -181,6 +184,7 @@ noncomputable def finiteKuboBastinDirectionalTransitionFactor
 
 /-- The directional transition factor is the generalized measured/source factor specialized to the
 same directional charge current at both vertices. -/
+omit [Fintype ι] in
 theorem finiteKuboBastinDirectionalTransitionFactor_eq_vertex
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -213,6 +217,7 @@ noncomputable def finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
 
 /-- The directional occupation-resolved term is the generalized vertex term specialized to the
 same directional charge current at both vertices. -/
+omit [Fintype ι] in
 theorem finiteKuboBastinOccupationResolvedDirectionalCurrentTerm_eq_vertex
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -232,6 +237,7 @@ theorem finiteKuboBastinOccupationResolvedDirectionalCurrentTerm_eq_vertex
 
 /-- The occupation-resolved directional transition is exactly the existing finite
 retarded-resolvent transition. -/
+omit [Fintype ι] in
 theorem finiteKuboBastinSpectralDirectionalCurrentTerm_eq_occupationResolved
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
