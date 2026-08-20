@@ -1,5 +1,5 @@
+import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.ComponentPairing
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentOrderedSimplex
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Amplitude
 
 set_option linter.style.header false
@@ -31,10 +31,10 @@ private theorem orderedQuarticLegOperator_componentOrderedLeg
     orderedQuarticLegOperator ε d (d.assembleVertexOrder orders shuffle) τ
         (d.componentOrderedLeg shuffle B p) =
       orderedQuarticLegOperator ε (d.restrictComponent B.2) (orders B)
-        (d.componentTimeAssignment shuffle τ B) p := by
+        (shuffle.timeAssignment τ B) p := by
   unfold orderedQuarticLegOperator quarticLegOperatorForSequence
   simp only [d.orderedQuarticLegEquiv_componentOrderedLeg,
-    Common.QuarticDiagram.componentTimeAssignment_apply]
+    Combinatorics.FamilySlotShuffleTo.timeAssignment_apply]
   rw [d.restrictComponent_vertexLabel_componentOrder orders shuffle B]
 
 variable [Fintype Mode]
@@ -49,7 +49,7 @@ theorem orderedQuarticPairValue_componentOrderedLeg (ε : Mode → ℝ) (β : �
     orderedQuarticPairValue ε β d (d.assembleVertexOrder orders shuffle) τ
         (d.componentOrderedLeg shuffle B a) (d.componentOrderedLeg shuffle B b) =
       orderedQuarticPairValue ε β (d.restrictComponent B.2) (orders B)
-        (d.componentTimeAssignment shuffle τ B) a b := by
+        (shuffle.timeAssignment τ B) a b := by
   unfold orderedQuarticPairValue
   rw [orderedQuarticLegOperator_componentOrderedLeg,
     orderedQuarticLegOperator_componentOrderedLeg]

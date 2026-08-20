@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleIntegrand
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Ordering.ComponentOrderedSimplex
 import Mathlib.Data.Finset.Sort
 
@@ -69,10 +70,8 @@ all actual interaction vertices of that component. -/
 private theorem TwoPointDiagram.canonicalComponentTimeAssignment_eq_iff
     {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
     (τ υ : Fin S.card → ℝ) (B : d.componentPartition.parts) :
-    d.interactionComponentTimeAssignment
-        d.canonicalComponentInteractionShuffle τ B =
-      d.interactionComponentTimeAssignment
-        d.canonicalComponentInteractionShuffle υ B ↔
+    d.canonicalComponentInteractionShuffle.timeAssignment τ B =
+      d.canonicalComponentInteractionShuffle.timeAssignment υ B ↔
       ∀ v : ↥(TwoPointDiagram.interactionPart
         (B : Finset (TwoPointVertex S))),
         τ ((S.orderIsoOfFin rfl).symm
@@ -84,7 +83,7 @@ private theorem TwoPointDiagram.canonicalComponentTimeAssignment_eq_iff
     have hv := congrFun h
       (((TwoPointDiagram.interactionPart
         (B : Finset (TwoPointVertex S))).orderIsoOfFin rfl).symm v)
-    simpa [TwoPointDiagram.interactionComponentTimeAssignment,
+    simpa [Combinatorics.FamilySlotShuffleTo.timeAssignment,
       TwoPointDiagram.canonicalComponentInteractionShuffle,
       TwoPointDiagram.componentInteractionSlotVertexEquiv] using hv
   · intro h
@@ -116,9 +115,9 @@ theorem TwoPointDiagram.canonicalComponentTimeAssignment_univ_eq_iff
     (d : TwoPointDiagram ExternalLabel InternalLabel N
       (Finset.univ : Finset (Fin N)))
     (σ υ : Fin N → ℝ) (B : d.componentPartition.parts) :
-    d.interactionComponentTimeAssignment d.canonicalComponentInteractionShuffle
+    d.canonicalComponentInteractionShuffle.timeAssignment
         (fun i => σ (Fin.cast (by simp) i)) B =
-      d.interactionComponentTimeAssignment d.canonicalComponentInteractionShuffle
+      d.canonicalComponentInteractionShuffle.timeAssignment
         (fun i => υ (Fin.cast (by simp) i)) B ↔
       ∀ v : ↥(TwoPointDiagram.interactionPart
         (B : Finset (TwoPointVertex

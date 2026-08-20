@@ -31,28 +31,6 @@ def TwoPointDiagram.ComponentInteractionShuffle.ambientPermutation
     (shuffle : d.ComponentInteractionShuffle) : Equiv.Perm (Fin S.card) :=
   d.canonicalComponentInteractionShuffle.relativeAmbientPermutation shuffle
 
-/-- An arbitrary component-shuffle product is the canonical component-shuffle product evaluated on
-the correspondingly permuted ambient interaction-time assignment. -/
-theorem TwoPointDiagram.ComponentInteractionShuffle.interactionComponentShuffleIntegrand_eq_canonical
-    {S : Finset (Fin N)} {d : TwoPointDiagram ExternalLabel InternalLabel N S}
-    (shuffle : d.ComponentInteractionShuffle)
-    (componentIntegrand :
-      ∀ B : d.componentPartition.parts,
-        (Fin (d.interactionComponentSize B) → ℝ) → ℂ)
-    (τ : Fin S.card → ℝ) :
-    d.interactionComponentShuffleIntegrand shuffle componentIntegrand τ =
-      d.interactionComponentShuffleIntegrand d.canonicalComponentInteractionShuffle
-        componentIntegrand (fun i => τ (shuffle.ambientPermutation i)) := by
-  unfold TwoPointDiagram.interactionComponentShuffleIntegrand
-  apply Fintype.prod_congr
-  intro B
-  apply congrArg (componentIntegrand B)
-  funext i
-  change τ (shuffle.slotEquiv ⟨B, i⟩) =
-    τ (d.canonicalComponentInteractionShuffle.relativeAmbientPermutation shuffle
-      (d.canonicalComponentInteractionShuffle.slotEquiv ⟨B, i⟩))
-  rw [Combinatorics.FamilySlotShuffleTo.relativeAmbientPermutation_slotEquiv]
-
 /-- Canonical identification of explicit two-point interaction slots with the ambient `univ.card`
 slot coordinates. -/
 noncomputable def twoPointSlotEquiv {n : ℕ} :

@@ -1,5 +1,5 @@
+import LeanCondensedMatter.Analysis.OrderedSimplex.FamilyShuffleFintype
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentOrderedSimplex
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentVertexProduct
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.ComponentContractionIntegrand
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Wick.Amplitude
@@ -11,11 +11,11 @@ set_option linter.style.header false
 
 The global vertex-order sum is reindexed by component-local orders and component shuffles. For each
 fixed family of local orders, the M1 contraction-integrand factorization identifies the global
-integrand with the component-shuffle integrand, so the M0 ordered-simplex product theorem applies.
-The remaining finite sum over families of component orders distributes into the product of the local
-order sums. Combining this with the Common scalar-prefactor factorization gives the full M2 quartic
-Wick-amplitude factorization. No new diagram combinatorics or amplitude convention is introduced at
-this assembly boundary.
+integrand with the generic family-shuffle integrand, so the ordered-simplex product theorem applies
+directly. The remaining finite sum over families of component orders distributes into the product of
+the local order sums. Combining this with the Common scalar-prefactor factorization gives the full M2
+quartic Wick-amplitude factorization. No new diagram combinatorics or amplitude convention is
+introduced at this assembly boundary.
 -/
 
 namespace SecondQuantization
@@ -61,14 +61,21 @@ private theorem sum_orderedSimplexContribution_eq_prod_components
           (d.restrictComponentConnected B.2).1 (orders B)
       have hglobal (shuffle : d.ComponentShuffle) :
           d.contractionIntegrand ε β (d.assembleVertexOrder orders shuffle) =
-            d.componentShuffleIntegrand shuffle componentIntegrand := by
+            shuffle.ambientIntegrand componentIntegrand := by
         funext τ
         exact d.contractionIntegrand_assembleVertexOrder_eq_prod_components
           ε β orders shuffle τ
       simp_rw [hglobal]
+      have hcard :
+          (∑ B : d.componentPartition.parts, (B : Finset (Fin N)).card) = S.card := by
+        rw [Finset.sum_coe_sort]
+        exact d.componentPartition.sum_card_parts
       simpa only [localContribution, QuarticWickDiagram.orderedSimplexContribution,
         componentIntegrand] using
-        d.sum_componentShuffle_orderedSimplexIntegral_eq_prod β componentIntegrand
+        Combinatorics.FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_fintype
+          (ι := d.componentPartition.parts)
+          (fun B : d.componentPartition.parts => (B : Finset (Fin N)).card)
+          S.card hcard β componentIntegrand
           (fun B => continuous_contractionIntegrand ε β
             (d.restrictComponentConnected B.2).1 (orders B))
     _ = ∏ B : d.componentPartition.parts,
