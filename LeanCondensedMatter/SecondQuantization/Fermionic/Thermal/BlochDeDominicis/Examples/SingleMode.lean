@@ -69,7 +69,9 @@ theorem normalizedWeightedDiagonal_annihilate_create_annihilate_create_single_mo
   have hzero :
       Common.normalizedWeightedDiagonal w
         (0 : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) = 0 := by
-    simp [Common.normalizedWeightedDiagonal, Common.weightedTrace]
+    have h := Common.normalizedWeightedDiagonal_smul (0 : ℂ) w
+      (0 : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode)
+    simpa using h
   rw [annihilate_comp_create_comp_self, annihilate_comp_self, create_comp_self,
     hzero, mul_zero, mul_zero, add_zero, ← mul_add,
     ← Common.normalizedWeightedDiagonal_add, annihilate_comp_create_add_create_comp_annihilate,
