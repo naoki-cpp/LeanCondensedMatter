@@ -129,8 +129,10 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct
       rw [slotSplitVacuumComponentEquiv_apply]
       exact TwoPointDiagram.prod_slotSplitVacuumComponentPart_eq_restrictComponent
         h ext vac w C
-    _ = ∏ v : ↥(S \ T), w (vac.vertexLabel v) :=
-      (vac.prod_vertexLabel_eq_prod_restrictComponent w).symm
+    _ = ∏ v : ↥(S \ T), w (vac.vertexLabel v) := by
+      simpa only [QuarticDiagram.restrictComponent_vertexLabel_equivSigmaParts] using
+        (Finpartition.prod_eq_prod_parts vac.componentPartition
+          (fun v => w (vac.vertexLabel v))).symm
 
 /-- The product of the Dyson signs carried by the ambient vacuum components is the Dyson sign of the
 whole quartic vacuum piece. -/
@@ -168,7 +170,7 @@ theorem TwoPointDiagram.prod_slotSplitVacuumComponentSigns_eq
       rw [slotSplitVacuumComponentEquiv_apply,
         interactionPart_slotSplitVacuumComponentPart]
     _ = (-1 : ℂ) ^ (S \ T).card :=
-      (vac.dysonSign_eq_prod_componentSigns).symm
+      (Finpartition.pow_card_eq_prod_parts vac.componentPartition (-1 : ℂ)).symm
 
 end Common
 end SecondQuantization
