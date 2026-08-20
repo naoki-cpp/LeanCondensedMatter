@@ -55,19 +55,6 @@ noncomputable def finiteConductivityTableValue
   (finiteLehmannTableResponse hbar omega eta table.lehmann + table.contact) *
     finiteVolumeConductivityNormalization volume omega eta
 
-/-- The scalar conductivity table keeps the current-current and contact contributions visibly
-separate after finite-volume/electric-field normalization. -/
-theorem finiteConductivityTableValue_eq_current_add_contact
-    {ι : Type*} [Fintype ι]
-    (volume : QuantumTheory.Transport.PositiveVolume)
-    (hbar omega eta : ℝ) (table : FiniteConductivityTable ι) :
-    finiteConductivityTableValue volume hbar omega eta table =
-      finiteLehmannTableResponse hbar omega eta table.lehmann *
-          finiteVolumeConductivityNormalization volume omega eta +
-        table.contact * finiteVolumeConductivityNormalization volume omega eta := by
-  unfold finiteConductivityTableValue
-  ring
-
 variable {Site E ι : Type*}
 variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
@@ -86,25 +73,6 @@ noncomputable def finiteDirectionalConductivityTableOfPurePoint
       (boundedDirectionalContact geometry direction
         (system.hbar : ℂ) (q : ℂ) K) }
 
-/-- The Lehmann part of the scalar directional conductivity table is exactly the current-current
-finite sum used by `finiteKuboGreenwoodDirectionalConductivity`. -/
-theorem finiteDirectionalConductivityTable_lehmann_eq_kuboGreenwoodCurrentSum
-    [Fintype ι]
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
-    finiteLehmannTableResponse system.hbar omega eta
-        (finiteDirectionalConductivityTableOfPurePoint
-          system data geometry direction K q).lehmann =
-      ∑ mn : ι × ι,
-        finiteKuboGreenwoodDirectionalCurrentTerm
-          system data geometry direction K q omega eta mn := by
-  unfold finiteDirectionalConductivityTableOfPurePoint
-  rw [finiteLehmannTableResponse_ofPurePoint]
-  rw [purePointLehmannSeries_eq_finite_sum]
-  rfl
-
 /-- Evaluating the scalar table obtained from a finite pure-point hopping model gives exactly the
 existing finite Kubo–Greenwood conductivity, including contact and finite-volume normalization. -/
 theorem finiteConductivityTableValue_directional_ofPurePoint_eq_kuboGreenwood
@@ -120,7 +88,9 @@ theorem finiteConductivityTableValue_directional_ofPurePoint_eq_kuboGreenwood
       finiteKuboGreenwoodDirectionalConductivity
         volume system data geometry direction K q omega eta := by
   unfold finiteConductivityTableValue finiteKuboGreenwoodDirectionalConductivity
-  rw [finiteDirectionalConductivityTable_lehmann_eq_kuboGreenwoodCurrentSum]
+  unfold finiteDirectionalConductivityTableOfPurePoint
+  rw [finiteLehmannTableResponse_ofPurePoint]
+  rw [purePointLehmannSeries_eq_finite_sum]
   rfl
 
 end
