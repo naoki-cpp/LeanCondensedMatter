@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteWeightedTrace
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 
@@ -16,9 +16,8 @@ API.
 
 The unnormalized trace identities remain occupation-basis formulas about `traceFock`,
 `weightedTrace`, and the free diagonal evolution. The normalized Bloch–de Dominicis layer uses only
-their physical trace-ratio combination; comparison with the temporary
-`normalizedWeightedDiagonal` occupation-basis formula lives in
-`FiniteGibbsOccupationBasisBridge.lean`.
+their physical trace-ratio combination. The comparison with `normalizedWeightedDiagonal` is kept
+here as a derived coordinate formula rather than in a separate compatibility module.
 -/
 
 namespace SecondQuantization
@@ -96,6 +95,16 @@ theorem finiteGibbsExpectation_eq_trace_div (energy : Config → ℝ) (β : ℝ)
   rw [← purePointBoltzmannWeight_cast_eq_boltzmannWeight energy β n]
   push_cast
   field_simp
+
+/-- The canonical finite Gibbs expectation agrees with the normalized Boltzmann-weighted diagonal
+coordinate formula. -/
+theorem finiteGibbsExpectation_eq_normalizedWeightedDiagonal (energy : Config → ℝ) (β : ℝ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    finiteGibbsExpectation energy β A =
+      normalizedWeightedDiagonal (boltzmannWeight energy β) A := by
+  rw [finiteGibbsExpectation_eq_trace_div, normalizedWeightedDiagonal,
+    traceFock_diagonalEvolution_comp_eq_weightedTrace,
+    traceFock_diagonalEvolution_eq_weightSum]
 
 end Common
 end SecondQuantization
