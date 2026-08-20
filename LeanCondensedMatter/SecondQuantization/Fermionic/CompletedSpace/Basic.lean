@@ -54,6 +54,15 @@ theorem completedOccupationHilbertBasis_apply (n : Occupation Mode) :
   have h := (completedOccupationHilbertBasis (Mode := Mode)).repr_self n
   simpa [completedOccupationHilbertBasis, completedBasisState] using h
 
+/-- Inner product with a completed occupation basis vector in the first slot evaluates the
+corresponding coordinate. -/
+@[simp]
+theorem inner_completedBasisState_left (n : Occupation Mode) (ψ : CompletedFockSpace Mode) :
+    inner ℂ (completedBasisState n) ψ = ψ n := by
+  classical
+  unfold completedBasisState
+  simpa using lp.inner_single_left (𝕜 := ℂ) n (1 : ℂ) ψ
+
 /-- The coordinate-preserving inclusion of algebraic fermionic Fock space into its `ℓ²` completion. -/
 noncomputable def algebraicToCompleted :
     OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode where
