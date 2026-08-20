@@ -63,12 +63,11 @@ theorem manyBodyLocalizedQuantity_smul_id
 /-- Second quantization preserves the generalized balance decomposition. -/
 theorem dGamma_commutator_manyBodyLocalizedQuantity (h : 𝓗₁ →ₗ[ℂ] 𝓗₁)
     (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁)) (m : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : Test) :
-    AlgebraicFock.linearCommutator
+    ConservationLaw.linearCommutator
         (AlgebraicFock.dGamma 𝓗₁ h) (manyBodyLocalizedQuantity 𝓗₁ M m f) =
       AlgebraicFock.dGamma 𝓗₁ (_root_.ConservationLaw.transportCommutator 𝓗₁ h M m f) +
         AlgebraicFock.dGamma 𝓗₁ (_root_.ConservationLaw.sourceCommutator 𝓗₁ h M m f) := by
-  rw [manyBodyLocalizedQuantity, AlgebraicFock.dGamma_linearCommutator]
-  rw [AlgebraicFock.linearCommutator_eq_conservationLaw,
+  rw [manyBodyLocalizedQuantity, AlgebraicFock.dGamma_linearCommutator,
     _root_.ConservationLaw.linearCommutator_localizedQuantity,
     AlgebraicFock.dGamma_add]
 
@@ -77,7 +76,7 @@ charge-density commutator theorem. -/
 theorem dGamma_commutator_manyBodyLocalizedQuantity_smul_id
     (h : 𝓗₁ →ₗ[ℂ] 𝓗₁) (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁))
     (q : ℂ) (f : Test) :
-    AlgebraicFock.linearCommutator
+    ConservationLaw.linearCommutator
         (AlgebraicFock.dGamma 𝓗₁ h)
         (manyBodyLocalizedQuantity 𝓗₁ M (q • LinearMap.id) f) =
       q • AlgebraicFock.dGamma 𝓗₁ (_root_.ConservationLaw.linearCommutator h (M f)) := by
@@ -88,10 +87,9 @@ theorem dGamma_commutator_manyBodyLocalizedQuantity_smul_id
 quantity. This is a global statement only; no local-current representation is inferred. -/
 theorem oneBodyObservable_commutes_of_commutes (h m : 𝓗₁ →ₗ[ℂ] 𝓗₁)
     (hm : _root_.ConservationLaw.linearCommutator h m = 0) :
-    AlgebraicFock.linearCommutator
+    ConservationLaw.linearCommutator
         (AlgebraicFock.dGamma 𝓗₁ h) (oneBodyObservable 𝓗₁ m) = 0 := by
-  rw [oneBodyObservable, AlgebraicFock.dGamma_linearCommutator,
-    AlgebraicFock.linearCommutator_eq_conservationLaw, hm,
+  rw [oneBodyObservable, AlgebraicFock.dGamma_linearCommutator, hm,
     AlgebraicFock.dGamma_zero]
 
 end Field
