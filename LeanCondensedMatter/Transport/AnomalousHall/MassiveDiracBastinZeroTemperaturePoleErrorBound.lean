@@ -179,8 +179,9 @@ theorem norm_zeroTemperatureOccupation_mul_lorentzian_mul_spectatorError_le_quad
         le_add_of_nonneg_right (mul_nonneg hcoeff hsecond)
   · have hfar : innerRadius < |offset| := lt_of_not_ge hnear
     have hsq : innerRadius ^ 2 ≤ offset ^ 2 := by
-      have h := sq_le_sq₀ hfar.le hinner.le
-      simpa [sq_abs] using h
+      have hsqAbs : innerRadius ^ 2 ≤ |offset| ^ 2 :=
+        (sq_le_sq₀ hinner.le (abs_nonneg offset)).2 hfar.le
+      simpa [sq_abs] using hsqAbs
     have hi2 : 0 < innerRadius ^ 2 := sq_pos_of_pos hinner
     have hCscale : C ≤ (C / innerRadius ^ 2) * offset ^ 2 := by
       rw [div_mul_eq_mul_div]
