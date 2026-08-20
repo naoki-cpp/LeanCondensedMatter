@@ -47,6 +47,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinZeroTempera
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinZeroTemperaturePoleWeight
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinZeroTemperaturePoleErrorBound
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinZeroTemperaturePoleErrorLimit
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinZeroTemperaturePoleExtraction
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinCleanConductivity
 
 set_option linter.style.header false
@@ -54,7 +55,8 @@ set_option linter.style.header false
 /-!
 # Anomalous Hall transport benchmarks
 
-Public entry point for clean and disordered anomalous-Hall model benchmarks.  Generic spectral,
+Public entry point for clean and disordered anomalous-Hall model benchmarks. Generic spectral,
 intrinsic-current, and linear-response infrastructure remains owned upstream; this namespace
-contains concrete transport models and theorem-level bridges that consume those layers.
+contains concrete transport models and theorem-level bridges that consume those layers, including
+the explicit zero-temperature pole-extraction chain used by the massive-Dirac Hall benchmark.
 -/
