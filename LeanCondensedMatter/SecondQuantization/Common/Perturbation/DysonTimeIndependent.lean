@@ -19,12 +19,14 @@ noncomputable section
 
 variable {Config : Type*} [Fintype Config]
 
+omit [Fintype Config] in
 /-- In the time-independent case, each algebraic Dyson coefficient is the corresponding ordinary
 exponential-series coefficient. -/
-theorem dysonCoeff_eq_of_time_independent (energy : Config → ℝ)
+theorem dysonCoeff_eq_of_time_independent [Finite Config] (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hV : ∀ τ, interactionPicture energy V τ = V) : ∀ (n : ℕ) (τ : ℝ),
     dysonCoeff energy V n τ = ((-τ : ℂ) ^ n / n.factorial) • V ^ n := by
+  letI := Fintype.ofFinite Config
   intro n
   induction n with
   | zero => intro τ; simp [dysonCoeff_zero, Module.End.one_eq_id]
