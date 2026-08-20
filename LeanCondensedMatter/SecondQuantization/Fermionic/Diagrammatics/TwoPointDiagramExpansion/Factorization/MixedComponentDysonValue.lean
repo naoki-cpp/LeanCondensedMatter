@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentFixedTimeValue
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization.MixedComponentFixedTimeValue
 
 set_option linter.style.header false
 
