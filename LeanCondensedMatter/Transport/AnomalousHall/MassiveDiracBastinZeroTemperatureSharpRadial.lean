@@ -50,7 +50,7 @@ theorem radialZeroTemperatureInterbandBastinPairLimitDensity_eq_clean_of_occupie
       radialCleanInterbandBastinPairLimitDensity band e v m p := by
   unfold radialZeroTemperatureInterbandBastinPairLimitDensity
     radialCleanInterbandBastinPairLimitDensity cleanInterbandBastinPairLimitDensity
-  rw [zeroTemperatureLorentzianPoleWeight_of_occupied hoccupied]
+  rw [zeroTemperatureLorentzianPoleWeight_of_occupied hoccupied] <;> ring_nf
 
 /-- Above the Fermi level the unified zero-temperature radial target vanishes. -/
 theorem radialZeroTemperatureInterbandBastinPairLimitDensity_eq_zero_of_unoccupied
@@ -59,7 +59,7 @@ theorem radialZeroTemperatureInterbandBastinPairLimitDensity_eq_zero_of_unoccupi
     radialZeroTemperatureInterbandBastinPairLimitDensity
         band e v m fermiEnergy p = 0 := by
   unfold radialZeroTemperatureInterbandBastinPairLimitDensity
-  rw [zeroTemperatureLorentzianPoleWeight_of_unoccupied hunoccupied]
+  rw [zeroTemperatureLorentzianPoleWeight_of_unoccupied hunoccupied] <;> ring_nf
 
 /-- Exactly at the Fermi surface the unified radial target keeps one half of the clean density. -/
 theorem radialZeroTemperatureInterbandBastinPairLimitDensity_eq_half_clean_of_fermiSurface
@@ -70,8 +70,7 @@ theorem radialZeroTemperatureInterbandBastinPairLimitDensity_eq_half_clean_of_fe
       (1 / 2 : ℝ) * radialCleanInterbandBastinPairLimitDensity band e v m p := by
   unfold radialZeroTemperatureInterbandBastinPairLimitDensity
     radialCleanInterbandBastinPairLimitDensity cleanInterbandBastinPairLimitDensity
-  rw [hfermi, zeroTemperatureLorentzianPoleWeight_at_fermi_surface]
-  ring
+  rw [hfermi, zeroTemperatureLorentzianPoleWeight_at_fermi_surface] <;> ring_nf
 
 /-- Away from the Fermi surface, the unified target and the sharp occupied clean profile agree
 pointwise. -/
@@ -111,7 +110,8 @@ theorem finiteRadialZeroTemperatureInterbandBastinPairLimitIntegral_eq_sharp_of_
     rw [MeasureTheory.ae_iff]
     simp
   have hne' : ∀ᵐ p ∂(volume.restrict (Set.Icc (0 : ℝ) pMax)), p ≠ pF :=
-    MeasureTheory.ae_restrict_le hne
+    (MeasureTheory.ae_restrict_le
+      (μ := volume) (s := Set.Icc (0 : ℝ) pMax)) hne
   have hmem : ∀ᵐ p ∂(volume.restrict (Set.Icc (0 : ℝ) pMax)),
       p ∈ Set.Icc (0 : ℝ) pMax :=
     MeasureTheory.ae_restrict_mem measurableSet_Icc
