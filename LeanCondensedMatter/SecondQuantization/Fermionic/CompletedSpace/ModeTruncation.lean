@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteThermalCompatibility
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic
 
 set_option linter.style.header false
 

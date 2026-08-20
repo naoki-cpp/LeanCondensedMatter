@@ -1,5 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbsSummability
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsDensityOperator
 import Mathlib.Analysis.Normed.Lp.LpEquiv
 

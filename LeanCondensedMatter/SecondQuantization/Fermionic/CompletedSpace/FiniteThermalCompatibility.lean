@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteCompatibility
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbs
 
 set_option linter.style.header false
 
@@ -16,24 +17,7 @@ namespace Fermionic
 
 noncomputable section
 
-variable {Mode : Type*}
-
-/-- The normalized completed Gibbs probability is the normalized finite Boltzmann weight. -/
-theorem completedFreeGibbsProbability_eq_finite
-    (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
-    completedFreeGibbsProbability ε β n =
-      (Common.finitePartitionFunction (fermionEnergy ε) β)⁻¹ *
-        Common.finiteBoltzmannWeight (fermionEnergy ε) β n := by
-  rfl
-
-/-- In finite mode dimension the completed free Gibbs summability hypothesis is automatic. -/
-theorem completedFreeGibbsSummable_finite [Finite Mode]
-    (ε : Mode → ℝ) (β : ℝ) : CompletedFreeGibbsSummable ε β := by
-  letI := Fintype.ofFinite Mode
-  unfold CompletedFreeGibbsSummable
-  exact Summable.of_finite
-
-variable [Fintype Mode]
+variable {Mode : Type*} [Fintype Mode]
 
 /-- Under the canonical finite-mode isometry, the completed free Gibbs density operator is exactly
 the existing finite Gibbs density operator. -/
@@ -52,8 +36,8 @@ theorem completedFiniteHilbertEquiv_intertwines_freeGibbsDensity
     (Common.finiteGibbsDensityOperator (fermionEnergy ε) β).op
       (completedFiniteHilbertEquiv (Mode := Mode) (completedBasisState n))
   rw [completedFiniteHilbertEquiv_basisState,
-    Common.finiteGibbsDensityOperator_apply_basis,
-    completedFreeGibbsProbability_eq_finite]
+    Common.finiteGibbsDensityOperator_apply_basis]
+  rfl
 
 end
 end Fermionic
