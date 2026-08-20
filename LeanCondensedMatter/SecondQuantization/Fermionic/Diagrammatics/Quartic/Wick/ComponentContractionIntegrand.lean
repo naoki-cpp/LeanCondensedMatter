@@ -29,14 +29,14 @@ theorem QuarticWickDiagram.contractionIntegrand_assembleVertexOrder_eq_prod_comp
       ∏ B : d.componentPartition.parts,
         QuarticWickDiagram.contractionIntegrand ε β
           (d.restrictComponentConnected B.2).1 (orders B)
-          (d.componentTimeAssignment shuffle τ B) := by
+          (shuffle.timeAssignment τ B) := by
   classical
   simpa only [QuarticWickDiagram.contractionIntegrand,
     Common.QuarticDiagram.restrictComponentConnected] using
     d.pairingInOrder_evaluation_eq_prod_components Common.Statistics.fermion orders shuffle
       (orderedQuarticPairValue ε β d (d.assembleVertexOrder orders shuffle) τ)
       (fun B => orderedQuarticPairValue ε β (d.restrictComponent B.2) (orders B)
-        (d.componentTimeAssignment shuffle τ B))
+        (shuffle.timeAssignment τ B))
       (fun B a b => orderedQuarticPairValue_componentOrderedLeg
         ε β d orders shuffle τ B a b)
 
