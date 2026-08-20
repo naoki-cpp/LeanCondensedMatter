@@ -40,6 +40,7 @@ theorem hasDerivAt_energy_radial
     HasDerivAt (fun q : ℝ => energy v m q 0) (radialEnergyDerivative v m p) p := by
   have hpoly :
       HasDerivAt (fun q : ℝ => energySq v m q 0) (2 * v ^ 2 * p) p := by
+    change HasDerivAt (fun q : ℝ => v ^ 2 * q ^ 2 + m ^ 2) (2 * v ^ 2 * p) p
     convert (((hasDerivAt_id p).pow 2).const_mul (v ^ 2)).add_const (m ^ 2) using 1 <;>
       ring
   have hsq_ne : energySq v m p 0 ≠ 0 := by
