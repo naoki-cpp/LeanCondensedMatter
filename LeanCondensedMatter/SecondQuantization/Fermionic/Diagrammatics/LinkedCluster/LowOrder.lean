@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.PowerSeries.LowOrderLog
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonLinkedClusterTheorem
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.Theorem
 
 set_option linter.style.header false
 
