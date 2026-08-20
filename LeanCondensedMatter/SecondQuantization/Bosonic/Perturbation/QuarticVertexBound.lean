@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticInteraction
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Interaction
 import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.TotalParticleNumberWeightSummable
 
 set_option linter.style.header false
