@@ -24,7 +24,9 @@ theorem measurable_targetCenteredZeroTemperatureOccupation
     Measurable (fun offset : ℝ =>
       zeroTemperatureOccupation fermiEnergy (center + offset)) := by
   unfold zeroTemperatureOccupation
-  measurability
+  exact Measurable.ite
+    (measurableSet_lt (measurable_const.add measurable_id) measurable_const)
+    measurable_const measurable_const
 
 /-- The target-centered zero-temperature Lorentzian scalar integrand is interval integrable for
 nonzero broadening. -/
@@ -42,15 +44,16 @@ theorem intervalIntegrable_targetCenteredZeroTemperatureLorentzianIntegrand
       (continuous_lorentzianSpectralKernel_fixed_broadening
         broadening hbroadening).measurable).aestronglyMeasurable
   · filter_upwards with offset
-    have hocc := norm_zeroTemperatureOccupation_complex_le_one
-      fermiEnergy (center + offset)
-    have hkernelNonneg : 0 ≤ lorentzianSpectralKernel offset broadening :=
-      lorentzianSpectralKernel_nonneg offset broadening (sq_nonneg broadening)
-    rw [Real.norm_eq_abs, abs_mul, abs_of_nonneg hkernelNonneg,
-      Real.norm_eq_abs, abs_of_nonneg hkernelNonneg]
     have hoccReal : |zeroTemperatureOccupation fermiEnergy (center + offset)| ≤ 1 := by
-      simpa [Complex.norm_real] using hocc
-    nlinarith
+      by_cases h : center + offset < fermiEnergy <;>
+        simp [zeroTemperatureOccupation, h]
+    rw [Real.norm_eq_abs, abs_mul, Real.norm_eq_abs]
+    calc
+      |zeroTemperatureOccupation fermiEnergy (center + offset)| *
+          |lorentzianSpectralKernel offset broadening| ≤
+        1 * |lorentzianSpectralKernel offset broadening| :=
+          mul_le_mul_of_nonneg_right hoccReal (abs_nonneg _)
+      _ = |lorentzianSpectralKernel offset broadening| := one_mul _
 
 /-- Multiplying the existing regular-spectator error integrand by zero-temperature occupation
 preserves interval integrability on the fixed target window. -/
@@ -69,14 +72,13 @@ theorem intervalIntegrable_targetCenteredZeroTemperatureInterbandSpectatorCurren
   have herror := intervalIntegrable_targetCenteredInterbandSpectatorCurrentErrorIntegrand
     band e v m px py radius broadening hradiusNonneg hradius hbroadening
   apply herror.mono_fun
-  · have hocc : StronglyMeasurable (fun offset : ℝ =>
+  · have hocc : Measurable (fun offset : ℝ =>
         ((zeroTemperatureOccupation fermiEnergy
-          (bandEnergy band v m px py + offset) : ℝ) : ℂ)) := by
-      exact Complex.continuous_ofReal.comp_stronglyMeasurable
+          (bandEnergy band v m px py + offset) : ℝ) : ℂ)) :=
+      Complex.continuous_ofReal.measurable.comp
         (measurable_targetCenteredZeroTemperatureOccupation
-          (bandEnergy band v m px py) fermiEnergy).stronglyMeasurable
-    exact hocc.aestronglyMeasurable.mul
-      herror.aestronglyMeasurable_restrict_uIoc
+          (bandEnergy band v m px py) fermiEnergy)
+    exact hocc.aestronglyMeasurable.mul herror.def'.aestronglyMeasurable
   · filter_upwards with offset
     rw [norm_mul]
     calc
@@ -120,8 +122,10 @@ theorem targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral_eq_er
           lorentzianSpectralKernel offset broadening) •
             targetCenteredInterbandSpectatorCurrentFactor
               band e v m px py (0, 0))
-      volume (-radius) radius :=
-    hmassInt.smul_continuousOn continuousOn_const
+      volume (-radius) radius := by
+    exact hmassInt.smul_continuousOn
+      (g := fun _ : ℝ => targetCenteredInterbandSpectatorCurrentFactor
+        band e v m px py (0, 0)) continuousOn_const
   unfold targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral
   calc
     (∫ offset in -radius..radius,
@@ -207,7 +211,9 @@ theorem tendsto_targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegr
       band e v m px py fermiEnergy radius hE hradiusPos hradius
   have hmass := tendsto_targetCenteredZeroTemperatureLorentzianMass_band
     band v m px py fermiEnergy radius hradiusPos
-  have hmain := herror.add (hmass.smul tendsto_const_nhds)
+  have hmassPole := hmass.smul_const
+    (targetCenteredInterbandSpectatorCurrentFactor band e v m px py (0, 0))
+  have hmain := herror.add hmassPole
   have heq :
       (fun broadening : ℝ =>
         targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral
@@ -222,8 +228,7 @@ theorem tendsto_targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegr
     filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
     exact targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral_eq_error_add_mass_smul_pole
       band e v m px py fermiEnergy radius broadening hradiusPos.le hradius hbroadening.ne'
-  rw [zero_add] at hmain
-  exact hmain.congr' heq.symm
+  simpa using hmain.congr' heq.symm
 
 /-- Restoring the exact `-2 i` Bastin factor gives the full pointwise zero-temperature weighted pair
 limit, including the exact half-weight at the Fermi surface. -/
