@@ -49,6 +49,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinZeroTempera
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinZeroTemperaturePoleErrorLimit
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinZeroTemperaturePoleExtraction
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinZeroTemperaturePairLimit
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinZeroTemperatureRadialDCT
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinCleanConductivity
 
 set_option linter.style.header false
@@ -59,5 +60,6 @@ set_option linter.style.header false
 Public entry point for clean and disordered anomalous-Hall model benchmarks. Generic spectral,
 intrinsic-current, and linear-response infrastructure remains owned upstream; this namespace
 contains concrete transport models and theorem-level bridges that consume those layers, including
-the explicit zero-temperature pole-extraction chain used by the massive-Dirac Hall benchmark.
+the explicit zero-temperature pole-extraction and radial-limit chain used by the massive-Dirac Hall
+benchmark. The finite-cutoff radial DCT remains separate from the ultraviolet-limit step.
 -/
