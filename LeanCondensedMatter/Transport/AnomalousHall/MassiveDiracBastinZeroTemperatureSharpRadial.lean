@@ -59,7 +59,7 @@ theorem radialZeroTemperatureInterbandBastinPairLimitDensity_eq_zero_of_unoccupi
     radialZeroTemperatureInterbandBastinPairLimitDensity
         band e v m fermiEnergy p = 0 := by
   unfold radialZeroTemperatureInterbandBastinPairLimitDensity
-  rw [zeroTemperatureLorentzianPoleWeight_of_unoccupied hunoccupied] <;> ring_nf
+  rw [zeroTemperatureLorentzianPoleWeight_of_unoccupied hunoccupied]
 
 /-- Exactly at the Fermi surface the unified radial target keeps one half of the clean density. -/
 theorem radialZeroTemperatureInterbandBastinPairLimitDensity_eq_half_clean_of_fermiSurface
@@ -106,12 +106,10 @@ theorem finiteRadialZeroTemperatureInterbandBastinPairLimitIntegral_eq_sharp_of_
   unfold finiteRadialZeroTemperatureInterbandBastinPairLimitIntegral
     finiteRadialSharpZeroTemperatureInterbandBastinPairLimitIntegral
   apply integral_congr_ae
-  have hne : ∀ᵐ p : ℝ, p ≠ pF := by
-    rw [MeasureTheory.ae_iff]
-    simp
   have hne' : ∀ᵐ p ∂(volume.restrict (Set.Icc (0 : ℝ) pMax)), p ≠ pF := by
-    rw [ae_restrict_iff' measurableSet_Icc]
-    exact hne.mono (fun p hp _ => hp)
+    refine (ae_restrict_iff' measurableSet_Icc).2 ?_
+    filter_upwards [(volume : Measure ℝ).ae_ne pF] with p hpF _
+    exact hpF
   have hmem : ∀ᵐ p ∂(volume.restrict (Set.Icc (0 : ℝ) pMax)),
       p ∈ Set.Icc (0 : ℝ) pMax :=
     MeasureTheory.ae_restrict_mem measurableSet_Icc
