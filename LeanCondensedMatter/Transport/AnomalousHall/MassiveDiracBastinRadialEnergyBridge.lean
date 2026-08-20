@@ -41,16 +41,14 @@ theorem hasDerivAt_energy_radial
   have hpoly :
       HasDerivAt (fun q : ℝ => energySq v m q 0) (2 * v ^ 2 * p) p := by
     convert (((hasDerivAt_id p).pow 2).const_mul (v ^ 2)).add_const (m ^ 2) using 1 <;>
-      simp [energySq] <;> ring
+      ring
   have hsq_ne : energySq v m p 0 ≠ 0 := by
-    have hm2 : 0 < m ^ 2 := sq_pos_of_pos hm
     unfold energySq
     positivity
   have hsqrt := hpoly.sqrt hsq_ne
   unfold radialEnergyDerivative energy
   convert hsqrt using 1
   field_simp [ne_of_gt (energy_pos_of_mass_pos v m p 0 hm)]
-  ring
 
 /-- The radial energy derivative is continuous for positive mass. -/
 theorem continuous_radialEnergyDerivative
@@ -75,9 +73,8 @@ theorem radialCleanInterbandBastinPairLimitDensity_eq_energyDensity_mul_deriv
     cleanInterbandBastinPairLimitDensity cleanInterbandBastinPairRadialEnergyDensity
     radialBerryEnergyDensity radialEnergyDerivative
   cases band <;>
-    simp [berryCurvature_lower, berryCurvature_upper, bandSign, hE] <;>
-    field_simp [hE] <;>
-    ring
+    simp [berryCurvature_lower, berryCurvature_upper, bandSign] <;>
+    field_simp [hE]
 
 /-- The clean radial energy density is continuous on the positive-energy image of any radial
 momentum interval when `m > 0`. -/
@@ -120,7 +117,14 @@ theorem finiteRadialCleanInterbandBastinPairIntegral_eq_energyShell
     (continuous_radialEnergyDerivative v m hm).continuousOn
     (continuousOn_cleanInterbandBastinPairRadialEnergyDensity_image
       band e v m pMax hm)
-  rw [hsub]
+  have hsub' :
+      (∫ p in (0 : ℝ)..pMax,
+        cleanInterbandBastinPairRadialEnergyDensity band e m (energy v m p 0) *
+          radialEnergyDerivative v m p) =
+        ∫ ε in energy v m 0 0..energy v m pMax 0,
+          cleanInterbandBastinPairRadialEnergyDensity band e m ε := by
+    simpa only [Function.comp_apply] using hsub
+  rw [hsub']
   unfold cleanInterbandBastinPairEnergyShellIntegral
   have hzero : energy v m 0 0 = m := by
     unfold energy energySq
