@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticInteraction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Interaction
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ImaginaryTimeEvolution
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.ExchangeAlgebra
 
