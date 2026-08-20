@@ -208,10 +208,10 @@ theorem boundedLatticeOperator_comp
 theorem boundedLatticeOperator_linearCommutator
     (A B : AlgebraicFock (LatticeState Site) →ₗ[ℂ]
       AlgebraicFock (LatticeState Site)) :
-    boundedLatticeOperator (AlgebraicFock.linearCommutator A B) =
+    boundedLatticeOperator (ConservationLaw.linearCommutator A B) =
       (boundedLatticeOperator A).comp (boundedLatticeOperator B) -
         (boundedLatticeOperator B).comp (boundedLatticeOperator A) := by
-  unfold AlgebraicFock.linearCommutator
+  unfold ConservationLaw.linearCommutator
   rw [boundedLatticeOperator_sub, boundedLatticeOperator_comp,
     boundedLatticeOperator_comp]
 

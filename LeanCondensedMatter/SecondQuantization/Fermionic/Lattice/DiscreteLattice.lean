@@ -40,15 +40,6 @@ private theorem linearMap_finsetSum_apply
 
 variable {Site : Type*}
 
-private theorem linearCommutator_smul_right
-    {V : Type*} [AddCommGroup V] [Module ℂ V]
-    (q : ℂ) (A B : V →ₗ[ℂ] V) :
-    AlgebraicFock.linearCommutator A (q • B) =
-      q • AlgebraicFock.linearCommutator A B := by
-  apply LinearMap.ext
-  intro Ψ
-  simp [AlgebraicFock.linearCommutator, smul_sub]
-
 /-- The canonical one-particle ket localized at a lattice site. -/
 noncomputable def latticeKet (x : Site) : LatticeState Site :=
   Finsupp.single x 1
@@ -230,9 +221,9 @@ theorem siteProjector_comp_operator (K : LocallyFiniteHopping Site) (x : Site) :
 
 /-- The local one-particle commutator is the negative finite sum of oriented bond operators. -/
 theorem linearCommutator_siteProjector (K : LocallyFiniteHopping Site) (x : Site) :
-    AlgebraicFock.linearCommutator K.operator (siteProjector x) =
+    ConservationLaw.linearCommutator K.operator (siteProjector x) =
       -∑ y ∈ K.incident x, K.bondOperator x y := by
-  simp only [AlgebraicFock.linearCommutator, K.operator_comp_siteProjector,
+  simp only [ConservationLaw.linearCommutator, K.operator_comp_siteProjector,
     K.siteProjector_comp_operator, bondOperator, Finset.sum_sub_distrib]
   abel
 
@@ -279,10 +270,10 @@ theorem bondCurrent_swap (ℏ q : ℂ) (K : LocallyFiniteHopping Site) (x y : Si
 theorem heisenberg_siteChargeDensity (ℏ q : ℂ)
     (K : LocallyFiniteHopping Site) (x : Site) :
     (Complex.I / ℏ) •
-        AlgebraicFock.linearCommutator (hoppingHamiltonian K) (siteChargeDensity q x) =
+        ConservationLaw.linearCommutator (hoppingHamiltonian K) (siteChargeDensity q x) =
       -∑ y ∈ K.incident x, bondCurrent ℏ q K x y := by
   unfold hoppingHamiltonian siteChargeDensity
-  rw [linearCommutator_smul_right]
+  rw [ConservationLaw.linearCommutator_smul_right]
   rw [AlgebraicFock.dGamma_linearCommutator]
   rw [K.linearCommutator_siteProjector]
   have hdGamma :
@@ -307,7 +298,7 @@ theorem heisenberg_siteChargeDensity (ℏ q : ℂ)
 theorem discrete_continuity (ℏ q : ℂ)
     (K : LocallyFiniteHopping Site) (x : Site) :
     (Complex.I / ℏ) •
-          AlgebraicFock.linearCommutator (hoppingHamiltonian K) (siteChargeDensity q x) +
+          ConservationLaw.linearCommutator (hoppingHamiltonian K) (siteChargeDensity q x) +
         ∑ y ∈ K.incident x, bondCurrent ℏ q K x y = 0 := by
   rw [heisenberg_siteChargeDensity]
   abel

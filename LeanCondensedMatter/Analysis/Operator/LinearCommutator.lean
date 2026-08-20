@@ -30,6 +30,14 @@ theorem linearCommutator_apply {V : Type*} [AddCommGroup V] [Module ℂ V]
     linearCommutator S T v = S (T v) - T (S v) :=
   rfl
 
+/-- The ordinary commutator is linear in its right argument. -/
+theorem linearCommutator_smul_right {V : Type*} [AddCommGroup V] [Module ℂ V]
+    (q : ℂ) (S T : V →ₗ[ℂ] V) :
+    linearCommutator S (q • T) = q • linearCommutator S T := by
+  apply LinearMap.ext
+  intro v
+  simp [linearCommutator, smul_sub]
+
 /-- Commutation with a fixed left operator, packaged as a linear map on endomorphisms. -/
 noncomputable def commutatorEvolution {V : Type*} [AddCommGroup V] [Module ℂ V]
     (S : V →ₗ[ℂ] V) :

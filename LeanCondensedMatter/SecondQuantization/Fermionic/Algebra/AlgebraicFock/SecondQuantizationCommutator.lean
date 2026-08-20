@@ -14,9 +14,8 @@ endomorphisms:
 [dGamma S, dGamma T] = dGamma [S, T].
 ```
 
-The ordinary linear-map commutator itself is owned upstream by
-`Analysis.Operator.LinearCommutator`; this module retains the historical `AlgebraicFock` name as a
-compatibility abbreviation and proves the second-quantization functoriality theorem.
+The ordinary linear-map commutator is owned upstream by `Analysis.Operator.LinearCommutator`;
+this module proves only the fermionic second-quantization functoriality theorem and its consequences.
 -/
 
 namespace SecondQuantization
@@ -25,35 +24,15 @@ namespace AlgebraicFock
 
 variable (𝓗₁ : Type*) [AddCommGroup 𝓗₁] [Module ℂ 𝓗₁]
 
-/-- Compatibility abbreviation for the representation-independent linear commutator.
-
-Its body remains expanded so legacy proofs using `simp only [AlgebraicFock.linearCommutator]` keep
-working, while `linearCommutator_eq_conservationLaw` identifies the canonical upstream owner. -/
-noncomputable abbrev linearCommutator {V : Type*} [AddCommGroup V] [Module ℂ V]
-    (S T : V →ₗ[ℂ] V) : V →ₗ[ℂ] V :=
-  S.comp T - T.comp S
-
-/-- The historical fermionic name agrees definitionally with the canonical upstream commutator. -/
-theorem linearCommutator_eq_conservationLaw {V : Type*} [AddCommGroup V] [Module ℂ V]
-    (S T : V →ₗ[ℂ] V) :
-    linearCommutator S T = ConservationLaw.linearCommutator S T :=
-  rfl
-
-@[simp]
-theorem linearCommutator_apply {V : Type*} [AddCommGroup V] [Module ℂ V]
-    (S T : V →ₗ[ℂ] V) (v : V) :
-    linearCommutator S T v = S (T v) - T (S v) :=
-  rfl
-
 /-- Second quantization preserves ordinary commutators. -/
 theorem dGamma_linearCommutator (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
-    linearCommutator (dGamma 𝓗₁ S) (dGamma 𝓗₁ T) =
-      dGamma 𝓗₁ (linearCommutator S T) := by
+    ConservationLaw.linearCommutator (dGamma 𝓗₁ S) (dGamma 𝓗₁ T) =
+      dGamma 𝓗₁ (ConservationLaw.linearCommutator S T) := by
   apply LinearMap.ext
   intro Ψ
   change
     dGamma 𝓗₁ S (dGamma 𝓗₁ T Ψ) - dGamma 𝓗₁ T (dGamma 𝓗₁ S Ψ) =
-      dGamma 𝓗₁ (linearCommutator S T) Ψ
+      dGamma 𝓗₁ (ConservationLaw.linearCommutator S T) Ψ
   induction Ψ using CliffordAlgebra.left_induction with
   | algebraMap c => simp
   | add x y hx hy =>
@@ -64,14 +43,14 @@ theorem dGamma_linearCommutator (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
             (dGamma 𝓗₁ S (dGamma 𝓗₁ T x) - dGamma 𝓗₁ T (dGamma 𝓗₁ S x)) +
               (dGamma 𝓗₁ S (dGamma 𝓗₁ T y) - dGamma 𝓗₁ T (dGamma 𝓗₁ S y)) := by
           abel
-        _ = dGamma 𝓗₁ (linearCommutator S T) x +
-              dGamma 𝓗₁ (linearCommutator S T) y := by
+        _ = dGamma 𝓗₁ (ConservationLaw.linearCommutator S T) x +
+              dGamma 𝓗₁ (ConservationLaw.linearCommutator S T) y := by
           rw [hx, hy]
   | ι_mul x f hx =>
       change
         dGamma 𝓗₁ S (dGamma 𝓗₁ T (oneParticle 𝓗₁ f * x)) -
             dGamma 𝓗₁ T (dGamma 𝓗₁ S (oneParticle 𝓗₁ f * x)) =
-          dGamma 𝓗₁ (linearCommutator S T) (oneParticle 𝓗₁ f * x)
+          dGamma 𝓗₁ (ConservationLaw.linearCommutator S T) (oneParticle 𝓗₁ f * x)
       calc
         dGamma 𝓗₁ S (dGamma 𝓗₁ T (oneParticle 𝓗₁ f * x)) -
               dGamma 𝓗₁ T (dGamma 𝓗₁ S (oneParticle 𝓗₁ f * x)) =
@@ -94,10 +73,10 @@ theorem dGamma_linearCommutator (S T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
           rw [map_sub, sub_mul, mul_sub]
           abel
         _ = oneParticle 𝓗₁ (S (T f) - T (S f)) * x +
-              oneParticle 𝓗₁ f * dGamma 𝓗₁ (linearCommutator S T) x := by
+              oneParticle 𝓗₁ f * dGamma 𝓗₁ (ConservationLaw.linearCommutator S T) x := by
           rw [hx]
-        _ = dGamma 𝓗₁ (linearCommutator S T) (oneParticle 𝓗₁ f * x) := by
-          rw [dGamma_oneParticle_mul, linearCommutator_apply]
+        _ = dGamma 𝓗₁ (ConservationLaw.linearCommutator S T) (oneParticle 𝓗₁ f * x) := by
+          rw [dGamma_oneParticle_mul, ConservationLaw.linearCommutator_apply]
 
 /-- The algebraic total particle-number operator, identified as `dGamma id`.
 
@@ -125,12 +104,12 @@ theorem numberOperator_oneParticle_mul (f : 𝓗₁) (Ψ : AlgebraicFock 𝓗₁
 
 /-- Every second-quantized one-particle operator commutes with total particle number. -/
 theorem numberOperator_commutes_dGamma (T : 𝓗₁ →ₗ[ℂ] 𝓗₁) :
-    linearCommutator (numberOperator 𝓗₁) (dGamma 𝓗₁ T) = 0 := by
+    ConservationLaw.linearCommutator (numberOperator 𝓗₁) (dGamma 𝓗₁ T) = 0 := by
   rw [numberOperator, dGamma_linearCommutator]
-  have h : linearCommutator (LinearMap.id : 𝓗₁ →ₗ[ℂ] 𝓗₁) T = 0 := by
+  have h : ConservationLaw.linearCommutator (LinearMap.id : 𝓗₁ →ₗ[ℂ] 𝓗₁) T = 0 := by
     apply LinearMap.ext
     intro f
-    simp [linearCommutator]
+    simp [ConservationLaw.linearCommutator]
   rw [h, dGamma_zero]
 
 end AlgebraicFock
