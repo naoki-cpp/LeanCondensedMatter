@@ -1,5 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentConnected
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentEvaluation
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentConnected
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentEvaluation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairValue
 
 set_option linter.style.header false
