@@ -79,18 +79,6 @@ noncomputable def finiteLehmannTableOfPurePoint
   matrixA := fun m n => inner ℂ (data.basis m) (A (data.basis n))
   matrixB := fun m n => inner ℂ (data.basis m) (B (data.basis n))
 
-/-- The scalar-table transition weight obtained from pure-point data is definitionally the existing
-operator-level transition weight. -/
-@[simp]
-theorem finiteLehmannTableTransitionWeight_ofPurePoint
-    (system : BoundedFreeSystem H)
-    (data : PurePointLehmannData system ι)
-    (A B : H →L[ℂ] H) (mn : ι × ι) :
-    finiteLehmannTableTransitionWeight system.hbar
-        (finiteLehmannTableOfPurePoint system data A B) mn =
-      purePointTransitionWeight system data A B mn :=
-  rfl
-
 /-- For a finite spectral index, scalar-table evaluation is exactly the theorem-level pure-point
 Lehmann series.  This is the main operator-to-calculation bridge. -/
 theorem finiteLehmannTableResponse_ofPurePoint
