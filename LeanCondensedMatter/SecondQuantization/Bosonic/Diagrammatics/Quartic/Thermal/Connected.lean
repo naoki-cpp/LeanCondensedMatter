@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion
-import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticThermalComponentFactorization
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.ComponentFactorization
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentDecompositionEquiv
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.ComponentOrder
 
