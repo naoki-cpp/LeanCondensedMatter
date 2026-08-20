@@ -14,7 +14,7 @@ integral; that remains a separate Ward/energy-representation problem.
 namespace SecondQuantization.Fermionic.Transport
 
 open SecondQuantization.Fermionic.Lattice
-open QuantumTheory.LinearResponse
+open QuantumTheory.LinearResponse QuantumTheory.Transport
 
 noncomputable section
 
