@@ -48,16 +48,18 @@ theorem completedFreeGibbsAdmissible_erase
 /-- For an odd tail, completed CAR exchange followed by KMS rotation solves the wrapped term.
 The coefficient `g / (1 + g)` is the Fermi thermal factor attached to the leading ladder. -/
 theorem completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
-    (ε : Mode → ℝ) (β : ℝ) (hsum : CompletedFreeGibbsSummable ε β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (n : ℕ) (C : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode))
     (hlen : l.length = 2 * n + 1)
     (hne : (1 : ℂ) + C.gibbsFactor ε β ≠ 0) :
     completedFreeGibbsExpectation ε β hsum (C :: l) =
       (C.gibbsFactor ε β / ((1 : ℂ) + C.gibbsFactor ε β)) *
-        (completedFreeGibbsDensityOperator ε β hsum).expectation (thermalPeelSum C l) := by
+        (purePointGibbsDensityOperator completedOccupationHilbertBasis
+          (fermionEnergy ε) β hsum).expectation (thermalPeelSum C l) := by
   set E : ℂ := completedFreeGibbsExpectation ε β hsum (C :: l)
   set P : ℂ :=
-    (completedFreeGibbsDensityOperator ε β hsum).expectation (thermalPeelSum C l)
+    (purePointGibbsDensityOperator completedOccupationHilbertBasis
+      (fermionEnergy ε) β hsum).expectation (thermalPeelSum C l)
   set R : ℂ := completedFreeGibbsExpectation ε β hsum (l ++ [C])
   have hpeel : E = P + ((-1 : ℂ) ^ l.length) * R := by
     simpa [E, P, R] using
@@ -90,12 +92,13 @@ theorem completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
       rw [hR]
       ring
     _ = (C.gibbsFactor ε β / ((1 : ℂ) + C.gibbsFactor ε β)) *
-        (completedFreeGibbsDensityOperator ε β hsum).expectation (thermalPeelSum C l) := rfl
+        (purePointGibbsDensityOperator completedOccupationHilbertBasis
+          (fermionEnergy ε) β hsum).expectation (thermalPeelSum C l) := rfl
 
 /-- The normalized two-point completed Gibbs expectation is the scalar CAR coefficient multiplied
 by the same Gibbs ratio that solves the odd-tail KMS equation. -/
 theorem completedFreeGibbsExpectation_pair_eq
-    (ε : Mode → ℝ) (β : ℝ) (hsum : CompletedFreeGibbsSummable ε β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (C D : CompletedThermalLadder Mode)
     (hne : (1 : ℂ) + C.gibbsFactor ε β ≠ 0) :
     completedFreeGibbsExpectation ε β hsum [C, D] =
@@ -104,7 +107,8 @@ theorem completedFreeGibbsExpectation_pair_eq
   have h := completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
     ε β hsum 0 C [D] (by simp) hne
   have hpeel :
-      (completedFreeGibbsDensityOperator ε β hsum).expectation (thermalPeelSum C [D]) =
+      (purePointGibbsDensityOperator completedOccupationHilbertBasis
+        (fermionEnergy ε) β hsum).expectation (thermalPeelSum C [D]) =
         C.anticommutatorValue D := by
     simp [thermalPeelSum]
   rw [hpeel] at h
