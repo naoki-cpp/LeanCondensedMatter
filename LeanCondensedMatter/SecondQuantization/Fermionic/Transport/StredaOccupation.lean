@@ -182,9 +182,9 @@ noncomputable def finiteKuboBastinDirectionalTransitionFactor
         (kuboBastinEnergyBroadening system.hbar eta)
         (data.basis mn.2))
 
+omit [Fintype ι] in
 /-- The directional transition factor is the generalized measured/source factor specialized to the
 same directional charge current at both vertices. -/
-omit [Fintype ι] in
 theorem finiteKuboBastinDirectionalTransitionFactor_eq_vertex
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -215,9 +215,9 @@ noncomputable def finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
     finiteKuboBastinDirectionalTransitionFactor
       system data geometry direction K q omega eta mn
 
+omit [Fintype ι] in
 /-- The directional occupation-resolved term is the generalized vertex term specialized to the
 same directional charge current at both vertices. -/
-omit [Fintype ι] in
 theorem finiteKuboBastinOccupationResolvedDirectionalCurrentTerm_eq_vertex
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -235,9 +235,9 @@ theorem finiteKuboBastinOccupationResolvedDirectionalCurrentTerm_eq_vertex
         omega eta mn := by
   rfl
 
+omit [Fintype ι] in
 /-- The occupation-resolved directional transition is exactly the existing finite
 retarded-resolvent transition. -/
-omit [Fintype ι] in
 theorem finiteKuboBastinSpectralDirectionalCurrentTerm_eq_occupationResolved
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
