@@ -57,6 +57,17 @@ theorem targetCenteredZeroTemperatureInterbandBastinPairIntegral_eq_neg_two_i_mu
   rw [← intervalIntegral.integral_const_mul]
   apply intervalIntegral.integral_congr
   intro offset _
+  change
+    ((zeroTemperatureOccupation fermiEnergy
+        (bandEnergy band v m px py + offset) : ℝ) : ℂ) *
+        bastinBandPairContribution (oppositeBand band) band e v m px py
+          (bandEnergy band v m px py + offset) broadening =
+      (-2 * Complex.I) *
+        (((zeroTemperatureOccupation fermiEnergy
+            (bandEnergy band v m px py + offset) : ℝ) : ℂ) *
+          ((lorentzianSpectralKernel offset broadening : ℂ) *
+            targetCenteredInterbandSpectatorCurrentFactor
+              band e v m px py (offset, broadening)))
   rw [bastinBandPairContribution_opposite_source_eq_lorentzian
     band e v m px py (bandEnergy band v m px py + offset) broadening hbroadening]
   unfold targetCenteredInterbandSpectatorCurrentFactor
