@@ -54,12 +54,12 @@ They are not alternative state models.
 | Generic diagonal trace | `Common/Thermal/DiagonalTrace.lean` | Matrix coefficients, extensionality, composition, and summability-aware `tsumTrace`. |
 | Finite unnormalized sums | `Common/Thermal/FiniteWeightedTrace.lean` | Finite trace, weighted trace, and total weight. |
 | Normalized coordinate functional | `Common/Thermal/WeightedDiagonalFunctional.lean` | `normalizedWeightedDiagonal` for an arbitrary finite complex weight. |
-| Gibbs occupation-basis comparison | `Common/Thermal/FiniteGibbsOccupationBasisBridge.lean` | Equality between the canonical finite Gibbs expectation and the normalized Boltzmann-weighted sum. |
-| Density-state coordinate formula | `Common/Thermal/FiniteGibbsExpectationBridge.lean` | Algebraic-operator expectation adapter, diagonal-sum formula, and operator-integral formula for the generic finite pure-point state. |
+| Density-state coordinate formulas | `Common/Thermal/FiniteGibbsExpectationBridge.lean` and `Common/Thermal/BlochDeDominicis/GibbsExpectation/Core.lean` | Algebraic-operator expectation adapter, diagonal-sum and operator-integral formulas, plus the derived trace-ratio and normalized Boltzmann-weighted coordinate identities. |
 
 `normalizedWeightedDiagonal` has no physical interpretation for an arbitrary complex weight. It is
-called a Gibbs expectation only after specialization to positive Boltzmann weights and proof of the
-density-state comparison.
+called a Gibbs expectation only after specialization to positive Boltzmann weights. The corresponding
+comparison with the canonical density-state expectation is derived directly in the finite Gibbs
+expectation core; there is no separate compatibility module.
 
 ## Generic pairing recursion
 
