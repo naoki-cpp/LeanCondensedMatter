@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Combinatorics.FinpartitionProduct
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.External.ExternalConnectivity
 
 set_option linter.style.header false
@@ -18,6 +19,28 @@ namespace SecondQuantization
 namespace Common
 
 variable {ExternalLabel InternalLabel : Type*} {N : ℕ}
+
+/-- Interaction vertices are the dependent disjoint union of the interaction parts of all full
+components. -/
+noncomputable def TwoPointDiagram.interactionVertexComponentEquiv
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S) :
+    ↥S ≃ Σ B : d.componentPartition.parts,
+      ↥(TwoPointDiagram.interactionPart (B : Finset (TwoPointVertex S))) :=
+  d.componentPartition.equivSigmaSubfinsets S
+    (fun v => (Sum.inr v : TwoPointVertex S))
+    (fun _ => Finset.mem_univ _)
+    (fun B => TwoPointDiagram.interactionPart (B : Finset (TwoPointVertex S)))
+    (fun B => TwoPointDiagram.interactionPart_subset (B : Finset (TwoPointVertex S)))
+    (fun B v => TwoPointDiagram.mem_interactionPart_subtype
+      (B : Finset (TwoPointVertex S)) v)
+
+@[simp]
+theorem TwoPointDiagram.interactionVertexComponentEquiv_symm_val
+    {S : Finset (Fin N)} (d : TwoPointDiagram ExternalLabel InternalLabel N S)
+    (x : Σ B : d.componentPartition.parts,
+      ↥(TwoPointDiagram.interactionPart (B : Finset (TwoPointVertex S)))) :
+    ((d.interactionVertexComponentEquiv.symm x : ↥S) : Fin N) = (x.2 : Fin N) :=
+  rfl
 
 /-- The interaction slots carried by the canonical external component. -/
 noncomputable def TwoPointDiagram.externalInteractionPart
