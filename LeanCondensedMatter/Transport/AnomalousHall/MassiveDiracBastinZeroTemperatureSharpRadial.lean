@@ -51,7 +51,6 @@ theorem radialZeroTemperatureInterbandBastinPairLimitDensity_eq_clean_of_occupie
   unfold radialZeroTemperatureInterbandBastinPairLimitDensity
     radialCleanInterbandBastinPairLimitDensity cleanInterbandBastinPairLimitDensity
   rw [zeroTemperatureLorentzianPoleWeight_of_occupied hoccupied]
-  ring
 
 /-- Above the Fermi level the unified zero-temperature radial target vanishes. -/
 theorem radialZeroTemperatureInterbandBastinPairLimitDensity_eq_zero_of_unoccupied
@@ -112,7 +111,7 @@ theorem finiteRadialZeroTemperatureInterbandBastinPairLimitIntegral_eq_sharp_of_
     rw [MeasureTheory.ae_iff]
     simp
   have hne' : ∀ᵐ p ∂(volume.restrict (Set.Icc (0 : ℝ) pMax)), p ≠ pF :=
-    hne.filter_mono MeasureTheory.ae_restrict_le
+    MeasureTheory.ae_restrict_le hne
   have hmem : ∀ᵐ p ∂(volume.restrict (Set.Icc (0 : ℝ) pMax)),
       p ∈ Set.Icc (0 : ℝ) pMax :=
     MeasureTheory.ae_restrict_mem measurableSet_Icc
