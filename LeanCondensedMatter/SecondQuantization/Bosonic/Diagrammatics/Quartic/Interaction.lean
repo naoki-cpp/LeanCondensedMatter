@@ -52,16 +52,6 @@ theorem interactionPicture_quarticVertexOperator (ε : Mode → ℝ) (q : Quarti
       (fun i => imaginaryTimeEvolve_create ε τ i)
       (fun i => imaginaryTimeEvolve_annihilate ε τ i))
 
-/-- The interaction picture distributes over a finite support of bosonic quartic vertices. -/
-theorem interactionPicture_quarticInteractionOn (support : Finset (QuarticVertexLabel Mode))
-    (ε : Mode → ℝ) (g : QuarticVertexLabel Mode → ℂ) (τ : ℝ) :
-    interactionPicture ε (quarticInteractionOn support g) τ =
-      ∑ q ∈ support, g q • interactionPicture ε (quarticVertexOperator q) τ := by
-  simpa [interactionPicture, Common.interactionPicture, quarticInteractionOn,
-    quarticVertexOperator] using
-    (Common.heisenbergEvolve_quarticInteractionOn
-      support (freeEigenvalue ε) τ create annihilate g)
-
 /-- The interaction picture distributes over the all-label finite-mode quartic interaction. -/
 theorem interactionPicture_quarticInteraction [Fintype Mode] (ε : Mode → ℝ)
     (g : QuarticVertexLabel Mode → ℂ) (τ : ℝ) :
