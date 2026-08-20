@@ -22,6 +22,8 @@ the resulting data are intended to feed the implementation-independent
 namespace SecondQuantization
 namespace Fermionic
 
+open QuantumTheory
+
 noncomputable section
 
 variable {Mode : Type*} [LinearOrder Mode]
@@ -76,11 +78,14 @@ theorem gibbsFactor_annihilate (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
 
 /-- Uniform completed free-Gibbs intertwining for a creation or annihilation operator. -/
 theorem completedFreeGibbsDensityOperator_comp_operator
-    (ε : Mode → ℝ) (β : ℝ) (hsum : CompletedFreeGibbsSummable ε β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (C : CompletedThermalLadder Mode) :
-    (completedFreeGibbsDensityOperator ε β hsum).op.comp C.operator =
+    (purePointGibbsDensityOperator completedOccupationHilbertBasis
+        (fermionEnergy ε) β hsum).op.comp C.operator =
       C.gibbsFactor ε β •
-        (C.operator.comp (completedFreeGibbsDensityOperator ε β hsum).op) := by
+        (C.operator.comp
+          (purePointGibbsDensityOperator completedOccupationHilbertBasis
+            (fermionEnergy ε) β hsum).op) := by
   cases C with
   | create i =>
       exact completedFreeGibbsDensityOperator_comp_create ε β hsum i
