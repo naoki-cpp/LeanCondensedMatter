@@ -88,15 +88,6 @@ theorem completedDiagonalOperator_isClosable (w : Occupation Mode → ℂ) :
     (completedDiagonalOperator w).IsClosable :=
   (completedDiagonalOperator_isClosed w).isClosable
 
-/-- Inner product with a completed occupation basis vector in the first slot evaluates the
-corresponding coordinate. -/
-@[simp]
-theorem inner_completedBasisState_left (n : Occupation Mode) (ψ : CompletedFockSpace Mode) :
-    inner ℂ (completedBasisState n) ψ = ψ n := by
-  classical
-  unfold completedBasisState
-  simpa using lp.inner_single_left (𝕜 := ℂ) n (1 : ℂ) ψ
-
 /-- The maximal diagonal operator with conjugated weights is a formal adjoint of the original
 operator. -/
 theorem completedDiagonalOperator_isFormalAdjoint_conj (w : Occupation Mode → ℂ) :
