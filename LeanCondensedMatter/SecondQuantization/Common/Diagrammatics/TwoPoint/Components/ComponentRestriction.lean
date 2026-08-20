@@ -74,16 +74,6 @@ def twoPointLegVertex {S : Finset (Fin N)} : TwoPointLeg S → TwoPointVertex S
   | .inl e => .inl e
   | .inr p => .inr p.1
 
-@[simp]
-theorem twoPointLegVertex_external {S : Finset (Fin N)} (e : Fin 2) :
-    twoPointLegVertex (Sum.inl e : TwoPointLeg S) = (Sum.inl e : TwoPointVertex S) :=
-  rfl
-
-@[simp]
-theorem twoPointLegVertex_interaction {S : Finset (Fin N)} (v : ↥S) (l : Fin 4) :
-    twoPointLegVertex (Sum.inr (v, l) : TwoPointLeg S) = (Sum.inr v : TwoPointVertex S) :=
-  rfl
-
 /-- A flattened leg belongs to `B` when the component block of its incident vertex is `B`. -/
 def TwoPointDiagram.legInComponent {S : Finset (Fin N)}
     (d : TwoPointDiagram ExternalLabel InternalLabel N S)
