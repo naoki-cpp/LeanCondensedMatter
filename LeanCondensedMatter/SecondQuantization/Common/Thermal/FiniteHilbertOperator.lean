@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
 import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.LinearAlgebra.Finsupp.Pi
 
 set_option linter.style.header false
