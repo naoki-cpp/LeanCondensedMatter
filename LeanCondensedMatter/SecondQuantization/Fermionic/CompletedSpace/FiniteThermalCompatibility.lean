@@ -35,7 +35,9 @@ theorem completedFiniteHilbertEquiv_intertwines_freeGibbsDensity
   apply continuousLinearMap_ext_completedBasis_to_finite
   intro n
   simp only [ContinuousLinearMap.comp_apply]
-  rw [finitePurePointGibbsDensityOperator_apply_basis, map_smul]
+  rw [← completedOccupationHilbertBasis_apply (Mode := Mode) n,
+    finitePurePointGibbsDensityOperator_apply_basis, map_smul,
+    completedOccupationHilbertBasis_apply]
   change (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) •
       completedFiniteHilbertEquiv (Mode := Mode) (completedBasisState n) =
     (Common.finiteGibbsDensityOperator (fermionEnergy ε) β).op
