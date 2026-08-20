@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.PowerSeries.Cumulant
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.DysonConnectedDiagramExpansion
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster.ConnectedDiagramExpansion
 
 set_option linter.style.header false
 
