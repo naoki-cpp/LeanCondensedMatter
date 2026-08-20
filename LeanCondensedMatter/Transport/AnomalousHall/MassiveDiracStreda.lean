@@ -15,10 +15,16 @@ representations without introducing an independent response formalism.
 
 `Matrix.toEuclideanCLM` identifies a complex `2 × 2` matrix with a bounded operator on the canonical
 two-level Euclidean Hilbert space.  The massive-Dirac Hamiltonian is proved Hermitian before being
-bundled as a `BoundedFreeSystem`; the current matrices are transported by the same star-algebra
-equivalence.  The ordinary matrix trace is also identified with the finite-dimensional operator
-trace used by the generic transport layer.  The existing pointwise Bastin/Středa trace identity can
-then be instantiated directly for the physical massive-Dirac Hamiltonian and current vertices.
+bundled as a `BoundedFreeSystem`; the concrete current matrices are transported by the same
+star-algebra equivalence.  These bounded current vertices remain the adapter boundary consumed by
+the existing Bastin/Středa stack.  Their identification with the canonical charge-like `q v`
+representative at `q = -e` is proved downstream in `MassiveDiracCurrentOperatorBridge`, so this file
+does not make the concrete matrices a separate foundational current convention.
+
+The ordinary matrix trace is also identified with the finite-dimensional operator trace used by the
+generic transport layer.  The existing pointwise Bastin/Středa trace identity can then be
+instantiated directly for the massive-Dirac Hamiltonian and its canonical-derived concrete current
+vertices.
 
 This file does not yet choose an eigenvector gauge, evaluate the resolvent spectral sum, remove the
 finite broadening, or identify the generic transport normalization with the continuum Berry result.
@@ -53,11 +59,13 @@ theorem finiteDimensionalOperatorTrace_matrixOperator (M : Matrix2) :
 noncomputable def hamiltonianOperator (v m px py : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
   matrixOperator (hamiltonian v m px py)
 
-/-- Physical charge-current vertex `jₓ = -e v σₓ` as a bounded operator. -/
+/-- Concrete bounded adapter for the canonical-derived charge-current vertex `jₓ = -e v σₓ`.
+`MassiveDiracCurrentOperatorBridge` proves that this equals the generic charge-like representative. -/
 noncomputable def currentXOperator (e v : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
   matrixOperator (currentX e v)
 
-/-- Physical charge-current vertex `jᵧ = -e v σᵧ` as a bounded operator. -/
+/-- Concrete bounded adapter for the canonical-derived charge-current vertex `jᵧ = -e v σᵧ`;
+its equality with the generic `q v` representative is proved in `MassiveDiracCurrentOperatorBridge`. -/
 noncomputable def currentYOperator (e v : ℝ) : DiracHilbert →L[ℂ] DiracHilbert :=
   matrixOperator (currentY e v)
 
@@ -134,7 +142,7 @@ theorem boundedFreeSystem_hbar (hbar v m px py : ℝ) (hhbar : 0 < hbar) :
   rfl
 
 /-- Pointwise finite-broadening Bastin/Středa identity specialized to the actual massive-Dirac
-Hamiltonian and physical charge-current vertices. -/
+Hamiltonian and canonical-derived concrete charge-current vertices. -/
 theorem regularizedBastinTraceIntegrand_eq_streda
     (e v m px py energy broadening : ℝ) :
     regularizedBastinTraceIntegrand
