@@ -3,93 +3,64 @@ from __future__ import annotations
 from architecture_audit_common import finish_audit, repository_root, strip_lean_comments
 
 ROOT = repository_root(__file__)
-FINITE_GIBBS = (
-    ROOT
-    / "LeanCondensedMatter"
-    / "SecondQuantization"
-    / "Common"
-    / "Thermal"
-    / "FiniteGibbsDensityOperator.lean"
-)
-FREE_ENTROPY = (
-    ROOT
-    / "LeanCondensedMatter"
-    / "SecondQuantization"
-    / "Fermionic"
-    / "Thermal"
-    / "FreeEntropy.lean"
-)
+LEAN = ROOT / "LeanCondensedMatter"
+THERMAL = LEAN / "SecondQuantization" / "Common" / "Thermal"
+PURE_POINT = LEAN / "QuantumTheory" / "Gibbs" / "PurePoint.lean"
+FINITE_HILBERT = THERMAL / "FiniteHilbertOperator.lean"
+FINITE_EXPECTATION = THERMAL / "FiniteGibbsExpectationBridge.lean"
+FREE_ENTROPY = LEAN / "SecondQuantization" / "Fermionic" / "Thermal" / "FreeEntropy.lean"
 
-DENSITY_IMPORT = (
-    "import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
-)
-ENTROPY_PREFIX = "import LeanCondensedMatter.QuantumTheory.Entropy"
-ENTROPY_DIAGONAL_IMPORT = (
-    "import LeanCondensedMatter.QuantumTheory.Entropy.Diagonal"
-)
+
+def code(path):
+    return strip_lean_comments(path.read_text(encoding="utf-8"))
 
 
 def main() -> int:
     errors: list[str] = []
 
-    if not FINITE_GIBBS.exists():
-        errors.append(
-            "missing finite Gibbs density boundary file: "
-            f"{FINITE_GIBBS.relative_to(ROOT)}"
-        )
-    else:
-        code = strip_lean_comments(FINITE_GIBBS.read_text(encoding="utf-8"))
-        relative = FINITE_GIBBS.relative_to(ROOT)
+    for path in (PURE_POINT, FINITE_HILBERT, FINITE_EXPECTATION, FREE_ENTROPY):
+        if not path.exists():
+            errors.append(f"missing density boundary file: {path.relative_to(ROOT)}")
+    for name in ("FiniteGibbsDensityOperator.lean", "PurePointCompatibility.lean"):
+        if (THERMAL / name).exists():
+            errors.append(f"obsolete finite Gibbs owner remains: {THERMAL.relative_to(ROOT) / name}")
 
-        if DENSITY_IMPORT not in code:
-            errors.append(
-                "finite Gibbs density construction must import the density diagonal owner "
-                f"directly in {relative}"
-            )
+    if errors:
+        return finish_audit(errors,
+            failure_heading="SecondQuantization density-boundary audit failed:",
+            success_message="SecondQuantization density-boundary audit passed.")
 
-        if ENTROPY_PREFIX in code:
-            errors.append(
-                "finite Gibbs density construction must not depend on the entropy layer in "
-                f"{relative}"
-            )
+    pure = code(PURE_POINT)
+    if "import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula" not in pure:
+        errors.append("PurePoint must import the diagonal density owner directly")
+    if "import LeanCondensedMatter.QuantumTheory.Entropy" in pure:
+        errors.append("PurePoint must remain independent of entropy")
+    for name in ("purePointGibbsDensityOperator", "finitePurePointGibbsDensityOperator"):
+        if name not in pure:
+            errors.append(f"PurePoint must own `{name}`")
 
-        for boundary in (
-            "diagonalDensityOperator",
-            "diagonalDensityOperator_apply_basis",
-            "normalizedDiagonalWeight",
-        ):
-            if boundary not in code:
-                errors.append(
-                    f"finite Gibbs density construction must retain density API `{boundary}` in "
-                    f"{relative}"
-                )
+    finite = code(FINITE_HILBERT)
+    if any(name in finite for name in ("Gibbs", "Boltzmann", "DensityOperator")):
+        errors.append("FiniteHilbertOperator must remain independent of thermal states")
 
-    if not FREE_ENTROPY.exists():
-        errors.append(
-            "missing free-fermion entropy boundary file: "
-            f"{FREE_ENTROPY.relative_to(ROOT)}"
-        )
-    else:
-        code = strip_lean_comments(FREE_ENTROPY.read_text(encoding="utf-8"))
-        relative = FREE_ENTROPY.relative_to(ROOT)
+    expectation = code(FINITE_EXPECTATION)
+    for required in (
+        "import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
+        "import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteHilbertOperator",
+        "finitePurePointGibbsDensityOperator",
+    ):
+        if required not in expectation:
+            errors.append(f"finite Gibbs expectation adapter must use `{required}`")
 
-        if ENTROPY_DIAGONAL_IMPORT not in code:
-            errors.append(
-                "free-fermion entropy must import the entropy diagonal theorem owner directly in "
-                f"{relative}"
-            )
+    entropy = code(FREE_ENTROPY)
+    if "import LeanCondensedMatter.QuantumTheory.Entropy.Diagonal" not in entropy:
+        errors.append("free-fermion entropy must import the diagonal entropy owner directly")
+    if "entropyOpSpectralTraceClass_trace_eq_tsum_diagonal" not in entropy:
+        errors.append("free-fermion entropy must retain the diagonal entropy theorem")
 
-        if "entropyOpSpectralTraceClass_trace_eq_tsum_diagonal" not in code:
-            errors.append(
-                "free-fermion entropy must retain its diagonal entropy theorem use in "
-                f"{relative}"
-            )
-
-    return finish_audit(
-        errors,
+    return finish_audit(errors,
         failure_heading="SecondQuantization density-boundary audit failed:",
-        success_message="SecondQuantization density-boundary audit passed.",
-    )
+        success_message="SecondQuantization density-boundary audit passed.")
 
 
 if __name__ == "__main__":

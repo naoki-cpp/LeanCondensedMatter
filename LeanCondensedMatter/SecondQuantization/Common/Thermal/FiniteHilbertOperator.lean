@@ -1,31 +1,24 @@
 import LeanCondensedMatter.SecondQuantization.Common.Algebra.AlgebraicFock
-import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
-import LeanCondensedMatter.QuantumTheory.DensityOperator.Expectation
 import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.LinearAlgebra.Finsupp.Pi
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
 
 /-!
-# Finite-configuration Gibbs density operators
+# Finite Hilbert realization of algebraic Fock operators
 
-A finite occupation/configuration basis carries a canonical Euclidean Hilbert-space realization.
-Positive Boltzmann weights on that basis therefore define a genuine density operator, not merely a
-normalized coordinate functional.
-
-This Hilbert realization is introduced separately from the existing finite analytic Dyson
-realization, which currently uses the sup-norm function space. The destructive replacement of that
-analytic representation is deferred until its operator-continuity proofs and all callers migrate in
-one package; no compatibility alias between the two spaces is introduced here.
+This module owns the representation-theoretic bridge from a finite algebraic Fock basis to its
+canonical Euclidean Hilbert realization.  The construction is independent of any thermal state:
+it provides the finite Hilbert basis, the algebraic-to-Hilbert equivalence, and transport of
+algebraic endomorphisms to bounded operators.
 -/
 
 namespace SecondQuantization
 namespace Common
 
 noncomputable section
-
-open QuantumTheory
 
 variable {Config : Type*} [Fintype Config]
 
@@ -179,77 +172,6 @@ theorem finiteHilbertOperatorLinearMap_apply
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     finiteHilbertOperatorLinearMap A = finiteHilbertOperator A :=
   rfl
-
-/-- The positive real Boltzmann weight `exp (-β E(n))`. -/
-noncomputable def finiteBoltzmannWeight (energy : Config → ℝ) (β : ℝ) (n : Config) : ℝ :=
-  Real.exp (-β * energy n)
-
-/-- The real finite partition function. -/
-noncomputable def finitePartitionFunction (energy : Config → ℝ) (β : ℝ) : ℝ :=
-  ∑' n : Config, finiteBoltzmannWeight energy β n
-
-/-- The finite Boltzmann family has its defining finite sum. -/
-theorem hasSum_finiteBoltzmannWeight (energy : Config → ℝ) (β : ℝ) :
-    HasSum (finiteBoltzmannWeight energy β) (finitePartitionFunction energy β) := by
-  rw [finitePartitionFunction]
-  exact (Summable.of_finite : Summable (finiteBoltzmannWeight energy β)).hasSum
-
-variable [Nonempty Config]
-
-/-- The finite partition function is strictly positive. -/
-theorem finitePartitionFunction_pos (energy : Config → ℝ) (β : ℝ) :
-    0 < finitePartitionFunction energy β := by
-  rw [finitePartitionFunction, tsum_fintype]
-  exact Finset.sum_pos (fun _ _ => Real.exp_pos _) Finset.univ_nonempty
-
-/-- The canonical finite Gibbs state. -/
-noncomputable def finiteGibbsDensityOperator (energy : Config → ℝ) (β : ℝ) :
-    QuantumTheory.DensityOperator (FiniteHilbertFock Config) :=
-  diagonalDensityOperator
-    (finiteHilbertBasis (Config := Config))
-    (finiteBoltzmannWeight energy β)
-    Summable.of_finite
-    (fun _ => (Real.exp_pos _).le)
-    (finitePartitionFunction_pos energy β)
-
-/-- The finite Gibbs density operator acts diagonally with normalized Boltzmann weights. -/
-@[simp]
-theorem finiteGibbsDensityOperator_apply_basis (energy : Config → ℝ) (β : ℝ) (n : Config) :
-    (finiteGibbsDensityOperator energy β).op (finiteHilbertBasisState n) =
-      (((finitePartitionFunction energy β)⁻¹ * finiteBoltzmannWeight energy β n : ℝ) : ℂ) •
-        finiteHilbertBasisState n := by
-  simpa [finiteGibbsDensityOperator, finitePartitionFunction, normalizedDiagonalWeight] using
-    diagonalDensityOperator_apply_basis
-      (finiteHilbertBasis (Config := Config))
-      (finiteBoltzmannWeight energy β)
-      (Summable.of_finite : Summable fun n : Config => ‖finiteBoltzmannWeight energy β n‖)
-      (fun _ => (Real.exp_pos _).le)
-      (finitePartitionFunction_pos energy β) n
-
-/-- The canonical finite Gibbs expectation, bundled as a complex linear map. -/
-noncomputable def finiteGibbsExpectationLinearMap (energy : Config → ℝ) (β : ℝ) :
-    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ :=
-  (finiteGibbsDensityOperator energy β).expectation.toLinearMap.comp
-    (finiteHilbertOperatorLinearMap (Config := Config))
-
-/-- The canonical finite Gibbs expectation of an algebraic Fock operator. -/
-noncomputable def finiteGibbsExpectation (energy : Config → ℝ) (β : ℝ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) : ℂ :=
-  finiteGibbsExpectationLinearMap energy β A
-
-@[simp]
-theorem finiteGibbsExpectationLinearMap_apply (energy : Config → ℝ) (β : ℝ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    finiteGibbsExpectationLinearMap energy β A = finiteGibbsExpectation energy β A :=
-  rfl
-
-@[simp]
-theorem finiteGibbsExpectation_id (energy : Config → ℝ) (β : ℝ) :
-    finiteGibbsExpectation energy β
-      (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 1 := by
-  rw [finiteGibbsExpectation, finiteGibbsExpectationLinearMap, LinearMap.comp_apply,
-    finiteHilbertOperatorLinearMap_apply, finiteHilbertOperator_id]
-  exact (finiteGibbsDensityOperator energy β).expectation_id
 
 end
 end Common

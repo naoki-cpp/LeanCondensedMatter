@@ -1,14 +1,16 @@
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsDensityOperator
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteHilbertOperator
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteOperatorIntegral
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Finite
+import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 
 set_option linter.style.header false
 
 /-!
-# Coordinate formula for finite Gibbs density-state expectations
+# Finite Gibbs expectation bridge
 
-This module identifies the canonical density-operator expectation with finite occupation-basis
-weighted sums.
+Finite Gibbs states are the finite specialization of the generic pure-point Gibbs construction.
+This module keeps only the SecondQuantization-specific adapter that transports algebraic Fock
+operators to the finite Hilbert realization, together with the resulting coordinate formulas.
 -/
 
 namespace SecondQuantization
@@ -20,6 +22,34 @@ open QuantumTheory
 
 variable {Config : Type*} [Fintype Config] [Nonempty Config]
 
+/-- The canonical finite Gibbs expectation, bundled as a complex linear map on algebraic Fock
+endomorphisms.  The state itself is the generic finite pure-point Gibbs density operator. -/
+noncomputable def finiteGibbsExpectationLinearMap (energy : Config → ℝ) (β : ℝ) :
+    (AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) →ₗ[ℂ] ℂ :=
+  (finitePurePointGibbsDensityOperator
+      (finiteHilbertBasis (Config := Config)) energy β).expectation.toLinearMap.comp
+    (finiteHilbertOperatorLinearMap (Config := Config))
+
+/-- The canonical finite Gibbs expectation of an algebraic Fock operator. -/
+noncomputable def finiteGibbsExpectation (energy : Config → ℝ) (β : ℝ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) : ℂ :=
+  finiteGibbsExpectationLinearMap energy β A
+
+@[simp]
+theorem finiteGibbsExpectationLinearMap_apply (energy : Config → ℝ) (β : ℝ)
+    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
+    finiteGibbsExpectationLinearMap energy β A = finiteGibbsExpectation energy β A :=
+  rfl
+
+@[simp]
+theorem finiteGibbsExpectation_id (energy : Config → ℝ) (β : ℝ) :
+    finiteGibbsExpectation energy β
+      (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 1 := by
+  rw [finiteGibbsExpectation, finiteGibbsExpectationLinearMap, LinearMap.comp_apply,
+    finiteHilbertOperatorLinearMap_apply, finiteHilbertOperator_id]
+  exact (finitePurePointGibbsDensityOperator
+    (finiteHilbertBasis (Config := Config)) energy β).expectation_id
+
 /-- Scalar multiplication passes through the canonical finite Gibbs expectation. -/
 @[simp]
 theorem finiteGibbsExpectation_smul (energy : Config → ℝ) (β : ℝ) (c : ℂ)
@@ -29,19 +59,22 @@ theorem finiteGibbsExpectation_smul (energy : Config → ℝ) (β : ℝ) (c : �
     c * (finiteGibbsExpectationLinearMap energy β) A
   rw [map_smul, smul_eq_mul]
 
-/-- The density-state Gibbs expectation is the normalized Boltzmann-weighted diagonal sum. -/
+/-- The density-state Gibbs expectation is the normalized pure-point probability weighted diagonal
+sum. -/
 theorem finiteGibbsExpectation_eq_sum (energy : Config → ℝ) (β : ℝ)
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     finiteGibbsExpectation energy β A =
-      ∑ n : Config,
-        (((finitePartitionFunction energy β)⁻¹ * finiteBoltzmannWeight energy β n : ℝ) : ℂ) *
-          matrixCoeff A n n := by
+      ∑ n : Config, (purePointGibbsProbability energy β n : ℂ) * matrixCoeff A n n := by
   classical
-  have hbase := (finiteGibbsDensityOperator energy β).expectation_eq_sum_diagonal
-    (finiteHilbertOperator A)
-    (finiteHilbertOrthonormalBasis (Config := Config))
-    (fun n => (finitePartitionFunction energy β)⁻¹ * finiteBoltzmannWeight energy β n)
-    (fun n => by simpa using finiteGibbsDensityOperator_apply_basis energy β n)
+  have hbase :=
+    (finitePurePointGibbsDensityOperator
+      (finiteHilbertBasis (Config := Config)) energy β).expectation_eq_sum_diagonal
+      (finiteHilbertOperator A)
+      (finiteHilbertOrthonormalBasis (Config := Config))
+      (purePointGibbsProbability energy β)
+      (fun n => by
+        simpa using finitePurePointGibbsDensityOperator_apply_basis
+          (finiteHilbertBasis (Config := Config)) energy β n)
   have hinner (n : Config) :
       inner ℂ ((finiteHilbertOrthonormalBasis (Config := Config)) n)
         (finiteHilbertOperator A ((finiteHilbertOrthonormalBasis (Config := Config)) n)) =
@@ -52,17 +85,17 @@ theorem finiteGibbsExpectation_eq_sum (energy : Config → ℝ) (β : ℝ)
     rw [EuclideanSpace.inner_single_left]
     simp only [map_one, one_mul]
     exact finiteHilbertOperator_basis_apply A n n
-  rw [finiteGibbsExpectation]
+  rw [finiteGibbsExpectation, finiteGibbsExpectationLinearMap, LinearMap.comp_apply,
+    finiteHilbertOperatorLinearMap_apply]
   calc
-    (finiteGibbsDensityOperator energy β).expectation (finiteHilbertOperator A) =
+    (finitePurePointGibbsDensityOperator
+        (finiteHilbertBasis (Config := Config)) energy β).expectation (finiteHilbertOperator A) =
         ∑ n : Config,
-          ((((finitePartitionFunction energy β)⁻¹ * finiteBoltzmannWeight energy β n : ℝ) : ℂ) *
+          (purePointGibbsProbability energy β n : ℂ) *
             inner ℂ ((finiteHilbertOrthonormalBasis (Config := Config)) n)
-              (finiteHilbertOperator A ((finiteHilbertOrthonormalBasis (Config := Config)) n))) :=
+              (finiteHilbertOperator A ((finiteHilbertOrthonormalBasis (Config := Config)) n)) :=
       hbase
-    _ = ∑ n : Config,
-        (((finitePartitionFunction energy β)⁻¹ * finiteBoltzmannWeight energy β n : ℝ) : ℂ) *
-          matrixCoeff A n n := by
+    _ = ∑ n : Config, (purePointGibbsProbability energy β n : ℂ) * matrixCoeff A n n := by
       apply Finset.sum_congr rfl
       intro n _
       rw [hinner n]
@@ -79,22 +112,7 @@ theorem finiteGibbsExpectation_operatorIntervalIntegral
   simp_rw [finiteGibbsExpectation_eq_sum, matrixCoeff_operatorIntervalIntegral,
     ← intervalIntegral.integral_const_mul]
   exact (intervalIntegral.integral_finsetSum fun n _ =>
-    (hF n).const_mul
-      ((((finitePartitionFunction energy β)⁻¹ * finiteBoltzmannWeight energy β n : ℝ) : ℂ))).symm
-
-/-- The finite Gibbs density-state expectation commutes with coefficientwise finite operator
-integration after transporting algebraic operators to the finite Hilbert realization. -/
-theorem finiteGibbsDensityOperator_expectation_operatorIntervalIntegral
-    (energy : Config → ℝ) (β : ℝ)
-    (F : ℝ → AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (a b : ℝ)
-    (hF : ∀ n : Config, IntervalIntegrable
-      (fun τ => matrixCoeff (F τ) n n) MeasureTheory.volume a b) :
-    (finiteGibbsDensityOperator energy β).expectation
-        (finiteHilbertOperator (operatorIntervalIntegral F a b)) =
-      ∫ τ in a..b,
-        (finiteGibbsDensityOperator energy β).expectation (finiteHilbertOperator (F τ)) := by
-  simpa [finiteGibbsExpectation, finiteGibbsExpectationLinearMap] using
-    finiteGibbsExpectation_operatorIntervalIntegral energy β F a b hF
+    (hF n).const_mul (purePointGibbsProbability energy β n : ℂ)).symm
 
 end
 end Common

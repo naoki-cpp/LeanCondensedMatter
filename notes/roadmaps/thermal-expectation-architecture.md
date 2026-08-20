@@ -21,9 +21,15 @@ Finite SecondQuantization uses
 FiniteHilbertFock Config := EuclideanSpace ℂ Config
 ```
 
-for a finite configuration type. Algebraic-Fock endomorphisms are transported to bounded operators
-on this Hilbert realization. `finiteGibbsDensityOperator` is the normalized state and
-`finiteGibbsExpectation` is its expectation after transport.
+for a finite configuration type. `Common/Thermal/FiniteHilbertOperator.lean` owns the Hilbert basis,
+algebraic-to-Hilbert equivalence, and transport of algebraic-Fock endomorphisms to bounded operators.
+The normalized thermal state is not reimplemented in SecondQuantization: it is
+
+```lean
+QuantumTheory.finitePurePointGibbsDensityOperator finiteHilbertBasis energy β
+```
+
+and `finiteGibbsExpectation` is its expectation after the algebraic operator transport.
 
 ## Finite trace-ratio formula
 
@@ -43,11 +49,13 @@ They are not alternative state models.
 
 | Layer | Module | Responsibility |
 |---|---|---|
+| Generic pure-point Gibbs state | `QuantumTheory/Gibbs/PurePoint.lean` | Boltzmann weights, partition function, normalized probabilities, and finite/countable pure-point density states. |
+| Finite Hilbert transport | `Common/Thermal/FiniteHilbertOperator.lean` | Finite Hilbert basis and transport of algebraic Fock operators to bounded operators. |
 | Generic diagonal trace | `Common/Thermal/DiagonalTrace.lean` | Matrix coefficients, extensionality, composition, and summability-aware `tsumTrace`. |
 | Finite unnormalized sums | `Common/Thermal/FiniteWeightedTrace.lean` | Finite trace, weighted trace, and total weight. |
 | Normalized coordinate functional | `Common/Thermal/WeightedDiagonalFunctional.lean` | `normalizedWeightedDiagonal` for an arbitrary finite complex weight. |
 | Gibbs occupation-basis comparison | `Common/Thermal/FiniteGibbsOccupationBasisBridge.lean` | Equality between the canonical finite Gibbs expectation and the normalized Boltzmann-weighted sum. |
-| Density-state coordinate formula | `Common/Thermal/FiniteGibbsExpectationBridge.lean` | Diagonal-sum and operator-integral formulas for the canonical finite Gibbs expectation. |
+| Density-state coordinate formula | `Common/Thermal/FiniteGibbsExpectationBridge.lean` | Algebraic-operator expectation adapter, diagonal-sum formula, and operator-integral formula for the generic finite pure-point state. |
 
 `normalizedWeightedDiagonal` has no physical interpretation for an arbitrary complex weight. It is
 called a Gibbs expectation only after specialization to positive Boltzmann weights and proof of the
@@ -82,7 +90,7 @@ integrability, domain closure, and KMS hypotheses.
 `Common/Thermal/BlochDeDominicis/GibbsExpectation/Recursion.lean` constructs the finite Gibbs
 instance. It combines:
 
-- the canonical finite Gibbs density-state expectation;
+- the generic finite pure-point Gibbs density state through `finiteGibbsExpectation`;
 - finite diagonal imaginary-time evolution;
 - the trace-ratio formula;
 - KMS rotation and exchange identities;
@@ -152,8 +160,8 @@ concrete expectation/KMS instance
 public Bloch–de Dominicis theorem
 ```
 
-The generic recursion must remain independent of finite Gibbs implementations and coordinate
-formulas. `scripts/check_bloch_de_dominicis_expectation_boundary.py` enforces this boundary. The
+The generic recursion must remain independent of finite Gibbs adapters and coordinate formulas.
+`scripts/check_bloch_de_dominicis_expectation_boundary.py` enforces this boundary. The
 SecondQuantization architecture checks additionally reject removed compatibility modules and invalid
 dependency directions.
 

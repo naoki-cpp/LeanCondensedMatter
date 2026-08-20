@@ -166,15 +166,17 @@ finite-mode assumptions.
 When `Mode` is finite, `Fermionic.Occupation Mode` is finite and the completed `ℓ²` representation is
 finite dimensional. `CompletedSpace/FiniteCompatibility.lean` identifies it canonically and
 isometrically with `Common.FiniteHilbertFock (Occupation Mode)` using Mathlib's finite-index
-`lpPiLpₗᵢ`.  The equivalence sends completed basis vectors to the existing finite Hilbert basis and
-makes the algebraic-to-completed and algebraic-to-finite Hilbert maps commute.
+`lpPiLpₗᵢ`.  The equivalence sends completed basis vectors to the finite Hilbert basis and makes the
+algebraic-to-completed and algebraic-to-finite Hilbert maps commute. The finite Hilbert realization
+and operator transport are owned by `Common/Thermal/FiniteHilbertOperator.lean`, independently of
+any thermal state.
 
-`CompletedSpace/FiniteThermalCompatibility.lean` keeps the state-level bridge.  Generic pure-point
-summability is automatic on the finite occupation index, and
-`SecondQuantization.Common.Thermal.PurePointCompatibility` identifies the existing finite Gibbs
-state with the finite specialization of that same generic construction.  The completed pure-point
-Gibbs density operator therefore intertwines with the finite Gibbs density operator under the
-canonical Hilbert-space isometry.
+`CompletedSpace/FiniteThermalCompatibility.lean` keeps the state-level bridge. Generic pure-point
+summability is automatic on the finite occupation index, so both sides use
+`finitePurePointGibbsDensityOperator` directly: one on `completedOccupationHilbertBasis`, the other on
+`Common.finiteHilbertBasis`. The canonical Hilbert-space isometry intertwines these two
+representations because they have the same `purePointGibbsProbability` weights. No separate finite
+Gibbs density-state implementation or compatibility module is required.
 
 For arbitrary `Mode`, `CompletedSpace/ModeTruncation.lean` defines the finite-mode coordinate
 projections indexed by `Finset Mode`.  They are contractions, fix every algebraic vector once the
@@ -227,7 +229,7 @@ trace-norm convergence is asserted.
 ### C5 — compatibility and approximation
 
 - [x] Identify finite-mode completed Fock space with `FiniteHilbertFock`.
-- [x] Show the finite Gibbs density API commutes with the finite compatibility equivalence.
+- [x] Show the generic finite pure-point Gibbs state commutes with the finite compatibility equivalence.
 - [x] Define finite-mode truncations as a `Finset Mode` directed net.
 - [x] Prove strong convergence of finite-mode projections and weak convergence of the truncated
   Gibbs states against every bounded observable, with both topologies explicit.

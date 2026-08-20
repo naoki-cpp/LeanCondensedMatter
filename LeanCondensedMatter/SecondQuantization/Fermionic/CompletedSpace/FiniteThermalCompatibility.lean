@@ -1,17 +1,16 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteCompatibility
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.PurePointCompatibility
+import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 
 set_option linter.style.header false
 
 /-!
 # Finite-mode compatibility of the completed free Gibbs state
 
-For finitely many fermionic modes, the completed occupation space and the existing finite Hilbert
-Fock realization are canonically isometric.  The completed free Gibbs state is the finite
-specialization of the generic pure-point Gibbs state on the occupation basis, while the finite
-Hilbert Gibbs state is the same specialization in the existing finite realization.  The same
-pure-point probabilities therefore describe both states under the canonical isometry.
+For finitely many fermionic modes, the completed occupation space and the finite Hilbert Fock
+realization are canonically isometric. Both Gibbs states are finite specializations of the same
+generic pure-point construction on the corresponding occupation bases, so the canonical isometry
+intertwines them with the same pure-point probabilities.
 -/
 
 namespace SecondQuantization
@@ -23,14 +22,15 @@ noncomputable section
 
 variable {Mode : Type*} [Fintype Mode]
 
-/-- Under the canonical finite-mode isometry, the finite pure-point free Gibbs density operator on
-completed Fock space is exactly the existing finite Gibbs density operator. -/
+/-- Under the canonical finite-mode isometry, the two finite pure-point realizations of the free
+Gibbs density operator are intertwined exactly. -/
 theorem completedFiniteHilbertEquiv_intertwines_freeGibbsDensity
     (ε : Mode → ℝ) (β : ℝ) :
     (completedFiniteHilbertContinuousEquiv (Mode := Mode)).toContinuousLinearMap.comp
         (finitePurePointGibbsDensityOperator completedOccupationHilbertBasis
           (fermionEnergy ε) β).op =
-      (Common.finiteGibbsDensityOperator (fermionEnergy ε) β).op.comp
+      (finitePurePointGibbsDensityOperator
+        (Common.finiteHilbertBasis (Config := Occupation Mode)) (fermionEnergy ε) β).op.comp
         (completedFiniteHilbertContinuousEquiv (Mode := Mode)).toContinuousLinearMap := by
   apply continuousLinearMap_ext_completedBasis_to_finite
   intro n
@@ -40,10 +40,13 @@ theorem completedFiniteHilbertEquiv_intertwines_freeGibbsDensity
     completedOccupationHilbertBasis_apply]
   change (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) •
       completedFiniteHilbertEquiv (Mode := Mode) (completedBasisState n) =
-    (Common.finiteGibbsDensityOperator (fermionEnergy ε) β).op
+    (finitePurePointGibbsDensityOperator
+      (Common.finiteHilbertBasis (Config := Occupation Mode)) (fermionEnergy ε) β).op
       (completedFiniteHilbertEquiv (Mode := Mode) (completedBasisState n))
   rw [completedFiniteHilbertEquiv_basisState,
-    Common.finiteGibbsDensityOperator_apply_basis_eq_purePointProbability]
+    ← Common.finiteHilbertBasis_apply (Config := Occupation Mode) n,
+    finitePurePointGibbsDensityOperator_apply_basis,
+    Common.finiteHilbertBasis_apply]
 
 end
 end Fermionic

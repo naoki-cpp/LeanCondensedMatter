@@ -6,7 +6,7 @@ and mention an identifier only when the implementation matters.
 | Term | Meaning in this project | Primary implementation |
 |---|---|---|
 | Algebraic Fock space | Finite-support linear combinations of occupation configurations. It is not a completed Hilbert space. | `SecondQuantization/Common/Algebra/AlgebraicFock.lean` |
-| Finite Hilbert Fock realization | `EuclideanSpace ℂ Config` for finite `Config`, used to interpret algebraic operators as bounded finite-dimensional operators. | `SecondQuantization/Common/Thermal/FiniteGibbsDensityOperator.lean` |
+| Finite Hilbert Fock realization | `EuclideanSpace ℂ Config` for finite `Config`, used to interpret algebraic operators as bounded finite-dimensional operators. | `SecondQuantization/Common/Thermal/FiniteHilbertOperator.lean` |
 | Mode index type | A type of one-particle labels. It does not by itself carry a one-particle Hilbert-space structure. | `SecondQuantization/Common/Algebra/OneParticleSpace.lean` |
 | Occupation configuration | Fermionic or bosonic occupation data. The zero configuration is not yet the vacuum vector until embedded in Fock space. | `SecondQuantization/Fermionic/Algebra/Occupation.lean`, `SecondQuantization/Bosonic/Algebra/Occupation.lean` |
 | Basis state | The algebraic Fock vector associated with one occupation configuration. | `basisState` |
@@ -14,10 +14,11 @@ and mention an identifier only when the implementation matters.
 | Exchange commutator | `[A,B]ζ = A ∘ B - ζ B ∘ A`. It is a reordering identity, not a contraction. | `SecondQuantization/Common/Algebra/ExchangeCommutator.lean` |
 | Imaginary-time ordering | Ordering operator factors by imaginary time, with the statistics sign inserted on exchange. It is not thermal until evaluated in a thermal state. | `SecondQuantization/Common/ImaginaryTime/TimeOrdering.lean` |
 | Diagonal imaginary-time evolution | Basis-diagonal algebraic evolution by exponential energy factors. It is not automatically an operator exponential on completed Fock space. | `SecondQuantization/Common/ImaginaryTime/DiagonalEvolution.lean` |
-| Boltzmann weight | `exp (-β E(n))`. The algebraic definition accepts real `β`; physical applications state any required sign assumption separately. | `finiteBoltzmannWeight`, free fermionic/bosonic thermal modules |
-| Partition function | The normalized-state denominator obtained by summing positive Boltzmann weights or taking the spectral trace of a Gibbs operator. Reserve the term for the Gibbs specialization, not an arbitrary weight sum. | `finitePartitionFunction`, `QuantumTheory.gibbsOp` |
+| Boltzmann weight | `exp (-β E(i))`. The pure-point definition accepts real `β`; physical applications state any required sign assumption separately. | `QuantumTheory.purePointBoltzmannWeight`, free fermionic/bosonic thermal modules |
+| Partition function | The normalized-state denominator obtained by summing positive Boltzmann weights or taking the spectral trace of a Gibbs operator. Reserve the term for the Gibbs specialization, not an arbitrary weight sum. | `QuantumTheory.purePointPartitionFunction`, `QuantumTheory.gibbsOp` |
+| Pure-point Gibbs state | Density operator constructed directly from a Hilbert basis, real energy levels, and Boltzmann summability; the finite specialization requires no separate state implementation. | `QuantumTheory/Gibbs/PurePoint.lean` |
 | Density-state expectation | The canonical normalized expectation of a bounded operator in a density state. | `QuantumTheory.DensityOperator.expectation` |
-| Finite Gibbs expectation | Density-state expectation after transporting an algebraic Fock operator to the finite Hilbert realization. | `SecondQuantization.Common.finiteGibbsExpectation` |
+| Finite Gibbs expectation | Density-state expectation of the generic finite pure-point Gibbs state after transporting an algebraic Fock operator to the finite Hilbert realization. | `SecondQuantization.Common.finiteGibbsExpectation` |
 | Weighted trace | An unnormalized finite coordinate sum with an arbitrary weight. It is proof infrastructure, not a physical state by itself. | `SecondQuantization/Common/Thermal/FiniteWeightedTrace.lean` |
 | Normalized weighted diagonal | A normalized coordinate functional for an arbitrary finite complex weight. Call it Gibbs only after the Boltzmann specialization and density-state comparison. | `SecondQuantization/Common/Thermal/WeightedDiagonalFunctional.lean` |
 | Thermal contraction | The c-number expectation of an imaginary-time-ordered operator pair in a specified thermal state. It is not the operator identity used to exchange two factors. | finite Gibbs two-point and contraction modules |
