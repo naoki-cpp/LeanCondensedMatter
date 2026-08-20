@@ -27,7 +27,7 @@ namespace CompletedThermalLadder
 /-- The completed free-fermion Gibbs expectation as an implementation of the generic
 Bloch--de Dominicis pairing-recursion contract. -/
 noncomputable def completedFreeGibbsExpectationRecursion
-    (ε : Mode → ℝ) (β : ℝ) (hsum : CompletedFreeGibbsSummable ε β) :
+    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β) :
     Common.BlochDeDominicis.ExpectationPairingRecursion
       (CompletedThermalLadder Mode) Common.Statistics.fermion where
   expectation := completedFreeGibbsExpectation ε β hsum
@@ -46,7 +46,8 @@ noncomputable def completedFreeGibbsExpectationRecursion
     calc
       completedFreeGibbsExpectation ε β hsum (C 0 :: l) =
         ((C 0).gibbsFactor ε β / ((1 : ℂ) + (C 0).gibbsFactor ε β)) *
-          (completedFreeGibbsDensityOperator ε β hsum).expectation
+          (purePointGibbsDensityOperator completedOccupationHilbertBasis
+            (fermionEnergy ε) β hsum).expectation
             (thermalPeelSum (C 0) l) :=
         completedFreeGibbsExpectation_cons_eq_gibbsRatio_mul_peel
           ε β hsum n (C 0) l hlen (hC 0)
@@ -86,7 +87,7 @@ noncomputable def completedFreeGibbsExpectationRecursion
 /-- Completed free-fermion Bloch--de Dominicis expansion obtained by feeding the completed Gibbs
 recursion data into the common pairing induction. -/
 theorem completedFreeGibbsExpectation_eq_sum_pairing
-    (ε : Mode → ℝ) (β : ℝ) (hsum : CompletedFreeGibbsSummable ε β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (n : ℕ) (C : Fin (2 * n) → CompletedThermalLadder Mode)
     (hC : completedFreeGibbsAdmissible ε β n C) :
     completedFreeGibbsExpectation ε β hsum (List.ofFn C) =

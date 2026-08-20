@@ -46,6 +46,7 @@ which is contrary to the issue boundary.
 
 - `CompletedFockSpace Mode`, the `ℓ²` occupation-amplitude Hilbert space;
 - `completedBasisState`, the canonical occupation vector;
+- `completedOccupationHilbertBasis`, the canonical Hilbert basis on the same occupation index;
 - `algebraicToCompleted`, the coordinate-preserving linear inclusion;
 - injectivity and dense range of that inclusion;
 - `completedNumberOperator`, the bounded projection onto configurations containing one mode;
@@ -89,63 +90,76 @@ definitions.
 Products used in genuinely unbounded Dyson expressions must still state their product domains.  A
 formal expression such as `A * exp (-β H)` is not admitted merely because it is meaningful in finite
 dimensions.  The completed free-Gibbs pairing recursion does **not** require such an operator product:
-its KMS step uses the already constructed bounded trace-class Gibbs density operator together with
-bounded ladder operators, and proves cyclic rotation directly from the occupation-basis expectation
-series.  Thus no additional unbounded `exp (-β H)` product-domain API is part of the completed KMS
-bridge; further domain lemmas should be added only when a later unbounded Dyson expression actually
-consumes them.
+its KMS step uses the bounded trace-class pure-point Gibbs density operator together with bounded
+ladder operators, and proves cyclic rotation directly from the occupation-basis expectation series.
+Thus no additional unbounded `exp (-β H)` product-domain API is part of the completed KMS bridge;
+further domain lemmas should be added only when a later unbounded Dyson expression actually consumes
+them.
 
 ## Thermal-state route
 
-`CompletedSpace/FreeGibbs.lean` constructs the free completed Gibbs state from the minimal explicit
-occupation-level hypothesis
+The state-level Gibbs construction is owned by `QuantumTheory.Gibbs.PurePoint`.  The completed free
+fermion state specializes that generic construction to
 
 ```text
-Summable (fun n : Occupation Mode => ‖exp (-β E(n))‖).
+b = completedOccupationHilbertBasis
+E = fermionEnergy ε
 ```
 
-The hypothesis gives a positive finite partition sum and a normalized diagonal trace-class
-`QuantumTheory.DensityOperator`.  Bounded observables therefore use the canonical
-`DensityOperator.expectation` from #421, with an explicit occupation-basis `tsum` formula.
-
-Unbounded diagonal observables are not passed through that bounded API.
-`CompletedSpace/UnboundedExpectation.lean` instead uses the separate condition
+with the explicit state-existence hypothesis
 
 ```text
-Summable (fun n => ‖pβ(n) * a(n)‖)
+PurePointGibbsSummable (fermionEnergy ε) β.
 ```
 
-and defines the corresponding real occupation-series expectation, including specializations to the
-free Hamiltonian energy and total particle number.
+Accordingly, `purePointBoltzmannWeight`, `purePointPartitionFunction`,
+`purePointGibbsProbability`, and `purePointGibbsDensityOperator` are the canonical state API.
+`CompletedSpace/FreeGibbs.lean` records only the completed occupation-basis action and bounded
+expectation-series formulas needed by the fermionic KMS layer.
 
-For free fermions, `CompletedSpace/FreeGibbsSummability.lean` supplies a more practical one-particle
-sufficient condition.  With
+Unbounded diagonal observables are not passed through the bounded density-state expectation API.
+The free Hamiltonian energy uses the generic `QuantumTheory.Gibbs.PurePointExpectation` interface.
+For representation-specific diagonal observables, `CompletedSpace/UnboundedExpectation.lean` uses
 
 ```text
-qᵢ := exp (-β εᵢ),
+Summable (fun n => ‖purePointGibbsProbability (fermionEnergy ε) β n * a(n)‖)
 ```
 
-`Summable q` implies the occupation-level Gibbs summability because
+and defines the corresponding real occupation-series expectation.  This supplies the total-particle
+number interface without duplicating the generic pure-point energy expectation.
+
+For free fermions, `CompletedSpace/FreeGibbsSummability.lean` supplies a one-particle sufficient
+condition using the same generic summability predicate.  With
 
 ```text
-exp (-β E(n)) = ∏ i ∈ n, qᵢ.
+qᵢ := purePointBoltzmannWeight ε β i = exp (-β εᵢ),
+```
+
+```text
+PurePointGibbsSummable ε β
+```
+
+implies `PurePointGibbsSummable (fermionEnergy ε) β` because
+
+```text
+purePointBoltzmannWeight (fermionEnergy ε) β n = ∏ i ∈ n, qᵢ.
 ```
 
 The same finite-subset summability theorem yields the infinite product identity
 
 ```text
-Z(β) = ∏' i, (1 + qᵢ).
+purePointPartitionFunction (fermionEnergy ε) β = ∏' i, (1 + qᵢ).
 ```
 
 No separate countability typeclass is required by this API: the summability hypothesis itself is
 the analytic restriction on the mode family.
 
-The generic `ExpectationPairingRecursion` from #421 remains representation independent.  The
-completed fermionic implementation packages creation and annihilation as bounded thermal ladders,
-proves the Gibbs/KMS rotation against an arbitrary bounded operator, rewrites the CAR peel as an
-indexed `List.eraseIdx` sum, and supplies the representation-specific admissibility predicate and
-first-pair recurrence.  The common recursion therefore acquires no occupation-basis, countability,
-or finite-mode assumptions.
+The generic `ExpectationPairingRecursion` remains representation independent.  The completed
+fermionic implementation packages creation and annihilation as bounded thermal ladders, proves the
+Gibbs/KMS rotation against an arbitrary bounded operator, rewrites the CAR peel as an indexed
+`List.eraseIdx` sum, and supplies the representation-specific admissibility predicate and first-pair
+recurrence.  The common recursion therefore acquires no occupation-basis, countability, or
+finite-mode assumptions.
 
 ## Finite-mode compatibility and approximation
 
@@ -153,28 +167,28 @@ When `Mode` is finite, `Fermionic.Occupation Mode` is finite and the completed `
 finite dimensional. `CompletedSpace/FiniteCompatibility.lean` identifies it canonically and
 isometrically with `Common.FiniteHilbertFock (Occupation Mode)` using Mathlib's finite-index
 `lpPiLpₗᵢ`.  The equivalence sends completed basis vectors to the existing finite Hilbert basis and
-makes the algebraic-to-completed and algebraic-to-finite Hilbert maps commute.  The former separate
-bounded-operator compatibility layer is intentionally not retained: completed number, creation, and
-annihilation operators are already related to the algebraic core where those facts are needed.
+makes the algebraic-to-completed and algebraic-to-finite Hilbert maps commute.
 
-`CompletedSpace/FiniteThermalCompatibility.lean` retains the state-level bridge.  Finite mode sets
-make the completed Gibbs summability condition automatic, and the completed free Gibbs density
-operator intertwines with the existing finite Gibbs density operator under the same isometry.
-Definitionally identical Boltzmann-weight expressions are no longer exposed through separate
-compatibility theorem names.
+`CompletedSpace/FiniteThermalCompatibility.lean` keeps the state-level bridge.  Generic pure-point
+summability is automatic on the finite occupation index, and
+`SecondQuantization.Common.Thermal.PurePointCompatibility` identifies the existing finite Gibbs
+state with the finite specialization of that same generic construction.  The completed pure-point
+Gibbs density operator therefore intertwines with the finite Gibbs density operator under the
+canonical Hilbert-space isometry.
 
 For arbitrary `Mode`, `CompletedSpace/ModeTruncation.lean` defines the finite-mode coordinate
 projections indexed by `Finset Mode`.  They are contractions, fix every algebraic vector once the
 finite mode set contains its support, and converge strongly to the identity as a directed net.  No
 countability assumption on `Mode` is needed.
 
-`CompletedSpace/GibbsModeTruncation.lean` restricts the free Boltzmann weights to the same finite-mode
-sectors, constructs normalized truncated Gibbs density operators on the full completed space, and
-proves convergence of the truncated partition functions and occupation probabilities under the
-existing absolute Gibbs summability assumption.  `GibbsModeTruncationExpectation.lean` makes the
-state topology explicit: for every bounded operator `A`, the truncated Gibbs expectations converge
-to the full completed Gibbs expectation.  This is weak state convergence against bounded
-observables; no trace-norm convergence is asserted.
+`CompletedSpace/GibbsModeTruncation.lean` restricts the generic pure-point free-fermion weights to
+the same finite-mode sectors, constructs normalized truncated Gibbs density operators on the full
+completed space, and proves convergence of their partition functions and probabilities to the
+generic pure-point values under `PurePointGibbsSummable (fermionEnergy ε) β`.
+`GibbsModeTruncationExpectation.lean` makes the state topology explicit: for every bounded operator
+`A`, the truncated Gibbs expectations converge to the generic pure-point Gibbs expectation on the
+completed occupation basis.  This is weak state convergence against bounded observables; no
+trace-norm convergence is asserted.
 
 ## Staged work
 
@@ -204,12 +218,11 @@ observables; no trace-norm convergence is asserted.
 
 ### C4 — trace-class free Gibbs state
 
-- [x] State explicit occupation-level Boltzmann summability and a useful mode-level sufficient
-  criterion.
-- [x] Construct the diagonal trace-class Gibbs state with positive normalization.
+- [x] Reuse the generic pure-point Gibbs state on the completed occupation basis.
+- [x] Prove a useful one-particle sufficient criterion for occupation-level pure-point summability.
 - [x] Connect bounded expectations to `DensityOperator.expectation`.
-- [x] Provide a separate integrability and expectation interface for unbounded diagonal observables.
-- [x] Prove the free-fermion partition product formula under mode-level summability.
+- [x] Keep representation-specific unbounded diagonal expectations separate from the bounded API.
+- [x] Prove the free-fermion partition product formula under one-particle summability.
 
 ### C5 — compatibility and approximation
 

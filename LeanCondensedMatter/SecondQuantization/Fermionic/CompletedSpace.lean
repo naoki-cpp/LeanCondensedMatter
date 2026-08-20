@@ -43,44 +43,50 @@ linear maps on `Dom(H)` rather than informal products of an unbounded operator. 
 domain they satisfy the free-energy relations `[H, aᵢ†] = εᵢ aᵢ†` and
 `[H, aᵢ] = -εᵢ aᵢ` as identities of linear maps.
 
-Under explicit absolute summability of the occupation Boltzmann weights, the completed free Gibbs
-state is a genuine trace-class `DensityOperator`. Bounded expectations use the canonical
-density-state API, while integrable unbounded diagonal observables are represented separately by
-absolutely convergent occupation-basis series. In particular this gives explicit expectation
-interfaces for the completed free Hamiltonian and total particle number without coercing either
-unbounded operator into `ContinuousLinearMap`. The Gibbs density operator also obeys the bounded
-thermal-intertwining relations `ρβ aᵢ† = exp (-β εᵢ) aᵢ† ρβ` and
-`ρβ aᵢ = exp (β εᵢ) aᵢ ρβ`. Creation and annihilation are additionally packaged as a single
-completed thermal-ladder type carrying its Gibbs factor and scalar CAR coefficient. Repeated CAR
-exchange is exposed as a bounded thermal peel identity. The canonical occupation-basis Gibbs
-expectation also satisfies the completed KMS rotation `⟨C A⟩β = gβ(C) ⟨A C⟩β` for a thermal
-ladder `C` and arbitrary bounded `A`, proved by reindexing the absolutely convergent Gibbs series by
-the one-mode occupation toggle rather than introducing general trace cyclicity. Combining the peel
-identity with this KMS rotation solves the wrapped term for odd tails with coefficient
-`gβ(C) / (1 + gβ(C))`; the same coefficient gives the normalized completed two-point Gibbs value
-from the scalar CAR coefficient. The recursive peel is also exposed in its position-indexed
-`List.eraseIdx` form, and these completed-space facts instantiate the generic
-`Common.BlochDeDominicis.ExpectationPairingRecursion` contract. Consequently the arbitrary even
-completed free-Gibbs ladder expectation inherits the common pairing expansion without duplicating
-the pairing induction or adding finite-mode/countability assumptions to that generic layer.
+The completed free Gibbs state reuses `QuantumTheory.Gibbs.PurePoint`: the generic pure-point Gibbs
+density operator is specialized to `completedOccupationHilbertBasis` and the occupation energy
+`fermionEnergy ε`. Its state-existence hypothesis is therefore
+`PurePointGibbsSummable (fermionEnergy ε) β`, and Boltzmann weights, partition functions,
+normalized probabilities, and the density-state constructor all have a single generic owner.
+Bounded expectations use the canonical density-state API and the completed layer records only the
+occupation-basis specialization needed by KMS. Potentially unbounded free-energy expectations use
+the generic pure-point energy-expectation API, while representation-specific arbitrary diagonal
+observables such as total particle number retain an explicit absolutely summable occupation-series
+interface. No unbounded operator is coerced into `ContinuousLinearMap`.
 
-For the free fermion state, summability of the one-particle Boltzmann factors
-`exp (-β εᵢ)` is a concrete sufficient condition for occupation-level Gibbs summability. Under this
+The specialized pure-point Gibbs density operator obeys the bounded thermal-intertwining relations
+`ρβ aᵢ† = exp (-β εᵢ) aᵢ† ρβ` and `ρβ aᵢ = exp (β εᵢ) aᵢ ρβ`. Creation and annihilation are
+additionally packaged as a single completed thermal-ladder type carrying its Gibbs factor and scalar
+CAR coefficient. Repeated CAR exchange is exposed as a bounded thermal peel identity. The canonical
+occupation-basis Gibbs expectation also satisfies the completed KMS rotation
+`⟨C A⟩β = gβ(C) ⟨A C⟩β` for a thermal ladder `C` and arbitrary bounded `A`, proved by reindexing
+the absolutely convergent pure-point Gibbs series by the one-mode occupation toggle rather than
+introducing general trace cyclicity. Combining the peel identity with this KMS rotation solves the
+wrapped term for odd tails with coefficient `gβ(C) / (1 + gβ(C))`; the same coefficient gives the
+normalized completed two-point Gibbs value from the scalar CAR coefficient. The recursive peel is
+also exposed in its position-indexed `List.eraseIdx` form, and these completed-space facts instantiate
+the generic `Common.BlochDeDominicis.ExpectationPairingRecursion` contract. Consequently the
+arbitrary even completed free-Gibbs ladder expectation inherits the common pairing expansion without
+duplicating the pairing induction or adding finite-mode/countability assumptions to that generic
+layer.
+
+For the free fermion state, the one-particle condition `PurePointGibbsSummable ε β` is a concrete
+sufficient condition for occupation-level `PurePointGibbsSummable (fermionEnergy ε) β`. Under this
 condition the partition function satisfies the infinite product formula
 `Z(β) = ∏' i, (1 + exp (-β εᵢ))`.
 
 When the mode type is finite, the completed `ℓ²` representation is canonically linearly isometric to
 the existing `Common.FiniteHilbertFock` occupation realization, with occupation coordinates, basis
-vectors, and the algebraic-core embedding identified explicitly. In finite mode dimension Gibbs
-summability is automatic, and the completed free Gibbs density operator intertwines with the
-existing finite Gibbs state under the same isometry.
+vectors, and the algebraic-core embedding identified explicitly. Finite pure-point Gibbs summability
+is automatic, and the generic pure-point Gibbs state on the completed occupation basis intertwines
+with the existing finite Gibbs state under the same isometry.
 
 For arbitrary mode types, finite-mode coordinate projections indexed by `Finset Mode` form a
-contractive net converging strongly to the identity. The same finite-mode net also restricts the
-free Gibbs weights to occupations contained in each finite mode set. Under the existing absolute
-Gibbs summability hypothesis these truncated partition functions converge to the full partition
-function, every normalized occupation probability converges to its full Gibbs value, and the
-normalized truncated Gibbs states converge weakly against every bounded operator.
+contractive net converging strongly to the identity. The same finite-mode net restricts the generic
+pure-point free Gibbs weights to occupations contained in each finite mode set. Under absolute
+pure-point Gibbs summability these truncated partition functions converge to the full generic
+partition function, every normalized occupation probability converges to its pure-point Gibbs value,
+and the normalized truncated Gibbs states converge weakly against every bounded operator.
 
 Thermodynamic-limit constructions remain later work.
 -/
