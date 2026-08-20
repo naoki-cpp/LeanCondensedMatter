@@ -54,13 +54,29 @@ gibbsOp Hop β = exp (-β Hop)
 through continuous functional calculus. A normalized `gibbsState` is constructed from explicit
 compactness, spectral-summability, and nonzero-trace hypotheses.
 
-The Helmholtz free-energy theorem proves the Gibbs lower bound under these hypotheses, and the Gibbs
-state satisfies the corresponding entropy identity. Uniqueness of the minimizer is not yet proved.
+For Hamiltonians represented instead by pure-point spectral data, `QuantumTheory.Gibbs.PurePoint`
+constructs the density state directly from a Hilbert basis and real energies. Its canonical API is
+
+```text
+purePointBoltzmannWeight
+purePointPartitionFunction
+purePointGibbsProbability
+purePointGibbsDensityOperator
+```
+
+with `PurePointGibbsSummable` as the explicit state-existence hypothesis. On a finite spectral index,
+`finitePurePointGibbsDensityOperator` is the direct specialization and requires no independent finite
+Gibbs-state implementation.
+
+The Helmholtz free-energy theorem proves the Gibbs lower bound under its stated hypotheses, and the
+bounded-Hamiltonian Gibbs state satisfies the corresponding entropy identity. Uniqueness of the
+minimizer is not yet proved.
 
 A bounded Hamiltonian cannot model a genuinely infinite-dimensional compact Gibbs operator: the
 operator exponential is invertible, so compactness forces finite dimensionality. Infinite-volume or
 infinite-mode Gibbs theory therefore requires an unbounded self-adjoint Hamiltonian or a semigroup
-interface with domain control.
+interface with domain control; pure-point spectral data provide one state-level route when the
+Boltzmann weights are summable.
 
 ## Finite-temperature linked-cluster theory
 
@@ -88,7 +104,8 @@ The pairing theorem applies to free or quasifree Gaussian thermal states. It doe
 arbitrary interacting Gibbs state has a pairing-only moment expansion.
 
 The generic pairing recursion is independent of occupation bases and finite-dimensional traces. The
-current concrete instance is a finite Gibbs realization. A bosonic infinite-occupation instance
+current concrete instance transports algebraic Fock operators to a finite Hilbert realization and
+evaluates them in the generic finite pure-point Gibbs state. A bosonic infinite-occupation instance
 must state all summability, integrability, product-domain, and KMS assumptions explicitly.
 
 ## Second-quantization representations
@@ -122,8 +139,8 @@ and later thermodynamic limits is documented in
 
 ### Finite Gibbs and Bloch–de Dominicis results
 
-- The configuration type is finite and nonempty where a normalized finite Gibbs state is required.
-- Boltzmann weights are real and positive.
+- The configuration type is finite and nonempty where a normalized Gibbs state is required.
+- The generic pure-point Boltzmann summability condition is automatic on the finite index.
 - The algebraic operator is transported to the finite Hilbert realization before applying the
   density-state expectation.
 
@@ -156,12 +173,14 @@ and later thermodynamic limits is documented in
 | Von Neumann entropy | `QuantumTheory.vonNeumannEntropy` | `QuantumTheory/Entropy.lean` |
 | Gibbs operator | `QuantumTheory.gibbsOp` | `QuantumTheory/Gibbs/State.lean` |
 | Gibbs state | `QuantumTheory.gibbsState` | `QuantumTheory/Gibbs/State.lean` |
+| Pure-point Gibbs state | `QuantumTheory.purePointGibbsDensityOperator` | `QuantumTheory/Gibbs/PurePoint.lean` |
+| Finite pure-point Gibbs state | `QuantumTheory.finitePurePointGibbsDensityOperator` | `QuantumTheory/Gibbs/PurePoint.lean` |
 | Energy expectation | `QuantumTheory.energyExpValue` | `QuantumTheory/Gibbs/EnergyExpectation.lean` |
 | Algebraic Fock core | `SecondQuantization.Common.AlgebraicFock` | `SecondQuantization/Common/Algebra/AlgebraicFock.lean` |
 | Completed fermionic Fock space | `SecondQuantization.Fermionic.CompletedFockSpace` | `SecondQuantization/Fermionic/CompletedSpace/Basic.lean` |
 | Algebraic-to-completed Fock inclusion | `SecondQuantization.Fermionic.algebraicToCompleted` | `SecondQuantization/Fermionic/CompletedSpace/Basic.lean` |
 | Completed single-mode number projection | `SecondQuantization.Fermionic.completedNumberOperator` | `SecondQuantization/Fermionic/CompletedSpace/Basic.lean` |
-| Finite Hilbert Fock realization | `SecondQuantization.Common.FiniteHilbertFock` | `SecondQuantization/Common/Thermal/FiniteGibbsDensityOperator.lean` |
-| Finite Gibbs expectation | `SecondQuantization.Common.finiteGibbsExpectation` | `SecondQuantization/Common/Thermal/FiniteGibbsDensityOperator.lean` |
+| Finite Hilbert Fock realization | `SecondQuantization.Common.FiniteHilbertFock` | `SecondQuantization/Common/Thermal/FiniteHilbertOperator.lean` |
+| Finite Gibbs expectation | `SecondQuantization.Common.finiteGibbsExpectation` | `SecondQuantization/Common/Thermal/FiniteGibbsExpectationBridge.lean` |
 | Perfect pairing | `Combinatorics.PerfectPairing` | `Combinatorics/PerfectPairing.lean` |
 | Generic thermal pairing recursion | `ExpectationPairingRecursion` | `SecondQuantization/Common/Thermal/BlochDeDominicis/ExpectationRecursion.lean` |
