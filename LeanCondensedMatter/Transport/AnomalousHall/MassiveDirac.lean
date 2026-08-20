@@ -18,6 +18,13 @@ jₓ = -e vₓ,
 jᵧ = -e vᵧ.
 ```
 
+The `currentX`/`currentY` definitions below remain concrete closed forms and regression targets for
+the AHE calculation.  Their theorem-level authority as charge currents is supplied downstream by
+`MassiveDiracCurrentBridge`: the generic charge-like corrected representative for `q I` has zero
+localization correction, reduces to `q v`, and at electron charge `q = -e` agrees exactly with these
+matrices.  Thus this model file records the realization rather than introducing a separate
+foundational current convention.
+
 With this convention the continuum measure is `d²p / (2πℏ)²`.  The generic pointwise spectral
 Berry-curvature identities live upstream in `Analysis.Operator.Spectral.BerryCurvature`; this file
 supplies the concrete massive-Dirac algebra that will be connected to that force-matrix API.
@@ -60,12 +67,15 @@ def velocityX (v : ℝ) : Matrix2 :=
 def velocityY (v : ℝ) : Matrix2 :=
   ((v : ℝ) : ℂ) • sigmaY
 
-/-- Charge-current vertex `jₓ = -e vₓ`.  The parameter `e > 0` denotes the elementary-charge
-magnitude, so the electron charge is `-e`. -/
+/-- Concrete massive-Dirac realization `jₓ = -e vₓ` of the canonical charge-like current
+representative.  The parameter `e > 0` denotes the elementary-charge magnitude, so the electron
+charge is `-e`; `MassiveDiracCurrentBridge` proves this matrix equals the generic `q v`
+representative at `q = -e`. -/
 def currentX (e v : ℝ) : Matrix2 :=
   (((-e * v : ℝ) : ℂ)) • sigmaX
 
-/-- Charge-current vertex `jᵧ = -e vᵧ`. -/
+/-- Concrete massive-Dirac realization `jᵧ = -e vᵧ` of the same canonical charge-like
+representative; the generic-to-model equality is proved in `MassiveDiracCurrentBridge`. -/
 def currentY (e v : ℝ) : Matrix2 :=
   (((-e * v : ℝ) : ℂ)) • sigmaY
 

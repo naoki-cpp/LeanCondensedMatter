@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStredaSpectral
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerryBridge
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracCurrentOperatorBridge
 import LeanCondensedMatter.Transport.StredaTraceKernel
 
 set_option linter.style.header false
@@ -18,9 +19,12 @@ projector resolvents proved in `MassiveDiracStredaSpectral`.  Second, the interb
 Tr(P_m jₓ P_n jᵧ),  m = oppositeBand n,
 ```
 
-is transported back to the concrete `2 × 2` matrix trace.  Since `j_i = -e v_i`, this trace is
-`e²` times the force-matrix numerator already used in `MassiveDiracBerryBridge`.  Dividing its
-imaginary part by the squared interband gap therefore reproduces `e² Ω_n`.
+is transported back to the concrete `2 × 2` matrix trace.  The current vertices here are the
+concrete realization of the canonical charge-like representative proved in
+`MassiveDiracCurrentBridge` / `MassiveDiracCurrentOperatorBridge`: for electron charge `q = -e`,
+they are exactly `j_i = -e v_i`.  Therefore the trace is `e²` times the force-matrix numerator
+already used in `MassiveDiracBerryBridge`.  Dividing its imaginary part by the squared interband gap
+reproduces `e² Ω_n`.
 
 This is still a pointwise, finite-dimensional bridge.  The next step is to expand the full Bastin
 projector expression into its diagonal/interband band blocks and then perform the occupation and
@@ -33,19 +37,19 @@ noncomputable section
 
 open QuantumTheory.Transport
 
-/-- The charge-current matrix is the velocity matrix multiplied by the electron charge `-e`. -/
+/-- Compatibility alias for the historical matrix statement `jₓ = -e vₓ`; its authority now comes
+from the canonical charge-current bridge rather than an independent current convention. -/
 theorem currentX_eq_charge_smul_velocityX (e v : ℝ) :
     currentX e v = (((-e : ℝ) : ℂ)) • velocityX v := by
-  ext i j
-  fin_cases i <;> fin_cases j <;>
-    simp [currentX, velocityX, sigmaX]
+  simpa [canonicalChargeCurrentXMatrix] using
+    (canonicalChargeCurrentXMatrix_eq_currentX e v).symm
 
-/-- The `y` charge-current matrix is likewise `-e` times the velocity matrix. -/
+/-- Compatibility alias for the historical matrix statement `jᵧ = -e vᵧ`, derived from the same
+canonical charge-current bridge. -/
 theorem currentY_eq_charge_smul_velocityY (e v : ℝ) :
     currentY e v = (((-e : ℝ) : ℂ)) • velocityY v := by
-  ext i j
-  fin_cases i <;> fin_cases j <;> simp [currentY, velocityY, sigmaY]
-  all_goals ring
+  simpa [canonicalChargeCurrentYMatrix] using
+    (canonicalChargeCurrentYMatrix_eq_currentY e v).symm
 
 /-- Gauge-independent interband current block in the bounded-operator representation. -/
 noncomputable def interbandCurrentTrace
@@ -53,6 +57,20 @@ noncomputable def interbandCurrentTrace
   finiteDimensionalOperatorTrace
     (bandProjectorOperator (oppositeBand band) v m px py * currentXOperator e v *
       bandProjectorOperator band v m px py * currentYOperator e v)
+
+/-- Replacing the concrete bounded current vertices by the canonical electron-charge velocity
+representatives leaves the interband current block unchanged. -/
+theorem interbandCurrentTrace_eq_canonicalChargeVelocityTrace
+    (band : Band) (e v m px py : ℝ) :
+    interbandCurrentTrace band e v m px py =
+      finiteDimensionalOperatorTrace
+        (bandProjectorOperator (oppositeBand band) v m px py *
+          (((( -e : ℝ) : ℂ)) • velocityXOperator v) *
+          bandProjectorOperator band v m px py *
+          (((( -e : ℝ) : ℂ)) • velocityYOperator v)) := by
+  unfold interbandCurrentTrace
+  rw [currentXOperator_eq_charge_smul_velocityXOperator,
+    currentYOperator_eq_charge_smul_velocityYOperator]
 
 /-- The bounded-operator interband current trace is exactly the ordinary matrix trace of the same
 projector/current block. -/
@@ -140,6 +158,20 @@ noncomputable def projectorBastinTraceIntegrand
     (e v m px py probeEnergy broadening : ℝ) : ℂ :=
   finiteDimensionalOperatorTrace
     (projectorBastinOperatorIntegrand e v m px py probeEnergy broadening)
+
+/-- The existing Bastin trace integrand is unchanged when its concrete current vertices are rewritten
+as the canonical electron-charge velocity representatives. -/
+theorem regularizedBastinTraceIntegrand_eq_canonicalChargeVelocityVertices
+    (e v m px py probeEnergy broadening : ℝ) :
+    regularizedBastinTraceIntegrand
+        (hamiltonianOperator v m px py)
+        (currentXOperator e v) (currentYOperator e v) probeEnergy broadening =
+      regularizedBastinTraceIntegrand
+        (hamiltonianOperator v m px py)
+        (((( -e : ℝ) : ℂ)) • velocityXOperator v)
+        (((( -e : ℝ) : ℂ)) • velocityYOperator v) probeEnergy broadening := by
+  rw [currentXOperator_eq_charge_smul_velocityXOperator,
+    currentYOperator_eq_charge_smul_velocityYOperator]
 
 /-- At positive broadening and away from the band degeneracy, the generic massive-Dirac Bastin trace
 integrand is exactly the projector-expanded expression. -/
