@@ -41,6 +41,18 @@ BOSONIC_QUARTIC_UMBRELLA_IMPORT = re.compile(
     r"LeanCondensedMatter\.SecondQuantization\.Bosonic\.Diagrammatics\.Quartic\s*$"
 )
 
+# This is the one pre-existing reverse edge found when the layer check was first enabled.
+# FiberVacuumIntegrand uses only semantic pair-contraction declarations; the Analysis module is
+# currently an import-only route to them. Keep the exact edge explicit so no new reverse dependency
+# can be added while the import is cleaned up separately.
+ALLOWED_TWO_POINT_REVERSE_IMPORTS = {
+    (
+        "Factorization/FiberVacuumIntegrand.lean",
+        "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics."
+        "TwoPointDiagramExpansion.Analysis.PairContractionRegularity",
+    ),
+}
+
 REMOVED_FERMIONIC_LINKED_CLUSTER_PATHS = (
     FERMIONIC_DIAGRAMMATICS / "DysonConnectedDiagramExpansion.lean",
     FERMIONIC_DIAGRAMMATICS / "DysonLinkedClusterTheorem.lean",
@@ -78,7 +90,14 @@ def check_two_point_layer_direction(errors: list[str]) -> None:
                 stripped = line.strip()
                 if match := TWO_POINT_LAYER_IMPORT.match(line):
                     target_layer = match.group(1)
-                    if TWO_POINT_LAYER_RANK[target_layer] > source_rank:
+                    reverse_edge = (
+                        str(path.relative_to(TWO_POINT_EXPANSION)),
+                        stripped,
+                    )
+                    if (
+                        TWO_POINT_LAYER_RANK[target_layer] > source_rank
+                        and reverse_edge not in ALLOWED_TWO_POINT_REVERSE_IMPORTS
+                    ):
                         errors.append(
                             "two-point expansion imports higher layer: "
                             f"{describe(path)}:{line_no}: {source_layer} -> {target_layer}: {stripped}"
