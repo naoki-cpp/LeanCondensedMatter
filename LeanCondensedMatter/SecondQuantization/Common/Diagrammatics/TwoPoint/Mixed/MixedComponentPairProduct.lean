@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentPairEquiv
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentVertexProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition
 import LeanCondensedMatter.Combinatorics.PerfectPairing.ComponentProduct
 
 set_option linter.style.header false
@@ -33,31 +33,6 @@ theorem TwoPointDiagram.mixedComponentPairSigmaEquiv_apply
     d.mixedComponentPairSigmaEquiv τ τ' σ ⟨B, pr⟩ = pr.1 :=
   rfl
 
-/-- A mixed pair-local product splits into the canonical external component and all vacuum
-components. -/
-theorem TwoPointDiagram.prod_mixedComponentPairs_eq_external_mul_prod_vacuum
-    {M : Type*} [CommMonoid M]
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (F : (d.pairingInMixedOrder τ τ' σ).NormalizedPair → M) :
-    (∏ pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair, F pr) =
-      (∏ pr : d.MixedComponentPair τ τ' σ d.externalComponentPart, F pr.1) *
-        d.vacuumComponentParts.prod (fun B =>
-          ∏ pr : d.MixedComponentPair τ τ' σ B, F pr.1) := by
-  calc
-    (∏ pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair, F pr) =
-        ∏ B : d.componentPartition.parts,
-          ∏ pr : d.MixedComponentPair τ τ' σ B, F pr.1 := by
-      simpa only [TwoPointDiagram.mixedComponentPairSigmaEquiv_apply] using
-        (d.pairingInMixedOrder τ τ' σ).prod_componentDecomposition
-          (d.mixedComponentPairSigmaEquiv τ τ' σ) F
-    _ = (∏ pr : d.MixedComponentPair τ τ' σ d.externalComponentPart, F pr.1) *
-        d.vacuumComponentParts.prod (fun B =>
-          ∏ pr : d.MixedComponentPair τ τ' σ B, F pr.1) :=
-      d.prod_componentParts_eq_external_mul_prod_vacuum
-        (fun B => ∏ pr : d.MixedComponentPair τ τ' σ B, F pr.1)
-
 /-- Nested-Finset form of the mixed pair-product factorization. -/
 theorem TwoPointDiagram.prod_mixedPairValues_eq_external_mul_prod_vacuum
     {M : Type*} [CommMonoid M]
@@ -74,10 +49,16 @@ theorem TwoPointDiagram.prod_mixedPairValues_eq_external_mul_prod_vacuum
     (∏ pr ∈ (d.pairingInMixedOrder τ τ' σ).pairs, F pr) =
         ∏ pr : (d.pairingInMixedOrder τ τ' σ).NormalizedPair, F pr.1 :=
       Finset.prod_subtype (d.pairingInMixedOrder τ τ' σ).pairs (fun _ => Iff.rfl) F
+    _ = ∏ B : d.componentPartition.parts,
+        ∏ pr : d.MixedComponentPair τ τ' σ B, F pr.1.1 := by
+      simpa only [TwoPointDiagram.mixedComponentPairSigmaEquiv_apply] using
+        (d.pairingInMixedOrder τ τ' σ).prod_componentDecomposition
+          (d.mixedComponentPairSigmaEquiv τ τ' σ) (fun pr => F pr.1)
     _ = (∏ pr : d.MixedComponentPair τ τ' σ d.externalComponentPart, F pr.1.1) *
         d.vacuumComponentParts.prod (fun B =>
           ∏ pr : d.MixedComponentPair τ τ' σ B, F pr.1.1) :=
-      d.prod_mixedComponentPairs_eq_external_mul_prod_vacuum τ τ' σ (fun pr => F pr.1)
+      d.prod_componentParts_eq_external_mul_prod_vacuum
+        (fun B => ∏ pr : d.MixedComponentPair τ τ' σ B, F pr.1.1)
 
 end Common
 end SecondQuantization
