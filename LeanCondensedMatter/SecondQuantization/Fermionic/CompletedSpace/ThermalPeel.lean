@@ -101,22 +101,24 @@ theorem operator_comp_operatorProduct_eq_thermalPeelSum
 
 /-- Canonical completed free-Gibbs expectation of an ordered thermal-ladder list. -/
 noncomputable def completedFreeGibbsExpectation
-    (ε : Mode → ℝ) (β : ℝ) (hsum : CompletedFreeGibbsSummable ε β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (l : List (CompletedThermalLadder Mode)) : ℂ :=
-  (completedFreeGibbsDensityOperator ε β hsum).expectation (operatorProduct l)
+  (purePointGibbsDensityOperator completedOccupationHilbertBasis
+    (fermionEnergy ε) β hsum).expectation (operatorProduct l)
 
 @[simp]
 theorem completedFreeGibbsExpectation_nil
-    (ε : Mode → ℝ) (β : ℝ) (hsum : CompletedFreeGibbsSummable ε β) :
+    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β) :
     completedFreeGibbsExpectation ε β hsum [] = 1 := by
   simp [completedFreeGibbsExpectation]
 
 /-- Expectation-level exchange formula before the KMS rotation of the final term. -/
 theorem completedFreeGibbsExpectation_cons_eq_peel_add_rotated
-    (ε : Mode → ℝ) (β : ℝ) (hsum : CompletedFreeGibbsSummable ε β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (C₁ : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode)) :
     completedFreeGibbsExpectation ε β hsum (C₁ :: l) =
-      (completedFreeGibbsDensityOperator ε β hsum).expectation (thermalPeelSum C₁ l) +
+      (purePointGibbsDensityOperator completedOccupationHilbertBasis
+        (fermionEnergy ε) β hsum).expectation (thermalPeelSum C₁ l) +
         ((-1 : ℂ) ^ l.length) * completedFreeGibbsExpectation ε β hsum (l ++ [C₁]) := by
   rw [completedFreeGibbsExpectation, operatorProduct_cons,
     operator_comp_operatorProduct_eq_thermalPeelSum C₁ l]
