@@ -4,7 +4,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteWeightedTrace
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.WeightedDiagonalFunctional
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteHilbertOperator
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsOccupationBasisBridge
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 
@@ -25,6 +24,8 @@ This umbrella exposes five distinct layers:
 The canonical Gibbs state is the generic pure-point density operator. `SecondQuantization.Common`
 adds only the finite Hilbert transport and expectation adapter needed for algebraic Fock operators.
 Occupation-basis formulas are proof infrastructure, not a competing normalized-state API. The
-generic pairing recursion has no finite-configuration assumption; a future bosonic implementation
-must provide honest summability or domain hypotheses rather than a false finite occupation basis.
+Gibbs-specific coordinate comparison is a derived theorem in the finite Gibbs expectation core,
+not a separate compatibility layer. The generic pairing recursion has no finite-configuration
+assumption; a future bosonic implementation must provide honest summability or domain hypotheses
+rather than a false finite occupation basis.
 -/
