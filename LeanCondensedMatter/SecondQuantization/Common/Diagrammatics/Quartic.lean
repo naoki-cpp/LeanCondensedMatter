@@ -1,7 +1,7 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Leg
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Diagram
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Ordered
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Connected
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Leg
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Diagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Connected
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentPartition
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentRestriction
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentConnected
