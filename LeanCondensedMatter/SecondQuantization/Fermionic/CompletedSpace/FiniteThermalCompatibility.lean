@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FiniteCompatibility
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbs
 
 set_option linter.style.header false
 
