@@ -1,5 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticWickExpansion
-import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagram
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal.WickExpansion
+import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Diagram
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Core.Ordered
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 
