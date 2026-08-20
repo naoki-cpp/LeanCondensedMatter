@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Reassemble
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Components.Reassemble
 import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticInteraction
 
 set_option linter.style.header false
