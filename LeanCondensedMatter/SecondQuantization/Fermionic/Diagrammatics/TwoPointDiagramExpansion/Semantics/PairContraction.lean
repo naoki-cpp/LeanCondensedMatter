@@ -1,5 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Pairing
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.MixedComponentPairingValue
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Pairing
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics.Reindexing
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
 
 set_option linter.style.header false
@@ -164,6 +164,15 @@ noncomputable def orderedTwoPointLegPairContraction
   timedFieldPairContraction ε β
     (orderedTwoPointLegField i j τ τ' q σ x)
     (orderedTwoPointLegField i j τ τ' q σ y)
+
+/-- Canonical free Gibbs density-state contraction attached to one normalized pair in the actual
+mixed-time pairing. -/
+noncomputable def FixedExternalTwoPointWickDiagram.mixedPairContractionValue
+    {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
+    (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)
+    (pr : (d.1.pairingInMixedOrder τ τ' σ).NormalizedPair) : ℂ :=
+  mixedTimeOrderedAtomicPairValue ε β i j τ τ' σ d.vertexLabelSequence
+    pr.1.1 pr.1.2
 
 /-- The contraction used by a normalized mixed pair is the density-state contraction of the two
 fixed standard legs represented by its endpoints. -/
