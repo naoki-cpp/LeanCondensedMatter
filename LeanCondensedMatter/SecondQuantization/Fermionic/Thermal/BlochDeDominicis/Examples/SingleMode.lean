@@ -32,9 +32,9 @@ not the arbitrary normalized diagonal weight `w` used here.
 (`annihilate_comp_create_self`, `annihilate_comp_self`, `create_comp_self`,
 `annihilate_comp_create_comp_self`, `annihilate_comp_create_add_create_comp_annihilate` —
 `Fermionic/Algebra/CanonicalAnticommutationRelations.lean`/`Fermionic/Algebra/NumberOperator.lean`) plus the
-diagonal-functional API (`Common.normalizedWeightedDiagonal_add`/`_id`/`_zero`). The general
-theorem, for operators at possibly distinct modes and a genuine free Gibbs weight, needs the
-multi-mode
+diagonal-functional API (`Common.normalizedWeightedDiagonal_add`/`_id` and the generic linear-map
+`map_zero`). The general theorem, for operators at possibly distinct modes and a genuine free Gibbs
+weight, needs the multi-mode
 factorization the free partition function already exhibits
 (`Fermionic/Thermal/FreePartitionFunction.lean`'s `freePartitionFunction_eq_prod`) and remains future work;
 the middle `(13)(24)` term's vanishing here is a special case of
@@ -67,7 +67,7 @@ theorem normalizedWeightedDiagonal_annihilate_create_annihilate_create_single_mo
         Common.normalizedWeightedDiagonal w ((annihilate i).comp (create i)) *
           Common.normalizedWeightedDiagonal w ((create i).comp (annihilate i)) := by
   rw [annihilate_comp_create_comp_self, annihilate_comp_self, create_comp_self,
-    Common.normalizedWeightedDiagonal_zero, mul_zero, mul_zero, add_zero, ← mul_add,
+    (Common.normalizedWeightedDiagonal w).map_zero, mul_zero, mul_zero, add_zero, ← mul_add,
     ← Common.normalizedWeightedDiagonal_add, annihilate_comp_create_add_create_comp_annihilate,
     Common.normalizedWeightedDiagonal_id w hw, mul_one]
 
