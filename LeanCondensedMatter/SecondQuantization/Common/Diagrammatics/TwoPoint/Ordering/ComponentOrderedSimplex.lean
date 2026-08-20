@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Combinatorics.FamilySlotShuffle
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentVertexProduct
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Components.ComponentDecomposition
 
 set_option linter.style.header false
 
