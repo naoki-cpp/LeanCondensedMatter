@@ -42,6 +42,18 @@ noncomputable def completedBasisState (n : Occupation Mode) : CompletedFockSpace
   classical
   exact lp.single 2 n 1
 
+/-- The canonical occupation Hilbert basis of completed fermionic Fock space. -/
+noncomputable def completedOccupationHilbertBasis :
+    HilbertBasis (Occupation Mode) ℂ (CompletedFockSpace Mode) :=
+  HilbertBasis.ofRepr (LinearIsometryEquiv.refl ℂ (CompletedFockSpace Mode))
+
+@[simp]
+theorem completedOccupationHilbertBasis_apply (n : Occupation Mode) :
+    completedOccupationHilbertBasis (Mode := Mode) n = completedBasisState n := by
+  classical
+  have h := (completedOccupationHilbertBasis (Mode := Mode)).repr_self n
+  simpa [completedOccupationHilbertBasis, completedBasisState] using h
+
 /-- The coordinate-preserving inclusion of algebraic fermionic Fock space into its `ℓ²` completion. -/
 noncomputable def algebraicToCompleted :
     OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode where
