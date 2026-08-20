@@ -1,14 +1,16 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsDensityOperator
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
+import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 
 set_option linter.style.header false
 
 /-!
 # The canonical free-fermion Gibbs density operator
 
-The finite free-fermion thermal state is the canonical finite Gibbs density operator specialized to
-`fermionEnergy ε`. This module records its occupation-basis action and identifies density-operator
-expectations of transported algebraic observables with the canonical finite Gibbs expectation.
+The finite free-fermion thermal state is the generic finite pure-point Gibbs density operator
+specialized to the occupation basis and `fermionEnergy ε`. This module records its occupation-basis
+action and identifies density-operator expectations of transported algebraic observables with the
+canonical finite Gibbs expectation adapter.
 -/
 
 namespace SecondQuantization
@@ -21,18 +23,19 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 /-- The canonical finite free-fermion Gibbs state. -/
 noncomputable def freeGibbsDensityOperator (ε : Mode → ℝ) (β : ℝ) :
     DensityOperator (Common.FiniteHilbertFock (Occupation Mode)) :=
-  Common.finiteGibbsDensityOperator (fermionEnergy ε) β
+  finitePurePointGibbsDensityOperator
+    (Common.finiteHilbertBasis (Config := Occupation Mode)) (fermionEnergy ε) β
 
 omit [LinearOrder Mode] in
 /-- The free Gibbs density operator acts diagonally in the occupation basis. -/
 theorem freeGibbsDensityOperator_apply_basis (ε : Mode → ℝ) (β : ℝ)
     (n : Occupation Mode) :
     (freeGibbsDensityOperator ε β).op (Common.finiteHilbertBasisState n) =
-      (((Common.finitePartitionFunction (fermionEnergy ε) β)⁻¹ *
-          Common.finiteBoltzmannWeight (fermionEnergy ε) β n : ℝ) : ℂ) •
+      (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) •
         Common.finiteHilbertBasisState n := by
   simpa [freeGibbsDensityOperator] using
-    Common.finiteGibbsDensityOperator_apply_basis (fermionEnergy ε) β n
+    finitePurePointGibbsDensityOperator_apply_basis
+      (Common.finiteHilbertBasis (Config := Occupation Mode)) (fermionEnergy ε) β n
 
 omit [LinearOrder Mode] in
 /-- Evaluating the free Gibbs density state on a transported algebraic Fock operator is the
