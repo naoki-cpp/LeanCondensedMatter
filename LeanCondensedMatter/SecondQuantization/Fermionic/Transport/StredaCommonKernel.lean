@@ -236,9 +236,9 @@ noncomputable def finiteKuboBastinCommonTransitionIntegrand
       interpolation.occupationDerivative)
     (data.energy mn.2) (data.energy mn.1) energy
 
+omit [Fintype ι] in
 /-- The directional localized transition integrand is the generalized common-energy integrand
 specialized to the same directional current at both vertices. -/
-omit [Fintype ι] in
 theorem finiteKuboBastinCommonTransitionIntegrand_eq_vertex
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -257,6 +257,7 @@ theorem finiteKuboBastinCommonTransitionIntegrand_eq_vertex
   rfl
 
 omit [Fintype ι] in
+/-- The directional transition integrand is integrable on the full energy axis. -/
 theorem integrable_finiteKuboBastinCommonTransitionIntegrand
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -271,6 +272,7 @@ theorem integrable_finiteKuboBastinCommonTransitionIntegrand
       system data geometry direction K q omega eta mn)
 
 omit [Fintype ι] in
+/-- The localized directional transition integrates to the occupation-resolved term. -/
 theorem integral_finiteKuboBastinCommonTransitionIntegrand
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
