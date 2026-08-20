@@ -48,9 +48,8 @@ theorem integral_orientedIntervalIntegrand
     MeasureTheory.integral_indicator measurableSet_Ioc]
   rfl
 
-variable {Site E ι : Type*}
-variable [LinearOrder Site] [Fintype Site]
-variable [AddCommGroup E] [Module ℝ E]
+variable {Site ι : Type*}
+variable [Fintype Site]
 
 /-- Full-line localized integrand associated with one generalized Bastin transition. -/
 noncomputable def finiteKuboBastinCommonVertexTransitionIntegrand
@@ -219,6 +218,10 @@ theorem finiteKuboBastinSpectralChannelResponse_eq_commonEnergy
           system data interpolation channel.measured channel.source
             channel.observableVariation omega eta
 
+variable {E : Type*}
+variable [LinearOrder Site]
+variable [AddCommGroup E] [Module ℝ E]
+
 /-- The full-line localized integrand associated with one finite directional Bastin transition. -/
 noncomputable def finiteKuboBastinCommonTransitionIntegrand
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
@@ -235,6 +238,7 @@ noncomputable def finiteKuboBastinCommonTransitionIntegrand
 
 /-- The directional localized transition integrand is the generalized common-energy integrand
 specialized to the same directional current at both vertices. -/
+omit [Fintype ι] in
 theorem finiteKuboBastinCommonTransitionIntegrand_eq_vertex
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -252,6 +256,7 @@ theorem finiteKuboBastinCommonTransitionIntegrand_eq_vertex
         omega eta mn := by
   rfl
 
+omit [Fintype ι] in
 theorem integrable_finiteKuboBastinCommonTransitionIntegrand
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -265,6 +270,7 @@ theorem integrable_finiteKuboBastinCommonTransitionIntegrand
     (-finiteKuboBastinDirectionalTransitionFactor
       system data geometry direction K q omega eta mn)
 
+omit [Fintype ι] in
 theorem integral_finiteKuboBastinCommonTransitionIntegrand
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
