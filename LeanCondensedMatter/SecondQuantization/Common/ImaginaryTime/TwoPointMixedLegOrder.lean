@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.MixedEventSlotEmbedding
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Diagram
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Core.Diagram
 import LeanCondensedMatter.Combinatorics.ListFlatMapOrder
 import Mathlib.Data.List.NodupEquivFin
 import Mathlib.Data.Fintype.EquivFin
