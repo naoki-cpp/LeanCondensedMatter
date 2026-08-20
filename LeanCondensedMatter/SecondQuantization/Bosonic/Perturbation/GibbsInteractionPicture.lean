@@ -101,8 +101,8 @@ theorem firstDysonIntegrand_mem_freeGibbsDomain
     (ε : Mode → ℝ) (β σ : ℝ) (V : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
     (hV : V ∈ freeGibbsDomain ε β) :
     (interactionPicture ε V σ).comp
-        (Common.infiniteDysonCoeff (freeEigenvalue ε) V 0 σ) ∈ freeGibbsDomain ε β := by
-  rw [Common.infiniteDysonCoeff_zero, LinearMap.comp_id]
+        (Common.dysonCoeff (freeEigenvalue ε) V 0 σ) ∈ freeGibbsDomain ε β := by
+  rw [Common.dysonCoeff_zero, LinearMap.comp_id]
   exact (freeGibbsSummable_interactionPicture_iff ε β σ V).2 hV
 
 end
