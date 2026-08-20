@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.ComponentGlobalCrossingParity
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Factorization.ComponentGlobalCrossingParity
 import LeanCondensedMatter.Combinatorics.PerfectPairing.Evaluation
 
 set_option linter.style.header false
