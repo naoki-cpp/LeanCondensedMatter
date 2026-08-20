@@ -53,13 +53,6 @@ theorem normalizedWeightedDiagonal_sub (w : Config → ℂ)
     normalizedWeightedDiagonal w A + -normalizedWeightedDiagonal w B
   rw [normalizedWeightedDiagonal_add, normalizedWeightedDiagonal_neg]
 
-/-- The normalized weighted diagonal functional vanishes on the zero operator. -/
-theorem normalizedWeightedDiagonal_zero (w : Config → ℂ) :
-    normalizedWeightedDiagonal w (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 0 := by
-  have h := normalizedWeightedDiagonal_smul (0 : ℂ) w
-    (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
-  simpa using h
-
 /-! ## Identity and diagonal operators -/
 
 /-- The normalized weighted diagonal of the identity is one when the total weight is nonzero. -/
