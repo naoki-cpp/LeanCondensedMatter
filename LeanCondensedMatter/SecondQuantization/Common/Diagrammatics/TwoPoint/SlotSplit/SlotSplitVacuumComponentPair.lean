@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.SlotSplit.SlotSplitVacuumPairImage
 import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.TwoPoint.Mixed.MixedComponentCrossing
-import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.FixedOrderComponentPair
+import LeanCondensedMatter.SecondQuantization.Common.Diagrammatics.Quartic.Pairing.FixedOrderComponentPair
 
 set_option linter.style.header false
 
