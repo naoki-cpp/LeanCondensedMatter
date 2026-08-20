@@ -26,12 +26,14 @@ namespace CompletedThermalLadder
 `⟨C A⟩β = gβ(C) ⟨A C⟩β`.  The scalar `gβ(C)` is the same factor appearing in
 `ρβ C = gβ(C) C ρβ`. -/
 theorem completedFreeGibbsExpectation_operator_comp
-    (ε : Mode → ℝ) (β : ℝ) (hsum : CompletedFreeGibbsSummable ε β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (C : CompletedThermalLadder Mode)
     (A : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode) :
-    (completedFreeGibbsDensityOperator ε β hsum).expectation (C.operator.comp A) =
+    (purePointGibbsDensityOperator completedOccupationHilbertBasis
+      (fermionEnergy ε) β hsum).expectation (C.operator.comp A) =
       C.gibbsFactor ε β *
-        (completedFreeGibbsDensityOperator ε β hsum).expectation (A.comp C.operator) := by
+        (purePointGibbsDensityOperator completedOccupationHilbertBasis
+          (fermionEnergy ε) β hsum).expectation (A.comp C.operator) := by
   rw [completedFreeGibbsDensityOperator_expectation_eq_tsum,
     completedFreeGibbsDensityOperator_expectation_eq_tsum, ← tsum_mul_left]
   cases C with
@@ -39,12 +41,12 @@ theorem completedFreeGibbsExpectation_operator_comp
       simp only [operator_create, gibbsFactor_create]
       let f : Occupation Mode → ℂ := fun n =>
         Complex.exp (-(β : ℂ) * (ε i : ℂ)) *
-          ((completedFreeGibbsProbability ε β n : ℂ) *
+          ((purePointGibbsProbability (fermionEnergy ε) β n : ℂ) *
             inner ℂ (completedBasisState n)
               ((A.comp (completedCreate i)) (completedBasisState n)))
       calc
         (∑' n : Occupation Mode,
-            (completedFreeGibbsProbability ε β n : ℂ) *
+            (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) *
               inner ℂ (completedBasisState n)
                 (((completedCreate i).comp A) (completedBasisState n))) =
             ∑' n : Occupation Mode, f (toggleOccupation i n) := by
@@ -68,12 +70,12 @@ theorem completedFreeGibbsExpectation_operator_comp
               ring_nf
               exact Complex.exp_zero
             calc
-              _ = 1 * ((completedFreeGibbsProbability ε β n : ℂ) *
+              _ = 1 * ((purePointGibbsProbability (fermionEnergy ε) β n : ℂ) *
                   (fermionPhase i (removeOccupation i n) *
                     (A (completedBasisState n)) (removeOccupation i n))) := by ring
               _ = (Complex.exp (-(β : ℂ) * (ε i : ℂ)) *
                     Complex.exp ((β : ℂ) * (ε i : ℂ))) *
-                    ((completedFreeGibbsProbability ε β n : ℂ) *
+                    ((purePointGibbsProbability (fermionEnergy ε) β n : ℂ) *
                       (fermionPhase i (removeOccupation i n) *
                         (A (completedBasisState n)) (removeOccupation i n))) := by
                     rw [hexp]
@@ -89,7 +91,7 @@ theorem completedFreeGibbsExpectation_operator_comp
             (Equiv.tsum_eq (toggleOccupationEquiv i) f)
         _ = ∑' n : Occupation Mode,
             Complex.exp (-(β : ℂ) * (ε i : ℂ)) *
-              ((completedFreeGibbsProbability ε β n : ℂ) *
+              ((purePointGibbsProbability (fermionEnergy ε) β n : ℂ) *
                 inner ℂ (completedBasisState n)
                   ((A.comp (completedCreate i)) (completedBasisState n))) := by
           rfl
@@ -97,12 +99,12 @@ theorem completedFreeGibbsExpectation_operator_comp
       simp only [operator_annihilate, gibbsFactor_annihilate]
       let f : Occupation Mode → ℂ := fun n =>
         Complex.exp ((β : ℂ) * (ε i : ℂ)) *
-          ((completedFreeGibbsProbability ε β n : ℂ) *
+          ((purePointGibbsProbability (fermionEnergy ε) β n : ℂ) *
             inner ℂ (completedBasisState n)
               ((A.comp (completedAnnihilate i)) (completedBasisState n)))
       calc
         (∑' n : Occupation Mode,
-            (completedFreeGibbsProbability ε β n : ℂ) *
+            (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) *
               inner ℂ (completedBasisState n)
                 (((completedAnnihilate i).comp A) (completedBasisState n))) =
             ∑' n : Occupation Mode, f (toggleOccupation i n) := by
@@ -133,12 +135,12 @@ theorem completedFreeGibbsExpectation_operator_comp
               ring_nf
               exact Complex.exp_zero
             calc
-              _ = 1 * ((completedFreeGibbsProbability ε β n : ℂ) *
+              _ = 1 * ((purePointGibbsProbability (fermionEnergy ε) β n : ℂ) *
                   (fermionPhase i (insertOccupation i n) *
                     (A (completedBasisState n)) (insertOccupation i n))) := by ring
               _ = (Complex.exp ((β : ℂ) * (ε i : ℂ)) *
                     Complex.exp (-(β : ℂ) * (ε i : ℂ))) *
-                    ((completedFreeGibbsProbability ε β n : ℂ) *
+                    ((purePointGibbsProbability (fermionEnergy ε) β n : ℂ) *
                       (fermionPhase i (insertOccupation i n) *
                         (A (completedBasisState n)) (insertOccupation i n))) := by
                     rw [hexp]
@@ -148,14 +150,14 @@ theorem completedFreeGibbsExpectation_operator_comp
             (Equiv.tsum_eq (toggleOccupationEquiv i) f)
         _ = ∑' n : Occupation Mode,
             Complex.exp ((β : ℂ) * (ε i : ℂ)) *
-              ((completedFreeGibbsProbability ε β n : ℂ) *
+              ((purePointGibbsProbability (fermionEnergy ε) β n : ℂ) *
                 inner ℂ (completedBasisState n)
                   ((A.comp (completedAnnihilate i)) (completedBasisState n))) := by
           rfl
 
 /-- KMS rotation specialized to an ordered thermal-ladder tail. -/
 theorem completedFreeGibbsExpectation_cons_eq_gibbsFactor_mul_rotate
-    (ε : Mode → ℝ) (β : ℝ) (hsum : CompletedFreeGibbsSummable ε β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (C : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode)) :
     completedFreeGibbsExpectation ε β hsum (C :: l) =
       C.gibbsFactor ε β * completedFreeGibbsExpectation ε β hsum (l ++ [C]) := by
