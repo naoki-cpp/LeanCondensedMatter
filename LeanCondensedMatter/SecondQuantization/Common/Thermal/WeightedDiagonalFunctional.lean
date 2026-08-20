@@ -52,11 +52,6 @@ theorem normalizedWeightedDiagonal_sub (w : Config → ℂ)
       normalizedWeightedDiagonal w A - normalizedWeightedDiagonal w B :=
   (normalizedWeightedDiagonal w).map_sub A B
 
-/-- The normalized weighted diagonal functional vanishes on the zero operator. -/
-theorem normalizedWeightedDiagonal_zero (w : Config → ℂ) :
-    normalizedWeightedDiagonal w (0 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 0 :=
-  (normalizedWeightedDiagonal w).map_zero
-
 /-- The normalized weighted diagonal of the identity is one when the total weight is nonzero. -/
 theorem normalizedWeightedDiagonal_id (w : Config → ℂ) (hw : weightSum w ≠ 0) :
     normalizedWeightedDiagonal w (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] _) = 1 := by
