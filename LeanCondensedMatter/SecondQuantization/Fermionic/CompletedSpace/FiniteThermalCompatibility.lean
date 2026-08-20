@@ -17,17 +17,7 @@ namespace Fermionic
 
 noncomputable section
 
-variable {Mode : Type*}
-
-/-- The normalized completed Gibbs probability is the normalized finite Boltzmann weight. -/
-theorem completedFreeGibbsProbability_eq_finite
-    (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
-    completedFreeGibbsProbability ε β n =
-      (Common.finitePartitionFunction (fermionEnergy ε) β)⁻¹ *
-        Common.finiteBoltzmannWeight (fermionEnergy ε) β n := by
-  rfl
-
-variable [Fintype Mode]
+variable {Mode : Type*} [Fintype Mode]
 
 /-- Under the canonical finite-mode isometry, the completed free Gibbs density operator is exactly
 the existing finite Gibbs density operator. -/
@@ -46,8 +36,8 @@ theorem completedFiniteHilbertEquiv_intertwines_freeGibbsDensity
     (Common.finiteGibbsDensityOperator (fermionEnergy ε) β).op
       (completedFiniteHilbertEquiv (Mode := Mode) (completedBasisState n))
   rw [completedFiniteHilbertEquiv_basisState,
-    Common.finiteGibbsDensityOperator_apply_basis,
-    completedFreeGibbsProbability_eq_finite]
+    Common.finiteGibbsDensityOperator_apply_basis]
+  rfl
 
 end
 end Fermionic
