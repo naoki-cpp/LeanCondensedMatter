@@ -94,15 +94,18 @@ theorem thermalPeelTerms_eq_ofFn
 
 /-- Expectation of the completed CAR peel as an indexed finite sum over the removed tail position. -/
 theorem completedFreeGibbsExpectation_thermalPeelSum_eq_sum
-    (ε : Mode → ℝ) (β : ℝ) (hsum : CompletedFreeGibbsSummable ε β)
+    (ε : Mode → ℝ) (β : ℝ) (hsum : PurePointGibbsSummable (fermionEnergy ε) β)
     (C₁ : CompletedThermalLadder Mode) (l : List (CompletedThermalLadder Mode)) :
-    (completedFreeGibbsDensityOperator ε β hsum).expectation (thermalPeelSum C₁ l) =
+    (purePointGibbsDensityOperator completedOccupationHilbertBasis
+      (fermionEnergy ε) β hsum).expectation (thermalPeelSum C₁ l) =
       ∑ j : Fin l.length,
         ((-1 : ℂ) ^ (j : ℕ)) * C₁.anticommutatorValue (l[(j : ℕ)]'j.isLt) *
           completedFreeGibbsExpectation ε β hsum (l.eraseIdx j) := by
   have hmap : ∀ L : List (CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode),
-      (completedFreeGibbsDensityOperator ε β hsum).expectation L.sum =
-        (L.map (completedFreeGibbsDensityOperator ε β hsum).expectation).sum := by
+      (purePointGibbsDensityOperator completedOccupationHilbertBasis
+        (fermionEnergy ε) β hsum).expectation L.sum =
+        (L.map (purePointGibbsDensityOperator completedOccupationHilbertBasis
+          (fermionEnergy ε) β hsum).expectation).sum := by
     intro L
     induction L with
     | nil => simp
