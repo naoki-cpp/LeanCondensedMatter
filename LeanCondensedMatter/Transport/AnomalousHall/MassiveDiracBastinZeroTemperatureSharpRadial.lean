@@ -60,6 +60,7 @@ theorem radialZeroTemperatureInterbandBastinPairLimitDensity_eq_zero_of_unoccupi
         band e v m fermiEnergy p = 0 := by
   unfold radialZeroTemperatureInterbandBastinPairLimitDensity
   rw [zeroTemperatureLorentzianPoleWeight_of_unoccupied hunoccupied]
+  ring
 
 /-- Exactly at the Fermi surface the unified radial target keeps one half of the clean density. -/
 theorem radialZeroTemperatureInterbandBastinPairLimitDensity_eq_half_clean_of_fermiSurface
@@ -70,7 +71,8 @@ theorem radialZeroTemperatureInterbandBastinPairLimitDensity_eq_half_clean_of_fe
       (1 / 2 : ℝ) * radialCleanInterbandBastinPairLimitDensity band e v m p := by
   unfold radialZeroTemperatureInterbandBastinPairLimitDensity
     radialCleanInterbandBastinPairLimitDensity cleanInterbandBastinPairLimitDensity
-  rw [hfermi, zeroTemperatureLorentzianPoleWeight_at_fermi_surface] <;> ring_nf
+  rw [hfermi, zeroTemperatureLorentzianPoleWeight_at_fermi_surface]
+  ring_nf
 
 /-- Away from the Fermi surface, the unified target and the sharp occupied clean profile agree
 pointwise. -/
