@@ -70,9 +70,9 @@ transport/source balance decomposition, and weak current-representation interfac
 Heisenberg scaling, the conventional current `1/2 {v,m}`, and concrete first-quantized current
 realizations.
 
-The historical `AlgebraicFock.linearCommutator` name is only a compatibility abbreviation for the
-upstream generic commutator. Second quantization owns the theorem that `dGamma` preserves the
-commutator, not the commutator operation itself.
+Fermionic second quantization consumes the canonical `ConservationLaw.linearCommutator` directly.
+It owns only representation-specific results such as preservation by `dGamma`; no duplicate
+`AlgebraicFock` commutator operation or compatibility theorem is part of the public API.
 
 ## Lattice model owner
 
