@@ -1,7 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Bosonic.Algebra.CreationAnnihilation
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.InteractionPicture
-import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TimeOrdering
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 
 set_option linter.style.header false
@@ -11,7 +10,6 @@ set_option linter.style.header false
 
 This module contains the bosonic imaginary-time layer:
 
-- bosonic time ordering;
 - the free-energy eigenvalue and diagonal free Hamiltonian;
 - algebraic free and Heisenberg imaginary-time evolution;
 - evolved creation and annihilation operators;
@@ -32,40 +30,6 @@ variable {Mode : Type*}
 
 /-- File-local classical decidable equality, kept out of public theorem signatures. -/
 local instance instDecidableEqImaginaryTimeEvolution : DecidableEq Mode := Classical.decEq Mode
-
-/-- The bosonic imaginary-time-ordered product of two operators. -/
-noncomputable def timeOrderedProduct
-    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (τA τB : ℝ) :
-    FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
-  Common.timeOrderedProduct Common.Statistics.boson A B τA τB
-
-/-- At strictly later time, `A` acts first. -/
-theorem timeOrderedProduct_of_gt
-    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) {τA τB : ℝ} (h : τB < τA) :
-    timeOrderedProduct A B τA τB = A.comp B :=
-  Common.timeOrderedProduct_of_gt Common.Statistics.boson A B h
-
-/-- At strictly later time, `B` acts first without a bosonic exchange sign. -/
-theorem timeOrderedProduct_of_lt
-    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) {τA τB : ℝ} (h : τA < τB) :
-    timeOrderedProduct A B τA τB = B.comp A := by
-  simpa [timeOrderedProduct] using
-    (Common.timeOrderedProduct_of_lt Common.Statistics.boson A B h)
-
-/-- Equal imaginary times give the symmetric product. -/
-@[simp]
-theorem timeOrderedProduct_self_time
-    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (τ : ℝ) :
-    timeOrderedProduct A B τ τ = (2⁻¹ : ℂ) • (A.comp B + B.comp A) := by
-  simpa [timeOrderedProduct] using
-    (Common.timeOrderedProduct_self_time Common.Statistics.boson A B τ)
-
-/-- Swapping both operators and their times leaves the bosonic ordered product unchanged. -/
-theorem timeOrderedProduct_swap
-    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (τA τB : ℝ) :
-    timeOrderedProduct B A τB τA = timeOrderedProduct A B τA τB := by
-  simpa [timeOrderedProduct] using
-    (Common.timeOrderedProduct_swap Common.Statistics.boson A B τA τB)
 
 /-- The free-Hamiltonian eigenvalue `E(n) = Σᵢ n(i) ε(i)`. -/
 def freeEigenvalue (ε : Mode → ℝ) (n : Occupation Mode) : ℝ :=
