@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsDensityOperator
+import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteHilbertOperator
 import Mathlib.Analysis.Normed.Lp.LpEquiv
 
 set_option linter.style.header false
@@ -13,13 +13,13 @@ For a finite mode type, the completed occupation representation
 ℓ²(Occupation Mode, ℂ)
 ```
 
-is finite dimensional.  The existing finite thermal API realizes the same occupation coordinates as
+is finite dimensional.  The common finite Hilbert API realizes the same occupation coordinates as
 `Common.FiniteHilbertFock (Occupation Mode) = EuclideanSpace ℂ (Occupation Mode)`.
 
 This file identifies the two Hilbert realizations by Mathlib's canonical finite-index
 `lp`–`PiLp` linear isometry equivalence.  The map preserves occupation coordinates, sends the
-completed occupation basis to the existing finite Hilbert basis, and makes the algebraic Fock core
-commute with the existing `Common.finiteHilbertFockEquiv`.
+completed occupation basis to the finite Hilbert basis, and makes the algebraic Fock core commute
+with `Common.finiteHilbertFockEquiv`.
 -/
 
 namespace SecondQuantization
@@ -30,7 +30,7 @@ noncomputable section
 variable {Mode : Type*} [Fintype Mode]
 
 /-- For finite mode sets, completed fermionic Fock space is canonically isometrically equivalent to
-the existing finite Hilbert Fock realization on the same occupation configurations. -/
+the finite Hilbert Fock realization on the same occupation configurations. -/
 noncomputable def completedFiniteHilbertEquiv :
     CompletedFockSpace Mode ≃ₗᵢ[ℂ] Common.FiniteHilbertFock (Occupation Mode) :=
   lpPiLpₗᵢ (fun _ : Occupation Mode => ℂ) ℂ
@@ -41,7 +41,7 @@ noncomputable def completedFiniteHilbertContinuousEquiv :
   (completedFiniteHilbertEquiv (Mode := Mode)).toContinuousLinearEquiv
 
 /-- The finite compatibility equivalence intertwines the algebraic-to-completed inclusion with the
-existing algebraic-to-finite-Hilbert equivalence. -/
+algebraic-to-finite-Hilbert equivalence. -/
 @[simp]
 theorem completedFiniteHilbertEquiv_algebraicToCompleted
     (x : OccupationFock Mode) :
@@ -50,8 +50,8 @@ theorem completedFiniteHilbertEquiv_algebraicToCompleted
   ext n
   rfl
 
-/-- The completed occupation basis is exactly the existing finite Hilbert occupation basis after
-transport through the canonical finite compatibility equivalence. -/
+/-- The completed occupation basis is exactly the finite Hilbert occupation basis after transport
+through the canonical finite compatibility equivalence. -/
 @[simp]
 theorem completedFiniteHilbertEquiv_basisState (n : Occupation Mode) :
     completedFiniteHilbertEquiv (Mode := Mode) (completedBasisState n) =
