@@ -184,6 +184,20 @@ theorem intervalIntegrable_matrixCoeff_dysonCoeff (energy : Config → ℝ)
       MeasureTheory.volume a b :=
   (continuous_matrixCoeff_dysonCoeff energy V order m n).intervalIntegrable a b
 
+/-- At zero imaginary time, only the zeroth Dyson coefficient is nonzero. -/
+theorem dysonCoeff_at_zero (energy : Config → ℝ)
+    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) :
+    dysonCoeff energy V n 0 = if n = 0 then LinearMap.id else 0 := by
+  cases n with
+  | zero => simp [dysonCoeff_zero]
+  | succ k =>
+      simp only [Nat.succ_ne_zero, if_false]
+      apply matrixCoeff_ext
+      intro m n'
+      change dysonCoeff energy V (k + 1) 0 (basisState n') m = matrixCoeff 0 m n'
+      rw [dysonCoeff_succ_basisState_apply, intervalIntegral.integral_same]
+      simp [matrixCoeff]
+
 variable [Fintype Config]
 
 /-- On a finite configuration type, the canonical reachable-support coefficient satisfies the
@@ -208,23 +222,16 @@ theorem dysonCoeff_succ (energy : Config → ℝ)
     simp [matrixCoeff]
   rw [hneg, matrixCoeff_operatorIntervalIntegral]
   congr 1
-  exact intervalIntegral.integral_congr fun σ _ => rfl
 
 /-- The first-order coefficient is the negative interval integral of the interaction-picture
 operator. -/
 theorem dysonCoeff_one (energy : Config → ℝ)
     (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (τ : ℝ) :
     dysonCoeff energy V 1 τ = - operatorIntervalIntegral (interactionPicture energy V) 0 τ := by
-  rw [dysonCoeff_succ]
+  rw [show 1 = 0 + 1 by omega, dysonCoeff_succ]
   congr 2
-
-/-- At zero imaginary time, only the zeroth Dyson coefficient is nonzero. -/
-theorem dysonCoeff_at_zero (energy : Config → ℝ)
-    (V : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (n : ℕ) :
-    dysonCoeff energy V n 0 = if n = 0 then LinearMap.id else 0 := by
-  cases n with
-  | zero => simp [dysonCoeff_zero]
-  | succ k => simp [dysonCoeff_succ, operatorIntervalIntegral_same]
+  funext σ
+  rw [dysonCoeff_zero, LinearMap.comp_id]
 
 /-- Matrix-coefficient form of the finite Dyson successor recursion. -/
 theorem matrixCoeff_dysonCoeff_succ (energy : Config → ℝ)
