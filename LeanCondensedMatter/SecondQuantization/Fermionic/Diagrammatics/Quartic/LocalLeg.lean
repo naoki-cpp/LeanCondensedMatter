@@ -26,18 +26,13 @@ noncomputable def quarticLocalLegOperator (q : QuarticVertexLabel Mode) :
     Fin 4 → OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.quarticLocalLegOperator create annihilate q
 
-/-- The free-energy shift of a quartic local-leg operator. -/
-noncomputable def quarticLocalLegEnergyShift (ε : Mode → ℝ) (q : QuarticVertexLabel Mode) :
-    Fin 4 → ℝ :=
-  Common.quarticLocalLegEnergyShift ε q
-
 /-- A local leg is an eigenoperator of the free imaginary-time evolution. -/
 theorem imaginaryTimeEvolve_quarticLocalLegOperator (ε : Mode → ℝ) (q : QuarticVertexLabel Mode)
     (l : Fin 4) (τ : ℝ) :
     imaginaryTimeEvolve ε τ (quarticLocalLegOperator q l) =
       Complex.exp (((τ * quarticLocalLegEnergyShift ε q l : ℝ) : ℂ)) •
         quarticLocalLegOperator q l := by
-  simpa [imaginaryTimeEvolve, quarticLocalLegOperator, quarticLocalLegEnergyShift] using
+  simpa [imaginaryTimeEvolve, quarticLocalLegOperator] using
     (Common.heisenbergEvolve_quarticLocalLegOperator
       (fermionEnergy ε) ε create annihilate q l τ
       (fun i => imaginaryTimeEvolve_create ε τ i)
