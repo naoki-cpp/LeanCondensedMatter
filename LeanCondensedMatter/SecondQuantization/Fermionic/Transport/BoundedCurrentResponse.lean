@@ -18,8 +18,8 @@ j  ↦  dΓ(j)  ↦  boundedLatticeOperator (dΓ(j)).
 
 The measured current and the source-coupling observable remain separate inputs to the response.
 Thus the primitive bounded adapter is `χᴿ_{J,B}`, not a hard-coded current-current correlator.
-The older bond-current/current-current wrapper is retained as a charge specialization, and the
-one-particle bond operator recovers it by theorem.
+Charge, spin, orbital, and other concrete current representations should specialize the generic
+one-body or measured-current API at their natural owner.
 
 This module still does not call a retarded susceptibility a conductivity. If the measured observable
 depends explicitly on the source, its observable-variation/contact term must be added by the
@@ -84,54 +84,6 @@ noncomputable def boundedOneBodyCurrentRetardedSusceptibility
     (t s : ℝ) : ℂ :=
   boundedMeasuredCurrentRetardedSusceptibility system expectation
     (boundedOneBodyCurrent current) source t s
-
-/-- The one-particle operator underlying the existing oriented electric bond current is exactly a
-special case of `boundedOneBodyCurrent`. -/
-theorem boundedOneBodyCurrent_scaledBondOperator
-    (ℏ q : ℂ) (K : LocallyFiniteHopping Site) (x y : Site) :
-    boundedOneBodyCurrent (((Complex.I * q) / ℏ) • K.bondOperator x y) =
-      boundedBondCurrent ℏ q K x y := by
-  change Lattice.boundedLatticeOperator
-      (AlgebraicFock.dGamma (LatticeState Site)
-        (((Complex.I * q) / ℏ) • K.bondOperator x y)) =
-    Lattice.boundedLatticeOperator
-      (((Complex.I * q) / ℏ) •
-        AlgebraicFock.dGamma (LatticeState Site) (K.bondOperator x y))
-  rw [AlgebraicFock.dGamma_smul]
-
-/-- The historical bounded bond-current/current-current retarded kernel supplied to the general Kubo
-API. It is definitionally a specialization of the generic measured-current/source adapter.
-
-This remains deliberately not named conductivity: a vector-potential response must also account for
-explicit source dependence of the measured current, as developed downstream in issue #444. -/
-noncomputable def boundedBondCurrentRetardedSusceptibility
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock Site))
-    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
-      (FiniteLatticeHilbertFock Site))
-    (ℏ q : ℂ) (K : LocallyFiniteHopping Site)
-    (x y u v : Site) (t s : ℝ) : ℂ :=
-  boundedMeasuredCurrentRetardedSusceptibility system expectation
-    (boundedBondCurrent ℏ q K x y)
-    (boundedBondCurrent ℏ q K u v) t s
-
-/-- The generalized one-body-current response recovers the existing electric bond-current response
-when supplied with the scaled one-particle bond operator and a bond-current source. -/
-theorem boundedOneBodyCurrentRetardedSusceptibility_scaledBondOperator
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock Site))
-    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
-      (FiniteLatticeHilbertFock Site))
-    (ℏ q : ℂ) (K : LocallyFiniteHopping Site)
-    (x y u v : Site) (t s : ℝ) :
-    boundedOneBodyCurrentRetardedSusceptibility system expectation
-        (((Complex.I * q) / ℏ) • K.bondOperator x y)
-        (boundedBondCurrent ℏ q K u v) t s =
-      boundedBondCurrentRetardedSusceptibility system expectation
-        ℏ q K x y u v t s := by
-  rw [boundedOneBodyCurrentRetardedSusceptibility,
-    boundedBondCurrentRetardedSusceptibility,
-    boundedOneBodyCurrent_scaledBondOperator]
 
 end
 end Transport
