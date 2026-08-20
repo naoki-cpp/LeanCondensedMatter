@@ -58,18 +58,19 @@ theorem nestedVertexOperatorComp_succ (ε : Mode → ℝ) (n : ℕ)
       (interactionPicture ε (quarticVertexOperator (q 0)) (τ 0)).comp
         (nestedVertexOperatorComp ε n (fun i => q i.succ) (fun i => τ i.succ)) := rfl
 
-omit [LinearOrder Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 /-- **Continuity in `σ`, at fixed `k n'`, of a matrix coefficient of `(interactionPicture ε V
 σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)`** — the finite sum of products of
 `Common.continuous_matrixCoeff_interactionPicture`/`Common.continuous_matrixCoeff_dysonCoeff` (via
 `Common.matrixCoeff_comp`), the integrability the inductive step's
 `Common.comp_operatorIntervalIntegral`/`Common.normalizedWeightedDiagonal_operatorIntervalIntegral`
 need. -/
-theorem continuous_matrixCoeff_interactionPicture_comp_dysonCoeff (ε : Mode → ℝ)
+theorem continuous_matrixCoeff_interactionPicture_comp_dysonCoeff [Finite Mode] (ε : Mode → ℝ)
     (V : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (n : ℕ)
     (k n' : Occupation Mode) :
     Continuous (fun σ : ℝ => Common.matrixCoeff
       ((interactionPicture ε V σ).comp (Common.dysonCoeff (fermionEnergy ε) V n σ)) k n') := by
+  letI := Fintype.ofFinite Mode
   simp_rw [Common.matrixCoeff_comp]
   exact continuous_finsetSum _ fun j _ =>
     (Common.continuous_matrixCoeff_interactionPicture (fermionEnergy ε) V k j).mul
