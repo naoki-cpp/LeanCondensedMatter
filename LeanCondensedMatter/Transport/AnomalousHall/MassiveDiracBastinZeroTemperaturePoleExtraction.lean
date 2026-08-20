@@ -18,6 +18,10 @@ noncomputable section
 
 open Filter MeasureTheory
 
+private theorem real_smul_complex_eq_mul (r : ℝ) (z : ℂ) :
+    r • z = (r : ℂ) * z := by
+  rfl
+
 /-- The target-centered zero-temperature occupation is measurable in the offset variable. -/
 theorem measurable_targetCenteredZeroTemperatureOccupation
     (center fermiEnergy : ℝ) :
@@ -166,6 +170,7 @@ theorem targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral_eq_er
                 lorentzianSpectralKernel offset broadening) •
                 targetCenteredInterbandSpectatorCurrentFactor
                   band e v m px py (0, 0)
+        rw [real_smul_complex_eq_mul]
         push_cast
         ring
     _ = (∫ offset in -radius..radius,
@@ -188,6 +193,7 @@ theorem targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral_eq_er
             band e v m px py (0, 0) := by
         unfold targetCenteredZeroTemperatureInterbandSpectatorCurrentErrorIntegral
           targetCenteredZeroTemperatureLorentzianMass
+          targetCenteredInterbandSpectatorCurrentErrorIntegrand
         rw [intervalIntegral.integral_smul_const]
 
 /-- The complete zero-temperature weighted regular pole integral converges to the unified scalar pole
@@ -249,7 +255,11 @@ theorem tendsto_targetCenteredZeroTemperatureInterbandBastinPairIntegral
               band e v m px py (0, 0)))) := by
   have hpole := tendsto_targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral
     band e v m px py fermiEnergy radius hE hradiusPos hradius
-  have hscaled := tendsto_const_nhds.mul hpole
+  have hconst : Tendsto
+      (fun _ : ℝ => (-2 * Complex.I : ℂ))
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (-2 * Complex.I : ℂ)) := tendsto_const_nhds
+  have hscaled := hconst.mul hpole
   have heq :
       (fun broadening : ℝ =>
         targetCenteredZeroTemperatureInterbandBastinPairIntegral
