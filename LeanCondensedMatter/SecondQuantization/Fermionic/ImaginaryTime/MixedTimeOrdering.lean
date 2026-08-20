@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.TwoPointMixedOrder
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Unnormalized.PeelFirst
-import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.QuarticInteraction
+import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.Quartic.Interaction
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.ExternalField
 import LeanCondensedMatter.SecondQuantization.Fermionic.ImaginaryTime.InteractionPicture
 
