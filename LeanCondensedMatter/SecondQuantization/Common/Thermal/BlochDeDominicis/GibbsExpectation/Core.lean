@@ -1,6 +1,7 @@
 import LeanCondensedMatter.SecondQuantization.Common.ImaginaryTime.DiagonalEvolution
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteWeightedTrace
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge
+import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 
 set_option linter.style.header false
 set_option linter.style.openClassical false
@@ -9,8 +10,9 @@ set_option linter.style.openClassical false
 # Finite Gibbs expectations from density operators
 
 The normalized Gibbs expectation on a finite configuration space is the canonical expectation of
-the trace-class density operator `finiteGibbsDensityOperator`. Positivity, normalization, and
-linearity come from the density-state API.
+the generic finite pure-point Gibbs density operator after transporting algebraic Fock operators to
+the finite Hilbert realization. Positivity, normalization, and linearity come from the density-state
+API.
 
 The unnormalized trace identities remain occupation-basis formulas about `traceFock`,
 `weightedTrace`, and the free diagonal evolution. The normalized Bloch–de Dominicis layer uses only
@@ -23,6 +25,7 @@ namespace SecondQuantization
 namespace Common
 
 open scoped Classical
+open QuantumTheory
 
 variable {Config : Type*} [Fintype Config]
 
@@ -31,11 +34,10 @@ noncomputable def boltzmannWeight (energy : Config → ℝ) (β : ℝ) (n : Conf
   Complex.exp (((-β) * energy n : ℝ) : ℂ)
 
 omit [Fintype Config] in
-/-- The real positive Boltzmann weight used by the density operator casts to the algebraic complex
-Boltzmann weight. -/
-theorem finiteBoltzmannWeight_cast_eq_boltzmannWeight (energy : Config → ℝ) (β : ℝ) (n : Config) :
-    ((finiteBoltzmannWeight energy β n : ℝ) : ℂ) = boltzmannWeight energy β n := by
-  rw [finiteBoltzmannWeight, boltzmannWeight, Complex.ofReal_exp]
+private theorem purePointBoltzmannWeight_cast_eq_boltzmannWeight
+    (energy : Config → ℝ) (β : ℝ) (n : Config) :
+    ((purePointBoltzmannWeight energy β n : ℝ) : ℂ) = boltzmannWeight energy β n := by
+  rw [purePointBoltzmannWeight, boltzmannWeight, Complex.ofReal_exp]
 
 omit [Fintype Config] in
 /-- `diagonalEvolution` is diagonal with the complex Boltzmann weights. -/
@@ -76,20 +78,22 @@ theorem finiteGibbsExpectation_eq_trace_div (energy : Config → ℝ) (β : ℝ)
         traceFock (diagonalEvolution energy (-β)) := by
   rw [finiteGibbsExpectation_eq_sum, traceFock_diagonalEvolution_comp_eq_weightedTrace,
     traceFock_diagonalEvolution_eq_weightSum, weightedTrace, weightSum]
-  have hZcast : ((finitePartitionFunction energy β : ℝ) : ℂ) =
+  simp_rw [purePointGibbsProbability]
+  have hZcast : ((purePointPartitionFunction energy β : ℝ) : ℂ) =
       ∑ n : Config, boltzmannWeight energy β n := by
-    rw [finitePartitionFunction, tsum_fintype]
+    rw [purePointPartitionFunction, tsum_fintype]
     push_cast
     exact Finset.sum_congr rfl fun n _ =>
-      finiteBoltzmannWeight_cast_eq_boltzmannWeight energy β n
-  have hZne : ((finitePartitionFunction energy β : ℝ) : ℂ) ≠ 0 := by
-    exact_mod_cast (ne_of_gt (finitePartitionFunction_pos energy β))
+      purePointBoltzmannWeight_cast_eq_boltzmannWeight energy β n
+  have hZne : ((purePointPartitionFunction energy β : ℝ) : ℂ) ≠ 0 := by
+    exact_mod_cast (ne_of_gt
+      (purePointPartitionFunction_pos energy β (purePointGibbsSummable_of_finite energy β)))
   rw [← hZcast]
   field_simp
   rw [Finset.sum_mul]
   apply Finset.sum_congr rfl
   intro n _
-  rw [← finiteBoltzmannWeight_cast_eq_boltzmannWeight energy β n]
+  rw [← purePointBoltzmannWeight_cast_eq_boltzmannWeight energy β n]
   push_cast
   field_simp
 
