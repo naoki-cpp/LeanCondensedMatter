@@ -27,13 +27,6 @@ theorem completedFreeGibbsProbability_eq_finite
         Common.finiteBoltzmannWeight (fermionEnergy ε) β n := by
   rfl
 
-/-- In finite mode dimension the completed free Gibbs summability hypothesis is automatic. -/
-theorem completedFreeGibbsSummable_finite [Finite Mode]
-    (ε : Mode → ℝ) (β : ℝ) : CompletedFreeGibbsSummable ε β := by
-  letI := Fintype.ofFinite Mode
-  unfold CompletedFreeGibbsSummable
-  exact Summable.of_finite
-
 variable [Fintype Mode]
 
 /-- Under the canonical finite-mode isometry, the completed free Gibbs density operator is exactly
