@@ -1,6 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.InfiniteDyson
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.InfiniteDysonContinuity
-import LeanCondensedMatter.SecondQuantization.Common.Perturbation.InfiniteDysonFiniteBridge
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.FiniteSupportIntegral
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.ReachableSupport
 import LeanCondensedMatter.SecondQuantization.Common.Perturbation.MatrixCoefficientDyson
@@ -24,10 +21,11 @@ set_option linter.style.header false
 # Perturbative infrastructure
 
 The public layer includes finite reachable supports, finite-support coefficientwise integration, and
-finite-order Dyson coefficients valid for arbitrary configuration types, together with direct
-matrix-coefficient continuity and interval-integrability. On finite configuration types, the
-reachable-support recursion is proved to agree with the existing finite-basis Dyson construction.
-The remaining continuous-operator realization, norm bounds, analytic evolution, trace series, and
-exponential identities are finite-basis constructions and retain their explicit finiteness
-assumptions.
+a single finite-order Dyson coefficient construction valid for arbitrary configuration types,
+together with direct matrix-coefficient continuity and interval-integrability. On finite
+configuration types, that canonical recursion also satisfies the coefficientwise reconstructed
+operator-integral equation used by the continuous finite-dimensional realization.
+
+The remaining norm bounds, analytic evolution, trace series, and exponential identities are
+finite-basis constructions and retain their explicit finiteness assumptions.
 -/
