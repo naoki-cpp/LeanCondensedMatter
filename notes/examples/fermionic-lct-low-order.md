@@ -26,7 +26,7 @@ Wick diagrams on `Fin 1`, `Fin 2`, or `Fin 3`.
 
 The generic power-series formulas live in
 `Analysis/PowerSeries/LowOrderLog.lean`. The fermionic formal corollaries live in
-`SecondQuantization/Fermionic/Diagrammatics/DysonLinkedClusterLowOrder.lean`, and the analytic
+`SecondQuantization/Fermionic/Diagrammatics/LinkedCluster/LowOrder.lean`, and the analytic
 logarithmic-derivative corollaries live in
 `SecondQuantization/Fermionic/Perturbation/AnalyticLinkedClusterLowOrder.lean`.
 
