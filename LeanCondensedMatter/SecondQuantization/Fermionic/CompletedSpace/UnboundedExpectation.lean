@@ -1,6 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
-import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
+import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointExpectation
 
 set_option linter.style.header false
 
