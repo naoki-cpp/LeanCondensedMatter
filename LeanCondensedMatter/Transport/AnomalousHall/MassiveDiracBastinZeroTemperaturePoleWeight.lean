@@ -47,8 +47,7 @@ theorem targetCenteredZeroTemperatureLorentzianMass_eq_energyIntegral
   intro energy _
   dsimp [f]
   congr 2
-  · ring
-  · ring
+  ring
 
 /-- The target-centered zero-temperature Lorentzian mass converges to the unified pole weight:
 `π` below the Fermi level, `0` above it, and `π/2` exactly at the Fermi surface. -/
