@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinTrace
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.GeneralizedStaticStreda
+import LeanCondensedMatter.Transport.GeneralizedStaticStreda
 
 set_option linter.style.header false
 
@@ -24,8 +24,7 @@ namespace Fermionic
 namespace Transport
 
 open Lattice
-
-open QuantumTheory.LinearResponse
+open QuantumTheory.LinearResponse QuantumTheory.Transport
 
 noncomputable section
 
