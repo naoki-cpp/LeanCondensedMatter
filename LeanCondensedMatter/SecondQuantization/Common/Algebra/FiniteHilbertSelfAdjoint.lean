@@ -12,8 +12,9 @@ configuration basis. Its matrix in the corresponding orthonormal basis is exactl
 coordinate matrix `matrixCoeff A`. Consequently adjoints and self-adjointness of bounded
 transported operators are equivalent to conjugate-transpose identities for those coefficients.
 
-This module is model-independent. In particular, hopping and current models can establish
-self-adjointness by proving a coefficient identity before entering the analytic Kubo layer.
+This module is model-independent representation infrastructure. In particular, hopping and current
+models can establish self-adjointness by proving a coefficient identity without depending on the
+thermal layer.
 -/
 
 namespace SecondQuantization
@@ -23,8 +24,7 @@ noncomputable section
 
 variable {Config : Type*} [Fintype Config] [DecidableEq Config]
 
-/-- Matrix of an algebraic Fock endomorphism in the canonical finite-Hilbert occupation basis. -/
-noncomputable def finiteHilbertOperatorMatrix
+private noncomputable def finiteHilbertOperatorMatrix
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     Matrix Config Config ℂ :=
   LinearMap.toMatrix
@@ -32,9 +32,7 @@ noncomputable def finiteHilbertOperatorMatrix
     (finiteHilbertOrthonormalBasis (Config := Config)).toBasis
     (finiteHilbertOperator A).toLinearMap
 
-/-- The analytic matrix of the transported operator is its algebraic coordinate matrix. -/
-@[simp]
-theorem finiteHilbertOperatorMatrix_apply
+@[simp] private theorem finiteHilbertOperatorMatrix_apply
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) (m n : Config) :
     finiteHilbertOperatorMatrix A m n = matrixCoeff A m n := by
   unfold finiteHilbertOperatorMatrix
@@ -83,9 +81,7 @@ theorem star_finiteHilbertOperator_eq_iff_matrixCoeff
     rw [ContinuousLinearMap.adjoint_toLinearMap] at hlin
     exact ContinuousLinearMap.ext fun x => LinearMap.congr_fun hlin x
 
-/-- The transported bounded operator is self-adjoint exactly when its canonical matrix is
-Hermitian. -/
-theorem finiteHilbertOperator_isSelfAdjoint_iff_matrix_isHermitian
+private theorem finiteHilbertOperator_isSelfAdjoint_iff_matrix_isHermitian
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
     IsSelfAdjoint (finiteHilbertOperator A) ↔
       (finiteHilbertOperatorMatrix A).IsHermitian := by
