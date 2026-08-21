@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteHilbertOperator
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator
 import Mathlib.Algebra.Algebra.Hom
 
 set_option linter.style.header false
