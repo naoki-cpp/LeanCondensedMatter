@@ -55,6 +55,7 @@ theorem completedAnticomm_create_create (i j : Mode) :
     completedAnticomm (completedCreate i) (completedCreate j) = 0 := by
   apply Common.continuousLinearMap_ext_algebraicCore
   intro x
+  fold algebraicToCompleted
   rw [completedAnticomm_apply]
   rw [completedCreate_algebraicToCompleted j x,
     completedCreate_algebraicToCompleted i (create j x),
@@ -72,6 +73,7 @@ theorem completedAnticomm_annihilate_annihilate (i j : Mode) :
     completedAnticomm (completedAnnihilate i) (completedAnnihilate j) = 0 := by
   apply Common.continuousLinearMap_ext_algebraicCore
   intro x
+  fold algebraicToCompleted
   rw [completedAnticomm_apply]
   rw [completedAnnihilate_algebraicToCompleted j x,
     completedAnnihilate_algebraicToCompleted i (annihilate j x),
@@ -90,6 +92,7 @@ theorem completedAnticomm_annihilate_create (i j : Mode) :
       if i = j then ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) else 0 := by
   apply Common.continuousLinearMap_ext_algebraicCore
   intro x
+  fold algebraicToCompleted
   rw [completedAnticomm_apply]
   rw [completedCreate_algebraicToCompleted j x,
     completedAnnihilate_algebraicToCompleted i (create j x),
