@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
+import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.FockSpace
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection
 
 set_option linter.style.header false
@@ -79,13 +79,6 @@ theorem algebraicToCompleted_basisState (n : Occupation Mode) :
   simpa [algebraicToCompleted, basisState, completedBasisState] using
     (Common.algebraicToCompleted_basisState (Config := Occupation Mode) n)
 
-/-- The algebraic-to-completed inclusion loses no finite-support vector. -/
-theorem algebraicToCompleted_injective :
-    Function.Injective
-      (algebraicToCompleted : OccupationFock Mode → CompletedFockSpace Mode) := by
-  simpa [algebraicToCompleted] using
-    (Common.algebraicToCompleted_injective (Config := Occupation Mode))
-
 /-- Finite-support fermionic Fock vectors are dense in the completed `ℓ²` space. -/
 theorem algebraicToCompleted_denseRange :
     DenseRange
@@ -109,8 +102,7 @@ theorem completedNumberOperator_apply (i : Mode) (ψ : CompletedFockSpace Mode)
     (Common.completedCoordinateProjection_apply
       (Config := Occupation Mode) (fun m : Occupation Mode => i ∈ m) ψ n)
 
-/-- The completed number operator has the same occupation-basis eigenvalue equation as the
-algebraic number operator. -/
+/-- The completed number operator acts diagonally on occupation-basis states. -/
 @[simp]
 theorem completedNumberOperator_basisState (i : Mode) (n : Occupation Mode) :
     completedNumberOperator i (completedBasisState n) =
@@ -118,20 +110,6 @@ theorem completedNumberOperator_basisState (i : Mode) (n : Occupation Mode) :
   simpa [completedNumberOperator, completedBasisState] using
     (Common.completedCoordinateProjection_basisState
       (Config := Occupation Mode) (fun m : Occupation Mode => i ∈ m) n)
-
-/-- The completed single-mode number operator agrees with the algebraic number operator on the
-whole finite-support core, not only on individual basis states. -/
-theorem completedNumberOperator_comp_algebraicToCompleted (i : Mode) :
-    (completedNumberOperator i).toLinearMap.comp algebraicToCompleted =
-      algebraicToCompleted.comp (numberOperator i) := by
-  apply Finsupp.lhom_ext
-  intro n c
-  have hc : (Finsupp.single n c : OccupationFock Mode) = c • basisState n :=
-    (Finsupp.smul_single_one n c).symm
-  rw [hc]
-  simp only [LinearMap.comp_apply, map_smul]
-  by_cases hi : i ∈ n <;>
-    simp [numberOperator_basisState, hi]
 
 end
 end Fermionic
