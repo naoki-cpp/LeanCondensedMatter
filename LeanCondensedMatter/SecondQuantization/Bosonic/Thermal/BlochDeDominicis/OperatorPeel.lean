@@ -70,20 +70,16 @@ theorem FreeThermalField.operator_comp_operator_eq_exchangeValue
           · subst j
             simp only [FreeThermalField.operator, FreeThermalField.exchangeValue,
               if_true, neg_one_smul]
-            have h := comm_annihilate_create i i
+            have h := comm_create_annihilate i i
             rw [if_pos rfl] at h
             unfold comm at h
-            have hcomp := (sub_eq_iff_eq_add).mp h
-            rw [hcomp]
-            module
+            exact (sub_eq_iff_eq_add).mp h
           · simp only [FreeThermalField.operator, FreeThermalField.exchangeValue,
               if_neg hij, zero_smul, zero_add]
-            have h := comm_annihilate_create j i
-            rw [if_neg (Ne.symm hij)] at h
+            have h := comm_create_annihilate i j
+            rw [if_neg hij] at h
             unfold comm at h
-            have hcomp : (Bosonic.annihilate j).comp (Bosonic.create i) =
-                (Bosonic.create i).comp (Bosonic.annihilate j) := sub_eq_zero.mp h
-            exact hcomp.symm
+            exact sub_eq_zero.mp h
       | create j =>
           simp only [FreeThermalField.operator, FreeThermalField.exchangeValue,
             zero_smul, zero_add]
@@ -100,9 +96,9 @@ theorem FreeThermalField.orderedProduct_eq_common_operatorProduct
   induction fields with
   | nil => rfl
   | cons C t ih =>
-      simp only [FreeThermalField.orderedProduct,
+    simp only [FreeThermalField.orderedProduct,
         Common.BlochDeDominicis.operatorProduct_cons]
-      rw [ih]
+    rw [ih]
 
 /-- Bare bosonic CCR peel sum, before Gibbs/KMS rotation. -/
 noncomputable def FreeThermalField.operatorPeelSum (C : FreeThermalField Mode)
