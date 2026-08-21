@@ -158,7 +158,7 @@ theorem continuousLinearMap_ext_completedBasis
       (Finsupp.smul_single_one c a).symm
     rw [ha]
     simp only [LinearMap.comp_apply, map_smul, algebraicToCompleted_basisState]
-    rw [h c]
+    exact congrArg (fun y : E => a • y) (h c)
   exact congrArg (fun f : AlgebraicFock Config →ₗ[ℂ] E => f x) hcore
 
 end
