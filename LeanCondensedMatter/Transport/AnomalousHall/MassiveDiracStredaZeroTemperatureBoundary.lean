@@ -86,7 +86,7 @@ theorem tendsto_regularizedStredaSurfacePrimitiveTrace_massiveDirac_atBot_zero
         (fun probeEnergy : ℝ =>
           projectorResolvent (retardedSpectralParameter probeEnergy broadening) v m px py)
         atBot (nhds 0) := by
-    simpa only [projectorResolvent_eq_coefficients] using
+    simpa only [projectorResolvent_eq_coefficients, zero_smul, zero_add] using
       (hretLower.smul_const (bandProjectorOperator .lower v m px py)).add
         (hretUpper.smul_const (bandProjectorOperator .upper v m px py))
   have hadvProj :
@@ -94,7 +94,7 @@ theorem tendsto_regularizedStredaSurfacePrimitiveTrace_massiveDirac_atBot_zero
         (fun probeEnergy : ℝ =>
           projectorResolvent (advancedSpectralParameter probeEnergy broadening) v m px py)
         atBot (nhds 0) := by
-    simpa only [projectorResolvent_eq_coefficients] using
+    simpa only [projectorResolvent_eq_coefficients, zero_smul, zero_add] using
       (hadvLower.smul_const (bandProjectorOperator .lower v m px py)).add
         (hadvUpper.smul_const (bandProjectorOperator .upper v m px py))
   have hret :
@@ -143,11 +143,11 @@ theorem tendsto_regularizedStredaSurfacePrimitiveTrace_massiveDirac_atBot_zero
             probeEnergy broadening)
         atBot (nhds 0) := by
     simpa only [regularizedStredaSurfacePrimitiveOperator, smrckaStredaSurfaceFactor,
-      retardedAdvancedResolventDifference] using hscaled
+      retardedAdvancedResolventDifference, mul_zero, zero_mul, sub_self, smul_zero] using hscaled
   have htrace :=
     (finiteDimensionalOperatorTrace (H := DiracHilbert)).continuous.continuousAt.tendsto.comp
       hoperator
-  simpa only [regularizedStredaSurfacePrimitiveTrace, Function.comp_apply, map_zero] using htrace
+  simpa only [regularizedStredaSurfacePrimitiveTrace, Function.comp_def, map_zero] using htrace
 
 /-- Therefore the finite-window zero-temperature Fermi-surface term tends to the single Fermi-edge
 primitive as the lower energy is sent to `-∞`. -/
