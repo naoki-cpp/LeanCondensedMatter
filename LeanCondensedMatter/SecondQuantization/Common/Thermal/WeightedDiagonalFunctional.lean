@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteWeightedTrace
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteWeightedTrace
 
 set_option linter.style.header false
 
