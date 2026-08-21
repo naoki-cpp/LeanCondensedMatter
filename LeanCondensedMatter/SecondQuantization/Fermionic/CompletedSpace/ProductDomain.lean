@@ -32,14 +32,14 @@ The proof packages the shifted weighted coordinates as the sum of the original d
 a scalar multiple of the original `ℓ²` vector. -/
 theorem mem_completedDiagonalDomain_add_const
     (w : Occupation Mode → ℂ) (c : ℂ) {ψ : CompletedFockSpace Mode}
-    (hψ : ψ ∈ completedDiagonalDomain w) :
-    ψ ∈ completedDiagonalDomain (fun n => w n + c) := by
-  rw [mem_completedDiagonalDomain_iff]
-  let x : (completedDiagonalOperator w).domain := ⟨ψ, hψ⟩
-  have hout := lp.memℓp (completedDiagonalOperator w x + c • ψ)
+    (hψ : ψ ∈ Common.completedDiagonalDomain w) :
+    ψ ∈ Common.completedDiagonalDomain (fun n => w n + c) := by
+  rw [Common.mem_completedDiagonalDomain_iff]
+  let x : (Common.completedDiagonalOperator w).domain := ⟨ψ, hψ⟩
+  have hout := lp.memℓp (Common.completedDiagonalOperator w x + c • ψ)
   have hfun :
       (fun n : Occupation Mode => (w n + c) * ψ n) =
-        (fun n : Occupation Mode => (completedDiagonalOperator w x + c • ψ) n) := by
+        (fun n : Occupation Mode => (Common.completedDiagonalOperator w x + c • ψ) n) := by
     funext n
     change (w n + c) * ψ n = w n * ψ n + c * ψ n
     ring
@@ -70,24 +70,24 @@ theorem completedCreate_mem_completedFreeHamiltonianDomain
     (ε : Mode → ℝ) (i : Mode) {ψ : CompletedFockSpace Mode}
     (hψ : ψ ∈ completedFreeHamiltonianDomain ε) :
     completedCreate i ψ ∈ completedFreeHamiltonianDomain ε := by
-  change ψ ∈ completedDiagonalDomain (freeHamiltonianWeight ε) at hψ
-  change completedCreate i ψ ∈ completedDiagonalDomain (freeHamiltonianWeight ε)
-  rw [mem_completedDiagonalDomain_iff]
+  change ψ ∈ Common.completedDiagonalDomain (freeHamiltonianWeight ε) at hψ
+  change completedCreate i ψ ∈ Common.completedDiagonalDomain (freeHamiltonianWeight ε)
+  rw [Common.mem_completedDiagonalDomain_iff]
   have hshift :
-      ψ ∈ completedDiagonalDomain
+      ψ ∈ Common.completedDiagonalDomain
         (fun n => freeHamiltonianWeight ε n + (ε i : ℂ)) :=
     mem_completedDiagonalDomain_add_const (freeHamiltonianWeight ε) (ε i : ℂ) hψ
   let x :
-      (completedDiagonalOperator
+      (Common.completedDiagonalOperator
         (fun n => freeHamiltonianWeight ε n + (ε i : ℂ))).domain := ⟨ψ, hshift⟩
   have hout := lp.memℓp
     (completedToggle i
-      (completedDiagonalOperator
+      (Common.completedDiagonalOperator
         (fun n => freeHamiltonianWeight ε n + (ε i : ℂ)) x))
   exact hout.mono' fun n => by
     by_cases h : i ∈ n
     · rw [completedCreate_apply, if_pos h, completedToggle_apply,
-        completedDiagonalOperator_apply, freeHamiltonianWeight_toggle_of_mem ε h]
+        Common.completedDiagonalOperator_apply, freeHamiltonianWeight_toggle_of_mem ε h]
       simpa [x, norm_fermionPhase]
     · simp only [completedCreate_apply, if_neg h, mul_zero, norm_zero]
       exact norm_nonneg _
@@ -97,26 +97,26 @@ theorem completedAnnihilate_mem_completedFreeHamiltonianDomain
     (ε : Mode → ℝ) (i : Mode) {ψ : CompletedFockSpace Mode}
     (hψ : ψ ∈ completedFreeHamiltonianDomain ε) :
     completedAnnihilate i ψ ∈ completedFreeHamiltonianDomain ε := by
-  change ψ ∈ completedDiagonalDomain (freeHamiltonianWeight ε) at hψ
-  change completedAnnihilate i ψ ∈ completedDiagonalDomain (freeHamiltonianWeight ε)
-  rw [mem_completedDiagonalDomain_iff]
+  change ψ ∈ Common.completedDiagonalDomain (freeHamiltonianWeight ε) at hψ
+  change completedAnnihilate i ψ ∈ Common.completedDiagonalDomain (freeHamiltonianWeight ε)
+  rw [Common.mem_completedDiagonalDomain_iff]
   have hshift :
-      ψ ∈ completedDiagonalDomain
+      ψ ∈ Common.completedDiagonalDomain
         (fun n => freeHamiltonianWeight ε n + (-(ε i : ℂ))) :=
     mem_completedDiagonalDomain_add_const (freeHamiltonianWeight ε) (-(ε i : ℂ)) hψ
   let x :
-      (completedDiagonalOperator
+      (Common.completedDiagonalOperator
         (fun n => freeHamiltonianWeight ε n + (-(ε i : ℂ)))).domain := ⟨ψ, hshift⟩
   have hout := lp.memℓp
     (completedToggle i
-      (completedDiagonalOperator
+      (Common.completedDiagonalOperator
         (fun n => freeHamiltonianWeight ε n + (-(ε i : ℂ))) x))
   exact hout.mono' fun n => by
     by_cases h : i ∈ n
     · simp only [completedAnnihilate_apply, if_pos h, mul_zero, norm_zero]
       exact norm_nonneg _
     · rw [completedAnnihilate_apply, if_neg h, completedToggle_apply,
-        completedDiagonalOperator_apply]
+        Common.completedDiagonalOperator_apply]
       have hE := freeHamiltonianWeight_toggle_of_not_mem ε h
       rw [hE]
       simpa [x, norm_fermionPhase]

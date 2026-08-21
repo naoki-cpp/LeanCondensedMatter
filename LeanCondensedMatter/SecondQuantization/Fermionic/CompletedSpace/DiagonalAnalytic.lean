@@ -7,12 +7,14 @@ set_option linter.style.header false
 # Analytic properties of completed fermionic diagonal operators
 
 This file develops analytic properties of the maximal weighted diagonal operators defined in
-`Diagonal.lean`. The definition layer stays independent of adjoints and closed-operator theory;
-this file begins that later analytic layer.
+`Common.CompletedSpace.Diagonal`. The definition layer stays independent of adjoints and
+closed-operator theory; this file begins that later analytic layer.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
+
+open Common
 
 noncomputable section
 
