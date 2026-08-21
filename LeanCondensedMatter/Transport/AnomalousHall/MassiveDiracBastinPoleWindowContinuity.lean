@@ -85,10 +85,12 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap
   have hadvSq := hadv.mul hadv
   have hxy := hretSq.mul
     (continuousAt_const : ContinuousAt
-      (fun _ : ℝ × ℝ => bastinXYBandBlockTrace (oppositeBand band) band e v m px py) p)
+      (fun _ : ℝ × ℝ =>
+        bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py) p)
   have hyx := hadvSq.mul
     (continuousAt_const : ContinuousAt
-      (fun _ : ℝ × ℝ => bastinYXBandBlockTrace (oppositeBand band) band e v m px py) p)
+      (fun _ : ℝ × ℝ =>
+        bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py) p)
   unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
   dsimp
   simpa [pow_two] using hxy.sub hyx
