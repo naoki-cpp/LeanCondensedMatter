@@ -70,7 +70,8 @@ theorem matrixCoeff_freeGibbs_interactionPicture_self
         ((imaginaryTimeEvolveFree ε (-β)).comp (interactionPicture ε V σ)) n n =
       Common.matrixCoeff ((imaginaryTimeEvolveFree ε (-β)).comp V) n n := by
   rw [matrixCoeff_imaginaryTimeEvolveFree_comp,
-    matrixCoeff_imaginaryTimeEvolveFree_comp, matrixCoeff_interactionPicture]
+    matrixCoeff_imaginaryTimeEvolveFree_comp, interactionPicture,
+    Common.matrixCoeff_interactionPicture]
   simp
 
 omit [Fintype Mode] in
