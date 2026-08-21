@@ -22,60 +22,6 @@ variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteS
 
 variable (system : BoundedFreeSystem H)
 
-@[simp]
-theorem heisenbergEvolution_add
-    (A₁ A₂ : H →L[ℂ] H) (t : ℝ) :
-    heisenbergEvolution system (A₁ + A₂) t =
-      heisenbergEvolution system A₁ t + heisenbergEvolution system A₂ t := by
-  simp [heisenbergEvolution, mul_add, add_mul]
-
-@[simp]
-theorem heisenbergEvolution_smul
-    (c : ℂ) (A : H →L[ℂ] H) (t : ℝ) :
-    heisenbergEvolution system (c • A) t =
-      c • heisenbergEvolution system A t := by
-  simp [heisenbergEvolution]
-
-@[simp]
-theorem commutatorSusceptibility_add_left
-    (expectation : NormalizedExpectation H)
-    (A₁ A₂ B : H →L[ℂ] H) (t s : ℝ) :
-    commutatorSusceptibility system expectation (A₁ + A₂) B t s =
-      commutatorSusceptibility system expectation A₁ B t s +
-        commutatorSusceptibility system expectation A₂ B t s := by
-  simp [commutatorSusceptibility, mul_add, add_mul]
-  ring
-
-@[simp]
-theorem commutatorSusceptibility_smul_left
-    (expectation : NormalizedExpectation H)
-    (c : ℂ) (A B : H →L[ℂ] H) (t s : ℝ) :
-    commutatorSusceptibility system expectation (c • A) B t s =
-      c • commutatorSusceptibility system expectation A B t s := by
-  simp [commutatorSusceptibility, smul_eq_mul]
-  ring
-
-@[simp]
-theorem retardedSusceptibility_add_left
-    (expectation : NormalizedExpectation H)
-    (A₁ A₂ B : H →L[ℂ] H) (t s : ℝ) :
-    retardedSusceptibility system expectation (A₁ + A₂) B t s =
-      retardedSusceptibility system expectation A₁ B t s +
-        retardedSusceptibility system expectation A₂ B t s := by
-  by_cases h : s ≤ t
-  · simp [retardedSusceptibility, h]
-  · simp [retardedSusceptibility, h]
-
-@[simp]
-theorem retardedSusceptibility_smul_left
-    (expectation : NormalizedExpectation H)
-    (c : ℂ) (A B : H →L[ℂ] H) (t s : ℝ) :
-    retardedSusceptibility system expectation (c • A) B t s =
-      c • retardedSusceptibility system expectation A B t s := by
-  by_cases h : s ≤ t
-  · simp [retardedSusceptibility, h]
-  · simp [retardedSusceptibility, h]
-
 /-- With source and times fixed, retarded susceptibility is a complex-linear functional of the
 measured observable. -/
 noncomputable def retardedSusceptibilityMeasuredLinearMap
@@ -84,27 +30,18 @@ noncomputable def retardedSusceptibilityMeasuredLinearMap
     (H →L[ℂ] H) →ₗ[ℂ] ℂ where
   toFun := fun measured =>
     retardedSusceptibility system expectation measured source t s
-  map_add' := fun A₁ A₂ =>
-    retardedSusceptibility_add_left system expectation A₁ A₂ source t s
-  map_smul' := fun c A =>
-    retardedSusceptibility_smul_left system expectation c A source t s
-
-@[simp]
-theorem retardedSusceptibilityMeasuredLinearMap_apply
-    (expectation : NormalizedExpectation H)
-    (source measured : H →L[ℂ] H) (t s : ℝ) :
-    retardedSusceptibilityMeasuredLinearMap system expectation source t s measured =
-      retardedSusceptibility system expectation measured source t s :=
-  rfl
-
-/-- A zero measured observable has zero retarded response. -/
-@[simp]
-theorem retardedSusceptibility_zero_left
-    (expectation : NormalizedExpectation H)
-    (source : H →L[ℂ] H) (t s : ℝ) :
-    retardedSusceptibility system expectation (0 : H →L[ℂ] H) source t s = 0 := by
-  simpa using
-    (map_zero (retardedSusceptibilityMeasuredLinearMap system expectation source t s))
+  map_add' := fun A₁ A₂ => by
+    by_cases h : s ≤ t
+    · simp [retardedSusceptibility, commutatorSusceptibility, heisenbergEvolution,
+        h, mul_add, add_mul]
+      ring
+    · simp [retardedSusceptibility, h]
+  map_smul' := fun c A => by
+    by_cases h : s ≤ t
+    · simp [retardedSusceptibility, commutatorSusceptibility, heisenbergEvolution,
+        h, smul_eq_mul]
+      ring
+    · simp [retardedSusceptibility, h]
 
 end
 end LinearResponse
