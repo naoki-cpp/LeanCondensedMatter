@@ -1,14 +1,15 @@
 import LeanCondensedMatter.Transport.FiniteDisorderBorn
+import LeanCondensedMatter.Transport.FiniteDisorderResolvent
 
 set_option linter.style.header false
 
 /-!
-# Advanced finite-disorder Born self-energy
+# Advanced finite-disorder Born self-energy and closure boundary
 
-This module mirrors the retarded weak-scattering boundary with advanced Green operators. It proves
-an exact right-oriented Dyson identity, iterates it once with the complete configuration Green
-operator retained in the remainder, and separates the advanced Born approximation from its exact
-closure error.
+Exact retarded/advanced Green operators and configuration-wise Dyson identities are owned by
+`FiniteDisorderResolvent`. This module consumes those exact identities together with the centered
+finite-disorder moment data from `FiniteDisorderBorn` and defines the advanced averaged remainder,
+Born self-energy, resolvent approximation, and explicit closure error.
 
 The advanced Born self-energy uses the same centered finite-disorder covariance action as the
 retarded self-energy. No self-consistency, vertex resummation, Ward identity, trace-per-volume
@@ -27,89 +28,6 @@ variable [Fintype Ω]
 namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
-
-/-- Exact clean advanced Green operator used in the Born expansion. -/
-noncomputable def freeAdvancedGreen
-    (energy broadening : ℝ) : H →L[ℂ] H :=
-  advancedResolvent ensemble.baseHamiltonian.1 energy broadening
-
-/-- Exact advanced Green operator of one disordered configuration. -/
-noncomputable def configurationAdvancedGreen
-    (energy broadening : ℝ) (ω : Ω) : H →L[ℂ] H :=
-  advancedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening
-
-/-- The clean advanced Green operator is the adjoint of the clean retarded Green operator. -/
-theorem star_freeRetardedGreen
-    (energy broadening : ℝ) :
-    star (ensemble.freeRetardedGreen energy broadening) =
-      ensemble.freeAdvancedGreen energy broadening := by
-  unfold freeRetardedGreen freeAdvancedGreen
-  exact star_retardedResolvent
-    ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2 energy broadening
-
-/-- The configuration advanced Green operator is the adjoint of the corresponding retarded Green
-operator. -/
-theorem star_configurationRetardedGreen
-    (energy broadening : ℝ) (ω : Ω) :
-    star (ensemble.configurationRetardedGreen energy broadening ω) =
-      ensemble.configurationAdvancedGreen energy broadening ω := by
-  unfold configurationRetardedGreen configurationAdvancedGreen
-  exact star_retardedResolvent
-    (ensemble.configurationHamiltonian ω).1
-    (ensemble.configurationHamiltonian ω).2 energy broadening
-
-/-- Exact right-oriented advanced resolvent identity
-`Gωᴬ = G₀ᴬ + Gωᴬ Vω G₀ᴬ` at positive broadening. -/
-theorem configurationAdvancedGreen_eq_free_add_dyson
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) (ω : Ω) :
-    ensemble.configurationAdvancedGreen energy broadening ω =
-      ensemble.freeAdvancedGreen energy broadening +
-        ensemble.configurationAdvancedGreen energy broadening ω *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.freeAdvancedGreen energy broadening := by
-  have hretarded := congrArg star
-    (configurationRetardedGreen_eq_free_add_dyson
-      ensemble energy broadening hbroadening ω)
-  simpa [star_add, star_mul, star_configurationRetardedGreen,
-    star_freeRetardedGreen, (ensemble.impurityPotential ω).2.star_eq, mul_assoc] using hretarded
-
-/-- Exact second-order advanced Dyson expansion with the full configuration Green operator retained
-in the remainder. This remains an identity rather than a Born closure. -/
-theorem configurationAdvancedGreen_eq_secondOrder_add_exactRemainder
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) (ω : Ω) :
-    ensemble.configurationAdvancedGreen energy broadening ω =
-      ensemble.freeAdvancedGreen energy broadening +
-        ensemble.freeAdvancedGreen energy broadening *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.freeAdvancedGreen energy broadening +
-        ensemble.configurationAdvancedGreen energy broadening ω *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.freeAdvancedGreen energy broadening *
-              (ensemble.impurityPotential ω).1 *
-                ensemble.freeAdvancedGreen energy broadening := by
-  have hdyson := configurationAdvancedGreen_eq_free_add_dyson
-    ensemble energy broadening hbroadening ω
-  calc
-    ensemble.configurationAdvancedGreen energy broadening ω =
-        ensemble.freeAdvancedGreen energy broadening +
-          ensemble.configurationAdvancedGreen energy broadening ω *
-            (ensemble.impurityPotential ω).1 *
-              ensemble.freeAdvancedGreen energy broadening := hdyson
-    _ = ensemble.freeAdvancedGreen energy broadening +
-          (ensemble.freeAdvancedGreen energy broadening +
-            ensemble.configurationAdvancedGreen energy broadening ω *
-              (ensemble.impurityPotential ω).1 *
-                ensemble.freeAdvancedGreen energy broadening) *
-            (ensemble.impurityPotential ω).1 *
-              ensemble.freeAdvancedGreen energy broadening := by
-      exact congrArg
-        (fun green : H →L[ℂ] H =>
-          ensemble.freeAdvancedGreen energy broadening +
-            green * (ensemble.impurityPotential ω).1 *
-              ensemble.freeAdvancedGreen energy broadening)
-        hdyson
-    _ = _ := by
-      noncomm_ring
 
 /-- The first-order advanced Dyson contribution vanishes exactly for centered disorder. -/
 theorem operatorAverage_firstOrderAdvancedTerm_eq_zero
