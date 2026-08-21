@@ -19,7 +19,7 @@ open QuantumTheory
 
 noncomputable section
 
-variable {Config : Type*} [Fintype Config]
+variable {Config : Type*} [Fintype Config] [Nonempty Config]
 
 /-- The canonical finite-configuration isometry intertwines the pure-point Gibbs density operator
 on completed Fock space with the same density operator on the finite Hilbert realization. -/
