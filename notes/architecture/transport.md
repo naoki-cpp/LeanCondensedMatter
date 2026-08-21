@@ -1,0 +1,91 @@
+# Transport ownership
+
+The transport stack is organized by mathematical ownership rather than by the first concrete
+consumer.
+
+```text
+QuantumTheory.LinearResponse
+        ↓
+QuantumTheory.Transport
+  finite Kubo–Bastin / Středa / resolvents / disorder
+        ↓
+SecondQuantization.Fermionic.Transport
+  finite-Fock, lattice, directional-current, occupation specializations
+        ↓
+concrete transport models and benchmarks
+```
+
+Concrete model modules may consume the neutral `Transport` layer directly when no fermionic
+realization is required. They must not become owners of reusable Kubo–Bastin, Středa, resolvent, or
+disorder machinery.
+
+## Generic transport boundary
+
+Files under `LeanCondensedMatter/Transport/` are statistics-neutral transport theory. They must not
+import `LeanCondensedMatter.SecondQuantization`.
+
+The canonical generic owners include:
+
+- `FiniteKuboBastin` for finite measured/source Kubo–Bastin response;
+- `StredaOccupation`, `StredaCommonKernel`, `StredaCommonEnergyBridge`, and
+  `GeneralizedStaticStreda` for the regularized Středa chain;
+- `FiniteDisorder` for exact finite ensembles and exact scalar/operator averages;
+- `FiniteDisorderResolvent` for exact clean/configuration Green operators and configuration-wise
+  Dyson identities;
+- `FiniteDisorderBorn` and `FiniteDisorderAdvancedBorn` for first-Born approximation boundaries and
+  explicit closure errors;
+- `FiniteDisorderSCBA` for supplied self-consistent Born data and Ward-consistency identities.
+
+Finite dimensionality belongs only at theorem boundaries that actually require an ordinary trace or
+a finite spectral sum.
+
+## Fermionic transport boundary
+
+`SecondQuantization/Fermionic/Transport` owns genuinely fermionic or lattice realizations: finite
+Fock carriers, directional charge current, Peierls contact terms, Fermi occupation/state data, and
+finite-volume conductivity specializations.
+
+A fermionic module may wrap a generic theorem when the wrapper names a real physical specialization,
+but it should import and specialize the canonical neutral owner rather than re-prove or re-own the
+statistics-independent theorem.
+
+In particular:
+
+```text
+KuboBastinSpectral  → Transport.FiniteKuboBastin
+StredaOccupation    → Transport.StredaOccupation
+StredaCommonKernel  → Transport.StredaCommonKernel
+StaticKuboBastinResponse → Transport.GeneralizedStaticStreda
+```
+
+## Disorder boundary
+
+The exact/approximate split is intentionally explicit:
+
+```text
+FiniteDisorder
+  exact ensemble + exact averages
+        ↓
+FiniteDisorderResolvent
+  exact Gᴿ/Gᴬ + exact configuration Dyson identities
+        ↓
+FiniteDisorderBorn / FiniteDisorderAdvancedBorn
+  moments + averaged remainder + Born approximation + closure error
+```
+
+SCBA is not a child of the first-Born closure layer:
+
+```text
+FiniteDisorder + Resolvent
+        ↓
+FiniteDisorderSCBA
+```
+
+`FiniteDisorderMomentData` and `FiniteCovarianceSuperoperator` are deliberately separate. The former
+stores centered exact second-moment data used by first Born; the latter is a bounded complex-linear,
+adjoint-compatible covariance superoperator used by SCBA. Do not merge them merely for naming
+symmetry.
+
+Model-specific scalar disorder, Pauli decompositions, scattering rates, NCA vertices, and crossed
+diagrams belong downstream and must preserve the distinction between exact finite averages and
+weak-disorder approximations.

@@ -26,6 +26,7 @@ jobs:
           python3 scripts/check_root_public_umbrellas.py
           python3 scripts/check_quantum_theory_architecture.py
           python3 scripts/check_generalized_current_architecture.py
+          python3 scripts/check_transport_architecture.py
           python3 scripts/check_single_particle_architecture.py
           python3 scripts/check_quantum_physical_scalar_boundary.py
           python3 scripts/check_quantum_pure_state_dynamics.py
