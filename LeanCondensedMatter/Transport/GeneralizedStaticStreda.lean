@@ -92,6 +92,7 @@ theorem adiabaticFrequencyDomainResponseChannel_zero_frequency_eq_staticKuboBast
     adiabaticFrequencyDomainResponseChannel_eq_finiteDimensionalKuboBastin
       system data channel 0 eta heta
 
+omit [FiniteDimensional ℂ H] in
 /-- Once the static two-vertex response is equipped with an explicit regularized Středa energy
 representation, the complete generalized response is its surface-plus-sea decomposition plus the
 unchanged observable-variation expectation. -/
