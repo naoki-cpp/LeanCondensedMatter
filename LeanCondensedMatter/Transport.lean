@@ -11,6 +11,7 @@ import LeanCondensedMatter.Transport.StredaOccupation
 import LeanCondensedMatter.Transport.StredaCommonKernel
 import LeanCondensedMatter.Transport.StredaCommonEnergyBridge
 import LeanCondensedMatter.Transport.StredaIntegration
+import LeanCondensedMatter.Transport.GeneralizedStaticStreda
 import LeanCondensedMatter.Transport.StredaResolventSpectral
 import LeanCondensedMatter.Transport.StredaTraceSpectral
 import LeanCondensedMatter.Transport.StredaTraceRepresentation
@@ -27,9 +28,9 @@ set_option linter.style.header false
 # Transport
 
 Public entry point for generic transport infrastructure: finite-volume normalization, response and
-resolvent formulations, finite pure-point, occupation-resolved, and common-energy Kubo–Bastin,
-ordinary-trace/common-energy bridges, Středa integration/trace theory, occupation interpolation,
-finite disorder, and concrete anomalous-Hall benchmarks.
+resolvent formulations, finite pure-point, occupation-resolved, common-energy, and static
+Kubo–Bastin/Středa bridges, Středa integration/trace theory, occupation interpolation, finite
+disorder, and concrete anomalous-Hall benchmarks.
 
 Model-specific fermionic transport adapters remain downstream in `SecondQuantization.Fermionic`.
 Implementation modules should import the narrow transport leaves they use rather than this umbrella.

@@ -1,4 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.Bounded
 import LeanCondensedMatter.Transport.FiniteKuboBastin
 import LeanCondensedMatter.Transport.StredaIntegration
 
@@ -22,54 +21,55 @@ conceptually distinct pieces:
 vertex response(A₀,B) + ⟨A₁⟩.
 ```
 
-Only the two-vertex Bastin piece is fed into `RegularizedStredaRepresentation`.  The explicit
-observable-variation/contact expectation remains outside the surface/sea integration-by-parts
-split.  This avoids silently absorbing a source-dependent measured-observable variation into a
-traced two-vertex energy kernel.
+Only the two-vertex Bastin piece is fed into `RegularizedStredaRepresentation`. The explicit
+observable-variation expectation remains outside the surface/sea integration-by-parts split.
 
-No equality with a concrete traced Bastin energy integral is asserted here.  A downstream consumer
+This boundary is statistics-independent and generic in the finite-dimensional Hilbert-space
+carrier. Fermionic current constructions remain downstream specializations.
+
+No equality with a concrete traced Bastin energy integral is asserted here. A downstream consumer
 must supply a `RegularizedStredaRepresentation` for the static vertex response, including all
 analytic and energy-representation hypotheses required by the Středa layer.
 -/
 
-namespace SecondQuantization
-namespace Fermionic
+namespace QuantumTheory
 namespace Transport
 
-open Lattice
-open QuantumTheory QuantumTheory.LinearResponse QuantumTheory.Transport
+open LinearResponse
 
 noncomputable section
 
-variable {Site ι : Type*}
-variable [Fintype Site] [Fintype ι]
+variable {H ι : Type*}
+variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
+variable [FiniteDimensional ℂ H] [Fintype ι]
 
 /-- Zero-frequency ordinary-trace response of the measured/source vertices only, before adding the
 explicit observable-variation expectation. -/
 noncomputable def finiteDimensionalStaticKuboBastinChannelVertexResponse
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (system : BoundedFreeSystem H)
     (data : PurePointLehmannData system ι)
-    (channel : ResponseChannel (FiniteLatticeHilbertFock Site))
+    (channel : ResponseChannel H)
     (eta : ℝ) : ℂ :=
-  LinearMap.trace ℂ (FiniteLatticeHilbertFock Site)
+  LinearMap.trace ℂ H
     (finiteKuboBastinVertexTraceCarrier
       system data channel.measured channel.source 0 eta)
 
-/-- Zero-frequency specialization of the complete generalized Kubo–Bastin response.  The switching
+/-- Zero-frequency specialization of the complete generalized Kubo–Bastin response. The switching
 rate stays finite and the explicit observable-variation expectation is retained. -/
 noncomputable def finiteDimensionalStaticKuboBastinChannelResponse
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (system : BoundedFreeSystem H)
     (data : PurePointLehmannData system ι)
-    (channel : ResponseChannel (FiniteLatticeHilbertFock Site))
+    (channel : ResponseChannel H)
     (eta : ℝ) : ℂ :=
   finiteDimensionalKuboBastinChannelResponse system data channel 0 eta
 
+omit [FiniteDimensional ℂ H] in
 /-- The static generalized response is exactly the two-vertex ordinary trace plus the explicit
-observable-variation/contact expectation. -/
+observable-variation expectation. -/
 theorem finiteDimensionalStaticKuboBastinChannelResponse_eq_vertex_add_observableVariation
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (system : BoundedFreeSystem H)
     (data : PurePointLehmannData system ι)
-    (channel : ResponseChannel (FiniteLatticeHilbertFock Site))
+    (channel : ResponseChannel H)
     (eta : ℝ) :
     finiteDimensionalStaticKuboBastinChannelResponse system data channel eta =
       finiteDimensionalStaticKuboBastinChannelVertexResponse system data channel eta +
@@ -79,9 +79,9 @@ theorem finiteDimensionalStaticKuboBastinChannelResponse_eq_vertex_add_observabl
 /-- At positive switching rate, the zero-frequency causal response carried by the channel equals the
 named static generalized Kubo–Bastin response. -/
 theorem adiabaticFrequencyDomainResponseChannel_zero_frequency_eq_staticKuboBastin
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (system : BoundedFreeSystem H)
     (data : PurePointLehmannData system ι)
-    (channel : ResponseChannel (FiniteLatticeHilbertFock Site))
+    (channel : ResponseChannel H)
     (eta : ℝ) (heta : 0 < eta) :
     adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
           (purePointNormalizedExpectation system data)
@@ -92,13 +92,14 @@ theorem adiabaticFrequencyDomainResponseChannel_zero_frequency_eq_staticKuboBast
     adiabaticFrequencyDomainResponseChannel_eq_finiteDimensionalKuboBastin
       system data channel 0 eta heta
 
+omit [FiniteDimensional ℂ H] in
 /-- Once the static two-vertex response is equipped with an explicit regularized Středa energy
 representation, the complete generalized response is its surface-plus-sea decomposition plus the
-unchanged observable-variation/contact expectation. -/
+unchanged observable-variation expectation. -/
 theorem finiteDimensionalStaticKuboBastinChannelResponse_eq_surface_add_sea_add_observableVariation
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
+    (system : BoundedFreeSystem H)
     (data : PurePointLehmannData system ι)
-    (channel : ResponseChannel (FiniteLatticeHilbertFock Site))
+    (channel : ResponseChannel H)
     (eta : ℝ)
     (representation : RegularizedStredaRepresentation
       (finiteDimensionalStaticKuboBastinChannelVertexResponse system data channel eta)) :
@@ -114,5 +115,4 @@ theorem finiteDimensionalStaticKuboBastinChannelResponse_eq_surface_add_sea_add_
 
 end
 end Transport
-end Fermionic
-end SecondQuantization
+end QuantumTheory
