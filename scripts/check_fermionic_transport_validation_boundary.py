@@ -12,7 +12,7 @@ TRANSPORT = FERMIONIC / "Transport"
 VALIDATION = FERMIONIC / "Validation"
 
 TRANSPORT_NAMES = (
-    "BoundedCurrentResponse",
+    "BoundedOneBodyResponse",
     "ConductivityNormalization",
     "FrequencyResponse",
     "GeometricCurrentResponse",

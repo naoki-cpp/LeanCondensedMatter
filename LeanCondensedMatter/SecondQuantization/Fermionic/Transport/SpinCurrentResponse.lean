@@ -62,24 +62,6 @@ noncomputable def boundedSpinZCurrentBondSourceRetardedSusceptibility
     velocity (spinZOneBody spinScale)
     (boundedBondCurrent ℏ q K u v) t s
 
-/-- The mixed spin/electric response is exactly the generic measured-current/source Kubo adapter
-specialized to the concrete bounded spin-z current and electric bond source. -/
-theorem boundedSpinZCurrentBondSourceRetardedSusceptibility_eq_generic
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock (SpinfulSite Site)))
-    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
-      (FiniteLatticeHilbertFock (SpinfulSite Site)))
-    (velocity : LatticeState (SpinfulSite Site) →ₗ[ℂ] LatticeState (SpinfulSite Site))
-    (spinScale ℏ q : ℂ)
-    (K : LocallyFiniteHopping (SpinfulSite Site))
-    (u v : SpinfulSite Site) (t s : ℝ) :
-    boundedSpinZCurrentBondSourceRetardedSusceptibility system expectation
-        velocity spinScale ℏ q K u v t s =
-      boundedMeasuredCurrentRetardedSusceptibility system expectation
-        (boundedSpinZCurrent velocity spinScale)
-        (boundedBondCurrent ℏ q K u v) t s := by
-  rfl
-
 end
 end Transport
 end Fermionic

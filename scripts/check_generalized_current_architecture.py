@@ -41,8 +41,8 @@ SINGLE_PARTICLE_SPIN = (
 FERMIONIC_FIELD_BRIDGE = (
     LEAN / "SecondQuantization" / "Fermionic" / "Field" / "GeneralizedQuantity.lean"
 )
-BOUNDED_RESPONSE = (
-    LEAN / "SecondQuantization" / "Fermionic" / "Transport" / "BoundedCurrentResponse.lean"
+BOUNDED_ONE_BODY_RESPONSE = (
+    LEAN / "SecondQuantization" / "Fermionic" / "Transport" / "BoundedOneBodyResponse.lean"
 )
 CONVENTIONAL_RESPONSE = (
     LEAN / "SecondQuantization" / "Fermionic" / "Transport" / "ConventionalCurrentResponse.lean"
@@ -62,6 +62,7 @@ OLD_CURRENT_OWNERS = (
     LEAN / "QuantumTheory" / "ConservationLaw" / "ConventionalCurrent.lean",
     LEAN / "QuantumTheory" / "ConservationLaw" / "SchwartzCurrent1D.lean",
     LEAN / "QuantumTheory" / "ConservationLaw" / "SchwartzSpinCurrent1D.lean",
+    LEAN / "SecondQuantization" / "Fermionic" / "Transport" / "BoundedCurrentResponse.lean",
 )
 
 IMPORT_RE = re.compile(r"^\s*import\s+([^\s]+)", re.MULTILINE)
@@ -114,7 +115,7 @@ def main() -> int:
         SINGLE_PARTICLE_SCHWARTZ,
         SINGLE_PARTICLE_SPIN,
         FERMIONIC_FIELD_BRIDGE,
-        BOUNDED_RESPONSE,
+        BOUNDED_ONE_BODY_RESPONSE,
         CONVENTIONAL_RESPONSE,
         QUANTUM_UMBRELLA,
         FIELD_UMBRELLA,
@@ -312,12 +313,12 @@ def main() -> int:
             f"{relative(FERMIONIC_FIELD_BRIDGE)} must not regain concrete current-representation ownership"
         )
 
-    # Generic bounded response remains independent of conventional-current machinery. The
-    # conventional adapter needs only the pure symmetrized-product algebra.
-    for imported in imports(BOUNDED_RESPONSE):
+    # Generic bounded one-body response remains independent of conventional-current machinery. The
+    # conventional adapter needs only the pure symmetrized-product algebra plus that neutral bridge.
+    for imported in imports(BOUNDED_ONE_BODY_RESPONSE):
         if "ConventionalCurrent" in imported:
             errors.append(
-                f"{relative(BOUNDED_RESPONSE)} must not import conventional-current machinery: `{imported}`"
+                f"{relative(BOUNDED_ONE_BODY_RESPONSE)} must not import conventional-current machinery: `{imported}`"
             )
     require_import(
         errors,
@@ -327,7 +328,7 @@ def main() -> int:
     require_import(
         errors,
         CONVENTIONAL_RESPONSE,
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedCurrentResponse",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse",
     )
 
     # The QuantumTheory umbrella exposes only the abstract Heisenberg owner.
@@ -363,7 +364,7 @@ def main() -> int:
     require_import(
         errors,
         TRANSPORT_UMBRELLA,
-        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedCurrentResponse",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse",
     )
     require_import(
         errors,
