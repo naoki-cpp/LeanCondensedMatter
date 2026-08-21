@@ -41,11 +41,11 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero_im_eq_neg_chargeSq_be
     rw [← Complex.ofReal_inv, ← Complex.ofReal_pow]
   calc
     (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-          bastinXYBandBlockTrace (oppositeBand band) band e v m px py -
+          bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py -
         ((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-          bastinYXBandBlockTrace (oppositeBand band) band e v m px py).im =
-        (bastinXYBandBlockTrace (oppositeBand band) band e v m px py -
-            bastinYXBandBlockTrace (oppositeBand band) band e v m px py).im /
+          bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py).im =
+        (bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py -
+            bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py).im /
           interbandEnergyGap band v m px py ^ 2 := by
       rw [← mul_sub, hcoeff]
       simp only [Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im, zero_mul,
