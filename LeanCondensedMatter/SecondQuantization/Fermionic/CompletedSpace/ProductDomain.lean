@@ -12,9 +12,9 @@ operators are only formed after proving that the ladder operators preserve its m
 `ℓ²` domain.
 
 For one fermionic mode `i`, creation and annihilation shift the occupation energy by the finite
-scalar `ε i`.  The key analytic observation is therefore that adding a constant to a diagonal
-weight does not shrink its domain.  Combining this with the occupation toggle gives domain
-invariance of the free Hamiltonian under both bounded ladder operators.
+scalar `ε i`.  The generic stability of weighted diagonal domains under a finite scalar shift is
+owned by `Common.CompletedSpace.Diagonal`; this file combines it with the occupation toggle to prove
+domain invariance of the free Hamiltonian under both bounded ladder operators.
 -/
 
 namespace SecondQuantization
@@ -25,26 +25,6 @@ open scoped ENNReal
 noncomputable section
 
 variable {Mode : Type*} [LinearOrder Mode]
-
-omit [LinearOrder Mode] in
-/-- Membership in a diagonal weighted `ℓ²` domain is stable under adding a constant to the weight.
-The proof packages the shifted weighted coordinates as the sum of the original diagonal image and
-a scalar multiple of the original `ℓ²` vector. -/
-theorem mem_completedDiagonalDomain_add_const
-    (w : Occupation Mode → ℂ) (c : ℂ) {ψ : CompletedFockSpace Mode}
-    (hψ : ψ ∈ Common.completedDiagonalDomain w) :
-    ψ ∈ Common.completedDiagonalDomain (fun n => w n + c) := by
-  rw [Common.mem_completedDiagonalDomain_iff]
-  let x : (Common.completedDiagonalOperator w).domain := ⟨ψ, hψ⟩
-  have hout := lp.memℓp (Common.completedDiagonalOperator w x + c • ψ)
-  have hfun :
-      (fun n : Occupation Mode => (w n + c) * ψ n) =
-        (fun n : Occupation Mode => (Common.completedDiagonalOperator w x + c • ψ) n) := by
-    funext n
-    change (w n + c) * ψ n = w n * ψ n + c * ψ n
-    ring
-  rw [hfun]
-  exact hout
 
 /-- Removing an occupied mode lowers the free occupation energy by exactly that one-particle
 energy. -/
@@ -76,7 +56,8 @@ theorem completedCreate_mem_completedFreeHamiltonianDomain
   have hshift :
       ψ ∈ Common.completedDiagonalDomain
         (fun n => freeHamiltonianWeight ε n + (ε i : ℂ)) :=
-    mem_completedDiagonalDomain_add_const (freeHamiltonianWeight ε) (ε i : ℂ) hψ
+    Common.mem_completedDiagonalDomain_add_const
+      (freeHamiltonianWeight ε) (ε i : ℂ) hψ
   let x :
       (Common.completedDiagonalOperator
         (fun n => freeHamiltonianWeight ε n + (ε i : ℂ))).domain := ⟨ψ, hshift⟩
@@ -103,7 +84,8 @@ theorem completedAnnihilate_mem_completedFreeHamiltonianDomain
   have hshift :
       ψ ∈ Common.completedDiagonalDomain
         (fun n => freeHamiltonianWeight ε n + (-(ε i : ℂ))) :=
-    mem_completedDiagonalDomain_add_const (freeHamiltonianWeight ε) (-(ε i : ℂ)) hψ
+    Common.mem_completedDiagonalDomain_add_const
+      (freeHamiltonianWeight ε) (-(ε i : ℂ)) hψ
   let x :
       (Common.completedDiagonalOperator
         (fun n => freeHamiltonianWeight ε n + (-(ε i : ℂ)))).domain := ⟨ψ, hshift⟩
