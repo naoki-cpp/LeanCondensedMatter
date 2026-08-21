@@ -34,7 +34,13 @@ theorem targetCenteredStredaSurfaceSpectatorCurrentFactor_radial_eq
     projectorResolventCoefficient_advanced_targetOffset_oppositeBand,
     bastinXYBandBlockTrace_opposite_source_radial band e v m p hE,
     bastinYXBandBlockTrace_opposite_source_radial band e v m p hE]
-  fold radialInterbandCurrentAmplitude
+  change
+    (((((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) +
+          (broadening : ℂ) * Complex.I)⁻¹) *
+        radialInterbandCurrentAmplitude band e v m p -
+      ((((interbandEnergyGap band v m p 0 + offset : ℝ) : ℂ) -
+          (broadening : ℂ) * Complex.I)⁻¹) *
+        (-radialInterbandCurrentAmplitude band e v m p)) = _
   ring
 
 /-- At zero offset and broadening the radial surface spectator is twice the inverse interband gap
@@ -46,8 +52,11 @@ theorem targetCenteredStredaSurfaceSpectatorCurrentFactor_radial_zero
         radialInterbandCurrentAmplitude band e v m p := by
   rw [targetCenteredStredaSurfaceSpectatorCurrentFactor_radial_eq
     band e v m p 0 0 hE]
-  simp
-  ring_nf
+  change
+    (((((interbandEnergyGap band v m p 0 : ℝ) : ℂ))⁻¹ +
+        (((interbandEnergyGap band v m p 0 : ℝ) : ℂ))⁻¹) *
+      radialInterbandCurrentAmplitude band e v m p) = _
+  ring
 
 end
 
