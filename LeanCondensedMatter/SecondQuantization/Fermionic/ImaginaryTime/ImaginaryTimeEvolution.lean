@@ -21,6 +21,9 @@ operator-norm limit, but that is because no operator exponential is being constr
 diagonal definition is specific to a *diagonal* Hamiltonian; it does not extend to a general
 `H = H₀ + V` (that is exactly why the interaction picture and Dyson series are needed for anything
 beyond the free theory).
+
+Generic semigroup, inverse, and zero-time laws for the diagonal and Heisenberg evolutions are owned
+by `SecondQuantization.Common.ImaginaryTime.DiagonalEvolution` and consumed directly from there.
 -/
 
 namespace SecondQuantization
@@ -54,33 +57,6 @@ theorem imaginaryTimeEvolveFree_basisState (ε : Mode → ℝ) (τ : ℝ) (n : O
   push_cast [fermionEnergy]
   ring
 
-omit [LinearOrder Mode] in
-/-- **`e^{0·H₀} = id`.** -/
-@[simp]
-theorem imaginaryTimeEvolveFree_zero (ε : Mode → ℝ) :
-    imaginaryTimeEvolveFree ε 0 = LinearMap.id :=
-  Common.diagonalEvolution_zero (fermionEnergy ε)
-
-omit [LinearOrder Mode] in
-/-- **The one-parameter semigroup law**, `e^{τH₀} ∘ e^{τ'H₀} = e^{(τ+τ')H₀}`. -/
-theorem imaginaryTimeEvolveFree_add (ε : Mode → ℝ) (τ τ' : ℝ) :
-    (imaginaryTimeEvolveFree ε τ).comp (imaginaryTimeEvolveFree ε τ') =
-      imaginaryTimeEvolveFree ε (τ + τ') :=
-  Common.diagonalEvolution_add (fermionEnergy ε) τ τ'
-
-omit [LinearOrder Mode] in
-/-- **`e^{τH₀}` and `e^{-τH₀}` are mutually inverse.** -/
-@[simp]
-theorem imaginaryTimeEvolveFree_comp_neg (ε : Mode → ℝ) (τ : ℝ) :
-    (imaginaryTimeEvolveFree ε τ).comp (imaginaryTimeEvolveFree ε (-τ)) = LinearMap.id :=
-  Common.diagonalEvolution_comp_neg (fermionEnergy ε) τ
-
-omit [LinearOrder Mode] in
-@[simp]
-theorem imaginaryTimeEvolveFree_neg_comp (ε : Mode → ℝ) (τ : ℝ) :
-    (imaginaryTimeEvolveFree ε (-τ)).comp (imaginaryTimeEvolveFree ε τ) = LinearMap.id :=
-  Common.diagonalEvolution_neg_comp (fermionEnergy ε) τ
-
 /-! ## Algebraic Heisenberg-type evolution of a general operator -/
 
 /-- **The algebraic imaginary-time conjugation of an operator `A` under the free diagonal
@@ -91,14 +67,6 @@ noncomputable def imaginaryTimeEvolve (ε : Mode → ℝ) (τ : ℝ)
     (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
     OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.heisenbergEvolve (fermionEnergy ε) τ A
-
-omit [LinearOrder Mode] in
-/-- **At `τ = 0`, imaginary-time evolution is trivial**: `A(0) = A`. -/
-@[simp]
-theorem imaginaryTimeEvolve_zero (ε : Mode → ℝ)
-    (A : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    imaginaryTimeEvolve ε 0 A = A :=
-  Common.heisenbergEvolve_zero (fermionEnergy ε) A
 
 omit [LinearOrder Mode] in
 /-- Unfolds `imaginaryTimeEvolve` back down to `imaginaryTimeEvolveFree`, matching the shape most
