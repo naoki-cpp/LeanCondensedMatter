@@ -22,8 +22,7 @@ noncomputable section
 
 variable {Config : Type*}
 
-/-- The linear coordinate mask associated with a predicate on configurations. -/
-noncomputable def completedCoordinateProjectionLinear (P : Config → Prop) :
+private noncomputable def coordinateProjectionLinear (P : Config → Prop) :
     CompletedFock Config →ₗ[ℂ] CompletedFock Config := by
   classical
   exact
@@ -40,22 +39,16 @@ noncomputable def completedCoordinateProjectionLinear (P : Config → Prop) :
         funext c
         by_cases h : P c <;> simp [h] }
 
-@[simp]
-theorem completedCoordinateProjectionLinear_apply (P : Config → Prop)
-    (ψ : CompletedFock Config) (c : Config) :
-    completedCoordinateProjectionLinear P ψ c = if P c then ψ c else 0 := by
-  rfl
-
 /-- The bounded coordinate projection associated with a predicate on configurations. Its operator
 norm is at most one. -/
 noncomputable def completedCoordinateProjection (P : Config → Prop) :
     CompletedFock Config →L[ℂ] CompletedFock Config := by
   classical
-  exact (completedCoordinateProjectionLinear P).mkContinuous 1 fun ψ => by
+  exact (coordinateProjectionLinear P).mkContinuous 1 fun ψ => by
     simpa only [one_mul] using
       lp.norm_mono (p := (2 : ℝ≥0∞)) (by norm_num)
-        (x := completedCoordinateProjectionLinear P ψ) (y := ψ) (fun c => by
-          by_cases h : P c <;> simp [completedCoordinateProjectionLinear_apply, h])
+        (x := coordinateProjectionLinear P ψ) (y := ψ) (fun c => by
+          by_cases h : P c <;> simp [coordinateProjectionLinear, h])
 
 @[simp]
 theorem completedCoordinateProjection_apply (P : Config → Prop)
