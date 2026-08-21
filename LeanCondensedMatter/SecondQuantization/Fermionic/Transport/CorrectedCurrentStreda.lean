@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentKuboBastin
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.GeneralizedStaticStreda
+import LeanCondensedMatter.Transport.GeneralizedStaticStreda
 
 set_option linter.style.header false
 
