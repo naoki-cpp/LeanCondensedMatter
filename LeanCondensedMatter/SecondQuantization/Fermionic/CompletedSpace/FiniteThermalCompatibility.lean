@@ -34,8 +34,14 @@ theorem completedFiniteHilbertEquiv_intertwines_freeGibbsDensity
         (completedFiniteHilbertContinuousEquiv (Mode := Mode)).toContinuousLinearMap := by
   apply Common.continuousLinearMap_ext_completedBasis
   intro n
-  fold completedBasisState
   simp only [ContinuousLinearMap.comp_apply]
+  change
+    (completedFiniteHilbertContinuousEquiv (Mode := Mode))
+        ((finitePurePointGibbsDensityOperator completedOccupationHilbertBasis
+          (fermionEnergy ε) β).op (completedBasisState n)) =
+      (finitePurePointGibbsDensityOperator
+        (Common.finiteHilbertBasis (Config := Occupation Mode)) (fermionEnergy ε) β).op
+        (completedFiniteHilbertContinuousEquiv (Mode := Mode) (completedBasisState n))
   rw [← completedOccupationHilbertBasis_apply (Mode := Mode) n,
     finitePurePointGibbsDensityOperator_apply_basis, map_smul,
     completedOccupationHilbertBasis_apply]
