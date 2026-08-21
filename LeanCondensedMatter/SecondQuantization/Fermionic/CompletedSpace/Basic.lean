@@ -1,27 +1,18 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
-import Mathlib.Analysis.InnerProductSpace.l2Space
+import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Basic
 
 set_option linter.style.header false
 
 /-!
 # Completed fermionic Fock space
 
-This file starts the completed-space vertical slice tracked by issue #440. For a mode type `Mode`,
-the completed fermionic Fock space is the Hilbert space of square-summable complex amplitudes on
-finite occupation configurations:
+This file specializes the statistics-independent completed Fock infrastructure in
+`Common.CompletedSpace.Basic` to fermionic occupation configurations. The completed fermionic Fock
+space is `ℓ²(Fermionic.Occupation Mode, ℂ)`.
 
-```text
-ℓ²(Fermionic.Occupation Mode, ℂ) = ℓ²(Finset Mode, ℂ).
-```
-
-The existing algebraic Fock space consists of finitely supported amplitudes on the same occupation
-basis. Its coordinate-preserving map into the completed space is injective and has dense range.
-
-As the first completed operator, this file defines the single-mode occupation projection. It is a
-bounded continuous linear map of norm at most one and agrees with the existing algebraic number
-operator on the full algebraic core. Creation, annihilation, free Hamiltonians with unbounded
-one-particle energies, and their domains are deliberately not bundled as continuous linear maps
-here; those require separate boundedness or `LinearPMap` domain proofs.
+The generic Hilbert-space construction, canonical basis, and dense algebraic inclusion are owned by
+`Common`. This file keeps readable fermionic specialization names together with the genuinely
+fermionic single-mode occupation projection.
 -/
 
 namespace SecondQuantization
@@ -31,51 +22,51 @@ open scoped ENNReal
 
 noncomputable section
 
-/-- The completed fermionic Fock space: square-summable amplitudes on finite occupation states. -/
+/-- The completed fermionic Fock space: the generic completed Fock space on fermionic occupations. -/
 abbrev CompletedFockSpace (Mode : Type*) :=
-  lp (fun _ : Occupation Mode => ℂ) 2
+  Common.CompletedFock (Occupation Mode)
 
 variable {Mode : Type*}
 
 /-- The canonical occupation-basis vector in completed fermionic Fock space. -/
-noncomputable def completedBasisState (n : Occupation Mode) : CompletedFockSpace Mode := by
-  classical
-  exact lp.single 2 n 1
+noncomputable def completedBasisState (n : Occupation Mode) : CompletedFockSpace Mode :=
+  Common.completedBasisState n
 
 /-- The canonical occupation Hilbert basis of completed fermionic Fock space. -/
 noncomputable def completedOccupationHilbertBasis :
     HilbertBasis (Occupation Mode) ℂ (CompletedFockSpace Mode) :=
-  HilbertBasis.ofRepr (LinearIsometryEquiv.refl ℂ (CompletedFockSpace Mode))
+  Common.completedHilbertBasis
 
 @[simp]
 theorem completedOccupationHilbertBasis_apply (n : Occupation Mode) :
     completedOccupationHilbertBasis (Mode := Mode) n = completedBasisState n := by
-  classical
-  have h := (completedOccupationHilbertBasis (Mode := Mode)).repr_self n
-  simpa [completedOccupationHilbertBasis, completedBasisState] using h
+  simpa [completedOccupationHilbertBasis, completedBasisState] using
+    (Common.completedHilbertBasis_apply (Config := Occupation Mode) n)
 
 /-- Inner product with a completed occupation basis vector in the first slot evaluates the
 corresponding coordinate. -/
 @[simp]
 theorem inner_completedBasisState_left (n : Occupation Mode) (ψ : CompletedFockSpace Mode) :
     inner ℂ (completedBasisState n) ψ = ψ n := by
-  classical
-  unfold completedBasisState
-  simpa using lp.inner_single_left (𝕜 := ℂ) n (1 : ℂ) ψ
+  simpa [completedBasisState] using
+    (Common.inner_completedBasisState_left (Config := Occupation Mode) n ψ)
+
+@[simp]
+theorem completedBasisState_apply_self (n : Occupation Mode) :
+    completedBasisState n n = 1 := by
+  simpa [completedBasisState] using
+    (Common.completedBasisState_apply_self (Config := Occupation Mode) n)
+
+@[simp]
+theorem completedBasisState_apply_of_ne {m n : Occupation Mode} (h : m ≠ n) :
+    completedBasisState n m = 0 := by
+  simpa [completedBasisState] using
+    (Common.completedBasisState_apply_of_ne (Config := Occupation Mode) h)
 
 /-- The coordinate-preserving inclusion of algebraic fermionic Fock space into its `ℓ²` completion. -/
 noncomputable def algebraicToCompleted :
-    OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode where
-  toFun x :=
-    ⟨fun n => x n, (memℓp_zero x.hasFiniteSupport).of_exponent_ge zero_le⟩
-  map_add' x y := by
-    apply lp.ext
-    funext n
-    rfl
-  map_smul' c x := by
-    apply lp.ext
-    funext n
-    rfl
+    OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode :=
+  Common.algebraicToCompleted
 
 @[simp]
 theorem algebraicToCompleted_apply (x : OccupationFock Mode) (n : Occupation Mode) :
@@ -85,45 +76,22 @@ theorem algebraicToCompleted_apply (x : OccupationFock Mode) (n : Occupation Mod
 @[simp]
 theorem algebraicToCompleted_basisState (n : Occupation Mode) :
     algebraicToCompleted (basisState n) = completedBasisState n := by
-  classical
-  apply lp.ext
-  funext m
-  by_cases h : m = n
-  · subst m
-    simp [algebraicToCompleted, basisState, Common.basisState, completedBasisState,
-      Finsupp.single_apply, lp.single_apply]
-  · have hnm : n ≠ m := Ne.symm h
-    simp [algebraicToCompleted, basisState, Common.basisState, completedBasisState,
-      Finsupp.single_apply, lp.single_apply, h, hnm, Pi.single_eq_of_ne]
+  simpa [algebraicToCompleted, basisState, completedBasisState] using
+    (Common.algebraicToCompleted_basisState (Config := Occupation Mode) n)
 
 /-- The algebraic-to-completed inclusion loses no finite-support vector. -/
 theorem algebraicToCompleted_injective :
     Function.Injective
       (algebraicToCompleted : OccupationFock Mode → CompletedFockSpace Mode) := by
-  intro x y hxy
-  apply Finsupp.ext
-  intro n
-  exact congrArg (fun z : CompletedFockSpace Mode => z n) hxy
+  simpa [algebraicToCompleted] using
+    (Common.algebraicToCompleted_injective (Config := Occupation Mode))
 
 /-- Finite-support fermionic Fock vectors are dense in the completed `ℓ²` space. -/
 theorem algebraicToCompleted_denseRange :
     DenseRange
       (algebraicToCompleted : OccupationFock Mode → CompletedFockSpace Mode) := by
-  classical
-  intro ψ
-  refine mem_closure_of_tendsto (lp.hasSum_single (p := (2 : ℝ≥0∞)) (by norm_num) ψ) ?_
-  filter_upwards [] with s
-  refine ⟨s.sum (fun n => ψ n • basisState n), ?_⟩
-  rw [map_sum]
-  apply Finset.sum_congr rfl
-  intro n _hn
-  rw [map_smul, algebraicToCompleted_basisState]
-  apply lp.ext
-  funext m
-  by_cases h : m = n
-  · subst m
-    simp [completedBasisState, lp.single_apply]
-  · simp [completedBasisState, lp.single_apply, h, Pi.single_eq_of_ne]
+  simpa [algebraicToCompleted] using
+    (Common.algebraicToCompleted_denseRange (Config := Occupation Mode))
 
 variable [LinearOrder Mode]
 
@@ -175,7 +143,7 @@ theorem completedNumberOperator_basisState (i : Mode) (n : Occupation Mode) :
   apply lp.ext
   funext m
   by_cases hi : i ∈ n <;> by_cases hm : m = n <;>
-    simp [completedBasisState, completedNumberOperator_apply, hi, hm, lp.single_apply]
+    simp [completedBasisState, completedNumberOperator_apply, hi, hm]
 
 /-- The completed single-mode number operator agrees with the algebraic number operator on the
 whole finite-support core, not only on individual basis states. -/
