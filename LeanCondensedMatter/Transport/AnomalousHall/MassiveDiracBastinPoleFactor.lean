@@ -35,8 +35,8 @@ noncomputable def interbandSpectatorCurrentFactor
   let a := projectorResolventCoefficient
     (advancedSpectralParameter probeEnergy broadening)
     (oppositeBand band) v m px py
-  r ^ 2 * bastinXYBandBlockTrace (oppositeBand band) band e v m px py -
-    a ^ 2 * bastinYXBandBlockTrace (oppositeBand band) band e v m px py
+  r ^ 2 * bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py -
+    a ^ 2 * bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py
 
 /-- Exact factorization of one interband Bastin pair into its Lorentzian spectral pole and regular
 spectator/current factor. -/
@@ -67,9 +67,9 @@ theorem tendsto_interbandSpectatorCurrentFactor_at_bandPole
       (nhds 0)
       (nhds
         (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-            bastinXYBandBlockTrace (oppositeBand band) band e v m px py -
+            bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py -
           ((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-            bastinYXBandBlockTrace (oppositeBand band) band e v m px py)) := by
+            bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)) := by
   have hret := tendsto_retarded_oppositeBandCoefficient_sq_at_bandPole
     band v m px py hE
   have hadv := tendsto_advanced_oppositeBandCoefficient_sq_at_bandPole
@@ -80,34 +80,36 @@ theorem tendsto_interbandSpectatorCurrentFactor_at_bandPole
           projectorResolventCoefficient
               (retardedSpectralParameter (bandEnergy band v m px py) broadening)
               (oppositeBand band) v m px py ^ 2 *
-            bastinXYBandBlockTrace (oppositeBand band) band e v m px py)
+            bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py)
         (nhds 0)
         (nhds
           (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-            bastinXYBandBlockTrace (oppositeBand band) band e v m px py)) := by
+            bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py)) := by
     exact hret.mul
       (tendsto_const_nhds :
         Tendsto
-          (fun _ : ℝ => bastinXYBandBlockTrace (oppositeBand band) band e v m px py)
+          (fun _ : ℝ =>
+            bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py)
           (nhds 0)
-          (nhds (bastinXYBandBlockTrace (oppositeBand band) band e v m px py)))
+          (nhds (bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py)))
   have hyx :
       Tendsto
         (fun broadening : ℝ =>
           projectorResolventCoefficient
               (advancedSpectralParameter (bandEnergy band v m px py) broadening)
               (oppositeBand band) v m px py ^ 2 *
-            bastinYXBandBlockTrace (oppositeBand band) band e v m px py)
+            bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)
         (nhds 0)
         (nhds
           (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-            bastinYXBandBlockTrace (oppositeBand band) band e v m px py)) := by
+            bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)) := by
     exact hadv.mul
       (tendsto_const_nhds :
         Tendsto
-          (fun _ : ℝ => bastinYXBandBlockTrace (oppositeBand band) band e v m px py)
+          (fun _ : ℝ =>
+            bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)
           (nhds 0)
-          (nhds (bastinYXBandBlockTrace (oppositeBand band) band e v m px py)))
+          (nhds (bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)))
   simpa [interbandSpectatorCurrentFactor] using hxy.sub hyx
 
 end
