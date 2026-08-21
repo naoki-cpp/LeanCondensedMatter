@@ -32,7 +32,7 @@ theorem completedFiniteHilbertEquiv_intertwines_freeGibbsDensity
       (finitePurePointGibbsDensityOperator
         (Common.finiteHilbertBasis (Config := Occupation Mode)) (fermionEnergy ε) β).op.comp
         (completedFiniteHilbertContinuousEquiv (Mode := Mode)).toContinuousLinearMap := by
-  apply continuousLinearMap_ext_completedBasis_to_finite
+  apply Common.continuousLinearMap_ext_completedBasis
   intro n
   simp only [ContinuousLinearMap.comp_apply]
   rw [← completedOccupationHilbertBasis_apply (Mode := Mode) n,
