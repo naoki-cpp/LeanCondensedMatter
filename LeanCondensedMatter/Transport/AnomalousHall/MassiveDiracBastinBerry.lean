@@ -20,10 +20,10 @@ operator trace
 Tr(P_m j_μ P_n j_ν),  m = oppositeBand n,
 ```
 
-is transported back to the concrete `2 × 2` matrix trace. For the Hall component `(μ,ν) = (x,y)`,
-the current vertices are exactly `j_μ = -e v_μ`, so the trace is `e²` times the force-matrix
-numerator already used in `MassiveDiracBerryBridge`. Dividing its imaginary part by the squared
-interband gap reproduces `e² Ω_n`.
+is transported back to the concrete `2 × 2` matrix trace. For arbitrary in-plane directions, the
+current vertices are exactly `j_μ = -e v_μ`, so the trace is `e²` times the corresponding
+force-matrix numerator. For the Hall component `(μ,ν) = (x,y)`, dividing its imaginary part by the
+squared interband gap reproduces `e² Ω_n`.
 
 This is still a pointwise, finite-dimensional bridge. The next step is to expand the full Bastin
 projector expression into its diagonal/interband band blocks and then perform the occupation and
@@ -51,9 +51,9 @@ theorem interbandCurrentTrace_eq_canonicalChargeVelocityTrace
     interbandCurrentTrace μ ν band e v m px py =
       finiteDimensionalOperatorTrace
         (bandProjectorOperator (oppositeBand band) v m px py *
-          (((( -e : ℝ) : ℂ)) • velocityOperator μ v) *
+          ((((-e : ℝ) : ℂ)) • velocityOperator μ v) *
           bandProjectorOperator band v m px py *
-          (((( -e : ℝ) : ℂ)) • velocityOperator ν v)) := by
+          ((((-e : ℝ) : ℂ)) • velocityOperator ν v)) := by
   unfold interbandCurrentTrace
   rw [currentOperator_eq_charge_smul_velocityOperator,
     currentOperator_eq_charge_smul_velocityOperator]
@@ -72,32 +72,32 @@ theorem interbandCurrentTrace_eq_matrixTrace
       (bandProjector (oppositeBand band) v m px py * current μ e v *
         bandProjector band v m px py * current ν e v)
 
-/-- Replacing the `x-y` charge currents by `-e` times the corresponding velocities pulls out `e²`
-from the interband projector trace. -/
+/-- Replacing direction-indexed charge currents by `-e` times the corresponding velocities pulls
+out `e²` from the interband projector trace. -/
 theorem matrixInterbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator
-    (band : Band) (e v m px py : ℝ) :
+    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
     Matrix.trace
-        (bandProjector (oppositeBand band) v m px py * current .x e v *
-          bandProjector band v m px py * current .y e v) =
-      (((e ^ 2 : ℝ) : ℂ)) * forceMatrixTraceNumerator band v m px py := by
+        (bandProjector (oppositeBand band) v m px py * current μ e v *
+          bandProjector band v m px py * current ν e v) =
+      (((e ^ 2 : ℝ) : ℂ)) * forceMatrixTraceNumerator μ ν band v m px py := by
   simp [current, forceMatrixTraceNumerator]
   ring
 
-/-- Operator form of the same `e²` factorization for the Hall `(x,y)` component. -/
+/-- Operator form of the same direction-indexed `e²` factorization. -/
 theorem interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator
-    (band : Band) (e v m px py : ℝ) :
-    interbandCurrentTrace .x .y band e v m px py =
-      (((e ^ 2 : ℝ) : ℂ)) * forceMatrixTraceNumerator band v m px py := by
+    (μ ν : Direction2) (band : Band) (e v m px py : ℝ) :
+    interbandCurrentTrace μ ν band e v m px py =
+      (((e ^ 2 : ℝ) : ℂ)) * forceMatrixTraceNumerator μ ν band v m px py := by
   rw [interbandCurrentTrace_eq_matrixTrace]
   exact matrixInterbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator
-    band e v m px py
+    μ ν band e v m px py
 
 /-- Imaginary part of the physical-current interband Hall block. -/
 theorem interbandCurrentTrace_im
     (band : Band) (e v m px py : ℝ) :
     (interbandCurrentTrace .x .y band e v m px py).im =
-      e ^ 2 * (forceMatrixTraceNumerator band v m px py).im := by
-  rw [interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator]
+      e ^ 2 * (forceMatrixTraceNumerator .x .y band v m px py).im := by
+  rw [interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator .x .y]
   push_cast
   simp [Complex.mul_im, pow_two]
 
@@ -153,8 +153,8 @@ theorem regularizedBastinTraceIntegrand_eq_canonicalChargeVelocityVertices
         (currentOperator .x e v) (currentOperator .y e v) probeEnergy broadening =
       regularizedBastinTraceIntegrand
         (hamiltonianOperator v m px py)
-        (((( -e : ℝ) : ℂ)) • velocityOperator .x v)
-        (((( -e : ℝ) : ℂ)) • velocityOperator .y v) probeEnergy broadening := by
+        ((((-e : ℝ) : ℂ)) • velocityOperator .x v)
+        ((((-e : ℝ) : ℂ)) • velocityOperator .y v) probeEnergy broadening := by
   rw [currentOperator_eq_charge_smul_velocityOperator,
     currentOperator_eq_charge_smul_velocityOperator]
 

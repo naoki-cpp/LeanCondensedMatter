@@ -60,11 +60,11 @@ theorem radius_lt_abs_interbandEnergyGap_of_lt_two_mul_mass
   exact lt_of_lt_of_le hradius
     (two_mul_mass_le_abs_interbandEnergyGap band v m px py hm.le)
 
-/-- On the radial axis the gauge-independent interband force numerator is purely imaginary.
+/-- On the radial axis the gauge-independent Hall interband force numerator is purely imaginary.
 Its imaginary coefficient is the one already used by the Berry-curvature bridge. -/
 theorem forceMatrixTraceNumerator_radial
     (band : Band) (v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
-    forceMatrixTraceNumerator band v m p 0 =
+    forceMatrixTraceNumerator .x .y band v m p 0 =
       (((-(bandSign band * m * v ^ 2 / energy v m p 0) : ℝ) : ℂ)) * Complex.I := by
   have hEc : (((energy v m p 0 : ℝ) : ℂ)) ≠ 0 := by
     exact_mod_cast hE
@@ -80,7 +80,7 @@ theorem interbandCurrentTrace_radial
     interbandCurrentTrace .x .y band e v m p 0 =
       (((e ^ 2 : ℝ) : ℂ)) *
         (((-(bandSign band * m * v ^ 2 / energy v m p 0) : ℝ) : ℂ)) * Complex.I := by
-  rw [interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator,
+  rw [interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator .x .y,
     forceMatrixTraceNumerator_radial band v m p hE]
   ring
 
