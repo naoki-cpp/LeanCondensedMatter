@@ -133,15 +133,15 @@ theorem finiteKuboGreenwoodDirectionalConductivity_eq_current_sum_add_contact
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) :
     finiteKuboGreenwoodDirectionalConductivity
-        volume system data geometry direction K q ω eta =
+        volume system data geometry direction K q ω η =
       (∑ mn : ι × ι,
           finiteKuboGreenwoodDirectionalCurrentTerm
-            system data geometry direction K q ω eta mn) *
-          finiteVolumeConductivityNormalization volume ω eta +
+            system data geometry direction K q ω η mn) *
+          finiteVolumeConductivityNormalization volume ω η +
         purePointNormalizedExpectation system data
             (boundedDirectionalContact geometry direction
               (system.hbar : ℂ) (q : ℂ) K) *
-          finiteVolumeConductivityNormalization volume ω eta := by
+          finiteVolumeConductivityNormalization volume ω η := by
   unfold finiteKuboGreenwoodDirectionalConductivity
   ring
 
