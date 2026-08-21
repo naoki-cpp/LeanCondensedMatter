@@ -22,14 +22,6 @@ open Combinatorics
 
 variable {Label : Type*} {N : ℕ}
 
-private def sigmaSubtypeFiberwiseEquiv {ι : Type*} {α : ι → Type*}
-    (p : ∀ i, α i → Prop) :
-    (Σ i, {x : α i // p i x}) ≃ {x : Σ i, α i // p x.1 x.2} where
-  toFun x := ⟨⟨x.1, x.2.1⟩, x.2.2⟩
-  invFun x := ⟨x.1.1, ⟨x.1.2, x.2⟩⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-
 private def sigmaFiberPairEquiv {ι α : Type*} (f : α → ι) :
     (Σ i, {x : α // f x = i} × {x : α // f x = i}) ≃
       {p : α × α // f p.1 = f p.2} where
@@ -100,15 +92,6 @@ private noncomputable def QuarticDiagram.componentOrderedLegFiberEquiv
       intro x
       simp))
 
-@[simp]
-private theorem QuarticDiagram.componentOrderedLegFiberEquiv_apply
-    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (shuffle : d.ComponentShuffle) (B : d.componentPartition.parts)
-    (p : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
-    (d.componentOrderedLegFiberEquiv shuffle B p).1 =
-      d.componentOrderedLeg shuffle B p :=
-  rfl
-
 private noncomputable def QuarticDiagram.componentOrderedLegPairEquiv
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (shuffle : d.ComponentShuffle) :
@@ -124,16 +107,6 @@ private noncomputable def QuarticDiagram.componentOrderedLegPairEquiv
     (sigmaFiberPairEquiv fun p : Fin (2 * (2 * S.card)) =>
       ((d.componentOrderedLegEquiv shuffle).symm p).1)
 
-@[simp]
-private theorem QuarticDiagram.componentOrderedLegPairEquiv_apply
-    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (shuffle : d.ComponentShuffle) (B : d.componentPartition.parts)
-    (a b : Fin (2 * (2 * (B : Finset (Fin N)).card))) :
-    (d.componentOrderedLegPairEquiv shuffle ⟨B, (a, b)⟩).1 =
-      (d.componentOrderedLeg shuffle B a,
-        d.componentOrderedLeg shuffle B b) :=
-  rfl
-
 private def QuarticDiagram.localOrderedPairSigmaEquiv
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (orders : d.ComponentVertexOrders) :
@@ -141,9 +114,11 @@ private def QuarticDiagram.localOrderedPairSigmaEquiv
       {x : Σ B : d.componentPartition.parts,
           Fin (2 * (2 * (B : Finset (Fin N)).card)) ×
             Fin (2 * (2 * (B : Finset (Fin N)).card)) //
-        x.2 ∈ ((d.restrictComponent x.1.2).pairingInOrder (orders x.1)).pairs} :=
-  sigmaSubtypeFiberwiseEquiv fun B pr =>
-    pr ∈ ((d.restrictComponent B.2).pairingInOrder (orders B)).pairs
+        x.2 ∈ ((d.restrictComponent x.1.2).pairingInOrder (orders x.1)).pairs} where
+  toFun x := ⟨⟨x.1, x.2.1⟩, x.2.2⟩
+  invFun x := ⟨x.1.1, ⟨x.1.2, x.2⟩⟩
+  left_inv _ := rfl
+  right_inv _ := rfl
 
 private noncomputable def QuarticDiagram.componentPairSubtypeEquiv
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
