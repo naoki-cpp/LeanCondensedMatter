@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.Hamiltonian
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic
 import Mathlib.LinearAlgebra.LinearPMap
 
 set_option linter.style.header false
