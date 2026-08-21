@@ -8,7 +8,7 @@ set_option linter.style.header false
 # Two-dimensional massive Dirac model for anomalous Hall transport
 
 This file fixes the clean two-band conventions and the first Berry-curvature benchmark used by
-#1269.  The momentum variables `px`, `py` are physical momenta (not wave vectors), so
+#1269. The momentum variables `px`, `py` are physical momenta (not wave vectors), so
 
 ```text
 H₀(p) = v (pₓ σₓ + pᵧ σᵧ) + m σ_z,
@@ -16,18 +16,17 @@ v_μ = ∂H₀/∂p_μ,
 j_μ = -e v_μ,  μ ∈ {x,y}.
 ```
 
-The in-plane direction is represented explicitly by `Direction2`.  The direction-indexed
-`velocity` and `current` definitions are the model-level owners; the `velocityX`/`velocityY` and
-`currentX`/`currentY` names are source-compatible abbreviations while downstream transport files
-migrate to the indexed API.
+The in-plane direction is represented explicitly by `Direction2`. The direction-indexed
+`velocity`, `current`, and `dMomentum` definitions are the model-level owners used throughout the
+transport stack.
 
 The theorem-level authority for the charge-current interpretation is supplied downstream by
 `MassiveDiracCurrentBridge`: the generic charge-like corrected representative for `q I` has zero
 localization correction, reduces to `q v`, and at electron charge `q = -e` agrees exactly with these
-matrices.  Thus this model file records the realization rather than introducing a separate
+matrices. Thus this model file records the realization rather than introducing a separate
 foundational current convention.
 
-With this convention the continuum measure is `d²p / (2πℏ)²`.  The generic pointwise spectral
+With this convention the continuum measure is `d²p / (2πℏ)²`. The generic pointwise spectral
 Berry-curvature identities live upstream in `Analysis.Operator.Spectral.BerryCurvature`; this file
 supplies the concrete massive-Dirac algebra that will be connected to that force-matrix API.
 
@@ -76,23 +75,11 @@ def hamiltonian (v m px py : ℝ) : Matrix2 :=
 def velocity (direction : Direction2) (v : ℝ) : Matrix2 :=
   ((v : ℝ) : ℂ) • directionPauli direction
 
-/-- `x` specialization of the direction-indexed velocity. -/
-abbrev velocityX (v : ℝ) : Matrix2 := velocity .x v
-
-/-- `y` specialization of the direction-indexed velocity. -/
-abbrev velocityY (v : ℝ) : Matrix2 := velocity .y v
-
 /-- Concrete massive-Dirac realization `j_μ = -e v_μ` of the canonical charge-like current
-representative.  The parameter `e > 0` denotes the elementary-charge magnitude, so the electron
+representative. The parameter `e > 0` denotes the elementary-charge magnitude, so the electron
 charge is `-e`; `MassiveDiracCurrentBridge` identifies this with the generic `q v` representative. -/
 def current (direction : Direction2) (e v : ℝ) : Matrix2 :=
   (((-e : ℝ) : ℂ)) • velocity direction v
-
-/-- `x` specialization of the direction-indexed current. -/
-abbrev currentX (e v : ℝ) : Matrix2 := current .x e v
-
-/-- `y` specialization of the direction-indexed current. -/
-abbrev currentY (e v : ℝ) : Matrix2 := current .y e v
 
 /-- Positive energy squared of the clean massive Dirac dispersion. -/
 def energySq (v m px py : ℝ) : ℝ :=
@@ -145,12 +132,6 @@ def dVector (v m px py : ℝ) : Vec3 :=
 def dMomentum : Direction2 → ℝ → Vec3
   | .x, v => ⟨v, 0, 0⟩
   | .y, v => ⟨0, v, 0⟩
-
-/-- `x` specialization of the direction-indexed `d`-vector derivative. -/
-abbrev dMomentumX (v : ℝ) : Vec3 := dMomentum .x v
-
-/-- `y` specialization of the direction-indexed `d`-vector derivative. -/
-abbrev dMomentumY (v : ℝ) : Vec3 := dMomentum .y v
 
 /-- Gauge-independent two-band curvature expression
 `-s d·(∂ₓd×∂ᵧd)/(2 E³)` for band sign `s = ±1`.
