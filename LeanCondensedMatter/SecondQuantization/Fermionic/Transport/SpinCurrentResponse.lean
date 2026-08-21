@@ -58,8 +58,8 @@ noncomputable def boundedSpinZCurrentBondSourceRetardedSusceptibility
     (spinScale ℏ q : ℂ)
     (K : LocallyFiniteHopping (SpinfulSite Site))
     (u v : SpinfulSite Site) (t s : ℝ) : ℂ :=
-  boundedConventionalCurrentRetardedSusceptibility system expectation
-    velocity (spinZOneBody spinScale)
+  QuantumTheory.LinearResponse.retardedSusceptibility system expectation
+    (boundedSpinZCurrent velocity spinScale)
     (boundedBondCurrent ℏ q K u v) t s
 
 end
