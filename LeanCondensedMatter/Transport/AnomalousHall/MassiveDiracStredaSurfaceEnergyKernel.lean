@@ -137,21 +137,7 @@ theorem interbandStredaSurfaceTraceContribution_radial_eq_kernel
   ring_nf
   rw [show Complex.I ^ 2 = (-1 : ℂ) by
     rw [pow_two, Complex.I_mul_I]]
-  let common : ℂ :=
-    (broadening : ℂ) *
-      ((broadening : ℂ) ^ 2 -
-          (energy v m p 0 : ℂ) * (fermiEnergy : ℂ) * 2 +
-          (energy v m p 0 : ℂ) ^ 2 + (fermiEnergy : ℂ) ^ 2)⁻¹ *
-      ((broadening : ℂ) ^ 2 +
-          (energy v m p 0 : ℂ) * (fermiEnergy : ℂ) * 2 +
-          (energy v m p 0 : ℂ) ^ 2 + (fermiEnergy : ℂ) ^ 2)⁻¹ *
-      (e : ℂ) ^ 2 * (m : ℂ) * (v : ℂ) ^ 2
-  calc
-    _ = ((energy v m p 0 : ℂ)⁻¹ * (energy v m p 0 : ℂ)) * common := by
-      dsimp [common]
-      ring
-    _ = common := by rw [inv_mul_cancel₀ hEc, one_mul]
-    _ = _ := by rfl
+  simpa [hEc, mul_comm, mul_left_comm, mul_assoc]
 
 /-- Positive-energy-coordinate Středa surface density after removing the radial Jacobian. -/
 def stredaSurfaceRadialEnergyDensity
