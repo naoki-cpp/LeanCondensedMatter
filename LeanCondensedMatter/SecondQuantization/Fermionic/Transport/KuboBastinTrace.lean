@@ -1,13 +1,13 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.GeneralizedKuboBastin
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinSpectral
 
 set_option linter.style.header false
 
 /-!
 # Ordinary finite-dimensional trace form of the directional Kubo–Bastin response
 
-This module specializes the neutral finite Kubo–Bastin response from `GeneralizedKuboBastin` to the
-continuity-derived directional electric current and Peierls contact operator. The directional trace
-carrier is defined from the generic measured/source trace carrier rather than duplicating its
+This module specializes the neutral finite Kubo–Bastin response from `Transport.FiniteKuboBastin`
+to the continuity-derived directional electric current and Peierls contact operator. The directional
+trace carrier is defined from the generic measured/source trace carrier rather than duplicating its
 implementation.
 
 This is the finite equivalent permitted at the B2 boundary of issue #367. It is basis-resolved
@@ -36,7 +36,7 @@ namespace Transport
 
 open Lattice
 
-open QuantumTheory QuantumTheory.LinearResponse
+open QuantumTheory QuantumTheory.LinearResponse QuantumTheory.Transport
 
 noncomputable section
 

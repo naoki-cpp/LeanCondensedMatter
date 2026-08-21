@@ -2,6 +2,7 @@ import LeanCondensedMatter.Transport.FiniteVolume
 import LeanCondensedMatter.Transport.System
 import LeanCondensedMatter.Transport.LinearResponse
 import LeanCondensedMatter.Transport.Resolvent
+import LeanCondensedMatter.Transport.FiniteKuboBastin
 import LeanCondensedMatter.Transport.ResolventEnergyDerivative
 import LeanCondensedMatter.Transport.StredaOperatorKernel
 import LeanCondensedMatter.Transport.StredaTraceKernel
@@ -23,8 +24,8 @@ set_option linter.style.header false
 # Transport
 
 Public entry point for generic transport infrastructure: finite-volume normalization, response and
-resolvent formulations, Středa integration/trace theory, occupation interpolation, finite disorder,
-and concrete anomalous-Hall benchmarks.
+resolvent formulations, finite pure-point Kubo–Bastin, Středa integration/trace theory, occupation
+interpolation, finite disorder, and concrete anomalous-Hall benchmarks.
 
 Model-specific fermionic transport adapters remain downstream in `SecondQuantization.Fermionic`.
 Implementation modules should import the narrow transport leaves they use rather than this umbrella.
