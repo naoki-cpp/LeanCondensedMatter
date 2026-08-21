@@ -100,17 +100,6 @@ structure DifferentialCurrentRepresentation
   /-- Proof that the transport functional is represented by `current ∘ d`. -/
   factors : FactorsThroughDifferential d Φ current
 
-namespace DifferentialCurrentRepresentation
-
-/-- Evaluate the represented transport functional on a test object. -/
-theorem apply
-    {d : Test →ₗ[𝕜] OneForm} {Φ : Test →ₗ[𝕜] Obs}
-    (R : DifferentialCurrentRepresentation d Φ) (f : Test) :
-    Φ f = R.current (d f) :=
-  R.factors f
-
-end DifferentialCurrentRepresentation
-
 /-- A bilinear pairing of a current density with 1-form-like test data.
 
 Concrete models are responsible for showing that this supplied pairing has the intended local or
@@ -188,16 +177,6 @@ def toDifferentialCurrentRepresentation
     DifferentialCurrentRepresentation d Φ where
   current := pairing R.currentDensity
   factors := R.represents
-
-/-- Evaluate the local current-density representation on one test object. -/
-theorem apply
-    {d : Test →ₗ[𝕜] OneForm}
-    {Φ : Test →ₗ[𝕜] Obs}
-    {pairing : LocalCurrentPairing (𝕜 := 𝕜) (OneForm := OneForm) (Obs := Obs)
-      (CurrentDensity := CurrentDensity)}
-    (R : LocalCurrentDensityRepresentation d Φ pairing) (f : Test) :
-    Φ f = pairing R.currentDensity (d f) :=
-  R.represents f
 
 /-- Any two densities representing the same transport functional are weakly equivalent on exact
 test 1-forms. -/
