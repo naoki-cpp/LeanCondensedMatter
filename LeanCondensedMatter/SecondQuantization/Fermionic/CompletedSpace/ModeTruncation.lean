@@ -30,20 +30,6 @@ variable {Mode : Type*}
 /-- Classical decidable equality used internally by finite-mode truncation. -/
 local instance completedModeTruncationDecidableEq : DecidableEq Mode := Classical.decEq Mode
 
-/-- Linear finite-mode truncation: retain an occupation amplitude exactly when all occupied modes
-belong to `S`. -/
-noncomputable def completedModeTruncationLinear (S : Finset Mode) :
-    CompletedFockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode :=
-  Common.completedCoordinateProjectionLinear (fun n : Occupation Mode => n ⊆ S)
-
-@[simp]
-theorem completedModeTruncationLinear_apply (S : Finset Mode)
-    (ψ : CompletedFockSpace Mode) (n : Occupation Mode) :
-    completedModeTruncationLinear S ψ n = if n ⊆ S then ψ n else 0 := by
-  simpa [completedModeTruncationLinear] using
-    (Common.completedCoordinateProjectionLinear_apply
-      (Config := Occupation Mode) (fun m : Occupation Mode => m ⊆ S) ψ n)
-
 /-- Finite-mode truncation as a bounded projection of norm at most one. -/
 noncomputable def completedModeTruncation (S : Finset Mode) :
     CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
