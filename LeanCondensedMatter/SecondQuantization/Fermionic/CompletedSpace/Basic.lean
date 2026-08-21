@@ -95,19 +95,6 @@ theorem algebraicToCompleted_denseRange :
 
 variable [LinearOrder Mode]
 
-/-- The underlying linear map of the completed single-mode occupation projection. -/
-noncomputable def completedNumberOperatorLinear (i : Mode) :
-    CompletedFockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode :=
-  Common.completedCoordinateProjectionLinear (fun n : Occupation Mode => i ∈ n)
-
-@[simp]
-theorem completedNumberOperatorLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
-    (n : Occupation Mode) :
-    completedNumberOperatorLinear i ψ n = if i ∈ n then ψ n else 0 := by
-  simpa [completedNumberOperatorLinear] using
-    (Common.completedCoordinateProjectionLinear_apply
-      (Config := Occupation Mode) (fun m : Occupation Mode => i ∈ m) ψ n)
-
 /-- The completed single-mode number operator. It is the orthogonal coordinate projection onto
 occupation configurations containing `i`, hence has operator norm at most one. -/
 noncomputable def completedNumberOperator (i : Mode) :
