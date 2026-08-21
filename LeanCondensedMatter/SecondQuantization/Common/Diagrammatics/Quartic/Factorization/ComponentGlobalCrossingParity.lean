@@ -76,27 +76,17 @@ private theorem QuarticDiagram.sum_componentOrderedLeg_inversions_mod_two_eq_zer
   rw [Fin.sum_univ_four]
   split_ifs <;> omega
 
-/-- Oriented crossing count from pairs in component `B` to pairs in component `C`. -/
-private noncomputable def QuarticDiagram.componentOrientedCrossingCount
-    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B C : d.componentPartition.parts) : ℕ :=
-  (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount
-    (d.componentPairEquiv orders shuffle) B C
-
 /-- Both orientations of the crossing count between two distinct components add up to an even
 number. -/
-private theorem QuarticDiagram.componentOrientedCrossingCount_add_swap_mod_two_eq_zero
+private theorem QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (B C : d.componentPartition.parts) (hBC : B ≠ C) :
-    (d.componentOrientedCrossingCount orders shuffle B C +
-      d.componentOrientedCrossingCount orders shuffle C B) % 2 = 0 := by
+    ((d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount
+        (d.componentPairEquiv orders shuffle) B C +
+      (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount
+        (d.componentPairEquiv orders shuffle) C B) % 2 = 0 := by
   classical
-  change ((d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount
-      (d.componentPairEquiv orders shuffle) B C +
-    (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount
-      (d.componentPairEquiv orders shuffle) C B) % 2 = 0
   have hor := Combinatorics.Pairing.componentGeometricCrossingCount_eq_oriented_add
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
     (d.componentPairEquiv orders shuffle) B C
@@ -131,15 +121,15 @@ private theorem QuarticDiagram.crosses_componentPairEquiv_iff
     p.1.1 p.1.2 q.1.1 q.1.2
 
 /-- The diagonal oriented crossing count is the local crossing count of that component. -/
-private theorem QuarticDiagram.componentOrientedCrossingCount_self
+private theorem QuarticDiagram.componentCrossingCount_self
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
     (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
     (B : d.componentPartition.parts) :
-    d.componentOrientedCrossingCount orders shuffle B B =
+    (d.pairingInOrder (d.assembleVertexOrder orders shuffle)).componentCrossingCount
+        (d.componentPairEquiv orders shuffle) B B =
       ((d.restrictComponent B.2).pairingInOrder (orders B)).crossingCount := by
   classical
-  rw [QuarticDiagram.componentOrientedCrossingCount,
-      Combinatorics.Pairing.componentCrossingCount, Fintype.sum_prod_type,
+  rw [Combinatorics.Pairing.componentCrossingCount, Fintype.sum_prod_type,
     Combinatorics.Pairing.crossingCount_eq_sum_sum_crosses]
   apply Finset.sum_congr rfl
   intro p _
@@ -159,11 +149,11 @@ theorem QuarticDiagram.pairingInOrder_crossingCount_mod_two_eq_sum_components
     (d.pairingInOrder (d.assembleVertexOrder orders shuffle))
     (d.componentPairEquiv orders shuffle)
     (fun B C hBC =>
-      d.componentOrientedCrossingCount_add_swap_mod_two_eq_zero orders shuffle B C hBC)]
+      d.componentCrossingCount_add_swap_mod_two_eq_zero orders shuffle B C hBC)]
   apply congrArg (fun n : ℕ => n % 2)
   apply Finset.sum_congr rfl
   intro B _
-  exact d.componentOrientedCrossingCount_self orders shuffle B
+  exact d.componentCrossingCount_self orders shuffle B
 
 /-- Pairing weight factors over connected components for every component shuffle. -/
 theorem QuarticDiagram.pairingInOrder_weight_eq_prod_components
