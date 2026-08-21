@@ -133,7 +133,7 @@ theorem interbandStredaSurfaceTraceContribution_radial_eq_kernel
     hsumPlus, hsumMinus]
   unfold lorentzianSpectralKernel radialInterbandStredaSurfaceKernel
   push_cast
-  simp only [div_eq_mul_inv, mul_inv_rev₀]
+  simp only [div_eq_mul_inv, mul_inv_rev]
   ring_nf
   rw [show Complex.I ^ 2 = (-1 : ℂ) by
     rw [pow_two, Complex.I_mul_I]]
