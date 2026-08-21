@@ -143,7 +143,7 @@ theorem completedNumberOperator_basisState (i : Mode) (n : Occupation Mode) :
   apply lp.ext
   funext m
   by_cases hi : i ∈ n <;> by_cases hm : m = n <;>
-    simp [completedBasisState, completedNumberOperator_apply, hi, hm, lp.single_apply]
+    simp [completedBasisState, completedNumberOperator_apply, hi, hm]
 
 /-- The completed single-mode number operator agrees with the algebraic number operator on the
 whole finite-support core, not only on individual basis states. -/
