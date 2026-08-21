@@ -1,4 +1,5 @@
-import LeanCondensedMatter.Transport.FiniteDisorderBorn
+import LeanCondensedMatter.Transport.FiniteDisorder
+import LeanCondensedMatter.Transport.Resolvent
 
 set_option linter.style.header false
 
@@ -6,9 +7,9 @@ set_option linter.style.header false
 # Bounded self-consistent Born data
 
 This module begins the conserving impurity slice selected in issue #372 and specified by #688. It
-refines the exact finite second moment from the first Born layer to a bounded complex-linear
-covariance superoperator and records supplied retarded/advanced self-consistent Born approximation
-(SCBA) solutions.
+refines the exact finite second moment from the finite-disorder ensemble layer to a bounded
+complex-linear covariance superoperator and records supplied retarded/advanced self-consistent Born
+approximation (SCBA) solutions.
 
 SCBA is not identified with the exact finite disorder average. A solution stores its self-energy
 fixed-point equations and two-sided Green-operator inverse identities explicitly. The covariance
