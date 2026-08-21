@@ -88,7 +88,7 @@ theorem interbandCurrentTrace_radial
 now in explicit purely-imaginary form. -/
 theorem bastinXYBandBlockTrace_opposite_source_radial
     (band : Band) (e v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
-    bastinXYBandBlockTrace (oppositeBand band) band e v m p 0 =
+    bastinBandBlockTrace .x .y (oppositeBand band) band e v m p 0 =
       (((e ^ 2 : ℝ) : ℂ)) *
         (((bandSign band * m * v ^ 2 / energy v m p 0 : ℝ) : ℂ)) * Complex.I := by
   rw [bastinXYBandBlockTrace_opposite_source,
@@ -99,7 +99,7 @@ theorem bastinXYBandBlockTrace_opposite_source_radial
 /-- The radial `y-x` block has the opposite imaginary sign. -/
 theorem bastinYXBandBlockTrace_opposite_source_radial
     (band : Band) (e v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
-    bastinYXBandBlockTrace (oppositeBand band) band e v m p 0 =
+    bastinBandBlockTrace .y .x (oppositeBand band) band e v m p 0 =
       -((((e ^ 2 : ℝ) : ℂ)) *
         (((bandSign band * m * v ^ 2 / energy v m p 0 : ℝ) : ℂ)) * Complex.I) := by
   rw [bastinYXBandBlockTrace_opposite_source,
