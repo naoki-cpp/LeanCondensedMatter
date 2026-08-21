@@ -81,7 +81,9 @@ theorem stredaSurfaceBandPairContribution_opposite_source_radial_eq
           (fermiEnergy - bandEnergy band v m p 0) broadening : ℂ) *
         targetCenteredStredaSurfaceSpectatorCurrentFactor band e v m p 0
           (fermiEnergy - bandEnergy band v m p 0, broadening) := hpair
-    _ = _ := by rw [hspectator]
+    _ = _ := by
+      rw [hspectator]
+      ring
 
 /-- Closed real radial interband Středa surface kernel at Fermi energy `fermiEnergy`. -/
 def radialInterbandStredaSurfaceKernel
@@ -137,10 +139,10 @@ theorem interbandStredaSurfaceTraceContribution_radial_eq_kernel
     hsumPlus, hsumMinus]
   unfold lorentzianSpectralKernel radialInterbandStredaSurfaceKernel
   push_cast
-  have hI : Complex.I * Complex.I = (-1 : ℂ) := Complex.I_mul_I
   field_simp [hEc, hdenPlus, hdenMinus]
   ring_nf
-  rw [hI]
+  rw [show Complex.I ^ 2 = (-1 : ℂ) by
+    rw [pow_two, Complex.I_mul_I]]
   ring
 
 /-- Positive-energy-coordinate Středa surface density after removing the radial Jacobian. -/
@@ -164,7 +166,29 @@ theorem radialInterbandStredaSurfaceKernel_mul_p_eq_energyDensity_mul_deriv
   unfold radialInterbandStredaSurfaceKernel stredaSurfaceRadialEnergyDensity
     radialEnergyDerivative
   field_simp [hE]
-  ring
+
+/-- At nonzero broadening the positive-energy Středa surface density is continuous. -/
+theorem continuous_stredaSurfaceRadialEnergyDensity
+    (e m fermiEnergy broadening : ℝ) (hbroadening : broadening ≠ 0) :
+    Continuous (stredaSurfaceRadialEnergyDensity e m fermiEnergy · broadening) := by
+  have hplus : Continuous
+      (fun energy : ℝ => (fermiEnergy + energy) ^ 2 + broadening ^ 2) := by
+    fun_prop
+  have hminus : Continuous
+      (fun energy : ℝ => (fermiEnergy - energy) ^ 2 + broadening ^ 2) := by
+    fun_prop
+  have hplusNe : ∀ energy : ℝ,
+      (fermiEnergy + energy) ^ 2 + broadening ^ 2 ≠ 0 := by
+    intro energy
+    nlinarith [sq_pos_of_ne_zero hbroadening]
+  have hminusNe : ∀ energy : ℝ,
+      (fermiEnergy - energy) ^ 2 + broadening ^ 2 ≠ 0 := by
+    intro energy
+    nlinarith [sq_pos_of_ne_zero hbroadening]
+  unfold stredaSurfaceRadialEnergyDensity
+  exact
+    (by fun_prop : Continuous (fun energy : ℝ => -4 * e ^ 2 * m * energy * broadening)).div
+      (hplus.mul hminus) (fun energy => mul_ne_zero (hplusNe energy) (hminusNe energy))
 
 /-- Finite positive-energy Středa surface integral. -/
 def finiteEnergyStredaSurfaceIntegral
@@ -173,10 +197,10 @@ def finiteEnergyStredaSurfaceIntegral
     stredaSurfaceRadialEnergyDensity e m fermiEnergy energy broadening
 
 /-- The radial interband surface integral equals the corresponding positive-energy integral for
-positive mass. -/
+positive mass and nonzero broadening. -/
 theorem finiteRadialInterbandStredaSurfaceIntegral_eq_energyIntegral
     (e v m fermiEnergy pMax broadening : ℝ)
-    (hm : 0 < m) (hpMax : 0 ≤ pMax) :
+    (hm : 0 < m) (hpMax : 0 ≤ pMax) (hbroadening : broadening ≠ 0) :
     (∫ p in (0 : ℝ)..pMax,
       p * radialInterbandStredaSurfaceKernel
         e v m fermiEnergy (energy v m p 0) broadening) =
@@ -194,24 +218,28 @@ theorem finiteRadialInterbandStredaSurfaceIntegral_eq_energyIntegral
     exact radialInterbandStredaSurfaceKernel_mul_p_eq_energyDensity_mul_deriv
       e v m fermiEnergy p broadening hm
   rw [hfun]
-  have hderiv := fun p _ => hasDerivAt_energy_radial v m p hm
-  have hderivCont := (continuous_radialEnergyDerivative v m hm).continuousOn
-  have hdensityCont : ContinuousOn
-      (stredaSurfaceRadialEnergyDensity e m fermiEnergy · broadening)
-      ((fun p : ℝ => energy v m p 0) '' [[(0 : ℝ), pMax]]) := by
-    unfold stredaSurfaceRadialEnergyDensity
-    fun_prop
   have hsub := intervalIntegral.integral_comp_mul_deriv'
     (a := (0 : ℝ)) (b := pMax)
     (f := fun p : ℝ => energy v m p 0)
     (f' := radialEnergyDerivative v m)
     (g := stredaSurfaceRadialEnergyDensity e m fermiEnergy · broadening)
-    hderiv hderivCont hdensityCont
+    (fun p _ => hasDerivAt_energy_radial v m p hm)
+    (continuous_radialEnergyDerivative v m hm).continuousOn
+    (continuous_stredaSurfaceRadialEnergyDensity
+      e m fermiEnergy broadening hbroadening).continuousOn
+  have hsub' :
+      (∫ p in (0 : ℝ)..pMax,
+        stredaSurfaceRadialEnergyDensity e m fermiEnergy (energy v m p 0) broadening *
+          radialEnergyDerivative v m p) =
+        ∫ energy in energy v m 0 0..energy v m pMax 0,
+          stredaSurfaceRadialEnergyDensity e m fermiEnergy energy broadening := by
+    simpa only [Function.comp_apply] using hsub
+  rw [hsub']
+  unfold finiteEnergyStredaSurfaceIntegral
   have hzero : energy v m 0 0 = m := by
     unfold energy energySq
     simp [Real.sqrt_sq_eq_abs, abs_of_pos hm]
-  unfold finiteEnergyStredaSurfaceIntegral
-  simpa only [Function.comp_apply, hzero] using hsub
+  rw [hzero]
 
 end
 
