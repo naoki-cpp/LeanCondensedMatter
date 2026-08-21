@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.DiagonalTrace
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.DiagonalTrace
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 
 set_option linter.style.header false
