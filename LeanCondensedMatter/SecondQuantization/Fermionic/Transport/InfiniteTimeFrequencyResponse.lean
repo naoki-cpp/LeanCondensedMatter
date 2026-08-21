@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StationaryFrequencyResponse
 import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability
+import LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic
 import Mathlib.MeasureTheory.Integral.IntegralEqImproper
 
 set_option linter.style.header false
@@ -26,18 +27,9 @@ namespace Fermionic
 namespace Transport
 
 open Lattice
+open QuantumTheory.LinearResponse
 
 noncomputable section
-
-/-- The field-layer lag factor agrees with the general linear-response adiabatic phase. -/
-theorem adiabaticFrequencyFactor_eq_adiabaticFrequencyPhase
-    (ω η τ : ℝ) :
-    adiabaticFrequencyFactor ω η τ =
-      QuantumTheory.LinearResponse.adiabaticFrequencyPhase ω η τ := by
-  unfold adiabaticFrequencyFactor
-    QuantumTheory.LinearResponse.adiabaticFrequencyPhase
-  congr 2
-  ring
 
 /-- Explicit integrability hypothesis for the adiabatically weighted positive-lag kernel. -/
 def AdiabaticLagIntegrable (kernel : ℝ → ℂ) (ω η : ℝ) : Prop :=
@@ -60,14 +52,24 @@ theorem hasInfiniteObservationTimeLimit_finiteTimeAdiabaticTransform
   unfold HasInfiniteObservationTimeLimit
   change Filter.Tendsto
     (fun T : ℝ => ∫ τ in (0 : ℝ)..T,
-      adiabaticFrequencyFactor ω η τ * kernel τ)
+      adiabaticFrequencyPhase ω η τ * kernel τ)
     Filter.atTop
     (nhds (∫ τ in Set.Ioi (0 : ℝ),
       adiabaticFrequencyFactor ω η τ * kernel τ))
-  exact MeasureTheory.intervalIntegral_tendsto_integral_Ioi
+  have hInt' : MeasureTheory.IntegrableOn
+      (fun τ => adiabaticFrequencyPhase ω η τ * kernel τ)
+      (Set.Ioi (0 : ℝ)) MeasureTheory.volume := by
+    apply hInt.congr_fun
+    · intro τ _
+      rw [← adiabaticFrequencyFactor_eq_adiabaticFrequencyPhase]
+    · exact measurableSet_Ioi
+  convert MeasureTheory.intervalIntegral_tendsto_integral_Ioi
     (μ := MeasureTheory.volume)
-    (f := fun τ : ℝ => adiabaticFrequencyFactor ω η τ * kernel τ)
-    (b := fun T : ℝ => T) (0 : ℝ) hInt Filter.tendsto_id
+    (f := fun τ : ℝ => adiabaticFrequencyPhase ω η τ * kernel τ)
+    (b := fun T : ℝ => T) (0 : ℝ) hInt' Filter.tendsto_id using 1
+  apply MeasureTheory.setIntegral_congr_fun measurableSet_Ioi
+  intro τ _
+  rw [adiabaticFrequencyFactor_eq_adiabaticFrequencyPhase]
 
 variable {Site E : Type*}
 variable [LinearOrder Site] [Fintype Site]
