@@ -52,10 +52,7 @@ theorem targetCenteredStredaSurfaceSpectatorCurrentFactor_radial_zero
         radialInterbandCurrentAmplitude band e v m p := by
   rw [targetCenteredStredaSurfaceSpectatorCurrentFactor_radial_eq
     band e v m p 0 0 hE]
-  change
-    (((((interbandEnergyGap band v m p 0 : ℝ) : ℂ))⁻¹ +
-        (((interbandEnergyGap band v m p 0 : ℝ) : ℂ))⁻¹) *
-      radialInterbandCurrentAmplitude band e v m p) = _
+  simp only [add_zero, zero_mul, sub_zero]
   ring
 
 end
