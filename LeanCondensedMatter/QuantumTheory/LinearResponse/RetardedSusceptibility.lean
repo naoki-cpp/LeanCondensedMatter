@@ -157,40 +157,6 @@ theorem retardedSusceptibility_eq_timeDifference_of_stationary
   · have hdiff : ¬ 0 ≤ t - s := fun hnonneg => h (sub_nonneg.mp hnonneg)
     simp [retardedSusceptibility, h, hdiff]
 
-/-- The source-coupled response integral is the source weighted by the named two-time
-susceptibility. -/
-theorem sourceCoupled_responseIntegral_eq_commutatorSusceptibility
-    (expectation : NormalizedExpectation H)
-    (f : ℝ → ℝ) (B A : H →L[ℂ] H) (t : ℝ) :
-    ((Complex.I / (system.hbar : ℂ)) •
-      ∫ s in (0 : ℝ)..t,
-        (f s : ℂ) *
-          expectation
-            (heisenbergEvolution system A t * heisenbergEvolution system B s -
-              heisenbergEvolution system B s * heisenbergEvolution system A t)) =
-      ∫ s in (0 : ℝ)..t,
-        (f s : ℂ) * commutatorSusceptibility system expectation A B t s := by
-  rw [← intervalIntegral.integral_smul]
-  apply intervalIntegral.integral_congr
-  intro s _
-  simp [commutatorSusceptibility, smul_eq_mul]
-  ring
-
-/-- On a nonnegative observation interval, replacing the two-time kernel by its retarded extension
-does not change the response integral. -/
-theorem integral_commutatorSusceptibility_eq_retardedSusceptibility
-    (expectation : NormalizedExpectation H)
-    (f : ℝ → ℝ) (A B : H →L[ℂ] H) {t : ℝ} (ht : 0 ≤ t) :
-    (∫ s in (0 : ℝ)..t,
-        (f s : ℂ) * commutatorSusceptibility system expectation A B t s) =
-      ∫ s in (0 : ℝ)..t,
-        (f s : ℂ) * retardedSusceptibility system expectation A B t s := by
-  apply intervalIntegral.integral_congr
-  intro s hs
-  have hs' : s ∈ Icc (0 : ℝ) t := by
-    simpa [uIcc_of_le ht] using hs
-  simp [retardedSusceptibility, hs'.2]
-
 /-- The scalar-source response integral is the causal convolution with the retarded
 susceptibility. -/
 theorem sourceCoupled_responseIntegral_eq_retardedSusceptibility
@@ -204,13 +170,13 @@ theorem sourceCoupled_responseIntegral_eq_retardedSusceptibility
               heisenbergEvolution system B s * heisenbergEvolution system A t)) =
       ∫ s in (0 : ℝ)..t,
         (f s : ℂ) * retardedSusceptibility system expectation A B t s := by
-  calc
-    _ = ∫ s in (0 : ℝ)..t,
-        (f s : ℂ) * commutatorSusceptibility system expectation A B t s :=
-      sourceCoupled_responseIntegral_eq_commutatorSusceptibility
-        system expectation f B A t
-    _ = _ := integral_commutatorSusceptibility_eq_retardedSusceptibility
-      system expectation f A B ht
+  rw [← intervalIntegral.integral_smul]
+  apply intervalIntegral.integral_congr
+  intro s hs
+  have hs' : s ∈ Icc (0 : ℝ) t := by
+    simpa [uIcc_of_le ht] using hs
+  simp [retardedSusceptibility, hs'.2, commutatorSusceptibility, smul_eq_mul]
+  ring
 
 /-- The bounded scalar-source Kubo formula written as a causal convolution with the retarded
 susceptibility. -/
