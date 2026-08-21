@@ -38,13 +38,6 @@ noncomputable def sourceCoupledPerturbation
     (f : ℝ → ℝ) (B : H →L[ℂ] H) (t : ℝ) : H →L[ℂ] H :=
   (-(f t : ℂ)) • B
 
-omit [CompleteSpace H] in
-@[simp]
-theorem sourceCoupledPerturbation_apply
-    (f : ℝ → ℝ) (B : H →L[ℂ] H) (t : ℝ) :
-    sourceCoupledPerturbation f B t = (-(f t : ℂ)) • B :=
-  rfl
-
 /-- A real scalar source preserves self-adjointness of the coupling observable pointwise. -/
 theorem isSelfAdjoint_sourceCoupledPerturbation
     (f : ℝ → ℝ) {B : H →L[ℂ] H} (hB : IsSelfAdjoint B) (t : ℝ) :
@@ -60,45 +53,6 @@ theorem timeDependentInteractionPerturbation_sourceCoupledPerturbation
       (-(f t : ℂ)) • heisenbergEvolution system B t := by
   simp [timeDependentInteractionPerturbation, sourceCoupledPerturbation,
     heisenbergEvolution, mul_assoc]
-
-/-- The instantaneous commutator response for `V(t) = -f(t) B` carries one overall minus sign. -/
-theorem sourceCoupled_commutatorExpectation
-    (expectation : NormalizedExpectation H)
-    (f : ℝ → ℝ) (B A : H →L[ℂ] H) (t s : ℝ) :
-    expectation
-        (heisenbergEvolution system A t *
-            timeDependentInteractionPerturbation system
-              (sourceCoupledPerturbation f B) s -
-          timeDependentInteractionPerturbation system
-              (sourceCoupledPerturbation f B) s *
-            heisenbergEvolution system A t) =
-      -((f s : ℂ) *
-        expectation
-          (heisenbergEvolution system A t * heisenbergEvolution system B s -
-            heisenbergEvolution system B s * heisenbergEvolution system A t)) := by
-  rw [timeDependentInteractionPerturbation_sourceCoupledPerturbation]
-  calc
-    expectation
-        (heisenbergEvolution system A t *
-            ((-(f s : ℂ)) • heisenbergEvolution system B s) -
-          ((-(f s : ℂ)) • heisenbergEvolution system B s) *
-            heisenbergEvolution system A t) =
-      expectation
-        ((-(f s : ℂ)) •
-          (heisenbergEvolution system A t * heisenbergEvolution system B s -
-            heisenbergEvolution system B s * heisenbergEvolution system A t)) := by
-      congr 1
-      rw [mul_smul_comm, smul_mul_assoc, smul_sub]
-    _ = (-(f s : ℂ)) *
-        expectation
-          (heisenbergEvolution system A t * heisenbergEvolution system B s -
-            heisenbergEvolution system B s * heisenbergEvolution system A t) := by
-      exact map_smul expectation.toContinuousLinearMap _ _
-    _ = -((f s : ℂ) *
-        expectation
-          (heisenbergEvolution system A t * heisenbergEvolution system B s -
-            heisenbergEvolution system B s * heisenbergEvolution system A t)) := by
-      ring
 
 /-- Substituting `V(t) = -f(t) B` into the general response integral produces the conventional
 positive `i/ℏ` prefactor. -/
@@ -136,7 +90,26 @@ theorem sourceCoupled_responseIntegral_eq
               heisenbergEvolution system A t)) =
         fun s => -g s := by
     funext s
-    simpa [g] using sourceCoupled_commutatorExpectation system expectation f B A t s
+    rw [timeDependentInteractionPerturbation_sourceCoupledPerturbation]
+    calc
+      expectation
+          (heisenbergEvolution system A t *
+              ((-(f s : ℂ)) • heisenbergEvolution system B s) -
+            ((-(f s : ℂ)) • heisenbergEvolution system B s) *
+              heisenbergEvolution system A t) =
+        expectation
+          ((-(f s : ℂ)) •
+            (heisenbergEvolution system A t * heisenbergEvolution system B s -
+              heisenbergEvolution system B s * heisenbergEvolution system A t)) := by
+        congr 1
+        rw [mul_smul_comm, smul_mul_assoc, smul_sub]
+      _ = (-(f s : ℂ)) *
+          expectation
+            (heisenbergEvolution system A t * heisenbergEvolution system B s -
+              heisenbergEvolution system B s * heisenbergEvolution system A t) := by
+        exact map_smul expectation.toContinuousLinearMap _ _
+      _ = -g s := by
+        simp [g]
   rw [hfun, intervalIntegral.integral_neg]
   simp [g]
 
