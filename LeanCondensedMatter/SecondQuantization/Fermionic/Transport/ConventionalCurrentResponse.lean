@@ -4,9 +4,9 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBody
 set_option linter.style.header false
 
 /-!
-# Bounded conventional-current response adapters
+# Bounded conventional-current adapter
 
-This module specializes the generic bounded one-body response boundary to the conventional current
+This module specializes the generic bounded one-body operator boundary to the conventional current
 
 ```text
 jᵐ = 1/2 {v,m}.
@@ -16,6 +16,9 @@ The neutral `BoundedOneBodyResponse` module intentionally does not depend on any
 representation. At this layer the supplied one-body operators `v` and `m` are combined only through
 the shared analysis-level symmetrized product; the concrete first-quantized velocity interpretation
 remains in `QuantumMechanics.SingleParticle`.
+
+Response consumers should pass `boundedConventionalCurrent` directly to the observable-generic Kubo
+API rather than introducing another conventional-current-specific response wrapper.
 -/
 
 namespace SecondQuantization
@@ -34,19 +37,6 @@ noncomputable def boundedConventionalCurrent
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
   boundedOneBodyOperator
     (_root_.ConservationLaw.symmetrizedProduct velocity m)
-
-/-- Kubo response of the conventional current `1/2 {v,m}` when that current representation has
-been justified by the upstream generalized-balance-law hypotheses. -/
-noncomputable def boundedConventionalCurrentRetardedSusceptibility
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock Site))
-    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
-      (FiniteLatticeHilbertFock Site))
-    (velocity m : LatticeState Site →ₗ[ℂ] LatticeState Site)
-    (source : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
-    (t s : ℝ) : ℂ :=
-  QuantumTheory.LinearResponse.retardedSusceptibility system expectation
-    (boundedConventionalCurrent velocity m) source t s
 
 end
 end Transport
