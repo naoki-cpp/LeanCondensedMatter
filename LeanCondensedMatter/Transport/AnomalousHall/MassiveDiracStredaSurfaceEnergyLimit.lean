@@ -15,7 +15,7 @@ namespace AnomalousHall.MassiveDirac
 
 noncomputable section
 
-open Filter
+open Filter MeasureTheory
 
 private theorem continuous_lorentzianSpectralKernel_sub_center
     (center broadening : ℝ) (hbroadening : broadening ≠ 0) :
@@ -93,14 +93,30 @@ theorem tendsto_finiteEnergyStredaSurfaceIntegral
   have hMirrorMass :=
     tendsto_integral_lorentzianSpectralKernel_sub_center_of_center_lt_lower
       (-fermiEnergy) m energyMax (by linarith) (le_of_lt (lt_trans hmF hFMax))
-  have hdiff := hFermiMass.sub hMirrorMass
+  have hMirrorMass' : Tendsto
+      (fun broadening : ℝ =>
+        ∫ energy in m..energyMax,
+          lorentzianSpectralKernel (energy + fermiEnergy) broadening)
+      (nhdsWithin 0 (Set.Ioi 0)) (nhds 0) := by
+    simpa [sub_neg_eq_add] using hMirrorMass
+  have hdiff := hFermiMass.sub hMirrorMass'
   have hscale : Tendsto
       (fun _ : ℝ => -(e ^ 2 * m / fermiEnergy))
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (-(e ^ 2 * m / fermiEnergy))) :=
     tendsto_const_nhds
   have hscaled := hscale.mul hdiff
-  apply Tendsto.congr' ?_ hscaled
+  have hscaled' : Tendsto
+      (fun broadening : ℝ =>
+        -(e ^ 2 * m / fermiEnergy) *
+          ((∫ energy in m..energyMax,
+              lorentzianSpectralKernel (energy - fermiEnergy) broadening) -
+            ∫ energy in m..energyMax,
+              lorentzianSpectralKernel (energy + fermiEnergy) broadening))
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (-(e ^ 2 * m / fermiEnergy) * Real.pi)) := by
+    simpa using hscaled
+  apply Tendsto.congr' ?_ hscaled'
   filter_upwards [self_mem_nhdsWithin] with broadening hbroadening
   rw [finiteEnergyStredaSurfaceIntegral_eq_lorentzian_difference
     e m fermiEnergy energyMax broadening hfermi hbroadening.ne']
