@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricCurrent
+import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticSwitching
 import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
 
 set_option linter.style.header false
@@ -55,6 +56,16 @@ theorem adiabaticFrequencyFactor_zero_frequency (η τ : ℝ) :
     adiabaticFrequencyFactor 0 η τ =
       Complex.exp (-(η : ℂ) * (τ : ℂ)) := by
   simp [adiabaticFrequencyFactor]
+
+/-- The fermionic field-layer lag factor is the canonical linear-response adiabatic phase. -/
+theorem adiabaticFrequencyFactor_eq_adiabaticFrequencyPhase
+    (ω η τ : ℝ) :
+    adiabaticFrequencyFactor ω η τ =
+      QuantumTheory.LinearResponse.adiabaticFrequencyPhase ω η τ := by
+  unfold adiabaticFrequencyFactor
+    QuantumTheory.LinearResponse.adiabaticFrequencyPhase
+  congr 2
+  ring
 
 variable {Site E : Type*}
 variable [LinearOrder Site] [Fintype Site]
