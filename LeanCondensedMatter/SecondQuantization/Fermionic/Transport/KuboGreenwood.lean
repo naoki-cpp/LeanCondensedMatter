@@ -35,8 +35,7 @@ namespace Fermionic
 namespace Transport
 
 open Lattice
-
-open QuantumTheory.LinearResponse
+open QuantumTheory.LinearResponse QuantumTheory.Transport
 
 noncomputable section
 
@@ -134,15 +133,15 @@ theorem finiteKuboGreenwoodDirectionalConductivity_eq_current_sum_add_contact
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q ω η : ℝ) :
     finiteKuboGreenwoodDirectionalConductivity
-        volume system data geometry direction K q ω η =
+        volume system data geometry direction K q ω eta =
       (∑ mn : ι × ι,
           finiteKuboGreenwoodDirectionalCurrentTerm
-            system data geometry direction K q ω η mn) *
-          finiteVolumeConductivityNormalization volume ω η +
+            system data geometry direction K q ω eta mn) *
+          finiteVolumeConductivityNormalization volume ω eta +
         purePointNormalizedExpectation system data
             (boundedDirectionalContact geometry direction
               (system.hbar : ℂ) (q : ℂ) K) *
-          finiteVolumeConductivityNormalization volume ω η := by
+          finiteVolumeConductivityNormalization volume ω eta := by
   unfold finiteKuboGreenwoodDirectionalConductivity
   ring
 
