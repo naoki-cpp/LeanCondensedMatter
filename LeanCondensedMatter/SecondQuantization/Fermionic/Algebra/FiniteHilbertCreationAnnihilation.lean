@@ -11,8 +11,9 @@ On a finite mode set, the occupation-subset Fock space has its canonical Euclide
 realization. The explicit signed basis actions of `create i` and `annihilate i` are conjugate
 transposes of one another. Their bounded finite-Hilbert transports are therefore genuine adjoints.
 
-This result is the analytic bridge needed to prove self-adjointness of number-conserving one-body
-Hamiltonians and currents from Hermitian hopping coefficients.
+This is finite-Hilbert representation infrastructure for fermionic ladder operators. It is kept
+below the thermal layer so lattice and other non-thermal models can use the bounded transports and
+adjoint identities directly.
 -/
 
 namespace SecondQuantization
@@ -22,8 +23,7 @@ noncomputable section
 
 variable {Mode : Type*} [LinearOrder Mode]
 
-/-- The creation and annihilation coordinate matrices are conjugate transposes. -/
-theorem star_matrixCoeff_create_eq_matrixCoeff_annihilate
+private theorem star_matrixCoeff_create_eq_matrixCoeff_annihilate
     (i : Mode) (m n : Occupation Mode) :
     star (Common.matrixCoeff (create i) n m) =
       Common.matrixCoeff (annihilate i) m n := by
