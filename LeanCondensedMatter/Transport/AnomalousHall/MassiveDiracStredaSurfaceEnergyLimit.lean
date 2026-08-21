@@ -50,6 +50,11 @@ theorem finiteEnergyStredaSurfaceIntegral_eq_lorentzian_difference
       volume m energyMax :=
     (continuous_lorentzianSpectralKernel_sub_center
       (-fermiEnergy) broadening hbroadening).intervalIntegrable _ _
+  have hIntMirror' : IntervalIntegrable
+      (fun energy : ℝ =>
+        lorentzianSpectralKernel (energy + fermiEnergy) broadening)
+      volume m energyMax := by
+    simpa [sub_neg_eq_add] using hIntMirror
   unfold finiteEnergyStredaSurfaceIntegral
   calc
     (∫ energy in m..energyMax,
@@ -68,25 +73,20 @@ theorem finiteEnergyStredaSurfaceIntegral_eq_lorentzian_difference
             lorentzianSpectralKernel (energy + fermiEnergy) broadening)) := by
       rw [intervalIntegral.integral_const_mul]
     _ = _ := by
-      rw [intervalIntegral.integral_sub]
-      · simpa [sub_neg_eq_add] using hIntMirror
-      · exact hIntFermi
-      · simpa [sub_neg_eq_add] using hIntMirror
+      rw [intervalIntegral.integral_sub hIntFermi hIntMirror']
 
 /-- Once the positive-energy interval contains the metallic Fermi energy, the finite Středa
 surface energy integral converges to `-(e² m / εF) π`. -/
 theorem tendsto_finiteEnergyStredaSurfaceIntegral
     (e m fermiEnergy energyMax : ℝ)
-    (hmF : m < fermiEnergy) (hFMax : fermiEnergy < energyMax) :
+    (hm : 0 < m) (hmF : m < fermiEnergy) (hFMax : fermiEnergy < energyMax) :
     Tendsto
       (fun broadening : ℝ =>
         finiteEnergyStredaSurfaceIntegral e m fermiEnergy energyMax broadening)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds (-(e ^ 2 * m / fermiEnergy) * Real.pi)) := by
-  have hfermi : fermiEnergy ≠ 0 := by
-    intro hzero
-    rw [hzero] at hmF
-    linarith
+  have hfermiPos : 0 < fermiEnergy := lt_trans hm hmF
+  have hfermi : fermiEnergy ≠ 0 := ne_of_gt hfermiPos
   have hFermiMass :=
     tendsto_integral_lorentzianSpectralKernel_sub_center_of_mem
       fermiEnergy m energyMax hmF hFMax
