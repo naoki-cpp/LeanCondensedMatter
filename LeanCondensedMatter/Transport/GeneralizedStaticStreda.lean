@@ -63,6 +63,7 @@ noncomputable def finiteDimensionalStaticKuboBastinChannelResponse
     (eta : ℝ) : ℂ :=
   finiteDimensionalKuboBastinChannelResponse system data channel 0 eta
 
+omit [FiniteDimensional ℂ H] in
 /-- The static generalized response is exactly the two-vertex ordinary trace plus the explicit
 observable-variation expectation. -/
 theorem finiteDimensionalStaticKuboBastinChannelResponse_eq_vertex_add_observableVariation
