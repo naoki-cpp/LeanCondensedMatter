@@ -119,12 +119,12 @@ theorem tendsto_bastinBandPairContribution_zero
   have hdiff := tendsto_spectralDifferenceCoefficient_zero
     target v m px py probeEnergy htarget
   have hxy : Tendsto
-      (fun _ : ℝ => bastinXYBandBlockTrace source target e v m px py)
-      (nhds 0) (nhds (bastinXYBandBlockTrace source target e v m px py)) :=
+      (fun _ : ℝ => bastinBandBlockTrace .x .y source target e v m px py)
+      (nhds 0) (nhds (bastinBandBlockTrace .x .y source target e v m px py)) :=
     tendsto_const_nhds
   have hyx : Tendsto
-      (fun _ : ℝ => bastinYXBandBlockTrace source target e v m px py)
-      (nhds 0) (nhds (bastinYXBandBlockTrace source target e v m px py)) :=
+      (fun _ : ℝ => bastinBandBlockTrace .y .x source target e v m px py)
+      (nhds 0) (nhds (bastinBandBlockTrace .y .x source target e v m px py)) :=
     tendsto_const_nhds
   have hretTerm := (((hret.mul hret).mul hdiff).mul hxy)
   have hadvTerm := (((hadv.mul hadv).mul hdiff).mul hyx)

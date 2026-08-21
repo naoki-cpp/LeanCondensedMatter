@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Basic
-import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteHilbertOperator
+import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator
 import Mathlib.Analysis.Normed.Lp.LpEquiv
 
 set_option linter.style.header false

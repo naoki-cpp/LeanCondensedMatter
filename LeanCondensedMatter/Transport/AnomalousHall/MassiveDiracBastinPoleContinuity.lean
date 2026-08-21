@@ -36,9 +36,9 @@ theorem targetCenteredInterbandSpectatorCurrentFactor_zero
     (band : Band) (e v m px py : ℝ) :
     targetCenteredInterbandSpectatorCurrentFactor band e v m px py (0, 0) =
       (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-          bastinXYBandBlockTrace (oppositeBand band) band e v m px py -
+          bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py -
         ((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-          bastinYXBandBlockTrace (oppositeBand band) band e v m px py) := by
+          bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py) := by
   unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
   simp [retardedSpectralParameter, advancedSpectralParameter,
     projectorResolventCoefficient_oppositeBand_at_bandEnergy]
@@ -94,11 +94,13 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_zero
   have hadvSq := hadv.mul hadv
   have hxy := hretSq.mul
     (continuousAt_const : ContinuousAt
-      (fun _ : ℝ × ℝ => bastinXYBandBlockTrace (oppositeBand band) band e v m px py)
+      (fun _ : ℝ × ℝ =>
+        bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py)
       (0, 0))
   have hyx := hadvSq.mul
     (continuousAt_const : ContinuousAt
-      (fun _ : ℝ × ℝ => bastinYXBandBlockTrace (oppositeBand band) band e v m px py)
+      (fun _ : ℝ × ℝ =>
+        bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)
       (0, 0))
   unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
   dsimp
@@ -113,9 +115,9 @@ theorem tendsto_targetCenteredInterbandSpectatorCurrentFactor_zero
       (nhds (0, 0))
       (nhds
         (((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-            bastinXYBandBlockTrace (oppositeBand band) band e v m px py -
+            bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py -
           ((((interbandEnergyGap band v m px py : ℝ) : ℂ))⁻¹) ^ 2 *
-            bastinYXBandBlockTrace (oppositeBand band) band e v m px py)) := by
+            bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)) := by
   have h := (continuousAt_targetCenteredInterbandSpectatorCurrentFactor_zero
     band e v m px py hE).tendsto
   rw [targetCenteredInterbandSpectatorCurrentFactor_zero band e v m px py] at h

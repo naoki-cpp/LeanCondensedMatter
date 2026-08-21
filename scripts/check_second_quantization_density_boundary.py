@@ -4,9 +4,10 @@ from architecture_audit_common import finish_audit, repository_root, strip_lean_
 
 ROOT = repository_root(__file__)
 LEAN = ROOT / "LeanCondensedMatter"
+ALGEBRA = LEAN / "SecondQuantization" / "Common" / "Algebra"
 THERMAL = LEAN / "SecondQuantization" / "Common" / "Thermal"
 PURE_POINT = LEAN / "QuantumTheory" / "Gibbs" / "PurePoint.lean"
-FINITE_HILBERT = THERMAL / "FiniteHilbertOperator.lean"
+FINITE_HILBERT = ALGEBRA / "FiniteHilbertOperator.lean"
 FINITE_EXPECTATION = THERMAL / "FiniteGibbsExpectationBridge.lean"
 FREE_ENTROPY = LEAN / "SecondQuantization" / "Fermionic" / "Thermal" / "FreeEntropy.lean"
 
@@ -24,6 +25,12 @@ def main() -> int:
     for name in ("FiniteGibbsDensityOperator.lean", "PurePointCompatibility.lean"):
         if (THERMAL / name).exists():
             errors.append(f"obsolete finite Gibbs owner remains: {THERMAL.relative_to(ROOT) / name}")
+    for name in ("FiniteHilbertOperator.lean", "FiniteHilbertOperatorAlgebra.lean"):
+        if (THERMAL / name).exists():
+            errors.append(
+                f"state-independent finite Hilbert owner remains under Thermal: "
+                f"{THERMAL.relative_to(ROOT) / name}"
+            )
 
     if errors:
         return finish_audit(errors,
@@ -46,7 +53,7 @@ def main() -> int:
     expectation = code(FINITE_EXPECTATION)
     for required in (
         "import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
-        "import LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteHilbertOperator",
+        "import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator",
         "finitePurePointGibbsDensityOperator",
     ):
         if required not in expectation:
