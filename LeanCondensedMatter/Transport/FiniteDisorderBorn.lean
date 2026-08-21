@@ -17,6 +17,9 @@ self-energy is the covariance action on the clean retarded resolvent. The exact 
 is not identified with the Born expression by definition: their difference is named
 `bornRetardedClosureError`, and equality requires an explicit `RetardedBornClosureHypothesis`.
 
+Exact scalar/operator averaging is owned by `FiniteDisorder`; this module only consumes that layer
+to state the moment, Dyson, and Born boundaries.
+
 No self-consistent Born approximation, dressed propagator inside the self-energy, vertex
 correction, Ward identity, trace-per-volume construction, or thermodynamic limit is introduced.
 -/
@@ -35,44 +38,6 @@ variable [Fintype Ω]
 namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
-
-/-- Exact weighted finite average of an operator-valued configuration observable. -/
-noncomputable def operatorAverage
-    (operator : Ω → H →L[ℂ] H) : H →L[ℂ] H :=
-  ∑ ω, (ensemble.probability ω : ℂ) • operator ω
-
-@[simp]
-theorem operatorAverage_zero :
-    ensemble.operatorAverage (fun _ => 0) = 0 := by
-  simp [operatorAverage]
-
-/-- Normalization makes the operator average of a constant equal to that constant. -/
-theorem operatorAverage_const (operator : H →L[ℂ] H) :
-    ensemble.operatorAverage (fun _ => operator) = operator := by
-  unfold operatorAverage
-  rw [← Finset.sum_smul]
-  have hprobability :
-      ∑ ω, (ensemble.probability ω : ℂ) = 1 := by
-    exact_mod_cast ensemble.probability_sum
-  rw [hprobability, one_smul]
-
-/-- Exact finite operator averaging is additive. -/
-theorem operatorAverage_add
-    (left right : Ω → H →L[ℂ] H) :
-    ensemble.operatorAverage (fun ω => left ω + right ω) =
-      ensemble.operatorAverage left + ensemble.operatorAverage right := by
-  simp [operatorAverage, smul_add, Finset.sum_add_distrib]
-
-/-- Configuration-independent operators can be pulled through an exact finite operator average. -/
-theorem operatorAverage_mul_left_right
-    (left right : H →L[ℂ] H) (operator : Ω → H →L[ℂ] H) :
-    ensemble.operatorAverage (fun ω => left * operator ω * right) =
-      left * ensemble.operatorAverage operator * right := by
-  unfold operatorAverage
-  rw [Finset.mul_sum, Finset.sum_mul]
-  apply Finset.sum_congr rfl
-  intro ω _
-  simp
 
 /-- Exact clean retarded Green operator used in the Born expansion. -/
 noncomputable def freeRetardedGreen
