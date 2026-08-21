@@ -88,29 +88,6 @@ theorem coe_completedFreeGibbsProbability_removeOccupation_of_mem
   push_cast
   rfl
 
-omit [LinearOrder Mode] in
-/-- Two bounded operators on completed Fock space are equal when they agree on every occupation
-basis vector.  The proof passes through the dense algebraic finite-support core. -/
-private theorem continuousLinearMap_ext_completedBasis
-    {A B : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode}
-    (h : ∀ n : Occupation Mode,
-      A.toLinearMap (completedBasisState n) = B.toLinearMap (completedBasisState n)) :
-    A = B := by
-  apply DFunLike.ext'
-  exact (map_continuous A).ext_on algebraicToCompleted_denseRange (map_continuous B) <| by
-    rintro _ ⟨x, rfl⟩
-    have hcore :
-        A.toLinearMap.comp algebraicToCompleted =
-          B.toLinearMap.comp algebraicToCompleted := by
-      apply Finsupp.lhom_ext
-      intro n c
-      have hc : (Finsupp.single n c : OccupationFock Mode) = c • basisState n :=
-        (Finsupp.smul_single_one n c).symm
-      rw [hc]
-      simp only [LinearMap.comp_apply, map_smul, algebraicToCompleted_basisState]
-      rw [h n]
-    exact congrArg (fun f : OccupationFock Mode →ₗ[ℂ] CompletedFockSpace Mode => f x) hcore
-
 /-- Completed free-Gibbs creation intertwining:
 `ρβ aᵢ† = exp (-β εᵢ) aᵢ† ρβ` as an identity of bounded operators. -/
 theorem completedFreeGibbsDensityOperator_comp_create
@@ -121,7 +98,7 @@ theorem completedFreeGibbsDensityOperator_comp_create
         ((completedCreate i).comp
           (purePointGibbsDensityOperator completedOccupationHilbertBasis
             (fermionEnergy ε) β hsum).op) := by
-  apply continuousLinearMap_ext_completedBasis
+  apply Common.continuousLinearMap_ext_completedBasis
   intro n
   change
     (purePointGibbsDensityOperator completedOccupationHilbertBasis
@@ -155,7 +132,7 @@ theorem completedFreeGibbsDensityOperator_comp_annihilate
         ((completedAnnihilate i).comp
           (purePointGibbsDensityOperator completedOccupationHilbertBasis
             (fermionEnergy ε) β hsum).op) := by
-  apply continuousLinearMap_ext_completedBasis
+  apply Common.continuousLinearMap_ext_completedBasis
   intro n
   change
     (purePointGibbsDensityOperator completedOccupationHilbertBasis
