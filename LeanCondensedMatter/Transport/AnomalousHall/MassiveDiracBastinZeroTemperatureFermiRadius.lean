@@ -36,11 +36,8 @@ theorem energy_radial_eq_imp_eq_of_nonneg
   have hsquare := congrArg (fun x : ℝ => x ^ 2) henergy
   rw [energy_sq v m p 0, energy_sq v m q 0] at hsquare
   unfold energySq at hsquare
-  have hmul : v ^ 2 * p ^ 2 = v ^ 2 * q ^ 2 := by
-    norm_num at hsquare
-    exact add_right_cancel hsquare
-  have hpqSq : p ^ 2 = q ^ 2 := by
-    exact mul_left_cancel₀ (pow_ne_zero 2 hv) hmul
+  norm_num at hsquare
+  have hpqSq : p ^ 2 = q ^ 2 := hsquare.resolve_right hv
   rcases sq_eq_sq_iff_eq_or_eq_neg.mp hpqSq with hpq | hpq
   · exact hpq
   · nlinarith
