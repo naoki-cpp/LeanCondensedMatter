@@ -21,7 +21,6 @@ namespace SecondQuantization
 namespace Fermionic
 
 open Filter Topology
-open scoped ENNReal
 
 noncomputable section
 
@@ -42,21 +41,6 @@ theorem completedModeTruncation_apply (S : Finset Mode)
   simpa [completedModeTruncation] using
     (Common.completedCoordinateProjection_apply
       (Config := Occupation Mode) (fun m : Occupation Mode => m ⊆ S) ψ n)
-
-/-- Finite-mode truncation is contractive. -/
-theorem norm_completedModeTruncation_le (S : Finset Mode) (ψ : CompletedFockSpace Mode) :
-    ‖completedModeTruncation S ψ‖ ≤ ‖ψ‖ := by
-  simpa [completedModeTruncation] using
-    (Common.norm_completedCoordinateProjection_le
-      (Config := Occupation Mode) (fun n : Occupation Mode => n ⊆ S) ψ)
-
-/-- Finite-mode truncation is nonexpansive in the Hilbert-space metric. -/
-theorem dist_completedModeTruncation_le (S : Finset Mode)
-    (ψ φ : CompletedFockSpace Mode) :
-    dist (completedModeTruncation S ψ) (completedModeTruncation S φ) ≤ dist ψ φ := by
-  simpa [completedModeTruncation] using
-    (Common.dist_completedCoordinateProjection_le
-      (Config := Occupation Mode) (fun n : Occupation Mode => n ⊆ S) ψ φ)
 
 /-- A basis state survives exactly when its occupation configuration is contained in `S`. -/
 theorem completedModeTruncation_basisState (S : Finset Mode) (n : Occupation Mode) :
@@ -103,8 +87,10 @@ theorem dist_completedModeTruncation_le_two_mul_of_fixed
     (hφ : completedModeTruncation S φ = φ) :
     dist (completedModeTruncation S ψ) ψ ≤ 2 * dist ψ φ := by
   have hcontract :
-      dist (completedModeTruncation S ψ) (completedModeTruncation S φ) ≤ dist ψ φ :=
-    dist_completedModeTruncation_le S ψ φ
+      dist (completedModeTruncation S ψ) (completedModeTruncation S φ) ≤ dist ψ φ := by
+    simpa [completedModeTruncation] using
+      (Common.dist_completedCoordinateProjection_le
+        (Config := Occupation Mode) (fun n : Occupation Mode => n ⊆ S) ψ φ)
   calc
     dist (completedModeTruncation S ψ) ψ ≤
         dist (completedModeTruncation S ψ) (completedModeTruncation S φ) +
