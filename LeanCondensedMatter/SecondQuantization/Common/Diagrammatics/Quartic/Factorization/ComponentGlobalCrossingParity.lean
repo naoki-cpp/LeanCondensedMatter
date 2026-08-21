@@ -106,20 +106,6 @@ private theorem QuarticDiagram.componentCrossingCount_add_swap_mod_two_eq_zero
   rw [hcross]
   exact d.sum_componentOrderedLeg_inversions_mod_two_eq_zero shuffle B C hBC
 
-private theorem QuarticDiagram.crosses_componentPairEquiv_iff
-    {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
-    (orders : d.ComponentVertexOrders) (shuffle : d.ComponentShuffle)
-    (B : d.componentPartition.parts) (p q : d.LocalOrderedPair orders B) :
-    Combinatorics.Crosses
-        (d.componentPairEquiv orders shuffle ⟨B, p⟩).1
-        (d.componentPairEquiv orders shuffle ⟨B, q⟩).1 ↔
-      Combinatorics.Crosses p.1 q.1 := by
-  rw [d.componentPairEquiv_apply, d.componentPairEquiv_apply]
-  exact Combinatorics.crosses_map_iff
-    (d.componentOrderedLegOrderEmbedding shuffle B)
-    (d.componentOrderedLegOrderEmbedding shuffle B).strictMono
-    p.1.1 p.1.2 q.1.1 q.1.2
-
 /-- The diagonal oriented crossing count is the local crossing count of that component. -/
 private theorem QuarticDiagram.componentCrossingCount_self
     {S : Finset (Fin N)} (d : QuarticDiagram Label N S)
@@ -135,7 +121,12 @@ private theorem QuarticDiagram.componentCrossingCount_self
   intro p _
   apply Finset.sum_congr rfl
   intro q _
-  simp only [d.crosses_componentPairEquiv_iff]
+  rw [d.componentPairEquiv_apply, d.componentPairEquiv_apply]
+  have hcross := Combinatorics.crosses_map_iff
+    (d.componentOrderedLeg shuffle B)
+    (d.componentOrderedLeg_strictMono shuffle B)
+    p.1.1 p.1.2 q.1.1 q.1.2
+  simpa only [hcross]
 
 /-- The assembled global crossing count has the same parity as the sum of component-local crossing
 counts. -/
