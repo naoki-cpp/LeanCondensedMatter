@@ -52,7 +52,7 @@ theorem targetCenteredStredaSurfaceSpectatorCurrentFactor_radial_zero
         radialInterbandCurrentAmplitude band e v m p := by
   rw [targetCenteredStredaSurfaceSpectatorCurrentFactor_radial_eq
     band e v m p 0 0 hE]
-  norm_num <;> ring
+  simp [two_mul, add_mul]
 
 end
 
