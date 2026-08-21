@@ -17,7 +17,7 @@ namespace AnomalousHall.MassiveDirac
 
 noncomputable section
 
-open QuantumTheory.Transport
+open Filter QuantumTheory.Transport
 
 /-- Exact value of the target-centered Středa surface spectator at the clean target-band pole. -/
 theorem targetCenteredStredaSurfaceSpectatorCurrentFactor_zero
