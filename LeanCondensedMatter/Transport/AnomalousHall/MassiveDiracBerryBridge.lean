@@ -9,13 +9,13 @@ This file evaluates the clean two-band force-matrix numerator without choosing e
 For a target band `n` and the opposite band `m`, the rank-one spectral-projector identity
 
 ```text
-Tr(P_m vₓ P_n vᵧ) = ⟨m|vₓ|n⟩ ⟨n|vᵧ|m⟩
+Tr(P_m v_μ P_n v_ν) = ⟨m|v_μ|n⟩ ⟨n|v_ν|m⟩
 ```
 
-identifies the projector trace with the interband numerator appearing in the generic pointwise
-Berry-curvature formula of `Analysis.Operator.Spectral.BerryCurvature`.
+identifies the direction-indexed projector trace with the interband numerator appearing in the
+generic pointwise Berry-curvature formula of `Analysis.Operator.Spectral.BerryCurvature`.
 
-The massive-Dirac projector algebra then gives
+For the Hall component `(μ,ν) = (x,y)`, the massive-Dirac projector algebra gives
 
 ```text
 Im Tr(P_m vₓ P_n vᵧ) = -s m v² / E,
@@ -49,19 +49,20 @@ theorem interbandEnergyGap_eq (band : Band) (v m px py : ℝ) :
     interbandEnergyGap band v m px py = 2 * bandSign band * energy v m px py := by
   cases band <;> simp [interbandEnergyGap, bandEnergy] <;> ring
 
-/-- Gauge-independent interband force-matrix numerator.
+/-- Gauge-independent direction-indexed interband force-matrix numerator.
 
 For rank-one spectral projectors this trace equals
-`⟨m|vₓ|n⟩ ⟨n|vᵧ|m⟩`, with `m = oppositeBand n`. -/
-def forceMatrixTraceNumerator (band : Band) (v m px py : ℝ) : ℂ :=
+`⟨m|v_μ|n⟩ ⟨n|v_ν|m⟩`, with `m = oppositeBand n`. -/
+def forceMatrixTraceNumerator
+    (μ ν : Direction2) (band : Band) (v m px py : ℝ) : ℂ :=
   Matrix.trace
-    (bandProjector (oppositeBand band) v m px py * velocity .x v *
-      bandProjector band v m px py * velocity .y v)
+    (bandProjector (oppositeBand band) v m px py * velocity μ v *
+      bandProjector band v m px py * velocity ν v)
 
-/-- The imaginary part of the massive-Dirac interband force numerator is `-s m v²/E`. -/
+/-- The imaginary part of the massive-Dirac Hall force numerator is `-s m v²/E`. -/
 theorem forceMatrixTraceNumerator_im (band : Band) (v m px py : ℝ)
     (hE : energy v m px py ≠ 0) :
-    (forceMatrixTraceNumerator band v m px py).im =
+    (forceMatrixTraceNumerator .x .y band v m px py).im =
       -(bandSign band) * m * v ^ 2 / energy v m px py := by
   have hEc : (((energy v m px py : ℝ) : ℂ)) ≠ 0 := by
     exact_mod_cast hE
@@ -71,10 +72,10 @@ theorem forceMatrixTraceNumerator_im (band : Band) (v m px py : ℝ)
     field_simp [hEc] <;>
     ring_nf
 
-/-- The real two-band force-matrix Berry-curvature expression obtained from the generic formula
-`2 Im(Fˣ_mn Fʸ_nm)/(E_n-E_m)²` after using that the energy denominator is real. -/
+/-- The real two-band force-matrix Berry-curvature expression obtained from the Hall component of
+the generic formula `2 Im(Fˣ_mn Fʸ_nm)/(E_n-E_m)²` after using that the energy denominator is real. -/
 def forceMatrixBerryCurvature (band : Band) (v m px py : ℝ) : ℝ :=
-  2 * (forceMatrixTraceNumerator band v m px py).im /
+  2 * (forceMatrixTraceNumerator .x .y band v m px py).im /
     interbandEnergyGap band v m px py ^ 2
 
 /-- The projector/force-matrix expression equals the closed massive-Dirac Berry curvature away
