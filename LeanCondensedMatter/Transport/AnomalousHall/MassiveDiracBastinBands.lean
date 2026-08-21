@@ -102,86 +102,80 @@ theorem projectorResolvent_sq
   rw [bandProjectorOperator_upper_mul_lower v m px py hE]
   simp [pow_two]
 
-/-- Ordered Hall band block `Tr(P_target jₓ P_source jᵧ)` used by the Berry bridge. -/
+/-- Ordered current band block `Tr(P_target j_μ P_source j_ν)` used by the Berry bridge. -/
 noncomputable def currentBandBlockTrace
-    (source target : Band) (e v m px py : ℝ) : ℂ :=
+    (μ ν : Direction2) (source target : Band) (e v m px py : ℝ) : ℂ :=
   finiteDimensionalOperatorTrace
-    (bandProjectorOperator target v m px py * currentOperator .x e v *
-      bandProjectorOperator source v m px py * currentOperator .y e v)
+    (bandProjectorOperator target v m px py * currentOperator μ e v *
+      bandProjectorOperator source v m px py * currentOperator ν e v)
 
-/-- Natural `x-y` ordered trace produced directly by expanding the Bastin kernel. -/
-noncomputable def bastinXYBandBlockTrace
-    (source target : Band) (e v m px py : ℝ) : ℂ :=
+/-- Natural ordered trace `Tr(j_μ P_source j_ν P_target)` produced by the Bastin kernel. -/
+noncomputable def bastinBandBlockTrace
+    (μ ν : Direction2) (source target : Band) (e v m px py : ℝ) : ℂ :=
   finiteDimensionalOperatorTrace
-    (currentOperator .x e v * bandProjectorOperator source v m px py *
-      currentOperator .y e v * bandProjectorOperator target v m px py)
+    (currentOperator μ e v * bandProjectorOperator source v m px py *
+      currentOperator ν e v * bandProjectorOperator target v m px py)
 
-/-- Natural `y-x` ordered trace produced directly by the advanced part of the Bastin kernel. -/
-noncomputable def bastinYXBandBlockTrace
-    (source target : Band) (e v m px py : ℝ) : ℂ :=
-  finiteDimensionalOperatorTrace
-    (currentOperator .y e v * bandProjectorOperator source v m px py *
-      currentOperator .x e v * bandProjectorOperator target v m px py)
-
-/-- Cyclicity identifies the direct `x-y` Bastin block with the Berry-bridge block. -/
-theorem bastinXYBandBlockTrace_eq_currentBandBlockTrace
-    (source target : Band) (e v m px py : ℝ) :
-    bastinXYBandBlockTrace source target e v m px py =
-      currentBandBlockTrace source target e v m px py := by
-  unfold bastinXYBandBlockTrace currentBandBlockTrace
+/-- Cyclicity identifies the direct Bastin block with the corresponding projector-first block. -/
+theorem bastinBandBlockTrace_eq_currentBandBlockTrace
+    (μ ν : Direction2) (source target : Band) (e v m px py : ℝ) :
+    bastinBandBlockTrace μ ν source target e v m px py =
+      currentBandBlockTrace μ ν source target e v m px py := by
+  unfold bastinBandBlockTrace currentBandBlockTrace
   calc
     finiteDimensionalOperatorTrace
-        (currentOperator .x e v * bandProjectorOperator source v m px py *
-          currentOperator .y e v * bandProjectorOperator target v m px py) =
+        (currentOperator μ e v * bandProjectorOperator source v m px py *
+          currentOperator ν e v * bandProjectorOperator target v m px py) =
       finiteDimensionalOperatorTrace
-        ((currentOperator .x e v * bandProjectorOperator source v m px py *
-          currentOperator .y e v) * bandProjectorOperator target v m px py) := by rfl
+        ((currentOperator μ e v * bandProjectorOperator source v m px py *
+          currentOperator ν e v) * bandProjectorOperator target v m px py) := by rfl
     _ = finiteDimensionalOperatorTrace
         (bandProjectorOperator target v m px py *
-          (currentOperator .x e v * bandProjectorOperator source v m px py *
-            currentOperator .y e v)) :=
+          (currentOperator μ e v * bandProjectorOperator source v m px py *
+            currentOperator ν e v)) :=
       finiteDimensionalOperatorTrace_mul_comm _ _
     _ = finiteDimensionalOperatorTrace
-        (bandProjectorOperator target v m px py * currentOperator .x e v *
-          bandProjectorOperator source v m px py * currentOperator .y e v) := by
+        (bandProjectorOperator target v m px py * currentOperator μ e v *
+          bandProjectorOperator source v m px py * currentOperator ν e v) := by
       simp only [mul_assoc]
 
-/-- Cyclicity identifies the direct `y-x` block with the reversed Berry-bridge block. -/
-theorem bastinYXBandBlockTrace_eq_reversedCurrentBandBlockTrace
-    (source target : Band) (e v m px py : ℝ) :
-    bastinYXBandBlockTrace source target e v m px py =
-      currentBandBlockTrace target source e v m px py := by
-  unfold bastinYXBandBlockTrace currentBandBlockTrace
+/-- Reversing the current order exchanges the source and target labels in the projector-first
+block. -/
+theorem bastinBandBlockTrace_swap_eq_currentBandBlockTrace
+    (μ ν : Direction2) (source target : Band) (e v m px py : ℝ) :
+    bastinBandBlockTrace ν μ source target e v m px py =
+      currentBandBlockTrace μ ν target source e v m px py := by
+  unfold bastinBandBlockTrace currentBandBlockTrace
   calc
     finiteDimensionalOperatorTrace
-        (currentOperator .y e v * bandProjectorOperator source v m px py *
-          currentOperator .x e v * bandProjectorOperator target v m px py) =
+        (currentOperator ν e v * bandProjectorOperator source v m px py *
+          currentOperator μ e v * bandProjectorOperator target v m px py) =
       finiteDimensionalOperatorTrace
-        (currentOperator .y e v *
-          (bandProjectorOperator source v m px py * currentOperator .x e v *
+        (currentOperator ν e v *
+          (bandProjectorOperator source v m px py * currentOperator μ e v *
             bandProjectorOperator target v m px py)) := by
       simp only [mul_assoc]
     _ = finiteDimensionalOperatorTrace
-        ((bandProjectorOperator source v m px py * currentOperator .x e v *
-          bandProjectorOperator target v m px py) * currentOperator .y e v) := by
+        ((bandProjectorOperator source v m px py * currentOperator μ e v *
+          bandProjectorOperator target v m px py) * currentOperator ν e v) := by
       symm
       exact finiteDimensionalOperatorTrace_mul_comm _ _
     _ = finiteDimensionalOperatorTrace
-        (bandProjectorOperator source v m px py * currentOperator .x e v *
-          bandProjectorOperator target v m px py * currentOperator .y e v) := by rfl
+        (bandProjectorOperator source v m px py * currentOperator μ e v *
+          bandProjectorOperator target v m px py * currentOperator ν e v) := by rfl
 
-/-- The lower-to-upper ordered block is the lower-band Hall interband trace. -/
+/-- The lower-to-upper ordered block is the lower-band interband trace. -/
 theorem currentBandBlockTrace_lower_upper
-    (e v m px py : ℝ) :
-    currentBandBlockTrace .lower .upper e v m px py =
-      interbandCurrentTrace .x .y .lower e v m px py := by
+    (μ ν : Direction2) (e v m px py : ℝ) :
+    currentBandBlockTrace μ ν .lower .upper e v m px py =
+      interbandCurrentTrace μ ν .lower e v m px py := by
   rfl
 
-/-- The upper-to-lower ordered block is the upper-band Hall interband trace. -/
+/-- The upper-to-lower ordered block is the upper-band interband trace. -/
 theorem currentBandBlockTrace_upper_lower
-    (e v m px py : ℝ) :
-    currentBandBlockTrace .upper .lower e v m px py =
-      interbandCurrentTrace .x .y .upper e v m px py := by
+    (μ ν : Direction2) (e v m px py : ℝ) :
+    currentBandBlockTrace μ ν .upper .lower e v m px py =
+      interbandCurrentTrace μ ν .upper e v m px py := by
   rfl
 
 /-- Difference of retarded and advanced scalar resolvent coefficients for one band. -/
@@ -200,8 +194,8 @@ noncomputable def bastinBandPairContribution
   let a := projectorResolventCoefficient
     (advancedSpectralParameter probeEnergy broadening) source v m px py
   let d := spectralDifferenceCoefficient target v m px py probeEnergy broadening
-  r ^ 2 * d * bastinXYBandBlockTrace source target e v m px py -
-    a ^ 2 * d * bastinYXBandBlockTrace source target e v m px py
+  r ^ 2 * d * bastinBandBlockTrace .x .y source target e v m px py -
+    a ^ 2 * d * bastinBandBlockTrace .y .x source target e v m px py
 
 /-- Diagonal/intraband part of the finite-broadening projector Bastin trace. -/
 noncomputable def diagonalBastinTraceContribution
@@ -234,8 +228,7 @@ theorem projectorBastinTraceIntegrand_eq_four_band_blocks
     (retardedSpectralParameter probeEnergy broadening) v m px py]
   rw [projectorResolvent_eq_coefficients
     (advancedSpectralParameter probeEnergy broadening) v m px py]
-  unfold bastinBandPairContribution spectralDifferenceCoefficient
-    bastinXYBandBlockTrace bastinYXBandBlockTrace
+  unfold bastinBandPairContribution spectralDifferenceCoefficient bastinBandBlockTrace
   simp only [add_mul, sub_mul, mul_add, mul_sub, mul_smul_comm, smul_mul_assoc]
   simp only [map_add, map_sub, map_smul]
   ring_nf
