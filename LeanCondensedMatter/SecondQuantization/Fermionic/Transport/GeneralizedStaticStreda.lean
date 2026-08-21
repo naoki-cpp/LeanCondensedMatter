@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.GeneralizedKuboBastin
+import LeanCondensedMatter.Transport.FiniteKuboBastin
 import LeanCondensedMatter.Transport.StredaIntegration
 
 set_option linter.style.header false
