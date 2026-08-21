@@ -1,33 +1,26 @@
-import LeanCondensedMatter.Transport.FiniteDisorder
-import LeanCondensedMatter.Transport.Resolvent
+import LeanCondensedMatter.Transport.FiniteDisorderResolvent
 
 set_option linter.style.header false
 
 /-!
-# Finite-disorder Born self-energy and exact Dyson remainder
+# Finite-disorder Born self-energy and closure boundary
 
-This module separates three logically distinct objects:
+This module starts from the exact finite ensemble and exact configuration-wise resolvent/Dyson
+identities owned by `FiniteDisorder` and `FiniteDisorderResolvent`.
 
-1. exact finite disorder moments;
-2. an exact second-order resolvent/Dyson expansion with its full remainder; and
-3. the weak-scattering Born closure obtained by dropping that remainder error.
-
-A `FiniteDisorderMomentData` bundles explicit centering and covariance assumptions. The Born
-self-energy is the covariance action on the clean retarded resolvent. The exact averaged resolvent
-is not identified with the Born expression by definition: their difference is named
+A `FiniteDisorderMomentData` bundles explicit centering and covariance assumptions. From those
+moments, the module forms the exact averaged second-order Dyson remainder and then defines the
+weak-scattering Born self-energy and resolvent approximation. The exact averaged resolvent is not
+identified with the Born expression by definition: their difference is named
 `bornRetardedClosureError`, and equality requires an explicit `RetardedBornClosureHypothesis`.
 
-Exact scalar/operator averaging is owned by `FiniteDisorder`; this module only consumes that layer
-to state the moment, Dyson, and Born boundaries.
-
-No self-consistent Born approximation, dressed propagator inside the self-energy, vertex
-correction, Ward identity, trace-per-volume construction, or thermodynamic limit is introduced.
+No advanced Born closure, self-consistent Born approximation, dressed propagator inside the
+self-energy, vertex correction, Ward identity, trace-per-volume construction, or thermodynamic
+limit is introduced here.
 -/
 
 namespace QuantumTheory
 namespace Transport
-
-open scoped BigOperators
 
 noncomputable section
 
@@ -38,105 +31,6 @@ variable [Fintype Ω]
 namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
-
-/-- Exact clean retarded Green operator used in the Born expansion. -/
-noncomputable def freeRetardedGreen
-    (energy broadening : ℝ) : H →L[ℂ] H :=
-  retardedResolvent ensemble.baseHamiltonian.1 energy broadening
-
-/-- Exact retarded Green operator of one disordered configuration. -/
-noncomputable def configurationRetardedGreen
-    (energy broadening : ℝ) (ω : Ω) : H →L[ℂ] H :=
-  retardedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening
-
-/-- Exact first resolvent identity
-`Gω = G₀ + G₀ Vω Gω` at positive retarded broadening. -/
-theorem configurationRetardedGreen_eq_free_add_dyson
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) (ω : Ω) :
-    ensemble.configurationRetardedGreen energy broadening ω =
-      ensemble.freeRetardedGreen energy broadening +
-        ensemble.freeRetardedGreen energy broadening *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.configurationRetardedGreen energy broadening ω := by
-  unfold configurationRetardedGreen freeRetardedGreen
-  let shift₀ : H →L[ℂ] H :=
-    algebraMap ℂ (H →L[ℂ] H) (retardedSpectralParameter energy broadening) -
-      ensemble.baseHamiltonian.1
-  let shiftω : H →L[ℂ] H :=
-    algebraMap ℂ (H →L[ℂ] H) (retardedSpectralParameter energy broadening) -
-      (ensemble.configurationHamiltonian ω).1
-  have hshift : shift₀ = shiftω + (ensemble.impurityPotential ω).1 := by
-    dsimp [shift₀, shiftω, FiniteDisorderEnsemble.configurationHamiltonian]
-    noncomm_ring
-  have hfree := resolvent_mul_retardedShift
-    ensemble.baseHamiltonian.1 ensemble.baseHamiltonian.2
-    energy broadening hbroadening
-  have hconfiguration := retardedShift_mul_resolvent
-    (ensemble.configurationHamiltonian ω).1
-    (ensemble.configurationHamiltonian ω).2
-    energy broadening hbroadening
-  change retardedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening = _
-  calc
-    retardedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening =
-        retardedResolvent ensemble.baseHamiltonian.1 energy broadening * shift₀ *
-          retardedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening := by
-      rw [hfree]
-      simp
-    _ = retardedResolvent ensemble.baseHamiltonian.1 energy broadening *
-          (shiftω + (ensemble.impurityPotential ω).1) *
-            retardedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening := by
-      rw [hshift]
-    _ = retardedResolvent ensemble.baseHamiltonian.1 energy broadening *
-          (shiftω * retardedResolvent
-            (ensemble.configurationHamiltonian ω).1 energy broadening) +
-        retardedResolvent ensemble.baseHamiltonian.1 energy broadening *
-          (ensemble.impurityPotential ω).1 *
-            retardedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening := by
-      noncomm_ring
-    _ = retardedResolvent ensemble.baseHamiltonian.1 energy broadening +
-        retardedResolvent ensemble.baseHamiltonian.1 energy broadening *
-          (ensemble.impurityPotential ω).1 *
-            retardedResolvent (ensemble.configurationHamiltonian ω).1 energy broadening := by
-      rw [hconfiguration]
-      simp
-
-/-- Exact second-order Dyson expansion with the full configuration resolvent retained in the
-remainder. This is an identity, not a weak-scattering approximation. -/
-theorem configurationRetardedGreen_eq_secondOrder_add_exactRemainder
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) (ω : Ω) :
-    ensemble.configurationRetardedGreen energy broadening ω =
-      ensemble.freeRetardedGreen energy broadening +
-        ensemble.freeRetardedGreen energy broadening *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.freeRetardedGreen energy broadening +
-        ensemble.freeRetardedGreen energy broadening *
-          (ensemble.impurityPotential ω).1 *
-            ensemble.freeRetardedGreen energy broadening *
-              (ensemble.impurityPotential ω).1 *
-                ensemble.configurationRetardedGreen energy broadening ω := by
-  have hdyson := configurationRetardedGreen_eq_free_add_dyson
-    ensemble energy broadening hbroadening ω
-  calc
-    ensemble.configurationRetardedGreen energy broadening ω =
-        ensemble.freeRetardedGreen energy broadening +
-          ensemble.freeRetardedGreen energy broadening *
-            (ensemble.impurityPotential ω).1 *
-              ensemble.configurationRetardedGreen energy broadening ω := hdyson
-    _ = ensemble.freeRetardedGreen energy broadening +
-          ensemble.freeRetardedGreen energy broadening *
-            (ensemble.impurityPotential ω).1 *
-              (ensemble.freeRetardedGreen energy broadening +
-                ensemble.freeRetardedGreen energy broadening *
-                  (ensemble.impurityPotential ω).1 *
-                    ensemble.configurationRetardedGreen energy broadening ω) := by
-      exact congrArg
-        (fun green : H →L[ℂ] H =>
-          ensemble.freeRetardedGreen energy broadening +
-            ensemble.freeRetardedGreen energy broadening *
-              (ensemble.impurityPotential ω).1 * green)
-        hdyson
-    _ = _ := by
-      noncomm_ring
 
 /-- Explicit centered-disorder and covariance assumptions for a finite ensemble. The covariance is
 an operator-valued action on a supplied kernel; its exact finite second-moment realization is stored
