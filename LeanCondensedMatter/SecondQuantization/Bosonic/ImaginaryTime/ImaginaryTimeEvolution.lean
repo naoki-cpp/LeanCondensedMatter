@@ -19,6 +19,9 @@ All constructions are algebraic. No operator exponential, Hilbert-space completi
 assumption on the dispersion, or convergence theorem is used. The interaction-picture matrix-
 coefficient formula, continuity, and interval integrability use only finite support of individual
 algebraic-Fock vectors, not finiteness of the bosonic occupation type.
+
+Generic semigroup, inverse, zero-time, and composition laws for diagonal/Heisenberg evolution are
+owned by `SecondQuantization.Common.ImaginaryTime.DiagonalEvolution` and consumed directly there.
 -/
 
 namespace SecondQuantization
@@ -77,50 +80,17 @@ theorem imaginaryTimeEvolveFree_basisState (ε : Mode → ℝ) (τ : ℝ) (n : O
   simp only [imaginaryTimeEvolveFree, basisState]
   exact Common.diagonalEvolution_basisState (freeEigenvalue ε) τ n
 
-@[simp]
-theorem imaginaryTimeEvolveFree_zero (ε : Mode → ℝ) :
-    imaginaryTimeEvolveFree ε 0 = LinearMap.id :=
-  Common.diagonalEvolution_zero (freeEigenvalue ε)
-
-theorem imaginaryTimeEvolveFree_add (ε : Mode → ℝ) (τ τ' : ℝ) :
-    (imaginaryTimeEvolveFree ε τ).comp (imaginaryTimeEvolveFree ε τ') =
-      imaginaryTimeEvolveFree ε (τ + τ') :=
-  Common.diagonalEvolution_add (freeEigenvalue ε) τ τ'
-
-@[simp]
-theorem imaginaryTimeEvolveFree_comp_neg (ε : Mode → ℝ) (τ : ℝ) :
-    (imaginaryTimeEvolveFree ε τ).comp (imaginaryTimeEvolveFree ε (-τ)) = LinearMap.id :=
-  Common.diagonalEvolution_comp_neg (freeEigenvalue ε) τ
-
-@[simp]
-theorem imaginaryTimeEvolveFree_neg_comp (ε : Mode → ℝ) (τ : ℝ) :
-    (imaginaryTimeEvolveFree ε (-τ)).comp (imaginaryTimeEvolveFree ε τ) = LinearMap.id :=
-  Common.diagonalEvolution_neg_comp (freeEigenvalue ε) τ
-
 /-- Conjugation by the free diagonal evolution. -/
 noncomputable def imaginaryTimeEvolve (ε : Mode → ℝ) (τ : ℝ)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     FockSpace Mode →ₗ[ℂ] FockSpace Mode :=
   Common.heisenbergEvolve (freeEigenvalue ε) τ A
 
-@[simp]
-theorem imaginaryTimeEvolve_zero (ε : Mode → ℝ)
-    (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    imaginaryTimeEvolve ε 0 A = A :=
-  Common.heisenbergEvolve_zero (freeEigenvalue ε) A
-
 theorem imaginaryTimeEvolve_apply (ε : Mode → ℝ) (τ : ℝ)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) (x : FockSpace Mode) :
     imaginaryTimeEvolve ε τ A x =
       imaginaryTimeEvolveFree ε τ (A (imaginaryTimeEvolveFree ε (-τ) x)) :=
   rfl
-
-/-- Imaginary-time evolution distributes over operator composition. -/
-theorem imaginaryTimeEvolve_comp (ε : Mode → ℝ) (τ : ℝ)
-    (A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
-    imaginaryTimeEvolve ε τ (A.comp B) =
-      (imaginaryTimeEvolve ε τ A).comp (imaginaryTimeEvolve ε τ B) :=
-  Common.heisenbergEvolve_comp (freeEigenvalue ε) τ A B
 
 /-- The free Hamiltonian is fixed by its own imaginary-time evolution. -/
 theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
