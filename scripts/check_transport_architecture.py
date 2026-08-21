@@ -21,6 +21,7 @@ IMPORT_RE = re.compile(r"^\s*import\s+([^\s]+)")
 SECOND_QUANTIZATION_PREFIX = "LeanCondensedMatter.SecondQuantization"
 
 NEUTRAL_OWNERS = (
+    TRANSPORT / "ConductivityNormalization.lean",
     TRANSPORT / "FiniteKuboBastin.lean",
     TRANSPORT / "StredaOccupation.lean",
     TRANSPORT / "StredaCommonKernel.lean",
@@ -40,6 +41,8 @@ REMOVED_GENERIC_FERMIONIC_OWNERS = (
 )
 
 FERMIONIC_SPECIALIZATIONS = {
+    FERMIONIC_TRANSPORT / "ConductivityNormalization.lean":
+        "LeanCondensedMatter.Transport.ConductivityNormalization",
     FERMIONIC_TRANSPORT / "KuboBastinSpectral.lean":
         "LeanCondensedMatter.Transport.FiniteKuboBastin",
     FERMIONIC_TRANSPORT / "StredaOccupation.lean":
@@ -110,9 +113,24 @@ def main() -> int:
         )
 
     # Fermionic directional/current modules may specialize neutral transport, but the generic
-    # Kubo–Bastin/Středa authority stays in Transport.
+    # Kubo–Bastin/Středa/normalization authority stays in Transport.
     for path, imported in FERMIONIC_SPECIALIZATIONS.items():
         require_import(errors, path, imported)
+
+    # The fermionic conductivity module is only a directional realization. The scalar
+    # vector-potential/electric-field conversion must not be redefined downstream.
+    fermionic_normalization = FERMIONIC_TRANSPORT / "ConductivityNormalization.lean"
+    if fermionic_normalization.exists():
+        text = fermionic_normalization.read_text(encoding="utf-8")
+        for declaration in (
+            "def adiabaticElectricFieldFactor",
+            "def finiteVolumeConductivityNormalization",
+            "def finiteVolumeConductivityFromVectorPotential",
+        ):
+            if declaration in text:
+                errors.append(
+                    f"{relative(fermionic_normalization)} must not re-own generic normalization `{declaration}`"
+                )
 
     # Exact finite disorder owns the ensemble and exact averages. Configuration-wise resolvent
     # identities are a separate exact layer consumed by first Born and advanced Born.
