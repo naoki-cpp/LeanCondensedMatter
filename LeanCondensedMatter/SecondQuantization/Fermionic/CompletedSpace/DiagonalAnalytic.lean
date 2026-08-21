@@ -18,11 +18,6 @@ noncomputable section
 
 variable {Mode : Type*}
 
-/-- Free-Hamiltonian occupation energies are fixed by complex conjugation. -/
-theorem star_freeHamiltonianWeight (ε : Mode → ℝ) (n : Occupation Mode) :
-    star (freeHamiltonianWeight ε n) = freeHamiltonianWeight ε n := by
-  simp [freeHamiltonianWeight]
-
 /-- The completed free Hamiltonian is densely defined. -/
 theorem completedFreeHamiltonian_denseDomain (ε : Mode → ℝ) :
     Dense (((completedFreeHamiltonian ε).domain : Submodule ℂ (CompletedFockSpace Mode)) :
@@ -38,12 +33,7 @@ theorem completedFreeHamiltonian_isClosed (ε : Mode → ℝ) :
 theorem completedFreeHamiltonian_isSelfAdjoint (ε : Mode → ℝ) :
     IsSelfAdjoint (completedFreeHamiltonian ε) := by
   exact Common.completedDiagonalOperator_isSelfAdjoint_of_star (freeHamiltonianWeight ε)
-    (star_freeHamiltonianWeight ε)
-
-/-- Total-particle-number weights are fixed by complex conjugation. -/
-theorem star_particleNumberWeight (n : Occupation Mode) :
-    star (particleNumber n : ℂ) = (particleNumber n : ℂ) := by
-  simp
+    (fun n => by simp [freeHamiltonianWeight])
 
 /-- The completed total number operator is densely defined. -/
 theorem completedTotalNumberOperator_denseDomain {Mode : Type*} :
@@ -63,7 +53,7 @@ theorem completedTotalNumberOperator_isSelfAdjoint {Mode : Type*} :
     IsSelfAdjoint (completedTotalNumberOperator (Mode := Mode)) := by
   exact Common.completedDiagonalOperator_isSelfAdjoint_of_star
     (fun n : Occupation Mode => (particleNumber n : ℂ))
-    (star_particleNumberWeight (Mode := Mode))
+    (fun n => by simp)
 
 end
 end Fermionic
