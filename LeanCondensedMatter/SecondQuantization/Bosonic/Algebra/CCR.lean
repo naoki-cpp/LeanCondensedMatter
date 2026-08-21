@@ -156,6 +156,19 @@ theorem comm_annihilate_create (i j : Mode) :
     exact linearMap_ext_basisState fun n => by
       rw [comm_annihilate_create_basisState, if_neg hij, LinearMap.zero_apply]
 
+/-- The reverse mixed CCR, `[aᵢ†, aⱼ] = -δᵢⱼ`. -/
+theorem comm_create_annihilate (i j : Mode) :
+    comm (create i) (annihilate j) =
+      if i = j then -(LinearMap.id : FockSpace Mode →ₗ[ℂ] FockSpace Mode) else 0 := by
+  rw [show comm (create i) (annihilate j) = -comm (annihilate j) (create i) by
+    simp only [comm]
+    abel]
+  rw [comm_annihilate_create]
+  by_cases h : i = j
+  · subst j
+    simp
+  · simp [h, Ne.symm h]
+
 end
 
 end Bosonic
