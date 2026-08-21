@@ -1,3 +1,4 @@
+import LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.HarmonicSourceResponse
 
 set_option linter.style.header false
@@ -24,6 +25,7 @@ namespace Fermionic
 namespace Transport
 
 open Lattice
+open QuantumTheory.LinearResponse
 
 noncomputable section
 
