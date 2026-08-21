@@ -36,18 +36,18 @@ noncomputable section
 interband current trace whose target label is the opposite band. -/
 theorem bastinXYBandBlockTrace_opposite_source
     (band : Band) (e v m px py : ℝ) :
-    bastinXYBandBlockTrace (oppositeBand band) band e v m px py =
+    bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py =
       interbandCurrentTrace .x .y (oppositeBand band) e v m px py := by
-  rw [bastinXYBandBlockTrace_eq_currentBandBlockTrace]
+  rw [bastinBandBlockTrace_eq_currentBandBlockTrace]
   cases band <;> rfl
 
 /-- The corresponding `y-x` Bastin trace is the Hall interband current trace of the selected target
 band. -/
 theorem bastinYXBandBlockTrace_opposite_source
     (band : Band) (e v m px py : ℝ) :
-    bastinYXBandBlockTrace (oppositeBand band) band e v m px py =
+    bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py =
       interbandCurrentTrace .x .y band e v m px py := by
-  rw [bastinYXBandBlockTrace_eq_reversedCurrentBandBlockTrace]
+  rw [bastinBandBlockTrace_swap_eq_currentBandBlockTrace]
   cases band <;> rfl
 
 /-- The imaginary parts of the two Hall interband current traces are opposite away from the band
@@ -77,8 +77,8 @@ theorem interbandCurrentBerryWeight_oppositeBand
 Berry weight of that target band. -/
 theorem bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_berryWeight
     (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    ((bastinXYBandBlockTrace (oppositeBand band) band e v m px py -
-        bastinYXBandBlockTrace (oppositeBand band) band e v m px py).im /
+    ((bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py -
+        bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py).im /
       interbandEnergyGap band v m px py ^ 2) =
       -interbandCurrentBerryWeight band e v m px py := by
   rw [bastinXYBandBlockTrace_opposite_source,
@@ -92,8 +92,8 @@ theorem bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_berryWeight
 Berry curvature. -/
 theorem bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_chargeSq_berryCurvature
     (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    ((bastinXYBandBlockTrace (oppositeBand band) band e v m px py -
-        bastinYXBandBlockTrace (oppositeBand band) band e v m px py).im /
+    ((bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py -
+        bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py).im /
       interbandEnergyGap band v m px py ^ 2) =
       -(e ^ 2 * berryCurvature band v m px py) := by
   rw [bastinInterbandBlockDifference_im_div_gap_sq_eq_neg_berryWeight
