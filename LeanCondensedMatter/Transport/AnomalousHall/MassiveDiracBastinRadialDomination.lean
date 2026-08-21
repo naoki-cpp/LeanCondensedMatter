@@ -7,10 +7,10 @@ set_option linter.style.header false
 # Radial domination data for the massive-Dirac Bastin limit
 
 The remaining clean Phase 3 boundary in #1269 is the interchange of the positive-zero-broadening
-limit with the finite radial momentum integral.  The key model-specific input is that a positive
+limit with the finite radial momentum integral. The key model-specific input is that a positive
 Dirac mass gives a momentum-independent lower bound on the interband gap.
 
-On the radial axis `pᵧ = 0`, the interband current trace is also purely imaginary.  This file records
+On the radial axis `pᵧ = 0`, the interband current trace is also purely imaginary. This file records
 those two facts in a form adapted to the later uniform spectator and dominated-convergence bounds.
 
 No momentum integral or limit interchange is claimed yet in this first layer.
@@ -70,14 +70,14 @@ theorem forceMatrixTraceNumerator_radial
     exact_mod_cast hE
   cases band <;>
     simp [forceMatrixTraceNumerator, oppositeBand, bandProjector, Matrix.trace,
-      Matrix.mul_apply, velocityX, velocityY, hamiltonian, sigmaX, sigmaY, sigmaZ] <;>
+      Matrix.mul_apply, velocity, directionPauli, hamiltonian, sigmaX, sigmaY, sigmaZ] <;>
     field_simp [hEc] <;>
     ring_nf
 
-/-- The physical interband current trace on the radial axis is therefore purely imaginary as well. -/
+/-- The physical Hall interband current trace on the radial axis is therefore purely imaginary. -/
 theorem interbandCurrentTrace_radial
     (band : Band) (e v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
-    interbandCurrentTrace band e v m p 0 =
+    interbandCurrentTrace .x .y band e v m p 0 =
       (((e ^ 2 : ℝ) : ℂ)) *
         (((-(bandSign band * m * v ^ 2 / energy v m p 0) : ℝ) : ℂ)) * Complex.I := by
   rw [interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator,
