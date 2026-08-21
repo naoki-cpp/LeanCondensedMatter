@@ -76,8 +76,7 @@ theorem current_isHermitian (direction : Direction2) (e v : ℝ) :
     apply Matrix.IsHermitian.ext <;>
     intro i j <;>
     fin_cases i <;> fin_cases j <;>
-    simp [current, velocity, directionPauli, sigmaX, sigmaY] <;>
-    ring
+    simp [current, velocity, directionPauli, sigmaX, sigmaY]
 
 /-- Transporting the Hermitian Hamiltonian through `Matrix.toEuclideanCLM` gives a self-adjoint
 bounded operator, as required by the generic free-system API. -/
