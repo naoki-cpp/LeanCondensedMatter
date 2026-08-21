@@ -99,16 +99,6 @@ theorem TwoPointDiagram.mixedComponentCrossingPreserving_of_positionOrder
     · simpa [q0, p1] using h01.mpr ht01
     · simpa [p1, q1] using h11.mpr ht11
 
-/-- Component-local equality of interaction times implies crossing preservation. -/
-theorem TwoPointDiagram.mixedComponentCrossingPreserving_of_componentTimeEq
-    {ExternalLabel : Type*} {InternalLabel : Type*} {n : ℕ}
-    (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
-    (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
-    (hTime : d.ComponentTimeEq B σ υ) :
-    d.MixedComponentCrossingPreserving τ τ' σ υ B :=
-  d.mixedComponentCrossingPreserving_of_positionOrder τ τ' σ υ B
-    (d.mixedComponentPositionTimeEquiv_lt_iff τ τ' σ υ B hTime)
-
 /-- Inside one order chamber, canonical transport of a normalized component pair preserves the two
 underlying standard atomic legs in their normalized order. -/
 theorem TwoPointDiagram.mixedComponentPairTimeEquiv_endpointLegs_eq_of_sameOrderChamber
