@@ -51,10 +51,11 @@ noncomputable def completedCoordinateProjection (P : Config → Prop) :
           by_cases h : P c <;> simp [coordinateProjectionLinear, h])
 
 @[simp]
-theorem completedCoordinateProjection_apply (P : Config → Prop)
+theorem completedCoordinateProjection_apply (P : Config → Prop) [DecidablePred P]
     (ψ : CompletedFock Config) (c : Config) :
     completedCoordinateProjection P ψ c = if P c then ψ c else 0 := by
-  rfl
+  classical
+  by_cases h : P c <;> simp [completedCoordinateProjection, coordinateProjectionLinear, h]
 
 /-- Coordinate projections are contractive. -/
 theorem norm_completedCoordinateProjection_le (P : Config → Prop) (ψ : CompletedFock Config) :
@@ -74,14 +75,32 @@ theorem dist_completedCoordinateProjection_le (P : Config → Prop)
 /-- A canonical basis state survives a coordinate projection exactly when its configuration
 satisfies the predicate. -/
 @[simp]
-theorem completedCoordinateProjection_basisState (P : Config → Prop) (c : Config) :
+theorem completedCoordinateProjection_basisState (P : Config → Prop) [DecidablePred P]
+    (c : Config) :
     completedCoordinateProjection P (completedBasisState c) =
       if P c then completedBasisState c else 0 := by
   classical
-  apply lp.ext
-  funext d
-  by_cases hc : P c <;> by_cases hd : P d <;> by_cases hdc : d = c
-  all_goals simp [completedCoordinateProjection_apply, hc, hd, hdc]
+  by_cases hc : P c
+  · simp only [hc, if_true]
+    apply lp.ext
+    funext d
+    by_cases hd : P d
+    · simp [completedCoordinateProjection_apply, hd]
+    · have hdc : d ≠ c := by
+        intro h
+        subst d
+        exact hd hc
+      simp [completedCoordinateProjection_apply, hd, hdc]
+  · simp only [hc, if_false]
+    apply lp.ext
+    funext d
+    by_cases hd : P d
+    · have hdc : d ≠ c := by
+        intro h
+        subst d
+        exact hc hd
+      simp [completedCoordinateProjection_apply, hd, hdc]
+    · simp [completedCoordinateProjection_apply, hd]
 
 end
 end Common
