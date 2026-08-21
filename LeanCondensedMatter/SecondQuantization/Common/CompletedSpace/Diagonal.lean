@@ -70,6 +70,24 @@ theorem completedDiagonalOperator_apply (w : Config → ℂ)
     completedDiagonalOperator w ψ c = w c * (ψ : CompletedFock Config) c := by
   rfl
 
+/-- Membership in a diagonal weighted `ℓ²` domain is stable under adding a finite scalar constant
+to the weight. -/
+theorem mem_completedDiagonalDomain_add_const
+    (w : Config → ℂ) (c : ℂ) {ψ : CompletedFock Config}
+    (hψ : ψ ∈ completedDiagonalDomain w) :
+    ψ ∈ completedDiagonalDomain (fun n => w n + c) := by
+  rw [mem_completedDiagonalDomain_iff]
+  let x : (completedDiagonalOperator w).domain := ⟨ψ, hψ⟩
+  have hout := lp.memℓp (completedDiagonalOperator w x + c • ψ)
+  have hfun :
+      (fun n : Config => (w n + c) * ψ n) =
+        (fun n : Config => (completedDiagonalOperator w x + c • ψ) n) := by
+    funext n
+    change (w n + c) * ψ n = w n * ψ n + c * ψ n
+    ring
+  rw [hfun]
+  exact hout
+
 /-- Every finite-support algebraic Fock vector belongs to every weighted diagonal domain. -/
 theorem algebraicToCompleted_mem_completedDiagonalDomain (w : Config → ℂ)
     (x : AlgebraicFock Config) :
