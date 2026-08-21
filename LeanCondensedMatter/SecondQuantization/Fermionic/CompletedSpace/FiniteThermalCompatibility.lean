@@ -51,10 +51,12 @@ theorem completedFiniteHilbertEquiv_intertwines_freeGibbsDensity
     finitePurePointGibbsDensityOperator_apply_basis, map_smul,
     completedOccupationHilbertBasis_apply]
   change (purePointGibbsProbability (fermionEnergy ε) β n : ℂ) •
-      Common.completedFiniteHilbertEquiv (Config := Occupation Mode) (completedBasisState n) =
+      Common.completedFiniteHilbertEquiv (Config := Occupation Mode)
+        (Common.completedBasisState n) =
     (finitePurePointGibbsDensityOperator
       (Common.finiteHilbertBasis (Config := Occupation Mode)) (fermionEnergy ε) β).op
-      (Common.completedFiniteHilbertEquiv (Config := Occupation Mode) (completedBasisState n))
+      (Common.completedFiniteHilbertEquiv (Config := Occupation Mode)
+        (Common.completedBasisState n))
   rw [Common.completedFiniteHilbertEquiv_basisState,
     ← Common.finiteHilbertBasis_apply (Config := Occupation Mode) n,
     finitePurePointGibbsDensityOperator_apply_basis,
