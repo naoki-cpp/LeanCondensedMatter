@@ -10,9 +10,10 @@ This module introduces the finite probabilistic layer used before any weak-disor
 thermodynamic-limit approximation. A finite ensemble consists of a clean bounded Hamiltonian,
 a self-adjoint impurity potential for each configuration, and a normalized nonnegative weight.
 
-For every configuration the exact Hamiltonian is `Hω = H₀ + Vω`. The ensemble average is a finite
-weighted sum kept outside the configuration-wise response. In finite dimension, the average of an
-ordinary operator trace is proved equal to the trace of the weighted finite operator sum.
+For every configuration the exact Hamiltonian is `Hω = H₀ + Vω`. Scalar and operator-valued
+ensemble averages are finite weighted sums kept outside the configuration-wise response. In finite
+dimension, the scalar average of an ordinary operator trace is proved equal to the trace of the
+exact operator average.
 
 No Gaussian law, independence assumption, Born approximation, disorder expansion, trace per unit
 volume, or infinite-volume limit is introduced here.
@@ -104,15 +105,52 @@ theorem average_const_mul (scalar : ℂ) (response : Ω → ℂ) :
   intro ω _
   ring
 
+/-- Exact weighted finite average of an operator-valued configuration observable. -/
+noncomputable def operatorAverage
+    (operator : Ω → H →L[ℂ] H) : H →L[ℂ] H :=
+  ∑ ω, (ensemble.probability ω : ℂ) • operator ω
+
+@[simp]
+theorem operatorAverage_zero :
+    ensemble.operatorAverage (fun _ => 0) = 0 := by
+  simp [operatorAverage]
+
+/-- Normalization makes the operator average of a constant equal to that constant. -/
+theorem operatorAverage_const (operator : H →L[ℂ] H) :
+    ensemble.operatorAverage (fun _ => operator) = operator := by
+  unfold operatorAverage
+  rw [← Finset.sum_smul]
+  have hprobability :
+      ∑ ω, (ensemble.probability ω : ℂ) = 1 := by
+    exact_mod_cast ensemble.probability_sum
+  rw [hprobability, one_smul]
+
+/-- Exact finite operator averaging is additive. -/
+theorem operatorAverage_add
+    (left right : Ω → H →L[ℂ] H) :
+    ensemble.operatorAverage (fun ω => left ω + right ω) =
+      ensemble.operatorAverage left + ensemble.operatorAverage right := by
+  simp [operatorAverage, smul_add, Finset.sum_add_distrib]
+
+/-- Configuration-independent operators can be pulled through an exact finite operator average. -/
+theorem operatorAverage_mul_left_right
+    (left right : H →L[ℂ] H) (operator : Ω → H →L[ℂ] H) :
+    ensemble.operatorAverage (fun ω => left * operator ω * right) =
+      left * ensemble.operatorAverage operator * right := by
+  unfold operatorAverage
+  rw [Finset.mul_sum, Finset.sum_mul]
+  apply Finset.sum_congr rfl
+  intro ω _
+  simp
+
 /-- Finite disorder averaging commutes with the ordinary finite-dimensional operator trace. -/
 theorem average_finiteDimensionalOperatorTrace
     [FiniteDimensional ℂ H]
     (operator : Ω → H →L[ℂ] H) :
     ensemble.average
         (fun ω => finiteDimensionalOperatorTrace (H := H) (operator ω)) =
-      finiteDimensionalOperatorTrace (H := H)
-        (∑ ω, (ensemble.probability ω : ℂ) • operator ω) := by
-  unfold average
+      finiteDimensionalOperatorTrace (H := H) (ensemble.operatorAverage operator) := by
+  unfold average operatorAverage
   rw [map_sum]
   apply Finset.sum_congr rfl
   intro ω _
