@@ -1,5 +1,6 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStredaZeroTemperature
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStredaSpectral
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinBands
 import Mathlib.Analysis.SpecificLimits.RCLike
 import Mathlib.Analysis.Normed.Field.Lemmas
 import Mathlib.Topology.Bornology.BoundedOperation
@@ -116,16 +117,62 @@ theorem tendsto_regularizedStredaSurfacePrimitiveTrace_massiveDirac_atBot_zero
     filter_upwards with probeEnergy
     exact (advancedResolvent_eq_projectorResolvent
       v m px py probeEnergy broadening hE hbroadening).symm
-  have hleftRet := ((tendsto_const_nhds.mul hret).mul tendsto_const_nhds)
-  have hleftAdv := ((tendsto_const_nhds.mul hadv).mul tendsto_const_nhds)
-  have hleft := hleftRet.sub hleftAdv
-  have hdiff := hret.sub hadv
-  have hfactor := hleft.mul hdiff
-  have hscaled := tendsto_const_nhds.smul hfactor
+  let jx : DiracHilbert →L[ℂ] DiracHilbert := currentXOperator e v
+  let jy : DiracHilbert →L[ℂ] DiracHilbert := currentYOperator e v
+  have hjx : Tendsto (fun _ : ℝ => jx) atBot (nhds jx) := tendsto_const_nhds
+  have hjy : Tendsto (fun _ : ℝ => jy) atBot (nhds jy) := tendsto_const_nhds
+  have hleftRet :
+      Tendsto
+        (fun probeEnergy : ℝ =>
+          jx * retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening * jy)
+        atBot (nhds 0) := by
+    convert (hjx.mul hret).mul hjy using 1 <;> simp
+  have hleftAdv :
+      Tendsto
+        (fun probeEnergy : ℝ =>
+          jy * advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening * jx)
+        atBot (nhds 0) := by
+    convert (hjy.mul hadv).mul hjx using 1 <;> simp
+  have hleft :
+      Tendsto
+        (fun probeEnergy : ℝ =>
+          jx * retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening * jy -
+            jy * advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening * jx)
+        atBot (nhds 0) := by
+    simpa using hleftRet.sub hleftAdv
+  have hdiff :
+      Tendsto
+        (fun probeEnergy : ℝ =>
+          retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening -
+            advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening)
+        atBot (nhds 0) := by
+    simpa using hret.sub hadv
+  have hfactor :
+      Tendsto
+        (fun probeEnergy : ℝ =>
+          (jx * retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening * jy -
+              jy * advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening * jx) *
+            (retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening -
+              advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening))
+        atBot (nhds 0) := by
+    simpa using hleft.mul hdiff
+  have hscale :
+      Tendsto (fun _ : ℝ => (-(1 / 2 : ℂ))) atBot (nhds (-(1 / 2 : ℂ))) :=
+    tendsto_const_nhds
+  have hscaled :
+      Tendsto
+        (fun probeEnergy : ℝ =>
+          (-(1 / 2 : ℂ)) •
+            ((jx * retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening * jy -
+                jy * advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening * jx) *
+              (retardedResolvent (hamiltonianOperator v m px py) probeEnergy broadening -
+                advancedResolvent (hamiltonianOperator v m px py) probeEnergy broadening)))
+        atBot (nhds 0) := by
+    simpa using hscale.smul hfactor
   have htrace :=
     (finiteDimensionalOperatorTrace (H := DiracHilbert)).continuous.continuousAt.tendsto.comp hscaled
   simpa [regularizedStredaSurfacePrimitiveTrace,
-    regularizedStredaSurfacePrimitiveOperator, smrckaStredaSurfaceFactor] using htrace
+    regularizedStredaSurfacePrimitiveOperator, smrckaStredaSurfaceFactor, jx, jy] using htrace
 
 /-- Therefore the finite-window zero-temperature Fermi-surface term tends to the single Fermi-edge
 primitive as the lower energy is sent to `-∞`. -/
