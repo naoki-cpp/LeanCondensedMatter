@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStredaSurfaceRadialKernel
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialEnergyBridge
+import LeanCondensedMatter.Transport.AnomousHall.MassiveDiracStredaSurfaceRadialKernel
+import LeanCondensedMatter.Transport.AnomousHall.MassiveDiracBastinRadialEnergyBridge
 import Mathlib.Tactic
 
 set_option linter.style.header false
@@ -118,6 +118,12 @@ theorem interbandStredaSurfaceTraceContribution_radial_eq_kernel
   have hdenMinus :
       (fermiEnergy - energy v m p 0) ^ 2 + broadening ^ 2 ≠ 0 := by
     nlinarith [sq_pos_of_pos hbroadening]
+  have hdenPlus' :
+      broadening ^ 2 + (fermiEnergy + energy v m p 0) ^ 2 ≠ 0 := by
+    nlinarith [sq_pos_of_pos hbroadening]
+  have hdenMinus' :
+      broadening ^ 2 + (fermiEnergy - energy v m p 0) ^ 2 ≠ 0 := by
+    nlinarith [sq_pos_of_pos hbroadening]
   unfold interbandStredaSurfaceTraceContribution
   rw [show stredaSurfaceBandPairContribution .lower .upper
         e v m p 0 fermiEnergy broadening =
@@ -139,7 +145,7 @@ theorem interbandStredaSurfaceTraceContribution_radial_eq_kernel
     hsumPlus, hsumMinus]
   unfold lorentzianSpectralKernel radialInterbandStredaSurfaceKernel
   push_cast
-  field_simp [hEc, hdenPlus, hdenMinus]
+  field_simp [hEc, hdenPlus, hdenMinus, hdenPlus', hdenMinus']
   ring_nf
   rw [show Complex.I ^ 2 = (-1 : ℂ) by
     rw [pow_two, Complex.I_mul_I]]
@@ -170,7 +176,8 @@ theorem radialInterbandStredaSurfaceKernel_mul_p_eq_energyDensity_mul_deriv
 /-- At nonzero broadening the positive-energy Středa surface density is continuous. -/
 theorem continuous_stredaSurfaceRadialEnergyDensity
     (e m fermiEnergy broadening : ℝ) (hbroadening : broadening ≠ 0) :
-    Continuous (stredaSurfaceRadialEnergyDensity e m fermiEnergy · broadening) := by
+    Continuous (fun energy : ℝ =>
+      stredaSurfaceRadialEnergyDensity e m fermiEnergy energy broadening) := by
   have hplus : Continuous
       (fun energy : ℝ => (fermiEnergy + energy) ^ 2 + broadening ^ 2) := by
     fun_prop
@@ -222,7 +229,8 @@ theorem finiteRadialInterbandStredaSurfaceIntegral_eq_energyIntegral
     (a := (0 : ℝ)) (b := pMax)
     (f := fun p : ℝ => energy v m p 0)
     (f' := radialEnergyDerivative v m)
-    (g := stredaSurfaceRadialEnergyDensity e m fermiEnergy · broadening)
+    (g := fun energy : ℝ =>
+      stredaSurfaceRadialEnergyDensity e m fermiEnergy energy broadening)
     (fun p _ => hasDerivAt_energy_radial v m p hm)
     (continuous_radialEnergyDerivative v m hm).continuousOn
     (continuous_stredaSurfaceRadialEnergyDensity
