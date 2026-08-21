@@ -47,7 +47,7 @@ theorem targetCenteredStredaSurfaceSpectatorCurrentFactor_radial_zero
   rw [targetCenteredStredaSurfaceSpectatorCurrentFactor_radial_eq
     band e v m p 0 0 hE]
   simp
-  ring
+  ring_nf
 
 end
 
