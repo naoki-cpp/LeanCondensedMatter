@@ -10,6 +10,9 @@ configurations contained in `S`.  It is a contractive coordinate projection.  As
 the directed set `Finset Mode` ordered by inclusion, these projections converge strongly to the
 identity on completed fermionic Fock space.
 
+The coordinate-mask implementation and contractivity are owned by `Common.CompletedSpace`; this
+file keeps the fermionic finite-support semantics and strong-convergence argument.
+
 The convergence is formulated as a net rather than a sequence, so no countability assumption on the
 ambient mode type is required.
 -/
@@ -18,7 +21,6 @@ namespace SecondQuantization
 namespace Fermionic
 
 open Filter Topology
-open scoped ENNReal
 
 noncomputable section
 
@@ -27,82 +29,26 @@ variable {Mode : Type*}
 /-- Classical decidable equality used internally by finite-mode truncation. -/
 local instance completedModeTruncationDecidableEq : DecidableEq Mode := Classical.decEq Mode
 
-/-- Linear finite-mode truncation: retain an occupation amplitude exactly when all occupied modes
-belong to `S`. -/
-noncomputable def completedModeTruncationLinear (S : Finset Mode) :
-    CompletedFockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode := by
-  classical
-  exact
-    { toFun := fun ψ =>
-        ⟨fun n => if n ⊆ S then ψ n else 0,
-          (lp.memℓp ψ).mono' fun n => by
-            by_cases h : n ⊆ S <;> simp [h]⟩
-      map_add' := fun ψ φ => by
-        apply lp.ext
-        funext n
-        by_cases h : n ⊆ S <;> simp [h]
-      map_smul' := fun c ψ => by
-        apply lp.ext
-        funext n
-        by_cases h : n ⊆ S <;> simp [h] }
-
-@[simp]
-theorem completedModeTruncationLinear_apply (S : Finset Mode)
-    (ψ : CompletedFockSpace Mode) (n : Occupation Mode) :
-    completedModeTruncationLinear S ψ n = if n ⊆ S then ψ n else 0 := by
-  rfl
-
 /-- Finite-mode truncation as a bounded projection of norm at most one. -/
 noncomputable def completedModeTruncation (S : Finset Mode) :
-    CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode := by
-  exact (completedModeTruncationLinear S).mkContinuous 1 fun ψ => by
-    simpa only [one_mul] using
-      lp.norm_mono (p := (2 : ℝ≥0∞)) (by norm_num)
-        (x := completedModeTruncationLinear S ψ) (y := ψ) (fun n => by
-          by_cases h : n ⊆ S <;> simp [completedModeTruncationLinear_apply, h])
+    CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
+  Common.completedCoordinateProjection (fun n : Occupation Mode => n ⊆ S)
 
 @[simp]
 theorem completedModeTruncation_apply (S : Finset Mode)
     (ψ : CompletedFockSpace Mode) (n : Occupation Mode) :
     completedModeTruncation S ψ n = if n ⊆ S then ψ n else 0 := by
-  rfl
-
-/-- Finite-mode truncation is contractive. -/
-theorem norm_completedModeTruncation_le (S : Finset Mode) (ψ : CompletedFockSpace Mode) :
-    ‖completedModeTruncation S ψ‖ ≤ ‖ψ‖ := by
-  simpa only [one_mul] using
-    lp.norm_mono (p := (2 : ℝ≥0∞)) (by norm_num)
-      (x := completedModeTruncation S ψ) (y := ψ) (fun n => by
-        by_cases h : n ⊆ S <;> simp [completedModeTruncation_apply, h])
-
-/-- Finite-mode truncation is nonexpansive in the Hilbert-space metric. -/
-theorem dist_completedModeTruncation_le (S : Finset Mode)
-    (ψ φ : CompletedFockSpace Mode) :
-    dist (completedModeTruncation S ψ) (completedModeTruncation S φ) ≤ dist ψ φ := by
-  simpa [dist_eq_norm, map_sub] using norm_completedModeTruncation_le S (ψ - φ)
+  simpa [completedModeTruncation] using
+    (Common.completedCoordinateProjection_apply
+      (Config := Occupation Mode) (fun m : Occupation Mode => m ⊆ S) ψ n)
 
 /-- A basis state survives exactly when its occupation configuration is contained in `S`. -/
 theorem completedModeTruncation_basisState (S : Finset Mode) (n : Occupation Mode) :
     completedModeTruncation S (completedBasisState n) =
       if n ⊆ S then completedBasisState n else 0 := by
-  classical
-  apply lp.ext
-  funext m
-  by_cases hn : n ⊆ S
-  · simp only [hn, if_true]
-    by_cases hmn : m = n
-    · subst m
-      simp [completedModeTruncation_apply, completedBasisState, hn]
-    · by_cases hmS : m ⊆ S <;>
-        simp [completedModeTruncation_apply, completedBasisState, hmn, hmS]
-  · simp only [hn, if_false]
-    by_cases hmS : m ⊆ S
-    · have hmn : m ≠ n := by
-        intro h
-        subst m
-        exact hn hmS
-      simp [completedModeTruncation_apply, completedBasisState, hmS, hmn]
-    · simp [completedModeTruncation_apply, hmS]
+  simpa [completedModeTruncation, completedBasisState] using
+    (Common.completedCoordinateProjection_basisState
+      (Config := Occupation Mode) (fun m : Occupation Mode => m ⊆ S) n)
 
 /-- The finite set of ambient modes occurring in the support of an algebraic Fock vector. -/
 noncomputable def algebraicModeSupport (x : OccupationFock Mode) : Finset Mode := by
@@ -141,8 +87,10 @@ theorem dist_completedModeTruncation_le_two_mul_of_fixed
     (hφ : completedModeTruncation S φ = φ) :
     dist (completedModeTruncation S ψ) ψ ≤ 2 * dist ψ φ := by
   have hcontract :
-      dist (completedModeTruncation S ψ) (completedModeTruncation S φ) ≤ dist ψ φ :=
-    dist_completedModeTruncation_le S ψ φ
+      dist (completedModeTruncation S ψ) (completedModeTruncation S φ) ≤ dist ψ φ := by
+    simpa [completedModeTruncation] using
+      (Common.dist_completedCoordinateProjection_le
+        (Config := Occupation Mode) (fun n : Occupation Mode => n ⊆ S) ψ φ)
   calc
     dist (completedModeTruncation S ψ) ψ ≤
         dist (completedModeTruncation S ψ) (completedModeTruncation S φ) +

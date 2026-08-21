@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.NumberOperator
-import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.Basic
+import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.CoordinateProjection
 
 set_option linter.style.header false
 
@@ -10,9 +10,9 @@ This file specializes the statistics-independent completed Fock infrastructure i
 `Common.CompletedSpace.Basic` to fermionic occupation configurations. The completed fermionic Fock
 space is `ℓ²(Fermionic.Occupation Mode, ℂ)`.
 
-The generic Hilbert-space construction, canonical basis, and dense algebraic inclusion are owned by
-`Common`. This file keeps readable fermionic specialization names together with the genuinely
-fermionic single-mode occupation projection.
+The generic Hilbert-space construction, canonical basis, dense algebraic inclusion, and coordinate
+projection backend are owned by `Common`. This file keeps readable fermionic specialization names
+together with the genuinely fermionic single-mode occupation predicate.
 -/
 
 namespace SecondQuantization
@@ -95,43 +95,19 @@ theorem algebraicToCompleted_denseRange :
 
 variable [LinearOrder Mode]
 
-/-- The underlying linear map of the completed single-mode occupation projection. -/
-noncomputable def completedNumberOperatorLinear (i : Mode) :
-    CompletedFockSpace Mode →ₗ[ℂ] CompletedFockSpace Mode where
-  toFun ψ :=
-    ⟨fun n => if i ∈ n then ψ n else 0,
-      (lp.memℓp ψ).mono' fun n => by
-        by_cases h : i ∈ n <;> simp [h]⟩
-  map_add' ψ φ := by
-    apply lp.ext
-    funext n
-    by_cases h : i ∈ n <;> simp [h]
-  map_smul' c ψ := by
-    apply lp.ext
-    funext n
-    by_cases h : i ∈ n <;> simp [h]
-
-@[simp]
-theorem completedNumberOperatorLinear_apply (i : Mode) (ψ : CompletedFockSpace Mode)
-    (n : Occupation Mode) :
-    completedNumberOperatorLinear i ψ n = if i ∈ n then ψ n else 0 :=
-  rfl
-
 /-- The completed single-mode number operator. It is the orthogonal coordinate projection onto
 occupation configurations containing `i`, hence has operator norm at most one. -/
 noncomputable def completedNumberOperator (i : Mode) :
     CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode :=
-  (completedNumberOperatorLinear i).mkContinuous 1 fun ψ => by
-    simpa only [one_mul] using
-      lp.norm_mono (p := (2 : ℝ≥0∞)) (by norm_num)
-        (x := completedNumberOperatorLinear i ψ) (y := ψ) (fun n => by
-          by_cases h : i ∈ n <;> simp [h])
+  Common.completedCoordinateProjection (fun n : Occupation Mode => i ∈ n)
 
 @[simp]
 theorem completedNumberOperator_apply (i : Mode) (ψ : CompletedFockSpace Mode)
     (n : Occupation Mode) :
-    completedNumberOperator i ψ n = if i ∈ n then ψ n else 0 :=
-  rfl
+    completedNumberOperator i ψ n = if i ∈ n then ψ n else 0 := by
+  simpa [completedNumberOperator] using
+    (Common.completedCoordinateProjection_apply
+      (Config := Occupation Mode) (fun m : Occupation Mode => i ∈ m) ψ n)
 
 /-- The completed number operator has the same occupation-basis eigenvalue equation as the
 algebraic number operator. -/
@@ -139,11 +115,9 @@ algebraic number operator. -/
 theorem completedNumberOperator_basisState (i : Mode) (n : Occupation Mode) :
     completedNumberOperator i (completedBasisState n) =
       if i ∈ n then completedBasisState n else 0 := by
-  classical
-  apply lp.ext
-  funext m
-  by_cases hi : i ∈ n <;> by_cases hm : m = n <;>
-    simp [completedBasisState, completedNumberOperator_apply, hi, hm]
+  simpa [completedNumberOperator, completedBasisState] using
+    (Common.completedCoordinateProjection_basisState
+      (Config := Occupation Mode) (fun m : Occupation Mode => i ∈ m) n)
 
 /-- The completed single-mode number operator agrees with the algebraic number operator on the
 whole finite-support core, not only on individual basis states. -/
