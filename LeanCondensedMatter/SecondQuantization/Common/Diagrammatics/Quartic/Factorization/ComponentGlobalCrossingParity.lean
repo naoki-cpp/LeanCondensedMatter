@@ -121,10 +121,11 @@ private theorem QuarticDiagram.componentCrossingCount_self
   intro p _
   apply Finset.sum_congr rfl
   intro q _
-  simp only [d.componentPairEquiv_apply,
-    Combinatorics.crosses_map_iff
-      (d.componentOrderedLegOrderEmbedding shuffle B)
-      (d.componentOrderedLegOrderEmbedding shuffle B).strictMono]
+  rw [d.componentPairEquiv_apply, d.componentPairEquiv_apply]
+  rw [Combinatorics.crosses_map_iff
+    (d.componentOrderedLeg shuffle B)
+    (d.componentOrderedLeg_strictMono shuffle B)
+    p.1.1 p.1.2 q.1.1 q.1.2]
 
 /-- The assembled global crossing count has the same parity as the sum of component-local crossing
 counts. -/
