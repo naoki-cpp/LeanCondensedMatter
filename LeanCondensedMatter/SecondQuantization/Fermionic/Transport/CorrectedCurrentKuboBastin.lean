@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.GeneralizedKuboBastin
+import LeanCondensedMatter.Transport.FiniteKuboBastin
 
 set_option linter.style.header false
 
@@ -31,7 +31,7 @@ namespace Fermionic
 namespace Transport
 
 open Lattice
-open QuantumTheory QuantumTheory.LinearResponse
+open QuantumTheory QuantumTheory.LinearResponse QuantumTheory.Transport
 
 noncomputable section
 
