@@ -34,20 +34,9 @@ theorem completedAnticomm_apply
     completedAnticomm A B ψ = A (B ψ) + B (A ψ) :=
   rfl
 
-omit [LinearOrder Mode] in
-/-- Continuous linear maps on completed Fock space are determined by their values on the dense
-finite-support algebraic core. -/
-private theorem continuousLinearMap_ext_algebraicCore
-    {A B : CompletedFockSpace Mode →L[ℂ] CompletedFockSpace Mode}
-    (h : ∀ x : OccupationFock Mode, A (algebraicToCompleted x) = B (algebraicToCompleted x)) :
-    A = B := by
-  apply DFunLike.ext'
-  exact (map_continuous A).ext_on algebraicToCompleted_denseRange (map_continuous B) <| by
-    rintro _ ⟨x, rfl⟩
-    exact h x
-
 private theorem completedCreate_algebraicToCompleted (i : Mode) (x : OccupationFock Mode) :
-    completedCreate i (algebraicToCompleted x) = algebraicToCompleted (create i x) := by
+    completedCreate i (Common.algebraicToCompleted x) =
+      Common.algebraicToCompleted (create i x) := by
   change (completedCreate i).toLinearMap (algebraicToCompleted x) =
     algebraicToCompleted (create i x)
   simpa only [LinearMap.comp_apply] using
@@ -55,7 +44,8 @@ private theorem completedCreate_algebraicToCompleted (i : Mode) (x : OccupationF
       (completedCreate_comp_algebraicToCompleted i)
 
 private theorem completedAnnihilate_algebraicToCompleted (i : Mode) (x : OccupationFock Mode) :
-    completedAnnihilate i (algebraicToCompleted x) = algebraicToCompleted (annihilate i x) := by
+    completedAnnihilate i (Common.algebraicToCompleted x) =
+      Common.algebraicToCompleted (annihilate i x) := by
   change (completedAnnihilate i).toLinearMap (algebraicToCompleted x) =
     algebraicToCompleted (annihilate i x)
   simpa only [LinearMap.comp_apply] using
@@ -65,7 +55,7 @@ private theorem completedAnnihilate_algebraicToCompleted (i : Mode) (x : Occupat
 /-- Completed creation operators anticommute. -/
 theorem completedAnticomm_create_create (i j : Mode) :
     completedAnticomm (completedCreate i) (completedCreate j) = 0 := by
-  apply continuousLinearMap_ext_algebraicCore
+  apply Common.continuousLinearMap_ext_algebraicCore
   intro x
   rw [completedAnticomm_apply]
   rw [completedCreate_algebraicToCompleted j x,
@@ -82,7 +72,7 @@ theorem completedAnticomm_create_create (i j : Mode) :
 /-- Completed annihilation operators anticommute. -/
 theorem completedAnticomm_annihilate_annihilate (i j : Mode) :
     completedAnticomm (completedAnnihilate i) (completedAnnihilate j) = 0 := by
-  apply continuousLinearMap_ext_algebraicCore
+  apply Common.continuousLinearMap_ext_algebraicCore
   intro x
   rw [completedAnticomm_apply]
   rw [completedAnnihilate_algebraicToCompleted j x,
@@ -100,7 +90,7 @@ theorem completedAnticomm_annihilate_annihilate (i j : Mode) :
 theorem completedAnticomm_annihilate_create (i j : Mode) :
     completedAnticomm (completedAnnihilate i) (completedCreate j) =
       if i = j then ContinuousLinearMap.id ℂ (CompletedFockSpace Mode) else 0 := by
-  apply continuousLinearMap_ext_algebraicCore
+  apply Common.continuousLinearMap_ext_algebraicCore
   intro x
   rw [completedAnticomm_apply]
   rw [completedCreate_algebraicToCompleted j x,

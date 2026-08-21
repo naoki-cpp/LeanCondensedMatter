@@ -128,6 +128,39 @@ theorem algebraicToCompleted_denseRange :
     simp [completedBasisState, lp.single_apply]
   · simp [completedBasisState, lp.single_apply, h, Pi.single_eq_of_ne]
 
+/-- Continuous linear maps out of completed Fock space are determined by their values on the dense
+finite-support algebraic core. -/
+theorem continuousLinearMap_ext_algebraicCore
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
+    {A B : CompletedFock Config →L[ℂ] E}
+    (h : ∀ x : AlgebraicFock Config, A (algebraicToCompleted x) = B (algebraicToCompleted x)) :
+    A = B := by
+  apply DFunLike.ext'
+  exact (map_continuous A).ext_on algebraicToCompleted_denseRange (map_continuous B) <| by
+    rintro _ ⟨x, rfl⟩
+    exact h x
+
+/-- Continuous linear maps out of completed Fock space are determined by their values on the
+canonical completed basis. -/
+theorem continuousLinearMap_ext_completedBasis
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℂ E]
+    {A B : CompletedFock Config →L[ℂ] E}
+    (h : ∀ c : Config, A (completedBasisState c) = B (completedBasisState c)) :
+    A = B := by
+  apply continuousLinearMap_ext_algebraicCore
+  intro x
+  have hcore :
+      A.toLinearMap.comp algebraicToCompleted =
+        B.toLinearMap.comp algebraicToCompleted := by
+    apply Finsupp.lhom_ext
+    intro c a
+    have ha : (Finsupp.single c a : AlgebraicFock Config) = a • basisState c :=
+      (Finsupp.smul_single_one c a).symm
+    rw [ha]
+    simp only [LinearMap.comp_apply, map_smul, algebraicToCompleted_basisState]
+    exact congrArg (fun y : E => a • y) (h c)
+  exact congrArg (fun f : AlgebraicFock Config →ₗ[ℂ] E => f x) hcore
+
 end
 end Common
 end SecondQuantization
