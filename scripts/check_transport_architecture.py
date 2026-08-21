@@ -15,6 +15,7 @@ from architecture_audit_common import (
 ROOT = repository_root(__file__)
 LEAN = ROOT / "LeanCondensedMatter"
 TRANSPORT = LEAN / "Transport"
+LINEAR_RESPONSE = LEAN / "QuantumTheory" / "LinearResponse"
 FERMIONIC_TRANSPORT = LEAN / "SecondQuantization" / "Fermionic" / "Transport"
 
 IMPORT_RE = re.compile(r"^\s*import\s+([^\s]+)")
@@ -34,6 +35,8 @@ NEUTRAL_OWNERS = (
     TRANSPORT / "FiniteDisorderAdvancedBorn.lean",
     TRANSPORT / "FiniteDisorderSCBA.lean",
 )
+
+FINITE_TIME_ADIABATIC_OWNER = LINEAR_RESPONSE / "FiniteTimeAdiabatic.lean"
 
 REMOVED_GENERIC_FERMIONIC_OWNERS = (
     FERMIONIC_TRANSPORT / "GeneralizedKuboBastin.lean",
@@ -98,6 +101,11 @@ def main() -> int:
     for path in NEUTRAL_OWNERS:
         require_exists(errors, path)
 
+    if not FINITE_TIME_ADIABATIC_OWNER.exists():
+        errors.append(
+            f"missing canonical linear-response owner: {relative(FINITE_TIME_ADIABATIC_OWNER)}"
+        )
+
     check_absent_paths(
         errors,
         REMOVED_GENERIC_FERMIONIC_OWNERS,
@@ -148,6 +156,34 @@ def main() -> int:
                 errors.append(
                     f"{relative(fermionic_table)} must not re-own generic scalar table `{declaration}`"
                 )
+
+    # Scalar finite-time adiabatic transformation and observation-time convergence are generic
+    # linear-response concepts. Fermionic transport must not reintroduce its retired copies.
+    fermionic_frequency = FERMIONIC_TRANSPORT / "FrequencyResponse.lean"
+    if fermionic_frequency.exists():
+        text = fermionic_frequency.read_text(encoding="utf-8")
+        for declaration in (
+            "def finiteTimeAdiabaticTransform",
+            "def HasInfiniteObservationTimeLimit",
+            "def HasZeroSwitchingLimit",
+            "def HasDCFrequencyLimit",
+            "def HasTimeThenSwitchingThenDCLimit",
+            "def HasTimeThenDCThenSwitchingLimit",
+        ):
+            if declaration in text:
+                errors.append(
+                    f"{relative(fermionic_frequency)} must not re-own generic response core `{declaration}`"
+                )
+
+    for consumer in (
+        FERMIONIC_TRANSPORT / "StationaryFrequencyResponse.lean",
+        FERMIONIC_TRANSPORT / "InfiniteTimeFrequencyResponse.lean",
+    ):
+        require_import(
+            errors,
+            consumer,
+            "LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic",
+        )
 
     # Exact finite disorder owns the ensemble and exact averages. Configuration-wise resolvent
     # identities are a separate exact layer consumed by first Born and advanced Born.
