@@ -1,37 +1,23 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinTrace
-import LeanCondensedMatter.Transport.OccupationInterpolation
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+import LeanCondensedMatter.Transport.StredaOccupation
 
 set_option linter.style.header false
 
 /-!
-# Occupation interpolation boundary for the regularized Středa program
+# Fermionic directional occupation-resolved Kubo–Bastin response
 
-The finite Kubo–Bastin response inherited from the causal Kubo chain is expressed using discrete
-pure-point probabilities `pₘ`. A physical Středa energy integral instead requires a differentiable
-occupation function `f(E)`. These are not interchangeable by definition: the bridge must state that
-`f(Eₘ) = pₘ` on the supplied energy spectrum and must provide the integrability needed by the
-fundamental theorem of calculus.
+The statistics-independent occupation interpolation and arbitrary measured/source Kubo–Bastin
+response now live under `QuantumTheory.Transport`, in `OccupationInterpolation` and
+`StredaOccupation`.  This module retains only the finite-lattice directional charge-current
+specialization with its Peierls contact and finite-volume normalization.
 
-This module records that boundary first for arbitrary measured/source response vertices and an
-explicit observable-variation/contact term. For every transition it proves
+For each directional transition the discrete probability difference is replaced by the oriented
+energy integral of the supplied occupation derivative.  The resulting response remains connected
+to the causal Kubo / Kubo–Bastin chain at fixed positive switching rate.
 
-```text
-pₘ - pₙ = ∫_[Eₙ,Eₘ] f'(E) dE
-```
-
-and rewrites the complete finite generalized Kubo–Bastin response using these oriented
-occupation-derivative integrals. The existing directional charge-current conductivity path is then
-retained as a downstream specialization with its Peierls contact and finite-volume normalization.
-
-This is not yet a common full-energy Bastin integral and therefore is not yet the concrete
-surface/sea representation required by `RegularizedStredaRepresentation`. The next layer combines
-the finite transition intervals into a common energy kernel. Identifying that kernel or the static
-response with the canonical traced Středa/Bastin integral remains a separate Ward/energy-
-representation problem.
-
-No zero-temperature distributional derivative, zero-broadening, DC, disorder, trace-per-volume, or
-thermodynamic-limit claim is made here.
+This is not yet a common full-energy Bastin integral or a Středa surface/sea representation. No
+zero-temperature distributional derivative, zero-broadening, DC, disorder, trace-per-volume, or
+thermodynamic-limit statement is made here.
 -/
 
 namespace SecondQuantization
@@ -39,130 +25,17 @@ namespace Fermionic
 namespace Transport
 
 open SecondQuantization.Fermionic.Lattice
-
 open MeasureTheory QuantumTheory.LinearResponse QuantumTheory.Transport
 
 noncomputable section
 
-variable {Site : Type*}
+variable {Site ι E : Type*}
 variable [Fintype Site]
-
-/-- Matrix elements and retarded-resolvent factor of one finite generalized Bastin transition,
-with the occupation difference removed. -/
-noncomputable def finiteKuboBastinVertexTransitionFactor
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (measured source :
-      FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
-    (omega eta : ℝ) (mn : ι × ι) : ℂ :=
-  inner ℂ (data.basis mn.1) (measured (data.basis mn.2)) *
-    inner ℂ (data.basis mn.2) (source (data.basis mn.1)) *
-    inner ℂ (data.basis mn.2)
-      (QuantumTheory.Transport.retardedResolvent system.hamiltonian.1
-        (kuboBastinRetardedEnergy system.hbar omega (data.energy mn.1))
-        (kuboBastinEnergyBroadening system.hbar eta)
-        (data.basis mn.2))
-
-/-- One generalized Kubo–Bastin transition with its discrete occupation difference replaced by an
-oriented energy integral of the occupation derivative. -/
-noncomputable def finiteKuboBastinOccupationResolvedVertexTerm
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
-    (measured source :
-      FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
-    (omega eta : ℝ) (mn : ι × ι) : ℂ :=
-  -(∫ energy in data.energy mn.2..data.energy mn.1,
-      interpolation.occupationDerivative energy) *
-    finiteKuboBastinVertexTransitionFactor
-      system data measured source omega eta mn
-
-/-- The generalized spectral Bastin transition is exactly its occupation-resolved form. -/
-theorem finiteKuboBastinSpectralVertexTerm_eq_occupationResolved
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
-    (measured source :
-      FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
-    (omega eta : ℝ) (mn : ι × ι) :
-    finiteKuboBastinSpectralVertexTerm
-        system data measured source omega eta mn =
-      finiteKuboBastinOccupationResolvedVertexTerm
-        system data interpolation measured source omega eta mn := by
-  unfold finiteKuboBastinSpectralVertexTerm
-    finiteKuboBastinOccupationResolvedVertexTerm
-    finiteKuboBastinVertexTransitionFactor
-  rw [interpolation.probabilityDifference_eq_integral system mn.1 mn.2]
-  ring
-
-variable [Fintype ι]
-
-/-- Complete generalized response after replacing every discrete probability difference by its
-oriented occupation-derivative integral. The explicit observable-variation/contact expectation is
-kept unchanged. -/
-noncomputable def finiteKuboBastinOccupationResolvedVertexResponse
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
-    (measured source observableVariation :
-      FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
-    (omega eta : ℝ) : ℂ :=
-  (∑ mn : ι × ι,
-      finiteKuboBastinOccupationResolvedVertexTerm
-        system data interpolation measured source omega eta mn) +
-    purePointNormalizedExpectation system data observableVariation
-
-/-- The generalized finite spectral Bastin response equals its occupation-resolved form. -/
-theorem finiteKuboBastinSpectralVertexResponse_eq_occupationResolved
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
-    (measured source observableVariation :
-      FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
-    (omega eta : ℝ) :
-    finiteKuboBastinSpectralVertexResponse
-        system data measured source observableVariation omega eta =
-      finiteKuboBastinOccupationResolvedVertexResponse
-        system data interpolation measured source observableVariation omega eta := by
-  unfold finiteKuboBastinSpectralVertexResponse
-    finiteKuboBastinOccupationResolvedVertexResponse
-  congr 1
-  apply Finset.sum_congr rfl
-  intro mn _
-  exact finiteKuboBastinSpectralVertexTerm_eq_occupationResolved
-    system data interpolation measured source omega eta mn
-
-/-- Occupation-resolved generalized response attached directly to a neutral response channel. -/
-noncomputable def finiteKuboBastinOccupationResolvedChannelResponse
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
-    (channel : ResponseChannel (FiniteLatticeHilbertFock Site))
-    (omega eta : ℝ) : ℂ :=
-  finiteKuboBastinOccupationResolvedVertexResponse system data interpolation
-    channel.measured channel.source channel.observableVariation omega eta
-
-/-- The neutral finite spectral channel response equals its occupation-resolved form. -/
-theorem finiteKuboBastinSpectralChannelResponse_eq_occupationResolved
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
-    (channel : ResponseChannel (FiniteLatticeHilbertFock Site))
-    (omega eta : ℝ) :
-    finiteKuboBastinSpectralChannelResponse system data channel omega eta =
-      finiteKuboBastinOccupationResolvedChannelResponse
-        system data interpolation channel omega eta := by
-  simpa [finiteKuboBastinSpectralChannelResponse,
-    finiteKuboBastinOccupationResolvedChannelResponse] using
-    finiteKuboBastinSpectralVertexResponse_eq_occupationResolved
-      system data interpolation channel.measured channel.source
-        channel.observableVariation omega eta
-
-variable {E : Type*}
 variable [LinearOrder Site]
 variable [AddCommGroup E] [Module ℝ E]
+variable [Fintype ι]
 
-/-- The current matrix elements and retarded resolvent factor of one finite directional Bastin
+/-- The current matrix elements and retarded-resolvent factor of one finite directional Bastin
 transition, with the occupation difference removed. -/
 noncomputable def finiteKuboBastinDirectionalTransitionFactor
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
