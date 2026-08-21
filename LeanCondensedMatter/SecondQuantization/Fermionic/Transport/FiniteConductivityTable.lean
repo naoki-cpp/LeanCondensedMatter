@@ -32,7 +32,7 @@ namespace Fermionic
 namespace Transport
 
 open Lattice
-open QuantumTheory.LinearResponse
+open QuantumTheory.LinearResponse QuantumTheory.Transport
 
 noncomputable section
 
