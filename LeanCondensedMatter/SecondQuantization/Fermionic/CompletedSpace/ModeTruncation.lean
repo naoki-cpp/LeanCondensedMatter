@@ -92,18 +92,16 @@ theorem completedModeTruncation_basisState (S : Finset Mode) (n : Occupation Mod
   · simp only [hn, if_true]
     by_cases hmn : m = n
     · subst m
-      simp [completedModeTruncation_apply, completedBasisState, lp.single_apply, hn]
+      simp [completedModeTruncation_apply, completedBasisState, hn]
     · by_cases hmS : m ⊆ S <;>
-        simp [completedModeTruncation_apply, completedBasisState, lp.single_apply,
-          hmn, hmS, Pi.single_eq_of_ne]
+        simp [completedModeTruncation_apply, completedBasisState, hmn, hmS]
   · simp only [hn, if_false]
     by_cases hmS : m ⊆ S
     · have hmn : m ≠ n := by
         intro h
         subst m
         exact hn hmS
-      simp [completedModeTruncation_apply, completedBasisState, lp.single_apply,
-        hmS, hmn, Pi.single_eq_of_ne]
+      simp [completedModeTruncation_apply, completedBasisState, hmS, hmn]
     · simp [completedModeTruncation_apply, hmS]
 
 /-- The finite set of ambient modes occurring in the support of an algebraic Fock vector. -/
