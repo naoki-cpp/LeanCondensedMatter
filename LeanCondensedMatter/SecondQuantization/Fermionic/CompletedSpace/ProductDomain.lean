@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Diagonal
+import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Operators
 
 set_option linter.style.header false
 
