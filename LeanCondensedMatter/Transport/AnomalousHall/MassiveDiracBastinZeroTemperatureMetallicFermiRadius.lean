@@ -43,7 +43,7 @@ theorem metallicFermiRadius_nonneg
 
 /-- Squaring the explicit metallic Fermi radius removes the square root and absolute value. -/
 theorem metallicFermiRadius_sq
-    (v m fermiEnergy : ℝ) (hv : v ≠ 0)
+    (v m fermiEnergy : ℝ)
     (hm : 0 < m) (hmF : m ≤ fermiEnergy) :
     metallicFermiRadius v m fermiEnergy ^ 2 =
       (fermiEnergy ^ 2 - m ^ 2) / v ^ 2 := by
@@ -65,8 +65,9 @@ theorem energy_metallicFermiRadius
     rw [energy_sq]
     unfold energySq
     norm_num
-    rw [metallicFermiRadius_sq v m fermiEnergy hv hm hmF]
+    rw [metallicFermiRadius_sq v m fermiEnergy hm hmF]
     field_simp [pow_ne_zero 2 hv]
+    ring
   have henergyNonneg :
       0 ≤ energy v m (metallicFermiRadius v m fermiEnergy) 0 :=
     Real.sqrt_nonneg _
@@ -102,22 +103,25 @@ theorem bandEnergy_upper_lt_fermi_iff_lt_metallicFermiRadius
     (hm : 0 < m) (hmF : m ≤ fermiEnergy) (hp : 0 ≤ p) :
     bandEnergy .upper v m p 0 < fermiEnergy ↔
       p < metallicFermiRadius v m fermiEnergy := by
-  rw [bandEnergy_upper,
-    ← energy_metallicFermiRadius v m fermiEnergy hv hm hmF]
+  rw [bandEnergy_upper]
+  have hfermi := energy_metallicFermiRadius v m fermiEnergy hv hm hmF
   constructor
   · intro henergy
     by_contra hpF
     have hpFle : metallicFermiRadius v m fermiEnergy ≤ p := le_of_not_gt hpF
     rcases hpFle.eq_or_lt with hpEq | hpLt
-    · rw [hpEq] at henergy
-      exact (lt_irrefl _ henergy).elim
+    · have hfermi' := hfermi
+      rw [hpEq] at hfermi'
+      linarith
     · have hmono := energy_radial_lt_of_lt_of_nonneg
         v m (metallicFermiRadius v m fermiEnergy) p hv
         (metallicFermiRadius_nonneg v m fermiEnergy hm hmF) hpLt
       linarith
   · intro hpLt
-    exact energy_radial_lt_of_lt_of_nonneg
+    have hmono := energy_radial_lt_of_lt_of_nonneg
       v m p (metallicFermiRadius v m fermiEnergy) hv hp hpLt
+    rw [hfermi] at hmono
+    exact hmono
 
 /-- In the positive-mass metallic regime the lower band is occupied at every radial momentum. -/
 theorem bandEnergy_lower_lt_fermi
