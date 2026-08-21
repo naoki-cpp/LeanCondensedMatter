@@ -16,19 +16,6 @@ namespace Fermionic
 noncomputable section
 
 variable {Mode : Type*}
-
-@[simp]
-theorem completedBasisState_apply_self (n : Occupation Mode) :
-    completedBasisState n n = 1 := by
-  classical
-  simp [completedBasisState, lp.single_apply]
-
-@[simp]
-theorem completedBasisState_apply_of_ne {m n : Occupation Mode} (h : m ≠ n) :
-    completedBasisState n m = 0 := by
-  classical
-  simp [completedBasisState, lp.single_apply, h, Pi.single_eq_of_ne]
-
 variable [LinearOrder Mode]
 
 @[simp]
