@@ -7,7 +7,7 @@ set_option linter.style.header false
 /-!
 # Interband Bastin block antisymmetry for the massive Dirac model
 
-At a target-band Bastin pole, the source band is the opposite band.  The natural `x-y` and `y-x`
+At a target-band Bastin pole, the source band is the opposite band. The natural `x-y` and `y-x`
 trace orderings therefore reduce to the two opposite interband current traces already used by the
 clean Berry-curvature bridge.
 
@@ -32,30 +32,30 @@ noncomputable section
   rw [interbandEnergyGap_eq, interbandEnergyGap_eq]
   cases band <;> simp [oppositeBand, bandSign]
 
-/-- With the source chosen as the opposite band, the natural Bastin `x-y` trace is the interband
-current trace whose target label is the opposite band. -/
+/-- With the source chosen as the opposite band, the natural Bastin `x-y` trace is the Hall
+interband current trace whose target label is the opposite band. -/
 theorem bastinXYBandBlockTrace_opposite_source
     (band : Band) (e v m px py : ℝ) :
     bastinXYBandBlockTrace (oppositeBand band) band e v m px py =
-      interbandCurrentTrace (oppositeBand band) e v m px py := by
+      interbandCurrentTrace .x .y (oppositeBand band) e v m px py := by
   rw [bastinXYBandBlockTrace_eq_currentBandBlockTrace]
   cases band <;> rfl
 
-/-- The corresponding `y-x` Bastin trace is the interband current trace of the selected target
+/-- The corresponding `y-x` Bastin trace is the Hall interband current trace of the selected target
 band. -/
 theorem bastinYXBandBlockTrace_opposite_source
     (band : Band) (e v m px py : ℝ) :
     bastinYXBandBlockTrace (oppositeBand band) band e v m px py =
-      interbandCurrentTrace band e v m px py := by
+      interbandCurrentTrace .x .y band e v m px py := by
   rw [bastinYXBandBlockTrace_eq_reversedCurrentBandBlockTrace]
   cases band <;> rfl
 
-/-- The imaginary parts of the two interband current traces are opposite away from the band
+/-- The imaginary parts of the two Hall interband current traces are opposite away from the band
 degeneracy. -/
 theorem interbandCurrentTrace_oppositeBand_im
     (band : Band) (e v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    (interbandCurrentTrace (oppositeBand band) e v m px py).im =
-      -(interbandCurrentTrace band e v m px py).im := by
+    (interbandCurrentTrace .x .y (oppositeBand band) e v m px py).im =
+      -(interbandCurrentTrace .x .y band e v m px py).im := by
   rw [interbandCurrentTrace_im (oppositeBand band) e v m px py,
     interbandCurrentTrace_im band e v m px py,
     forceMatrixTraceNumerator_im (oppositeBand band) v m px py hE,

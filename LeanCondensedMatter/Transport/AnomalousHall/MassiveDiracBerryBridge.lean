@@ -55,8 +55,8 @@ For rank-one spectral projectors this trace equals
 `⟨m|vₓ|n⟩ ⟨n|vᵧ|m⟩`, with `m = oppositeBand n`. -/
 def forceMatrixTraceNumerator (band : Band) (v m px py : ℝ) : ℂ :=
   Matrix.trace
-    (bandProjector (oppositeBand band) v m px py * velocityX v *
-      bandProjector band v m px py * velocityY v)
+    (bandProjector (oppositeBand band) v m px py * velocity .x v *
+      bandProjector band v m px py * velocity .y v)
 
 /-- The imaginary part of the massive-Dirac interband force numerator is `-s m v²/E`. -/
 theorem forceMatrixTraceNumerator_im (band : Band) (v m px py : ℝ)
@@ -67,7 +67,7 @@ theorem forceMatrixTraceNumerator_im (band : Band) (v m px py : ℝ)
     exact_mod_cast hE
   cases band <;>
     simp [forceMatrixTraceNumerator, oppositeBand, bandProjector, Matrix.trace, Matrix.mul_apply,
-      velocityX, velocityY, hamiltonian, sigmaX, sigmaY, sigmaZ] <;>
+      velocity, directionPauli, hamiltonian, sigmaX, sigmaY, sigmaZ] <;>
     field_simp [hEc] <;>
     ring_nf
 

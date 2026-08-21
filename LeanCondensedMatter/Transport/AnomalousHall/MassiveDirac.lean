@@ -8,24 +8,25 @@ set_option linter.style.header false
 # Two-dimensional massive Dirac model for anomalous Hall transport
 
 This file fixes the clean two-band conventions and the first Berry-curvature benchmark used by
-#1269.  The momentum variables `px`, `py` are physical momenta (not wave vectors), so
+#1269. The momentum variables `px`, `py` are physical momenta (not wave vectors), so
 
 ```text
 H₀(p) = v (pₓ σₓ + pᵧ σᵧ) + m σ_z,
-vₓ = ∂H₀/∂pₓ = v σₓ,
-vᵧ = ∂H₀/∂pᵧ = v σᵧ,
-jₓ = -e vₓ,
-jᵧ = -e vᵧ.
+v_μ = ∂H₀/∂p_μ,
+j_μ = -e v_μ,  μ ∈ {x,y}.
 ```
 
-The `currentX`/`currentY` definitions below remain concrete closed forms and regression targets for
-the AHE calculation.  Their theorem-level authority as charge currents is supplied downstream by
+The in-plane direction is represented explicitly by `Direction2`. The direction-indexed
+`velocity`, `current`, and `dMomentum` definitions are the model-level owners used throughout the
+transport stack.
+
+The theorem-level authority for the charge-current interpretation is supplied downstream by
 `MassiveDiracCurrentBridge`: the generic charge-like corrected representative for `q I` has zero
 localization correction, reduces to `q v`, and at electron charge `q = -e` agrees exactly with these
-matrices.  Thus this model file records the realization rather than introducing a separate
+matrices. Thus this model file records the realization rather than introducing a separate
 foundational current convention.
 
-With this convention the continuum measure is `d²p / (2πℏ)²`.  The generic pointwise spectral
+With this convention the continuum measure is `d²p / (2πℏ)²`. The generic pointwise spectral
 Berry-curvature identities live upstream in `Analysis.Operator.Spectral.BerryCurvature`; this file
 supplies the concrete massive-Dirac algebra that will be connected to that force-matrix API.
 
@@ -52,6 +53,17 @@ def sigmaY : Matrix2 :=
 def sigmaZ : Matrix2 :=
   !![1, 0; 0, -1]
 
+/-- Cartesian directions in the two-dimensional Dirac plane. -/
+inductive Direction2 where
+  | x
+  | y
+  deriving DecidableEq, Fintype
+
+/-- Pauli matrix associated with an in-plane Cartesian direction. -/
+def directionPauli : Direction2 → Matrix2
+  | .x => sigmaX
+  | .y => sigmaY
+
 /-- Clean two-dimensional massive Dirac Hamiltonian
 `H₀(p) = v (pₓ σₓ + pᵧ σᵧ) + m σ_z`. -/
 def hamiltonian (v m px py : ℝ) : Matrix2 :=
@@ -59,25 +71,15 @@ def hamiltonian (v m px py : ℝ) : Matrix2 :=
     ((v * py : ℝ) : ℂ) • sigmaY +
       ((m : ℝ) : ℂ) • sigmaZ
 
-/-- Velocity operator `vₓ = ∂H₀/∂pₓ = v σₓ`. -/
-def velocityX (v : ℝ) : Matrix2 :=
-  ((v : ℝ) : ℂ) • sigmaX
+/-- Velocity operator `v_μ = ∂H₀/∂p_μ = v σ_μ`. -/
+def velocity (direction : Direction2) (v : ℝ) : Matrix2 :=
+  ((v : ℝ) : ℂ) • directionPauli direction
 
-/-- Velocity operator `vᵧ = ∂H₀/∂pᵧ = v σᵧ`. -/
-def velocityY (v : ℝ) : Matrix2 :=
-  ((v : ℝ) : ℂ) • sigmaY
-
-/-- Concrete massive-Dirac realization `jₓ = -e vₓ` of the canonical charge-like current
-representative.  The parameter `e > 0` denotes the elementary-charge magnitude, so the electron
-charge is `-e`; `MassiveDiracCurrentBridge` proves this matrix equals the generic `q v`
-representative at `q = -e`. -/
-def currentX (e v : ℝ) : Matrix2 :=
-  (((-e * v : ℝ) : ℂ)) • sigmaX
-
-/-- Concrete massive-Dirac realization `jᵧ = -e vᵧ` of the same canonical charge-like
-representative; the generic-to-model equality is proved in `MassiveDiracCurrentBridge`. -/
-def currentY (e v : ℝ) : Matrix2 :=
-  (((-e * v : ℝ) : ℂ)) • sigmaY
+/-- Concrete massive-Dirac realization `j_μ = -e v_μ` of the canonical charge-like current
+representative. The parameter `e > 0` denotes the elementary-charge magnitude, so the electron
+charge is `-e`; `MassiveDiracCurrentBridge` identifies this with the generic `q v` representative. -/
+def current (direction : Direction2) (e v : ℝ) : Matrix2 :=
+  (((-e : ℝ) : ℂ)) • velocity direction v
 
 /-- Positive energy squared of the clean massive Dirac dispersion. -/
 def energySq (v m px py : ℝ) : ℝ :=
@@ -126,13 +128,10 @@ def scalarTriple (a b c : Vec3) : ℝ :=
 def dVector (v m px py : ℝ) : Vec3 :=
   ⟨v * px, v * py, m⟩
 
-/-- `∂d/∂pₓ = (v,0,0)`. -/
-def dMomentumX (v : ℝ) : Vec3 :=
-  ⟨v, 0, 0⟩
-
-/-- `∂d/∂pᵧ = (0,v,0)`. -/
-def dMomentumY (v : ℝ) : Vec3 :=
-  ⟨0, v, 0⟩
+/-- Momentum derivative of the `d` vector in direction `μ`. -/
+def dMomentum : Direction2 → ℝ → Vec3
+  | .x, v => ⟨v, 0, 0⟩
+  | .y, v => ⟨0, v, 0⟩
 
 /-- Gauge-independent two-band curvature expression
 `-s d·(∂ₓd×∂ᵧd)/(2 E³)` for band sign `s = ±1`.
@@ -145,7 +144,7 @@ def twoBandCurvatureFromTriple (sign triple radius : ℝ) : ℝ :=
 /-- Closed clean massive-Dirac Berry-curvature benchmark before occupation/integration. -/
 def berryCurvature (band : Band) (v m px py : ℝ) : ℝ :=
   twoBandCurvatureFromTriple (bandSign band)
-    (scalarTriple (dVector v m px py) (dMomentumX v) (dMomentumY v))
+    (scalarTriple (dVector v m px py) (dMomentum .x v) (dMomentum .y v))
     (energy v m px py)
 
 @[simp] theorem hamiltonian_00 (v m px py : ℝ) :
@@ -167,60 +166,6 @@ def berryCurvature (band : Band) (v m px py : ℝ) : ℝ :=
 @[simp] theorem hamiltonian_11 (v m px py : ℝ) :
     hamiltonian v m px py 1 1 = -(m : ℂ) := by
   simp [hamiltonian, sigmaX, sigmaY, sigmaZ]
-
-@[simp] theorem velocityX_00 (v : ℝ) : velocityX v 0 0 = 0 := by
-  simp [velocityX, sigmaX]
-
-@[simp] theorem velocityX_01 (v : ℝ) : velocityX v 0 1 = (v : ℂ) := by
-  simp [velocityX, sigmaX]
-
-@[simp] theorem velocityX_10 (v : ℝ) : velocityX v 1 0 = (v : ℂ) := by
-  simp [velocityX, sigmaX]
-
-@[simp] theorem velocityX_11 (v : ℝ) : velocityX v 1 1 = 0 := by
-  simp [velocityX, sigmaX]
-
-@[simp] theorem velocityY_00 (v : ℝ) : velocityY v 0 0 = 0 := by
-  simp [velocityY, sigmaY]
-
-@[simp] theorem velocityY_01 (v : ℝ) : velocityY v 0 1 = -Complex.I * (v : ℂ) := by
-  simp [velocityY, sigmaY]
-  ring
-
-@[simp] theorem velocityY_10 (v : ℝ) : velocityY v 1 0 = Complex.I * (v : ℂ) := by
-  simp [velocityY, sigmaY]
-  ring
-
-@[simp] theorem velocityY_11 (v : ℝ) : velocityY v 1 1 = 0 := by
-  simp [velocityY, sigmaY]
-
-@[simp] theorem currentX_00 (e v : ℝ) : currentX e v 0 0 = 0 := by
-  simp [currentX, sigmaX]
-
-@[simp] theorem currentX_01 (e v : ℝ) : currentX e v 0 1 = ((-e * v : ℝ) : ℂ) := by
-  simp [currentX, sigmaX]
-
-@[simp] theorem currentX_10 (e v : ℝ) : currentX e v 1 0 = ((-e * v : ℝ) : ℂ) := by
-  simp [currentX, sigmaX]
-
-@[simp] theorem currentX_11 (e v : ℝ) : currentX e v 1 1 = 0 := by
-  simp [currentX, sigmaX]
-
-@[simp] theorem currentY_00 (e v : ℝ) : currentY e v 0 0 = 0 := by
-  simp [currentY, sigmaY]
-
-@[simp] theorem currentY_01 (e v : ℝ) :
-    currentY e v 0 1 = -Complex.I * ((-e * v : ℝ) : ℂ) := by
-  simp [currentY, sigmaY]
-  ring
-
-@[simp] theorem currentY_10 (e v : ℝ) :
-    currentY e v 1 0 = Complex.I * ((-e * v : ℝ) : ℂ) := by
-  simp [currentY, sigmaY]
-  ring
-
-@[simp] theorem currentY_11 (e v : ℝ) : currentY e v 1 1 = 0 := by
-  simp [currentY, sigmaY]
 
 /-- The dispersion polynomial is nonnegative. -/
 theorem energySq_nonneg (v m px py : ℝ) : 0 ≤ energySq v m px py := by
@@ -257,8 +202,8 @@ theorem hamiltonian_mul_self (v m px py : ℝ) :
 
 /-- The massive-Dirac `d`-vector Jacobian contributes `m v²`. -/
 theorem scalarTriple_dirac (v m px py : ℝ) :
-    scalarTriple (dVector v m px py) (dMomentumX v) (dMomentumY v) = m * v ^ 2 := by
-  simp [scalarTriple, dVector, dMomentumX, dMomentumY, pow_two]
+    scalarTriple (dVector v m px py) (dMomentum .x v) (dMomentum .y v) = m * v ^ 2 := by
+  simp [scalarTriple, dVector, dMomentum, pow_two]
 
 /-- Upper-band Berry curvature `Ω₊ = -m v²/(2E³)`. -/
 theorem berryCurvature_upper (v m px py : ℝ) :
