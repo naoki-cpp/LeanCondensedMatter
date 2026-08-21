@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.AnomousHall.MassiveDiracStredaSurfaceRadialKernel
-import LeanCondensedMatter.Transport.AnomousHall.MassiveDiracBastinRadialEnergyBridge
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStredaSurfaceRadialKernel
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialEnergyBridge
 import Mathlib.Tactic
 
 set_option linter.style.header false
