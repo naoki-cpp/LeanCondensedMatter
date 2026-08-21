@@ -112,18 +112,6 @@ theorem interbandStredaSurfaceTraceContribution_radial_eq_kernel
     (fermiEnergy - energy v m p 0) broadening hbroadening.ne'
   have hEc : (((energy v m p 0 : ℝ) : ℂ)) ≠ 0 := by
     exact_mod_cast hE
-  have hdenPlus :
-      (fermiEnergy + energy v m p 0) ^ 2 + broadening ^ 2 ≠ 0 := by
-    nlinarith [sq_pos_of_pos hbroadening]
-  have hdenMinus :
-      (fermiEnergy - energy v m p 0) ^ 2 + broadening ^ 2 ≠ 0 := by
-    nlinarith [sq_pos_of_pos hbroadening]
-  have hdenPlus' :
-      broadening ^ 2 + (fermiEnergy + energy v m p 0) ^ 2 ≠ 0 := by
-    nlinarith [sq_pos_of_pos hbroadening]
-  have hdenMinus' :
-      broadening ^ 2 + (fermiEnergy - energy v m p 0) ^ 2 ≠ 0 := by
-    nlinarith [sq_pos_of_pos hbroadening]
   unfold interbandStredaSurfaceTraceContribution
   rw [show stredaSurfaceBandPairContribution .lower .upper
         e v m p 0 fermiEnergy broadening =
@@ -145,10 +133,11 @@ theorem interbandStredaSurfaceTraceContribution_radial_eq_kernel
     hsumPlus, hsumMinus]
   unfold lorentzianSpectralKernel radialInterbandStredaSurfaceKernel
   push_cast
-  field_simp [hEc, hdenPlus, hdenMinus, hdenPlus', hdenMinus']
+  simp only [div_eq_mul_inv, mul_inv_rev₀]
   ring_nf
   rw [show Complex.I ^ 2 = (-1 : ℂ) by
     rw [pow_two, Complex.I_mul_I]]
+  simp [hEc]
   ring
 
 /-- Positive-energy-coordinate Středa surface density after removing the radial Jacobian. -/
@@ -207,7 +196,7 @@ def finiteEnergyStredaSurfaceIntegral
 positive mass and nonzero broadening. -/
 theorem finiteRadialInterbandStredaSurfaceIntegral_eq_energyIntegral
     (e v m fermiEnergy pMax broadening : ℝ)
-    (hm : 0 < m) (hpMax : 0 ≤ pMax) (hbroadening : broadening ≠ 0) :
+    (hm : 0 < m) (_hpMax : 0 ≤ pMax) (hbroadening : broadening ≠ 0) :
     (∫ p in (0 : ℝ)..pMax,
       p * radialInterbandStredaSurfaceKernel
         e v m fermiEnergy (energy v m p 0) broadening) =
