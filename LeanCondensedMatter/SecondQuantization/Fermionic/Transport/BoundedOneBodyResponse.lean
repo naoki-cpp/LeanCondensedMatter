@@ -45,31 +45,6 @@ noncomputable def boundedOneBodyOperator
     FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site :=
   boundedOneBodyOperatorLinearMap operator
 
-@[simp]
-theorem boundedOneBodyOperatorLinearMap_apply
-    (operator : LatticeState Site →ₗ[ℂ] LatticeState Site) :
-    boundedOneBodyOperatorLinearMap operator = boundedOneBodyOperator operator :=
-  rfl
-
-@[simp]
-theorem boundedOneBodyOperator_add
-    (A B : LatticeState Site →ₗ[ℂ] LatticeState Site) :
-    boundedOneBodyOperator (A + B) =
-      boundedOneBodyOperator A + boundedOneBodyOperator B :=
-  map_add boundedOneBodyOperatorLinearMap A B
-
-@[simp]
-theorem boundedOneBodyOperator_smul
-    (c : ℂ) (A : LatticeState Site →ₗ[ℂ] LatticeState Site) :
-    boundedOneBodyOperator (c • A) = c • boundedOneBodyOperator A :=
-  map_smul boundedOneBodyOperatorLinearMap c A
-
-@[simp]
-theorem boundedOneBodyOperator_zero :
-    boundedOneBodyOperator
-      (0 : LatticeState Site →ₗ[ℂ] LatticeState Site) = 0 :=
-  map_zero boundedOneBodyOperatorLinearMap
-
 /-- With system, state, source, and times fixed, the retarded response is a linear functional of the
 supplied one-body measured operator. -/
 noncomputable def boundedOneBodyRetardedResponseLinearMap
@@ -83,20 +58,6 @@ noncomputable def boundedOneBodyRetardedResponseLinearMap
   (QuantumTheory.LinearResponse.retardedSusceptibilityMeasuredLinearMap
       system expectation source t s).comp
     (boundedOneBodyOperatorLinearMap (Site := Site))
-
-@[simp]
-theorem boundedOneBodyRetardedResponseLinearMap_apply
-    (system : QuantumTheory.LinearResponse.BoundedFreeSystem
-      (FiniteLatticeHilbertFock Site))
-    (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
-      (FiniteLatticeHilbertFock Site))
-    (source : FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
-    (operator : LatticeState Site →ₗ[ℂ] LatticeState Site)
-    (t s : ℝ) :
-    boundedOneBodyRetardedResponseLinearMap system expectation source t s operator =
-      QuantumTheory.LinearResponse.retardedSusceptibility system expectation
-        (boundedOneBodyOperator operator) source t s :=
-  rfl
 
 end
 end Transport
