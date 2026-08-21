@@ -66,7 +66,7 @@ theorem finiteTimeAdiabaticDirectionalRetardedCoefficient_eq_stationaryLag
   let J := boundedDirectionalCurrent geometry direction
     (system.hbar : ℂ) (q : ℂ) K
   let g : ℝ → ℂ := fun τ =>
-    adiabaticFrequencyFactor ω η τ *
+    adiabaticFrequencyPhase ω η τ *
       QuantumTheory.LinearResponse.commutatorSusceptibility
         system expectation J J τ 0
   change
@@ -88,6 +88,7 @@ theorem finiteTimeAdiabaticDirectionalRetardedCoefficient_eq_stationaryLag
           g (T - s)
       rw [QuantumTheory.LinearResponse.retardedSusceptibility_eq_timeDifference_of_stationary
         system expectation hstationary J J T s]
+      rw [adiabaticFrequencyFactor_eq_adiabaticFrequencyPhase]
       simp [g, sub_nonneg.mpr hsIcc.2]
     _ = ∫ τ in (0 : ℝ)..T, g τ := by
       simpa using
