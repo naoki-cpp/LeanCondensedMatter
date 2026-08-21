@@ -137,8 +137,7 @@ theorem interbandStredaSurfaceTraceContribution_radial_eq_kernel
   ring_nf
   rw [show Complex.I ^ 2 = (-1 : ℂ) by
     rw [pow_two, Complex.I_mul_I]]
-  simp [hEc]
-  ring
+  simpa [hEc, mul_comm, mul_left_comm, mul_assoc]
 
 /-- Positive-energy-coordinate Středa surface density after removing the radial Jacobian. -/
 def stredaSurfaceRadialEnergyDensity
