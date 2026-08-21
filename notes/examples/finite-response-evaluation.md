@@ -30,16 +30,18 @@ the scalar evaluation is exactly the existing `purePointLehmannSeries`.
 
 ## Electrical conductivity workflow
 
-Electrical conductivity additionally needs the Peierls/contact expectation and physical volume.
-Provide the current-current spectral data plus contact value as a
-`SecondQuantization.Fermionic.Transport.FiniteConductivityTable ι` and evaluate it directly with
+Electrical conductivity additionally needs an explicit contact/observable-variation expectation and
+physical volume. Provide the measured/source spectral data plus contact value as a
+`QuantumTheory.Transport.FiniteConductivityTable ι` and evaluate it directly with
 
 ```text
 finiteConductivityTableValue volume ℏ ω η table
 ```
 
-For a proved finite pure-point hopping model, `finiteDirectionalConductivityTableOfPurePoint`
-constructs the scalar current/contact table from the existing Peierls data. The theorem
+The scalar table and evaluator are representation-independent. For a proved finite fermionic
+pure-point hopping model, the downstream
+`SecondQuantization.Fermionic.Transport.finiteDirectionalConductivityTableOfPurePoint` constructs
+the canonical scalar current/contact table from the existing Peierls data. The theorem
 `finiteConductivityTableValue_directional_ofPurePoint_eq_kuboGreenwood` identifies its evaluation
 exactly with `finiteKuboGreenwoodDirectionalConductivity`.
 

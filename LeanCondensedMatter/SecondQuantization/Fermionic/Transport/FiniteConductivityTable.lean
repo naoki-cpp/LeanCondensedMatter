@@ -1,30 +1,20 @@
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteLehmannTable
+import LeanCondensedMatter.Transport.FiniteConductivityTable
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboGreenwood
 
 set_option linter.style.header false
 
 /-!
-# Finite scalar conductivity evaluation tables
+# Fermionic directional finite-conductivity table realization
 
-This module is the electrical-conductivity specialization of the finite scalar Lehmann table.
-The theorem-level Kubo chain already derives the finite Kubo–Greenwood expression from causal
-response, the continuity-derived Peierls current, the explicit contact variation, and the
-finite-volume electric-field normalization.
+The representation-independent scalar conductivity table and evaluator now live in
+`QuantumTheory.Transport.FiniteConductivityTable`. This module retains only the finite-lattice
+fermionic realization: it constructs that canonical scalar table from a pure-point Peierls
+conductivity problem and proves that evaluating it reproduces the existing finite
+Kubo–Greenwood directional conductivity.
 
-For small benchmark models, only the scalar spectral current table and the scalar contact
-expectation are needed after that derivation.  `FiniteConductivityTable` therefore stores
-
-```text
-Eₙ, pₙ, Jₘₙ, Jₙₘ, ⟨C⟩,
-```
-
-through a `FiniteLehmannTable` plus one contact value.  Its evaluator keeps `ℏ`, driving frequency
-`ω`, switching rate `η`, and positive physical volume explicit and reuses the existing
-`finiteVolumeConductivityNormalization` convention.
-
-The main theorem constructs this scalar table from a finite pure-point hopping model and proves
-that its value is exactly `finiteKuboGreenwoodDirectionalConductivity`.  Thus this is a calculation
-boundary for concrete finite models, not a second definition of electrical conductivity.
+The directional realization supplies the continuity-derived Peierls current and explicit contact
+expectation. The table storage, scalar Lehmann evaluation, positive-volume normalization, and
+electric-field conversion are owned upstream and are not redefined here.
 -/
 
 namespace SecondQuantization
@@ -36,31 +26,12 @@ open QuantumTheory.LinearResponse QuantumTheory.Transport
 
 noncomputable section
 
-/-- Scalar data sufficient to evaluate a finite electrical conductivity once the operator-level
-Kubo theorem has supplied the current and contact observables. -/
-structure FiniteConductivityTable (ι : Type*) where
-  /-- Finite spectral current-current Lehmann data. -/
-  lehmann : FiniteLehmannTable ι
-  /-- Scalar expectation of the explicit Peierls/contact operator. -/
-  contact : ℂ
-
-/-- Evaluate the finite electrical conductivity from a scalar Lehmann table and contact value.
-
-The conversion from vector-potential response to current-density/electric-field response uses the
-same positive-volume normalization as the proved finite Kubo–Greenwood theorem. -/
-noncomputable def finiteConductivityTableValue
-    {ι : Type*} [Fintype ι]
-    (volume : QuantumTheory.Transport.PositiveVolume)
-    (hbar omega eta : ℝ) (table : FiniteConductivityTable ι) : ℂ :=
-  (finiteLehmannTableResponse hbar omega eta table.lehmann + table.contact) *
-    finiteVolumeConductivityNormalization volume omega eta
-
 variable {Site E ι : Type*}
 variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
 
-/-- Forget a finite pure-point Peierls conductivity problem to the scalar data needed for exact
-finite evaluation. -/
+/-- Forget a finite pure-point Peierls conductivity problem to the generic scalar data needed for
+exact finite evaluation. -/
 noncomputable def finiteDirectionalConductivityTableOfPurePoint
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -73,8 +44,9 @@ noncomputable def finiteDirectionalConductivityTableOfPurePoint
       (boundedDirectionalContact geometry direction
         (system.hbar : ℂ) (q : ℂ) K) }
 
-/-- Evaluating the scalar table obtained from a finite pure-point hopping model gives exactly the
-existing finite Kubo–Greenwood conductivity, including contact and finite-volume normalization. -/
+/-- Evaluating the generic scalar table obtained from a finite pure-point hopping model gives
+exactly the existing finite Kubo–Greenwood conductivity, including contact and finite-volume
+normalization. -/
 theorem finiteConductivityTableValue_directional_ofPurePoint_eq_kuboGreenwood
     [Fintype ι]
     (volume : QuantumTheory.Transport.PositiveVolume)

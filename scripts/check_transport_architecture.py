@@ -22,6 +22,7 @@ SECOND_QUANTIZATION_PREFIX = "LeanCondensedMatter.SecondQuantization"
 
 NEUTRAL_OWNERS = (
     TRANSPORT / "ConductivityNormalization.lean",
+    TRANSPORT / "FiniteConductivityTable.lean",
     TRANSPORT / "FiniteKuboBastin.lean",
     TRANSPORT / "StredaOccupation.lean",
     TRANSPORT / "StredaCommonKernel.lean",
@@ -43,6 +44,8 @@ REMOVED_GENERIC_FERMIONIC_OWNERS = (
 FERMIONIC_SPECIALIZATIONS = {
     FERMIONIC_TRANSPORT / "ConductivityNormalization.lean":
         "LeanCondensedMatter.Transport.ConductivityNormalization",
+    FERMIONIC_TRANSPORT / "FiniteConductivityTable.lean":
+        "LeanCondensedMatter.Transport.FiniteConductivityTable",
     FERMIONIC_TRANSPORT / "KuboBastinSpectral.lean":
         "LeanCondensedMatter.Transport.FiniteKuboBastin",
     FERMIONIC_TRANSPORT / "StredaOccupation.lean":
@@ -113,12 +116,12 @@ def main() -> int:
         )
 
     # Fermionic directional/current modules may specialize neutral transport, but the generic
-    # Kubo–Bastin/Středa/normalization authority stays in Transport.
+    # Kubo–Bastin/Středa/normalization/scalar-evaluation authority stays in Transport.
     for path, imported in FERMIONIC_SPECIALIZATIONS.items():
         require_import(errors, path, imported)
 
-    # The fermionic conductivity module is only a directional realization. The scalar
-    # vector-potential/electric-field conversion must not be redefined downstream.
+    # The fermionic conductivity-normalization module is only a directional realization. The
+    # scalar vector-potential/electric-field conversion must not be redefined downstream.
     fermionic_normalization = FERMIONIC_TRANSPORT / "ConductivityNormalization.lean"
     if fermionic_normalization.exists():
         text = fermionic_normalization.read_text(encoding="utf-8")
@@ -130,6 +133,20 @@ def main() -> int:
             if declaration in text:
                 errors.append(
                     f"{relative(fermionic_normalization)} must not re-own generic normalization `{declaration}`"
+                )
+
+    # The fermionic conductivity-table module constructs the directional Peierls realization only.
+    # Generic scalar table storage/evaluation belongs to Transport.
+    fermionic_table = FERMIONIC_TRANSPORT / "FiniteConductivityTable.lean"
+    if fermionic_table.exists():
+        text = fermionic_table.read_text(encoding="utf-8")
+        for declaration in (
+            "structure FiniteConductivityTable",
+            "def finiteConductivityTableValue",
+        ):
+            if declaration in text:
+                errors.append(
+                    f"{relative(fermionic_table)} must not re-own generic scalar table `{declaration}`"
                 )
 
     # Exact finite disorder owns the ensemble and exact averages. Configuration-wise resolvent
