@@ -8,7 +8,7 @@ set_option linter.style.header false
 /-!
 # Generic finite pure-point Kubo–Bastin response
 
-This module owns the statistics-independent finite Kubo–Bastin bridge.  It is generic in the
+This module owns the statistics-independent finite Kubo–Bastin bridge. It is generic in the
 Hilbert-space carrier and in the measured/source vertices:
 
 ```text
@@ -18,8 +18,8 @@ pure-point Lehmann response
   -> ResponseChannel packaging.
 ```
 
-The spectral identities only require a complete complex Hilbert space.  Finite dimensionality is
-introduced only where the ordinary `LinearMap.trace` is used.  Fermionic Fock spaces, lattice
+The spectral identities only require a complete complex Hilbert space. Finite dimensionality is
+introduced only where the ordinary `LinearMap.trace` is used. Fermionic Fock spaces, lattice
 currents, Peierls contacts, and conductivity normalization are downstream specializations.
 
 No zero-frequency, zero-broadening, disorder, trace-per-unit-volume, or thermodynamic-limit
@@ -231,6 +231,27 @@ theorem adiabaticFrequencyDomainSusceptibility_add_observableVariation_eq_bastin
   exact finiteLehmannVertexTerm_eq_bastinSpectral
     system data measured source omega eta heta mn
 
+/-- The spectral Kubo–Bastin response attached directly to a neutral `ResponseChannel`. -/
+noncomputable def finiteKuboBastinSpectralChannelResponse
+    (channel : ResponseChannel H)
+    (omega eta : ℝ) : ℂ :=
+  finiteKuboBastinSpectralVertexResponse system data
+    channel.measured channel.source channel.observableVariation omega eta
+
+/-- At positive switching rate, the frequency-domain response carried by a `ResponseChannel` is
+exactly its finite Kubo–Bastin spectral response. -/
+theorem adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral
+    (channel : ResponseChannel H)
+    (omega eta : ℝ) (heta : 0 < eta) :
+    adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
+          (purePointNormalizedExpectation system data)
+          channel.measured channel.source omega eta heta +
+        purePointNormalizedExpectation system data channel.observableVariation =
+      finiteKuboBastinSpectralChannelResponse system data channel omega eta := by
+  simpa [finiteKuboBastinSpectralChannelResponse] using
+    adiabaticFrequencyDomainSusceptibility_add_observableVariation_eq_bastinSpectral
+      system data channel.measured channel.source channel.observableVariation omega eta heta
+
 variable [FiniteDimensional ℂ H]
 
 /-- Ordinary finite-dimensional trace carrier for the generic measured/source Kubo–Bastin
@@ -296,13 +317,6 @@ theorem adiabaticFrequencyDomainSusceptibility_add_observableVariation_eq_finite
   exact (finiteDimensionalKuboBastinVertexResponse_eq_spectral
     system data measured source observableVariation omega eta).symm
 
-/-- The spectral Kubo–Bastin response attached directly to a neutral `ResponseChannel`. -/
-noncomputable def finiteKuboBastinSpectralChannelResponse
-    (channel : ResponseChannel H)
-    (omega eta : ℝ) : ℂ :=
-  finiteKuboBastinSpectralVertexResponse system data
-    channel.measured channel.source channel.observableVariation omega eta
-
 /-- The ordinary finite-dimensional Kubo–Bastin response attached directly to a neutral
 `ResponseChannel`. -/
 noncomputable def finiteDimensionalKuboBastinChannelResponse
@@ -310,20 +324,6 @@ noncomputable def finiteDimensionalKuboBastinChannelResponse
     (omega eta : ℝ) : ℂ :=
   finiteDimensionalKuboBastinVertexResponse system data
     channel.measured channel.source channel.observableVariation omega eta
-
-/-- At positive switching rate, the frequency-domain response carried by a `ResponseChannel` is
-exactly its finite Kubo–Bastin spectral response. -/
-theorem adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral
-    (channel : ResponseChannel H)
-    (omega eta : ℝ) (heta : 0 < eta) :
-    adiabaticFrequencyDomainSusceptibilityOfPositiveRate system
-          (purePointNormalizedExpectation system data)
-          channel.measured channel.source omega eta heta +
-        purePointNormalizedExpectation system data channel.observableVariation =
-      finiteKuboBastinSpectralChannelResponse system data channel omega eta := by
-  simpa [finiteKuboBastinSpectralChannelResponse] using
-    adiabaticFrequencyDomainSusceptibility_add_observableVariation_eq_bastinSpectral
-      system data channel.measured channel.source channel.observableVariation omega eta heta
 
 /-- At positive switching rate, the frequency-domain response carried by a `ResponseChannel` is
 exactly its ordinary finite-dimensional Kubo–Bastin response. -/
