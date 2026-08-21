@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Massive-Dirac regularized Středa energy split
 
 The massive-Dirac Bastin development already specializes the repository's pointwise regularized
-Bastin/Středa identity to the physical Hamiltonian and charge-current vertices.  This file lifts
+Bastin/Středa identity to the physical Hamiltonian and charge-current vertices. This file lifts
 that pointwise identity to the finite-energy integration-by-parts layer owned by
 `Transport.StredaTraceRepresentation`.
 
@@ -22,9 +22,9 @@ sea     =  ∫ f(E) S(E) dE,
 ```
 
 where `P` is the repository's regularized Středa surface primitive and `S` its residual sea kernel,
-both evaluated on the actual massive-Dirac Hamiltonian and `jₓ,jᵧ` vertices.
+both evaluated on the actual massive-Dirac Hamiltonian and the `x-y` Hall-current vertices.
 
-This remains a finite-broadening, finite-energy-interval theorem.  In particular, no zero-temperature
+This remains a finite-broadening, finite-energy-interval theorem. In particular, no zero-temperature
 distributional derivative, zero-broadening limit, or interchange with momentum integration is
 claimed here.
 -/
@@ -36,14 +36,14 @@ noncomputable section
 open QuantumTheory.Transport
 
 /-- Canonical analytic Středa data specialized to the massive-Dirac Hamiltonian and physical
-charge-current vertices.  All occupation, integrability, endpoint, and positive-broadening
+`x-y` charge-current vertices. All occupation, integrability, endpoint, and positive-broadening
 hypotheses remain exactly those of the generic traced Středa layer. -/
 abbrev MassiveDiracStredaAnalyticData
     (e v m px py broadening lowerEnergy upperEnergy : ℝ)
     (occupation occupationDerivative : ℝ → ℂ) :=
   TracedStredaAnalyticData
     (hamiltonianOperator v m px py)
-    (currentXOperator e v) (currentYOperator e v)
+    (currentOperator .x e v) (currentOperator .y e v)
     broadening lowerEnergy upperEnergy occupation occupationDerivative
 
 /-- Finite-interval regularized traced Bastin energy response for one massive-Dirac momentum fiber. -/
@@ -52,7 +52,7 @@ noncomputable def massiveDiracRegularizedBastinEnergyIntegral
     (occupation : ℝ → ℂ) : ℂ :=
   regularizedTracedBastinEnergyIntegral
     (hamiltonianOperator v m px py)
-    (currentXOperator e v) (currentYOperator e v)
+    (currentOperator .x e v) (currentOperator .y e v)
     broadening lowerEnergy upperEnergy occupation
 
 /-- Named Fermi-surface part of the massive-Dirac regularized Středa split. -/
@@ -83,7 +83,7 @@ theorem massiveDiracRegularizedStredaFermiSurface_eq
         occupationDerivative energy *
           regularizedStredaSurfacePrimitiveTrace
             (hamiltonianOperator v m px py)
-            (currentXOperator e v) (currentYOperator e v)
+            (currentOperator .x e v) (currentOperator .y e v)
             energy broadening) := by
   rfl
 
@@ -99,7 +99,7 @@ theorem massiveDiracRegularizedStredaFermiSea_eq
         occupation energy *
           regularizedStredaResidualSeaTraceKernel
             (hamiltonianOperator v m px py)
-            (currentXOperator e v) (currentYOperator e v)
+            (currentOperator .x e v) (currentOperator .y e v)
             energy broadening := by
   rfl
 
@@ -120,7 +120,7 @@ theorem massiveDiracRegularizedBastinEnergyIntegral_eq_surface_add_sea
     data.toRegularizedStredaIntegralData
 
 /-- A sector with identically zero occupation derivative has no Fermi-surface contribution in the
-repository's regularized Středa convention.  This is the smooth finite-interval statement behind
+repository's regularized Středa convention. This is the smooth finite-interval statement behind
 the classification of a completely filled sector as a sea contribution; it does not model a
 zero-temperature jump at a Fermi edge. -/
 theorem massiveDiracRegularizedStredaFermiSurface_eq_zero_of_derivative_zero
