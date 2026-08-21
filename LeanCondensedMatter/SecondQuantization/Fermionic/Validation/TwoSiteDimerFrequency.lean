@@ -34,7 +34,7 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Validation
 
-open QuantumTheory.LinearResponse
+open QuantumTheory.LinearResponse QuantumTheory.Transport
 open Transport
 
 noncomputable section
