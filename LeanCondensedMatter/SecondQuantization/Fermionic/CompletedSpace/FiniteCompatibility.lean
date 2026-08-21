@@ -63,36 +63,25 @@ theorem completedFiniteHilbertEquiv_basisState (n : Occupation Mode) :
   exact Common.finiteHilbertFockEquiv_basisState n
 
 omit [Fintype Mode] in
-/-- Continuous maps from completed Fock space into the finite Hilbert realization are determined by
-their values on the dense algebraic core. -/
-theorem continuousLinearMap_ext_algebraicCore_to_finite
-    {A B : CompletedFockSpace Mode →L[ℂ] Common.FiniteHilbertFock (Occupation Mode)}
-    (h : ∀ x : OccupationFock Mode, A (algebraicToCompleted x) = B (algebraicToCompleted x)) :
-    A = B := by
-  apply DFunLike.ext'
-  exact (map_continuous A).ext_on algebraicToCompleted_denseRange (map_continuous B) <| by
-    rintro _ ⟨x, rfl⟩
-    exact h x
-
-omit [Fintype Mode] in
 /-- It suffices to compare two continuous maps on the completed occupation basis. -/
 theorem continuousLinearMap_ext_completedBasis_to_finite
     {A B : CompletedFockSpace Mode →L[ℂ] Common.FiniteHilbertFock (Occupation Mode)}
     (h : ∀ n : Occupation Mode, A (completedBasisState n) = B (completedBasisState n)) :
     A = B := by
-  apply continuousLinearMap_ext_algebraicCore_to_finite
-  intro x
-  have hmaps : A.toLinearMap.comp algebraicToCompleted =
-      B.toLinearMap.comp algebraicToCompleted := by
-    apply Finsupp.lhom_ext
-    intro n c
-    have hc : (Finsupp.single n c : OccupationFock Mode) = c • basisState n :=
-      (Finsupp.smul_single_one n c).symm
-    rw [hc]
-    simp only [LinearMap.comp_apply, map_smul, algebraicToCompleted_basisState]
-    exact congrArg (fun y : Common.FiniteHilbertFock (Occupation Mode) => c • y) (h n)
-  exact congrArg (fun f : OccupationFock Mode →ₗ[ℂ]
-    Common.FiniteHilbertFock (Occupation Mode) => f x) hmaps
+  apply DFunLike.ext'
+  exact (map_continuous A).ext_on algebraicToCompleted_denseRange (map_continuous B) <| by
+    rintro _ ⟨x, rfl⟩
+    have hmaps : A.toLinearMap.comp algebraicToCompleted =
+        B.toLinearMap.comp algebraicToCompleted := by
+      apply Finsupp.lhom_ext
+      intro n c
+      have hc : (Finsupp.single n c : OccupationFock Mode) = c • basisState n :=
+        (Finsupp.smul_single_one n c).symm
+      rw [hc]
+      simp only [LinearMap.comp_apply, map_smul, algebraicToCompleted_basisState]
+      exact congrArg (fun y : Common.FiniteHilbertFock (Occupation Mode) => c • y) (h n)
+    exact congrArg (fun f : OccupationFock Mode →ₗ[ℂ]
+      Common.FiniteHilbertFock (Occupation Mode) => f x) hmaps
 
 end
 end Fermionic
