@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from collections import Counter
+
 from architecture_audit_common import finish_audit, lean_imports, repository_root
 
 ROOT = repository_root(__file__)
@@ -8,7 +10,7 @@ LEAN_ROOT = ROOT / "LeanCondensedMatter"
 TRANSPORT_MODULE = LEAN_ROOT / "Transport.lean"
 CONCRETE_TRANSPORT_UMBRELLA = "LeanCondensedMatter.Transport.AnomalousHall"
 
-PUBLIC_TRACK_IMPORTS = (
+PUBLIC_TRACK_MODULES = (
     "LeanCondensedMatter.Analysis",
     "LeanCondensedMatter.Combinatorics",
     "LeanCondensedMatter.Permutation",
@@ -26,15 +28,21 @@ def check_root_imports(errors: list[str]) -> None:
         return
 
     imports = lean_imports(ROOT_MODULE)
-    if imports != PUBLIC_TRACK_IMPORTS:
-        errors.append(
-            "LeanCondensedMatter.lean must import only the canonical public track umbrellas in "
-            "their stable order; found: " + ", ".join(imports)
-        )
+    counts = Counter(imports)
+    duplicates = sorted(module for module, count in counts.items() if count > 1)
+    expected = set(PUBLIC_TRACK_MODULES)
+    actual = set(imports)
+
+    for module in sorted(expected - actual):
+        errors.append(f"LeanCondensedMatter.lean is missing public umbrella `{module}`")
+    for module in sorted(actual - expected):
+        errors.append(f"LeanCondensedMatter.lean imports non-canonical root module `{module}`")
+    for module in duplicates:
+        errors.append(f"LeanCondensedMatter.lean imports public umbrella more than once: `{module}`")
 
 
 def check_umbrella_files(errors: list[str]) -> None:
-    for module in PUBLIC_TRACK_IMPORTS:
+    for module in PUBLIC_TRACK_MODULES:
         relative = module.removeprefix("LeanCondensedMatter.").replace(".", "/") + ".lean"
         path = LEAN_ROOT / relative
         if not path.is_file():
