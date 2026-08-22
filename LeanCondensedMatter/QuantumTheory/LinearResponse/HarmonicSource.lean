@@ -9,13 +9,14 @@ The canonical complex adiabatic phase can be decomposed into two real source pro
 observation time `T`:
 
 ```text
-f_cos(s) = Re exp ((iω - η) (T - s)),
-f_sin(s) = Im exp ((iω - η) (T - s)).
+f_cos(s) = exp (-η (T - s)) cos (ω (T - s)),
+f_sin(s) = exp (-η (T - s)) sin (ω (T - s)).
 ```
 
-These definitions are representation independent. They do not depend on particle statistics,
-Fock-space realizations, current operators, lattice geometry, or conductivity normalization.
-Concrete response theorems using these real source profiles belong in downstream realizations.
+These definitions are representation independent and are stated directly with real elementary
+functions. They do not depend on particle statistics, Fock-space realizations, current operators,
+lattice geometry, or conductivity normalization. Concrete response theorems using these real
+source profiles belong in downstream realizations.
 -/
 
 namespace QuantumTheory
@@ -25,11 +26,11 @@ noncomputable section
 
 /-- Real cosine quadrature of the normalized adiabatic harmonic source. -/
 def adiabaticCosineSource (ω η T s : ℝ) : ℝ :=
-  (adiabaticFrequencyPhase ω η (T - s)).re
+  Real.exp (-η * (T - s)) * Real.cos (ω * (T - s))
 
 /-- Real sine quadrature of the normalized adiabatic harmonic source. -/
 def adiabaticSineSource (ω η T s : ℝ) : ℝ :=
-  (adiabaticFrequencyPhase ω η (T - s)).im
+  Real.exp (-η * (T - s)) * Real.sin (ω * (T - s))
 
 /-- The canonical complex adiabatic phase is the complexification of its two real quadratures. -/
 theorem adiabaticFrequencyPhase_eq_cosine_add_I_sine
@@ -38,7 +39,8 @@ theorem adiabaticFrequencyPhase_eq_cosine_add_I_sine
       (adiabaticCosineSource ω η T s : ℂ) +
         Complex.I * (adiabaticSineSource ω η T s : ℂ) := by
   apply Complex.ext <;>
-    simp [adiabaticCosineSource, adiabaticSineSource]
+    simp [adiabaticFrequencyPhase, adiabaticCosineSource, adiabaticSineSource] <;>
+    ring
 
 @[simp]
 theorem adiabaticCosineSource_at_observation (ω η T : ℝ) :
