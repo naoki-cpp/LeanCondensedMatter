@@ -1,0 +1,109 @@
+{
+  "scopedImportGraphs": [
+    {
+      "id": "genericTransportBoundary",
+      "sourceRoots": ["LeanCondensedMatter/Transport"],
+      "layers": [
+        {"id": "transport", "modulePrefixes": ["LeanCondensedMatter.Transport"]},
+        {"id": "secondQuantization", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization"]}
+      ],
+      "edges": [
+        {"upstream": "transport", "downstream": "secondQuantization"}
+      ]
+    },
+    {
+      "id": "finiteDisorderClosures",
+      "sourceRoots": ["LeanCondensedMatter/Transport"],
+      "layers": [
+        {"id": "finiteDisorder", "modulePrefixes": ["LeanCondensedMatter.Transport.FiniteDisorder"]},
+        {"id": "resolvent", "modulePrefixes": ["LeanCondensedMatter.Transport.Resolvent"]},
+        {"id": "moments", "modulePrefixes": ["LeanCondensedMatter.Transport.FiniteDisorderMoments"]},
+        {"id": "disorderResolvent", "modulePrefixes": ["LeanCondensedMatter.Transport.FiniteDisorderResolvent"]},
+        {"id": "born", "modulePrefixes": ["LeanCondensedMatter.Transport.FiniteDisorderBorn"]},
+        {"id": "advancedBorn", "modulePrefixes": ["LeanCondensedMatter.Transport.FiniteDisorderAdvancedBorn"]},
+        {"id": "scba", "modulePrefixes": ["LeanCondensedMatter.Transport.FiniteDisorderSCBA"]}
+      ],
+      "edges": [
+        {"upstream": "finiteDisorder", "downstream": "moments"},
+        {"upstream": "finiteDisorder", "downstream": "disorderResolvent"},
+        {"upstream": "resolvent", "downstream": "disorderResolvent"},
+        {"upstream": "moments", "downstream": "born"},
+        {"upstream": "disorderResolvent", "downstream": "born"},
+        {"upstream": "moments", "downstream": "advancedBorn"},
+        {"upstream": "disorderResolvent", "downstream": "advancedBorn"},
+        {"upstream": "finiteDisorder", "downstream": "scba"},
+        {"upstream": "resolvent", "downstream": "scba"}
+      ]
+    },
+    {
+      "id": "generalizedCurrentCrossBoundary",
+      "sourceRoots": [
+        "LeanCondensedMatter/Analysis/Operator",
+        "LeanCondensedMatter/Analysis/Calculus",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Field"
+      ],
+      "layers": [
+        {"id": "analysisCurrent", "modulePrefixes": [
+          "LeanCondensedMatter.Analysis.Operator.LinearCommutator",
+          "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
+          "LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation",
+          "LeanCondensedMatter.Analysis.Calculus.BalanceLaw",
+          "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization"
+        ]},
+        {"id": "fermionicFieldBridge", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Field.GeneralizedQuantity"]},
+        {"id": "quantumMechanics", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics"]}
+      ],
+      "edges": [
+        {"upstream": "analysisCurrent", "downstream": "fermionicFieldBridge"}
+      ]
+    },
+    {
+      "id": "linearResponseLayers",
+      "sourceRoots": ["LeanCondensedMatter/QuantumTheory/LinearResponse"],
+      "layers": [
+        {"id": "expectation", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation"]},
+        {"id": "freeDynamics", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics"]},
+        {"id": "pureStateDynamics", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics"]},
+        {"id": "densityExpectation", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation"]},
+        {"id": "stationarity", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity"]},
+        {"id": "pictureEquivalence", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence"]},
+        {"id": "conservationLaws", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws"]},
+        {"id": "equationsOfMotion", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion"]}
+      ],
+      "edges": [
+        {"upstream": "expectation", "downstream": "densityExpectation"},
+        {"upstream": "expectation", "downstream": "stationarity"},
+        {"upstream": "freeDynamics", "downstream": "stationarity"},
+        {"upstream": "pureStateDynamics", "downstream": "pictureEquivalence"},
+        {"upstream": "densityExpectation", "downstream": "conservationLaws"},
+        {"upstream": "stationarity", "downstream": "conservationLaws"},
+        {"upstream": "pictureEquivalence", "downstream": "conservationLaws"},
+        {"upstream": "pictureEquivalence", "downstream": "equationsOfMotion"}
+      ]
+    },
+    {
+      "id": "densityGibbsEntropy",
+      "sourceRoots": [
+        "LeanCondensedMatter/QuantumTheory/Gibbs",
+        "LeanCondensedMatter/QuantumTheory/Entropy",
+        "LeanCondensedMatter/SecondQuantization/Common/Algebra",
+        "LeanCondensedMatter/SecondQuantization/Common/Thermal",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal"
+      ],
+      "layers": [
+        {"id": "diagonalFormula", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"]},
+        {"id": "purePoint", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint"]},
+        {"id": "finiteHilbert", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator"]},
+        {"id": "finiteExpectation", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Common.Thermal.FiniteGibbsExpectationBridge"]},
+        {"id": "entropy", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Entropy"]},
+        {"id": "freeEntropy", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeEntropy"]}
+      ],
+      "edges": [
+        {"upstream": "diagonalFormula", "downstream": "purePoint"},
+        {"upstream": "purePoint", "downstream": "finiteExpectation"},
+        {"upstream": "finiteHilbert", "downstream": "finiteExpectation"},
+        {"upstream": "entropy", "downstream": "freeEntropy"}
+      ]
+    }
+  ]
+}
