@@ -4,12 +4,12 @@ Architecture CI has two deliberately different layers:
 
 ```text
 Python pre-build audit
-  repository files / direct imports / layer DAG
+  repository files / direct imports / declarative layer DAGs
         ↓
 lake build --wfail + lint
         ↓
 Lean post-build audit
-  compiled declarations / owners / public types / semantic contracts
+  compiled declarations / owners / namespaces / public types / semantic contracts
         ↓
 compiled sorryAx audit
 ```
@@ -69,7 +69,7 @@ Keep these checks in the lightweight pre-build Python audit:
 - file and umbrella layout;
 - direct Lean import edges;
 - dependency direction between source trees;
-- repository layer DAGs;
+- repository and scoped layer DAGs;
 - source-syntax policy only when syntax itself is intentionally the contract.
 
 ### Lean owns compiled semantics
@@ -78,6 +78,7 @@ Prefer `CheckArchitecture.lean` for invariants that are naturally properties of 
 
 - canonical declaration ownership;
 - declaration-name/module ownership relationships;
+- declaration namespace/module relationships;
 - public type/signature dependencies;
 - semantic contracts expressible by typed Lean declarations or theorems.
 
@@ -86,14 +87,53 @@ through `Environment.const2ModIdx`, marks whether each declaration has a source 
 violations before failing. Generated declarations can therefore be excluded from source-ownership checks without
 parsing `namespace`, `section`, or declaration syntax in Python.
 
-`CheckArchitecture.lean` also exposes reusable helpers for:
-
-- exact canonical owner checks;
-- declaration-prefix to module-prefix ownership checks;
-- public compiled type dependencies on forbidden module layers.
+Private declarations are normalized to their user-facing names before namespace/name contracts are applied.
 
 Existing Python declaration/source scans are transitional until their invariant is migrated. Do not add a new Python
 regex owner scan when the compiled environment can express the same rule directly.
+
+## Declarative architecture graphs
+
+Repository dependency DAGs should be specified under `scripts/architecture/` rather than repeated as checker-local
+`ImportBoundary` tables, layer ranks, or manual graph traversal.
+
+The shared graph format supports:
+
+- a primary graph whose layer data is consumed by both Python and Lean;
+- `scopedImportGraphs`, each with its own source roots, layer prefixes, and upstream -> downstream edges;
+- small compiled `namespaceExceptions` for intentional semantic crossings.
+
+For an import from source layer `A` to target layer `B`, the graph rule is:
+
+```text
+A = B
+or
+B is an ancestor of A
+```
+
+This one rule derives downstream and sibling-import prohibitions from graph reachability.
+
+The current SecondQuantization specification centralizes, among others:
+
+```text
+math → quantumTheory → common → {fermionic, bosonic}
+
+Algebra → {Field, Lattice} → Transport → Validation
+
+Semantics → Factorization → Analysis → Integration → Series
+
+CompletedSpace → Thermal
+
+QuantumTheory → {SingleParticle, SecondQuantization}
+
+Combinatorics → Permutation
+```
+
+Focused Python scripts should not restate those edges. They may retain a genuinely different invariant such as exact
+umbrella exposure, required physical source layout, a transitive reachability restriction stronger than direct-import
+ancestry, or source syntax that is itself part of the contract.
+
+See `scripts/architecture/README.md` for the graph schema and current scoped DAGs.
 
 ## Shared Python audit primitives
 
@@ -102,27 +142,18 @@ The common layer provides:
 
 - `lean_imports` / `numbered_imports` for comment-aware direct Lean imports;
 - `module_matches_prefix` for module-boundary-safe prefix matching;
-- `require_import` / `forbid_import_prefixes` for individual dependency edges;
-- `ImportBoundary` / `check_import_boundaries` for declarative source-tree dependency rules;
+- `require_import` / `forbid_import_prefixes` for genuinely local individual dependency constraints;
+- graph loading, module classification, reachability, and DAG validation;
 - `require_files` for current canonical source owners;
 - `lean_files_matching` for legacy declaration scans pending Lean migration;
 - `lean_source` / `strip_lean_comments` for the shared comment-aware source view.
 
+`ImportBoundary` / `check_import_boundaries` remain available for a local source rule that is not part of a durable
+layer graph. Do not use them to create a second copy of a graph already represented under `scripts/architecture/`.
+
 Because the full Python audit runs in one read-only process, the common layer caches deterministic file discovery,
 source reads, comment-stripped Lean source, and parsed imports. Checkers should use these shared views instead of
 re-reading the same tree independently when a common primitive fits the task.
-
-A checker should declare its layer graph as data where possible. For example:
-
-```python
-DEPENDENCY_BOUNDARIES = (
-    ImportBoundary(
-        COMMON,
-        (FERMIONIC_PREFIX, BOSONIC_PREFIX),
-        "Common must remain statistics-independent",
-    ),
-)
-```
 
 Generic import parsing, module-prefix semantics, comment stripping, file scans, and dependency traversal should not be
 reimplemented in individual checkers. Checker-local regexes remain appropriate only for genuinely source-level policy
@@ -130,8 +161,8 @@ that cannot be represented more robustly in the compiled Lean environment.
 
 ## One owner per architectural concern
 
-A durable layer graph should have one authoritative checker. Focused checkers may add constraints specific to their
-mathematical domain, but they should not duplicate the same repository-wide dependency DAG.
+A durable layer graph should have one authoritative specification. Focused checkers may add constraints specific to
+their mathematical domain, but they should not duplicate the same dependency DAG.
 
 For example, the fermionic responsibility graph
 
@@ -139,20 +170,21 @@ For example, the fermionic responsibility graph
 Algebra → {Field, Lattice} → Transport → Validation
 ```
 
-is owned by the transport/validation boundary checker. The AlgebraicFock and Lattice checkers retain their own
-finite-dimensionality and response-separation rules without maintaining a second copy of that DAG.
+is owned by the shared graph specification. The AlgebraicFock, Lattice, and transport/validation checkers retain only
+their non-DAG constraints.
 
 The same one-owner rule applies across languages: once a declaration-level invariant is migrated to the compiled Lean
 audit, delete the superseded Python source parser instead of keeping both as permanent guards.
 
 ## Prefer positive boundaries over exact source snapshots
 
-Permanent audits should express the minimum durable contract. Prefer required imports plus forbidden downstream
-prefixes over an exact list of all imports. Prefer required public umbrellas as a set over pinning their source order
-unless order itself is part of the contract. This lets a layer acquire a new reusable upstream helper without turning
-an unrelated source snapshot into a CI failure.
+Permanent audits should express the minimum durable contract. Prefer a layer graph over repeated forbidden-downstream
+lists. Prefer required public umbrellas as a set over pinning their source order unless order itself is part of the
+contract. This lets a layer acquire a new reusable upstream helper without turning an unrelated source snapshot into a
+CI failure.
 
-For compiled checks, prefer declaration owner, public type, or theorem contracts over implementation-body text.
+For compiled checks, prefer declaration owner, public type, namespace, or theorem contracts over implementation-body
+text.
 
 ## Do not preserve migration history in permanent CI
 
@@ -170,11 +202,13 @@ Lean-checked theorems when they can express the intended invariant.
 
 ## Adding a Python topology checker
 
-1. Add a focused `check_*.py` script exposing `main() -> int | None`.
-2. Reuse the shared primitives in `architecture_audit_common.py`; do not add a new generic import/parser implementation.
-3. Register it once in `CHECKS` in `check_architecture.py`.
-4. Choose a scope for local organization only; full CI still runs every registered checker.
-5. Do not add another direct workflow invocation for the checker.
+1. First ask whether the rule is another edge or scoped subgraph of an existing declarative graph. If so, edit the graph
+   specification instead of adding checker-local dependency logic.
+2. For a genuinely distinct source-topology contract, add a focused `check_*.py` script exposing `main() -> int | None`.
+3. Reuse the shared primitives in `architecture_audit_common.py`; do not add a new generic import/parser implementation.
+4. Register it once in `CHECKS` in `check_architecture.py`.
+5. Choose a scope for local organization only; full CI still runs every registered checker.
+6. Do not add another direct workflow invocation for the checker.
 
 If a new `check_*.py` script is intentionally *not* an architecture CI checker, add it to
 `NON_ARCHITECTURE_CHECK_SCRIPTS` with that intent made explicit. Otherwise manifest validation fails.
