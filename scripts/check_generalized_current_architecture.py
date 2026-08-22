@@ -6,6 +6,7 @@ from architecture_audit_common import (
     finish_audit,
     forbid_import_prefixes,
     lean_imports,
+    module_matches_prefix,
     require_files,
     require_import,
     repository_root,
@@ -30,6 +31,8 @@ BOUNDED_ONE_BODY_RESPONSE = LEAN / "SecondQuantization" / "Fermionic" / "Transpo
 CONVENTIONAL_RESPONSE = LEAN / "SecondQuantization" / "Fermionic" / "Transport" / "ConventionalCurrentResponse.lean"
 QUANTUM_UMBRELLA = LEAN / "QuantumTheory" / "ConservationLaw.lean"
 TRANSPORT_UMBRELLA = LEAN / "SecondQuantization" / "Fermionic" / "Transport.lean"
+
+QUANTUM_MECHANICS_PREFIX = "LeanCondensedMatter.QuantumMechanics"
 
 
 def relative(path: Path) -> str:
@@ -195,7 +198,7 @@ def main() -> int:
     if "AlgebraicFock.dGamma" not in bridge_code:
         errors.append(f"{relative(FERMIONIC_FIELD_BRIDGE)} must remain an explicit dGamma bridge")
     if any(
-        imported.startswith("LeanCondensedMatter.QuantumMechanics")
+        module_matches_prefix(imported, QUANTUM_MECHANICS_PREFIX)
         or "ConventionalCurrent" in imported
         or "SchwartzCurrent" in imported
         for imported in bridge_imports

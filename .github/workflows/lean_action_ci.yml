@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Check architecture
-        run: python3 scripts/check_architecture.py --scope core
+        run: python3 scripts/check_architecture.py
       - uses: leanprover/lean-action@v1
         with:
           # Keep the whole library warning-free, including modules unchanged by the PR.
@@ -32,8 +32,9 @@ jobs:
       - name: Check compiled declarations for sorryAx
         run: lake env lean scripts/CheckNoSorry.lean
 
-  # Documentation is intentionally built only on pushes to main. doc-gen4 processes the
-  # full Mathlib symbol set, so running it for every pull request would be unnecessarily slow.
+  # Generated developer artifacts are intentionally built only on pushes to main. Both theorem
+  # catalog generation and doc-gen4 consume the compiled Lean environment, so keep them on one
+  # runner rather than starting independent workflows for the same commit.
   docs:
     needs: build
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -58,6 +59,40 @@ jobs:
             docgen-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('lean-toolchain', 'lake-manifest.json', 'lakefile.toml') }}-
 
       - uses: leanprover/lean-action@v1
+
+      - name: Generate theorem catalog
+        shell: bash
+        run: |
+          set -o pipefail
+          lake env lean scripts/TheoremCatalog.lean 2>&1 | tee theorem-catalog.log
+
+      - name: Add theorem catalog summary
+        if: success()
+        run: |
+          echo "## Theorem catalog" >> "$GITHUB_STEP_SUMMARY"
+          grep '^Theorems:' docs/generated/theorems.md >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "The complete Markdown and JSON catalogs are attached as a workflow artifact." >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload theorem catalog
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-catalog
+          path: |
+            docs/generated/theorems.md
+            docs/generated/theorems.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Upload theorem catalog generator log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: theorem-catalog-log
+          path: theorem-catalog.log
+          if-no-files-found: warn
+          retention-days: 7
 
       - name: Build API documentation
         shell: bash

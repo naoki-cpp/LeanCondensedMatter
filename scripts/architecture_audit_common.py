@@ -4,6 +4,7 @@ import re
 import sys
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
+from functools import lru_cache
 from pathlib import Path
 
 IMPORT_RE = re.compile(r"^\s*import\s+([^\s]+)\s*$")
@@ -28,19 +29,32 @@ def relative(root: Path, path: Path) -> str:
     return str(path.relative_to(root))
 
 
+@lru_cache(maxsize=None)
+def _matching_files(root: Path, pattern: str) -> tuple[Path, ...]:
+    """Cache deterministic file discovery for the read-only lifetime of one audit process."""
+    if not root.exists():
+        return ()
+    return tuple(sorted(root.rglob(pattern)))
+
+
 def files_matching(root: Path, pattern: str) -> Iterator[Path]:
     """Yield matching files in deterministic repository order."""
-    if root.exists():
-        yield from sorted(root.rglob(pattern))
+    yield from _matching_files(root, pattern)
 
 
 def lean_files(root: Path) -> Iterator[Path]:
     yield from files_matching(root, "*.lean")
 
 
+@lru_cache(maxsize=None)
+def _source_text(path: Path) -> str:
+    """Read one source file once during the read-only architecture audit."""
+    return path.read_text(encoding="utf-8")
+
+
 def numbered_lines(path: Path) -> Iterator[tuple[int, str]]:
     """Yield UTF-8 text lines with one-based line numbers."""
-    yield from enumerate(path.read_text(encoding="utf-8").splitlines(), start=1)
+    yield from enumerate(_source_text(path).splitlines(), start=1)
 
 
 def strip_lean_comments(text: str) -> str:
@@ -99,27 +113,35 @@ def strip_lean_comments(text: str) -> str:
     return "".join(out)
 
 
+@lru_cache(maxsize=None)
+def lean_source(path: Path) -> str:
+    """Return cached comment-stripped Lean source for one file."""
+    return strip_lean_comments(_source_text(path))
+
+
 def lean_files_matching(root: Path, pattern: re.Pattern[str]) -> list[Path]:
     """Return Lean files whose comment-stripped source matches a compiled pattern."""
-    matches: list[Path] = []
-    for path in lean_files(root):
-        code = strip_lean_comments(path.read_text(encoding="utf-8"))
-        if pattern.search(code):
-            matches.append(path)
-    return matches
+    return [path for path in lean_files(root) if pattern.search(lean_source(path))]
+
+
+@lru_cache(maxsize=None)
+def _numbered_imports(path: Path) -> tuple[tuple[int, str], ...]:
+    imports: list[tuple[int, str]] = []
+    for line_no, line in enumerate(lean_source(path).splitlines(), start=1):
+        if match := IMPORT_RE.match(line):
+            imports.append((line_no, match.group(1)))
+    return tuple(imports)
 
 
 def numbered_imports(path: Path) -> Iterator[tuple[int, str]]:
-    """Yield direct Lean imports with source line numbers after removing comments."""
-    code = strip_lean_comments(path.read_text(encoding="utf-8"))
-    for line_no, line in enumerate(code.splitlines(), start=1):
-        if match := IMPORT_RE.match(line):
-            yield line_no, match.group(1)
+    """Yield cached direct Lean imports with source line numbers after removing comments."""
+    yield from _numbered_imports(path)
 
 
+@lru_cache(maxsize=None)
 def lean_imports(path: Path) -> tuple[str, ...]:
-    """Return direct Lean imports after removing comments."""
-    return tuple(imported for _, imported in numbered_imports(path))
+    """Return cached direct Lean imports after removing comments."""
+    return tuple(imported for _, imported in _numbered_imports(path))
 
 
 def module_matches_prefix(module: str, prefix: str) -> bool:
