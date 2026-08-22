@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic
 
 set_option linter.style.header false
 
