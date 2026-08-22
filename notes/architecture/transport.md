@@ -5,26 +5,39 @@ consumer.
 
 ```text
 QuantumTheory.LinearResponse
-        ↓
+          ↓
 QuantumTheory.Transport
   finite Kubo–Bastin / Středa / resolvents / disorder
-        ↓
-SecondQuantization.Fermionic.Transport
-  finite-Fock, lattice, directional-current, occupation specializations
-        ↓
-concrete transport models and benchmarks
+      ↙                                  ↘
+SecondQuantization.Fermionic.Transport   concrete statistics-neutral models
+  finite-Fock, lattice, directional-     e.g. Transport.AnomalousHall
+  current, occupation specializations
+      ↓
+fermionic / lattice model consumers
 ```
 
 Concrete model modules may consume the neutral `Transport` layer directly when no fermionic
 realization is required. They must not become owners of reusable Kubo–Bastin, Středa, resolvent, or
 disorder machinery.
 
+## Public umbrella boundary
+
+`LeanCondensedMatter.Transport` is the public umbrella for generic transport infrastructure only. It
+must not re-export concrete benchmark umbrellas such as `LeanCondensedMatter.Transport.AnomalousHall`.
+The project root `LeanCondensedMatter.lean` imports the generic transport umbrella and concrete AHE
+umbrella explicitly as separate public tracks, so the all-inclusive root remains all-inclusive without
+collapsing the ownership boundary.
+
+Implementation modules should continue to import the narrow transport leaves they actually use rather
+than depending on either umbrella.
+
 ## Generic transport boundary
 
-Files under `LeanCondensedMatter/Transport/` are statistics-neutral transport theory. They must not
-import `LeanCondensedMatter.SecondQuantization`.
+Files under `LeanCondensedMatter/Transport/` are statistics-neutral transport theory and statistics-
+neutral concrete consumers. They must not import `LeanCondensedMatter.SecondQuantization`.
 
-The canonical generic owners include:
+Reusable generic transport declarations belong in neutral owner modules outside concrete model
+subtrees. The canonical generic owners include:
 
 - `FiniteKuboBastin` for finite measured/source Kubo–Bastin response;
 - `StredaOccupation`, `StredaCommonKernel`, and `GeneralizedStaticStreda` for the regularized Středa
