@@ -48,7 +48,11 @@ def collectSnapshot : CommandElabM Snapshot := do
     let some moduleName := declarationModule? env declName | continue
     unless isProjectModule moduleName do continue
     let sourceDeclared := (← findDeclarationRanges? declName).isSome
-    declarations := declarations.push { declName, moduleName, sourceDeclared }
+    declarations := declarations.push {
+      name := declName
+      moduleName := moduleName
+      sourceDeclared := sourceDeclared
+    }
   return { env, declarations }
 
 /-- Find one compiled project declaration by name. -/
@@ -100,7 +104,10 @@ partial def exprUsesModulePrefix
   | .app fn arg =>
       exprUsesModulePrefix snapshot fn modulePrefix ||
         exprUsesModulePrefix snapshot arg modulePrefix
-  | .lam _ binderType body _ | .forallE _ binderType body _ =>
+  | .lam _ binderType body _ =>
+      exprUsesModulePrefix snapshot binderType modulePrefix ||
+        exprUsesModulePrefix snapshot body modulePrefix
+  | .forallE _ binderType body _ =>
       exprUsesModulePrefix snapshot binderType modulePrefix ||
         exprUsesModulePrefix snapshot body modulePrefix
   | .letE _ type value body _ =>
