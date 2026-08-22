@@ -4,8 +4,6 @@ import re
 from pathlib import Path
 
 from architecture_audit_common import (
-    ImportBoundary,
-    check_import_boundaries,
     finish_audit,
     lean_files,
     relative as relative_to,
@@ -32,16 +30,6 @@ REQUIRED_FILES = (
     ALGEBRAIC / "RankOne.lean",
 )
 
-# The global Fermionic layer DAG is owned by check_fermionic_transport_validation_boundary.py.
-# This focused audit only adds the algebraic-core constraint against transport-specific quantum API.
-DOMAIN_BOUNDARIES = (
-    ImportBoundary(
-        ALGEBRAIC,
-        ("LeanCondensedMatter.QuantumTheory.Transport",),
-        "algebraic Fock core must remain independent of transport-specific quantum theory",
-    ),
-)
-
 FORBIDDEN_ANALYTIC_ASSUMPTION = re.compile(r"\b(?:Fintype|FiniteDimensional)\b")
 
 
@@ -54,8 +42,7 @@ def check_layout(errors: list[str]) -> None:
 
 
 def check_algebra_boundary(errors: list[str]) -> None:
-    check_import_boundaries(errors, DOMAIN_BOUNDARIES, root=ROOT)
-
+    # AlgebraicFock -> QuantumTheory.Transport direction is owned by the shared scoped DAG.
     for path in lean_files(ALGEBRAIC):
         code = strip_lean_comments(path.read_text(encoding="utf-8"))
         if "namespace Field" in code:
