@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.StredaTraceSpectral
-import LeanCondensedMatter.Transport.StredaTraceRepresentation
+import LeanCondensedMatter.Transport.Streda.TraceSpectral
+import LeanCondensedMatter.Transport.Streda.TraceRepresentation
 
 set_option linter.style.header false
 
