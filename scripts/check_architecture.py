@@ -19,10 +19,11 @@ class ArchitectureCheck:
     scope: str
 
 
-# This manifest owns architecture-audit registration only. Dependency graphs belong to focused
-# checker data expressed through architecture_audit_common.ImportBoundary. Scopes are optional
-# local filters and must not become a second architecture model.
+# This manifest owns architecture-audit registration only. Dependency DAGs live in shared
+# specifications under scripts/architecture/. Scopes are optional local filters and must not become
+# a second architecture model.
 CHECKS: tuple[ArchitectureCheck, ...] = (
+    ArchitectureCheck("declarative architecture graphs", "check_architecture_graphs.py", "core"),
     ArchitectureCheck("root public umbrellas", "check_root_public_umbrellas.py", "core"),
     ArchitectureCheck("QuantumTheory architecture", "check_quantum_theory_architecture.py", "core"),
     ArchitectureCheck("generalized-current architecture", "check_generalized_current_architecture.py", "core"),
