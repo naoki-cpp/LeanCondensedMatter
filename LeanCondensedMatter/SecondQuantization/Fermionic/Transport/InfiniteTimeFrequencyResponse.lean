@@ -1,25 +1,21 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StationaryFrequencyResponse
 import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability
-import LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic
-import Mathlib.MeasureTheory.Integral.IntegralEqImproper
+import LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic
 
 set_option linter.style.header false
 
 /-!
-# Infinite-observation-time adiabatic response
+# Fermionic infinite-observation-time adiabatic response
 
-The stationary finite-time response is an interval integral over the positive lag variable. This
-module takes the first regulator limit under an explicit Bochner-integrability hypothesis:
+The representation-independent positive-lag integrability condition, half-infinite scalar adiabatic
+transform, and finite-time `T → +∞` convergence theorem now live in
+`QuantumTheory.LinearResponse.InfiniteTimeAdiabatic`.
 
-```text
-∫₀ᵀ dτ exp ((-η + iω) τ) K(τ)
-  ⟶ ∫_(0,∞) dτ exp ((-η + iω) τ) K(τ)
-```
-
-as `T → +∞`. For bounded observables, the general linear-response layer proves this integrability
-automatically whenever `η > 0`; the directional-current specialization therefore needs only
-stationarity and a strictly positive switching rate. Frequency, switching, volume, and DC limits
-remain separate and untaken.
+This module retains the finite-lattice fermionic realization. For bounded directional currents, the
+general linear-response integrability theorem supplies the generic scalar hypothesis whenever
+`η > 0`; stationarity then identifies the finite-time directional response with the positive-lag
+kernel before applying the generic observation-time limit. Frequency, switching, volume, and DC
+limits remain separate and untaken.
 -/
 
 namespace SecondQuantization
@@ -30,36 +26,6 @@ open Lattice
 open QuantumTheory.LinearResponse
 
 noncomputable section
-
-/-- Explicit integrability hypothesis for the adiabatically weighted positive-lag kernel. -/
-def AdiabaticLagIntegrable (kernel : ℝ → ℂ) (ω η : ℝ) : Prop :=
-  MeasureTheory.IntegrableOn
-    (fun τ => adiabaticFrequencyPhase ω η τ * kernel τ)
-    (Set.Ioi (0 : ℝ)) MeasureTheory.volume
-
-/-- The half-infinite adiabatic transform at fixed frequency and switching rate. -/
-noncomputable def infiniteTimeAdiabaticTransform
-    (kernel : ℝ → ℂ) (ω η : ℝ) : ℂ :=
-  ∫ τ in Set.Ioi (0 : ℝ), adiabaticFrequencyPhase ω η τ * kernel τ
-
-/-- Integrability of the weighted lag kernel is sufficient for the observation-time limit. -/
-theorem hasInfiniteObservationTimeLimit_finiteTimeAdiabaticTransform
-    (kernel : ℝ → ℂ) (ω η : ℝ)
-    (hInt : AdiabaticLagIntegrable kernel ω η) :
-    HasInfiniteObservationTimeLimit
-      (finiteTimeAdiabaticTransform kernel ω η)
-      (infiniteTimeAdiabaticTransform kernel ω η) := by
-  unfold HasInfiniteObservationTimeLimit
-  change Filter.Tendsto
-    (fun T : ℝ => ∫ τ in (0 : ℝ)..T,
-      adiabaticFrequencyPhase ω η τ * kernel τ)
-    Filter.atTop
-    (nhds (∫ τ in Set.Ioi (0 : ℝ),
-      adiabaticFrequencyPhase ω η τ * kernel τ))
-  exact MeasureTheory.intervalIntegral_tendsto_integral_Ioi
-    (μ := MeasureTheory.volume)
-    (f := fun τ : ℝ => adiabaticFrequencyPhase ω η τ * kernel τ)
-    (b := fun T : ℝ => T) (0 : ℝ) hInt Filter.tendsto_id
 
 variable {Site E : Type*}
 variable [LinearOrder Site] [Fintype Site]
