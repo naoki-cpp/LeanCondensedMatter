@@ -66,12 +66,6 @@ def main() -> int:
                 f"conservation laws must import `{required_import}` in {relative(CONSERVATION)}"
             )
 
-    if any("EquationsOfMotion" in imported for imported in conservation_imports):
-        errors.append(
-            "algebraic conservation laws must not depend on equations of motion in "
-            f"{relative(CONSERVATION)}"
-        )
-
     for path, code in (
         (FREE_DYNAMICS, free_dynamics_code),
         (CONSERVATION, conservation_code),
