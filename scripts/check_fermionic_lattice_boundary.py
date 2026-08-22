@@ -4,8 +4,6 @@ import re
 from pathlib import Path
 
 from architecture_audit_common import (
-    ImportBoundary,
-    check_import_boundaries,
     finish_audit,
     lean_files,
     repository_root,
@@ -30,19 +28,6 @@ REQUIRED = (
     LATTICE / "GeometricPeierls.lean",
 )
 
-# The global Fermionic layer DAG is owned by check_fermionic_transport_validation_boundary.py.
-# This focused audit adds the domain rule that lattice construction is upstream of response theory.
-DOMAIN_BOUNDARIES = (
-    ImportBoundary(
-        LATTICE,
-        (
-            "LeanCondensedMatter.QuantumTheory.LinearResponse",
-            "LeanCondensedMatter.QuantumTheory.Transport",
-        ),
-        "fermionic lattice construction must remain upstream of response/transport theory",
-    ),
-)
-
 FORBIDDEN_RESPONSE_NAME = re.compile(
     r"\b(?:BoundedFreeSystem|NormalizedExpectation|retardedSusceptibility|"
     r"conductivity|Conductivity|Streda|Středa|FrequencyResponse)\b"
@@ -58,8 +43,7 @@ def check_layout(errors: list[str]) -> None:
 
 
 def check_lattice_boundary(errors: list[str]) -> None:
-    check_import_boundaries(errors, DOMAIN_BOUNDARIES, root=ROOT)
-
+    # Lattice -> response/transport dependency direction is owned by the shared scoped DAG.
     for path in lean_files(LATTICE):
         code = strip_lean_comments(path.read_text(encoding="utf-8"))
         if "namespace Field" in code:
