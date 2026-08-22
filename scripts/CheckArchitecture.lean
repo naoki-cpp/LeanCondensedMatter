@@ -1,5 +1,6 @@
 import Lean
 import LeanCondensedMatter
+import LeanCondensedMatter.QuantumTheory.POVM.Born
 import Lean.Elab.Command
 import Lean.Util.FoldConsts
 
