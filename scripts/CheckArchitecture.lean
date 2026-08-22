@@ -25,9 +25,9 @@ structure NamedCheck where
   run : Snapshot → Array String
 
 /-- Module-boundary-aware prefix matching for Lean names. -/
-def nameMatchesPrefix (name prefix : Name) : Bool :=
+def nameMatchesPrefix (name expectedPrefix : Name) : Bool :=
   let nameString := name.toString
-  let prefixString := prefix.toString
+  let prefixString := expectedPrefix.toString
   nameString == prefixString || nameString.startsWith (prefixString ++ ".")
 
 /-- Whether a module belongs to this project rather than Mathlib or another dependency. -/
@@ -107,9 +107,10 @@ def checkTypeDoesNotDependOn
   | none => #[s!"missing compiled declaration `{declName}`"]
   | some type => Id.run do
       let mut errors : Array String := #[]
-      for prefix in forbiddenModulePrefixes do
-        if exprUsesModulePrefix snapshot type prefix then
-          errors := errors.push s!"type of `{declName}` depends on forbidden module prefix `{prefix}`"
+      for forbiddenPrefix in forbiddenModulePrefixes do
+        if exprUsesModulePrefix snapshot type forbiddenPrefix then
+          errors := errors.push
+            s!"type of `{declName}` depends on forbidden module prefix `{forbiddenPrefix}`"
       return errors
 
 /-- Basic harness health check. It intentionally asserts no domain architecture beyond the ability
