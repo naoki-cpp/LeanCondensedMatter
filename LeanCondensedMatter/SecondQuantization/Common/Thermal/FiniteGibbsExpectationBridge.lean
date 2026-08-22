@@ -36,12 +36,6 @@ noncomputable def finiteGibbsExpectation (energy : Config → ℝ) (β : ℝ)
   finiteGibbsExpectationLinearMap energy β A
 
 @[simp]
-theorem finiteGibbsExpectationLinearMap_apply (energy : Config → ℝ) (β : ℝ)
-    (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
-    finiteGibbsExpectationLinearMap energy β A = finiteGibbsExpectation energy β A :=
-  rfl
-
-@[simp]
 theorem finiteGibbsExpectation_id (energy : Config → ℝ) (β : ℝ) :
     finiteGibbsExpectation energy β
       (LinearMap.id : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) = 1 := by
