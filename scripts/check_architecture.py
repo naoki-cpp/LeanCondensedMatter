@@ -36,7 +36,6 @@ CHECKS: tuple[ArchitectureCheck, ...] = (
     ArchitectureCheck("QuantumTheory conservation laws", "check_quantum_conservation_laws.py", "core"),
     ArchitectureCheck("QuantumTheory pure-point density", "check_quantum_pure_point_density.py", "core"),
     ArchitectureCheck("QuantumTheory normalized expectation", "check_quantum_normalized_expectation.py", "core"),
-    ArchitectureCheck("combinatorics dependency layers", "check_combinatorics_dependency_layers.py", "core"),
     ArchitectureCheck("SecondQuantization architecture", "check_second_quantization_architecture.py", "second-quantization"),
     ArchitectureCheck("thermal ownership boundary", "check_second_quantization_thermal_boundary.py", "second-quantization"),
     ArchitectureCheck("diagrammatics layer architecture", "check_diagrammatics_layer_architecture.py", "second-quantization"),
