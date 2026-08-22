@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinOccupation
-import LeanCondensedMatter.Transport.KuboBastinCommonEnergy
+import LeanCondensedMatter.Transport.KuboBastin.CommonEnergy
 
 set_option linter.style.header false
 
@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Fermionic directional common-energy Kubo–Bastin kernel
 
 The statistics-independent common-energy construction now lives in
-`QuantumTheory.Transport.KuboBastinCommonEnergy`.  This module retains only the finite-lattice
+`QuantumTheory.Transport.KuboBastin.CommonEnergy`. This module retains only the finite-lattice
 directional charge-current specialization, including the Peierls contact and finite-volume
 conductivity normalization.
 

@@ -55,15 +55,15 @@ RETIRED_FERMIONIC_TRANSPORT_MODULES = (
 
 FERMIONIC_SPECIALIZATIONS = {
     FERMIONIC_TRANSPORT / "ConductivityNormalization.lean":
-        "LeanCondensedMatter.Transport.ConductivityNormalization",
+        "LeanCondensedMatter.Transport.Core.ConductivityNormalization",
     FERMIONIC_TRANSPORT / "FiniteConductivityTable.lean":
-        "LeanCondensedMatter.Transport.FiniteConductivityTable",
+        "LeanCondensedMatter.Transport.Core.FiniteConductivityTable",
     FERMIONIC_TRANSPORT / "KuboBastinSpectral.lean":
-        "LeanCondensedMatter.Transport.FiniteKuboBastin",
+        "LeanCondensedMatter.Transport.KuboBastin.Finite",
     FERMIONIC_TRANSPORT / "KuboBastinOccupation.lean":
-        "LeanCondensedMatter.Transport.KuboBastinOccupation",
+        "LeanCondensedMatter.Transport.KuboBastin.Occupation",
     FERMIONIC_TRANSPORT / "KuboBastinCommonEnergy.lean":
-        "LeanCondensedMatter.Transport.KuboBastinCommonEnergy",
+        "LeanCondensedMatter.Transport.KuboBastin.CommonEnergy",
     FERMIONIC_TRANSPORT / "StaticKuboBastinResponse.lean":
         "LeanCondensedMatter.Transport.GeneralizedStaticStreda",
 }

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteLehmannTable
-import LeanCondensedMatter.Transport.ConductivityNormalization
+import LeanCondensedMatter.Transport.Core.ConductivityNormalization
 
 set_option linter.style.header false
 
@@ -18,7 +18,7 @@ plus the positive physical volume, driving frequency, switching rate, and `ℏ`.
 
 `FiniteConductivityTable` therefore extends the generic finite Lehmann calculation boundary with one
 scalar contact value. `finiteConductivityTableValue` evaluates that data using the canonical
-finite-volume electric-field normalization from `Transport.ConductivityNormalization`.
+finite-volume electric-field normalization from `Transport.Core.ConductivityNormalization`.
 
 This layer is independent of particle statistics, Fock-space realization, lattice geometry, Peierls
 currents, and any concrete model. Fermionic directional constructors remain downstream in

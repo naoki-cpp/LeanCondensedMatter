@@ -3,12 +3,19 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from architecture_audit_common import finish_audit, require_files, require_import, repository_root
+from architecture_audit_common import (
+    finish_audit,
+    lean_imports,
+    require_files,
+    require_import,
+    repository_root,
+)
 
 ROOT = repository_root(__file__)
 LEAN = ROOT / "LeanCondensedMatter"
 TRANSPORT = LEAN / "Transport"
 AHE = TRANSPORT / "AnomalousHall"
+FERMIONIC_TRANSPORT = LEAN / "SecondQuantization" / "Fermionic" / "Transport"
 
 DECLARATION_RE = re.compile(
     r"^\s*(?:noncomputable\s+)?(?:def|abbrev|structure|inductive|class|theorem|lemma)\s+",
@@ -72,6 +79,62 @@ GENERIC_COMPAT = {
     "FiniteDisorderSCBA.lean": "LeanCondensedMatter.Transport.Disorder.SCBA",
 }
 
+# Canonical implementation modules and migrated downstream specializations must no longer consume
+# the compatibility layer.  Keep this list incremental so each migration slice can land and be
+# guarded independently before the forwarding modules are finally removed.
+CANONICAL_IMPORT_MIGRATIONS = {
+    TRANSPORT / "Core" / "ConductivityNormalization.lean": (
+        ("LeanCondensedMatter.Transport.Core.FiniteVolume",),
+        ("LeanCondensedMatter.Transport.FiniteVolume",),
+    ),
+    TRANSPORT / "Core" / "FiniteConductivityTable.lean": (
+        ("LeanCondensedMatter.Transport.Core.ConductivityNormalization",),
+        ("LeanCondensedMatter.Transport.ConductivityNormalization",),
+    ),
+    TRANSPORT / "KuboBastin" / "Finite.lean": (
+        ("LeanCondensedMatter.Transport.Resolvent.Spectral",),
+        ("LeanCondensedMatter.Transport.ResolventSpectral",),
+    ),
+    TRANSPORT / "KuboBastin" / "Occupation.lean": (
+        (
+            "LeanCondensedMatter.Transport.KuboBastin.Finite",
+            "LeanCondensedMatter.Transport.KuboBastin.OccupationInterpolation",
+        ),
+        (
+            "LeanCondensedMatter.Transport.FiniteKuboBastin",
+            "LeanCondensedMatter.Transport.OccupationInterpolation",
+        ),
+    ),
+    TRANSPORT / "KuboBastin" / "CommonEnergy.lean": (
+        ("LeanCondensedMatter.Transport.KuboBastin.Occupation",),
+        ("LeanCondensedMatter.Transport.KuboBastinOccupation",),
+    ),
+    FERMIONIC_TRANSPORT / "ConductivityNormalization.lean": (
+        ("LeanCondensedMatter.Transport.Core.ConductivityNormalization",),
+        ("LeanCondensedMatter.Transport.ConductivityNormalization",),
+    ),
+    FERMIONIC_TRANSPORT / "FiniteConductivityTable.lean": (
+        ("LeanCondensedMatter.Transport.Core.FiniteConductivityTable",),
+        ("LeanCondensedMatter.Transport.FiniteConductivityTable",),
+    ),
+    FERMIONIC_TRANSPORT / "KuboBastinSpectral.lean": (
+        ("LeanCondensedMatter.Transport.KuboBastin.Finite",),
+        ("LeanCondensedMatter.Transport.FiniteKuboBastin",),
+    ),
+    FERMIONIC_TRANSPORT / "CorrectedCurrentKuboBastin.lean": (
+        ("LeanCondensedMatter.Transport.KuboBastin.Finite",),
+        ("LeanCondensedMatter.Transport.FiniteKuboBastin",),
+    ),
+    FERMIONIC_TRANSPORT / "KuboBastinOccupation.lean": (
+        ("LeanCondensedMatter.Transport.KuboBastin.Occupation",),
+        ("LeanCondensedMatter.Transport.KuboBastinOccupation",),
+    ),
+    FERMIONIC_TRANSPORT / "KuboBastinCommonEnergy.lean": (
+        ("LeanCondensedMatter.Transport.KuboBastin.CommonEnergy",),
+        ("LeanCondensedMatter.Transport.KuboBastinCommonEnergy",),
+    ),
+}
+
 AHE_MODEL = {
     "MassiveDirac.lean": "Model.Basic",
     "MassiveDiracCurrentBridge.lean": "Model.CurrentBridge",
@@ -115,6 +178,21 @@ def require_compat(errors: list[str], path: Path, module: str) -> None:
     no_declarations(errors, path)
 
 
+def require_canonical_imports(
+    errors: list[str], path: Path, required: tuple[str, ...], forbidden: tuple[str, ...]
+) -> None:
+    for module in required:
+        require_import(errors, path, module, root=ROOT, description="canonical transport hierarchy")
+    if not path.is_file():
+        return
+    imports = lean_imports(path)
+    for module in forbidden:
+        if module in imports:
+            errors.append(
+                f"{path.relative_to(ROOT)} must import the canonical hierarchy directly, not `{module}`"
+            )
+
+
 def module_path(suffix: str) -> Path:
     parts = suffix.split(".")
     return AHE / "MassiveDirac" / Path(*parts[:-1]) / f"{parts[-1]}.lean"
@@ -126,6 +204,9 @@ def main() -> int:
 
     for filename, module in GENERIC_COMPAT.items():
         require_compat(errors, TRANSPORT / filename, module)
+
+    for path, (required, forbidden) in CANONICAL_IMPORT_MIGRATIONS.items():
+        require_canonical_imports(errors, path, required, forbidden)
 
     transport_umbrella = LEAN / "Transport.lean"
     for module in (

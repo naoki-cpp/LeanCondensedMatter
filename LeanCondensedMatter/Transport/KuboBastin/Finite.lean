@@ -1,7 +1,7 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Finite
 import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain
 import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
-import LeanCondensedMatter.Transport.ResolventSpectral
+import LeanCondensedMatter.Transport.Resolvent.Spectral
 
 set_option linter.style.header false
 

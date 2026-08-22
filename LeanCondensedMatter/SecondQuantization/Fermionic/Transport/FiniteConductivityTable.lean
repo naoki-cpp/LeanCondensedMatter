@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.FiniteConductivityTable
+import LeanCondensedMatter.Transport.Core.FiniteConductivityTable
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboGreenwood
 
 set_option linter.style.header false
@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Fermionic directional finite-conductivity table realization
 
 The representation-independent scalar conductivity table and evaluator now live in
-`QuantumTheory.Transport.FiniteConductivityTable`. This module retains only the finite-lattice
+`QuantumTheory.Transport.Core.FiniteConductivityTable`. This module retains only the finite-lattice
 fermionic realization: it constructs that canonical scalar table from a pure-point Peierls
 conductivity problem and proves that evaluating it reproduces the existing finite
 Kubo–Greenwood directional conductivity.

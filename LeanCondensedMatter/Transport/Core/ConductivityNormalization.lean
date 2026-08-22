@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.FiniteVolume
+import LeanCondensedMatter.Transport.Core.FiniteVolume
 import Mathlib.Data.Complex.Basic
 import Mathlib.Tactic
 
