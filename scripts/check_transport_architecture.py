@@ -103,8 +103,8 @@ def main() -> int:
     for path, imported in FERMIONIC_SPECIALIZATIONS.items():
         require_owner_import(errors, path, imported)
 
-    # Canonical declaration ownership and forbidden declaration-name leakage are compiled Lean
-    # contracts. This checker now keeps only file existence and required direct imports.
+    # Keep only durable source topology. The removed declaration/body blacklists recorded particular
+    # refactor states and helper spellings; they are not reproduced as architecture snapshots.
     finite_trace_import = "LeanCondensedMatter.Transport.FiniteTrace"
     require_owner_import(errors, TRANSPORT / "StredaTraceKernel.lean", finite_trace_import)
     require_owner_import(errors, TRANSPORT / "FiniteDisorder.lean", finite_trace_import)
