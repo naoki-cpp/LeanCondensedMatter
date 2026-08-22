@@ -24,6 +24,9 @@ jobs:
       - name: Check SecondQuantization architecture
         run: python3 scripts/check_second_quantization_architecture.py
 
+      - name: Check thermal ownership boundary
+        run: python3 scripts/check_second_quantization_thermal_boundary.py
+
       - name: Check diagrammatics layer architecture
         run: python3 scripts/check_diagrammatics_layer_architecture.py
 
