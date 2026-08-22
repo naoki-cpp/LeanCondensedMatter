@@ -18,6 +18,7 @@ import LeanCondensedMatter.Transport.StredaTraceRepresentation
 import LeanCondensedMatter.Transport.StredaSpectralEnergyIntegral
 import LeanCondensedMatter.Transport.FiniteDisorder
 import LeanCondensedMatter.Transport.FiniteDisorderResolvent
+import LeanCondensedMatter.Transport.FiniteDisorderMoments
 import LeanCondensedMatter.Transport.FiniteDisorderBorn
 import LeanCondensedMatter.Transport.FiniteDisorderAdvancedBorn
 import LeanCondensedMatter.Transport.FiniteDisorderSCBA
@@ -31,7 +32,8 @@ Public entry point for generic transport infrastructure: finite-volume/electric-
 finite scalar conductivity evaluation, ordinary finite-dimensional trace infrastructure, response and
 resolvent formulations, resolvent spectral action, finite pure-point, occupation-resolved,
 common-energy, and static Kubo–Bastin/Středa bridges, Středa integration/trace theory, occupation
-interpolation, exact finite disorder/resolvent identities, and Born/SCBA approximations.
+interpolation, exact finite disorder/resolvent identities, shared finite-disorder moments, and
+Born/SCBA approximations.
 
 Concrete statistics-neutral model umbrellas such as `LeanCondensedMatter.Transport.AnomalousHall` are
 explicit downstream imports rather than part of this generic umbrella. Model-specific fermionic
