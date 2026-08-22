@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboGreenwood
-import LeanCondensedMatter.Transport.FiniteKuboBastin
+import LeanCondensedMatter.Transport.KuboBastin.Finite
 
 set_option linter.style.header false
 
@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Fermionic directional Kubo–Bastin spectral conductivity
 
 The statistics-independent pure-point resolvent and measured/source Kubo–Bastin machinery lives in
-`Transport.FiniteKuboBastin`.  This module retains only the finite-lattice directional electric
+`Transport.KuboBastin.Finite`. This module retains only the finite-lattice directional electric
 current specialization derived from Kubo–Greenwood.
 
 The adiabatic switching rate `η` has units of inverse time, whereas the resolvent broadening has
