@@ -46,8 +46,12 @@ subtrees. The canonical generic owners include:
 - `ResolventSpectral` for the action of those resolvents on arbitrary Hamiltonian eigenvectors and
   the derived pure-point basis formulas;
 - `FiniteKuboBastin` for finite measured/source Kubo–Bastin response;
-- `StredaOccupation`, `StredaCommonKernel`, and `GeneralizedStaticStreda` for the regularized Středa
-  chain;
+- `KuboBastinOccupation` for replacing discrete occupation differences by occupation-derivative
+  interval integrals;
+- `KuboBastinCommonEnergy` for the finite full-line common-energy representation before any genuine
+  Středa surface/sea decomposition;
+- `StredaOperatorKernel`, `StredaTraceKernel`, `StredaIntegration`, and `GeneralizedStaticStreda` for
+  the genuine regularized Středa operator/trace/integration chain;
 - `FiniteDisorder` for exact finite ensembles and exact scalar/operator averages;
 - `FiniteDisorderResolvent` for exact clean/configuration Green operators and configuration-wise
   Dyson identities;
@@ -67,6 +71,11 @@ independent physical-normalization datum.
 retarded eigenvector formula rather than reproving inverse-operator algebra. `StredaTraceSpectral`
 consumes the same owner for arbitrary-energy retarded/advanced pure-point factors. The old
 Středa-named resolvent-spectral owner is retired because the underlying theorem is not Středa-specific.
+
+`KuboBastinOccupation` and `KuboBastinCommonEnergy` deliberately remain on the Kubo–Bastin side of
+the semantic boundary: they construct occupation-resolved and common-energy representations but do
+not define a Středa surface or sea term. The Středa-named layer begins where
+`StredaOperatorKernel` introduces the Smrčka–Středa surface primitive and residual sea kernel.
 
 `StredaTraceKernel` consumes `FiniteTrace` to turn Středa operator kernels into scalar trace kernels.
 `FiniteDisorder` also consumes `FiniteTrace` directly when proving that exact finite averaging commutes
@@ -89,9 +98,9 @@ statistics-independent theorem.
 In particular:
 
 ```text
-KuboBastinSpectral  → Transport.FiniteKuboBastin
-StredaOccupation    → Transport.StredaOccupation
-StredaCommonKernel  → Transport.StredaCommonKernel
+KuboBastinSpectral      → Transport.FiniteKuboBastin
+KuboBastinOccupation    → Transport.KuboBastinOccupation
+KuboBastinCommonEnergy  → Transport.KuboBastinCommonEnergy
 StaticKuboBastinResponse → Transport.GeneralizedStaticStreda
 ```
 
