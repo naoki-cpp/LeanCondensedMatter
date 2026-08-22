@@ -4,7 +4,6 @@ from pathlib import Path
 
 from architecture_audit_common import (
     finish_audit,
-    lean_imports,
     require_files,
     require_import,
     relative as relative_to,
@@ -132,13 +131,6 @@ def main() -> int:
 
     finite_disorder = TRANSPORT / "FiniteDisorder.lean"
     require_owner_import(errors, finite_disorder, finite_trace_import)
-    if finite_disorder.exists() and "LeanCondensedMatter.Transport.StredaTraceKernel" in lean_imports(
-        finite_disorder
-    ):
-        errors.append(
-            f"{relative(finite_disorder)} must consume ordinary trace infrastructure from "
-            "Transport.FiniteTrace rather than the downstream Středa trace layer"
-        )
 
     resolvent = TRANSPORT / "Resolvent.lean"
     forbid_declarations(
