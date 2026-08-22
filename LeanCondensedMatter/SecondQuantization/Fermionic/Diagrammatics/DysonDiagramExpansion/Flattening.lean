@@ -34,7 +34,7 @@ theorem interactionPicture_quarticVertexOperator_eq_prodComp (ε : Mode → ℝ)
   change Common.heisenbergEvolve (fermionEnergy ε) τ (quarticVertexOperator q) = _
   rw [quarticVertexOperator, Common.heisenbergEvolve_comp, Common.heisenbergEvolve_comp,
     Common.heisenbergEvolve_comp]
-  simp [Common.prodComp, quarticLocalLegOperator, List.ofFn_succ]
+  simp [Common.prodComp, quarticLocalLegOperator, List.ofFn_succ, imaginaryTimeEvolve]
 
 omit [Fintype Mode] in
 /-- **A flattened leg's evolution eigenvalue shift** — `quarticLocalLegEnergyShift` at the vertex
