@@ -1,0 +1,84 @@
+{
+  "layers": [
+    {
+      "id": "math",
+      "modulePrefixes": [
+        "LeanCondensedMatter.Analysis",
+        "LeanCondensedMatter.Combinatorics"
+      ],
+      "namespacePrefixes": [],
+      "forbiddenNameFragments": []
+    },
+    {
+      "id": "quantumTheory",
+      "modulePrefixes": [
+        "LeanCondensedMatter.QuantumTheory"
+      ],
+      "namespacePrefixes": [],
+      "forbiddenNameFragments": []
+    },
+    {
+      "id": "common",
+      "modulePrefixes": [
+        "LeanCondensedMatter.SecondQuantization.Common"
+      ],
+      "namespacePrefixes": [
+        "SecondQuantization.Common"
+      ],
+      "forbiddenNameFragments": [
+        "Boson",
+        "Bosonic",
+        "Fermion",
+        "Fermionic"
+      ]
+    },
+    {
+      "id": "fermionic",
+      "modulePrefixes": [
+        "LeanCondensedMatter.SecondQuantization.Fermionic"
+      ],
+      "namespacePrefixes": [
+        "SecondQuantization.Fermionic"
+      ],
+      "forbiddenNameFragments": []
+    },
+    {
+      "id": "bosonic",
+      "modulePrefixes": [
+        "LeanCondensedMatter.SecondQuantization.Bosonic"
+      ],
+      "namespacePrefixes": [
+        "SecondQuantization.Bosonic"
+      ],
+      "forbiddenNameFragments": []
+    }
+  ],
+  "edges": [
+    {
+      "upstream": "math",
+      "downstream": "quantumTheory"
+    },
+    {
+      "upstream": "math",
+      "downstream": "common"
+    },
+    {
+      "upstream": "quantumTheory",
+      "downstream": "common"
+    },
+    {
+      "upstream": "common",
+      "downstream": "fermionic"
+    },
+    {
+      "upstream": "common",
+      "downstream": "bosonic"
+    }
+  ],
+  "namespaceExceptions": [
+    {
+      "modulePrefix": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight",
+      "declarationPrefix": "Combinatorics.Pairing.weight"
+    }
+  ]
+}
