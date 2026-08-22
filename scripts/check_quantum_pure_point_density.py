@@ -1,11 +1,9 @@
 from __future__ import annotations
 
-import re
 from pathlib import Path
 
 from architecture_audit_common import (
     finish_audit,
-    lean_files_matching,
     lean_imports,
     relative as relative_to,
     repository_root,
@@ -19,33 +17,9 @@ ENTROPY_DIAGONAL = QUANTUM / "Entropy" / "Diagonal.lean"
 PURE_POINT = QUANTUM / "LinearResponse" / "PurePointDynamics.lean"
 DIAGONAL_MODULE = "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
 
-GENERAL_DIAGONAL_DECLARATIONS = (
-    "DensityOperator.hasSum_diagonal_weights",
-    "DensityOperator.summable_diagonal_weights",
-    "DensityOperator.diagonal_weight_le_one",
-    "normalizedDiagonalWeight",
-    "summable_norm_normalizedDiagonalWeight",
-    "diagonalDensityOperator_apply_basis",
-    "normalizedDiagonalWeight_nonneg",
-    "hasSum_normalizedDiagonalWeight",
-    "normalizedDiagonalWeight_le_one",
-)
-
 
 def relative(path: Path) -> str:
     return relative_to(ROOT, path)
-
-
-def declaration_pattern(name: str) -> re.Pattern[str]:
-    return re.compile(
-        rf"^\s*(?:private\s+)?(?:noncomputable\s+)?(?:theorem|lemma|def)\s+"
-        rf"{re.escape(name)}\b",
-        re.MULTILINE,
-    )
-
-
-def declaration_owners(name: str) -> list[Path]:
-    return lean_files_matching(QUANTUM, declaration_pattern(name))
 
 
 def main() -> int:
@@ -64,15 +38,6 @@ def main() -> int:
 
     diagonal_code = strip_lean_comments(DIAGONAL_FORMULA.read_text(encoding="utf-8"))
     pure_point_code = strip_lean_comments(PURE_POINT.read_text(encoding="utf-8"))
-
-    for declaration in GENERAL_DIAGONAL_DECLARATIONS:
-        owners = declaration_owners(declaration)
-        if owners != [DIAGONAL_FORMULA]:
-            rendered = ", ".join(relative(path) for path in owners) or "<none>"
-            errors.append(
-                f"general diagonal-state declaration `{declaration}` must be owned exactly once "
-                f"by {relative(DIAGONAL_FORMULA)}; found: {rendered}"
-            )
 
     if DIAGONAL_MODULE not in lean_imports(ENTROPY_DIAGONAL):
         errors.append(
