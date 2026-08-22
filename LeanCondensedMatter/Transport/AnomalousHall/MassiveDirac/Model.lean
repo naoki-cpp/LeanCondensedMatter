@@ -1,14 +1,12 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracCurrentBridge
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracSpectral
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.CurrentBridge
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Spectral
 
 set_option linter.style.header false
 
 /-!
-# Massive-Dirac anomalous-Hall model
+# Massive-Dirac model
 
-Public umbrella for the concrete two-dimensional massive-Dirac model, its canonical current bridge,
-and gauge-independent spectral/projector algebra.
-
-Berry/intrinsic response, Středa specialization, and detailed Bastin limit analysis remain downstream.
+Public umbrella for the model Hamiltonian, current bridge, and spectral/projector algebra. Canonical
+implementations live under `MassiveDirac/Model/`.
 -/

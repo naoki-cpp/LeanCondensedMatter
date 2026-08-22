@@ -28,6 +28,7 @@ CHECKS: tuple[ArchitectureCheck, ...] = (
     ArchitectureCheck("QuantumTheory architecture", "check_quantum_theory_architecture.py", "core"),
     ArchitectureCheck("generalized-current architecture", "check_generalized_current_architecture.py", "core"),
     ArchitectureCheck("transport architecture", "check_transport_architecture.py", "core"),
+    ArchitectureCheck("transport physical hierarchy", "check_transport_hierarchy.py", "core"),
     ArchitectureCheck("single-particle architecture", "check_single_particle_architecture.py", "core"),
     ArchitectureCheck("QuantumTheory physical scalar boundary", "check_quantum_physical_scalar_boundary.py", "core"),
     ArchitectureCheck("QuantumTheory pure-state dynamics", "check_quantum_pure_state_dynamics.py", "core"),

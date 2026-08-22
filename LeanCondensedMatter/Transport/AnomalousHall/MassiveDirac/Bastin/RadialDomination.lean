@@ -1,0 +1,112 @@
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPairBerry
+import Mathlib.Tactic
+
+set_option linter.style.header false
+
+/-!
+# Radial domination data for the massive-Dirac Bastin limit
+
+The remaining clean Phase 3 boundary in #1269 is the interchange of the positive-zero-broadening
+limit with the finite radial momentum integral. The key model-specific input is that a positive
+Dirac mass gives a momentum-independent lower bound on the interband gap.
+
+On the radial axis `pᵧ = 0`, the interband current trace is also purely imaginary. This file records
+those two facts in a form adapted to the later uniform spectator and dominated-convergence bounds.
+
+No momentum integral or limit interchange is claimed yet in this first layer.
+-/
+
+namespace AnomalousHall.MassiveDirac
+
+noncomputable section
+
+/-- The positive Dirac energy is nonnegative for every momentum. -/
+theorem energy_nonneg (v m px py : ℝ) :
+    0 ≤ energy v m px py := by
+  exact Real.sqrt_nonneg _
+
+/-- For nonnegative mass, the massive-Dirac energy is bounded below by the mass uniformly in
+momentum. -/
+theorem mass_le_energy (v m px py : ℝ) (_hm : 0 ≤ m) :
+    m ≤ energy v m px py := by
+  have hkin : 0 ≤ v ^ 2 * (px ^ 2 + py ^ 2) := by
+    positivity
+  have hsq : m ^ 2 ≤ energy v m px py ^ 2 := by
+    rw [energy_sq]
+    unfold energySq
+    linarith
+  have hE := energy_nonneg v m px py
+  nlinarith [_hm]
+
+/-- For positive mass the model stays uniformly away from the Dirac degeneracy. -/
+theorem energy_pos_of_mass_pos (v m px py : ℝ) (hm : 0 < m) :
+    0 < energy v m px py := by
+  exact lt_of_lt_of_le hm (mass_le_energy v m px py hm.le)
+
+/-- The absolute interband gap is bounded below by `2m`, uniformly in momentum. -/
+theorem two_mul_mass_le_abs_interbandEnergyGap
+    (band : Band) (v m px py : ℝ) (hm : 0 ≤ m) :
+    2 * m ≤ |interbandEnergyGap band v m px py| := by
+  rw [interbandEnergyGap_eq]
+  have hE := energy_nonneg v m px py
+  have hmE := mass_le_energy v m px py hm
+  cases band <;> simp [bandSign, abs_of_nonneg hE] <;> linarith
+
+/-- A pole window narrower than the mass gap is valid simultaneously at every momentum. -/
+theorem radius_lt_abs_interbandEnergyGap_of_lt_two_mul_mass
+    (band : Band) (v m px py radius : ℝ) (hm : 0 < m)
+    (hradius : radius < 2 * m) :
+    radius < |interbandEnergyGap band v m px py| := by
+  exact lt_of_lt_of_le hradius
+    (two_mul_mass_le_abs_interbandEnergyGap band v m px py hm.le)
+
+/-- On the radial axis the gauge-independent Hall interband force numerator is purely imaginary.
+Its imaginary coefficient is the one already used by the Berry-curvature bridge. -/
+theorem forceMatrixTraceNumerator_radial
+    (band : Band) (v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
+    forceMatrixTraceNumerator .x .y band v m p 0 =
+      (((-(bandSign band * m * v ^ 2 / energy v m p 0) : ℝ) : ℂ)) * Complex.I := by
+  have hEc : (((energy v m p 0 : ℝ) : ℂ)) ≠ 0 := by
+    exact_mod_cast hE
+  cases band <;>
+    simp [forceMatrixTraceNumerator, oppositeBand, bandProjector, Matrix.trace,
+      Matrix.mul_apply, velocity, directionPauli, hamiltonian, sigmaX, sigmaY, sigmaZ] <;>
+    field_simp [hEc] <;>
+    ring_nf
+
+/-- The physical Hall interband current trace on the radial axis is therefore purely imaginary. -/
+theorem interbandCurrentTrace_radial
+    (band : Band) (e v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
+    interbandCurrentTrace .x .y band e v m p 0 =
+      (((e ^ 2 : ℝ) : ℂ)) *
+        (((-(bandSign band * m * v ^ 2 / energy v m p 0) : ℝ) : ℂ)) * Complex.I := by
+  rw [interbandCurrentTrace_eq_chargeSq_forceMatrixTraceNumerator .x .y,
+    forceMatrixTraceNumerator_radial band v m p hE]
+  ring
+
+/-- The natural radial `x-y` Bastin block at a target-band pole is the opposite-band current trace,
+now in explicit purely-imaginary form. -/
+theorem bastinXYBandBlockTrace_opposite_source_radial
+    (band : Band) (e v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
+    bastinBandBlockTrace .x .y (oppositeBand band) band e v m p 0 =
+      (((e ^ 2 : ℝ) : ℂ)) *
+        (((bandSign band * m * v ^ 2 / energy v m p 0 : ℝ) : ℂ)) * Complex.I := by
+  rw [bastinXYBandBlockTrace_opposite_source,
+    interbandCurrentTrace_radial (oppositeBand band) e v m p hE]
+  cases band <;> simp [oppositeBand, bandSign]
+  all_goals ring
+
+/-- The radial `y-x` block has the opposite imaginary sign. -/
+theorem bastinYXBandBlockTrace_opposite_source_radial
+    (band : Band) (e v m p : ℝ) (hE : energy v m p 0 ≠ 0) :
+    bastinBandBlockTrace .y .x (oppositeBand band) band e v m p 0 =
+      -((((e ^ 2 : ℝ) : ℂ)) *
+        (((bandSign band * m * v ^ 2 / energy v m p 0 : ℝ) : ℂ)) * Complex.I) := by
+  rw [bastinYXBandBlockTrace_opposite_source,
+    interbandCurrentTrace_radial band e v m p hE]
+  push_cast
+  ring
+
+end
+
+end AnomalousHall.MassiveDirac
