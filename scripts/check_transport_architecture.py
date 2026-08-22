@@ -27,8 +27,8 @@ NEUTRAL_OWNERS = (
     TRANSPORT / "FiniteTrace.lean",
     TRANSPORT / "ResolventSpectral.lean",
     TRANSPORT / "FiniteKuboBastin.lean",
-    TRANSPORT / "StredaOccupation.lean",
-    TRANSPORT / "StredaCommonKernel.lean",
+    TRANSPORT / "KuboBastinOccupation.lean",
+    TRANSPORT / "KuboBastinCommonEnergy.lean",
     TRANSPORT / "GeneralizedStaticStreda.lean",
     TRANSPORT / "FiniteDisorder.lean",
     TRANSPORT / "FiniteDisorderResolvent.lean",
@@ -49,6 +49,13 @@ RETIRED_TRANSPORT_MODULES = (
     TRANSPORT / "System.lean",
     TRANSPORT / "LinearResponse.lean",
     TRANSPORT / "StredaResolventSpectral.lean",
+    TRANSPORT / "StredaOccupation.lean",
+    TRANSPORT / "StredaCommonKernel.lean",
+)
+
+RETIRED_FERMIONIC_TRANSPORT_MODULES = (
+    FERMIONIC_TRANSPORT / "StredaOccupation.lean",
+    FERMIONIC_TRANSPORT / "StredaCommonKernel.lean",
 )
 
 FERMIONIC_SPECIALIZATIONS = {
@@ -58,10 +65,10 @@ FERMIONIC_SPECIALIZATIONS = {
         "LeanCondensedMatter.Transport.FiniteConductivityTable",
     FERMIONIC_TRANSPORT / "KuboBastinSpectral.lean":
         "LeanCondensedMatter.Transport.FiniteKuboBastin",
-    FERMIONIC_TRANSPORT / "StredaOccupation.lean":
-        "LeanCondensedMatter.Transport.StredaOccupation",
-    FERMIONIC_TRANSPORT / "StredaCommonKernel.lean":
-        "LeanCondensedMatter.Transport.StredaCommonKernel",
+    FERMIONIC_TRANSPORT / "KuboBastinOccupation.lean":
+        "LeanCondensedMatter.Transport.KuboBastinOccupation",
+    FERMIONIC_TRANSPORT / "KuboBastinCommonEnergy.lean":
+        "LeanCondensedMatter.Transport.KuboBastinCommonEnergy",
     FERMIONIC_TRANSPORT / "StaticKuboBastinResponse.lean":
         "LeanCondensedMatter.Transport.GeneralizedStaticStreda",
 }
@@ -101,6 +108,12 @@ def main() -> int:
         if path.exists():
             errors.append(
                 f"{relative(path)} is retired and must not be reintroduced into generic Transport"
+            )
+
+    for path in RETIRED_FERMIONIC_TRANSPORT_MODULES:
+        if path.exists():
+            errors.append(
+                f"{relative(path)} is retired and must not be reintroduced into fermionic Transport"
             )
 
     for path in lean_files(TRANSPORT):
