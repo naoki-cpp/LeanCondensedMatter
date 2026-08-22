@@ -36,7 +36,10 @@ NEUTRAL_OWNERS = (
     TRANSPORT / "FiniteDisorderSCBA.lean",
 )
 
-FINITE_TIME_ADIABATIC_OWNER = LINEAR_RESPONSE / "FiniteTimeAdiabatic.lean"
+ADIABATIC_RESPONSE_OWNERS = (
+    LINEAR_RESPONSE / "FiniteTimeAdiabatic.lean",
+    LINEAR_RESPONSE / "InfiniteTimeAdiabatic.lean",
+)
 
 REMOVED_GENERIC_FERMIONIC_OWNERS = (
     FERMIONIC_TRANSPORT / "GeneralizedKuboBastin.lean",
@@ -101,10 +104,9 @@ def main() -> int:
     for path in NEUTRAL_OWNERS:
         require_exists(errors, path)
 
-    if not FINITE_TIME_ADIABATIC_OWNER.exists():
-        errors.append(
-            f"missing canonical linear-response owner: {relative(FINITE_TIME_ADIABATIC_OWNER)}"
-        )
+    for path in ADIABATIC_RESPONSE_OWNERS:
+        if not path.exists():
+            errors.append(f"missing canonical linear-response owner: {relative(path)}")
 
     check_absent_paths(
         errors,
@@ -175,15 +177,31 @@ def main() -> int:
                     f"{relative(fermionic_frequency)} must not re-own generic response core `{declaration}`"
                 )
 
-    for consumer in (
+    require_import(
+        errors,
         FERMIONIC_TRANSPORT / "StationaryFrequencyResponse.lean",
-        FERMIONIC_TRANSPORT / "InfiniteTimeFrequencyResponse.lean",
-    ):
-        require_import(
-            errors,
-            consumer,
-            "LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic",
-        )
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic",
+    )
+
+    # Scalar positive-lag integrability, the half-infinite transform, and the finite-time to
+    # infinite-time convergence theorem are likewise generic linear-response concepts.
+    fermionic_infinite = FERMIONIC_TRANSPORT / "InfiniteTimeFrequencyResponse.lean"
+    require_import(
+        errors,
+        fermionic_infinite,
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic",
+    )
+    if fermionic_infinite.exists():
+        text = fermionic_infinite.read_text(encoding="utf-8")
+        for declaration in (
+            "def AdiabaticLagIntegrable",
+            "def infiniteTimeAdiabaticTransform",
+            "theorem hasInfiniteObservationTimeLimit_finiteTimeAdiabaticTransform",
+        ):
+            if declaration in text:
+                errors.append(
+                    f"{relative(fermionic_infinite)} must not re-own generic infinite-time response `{declaration}`"
+                )
 
     # Exact finite disorder owns the ensemble and exact averages. Configuration-wise resolvent
     # identities are a separate exact layer consumed by first Born and advanced Born.
