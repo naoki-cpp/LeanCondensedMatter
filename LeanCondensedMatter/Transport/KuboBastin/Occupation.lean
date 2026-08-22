@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.FiniteKuboBastin
-import LeanCondensedMatter.Transport.OccupationInterpolation
+import LeanCondensedMatter.Transport.KuboBastin.Finite
+import LeanCondensedMatter.Transport.KuboBastin.OccupationInterpolation
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 
 set_option linter.style.header false
