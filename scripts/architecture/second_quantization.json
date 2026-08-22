@@ -75,6 +75,134 @@
       "downstream": "bosonic"
     }
   ],
+  "scopedImportGraphs": [
+    {
+      "id": "fermionicResponsibility",
+      "sourceRoots": [
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Field",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Validation"
+      ],
+      "layers": [
+        {"id": "algebra", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Algebra"]},
+        {"id": "field", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Field"]},
+        {"id": "lattice", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Lattice"]},
+        {"id": "transport", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport"]},
+        {"id": "validation", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Validation"]}
+      ],
+      "edges": [
+        {"upstream": "algebra", "downstream": "field"},
+        {"upstream": "algebra", "downstream": "lattice"},
+        {"upstream": "field", "downstream": "transport"},
+        {"upstream": "lattice", "downstream": "transport"},
+        {"upstream": "transport", "downstream": "validation"}
+      ]
+    },
+    {
+      "id": "twoPointDiagrammatics",
+      "sourceRoots": [
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Diagrammatics/TwoPointDiagramExpansion"
+      ],
+      "layers": [
+        {"id": "umbrella", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion"]},
+        {"id": "semantics", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Semantics"]},
+        {"id": "factorization", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Factorization"]},
+        {"id": "analysis", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Analysis"]},
+        {"id": "integration", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Integration"]},
+        {"id": "series", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.TwoPointDiagramExpansion.Series"]},
+        {"id": "linkedCluster", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.LinkedCluster"]}
+      ],
+      "edges": [
+        {"upstream": "semantics", "downstream": "factorization"},
+        {"upstream": "factorization", "downstream": "analysis"},
+        {"upstream": "analysis", "downstream": "integration"},
+        {"upstream": "integration", "downstream": "series"}
+      ]
+    },
+    {
+      "id": "bosonicQuarticThermal",
+      "sourceRoots": [
+        "LeanCondensedMatter/SecondQuantization/Bosonic/Diagrammatics/Quartic"
+      ],
+      "layers": [
+        {"id": "semantics", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic"]},
+        {"id": "thermal", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.Quartic.Thermal"]}
+      ],
+      "edges": [
+        {"upstream": "semantics", "downstream": "thermal"}
+      ]
+    },
+    {
+      "id": "completedSpaceThermal",
+      "sourceRoots": [
+        "LeanCondensedMatter/SecondQuantization/Fermionic/CompletedSpace",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal"
+      ],
+      "layers": [
+        {"id": "completedSpace", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace"]},
+        {"id": "thermal", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Thermal"]}
+      ],
+      "edges": [
+        {"upstream": "completedSpace", "downstream": "thermal"}
+      ]
+    },
+    {
+      "id": "latticeResponseBoundary",
+      "sourceRoots": [
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice"
+      ],
+      "layers": [
+        {"id": "lattice", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Lattice"]},
+        {"id": "response", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse", "LeanCondensedMatter.QuantumTheory.Transport"]}
+      ],
+      "edges": [
+        {"upstream": "lattice", "downstream": "response"}
+      ]
+    },
+    {
+      "id": "algebraicFockTransportBoundary",
+      "sourceRoots": [
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock"
+      ],
+      "layers": [
+        {"id": "algebraicFock", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Algebra.AlgebraicFock"]},
+        {"id": "quantumTransport", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Transport"]}
+      ],
+      "edges": [
+        {"upstream": "algebraicFock", "downstream": "quantumTransport"}
+      ]
+    },
+    {
+      "id": "singleParticleBoundary",
+      "sourceRoots": [
+        "LeanCondensedMatter/QuantumTheory",
+        "LeanCondensedMatter/QuantumMechanics/SingleParticle",
+        "LeanCondensedMatter/SecondQuantization"
+      ],
+      "layers": [
+        {"id": "quantumTheory", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory"]},
+        {"id": "singleParticle", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle"]},
+        {"id": "secondQuantization", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization"]}
+      ],
+      "edges": [
+        {"upstream": "quantumTheory", "downstream": "singleParticle"},
+        {"upstream": "quantumTheory", "downstream": "secondQuantization"}
+      ]
+    },
+    {
+      "id": "combinatoricsPermutationBoundary",
+      "sourceRoots": [
+        "LeanCondensedMatter/Combinatorics"
+      ],
+      "layers": [
+        {"id": "combinatorics", "modulePrefixes": ["LeanCondensedMatter.Combinatorics"]},
+        {"id": "permutation", "modulePrefixes": ["LeanCondensedMatter.Permutation"]}
+      ],
+      "edges": []
+    }
+  ],
   "namespaceExceptions": [
     {
       "modulePrefix": "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight",
