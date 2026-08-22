@@ -1,11 +1,6 @@
 from __future__ import annotations
 
-from architecture_audit_common import (
-    finish_audit,
-    lean_imports,
-    repository_root,
-    strip_lean_comments,
-)
+from architecture_audit_common import finish_audit, lean_imports, repository_root
 
 ROOT = repository_root(__file__)
 QUANTUM = ROOT / "LeanCondensedMatter" / "QuantumTheory"
@@ -32,22 +27,7 @@ def main() -> int:
             success_message="QuantumTheory normalized-expectation audit passed.",
         )
 
-    expectation_code = strip_lean_comments(EXPECTATION.read_text(encoding="utf-8"))
-
-    forbidden_expectation_dependencies = (
-        "LeanCondensedMatter.Analysis.Dyson",
-        "LinearResponse.FreeDynamics",
-        "freePropagator",
-        "heisenbergEvolution",
-        "BoundedFreeSystem",
-    )
-    for fragment in forbidden_expectation_dependencies:
-        if fragment in expectation_code:
-            errors.append(
-                f"expectation core must remain independent of dynamics via `{fragment}` in "
-                f"{EXPECTATION.relative_to(ROOT)}"
-            )
-
+    # Declaration-type independence from dynamics is owned by the compiled Lean audit.
     stationarity_imports = lean_imports(STATIONARITY)
     for imported in (EXPECTATION_MODULE, FREE_DYNAMICS_MODULE):
         if imported not in stationarity_imports:
