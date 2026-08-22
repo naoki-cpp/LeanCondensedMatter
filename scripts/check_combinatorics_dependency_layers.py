@@ -2,7 +2,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from architecture_audit_common import lean_imports, numbered_imports, repository_root
+from architecture_audit_common import (
+    finish_audit,
+    lean_imports,
+    module_matches_prefix,
+    numbered_imports,
+    repository_root,
+)
 
 ROOT = repository_root(__file__)
 LEAN_ROOT = ROOT / "LeanCondensedMatter"
@@ -47,7 +53,8 @@ def imports(module: str) -> tuple[str, ...]:
 
 
 def is_forbidden(module: str) -> bool:
-    return module.startswith(FORBIDDEN_PROJECT_PREFIXES + FORBIDDEN_EXTERNAL_PREFIXES)
+    prefixes = (*FORBIDDEN_PROJECT_PREFIXES, *FORBIDDEN_EXTERNAL_PREFIXES)
+    return any(module_matches_prefix(module, prefix) for prefix in prefixes)
 
 
 def check_root(root: str) -> list[str]:
@@ -72,37 +79,32 @@ def check_root(root: str) -> list[str]:
     return findings
 
 
-def is_permutation_import(module: str) -> bool:
-    return module == PERMUTATION_PREFIX or module.startswith(PERMUTATION_PREFIX + ".")
-
-
 def check_combinatorics_direct_imports() -> list[str]:
     findings: list[str] = []
     paths = [COMBINATORICS_UMBRELLA, *sorted(COMBINATORICS_ROOT.rglob("*.lean"))]
 
     for path in paths:
         for line_number, imported in numbered_imports(path):
-            if is_permutation_import(imported):
+            if module_matches_prefix(imported, PERMUTATION_PREFIX):
                 findings.append(f"{path.relative_to(ROOT)}:{line_number} -> {imported}")
 
     return findings
 
 
-def main() -> None:
+def main() -> int:
     findings: list[str] = []
     for root in LOW_LEVEL_ROOTS:
         findings.extend(check_root(root))
 
     findings.extend(check_combinatorics_direct_imports())
+    findings = sorted(set(findings))
 
-    if findings:
-        print("Combinatorics dependency-layer audit failed:")
-        for finding in sorted(set(findings)):
-            print(f"- {finding}")
-        raise SystemExit(1)
-
-    print("Combinatorics dependency-layer audit passed.")
+    return finish_audit(
+        findings,
+        failure_heading="Combinatorics dependency-layer audit failed:",
+        success_message="Combinatorics dependency-layer audit passed.",
+    )
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

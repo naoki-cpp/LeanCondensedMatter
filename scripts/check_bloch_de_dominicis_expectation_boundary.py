@@ -5,7 +5,9 @@ from pathlib import Path
 
 from architecture_audit_common import (
     finish_audit,
-    lean_imports,
+    forbid_import_prefixes,
+    require_files,
+    require_import,
     repository_root,
     strip_lean_comments,
 )
@@ -21,10 +23,15 @@ TARGET = (
     / "ExpectationRecursion.lean"
 )
 
-ALLOWED_IMPORTS = {
+REQUIRED_IMPORTS = (
     "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight",
     "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion",
-}
+)
+
+FORBIDDEN_IMPORT_PREFIXES = (
+    "LeanCondensedMatter.SecondQuantization.Fermionic",
+    "LeanCondensedMatter.SecondQuantization.Bosonic",
+)
 
 FORBIDDEN_IDENTIFIERS = {
     re.compile(r"(?<![A-Za-z0-9_'])Fintype(?![A-Za-z0-9_'])"):
@@ -55,31 +62,39 @@ def relative(path: Path) -> str:
 def main() -> int:
     errors: list[str] = []
 
-    if not TARGET.is_file():
-        errors.append(f"missing generic expectation recursion module: {relative(TARGET)}")
-    else:
-        imports = set(lean_imports(TARGET))
-        unexpected = sorted(imports - ALLOWED_IMPORTS)
-        missing = sorted(ALLOWED_IMPORTS - imports)
-        for imported in unexpected:
-            errors.append(
-                "generic expectation recursion has a non-generic import: "
-                f"{relative(TARGET)}: {imported}"
-            )
-        for imported in missing:
-            errors.append(
-                "generic expectation recursion is missing required abstraction import: "
-                f"{relative(TARGET)}: {imported}"
-            )
+    require_files(errors, (TARGET,), root=ROOT, description="generic expectation recursion module")
+    if errors:
+        return finish_audit(
+            errors,
+            failure_heading="Bloch-de Dominicis expectation boundary check failed:",
+            success_message="Bloch-de Dominicis expectation boundary check passed",
+        )
 
-        code = strip_lean_comments(TARGET.read_text(encoding="utf-8"))
-        for line_no, line in enumerate(code.splitlines(), start=1):
-            for pattern, description in FORBIDDEN_IDENTIFIERS.items():
-                if match := pattern.search(line):
-                    errors.append(
-                        f"generic expectation recursion mentions {description}: "
-                        f"{relative(TARGET)}:{line_no}: {match.group(0)}"
-                    )
+    for imported in REQUIRED_IMPORTS:
+        require_import(
+            errors,
+            TARGET,
+            imported,
+            root=ROOT,
+            description="generic expectation recursion module",
+        )
+
+    forbid_import_prefixes(
+        errors,
+        TARGET,
+        FORBIDDEN_IMPORT_PREFIXES,
+        root=ROOT,
+        description="generic expectation recursion must remain statistics-independent",
+    )
+
+    code = strip_lean_comments(TARGET.read_text(encoding="utf-8"))
+    for line_no, line in enumerate(code.splitlines(), start=1):
+        for pattern, description in FORBIDDEN_IDENTIFIERS.items():
+            if match := pattern.search(line):
+                errors.append(
+                    f"generic expectation recursion mentions {description}: "
+                    f"{relative(TARGET)}:{line_no}: {match.group(0)}"
+                )
 
     return finish_audit(
         errors,
