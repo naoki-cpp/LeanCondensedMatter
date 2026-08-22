@@ -101,32 +101,6 @@ theorem hasDerivAt_advancedResolvent_energy
     (-(advancedResolvent hamiltonian energy broadening) ^ 2) energy
   exact hcomp
 
-namespace BoundedSystem
-
-/-- System-level real-energy derivative of the stored-broadening retarded Green operator. -/
-theorem hasDerivAt_retardedGreen_energy
-    (system : BoundedSystem H) (energy : ℝ) :
-    HasDerivAt system.retardedGreen
-      (-(system.retardedGreen energy) ^ 2) energy := by
-  change HasDerivAt
-    (fun x : ℝ => retardedResolvent system.hamiltonian.1 x system.broadening)
-    (-(retardedResolvent system.hamiltonian.1 energy system.broadening) ^ 2) energy
-  exact hasDerivAt_retardedResolvent_energy system.hamiltonian.1 system.hamiltonian.2
-    energy system.broadening system.broadening_pos
-
-/-- System-level real-energy derivative of the stored-broadening advanced Green operator. -/
-theorem hasDerivAt_advancedGreen_energy
-    (system : BoundedSystem H) (energy : ℝ) :
-    HasDerivAt system.advancedGreen
-      (-(system.advancedGreen energy) ^ 2) energy := by
-  change HasDerivAt
-    (fun x : ℝ => advancedResolvent system.hamiltonian.1 x system.broadening)
-    (-(advancedResolvent system.hamiltonian.1 energy system.broadening) ^ 2) energy
-  exact hasDerivAt_advancedResolvent_energy system.hamiltonian.1 system.hamiltonian.2
-    energy system.broadening system.broadening_pos
-
-end BoundedSystem
-
 end
 
 end QuantumTheory.Transport
