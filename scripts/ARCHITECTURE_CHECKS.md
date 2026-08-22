@@ -1,11 +1,27 @@
 # Architecture checks
 
-`check_architecture.py` is the single CI entry point for the repository's Python architecture checks.
-CI runs the full registered audit once. Individual checker scripts remain focused and directly executable for
-local debugging, but the runner loads their `main()` functions into one Python process instead of spawning one
-process per checker.
+Architecture CI has two deliberately different layers:
 
-## Execution scopes
+```text
+Python pre-build audit
+  repository files / direct imports / layer DAG
+        ↓
+lake build --wfail + lint
+        ↓
+Lean post-build audit
+  compiled declarations / owners / public types / semantic contracts
+        ↓
+compiled sorryAx audit
+```
+
+`check_architecture.py` is the single CI entry point for the repository's Python architecture checks.
+`scripts/CheckArchitecture.lean` is the single post-build entry point for compiled semantic architecture checks.
+
+## Python execution
+
+CI runs the full registered Python audit once. Individual checker scripts remain focused and directly executable for
+local debugging, but the runner loads their `main()` functions into one Python process instead of spawning one process
+per checker.
 
 Every registered checker participates in the full CI audit. The runner also exposes two optional local filters:
 
@@ -16,7 +32,7 @@ Scopes are organizational filters only. They do not define CI partitions and the
 Lean module dependency graph. Each checker is registered exactly once, and the runner rejects unregistered
 `check_*.py` scripts except for explicitly listed non-architecture utilities.
 
-Run the same full audit as CI with:
+Run the same full Python audit as CI with:
 
 ```bash
 python3 scripts/check_architecture.py
@@ -35,34 +51,64 @@ List registered checks without executing them with:
 python3 scripts/check_architecture.py --list
 ```
 
-## What belongs in architecture CI
+After the library has been built, run the compiled audit with:
+
+```bash
+lake env lean scripts/CheckArchitecture.lean
+```
+
+## Responsibility boundary
 
 Architecture CI encodes the repository's **current structure**, not the sequence of refactors that produced it.
-Durable invariants include:
+The authoritative mechanism should match the kind of invariant.
 
-- dependency direction between layers;
-- canonical ownership of public abstractions;
-- representation-independent code staying upstream of concrete realizations;
-- foundational APIs remaining free of accidental finiteness assumptions;
-- terminal validation/example layers not being imported by reusable theory;
-- mathematically lossy implementation patterns that the project intentionally forbids.
+### Python owns source topology
 
-These checks describe *what must remain true*, not *how a proof happens to be written today*.
+Keep these checks in the lightweight pre-build Python audit:
 
-## Shared audit primitives
+- file and umbrella layout;
+- direct Lean import edges;
+- dependency direction between source trees;
+- repository layer DAGs;
+- source-syntax policy only when syntax itself is intentionally the contract.
 
-Use `architecture_audit_common.py` for repository-wide mechanics instead of checker-local infrastructure.
+### Lean owns compiled semantics
+
+Prefer `CheckArchitecture.lean` for invariants that are naturally properties of the compiled environment:
+
+- canonical declaration ownership;
+- declaration-name/module ownership relationships;
+- public type/signature dependencies;
+- semantic contracts expressible by typed Lean declarations or theorems.
+
+The compiled harness collects all `LeanCondensedMatter` declarations once, resolves declaration-to-module ownership
+through `Environment.const2ModIdx`, marks whether each declaration has a source declaration range, and accumulates all
+violations before failing. Generated declarations can therefore be excluded from source-ownership checks without
+parsing `namespace`, `section`, or declaration syntax in Python.
+
+`CheckArchitecture.lean` also exposes reusable helpers for:
+
+- exact canonical owner checks;
+- declaration-prefix to module-prefix ownership checks;
+- public compiled type dependencies on forbidden module layers.
+
+Existing Python declaration/source scans are transitional until their invariant is migrated. Do not add a new Python
+regex owner scan when the compiled environment can express the same rule directly.
+
+## Shared Python audit primitives
+
+Use `architecture_audit_common.py` for repository-wide source mechanics instead of checker-local infrastructure.
 The common layer provides:
 
 - `lean_imports` / `numbered_imports` for comment-aware direct Lean imports;
 - `module_matches_prefix` for module-boundary-safe prefix matching;
 - `require_import` / `forbid_import_prefixes` for individual dependency edges;
 - `ImportBoundary` / `check_import_boundaries` for declarative source-tree dependency rules;
-- `require_files` for current canonical owners;
-- `lean_files_matching` for declaration ownership scans;
+- `require_files` for current canonical source owners;
+- `lean_files_matching` for legacy declaration scans pending Lean migration;
 - `lean_source` / `strip_lean_comments` for the shared comment-aware source view.
 
-Because the full CI audit runs in one read-only Python process, the common layer caches deterministic file discovery,
+Because the full Python audit runs in one read-only process, the common layer caches deterministic file discovery,
 source reads, comment-stripped Lean source, and parsed imports. Checkers should use these shared views instead of
 re-reading the same tree independently when a common primitive fits the task.
 
@@ -79,8 +125,8 @@ DEPENDENCY_BOUNDARIES = (
 ```
 
 Generic import parsing, module-prefix semantics, comment stripping, file scans, and dependency traversal should not be
-reimplemented in individual checkers. Checker-local regexes remain appropriate for genuinely domain-specific
-declarations or semantic tokens.
+reimplemented in individual checkers. Checker-local regexes remain appropriate only for genuinely source-level policy
+that cannot be represented more robustly in the compiled Lean environment.
 
 ## One owner per architectural concern
 
@@ -94,7 +140,10 @@ Algebra → {Field, Lattice} → Transport → Validation
 ```
 
 is owned by the transport/validation boundary checker. The AlgebraicFock and Lattice checkers retain their own
-finite-dimensionality, namespace, and response-separation rules without maintaining a second copy of that DAG.
+finite-dimensionality and response-separation rules without maintaining a second copy of that DAG.
+
+The same one-owner rule applies across languages: once a declaration-level invariant is migrated to the compiled Lean
+audit, delete the superseded Python source parser instead of keeping both as permanent guards.
 
 ## Prefer positive boundaries over exact source snapshots
 
@@ -102,6 +151,8 @@ Permanent audits should express the minimum durable contract. Prefer required im
 prefixes over an exact list of all imports. Prefer required public umbrellas as a set over pinning their source order
 unless order itself is part of the contract. This lets a layer acquire a new reusable upstream helper without turning
 an unrelated source snapshot into a CI failure.
+
+For compiled checks, prefer declaration owner, public type, or theorem contracts over implementation-body text.
 
 ## Do not preserve migration history in permanent CI
 
@@ -117,7 +168,7 @@ Likewise, avoid checks that require exact proof fragments, helper theorem names,
 syntax itself is the public contract. Prefer declaration ownership, import direction, type-level constraints, or
 Lean-checked theorems when they can express the intended invariant.
 
-## Adding a checker
+## Adding a Python topology checker
 
 1. Add a focused `check_*.py` script exposing `main() -> int | None`.
 2. Reuse the shared primitives in `architecture_audit_common.py`; do not add a new generic import/parser implementation.
@@ -127,3 +178,12 @@ Lean-checked theorems when they can express the intended invariant.
 
 If a new `check_*.py` script is intentionally *not* an architecture CI checker, add it to
 `NON_ARCHITECTURE_CHECK_SCRIPTS` with that intent made explicit. Otherwise manifest validation fails.
+
+## Adding a compiled semantic checker
+
+1. Express the invariant as a pure `Snapshot → Array String` check in `CheckArchitecture.lean` where possible.
+2. Reuse declaration/module/type helpers rather than reparsing source text.
+3. Register the check in the single compiled-check array so all violations are accumulated in one run.
+4. Remove any Python declaration parser that becomes redundant after the Lean check is green.
+5. Keep mathematical identities in ordinary Lean theorems; architecture CI should verify the stable contract, not a
+   preferred proof route.
