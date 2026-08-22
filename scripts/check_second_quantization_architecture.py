@@ -11,6 +11,7 @@ from architecture_audit_common import (
     relative as relative_to,
     repository_root,
 )
+from architecture_graph_scopes import check_scoped_import_graphs
 
 ROOT = repository_root(__file__)
 LEAN = ROOT / "LeanCondensedMatter"
@@ -25,6 +26,7 @@ def relative(path: Path) -> str:
 
 def check_dependency_graph(errors: list[str], graph: ArchitectureGraph) -> None:
     check_architecture_graph_imports(errors, graph, root=ROOT, source_root=LEAN)
+    check_scoped_import_graphs(errors, GRAPH_SPEC, root=ROOT)
 
 
 def check_entry_point(errors: list[str]) -> None:
