@@ -9,7 +9,10 @@ from architecture_audit_common import (
     load_architecture_graph,
     repository_root,
 )
-from architecture_graph_scopes import check_scoped_import_graphs
+from architecture_graph_scopes import (
+    check_forbidden_reachability_contracts,
+    check_scoped_import_graphs,
+)
 
 ROOT = repository_root(__file__)
 LEAN = ROOT / "LeanCondensedMatter"
@@ -34,6 +37,7 @@ def main() -> int:
 
     for spec in (SECOND_QUANTIZATION_SPEC, SOURCE_TOPOLOGY_SPEC):
         check_scoped_import_graphs(errors, spec, root=ROOT)
+        check_forbidden_reachability_contracts(errors, spec, root=ROOT)
 
     return finish_audit(
         errors,
