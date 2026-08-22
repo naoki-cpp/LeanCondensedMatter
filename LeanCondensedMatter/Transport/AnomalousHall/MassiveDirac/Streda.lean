@@ -1,17 +1,14 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStreda
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStredaIntegral
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracCurrentOperatorBridge
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStredaSpectral
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda.Response
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda.Integral
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda.CurrentOperatorBridge
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda.Spectral
 
 set_option linter.style.header false
 
 /-!
 # Massive-Dirac Středa specialization
 
-Public umbrella for the bounded-operator realization of the massive-Dirac model and its concrete
-specialization of the generic finite Bastin/Středa transport API.
-
-Detailed pole extraction, radial limit interchange, and final zero-temperature Bastin analysis remain
-downstream in `MassiveDirac.Bastin`.
+Public umbrella for the concrete bounded-operator Středa realization. Canonical implementations
+live under `MassiveDirac/Streda/`.
 -/
