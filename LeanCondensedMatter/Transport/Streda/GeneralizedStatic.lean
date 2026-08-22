@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.FiniteKuboBastin
-import LeanCondensedMatter.Transport.StredaIntegration
+import LeanCondensedMatter.Transport.KuboBastin.Finite
+import LeanCondensedMatter.Transport.Streda.Integration
 
 set_option linter.style.header false
 
