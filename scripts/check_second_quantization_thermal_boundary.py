@@ -20,7 +20,6 @@ UNBOUNDED_EXPECTATION = THERMAL / "UnboundedExpectation.lean"
 COMMON_THERMAL_PREFIX = "LeanCondensedMatter.SecondQuantization.Common.Thermal"
 FERMIONIC_THERMAL_PREFIX = "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal"
 BOSONIC_THERMAL_PREFIX = "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal"
-COMPLETED_PREFIX = "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace"
 UNBOUNDED_THERMAL_IMPORT = f"{FERMIONIC_THERMAL_PREFIX}.UnboundedExpectation"
 
 
@@ -45,7 +44,7 @@ def main() -> int:
             success_message="SecondQuantization thermal-boundary audit passed.",
         )
 
-    # CompletedSpace -> Thermal direction is owned by the shared scoped DAG.
+    # CompletedSpace -> Thermal and the stricter UnboundedExpectation boundary are graph-owned.
 
     # The public representation umbrella exposes representation API only, never thermal theory.
     thermal_prefixes = (
@@ -58,15 +57,6 @@ def main() -> int:
             errors.append(
                 "Fermionic.CompletedSpace umbrella exports thermal API: "
                 f"{COMPLETED_UMBRELLA.relative_to(ROOT)}:{line_no}: {imported}"
-            )
-
-    # This is intentionally stronger than the layer DAG: this particular thermal theorem must not
-    # use CompletedSpace representation machinery.
-    for line_no, imported in numbered_imports(UNBOUNDED_EXPECTATION):
-        if module_matches_prefix(imported, COMPLETED_PREFIX):
-            errors.append(
-                "unbounded Gibbs expectation depends on CompletedSpace: "
-                f"{UNBOUNDED_EXPECTATION.relative_to(ROOT)}:{line_no}: {imported}"
             )
 
     thermal_exports = {imported for _, imported in numbered_imports(THERMAL_UMBRELLA)}
