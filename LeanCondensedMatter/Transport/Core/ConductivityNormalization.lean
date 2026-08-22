@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.FiniteVolume
+import LeanCondensedMatter.Transport.Core.FiniteVolume
 import Mathlib.Data.Complex.Basic
 import Mathlib.Tactic
 
@@ -83,7 +83,7 @@ theorem finiteVolumeConductivityDenominator_ne_zero
 intensive electric-field conductivity. -/
 noncomputable def finiteVolumeConductivityFromVectorPotential
     (volume : PositiveVolume) (ω η : ℝ) (response : ℂ) : ℂ :=
-  response * finiteVolumeConductivityNormalization volume ω η
+  response * finiteVolumeConductivityNormalization volume ω eta
 
 end Transport
 end QuantumTheory
