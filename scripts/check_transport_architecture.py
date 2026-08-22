@@ -37,6 +37,7 @@ NEUTRAL_OWNERS = (
 )
 
 ADIABATIC_RESPONSE_OWNERS = (
+    LINEAR_RESPONSE / "HarmonicSource.lean",
     LINEAR_RESPONSE / "FiniteTimeAdiabatic.lean",
     LINEAR_RESPONSE / "InfiniteTimeAdiabatic.lean",
 )
@@ -175,6 +176,28 @@ def main() -> int:
             if declaration in text:
                 errors.append(
                     f"{relative(fermionic_frequency)} must not re-own generic response core `{declaration}`"
+                )
+
+    # Real harmonic source quadratures are scalar linear-response data rather than a fermionic
+    # transport construction. The directional response module must consume the canonical owner.
+    fermionic_harmonic = FERMIONIC_TRANSPORT / "HarmonicSourceResponse.lean"
+    require_import(
+        errors,
+        fermionic_harmonic,
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.HarmonicSource",
+    )
+    if fermionic_harmonic.exists():
+        text = fermionic_harmonic.read_text(encoding="utf-8")
+        for declaration in (
+            "def adiabaticCosineSource",
+            "def adiabaticSineSource",
+            "theorem adiabaticFrequencyFactor_eq_cosine_add_I_sine",
+            "theorem adiabaticCosineSource_at_observation",
+            "theorem adiabaticSineSource_at_observation",
+        ):
+            if declaration in text:
+                errors.append(
+                    f"{relative(fermionic_harmonic)} must not re-own generic harmonic source `{declaration}`"
                 )
 
     require_import(

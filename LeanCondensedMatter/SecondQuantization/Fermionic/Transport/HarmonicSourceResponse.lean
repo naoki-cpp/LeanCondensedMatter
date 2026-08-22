@@ -1,24 +1,21 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.FrequencyResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.GeometricCurrentResponse
+import LeanCondensedMatter.QuantumTheory.LinearResponse.HarmonicSource
 
 set_option linter.style.header false
 
 /-!
 # Real harmonic sources for the finite-frequency current response
 
-The bounded source-coupling theorem accepts a real source profile. The complex adiabatic factor
-used by `FrequencyResponse` is therefore interpreted as the complexification of two physical real
-experiments:
+The representation-independent cosine/sine source quadratures now live in
+`QuantumTheory.LinearResponse.HarmonicSource`, where they are defined directly from the canonical
+adiabatic phase.
 
-```text
-f_cos(s) = Re exp ((-η + iω) (T - s)),
-f_sin(s) = Im exp ((-η + iω) (T - s)).
-```
-
-At the observation time, `f_cos(T) = 1` and `f_sin(T) = 0`. Consequently the cosine experiment
-contains the explicit Peierls contact response, while the sine experiment has no contact
-contribution. The two derivative theorems below are direct specializations of the proved bounded
-retarded-response theorem; no complex-valued Hamiltonian perturbation is introduced.
+This module retains the fermionic finite-lattice realization. The bounded source-coupling theorem
+accepts a real source profile, so the two physical quadratures give directional-current response
+theorems without introducing a complex-valued Hamiltonian perturbation. At the observation time,
+the cosine source equals one and therefore carries the explicit Peierls contact response, while the
+sine source vanishes and has no contact contribution.
 -/
 
 namespace SecondQuantization
@@ -26,35 +23,9 @@ namespace Fermionic
 namespace Transport
 
 open Lattice
+open QuantumTheory.LinearResponse
 
 noncomputable section
-
-/-- Real cosine quadrature of the normalized adiabatic harmonic source. -/
-def adiabaticCosineSource (ω η T s : ℝ) : ℝ :=
-  (adiabaticFrequencyFactor ω η (T - s)).re
-
-/-- Real sine quadrature of the normalized adiabatic harmonic source. -/
-def adiabaticSineSource (ω η T s : ℝ) : ℝ :=
-  (adiabaticFrequencyFactor ω η (T - s)).im
-
-/-- The complex adiabatic source is the complexification of its two real quadratures. -/
-theorem adiabaticFrequencyFactor_eq_cosine_add_I_sine
-    (ω η T s : ℝ) :
-    adiabaticFrequencyFactor ω η (T - s) =
-      (adiabaticCosineSource ω η T s : ℂ) +
-        Complex.I * (adiabaticSineSource ω η T s : ℂ) := by
-  apply Complex.ext <;>
-    simp [adiabaticCosineSource, adiabaticSineSource]
-
-@[simp]
-theorem adiabaticCosineSource_at_observation (ω η T : ℝ) :
-    adiabaticCosineSource ω η T T = 1 := by
-  simp [adiabaticCosineSource]
-
-@[simp]
-theorem adiabaticSineSource_at_observation (ω η T : ℝ) :
-    adiabaticSineSource ω η T T = 0 := by
-  simp [adiabaticSineSource]
 
 variable {Site E : Type*}
 variable [LinearOrder Site] [Fintype Site]
