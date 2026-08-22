@@ -16,7 +16,7 @@ The massive-Dirac benchmark is exposed through four logical layers:
 - `MassiveDirac.Model` — Hamiltonian, current realization, and spectral/projector algebra;
 - `MassiveDirac.Intrinsic` — Berry bridge and clean intrinsic Hall conductivity;
 - `MassiveDirac.Streda` — bounded-operator specialization of the generic Středa API;
-- `MassiveDirac.Bastin` — detailed finite-/zero-broadening Bastin analysis.
+- `MassiveDirac.Bastin` — detailed finite- and zero-broadening Bastin analysis.
 
 Reusable analysis currently living in the final layer is being extracted upstream under #1596.
 -/
