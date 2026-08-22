@@ -33,6 +33,13 @@ open Filter
 def lorentzianSpectralKernel (offset broadening : ℝ) : ℝ :=
   broadening / (broadening ^ 2 + offset ^ 2)
 
+/-- For nonnegative broadening the Lorentzian spectral kernel is nonnegative. -/
+theorem lorentzianSpectralKernel_nonneg
+    (offset broadening : ℝ) (hbroadening : 0 ≤ broadening) :
+    0 ≤ lorentzianSpectralKernel offset broadening := by
+  unfold lorentzianSpectralKernel
+  positivity
+
 private theorem complex_offset_add_I_ne_zero
     (offset broadening : ℝ) (hbroadening : broadening ≠ 0) :
     (offset : ℂ) + (broadening : ℂ) * Complex.I ≠ 0 := by
