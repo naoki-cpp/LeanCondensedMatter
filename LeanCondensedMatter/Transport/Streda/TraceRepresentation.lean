@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.StredaIntegration
-import LeanCondensedMatter.Transport.StredaTraceKernel
+import LeanCondensedMatter.Transport.Streda.Integration
+import LeanCondensedMatter.Transport.Streda.TraceKernel
 
 set_option linter.style.header false
 
