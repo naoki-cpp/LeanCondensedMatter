@@ -1,6 +1,6 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracIntrinsicConductivity
 import LeanCondensedMatter.Transport.StredaTraceKernel
-import LeanCondensedMatter.Transport.LinearResponse
+import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
 import Mathlib.Analysis.CStarAlgebra.Matrix
 import Mathlib.Analysis.Matrix.Hermitian
 
