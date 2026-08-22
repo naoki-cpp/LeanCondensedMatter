@@ -36,15 +36,7 @@ noncomputable def completedFreeModeTruncatedWeight (ε : Mode → ℝ) (β : ℝ
     (S : Finset Mode) (n : Occupation Mode) : ℝ :=
   if n ⊆ S then purePointBoltzmannWeight (fermionEnergy ε) β n else 0
 
-@[simp]
-theorem completedFreeModeTruncatedWeight_apply (ε : Mode → ℝ) (β : ℝ)
-    (S : Finset Mode) (n : Occupation Mode) :
-    completedFreeModeTruncatedWeight ε β S n =
-      if n ⊆ S then purePointBoltzmannWeight (fermionEnergy ε) β n else 0 :=
-  rfl
-
-/-- Truncated Boltzmann weights remain nonnegative. -/
-theorem completedFreeModeTruncatedWeight_nonneg (ε : Mode → ℝ) (β : ℝ)
+private theorem completedFreeModeTruncatedWeight_nonneg (ε : Mode → ℝ) (β : ℝ)
     (S : Finset Mode) (n : Occupation Mode) :
     0 ≤ completedFreeModeTruncatedWeight ε β S n := by
   by_cases h : n ⊆ S
@@ -52,8 +44,7 @@ theorem completedFreeModeTruncatedWeight_nonneg (ε : Mode → ℝ) (β : ℝ)
       purePointBoltzmannWeight_nonneg]
   · simp [completedFreeModeTruncatedWeight, h]
 
-/-- Absolute summability of the full Gibbs weights dominates every finite-mode truncation. -/
-theorem completedFreeModeTruncatedWeight_norm_summable (ε : Mode → ℝ) (β : ℝ)
+private theorem completedFreeModeTruncatedWeight_norm_summable (ε : Mode → ℝ) (β : ℝ)
     (hsum : PurePointGibbsSummable (fermionEnergy ε) β) (S : Finset Mode) :
     Summable fun n : Occupation Mode => ‖completedFreeModeTruncatedWeight ε β S n‖ := by
   exact Summable.of_nonneg_of_le
@@ -66,8 +57,7 @@ theorem completedFreeModeTruncatedWeight_norm_summable (ε : Mode → ℝ) (β :
       · simp [completedFreeModeTruncatedWeight, h])
     hsum
 
-/-- Ordinary summability of each truncated Boltzmann family. -/
-theorem completedFreeModeTruncatedWeight_summable (ε : Mode → ℝ) (β : ℝ)
+private theorem completedFreeModeTruncatedWeight_summable (ε : Mode → ℝ) (β : ℝ)
     (hsum : PurePointGibbsSummable (fermionEnergy ε) β) (S : Finset Mode) :
     Summable (completedFreeModeTruncatedWeight ε β S) :=
   Summable.of_norm (completedFreeModeTruncatedWeight_norm_summable ε β hsum S)
@@ -125,14 +115,6 @@ noncomputable def completedFreeModeTruncatedGibbsProbability (ε : Mode → ℝ)
     (S : Finset Mode) (n : Occupation Mode) : ℝ :=
   (completedFreeModeTruncatedPartitionFunction ε β S)⁻¹ *
     completedFreeModeTruncatedWeight ε β S n
-
-/-- Truncated normalized probabilities are nonnegative. -/
-theorem completedFreeModeTruncatedGibbsProbability_nonneg (ε : Mode → ℝ) (β : ℝ)
-    (hsum : PurePointGibbsSummable (fermionEnergy ε) β) (S : Finset Mode) (n : Occupation Mode) :
-    0 ≤ completedFreeModeTruncatedGibbsProbability ε β S n := by
-  exact mul_nonneg
-    (inv_nonneg.mpr (completedFreeModeTruncatedPartitionFunction_pos ε β hsum S).le)
-    (completedFreeModeTruncatedWeight_nonneg ε β S n)
 
 /-- Finite-mode truncated free Gibbs density operator, embedded in the full completed Fock space. -/
 noncomputable def completedFreeModeTruncatedGibbsDensityOperator
