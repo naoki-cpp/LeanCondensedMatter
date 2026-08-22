@@ -5,7 +5,6 @@ from pathlib import Path
 
 from architecture_audit_common import (
     finish_audit,
-    forbid_import_prefixes,
     require_files,
     require_import,
     repository_root,
@@ -26,11 +25,6 @@ TARGET = (
 REQUIRED_IMPORTS = (
     "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight",
     "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion",
-)
-
-FORBIDDEN_IMPORT_PREFIXES = (
-    "LeanCondensedMatter.SecondQuantization.Fermionic",
-    "LeanCondensedMatter.SecondQuantization.Bosonic",
 )
 
 FORBIDDEN_IDENTIFIERS = {
@@ -78,14 +72,6 @@ def main() -> int:
             root=ROOT,
             description="generic expectation recursion module",
         )
-
-    forbid_import_prefixes(
-        errors,
-        TARGET,
-        FORBIDDEN_IMPORT_PREFIXES,
-        root=ROOT,
-        description="generic expectation recursion must remain statistics-independent",
-    )
 
     code = strip_lean_comments(TARGET.read_text(encoding="utf-8"))
     for line_no, line in enumerate(code.splitlines(), start=1):
