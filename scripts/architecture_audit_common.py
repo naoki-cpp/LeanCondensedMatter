@@ -12,15 +12,6 @@ IMPORT_RE = re.compile(r"^\s*import\s+([^\s]+)\s*$")
 
 
 @dataclass(frozen=True)
-class ImportBoundary:
-    """A source tree and the downstream module prefixes it must not import."""
-
-    source_root: Path
-    forbidden_prefixes: tuple[str, ...]
-    description: str
-
-
-@dataclass(frozen=True)
 class ArchitectureLayer:
     """One vertex in a declarative architecture graph."""
 
@@ -212,47 +203,6 @@ def require_import(
         return
     if imported not in lean_imports(path):
         errors.append(f"{relative(root, path)} must import `{imported}`")
-
-
-def forbid_import_prefixes(
-    errors: list[str],
-    path: Path,
-    prefixes: str | tuple[str, ...],
-    *,
-    root: Path,
-    description: str,
-) -> None:
-    """Reject direct imports into forbidden downstream dependency prefixes."""
-    normalized = (prefixes,) if isinstance(prefixes, str) else prefixes
-    for line_no, imported in numbered_imports(path):
-        if any(module_matches_prefix(imported, prefix) for prefix in normalized):
-            errors.append(
-                f"{description}: {relative(root, path)}:{line_no} imports forbidden module `{imported}`"
-            )
-
-
-def check_import_boundaries(
-    errors: list[str],
-    boundaries: Iterable[ImportBoundary],
-    *,
-    root: Path,
-) -> None:
-    """Apply declarative import boundaries to every Lean file in each source tree."""
-    for boundary in boundaries:
-        if not boundary.source_root.is_dir():
-            errors.append(
-                f"missing dependency source tree for {boundary.description}: "
-                f"{relative(root, boundary.source_root)}"
-            )
-            continue
-        for path in lean_files(boundary.source_root):
-            forbid_import_prefixes(
-                errors,
-                path,
-                boundary.forbidden_prefixes,
-                root=root,
-                description=boundary.description,
-            )
 
 
 def load_architecture_graph(path: Path) -> ArchitectureGraph:
