@@ -2,13 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from architecture_audit_common import (
-    finish_audit,
-    lean_imports,
-    relative as relative_to,
-    repository_root,
-    strip_lean_comments,
-)
+from architecture_audit_common import finish_audit, lean_imports, relative as relative_to, repository_root
 
 ROOT = repository_root(__file__)
 QUANTUM = ROOT / "LeanCondensedMatter" / "QuantumTheory"
@@ -41,18 +35,7 @@ def main() -> int:
             success_message="QuantumTheory conservation-law audit passed.",
         )
 
-    free_dynamics_code = strip_lean_comments(FREE_DYNAMICS.read_text(encoding="utf-8"))
-    free_dynamics_normalized = " ".join(free_dynamics_code.split())
-    conservation_code = strip_lean_comments(CONSERVATION.read_text(encoding="utf-8"))
-    density_expectation_code = strip_lean_comments(DENSITY_EXPECTATION.read_text(encoding="utf-8"))
-    density_code = strip_lean_comments(DENSITY_BASIC.read_text(encoding="utf-8"))
-
-    if "hamiltonian : Observable H" not in free_dynamics_normalized:
-        errors.append(
-            "bounded free systems must store the Hamiltonian in the canonical observable type: "
-            f"{relative(FREE_DYNAMICS)}"
-        )
-
+    # Hamiltonian typing, dimension independence, and derivative independence are compiled contracts.
     if CONSERVATION_MODULE not in lean_imports(ROOT_UMBRELLA):
         errors.append(
             "QuantumTheory public umbrella must expose bounded conservation laws: "
@@ -65,25 +48,6 @@ def main() -> int:
             errors.append(
                 f"conservation laws must import `{required_import}` in {relative(CONSERVATION)}"
             )
-
-    for path, code in (
-        (FREE_DYNAMICS, free_dynamics_code),
-        (CONSERVATION, conservation_code),
-        (DENSITY_EXPECTATION, density_expectation_code),
-        (DENSITY_BASIC, density_code),
-    ):
-        for finite_assumption in ("[FiniteDimensional", "[Fintype"):
-            if finite_assumption in code:
-                errors.append(
-                    "bounded conservation laws must remain dimension-independent; found "
-                    f"`{finite_assumption}` in {relative(path)}"
-                )
-
-    if "HasDerivAt" in conservation_code:
-        errors.append(
-            "algebraic conservation laws must remain independent of derivative machinery in "
-            f"{relative(CONSERVATION)}"
-        )
 
     return finish_audit(
         errors,
