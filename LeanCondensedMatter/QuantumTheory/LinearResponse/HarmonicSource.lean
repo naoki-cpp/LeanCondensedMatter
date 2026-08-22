@@ -38,9 +38,16 @@ theorem adiabaticFrequencyPhase_eq_cosine_add_I_sine
     adiabaticFrequencyPhase ω η (T - s) =
       (adiabaticCosineSource ω η T s : ℂ) +
         Complex.I * (adiabaticSineSource ω η T s : ℂ) := by
-  apply Complex.ext <;>
-    simp [adiabaticFrequencyPhase, adiabaticCosineSource, adiabaticSineSource] <;>
-    ring
+  let τ : ℝ := T - s
+  unfold adiabaticFrequencyPhase
+  rw [show
+    (Complex.I * (ω : ℂ) - (η : ℂ)) * (τ : ℂ) =
+      ((-η * τ : ℝ) : ℂ) + ((ω * τ : ℝ) : ℂ) * Complex.I by
+        push_cast
+        ring]
+  rw [Complex.exp_add, ← Complex.ofReal_exp, ← Complex.cos_add_sin_I]
+  simp [adiabaticCosineSource, adiabaticSineSource, τ]
+  ring
 
 @[simp]
 theorem adiabaticCosineSource_at_observation (ω η T : ℝ) :
