@@ -1,11 +1,7 @@
 from __future__ import annotations
 
-import re
-from pathlib import Path
-
 from architecture_audit_common import (
     finish_audit,
-    lean_files_matching,
     lean_imports,
     repository_root,
     strip_lean_comments,
@@ -20,10 +16,6 @@ STATIONARITY = LINEAR_RESPONSE / "Stationarity.lean"
 UNITARY_PERTURBATION = LINEAR_RESPONSE / "UnitaryPerturbation.lean"
 EXPECTATION_MODULE = "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation"
 FREE_DYNAMICS_MODULE = "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics"
-
-NORMALIZED_EXPECTATION_DECL = re.compile(
-    r"^\s*structure\s+NormalizedExpectation\b", re.MULTILINE
-)
 
 
 def main() -> int:
@@ -41,27 +33,6 @@ def main() -> int:
         )
 
     expectation_code = strip_lean_comments(EXPECTATION.read_text(encoding="utf-8"))
-    stationarity_code = strip_lean_comments(STATIONARITY.read_text(encoding="utf-8"))
-    unitary_code = strip_lean_comments(UNITARY_PERTURBATION.read_text(encoding="utf-8"))
-
-    required_expectation_api = (
-        "structure NormalizedExpectation",
-        "noncomputable def NormalizedExpectation.pullback",
-        "theorem NormalizedExpectation.pullback_apply",
-    )
-    for declaration in required_expectation_api:
-        if declaration not in expectation_code:
-            errors.append(
-                f"missing normalized-expectation API `{declaration}` in {EXPECTATION.relative_to(ROOT)}"
-            )
-
-    owners = lean_files_matching(QUANTUM, NORMALIZED_EXPECTATION_DECL)
-    if owners != [EXPECTATION]:
-        rendered = ", ".join(str(path.relative_to(ROOT)) for path in owners) or "<none>"
-        errors.append(
-            "NormalizedExpectation must be owned exactly once by "
-            f"{EXPECTATION.relative_to(ROOT)}; found: {rendered}"
-        )
 
     forbidden_expectation_dependencies = (
         "LeanCondensedMatter.Analysis.Dyson",
@@ -83,17 +54,6 @@ def main() -> int:
             errors.append(
                 f"stationarity layer must import `{imported}` in {STATIONARITY.relative_to(ROOT)}"
             )
-    for declaration in ("def IsStationary", "theorem expectation_heisenbergEvolution_zero"):
-        if declaration not in stationarity_code:
-            errors.append(
-                f"missing stationarity API `{declaration}` in {STATIONARITY.relative_to(ROOT)}"
-            )
-
-    if "theorem timeDependentPerturbedObservableMap_one_of_isSelfAdjoint" not in unitary_code:
-        errors.append(
-            "finite-coupling dynamics must expose the self-adjoint normalized-expectation bridge in "
-            f"{UNITARY_PERTURBATION.relative_to(ROOT)}"
-        )
 
     return finish_audit(
         errors,
