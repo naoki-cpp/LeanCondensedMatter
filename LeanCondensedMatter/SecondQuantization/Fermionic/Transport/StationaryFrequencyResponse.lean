@@ -71,7 +71,7 @@ theorem finiteTimeAdiabaticDirectionalRetardedCoefficient_eq_stationaryLag
         system expectation J J τ 0
   change
     (∫ s in (0 : ℝ)..T,
-      adiabaticFrequencyFactor ω η (T - s) *
+      adiabaticFrequencyPhase ω η (T - s) *
         QuantumTheory.LinearResponse.retardedSusceptibility
           system expectation J J T s) =
       ∫ τ in (0 : ℝ)..T, g τ
@@ -82,13 +82,12 @@ theorem finiteTimeAdiabaticDirectionalRetardedCoefficient_eq_stationaryLag
       have hsIcc : s ∈ Set.Icc (0 : ℝ) T := by
         simpa [Set.uIcc_of_le hT] using hs
       change
-        adiabaticFrequencyFactor ω η (T - s) *
+        adiabaticFrequencyPhase ω η (T - s) *
             QuantumTheory.LinearResponse.retardedSusceptibility
               system expectation J J T s =
           g (T - s)
       rw [QuantumTheory.LinearResponse.retardedSusceptibility_eq_timeDifference_of_stationary
         system expectation hstationary J J T s]
-      rw [adiabaticFrequencyFactor_eq_adiabaticFrequencyPhase]
       simp [g, sub_nonneg.mpr hsIcc.2]
     _ = ∫ τ in (0 : ℝ)..T, g τ := by
       simpa using

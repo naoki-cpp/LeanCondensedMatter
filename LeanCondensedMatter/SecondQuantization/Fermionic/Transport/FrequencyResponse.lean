@@ -19,7 +19,7 @@ Peierls contact response. For a source proportional to
 exp (η t) exp (-i ω t),
 ```
 
-factoring out its value at the observation time leaves the lag factor
+factoring out its value at the observation time leaves the canonical linear-response lag phase
 
 ```text
 exp ((-η + i ω) τ).
@@ -33,39 +33,9 @@ namespace Fermionic
 namespace Transport
 
 open Lattice
+open QuantumTheory.LinearResponse
 
 noncomputable section
-
-/-- Adiabatically damped oscillatory factor for a positive time lag. -/
-def adiabaticFrequencyFactor (ω η τ : ℝ) : ℂ :=
-  Complex.exp ((-(η : ℂ) + Complex.I * (ω : ℂ)) * (τ : ℂ))
-
-@[simp]
-theorem adiabaticFrequencyFactor_zero_lag (ω η : ℝ) :
-    adiabaticFrequencyFactor ω η 0 = 1 := by
-  simp [adiabaticFrequencyFactor]
-
-@[simp]
-theorem adiabaticFrequencyFactor_zero_switching (ω τ : ℝ) :
-    adiabaticFrequencyFactor ω 0 τ =
-      Complex.exp (Complex.I * (ω : ℂ) * (τ : ℂ)) := by
-  simp [adiabaticFrequencyFactor]
-
-@[simp]
-theorem adiabaticFrequencyFactor_zero_frequency (η τ : ℝ) :
-    adiabaticFrequencyFactor 0 η τ =
-      Complex.exp (-(η : ℂ) * (τ : ℂ)) := by
-  simp [adiabaticFrequencyFactor]
-
-/-- The fermionic field-layer lag factor is the canonical linear-response adiabatic phase. -/
-theorem adiabaticFrequencyFactor_eq_adiabaticFrequencyPhase
-    (ω η τ : ℝ) :
-    adiabaticFrequencyFactor ω η τ =
-      QuantumTheory.LinearResponse.adiabaticFrequencyPhase ω η τ := by
-  unfold adiabaticFrequencyFactor
-    QuantumTheory.LinearResponse.adiabaticFrequencyPhase
-  congr 2
-  ring
 
 variable {Site E : Type*}
 variable [LinearOrder Site] [Fintype Site]
@@ -73,7 +43,7 @@ variable [AddCommGroup E] [Module ℝ E]
 
 /-- Retarded part of the finite-time, adiabatically regularized directional-current coefficient.
 
-The observation-time source value has been factored out, leaving the lag factor
+The observation-time source value has been factored out, leaving the canonical lag phase
 `exp ((-η + iω) (T - s))`. This is an exact finite-`T`, finite-`η` definition. -/
 noncomputable def finiteTimeAdiabaticDirectionalRetardedCoefficient
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
@@ -85,7 +55,7 @@ noncomputable def finiteTimeAdiabaticDirectionalRetardedCoefficient
   let J := boundedDirectionalCurrent geometry direction
     (system.hbar : ℂ) (q : ℂ) K
   ∫ s in (0 : ℝ)..T,
-    adiabaticFrequencyFactor ω η (T - s) *
+    adiabaticFrequencyPhase ω η (T - s) *
       QuantumTheory.LinearResponse.retardedSusceptibility
         system expectation J J T s
 
