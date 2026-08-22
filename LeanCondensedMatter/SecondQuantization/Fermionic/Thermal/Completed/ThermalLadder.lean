@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.CanonicalAnticommutationRelations
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.GibbsLadderIntertwining
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.GibbsLadderIntertwining
 
 set_option linter.style.header false
 

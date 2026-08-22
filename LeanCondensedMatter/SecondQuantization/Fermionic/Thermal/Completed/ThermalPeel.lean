@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalLadder
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ThermalLadder
 import Mathlib.Tactic.Module
 
 set_option linter.style.header false

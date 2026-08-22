@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.ExpectationRecursion
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalKMS
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ThermalKMS
 
 set_option linter.style.header false
 

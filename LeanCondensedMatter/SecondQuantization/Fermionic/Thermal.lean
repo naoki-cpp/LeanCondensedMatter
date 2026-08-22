@@ -9,13 +9,24 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.QuantumLinkedClu
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BlochDeDominicis.Examples.SingleMode
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BlochDeDominicis.TwoPoint
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FreeGibbs
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.GibbsLadderIntertwining
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ThermalLadder
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ThermalPeel
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ThermalPeelIndexed
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ThermalKMS
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ThermalFirstPair
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ThermalRecursion
 
 set_option linter.style.header false
 
 /-!
 # Fermionic free thermal theory
 
-Finite-basis weighted and Gibbs expectations, the free partition function, Fermi–Dirac occupation
-numbers and entropy, closed-form free Gibbs Green functions and contractions, concrete
-Bloch–de Dominicis specializations, and the completed-Hilbert free Gibbs specialization.
+Canonical public entry point for finite-basis and completed-Hilbert free-fermion thermal theory.
+It exposes weighted and Gibbs expectations, partition functions, Fermi--Dirac observables, entropy,
+Green functions and contractions, concrete Bloch--de Dominicis specializations, and the completed
+free-Gibbs ladder/KMS/pairing-recursion stack.
+
+Completed thermal modules depend on the representation and operator infrastructure in
+`Fermionic.CompletedSpace`; the representation umbrella does not own the thermal stack.
 -/
