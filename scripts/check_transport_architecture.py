@@ -44,6 +44,12 @@ ADIABATIC_RESPONSE_OWNERS = (
     LINEAR_RESPONSE / "InfiniteTimeAdiabatic.lean",
 )
 
+RETIRED_TRANSPORT_MODULES = (
+    TRANSPORT / "System.lean",
+    TRANSPORT / "LinearResponse.lean",
+    TRANSPORT / "StredaResolventSpectral.lean",
+)
+
 FERMIONIC_SPECIALIZATIONS = {
     FERMIONIC_TRANSPORT / "ConductivityNormalization.lean":
         "LeanCondensedMatter.Transport.ConductivityNormalization",
@@ -90,6 +96,12 @@ def main() -> int:
         description="canonical linear-response owner",
     )
 
+    for path in RETIRED_TRANSPORT_MODULES:
+        if path.exists():
+            errors.append(
+                f"{relative(path)} is retired and must not be reintroduced into generic Transport"
+            )
+
     for path in lean_files(TRANSPORT):
         forbid_import_prefixes(
             errors,
@@ -127,17 +139,27 @@ def main() -> int:
             "Transport.FiniteTrace rather than the downstream Středa trace layer"
         )
 
+    resolvent = TRANSPORT / "Resolvent.lean"
+    forbid_declarations(
+        errors,
+        resolvent,
+        (
+            "structure BoundedSystem",
+            "structure FiniteVolumeSystem",
+            "inductive CartesianDirection",
+            "def retardedFermiParameter",
+            "def advancedFermiParameter",
+            "noncomputable def retardedGreen",
+            "noncomputable def advancedGreen",
+        ),
+        "retired transport-system wrapper",
+    )
+
     resolvent_spectral_import = "LeanCondensedMatter.Transport.ResolventSpectral"
     finite_kubo_bastin = TRANSPORT / "FiniteKuboBastin.lean"
     streda_trace_spectral = TRANSPORT / "StredaTraceSpectral.lean"
     require_owner_import(errors, finite_kubo_bastin, resolvent_spectral_import)
     require_owner_import(errors, streda_trace_spectral, resolvent_spectral_import)
-    retired_streda_resolvent_spectral = TRANSPORT / "StredaResolventSpectral.lean"
-    if retired_streda_resolvent_spectral.exists():
-        errors.append(
-            f"{relative(retired_streda_resolvent_spectral)} is retired; generic resolvent spectral "
-            "action belongs to Transport.ResolventSpectral"
-        )
 
     forbid_declarations(
         errors,
