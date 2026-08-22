@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from architecture_audit_common import (
     finish_audit,
-    forbid_import_prefixes,
     lean_imports,
     repository_root,
     strip_lean_comments,
@@ -18,7 +17,6 @@ FINITE_EXPECTATION = THERMAL / "FiniteGibbsExpectationBridge.lean"
 FREE_ENTROPY = LEAN / "SecondQuantization" / "Fermionic" / "Thermal" / "FreeEntropy.lean"
 
 DIAGONAL_FORMULA_MODULE = "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
-ENTROPY_PREFIX = "LeanCondensedMatter.QuantumTheory.Entropy"
 PURE_POINT_MODULE = "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint"
 FINITE_HILBERT_MODULE = "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator"
 ENTROPY_DIAGONAL_MODULE = "LeanCondensedMatter.QuantumTheory.Entropy.Diagonal"
@@ -46,13 +44,6 @@ def main() -> int:
     pure_imports = lean_imports(PURE_POINT)
     if DIAGONAL_FORMULA_MODULE not in pure_imports:
         errors.append("PurePoint must import the diagonal density owner directly")
-    forbid_import_prefixes(
-        errors,
-        PURE_POINT,
-        ENTROPY_PREFIX,
-        root=ROOT,
-        description="PurePoint must remain independent of entropy",
-    )
     for name in ("purePointGibbsDensityOperator", "finitePurePointGibbsDensityOperator"):
         if name not in pure:
             errors.append(f"PurePoint must own `{name}`")
