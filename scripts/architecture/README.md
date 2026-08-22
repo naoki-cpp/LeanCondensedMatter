@@ -2,8 +2,8 @@
 
 Files in this directory are architecture **specifications**, not checker implementations.
 
-The goal is to describe repository boundaries by naming graph vertices and edges once, then let the
-Python pre-build audit and Lean post-build audit interpret the same data at their respective levels.
+The goal is to describe repository dependency direction by naming graph vertices and edges once,
+then let the architecture audits interpret that data at the appropriate level.
 
 ## Primary layer graph
 
@@ -37,8 +37,8 @@ Consequences follow from the graph rather than separate blacklists:
 ## Scoped import DAGs
 
 Some architectures are meaningful only inside a focused source region. Encoding them in the primary
-graph would make public umbrella modules look like ordinary dependency layers, so the specification
-also supports `scopedImportGraphs`.
+graph would turn unrelated modules into one artificial global ordering, so specifications also
+support `scopedImportGraphs`.
 
 Each scoped DAG declares:
 
@@ -50,7 +50,7 @@ Each scoped DAG declares:
 Targets outside the scoped graph are intentionally ignored. This lets a focused graph describe only
 the dependency relation it owns without duplicating unrelated repository policy.
 
-The current specification centralizes these previously hand-written boundaries:
+`second_quantization.json` contains the SecondQuantization-centered DAGs:
 
 ```text
 Fermionic
@@ -65,32 +65,75 @@ Fermionic
 Bosonic Quartic
   Semantics → Thermal
 
-Quantum current hierarchy
-  QuantumTheory → SingleParticle
-  QuantumTheory → SecondQuantization
+QuantumTheory → {SingleParticle, SecondQuantization}
 
 Combinatorics → Permutation
 ```
 
-It also includes focused DAGs that keep Fermionic lattice construction upstream of response theory
-and AlgebraicFock upstream of transport-specific quantum theory.
+It also keeps Fermionic lattice construction upstream of response theory and AlgebraicFock upstream
+of transport-specific quantum theory.
 
-Individual Python checkers should not restate these graph edges. They may retain genuinely different
-source-topology contracts such as required files, exact umbrella exposure, or a transitive reachability
-guard that is intentionally stronger than direct-import ancestry.
+`source_topology.json` contains the remaining repository source-layer DAGs that do not belong to the
+compiled SecondQuantization namespace contract:
 
-## One specification, two interpreters
+```text
+Generic Transport → SecondQuantization
 
-Python owns source topology. It classifies source and imported modules through `modulePrefixes` and
-checks direct imports against graph ancestry before the Lean build. The primary graph and all scoped
-DAGs are executed from the same pre-build architecture entry point.
+Finite disorder
+  FiniteDisorder ─────→ Moments ───────────┐
+        │                   └──────────────→│ Born
+        ├────────→ DisorderResolvent ─────→│ AdvancedBorn
+        │                 ↑                 │
+        └─────────────────┼──────────────→ SCBA
+                  Resolvent ─────────────→ SCBA
 
-Lean owns compiled semantics. It reads the primary graph from the same JSON after the build, resolves
-each source-declared constant to its compiled owner module, converts private names back with
-`privateToUserName`, and checks the layer's `namespacePrefixes` and `forbiddenNameFragments`.
+LinearResponse
+  FreeDynamics → PureStateDynamics → PictureEquivalence → {ConservationLaws, EquationsOfMotion}
+  Expectation → DensityExpectation → ConservationLaws
+  Expectation → Stationarity ← FreeDynamics
+  Stationarity → ConservationLaws
 
-Scoped DAGs are currently import-topology data only; declaration-level rules should be represented as
-compiled Lean contracts rather than reintroducing source parsers.
+Density / Gibbs / entropy
+  DiagonalFormula → PurePoint → FiniteGibbsExpectationBridge
+  FiniteHilbertOperator ────────────────→ FiniteGibbsExpectationBridge
+  Entropy → FreeEntropy ← PurePoint
+```
+
+A focused generalized-current graph additionally prevents representation-independent Analysis
+modules and the fermionic field bridge from depending on concrete `QuantumMechanics`.
+
+## What is not a DAG
+
+A dependency-direction DAG answers **which layers may depend on which upstream layers**. It does not
+assert that a particular direct edge must exist.
+
+Therefore contracts such as:
+
+- `A` must directly import `B`;
+- an umbrella must export a particular module set;
+- a file must exist at a canonical path;
+
+remain focused positive-edge/layout policy. They should not be encoded as fake DAG edges merely to
+put every topology check in one data structure.
+
+Likewise, source-level semantic guards such as finite-dimensionality restrictions remain outside the
+DAG when syntax or a particular source boundary is itself the intended contract.
+
+## One graph runner, two semantic levels
+
+`check_architecture_graphs.py` is the single Python owner for the primary graph and all scoped import
+DAGs. Individual Python checkers must not restate those dependency-direction edges.
+
+Python owns direct source topology: it classifies source and imported modules through
+`modulePrefixes` and checks imports against graph ancestry before the Lean build.
+
+Lean owns compiled semantics. `CheckArchitecture.lean` reads the primary graph from
+`second_quantization.json` after the build, resolves each source-declared constant to its compiled
+owner module, converts private names back with `privateToUserName`, and checks the layer's
+`namespacePrefixes` and `forbiddenNameFragments`.
+
+Scoped DAGs are import-topology data only; declaration-level rules should be represented as compiled
+Lean contracts rather than reintroducing source parsers.
 
 This deliberately avoids teaching Python how to parse Lean `namespace`, `section`, `end`, declaration
 modifiers, or private-name syntax.
