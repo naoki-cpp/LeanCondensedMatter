@@ -27,7 +27,6 @@ NEUTRAL_OWNERS = (
     TRANSPORT / "FiniteKuboBastin.lean",
     TRANSPORT / "StredaOccupation.lean",
     TRANSPORT / "StredaCommonKernel.lean",
-    TRANSPORT / "StredaCommonEnergyBridge.lean",
     TRANSPORT / "GeneralizedStaticStreda.lean",
     TRANSPORT / "FiniteDisorder.lean",
     TRANSPORT / "FiniteDisorderResolvent.lean",
@@ -40,6 +39,10 @@ ADIABATIC_RESPONSE_OWNERS = (
     LINEAR_RESPONSE / "HarmonicSource.lean",
     LINEAR_RESPONSE / "FiniteTimeAdiabatic.lean",
     LINEAR_RESPONSE / "InfiniteTimeAdiabatic.lean",
+)
+
+REMOVED_GENERIC_TRANSPORT_OWNERS = (
+    TRANSPORT / "StredaCommonEnergyBridge.lean",
 )
 
 REMOVED_GENERIC_FERMIONIC_OWNERS = (
@@ -108,6 +111,13 @@ def main() -> int:
     for path in ADIABATIC_RESPONSE_OWNERS:
         if not path.exists():
             errors.append(f"missing canonical linear-response owner: {relative(path)}")
+
+    check_absent_paths(
+        errors,
+        REMOVED_GENERIC_TRANSPORT_OWNERS,
+        root=ROOT,
+        description="retired generic transport forwarding owner must stay removed",
+    )
 
     check_absent_paths(
         errors,

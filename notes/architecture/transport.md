@@ -27,8 +27,8 @@ import `LeanCondensedMatter.SecondQuantization`.
 The canonical generic owners include:
 
 - `FiniteKuboBastin` for finite measured/source Kubo–Bastin response;
-- `StredaOccupation`, `StredaCommonKernel`, `StredaCommonEnergyBridge`, and
-  `GeneralizedStaticStreda` for the regularized Středa chain;
+- `StredaOccupation`, `StredaCommonKernel`, and `GeneralizedStaticStreda` for the regularized Středa
+  chain;
 - `FiniteDisorder` for exact finite ensembles and exact scalar/operator averages;
 - `FiniteDisorderResolvent` for exact clean/configuration Green operators and configuration-wise
   Dyson identities;

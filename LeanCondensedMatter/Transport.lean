@@ -11,7 +11,6 @@ import LeanCondensedMatter.Transport.StredaTraceKernel
 import LeanCondensedMatter.Transport.OccupationInterpolation
 import LeanCondensedMatter.Transport.StredaOccupation
 import LeanCondensedMatter.Transport.StredaCommonKernel
-import LeanCondensedMatter.Transport.StredaCommonEnergyBridge
 import LeanCondensedMatter.Transport.StredaIntegration
 import LeanCondensedMatter.Transport.GeneralizedStaticStreda
 import LeanCondensedMatter.Transport.StredaResolventSpectral
