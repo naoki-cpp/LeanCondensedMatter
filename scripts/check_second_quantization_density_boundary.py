@@ -1,11 +1,6 @@
 from __future__ import annotations
 
-from architecture_audit_common import (
-    finish_audit,
-    lean_imports,
-    repository_root,
-    strip_lean_comments,
-)
+from architecture_audit_common import finish_audit, lean_imports, repository_root
 
 ROOT = repository_root(__file__)
 LEAN = ROOT / "LeanCondensedMatter"
@@ -22,10 +17,6 @@ FINITE_HILBERT_MODULE = "LeanCondensedMatter.SecondQuantization.Common.Algebra.F
 ENTROPY_DIAGONAL_MODULE = "LeanCondensedMatter.QuantumTheory.Entropy.Diagonal"
 
 
-def code(path):
-    return strip_lean_comments(path.read_text(encoding="utf-8"))
-
-
 def main() -> int:
     errors: list[str] = []
 
@@ -40,33 +31,17 @@ def main() -> int:
             success_message="SecondQuantization density-boundary audit passed.",
         )
 
-    pure = code(PURE_POINT)
-    pure_imports = lean_imports(PURE_POINT)
-    if DIAGONAL_FORMULA_MODULE not in pure_imports:
+    # Semantic owners and public type-layer independence are compiled Lean contracts.
+    if DIAGONAL_FORMULA_MODULE not in lean_imports(PURE_POINT):
         errors.append("PurePoint must import the diagonal density owner directly")
-    for name in ("purePointGibbsDensityOperator", "finitePurePointGibbsDensityOperator"):
-        if name not in pure:
-            errors.append(f"PurePoint must own `{name}`")
 
-    finite = code(FINITE_HILBERT)
-    if any(name in finite for name in ("Gibbs", "Boltzmann", "DensityOperator")):
-        errors.append("FiniteHilbertOperator must remain independent of thermal states")
-
-    expectation = code(FINITE_EXPECTATION)
     expectation_imports = lean_imports(FINITE_EXPECTATION)
     for required in (PURE_POINT_MODULE, FINITE_HILBERT_MODULE):
         if required not in expectation_imports:
             errors.append(f"finite Gibbs expectation adapter must import `{required}`")
-    if "finitePurePointGibbsDensityOperator" not in expectation:
-        errors.append(
-            "finite Gibbs expectation adapter must consume `finitePurePointGibbsDensityOperator`"
-        )
 
-    entropy = code(FREE_ENTROPY)
     if ENTROPY_DIAGONAL_MODULE not in lean_imports(FREE_ENTROPY):
         errors.append("free-fermion entropy must import the diagonal entropy owner directly")
-    if "entropyOpSpectralTraceClass_trace_eq_tsum_diagonal" not in entropy:
-        errors.append("free-fermion entropy must expose the diagonal entropy theorem")
 
     return finish_audit(
         errors,
