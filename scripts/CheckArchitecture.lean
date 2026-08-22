@@ -1,6 +1,7 @@
 import Lean
 import LeanCondensedMatter
 import Lean.Elab.Command
+import Lean.Util.FoldConsts
 
 open Lean Elab Command
 
@@ -93,33 +94,11 @@ def checkDeclarationPrefixOwner
 
 /-- Does an expression mention a constant owned by a module under `modulePrefix`? This is intended
 for public type/signature dependency checks; direct source-import topology remains a Python concern. -/
-partial def exprUsesModulePrefix
-    (snapshot : Snapshot) (expr : Expr) (modulePrefix : Name) : Bool :=
-  match expr with
-  | .bvar _ | .fvar _ | .mvar _ | .sort _ | .lit _ => false
-  | .const constName _ =>
-      match declarationModule? snapshot.env constName with
-      | some moduleName => nameMatchesPrefix moduleName modulePrefix
-      | none => false
-  | .app fn arg =>
-      exprUsesModulePrefix snapshot fn modulePrefix ||
-        exprUsesModulePrefix snapshot arg modulePrefix
-  | .lam _ binderType body _ =>
-      exprUsesModulePrefix snapshot binderType modulePrefix ||
-        exprUsesModulePrefix snapshot body modulePrefix
-  | .forallE _ binderType body _ =>
-      exprUsesModulePrefix snapshot binderType modulePrefix ||
-        exprUsesModulePrefix snapshot body modulePrefix
-  | .letE _ type value body _ =>
-      exprUsesModulePrefix snapshot type modulePrefix ||
-        exprUsesModulePrefix snapshot value modulePrefix ||
-        exprUsesModulePrefix snapshot body modulePrefix
-  | .mdata _ inner => exprUsesModulePrefix snapshot inner modulePrefix
-  | .proj typeName _ struct =>
-      (match declarationModule? snapshot.env typeName with
-       | some moduleName => nameMatchesPrefix moduleName modulePrefix
-       | none => false) ||
-        exprUsesModulePrefix snapshot struct modulePrefix
+def exprUsesModulePrefix (snapshot : Snapshot) (expr : Expr) (modulePrefix : Name) : Bool :=
+  expr.getUsedConstants.any fun constName =>
+    match declarationModule? snapshot.env constName with
+    | some moduleName => nameMatchesPrefix moduleName modulePrefix
+    | none => false
 
 /-- Check that a declaration's public compiled type does not depend on any forbidden module layer. -/
 def checkTypeDoesNotDependOn
