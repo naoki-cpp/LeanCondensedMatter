@@ -1,5 +1,5 @@
 import LeanCondensedMatter.QuantumTheory.LinearResponse.Lehmann
-import LeanCondensedMatter.Transport.Resolvent
+import LeanCondensedMatter.Transport.Resolvent.Basic
 
 set_option linter.style.header false
 
