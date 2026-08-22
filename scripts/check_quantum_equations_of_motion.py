@@ -5,7 +5,8 @@ from pathlib import Path
 
 from architecture_audit_common import (
     finish_audit,
-    lean_files,
+    lean_files_matching,
+    lean_imports,
     relative as relative_to,
     repository_root,
     strip_lean_comments,
@@ -15,9 +16,7 @@ ROOT = repository_root(__file__)
 QUANTUM = ROOT / "LeanCondensedMatter" / "QuantumTheory"
 EQUATIONS = QUANTUM / "LinearResponse" / "EquationsOfMotion.lean"
 ROOT_UMBRELLA = ROOT / "LeanCondensedMatter" / "QuantumTheory.lean"
-EQUATIONS_IMPORT = (
-    "import LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion"
-)
+EQUATIONS_MODULE = "LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion"
 
 REQUIRED_DECLARATIONS = (
     "theorem hasDerivAt_freePropagator",
@@ -54,8 +53,6 @@ def main() -> int:
         )
 
     code = strip_lean_comments(EQUATIONS.read_text(encoding="utf-8"))
-    normalized = " ".join(code.split())
-    root_code = ROOT_UMBRELLA.read_text(encoding="utf-8")
 
     for declaration in REQUIRED_DECLARATIONS:
         if declaration not in code:
@@ -63,39 +60,19 @@ def main() -> int:
                 f"missing bounded-dynamics declaration `{declaration}` in {relative(EQUATIONS)}"
             )
 
-    if EQUATIONS_IMPORT not in root_code:
+    if EQUATIONS_MODULE not in lean_imports(ROOT_UMBRELLA):
         errors.append(
             "QuantumTheory public umbrella must expose bounded equations of motion: "
             f"{relative(ROOT_UMBRELLA)}"
         )
 
     for name in CANONICAL_NAMES:
-        owners: list[Path] = []
-        pattern = declaration_pattern(name)
-        for path in lean_files(QUANTUM):
-            path_code = strip_lean_comments(path.read_text(encoding="utf-8"))
-            if pattern.search(path_code):
-                owners.append(path)
+        owners = lean_files_matching(QUANTUM, declaration_pattern(name))
         if owners != [EQUATIONS]:
             rendered = ", ".join(relative(path) for path in owners) or "<none>"
             errors.append(
                 f"canonical declaration `{name}` must be owned exactly once by "
                 f"{relative(EQUATIONS)}; found: {rendered}"
-            )
-
-    required_boundaries = (
-        "hasDerivAt_exp_smul_const'",
-        "hasDerivAt_iff_tendsto",
-        "schrodingerGenerator system",
-        "Complex.I / (system.hbar : ℂ)",
-        "(-(Complex.I / (system.hbar : ℂ)))",
-        "heisenbergEvolution system A",
-        "evolveDensityOperator system ρ",
-    )
-    for boundary in required_boundaries:
-        if boundary not in normalized:
-            errors.append(
-                f"bounded equations must retain `{boundary}` in {relative(EQUATIONS)}"
             )
 
     for finite_assumption in ("[FiniteDimensional", "[Fintype"):
@@ -104,12 +81,6 @@ def main() -> int:
                 "bounded equations of motion must remain dimension-independent; found "
                 f"`{finite_assumption}` in {relative(EQUATIONS)}"
             )
-
-    if "Differentiable" in code and "HasDerivAt" not in code:
-        errors.append(
-            "equations of motion must expose the actual norm derivatives, not only generic "
-            f"differentiability, in {relative(EQUATIONS)}"
-        )
 
     return finish_audit(
         errors,

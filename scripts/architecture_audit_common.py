@@ -1,8 +1,21 @@
 from __future__ import annotations
 
+import re
 import sys
 from collections.abc import Iterable, Iterator
+from dataclasses import dataclass
 from pathlib import Path
+
+IMPORT_RE = re.compile(r"^\s*import\s+([^\s]+)\s*$")
+
+
+@dataclass(frozen=True)
+class ImportBoundary:
+    """A source tree and the downstream module prefixes it must not import."""
+
+    source_root: Path
+    forbidden_prefixes: tuple[str, ...]
+    description: str
 
 
 def repository_root(script_file: str | Path) -> Path:
@@ -86,17 +99,102 @@ def strip_lean_comments(text: str) -> str:
     return "".join(out)
 
 
-def check_absent_paths(
+def lean_files_matching(root: Path, pattern: re.Pattern[str]) -> list[Path]:
+    """Return Lean files whose comment-stripped source matches a compiled pattern."""
+    matches: list[Path] = []
+    for path in lean_files(root):
+        code = strip_lean_comments(path.read_text(encoding="utf-8"))
+        if pattern.search(code):
+            matches.append(path)
+    return matches
+
+
+def numbered_imports(path: Path) -> Iterator[tuple[int, str]]:
+    """Yield direct Lean imports with source line numbers after removing comments."""
+    code = strip_lean_comments(path.read_text(encoding="utf-8"))
+    for line_no, line in enumerate(code.splitlines(), start=1):
+        if match := IMPORT_RE.match(line):
+            yield line_no, match.group(1)
+
+
+def lean_imports(path: Path) -> tuple[str, ...]:
+    """Return direct Lean imports after removing comments."""
+    return tuple(imported for _, imported in numbered_imports(path))
+
+
+def module_matches_prefix(module: str, prefix: str) -> bool:
+    """Match a Lean module prefix without conflating siblings such as Foo and FooExtra."""
+    return module == prefix or module.startswith(prefix + ".")
+
+
+def require_files(
     errors: list[str],
     paths: Iterable[Path],
     *,
     root: Path,
     description: str,
 ) -> None:
-    """Append one diagnostic for every path that should no longer exist."""
+    """Require canonical owner files to exist."""
     for path in paths:
-        if path.exists():
-            errors.append(f"{description}: {relative(root, path)}")
+        if not path.is_file():
+            errors.append(f"missing {description}: {relative(root, path)}")
+
+
+def require_import(
+    errors: list[str],
+    path: Path,
+    imported: str,
+    *,
+    root: Path,
+    description: str = "module",
+) -> None:
+    """Require one direct Lean import from an existing source file."""
+    if not path.is_file():
+        errors.append(f"missing {description}: {relative(root, path)}")
+        return
+    if imported not in lean_imports(path):
+        errors.append(f"{relative(root, path)} must import `{imported}`")
+
+
+def forbid_import_prefixes(
+    errors: list[str],
+    path: Path,
+    prefixes: str | tuple[str, ...],
+    *,
+    root: Path,
+    description: str,
+) -> None:
+    """Reject direct imports into forbidden downstream dependency prefixes."""
+    normalized = (prefixes,) if isinstance(prefixes, str) else prefixes
+    for line_no, imported in numbered_imports(path):
+        if any(module_matches_prefix(imported, prefix) for prefix in normalized):
+            errors.append(
+                f"{description}: {relative(root, path)}:{line_no} imports forbidden module `{imported}`"
+            )
+
+
+def check_import_boundaries(
+    errors: list[str],
+    boundaries: Iterable[ImportBoundary],
+    *,
+    root: Path,
+) -> None:
+    """Apply declarative import boundaries to every Lean file in each source tree."""
+    for boundary in boundaries:
+        if not boundary.source_root.is_dir():
+            errors.append(
+                f"missing dependency source tree for {boundary.description}: "
+                f"{relative(root, boundary.source_root)}"
+            )
+            continue
+        for path in lean_files(boundary.source_root):
+            forbid_import_prefixes(
+                errors,
+                path,
+                boundary.forbidden_prefixes,
+                root=root,
+                description=boundary.description,
+            )
 
 
 def finish_audit(

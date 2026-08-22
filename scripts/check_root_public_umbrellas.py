@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from pathlib import Path
-
-from architecture_audit_common import finish_audit, repository_root, strip_lean_comments
+from architecture_audit_common import finish_audit, lean_imports, repository_root
 
 ROOT = repository_root(__file__)
 ROOT_MODULE = ROOT / "LeanCondensedMatter.lean"
@@ -24,15 +22,8 @@ def check_root_imports(errors: list[str]) -> None:
         errors.append("missing project root module: LeanCondensedMatter.lean")
         return
 
-    code = strip_lean_comments(ROOT_MODULE.read_text(encoding="utf-8"))
-    imports = [
-        line.strip().removeprefix("import ").strip()
-        for line in code.splitlines()
-        if line.strip().startswith("import ")
-    ]
-
-    expected = list(PUBLIC_TRACK_IMPORTS)
-    if imports != expected:
+    imports = lean_imports(ROOT_MODULE)
+    if imports != PUBLIC_TRACK_IMPORTS:
         errors.append(
             "LeanCondensedMatter.lean must import only the canonical public track umbrellas in "
             "their stable order; found: " + ", ".join(imports)
@@ -42,7 +33,7 @@ def check_root_imports(errors: list[str]) -> None:
 def check_umbrella_files(errors: list[str]) -> None:
     for module in PUBLIC_TRACK_IMPORTS:
         relative = module.removeprefix("LeanCondensedMatter.").replace(".", "/") + ".lean"
-        path = LEAN_ROOT.parent / "LeanCondensedMatter" / relative
+        path = LEAN_ROOT / relative
         if not path.is_file():
             errors.append(f"missing public umbrella module: LeanCondensedMatter/{relative}")
 

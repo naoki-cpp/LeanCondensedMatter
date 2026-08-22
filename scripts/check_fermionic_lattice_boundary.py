@@ -3,12 +3,19 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from architecture_audit_common import finish_audit, lean_files, numbered_lines, repository_root, strip_lean_comments
+from architecture_audit_common import (
+    ImportBoundary,
+    check_import_boundaries,
+    finish_audit,
+    lean_files,
+    repository_root,
+    require_files,
+    strip_lean_comments,
+)
 
 ROOT = repository_root(__file__)
 FERMIONIC = ROOT / "LeanCondensedMatter" / "SecondQuantization" / "Fermionic"
 LATTICE = FERMIONIC / "Lattice"
-FIELD = FERMIONIC / "Field"
 
 REQUIRED = (
     FERMIONIC / "Lattice.lean",
@@ -23,31 +30,17 @@ REQUIRED = (
     LATTICE / "GeometricPeierls.lean",
 )
 
-REMOVED_FIELD = tuple(
-    FIELD / name
-    for name in (
-        "DiscreteLattice.lean",
-        "Peierls.lean",
-        "BoundedKuboBridge.lean",
-        "BoundedMatrixUnitAdjoint.lean",
-        "PeierlsContact.lean",
-        "HermitianBondCurrent.lean",
-        "RankOneSecondQuantization.lean",
-        "GeometricCurrent.lean",
-        "GeometricPeierls.lean",
-    )
-)
-
-OLD_FIELD_MODULE = re.compile(
-    r"LeanCondensedMatter\.SecondQuantization\.Fermionic\.Field\."
-    r"(?:DiscreteLattice|Peierls|BoundedKuboBridge|BoundedMatrixUnitAdjoint|PeierlsContact|"
-    r"HermitianBondCurrent|RankOneSecondQuantization|GeometricCurrent|GeometricPeierls)(?:\s|$)"
-)
-
-FORBIDDEN_IMPORT = re.compile(
-    r"^\s*import\s+LeanCondensedMatter\."
-    r"(?:SecondQuantization\.Fermionic\.(?:Field|Transport)|"
-    r"QuantumTheory\.(?:LinearResponse|Transport))"
+# The global Fermionic layer DAG is owned by check_fermionic_transport_validation_boundary.py.
+# This focused audit adds the domain rule that lattice construction is upstream of response theory.
+DOMAIN_BOUNDARIES = (
+    ImportBoundary(
+        LATTICE,
+        (
+            "LeanCondensedMatter.QuantumTheory.LinearResponse",
+            "LeanCondensedMatter.QuantumTheory.Transport",
+        ),
+        "fermionic lattice construction must remain upstream of response/transport theory",
+    ),
 )
 
 FORBIDDEN_RESPONSE_NAME = re.compile(
@@ -61,38 +54,28 @@ def rel(path: Path) -> str:
 
 
 def check_layout(errors: list[str]) -> None:
-    for path in REQUIRED:
-        if not path.is_file():
-            errors.append(f"missing fermionic lattice module: {rel(path)}")
-    for path in REMOVED_FIELD:
-        if path.exists():
-            errors.append(f"obsolete Fermionic.Field lattice module still exists: {rel(path)}")
+    require_files(errors, REQUIRED, root=ROOT, description="fermionic lattice owner")
 
 
 def check_lattice_boundary(errors: list[str]) -> None:
+    check_import_boundaries(errors, DOMAIN_BOUNDARIES, root=ROOT)
+
     for path in lean_files(LATTICE):
         code = strip_lean_comments(path.read_text(encoding="utf-8"))
         if "namespace Field" in code:
-            errors.append(f"lattice declaration remains in Field namespace: {rel(path)}")
+            errors.append(f"lattice declaration is outside its path-owned namespace: {rel(path)}")
         for line_no, line in enumerate(code.splitlines(), start=1):
-            if FORBIDDEN_IMPORT.match(line):
-                errors.append(f"lattice layer imports downstream theory: {rel(path)}:{line_no}: {line.strip()}")
             if FORBIDDEN_RESPONSE_NAME.search(line):
-                errors.append(f"generic response/transport declaration leaked into lattice layer: {rel(path)}:{line_no}: {line.strip()}")
-
-
-def check_old_paths(errors: list[str]) -> None:
-    for path in lean_files(ROOT / "LeanCondensedMatter"):
-        for line_no, line in numbered_lines(path):
-            if OLD_FIELD_MODULE.search(line):
-                errors.append(f"old Fermionic.Field lattice import remains: {rel(path)}:{line_no}: {line.strip()}")
+                errors.append(
+                    "generic response/transport declaration leaked into lattice layer: "
+                    f"{rel(path)}:{line_no}: {line.strip()}"
+                )
 
 
 def main() -> int:
     errors: list[str] = []
     check_layout(errors)
     check_lattice_boundary(errors)
-    check_old_paths(errors)
     return finish_audit(
         errors,
         failure_heading="Fermionic lattice boundary audit failed:",

@@ -5,7 +5,8 @@ from pathlib import Path
 
 from architecture_audit_common import (
     finish_audit,
-    lean_files,
+    lean_files_matching,
+    lean_imports,
     relative as relative_to,
     repository_root,
     strip_lean_comments,
@@ -16,6 +17,7 @@ QUANTUM = ROOT / "LeanCondensedMatter" / "QuantumTheory"
 DIAGONAL_FORMULA = QUANTUM / "DensityOperator" / "DiagonalFormula.lean"
 ENTROPY_DIAGONAL = QUANTUM / "Entropy" / "Diagonal.lean"
 PURE_POINT = QUANTUM / "LinearResponse" / "PurePointDynamics.lean"
+DIAGONAL_MODULE = "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
 
 GENERAL_DIAGONAL_DECLARATIONS = (
     "DensityOperator.hasSum_diagonal_weights",
@@ -43,13 +45,7 @@ def declaration_pattern(name: str) -> re.Pattern[str]:
 
 
 def declaration_owners(name: str) -> list[Path]:
-    pattern = declaration_pattern(name)
-    owners: list[Path] = []
-    for path in lean_files(QUANTUM):
-        code = strip_lean_comments(path.read_text(encoding="utf-8"))
-        if pattern.search(code):
-            owners.append(path)
-    return owners
+    return lean_files_matching(QUANTUM, declaration_pattern(name))
 
 
 def main() -> int:
@@ -67,7 +63,6 @@ def main() -> int:
         )
 
     diagonal_code = strip_lean_comments(DIAGONAL_FORMULA.read_text(encoding="utf-8"))
-    entropy_code = strip_lean_comments(ENTROPY_DIAGONAL.read_text(encoding="utf-8"))
     pure_point_code = strip_lean_comments(PURE_POINT.read_text(encoding="utf-8"))
 
     for declaration in GENERAL_DIAGONAL_DECLARATIONS:
@@ -79,23 +74,22 @@ def main() -> int:
                 f"by {relative(DIAGONAL_FORMULA)}; found: {rendered}"
             )
 
-    diagonal_import = "import LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
-    if diagonal_import not in entropy_code:
+    if DIAGONAL_MODULE not in lean_imports(ENTROPY_DIAGONAL):
         errors.append(
             "entropy diagonal formulas must consume the canonical density diagonal layer in "
             f"{relative(ENTROPY_DIAGONAL)}"
         )
 
-    required_pure_point_boundaries = (
-        diagonal_import,
-        "diagonalDensityOperator",
-        ".toNormalizedExpectation",
-    )
-    for boundary in required_pure_point_boundaries:
-        if boundary not in pure_point_code:
+    if DIAGONAL_MODULE not in lean_imports(PURE_POINT):
+        errors.append(
+            "pure-point response must consume the canonical density diagonal layer in "
+            f"{relative(PURE_POINT)}"
+        )
+    for declaration in ("diagonalDensityOperator", ".toNormalizedExpectation"):
+        if declaration not in pure_point_code:
             errors.append(
-                f"pure-point response must consume the canonical density layer via `{boundary}` "
-                f"in {relative(PURE_POINT)}"
+                f"pure-point response must consume canonical density API `{declaration}` in "
+                f"{relative(PURE_POINT)}"
             )
 
     if "entropyOp" in diagonal_code:
