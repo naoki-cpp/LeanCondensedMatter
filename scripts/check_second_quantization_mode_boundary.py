@@ -5,7 +5,6 @@ from pathlib import Path
 
 from architecture_audit_common import (
     finish_audit,
-    lean_files,
     relative as relative_to,
     repository_root,
     strip_lean_comments,
@@ -27,7 +26,6 @@ DIMENSION_INDEPENDENT_MODE_FILES = (
 
 FINITE_MODE_ASSUMPTION = re.compile(r"\[\s*(?:Fintype|Finite)\s+Mode\s*\]")
 MODE_LABEL_TYPECLASS = re.compile(r"\b(?:Fintype|Finite|DecidableEq)\b")
-LEGACY_MODE_COUNT = re.compile(r"\bmodeCount\b")
 
 
 def relative(path: Path) -> str:
@@ -53,14 +51,6 @@ def check_mode_boundary(errors: list[str]) -> None:
                     "typeclass assumption in foundational mode-label module: "
                     f"{relative(path)}:{line_no}: {line.strip()}"
                 )
-
-    for path in lean_files(SQ):
-        code = strip_lean_comments(path.read_text(encoding="utf-8"))
-        for match in LEGACY_MODE_COUNT.finditer(code):
-            line_no = code.count("\n", 0, match.start()) + 1
-            errors.append(
-                f"legacy global mode count: {relative(path)}:{line_no}: {match.group(0)}"
-            )
 
 
 def main() -> int:

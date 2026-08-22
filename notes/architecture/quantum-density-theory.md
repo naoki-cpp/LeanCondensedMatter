@@ -1,21 +1,20 @@
 # Quantum density-state architecture
 
-This document is the source of truth for the project’s density-state, measurement, entropy, and
-bounded Gibbs-state APIs.
+This note records the stable density-state, measurement, entropy, and bounded Gibbs-state architecture.
+Lean declarations are authoritative for mathematical semantics; the Python architecture audits enforce
+ownership, dependency, dimension, and selected semantic-safety boundaries without pinning incidental
+proof text.
 
 ## Canonical state model
 
-`QuantumTheory.DensityOperator H` is the only mixed-state type. It contains:
+`QuantumTheory.DensityOperator H` is the unique mixed-state type. It contains a bounded operator,
+positivity, a bundled compact self-adjoint spectral trace-class witness, and normalization of the
+spectral trace to `1`.
 
-- a bounded operator `op : H →L[ℂ] H`;
-- positivity of `op`;
-- a bundled compact self-adjoint spectral trace-class witness;
-- normalization of the spectral trace to `1`.
+The type is dimension-independent. Finite dimensionality is introduced only at theorem boundaries that
+actually require an ordinary finite matrix trace or another genuinely finite construction.
 
-The type is dimension-independent. Finite dimensionality is an additional hypothesis only where an
-ordinary finite matrix trace or another genuinely finite construction is used.
-
-The canonical modules are:
+Canonical ownership is feature-based:
 
 ```text
 QuantumTheory/
@@ -50,142 +49,90 @@ QuantumTheory/
 ```
 
 `QuantumTheory/DensityOperator.lean` and `QuantumTheory/Entropy.lean` are public umbrella modules.
-Finite-dimensional specializations live with the feature they specialize rather than in a parallel
-`FiniteDimensional/` hierarchy.
+Finite-dimensional specializations remain with the feature they specialize rather than forming a
+parallel finite-dimensional state hierarchy.
 
-## Expectations
+## Pure-state expectations
 
-The pure-state complex expectation uses the canonical physicists’ orientation
-
-```lean
-expValue A ψ = inner ℂ ψ (A ψ).
-```
-
-For a self-adjoint observable this equals the formerly used reversed orientation
-`inner ℂ (A ψ) ψ`. `observableExpValue A ψ : ℝ` transports the proved-real complex scalar through
-`Complex.selfAdjointEquiv`, and both values are invariant under global phase.
-
-`DensityOperator.expectation` is a continuous complex-linear functional on arbitrary bounded
-operators. It is defined from the density operator’s spectral decomposition and supplies complex
-linearity, normalization on the identity, a norm bound, nonnegativity on positive operators, and
-reality on symmetric, self-adjoint, or positive operators.
-
-For an `Observable H`, `DensityOperator.observableExpectation : ℝ` is the canonical real-valued
-mixed-state API. Its exact boundary theorem is
+The Lean API defines the canonical complex expectation
 
 ```lean
-ρ.expectation A.1 = (ρ.observableExpectation A : ℂ).
+expValue A ψ = inner ℂ ψ (A ψ)
 ```
 
-For a rank-one density operator, the complex and real APIs agree exactly with the corresponding
-vector-state expectations:
+and proves that for a self-adjoint observable it agrees with the reversed inner-product orientation.
+The real observable value is obtained losslessly from a proved self-adjoint complex scalar through
+`Complex.selfAdjointEquiv`:
 
 ```lean
-(pure ψ).expectation A.1 = expValue A ψ
-(pure ψ).observableExpectation A = observableExpValue A ψ.
+observableExpValue A ψ : ℝ
 ```
 
-### Countable diagonal formulas
+The API also proves the exact complex recovery theorem and global-phase invariance. These are Lean
+semantics, not source-text patterns that architecture CI needs to freeze.
 
-`DensityOperator.sqrtOp ρ = cfc Real.sqrt ρ.op` is the positive square root of the density
-operator. Trace-one spectral summability proves
+## Mixed-state expectations
+
+`DensityOperator.expectation` is the canonical complex-linear expectation functional on bounded
+operators. For `Observable H`,
 
 ```lean
-DensityOperator.sqrtOp_isHilbertSchmidt : IsHilbertSchmidt ρ.sqrtOp.
+DensityOperator.observableExpectation : ℝ
 ```
 
-This yields the basis-independent bridge for every bounded operator `A` and every Hilbert basis
-`b`:
+is the canonical real-valued mixed-state API, with an exact embedding theorem back into the complex
+expectation.
+
+For a rank-one density operator, the complex and real density-state expectations agree with the
+corresponding vector-state expectations.
+
+Architecture CI enforces unique ownership of the public pure-state and density-state real expectation
+APIs. It does not require a particular proof helper or literal implementation body.
+
+## Countable diagonal foundation
+
+The generic diagonal theory is countable rather than finite-dimensional. The square-root layer owns
 
 ```lean
-ρ.expectation A = innerHS b ρ.sqrtOp (A * ρ.sqrtOp).
+DensityOperator.sqrtOp
+DensityOperator.sqrtOp_isHilbertSchmidt
+DensityOperator.expectation_eq_innerHS
 ```
 
-The right side is an absolutely convergent Hilbert–Schmidt pairing. Consequently, whenever `b`
-diagonalizes `ρ` with real weights `w`, no finite-dimensional hypothesis is needed for
+and the diagonal-formula layer owns the `HasSum`, `Summable`, complex `tsum`, and real observable
+`tsum` formulas.
 
-```lean
-ρ.expectation A = ∑' i, (w i : ℂ) * inner ℂ (b i) (A (b i)).
-```
+These modules must remain free of accidental `[FiniteDimensional ...]` and `[Fintype ...]`
+assumptions. The density umbrella exports the canonical diagonal bridge and formula modules.
 
-The implementation also exposes the corresponding `HasSum` and `Summable` theorems. For a
-self-adjoint observable, the lossless real specialization is
-
-```lean
-ρ.observableExpectation A =
-  ∑' i, w i * diagonalExpectationValue A.1 A.2 (b i).
-```
-
-The real theorem is obtained by transporting an already identified real complex series; the
-physical value is not defined by applying `.re` to an arbitrary scalar.
-
-In finite dimensions, `DensityOperator.expectation_eq_linearMap_trace` additionally identifies the
-complex functional with the ordinary matrix trace `Tr(ρA)`. Finite-sum formulas are corollaries of
-the countable diagonal foundation whenever a finite Hilbert basis is supplied.
-
-Real-valued physical quantities are obtained from a proved self-adjoint complex scalar through
-`Complex.selfAdjointEquiv`; they are not defined by discarding an arbitrary imaginary part.
-
-## Pure states and purity
-
-`QuantumTheory.pure` maps a unit vector to the rank-one projector `|ψ⟩⟨ψ|` and proves that it is a
-normalized density operator on an arbitrary complete complex Hilbert space. This is a pure-state
-embedding, not purification of a mixed state on a larger space.
-
-`QuantumTheory.purity ρ` is the convergent spectral sum `∑ᵢ λᵢ²`. The API proves
-
-```text
-0 ≤ purity ρ ≤ 1
-purity (pure ψ) = 1
-ρ.expectation ρ.op = (purity ρ : ℂ)
-```
-
-In finite dimensions, `Tr(ρ²) = (purity ρ : ℂ)` exactly.
+For a Hamiltonian, `Gibbs/DiagonalEnergy.lean` exposes the countable common-eigenbasis
+`HilbertBasis`/`tsum` theorem as the generic foundation. Architecture CI requires that foundation to
+exist, but it does not inspect the proof strategy used by a finite corollary.
 
 ## Discrete measurements
 
-`QuantumTheory.POVM H M` supports any countable outcome type. Each effect is positive and the effects
-sum strongly to the identity:
+`QuantumTheory.POVM H M` supports countable outcome types. The scalar boundary is intentionally split
+into semantic types:
 
-```lean
-hasSum_apply : ∀ x, HasSum (fun m => E m x) x
-```
+- `probSelfAdjoint P ρ m : selfAdjoint ℂ` for the proved-real complex expectation;
+- `probNNReal P ρ m : NNReal` as the canonical nonnegative probability;
+- `prob P ρ m : ℝ` as a compatibility coercion;
+- `bornPMF P ρ : PMF M` as the normalized countable family.
 
-The Born scalar boundary is represented in four deliberately distinct forms:
+Architecture CI enforces unique ownership of `probNNReal` and `bornPMF`. It also retains one semantic
+safety guard for the internal probability kernel: physical real values must flow through
+`diagonalExpectationValue` and must not be defined by directly discarding an imaginary component with
+`.re`.
 
-- `probSelfAdjoint P ρ m : selfAdjoint ℂ` records the proved-real complex expectation
-  `Tr(ρ Eₘ)`;
-- `probNNReal P ρ m : NNReal` is the canonical scalar probability and expresses nonnegativity in
-  its type;
-- `prob P ρ m : ℝ` is only the compatibility coercion of `probNNReal`;
-- `bornPMF P ρ : PMF M` packages the whole countable family as a normalized probability mass
-  function.
-
-The exact complex boundary theorem is
-
-```lean
-ρ.expectation (P.E m) = ((probNNReal P ρ m : ℝ) : ℂ).
-```
-
-The internal double-series kernel uses `diagonalExpectationValue` for every positive effect, so its
-physical real value is transported through a self-adjointness proof rather than defined by applying
-`.re` to an arbitrary complex expression. Uses of `Complex.reCLM` inside normalization proofs are
-proof-only transport of already identified real scalars and do not define the probability API.
-
-The API proves nonnegativity, the upper bound `≤ 1`, countable summability, total probability `1`,
-and finite-outcome normalization. Both `NNReal` and compatibility `ℝ` normalization theorems are
-available, while `bornPMF` carries normalization intrinsically.
+This is different from a proof snapshot. The check protects a deliberately lossless physical-scalar
+boundary rather than a particular theorem sequence.
 
 ## Entropy
 
-`QuantumTheory.vonNeumannEntropy` is `ENNReal`-valued. This codomain represents both finite entropy
-and genuine divergence in infinite dimensions without assigning a junk real value to a divergent
-series.
-
-`entropyOp ρ = -ρ log ρ` is defined by continuous functional calculus and is compact. When its
-nonzero eigenvalues are summable, its spectral trace equals the entropy eigenvalue sum. In finite
-dimensions entropy is automatically finite, and `.toReal` agrees with the finite sum of
-`Real.negMulLog` over eigenvalues or diagonal weights.
+`QuantumTheory.vonNeumannEntropy` is `ENNReal`-valued so genuine divergence can be represented without
+a junk finite value. `entropyOp ρ = -ρ log ρ` is defined through continuous functional calculus. In
+finite dimensions entropy is automatically finite and the finite formulas are feature-owned
+specializations of the same state model.
 
 ## Gibbs states and free energy
 
@@ -193,87 +140,61 @@ For a bounded self-adjoint Hamiltonian `Hop`, `gibbsOp Hop β` is defined by con
 calculus as `exp (-β Hop)`. `gibbsState` normalizes this operator when compactness, spectral
 summability, and nonzero spectral trace are supplied.
 
-The current bounded-Hamiltonian model has an important limitation: compactness of `gibbsOp Hop β`
-forces the Hilbert space to be finite-dimensional because the exponential is invertible. Genuine
-infinite-dimensional Gibbs states therefore require a later unbounded self-adjoint Hamiltonian and
-domain-aware theory.
+The bounded model has the known limitation that compactness of this invertible exponential forces
+finite dimensionality. Genuine infinite-dimensional Gibbs states therefore require the separate
+unbounded/domain-aware line.
 
-The bounded theory includes:
-
-- `energyExpValue ρ Hop`, the Hamiltonian-facing specialization of
-  `ρ.observableExpectation Hop`;
-- the exact identity `ρ.expectation Hop.1 = (energyExpValue ρ Hop : ℂ)` inherited from the generic
-  observable boundary;
-- the countable common-eigenbasis formula
-
-  ```lean
-  energyExpValue ρ Hop = ∑' i, w i * E i;
-  ```
-
-- the finite common-eigenbasis sum as a direct corollary of the countable theorem;
-- the Helmholtz free-energy lower bound;
-- finiteness of entropy under the variational hypotheses;
-- the entropy/free-energy identity for the normalized Gibbs state.
-
-The finite common-eigenbasis corollary needs a finite index type but no separate
-`FiniteDimensional ℂ H` hypothesis once a complete finite orthonormal basis is explicitly supplied.
-
-Uniqueness of the Gibbs minimizer is not yet formalized.
+`energyExpValue` is the Hamiltonian-facing observable expectation API. The Lean library proves its
+relation to the generic expectation and its diagonal formulas. Architecture CI protects ownership and
+the countable diagonal foundation, not the exact source expression used to define or prove each
+specialization.
 
 ## Finite-dimensional specialization
 
-Finite-dimensional code uses the same `DensityOperator` type. Feature-owned specialization modules
-`DensityOperator/Finite.lean` and `Entropy/Finite.lean` provide:
+Finite-dimensional code uses the same `DensityOperator` type. `DensityOperator/Finite.lean` and
+`Entropy/Finite.lean` provide the ordinary trace and finite-sum specializations. There is no parallel
+finite-dimensional state or measurement hierarchy.
 
-- `DensityOperator.ofFiniteDimensional`;
-- equivalence with ordinary `LinearMap.trace` normalization;
-- ordinary trace formulas for expectations;
-- finite diagonal expectation formulas derived directly from the countable `HilbertBasis` theory;
-- the exact matrix formula `Tr(ρ²) = (purity ρ : ℂ)`;
-- the exact energy formula `Tr(ρH) = (energyExpValue ρ Hop : ℂ)`;
-- automatic entropy summability and finiteness.
+The guiding rule is:
 
-There is no separate finite-dimensional state, measurement model, or top-level finite-dimensional
-module hierarchy.
+```text
+dimension-independent state/expectation semantics
+                ↓
+countable spectral/diagonal foundation
+                ↓
+finite-dimensional corollaries where finiteness is genuinely required
+```
 
-## Regression boundary
+## CI-enforced architecture boundary
 
-The QuantumTheory architecture audit enforces:
+`scripts/check_quantum_theory_architecture.py` enforces durable current-state invariants:
 
-- the canonical pure-state orientation `inner ℂ ψ (A ψ)`;
-- unique ownership of `observableExpValue` in `Postulates.lean`;
-- unique ownership of `DensityOperator.observableExpectation` in
-  `DensityOperator/ObservableExpectation.lean`;
-- `energyExpValue` remaining a direct thermodynamic specialization rather than a duplicate generic
-  implementation;
-- unique ownership of `probNNReal` and `bornPMF` in `POVM/Born.lean`;
-- `prob` remaining a direct real coercion of `probNNReal`;
-- the Born normalization kernel using `diagonalExpectationValue` and containing no direct `.re`
-  projection in its definition body;
-- ownership of the density square-root/Hilbert–Schmidt bridge in
-  `DensityOperator/DiagonalExpectation.lean`;
-- ownership of countable complex and real diagonal formulas in
-  `DensityOperator/DiagonalFormula.lean`;
-- absence of `Fintype` and `FiniteDimensional` assumptions from the generic countable diagonal
-  modules;
-- finite-dimensional density and entropy specializations remaining feature-owned rather than
-  rebuilding a parallel `FiniteDimensional/` hierarchy;
-- `Gibbs/DiagonalEnergy.lean` retaining the `HilbertBasis`/`tsum` theorem as its foundation, with
-  the finite sum delegating to it instead of rebuilding the result through matrix trace.
+- unique canonical ownership of `DensityOperator` and `POVM`;
+- unique canonical ownership of pure-state and density-state real observable expectations;
+- unique canonical ownership of `probNNReal` and `bornPMF`;
+- the lossless Born probability-kernel boundary;
+- ownership of the Hilbert-Schmidt diagonal bridge and countable diagonal formulas;
+- absence of finite-dimensional/index assumptions from the generic countable diagonal modules;
+- export of the canonical diagonal modules from the density umbrella;
+- presence of the countable Gibbs diagonal-energy foundation.
 
-Proof-local extraction of the real component of a proved equality remains allowed. The audit guards
-public physical definitions and canonical internal kernels, not ordinary proof techniques.
+Other architecture audits additionally enforce the project-wide physical-scalar boundary and the
+upstream dependency rule that `QuantumTheory` must not import `SecondQuantization`.
+
+The architecture audits intentionally do **not** require:
+
+- exact definition bodies;
+- `simpa using ...` or other proof fragments;
+- helper theorem names merely because a current proof happens to use them;
+- historical lists of retired modules, aliases, or former owners.
+
+If a mathematical identity itself is important, it belongs as a Lean theorem. Python architecture CI
+should protect ownership, layering, type-level assumptions, and semantic safety properties that are
+not naturally expressed by merely compiling the library.
 
 ## Scope boundaries
 
-The current API does not provide:
-
-- continuous-outcome or measure-valued POVMs;
-- a general Schatten ideal hierarchy;
-- a trace on arbitrary non-self-adjoint trace-class operators;
-- unbounded observables or Hamiltonians;
-- thermodynamic limits;
-- completed infinite-mode Fock-space domain theory.
-
-Those extensions must build on the canonical state and expectation APIs rather than introduce
-parallel public state types.
+The current API does not yet provide a general continuous-outcome POVM theory, a full Schatten-ideal
+hierarchy, arbitrary non-self-adjoint trace-class operators, unbounded observables in the bounded core,
+or thermodynamic limits. Those extensions should build on the canonical state and expectation APIs
+rather than introduce parallel public state types.

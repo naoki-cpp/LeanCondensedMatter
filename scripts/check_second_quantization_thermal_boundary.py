@@ -1,6 +1,14 @@
 from __future__ import annotations
 
-from architecture_audit_common import finish_audit, lean_files, numbered_lines, repository_root
+from architecture_audit_common import (
+    ImportBoundary,
+    check_import_boundaries,
+    finish_audit,
+    module_matches_prefix,
+    numbered_imports,
+    repository_root,
+    require_files,
+)
 
 ROOT = repository_root(__file__)
 SQ = ROOT / "LeanCondensedMatter" / "SecondQuantization"
@@ -9,73 +17,72 @@ COMPLETED = FERMIONIC / "CompletedSpace"
 COMPLETED_UMBRELLA = FERMIONIC / "CompletedSpace.lean"
 THERMAL = FERMIONIC / "Thermal"
 THERMAL_UMBRELLA = FERMIONIC / "Thermal.lean"
+UNBOUNDED_EXPECTATION = THERMAL / "UnboundedExpectation.lean"
 
-MOVED_FROM_COMPLETED = (
-    "FreeGibbs",
-    "GibbsLadderIntertwining",
-    "ThermalLadder",
-    "ThermalPeel",
-    "ThermalPeelIndexed",
-    "ThermalKMS",
-    "ThermalFirstPair",
-    "ThermalRecursion",
-    "FreeGibbsSummability",
-    "GibbsModeTruncation",
-    "GibbsModeTruncationExpectation",
-    "UnboundedExpectation",
-)
+COMMON_THERMAL_PREFIX = "LeanCondensedMatter.SecondQuantization.Common.Thermal"
+FERMIONIC_THERMAL_PREFIX = "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal"
+BOSONIC_THERMAL_PREFIX = "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal"
+COMPLETED_PREFIX = "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace"
+UNBOUNDED_THERMAL_IMPORT = f"{FERMIONIC_THERMAL_PREFIX}.UnboundedExpectation"
 
-FERMIONIC_THERMAL_IMPORT = (
-    "import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal"
-)
-FINITE_THERMAL_COMPAT_IMPORT = (
-    "import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.FiniteThermalCompatibility"
-)
-UNBOUNDED_THERMAL_IMPORT = (
-    "import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.UnboundedExpectation"
+DEPENDENCY_BOUNDARIES = (
+    ImportBoundary(
+        COMPLETED,
+        (FERMIONIC_THERMAL_PREFIX,),
+        "CompletedSpace representation infrastructure must remain upstream of Fermionic.Thermal",
+    ),
 )
 
 
 def main() -> int:
     errors: list[str] = []
 
-    for stem in MOVED_FROM_COMPLETED:
-        old_path = COMPLETED / f"{stem}.lean"
-        if old_path.exists():
-            errors.append(
-                f"thermal theory returned to CompletedSpace: {old_path.relative_to(ROOT)}"
-            )
+    require_files(
+        errors,
+        (COMPLETED_UMBRELLA, THERMAL_UMBRELLA, UNBOUNDED_EXPECTATION),
+        root=ROOT,
+        description="thermal/completed-space architecture owner",
+    )
+    if not COMPLETED.is_dir():
+        errors.append(f"missing completed-space owner: {COMPLETED.relative_to(ROOT)}")
+    if not THERMAL.is_dir():
+        errors.append(f"missing fermionic thermal owner: {THERMAL.relative_to(ROOT)}")
 
-    for path in lean_files(COMPLETED):
-        for line_no, line in numbered_lines(path):
-            if line.strip().startswith(FERMIONIC_THERMAL_IMPORT):
-                errors.append(
-                    "CompletedSpace imports Fermionic.Thermal: "
-                    f"{path.relative_to(ROOT)}:{line_no}: {line.strip()}"
-                )
-
-    completed_umbrella = COMPLETED_UMBRELLA.read_text(encoding="utf-8")
-    if FERMIONIC_THERMAL_IMPORT in completed_umbrella:
-        errors.append("Fermionic.CompletedSpace umbrella must not export Fermionic.Thermal")
-    if FINITE_THERMAL_COMPAT_IMPORT in completed_umbrella:
-        errors.append(
-            "Fermionic.CompletedSpace umbrella must not export finite thermal compatibility"
+    if errors:
+        return finish_audit(
+            errors,
+            failure_heading="SecondQuantization thermal-boundary audit failed:",
+            success_message="SecondQuantization thermal-boundary audit passed.",
         )
 
-    unbounded = THERMAL / "UnboundedExpectation.lean"
-    if not unbounded.exists():
-        errors.append("missing Fermionic/Thermal/UnboundedExpectation.lean")
-    else:
-        for line_no, line in numbered_lines(unbounded):
-            if "Fermionic.CompletedSpace" in line and line.strip().startswith("import "):
-                errors.append(
-                    "unbounded Gibbs expectation regained completed-space dependency: "
-                    f"{unbounded.relative_to(ROOT)}:{line_no}: {line.strip()}"
-                )
+    check_import_boundaries(errors, DEPENDENCY_BOUNDARIES, root=ROOT)
 
-    thermal_umbrella = THERMAL_UMBRELLA.read_text(encoding="utf-8")
-    if UNBOUNDED_THERMAL_IMPORT not in thermal_umbrella:
-        errors.append("Fermionic.Thermal umbrella must export UnboundedExpectation")
+    # The public representation umbrella exposes representation API only, never thermal theory.
+    thermal_prefixes = (
+        COMMON_THERMAL_PREFIX,
+        FERMIONIC_THERMAL_PREFIX,
+        BOSONIC_THERMAL_PREFIX,
+    )
+    for line_no, imported in numbered_imports(COMPLETED_UMBRELLA):
+        if any(module_matches_prefix(imported, prefix) for prefix in thermal_prefixes):
+            errors.append(
+                "Fermionic.CompletedSpace umbrella exports thermal API: "
+                f"{COMPLETED_UMBRELLA.relative_to(ROOT)}:{line_no}: {imported}"
+            )
+
+    # The generic unbounded diagonal expectation is thermal theory, not completed-space machinery.
+    for line_no, imported in numbered_imports(UNBOUNDED_EXPECTATION):
+        if module_matches_prefix(imported, COMPLETED_PREFIX):
+            errors.append(
+                "unbounded Gibbs expectation depends on CompletedSpace: "
+                f"{UNBOUNDED_EXPECTATION.relative_to(ROOT)}:{line_no}: {imported}"
+            )
+
+    thermal_exports = {imported for _, imported in numbered_imports(THERMAL_UMBRELLA)}
+    if UNBOUNDED_THERMAL_IMPORT not in thermal_exports:
+        errors.append(
+            "Fermionic.Thermal umbrella must export the unbounded Gibbs expectation owner"
+        )
 
     return finish_audit(
         errors,

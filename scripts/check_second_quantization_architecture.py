@@ -5,61 +5,48 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from architecture_audit_common import (
-    check_absent_paths,
+    ImportBoundary,
+    check_import_boundaries,
     finish_audit,
     lean_files,
-    numbered_lines,
+    lean_imports,
     relative as relative_to,
     repository_root,
+    strip_lean_comments,
 )
 
 ROOT = repository_root(__file__)
-SQ = ROOT / "LeanCondensedMatter" / "SecondQuantization"
+LEAN = ROOT / "LeanCondensedMatter"
+SQ = LEAN / "SecondQuantization"
 OWNERS = {"Common", "Fermionic", "Bosonic"}
 
-REMOVED_FILES = (
-    SQ / "Common.lean",
-    SQ / "Fermionic.lean",
-    SQ / "Bosonic.lean",
-    SQ / "Fermionic" / "Perturbation" / "DysonExpansion.lean",
-    SQ / "Fermionic" / "Perturbation" / "ContinuousDyson.lean",
-    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentPairs.lean",
-    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentCrossingParity.lean",
-    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentLegInversion.lean",
-    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentOrderDecomposition.lean",
-    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentDecompositionEquiv.lean",
-    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentOrderedSimplex.lean",
-    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentOrder.lean",
-    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentPartition.lean",
-    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ComponentRestriction.lean",
-    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "Reassemble.lean",
-    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ReassembleDecompose.lean",
-    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ReassembleComponentPartitionEq.lean",
-    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "ReassembleRestrictComponent.lean",
-    SQ / "Bosonic" / "Diagrammatics" / "QuarticDiagramComponentDecompositionEquiv.lean",
-    SQ / "Fermionic" / "Diagrammatics" / "WickDiagram" / "Ordered.lean",
+SECOND_QUANTIZATION = "LeanCondensedMatter.SecondQuantization"
+FERMIONIC = f"{SECOND_QUANTIZATION}.Fermionic"
+BOSONIC = f"{SECOND_QUANTIZATION}.Bosonic"
+
+DEPENDENCY_BOUNDARIES = (
+    ImportBoundary(
+        SQ / "Common",
+        (FERMIONIC, BOSONIC),
+        "SecondQuantization.Common must remain statistics-independent",
+    ),
+    ImportBoundary(
+        LEAN / "Analysis",
+        (SECOND_QUANTIZATION,),
+        "Analysis must remain upstream of SecondQuantization",
+    ),
+    ImportBoundary(
+        LEAN / "Combinatorics",
+        (SECOND_QUANTIZATION,),
+        "Combinatorics must remain upstream of SecondQuantization",
+    ),
+    ImportBoundary(
+        LEAN / "QuantumTheory",
+        (SECOND_QUANTIZATION,),
+        "QuantumTheory must remain upstream of SecondQuantization",
+    ),
 )
 
-REMOVED_DIRECTORIES = (
-    SQ / "Bosonic" / "Foundations",
-    SQ / "Bosonic" / "OperatorAlgebra",
-)
-
-REMOVED_EXACT_IMPORT = re.compile(
-    r"^\s*import\s+LeanCondensedMatter\.SecondQuantization\.(Common|Fermionic|Bosonic)\s*$"
-)
-REMOVED_BOSONIC_PATH = re.compile(
-    r"LeanCondensedMatter\.SecondQuantization\.Bosonic\.(Foundations|OperatorAlgebra)(?:\.|\s|$)"
-)
-STATISTICS_IMPORT = re.compile(
-    r"^\s*import\s+LeanCondensedMatter\.SecondQuantization\.(Fermionic|Bosonic)(?:\.|\s|$)"
-)
-PHYSICS_IMPORT = re.compile(
-    r"^\s*import\s+LeanCondensedMatter\.SecondQuantization(?:\.|\s|$)"
-)
-LEGACY_FERMIONIC_IDENTIFIER = re.compile(
-    r"FockSpaceFermionic|FermionOccupation|fermionParticleNumber|fermionVacuum"
-)
 NAMESPACE_RE = re.compile(r"^\s*namespace\s+([A-Za-z0-9_'.]+)\s*$")
 SECTION_RE = re.compile(r"^\s*(?:noncomputable\s+)?section(?:\s+([A-Za-z0-9_'.]+))?\s*$")
 END_RE = re.compile(r"^\s*end(?:\s+([A-Za-z0-9_'.]+))?\s*$")
@@ -71,43 +58,7 @@ DECL_RE = re.compile(
 )
 STATISTIC_NAME_RE = re.compile(r"(?:Boson|Bosonic|Fermion|Fermionic)")
 
-REMOVED_IMPORTS = {
-    "import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.DysonExpansion":
-        "removed fermionic Dyson import",
-    "import LeanCondensedMatter.SecondQuantization.Fermionic.Perturbation.ContinuousDyson":
-        "removed fermionic continuous-Dyson import",
-    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPairs":
-        "removed fermionic ComponentPairs import",
-    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentCrossingParity":
-        "removed fermionic ComponentCrossingParity import",
-    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentLegInversion":
-        "removed fermionic ComponentLegInversion import",
-    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentOrderDecomposition":
-        "removed fermionic ComponentOrderDecomposition import",
-    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentDecompositionEquiv":
-        "removed fermionic ComponentDecompositionEquiv import",
-    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentOrderedSimplex":
-        "removed fermionic ComponentOrderedSimplex import",
-    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentOrder":
-        "removed fermionic ComponentOrder import",
-    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentPartition":
-        "removed fermionic ComponentPartition import",
-    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ComponentRestriction":
-        "removed fermionic ComponentRestriction import",
-    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Reassemble":
-        "removed fermionic Reassemble import",
-    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ReassembleDecompose":
-        "removed fermionic ReassembleDecompose import",
-    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ReassembleComponentPartitionEq":
-        "removed fermionic ReassembleComponentPartitionEq import",
-    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.ReassembleRestrictComponent":
-        "removed fermionic ReassembleRestrictComponent import",
-    "import LeanCondensedMatter.SecondQuantization.Bosonic.Diagrammatics.QuarticDiagramComponentDecompositionEquiv":
-        "removed bosonic QuarticDiagramComponentDecompositionEquiv import",
-    "import LeanCondensedMatter.SecondQuantization.Fermionic.Diagrammatics.WickDiagram.Ordered":
-        "removed fermionic Ordered import",
-}
-
+# Pairing weights are combinatorial data hosted under the Common thermal tree.
 ALLOWED_EXTERNAL_DECLARATIONS = {
     (
         "LeanCondensedMatter/SecondQuantization/Common/Thermal/"
@@ -137,62 +88,6 @@ class Finding:
 
 def relative(path: Path) -> str:
     return relative_to(ROOT, path)
-
-
-def strip_comments(text: str) -> str:
-    """Remove Lean line and nested block comments while preserving newlines."""
-    out: list[str] = []
-    i = 0
-    depth = 0
-    in_string = False
-    escaped = False
-
-    while i < len(text):
-        ch = text[i]
-        nxt = text[i + 1] if i + 1 < len(text) else ""
-
-        if depth:
-            if ch == "/" and nxt == "-":
-                depth += 1
-                out.extend("  ")
-                i += 2
-            elif ch == "-" and nxt == "/":
-                depth -= 1
-                out.extend("  ")
-                i += 2
-            else:
-                out.append("\n" if ch == "\n" else " ")
-                i += 1
-            continue
-
-        if in_string:
-            out.append(ch)
-            if escaped:
-                escaped = False
-            elif ch == "\\":
-                escaped = True
-            elif ch == '"':
-                in_string = False
-            i += 1
-            continue
-
-        if ch == '"':
-            in_string = True
-            out.append(ch)
-            i += 1
-        elif ch == "/" and nxt == "-":
-            depth = 1
-            out.extend("  ")
-            i += 2
-        elif ch == "-" and nxt == "-":
-            while i < len(text) and text[i] != "\n":
-                out.append(" ")
-                i += 1
-        else:
-            out.append(ch)
-            i += 1
-
-    return "".join(out)
 
 
 def current_namespace(stack: list[Frame]) -> tuple[str, ...]:
@@ -233,7 +128,9 @@ def close_scope(stack: list[Frame], name: str | None, path: Path, line_no: int) 
     for index in range(len(stack) - 1, -1, -1):
         frame = stack[index]
         frame_matches = frame.name == name or (
-            frame.kind == "namespace" and frame.namespace_parts and frame.namespace_parts[-1] == name
+            frame.kind == "namespace"
+            and frame.namespace_parts
+            and frame.namespace_parts[-1] == name
         )
         if frame_matches:
             del stack[index:]
@@ -246,7 +143,7 @@ def audit_file(path: Path) -> tuple[list[Finding], list[Finding]]:
     rel = path.relative_to(SQ)
     owner = rel.parts[0] if rel.parts and rel.parts[0] in OWNERS else "Root"
     expected = ("SecondQuantization", owner) if owner in OWNERS else ("SecondQuantization",)
-    text = strip_comments(path.read_text(encoding="utf-8"))
+    text = strip_lean_comments(path.read_text(encoding="utf-8"))
     stack: list[Frame] = []
     misplaced: list[Finding] = []
     statistic_names: list[Finding] = []
@@ -270,7 +167,7 @@ def audit_file(path: Path) -> tuple[list[Finding], list[Finding]]:
             finding = Finding(owner, path, line_no, kind, name, namespace)
             if namespace_parts[: len(expected)] != expected:
                 misplaced.append(finding)
-            if STATISTIC_NAME_RE.search(name):
+            if owner == "Common" and STATISTIC_NAME_RE.search(name):
                 statistic_names.append(finding)
 
     if stack:
@@ -298,57 +195,8 @@ def collect_namespace_findings() -> tuple[list[Finding], list[Finding]]:
     return misplaced, statistic_names
 
 
-def check_removed_paths(errors: list[str]) -> None:
-    check_absent_paths(
-        errors,
-        REMOVED_FILES,
-        root=ROOT,
-        description="removed compatibility module exists",
-    )
-    check_absent_paths(
-        errors,
-        REMOVED_DIRECTORIES,
-        root=ROOT,
-        description="removed directory exists",
-    )
-
-    for path in lean_files(ROOT / "LeanCondensedMatter"):
-        for line_no, line in numbered_lines(path):
-            stripped = line.strip()
-            if REMOVED_EXACT_IMPORT.match(line):
-                errors.append(f"removed umbrella import: {relative(path)}:{line_no}: {stripped}")
-            if REMOVED_BOSONIC_PATH.search(line):
-                errors.append(f"removed bosonic path: {relative(path)}:{line_no}: {stripped}")
-            if description := REMOVED_IMPORTS.get(stripped):
-                errors.append(f"{description}: {relative(path)}:{line_no}: {stripped}")
-
-
 def check_dependency_direction(errors: list[str]) -> None:
-    for path in lean_files(SQ / "Common"):
-        for line_no, line in numbered_lines(path):
-            if STATISTICS_IMPORT.match(line):
-                errors.append(
-                    f"Common imports statistics-specific code: {relative(path)}:{line_no}: {line.strip()}"
-                )
-
-    for area in ("Analysis", "Combinatorics"):
-        root = ROOT / "LeanCondensedMatter" / area
-        for path in lean_files(root):
-            for line_no, line in numbered_lines(path):
-                if PHYSICS_IMPORT.match(line):
-                    errors.append(
-                        f"{area} imports SecondQuantization: {relative(path)}:{line_no}: {line.strip()}"
-                    )
-
-
-def check_legacy_identifiers(errors: list[str]) -> None:
-    for path in lean_files(ROOT / "LeanCondensedMatter"):
-        text = path.read_text(encoding="utf-8")
-        for match in LEGACY_FERMIONIC_IDENTIFIER.finditer(text):
-            line_no = text.count("\n", 0, match.start()) + 1
-            errors.append(
-                f"legacy fermionic identifier: {relative(path)}:{line_no}: {match.group(0)}"
-            )
+    check_import_boundaries(errors, DEPENDENCY_BOUNDARIES, root=ROOT)
 
 
 def check_declaration_namespaces(errors: list[str]) -> None:
@@ -361,7 +209,7 @@ def check_declaration_namespaces(errors: list[str]) -> None:
         )
     for finding in statistic_names:
         errors.append(
-            "statistic-encoded declaration name: "
+            "statistics-specific declaration name in Common: "
             f"{relative(finding.path)}:{finding.line}: {finding.name}"
         )
 
@@ -372,23 +220,22 @@ def check_entry_point(errors: list[str]) -> None:
         errors.append(f"missing canonical entry point: {relative(entry)}")
 
     root_module = ROOT / "LeanCondensedMatter.lean"
-    expected = "import LeanCondensedMatter.SecondQuantization"
-    if expected not in root_module.read_text(encoding="utf-8").splitlines():
-        errors.append(f"repository root does not import canonical entry point: {expected}")
+    if SECOND_QUANTIZATION not in lean_imports(root_module):
+        errors.append(
+            "repository root does not import canonical entry point: "
+            f"{SECOND_QUANTIZATION}"
+        )
 
 
 def main() -> int:
     errors: list[str] = []
-    check_removed_paths(errors)
     check_dependency_direction(errors)
-    check_legacy_identifiers(errors)
     check_declaration_namespaces(errors)
     check_entry_point(errors)
-
     return finish_audit(
         errors,
-        failure_heading="SecondQuantization architecture check failed:",
-        success_message="SecondQuantization architecture check passed",
+        failure_heading="SecondQuantization architecture audit failed:",
+        success_message="SecondQuantization architecture audit passed.",
     )
 
 

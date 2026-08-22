@@ -1,14 +1,13 @@
 from __future__ import annotations
 
-import re
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+from architecture_audit_common import lean_imports, numbered_imports, repository_root
+
+ROOT = repository_root(__file__)
 LEAN_ROOT = ROOT / "LeanCondensedMatter"
 COMBINATORICS_ROOT = LEAN_ROOT / "Combinatorics"
 COMBINATORICS_UMBRELLA = LEAN_ROOT / "Combinatorics.lean"
-
-IMPORT_RE = re.compile(r"^\s*import\s+([^\s]+)\s*$")
 
 LOW_LEVEL_ROOTS = (
     "LeanCondensedMatter.Combinatorics.Cumulant.Moment",
@@ -42,16 +41,9 @@ def module_path(module: str) -> Path | None:
     return path if path.is_file() else None
 
 
-def imports(module: str) -> list[str]:
+def imports(module: str) -> tuple[str, ...]:
     path = module_path(module)
-    if path is None:
-        return []
-    result: list[str] = []
-    for line in path.read_text(encoding="utf-8").splitlines():
-        match = IMPORT_RE.match(line)
-        if match:
-            result.append(match.group(1))
-    return result
+    return () if path is None else lean_imports(path)
 
 
 def is_forbidden(module: str) -> bool:
@@ -89,11 +81,9 @@ def check_combinatorics_direct_imports() -> list[str]:
     paths = [COMBINATORICS_UMBRELLA, *sorted(COMBINATORICS_ROOT.rglob("*.lean"))]
 
     for path in paths:
-        for line_number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), start=1):
-            match = IMPORT_RE.match(line)
-            if match and is_permutation_import(match.group(1)):
-                relative = path.relative_to(ROOT)
-                findings.append(f"{relative}:{line_number} -> {match.group(1)}")
+        for line_number, imported in numbered_imports(path):
+            if is_permutation_import(imported):
+                findings.append(f"{path.relative_to(ROOT)}:{line_number} -> {imported}")
 
     return findings
 

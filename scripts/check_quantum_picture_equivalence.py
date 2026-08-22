@@ -5,7 +5,8 @@ from pathlib import Path
 
 from architecture_audit_common import (
     finish_audit,
-    lean_files,
+    lean_files_matching,
+    lean_imports,
     relative as relative_to,
     repository_root,
     strip_lean_comments,
@@ -18,9 +19,7 @@ PICTURE = QUANTUM / "LinearResponse" / "PictureEquivalence.lean"
 UNITARY_TRACE = LEAN_ROOT / "Analysis" / "Operator" / "TraceClass" / "Unitary.lean"
 DENSITY_DIAGONAL = QUANTUM / "DensityOperator" / "Diagonal.lean"
 ROOT_UMBRELLA = ROOT / "LeanCondensedMatter" / "QuantumTheory.lean"
-PICTURE_IMPORT = (
-    "import LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence"
-)
+PICTURE_MODULE = "LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence"
 EVOLVE_DENSITY_DECL = re.compile(
     r"^\s*noncomputable\s+def\s+evolveDensityOperator\b", re.MULTILINE
 )
@@ -46,10 +45,8 @@ def main() -> int:
         )
 
     picture_code = strip_lean_comments(PICTURE.read_text(encoding="utf-8"))
-    picture_normalized = " ".join(picture_code.split())
     unitary_code = strip_lean_comments(UNITARY_TRACE.read_text(encoding="utf-8"))
     diagonal_code = strip_lean_comments(DENSITY_DIAGONAL.read_text(encoding="utf-8"))
-    root_code = ROOT_UMBRELLA.read_text(encoding="utf-8")
 
     required_picture_declarations = (
         "noncomputable def heisenbergObservable",
@@ -93,38 +90,19 @@ def main() -> int:
             f"existence theorem in {relative(DENSITY_DIAGONAL)}"
         )
 
-    if PICTURE_IMPORT not in root_code:
+    if PICTURE_MODULE not in lean_imports(ROOT_UMBRELLA):
         errors.append(
             "QuantumTheory public umbrella must expose Schrödinger-Heisenberg picture equivalence: "
             f"{relative(ROOT_UMBRELLA)}"
         )
 
-    evolve_density_declarations: list[Path] = []
-    for path in lean_files(QUANTUM):
-        code = strip_lean_comments(path.read_text(encoding="utf-8"))
-        if EVOLVE_DENSITY_DECL.search(code):
-            evolve_density_declarations.append(path)
+    evolve_density_declarations = lean_files_matching(QUANTUM, EVOLVE_DENSITY_DECL)
     if evolve_density_declarations != [PICTURE]:
         rendered = ", ".join(relative(path) for path in evolve_density_declarations) or "<none>"
         errors.append(
             "canonical density-state evolution must be declared exactly once in "
             f"{relative(PICTURE)}; found: {rendered}"
         )
-
-    required_boundaries = (
-        "op := unitaryConjugate (freePropagator system t) ρ.op",
-        "ρ.pos.unitaryConjugate (freePropagator system t)",
-        "ρ.spectralTraceClass.unitaryConjugate",
-        "ρ.exists_diagonal_hilbertBasis",
-        "expectation_eq_tsum_diagonal",
-        "Complex.ofReal_injective",
-    )
-    for boundary in required_boundaries:
-        if boundary not in picture_normalized:
-            errors.append(
-                f"picture-equivalence implementation must retain `{boundary}` in "
-                f"{relative(PICTURE)}"
-            )
 
     for path, code in ((PICTURE, picture_code), (UNITARY_TRACE, unitary_code)):
         for finite_assumption in ("[FiniteDimensional", "[Fintype"):

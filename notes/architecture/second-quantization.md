@@ -1,7 +1,7 @@
 # Second-quantization architecture
 
 This note records the stable ownership and dependency boundaries of
-`LeanCondensedMatter/SecondQuantization/`. Lean declarations and the architecture audits under
+`LeanCondensedMatter/SecondQuantization/`. Lean declarations and the durable architecture audits under
 `scripts/` are the source of truth; this document explains the intended shape of those checks.
 
 ## Ownership
@@ -28,9 +28,9 @@ Particle-statistics-independent one-body current semantics are not second-quanti
 They live upstream under `Analysis` and `QuantumTheory.ConservationLaw`; second-quantized layers only
 supply `dGamma`, bounded-realization, lattice, and response adapters where those are genuinely needed.
 
-## Dependency direction
+## Repository-level dependency direction
 
-The stable dependency direction is
+The stable repository-level direction is
 
 ```text
 Analysis, Combinatorics, QuantumTheory
@@ -40,13 +40,39 @@ SecondQuantization.Common
 SecondQuantization.Fermionic, SecondQuantization.Bosonic
 ```
 
-`Analysis/` and `Combinatorics/` must not import `SecondQuantization`. Particle-statistics-independent
-`QuantumTheory` modules must likewise remain upstream of statistics-specific implementations.
-`Common` must not import fermionic or bosonic modules. Statistics-specific layers may consume Common
-and upstream reusable mathematics/quantum theory.
+The durable CI rules are current-state dependency rules:
 
-The architecture audit also checks path-owned namespaces and rejects removed compatibility imports
-and legacy ownership paths.
+- `Analysis`, `Combinatorics`, and `QuantumTheory` do not import `SecondQuantization`;
+- `SecondQuantization.Common` does not import `Fermionic` or `Bosonic`;
+- statistics-specific layers may consume Common and upstream reusable mathematics/quantum theory.
+
+These rules intentionally do not maintain blacklists of modules, imports, or identifiers that existed
+before an earlier refactor.
+
+## Fermionic responsibility DAG
+
+Within the fermionic tree, reusable theory flows downstream through explicit responsibility layers:
+
+```text
+Fermionic.Algebra
+      ↓
+┌───────────────────────────────┐
+│ Fermionic.Field               │  basis-independent/dGamma side interface
+│ Fermionic.Lattice             │  lattice realization
+└───────────────────────────────┘
+        ↓
+Fermionic.Transport             bounded/Kubo specializations
+        ↓
+Fermionic.Validation            terminal examples and checks
+```
+
+`Field` and `Lattice` are sibling realization layers. Reusable `Algebra` does not depend on either
+realization or on downstream consumers. `Field` and `Lattice` do not depend on `Transport` or
+`Validation`, and `Transport` does not depend on `Validation`.
+
+The dependency DAG is owned centrally by
+`scripts/check_fermionic_transport_validation_boundary.py`. Focused AlgebraicFock and Lattice audits
+add domain-specific constraints without duplicating that graph.
 
 ## Public import boundary
 
@@ -67,8 +93,9 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Transport
 One-body generalized current work that does not use second quantization should instead import the
 appropriate `Analysis` or `QuantumTheory.ConservationLaw` leaf.
 
-Leaf implementation files are not a compatibility surface. When a one-use routing module is removed,
-downstream code should migrate to the surviving semantic owner rather than preserving the old import.
+Leaf implementation files are not a compatibility surface. When a routing module ceases to represent
+a reusable concept, downstream code should consume the surviving semantic owner rather than keeping a
+compatibility layer solely for an old import path.
 
 ## Diagrammatics boundary
 
@@ -92,9 +119,14 @@ Common owns component and shuffle structure when no fermionic sign or energy dat
 Fermionic modules should call those results directly instead of exposing parameter-substitution or
 proof-routing wrappers.
 
-Public declarations should correspond to reusable mathematical structure or physics-facing endpoints.
-Proof-only reindexing, transport, uniqueness, and one-use bridge theorems should normally be private,
-local, or inlined when doing so reduces code without hiding a genuine domain concept.
+The two-point expansion has its own internal layer order:
+
+```text
+Semantics → Factorization → Analysis → Integration → Series
+```
+
+Lower layers must not import higher layers or their umbrella. The checker derives this from parsed
+Lean imports rather than source-line regexes.
 
 ## Current linked-cluster endpoints
 
@@ -123,7 +155,7 @@ SecondQuantization.Fermionic.
 in `TwoPointDiagramExpansion/CauchySeries.lean`. This means the next correlation-function target is
 higher-point/source-insertion structure, not re-proving the two-point linked-cluster identity.
 
-## Fermionic algebra, field, lattice, transport, and validation
+## Fermionic field/current boundary
 
 The basis-independent algebraic field architecture is documented separately in
 [`fermionic-field-operators.md`](fermionic-field-operators.md). The one-body/current boundary is
@@ -142,21 +174,7 @@ QuantumTheory.ConservationLaw
 │ Fermionic.Lattice             │  lattice current constructions
 └───────────────────────────────┘
         ↓
-Fermionic.Transport             bounded/Kubo specializations
-        ↓
-Fermionic.Validation
-```
-
-Within second quantization, the main downstream responsibility flow remains
-
-```text
-Fermionic.Algebra
-      ↓
-Fermionic.Lattice
-      ↓
 Fermionic.Transport
-      ↓
-Fermionic.Validation
 ```
 
 `Fermionic.Field` remains a narrow side interface for basis-independent density constructions and the
@@ -187,16 +205,24 @@ Rename-only churn is not an architecture improvement by itself.
 When a reusable concept survives, keep it at the narrowest authoritative owner. When only a proof path
 survives, keep that path private/local rather than turning it into public API.
 
+Permanent architecture CI should encode the current layer graph, canonical ownership, dimension
+boundaries, and semantic safety rules. It should not accumulate a history of removed files, former
+owners, or incidental proof syntax.
+
 ## CI-enforced invariants
 
-`scripts/check_second_quantization_architecture.py` enforces the core structural rules, including:
+`scripts/check_second_quantization_architecture.py` owns the repository-level SecondQuantization
+boundaries:
 
 - path-owned `Common`, `Fermionic`, and `Bosonic` declaration namespaces;
 - no statistics-specific imports from `Common`;
-- no `SecondQuantization` imports from `Analysis` or reusable `QuantumTheory` owners;
-- absence of removed compatibility modules/imports;
-- absence of legacy fermionic identifiers and ownership paths.
+- no `SecondQuantization` imports from `Analysis`, `Combinatorics`, or `QuantumTheory`;
+- the canonical public SecondQuantization entry point.
 
-Other focused audits enforce mode-boundary and theorem-catalog constraints. Documentation should be
-updated when those checks or the canonical public boundaries change; prose must not preserve an
-architecture that CI has already removed.
+`scripts/check_fermionic_transport_validation_boundary.py` owns the fermionic responsibility DAG.
+Other focused audits own domain-specific constraints such as algebraic dimension independence,
+lattice/response separation, thermal ownership, mode boundaries, density boundaries, and diagrammatic
+layer ordering.
+
+Architecture documentation should describe those durable current-state rules. Migration history
+belongs in Git history and issue/PR discussion rather than permanent CI assertions.
