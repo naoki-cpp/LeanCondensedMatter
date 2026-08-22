@@ -5,6 +5,7 @@ import LeanCondensedMatter.Transport.FiniteTrace
 import LeanCondensedMatter.Transport.System
 import LeanCondensedMatter.Transport.LinearResponse
 import LeanCondensedMatter.Transport.Resolvent
+import LeanCondensedMatter.Transport.ResolventSpectral
 import LeanCondensedMatter.Transport.FiniteKuboBastin
 import LeanCondensedMatter.Transport.ResolventEnergyDerivative
 import LeanCondensedMatter.Transport.StredaOperatorKernel
@@ -14,7 +15,6 @@ import LeanCondensedMatter.Transport.StredaOccupation
 import LeanCondensedMatter.Transport.StredaCommonKernel
 import LeanCondensedMatter.Transport.StredaIntegration
 import LeanCondensedMatter.Transport.GeneralizedStaticStreda
-import LeanCondensedMatter.Transport.StredaResolventSpectral
 import LeanCondensedMatter.Transport.StredaTraceSpectral
 import LeanCondensedMatter.Transport.StredaTraceRepresentation
 import LeanCondensedMatter.Transport.StredaSpectralEnergyIntegral
@@ -31,9 +31,9 @@ set_option linter.style.header false
 
 Public entry point for generic transport infrastructure: finite-volume/electric-field normalization,
 finite scalar conductivity evaluation, ordinary finite-dimensional trace infrastructure, response and
-resolvent formulations, finite pure-point, occupation-resolved, common-energy, and static
-Kubo–Bastin/Středa bridges, Středa integration/trace theory, occupation interpolation, exact finite
-disorder/resolvent identities, and Born/SCBA approximations.
+resolvent formulations, resolvent spectral action, finite pure-point, occupation-resolved,
+common-energy, and static Kubo–Bastin/Středa bridges, Středa integration/trace theory, occupation
+interpolation, exact finite disorder/resolvent identities, and Born/SCBA approximations.
 
 Concrete statistics-neutral model umbrellas such as `LeanCondensedMatter.Transport.AnomalousHall` are
 explicit downstream imports rather than part of this generic umbrella. Model-specific fermionic
