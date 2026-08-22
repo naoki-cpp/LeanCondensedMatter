@@ -1,7 +1,7 @@
 import LeanCondensedMatter.QuantumTheory.DensityOperator.Finite
 import LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain
 import LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel
-import LeanCondensedMatter.Transport.Resolvent
+import LeanCondensedMatter.Transport.ResolventSpectral
 
 set_option linter.style.header false
 
@@ -98,54 +98,12 @@ theorem retardedResolvent_apply_purePointBasis
           (kuboBastinRetardedEnergy system.hbar omega (data.energy m))
           (kuboBastinEnergyBroadening system.hbar eta) -
         (data.energy n : ℂ))⁻¹ • data.basis n := by
-  let z := retardedSpectralParameter
+  exact retardedResolvent_apply_eigenvector
+    system.hamiltonian.1 system.hamiltonian.2
+    (data.hamiltonian_apply_basis n)
     (kuboBastinRetardedEnergy system.hbar omega (data.energy m))
     (kuboBastinEnergyBroadening system.hbar eta)
-  let S : H →L[ℂ] H :=
-    algebraMap ℂ (H →L[ℂ] H) z - system.hamiltonian.1
-  let G := retardedResolvent system.hamiltonian.1
-    (kuboBastinRetardedEnergy system.hbar omega (data.energy m))
-    (kuboBastinEnergyBroadening system.hbar eta)
-  have hbroadening :
-      0 < kuboBastinEnergyBroadening system.hbar eta :=
-    kuboBastinEnergyBroadening_pos system.hbar eta system.hbar_pos heta
-  have hSG : S * G = 1 := by
-    simpa [S, G, z] using
-      (retardedShift_mul_resolvent system.hamiltonian.1
-        system.hamiltonian.2
-        (kuboBastinRetardedEnergy system.hbar omega (data.energy m))
-        (kuboBastinEnergyBroadening system.hbar eta) hbroadening)
-  have hGS : G * S = 1 := by
-    simpa [S, G, z] using
-      (resolvent_mul_retardedShift system.hamiltonian.1
-        system.hamiltonian.2
-        (kuboBastinRetardedEnergy system.hbar omega (data.energy m))
-        (kuboBastinEnergyBroadening system.hbar eta) hbroadening)
-  have hshift : z - (data.energy n : ℂ) ≠ 0 := by
-    simpa [z] using
-      (retardedSpectralShift_ne_zero system.hbar omega eta
-        (data.energy m) (data.energy n) system.hbar_pos heta)
-  have hS_basis : S (data.basis n) =
-      (z - (data.energy n : ℂ)) • data.basis n := by
-    simp [S, data.hamiltonian_apply_basis n, sub_smul]
-  have hS_injective : Function.Injective S := by
-    intro x y hxy
-    calc
-      x = (G * S) x := by rw [hGS]; simp
-      _ = G (S x) := rfl
-      _ = G (S y) := congrArg G hxy
-      _ = (G * S) y := rfl
-      _ = y := by rw [hGS]; simp
-  apply hS_injective
-  calc
-    S (G (data.basis n)) = data.basis n := by
-      change (S * G) (data.basis n) = data.basis n
-      rw [hSG]
-      simp
-    _ = S ((z - (data.energy n : ℂ))⁻¹ • data.basis n) := by
-      rw [map_smul, hS_basis]
-      rw [← mul_smul]
-      simp [hshift]
+    (kuboBastinEnergyBroadening_pos system.hbar eta system.hbar_pos heta)
 
 /-- The diagonal matrix element of the retarded resolvent is its scalar spectral denominator. -/
 theorem inner_purePointBasis_retardedResolvent
