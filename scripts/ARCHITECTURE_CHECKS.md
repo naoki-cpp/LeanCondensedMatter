@@ -86,7 +86,7 @@ Do not add a Python regex owner scan when the compiled environment can express t
 ## Declarative architecture graphs
 
 `check_architecture_graphs.py` is the **single Python owner of dependency graph structure**. Durable DAGs and transitive
-reachability contracts are data under `scripts/architecture/`, not checker-local `ImportBoundary` tables, layer ranks,
+reachability contracts are data under `scripts/architecture/`, not checker-local boundary tables, layer ranks,
 forbidden-import loops, or custom DFS implementations.
 
 The graph data is split by purpose:
@@ -166,8 +166,8 @@ Use `architecture_audit_common.py` for repository-wide source mechanics instead 
 common layer provides comment-aware direct imports, module-prefix matching, file requirements, graph loading,
 classification, reachability, and DAG validation.
 
-`ImportBoundary` / `check_import_boundaries` remain available only for a genuinely local rule that is not a durable
-layer graph. Do not use them to create a second copy of a graph already represented under `scripts/architecture/`.
+The superseded `ImportBoundary`, `check_import_boundaries`, and `forbid_import_prefixes` helpers have been removed.
+Durable dependency direction belongs in the shared graph specifications instead of a second imperative boundary API.
 
 Because the full Python audit runs in one read-only process, common source/import views are cached. Generic import
 parsing, module-prefix semantics, source scans, and dependency traversal should not be reimplemented in focused
