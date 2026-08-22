@@ -194,13 +194,15 @@
     {
       "id": "combinatoricsPermutationBoundary",
       "sourceRoots": [
-        "LeanCondensedMatter/Combinatorics"
+        "LeanCondensedMatter"
       ],
       "layers": [
         {"id": "combinatorics", "modulePrefixes": ["LeanCondensedMatter.Combinatorics"]},
         {"id": "permutation", "modulePrefixes": ["LeanCondensedMatter.Permutation"]}
       ],
-      "edges": []
+      "edges": [
+        {"upstream": "combinatorics", "downstream": "permutation"}
+      ]
     }
   ],
   "namespaceExceptions": [
