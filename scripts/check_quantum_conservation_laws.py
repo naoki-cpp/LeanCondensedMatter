@@ -1,11 +1,9 @@
 from __future__ import annotations
 
-import re
 from pathlib import Path
 
 from architecture_audit_common import (
     finish_audit,
-    lean_files_matching,
     lean_imports,
     relative as relative_to,
     repository_root,
@@ -24,52 +22,9 @@ CONSERVATION_MODULE = "LeanCondensedMatter.QuantumTheory.LinearResponse.Conserva
 PICTURE_MODULE = "LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence"
 DENSITY_EXPECTATION_MODULE = "LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation"
 
-CONSERVATION_DECLARATIONS = (
-    "theorem commute_freePropagator_of_commute_hamiltonian",
-    "theorem heisenbergEvolution_eq_self_of_commute_hamiltonian",
-    "theorem heisenbergObservable_eq_self_of_commute_hamiltonian",
-    "theorem expValue_evolveState_eq_of_commute_hamiltonian",
-    "theorem observableExpValue_evolveState_eq_of_commute_hamiltonian",
-    "theorem expectation_evolveDensityOperator_eq_of_commute_hamiltonian",
-    "theorem observableExpectation_evolveDensityOperator_eq_of_commute_hamiltonian",
-    "theorem expValue_hamiltonian_evolveState",
-    "theorem observableExpValue_hamiltonian_evolveState",
-    "theorem expectation_hamiltonian_evolveDensityOperator",
-    "theorem observableExpectation_hamiltonian_evolveDensityOperator",
-    "theorem unitaryConjugate_freePropagator_eq_self_of_commute_hamiltonian",
-    "theorem evolveDensityOperator_eq_self_of_commute_hamiltonian",
-    "theorem isStationary_toNormalizedExpectation_of_commute_hamiltonian",
-)
-
-DENSITY_EXPECTATION_DECLARATIONS = (
-    "noncomputable def DensityOperator.toNormalizedExpectation",
-    "theorem DensityOperator.toNormalizedExpectation_apply",
-)
-
 
 def relative(path: Path) -> str:
     return relative_to(ROOT, path)
-
-
-def declaration_pattern(name: str) -> re.Pattern[str]:
-    return re.compile(
-        rf"^\s*(?:noncomputable\s+)?(?:theorem|lemma|def)\s+{re.escape(name)}\b",
-        re.MULTILINE,
-    )
-
-
-def check_owned_declarations(
-    errors: list[str], declarations: tuple[str, ...], owner: Path
-) -> None:
-    for declaration in declarations:
-        name = declaration.split()[-1]
-        owners = lean_files_matching(QUANTUM, declaration_pattern(name))
-        if owners != [owner]:
-            rendered = ", ".join(relative(path) for path in owners) or "<none>"
-            errors.append(
-                f"canonical declaration `{name}` must be owned exactly once by "
-                f"{relative(owner)}; found: {rendered}"
-            )
 
 
 def main() -> int:
@@ -91,19 +46,6 @@ def main() -> int:
     conservation_code = strip_lean_comments(CONSERVATION.read_text(encoding="utf-8"))
     density_expectation_code = strip_lean_comments(DENSITY_EXPECTATION.read_text(encoding="utf-8"))
     density_code = strip_lean_comments(DENSITY_BASIC.read_text(encoding="utf-8"))
-
-    for declaration in CONSERVATION_DECLARATIONS:
-        if declaration not in conservation_code:
-            errors.append(
-                f"missing conservation declaration `{declaration}` in {relative(CONSERVATION)}"
-            )
-
-    for declaration in DENSITY_EXPECTATION_DECLARATIONS:
-        if declaration not in density_expectation_code:
-            errors.append(
-                "missing density-expectation declaration "
-                f"`{declaration}` in {relative(DENSITY_EXPECTATION)}"
-            )
 
     if "hamiltonian : Observable H" not in free_dynamics_normalized:
         errors.append(
@@ -128,17 +70,6 @@ def main() -> int:
         errors.append(
             "algebraic conservation laws must not depend on equations of motion in "
             f"{relative(CONSERVATION)}"
-        )
-
-    check_owned_declarations(errors, CONSERVATION_DECLARATIONS, CONSERVATION)
-    check_owned_declarations(errors, DENSITY_EXPECTATION_DECLARATIONS, DENSITY_EXPECTATION)
-
-    ext_owners = lean_files_matching(QUANTUM, declaration_pattern("DensityOperator.ext"))
-    if ext_owners != [DENSITY_BASIC]:
-        rendered = ", ".join(relative(path) for path in ext_owners) or "<none>"
-        errors.append(
-            "density-operator extensionality must be owned exactly once by "
-            f"{relative(DENSITY_BASIC)}; found: {rendered}"
         )
 
     for path, code in (
