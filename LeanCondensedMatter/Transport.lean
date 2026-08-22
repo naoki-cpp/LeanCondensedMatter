@@ -3,7 +3,6 @@ import LeanCondensedMatter.Transport.ConductivityNormalization
 import LeanCondensedMatter.Transport.FiniteConductivityTable
 import LeanCondensedMatter.Transport.FiniteTrace
 import LeanCondensedMatter.Transport.System
-import LeanCondensedMatter.Transport.LinearResponse
 import LeanCondensedMatter.Transport.Resolvent
 import LeanCondensedMatter.Transport.ResolventSpectral
 import LeanCondensedMatter.Transport.FiniteKuboBastin
