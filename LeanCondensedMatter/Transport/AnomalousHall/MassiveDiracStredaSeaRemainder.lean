@@ -127,7 +127,12 @@ theorem tendsto_cleanStredaSeaRemainderHallConductivityCutoff_atTop
       (fun _ : ℝ => intrinsicHallConductivity e hbar m fermiEnergy)
       atTop (nhds (intrinsicHallConductivity e hbar m fermiEnergy)) :=
     tendsto_const_nhds
-  simpa [cleanStredaSeaRemainderHallConductivityCutoff] using htotal.sub hsurface
+  change Tendsto
+    (fun energyCutoff : ℝ =>
+      intrinsicHallConductivityCutoff e hbar m fermiEnergy energyCutoff -
+        intrinsicHallConductivity e hbar m fermiEnergy)
+    atTop (nhds 0)
+  simpa using htotal.sub hsurface
 
 /-- Equivalently, for nonzero Dirac velocity the residual vanishes as the radial cutoff tends to
 `+∞`. -/
