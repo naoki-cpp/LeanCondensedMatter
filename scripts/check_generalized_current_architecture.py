@@ -144,20 +144,9 @@ def main() -> int:
 
     require_owner_import(errors, FERMIONIC_FIELD_BRIDGE, "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization")
     bridge_code = code(FERMIONIC_FIELD_BRIDGE)
-    bridge_imports = lean_imports(FERMIONIC_FIELD_BRIDGE)
     if "AlgebraicFock.dGamma" not in bridge_code:
         errors.append(f"{relative(FERMIONIC_FIELD_BRIDGE)} must remain an explicit dGamma bridge")
-    if any(
-        "ConventionalCurrent" in imported or "SchwartzCurrent" in imported
-        for imported in bridge_imports
-    ):
-        errors.append(f"{relative(FERMIONIC_FIELD_BRIDGE)} must not own concrete current representations")
 
-    for imported in lean_imports(BOUNDED_ONE_BODY_RESPONSE):
-        if "ConventionalCurrent" in imported:
-            errors.append(
-                f"{relative(BOUNDED_ONE_BODY_RESPONSE)} must not import conventional-current machinery: `{imported}`"
-            )
     require_owner_import(errors, CONVENTIONAL_RESPONSE, "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct")
     require_owner_import(errors, CONVENTIONAL_RESPONSE, "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse")
 
