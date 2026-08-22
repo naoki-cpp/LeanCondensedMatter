@@ -79,8 +79,8 @@ def _source_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
-def strip_lean_comments(text: str) -> str:
-    """Remove Lean comments so direct-import parsing cannot be fooled by commented imports."""
+def _strip_lean_comments(text: str) -> str:
+    """Remove Lean comments for comment-aware source-topology checks."""
     out: list[str] = []
     i = 0
     depth = 0
@@ -137,8 +137,8 @@ def strip_lean_comments(text: str) -> str:
 
 @lru_cache(maxsize=None)
 def lean_source(path: Path) -> str:
-    """Return cached comment-stripped source used by the direct-import parser."""
-    return strip_lean_comments(_source_text(path))
+    """Return cached comment-stripped source for direct-import and narrow syntax checks."""
+    return _strip_lean_comments(_source_text(path))
 
 
 @lru_cache(maxsize=None)
