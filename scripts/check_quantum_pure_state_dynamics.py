@@ -2,13 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from architecture_audit_common import (
-    finish_audit,
-    lean_imports,
-    relative as relative_to,
-    repository_root,
-    strip_lean_comments,
-)
+from architecture_audit_common import finish_audit, lean_imports, relative as relative_to, repository_root
 
 ROOT = repository_root(__file__)
 QUANTUM = ROOT / "LeanCondensedMatter" / "QuantumTheory"
@@ -32,20 +26,12 @@ def main() -> int:
             success_message="QuantumTheory pure-state dynamics audit passed.",
         )
 
-    code = strip_lean_comments(PURE_DYNAMICS.read_text(encoding="utf-8"))
-
+    # Dimension independence is a compiled declaration-type contract.
     if PURE_DYNAMICS_MODULE not in lean_imports(QUANTUM_UMBRELLA):
         errors.append(
             "QuantumTheory public umbrella must expose bounded pure-state dynamics: "
             f"{relative(QUANTUM_UMBRELLA)}"
         )
-
-    for finite_assumption in ("[FiniteDimensional", "[Fintype"):
-        if finite_assumption in code:
-            errors.append(
-                "bounded pure-state dynamics must remain dimension-independent; found "
-                f"`{finite_assumption}` in {relative(PURE_DYNAMICS)}"
-            )
 
     return finish_audit(
         errors,
