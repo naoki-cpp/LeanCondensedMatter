@@ -25,9 +25,9 @@ open Filter
 /-- For nonnegative broadening the Lorentzian spectral kernel is nonnegative. -/
 theorem lorentzianSpectralKernel_nonneg
     (offset broadening : ℝ) (hbroadening : 0 ≤ broadening) :
-    0 ≤ lorentzianSpectralKernel offset broadening := by
-  unfold lorentzianSpectralKernel
-  positivity
+    0 ≤ lorentzianSpectralKernel offset broadening :=
+  QuantumTheory.Transport.lorentzianSpectralKernel_nonneg
+    offset broadening hbroadening
 
 /-- For nonzero broadening the Lorentzian kernel is continuous as a function of energy offset. -/
 theorem continuous_lorentzianSpectralKernel_fixed_broadening
@@ -36,7 +36,7 @@ theorem continuous_lorentzianSpectralKernel_fixed_broadening
   have hden : ∀ offset : ℝ, broadening ^ 2 + offset ^ 2 ≠ 0 := by
     intro offset
     nlinarith [sq_pos_of_ne_zero hbroadening]
-  unfold lorentzianSpectralKernel
+  unfold lorentzianSpectralKernel QuantumTheory.Transport.lorentzianSpectralKernel
   exact continuous_const.div
     ((continuous_const.pow 2).add (continuous_id.pow 2)) hden
 
