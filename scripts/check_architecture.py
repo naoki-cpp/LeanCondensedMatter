@@ -19,10 +19,11 @@ class ArchitectureCheck:
     scope: str
 
 
-# This manifest owns architecture-audit registration only. Dependency graphs belong to focused
-# checker data expressed through architecture_audit_common.ImportBoundary. Scopes are optional
-# local filters and must not become a second architecture model.
+# This manifest owns architecture-audit registration only. Dependency DAGs live in shared
+# specifications under scripts/architecture/. Scopes are optional local filters and must not become
+# a second architecture model.
 CHECKS: tuple[ArchitectureCheck, ...] = (
+    ArchitectureCheck("declarative architecture graphs", "check_architecture_graphs.py", "core"),
     ArchitectureCheck("root public umbrellas", "check_root_public_umbrellas.py", "core"),
     ArchitectureCheck("QuantumTheory architecture", "check_quantum_theory_architecture.py", "core"),
     ArchitectureCheck("generalized-current architecture", "check_generalized_current_architecture.py", "core"),
@@ -35,7 +36,6 @@ CHECKS: tuple[ArchitectureCheck, ...] = (
     ArchitectureCheck("QuantumTheory conservation laws", "check_quantum_conservation_laws.py", "core"),
     ArchitectureCheck("QuantumTheory pure-point density", "check_quantum_pure_point_density.py", "core"),
     ArchitectureCheck("QuantumTheory normalized expectation", "check_quantum_normalized_expectation.py", "core"),
-    ArchitectureCheck("combinatorics dependency layers", "check_combinatorics_dependency_layers.py", "core"),
     ArchitectureCheck("SecondQuantization architecture", "check_second_quantization_architecture.py", "second-quantization"),
     ArchitectureCheck("thermal ownership boundary", "check_second_quantization_thermal_boundary.py", "second-quantization"),
     ArchitectureCheck("diagrammatics layer architecture", "check_diagrammatics_layer_architecture.py", "second-quantization"),

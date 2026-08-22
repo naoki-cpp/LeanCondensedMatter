@@ -4,9 +4,6 @@ from pathlib import Path
 
 from architecture_audit_common import (
     finish_audit,
-    forbid_import_prefixes,
-    lean_files,
-    lean_imports,
     require_files,
     require_import,
     relative as relative_to,
@@ -18,8 +15,6 @@ LEAN = ROOT / "LeanCondensedMatter"
 TRANSPORT = LEAN / "Transport"
 LINEAR_RESPONSE = LEAN / "QuantumTheory" / "LinearResponse"
 FERMIONIC_TRANSPORT = LEAN / "SecondQuantization" / "Fermionic" / "Transport"
-
-SECOND_QUANTIZATION_PREFIX = "LeanCondensedMatter.SecondQuantization"
 
 NEUTRAL_OWNERS = (
     TRANSPORT / "ConductivityNormalization.lean",
@@ -116,15 +111,6 @@ def main() -> int:
                 f"{relative(path)} is retired and must not be reintroduced into fermionic Transport"
             )
 
-    for path in lean_files(TRANSPORT):
-        forbid_import_prefixes(
-            errors,
-            path,
-            SECOND_QUANTIZATION_PREFIX,
-            root=ROOT,
-            description="Transport must remain upstream of SecondQuantization",
-        )
-
     for path, imported in FERMIONIC_SPECIALIZATIONS.items():
         require_owner_import(errors, path, imported)
 
@@ -145,13 +131,6 @@ def main() -> int:
 
     finite_disorder = TRANSPORT / "FiniteDisorder.lean"
     require_owner_import(errors, finite_disorder, finite_trace_import)
-    if finite_disorder.exists() and "LeanCondensedMatter.Transport.StredaTraceKernel" in lean_imports(
-        finite_disorder
-    ):
-        errors.append(
-            f"{relative(finite_disorder)} must consume ordinary trace infrastructure from "
-            "Transport.FiniteTrace rather than the downstream Středa trace layer"
-        )
 
     resolvent = TRANSPORT / "Resolvent.lean"
     forbid_declarations(
@@ -281,13 +260,6 @@ def main() -> int:
         finite_disorder_moments,
         "LeanCondensedMatter.Transport.FiniteDisorder",
     )
-    if finite_disorder_moments.exists() and (
-        "LeanCondensedMatter.Transport.FiniteDisorderResolvent" in lean_imports(finite_disorder_moments)
-    ):
-        errors.append(
-            f"{relative(finite_disorder_moments)} must remain an exact-disorder sibling of "
-            "FiniteDisorderResolvent rather than depending on resolvent infrastructure"
-        )
 
     finite_disorder_born = TRANSPORT / "FiniteDisorderBorn.lean"
     require_owner_import(
@@ -318,25 +290,10 @@ def main() -> int:
         finite_disorder_advanced_born,
         "LeanCondensedMatter.Transport.FiniteDisorderResolvent",
     )
-    if finite_disorder_advanced_born.exists() and (
-        "LeanCondensedMatter.Transport.FiniteDisorderBorn" in lean_imports(finite_disorder_advanced_born)
-    ):
-        errors.append(
-            f"{relative(finite_disorder_advanced_born)} must consume shared moments directly rather "
-            "than depending on the retarded Born approximation layer"
-        )
 
     scba = TRANSPORT / "FiniteDisorderSCBA.lean"
     require_owner_import(errors, scba, "LeanCondensedMatter.Transport.FiniteDisorder")
     require_owner_import(errors, scba, "LeanCondensedMatter.Transport.Resolvent")
-    for forbidden in (
-        "LeanCondensedMatter.Transport.FiniteDisorderBorn",
-        "LeanCondensedMatter.Transport.FiniteDisorderAdvancedBorn",
-    ):
-        if scba.exists() and forbidden in lean_imports(scba):
-            errors.append(
-                f"{relative(scba)} must remain independent of Born closure owner `{forbidden}`"
-            )
 
     return finish_audit(
         errors,

@@ -4,9 +4,7 @@ from pathlib import Path
 
 from architecture_audit_common import (
     finish_audit,
-    forbid_import_prefixes,
     lean_imports,
-    module_matches_prefix,
     require_files,
     require_import,
     repository_root,
@@ -32,8 +30,6 @@ CONVENTIONAL_RESPONSE = LEAN / "SecondQuantization" / "Fermionic" / "Transport" 
 QUANTUM_UMBRELLA = LEAN / "QuantumTheory" / "ConservationLaw.lean"
 TRANSPORT_UMBRELLA = LEAN / "SecondQuantization" / "Fermionic" / "Transport.lean"
 
-QUANTUM_MECHANICS_PREFIX = "LeanCondensedMatter.QuantumMechanics"
-
 
 def relative(path: Path) -> str:
     return path.relative_to(ROOT).as_posix()
@@ -45,12 +41,6 @@ def code(path: Path) -> str:
 
 def require_owner_import(errors: list[str], path: Path, imported: str) -> None:
     require_import(errors, path, imported, root=ROOT, description="architecture owner")
-
-
-def forbid_downstream(
-    errors: list[str], path: Path, prefixes: str | tuple[str, ...], description: str
-) -> None:
-    forbid_import_prefixes(errors, path, prefixes, root=ROOT, description=description)
 
 
 def main() -> int:
@@ -82,24 +72,6 @@ def main() -> int:
             success_message="Generalized-current architecture audit passed.",
         )
 
-    for path in (
-        ANALYSIS_OPERATOR,
-        SYMMETRIZED_PRODUCT,
-        CURRENT_REPRESENTATION,
-        BALANCE_LAW,
-        SYMMETRIC_LOCALIZATION,
-    ):
-        forbid_downstream(
-            errors,
-            path,
-            (
-                "LeanCondensedMatter.QuantumTheory",
-                "LeanCondensedMatter.QuantumMechanics",
-                "LeanCondensedMatter.SecondQuantization",
-            ),
-            "analysis-level current semantics must remain representation-independent",
-        )
-
     require_owner_import(errors, BALANCE_LAW, "LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation")
     require_owner_import(errors, SYMMETRIC_LOCALIZATION, "LeanCondensedMatter.Analysis.Calculus.BalanceLaw")
     require_owner_import(errors, SYMMETRIC_LOCALIZATION, "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct")
@@ -119,15 +91,6 @@ def main() -> int:
         "symmetrizedProductRightLinear",
     )
     for path in sorted(QUANTUM_CURRENT.glob("*.lean")):
-        forbid_downstream(
-            errors,
-            path,
-            (
-                "LeanCondensedMatter.QuantumMechanics",
-                "LeanCondensedMatter.SecondQuantization",
-            ),
-            "QuantumTheory.ConservationLaw must remain free of concrete kinematics and particle statistics",
-        )
         quantum_code = code(path)
         for token in forbidden_quantum_localization_tokens:
             if token in quantum_code:
@@ -178,38 +141,12 @@ def main() -> int:
 
     require_owner_import(errors, SINGLE_PARTICLE_SCHWARTZ, "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent")
     require_owner_import(errors, SINGLE_PARTICLE_SPIN, "LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent")
-    for path in (
-        SINGLE_PARTICLE_LOCALIZED_TRANSPORT,
-        SINGLE_PARTICLE_SYMMETRIZED_VELOCITY,
-        SINGLE_PARTICLE_CONVENTIONAL,
-        SINGLE_PARTICLE_SCHWARTZ,
-        SINGLE_PARTICLE_SPIN,
-    ):
-        forbid_downstream(
-            errors,
-            path,
-            "LeanCondensedMatter.SecondQuantization",
-            "single-particle current realizations must remain upstream of particle statistics",
-        )
 
     require_owner_import(errors, FERMIONIC_FIELD_BRIDGE, "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization")
     bridge_code = code(FERMIONIC_FIELD_BRIDGE)
-    bridge_imports = lean_imports(FERMIONIC_FIELD_BRIDGE)
     if "AlgebraicFock.dGamma" not in bridge_code:
         errors.append(f"{relative(FERMIONIC_FIELD_BRIDGE)} must remain an explicit dGamma bridge")
-    if any(
-        module_matches_prefix(imported, QUANTUM_MECHANICS_PREFIX)
-        or "ConventionalCurrent" in imported
-        or "SchwartzCurrent" in imported
-        for imported in bridge_imports
-    ):
-        errors.append(f"{relative(FERMIONIC_FIELD_BRIDGE)} must not own concrete current representations")
 
-    for imported in lean_imports(BOUNDED_ONE_BODY_RESPONSE):
-        if "ConventionalCurrent" in imported:
-            errors.append(
-                f"{relative(BOUNDED_ONE_BODY_RESPONSE)} must not import conventional-current machinery: `{imported}`"
-            )
     require_owner_import(errors, CONVENTIONAL_RESPONSE, "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct")
     require_owner_import(errors, CONVENTIONAL_RESPONSE, "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse")
 

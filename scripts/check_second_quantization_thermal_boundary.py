@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 from architecture_audit_common import (
-    ImportBoundary,
-    check_import_boundaries,
     finish_audit,
     module_matches_prefix,
     numbered_imports,
@@ -22,16 +20,7 @@ UNBOUNDED_EXPECTATION = THERMAL / "UnboundedExpectation.lean"
 COMMON_THERMAL_PREFIX = "LeanCondensedMatter.SecondQuantization.Common.Thermal"
 FERMIONIC_THERMAL_PREFIX = "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal"
 BOSONIC_THERMAL_PREFIX = "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal"
-COMPLETED_PREFIX = "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace"
 UNBOUNDED_THERMAL_IMPORT = f"{FERMIONIC_THERMAL_PREFIX}.UnboundedExpectation"
-
-DEPENDENCY_BOUNDARIES = (
-    ImportBoundary(
-        COMPLETED,
-        (FERMIONIC_THERMAL_PREFIX,),
-        "CompletedSpace representation infrastructure must remain upstream of Fermionic.Thermal",
-    ),
-)
 
 
 def main() -> int:
@@ -55,7 +44,7 @@ def main() -> int:
             success_message="SecondQuantization thermal-boundary audit passed.",
         )
 
-    check_import_boundaries(errors, DEPENDENCY_BOUNDARIES, root=ROOT)
+    # CompletedSpace -> Thermal and the stricter UnboundedExpectation boundary are graph-owned.
 
     # The public representation umbrella exposes representation API only, never thermal theory.
     thermal_prefixes = (
@@ -68,14 +57,6 @@ def main() -> int:
             errors.append(
                 "Fermionic.CompletedSpace umbrella exports thermal API: "
                 f"{COMPLETED_UMBRELLA.relative_to(ROOT)}:{line_no}: {imported}"
-            )
-
-    # The generic unbounded diagonal expectation is thermal theory, not completed-space machinery.
-    for line_no, imported in numbered_imports(UNBOUNDED_EXPECTATION):
-        if module_matches_prefix(imported, COMPLETED_PREFIX):
-            errors.append(
-                "unbounded Gibbs expectation depends on CompletedSpace: "
-                f"{UNBOUNDED_EXPECTATION.relative_to(ROOT)}:{line_no}: {imported}"
             )
 
     thermal_exports = {imported for _, imported in numbered_imports(THERMAL_UMBRELLA)}
