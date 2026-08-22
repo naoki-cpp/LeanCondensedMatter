@@ -160,12 +160,17 @@ def main() -> int:
                     f"{relative(fermionic_table)} must not re-own generic scalar table `{declaration}`"
                 )
 
-    # Scalar finite-time adiabatic transformation and observation-time convergence are generic
-    # linear-response concepts. Fermionic transport must not reintroduce its retired copies.
+    # Scalar finite-time response concepts and the adiabatic phase itself are generic linear-response
+    # data. Fermionic transport must consume the canonical phase rather than reintroduce an alias.
     fermionic_frequency = FERMIONIC_TRANSPORT / "FrequencyResponse.lean"
     if fermionic_frequency.exists():
         text = fermionic_frequency.read_text(encoding="utf-8")
         for declaration in (
+            "def adiabaticFrequencyFactor",
+            "theorem adiabaticFrequencyFactor_zero_lag",
+            "theorem adiabaticFrequencyFactor_zero_switching",
+            "theorem adiabaticFrequencyFactor_zero_frequency",
+            "theorem adiabaticFrequencyFactor_eq_adiabaticFrequencyPhase",
             "def finiteTimeAdiabaticTransform",
             "def HasInfiniteObservationTimeLimit",
             "def HasZeroSwitchingLimit",
