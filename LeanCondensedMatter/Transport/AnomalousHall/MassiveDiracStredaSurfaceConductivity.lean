@@ -41,6 +41,13 @@ theorem finiteRadialStredaSurfacePrimitiveIntegral_eq_kernelIntegral
   intro p _
   have hE : energy v m p 0 ≠ 0 :=
     ne_of_gt (energy_pos_of_mass_pos v m p 0 hm)
+  change
+    p * (regularizedStredaSurfacePrimitiveTrace
+      (hamiltonianOperator v m p 0)
+      (currentXOperator e v) (currentYOperator e v)
+      fermiEnergy broadening).re =
+      p * radialInterbandStredaSurfaceKernel
+        e v m fermiEnergy (energy v m p 0) broadening
   rw [regularizedStredaSurfacePrimitiveTrace_radial_eq_interband
       e v m p fermiEnergy broadening hE hbroadening,
     interbandStredaSurfaceTraceContribution_radial_eq_kernel
@@ -131,7 +138,6 @@ theorem tendsto_finiteRadialStredaSurfaceHallConductivity_intrinsic
     unfold bastinTraceHallPrefactor momentumMeasurePrefactor planckFromReduced
     have hpi : Real.pi ≠ 0 := ne_of_gt Real.pi_pos
     field_simp [hhbar.ne', hfermi.ne', hpi]
-    ring
   rw [hnorm] at hresponse
   exact hresponse
 
