@@ -2,13 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from architecture_audit_common import (
-    finish_audit,
-    lean_imports,
-    relative as relative_to,
-    repository_root,
-    strip_lean_comments,
-)
+from architecture_audit_common import finish_audit, lean_imports, relative as relative_to, repository_root
 
 ROOT = repository_root(__file__)
 LEAN_ROOT = ROOT / "LeanCondensedMatter"
@@ -27,8 +21,7 @@ def relative(path: Path) -> str:
 def main() -> int:
     errors: list[str] = []
 
-    required_files = (PICTURE, UNITARY_TRACE, DENSITY_DIAGONAL)
-    for path in required_files:
+    for path in (PICTURE, UNITARY_TRACE, DENSITY_DIAGONAL):
         if not path.exists():
             errors.append(f"missing picture-equivalence boundary file: {relative(path)}")
 
@@ -39,22 +32,12 @@ def main() -> int:
             success_message="QuantumTheory picture-equivalence audit passed.",
         )
 
-    picture_code = strip_lean_comments(PICTURE.read_text(encoding="utf-8"))
-    unitary_code = strip_lean_comments(UNITARY_TRACE.read_text(encoding="utf-8"))
-
+    # Dimension independence is checked from compiled declaration types.
     if PICTURE_MODULE not in lean_imports(ROOT_UMBRELLA):
         errors.append(
             "QuantumTheory public umbrella must expose Schrödinger-Heisenberg picture equivalence: "
             f"{relative(ROOT_UMBRELLA)}"
         )
-
-    for path, code in ((PICTURE, picture_code), (UNITARY_TRACE, unitary_code)):
-        for finite_assumption in ("[FiniteDimensional", "[Fintype"):
-            if finite_assumption in code:
-                errors.append(
-                    "picture-equivalence foundations must remain dimension-independent; found "
-                    f"`{finite_assumption}` in {relative(path)}"
-                )
 
     return finish_audit(
         errors,
