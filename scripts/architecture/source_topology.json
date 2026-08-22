@@ -73,6 +73,7 @@
       "edges": [
         {"upstream": "expectation", "downstream": "densityExpectation"},
         {"upstream": "expectation", "downstream": "stationarity"},
+        {"upstream": "freeDynamics", "downstream": "pureStateDynamics"},
         {"upstream": "freeDynamics", "downstream": "stationarity"},
         {"upstream": "pureStateDynamics", "downstream": "pictureEquivalence"},
         {"upstream": "densityExpectation", "downstream": "conservationLaws"},
@@ -85,7 +86,6 @@
       "id": "densityGibbsEntropy",
       "sourceRoots": [
         "LeanCondensedMatter/QuantumTheory/Gibbs",
-        "LeanCondensedMatter/QuantumTheory/Entropy",
         "LeanCondensedMatter/SecondQuantization/Common/Algebra",
         "LeanCondensedMatter/SecondQuantization/Common/Thermal",
         "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal"
