@@ -79,13 +79,8 @@ def _source_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
 
 
-def numbered_lines(path: Path) -> Iterator[tuple[int, str]]:
-    """Yield UTF-8 text lines with one-based line numbers."""
-    yield from enumerate(_source_text(path).splitlines(), start=1)
-
-
 def strip_lean_comments(text: str) -> str:
-    """Remove Lean line and nested block comments while preserving lines and strings."""
+    """Remove Lean comments so direct-import parsing cannot be fooled by commented imports."""
     out: list[str] = []
     i = 0
     depth = 0
@@ -142,13 +137,8 @@ def strip_lean_comments(text: str) -> str:
 
 @lru_cache(maxsize=None)
 def lean_source(path: Path) -> str:
-    """Return cached comment-stripped Lean source for one file."""
+    """Return cached comment-stripped source used by the direct-import parser."""
     return strip_lean_comments(_source_text(path))
-
-
-def lean_files_matching(root: Path, pattern: re.Pattern[str]) -> list[Path]:
-    """Return Lean files whose comment-stripped source matches a compiled pattern."""
-    return [path for path in lean_files(root) if pattern.search(lean_source(path))]
 
 
 @lru_cache(maxsize=None)
