@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.FiniteDisorderMoments
-import LeanCondensedMatter.Transport.FiniteDisorderResolvent
+import LeanCondensedMatter.Transport.Disorder.Moments
+import LeanCondensedMatter.Transport.Disorder.Resolvent
 
 set_option linter.style.header false
 
@@ -7,8 +7,8 @@ set_option linter.style.header false
 # Finite-disorder Born self-energy and closure boundary
 
 This module starts from the exact finite ensemble and exact configuration-wise resolvent/Dyson
-identities owned by `FiniteDisorder` and `FiniteDisorderResolvent`, together with centered finite
-second-moment data owned by `FiniteDisorderMoments`.
+identities owned by `Disorder.Finite` and `Disorder.Resolvent`, together with centered finite
+second-moment data owned by `Disorder.Moments`.
 
 From those moments, the module forms the exact averaged second-order Dyson remainder and then defines
 the weak-scattering Born self-energy and resolvent approximation. The exact averaged resolvent is not

@@ -16,21 +16,28 @@ TRANSPORT = LEAN / "Transport"
 LINEAR_RESPONSE = LEAN / "QuantumTheory" / "LinearResponse"
 FERMIONIC_TRANSPORT = LEAN / "SecondQuantization" / "Fermionic" / "Transport"
 
+CORE = TRANSPORT / "Core"
+RESOLVENT = TRANSPORT / "Resolvent"
+KUBO_BASTIN = TRANSPORT / "KuboBastin"
+STREDA = TRANSPORT / "Streda"
+DISORDER = TRANSPORT / "Disorder"
+
 NEUTRAL_OWNERS = (
-    TRANSPORT / "ConductivityNormalization.lean",
-    TRANSPORT / "FiniteConductivityTable.lean",
-    TRANSPORT / "FiniteTrace.lean",
-    TRANSPORT / "ResolventSpectral.lean",
-    TRANSPORT / "FiniteKuboBastin.lean",
-    TRANSPORT / "KuboBastinOccupation.lean",
-    TRANSPORT / "KuboBastinCommonEnergy.lean",
-    TRANSPORT / "GeneralizedStaticStreda.lean",
-    TRANSPORT / "FiniteDisorder.lean",
-    TRANSPORT / "FiniteDisorderResolvent.lean",
-    TRANSPORT / "FiniteDisorderMoments.lean",
-    TRANSPORT / "FiniteDisorderBorn.lean",
-    TRANSPORT / "FiniteDisorderAdvancedBorn.lean",
-    TRANSPORT / "FiniteDisorderSCBA.lean",
+    CORE / "ConductivityNormalization.lean",
+    CORE / "FiniteConductivityTable.lean",
+    CORE / "FiniteTrace.lean",
+    RESOLVENT / "Basic.lean",
+    RESOLVENT / "Spectral.lean",
+    KUBO_BASTIN / "Finite.lean",
+    KUBO_BASTIN / "Occupation.lean",
+    KUBO_BASTIN / "CommonEnergy.lean",
+    STREDA / "GeneralizedStatic.lean",
+    DISORDER / "Finite.lean",
+    DISORDER / "Resolvent.lean",
+    DISORDER / "Moments.lean",
+    DISORDER / "Born.lean",
+    DISORDER / "AdvancedBorn.lean",
+    DISORDER / "SCBA.lean",
 )
 
 ADIABATIC_RESPONSE_OWNERS = (
@@ -65,7 +72,7 @@ FERMIONIC_SPECIALIZATIONS = {
     FERMIONIC_TRANSPORT / "KuboBastinCommonEnergy.lean":
         "LeanCondensedMatter.Transport.KuboBastin.CommonEnergy",
     FERMIONIC_TRANSPORT / "StaticKuboBastinResponse.lean":
-        "LeanCondensedMatter.Transport.GeneralizedStaticStreda",
+        "LeanCondensedMatter.Transport.Streda.GeneralizedStatic",
 }
 
 
@@ -114,9 +121,14 @@ def main() -> int:
     for path, imported in FERMIONIC_SPECIALIZATIONS.items():
         require_owner_import(errors, path, imported)
 
-    finite_trace_import = "LeanCondensedMatter.Transport.FiniteTrace"
-    streda_trace_kernel = TRANSPORT / "StredaTraceKernel.lean"
+    finite_trace_import = "LeanCondensedMatter.Transport.Core.FiniteTrace"
+    streda_trace_kernel = STREDA / "TraceKernel.lean"
     require_owner_import(errors, streda_trace_kernel, finite_trace_import)
+    require_owner_import(
+        errors,
+        streda_trace_kernel,
+        "LeanCondensedMatter.Transport.Streda.OperatorKernel",
+    )
     forbid_declarations(
         errors,
         streda_trace_kernel,
@@ -129,10 +141,10 @@ def main() -> int:
         "ordinary finite-dimensional trace",
     )
 
-    finite_disorder = TRANSPORT / "FiniteDisorder.lean"
+    finite_disorder = DISORDER / "Finite.lean"
     require_owner_import(errors, finite_disorder, finite_trace_import)
 
-    resolvent = TRANSPORT / "Resolvent.lean"
+    resolvent = RESOLVENT / "Basic.lean"
     forbid_declarations(
         errors,
         resolvent,
@@ -148,9 +160,9 @@ def main() -> int:
         "retired transport-system wrapper",
     )
 
-    resolvent_spectral_import = "LeanCondensedMatter.Transport.ResolventSpectral"
-    finite_kubo_bastin = TRANSPORT / "FiniteKuboBastin.lean"
-    streda_trace_spectral = TRANSPORT / "StredaTraceSpectral.lean"
+    resolvent_spectral_import = "LeanCondensedMatter.Transport.Resolvent.Spectral"
+    finite_kubo_bastin = KUBO_BASTIN / "Finite.lean"
+    streda_trace_spectral = STREDA / "TraceSpectral.lean"
     require_owner_import(errors, finite_kubo_bastin, resolvent_spectral_import)
     require_owner_import(errors, streda_trace_spectral, resolvent_spectral_import)
 
@@ -242,35 +254,35 @@ def main() -> int:
         "generic infinite-time response",
     )
 
-    finite_disorder_resolvent = TRANSPORT / "FiniteDisorderResolvent.lean"
+    finite_disorder_resolvent = DISORDER / "Resolvent.lean"
     require_owner_import(
         errors,
         finite_disorder_resolvent,
-        "LeanCondensedMatter.Transport.FiniteDisorder",
+        "LeanCondensedMatter.Transport.Disorder.Finite",
     )
     require_owner_import(
         errors,
         finite_disorder_resolvent,
-        "LeanCondensedMatter.Transport.Resolvent",
+        "LeanCondensedMatter.Transport.Resolvent.Basic",
     )
 
-    finite_disorder_moments = TRANSPORT / "FiniteDisorderMoments.lean"
+    finite_disorder_moments = DISORDER / "Moments.lean"
     require_owner_import(
         errors,
         finite_disorder_moments,
-        "LeanCondensedMatter.Transport.FiniteDisorder",
+        "LeanCondensedMatter.Transport.Disorder.Finite",
     )
 
-    finite_disorder_born = TRANSPORT / "FiniteDisorderBorn.lean"
+    finite_disorder_born = DISORDER / "Born.lean"
     require_owner_import(
         errors,
         finite_disorder_born,
-        "LeanCondensedMatter.Transport.FiniteDisorderMoments",
+        "LeanCondensedMatter.Transport.Disorder.Moments",
     )
     require_owner_import(
         errors,
         finite_disorder_born,
-        "LeanCondensedMatter.Transport.FiniteDisorderResolvent",
+        "LeanCondensedMatter.Transport.Disorder.Resolvent",
     )
     forbid_declarations(
         errors,
@@ -279,21 +291,21 @@ def main() -> int:
         "shared finite-disorder moment",
     )
 
-    finite_disorder_advanced_born = TRANSPORT / "FiniteDisorderAdvancedBorn.lean"
+    finite_disorder_advanced_born = DISORDER / "AdvancedBorn.lean"
     require_owner_import(
         errors,
         finite_disorder_advanced_born,
-        "LeanCondensedMatter.Transport.FiniteDisorderMoments",
+        "LeanCondensedMatter.Transport.Disorder.Moments",
     )
     require_owner_import(
         errors,
         finite_disorder_advanced_born,
-        "LeanCondensedMatter.Transport.FiniteDisorderResolvent",
+        "LeanCondensedMatter.Transport.Disorder.Resolvent",
     )
 
-    scba = TRANSPORT / "FiniteDisorderSCBA.lean"
-    require_owner_import(errors, scba, "LeanCondensedMatter.Transport.FiniteDisorder")
-    require_owner_import(errors, scba, "LeanCondensedMatter.Transport.Resolvent")
+    scba = DISORDER / "SCBA.lean"
+    require_owner_import(errors, scba, "LeanCondensedMatter.Transport.Disorder.Finite")
+    require_owner_import(errors, scba, "LeanCondensedMatter.Transport.Resolvent.Basic")
 
     return finish_audit(
         errors,

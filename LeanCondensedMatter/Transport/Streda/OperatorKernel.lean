@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.ResolventEnergyDerivative
+import LeanCondensedMatter.Transport.Resolvent.EnergyDerivative
 import Mathlib.Analysis.Calculus.Deriv.Mul
 
 set_option linter.style.header false
