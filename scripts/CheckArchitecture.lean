@@ -30,11 +30,40 @@ structure OwnerRequirement where
   declaration : Name
   moduleName : Name
 
+/-- One layer vertex from the shared declarative architecture graph. -/
+structure ArchitectureLayerSpec where
+  id : String
+  modulePrefixes : Array String
+  namespacePrefixes : Array String
+  forbiddenNameFragments : Array String
+deriving FromJson
+
+/-- One upstream-to-downstream edge from the shared declarative architecture graph. -/
+structure ArchitectureEdgeSpec where
+  upstream : String
+  downstream : String
+deriving FromJson
+
+/-- One intentional declaration namespace exception in the shared architecture graph. -/
+structure NamespaceExceptionSpec where
+  modulePrefix : String
+  declarationPrefix : String
+deriving FromJson
+
+/-- Shared architecture data. Python consumes the DAG; Lean consumes compiled namespace contracts. -/
+structure ArchitectureGraphSpec where
+  layers : Array ArchitectureLayerSpec
+  edges : Array ArchitectureEdgeSpec
+  namespaceExceptions : Array NamespaceExceptionSpec
+deriving FromJson
+
+/-- Module-boundary-aware prefix matching for strings representing Lean names. -/
+def stringMatchesPrefix (value expectedPrefix : String) : Bool :=
+  value == expectedPrefix || value.startsWith (expectedPrefix ++ ".")
+
 /-- Module-boundary-aware prefix matching for Lean names. -/
 def nameMatchesPrefix (name expectedPrefix : Name) : Bool :=
-  let nameString := name.toString
-  let prefixString := expectedPrefix.toString
-  nameString == prefixString || nameString.startsWith (prefixString ++ ".")
+  stringMatchesPrefix name.toString expectedPrefix.toString
 
 /-- Whether a module belongs to this project rather than Mathlib or another dependency. -/
 def isProjectModule (moduleName : Name) : Bool :=
@@ -75,6 +104,32 @@ def Snapshot.sourceDeclarations (snapshot : Snapshot) : Array ProjectDeclaration
 def Snapshot.declarationType? (snapshot : Snapshot) (declName : Name) : Option Expr :=
   (snapshot.env.find? declName).map fun info => info.type
 
+/-- Find the architecture layer owning a compiled module. -/
+def ArchitectureGraphSpec.layerForModule?
+    (graph : ArchitectureGraphSpec) (moduleName : Name) : Option ArchitectureLayerSpec :=
+  graph.layers.find? fun layer =>
+    layer.modulePrefixes.any fun modulePrefix =>
+      stringMatchesPrefix moduleName.toString modulePrefix
+
+/-- Whether a declaration is one of the small intentional cross-namespace exceptions. -/
+def ArchitectureGraphSpec.isNamespaceException
+    (graph : ArchitectureGraphSpec) (moduleName declarationName : Name) : Bool :=
+  let moduleString := moduleName.toString
+  let declarationString := (privateToUserName declarationName).toString
+  graph.namespaceExceptions.any fun exception =>
+    stringMatchesPrefix moduleString exception.modulePrefix &&
+      stringMatchesPrefix declarationString exception.declarationPrefix
+
+/-- Load the architecture graph shared with the Python pre-build audit. -/
+def loadArchitectureGraph : CommandElabM ArchitectureGraphSpec := do
+  let contents ← liftIO <| IO.FS.readFile "scripts/architecture/second_quantization.json"
+  let json ← match Json.parse contents with
+    | .ok json => pure json
+    | .error error => throwError "failed to parse architecture graph JSON: {error}"
+  match (fromJson? json : Except String ArchitectureGraphSpec) with
+  | .ok graph => pure graph
+  | .error error => throwError "failed to decode architecture graph JSON: {error}"
+
 /-- Check a canonical declaration owner without depending on source spelling such as `theorem`,
 `lemma`, or `noncomputable def`. -/
 def checkOwner (snapshot : Snapshot) (declName expectedModule : Name) : Array String :=
@@ -105,6 +160,28 @@ def checkDeclarationPrefixOwner
         !nameMatchesPrefix declaration.moduleName modulePrefix then
       errors := errors.push
         s!"source declaration `{declaration.name}` is owned by `{declaration.moduleName}`, expected module prefix `{modulePrefix}`"
+  return errors
+
+/-- Enforce module-to-namespace contracts from the shared architecture graph on compiled source
+declarations. Private declarations are checked using their original user-facing names. -/
+def checkArchitectureGraphNamespaces
+    (graph : ArchitectureGraphSpec) (snapshot : Snapshot) : Array String := Id.run do
+  let mut errors : Array String := #[]
+  for declaration in snapshot.sourceDeclarations do
+    let some layer := graph.layerForModule? declaration.moduleName | continue
+    if layer.namespacePrefixes.isEmpty then continue
+    let userName := privateToUserName declaration.name
+    let userNameString := userName.toString
+    let namespaceOk := layer.namespacePrefixes.any fun namespacePrefix =>
+      stringMatchesPrefix userNameString namespacePrefix
+    let exceptionOk := graph.isNamespaceException declaration.moduleName declaration.name
+    if !namespaceOk && !exceptionOk then
+      errors := errors.push
+        s!"source declaration `{userName}` in module `{declaration.moduleName}` violates namespace contract for layer `{layer.id}`"
+    for fragment in layer.forbiddenNameFragments do
+      if userNameString.contains fragment then
+        errors := errors.push
+          s!"source declaration `{userName}` in layer `{layer.id}` contains forbidden name fragment `{fragment}`"
   return errors
 
 /-- Does an expression mention a constant owned by a module under `modulePrefix`? This is intended
@@ -351,7 +428,12 @@ private def checks : Array NamedCheck := #[
 ]
 
 run_cmd do
+  let graph ← loadArchitectureGraph
   let snapshot ← collectSnapshot
-  finishAudit snapshot (runChecks snapshot checks)
+  let allChecks := checks.push {
+    name := "architecture graph namespaces"
+    run := fun snapshot => checkArchitectureGraphNamespaces graph snapshot
+  }
+  finishAudit snapshot (runChecks snapshot allChecks)
 
 end LeanCondensedMatter.ArchitectureAudit
