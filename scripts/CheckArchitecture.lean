@@ -184,6 +184,72 @@ private def normalizedExpectationOwnerRequirements : Array OwnerRequirement := #
   },
 ]
 
+private def pictureEquivalenceOwnerRequirements : Array OwnerRequirement :=
+  let pictureModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence
+  let unitaryModule := `LeanCondensedMatter.Analysis.Operator.TraceClass.Unitary
+  #[
+    { declaration := `QuantumTheory.LinearResponse.heisenbergObservable, moduleName := pictureModule },
+    { declaration := `QuantumTheory.LinearResponse.expValue_evolveState_eq_heisenberg, moduleName := pictureModule },
+    { declaration := `QuantumTheory.LinearResponse.observableExpValue_evolveState_eq_heisenberg, moduleName := pictureModule },
+    { declaration := `QuantumTheory.LinearResponse.evolveDensityOperator, moduleName := pictureModule },
+    { declaration := `QuantumTheory.LinearResponse.evolveDensityOperator_isPositive, moduleName := pictureModule },
+    { declaration := `QuantumTheory.LinearResponse.evolveDensityOperator_trace_eq_one, moduleName := pictureModule },
+    { declaration := `QuantumTheory.LinearResponse.freePropagatorLinearIsometryEquiv, moduleName := pictureModule },
+    { declaration := `QuantumTheory.LinearResponse.evolveHilbertBasis, moduleName := pictureModule },
+    { declaration := `QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_heisenberg, moduleName := pictureModule },
+    { declaration := `QuantumTheory.LinearResponse.observableExpectation_evolveDensityOperator_eq_heisenberg, moduleName := pictureModule },
+    { declaration := `ContinuousLinearMap.unitaryConjugate, moduleName := unitaryModule },
+    { declaration := `ContinuousLinearMap.eigenspace_unitaryConjugate, moduleName := unitaryModule },
+    { declaration := `ContinuousLinearMap.finrank_eigenspace_unitaryConjugate, moduleName := unitaryModule },
+    { declaration := `ContinuousLinearMap.hasSummableRealEigenvalues_unitaryConjugate, moduleName := unitaryModule },
+    { declaration := `ContinuousLinearMap.spectralTrace_unitaryConjugate, moduleName := unitaryModule },
+    { declaration := `ContinuousLinearMap.isCompactOperator_unitaryConjugate, moduleName := unitaryModule },
+    { declaration := `ContinuousLinearMap.IsPositive.unitaryConjugate, moduleName := unitaryModule },
+    { declaration := `ContinuousLinearMap.SpectralTraceClass.unitaryConjugate, moduleName := unitaryModule },
+    { declaration := `ContinuousLinearMap.SpectralTraceClass.trace_unitaryConjugate, moduleName := unitaryModule },
+    {
+      declaration := `QuantumTheory.DensityOperator.exists_diagonal_hilbertBasis
+      moduleName := `LeanCondensedMatter.QuantumTheory.DensityOperator.Diagonal
+    },
+  ]
+
+private def equationsOfMotionOwnerRequirements : Array OwnerRequirement :=
+  let moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion
+  #[
+    { declaration := `QuantumTheory.LinearResponse.hasDerivAt_freePropagator, moduleName },
+    { declaration := `QuantumTheory.LinearResponse.hasDerivAt_freePropagator_neg, moduleName },
+    { declaration := `QuantumTheory.LinearResponse.schrodingerGenerator_commute_freePropagator, moduleName },
+    { declaration := `QuantumTheory.LinearResponse.schrodingerEquation, moduleName },
+    { declaration := `QuantumTheory.LinearResponse.heisenbergEquation, moduleName },
+    { declaration := `QuantumTheory.LinearResponse.vonNeumannEquation, moduleName },
+  ]
+
+private def conservationOwnerRequirements : Array OwnerRequirement :=
+  let conservationModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws
+  let densityExpectationModule := `LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation
+  #[
+    { declaration := `QuantumTheory.LinearResponse.commute_freePropagator_of_commute_hamiltonian, moduleName := conservationModule },
+    { declaration := `QuantumTheory.LinearResponse.heisenbergEvolution_eq_self_of_commute_hamiltonian, moduleName := conservationModule },
+    { declaration := `QuantumTheory.LinearResponse.heisenbergObservable_eq_self_of_commute_hamiltonian, moduleName := conservationModule },
+    { declaration := `QuantumTheory.LinearResponse.expValue_evolveState_eq_of_commute_hamiltonian, moduleName := conservationModule },
+    { declaration := `QuantumTheory.LinearResponse.observableExpValue_evolveState_eq_of_commute_hamiltonian, moduleName := conservationModule },
+    { declaration := `QuantumTheory.LinearResponse.expectation_evolveDensityOperator_eq_of_commute_hamiltonian, moduleName := conservationModule },
+    { declaration := `QuantumTheory.LinearResponse.observableExpectation_evolveDensityOperator_eq_of_commute_hamiltonian, moduleName := conservationModule },
+    { declaration := `QuantumTheory.LinearResponse.expValue_hamiltonian_evolveState, moduleName := conservationModule },
+    { declaration := `QuantumTheory.LinearResponse.observableExpValue_hamiltonian_evolveState, moduleName := conservationModule },
+    { declaration := `QuantumTheory.LinearResponse.expectation_hamiltonian_evolveDensityOperator, moduleName := conservationModule },
+    { declaration := `QuantumTheory.LinearResponse.observableExpectation_hamiltonian_evolveDensityOperator, moduleName := conservationModule },
+    { declaration := `QuantumTheory.LinearResponse.unitaryConjugate_freePropagator_eq_self_of_commute_hamiltonian, moduleName := conservationModule },
+    { declaration := `QuantumTheory.LinearResponse.evolveDensityOperator_eq_self_of_commute_hamiltonian, moduleName := conservationModule },
+    { declaration := `QuantumTheory.LinearResponse.isStationary_toNormalizedExpectation_of_commute_hamiltonian, moduleName := conservationModule },
+    { declaration := `QuantumTheory.DensityOperator.toNormalizedExpectation, moduleName := densityExpectationModule },
+    { declaration := `QuantumTheory.DensityOperator.toNormalizedExpectation_apply, moduleName := densityExpectationModule },
+    {
+      declaration := `QuantumTheory.DensityOperator.ext
+      moduleName := `LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
+    },
+  ]
+
 /-- Run all checks against one snapshot and retain every violation. -/
 def runChecks (snapshot : Snapshot) (checks : Array NamedCheck) : Array String := Id.run do
   let mut errors : Array String := #[]
@@ -215,6 +281,18 @@ private def checks : Array NamedCheck := #[
   {
     name := "normalized-expectation owners"
     run := fun snapshot => checkOwnerRequirements snapshot normalizedExpectationOwnerRequirements
+  },
+  {
+    name := "picture-equivalence owners"
+    run := fun snapshot => checkOwnerRequirements snapshot pictureEquivalenceOwnerRequirements
+  },
+  {
+    name := "equations-of-motion owners"
+    run := fun snapshot => checkOwnerRequirements snapshot equationsOfMotionOwnerRequirements
+  },
+  {
+    name := "conservation-law owners"
+    run := fun snapshot => checkOwnerRequirements snapshot conservationOwnerRequirements
   },
 ]
 
