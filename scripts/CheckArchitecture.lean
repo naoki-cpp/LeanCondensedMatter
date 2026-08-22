@@ -24,6 +24,11 @@ structure NamedCheck where
   name : String
   run : Snapshot → Array String
 
+/-- One canonical declaration-to-module ownership requirement. -/
+structure OwnerRequirement where
+  declaration : Name
+  moduleName : Name
+
 /-- Module-boundary-aware prefix matching for Lean names. -/
 def nameMatchesPrefix (name expectedPrefix : Name) : Bool :=
   let nameString := name.toString
@@ -80,6 +85,15 @@ def checkOwner (snapshot : Snapshot) (declName expectedModule : Name) : Array St
       else
         #[s!"`{declName}` must be owned by `{expectedModule}`, found `{declaration.moduleName}`"]
 
+/-- Check a declarative collection of canonical declaration owners. -/
+def checkOwnerRequirements
+    (snapshot : Snapshot) (requirements : Array OwnerRequirement) : Array String := Id.run do
+  let mut errors : Array String := #[]
+  for requirement in requirements do
+    for error in checkOwner snapshot requirement.declaration requirement.moduleName do
+      errors := errors.push error
+  return errors
+
 /-- Check path/namespace ownership semantically: source declarations under a declaration-name prefix
 must be owned by modules under the corresponding module prefix. -/
 def checkDeclarationPrefixOwner
@@ -123,11 +137,52 @@ def checkSnapshotHealth (snapshot : Snapshot) : Array String := Id.run do
     errors := errors.push "compiled project snapshot contains no source-declared LeanCondensedMatter declarations"
   return errors
 
-/-- A single canonical owner sentinel exercises declaration-to-module resolution in CI. Broader
-owner migration is tracked by #1584 L2. -/
-def checkSentinelOwner (snapshot : Snapshot) : Array String :=
-  checkOwner snapshot `QuantumTheory.DensityOperator
-    `LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
+private def densityOwnerRequirements : Array OwnerRequirement := #[
+  {
+    declaration := `QuantumTheory.DensityOperator
+    moduleName := `LeanCondensedMatter.QuantumTheory.DensityOperator.Basic
+  },
+]
+
+private def pureStateDynamicsOwnerRequirements : Array OwnerRequirement :=
+  let moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics
+  #[
+    { declaration := `QuantumTheory.LinearResponse.norm_freePropagator_apply, moduleName },
+    { declaration := `QuantumTheory.LinearResponse.phaseState, moduleName },
+    { declaration := `QuantumTheory.LinearResponse.evolveState, moduleName },
+    { declaration := `QuantumTheory.LinearResponse.evolveState_zero, moduleName },
+    { declaration := `QuantumTheory.LinearResponse.evolveState_add, moduleName },
+    { declaration := `QuantumTheory.LinearResponse.evolveState_neg_after, moduleName },
+    { declaration := `QuantumTheory.LinearResponse.evolveState_after_neg, moduleName },
+    { declaration := `QuantumTheory.LinearResponse.evolveState_phaseState, moduleName },
+  ]
+
+private def normalizedExpectationOwnerRequirements : Array OwnerRequirement := #[
+  {
+    declaration := `QuantumTheory.LinearResponse.NormalizedExpectation
+    moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation
+  },
+  {
+    declaration := `QuantumTheory.LinearResponse.NormalizedExpectation.pullback
+    moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation
+  },
+  {
+    declaration := `QuantumTheory.LinearResponse.NormalizedExpectation.pullback_apply
+    moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation
+  },
+  {
+    declaration := `QuantumTheory.LinearResponse.IsStationary
+    moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity
+  },
+  {
+    declaration := `QuantumTheory.LinearResponse.expectation_heisenbergEvolution_zero
+    moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.Stationarity
+  },
+  {
+    declaration := `QuantumTheory.LinearResponse.timeDependentPerturbedObservableMap_one_of_isSelfAdjoint
+    moduleName := `LeanCondensedMatter.QuantumTheory.LinearResponse.UnitaryPerturbation
+  },
+]
 
 /-- Run all checks against one snapshot and retain every violation. -/
 def runChecks (snapshot : Snapshot) (checks : Array NamedCheck) : Array String := Id.run do
@@ -149,7 +204,18 @@ def finishAudit (snapshot : Snapshot) (errors : Array String) : CommandElabM Uni
 
 private def checks : Array NamedCheck := #[
   { name := "snapshot health", run := checkSnapshotHealth },
-  { name := "canonical owner sentinel", run := checkSentinelOwner },
+  {
+    name := "density canonical owners"
+    run := fun snapshot => checkOwnerRequirements snapshot densityOwnerRequirements
+  },
+  {
+    name := "pure-state dynamics owners"
+    run := fun snapshot => checkOwnerRequirements snapshot pureStateDynamicsOwnerRequirements
+  },
+  {
+    name := "normalized-expectation owners"
+    run := fun snapshot => checkOwnerRequirements snapshot normalizedExpectationOwnerRequirements
+  },
 ]
 
 run_cmd do
