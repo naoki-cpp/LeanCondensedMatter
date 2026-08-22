@@ -1,42 +1,27 @@
-import LeanCondensedMatter.Transport.FiniteVolume
-import LeanCondensedMatter.Transport.ConductivityNormalization
-import LeanCondensedMatter.Transport.FiniteConductivityTable
-import LeanCondensedMatter.Transport.FiniteTrace
-import LeanCondensedMatter.Transport.Resolvent
-import LeanCondensedMatter.Transport.ResolventSpectral
-import LeanCondensedMatter.Transport.FiniteKuboBastin
-import LeanCondensedMatter.Transport.ResolventEnergyDerivative
-import LeanCondensedMatter.Transport.StredaOperatorKernel
-import LeanCondensedMatter.Transport.StredaTraceKernel
-import LeanCondensedMatter.Transport.OccupationInterpolation
-import LeanCondensedMatter.Transport.KuboBastinOccupation
-import LeanCondensedMatter.Transport.KuboBastinCommonEnergy
-import LeanCondensedMatter.Transport.StredaIntegration
-import LeanCondensedMatter.Transport.GeneralizedStaticStreda
-import LeanCondensedMatter.Transport.StredaTraceSpectral
-import LeanCondensedMatter.Transport.StredaTraceRepresentation
-import LeanCondensedMatter.Transport.StredaSpectralEnergyIntegral
-import LeanCondensedMatter.Transport.FiniteDisorder
-import LeanCondensedMatter.Transport.FiniteDisorderResolvent
-import LeanCondensedMatter.Transport.FiniteDisorderMoments
-import LeanCondensedMatter.Transport.FiniteDisorderBorn
-import LeanCondensedMatter.Transport.FiniteDisorderAdvancedBorn
-import LeanCondensedMatter.Transport.FiniteDisorderSCBA
+import LeanCondensedMatter.Transport.Foundations
+import LeanCondensedMatter.Transport.ResolventAPI
+import LeanCondensedMatter.Transport.KuboBastin
+import LeanCondensedMatter.Transport.Streda
+import LeanCondensedMatter.Transport.Disorder
 
 set_option linter.style.header false
 
 /-!
 # Transport
 
-Public entry point for generic transport infrastructure: finite-volume/electric-field normalization,
-finite scalar conductivity evaluation, ordinary finite-dimensional trace infrastructure, response and
-resolvent formulations, resolvent spectral action, finite pure-point, occupation-resolved,
-common-energy, and static Kubo–Bastin/Středa bridges, Středa integration/trace theory, occupation
-interpolation, exact finite disorder/resolvent identities, shared finite-disorder moments, and
-Born/SCBA approximations.
+Public entry point for generic transport infrastructure, organized into five logical layers:
 
-Concrete statistics-neutral model umbrellas such as `LeanCondensedMatter.Transport.AnomalousHall` are
-explicit downstream imports rather than part of this generic umbrella. Model-specific fermionic
-transport adapters likewise remain downstream in `SecondQuantization.Fermionic`.
-Implementation modules should import the narrow transport leaves they use rather than this umbrella.
+- `Transport.Foundations` — finite physical volume, normalization, scalar conductivity tables, and
+  finite-dimensional trace infrastructure;
+- `Transport.ResolventAPI` — retarded/advanced resolvents, spectral action, and energy derivatives;
+- `Transport.KuboBastin` — finite regularized Kubo–Bastin and occupation/common-energy bridges;
+- `Transport.Streda` — operator/trace Středa kernels, decomposition, integration, and spectral forms;
+- `Transport.Disorder` — exact finite disorder plus Born/advanced-Born/SCBA approximation layers.
+
+Concrete model umbrellas such as `LeanCondensedMatter.Transport.AnomalousHall` remain explicit
+downstream imports rather than part of this generic umbrella. Model-specific fermionic transport
+adapters likewise remain downstream in `SecondQuantization.Fermionic`.
+
+Implementation modules should continue to import the narrow leaves they use; these umbrellas expose
+the architecture and stable public grouping without forcing broad dependencies into leaf modules.
 -/
