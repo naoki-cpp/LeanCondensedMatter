@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Resolvent
+import LeanCondensedMatter.Transport.Resolvent.Basic
 import Mathlib.Analysis.Complex.RealDeriv
 
 set_option linter.style.header false
@@ -6,7 +6,7 @@ set_option linter.style.header false
 /-!
 # Real-energy derivatives of retarded and advanced resolvents
 
-`Resolvent` proves the holomorphic spectral-parameter identity
+`Resolvent.Basic` proves the holomorphic spectral-parameter identity
 
 ```text
 dG(z) / dz = -G(z)^2.
