@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.GibbsModeTruncation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.GibbsModeTruncation
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FreeGibbs
 import Mathlib.Analysis.Normed.Group.Tannery
 

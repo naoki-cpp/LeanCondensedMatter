@@ -8,6 +8,7 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.WeightedContract
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.QuantumLinkedCluster
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BlochDeDominicis.Examples.SingleMode
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.BlochDeDominicis.TwoPoint
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeGibbsSummability
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FreeGibbs
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.GibbsLadderIntertwining
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ThermalLadder
@@ -16,6 +17,8 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.Therma
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ThermalKMS
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ThermalFirstPair
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ThermalRecursion
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.GibbsModeTruncation
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.GibbsModeTruncationExpectation
 
 set_option linter.style.header false
 
@@ -24,8 +27,8 @@ set_option linter.style.header false
 
 Canonical public entry point for finite-basis and completed-Hilbert free-fermion thermal theory.
 It exposes weighted and Gibbs expectations, partition functions, Fermi--Dirac observables, entropy,
-Green functions and contractions, concrete Bloch--de Dominicis specializations, and the completed
-free-Gibbs ladder/KMS/pairing-recursion stack.
+Green functions and contractions, concrete Bloch--de Dominicis specializations, mode-level Gibbs
+summability, and completed free-Gibbs ladder/KMS/pairing plus finite-mode Gibbs convergence.
 
 Completed thermal modules depend on the representation and operator infrastructure in
 `Fermionic.CompletedSpace`; the representation umbrella does not own the thermal stack.

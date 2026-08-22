@@ -8,12 +8,9 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.DiagonalA
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ProductDomain
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeHamiltonianLadder
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.UnboundedExpectation
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbsSummability
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.FiniteCompatibility
 import LeanCondensedMatter.SecondQuantization.Common.CompletedSpace.FiniteThermalCompatibility
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ModeTruncation
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.GibbsModeTruncation
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.GibbsModeTruncationExpectation
 
 set_option linter.style.header false
 
@@ -25,11 +22,10 @@ algebraic core, bounded number/creation/annihilation operators and CAR, maximal 
 and their analytic properties, free-Hamiltonian domains and ladder relations, finite-dimensional
 compatibility, and finite-mode representation truncations.
 
-Thermal states, Gibbs intertwining, thermal ladder packaging, peel/KMS identities, and the completed
-Bloch--de Dominicis recursion are owned by `SecondQuantization.Fermionic.Thermal.Completed` and are
-exported through `SecondQuantization.Fermionic.Thermal`. Gibbs-specific summability and truncation
-modules that have not yet migrated remain here temporarily and are handled by the subsequent
-thermal-ownership phase.
+Thermal states, Gibbs summability and finite-mode Gibbs convergence, Gibbs intertwining, thermal
+ladder packaging, peel/KMS identities, and the completed Bloch--de Dominicis recursion are owned by
+`SecondQuantization.Fermionic.Thermal` (with completed-representation specializations under
+`SecondQuantization.Fermionic.Thermal.Completed`).
 
 No unbounded operator is coerced into `ContinuousLinearMap`; products involving the completed free
 Hamiltonian are stated on its explicit maximal domain.
