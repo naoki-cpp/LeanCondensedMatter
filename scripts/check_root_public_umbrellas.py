@@ -5,6 +5,8 @@ from architecture_audit_common import finish_audit, lean_imports, repository_roo
 ROOT = repository_root(__file__)
 ROOT_MODULE = ROOT / "LeanCondensedMatter.lean"
 LEAN_ROOT = ROOT / "LeanCondensedMatter"
+TRANSPORT_MODULE = LEAN_ROOT / "Transport.lean"
+CONCRETE_TRANSPORT_UMBRELLA = "LeanCondensedMatter.Transport.AnomalousHall"
 
 PUBLIC_TRACK_IMPORTS = (
     "LeanCondensedMatter.Analysis",
@@ -13,6 +15,7 @@ PUBLIC_TRACK_IMPORTS = (
     "LeanCondensedMatter.QuantumTheory",
     "LeanCondensedMatter.QuantumMechanics",
     "LeanCondensedMatter.Transport",
+    CONCRETE_TRANSPORT_UMBRELLA,
     "LeanCondensedMatter.SecondQuantization",
 )
 
@@ -38,10 +41,24 @@ def check_umbrella_files(errors: list[str]) -> None:
             errors.append(f"missing public umbrella module: LeanCondensedMatter/{relative}")
 
 
+def check_transport_umbrella_boundary(errors: list[str]) -> None:
+    if not TRANSPORT_MODULE.is_file():
+        errors.append("missing generic transport umbrella: LeanCondensedMatter/Transport.lean")
+        return
+
+    if CONCRETE_TRANSPORT_UMBRELLA in lean_imports(TRANSPORT_MODULE):
+        errors.append(
+            "LeanCondensedMatter.Transport must remain generic-only; import "
+            "LeanCondensedMatter.Transport.AnomalousHall explicitly from the project root or a "
+            "concrete consumer instead"
+        )
+
+
 def main() -> int:
     errors: list[str] = []
     check_root_imports(errors)
     check_umbrella_files(errors)
+    check_transport_umbrella_boundary(errors)
     return finish_audit(
         errors,
         failure_heading="Root public-umbrella audit failed:",
