@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 from architecture_audit_common import (
-    ImportBoundary,
-    check_import_boundaries,
     finish_audit,
     module_matches_prefix,
     numbered_imports,
@@ -24,14 +22,6 @@ FERMIONIC_THERMAL_PREFIX = "LeanCondensedMatter.SecondQuantization.Fermionic.The
 BOSONIC_THERMAL_PREFIX = "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal"
 COMPLETED_PREFIX = "LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace"
 UNBOUNDED_THERMAL_IMPORT = f"{FERMIONIC_THERMAL_PREFIX}.UnboundedExpectation"
-
-DEPENDENCY_BOUNDARIES = (
-    ImportBoundary(
-        COMPLETED,
-        (FERMIONIC_THERMAL_PREFIX,),
-        "CompletedSpace representation infrastructure must remain upstream of Fermionic.Thermal",
-    ),
-)
 
 
 def main() -> int:
@@ -55,7 +45,7 @@ def main() -> int:
             success_message="SecondQuantization thermal-boundary audit passed.",
         )
 
-    check_import_boundaries(errors, DEPENDENCY_BOUNDARIES, root=ROOT)
+    # CompletedSpace -> Thermal direction is owned by the shared scoped DAG.
 
     # The public representation umbrella exposes representation API only, never thermal theory.
     thermal_prefixes = (
@@ -70,7 +60,8 @@ def main() -> int:
                 f"{COMPLETED_UMBRELLA.relative_to(ROOT)}:{line_no}: {imported}"
             )
 
-    # The generic unbounded diagonal expectation is thermal theory, not completed-space machinery.
+    # This is intentionally stronger than the layer DAG: this particular thermal theorem must not
+    # use CompletedSpace representation machinery.
     for line_no, imported in numbered_imports(UNBOUNDED_EXPECTATION):
         if module_matches_prefix(imported, COMPLETED_PREFIX):
             errors.append(
