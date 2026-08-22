@@ -4,18 +4,17 @@ import LeanCondensedMatter.Transport.Resolvent
 set_option linter.style.header false
 
 /-!
-# Pure-point spectral action of the Středa resolvents
+# Spectral action of retarded and advanced resolvents
 
-The static Středa energy integral evaluates retarded and advanced resolvents at an arbitrary real
-integration energy. The earlier finite Kubo–Bastin spectral layer only needed a retarded resolvent
-at the transition-dependent energy `Eₘ + ℏω`.
+For a bounded self-adjoint Hamiltonian, the retarded and advanced resolvents act diagonally on every
+Hamiltonian eigenvector. This module owns that dimension-independent eigenvector theorem and derives
+the pure-point Hilbert-basis formulas used by finite Kubo–Bastin and Středa spectral expansions.
 
-This module records the general pure-point action required by the energy-integral bridge. At every
-strictly positive energy broadening, both resolvents and their squares act diagonally on the supplied
-Hamiltonian eigenbasis with their explicit scalar denominators.
+The canonical core is stated for an arbitrary eigenvector rather than for `PurePointLehmannData`.
+Pure-point basis formulas, squared-resolvent formulas, and diagonal matrix elements are corollaries.
 
-No trace, occupation integral, contact cancellation, zero-broadening limit, or conductivity claim
-is made here.
+No trace, occupation integral, contact cancellation, zero-broadening limit, or conductivity claim is
+made here.
 -/
 
 namespace QuantumTheory
@@ -28,6 +27,96 @@ noncomputable section
 variable {H ι : Type*}
 variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/-- The retarded resolvent acts on a Hamiltonian eigenvector by the corresponding scalar resolvent
+factor. -/
+theorem retardedResolvent_apply_eigenvector
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    {v : H} {eigenvalue : ℝ}
+    (hv : hamiltonian v = (eigenvalue : ℂ) • v)
+    (energy broadening : ℝ) (hbroadening : 0 < broadening) :
+    retardedResolvent hamiltonian energy broadening v =
+      (retardedSpectralParameter energy broadening - (eigenvalue : ℂ))⁻¹ • v := by
+  let z := retardedSpectralParameter energy broadening
+  let S : H →L[ℂ] H := algebraMap ℂ (H →L[ℂ] H) z - hamiltonian
+  let G : H →L[ℂ] H := retardedResolvent hamiltonian energy broadening
+  have hSG : S * G = 1 := by
+    simpa [S, G, z] using
+      retardedShift_mul_resolvent hamiltonian hself energy broadening hbroadening
+  have hGS : G * S = 1 := by
+    simpa [S, G, z] using
+      resolvent_mul_retardedShift hamiltonian hself energy broadening hbroadening
+  have hshift : z - (eigenvalue : ℂ) ≠ 0 := by
+    intro hzero
+    have him := congrArg Complex.im hzero
+    simp [z, retardedSpectralParameter] at him
+    linarith
+  have hS_v : S v = (z - (eigenvalue : ℂ)) • v := by
+    change z • v - hamiltonian v = _
+    rw [hv]
+    exact (sub_smul z (eigenvalue : ℂ) v).symm
+  have hS_injective : Function.Injective S := by
+    intro x y hxy
+    calc
+      x = (G * S) x := by rw [hGS]; simp
+      _ = G (S x) := rfl
+      _ = G (S y) := congrArg G hxy
+      _ = (G * S) y := rfl
+      _ = y := by rw [hGS]; simp
+  apply hS_injective
+  calc
+    S (G v) = v := by
+      change (S * G) v = v
+      rw [hSG]
+      simp
+    _ = S ((z - (eigenvalue : ℂ))⁻¹ • v) := by
+      rw [map_smul, hS_v, ← mul_smul]
+      simp [hshift]
+
+/-- The advanced resolvent acts on a Hamiltonian eigenvector by the corresponding scalar resolvent
+factor. -/
+theorem advancedResolvent_apply_eigenvector
+    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
+    {v : H} {eigenvalue : ℝ}
+    (hv : hamiltonian v = (eigenvalue : ℂ) • v)
+    (energy broadening : ℝ) (hbroadening : 0 < broadening) :
+    advancedResolvent hamiltonian energy broadening v =
+      (advancedSpectralParameter energy broadening - (eigenvalue : ℂ))⁻¹ • v := by
+  let z := advancedSpectralParameter energy broadening
+  let S : H →L[ℂ] H := algebraMap ℂ (H →L[ℂ] H) z - hamiltonian
+  let G : H →L[ℂ] H := advancedResolvent hamiltonian energy broadening
+  have hSG : S * G = 1 := by
+    simpa [S, G, z] using
+      advancedShift_mul_resolvent hamiltonian hself energy broadening hbroadening
+  have hGS : G * S = 1 := by
+    simpa [S, G, z] using
+      resolvent_mul_advancedShift hamiltonian hself energy broadening hbroadening
+  have hshift : z - (eigenvalue : ℂ) ≠ 0 := by
+    intro hzero
+    have him := congrArg Complex.im hzero
+    simp [z, advancedSpectralParameter] at him
+    linarith
+  have hS_v : S v = (z - (eigenvalue : ℂ)) • v := by
+    change z • v - hamiltonian v = _
+    rw [hv]
+    exact (sub_smul z (eigenvalue : ℂ) v).symm
+  have hS_injective : Function.Injective S := by
+    intro x y hxy
+    calc
+      x = (G * S) x := by rw [hGS]; simp
+      _ = G (S x) := rfl
+      _ = G (S y) := congrArg G hxy
+      _ = (G * S) y := rfl
+      _ = y := by rw [hGS]; simp
+  apply hS_injective
+  calc
+    S (G v) = v := by
+      change (S * G) v = v
+      rw [hSG]
+      simp
+    _ = S ((z - (eigenvalue : ℂ))⁻¹ • v) := by
+      rw [map_smul, hS_v, ← mul_smul]
+      simp [hshift]
+
 variable
   (system : BoundedFreeSystem H)
   (data : PurePointLehmannData system ι)
@@ -39,42 +128,9 @@ theorem retardedResolvent_apply_purePointBasis_at_energy
     retardedResolvent system.hamiltonian.1 energy broadening (data.basis n) =
       (retardedSpectralParameter energy broadening - (data.energy n : ℂ))⁻¹ •
         data.basis n := by
-  let z := retardedSpectralParameter energy broadening
-  let S : H →L[ℂ] H := algebraMap ℂ (H →L[ℂ] H) z - system.hamiltonian.1
-  let G : H →L[ℂ] H := retardedResolvent system.hamiltonian.1 energy broadening
-  have hSG : S * G = 1 := by
-    simpa [S, G, z] using
-      retardedShift_mul_resolvent system.hamiltonian.1 system.hamiltonian.2
-        energy broadening hbroadening
-  have hGS : G * S = 1 := by
-    simpa [S, G, z] using
-      resolvent_mul_retardedShift system.hamiltonian.1 system.hamiltonian.2
-        energy broadening hbroadening
-  have hshift : z - (data.energy n : ℂ) ≠ 0 := by
-    intro hzero
-    have him := congrArg Complex.im hzero
-    simp [z, retardedSpectralParameter] at him
-    linarith
-  have hS_basis : S (data.basis n) =
-      (z - (data.energy n : ℂ)) • data.basis n := by
-    simp [S, data.hamiltonian_apply_basis n, sub_smul]
-  have hS_injective : Function.Injective S := by
-    intro x y hxy
-    calc
-      x = (G * S) x := by rw [hGS]; simp
-      _ = G (S x) := rfl
-      _ = G (S y) := congrArg G hxy
-      _ = (G * S) y := rfl
-      _ = y := by rw [hGS]; simp
-  apply hS_injective
-  calc
-    S (G (data.basis n)) = data.basis n := by
-      change (S * G) (data.basis n) = data.basis n
-      rw [hSG]
-      simp
-    _ = S ((z - (data.energy n : ℂ))⁻¹ • data.basis n) := by
-      rw [map_smul, hS_basis, ← mul_smul]
-      simp [hshift]
+  exact retardedResolvent_apply_eigenvector
+    system.hamiltonian.1 system.hamiltonian.2
+    (data.hamiltonian_apply_basis n) energy broadening hbroadening
 
 /-- The advanced resolvent acts diagonally on a pure-point energy basis at an arbitrary real
 energy. -/
@@ -83,42 +139,9 @@ theorem advancedResolvent_apply_purePointBasis_at_energy
     advancedResolvent system.hamiltonian.1 energy broadening (data.basis n) =
       (advancedSpectralParameter energy broadening - (data.energy n : ℂ))⁻¹ •
         data.basis n := by
-  let z := advancedSpectralParameter energy broadening
-  let S : H →L[ℂ] H := algebraMap ℂ (H →L[ℂ] H) z - system.hamiltonian.1
-  let G : H →L[ℂ] H := advancedResolvent system.hamiltonian.1 energy broadening
-  have hSG : S * G = 1 := by
-    simpa [S, G, z] using
-      advancedShift_mul_resolvent system.hamiltonian.1 system.hamiltonian.2
-        energy broadening hbroadening
-  have hGS : G * S = 1 := by
-    simpa [S, G, z] using
-      resolvent_mul_advancedShift system.hamiltonian.1 system.hamiltonian.2
-        energy broadening hbroadening
-  have hshift : z - (data.energy n : ℂ) ≠ 0 := by
-    intro hzero
-    have him := congrArg Complex.im hzero
-    simp [z, advancedSpectralParameter] at him
-    linarith
-  have hS_basis : S (data.basis n) =
-      (z - (data.energy n : ℂ)) • data.basis n := by
-    simp [S, data.hamiltonian_apply_basis n, sub_smul]
-  have hS_injective : Function.Injective S := by
-    intro x y hxy
-    calc
-      x = (G * S) x := by rw [hGS]; simp
-      _ = G (S x) := rfl
-      _ = G (S y) := congrArg G hxy
-      _ = (G * S) y := rfl
-      _ = y := by rw [hGS]; simp
-  apply hS_injective
-  calc
-    S (G (data.basis n)) = data.basis n := by
-      change (S * G) (data.basis n) = data.basis n
-      rw [hSG]
-      simp
-    _ = S ((z - (data.energy n : ℂ))⁻¹ • data.basis n) := by
-      rw [map_smul, hS_basis, ← mul_smul]
-      simp [hshift]
+  exact advancedResolvent_apply_eigenvector
+    system.hamiltonian.1 system.hamiltonian.2
+    (data.hamiltonian_apply_basis n) energy broadening hbroadening
 
 /-- The square of the retarded resolvent has the squared scalar denominator on the energy basis. -/
 theorem retardedResolvent_sq_apply_purePointBasis_at_energy

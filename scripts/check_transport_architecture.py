@@ -25,6 +25,7 @@ NEUTRAL_OWNERS = (
     TRANSPORT / "ConductivityNormalization.lean",
     TRANSPORT / "FiniteConductivityTable.lean",
     TRANSPORT / "FiniteTrace.lean",
+    TRANSPORT / "ResolventSpectral.lean",
     TRANSPORT / "FiniteKuboBastin.lean",
     TRANSPORT / "StredaOccupation.lean",
     TRANSPORT / "StredaCommonKernel.lean",
@@ -124,6 +125,18 @@ def main() -> int:
         errors.append(
             f"{relative(finite_disorder)} must consume ordinary trace infrastructure from "
             "Transport.FiniteTrace rather than the downstream Středa trace layer"
+        )
+
+    resolvent_spectral_import = "LeanCondensedMatter.Transport.ResolventSpectral"
+    finite_kubo_bastin = TRANSPORT / "FiniteKuboBastin.lean"
+    streda_trace_spectral = TRANSPORT / "StredaTraceSpectral.lean"
+    require_owner_import(errors, finite_kubo_bastin, resolvent_spectral_import)
+    require_owner_import(errors, streda_trace_spectral, resolvent_spectral_import)
+    retired_streda_resolvent_spectral = TRANSPORT / "StredaResolventSpectral.lean"
+    if retired_streda_resolvent_spectral.exists():
+        errors.append(
+            f"{relative(retired_streda_resolvent_spectral)} is retired; generic resolvent spectral "
+            "action belongs to Transport.ResolventSpectral"
         )
 
     forbid_declarations(

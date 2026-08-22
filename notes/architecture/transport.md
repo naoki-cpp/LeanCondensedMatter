@@ -41,6 +41,10 @@ subtrees. The canonical generic owners include:
 
 - `FiniteTrace` for the ordinary finite-dimensional operator trace, cyclicity, and differentiation
   through that trace;
+- `Resolvent` for dimension-independent retarded/advanced Green operators and their algebraic
+  identities;
+- `ResolventSpectral` for the action of those resolvents on arbitrary Hamiltonian eigenvectors and
+  the derived pure-point basis formulas;
 - `FiniteKuboBastin` for finite measured/source Kubo–Bastin response;
 - `StredaOccupation`, `StredaCommonKernel`, and `GeneralizedStaticStreda` for the regularized Středa
   chain;
@@ -50,6 +54,11 @@ subtrees. The canonical generic owners include:
 - `FiniteDisorderBorn` and `FiniteDisorderAdvancedBorn` for first-Born approximation boundaries and
   explicit closure errors;
 - `FiniteDisorderSCBA` for supplied self-consistent Born data and Ward-consistency identities.
+
+`FiniteKuboBastin` consumes `ResolventSpectral` for the transition-energy specialization of the
+retarded eigenvector formula rather than reproving inverse-operator algebra. `StredaTraceSpectral`
+consumes the same owner for arbitrary-energy retarded/advanced pure-point factors. The old
+Středa-named resolvent-spectral owner is retired because the underlying theorem is not Středa-specific.
 
 `StredaTraceKernel` consumes `FiniteTrace` to turn Středa operator kernels into scalar trace kernels.
 `FiniteDisorder` also consumes `FiniteTrace` directly when proving that exact finite averaging commutes
