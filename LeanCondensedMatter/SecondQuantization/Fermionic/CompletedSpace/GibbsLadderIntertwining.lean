@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Core
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.FreeGibbs
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.FreeGibbs
 
 set_option linter.style.header false
 
