@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.LinearResponse
+import LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics
 import LeanCondensedMatter.Transport.FiniteTrace
 
 set_option linter.style.header false
