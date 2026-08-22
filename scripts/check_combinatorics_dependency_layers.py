@@ -6,14 +6,11 @@ from architecture_audit_common import (
     finish_audit,
     lean_imports,
     module_matches_prefix,
-    numbered_imports,
     repository_root,
 )
 
 ROOT = repository_root(__file__)
 LEAN_ROOT = ROOT / "LeanCondensedMatter"
-COMBINATORICS_ROOT = LEAN_ROOT / "Combinatorics"
-COMBINATORICS_UMBRELLA = LEAN_ROOT / "Combinatorics.lean"
 
 LOW_LEVEL_ROOTS = (
     "LeanCondensedMatter.Combinatorics.Cumulant.Moment",
@@ -34,8 +31,6 @@ FORBIDDEN_EXTERNAL_PREFIXES = (
     "Mathlib.LinearAlgebra.Matrix.Determinant",
     "Mathlib.LinearAlgebra.Matrix.Permanent",
 )
-
-PERMUTATION_PREFIX = "LeanCondensedMatter.Permutation"
 
 
 def module_path(module: str) -> Path | None:
@@ -58,6 +53,7 @@ def is_forbidden(module: str) -> bool:
 
 
 def check_root(root: str) -> list[str]:
+    """Keep the transitive low-level reachability guard that is stronger than a direct-import DAG."""
     findings: list[str] = []
     stack: list[tuple[str, tuple[str, ...]]] = [(root, (root,))]
     visited: set[str] = set()
@@ -79,24 +75,12 @@ def check_root(root: str) -> list[str]:
     return findings
 
 
-def check_combinatorics_direct_imports() -> list[str]:
-    findings: list[str] = []
-    paths = [COMBINATORICS_UMBRELLA, *sorted(COMBINATORICS_ROOT.rglob("*.lean"))]
-
-    for path in paths:
-        for line_number, imported in numbered_imports(path):
-            if module_matches_prefix(imported, PERMUTATION_PREFIX):
-                findings.append(f"{path.relative_to(ROOT)}:{line_number} -> {imported}")
-
-    return findings
-
-
 def main() -> int:
+    # Direct Combinatorics -> Permutation imports are owned by the shared scoped DAG. This focused
+    # checker retains only the transitive low-level closure restriction.
     findings: list[str] = []
     for root in LOW_LEVEL_ROOTS:
         findings.extend(check_root(root))
-
-    findings.extend(check_combinatorics_direct_imports())
     findings = sorted(set(findings))
 
     return finish_audit(
