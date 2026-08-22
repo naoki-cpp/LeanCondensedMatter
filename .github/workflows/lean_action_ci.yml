@@ -29,6 +29,8 @@ jobs:
           build: true
           build-args: "--wfail"
           lint: true
+      - name: Check compiled architecture
+        run: lake env lean scripts/CheckArchitecture.lean
       - name: Check compiled declarations for sorryAx
         run: lake env lean scripts/CheckNoSorry.lean
 
