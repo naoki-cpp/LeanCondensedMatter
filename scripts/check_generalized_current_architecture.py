@@ -66,8 +66,9 @@ def main() -> int:
             success_message="Generalized-current architecture audit passed.",
         )
 
-    # Declaration ownership, naming neutrality, and typed dGamma/symmetrization contracts are
-    # checked from the compiled Lean environment. Python retains only source topology here.
+    # Keep only durable source topology here. The old helper-name/body snapshots were implementation
+    # history rather than stable architecture contracts; semantic invariants belong in typed Lean
+    # declarations when they need explicit CI protection.
     require_owner_import(errors, BALANCE_LAW, "LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation")
     require_owner_import(errors, SYMMETRIC_LOCALIZATION, "LeanCondensedMatter.Analysis.Calculus.BalanceLaw")
     require_owner_import(errors, SYMMETRIC_LOCALIZATION, "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct")
