@@ -1,5 +1,6 @@
 import Lean
 import LeanCondensedMatter
+import LeanCondensedMatter.QuantumTheory.POVM.Born
 import Lean.Elab.Command
 import Lean.Util.FoldConsts
 
@@ -250,6 +251,51 @@ private def conservationOwnerRequirements : Array OwnerRequirement :=
     },
   ]
 
+private def diagonalOwnerRequirements : Array OwnerRequirement :=
+  let formulaModule := `LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula
+  let bridgeModule := `LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalExpectation
+  #[
+    { declaration := `QuantumTheory.DensityOperator.sqrtOp, moduleName := bridgeModule },
+    { declaration := `QuantumTheory.DensityOperator.sqrtOp_isHilbertSchmidt, moduleName := bridgeModule },
+    { declaration := `QuantumTheory.DensityOperator.expectation_eq_innerHS, moduleName := bridgeModule },
+    { declaration := `QuantumTheory.DensityOperator.hasSum_expectation_diagonal, moduleName := formulaModule },
+    { declaration := `QuantumTheory.DensityOperator.summable_expectation_diagonal, moduleName := formulaModule },
+    { declaration := `QuantumTheory.DensityOperator.expectation_eq_tsum_diagonal, moduleName := formulaModule },
+    { declaration := `QuantumTheory.DensityOperator.observableExpectation_eq_tsum_diagonal, moduleName := formulaModule },
+    { declaration := `QuantumTheory.DensityOperator.hasSum_diagonal_weights, moduleName := formulaModule },
+    { declaration := `QuantumTheory.DensityOperator.summable_diagonal_weights, moduleName := formulaModule },
+    { declaration := `QuantumTheory.DensityOperator.diagonal_weight_le_one, moduleName := formulaModule },
+    { declaration := `QuantumTheory.normalizedDiagonalWeight, moduleName := formulaModule },
+    { declaration := `QuantumTheory.summable_norm_normalizedDiagonalWeight, moduleName := formulaModule },
+    { declaration := `QuantumTheory.diagonalDensityOperator_apply_basis, moduleName := formulaModule },
+    { declaration := `QuantumTheory.normalizedDiagonalWeight_nonneg, moduleName := formulaModule },
+    { declaration := `QuantumTheory.hasSum_normalizedDiagonalWeight, moduleName := formulaModule },
+    { declaration := `QuantumTheory.normalizedDiagonalWeight_le_one, moduleName := formulaModule },
+  ]
+
+private def quantumCoreOwnerRequirements : Array OwnerRequirement :=
+  let postulatesModule := `LeanCondensedMatter.QuantumTheory.Postulates
+  let observableExpectationModule :=
+    `LeanCondensedMatter.QuantumTheory.DensityOperator.ObservableExpectation
+  let bornModule := `LeanCondensedMatter.QuantumTheory.POVM.Born
+  #[
+    {
+      declaration := `QuantumTheory.POVM
+      moduleName := `LeanCondensedMatter.QuantumTheory.POVM.Basic
+    },
+    { declaration := `QuantumTheory.observableExpValue, moduleName := postulatesModule },
+    {
+      declaration := `QuantumTheory.DensityOperator.observableExpectation
+      moduleName := observableExpectationModule
+    },
+    { declaration := `QuantumTheory.probNNReal, moduleName := bornModule },
+    { declaration := `QuantumTheory.bornPMF, moduleName := bornModule },
+    {
+      declaration := `QuantumTheory.energyExpValue_eq_tsum_common_eigenbasis
+      moduleName := `LeanCondensedMatter.QuantumTheory.Gibbs.DiagonalEnergy
+    },
+  ]
+
 /-- Run all checks against one snapshot and retain every violation. -/
 def runChecks (snapshot : Snapshot) (checks : Array NamedCheck) : Array String := Id.run do
   let mut errors : Array String := #[]
@@ -293,6 +339,14 @@ private def checks : Array NamedCheck := #[
   {
     name := "conservation-law owners"
     run := fun snapshot => checkOwnerRequirements snapshot conservationOwnerRequirements
+  },
+  {
+    name := "diagonal-state owners"
+    run := fun snapshot => checkOwnerRequirements snapshot diagonalOwnerRequirements
+  },
+  {
+    name := "quantum core owners"
+    run := fun snapshot => checkOwnerRequirements snapshot quantumCoreOwnerRequirements
   },
 ]
 
