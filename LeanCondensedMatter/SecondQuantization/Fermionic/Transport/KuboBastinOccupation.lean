@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinTrace
-import LeanCondensedMatter.Transport.StredaOccupation
+import LeanCondensedMatter.Transport.KuboBastinOccupation
 
 set_option linter.style.header false
 
@@ -8,7 +8,7 @@ set_option linter.style.header false
 
 The statistics-independent occupation interpolation and arbitrary measured/source Kubo–Bastin
 response now live under `QuantumTheory.Transport`, in `OccupationInterpolation` and
-`StredaOccupation`.  This module retains only the finite-lattice directional charge-current
+`KuboBastinOccupation`.  This module retains only the finite-lattice directional charge-current
 specialization with its Peierls contact and finite-volume normalization.
 
 For each directional transition the discrete probability difference is replaced by the oriented
