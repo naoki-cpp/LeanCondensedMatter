@@ -41,8 +41,8 @@ subtrees. The canonical generic owners include:
 
 - `FiniteTrace` for the ordinary finite-dimensional operator trace, cyclicity, and differentiation
   through that trace;
-- `Resolvent` for dimension-independent retarded/advanced Green operators and their algebraic
-  identities;
+- `Resolvent` for the retarded/advanced spectral parameters, dimension-independent Green operators,
+  and their algebraic identities;
 - `ResolventSpectral` for the action of those resolvents on arbitrary Hamiltonian eigenvectors and
   the derived pure-point basis formulas;
 - `FiniteKuboBastin` for finite measured/source Kubo–Bastin response;
@@ -54,6 +54,12 @@ subtrees. The canonical generic owners include:
 - `FiniteDisorderBorn` and `FiniteDisorderAdvancedBorn` for first-Born approximation boundaries and
   explicit closure errors;
 - `FiniteDisorderSCBA` for supplied self-consistent Born data and Ward-consistency identities.
+
+The old `Transport.System` and `Transport.LinearResponse` modules are retired. Transport code should
+use the canonical `QuantumTheory.LinearResponse.BoundedFreeSystem` for free dynamics, pass measured
+and source vertices explicitly, and use the generic resolvent API directly rather than rebuilding a
+large transport-system record around otherwise independent data. `PositiveVolume` remains a small,
+independent physical-normalization datum.
 
 `FiniteKuboBastin` consumes `ResolventSpectral` for the transition-energy specialization of the
 retarded eigenvector formula rather than reproving inverse-operator algebra. `StredaTraceSpectral`
