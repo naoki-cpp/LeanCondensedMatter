@@ -6,6 +6,7 @@ from pathlib import Path
 from architecture_audit_common import (
     finish_audit,
     lean_imports,
+    lean_source,
     require_files,
     require_import,
     repository_root,
@@ -17,6 +18,9 @@ TRANSPORT = LEAN / "Transport"
 AHE = TRANSPORT / "AnomalousHall"
 FERMIONIC_TRANSPORT = LEAN / "SecondQuantization" / "Fermionic" / "Transport"
 
+# Deliberate source-syntax contract: compatibility forwarding files may be absent from the compiled
+# public environment, and their defining property is precisely that they contain imports but no Lean
+# declarations. This is not used for semantic owner/type inspection.
 DECLARATION_RE = re.compile(
     r"^\s*(?:noncomputable\s+)?(?:def|abbrev|structure|inductive|class|theorem|lemma)\s+",
     re.MULTILINE,
@@ -80,7 +84,7 @@ GENERIC_COMPAT = {
 }
 
 # Canonical implementation modules and migrated downstream specializations must no longer consume
-# the compatibility layer.  Keep this list incremental so each migration slice can land and be
+# the compatibility layer. Keep this list incremental so each migration slice can land and be
 # guarded independently before the forwarding modules are finally removed.
 CANONICAL_IMPORT_MIGRATIONS = {
     TRANSPORT / "Core" / "ConductivityNormalization.lean": (
@@ -169,7 +173,7 @@ AHE_COMPAT = AHE_MODEL | AHE_INTRINSIC | AHE_STREDA | AHE_BASTIN
 def no_declarations(errors: list[str], path: Path) -> None:
     if not path.is_file():
         return
-    if DECLARATION_RE.search(path.read_text(encoding="utf-8")):
+    if DECLARATION_RE.search(lean_source(path)):
         errors.append(f"{path.relative_to(ROOT)} is compatibility-only and must not own declarations")
 
 
