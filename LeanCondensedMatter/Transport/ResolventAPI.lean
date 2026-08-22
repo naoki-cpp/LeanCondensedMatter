@@ -1,17 +1,14 @@
-import LeanCondensedMatter.Transport.Resolvent
-import LeanCondensedMatter.Transport.ResolventSpectral
-import LeanCondensedMatter.Transport.ResolventEnergyDerivative
-import LeanCondensedMatter.Transport.LorentzianSpectralKernel
+import LeanCondensedMatter.Transport.Resolvent.Basic
+import LeanCondensedMatter.Transport.Resolvent.Spectral
+import LeanCondensedMatter.Transport.Resolvent.EnergyDerivative
+import LeanCondensedMatter.Transport.Analysis.LorentzianKernel
 
 set_option linter.style.header false
 
 /-!
 # Transport resolvent API
 
-Public umbrella for the generic retarded/advanced resolvent layer: dimension-independent resolvent
-identities, finite pure-point spectral action, energy-derivative identities, and the scalar
-Lorentzian spectral kernel used by retarded-minus-advanced pole extraction.
-
-No conductivity, occupation integral, Středa decomposition, disorder approximation, or concrete
-model specialization is introduced here.
+Transitional public umbrella for the physical `Transport.Resolvent/` hierarchy and the reusable
+Lorentzian pole kernel. The final public entry is being migrated to `Transport.Resolvent` once all
+internal imports no longer use the historical basic-resolvent path.
 -/
