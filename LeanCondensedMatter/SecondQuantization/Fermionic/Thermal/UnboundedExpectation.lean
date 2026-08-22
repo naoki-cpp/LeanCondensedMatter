@@ -1,4 +1,3 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.Basic
 import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.FreeBoltzmannCore
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePointExpectation
 
@@ -8,10 +7,10 @@ set_option linter.style.header false
 # Integrable diagonal Gibbs expectations
 
 The canonical `DensityOperator.expectation` API accepts bounded continuous linear observables.
-Diagonal observables such as total particle number can be unbounded on completed fermionic Fock
-space, so their thermal expectations are represented separately as absolutely summable occupation
-series.  The Gibbs probabilities themselves are the generic pure-point probabilities specialized to
-`fermionEnergy ε`; this file only keeps the representation-specific arbitrary-diagonal interface.
+Diagonal observables such as total particle number can be unbounded, so their thermal expectations
+are represented separately as absolutely summable occupation series. The Gibbs probabilities are
+the generic pure-point probabilities specialized to `fermionEnergy ε`; this file keeps only the
+fermionic arbitrary-diagonal interface.
 
 The free Hamiltonian energy expectation is already owned generically by
 `QuantumTheory.Gibbs.PurePointExpectation` and is not duplicated here.
@@ -32,7 +31,7 @@ def CompletedFreeGibbsIntegrableDiagonal (ε : Mode → ℝ) (β : ℝ)
   Summable fun n : Occupation Mode =>
     ‖purePointGibbsProbability (fermionEnergy ε) β n * a n‖
 
-/-- The occupation-series expectation of a real diagonal observable.  This definition is intended
+/-- The occupation-series expectation of a real diagonal observable. This definition is intended
 to be used together with `CompletedFreeGibbsIntegrableDiagonal`, which ensures that the `tsum` is
 not the nonsummable junk value. -/
 noncomputable def completedFreeGibbsDiagonalExpectation
