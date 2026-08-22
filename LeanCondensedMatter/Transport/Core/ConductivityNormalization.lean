@@ -83,7 +83,7 @@ theorem finiteVolumeConductivityDenominator_ne_zero
 intensive electric-field conductivity. -/
 noncomputable def finiteVolumeConductivityFromVectorPotential
     (volume : PositiveVolume) (ω η : ℝ) (response : ℂ) : ℂ :=
-  response * finiteVolumeConductivityNormalization volume ω eta
+  response * finiteVolumeConductivityNormalization volume ω η
 
 end Transport
 end QuantumTheory
