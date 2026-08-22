@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.LinearResponse
-import LeanCondensedMatter.Transport.StredaTraceKernel
+import LeanCondensedMatter.Transport.FiniteTrace
 
 set_option linter.style.header false
 

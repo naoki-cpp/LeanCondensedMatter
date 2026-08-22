@@ -24,6 +24,7 @@ SECOND_QUANTIZATION_PREFIX = "LeanCondensedMatter.SecondQuantization"
 NEUTRAL_OWNERS = (
     TRANSPORT / "ConductivityNormalization.lean",
     TRANSPORT / "FiniteConductivityTable.lean",
+    TRANSPORT / "FiniteTrace.lean",
     TRANSPORT / "FiniteKuboBastin.lean",
     TRANSPORT / "StredaOccupation.lean",
     TRANSPORT / "StredaCommonKernel.lean",
@@ -99,6 +100,31 @@ def main() -> int:
 
     for path, imported in FERMIONIC_SPECIALIZATIONS.items():
         require_owner_import(errors, path, imported)
+
+    finite_trace_import = "LeanCondensedMatter.Transport.FiniteTrace"
+    streda_trace_kernel = TRANSPORT / "StredaTraceKernel.lean"
+    require_owner_import(errors, streda_trace_kernel, finite_trace_import)
+    forbid_declarations(
+        errors,
+        streda_trace_kernel,
+        (
+            "def finiteDimensionalOperatorTrace",
+            "theorem finiteDimensionalOperatorTrace_apply",
+            "theorem finiteDimensionalOperatorTrace_mul_comm",
+            "theorem hasDerivAt_finiteDimensionalOperatorTrace_comp",
+        ),
+        "ordinary finite-dimensional trace",
+    )
+
+    finite_disorder = TRANSPORT / "FiniteDisorder.lean"
+    require_owner_import(errors, finite_disorder, finite_trace_import)
+    if finite_disorder.exists() and "LeanCondensedMatter.Transport.StredaTraceKernel" in lean_imports(
+        finite_disorder
+    ):
+        errors.append(
+            f"{relative(finite_disorder)} must consume ordinary trace infrastructure from "
+            "Transport.FiniteTrace rather than the downstream Středa trace layer"
+        )
 
     forbid_declarations(
         errors,

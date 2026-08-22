@@ -39,6 +39,8 @@ neutral concrete consumers. They must not import `LeanCondensedMatter.SecondQuan
 Reusable generic transport declarations belong in neutral owner modules outside concrete model
 subtrees. The canonical generic owners include:
 
+- `FiniteTrace` for the ordinary finite-dimensional operator trace, cyclicity, and differentiation
+  through that trace;
 - `FiniteKuboBastin` for finite measured/source Kubo–Bastin response;
 - `StredaOccupation`, `StredaCommonKernel`, and `GeneralizedStaticStreda` for the regularized Středa
   chain;
@@ -48,6 +50,11 @@ subtrees. The canonical generic owners include:
 - `FiniteDisorderBorn` and `FiniteDisorderAdvancedBorn` for first-Born approximation boundaries and
   explicit closure errors;
 - `FiniteDisorderSCBA` for supplied self-consistent Born data and Ward-consistency identities.
+
+`StredaTraceKernel` consumes `FiniteTrace` to turn Středa operator kernels into scalar trace kernels.
+`FiniteDisorder` also consumes `FiniteTrace` directly when proving that exact finite averaging commutes
+with the ordinary trace; exact disorder must not depend on the Středa trace layer solely for this
+generic operation.
 
 Finite dimensionality belongs only at theorem boundaries that actually require an ordinary trace or
 a finite spectral sum.
