@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic
 import LeanCondensedMatter.QuantumMechanics.SingleParticle.ChargeLikeCurrent
 
 set_option linter.style.header false
