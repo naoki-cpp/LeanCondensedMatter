@@ -2,13 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from architecture_audit_common import (
-    finish_audit,
-    lean_imports,
-    relative as relative_to,
-    repository_root,
-    strip_lean_comments,
-)
+from architecture_audit_common import finish_audit, lean_imports, relative as relative_to, repository_root
 
 ROOT = repository_root(__file__)
 QUANTUM = ROOT / "LeanCondensedMatter" / "QuantumTheory"
@@ -32,20 +26,12 @@ def main() -> int:
             success_message="QuantumTheory equations-of-motion audit passed.",
         )
 
-    code = strip_lean_comments(EQUATIONS.read_text(encoding="utf-8"))
-
+    # Dimension independence is checked from compiled declaration types.
     if EQUATIONS_MODULE not in lean_imports(ROOT_UMBRELLA):
         errors.append(
             "QuantumTheory public umbrella must expose bounded equations of motion: "
             f"{relative(ROOT_UMBRELLA)}"
         )
-
-    for finite_assumption in ("[FiniteDimensional", "[Fintype"):
-        if finite_assumption in code:
-            errors.append(
-                "bounded equations of motion must remain dimension-independent; found "
-                f"`{finite_assumption}` in {relative(EQUATIONS)}"
-            )
 
     return finish_audit(
         errors,
