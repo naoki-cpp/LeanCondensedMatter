@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.StredaResolventSpectral
+import LeanCondensedMatter.Transport.ResolventSpectral
 import LeanCondensedMatter.Transport.StredaTraceKernel
 
 set_option linter.style.header false
