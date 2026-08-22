@@ -20,20 +20,10 @@ variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-! ## Flattening `nestedVertexOperatorComp` into a `4n`-atom `Common.prodComp` -/
 
-omit [LinearOrder Mode] [Fintype Mode] in
-/-- **`imaginaryTimeEvolve` distributes over composition** — directly
-`Common.heisenbergEvolve_comp` at `energy := fermionEnergy ε`. Needed to unfold
-`quarticVertexOperator`'s evolution atom-by-atom. -/
-theorem imaginaryTimeEvolve_comp (ε : Mode → ℝ) (τ : ℝ)
-    (A B : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) :
-    imaginaryTimeEvolve ε τ (A.comp B) =
-      (imaginaryTimeEvolve ε τ A).comp (imaginaryTimeEvolve ε τ B) :=
-  Common.heisenbergEvolve_comp (fermionEnergy ε) τ A B
-
 omit [Fintype Mode] in
 /-- **A single vertex's evolved operator, flattened into a `Common.prodComp` of its four
 individually-evolved atomic legs**: unfolds `quarticVertexOperator`'s own definition
-(`c₁† c₂† a₂ a₁`) via `imaginaryTimeEvolve_comp`, three times, matching
+(`c₁† c₂† a₂ a₁`) via `Common.heisenbergEvolve_comp`, three times, matching
 `quarticLocalLegOperator`'s `0 ↦ create₁, 1 ↦ create₂, 2 ↦ annihilate₂, 3 ↦ annihilate₁`
 convention exactly. -/
 theorem interactionPicture_quarticVertexOperator_eq_prodComp (ε : Mode → ℝ)
@@ -41,10 +31,10 @@ theorem interactionPicture_quarticVertexOperator_eq_prodComp (ε : Mode → ℝ)
     interactionPicture ε (quarticVertexOperator q) τ =
       Common.prodComp
         (List.ofFn (fun l : Fin 4 => imaginaryTimeEvolve ε τ (quarticLocalLegOperator q l))) := by
-  change imaginaryTimeEvolve ε τ (quarticVertexOperator q) = _
-  rw [quarticVertexOperator, imaginaryTimeEvolve_comp, imaginaryTimeEvolve_comp,
-    imaginaryTimeEvolve_comp]
-  simp [Common.prodComp, quarticLocalLegOperator, List.ofFn_succ]
+  change Common.heisenbergEvolve (fermionEnergy ε) τ (quarticVertexOperator q) = _
+  rw [quarticVertexOperator, Common.heisenbergEvolve_comp, Common.heisenbergEvolve_comp,
+    Common.heisenbergEvolve_comp]
+  simp [Common.prodComp, quarticLocalLegOperator, List.ofFn_succ, imaginaryTimeEvolve]
 
 omit [Fintype Mode] in
 /-- **A flattened leg's evolution eigenvalue shift** — `quarticLocalLegEnergyShift` at the vertex
