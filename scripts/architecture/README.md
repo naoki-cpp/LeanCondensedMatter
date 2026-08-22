@@ -116,8 +116,10 @@ Therefore contracts such as:
 remain focused positive-edge/layout policy. They should not be encoded as fake DAG edges merely to
 put every topology check in one data structure.
 
-Likewise, source-level semantic guards such as finite-dimensionality restrictions remain outside the
-DAG when syntax or a particular source boundary is itself the intended contract.
+Declaration ownership, namespace ownership, dimension independence, and other semantic signature
+constraints are also not DAGs: they belong to the compiled Lean audit. Source syntax is inspected in
+Python only when syntax itself is the intended contract, such as a compatibility-forwarding file
+that must own no declarations.
 
 ## One graph runner, two semantic levels
 
@@ -130,13 +132,14 @@ Python owns direct source topology: it classifies source and imported modules th
 Lean owns compiled semantics. `CheckArchitecture.lean` reads the primary graph from
 `second_quantization.json` after the build, resolves each source-declared constant to its compiled
 owner module, converts private names back with `privateToUserName`, and checks the layer's
-`namespacePrefixes` and `forbiddenNameFragments`.
+`namespacePrefixes` and `forbiddenNameFragments`. Additional compiled checks protect canonical
+owners and declaration-type dependencies that are not naturally represented by the layer DAG.
 
 Scoped DAGs are import-topology data only; declaration-level rules should be represented as compiled
 Lean contracts rather than reintroducing source parsers.
 
 This deliberately avoids teaching Python how to parse Lean `namespace`, `section`, `end`, declaration
-modifiers, or private-name syntax.
+modifiers, private-name syntax, proof bodies, or helper-name usage.
 
 ## Exceptions
 
