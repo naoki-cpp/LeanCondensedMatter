@@ -15,6 +15,8 @@
       "id": "finiteDisorderClosures",
       "sourceRoots": ["LeanCondensedMatter/Transport"],
       "layers": [
+        {"id": "finiteTrace", "modulePrefixes": ["LeanCondensedMatter.Transport.FiniteTrace"]},
+        {"id": "stredaTraceKernel", "modulePrefixes": ["LeanCondensedMatter.Transport.StredaTraceKernel"]},
         {"id": "finiteDisorder", "modulePrefixes": ["LeanCondensedMatter.Transport.FiniteDisorder"]},
         {"id": "resolvent", "modulePrefixes": ["LeanCondensedMatter.Transport.Resolvent"]},
         {"id": "moments", "modulePrefixes": ["LeanCondensedMatter.Transport.FiniteDisorderMoments"]},
@@ -24,6 +26,8 @@
         {"id": "scba", "modulePrefixes": ["LeanCondensedMatter.Transport.FiniteDisorderSCBA"]}
       ],
       "edges": [
+        {"upstream": "finiteTrace", "downstream": "stredaTraceKernel"},
+        {"upstream": "finiteTrace", "downstream": "finiteDisorder"},
         {"upstream": "finiteDisorder", "downstream": "moments"},
         {"upstream": "finiteDisorder", "downstream": "disorderResolvent"},
         {"upstream": "resolvent", "downstream": "disorderResolvent"},
@@ -33,6 +37,26 @@
         {"upstream": "disorderResolvent", "downstream": "advancedBorn"},
         {"upstream": "finiteDisorder", "downstream": "scba"},
         {"upstream": "resolvent", "downstream": "scba"}
+      ]
+    },
+    {
+      "id": "analysisCurrentLayers",
+      "sourceRoots": [
+        "LeanCondensedMatter/Analysis/Operator",
+        "LeanCondensedMatter/Analysis/Calculus"
+      ],
+      "layers": [
+        {"id": "linearCommutator", "modulePrefixes": ["LeanCondensedMatter.Analysis.Operator.LinearCommutator"]},
+        {"id": "symmetrizedProduct", "modulePrefixes": ["LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"]},
+        {"id": "currentRepresentation", "modulePrefixes": ["LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation"]},
+        {"id": "balanceLaw", "modulePrefixes": ["LeanCondensedMatter.Analysis.Calculus.BalanceLaw"]},
+        {"id": "symmetricLocalization", "modulePrefixes": ["LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization"]}
+      ],
+      "edges": [
+        {"upstream": "linearCommutator", "downstream": "symmetrizedProduct"},
+        {"upstream": "currentRepresentation", "downstream": "balanceLaw"},
+        {"upstream": "balanceLaw", "downstream": "symmetricLocalization"},
+        {"upstream": "symmetrizedProduct", "downstream": "symmetricLocalization"}
       ]
     },
     {
@@ -55,6 +79,34 @@
       ],
       "edges": [
         {"upstream": "analysisCurrent", "downstream": "fermionicFieldBridge"}
+      ]
+    },
+    {
+      "id": "singleParticleCurrentLayers",
+      "sourceRoots": ["LeanCondensedMatter/QuantumMechanics/SingleParticle"],
+      "layers": [
+        {"id": "localizedTransport", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport"]},
+        {"id": "symmetrizedVelocity", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"]},
+        {"id": "conventionalCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.ConventionalCurrent"]},
+        {"id": "schwartzCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzCurrent1D"]},
+        {"id": "schwartzSpinCurrent", "modulePrefixes": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.Continuum.Continuity.SchwartzSpinCurrent1D"]}
+      ],
+      "edges": [
+        {"upstream": "localizedTransport", "downstream": "symmetrizedVelocity"},
+        {"upstream": "symmetrizedVelocity", "downstream": "conventionalCurrent"},
+        {"upstream": "symmetrizedVelocity", "downstream": "schwartzCurrent"},
+        {"upstream": "symmetrizedVelocity", "downstream": "schwartzSpinCurrent"}
+      ]
+    },
+    {
+      "id": "fermionicTransportCurrentAdapters",
+      "sourceRoots": ["LeanCondensedMatter/SecondQuantization/Fermionic/Transport"],
+      "layers": [
+        {"id": "boundedOneBody", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse"]},
+        {"id": "conventionalCurrent", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConventionalCurrentResponse"]}
+      ],
+      "edges": [
+        {"upstream": "boundedOneBody", "downstream": "conventionalCurrent"}
       ]
     },
     {
@@ -83,6 +135,22 @@
       ]
     },
     {
+      "id": "densityDiagonalConsumers",
+      "sourceRoots": [
+        "LeanCondensedMatter/QuantumTheory/Entropy",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse"
+      ],
+      "layers": [
+        {"id": "diagonalFormula", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"]},
+        {"id": "entropyDiagonal", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.Entropy.Diagonal"]},
+        {"id": "purePointDynamics", "modulePrefixes": ["LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointDynamics"]}
+      ],
+      "edges": [
+        {"upstream": "diagonalFormula", "downstream": "entropyDiagonal"},
+        {"upstream": "diagonalFormula", "downstream": "purePointDynamics"}
+      ]
+    },
+    {
       "id": "densityGibbsEntropy",
       "sourceRoots": [
         "LeanCondensedMatter/QuantumTheory/Gibbs",
@@ -104,6 +172,35 @@
         {"upstream": "finiteHilbert", "downstream": "finiteExpectation"},
         {"upstream": "entropy", "downstream": "freeEntropy"},
         {"upstream": "purePoint", "downstream": "freeEntropy"}
+      ]
+    },
+    {
+      "id": "unboundedExpectationBoundary",
+      "sourceRoots": ["LeanCondensedMatter/SecondQuantization/Fermionic/Thermal"],
+      "layers": [
+        {"id": "unboundedExpectation", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.UnboundedExpectation"]},
+        {"id": "completedSpace", "modulePrefixes": ["LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace"]}
+      ],
+      "edges": []
+    }
+  ],
+  "forbiddenReachability": [
+    {
+      "id": "combinatoricsLowLevelClosure",
+      "roots": [
+        "LeanCondensedMatter.Combinatorics.Cumulant.Moment",
+        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecomposition",
+        "LeanCondensedMatter.Permutation.ConnectedDecomposition",
+        "LeanCondensedMatter.Permutation.PairingBridge"
+      ],
+      "forbiddenPrefixes": [
+        "LeanCondensedMatter.Combinatorics.Cumulant.Inversion",
+        "LeanCondensedMatter.Combinatorics.Cumulant.ConnectedDecompositionInversion",
+        "LeanCondensedMatter.Permutation.Cumulant",
+        "LeanCondensedMatter.Combinatorics.SetPartition.Mobius",
+        "Mathlib.Data.Complex",
+        "Mathlib.LinearAlgebra.Matrix.Determinant",
+        "Mathlib.LinearAlgebra.Matrix.Permanent"
       ]
     }
   ]
