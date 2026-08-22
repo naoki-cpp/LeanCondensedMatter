@@ -80,8 +80,8 @@ theorem stronglyMeasurable_radialInterbandPoleIntegrand
     ring
   rw [hfun]
   apply Measurable.stronglyMeasurable
-  unfold lorentzianSpectralKernel radialInterbandCurrentAmplitude
-    interbandEnergyGap bandEnergy energy energySq
+  unfold lorentzianSpectralKernel QuantumTheory.Transport.lorentzianSpectralKernel
+    radialInterbandCurrentAmplitude interbandEnergyGap bandEnergy energy energySq
   measurability
 
 /-- For positive broadening the radial target-centered Bastin pair is strongly measurable as a

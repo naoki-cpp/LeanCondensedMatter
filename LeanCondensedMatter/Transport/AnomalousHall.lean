@@ -1,57 +1,22 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracCurrentBridge
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracSpectral
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerryBridge
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerrySymmetry
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracIntrinsic
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracIntrinsicConductivity
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStreda
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStredaIntegral
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracCurrentOperatorBridge
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStredaSpectral
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinBerry
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinBands
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinLimit
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinLorentzian
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinOccupation
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinTail
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinFiniteWindow
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinFermiSurface
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinSpectator
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinInterband
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleFactor
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleWindow
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleContinuity
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleWindowContinuity
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleWindowBound
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleLocalError
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleErrorIntegral
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleInnerError
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleOuterError
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleErrorSplit
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleErrorBound
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleErrorLimit
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleExtraction
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleExtractionLimit
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPairIntegral
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPairBerry
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialDomination
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialLimitInterchange
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialSpectatorBound
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialResolventBound
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialSpectatorUniformBound
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialPairUniformBound
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialDominatedConvergence
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialEnergyBridge
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinZeroTemperaturePair
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinCleanConductivity
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin
 
 set_option linter.style.header false
 
 /-!
 # Anomalous Hall transport benchmarks
 
-Public entry point for clean and disordered anomalous-Hall model benchmarks.  Generic spectral,
-intrinsic-current, and linear-response infrastructure remains owned upstream; this namespace
-contains concrete transport models and theorem-level bridges that consume those layers.
+Public entry point for anomalous-Hall model benchmarks. Generic spectral, intrinsic-current,
+linear-response, Kubo–Bastin, Středa, and disorder infrastructure remains owned upstream.
+
+The massive-Dirac benchmark is exposed through four logical layers:
+
+- `MassiveDirac.Model` — Hamiltonian, current realization, and spectral/projector algebra;
+- `MassiveDirac.Intrinsic` — Berry bridge and clean intrinsic Hall conductivity;
+- `MassiveDirac.Streda` — bounded-operator specialization of the generic Středa API;
+- `MassiveDirac.Bastin` — detailed finite- and zero-broadening Bastin analysis.
+
+Reusable analysis currently living in the final layer is being extracted upstream under #1596.
 -/
