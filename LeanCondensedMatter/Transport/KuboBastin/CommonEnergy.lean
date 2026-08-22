@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.KuboBastinOccupation
+import LeanCondensedMatter.Transport.KuboBastin.Occupation
 
 set_option linter.style.header false
 
