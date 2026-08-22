@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.CompletedSpace.ThermalPeel
+import LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.Completed.ThermalPeel
 
 set_option linter.style.header false
 
