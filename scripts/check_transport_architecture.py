@@ -32,6 +32,7 @@ NEUTRAL_OWNERS = (
     TRANSPORT / "GeneralizedStaticStreda.lean",
     TRANSPORT / "FiniteDisorder.lean",
     TRANSPORT / "FiniteDisorderResolvent.lean",
+    TRANSPORT / "FiniteDisorderMoments.lean",
     TRANSPORT / "FiniteDisorderBorn.lean",
     TRANSPORT / "FiniteDisorderAdvancedBorn.lean",
     TRANSPORT / "FiniteDisorderSCBA.lean",
@@ -249,31 +250,68 @@ def main() -> int:
         "generic infinite-time response",
     )
 
+    finite_disorder_resolvent = TRANSPORT / "FiniteDisorderResolvent.lean"
     require_owner_import(
         errors,
-        TRANSPORT / "FiniteDisorderResolvent.lean",
+        finite_disorder_resolvent,
         "LeanCondensedMatter.Transport.FiniteDisorder",
     )
     require_owner_import(
         errors,
-        TRANSPORT / "FiniteDisorderResolvent.lean",
+        finite_disorder_resolvent,
         "LeanCondensedMatter.Transport.Resolvent",
     )
+
+    finite_disorder_moments = TRANSPORT / "FiniteDisorderMoments.lean"
     require_owner_import(
         errors,
-        TRANSPORT / "FiniteDisorderBorn.lean",
+        finite_disorder_moments,
+        "LeanCondensedMatter.Transport.FiniteDisorder",
+    )
+    if finite_disorder_moments.exists() and (
+        "LeanCondensedMatter.Transport.FiniteDisorderResolvent" in lean_imports(finite_disorder_moments)
+    ):
+        errors.append(
+            f"{relative(finite_disorder_moments)} must remain an exact-disorder sibling of "
+            "FiniteDisorderResolvent rather than depending on resolvent infrastructure"
+        )
+
+    finite_disorder_born = TRANSPORT / "FiniteDisorderBorn.lean"
+    require_owner_import(
+        errors,
+        finite_disorder_born,
+        "LeanCondensedMatter.Transport.FiniteDisorderMoments",
+    )
+    require_owner_import(
+        errors,
+        finite_disorder_born,
         "LeanCondensedMatter.Transport.FiniteDisorderResolvent",
     )
+    forbid_declarations(
+        errors,
+        finite_disorder_born,
+        ("structure FiniteDisorderMomentData",),
+        "shared finite-disorder moment",
+    )
+
+    finite_disorder_advanced_born = TRANSPORT / "FiniteDisorderAdvancedBorn.lean"
     require_owner_import(
         errors,
-        TRANSPORT / "FiniteDisorderAdvancedBorn.lean",
-        "LeanCondensedMatter.Transport.FiniteDisorderBorn",
+        finite_disorder_advanced_born,
+        "LeanCondensedMatter.Transport.FiniteDisorderMoments",
     )
     require_owner_import(
         errors,
-        TRANSPORT / "FiniteDisorderAdvancedBorn.lean",
+        finite_disorder_advanced_born,
         "LeanCondensedMatter.Transport.FiniteDisorderResolvent",
     )
+    if finite_disorder_advanced_born.exists() and (
+        "LeanCondensedMatter.Transport.FiniteDisorderBorn" in lean_imports(finite_disorder_advanced_born)
+    ):
+        errors.append(
+            f"{relative(finite_disorder_advanced_born)} must consume shared moments directly rather "
+            "than depending on the retarded Born approximation layer"
+        )
 
     scba = TRANSPORT / "FiniteDisorderSCBA.lean"
     require_owner_import(errors, scba, "LeanCondensedMatter.Transport.FiniteDisorder")

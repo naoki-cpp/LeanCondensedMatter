@@ -1,3 +1,4 @@
+import LeanCondensedMatter.Transport.FiniteDisorderMoments
 import LeanCondensedMatter.Transport.FiniteDisorderResolvent
 
 set_option linter.style.header false
@@ -6,11 +7,11 @@ set_option linter.style.header false
 # Finite-disorder Born self-energy and closure boundary
 
 This module starts from the exact finite ensemble and exact configuration-wise resolvent/Dyson
-identities owned by `FiniteDisorder` and `FiniteDisorderResolvent`.
+identities owned by `FiniteDisorder` and `FiniteDisorderResolvent`, together with centered finite
+second-moment data owned by `FiniteDisorderMoments`.
 
-A `FiniteDisorderMomentData` bundles explicit centering and covariance assumptions. From those
-moments, the module forms the exact averaged second-order Dyson remainder and then defines the
-weak-scattering Born self-energy and resolvent approximation. The exact averaged resolvent is not
+From those moments, the module forms the exact averaged second-order Dyson remainder and then defines
+the weak-scattering Born self-energy and resolvent approximation. The exact averaged resolvent is not
 identified with the Born expression by definition: their difference is named
 `bornRetardedClosureError`, and equality requires an explicit `RetardedBornClosureHypothesis`.
 
@@ -31,22 +32,6 @@ variable [Fintype Ω]
 namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
-
-/-- Explicit centered-disorder and covariance assumptions for a finite ensemble. The covariance is
-an operator-valued action on a supplied kernel; its exact finite second-moment realization is stored
-as a field. -/
-structure FiniteDisorderMomentData where
-  /-- Operator-valued covariance action on an inserted bounded kernel. -/
-  covariance : (H →L[ℂ] H) → H →L[ℂ] H
-  /-- Exact centering condition `E[Vω] = 0`. -/
-  centered :
-    ensemble.operatorAverage (fun ω => (ensemble.impurityPotential ω).1) = 0
-  /-- Identification of the covariance action with the exact weighted finite second moment. -/
-  covariance_eq_secondMoment : ∀ kernel,
-    covariance kernel =
-      ensemble.operatorAverage (fun ω =>
-        (ensemble.impurityPotential ω).1 * kernel *
-          (ensemble.impurityPotential ω).1)
 
 /-- The first-order averaged Dyson term vanishes exactly for centered disorder. -/
 theorem operatorAverage_firstOrderRetardedTerm_eq_zero

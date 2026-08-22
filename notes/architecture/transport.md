@@ -51,8 +51,10 @@ subtrees. The canonical generic owners include:
 - `FiniteDisorder` for exact finite ensembles and exact scalar/operator averages;
 - `FiniteDisorderResolvent` for exact clean/configuration Green operators and configuration-wise
   Dyson identities;
-- `FiniteDisorderBorn` and `FiniteDisorderAdvancedBorn` for first-Born approximation boundaries and
-  explicit closure errors;
+- `FiniteDisorderMoments` for centered finite second-moment/covariance-action data shared by
+  retarded and advanced first-Born approximations;
+- `FiniteDisorderBorn` and `FiniteDisorderAdvancedBorn` for retarded/advanced first-Born
+  approximation boundaries and explicit closure errors;
 - `FiniteDisorderSCBA` for supplied self-consistent Born data and Ward-consistency identities.
 
 The old `Transport.System` and `Transport.LinearResponse` modules are retired. Transport code should
@@ -98,15 +100,16 @@ StaticKuboBastinResponse → Transport.GeneralizedStaticStreda
 The exact/approximate split is intentionally explicit:
 
 ```text
-FiniteDisorder
-  exact ensemble + exact averages
-        ↓
-FiniteDisorderResolvent
-  exact Gᴿ/Gᴬ + exact configuration Dyson identities
-        ↓
-FiniteDisorderBorn / FiniteDisorderAdvancedBorn
-  moments + averaged remainder + Born approximation + closure error
+                    ┌→ FiniteDisorderResolvent ─┐
+FiniteDisorder ─────┤                            ├→ FiniteDisorderBorn
+                    └→ FiniteDisorderMoments ────┤
+                                                 └→ FiniteDisorderAdvancedBorn
 ```
+
+`FiniteDisorderResolvent` and `FiniteDisorderMoments` are sibling owners over exact finite disorder.
+`FiniteDisorderMoments` contains only the centered exact second-moment data and therefore must not
+depend on resolvent infrastructure. Retarded and advanced Born are sibling consumers of both owners;
+the advanced module must not depend on the retarded Born module merely to reuse the moment data.
 
 SCBA is not a child of the first-Born closure layer:
 

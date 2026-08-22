@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.FiniteDisorderBorn
+import LeanCondensedMatter.Transport.FiniteDisorderMoments
 import LeanCondensedMatter.Transport.FiniteDisorderResolvent
 
 set_option linter.style.header false
@@ -8,7 +8,7 @@ set_option linter.style.header false
 
 Exact retarded/advanced Green operators and configuration-wise Dyson identities are owned by
 `FiniteDisorderResolvent`. This module consumes those exact identities together with the centered
-finite-disorder moment data from `FiniteDisorderBorn` and defines the advanced averaged remainder,
+finite-disorder moment data from `FiniteDisorderMoments` and defines the advanced averaged remainder,
 Born self-energy, resolvent approximation, and explicit closure error.
 
 The advanced Born self-energy uses the same centered finite-disorder covariance action as the
