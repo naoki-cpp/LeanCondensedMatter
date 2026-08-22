@@ -47,7 +47,7 @@ theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility
     (system.hbar : ℂ) (q : ℂ) K
   change
     (∫ τ : ℝ in Ioi 0,
-      adiabaticFrequencyFactor ω η τ *
+      adiabaticFrequencyPhase ω η τ *
         commutatorSusceptibility system expectation J J τ 0) =
       ∫ τ : ℝ,
         adiabaticFrequencySusceptibilityIntegrand
@@ -85,7 +85,6 @@ theorem infiniteTimeAdiabaticDirectionalRetardedCoefficient_eq_susceptibility
   rw [adiabaticFrequencySusceptibilityIntegrand]
   rw [retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg
     system expectation J J hτnonneg]
-  rw [← adiabaticFrequencyFactor_eq_adiabaticFrequencyPhase]
 
 variable {ι : Type*}
 

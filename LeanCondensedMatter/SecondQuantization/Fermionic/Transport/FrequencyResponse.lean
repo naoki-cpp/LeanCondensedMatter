@@ -1,16 +1,19 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Lattice.GeometricCurrent
+import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticSwitching
 import LeanCondensedMatter.QuantumTheory.LinearResponse.RetardedSusceptibility
 
 set_option linter.style.header false
 
 /-!
-# Finite-time adiabatic frequency response
+# Finite-time fermionic directional frequency response
 
-The geometric current theorem is a bounded finite-volume statement in the time domain. This module
-introduces the next, deliberately weaker layer needed by conductivity: a complexified finite-time
-frequency coefficient with a strictly positive switching rate.
+The generic scalar finite-time adiabatic transform and observation-time convergence predicate now
+live in `QuantumTheory.LinearResponse.FiniteTimeAdiabatic`; regulator/static limit orderings are
+owned by `QuantumTheory.LinearResponse.LimitOrder`.
 
-For a source proportional to
+This module retains the finite-lattice fermionic realization needed by conductivity: a complexified
+finite-time coefficient built from the continuity-derived directional current and the explicit
+Peierls contact response. For a source proportional to
 
 ```text
 exp (η t) exp (-i ω t),
@@ -22,16 +25,7 @@ factoring out its value at the observation time leaves the lag factor
 exp ((-η + i ω) τ).
 ```
 
-The definitions below do not assert an infinite-time, zero-switching, or DC limit. Instead, those
-limits are represented by separate predicates, and the two physically distinct orders
-
-```text
-T → ∞, then η → 0⁺, then ω → 0
-T → ∞, then ω → 0, then η → 0⁺
-```
-
-are recorded independently. This prevents a finite regularized coefficient from being silently
-identified with a DC conductivity.
+No infinite-time, zero-switching, DC, or thermodynamic limit is asserted here.
 -/
 
 namespace SecondQuantization
@@ -63,57 +57,15 @@ theorem adiabaticFrequencyFactor_zero_frequency (η τ : ℝ) :
       Complex.exp (-(η : ℂ) * (τ : ℂ)) := by
   simp [adiabaticFrequencyFactor]
 
-/-- Finite-observation-time adiabatic transform of a scalar causal kernel. No limit is taken. -/
-noncomputable def finiteTimeAdiabaticTransform
-    (kernel : ℝ → ℂ) (ω η T : ℝ) : ℂ :=
-  ∫ τ in (0 : ℝ)..T, adiabaticFrequencyFactor ω η τ * kernel τ
-
-@[simp]
-theorem finiteTimeAdiabaticTransform_zero_time
-    (kernel : ℝ → ℂ) (ω η : ℝ) :
-    finiteTimeAdiabaticTransform kernel ω η 0 = 0 := by
-  simp [finiteTimeAdiabaticTransform]
-
-/-- Existence of the observation-time limit `T → +∞` at fixed `ω` and `η`. -/
-def HasInfiniteObservationTimeLimit
-    (response : ℝ → ℂ) (value : ℂ) : Prop :=
-  Filter.Tendsto response Filter.atTop (nhds value)
-
-/-- Existence of the one-sided zero-switching limit `η → 0⁺`. -/
-def HasZeroSwitchingLimit
-    (response : ℝ → ℂ) (value : ℂ) : Prop :=
-  Filter.Tendsto response (nhdsWithin 0 (Set.Ioi 0)) (nhds value)
-
-/-- Existence of the frequency limit `ω → 0` at fixed values of the other regulators. -/
-def HasDCFrequencyLimit
-    (response : ℝ → ℂ) (value : ℂ) : Prop :=
-  Filter.Tendsto response (nhds 0) (nhds value)
-
-/-- The order `T → ∞`, then `η → 0⁺`, then `ω → 0`.
-
-The intermediate functions are explicit data rather than hidden choices. -/
-def HasTimeThenSwitchingThenDCLimit
-    (response : ℝ → ℝ → ℝ → ℂ)
-    (afterTime : ℝ → ℝ → ℂ)
-    (afterSwitching : ℝ → ℂ)
-    (dcValue : ℂ) : Prop :=
-  (∀ ω η, HasInfiniteObservationTimeLimit
-      (response ω η) (afterTime ω η)) ∧
-    (∀ ω, HasZeroSwitchingLimit
-      (afterTime ω) (afterSwitching ω)) ∧
-    HasDCFrequencyLimit afterSwitching dcValue
-
-/-- The distinct order `T → ∞`, then `ω → 0`, then `η → 0⁺`. -/
-def HasTimeThenDCThenSwitchingLimit
-    (response : ℝ → ℝ → ℝ → ℂ)
-    (afterTime : ℝ → ℝ → ℂ)
-    (afterDC : ℝ → ℂ)
-    (value : ℂ) : Prop :=
-  (∀ ω η, HasInfiniteObservationTimeLimit
-      (response ω η) (afterTime ω η)) ∧
-    (∀ η, HasDCFrequencyLimit
-      (fun ω => afterTime ω η) (afterDC η)) ∧
-    HasZeroSwitchingLimit afterDC value
+/-- The fermionic field-layer lag factor is the canonical linear-response adiabatic phase. -/
+theorem adiabaticFrequencyFactor_eq_adiabaticFrequencyPhase
+    (ω η τ : ℝ) :
+    adiabaticFrequencyFactor ω η τ =
+      QuantumTheory.LinearResponse.adiabaticFrequencyPhase ω η τ := by
+  unfold adiabaticFrequencyFactor
+    QuantumTheory.LinearResponse.adiabaticFrequencyPhase
+  congr 2
+  ring
 
 variable {Site E : Type*}
 variable [LinearOrder Site] [Fintype Site]

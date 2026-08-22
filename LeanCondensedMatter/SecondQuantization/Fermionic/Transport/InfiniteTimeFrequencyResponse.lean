@@ -1,5 +1,6 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StationaryFrequencyResponse
 import LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticIntegrability
+import LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic
 import Mathlib.MeasureTheory.Integral.IntegralEqImproper
 
 set_option linter.style.header false
@@ -26,29 +27,20 @@ namespace Fermionic
 namespace Transport
 
 open Lattice
+open QuantumTheory.LinearResponse
 
 noncomputable section
-
-/-- The field-layer lag factor agrees with the general linear-response adiabatic phase. -/
-theorem adiabaticFrequencyFactor_eq_adiabaticFrequencyPhase
-    (ω η τ : ℝ) :
-    adiabaticFrequencyFactor ω η τ =
-      QuantumTheory.LinearResponse.adiabaticFrequencyPhase ω η τ := by
-  unfold adiabaticFrequencyFactor
-    QuantumTheory.LinearResponse.adiabaticFrequencyPhase
-  congr 2
-  ring
 
 /-- Explicit integrability hypothesis for the adiabatically weighted positive-lag kernel. -/
 def AdiabaticLagIntegrable (kernel : ℝ → ℂ) (ω η : ℝ) : Prop :=
   MeasureTheory.IntegrableOn
-    (fun τ => adiabaticFrequencyFactor ω η τ * kernel τ)
+    (fun τ => adiabaticFrequencyPhase ω η τ * kernel τ)
     (Set.Ioi (0 : ℝ)) MeasureTheory.volume
 
 /-- The half-infinite adiabatic transform at fixed frequency and switching rate. -/
 noncomputable def infiniteTimeAdiabaticTransform
     (kernel : ℝ → ℂ) (ω η : ℝ) : ℂ :=
-  ∫ τ in Set.Ioi (0 : ℝ), adiabaticFrequencyFactor ω η τ * kernel τ
+  ∫ τ in Set.Ioi (0 : ℝ), adiabaticFrequencyPhase ω η τ * kernel τ
 
 /-- Integrability of the weighted lag kernel is sufficient for the observation-time limit. -/
 theorem hasInfiniteObservationTimeLimit_finiteTimeAdiabaticTransform
@@ -60,13 +52,13 @@ theorem hasInfiniteObservationTimeLimit_finiteTimeAdiabaticTransform
   unfold HasInfiniteObservationTimeLimit
   change Filter.Tendsto
     (fun T : ℝ => ∫ τ in (0 : ℝ)..T,
-      adiabaticFrequencyFactor ω η τ * kernel τ)
+      adiabaticFrequencyPhase ω η τ * kernel τ)
     Filter.atTop
     (nhds (∫ τ in Set.Ioi (0 : ℝ),
-      adiabaticFrequencyFactor ω η τ * kernel τ))
+      adiabaticFrequencyPhase ω η τ * kernel τ))
   exact MeasureTheory.intervalIntegral_tendsto_integral_Ioi
     (μ := MeasureTheory.volume)
-    (f := fun τ : ℝ => adiabaticFrequencyFactor ω η τ * kernel τ)
+    (f := fun τ : ℝ => adiabaticFrequencyPhase ω η τ * kernel τ)
     (b := fun T : ℝ => T) (0 : ℝ) hInt Filter.tendsto_id
 
 variable {Site E : Type*}
@@ -113,7 +105,6 @@ theorem stationaryDirectionalAdiabaticIntegrable_of_pos
     rw [QuantumTheory.LinearResponse.adiabaticFrequencySusceptibilityIntegrand]
     rw [QuantumTheory.LinearResponse.retardedTimeDifferenceKernel_eq_commutatorSusceptibility_of_nonneg
       system expectation J J hτnonneg]
-    rw [← adiabaticFrequencyFactor_eq_adiabaticFrequencyPhase]
     rfl
   · exact measurableSet_Ioi
 
