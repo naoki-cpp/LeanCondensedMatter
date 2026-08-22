@@ -23,17 +23,10 @@ namespace Fermionic
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 omit [LinearOrder Mode] in
-/-- The total free Boltzmann weight is the free partition function. -/
-theorem weightSum_freeBoltzmannWeight_eq_freePartitionFunction (ε : Mode → ℝ) (β : ℝ) :
-    Common.weightSum (freeBoltzmannWeight ε β) = freePartitionFunction ε β := by
-  rw [Common.weightSum, freePartitionFunction]
-
-omit [LinearOrder Mode] in
 /-- The total free Boltzmann weight is nonzero. -/
 theorem weightSum_freeBoltzmannWeight_ne_zero (ε : Mode → ℝ) (β : ℝ) :
     Common.weightSum (freeBoltzmannWeight ε β) ≠ 0 := by
-  rw [weightSum_freeBoltzmannWeight_eq_freePartitionFunction]
-  exact freePartitionFunction_ne_zero ε β
+  simpa [Common.weightSum, freePartitionFunction] using freePartitionFunction_ne_zero ε β
 
 omit [LinearOrder Mode] [Fintype Mode] in
 /-- The fermionic free Boltzmann weight agrees with the Common weight at `fermionEnergy`. -/
