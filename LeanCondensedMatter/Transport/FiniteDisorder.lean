@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Disorder.Finite
+import LeanCondensedMatter.Transport.FiniteTrace
 
 set_option linter.style.header false
 
