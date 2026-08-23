@@ -15,6 +15,10 @@ linter.style.header = false
 linter.style.longLine = false
 linter.style.haveILetI = false
 linter.unnecessarySimpa = false
+# Temporarily suppress migration-only warning classes so CI exposes the remaining hard 4.33 errors.
+# Remove these two overrides once the version migration compiles cleanly.
+linter.deprecated = false
+linter.unusedSimpArgs = false
 # Lean 4.33 tightened backward type-level definitional equality. Keep the previous behavior during
 # the version migration; remove this once the affected proofs have explicit coercion/API bridges.
 backward.isDefEq.respectTransparency.types = false
