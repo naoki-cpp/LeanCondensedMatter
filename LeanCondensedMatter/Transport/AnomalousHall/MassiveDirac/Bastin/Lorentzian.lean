@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinLimit
-import LeanCondensedMatter.Transport.LorentzianSpectralKernel
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Limit
+import LeanCondensedMatter.Transport.Analysis.LorentzianKernel
 import Mathlib.Tactic
 
 set_option linter.style.header false
