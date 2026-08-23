@@ -65,7 +65,7 @@ def load_scoped_import_graphs(spec_path: Path, *, root: Path) -> tuple[ScopedImp
 
 
 def check_scoped_import_graphs(errors: list[str], spec_path: Path, *, root: Path) -> None:
-    """Apply every scoped DAG to its declared source roots."""
+    """Apply every scoped DAG to its declared source roots independently."""
     try:
         graphs = load_scoped_import_graphs(spec_path, root=root)
     except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
@@ -80,17 +80,18 @@ def check_scoped_import_graphs(errors: list[str], spec_path: Path, *, root: Path
                     f"{source_root.relative_to(root)}"
                 )
                 continue
-            before = len(errors)
+
+            # The common graph validator short-circuits on an already-populated error list. Give
+            # every scoped graph a fresh diagnostic buffer so an earlier failure never suppresses
+            # validation or import diagnostics for later graphs.
+            graph_errors: list[str] = []
             check_architecture_graph_imports(
-                errors,
+                graph_errors,
                 scoped.graph,
                 root=root,
                 source_root=source_root,
             )
-            if len(errors) > before:
-                errors[before:] = [
-                    f"scoped graph `{scoped.id}`: {error}" for error in errors[before:]
-                ]
+            errors.extend(f"scoped graph `{scoped.id}`: {error}" for error in graph_errors)
 
 
 def project_module_path(root: Path, module: str) -> Path | None:
