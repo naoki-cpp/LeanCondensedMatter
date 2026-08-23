@@ -1,6 +1,6 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStreda
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracSpectral
-import LeanCondensedMatter.Transport.Resolvent
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda.Response
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Spectral
+import LeanCondensedMatter.Transport.Resolvent.Basic
 
 set_option linter.style.header false
 
