@@ -4,8 +4,10 @@ from pathlib import Path
 
 from architecture_audit_common import (
     finish_audit,
+    lean_files,
     lean_imports,
     lean_source,
+    numbered_imports,
     require_import,
     repository_root,
 )
@@ -45,62 +47,6 @@ GENERIC_COMPAT = {
     "FiniteDisorderSCBA.lean": "LeanCondensedMatter.Transport.Disorder.SCBA",
 }
 
-# Canonical implementation modules and migrated downstream specializations must no longer consume
-# the compatibility layer. Keep this list incremental so each migration slice can land and be
-# guarded independently before the forwarding modules are finally removed.
-CANONICAL_IMPORT_MIGRATIONS = {
-    TRANSPORT / "Core" / "ConductivityNormalization.lean": (
-        ("LeanCondensedMatter.Transport.Core.FiniteVolume",),
-        ("LeanCondensedMatter.Transport.FiniteVolume",),
-    ),
-    TRANSPORT / "Core" / "FiniteConductivityTable.lean": (
-        ("LeanCondensedMatter.Transport.Core.ConductivityNormalization",),
-        ("LeanCondensedMatter.Transport.ConductivityNormalization",),
-    ),
-    TRANSPORT / "KuboBastin" / "Finite.lean": (
-        ("LeanCondensedMatter.Transport.Resolvent.Spectral",),
-        ("LeanCondensedMatter.Transport.ResolventSpectral",),
-    ),
-    TRANSPORT / "KuboBastin" / "Occupation.lean": (
-        (
-            "LeanCondensedMatter.Transport.KuboBastin.Finite",
-            "LeanCondensedMatter.Transport.KuboBastin.OccupationInterpolation",
-        ),
-        (
-            "LeanCondensedMatter.Transport.FiniteKuboBastin",
-            "LeanCondensedMatter.Transport.OccupationInterpolation",
-        ),
-    ),
-    TRANSPORT / "KuboBastin" / "CommonEnergy.lean": (
-        ("LeanCondensedMatter.Transport.KuboBastin.Occupation",),
-        ("LeanCondensedMatter.Transport.KuboBastinOccupation",),
-    ),
-    FERMIONIC_TRANSPORT / "ConductivityNormalization.lean": (
-        ("LeanCondensedMatter.Transport.Core.ConductivityNormalization",),
-        ("LeanCondensedMatter.Transport.ConductivityNormalization",),
-    ),
-    FERMIONIC_TRANSPORT / "FiniteConductivityTable.lean": (
-        ("LeanCondensedMatter.Transport.Core.FiniteConductivityTable",),
-        ("LeanCondensedMatter.Transport.FiniteConductivityTable",),
-    ),
-    FERMIONIC_TRANSPORT / "KuboBastinSpectral.lean": (
-        ("LeanCondensedMatter.Transport.KuboBastin.Finite",),
-        ("LeanCondensedMatter.Transport.FiniteKuboBastin",),
-    ),
-    FERMIONIC_TRANSPORT / "CorrectedCurrentKuboBastin.lean": (
-        ("LeanCondensedMatter.Transport.KuboBastin.Finite",),
-        ("LeanCondensedMatter.Transport.FiniteKuboBastin",),
-    ),
-    FERMIONIC_TRANSPORT / "KuboBastinOccupation.lean": (
-        ("LeanCondensedMatter.Transport.KuboBastin.Occupation",),
-        ("LeanCondensedMatter.Transport.KuboBastinOccupation",),
-    ),
-    FERMIONIC_TRANSPORT / "KuboBastinCommonEnergy.lean": (
-        ("LeanCondensedMatter.Transport.KuboBastin.CommonEnergy",),
-        ("LeanCondensedMatter.Transport.KuboBastinCommonEnergy",),
-    ),
-}
-
 AHE_MODEL = {
     "MassiveDirac.lean": "Model.Basic",
     "MassiveDiracCurrentBridge.lean": "Model.CurrentBridge",
@@ -133,213 +79,6 @@ AHE_COMPAT = AHE_MODEL | AHE_INTRINSIC | AHE_STREDA | AHE_BASTIN
 
 MD = "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac"
 
-AHE_CANONICAL_IMPORT_MIGRATIONS = {
-    AHE / "MassiveDirac" / "Model" / "CurrentBridge.lean": (
-        (f"{MD}.Model.Basic",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac",),
-    ),
-    AHE / "MassiveDirac" / "Model" / "Spectral.lean": (
-        (f"{MD}.Model.Basic",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac",),
-    ),
-    AHE / "MassiveDirac" / "Intrinsic" / "BerryBridge.lean": (
-        (f"{MD}.Model.Spectral",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracSpectral",),
-    ),
-    AHE / "MassiveDirac" / "Intrinsic" / "BerrySymmetry.lean": (
-        (f"{MD}.Intrinsic.BerryBridge",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerryBridge",),
-    ),
-    AHE / "MassiveDirac" / "Intrinsic" / "Response.lean": (
-        (f"{MD}.Intrinsic.BerrySymmetry",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerrySymmetry",),
-    ),
-    AHE / "MassiveDirac" / "Intrinsic" / "Conductivity.lean": (
-        (f"{MD}.Intrinsic.Response",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracIntrinsic",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "Berry.lean": (
-        (
-            f"{MD}.Streda.Spectral",
-            f"{MD}.Intrinsic.BerryBridge",
-            f"{MD}.Streda.CurrentOperatorBridge",
-            "LeanCondensedMatter.Transport.Streda.TraceKernel",
-        ),
-        (
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStredaSpectral",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerryBridge",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracCurrentOperatorBridge",
-            "LeanCondensedMatter.Transport.StredaTraceKernel",
-        ),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "Bands.lean": (
-        (f"{MD}.Bastin.Berry",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinBerry",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "Limit.lean": (
-        (f"{MD}.Bastin.Bands",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinBands",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "Lorentzian.lean": (
-        (f"{MD}.Bastin.Limit", "LeanCondensedMatter.Transport.Analysis.LorentzianKernel"),
-        (
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinLimit",
-            "LeanCondensedMatter.Transport.LorentzianSpectralKernel",
-        ),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "Occupation.lean": (
-        (f"{MD}.Bastin.Lorentzian",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinLorentzian",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "Tail.lean": (
-        (f"{MD}.Bastin.Occupation",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinOccupation",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "FiniteWindow.lean": (
-        (f"{MD}.Bastin.Tail",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinTail",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "FermiSurface.lean": (
-        (f"{MD}.Bastin.FiniteWindow",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinFiniteWindow",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "Spectator.lean": (
-        (f"{MD}.Bastin.FermiSurface",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinFermiSurface",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "Interband.lean": (
-        (f"{MD}.Bastin.Spectator", f"{MD}.Intrinsic.BerrySymmetry"),
-        (
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinSpectator",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerrySymmetry",
-        ),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "PoleFactor.lean": (
-        (f"{MD}.Bastin.Interband",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinInterband",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "PoleWindow.lean": (
-        (f"{MD}.Bastin.PoleFactor",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleFactor",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "PoleContinuity.lean": (
-        (f"{MD}.Bastin.PoleWindow",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleWindow",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "PoleWindowContinuity.lean": (
-        (f"{MD}.Bastin.PoleContinuity",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleContinuity",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "PoleWindowBound.lean": (
-        (f"{MD}.Bastin.PoleWindowContinuity",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleWindowContinuity",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "PoleLocalError.lean": (
-        (f"{MD}.Bastin.PoleWindowBound",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleWindowBound",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "PoleErrorIntegral.lean": (
-        (f"{MD}.Bastin.PoleLocalError",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleLocalError",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "PoleInnerError.lean": (
-        (f"{MD}.Bastin.PoleErrorIntegral",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleErrorIntegral",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "PoleOuterError.lean": (
-        (f"{MD}.Bastin.PoleInnerError",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleInnerError",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "PoleErrorSplit.lean": (
-        (f"{MD}.Bastin.PoleOuterError",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleOuterError",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "PoleErrorBound.lean": (
-        (f"{MD}.Bastin.PoleErrorSplit",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleErrorSplit",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "PoleErrorLimit.lean": (
-        (f"{MD}.Bastin.PoleErrorBound",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleErrorBound",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "PoleExtraction.lean": (
-        (f"{MD}.Bastin.PoleErrorLimit",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleErrorLimit",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "PoleExtractionLimit.lean": (
-        (f"{MD}.Bastin.PoleExtraction",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleExtraction",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "PairIntegral.lean": (
-        (f"{MD}.Bastin.PoleExtractionLimit",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleExtractionLimit",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "PairBerry.lean": (
-        (f"{MD}.Bastin.PairIntegral",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPairIntegral",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "CleanConductivity.lean": (
-        (f"{MD}.Bastin.PairBerry", f"{MD}.Intrinsic.Conductivity"),
-        (
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPairBerry",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracIntrinsicConductivity",
-        ),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "RadialDomination.lean": (
-        (f"{MD}.Bastin.PairBerry",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPairBerry",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "RadialLimitInterchange.lean": (
-        (f"{MD}.Bastin.CleanConductivity", f"{MD}.Bastin.RadialDomination"),
-        (
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinCleanConductivity",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialDomination",
-        ),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "RadialSpectatorBound.lean": (
-        (f"{MD}.Bastin.RadialDomination",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialDomination",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "RadialResolventBound.lean": (
-        (f"{MD}.Bastin.RadialSpectatorBound",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialSpectatorBound",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "RadialSpectatorUniformBound.lean": (
-        (f"{MD}.Bastin.RadialResolventBound",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialResolventBound",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "RadialPairUniformBound.lean": (
-        (f"{MD}.Bastin.RadialSpectatorUniformBound",),
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialSpectatorUniformBound",),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "RadialDominatedConvergence.lean": (
-        (f"{MD}.Bastin.RadialLimitInterchange", f"{MD}.Bastin.RadialPairUniformBound"),
-        (
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialLimitInterchange",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialPairUniformBound",
-        ),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "RadialEnergyBridge.lean": (
-        (f"{MD}.Bastin.RadialDominatedConvergence", f"{MD}.Bastin.CleanConductivity"),
-        (
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialDominatedConvergence",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinCleanConductivity",
-        ),
-    ),
-    AHE / "MassiveDirac" / "Bastin" / "ZeroTemperaturePair.lean": (
-        (
-            f"{MD}.Bastin.RadialEnergyBridge",
-            f"{MD}.Bastin.FermiSurface",
-            f"{MD}.Bastin.RadialPairUniformBound",
-        ),
-        (
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialEnergyBridge",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinFermiSurface",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialPairUniformBound",
-        ),
-    ),
-}
-
 
 def project_module_path(module: str) -> Path | None:
     prefix = "LeanCondensedMatter."
@@ -353,11 +92,12 @@ def forwarding_only(errors: list[str], path: Path) -> None:
     if not path.is_file():
         return
 
+    import_lines = {line_no for line_no, _ in numbered_imports(path)}
     for line_no, line in enumerate(lean_source(path).splitlines(), start=1):
         stripped = line.strip()
         if not stripped:
             continue
-        if stripped.startswith("import "):
+        if line_no in import_lines:
             continue
         if stripped == "set_option linter.style.header false":
             continue
@@ -368,26 +108,47 @@ def forwarding_only(errors: list[str], path: Path) -> None:
 
 
 def require_compat(errors: list[str], path: Path, module: str) -> None:
-    require_import(errors, path, module, root=ROOT, description="compatibility forwarding module")
+    """Require a declaration-free forwarding module with exactly one canonical import."""
+    if not path.is_file():
+        errors.append(f"missing compatibility forwarding module: {path.relative_to(ROOT)}")
+        return
+
+    imports = lean_imports(path)
+    if imports != (module,):
+        rendered = ", ".join(f"`{imported}`" for imported in imports) or "<none>"
+        errors.append(
+            f"{path.relative_to(ROOT)} must import exactly `{module}`, found {rendered}"
+        )
+
     target = project_module_path(module)
     if target is None or not target.is_file():
         errors.append(f"compatibility module target does not exist: `{module}`")
     forwarding_only(errors, path)
 
 
-def require_canonical_imports(
-    errors: list[str], path: Path, required: tuple[str, ...], forbidden: tuple[str, ...]
+def flat_module_names(prefix: str, compatibility: dict[str, str]) -> frozenset[str]:
+    """Derive historical flat module names from their forwarding filenames."""
+    return frozenset(f"{prefix}.{Path(filename).stem}" for filename in compatibility)
+
+
+def forbid_compat_imports_under(
+    errors: list[str],
+    source_root: Path,
+    forbidden_modules: frozenset[str],
+    *,
+    description: str,
 ) -> None:
-    for module in required:
-        require_import(errors, path, module, root=ROOT, description="canonical transport hierarchy")
-    if not path.is_file():
+    """Prevent every canonical consumer under a tree from regressing to a compatibility shim."""
+    if not source_root.is_dir():
+        errors.append(f"missing {description}: {source_root.relative_to(ROOT)}")
         return
-    imports = lean_imports(path)
-    for module in forbidden:
-        if module in imports:
-            errors.append(
-                f"{path.relative_to(ROOT)} must import the canonical hierarchy directly, not `{module}`"
-            )
+    for path in lean_files(source_root):
+        for line_no, imported in numbered_imports(path):
+            if imported in forbidden_modules:
+                errors.append(
+                    f"{path.relative_to(ROOT)}:{line_no} must import the canonical hierarchy "
+                    f"directly, not compatibility module `{imported}`"
+                )
 
 
 def main() -> int:
@@ -396,11 +157,23 @@ def main() -> int:
     for filename, module in GENERIC_COMPAT.items():
         require_compat(errors, TRANSPORT / filename, module)
 
-    for path, (required, forbidden) in CANONICAL_IMPORT_MIGRATIONS.items():
-        require_canonical_imports(errors, path, required, forbidden)
-
-    for path, (required, forbidden) in AHE_CANONICAL_IMPORT_MIGRATIONS.items():
-        require_canonical_imports(errors, path, required, forbidden)
+    # The compatibility map is the single source of truth for both forwarding targets and forbidden
+    # historical imports. This replaces the per-file migration table: every current and future
+    # canonical module is guarded automatically.
+    generic_flat_modules = flat_module_names("LeanCondensedMatter.Transport", GENERIC_COMPAT)
+    for directory in ("Core", "Resolvent", "Analysis", "KuboBastin", "Streda", "Disorder"):
+        forbid_compat_imports_under(
+            errors,
+            TRANSPORT / directory,
+            generic_flat_modules,
+            description=f"canonical Transport/{directory} hierarchy",
+        )
+    forbid_compat_imports_under(
+        errors,
+        FERMIONIC_TRANSPORT,
+        generic_flat_modules,
+        description="fermionic transport specialization hierarchy",
+    )
 
     transport_umbrella = LEAN / "Transport.lean"
     for module in (
@@ -427,6 +200,16 @@ def main() -> int:
     for filename, suffix in AHE_COMPAT.items():
         module = f"{MD}.{suffix}"
         require_compat(errors, AHE / filename, module)
+
+    ahe_flat_modules = flat_module_names(
+        "LeanCondensedMatter.Transport.AnomalousHall", AHE_COMPAT
+    )
+    forbid_compat_imports_under(
+        errors,
+        AHE / "MassiveDirac",
+        ahe_flat_modules,
+        description="canonical massive-Dirac AHE hierarchy",
+    )
 
     ahe_umbrella = TRANSPORT / "AnomalousHall.lean"
     for module in (
