@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinCleanConductivity
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialDomination
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.CleanConductivity
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialDomination
 import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.Tactic
 
