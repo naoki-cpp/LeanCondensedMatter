@@ -43,7 +43,7 @@ theorem lorentzianSpectralOuterMass_eq_tailMass
   have hwhole := intervalIntegral.integral_add_adjacent_intervals
     (hleft.trans hmiddle) hright
   have hleftMiddle := intervalIntegral.integral_add_adjacent_intervals hleft hmiddle
-  unfold lorentzianSpectralOuterMass lorentzianSpectralTailMass
+  unfold lorentzianSpectralOuterMass QuantumTheory.Transport.lorentzianSpectralTailMass
   linarith
 
 /-- The Lorentzian-weighted spectator error integrated over both outer intervals. -/
