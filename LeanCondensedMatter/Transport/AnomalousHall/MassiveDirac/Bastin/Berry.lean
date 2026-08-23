@@ -1,7 +1,7 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStredaSpectral
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerryBridge
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracCurrentOperatorBridge
-import LeanCondensedMatter.Transport.StredaTraceKernel
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda.Spectral
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerryBridge
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda.CurrentOperatorBridge
+import LeanCondensedMatter.Transport.Streda.TraceKernel
 
 set_option linter.style.header false
 
