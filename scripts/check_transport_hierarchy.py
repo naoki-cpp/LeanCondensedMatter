@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import re
 from pathlib import Path
 
 from architecture_audit_common import (
@@ -17,14 +16,6 @@ LEAN = ROOT / "LeanCondensedMatter"
 TRANSPORT = LEAN / "Transport"
 AHE = TRANSPORT / "AnomalousHall"
 FERMIONIC_TRANSPORT = LEAN / "SecondQuantization" / "Fermionic" / "Transport"
-
-# Deliberate source-syntax contract: compatibility forwarding files may be absent from the compiled
-# public environment, and their defining property is precisely that they contain imports but no Lean
-# declarations. This is not used for semantic owner/type inspection.
-DECLARATION_RE = re.compile(
-    r"^\s*(?:noncomputable\s+)?(?:def|abbrev|structure|inductive|class|theorem|lemma)\s+",
-    re.MULTILINE,
-)
 
 GENERIC_CANONICAL = (
     TRANSPORT / "Core" / "FiniteVolume.lean",
@@ -197,16 +188,28 @@ AHE_CANONICAL_IMPORT_MIGRATIONS = {
 }
 
 
-def no_declarations(errors: list[str], path: Path) -> None:
+def forwarding_only(errors: list[str], path: Path) -> None:
+    """Require a compatibility module to contain imports and the standard header option only."""
     if not path.is_file():
         return
-    if DECLARATION_RE.search(lean_source(path)):
-        errors.append(f"{path.relative_to(ROOT)} is compatibility-only and must not own declarations")
+
+    for line_no, line in enumerate(lean_source(path).splitlines(), start=1):
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if stripped.startswith("import "):
+            continue
+        if stripped == "set_option linter.style.header false":
+            continue
+        errors.append(
+            f"{path.relative_to(ROOT)}:{line_no} is compatibility-only; "
+            f"unexpected Lean command `{stripped}`"
+        )
 
 
 def require_compat(errors: list[str], path: Path, module: str) -> None:
     require_import(errors, path, module, root=ROOT, description="compatibility forwarding module")
-    no_declarations(errors, path)
+    forwarding_only(errors, path)
 
 
 def require_canonical_imports(
