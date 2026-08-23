@@ -3,7 +3,8 @@
 Files in this directory are architecture **specifications**, not checker implementations.
 
 The goal is to describe durable repository topology as data, then let the architecture audits
-interpret it at the appropriate level.
+interpret it at the appropriate level. Architecture specifications are validated strictly: unknown
+or misspelled fields are CI errors rather than silently ignored configuration.
 
 ## Primary layer graph
 
@@ -51,10 +52,14 @@ Each scoped DAG declares:
 - `id`: diagnostic name;
 - `sourceRoots`: repository directories whose direct imports are checked;
 - `layers`: local graph vertices with `modulePrefixes`;
-- `edges`: local upstream -> downstream dependency edges.
+- `edges`: local upstream -> downstream dependency edges;
+- optional `coveragePrefixes`: module prefixes for which every source module under the declared
+  roots must be assigned to one of the DAG layers.
 
 Targets outside the scoped graph are intentionally ignored. This lets a focused graph describe only
-the dependency relation it owns without duplicating unrelated repository policy.
+the dependency relation it owns without duplicating unrelated repository policy. When a scoped DAG
+is intended to be authoritative for a subtree, use `coveragePrefixes` so adding a new source file
+without updating the DAG fails CI instead of silently leaving that module unclassified.
 
 `second_quantization.json` contains the SecondQuantization-centered DAGs:
 
@@ -120,9 +125,11 @@ Intrinsic geometry → Bastin foundation → Pole → Pair → Radial → Zero-T
                                       ↖──── Intrinsic conductivity ────┘
 ```
 
-The Bastin stage graph became authoritative after the #1606–#1612 canonical-import migration
-completed. Exact direct imports remain separate regression/source contracts; the DAG only states the
-durable allowed dependency direction between stages.
+The Model/Intrinsic and Bastin source regions use `coveragePrefixes`, so a newly added canonical AHE
+module must be classified into the corresponding DAG before CI accepts it. The Bastin stage graph
+became authoritative after the #1606–#1612 canonical-import migration completed. Exact direct imports
+remain separate regression/source contracts; the DAG only states the durable allowed dependency
+direction between stages.
 
 ## Positive source contracts
 
@@ -141,7 +148,7 @@ required edges. A required direct import is deliberately not encoded as an ordin
 allowed direction and a required edge are different contracts.
 
 Special topology that is not yet a uniform data shape may remain in a focused checker. Examples are
-exact umbrella boundaries, layered directory-layout rules, and compatibility-forwarding migration
+exact umbrella boundaries, layered directory-layout rules, and compatibility-forwarding syntax
 contracts.
 
 ## Source syntax contracts
@@ -149,11 +156,18 @@ contracts.
 Declaration ownership, namespace ownership, dimension independence, and other semantic signature
 constraints belong to the compiled Lean audit, not source-text parsing.
 
-Python inspects syntax only when syntax itself is the invariant. The main example is a compatibility
-forwarding module. Such a file may be absent from the compiled public environment, so its forwarding
-property is checked directly: after comments are removed, only `import` commands, blank lines, and
-the standard `set_option linter.style.header false` command are accepted. This allowlist avoids
-trying to maintain a regex enumerating every form of Lean declaration.
+Python inspects syntax only when syntax itself is the invariant. Direct-import extraction recognizes
+the Lean 4.31 module forms `import`, `public import`, `meta import`, `public meta import`, and
+`import all`. If an import-looking top-level command does not match the supported grammar, the audit
+fails closed instead of ignoring a dependency that could bypass the source graph.
+
+The other narrow source-syntax invariant is a compatibility forwarding module. Such a file may be
+absent from the compiled public environment, so its forwarding property is checked directly: after
+comments are removed, only one canonical import, blank lines, and the standard
+`set_option linter.style.header false` command are accepted. The compatibility maps also derive the
+set of historical flat module names forbidden throughout canonical Transport/AHE implementation
+trees, so new canonical files cannot regress to old forwarding paths without being individually
+registered in another migration table.
 
 ## Independent diagnostics
 

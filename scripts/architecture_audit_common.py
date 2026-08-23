@@ -1,14 +1,11 @@
 from __future__ import annotations
 
 import json
-import re
 import sys
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 from functools import lru_cache
 from pathlib import Path
-
-IMPORT_RE = re.compile(r"^\s*import\s+([^\s]+)\s*$")
 
 
 @dataclass(frozen=True)
@@ -141,13 +138,63 @@ def lean_source(path: Path) -> str:
     return _strip_lean_comments(_source_text(path))
 
 
+def _parse_import_line(line: str) -> tuple[str | None, str | None]:
+    """Parse Lean 4.31 import syntax, returning ``(module, error)``.
+
+    The supported grammar is ``public? meta? import all? ident``. Import-looking commands that do
+    not match this grammar are reported instead of being silently ignored so architecture checks
+    fail closed when source syntax changes.
+    """
+    stripped = line.strip()
+    if not stripped:
+        return None, None
+
+    tokens = stripped.split()
+    try:
+        import_index = tokens.index("import")
+    except ValueError:
+        return None, None
+
+    # A top-level import command can place at most `public` and `meta` before `import`. Do not treat
+    # arbitrary declarations containing an identifier named `import` as import commands.
+    if import_index > 2:
+        return None, None
+
+    index = 0
+    if tokens[index] == "public":
+        index += 1
+    if index < len(tokens) and tokens[index] == "meta":
+        index += 1
+    if index >= len(tokens) or tokens[index] != "import":
+        return None, f"unsupported Lean import syntax `{stripped}`"
+
+    index += 1
+    if index < len(tokens) and tokens[index] == "all":
+        index += 1
+    if index != len(tokens) - 1:
+        return None, f"unsupported Lean import syntax `{stripped}`"
+
+    return tokens[index], None
+
+
 @lru_cache(maxsize=None)
 def _numbered_imports(path: Path) -> tuple[tuple[int, str], ...]:
     imports: list[tuple[int, str]] = []
     for line_no, line in enumerate(lean_source(path).splitlines(), start=1):
-        if match := IMPORT_RE.match(line):
-            imports.append((line_no, match.group(1)))
+        imported, _ = _parse_import_line(line)
+        if imported is not None:
+            imports.append((line_no, imported))
     return tuple(imports)
+
+
+@lru_cache(maxsize=None)
+def _invalid_import_commands(path: Path) -> tuple[tuple[int, str], ...]:
+    errors: list[tuple[int, str]] = []
+    for line_no, line in enumerate(lean_source(path).splitlines(), start=1):
+        _, error = _parse_import_line(line)
+        if error is not None:
+            errors.append((line_no, error))
+    return tuple(errors)
 
 
 def numbered_imports(path: Path) -> Iterator[tuple[int, str]]:
@@ -159,6 +206,13 @@ def numbered_imports(path: Path) -> Iterator[tuple[int, str]]:
 def lean_imports(path: Path) -> tuple[str, ...]:
     """Return cached direct Lean imports after removing comments."""
     return tuple(imported for _, imported in _numbered_imports(path))
+
+
+def check_lean_import_syntax(errors: list[str], *, root: Path, source_root: Path) -> None:
+    """Fail closed on import-looking commands not understood by the source audit parser."""
+    for path in lean_files(source_root):
+        for line_no, error in _invalid_import_commands(path):
+            errors.append(f"{relative(root, path)}:{line_no}: {error}")
 
 
 def module_matches_prefix(module: str, prefix: str) -> bool:

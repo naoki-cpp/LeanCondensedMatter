@@ -6,6 +6,10 @@
         "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Model",
         "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Intrinsic"
       ],
+      "coveragePrefixes": [
+        "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model",
+        "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic"
+      ],
       "layers": [
         {"id": "modelBasic", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic"]},
         {"id": "modelCurrentBridge", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.CurrentBridge"]},
@@ -29,6 +33,9 @@
       "sourceRoots": [
         "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Intrinsic",
         "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Bastin"
+      ],
+      "coveragePrefixes": [
+        "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin"
       ],
       "layers": [
         {
