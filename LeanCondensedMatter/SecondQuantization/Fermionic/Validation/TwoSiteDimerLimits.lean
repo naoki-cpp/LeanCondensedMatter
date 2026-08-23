@@ -18,7 +18,7 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Validation
 
-open Lattice
+open _root_.SecondQuantization.Fermionic.Lattice
 
 noncomputable section
 

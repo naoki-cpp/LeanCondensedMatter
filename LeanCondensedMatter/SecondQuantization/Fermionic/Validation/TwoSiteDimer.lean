@@ -22,7 +22,7 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Validation
 
-open Lattice Transport
+open _root_.SecondQuantization.Fermionic.Lattice Transport
 
 open QuantumTheory LinearResponse Transport
 

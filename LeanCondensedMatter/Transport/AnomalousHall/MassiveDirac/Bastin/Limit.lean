@@ -57,7 +57,17 @@ theorem tendsto_retarded_projectorResolventCoefficient_zero
           ((bandEnergy band v m px py : ℝ) : ℂ)) 0
     fun_prop
   have hinv := (hcontinuous.inv₀ hden).tendsto
-  simpa [projectorResolventCoefficient, retardedSpectralParameter, Pi.inv_apply] using hinv
+  have hpointwise :
+      (fun broadening : ℝ =>
+        retardedSpectralParameter probeEnergy broadening -
+          ((bandEnergy band v m px py : ℝ) : ℂ))⁻¹ =
+        (fun broadening : ℝ =>
+          (retardedSpectralParameter probeEnergy broadening -
+            ((bandEnergy band v m px py : ℝ) : ℂ))⁻¹) := by
+    funext broadening
+    rfl
+  rw [hpointwise] at hinv
+  simpa [projectorResolventCoefficient, retardedSpectralParameter] using hinv
 
 /-- Advanced scalar projector-resolvent coefficient has the same zero-broadening limit away from
 the selected band energy. -/
@@ -85,7 +95,17 @@ theorem tendsto_advanced_projectorResolventCoefficient_zero
           ((bandEnergy band v m px py : ℝ) : ℂ)) 0
     fun_prop
   have hinv := (hcontinuous.inv₀ hden).tendsto
-  simpa [projectorResolventCoefficient, advancedSpectralParameter, Pi.inv_apply] using hinv
+  have hpointwise :
+      (fun broadening : ℝ =>
+        advancedSpectralParameter probeEnergy broadening -
+          ((bandEnergy band v m px py : ℝ) : ℂ))⁻¹ =
+        (fun broadening : ℝ =>
+          (advancedSpectralParameter probeEnergy broadening -
+            ((bandEnergy band v m px py : ℝ) : ℂ))⁻¹) := by
+    funext broadening
+    rfl
+  rw [hpointwise] at hinv
+  simpa [projectorResolventCoefficient, advancedSpectralParameter] using hinv
 
 /-- Off the selected band energy, the retarded-minus-advanced scalar spectral coefficient tends to
 zero pointwise. -/
