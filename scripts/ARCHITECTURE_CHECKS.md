@@ -4,7 +4,7 @@ Architecture CI has two deliberately different layers:
 
 ```text
 Python pre-build audit
-  repository files / direct imports / declarative DAGs / reachability
+  repository files / direct imports / declarative DAGs / reachability / source contracts
         ↓
 lake build --wfail + lint
         ↓
@@ -20,14 +20,14 @@ architecture checks.
 
 ## Python execution
 
-CI runs the full registered Python audit once. Individual checker scripts remain directly executable
-for local debugging, but the runner loads their `main()` functions into one Python process instead of
-spawning one process per checker.
+CI runs the full registered Python audit once. The runner loads checker `main()` functions into one
+Python process instead of spawning one process per checker.
 
-The optional local scopes are only organizational filters:
+The optional local scopes are organizational filters only:
 
-- `core`: repository-wide, QuantumTheory, transport, single-particle, and graph topology checks;
-- `second-quantization`: SecondQuantization file/import/layout checks.
+- `core`: repository-wide, transport, current, and graph topology checks;
+- `second-quantization`: SecondQuantization-specific layout/topology checks;
+- a checker registered with scope `all` participates in both focused scopes.
 
 Run the same Python audit as CI with:
 
@@ -57,17 +57,18 @@ that produced it. The authoritative mechanism must match the kind of invariant.
 
 Keep these checks in the lightweight pre-build audit:
 
-- required files and umbrella layout;
+- required files and directories;
 - direct Lean import edges;
+- exact umbrella/import exposure when the source edge itself is the contract;
 - dependency direction between source trees;
 - repository and scoped layer DAGs;
 - transitive source reachability when it is itself an architecture boundary;
-- exact umbrella/import exposure when the source edge itself is the contract.
+- narrow source-syntax contracts when syntax itself is intentionally the invariant.
 
 Python may inspect Lean source syntax only when **syntax itself** is intentionally the invariant. The
-main remaining example is a compatibility-forwarding file that must contain imports but own no Lean
-declarations. Such a file may not be imported by the public library at all, so the compiled
-environment is intentionally not the authority for that forwarding-only property.
+main example is a compatibility-forwarding file that may be absent from the compiled public
+environment. Forwarding files are checked with an allowlist of permitted source commands rather than
+a regex attempting to enumerate Lean declarations.
 
 Comment stripping in `architecture_audit_common.py` exists to make direct-import and the small number
 of deliberate syntax checks comment-aware. It is not a general semantic Lean parser.
@@ -86,26 +87,25 @@ environment:
 
 The compiled harness collects `LeanCondensedMatter` declarations once, resolves declaration-to-module
 ownership through `Environment.const2ModIdx`, records whether declarations correspond to source
-ranges, and accumulates all violations before failing. Private declarations are normalized to their
+ranges, and accumulates violations before failing. Private declarations are normalized to their
 user-facing names before namespace/name contracts are applied.
 
 Do not add a Python declaration regex or helper-name scan when the compiled environment can express
-the rule. In particular, proof bodies and implementation helper choices are **not architecture
-contracts**. A theorem may be reproved or a definition refactored without changing CI as long as its
-stable owner, namespace, type, and mathematical API contract remain valid.
+the rule. Proof bodies and implementation helper choices are **not architecture contracts**.
 
 ## Declarative source graphs
 
-`check_architecture_graphs.py` is the **single Python owner of dependency graph structure**. Durable
-DAGs and transitive reachability contracts are data under `scripts/architecture/`, not checker-local
-rank tables, blacklists, or DFS implementations.
+`check_architecture_graphs.py` is the single Python owner of dependency graph structure. Durable DAGs
+and transitive reachability contracts are data under `scripts/architecture/`, not checker-local rank
+tables, blacklists, or DFS implementations.
 
 The graph data is split by purpose:
 
 - `second_quantization.json`: repository/SecondQuantization layer graph plus scoped
   SecondQuantization DAGs;
 - `source_topology.json`: focused Transport, current, LinearResponse, density/Gibbs/entropy, and
-  transitive reachability graphs.
+  transitive reachability graphs;
+- `ahe_topology.json`: stable canonical Massive-Dirac AHE source DAGs that have completed migration.
 
 For a direct import from source layer `A` to target layer `B`, the rule is:
 
@@ -140,11 +140,11 @@ Single-particle current
 
 Generic Transport → SecondQuantization
 
-Finite-disorder closure layers
-  FiniteTrace → {StredaTraceKernel, FiniteDisorder}
-  FiniteDisorder → {Moments, DisorderResolvent, SCBA}
-  Resolvent → {DisorderResolvent, SCBA}
-  {Moments, DisorderResolvent} → {Born, AdvancedBorn}
+Canonical finite-disorder closure layers
+  Core.FiniteTrace → {Streda.TraceKernel, Disorder.Finite}
+  Disorder.Finite → {Disorder.Moments, Disorder.Resolvent, Disorder.SCBA}
+  Resolvent.Basic → {Disorder.Resolvent, Disorder.SCBA}
+  {Disorder.Moments, Disorder.Resolvent} → {Disorder.Born, Disorder.AdvancedBorn}
 
 LinearResponse
   FreeDynamics → PureStateDynamics → PictureEquivalence → {ConservationLaws, EquationsOfMotion}
@@ -152,19 +152,52 @@ LinearResponse
   FreeDynamics → Stationarity → ConservationLaws
   DensityExpectation → ConservationLaws
 
-Density / Gibbs / entropy
-  DiagonalFormula → PurePoint / diagonal consumers
-  {PurePoint, FiniteHilbertOperator} → FiniteGibbsExpectationBridge
-  {Entropy, PurePoint} → FreeEntropy
+Massive-Dirac AHE foundation
+  Model.Basic → {Model.CurrentBridge, Model.Spectral}
+  Model.Spectral → Intrinsic.BerryBridge → Intrinsic.BerrySymmetry
+                 → Intrinsic.Response → Intrinsic.Conductivity
 ```
 
 The graph runner also owns the Combinatorics low-level forbidden-transitive-reachability contract.
+Every scoped graph is checked with a fresh diagnostic buffer so a failure in one graph cannot suppress
+validation or import diagnostics from later graphs.
+
+Python uses longest-prefix classification for source DAGs. The primary graph is also consumed by the
+Lean audit, whose lookup is order-based, so the Python pre-build audit requires primary module
+prefixes from different layers to be non-overlapping. That partition invariant guarantees both
+consumers classify the shared primary graph identically.
+
+## Declarative positive source contracts
 
 A required direct import is deliberately not encoded merely as an allowed DAG edge: a DAG says which
-direction is legal, not that one exact edge must exist. Focused topology checkers may therefore retain
-required imports and exact umbrella exposure without duplicating the architecture DAG.
+direction is legal, not that one exact edge must exist.
 
-See `scripts/architecture/README.md` for the graph schema.
+`source_contracts.json` therefore owns the uniform positive topology that used to be spread over many
+small focused Python scripts. `check_source_contracts.py` currently checks:
+
+- required canonical files;
+- required canonical directories;
+- required direct imports.
+
+This includes the thin QuantumTheory, SingleParticle, SecondQuantization AlgebraicFock/Lattice/mode,
+density/Gibbs, transport/validation owner, and Bloch–de Dominicis topology contracts. Their semantic
+owner/type rules remain in the compiled Lean audit.
+
+Special topology stays in a focused Python checker only when it is not yet a uniform data contract,
+for example layered directory layout, exact umbrella boundaries, or an active compatibility
+migration.
+
+## Compatibility forwarding files
+
+Transport and AHE compatibility modules are temporary source-topology objects. Their defining source
+contract is deliberately narrow: after comments are stripped, only
+
+- `import ...` commands,
+- blank lines, and
+- `set_option linter.style.header false`
+
+are accepted. This is stronger and more future-proof than maintaining a declaration regex that can
+miss `private`, `opaque`, `axiom`, `instance`, or future Lean declaration forms.
 
 ## Compiled semantic contracts
 
@@ -192,32 +225,33 @@ happens to establish it today.
 - file/import requirements;
 - graph loading, classification, reachability, and DAG validation.
 
-The old `ImportBoundary`, `check_import_boundaries`, `forbid_import_prefixes`, declaration-scanning
-helpers, and generic source-matching helpers have been removed as their responsibilities moved to the
-shared graph audit or compiled Lean audit.
+`architecture_graph_scopes.py` owns scoped-DAG loading and transitive-reachability execution.
+`check_source_contracts.py` owns uniform positive file/directory/direct-import contracts.
 
-Because the full Python audit runs in one read-only process, source/import views are cached. Focused
-checkers should not implement a second Lean parser or dependency traversal.
+The old `ImportBoundary`, checker-local dependency traversal, declaration-scanning helpers, and generic
+semantic source-matching helpers have been removed. Focused checkers should not implement a second
+Lean parser or dependency traversal.
 
 ## One owner per architectural concern
 
-A durable layer graph has one authoritative specification and one graph runner. A declaration-level
-invariant has one compiled Lean contract. Once an invariant is migrated, delete its superseded
-parser, blacklist, DFS, or token scan instead of retaining duplicate guards.
-
-The same rule applies across languages:
+A durable layer graph has one authoritative specification and one graph runner. A uniform positive
+source contract has one data specification and one runner. A declaration-level invariant has one
+compiled Lean contract. Once an invariant is migrated, delete its superseded parser, blacklist, DFS,
+token scan, or one-off data-only checker instead of retaining duplicate guards.
 
 ```text
-source topology  → Python
-compiled meaning → Lean
+allowed dependency direction → declarative DAG data
+required source topology      → source_contracts.json / focused syntax-layout checks
+compiled meaning              → Lean
 ```
 
 ## Adding source topology
 
-1. Ask whether the rule is an edge/subgraph or reachability contract of an existing declarative graph.
-2. If yes, edit a specification under `scripts/architecture/`; do not add checker-local traversal.
-3. Add a focused Python check only for a distinct file/import/syntax contract.
-4. Reuse shared primitives and register the checker once in `check_architecture.py`.
+1. Ask whether the rule is a dependency direction/reachability rule or a required concrete edge.
+2. Put direction/reachability into an architecture graph under `scripts/architecture/`.
+3. Put uniform required files/directories/direct imports into `source_contracts.json`.
+4. Add a focused Python checker only for a genuinely distinct layout/syntax/migration contract.
+5. Reuse shared primitives and register each checker once in `check_architecture.py`.
 
 ## Adding a compiled semantic check
 
