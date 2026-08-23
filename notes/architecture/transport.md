@@ -30,7 +30,9 @@ Transport/
 │   ├── Spectral.lean
 │   └── EnergyDerivative.lean
 ├── Analysis/
-│   └── LorentzianKernel.lean
+│   ├── LorentzianKernel.lean
+│   ├── LorentzianPole.lean
+│   └── ZeroTemperatureOccupation.lean
 ├── KuboBastin/
 │   ├── Finite.lean
 │   ├── OccupationInterpolation.lean
@@ -55,13 +57,14 @@ Transport/
 
 The stable public grouping modules are `Transport.Core`, `Transport.Resolvent`,
 `Transport.KuboBastin`, `Transport.Streda`, and `Transport.Disorder`. The project-level
-`LeanCondensedMatter.Transport` imports those five groups. `Transport.Foundations` and
-`Transport.ResolventAPI` are transitional compatibility umbrellas and are not owners.
+`LeanCondensedMatter.Transport` imports those five groups. `Transport.ResolventAPI` remains a
+transitional compatibility umbrella and is not an owner. The retired `Transport.Foundations`
+umbrella and the four historical flat Core leaf modules were removed after repository-wide consumer
+audits showed no remaining imports.
 
-Historical flat leaf paths remain temporarily as forwarding modules so downstream consumers can be
-migrated incrementally. They must not contain declarations. `scripts/check_transport_hierarchy.py`
-enforces that the new physical files exist and that compatibility paths forward to their canonical
-owners.
+Other historical flat leaf paths remain temporarily as forwarding modules so downstream consumers
+can be migrated incrementally. They must not contain declarations. `scripts/check_transport_hierarchy.py`
+enforces that the remaining compatibility paths forward to their canonical owners.
 
 ## Semantic Kubo–Bastin / Středa boundary
 
@@ -114,17 +117,18 @@ Transport/AnomalousHall/MassiveDirac/
 │   └── Spectral.lean
 └── Bastin/
     ├── Berry / Bands / Limit / Lorentzian / Occupation / ...
-    ├── Pole*       -- local regular-pole extraction proof chain
+    ├── Pole*       -- model-specific pole factor/window/specialization bridge
     ├── Radial*     -- finite-cutoff radial domination/DCT chain
     └── CleanConductivity.lean
 ```
 
 `MassiveDirac.Model`, `.Intrinsic`, `.Streda`, and `.Bastin` are the public benchmark layers.
-The old flat `MassiveDirac*` and `MassiveDiracBastin*` files are compatibility forwarders only.
+The remaining old flat `MassiveDirac*` and `MassiveDiracBastin*` files are compatibility forwarders
+only; retired pole-error shims have already been removed.
 
-This hierarchy is not permission for AHE to own reusable analysis. Generic Lorentzian analysis has
-already moved to `Transport/Analysis/LorentzianKernel.lean`; zero-temperature occupation and the
-regular-factor Lorentzian pole theorem are next extraction candidates under issue #1596.
+This hierarchy is not permission for AHE to own reusable analysis. Generic Lorentzian kernel/tail
+analysis, zero-temperature occupation/Fermi-edge weights, and regular-factor Lorentzian pole
+extraction now live under `Transport/Analysis/` and are consumed by the massive-Dirac specialization.
 
 ## Generic / concrete boundary
 
