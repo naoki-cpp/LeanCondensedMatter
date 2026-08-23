@@ -1,0 +1,29 @@
+{
+  "scopedImportGraphs": [
+    {
+      "id": "massiveDiracFoundation",
+      "sourceRoots": [
+        "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Model",
+        "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Intrinsic"
+      ],
+      "layers": [
+        {"id": "modelBasic", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic"]},
+        {"id": "modelCurrentBridge", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.CurrentBridge"]},
+        {"id": "modelSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Spectral"]},
+        {"id": "intrinsicBerryBridge", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerryBridge"]},
+        {"id": "intrinsicBerrySymmetry", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerrySymmetry"]},
+        {"id": "intrinsicResponse", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Response"]},
+        {"id": "intrinsicConductivity", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Conductivity"]}
+      ],
+      "edges": [
+        {"upstream": "modelBasic", "downstream": "modelCurrentBridge"},
+        {"upstream": "modelBasic", "downstream": "modelSpectral"},
+        {"upstream": "modelSpectral", "downstream": "intrinsicBerryBridge"},
+        {"upstream": "intrinsicBerryBridge", "downstream": "intrinsicBerrySymmetry"},
+        {"upstream": "intrinsicBerrySymmetry", "downstream": "intrinsicResponse"},
+        {"upstream": "intrinsicResponse", "downstream": "intrinsicConductivity"}
+      ]
+    }
+  ],
+  "forbiddenReachability": []
+}
