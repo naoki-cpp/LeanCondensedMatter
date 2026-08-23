@@ -74,13 +74,6 @@
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleContinuity",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleWindowContinuity",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleWindowBound",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleLocalError",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleErrorIntegral",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleInnerError",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleOuterError",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleErrorSplit",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleErrorBound",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleErrorLimit",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleExtraction",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleExtractionLimit"
           ]
