@@ -48,8 +48,7 @@ theorem tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral
   have hslice : ∀ broadening : ℝ, broadening ≠ 0 →
       ContinuousOn (fun offset : ℝ => factor (offset, broadening))
         (Set.Icc (-radius) radius) := by
-    intro broadening _
-    intro offset hoffset
+    intro broadening _ offset hoffset
     have hfactor :=
       continuousAt_targetCenteredInterbandSpectatorCurrentFactor_on_targetWindow
         band e v m px py radius (offset, broadening) hradius (abs_le.mpr hoffset)
