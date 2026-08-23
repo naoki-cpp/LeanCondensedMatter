@@ -28,7 +28,8 @@ theorem norm_lorentzian_mul_targetCenteredInterbandSpectatorCurrentFactor_radial
           band e v m p 0 (offset, broadening)‖ ≤
       radialInterbandSpectatorUniformBound e v m radius *
         lorentzianSpectralKernel offset broadening := by
-  have hkernel := lorentzianSpectralKernel_nonneg offset broadening hbroadening
+  have hkernel := QuantumTheory.Transport.lorentzianSpectralKernel_nonneg
+    offset broadening hbroadening
   have hnorm :
       ‖(lorentzianSpectralKernel offset broadening : ℂ)‖ =
         lorentzianSpectralKernel offset broadening := by
@@ -58,9 +59,10 @@ theorem norm_targetCenteredInterbandSpectatorCurrentPoleIntegral_radial_le
         (∫ offset in -radius..radius,
           lorentzianSpectralKernel offset broadening) := by
   have hab : -radius ≤ radius := by linarith
-  have hkernelInt := intervalIntegrable_lorentzianSpectralKernel
+  have hkernelInt := QuantumTheory.Transport.intervalIntegrable_lorentzianSpectralKernel
     (-radius) radius broadening hbroadening.ne'
   unfold targetCenteredInterbandSpectatorCurrentPoleIntegral
+    QuantumTheory.Transport.lorentzianRegularFactorIntegral
   have hineq :
       ‖∫ offset in -radius..radius,
           (lorentzianSpectralKernel offset broadening : ℂ) *
