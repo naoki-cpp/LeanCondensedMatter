@@ -535,6 +535,11 @@ private theorem lorentzianRegularFactorIntegral_eq_error_add_mass_smul_pole
         apply intervalIntegral.integral_congr
         intro offset _
         unfold lorentzianRegularFactorErrorIntegrand lorentzianRegularFactorError
+        change
+          (lorentzianSpectralKernel offset broadening : ℂ) * factor (offset, broadening) =
+            (lorentzianSpectralKernel offset broadening : ℂ) *
+                (factor (offset, broadening) - factor (0, 0)) +
+              lorentzianSpectralKernel offset broadening • factor (0, 0)
         rw [real_smul_complex_eq_mul]
         ring
     _ = (∫ offset in -radius..radius,
