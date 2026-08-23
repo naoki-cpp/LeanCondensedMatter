@@ -1,0 +1,226 @@
+{
+  "requiredFiles": [
+    {
+      "id": "quantumTheoryPictureOwners",
+      "paths": [
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/PictureEquivalence.lean",
+        "LeanCondensedMatter/Analysis/Operator/TraceClass/Unitary.lean",
+        "LeanCondensedMatter/QuantumTheory/DensityOperator/Diagonal.lean"
+      ]
+    },
+    {
+      "id": "quantumTheoryConservationOwners",
+      "paths": [
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/FreeDynamics.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/ConservationLaws.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/DensityExpectation.lean",
+        "LeanCondensedMatter/QuantumTheory/DensityOperator/Basic.lean"
+      ]
+    },
+    {
+      "id": "quantumTheoryPurePointDensityOwners",
+      "paths": [
+        "LeanCondensedMatter/QuantumTheory/DensityOperator/DiagonalFormula.lean",
+        "LeanCondensedMatter/QuantumTheory/Entropy/Diagonal.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/PurePointDynamics.lean"
+      ]
+    },
+    {
+      "id": "quantumTheoryNormalizedExpectationOwners",
+      "paths": [
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/Expectation.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/FreeDynamics.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/Stationarity.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/UnitaryPerturbation.lean"
+      ]
+    },
+    {
+      "id": "quantumTheoryPublicModules",
+      "paths": [
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/PureStateDynamics.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/EquationsOfMotion.lean"
+      ]
+    },
+    {
+      "id": "secondQuantizationEntryPoint",
+      "paths": [
+        "LeanCondensedMatter/SecondQuantization.lean"
+      ]
+    },
+    {
+      "id": "fermionicAlgebraicFockOwners",
+      "paths": [
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/Basic.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/Creation.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/Annihilation.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/Mode.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/OccupationEquivalence.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/OccupationFieldEquivalence.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/SecondQuantization.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/SecondQuantizationLinearity.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/SecondQuantizationCommutator.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/AlgebraicFock/RankOne.lean"
+      ]
+    },
+    {
+      "id": "fermionicLatticeOwners",
+      "paths": [
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/DiscreteLattice.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/Peierls.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/Bounded.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/BoundedMatrixUnitAdjoint.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/PeierlsContact.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/HermitianBondCurrent.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/RankOneSecondQuantization.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/GeometricCurrent.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Lattice/GeometricPeierls.lean"
+      ]
+    },
+    {
+      "id": "fermionicTransportValidationOwners",
+      "paths": [
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Validation.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/BoundedOneBodyResponse.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/ConductivityNormalization.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FrequencyResponse.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/GeometricCurrentResponse.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/HarmonicSourceResponse.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/InfiniteTimeFrequencyResponse.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/KuboBastinSpectral.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/KuboBastinTrace.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/KuboGreenwood.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/SpectralFrequencyResponse.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StaticKuboBastinResponse.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StationaryFrequencyResponse.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Validation/FiniteToys.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Validation/TwoLevelExplicit.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Validation/TwoSiteDimer.lean"
+      ]
+    },
+    {
+      "id": "dimensionIndependentModeOwners",
+      "paths": [
+        "LeanCondensedMatter/SecondQuantization/Common/Algebra/OneParticleSpace.lean",
+        "LeanCondensedMatter/SecondQuantization/Common/Algebra/OccupationBasis.lean",
+        "LeanCondensedMatter/SecondQuantization/Common/Algebra/AlgebraicFock.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/Occupation.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Algebra/FockSpace.lean",
+        "LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/Occupation.lean",
+        "LeanCondensedMatter/SecondQuantization/Bosonic/Algebra/FockSpace.lean"
+      ]
+    },
+    {
+      "id": "densityGibbsOwners",
+      "paths": [
+        "LeanCondensedMatter/QuantumTheory/Gibbs/PurePoint.lean",
+        "LeanCondensedMatter/SecondQuantization/Common/Algebra/FiniteHilbertOperator.lean",
+        "LeanCondensedMatter/SecondQuantization/Common/Thermal/FiniteGibbsExpectationBridge.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreeEntropy.lean"
+      ]
+    },
+    {
+      "id": "blochDeDominicisExpectationOwner",
+      "paths": [
+        "LeanCondensedMatter/SecondQuantization/Common/Thermal/BlochDeDominicis/ExpectationRecursion.lean"
+      ]
+    }
+  ],
+  "requiredDirectories": [
+    {
+      "id": "singleParticleContinuum",
+      "paths": [
+        "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum"
+      ]
+    }
+  ],
+  "requiredImports": [
+    {
+      "id": "quantumTheoryDensityUmbrella",
+      "path": "LeanCondensedMatter/QuantumTheory/DensityOperator.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalExpectation",
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
+      ]
+    },
+    {
+      "id": "quantumTheoryPublicUmbrella",
+      "path": "LeanCondensedMatter/QuantumTheory.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.PureStateDynamics",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.EquationsOfMotion",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.ConservationLaws"
+      ]
+    },
+    {
+      "id": "conservationDependencies",
+      "path": "LeanCondensedMatter/QuantumTheory/LinearResponse/ConservationLaws.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.PictureEquivalence",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.DensityExpectation"
+      ]
+    },
+    {
+      "id": "densityDiagonalConsumers",
+      "path": "LeanCondensedMatter/QuantumTheory/Entropy/Diagonal.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
+      ]
+    },
+    {
+      "id": "purePointDynamicsDensityDependency",
+      "path": "LeanCondensedMatter/QuantumTheory/LinearResponse/PurePointDynamics.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
+      ]
+    },
+    {
+      "id": "stationarityDependencies",
+      "path": "LeanCondensedMatter/QuantumTheory/LinearResponse/Stationarity.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.Expectation",
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.FreeDynamics"
+      ]
+    },
+    {
+      "id": "secondQuantizationRootExposure",
+      "path": "LeanCondensedMatter.lean",
+      "modules": [
+        "LeanCondensedMatter.SecondQuantization"
+      ]
+    },
+    {
+      "id": "purePointGibbsDensityDependency",
+      "path": "LeanCondensedMatter/QuantumTheory/Gibbs/PurePoint.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.DiagonalFormula"
+      ]
+    },
+    {
+      "id": "finiteGibbsExpectationDependencies",
+      "path": "LeanCondensedMatter/SecondQuantization/Common/Thermal/FiniteGibbsExpectationBridge.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint",
+        "LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperator"
+      ]
+    },
+    {
+      "id": "freeEntropyDependency",
+      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/FreeEntropy.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.Entropy.Diagonal"
+      ]
+    },
+    {
+      "id": "blochDeDominicisExpectationDependencies",
+      "path": "LeanCondensedMatter/SecondQuantization/Common/Thermal/BlochDeDominicis/ExpectationRecursion.lean",
+      "modules": [
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight",
+        "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion"
+      ]
+    }
+  ]
+}
