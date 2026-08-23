@@ -127,7 +127,7 @@ theorem norm_targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral_
         (∫ offset in -radius..radius,
           lorentzianSpectralKernel offset broadening) := by
   have hab : -radius ≤ radius := by linarith
-  have hkernelInt := intervalIntegrable_lorentzianSpectralKernel
+  have hkernelInt := QuantumTheory.Transport.intervalIntegrable_lorentzianSpectralKernel
     (-radius) radius broadening hbroadening.ne'
   unfold targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral
   have hineq :

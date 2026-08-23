@@ -8,12 +8,12 @@ set_option linter.style.header false
 # Uniform bounds for the massive-Dirac Bastin spectator on a pole window
 
 The target-centered spectator/current factor is continuous throughout any energy strip whose
-radius is smaller than the interband gap.  Restricting that strip to a compact rectangle in energy
+radius is smaller than the interband gap. Restricting that strip to a compact rectangle in energy
 offset and broadening therefore gives a uniform norm bound.
 
 This file records both the bound on the regular factor itself and the bound on its deviation from
-the target-pole value.  These are the compactness inputs needed to control the Lorentzian-weighted
-error term in the occupation-weighted Bastin energy integral.
+the target-pole value, including a nonnegative choice of the latter bound. These are the compactness
+inputs used by the generic Lorentzian pole-extraction theorem.
 
 No energy integration, zero-broadening limit exchange, or momentum integration is performed here.
 -/
@@ -79,6 +79,20 @@ theorem exists_norm_targetCenteredInterbandSpectatorCurrentFactor_sub_pole_le_on
       (targetCenteredBastinPoleRectangle radius broadeningMax) :=
     continuousOn_const
   exact hcompact.exists_bound_of_continuousOn (hcontinuous.sub hconstant)
+
+/-- The compact-rectangle deviation bound can be chosen nonnegative. -/
+theorem exists_nonneg_norm_targetCenteredInterbandSpectatorCurrentFactor_sub_pole_le_on_rectangle
+    (band : Band) (e v m px py radius broadeningMax : ℝ)
+    (hradius : radius < |interbandEnergyGap band v m px py|) :
+    ∃ C : ℝ, 0 ≤ C ∧
+      ∀ p ∈ targetCenteredBastinPoleRectangle radius broadeningMax,
+        ‖targetCenteredInterbandSpectatorCurrentFactor band e v m px py p -
+          targetCenteredInterbandSpectatorCurrentFactor band e v m px py (0, 0)‖ ≤ C := by
+  rcases exists_norm_targetCenteredInterbandSpectatorCurrentFactor_sub_pole_le_on_rectangle
+      band e v m px py radius broadeningMax hradius with ⟨C, hC⟩
+  refine ⟨max C 0, le_max_right _ _, ?_⟩
+  intro p hp
+  exact le_trans (hC p hp) (le_max_left _ _)
 
 end
 

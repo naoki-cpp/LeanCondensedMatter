@@ -41,6 +41,7 @@ theorem targetCenteredInterbandBastinPairIntegral_eq_neg_two_i_mul_poleIntegral
           band e v m px py radius broadening := by
   unfold targetCenteredInterbandBastinPairIntegral
     targetCenteredInterbandSpectatorCurrentPoleIntegral
+    QuantumTheory.Transport.lorentzianRegularFactorIntegral
   rw [← intervalIntegral.integral_const_mul]
   apply intervalIntegral.integral_congr
   intro offset _

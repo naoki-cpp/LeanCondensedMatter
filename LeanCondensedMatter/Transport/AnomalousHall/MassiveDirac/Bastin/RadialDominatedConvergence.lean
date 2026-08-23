@@ -118,6 +118,7 @@ theorem stronglyMeasurable_targetCenteredInterbandBastinPairIntegral_radial
           ∫ offset : ℝ, F (p, offset) ∂(volume.restrict (Set.Ioc (-radius) radius))) := by
       funext p
       unfold targetCenteredInterbandSpectatorCurrentPoleIntegral
+        QuantumTheory.Transport.lorentzianRegularFactorIntegral
       rw [intervalIntegral.integral_of_le hab]
     rw [heq]
     exact hparam
