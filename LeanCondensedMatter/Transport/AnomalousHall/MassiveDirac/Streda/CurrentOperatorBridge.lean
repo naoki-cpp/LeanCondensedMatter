@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStreda
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracCurrentBridge
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda.Response
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.CurrentBridge
 
 set_option linter.style.header false
 

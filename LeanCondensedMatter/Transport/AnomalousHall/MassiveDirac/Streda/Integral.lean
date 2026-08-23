@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStreda
-import LeanCondensedMatter.Transport.StredaTraceRepresentation
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda.Response
+import LeanCondensedMatter.Transport.Streda.TraceRepresentation
 
 set_option linter.style.header false
 
