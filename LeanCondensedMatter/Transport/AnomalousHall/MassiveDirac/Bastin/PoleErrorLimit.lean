@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleErrorBound
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleErrorBound
 import Mathlib.Tactic
 
 set_option linter.style.header false
