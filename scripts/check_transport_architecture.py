@@ -84,17 +84,6 @@ def require_owner_import(errors: list[str], path: Path, imported: str) -> None:
     require_import(errors, path, imported, root=ROOT, description="transport specialization")
 
 
-def forbid_declarations(
-    errors: list[str], path: Path, declarations: tuple[str, ...], owner: str
-) -> None:
-    if not path.exists():
-        return
-    text = path.read_text(encoding="utf-8")
-    for declaration in declarations:
-        if declaration in text:
-            errors.append(f"{relative(path)} must not own {owner} declaration `{declaration}`")
-
-
 def main() -> int:
     errors: list[str] = []
 
@@ -121,6 +110,8 @@ def main() -> int:
     for path, imported in FERMIONIC_SPECIALIZATIONS.items():
         require_owner_import(errors, path, imported)
 
+    # Keep only durable source topology. The removed declaration/body blacklists recorded particular
+    # refactor states and helper spellings; they are not reproduced as architecture snapshots.
     finite_trace_import = "LeanCondensedMatter.Transport.Core.FiniteTrace"
     streda_trace_kernel = STREDA / "TraceKernel.lean"
     require_owner_import(errors, streda_trace_kernel, finite_trace_import)
@@ -129,129 +120,32 @@ def main() -> int:
         streda_trace_kernel,
         "LeanCondensedMatter.Transport.Streda.OperatorKernel",
     )
-    forbid_declarations(
-        errors,
-        streda_trace_kernel,
-        (
-            "def finiteDimensionalOperatorTrace",
-            "theorem finiteDimensionalOperatorTrace_apply",
-            "theorem finiteDimensionalOperatorTrace_mul_comm",
-            "theorem hasDerivAt_finiteDimensionalOperatorTrace_comp",
-        ),
-        "ordinary finite-dimensional trace",
-    )
 
-    finite_disorder = DISORDER / "Finite.lean"
-    require_owner_import(errors, finite_disorder, finite_trace_import)
-
-    resolvent = RESOLVENT / "Basic.lean"
-    forbid_declarations(
-        errors,
-        resolvent,
-        (
-            "structure BoundedSystem",
-            "structure FiniteVolumeSystem",
-            "inductive CartesianDirection",
-            "def retardedFermiParameter",
-            "def advancedFermiParameter",
-            "noncomputable def retardedGreen",
-            "noncomputable def advancedGreen",
-        ),
-        "retired transport-system wrapper",
-    )
+    require_owner_import(errors, DISORDER / "Finite.lean", finite_trace_import)
 
     resolvent_spectral_import = "LeanCondensedMatter.Transport.Resolvent.Spectral"
-    finite_kubo_bastin = KUBO_BASTIN / "Finite.lean"
-    streda_trace_spectral = STREDA / "TraceSpectral.lean"
-    require_owner_import(errors, finite_kubo_bastin, resolvent_spectral_import)
-    require_owner_import(errors, streda_trace_spectral, resolvent_spectral_import)
+    require_owner_import(errors, KUBO_BASTIN / "Finite.lean", resolvent_spectral_import)
+    require_owner_import(errors, STREDA / "TraceSpectral.lean", resolvent_spectral_import)
 
-    forbid_declarations(
-        errors,
-        FERMIONIC_TRANSPORT / "ConductivityNormalization.lean",
-        (
-            "def adiabaticElectricFieldFactor",
-            "def finiteVolumeConductivityNormalization",
-            "def finiteVolumeConductivityFromVectorPotential",
-        ),
-        "generic normalization",
-    )
-    forbid_declarations(
-        errors,
-        FERMIONIC_TRANSPORT / "FiniteConductivityTable.lean",
-        (
-            "structure FiniteConductivityTable",
-            "def finiteConductivityTableValue",
-        ),
-        "generic scalar table",
-    )
-
-    frequency_response = FERMIONIC_TRANSPORT / "FrequencyResponse.lean"
     require_owner_import(
         errors,
-        frequency_response,
+        FERMIONIC_TRANSPORT / "FrequencyResponse.lean",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticSwitching",
     )
-    if frequency_response.exists():
-        frequency_code = frequency_response.read_text(encoding="utf-8")
-        if "adiabaticFrequencyPhase" not in frequency_code:
-            errors.append(
-                f"{relative(frequency_response)} must consume the canonical adiabatic frequency phase"
-            )
-    forbid_declarations(
-        errors,
-        frequency_response,
-        (
-            "def finiteTimeAdiabaticTransform",
-            "def HasInfiniteObservationTimeLimit",
-            "def HasZeroSwitchingLimit",
-            "def HasDCFrequencyLimit",
-            "def HasTimeThenSwitchingThenDCLimit",
-            "def HasTimeThenDCThenSwitchingLimit",
-        ),
-        "generic response core",
-    )
-
-    fermionic_harmonic = FERMIONIC_TRANSPORT / "HarmonicSourceResponse.lean"
     require_owner_import(
         errors,
-        fermionic_harmonic,
+        FERMIONIC_TRANSPORT / "HarmonicSourceResponse.lean",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.HarmonicSource",
     )
-    forbid_declarations(
-        errors,
-        fermionic_harmonic,
-        (
-            "def adiabaticCosineSource",
-            "def adiabaticSineSource",
-            "theorem adiabaticFrequencyFactor_eq_cosine_add_I_sine",
-            "theorem adiabaticCosineSource_at_observation",
-            "theorem adiabaticSineSource_at_observation",
-        ),
-        "generic harmonic-source",
-    )
-
     require_owner_import(
         errors,
         FERMIONIC_TRANSPORT / "StationaryFrequencyResponse.lean",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic",
     )
-
-    fermionic_infinite = FERMIONIC_TRANSPORT / "InfiniteTimeFrequencyResponse.lean"
     require_owner_import(
         errors,
-        fermionic_infinite,
+        FERMIONIC_TRANSPORT / "InfiniteTimeFrequencyResponse.lean",
         "LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic",
-    )
-    forbid_declarations(
-        errors,
-        fermionic_infinite,
-        (
-            "def AdiabaticLagIntegrable",
-            "def infiniteTimeAdiabaticTransform",
-            "theorem hasInfiniteObservationTimeLimit_finiteTimeAdiabaticTransform",
-        ),
-        "generic infinite-time response",
     )
 
     finite_disorder_resolvent = DISORDER / "Resolvent.lean"
@@ -266,10 +160,9 @@ def main() -> int:
         "LeanCondensedMatter.Transport.Resolvent.Basic",
     )
 
-    finite_disorder_moments = DISORDER / "Moments.lean"
     require_owner_import(
         errors,
-        finite_disorder_moments,
+        DISORDER / "Moments.lean",
         "LeanCondensedMatter.Transport.Disorder.Finite",
     )
 
@@ -283,12 +176,6 @@ def main() -> int:
         errors,
         finite_disorder_born,
         "LeanCondensedMatter.Transport.Disorder.Resolvent",
-    )
-    forbid_declarations(
-        errors,
-        finite_disorder_born,
-        ("structure FiniteDisorderMomentData",),
-        "shared finite-disorder moment",
     )
 
     finite_disorder_advanced_born = DISORDER / "AdvancedBorn.lean"
