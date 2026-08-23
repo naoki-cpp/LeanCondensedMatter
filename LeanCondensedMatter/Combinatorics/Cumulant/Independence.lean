@@ -28,7 +28,7 @@ theorem partitionProduct_restrict_eq_prod_inf {S : Finset α} (π : Finpartition
   have hinj : Set.InjOn (fun C => C ⊓ b)
       (π.parts.filter (fun C => C ⊓ b ≠ ⊥) : Finset (Finset α)) := by
     intro C1 hC1 C2 hC2 heq
-    simp only [Finset.coe_filter, Set.mem_setOf_eq] at hC1 hC2
+    simp only [Finset.coe_filter, Set.mem_ofPred_eq] at hC1 hC2
     have heq' : C1 ⊓ b = C2 ⊓ b := heq
     have hle : C1 ⊓ b ≤ C2 := by rw [heq']; exact inf_le_left
     exact eq_of_inf_ne_bot hC1.1 hC2.1 inf_le_left hle hC1.2
