@@ -15,8 +15,8 @@ L_η(x) = η / (η² + x²).
 ```
 
 It proves the elementary scalar resolvent identity, exact finite-interval integrals, symmetric-window
-mass formula, and convergence of every fixed positive symmetric-window mass to `π` as
-`η → 0⁺`.
+mass formula, convergence of every fixed positive symmetric-window mass to `π`, and vanishing mass
+between fixed nested positive windows as `η → 0⁺`.
 
 No Hamiltonian, band structure, current operator, occupation function, conductivity normalization,
 or concrete transport model appears here.
@@ -138,6 +138,54 @@ theorem tendsto_integral_lorentzianSpectralKernel_symmetric
   rw [hfun]
   rw [hpi] at hmass
   exact hmass
+
+/-- Lorentzian spectral mass between an inner and outer symmetric window, represented as the
+outer-window mass minus the inner-window mass. -/
+def lorentzianSpectralTailMass (innerRadius outerRadius broadening : ℝ) : ℝ :=
+  (∫ offset in -outerRadius..outerRadius,
+      lorentzianSpectralKernel offset broadening) -
+    (∫ offset in -innerRadius..innerRadius,
+      lorentzianSpectralKernel offset broadening)
+
+/-- Exact arctangent form of the symmetric Lorentzian tail mass. -/
+theorem lorentzianSpectralTailMass_eq_two_mul_arctan_sub
+    (innerRadius outerRadius broadening : ℝ) :
+    lorentzianSpectralTailMass innerRadius outerRadius broadening =
+      2 * (Real.arctan (outerRadius / broadening) -
+        Real.arctan (innerRadius / broadening)) := by
+  rw [lorentzianSpectralTailMass,
+    integral_lorentzianSpectralKernel_symmetric,
+    integral_lorentzianSpectralKernel_symmetric]
+  ring
+
+/-- The outer symmetric mass is the inner mass plus the spectral tail mass. -/
+theorem integral_lorentzianSpectralKernel_outer_eq_inner_add_tail
+    (innerRadius outerRadius broadening : ℝ) :
+    (∫ offset in -outerRadius..outerRadius,
+        lorentzianSpectralKernel offset broadening) =
+      (∫ offset in -innerRadius..innerRadius,
+        lorentzianSpectralKernel offset broadening) +
+        lorentzianSpectralTailMass innerRadius outerRadius broadening := by
+  unfold lorentzianSpectralTailMass
+  ring
+
+/-- For fixed positive nested radii, all Lorentzian mass between the two windows vanishes as the
+broadening tends to zero from the positive side. -/
+theorem tendsto_lorentzianSpectralTailMass_zero
+    (innerRadius outerRadius : ℝ)
+    (hinner : 0 < innerRadius) (hnested : innerRadius ≤ outerRadius) :
+    Tendsto
+      (fun broadening : ℝ =>
+        lorentzianSpectralTailMass innerRadius outerRadius broadening)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds 0) := by
+  have houter : 0 < outerRadius := lt_of_lt_of_le hinner hnested
+  have hOuterMass :=
+    tendsto_integral_lorentzianSpectralKernel_symmetric outerRadius houter
+  have hInnerMass :=
+    tendsto_integral_lorentzianSpectralKernel_symmetric innerRadius hinner
+  have htail := hOuterMass.sub hInnerMass
+  simpa [lorentzianSpectralTailMass] using htail
 
 end
 
