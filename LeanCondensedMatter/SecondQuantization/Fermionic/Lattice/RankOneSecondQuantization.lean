@@ -36,8 +36,8 @@ theorem dualRankOne_latticeKet_latticeCoordinateDual (x y : Site) :
       matrixUnit x y := by
   apply LinearMap.ext
   intro ψ
-  change Finsupp.single x (ψ y) = Finsupp.single x (ψ y)
-  rfl
+  rw [AlgebraicFock.dualRankOne_apply, latticeCoordinateDual_apply, matrixUnit_apply]
+  simp [latticeKet]
 
 /-- The second quantization of a lattice matrix unit factors into creation and annihilation fields. -/
 theorem dGamma_matrixUnit (x y : Site) :
