@@ -169,6 +169,33 @@ BASTIN_NAMES = (
 AHE_BASTIN = {f"MassiveDiracBastin{name}.lean": f"Bastin.{name}" for name in BASTIN_NAMES}
 AHE_COMPAT = AHE_MODEL | AHE_INTRINSIC | AHE_STREDA | AHE_BASTIN
 
+AHE_CANONICAL_IMPORT_MIGRATIONS = {
+    AHE / "MassiveDirac" / "Model" / "CurrentBridge.lean": (
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac",),
+    ),
+    AHE / "MassiveDirac" / "Model" / "Spectral.lean": (
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac",),
+    ),
+    AHE / "MassiveDirac" / "Intrinsic" / "BerryBridge.lean": (
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Spectral",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracSpectral",),
+    ),
+    AHE / "MassiveDirac" / "Intrinsic" / "BerrySymmetry.lean": (
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerryBridge",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerryBridge",),
+    ),
+    AHE / "MassiveDirac" / "Intrinsic" / "Response.lean": (
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerrySymmetry",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerrySymmetry",),
+    ),
+    AHE / "MassiveDirac" / "Intrinsic" / "Conductivity.lean": (
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Response",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracIntrinsic",),
+    ),
+}
+
 
 def no_declarations(errors: list[str], path: Path) -> None:
     if not path.is_file():
@@ -210,6 +237,9 @@ def main() -> int:
         require_compat(errors, TRANSPORT / filename, module)
 
     for path, (required, forbidden) in CANONICAL_IMPORT_MIGRATIONS.items():
+        require_canonical_imports(errors, path, required, forbidden)
+
+    for path, (required, forbidden) in AHE_CANONICAL_IMPORT_MIGRATIONS.items():
         require_canonical_imports(errors, path, required, forbidden)
 
     transport_umbrella = LEAN / "Transport.lean"
