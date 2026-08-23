@@ -1,9 +1,9 @@
-# Declarative architecture graphs
+# Declarative architecture data
 
 Files in this directory are architecture **specifications**, not checker implementations.
 
-The goal is to describe repository dependency direction by naming graph vertices and edges once,
-then let the architecture audits interpret that data at the appropriate level.
+The goal is to describe durable repository topology as data, then let the architecture audits
+interpret it at the appropriate level.
 
 ## Primary layer graph
 
@@ -33,6 +33,12 @@ Consequences follow from the graph rather than separate blacklists:
 - `Analysis` / `Combinatorics` / `QuantumTheory` cannot import SecondQuantization layers downstream;
 - `Fermionic` and `Bosonic` cannot import each other;
 - both statistics-specific layers may consume `Common` and its upstream ancestors.
+
+Python classifies graph modules by longest matching prefix. The compiled Lean namespace audit reads
+the same primary graph with first-match lookup, so the pre-build audit additionally requires primary
+module prefixes owned by different layers to be non-overlapping. That partition invariant makes the
+two classification rules equivalent. Scoped source-only DAGs may still use nested prefixes because
+they are interpreted only by Python's longest-prefix classifier.
 
 ## Scoped import DAGs
 
@@ -73,53 +79,78 @@ Combinatorics → Permutation
 It also keeps Fermionic lattice construction upstream of response theory and AlgebraicFock upstream
 of transport-specific quantum theory.
 
-`source_topology.json` contains the remaining repository source-layer DAGs that do not belong to the
-compiled SecondQuantization namespace contract:
+`source_topology.json` contains repository source-layer DAGs that do not belong to the compiled
+SecondQuantization namespace contract. The finite-disorder graph is expressed in terms of the
+**canonical** Transport modules rather than compatibility forwarders:
 
 ```text
-Generic Transport → SecondQuantization
+Transport.Core.FiniteTrace
+  ├→ Transport.Streda.TraceKernel
+  └→ Transport.Disorder.Finite
 
-Finite disorder
-  FiniteDisorder ─────→ Moments ───────────┐
-        │                   └──────────────→│ Born
-        ├────────→ DisorderResolvent ─────→│ AdvancedBorn
-        │                 ↑                 │
-        └─────────────────┼──────────────→ SCBA
-                  Resolvent ─────────────→ SCBA
+Transport.Disorder.Finite
+  ├→ Transport.Disorder.Moments
+  ├→ Transport.Disorder.Resolvent
+  └→ Transport.Disorder.SCBA
 
-LinearResponse
-  FreeDynamics → PureStateDynamics → PictureEquivalence → {ConservationLaws, EquationsOfMotion}
-  Expectation → DensityExpectation → ConservationLaws
-  Expectation → Stationarity ← FreeDynamics
-  Stationarity → ConservationLaws
+Transport.Resolvent.Basic
+  ├→ Transport.Disorder.Resolvent
+  └→ Transport.Disorder.SCBA
 
-Density / Gibbs / entropy
-  DiagonalFormula → PurePoint → FiniteGibbsExpectationBridge
-  FiniteHilbertOperator ────────────────→ FiniteGibbsExpectationBridge
-  Entropy → FreeEntropy ← PurePoint
+{Transport.Disorder.Moments, Transport.Disorder.Resolvent}
+  ├→ Transport.Disorder.Born
+  └→ Transport.Disorder.AdvancedBorn
 ```
 
-A focused generalized-current graph additionally prevents representation-independent Analysis
-modules and the fermionic field bridge from depending on concrete `QuantumMechanics`.
+It also contains the LinearResponse, generalized-current, density/Gibbs/entropy, and other focused
+source DAGs.
 
-## What is not a DAG
+`ahe_topology.json` starts the stable canonical Massive-Dirac AHE graph without freezing the Bastin
+migration while it is still evolving:
+
+```text
+Model.Basic ─┬→ Model.CurrentBridge
+             └→ Model.Spectral → Intrinsic.BerryBridge
+                                → Intrinsic.BerrySymmetry
+                                → Intrinsic.Response
+                                → Intrinsic.Conductivity
+```
+
+## Positive source contracts
 
 A dependency-direction DAG answers **which layers may depend on which upstream layers**. It does not
 assert that a particular direct edge must exist.
 
-Therefore contracts such as:
+Fixed positive topology therefore lives separately in `source_contracts.json`. The shared source
+contract runner currently supports:
 
-- `A` must directly import `B`;
-- an umbrella must export a particular module set;
-- a file must exist at a canonical path;
+- required canonical files;
+- required canonical directories;
+- required direct imports.
 
-remain focused positive-edge/layout policy. They should not be encoded as fake DAG edges merely to
-put every topology check in one data structure.
+This replaces checker-local Python files whose only remaining content was a static list of paths and
+required edges. A required direct import is deliberately not encoded as an ordinary DAG edge: an
+allowed direction and a required edge are different contracts.
+
+Special topology that is not yet a uniform data shape may remain in a focused checker. Examples are
+exact umbrella boundaries, layered directory-layout rules, and active compatibility migrations.
+
+## Source syntax contracts
 
 Declaration ownership, namespace ownership, dimension independence, and other semantic signature
-constraints are also not DAGs: they belong to the compiled Lean audit. Source syntax is inspected in
-Python only when syntax itself is the intended contract, such as a compatibility-forwarding file
-that must own no declarations.
+constraints belong to the compiled Lean audit, not source-text parsing.
+
+Python inspects syntax only when syntax itself is the invariant. The main example is a compatibility
+forwarding module. Such a file may be absent from the compiled public environment, so its forwarding
+property is checked directly: after comments are removed, only `import` commands, blank lines, and
+the standard `set_option linter.style.header false` command are accepted. This allowlist avoids
+trying to maintain a regex enumerating every form of Lean declaration.
+
+## Independent diagnostics
+
+Every primary/scoped DAG is validated and checked with its own fresh diagnostic buffer. A malformed
+or violated graph must not prevent later graphs from being validated in the same CI run. Diagnostics
+are then accumulated by the top-level architecture audit.
 
 ## One graph runner, two semantic levels
 
@@ -135,8 +166,8 @@ owner module, converts private names back with `privateToUserName`, and checks t
 `namespacePrefixes` and `forbiddenNameFragments`. Additional compiled checks protect canonical
 owners and declaration-type dependencies that are not naturally represented by the layer DAG.
 
-Scoped DAGs are import-topology data only; declaration-level rules should be represented as compiled
-Lean contracts rather than reintroducing source parsers.
+Scoped DAGs and `source_contracts.json` are source-topology data only; declaration-level rules should
+be represented as compiled Lean contracts rather than reintroducing source parsers.
 
 This deliberately avoids teaching Python how to parse Lean `namespace`, `section`, `end`, declaration
 modifiers, private-name syntax, proof bodies, or helper-name usage.
