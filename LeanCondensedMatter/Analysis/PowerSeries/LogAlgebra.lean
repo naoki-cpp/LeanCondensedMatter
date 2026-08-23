@@ -40,7 +40,7 @@ theorem derivative_logOf_mul {Z : PowerSeries ℂ}
     rw [PowerSeries.subst_mul hsub, PowerSeries.subst_add hsub,
       PowerSeries.subst_X hsub, hone] at hgeom
     simpa using hgeom
-  rw [PowerSeries.logOf_eq, PowerSeries.derivative_subst ℂ hsub]
+  rw [PowerSeries.logOf_eq, PowerSeries.derivative_subst hsub]
   have hderiv : d⁄dX ℂ (Z - 1) = d⁄dX ℂ Z := by simp
   rw [hderiv]
   calc
