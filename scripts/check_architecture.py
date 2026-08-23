@@ -19,32 +19,15 @@ class ArchitectureCheck:
     scope: str
 
 
-# This manifest owns architecture-audit registration only. Dependency DAGs live in shared
-# specifications under scripts/architecture/. Scopes are optional local filters and must not become
-# a second architecture model.
+# This manifest owns architecture-audit registration only. Dependency DAGs and uniform source
+# contracts live in shared specifications under scripts/architecture/. Scopes are optional local
+# filters and must not become a second architecture model. A checker with scope `all` participates
+# in both focused scopes.
 CHECKS: tuple[ArchitectureCheck, ...] = (
     ArchitectureCheck("declarative architecture graphs", "check_architecture_graphs.py", "core"),
-    ArchitectureCheck("root public umbrellas", "check_root_public_umbrellas.py", "core"),
-    ArchitectureCheck("QuantumTheory architecture", "check_quantum_theory_architecture.py", "core"),
-    ArchitectureCheck("generalized-current architecture", "check_generalized_current_architecture.py", "core"),
-    ArchitectureCheck("transport architecture", "check_transport_architecture.py", "core"),
+    ArchitectureCheck("declarative source contracts", "check_source_contracts.py", "all"),
     ArchitectureCheck("transport physical hierarchy", "check_transport_hierarchy.py", "core"),
-    ArchitectureCheck("single-particle architecture", "check_single_particle_architecture.py", "core"),
-    ArchitectureCheck("QuantumTheory pure-state dynamics", "check_quantum_pure_state_dynamics.py", "core"),
-    ArchitectureCheck("QuantumTheory picture equivalence", "check_quantum_picture_equivalence.py", "core"),
-    ArchitectureCheck("QuantumTheory equations of motion", "check_quantum_equations_of_motion.py", "core"),
-    ArchitectureCheck("QuantumTheory conservation laws", "check_quantum_conservation_laws.py", "core"),
-    ArchitectureCheck("QuantumTheory pure-point density", "check_quantum_pure_point_density.py", "core"),
-    ArchitectureCheck("QuantumTheory normalized expectation", "check_quantum_normalized_expectation.py", "core"),
-    ArchitectureCheck("SecondQuantization architecture", "check_second_quantization_architecture.py", "second-quantization"),
-    ArchitectureCheck("thermal ownership boundary", "check_second_quantization_thermal_boundary.py", "second-quantization"),
     ArchitectureCheck("diagrammatics layer architecture", "check_diagrammatics_layer_architecture.py", "second-quantization"),
-    ArchitectureCheck("fermionic algebraic-Fock boundary", "check_fermionic_algebraic_fock_boundary.py", "second-quantization"),
-    ArchitectureCheck("fermionic lattice boundary", "check_fermionic_lattice_boundary.py", "second-quantization"),
-    ArchitectureCheck("fermionic transport/validation boundary", "check_fermionic_transport_validation_boundary.py", "second-quantization"),
-    ArchitectureCheck("dimension-independent mode boundary", "check_second_quantization_mode_boundary.py", "second-quantization"),
-    ArchitectureCheck("density dependency boundary", "check_second_quantization_density_boundary.py", "second-quantization"),
-    ArchitectureCheck("Bloch-de Dominicis expectation boundary", "check_bloch_de_dominicis_expectation_boundary.py", "second-quantization"),
 )
 
 SCOPES = ("core", "second-quantization", "all")
@@ -78,7 +61,7 @@ def validate_manifest() -> list[str]:
         if not path.is_file():
             errors.append(f"registered architecture check does not exist: scripts/{check.script}")
 
-        if check.scope not in SCOPES[:-1]:
+        if check.scope not in SCOPES:
             errors.append(f"unknown architecture check scope `{check.scope}` for {check.script}")
 
     for script in sorted(architecture_script_candidates() - seen_scripts):
@@ -90,7 +73,7 @@ def validate_manifest() -> list[str]:
 def selected_checks(scope: str) -> tuple[ArchitectureCheck, ...]:
     if scope == "all":
         return CHECKS
-    return tuple(check for check in CHECKS if check.scope == scope)
+    return tuple(check for check in CHECKS if check.scope in (scope, "all"))
 
 
 def load_checker_main(check: ArchitectureCheck) -> Callable[[], int | None]:

@@ -1,0 +1,120 @@
+{
+  "scopedImportGraphs": [
+    {
+      "id": "massiveDiracFoundation",
+      "sourceRoots": [
+        "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Model",
+        "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Intrinsic"
+      ],
+      "layers": [
+        {"id": "modelBasic", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic"]},
+        {"id": "modelCurrentBridge", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.CurrentBridge"]},
+        {"id": "modelSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Spectral"]},
+        {"id": "intrinsicBerryBridge", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerryBridge"]},
+        {"id": "intrinsicBerrySymmetry", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerrySymmetry"]},
+        {"id": "intrinsicResponse", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Response"]},
+        {"id": "intrinsicConductivity", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Conductivity"]}
+      ],
+      "edges": [
+        {"upstream": "modelBasic", "downstream": "modelCurrentBridge"},
+        {"upstream": "modelBasic", "downstream": "modelSpectral"},
+        {"upstream": "modelSpectral", "downstream": "intrinsicBerryBridge"},
+        {"upstream": "intrinsicBerryBridge", "downstream": "intrinsicBerrySymmetry"},
+        {"upstream": "intrinsicBerrySymmetry", "downstream": "intrinsicResponse"},
+        {"upstream": "intrinsicResponse", "downstream": "intrinsicConductivity"}
+      ]
+    },
+    {
+      "id": "massiveDiracBastinLayers",
+      "sourceRoots": [
+        "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Intrinsic",
+        "LeanCondensedMatter/Transport/AnomalousHall/MassiveDirac/Bastin"
+      ],
+      "layers": [
+        {
+          "id": "intrinsicGeometry",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerryBridge",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerrySymmetry"
+          ]
+        },
+        {
+          "id": "intrinsicConductivity",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Conductivity"
+          ]
+        },
+        {
+          "id": "bastinFoundation",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Berry",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Bands",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Limit",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Lorentzian",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Occupation",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Tail",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.FiniteWindow",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.FermiSurface",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Spectator",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Interband"
+          ]
+        },
+        {
+          "id": "bastinPole",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleFactor",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleWindow",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleContinuity",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleWindowContinuity",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleWindowBound",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleLocalError",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleErrorIntegral",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleInnerError",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleOuterError",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleErrorSplit",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleErrorBound",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleErrorLimit",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleExtraction",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleExtractionLimit"
+          ]
+        },
+        {
+          "id": "bastinPair",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PairIntegral",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PairBerry",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.CleanConductivity"
+          ]
+        },
+        {
+          "id": "bastinRadial",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialDomination",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialLimitInterchange",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialSpectatorBound",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialResolventBound",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialSpectatorUniformBound",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialPairUniformBound",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialDominatedConvergence",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialEnergyBridge"
+          ]
+        },
+        {
+          "id": "bastinZeroTemperature",
+          "modulePrefixes": [
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.ZeroTemperaturePair"
+          ]
+        }
+      ],
+      "edges": [
+        {"upstream": "intrinsicGeometry", "downstream": "bastinFoundation"},
+        {"upstream": "bastinFoundation", "downstream": "bastinPole"},
+        {"upstream": "bastinPole", "downstream": "bastinPair"},
+        {"upstream": "intrinsicConductivity", "downstream": "bastinPair"},
+        {"upstream": "bastinPair", "downstream": "bastinRadial"},
+        {"upstream": "bastinRadial", "downstream": "bastinZeroTemperature"}
+      ]
+    }
+  ],
+  "forbiddenReachability": []
+}
