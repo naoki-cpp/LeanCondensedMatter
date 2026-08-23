@@ -30,7 +30,7 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Transport
 
-open Lattice
+open _root_.SecondQuantization.Fermionic.Lattice
 open QuantumTheory QuantumTheory.LinearResponse QuantumTheory.Transport
 
 noncomputable section
