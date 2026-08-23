@@ -47,17 +47,17 @@ theorem tendsto_zeroTemperatureOccupation_lorentzian_fermi_surface_finite_window
 abbrev zeroTemperatureLorentzianPoleWeight :=
   QuantumTheory.Transport.zeroTemperatureLorentzianPoleWeight
 
-@[simp] theorem zeroTemperatureLorentzianPoleWeight_of_occupied
+theorem zeroTemperatureLorentzianPoleWeight_of_occupied
     {fermiEnergy center : ℝ} (h : center < fermiEnergy) :
     zeroTemperatureLorentzianPoleWeight fermiEnergy center = Real.pi :=
   QuantumTheory.Transport.zeroTemperatureLorentzianPoleWeight_of_occupied h
 
-@[simp] theorem zeroTemperatureLorentzianPoleWeight_of_unoccupied
+theorem zeroTemperatureLorentzianPoleWeight_of_unoccupied
     {fermiEnergy center : ℝ} (h : fermiEnergy < center) :
     zeroTemperatureLorentzianPoleWeight fermiEnergy center = 0 :=
   QuantumTheory.Transport.zeroTemperatureLorentzianPoleWeight_of_unoccupied h
 
-@[simp] theorem zeroTemperatureLorentzianPoleWeight_at_fermi_surface
+theorem zeroTemperatureLorentzianPoleWeight_at_fermi_surface
     (fermiEnergy : ℝ) :
     zeroTemperatureLorentzianPoleWeight fermiEnergy fermiEnergy = Real.pi / 2 :=
   QuantumTheory.Transport.zeroTemperatureLorentzianPoleWeight_at_fermi_surface fermiEnergy
