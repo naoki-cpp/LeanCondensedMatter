@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleExtractionLimit
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleExtractionLimit
 import Mathlib.Tactic
 
 set_option linter.style.header false
