@@ -105,8 +105,9 @@ Transport.Resolvent.Basic
 It also contains the LinearResponse, generalized-current, density/Gibbs/entropy, and other focused
 source DAGs.
 
-`ahe_topology.json` starts the stable canonical Massive-Dirac AHE graph without freezing the Bastin
-migration while it is still evolving:
+`ahe_topology.json` owns the canonical Massive-Dirac AHE source ordering. The stable Model/Intrinsic
+foundation is checked separately from the coarser Bastin stage DAG, so exact theorem-level module
+edges do not have to become architecture layers:
 
 ```text
 Model.Basic ─┬→ Model.CurrentBridge
@@ -114,7 +115,14 @@ Model.Basic ─┬→ Model.CurrentBridge
                                 → Intrinsic.BerrySymmetry
                                 → Intrinsic.Response
                                 → Intrinsic.Conductivity
+
+Intrinsic geometry → Bastin foundation → Pole → Pair → Radial → Zero-T
+                                      ↖──── Intrinsic conductivity ────┘
 ```
+
+The Bastin stage graph became authoritative after the #1606–#1612 canonical-import migration
+completed. Exact direct imports remain separate regression/source contracts; the DAG only states the
+durable allowed dependency direction between stages.
 
 ## Positive source contracts
 
@@ -133,7 +141,8 @@ required edges. A required direct import is deliberately not encoded as an ordin
 allowed direction and a required edge are different contracts.
 
 Special topology that is not yet a uniform data shape may remain in a focused checker. Examples are
-exact umbrella boundaries, layered directory-layout rules, and active compatibility migrations.
+exact umbrella boundaries, layered directory-layout rules, and compatibility-forwarding migration
+contracts.
 
 ## Source syntax contracts
 
