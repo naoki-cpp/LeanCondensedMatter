@@ -6,7 +6,6 @@ from architecture_audit_common import (
     finish_audit,
     lean_imports,
     lean_source,
-    require_files,
     require_import,
     repository_root,
 )
@@ -16,34 +15,6 @@ LEAN = ROOT / "LeanCondensedMatter"
 TRANSPORT = LEAN / "Transport"
 AHE = TRANSPORT / "AnomalousHall"
 FERMIONIC_TRANSPORT = LEAN / "SecondQuantization" / "Fermionic" / "Transport"
-
-GENERIC_CANONICAL = (
-    TRANSPORT / "Core" / "FiniteVolume.lean",
-    TRANSPORT / "Core" / "ConductivityNormalization.lean",
-    TRANSPORT / "Core" / "FiniteConductivityTable.lean",
-    TRANSPORT / "Core" / "FiniteTrace.lean",
-    TRANSPORT / "Resolvent" / "Basic.lean",
-    TRANSPORT / "Resolvent" / "Spectral.lean",
-    TRANSPORT / "Resolvent" / "EnergyDerivative.lean",
-    TRANSPORT / "Analysis" / "LorentzianKernel.lean",
-    TRANSPORT / "KuboBastin" / "Finite.lean",
-    TRANSPORT / "KuboBastin" / "OccupationInterpolation.lean",
-    TRANSPORT / "KuboBastin" / "Occupation.lean",
-    TRANSPORT / "KuboBastin" / "CommonEnergy.lean",
-    TRANSPORT / "Streda" / "OperatorKernel.lean",
-    TRANSPORT / "Streda" / "TraceKernel.lean",
-    TRANSPORT / "Streda" / "Integration.lean",
-    TRANSPORT / "Streda" / "GeneralizedStatic.lean",
-    TRANSPORT / "Streda" / "TraceSpectral.lean",
-    TRANSPORT / "Streda" / "TraceRepresentation.lean",
-    TRANSPORT / "Streda" / "SpectralEnergyIntegral.lean",
-    TRANSPORT / "Disorder" / "Finite.lean",
-    TRANSPORT / "Disorder" / "Resolvent.lean",
-    TRANSPORT / "Disorder" / "Moments.lean",
-    TRANSPORT / "Disorder" / "Born.lean",
-    TRANSPORT / "Disorder" / "AdvancedBorn.lean",
-    TRANSPORT / "Disorder" / "SCBA.lean",
-)
 
 GENERIC_COMPAT = {
     "FiniteVolume.lean": "LeanCondensedMatter.Transport.Core.FiniteVolume",
@@ -160,32 +131,117 @@ BASTIN_NAMES = (
 AHE_BASTIN = {f"MassiveDiracBastin{name}.lean": f"Bastin.{name}" for name in BASTIN_NAMES}
 AHE_COMPAT = AHE_MODEL | AHE_INTRINSIC | AHE_STREDA | AHE_BASTIN
 
+MD = "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac"
+
 AHE_CANONICAL_IMPORT_MIGRATIONS = {
     AHE / "MassiveDirac" / "Model" / "CurrentBridge.lean": (
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic",),
+        (f"{MD}.Model.Basic",),
         ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac",),
     ),
     AHE / "MassiveDirac" / "Model" / "Spectral.lean": (
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic",),
+        (f"{MD}.Model.Basic",),
         ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac",),
     ),
     AHE / "MassiveDirac" / "Intrinsic" / "BerryBridge.lean": (
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Spectral",),
+        (f"{MD}.Model.Spectral",),
         ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracSpectral",),
     ),
     AHE / "MassiveDirac" / "Intrinsic" / "BerrySymmetry.lean": (
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerryBridge",),
+        (f"{MD}.Intrinsic.BerryBridge",),
         ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerryBridge",),
     ),
     AHE / "MassiveDirac" / "Intrinsic" / "Response.lean": (
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerrySymmetry",),
+        (f"{MD}.Intrinsic.BerrySymmetry",),
         ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerrySymmetry",),
     ),
     AHE / "MassiveDirac" / "Intrinsic" / "Conductivity.lean": (
-        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Response",),
+        (f"{MD}.Intrinsic.Response",),
         ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracIntrinsic",),
     ),
+    AHE / "MassiveDirac" / "Bastin" / "Berry.lean": (
+        (
+            f"{MD}.Streda.Spectral",
+            f"{MD}.Intrinsic.BerryBridge",
+            f"{MD}.Streda.CurrentOperatorBridge",
+            "LeanCondensedMatter.Transport.Streda.TraceKernel",
+        ),
+        (
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracStredaSpectral",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerryBridge",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracCurrentOperatorBridge",
+            "LeanCondensedMatter.Transport.StredaTraceKernel",
+        ),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "Bands.lean": (
+        (f"{MD}.Bastin.Berry",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinBerry",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "Limit.lean": (
+        (f"{MD}.Bastin.Bands",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinBands",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "Lorentzian.lean": (
+        (f"{MD}.Bastin.Limit", "LeanCondensedMatter.Transport.Analysis.LorentzianKernel"),
+        (
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinLimit",
+            "LeanCondensedMatter.Transport.LorentzianSpectralKernel",
+        ),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "Occupation.lean": (
+        (f"{MD}.Bastin.Lorentzian",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinLorentzian",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "Tail.lean": (
+        (f"{MD}.Bastin.Occupation",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinOccupation",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "FiniteWindow.lean": (
+        (f"{MD}.Bastin.Tail",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinTail",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "FermiSurface.lean": (
+        (f"{MD}.Bastin.FiniteWindow",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinFiniteWindow",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "Spectator.lean": (
+        (f"{MD}.Bastin.FermiSurface",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinFermiSurface",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "Interband.lean": (
+        (f"{MD}.Bastin.Spectator", f"{MD}.Intrinsic.BerrySymmetry"),
+        (
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinSpectator",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBerrySymmetry",
+        ),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "PoleFactor.lean": (
+        (f"{MD}.Bastin.Interband",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinInterband",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "PoleWindow.lean": (
+        (f"{MD}.Bastin.PoleFactor",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleFactor",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "PoleContinuity.lean": (
+        (f"{MD}.Bastin.PoleWindow",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleWindow",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "PoleWindowContinuity.lean": (
+        (f"{MD}.Bastin.PoleContinuity",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleContinuity",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "PoleWindowBound.lean": (
+        (f"{MD}.Bastin.PoleWindowContinuity",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleWindowContinuity",),
+    ),
 }
+
+
+def project_module_path(module: str) -> Path | None:
+    prefix = "LeanCondensedMatter."
+    if not module.startswith(prefix):
+        return None
+    return LEAN / (module[len(prefix):].replace(".", "/") + ".lean")
 
 
 def forwarding_only(errors: list[str], path: Path) -> None:
@@ -209,6 +265,9 @@ def forwarding_only(errors: list[str], path: Path) -> None:
 
 def require_compat(errors: list[str], path: Path, module: str) -> None:
     require_import(errors, path, module, root=ROOT, description="compatibility forwarding module")
+    target = project_module_path(module)
+    if target is None or not target.is_file():
+        errors.append(f"compatibility module target does not exist: `{module}`")
     forwarding_only(errors, path)
 
 
@@ -227,14 +286,8 @@ def require_canonical_imports(
             )
 
 
-def module_path(suffix: str) -> Path:
-    parts = suffix.split(".")
-    return AHE / "MassiveDirac" / Path(*parts[:-1]) / f"{parts[-1]}.lean"
-
-
 def main() -> int:
     errors: list[str] = []
-    require_files(errors, GENERIC_CANONICAL, root=ROOT, description="physical transport owner")
 
     for filename, module in GENERIC_COMPAT.items():
         require_compat(errors, TRANSPORT / filename, module)
@@ -267,25 +320,16 @@ def main() -> int:
             description="resolvent hierarchy",
         )
 
-    ahe_suffixes = (
-        set(AHE_MODEL.values())
-        | set(AHE_INTRINSIC.values())
-        | set(AHE_STREDA.values())
-        | set(AHE_BASTIN.values())
-    )
-    canonical_ahe = tuple(module_path(suffix) for suffix in sorted(ahe_suffixes))
-    require_files(errors, canonical_ahe, root=ROOT, description="massive-Dirac physical owner")
-
     for filename, suffix in AHE_COMPAT.items():
-        module = "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac." + suffix
+        module = f"{MD}.{suffix}"
         require_compat(errors, AHE / filename, module)
 
     ahe_umbrella = TRANSPORT / "AnomalousHall.lean"
     for module in (
-        "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model",
-        "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic",
-        "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda",
-        "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin",
+        f"{MD}.Model",
+        f"{MD}.Intrinsic",
+        f"{MD}.Streda",
+        f"{MD}.Bastin",
     ):
         require_import(errors, ahe_umbrella, module, root=ROOT, description="AHE public umbrella")
 
