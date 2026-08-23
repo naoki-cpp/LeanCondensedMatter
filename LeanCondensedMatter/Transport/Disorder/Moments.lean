@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.FiniteDisorder
+import LeanCondensedMatter.Transport.Disorder.Finite
 
 set_option linter.style.header false
 
@@ -25,7 +25,7 @@ namespace FiniteDisorderEnsemble
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
 /-- Explicit centered-disorder and covariance assumptions for a finite ensemble. The covariance is
-an operator-valued action on a supplied kernel; its exact finite second-moment realization is stored
+an operator-valued action on a supplied bounded kernel; its exact finite second-moment realization is stored
 as a field. -/
 structure FiniteDisorderMomentData where
   /-- Operator-valued covariance action on an inserted bounded kernel. -/

@@ -1,14 +1,14 @@
-import LeanCondensedMatter.Transport.FiniteTrace
-import LeanCondensedMatter.Transport.StredaOperatorKernel
+import LeanCondensedMatter.Transport.Core.FiniteTrace
+import LeanCondensedMatter.Transport.Streda.OperatorKernel
 
 set_option linter.style.header false
 
 /-!
 # Finite-dimensional trace kernels for the regularized Středa split
 
-The operator-valued kernels in `StredaOperatorKernel` become the scalar energy kernels used by a
+The operator-valued kernels in `Streda.OperatorKernel` become the scalar energy kernels used by a
 finite Kubo–Bastin formula only after applying the ordinary finite-dimensional trace owned by
-`FiniteTrace`. This module applies that generic trace primitive to the Středa operator kernels and
+`Core.FiniteTrace`. This module applies that generic trace primitive to the Středa operator kernels and
 proves that:
 
 * differentiation of the real-energy Středa operator path descends through the trace;

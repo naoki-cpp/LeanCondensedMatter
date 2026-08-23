@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.FiniteDisorder
-import LeanCondensedMatter.Transport.Resolvent
+import LeanCondensedMatter.Transport.Disorder.Finite
+import LeanCondensedMatter.Transport.Resolvent.Basic
 
 set_option linter.style.header false
 

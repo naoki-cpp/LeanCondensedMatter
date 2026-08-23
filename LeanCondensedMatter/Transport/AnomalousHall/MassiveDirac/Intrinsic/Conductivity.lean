@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracIntrinsic
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Response
 import Mathlib.Topology.Algebra.Order.Field
 
 set_option linter.style.header false
