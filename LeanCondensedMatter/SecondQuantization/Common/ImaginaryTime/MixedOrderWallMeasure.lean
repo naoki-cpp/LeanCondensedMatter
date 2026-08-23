@@ -114,7 +114,7 @@ theorem volume_twoPointMixedOrderWallSet_eq_zero {n : ℕ} (τ τ' : ℝ) :
 theorem ae_not_mem_twoPointMixedOrderWallSet {n : ℕ} (τ τ' : ℝ) :
     ∀ᵐ σ : Fin n → ℝ, σ ∉ twoPointMixedOrderWallSet (n := n) τ τ' := by
   rw [ae_iff]
-  simpa only [not_not, Set.setOf_mem_eq] using
+  simpa only [not_not, Set.ofPred_mem_eq] using
     (volume_twoPointMixedOrderWallSet_eq_zero (n := n) τ τ')
 
 end Common
