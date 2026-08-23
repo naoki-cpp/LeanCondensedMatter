@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleLocalError
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleLocalError
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Tactic
 
