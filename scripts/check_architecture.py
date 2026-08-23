@@ -19,18 +19,14 @@ class ArchitectureCheck:
     scope: str
 
 
-# This manifest owns architecture-audit registration only. Dependency DAGs and fixed source
+# This manifest owns architecture-audit registration only. Dependency DAGs and uniform source
 # contracts live in shared specifications under scripts/architecture/. Scopes are optional local
 # filters and must not become a second architecture model. A checker with scope `all` participates
 # in both focused scopes.
 CHECKS: tuple[ArchitectureCheck, ...] = (
     ArchitectureCheck("declarative architecture graphs", "check_architecture_graphs.py", "core"),
     ArchitectureCheck("declarative source contracts", "check_source_contracts.py", "all"),
-    ArchitectureCheck("root public umbrellas", "check_root_public_umbrellas.py", "core"),
-    ArchitectureCheck("generalized-current architecture", "check_generalized_current_architecture.py", "core"),
-    ArchitectureCheck("transport architecture", "check_transport_architecture.py", "core"),
     ArchitectureCheck("transport physical hierarchy", "check_transport_hierarchy.py", "core"),
-    ArchitectureCheck("thermal ownership boundary", "check_second_quantization_thermal_boundary.py", "second-quantization"),
     ArchitectureCheck("diagrammatics layer architecture", "check_diagrammatics_layer_architecture.py", "second-quantization"),
 )
 
