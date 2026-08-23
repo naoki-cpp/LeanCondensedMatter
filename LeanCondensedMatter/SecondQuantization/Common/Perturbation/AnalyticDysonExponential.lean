@@ -108,8 +108,11 @@ theorem exp_continuousDiagonalHamiltonian_basis_apply (energy : Config → ℝ)
       (spanBasis ∘ fun n : ℕ =>
         ((Nat.factorial n : ℂ)⁻¹) • (((τ * energy c : ℝ) : ℂ) ^ n)) := by
     funext n
-    simp [evalBasis, spanBasis, Function.comp_apply,
-      smul_continuousDiagonalHamiltonian_pow_basis_apply, smul_smul]
+    change ((Nat.factorial n : ℂ)⁻¹) •
+        ((τ • continuousDiagonalHamiltonian energy) ^ n) (finiteAnalyticBasis c) =
+      (((Nat.factorial n : ℂ)⁻¹ * (((τ * energy c : ℝ) : ℂ) ^ n)) •
+        finiteAnalyticBasis c)
+    rw [smul_continuousDiagonalHamiltonian_pow_basis_apply, smul_smul]
   rw [hterms] at hop
   have heq := hop.unique hscalar
   simpa [evalBasis, spanBasis, Complex.exp_eq_exp_ℂ] using heq
