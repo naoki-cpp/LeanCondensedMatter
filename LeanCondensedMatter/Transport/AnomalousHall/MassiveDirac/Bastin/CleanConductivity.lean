@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPairBerry
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracIntrinsicConductivity
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PairBerry
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.Conductivity
 import Mathlib.Tactic
 
 set_option linter.style.header false

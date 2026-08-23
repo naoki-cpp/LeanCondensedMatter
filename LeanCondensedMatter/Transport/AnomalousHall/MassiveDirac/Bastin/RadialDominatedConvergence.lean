@@ -1,5 +1,5 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialLimitInterchange
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialPairUniformBound
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialLimitInterchange
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialPairUniformBound
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.Tactic
 

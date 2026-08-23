@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleInnerError
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleInnerError
 import Mathlib.Tactic
 
 set_option linter.style.header false
