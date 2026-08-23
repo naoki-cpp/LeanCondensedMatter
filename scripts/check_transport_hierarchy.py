@@ -234,6 +234,110 @@ AHE_CANONICAL_IMPORT_MIGRATIONS = {
         (f"{MD}.Bastin.PoleWindowContinuity",),
         ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleWindowContinuity",),
     ),
+    AHE / "MassiveDirac" / "Bastin" / "PoleLocalError.lean": (
+        (f"{MD}.Bastin.PoleWindowBound",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleWindowBound",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "PoleErrorIntegral.lean": (
+        (f"{MD}.Bastin.PoleLocalError",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleLocalError",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "PoleInnerError.lean": (
+        (f"{MD}.Bastin.PoleErrorIntegral",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleErrorIntegral",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "PoleOuterError.lean": (
+        (f"{MD}.Bastin.PoleInnerError",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleInnerError",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "PoleErrorSplit.lean": (
+        (f"{MD}.Bastin.PoleOuterError",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleOuterError",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "PoleErrorBound.lean": (
+        (f"{MD}.Bastin.PoleErrorSplit",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleErrorSplit",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "PoleErrorLimit.lean": (
+        (f"{MD}.Bastin.PoleErrorBound",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleErrorBound",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "PoleExtraction.lean": (
+        (f"{MD}.Bastin.PoleErrorLimit",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleErrorLimit",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "PoleExtractionLimit.lean": (
+        (f"{MD}.Bastin.PoleExtraction",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleExtraction",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "PairIntegral.lean": (
+        (f"{MD}.Bastin.PoleExtractionLimit",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPoleExtractionLimit",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "PairBerry.lean": (
+        (f"{MD}.Bastin.PairIntegral",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPairIntegral",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "CleanConductivity.lean": (
+        (f"{MD}.Bastin.PairBerry", f"{MD}.Intrinsic.Conductivity"),
+        (
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPairBerry",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracIntrinsicConductivity",
+        ),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "RadialDomination.lean": (
+        (f"{MD}.Bastin.PairBerry",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinPairBerry",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "RadialLimitInterchange.lean": (
+        (f"{MD}.Bastin.CleanConductivity", f"{MD}.Bastin.RadialDomination"),
+        (
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinCleanConductivity",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialDomination",
+        ),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "RadialSpectatorBound.lean": (
+        (f"{MD}.Bastin.RadialDomination",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialDomination",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "RadialResolventBound.lean": (
+        (f"{MD}.Bastin.RadialSpectatorBound",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialSpectatorBound",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "RadialSpectatorUniformBound.lean": (
+        (f"{MD}.Bastin.RadialResolventBound",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialResolventBound",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "RadialPairUniformBound.lean": (
+        (f"{MD}.Bastin.RadialSpectatorUniformBound",),
+        ("LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialSpectatorUniformBound",),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "RadialDominatedConvergence.lean": (
+        (f"{MD}.Bastin.RadialLimitInterchange", f"{MD}.Bastin.RadialPairUniformBound"),
+        (
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialLimitInterchange",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialPairUniformBound",
+        ),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "RadialEnergyBridge.lean": (
+        (f"{MD}.Bastin.RadialDominatedConvergence", f"{MD}.Bastin.CleanConductivity"),
+        (
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialDominatedConvergence",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinCleanConductivity",
+        ),
+    ),
+    AHE / "MassiveDirac" / "Bastin" / "ZeroTemperaturePair.lean": (
+        (
+            f"{MD}.Bastin.RadialEnergyBridge",
+            f"{MD}.Bastin.FermiSurface",
+            f"{MD}.Bastin.RadialPairUniformBound",
+        ),
+        (
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialEnergyBridge",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinFermiSurface",
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialPairUniformBound",
+        ),
+    ),
 }
 
 
