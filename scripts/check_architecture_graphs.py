@@ -5,6 +5,7 @@ from pathlib import Path
 from architecture_audit_common import (
     ArchitectureGraph,
     check_architecture_graph_imports,
+    check_lean_import_syntax,
     finish_audit,
     load_architecture_graph,
     module_matches_prefix,
@@ -13,6 +14,7 @@ from architecture_audit_common import (
 from architecture_graph_scopes import (
     check_forbidden_reachability_contracts,
     check_scoped_import_graphs,
+    validate_architecture_spec,
 )
 
 ROOT = repository_root(__file__)
@@ -52,14 +54,29 @@ def check_primary_graph(errors: list[str], graph: ArchitectureGraph) -> None:
 def main() -> int:
     errors: list[str] = []
 
-    try:
-        graph = load_architecture_graph(SECOND_QUANTIZATION_SPEC)
-    except (OSError, KeyError, TypeError, ValueError) as error:
-        errors.append(f"invalid primary architecture graph: {error}")
-    else:
-        check_primary_graph(errors, graph)
+    # Source topology depends on understanding every import command. Validate the parser's supported
+    # syntax repository-wide before any graph is allowed to ignore an import-looking line.
+    check_lean_import_syntax(errors, root=ROOT, source_root=LEAN)
+
+    valid_specs: dict[Path, bool] = {}
+    for spec in SCOPED_SPECS:
+        valid_specs[spec] = validate_architecture_spec(
+            errors,
+            spec,
+            require_primary=spec == SECOND_QUANTIZATION_SPEC,
+        )
+
+    if valid_specs[SECOND_QUANTIZATION_SPEC]:
+        try:
+            graph = load_architecture_graph(SECOND_QUANTIZATION_SPEC)
+        except (OSError, KeyError, TypeError, ValueError) as error:
+            errors.append(f"invalid primary architecture graph: {error}")
+        else:
+            check_primary_graph(errors, graph)
 
     for spec in SCOPED_SPECS:
+        if not valid_specs[spec]:
+            continue
         check_scoped_import_graphs(errors, spec, root=ROOT)
         check_forbidden_reachability_contracts(errors, spec, root=ROOT)
 
