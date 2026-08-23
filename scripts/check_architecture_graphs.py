@@ -19,6 +19,8 @@ LEAN = ROOT / "LeanCondensedMatter"
 ARCHITECTURE = ROOT / "scripts" / "architecture"
 SECOND_QUANTIZATION_SPEC = ARCHITECTURE / "second_quantization.json"
 SOURCE_TOPOLOGY_SPEC = ARCHITECTURE / "source_topology.json"
+AHE_TOPOLOGY_SPEC = ARCHITECTURE / "ahe_topology.json"
+SCOPED_SPECS = (SECOND_QUANTIZATION_SPEC, SOURCE_TOPOLOGY_SPEC, AHE_TOPOLOGY_SPEC)
 
 
 def check_primary_graph(errors: list[str], graph: ArchitectureGraph) -> None:
@@ -37,7 +39,7 @@ def main() -> int:
     else:
         check_primary_graph(errors, graph)
 
-    for spec in (SECOND_QUANTIZATION_SPEC, SOURCE_TOPOLOGY_SPEC):
+    for spec in SCOPED_SPECS:
         check_scoped_import_graphs(errors, spec, root=ROOT)
         check_forbidden_reachability_contracts(errors, spec, root=ROOT)
 
