@@ -79,7 +79,7 @@ theorem norm_zeroTemperatureOccupation_complex_le_one
     (fermiEnergy energy : ℝ) :
     ‖((zeroTemperatureOccupation fermiEnergy energy : ℝ) : ℂ)‖ ≤ 1 := by
   by_cases h : energy < fermiEnergy <;>
-    simp [zeroTemperatureOccupation, h]
+    simp [QuantumTheory.Transport.zeroTemperatureOccupation, h]
 
 /-- Inserting zero-temperature occupation does not enlarge the pointwise Lorentzian/spectator
 bound on the radial axis. -/
