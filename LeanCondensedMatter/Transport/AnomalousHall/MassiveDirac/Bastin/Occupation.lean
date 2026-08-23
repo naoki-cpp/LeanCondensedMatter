@@ -22,12 +22,12 @@ open Filter
 /-- Compatibility alias for the generic zero-temperature occupation. -/
 abbrev zeroTemperatureOccupation := QuantumTheory.Transport.zeroTemperatureOccupation
 
-@[simp] theorem zeroTemperatureOccupation_eq_one
+theorem zeroTemperatureOccupation_eq_one
     {fermiEnergy energy : ℝ} (h : energy < fermiEnergy) :
     zeroTemperatureOccupation fermiEnergy energy = 1 :=
   QuantumTheory.Transport.zeroTemperatureOccupation_eq_one h
 
-@[simp] theorem zeroTemperatureOccupation_eq_zero
+theorem zeroTemperatureOccupation_eq_zero
     {fermiEnergy energy : ℝ} (h : fermiEnergy ≤ energy) :
     zeroTemperatureOccupation fermiEnergy energy = 0 :=
   QuantumTheory.Transport.zeroTemperatureOccupation_eq_zero h
