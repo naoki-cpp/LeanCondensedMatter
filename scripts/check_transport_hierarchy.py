@@ -67,12 +67,11 @@ AHE_STREDA = {
 BASTIN_NAMES = (
     "Berry", "Bands", "Limit", "Lorentzian", "Occupation", "Tail", "FiniteWindow",
     "FermiSurface", "Spectator", "Interband", "PoleFactor", "PoleWindow", "PoleContinuity",
-    "PoleWindowContinuity", "PoleWindowBound", "PoleLocalError", "PoleErrorIntegral",
-    "PoleInnerError", "PoleOuterError", "PoleErrorSplit", "PoleErrorBound", "PoleErrorLimit",
-    "PoleExtraction", "PoleExtractionLimit", "PairIntegral", "PairBerry", "RadialDomination",
-    "RadialLimitInterchange", "RadialSpectatorBound", "RadialResolventBound",
-    "RadialSpectatorUniformBound", "RadialPairUniformBound", "RadialDominatedConvergence",
-    "RadialEnergyBridge", "ZeroTemperaturePair", "CleanConductivity",
+    "PoleWindowContinuity", "PoleWindowBound", "PoleExtraction", "PoleExtractionLimit",
+    "PairIntegral", "PairBerry", "RadialDomination", "RadialLimitInterchange",
+    "RadialSpectatorBound", "RadialResolventBound", "RadialSpectatorUniformBound",
+    "RadialPairUniformBound", "RadialDominatedConvergence", "RadialEnergyBridge",
+    "ZeroTemperaturePair", "CleanConductivity",
 )
 AHE_BASTIN = {f"MassiveDiracBastin{name}.lean": f"Bastin.{name}" for name in BASTIN_NAMES}
 AHE_COMPAT = AHE_MODEL | AHE_INTRINSIC | AHE_STREDA | AHE_BASTIN
