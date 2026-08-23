@@ -1,6 +1,71 @@
 {
   "requiredFiles": [
     {
+      "id": "rootPublicUmbrellas",
+      "paths": [
+        "LeanCondensedMatter/Analysis.lean",
+        "LeanCondensedMatter/Combinatorics.lean",
+        "LeanCondensedMatter/Permutation.lean",
+        "LeanCondensedMatter/QuantumTheory.lean",
+        "LeanCondensedMatter/QuantumMechanics.lean",
+        "LeanCondensedMatter/Transport.lean",
+        "LeanCondensedMatter/Transport/AnomalousHall.lean",
+        "LeanCondensedMatter/SecondQuantization.lean"
+      ]
+    },
+    {
+      "id": "generalizedCurrentOwners",
+      "paths": [
+        "LeanCondensedMatter/Analysis/Operator/LinearCommutator.lean",
+        "LeanCondensedMatter/Analysis/Operator/SymmetrizedProduct.lean",
+        "LeanCondensedMatter/Analysis/Calculus/CurrentRepresentation.lean",
+        "LeanCondensedMatter/Analysis/Calculus/BalanceLaw.lean",
+        "LeanCondensedMatter/Analysis/Calculus/SymmetricLocalization.lean",
+        "LeanCondensedMatter/QuantumMechanics/SingleParticle/LocalizedTransport.lean",
+        "LeanCondensedMatter/QuantumMechanics/SingleParticle/SymmetrizedVelocityCurrent.lean",
+        "LeanCondensedMatter/QuantumMechanics/SingleParticle/ConventionalCurrent.lean",
+        "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/SchwartzCurrent1D.lean",
+        "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/SchwartzSpinCurrent1D.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Field/GeneralizedQuantity.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/BoundedOneBodyResponse.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/ConventionalCurrentResponse.lean",
+        "LeanCondensedMatter/QuantumTheory/ConservationLaw.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport.lean"
+      ]
+    },
+    {
+      "id": "canonicalTransportOwners",
+      "paths": [
+        "LeanCondensedMatter/Transport/Core/ConductivityNormalization.lean",
+        "LeanCondensedMatter/Transport/Core/FiniteConductivityTable.lean",
+        "LeanCondensedMatter/Transport/Core/FiniteTrace.lean",
+        "LeanCondensedMatter/Transport/Resolvent/Basic.lean",
+        "LeanCondensedMatter/Transport/Resolvent/Spectral.lean",
+        "LeanCondensedMatter/Transport/KuboBastin/Finite.lean",
+        "LeanCondensedMatter/Transport/KuboBastin/Occupation.lean",
+        "LeanCondensedMatter/Transport/KuboBastin/CommonEnergy.lean",
+        "LeanCondensedMatter/Transport/Streda/GeneralizedStatic.lean",
+        "LeanCondensedMatter/Transport/Disorder/Finite.lean",
+        "LeanCondensedMatter/Transport/Disorder/Resolvent.lean",
+        "LeanCondensedMatter/Transport/Disorder/Moments.lean",
+        "LeanCondensedMatter/Transport/Disorder/Born.lean",
+        "LeanCondensedMatter/Transport/Disorder/AdvancedBorn.lean",
+        "LeanCondensedMatter/Transport/Disorder/SCBA.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/AdiabaticSwitching.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/HarmonicSource.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/FiniteTimeAdiabatic.lean",
+        "LeanCondensedMatter/QuantumTheory/LinearResponse/InfiniteTimeAdiabatic.lean"
+      ]
+    },
+    {
+      "id": "thermalCompletedSpaceOwners",
+      "paths": [
+        "LeanCondensedMatter/SecondQuantization/Fermionic/CompletedSpace.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal/UnboundedExpectation.lean"
+      ]
+    },
+    {
       "id": "quantumTheoryPictureOwners",
       "paths": [
         "LeanCondensedMatter/QuantumTheory/LinearResponse/PictureEquivalence.lean",
@@ -128,11 +193,32 @@
       ]
     }
   ],
+  "forbiddenFiles": [
+    {
+      "id": "retiredTransportModules",
+      "paths": [
+        "LeanCondensedMatter/Transport/System.lean",
+        "LeanCondensedMatter/Transport/LinearResponse.lean",
+        "LeanCondensedMatter/Transport/StredaResolventSpectral.lean",
+        "LeanCondensedMatter/Transport/StredaOccupation.lean",
+        "LeanCondensedMatter/Transport/StredaCommonKernel.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StredaOccupation.lean",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StredaCommonKernel.lean"
+      ]
+    }
+  ],
   "requiredDirectories": [
     {
       "id": "singleParticleContinuum",
       "paths": [
         "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum"
+      ]
+    },
+    {
+      "id": "thermalCompletedSpaceDirectories",
+      "paths": [
+        "LeanCondensedMatter/SecondQuantization/Fermionic/CompletedSpace",
+        "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal"
       ]
     }
   ],
@@ -220,6 +306,222 @@
       "modules": [
         "LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.PairingWeight",
         "LeanCondensedMatter.Combinatorics.PerfectPairing.FirstPairRecursion"
+      ]
+    },
+    {
+      "id": "generalizedCurrentBalanceLaw",
+      "path": "LeanCondensedMatter/Analysis/Calculus/BalanceLaw.lean",
+      "modules": ["LeanCondensedMatter.Analysis.Calculus.CurrentRepresentation"]
+    },
+    {
+      "id": "generalizedCurrentSymmetricLocalization",
+      "path": "LeanCondensedMatter/Analysis/Calculus/SymmetricLocalization.lean",
+      "modules": [
+        "LeanCondensedMatter.Analysis.Calculus.BalanceLaw",
+        "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct"
+      ]
+    },
+    {
+      "id": "generalizedCurrentLocalizedTransport",
+      "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle/LocalizedTransport.lean",
+      "modules": [
+        "LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization",
+        "LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution"
+      ]
+    },
+    {
+      "id": "generalizedCurrentSymmetrizedVelocity",
+      "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle/SymmetrizedVelocityCurrent.lean",
+      "modules": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.LocalizedTransport"]
+    },
+    {
+      "id": "generalizedCurrentConventional",
+      "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle/ConventionalCurrent.lean",
+      "modules": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"]
+    },
+    {
+      "id": "generalizedCurrentSchwartz",
+      "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/SchwartzCurrent1D.lean",
+      "modules": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"]
+    },
+    {
+      "id": "generalizedCurrentSchwartzSpin",
+      "path": "LeanCondensedMatter/QuantumMechanics/SingleParticle/Continuum/Continuity/SchwartzSpinCurrent1D.lean",
+      "modules": ["LeanCondensedMatter.QuantumMechanics.SingleParticle.SymmetrizedVelocityCurrent"]
+    },
+    {
+      "id": "generalizedCurrentFieldBridge",
+      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Field/GeneralizedQuantity.lean",
+      "modules": ["LeanCondensedMatter.Analysis.Calculus.SymmetricLocalization"]
+    },
+    {
+      "id": "generalizedCurrentConventionalResponse",
+      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/ConventionalCurrentResponse.lean",
+      "modules": [
+        "LeanCondensedMatter.Analysis.Operator.SymmetrizedProduct",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse"
+      ]
+    },
+    {
+      "id": "generalizedCurrentTransportUmbrella",
+      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport.lean",
+      "modules": [
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.BoundedOneBodyResponse",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Transport.ConventionalCurrentResponse"
+      ]
+    },
+    {
+      "id": "transportFermionicSpecializations",
+      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/ConductivityNormalization.lean",
+      "modules": ["LeanCondensedMatter.Transport.Core.ConductivityNormalization"]
+    },
+    {
+      "id": "transportFiniteConductivitySpecialization",
+      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FiniteConductivityTable.lean",
+      "modules": ["LeanCondensedMatter.Transport.Core.FiniteConductivityTable"]
+    },
+    {
+      "id": "transportKuboBastinSpectralSpecialization",
+      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/KuboBastinSpectral.lean",
+      "modules": ["LeanCondensedMatter.Transport.KuboBastin.Finite"]
+    },
+    {
+      "id": "transportKuboBastinOccupationSpecialization",
+      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/KuboBastinOccupation.lean",
+      "modules": ["LeanCondensedMatter.Transport.KuboBastin.Occupation"]
+    },
+    {
+      "id": "transportKuboBastinCommonEnergySpecialization",
+      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/KuboBastinCommonEnergy.lean",
+      "modules": ["LeanCondensedMatter.Transport.KuboBastin.CommonEnergy"]
+    },
+    {
+      "id": "transportStaticKuboBastinSpecialization",
+      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StaticKuboBastinResponse.lean",
+      "modules": ["LeanCondensedMatter.Transport.Streda.GeneralizedStatic"]
+    },
+    {
+      "id": "transportStredaTraceKernel",
+      "path": "LeanCondensedMatter/Transport/Streda/TraceKernel.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Core.FiniteTrace",
+        "LeanCondensedMatter.Transport.Streda.OperatorKernel"
+      ]
+    },
+    {
+      "id": "transportFiniteDisorder",
+      "path": "LeanCondensedMatter/Transport/Disorder/Finite.lean",
+      "modules": ["LeanCondensedMatter.Transport.Core.FiniteTrace"]
+    },
+    {
+      "id": "transportKuboBastinFinite",
+      "path": "LeanCondensedMatter/Transport/KuboBastin/Finite.lean",
+      "modules": ["LeanCondensedMatter.Transport.Resolvent.Spectral"]
+    },
+    {
+      "id": "transportStredaTraceSpectral",
+      "path": "LeanCondensedMatter/Transport/Streda/TraceSpectral.lean",
+      "modules": ["LeanCondensedMatter.Transport.Resolvent.Spectral"]
+    },
+    {
+      "id": "transportFrequencyResponse",
+      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/FrequencyResponse.lean",
+      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.AdiabaticSwitching"]
+    },
+    {
+      "id": "transportHarmonicResponse",
+      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/HarmonicSourceResponse.lean",
+      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.HarmonicSource"]
+    },
+    {
+      "id": "transportStationaryResponse",
+      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/StationaryFrequencyResponse.lean",
+      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.FiniteTimeAdiabatic"]
+    },
+    {
+      "id": "transportInfiniteTimeResponse",
+      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Transport/InfiniteTimeFrequencyResponse.lean",
+      "modules": ["LeanCondensedMatter.QuantumTheory.LinearResponse.InfiniteTimeAdiabatic"]
+    },
+    {
+      "id": "transportDisorderResolvent",
+      "path": "LeanCondensedMatter/Transport/Disorder/Resolvent.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Disorder.Finite",
+        "LeanCondensedMatter.Transport.Resolvent.Basic"
+      ]
+    },
+    {
+      "id": "transportDisorderMoments",
+      "path": "LeanCondensedMatter/Transport/Disorder/Moments.lean",
+      "modules": ["LeanCondensedMatter.Transport.Disorder.Finite"]
+    },
+    {
+      "id": "transportDisorderBorn",
+      "path": "LeanCondensedMatter/Transport/Disorder/Born.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Disorder.Moments",
+        "LeanCondensedMatter.Transport.Disorder.Resolvent"
+      ]
+    },
+    {
+      "id": "transportDisorderAdvancedBorn",
+      "path": "LeanCondensedMatter/Transport/Disorder/AdvancedBorn.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Disorder.Moments",
+        "LeanCondensedMatter.Transport.Disorder.Resolvent"
+      ]
+    },
+    {
+      "id": "transportDisorderScba",
+      "path": "LeanCondensedMatter/Transport/Disorder/SCBA.lean",
+      "modules": [
+        "LeanCondensedMatter.Transport.Disorder.Finite",
+        "LeanCondensedMatter.Transport.Resolvent.Basic"
+      ]
+    },
+    {
+      "id": "thermalPublicUmbrella",
+      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/Thermal.lean",
+      "modules": ["LeanCondensedMatter.SecondQuantization.Fermionic.Thermal.UnboundedExpectation"]
+    }
+  ],
+  "exactImports": [
+    {
+      "id": "rootPublicTrack",
+      "path": "LeanCondensedMatter.lean",
+      "modules": [
+        "LeanCondensedMatter.Analysis",
+        "LeanCondensedMatter.Combinatorics",
+        "LeanCondensedMatter.Permutation",
+        "LeanCondensedMatter.QuantumTheory",
+        "LeanCondensedMatter.QuantumMechanics",
+        "LeanCondensedMatter.Transport",
+        "LeanCondensedMatter.Transport.AnomalousHall",
+        "LeanCondensedMatter.SecondQuantization"
+      ]
+    },
+    {
+      "id": "quantumConservationUmbrella",
+      "path": "LeanCondensedMatter/QuantumTheory/ConservationLaw.lean",
+      "modules": ["LeanCondensedMatter.QuantumTheory.ConservationLaw.HeisenbergEvolution"]
+    }
+  ],
+  "forbiddenImports": [
+    {
+      "id": "genericTransportUmbrella",
+      "path": "LeanCondensedMatter/Transport.lean",
+      "modules": ["LeanCondensedMatter.Transport.AnomalousHall"]
+    }
+  ],
+  "forbiddenImportPrefixes": [
+    {
+      "id": "completedSpaceThermalBoundary",
+      "path": "LeanCondensedMatter/SecondQuantization/Fermionic/CompletedSpace.lean",
+      "prefixes": [
+        "LeanCondensedMatter.SecondQuantization.Common.Thermal",
+        "LeanCondensedMatter.SecondQuantization.Fermionic.Thermal",
+        "LeanCondensedMatter.SecondQuantization.Bosonic.Thermal"
       ]
     }
   ]
