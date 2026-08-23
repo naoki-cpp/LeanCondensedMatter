@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialDomination
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialDomination
 import Mathlib.Tactic
 
 set_option linter.style.header false

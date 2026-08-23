@@ -1,6 +1,6 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialEnergyBridge
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinFermiSurface
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinRadialPairUniformBound
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialEnergyBridge
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.FermiSurface
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialPairUniformBound
 import Mathlib.Tactic
 
 set_option linter.style.header false
