@@ -7,6 +7,7 @@ from architecture_audit_common import (
     check_architecture_graph_imports,
     finish_audit,
     load_architecture_graph,
+    module_matches_prefix,
     repository_root,
 )
 from architecture_graph_scopes import (
@@ -23,7 +24,26 @@ AHE_TOPOLOGY_SPEC = ARCHITECTURE / "ahe_topology.json"
 SCOPED_SPECS = (SECOND_QUANTIZATION_SPEC, SOURCE_TOPOLOGY_SPEC, AHE_TOPOLOGY_SPEC)
 
 
+def check_primary_prefix_partition(errors: list[str], graph: ArchitectureGraph) -> None:
+    """Keep Python longest-prefix and Lean first-match classification equivalent for the shared graph."""
+    prefixes = [
+        (layer.id, prefix)
+        for layer in graph.layers
+        for prefix in layer.module_prefixes
+    ]
+    for index, (left_id, left) in enumerate(prefixes):
+        for right_id, right in prefixes[index + 1 :]:
+            if left_id == right_id:
+                continue
+            if module_matches_prefix(left, right) or module_matches_prefix(right, left):
+                errors.append(
+                    "primary graph module prefixes must form a non-overlapping partition so Python "
+                    f"and Lean classify identically: `{left}` ({left_id}) overlaps `{right}` ({right_id})"
+                )
+
+
 def check_primary_graph(errors: list[str], graph: ArchitectureGraph) -> None:
+    check_primary_prefix_partition(errors, graph)
     graph_errors: list[str] = []
     check_architecture_graph_imports(graph_errors, graph, root=ROOT, source_root=LEAN)
     errors.extend(f"primary graph: {error}" for error in graph_errors)
