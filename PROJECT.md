@@ -64,6 +64,7 @@ Topic-specific details belong in `notes/`; do not add long content sections to t
 - **Finish implementations with regression protection.** After the implementation makes its intended invariant clear, add or extend the narrowest practical automated check before calling the work complete. Prefer a Lean theorem or type-level guarantee; use a targeted build, linter, architecture audit, or CI workflow for cross-file constraints.
 - **Names and structures track the physics dictionary.** Keep `def`/`theorem` names aligned with the physical notions they formalize, per `notes/model-and-assumptions.md`.
 - **Keep routing APIs small.** Proof-only transport, reindexing, and one-use wrapper declarations should be private/local or inlined when that reduces code without obscuring a reusable mathematical or physical boundary.
+- **Proof search follows Pólya, compactly.** Understand the goal and hypotheses; search analogous results and reduce or transform to a tractable subgoal; execute the smallest justified plan; then check, simplify, and generalize. Prefer this pass over brute-force tactics or premature abstractions.
 
 ## Commit conventions
 
