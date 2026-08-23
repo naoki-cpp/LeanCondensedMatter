@@ -22,7 +22,9 @@ SOURCE_TOPOLOGY_SPEC = ARCHITECTURE / "source_topology.json"
 
 
 def check_primary_graph(errors: list[str], graph: ArchitectureGraph) -> None:
-    check_architecture_graph_imports(errors, graph, root=ROOT, source_root=LEAN)
+    graph_errors: list[str] = []
+    check_architecture_graph_imports(graph_errors, graph, root=ROOT, source_root=LEAN)
+    errors.extend(f"primary graph: {error}" for error in graph_errors)
 
 
 def main() -> int:
