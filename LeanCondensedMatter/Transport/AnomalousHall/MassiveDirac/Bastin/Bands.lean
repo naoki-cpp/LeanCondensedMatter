@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinBerry
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Berry
 
 set_option linter.style.header false
 

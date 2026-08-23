@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDiracBastinLorentzian
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Lorentzian
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Tactic
 
