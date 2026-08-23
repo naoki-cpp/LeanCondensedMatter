@@ -19,11 +19,6 @@ AHE = TRANSPORT / "AnomalousHall"
 FERMIONIC_TRANSPORT = LEAN / "SecondQuantization" / "Fermionic" / "Transport"
 
 GENERIC_COMPAT = {
-    "FiniteVolume.lean": "LeanCondensedMatter.Transport.Core.FiniteVolume",
-    "ConductivityNormalization.lean": "LeanCondensedMatter.Transport.Core.ConductivityNormalization",
-    "FiniteConductivityTable.lean": "LeanCondensedMatter.Transport.Core.FiniteConductivityTable",
-    "FiniteTrace.lean": "LeanCondensedMatter.Transport.Core.FiniteTrace",
-    "Foundations.lean": "LeanCondensedMatter.Transport.Core",
     "ResolventSpectral.lean": "LeanCondensedMatter.Transport.Resolvent.Spectral",
     "ResolventEnergyDerivative.lean": "LeanCondensedMatter.Transport.Resolvent.EnergyDerivative",
     "ResolventAPI.lean": "LeanCondensedMatter.Transport.Resolvent",
