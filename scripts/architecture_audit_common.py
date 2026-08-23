@@ -300,8 +300,10 @@ def check_architecture_graph_imports(
     source_root: Path,
 ) -> None:
     """Require each classified project import to point to the same layer or a graph ancestor."""
-    validate_architecture_graph(errors, graph)
-    if errors:
+    validation_errors: list[str] = []
+    validate_architecture_graph(validation_errors, graph)
+    errors.extend(validation_errors)
+    if validation_errors:
         return
 
     for path in lean_files(source_root):
