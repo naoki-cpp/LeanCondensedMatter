@@ -105,7 +105,7 @@ The graph data is split by purpose:
   SecondQuantization DAGs;
 - `source_topology.json`: focused Transport, current, LinearResponse, density/Gibbs/entropy, and
   transitive reachability graphs;
-- `ahe_topology.json`: stable canonical Massive-Dirac AHE source DAGs that have completed migration.
+- `ahe_topology.json`: canonical Massive-Dirac Model/Intrinsic and completed Bastin stage DAGs.
 
 For a direct import from source layer `A` to target layer `B`, the rule is:
 
@@ -156,7 +156,16 @@ Massive-Dirac AHE foundation
   Model.Basic → {Model.CurrentBridge, Model.Spectral}
   Model.Spectral → Intrinsic.BerryBridge → Intrinsic.BerrySymmetry
                  → Intrinsic.Response → Intrinsic.Conductivity
+
+Massive-Dirac Bastin stages
+  Intrinsic geometry → Foundation → Pole → Pair → Radial → Zero-T
+                                    ↑
+                     Intrinsic conductivity
 ```
+
+The Bastin stage graph is intentionally coarser than the exact direct-import chain. The #1606–#1612
+canonicalization is protected separately by direct-import regression guards, while the DAG records
+the durable allowed direction between mathematical stages.
 
 The graph runner also owns the Combinatorics low-level forbidden-transitive-reachability contract.
 Every scoped graph is checked with a fresh diagnostic buffer so a failure in one graph cannot suppress
@@ -184,8 +193,7 @@ density/Gibbs, transport/validation owner, and Bloch–de Dominicis topology con
 owner/type rules remain in the compiled Lean audit.
 
 Special topology stays in a focused Python checker only when it is not yet a uniform data contract,
-for example layered directory layout, exact umbrella boundaries, or an active compatibility
-migration.
+for example layered directory layout or compatibility-forwarding/regression contracts.
 
 ## Compatibility forwarding files
 
