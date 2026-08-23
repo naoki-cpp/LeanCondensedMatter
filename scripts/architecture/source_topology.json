@@ -15,15 +15,15 @@
       "id": "finiteDisorderClosures",
       "sourceRoots": ["LeanCondensedMatter/Transport"],
       "layers": [
-        {"id": "finiteTrace", "modulePrefixes": ["LeanCondensedMatter.Transport.FiniteTrace"]},
-        {"id": "stredaTraceKernel", "modulePrefixes": ["LeanCondensedMatter.Transport.StredaTraceKernel"]},
-        {"id": "finiteDisorder", "modulePrefixes": ["LeanCondensedMatter.Transport.FiniteDisorder"]},
-        {"id": "resolvent", "modulePrefixes": ["LeanCondensedMatter.Transport.Resolvent"]},
-        {"id": "moments", "modulePrefixes": ["LeanCondensedMatter.Transport.FiniteDisorderMoments"]},
-        {"id": "disorderResolvent", "modulePrefixes": ["LeanCondensedMatter.Transport.FiniteDisorderResolvent"]},
-        {"id": "born", "modulePrefixes": ["LeanCondensedMatter.Transport.FiniteDisorderBorn"]},
-        {"id": "advancedBorn", "modulePrefixes": ["LeanCondensedMatter.Transport.FiniteDisorderAdvancedBorn"]},
-        {"id": "scba", "modulePrefixes": ["LeanCondensedMatter.Transport.FiniteDisorderSCBA"]}
+        {"id": "finiteTrace", "modulePrefixes": ["LeanCondensedMatter.Transport.Core.FiniteTrace"]},
+        {"id": "stredaTraceKernel", "modulePrefixes": ["LeanCondensedMatter.Transport.Streda.TraceKernel"]},
+        {"id": "finiteDisorder", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Finite"]},
+        {"id": "resolvent", "modulePrefixes": ["LeanCondensedMatter.Transport.Resolvent.Basic"]},
+        {"id": "moments", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Moments"]},
+        {"id": "disorderResolvent", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Resolvent"]},
+        {"id": "born", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Born"]},
+        {"id": "advancedBorn", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.AdvancedBorn"]},
+        {"id": "scba", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.SCBA"]}
       ],
       "edges": [
         {"upstream": "finiteTrace", "downstream": "stredaTraceKernel"},
