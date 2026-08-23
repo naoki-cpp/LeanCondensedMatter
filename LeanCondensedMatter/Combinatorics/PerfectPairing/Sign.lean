@@ -246,6 +246,7 @@ private theorem blockFactor_self (τ : Equiv.Perm (Fin (2 * n))) (k : Fin n) :
     if_neg (hnotlt 1 0 (by decide)), if_neg (hnotlt 1 1 (by decide)),
     ite_lt_eq_neg_one_pow _ _ hne]
   simp only [one_mul, mul_one, blockPair]
+  rfl
 
 private theorem blockFactor_of_lt (τ : Equiv.Perm (Fin (2 * n))) {k l : Fin n} (h : k < l) :
     blockFactor τ k l =
