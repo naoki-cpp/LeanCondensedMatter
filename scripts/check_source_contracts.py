@@ -13,9 +13,76 @@ from architecture_audit_common import (
 ROOT = repository_root(__file__)
 SPEC = ROOT / "scripts" / "architecture" / "source_contracts.json"
 
+CONTRACT_FIELDS = {
+    "requiredFiles": ("id", "paths"),
+    "forbiddenFiles": ("id", "paths"),
+    "requiredDirectories": ("id", "paths"),
+    "requiredImports": ("id", "path", "modules"),
+    "exactImports": ("id", "path", "modules"),
+    "forbiddenImports": ("id", "path", "modules"),
+    "forbiddenImportPrefixes": ("id", "path", "prefixes"),
+}
+
 
 def load_spec() -> dict[str, object]:
-    return json.loads(SPEC.read_text(encoding="utf-8"))
+    raw = json.loads(SPEC.read_text(encoding="utf-8"))
+    if not isinstance(raw, dict):
+        raise ValueError("source contract specification must be a JSON object")
+    return raw
+
+
+def validate_string_list(
+    errors: list[str], category: str, contract_id: str, field: str, value: object
+) -> None:
+    if not isinstance(value, list) or not all(isinstance(item, str) and item for item in value):
+        errors.append(
+            f"source contract `{contract_id}` in `{category}` requires `{field}` to be a list of nonempty strings"
+        )
+
+
+def validate_spec(errors: list[str], raw: dict[str, object]) -> None:
+    unknown = sorted(set(raw) - set(CONTRACT_FIELDS))
+    for key in unknown:
+        errors.append(f"unknown source contract category `{key}`")
+
+    seen_ids: set[str] = set()
+    for category, required_fields in CONTRACT_FIELDS.items():
+        contracts = raw.get(category, [])
+        if not isinstance(contracts, list):
+            errors.append(f"source contract category `{category}` must be a list")
+            continue
+        for index, contract in enumerate(contracts):
+            if not isinstance(contract, dict):
+                errors.append(f"source contract `{category}` item {index} must be an object")
+                continue
+            missing = [field for field in required_fields if field not in contract]
+            extra = sorted(set(contract) - set(required_fields))
+            if missing:
+                errors.append(
+                    f"source contract `{category}` item {index} is missing fields: {', '.join(missing)}"
+                )
+            if extra:
+                errors.append(
+                    f"source contract `{category}` item {index} has unknown fields: {', '.join(extra)}"
+                )
+            if missing:
+                continue
+
+            contract_id = contract["id"]
+            if not isinstance(contract_id, str) or not contract_id:
+                errors.append(f"source contract `{category}` item {index} has invalid `id`")
+                continue
+            if contract_id in seen_ids:
+                errors.append(f"duplicate source contract id `{contract_id}`")
+            seen_ids.add(contract_id)
+
+            if "path" in required_fields:
+                path = contract["path"]
+                if not isinstance(path, str) or not path:
+                    errors.append(f"source contract `{contract_id}` requires a nonempty `path`")
+            for field in ("paths", "modules", "prefixes"):
+                if field in required_fields:
+                    validate_string_list(errors, category, contract_id, field, contract[field])
 
 
 def check_required_files(errors: list[str], raw: dict[str, object]) -> None:
@@ -125,13 +192,15 @@ def main() -> int:
     except (OSError, TypeError, ValueError, json.JSONDecodeError) as error:
         errors.append(f"invalid source contract specification: {error}")
     else:
-        check_required_files(errors, raw)
-        check_forbidden_files(errors, raw)
-        check_required_directories(errors, raw)
-        check_required_imports(errors, raw)
-        check_exact_imports(errors, raw)
-        check_forbidden_imports(errors, raw)
-        check_forbidden_import_prefixes(errors, raw)
+        validate_spec(errors, raw)
+        if not errors:
+            check_required_files(errors, raw)
+            check_forbidden_files(errors, raw)
+            check_required_directories(errors, raw)
+            check_required_imports(errors, raw)
+            check_exact_imports(errors, raw)
+            check_forbidden_imports(errors, raw)
+            check_forbidden_import_prefixes(errors, raw)
 
     return finish_audit(
         errors,
