@@ -43,7 +43,15 @@ theorem lorentzianSpectralOuterMass_eq_tailMass
   have hwhole := intervalIntegral.integral_add_adjacent_intervals
     (hleft.trans hmiddle) hright
   have hleftMiddle := intervalIntegral.integral_add_adjacent_intervals hleft hmiddle
-  unfold lorentzianSpectralOuterMass QuantumTheory.Transport.lorentzianSpectralTailMass
+  change
+    (∫ offset in -outerRadius..-innerRadius,
+        lorentzianSpectralKernel offset broadening) +
+      (∫ offset in innerRadius..outerRadius,
+        lorentzianSpectralKernel offset broadening) =
+      (∫ offset in -outerRadius..outerRadius,
+        lorentzianSpectralKernel offset broadening) -
+      ∫ offset in -innerRadius..innerRadius,
+        lorentzianSpectralKernel offset broadening
   linarith
 
 /-- The Lorentzian-weighted spectator error integrated over both outer intervals. -/
