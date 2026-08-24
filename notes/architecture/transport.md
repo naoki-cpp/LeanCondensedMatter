@@ -58,12 +58,12 @@ Transport/
 The stable public grouping modules are `Transport.Core`, `Transport.Resolvent`,
 `Transport.KuboBastin`, `Transport.Streda`, and `Transport.Disorder`. The project-level
 `LeanCondensedMatter.Transport` imports those five groups. The retired `Transport.Foundations`,
-`Transport.ResolventAPI`, and historical flat Core/Resolvent leaf modules were removed after
+`Transport.ResolventAPI`, and all historical flat generic Transport leaf modules were removed after
 repository-wide consumer audits showed no remaining imports.
 
-Other historical flat leaf paths remain temporarily as forwarding modules so downstream consumers
-can be migrated incrementally. They must not contain declarations. `scripts/check_transport_hierarchy.py`
-enforces that the remaining compatibility paths forward to their canonical owners.
+Historical flat compatibility modules now remain only in the concrete massive-Dirac AHE track. They
+must not contain declarations. `scripts/check_transport_hierarchy.py` enforces that the remaining AHE
+compatibility paths forward to their canonical owners.
 
 ## Semantic Kubo–Bastin / Středa boundary
 

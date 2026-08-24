@@ -16,16 +16,6 @@ ROOT = repository_root(__file__)
 LEAN = ROOT / "LeanCondensedMatter"
 TRANSPORT = LEAN / "Transport"
 AHE = TRANSPORT / "AnomalousHall"
-FERMIONIC_TRANSPORT = LEAN / "SecondQuantization" / "Fermionic" / "Transport"
-
-GENERIC_COMPAT = {
-    "FiniteDisorder.lean": "LeanCondensedMatter.Transport.Disorder.Finite",
-    "FiniteDisorderResolvent.lean": "LeanCondensedMatter.Transport.Disorder.Resolvent",
-    "FiniteDisorderMoments.lean": "LeanCondensedMatter.Transport.Disorder.Moments",
-    "FiniteDisorderBorn.lean": "LeanCondensedMatter.Transport.Disorder.Born",
-    "FiniteDisorderAdvancedBorn.lean": "LeanCondensedMatter.Transport.Disorder.AdvancedBorn",
-    "FiniteDisorderSCBA.lean": "LeanCondensedMatter.Transport.Disorder.SCBA",
-}
 
 AHE_MODEL = {
     "MassiveDirac.lean": "Model.Basic",
@@ -132,27 +122,6 @@ def forbid_compat_imports_under(
 
 def main() -> int:
     errors: list[str] = []
-
-    for filename, module in GENERIC_COMPAT.items():
-        require_compat(errors, TRANSPORT / filename, module)
-
-    # The compatibility map is the single source of truth for both forwarding targets and forbidden
-    # historical imports. This replaces the per-file migration table: every current and future
-    # canonical module is guarded automatically.
-    generic_flat_modules = flat_module_names("LeanCondensedMatter.Transport", GENERIC_COMPAT)
-    for directory in ("Core", "Resolvent", "Analysis", "KuboBastin", "Streda", "Disorder"):
-        forbid_compat_imports_under(
-            errors,
-            TRANSPORT / directory,
-            generic_flat_modules,
-            description=f"canonical Transport/{directory} hierarchy",
-        )
-    forbid_compat_imports_under(
-        errors,
-        FERMIONIC_TRANSPORT,
-        generic_flat_modules,
-        description="fermionic transport specialization hierarchy",
-    )
 
     transport_umbrella = LEAN / "Transport.lean"
     for module in (
