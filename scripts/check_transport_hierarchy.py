@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from architecture_audit_common import (
     finish_audit,
+    lean_imports,
     require_import,
     repository_root,
 )
@@ -37,6 +38,37 @@ def main() -> int:
             root=ROOT,
             description="resolvent hierarchy",
         )
+
+    disorder_umbrella = TRANSPORT / "Disorder.lean"
+    born_common_module = "LeanCondensedMatter.Transport.Disorder.BornCommon"
+    require_import(
+        errors,
+        disorder_umbrella,
+        born_common_module,
+        root=ROOT,
+        description="disorder public umbrella",
+    )
+    retarded_born_path = TRANSPORT / "Disorder" / "RetardedBorn.lean"
+    advanced_born_path = TRANSPORT / "Disorder" / "AdvancedBorn.lean"
+    for path in (retarded_born_path, advanced_born_path):
+        require_import(
+            errors,
+            path,
+            born_common_module,
+            root=ROOT,
+            description="Born specialization",
+        )
+
+    retired_born_path = TRANSPORT / "Disorder" / "Born.lean"
+    if retired_born_path.exists():
+        errors.append("Transport/Disorder/Born.lean is retired; use RetardedBorn.lean")
+
+    retarded_born_module = "LeanCondensedMatter.Transport.Disorder.RetardedBorn"
+    advanced_born_module = "LeanCondensedMatter.Transport.Disorder.AdvancedBorn"
+    if advanced_born_module in lean_imports(retarded_born_path):
+        errors.append("Transport/Disorder/RetardedBorn.lean must not import AdvancedBorn")
+    if retarded_born_module in lean_imports(advanced_born_path):
+        errors.append("Transport/Disorder/AdvancedBorn.lean must not import RetardedBorn")
 
     ahe_umbrella = TRANSPORT / "AnomalousHall.lean"
     for module in (

@@ -50,7 +50,8 @@ Transport/
     ├── Finite.lean
     ├── Resolvent.lean
     ├── Moments.lean
-    ├── Born.lean
+    ├── BornCommon.lean
+    ├── RetardedBorn.lean
     ├── AdvancedBorn.lean
     └── SCBA.lean
 ```
@@ -82,18 +83,22 @@ re-owning resolvent algebra.
 The exact/approximate split remains explicit:
 
 ```text
-                   ┌→ Disorder/Resolvent ─┐
-Disorder/Finite ───┤                       ├→ Disorder/Born
-                   └→ Disorder/Moments ────┤
-                                           └→ Disorder/AdvancedBorn
+                   ┌→ Disorder/Resolvent ───────────────────────┐
+Disorder/Finite ───┤                                            ├→ Disorder/RetardedBorn
+                   └→ Disorder/Moments → BornCommon ───────────┤
+                                                                └→ Disorder/AdvancedBorn
 
 Disorder/Finite + Resolvent
               ↓
          Disorder/SCBA
 ```
 
-`Disorder/Moments` and `Disorder/Resolvent` are sibling exact owners. Advanced Born must not depend
-on retarded Born merely to reuse moments. SCBA remains independent of the first-Born closure owner.
+`Disorder/Moments` and `Disorder/Resolvent` remain sibling exact owners. `Disorder/BornCommon`
+owns only R/A-neutral proof algebra shared by both first-Born specializations: centered first-order
+insertion cancellation, averaging of a configuration-wise second-order expansion, and the algebraic
+closure-error identity. Retarded/advanced self-energies, Born resolvent approximations, and named
+closure errors stay in `Disorder/RetardedBorn` and `Disorder/AdvancedBorn`. Those modules remain
+siblings and must not import one another. SCBA remains independent of the first-Born closure owners.
 
 ## AHE benchmark hierarchy
 
