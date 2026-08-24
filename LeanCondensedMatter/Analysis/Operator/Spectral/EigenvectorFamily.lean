@@ -349,7 +349,13 @@ theorem hasSum_eigenvectorFamily (hT : IsCompactOperator T) (hT' : T.IsSymmetric
   set G := Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ) with hG_def
   set b := eigenvectorHilbertBasis hT hT'
   have hb : ∀ a, (b a : H) = eigenvectorFamily hT a := fun a => by
-    simp [b, eigenvectorHilbertBasis, HilbertBasis.coe_mk]
+    let va : (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure :=
+      ⟨eigenvectorFamily hT a,
+        (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).le_topologicalClosure
+          (Submodule.subset_span ⟨a, rfl⟩)⟩
+    have hsub : b a = va := by
+      simp [b, eigenvectorHilbertBasis, va]
+    simpa [va] using congrArg Subtype.val hsub
   have hstep1 : HasSum (fun a : EigenvectorIndex T => (inner ℂ (b a : H) x : ℂ) • (b a : H))
       (F.subtypeₗᵢ (F.orthogonalProjectionOnto x)) :=
     (b.hasSum_orthogonalProjectionOnto x).mapL F.subtypeₗᵢ.toContinuousLinearMap
