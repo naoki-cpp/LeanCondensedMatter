@@ -202,8 +202,9 @@ private theorem eq_annihilate_of_vacuum_of_mixedCAR
           SecondQuantization.Fermionic.create j (B (basisState n)) =
         if i = j then basisState n else 0) :
     B = SecondQuantization.Fermionic.annihilate i := by
-  apply linearMap_ext_basisState
+  apply Common.linearMap_ext_basisState
   intro n
+  change B (basisState n) = SecondQuantization.Fermionic.annihilate i (basisState n)
   induction n using Finset.induction with
   | empty =>
       simpa using hVac
