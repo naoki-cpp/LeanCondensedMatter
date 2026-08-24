@@ -315,7 +315,7 @@ private theorem neg_one_pow_crossingCount_eq_of_sidePairing (e : SideSplitting m
     _ = (-1 : ℤˣ) ^ sideReversedCount e σ *
           (Equiv.Perm.sign (baseListingPerm e) * Equiv.Perm.sign σ) := by
       rw [← hsign]
-    _ = Equiv.Perm.sign (baseListingPerm e) * (-1) ^ sideReversedCount e σ *
+    _ = Equiv.Perm.sign (baseListingPerm e) * (-1 : ℤˣ) ^ sideReversedCount e σ *
           Equiv.Perm.sign σ := by
       rw [← mul_assoc, mul_comm ((-1 : ℤˣ) ^ sideReversedCount e σ), mul_assoc]
 
@@ -435,6 +435,9 @@ theorem pairingSum_eq_permutationSum_of_inl_vanishing {R : Type*} [CommSemiring 
       sideSplittingWeight ζ e *
         permutationSum ζ (exchangeMatrix ζ e pv) Finset.univ := by
   classical
+  change pairingSum ζ pv =
+    sideSplittingWeight ζ e *
+      permutationSum ζ (fun i j => exchangeMatrix ζ e pv i j) Finset.univ
   rw [pairingSum]
   simp only [Pairing.evaluation]
   rw [sum_pairings_eq_sum_perm_of_inl_vanishing e _ pv hpv,
