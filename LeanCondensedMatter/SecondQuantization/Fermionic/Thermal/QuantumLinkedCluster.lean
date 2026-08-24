@@ -121,8 +121,9 @@ omit [Fintype Mode] in
 operator-level definition matches the physical "number operator" reading. -/
 theorem occupationProjector_singleton (i : Mode) :
     occupationProjector ({i} : Finset Mode) = numberOperator i := by
-  apply linearMap_ext_basisState
+  apply Common.linearMap_ext_basisState
   intro n
+  change occupationProjector ({i} : Finset Mode) (basisState n) = numberOperator i (basisState n)
   simp [occupationProjector_basisState, numberOperator_basisState, Finset.singleton_subset_iff]
 
 omit [LinearOrder Mode] in
