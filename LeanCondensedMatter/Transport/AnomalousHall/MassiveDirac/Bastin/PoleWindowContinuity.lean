@@ -65,22 +65,42 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap
     apply hshift
     unfold interbandEnergyGap
     linarith
+  have hretRaw := hretDen.inv₀ hretDen_ne
   have hret : ContinuousAt
       (fun q : ℝ × ℝ =>
         projectorResolventCoefficient
           (retardedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
           (oppositeBand band) v m px py)
       p := by
-    simpa [projectorResolventCoefficient, retardedSpectralParameter] using
-      hretDen.inv₀ hretDen_ne
+    have hfun :
+        (fun q : ℝ × ℝ =>
+          (((bandEnergy band v m px py + q.1 : ℝ) : ℂ) + (q.2 : ℂ) * Complex.I) -
+            ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ))⁻¹ =
+          (fun q : ℝ × ℝ =>
+            ((((bandEnergy band v m px py + q.1 : ℝ) : ℂ) + (q.2 : ℂ) * Complex.I) -
+              ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ))⁻¹) := by
+      funext q
+      rfl
+    rw [hfun] at hretRaw
+    simpa [projectorResolventCoefficient, retardedSpectralParameter] using hretRaw
+  have hadvRaw := hadvDen.inv₀ hadvDen_ne
   have hadv : ContinuousAt
       (fun q : ℝ × ℝ =>
         projectorResolventCoefficient
           (advancedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
           (oppositeBand band) v m px py)
       p := by
-    simpa [projectorResolventCoefficient, advancedSpectralParameter] using
-      hadvDen.inv₀ hadvDen_ne
+    have hfun :
+        (fun q : ℝ × ℝ =>
+          (((bandEnergy band v m px py + q.1 : ℝ) : ℂ) - (q.2 : ℂ) * Complex.I) -
+            ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ))⁻¹ =
+          (fun q : ℝ × ℝ =>
+            ((((bandEnergy band v m px py + q.1 : ℝ) : ℂ) - (q.2 : ℂ) * Complex.I) -
+              ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ))⁻¹) := by
+      funext q
+      rfl
+    rw [hfun] at hadvRaw
+    simpa [projectorResolventCoefficient, advancedSpectralParameter] using hadvRaw
   have hretSq := hret.mul hret
   have hadvSq := hadv.mul hadv
   have hxy := hretSq.mul
@@ -91,9 +111,67 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap
     (continuousAt_const : ContinuousAt
       (fun _ : ℝ × ℝ =>
         bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py) p)
+  have hsubRaw := hxy.sub hyx
+  have hsub : ContinuousAt
+      (fun q : ℝ × ℝ =>
+        projectorResolventCoefficient
+              (retardedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
+              (oppositeBand band) v m px py *
+            projectorResolventCoefficient
+              (retardedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
+              (oppositeBand band) v m px py *
+          bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py -
+        projectorResolventCoefficient
+              (advancedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
+              (oppositeBand band) v m px py *
+            projectorResolventCoefficient
+              (advancedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
+              (oppositeBand band) v m px py *
+          bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)
+      p := by
+    have hfun :
+        (((fun q : ℝ × ℝ =>
+              projectorResolventCoefficient
+                (retardedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
+                (oppositeBand band) v m px py) *
+            (fun q : ℝ × ℝ =>
+              projectorResolventCoefficient
+                (retardedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
+                (oppositeBand band) v m px py)) *
+          (fun _ : ℝ × ℝ =>
+            bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py)) -
+        (((fun q : ℝ × ℝ =>
+              projectorResolventCoefficient
+                (advancedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
+                (oppositeBand band) v m px py) *
+            (fun q : ℝ × ℝ =>
+              projectorResolventCoefficient
+                (advancedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
+                (oppositeBand band) v m px py)) *
+          (fun _ : ℝ × ℝ =>
+            bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py)) =
+          (fun q : ℝ × ℝ =>
+            projectorResolventCoefficient
+                  (retardedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
+                  (oppositeBand band) v m px py *
+                projectorResolventCoefficient
+                  (retardedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
+                  (oppositeBand band) v m px py *
+              bastinBandBlockTrace .x .y (oppositeBand band) band e v m px py -
+            projectorResolventCoefficient
+                  (advancedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
+                  (oppositeBand band) v m px py *
+                projectorResolventCoefficient
+                  (advancedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
+                  (oppositeBand band) v m px py *
+              bastinBandBlockTrace .y .x (oppositeBand band) band e v m px py) := by
+      funext q
+      rfl
+    rw [hfun] at hsubRaw
+    exact hsubRaw
   unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
   dsimp
-  simpa [pow_two] using hxy.sub hyx
+  simpa [pow_two] using hsub
 
 /-- A target-centered energy window narrower than the interband gap is a continuity region for the
 regular spectator/current factor, independently of the broadening coordinate. -/
