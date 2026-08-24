@@ -7,9 +7,9 @@ set_option linter.style.header false
 # Resolvent identities and commutation
 
 For a self-adjoint partial operator, the bounded resolvents at two nonreal spectral parameters
-satisfy the usual resolvent identity.  In particular, all such resolvents commute.  This is the
-algebraic input needed to compare the bounded self-adjoint approximants and their exponential
-unitary groups in the Stone-theorem construction tracked by issue #840.
+satisfy the usual resolvent identity and therefore commute pairwise. The bounded self-adjoint
+resolvent approximants used in the Stone construction are symmetric linear combinations of these
+resolvents, so approximants at different positive regularization scales commute as well.
 -/
 
 namespace LinearPMap
@@ -83,6 +83,23 @@ theorem nonrealResolvent_commute
     (z w : ℂ) (hz : z.im ≠ 0) (hw : w.im ≠ 0) :
     Commute (nonrealResolvent A hA z hz) (nonrealResolvent A hA w hw) := by
   exact nonrealResolvent_mul_comm A hA z w hz hw
+
+/-- Bounded self-adjoint resolvent approximants at two positive scales commute. -/
+theorem boundedSelfAdjointApproximation_commute
+    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A)
+    (r s : ℝ) (hr : 0 < r) (hs : 0 < s) :
+    Commute (boundedSelfAdjointApproximation A hA r hr)
+      (boundedSelfAdjointApproximation A hA s hs) := by
+  unfold boundedSelfAdjointApproximation
+  apply Commute.smul_left
+  apply Commute.smul_right
+  apply Commute.add_left
+  · apply Commute.add_right
+    · apply nonrealResolvent_commute
+    · apply nonrealResolvent_commute
+  · apply Commute.add_right
+    · apply nonrealResolvent_commute
+    · apply nonrealResolvent_commute
 
 end
 

@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximationCommutation
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventCommutation
 import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionAlgebra
 import LeanCondensedMatter.Analysis.Operator.Unbounded.BoundedUnitaryEvolutionEstimate
 import Mathlib.Tactic

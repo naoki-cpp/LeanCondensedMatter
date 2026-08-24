@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventEvolutionStrongContinuity
-import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventApproximationCommutation
+import LeanCondensedMatter.Analysis.Operator.Unbounded.ResolventCommutation
 import Mathlib.Tactic
 
 set_option linter.style.header false
