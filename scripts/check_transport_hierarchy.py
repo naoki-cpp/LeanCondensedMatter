@@ -19,13 +19,6 @@ AHE = TRANSPORT / "AnomalousHall"
 FERMIONIC_TRANSPORT = LEAN / "SecondQuantization" / "Fermionic" / "Transport"
 
 GENERIC_COMPAT = {
-    "StredaOperatorKernel.lean": "LeanCondensedMatter.Transport.Streda.OperatorKernel",
-    "StredaTraceKernel.lean": "LeanCondensedMatter.Transport.Streda.TraceKernel",
-    "StredaIntegration.lean": "LeanCondensedMatter.Transport.Streda.Integration",
-    "GeneralizedStaticStreda.lean": "LeanCondensedMatter.Transport.Streda.GeneralizedStatic",
-    "StredaTraceSpectral.lean": "LeanCondensedMatter.Transport.Streda.TraceSpectral",
-    "StredaTraceRepresentation.lean": "LeanCondensedMatter.Transport.Streda.TraceRepresentation",
-    "StredaSpectralEnergyIntegral.lean": "LeanCondensedMatter.Transport.Streda.SpectralEnergyIntegral",
     "FiniteDisorder.lean": "LeanCondensedMatter.Transport.Disorder.Finite",
     "FiniteDisorderResolvent.lean": "LeanCondensedMatter.Transport.Disorder.Resolvent",
     "FiniteDisorderMoments.lean": "LeanCondensedMatter.Transport.Disorder.Moments",
