@@ -49,10 +49,12 @@ theorem TwoPointDiagram.externalPiece_vertexLabel
     d.externalPiece.vertexLabel ⟨v, Finset.mem_univ _⟩ =
       d.vertexLabel ⟨d.externalInteractionPart.orderEmbOfFin rfl v, Finset.mem_univ _⟩ := by
   unfold TwoPointDiagram.externalPiece
+  unfold TwoPointDiagram.externalInteractionPart
   rw [TwoPointDiagram.slotCongr_vertexLabel,
     TwoPointDiagram.externalVacuumSplit_fst_vertexLabel]
   exact congrArg d.vertexLabel
-    (Subtype.ext (standardSlotEquiv_symm_coe d.externalInteractionPart
+    (Subtype.ext (standardSlotEquiv_symm_coe
+      (TwoPointDiagram.interactionPart (d.externalComponent 0))
       ⟨v, Finset.mem_univ v⟩))
 
 private noncomputable def TwoPointDiagram.externalPieceLegEquiv
@@ -78,6 +80,7 @@ private theorem TwoPointDiagram.externalPiece_partner_externalPieceLegEquiv
       twoPointLegCongr (standardSlotEquiv d.externalInteractionPart)
         (d.externalComponentLegEquiv.symm
           (d.restrictedPartner d.externalComponentPart leg))
+  unfold TwoPointDiagram.externalInteractionPart
   rw [TwoPointDiagram.slotCongr_partner,
     d.externalComponentLegEquiv_symm_restrictedPartner]
   rfl
