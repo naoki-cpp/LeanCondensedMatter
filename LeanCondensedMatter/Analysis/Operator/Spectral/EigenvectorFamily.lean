@@ -152,7 +152,7 @@ theorem countable_eigenvectorIndex (hT : IsCompactOperator T) (hT' : T.IsSymmetr
   have hcov : (Set.univ : Set (EigenvectorIndex T)) =
       ⋃ n : ℕ, {a : EigenvectorIndex T | 1 / (n + 1 : ℝ) ≤ |a.1.1|} := by
     ext a
-    simp only [Set.mem_univ, Set.mem_iUnion, Set.mem_setOf_eq, true_iff]
+    simp only [Set.mem_univ, Set.mem_iUnion, Set.mem_ofPred_eq, true_iff]
     obtain ⟨n, hn⟩ := exists_nat_one_div_lt (abs_pos.mpr a.1.2)
     exact ⟨n, hn.le⟩
   have hfin : ∀ n : ℕ, {a : EigenvectorIndex T | 1 / (n + 1 : ℝ) ≤ |a.1.1|}.Finite :=
