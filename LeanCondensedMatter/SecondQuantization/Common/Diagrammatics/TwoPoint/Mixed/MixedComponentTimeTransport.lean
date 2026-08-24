@@ -245,8 +245,13 @@ theorem TwoPointDiagram.mixedExternalPositionEquiv_positionTimeEquiv {n : ℕ}
     d.mixedExternalPositionEquiv τ τ' υ
         (d.mixedComponentPositionTimeEquiv τ τ' σ υ d.externalComponentPart p) =
       d.mixedExternalPositionEquiv τ τ' σ p := by
-  simp [TwoPointDiagram.mixedExternalPositionEquiv,
-    TwoPointDiagram.mixedComponentPositionTimeEquiv]
+  change d.externalComponentLegEquiv.symm
+      (d.mixedComponentPositionEquiv τ τ' υ d.externalComponentPart
+        (d.mixedComponentPositionTimeEquiv τ τ' σ υ d.externalComponentPart p)) =
+    d.externalComponentLegEquiv.symm
+      (d.mixedComponentPositionEquiv τ τ' σ d.externalComponentPart p)
+  exact congrArg d.externalComponentLegEquiv.symm
+    (d.mixedComponentPositionEquiv_timeEquiv τ τ' σ υ d.externalComponentPart p)
 
 /-- Vacuum-component restricted position coordinates are unchanged by time transport. -/
 @[simp]
