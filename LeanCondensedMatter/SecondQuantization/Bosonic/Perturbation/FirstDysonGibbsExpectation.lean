@@ -36,6 +36,7 @@ theorem freeGibbsExpectation_dysonCoeff_one
   rw [matrixCoeff_freeGibbs_dysonCoeff_one_self]
   simp only [LinearMap.comp_smul, Common.matrixCoeff_smul]
 
+omit [Fintype Mode] in
 /-- At Dyson order zero, the Gibbs expectation satisfies the recursive interval formula directly.
 No infinite-sum/integral interchange hypothesis is required because the integrand expectation is
 constant after free interaction-picture conjugation. -/
