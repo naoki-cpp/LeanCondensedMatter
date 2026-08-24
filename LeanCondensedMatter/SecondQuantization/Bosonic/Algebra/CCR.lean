@@ -54,7 +54,7 @@ theorem comm_create_create_basisState (i j : Mode) (n : Occupation Mode) :
     smul_smul, smul_smul, createOccupation_comm i j n, mul_comm, sub_self]
 
 theorem comm_create_create (i j : Mode) : comm (create i) (create j) = 0 :=
-  linearMap_ext_basisState fun n => by rw [comm_create_create_basisState, LinearMap.zero_apply]
+  Common.linearMap_ext_basisState fun n => by rw [comm_create_create_basisState, LinearMap.zero_apply]
 
 /-! ## `[a_i, a_j] = 0` -/
 
@@ -86,7 +86,7 @@ theorem comm_annihilate_annihilate_basisState (i j : Mode) (n : Occupation Mode)
         smul_smul, smul_smul, removeOccupation_comm hij, mul_comm, sub_self]
 
 theorem comm_annihilate_annihilate (i j : Mode) : comm (annihilate i) (annihilate j) = 0 :=
-  linearMap_ext_basisState fun n => by
+  Common.linearMap_ext_basisState fun n => by
     rw [comm_annihilate_annihilate_basisState, LinearMap.zero_apply]
 
 /-! ## `[a_i, a_j†] = δ_ij` -/
@@ -150,10 +150,10 @@ theorem comm_annihilate_create (i j : Mode) :
       else 0 := by
   rcases eq_or_ne i j with rfl | hij
   · rw [if_pos rfl]
-    exact linearMap_ext_basisState fun n => by
+    exact Common.linearMap_ext_basisState fun n => by
       rw [comm_annihilate_create_basisState, if_pos rfl, LinearMap.id_apply]
   · rw [if_neg hij]
-    exact linearMap_ext_basisState fun n => by
+    exact Common.linearMap_ext_basisState fun n => by
       rw [comm_annihilate_create_basisState, if_neg hij, LinearMap.zero_apply]
 
 /-- The reverse mixed CCR, `[aᵢ†, aⱼ] = -δᵢⱼ`. -/
