@@ -318,8 +318,7 @@ private theorem dense_eigenvectorFamilyInClosure (hT : IsCompactOperator T) :
     ⊤ ≤ (Submodule.span ℂ (Set.range (eigenvectorFamilyInClosure hT))).topologicalClosure := by
   rw [← eq_top_iff]
   apply Submodule.dense_iff_topologicalClosure_eq_top.mp
-  rw [((Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure).subtypeₗᵢ
-    .isometry.isEmbedding.isInducing.dense_iff]
+  rw [((Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure).subtypeₗᵢ.isometry.isEmbedding.isInducing.dense_iff]
   intro y
   have hspaneq :
       Submodule.map
