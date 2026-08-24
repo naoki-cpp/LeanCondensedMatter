@@ -40,7 +40,8 @@ private noncomputable def operatorStarLinearIsometry :
 @[simp]
 private theorem operatorStarLinearIsometry_apply (A : H →L[ℂ] H) :
     operatorStarLinearIsometry A = star A := by
-  simp [operatorStarLinearIsometry]
+  change (starL' ℝ) A = star A
+  exact starL'_apply ℝ A
 
 /-- A pointwise self-adjoint Schrödinger-picture perturbation remains self-adjoint in the
 interaction picture. -/
