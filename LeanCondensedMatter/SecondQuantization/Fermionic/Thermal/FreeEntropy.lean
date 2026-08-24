@@ -157,6 +157,7 @@ theorem sum_freeGibbsConfigurationProbability_filter_mem
   rw [show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
   field_simp [hPpos.ne', Real.exp_ne_zero]
 
+omit [LinearOrder Mode] in
 /-- The mean free energy is the mode-energy sum weighted by Fermi–Dirac occupations. -/
 theorem sum_freeGibbsConfigurationProbability_mul_fermionEnergy
     (ε : Mode → ℝ) (β : ℝ) :
@@ -262,7 +263,7 @@ private theorem one_sub_fermiDiracOccupation_eq_inv_one_add_exp_neg
   rw [fermiDiracOccupation, show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
   field_simp [Real.exp_ne_zero] <;> ring
 
-omit [LinearOrder Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 private theorem binaryEntropy_fermiDiracOccupation
     (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
     Real.negMulLog (fermiDiracOccupation ε β i) +
