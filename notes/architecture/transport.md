@@ -34,7 +34,9 @@ Transport/
 │   ├── LorentzianPole.lean
 │   └── ZeroTemperatureOccupation.lean
 ├── KuboBastin/
+│   ├── PurePoint.lean
 │   ├── Finite.lean
+│   ├── FiniteTrace.lean
 │   ├── OccupationInterpolation.lean
 │   ├── Occupation.lean
 │   └── CommonEnergy.lean
@@ -69,13 +71,32 @@ compatibility-forwarder machinery.
 
 ## Semantic Kubo–Bastin / Středa boundary
 
+The pure-point and finite restrictions are separate ownership boundaries:
+
+```text
+KuboBastin/PurePoint
+        ↓  [Fintype ι]
+KuboBastin/Finite
+        ↓  [FiniteDimensional ℂ H]
+KuboBastin/FiniteTrace
+```
+
+`KuboBastin/PurePoint.lean` owns the complete-Hilbert-space Lehmann-to-retarded-resolvent algebra for
+one pure-point transition and does not assume a finite spectral index. `KuboBastin/Finite.lean`
+introduces `Fintype ι` only when those transitions are assembled into ordinary finite sums and
+packaged as finite `ResponseChannel` responses. `KuboBastin/FiniteTrace.lean` then introduces
+`FiniteDimensional ℂ H` exactly where ordinary `LinearMap.trace` is used. Thus finite spectral index
+and finite Hilbert-space dimension are explicit, distinct assumptions rather than properties of the
+Kubo–Bastin transition algebra itself.
+
 `KuboBastin/Occupation.lean` and `KuboBastin/CommonEnergy.lean` remain on the Kubo–Bastin side of
-the boundary: they build occupation-resolved and common-energy representations but do not define a
-Středa surface or sea term. Genuine Středa ownership begins at `Streda/OperatorKernel.lean`, where
-the Smrčka–Středa surface primitive and residual sea kernel are introduced.
+the boundary: their transition-level APIs are pure-point, while complete response/kernel sums use
+the finite spectral-index layer. They do not define a Středa surface or sea term. Genuine Středa
+ownership begins at `Streda/OperatorKernel.lean`, where the Smrčka–Středa surface primitive and
+residual sea kernel are introduced.
 
 `Resolvent/Spectral.lean` owns the model-independent eigenvector action of retarded/advanced
-resolvents. Both finite Kubo–Bastin and Středa spectral expansions consume that result rather than
+resolvents. Pure-point Kubo–Bastin and Středa spectral expansions consume that result rather than
 re-owning resolvent algebra.
 
 ## Disorder boundary
