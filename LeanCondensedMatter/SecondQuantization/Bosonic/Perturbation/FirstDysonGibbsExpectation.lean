@@ -20,6 +20,7 @@ noncomputable section
 
 variable {Mode : Type*} [Fintype Mode]
 
+omit [Fintype Mode] in
 /-- The normalized free-Gibbs expectation of the first Dyson coefficient is the bare interaction
 expectation multiplied by the signed interval length. -/
 theorem freeGibbsExpectation_dysonCoeff_one
