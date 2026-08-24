@@ -91,7 +91,7 @@ private theorem log_purePointPartitionFunction_fermionEnergy_eq_sum
       (f := fun i => 1 + Real.exp (-β * ε i))
       (fun i _ => ne_of_gt (by positivity)))
 
-omit [LinearOrder Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 private theorem sum_purePointBoltzmannWeight_powerset_eq_prod
     (ε : Mode → ℝ) (β : ℝ) (s : Finset Mode) :
     ∑ t ∈ s.powerset, purePointBoltzmannWeight (fermionEnergy ε) β t =
@@ -103,6 +103,7 @@ private theorem sum_purePointBoltzmannWeight_powerset_eq_prod
   rw [← h]
   exact Finset.prod_congr rfl fun j _ => add_comm _ _
 
+omit [LinearOrder Mode] in
 /-- The total probability of configurations containing mode `i` is its Fermi–Dirac occupation. -/
 theorem sum_freeGibbsConfigurationProbability_filter_mem
     (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
@@ -245,7 +246,7 @@ theorem vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_configuration
   rw [vonNeumannEntropy_eq_ofReal_entropyOp_trace ρ hs,
     ENNReal.toReal_ofReal htrace_nonneg, htrace, tsum_fintype]
 
-omit [LinearOrder Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 private theorem fermiDiracOccupation_eq_exp_neg_div
     (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
     fermiDiracOccupation ε β i =
@@ -253,7 +254,7 @@ private theorem fermiDiracOccupation_eq_exp_neg_div
   rw [fermiDiracOccupation, show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
   field_simp [Real.exp_ne_zero]
 
-omit [LinearOrder Mode] in
+omit [LinearOrder Mode] [Fintype Mode] in
 private theorem one_sub_fermiDiracOccupation_eq_inv_one_add_exp_neg
     (ε : Mode → ℝ) (β : ℝ) (i : Mode) :
     1 - fermiDiracOccupation ε β i =
