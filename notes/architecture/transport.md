@@ -61,10 +61,10 @@ The stable public grouping modules are `Transport.Core`, `Transport.Resolvent`,
 `Transport.ResolventAPI`, and all historical flat generic Transport leaf modules were removed after
 repository-wide consumer audits showed no remaining imports.
 
-Historical flat compatibility modules now remain only in the final pair/radial portion of the
-concrete massive-Dirac Bastin track. They must not contain declarations.
-`scripts/check_transport_hierarchy.py` enforces that these remaining compatibility paths forward to
-their canonical owners.
+All historical flat Transport and massive-Dirac AHE compatibility modules have now been removed
+after repository-wide consumer audits showed no remaining imports. `scripts/check_transport_hierarchy.py`
+continues to enforce the canonical public umbrellas and core hierarchy constraints without carrying
+compatibility-forwarder machinery.
 
 ## Semantic Kubo–Bastin / Středa boundary
 
@@ -123,9 +123,9 @@ Transport/AnomalousHall/MassiveDirac/
 ```
 
 `MassiveDirac.Model`, `.Intrinsic`, `.Streda`, and `.Bastin` are the public benchmark layers.
-The historical flat Model, Intrinsic, Středa, Bastin-foundation, and Bastin-pole forwarding modules
-were removed after repository-wide consumer audits showed no remaining imports. The remaining old
-flat `MassiveDiracBastin*` files are pair/radial-chain compatibility forwarders only.
+The historical flat Model, Intrinsic, Středa, and Bastin forwarding modules were removed after
+repository-wide consumer audits showed no remaining imports. Concrete implementations now live only
+under the canonical `MassiveDirac/{Model,Intrinsic,Streda,Bastin}/` hierarchy.
 
 This hierarchy is not permission for AHE to own reusable analysis. Generic Lorentzian kernel/tail
 analysis, zero-temperature occupation/Fermi-edge weights, and regular-factor Lorentzian pole
