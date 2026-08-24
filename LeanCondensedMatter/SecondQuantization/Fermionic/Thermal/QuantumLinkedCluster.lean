@@ -180,17 +180,9 @@ theorem occupationProjector_idempotent (S : Finset Mode) :
 /-! ## Independence from a product weight -/
 
 /-- **`w` is a product weight across the mode bipartition `(A, B)`.** `A`, `B` partition all of
-`Mode` (`Disjoint A B`, `A ∪ B = univ`, `w n = wA (n ∩ A) * wB (n ∩ B)`) — e.g. a Gibbs weight
-for a Hamiltonian `H = HA + HB` with `[HA, HB] = 0` and no cross-region interaction. It is *not* a
-general interacting Gibbs weight. `occupationMoment_isIndependentAcross` shows it implies
-`Finpartition.IsIndependentAcross (occupationMoment w) A B`, and `occupationCumulant_eq_zero_of_
-isProductWeightAcross` packages the resulting cumulant-vanishing fact without exposing
-`Finpartition.IsIndependentAcross` to callers.
-
-This is a necessary building block for the Linked Cluster Theorem, not the theorem itself: the LCT
-needs the harder statement that disconnected contributions cancel in `log Z` even in the presence
-of cross-region interaction — see `notes/roadmaps/second-quantization.md` for what remains.
--/
+`Mode` (`Disjoint A B`, `A ∪ B = univ`), and `w` factors as `wA` on the `A`-part of an occupation
+state times `wB` on the `B`-part — the combinatorial content of "the weight treats modes in `A`
+and modes in `B` as physically independent". -/
 def IsProductWeightAcross (w : Occupation Mode → ℂ) (A B : Finset Mode) : Prop :=
   Disjoint A B ∧ A ∪ B = Finset.univ ∧
     ∃ wA wB : Finset Mode → ℂ, ∀ n, w n = wA (n ∩ A) * wB (n ∩ B)
