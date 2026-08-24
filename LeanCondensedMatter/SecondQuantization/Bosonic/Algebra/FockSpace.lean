@@ -29,26 +29,6 @@ noncomputable def basisState (n : Occupation Mode) : FockSpace Mode :=
 /-- The basis vector of the zero-occupation state. -/
 noncomputable def fockVacuum : FockSpace Mode := basisState vacuum
 
-@[simp]
-theorem basisState_ne_zero (n : Occupation Mode) : basisState n ≠ 0 :=
-  Common.basisState_ne_zero n
-
-theorem basisState_injective : Function.Injective (basisState : Occupation Mode → _) :=
-  Common.basisState_injective
-
-/-- Basis vectors are injective on all bosonic occupation states. -/
-theorem basisState_injOn : Set.InjOn (basisState : Occupation Mode → _) Set.univ := by
-  change Set.InjOn
-    (Common.basisState : Occupation Mode → Common.AlgebraicFock (Occupation Mode)) Set.univ
-  exact Common.basisState_injOn
-
-/-- The occupation-number basis vectors are linearly independent. -/
-theorem basisState_linearIndependent :
-    LinearIndependent ℂ (basisState : Occupation Mode → FockSpace Mode) := by
-  change LinearIndependent ℂ
-    (Common.basisState : Occupation Mode → Common.AlgebraicFock (Occupation Mode))
-  exact Common.basisState_linearIndependent
-
 /-- Linear maps out of `FockSpace Mode` are determined by their values on basis states. -/
 theorem linearMap_ext_basisState {f g : FockSpace Mode →ₗ[ℂ] FockSpace Mode}
     (h : ∀ n, f (basisState n) = g (basisState n)) : f = g :=
