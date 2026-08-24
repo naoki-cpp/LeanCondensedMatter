@@ -19,11 +19,6 @@ AHE = TRANSPORT / "AnomalousHall"
 FERMIONIC_TRANSPORT = LEAN / "SecondQuantization" / "Fermionic" / "Transport"
 
 GENERIC_COMPAT = {
-    "LorentzianSpectralKernel.lean": "LeanCondensedMatter.Transport.Analysis.LorentzianKernel",
-    "FiniteKuboBastin.lean": "LeanCondensedMatter.Transport.KuboBastin.Finite",
-    "OccupationInterpolation.lean": "LeanCondensedMatter.Transport.KuboBastin.OccupationInterpolation",
-    "KuboBastinOccupation.lean": "LeanCondensedMatter.Transport.KuboBastin.Occupation",
-    "KuboBastinCommonEnergy.lean": "LeanCondensedMatter.Transport.KuboBastin.CommonEnergy",
     "StredaOperatorKernel.lean": "LeanCondensedMatter.Transport.Streda.OperatorKernel",
     "StredaTraceKernel.lean": "LeanCondensedMatter.Transport.Streda.TraceKernel",
     "StredaIntegration.lean": "LeanCondensedMatter.Transport.Streda.Integration",
