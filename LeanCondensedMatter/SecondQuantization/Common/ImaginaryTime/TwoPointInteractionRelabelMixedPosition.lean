@@ -27,6 +27,18 @@ noncomputable def interactionVertexMixedPositionRelabel {n : ℕ}
     ((interactionVertexLegRelabel π).trans
       (mixedTimeOrderedAtomicLegEquiv τ τ' (fun v => σ (π.symm v))).symm)
 
+private theorem mixedTimeOrderedAtomicLegPosition_read {n : ℕ}
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (p : Fin (2 * (2 * n + 1))) :
+    mixedTimeOrderedAtomicLegPosition τ τ' σ
+        (mixedTimeOrderedAtomicLegEquiv τ τ' σ p) = p := by
+  exact (mixedTimeOrderedAtomicLegEquiv τ τ' σ).symm_apply_apply p
+
+private theorem mixedTimeOrderedAtomicLegEquiv_position {n : ℕ}
+    (τ τ' : ℝ) (σ : Fin n → ℝ) (leg : OrderedTwoPointLeg n) :
+    mixedTimeOrderedAtomicLegEquiv τ τ' σ
+        (mixedTimeOrderedAtomicLegPosition τ τ' σ leg) = leg := by
+  exact (mixedTimeOrderedAtomicLegEquiv τ τ' σ).apply_symm_apply leg
+
 /-- Reading the old standard leg at a transported mixed position gives the relabeling of the new
 standard leg. -/
 @[simp]
@@ -47,7 +59,8 @@ theorem interactionVertexMixedPositionRelabel_apply {n : ℕ}
       mixedTimeOrderedAtomicLegPosition τ τ' (fun v => σ (π.symm v))
         (interactionVertexLegRelabel π (mixedTimeOrderedAtomicLegEquiv τ τ' σ p)) := by
   apply (mixedTimeOrderedAtomicLegEquiv τ τ' (fun v => σ (π.symm v))).injective
-  simp [mixedTimeOrderedAtomicLegPosition]
+  rw [mixedTimeOrderedAtomicLegEquiv_interactionVertexMixedPositionRelabel,
+    mixedTimeOrderedAtomicLegEquiv_position]
 
 /-- The supporting old event of a transported mixed position is the relabeling of the supporting
 new event. -/
@@ -112,7 +125,7 @@ theorem interactionVertexMixedPositionRelabel_lt_iff_of_eventTime_ne {n : ℕ}
     π τ τ' σ (orderedTwoPointLegEvent x) (orderedTwoPointLegEvent y)]
   · rw [← orderedTwoPointTimedEventPosition_lt_iff]
     rw [← mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt τ τ' σ x y hxy]
-    simp [x, y, mixedTimeOrderedAtomicLegPosition]
+    simpa only [x, y, mixedTimeOrderedAtomicLegPosition_read]
   · simpa [x, y] using hTime
 
 /-- With injective interaction times, transported mixed positions preserve order whenever their
@@ -142,7 +155,7 @@ theorem interactionVertexMixedPositionRelabel_lt_iff_of_injective_of_event_ne {n
   rw [orderedTwoPointTimedEventPosition_interactionVertexEventRelabel_lt_iff_of_injective
     π τ τ' σ hσ (orderedTwoPointLegEvent x) (orderedTwoPointLegEvent y)]
   rw [← mixedTimeOrderedAtomicLegPosition_lt_iff_eventPosition_lt τ τ' σ x y hEvent]
-  simp [x, y, mixedTimeOrderedAtomicLegPosition]
+  simpa only [x, y, mixedTimeOrderedAtomicLegPosition_read]
 
 private theorem mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) (x y : OrderedTwoPointLeg n)
@@ -206,18 +219,18 @@ theorem interactionVertexMixedPositionRelabel_lt_iff_of_injective {n : ℕ}
     rw [interactionVertexMixedPositionRelabel_apply,
       interactionVertexMixedPositionRelabel_apply]
     have hp : mixedTimeOrderedAtomicLegPosition τ τ' σ x = p := by
-      simp [x, mixedTimeOrderedAtomicLegPosition]
+      simpa only [x] using mixedTimeOrderedAtomicLegPosition_read τ τ' σ p
     have hq : mixedTimeOrderedAtomicLegPosition τ τ' σ y = q := by
-      simp [y, mixedTimeOrderedAtomicLegPosition]
+      simpa only [y] using mixedTimeOrderedAtomicLegPosition_read τ τ' σ q
     rw [← hp, ← hq]
     have hxinv :
         mixedTimeOrderedAtomicLegEquiv τ τ' σ
             (mixedTimeOrderedAtomicLegPosition τ τ' σ x) = x :=
-      (mixedTimeOrderedAtomicLegEquiv τ τ' σ).apply_symm_apply x
+      mixedTimeOrderedAtomicLegEquiv_position τ τ' σ x
     have hyinv :
         mixedTimeOrderedAtomicLegEquiv τ τ' σ
             (mixedTimeOrderedAtomicLegPosition τ τ' σ y) = y :=
-      (mixedTimeOrderedAtomicLegEquiv τ τ' σ).apply_symm_apply y
+      mixedTimeOrderedAtomicLegEquiv_position τ τ' σ y
     simp only [hxinv, hyinv]
     rw [mixedTimeOrderedAtomicLegPosition_lt_iff_eventBlockIdxOf_lt
       τ τ' (fun v => σ (π.symm v))
