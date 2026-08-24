@@ -30,16 +30,13 @@ local instance instDecidableEqBosonicBlochDeDominicisTwoPoint : DecidableEq Mode
   Classical.decEq Mode
 
 /-- Bridge `Common.matrixCoeff` to the local occupation-basis notation. -/
-omit [Fintype Mode] in
 private theorem matrixCoeff_eq (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
     (m n : Occupation Mode) : Common.matrixCoeff A m n = A (basisState n) m := rfl
 
-omit [Fintype Mode] in
 private theorem smul_basisState_apply_self (c : ℂ) (n : Occupation Mode) :
     (c • basisState n : FockSpace Mode) n = c :=
   Common.smul_basisState_apply_self c n
 
-omit [Fintype Mode] in
 private theorem smul_basisState_apply_of_ne (c : ℂ) {m n : Occupation Mode} (h : m ≠ n) :
     (c • basisState m : FockSpace Mode) n = 0 :=
   Common.smul_basisState_apply_of_ne c h
