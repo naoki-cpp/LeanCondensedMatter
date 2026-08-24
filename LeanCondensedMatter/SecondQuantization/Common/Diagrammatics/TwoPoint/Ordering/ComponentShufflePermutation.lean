@@ -8,7 +8,7 @@ set_option linter.style.header false
 
 The relative ambient permutation between two family shuffles is owned by
 `Combinatorics/FamilySlotShuffle.lean`. This module specializes that construction from the canonical
-component two-point shuffle to a chosen component interaction shuffle, then records the resulting
+two-point component shuffle to a chosen component interaction shuffle, then records the resulting
 time-coordinate and interaction-vertex transports.
 
 For standard two-point diagrams on `Fin n`, it also transports the ambient permutation and time
