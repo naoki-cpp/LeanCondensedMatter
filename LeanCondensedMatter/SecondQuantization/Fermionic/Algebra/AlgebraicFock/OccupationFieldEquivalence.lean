@@ -36,7 +36,7 @@ private theorem exteriorBasis_eq_sort_prod
     (List.map
         (fun i : Fin n.card =>
           ExteriorAlgebra.ι ℂ
-            (b (((↑t : Finset Mode).orderEmbOfFin t.prop) i)))
+            (b (((↑t : Finset Mode).orderEmbOfFin (Set.powersetCard.card_eq t)) i)))
         (List.finRange n.card)).prod =
       (List.map (fun x => ExteriorAlgebra.ι ℂ (b x))
         (n.sort (· ≤ ·))).prod
@@ -44,13 +44,13 @@ private theorem exteriorBasis_eq_sort_prod
     _ =
         (List.map (fun x => ExteriorAlgebra.ι ℂ (b x))
           ((List.finRange n.card).map
-            ((↑t : Finset Mode).orderEmbOfFin t.prop))).prod := by
+            ((↑t : Finset Mode).orderEmbOfFin (Set.powersetCard.card_eq t)))).prod := by
       have hfun :
           (fun i : Fin n.card =>
             ExteriorAlgebra.ι ℂ
-              (b (((↑t : Finset Mode).orderEmbOfFin t.prop) i))) =
+              (b (((↑t : Finset Mode).orderEmbOfFin (Set.powersetCard.card_eq t)) i))) =
             (fun x => ExteriorAlgebra.ι ℂ (b x)) ∘
-              ((↑t : Finset Mode).orderEmbOfFin t.prop) := by
+              ((↑t : Finset Mode).orderEmbOfFin (Set.powersetCard.card_eq t)) := by
         funext i
         rfl
       rw [hfun, List.map_map]
