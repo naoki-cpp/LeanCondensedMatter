@@ -6,9 +6,9 @@ set_option linter.style.header false
 /-!
 # Fermionic directional Kubo–Bastin spectral conductivity
 
-The statistics-independent pure-point resolvent and measured/source Kubo–Bastin machinery lives in
-`Transport.KuboBastin.Finite`. This module retains only the finite-lattice directional electric
-current specialization derived from Kubo–Greenwood.
+The statistics-independent transition algebra lives in `Transport.KuboBastin.PurePoint`, while
+finite spectral-index response sums live in `Transport.KuboBastin.Finite`. This module retains only
+the finite-lattice directional electric-current specialization derived from Kubo–Greenwood.
 
 The adiabatic switching rate `η` has units of inverse time, whereas the resolvent broadening has
 units of energy. With the repository's explicit reduced Planck constant, the matching retarded

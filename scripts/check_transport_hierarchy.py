@@ -39,6 +39,41 @@ def main() -> int:
             description="resolvent hierarchy",
         )
 
+    kubo_bastin_umbrella = TRANSPORT / "KuboBastin.lean"
+    pure_point_module = "LeanCondensedMatter.Transport.KuboBastin.PurePoint"
+    finite_module = "LeanCondensedMatter.Transport.KuboBastin.Finite"
+    finite_trace_module = "LeanCondensedMatter.Transport.KuboBastin.FiniteTrace"
+    for module in (pure_point_module, finite_module, finite_trace_module):
+        require_import(
+            errors,
+            kubo_bastin_umbrella,
+            module,
+            root=ROOT,
+            description="Kubo-Bastin public umbrella",
+        )
+
+    pure_point_path = TRANSPORT / "KuboBastin" / "PurePoint.lean"
+    finite_path = TRANSPORT / "KuboBastin" / "Finite.lean"
+    finite_trace_path = TRANSPORT / "KuboBastin" / "FiniteTrace.lean"
+    require_import(
+        errors,
+        finite_path,
+        pure_point_module,
+        root=ROOT,
+        description="finite Kubo-Bastin specialization",
+    )
+    require_import(
+        errors,
+        finite_trace_path,
+        finite_module,
+        root=ROOT,
+        description="finite-dimensional Kubo-Bastin trace realization",
+    )
+    if finite_module in lean_imports(pure_point_path):
+        errors.append("Transport/KuboBastin/PurePoint.lean must not import Finite")
+    if finite_trace_module in lean_imports(pure_point_path):
+        errors.append("Transport/KuboBastin/PurePoint.lean must not import FiniteTrace")
+
     disorder_umbrella = TRANSPORT / "Disorder.lean"
     born_common_module = "LeanCondensedMatter.Transport.Disorder.BornCommon"
     require_import(

@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse
-import LeanCondensedMatter.Transport.KuboBastin.Finite
+import LeanCondensedMatter.Transport.KuboBastin.FiniteTrace
 
 set_option linter.style.header false
 

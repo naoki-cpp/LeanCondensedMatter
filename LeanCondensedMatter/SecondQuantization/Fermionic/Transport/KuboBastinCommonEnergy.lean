@@ -54,7 +54,7 @@ theorem finiteKuboBastinCommonTransitionIntegrand_eq_vertex
     (mn : ι × ι) :
     finiteKuboBastinCommonTransitionIntegrand
         system data interpolation geometry direction K q omega eta mn =
-      finiteKuboBastinCommonVertexTransitionIntegrand system data interpolation
+      purePointKuboBastinCommonVertexTransitionIntegrand system data interpolation
         (boundedDirectionalCurrent geometry direction
           (system.hbar : ℂ) (q : ℂ) K)
         (boundedDirectionalCurrent geometry direction

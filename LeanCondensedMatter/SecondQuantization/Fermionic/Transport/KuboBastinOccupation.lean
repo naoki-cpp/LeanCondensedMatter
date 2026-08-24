@@ -12,7 +12,7 @@ response now live under `QuantumTheory.Transport`, in `KuboBastin.OccupationInte
 specialization with its Peierls contact and finite-volume normalization.
 
 For each directional transition the discrete probability difference is replaced by the oriented
-energy integral of the supplied occupation derivative.  The resulting response remains connected
+energy integral of the supplied occupation derivative. The resulting response remains connected
 to the causal Kubo / Kubo–Bastin chain at fixed positive switching rate.
 
 This is not yet a common full-energy Bastin integral or a Středa surface/sea representation. No
@@ -66,7 +66,7 @@ theorem finiteKuboBastinDirectionalTransitionFactor_eq_vertex
     (mn : ι × ι) :
     finiteKuboBastinDirectionalTransitionFactor
         system data geometry direction K q omega eta mn =
-      finiteKuboBastinVertexTransitionFactor system data
+      purePointKuboBastinVertexTransitionFactor system data
         (boundedDirectionalCurrent geometry direction
           (system.hbar : ℂ) (q : ℂ) K)
         (boundedDirectionalCurrent geometry direction
@@ -100,7 +100,7 @@ theorem finiteKuboBastinOccupationResolvedDirectionalCurrentTerm_eq_vertex
     (mn : ι × ι) :
     finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
         system data interpolation geometry direction K q omega eta mn =
-      finiteKuboBastinOccupationResolvedVertexTerm system data interpolation
+      purePointKuboBastinOccupationResolvedVertexTerm system data interpolation
         (boundedDirectionalCurrent geometry direction
           (system.hbar : ℂ) (q : ℂ) K)
         (boundedDirectionalCurrent geometry direction
