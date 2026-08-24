@@ -6,46 +6,20 @@ import Mathlib.Tactic.FieldSimp
 set_option linter.style.header false
 
 /-!
-# Fermionic occupation moments and the linked-cluster bridge
+# Fermionic occupation moments and cumulants
 
-Phase 8 of Track D's fermionic primary line (`notes/roadmaps/second-quantization.md`): the first
-bridge between Track D (weighted expectation functionals on `FockSpace`) and Track B (the
-abstract moment-cumulant duality on the partition lattice, `Combinatorics/MomentCumulant.lean`,
-`Combinatorics/CumulantFactorization.lean`).
+This module packages occupation-number moments, their operator-level projectors, and the resulting
+cumulants for arbitrary complex weights on a finite fermionic occupation space.
 
 `occupationMoment w S := (Σₙ (if S ⊆ n then w n else 0)) / Z(w)` is the normalized weighted
-diagonal functional for the simultaneous occupation of every mode in `S`, `⟨∏ᵢ∈S nᵢ⟩_w`, computed
-directly as a weighted sum rather than via an operator product (the `numberOperator i`'s commute as
-they're simultaneously diagonal, but `FockSpace Mode →ₗ[ℂ] FockSpace Mode` has no
-`CommMonoid` structure under composition to state that with `Finset.prod`, so this file bypasses
-the issue rather than solving it). It lands exactly in Track B's `Finset Mode → ℂ` moment-function
-type, with
-`occupationMoment w ⊥ = 1` matching `IsIndependentAcross`'s normalization hypothesis.
+functional for simultaneous occupation of every mode in `S`. `occupationProjector S` is the
+corresponding diagonal operator and forms a commuting idempotent family under composition.
 
-The implementation is fermionic-specific — it uses `Occupation` and `Common.weightSum`/
-`Common.normalizedWeightedDiagonal` throughout — hence its `SecondQuantization/Fermionic/` path;
-generalizing it to a statistics-independent form (were that ever needed) remains separate future
-work.
-
-`occupationProjector S` supplies the operator-level witness `∏ᵢ∈S nᵢ`, a `Common.diagonalOperator`
-at eigenvalue function `fun n => if S ⊆ n then 1 else 0`, with
-`normalizedWeightedDiagonal_occupationProjector` confirming it reproduces `occupationMoment` and
-`occupationProjector_singleton` confirming it agrees with `numberOperator` at a single mode.
-`occupationProjector_mul`/`_comm`/`_idempotent`/`_empty` establish it as a genuine commuting-
-projector algebra under composition, making "`occupationProjector S` is the simultaneous product
-of number operators" an operator-algebra theorem rather than only a physical reading.
-
-`IsProductWeightAcross w A B` formalizes *physical* independence of a weight across a mode
-bipartition (`Disjoint A B`, `A ∪ B = univ`, `w n = wA (n ∩ A) * wB (n ∩ B)`) — e.g. a Gibbs weight
-for a Hamiltonian `H = HA + HB` with `[HA, HB] = 0` and no cross-region interaction. It is *not* a
-general interacting Gibbs weight. `occupationMoment_isIndependentAcross` shows it implies
-`Finpartition.IsIndependentAcross (occupationMoment w) A B`, and `occupationCumulant_eq_zero_of_
-isProductWeightAcross` packages the resulting cumulant-vanishing fact without exposing
-`Finpartition.IsIndependentAcross` to callers.
-
-This is a necessary building block for the Linked Cluster Theorem, not the theorem itself: the LCT
-needs the harder statement that disconnected contributions cancel in `log Z` even in the presence
-of cross-region interaction — see `notes/roadmaps/second-quantization.md` for what remains.
+`IsProductWeightAcross w A B` states that a weight factors across a bipartition of the mode set.
+Such a factorization makes `occupationMoment w` independent across the partition, so the associated
+`occupationCumulant` vanishes on a set spanning both sides. The general moment-cumulant and
+independence machinery is owned by `Combinatorics.Cumulant.Independence`; this module supplies the
+fermionic occupation-space specialization and its operator interpretation.
 -/
 
 namespace SecondQuantization
@@ -56,7 +30,7 @@ noncomputable section
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- File-local classical decidable equality, kept out of public theorem signatures. -/
-local instance instDecidableEqQuantumLinkedCluster : DecidableEq Mode := Classical.decEq Mode
+local instance instDecidableEqOccupationCumulant : DecidableEq Mode := Classical.decEq Mode
 
 /-- **The weighted occupation-correlator moment.** `occupationMoment w S` is the normalized
 weighted occupation correlator under the weight `w` — the diagonal functional `⟨∏ᵢ∈S nᵢ⟩_w` of the
@@ -102,8 +76,8 @@ omit [LinearOrder Mode] in
 `fun n => if S ⊆ n then 1 else 0` — `1` on occupation states containing every mode of `S`, `0`
 otherwise, the simultaneous-occupation observable `∏ᵢ∈S nᵢ`. Diagonal by construction, so
 `occupationProjector S` and `occupationProjector T` commute for any `S`, `T`
-(`occupationProjector_comm`), without needing a `CommMonoid` structure on `FockSpace Mode
-→ₗ[ℂ] FockSpace Mode` under composition. -/
+(`occupationProjector_comm`), without needing a `CommMonoid` structure on `OccupationFock Mode
+→ₗ[ℂ] OccupationFock Mode` under composition. -/
 noncomputable def occupationProjector (S : Finset Mode) :
     OccupationFock Mode →ₗ[ℂ] OccupationFock Mode :=
   Common.diagonalOperator fun n : Occupation Mode => if S ⊆ n then 1 else 0
