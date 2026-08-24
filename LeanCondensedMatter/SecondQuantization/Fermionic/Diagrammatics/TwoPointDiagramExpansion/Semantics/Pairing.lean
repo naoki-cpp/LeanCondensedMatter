@@ -98,7 +98,8 @@ theorem zetaCommutator_bareExternalFieldOperator
   cases A <;> cases B <;>
     simp [bareExternalFieldOperator, externalFieldLabelIsCreate, externalFieldLabelMode,
       anticomm_annihilate_annihilate, anticomm_annihilate_create,
-      anticomm_create_annihilate, anticomm_create_create]
+      anticomm_create_annihilate, anticomm_create_create] <;>
+    split <;> simp_all
 
 /-- The scalar coefficient in the zeta-commutator of two evolved fields. -/
 noncomputable def timedFieldCommutatorCoeff (ε : Mode → ℝ)
