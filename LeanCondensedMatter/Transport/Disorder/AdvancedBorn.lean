@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.Disorder.Moments
+import LeanCondensedMatter.Transport.Disorder.BornCommon
 import LeanCondensedMatter.Transport.Disorder.Resolvent
 
 set_option linter.style.header false
@@ -8,12 +9,14 @@ set_option linter.style.header false
 
 Exact retarded/advanced Green operators and configuration-wise Dyson identities are owned by
 `Disorder.Resolvent`. This module consumes those exact identities together with the centered
-finite-disorder moment data from `Disorder.Moments` and defines the advanced averaged remainder,
-Born self-energy, resolvent approximation, and explicit closure error.
+finite-disorder moment data from `Disorder.Moments` and the R/A-neutral proof algebra from
+`Disorder.BornCommon`.
 
-The advanced Born self-energy uses the same centered finite-disorder covariance action as the
-retarded self-energy. No self-consistency, vertex resummation, Ward identity, trace-per-volume
-construction, or thermodynamic limit is introduced.
+The advanced specialization uses the same finite covariance action as the retarded specialization,
+but keeps its physical self-energy, approximation, and closure-error definitions locally. It
+remains a sibling of `Disorder.Born`: neither specialization imports the other. No self-consistency,
+vertex resummation, Ward identity, trace-per-volume construction, or thermodynamic limit is
+introduced.
 -/
 
 namespace QuantumTheory
@@ -37,9 +40,9 @@ theorem operatorAverage_firstOrderAdvancedTerm_eq_zero
       ensemble.freeAdvancedGreen energy broadening *
         (ensemble.impurityPotential ω).1 *
           ensemble.freeAdvancedGreen energy broadening) = 0 := by
-  rw [operatorAverage_mul_left_right ensemble]
-  rw [FiniteDisorderMomentData.centered moments]
-  simp
+  simpa using operatorAverage_mul_impurity_mul_eq_zero ensemble moments
+    (ensemble.freeAdvancedGreen energy broadening)
+    (ensemble.freeAdvancedGreen energy broadening)
 
 /-- Exact finite average of the full advanced second-order Dyson remainder. -/
 noncomputable def exactSecondOrderAdvancedRemainder
@@ -60,47 +63,28 @@ theorem operatorAverage_configurationAdvancedGreen_eq_free_add_exactRemainder
         (fun ω => ensemble.configurationAdvancedGreen energy broadening ω) =
       ensemble.freeAdvancedGreen energy broadening +
         ensemble.exactSecondOrderAdvancedRemainder energy broadening := by
-  calc
-    ensemble.operatorAverage
-        (fun ω => ensemble.configurationAdvancedGreen energy broadening ω) =
-      ensemble.operatorAverage (fun ω =>
-        (ensemble.freeAdvancedGreen energy broadening +
-          ensemble.freeAdvancedGreen energy broadening *
-            (ensemble.impurityPotential ω).1 *
-              ensemble.freeAdvancedGreen energy broadening) +
+  simpa [exactSecondOrderAdvancedRemainder] using
+    operatorAverage_eq_free_add_remainder_of_secondOrder
+      ensemble
+      (ensemble.freeAdvancedGreen energy broadening)
+      (fun ω => ensemble.configurationAdvancedGreen energy broadening ω)
+      (fun ω =>
+        ensemble.freeAdvancedGreen energy broadening *
+          (ensemble.impurityPotential ω).1 *
+            ensemble.freeAdvancedGreen energy broadening)
+      (fun ω =>
         ensemble.configurationAdvancedGreen energy broadening ω *
           (ensemble.impurityPotential ω).1 *
             ensemble.freeAdvancedGreen energy broadening *
               (ensemble.impurityPotential ω).1 *
-                ensemble.freeAdvancedGreen energy broadening) := by
-      apply congrArg ensemble.operatorAverage
-      funext ω
-      exact configurationAdvancedGreen_eq_secondOrder_add_exactRemainder
-        ensemble energy broadening hbroadening ω
-    _ = ensemble.operatorAverage (fun ω =>
-          ensemble.freeAdvancedGreen energy broadening +
-            ensemble.freeAdvancedGreen energy broadening *
-              (ensemble.impurityPotential ω).1 *
-                ensemble.freeAdvancedGreen energy broadening) +
-        ensemble.exactSecondOrderAdvancedRemainder energy broadening := by
-      rw [operatorAverage_add ensemble]
-      rfl
-    _ = (ensemble.operatorAverage
-          (fun _ => ensemble.freeAdvancedGreen energy broadening) +
-        ensemble.operatorAverage (fun ω =>
-          ensemble.freeAdvancedGreen energy broadening *
-            (ensemble.impurityPotential ω).1 *
-              ensemble.freeAdvancedGreen energy broadening)) +
-        ensemble.exactSecondOrderAdvancedRemainder energy broadening := by
-      rw [operatorAverage_add ensemble]
-    _ = ensemble.freeAdvancedGreen energy broadening +
-        ensemble.exactSecondOrderAdvancedRemainder energy broadening := by
-      rw [operatorAverage_const ensemble]
-      rw [operatorAverage_firstOrderAdvancedTerm_eq_zero ensemble moments]
-      simp
+                ensemble.freeAdvancedGreen energy broadening)
+      (configurationAdvancedGreen_eq_secondOrder_add_exactRemainder
+        ensemble energy broadening hbroadening)
+      (operatorAverage_firstOrderAdvancedTerm_eq_zero
+        ensemble moments energy broadening)
 
-/-- Weak-scattering advanced Born self-energy: the same covariance action evaluated on the clean
-advanced Green operator. -/
+/-- Weak-scattering advanced Born self-energy: covariance evaluated on the clean advanced Green
+operator. -/
 noncomputable def bornAdvancedSelfEnergy
     (moments : FiniteDisorderMomentData ensemble)
     (energy broadening : ℝ) : H →L[ℂ] H :=
@@ -149,7 +133,10 @@ theorem operatorAverage_configurationAdvancedGreen_eq_bornApproximation_add_erro
   rw [operatorAverage_configurationAdvancedGreen_eq_free_add_exactRemainder
     ensemble moments energy broadening hbroadening]
   unfold bornAdvancedResolventApproximation bornAdvancedClosureError
-  noncomm_ring
+  exact free_add_remainder_eq_bornApproximation_add_error
+    (ensemble.freeAdvancedGreen energy broadening)
+    (ensemble.exactSecondOrderAdvancedRemainder energy broadening)
+    (bornAdvancedSelfEnergy ensemble moments energy broadening)
 
 /-- Explicit closure hypothesis required before identifying the exact advanced average with its
 second-order Born approximation. -/

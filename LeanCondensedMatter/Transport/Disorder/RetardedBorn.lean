@@ -1,19 +1,21 @@
 import LeanCondensedMatter.Transport.Disorder.Moments
+import LeanCondensedMatter.Transport.Disorder.BornCommon
 import LeanCondensedMatter.Transport.Disorder.Resolvent
 
 set_option linter.style.header false
 
 /-!
-# Finite-disorder Born self-energy and closure boundary
+# Retarded finite-disorder Born self-energy and closure boundary
 
 This module starts from the exact finite ensemble and exact configuration-wise resolvent/Dyson
 identities owned by `Disorder.Finite` and `Disorder.Resolvent`, together with centered finite
-second-moment data owned by `Disorder.Moments`.
+second-moment data owned by `Disorder.Moments` and the R/A-neutral proof algebra from
+`Disorder.BornCommon`.
 
-From those moments, the module forms the exact averaged second-order Dyson remainder and then defines
-the weak-scattering Born self-energy and resolvent approximation. The exact averaged resolvent is not
-identified with the Born expression by definition: their difference is named
-`bornRetardedClosureError`, and equality requires an explicit `RetardedBornClosureHypothesis`.
+From those ingredients, the module forms the exact averaged retarded second-order Dyson remainder
+and defines the retarded first-Born self-energy, resolvent approximation, and named closure error.
+The exact averaged resolvent is not identified with the Born expression by definition: equality
+requires an explicit `RetardedBornClosureHypothesis`.
 
 No advanced Born closure, self-consistent Born approximation, dressed propagator inside the
 self-energy, vertex correction, Ward identity, trace-per-volume construction, or thermodynamic
@@ -41,9 +43,9 @@ theorem operatorAverage_firstOrderRetardedTerm_eq_zero
       ensemble.freeRetardedGreen energy broadening *
         (ensemble.impurityPotential ω).1 *
           ensemble.freeRetardedGreen energy broadening) = 0 := by
-  rw [operatorAverage_mul_left_right ensemble]
-  rw [FiniteDisorderMomentData.centered moments]
-  simp
+  simpa using operatorAverage_mul_impurity_mul_eq_zero ensemble moments
+    (ensemble.freeRetardedGreen energy broadening)
+    (ensemble.freeRetardedGreen energy broadening)
 
 /-- Exact finite average of the full second-order Dyson remainder. -/
 noncomputable def exactSecondOrderRetardedRemainder
@@ -64,44 +66,25 @@ theorem operatorAverage_configurationRetardedGreen_eq_free_add_exactRemainder
         (fun ω => ensemble.configurationRetardedGreen energy broadening ω) =
       ensemble.freeRetardedGreen energy broadening +
         ensemble.exactSecondOrderRetardedRemainder energy broadening := by
-  calc
-    ensemble.operatorAverage
-        (fun ω => ensemble.configurationRetardedGreen energy broadening ω) =
-      ensemble.operatorAverage (fun ω =>
-        (ensemble.freeRetardedGreen energy broadening +
-          ensemble.freeRetardedGreen energy broadening *
-            (ensemble.impurityPotential ω).1 *
-              ensemble.freeRetardedGreen energy broadening) +
+  simpa [exactSecondOrderRetardedRemainder] using
+    operatorAverage_eq_free_add_remainder_of_secondOrder
+      ensemble
+      (ensemble.freeRetardedGreen energy broadening)
+      (fun ω => ensemble.configurationRetardedGreen energy broadening ω)
+      (fun ω =>
+        ensemble.freeRetardedGreen energy broadening *
+          (ensemble.impurityPotential ω).1 *
+            ensemble.freeRetardedGreen energy broadening)
+      (fun ω =>
         ensemble.freeRetardedGreen energy broadening *
           (ensemble.impurityPotential ω).1 *
             ensemble.freeRetardedGreen energy broadening *
               (ensemble.impurityPotential ω).1 *
-                ensemble.configurationRetardedGreen energy broadening ω) := by
-      apply congrArg ensemble.operatorAverage
-      funext ω
-      exact configurationRetardedGreen_eq_secondOrder_add_exactRemainder
-        ensemble energy broadening hbroadening ω
-    _ = ensemble.operatorAverage (fun ω =>
-          ensemble.freeRetardedGreen energy broadening +
-            ensemble.freeRetardedGreen energy broadening *
-              (ensemble.impurityPotential ω).1 *
-                ensemble.freeRetardedGreen energy broadening) +
-        ensemble.exactSecondOrderRetardedRemainder energy broadening := by
-      rw [operatorAverage_add ensemble]
-      rfl
-    _ = (ensemble.operatorAverage
-          (fun _ => ensemble.freeRetardedGreen energy broadening) +
-        ensemble.operatorAverage (fun ω =>
-          ensemble.freeRetardedGreen energy broadening *
-            (ensemble.impurityPotential ω).1 *
-              ensemble.freeRetardedGreen energy broadening)) +
-        ensemble.exactSecondOrderRetardedRemainder energy broadening := by
-      rw [operatorAverage_add ensemble]
-    _ = ensemble.freeRetardedGreen energy broadening +
-        ensemble.exactSecondOrderRetardedRemainder energy broadening := by
-      rw [operatorAverage_const ensemble]
-      rw [operatorAverage_firstOrderRetardedTerm_eq_zero ensemble moments]
-      simp
+                ensemble.configurationRetardedGreen energy broadening ω)
+      (configurationRetardedGreen_eq_secondOrder_add_exactRemainder
+        ensemble energy broadening hbroadening)
+      (operatorAverage_firstOrderRetardedTerm_eq_zero
+        ensemble moments energy broadening)
 
 /-- Weak-scattering Born self-energy: covariance acting on the clean retarded Green operator. The
 name records its approximation status; no dressed self-consistent propagator is inserted. -/
@@ -153,7 +136,10 @@ theorem operatorAverage_configurationRetardedGreen_eq_bornApproximation_add_erro
   rw [operatorAverage_configurationRetardedGreen_eq_free_add_exactRemainder
     ensemble moments energy broadening hbroadening]
   unfold bornRetardedResolventApproximation bornRetardedClosureError
-  noncomm_ring
+  exact free_add_remainder_eq_bornApproximation_add_error
+    (ensemble.freeRetardedGreen energy broadening)
+    (ensemble.exactSecondOrderRetardedRemainder energy broadening)
+    (bornRetardedSelfEnergy ensemble moments energy broadening)
 
 /-- Explicit closure hypothesis required to turn the second-order Born approximation into an exact
 equality statement. In weak-scattering applications this field represents the neglected higher
