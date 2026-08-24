@@ -156,7 +156,7 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_zero
     exact hsubRaw
   unfold targetCenteredInterbandSpectatorCurrentFactor interbandSpectatorCurrentFactor
   dsimp
-  simpa [ret, adv, xy, yx] using hsub
+  simpa [pow_two, ret, adv, xy, yx] using hsub
 
 /-- Jointly sending both the target-centered energy offset and broadening to zero extracts the same
 inverse-gap-squared antisymmetric current block as the fixed-energy pole limit. -/
