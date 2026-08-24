@@ -145,7 +145,12 @@ theorem continuumMaximalLaplacian1D_agrees_on_H2 (ψ : continuumH2Domain1D) :
           continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D ψ.property⟩ =
       continuumH2Laplacian1D ψ := by
   apply l2ToTemperedDistribution1D_injective
-  rw [l2ToTemperedDistribution1D_continuumMaximalLaplacian1D,
+  change l2ToTemperedDistribution1D
+      (continuumMaximalLaplacianOnDomain1D
+        ⟨(ψ : ContinuumL2Wavefunction1D),
+          continuumH2Domain1D_le_continuumMaximalLaplacianDomain1D ψ.property⟩) =
+    l2ToTemperedDistribution1D (continuumH2Laplacian1D ψ)
+  rw [l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D,
     l2ToTemperedDistribution1D_continuumH2Laplacian1D]
 
 /-- Graph membership in the maximal Laplacian is exactly the distributional Laplacian equation. -/
@@ -169,7 +174,10 @@ theorem mem_continuumMaximalLaplacian1D_graph_iff
     rw [LinearPMap.mem_graph_iff]
     refine ⟨⟨z.1, hdomain⟩, rfl, ?_⟩
     apply l2ToTemperedDistribution1D_injective
-    rw [l2ToTemperedDistribution1D_continuumMaximalLaplacian1D]
+    change l2ToTemperedDistribution1D
+        (continuumMaximalLaplacianOnDomain1D ⟨z.1, hdomain⟩) =
+      l2ToTemperedDistribution1D z.2
+    rw [l2ToTemperedDistribution1D_continuumMaximalLaplacianValue1D]
     exact hz.symm
 
 /-- The maximal distributional Laplacian is a closed unbounded operator on `L²(ℝ, ℂ)`. -/
@@ -208,8 +216,3 @@ theorem continuumMaximalLaplacian1D_denseDomain :
 /-- In particular, the maximal distributional Laplacian is closable. -/
 theorem continuumMaximalLaplacian1D_isClosable : continuumMaximalLaplacian1D.IsClosable :=
   continuumMaximalLaplacian1D_isClosed.isClosable
-
-end
-end Continuum
-end SingleParticle
-end QuantumMechanics
