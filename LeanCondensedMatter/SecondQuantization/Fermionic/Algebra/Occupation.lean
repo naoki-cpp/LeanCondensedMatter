@@ -6,17 +6,14 @@ set_option linter.style.header false
 /-!
 # Fermionic occupation-number states
 
-Track D's primary line now targets the finite-mode *fermionic* case first (Linked Cluster
-Theorem groundwork, `notes/roadmaps/second-quantization.md`). Pauli exclusion means a fermionic
-occupation-number state is fully determined by *which* modes are occupied — no mode can hold more
-than one particle — so `Occupation Mode := Finset Mode` (the set of occupied modes), unlike
-the bosonic case's `Mode →₀ ℕ` (`BosonOccupation.lean`).
+Pauli exclusion means a fermionic occupation-number state is fully determined by *which* modes are
+occupied — no mode can hold more than one particle — so `Occupation Mode := Finset Mode` (the set
+of occupied modes), unlike the bosonic case's `Mode →₀ ℕ` in `Bosonic/Algebra/Occupation.lean`.
 
-This file only covers the occupation-number bookkeeping (vacuum, particle number, inserting/
-removing a mode from the occupied set). It deliberately stops short of the fermionic creation/
-annihilation operators, CAR, and the sign (Jordan–Wigner-style) factors that come with them —
-those belong to a later file (`CreationAnnihilationFermionic.lean`) once this bookkeeping layer is
-in place.
+This file owns the occupation-number bookkeeping: vacuum, particle number, and inserting or
+removing a mode from the occupied set. Creation and annihilation operators are defined separately in
+`CreationAnnihilation.lean`, and their canonical anticommutation relations are proved in
+`CanonicalAnticommutationRelations.lean`.
 -/
 
 namespace SecondQuantization

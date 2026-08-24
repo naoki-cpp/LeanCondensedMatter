@@ -7,9 +7,9 @@ set_option linter.style.header false
 
 The two exchange statistics available to identical particles, and the sign `ζ ∈ {+1, -1}` that
 distinguishes their (anti)commutation relations — `+1` for bosons (CCR), `-1` for fermions (CAR).
-Kept as its own tiny file so both occupation-number representations
-(`BosonOccupation.lean`, `Fermionic.Occupation.lean`) and, later, a unified statement of CCR/CAR can
-refer to it without duplicating the sign convention.
+Kept as its own tiny file so the bosonic and fermionic occupation-number representations, together
+with the shared `ExchangeAlgebra` interface, can refer to the same sign convention without
+duplicating it.
 -/
 
 namespace SecondQuantization

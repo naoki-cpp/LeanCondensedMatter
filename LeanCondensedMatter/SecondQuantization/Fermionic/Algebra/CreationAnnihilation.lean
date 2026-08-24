@@ -6,18 +6,17 @@ set_option linter.style.header false
 /-!
 # Fermionic creation and annihilation operators
 
-Phase 4 of Track D's fermionic primary line (`notes/roadmaps/second-quantization.md`): the
-creation and annihilation operators `create i`, `annihilate i : FockSpace Mode →ₗ[ℂ]
-FockSpace Mode`, defined on basis states and extended linearly.
+The creation and annihilation operators `create i`, `annihilate i : OccupationFock Mode →ₗ[ℂ]
+OccupationFock Mode` are defined on basis states and extended linearly.
 
 Unlike the bosonic case, these carry a **sign factor** (the Jordan–Wigner-style string): acting
 with `create i`/`annihilate i` on the occupation state `n` picks up a factor `(-1)^k`, where `k`
 is the number of *occupied* modes ordered strictly before `i`. This requires fixing a
-`[LinearOrder Mode]` on the mode set (needed to make "before" meaningful) — the first place in
-this track a mode ordering is required.
+`[LinearOrder Mode]` on the mode set so "before" is meaningful.
 
-This file proves the basis-level action (vacuum, raising/lowering particle number, Pauli
-exclusion) but stops short of CAR itself (`{aᵢ, aⱼ†} = δᵢⱼ` etc.), which is `CAR.lean`'s job.
+This file proves the basis-level action, including vacuum behavior, particle-number changes, and
+Pauli exclusion. The canonical anticommutation relations are proved separately in
+`CanonicalAnticommutationRelations.lean`.
 -/
 
 namespace SecondQuantization
@@ -111,7 +110,8 @@ theorem create_fockVacuum (i : Mode) :
   congr 1
 
 /-- **Creating twice in the same mode annihilates the state**, the basis-level shadow of Pauli
-exclusion (`{aᵢ†, aᵢ†} = 0`, before CAR itself is stated in `CAR.lean`). -/
+exclusion (`{aᵢ†, aᵢ†} = 0`, before the full CAR are stated in
+`CanonicalAnticommutationRelations.lean`). -/
 @[simp]
 theorem create_create_basisState_self (i : Mode) (n : Occupation Mode) :
     create i (create i (basisState n)) = 0 := by
