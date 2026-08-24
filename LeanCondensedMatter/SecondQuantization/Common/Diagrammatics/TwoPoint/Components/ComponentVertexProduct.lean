@@ -53,7 +53,7 @@ theorem TwoPointDiagram.dysonSign_eq_external_mul_prod_vacuum
             (B : Finset (TwoPointVertex S))).card) := by
   have h := d.prod_vertexLabel_eq_prod_componentInteractionParts (fun _ => (-1 : ℂ))
   rw [d.prod_componentParts_eq_external_mul_prod_vacuum] at h
-  simpa [TwoPointDiagram.externalComponentPart] using h
+  simpa [TwoPointDiagram.externalComponentPart, Finset.card_univ, Fintype.card_coe] using h
 
 end Common
 end SecondQuantization
