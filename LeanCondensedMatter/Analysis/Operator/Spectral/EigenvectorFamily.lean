@@ -296,32 +296,38 @@ theorem orthogonal_closure_span_eigenvectorFamily (hT : IsCompactOperator T)
   rw [hFGbot, Submodule.mem_bot] at this
   rwa [this, add_zero]
 
-/-- `eigenvectorFamily`, recast as a `HilbertBasis` of the closed subspace it spans, using
-orthonormality and density of its span in that closure. -/
-noncomputable def eigenvectorHilbertBasis (hT : IsCompactOperator T) (hT' : T.IsSymmetric) :
-    HilbertBasis (EigenvectorIndex T) ℂ
-      (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure := by
-  set E' := Submodule.span ℂ (Set.range (eigenvectorFamily hT)) with hE'_def
-  set F := E'.topologicalClosure with hF_def
-  have hmem : ∀ a, eigenvectorFamily hT a ∈ F := fun a =>
-    hF_def ▸ E'.le_topologicalClosure (hE'_def ▸ Submodule.subset_span ⟨a, rfl⟩)
-  let v : EigenvectorIndex T → F :=
-    fun a => ⟨eigenvectorFamily hT a, hmem a⟩
-  have hv : Orthonormal ℂ v := by
-    constructor
-    · intro a
-      simpa [v] using (orthonormal_eigenvectorFamily hT hT').1 a
-    · intro a b hab
-      simpa [v, Submodule.coe_inner] using
-        (orthonormal_eigenvectorFamily hT hT').2 hab
-  refine HilbertBasis.mk hv ?_
+private noncomputable def eigenvectorFamilyInClosure (hT : IsCompactOperator T) :
+    EigenvectorIndex T →
+      (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure :=
+  fun a =>
+    ⟨eigenvectorFamily hT a,
+      (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).le_topologicalClosure
+        (Submodule.subset_span ⟨a, rfl⟩)⟩
+
+private theorem orthonormal_eigenvectorFamilyInClosure
+    (hT : IsCompactOperator T) (hT' : T.IsSymmetric) :
+    Orthonormal ℂ (eigenvectorFamilyInClosure hT) := by
+  constructor
+  · intro a
+    simpa [eigenvectorFamilyInClosure] using (orthonormal_eigenvectorFamily hT hT').1 a
+  · intro a b hab
+    simpa [eigenvectorFamilyInClosure, Submodule.coe_inner] using
+      (orthonormal_eigenvectorFamily hT hT').2 hab
+
+private theorem dense_eigenvectorFamilyInClosure (hT : IsCompactOperator T) :
+    ⊤ ≤ (Submodule.span ℂ (Set.range (eigenvectorFamilyInClosure hT))).topologicalClosure := by
   rw [← eq_top_iff]
   apply Submodule.dense_iff_topologicalClosure_eq_top.mp
-  rw [F.subtypeₗᵢ.isometry.isEmbedding.isInducing.dense_iff]
+  rw [((Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure).subtypeₗᵢ
+    .isometry.isEmbedding.isInducing.dense_iff]
   intro y
-  have hspaneq : Submodule.map F.subtypeₗᵢ.toLinearMap
-      (Submodule.span ℂ (Set.range v)) = E' := by
-    rw [Submodule.map_span, hE'_def]
+  have hspaneq :
+      Submodule.map
+          ((Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure).subtypeₗᵢ
+            .toLinearMap
+          (Submodule.span ℂ (Set.range (eigenvectorFamilyInClosure hT))) =
+        Submodule.span ℂ (Set.range (eigenvectorFamily hT)) := by
+    rw [Submodule.map_span]
     congr 1
     ext z
     constructor
@@ -329,12 +335,31 @@ noncomputable def eigenvectorHilbertBasis (hT : IsCompactOperator T) (hT' : T.Is
       exact ⟨a, rfl⟩
     · rintro ⟨a, rfl⟩
       exact ⟨_, ⟨a, rfl⟩, rfl⟩
-  have himg : F.subtypeₗᵢ '' (Submodule.span ℂ (Set.range v) : Set F) =
-      (E' : Set H) := by
+  have himg :
+      ((Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure).subtypeₗᵢ ''
+          (Submodule.span ℂ (Set.range (eigenvectorFamilyInClosure hT)) :
+            Set (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure) =
+        (Submodule.span ℂ (Set.range (eigenvectorFamily hT)) : Set H) := by
     rw [← hspaneq]
     exact (Submodule.map_coe _ _).symm
-  rw [himg, ← Submodule.topologicalClosure_coe, ← hF_def]
+  rw [himg, ← Submodule.topologicalClosure_coe]
   exact y.2
+
+/-- `eigenvectorFamily`, recast as a `HilbertBasis` of the closed subspace it spans, using
+orthonormality and density of its span in that closure. -/
+noncomputable def eigenvectorHilbertBasis (hT : IsCompactOperator T) (hT' : T.IsSymmetric) :
+    HilbertBasis (EigenvectorIndex T) ℂ
+      (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure :=
+  HilbertBasis.mk (orthonormal_eigenvectorFamilyInClosure hT hT')
+    (dense_eigenvectorFamilyInClosure hT)
+
+private theorem eigenvectorHilbertBasis_apply
+    (hT : IsCompactOperator T) (hT' : T.IsSymmetric) (a : EigenvectorIndex T) :
+    eigenvectorHilbertBasis hT hT' a = eigenvectorFamilyInClosure hT a := by
+  have h := HilbertBasis.coe_mk
+    (orthonormal_eigenvectorFamilyInClosure hT hT')
+    (dense_eigenvectorFamilyInClosure hT)
+  exact congrFun h a
 
 /-- **The `tsum` reconstruction of a compact self-adjoint operator from its eigenvectors.** For
 any `x : H`, `T x` is the sum, over `EigenvectorIndex T`, of `T`'s eigenvector expansion of `x`:
@@ -348,21 +373,9 @@ theorem hasSum_eigenvectorFamily (hT : IsCompactOperator T) (hT' : T.IsSymmetric
   set F := E'.topologicalClosure with hF_def
   set G := Module.End.eigenspace (T : H →ₗ[ℂ] H) (0 : ℂ) with hG_def
   set b := eigenvectorHilbertBasis hT hT'
-  have hbSub :
-      ⇑b =
-        (fun a : EigenvectorIndex T =>
-          (⟨eigenvectorFamily hT a,
-            (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).le_topologicalClosure
-              (Submodule.subset_span ⟨a, rfl⟩)⟩ :
-            (Submodule.span ℂ (Set.range (eigenvectorFamily hT))).topologicalClosure)) := by
-    dsimp [b]
-    unfold eigenvectorHilbertBasis
-    rw [HilbertBasis.coe_mk]
-    funext a
-    apply Subtype.ext
-    rfl
   have hb : ∀ a, (b a : H) = eigenvectorFamily hT a := fun a => by
-    have hsub := congrFun hbSub a
+    have hsub : b a = eigenvectorFamilyInClosure hT a := by
+      simpa only [b] using eigenvectorHilbertBasis_apply hT hT' a
     exact congrArg Subtype.val hsub
   have hstep1 : HasSum (fun a : EigenvectorIndex T => (inner ℂ (b a : H) x : ℂ) • (b a : H))
       (F.subtypeₗᵢ (F.orthogonalProjectionOnto x)) :=
