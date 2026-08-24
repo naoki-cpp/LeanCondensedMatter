@@ -57,10 +57,9 @@ Transport/
 
 The stable public grouping modules are `Transport.Core`, `Transport.Resolvent`,
 `Transport.KuboBastin`, `Transport.Streda`, and `Transport.Disorder`. The project-level
-`LeanCondensedMatter.Transport` imports those five groups. `Transport.ResolventAPI` remains a
-transitional compatibility umbrella and is not an owner. The retired `Transport.Foundations`
-umbrella and the four historical flat Core leaf modules were removed after repository-wide consumer
-audits showed no remaining imports.
+`LeanCondensedMatter.Transport` imports those five groups. The retired `Transport.Foundations`,
+`Transport.ResolventAPI`, and historical flat Core/Resolvent leaf modules were removed after
+repository-wide consumer audits showed no remaining imports.
 
 Other historical flat leaf paths remain temporarily as forwarding modules so downstream consumers
 can be migrated incrementally. They must not contain declarations. `scripts/check_transport_hierarchy.py`
