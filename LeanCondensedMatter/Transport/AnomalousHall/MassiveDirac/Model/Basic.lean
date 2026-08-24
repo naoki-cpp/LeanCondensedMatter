@@ -57,7 +57,13 @@ def sigmaZ : Matrix2 :=
 inductive Direction2 where
   | x
   | y
-  deriving DecidableEq, Fintype
+  deriving DecidableEq
+
+instance : Fintype Direction2 where
+  elems := {.x, .y}
+  complete := by
+    intro direction
+    cases direction <;> simp
 
 /-- Pauli matrix associated with an in-plane Cartesian direction. -/
 def directionPauli : Direction2 → Matrix2
