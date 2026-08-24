@@ -17,7 +17,6 @@ the four cross-pair endpoint comparisons.
 namespace Combinatorics
 
 /-- A Boolean-style inversion indicator is the corresponding power of `-1`. -/
-@[simp]
 theorem if_negOne_one_eq_negOne_pow_indicator (p : Prop) [Decidable p] :
     (if p then (-1 : ℤˣ) else 1) = (-1) ^ (if p then 1 else 0) := by
   by_cases hp : p <;> simp [hp]

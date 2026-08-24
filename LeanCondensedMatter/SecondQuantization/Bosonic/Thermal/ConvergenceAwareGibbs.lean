@@ -121,6 +121,7 @@ noncomputable def freeGibbsExpectation (ε : Mode → ℝ) (β : ℝ)
     freeGibbsPartition ε β
 
 /-- The normalized free Gibbs expectation is additive on its explicit summability domain. -/
+omit [Fintype Mode] in
 theorem freeGibbsExpectation_add (ε : Mode → ℝ) (β : ℝ)
     {A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode}
     (hA : freeGibbsSummable ε β A) (hB : freeGibbsSummable ε β B) :
@@ -130,6 +131,7 @@ theorem freeGibbsExpectation_add (ε : Mode → ℝ) (β : ℝ)
   rw [LinearMap.comp_add, Common.tsumTrace_add hA hB, add_div]
 
 /-- The normalized free Gibbs expectation is homogeneous on algebraic-Fock endomorphisms. -/
+omit [Fintype Mode] in
 theorem freeGibbsExpectation_smul (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :
     freeGibbsExpectation ε β (c • A) = c * freeGibbsExpectation ε β A := by

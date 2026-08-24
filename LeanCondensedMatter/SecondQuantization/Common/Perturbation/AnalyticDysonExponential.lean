@@ -53,7 +53,6 @@ theorem continuousDiagonalHamiltonian_basis_apply (energy : Config → ℝ) (c :
     _ = (energy c : ℂ) • finiteAnalyticBasis c := by
       rw [diagonalHamiltonian_basisState, map_smul, finiteAnalyticFockEquiv_basisState]
 
-@[simp]
 theorem continuousDiagonalHamiltonian_pow_basis_apply (energy : Config → ℝ)
     (c : Config) (n : ℕ) :
     (continuousDiagonalHamiltonian energy ^ n) (finiteAnalyticBasis c) =
@@ -74,7 +73,6 @@ theorem smul_continuousDiagonalHamiltonian_basis_apply (energy : Config → ℝ)
   change (τ : ℂ) • continuousDiagonalHamiltonian energy (finiteAnalyticBasis c) = _
   rw [continuousDiagonalHamiltonian_basis_apply, smul_smul, Complex.ofReal_mul]
 
-@[simp]
 theorem smul_continuousDiagonalHamiltonian_pow_basis_apply (energy : Config → ℝ)
     (τ : ℝ) (c : Config) (n : ℕ) :
     ((τ • continuousDiagonalHamiltonian energy) ^ n) (finiteAnalyticBasis c) =
