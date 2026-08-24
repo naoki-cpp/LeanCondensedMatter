@@ -17,23 +17,6 @@ LEAN = ROOT / "LeanCondensedMatter"
 TRANSPORT = LEAN / "Transport"
 AHE = TRANSPORT / "AnomalousHall"
 
-AHE_MODEL = {
-    "MassiveDirac.lean": "Model.Basic",
-    "MassiveDiracCurrentBridge.lean": "Model.CurrentBridge",
-    "MassiveDiracSpectral.lean": "Model.Spectral",
-}
-AHE_INTRINSIC = {
-    "MassiveDiracBerryBridge.lean": "Intrinsic.BerryBridge",
-    "MassiveDiracBerrySymmetry.lean": "Intrinsic.BerrySymmetry",
-    "MassiveDiracIntrinsic.lean": "Intrinsic.Response",
-    "MassiveDiracIntrinsicConductivity.lean": "Intrinsic.Conductivity",
-}
-AHE_STREDA = {
-    "MassiveDiracStreda.lean": "Streda.Response",
-    "MassiveDiracStredaIntegral.lean": "Streda.Integral",
-    "MassiveDiracCurrentOperatorBridge.lean": "Streda.CurrentOperatorBridge",
-    "MassiveDiracStredaSpectral.lean": "Streda.Spectral",
-}
 BASTIN_NAMES = (
     "Berry", "Bands", "Limit", "Lorentzian", "Occupation", "Tail", "FiniteWindow",
     "FermiSurface", "Spectator", "Interband", "PoleFactor", "PoleWindow", "PoleContinuity",
@@ -43,8 +26,7 @@ BASTIN_NAMES = (
     "RadialPairUniformBound", "RadialDominatedConvergence", "RadialEnergyBridge",
     "ZeroTemperaturePair", "CleanConductivity",
 )
-AHE_BASTIN = {f"MassiveDiracBastin{name}.lean": f"Bastin.{name}" for name in BASTIN_NAMES}
-AHE_COMPAT = AHE_MODEL | AHE_INTRINSIC | AHE_STREDA | AHE_BASTIN
+AHE_COMPAT = {f"MassiveDiracBastin{name}.lean": f"Bastin.{name}" for name in BASTIN_NAMES}
 
 MD = "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac"
 
