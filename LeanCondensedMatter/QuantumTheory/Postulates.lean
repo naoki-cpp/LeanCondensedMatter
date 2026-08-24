@@ -74,7 +74,7 @@ phase) does not change the expectation value of any observable — quantum state
 determined only up to a global phase. -/
 theorem expValue_smul_of_norm_eq_one {c : ℂ} (hc : ‖c‖ = 1) (hψ' : ‖c • ψ.1‖ = 1) :
     expValue A ⟨c • ψ.1, hψ'⟩ = expValue A ψ := by
-  rw [expValue_eq_inner_apply_left, expValue_eq_inner_apply_left]
+  change inner ℂ (c • ψ.1) (A.1 (c • ψ.1)) = inner ℂ ψ.1 (A.1 ψ.1)
   have h1 : c * (starRingEnd ℂ) c = 1 := by
     rw [Complex.mul_conj, Complex.normSq_eq_norm_sq, hc]; norm_num
   simp only [map_smul, inner_smul_left, inner_smul_right]
@@ -85,7 +85,10 @@ theorem observableExpValue_smul_of_norm_eq_one {c : ℂ} (hc : ‖c‖ = 1)
     (hψ' : ‖c • ψ.1‖ = 1) :
     observableExpValue A ⟨c • ψ.1, hψ'⟩ = observableExpValue A ψ := by
   apply Complex.ofReal_injective
-  rw [coe_observableExpValue, coe_observableExpValue,
-    expValue_smul_of_norm_eq_one A ψ hc hψ']
+  calc
+    (observableExpValue A ⟨c • ψ.1, hψ'⟩ : ℂ) =
+        expValue A ⟨c • ψ.1, hψ'⟩ := coe_observableExpValue A ⟨c • ψ.1, hψ'⟩
+    _ = expValue A ψ := expValue_smul_of_norm_eq_one A ψ hc hψ'
+    _ = (observableExpValue A ψ : ℂ) := (coe_observableExpValue A ψ).symm
 
 end QuantumTheory
