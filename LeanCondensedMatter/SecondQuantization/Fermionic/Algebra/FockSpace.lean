@@ -11,10 +11,11 @@ space is the free `ℂ`-vector space on the fermionic occupation-number basis `O
 (`Occupation.lean`).
 
 Built directly on `Common.AlgebraicFock`:
-`OccupationFock Mode := Common.AlgebraicFock (Occupation Mode)`, with
-`basisState`/`linearMap_ext_basisState` reusing the generic `Common` versions rather than
-re-proving them. The name deliberately records that this representation depends on the chosen mode
-basis. The basis-independent algebraic fermionic Fock construction is the exterior-algebra
+`OccupationFock Mode := Common.AlgebraicFock (Occupation Mode)`, with `basisState` specializing the
+generic `Common.basisState`. Generic basis extensionality is consumed directly from
+`Common.linearMap_ext_basisState` rather than re-exported under a fermionic wrapper. The name
+deliberately records that this representation depends on the chosen mode basis. The
+basis-independent algebraic fermionic Fock construction is the exterior-algebra
 `Fermionic.AlgebraicFock` and is related to this representation by a chosen-basis equivalence.
 `Fermionic.CompletedFockSpace` is the separate completed `ℓ²` occupation representation.
 
@@ -40,14 +41,6 @@ noncomputable def basisState (n : Occupation Mode) : OccupationFock Mode :=
 
 /-- **The occupation-basis Fock vacuum vector**, the basis vector of the empty occupation state. -/
 noncomputable def fockVacuum : OccupationFock Mode := basisState vacuum
-
-/-- Two linear maps out of `OccupationFock Mode` that agree on every basis state are equal —
-the basis-level facts proved in `CreationAnnihilation.lean`/`CanonicalAnticommutationRelations.lean`
-suffice to establish the operator identities. -/
-theorem linearMap_ext_basisState
-    {f g : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode}
-    (h : ∀ n, f (basisState n) = g (basisState n)) : f = g :=
-  Common.linearMap_ext_basisState h
 
 end Fermionic
 end SecondQuantization
