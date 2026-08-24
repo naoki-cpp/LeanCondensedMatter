@@ -70,8 +70,10 @@ theorem annihilate_comp_create_self (i : Mode) :
 (occupation-number basis states are simultaneous eigenvectors with eigenvalue `0` or `1`). -/
 theorem numberOperator_comp_self (i : Mode) :
     (numberOperator i).comp (numberOperator i) = numberOperator i := by
-  apply linearMap_ext_basisState
+  apply Common.linearMap_ext_basisState
   intro n
+  change ((numberOperator i).comp (numberOperator i)) (basisState n) =
+    numberOperator i (basisState n)
   rw [LinearMap.comp_apply, numberOperator_basisState]
   split_ifs with h
   · rw [numberOperator_basisState, if_pos h]
