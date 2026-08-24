@@ -33,12 +33,6 @@ theorem boundedUnitaryEvolution_apply_hasDerivAt (B : H →L[ℂ] H) (t : ℝ) (
     (boundedUnitaryEvolution_hasDerivAt B t).hasFDerivAt
   simpa [Function.comp_def] using h.hasDerivAt
 
-/-- Each resolvent-approximating unitary group is strongly continuous on every vector. -/
-theorem resolventApproximationEvolution_apply_continuous
-    (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (x : H) :
-    Continuous (fun t : ℝ => resolventApproximationEvolution A hA r hr t x) := by
-  exact boundedUnitaryEvolution_apply_continuous _ x
-
 /-- The resolvent-approximating evolution satisfies its bounded-generator equation vectorwise. -/
 theorem resolventApproximationEvolution_apply_hasDerivAt
     (A : H →ₗ.[ℂ] H) (hA : IsSelfAdjoint A) (r : ℝ) (hr : 0 < r) (t : ℝ) (x : H) :
