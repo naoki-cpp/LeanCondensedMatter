@@ -216,8 +216,8 @@ theorem TwoPointDiagram.externalPieceMixedPosition_strictMono
     TwoPointDiagram.externalPieceMixedPosition,
     mixedTimeOrderedAtomicLegPosition_map_lt_iff
       (d.externalInteractionPart.orderEmbOfFin rfl).strictMono]
-  simpa [TwoPointDiagram.externalPieceTimes,
-    mixedTimeOrderedAtomicLegPosition] using hpq
+  simpa only [TwoPointDiagram.externalPieceTimes,
+    mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv] using hpq
 
 theorem TwoPointDiagram.externalPieceMixedPosition_injective
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
