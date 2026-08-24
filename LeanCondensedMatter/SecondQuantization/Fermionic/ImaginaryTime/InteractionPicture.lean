@@ -30,8 +30,10 @@ omit [LinearOrder Mode] [Fintype Mode] in
 /-- `interactionHamiltonian` is time-independent under free imaginary-time evolution. -/
 theorem imaginaryTimeEvolve_interactionHamiltonian (ε : Mode → ℝ) (Vint : Mode → Mode → ℝ)
     (τ : ℝ) : imaginaryTimeEvolve ε τ (interactionHamiltonian Vint) = interactionHamiltonian Vint := by
-  apply linearMap_ext_basisState
+  apply Common.linearMap_ext_basisState
   intro n
+  change imaginaryTimeEvolve ε τ (interactionHamiltonian Vint) (basisState n) =
+    interactionHamiltonian Vint (basisState n)
   rw [imaginaryTimeEvolve_apply, imaginaryTimeEvolveFree_basisState, map_smul,
     interactionHamiltonian_basisState, smul_smul, map_smul, imaginaryTimeEvolveFree_basisState,
     smul_smul]
