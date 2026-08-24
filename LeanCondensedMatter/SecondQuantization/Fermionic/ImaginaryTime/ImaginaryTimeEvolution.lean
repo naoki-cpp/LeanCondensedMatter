@@ -82,8 +82,10 @@ omit [LinearOrder Mode] in
 diagonal in the very basis `e^{τH₀}` acts on by a scalar. -/
 theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
     imaginaryTimeEvolve ε τ (freeHamiltonian ε) = freeHamiltonian ε := by
-  apply linearMap_ext_basisState
+  apply Common.linearMap_ext_basisState
   intro n
+  change imaginaryTimeEvolve ε τ (freeHamiltonian ε) (basisState n) =
+    freeHamiltonian ε (basisState n)
   rw [imaginaryTimeEvolve_apply,
     imaginaryTimeEvolveFree_basisState, map_smul, freeHamiltonian_basisState, smul_smul,
     map_smul, imaginaryTimeEvolveFree_basisState, smul_smul]
@@ -99,8 +101,10 @@ content of the free-theory Heisenberg equation of motion `d/dτ c_i(τ) = [H₀,
 proved here directly from the basis-level action rather than by solving that ODE. -/
 theorem imaginaryTimeEvolve_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     imaginaryTimeEvolve ε τ (annihilate i) = Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i := by
-  apply linearMap_ext_basisState
+  apply Common.linearMap_ext_basisState
   intro n
+  change imaginaryTimeEvolve ε τ (annihilate i) (basisState n) =
+    (Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i) (basisState n)
   rw [imaginaryTimeEvolve_apply,
     imaginaryTimeEvolveFree_basisState, map_smul, LinearMap.smul_apply]
   by_cases hi : i ∈ n
@@ -119,8 +123,10 @@ theorem imaginaryTimeEvolve_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode)
 /-- **The imaginary-time-evolved creation operator**: `c_i†(τ) = e^{τε_i} c_i†`. -/
 theorem imaginaryTimeEvolve_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     imaginaryTimeEvolve ε τ (create i) = Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i := by
-  apply linearMap_ext_basisState
+  apply Common.linearMap_ext_basisState
   intro n
+  change imaginaryTimeEvolve ε τ (create i) (basisState n) =
+    (Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i) (basisState n)
   rw [imaginaryTimeEvolve_apply,
     imaginaryTimeEvolveFree_basisState, map_smul, LinearMap.smul_apply]
   by_cases hi : i ∈ n
