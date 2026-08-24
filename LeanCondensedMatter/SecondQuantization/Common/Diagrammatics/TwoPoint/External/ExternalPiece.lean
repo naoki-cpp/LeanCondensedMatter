@@ -83,7 +83,6 @@ private theorem TwoPointDiagram.externalPiece_partner_externalPieceLegEquiv
   unfold TwoPointDiagram.externalInteractionPart
   rw [TwoPointDiagram.slotCongr_partner,
     d.externalComponentLegEquiv_symm_restrictedPartner]
-  rfl
 
 private theorem TwoPointDiagram.externalSlotLegSplitting_external_externalPart
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
