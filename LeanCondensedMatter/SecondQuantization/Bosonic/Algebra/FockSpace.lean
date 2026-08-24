@@ -29,10 +29,5 @@ noncomputable def basisState (n : Occupation Mode) : FockSpace Mode :=
 /-- The basis vector of the zero-occupation state. -/
 noncomputable def fockVacuum : FockSpace Mode := basisState vacuum
 
-/-- Linear maps out of `FockSpace Mode` are determined by their values on basis states. -/
-theorem linearMap_ext_basisState {f g : FockSpace Mode →ₗ[ℂ] FockSpace Mode}
-    (h : ∀ n, f (basisState n) = g (basisState n)) : f = g :=
-  Common.linearMap_ext_basisState h
-
 end Bosonic
 end SecondQuantization
