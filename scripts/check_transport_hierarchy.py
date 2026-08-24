@@ -18,11 +18,10 @@ TRANSPORT = LEAN / "Transport"
 AHE = TRANSPORT / "AnomalousHall"
 
 BASTIN_NAMES = (
-    "PoleFactor", "PoleWindow", "PoleContinuity", "PoleWindowContinuity", "PoleWindowBound",
-    "PoleExtraction", "PoleExtractionLimit", "PairIntegral", "PairBerry", "RadialDomination",
-    "RadialLimitInterchange", "RadialSpectatorBound", "RadialResolventBound",
-    "RadialSpectatorUniformBound", "RadialPairUniformBound", "RadialDominatedConvergence",
-    "RadialEnergyBridge", "ZeroTemperaturePair", "CleanConductivity",
+    "PairIntegral", "PairBerry", "RadialDomination", "RadialLimitInterchange",
+    "RadialSpectatorBound", "RadialResolventBound", "RadialSpectatorUniformBound",
+    "RadialPairUniformBound", "RadialDominatedConvergence", "RadialEnergyBridge",
+    "ZeroTemperaturePair", "CleanConductivity",
 )
 AHE_COMPAT = {f"MassiveDiracBastin{name}.lean": f"Bastin.{name}" for name in BASTIN_NAMES}
 
