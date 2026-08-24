@@ -150,8 +150,12 @@ theorem anticomm_create_create_basisState (i j : Mode) (n : Occupation Mode) :
       create_basisState_of_not_mem hi, map_smul, create_basisState_of_not_mem hjni, hswap]
     exact cancel_cast_smul_smul (fermionSign_create_create_cancel hij hi hj) _
 
-theorem anticomm_create_create (i j : Mode) : anticomm (create i) (create j) = 0 :=
-  linearMap_ext_basisState fun n => anticomm_create_create_basisState i j n
+theorem anticomm_create_create (i j : Mode) : anticomm (create i) (create j) = 0 := by
+  apply Common.linearMap_ext_basisState
+  intro n
+  change anticomm (create i) (create j) (basisState n) =
+    (0 : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (basisState n)
+  rw [anticomm_create_create_basisState, LinearMap.zero_apply]
 
 /-- **`cᵢ† cᵢ† = 0`**: the same-mode special case of `anticomm_create_create`, `{cᵢ†, cᵢ†} =
 2 cᵢ† cᵢ† = 0`, hence `cᵢ† cᵢ† = 0` (`ℂ` has no `2`-torsion). -/
@@ -195,8 +199,12 @@ theorem anticomm_annihilate_annihilate_basisState (i j : Mode) (n : Occupation M
     · rw [annihilate_basisState_of_not_mem hj, map_zero, annihilate_basisState_of_not_mem hi,
         map_zero, zero_add]
 
-theorem anticomm_annihilate_annihilate (i j : Mode) : anticomm (annihilate i) (annihilate j) = 0 :=
-  linearMap_ext_basisState fun n => anticomm_annihilate_annihilate_basisState i j n
+theorem anticomm_annihilate_annihilate (i j : Mode) : anticomm (annihilate i) (annihilate j) = 0 := by
+  apply Common.linearMap_ext_basisState
+  intro n
+  change anticomm (annihilate i) (annihilate j) (basisState n) =
+    (0 : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (basisState n)
+  rw [anticomm_annihilate_annihilate_basisState, LinearMap.zero_apply]
 
 /-- **`cᵢ cᵢ = 0`**: the same-mode special case of `anticomm_annihilate_annihilate`, the
 creation-side mirror of `create_comp_self`. -/
@@ -260,10 +268,14 @@ theorem anticomm_annihilate_create (i j : Mode) :
     anticomm (annihilate i) (create j) = if i = j then LinearMap.id else 0 := by
   rcases eq_or_ne i j with rfl | hij
   · rw [if_pos rfl]
-    exact linearMap_ext_basisState fun n => by
+    exact Common.linearMap_ext_basisState fun n => by
+      change anticomm (annihilate i) (create i) (basisState n) =
+        (LinearMap.id : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (basisState n)
       rw [anticomm_annihilate_create_basisState, if_pos rfl, LinearMap.id_apply]
   · rw [if_neg hij]
-    exact linearMap_ext_basisState fun n => by
+    exact Common.linearMap_ext_basisState fun n => by
+      change anticomm (annihilate i) (create j) (basisState n) =
+        (0 : OccupationFock Mode →ₗ[ℂ] OccupationFock Mode) (basisState n)
       rw [anticomm_annihilate_create_basisState, if_neg hij, LinearMap.zero_apply]
 
 omit [LinearOrder Mode] in
