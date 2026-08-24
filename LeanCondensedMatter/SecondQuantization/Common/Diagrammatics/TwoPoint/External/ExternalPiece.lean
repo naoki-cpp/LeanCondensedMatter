@@ -142,7 +142,7 @@ private theorem TwoPointDiagram.twoPointLegEquiv_externalPieceLegEquiv_symm
                   (Sum.inl ext)) =
             (twoPointLegEquiv d.externalInteractionPart).symm (Sum.inl ext) := by
         have h := hcongr (Sum.inl ext)
-        rw [twoPointLegDataCongr_inl, Equiv.apply_eq_iff_eq_symm_apply] at h
+        rw [twoPointLegDataCongr_inl, ← Equiv.eq_symm_apply] at h
         exact h
       rw [hk, d.externalSlotLegSplitting_external_externalPart, Equiv.apply_symm_apply]
       rfl
@@ -156,7 +156,7 @@ private theorem TwoPointDiagram.twoPointLegEquiv_externalPieceLegEquiv_symm
             (twoPointLegEquiv d.externalInteractionPart).symm
               (Sum.inr (e.symm v, l)) := by
         have h := hcongr (Sum.inr (v, l))
-        rw [twoPointLegDataCongr_inr, Equiv.apply_eq_iff_eq_symm_apply] at h
+        rw [twoPointLegDataCongr_inr, ← Equiv.eq_symm_apply] at h
         exact h
       rw [hk, d.externalSlotLegSplitting_interaction_externalPart, Equiv.apply_symm_apply]
       apply congrArg Sum.inr
