@@ -285,6 +285,7 @@ private theorem binaryEntropy_fermiDiracOccupation
   rw [Real.negMulLog, Real.negMulLog, hlogf, hlog1mf]
   ring
 
+omit [LinearOrder Mode] in
 /-- The finite free-fermion entropy is the sum of binary entropies of the Fermi–Dirac modes. -/
 theorem vonNeumannEntropy_freeGibbsDensityOperator_toReal_eq_sum_fermiDirac
     (ε : Mode → ℝ) (β : ℝ) :
