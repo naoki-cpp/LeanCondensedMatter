@@ -31,23 +31,25 @@ private theorem fixedExternalOfSlotSplit_prod_vacuumDysonSign_mul_vertexWeight
     (g : QuarticVertexLabel Mode → ℂ) (T : Finset (Fin n))
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
     (hext : ext.1.IsExternallyConnected)
-    (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T)) :
+    (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \\ T)) :
     let d := fixedExternalOfSlotSplit T ext vac
     d.1.vacuumComponentParts.prod (fun B =>
       d.mixedComponentDysonSign B * d.mixedComponentVertexWeight g B) =
-      (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g := by
+      (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \\ T).card * vac.couplingWeight g := by
   classical
   let d := fixedExternalOfSlotSplit T ext vac
   change d.1.vacuumComponentParts.prod (fun B =>
       d.mixedComponentDysonSign B * d.mixedComponentVertexWeight g B) = _
   rw [Finset.prod_mul_distrib]
   have hsign : d.1.vacuumComponentParts.prod d.mixedComponentDysonSign =
-      (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card := by
+      (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \\ T).card := by
+    unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonSign
     simpa [d, fixedExternalOfSlotSplit] using
       (Common.TwoPointDiagram.prod_slotSplitVacuumComponentSigns_eq
         (Finset.subset_univ T) ext.1 vac hext)
   have hvertex : d.1.vacuumComponentParts.prod (d.mixedComponentVertexWeight g) =
       vac.couplingWeight g := by
+    unfold FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight
     simpa [d, fixedExternalOfSlotSplit,
       QuarticWickDiagram.couplingWeight, Common.QuarticDiagram.vertexWeight] using
       (Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct
@@ -59,9 +61,9 @@ private theorem fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg
     (ε : Mode → ℝ)
     (T : Finset (Fin n))
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
-    (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
+    (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \\ T))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
-    (p : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \ T).card))) :
+    (p : Fin (2 * (2 * ((Finset.univ : Finset (Fin n)) \\ T).card))) :
     mixedTimeOrderedAtomicOperatorFamily ε i j τ τ'
         (fixedExternalOfSlotSplit T ext vac).vertexLabelSequence σ
         (mixedTimeOrderedQuarticLegMapPosition
@@ -77,7 +79,7 @@ private theorem fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg
             (orderedQuarticLegMapToTwoPointLeg (slotSplitVacuumSlot T) p)))) = _
   rw [mixedTimeOrderedAtomicLegEquiv_mixedTimeOrderedAtomicLegPosition]
   let q := Common.orderedQuarticLegEquiv
-    ((Finset.univ : Finset (Fin n)) \ T).card p
+    ((Finset.univ : Finset (Fin n)) \\ T).card p
   have hfield :
       orderedTwoPointLegField i j τ τ'
           (fixedExternalOfSlotSplit T ext vac).vertexLabelSequence σ
@@ -87,9 +89,9 @@ private theorem fixedExternalOfSlotSplit_mixedAtomicOperator_vacuumOrderedLeg
             (vac.vertexLabel (slotSplitVacuumOrder T q.1)) q.2⟩ := by
     have hp :
         (Common.orderedQuarticLegEquiv
-          ((Finset.univ : Finset (Fin n)) \ T).card).symm q = p :=
+          ((Finset.univ : Finset (Fin n)) \\ T).card).symm q = p :=
       (Common.orderedQuarticLegEquiv
-        ((Finset.univ : Finset (Fin n)) \ T).card).symm_apply_apply p
+        ((Finset.univ : Finset (Fin n)) \\ T).card).symm_apply_apply p
     rw [← hp]
     rcases q with ⟨v, l⟩
     simp only [orderedQuarticLegMapToTwoPointLeg,
@@ -121,7 +123,7 @@ private theorem fixedExternalOfSlotSplit_mixedPairContractionValue_vacuumNormali
     (ε : Mode → ℝ) (β : ℝ)
     (T : Finset (Fin n))
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
-    (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
+    (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \\ T))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T))
     (pr : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair) :
@@ -151,7 +153,7 @@ private theorem fixedExternalOfSlotSplit_prod_vacuumPairContractionValue_eq
     (ε : Mode → ℝ) (β : ℝ)
     (T : Finset (Fin n))
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
-    (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
+    (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \\ T))
     (hext : ext.1.IsExternallyConnected)
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
@@ -203,13 +205,13 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
     (T : Finset (Fin n))
     (ext : FixedExternalTwoPointWickDiagramOn Mode n T i j)
     (hext : ext.1.IsExternallyConnected)
-    (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \ T))
+    (vac : QuarticWickDiagram Mode n ((Finset.univ : Finset (Fin n)) \\ T))
     (τ τ' : ℝ) (σ : Fin n → ℝ)
     (hσ : StrictAnti (σ ∘ slotSplitVacuumSlot T)) :
     let d := fixedExternalOfSlotSplit T ext vac
     d.1.vacuumComponentParts.prod
         (d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ) =
-      (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g *
+      (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \\ T).card * vac.couplingWeight g *
         vac.contractionIntegrand ε β (slotSplitVacuumOrder T)
           (σ ∘ slotSplitVacuumSlot T) := by
   classical
@@ -217,7 +219,7 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
   have hpre :
       d.1.vacuumComponentParts.prod (fun B =>
         d.mixedComponentDysonSign B * d.mixedComponentVertexWeight g B) =
-        (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g := by
+        (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \\ T).card * vac.couplingWeight g := by
     simpa [d] using
       (fixedExternalOfSlotSplit_prod_vacuumDysonSign_mul_vertexWeight
         g T ext hext vac)
@@ -282,17 +284,20 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
           d.1.vacuumComponentParts.prod (fun B =>
             ∏ pr : d.1.MixedComponentPair τ τ' σ B,
               d.mixedPairContractionValue ε β τ τ' σ pr.1)) := by
+      unfold FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue
+        FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
+        FixedExternalTwoPointWickDiagram.mixedComponentPairingValue
       rw [← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
       apply Finset.prod_congr rfl
       intro B _
       ring
-    _ = ((-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g) *
+    _ = ((-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \\ T).card * vac.couplingWeight g) *
         ((vac.pairingInOrder (slotSplitVacuumOrder T)).weight Common.Statistics.fermion *
           ∏ pr : (vac.pairingInOrder (slotSplitVacuumOrder T)).NormalizedPair,
             orderedQuarticPairValue ε β vac (slotSplitVacuumOrder T)
               (σ ∘ slotSplitVacuumSlot T) pr.1.1 pr.1.2) := by
       rw [hpre, hweight, hcontraction]
-    _ = (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card * vac.couplingWeight g *
+    _ = (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \\ T).card * vac.couplingWeight g *
         vac.contractionIntegrand ε β (slotSplitVacuumOrder T)
           (σ ∘ slotSplitVacuumSlot T) := by
       have hpairProd :
