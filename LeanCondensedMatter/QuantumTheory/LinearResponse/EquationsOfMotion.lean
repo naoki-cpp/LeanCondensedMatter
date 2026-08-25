@@ -133,47 +133,17 @@ theorem vonNeumannEquation (ρ : DensityOperator H) (t : ℝ) :
       ((-(Complex.I / (system.hbar : ℂ))) •
         (system.hamiltonian.1 * (evolveDensityOperator system ρ t).op -
           (evolveDensityOperator system ρ t).op * system.hamiltonian.1)) t := by
-  let G := schrodingerGenerator system
-  let U := freePropagator system t
-  let Uneg := freePropagator system (-t)
-  have hleft := (hasDerivAt_freePropagator system t).mul_const ρ.op
-  have hprod := hleft.mul (hasDerivAt_freePropagator_neg system t)
-  have hraw : HasDerivAt (fun s : ℝ => (evolveDensityOperator system ρ s).op)
-      (G * U * ρ.op * Uneg + U * ρ.op * ((-G) * Uneg)) t := by
-    rw [hasDerivAt_iff_tendsto]
-    rw [hasDerivAt_iff_tendsto] at hprod
-    simpa [G, U, Uneg, evolveDensityOperator_op, unitaryConjugate,
-      star_freePropagator, mul_assoc] using hprod
-  have hcommNeg : Commute G Uneg := by
-    simpa [G, Uneg] using schrodingerGenerator_commute_freePropagator system (-t)
-  have hderivRaw :
-      (G * U * ρ.op * Uneg + U * ρ.op * ((-G) * Uneg)) =
-        G * (U * ρ.op * Uneg) - (U * ρ.op * Uneg) * G := by
-    rw [neg_mul, hcommNeg.eq]
-    noncomm_ring
-  have hgenerator :
-      HasDerivAt (fun s : ℝ => (evolveDensityOperator system ρ s).op)
-        (schrodingerGenerator system * (evolveDensityOperator system ρ t).op -
-          (evolveDensityOperator system ρ t).op * schrodingerGenerator system) t := by
-    have hderiv :
-        (G * U * ρ.op * Uneg + U * ρ.op * ((-G) * Uneg)) =
-          G * (evolveDensityOperator system ρ t).op -
-            (evolveDensityOperator system ρ t).op * G := by
-      simpa [G, U, Uneg, evolveDensityOperator_op, unitaryConjugate,
-        star_freePropagator] using hderivRaw
-    rw [← hderiv]
-    exact hraw
-  have hderiv :
-      schrodingerGenerator system * (evolveDensityOperator system ρ t).op -
-          (evolveDensityOperator system ρ t).op * schrodingerGenerator system =
-        (-(Complex.I / (system.hbar : ℂ))) •
-          (system.hamiltonian.1 * (evolveDensityOperator system ρ t).op -
-            (evolveDensityOperator system ρ t).op * system.hamiltonian.1) := by
-    rw [schrodingerGenerator]
-    simp only [mul_smul_comm, smul_mul_assoc]
-    module
-  rw [← hderiv]
-  exact hgenerator
+  have h := (heisenbergEquation system ρ.op (-t)).scomp t (hasDerivAt_neg t)
+  have hevolved (s : ℝ) :
+      heisenbergEvolution system ρ.op (-s) = (evolveDensityOperator system ρ s).op := by
+    simp [evolveDensityOperator_op, unitaryConjugate, heisenbergEvolution,
+      star_freePropagator]
+  rw [show (heisenbergEvolution system ρ.op ∘ Neg.neg) =
+      fun s : ℝ => (evolveDensityOperator system ρ s).op by
+        funext s
+        exact hevolved s] at h
+  rw [hevolved t] at h
+  simpa using h
 
 end
 end LinearResponse
