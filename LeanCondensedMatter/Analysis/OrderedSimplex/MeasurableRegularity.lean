@@ -1,6 +1,7 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.FiniteSelectionIntegrability
 import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
+import Mathlib.Analysis.Normed.Group.Bounded
 import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.Topology.Order.Compact
 
 set_option linter.style.header false
 
@@ -21,6 +22,34 @@ integral.
 namespace intervalIntegral
 
 open MeasureTheory Set
+
+private theorem exists_norm_bound_on_compact_of_finite_continuous_selection
+    {ι X E : Type*} [Finite ι] [TopologicalSpace X] [SeminormedAddGroup E]
+    (K : Set X) (hK : IsCompact K) (f : X → E) (g : ι → X → E)
+    (hg : ∀ i, Continuous (g i))
+    (hselect : ∀ x ∈ K, ∃ i, f x = g i x) :
+    ∃ C : ℝ, ∀ x ∈ K, ‖f x‖ ≤ C := by
+  classical
+  letI := Fintype.ofFinite ι
+  let envelope : X → ℝ := fun x => ∑ i : ι, ‖g i x‖
+  have hEnvelope : Continuous envelope := by
+    dsimp [envelope]
+    exact continuous_finsetSum _ fun i _ => (hg i).norm
+  obtain ⟨C, hC⟩ := hK.exists_bound_of_continuousOn hEnvelope.continuousOn
+  refine ⟨C, ?_⟩
+  intro x hx
+  obtain ⟨i, hi⟩ := hselect x hx
+  have hterm : ‖f x‖ ≤ envelope x := by
+    rw [hi]
+    dsimp [envelope]
+    exact Finset.single_le_sum (fun j _ => norm_nonneg (g j x)) (Finset.mem_univ i)
+  have hnonneg : 0 ≤ envelope x := by
+    dsimp [envelope]
+    exact Finset.sum_nonneg fun j _ => norm_nonneg (g j x)
+  have hbound := hC x hx
+  have hEnvelopeLe : envelope x ≤ C := by
+    simpa [Real.norm_eq_abs, abs_of_nonneg hnonneg] using hbound
+  exact hterm.trans hEnvelopeLe
 
 /-- The centered coordinate cube of radius `R`.  It is used instead of `[0, β]^n` so that fixing a
 coordinate preserves local boundedness even when later bounds have the opposite sign. -/
