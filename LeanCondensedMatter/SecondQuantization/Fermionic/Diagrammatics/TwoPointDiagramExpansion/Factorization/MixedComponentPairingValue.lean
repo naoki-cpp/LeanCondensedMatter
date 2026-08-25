@@ -19,6 +19,7 @@ open Common
 variable {Mode : Type*} [LinearOrder Mode] [Fintype Mode]
 
 /-- Fermionic crossing weight times the contraction product internal to one full component. -/
+@[implicit_reducible]
 noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentPairingValue
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (τ τ' : ℝ) (σ : Fin n → ℝ)

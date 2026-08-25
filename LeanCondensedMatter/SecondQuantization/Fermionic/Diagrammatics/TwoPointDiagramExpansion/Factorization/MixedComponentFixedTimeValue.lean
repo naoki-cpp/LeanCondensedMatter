@@ -25,6 +25,7 @@ namespace Fermionic
 variable {Mode : Type*}
 
 /-- Product of quartic couplings on the interaction vertices belonging to one full component. -/
+@[implicit_reducible]
 noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (g : QuarticVertexLabel Mode → ℂ)
@@ -42,6 +43,7 @@ section Fermionic
 variable [LinearOrder Mode] [Fintype Mode]
 
 /-- Coupling weight times mixed pairing value internal to one full component. -/
+@[implicit_reducible]
 noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentFixedTimeValue
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
