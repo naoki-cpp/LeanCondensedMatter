@@ -5,16 +5,14 @@ set_option linter.style.header false
 /-!
 # The canonical anticommutation relations
 
-Phase 5 of Track D's fermionic primary line (`notes/roadmaps/second-quantization.md`): the
-canonical anticommutation relations (CAR) for the fermionic creation/annihilation operators of
-`CreationAnnihilationFermionic.lean`:
+This module proves the canonical anticommutation relations (CAR) for the fermionic creation and
+annihilation operators defined in `CreationAnnihilation.lean`:
 
 * `{aᵢ, aⱼ} = 0` (`anticomm_annihilate_annihilate`)
 * `{aᵢ†, aⱼ†} = 0` (`anticomm_create_create`)
 * `{aᵢ, aⱼ†} = δᵢⱼ` (`anticomm_annihilate_create`)
 
-The file is named out in full (not abbreviated `CAR.lean`) so the module name itself says what it
-proves.
+The full filename makes the module's role explicit.
 -/
 
 namespace SecondQuantization
