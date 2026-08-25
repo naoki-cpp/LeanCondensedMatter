@@ -19,17 +19,17 @@ namespace BinaryShuffle
 def leftSlot : {m n : ℕ} → BinaryShuffle m n → Fin m → Fin (m + n)
   | 0, 0, .nil => Fin.elim0
   | m + 1, n, .consLeft σ => fun i =>
-      Fin.cases 0 (fun j => Fin.cast (by omega) (leftSlot σ j).succ) i
+      Fin.cases 0 (fun j => Fin.cast (by lia) (leftSlot σ j).succ) i
   | m, n + 1, .consRight σ => fun i =>
-      Fin.cast (by omega) (leftSlot σ i).succ
+      Fin.cast (by lia) (leftSlot σ i).succ
 
 /-- Ambient position of a right local slot. -/
 def rightSlot : {m n : ℕ} → BinaryShuffle m n → Fin n → Fin (m + n)
   | 0, 0, .nil => Fin.elim0
   | m + 1, n, .consLeft σ => fun j =>
-      Fin.cast (by omega) (rightSlot σ j).succ
+      Fin.cast (by lia) (rightSlot σ j).succ
   | m, n + 1, .consRight σ => fun j =>
-      Fin.cases 0 (fun k => Fin.cast (by omega) (rightSlot σ k).succ) j
+      Fin.cases 0 (fun k => Fin.cast (by lia) (rightSlot σ k).succ) j
 
 @[simp]
 theorem leftSlot_consLeft_zero {m n : ℕ} (σ : BinaryShuffle m n) :
@@ -37,15 +37,15 @@ theorem leftSlot_consLeft_zero {m n : ℕ} (σ : BinaryShuffle m n) :
 
 @[simp]
 theorem leftSlot_consLeft_succ {m n : ℕ} (σ : BinaryShuffle m n) (i : Fin m) :
-    leftSlot (.consLeft σ) i.succ = Fin.cast (by omega) (leftSlot σ i).succ := rfl
+    leftSlot (.consLeft σ) i.succ = Fin.cast (by lia) (leftSlot σ i).succ := rfl
 
 @[simp]
 theorem rightSlot_consLeft {m n : ℕ} (σ : BinaryShuffle m n) (j : Fin n) :
-    rightSlot (.consLeft σ) j = Fin.cast (by omega) (rightSlot σ j).succ := rfl
+    rightSlot (.consLeft σ) j = Fin.cast (by lia) (rightSlot σ j).succ := rfl
 
 @[simp]
 theorem leftSlot_consRight {m n : ℕ} (σ : BinaryShuffle m n) (i : Fin m) :
-    leftSlot (.consRight σ) i = Fin.cast (by omega) (leftSlot σ i).succ := by
+    leftSlot (.consRight σ) i = Fin.cast (by lia) (leftSlot σ i).succ := by
   simp [leftSlot]
 
 @[simp]
@@ -55,7 +55,7 @@ theorem rightSlot_consRight_zero {m n : ℕ} (σ : BinaryShuffle m n) :
 
 @[simp]
 theorem rightSlot_consRight_succ {m n : ℕ} (σ : BinaryShuffle m n) (j : Fin n) :
-    rightSlot (.consRight σ) j.succ = Fin.cast (by omega) (rightSlot σ j).succ := by
+    rightSlot (.consRight σ) j.succ = Fin.cast (by lia) (rightSlot σ j).succ := by
   simp [rightSlot]
 
 /-- Left local slots retain their internal order in ambient coordinates. -/
@@ -70,7 +70,7 @@ theorem leftSlot_strictMono : ∀ {m n : ℕ} (σ : BinaryShuffle m n), StrictMo
           | succ j =>
               simp only [leftSlot_consLeft_zero, leftSlot_consLeft_succ]
               change 0 < (leftSlot σ j).val + 1
-              omega
+              lia
       | succ i =>
           induction j using Fin.cases with
           | zero => simp at hij
@@ -79,13 +79,13 @@ theorem leftSlot_strictMono : ∀ {m n : ℕ} (σ : BinaryShuffle m n), StrictMo
               have h := leftSlot_strictMono σ hbase
               simp only [leftSlot_consLeft_succ]
               change (leftSlot σ i).val + 1 < (leftSlot σ j).val + 1
-              omega
+              lia
   | m, n + 1, .consRight σ => by
       intro i j hij
       have h := leftSlot_strictMono σ hij
       simp only [leftSlot_consRight]
       change (leftSlot σ i).val + 1 < (leftSlot σ j).val + 1
-      omega
+      lia
 
 /-- Right local slots retain their internal order in ambient coordinates. -/
 theorem rightSlot_strictMono : ∀ {m n : ℕ} (σ : BinaryShuffle m n), StrictMono (rightSlot σ)
@@ -95,7 +95,7 @@ theorem rightSlot_strictMono : ∀ {m n : ℕ} (σ : BinaryShuffle m n), StrictM
       have h := rightSlot_strictMono σ hij
       simp only [rightSlot_consLeft]
       change (rightSlot σ i).val + 1 < (rightSlot σ j).val + 1
-      omega
+      lia
   | m, n + 1, .consRight σ => by
       intro i j hij
       induction i using Fin.cases with
@@ -105,7 +105,7 @@ theorem rightSlot_strictMono : ∀ {m n : ℕ} (σ : BinaryShuffle m n), StrictM
           | succ j =>
               simp only [rightSlot_consRight_zero, rightSlot_consRight_succ]
               change 0 < (rightSlot σ j).val + 1
-              omega
+              lia
       | succ i =>
           induction j using Fin.cases with
           | zero => simp at hij
@@ -114,7 +114,7 @@ theorem rightSlot_strictMono : ∀ {m n : ℕ} (σ : BinaryShuffle m n), StrictM
               have h := rightSlot_strictMono σ hbase
               simp only [rightSlot_consRight_succ]
               change (rightSlot σ i).val + 1 < (rightSlot σ j).val + 1
-              omega
+              lia
 
 /-- A left and a right local slot never occupy the same ambient position. -/
 theorem leftSlot_ne_rightSlot : ∀ {m n : ℕ} (σ : BinaryShuffle m n)
@@ -127,14 +127,14 @@ theorem leftSlot_ne_rightSlot : ∀ {m n : ℕ} (σ : BinaryShuffle m n)
           have hv := congrArg Fin.val h
           simp only [leftSlot_consLeft_zero, rightSlot_consLeft, Fin.val_cast, Fin.val_succ,
             Fin.val_zero] at hv
-          omega
+          lia
       | succ i =>
           intro h
           apply leftSlot_ne_rightSlot σ i j
           apply Fin.ext
           have hv := congrArg Fin.val h
           simp only [leftSlot_consLeft_succ, rightSlot_consLeft, Fin.val_cast, Fin.val_succ] at hv
-          omega
+          lia
   | m, n + 1, .consRight σ, i, j => by
       induction j using Fin.cases with
       | zero =>
@@ -142,14 +142,14 @@ theorem leftSlot_ne_rightSlot : ∀ {m n : ℕ} (σ : BinaryShuffle m n)
           have hv := congrArg Fin.val h
           simp only [leftSlot_consRight, rightSlot_consRight_zero, Fin.val_cast, Fin.val_succ,
             Fin.val_zero] at hv
-          omega
+          lia
       | succ j =>
           intro h
           apply leftSlot_ne_rightSlot σ i j
           apply Fin.ext
           have hv := congrArg Fin.val h
           simp only [leftSlot_consRight, rightSlot_consRight_succ, Fin.val_cast, Fin.val_succ] at hv
-          omega
+          lia
 
 /-- Ambient slot occupied by a tagged left or right local slot. -/
 def slot {m n : ℕ} (σ : BinaryShuffle m n) : Fin m ⊕ Fin n → Fin (m + n)
