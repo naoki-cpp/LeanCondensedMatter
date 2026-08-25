@@ -123,19 +123,14 @@ private theorem
     d.mixedComponentVertexWeight g d.1.externalComponentPart =
       orderedTwoPointVertexWeight g d.externalPiece.vertexLabelSequence := by
   classical
-  have hext :
-      (d.1.externalComponentPart :
-        Finset (Common.TwoPointVertex (Finset.univ : Finset (Fin n)))) =
-          d.1.externalComponent 0 := rfl
   calc
     d.mixedComponentVertexWeight g d.1.externalComponentPart =
         ∏ v : ↥d.1.externalInteractionPart,
-          g (d.1.externalVacuumSplit.1.vertexLabel v) := by
+          g (d.1.vertexLabel ⟨v.1, Finset.mem_univ _⟩) := by
       unfold FixedExternalTwoPointWickDiagram.mixedComponentVertexWeight
-      rw [hext]
-      apply Finset.prod_congr rfl
-      intro v _
-      rw [Common.TwoPointDiagram.externalVacuumSplit_fst_vertexLabel]
+      unfold Common.TwoPointDiagram.externalComponentPart
+      unfold Common.TwoPointDiagram.externalInteractionPart
+      rfl
     _ = ∏ v : ↥(Finset.univ : Finset (Fin d.1.externalInteractionPart.card)),
           g (d.externalPiece.1.vertexLabel v) := by
       let e := Common.standardSlotEquiv d.1.externalInteractionPart
@@ -144,12 +139,8 @@ private theorem
       apply Finset.prod_congr rfl
       intro v _
       calc
-        g (d.1.externalVacuumSplit.1.vertexLabel v) =
-            g (d.1.vertexLabel ⟨v.1,
-              Common.TwoPointDiagram.interactionPart_subset
-                (d.1.externalComponent 0) v.2⟩) := by
-          rw [Common.TwoPointDiagram.externalVacuumSplit_fst_vertexLabel]
-        _ = g (d.1.vertexLabel
+        g (d.1.vertexLabel ⟨v.1, Finset.mem_univ _⟩) =
+            g (d.1.vertexLabel
               ⟨d.1.externalInteractionPart.orderEmbOfFin rfl (e v).1,
                 Finset.mem_univ _⟩) := by
           apply congrArg g
