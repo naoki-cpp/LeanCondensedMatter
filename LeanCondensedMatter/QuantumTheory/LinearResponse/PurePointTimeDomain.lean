@@ -130,10 +130,9 @@ theorem summable_purePointForwardTimeTerm
     (A B : H →L[ℂ] H) (τ : ℝ)
     (hsum : PurePointTimeDomainSummable system data A B) :
     Summable (purePointForwardTimeTerm system data A B τ) := by
-  have hnorm : Summable fun mn : ι × ι =>
-      ‖purePointForwardTimeTerm system data A B τ mn‖ := by
-    simpa [purePointForwardTimeTerm, norm_mul] using hsum.1
-  exact hnorm.of_norm
+  apply hsum.1.of_norm_bounded
+  intro mn
+  simp [purePointForwardTimeTerm]
 
 /-- Absolute summability of the backward weights is preserved by the unit transition phase. -/
 theorem summable_purePointBackwardTimeTerm
@@ -141,10 +140,9 @@ theorem summable_purePointBackwardTimeTerm
     (A B : H →L[ℂ] H) (τ : ℝ)
     (hsum : PurePointTimeDomainSummable system data A B) :
     Summable (purePointBackwardTimeTerm system data A B τ) := by
-  have hnorm : Summable fun mn : ι × ι =>
-      ‖purePointBackwardTimeTerm system data A B τ mn‖ := by
-    simpa [purePointBackwardTimeTerm, norm_mul] using hsum.2.1
-  exact hnorm.of_norm
+  apply hsum.2.1.of_norm_bounded
+  intro mn
+  simp [purePointBackwardTimeTerm]
 
 /-- Absolute summability of the physical weights is preserved by the unit transition phase. -/
 theorem summable_purePointTimeDomainTerm
@@ -152,13 +150,9 @@ theorem summable_purePointTimeDomainTerm
     (A B : H →L[ℂ] H) (τ : ℝ)
     (hsum : PurePointTimeDomainSummable system data A B) :
     Summable (purePointTimeDomainTerm system data A B τ) := by
-  have hweight : Summable fun mn : ι × ι =>
-      ‖purePointTransitionWeight system data A B mn‖ := by
-    simpa only [PurePointLehmannSummable] using hsum.2.2
-  have hnorm : Summable fun mn : ι × ι =>
-      ‖purePointTimeDomainTerm system data A B τ mn‖ := by
-    simpa [purePointTimeDomainTerm, norm_mul] using hweight
-  exact hnorm.of_norm
+  apply hsum.2.2.of_norm_bounded
+  intro mn
+  simp [purePointTimeDomainTerm]
 
 /-- Expansion of `ω(A_I(τ) B)` into the forward ordered transition series. -/
 theorem purePointExpectation_heisenberg_mul_eq_tsum
