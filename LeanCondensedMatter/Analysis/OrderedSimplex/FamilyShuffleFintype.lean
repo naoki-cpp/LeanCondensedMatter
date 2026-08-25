@@ -23,7 +23,7 @@ private theorem sum_size_comp_equiv (e : ι ≃ κ) (size : κ → ℕ) :
   Equiv.sum_comp e size
 
 /-- Reindex family slot shuffles along an equivalence of their finite block-index types. -/
-noncomputable def FamilySlotShuffle.reindexEquiv (e : ι ≃ κ) (size : κ → ℕ) :
+private noncomputable def reindexEquiv (e : ι ≃ κ) (size : κ → ℕ) :
     FamilySlotShuffle size ≃ FamilySlotShuffle (fun i => size (e i)) := by
   let hsum : (∑ i : ι, size (e i)) = ∑ j : κ, size j := sum_size_comp_equiv e size
   let localEquiv : (Σ i : ι, Fin (size (e i))) ≃ (Σ j : κ, Fin (size j)) :=
@@ -82,33 +82,6 @@ noncomputable def FamilySlotShuffle.reindexEquiv (e : ι ≃ κ) (size : κ → 
         rw [localEquiv.symm_apply_apply]
         simp }
 
-/-- One reindexed family-shuffle term has the same ordered-simplex integral as the original term. -/
-theorem FamilySlotShuffle.orderedSimplexIntegral_reindexEquiv
-    (e : ι ≃ κ) (size : κ → ℕ) (shuffle : FamilySlotShuffle size)
-    (β : ℝ) (localIntegrand : ∀ j, (Fin (size j) → ℝ) → ℂ) :
-    orderedSimplexIntegral (∑ i : ι, size (e i)) β
-        ((FamilySlotShuffle.reindexEquiv e size shuffle).integrand
-          (fun i => localIntegrand (e i))) =
-      orderedSimplexIntegral (∑ j : κ, size j) β
-        (shuffle.integrand localIntegrand) := by
-  let hsum : (∑ i : ι, size (e i)) = ∑ j : κ, size j := sum_size_comp_equiv e size
-  rw [intervalIntegral.orderedSimplexIntegral_cast hsum]
-  apply orderedSimplexIntegral_congr
-  intro τ
-  unfold FamilySlotShuffle.integrand FamilySlotShuffle.timeAssignment
-  have hterm : ∀ i : ι,
-      localIntegrand (e i) (fun a =>
-        (fun z => τ (Fin.cast hsum z))
-          ((FamilySlotShuffle.reindexEquiv e size shuffle).slotEquiv ⟨i, a⟩)) =
-        localIntegrand (e i) (fun a => τ (shuffle.slotEquiv ⟨e i, a⟩)) := by
-    intro i
-    apply congrArg (localIntegrand (e i))
-    funext a
-    simp [FamilySlotShuffle.reindexEquiv]
-  simp_rw [hterm]
-  exact Equiv.prod_comp e
-    (fun j => localIntegrand j (fun a => τ (shuffle.slotEquiv ⟨j, a⟩)))
-
 /-- Finite-family ordered-simplex shuffle product identity for an arbitrary finite block-index type,
 under measurable local boundedness. -/
 theorem FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype_of_measurableLocallyBounded
@@ -126,14 +99,32 @@ theorem FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype_o
         orderedSimplexIntegral (∑ i, size i) β (shuffle.integrand localIntegrand)) =
       ∑ shuffle : FamilySlotShuffle size,
         orderedSimplexIntegral (∑ j, sizeFin j) β
-          ((FamilySlotShuffle.reindexEquiv e size shuffle).integrand localFin) := by
+          ((reindexEquiv e size shuffle).integrand localFin) := by
             apply Fintype.sum_congr
             intro shuffle
-            exact (FamilySlotShuffle.orderedSimplexIntegral_reindexEquiv
-              e size shuffle β localIntegrand).symm
+            symm
+            dsimp [sizeFin, localFin]
+            let hsum : (∑ i : Fin (Fintype.card ι), size (e i)) = ∑ j : ι, size j :=
+              sum_size_comp_equiv e size
+            rw [intervalIntegral.orderedSimplexIntegral_cast hsum]
+            apply orderedSimplexIntegral_congr
+            intro τ
+            unfold FamilySlotShuffle.integrand FamilySlotShuffle.timeAssignment
+            have hterm : ∀ i : Fin (Fintype.card ι),
+                localIntegrand (e i) (fun a =>
+                  (fun z => τ (Fin.cast hsum z))
+                    ((reindexEquiv e size shuffle).slotEquiv ⟨i, a⟩)) =
+                  localIntegrand (e i) (fun a => τ (shuffle.slotEquiv ⟨e i, a⟩)) := by
+              intro i
+              apply congrArg (localIntegrand (e i))
+              funext a
+              simp [reindexEquiv]
+            simp_rw [hterm]
+            exact Equiv.prod_comp e
+              (fun j => localIntegrand j (fun a => τ (shuffle.slotEquiv ⟨j, a⟩)))
     _ = ∑ shuffle : FamilySlotShuffle sizeFin,
         orderedSimplexIntegral (∑ j, sizeFin j) β (shuffle.integrand localFin) :=
-      Equiv.sum_comp (FamilySlotShuffle.reindexEquiv e size)
+      Equiv.sum_comp (reindexEquiv e size)
         (fun shuffle => orderedSimplexIntegral (∑ j, sizeFin j) β
           (shuffle.integrand localFin))
     _ = ∏ j, orderedSimplexIntegral (sizeFin j) β (localFin j) :=
@@ -141,30 +132,6 @@ theorem FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype_o
         (Fintype.card ι) sizeFin β localFin (fun j => hlocal (e j))
     _ = ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i) :=
       Equiv.prod_comp e (fun i => orderedSimplexIntegral (size i) β (localIntegrand i))
-
-/-- Transporting a canonical family shuffle to a propositionally equal ambient total preserves its
-ordered-simplex term. -/
-theorem FamilySlotShuffleTo.orderedSimplexIntegral_ambientIntegrand_castTotalEquiv
-    (size : ι → ℕ) (total : ℕ) (hTotal : (∑ i, size i) = total)
-    (shuffle : FamilySlotShuffle size) (β : ℝ)
-    (localIntegrand : ∀ i, (Fin (size i) → ℝ) → ℂ) :
-    orderedSimplexIntegral total β
-        ((FamilySlotShuffleTo.castTotalEquiv hTotal shuffle).ambientIntegrand localIntegrand) =
-      orderedSimplexIntegral (∑ i, size i) β (shuffle.integrand localIntegrand) := by
-  calc
-    orderedSimplexIntegral total β
-        ((FamilySlotShuffleTo.castTotalEquiv hTotal shuffle).ambientIntegrand localIntegrand) =
-      orderedSimplexIntegral total β (fun τ =>
-        shuffle.integrand localIntegrand (fun j => τ (Fin.cast hTotal j))) := by
-          apply orderedSimplexIntegral_congr
-          intro τ
-          unfold FamilySlotShuffleTo.ambientIntegrand FamilySlotShuffle.integrand
-            FamilySlotShuffle.timeAssignment FamilySlotShuffleTo.castTotalEquiv
-          rfl
-    _ = orderedSimplexIntegral (∑ i, size i) β (shuffle.integrand localIntegrand) := by
-      symm
-      exact intervalIntegral.orderedSimplexIntegral_cast hTotal β
-        (shuffle.integrand localIntegrand)
 
 /-- Finite-family ordered-simplex shuffle product identity directly over an ambient total that is
 propositionally equal to the sum of local block sizes. -/
@@ -188,8 +155,20 @@ theorem FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_
         orderedSimplexIntegral (∑ i, size i) β (shuffle.integrand localIntegrand) := by
       apply Fintype.sum_congr
       intro shuffle
-      exact FamilySlotShuffleTo.orderedSimplexIntegral_ambientIntegrand_castTotalEquiv
-        size total hTotal shuffle β localIntegrand
+      calc
+        orderedSimplexIntegral total β
+            ((FamilySlotShuffleTo.castTotalEquiv hTotal shuffle).ambientIntegrand localIntegrand) =
+          orderedSimplexIntegral total β (fun τ =>
+            shuffle.integrand localIntegrand (fun j => τ (Fin.cast hTotal j))) := by
+              apply orderedSimplexIntegral_congr
+              intro τ
+              unfold FamilySlotShuffleTo.ambientIntegrand FamilySlotShuffle.integrand
+                FamilySlotShuffle.timeAssignment FamilySlotShuffleTo.castTotalEquiv
+              rfl
+        _ = orderedSimplexIntegral (∑ i, size i) β (shuffle.integrand localIntegrand) := by
+          symm
+          exact intervalIntegral.orderedSimplexIntegral_cast hTotal β
+            (shuffle.integrand localIntegrand)
     _ = ∏ i, orderedSimplexIntegral (size i) β (localIntegrand i) :=
       FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype_of_measurableLocallyBounded
         size β localIntegrand hlocal
