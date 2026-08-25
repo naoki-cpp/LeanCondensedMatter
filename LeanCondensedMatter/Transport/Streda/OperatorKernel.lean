@@ -79,7 +79,7 @@ noncomputable def regularizedStredaSurfacePrimitiveOperatorDerivative
       hamiltonian current₁ current₂ energy broadening
 
 /-- The retarded-minus-advanced resolvent difference has the expected real-energy derivative. -/
-theorem hasDerivAt_retardedAdvancedResolventDifference
+private theorem hasDerivAt_retardedAdvancedResolventDifference
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
     HasDerivAt
@@ -99,7 +99,7 @@ theorem hasDerivAt_retardedAdvancedResolventDifference
         hamiltonian hself energy broadening hbroadening)
 
 /-- Product differentiation of the standard Smrčka–Středa surface factor. -/
-theorem hasDerivAt_smrckaStredaSurfaceFactor
+private theorem hasDerivAt_smrckaStredaSurfaceFactor
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
     (current₁ current₂ : H →L[ℂ] H)
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
