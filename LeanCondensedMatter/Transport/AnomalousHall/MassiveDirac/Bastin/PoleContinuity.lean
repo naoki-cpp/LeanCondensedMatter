@@ -50,76 +50,50 @@ theorem continuousAt_targetCenteredInterbandSpectatorCurrentFactor_of_shiftedGap
     ContinuousAt
       (targetCenteredInterbandSpectatorCurrentFactor band e v m px py)
       p := by
-  have hretDen : ContinuousAt
+  have hside : ∀ side : SpectralSide, ContinuousAt
       (fun q : ℝ × ℝ =>
-        (((bandEnergy band v m px py + q.1 : ℝ) : ℂ) + (q.2 : ℂ) * Complex.I) -
-          ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ))
+        projectorResolventCoefficient
+          (spectralParameter side (bandEnergy band v m px py + q.1) q.2)
+          (oppositeBand band) v m px py)
       p := by
-    fun_prop
-  have hretDen_ne :
-      (((bandEnergy band v m px py + p.1 : ℝ) : ℂ) + (p.2 : ℂ) * Complex.I) -
-          ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ) ≠ 0 := by
-    intro hzero
-    have hre :
-        bandEnergy band v m px py + p.1 -
-          bandEnergy (oppositeBand band) v m px py = 0 := by
-      simpa using congrArg Complex.re hzero
-    apply hshift
-    unfold interbandEnergyGap
-    linarith
-  have hadvDen : ContinuousAt
+    intro side
+    have hparameter : ContinuousAt
+        (fun q : ℝ × ℝ =>
+          spectralParameter side (bandEnergy band v m px py + q.1) q.2)
+        p := by
+      unfold spectralParameter
+      fun_prop
+    have hden :
+        spectralParameter side (bandEnergy band v m px py + p.1) p.2 -
+            ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ) ≠ 0 := by
+      intro hzero
+      have hre :
+          bandEnergy band v m px py + p.1 -
+            bandEnergy (oppositeBand band) v m px py = 0 := by
+        simpa [spectralParameter] using congrArg Complex.re hzero
+      apply hshift
+      unfold interbandEnergyGap
+      linarith
+    change ContinuousAt
       (fun q : ℝ × ℝ =>
-        (((bandEnergy band v m px py + q.1 : ℝ) : ℂ) - (q.2 : ℂ) * Complex.I) -
-          ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ))
-      p := by
-    fun_prop
-  have hadvDen_ne :
-      (((bandEnergy band v m px py + p.1 : ℝ) : ℂ) - (p.2 : ℂ) * Complex.I) -
-          ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ) ≠ 0 := by
-    intro hzero
-    have hre :
-        bandEnergy band v m px py + p.1 -
-          bandEnergy (oppositeBand band) v m px py = 0 := by
-      simpa using congrArg Complex.re hzero
-    apply hshift
-    unfold interbandEnergyGap
-    linarith
-  have hretRaw := hretDen.inv₀ hretDen_ne
+        (spectralParameter side (bandEnergy band v m px py + q.1) q.2 -
+          ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ))⁻¹)
+      p
+    exact (hparameter.sub continuousAt_const).inv₀ hden
   have hret : ContinuousAt
       (fun q : ℝ × ℝ =>
         projectorResolventCoefficient
           (retardedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
           (oppositeBand band) v m px py)
       p := by
-    have hfun :
-        (fun q : ℝ × ℝ =>
-          (((bandEnergy band v m px py + q.1 : ℝ) : ℂ) + (q.2 : ℂ) * Complex.I) -
-            ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ))⁻¹ =
-          (fun q : ℝ × ℝ =>
-            ((((bandEnergy band v m px py + q.1 : ℝ) : ℂ) + (q.2 : ℂ) * Complex.I) -
-              ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ))⁻¹) := by
-      funext q
-      rfl
-    rw [hfun] at hretRaw
-    simpa [projectorResolventCoefficient, retardedSpectralParameter] using hretRaw
-  have hadvRaw := hadvDen.inv₀ hadvDen_ne
+    simpa only [spectralParameter_retarded] using hside .retarded
   have hadv : ContinuousAt
       (fun q : ℝ × ℝ =>
         projectorResolventCoefficient
           (advancedSpectralParameter (bandEnergy band v m px py + q.1) q.2)
           (oppositeBand band) v m px py)
       p := by
-    have hfun :
-        (fun q : ℝ × ℝ =>
-          (((bandEnergy band v m px py + q.1 : ℝ) : ℂ) - (q.2 : ℂ) * Complex.I) -
-            ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ))⁻¹ =
-          (fun q : ℝ × ℝ =>
-            ((((bandEnergy band v m px py + q.1 : ℝ) : ℂ) - (q.2 : ℂ) * Complex.I) -
-              ((bandEnergy (oppositeBand band) v m px py : ℝ) : ℂ))⁻¹) := by
-      funext q
-      rfl
-    rw [hfun] at hadvRaw
-    simpa [projectorResolventCoefficient, advancedSpectralParameter] using hadvRaw
+    simpa only [spectralParameter_advanced] using hside .advanced
   have hretSq := hret.mul hret
   have hadvSq := hadv.mul hadv
   have hxy := hretSq.mul

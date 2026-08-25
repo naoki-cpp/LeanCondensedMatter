@@ -31,6 +31,38 @@ private theorem complex_spectral_offset_ne_zero
     (((probeEnergy - bandEnergy band v m px py : ℝ) : ℂ)) ≠ 0 := by
   exact_mod_cast sub_ne_zero.mpr hprobe
 
+/-- At a probe energy away from the selected band, the scalar projector-resolvent coefficient on
+either spectral side tends to the ordinary real-energy coefficient as `η → 0`. -/
+theorem tendsto_projectorResolventCoefficient_zero
+    (side : SpectralSide) (band : Band) (v m px py probeEnergy : ℝ)
+    (hprobe : probeEnergy ≠ bandEnergy band v m px py) :
+    Tendsto
+      (fun broadening : ℝ =>
+        projectorResolventCoefficient
+          (spectralParameter side probeEnergy broadening) band v m px py)
+      (nhds 0)
+      (nhds (projectorResolventCoefficient (probeEnergy : ℂ) band v m px py)) := by
+  have hden :
+      spectralParameter side probeEnergy 0 -
+          ((bandEnergy band v m px py : ℝ) : ℂ) ≠ 0 := by
+    simpa [spectralParameter] using
+      complex_spectral_offset_ne_zero band v m px py probeEnergy hprobe
+  have hcontinuous : ContinuousAt
+      (fun broadening : ℝ =>
+        spectralParameter side probeEnergy broadening -
+          ((bandEnergy band v m px py : ℝ) : ℂ)) 0 := by
+    unfold spectralParameter
+    fun_prop
+  have hinv : Tendsto
+      (fun broadening : ℝ =>
+        (spectralParameter side probeEnergy broadening -
+          ((bandEnergy band v m px py : ℝ) : ℂ))⁻¹)
+      (nhds 0)
+      (nhds ((spectralParameter side probeEnergy 0 -
+        ((bandEnergy band v m px py : ℝ) : ℂ))⁻¹)) :=
+    (hcontinuous.inv₀ hden).tendsto
+  simpa [projectorResolventCoefficient, spectralParameter] using hinv
+
 /-- At a probe energy away from the selected band, the retarded scalar projector-resolvent
 coefficient tends to the ordinary real-energy resolvent coefficient as `η → 0`. -/
 theorem tendsto_retarded_projectorResolventCoefficient_zero
@@ -42,32 +74,9 @@ theorem tendsto_retarded_projectorResolventCoefficient_zero
           (retardedSpectralParameter probeEnergy broadening) band v m px py)
       (nhds 0)
       (nhds (projectorResolventCoefficient (probeEnergy : ℂ) band v m px py)) := by
-  have hden :
-      retardedSpectralParameter probeEnergy 0 -
-          ((bandEnergy band v m px py : ℝ) : ℂ) ≠ 0 := by
-    simpa [retardedSpectralParameter] using
-      complex_spectral_offset_ne_zero band v m px py probeEnergy hprobe
-  have hcontinuous : ContinuousAt
-      (fun broadening : ℝ =>
-        retardedSpectralParameter probeEnergy broadening -
-          ((bandEnergy band v m px py : ℝ) : ℂ)) 0 := by
-    change ContinuousAt
-      (fun broadening : ℝ =>
-        ((probeEnergy : ℂ) + (broadening : ℂ) * Complex.I) -
-          ((bandEnergy band v m px py : ℝ) : ℂ)) 0
-    fun_prop
-  have hinv := (hcontinuous.inv₀ hden).tendsto
-  have hpointwise :
-      (fun broadening : ℝ =>
-        retardedSpectralParameter probeEnergy broadening -
-          ((bandEnergy band v m px py : ℝ) : ℂ))⁻¹ =
-        (fun broadening : ℝ =>
-          (retardedSpectralParameter probeEnergy broadening -
-            ((bandEnergy band v m px py : ℝ) : ℂ))⁻¹) := by
-    funext broadening
-    rfl
-  rw [hpointwise] at hinv
-  simpa [projectorResolventCoefficient, retardedSpectralParameter] using hinv
+  simpa only [spectralParameter_retarded] using
+    tendsto_projectorResolventCoefficient_zero
+      .retarded band v m px py probeEnergy hprobe
 
 /-- Advanced scalar projector-resolvent coefficient has the same zero-broadening limit away from
 the selected band energy. -/
@@ -80,32 +89,9 @@ theorem tendsto_advanced_projectorResolventCoefficient_zero
           (advancedSpectralParameter probeEnergy broadening) band v m px py)
       (nhds 0)
       (nhds (projectorResolventCoefficient (probeEnergy : ℂ) band v m px py)) := by
-  have hden :
-      advancedSpectralParameter probeEnergy 0 -
-          ((bandEnergy band v m px py : ℝ) : ℂ) ≠ 0 := by
-    simpa [advancedSpectralParameter] using
-      complex_spectral_offset_ne_zero band v m px py probeEnergy hprobe
-  have hcontinuous : ContinuousAt
-      (fun broadening : ℝ =>
-        advancedSpectralParameter probeEnergy broadening -
-          ((bandEnergy band v m px py : ℝ) : ℂ)) 0 := by
-    change ContinuousAt
-      (fun broadening : ℝ =>
-        ((probeEnergy : ℂ) - (broadening : ℂ) * Complex.I) -
-          ((bandEnergy band v m px py : ℝ) : ℂ)) 0
-    fun_prop
-  have hinv := (hcontinuous.inv₀ hden).tendsto
-  have hpointwise :
-      (fun broadening : ℝ =>
-        advancedSpectralParameter probeEnergy broadening -
-          ((bandEnergy band v m px py : ℝ) : ℂ))⁻¹ =
-        (fun broadening : ℝ =>
-          (advancedSpectralParameter probeEnergy broadening -
-            ((bandEnergy band v m px py : ℝ) : ℂ))⁻¹) := by
-    funext broadening
-    rfl
-  rw [hpointwise] at hinv
-  simpa [projectorResolventCoefficient, advancedSpectralParameter] using hinv
+  simpa only [spectralParameter_advanced] using
+    tendsto_projectorResolventCoefficient_zero
+      .advanced band v m px py probeEnergy hprobe
 
 /-- Off the selected band energy, the retarded-minus-advanced scalar spectral coefficient tends to
 zero pointwise. -/
