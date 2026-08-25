@@ -22,8 +22,7 @@ theorem orderedSimplexTimeCube_mono {n : ℕ} {R S : ℝ} (hRS : R ≤ S) :
   exact ⟨fun i => (neg_le_neg hRS).trans (hx.1 i),
     fun i => (hx.2 i).trans hRS⟩
 
-/-- Prepending a coordinate whose absolute value is at most the cube radius stays inside the cube. -/
-theorem finCons_mem_orderedSimplexTimeCube {n : ℕ} {R t : ℝ}
+private theorem finCons_mem_orderedSimplexTimeCube {n : ℕ} {R t : ℝ}
     {rest : Fin n → ℝ} (ht : |t| ≤ R)
     (hrest : rest ∈ orderedSimplexTimeCube n R) :
     Fin.cons t rest ∈ orderedSimplexTimeCube (n + 1) R := by
@@ -37,17 +36,6 @@ theorem finCons_mem_orderedSimplexTimeCube {n : ℕ} {R t : ℝ}
     induction i using Fin.cases with
     | zero => exact (le_abs_self t).trans ht
     | succ i => exact hrest.2 i
-
-/-- Every point of the unoriented interval between `0` and `β` has absolute value at most `|β|`. -/
-theorem abs_le_abs_of_mem_uIoc_zero {β t : ℝ} (ht : t ∈ Set.uIoc (0 : ℝ) β) :
-    |t| ≤ |β| := by
-  rcases le_total (0 : ℝ) β with hβ | hβ
-  · rw [uIoc_of_le hβ] at ht
-    rw [abs_of_nonneg hβ, abs_of_nonneg ht.1.le]
-    exact ht.2
-  · rw [uIoc_of_ge hβ] at ht
-    rw [abs_of_nonpos hβ, abs_of_nonpos ht.2]
-    exact neg_le_neg ht.1.le
 
 /-- Every point of the unoriented closed interval between `0` and `β` has absolute value at most
 `|β|`. -/
@@ -79,7 +67,8 @@ theorem norm_orderedSimplexIntegral_le_of_cube_bound :
           ‖orderedSimplexIntegral n t (fun rest => f (Fin.cons t rest))‖ ≤
             C * |β| ^ n := by
         intro t ht
-        have htAbs : |t| ≤ |β| := abs_le_abs_of_mem_uIoc_zero ht
+        have htAbs : |t| ≤ |β| :=
+          abs_le_abs_of_mem_uIcc_zero (uIoc_subset_uIcc ht)
         have hslice : ∀ rest ∈ orderedSimplexTimeCube n |t|,
             ‖f (Fin.cons t rest)‖ ≤ C := by
           intro rest hrest
@@ -100,15 +89,6 @@ theorem norm_orderedSimplexIntegral_le_of_cube_bound :
         _ = C * |β| ^ (n + 1) := by
           rw [sub_zero, pow_succ]
           ring
-
-/-- Measurability of the recursively exposed outer boundary of an ordered-simplex integrand. -/
-theorem measurable_orderedSimplexIntegral_boundary {n : ℕ}
-    (f : (Fin (n + 1) → ℝ) → ℂ) (hf : Measurable f) :
-    Measurable (fun β : ℝ =>
-      orderedSimplexIntegral n β (fun rest => f (Fin.cons β rest))) := by
-  exact measurable_orderedSimplexIntegral_of_measurable n id
-    (fun β rest => f (Fin.cons β rest)) measurable_id
-    (hf.comp (Continuous.finCons continuous_fst continuous_snd).measurable)
 
 /-- A measurable locally bounded integrand gives a uniform bound for its recursively exposed
 ordered-simplex boundary on every finite oriented interval. -/
@@ -148,7 +128,10 @@ theorem MeasurableLocallyBounded.intervalIntegrable_orderedSimplexIntegral_bound
   let H : ℝ → ℂ := fun t =>
     orderedSimplexIntegral n t (fun rest => f (Fin.cons t rest))
   have hMeas : Measurable H := by
-    simpa [H] using measurable_orderedSimplexIntegral_boundary f hf.1
+    simpa [H] using
+      measurable_orderedSimplexIntegral_of_measurable n id
+        (fun t rest => f (Fin.cons t rest)) measurable_id
+        (hf.1.comp (Continuous.finCons continuous_fst continuous_snd).measurable)
   obtain ⟨D, _hD, hNorm⟩ := hf.exists_norm_bound_orderedSimplexIntegral_boundary β
   have hIntOn : IntegrableOn H (Set.uIcc (0 : ℝ) β) := by
     exact MeasureTheory.IntegrableOn.of_bound
