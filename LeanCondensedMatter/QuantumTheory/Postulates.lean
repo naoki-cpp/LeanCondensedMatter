@@ -2,8 +2,6 @@ import Mathlib.Analysis.InnerProductSpace.Adjoint
 import Mathlib.Analysis.InnerProductSpace.Symmetric
 import Mathlib.LinearAlgebra.Complex.Module
 
--- No project files currently carry a Mathlib-style copyright/author header; a
--- project-wide policy for this is a separate open item (see notes/conventions.md).
 set_option linter.style.header false
 
 /-!
@@ -19,9 +17,9 @@ scope notes.
 
 namespace QuantumTheory
 
-/-- **State space postulate.** A pure state of a quantum system is a unit vector in a
-complex Hilbert space `H`. (Global-phase equivalence of states is not yet formalized;
-`State H` is the space of representatives, not of physical states.) -/
+/-- **State space postulate.** A pure state of a quantum system is represented by a unit vector in
+a complex Hilbert space `H`. `State H` is the space of unit-vector representatives rather than a
+quotient by global phase; phase invariance is expressed by the theorems below. -/
 def State (H : Type*) [NormedAddCommGroup H] :=
   { ψ : H // ‖ψ‖ = 1 }
 
@@ -38,8 +36,8 @@ variable (A : Observable H) (ψ : State H)
 /-- The canonical complex expectation of an observable `A` in a state `ψ`, `⟨ψ|A|ψ⟩`. -/
 noncomputable def expValue : ℂ := inner ℂ ψ.1 (A.1 ψ.1)
 
-/-- For a self-adjoint observable, the canonical `⟨ψ|A|ψ⟩` orientation agrees exactly with the
-formerly used reversed orientation `⟨Aψ|ψ⟩`. -/
+/-- For a self-adjoint observable, the canonical `⟨ψ|A|ψ⟩` orientation also equals
+`⟨Aψ|ψ⟩`. -/
 theorem expValue_eq_inner_apply_left :
     expValue A ψ = inner ℂ (A.1 ψ.1) ψ.1 :=
   (A.2.isSymmetric ψ.1 ψ.1).symm
