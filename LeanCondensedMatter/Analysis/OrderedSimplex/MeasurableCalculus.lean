@@ -76,7 +76,7 @@ theorem ae_hasDerivAt_intervalIntegral_of_intervalIntegrable
 /-- A bounded interval-integrable Banach-valued function has an absolutely continuous indefinite
 interval integral. -/
 theorem IntervalIntegrable.absolutelyContinuousOnInterval_intervalIntegral_of_norm_le
-    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     {h : ℝ → E} {a b c C : ℝ}
     (hh : IntervalIntegrable h volume a b)
     (hc : c ∈ Set.uIcc a b) (hC : 0 ≤ C)

@@ -5,8 +5,7 @@ set_option linter.style.header false
 /-!
 # Basis-independent smeared fermionic charge density
 
-This module begins F4 of issue #524 at the algebraic level. Let `Test` be a complex vector space of
-smearing functions or discrete observables, and let
+Let `Test` be a complex vector space of smearing functions or discrete observables, and let
 
 ```text
 M : Test →ₗ[ℂ] End(𝓗₁)
@@ -18,7 +17,7 @@ assign the corresponding one-particle density observable. For charge `q`, define
 ρ(f) = q dΓ(M f).
 ```
 
-No concrete position-space multiplication operator is assumed yet. This interface covers continuum
+No concrete position-space multiplication operator is assumed. This interface covers continuum
 multiplication operators once their analytic domain is supplied, and finite lattice site observables
 without introducing unnecessary analytic hypotheses.
 -/
@@ -78,7 +77,7 @@ theorem dGamma_commutator_chargeDensity (q : ℂ)
 ```
 
 This identity is purely algebraic. Analytic domain assumptions for an unbounded Schrödinger
-Hamiltonian or continuum multiplication operator belong to the later weak-continuity layer. -/
+Hamiltonian or continuum multiplication operator belong to the weak-continuity layer. -/
 theorem heisenberg_commutator_chargeDensity (ℏ q : ℂ)
     (M : Test →ₗ[ℂ] (𝓗₁ →ₗ[ℂ] 𝓗₁))
     (h : 𝓗₁ →ₗ[ℂ] 𝓗₁) (f : Test) :

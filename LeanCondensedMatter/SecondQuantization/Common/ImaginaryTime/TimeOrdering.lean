@@ -7,12 +7,11 @@ set_option linter.style.header false
 /-!
 # Imaginary-time ordering `T_τ`, generic over the occupation-state type
 
-Phase 9, step 2 (`notes/roadmaps/second-quantization.md`): imaginary-time ordering of a pair of
-operators at (generally distinct) imaginary times. Time ordering itself does not depend on
-`imaginaryTimeEvolve`, or on which concrete occupation-state type the operators act on — it
-orders whatever two already-time-labelled `AlgebraicFock Config` endomorphisms it is given, using
-only `LinearMap.comp` and scalar multiplication — so it is extracted here, generic over `Config`,
-rather than duplicated per statistics.
+Imaginary-time ordering of a pair of operators at (generally distinct) imaginary times is generic
+over the occupation-state type. It does not depend on `imaginaryTimeEvolve`, or on which concrete
+occupation-state type the operators act on — it orders whatever two already-time-labelled
+`AlgebraicFock Config` endomorphisms it is given, using only `LinearMap.comp` and scalar
+multiplication.
 
 `timeOrderedProduct s A B τA τB` takes the exchange sign from the quantum statistics
 `s : Statistics` directly. This keeps the public API on the physically meaningful statistics

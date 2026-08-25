@@ -116,7 +116,7 @@ theorem FixedExternalTwoPointWickDiagram.measurable_mixedComponentDysonFixedTime
     have hContinuous :=
       (d.continuous_mixedComponentDysonFixedTimeChamberRepresentative
         ε β g τ τ' (twoPointOrderSignatureBase τ τ' s) B).measurable
-    simpa only [twoPointOrderSignatureFiber, Set.mem_setOf_eq] using
+    simpa only [twoPointOrderSignatureFiber, Set.mem_ofPred_eq] using
       (Measurable.ite hFiber hContinuous measurable_const)
   have hEq : rep = fun σ : Fin n → ℝ =>
       d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ B := by

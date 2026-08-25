@@ -31,8 +31,10 @@ theorem IsPairing.permCongr {α β : Type*} {partner : Equiv.Perm α}
   · intro x
     simp [Equiv.permCongr_apply, h.1 (e.symm x)]
   · intro x hx
-    rw [Equiv.permCongr_apply, Equiv.apply_eq_iff_eq_symm_apply] at hx
-    exact h.2 _ hx
+    rw [Equiv.permCongr_apply] at hx
+    apply h.2 (e.symm x)
+    apply e.injective
+    simpa using hx
 
 instance decidableIsPairing {n : ℕ} (partner : Equiv.Perm (Fin (2 * n))) :
     Decidable (IsPairing partner) :=

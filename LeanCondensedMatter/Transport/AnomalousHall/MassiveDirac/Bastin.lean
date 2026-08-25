@@ -2,7 +2,6 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Berry
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Bands
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Limit
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Lorentzian
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Spectator
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Interband
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleFactor

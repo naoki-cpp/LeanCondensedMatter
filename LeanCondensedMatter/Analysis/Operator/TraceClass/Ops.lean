@@ -2,8 +2,6 @@ import LeanCondensedMatter.Analysis.InnerProductSpace.HilbertBasisParseval
 import LeanCondensedMatter.Analysis.Operator.TraceClass.Basic
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
 
--- No project files currently carry a Mathlib-style copyright/author header; a
--- project-wide policy for this is a separate open item (see notes/conventions.md).
 set_option linter.style.header false
 
 /-!
@@ -12,7 +10,7 @@ set_option linter.style.header false
 The theorems are proved by comparing operators against a common Hilbert basis rather than relating
 individually unrelated eigenbases. Diagonal matrix elements are transported through
 `selfAdjoint ℂ` before they are treated as real numbers. See
-`notes/roadmaps/operator-algebra.md` (Track C).
+`notes/roadmaps/operator-algebra.md`.
 -/
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]

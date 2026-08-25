@@ -158,9 +158,28 @@ theorem quarticWickDiagramAmplitude_empty (ε : Mode → ℝ) (β : ℝ) (g : Qu
   have hcontrib : ∀ order : Common.QuarticVertexOrder (∅ : Finset (Fin N)),
       d.orderedSimplexContribution ε β order = 1 := by
     intro order
-    simp only [QuarticWickDiagram.orderedSimplexContribution]
-    simp [QuarticWickDiagram.contractionIntegrand, Combinatorics.Pairing.evaluation,
-      Combinatorics.Pairing.pairs, Combinatorics.Pairing.crossingCount]
+    have hpairs : (d.pairingInOrder order).pairs = ∅ := by
+      ext pr
+      exact Fin.elim0 pr.1
+    have hcrossing : (d.pairingInOrder order).crossingCount = 0 := by
+      rw [Combinatorics.Pairing.crossingCount, hpairs]
+      apply Finset.card_eq_zero.mpr
+      ext pairPair
+      exact Fin.elim0 pairPair.1.1
+    have hweight : (d.pairingInOrder order).weight Common.Statistics.fermion = 1 := by
+      rw [Combinatorics.Pairing.weight, hcrossing, pow_zero]
+    rw [QuarticWickDiagram.orderedSimplexContribution,
+      intervalIntegral.orderedSimplexIntegral_cast hcard,
+      intervalIntegral.orderedSimplexIntegral_zero]
+    change
+      (d.pairingInOrder order).weight Common.Statistics.fermion *
+          ∏ pr ∈ (d.pairingInOrder order).pairs,
+            orderedQuarticPairValue ε β d order (fun i => i.elim0) pr.1 pr.2 = 1
+    rw [hweight, hpairs, one_mul]
+    change
+      (∅ : Finset (Fin 0 × Fin 0)).prod
+          (fun pr => orderedQuarticPairValue ε β d order (fun i => i.elim0) pr.1 pr.2) = (1 : ℂ)
+    exact Finset.prod_empty
   simp only [quarticWickDiagramAmplitude, QuarticWickDiagram.couplingWeight,
     Common.QuarticDiagram.vertexWeight, hcard, pow_zero, one_mul]
   have hcoupling : ∏ v : (↥(∅ : Finset (Fin N))), g (d.vertexLabel v) = 1 := by

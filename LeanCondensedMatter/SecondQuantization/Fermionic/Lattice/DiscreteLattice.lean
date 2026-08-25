@@ -6,8 +6,7 @@ set_option linter.style.header false
 /-!
 # Locally finite discrete-lattice fermionic currents
 
-This module begins F5 of issue #524 without assuming that the lattice itself is finite. For an
-arbitrary site type `Site`, the algebraic one-particle space is the free complex vector space
+For an arbitrary site type `Site`, the algebraic one-particle space is the free complex vector space
 `Site →₀ ℂ`. A hopping model is specified by the finitely supported image of every site ket together
 with a finite incident set at every site that contains all incoming and outgoing nonzero matrix
 elements.

@@ -43,7 +43,7 @@ theorem QuarticDiagram.vertexOfLeg_blockLegEquiv_eq_iff {S : Finset (Fin N)}
     (leg : {leg : Fin (2 * (2 * S.card)) // d.legInBlock B leg}) (v : ↥B) :
     vertexOfLeg (d.blockLegEquiv hB leg) = v ↔
       vertexOfLeg (leg : Fin (2 * (2 * S.card))) = d.blockVertex hB v := by
-  rw [d.vertexOfLeg_blockLegEquiv hB leg, Equiv.apply_eq_iff_eq_symm_apply]
+  rw [d.vertexOfLeg_blockLegEquiv hB leg, ← Equiv.eq_symm_apply]
   exact ⟨fun h => congrArg Subtype.val h, fun h => Subtype.ext h⟩
 
 /-- The restricted diagram's adjacency is the ambient adjacency transported through `blockVertex`. -/

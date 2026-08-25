@@ -44,10 +44,14 @@ noncomputable def twoPointSlotTimeEquiv {n : ℕ} :
   invFun σ i := σ (Fin.cast (by simp) i)
   left_inv σ := by
     funext i
-    simp
+    apply congrArg σ
+    apply Fin.ext
+    rfl
   right_inv σ := by
     funext i
-    simp
+    apply congrArg σ
+    apply Fin.ext
+    rfl
 
 /-- The component-shuffle ambient permutation transported from `Fin univ.card` to the explicit
 interaction-slot type `Fin n` of a standard two-point diagram. -/

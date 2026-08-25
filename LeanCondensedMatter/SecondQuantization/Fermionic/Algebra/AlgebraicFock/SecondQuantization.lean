@@ -6,9 +6,8 @@ set_option linter.style.header false
 /-!
 # Basis-independent fermionic second quantization
 
-This module begins F3 of issue #524. A one-particle linear operator `T : 𝓗₁ →ₗ[ℂ] 𝓗₁`
-induces the degree-preserving operator `dΓ(T)` on the algebraic finite-particle Fock space. It is
-characterized recursively by
+A one-particle linear operator `T : 𝓗₁ →ₗ[ℂ] 𝓗₁` induces the degree-preserving operator `dΓ(T)`
+on the algebraic finite-particle Fock space. It is characterized recursively by
 
 ```text
 dΓ(T) 1 = 0,

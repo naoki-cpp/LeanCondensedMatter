@@ -7,17 +7,14 @@ set_option linter.style.openClassical false
 /-!
 # Imaginary-time evolution under a diagonal free Hamiltonian, generic over the basis type
 
-Shared infrastructure for Track D's fermionic and bosonic lines
-(`notes/roadmaps/second-quantization.md`): both `Fermionic.ImaginaryTimeEvolution.lean` and
-`Bosonic.ImaginaryTimeEvolution.lean` construct `e^{τH₀}` for a free Hamiltonian that is diagonal
-in the occupation-number basis with some real eigenvalue `E(n)` — `Σᵢ∈n ε(i)` for fermions,
-`Σᵢ n(i)·ε(i)` for bosons — and both prove the exact same shape of facts about it: the basis-level
-action `|n⟩ ↦ exp(τ E(n))|n⟩`, the one-parameter semigroup law, mutual inversion of `e^{τH₀}` and
-`e^{-τH₀}`, and the algebraic Heisenberg-type evolution `A(τ) := e^{τH₀} A e^{-τH₀}` of a
-general operator.
-None of that depends on which occupation-state type or eigenvalue formula produced `E`, so it's
-extracted here as `diagonalEvolution energy τ` on `AlgebraicFock Config`, generic over `Config`
-and an arbitrary real-valued `energy : Config → ℝ`.
+Shared infrastructure for the fermionic and bosonic imaginary-time evolutions documented in
+`notes/roadmaps/second-quantization.md`: both statistics use a free Hamiltonian diagonal in the
+occupation-number basis with a real eigenvalue `E(n)` — `Σᵢ∈n ε(i)` for fermions,
+`Σᵢ n(i)·ε(i)` for bosons. The basis-level action `|n⟩ ↦ exp(τ E(n))|n⟩`, the one-parameter
+semigroup law, mutual inversion of `e^{τH₀}` and `e^{-τH₀}`, and the algebraic Heisenberg-type
+evolution `A(τ) := e^{τH₀} A e^{-τH₀}` depend only on that eigenvalue function.
+Accordingly, this file exposes `diagonalEvolution energy τ` on `AlgebraicFock Config`, generic over
+`Config` and an arbitrary real-valued `energy : Config → ℝ`.
 
 **This is an algebraic, basis-diagonal realization of `e^{τH₀}`, not an operator exponential**:
 `diagonalEvolution` is defined directly from `energy`'s value on each basis state, not derived from
@@ -26,10 +23,9 @@ an operator-valued `Complex.exp` of some `H₀ : AlgebraicFock Config →ₗ[ℂ
 meaningful yet). See `Bosonic.freeHamiltonian`/`Bosonic.freeHamiltonian_basisState` for how the
 bosonic line relates the two for its own `energy := freeEigenvalue ε`.
 
-Both `Fermionic.imaginaryTimeEvolveFree`/`imaginaryTimeEvolve` and
-`Bosonic.imaginaryTimeEvolveFree`/`imaginaryTimeEvolve` are now specialized wrappers around
-`diagonalEvolution`/`heisenbergEvolve` here (`fermionEnergy`/`freeEigenvalue` supplying `energy`),
-so the semigroup/inversion/`A(0) = A` facts are proved once, in this file.
+`Fermionic.imaginaryTimeEvolveFree`/`imaginaryTimeEvolve` and
+`Bosonic.imaginaryTimeEvolveFree`/`imaginaryTimeEvolve` specialize
+`diagonalEvolution`/`heisenbergEvolve` using `fermionEnergy`/`freeEigenvalue`.
 -/
 
 namespace SecondQuantization
@@ -146,10 +142,8 @@ theorem heisenbergEvolve_sum {ι : Type*} (energy : Config → ℝ) (τ : ℝ) (
 
 /-- **`diagonalEvolution`'s matrix coefficients**: diagonal, `exp(τ · energy n)` on the diagonal
 and `0` off it — the algebraic content of "`diagonalEvolution` acts on each basis state by a
-scalar". Needed for `matrixCoeff_heisenbergEvolve` below, and (specialized to `energy :=
-freeEigenvalue`/`fermionEnergy`, `τ := -β`) for the Gibbs weight's own diagonal matrix entries
-(`GibbsExpectation/Core.lean`'s `matrixCoeff_diagonalEvolution`, proved independently there rather
-than from this lemma to avoid pulling this file's dependents into that heavier one). -/
+scalar". Specialized to `energy := freeEigenvalue`/`fermionEnergy`, `τ := -β`, the same formula
+provides the basis-diagonal Gibbs-weight coefficients. -/
 theorem matrixCoeff_diagonalEvolution_eq_ite (energy : Config → ℝ) (τ : ℝ) (m n : Config) :
     matrixCoeff (diagonalEvolution energy τ) m n =
       if m = n then Complex.exp ((τ * energy n : ℝ) : ℂ) else 0 := by

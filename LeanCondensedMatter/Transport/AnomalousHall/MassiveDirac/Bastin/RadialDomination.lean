@@ -6,14 +6,12 @@ set_option linter.style.header false
 /-!
 # Radial domination data for the massive-Dirac Bastin limit
 
-The remaining clean Phase 3 boundary in #1269 is the interchange of the positive-zero-broadening
-limit with the finite radial momentum integral. The key model-specific input is that a positive
-Dirac mass gives a momentum-independent lower bound on the interband gap.
+Interchanging the positive-zero-broadening limit with the finite radial momentum integral uses a
+model-specific momentum-independent lower bound on the interband gap when the Dirac mass is
+positive.
 
 On the radial axis `pᵧ = 0`, the interband current trace is also purely imaginary. This file records
-those two facts in a form adapted to the later uniform spectator and dominated-convergence bounds.
-
-No momentum integral or limit interchange is claimed yet in this first layer.
+those two inputs in a form adapted to uniform spectator and dominated-convergence bounds.
 -/
 
 namespace AnomalousHall.MassiveDirac

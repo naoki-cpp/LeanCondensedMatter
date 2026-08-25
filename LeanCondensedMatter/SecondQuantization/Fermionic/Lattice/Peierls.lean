@@ -6,10 +6,10 @@ set_option linter.style.header false
 /-!
 # Peierls link phases and continuity-derived fermionic current
 
-This module implements F6 of issue #524 on the algebraic locally finite lattice layer. Since the
-operator spaces used here are algebraic linear-map spaces with no chosen norm or topology, an
-operator-valued derivative is stated weakly: a family has an algebraic derivative when every
-complex-linear scalar functional sees the corresponding ordinary complex derivative.
+On the algebraic locally finite lattice layer, the operator spaces are algebraic linear-map spaces
+with no chosen norm or topology, so an operator-valued derivative is stated weakly: a family has an
+algebraic derivative when every complex-linear scalar functional sees the corresponding ordinary
+complex derivative.
 
 For the oriented link `x → y`, the Peierls convention is
 
@@ -125,7 +125,7 @@ namespace LocallyFiniteHopping
 /-- The two oriented hopping terms on a link with opposite Peierls phases.
 
 This is the link contribution, not the full hopping Hamiltonian. Link variables remain separate
-from a uniform vector potential, whose geometric link lengths and directions belong to the later
+from a uniform vector potential, whose geometric link lengths and directions belong to the
 macroscopic conductivity layer. -/
 noncomputable def peierlsBondHamiltonian (K : LocallyFiniteHopping Site)
     (ℏ q : ℂ) (x y : Site) (A : ℂ) :

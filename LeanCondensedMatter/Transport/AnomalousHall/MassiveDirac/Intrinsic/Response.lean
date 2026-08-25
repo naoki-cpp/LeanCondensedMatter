@@ -6,9 +6,9 @@ set_option linter.style.header false
 /-!
 # Intrinsic Berry weight for the metallic massive Dirac cone
 
-This file begins the occupied-state part of #1269 without hiding the ultraviolet issue of a
-single continuum Dirac cone. After angular reduction and the change from radial momentum to the
-positive Dirac energy `ε`, the dimensionless Berry-weight density of band sign `s = ±1` is
+For a single continuum Dirac cone, the occupied-state response must keep the ultraviolet regulator
+explicit. After angular reduction and the change from radial momentum to the positive Dirac energy
+`ε`, the dimensionless Berry-weight density of band sign `s = ±1` is
 
 ```text
 -s m / (2 ε²).
@@ -69,8 +69,8 @@ theorem energyShellBerryWeight_eq (band : Band) (m ε₀ ε₁ : ℝ)
   norm_num
   ring
 
-/-- Filled lower-band Berry weight from the positive gap edge `m` to a finite UV cutoff `Λ`.
-The benchmark in #1269 takes `m > 0`. -/
+/-- Filled lower-band Berry weight from the positive gap edge `m` to a finite UV cutoff `Λ`, under
+the benchmark convention `m > 0`. -/
 def valenceBerryWeightCutoff (m Λ : ℝ) : ℝ :=
   energyShellBerryWeight .lower m m Λ
 

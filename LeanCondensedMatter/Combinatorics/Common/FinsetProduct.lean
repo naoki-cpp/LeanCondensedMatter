@@ -24,7 +24,7 @@ theorem Finset.card_filter_product_eq_sum_card_filter {α : Type*}
       (T : Set α) := by
     intro pp hpp
     simp only [Finset.coe_filter, Finset.product_eq_sprod, Finset.mem_product,
-      Set.mem_setOf_eq] at hpp
+      Set.mem_ofPred_eq] at hpp
     exact hpp.1.1
   rw [Finset.card_eq_sum_card_fiberwise hmaps]
   apply Finset.sum_congr rfl

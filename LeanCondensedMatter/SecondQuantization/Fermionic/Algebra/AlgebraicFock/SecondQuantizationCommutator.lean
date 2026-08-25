@@ -6,9 +6,8 @@ set_option linter.style.header false
 /-!
 # Commutator functoriality of fermionic second quantization
 
-This module completes the algebraic functorial core of F3 in issue #524. Second quantization sends
-the commutator of one-particle endomorphisms to the commutator of their induced finite-particle
-endomorphisms:
+Second quantization sends the commutator of one-particle endomorphisms to the commutator of their
+induced finite-particle endomorphisms:
 
 ```text
 [dGamma S, dGamma T] = dGamma [S, T].

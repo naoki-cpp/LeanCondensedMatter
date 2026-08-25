@@ -5,12 +5,11 @@ set_option linter.style.header false
 /-!
 # Zero-parameter checks for the two-site dimer
 
-This module closes the elementary limiting checks for the exact conductivity benchmark of issue
-#1251.  In addition to the orientation/sign symmetries already recorded in `TwoSiteDimer`, the
-physical dimer operators vanish when the hopping is turned off, and the Peierls current/contact
-vanish when the electric charge is set to zero.
+In addition to the orientation/sign symmetries recorded in `TwoSiteDimer`, the physical dimer
+operators vanish when the hopping is turned off, and the Peierls current/contact vanish when the
+electric charge is set to zero.
 
-These are finite-operator identities.  No singular DC, zero-broadening, or thermodynamic limit is
+These are finite-operator identities. No singular DC, zero-broadening, or thermodynamic limit is
 being taken.
 -/
 
@@ -18,7 +17,7 @@ namespace SecondQuantization
 namespace Fermionic
 namespace Validation
 
-open Lattice
+open _root_.SecondQuantization.Fermionic.Lattice
 
 noncomputable section
 

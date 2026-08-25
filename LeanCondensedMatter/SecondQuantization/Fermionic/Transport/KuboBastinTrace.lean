@@ -11,31 +11,25 @@ to the continuity-derived directional electric current and Peierls contact opera
 trace carrier is defined from the generic measured/source trace carrier rather than duplicating its
 implementation.
 
-This is the finite equivalent permitted at the B2 boundary of issue #367. It is basis-resolved
-through the scalar coefficient because the resolvent energy `Eₘ + ℏω` depends on the outer
-spectral index. The main theorem does not introduce a disconnected Bastin law: it proves that the
-named trace response is equal to the conductivity already obtained through time-dependent
-perturbation theory, the causal Kubo theorem, the finite observation-time limit, and the
-Kubo–Greenwood expansion.
+The representation is basis-resolved through the scalar coefficient because the resolvent energy
+`Eₘ + ℏω` depends on the outer spectral index. The main theorem does not introduce a disconnected
+Bastin law: it proves that the named trace response is equal to the conductivity already obtained
+through time-dependent perturbation theory, the causal Kubo theorem, the finite observation-time
+limit, and the Kubo–Greenwood expansion.
 
 The current, Hamiltonian, pure-point Fermi probabilities, Peierls contact expectation, positive
 finite volume, electric-field conversion factor, frequency, and positive switching rate remain
 explicit. No cyclic energy-integral formula, zero-broadening limit, DC limit, disorder average,
-trace per unit volume, or thermodynamic limit is claimed.
-
-A future infinite-dimensional finite-volume extension would require an actual complex trace ideal
-for the generally non-self-adjoint current–resolvent products, closure of that ideal under bounded
-left and right multiplication, cyclicity for bounded/trace-class products, and integrability of the
-energy-dependent trace. Those ingredients are not presently available in the repository and are
-not replaced here by compactness or by a self-adjoint spectral trace. Trace per unit volume and the
-thermodynamic limit remain separate constructions.
+trace per unit volume, or thermodynamic limit is claimed. An infinite-dimensional finite-volume
+extension would require a complex trace ideal for the generally non-self-adjoint current–resolvent
+products together with the corresponding closure, cyclicity, and integrability hypotheses.
 -/
 
 namespace SecondQuantization
 namespace Fermionic
 namespace Transport
 
-open Lattice
+open _root_.SecondQuantization.Fermionic.Lattice
 
 open QuantumTheory QuantumTheory.LinearResponse QuantumTheory.Transport
 
@@ -167,8 +161,8 @@ theorem finiteDimensionalKuboBastinDirectionalConductivity_eq_spectral
     finiteKuboBastinSpectralDirectionalConductivity
   rw [linearMap_trace_finiteKuboBastinDirectionalTraceCarrier]
 
-/-- Main B2 identification: the ordinary finite-dimensional Kubo–Bastin trace response is exactly
-the conductivity derived from the causal Kubo response chain, at fixed positive switching rate. -/
+/-- The ordinary finite-dimensional Kubo–Bastin trace response is exactly the conductivity derived
+from the causal Kubo response chain, at fixed positive switching rate. -/
 theorem infiniteTimeAdiabaticDirectionalConductivity_eq_finiteDimensionalKuboBastin
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))

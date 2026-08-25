@@ -101,6 +101,7 @@ theorem operatorPeelSum_mem_freeGibbsDomain
     (freeGibbsDomain ε β).smul_mem _
       (FreeThermalField.orderedProduct_mem_freeGibbsDomain ε β hpos (l.eraseIdx j))
 
+omit [Fintype Mode] in
 /-- Finite additivity of the normalized free-Gibbs expectation on explicitly summable terms. -/
 private theorem freeGibbsExpectation_finset_sum
     {ι : Type*}

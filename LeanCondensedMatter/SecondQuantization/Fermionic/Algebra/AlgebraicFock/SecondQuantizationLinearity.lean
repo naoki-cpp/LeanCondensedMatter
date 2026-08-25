@@ -5,8 +5,8 @@ set_option linter.style.header false
 /-!
 # Linearity of fermionic second quantization
 
-This module continues F3 of issue #524. The recursive characterization of `dGamma` determines it
-uniquely on the exterior algebra and makes the assignment
+The recursive characterization of `dGamma` determines it uniquely on the exterior algebra and makes
+the assignment
 
 ```text
 T ↦ dGamma T

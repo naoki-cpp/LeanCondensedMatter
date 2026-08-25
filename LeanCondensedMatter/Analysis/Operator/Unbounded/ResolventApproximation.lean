@@ -21,7 +21,7 @@ and
 are bounded self-adjoint operators.  The first is the standard resolvent regularizer and the second
 is the corresponding bounded approximation of the unbounded generator.  On the original operator
 domain they satisfy `Aᵣ x = Jᵣ (A x)`.  This is the rational approximation layer used in the
-Stone-theorem construction tracked by issue #840.
+Stone-theorem construction.
 -/
 
 namespace LinearPMap

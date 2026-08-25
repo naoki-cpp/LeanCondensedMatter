@@ -166,7 +166,10 @@ theorem continuumH2Laplacian1D_symmetric
 theorem continuumH2LaplacianPMap1D_isFormalAdjoint :
     continuumH2LaplacianPMap1D.IsFormalAdjoint continuumH2LaplacianPMap1D := by
   intro ψ φ
-  simpa [continuumH2LaplacianPMap1D] using continuumH2Laplacian1D_symmetric ψ φ
+  change
+    inner ℂ (continuumH2Laplacian1D ψ) (φ : ContinuumL2Wavefunction1D) =
+      inner ℂ (ψ : ContinuumL2Wavefunction1D) (continuumH2Laplacian1D φ)
+  exact continuumH2Laplacian1D_symmetric ψ φ
 
 end
 end Continuum

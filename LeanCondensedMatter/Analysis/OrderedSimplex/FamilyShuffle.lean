@@ -95,7 +95,9 @@ theorem FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_of_measur
             orderedSimplexIntegral (∑ i, size i) β
               ((FamilySlotShuffle.cons size p.1 p.2).integrand localIntegrand) := by
                 rw [← Equiv.sum_comp (FamilySlotShuffle.consEquiv size)]
-                simp [FamilySlotShuffle.consEquiv]
+                apply Finset.sum_congr rfl
+                intro p _
+                rfl
         _ = ∑ outer : SlotShuffle (size 0) (FamilySlotShuffle.tailTotal size),
               ∑ tail : FamilySlotShuffle (FamilySlotShuffle.tailSize size),
                 orderedSimplexIntegral (size 0 + FamilySlotShuffle.tailTotal size) β

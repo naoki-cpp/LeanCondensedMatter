@@ -6,27 +6,24 @@ set_option linter.style.header false
 /-!
 # The KMS-type trace rotation, combining trace cyclicity and the KMS-type relation
 
-Phase 9, step 4 of Track D's finite-mode fermionic primary line
-(`notes/roadmaps/second-quantization.md`), step 3 of the plan (discussed with the user) toward a
-common `Common/`-level Bloch–de Dominicis induction interface usable by both statistics: combines
-`Common.traceFock_comp_comm`/`Common.tsumTrace_comp_comm` (trace cyclicity, finite and `tsum`) with
-`Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution` (the KMS-type relation) into the
-single identity the theorem's induction actually uses to move a ladder operator from the end of an
-operator product to its front, picking up an eigenvalue-dependent weight:
+The common Bloch–de Dominicis induction uses trace cyclicity together with the KMS-type relation to
+move a ladder operator from the end of an operator product to its front while picking up an
+eigenvalue-dependent weight. This file packages that statistics-independent step by combining
+`Common.traceFock_comp_comm`/`Common.tsumTrace_comp_comm` with
+`Common.diagonalEvolution_comp_eq_smul_comp_diagonalEvolution`:
 
-`Tr[e^{-βH₀} (A C)] = e^{qβ} Tr[e^{-βH₀} (C A)]`
+`Tr[e^{-βH₀} (A C)] = e^{qβ} Tr[e^{-βH₀} (C A)]`.
 
-matching the physics reference notes' derivation (`quantum-statistical-mechanics.tex`, the
-`⟨Ĉ₂⋯Ĉ_{2n}Ĉ₁⟩ = w₁⟨Ĉ₁Ĉ₂⋯Ĉ_{2n}⟩` step inside the Bloch–de Dominicis theorem's proof) exactly:
-`A` plays the role of `Ĉ₂⋯Ĉ_{2n}`, `C` plays the role of `Ĉ₁`, and `w₁ = e^{qβ}` is `C`'s
-eigenvalue-shift weight (`q = -εᵢ` for `annihilate i`, `q = εᵢ` for `create i`).
+This matches the physics reference notes' derivation (`quantum-statistical-mechanics.tex`, the
+`⟨Ĉ₂⋯Ĉ_{2n}Ĉ₁⟩ = w₁⟨Ĉ₁Ĉ₂⋯Ĉ_{2n}⟩` step inside the Bloch–de Dominicis theorem's proof): `A` plays
+the role of `Ĉ₂⋯Ĉ_{2n}`, `C` plays the role of `Ĉ₁`, and `w₁ = e^{qβ}` is `C`'s eigenvalue-shift
+weight (`q = -εᵢ` for `annihilate i`, `q = εᵢ` for `create i`).
 
 Both a `[Fintype Config]` version (`traceFock_diagonalEvolution_comp_rotate`) and a `tsum`,
 summability-hypothesis-gated version usable on an infinite `Config`
-(`tsumTrace_diagonalEvolution_comp_rotate`) are proved below, the latter built from
-`Common.tsumTrace_comp_comm` in place of `traceFock_comp_comm`. This rotation identity is reusable
-infrastructure beyond Bloch–de Dominicis; the theorem that specifically packages it into the
-Bloch–de Dominicis 2-point base case lives in `Common/Thermal/BlochDeDominicis/Unnormalized/TwoPoint.lean`.
+(`tsumTrace_diagonalEvolution_comp_rotate`) are proved below. The Bloch–de Dominicis 2-point base
+case that consumes this rotation identity lives in
+`Common/Thermal/BlochDeDominicis/Unnormalized/TwoPoint.lean`.
 -/
 
 namespace SecondQuantization
@@ -82,10 +79,9 @@ theorem traceFock_diagonalEvolution_comp_rotate [Fintype Config]
 
 /-- **The `tsum` KMS-type trace rotation**: the `[Fintype Config]`-free analogue of
 `traceFock_diagonalEvolution_comp_rotate`, built from `Common.tsumTrace_comp_comm` instead of
-`traceFock_comp_comm`. This is the piece that lets the rotation step — hence, eventually, the
-2-point base case and the general induction — reach a genuine bosonic occupation type, at the cost
-of the explicit double-summability hypothesis `h` (unlike the `[Fintype Config]` case, where it is
-automatic). -/
+`traceFock_comp_comm`. This lets the rotation step operate on a genuine bosonic occupation type at
+the cost of the explicit double-summability hypothesis `h`, unlike the `[Fintype Config]` case
+where summability is automatic. -/
 theorem tsumTrace_diagonalEvolution_comp_rotate
     (energy : Config → ℝ) (β q : ℝ) (A C : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)
     (hC : heisenbergEvolve energy (-β) C = Complex.exp ((q * (-β) : ℝ) : ℂ) • C)
