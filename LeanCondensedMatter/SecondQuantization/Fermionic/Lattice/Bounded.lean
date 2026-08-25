@@ -7,18 +7,16 @@ set_option linter.style.header false
 /-!
 # Bounded finite-lattice bridge for fermionic current response
 
-This module implements the bounded specialization required by F7 of issue #524. The foundational
-current remains defined on the basis-independent algebraic exterior Fock space over an arbitrary
-locally finite lattice. Here the site type is explicitly finite. The canonical site basis identifies
-that exterior Fock representation with the existing occupation-subset representation, and the
-repository's finite-Hilbert transport then turns every algebraic endomorphism into a bounded
-operator.
+The foundational current is defined on the basis-independent algebraic exterior Fock space over an
+arbitrary locally finite lattice. Here the site type is explicitly finite. The canonical site basis
+identifies that exterior Fock representation with the occupation-subset representation, and the
+finite-Hilbert transport turns every algebraic endomorphism into a bounded operator.
 
 The resulting Hilbert space contains all occupation sectors of the finite site cutoff. No fixed
 particle-number sector is required for boundedness because the complete finite-lattice fermionic
 Fock space is finite-dimensional. This layer does not take a thermodynamic limit and does not claim
 that a current-current susceptibility alone is a complete conductivity formula; observable
-variation/contact terms remain the responsibility of issue #444.
+variation/contact terms belong to the conductivity-response layer.
 -/
 
 namespace SecondQuantization
