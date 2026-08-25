@@ -6,8 +6,7 @@ set_option linter.style.header false
 /-!
 # Locally finite discrete-lattice fermionic currents
 
-This module begins F5 of issue #524 without assuming that the lattice itself is finite. For an
-arbitrary site type `Site`, the algebraic one-particle space is the free complex vector space
+For an arbitrary site type `Site`, the algebraic one-particle space is the free complex vector space
 `Site →₀ ℂ`. A hopping model is specified by the finitely supported image of every site ket together
 with a finite incident set at every site that contains all incoming and outgoing nonzero matrix
 elements.
@@ -56,13 +55,7 @@ theorem matrixUnit_apply (x y : Site) (ψ : LatticeState Site) :
   rfl
 
 /-- A matrix unit sends its source-site ket to its target-site ket. -/
-theorem matrixUnit_single_same (x y : Site) (c : ℂ) :
-    matrixUnit x y (Finsupp.single y c) = Finsupp.single x c := by
-  classical
-  simp [matrixUnit]
-
-/-- A matrix unit kills a ket localized away from its source site. -/
-theorem matrixUnit_single_of_ne (x y z : Site) (c : ℂ) (h : y ≠ z) :
+theorem matrixUnit_single_same (x y z : Site) (c : ℂ) (h : y ≠ z) :
     matrixUnit x y (Finsupp.single z c) = 0 := by
   classical
   simp [matrixUnit, h]
