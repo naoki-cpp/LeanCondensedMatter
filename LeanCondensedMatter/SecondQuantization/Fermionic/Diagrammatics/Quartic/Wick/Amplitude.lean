@@ -159,9 +159,7 @@ theorem quarticWickDiagramAmplitude_empty (ε : Mode → ℝ) (β : ℝ) (g : Qu
       d.orderedSimplexContribution ε β order = 1 := by
     intro order
     have hpairs : (d.pairingInOrder order).pairs = ∅ := by
-      apply Finset.eq_empty_iff_forall_not_mem.mpr
-      intro pr
-      intro _
+      ext pr
       exact Fin.elim0 pr.1
     have hcrossing : (d.pairingInOrder order).crossingCount = 0 := by
       rw [Combinatorics.Pairing.crossingCount, hpairs]
