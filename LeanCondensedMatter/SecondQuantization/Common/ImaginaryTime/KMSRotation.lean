@@ -58,7 +58,7 @@ theorem traceFock_diagonalEvolution_comp_rotate [Fintype Config]
     traceFock ((diagonalEvolution energy (-β)).comp (A.comp C)) =
       Complex.exp ((q * β : ℝ) : ℂ) •
         traceFock ((diagonalEvolution energy (-β)).comp (C.comp A)) := by
-  have hKMS' := comp_diagonalEvolution_eq_smul_comp_diagonalEvolution energy (-β) q C hC
+  have hKMS' := comp_diagonalEvolution_eq_smul_diagonalEvolution_comp energy (-β) q C hC
   rw [show ((-(q * -β) : ℝ) : ℂ) = ((q * β : ℝ) : ℂ) by push_cast; ring] at hKMS'
   calc traceFock ((diagonalEvolution energy (-β)).comp (A.comp C))
       = traceFock (((diagonalEvolution energy (-β)).comp A).comp C) := by
@@ -90,7 +90,7 @@ theorem tsumTrace_diagonalEvolution_comp_rotate
     tsumTrace ((diagonalEvolution energy (-β)).comp (A.comp C)) =
       Complex.exp ((q * β : ℝ) : ℂ) •
         tsumTrace ((diagonalEvolution energy (-β)).comp (C.comp A)) := by
-  have hKMS' := comp_diagonalEvolution_eq_smul_comp_diagonalEvolution energy (-β) q C hC
+  have hKMS' := comp_diagonalEvolution_eq_smul_diagonalEvolution_comp energy (-β) q C hC
   rw [show ((-(q * -β) : ℝ) : ℂ) = ((q * β : ℝ) : ℂ) by push_cast; ring] at hKMS'
   calc tsumTrace ((diagonalEvolution energy (-β)).comp (A.comp C))
       = tsumTrace (((diagonalEvolution energy (-β)).comp A).comp C) := by
