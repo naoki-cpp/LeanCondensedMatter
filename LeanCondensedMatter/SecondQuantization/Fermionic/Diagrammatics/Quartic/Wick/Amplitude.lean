@@ -158,7 +158,8 @@ theorem quarticWickDiagramAmplitude_empty (ε : Mode → ℝ) (β : ℝ) (g : Qu
   have hcontrib : ∀ order : Common.QuarticVertexOrder (∅ : Finset (Fin N)),
       d.orderedSimplexContribution ε β order = 1 := by
     intro order
-    rw [QuarticWickDiagram.orderedSimplexContribution, hcard,
+    rw [QuarticWickDiagram.orderedSimplexContribution,
+      intervalIntegral.orderedSimplexIntegral_cast hcard,
       intervalIntegral.orderedSimplexIntegral_zero]
     simp [QuarticWickDiagram.contractionIntegrand, Combinatorics.Pairing.evaluation,
       Combinatorics.Pairing.pairs, Combinatorics.Pairing.crossingCount]
