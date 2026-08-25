@@ -3,36 +3,24 @@ import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Un
 set_option linter.style.header false
 
 /-!
-# The 4-point Bloch–de Dominicis first-operator reduction (concrete stepping stone)
+# The 4-point Bloch–de Dominicis first-operator reduction
 
-Phase 9's finite-mode Bloch–de Dominicis induction (`notes/roadmaps/second-quantization.md`): the
-`n = 2` (4-operator) case of `Common/Thermal/BlochDeDominicis/Unnormalized/TwoPoint.lean`'s `n = 1` base-case strategy —
-commuting `C₁` through the three remaining factors via the c-number exchange commutator, followed
-by one KMS cyclicity step (`Common.traceFock_diagonalEvolution_comp_rotate`) to solve the resulting
-self-referential trace equation. This was originally a concrete stepping stone toward the general
-`n`-point induction, built before committing to the general inductive statement and its connection
-to `Combinatorics.Pairing`, to validate that the same commutator-substitution/rotation
-pattern generalizes past the base case. That general theorem now exists —
-`Common/Thermal/BlochDeDominicis/Induction.lean`'s
-`finiteGibbsExpectation_prodComp_eq_sum_pairing`, proved by genuine induction on `n` rather than
-by hand-unrolling — so this file is no longer on the critical path to it; it remains useful in its
-own right as the concrete, hand-unrolled `n = 2` un-normalized first-operator reduction (below).
+The `n = 2` (4-operator) case of the finite-temperature Bloch–de Dominicis induction applies the
+same commutator-substitution and KMS-rotation pattern as the 2-point base case: commute `C₁`
+through the three remaining factors via the c-number exchange commutator, then use
+`Common.traceFock_diagonalEvolution_comp_rotate` to close the resulting self-referential trace
+equation. The general induction is provided by
+`Common/Thermal/BlochDeDominicis/Induction.lean`; this file exposes the concrete hand-unrolled
+`n = 2` first-operator reduction.
 
-**Not the genuine 4-point Bloch–de Dominicis *expansion*** — that name refers to the fully-reduced
-normalized identity `⟨C₁C₂C₃C₄⟩_β = ⟨C₁C₂⟩_β⟨C₃C₄⟩_β + ζ⟨C₁C₃⟩_β⟨C₂C₄⟩_β + ⟨C₁C₄⟩_β⟨C₂C₃⟩_β`, a
-product of normalized 2-point *numbers*. What's proved here is only the *first-operator reduction*
-one level short of that: the RHS is a sum of `traceFock`-of-*remaining*-operator-pairs terms
-(`Tr[e^{-βH₀}(C₃C₄)]` etc.), not yet reduced to pure numbers via `TwoPoint.lean`'s own theorem —
-doing that needs each remaining pair's own imaginary-time eigenoperator shift and c-number
-commutator hypotheses (not assumed here, since `C₁` is the only operator this file's hypotheses
-concern), and would need dividing by `traceFock D` (requiring it nonzero) to land on genuine
-normalized 2-point numbers rather than un-normalized traces. Chaining `TwoPoint.lean`'s own theorem
-onto each remaining-pair term, and connecting the resulting three coefficients `1`, `ζ`, `ζ²`
-(which specialize to the `1`, `ζ`, `1` of
-`Combinatorics.PairingWeight.four_position_pairings_and_weights` exactly, since `ζ² = 1`
-for `ζ = ±1`) to a genuine sum over `Combinatorics.Pairing 2` is now subsumed by
-`Induction.lean`'s general theorem (at `n = 2`, matching `GibbsExpectation/FourPoint.lean`'s
-`finiteGibbsExpectation_four_point`) rather than done here specifically.
+**Not the fully reduced 4-point Bloch–de Dominicis expansion.** The normalized identity
+`⟨C₁C₂C₃C₄⟩_β = ⟨C₁C₂⟩_β⟨C₃C₄⟩_β + ζ⟨C₁C₃⟩_β⟨C₂C₄⟩_β + ⟨C₁C₄⟩_β⟨C₂C₃⟩_β` is a product of
+normalized 2-point numbers. Here the right-hand side is instead a sum of un-normalized
+`traceFock` terms for the remaining operator pairs. Reducing those terms further requires each
+remaining pair's own imaginary-time eigenoperator shift and c-number commutator hypotheses, plus
+a nonzero partition function for normalization. The general theorem in `Induction.lean` packages
+the corresponding pairing-weighted reduction; at `n = 2` it matches
+`GibbsExpectation/FourPoint.lean`'s `finiteGibbsExpectation_four_point`.
 -/
 
 namespace SecondQuantization
@@ -41,7 +29,7 @@ namespace Common
 
 variable {Config : Type*}
 
-/-- **The pure operator-algebra identity behind the 4-point reduction**, now a specialization of
+/-- **The pure operator-algebra identity behind the 4-point reduction**, a specialization of
 `PeelFirst.lean`'s general `comp_prodComp_eq_of_zetaCommutator` at `l := [(C2,c12), (C3,c13),
 (C4,c14)]` — repeatedly rewriting `C₁Cⱼ` as `c₁ⱼ • id + ζ•(CⱼC₁)` (for `j = 2, 3, 4`) and pushing
 the resulting `C₁` rightward through `C₂`, then `C₃`, picks up one factor of `ζ` per operator it
@@ -71,11 +59,11 @@ theorem comp_comp_comp_eq_of_zetaCommutator
     smul_smul, smul_zero, add_zero] at h
   linear_combination (norm := module) h
 
-/-- **The 4-point Bloch–de Dominicis first-operator reduction**, now a specialization of
+/-- **The 4-point Bloch–de Dominicis first-operator reduction**, a specialization of
 `PeelFirstTrace.lean`'s general `traceFock_diagonalEvolution_comp_peel` at `l := [(C2,c12),
 (C3,c13), (C4,c14)]`: `(1 - ζ³w₁) Tr[e^{-βH₀}(C₁C₂C₃C₄)] = c₁₂ Tr[e^{-βH₀}(C₃C₄)] + ζc₁₃
 Tr[e^{-βH₀}(C₂C₄)] + ζ²c₁₄ Tr[e^{-βH₀}(C₂C₃)]`. See the module docstring for why this is left
-un-normalized/un-reduced to a genuine pairing-weighted sum of numbers. -/
+un-normalized rather than reduced to a pairing-weighted sum of normalized numbers. -/
 theorem traceFock_diagonalEvolution_comp_four_point_reduction [Fintype Config]
     (energy : Config → ℝ) (β q1 : ℝ) (ζ c12 c13 c14 : ℂ)
     (C1 C2 C3 C4 : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)

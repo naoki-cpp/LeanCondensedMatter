@@ -6,12 +6,12 @@ set_option linter.style.header false
 /-!
 # Coefficientwise interval integration of a finite-mode operator-valued function
 
-Groundwork for the genuine (continuous imaginary-time) interaction-picture Dyson series
-(`notes/roadmaps/second-quantization.md`, Phase 9, step 5): `AlgebraicFock Config` is a purely
-algebraic vector space (finite `ℂ`-linear combinations of basis states, no topology, no inner
-product — see `AlgebraicFock.lean`'s module docstring), so there is no norm on operators to
-integrate an operator-valued function against directly. Rather than introducing one, this file
-exploits `[Fintype Config]`: an operator-valued function `F : ℝ → AlgebraicFock Config →ₗ[ℂ]
+For the continuous imaginary-time interaction-picture Dyson series documented in
+`notes/roadmaps/second-quantization.md`, `AlgebraicFock Config` is a purely algebraic vector space
+(finite `ℂ`-linear combinations of basis states, no topology, no inner product — see
+`AlgebraicFock.lean`'s module docstring), so there is no norm on operators to integrate an
+operator-valued function against directly. Rather than introducing one, this file exploits
+`[Fintype Config]`: an operator-valued function `F : ℝ → AlgebraicFock Config →ₗ[ℂ]
 AlgebraicFock Config` has, for each fixed `m n : Config`, an ordinary `ℂ`-valued matrix-coefficient
 function `τ ↦ matrixCoeff (F τ) m n`, integrable by Mathlib's `intervalIntegral` directly.
 `operatorIntervalIntegral F a b` is defined so that its own matrix coefficients are exactly those

@@ -5,15 +5,14 @@ set_option linter.style.header false
 /-!
 # Symmetry checks for the clean massive-Dirac Berry curvature
 
-This file closes the elementary symmetry/regression checks in #1269 Phase 1B.  The closed
-massive-Dirac Berry curvature must
+The closed massive-Dirac Berry curvature must
 
 - be odd under reversal of the time-reversal-breaking mass `m`;
 - vanish in the massless model away from the Dirac-point degeneracy;
 - have opposite signs in the two bands.
 
 The algebraic `berryCurvature` definition is total even when `E = 0`, because Lean's field
-division is total.  Physical statements about the massless cone therefore keep the nondegeneracy
+division is total. Physical statements about the massless cone therefore keep the nondegeneracy
 hypothesis explicit even though the corresponding zero numerator makes the algebraic identity
 itself stronger.
 -/

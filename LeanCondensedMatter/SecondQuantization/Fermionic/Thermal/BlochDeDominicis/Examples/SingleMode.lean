@@ -6,40 +6,27 @@ set_option linter.style.header false
 /-!
 # The single-mode 4-point Wick identity for normalized diagonal weights
 
-Phase 9, step 4 (`notes/roadmaps/second-quantization.md`): a first concrete instance of the
-finite-mode fermionic Bloch–de Dominicis pairing-sum structure, for a single mode `i` and an
-*arbitrary* occupation-number-diagonal weight `w`:
+A concrete finite-mode fermionic Bloch–de Dominicis pairing identity for a single mode `i` and an
+arbitrary occupation-number-diagonal weight `w`:
 
-`⟨cᵢcᵢ†cᵢcᵢ†⟩_w = ⟨cᵢcᵢ†⟩_w² + ζ⟨cᵢcᵢ⟩_w⟨cᵢ†cᵢ†⟩_w + ⟨cᵢcᵢ†⟩_w⟨cᵢ†cᵢ⟩_w`
+`⟨cᵢcᵢ†cᵢcᵢ†⟩_w = ⟨cᵢcᵢ†⟩_w² + ζ⟨cᵢcᵢ⟩_w⟨cᵢ†cᵢ†⟩_w + ⟨cᵢcᵢ†⟩_w⟨cᵢ†cᵢ⟩_w`.
 
-**This is not yet a finite-temperature theorem.** `w` is arbitrary here — no `β`, Hamiltonian, or
-Boltzmann weight appears — so this is a purely algebraic identity for any normalized
-occupation-number-diagonal weighted functional, not yet a genuine thermal-expectation statement
-(see `Fermionic/Thermal/FreeBoltzmannWeight.lean` for the specialization that supplies a genuine Gibbs
-weight). It matches the previously established four-position pairing weights `1`, `ζ`, `1` from
-`Common/Thermal/BlochDeDominicis/PairingWeight.lean`'s `four_position_pairings_and_weights` term by term
-(`(12)(34)`, `(13)(24)`, `(14)(23)` for the position labels `1,2,3,4 ↦ cᵢ,cᵢ†,cᵢ,cᵢ†`) — the
-coefficients are hand-written here to match those weights, not obtained by summing over
-`Combinatorics.Pairing 2` itself. `Common/Thermal/BlochDeDominicis/Induction.lean`'s general
-`finiteGibbsExpectation_prodComp_eq_sum_pairing` now gives that genuine `Pairing 2`-sum connection
-for `finiteGibbsExpectation`, the canonical finite Gibbs density-state expectation. Restating
-*this* file's arbitrary-`w` identity as a `Pairing 2` sum rather than three hand-written terms
-remains separate future work, because the general theorem is specific to the Gibbs density state,
-not the arbitrary normalized diagonal weight `w` used here.
+The weight `w` is arbitrary: no `β`, Hamiltonian, or Boltzmann weight is assumed, so the theorem is
+an algebraic identity for a normalized occupation-number-diagonal functional. A genuine Gibbs
+weight is supplied by the thermal specialization in `Fermionic/Thermal/FreeBoltzmannWeight.lean`.
+The three terms match the four-position pairing weights `1`, `ζ`, `1` from
+`Common/Thermal/BlochDeDominicis/PairingWeight.lean` for position labels
+`1,2,3,4 ↦ cᵢ,cᵢ†,cᵢ,cᵢ†`. The general finite-Gibbs pairing sum is exposed by
+`Common/Thermal/BlochDeDominicis/Induction.lean`'s
+`finiteGibbsExpectation_prodComp_eq_sum_pairing`.
 
-**Scope.** Deliberately the smallest nontrivial instance: all four operators act at the same mode
-`i`, so no cross-mode independence of the weight is needed — the identity follows from CAR alone
-(`annihilate_comp_create_self`, `annihilate_comp_self`, `create_comp_self`,
-`annihilate_comp_create_comp_self`, `annihilate_comp_create_add_create_comp_annihilate` —
-`Fermionic/Algebra/CanonicalAnticommutationRelations.lean`/`Fermionic/Algebra/NumberOperator.lean`) plus the
-diagonal-functional API (`Common.normalizedWeightedDiagonal_add`/`_id`) and direct evaluation at the
-zero operator. The general theorem, for operators at possibly distinct modes and a genuine free Gibbs
-weight, needs the multi-mode
-factorization the free partition function already exhibits
-(`Fermionic/Thermal/FreePartitionFunction.lean`'s `freePartitionFunction_eq_prod`) and remains future work;
-the middle `(13)(24)` term's vanishing here is a special case of
-`Fermionic/Thermal/WeightedContraction.lean`'s same-type selection rule (a `U(1)`-charge argument, not a
-single-mode coincidence), so that part of the argument already generalizes.
+**Scope.** All four operators act at the same mode `i`, so no cross-mode independence of the
+weight is needed. The identity follows from CAR (`annihilate_comp_create_self`,
+`annihilate_comp_self`, `create_comp_self`, `annihilate_comp_create_comp_self`,
+`annihilate_comp_create_add_create_comp_annihilate`) together with the diagonal-functional API
+(`Common.normalizedWeightedDiagonal_add`/`_id`) and direct evaluation at the zero operator. The
+middle `(13)(24)` term vanishes by the same-type selection rule represented here by
+`annihilate_comp_self`.
 -/
 
 namespace SecondQuantization

@@ -6,19 +6,17 @@ set_option linter.style.header false
 /-!
 # The 2-point Bloch–de Dominicis base case
 
-Phase 9, step 4 of Track D's finite-mode fermionic primary line
-(`notes/roadmaps/second-quantization.md`): the `n = 1` base case of the general finite-temperature
-Bloch–de Dominicis induction (`quantum-statistical-mechanics.tex`), packaging
-`Common/ImaginaryTime/KMSRotation.lean`'s rotation identity together with the c-number exchange commutator into
-the closed self-referential 2-point equation
+The `n = 1` base case of the general finite-temperature Bloch–de Dominicis induction
+(`quantum-statistical-mechanics.tex`) packages `Common/ImaginaryTime/KMSRotation.lean`'s rotation
+identity together with the c-number exchange commutator into the closed self-referential 2-point
+equation
 
-`(1 - ζw₁) Tr[e^{-βH₀}(C₁Cⱼ)] = c₁ⱼ Tr[e^{-βH₀}]`
+`(1 - ζw₁) Tr[e^{-βH₀}(C₁Cⱼ)] = c₁ⱼ Tr[e^{-βH₀}]`.
 
-Unlike the rotation identity itself (reusable well beyond Bloch–de Dominicis), this equation is
-specifically the Bloch–de Dominicis base case, hence its own file. Both a `[Fintype Config]`
-version (`traceFock_diagonalEvolution_comp_two_point`) and a `tsum`, summability-hypothesis-gated
-version usable on an infinite `Config` (`tsumTrace_diagonalEvolution_comp_two_point`) are proved
-below.
+Unlike the rotation identity itself (reusable beyond Bloch–de Dominicis), this equation is
+specifically the Bloch–de Dominicis base case. Both a `[Fintype Config]` version
+(`traceFock_diagonalEvolution_comp_two_point`) and a `tsum`, summability-hypothesis-gated version
+usable on an infinite `Config` (`tsumTrace_diagonalEvolution_comp_two_point`) are provided.
 -/
 
 namespace SecondQuantization
@@ -61,10 +59,7 @@ hypotheses plus explicit summability of the partition-function diagonal series
 (`n ↦ (e^{-βH₀})ₙₙ`, `hSummD`) and of the rotation's double series (`h`). Summability of the
 rotated two-point diagonal series (`n ↦ (e^{-βH₀}CⱼC₁)ₙₙ`) is *not* a separate hypothesis — it
 follows from `h` alone via `summable_matrixCoeff_diag_comp_of_summable_uncurry`, so only two
-summability witnesses are needed rather than three. This is the theorem a genuine bosonic
-free Boltzmann weight would need to instantiate (supplying those two summability witnesses from
-`Bosonic/Thermal/BoltzmannWeightSummable.lean`-style convergence facts, not done here) to get a real
-bosonic 2-point function out of this framework. -/
+summability witnesses are needed rather than three. -/
 theorem tsumTrace_diagonalEvolution_comp_two_point
     (energy : Config → ℝ) (β q1 : ℝ) (ζ c1j : ℂ)
     (C1 Cj : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config)

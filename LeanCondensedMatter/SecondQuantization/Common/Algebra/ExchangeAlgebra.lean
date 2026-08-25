@@ -18,16 +18,16 @@ statistics instantiate, letting the common thermal induction reference
 `ExchangeAlgebra.annihilate_create`/`_annihilate_annihilate`/`_create_create` directly instead of
 fermionic `anticomm_*` or bosonic `comm_*` facts.
 
-Mirrors `Common/Algebra/OccupationBasis.lean`'s architecture exactly: the interface is a `class` in
+The architecture mirrors `Common/Algebra/OccupationBasis.lean`: the interface is a `class` in
 `Common/`, and the concrete instances (`SecondQuantization.Fermionic.exchangeAlgebra` and
 `SecondQuantization.Bosonic.exchangeAlgebra`) live in each statistics-specific directory. A
 `Common/` file importing `Fermionic/` or `Bosonic/` would invert the intended dependency direction
-(`notes/conventions.md`'s "one directory per track" rule).
+documented in `notes/conventions.md`.
 
 The interface does not replace the existing public `annihilate`/`create` functions or the CAR/CCR
 theorems (`Fermionic.annihilate`/`create`, `anticomm_*`, `Bosonic.annihilate`/`create`, `comm_*`).
 The `ExchangeAlgebra` instances' fields simply reference them, so downstream files using the
-statistics-specific names directly are unaffected.
+statistics-specific names directly remain on those APIs.
 -/
 
 namespace SecondQuantization
@@ -53,12 +53,8 @@ class ExchangeAlgebra (s : Statistics) (Mode Config : Type*) [DecidableEq Mode] 
 variable {s : Statistics} {Mode Config : Type*} [DecidableEq Mode] [ExchangeAlgebra s Mode Config]
 
 /-- **`[a_i, a_i†]_ζ = id`, for any statistics instantiating `ExchangeAlgebra`**: the `i = j` case
-of `annihilate_create`. Generalizes `Fermionic/Algebra/NumberOperator.lean`'s and
-`Bosonic/Algebra/NumberOperator.lean`'s previously-independently-proved
-`exchangeCommutator_annihilate_create_self` — both are now one-line instances of this, since their
-`Common.ExchangeAlgebra` instances package the concrete `annihilate`/`create` operators directly
-(`Fermionic/Algebra/ExchangeAlgebra.lean`'s/`Bosonic/Algebra/ExchangeAlgebra.lean`'s `exchangeAlgebra`
-instances). -/
+of `annihilate_create`. The fermionic and bosonic `NumberOperator` specializations obtain their
+corresponding self-mode exchange identity from this statistics-generic statement. -/
 theorem exchangeCommutator_annihilate_create_self (i : Mode) :
     exchangeCommutator s (ExchangeAlgebra.annihilate (s := s) (Config := Config) i)
       (ExchangeAlgebra.create (s := s) (Config := Config) i) =
@@ -67,10 +63,9 @@ theorem exchangeCommutator_annihilate_create_self (i : Mode) :
   rwa [if_pos rfl] at h
 
 /-- **`a_i a_i† = id + ζ•N_i`, for any statistics instantiating `ExchangeAlgebra`**, from
-`exchangeCommutator_annihilate_create_self` via `comp_eq_id_add_of_zetaCommutator_eq_id`.
-Generalizes `Fermionic/Algebra/NumberOperator.lean`'s `annihilate_comp_create_self` (`c_i c_i† = id - N_i`,
-`ζ = -1`) and `Bosonic/Algebra/NumberOperator.lean`'s (`a_i a_i† = id + N_i`, `ζ = 1`) — both are now
-one-line instances of this rather than independently re-deriving the same reordering. -/
+`exchangeCommutator_annihilate_create_self` via `comp_eq_id_add_of_zetaCommutator_eq_id`. Its
+fermionic specialization is `c_i c_i† = id - N_i` and its bosonic specialization is
+`a_i a_i† = id + N_i`. -/
 theorem annihilate_comp_create_self (i : Mode) :
     (ExchangeAlgebra.annihilate (s := s) (Config := Config) i).comp
         (ExchangeAlgebra.create (s := s) (Config := Config) i) =

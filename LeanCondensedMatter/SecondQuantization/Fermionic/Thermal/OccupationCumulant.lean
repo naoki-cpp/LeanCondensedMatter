@@ -56,9 +56,8 @@ theorem occupationMoment_bot {w : Occupation Mode → ℂ} (hZ : Common.weightSu
   exact div_self hZ
 
 /-- **`occupationMoment` at a singleton `{i}` is the normalized weighted diagonal functional of
-`numberOperator i`.**
-Connects the weighted-sum definition back to Track D's operator-level normalized weighted
-functional. -/
+`numberOperator i`.** This connects the weighted-sum definition to the operator-level normalized
+weighted functional. -/
 theorem occupationMoment_singleton (w : Occupation Mode → ℂ) (i : Mode) :
     occupationMoment w {i} = Common.normalizedWeightedDiagonal w (numberOperator i) := by
   rw [occupationMoment, Common.normalizedWeightedDiagonal, weightedTrace_numberOperator]
@@ -245,9 +244,9 @@ theorem weightSum_eq_mul_of_product_factorization {w wA wB : Occupation Mode →
 
 omit [LinearOrder Mode] in
 /-- **The main theorem: a product weight makes `occupationMoment` independent across its
-bipartition.** Connects the *physical* independence hypothesis `IsProductWeightAcross` to the
-abstract hypothesis `Finpartition.IsIndependentAcross` that Track B's cumulant-vanishing theorem
-(`cumulantFromMoment_eq_zero_of_isIndependentAcross`) needs. -/
+bipartition.** Connects the physical independence hypothesis `IsProductWeightAcross` to the
+abstract `Finpartition.IsIndependentAcross` condition used by the general cumulant-vanishing
+theorem `cumulantFromMoment_eq_zero_of_isIndependentAcross`. -/
 theorem occupationMoment_isIndependentAcross {w : Occupation Mode → ℂ} {A B : Finset Mode}
     (hw : IsProductWeightAcross w A B) (hZ : Common.weightSum w ≠ 0) :
     Finpartition.IsIndependentAcross (occupationMoment w) A B := by
@@ -277,8 +276,8 @@ theorem occupationMoment_isIndependentAcross {w : Occupation Mode → ℂ} {A B 
     eA, eB, hZeq]
   field_simp
 
-/-- **The occupation-number cumulant** — Track B's `cumulantFromMoment` specialized to
-`occupationMoment w`. Named so the physics-facing corollary below reads without exposing
+/-- **The occupation-number cumulant** — `cumulantFromMoment` specialized to
+`occupationMoment w`, named so the physics-facing corollary below does not expose
 `Finpartition.IsIndependentAcross`. -/
 noncomputable def occupationCumulant (w : Occupation Mode → ℂ) (S : Finset Mode) : ℂ :=
   Finpartition.cumulantFromMoment (occupationMoment w) S
@@ -287,7 +286,7 @@ omit [LinearOrder Mode] in
 /-- **Occupation-number cumulants vanish across a product-weight bipartition.** The physics-facing
 form of `occupationMoment_isIndependentAcross`: under a product weight (e.g. a Gibbs weight for a
 Hamiltonian `H = HA + HB` with `[HA, HB] = 0` and no cross-region interaction), the connected
-correlator of modes spanning both `A` and `B` vanishes. This packages Track B's
+correlator of modes spanning both `A` and `B` vanishes. This packages
 `cumulantFromMoment_eq_zero_of_isIndependentAcross` so callers never need to name
 `Finpartition.IsIndependentAcross` themselves. -/
 theorem occupationCumulant_eq_zero_of_isProductWeightAcross {w : Occupation Mode → ℂ}

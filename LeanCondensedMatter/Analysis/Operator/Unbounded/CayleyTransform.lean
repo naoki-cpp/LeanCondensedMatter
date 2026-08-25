@@ -16,9 +16,8 @@ On a vector `y`, if `u = (A - z)⁻¹ y`, then `C_z y = (A - star z) u`. The res
 identity gives `R_z† = R_(star z)`, and consequently `C_z† = C_(star z)`. The two Cayley
 transforms are mutual inverses, so `C_z` is unitary.
 
-This is the next operator-theoretic ingredient for the Stone-theorem construction tracked by issue
-#840. It will be used to obtain uniformly bounded rational approximations of the identity and of
-the self-adjoint generator.
+The Cayley transform supplies the unitary resolvent transform used by the bounded rational
+approximation layer of the Stone-theorem construction.
 -/
 
 namespace LinearPMap

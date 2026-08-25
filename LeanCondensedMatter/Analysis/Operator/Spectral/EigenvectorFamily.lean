@@ -4,33 +4,29 @@ import Mathlib.Analysis.InnerProductSpace.l2Space
 import Mathlib.Analysis.InnerProductSpace.Positive
 import Mathlib.LinearAlgebra.Complex.Module
 
--- No project files currently carry a Mathlib-style copyright/author header; a
--- project-wide policy for this is a separate open item (see notes/conventions.md).
 set_option linter.style.header false
 
 /-!
 # A countable orthonormal family of eigenvectors for a compact self-adjoint operator
 
 Mathlib's spectral theorem for compact self-adjoint operators (`Mathlib.Analysis.
-InnerProductSpace.Spectrum`) only proves qualitative facts about eigenspaces as submodules
-(`orthogonalComplement_iSup_eigenspaces_eq_bot`, `finite_dimensional_eigenspace`) — it never
-packages these into an actual countable indexed orthonormal family of eigenvectors. This file
-takes the first step towards Track C's trace-class operator theory
-(`notes/roadmaps/operator-algebra.md`) by building that family, gluing together an orthonormal
-basis of each nonzero eigenspace via `OrthogonalFamily.orthonormal_sigma_orthonormal`.
+InnerProductSpace.Spectrum`) proves qualitative facts about eigenspaces as submodules
+(`orthogonalComplement_iSup_eigenspaces_eq_bot`, `finite_dimensional_eigenspace`) but does not
+package the nonzero eigenspaces into a countable indexed orthonormal family. This file builds that
+family by gluing together an orthonormal basis of each nonzero eigenspace via
+`OrthogonalFamily.orthonormal_sigma_orthonormal`, supporting the spectral-trace infrastructure
+documented in `notes/roadmaps/operator-algebra.md`.
 
 **Scope note:** the eigenvalue-`0` eigenspace (the kernel of `T`) is deliberately excluded from
 the family — it contributes nothing to the trace regardless of its (possibly infinite, even
-non-separable) dimension, so restricting to nonzero eigenvalues keeps the index type free of
-that complication. See `notes/caveats.md` for what remains: countability of the index type
-(from compactness) and the `tsum` reconstruction of `T` from this family, neither proved here.
+non-separable) dimension. The file proves countability of the resulting index type, identifies the
+closed nonzero-eigenspace component relative to the kernel, and establishes the `tsum`
+reconstruction of `T` from the family.
 
-**File layout (Track C, `notes/roadmaps/operator-algebra.md`):** this file builds
-`EigenvectorIndex`/`eigenvectorFamily` and their structural facts (orthonormality, countability,
-the closure/Hilbert-basis structure, and the `tsum` reconstruction). `TraceClassBasic.lean`
-defines `IsTraceClass`/`trace` on top of it; `TraceClassScalar.lean` adds scalar-multiplication
-compatibility; `TraceClassOps.lean` adds additive linearity, cyclicity, and the trace bound
-against an incomplete orthonormal family.
+**File layout:** this file owns `EigenvectorIndex`/`eigenvectorFamily` and their structural facts.
+`Analysis/Operator/TraceClass/Basic.lean` defines the spectral summability and trace notions on top
+of them; `TraceClass/Scalar.lean` adds scalar compatibility; `TraceClass/Ops.lean` adds additive
+linearity, cyclicity, and the trace bound against an incomplete orthonormal family.
 -/
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
@@ -369,9 +365,9 @@ private theorem eigenvectorHilbertBasis_apply
 
 /-- **The `tsum` reconstruction of a compact self-adjoint operator from its eigenvectors.** For
 any `x : H`, `T x` is the sum, over `EigenvectorIndex T`, of `T`'s eigenvector expansion of `x`:
-`T x = ∑' a, (eigenvalue a : ℂ) • ⟪eigenvectorFamily a, x⟫ • eigenvectorFamily a`. This is
-Track C's step 1 goal (`notes/roadmaps/operator-algebra.md`), the infinite-dimensional analogue
-of the finite-dimensional eigenbasis expansions used throughout `QuantumTheory/Entropy.lean`. -/
+`T x = ∑' a, (eigenvalue a : ℂ) • ⟪eigenvectorFamily a, x⟫ • eigenvectorFamily a`. This is the
+infinite-dimensional analogue of the finite-dimensional eigenbasis expansions used throughout
+`QuantumTheory/Entropy.lean`. -/
 theorem hasSum_eigenvectorFamily (hT : IsCompactOperator T) (hT' : T.IsSymmetric) (x : H) :
     HasSum (fun a : EigenvectorIndex T =>
       (a.1.1 : ℂ) • (inner ℂ (eigenvectorFamily hT a) x : ℂ) • eigenvectorFamily hT a) (T x) := by
