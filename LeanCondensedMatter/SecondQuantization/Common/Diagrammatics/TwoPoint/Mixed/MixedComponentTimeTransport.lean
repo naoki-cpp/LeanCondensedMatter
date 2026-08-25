@@ -48,7 +48,7 @@ theorem TwoPointDiagram.ComponentTimeEq.symm {n : ℕ}
 
 @[trans]
 theorem TwoPointDiagram.ComponentTimeEq.trans {n : ℕ}
-    {d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n))}
+    {d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     {B : d.componentPartition.parts} {σ υ ω : Fin n → ℝ}
     (hσυ : d.ComponentTimeEq B σ υ) (hυω : d.ComponentTimeEq B υ ω) :
     d.ComponentTimeEq B σ ω := by
@@ -95,7 +95,7 @@ theorem TwoPointDiagram.mixedComponentPositionEquiv_timeEquiv {n : ℕ}
 
 /-- Time transport preserves the underlying position in the standard flattened diagram-leg
 enumeration. -/
-theorem TwoPointDiagram.mixedTimeAmbientPositionEquiv_positionTimeEquiv {n : ℕ}
+private theorem TwoPointDiagram.mixedTimeAmbientPositionEquiv_positionTimeEquiv {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
     (p : d.MixedComponentPosition τ τ' σ B) :
@@ -125,7 +125,7 @@ theorem TwoPointDiagram.mixedTimeOrderedAtomicLegEquiv_positionTimeEquiv {n : �
 
 /-- Under component-local equality of interaction times, the supporting event of every mixed
 component position has the same time at both assignments. -/
-theorem TwoPointDiagram.componentPosition_eventTime_eq {n : ℕ}
+private theorem TwoPointDiagram.componentPosition_eventTime_eq {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
     (hTime : d.ComponentTimeEq B σ υ)
@@ -165,7 +165,7 @@ theorem TwoPointDiagram.componentPosition_eventTime_eq {n : ℕ}
 /-- Component position transport preserves strict mixed order as soon as the flattened atomic-leg
 order of the two supporting legs is preserved. This is the coordinate bookkeeping shared by every
 sufficient condition for order preservation. -/
-theorem TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_legPosition_lt_iff {n : ℕ}
+private theorem TwoPointDiagram.mixedComponentPositionTimeEquiv_lt_iff_of_legPosition_lt_iff {n : ℕ}
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
     (τ τ' : ℝ) (σ υ : Fin n → ℝ) (B : d.componentPartition.parts)
     (p q : d.MixedComponentPosition τ τ' σ B)
