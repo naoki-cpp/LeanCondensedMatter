@@ -6,25 +6,11 @@ set_option linter.style.header false
 /-!
 # Order of blocks in flattened lists
 
-Generic lemmas for comparing `idxOf` positions in a duplicate-free `List.flatMap`, together with the
-invariance of `idxOf` under an injective relabeling.  These isolate list-index bookkeeping from the
-diagrammatic mixed-event order arguments that use it.
+Generic lemmas for comparing `idxOf` positions in a duplicate-free `List.flatMap`. These isolate
+list-index bookkeeping from the diagrammatic mixed-event order arguments that use it.
 -/
 
 namespace List
-
-/-- Relabeling a list by an injective function leaves every element's index where it was. -/
-theorem idxOf_map_of_injective {α β : Type*} [DecidableEq α] [DecidableEq β]
-    {f : α → β} (hf : Function.Injective f) (l : List α) (a : α) :
-    (l.map f).idxOf (f a) = l.idxOf a := by
-  induction l with
-  | nil => simp
-  | cons b l ih =>
-      by_cases hab : b = a
-      · subst hab
-        simp
-      · have hfab : f b ≠ f a := fun h => hab (hf h)
-        rw [List.map_cons, List.idxOf_cons_ne _ hfab, List.idxOf_cons_ne _ hab, ih]
 
 /-- In a duplicate-free flattened list, two elements of one block have the same order relation to an
 element outside that block. -/
