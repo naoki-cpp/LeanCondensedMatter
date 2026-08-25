@@ -1,4 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinSpectral
+import LeanCondensedMatter.Transport.KuboBastin.FiniteTrace
 
 set_option linter.style.header false
 
