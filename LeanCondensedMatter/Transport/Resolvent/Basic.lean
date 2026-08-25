@@ -268,40 +268,6 @@ theorem star_advancedResolvent
   rw [← star_retardedResolvent hamiltonian hself energy broadening]
   simp
 
-/-- Raw resolvent identity at two retarded spectral parameters. -/
-theorem retardedResolvent_sub_retardedResolvent
-    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    (energy₁ energy₂ broadening : ℝ) (hbroadening : 0 < broadening) :
-    retardedResolvent hamiltonian energy₁ broadening -
-        retardedResolvent hamiltonian energy₂ broadening =
-      retardedResolvent hamiltonian energy₁ broadening *
-        ((algebraMap ℂ (H →L[ℂ] H) (retardedSpectralParameter energy₂ broadening) - hamiltonian) -
-          (algebraMap ℂ (H →L[ℂ] H) (retardedSpectralParameter energy₁ broadening) - hamiltonian)) *
-        retardedResolvent hamiltonian energy₂ broadening := by
-  have h₁ := retardedSpectralParameter_mem_resolventSet
-    hamiltonian hself energy₁ broadening hbroadening
-  have h₂ := retardedSpectralParameter_mem_resolventSet
-    hamiltonian hself energy₂ broadening hbroadening
-  unfold retardedResolvent resolvent
-  exact Ring.inverse_sub_inverse (iff_of_true h₁ h₂)
-
-/-- Raw resolvent identity at two advanced spectral parameters. -/
-theorem advancedResolvent_sub_advancedResolvent
-    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    (energy₁ energy₂ broadening : ℝ) (hbroadening : 0 < broadening) :
-    advancedResolvent hamiltonian energy₁ broadening -
-        advancedResolvent hamiltonian energy₂ broadening =
-      advancedResolvent hamiltonian energy₁ broadening *
-        ((algebraMap ℂ (H →L[ℂ] H) (advancedSpectralParameter energy₂ broadening) - hamiltonian) -
-          (algebraMap ℂ (H →L[ℂ] H) (advancedSpectralParameter energy₁ broadening) - hamiltonian)) *
-        advancedResolvent hamiltonian energy₂ broadening := by
-  have h₁ := advancedSpectralParameter_mem_resolventSet
-    hamiltonian hself energy₁ broadening hbroadening
-  have h₂ := advancedSpectralParameter_mem_resolventSet
-    hamiltonian hself energy₂ broadening hbroadening
-  unfold advancedResolvent resolvent
-  exact Ring.inverse_sub_inverse (iff_of_true h₁ h₂)
-
 /-- Complex spectral-parameter derivative of the resolvent at either side-indexed point. -/
 theorem hasDerivAt_resolvent_spectralParameter
     (side : SpectralSide) (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
@@ -312,28 +278,6 @@ theorem hasDerivAt_resolvent_spectralParameter
   exact spectrum.hasDerivAt_resolvent_const_left
     (spectralParameter_mem_resolventSet
       side hamiltonian hself energy broadening hbroadening)
-
-/-- Complex spectral-parameter derivative of the resolvent at the retarded point. -/
-theorem hasDerivAt_resolvent_retarded
-    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) :
-    HasDerivAt (resolvent hamiltonian)
-      (-(retardedResolvent hamiltonian energy broadening) ^ 2)
-      (retardedSpectralParameter energy broadening) := by
-  simpa only [retardedResolvent, spectralParameter_retarded] using
-    hasDerivAt_resolvent_spectralParameter .retarded hamiltonian hself
-      energy broadening (ne_of_gt hbroadening)
-
-/-- Complex spectral-parameter derivative of the resolvent at the advanced point. -/
-theorem hasDerivAt_resolvent_advanced
-    (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) :
-    HasDerivAt (resolvent hamiltonian)
-      (-(advancedResolvent hamiltonian energy broadening) ^ 2)
-      (advancedSpectralParameter energy broadening) := by
-  simpa only [advancedResolvent, spectralParameter_advanced] using
-    hasDerivAt_resolvent_spectralParameter .advanced hamiltonian hself
-      energy broadening (ne_of_gt hbroadening)
 
 end
 end Transport

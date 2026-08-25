@@ -11,8 +11,8 @@ Hamiltonian eigenvector. This module owns that dimension-independent eigenvector
 the pure-point Hilbert-basis formulas used by finite Kubo–Bastin and Středa spectral expansions.
 
 The canonical core is stated for an arbitrary spectral side and eigenvector rather than for
-`PurePointLehmannData`. Retarded/advanced names remain public specializations. Pure-point basis
-formulas, squared-resolvent formulas, and diagonal matrix elements are corollaries.
+`PurePointLehmannData`. Retarded/advanced names remain public specializations. Pure-point basis and
+squared-resolvent formulas are corollaries.
 
 No trace, occupation integral, contact cancellation, zero-broadening limit, or conductivity claim is
 made here.
@@ -157,28 +157,6 @@ theorem advancedResolvent_sq_apply_purePointBasis_at_energy
   rw [advancedResolvent_apply_purePointBasis_at_energy
     system data energy broadening hbroadening n]
   rw [smul_smul, pow_two]
-
-/-- Diagonal matrix element of the arbitrary-energy retarded resolvent. -/
-theorem inner_purePointBasis_retardedResolvent_at_energy
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) (n : ι) :
-    inner ℂ (data.basis n)
-        (retardedResolvent system.hamiltonian.1 energy broadening (data.basis n)) =
-      (retardedSpectralParameter energy broadening - (data.energy n : ℂ))⁻¹ := by
-  rw [retardedResolvent_apply_purePointBasis_at_energy
-    system data energy broadening hbroadening n]
-  rw [inner_smul_right]
-  simp [inner_self_eq_norm_sq_to_K, data.basis.orthonormal.norm_eq_one]
-
-/-- Diagonal matrix element of the arbitrary-energy advanced resolvent. -/
-theorem inner_purePointBasis_advancedResolvent_at_energy
-    (energy broadening : ℝ) (hbroadening : 0 < broadening) (n : ι) :
-    inner ℂ (data.basis n)
-        (advancedResolvent system.hamiltonian.1 energy broadening (data.basis n)) =
-      (advancedSpectralParameter energy broadening - (data.energy n : ℂ))⁻¹ := by
-  rw [advancedResolvent_apply_purePointBasis_at_energy
-    system data energy broadening hbroadening n]
-  rw [inner_smul_right]
-  simp [inner_self_eq_norm_sq_to_K, data.basis.orthonormal.norm_eq_one]
 
 end
 end Transport

@@ -109,9 +109,7 @@ theorem hamiltonianOperator_mul_bandProjectorOperator
         φ (bandProjector band v m px py) := by
       exact map_smul φ _ _
 
-/-- Multiplying one spectral projector by the shifted Hamiltonian gives its scalar spectral
-factor. -/
-theorem shiftedHamiltonian_mul_bandProjectorOperator
+private theorem shiftedHamiltonian_mul_bandProjectorOperator
     (z : ℂ) (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
     (algebraMap ℂ (DiracHilbert →L[ℂ] DiracHilbert) z - hamiltonianOperator v m px py) *
         bandProjectorOperator band v m px py =
@@ -173,9 +171,7 @@ theorem projectorResolvent_sq
   rw [bandProjectorOperator_upper_mul_lower v m px py hE]
   simp [pow_two]
 
-/-- If the spectral parameter misses both bands, the projector expansion is a left inverse of
-`z I - H₀`. -/
-theorem shiftedHamiltonian_mul_projectorResolvent
+private theorem shiftedHamiltonian_mul_projectorResolvent
     (z : ℂ) (v m px py : ℝ) (hE : energy v m px py ≠ 0)
     (hlower : z - ((bandEnergy .lower v m px py : ℝ) : ℂ) ≠ 0)
     (hupper : z - ((bandEnergy .upper v m px py : ℝ) : ℂ) ≠ 0) :
@@ -200,24 +196,6 @@ theorem spectralParameter_sub_bandEnergy_ne_zero
   have him : side.sign * broadening = 0 := by
     simpa using congrArg Complex.im hzero
   exact (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening) him
-
-/-- Positive retarded broadening keeps the spectral parameter away from either real band energy. -/
-theorem retardedSpectralParameter_sub_bandEnergy_ne_zero
-    (band : Band) (v m px py probeEnergy broadening : ℝ) (hbroadening : 0 < broadening) :
-    retardedSpectralParameter probeEnergy broadening -
-        ((bandEnergy band v m px py : ℝ) : ℂ) ≠ 0 := by
-  simpa only [spectralParameter_retarded] using
-    spectralParameter_sub_bandEnergy_ne_zero .retarded band v m px py probeEnergy broadening
-      (ne_of_gt hbroadening)
-
-/-- Positive advanced broadening keeps the spectral parameter away from either real band energy. -/
-theorem advancedSpectralParameter_sub_bandEnergy_ne_zero
-    (band : Band) (v m px py probeEnergy broadening : ℝ) (hbroadening : 0 < broadening) :
-    advancedSpectralParameter probeEnergy broadening -
-        ((bandEnergy band v m px py : ℝ) : ℂ) ≠ 0 := by
-  simpa only [spectralParameter_advanced] using
-    spectralParameter_sub_bandEnergy_ne_zero .advanced band v m px py probeEnergy broadening
-      (ne_of_gt hbroadening)
 
 /-- The generic resolvent on either spectral side equals the gauge-free two-projector expansion. -/
 theorem resolvent_spectralParameter_eq_projectorResolvent
