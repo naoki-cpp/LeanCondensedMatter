@@ -1,23 +1,23 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialLimitInterchange
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.CleanConductivity
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialDomination
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialPairUniformBound
+import Mathlib.MeasureTheory.Integral.Bochner.Basic
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.Tactic
 
 set_option linter.style.header false
 
 /-!
-# Model-specific dominated convergence for the finite radial Bastin integral
+# Dominated convergence for the finite radial massive-Dirac Bastin integral
 
-The preceding radial estimates give a momentum- and broadening-independent norm bound for the
-energy-integrated interband Bastin pair.  On a finite radial interval `0 ≤ p ≤ pMax`, multiplication
-by the radial Jacobian `p` is therefore dominated by one constant integrable function.
+The clean interband Bastin-pair limit is known pointwise in radial momentum. This file packages the
+finite radial densities and integrals, records the dominated-convergence boundary for passing the
+positive zero-broadening limit through a finite radial integral, and discharges that boundary from
+the positive mass gap and uniform radial spectator bounds.
 
-This file also discharges the remaining measurability hypothesis by viewing the target-window pole
-integral as a parameter-dependent Bochner integral of a jointly measurable radial/energy-offset
-integrand.  The generic dominated-convergence theorem from `MassiveDiracBastinRadialLimitInterchange`
-then yields the actual finite-broadening radial limit interchange.
-
-The ultraviolet cutoff remains fixed throughout.  No `pMax → ∞` limit is mixed with `η → 0⁺`.
+The measurability argument views the target-window pole integral as a parameter-dependent Bochner
+integral of a jointly measurable radial/energy-offset integrand. The ultraviolet cutoff remains
+fixed throughout; no `pMax → ∞` limit is mixed with `η → 0⁺`.
 -/
 
 namespace AnomalousHall.MassiveDirac
@@ -25,6 +25,84 @@ namespace AnomalousHall.MassiveDirac
 noncomputable section
 
 open Filter MeasureTheory Set
+
+/-- Radial momentum density of the finite-broadening, target-centered interband Bastin pair. The
+factor `p` is the two-dimensional radial Jacobian; the angular factor remains outside this density.
+-/
+def radialInterbandBastinPairDensity
+    (band : Band) (e v m radius p broadening : ℝ) : ℝ :=
+  p * (targetCenteredInterbandBastinPairIntegral
+    band e v m p 0 radius broadening).re
+
+/-- Radial momentum density of the already-extracted clean interband Bastin-pair limit. -/
+def radialCleanInterbandBastinPairLimitDensity
+    (band : Band) (e v m p : ℝ) : ℝ :=
+  p * cleanInterbandBastinPairLimitDensity band e v m p 0
+
+/-- Positive mass makes the fixed-window pointwise Bastin-pair limit uniform in the sense that one
+radius satisfying `radius < 2m` is valid at every radial momentum. -/
+theorem tendsto_radialInterbandBastinPairDensity
+    (band : Band) (e v m radius p : ℝ)
+    (hm : 0 < m) (hradiusPos : 0 < radius) (hradius : radius < 2 * m) :
+    Tendsto
+      (fun broadening : ℝ =>
+        radialInterbandBastinPairDensity band e v m radius p broadening)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (radialCleanInterbandBastinPairLimitDensity band e v m p)) := by
+  have hE : energy v m p 0 ≠ 0 :=
+    ne_of_gt (energy_pos_of_mass_pos v m p 0 hm)
+  have hgap : radius < |interbandEnergyGap band v m p 0| :=
+    radius_lt_abs_interbandEnergyGap_of_lt_two_mul_mass
+      band v m p 0 radius hm hradius
+  have hpair :=
+    tendsto_targetCenteredInterbandBastinPairIntegral_re_cleanLimitDensity
+      band e v m p 0 radius hE hradiusPos hgap
+  unfold radialInterbandBastinPairDensity radialCleanInterbandBastinPairLimitDensity
+  exact tendsto_const_nhds.mul hpair
+
+/-- Finite radial momentum integral of the finite-broadening interband Bastin-pair density. -/
+def finiteRadialInterbandBastinPairIntegral
+    (band : Band) (e v m radius pMax broadening : ℝ) : ℝ :=
+  ∫ p in Set.Icc 0 pMax,
+    radialInterbandBastinPairDensity band e v m radius p broadening
+
+/-- Finite radial momentum integral of the clean interband Bastin-pair limit density. -/
+def finiteRadialCleanInterbandBastinPairIntegral
+    (band : Band) (e v m pMax : ℝ) : ℝ :=
+  ∫ p in Set.Icc 0 pMax,
+    radialCleanInterbandBastinPairLimitDensity band e v m p
+
+/-- Dominated convergence passes `η → 0⁺` through the finite radial momentum integral once a
+single integrable radial bound and eventual measurability are supplied. The pointwise convergence
+hypothesis is not repeated: it follows from the positive mass gap and `radius < 2m`. -/
+theorem tendsto_finiteRadialInterbandBastinPairIntegral_of_dominated
+    (band : Band) (e v m radius pMax : ℝ)
+    (hm : 0 < m) (hradiusPos : 0 < radius) (hradius : radius < 2 * m)
+    (bound : ℝ → ℝ)
+    (hMeasurable :
+      ∀ᶠ broadening : ℝ in nhdsWithin 0 (Set.Ioi 0),
+        AEStronglyMeasurable
+          (fun p => radialInterbandBastinPairDensity
+            band e v m radius p broadening)
+          (volume.restrict (Set.Icc 0 pMax)))
+    (hBound :
+      ∀ᶠ broadening : ℝ in nhdsWithin 0 (Set.Ioi 0),
+        ∀ᵐ p ∂(volume.restrict (Set.Icc 0 pMax)),
+          ‖radialInterbandBastinPairDensity band e v m radius p broadening‖ ≤ bound p)
+    (hBoundIntegrable :
+      Integrable bound (volume.restrict (Set.Icc 0 pMax))) :
+    Tendsto
+      (fun broadening : ℝ =>
+        finiteRadialInterbandBastinPairIntegral
+          band e v m radius pMax broadening)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (finiteRadialCleanInterbandBastinPairIntegral band e v m pMax)) := by
+  unfold finiteRadialInterbandBastinPairIntegral finiteRadialCleanInterbandBastinPairIntegral
+  exact tendsto_integral_filter_of_dominated_convergence
+    bound hMeasurable hBound hBoundIntegrable
+    (ae_of_all _ fun p =>
+      tendsto_radialInterbandBastinPairDensity
+        band e v m radius p hm hradiusPos hradius)
 
 /-- Uniform norm bound for the complete energy-integrated radial Bastin pair. -/
 def radialInterbandBastinPairUniformBound
@@ -206,9 +284,9 @@ theorem integrable_radialInterbandBastinDominatingConstant
   exact MeasureTheory.ae_restrict_of_forall_mem measurableSet_Icc (fun _ _ => by
     simp [Real.norm_eq_abs, abs_of_nonneg hD])
 
-/-- The model-specific positive-mass bounds discharge all hypotheses of the finite-radial dominated
-convergence theorem.  Thus the actual finite-broadening radial momentum integral converges to the
-integral of the clean local limit profile as `η → 0⁺`. -/
+/-- The model-specific positive-mass bounds discharge all hypotheses of finite-radial dominated
+convergence. Thus the finite-broadening radial momentum integral converges to the integral of the
+clean local limit profile as `η → 0⁺`. -/
 theorem tendsto_finiteRadialInterbandBastinPairIntegral
     (band : Band) (e v m radius pMax : ℝ)
     (hm : 0 < m) (hpMax : 0 ≤ pMax)
