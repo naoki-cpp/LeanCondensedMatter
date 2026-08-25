@@ -165,7 +165,8 @@ theorem norm_targetCenteredZeroTemperatureInterbandBastinPairIntegral_radial_le
   have hpole :=
     norm_targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral_radial_le
       band e v m p fermiEnergy radius broadening hm hradiusPos hradius hbroadening
-  have hmass := integral_lorentzianSpectralKernel_symmetric_le_pi radius broadening
+  have hmass := QuantumTheory.Transport.integral_lorentzianSpectralKernel_symmetric_le_pi
+    radius broadening
   have hC := radialInterbandSpectatorUniformBound_nonneg e v m radius
   have hpolePi :
       ‖targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral
