@@ -14,8 +14,8 @@ operator domain one moreover has the quantitative estimate
 
 Density of the domain then upgrades this to strong convergence `Jᵣ x → x` for every vector as
 `r → +∞`.  Combined with `Aᵣ x = Jᵣ (A x)`, this also gives `Aᵣ x → A x` on the generator domain.
-These are the convergence estimates needed before exponentiating the bounded self-adjoint
-approximants in the Stone-theorem construction tracked by issue #840.
+These convergence estimates connect the bounded self-adjoint approximants to the original generator
+in the Stone-theorem construction.
 -/
 
 namespace LinearPMap
