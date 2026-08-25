@@ -44,21 +44,7 @@ private theorem FixedExternalTwoPointWickDiagram.dysonSign_eq_external_mul_prod_
       d.1.dysonSign_eq_external_mul_prod_vacuum
     _ = d.mixedComponentDysonSign d.1.externalComponentPart *
         d.1.vacuumComponentParts.prod d.mixedComponentDysonSign := by
-      have hext :
-          (-1 : ℂ) ^ (Common.TwoPointDiagram.interactionPart
-            (d.1.externalComponent 0)).card =
-            d.mixedComponentDysonSign d.1.externalComponentPart := by
-        rfl
-      have hvac :
-          d.1.vacuumComponentParts.prod (fun B =>
-            (-1 : ℂ) ^ (Common.TwoPointDiagram.interactionPart
-              (B : Finset (Common.TwoPointVertex
-                (Finset.univ : Finset (Fin n))))).card) =
-            d.1.vacuumComponentParts.prod d.mixedComponentDysonSign := by
-        apply Finset.prod_congr rfl
-        intro B hB
-        rfl
-      rw [hext, hvac]
+      rfl
 
 section Fermionic
 
