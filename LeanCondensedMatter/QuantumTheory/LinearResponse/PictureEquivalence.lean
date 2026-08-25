@@ -35,6 +35,26 @@ theorem coe_heisenbergObservable (A : Observable H) (t : ℝ) :
     (heisenbergObservable system A t).1 = heisenbergEvolution system A.1 t :=
   rfl
 
+/-- The quadratic form of a bounded operator agrees after transporting either the vector or the
+operator by the free dynamics. -/
+private theorem inner_freePropagator_apply_eq_heisenbergEvolution
+    (A : H →L[ℂ] H) (x : H) (t : ℝ) :
+    inner ℂ (freePropagator system t x)
+        (A (freePropagator system t x)) =
+      inner ℂ x (heisenbergEvolution system A t x) := by
+  change inner ℂ (freePropagator system t x)
+      (A (freePropagator system t x)) =
+    inner ℂ x
+      (freePropagator system (-t) (A (freePropagator system t x)))
+  rw [← star_freePropagator system t]
+  change inner ℂ (freePropagator system t x)
+      (A (freePropagator system t x)) =
+    inner ℂ x
+      ((ContinuousLinearMap.adjoint (freePropagator system t))
+        (A (freePropagator system t x)))
+  exact (ContinuousLinearMap.adjoint_inner_right
+    (freePropagator system t) x (A (freePropagator system t x))).symm
+
 /-- The complex pure-state expectation is identical in the Schrödinger and Heisenberg pictures. -/
 theorem expValue_evolveState_eq_heisenberg
     (A : Observable H) (ψ : State H) (t : ℝ) :
@@ -43,16 +63,8 @@ theorem expValue_evolveState_eq_heisenberg
   rw [expValue, expValue]
   change inner ℂ (freePropagator system t ψ.1)
       (A.1 (freePropagator system t ψ.1)) =
-    inner ℂ ψ.1
-      (freePropagator system (-t) (A.1 (freePropagator system t ψ.1)))
-  rw [← star_freePropagator system t]
-  change inner ℂ (freePropagator system t ψ.1)
-      (A.1 (freePropagator system t ψ.1)) =
-    inner ℂ ψ.1
-      ((ContinuousLinearMap.adjoint (freePropagator system t))
-        (A.1 (freePropagator system t ψ.1)))
-  exact (ContinuousLinearMap.adjoint_inner_right
-    (freePropagator system t) ψ.1 (A.1 (freePropagator system t ψ.1))).symm
+    inner ℂ ψ.1 (heisenbergEvolution system A.1 t ψ.1)
+  exact inner_freePropagator_apply_eq_heisenbergEvolution system A.1 ψ.1 t
 
 /-- The lossless real observable expectation is identical in the Schrödinger and Heisenberg
 pictures. -/
@@ -158,18 +170,7 @@ theorem expectation_evolveDensityOperator_eq_heisenberg
   apply congrArg (fun z : ℂ => (w i : ℂ) * z)
   rw [show b' i = freePropagator system t (b i) from
     evolveHilbertBasis_apply system b t i]
-  change inner ℂ (freePropagator system t (b i))
-      (A (freePropagator system t (b i))) =
-    inner ℂ (b i)
-      (freePropagator system (-t) (A (freePropagator system t (b i))))
-  rw [← star_freePropagator system t]
-  change inner ℂ (freePropagator system t (b i))
-      (A (freePropagator system t (b i))) =
-    inner ℂ (b i)
-      ((ContinuousLinearMap.adjoint (freePropagator system t))
-        (A (freePropagator system t (b i))))
-  exact (ContinuousLinearMap.adjoint_inner_right
-    (freePropagator system t) (b i) (A (freePropagator system t (b i)))).symm
+  exact inner_freePropagator_apply_eq_heisenbergEvolution system A (b i) t
 
 /-- The lossless real density-state observable expectation is identical in the Schrödinger and
 Heisenberg pictures. -/

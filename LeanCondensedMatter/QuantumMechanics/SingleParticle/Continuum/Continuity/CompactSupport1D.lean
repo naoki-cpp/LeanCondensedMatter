@@ -57,6 +57,34 @@ theorem intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace
   unfold intervalSmearedCurrentPairing1D wholeSpaceSmearedCurrentPairing1D
   exact ConservationLaw.integral_deriv_mul_eq_integral_of_tsupport_subset_Ioo htestSupport
 
+/-- A compact support window transports an interval smeared-density derivative theorem to the
+corresponding whole-space statement. -/
+theorem hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_interval
+    (a b t : ℝ)
+    {test : ℝ → ℝ} {ψ : ℝ → ℝ → ℂ} {current : ℝ → ℝ}
+    (htestSupport : tsupport test ⊆ Ioo a b)
+    (hInterval : HasDerivAt
+      (fun τ => intervalSmearedProbabilityDensity1D a b test (ψ τ))
+      (intervalSmearedCurrentPairing1D a b (deriv test) current -
+        weightedBoundaryCurrent1D a b test current) t) :
+    HasDerivAt
+      (fun τ => wholeSpaceSmearedProbabilityDensity1D test (ψ τ))
+      (wholeSpaceSmearedCurrentPairing1D (deriv test) current) t := by
+  have hDensityWindow :
+      (fun τ => intervalSmearedProbabilityDensity1D a b test (ψ τ)) =
+        fun τ => wholeSpaceSmearedProbabilityDensity1D test (ψ τ) := by
+    funext τ
+    exact intervalSmearedProbabilityDensity1D_eq_wholeSpace a b htestSupport
+  have hCurrentWindow :
+      intervalSmearedCurrentPairing1D a b (deriv test) current =
+        wholeSpaceSmearedCurrentPairing1D (deriv test) current :=
+    intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace a b htestSupport
+  rcases ConservationLaw.endpoint_values_eq_zero_of_tsupport_subset_Ioo htestSupport with ⟨ha, hb⟩
+  have hBoundary : weightedBoundaryCurrent1D a b test current = 0 := by
+    simp [weightedBoundaryCurrent1D, ha, hb]
+  rw [hDensityWindow, hCurrentWindow, hBoundary, sub_zero] at hInterval
+  exact hInterval
+
 /-- The scalar-potential Schrödinger equation gives the whole-space weak continuity identity against
 a differentiable compactly supported test function. -/
 theorem schrodinger_weak_continuity_wholeSpace
@@ -146,24 +174,8 @@ theorem hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_schrodinger
     a b t ℏ κ hℏ hs hDensityMeas hDensityIntegrable hDensityRateMeas hBound
       hBoundIntegrable htimeRe htimeIm htest hψre hψim hψxre hψxim hschrodinger
       htestDerivIntegrable hcurrentIntegrable
-  have hDensityWindow :
-      (fun τ => intervalSmearedProbabilityDensity1D a b test (ψ τ)) =
-        fun τ => wholeSpaceSmearedProbabilityDensity1D test (ψ τ) := by
-    funext τ
-    exact intervalSmearedProbabilityDensity1D_eq_wholeSpace a b htestSupport
-  have hCurrentWindow :
-      intervalSmearedCurrentPairing1D a b (deriv test)
-          (fun x => probabilityCurrentValue1D ℏ κ (ψ t x) (ψx x)) =
-        wholeSpaceSmearedCurrentPairing1D (deriv test)
-          (fun x => probabilityCurrentValue1D ℏ κ (ψ t x) (ψx x)) :=
-    intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace a b htestSupport
-  have hBoundary :
-      weightedBoundaryCurrent1D a b test
-          (fun x => probabilityCurrentValue1D ℏ κ (ψ t x) (ψx x)) = 0 := by
-    rcases ConservationLaw.endpoint_values_eq_zero_of_tsupport_subset_Ioo htestSupport with ⟨ha, hb⟩
-    simp [weightedBoundaryCurrent1D, ha, hb]
-  rw [hDensityWindow, hCurrentWindow, hBoundary, sub_zero] at hInterval
-  exact hInterval
+  exact hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_interval
+    a b t htestSupport hInterval
 
 end
 end Continuum
