@@ -103,7 +103,7 @@ Transport.Resolvent.Basic
   └→ Transport.Disorder.SCBA
 
 {Transport.Disorder.Moments, Transport.Disorder.Resolvent}
-  ├→ Transport.Disorder.Born
+  ├→ Transport.Disorder.RetardedBorn
   └→ Transport.Disorder.AdvancedBorn
 ```
 

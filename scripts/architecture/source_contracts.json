@@ -41,14 +41,17 @@
         "LeanCondensedMatter/Transport/Core/FiniteTrace.lean",
         "LeanCondensedMatter/Transport/Resolvent/Basic.lean",
         "LeanCondensedMatter/Transport/Resolvent/Spectral.lean",
+        "LeanCondensedMatter/Transport/KuboBastin/PurePoint.lean",
         "LeanCondensedMatter/Transport/KuboBastin/Finite.lean",
+        "LeanCondensedMatter/Transport/KuboBastin/FiniteTrace.lean",
         "LeanCondensedMatter/Transport/KuboBastin/Occupation.lean",
         "LeanCondensedMatter/Transport/KuboBastin/CommonEnergy.lean",
         "LeanCondensedMatter/Transport/Streda/GeneralizedStatic.lean",
         "LeanCondensedMatter/Transport/Disorder/Finite.lean",
         "LeanCondensedMatter/Transport/Disorder/Resolvent.lean",
         "LeanCondensedMatter/Transport/Disorder/Moments.lean",
-        "LeanCondensedMatter/Transport/Disorder/Born.lean",
+        "LeanCondensedMatter/Transport/Disorder/BornCommon.lean",
+        "LeanCondensedMatter/Transport/Disorder/RetardedBorn.lean",
         "LeanCondensedMatter/Transport/Disorder/AdvancedBorn.lean",
         "LeanCondensedMatter/Transport/Disorder/SCBA.lean",
         "LeanCondensedMatter/QuantumTheory/LinearResponse/AdiabaticSwitching.lean",
@@ -414,9 +417,28 @@
       "modules": ["LeanCondensedMatter.Transport.Core.FiniteTrace"]
     },
     {
+      "id": "transportKuboBastinPurePoint",
+      "path": "LeanCondensedMatter/Transport/KuboBastin/PurePoint.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.PurePointFrequencyDomain",
+        "LeanCondensedMatter.Transport.Resolvent.Spectral"
+      ]
+    },
+    {
       "id": "transportKuboBastinFinite",
       "path": "LeanCondensedMatter/Transport/KuboBastin/Finite.lean",
-      "modules": ["LeanCondensedMatter.Transport.Resolvent.Spectral"]
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.LinearResponse.ResponseChannel",
+        "LeanCondensedMatter.Transport.KuboBastin.PurePoint"
+      ]
+    },
+    {
+      "id": "transportKuboBastinFiniteTrace",
+      "path": "LeanCondensedMatter/Transport/KuboBastin/FiniteTrace.lean",
+      "modules": [
+        "LeanCondensedMatter.QuantumTheory.DensityOperator.Finite",
+        "LeanCondensedMatter.Transport.KuboBastin.Finite"
+      ]
     },
     {
       "id": "transportStredaTraceSpectral",
@@ -457,10 +479,11 @@
       "modules": ["LeanCondensedMatter.Transport.Disorder.Finite"]
     },
     {
-      "id": "transportDisorderBorn",
-      "path": "LeanCondensedMatter/Transport/Disorder/Born.lean",
+      "id": "transportDisorderRetardedBorn",
+      "path": "LeanCondensedMatter/Transport/Disorder/RetardedBorn.lean",
       "modules": [
         "LeanCondensedMatter.Transport.Disorder.Moments",
+        "LeanCondensedMatter.Transport.Disorder.BornCommon",
         "LeanCondensedMatter.Transport.Disorder.Resolvent"
       ]
     },
@@ -469,6 +492,7 @@
       "path": "LeanCondensedMatter/Transport/Disorder/AdvancedBorn.lean",
       "modules": [
         "LeanCondensedMatter.Transport.Disorder.Moments",
+        "LeanCondensedMatter.Transport.Disorder.BornCommon",
         "LeanCondensedMatter.Transport.Disorder.Resolvent"
       ]
     },

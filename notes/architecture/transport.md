@@ -30,9 +30,13 @@ Transport/
 │   ├── Spectral.lean
 │   └── EnergyDerivative.lean
 ├── Analysis/
-│   └── LorentzianKernel.lean
+│   ├── LorentzianKernel.lean
+│   ├── LorentzianPole.lean
+│   └── ZeroTemperatureOccupation.lean
 ├── KuboBastin/
+│   ├── PurePoint.lean
 │   ├── Finite.lean
+│   ├── FiniteTrace.lean
 │   ├── OccupationInterpolation.lean
 │   ├── Occupation.lean
 │   └── CommonEnergy.lean
@@ -48,30 +52,51 @@ Transport/
     ├── Finite.lean
     ├── Resolvent.lean
     ├── Moments.lean
-    ├── Born.lean
+    ├── BornCommon.lean
+    ├── RetardedBorn.lean
     ├── AdvancedBorn.lean
     └── SCBA.lean
 ```
 
 The stable public grouping modules are `Transport.Core`, `Transport.Resolvent`,
 `Transport.KuboBastin`, `Transport.Streda`, and `Transport.Disorder`. The project-level
-`LeanCondensedMatter.Transport` imports those five groups. `Transport.Foundations` and
-`Transport.ResolventAPI` are transitional compatibility umbrellas and are not owners.
+`LeanCondensedMatter.Transport` imports those five groups. The retired `Transport.Foundations`,
+`Transport.ResolventAPI`, and all historical flat generic Transport leaf modules were removed after
+repository-wide consumer audits showed no remaining imports.
 
-Historical flat leaf paths remain temporarily as forwarding modules so downstream consumers can be
-migrated incrementally. They must not contain declarations. `scripts/check_transport_hierarchy.py`
-enforces that the new physical files exist and that compatibility paths forward to their canonical
-owners.
+All historical flat Transport and massive-Dirac AHE compatibility modules have now been removed
+after repository-wide consumer audits showed no remaining imports. `scripts/check_transport_hierarchy.py`
+continues to enforce the canonical public umbrellas and core hierarchy constraints without carrying
+compatibility-forwarder machinery.
 
 ## Semantic Kubo–Bastin / Středa boundary
 
+The pure-point and finite restrictions are separate ownership boundaries:
+
+```text
+KuboBastin/PurePoint
+        ↓  [Fintype ι]
+KuboBastin/Finite
+        ↓  [FiniteDimensional ℂ H]
+KuboBastin/FiniteTrace
+```
+
+`KuboBastin/PurePoint.lean` owns the complete-Hilbert-space Lehmann-to-retarded-resolvent algebra for
+one pure-point transition and does not assume a finite spectral index. `KuboBastin/Finite.lean`
+introduces `Fintype ι` only when those transitions are assembled into ordinary finite sums and
+packaged as finite `ResponseChannel` responses. `KuboBastin/FiniteTrace.lean` then introduces
+`FiniteDimensional ℂ H` exactly where ordinary `LinearMap.trace` is used. Thus finite spectral index
+and finite Hilbert-space dimension are explicit, distinct assumptions rather than properties of the
+Kubo–Bastin transition algebra itself.
+
 `KuboBastin/Occupation.lean` and `KuboBastin/CommonEnergy.lean` remain on the Kubo–Bastin side of
-the boundary: they build occupation-resolved and common-energy representations but do not define a
-Středa surface or sea term. Genuine Středa ownership begins at `Streda/OperatorKernel.lean`, where
-the Smrčka–Středa surface primitive and residual sea kernel are introduced.
+the boundary: their transition-level APIs are pure-point, while complete response/kernel sums use
+the finite spectral-index layer. They do not define a Středa surface or sea term. Genuine Středa
+ownership begins at `Streda/OperatorKernel.lean`, where the Smrčka–Středa surface primitive and
+residual sea kernel are introduced.
 
 `Resolvent/Spectral.lean` owns the model-independent eigenvector action of retarded/advanced
-resolvents. Both finite Kubo–Bastin and Středa spectral expansions consume that result rather than
+resolvents. Pure-point Kubo–Bastin and Středa spectral expansions consume that result rather than
 re-owning resolvent algebra.
 
 ## Disorder boundary
@@ -79,18 +104,22 @@ re-owning resolvent algebra.
 The exact/approximate split remains explicit:
 
 ```text
-                   ┌→ Disorder/Resolvent ─┐
-Disorder/Finite ───┤                       ├→ Disorder/Born
-                   └→ Disorder/Moments ────┤
-                                           └→ Disorder/AdvancedBorn
+                   ┌→ Disorder/Resolvent ───────────────────────┐
+Disorder/Finite ───┤                                            ├→ Disorder/RetardedBorn
+                   └→ Disorder/Moments → BornCommon ───────────┤
+                                                                └→ Disorder/AdvancedBorn
 
 Disorder/Finite + Resolvent
               ↓
          Disorder/SCBA
 ```
 
-`Disorder/Moments` and `Disorder/Resolvent` are sibling exact owners. Advanced Born must not depend
-on retarded Born merely to reuse moments. SCBA remains independent of the first-Born closure owner.
+`Disorder/Moments` and `Disorder/Resolvent` remain sibling exact owners. `Disorder/BornCommon`
+owns only R/A-neutral proof algebra shared by both first-Born specializations: centered first-order
+insertion cancellation, averaging of a configuration-wise second-order expansion, and the algebraic
+closure-error identity. Retarded/advanced self-energies, Born resolvent approximations, and named
+closure errors stay in `Disorder/RetardedBorn` and `Disorder/AdvancedBorn`. Those modules remain
+siblings and must not import one another. SCBA remains independent of the first-Born closure owners.
 
 ## AHE benchmark hierarchy
 
@@ -114,17 +143,19 @@ Transport/AnomalousHall/MassiveDirac/
 │   └── Spectral.lean
 └── Bastin/
     ├── Berry / Bands / Limit / Lorentzian / Occupation / ...
-    ├── Pole*       -- local regular-pole extraction proof chain
+    ├── Pole*       -- model-specific pole factor/window/specialization bridge
     ├── Radial*     -- finite-cutoff radial domination/DCT chain
     └── CleanConductivity.lean
 ```
 
 `MassiveDirac.Model`, `.Intrinsic`, `.Streda`, and `.Bastin` are the public benchmark layers.
-The old flat `MassiveDirac*` and `MassiveDiracBastin*` files are compatibility forwarders only.
+The historical flat Model, Intrinsic, Středa, and Bastin forwarding modules were removed after
+repository-wide consumer audits showed no remaining imports. Concrete implementations now live only
+under the canonical `MassiveDirac/{Model,Intrinsic,Streda,Bastin}/` hierarchy.
 
-This hierarchy is not permission for AHE to own reusable analysis. Generic Lorentzian analysis has
-already moved to `Transport/Analysis/LorentzianKernel.lean`; zero-temperature occupation and the
-regular-factor Lorentzian pole theorem are next extraction candidates under issue #1596.
+This hierarchy is not permission for AHE to own reusable analysis. Generic Lorentzian kernel/tail
+analysis, zero-temperature occupation/Fermi-edge weights, and regular-factor Lorentzian pole
+extraction now live under `Transport/Analysis/` and are consumed by the massive-Dirac specialization.
 
 ## Generic / concrete boundary
 

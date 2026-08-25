@@ -21,7 +21,8 @@
         {"id": "resolvent", "modulePrefixes": ["LeanCondensedMatter.Transport.Resolvent.Basic"]},
         {"id": "moments", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Moments"]},
         {"id": "disorderResolvent", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Resolvent"]},
-        {"id": "born", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.Born"]},
+        {"id": "bornCommon", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.BornCommon"]},
+        {"id": "retardedBorn", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.RetardedBorn"]},
         {"id": "advancedBorn", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.AdvancedBorn"]},
         {"id": "scba", "modulePrefixes": ["LeanCondensedMatter.Transport.Disorder.SCBA"]}
       ],
@@ -31,9 +32,10 @@
         {"upstream": "finiteDisorder", "downstream": "moments"},
         {"upstream": "finiteDisorder", "downstream": "disorderResolvent"},
         {"upstream": "resolvent", "downstream": "disorderResolvent"},
-        {"upstream": "moments", "downstream": "born"},
-        {"upstream": "disorderResolvent", "downstream": "born"},
-        {"upstream": "moments", "downstream": "advancedBorn"},
+        {"upstream": "moments", "downstream": "bornCommon"},
+        {"upstream": "bornCommon", "downstream": "retardedBorn"},
+        {"upstream": "bornCommon", "downstream": "advancedBorn"},
+        {"upstream": "disorderResolvent", "downstream": "retardedBorn"},
         {"upstream": "disorderResolvent", "downstream": "advancedBorn"},
         {"upstream": "finiteDisorder", "downstream": "scba"},
         {"upstream": "resolvent", "downstream": "scba"}
