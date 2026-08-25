@@ -1,8 +1,6 @@
 import LeanCondensedMatter.Analysis.Operator.DiagonalExpectation
 import Mathlib.Analysis.InnerProductSpace.Spectrum
 
--- No project files currently carry a Mathlib-style copyright/author header; a
--- project-wide policy for this is a separate open item (see notes/conventions.md).
 set_option linter.style.header false
 
 /-!
