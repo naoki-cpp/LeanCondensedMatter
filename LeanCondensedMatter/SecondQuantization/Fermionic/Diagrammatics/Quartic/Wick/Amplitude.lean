@@ -176,7 +176,7 @@ theorem quarticWickDiagramAmplitude_empty (ε : Mode → ℝ) (β : ℝ) (g : Qu
           ∏ pr ∈ (d.pairingInOrder order).pairs,
             orderedQuarticPairValue ε β d order (fun i => i.elim0) pr.1 pr.2 = 1
     rw [hweight, hpairs]
-    exact Finset.prod_empty
+    rfl
   simp only [quarticWickDiagramAmplitude, QuarticWickDiagram.couplingWeight,
     Common.QuarticDiagram.vertexWeight, hcard, pow_zero, one_mul]
   have hcoupling : ∏ v : (↥(∅ : Finset (Fin N))), g (d.vertexLabel v) = 1 := by
