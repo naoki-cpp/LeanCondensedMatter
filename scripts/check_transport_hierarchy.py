@@ -114,6 +114,34 @@ def main() -> int:
     ):
         require_import(errors, ahe_umbrella, module, root=ROOT, description="AHE public umbrella")
 
+    massive_dirac_bastin_umbrella = TRANSPORT / "AnomalousHall" / "MassiveDirac" / "Bastin.lean"
+    pole_extraction_module = f"{MD}.Bastin.PoleExtraction"
+    require_import(
+        errors,
+        massive_dirac_bastin_umbrella,
+        pole_extraction_module,
+        root=ROOT,
+        description="massive-Dirac Bastin public umbrella",
+    )
+    pair_integral_path = (
+        TRANSPORT / "AnomalousHall" / "MassiveDirac" / "Bastin" / "PairIntegral.lean"
+    )
+    require_import(
+        errors,
+        pair_integral_path,
+        pole_extraction_module,
+        root=ROOT,
+        description="massive-Dirac pole extraction consumer",
+    )
+    retired_pole_extraction_limit_path = (
+        TRANSPORT / "AnomalousHall" / "MassiveDirac" / "Bastin" / "PoleExtractionLimit.lean"
+    )
+    if retired_pole_extraction_limit_path.exists():
+        errors.append(
+            "MassiveDirac/Bastin/PoleExtractionLimit.lean is retired; "
+            "keep the limit theorem in PoleExtraction.lean"
+        )
+
     return finish_audit(
         errors,
         failure_heading="Transport physical-hierarchy audit failed:",
