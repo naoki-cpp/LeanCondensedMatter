@@ -27,30 +27,13 @@ noncomputable section
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- At fixed broadening, every side-indexed spectral parameter has real-energy derivative one. -/
-theorem hasDerivAt_spectralParameter_energy
+private theorem hasDerivAt_spectralParameter_energy
     (side : SpectralSide) (energy broadening : ℝ) :
     HasDerivAt (fun x : ℝ => spectralParameter side x broadening)
       (1 : ℂ) energy := by
   simpa [spectralParameter] using
     (Complex.ofRealCLM.hasDerivAt.add_const
       (((side.sign * broadening : ℝ) : ℂ) * Complex.I))
-
-/-- At fixed broadening, the retarded spectral parameter has real-energy derivative one. -/
-theorem hasDerivAt_retardedSpectralParameter_energy
-    (energy broadening : ℝ) :
-    HasDerivAt (fun x : ℝ => retardedSpectralParameter x broadening)
-      (1 : ℂ) energy := by
-  simpa only [spectralParameter_retarded] using
-    hasDerivAt_spectralParameter_energy .retarded energy broadening
-
-/-- At fixed broadening, the advanced spectral parameter has real-energy derivative one. -/
-theorem hasDerivAt_advancedSpectralParameter_energy
-    (energy broadening : ℝ) :
-    HasDerivAt (fun x : ℝ => advancedSpectralParameter x broadening)
-      (1 : ℂ) energy := by
-  simpa only [spectralParameter_advanced] using
-    hasDerivAt_spectralParameter_energy .advanced energy broadening
 
 /-- A resolvent on either spectral side differentiated along the real-energy axis is `-Gˢ²`. -/
 theorem hasDerivAt_resolvent_spectralParameter_energy

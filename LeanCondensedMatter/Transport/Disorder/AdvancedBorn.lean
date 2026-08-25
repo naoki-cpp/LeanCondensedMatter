@@ -32,8 +32,7 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
-/-- The first-order advanced Dyson contribution vanishes exactly for centered disorder. -/
-theorem operatorAverage_firstOrderAdvancedTerm_eq_zero
+private theorem operatorAverage_firstOrderAdvancedTerm_eq_zero
     (moments : FiniteDisorderMomentData ensemble)
     (energy broadening : ℝ) :
     ensemble.operatorAverage (fun ω =>
