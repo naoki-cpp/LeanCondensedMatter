@@ -21,10 +21,11 @@ It also proves that if `T` is compact and self-adjoint and `f 0 = 0`, then `cfc 
 The condition at zero is essential in infinite dimensions: a nonzero constant term contributes a
 multiple of the identity, which is not compact in general.
 
-This is foundational infrastructure for Track C (`notes/roadmaps/operator-algebra.md`): the
-continuous functional calculus is the natural infinite-dimensional replacement for the
-explicit-eigenbasis constructions used in `LeanCondensedMatter/QuantumTheory/Entropy.lean`,
-since in infinite dimensions there is no finite list of eigenvalues to sum over.
+This is foundational infrastructure for the operator-algebra development documented in
+`notes/roadmaps/operator-algebra.md`: the continuous functional calculus is the natural
+infinite-dimensional replacement for the explicit-eigenbasis constructions used in
+`LeanCondensedMatter/QuantumTheory/Entropy.lean`, since in infinite dimensions there is no finite
+list of eigenvalues to sum over.
 -/
 
 open Polynomial
