@@ -261,33 +261,8 @@ theorem hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_electromagnetic_schr
       a b t q ℏ mass hℏ hmass hs hDensityMeas hDensityIntegrable hDensityRateMeas
       hBound hBoundIntegrable htimeRe htimeIm htest hA hψre hψim hψxre hψxim
       hschrodinger htestDerivIntegrable hcurrentIntegrable
-  have hDensityWindow :
-      (fun τ => intervalSmearedProbabilityDensity1D a b test (ψ τ)) =
-        fun τ => wholeSpaceSmearedProbabilityDensity1D test (ψ τ) := by
-    funext τ
-    exact intervalSmearedProbabilityDensity1D_eq_wholeSpace a b htestSupport
-  have hCurrentWindow :
-      intervalSmearedCurrentPairing1D a b (deriv test)
-          (fun x => electromagneticProbabilityCurrentValue1D
-            q ℏ mass (vectorPotential x) (ψ t x) (ψx x)) =
-        wholeSpaceSmearedCurrentPairing1D (deriv test)
-          (fun x => electromagneticProbabilityCurrentValue1D
-            q ℏ mass (vectorPotential x) (ψ t x) (ψx x)) :=
-    intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace a b htestSupport
-  have hBoundary :
-      weightedBoundaryCurrent1D a b test
-          (fun x => electromagneticProbabilityCurrentValue1D
-            q ℏ mass (vectorPotential x) (ψ t x) (ψx x)) = 0 := by
-    rcases Classical.em (test a = 0) with ha | ha
-    · have hb : test b = 0 := by
-        by_contra hb
-        have hbTop : b ∈ tsupport test := subset_closure hb
-        exact (lt_irrefl b (htestSupport hbTop).2)
-      simp [weightedBoundaryCurrent1D, ha, hb]
-    · have haTop : a ∈ tsupport test := subset_closure ha
-      exact (False.elim (lt_irrefl a (htestSupport haTop).1))
-  rw [hDensityWindow, hCurrentWindow, hBoundary, sub_zero] at hInterval
-  exact hInterval
+  exact hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_interval
+    a b t htestSupport hInterval
 
 /-- For a Schwartz spatial wavefunction, all wavefunction spatial differentiability hypotheses in
 the electromagnetic interval weak theorem are automatic. -/
