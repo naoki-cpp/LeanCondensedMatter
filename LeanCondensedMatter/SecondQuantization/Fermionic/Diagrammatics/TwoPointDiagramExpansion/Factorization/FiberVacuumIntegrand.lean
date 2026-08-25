@@ -44,9 +44,9 @@ private theorem fixedExternalOfSlotSplit_prod_vacuumDysonSign_mul_vertexWeight
   have hsign : d.1.vacuumComponentParts.prod d.mixedComponentDysonSign =
       (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card := by
     have hsignFn :
-        d.mixedComponentDysonSign = fun B =>
+        d.mixedComponentDysonSign = fun B : d.1.componentPartition.parts =>
           (-1 : ℂ) ^ (Common.TwoPointDiagram.interactionPart
-            (B : Finset (Common.TwoPointVertex
+            (B.1 : Finset (Common.TwoPointVertex
               (Finset.univ : Finset (Fin n))))).card := by
       funext B
       rfl
@@ -57,13 +57,13 @@ private theorem fixedExternalOfSlotSplit_prod_vacuumDysonSign_mul_vertexWeight
   have hvertex : d.1.vacuumComponentParts.prod (d.mixedComponentVertexWeight g) =
       vac.couplingWeight g := by
     have hvertexFn :
-        d.mixedComponentVertexWeight g = fun B =>
+        d.mixedComponentVertexWeight g = fun B : d.1.componentPartition.parts =>
           ∏ v : ↥(Common.TwoPointDiagram.interactionPart
-            (B : Finset (Common.TwoPointVertex
+            (B.1 : Finset (Common.TwoPointVertex
               (Finset.univ : Finset (Fin n))))),
             g (d.1.vertexLabel
               ⟨v.1, Common.TwoPointDiagram.interactionPart_subset
-                (B : Finset (Common.TwoPointVertex
+                (B.1 : Finset (Common.TwoPointVertex
                   (Finset.univ : Finset (Fin n)))) v.2⟩) := by
       funext B
       rfl
