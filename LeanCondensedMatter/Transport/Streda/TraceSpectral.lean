@@ -44,7 +44,7 @@ noncomputable def stredaAdvancedSpectralFactor
 
 /-- Ordinary finite-dimensional trace written as the diagonal sum in the supplied pure-point
 basis. -/
-theorem finiteDimensionalOperatorTrace_eq_sum_inner_purePointBasis
+private theorem finiteDimensionalOperatorTrace_eq_sum_inner_purePointBasis
     (operator : H →L[ℂ] H) :
     finiteDimensionalOperatorTrace (H := H) operator =
       ∑ m : ι, inner ℂ (data.basis m) (operator (data.basis m)) := by
@@ -60,7 +60,7 @@ theorem finiteDimensionalOperatorTrace_eq_sum_inner_purePointBasis
 omit [FiniteDimensional ℂ H] in
 /-- Matrix element of `left * diagonal * right` when the middle operator is diagonal in the
 supplied pure-point basis. -/
-theorem inner_purePointBasis_mul_diagonal_mul
+private theorem inner_purePointBasis_mul_diagonal_mul
     (left diagonal right : H →L[ℂ] H) (diagonalFactor : ι → ℂ)
     (hdiagonal : ∀ n, diagonal (data.basis n) = diagonalFactor n • data.basis n)
     (m : ι) :
@@ -84,7 +84,7 @@ theorem inner_purePointBasis_mul_diagonal_mul
 omit [FiniteDimensional ℂ H] in
 /-- Matrix element of `left * middle * right * terminal` when both inserted operators are diagonal
 in the supplied pure-point basis. -/
-theorem inner_purePointBasis_mul_diagonal_mul_mul_diagonal
+private theorem inner_purePointBasis_mul_diagonal_mul_mul_diagonal
     (left middle right terminal : H →L[ℂ] H)
     (middleFactor terminalFactor : ι → ℂ)
     (hmiddle : ∀ n, middle (data.basis n) = middleFactor n • data.basis n)
@@ -124,7 +124,7 @@ noncomputable def regularizedBastinSpectralTraceSum
 
 omit [FiniteDimensional ℂ H] in
 /-- The canonical Bastin operator integrand in a form with all noncommutative signs expanded. -/
-theorem regularizedBastinOperatorIntegrand_eq_expanded
+private theorem regularizedBastinOperatorIntegrand_eq_expanded
     (current₁ current₂ : H →L[ℂ] H) (energy broadening : ℝ) :
     regularizedBastinOperatorIntegrand
         system.hamiltonian.1 current₁ current₂ energy broadening =

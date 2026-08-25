@@ -90,20 +90,6 @@ theorem bastinBandBlockTrace_swap_eq_currentBandBlockTrace
         (bandProjectorOperator source v m px py * currentOperator μ e v *
           bandProjectorOperator target v m px py * currentOperator ν e v) := by rfl
 
-/-- The lower-to-upper ordered block is the lower-band interband trace. -/
-theorem currentBandBlockTrace_lower_upper
-    (μ ν : Direction2) (e v m px py : ℝ) :
-    currentBandBlockTrace μ ν .lower .upper e v m px py =
-      interbandCurrentTrace μ ν .lower e v m px py := by
-  rfl
-
-/-- The upper-to-lower ordered block is the upper-band interband trace. -/
-theorem currentBandBlockTrace_upper_lower
-    (μ ν : Direction2) (e v m px py : ℝ) :
-    currentBandBlockTrace μ ν .upper .lower e v m px py =
-      interbandCurrentTrace μ ν .upper e v m px py := by
-  rfl
-
 /-- Difference of retarded and advanced scalar resolvent coefficients for one band. -/
 noncomputable def spectralDifferenceCoefficient
     (band : Band) (v m px py probeEnergy broadening : ℝ) : ℂ :=
