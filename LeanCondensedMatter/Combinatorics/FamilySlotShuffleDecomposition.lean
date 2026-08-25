@@ -191,9 +191,7 @@ theorem FamilySlotShuffle.tailSlotSubtypeEquiv_val
     ((shuffle.tailSlotSubtypeEquiv y : ↥shuffle.tailSlots) : Fin (∑ i, size i)) =
       shuffle.slotEquiv
         ((FamilySlotShuffle.headTailLocalSlotEquiv size).symm (Sum.inr y)) := by
-  simpa [FamilySlotShuffle.tailSlotSubtypeEquiv, FamilySlotShuffle.tailSlots,
-    FamilySlotShuffle.headTailSlotEquiv] using
-    (SumEquiv.rightSubtypeEquiv_val shuffle.headTailSlotEquiv y)
+  rfl
 
 /-- The ambient tail-slot subtype is the set-theoretic complement of the ambient head-slot subtype. -/
 theorem FamilySlotShuffle.tailSlots_set_eq_compl_headSlots
