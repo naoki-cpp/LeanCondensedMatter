@@ -48,7 +48,7 @@ theorem TwoPointDiagram.ComponentTimeEq.symm {n : ℕ}
 
 @[trans]
 theorem TwoPointDiagram.ComponentTimeEq.trans {n : ℕ}
-    {d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
+    {d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n))}
     {B : d.componentPartition.parts} {σ υ ω : Fin n → ℝ}
     (hσυ : d.ComponentTimeEq B σ υ) (hυω : d.ComponentTimeEq B υ ω) :
     d.ComponentTimeEq B σ ω := by
