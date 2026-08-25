@@ -6,20 +6,19 @@ set_option linter.style.header false
 /-!
 # Exact Lehmann and conductivity benchmark for the two-site dimer
 
-This module is the first exact scalar conductivity benchmark for issue #1251.  It records the
-spectral data of the one-particle sector of the unit-hopping two-site dimer in its
-bonding/antibonding energy basis.  With `ℏ = 1`, the energies are `-1` and `+1`; the zero-temperature
-ground-state occupation is `(1,0)`; and the continuity-derived oriented current has off-diagonal
-matrix elements `i` and `-i` in this basis.
+This module records the spectral data of the one-particle sector of the unit-hopping two-site dimer
+in its bonding/antibonding energy basis. With `ℏ = 1`, the energies are `-1` and `+1`; the
+zero-temperature ground-state occupation is `(1,0)`; and the continuity-derived oriented current
+has off-diagonal matrix elements `i` and `-i` in this basis.
 
 At the explicit regularized point `ω = 0`, `η = 1`, the finite Lehmann current-current response is
-exactly `4/5`.  For unit hopping and unit charge, the Peierls contact operator restricted to this
+exactly `4/5`. For unit hopping and unit charge, the Peierls contact operator restricted to this
 one-particle sector equals the hopping Hamiltonian, so its ground-state expectation is `-1`.
 With unit physical volume, the existing vector-potential-to-electric-field normalization is `-1`,
 and the resulting finite conductivity is therefore exactly `1/5`.
 
 No floating-point approximation, zero-broadening limit, DC limit, or thermodynamic limit occurs
-here.  The table evaluator and normalization are the same public definitions used by the proved
+here. The table evaluator and normalization are the same public definitions used by the proved
 finite Kubo-Greenwood chain.
 -/
 
