@@ -90,6 +90,7 @@ theorem orderedSimplexShuffleIntegral_eq_mul
     orderedSimplexShuffleIntegral m n β f g =
       orderedSimplexIntegral m β f * orderedSimplexIntegral n β g :=
   orderedSimplexShuffleIntegral_eq_mul_of_measurableLocallyBounded
-    m n β f g hf.measurableLocallyBounded hg.measurableLocallyBounded
+    m n β f g (intervalIntegral.Continuous.measurableLocallyBounded hf)
+      (intervalIntegral.Continuous.measurableLocallyBounded hg)
 
 end intervalIntegral
