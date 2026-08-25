@@ -32,7 +32,7 @@ theorem orderedSimplexContribution_eq_orderedSimplexIntegral_integrand :
   | m + 1, n, .consLeft σ, β, f, g => by
       rw [orderedSimplexContribution]
       rw [intervalIntegral.orderedSimplexIntegral_cast
-        (show m + 1 + n = (m + n) + 1 by omega)]
+        (show m + 1 + n = (m + n) + 1 by lia)]
       rw [orderedSimplexIntegral_succ]
       apply intervalIntegral.integral_congr
       intro t _ht
@@ -54,7 +54,7 @@ theorem orderedSimplexContribution_eq_orderedSimplexIntegral_integrand :
   | m, n + 1, .consRight σ, β, f, g => by
       rw [orderedSimplexContribution]
       rw [intervalIntegral.orderedSimplexIntegral_cast
-        (show m + (n + 1) = (m + n) + 1 by omega)]
+        (show m + (n + 1) = (m + n) + 1 by lia)]
       rw [orderedSimplexIntegral_succ]
       apply intervalIntegral.integral_congr
       intro t _ht
@@ -84,7 +84,7 @@ theorem orderedSimplexContribution_consLeft_boundary {m n : ℕ}
         (toSlotShuffle (.consLeft σ)).integrand f g
           (fun i : Fin (m + 1 + n) =>
             (Fin.cons t rest : Fin ((m + n) + 1) → ℝ)
-              (Fin.cast (show m + 1 + n = (m + n) + 1 by omega) i))) := by
+              (Fin.cast (show m + 1 + n = (m + n) + 1 by lia) i))) := by
   rw [orderedSimplexContribution_eq_orderedSimplexIntegral_integrand]
   apply orderedSimplexIntegral_congr
   intro rest
@@ -109,7 +109,7 @@ theorem orderedSimplexContribution_consRight_boundary {m n : ℕ}
         (toSlotShuffle (.consRight σ)).integrand f g
           (fun i : Fin (m + (n + 1)) =>
             (Fin.cons t rest : Fin ((m + n) + 1) → ℝ)
-              (Fin.cast (show m + (n + 1) = (m + n) + 1 by omega) i))) := by
+              (Fin.cast (show m + (n + 1) = (m + n) + 1 by lia) i))) := by
   rw [orderedSimplexContribution_eq_orderedSimplexIntegral_integrand]
   apply orderedSimplexIntegral_congr
   intro rest
@@ -133,7 +133,7 @@ theorem intervalIntegrable_orderedSimplexContribution_consLeft {m n : ℕ}
     IntervalIntegrable
       (fun t => orderedSimplexContribution σ t (fun rest => f (Fin.cons t rest)) g)
       volume 0 β := by
-  let hdim : m + 1 + n = (m + n) + 1 := by omega
+  let hdim : m + 1 + n = (m + n) + 1 := by lia
   let F : (Fin ((m + n) + 1) → ℝ) → ℂ := fun τ =>
     (toSlotShuffle (.consLeft σ)).integrand f g
       (fun i => τ (Fin.cast hdim i))
@@ -151,7 +151,7 @@ theorem intervalIntegrable_orderedSimplexContribution_consRight {m n : ℕ}
     IntervalIntegrable
       (fun t => orderedSimplexContribution σ t f (fun rest => g (Fin.cons t rest)))
       volume 0 β := by
-  let hdim : m + (n + 1) = (m + n) + 1 := by omega
+  let hdim : m + (n + 1) = (m + n) + 1 := by lia
   let F : (Fin ((m + n) + 1) → ℝ) → ℂ := fun τ =>
     (toSlotShuffle (.consRight σ)).integrand f g
       (fun i => τ (Fin.cast hdim i))
