@@ -58,33 +58,6 @@ private noncomputable def lorentzianRegularFactorOuterErrorIntegral
     ∫ offset in innerRadius..outerRadius,
       lorentzianRegularFactorErrorIntegrand factor broadening offset
 
-/-- For nonzero broadening the Lorentzian kernel is continuous as a function of energy offset. -/
-theorem continuous_lorentzianSpectralKernel_fixed_broadening
-    (broadening : ℝ) (hbroadening : broadening ≠ 0) :
-    Continuous (fun offset : ℝ => lorentzianSpectralKernel offset broadening) := by
-  have hden : ∀ offset : ℝ, broadening ^ 2 + offset ^ 2 ≠ 0 := by
-    intro offset
-    nlinarith [sq_pos_of_ne_zero hbroadening]
-  unfold lorentzianSpectralKernel
-  exact continuous_const.div
-    ((continuous_const.pow 2).add (continuous_id.pow 2)) hden
-
-/-- At nonzero broadening the Lorentzian kernel is interval integrable on every finite interval. -/
-theorem intervalIntegrable_lorentzianSpectralKernel
-    (lower upper broadening : ℝ) (hbroadening : broadening ≠ 0) :
-    IntervalIntegrable (fun offset : ℝ => lorentzianSpectralKernel offset broadening)
-      MeasureTheory.volume lower upper := by
-  exact (continuous_lorentzianSpectralKernel_fixed_broadening broadening hbroadening).intervalIntegrable
-    (μ := MeasureTheory.volume) lower upper
-
-/-- Every symmetric Lorentzian mass is strictly smaller than `π`. -/
-theorem integral_lorentzianSpectralKernel_symmetric_lt_pi
-    (radius broadening : ℝ) :
-    (∫ offset in -radius..radius,
-      lorentzianSpectralKernel offset broadening) < Real.pi := by
-  rw [integral_lorentzianSpectralKernel_symmetric]
-  linarith [Real.arctan_lt_pi_div_two (radius / broadening)]
-
 private theorem exists_delta_norm_regularFactor_sub_pole_lt_of_coordinates
     (factor : ℝ × ℝ → ℂ) (ε : ℝ)
     (hcontinuous : ContinuousAt factor (0, 0)) (hε : 0 < ε) :
