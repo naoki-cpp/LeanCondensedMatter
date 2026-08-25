@@ -163,7 +163,9 @@ theorem quarticWickDiagramAmplitude_empty (ε : Mode → ℝ) (β : ℝ) (g : Qu
       exact Fin.elim0 pr.1
     have hcrossing : (d.pairingInOrder order).crossingCount = 0 := by
       rw [Combinatorics.Pairing.crossingCount, hpairs]
-      simp
+      apply Finset.card_eq_zero.mpr
+      ext pairPair
+      exact Fin.elim0 pairPair.1.1
     have hweight : (d.pairingInOrder order).weight Common.Statistics.fermion = 1 := by
       rw [Combinatorics.Pairing.weight, hcrossing, pow_zero]
     rw [QuarticWickDiagram.orderedSimplexContribution,
@@ -174,7 +176,7 @@ theorem quarticWickDiagramAmplitude_empty (ε : Mode → ℝ) (β : ℝ) (g : Qu
           ∏ pr ∈ (d.pairingInOrder order).pairs,
             orderedQuarticPairValue ε β d order (fun i => i.elim0) pr.1 pr.2 = 1
     rw [hweight, hpairs]
-    simp
+    exact Finset.prod_empty
   simp only [quarticWickDiagramAmplitude, QuarticWickDiagram.couplingWeight,
     Common.QuarticDiagram.vertexWeight, hcard, pow_zero, one_mul]
   have hcoupling : ∏ v : (↥(∅ : Finset (Fin N))), g (d.vertexLabel v) = 1 := by
