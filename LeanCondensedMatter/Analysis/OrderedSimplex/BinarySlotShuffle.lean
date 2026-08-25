@@ -1,7 +1,6 @@
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffle
 import LeanCondensedMatter.Analysis.OrderedSimplex.BinaryShuffleIntegrand
 import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableIntegralBound
-import LeanCondensedMatter.Analysis.OrderedSimplex.MeasurableRegularityCast
 import LeanCondensedMatter.Combinatorics.BinaryShuffleSlotEquiv
 
 set_option linter.style.header false
@@ -124,6 +123,13 @@ private theorem orderedSimplexContribution_consRight_boundary {m n : ℕ}
     | zero => simp [toSlotShuffle]
     | succ j => simp [toSlotShuffle]
 
+private theorem measurableLocallyBounded_finCast {a b : ℕ} (h : a = b)
+    {f : (Fin a → ℝ) → ℂ} (hf : MeasurableLocallyBounded f) :
+    MeasurableLocallyBounded
+      (fun τ : Fin b → ℝ => f (fun i => τ (Fin.cast h i))) := by
+  subst b
+  simpa using hf
+
 /-- The inner contribution at a left recursive shuffle step is interval integrable under measurable
 local boundedness. -/
 private theorem intervalIntegrable_orderedSimplexContribution_consLeft {m n : ℕ}
@@ -138,7 +144,8 @@ private theorem intervalIntegrable_orderedSimplexContribution_consLeft {m n : �
     (toSlotShuffle (.consLeft σ)).integrand f g
       (fun i => τ (Fin.cast hdim i))
   have hF : MeasurableLocallyBounded F := by
-    exact ((toSlotShuffle (.consLeft σ)).measurableLocallyBounded_integrand f g hf hg).finCast hdim
+    exact measurableLocallyBounded_finCast hdim
+      ((toSlotShuffle (.consLeft σ)).measurableLocallyBounded_integrand f g hf hg)
   have hInt := hF.intervalIntegrable_orderedSimplexIntegral_boundary β
   simpa only [F, hdim, orderedSimplexContribution_consLeft_boundary] using hInt
 
@@ -156,7 +163,8 @@ private theorem intervalIntegrable_orderedSimplexContribution_consRight {m n : �
     (toSlotShuffle (.consRight σ)).integrand f g
       (fun i => τ (Fin.cast hdim i))
   have hF : MeasurableLocallyBounded F := by
-    exact ((toSlotShuffle (.consRight σ)).measurableLocallyBounded_integrand f g hf hg).finCast hdim
+    exact measurableLocallyBounded_finCast hdim
+      ((toSlotShuffle (.consRight σ)).measurableLocallyBounded_integrand f g hf hg)
   have hInt := hF.intervalIntegrable_orderedSimplexIntegral_boundary β
   simpa only [F, hdim, orderedSimplexContribution_consRight_boundary] using hInt
 
