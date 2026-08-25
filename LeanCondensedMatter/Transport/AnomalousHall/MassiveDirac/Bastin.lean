@@ -15,7 +15,6 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleConti
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleWindowContinuity
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleWindowBound
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleExtraction
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleExtractionLimit
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PairIntegral
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PairBerry
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialDomination

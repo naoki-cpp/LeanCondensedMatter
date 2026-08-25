@@ -74,8 +74,7 @@
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleContinuity",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleWindowContinuity",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleWindowBound",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleExtraction",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleExtractionLimit"
+            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleExtraction"
           ]
         },
         {
