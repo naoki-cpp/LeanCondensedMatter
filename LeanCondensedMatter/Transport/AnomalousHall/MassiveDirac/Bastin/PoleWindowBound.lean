@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleWindowContinuity
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleContinuity
 import Mathlib.Analysis.Normed.Group.Bounded
 import Mathlib.Tactic
 
