@@ -14,9 +14,9 @@ advanced resolvent differences,
 L_η(x) = η / (η² + x²).
 ```
 
-It proves the elementary scalar resolvent identity, exact finite-interval integrals, symmetric-window
-mass formula, convergence of every fixed positive symmetric-window mass to `π`, and vanishing mass
-between fixed nested positive windows as `η → 0⁺`.
+It proves the elementary scalar resolvent identity, continuity and finite-interval integrability at
+nonzero broadening, exact finite-interval integrals, symmetric-window mass bounds and convergence
+to `π`, and vanishing mass between fixed nested positive windows as `η → 0⁺`.
 
 No Hamiltonian, band structure, current operator, occupation function, conductivity normalization,
 or concrete transport model appears here.
@@ -39,6 +39,25 @@ theorem lorentzianSpectralKernel_nonneg
     0 ≤ lorentzianSpectralKernel offset broadening := by
   unfold lorentzianSpectralKernel
   positivity
+
+/-- For nonzero broadening the Lorentzian kernel is continuous as a function of energy offset. -/
+theorem continuous_lorentzianSpectralKernel_fixed_broadening
+    (broadening : ℝ) (hbroadening : broadening ≠ 0) :
+    Continuous (fun offset : ℝ => lorentzianSpectralKernel offset broadening) := by
+  have hden : ∀ offset : ℝ, broadening ^ 2 + offset ^ 2 ≠ 0 := by
+    intro offset
+    nlinarith [sq_pos_of_ne_zero hbroadening]
+  unfold lorentzianSpectralKernel
+  exact continuous_const.div
+    ((continuous_const.pow 2).add (continuous_id.pow 2)) hden
+
+/-- At nonzero broadening the Lorentzian kernel is interval integrable on every finite interval. -/
+theorem intervalIntegrable_lorentzianSpectralKernel
+    (lower upper broadening : ℝ) (hbroadening : broadening ≠ 0) :
+    IntervalIntegrable (fun offset : ℝ => lorentzianSpectralKernel offset broadening)
+      MeasureTheory.volume lower upper := by
+  exact (continuous_lorentzianSpectralKernel_fixed_broadening broadening hbroadening).intervalIntegrable
+    (μ := MeasureTheory.volume) lower upper
 
 private theorem complex_offset_add_I_ne_zero
     (offset broadening : ℝ) (hbroadening : broadening ≠ 0) :
@@ -99,6 +118,21 @@ theorem integral_lorentzianSpectralKernel_symmetric
   rw [show (-radius) / broadening = -(radius / broadening) by ring]
   rw [Real.arctan_neg]
   ring
+
+/-- Every symmetric Lorentzian mass is strictly smaller than `π`. -/
+theorem integral_lorentzianSpectralKernel_symmetric_lt_pi
+    (radius broadening : ℝ) :
+    (∫ offset in -radius..radius,
+      lorentzianSpectralKernel offset broadening) < Real.pi := by
+  rw [integral_lorentzianSpectralKernel_symmetric]
+  linarith [Real.arctan_lt_pi_div_two (radius / broadening)]
+
+/-- Every symmetric Lorentzian mass is at most `π`. -/
+theorem integral_lorentzianSpectralKernel_symmetric_le_pi
+    (radius broadening : ℝ) :
+    (∫ offset in -radius..radius,
+      lorentzianSpectralKernel offset broadening) ≤ Real.pi :=
+  le_of_lt (integral_lorentzianSpectralKernel_symmetric_lt_pi radius broadening)
 
 /-- Every fixed positive symmetric neighborhood captures asymptotic Lorentzian mass `π` as the
 broadening tends to zero from the positive side. -/

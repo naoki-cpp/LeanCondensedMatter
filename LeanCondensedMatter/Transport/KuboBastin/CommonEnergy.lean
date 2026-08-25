@@ -6,12 +6,12 @@ set_option linter.style.header false
 # Common energy kernel for finite Kubo–Bastin response
 
 Finite transition intervals are localized on the full energy axis and summed into one integrable
-piecewise kernel.  The construction is statistics-independent and generic in the Hilbert-space
-carrier, measured/source vertices, and explicit observable-variation term.
+piecewise kernel. The transition-level construction is pure-point and does not require a finite
+spectral index; finite sums first enter at the common-energy kernel.
 
-The common kernel is generally discontinuous at spectral energies.  It is therefore not itself the
+The common kernel is generally discontinuous at spectral energies. It is therefore not itself the
 smooth Středa primitive required by `RegularizedStredaRepresentation`, and equality with the
-canonical traced Bastin energy integral is not asserted here.  That identification remains a
+canonical traced Bastin energy integral is not asserted here. That identification remains a
 separate Ward/energy-representation theorem.
 
 Fermionic lattice currents, Peierls contacts, and conductivity normalization remain downstream.
@@ -51,48 +51,48 @@ theorem integral_orientedIntervalIntegrand
 variable {H ι : Type*}
 variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- Full-line localized integrand associated with one generalized Bastin transition. -/
-noncomputable def finiteKuboBastinCommonVertexTransitionIntegrand
+/-- Full-line localized integrand associated with one generalized pure-point Bastin transition. -/
+noncomputable def purePointKuboBastinCommonVertexTransitionIntegrand
     (system : BoundedFreeSystem H)
     (data : PurePointLehmannData system ι)
     (interpolation : PurePointOccupationInterpolation system data)
     (measured source : H →L[ℂ] H)
     (omega eta : ℝ) (mn : ι × ι) (energy : ℝ) : ℂ :=
   orientedIntervalIntegrand
-    ((-finiteKuboBastinVertexTransitionFactor
+    ((-purePointKuboBastinVertexTransitionFactor
       system data measured source omega eta mn) •
       interpolation.occupationDerivative)
     (data.energy mn.2) (data.energy mn.1) energy
 
-theorem integrable_finiteKuboBastinCommonVertexTransitionIntegrand
+theorem integrable_purePointKuboBastinCommonVertexTransitionIntegrand
     (system : BoundedFreeSystem H)
     (data : PurePointLehmannData system ι)
     (interpolation : PurePointOccupationInterpolation system data)
     (measured source : H →L[ℂ] H)
     (omega eta : ℝ) (mn : ι × ι) :
-    Integrable (finiteKuboBastinCommonVertexTransitionIntegrand
+    Integrable (purePointKuboBastinCommonVertexTransitionIntegrand
       system data interpolation measured source omega eta mn) := by
   apply integrable_orientedIntervalIntegrand
   exact (interpolation.occupationDerivative_intervalIntegrable mn.1 mn.2).smul
-    (-finiteKuboBastinVertexTransitionFactor
+    (-purePointKuboBastinVertexTransitionFactor
       system data measured source omega eta mn)
 
-theorem integral_finiteKuboBastinCommonVertexTransitionIntegrand
+theorem integral_purePointKuboBastinCommonVertexTransitionIntegrand
     (system : BoundedFreeSystem H)
     (data : PurePointLehmannData system ι)
     (interpolation : PurePointOccupationInterpolation system data)
     (measured source : H →L[ℂ] H)
     (omega eta : ℝ) (mn : ι × ι) :
-    (∫ energy : ℝ, finiteKuboBastinCommonVertexTransitionIntegrand
+    (∫ energy : ℝ, purePointKuboBastinCommonVertexTransitionIntegrand
       system data interpolation measured source omega eta mn energy) =
-      finiteKuboBastinOccupationResolvedVertexTerm
+      purePointKuboBastinOccupationResolvedVertexTerm
         system data interpolation measured source omega eta mn := by
-  let factor := finiteKuboBastinVertexTransitionFactor
+  let factor := purePointKuboBastinVertexTransitionFactor
     system data measured source omega eta mn
   have hint : IntervalIntegrable ((-factor) • interpolation.occupationDerivative)
       volume (data.energy mn.2) (data.energy mn.1) :=
     (interpolation.occupationDerivative_intervalIntegrable mn.1 mn.2).smul (-factor)
-  rw [show finiteKuboBastinCommonVertexTransitionIntegrand
+  rw [show purePointKuboBastinCommonVertexTransitionIntegrand
       system data interpolation measured source omega eta mn =
       orientedIntervalIntegrand ((-factor) • interpolation.occupationDerivative)
         (data.energy mn.2) (data.energy mn.1) by rfl]
@@ -100,7 +100,7 @@ theorem integral_finiteKuboBastinCommonVertexTransitionIntegrand
   change (∫ energy in data.energy mn.2..data.energy mn.1,
       (-factor) • interpolation.occupationDerivative energy) = _
   rw [intervalIntegral.integral_smul]
-  unfold finiteKuboBastinOccupationResolvedVertexTerm
+  unfold purePointKuboBastinOccupationResolvedVertexTerm
   simp only [smul_eq_mul]
   ring
 
@@ -113,7 +113,7 @@ noncomputable def finiteKuboBastinCommonVertexEnergyKernel
     (interpolation : PurePointOccupationInterpolation system data)
     (measured source : H →L[ℂ] H)
     (omega eta : ℝ) (energy : ℝ) : ℂ :=
-  ∑ mn : ι × ι, finiteKuboBastinCommonVertexTransitionIntegrand
+  ∑ mn : ι × ι, purePointKuboBastinCommonVertexTransitionIntegrand
     system data interpolation measured source omega eta mn energy
 
 theorem integrable_finiteKuboBastinCommonVertexEnergyKernel
@@ -127,7 +127,7 @@ theorem integrable_finiteKuboBastinCommonVertexEnergyKernel
   unfold finiteKuboBastinCommonVertexEnergyKernel
   apply integrable_finsetSum
   intro mn _
-  exact integrable_finiteKuboBastinCommonVertexTransitionIntegrand
+  exact integrable_purePointKuboBastinCommonVertexTransitionIntegrand
     system data interpolation measured source omega eta mn
 
 theorem integral_finiteKuboBastinCommonVertexEnergyKernel
@@ -138,16 +138,16 @@ theorem integral_finiteKuboBastinCommonVertexEnergyKernel
     (omega eta : ℝ) :
     (∫ energy : ℝ, finiteKuboBastinCommonVertexEnergyKernel
       system data interpolation measured source omega eta energy) =
-      ∑ mn : ι × ι, finiteKuboBastinOccupationResolvedVertexTerm
+      ∑ mn : ι × ι, purePointKuboBastinOccupationResolvedVertexTerm
         system data interpolation measured source omega eta mn := by
   unfold finiteKuboBastinCommonVertexEnergyKernel
   rw [MeasureTheory.integral_finsetSum]
   · apply Finset.sum_congr rfl
     intro mn _
-    exact integral_finiteKuboBastinCommonVertexTransitionIntegrand
+    exact integral_purePointKuboBastinCommonVertexTransitionIntegrand
       system data interpolation measured source omega eta mn
   · intro mn _
-    exact integrable_finiteKuboBastinCommonVertexTransitionIntegrand
+    exact integrable_purePointKuboBastinCommonVertexTransitionIntegrand
       system data interpolation measured source omega eta mn
 
 /-- Generalized common-energy response, with the explicit observable-variation expectation kept

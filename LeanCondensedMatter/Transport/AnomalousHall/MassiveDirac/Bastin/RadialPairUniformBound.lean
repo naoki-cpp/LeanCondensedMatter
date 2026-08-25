@@ -28,7 +28,8 @@ theorem norm_lorentzian_mul_targetCenteredInterbandSpectatorCurrentFactor_radial
           band e v m p 0 (offset, broadening)‖ ≤
       radialInterbandSpectatorUniformBound e v m radius *
         lorentzianSpectralKernel offset broadening := by
-  have hkernel := lorentzianSpectralKernel_nonneg offset broadening hbroadening
+  have hkernel := QuantumTheory.Transport.lorentzianSpectralKernel_nonneg
+    offset broadening hbroadening
   have hnorm :
       ‖(lorentzianSpectralKernel offset broadening : ℂ)‖ =
         lorentzianSpectralKernel offset broadening := by
@@ -58,9 +59,10 @@ theorem norm_targetCenteredInterbandSpectatorCurrentPoleIntegral_radial_le
         (∫ offset in -radius..radius,
           lorentzianSpectralKernel offset broadening) := by
   have hab : -radius ≤ radius := by linarith
-  have hkernelInt := intervalIntegrable_lorentzianSpectralKernel
+  have hkernelInt := QuantumTheory.Transport.intervalIntegrable_lorentzianSpectralKernel
     (-radius) radius broadening hbroadening.ne'
   unfold targetCenteredInterbandSpectatorCurrentPoleIntegral
+    QuantumTheory.Transport.lorentzianRegularFactorIntegral
   have hineq :
       ‖∫ offset in -radius..radius,
           (lorentzianSpectralKernel offset broadening : ℂ) *
@@ -79,15 +81,6 @@ theorem norm_targetCenteredInterbandSpectatorCurrentPoleIntegral_radial_le
     · exact hkernelInt.const_mul (radialInterbandSpectatorUniformBound e v m radius)
   rw [intervalIntegral.integral_const_mul] at hineq
   exact hineq
-
-/-- Every positive-broadening symmetric Lorentzian window has mass at most `π`. -/
-theorem integral_lorentzianSpectralKernel_symmetric_le_pi
-    (radius broadening : ℝ) :
-    (∫ offset in -radius..radius,
-      lorentzianSpectralKernel offset broadening) ≤ Real.pi := by
-  rw [integral_lorentzianSpectralKernel_symmetric]
-  have h := Real.arctan_lt_pi_div_two (radius / broadening)
-  linarith
 
 /-- The explicit spectator bound is nonnegative. -/
 theorem radialInterbandSpectatorUniformBound_nonneg
@@ -109,7 +102,8 @@ theorem norm_targetCenteredInterbandBastinPairIntegral_radial_le
   have hpole :=
     norm_targetCenteredInterbandSpectatorCurrentPoleIntegral_radial_le
       band e v m p radius broadening hm hradiusPos hradius hbroadening
-  have hmass := integral_lorentzianSpectralKernel_symmetric_le_pi radius broadening
+  have hmass := QuantumTheory.Transport.integral_lorentzianSpectralKernel_symmetric_le_pi
+    radius broadening
   have hC := radialInterbandSpectatorUniformBound_nonneg e v m radius
   have hpolePi :
       ‖targetCenteredInterbandSpectatorCurrentPoleIntegral

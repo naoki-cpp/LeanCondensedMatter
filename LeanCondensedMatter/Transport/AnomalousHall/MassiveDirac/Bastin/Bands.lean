@@ -6,8 +6,9 @@ set_option linter.style.header false
 # Massive-Dirac Bastin band-block decomposition
 
 The exact finite-broadening Bastin trace from `MassiveDiracBastinBerry` is already written with the
-gauge-free two-band projector resolvent. This file expands that expression into the four ordered
-band blocks
+gauge-free two-band projector resolvent. The projector/resolvent algebra itself is owned by
+`MassiveDirac/Streda/Spectral`; this file starts from that spectral API and expands the Bastin
+expression into the four ordered band blocks
 
 ```text
 (--), (-+), (+-), (++).
@@ -26,81 +27,6 @@ namespace AnomalousHall.MassiveDirac
 noncomputable section
 
 open QuantumTheory.Transport
-
-/-- Scalar coefficient of band `band` in the gauge-free projector resolvent at spectral parameter
-`z`. -/
-noncomputable def projectorResolventCoefficient
-    (z : ℂ) (band : Band) (v m px py : ℝ) : ℂ :=
-  (z - ((bandEnergy band v m px py : ℝ) : ℂ))⁻¹
-
-/-- Operator projectors remain idempotent after transport from `2 × 2` matrices. -/
-theorem bandProjectorOperator_mul_self
-    (band : Band) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    bandProjectorOperator band v m px py * bandProjectorOperator band v m px py =
-      bandProjectorOperator band v m px py := by
-  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
-  change φ (bandProjector band v m px py) * φ (bandProjector band v m px py) =
-    φ (bandProjector band v m px py)
-  calc
-    φ (bandProjector band v m px py) * φ (bandProjector band v m px py) =
-        φ (bandProjector band v m px py * bandProjector band v m px py) := by
-      symm
-      exact map_mul φ _ _
-    _ = φ (bandProjector band v m px py) := by
-      rw [bandProjector_mul_self band v m px py hE]
-
-/-- Lower then upper operator projectors are orthogonal away from the Dirac degeneracy. -/
-theorem bandProjectorOperator_lower_mul_upper
-    (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    bandProjectorOperator .lower v m px py * bandProjectorOperator .upper v m px py = 0 := by
-  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
-  change φ (bandProjector .lower v m px py) * φ (bandProjector .upper v m px py) = 0
-  calc
-    φ (bandProjector .lower v m px py) * φ (bandProjector .upper v m px py) =
-        φ (bandProjector .lower v m px py * bandProjector .upper v m px py) := by
-      symm
-      exact map_mul φ _ _
-    _ = 0 := by rw [bandProjector_lower_mul_upper v m px py hE, map_zero]
-
-/-- Upper then lower operator projectors are orthogonal away from the Dirac degeneracy. -/
-theorem bandProjectorOperator_upper_mul_lower
-    (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    bandProjectorOperator .upper v m px py * bandProjectorOperator .lower v m px py = 0 := by
-  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
-  change φ (bandProjector .upper v m px py) * φ (bandProjector .lower v m px py) = 0
-  calc
-    φ (bandProjector .upper v m px py) * φ (bandProjector .lower v m px py) =
-        φ (bandProjector .upper v m px py * bandProjector .lower v m px py) := by
-      symm
-      exact map_mul φ _ _
-    _ = 0 := by rw [bandProjector_upper_mul_lower v m px py hE, map_zero]
-
-/-- The projector resolvent written using the named scalar band coefficients. -/
-theorem projectorResolvent_eq_coefficients
-    (z : ℂ) (v m px py : ℝ) :
-    projectorResolvent z v m px py =
-      projectorResolventCoefficient z .lower v m px py •
-          bandProjectorOperator .lower v m px py +
-        projectorResolventCoefficient z .upper v m px py •
-          bandProjectorOperator .upper v m px py := by
-  rfl
-
-/-- Squaring the two-band projector resolvent squares only its scalar spectral coefficients. -/
-theorem projectorResolvent_sq
-    (z : ℂ) (v m px py : ℝ) (hE : energy v m px py ≠ 0) :
-    projectorResolvent z v m px py ^ 2 =
-      projectorResolventCoefficient z .lower v m px py ^ 2 •
-          bandProjectorOperator .lower v m px py +
-        projectorResolventCoefficient z .upper v m px py ^ 2 •
-          bandProjectorOperator .upper v m px py := by
-  rw [projectorResolvent_eq_coefficients, pow_two]
-  rw [add_mul, mul_add, mul_add]
-  simp only [smul_mul_assoc, mul_smul_comm, smul_smul]
-  rw [bandProjectorOperator_mul_self .lower v m px py hE]
-  rw [bandProjectorOperator_mul_self .upper v m px py hE]
-  rw [bandProjectorOperator_lower_mul_upper v m px py hE]
-  rw [bandProjectorOperator_upper_mul_lower v m px py hE]
-  simp [pow_two]
 
 /-- Ordered current band block `Tr(P_target j_μ P_source j_ν)` used by the Berry bridge. -/
 noncomputable def currentBandBlockTrace

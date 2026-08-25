@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.KuboBastin.Finite
+import LeanCondensedMatter.Transport.KuboBastin.FiniteTrace
 import LeanCondensedMatter.Transport.Streda.Integration
 
 set_option linter.style.header false

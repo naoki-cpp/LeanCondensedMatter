@@ -1,112 +1,88 @@
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleErrorLimit
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.PoleWindowBound
+import LeanCondensedMatter.Transport.Analysis.LorentzianPole
 import Mathlib.Tactic
 
 set_option linter.style.header false
 
 /-!
-# Regular-factor extraction at a massive-Dirac Bastin pole
+# Massive-Dirac specialization of Lorentzian pole extraction
 
-The fixed-window spectator error vanishes in the positive zero-broadening limit.  This file now
-returns to the physical regular factor itself.  Its Lorentzian-weighted target-centered integral is
-split exactly into the already-controlled error integral plus the scalar Lorentzian mass multiplying
-the regular factor evaluated at the target pole.
+The analytic error decomposition and zero-broadening extraction are owned generically by
+`Transport.Analysis.LorentzianPole`. This module owns the massive-Dirac fixed-window specialization:
+the regular spectator/current pole integral together with its zero-broadening limit.
 
-The subsequent limit therefore reduces to the existing Lorentzian mass theorem and the fixed-window
-error theorem.  No momentum integration is performed here.
+The limit is pointwise in momentum and uses a fixed positive target-centered energy window strictly
+narrower than the interband gap. No model-local error split, duplicate approximate-identity proof,
+momentum integration, or momentum-limit interchange is introduced here.
 -/
 
 namespace AnomalousHall.MassiveDirac
 
 noncomputable section
 
-open MeasureTheory
+open Filter QuantumTheory.Transport
 
 /-- Lorentzian-weighted target-centered integral of the regular interband spectator/current factor.
--/
+This is the massive-Dirac specialization of `lorentzianRegularFactorIntegral`. -/
 noncomputable def targetCenteredInterbandSpectatorCurrentPoleIntegral
     (band : Band) (e v m px py radius broadening : ℝ) : ℂ :=
-  ∫ offset in -radius..radius,
-    (lorentzianSpectralKernel offset broadening : ℂ) *
-      targetCenteredInterbandSpectatorCurrentFactor
-        band e v m px py (offset, broadening)
+  lorentzianRegularFactorIntegral
+    (targetCenteredInterbandSpectatorCurrentFactor band e v m px py)
+    radius broadening
 
-private theorem real_smul_complex_eq_mul (r : ℝ) (z : ℂ) :
-    r • z = (r : ℂ) * z := by
-  rfl
-
-/-- At fixed nonzero broadening, the regular-factor pole integral is exactly its spectator-error
-integral plus the scalar Lorentzian mass multiplying the target-pole value. -/
-theorem targetCenteredInterbandSpectatorCurrentPoleIntegral_eq_error_add_mass_smul_pole
-    (band : Band) (e v m px py radius broadening : ℝ)
-    (hradiusNonneg : 0 ≤ radius)
-    (hradius : radius < |interbandEnergyGap band v m px py|)
-    (hbroadening : broadening ≠ 0) :
-    targetCenteredInterbandSpectatorCurrentPoleIntegral
-        band e v m px py radius broadening =
-      targetCenteredInterbandSpectatorCurrentErrorIntegral
-          band e v m px py radius broadening +
-        (∫ offset in -radius..radius,
-          lorentzianSpectralKernel offset broadening) •
+/-- On a fixed positive target-centered window narrower than the interband gap, the Lorentzian-
+weighted regular spectator/current factor converges to `π` times its target-pole value. -/
+theorem tendsto_targetCenteredInterbandSpectatorCurrentPoleIntegral
+    (band : Band) (e v m px py radius : ℝ)
+    (hE : energy v m px py ≠ 0)
+    (hradiusPos : 0 < radius)
+    (hradius : radius < |interbandEnergyGap band v m px py|) :
+    Tendsto
+      (fun broadening : ℝ =>
+        targetCenteredInterbandSpectatorCurrentPoleIntegral
+          band e v m px py radius broadening)
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds
+        (Real.pi •
           targetCenteredInterbandSpectatorCurrentFactor
-            band e v m px py (0, 0) := by
-  have herrorInt :=
-    intervalIntegrable_targetCenteredInterbandSpectatorCurrentErrorIntegrand
-      band e v m px py radius broadening hradiusNonneg hradius hbroadening
-  have hkernelCont :=
-    continuous_lorentzianSpectralKernel_fixed_broadening broadening hbroadening
-  have hpoleInt : IntervalIntegrable
-      (fun offset : ℝ =>
-        lorentzianSpectralKernel offset broadening •
-          targetCenteredInterbandSpectatorCurrentFactor band e v m px py (0, 0))
-      MeasureTheory.volume (-radius) radius := by
-    exact (hkernelCont.smul continuous_const).intervalIntegrable
-      (μ := MeasureTheory.volume) (-radius) radius
-  unfold targetCenteredInterbandSpectatorCurrentPoleIntegral
-  calc
-    (∫ offset in -radius..radius,
-        (lorentzianSpectralKernel offset broadening : ℂ) *
-          targetCenteredInterbandSpectatorCurrentFactor
-            band e v m px py (offset, broadening)) =
-      ∫ offset in -radius..radius,
-        targetCenteredInterbandSpectatorCurrentErrorIntegrand
-            band e v m px py broadening offset +
-          lorentzianSpectralKernel offset broadening •
-            targetCenteredInterbandSpectatorCurrentFactor
-              band e v m px py (0, 0) := by
-        apply intervalIntegral.integral_congr
-        intro offset _
-        unfold targetCenteredInterbandSpectatorCurrentErrorIntegrand
-          targetCenteredInterbandSpectatorCurrentError
-        change
-          (lorentzianSpectralKernel offset broadening : ℂ) *
-              targetCenteredInterbandSpectatorCurrentFactor
-                band e v m px py (offset, broadening) =
-            (lorentzianSpectralKernel offset broadening : ℂ) *
-                (targetCenteredInterbandSpectatorCurrentFactor
-                    band e v m px py (offset, broadening) -
-                  targetCenteredInterbandSpectatorCurrentFactor
-                    band e v m px py (0, 0)) +
-              lorentzianSpectralKernel offset broadening •
-                targetCenteredInterbandSpectatorCurrentFactor
-                  band e v m px py (0, 0)
-        rw [real_smul_complex_eq_mul]
-        ring
-    _ = (∫ offset in -radius..radius,
-          targetCenteredInterbandSpectatorCurrentErrorIntegrand
-            band e v m px py broadening offset) +
-        ∫ offset in -radius..radius,
-          lorentzianSpectralKernel offset broadening •
-            targetCenteredInterbandSpectatorCurrentFactor
-              band e v m px py (0, 0) := by
-        exact intervalIntegral.integral_add herrorInt hpoleInt
-    _ = targetCenteredInterbandSpectatorCurrentErrorIntegral
-          band e v m px py radius broadening +
-        (∫ offset in -radius..radius,
-          lorentzianSpectralKernel offset broadening) •
-          targetCenteredInterbandSpectatorCurrentFactor
-            band e v m px py (0, 0) := by
-        unfold targetCenteredInterbandSpectatorCurrentErrorIntegral
-        rw [intervalIntegral.integral_smul_const]
+            band e v m px py (0, 0))) := by
+  let factor : ℝ × ℝ → ℂ :=
+    targetCenteredInterbandSpectatorCurrentFactor band e v m px py
+  have hcontinuous : ContinuousAt factor (0, 0) := by
+    simpa [factor] using
+      continuousAt_targetCenteredInterbandSpectatorCurrentFactor_zero
+        band e v m px py hE
+  have hslice : ∀ broadening : ℝ, broadening ≠ 0 →
+      ContinuousOn (fun offset : ℝ => factor (offset, broadening))
+        (Set.Icc (-radius) radius) := by
+    intro broadening _ offset hoffset
+    have hfactor :=
+      continuousAt_targetCenteredInterbandSpectatorCurrentFactor_on_targetWindow
+        band e v m px py radius (offset, broadening) hradius (abs_le.mpr hoffset)
+    have hpair : ContinuousAt (fun x : ℝ => (x, broadening)) offset := by
+      fun_prop
+    have hcomp : ContinuousAt (fun x : ℝ => factor (x, broadening)) offset := by
+      change Filter.Tendsto
+        (fun x : ℝ =>
+          targetCenteredInterbandSpectatorCurrentFactor band e v m px py (x, broadening))
+        (nhds offset)
+        (nhds
+          (targetCenteredInterbandSpectatorCurrentFactor
+            band e v m px py (offset, broadening)))
+      exact Filter.Tendsto.comp hfactor hpair
+    exact hcomp.continuousWithinAt
+  have hbound : ∃ C : ℝ, 0 ≤ C ∧
+      ∀ p ∈ Set.Icc (-radius) radius ×ˢ Set.Icc (0 : ℝ) 1,
+        ‖factor p - factor (0, 0)‖ ≤ C := by
+    rcases exists_nonneg_norm_targetCenteredInterbandSpectatorCurrentFactor_sub_pole_le_on_rectangle
+        band e v m px py radius 1 hradius with ⟨C, hCnonneg, hC⟩
+    refine ⟨C, hCnonneg, ?_⟩
+    intro p hp
+    simpa [factor, targetCenteredBastinPoleRectangle] using hC p hp
+  have hgeneric := tendsto_lorentzianRegularFactorIntegral
+    factor radius hradiusPos hcontinuous hslice hbound
+  simpa [factor, lorentzianRegularFactorIntegral,
+    targetCenteredInterbandSpectatorCurrentPoleIntegral] using hgeneric
 
 end
 
