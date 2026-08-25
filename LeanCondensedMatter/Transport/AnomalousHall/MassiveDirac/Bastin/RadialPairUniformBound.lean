@@ -82,15 +82,6 @@ theorem norm_targetCenteredInterbandSpectatorCurrentPoleIntegral_radial_le
   rw [intervalIntegral.integral_const_mul] at hineq
   exact hineq
 
-/-- Every positive-broadening symmetric Lorentzian window has mass at most `π`. -/
-theorem integral_lorentzianSpectralKernel_symmetric_le_pi
-    (radius broadening : ℝ) :
-    (∫ offset in -radius..radius,
-      lorentzianSpectralKernel offset broadening) ≤ Real.pi := by
-  rw [integral_lorentzianSpectralKernel_symmetric]
-  have h := Real.arctan_lt_pi_div_two (radius / broadening)
-  linarith
-
 /-- The explicit spectator bound is nonnegative. -/
 theorem radialInterbandSpectatorUniformBound_nonneg
     (e v m radius : ℝ) :
@@ -111,7 +102,8 @@ theorem norm_targetCenteredInterbandBastinPairIntegral_radial_le
   have hpole :=
     norm_targetCenteredInterbandSpectatorCurrentPoleIntegral_radial_le
       band e v m p radius broadening hm hradiusPos hradius hbroadening
-  have hmass := integral_lorentzianSpectralKernel_symmetric_le_pi radius broadening
+  have hmass := QuantumTheory.Transport.integral_lorentzianSpectralKernel_symmetric_le_pi
+    radius broadening
   have hC := radialInterbandSpectatorUniformBound_nonneg e v m radius
   have hpolePi :
       ‖targetCenteredInterbandSpectatorCurrentPoleIntegral
