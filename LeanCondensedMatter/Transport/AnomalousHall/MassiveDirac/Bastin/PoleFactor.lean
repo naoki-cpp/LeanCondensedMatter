@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Interband
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Lorentzian
 import Mathlib.Tactic
 
 set_option linter.style.header false

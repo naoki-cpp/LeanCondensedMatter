@@ -1,5 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialEnergyBridge
-import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.FermiSurface
+import LeanCondensedMatter.Transport.Analysis.ZeroTemperatureOccupation
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialPairUniformBound
 import Mathlib.Tactic
 
@@ -21,7 +21,7 @@ namespace AnomalousHall.MassiveDirac
 
 noncomputable section
 
-open MeasureTheory
+open MeasureTheory QuantumTheory.Transport
 
 /-- Target-centered regular pole integral with the physical zero-temperature occupation inserted. -/
 noncomputable def targetCenteredZeroTemperatureInterbandSpectatorCurrentPoleIntegral

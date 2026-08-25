@@ -58,10 +58,6 @@
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Bands",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Limit",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Lorentzian",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Occupation",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Tail",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.FiniteWindow",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.FermiSurface",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Spectator",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.Interband"
           ]
