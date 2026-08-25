@@ -130,8 +130,10 @@ theorem realMultiplicationOperator_isFormalAdjoint
     (M.toPMap ⊤).IsFormalAdjoint (M.toPMap ⊤) := by
   dsimp
   intro ψ φ
-  simpa using realMultiplicationOperator_symmetric f hf
-    (ψ : ComplexL2) (φ : ComplexL2)
+  change
+    inner ℂ (multiplicationOperator (realMultiplier f hf) (ψ : ComplexL2)) (φ : ComplexL2) =
+      inner ℂ (ψ : ComplexL2) (multiplicationOperator (realMultiplier f hf) (φ : ComplexL2))
+  exact realMultiplicationOperator_symmetric f hf (ψ : ComplexL2) (φ : ComplexL2)
 
 end
 end L2MultiplicationRealLine

@@ -13,7 +13,7 @@ operator-theory or condensed-matter content.
 individually summable.** Given `g : ι × κ → E` summable, together with `HasSum` data for its row
 sums (`row i = Σⱼ g(i,j)`) and column sums (`col j = Σᵢ g(i,j)`), `row` and `col` are themselves
 summable and have the same total. -/
-theorem tsum_fiberwise_eq_of_summable {ι κ E : Type*} [NormedAddCommGroup E] [CompleteSpace E]
+theorem tsum_fiberwise_eq_of_summable {ι κ E : Type*} [NormedAddCommGroup E]
     {g : ι × κ → E} {row : ι → E} {col : κ → E} (hg : Summable g)
     (hrow : ∀ i, HasSum (fun j => g (i, j)) (row i))
     (hcol : ∀ j, HasSum (fun i => g (i, j)) (col j)) :

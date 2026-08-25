@@ -29,24 +29,29 @@ variable {Mode : Type*} [Fintype Mode]
 local instance instDecidableEqBosonicBlochDeDominicisTwoPoint : DecidableEq Mode :=
   Classical.decEq Mode
 
+omit [Fintype Mode] in
 /-- Bridge `Common.matrixCoeff` to the local occupation-basis notation. -/
 private theorem matrixCoeff_eq (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode)
     (m n : Occupation Mode) : Common.matrixCoeff A m n = A (basisState n) m := rfl
 
+omit [Fintype Mode] in
 private theorem smul_basisState_apply_self (c : ℂ) (n : Occupation Mode) :
     (c • basisState n : FockSpace Mode) n = c :=
   Common.smul_basisState_apply_self c n
 
+omit [Fintype Mode] in
 private theorem smul_basisState_apply_of_ne (c : ℂ) {m n : Occupation Mode} (h : m ≠ n) :
     (c • basisState m : FockSpace Mode) n = 0 :=
   Common.smul_basisState_apply_of_ne c h
 
+omit [Fintype Mode] in
 /-- The diagonal matrix coefficient of `e^{τH₀}` is its basis eigenvalue. -/
 theorem matrixCoeff_imaginaryTimeEvolveFree_self (ε : Mode → ℝ) (τ : ℝ) (n : Occupation Mode) :
     Common.matrixCoeff (imaginaryTimeEvolveFree ε τ) n n =
       Complex.exp ((τ * freeEigenvalue ε n : ℝ) : ℂ) := by
   rw [matrixCoeff_eq, imaginaryTimeEvolveFree_basisState, smul_basisState_apply_self]
 
+omit [Fintype Mode] in
 /-- The annihilation matrix coefficient against the corresponding lowered state. -/
 theorem matrixCoeff_annihilate_removeOccupation (i : Mode) (n : Occupation Mode) :
     Common.matrixCoeff (annihilate i) (removeOccupation i n) n = (Real.sqrt (n i : ℝ) : ℂ) := by
@@ -56,6 +61,7 @@ theorem matrixCoeff_annihilate_removeOccupation (i : Mode) (n : Occupation Mode)
     simp
   · rw [annihilate_basisState_of_pos h, smul_basisState_apply_self]
 
+omit [Fintype Mode] in
 /-- The matrix coefficient of `e^{τH₀}a_i†` against the corresponding lowered state. -/
 theorem matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation
     (ε : Mode → ℝ) (τ : ℝ) (i : Mode) (n : Occupation Mode) :
@@ -82,6 +88,7 @@ theorem matrixCoeff_imaginaryTimeEvolveFree_comp_create_removeOccupation
     have hcoord : ((removeOccupation i n) i : ℝ) + 1 = (n i : ℝ) := by exact_mod_cast hcoordN
     rw [createOccupation_removeOccupation_of_pos h, hcoord, smul_basisState_apply_self]
 
+omit [Fintype Mode] in
 /-- Mixed matrix coefficients vanish when the annihilation and creation modes differ. -/
 theorem matrixCoeff_imaginaryTimeEvolveFree_comp_create_mul_matrixCoeff_annihilate_of_ne
     {i j : Mode} (h : i ≠ j) (ε : Mode → ℝ) (τ : ℝ) (n k : Occupation Mode) :

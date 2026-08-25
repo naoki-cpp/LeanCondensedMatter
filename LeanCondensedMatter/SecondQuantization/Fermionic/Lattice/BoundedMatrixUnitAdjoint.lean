@@ -81,7 +81,8 @@ theorem latticeBasis_coord_eq_latticeCoordinateDual (y : Site) :
     (latticeBasis (Site := Site)).coord y = latticeCoordinateDual y := by
   apply LinearMap.ext
   intro ψ
-  simp [latticeBasis, latticeCoordinateDual]
+  change ψ y = ψ y
+  rfl
 
 variable [LinearOrder Site]
 

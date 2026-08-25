@@ -20,7 +20,7 @@ variable {n : ℕ}
 def pairSlotIndexEquiv (n : ℕ) : Fin (2 * n) ≃ Fin n × Fin 2 :=
   (finCongr (by ring)).trans (finProdFinEquiv (m := n) (n := 2)).symm
 
-/-- Recover an ambient position from its block index and its slot inside that block. -/
+/-- Recover an ambient position from its block index and its slot inside the block. -/
 theorem pairSlotIndexEquiv_reconstruct_val (n : ℕ) (p : Fin (2 * n)) :
     p.val = (pairSlotIndexEquiv n p).2.val + 2 * (pairSlotIndexEquiv n p).1.val := by
   have h := congrArg (fun q => q.val) ((pairSlotIndexEquiv n).symm_apply_apply p)
@@ -245,7 +245,8 @@ private theorem blockFactor_self (τ : Equiv.Perm (Fin (2 * n))) (k : Fin n) :
   rw [if_neg (hnotlt 0 0 (by decide)), if_pos hlt01,
     if_neg (hnotlt 1 0 (by decide)), if_neg (hnotlt 1 1 (by decide)),
     ite_lt_eq_neg_one_pow _ _ hne]
-  simp [blockPair]
+  simp only [one_mul, mul_one, blockPair]
+  rfl
 
 private theorem blockFactor_of_lt (τ : Equiv.Perm (Fin (2 * n))) {k l : Fin n} (h : k < l) :
     blockFactor τ k l =

@@ -92,7 +92,7 @@ private theorem twoPointOrderSignatureFiber_eq_iInter {n : ℕ} (τ τ' : ℝ)
         else (twoPointEventStrictComparisonSet τ τ' p.1 p.2)ᶜ := by
   classical
   ext σ
-  simp only [twoPointOrderSignatureFiber, Set.mem_setOf_eq, Set.mem_iInter]
+  simp only [twoPointOrderSignatureFiber, Set.mem_ofPred_eq, Set.mem_iInter]
   constructor
   · intro h p
     have hp : p ∈ twoPointOrderSignature τ τ' σ ↔ p ∈ s := by

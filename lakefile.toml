@@ -13,13 +13,14 @@ weak.linter.mathlibStandardSet = true
 # Keep warning-as-error focused on correctness, API health, and deprecations rather than formatting.
 linter.style.header = false
 linter.style.longLine = false
+linter.style.haveILetI = false
 linter.unnecessarySimpa = false
 maxSynthPendingDepth = 3
 
 [[require]]
 name = "mathlib"
 scope = "leanprover-community"
-rev = "v4.31.0"
+rev = "v4.33.1"
 
 [[lean_lib]]
 name = "LeanCondensedMatter"

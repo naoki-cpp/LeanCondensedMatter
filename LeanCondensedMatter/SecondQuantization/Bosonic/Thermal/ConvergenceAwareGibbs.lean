@@ -120,6 +120,7 @@ noncomputable def freeGibbsExpectation (ε : Mode → ℝ) (β : ℝ)
   Common.tsumTrace ((imaginaryTimeEvolveFree ε (-β)).comp A) /
     freeGibbsPartition ε β
 
+omit [Fintype Mode] in
 /-- The normalized free Gibbs expectation is additive on its explicit summability domain. -/
 theorem freeGibbsExpectation_add (ε : Mode → ℝ) (β : ℝ)
     {A B : FockSpace Mode →ₗ[ℂ] FockSpace Mode}
@@ -129,6 +130,7 @@ theorem freeGibbsExpectation_add (ε : Mode → ℝ) (β : ℝ)
   unfold freeGibbsExpectation
   rw [LinearMap.comp_add, Common.tsumTrace_add hA hB, add_div]
 
+omit [Fintype Mode] in
 /-- The normalized free Gibbs expectation is homogeneous on algebraic-Fock endomorphisms. -/
 theorem freeGibbsExpectation_smul (ε : Mode → ℝ) (β : ℝ) (c : ℂ)
     (A : FockSpace Mode →ₗ[ℂ] FockSpace Mode) :

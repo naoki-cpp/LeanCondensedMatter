@@ -50,7 +50,7 @@ theorem anticomm_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' 
     simp [quarticLocalLegOperator, Common.quarticLocalLegIsCreate,
       Common.quarticLocalLegMode, Common.quarticLocalLegOperator,
       anticomm_create_create, anticomm_annihilate_annihilate,
-      anticomm_annihilate_create, anticomm_create_annihilate]
+      anticomm_annihilate_create, anticomm_create_annihilate] <;> rfl
 
 /-- The Common `ζ`-commutator form of the fermionic quartic local-leg CAR. -/
 theorem zetaCommutator_quarticLocalLegOperator (q q' : QuarticVertexLabel Mode) (l l' : Fin 4) :

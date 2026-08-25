@@ -23,12 +23,12 @@ open Finset
 variable {ι R : Type*} [Fintype ι]
 
 private noncomputable def assignmentSingleCycleKernelSum [CommSemiring R]
-    (K : ι → ι → R) (m : ℕ) : R :=
+    (K : Matrix ι ι R) (m : ℕ) : R :=
   ∑ x : Fin m → ι,
     singleCycleKernelSum (fun a b : Fin m => K (x a) (x b)) Finset.univ
 
 private theorem sum_singleCycleContribution_assignments_eq_pow_mul_assignmentSingleCycleKernelSum
-    [CommSemiring R] (ζ : R) (K : ι → ι → R) (m : ℕ) :
+    [CommSemiring R] (ζ : R) (K : Matrix ι ι R) (m : ℕ) :
     (∑ x : Fin m → ι,
       singleCycleContribution ζ (fun a b : Fin m => K (x a) (x b)) Finset.univ) =
       ζ ^ (m - 1) * assignmentSingleCycleKernelSum K m := by
@@ -37,7 +37,7 @@ private theorem sum_singleCycleContribution_assignments_eq_pow_mul_assignmentSin
   simp [assignmentSingleCycleKernelSum, Finset.mul_sum]
 
 private noncomputable def cycleAssignmentKernelSum [CommSemiring R]
-    (K : ι → ι → R) {m : ℕ} (σ : Equiv.Perm (Fin m)) : R :=
+    (K : Matrix ι ι R) {m : ℕ} (σ : Equiv.Perm (Fin m)) : R :=
   ∑ x : Fin m → ι, ∏ a : Fin m, K (x a) (x (σ a))
 
 private def assignmentRelabel {m : ℕ} (e : Equiv.Perm (Fin m)) :
@@ -53,7 +53,7 @@ private def assignmentRelabel {m : ℕ} (e : Equiv.Perm (Fin m)) :
 
 omit [Fintype ι] in
 private theorem cycleKernelWeight_conj [CommSemiring R] {m : ℕ}
-    (K : ι → ι → R) (e σ : Equiv.Perm (Fin m)) (x : Fin m → ι) :
+    (K : Matrix ι ι R) (e σ : Equiv.Perm (Fin m)) (x : Fin m → ι) :
     (∏ a : Fin m, K (x a) (x ((e * σ * e⁻¹) a))) =
       ∏ a : Fin m, K ((x ∘ e) a) ((x ∘ e) (σ a)) := by
   classical
@@ -67,7 +67,7 @@ private theorem cycleKernelWeight_conj [CommSemiring R] {m : ℕ}
       simp [Equiv.Perm.mul_apply]
 
 private theorem cycleAssignmentKernelSum_conj [CommSemiring R] {m : ℕ}
-    (K : ι → ι → R) (e σ : Equiv.Perm (Fin m)) :
+    (K : Matrix ι ι R) (e σ : Equiv.Perm (Fin m)) :
     cycleAssignmentKernelSum K (e * σ * e⁻¹) = cycleAssignmentKernelSum K σ := by
   classical
   rw [cycleAssignmentKernelSum, cycleAssignmentKernelSum]
@@ -83,17 +83,17 @@ private theorem cycleAssignmentKernelSum_conj [CommSemiring R] {m : ℕ}
         (fun x => ∏ a : Fin m, K (x a) (x (σ a)))
 
 private noncomputable def pathKernelWeight [CommSemiring R]
-    (K : ι → ι → R) (a : ι) {n : ℕ} (v : Fin n → ι) (b : ι) : R :=
+    (K : Matrix ι ι R) (a : ι) {n : ℕ} (v : Fin n → ι) (b : ι) : R :=
   ∏ i : Fin (n + 1),
     K ((Fin.cons a v : Fin (n + 1) → ι) i) ((Fin.snoc v b : Fin (n + 1) → ι) i)
 
 private noncomputable def pathKernelSum [CommSemiring R]
-    (K : ι → ι → R) (n : ℕ) (a b : ι) : R :=
+    (K : Matrix ι ι R) (n : ℕ) (a b : ι) : R :=
   ∑ v : Fin n → ι, pathKernelWeight K a v b
 
 omit [Fintype ι] in
 private theorem pathKernelWeight_cons [CommSemiring R]
-    (K : ι → ι → R) (a c b : ι) {n : ℕ} (v : Fin n → ι) :
+    (K : Matrix ι ι R) (a c b : ι) {n : ℕ} (v : Fin n → ι) :
     pathKernelWeight K a (Fin.cons c v) b = K a c * pathKernelWeight K c v b := by
   classical
   rw [pathKernelWeight, ← Fin.cons_snoc_eq_snoc_cons c v b, Fin.prod_univ_succ]
@@ -101,7 +101,7 @@ private theorem pathKernelWeight_cons [CommSemiring R]
   rfl
 
 private theorem pathKernelSum_succ [CommSemiring R]
-    (K : ι → ι → R) (n : ℕ) (a b : ι) :
+    (K : Matrix ι ι R) (n : ℕ) (a b : ι) :
     pathKernelSum K (n + 1) a b = ∑ c : ι, K a c * pathKernelSum K n c b := by
   classical
   rw [pathKernelSum]
@@ -135,7 +135,7 @@ private theorem pathKernelSum_eq_pow [CommSemiring R] [DecidableEq ι]
 
 omit [Fintype ι] in
 private theorem cycleKernelWeight_finRotate [CommSemiring R] {n : ℕ}
-    (K : ι → ι → R) (x : Fin (n + 1) → ι) :
+    (K : Matrix ι ι R) (x : Fin (n + 1) → ι) :
     (∏ i : Fin (n + 1), K (x i) (x (finRotate (n + 1) i))) =
       pathKernelWeight K (x 0) (Fin.tail x) (x 0) := by
   classical
@@ -313,7 +313,7 @@ private theorem fullCycle_card_one :
   exact Fintype.card_unique
 
 private theorem assignmentSingleCycleKernelSum_eq_sum_cycleAssignmentKernelSum [CommSemiring R]
-    (K : ι → ι → R) (m : ℕ) :
+    (K : Matrix ι ι R) (m : ℕ) :
     assignmentSingleCycleKernelSum K m =
       ∑ σ : {σ : Equiv.Perm (Fin m) // σ.IsCycleOn (Set.univ : Set (Fin m))},
         cycleAssignmentKernelSum K σ.1 := by

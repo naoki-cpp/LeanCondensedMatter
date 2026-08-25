@@ -16,6 +16,11 @@ the four cross-pair endpoint comparisons.
 
 namespace Combinatorics
 
+/-- A Boolean-style inversion indicator is the corresponding power of `-1`. -/
+theorem if_negOne_one_eq_negOne_pow_indicator (p : Prop) [Decidable p] :
+    (if p then (-1 : ℤˣ) else 1) = (-1) ^ (if p then 1 else 0) := by
+  by_cases hp : p <;> simp [hp]
+
 /-- Select endpoint `0` or endpoint `1` of an ordered pair. -/
 def pairEndpointAt {n : ℕ} (pair : Fin (2 * n) × Fin (2 * n)) (k : Fin 2) : Fin (2 * n) :=
   if k = 0 then pair.1 else pair.2

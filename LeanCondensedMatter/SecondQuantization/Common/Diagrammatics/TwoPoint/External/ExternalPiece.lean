@@ -49,10 +49,12 @@ theorem TwoPointDiagram.externalPiece_vertexLabel
     d.externalPiece.vertexLabel ⟨v, Finset.mem_univ _⟩ =
       d.vertexLabel ⟨d.externalInteractionPart.orderEmbOfFin rfl v, Finset.mem_univ _⟩ := by
   unfold TwoPointDiagram.externalPiece
+  unfold TwoPointDiagram.externalInteractionPart
   rw [TwoPointDiagram.slotCongr_vertexLabel,
     TwoPointDiagram.externalVacuumSplit_fst_vertexLabel]
   exact congrArg d.vertexLabel
-    (Subtype.ext (standardSlotEquiv_symm_coe d.externalInteractionPart
+    (Subtype.ext (standardSlotEquiv_symm_coe
+      (TwoPointDiagram.interactionPart (d.externalComponent 0))
       ⟨v, Finset.mem_univ v⟩))
 
 private noncomputable def TwoPointDiagram.externalPieceLegEquiv
@@ -78,9 +80,9 @@ private theorem TwoPointDiagram.externalPiece_partner_externalPieceLegEquiv
       twoPointLegCongr (standardSlotEquiv d.externalInteractionPart)
         (d.externalComponentLegEquiv.symm
           (d.restrictedPartner d.externalComponentPart leg))
+  unfold TwoPointDiagram.externalInteractionPart
   rw [TwoPointDiagram.slotCongr_partner,
     d.externalComponentLegEquiv_symm_restrictedPartner]
-  rfl
 
 private theorem TwoPointDiagram.externalSlotLegSplitting_external_externalPart
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))
@@ -142,7 +144,7 @@ private theorem TwoPointDiagram.twoPointLegEquiv_externalPieceLegEquiv_symm
                   (Sum.inl ext)) =
             (twoPointLegEquiv d.externalInteractionPart).symm (Sum.inl ext) := by
         have h := hcongr (Sum.inl ext)
-        rw [twoPointLegDataCongr_inl, Equiv.apply_eq_iff_eq_symm_apply] at h
+        rw [twoPointLegDataCongr_inl, ← Equiv.eq_symm_apply] at h
         exact h
       rw [hk, d.externalSlotLegSplitting_external_externalPart, Equiv.apply_symm_apply]
       rfl
@@ -156,7 +158,7 @@ private theorem TwoPointDiagram.twoPointLegEquiv_externalPieceLegEquiv_symm
             (twoPointLegEquiv d.externalInteractionPart).symm
               (Sum.inr (e.symm v, l)) := by
         have h := hcongr (Sum.inr (v, l))
-        rw [twoPointLegDataCongr_inr, Equiv.apply_eq_iff_eq_symm_apply] at h
+        rw [twoPointLegDataCongr_inr, ← Equiv.eq_symm_apply] at h
         exact h
       rw [hk, d.externalSlotLegSplitting_interaction_externalPart, Equiv.apply_symm_apply]
       apply congrArg Sum.inr
@@ -213,8 +215,8 @@ theorem TwoPointDiagram.externalPieceMixedPosition_strictMono
     TwoPointDiagram.externalPieceMixedPosition,
     mixedTimeOrderedAtomicLegPosition_map_lt_iff
       (d.externalInteractionPart.orderEmbOfFin rfl).strictMono]
-  simpa [TwoPointDiagram.externalPieceTimes,
-    mixedTimeOrderedAtomicLegPosition] using hpq
+  simpa only [TwoPointDiagram.externalPieceTimes,
+    mixedTimeOrderedAtomicLegPosition_mixedTimeOrderedAtomicLegEquiv] using hpq
 
 theorem TwoPointDiagram.externalPieceMixedPosition_injective
     (d : TwoPointDiagram ExternalLabel InternalLabel n (Finset.univ : Finset (Fin n)))

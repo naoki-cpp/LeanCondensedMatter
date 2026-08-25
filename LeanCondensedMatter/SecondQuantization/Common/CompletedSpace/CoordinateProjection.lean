@@ -33,10 +33,13 @@ private noncomputable def coordinateProjectionLinear (P : Config → Prop) :
       map_add' := fun ψ φ => by
         apply lp.ext
         funext c
+        change (if P c then ψ c + φ c else 0) =
+          (if P c then ψ c else 0) + (if P c then φ c else 0)
         by_cases h : P c <;> simp [h]
       map_smul' := fun a ψ => by
         apply lp.ext
         funext c
+        change (if P c then a • ψ c else 0) = a • (if P c then ψ c else 0)
         by_cases h : P c <;> simp [h] }
 
 /-- The bounded coordinate projection associated with a predicate on configurations. Its operator
