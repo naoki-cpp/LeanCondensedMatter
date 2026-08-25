@@ -88,7 +88,6 @@
           "id": "bastinRadial",
           "modulePrefixes": [
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialDomination",
-            "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialLimitInterchange",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialSpectatorBound",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialSpectatorUniformBound",
             "LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin.RadialPairUniformBound",
