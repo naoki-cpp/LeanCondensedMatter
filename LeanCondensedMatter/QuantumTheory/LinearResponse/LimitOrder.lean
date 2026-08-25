@@ -137,6 +137,26 @@ def HasAdiabaticRemovalLimit (f : ℝ → ℂ) (L : ℂ) : Prop :=
 def HasStaticLimit (f : ℝ → ℂ) (L : ℂ) : Prop :=
   Tendsto f (𝓝 0) (𝓝 L)
 
+/-- Finite sums preserve regulator-removal limits term by term. -/
+theorem HasAdiabaticRemovalLimit.finsetSum {κ : Type*} (s : Finset κ)
+    (f : κ → ℝ → ℂ) (L : κ → ℂ)
+    (h : ∀ j ∈ s, HasAdiabaticRemovalLimit (f j) (L j)) :
+    HasAdiabaticRemovalLimit
+      (fun eta => s.sum fun j => f j eta)
+      (s.sum L) := by
+  unfold HasAdiabaticRemovalLimit
+  exact tendsto_finsetSum s fun j hj => h j hj
+
+/-- Finite sums preserve static limits term by term. -/
+theorem HasStaticLimit.finsetSum {κ : Type*} (s : Finset κ)
+    (f : κ → ℝ → ℂ) (L : κ → ℂ)
+    (h : ∀ j ∈ s, HasStaticLimit (f j) (L j)) :
+    HasStaticLimit
+      (fun omega => s.sum fun j => f j omega)
+      (s.sum L) := by
+  unfold HasStaticLimit
+  exact tendsto_finsetSum s fun j hj => h j hj
+
 /-- First take the static limit at every fixed positive rate, then remove the regulator. -/
 def HasStaticThenAdiabaticLimit
     (F : ℝ → ℝ → ℂ) (L : ℂ) : Prop :=
