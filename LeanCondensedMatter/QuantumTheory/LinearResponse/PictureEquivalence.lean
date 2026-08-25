@@ -37,7 +37,7 @@ theorem coe_heisenbergObservable (A : Observable H) (t : ℝ) :
 
 /-- The quadratic form of a bounded operator agrees after transporting either the vector or the
 operator by the free dynamics. -/
-theorem inner_freePropagator_apply_eq_heisenbergEvolution
+private theorem inner_freePropagator_apply_eq_heisenbergEvolution
     (A : H →L[ℂ] H) (x : H) (t : ℝ) :
     inner ℂ (freePropagator system t x)
         (A (freePropagator system t x)) =
