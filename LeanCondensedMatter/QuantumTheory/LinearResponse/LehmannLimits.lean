@@ -148,10 +148,11 @@ theorem hasStaticLimit_finiteLehmannLimitSum_of_pos
       (fun omega : ℝ =>
         finiteLehmannLimitSum s hbar omega eta energyGap weight)
       (finiteLehmannLimitSum s hbar 0 eta energyGap weight) := by
-  simpa [HasStaticLimit, finiteLehmannLimitSum] using
-    tendsto_finsetSum s fun j _ =>
-      hasStaticLimit_lehmannTerm_of_pos
-        hbar eta (energyGap j) (weight j) heta
+  unfold finiteLehmannLimitSum
+  apply HasStaticLimit.finsetSum
+  intro j _
+  exact hasStaticLimit_lehmannTerm_of_pos
+    hbar eta (energyGap j) (weight j) heta
 
 /-- Regulator removal for a finite sum whose nonzero-weight terms are nonresonant. -/
 theorem hasAdiabaticRemovalLimit_finiteLehmannLimitSum
@@ -163,10 +164,11 @@ theorem hasAdiabaticRemovalLimit_finiteLehmannLimitSum
       (fun eta : ℝ =>
         finiteLehmannLimitSum s hbar omega eta energyGap weight)
       (finiteUnswitchedLehmannSum s hbar omega energyGap weight) := by
-  simpa [HasAdiabaticRemovalLimit, finiteLehmannLimitSum, finiteUnswitchedLehmannSum] using
-    tendsto_finsetSum s fun j hj =>
-      hasAdiabaticRemovalLimit_lehmannTerm
-        hbar omega (energyGap j) (weight j) (hregular j hj)
+  unfold finiteLehmannLimitSum finiteUnswitchedLehmannSum
+  apply HasAdiabaticRemovalLimit.finsetSum
+  intro j hj
+  exact hasAdiabaticRemovalLimit_lehmannTerm
+    hbar omega (energyGap j) (weight j) (hregular j hj)
 
 /-- Static continuity of a finite zero-rate nonresonant sum. -/
 theorem hasStaticLimit_finiteUnswitchedLehmannSum
@@ -178,10 +180,11 @@ theorem hasStaticLimit_finiteUnswitchedLehmannSum
       (fun omega : ℝ =>
         finiteUnswitchedLehmannSum s hbar omega energyGap weight)
       (finiteUnswitchedLehmannSum s hbar 0 energyGap weight) := by
-  simpa [HasStaticLimit, finiteUnswitchedLehmannSum] using
-    tendsto_finsetSum s fun j hj =>
-      hasStaticLimit_unswitchedLehmannTerm
-        hbar (energyGap j) (weight j) hhbar (hregular j hj)
+  unfold finiteUnswitchedLehmannSum
+  apply HasStaticLimit.finsetSum
+  intro j hj
+  exact hasStaticLimit_unswitchedLehmannTerm
+    hbar (energyGap j) (weight j) hhbar (hregular j hj)
 
 /-- Near zero frequency, every finite static-nonresonant sum admits regulator removal. -/
 theorem eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum
