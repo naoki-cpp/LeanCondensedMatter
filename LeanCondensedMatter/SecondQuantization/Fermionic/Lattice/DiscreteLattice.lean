@@ -55,7 +55,13 @@ theorem matrixUnit_apply (x y : Site) (ψ : LatticeState Site) :
   rfl
 
 /-- A matrix unit sends its source-site ket to its target-site ket. -/
-theorem matrixUnit_single_same (x y z : Site) (c : ℂ) (h : y ≠ z) :
+theorem matrixUnit_single_same (x y : Site) (c : ℂ) :
+    matrixUnit x y (Finsupp.single y c) = Finsupp.single x c := by
+  classical
+  simp [matrixUnit]
+
+/-- A matrix unit kills a ket localized away from its source site. -/
+theorem matrixUnit_single_of_ne (x y z : Site) (c : ℂ) (h : y ≠ z) :
     matrixUnit x y (Finsupp.single z c) = 0 := by
   classical
   simp [matrixUnit, h]
