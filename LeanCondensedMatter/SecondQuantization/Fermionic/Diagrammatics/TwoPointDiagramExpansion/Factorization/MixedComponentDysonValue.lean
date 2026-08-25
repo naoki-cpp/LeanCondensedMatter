@@ -21,6 +21,7 @@ namespace Fermionic
 variable {Mode : Type*}
 
 /-- Dyson sign contributed by the interaction vertices in one full component. -/
+@[implicit_reducible]
 noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonSign
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (B : d.1.componentPartition.parts) : ℂ :=
@@ -64,6 +65,7 @@ section Fermionic
 variable [LinearOrder Mode] [Fintype Mode]
 
 /-- Dyson sign times the fixed-time value internal to one full component. -/
+@[implicit_reducible]
 noncomputable def FixedExternalTwoPointWickDiagram.mixedComponentDysonFixedTimeValue
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (ε : Mode → ℝ) (β : ℝ) (g : QuarticVertexLabel Mode → ℂ)
