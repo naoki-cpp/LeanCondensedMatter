@@ -148,14 +148,10 @@ theorem hasStaticLimit_finiteLehmannLimitSum_of_pos
       (fun omega : ℝ =>
         finiteLehmannLimitSum s hbar omega eta energyGap weight)
       (finiteLehmannLimitSum s hbar 0 eta energyGap weight) := by
-  classical
-  unfold HasStaticLimit
-  induction s using Finset.induction_on with
-  | empty => simp [finiteLehmannLimitSum]
-  | @insert a s ha ih =>
-      simpa [finiteLehmannLimitSum, Finset.sum_insert, ha] using
-        (hasStaticLimit_lehmannTerm_of_pos
-          hbar eta (energyGap a) (weight a) heta).add ih
+  simpa [HasStaticLimit, finiteLehmannLimitSum] using
+    tendsto_finsetSum s fun j _ =>
+      hasStaticLimit_lehmannTerm_of_pos
+        hbar eta (energyGap j) (weight j) heta
 
 /-- Regulator removal for a finite sum whose nonzero-weight terms are nonresonant. -/
 theorem hasAdiabaticRemovalLimit_finiteLehmannLimitSum
@@ -167,21 +163,10 @@ theorem hasAdiabaticRemovalLimit_finiteLehmannLimitSum
       (fun eta : ℝ =>
         finiteLehmannLimitSum s hbar omega eta energyGap weight)
       (finiteUnswitchedLehmannSum s hbar omega energyGap weight) := by
-  classical
-  unfold HasAdiabaticRemovalLimit
-  induction s using Finset.induction_on with
-  | empty => simp [finiteLehmannLimitSum, finiteUnswitchedLehmannSum]
-  | @insert a s ha ih =>
-      have haRegular := hregular a (Finset.mem_insert_self a s)
-      have hsRegular : ∀ j ∈ s,
-          weight j = 0 ∨ omega + energyGap j / hbar ≠ 0 := by
-        intro j hj
-        exact hregular j (Finset.mem_insert_of_mem hj)
-      simpa [finiteLehmannLimitSum, finiteUnswitchedLehmannSum,
-        Finset.sum_insert, ha] using
-        (hasAdiabaticRemovalLimit_lehmannTerm
-          hbar omega (energyGap a) (weight a) haRegular).add
-          (ih hsRegular)
+  simpa [HasAdiabaticRemovalLimit, finiteLehmannLimitSum, finiteUnswitchedLehmannSum] using
+    tendsto_finsetSum s fun j hj =>
+      hasAdiabaticRemovalLimit_lehmannTerm
+        hbar omega (energyGap j) (weight j) (hregular j hj)
 
 /-- Static continuity of a finite zero-rate nonresonant sum. -/
 theorem hasStaticLimit_finiteUnswitchedLehmannSum
@@ -193,20 +178,10 @@ theorem hasStaticLimit_finiteUnswitchedLehmannSum
       (fun omega : ℝ =>
         finiteUnswitchedLehmannSum s hbar omega energyGap weight)
       (finiteUnswitchedLehmannSum s hbar 0 energyGap weight) := by
-  classical
-  unfold HasStaticLimit
-  induction s using Finset.induction_on with
-  | empty => simp [finiteUnswitchedLehmannSum]
-  | @insert a s ha ih =>
-      have haRegular := hregular a (Finset.mem_insert_self a s)
-      have hsRegular : ∀ j ∈ s,
-          weight j = 0 ∨ energyGap j ≠ 0 := by
-        intro j hj
-        exact hregular j (Finset.mem_insert_of_mem hj)
-      simpa [finiteUnswitchedLehmannSum, Finset.sum_insert, ha] using
-        (hasStaticLimit_unswitchedLehmannTerm
-          hbar (energyGap a) (weight a) hhbar haRegular).add
-          (ih hsRegular)
+  simpa [HasStaticLimit, finiteUnswitchedLehmannSum] using
+    tendsto_finsetSum s fun j hj =>
+      hasStaticLimit_unswitchedLehmannTerm
+        hbar (energyGap j) (weight j) hhbar (hregular j hj)
 
 /-- Near zero frequency, every finite static-nonresonant sum admits regulator removal. -/
 theorem eventually_hasAdiabaticRemovalLimit_finiteLehmannLimitSum
