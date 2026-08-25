@@ -43,31 +43,11 @@ private theorem fixedExternalOfSlotSplit_prod_vacuumDysonSign_mul_vertexWeight
   rw [Finset.prod_mul_distrib]
   have hsign : d.1.vacuumComponentParts.prod d.mixedComponentDysonSign =
       (-1 : ℂ) ^ ((Finset.univ : Finset (Fin n)) \ T).card := by
-    have hsignFn :
-        d.mixedComponentDysonSign = fun B : d.1.componentPartition.parts =>
-          (-1 : ℂ) ^ (Common.TwoPointDiagram.interactionPart
-            (B.1 : Finset (Common.TwoPointVertex
-              (Finset.univ : Finset (Fin n))))).card := by
-      funext B
-      rfl
-    rw [hsignFn]
     simpa [d, fixedExternalOfSlotSplit] using
       (Common.TwoPointDiagram.prod_slotSplitVacuumComponentSigns_eq
         (Finset.subset_univ T) ext.1 vac hext)
   have hvertex : d.1.vacuumComponentParts.prod (d.mixedComponentVertexWeight g) =
       vac.couplingWeight g := by
-    have hvertexFn :
-        d.mixedComponentVertexWeight g = fun B : d.1.componentPartition.parts =>
-          ∏ v : ↥(Common.TwoPointDiagram.interactionPart
-            (B.1 : Finset (Common.TwoPointVertex
-              (Finset.univ : Finset (Fin n))))),
-            g (d.1.vertexLabel
-              ⟨v.1, Common.TwoPointDiagram.interactionPart_subset
-                (B.1 : Finset (Common.TwoPointVertex
-                  (Finset.univ : Finset (Fin n)))) v.2⟩) := by
-      funext B
-      rfl
-    rw [hvertexFn]
     simpa [d, fixedExternalOfSlotSplit,
       QuarticWickDiagram.couplingWeight, Common.QuarticDiagram.vertexWeight] using
       (Common.TwoPointDiagram.prod_slotSplitVacuumComponents_eq_vacuumVertexProduct
@@ -290,15 +270,6 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
     simpa [d] using
       (fixedExternalOfSlotSplit_prod_vacuumPairContractionValue_eq
         ε β T ext vac hext τ τ' σ hσ)
-  have hdysonFn :
-      d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ = fun B =>
-        d.mixedComponentDysonSign B *
-          (d.mixedComponentVertexWeight g B *
-            (d.1.mixedComponentWeight Common.Statistics.fermion τ τ' σ B *
-              ∏ pr : d.1.MixedComponentPair τ τ' σ B,
-                d.mixedPairContractionValue ε β τ τ' σ pr.1)) := by
-    funext B
-    rfl
   change d.1.vacuumComponentParts.prod
       (d.mixedComponentDysonFixedTimeValue ε β g τ τ' σ) = _
   calc
@@ -311,7 +282,6 @@ theorem fixedExternalOfSlotSplit_prod_vacuumDysonFixedTimeValue_eq_quarticIntegr
           d.1.vacuumComponentParts.prod (fun B =>
             ∏ pr : d.1.MixedComponentPair τ τ' σ B,
               d.mixedPairContractionValue ε β τ τ' σ pr.1)) := by
-      rw [hdysonFn]
       rw [← Finset.prod_mul_distrib, ← Finset.prod_mul_distrib]
       apply Finset.prod_congr rfl
       intro B _
