@@ -175,8 +175,11 @@ theorem quarticWickDiagramAmplitude_empty (ε : Mode → ℝ) (β : ℝ) (g : Qu
       (d.pairingInOrder order).weight Common.Statistics.fermion *
           ∏ pr ∈ (d.pairingInOrder order).pairs,
             orderedQuarticPairValue ε β d order (fun i => i.elim0) pr.1 pr.2 = 1
-    rw [hweight, hpairs]
-    simp
+    rw [hweight, hpairs, one_mul]
+    change
+      (∅ : Finset (Fin 0 × Fin 0)).prod
+          (fun pr => orderedQuarticPairValue ε β d order (fun i => i.elim0) pr.1 pr.2) = (1 : ℂ)
+    exact Finset.prod_empty
   simp only [quarticWickDiagramAmplitude, QuarticWickDiagram.couplingWeight,
     Common.QuarticDiagram.vertexWeight, hcard, pow_zero, one_mul]
   have hcoupling : ∏ v : (↥(∅ : Finset (Fin N))), g (d.vertexLabel v) = 1 := by
