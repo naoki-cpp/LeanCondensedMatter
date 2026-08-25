@@ -83,37 +83,14 @@ termination_by m n => m + n
 
 /-- Binary shuffle identity: the recursively accumulated contribution of all order-preserving
 interleavings equals the product of the two component ordered-simplex integrals. -/
-theorem orderedSimplexShuffleIntegral_eq_mul :
-    ∀ (m n : ℕ) (β : ℝ) (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ),
-      Continuous f → Continuous g →
-      orderedSimplexShuffleIntegral m n β f g =
-        orderedSimplexIntegral m β f * orderedSimplexIntegral n β g
-  | 0, n, β, f, g, _hf, _hg => by
-      simp
-  | m + 1, 0, β, f, g, _hf, _hg => by
-      simp
-  | m + 1, n + 1, β, f, g, hf, hg => by
-      rw [orderedSimplexShuffleIntegral]
-      have hleft : ∀ t : ℝ,
-          orderedSimplexShuffleIntegral m (n + 1) t
-              (fun rest => f (Fin.cons t rest)) g =
-            orderedSimplexIntegral m t (fun rest => f (Fin.cons t rest)) *
-              orderedSimplexIntegral (n + 1) t g := by
-        intro t
-        exact orderedSimplexShuffleIntegral_eq_mul m (n + 1) t
-          (fun rest => f (Fin.cons t rest)) g
-          (hf.comp (Continuous.finCons continuous_const continuous_id)) hg
-      have hright : ∀ t : ℝ,
-          orderedSimplexShuffleIntegral (m + 1) n t f
-              (fun rest => g (Fin.cons t rest)) =
-            orderedSimplexIntegral (m + 1) t f *
-              orderedSimplexIntegral n t (fun rest => g (Fin.cons t rest)) := by
-        intro t
-        exact orderedSimplexShuffleIntegral_eq_mul (m + 1) n t f
-          (fun rest => g (Fin.cons t rest)) hf
-          (hg.comp (Continuous.finCons continuous_const continuous_id))
-      simp_rw [hleft, hright]
-      exact (orderedSimplexIntegral_succ_mul_succ m n β f g hf hg).symm
-termination_by m n => m + n
+theorem orderedSimplexShuffleIntegral_eq_mul
+    (m n : ℕ) (β : ℝ)
+    (f : (Fin m → ℝ) → ℂ) (g : (Fin n → ℝ) → ℂ)
+    (hf : Continuous f) (hg : Continuous g) :
+    orderedSimplexShuffleIntegral m n β f g =
+      orderedSimplexIntegral m β f * orderedSimplexIntegral n β g :=
+  orderedSimplexShuffleIntegral_eq_mul_of_measurableLocallyBounded
+    m n β f g (intervalIntegral.Continuous.measurableLocallyBounded hf)
+      (intervalIntegral.Continuous.measurableLocallyBounded hg)
 
 end intervalIntegral
