@@ -1,7 +1,5 @@
 import LeanCondensedMatter.Analysis.Operator.Spectral.EigenvectorFamily
 
--- No project files currently carry a Mathlib-style copyright/author header; a
--- project-wide policy for this is a separate open item (see notes/conventions.md).
 set_option linter.style.header false
 
 /-!
@@ -13,7 +11,7 @@ Defines `HasSummableRealEigenvalues` and its associated `spectralTrace` on top o
 These declarations are not a general trace-class ideal: the predicate records only absolute
 summability of the indexed nonzero real eigenvalues. Compactness and symmetry remain explicit
 hypotheses of the operator theorems that use the spectral expansion. See
-`notes/roadmaps/operator-algebra.md` (Track C).
+`notes/roadmaps/operator-algebra.md`.
 -/
 
 variable {H : Type*} [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]

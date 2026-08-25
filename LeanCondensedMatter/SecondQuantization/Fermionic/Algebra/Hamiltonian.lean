@@ -5,18 +5,15 @@ set_option linter.style.header false
 /-!
 # Fermionic Hamiltonians
 
-Phase 6 of Track D's fermionic primary line (`notes/roadmaps/second-quantization.md`): the
-free/interaction Hamiltonians, each a `Common.diagonalOperator` (`Common/Algebra/AlgebraicFock.lean`) whose
-eigenvalue at occupation state `n` is the corresponding occupation-dependent scalar (total particle
-number, free energy, or interaction energy). Since each `n : Occupation Mode := Finset Mode`
-is itself finite regardless of whether `Mode` is, these sums are all over `n` (or `n × n`), **not**
-over all of `Mode` — so, unlike an earlier version of this file built from finite sums of
-`numberOperator i` over `i : Mode`, none of the three definitions below needs `[Fintype Mode]`.
+The total-number, free, and density-density interaction Hamiltonians are defined as
+`Common.diagonalOperator`s whose eigenvalues are occupation-dependent scalars. Since each
+`n : Occupation Mode := Finset Mode` is finite regardless of whether `Mode` is, the defining sums
+run over `n` (or `n × n`), not over all of `Mode`; none of the three definitions therefore needs
+`[Fintype Mode]`.
 
-Field operators are still out of scope (see `CreationAnnihilationFermionic.lean`'s module
-docstring); so is anything beyond the algebraic level (no self-adjointness, no spectral theory,
-no completion) — those are deferred past the algebraic Linked Cluster Theorem, per this track's
-design principles.
+These are algebraic, basis-diagonal operators on `OccupationFock Mode`. Self-adjointness, spectral
+theory, completed-space realizations, and general non-diagonal quartic interactions are separate
+concerns.
 -/
 
 namespace SecondQuantization

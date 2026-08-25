@@ -96,8 +96,10 @@ theorem imaginaryTimeEvolve_apply (ε : Mode → ℝ) (τ : ℝ)
 /-- The free Hamiltonian is fixed by its own imaginary-time evolution. -/
 theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
     imaginaryTimeEvolve ε τ (freeHamiltonian ε) = freeHamiltonian ε := by
-  apply linearMap_ext_basisState
+  apply Common.linearMap_ext_basisState
   intro n
+  change imaginaryTimeEvolve ε τ (freeHamiltonian ε) (basisState n) =
+    freeHamiltonian ε (basisState n)
   have hscalar : Complex.exp ((-τ * freeEigenvalue ε n : ℝ) : ℂ) *
       Complex.exp ((τ * freeEigenvalue ε n : ℝ) : ℂ) = 1 := by
     rw [← Complex.exp_add, ← Complex.ofReal_add]
@@ -110,8 +112,10 @@ theorem imaginaryTimeEvolve_freeHamiltonian (ε : Mode → ℝ) (τ : ℝ) :
 theorem imaginaryTimeEvolve_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     imaginaryTimeEvolve ε τ (annihilate i) =
       Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i := by
-  apply linearMap_ext_basisState
+  apply Common.linearMap_ext_basisState
   intro n
+  change imaginaryTimeEvolve ε τ (annihilate i) (basisState n) =
+    (Complex.exp (-(τ : ℂ) * (ε i : ℂ)) • annihilate i) (basisState n)
   rw [imaginaryTimeEvolve_apply,
     imaginaryTimeEvolveFree_basisState, map_smul, LinearMap.smul_apply]
   by_cases hi : n i = 0
@@ -129,8 +133,10 @@ theorem imaginaryTimeEvolve_annihilate (ε : Mode → ℝ) (τ : ℝ) (i : Mode)
 theorem imaginaryTimeEvolve_create (ε : Mode → ℝ) (τ : ℝ) (i : Mode) :
     imaginaryTimeEvolve ε τ (create i) =
       Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i := by
-  apply linearMap_ext_basisState
+  apply Common.linearMap_ext_basisState
   intro n
+  change imaginaryTimeEvolve ε τ (create i) (basisState n) =
+    (Complex.exp ((τ : ℂ) * (ε i : ℂ)) • create i) (basisState n)
   have hexp : -τ * freeEigenvalue ε n + τ * (freeEigenvalue ε n + ε i) = τ * ε i := by
     ring
   have hcast : (τ : ℂ) * (ε i : ℂ) = ((τ * ε i : ℝ) : ℂ) := by

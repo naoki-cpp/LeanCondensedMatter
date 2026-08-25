@@ -478,7 +478,7 @@ private theorem
     exact d.mixedComponentGeometricCrossingCount_mod_two_eq_zero_of_vacuum
       τ τ' σ B C hBC hCVac
 
-theorem FixedExternalTwoPointWickDiagram.pairingInMixedOrder_weight_eq_prod_components_unconditional
+private theorem FixedExternalTwoPointWickDiagram.pairingInMixedOrder_weight_eq_prod_components_unconditional
     {n : ℕ} {i j : Mode} (d : FixedExternalTwoPointWickDiagram Mode n i j)
     (s : Common.Statistics) (τ τ' : ℝ) (σ : Fin n → ℝ) :
     (d.1.pairingInMixedOrder τ τ' σ).weight s =
