@@ -5,7 +5,7 @@ set_option linter.style.header false
 /-!
 # The occupation-basis interface, generic over the concrete occupation-state type
 
-Shared architectural vocabulary for Track D's fermionic and bosonic lines
+Shared architectural vocabulary for the fermionic and bosonic occupation-basis implementations
 (`notes/roadmaps/second-quantization.md`): both lines represent a Fock-space basis vector by a
 concrete occupation state (`Fermionic.Occupation Mode := Finset Mode` for fermions, `Bosonic.Occupation
 Mode := Mode →₀ ℕ` for bosons) together with a per-mode occupation number extracted from it
@@ -19,8 +19,8 @@ genuinely different (`Finset Mode` vs. `Mode →₀ ℕ`, since Pauli exclusion 
 The concrete instances (`SecondQuantization.Fermionic.occupationBasis` and
 `SecondQuantization.Bosonic.occupationBasis`) live in each statistics-specific directory, not here,
 since a `Common/` file importing `Fermionic/` or `Bosonic/` would invert the intended dependency
-direction (`notes/conventions.md`'s "one directory per track" rule: statistics-specific code
-depends on `Common/`, not the reverse).
+direction documented in `notes/conventions.md`: statistics-specific code depends on `Common/`, not
+the reverse.
 -/
 
 namespace SecondQuantization
