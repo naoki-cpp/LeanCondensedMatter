@@ -6,13 +6,14 @@ set_option linter.style.header false
 /-!
 # Shared finite-disorder Born algebra
 
-This module owns proof algebra common to retarded and advanced first-Born closures. It keeps the
+This module owns algebra common to retarded and advanced first-Born closures. It keeps the
 retarded and advanced physical specializations as sibling modules while centralizing centered
-first-order cancellation, second-order finite averaging, and the exact closure-error identity.
+first-order cancellation, second-order finite averaging, and the R/A-neutral second-order Born
+approximation/error formulas.
 
-Retarded/advanced self-energies, Born resolvent approximations, and named closure errors remain in
-their physical specialization modules. No resolvent choice, self-consistency, vertex correction,
-Ward identity, trace-per-volume construction, or thermodynamic limit is introduced here.
+Orientation-sensitive Dyson remainders, retarded/advanced self-energies, and physical closure
+hypotheses remain in their specialization modules. No resolvent choice, self-consistency, vertex
+correction, Ward identity, trace-per-volume construction, or thermodynamic limit is introduced here.
 -/
 
 namespace QuantumTheory
@@ -64,13 +65,26 @@ theorem operatorAverage_eq_free_add_remainder_of_secondOrder
       simp
 
 omit [CompleteSpace H] in
+/-- R/A-neutral second-order Born resolvent expression `G₀ + G₀ Σ G₀`. -/
+noncomputable def secondOrderBornResolventApproximation
+    (freeGreen selfEnergy : H →L[ℂ] H) : H →L[ℂ] H :=
+  freeGreen + freeGreen * selfEnergy * freeGreen
+
+omit [CompleteSpace H] in
+/-- R/A-neutral closure error between an exact second-order remainder and `G₀ Σ G₀`. -/
+noncomputable def secondOrderBornClosureError
+    (freeGreen exactRemainder selfEnergy : H →L[ℂ] H) : H →L[ℂ] H :=
+  exactRemainder - freeGreen * selfEnergy * freeGreen
+
+omit [CompleteSpace H] in
 /-- Adding an exact second-order remainder equals the Born-truncated expression plus the retained
 closure error. No smallness or vanishing of the error is assumed. -/
 theorem free_add_remainder_eq_bornApproximation_add_error
     (freeGreen exactRemainder selfEnergy : H →L[ℂ] H) :
     freeGreen + exactRemainder =
-      (freeGreen + freeGreen * selfEnergy * freeGreen) +
-        (exactRemainder - freeGreen * selfEnergy * freeGreen) := by
+      secondOrderBornResolventApproximation freeGreen selfEnergy +
+        secondOrderBornClosureError freeGreen exactRemainder selfEnergy := by
+  unfold secondOrderBornResolventApproximation secondOrderBornClosureError
   noncomm_ring
 
 end FiniteDisorderEnsemble
