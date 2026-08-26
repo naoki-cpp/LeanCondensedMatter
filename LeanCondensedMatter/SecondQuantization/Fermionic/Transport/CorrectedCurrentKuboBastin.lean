@@ -36,6 +36,7 @@ variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup OneForm] [Module ℂ OneForm]
 variable [Fintype ι]
 
+/-- Bounded Fock-space observable associated with one corrected/nested current component. -/
 noncomputable def boundedCorrectedCurrentObservable
     (velocity m : LatticeState Site →ₗ[ℂ] LatticeState Site)
     (N : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
@@ -45,6 +46,11 @@ noncomputable def boundedCorrectedCurrentObservable
     (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
       (LatticeState Site) velocity m N α)
 
+/-- Neutral response channel for one corrected current component.
+
+`source` and `observableVariation` are deliberately supplied independently: generalized spin or
+orbital currents may be measured in response to an electric source while also carrying their own
+explicit first-order source dependence. -/
 noncomputable def correctedCurrentResponseChannel
     (velocity m : LatticeState Site →ₗ[ℂ] LatticeState Site)
     (N : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
