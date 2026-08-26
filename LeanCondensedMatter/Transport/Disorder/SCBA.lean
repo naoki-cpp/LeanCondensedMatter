@@ -7,16 +7,16 @@ set_option linter.style.header false
 # Bounded self-consistent Born data
 
 This module provides the bounded one-particle SCBA foundation used by the conserving impurity
-program in issue #688. It refines the canonical exact finite second moment from the finite-disorder
-moment layer to a bounded complex-linear covariance superoperator and records supplied
-retarded/advanced self-consistent Born approximation (SCBA) solutions.
+program in issue #688. It consumes the canonical exact finite second-moment bounded complex-linear
+map from the finite-disorder moment layer and records supplied retarded/advanced self-consistent
+Born approximation (SCBA) solutions.
 
 SCBA is not identified with the exact finite disorder average. A solution stores its self-energy
-fixed-point equations and two-sided Green-operator inverse identities explicitly. The covariance
-used by the retarded and advanced equations is the same operator, and adjoint compatibility is
-visible data. From these assumptions the module proves the finite Ward-consistency identity
+fixed-point equations and two-sided Green-operator inverse identities explicitly. Both retarded and
+advanced fixed-point equations use the same canonical second-moment action, whose complex linearity
+and adjoint compatibility are proved upstream from the finite ensemble. The module derives
 
-`Σᴿ - Σᴬ = C(Ḡᴿ - Ḡᴬ)`
+`Σᴿ - Σᴬ = C₂(Ḡᴿ - Ḡᴬ)`
 
 and the retarded/advanced adjoint relation for the self-energy. The bounded algebraic foundation is
 dimension-independent; finite-dimensionality is added only at ordinary-trace and finite-matrix
@@ -40,21 +40,6 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
-/-- Finite-disorder covariance represented as a bounded complex-linear superoperator on bounded
-endomorphisms. It is identified with the canonical exact finite second moment and is required to
-preserve adjoints. -/
-structure FiniteCovarianceSuperoperator where
-  /-- Bounded complex-linear covariance action. -/
-  covariance : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H)
-  /-- Identification with the canonical exact normalized finite second moment `E[Vω X Vω]`. -/
-  covariance_eq_secondMoment : ∀ kernel,
-    covariance kernel = ensemble.exactSecondMoment kernel
-  /-- Compatibility of the covariance action with the operator adjoint. -/
-  covariance_star : ∀ kernel,
-    covariance (star kernel) = star (covariance kernel)
-
-variable (covarianceData : FiniteCovarianceSuperoperator ensemble)
-
 /-- SCBA retarded shift `zᴿ I - H₀ - Σᴿ`. -/
 noncomputable def scbaRetardedShift
     (energy broadening : ℝ) (selfEnergy : H →L[ℂ] H) : H →L[ℂ] H :=
@@ -69,7 +54,8 @@ noncomputable def scbaAdvancedShift
 
 /-- Supplied bounded retarded/advanced SCBA solution at fixed real energy and positive broadening.
 The structure records approximation equations rather than identifying these operators with the
-exact ensemble average. -/
+exact ensemble average. The self-energy map is the canonical exact second-moment action `C₂`; no
+separate covariance object or compatibility proof is supplied. -/
 structure FiniteSCBASolution (energy broadening : ℝ) where
   /-- The SCBA regulator remains strictly positive. -/
   broadening_pos : 0 < broadening
@@ -81,12 +67,12 @@ structure FiniteSCBASolution (energy broadening : ℝ) where
   retardedGreen : H →L[ℂ] H
   /-- Advanced SCBA Green operator. -/
   advancedGreen : H →L[ℂ] H
-  /-- Retarded self-energy fixed-point equation `Σᴿ = C(Ḡᴿ)`. -/
-  retardedSelfEnergy_eq_covariance :
-    retardedSelfEnergy = covarianceData.covariance retardedGreen
-  /-- Advanced self-energy fixed-point equation `Σᴬ = C(Ḡᴬ)`. -/
-  advancedSelfEnergy_eq_covariance :
-    advancedSelfEnergy = covarianceData.covariance advancedGreen
+  /-- Retarded self-energy fixed-point equation `Σᴿ = C₂(Ḡᴿ)`. -/
+  retardedSelfEnergy_eq_secondMoment :
+    retardedSelfEnergy = ensemble.exactSecondMoment retardedGreen
+  /-- Advanced self-energy fixed-point equation `Σᴬ = C₂(Ḡᴬ)`. -/
+  advancedSelfEnergy_eq_secondMoment :
+    advancedSelfEnergy = ensemble.exactSecondMoment advancedGreen
   /-- The retarded shift is a left inverse of the supplied retarded Green operator. -/
   retardedShift_mul_green :
     ensemble.scbaRetardedShift energy broadening retardedSelfEnergy * retardedGreen = 1
@@ -104,38 +90,38 @@ structure FiniteSCBASolution (energy broadening : ℝ) where
     advancedGreen = star retardedGreen
 
 variable {energy broadening : ℝ}
-variable (solution : FiniteSCBASolution ensemble covarianceData energy broadening)
+variable (solution : FiniteSCBASolution ensemble energy broadening)
 
-/-- The supplied SCBA self-energies inherit the retarded/advanced adjoint relation from the common
-adjoint-compatible covariance superoperator. -/
+/-- The supplied SCBA self-energies inherit the retarded/advanced adjoint relation from the
+canonical adjoint-compatible exact second-moment action. -/
 theorem FiniteSCBASolution.advancedSelfEnergy_eq_star_retarded :
     solution.advancedSelfEnergy = star solution.retardedSelfEnergy := by
   calc
     solution.advancedSelfEnergy =
-        covarianceData.covariance solution.advancedGreen :=
-      solution.advancedSelfEnergy_eq_covariance
-    _ = covarianceData.covariance (star solution.retardedGreen) :=
-      congrArg covarianceData.covariance solution.advancedGreen_eq_star_retarded
-    _ = star (covarianceData.covariance solution.retardedGreen) :=
-      covarianceData.covariance_star solution.retardedGreen
+        ensemble.exactSecondMoment solution.advancedGreen :=
+      solution.advancedSelfEnergy_eq_secondMoment
+    _ = ensemble.exactSecondMoment (star solution.retardedGreen) :=
+      congrArg ensemble.exactSecondMoment solution.advancedGreen_eq_star_retarded
+    _ = star (ensemble.exactSecondMoment solution.retardedGreen) :=
+      ensemble.exactSecondMoment_star solution.retardedGreen
     _ = star solution.retardedSelfEnergy :=
-      congrArg star solution.retardedSelfEnergy_eq_covariance.symm
+      congrArg star solution.retardedSelfEnergy_eq_secondMoment.symm
 
 /-- Finite SCBA Ward-consistency identity. The retarded and advanced self-energy difference is the
-same covariance superoperator applied to the Green-operator difference. -/
-theorem FiniteSCBASolution.selfEnergy_sub_eq_covariance_green_sub :
+canonical exact second-moment action applied to the Green-operator difference. -/
+theorem FiniteSCBASolution.selfEnergy_sub_eq_secondMoment_green_sub :
     solution.retardedSelfEnergy - solution.advancedSelfEnergy =
-      covarianceData.covariance
+      ensemble.exactSecondMoment
         (solution.retardedGreen - solution.advancedGreen) := by
   calc
     solution.retardedSelfEnergy - solution.advancedSelfEnergy =
-        covarianceData.covariance solution.retardedGreen -
-          covarianceData.covariance solution.advancedGreen := by
-      rw [solution.retardedSelfEnergy_eq_covariance,
-        solution.advancedSelfEnergy_eq_covariance]
-    _ = covarianceData.covariance
+        ensemble.exactSecondMoment solution.retardedGreen -
+          ensemble.exactSecondMoment solution.advancedGreen := by
+      rw [solution.retardedSelfEnergy_eq_secondMoment,
+        solution.advancedSelfEnergy_eq_secondMoment]
+    _ = ensemble.exactSecondMoment
         (solution.retardedGreen - solution.advancedGreen) :=
-      (covarianceData.covariance.map_sub _ _).symm
+      (ensemble.exactSecondMoment_sub _ _).symm
 
 /-- The supplied retarded Green operator is a unit whose inverse is its SCBA shift. -/
 theorem FiniteSCBASolution.retardedGreen_isUnit :
