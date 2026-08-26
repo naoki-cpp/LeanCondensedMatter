@@ -30,9 +30,8 @@ variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup E] [Module ℝ E]
 variable [Fintype ι]
 
-/-- Neutral response-channel packaging of the directional charge-current/Peierls-contact
-specialization. -/
-noncomputable def directionalChargeResponseChannel
+/-- Neutral response-channel packaging used by the static directional charge-current target. -/
+noncomputable def staticDirectionalChargeResponseChannel
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q : ℝ) :
@@ -52,7 +51,7 @@ noncomputable def finiteStaticKuboBastinVectorPotentialResponse
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta : ℝ) : ℂ :=
   finiteStaticKuboBastinChannelResponse system data
-    (directionalChargeResponseChannel system geometry direction K q) eta
+    (staticDirectionalChargeResponseChannel system geometry direction K q) eta
 
 /-- Named finite static Kubo–Bastin conductivity target. The switching rate remains positive and
 finite; only the driving frequency is specialized to zero. -/
