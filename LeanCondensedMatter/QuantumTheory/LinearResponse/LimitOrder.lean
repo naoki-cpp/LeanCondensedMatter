@@ -42,9 +42,7 @@ noncomputable def causalAdiabaticFrequencyDomainSusceptibility
   ∫ τ : ℝ in Ioi 0,
     adiabaticFrequencySusceptibilityIntegrand system expectation A B omega eta τ
 
-/-- Causality reduces the full-real-line fixed-rate transform to the positive half-line.  The value
-at `τ = 0` is retained by first restricting to `Ici 0`; `Ici` and `Ioi` have the same Lebesgue
-integral because a singleton has zero measure. -/
+/-- Causality reduces the full-real-line fixed-rate transform to the positive half-line. -/
 theorem adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eq_causal
     (expectation : NormalizedExpectation H)
     (A B : H →L[ℂ] H) (omega eta : ℝ) (hη : 0 < eta) :
@@ -55,26 +53,8 @@ theorem adiabaticFrequencyDomainSusceptibilityOfPositiveRate_eq_causal
   rw [adiabaticFrequencyDomainSusceptibilityOfPositiveRate,
     adiabaticFrequencyDomainSusceptibility,
     causalAdiabaticFrequencyDomainSusceptibility]
-  calc
-    (∫ τ : ℝ,
-        adiabaticFrequencySusceptibilityIntegrand system expectation A B omega eta τ) =
-      ∫ τ : ℝ,
-        (Ici (0 : ℝ)).indicator
-          (adiabaticFrequencySusceptibilityIntegrand system expectation A B omega eta) τ := by
-      apply integral_congr_ae
-      filter_upwards [] with τ
-      by_cases hτ : τ ∈ Ici (0 : ℝ)
-      · simp [hτ]
-      · have hneg : τ < 0 := by simpa [Set.mem_Ici, not_le] using hτ
-        have hzero := adiabaticFrequencySusceptibilityIntegrand_eq_zero_of_neg
-          system expectation A B omega eta hneg
-        simp [hτ, hzero]
-    _ = ∫ τ : ℝ in Ici 0,
-        adiabaticFrequencySusceptibilityIntegrand system expectation A B omega eta τ :=
-      integral_indicator measurableSet_Ici
-    _ = ∫ τ : ℝ in Ioi 0,
-        adiabaticFrequencySusceptibilityIntegrand system expectation A B omega eta τ :=
-      integral_Ici_eq_integral_Ioi
+  exact integral_adiabaticFrequencySusceptibilityIntegrand_eq_Ioi_zero
+    system expectation A B omega eta
 
 /-- At fixed frequency and fixed positive switching rate, increasing the observation window to
 infinity converges to the causal fixed-rate transform. -/
