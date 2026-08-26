@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Combinatorics.PerfectPairing
+import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero
 import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
 
 set_option linter.style.header false
