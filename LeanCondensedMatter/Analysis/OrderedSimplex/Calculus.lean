@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Analysis.OrderedSimplex.Continuity
+import LeanCondensedMatter.Analysis.OrderedSimplex.Integral
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts
 
@@ -31,7 +31,8 @@ theorem continuous_orderedSimplexIntegral_boundary (n : ℕ)
     Continuous (fun β : ℝ =>
       orderedSimplexIntegral n β (fun rest => f (Fin.cons β rest))) := by
   exact continuous_orderedSimplexIntegral_of_continuous n id
-    (fun β rest => f (Fin.cons β rest)) continuous_id (continuous_finCons_comp hf)
+    (fun β rest => f (Fin.cons β rest)) continuous_id
+    (hf.comp (Continuous.finCons continuous_fst continuous_snd))
 
 /-- Every positive-dimensional ordered-simplex integral vanishes when its upper bound is zero. -/
 @[simp]
