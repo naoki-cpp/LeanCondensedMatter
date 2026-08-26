@@ -105,19 +105,18 @@ theorem bornRetardedSelfEnergy_eq_secondMoment
 is deliberately not an equality theorem for the exact average and does not require centering. -/
 noncomputable def bornRetardedResolventApproximation
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  ensemble.freeRetardedGreen energy broadening +
-    ensemble.freeRetardedGreen energy broadening *
-      bornRetardedSelfEnergy ensemble energy broadening *
-        ensemble.freeRetardedGreen energy broadening
+  secondOrderBornResolventApproximation
+    (ensemble.freeRetardedGreen energy broadening)
+    (bornRetardedSelfEnergy ensemble energy broadening)
 
 /-- Exact error between the full averaged Dyson remainder and the Born second-order closure. Its
 definition does not assert that centered disorder holds or that the error is small. -/
 noncomputable def bornRetardedClosureError
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  ensemble.exactSecondOrderRetardedRemainder energy broadening -
-    ensemble.freeRetardedGreen energy broadening *
-      bornRetardedSelfEnergy ensemble energy broadening *
-        ensemble.freeRetardedGreen energy broadening
+  secondOrderBornClosureError
+    (ensemble.freeRetardedGreen energy broadening)
+    (ensemble.exactSecondOrderRetardedRemainder energy broadening)
+    (bornRetardedSelfEnergy ensemble energy broadening)
 
 /-- Exact decomposition of the averaged resolvent into the named Born approximation plus its
 closure error. Centering is used only through the exact averaged-Dyson reduction. -/
