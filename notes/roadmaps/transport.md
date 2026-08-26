@@ -7,36 +7,38 @@ This track separates four boundaries that must not be conflated:
 3. ordinary finite trace, trace-class trace, and trace per unit volume;
 4. a conductivity derived from causal response versus a formula adopted as a definition.
 
-## Reusable bounded data
+## Reusable bounded boundaries
 
-`QuantumTheory.Transport.BoundedSystem H` is defined on an arbitrary complete complex Hilbert
-space. It stores:
+The current Transport architecture deliberately does **not** package all transport assumptions into
+a monolithic `BoundedSystem` or `FiniteVolumeSystem`. Reusable data are composed at the narrowest
+layer that needs them.
+
+The bounded dynamics input is `QuantumTheory.LinearResponse.BoundedFreeSystem H`, defined on an
+arbitrary complete complex Hilbert space. It stores only:
 
 - a bounded self-adjoint Hamiltonian;
-- bounded self-adjoint current observables;
-- signed carrier charge and a positive reduced Planck constant;
-- zero-temperature Fermi energy;
-- positive retarded/advanced broadening;
-- a self-adjoint idempotent Fermi projector commuting with the Hamiltonian.
+- a positive reduced Planck constant.
 
-It does not assume `FiniteDimensional ℂ H`. The Fermi projector is supplied as data; construction
-of the discontinuous spectral projector by functional calculus is a separate theorem.
+Transport adds physical volume independently through `QuantumTheory.Transport.PositiveVolume`.
+The volume is not inferred from Hilbert-space dimension: an infinite-dimensional Hilbert space may
+still describe a finite-volume model, while an infinite-volume conductivity requires a trace per
+unit volume or a controlled thermodynamic limit.
 
-`QuantumTheory.Transport.FiniteVolumeSystem H` adds only a positive physical volume. An
-infinite-dimensional Hilbert space may still describe a finite-volume model. Infinite-volume
-conductivity requires a trace per unit volume or a controlled thermodynamic limit and is not
-obtained by deleting the volume field.
+Finite pure-point spectral data, response-channel data, current/contact information, occupations,
+and ordinary finite-dimensional traces remain separate inputs owned by the layers that use them.
+This avoids making a single transport wrapper carry assumptions that are irrelevant to many
+resolvent or response theorems.
 
-The retarded and advanced parameters are fixed as
+The retarded and advanced parameters remain
 
 ```text
 zᴿ(E, η) = E + iη,
 zᴬ(E, η) = E - iη.
 ```
 
-The bridge `BoundedSystem.toBoundedFreeSystem` forgets transport-specific data and exposes the
-Hamiltonian and `ℏ` to the general bounded linear-response API. The reverse direction is
-intentionally unavailable because a free-dynamics system does not determine current or Fermi data.
+Their shared implementation is organized through the side-indexed `SpectralSide` API in
+`Transport.Resolvent.Basic`, with retarded and advanced names retained as the public physical
+specializations.
 
 ## Implemented clean response chain
 
@@ -57,48 +59,59 @@ time-dependent perturbation
 ```
 
 The dimension-independent resolvent layer proves retarded/advanced invertibility, adjoint,
-difference, and energy-derivative identities for bounded self-adjoint Hamiltonians. Finite
-dimensionality is added only where ordinary traces and finite pure-point sums require it.
+spectral-action, and energy-derivative identities for bounded self-adjoint Hamiltonians. Finiteness
+is introduced only at the layer that actually needs it: a finite spectral-index sum requires a
+`Fintype` index, while the ordinary operator trace requires finite-dimensional Hilbert space.
+
+`Transport.Core` owns representation-independent bookkeeping such as positive physical volume,
+electric-field normalization, finite scalar conductivity tables, and the ordinary finite-dimensional
+trace. `Transport.KuboBastin` owns the pure-point Lehmann-to-resolvent bridge and finite/common-energy
+spectral representations. Genuine ordinary traced Bastin kernels belong to the static
+`Transport.Streda` layer rather than to a finite-frequency Kubo–Bastin compatibility wrapper.
 
 The static bridge does not identify the causal conductivity with an occupation-weighted Bastin
-integral by definition. The Peierls contact cancellation, switching-rate/energy-broadening
-conversion, volume normalization, and scalar prefactors remain visible in a finite Ward hypothesis.
+integral by definition. Contact terms, switching-rate/energy-broadening conversion, volume
+normalization, scalar prefactors, and the hypotheses needed to identify a concrete response with an
+energy representation remain explicit at their corresponding bridge.
 
-Finite two-level and two-site dimer models validate zero-current cases, simultaneous current-sign
-reversal, nonzero traced values, self-adjoint hopping/current constructions, and pointwise
-Bastin–Středa agreement.
+Finite model realizations, including the massive-Dirac anomalous-Hall benchmark, are downstream of
+the generic Transport layers and should not be used to define generic spectral-analysis APIs unless
+a genuinely reusable proof pattern has first been demonstrated.
 
 ## Implemented exact disorder and first Born boundary
 
-The exact finite-disorder layer now provides:
+The exact finite-disorder layer provides:
 
 ```text
 finite normalized ensemble Ω
   → self-adjoint impurity potentials Vω
   → exact configuration Hamiltonians Hω = H₀ + Vω
-  → configuration-wise finite static conductivities
-  → normalized finite conductivity average
-  → configuration-wise Ward/Bastin representation
-  → averaged traced and spectral Bastin representations.
+  → exact configuration retarded/advanced resolvents
+  → configuration-wise Dyson identities
+  → exact finite scalar/operator ensemble averages.
 ```
 
 No probability law beyond an explicit normalized finite weight is assumed. The ensemble average
-remains outside each exact configuration response, and contact plus finite-volume normalization
-remain inside it.
+remains outside each exact configuration response.
 
-The weak-scattering Born boundary then separates exact and approximate statements:
+The first-Born boundary then separates exact and approximate statements:
 
-- exact operator-valued finite averages;
-- explicit centering and covariance data;
-- exact first and once-iterated retarded Dyson identities;
+- explicit centered finite-disorder moment data;
+- shared retarded/advanced-neutral averaging and closure algebra in `Disorder.BornCommon`;
+- exact first and once-iterated retarded/advanced Dyson identities;
 - exact vanishing of the averaged first-order term under centering;
-- an exact second-order remainder retaining the full configuration resolvent;
-- a clean-propagator Born self-energy;
-- a named Born resolvent approximation;
-- an exact closure error;
-- equality with the approximation only under an explicit closure hypothesis.
+- exact second-order remainders retaining the full configuration resolvent;
+- clean-propagator retarded and advanced Born self-energies;
+- named Born resolvent approximations and exact closure errors;
+- equality with a Born approximation only under an explicit closure hypothesis.
 
-This layer does not include SCBA, a dressed internal propagator, or a vertex correction.
+The retarded and advanced physical specializations remain siblings. Shared proof-only algebra belongs
+in `BornCommon`; orientation-sensitive Dyson products and physical R/A names stay in the respective
+specializations unless an adjoint theorem gives a genuinely simpler common owner.
+
+The first-Born layer itself does not identify Born expressions with the exact disorder average
+without the stated closure hypothesis and does not introduce a dressed internal propagator or a
+vertex correction.
 
 ## Selected conserving vertex continuation
 
