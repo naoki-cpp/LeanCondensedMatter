@@ -3,12 +3,14 @@ import LeanCondensedMatter.Transport.Disorder.Finite
 set_option linter.style.header false
 
 /-!
-# Shared finite-disorder moment data
+# Exact finite-disorder moments and centering data
 
-This module owns the centered finite second-moment data shared by retarded and advanced first-Born
-transport approximations. The data depend only on the exact finite disorder ensemble and its exact
-operator average; no resolvent, Born closure, self-consistency, or thermodynamic-limit structure is
-introduced here.
+This module owns the exact finite second-moment action shared by Born and SCBA transport
+approximations, together with the explicit centering assumption used by first-Born averaging.
+The exact second moment is computed directly from the finite disorder ensemble rather than supplied
+as separate covariance data.
+
+No resolvent, Born closure, self-consistency, or thermodynamic-limit structure is introduced here.
 -/
 
 namespace QuantumTheory
@@ -24,21 +26,20 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
-/-- Explicit centered-disorder and covariance assumptions for a finite ensemble. The covariance is
-an operator-valued action on a supplied bounded kernel; its exact finite second-moment realization is stored
-as a field. -/
+/-- Exact normalized finite second-moment action `E[Vω X Vω]` on a bounded operator `X`.
+This is exact finite-ensemble data and carries no Born or self-consistency approximation. -/
+noncomputable def exactSecondMoment
+    (kernel : H →L[ℂ] H) : H →L[ℂ] H :=
+  ensemble.operatorAverage (fun ω =>
+    (ensemble.impurityPotential ω).1 * kernel *
+      (ensemble.impurityPotential ω).1)
+
+/-- Explicit centering assumption for a finite disorder ensemble. The exact second moment itself is
+computed canonically by `FiniteDisorderEnsemble.exactSecondMoment`. -/
 structure FiniteDisorderMomentData where
-  /-- Operator-valued covariance action on an inserted bounded kernel. -/
-  covariance : (H →L[ℂ] H) → H →L[ℂ] H
   /-- Exact centering condition `E[Vω] = 0`. -/
   centered :
     ensemble.operatorAverage (fun ω => (ensemble.impurityPotential ω).1) = 0
-  /-- Identification of the covariance action with the exact weighted finite second moment. -/
-  covariance_eq_secondMoment : ∀ kernel,
-    covariance kernel =
-      ensemble.operatorAverage (fun ω =>
-        (ensemble.impurityPotential ω).1 * kernel *
-          (ensemble.impurityPotential ω).1)
 
 end FiniteDisorderEnsemble
 
