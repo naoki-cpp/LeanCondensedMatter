@@ -18,9 +18,8 @@ variable {m n : ℕ} {f : Fin m → Fin n}
 
 /-- Transport a mixed event along a reindexing of the interaction slots, fixing the two external
 events. -/
-def twoPointTimedEventMap (f : Fin m → Fin n) : TwoPointTimedEvent m → TwoPointTimedEvent n
-  | .inl e => .inl e
-  | .inr v => .inr (f v)
+def twoPointTimedEventMap (f : Fin m → Fin n) : TwoPointTimedEvent m → TwoPointTimedEvent n :=
+  Sum.map id f
 
 @[simp]
 theorem twoPointTimedEventMap_inl (f : Fin m → Fin n) (e : Fin 2) :
@@ -32,18 +31,8 @@ theorem twoPointTimedEventMap_inr (f : Fin m → Fin n) (v : Fin m) :
 
 theorem twoPointTimedEventMap_injective (hf : Function.Injective f) :
     Function.Injective (twoPointTimedEventMap f) := by
-  intro a b hab
-  cases a with
-  | inl a =>
-      cases b with
-      | inl b => simpa using hab
-      | inr w => simp at hab
-  | inr v =>
-      cases b with
-      | inl b => simp at hab
-      | inr w =>
-          simp only [twoPointTimedEventMap_inr, Sum.inr.injEq] at hab
-          exact congrArg Sum.inr (hf hab)
+  simpa [twoPointTimedEventMap] using
+    (Sum.map_injective.mpr ⟨Function.injective_id, hf⟩)
 
 @[simp]
 theorem twoPointTimedEventTime_map (f : Fin m → Fin n) (τ τ' : ℝ) (σ : Fin n → ℝ)
