@@ -5,7 +5,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Thermal.BlochDeDominicis.Un
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
-set_option linter.unusedSectionVars false
 
 /-!
 # Uncutoff bosonic two-point function

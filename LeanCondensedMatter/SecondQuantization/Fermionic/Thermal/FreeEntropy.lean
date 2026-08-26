@@ -6,7 +6,6 @@ import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
 set_option linter.unusedDecidableInType false
-set_option linter.unusedSectionVars false
 set_option linter.unnecessarySeqFocus false
 
 /-!
