@@ -1,4 +1,4 @@
-import LeanCondensedMatter.Transport.Disorder.Finite
+import LeanCondensedMatter.Transport.Disorder.Moments
 import LeanCondensedMatter.Transport.Resolvent.Basic
 
 set_option linter.style.header false
@@ -7,9 +7,9 @@ set_option linter.style.header false
 # Bounded self-consistent Born data
 
 This module provides the bounded one-particle SCBA foundation used by the conserving impurity
-program in issue #688. It refines the exact finite second moment from the finite-disorder ensemble
-layer to a bounded complex-linear covariance superoperator and records supplied retarded/advanced
-self-consistent Born approximation (SCBA) solutions.
+program in issue #688. It refines the canonical exact finite second moment from the finite-disorder
+moment layer to a bounded complex-linear covariance superoperator and records supplied
+retarded/advanced self-consistent Born approximation (SCBA) solutions.
 
 SCBA is not identified with the exact finite disorder average. A solution stores its self-energy
 fixed-point equations and two-sided Green-operator inverse identities explicitly. The covariance
@@ -41,17 +41,14 @@ namespace FiniteDisorderEnsemble
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
 /-- Finite-disorder covariance represented as a bounded complex-linear superoperator on bounded
-endomorphisms. It is connected to the exact finite second moment and is required to preserve
-adjoints. -/
+endomorphisms. It is identified with the canonical exact finite second moment and is required to
+preserve adjoints. -/
 structure FiniteCovarianceSuperoperator where
   /-- Bounded complex-linear covariance action. -/
   covariance : (H →L[ℂ] H) →L[ℂ] (H →L[ℂ] H)
-  /-- Identification with the exact normalized finite second moment `E[Vω X Vω]`. -/
+  /-- Identification with the canonical exact normalized finite second moment `E[Vω X Vω]`. -/
   covariance_eq_secondMoment : ∀ kernel,
-    covariance kernel =
-      ensemble.operatorAverage (fun ω =>
-        (ensemble.impurityPotential ω).1 * kernel *
-          (ensemble.impurityPotential ω).1)
+    covariance kernel = ensemble.exactSecondMoment kernel
   /-- Compatibility of the covariance action with the operator adjoint. -/
   covariance_star : ∀ kernel,
     covariance (star kernel) = star (covariance kernel)

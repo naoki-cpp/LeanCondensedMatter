@@ -492,7 +492,7 @@
       "id": "transportDisorderScba",
       "path": "LeanCondensedMatter/Transport/Disorder/SCBA.lean",
       "modules": [
-        "LeanCondensedMatter.Transport.Disorder.Finite",
+        "LeanCondensedMatter.Transport.Disorder.Moments",
         "LeanCondensedMatter.Transport.Resolvent.Basic"
       ]
     },
