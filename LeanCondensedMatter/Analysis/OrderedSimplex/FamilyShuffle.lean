@@ -39,12 +39,12 @@ theorem FamilySlotShuffle.orderedSimplexIntegral_cons {k : ℕ}
   apply congrArg₂ (· * ·)
   · apply congrArg (localIntegrand 0)
     funext j
-    simp [FamilySlotShuffle.timeAssignment]
+    simp [FamilySlotShuffleTo.timeAssignment]
   · apply congrArg (fun h : Fin k → ℂ => ∏ i, h i)
     funext i
     apply congrArg (localIntegrand i.succ)
     funext j
-    simp [FamilySlotShuffle.timeAssignment]
+    simp [FamilySlotShuffleTo.timeAssignment]
 
 /-- Finite-family ordered-simplex shuffle product identity under measurable local boundedness. -/
 theorem FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_of_measurableLocallyBounded :

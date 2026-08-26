@@ -109,7 +109,7 @@ theorem FamilySlotShuffle.sum_orderedSimplexIntegral_integrand_eq_prod_fintype_o
             rw [intervalIntegral.orderedSimplexIntegral_cast hsum]
             apply orderedSimplexIntegral_congr
             intro τ
-            unfold FamilySlotShuffle.integrand FamilySlotShuffle.timeAssignment
+            unfold FamilySlotShuffle.integrand FamilySlotShuffleTo.timeAssignment
             have hterm : ∀ i : Fin (Fintype.card ι),
                 localIntegrand (e i) (fun a =>
                   (fun z => τ (Fin.cast hsum z))
@@ -163,7 +163,7 @@ theorem FamilySlotShuffleTo.sum_orderedSimplexIntegral_ambientIntegrand_eq_prod_
               apply orderedSimplexIntegral_congr
               intro τ
               unfold FamilySlotShuffleTo.ambientIntegrand FamilySlotShuffle.integrand
-                FamilySlotShuffle.timeAssignment FamilySlotShuffleTo.castTotalEquiv
+                FamilySlotShuffleTo.timeAssignment FamilySlotShuffleTo.castTotalEquiv
               rfl
         _ = orderedSimplexIntegral (∑ i, size i) β (shuffle.integrand localIntegrand) := by
           symm
