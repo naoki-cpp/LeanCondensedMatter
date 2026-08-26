@@ -143,8 +143,10 @@ theorem Pairing.eraseZeroPair_insertFirstPair {n : ℕ} (pairing : Pairing n)
   have hPj : P.partner 0 = j := pairing.insertFirstPair_partner_zero j hj
   have hoi_eq : ∀ k : Fin (2 * n),
       (P.eraseZeroOrderIso k : Fin (2 * (n + 1))) =
-        (deletedPositionsOrderIso n j hj k : Fin (2 * (n + 1))) :=
-    deletedPositionsOrderIso_congr n hPj (P.partner_ne 0) hj
+        (deletedPositionsOrderIso n j hj k : Fin (2 * (n + 1))) := by
+    intro k
+    subst j
+    rfl
   apply Pairing.ext
   apply Equiv.ext
   intro i
