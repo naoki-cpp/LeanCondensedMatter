@@ -42,8 +42,7 @@ def main() -> int:
     kubo_bastin_umbrella = TRANSPORT / "KuboBastin.lean"
     pure_point_module = "LeanCondensedMatter.Transport.KuboBastin.PurePoint"
     finite_module = "LeanCondensedMatter.Transport.KuboBastin.Finite"
-    finite_trace_module = "LeanCondensedMatter.Transport.KuboBastin.FiniteTrace"
-    for module in (pure_point_module, finite_module, finite_trace_module):
+    for module in (pure_point_module, finite_module):
         require_import(
             errors,
             kubo_bastin_umbrella,
@@ -54,7 +53,6 @@ def main() -> int:
 
     pure_point_path = TRANSPORT / "KuboBastin" / "PurePoint.lean"
     finite_path = TRANSPORT / "KuboBastin" / "Finite.lean"
-    finite_trace_path = TRANSPORT / "KuboBastin" / "FiniteTrace.lean"
     require_import(
         errors,
         finite_path,
@@ -62,17 +60,15 @@ def main() -> int:
         root=ROOT,
         description="finite Kubo-Bastin specialization",
     )
-    require_import(
-        errors,
-        finite_trace_path,
-        finite_module,
-        root=ROOT,
-        description="finite-dimensional Kubo-Bastin trace realization",
-    )
     if finite_module in lean_imports(pure_point_path):
         errors.append("Transport/KuboBastin/PurePoint.lean must not import Finite")
-    if finite_trace_module in lean_imports(pure_point_path):
-        errors.append("Transport/KuboBastin/PurePoint.lean must not import FiniteTrace")
+
+    retired_finite_trace_path = TRANSPORT / "KuboBastin" / "FiniteTrace.lean"
+    if retired_finite_trace_path.exists():
+        errors.append(
+            "Transport/KuboBastin/FiniteTrace.lean is retired; "
+            "ordinary operator traces belong under Transport/Streda"
+        )
 
     disorder_umbrella = TRANSPORT / "Disorder.lean"
     born_common_module = "LeanCondensedMatter.Transport.Disorder.BornCommon"
