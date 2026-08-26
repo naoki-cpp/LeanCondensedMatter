@@ -43,9 +43,8 @@ def twoPointTimedEventTime {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ) :
 
 /-- Stable equal-time rank: external events have ranks `0,1` and interaction slot `v` has rank
 `2 + v`. -/
-def twoPointTimedEventRank {n : ℕ} : TwoPointTimedEvent n → ℕ
-  | .inl e => e
-  | .inr v => 2 + v
+def twoPointTimedEventRank {n : ℕ} (event : TwoPointTimedEvent n) : ℕ :=
+  (finSumFinEquiv event : Fin (2 + n)).val
 
 /-- Stable non-strict event precedence: later imaginary time comes first, with the stable rank
 breaking equal-time ties. -/
@@ -60,29 +59,6 @@ def twoPointTimedEventBeforeOrEqual {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ
 def twoPointTimedEventBefore {n : ℕ} (τ τ' : ℝ) (σ : Fin n → ℝ)
     (a b : TwoPointTimedEvent n) : Prop :=
   twoPointTimedEventBeforeOrEqual τ τ' σ a b ∧ a ≠ b
-
-private theorem twoPointTimedEventRank_injective {n : ℕ} :
-    Function.Injective (twoPointTimedEventRank : TwoPointTimedEvent n → ℕ) := by
-  intro a b h
-  cases a with
-  | inl a =>
-      cases b with
-      | inl b =>
-          apply congrArg Sum.inl
-          apply Fin.ext
-          simpa [twoPointTimedEventRank] using h
-      | inr b =>
-          simp [twoPointTimedEventRank] at h
-          omega
-  | inr a =>
-      cases b with
-      | inl b =>
-          simp [twoPointTimedEventRank] at h
-          omega
-      | inr b =>
-          apply congrArg Sum.inr
-          apply Fin.ext
-          simpa [twoPointTimedEventRank] using h
 
 private theorem twoPointTimedEventBeforeOrEqual_total {n : ℕ}
     (τ τ' : ℝ) (σ : Fin n → ℝ) (a b : TwoPointTimedEvent n) :
@@ -127,7 +103,9 @@ private theorem twoPointTimedEventBeforeOrEqual_antisymm {n : ℕ}
   · rcases hba with hba | ⟨_, hbaRank⟩
     · rw [habTime] at hba
       exact (lt_irrefl _ hba).elim
-    · exact twoPointTimedEventRank_injective (habRank.antisymm hbaRank)
+    · apply (finSumFinEquiv : TwoPointTimedEvent n ≃ Fin (2 + n)).injective
+      apply Fin.ext
+      exact habRank.antisymm hbaRank
 
 /-- Stable comparison of two fixed events is unchanged when their two event times are unchanged. -/
 theorem twoPointTimedEventBeforeOrEqual_congr {n : ℕ}
