@@ -36,7 +36,6 @@ Transport/
 ├── KuboBastin/
 │   ├── PurePoint.lean
 │   ├── Finite.lean
-│   ├── FiniteTrace.lean
 │   ├── OccupationInterpolation.lean
 │   ├── Occupation.lean
 │   └── CommonEnergy.lean
@@ -61,8 +60,9 @@ Transport/
 The stable public grouping modules are `Transport.Core`, `Transport.Resolvent`,
 `Transport.KuboBastin`, `Transport.Streda`, and `Transport.Disorder`. The project-level
 `LeanCondensedMatter.Transport` imports those five groups. The retired `Transport.Foundations`,
-`Transport.ResolventAPI`, and all historical flat generic Transport leaf modules were removed after
-repository-wide consumer audits showed no remaining imports.
+`Transport.ResolventAPI`, historical flat generic Transport leaf modules, and the declaration-free
+`Transport.KuboBastin.FiniteTrace` compatibility shim were removed after repository-wide consumer
+audits showed no remaining imports.
 
 All historical flat Transport and massive-Dirac AHE compatibility modules have now been removed
 after repository-wide consumer audits showed no remaining imports. `scripts/check_transport_hierarchy.py`
@@ -71,23 +71,26 @@ compatibility-forwarder machinery.
 
 ## Semantic Kubo–Bastin / Středa boundary
 
-The pure-point and finite restrictions are separate ownership boundaries:
+The pure-point and finite spectral-index restrictions are separate ownership boundaries:
 
 ```text
 KuboBastin/PurePoint
         ↓  [Fintype ι]
 KuboBastin/Finite
-        ↓  [FiniteDimensional ℂ H]
-KuboBastin/FiniteTrace
 ```
 
 `KuboBastin/PurePoint.lean` owns the complete-Hilbert-space Lehmann-to-retarded-resolvent algebra for
 one pure-point transition and does not assume a finite spectral index. `KuboBastin/Finite.lean`
 introduces `Fintype ι` only when those transitions are assembled into ordinary finite sums and
-packaged as finite `ResponseChannel` responses. `KuboBastin/FiniteTrace.lean` then introduces
-`FiniteDimensional ℂ H` exactly where ordinary `LinearMap.trace` is used. Thus finite spectral index
-and finite Hilbert-space dimension are explicit, distinct assumptions rather than properties of the
-Kubo–Bastin transition algebra itself.
+packaged as finite `ResponseChannel` responses. It does not manufacture an ordinary operator-trace
+representation from an already-computed scalar response.
+
+Ordinary finite-dimensional operator trace is a representation-independent primitive owned by
+`Core/FiniteTrace.lean`. The first genuine traced Bastin kernels are obtained in the static Středa
+layer, where `Streda/TraceKernel.lean` applies that trace to the canonical operator kernels from
+`Streda/OperatorKernel.lean`. Thus finite spectral index and finite Hilbert-space dimension remain
+explicit, distinct assumptions, while ordinary traces are introduced only where an operator-valued
+kernel actually exists to trace.
 
 `KuboBastin/Occupation.lean` and `KuboBastin/CommonEnergy.lean` remain on the Kubo–Bastin side of
 the boundary: their transition-level APIs are pure-point, while complete response/kernel sums use
