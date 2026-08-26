@@ -141,11 +141,19 @@ theorem Pairing.eraseZeroPair_insertFirstPair {n : ℕ} (pairing : Pairing n)
     (pairing.insertFirstPair j hj).eraseZeroPair = pairing := by
   set P := pairing.insertFirstPair j hj with hPdef
   have hPj : P.partner 0 = j := pairing.insertFirstPair_partner_zero j hj
+  have orderIso_congr {a b : Fin (2 * (n + 1))} (hab : a = b)
+      (ha : a ≠ (0 : Fin (2 * (n + 1)))) (hb : b ≠ (0 : Fin (2 * (n + 1))))
+      (k : Fin (2 * n)) :
+      (deletedPositionsOrderIso n a ha k : Fin (2 * (n + 1))) =
+        (deletedPositionsOrderIso n b hb k : Fin (2 * (n + 1))) := by
+    cases hab
+    rfl
   have hoi_eq : ∀ k : Fin (2 * n),
       (P.eraseZeroOrderIso k : Fin (2 * (n + 1))) =
         (deletedPositionsOrderIso n j hj k : Fin (2 * (n + 1))) := by
     intro k
-    simpa [Pairing.eraseZeroOrderIso, hPj]
+    rw [Pairing.eraseZeroOrderIso]
+    exact orderIso_congr hPj (P.partner_ne 0) hj k
   apply Pairing.ext
   apply Equiv.ext
   intro i
