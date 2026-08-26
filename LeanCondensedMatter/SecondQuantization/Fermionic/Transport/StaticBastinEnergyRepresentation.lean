@@ -1,4 +1,5 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StaticStredaWardBridge
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.StaticKuboBastinResponse
+import LeanCondensedMatter.Transport.Streda.SpectralEnergyIntegral
 
 set_option linter.style.header false
 
@@ -11,9 +12,9 @@ integral is a separate energy-representation statement. It should not, by itself
 identity: a concrete proof may combine resolvent algebra, a Peierls/contact sum rule, and limiting or
 regularity input.
 
-This module gives that missing statement its own type. The existing
-`FiniteStaticPeierlsWardIdentity` implies the representation, but future proofs can construct the
-representation directly without packaging the whole Bastin identification as a Ward identity.
+This module owns that missing statement independently of any particular Ward or contact-sum-rule
+hypothesis. Downstream modules may construct the representation from model-specific input without
+making this layer depend on those models.
 
 No equality between the finite-broadening common-energy kernel and the canonical Bastin integrand is
 claimed here. In particular, such a pointwise equality is not expected for an arbitrary occupation
@@ -58,24 +59,6 @@ structure FiniteStaticBastinEnergyRepresentation
             (system.hbar : ℂ) (q : ℂ) K)
           (kuboBastinEnergyBroadening system.hbar eta)
           lowerEnergy upperEnergy occupation
-
-/-- The legacy visible Peierls Ward/f-sum hypothesis implies the more accurately named complete
-Bastin energy representation. -/
-noncomputable def FiniteStaticPeierlsWardIdentity.toBastinEnergyRepresentation
-    (convention : QuantumTheory.Transport.PositiveVolume)
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q eta lowerEnergy upperEnergy : ℝ)
-    (occupation : ℝ → ℂ)
-    (ward : FiniteStaticPeierlsWardIdentity convention system data
-      geometry direction K q eta lowerEnergy upperEnergy occupation) :
-    FiniteStaticBastinEnergyRepresentation convention system data
-      geometry direction K q eta lowerEnergy upperEnergy occupation where
-  vectorPotentialResponse_eq_scaledTracedBastin :=
-    ward.vectorPotentialResponse_eq_scaledTracedBastin
-      convention system data geometry direction K q eta
-        lowerEnergy upperEnergy occupation
 
 /-- A static Bastin energy representation cancels the explicit finite-volume zero-frequency
 normalization and identifies the named static conductivity with the canonical traced Bastin energy
