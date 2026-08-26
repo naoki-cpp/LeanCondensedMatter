@@ -39,18 +39,6 @@ noncomputable def FamilySlotShuffleTo.ambientIntegrand {size : ι → ℕ} {tota
     (τ : Fin total → ℝ) : ℂ :=
   ∏ i, localIntegrand i (shuffle.timeAssignment τ i)
 
-/-- Restrict an ambient time assignment to one local block. -/
-def FamilySlotShuffle.timeAssignment {size : ι → ℕ} (shuffle : FamilySlotShuffle size)
-    (τ : Fin (∑ i, size i) → ℝ) (i : ι) : Fin (size i) → ℝ :=
-  fun j => τ (shuffle.slotEquiv ⟨i, j⟩)
-
-@[simp]
-theorem FamilySlotShuffle.timeAssignment_apply {size : ι → ℕ}
-    (shuffle : FamilySlotShuffle size) (τ : Fin (∑ i, size i) → ℝ)
-    (i : ι) (j : Fin (size i)) :
-    shuffle.timeAssignment τ i j = τ (shuffle.slotEquiv ⟨i, j⟩) :=
-  rfl
-
 /-- Product of local integrands after all local coordinates are embedded by a family shuffle. -/
 noncomputable def FamilySlotShuffle.integrand {size : ι → ℕ}
     (shuffle : FamilySlotShuffle size)
@@ -59,7 +47,7 @@ noncomputable def FamilySlotShuffle.integrand {size : ι → ℕ}
   ∏ i, localIntegrand i (shuffle.timeAssignment τ i)
 
 /-- Coordinate restriction to one local block is continuous. -/
-theorem FamilySlotShuffle.continuous_timeAssignment {size : ι → ℕ}
+private theorem FamilySlotShuffle.continuous_timeAssignment {size : ι → ℕ}
     (shuffle : FamilySlotShuffle size) (i : ι) :
     Continuous (fun τ : Fin (∑ i, size i) → ℝ => shuffle.timeAssignment τ i) := by
   exact continuous_pi fun j => continuous_apply (shuffle.slotEquiv ⟨i, j⟩)
