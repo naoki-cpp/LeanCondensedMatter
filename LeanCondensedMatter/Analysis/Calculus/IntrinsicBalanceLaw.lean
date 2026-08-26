@@ -185,10 +185,7 @@ noncomputable def ofRepresented
     (B : BalanceLaw δ Q d) :
     IntrinsicBalanceLaw δ Q d where
   transport := B.current.comp d
-  transport_depends := by
-    intro f g hfg
-    simp only [LinearMap.comp_apply]
-    rw [hfg]
+  transport_depends := DependsOnlyOnDifferential.of_factors (fun _ => rfl)
   source := B.source
   balance := by
     intro f
