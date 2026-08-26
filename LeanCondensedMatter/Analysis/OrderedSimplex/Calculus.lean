@@ -80,13 +80,9 @@ theorem orderedSimplexIntegral_succ_mul_succ (m n : ℕ) (β : ℝ)
     (a := (0 : ℝ)) (b := β) (u := u) (v := v) (u' := u') (v' := v')
     hu.continuousOn hv.continuousOn
     (fun t _ => by
-      have hboundary := continuous_orderedSimplexIntegral_boundary m f hf
-      simpa only [u, u', orderedSimplexIntegral_succ] using
-        (hboundary.integral_hasStrictDerivAt 0 t).hasDerivAt)
+      simpa [u, u'] using hasDerivAt_orderedSimplexIntegral_succ m f hf t)
     (fun t _ => by
-      have hboundary := continuous_orderedSimplexIntegral_boundary n g hg
-      simpa only [v, v', orderedSimplexIntegral_succ] using
-        (hboundary.integral_hasStrictDerivAt 0 t).hasDerivAt)
+      simpa [v, v'] using hasDerivAt_orderedSimplexIntegral_succ n g hg t)
     (hu'.intervalIntegrable 0 β) (hv'.intervalIntegrable 0 β)
   simpa [u, v, u', v'] using hprod.symm
 
