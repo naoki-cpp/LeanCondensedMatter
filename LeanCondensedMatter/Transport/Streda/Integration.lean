@@ -23,9 +23,10 @@ B = -∫ f'(E) P(E) dE + ∫ f(E) S(E) dE.
 ```
 
 The first term is named the regularized Fermi-surface contribution and the second the regularized
-Fermi-sea contribution. A representation object additionally proves that a chosen response—most
-importantly the finite-dimensional Kubo–Bastin conductivity from `KuboBastinTrace`—equals `B`.
-Only after such a representation is supplied does the response inherit the split.
+Fermi-sea contribution. A representation object additionally proves that a chosen response equals
+`B`; canonical ordinary-trace Bastin energy representations are supplied downstream by the static
+`Transport.Streda` trace layer. Only after such a representation is supplied does the response
+inherit the split.
 
 This module does not identify the sea term with a magnetic-field derivative of particle density or
 magnetization. It also makes no zero-temperature distributional, zero-broadening, DC, disorder,
