@@ -17,6 +17,24 @@ namespace BinaryShuffle
 
 open intervalIntegral
 
+private theorem continuous_uncurry_finCons {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
+    {n : ℕ} {f : X → (Fin (n + 1) → ℝ) → Y}
+    (hf : Continuous (Function.uncurry f)) :
+    Continuous (Function.uncurry
+      (fun y : X × ℝ => fun rest : Fin n → ℝ => f y.1 (Fin.cons y.2 rest))) := by
+  have hcons : Continuous
+      (fun z : (X × ℝ) × (Fin n → ℝ) =>
+        (Fin.cons z.1.2 z.2 : Fin (n + 1) → ℝ)) :=
+    Continuous.finCons (continuous_snd.comp continuous_fst) continuous_snd
+  exact hf.comp ((continuous_fst.comp continuous_fst).prodMk hcons)
+
+private theorem continuous_uncurry_fst {X Y : Type*} [TopologicalSpace X] [TopologicalSpace Y]
+    {n : ℕ} {f : X → (Fin n → ℝ) → Y}
+    (hf : Continuous (Function.uncurry f)) :
+    Continuous (Function.uncurry
+      (fun y : X × ℝ => fun times : Fin n → ℝ => f y.1 times)) := by
+  exact hf.comp ((continuous_fst.comp continuous_fst).prodMk continuous_snd)
+
 /-- The ordered-simplex contribution of one explicit binary shuffle. -/
 noncomputable def orderedSimplexContribution :
     {m n : ℕ} → BinaryShuffle m n → ℝ →
@@ -133,13 +151,13 @@ theorem sum_orderedSimplexContribution_eq_shuffleIntegral :
         intro σ
         exact continuous_orderedSimplexContribution_of_continuous σ id
           (fun t rest => f (Fin.cons t rest)) (fun _ => g) continuous_id
-          (continuous_finCons_comp hf) (hg.comp continuous_snd)
+          (hf.comp (Continuous.finCons continuous_fst continuous_snd)) (hg.comp continuous_snd)
       have hcontRight : ∀ σ : BinaryShuffle (m + 1) n, Continuous (fun t : ℝ =>
           orderedSimplexContribution σ t f (fun rest => g (Fin.cons t rest))) := by
         intro σ
         exact continuous_orderedSimplexContribution_of_continuous σ id
           (fun _ => f) (fun t rest => g (Fin.cons t rest)) continuous_id
-          (hf.comp continuous_snd) (continuous_finCons_comp hg)
+          (hf.comp continuous_snd) (hg.comp (Continuous.finCons continuous_fst continuous_snd))
       simp_rw [← hleft, ← hright]
       rw [intervalIntegral.integral_add]
       · rw [intervalIntegral.integral_finsetSum, intervalIntegral.integral_finsetSum]
