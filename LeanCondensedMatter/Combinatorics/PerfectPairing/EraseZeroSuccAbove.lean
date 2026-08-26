@@ -1,5 +1,4 @@
-import LeanCondensedMatter.Combinatorics.PerfectPairing
-import LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositionsSuccAbove
+import LeanCondensedMatter.Combinatorics.PerfectPairing.EraseZero
 import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
 
 set_option linter.style.header false
@@ -7,8 +6,8 @@ set_option linter.style.header false
 /-!
 # `Pairing.eraseZeroOrderIso` via `Fin.succAbove`
 
-This module specializes the general finite-index deletion equivalence to the pairing recursion and
-connects it to `List.eraseIdx`.
+This module identifies the increasing reindexing used by `eraseZeroPair` with the explicit
+`Fin.succAbove` map needed to compare it with `List.eraseIdx`.
 -/
 
 namespace Combinatorics
@@ -20,10 +19,27 @@ theorem Pairing.eraseZeroOrderIso_eq_succ_succAbove {n : ℕ} (pairing : Pairing
     (i : Fin (2 * n)) :
     (pairing.eraseZeroOrderIso i : Fin (2 * (n + 1))) =
       (((pairing.partner 0).pred (pairing.partner_ne 0)).succAbove i).succ := by
+  let k := (pairing.partner 0).pred (pairing.partner_ne 0)
+  have hj : pairing.partner 0 = k.succ := (Fin.succ_pred _ _).symm
   rw [Pairing.eraseZeroOrderIso]
-  exact deletedPositionsOrderIso_eq_succ_succAbove n
-    ((pairing.partner 0).pred (pairing.partner_ne 0)) (pairing.partner 0)
-    (Fin.succ_pred _ _).symm (pairing.partner_ne 0) i
+  have hmem : ∀ i : Fin (2 * n), ((k.succAbove i).succ : Fin (2 * (n + 1))) ∈
+      deletedPositions n (pairing.partner 0) := by
+    intro i
+    simp only [deletedPositions, Finset.mem_erase, Finset.mem_univ, and_true]
+    refine ⟨?_, Fin.succ_ne_zero _⟩
+    rw [hj]
+    exact fun h => Fin.succAbove_ne k i (Fin.succ_injective _ h)
+  have hmono : StrictMono (fun i : Fin (2 * n) =>
+      ((k.succAbove i).succ : Fin (2 * (n + 1)))) :=
+    Fin.strictMono_succ.comp (Fin.strictMono_succAbove k)
+  have huniq := Finset.orderEmbOfFin_unique
+    (card_deletedPositions n (pairing.partner 0) (pairing.partner_ne 0)) hmem hmono
+  have h1 : (deletedPositionsOrderIso n (pairing.partner 0) (pairing.partner_ne 0) i :
+      Fin (2 * (n + 1))) =
+      Finset.orderEmbOfFin (deletedPositions n (pairing.partner 0))
+        (card_deletedPositions n (pairing.partner 0) (pairing.partner_ne 0)) i :=
+    Finset.coe_orderIsoOfFin_apply _ _ i
+  rw [h1, ← huniq]
 
 /-- Reindexing a family along `eraseZeroOrderIso` equals erasing the partner position from the
 tail list. -/

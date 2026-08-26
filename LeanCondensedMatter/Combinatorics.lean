@@ -1,5 +1,4 @@
 import LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositions
-import LeanCondensedMatter.Combinatorics.FiniteIndex.DeletedPositionsSuccAbove
 import LeanCondensedMatter.Combinatorics.FiniteIndex.EraseIdxOfFn
 import LeanCondensedMatter.Combinatorics.SumEquivPartition
 import LeanCondensedMatter.Combinatorics.BinaryShuffle
