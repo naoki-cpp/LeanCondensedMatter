@@ -28,6 +28,16 @@ noncomputable section
 variable {H ι : Type*}
 variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
+/-- A nonzero broadening keeps either spectral-side parameter away from every real energy. -/
+theorem spectralParameter_sub_real_ne_zero
+    (side : SpectralSide) (energy broadening eigenvalue : ℝ)
+    (hbroadening : broadening ≠ 0) :
+    spectralParameter side energy broadening - (eigenvalue : ℂ) ≠ 0 := by
+  intro hzero
+  have him : side.sign * broadening = 0 := by
+    simpa [spectralParameter] using congrArg Complex.im hzero
+  exact (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening) him
+
 /-- A resolvent on either spectral side acts on a Hamiltonian eigenvector by the corresponding
 scalar resolvent factor. -/
 theorem resolvent_spectralParameter_apply_eigenvector
@@ -48,10 +58,8 @@ theorem resolvent_spectralParameter_apply_eigenvector
     simpa [S, G, z] using
       resolvent_mul_spectralShift side hamiltonian hself energy broadening hbroadening
   have hshift : z - (eigenvalue : ℂ) ≠ 0 := by
-    intro hzero
-    have him : side.sign * broadening = 0 := by
-      simpa [z] using congrArg Complex.im hzero
-    exact (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening) him
+    simpa [z] using
+      spectralParameter_sub_real_ne_zero side energy broadening eigenvalue hbroadening
   have hS_v : S v = (z - (eigenvalue : ℂ)) • v := by
     change z • v - hamiltonian v = _
     rw [hv]
@@ -126,21 +134,37 @@ theorem advancedResolvent_apply_purePointBasis_at_energy
     system.hamiltonian.1 system.hamiltonian.2
     (data.hamiltonian_apply_basis n) energy broadening hbroadening
 
+/-- On a pure-point energy basis, the square of either spectral-side resolvent has the squared
+scalar denominator. -/
+theorem resolvent_spectralParameter_sq_apply_purePointBasis_at_energy
+    (side : SpectralSide)
+    (energy broadening : ℝ) (hbroadening : broadening ≠ 0) (n : ι) :
+    ((resolvent system.hamiltonian.1 (spectralParameter side energy broadening)) ^ 2)
+        (data.basis n) =
+      ((spectralParameter side energy broadening - (data.energy n : ℂ))⁻¹) ^ 2 •
+        data.basis n := by
+  rw [pow_two]
+  change resolvent system.hamiltonian.1 (spectralParameter side energy broadening)
+      (resolvent system.hamiltonian.1 (spectralParameter side energy broadening)
+        (data.basis n)) = _
+  rw [resolvent_spectralParameter_apply_eigenvector
+    side system.hamiltonian.1 system.hamiltonian.2
+    (data.hamiltonian_apply_basis n) energy broadening hbroadening]
+  rw [map_smul]
+  rw [resolvent_spectralParameter_apply_eigenvector
+    side system.hamiltonian.1 system.hamiltonian.2
+    (data.hamiltonian_apply_basis n) energy broadening hbroadening]
+  rw [smul_smul, pow_two]
+
 /-- The square of the retarded resolvent has the squared scalar denominator on the energy basis. -/
 theorem retardedResolvent_sq_apply_purePointBasis_at_energy
     (energy broadening : ℝ) (hbroadening : 0 < broadening) (n : ι) :
     ((retardedResolvent system.hamiltonian.1 energy broadening) ^ 2) (data.basis n) =
       ((retardedSpectralParameter energy broadening - (data.energy n : ℂ))⁻¹) ^ 2 •
         data.basis n := by
-  rw [pow_two]
-  change retardedResolvent system.hamiltonian.1 energy broadening
-      (retardedResolvent system.hamiltonian.1 energy broadening (data.basis n)) = _
-  rw [retardedResolvent_apply_purePointBasis_at_energy
-    system data energy broadening hbroadening n]
-  rw [map_smul]
-  rw [retardedResolvent_apply_purePointBasis_at_energy
-    system data energy broadening hbroadening n]
-  rw [smul_smul, pow_two]
+  simpa only [retardedResolvent, spectralParameter_retarded] using
+    resolvent_spectralParameter_sq_apply_purePointBasis_at_energy
+      system data .retarded energy broadening (ne_of_gt hbroadening) n
 
 /-- The square of the advanced resolvent has the squared scalar denominator on the energy basis. -/
 theorem advancedResolvent_sq_apply_purePointBasis_at_energy
@@ -148,15 +172,9 @@ theorem advancedResolvent_sq_apply_purePointBasis_at_energy
     ((advancedResolvent system.hamiltonian.1 energy broadening) ^ 2) (data.basis n) =
       ((advancedSpectralParameter energy broadening - (data.energy n : ℂ))⁻¹) ^ 2 •
         data.basis n := by
-  rw [pow_two]
-  change advancedResolvent system.hamiltonian.1 energy broadening
-      (advancedResolvent system.hamiltonian.1 energy broadening (data.basis n)) = _
-  rw [advancedResolvent_apply_purePointBasis_at_energy
-    system data energy broadening hbroadening n]
-  rw [map_smul]
-  rw [advancedResolvent_apply_purePointBasis_at_energy
-    system data energy broadening hbroadening n]
-  rw [smul_smul, pow_two]
+  simpa only [advancedResolvent, spectralParameter_advanced] using
+    resolvent_spectralParameter_sq_apply_purePointBasis_at_energy
+      system data .advanced energy broadening (ne_of_gt hbroadening) n
 
 end
 end Transport
