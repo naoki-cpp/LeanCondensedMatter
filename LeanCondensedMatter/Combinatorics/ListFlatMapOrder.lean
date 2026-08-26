@@ -12,6 +12,12 @@ list-index bookkeeping from the diagrammatic mixed-event order arguments that us
 
 namespace List
 
+/-- Injective relabeling preserves the index of each element. -/
+theorem idxOf_map_of_injective {α β : Type*} [DecidableEq α] [DecidableEq β]
+    {f : α → β} (hf : Function.Injective f) (l : List α) (a : α) :
+    (l.map f).idxOf (f a) = l.idxOf a := by
+  simp [List.idxOf, List.findIdx_map, Function.comp_def, hf.eq_iff]
+
 /-- In a duplicate-free flattened list, two elements of one block have the same order relation to an
 element outside that block. -/
 theorem idxOf_flatMap_block_lt_uniform
