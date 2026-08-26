@@ -7,9 +7,9 @@ set_option linter.style.header false
 # Exact finite-disorder static conductivity
 
 The finite disorder ensemble is kept outside the exact response of each configuration. For every
-configuration `ω`, this module applies the established finite-dimensional static Kubo–Bastin
-conductivity to the exact Hamiltonian `Hω = H₀ + Vω`, using supplied pure-point spectral data for
-that Hamiltonian. The disorder-averaged conductivity is then the normalized finite weighted sum.
+configuration `ω`, this module applies the established finite static Kubo–Bastin conductivity to
+the exact Hamiltonian `Hω = H₀ + Vω`, using supplied pure-point spectral data for that Hamiltonian.
+The disorder-averaged conductivity is then the normalized finite weighted sum.
 
 A visible family of finite-rate Peierls Ward identities transports the configuration-wise static
 conductivity to the canonical traced or spectral Bastin energy integral. These equalities are then
@@ -48,7 +48,7 @@ noncomputable def finiteDisorderConfigurationStaticConductivity
     (convention : QuantumTheory.Transport.PositiveVolume)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q eta : ℝ) (ω : Ω) : ℂ :=
-  finiteDimensionalStaticKuboBastinDirectionalConductivity
+  finiteStaticKuboBastinDirectionalConductivity
     convention (ensemble.configurationSystem hbar hbar_pos ω)
       (spectralData ω) geometry direction K q eta
 
