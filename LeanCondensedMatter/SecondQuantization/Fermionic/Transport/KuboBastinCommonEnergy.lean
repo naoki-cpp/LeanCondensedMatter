@@ -28,6 +28,7 @@ variable [Fintype Site] [Fintype ι]
 variable [LinearOrder Site]
 variable [AddCommGroup E] [Module ℝ E]
 
+/-- The full-line localized integrand associated with one finite directional Bastin transition. -/
 noncomputable def finiteKuboBastinCommonTransitionIntegrand
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -101,6 +102,7 @@ theorem integral_finiteKuboBastinCommonTransitionIntegrand
   simp only [smul_eq_mul]
   ring
 
+/-- The finite sum of all localized directional transition integrands on the full energy axis. -/
 noncomputable def finiteKuboBastinCommonEnergyKernel
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -161,6 +163,7 @@ theorem integral_finiteKuboBastinCommonEnergyKernel
     exact integrable_finiteKuboBastinCommonTransitionIntegrand
       system data interpolation geometry direction K q omega eta mn
 
+/-- The common-energy-kernel conductivity with contact and finite-volume normalization. -/
 noncomputable def finiteKuboBastinCommonEnergyDirectionalConductivity
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
