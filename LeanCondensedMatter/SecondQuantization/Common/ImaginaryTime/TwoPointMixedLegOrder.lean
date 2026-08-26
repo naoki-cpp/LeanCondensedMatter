@@ -301,9 +301,8 @@ theorem mixedTimeOrderedAtomicLegPosition_lt_iff_of_eventTime_eq {n : ℕ}
 variable {m n : ℕ} {f : Fin m → Fin n}
 
 /-- Transport a standard two-point leg along a reindexing of the interaction slots. -/
-def orderedTwoPointLegMap (f : Fin m → Fin n) : OrderedTwoPointLeg m → OrderedTwoPointLeg n
-  | .inl e => .inl e
-  | .inr p => .inr (⟨f (p.1 : Fin m), Finset.mem_univ _⟩, p.2)
+def orderedTwoPointLegMap (f : Fin m → Fin n) : OrderedTwoPointLeg m → OrderedTwoPointLeg n :=
+  Sum.map id <| Prod.map (fun v => ⟨f (v : Fin m), Finset.mem_univ _⟩) id
 
 @[simp]
 theorem orderedTwoPointLegMap_inl (f : Fin m → Fin n) (e : Fin 2) :
@@ -318,25 +317,13 @@ theorem orderedTwoPointLegMap_inr (f : Fin m → Fin n)
 /-- An injective reindexing of the slots transports distinct legs to distinct legs. -/
 theorem orderedTwoPointLegMap_injective (hf : Function.Injective f) :
     Function.Injective (orderedTwoPointLegMap f) := by
-  intro x y hxy
-  cases x with
-  | inl a =>
-      cases y with
-      | inl b => simpa using hxy
-      | inr q =>
-          obtain ⟨w, l'⟩ := q
-          simp at hxy
-  | inr p =>
-      obtain ⟨v, l⟩ := p
-      cases y with
-      | inl b => simp at hxy
-      | inr q =>
-          obtain ⟨w, l'⟩ := q
-          simp only [orderedTwoPointLegMap_inr, Sum.inr.injEq, Prod.mk.injEq,
-            Subtype.mk.injEq] at hxy
-          obtain ⟨hv, hl⟩ := hxy
-          subst hl
-          exact congrArg (fun u => Sum.inr (u, l)) (Subtype.ext (hf hv))
+  unfold orderedTwoPointLegMap
+  apply Function.Injective.sumMap
+  · exact Function.injective_id
+  · apply Function.Injective.prodMap
+    · intro v w h
+      exact Subtype.ext (hf (congrArg Subtype.val h))
+    · exact Function.injective_id
 
 /-- The transported leg is supported on the transported event. -/
 @[simp]
