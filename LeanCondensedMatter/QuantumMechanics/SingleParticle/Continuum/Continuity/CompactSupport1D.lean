@@ -47,6 +47,16 @@ theorem intervalSmearedProbabilityDensity1D_eq_wholeSpace
   unfold intervalSmearedProbabilityDensity1D wholeSpaceSmearedProbabilityDensity1D
   exact ConservationLaw.integral_mul_eq_integral_of_tsupport_subset_Ioo htestSupport
 
+/-- If the test support is strictly inside `a..b`, its interval pairing with a density rate is the
+whole-space pairing. -/
+theorem intervalSmearedDensityRate1D_eq_wholeSpace
+    (a b : ℝ) {test densityTimeDerivative : ℝ → ℝ}
+    (htestSupport : tsupport test ⊆ Ioo a b) :
+    intervalSmearedDensityRate1D a b test densityTimeDerivative =
+      wholeSpaceSmearedDensityRate1D test densityTimeDerivative := by
+  unfold intervalSmearedDensityRate1D wholeSpaceSmearedDensityRate1D
+  exact ConservationLaw.integral_mul_eq_integral_of_tsupport_subset_Ioo htestSupport
+
 /-- The interval pairing with `deriv test` agrees with the whole-space pairing whenever the
 support of `test` lies strictly inside the interval. -/
 theorem intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace
@@ -56,6 +66,31 @@ theorem intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace
       wholeSpaceSmearedCurrentPairing1D (deriv test) current := by
   unfold intervalSmearedCurrentPairing1D wholeSpaceSmearedCurrentPairing1D
   exact ConservationLaw.integral_deriv_mul_eq_integral_of_tsupport_subset_Ioo htestSupport
+
+/-- A compact support window transports an interval weak balance to the corresponding whole-space
+identity. -/
+theorem weak_continuity_wholeSpace_of_interval
+    (a b : ℝ) {test current densityTimeDerivative : ℝ → ℝ}
+    (htestSupport : tsupport test ⊆ Ioo a b)
+    (hInterval :
+      intervalSmearedDensityRate1D a b test densityTimeDerivative =
+        intervalSmearedCurrentPairing1D a b (deriv test) current -
+          weightedBoundaryCurrent1D a b test current) :
+    wholeSpaceSmearedDensityRate1D test densityTimeDerivative =
+      wholeSpaceSmearedCurrentPairing1D (deriv test) current := by
+  have hDensityWindow :
+      intervalSmearedDensityRate1D a b test densityTimeDerivative =
+        wholeSpaceSmearedDensityRate1D test densityTimeDerivative :=
+    intervalSmearedDensityRate1D_eq_wholeSpace a b htestSupport
+  have hCurrentWindow :
+      intervalSmearedCurrentPairing1D a b (deriv test) current =
+        wholeSpaceSmearedCurrentPairing1D (deriv test) current :=
+    intervalSmearedCurrentPairing1D_deriv_eq_wholeSpace a b htestSupport
+  rcases ConservationLaw.endpoint_values_eq_zero_of_tsupport_subset_Ioo htestSupport with ⟨ha, hb⟩
+  have hBoundary : weightedBoundaryCurrent1D a b test current = 0 := by
+    simp [weightedBoundaryCurrent1D, ha, hb]
+  rw [hDensityWindow, hCurrentWindow, hBoundary, sub_zero] at hInterval
+  exact hInterval
 
 /-- A compact support window transports an interval smeared-density derivative theorem to the
 corresponding whole-space statement. -/
@@ -106,22 +141,10 @@ theorem schrodinger_weak_continuity_wholeSpace
         (fun x => probabilityDensityTimeDerivativeValue (ψ x) (ψt x)) =
       wholeSpaceSmearedCurrentPairing1D (deriv test)
         (fun x => probabilityCurrentValue1D ℏ κ (ψ x) (ψx x)) := by
-  have hweak := ConservationLaw.weak_continuity_wholeSpace_of_pointwise
-    (a := a) (b := b) (test := test)
-    (current := fun x => probabilityCurrentValue1D ℏ κ (ψ x) (ψx x))
-    (currentDerivative := fun x =>
-      probabilityCurrentDivergenceValue1D ℏ κ (ψ x) (ψxx x))
-    (densityTimeDerivative := fun x =>
-      probabilityDensityTimeDerivativeValue (ψ x) (ψt x))
-    htestSupport htestDifferentiable
-    (by intro x
-        exact probability_continuity_balance_of_schrodinger
-          ℏ κ (potential x) (ψ x) (ψt x) (ψxx x) hℏ (hschrodinger x))
-    (by intro x hx
-        exact hasDerivAt_probabilityCurrentValue1D ℏ κ
-          (hψre x hx) (hψim x hx) (hψxre x hx) (hψxim x hx))
-    htestDerivIntegrable hcurrentIntegrable
-  simpa [wholeSpaceSmearedDensityRate1D, wholeSpaceSmearedCurrentPairing1D] using hweak
+  have hInterval := schrodinger_weak_continuity_interval
+    a b ℏ κ hℏ (fun x _ => (htestDifferentiable x).hasDerivAt)
+      hψre hψim hψxre hψxim hschrodinger htestDerivIntegrable hcurrentIntegrable
+  exact weak_continuity_wholeSpace_of_interval a b htestSupport hInterval
 
 /-- Under the explicit dominated time-differentiation hypotheses, the scalar-potential Schrödinger
 equation gives the derivative of the whole-space compactly supported smeared density:
@@ -167,13 +190,10 @@ theorem hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_schrodinger
       (fun τ => wholeSpaceSmearedProbabilityDensity1D test (ψ τ))
       (wholeSpaceSmearedCurrentPairing1D (deriv test)
         (fun x => probabilityCurrentValue1D ℏ κ (ψ t x) (ψx x))) t := by
-  have htest : ∀ x ∈ [[a, b]], HasDerivAt test (deriv test x) x := by
-    intro x _
-    exact (htestDifferentiable x).hasDerivAt
   have hInterval := hasDerivAt_intervalSmearedProbabilityDensity1D_of_schrodinger
     a b t ℏ κ hℏ hs hDensityMeas hDensityIntegrable hDensityRateMeas hBound
-      hBoundIntegrable htimeRe htimeIm htest hψre hψim hψxre hψxim hschrodinger
-      htestDerivIntegrable hcurrentIntegrable
+      hBoundIntegrable htimeRe htimeIm (fun x _ => (htestDifferentiable x).hasDerivAt)
+      hψre hψim hψxre hψxim hschrodinger htestDerivIntegrable hcurrentIntegrable
   exact hasDerivAt_wholeSpaceSmearedProbabilityDensity1D_of_interval
     a b t htestSupport hInterval
 
