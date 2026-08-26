@@ -1,4 +1,4 @@
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinTrace
+import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinSpectral
 import LeanCondensedMatter.Transport.KuboBastin.Occupation
 
 set_option linter.style.header false
@@ -13,7 +13,7 @@ specialization with its Peierls contact and finite-volume normalization.
 
 For each directional transition the discrete probability difference is replaced by the oriented
 energy integral of the supplied occupation derivative. The resulting response remains connected
-to the causal Kubo / Kubo–Bastin chain at fixed positive switching rate.
+to the causal Kubo / spectral Kubo–Bastin chain at fixed positive switching rate.
 
 This is not yet a common full-energy Bastin integral or a Středa surface/sea representation. No
 zero-temperature distributional derivative, zero-broadening, DC, disorder, trace-per-volume, or
@@ -56,8 +56,6 @@ noncomputable def finiteKuboBastinDirectionalTransitionFactor
         (data.basis mn.2))
 
 omit [Fintype ι] in
-/-- The directional transition factor is the generalized measured/source factor specialized to the
-same directional charge current at both vertices. -/
 theorem finiteKuboBastinDirectionalTransitionFactor_eq_vertex
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -74,8 +72,6 @@ theorem finiteKuboBastinDirectionalTransitionFactor_eq_vertex
         omega eta mn := by
   rfl
 
-/-- One finite directional Kubo–Bastin transition with its discrete occupation difference replaced
-by an oriented energy integral of the occupation derivative. -/
 noncomputable def finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -89,8 +85,6 @@ noncomputable def finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
       system data geometry direction K q omega eta mn
 
 omit [Fintype ι] in
-/-- The directional occupation-resolved term is the generalized vertex term specialized to the
-same directional charge current at both vertices. -/
 theorem finiteKuboBastinOccupationResolvedDirectionalCurrentTerm_eq_vertex
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -109,8 +103,6 @@ theorem finiteKuboBastinOccupationResolvedDirectionalCurrentTerm_eq_vertex
   rfl
 
 omit [Fintype ι] in
-/-- The occupation-resolved directional transition is exactly the existing finite
-retarded-resolvent transition. -/
 theorem finiteKuboBastinSpectralDirectionalCurrentTerm_eq_occupationResolved
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -128,9 +120,6 @@ theorem finiteKuboBastinSpectralDirectionalCurrentTerm_eq_occupationResolved
   rw [interpolation.probabilityDifference_eq_integral system mn.1 mn.2]
   ring
 
-/-- The complete finite directional conductivity after replacing every discrete probability
-difference by its oriented occupation-derivative integral. The contact term and finite-volume
-normalization remain unchanged. -/
 noncomputable def finiteKuboBastinOccupationResolvedDirectionalConductivity
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
@@ -146,8 +135,6 @@ noncomputable def finiteKuboBastinOccupationResolvedDirectionalConductivity
           (system.hbar : ℂ) (q : ℂ) K)) *
     finiteVolumeConductivityNormalization convention omega eta
 
-/-- The finite spectral Bastin conductivity equals its occupation-resolved transition-integral
-form. -/
 theorem finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
@@ -168,33 +155,8 @@ theorem finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved
   exact finiteKuboBastinSpectralDirectionalCurrentTerm_eq_occupationResolved
     system data interpolation geometry direction K q omega eta mn
 
-/-- The named ordinary-trace finite Kubo–Bastin response equals the occupation-resolved finite
-transition-integral form. -/
-theorem finiteDimensionalKuboBastinDirectionalConductivity_eq_occupationResolved
-    (convention : QuantumTheory.Transport.PositiveVolume)
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (interpolation : PurePointOccupationInterpolation system data)
-    (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
-    (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
-    finiteDimensionalKuboBastinDirectionalConductivity
-        convention system data geometry direction K q omega eta =
-      finiteKuboBastinOccupationResolvedDirectionalConductivity
-        convention system data interpolation geometry direction K q omega eta := by
-  calc
-    finiteDimensionalKuboBastinDirectionalConductivity
-        convention system data geometry direction K q omega eta =
-      finiteKuboBastinSpectralDirectionalConductivity
-        system data geometry direction K q omega eta convention :=
-      finiteDimensionalKuboBastinDirectionalConductivity_eq_spectral
-        convention system data geometry direction K q omega eta
-    _ = finiteKuboBastinOccupationResolvedDirectionalConductivity
-        convention system data interpolation geometry direction K q omega eta :=
-      finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved
-        convention system data interpolation geometry direction K q omega eta
-
-/-- The occupation-resolved response remains connected to the upstream causal Kubo derivation at
-fixed positive switching rate. -/
+/-- The occupation-resolved response remains connected directly to the upstream causal Kubo and
+spectral Kubo–Bastin derivation at fixed positive switching rate. -/
 theorem infiniteTimeAdiabaticDirectionalConductivity_eq_occupationResolved
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
@@ -208,16 +170,17 @@ theorem infiniteTimeAdiabaticDirectionalConductivity_eq_occupationResolved
       finiteKuboBastinOccupationResolvedDirectionalConductivity
         convention system data interpolation geometry direction K q omega eta := by
   calc
-    infiniteTimeAdiabaticDirectionalConductivity convention
-        system (purePointNormalizedExpectation system data)
-          geometry direction K q omega eta =
-      finiteDimensionalKuboBastinDirectionalConductivity
+    _ = finiteKuboGreenwoodDirectionalConductivity
         convention system data geometry direction K q omega eta :=
-      infiniteTimeAdiabaticDirectionalConductivity_eq_finiteDimensionalKuboBastin
+      infiniteTimeAdiabaticDirectionalConductivity_eq_finiteKuboGreenwood
         convention system data geometry direction K q omega eta heta
+    _ = finiteKuboBastinSpectralDirectionalConductivity
+        system data geometry direction K q omega eta convention :=
+      finiteKuboGreenwoodDirectionalConductivity_eq_bastinSpectral
+        system data geometry direction K q omega eta convention heta
     _ = finiteKuboBastinOccupationResolvedDirectionalConductivity
         convention system data interpolation geometry direction K q omega eta :=
-      finiteDimensionalKuboBastinDirectionalConductivity_eq_occupationResolved
+      finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved
         convention system data interpolation geometry direction K q omega eta
 
 end
