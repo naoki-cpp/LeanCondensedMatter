@@ -399,7 +399,7 @@ theorem mixedTimeOrderedAtomicLegPosition_map_lt_iff (hf : StrictMono f) (τ τ'
       rw [List.findIdx_map]
       apply congrArg (fun p => (twoPointTimedEventAtomicLegs event).findIdx p)
       funext w
-      simp [Function.comp_def, hInj.eq_iff]
+      simp [hInj.eq_iff]
     calc
       mixedTimeOrderedAtomicLegPosition τ τ' σ (orderedTwoPointLegMap f x) <
             mixedTimeOrderedAtomicLegPosition τ τ' σ (orderedTwoPointLegMap f y) ↔
