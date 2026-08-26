@@ -6,13 +6,13 @@ set_option linter.style.header false
 # Ordered positions after deleting two entries
 
 This module supplies the increasing equivalence from a smaller `Fin` type onto the positions left
-after deleting `0` and one further nonzero position.  It is pure finite-index combinatorics.
+after deleting `0` and one further nonzero position. It is pure finite-index combinatorics.
 -/
 
 namespace Combinatorics
 namespace FiniteIndex
 
-/-- Positions left after deleting `0` and a position `j`.  Distinctness is needed only when
+/-- Positions left after deleting `0` and a position `j`. Distinctness is needed only when
 proving that the result has cardinality `2 * n`. -/
 def deletedPositions (n : ℕ) (j : Fin (2 * (n + 1))) : Finset (Fin (2 * (n + 1))) :=
   (Finset.univ.erase 0).erase j
@@ -28,28 +28,6 @@ noncomputable def deletedPositionsOrderIso (n : ℕ) (j : Fin (2 * (n + 1)))
     (hzero : j ≠ (0 : Fin (2 * (n + 1)))) :
     Fin (2 * n) ≃o deletedPositions n j :=
   (deletedPositions n j).orderIsoOfFin (card_deletedPositions n j hzero)
-
-theorem deletedPositionsOrderIso_mem (n : ℕ) (j : Fin (2 * (n + 1)))
-    (hzero : j ≠ (0 : Fin (2 * (n + 1)))) (i : Fin (2 * n)) :
-    ((deletedPositionsOrderIso n j hzero i : Fin (2 * (n + 1))) ∈
-      deletedPositions n j) :=
-  (deletedPositionsOrderIso n j hzero i).property
-
-theorem deletedPositionsOrderIso_strictMono (n : ℕ) (j : Fin (2 * (n + 1)))
-    (hzero : j ≠ (0 : Fin (2 * (n + 1)))) :
-    StrictMono (fun i : Fin (2 * n) =>
-      (deletedPositionsOrderIso n j hzero i : Fin (2 * (n + 1)))) := by
-  intro i k hik
-  exact deletedPositionsOrderIso n j hzero |>.strictMono hik
-
-/-- The order isomorphism is independent of the proof that `j ≠ 0`. -/
-theorem deletedPositionsOrderIso_congr (n : ℕ) {j j' : Fin (2 * (n + 1))} (h : j = j')
-    (hzero : j ≠ (0 : Fin (2 * (n + 1))))
-    (hzero' : j' ≠ (0 : Fin (2 * (n + 1)))) (i : Fin (2 * n)) :
-    (deletedPositionsOrderIso n j hzero i : Fin (2 * (n + 1))) =
-      (deletedPositionsOrderIso n j' hzero' i : Fin (2 * (n + 1))) := by
-  subst h
-  rfl
 
 end FiniteIndex
 end Combinatorics
