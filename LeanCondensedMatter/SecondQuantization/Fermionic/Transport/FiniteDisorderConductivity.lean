@@ -151,27 +151,11 @@ theorem finiteDisorderAveragedStaticConductivity_eq_tracedBastinAverage
             (ensemble.configurationSystem hbar hbar_pos ω).hbar eta)
           lowerEnergy upperEnergy occupation) := by
   unfold finiteDisorderAveragedStaticConductivity
-  unfold FiniteDisorderEnsemble.average
-  apply Finset.sum_congr rfl
-  intro ω _
-  change (ensemble.probability ω : ℂ) *
-      finiteDisorderConfigurationStaticConductivity
-        ensemble hbar hbar_pos spectralData convention
-          geometry direction K q eta ω =
-    (ensemble.probability ω : ℂ) *
-      regularizedTracedBastinEnergyIntegral
-        (ensemble.configurationSystem hbar hbar_pos ω).hamiltonian.1
-        (boundedDirectionalCurrent geometry direction
-          ((ensemble.configurationSystem hbar hbar_pos ω).hbar : ℂ) (q : ℂ) K)
-        (boundedDirectionalCurrent geometry direction
-          ((ensemble.configurationSystem hbar hbar_pos ω).hbar : ℂ) (q : ℂ) K)
-        (kuboBastinEnergyBroadening
-          (ensemble.configurationSystem hbar hbar_pos ω).hbar eta)
-        lowerEnergy upperEnergy occupation
-  exact congrArg (fun value : ℂ => (ensemble.probability ω : ℂ) * value)
-    (finiteDisorderConfigurationStaticConductivity_eq_tracedBastin
-      ensemble hbar hbar_pos spectralData convention geometry direction K
-        q eta lowerEnergy upperEnergy occupation ω (ward ω) heta)
+  apply ensemble.average_congr
+  intro ω
+  exact finiteDisorderConfigurationStaticConductivity_eq_tracedBastin
+    ensemble hbar hbar_pos spectralData convention geometry direction K
+      q eta lowerEnergy upperEnergy occupation ω (ward ω) heta
 
 /-- The same exact finite-disorder bridge in the pure-point spectral energy-integral form. -/
 theorem finiteDisorderAveragedStaticConductivity_eq_spectralEnergyIntegralAverage
@@ -202,28 +186,12 @@ theorem finiteDisorderAveragedStaticConductivity_eq_spectralEnergyIntegralAverag
             (ensemble.configurationSystem hbar hbar_pos ω).hbar eta)
           lowerEnergy upperEnergy occupation) := by
   unfold finiteDisorderAveragedStaticConductivity
-  unfold FiniteDisorderEnsemble.average
-  apply Finset.sum_congr rfl
-  intro ω _
-  change (ensemble.probability ω : ℂ) *
-      finiteDisorderConfigurationStaticConductivity
-        ensemble hbar hbar_pos spectralData convention
-          geometry direction K q eta ω =
-    (ensemble.probability ω : ℂ) *
-      regularizedBastinSpectralEnergyIntegral
-        (ensemble.configurationSystem hbar hbar_pos ω) (spectralData ω)
-        (boundedDirectionalCurrent geometry direction
-          ((ensemble.configurationSystem hbar hbar_pos ω).hbar : ℂ) (q : ℂ) K)
-        (boundedDirectionalCurrent geometry direction
-          ((ensemble.configurationSystem hbar hbar_pos ω).hbar : ℂ) (q : ℂ) K)
-        (kuboBastinEnergyBroadening
-          (ensemble.configurationSystem hbar hbar_pos ω).hbar eta)
-        lowerEnergy upperEnergy occupation
-  exact congrArg (fun value : ℂ => (ensemble.probability ω : ℂ) * value)
-    ((ward ω).staticConductivity_eq_spectralEnergyIntegral
-      convention (ensemble.configurationSystem hbar hbar_pos ω)
-        (spectralData ω) geometry direction K q eta
-          lowerEnergy upperEnergy occupation heta)
+  apply ensemble.average_congr
+  intro ω
+  exact (ward ω).staticConductivity_eq_spectralEnergyIntegral
+    convention (ensemble.configurationSystem hbar hbar_pos ω)
+      (spectralData ω) geometry direction K q eta
+        lowerEnergy upperEnergy occupation heta
 
 end
 end Transport
