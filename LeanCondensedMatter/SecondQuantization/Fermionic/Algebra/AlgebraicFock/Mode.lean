@@ -57,14 +57,14 @@ theorem modeAnnihilate_comp_add_swap (e : Mode → 𝓗₁) (i j : Mode) :
       (modeAnnihilate e j).comp (modeAnnihilate e i) = 0 := by
   simpa [modeAnnihilate] using annihilate_comp_add_swap 𝓗₁ (e i) (e j)
 
-set_option linter.unusedDecidableInType false in
 /-- For an orthonormal family, the mixed smeared CAR becomes the Kronecker-delta mode CAR. -/
-theorem modeAnnihilate_comp_modeCreate_add_swap [DecidableEq Mode]
+theorem modeAnnihilate_comp_modeCreate_add_swap
     {e : Mode → 𝓗₁} (he : Orthonormal ℂ e) (i j : Mode) :
     (modeAnnihilate e i).comp (modeCreate e j) +
       (modeCreate e j).comp (modeAnnihilate e i) =
         (if i = j then (1 : ℂ) else 0) •
           (LinearMap.id : AlgebraicFock 𝓗₁ →ₗ[ℂ] AlgebraicFock 𝓗₁) := by
+  classical
   rw [modeAnnihilate, modeCreate, annihilate_comp_create_add_swap]
   rw [(orthonormal_iff_ite.mp he) i j]
 
