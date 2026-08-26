@@ -11,7 +11,7 @@ The statistics-independent common-energy construction now lives in
 directional charge-current specialization, including the Peierls contact and finite-volume
 conductivity normalization.
 
-The common kernel remains a finite full-energy representation at fixed broadening.  No canonical
+The common kernel remains a finite full-energy representation at fixed broadening. No canonical
 smooth Středa representation, zero-broadening/DC limit, disorder, trace-per-volume, or
 thermodynamic-limit claim is made here.
 -/
@@ -28,7 +28,6 @@ variable [Fintype Site] [Fintype ι]
 variable [LinearOrder Site]
 variable [AddCommGroup E] [Module ℝ E]
 
-/-- The full-line localized integrand associated with one finite directional Bastin transition. -/
 noncomputable def finiteKuboBastinCommonTransitionIntegrand
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -43,8 +42,6 @@ noncomputable def finiteKuboBastinCommonTransitionIntegrand
     (data.energy mn.2) (data.energy mn.1) energy
 
 omit [Fintype ι] in
-/-- The directional localized transition integrand is the generalized common-energy integrand
-specialized to the same directional current at both vertices. -/
 theorem finiteKuboBastinCommonTransitionIntegrand_eq_vertex
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -63,7 +60,6 @@ theorem finiteKuboBastinCommonTransitionIntegrand_eq_vertex
   rfl
 
 omit [Fintype ι] in
-/-- The directional transition integrand is integrable on the full energy axis. -/
 theorem integrable_finiteKuboBastinCommonTransitionIntegrand
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -78,7 +74,6 @@ theorem integrable_finiteKuboBastinCommonTransitionIntegrand
       system data geometry direction K q omega eta mn)
 
 omit [Fintype ι] in
-/-- The localized directional transition integrates to the occupation-resolved term. -/
 theorem integral_finiteKuboBastinCommonTransitionIntegrand
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -106,7 +101,6 @@ theorem integral_finiteKuboBastinCommonTransitionIntegrand
   simp only [smul_eq_mul]
   ring
 
-/-- The finite sum of all localized directional transition integrands on the full energy axis. -/
 noncomputable def finiteKuboBastinCommonEnergyKernel
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -116,8 +110,6 @@ noncomputable def finiteKuboBastinCommonEnergyKernel
   ∑ mn : ι × ι, finiteKuboBastinCommonTransitionIntegrand
     system data interpolation geometry direction K q omega eta mn energy
 
-/-- The directional common-energy kernel is the generalized vertex kernel specialized to the same
-directional current at both vertices. -/
 theorem finiteKuboBastinCommonEnergyKernel_eq_vertex
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -169,7 +161,6 @@ theorem integral_finiteKuboBastinCommonEnergyKernel
     exact integrable_finiteKuboBastinCommonTransitionIntegrand
       system data interpolation geometry direction K q omega eta mn
 
-/-- The common-energy-kernel conductivity with contact and finite-volume normalization. -/
 noncomputable def finiteKuboBastinCommonEnergyDirectionalConductivity
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
@@ -199,21 +190,23 @@ theorem finiteKuboBastinOccupationResolvedDirectionalConductivity_eq_commonEnerg
     finiteKuboBastinCommonEnergyDirectionalConductivity
   rw [integral_finiteKuboBastinCommonEnergyKernel]
 
-theorem finiteDimensionalKuboBastinDirectionalConductivity_eq_commonEnergy
+/-- The finite spectral conductivity equals its common-energy representation, without introducing
+an artificial ordinary-trace carrier. -/
+theorem finiteKuboBastinSpectralDirectionalConductivity_eq_commonEnergy
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (interpolation : PurePointOccupationInterpolation system data)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ) :
-    finiteDimensionalKuboBastinDirectionalConductivity
-        convention system data geometry direction K q omega eta =
+    finiteKuboBastinSpectralDirectionalConductivity
+        system data geometry direction K q omega eta convention =
       finiteKuboBastinCommonEnergyDirectionalConductivity
         convention system data interpolation geometry direction K q omega eta := by
   calc
     _ = finiteKuboBastinOccupationResolvedDirectionalConductivity
         convention system data interpolation geometry direction K q omega eta :=
-      finiteDimensionalKuboBastinDirectionalConductivity_eq_occupationResolved
+      finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved
         convention system data interpolation geometry direction K q omega eta
     _ = _ := finiteKuboBastinOccupationResolvedDirectionalConductivity_eq_commonEnergy
       convention system data interpolation geometry direction K q omega eta
