@@ -28,16 +28,6 @@ noncomputable section
 variable {H ι : Type*}
 variable [NormedAddCommGroup H] [InnerProductSpace ℂ H] [CompleteSpace H]
 
-/-- A nonzero broadening keeps either spectral-side parameter away from every real energy. -/
-theorem spectralParameter_sub_real_ne_zero
-    (side : SpectralSide) (energy broadening eigenvalue : ℝ)
-    (hbroadening : broadening ≠ 0) :
-    spectralParameter side energy broadening - (eigenvalue : ℂ) ≠ 0 := by
-  intro hzero
-  have him : side.sign * broadening = 0 := by
-    simpa [spectralParameter] using congrArg Complex.im hzero
-  exact (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening) him
-
 /-- A resolvent on either spectral side acts on a Hamiltonian eigenvector by the corresponding
 scalar resolvent factor. -/
 theorem resolvent_spectralParameter_apply_eigenvector
