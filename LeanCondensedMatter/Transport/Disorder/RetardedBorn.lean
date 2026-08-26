@@ -8,14 +8,16 @@ set_option linter.style.header false
 # Retarded finite-disorder Born self-energy and closure boundary
 
 This module starts from the exact finite ensemble and exact configuration-wise resolvent/Dyson
-identities owned by `Disorder.Finite` and `Disorder.Resolvent`, together with centered finite
-second-moment data owned by `Disorder.Moments` and the R/A-neutral proof algebra from
-`Disorder.BornCommon`.
+identities owned by `Disorder.Finite` and `Disorder.Resolvent`, together with the canonical exact
+second moment and explicit centering data owned by `Disorder.Moments` and the R/A-neutral proof
+algebra from `Disorder.BornCommon`.
 
 From those ingredients, the module forms the exact averaged retarded second-order Dyson remainder
 and defines the retarded first-Born self-energy, resolvent approximation, and named closure error.
-The exact averaged resolvent is not identified with the Born expression by definition: equality
-requires an explicit `RetardedBornClosureHypothesis`.
+The Born objects themselves use only the exact second moment; centering enters when the exact
+averaged Dyson expansion is reduced by cancellation of the first-order term. The exact averaged
+resolvent is not identified with the Born expression by definition: equality requires an explicit
+`RetardedBornClosureHypothesis`.
 
 No advanced Born closure, self-consistent Born approximation, dressed propagator inside the
 self-energy, vertex correction, Ward identity, trace-per-volume construction, or thermodynamic
@@ -85,79 +87,72 @@ theorem operatorAverage_configurationRetardedGreen_eq_free_add_exactRemainder
       (operatorAverage_firstOrderRetardedTerm_eq_zero
         ensemble moments energy broadening)
 
-/-- Weak-scattering Born self-energy: covariance acting on the clean retarded Green operator. The
-name records its approximation status; no dressed self-consistent propagator is inserted. -/
+/-- Weak-scattering Born self-energy: the exact finite second moment evaluated on the clean
+retarded Green operator. The definition itself does not require centered disorder. -/
 noncomputable def bornRetardedSelfEnergy
-    (moments : FiniteDisorderMomentData ensemble)
     (energy broadening : ℝ) : H →L[ℂ] H :=
-  moments.covariance (ensemble.freeRetardedGreen energy broadening)
+  ensemble.exactSecondMoment (ensemble.freeRetardedGreen energy broadening)
 
-/-- The Born self-energy is the exact finite second moment with a clean internal propagator. -/
+/-- The Born self-energy is the exact finite second moment with a clean retarded internal
+propagator. -/
 theorem bornRetardedSelfEnergy_eq_secondMoment
-    (moments : FiniteDisorderMomentData ensemble)
     (energy broadening : ℝ) :
-    bornRetardedSelfEnergy ensemble moments energy broadening =
-      ensemble.operatorAverage (fun ω =>
-        (ensemble.impurityPotential ω).1 *
-          ensemble.freeRetardedGreen energy broadening *
-            (ensemble.impurityPotential ω).1) :=
-  FiniteDisorderMomentData.covariance_eq_secondMoment moments
-    (ensemble.freeRetardedGreen energy broadening)
+    bornRetardedSelfEnergy ensemble energy broadening =
+      ensemble.exactSecondMoment (ensemble.freeRetardedGreen energy broadening) :=
+  rfl
 
 /-- Canonical second-order Born approximation to the averaged retarded resolvent. This definition
-is deliberately not an equality theorem for the exact average. -/
+is deliberately not an equality theorem for the exact average and does not require centering. -/
 noncomputable def bornRetardedResolventApproximation
-    (moments : FiniteDisorderMomentData ensemble)
     (energy broadening : ℝ) : H →L[ℂ] H :=
   ensemble.freeRetardedGreen energy broadening +
     ensemble.freeRetardedGreen energy broadening *
-      bornRetardedSelfEnergy ensemble moments energy broadening *
+      bornRetardedSelfEnergy ensemble energy broadening *
         ensemble.freeRetardedGreen energy broadening
 
-/-- Exact error between the full averaged Dyson remainder and the Born second-order closure. -/
+/-- Exact error between the full averaged Dyson remainder and the Born second-order closure. Its
+definition does not assert that centered disorder holds or that the error is small. -/
 noncomputable def bornRetardedClosureError
-    (moments : FiniteDisorderMomentData ensemble)
     (energy broadening : ℝ) : H →L[ℂ] H :=
   ensemble.exactSecondOrderRetardedRemainder energy broadening -
     ensemble.freeRetardedGreen energy broadening *
-      bornRetardedSelfEnergy ensemble moments energy broadening *
+      bornRetardedSelfEnergy ensemble energy broadening *
         ensemble.freeRetardedGreen energy broadening
 
 /-- Exact decomposition of the averaged resolvent into the named Born approximation plus its
-closure error. This theorem does not assert that the error is small or zero. -/
+closure error. Centering is used only through the exact averaged-Dyson reduction. -/
 theorem operatorAverage_configurationRetardedGreen_eq_bornApproximation_add_error
     (moments : FiniteDisorderMomentData ensemble)
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
     ensemble.operatorAverage
         (fun ω => ensemble.configurationRetardedGreen energy broadening ω) =
-      bornRetardedResolventApproximation ensemble moments energy broadening +
-        bornRetardedClosureError ensemble moments energy broadening := by
+      bornRetardedResolventApproximation ensemble energy broadening +
+        bornRetardedClosureError ensemble energy broadening := by
   rw [operatorAverage_configurationRetardedGreen_eq_free_add_exactRemainder
     ensemble moments energy broadening hbroadening]
   unfold bornRetardedResolventApproximation bornRetardedClosureError
   exact free_add_remainder_eq_bornApproximation_add_error
     (ensemble.freeRetardedGreen energy broadening)
     (ensemble.exactSecondOrderRetardedRemainder energy broadening)
-    (bornRetardedSelfEnergy ensemble moments energy broadening)
+    (bornRetardedSelfEnergy ensemble energy broadening)
 
 /-- Explicit closure hypothesis required to turn the second-order Born approximation into an exact
 equality statement. In weak-scattering applications this field represents the neglected higher
-order remainder; it is not derived in this module. -/
+order remainder; centering is a separate hypothesis on the exact averaging theorem. -/
 structure RetardedBornClosureHypothesis
-    (moments : FiniteDisorderMomentData ensemble)
     (energy broadening : ℝ) : Prop where
   closureError_eq_zero :
-    bornRetardedClosureError ensemble moments energy broadening = 0
+    bornRetardedClosureError ensemble energy broadening = 0
 
-/-- Equality with the Born approximation follows only after supplying the explicit closure
-hypothesis. -/
+/-- Equality with the Born approximation follows only after supplying both centered disorder and
+the explicit closure hypothesis. -/
 theorem operatorAverage_configurationRetardedGreen_eq_bornApproximation
     (moments : FiniteDisorderMomentData ensemble)
     (energy broadening : ℝ) (hbroadening : 0 < broadening)
-    (closure : RetardedBornClosureHypothesis ensemble moments energy broadening) :
+    (closure : RetardedBornClosureHypothesis ensemble energy broadening) :
     ensemble.operatorAverage
         (fun ω => ensemble.configurationRetardedGreen energy broadening ω) =
-      bornRetardedResolventApproximation ensemble moments energy broadening := by
+      bornRetardedResolventApproximation ensemble energy broadening := by
   rw [operatorAverage_configurationRetardedGreen_eq_bornApproximation_add_error
     ensemble moments energy broadening hbroadening]
   rw [RetardedBornClosureHypothesis.closureError_eq_zero closure, add_zero]
