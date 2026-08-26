@@ -1,5 +1,5 @@
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentResponse
-import LeanCondensedMatter.Transport.KuboBastin.FiniteTrace
+import LeanCondensedMatter.Transport.KuboBastin.Finite
 
 set_option linter.style.header false
 
@@ -7,7 +7,7 @@ set_option linter.style.header false
 # Corrected-current Kubo–Bastin bridge
 
 This module feeds the corrected/nested current representation from `CorrectedCurrentResponse`
-directly into the neutral `ResponseChannel` and generalized finite Kubo–Bastin API.
+directly into the neutral `ResponseChannel` and generalized finite spectral Kubo–Bastin API.
 
 For a supplied transported one-body observable `m`, velocity `v`, localizer-valued one-form `N`,
 and one-form `α`, the measured one-body current is
@@ -17,13 +17,9 @@ J_corrected(α) = J_nested(α)
                = J_conv(α) + 1/4 [v,[N α,m]].
 ```
 
-The construction is intentionally generic in `m`. Choosing an internal spin operator gives a
-corrected spin-current channel; choosing an orbital/internal angular-momentum operator gives the
-corresponding orbital-current channel. The electric or other source vertex and the explicit
-first-order observable variation remain independent inputs.
-
-No global-current uniqueness, DC limit, zero-broadening limit, disorder average, trace per unit
-volume, thermodynamic limit, or Středa decomposition is introduced here.
+The electric or other source vertex and the explicit first-order observable variation remain
+independent inputs. No artificial ordinary-trace carrier is introduced here; genuine operator
+traces belong to the canonical static Bastin/Středa layer.
 -/
 
 namespace SecondQuantization
@@ -40,7 +36,6 @@ variable [LinearOrder Site] [Fintype Site]
 variable [AddCommGroup OneForm] [Module ℂ OneForm]
 variable [Fintype ι]
 
-/-- Bounded Fock-space observable associated with one corrected/nested current component. -/
 noncomputable def boundedCorrectedCurrentObservable
     (velocity m : LatticeState Site →ₗ[ℂ] LatticeState Site)
     (N : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
@@ -50,11 +45,6 @@ noncomputable def boundedCorrectedCurrentObservable
     (_root_.ConservationLaw.nestedSymmetrizedCurrentFlux
       (LatticeState Site) velocity m N α)
 
-/-- Neutral response channel for one corrected current component.
-
-`source` and `observableVariation` are deliberately supplied independently: generalized spin or
-orbital currents may be measured in response to an electric source while also carrying their own
-explicit first-order source dependence. -/
 noncomputable def correctedCurrentResponseChannel
     (velocity m : LatticeState Site →ₗ[ℂ] LatticeState Site)
     (N : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
@@ -80,42 +70,9 @@ noncomputable def finiteKuboBastinSpectralCorrectedCurrentResponse
     (correctedCurrentResponseChannel velocity m N α source observableVariation)
     omega eta
 
-/-- Ordinary finite-dimensional Kubo–Bastin response of a corrected current channel. -/
-noncomputable def finiteDimensionalCorrectedCurrentKuboBastinResponse
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (velocity m : LatticeState Site →ₗ[ℂ] LatticeState Site)
-    (N : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
-    (α : OneForm)
-    (source observableVariation :
-      FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
-    (omega eta : ℝ) : ℂ :=
-  finiteDimensionalKuboBastinChannelResponse system data
-    (correctedCurrentResponseChannel velocity m N α source observableVariation)
-    omega eta
-
-/-- The corrected-current finite trace response is exactly its generalized spectral
-Kubo–Bastin response. -/
-theorem finiteDimensionalCorrectedCurrentKuboBastinResponse_eq_spectral
-    (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
-    (data : PurePointLehmannData system ι)
-    (velocity m : LatticeState Site →ₗ[ℂ] LatticeState Site)
-    (N : OneForm →ₗ[ℂ] (LatticeState Site →ₗ[ℂ] LatticeState Site))
-    (α : OneForm)
-    (source observableVariation :
-      FiniteLatticeHilbertFock Site →L[ℂ] FiniteLatticeHilbertFock Site)
-    (omega eta : ℝ) :
-    finiteDimensionalCorrectedCurrentKuboBastinResponse system data
-        velocity m N α source observableVariation omega eta =
-      finiteKuboBastinSpectralCorrectedCurrentResponse system data
-        velocity m N α source observableVariation omega eta := by
-  exact finiteDimensionalKuboBastinVertexResponse_eq_spectral system data
-    (boundedCorrectedCurrentObservable velocity m N α)
-    source observableVariation omega eta
-
 /-- At positive switching rate, the causal frequency-domain response of the corrected current
-channel is exactly its ordinary finite-dimensional Kubo–Bastin response. -/
-theorem adiabaticFrequencyDomainCorrectedCurrent_eq_finiteDimensionalKuboBastin
+channel is exactly its finite spectral Kubo–Bastin response. -/
+theorem adiabaticFrequencyDomainCorrectedCurrent_eq_bastinSpectral
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
     (velocity m : LatticeState Site →ₗ[ℂ] LatticeState Site)
@@ -129,11 +86,11 @@ theorem adiabaticFrequencyDomainCorrectedCurrent_eq_finiteDimensionalKuboBastin
           (boundedCorrectedCurrentObservable velocity m N α)
           source omega eta heta +
         purePointNormalizedExpectation system data observableVariation =
-      finiteDimensionalCorrectedCurrentKuboBastinResponse system data
+      finiteKuboBastinSpectralCorrectedCurrentResponse system data
         velocity m N α source observableVariation omega eta := by
-  simpa [finiteDimensionalCorrectedCurrentKuboBastinResponse,
+  simpa [finiteKuboBastinSpectralCorrectedCurrentResponse,
     correctedCurrentResponseChannel] using
-    adiabaticFrequencyDomainResponseChannel_eq_finiteDimensionalKuboBastin
+    adiabaticFrequencyDomainResponseChannel_eq_bastinSpectral
       system data
         (correctedCurrentResponseChannel velocity m N α source observableVariation)
         omega eta heta
