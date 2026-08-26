@@ -55,20 +55,18 @@ theorem twoPointTimedEventRank_map_le_iff (hf : StrictMono f) (a b : TwoPointTim
       | inl b => exact Iff.rfl
       | inr w =>
           have ha := a.isLt
-          simp only [twoPointTimedEventMap_inl, twoPointTimedEventMap_inr,
-            twoPointTimedEventRank]
-          omega
+          simp only [twoPointTimedEventMap_inl, twoPointTimedEventMap_inr]
+          simp [twoPointTimedEventRank] <;> omega
   | inr v =>
       cases b with
       | inl b =>
           have hb := b.isLt
-          simp only [twoPointTimedEventMap_inl, twoPointTimedEventMap_inr,
-            twoPointTimedEventRank]
-          omega
+          simp only [twoPointTimedEventMap_inl, twoPointTimedEventMap_inr]
+          simp [twoPointTimedEventRank] <;> omega
       | inr w =>
           have h := hfle v w
-          simp only [twoPointTimedEventMap_inr, twoPointTimedEventRank]
-          omega
+          simp only [twoPointTimedEventMap_inr]
+          simp [twoPointTimedEventRank] <;> omega
 
 theorem twoPointTimedEventBeforeOrEqual_map_iff (hf : StrictMono f) (τ τ' : ℝ) (σ : Fin n → ℝ)
     (a b : TwoPointTimedEvent m) :
