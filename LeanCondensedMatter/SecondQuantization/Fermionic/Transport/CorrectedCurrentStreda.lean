@@ -88,9 +88,9 @@ theorem finiteStaticCorrectedCurrentKuboBastinResponse_eq_surface_add_sea_add_ob
       (regularizedStredaFermiSurface representation.toRegularizedStredaIntegralData +
         regularizedStredaFermiSea representation.toRegularizedStredaIntegralData) +
       purePointNormalizedExpectation system data observableVariation := by
-  simpa [finiteStaticCorrectedCurrentKuboBastinResponse,
-    finiteKuboBastinSpectralCorrectedCurrentResponse,
-    correctedCurrentResponseChannel] using
+  change finiteStaticKuboBastinChannelResponse system data
+      (correctedCurrentResponseChannel velocity m N α source observableVariation) eta = _
+  simpa [correctedCurrentResponseChannel] using
     finiteStaticKuboBastinChannelResponse_eq_surface_add_sea_add_observableVariation
       system data
         (correctedCurrentResponseChannel velocity m N α source observableVariation)
