@@ -113,22 +113,6 @@ theorem schwartzChargeCurrent1D_eq_velocityExpectation
       q • schwartzVelocityExpectationCurrent1D ℏ κ ψ := by
   rw [schwartzChargeCurrent1D, schwartzProbabilityCurrent1D_eq_velocityExpectation ℏ κ hℏ ψ]
 
-/-- The weak probability-current representation can equivalently be written using the local
-velocity expectation density. -/
-theorem schwartzWeakTransportFunctional_probability_eq_velocityExpectation
-    (ℏ κ : ℝ) (hℏ : ℏ ≠ 0) (ψ : SchwartzMap ℝ ℂ) :
-    schwartzWeakTransportFunctional1D (schwartzProbabilityCurrent1D ℏ κ ψ) =
-      schwartzWeakTransportFunctional1D (schwartzVelocityExpectationCurrent1D ℏ κ ψ) := by
-  rw [schwartzProbabilityCurrent1D_eq_velocityExpectation ℏ κ hℏ ψ]
-
-/-- The weak charge-current representation can equivalently be written as the charge-scaled local
-velocity expectation density. -/
-theorem schwartzWeakTransportFunctional_charge_eq_velocityExpectation
-    (q ℏ κ : ℝ) (hℏ : ℏ ≠ 0) (ψ : SchwartzMap ℝ ℂ) :
-    schwartzWeakTransportFunctional1D (schwartzChargeCurrent1D q ℏ κ ψ) =
-      schwartzWeakTransportFunctional1D (q • schwartzVelocityExpectationCurrent1D ℏ κ ψ) := by
-  rw [schwartzChargeCurrent1D_eq_velocityExpectation q ℏ κ hℏ ψ]
-
 end
 end Continuum
 end SingleParticle
