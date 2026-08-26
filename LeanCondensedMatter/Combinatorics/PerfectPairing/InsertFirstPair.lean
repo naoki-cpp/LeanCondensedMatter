@@ -145,8 +145,7 @@ theorem Pairing.eraseZeroPair_insertFirstPair {n : ℕ} (pairing : Pairing n)
       (P.eraseZeroOrderIso k : Fin (2 * (n + 1))) =
         (deletedPositionsOrderIso n j hj k : Fin (2 * (n + 1))) := by
     intro k
-    subst j
-    rfl
+    simpa [Pairing.eraseZeroOrderIso, hPj]
   apply Pairing.ext
   apply Equiv.ext
   intro i
