@@ -72,6 +72,8 @@ theorem finiteKuboBastinDirectionalTransitionFactor_eq_vertex
         omega eta mn := by
   rfl
 
+/-- One finite directional Kubo–Bastin transition with its discrete occupation difference replaced
+by an oriented energy integral of the occupation derivative. -/
 noncomputable def finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
     (data : PurePointLehmannData system ι)
@@ -120,6 +122,9 @@ theorem finiteKuboBastinSpectralDirectionalCurrentTerm_eq_occupationResolved
   rw [interpolation.probabilityDifference_eq_integral system mn.1 mn.2]
   ring
 
+/-- The complete finite directional conductivity after replacing every discrete probability
+difference by its oriented occupation-derivative integral. The contact term and finite-volume
+normalization remain unchanged. -/
 noncomputable def finiteKuboBastinOccupationResolvedDirectionalConductivity
     (convention : QuantumTheory.Transport.PositiveVolume)
     (system : BoundedFreeSystem (FiniteLatticeHilbertFock Site))
