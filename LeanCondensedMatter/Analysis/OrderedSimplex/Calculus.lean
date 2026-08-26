@@ -17,29 +17,19 @@ its largest time belongs to the left or the right factor.
 
 namespace intervalIntegral
 
-/-- An ordered-simplex integral of a fixed continuous integrand is continuous in its upper bound. -/
-theorem continuous_orderedSimplexIntegral_bound (n : ℕ) (f : (Fin n → ℝ) → ℂ)
+private theorem continuous_orderedSimplexIntegral_bound (n : ℕ) (f : (Fin n → ℝ) → ℂ)
     (hf : Continuous f) :
     Continuous (fun β : ℝ => orderedSimplexIntegral n β f) := by
   simpa using continuous_orderedSimplexIntegral_of_continuous n id
     (fun _ : ℝ => f) continuous_id (hf.comp continuous_snd)
 
-/-- Fixing the outermost coordinate of a continuous integrand at the varying upper bound and
-integrating over all remaining ordered coordinates gives a continuous function of that bound. -/
-theorem continuous_orderedSimplexIntegral_boundary (n : ℕ)
+private theorem continuous_orderedSimplexIntegral_boundary (n : ℕ)
     (f : (Fin (n + 1) → ℝ) → ℂ) (hf : Continuous f) :
     Continuous (fun β : ℝ =>
       orderedSimplexIntegral n β (fun rest => f (Fin.cons β rest))) := by
   exact continuous_orderedSimplexIntegral_of_continuous n id
     (fun β rest => f (Fin.cons β rest)) continuous_id
     (hf.comp (Continuous.finCons continuous_fst continuous_snd))
-
-/-- Every positive-dimensional ordered-simplex integral vanishes when its upper bound is zero. -/
-@[simp]
-theorem orderedSimplexIntegral_succ_zero_bound (n : ℕ)
-    (f : (Fin (n + 1) → ℝ) → ℂ) :
-    orderedSimplexIntegral (n + 1) 0 f = 0 := by
-  simp [orderedSimplexIntegral_succ]
 
 /-- Fundamental theorem of calculus for an ordered-simplex integral: differentiating in the upper
 bound fixes the outermost time coordinate at that bound. -/
