@@ -10,7 +10,6 @@ import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.GeometricCurre
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.HarmonicSourceResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.InfiniteTimeFrequencyResponse
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinSpectral
-import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboBastinTrace
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentKuboBastin
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.CorrectedCurrentStreda
 import LeanCondensedMatter.SecondQuantization.Fermionic.Transport.KuboGreenwood
@@ -28,9 +27,9 @@ set_option linter.style.header false
 # Fermionic transport adapters
 
 Canonical downstream owner for fermionic Kubo/frequency response, intrinsic-flux and generalized
-current response, conductivity normalization, directional Kubo–Greenwood/Bastin/Středa, Ward,
-finite-table evaluation, and finite-disorder adapters. Generic reusable response and density theory
-remains under `QuantumTheory`, while statistics-independent Kubo–Bastin, resolvent, trace, and
+current response, conductivity normalization, directional Kubo–Greenwood/spectral Bastin/Středa,
+Ward, finite-table evaluation, and finite-disorder adapters. Generic reusable response and density
+theory remains under `QuantumTheory`, while statistics-independent Kubo–Bastin, resolvent, and
 Středa infrastructure lives under `QuantumTheory.Transport`.
 
 This layer consumes `Fermionic.Lattice` model operators and does not own finite toy checks; those are
