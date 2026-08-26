@@ -50,9 +50,8 @@ noncomputable def finiteStaticKuboBastinChannelVertexResponse
     (data : PurePointLehmannData system ι)
     (channel : ResponseChannel H)
     (eta : ℝ) : ℂ :=
-  ∑ mn : ι × ι,
-    purePointKuboBastinSpectralVertexTerm
-      system data channel.measured channel.source 0 eta mn
+  finiteKuboBastinSpectralVertexSum
+    system data channel.measured channel.source 0 eta
 
 /-- Zero-frequency specialization of the complete finite spectral Kubo–Bastin response. The
 switching rate stays finite and the explicit observable-variation expectation is retained. -/

@@ -14,9 +14,10 @@ one pure-point Lehmann transition
   -> retarded-resolvent spectral transition.
 ```
 
-Finite sums of transitions are downstream in `KuboBastin.Finite`. Ordinary finite-dimensional
-trace realization is further downstream in `KuboBastin.FiniteTrace`. Fermionic Fock spaces,
-lattice currents, Peierls contacts, and conductivity normalization are downstream specializations.
+Finite sums of transitions are downstream in `KuboBastin.Finite`. Genuine ordinary
+finite-dimensional trace realizations belong to the canonical static Bastin/Středa layer under
+`Transport.Streda`. Fermionic Fock spaces, lattice currents, Peierls contacts, and conductivity
+normalization are downstream specializations.
 
 No zero-frequency, zero-broadening, disorder, trace-per-unit-volume, or thermodynamic-limit
 statement is introduced here.
@@ -73,11 +74,11 @@ theorem retardedSpectralShift_ne_zero
           (kuboBastinRetardedEnergy hbar omega energyₘ)
           (kuboBastinEnergyBroadening hbar eta) -
         (energyₙ : ℂ) ≠ 0 := by
-  intro hzero
-  have him : hbar * eta = 0 := by
-    have himZero := congrArg Complex.im hzero
-    simpa [retardedSpectralParameter, kuboBastinEnergyBroadening] using himZero
-  exact (mul_ne_zero (ne_of_gt hhbar) (ne_of_gt heta)) him
+  simpa only [spectralParameter_retarded] using
+    spectralParameter_sub_real_ne_zero .retarded
+      (kuboBastinRetardedEnergy hbar omega energyₘ)
+      (kuboBastinEnergyBroadening hbar eta) energyₙ
+      (ne_of_gt (kuboBastinEnergyBroadening_pos hbar eta hhbar heta))
 
 variable
   (system : BoundedFreeSystem H)

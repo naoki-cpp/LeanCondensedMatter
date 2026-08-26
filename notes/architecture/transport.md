@@ -82,8 +82,10 @@ KuboBastin/Finite
 `KuboBastin/PurePoint.lean` owns the complete-Hilbert-space Lehmann-to-retarded-resolvent algebra for
 one pure-point transition and does not assume a finite spectral index. `KuboBastin/Finite.lean`
 introduces `Fintype ι` only when those transitions are assembled into ordinary finite sums and
-packaged as finite `ResponseChannel` responses. It does not manufacture an ordinary operator-trace
-representation from an already-computed scalar response.
+packaged as finite `ResponseChannel` responses. Its named `finiteKuboBastinSpectralVertexSum`
+separates the two-vertex contribution from the explicit observable-variation expectation used by
+the complete response. It does not manufacture an ordinary operator-trace representation from an
+already-computed scalar response.
 
 Ordinary finite-dimensional operator trace is a representation-independent primitive owned by
 `Core/FiniteTrace.lean`. The first genuine traced Bastin kernels are obtained in the static Středa
@@ -98,9 +100,10 @@ the finite spectral-index layer. They do not define a Středa surface or sea ter
 ownership begins at `Streda/OperatorKernel.lean`, where the Smrčka–Středa surface primitive and
 residual sea kernel are introduced.
 
-`Resolvent/Spectral.lean` owns the model-independent eigenvector action of retarded/advanced
-resolvents. Pure-point Kubo–Bastin and Středa spectral expansions consume that result rather than
-re-owning resolvent algebra.
+`Resolvent/Spectral.lean` owns the model-independent side-indexed eigenvector action and squared
+pure-point action of resolvents. Retarded/advanced names are public physical specializations.
+Pure-point Kubo–Bastin and Středa spectral expansions consume that result rather than re-owning
+resolvent algebra.
 
 ## Disorder boundary
 
@@ -118,9 +121,9 @@ Transport/Resolvent.Basic ──────────────────
 
 `Disorder/Finite` owns the exact finite ensemble and normalized scalar/operator averages.
 `Disorder/Resolvent` owns the exact configuration-wise retarded/advanced Green operators and Dyson
-identities. `Disorder/Moments` owns the canonical exact second-moment action
-`E[Vω X Vω]` together with the explicit centering assumption used to cancel first-order disorder
-insertions.
+identities. `Disorder/Moments` owns the canonical bounded complex-linear exact second-moment action
+`C₂(X) = E[Vω X Vω]`, proves its finite-average and adjoint-compatibility properties, and owns the
+separate `IsCentered` property used to cancel first-order disorder insertions.
 
 `Disorder/BornCommon` owns only genuinely R/A-neutral algebra shared by both first-Born
 specializations: centered first-order insertion cancellation, averaging of a configuration-wise
@@ -131,9 +134,11 @@ siblings and must not import one another.
 
 The Born self-energy and approximation objects use the canonical exact second moment and therefore
 do not themselves require centered disorder. Centering is required only when an exact averaged
-Dyson identity is reduced by cancelling the first-order contribution. SCBA represents the same
-canonical second moment by a supplied bounded complex-linear, adjoint-compatible covariance
-superoperator; it remains approximation data and is not identified with the exact disorder average.
+Dyson identity is reduced by cancelling the first-order contribution. SCBA uses the same canonical
+`exactSecondMomentCLM` directly in its supplied fixed-point equations; there is no second covariance
+function or separately supplied linearity/adjoint-compatibility assumption. The SCBA Green and
+self-energy solution itself remains approximation data and is not identified with the exact
+disorder average.
 
 ## AHE benchmark hierarchy
 
