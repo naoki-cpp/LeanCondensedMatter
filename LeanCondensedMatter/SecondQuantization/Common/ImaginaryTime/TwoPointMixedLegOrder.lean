@@ -391,6 +391,15 @@ theorem mixedTimeOrderedAtomicLegPosition_map_lt_iff (hf : StrictMono f) (τ τ'
       (orderedTwoPointLegMap f x) (orderedTwoPointLegMap f y)
       (mixedTimeOrderedAtomicLegs_nodup τ τ' σ)
       (orderedTwoPointTimedEvents_all_mem τ τ' σ (twoPointTimedEventMap f event)) hxMap hyMap
+    have hidx (z : OrderedTwoPointLeg m) :
+        ((twoPointTimedEventAtomicLegs event).map (orderedTwoPointLegMap f)).idxOf
+            (orderedTwoPointLegMap f z) =
+          (twoPointTimedEventAtomicLegs event).idxOf z := by
+      unfold List.idxOf
+      rw [List.findIdx_map]
+      apply congrArg (fun p => (twoPointTimedEventAtomicLegs event).findIdx p)
+      funext w
+      simp [Function.comp_def, hInj.eq_iff]
     calc
       mixedTimeOrderedAtomicLegPosition τ τ' σ (orderedTwoPointLegMap f x) <
             mixedTimeOrderedAtomicLegPosition τ τ' σ (orderedTwoPointLegMap f y) ↔
@@ -401,8 +410,7 @@ theorem mixedTimeOrderedAtomicLegPosition_map_lt_iff (hf : StrictMono f) (τ τ'
             simpa [mixedTimeOrderedAtomicLegPosition, mixedTimeOrderedAtomicLegs] using hAmbient
       _ ↔ (twoPointTimedEventAtomicLegs event).idxOf x <
             (twoPointTimedEventAtomicLegs event).idxOf y := by
-            rw [twoPointTimedEventAtomicLegs_map]
-            simp [List.idxOf, List.findIdx_map, Function.comp_def, hInj.eq_iff]
+            rw [twoPointTimedEventAtomicLegs_map, hidx x, hidx y]
       _ ↔ mixedTimeOrderedAtomicLegPosition τ τ' (σ ∘ f) x <
             mixedTimeOrderedAtomicLegPosition τ τ' (σ ∘ f) y := by
             symm
