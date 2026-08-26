@@ -113,9 +113,7 @@ theorem boundedCorrectedCurrentFluxRetardedResponse_eq_conventional_add_correcti
   rw [hdecomp]
   exact map_add (boundedOneBodyRetardedResponseLinearMap system expectation source t s) _ _
 
-/-- If `Φ` is represented by the nested/corrected current on exact differentials, its intrinsic
-Kubo response is exactly the corrected-current response precomposed with `d`. -/
-theorem boundedIntrinsicFluxRetardedResponse_eq_corrected_of_factors
+private theorem boundedIntrinsicFluxRetardedResponse_eq_corrected_of_factors
     (system : QuantumTheory.LinearResponse.BoundedFreeSystem
       (FiniteLatticeHilbertFock Site))
     (expectation : QuantumTheory.LinearResponse.NormalizedExpectation
