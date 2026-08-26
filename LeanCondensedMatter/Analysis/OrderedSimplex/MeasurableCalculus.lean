@@ -21,7 +21,7 @@ open Filter Function IsUnifLocDoublingMeasure MeasureTheory Set
 /-- Banach-valued Lebesgue differentiation for indefinite interval integrals.  Mathlib v4.31.0 only
 exports the real-valued specialization of this statement; the underlying Vitali differentiation
 result is already Banach-valued. -/
-theorem ae_hasDerivAt_intervalIntegral_of_locallyIntegrable
+private theorem ae_hasDerivAt_intervalIntegral_of_locallyIntegrable
     {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]
     {f : ℝ → E} (hf : LocallyIntegrable f volume) :
     ∀ᵐ x, ∀ c, HasDerivAt (fun x => ∫ t in c..x, f t) (f x) x := by
