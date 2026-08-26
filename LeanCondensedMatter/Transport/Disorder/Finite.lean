@@ -75,6 +75,14 @@ theorem configurationSystem_hamiltonian
 noncomputable def average (response : Ω → ℂ) : ℂ :=
   ∑ ω, (ensemble.probability ω : ℂ) * response ω
 
+/-- Pointwise-equal configuration observables have the same finite disorder average. -/
+theorem average_congr {left right : Ω → ℂ} (h : ∀ ω, left ω = right ω) :
+    ensemble.average left = ensemble.average right := by
+  unfold average
+  apply Finset.sum_congr rfl
+  intro ω _
+  rw [h ω]
+
 @[simp]
 theorem average_zero : ensemble.average (fun _ => 0) = 0 := by
   simp [average]
