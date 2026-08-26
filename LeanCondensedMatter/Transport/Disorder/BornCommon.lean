@@ -31,12 +31,13 @@ variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
 /-- Centered disorder kills every first-order insertion between fixed bounded operators. -/
 theorem operatorAverage_mul_impurity_mul_eq_zero
-    (moments : FiniteDisorderMomentData ensemble)
+    (hcentered : ensemble.IsCentered)
     (left right : H →L[ℂ] H) :
     ensemble.operatorAverage (fun ω =>
       left * (ensemble.impurityPotential ω).1 * right) = 0 := by
   rw [operatorAverage_mul_left_right ensemble]
-  rw [FiniteDisorderMomentData.centered moments]
+  change ensemble.operatorAverage (fun ω => (ensemble.impurityPotential ω).1) = 0 at hcentered
+  rw [hcentered]
   simp
 
 /-- Average a configuration-wise second-order expansion after its first-order contribution has
