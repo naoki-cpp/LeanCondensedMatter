@@ -9,8 +9,8 @@ set_option linter.style.header false
 
 Exact retarded/advanced Green operators and configuration-wise Dyson identities are owned by
 `Disorder.Resolvent`. This module consumes those exact identities together with the canonical exact
-second moment and explicit centering data from `Disorder.Moments` and the R/A-neutral proof algebra
-from `Disorder.BornCommon`.
+second moment and explicit centering property from `Disorder.Moments` and the R/A-neutral proof
+algebra from `Disorder.BornCommon`.
 
 The advanced specialization uses the same exact finite second-moment action as the retarded
 specialization, but keeps its orientation-sensitive Dyson remainder and physical names locally.
@@ -34,13 +34,13 @@ namespace FiniteDisorderEnsemble
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
 private theorem operatorAverage_firstOrderAdvancedTerm_eq_zero
-    (moments : FiniteDisorderMomentData ensemble)
+    (hcentered : ensemble.IsCentered)
     (energy broadening : ℝ) :
     ensemble.operatorAverage (fun ω =>
       ensemble.freeAdvancedGreen energy broadening *
         (ensemble.impurityPotential ω).1 *
           ensemble.freeAdvancedGreen energy broadening) = 0 := by
-  simpa using operatorAverage_mul_impurity_mul_eq_zero ensemble moments
+  simpa using operatorAverage_mul_impurity_mul_eq_zero ensemble hcentered
     (ensemble.freeAdvancedGreen energy broadening)
     (ensemble.freeAdvancedGreen energy broadening)
 
@@ -57,7 +57,7 @@ noncomputable def exactSecondOrderAdvancedRemainder
 /-- For centered disorder, the exact averaged advanced Green operator is the clean advanced Green
 operator plus the full exact second-order remainder. -/
 theorem operatorAverage_configurationAdvancedGreen_eq_free_add_exactRemainder
-    (moments : FiniteDisorderMomentData ensemble)
+    (hcentered : ensemble.IsCentered)
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
     ensemble.operatorAverage
         (fun ω => ensemble.configurationAdvancedGreen energy broadening ω) =
@@ -81,7 +81,7 @@ theorem operatorAverage_configurationAdvancedGreen_eq_free_add_exactRemainder
       (configurationAdvancedGreen_eq_secondOrder_add_exactRemainder
         ensemble energy broadening hbroadening)
       (operatorAverage_firstOrderAdvancedTerm_eq_zero
-        ensemble moments energy broadening)
+        ensemble hcentered energy broadening)
 
 /-- Weak-scattering advanced Born self-energy: the exact finite second moment evaluated on the
 clean advanced Green operator. The definition itself does not require centered disorder. -/
@@ -117,14 +117,14 @@ noncomputable def bornAdvancedClosureError
 /-- Exact decomposition of the averaged advanced Green operator into the Born approximation plus
 its retained closure error. Centering is used only through the exact averaged-Dyson reduction. -/
 theorem operatorAverage_configurationAdvancedGreen_eq_bornApproximation_add_error
-    (moments : FiniteDisorderMomentData ensemble)
+    (hcentered : ensemble.IsCentered)
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
     ensemble.operatorAverage
         (fun ω => ensemble.configurationAdvancedGreen energy broadening ω) =
       bornAdvancedResolventApproximation ensemble energy broadening +
         bornAdvancedClosureError ensemble energy broadening := by
   rw [operatorAverage_configurationAdvancedGreen_eq_free_add_exactRemainder
-    ensemble moments energy broadening hbroadening]
+    ensemble hcentered energy broadening hbroadening]
   unfold bornAdvancedResolventApproximation bornAdvancedClosureError
   exact free_add_remainder_eq_bornApproximation_add_error
     (ensemble.freeAdvancedGreen energy broadening)
@@ -142,14 +142,14 @@ structure AdvancedBornClosureHypothesis
 /-- Equality with the advanced Born approximation follows only under both centered disorder and the
 explicit closure hypothesis. -/
 theorem operatorAverage_configurationAdvancedGreen_eq_bornApproximation
-    (moments : FiniteDisorderMomentData ensemble)
+    (hcentered : ensemble.IsCentered)
     (energy broadening : ℝ) (hbroadening : 0 < broadening)
     (closure : AdvancedBornClosureHypothesis ensemble energy broadening) :
     ensemble.operatorAverage
         (fun ω => ensemble.configurationAdvancedGreen energy broadening ω) =
       bornAdvancedResolventApproximation ensemble energy broadening := by
   rw [operatorAverage_configurationAdvancedGreen_eq_bornApproximation_add_error
-    ensemble moments energy broadening hbroadening]
+    ensemble hcentered energy broadening hbroadening]
   rw [AdvancedBornClosureHypothesis.closureError_eq_zero closure, add_zero]
 
 end FiniteDisorderEnsemble
