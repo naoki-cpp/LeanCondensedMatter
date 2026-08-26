@@ -2,7 +2,6 @@ import LeanCondensedMatter.SecondQuantization.Bosonic.Thermal.BlochDeDominicis.T
 
 set_option linter.style.header false
 set_option linter.unusedFintypeInType false
-set_option linter.unusedSectionVars false
 
 /-!
 # Convergence-aware bosonic Gibbs functionals
