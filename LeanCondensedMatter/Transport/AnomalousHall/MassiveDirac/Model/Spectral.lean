@@ -103,7 +103,7 @@ theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
       bandProjector b v m px py =
         (1 / 2 : ℂ) • ((1 : Matrix2) + (((bandSign b : ℝ) : ℂ)) • Q) := by
     simpa [Q] using bandProjector_eq_normalizedHamiltonian b v m px py
-  rw [hH, hP]
+  rw [hH, hP, hP]
   cases band
   · simp only [bandSign_lower, bandEnergy_lower]
     push_cast
@@ -138,7 +138,7 @@ theorem bandProjector_mul_self (band : Band) (v m px py : ℝ)
       bandProjector b v m px py =
         (1 / 2 : ℂ) • ((1 : Matrix2) + (((bandSign b : ℝ) : ℂ)) • Q) := by
     simpa [Q] using bandProjector_eq_normalizedHamiltonian b v m px py
-  rw [hP]
+  rw [hP, hP, hP]
   cases band
   · simp only [bandSign_lower]
     push_cast
