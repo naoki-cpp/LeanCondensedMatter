@@ -34,6 +34,15 @@ noncomputable def exactSecondMoment
     (ensemble.impurityPotential ω).1 * kernel *
       (ensemble.impurityPotential ω).1)
 
+/-- The canonical exact second moment is the normalized finite operator average `E[Vω X Vω]`. -/
+theorem exactSecondMoment_eq_operatorAverage
+    (kernel : H →L[ℂ] H) :
+    ensemble.exactSecondMoment kernel =
+      ensemble.operatorAverage (fun ω =>
+        (ensemble.impurityPotential ω).1 * kernel *
+          (ensemble.impurityPotential ω).1) :=
+  rfl
+
 /-- Explicit centering assumption for a finite disorder ensemble. The exact second moment itself is
 computed canonically by `FiniteDisorderEnsemble.exactSecondMoment`. -/
 structure FiniteDisorderMomentData where
