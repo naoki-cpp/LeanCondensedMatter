@@ -401,8 +401,8 @@ theorem mixedTimeOrderedAtomicLegPosition_map_lt_iff (hf : StrictMono f) (τ τ'
             simpa [mixedTimeOrderedAtomicLegPosition, mixedTimeOrderedAtomicLegs] using hAmbient
       _ ↔ (twoPointTimedEventAtomicLegs event).idxOf x <
             (twoPointTimedEventAtomicLegs event).idxOf y := by
-            rw [twoPointTimedEventAtomicLegs_map, List.idxOf_map_of_injective hInj,
-              List.idxOf_map_of_injective hInj]
+            rw [twoPointTimedEventAtomicLegs_map]
+            simp [List.idxOf, List.findIdx_map, Function.comp_def, hInj.eq_iff]
       _ ↔ mixedTimeOrderedAtomicLegPosition τ τ' (σ ∘ f) x <
             mixedTimeOrderedAtomicLegPosition τ τ' (σ ∘ f) y := by
             symm
