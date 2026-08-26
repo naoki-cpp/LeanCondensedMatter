@@ -56,18 +56,6 @@ coordinate preserves local boundedness even when later bounds have the opposite 
 def orderedSimplexTimeCube (n : ℕ) (R : ℝ) : Set (Fin n → ℝ) :=
   Set.Icc (fun _ => -R) (fun _ => R)
 
-/-- Every centered finite-dimensional coordinate cube is compact. -/
-theorem isCompact_orderedSimplexTimeCube (n : ℕ) (R : ℝ) :
-    IsCompact (orderedSimplexTimeCube n R) := by
-  simpa [orderedSimplexTimeCube] using
-    (isCompact_Icc : IsCompact
-      (Set.Icc (fun _ : Fin n => -R) (fun _ : Fin n => R)))
-
-/-- Every centered coordinate cube is Borel measurable. -/
-theorem measurableSet_orderedSimplexTimeCube (n : ℕ) (R : ℝ) :
-    MeasurableSet (orderedSimplexTimeCube n R) :=
-  (isCompact_orderedSimplexTimeCube n R).isClosed.measurableSet
-
 /-- A measurable function that is uniformly bounded on every centered coordinate cube. -/
 def MeasurableLocallyBounded {n : ℕ} (f : (Fin n → ℝ) → ℂ) : Prop :=
   Measurable f ∧
@@ -85,8 +73,12 @@ theorem measurableLocallyBounded_of_finite_continuous_selection
   intro R _hR
   obtain ⟨C, hC⟩ :=
     exists_norm_bound_on_compact_of_finite_continuous_selection
-      (orderedSimplexTimeCube n R) (isCompact_orderedSimplexTimeCube n R) f g hg
-      (fun x _ => hselect x)
+      (orderedSimplexTimeCube n R)
+      (by
+        simpa [orderedSimplexTimeCube] using
+          (isCompact_Icc : IsCompact
+            (Set.Icc (fun _ : Fin n => -R) (fun _ : Fin n => R))))
+      f g hg (fun x _ => hselect x)
   refine ⟨max C 0, le_max_right _ _, ?_⟩
   intro x hx
   exact (hC x hx).trans (le_max_left _ _)
