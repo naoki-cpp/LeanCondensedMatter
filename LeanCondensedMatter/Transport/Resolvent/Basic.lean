@@ -81,6 +81,16 @@ theorem spectralParameter_im (side : SpectralSide) (energy broadening : ℝ) :
     (spectralParameter side energy broadening).im = side.sign * broadening := by
   simp [spectralParameter]
 
+/-- A nonzero broadening keeps either spectral-side parameter away from every real energy. -/
+theorem spectralParameter_sub_real_ne_zero
+    (side : SpectralSide) (energy broadening eigenvalue : ℝ)
+    (hbroadening : broadening ≠ 0) :
+    spectralParameter side energy broadening - (eigenvalue : ℂ) ≠ 0 := by
+  intro hzero
+  have him : side.sign * broadening = 0 := by
+    simpa [spectralParameter] using congrArg Complex.im hzero
+  exact (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening) him
+
 @[simp]
 theorem retardedSpectralParameter_re (energy broadening : ℝ) :
     (retardedSpectralParameter energy broadening).re = energy := by
