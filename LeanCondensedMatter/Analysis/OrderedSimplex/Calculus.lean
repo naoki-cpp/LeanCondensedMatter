@@ -75,6 +75,6 @@ theorem orderedSimplexIntegral_succ_mul_succ (m n : ℕ) (β : ℝ)
     (fun t _ => by
       simpa [v, v'] using hasDerivAt_orderedSimplexIntegral_succ n g hg t)
     (hu'.intervalIntegrable 0 β) (hv'.intervalIntegrable 0 β)
-  simpa [u, v, u', v'] using hprod.symm
+  simpa [u, v, u', v', orderedSimplexIntegral_succ] using hprod.symm
 
 end intervalIntegral
