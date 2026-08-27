@@ -93,7 +93,11 @@ theorem finiteCutoffContinuumBornSelfEnergy_eq_polarIntegral
   rw [finiteCutoffContinuumBornSelfEnergyFromPolarIntegral,
     finiteCutoffContinuumBornPolarGreenIntegral_eq]
   unfold finiteCutoffContinuumBornSelfEnergy continuumBornAngularMeasurePrefactor
-  simp [smul_smul]
+  rw [← algebraMap_smul ℂ (2 * Real.pi)
+    (finiteCutoffContinuumBornGreenIntegral side v m probeEnergy broadening pMax)]
+  simp only [RCLike.algebraMap_eq_ofReal, smul_smul]
+  congr 1
+  push_cast
   ring
 
 end
