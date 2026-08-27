@@ -79,11 +79,17 @@ theorem exactSecondMoment_eq_strength_smul
       ((model.ensemble.impurityPotential ω).1 * kernel *
         (model.ensemble.impurityPotential ω).1)) =
       (∑ ω, (model.ensemble.probability ω : ℂ) * (model.amplitude ω : ℂ) ^ 2) • kernel
-  rw [← Finset.sum_smul]
-  apply Finset.sum_congr rfl
-  intro ω _
-  rw [model.impurityPotential_eq ω]
-  simp [pow_two, mul_assoc, smul_smul]
+  calc
+    (∑ ω, (model.ensemble.probability ω : ℂ) •
+      ((model.ensemble.impurityPotential ω).1 * kernel *
+        (model.ensemble.impurityPotential ω).1)) =
+        ∑ ω, ((model.ensemble.probability ω : ℂ) * (model.amplitude ω : ℂ) ^ 2) • kernel := by
+      apply Finset.sum_congr rfl
+      intro ω _
+      rw [model.impurityPotential_eq ω]
+      simp [pow_two, mul_assoc, smul_smul]
+    _ = (∑ ω, (model.ensemble.probability ω : ℂ) * (model.amplitude ω : ℂ) ^ 2) • kernel := by
+      rw [← Finset.sum_smul]
 
 /-- The clean retarded Green operator of this finite ensemble is the retarded resolvent of the
 concrete massive-Dirac Hamiltonian. -/
