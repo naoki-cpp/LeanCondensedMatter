@@ -129,6 +129,7 @@ noncomputable def advancedResolvent
     (hamiltonian : H →L[ℂ] H) (energy broadening : ℝ) : H →L[ℂ] H :=
   spectralResolvent .advanced hamiltonian energy broadening
 
+omit [CompleteSpace H] in
 @[simp]
 theorem spectralResolvent_retarded
     (hamiltonian : H →L[ℂ] H) (energy broadening : ℝ) :
@@ -136,6 +137,7 @@ theorem spectralResolvent_retarded
       retardedResolvent hamiltonian energy broadening :=
   rfl
 
+omit [CompleteSpace H] in
 @[simp]
 theorem spectralResolvent_advanced
     (hamiltonian : H →L[ℂ] H) (energy broadening : ℝ) :
@@ -286,6 +288,7 @@ theorem star_retardedResolvent
     star (retardedResolvent hamiltonian energy broadening) =
       advancedResolvent hamiltonian energy broadening := by
   unfold retardedResolvent advancedResolvent spectralResolvent resolvent
+  rw [spectralParameter_retarded, spectralParameter_advanced]
   rw [← Ring.inverse_star]
   congr 1
   rw [star_sub, hself]
