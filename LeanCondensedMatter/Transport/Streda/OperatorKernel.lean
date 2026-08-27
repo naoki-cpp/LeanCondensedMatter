@@ -223,9 +223,10 @@ theorem continuous_regularizedStredaSurfacePrimitiveOperatorDerivative_energy
       regularizedStredaSurfacePrimitiveOperatorDerivative
         hamiltonian current₁ current₂ energy broadening) := by
   unfold regularizedStredaSurfacePrimitiveOperatorDerivative
-  exact continuous_const.smul
+  exact
     (continuous_smrckaStredaSurfaceFactorDerivative_energy
-      hamiltonian hself current₁ current₂ broadening hbroadening)
+      hamiltonian hself current₁ current₂ broadening hbroadening).const_smul
+      (-(1 / 2 : ℂ))
 
 /-- Canonical static Kubo–Bastin operator integrand at fixed finite broadening, with the overall
 physical prefactor omitted. -/
