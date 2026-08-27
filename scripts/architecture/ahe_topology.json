@@ -13,6 +13,7 @@
       "layers": [
         {"id": "modelBasic", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic"]},
         {"id": "modelCurrentBridge", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.CurrentBridge"]},
+        {"id": "modelOccupation", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Occupation"]},
         {"id": "modelSpectral", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Spectral"]},
         {"id": "intrinsicBerryBridge", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerryBridge"]},
         {"id": "intrinsicBerrySymmetry", "modulePrefixes": ["LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic.BerrySymmetry"]},
@@ -21,6 +22,7 @@
       ],
       "edges": [
         {"upstream": "modelBasic", "downstream": "modelCurrentBridge"},
+        {"upstream": "modelBasic", "downstream": "modelOccupation"},
         {"upstream": "modelBasic", "downstream": "modelSpectral"},
         {"upstream": "modelSpectral", "downstream": "intrinsicBerryBridge"},
         {"upstream": "intrinsicBerryBridge", "downstream": "intrinsicBerrySymmetry"},
