@@ -192,10 +192,8 @@ theorem spectralParameter_sub_bandEnergy_ne_zero
     (hbroadening : broadening ≠ 0) :
     spectralParameter side probeEnergy broadening -
         ((bandEnergy band v m px py : ℝ) : ℂ) ≠ 0 := by
-  intro hzero
-  have him : side.sign * broadening = 0 := by
-    simpa using congrArg Complex.im hzero
-  exact (mul_ne_zero (SpectralSide.sign_ne_zero side) hbroadening) him
+  exact spectralParameter_sub_real_ne_zero
+    side probeEnergy broadening (bandEnergy band v m px py) hbroadening
 
 /-- The generic resolvent on either spectral side equals the gauge-free two-projector expansion. -/
 theorem resolvent_spectralParameter_eq_projectorResolvent

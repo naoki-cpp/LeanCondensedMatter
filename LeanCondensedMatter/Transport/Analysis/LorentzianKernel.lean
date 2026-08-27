@@ -119,6 +119,28 @@ theorem integral_lorentzianSpectralKernel_symmetric
   rw [Real.arctan_neg]
   ring
 
+/-- For every fixed positive distance, `arctan(distance / η)` tends to `π / 2` as positive
+broadening tends to zero. -/
+theorem tendsto_arctan_pos_div_broadening
+    (distance : ℝ) (hdistance : 0 < distance) :
+    Tendsto
+      (fun broadening : ℝ => Real.arctan (distance / broadening))
+      (nhdsWithin 0 (Set.Ioi 0))
+      (nhds (Real.pi / 2)) := by
+  have hinv : Tendsto (fun broadening : ℝ => broadening⁻¹)
+      (nhdsWithin 0 (Set.Ioi 0)) atTop :=
+    tendsto_inv_nhdsGT_zero
+  have hscaled : Tendsto (fun broadening : ℝ => distance * broadening⁻¹)
+      (nhdsWithin 0 (Set.Ioi 0)) atTop := by
+    exact (tendsto_const_nhds : Tendsto (fun _ : ℝ => distance)
+      (nhdsWithin 0 (Set.Ioi 0)) (nhds distance)).pos_mul_atTop hdistance hinv
+  have harctanWithin := Real.tendsto_arctan_atTop.comp hscaled
+  have harctan := tendsto_nhds_of_tendsto_nhdsWithin harctanWithin
+  change Tendsto
+    (fun broadening : ℝ => Real.arctan (distance * broadening⁻¹))
+    (nhdsWithin 0 (Set.Ioi 0)) (nhds (Real.pi / 2)) at harctan
+  simpa only [div_eq_mul_inv] using harctan
+
 /-- Every symmetric Lorentzian mass is strictly smaller than `π`. -/
 theorem integral_lorentzianSpectralKernel_symmetric_lt_pi
     (radius broadening : ℝ) :
@@ -143,22 +165,7 @@ theorem tendsto_integral_lorentzianSpectralKernel_symmetric
         ∫ offset in -radius..radius, lorentzianSpectralKernel offset broadening)
       (nhdsWithin 0 (Set.Ioi 0))
       (nhds Real.pi) := by
-  have hinv : Tendsto (fun broadening : ℝ => broadening⁻¹)
-      (nhdsWithin 0 (Set.Ioi 0)) atTop :=
-    tendsto_inv_nhdsGT_zero
-  have hscaled : Tendsto (fun broadening : ℝ => radius * broadening⁻¹)
-      (nhdsWithin 0 (Set.Ioi 0)) atTop := by
-    exact (tendsto_const_nhds : Tendsto (fun _ : ℝ => radius)
-      (nhdsWithin 0 (Set.Ioi 0)) (nhds radius)).pos_mul_atTop hradius hinv
-  have harctanWithin := Real.tendsto_arctan_atTop.comp hscaled
-  have harctan : Tendsto
-      (fun broadening : ℝ => Real.arctan (radius / broadening))
-      (nhdsWithin 0 (Set.Ioi 0)) (nhds (Real.pi / 2)) := by
-    have h := tendsto_nhds_of_tendsto_nhdsWithin harctanWithin
-    change Tendsto
-      (fun broadening : ℝ => Real.arctan (radius * broadening⁻¹))
-      (nhdsWithin 0 (Set.Ioi 0)) (nhds (Real.pi / 2)) at h
-    simpa only [div_eq_mul_inv] using h
+  have harctan := tendsto_arctan_pos_div_broadening radius hradius
   have hmass := (tendsto_const_nhds : Tendsto (fun _ : ℝ => (2 : ℝ))
       (nhdsWithin 0 (Set.Ioi 0)) (nhds 2)).mul harctan
   have hfun :

@@ -74,13 +74,6 @@ theorem targetCenteredZeroTemperatureInterbandBastinPairIntegral_eq_neg_two_i_mu
   rw [show bandEnergy band v m px py + offset - bandEnergy band v m px py = offset by ring]
   ring
 
-/-- The complex norm of the zero-temperature occupation is at most one. -/
-theorem norm_zeroTemperatureOccupation_complex_le_one
-    (fermiEnergy energy : ℝ) :
-    ‖((zeroTemperatureOccupation fermiEnergy energy : ℝ) : ℂ)‖ ≤ 1 := by
-  by_cases h : energy < fermiEnergy <;>
-    simp [QuantumTheory.Transport.zeroTemperatureOccupation, h]
-
 /-- Inserting zero-temperature occupation does not enlarge the pointwise Lorentzian/spectator
 bound on the radial axis. -/
 theorem norm_zeroTemperatureOccupation_mul_lorentzian_mul_spectator_radial_le
@@ -105,7 +98,7 @@ theorem norm_zeroTemperatureOccupation_mul_lorentzian_mul_spectator_radial_le
           targetCenteredInterbandSpectatorCurrentFactor
             band e v m p 0 (offset, broadening)‖ := by
         exact mul_le_mul_of_nonneg_right
-          (norm_zeroTemperatureOccupation_complex_le_one
+          (QuantumTheory.Transport.norm_zeroTemperatureOccupation_complex_le_one
             fermiEnergy (bandEnergy band v m p 0 + offset)) (norm_nonneg _)
     _ = ‖(lorentzianSpectralKernel offset broadening : ℂ) *
           targetCenteredInterbandSpectatorCurrentFactor
