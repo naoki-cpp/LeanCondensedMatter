@@ -147,18 +147,12 @@ theorem continuumAngularGreenIntegral_eq
       0 (2 * Real.pi)
   have hcosIntegral :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.cos θ : ℝ) : ℂ)) = 0 := by
-    calc
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.cos θ : ℝ) : ℂ)) =
-          ((∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.cos θ) : ℂ) := by
-        exact intervalIntegral.integral_ofReal
-      _ = 0 := by simp
+    simpa using
+      (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume Real.cos)
   have hsinIntegral :
       (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.sin θ : ℝ) : ℂ)) = 0 := by
-    calc
-      (∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), ((Real.sin θ : ℝ) : ℂ)) =
-          ((∫ θ : ℝ in (0 : ℝ)..(2 * Real.pi), Real.sin θ) : ℂ) := by
-        exact intervalIntegral.integral_ofReal
-      _ = 0 := by simp
+    simpa using
+      (@intervalIntegral.integral_ofReal (0 : ℝ) (2 * Real.pi) volume Real.sin)
   unfold continuumAngularGreenIntegral
   have hfun :
       (fun θ : ℝ =>
