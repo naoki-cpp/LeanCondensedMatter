@@ -81,10 +81,12 @@ noncomputable def finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ)
     (mn : ι × ι) : ℂ :=
-  -(∫ energy in data.energy mn.2..data.energy mn.1,
-      interpolation.occupationDerivative energy) *
-    finiteKuboBastinDirectionalTransitionFactor
-      system data geometry direction K q omega eta mn
+  purePointKuboBastinOccupationResolvedVertexTerm system data interpolation
+    (boundedDirectionalCurrent geometry direction
+      (system.hbar : ℂ) (q : ℂ) K)
+    (boundedDirectionalCurrent geometry direction
+      (system.hbar : ℂ) (q : ℂ) K)
+    omega eta mn
 
 omit [Fintype ι] in
 theorem finiteKuboBastinOccupationResolvedDirectionalCurrentTerm_eq_vertex
@@ -116,11 +118,15 @@ theorem finiteKuboBastinSpectralDirectionalCurrentTerm_eq_occupationResolved
         system data geometry direction K q omega eta mn =
       finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
         system data interpolation geometry direction K q omega eta mn := by
-  unfold finiteKuboBastinSpectralDirectionalCurrentTerm
-    finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
-    finiteKuboBastinDirectionalTransitionFactor
-  rw [interpolation.probabilityDifference_eq_integral system mn.1 mn.2]
-  ring
+  simpa [finiteKuboBastinSpectralDirectionalCurrentTerm,
+    finiteKuboBastinOccupationResolvedDirectionalCurrentTerm] using
+    purePointKuboBastinSpectralVertexTerm_eq_occupationResolved
+      system data interpolation
+      (boundedDirectionalCurrent geometry direction
+        (system.hbar : ℂ) (q : ℂ) K)
+      (boundedDirectionalCurrent geometry direction
+        (system.hbar : ℂ) (q : ℂ) K)
+      omega eta mn
 
 /-- The complete finite directional conductivity after replacing every discrete probability
 difference by its oriented occupation-derivative integral. The contact term and finite-volume
@@ -132,12 +138,14 @@ noncomputable def finiteKuboBastinOccupationResolvedDirectionalConductivity
     (interpolation : PurePointOccupationInterpolation system data)
     (geometry : LatticeGeometry Site E) (direction : E →ₗ[ℝ] ℝ)
     (K : LocallyFiniteHopping Site) (q omega eta : ℝ) : ℂ :=
-  ((∑ mn : ι × ι,
-      finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
-        system data interpolation geometry direction K q omega eta mn) +
-      purePointNormalizedExpectation system data
-        (boundedDirectionalContact geometry direction
-          (system.hbar : ℂ) (q : ℂ) K)) *
+  finiteKuboBastinOccupationResolvedVertexResponse system data interpolation
+      (boundedDirectionalCurrent geometry direction
+        (system.hbar : ℂ) (q : ℂ) K)
+      (boundedDirectionalCurrent geometry direction
+        (system.hbar : ℂ) (q : ℂ) K)
+      (boundedDirectionalContact geometry direction
+        (system.hbar : ℂ) (q : ℂ) K)
+      omega eta *
     finiteVolumeConductivityNormalization convention omega eta
 
 theorem finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved
@@ -153,12 +161,18 @@ theorem finiteKuboBastinSpectralDirectionalConductivity_eq_occupationResolved
         convention system data interpolation geometry direction K q omega eta := by
   unfold finiteKuboBastinSpectralDirectionalConductivity
     finiteKuboBastinOccupationResolvedDirectionalConductivity
-  congr 1
-  congr 1
-  apply Finset.sum_congr rfl
-  intro mn _
-  exact finiteKuboBastinSpectralDirectionalCurrentTerm_eq_occupationResolved
-    system data interpolation geometry direction K q omega eta mn
+  exact congrArg
+    (fun response : ℂ =>
+      response * finiteVolumeConductivityNormalization convention omega eta)
+    (finiteKuboBastinSpectralVertexResponse_eq_occupationResolved
+      system data interpolation
+      (boundedDirectionalCurrent geometry direction
+        (system.hbar : ℂ) (q : ℂ) K)
+      (boundedDirectionalCurrent geometry direction
+        (system.hbar : ℂ) (q : ℂ) K)
+      (boundedDirectionalContact geometry direction
+        (system.hbar : ℂ) (q : ℂ) K)
+      omega eta)
 
 /-- The occupation-resolved response remains connected directly to the upstream causal Kubo and
 spectral Kubo–Bastin derivation at fixed positive switching rate. -/

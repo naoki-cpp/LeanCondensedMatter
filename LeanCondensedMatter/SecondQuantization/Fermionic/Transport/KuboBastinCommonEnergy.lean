@@ -85,22 +85,11 @@ theorem integral_finiteKuboBastinCommonTransitionIntegrand
       system data interpolation geometry direction K q omega eta mn energy) =
       finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
         system data interpolation geometry direction K q omega eta mn := by
-  let factor := finiteKuboBastinDirectionalTransitionFactor
-    system data geometry direction K q omega eta mn
-  have hint : IntervalIntegrable ((-factor) • interpolation.occupationDerivative)
-      volume (data.energy mn.2) (data.energy mn.1) :=
-    (interpolation.occupationDerivative_intervalIntegrable mn.1 mn.2).smul (-factor)
-  rw [show finiteKuboBastinCommonTransitionIntegrand
-      system data interpolation geometry direction K q omega eta mn =
-      orientedIntervalIntegrand ((-factor) • interpolation.occupationDerivative)
-        (data.energy mn.2) (data.energy mn.1) by rfl]
-  rw [integral_orientedIntervalIntegrand _ _ _ hint]
-  change (∫ energy in data.energy mn.2..data.energy mn.1,
-      (-factor) • interpolation.occupationDerivative energy) = _
-  rw [intervalIntegral.integral_smul]
-  unfold finiteKuboBastinOccupationResolvedDirectionalCurrentTerm
-  simp only [smul_eq_mul]
-  ring
+  rw [finiteKuboBastinCommonTransitionIntegrand_eq_vertex
+    system data interpolation geometry direction K q omega eta mn]
+  rw [integral_purePointKuboBastinCommonVertexTransitionIntegrand]
+  exact (finiteKuboBastinOccupationResolvedDirectionalCurrentTerm_eq_vertex
+    system data interpolation geometry direction K q omega eta mn).symm
 
 /-- The finite sum of all localized directional transition integrands on the full energy axis. -/
 noncomputable def finiteKuboBastinCommonEnergyKernel
@@ -191,7 +180,18 @@ theorem finiteKuboBastinOccupationResolvedDirectionalConductivity_eq_commonEnerg
         convention system data interpolation geometry direction K q omega eta := by
   unfold finiteKuboBastinOccupationResolvedDirectionalConductivity
     finiteKuboBastinCommonEnergyDirectionalConductivity
-  rw [integral_finiteKuboBastinCommonEnergyKernel]
+  rw [finiteKuboBastinOccupationResolvedVertexResponse_eq_commonEnergy
+    system data interpolation
+    (boundedDirectionalCurrent geometry direction
+      (system.hbar : ℂ) (q : ℂ) K)
+    (boundedDirectionalCurrent geometry direction
+      (system.hbar : ℂ) (q : ℂ) K)
+    (boundedDirectionalContact geometry direction
+      (system.hbar : ℂ) (q : ℂ) K)
+    omega eta]
+  unfold finiteKuboBastinCommonEnergyVertexResponse
+  rw [← finiteKuboBastinCommonEnergyKernel_eq_vertex
+    system data interpolation geometry direction K q omega eta]
 
 /-- The finite spectral conductivity equals its common-energy representation, without introducing
 an artificial ordinary-trace carrier. -/
