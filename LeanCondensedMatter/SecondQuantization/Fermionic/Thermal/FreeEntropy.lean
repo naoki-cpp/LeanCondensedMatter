@@ -4,9 +4,6 @@ import LeanCondensedMatter.QuantumTheory.Entropy.Diagonal
 import LeanCondensedMatter.QuantumTheory.Gibbs.PurePoint
 
 set_option linter.style.header false
-set_option linter.unusedFintypeInType false
-set_option linter.unusedDecidableInType false
-set_option linter.unnecessarySeqFocus false
 
 /-!
 # Entropy of the finite free-fermion Gibbs state
@@ -47,10 +44,11 @@ theorem freeGibbsDensityOperator_apply_basis_probability
   simpa [freeGibbsConfigurationProbability] using
     freeGibbsDensityOperator_apply_basis ε β n
 
-omit [LinearOrder Mode] in
-theorem freeGibbsConfigurationProbability_pos
+omit [LinearOrder Mode] [Fintype Mode] in
+theorem freeGibbsConfigurationProbability_pos [Finite Mode]
     (ε : Mode → ℝ) (β : ℝ) (n : Occupation Mode) :
     0 < freeGibbsConfigurationProbability ε β n := by
+  letI := Fintype.ofFinite Mode
   rw [freeGibbsConfigurationProbability, purePointGibbsProbability]
   exact mul_pos
     (inv_pos.mpr (purePointPartitionFunction_pos (fermionEnergy ε) β
@@ -260,7 +258,8 @@ private theorem one_sub_fermiDiracOccupation_eq_inv_one_add_exp_neg
     1 - fermiDiracOccupation ε β i =
       (1 + Real.exp (-β * ε i))⁻¹ := by
   rw [fermiDiracOccupation, show -β * ε i = -(β * ε i) by ring, Real.exp_neg]
-  field_simp [Real.exp_ne_zero] <;> ring
+  field_simp [Real.exp_ne_zero]
+  ring
 
 omit [LinearOrder Mode] [Fintype Mode] in
 private theorem binaryEntropy_fermiDiracOccupation
