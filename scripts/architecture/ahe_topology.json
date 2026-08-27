@@ -26,7 +26,6 @@
         {"upstream": "modelBasic", "downstream": "modelSpectral"},
         {"upstream": "modelSpectral", "downstream": "intrinsicBerryBridge"},
         {"upstream": "intrinsicBerryBridge", "downstream": "intrinsicBerrySymmetry"},
-        {"upstream": "modelOccupation", "downstream": "intrinsicResponse"},
         {"upstream": "intrinsicBerrySymmetry", "downstream": "intrinsicResponse"},
         {"upstream": "intrinsicResponse", "downstream": "intrinsicConductivity"}
       ]
