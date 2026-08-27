@@ -73,8 +73,13 @@ theorem hamiltonianOperator_eq_pauli (v m px py : ℝ) :
       (((v * px : ℝ) : ℂ)) • matrixOperator sigmaX +
         (((v * py : ℝ) : ℂ)) • matrixOperator sigmaY +
           (((m : ℝ) : ℂ)) • matrixOperator sigmaZ := by
-  unfold hamiltonianOperator hamiltonian matrixOperator
-  simp
+  let φ : Matrix2 ≃⋆ₐ[ℂ] (DiracHilbert →L[ℂ] DiracHilbert) := Matrix.toEuclideanCLM
+  change φ (hamiltonian v m px py) =
+    (((v * px : ℝ) : ℂ)) • φ sigmaX +
+      (((v * py : ℝ) : ℂ)) • φ sigmaY +
+        (((m : ℝ) : ℂ)) • φ sigmaZ
+  unfold hamiltonian
+  rw [map_add, map_add, map_smul, map_smul, map_smul]
 
 /-- Transporting `H₀² = E² I` to `DiracHilbert` gives the bounded-operator square identity used by
 the closed resolvent form. -/
@@ -135,6 +140,7 @@ theorem pauliGreenOperator_eq_closedForm
   simp [pauliGreenOperator, pauliGreenScalarCoefficient,
     pauliGreenXCoefficient, pauliGreenYCoefficient, pauliGreenZCoefficient,
     Algebra.algebraMap_eq_smul_one, smul_add, smul_smul]
+  module
 
 private theorem spectralShift_mul_pauliGreenOperator
     (side : SpectralSide) (v m px py probeEnergy broadening : ℝ)
@@ -157,6 +163,7 @@ private theorem spectralShift_mul_pauliGreenOperator
     rw [sub_mul, mul_add, mul_add]
     rw [hamiltonianOperator_mul_self]
     simp [Algebra.algebraMap_eq_smul_one, pauliGreenDenominator, smul_smul, sub_smul]
+    module
   rw [hquadratic, smul_smul]
   simp [pauliGreenDenominator_ne_zero side v m px py probeEnergy broadening hbroadening]
 
