@@ -71,7 +71,7 @@ theorem hasDerivAt_pauliGreenDenominator_radial
   have hp : HasDerivAt (fun q : ℝ => (q : ℂ)) 1 p :=
     (hasDerivAt_id p).ofReal_comp
   have hp2 : HasDerivAt (fun q : ℝ => (q : ℂ) ^ 2) (2 * (p : ℂ)) p := by
-    convert hp.pow 2 using 1 <;> ring
+    simpa only [pow_two, one_mul, mul_one, two_mul] using hp.mul hp
   have hterm :
       HasDerivAt (fun q : ℝ => (v : ℂ) ^ 2 * (q : ℂ) ^ 2)
         ((v : ℂ) ^ 2 * (2 * (p : ℂ))) p :=
@@ -82,12 +82,15 @@ theorem hasDerivAt_pauliGreenDenominator_radial
           spectralParameter side probeEnergy broadening ^ 2 - (m : ℂ) ^ 2 -
             (v : ℂ) ^ 2 * (q : ℂ) ^ 2)
         (-2 * (v : ℂ) ^ 2 * (p : ℂ)) p := by
-    convert (hasDerivAt_const p
-      (spectralParameter side probeEnergy broadening ^ 2 - (m : ℂ) ^ 2)).sub hterm using 1 <;>
-      ring
+    have hbase := (hasDerivAt_const p
+      (spectralParameter side probeEnergy broadening ^ 2 - (m : ℂ) ^ 2)).sub hterm
+    rw [show
+      (-2 : ℂ) * (v : ℂ) ^ 2 * (p : ℂ) =
+        -((v : ℂ) ^ 2 * (2 * (p : ℂ))) by ring]
+    simpa only [zero_sub] using hbase
   convert hpoly using 1
   funext q
-  exact (pauliGreenDenominator_radial_eq side v m probeEnergy broadening q).symm
+  exact pauliGreenDenominator_radial_eq side v m probeEnergy broadening q
 
 /-- The principal logarithm of the radial denominator differentiates to `-2v²` times the common
 Born radial denominator integrand. -/
@@ -146,8 +149,8 @@ theorem neg_two_mul_velocitySq_mul_finiteCutoffContinuumBornDenominatorIntegral_
     (fun p _ => hasDerivAt_log_pauliGreenDenominator_radial
       side v m probeEnergy broadening p hprobeEnergy hbroadening) hint
   rw [← hftc]
-  rw [← intervalIntegral.integral_const_mul]
-  rfl
+  unfold finiteCutoffContinuumBornDenominatorIntegral
+  rw [intervalIntegral.integral_const_mul]
 
 /-- Explicit finite-cutoff evaluation of the shared continuum Born denominator integral. -/
 theorem finiteCutoffContinuumBornDenominatorIntegral_eq_log_sub_log
