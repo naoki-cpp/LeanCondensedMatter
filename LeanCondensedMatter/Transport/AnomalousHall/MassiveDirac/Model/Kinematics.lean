@@ -1,4 +1,5 @@
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model.Basic
+import Mathlib.Analysis.Calculus.Deriv.Add
 import Mathlib.Analysis.Calculus.Deriv.Mul
 import Mathlib.Analysis.SpecialFunctions.Sqrt
 import Mathlib.Tactic
@@ -60,10 +61,15 @@ def radialEnergyDerivative (v m p : ℝ) : ℝ :=
 theorem hasDerivAt_energy_radial
     (v m p : ℝ) (hm : 0 < m) :
     HasDerivAt (fun q : ℝ => energy v m q 0) (radialEnergyDerivative v m p) p := by
+  have hpow : HasDerivAt (fun q : ℝ => q ^ 2) (2 * p) p := by
+    simpa using (hasDerivAt_id p).pow 2
+  have hmul :
+      HasDerivAt (fun q : ℝ => v ^ 2 * q ^ 2) (v ^ 2 * (2 * p)) p := by
+    exact HasDerivAt.const_mul (v ^ 2) hpow
   have hpoly :
       HasDerivAt (fun q : ℝ => energySq v m q 0) (v ^ 2 * (2 * p)) p := by
-    simpa [energySq] using
-      (((hasDerivAt_id p).pow 2).const_mul (v ^ 2)).add_const (m ^ 2)
+    have hadd := hmul.add (hasDerivAt_const p (m ^ 2))
+    simpa [energySq] using hadd
   have hsq_ne : energySq v m p 0 ≠ 0 := by
     unfold energySq
     positivity
