@@ -217,10 +217,13 @@ theorem shift_mul_green (side : SpectralSide) :
         solution.green side = 1 := by
   cases side with
   | retarded =>
-      simpa [selfEnergy, green, scbaRetardedShift] using solution.retardedShift_mul_green
+      change ensemble.scbaRetardedShift energy broadening solution.retardedSelfEnergy *
+        solution.retardedGreen = 1
+      exact solution.retardedShift_mul_green
   | advanced =>
-      simpa [selfEnergy, green, scbaAdvancedShift, advancedSelfEnergy, advancedGreen] using
-        solution.advancedShift_mul_green
+      change ensemble.scbaAdvancedShift energy broadening solution.advancedSelfEnergy *
+        solution.advancedGreen = 1
+      exact solution.advancedShift_mul_green
 
 /-- The side-indexed Green operator is a right inverse of the side-indexed SCBA shift. -/
 theorem green_mul_shift (side : SpectralSide) :
@@ -228,10 +231,13 @@ theorem green_mul_shift (side : SpectralSide) :
         ensemble.scbaShift side energy broadening (solution.selfEnergy side) = 1 := by
   cases side with
   | retarded =>
-      simpa [selfEnergy, green, scbaRetardedShift] using solution.green_mul_retardedShift
+      change solution.retardedGreen *
+        ensemble.scbaRetardedShift energy broadening solution.retardedSelfEnergy = 1
+      exact solution.green_mul_retardedShift
   | advanced =>
-      simpa [selfEnergy, green, scbaAdvancedShift, advancedSelfEnergy, advancedGreen] using
-        solution.green_mul_advancedShift
+      change solution.advancedGreen *
+        ensemble.scbaAdvancedShift energy broadening solution.advancedSelfEnergy = 1
+      exact solution.green_mul_advancedShift
 
 /-- Finite SCBA Ward-consistency identity. The retarded and advanced self-energy difference is the
 canonical exact second-moment action applied to the Green-operator difference. -/
