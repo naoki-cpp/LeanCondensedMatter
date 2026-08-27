@@ -104,11 +104,16 @@ theorem pauliGreenOperator_polar_eq
           (pauliGreenXCoefficient side v m p 0 probeEnergy broadening • matrixOperator sigmaX) +
         Real.sin θ •
           (pauliGreenXCoefficient side v m p 0 probeEnergy broadening • matrixOperator sigmaY) := by
+  have real_smul_complex_smul (r : ℝ) (z : ℂ)
+      (A : DiracHilbert →L[ℂ] DiracHilbert) :
+      r • (z • A) = (((r : ℝ) : ℂ) * z) • A := by
+    simpa only [RCLike.algebraMap_eq_ofReal, smul_smul] using
+      (algebraMap_smul ℂ r (z • A)).symm
   rw [inversionSymmetrizedPauliGreenOperator_eq_evenChannels]
   rw [pauliGreenOperator]
   rw [pauliGreenScalarCoefficient_polar, pauliGreenXCoefficient_polar,
     pauliGreenYCoefficient_polar, pauliGreenZCoefficient_polar]
-  simp [smul_smul, Complex.real_smul, mul_comm]
+  rw [real_smul_complex_smul, real_smul_complex_smul]
   module
 
 /-- Full polar-angle integral of the clean Green operator at fixed radial momentum. -/
