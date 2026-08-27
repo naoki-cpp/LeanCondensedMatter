@@ -60,7 +60,6 @@ theorem radialEnergySlope_sq_metallicFermiRadius
   rw [div_pow, mul_pow,
     metallicFermiRadius_sq v m fermiEnergy hm hmF]
   field_simp [hfermiNe, hv]
-  ring
 
 /-- In the strictly metallic regime `0 < m < epsilon_F`, the squared Fermi-surface radial slope is
 strictly positive when `v ≠ 0`. -/
