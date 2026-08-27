@@ -103,7 +103,7 @@ theorem hamiltonian_mul_bandProjector (band : Band) (v m px py : ℝ)
       bandProjector b v m px py =
         (1 / 2 : ℂ) • ((1 : Matrix2) + (((bandSign b : ℝ) : ℂ)) • Q) := by
     simpa [Q] using bandProjector_eq_normalizedHamiltonian b v m px py
-  rw [hH, hP, hP]
+  rw [hH, hP]
   cases band
   · simp only [bandSign_lower, bandEnergy_lower]
     push_cast
@@ -138,7 +138,7 @@ theorem bandProjector_mul_self (band : Band) (v m px py : ℝ)
       bandProjector b v m px py =
         (1 / 2 : ℂ) • ((1 : Matrix2) + (((bandSign b : ℝ) : ℂ)) • Q) := by
     simpa [Q] using bandProjector_eq_normalizedHamiltonian b v m px py
-  rw [hP, hP, hP]
+  rw [hP]
   cases band
   · simp only [bandSign_lower]
     push_cast
@@ -179,9 +179,9 @@ theorem bandProjector_lower_mul_upper (v m px py : ℝ)
   push_cast
   simp only [neg_smul, one_smul]
   rw [smul_mul_assoc, mul_smul_comm, smul_smul]
-  have hmul : (1 - Q) * (1 + Q) = 0 := by
+  have hmul : (1 + -Q) * (1 + Q) = 0 := by
     calc
-      (1 - Q) * (1 + Q) = 1 - Q * Q := by noncomm_ring
+      (1 + -Q) * (1 + Q) = 1 - Q * Q := by noncomm_ring
       _ = 0 := by rw [hQ]; simp
   rw [hmul, smul_zero]
 
@@ -202,9 +202,9 @@ theorem bandProjector_upper_mul_lower (v m px py : ℝ)
   push_cast
   simp only [neg_smul, one_smul]
   rw [smul_mul_assoc, mul_smul_comm, smul_smul]
-  have hmul : (1 + Q) * (1 - Q) = 0 := by
+  have hmul : (1 + Q) * (1 + -Q) = 0 := by
     calc
-      (1 + Q) * (1 - Q) = 1 - Q * Q := by noncomm_ring
+      (1 + Q) * (1 + -Q) = 1 - Q * Q := by noncomm_ring
       _ = 0 := by rw [hQ]; simp
   rw [hmul, smul_zero]
 
