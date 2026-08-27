@@ -142,12 +142,18 @@ theorem finiteCutoffContinuumBornGreenIntegral_eq
       finiteCutoffContinuumBornScalarIntegral side v m probeEnergy broadening pMax • 1 +
         finiteCutoffContinuumBornZIntegral side v m probeEnergy broadening pMax •
           matrixOperator sigmaZ := by
-  have hscalar :=
+  have hscalar :
+      IntervalIntegrable
+        (continuumBornRadialScalarIntegrand side v m probeEnergy broadening)
+        volume 0 pMax :=
     (continuous_continuumBornRadialScalarIntegrand
-      side v m probeEnergy broadening hbroadening).intervalIntegrable
-  have hz :=
+      side v m probeEnergy broadening hbroadening).intervalIntegrable 0 pMax
+  have hz :
+      IntervalIntegrable
+        (continuumBornRadialZIntegrand side v m probeEnergy broadening)
+        volume 0 pMax :=
     (continuous_continuumBornRadialZIntegrand
-      side v m probeEnergy broadening hbroadening).intervalIntegrable
+      side v m probeEnergy broadening hbroadening).intervalIntegrable 0 pMax
   unfold finiteCutoffContinuumBornGreenIntegral
   have hkernel :
       (fun p : ℝ => continuumBornRadialGreenKernel side v m probeEnergy broadening p) =
