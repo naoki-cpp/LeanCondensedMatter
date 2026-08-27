@@ -98,7 +98,18 @@ theorem finiteCutoffContinuumBornSelfEnergy_eq_polarIntegral
   simp only [RCLike.algebraMap_eq_ofReal, smul_smul]
   congr 1
   push_cast
-  ring_nf
+  calc
+    (disorderStrength : ℂ) * (Real.pi : ℂ) *
+        (momentumMeasurePrefactor hbar : ℂ) * 2 =
+      (disorderStrength : ℂ) *
+        ((Real.pi : ℂ) * (momentumMeasurePrefactor hbar : ℂ)) * 2 := by
+          rw [mul_assoc]
+    _ = (disorderStrength : ℂ) *
+        ((momentumMeasurePrefactor hbar : ℂ) * (Real.pi : ℂ)) * 2 := by
+          rw [mul_comm (Real.pi : ℂ) (momentumMeasurePrefactor hbar : ℂ)]
+    _ = (disorderStrength : ℂ) * (momentumMeasurePrefactor hbar : ℂ) *
+        (Real.pi : ℂ) * 2 := by
+          rw [← mul_assoc]
 
 end
 
