@@ -89,7 +89,7 @@ theorem hasDerivAt_retardedResolvent_energy
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
     HasDerivAt (fun x : ℝ => retardedResolvent hamiltonian x broadening)
       (-(retardedResolvent hamiltonian energy broadening) ^ 2) energy := by
-  simpa only [retardedResolvent] using
+  simpa only [spectralResolvent_retarded] using
     hasDerivAt_spectralResolvent_energy
       .retarded hamiltonian hself energy broadening (ne_of_gt hbroadening)
 
@@ -99,7 +99,7 @@ theorem hasDerivAt_advancedResolvent_energy
     (energy broadening : ℝ) (hbroadening : 0 < broadening) :
     HasDerivAt (fun x : ℝ => advancedResolvent hamiltonian x broadening)
       (-(advancedResolvent hamiltonian energy broadening) ^ 2) energy := by
-  simpa only [advancedResolvent] using
+  simpa only [spectralResolvent_advanced] using
     hasDerivAt_spectralResolvent_energy
       .advanced hamiltonian hself energy broadening (ne_of_gt hbroadening)
 
@@ -121,7 +121,7 @@ theorem continuous_retardedResolvent_energy
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
     (broadening : ℝ) (hbroadening : 0 < broadening) :
     Continuous (fun energy : ℝ => retardedResolvent hamiltonian energy broadening) := by
-  simpa only [retardedResolvent] using
+  simpa only [spectralResolvent_retarded] using
     continuous_spectralResolvent_energy .retarded hamiltonian hself broadening
       (ne_of_gt hbroadening)
 
@@ -130,7 +130,7 @@ theorem continuous_advancedResolvent_energy
     (hamiltonian : H →L[ℂ] H) (hself : IsSelfAdjoint hamiltonian)
     (broadening : ℝ) (hbroadening : 0 < broadening) :
     Continuous (fun energy : ℝ => advancedResolvent hamiltonian energy broadening) := by
-  simpa only [advancedResolvent] using
+  simpa only [spectralResolvent_advanced] using
     continuous_spectralResolvent_energy .advanced hamiltonian hself broadening
       (ne_of_gt hbroadening)
 
