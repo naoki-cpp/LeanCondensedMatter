@@ -75,6 +75,25 @@ theorem pauliGreenOperator_add_neg_momentum
   simp [pauliGreenOperator, two_smul]
   module
 
+/-- Clean Green operator averaged with its momentum-inverted partner.  This belongs to the exact
+propagator-symmetry layer rather than to any disorder closure. -/
+noncomputable def inversionSymmetrizedPauliGreenOperator
+    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) :
+    DiracHilbert →L[ℂ] DiracHilbert :=
+  (1 / 2 : ℂ) •
+    (pauliGreenOperator side v m px py probeEnergy broadening +
+      pauliGreenOperator side v m (-px) (-py) probeEnergy broadening)
+
+/-- Exact momentum-inversion symmetrization retains only the scalar and `σ_z` Pauli channels. -/
+theorem inversionSymmetrizedPauliGreenOperator_eq_evenChannels
+    (side : SpectralSide) (v m px py probeEnergy broadening : ℝ) :
+    inversionSymmetrizedPauliGreenOperator side v m px py probeEnergy broadening =
+      pauliGreenScalarCoefficient side v m px py probeEnergy broadening • 1 +
+        pauliGreenZCoefficient side v m px py probeEnergy broadening • matrixOperator sigmaZ := by
+  unfold inversionSymmetrizedPauliGreenOperator
+  rw [pauliGreenOperator_add_neg_momentum]
+  module
+
 end
 
 end AnomalousHall.MassiveDirac

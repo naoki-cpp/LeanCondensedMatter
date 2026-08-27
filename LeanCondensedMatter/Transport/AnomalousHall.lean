@@ -2,6 +2,7 @@ import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Model
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Intrinsic
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Streda
 import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Bastin
+import LeanCondensedMatter.Transport.AnomalousHall.MassiveDirac.Disorder
 
 set_option linter.style.header false
 
@@ -11,12 +12,13 @@ set_option linter.style.header false
 Public entry point for anomalous-Hall model benchmarks. Generic spectral, intrinsic-current,
 linear-response, Kubo–Bastin, Středa, and disorder infrastructure remains owned upstream.
 
-The massive-Dirac benchmark is exposed through four logical layers:
+The massive-Dirac benchmark is exposed through five logical layers:
 
 - `MassiveDirac.Model` — Hamiltonian, current realization, and spectral/projector algebra;
 - `MassiveDirac.Intrinsic` — Berry bridge and clean intrinsic Hall conductivity;
 - `MassiveDirac.Streda` — bounded-operator specialization of the generic Středa API;
-- `MassiveDirac.Bastin` — detailed finite- and zero-broadening Bastin analysis.
+- `MassiveDirac.Bastin` — detailed finite- and zero-broadening Bastin analysis;
+- `MassiveDirac.Disorder` — scalar-disorder specialization and finite-cutoff continuum Born closure.
 
-Reusable analysis currently living in the final layer is being extracted upstream under #1596.
+Reusable analysis currently living in the Bastin layer is being extracted upstream under #1596.
 -/
