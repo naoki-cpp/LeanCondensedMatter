@@ -8,19 +8,21 @@ set_option linter.style.header false
 
 This module provides the bounded one-particle SCBA foundation used by the conserving impurity
 program in issue #688. It consumes the canonical exact finite second-moment bounded complex-linear
-map from the finite-disorder moment layer and records supplied retarded/advanced self-consistent
-Born approximation (SCBA) solutions.
+map from the finite-disorder moment layer and records supplied retarded self-consistent Born
+approximation (SCBA) data. Advanced data are derived by adjoint through the common `SpectralSide`
+interface.
 
-SCBA is not identified with the exact finite disorder average. A solution stores its self-energy
-fixed-point equations, a two-sided inverse identity for the retarded Green operator, and the
-retarded/advanced adjoint relation. The advanced inverse identities are then derived by adjointing
-the retarded identities. Both retarded and advanced fixed-point equations use the same canonical
+SCBA is not identified with the exact finite disorder average. A solution stores only its retarded
+self-energy fixed-point equation and a two-sided inverse identity for the retarded Green operator.
+The advanced Green operator and self-energy are derived by adjoint compatibility, and the advanced
+fixed-point and inverse equations follow as theorems. Both spectral sides use the same canonical
 second-moment action, whose complex linearity and adjoint compatibility are proved upstream from
 the finite ensemble. The module derives
 
 `Σᴿ - Σᴬ = C₂(Ḡᴿ - Ḡᴬ)`
 
-and the retarded/advanced adjoint relation for the self-energy. The bounded algebraic foundation is
+and exposes side-indexed fixed-point, inverse, and unit APIs while retaining conventional
+retarded/advanced names as physics-facing specializations. The bounded algebraic foundation is
 dimension-independent; finite-dimensionality is added only at ordinary-trace and finite-matrix
 vertex boundaries.
 
@@ -42,76 +44,148 @@ namespace FiniteDisorderEnsemble
 
 variable (ensemble : FiniteDisorderEnsemble (H := H) (Ω := Ω))
 
+/-- Side-indexed SCBA shift `zˢ I - H₀ - Σˢ`. -/
+noncomputable def scbaShift
+    (side : SpectralSide) (energy broadening : ℝ) (selfEnergy : H →L[ℂ] H) : H →L[ℂ] H :=
+  algebraMap ℂ (H →L[ℂ] H) (spectralParameter side energy broadening) -
+    ensemble.baseHamiltonian.1 - selfEnergy
+
 /-- SCBA retarded shift `zᴿ I - H₀ - Σᴿ`. -/
 noncomputable def scbaRetardedShift
     (energy broadening : ℝ) (selfEnergy : H →L[ℂ] H) : H →L[ℂ] H :=
-  algebraMap ℂ (H →L[ℂ] H) (retardedSpectralParameter energy broadening) -
-    ensemble.baseHamiltonian.1 - selfEnergy
+  ensemble.scbaShift .retarded energy broadening selfEnergy
 
 /-- SCBA advanced shift `zᴬ I - H₀ - Σᴬ`. -/
 noncomputable def scbaAdvancedShift
     (energy broadening : ℝ) (selfEnergy : H →L[ℂ] H) : H →L[ℂ] H :=
-  algebraMap ℂ (H →L[ℂ] H) (advancedSpectralParameter energy broadening) -
-    ensemble.baseHamiltonian.1 - selfEnergy
+  ensemble.scbaShift .advanced energy broadening selfEnergy
+
+@[simp]
+theorem scbaShift_retarded
+    (energy broadening : ℝ) (selfEnergy : H →L[ℂ] H) :
+    ensemble.scbaShift .retarded energy broadening selfEnergy =
+      ensemble.scbaRetardedShift energy broadening selfEnergy :=
+  rfl
+
+@[simp]
+theorem scbaShift_advanced
+    (energy broadening : ℝ) (selfEnergy : H →L[ℂ] H) :
+    ensemble.scbaShift .advanced energy broadening selfEnergy =
+      ensemble.scbaAdvancedShift energy broadening selfEnergy :=
+  rfl
 
 /-- Adjointing a retarded SCBA shift gives the advanced shift with adjointed self-energy. -/
 theorem star_scbaRetardedShift
     (energy broadening : ℝ) (selfEnergy : H →L[ℂ] H) :
     star (ensemble.scbaRetardedShift energy broadening selfEnergy) =
       ensemble.scbaAdvancedShift energy broadening (star selfEnergy) := by
-  unfold scbaRetardedShift scbaAdvancedShift
+  unfold scbaRetardedShift scbaAdvancedShift scbaShift
+  rw [spectralParameter_retarded, spectralParameter_advanced]
   rw [star_sub, star_sub, ensemble.baseHamiltonian.2.star_eq]
   simp [Algebra.algebraMap_eq_smul_one]
 
-/-- Supplied bounded retarded/advanced SCBA solution at fixed real energy and positive broadening.
+/-- Supplied bounded retarded SCBA solution at fixed real energy and positive broadening.
 The structure records approximation equations rather than identifying these operators with the
 exact ensemble average. The self-energy map is the canonical exact second-moment action `C₂`; no
-separate covariance object or compatibility proof is supplied. Only the retarded two-sided inverse
-identities are supplied: the advanced inverse identities follow from adjoint compatibility. -/
+separate covariance object or compatibility proof is supplied. Advanced Green and self-energy data
+are derived by adjoint, so only the independent retarded fixed-point and two-sided inverse identities
+are stored. -/
 structure FiniteSCBASolution (energy broadening : ℝ) where
   /-- The SCBA regulator remains strictly positive. -/
   broadening_pos : 0 < broadening
   /-- Retarded SCBA self-energy. -/
   retardedSelfEnergy : H →L[ℂ] H
-  /-- Advanced SCBA self-energy. -/
-  advancedSelfEnergy : H →L[ℂ] H
   /-- Retarded SCBA Green operator. -/
   retardedGreen : H →L[ℂ] H
-  /-- Advanced SCBA Green operator. -/
-  advancedGreen : H →L[ℂ] H
   /-- Retarded self-energy fixed-point equation `Σᴿ = C₂(Ḡᴿ)`. -/
   retardedSelfEnergy_eq_secondMoment :
     retardedSelfEnergy = ensemble.exactSecondMoment retardedGreen
-  /-- Advanced self-energy fixed-point equation `Σᴬ = C₂(Ḡᴬ)`. -/
-  advancedSelfEnergy_eq_secondMoment :
-    advancedSelfEnergy = ensemble.exactSecondMoment advancedGreen
   /-- The retarded shift is a left inverse of the supplied retarded Green operator. -/
   retardedShift_mul_green :
     ensemble.scbaRetardedShift energy broadening retardedSelfEnergy * retardedGreen = 1
   /-- The retarded shift is a right inverse of the supplied retarded Green operator. -/
   green_mul_retardedShift :
     retardedGreen * ensemble.scbaRetardedShift energy broadening retardedSelfEnergy = 1
-  /-- Retarded and advanced SCBA Green operators are related by the operator adjoint. -/
-  advancedGreen_eq_star_retarded :
-    advancedGreen = star retardedGreen
 
 variable {energy broadening : ℝ}
 variable (solution : FiniteSCBASolution ensemble energy broadening)
 
-/-- The supplied SCBA self-energies inherit the retarded/advanced adjoint relation from the
-canonical adjoint-compatible exact second-moment action. -/
+/-- SCBA Green operator on either spectral side. The advanced branch is the adjoint of the supplied
+retarded branch. -/
+noncomputable def FiniteSCBASolution.green (side : SpectralSide) : H →L[ℂ] H :=
+  match side with
+  | .retarded => solution.retardedGreen
+  | .advanced => star solution.retardedGreen
+
+/-- SCBA self-energy on either spectral side. The advanced branch is the adjoint of the supplied
+retarded branch. -/
+noncomputable def FiniteSCBASolution.selfEnergy (side : SpectralSide) : H →L[ℂ] H :=
+  match side with
+  | .retarded => solution.retardedSelfEnergy
+  | .advanced => star solution.retardedSelfEnergy
+
+/-- Conventional advanced Green operator, retained as the advanced specialization of `green`. -/
+noncomputable def FiniteSCBASolution.advancedGreen : H →L[ℂ] H :=
+  solution.green .advanced
+
+/-- Conventional advanced self-energy, retained as the advanced specialization of `selfEnergy`. -/
+noncomputable def FiniteSCBASolution.advancedSelfEnergy : H →L[ℂ] H :=
+  solution.selfEnergy .advanced
+
+@[simp]
+theorem FiniteSCBASolution.green_retarded :
+    solution.green .retarded = solution.retardedGreen :=
+  rfl
+
+@[simp]
+theorem FiniteSCBASolution.green_advanced :
+    solution.green .advanced = star solution.retardedGreen :=
+  rfl
+
+@[simp]
+theorem FiniteSCBASolution.selfEnergy_retarded :
+    solution.selfEnergy .retarded = solution.retardedSelfEnergy :=
+  rfl
+
+@[simp]
+theorem FiniteSCBASolution.selfEnergy_advanced :
+    solution.selfEnergy .advanced = star solution.retardedSelfEnergy :=
+  rfl
+
+/-- The conventional advanced Green operator is the adjoint of the supplied retarded operator. -/
+@[simp]
+theorem FiniteSCBASolution.advancedGreen_eq_star_retarded :
+    solution.advancedGreen = star solution.retardedGreen :=
+  rfl
+
+/-- The conventional advanced self-energy is the adjoint of the supplied retarded self-energy. -/
+@[simp]
 theorem FiniteSCBASolution.advancedSelfEnergy_eq_star_retarded :
-    solution.advancedSelfEnergy = star solution.retardedSelfEnergy := by
-  calc
-    solution.advancedSelfEnergy =
-        ensemble.exactSecondMoment solution.advancedGreen :=
-      solution.advancedSelfEnergy_eq_secondMoment
-    _ = ensemble.exactSecondMoment (star solution.retardedGreen) :=
-      congrArg ensemble.exactSecondMoment solution.advancedGreen_eq_star_retarded
-    _ = star (ensemble.exactSecondMoment solution.retardedGreen) :=
-      ensemble.exactSecondMoment_star solution.retardedGreen
-    _ = star solution.retardedSelfEnergy :=
-      congrArg star solution.retardedSelfEnergy_eq_secondMoment.symm
+    solution.advancedSelfEnergy = star solution.retardedSelfEnergy :=
+  rfl
+
+/-- The SCBA self-energy satisfies the same canonical second-moment fixed-point equation on either
+spectral side. The advanced case is derived from retarded data by adjoint compatibility. -/
+theorem FiniteSCBASolution.selfEnergy_eq_secondMoment (side : SpectralSide) :
+    solution.selfEnergy side = ensemble.exactSecondMoment (solution.green side) := by
+  cases side with
+  | retarded =>
+      exact solution.retardedSelfEnergy_eq_secondMoment
+  | advanced =>
+      change star solution.retardedSelfEnergy =
+        ensemble.exactSecondMoment (star solution.retardedGreen)
+      calc
+        star solution.retardedSelfEnergy =
+            star (ensemble.exactSecondMoment solution.retardedGreen) :=
+          congrArg star solution.retardedSelfEnergy_eq_secondMoment
+        _ = ensemble.exactSecondMoment (star solution.retardedGreen) :=
+          (ensemble.exactSecondMoment_star solution.retardedGreen).symm
+
+/-- The derived advanced self-energy obeys `Σᴬ = C₂(Ḡᴬ)`. -/
+theorem FiniteSCBASolution.advancedSelfEnergy_eq_secondMoment :
+    solution.advancedSelfEnergy = ensemble.exactSecondMoment solution.advancedGreen := by
+  simpa only [FiniteSCBASolution.advancedSelfEnergy, FiniteSCBASolution.advancedGreen] using
+    solution.selfEnergy_eq_secondMoment .advanced
 
 /-- The advanced SCBA shift is the adjoint of the retarded SCBA shift. -/
 theorem FiniteSCBASolution.advancedShift_eq_star_retardedShift :
@@ -138,6 +212,34 @@ theorem FiniteSCBASolution.green_mul_advancedShift :
     solution.advancedGreen_eq_star_retarded] using
     congrArg star solution.retardedShift_mul_green
 
+/-- The side-indexed SCBA shift is a left inverse of the side-indexed Green operator. -/
+theorem FiniteSCBASolution.shift_mul_green (side : SpectralSide) :
+    ensemble.scbaShift side energy broadening (solution.selfEnergy side) *
+        solution.green side = 1 := by
+  cases side with
+  | retarded =>
+      simpa only [scbaRetardedShift, FiniteSCBASolution.selfEnergy_retarded,
+        FiniteSCBASolution.green_retarded] using
+        solution.retardedShift_mul_green
+  | advanced =>
+      simpa only [scbaAdvancedShift, FiniteSCBASolution.advancedSelfEnergy,
+        FiniteSCBASolution.advancedGreen] using
+        solution.advancedShift_mul_green
+
+/-- The side-indexed Green operator is a left inverse of its side-indexed SCBA shift. -/
+theorem FiniteSCBASolution.green_mul_shift (side : SpectralSide) :
+    solution.green side *
+        ensemble.scbaShift side energy broadening (solution.selfEnergy side) = 1 := by
+  cases side with
+  | retarded =>
+      simpa only [scbaRetardedShift, FiniteSCBASolution.selfEnergy_retarded,
+        FiniteSCBASolution.green_retarded] using
+        solution.green_mul_retardedShift
+  | advanced =>
+      simpa only [scbaAdvancedShift, FiniteSCBASolution.advancedSelfEnergy,
+        FiniteSCBASolution.advancedGreen] using
+        solution.green_mul_advancedShift
+
 /-- Finite SCBA Ward-consistency identity. The retarded and advanced self-energy difference is the
 canonical exact second-moment action applied to the Green-operator difference. -/
 theorem FiniteSCBASolution.selfEnergy_sub_eq_secondMoment_green_sub :
@@ -154,21 +256,25 @@ theorem FiniteSCBASolution.selfEnergy_sub_eq_secondMoment_green_sub :
         (solution.retardedGreen - solution.advancedGreen) :=
       (ensemble.exactSecondMoment_sub _ _).symm
 
+/-- The side-indexed SCBA Green operator is a unit whose inverse is its side-indexed shift. -/
+theorem FiniteSCBASolution.green_isUnit (side : SpectralSide) :
+    IsUnit (solution.green side) := by
+  refine ⟨⟨solution.green side,
+    ensemble.scbaShift side energy broadening (solution.selfEnergy side),
+    solution.green_mul_shift side,
+    solution.shift_mul_green side⟩, rfl⟩
+
 /-- The supplied retarded Green operator is a unit whose inverse is its SCBA shift. -/
 theorem FiniteSCBASolution.retardedGreen_isUnit :
     IsUnit solution.retardedGreen := by
-  refine ⟨⟨solution.retardedGreen,
-    ensemble.scbaRetardedShift energy broadening solution.retardedSelfEnergy,
-    solution.green_mul_retardedShift,
-    solution.retardedShift_mul_green⟩, rfl⟩
+  simpa only [FiniteSCBASolution.green_retarded] using
+    solution.green_isUnit .retarded
 
-/-- The supplied advanced Green operator is a unit whose inverse is its SCBA shift. -/
+/-- The derived advanced Green operator is a unit whose inverse is its SCBA shift. -/
 theorem FiniteSCBASolution.advancedGreen_isUnit :
     IsUnit solution.advancedGreen := by
-  refine ⟨⟨solution.advancedGreen,
-    ensemble.scbaAdvancedShift energy broadening solution.advancedSelfEnergy,
-    solution.green_mul_advancedShift,
-    solution.advancedShift_mul_green⟩, rfl⟩
+  simpa only [FiniteSCBASolution.advancedGreen] using
+    solution.green_isUnit .advanced
 
 end FiniteDisorderEnsemble
 
