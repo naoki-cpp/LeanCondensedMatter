@@ -174,7 +174,7 @@ theorem momentFromCumulant_eq_sum_blockContaining (κ : Finset α → R)
   rw [← Finset.mul_sum]
   rfl
 
-set_option linter.unusedDecidableInType false in
+omit [DecidableEq α] in
 /-- Reindex a cardinality-dependent sum over distinguished blocks by their size. -/
 theorem sum_blockContaining_card (s : Finset α) (a : α) (ha : a ∈ s)
     (f : ℕ → R) :

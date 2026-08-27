@@ -2,7 +2,6 @@ import LeanCondensedMatter.SecondQuantization.Common.Algebra.FiniteHilbertOperat
 import Mathlib.Analysis.Matrix.Hermitian
 
 set_option linter.style.header false
-set_option linter.unusedDecidableInType false
 
 /-!
 # Adjointness of finite-Hilbert operator transport
@@ -22,7 +21,10 @@ namespace Common
 
 noncomputable section
 
-variable {Config : Type*} [Fintype Config] [DecidableEq Config]
+variable {Config : Type*} [Fintype Config]
+
+/-- File-local classical decidable equality, kept out of public theorem signatures. -/
+local instance instDecidableEqFiniteHilbertSelfAdjoint : DecidableEq Config := Classical.decEq Config
 
 private noncomputable def finiteHilbertOperatorMatrix
     (A : AlgebraicFock Config →ₗ[ℂ] AlgebraicFock Config) :
