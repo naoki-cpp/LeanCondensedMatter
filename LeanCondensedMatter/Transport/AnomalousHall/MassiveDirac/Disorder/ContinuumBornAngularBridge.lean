@@ -99,17 +99,21 @@ theorem finiteCutoffContinuumBornSelfEnergy_eq_polarIntegral
   congr 1
   push_cast
   calc
-    (disorderStrength : ℂ) * (Real.pi : ℂ) *
-        (momentumMeasurePrefactor hbar : ℂ) * 2 =
+    (disorderStrength : ℂ) *
+        (((2 : ℂ) * (Real.pi : ℂ)) * (momentumMeasurePrefactor hbar : ℂ)) =
       (disorderStrength : ℂ) *
-        ((Real.pi : ℂ) * (momentumMeasurePrefactor hbar : ℂ)) * 2 := by
-          rw [mul_assoc]
-    _ = (disorderStrength : ℂ) *
-        ((momentumMeasurePrefactor hbar : ℂ) * (Real.pi : ℂ)) * 2 := by
-          rw [mul_comm (Real.pi : ℂ) (momentumMeasurePrefactor hbar : ℂ)]
+        ((momentumMeasurePrefactor hbar : ℂ) * ((2 : ℂ) * (Real.pi : ℂ))) := by
+          exact congrArg
+            (fun z : ℂ => (disorderStrength : ℂ) * z)
+            (mul_comm
+              ((2 : ℂ) * (Real.pi : ℂ))
+              (momentumMeasurePrefactor hbar : ℂ))
     _ = (disorderStrength : ℂ) * (momentumMeasurePrefactor hbar : ℂ) *
-        (Real.pi : ℂ) * 2 := by
-          rw [← mul_assoc]
+        ((2 : ℂ) * (Real.pi : ℂ)) := by
+          exact (mul_assoc
+            (disorderStrength : ℂ)
+            (momentumMeasurePrefactor hbar : ℂ)
+            ((2 : ℂ) * (Real.pi : ℂ))).symm
 
 end
 
